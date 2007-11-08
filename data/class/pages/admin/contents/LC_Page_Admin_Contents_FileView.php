@@ -52,6 +52,10 @@ class LC_Page_Admin_Contents_FileView extends LC_Page {
      * @return void
      */
     function process() {
+        // FIXME パスのチェック関数が必要
+        if (preg_match('|\./|', $_GET['file'])) {
+            SC_Utils_Ex::sfDispError('');
+        }
         // ユーザー認証
         SC_Utils_Ex::sfIsSuccess(new SC_Session());
 
