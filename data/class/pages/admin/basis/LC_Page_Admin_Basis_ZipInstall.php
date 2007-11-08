@@ -38,7 +38,7 @@ define("ZIP_CSV_FILE_PATH", DATA_PATH . "downloads/KEN_ALL.CSV");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id$
+ * @version $Id:LC_Page_Admin_Basis_ZipInstall.php 16741 2007-11-08 00:43:24Z adachi $
  */
 class LC_Page_Admin_Basis_ZipInstall extends LC_Page {
 
@@ -67,7 +67,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page {
         SC_Utils_Ex::sfIsSuccess($objSess);
 
         $fp = fopen(ZIP_CSV_FILE_PATH, "r");
-        $img_path = USER_URL . "templates/" . TEMPLATE_NAME . "/img/";
+        $img_path = USER_URL . "packages/" . TEMPLATE_NAME . "/img/";
 
         // 一部のIEは256バイト以上受け取ってから表示を開始する。
         for($i = 0; $i < 256; $i++) {
