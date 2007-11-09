@@ -334,7 +334,7 @@ VALUES (1, 1, 4, 'ice-01', NULL, 1, NULL, 150, 120, NULL, 2, now(), now());
 INSERT INTO dtb_products_class (product_id,classcategory_id1,classcategory_id2,product_code,stock,stock_unlimited,sale_limit,price01,price02,status,creator_id,create_date,update_date)
 VALUES (2, 0, 0, 'nabe-01', 100, NULL, NULL, 1700, 1650, NULL, 2, now(), now());
 
-INSERT INTO dtb_recommend_products (product_id,rank,comment,status,creator_id,create_date,update_date) VALUES (2, 4, 'お口直しに。', 0, 2, now(), now());
+INSERT INTO dtb_recommend_products (product_id, recommend_product_id, rank,comment,status,creator_id,create_date,update_date) VALUES (2, 1, 4, 'お口直しに。', 0, 2, now(), now());
 
 INSERT INTO dtb_class (name,status,rank,creator_id,create_date,update_date,del_flg,product_id) VALUES ('味', NULL, 1, 2, now(), now(), 0, NULL);
 INSERT INTO dtb_class (name,status,rank,creator_id,create_date,update_date,del_flg,product_id) VALUES ('大きさ', NULL, 2, 2, now(), now(), 0, NULL);
@@ -803,7 +803,7 @@ INSERT INTO mtb_constants VALUES ('TV_IMAGE_WIDTH','170',62,'TV連動商品画�
 INSERT INTO mtb_constants VALUES ('TV_IMAGE_HEIGHT','95',63,'TV連動商品画像縦');
 INSERT INTO mtb_constants VALUES ('TV_PRODUCTS_MAX','10',64,'TV連動商品最大登録数');
 INSERT INTO mtb_constants VALUES ('DEFAULT_PASSWORD','"UAhgGR3L"',65,'会員登録変更(マイページ)パスワード用');
-INSERT INTO mtb_constants VALUES ('RECOMMEND_PRODUCT_MAX','6',66,'おすすめ商品数');
+INSERT INTO mtb_constants VALUES ('dtbDUCT_MAX','6',66,'おすすめ商品数');
 INSERT INTO mtb_constants VALUES ('DELIV_ADDR_MAX','20',67,'別のお届け先最大登録数');
 INSERT INTO mtb_constants VALUES ('CUSTOMER_READING_MAX','30',68,'閲覧履歴保存数');
 INSERT INTO mtb_constants VALUES ('ORDER_STATUS_MAX','50',70,'管理画面ステータス一覧表示件数');

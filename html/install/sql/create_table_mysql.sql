@@ -406,7 +406,7 @@ CREATE TABLE dtb_bat_order_daily_hour (
 
 CREATE TABLE dtb_recommend_products (
     product_id int NOT NULL,
-    recommend_product_id int,
+    recommend_product_id int NOT NULL,
     rank int NOT NULL,
     comment text,
     status smallint NOT NULL DEFAULT 0,
