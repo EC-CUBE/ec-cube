@@ -711,7 +711,7 @@ class LC_Page_Products_Detail extends LC_Page {
                 . " GROUP BY product_id) AS T3 USING (product_id)";
         $objQuery->setorder("product_rank DESC");
         for($i = 0; $i < $max; $i++) {
-            $where = "del_flg = 0 AND product_id = ? AND status = 1";
+            $where = "del_flg = 0 AND T3.product_id = ? AND status = 1";
             $arrProductInfo = $objQuery->select("DISTINCT main_list_image, price02_min, price02_max, price01_min, price01_max, name, point_rate, product_rank", $from, $where, array($arrRet[$i]['recommend_product_id']));
 
             if(count($arrProductInfo) > 0) {
