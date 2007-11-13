@@ -629,7 +629,12 @@ function lfInitWebParam($objWebParam) {
     if(defined('HTML_PATH')) {
         $install_dir = HTML_PATH;
     } else {
-        $install_dir = realpath(dirname( __FILE__) . "/../") . "/";
+		if (substr(PHP_OS, 0, 3) == 'WIN') {
+			// ウインドウズの場合はパスの区切り記号が違う
+	        $install_dir = realpath(dirname( __FILE__) . "/../");
+		}else{
+	        $install_dir = realpath(dirname( __FILE__) . "/../") . "/";
+		}
     }
 
     if(defined('SITE_URL')) {
@@ -819,7 +824,12 @@ function lfMakeConfigFile() {
     $root_dir = $objWebParam->getValue('install_dir');
     // 語尾に'/'をつける
     if (!ereg("/$", $root_dir)) {
-        $root_dir = $root_dir . "/";
+		if (substr(PHP_OS, 0, 3) == 'WIN') {
+	        // ウインドウズの場合はパスの区切り記号が違う
+	        $root_dir = $root_dir . "\\";
+		}else{
+	        $root_dir = $root_dir . "/";
+		}
     }
 
     $normal_url = $objWebParam->getValue('normal_url');
@@ -841,7 +851,12 @@ function lfMakeConfigFile() {
     $data_path = realpath($data_path);
     // 語尾に'/'をつける
     if (!ereg("/$", $data_path)) {
-        $data_path = $data_path . "/";
+		if (substr(PHP_OS, 0, 3) == 'WIN') {
+	        // ウインドウズの場合はパスの区切り記号が違う
+        	$data_path = $data_path . "\\";
+		}else{
+	        $data_path = $data_path . "/";
+		}
     }
     $filepath = $data_path . "install.php";
 
