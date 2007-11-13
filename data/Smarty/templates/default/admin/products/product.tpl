@@ -38,7 +38,7 @@ function fnMoveSelect(select, target) {
 	$('#' + select).children().each(function() {
 		if (this.selected) {
 			$('#' + target).append(this);
-			$('#' + target).children().attr({selected: false});
+                        $(this).attr({selected: false});
 		}
 	});
 }
