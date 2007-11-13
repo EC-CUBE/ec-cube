@@ -117,10 +117,12 @@ foreach ($fileArrays as $path) {
 function listdirs($dir) {
     static $alldirs = array();
     $dirs = glob($dir . '/*');
-    if (count($dirs) > 0) {
+    if (is_array($dirs) && count($dirs) > 0) {
         foreach ($dirs as $d) $alldirs[] = $d;
     }
-    foreach ($dirs as $dir) listdirs($dir);
+    if (is_array($dirs)) {
+        foreach ($dirs as $dir) listdirs($dir);
+    }
     return $alldirs;
 }
 ?>
