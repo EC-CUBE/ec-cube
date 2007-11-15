@@ -60,7 +60,7 @@ define("PAYGENT_REF_LOOP", 1000);
 $arrDispKind = array(
 	PAYGENT_AUTH_CANCEL => 'オーソリキャンセル',
 	PAYGENT_CARD_COMMIT => '売上',
-	PAYGENT_CARD_COMMIT_CANCEL => '売上キャンセル',
+	PAYGENT_CARD_COMMIT_CANCEL => '売上キャンセル'
 );
 
 // 受注時の初期ステータス
@@ -68,7 +68,7 @@ $arrInitStatus = array(
 	PAYGENT_CREDIT => ORDER_NEW,		// クレジットは新規受付
 	PAYGENT_ATM => ORDER_PAY_WAIT,		// ATM決済は入金待ち
 	PAYGENT_CONVENI => ORDER_PAY_WAIT,	// コンビニは入金待ち
-	PAYGENT_BANK => ORDER_PAY_WAIT,		// 銀行は入金待ち
+	PAYGENT_BANK => ORDER_PAY_WAIT		// 銀行は入金待ち
 );
 
 define ("CHARGE_MAX", 500000);
@@ -339,7 +339,7 @@ function sfSendPaygentBANK($arrData, $arrInput, $uniqid) {
 	
 	// 共通データの取得
 	$arrSend = sfGetPaygentShare(PAYGENT_BANK, $arrData['order_id'], $arrPaymentDB[0]);
-
+	
 	/** 個別電文 **/
 	//$arrSend['bank_code'] = $arrInput['bank_code'];	
 	// 決済金額
@@ -395,6 +395,7 @@ function sfSendPaygentBANK($arrData, $arrInput, $uniqid) {
 	
 	return $arrRet;
 }
+
 
 /**************************************************************************************************************
  * 関数名	：sfPaygentResponse
@@ -732,9 +733,8 @@ function sfUpdatePaymentStatus($objPaygent, $arrSend) {
 		}	
 		$i++;
 	}
-	
-	
 }
+
 /**************************************************************************************************************
  * 関数名	：sfGetPaymentStatus
  * 処理内容	：入金ステータス差分照会（差分照会では変更のあったものだけ取得するためorder_idは不要）
