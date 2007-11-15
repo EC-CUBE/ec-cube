@@ -68,7 +68,7 @@ $arrInitStatus = array(
 	PAYGENT_CREDIT => ORDER_NEW,		// クレジットは新規受付
 	PAYGENT_ATM => ORDER_PAY_WAIT,		// ATM決済は入金待ち
 	PAYGENT_CONVENI => ORDER_PAY_WAIT,	// コンビニは入金待ち
-	PAYGENT_BANK => ORDER_NEW,			// 銀行は新規受付
+	PAYGENT_BANK => ORDER_PAY_WAIT,		// 銀行は入金待ち
 );
 
 define ("CHARGE_MAX", 500000);
@@ -172,7 +172,6 @@ function sfSendPaygentCredit($arrData, $arrInput, $uniqid) {
 	$arrSend = sfGetPaygentShare(PAYGENT_CREDIT, $arrData['order_id'], $arrPaymentDB[0]);
 	
 	/** 個別電文 **/
-	
 	// 決済金額
 	$arrSend['payment_amount'] = $arrData['payment_total'];
 	// カード番号
@@ -181,7 +180,6 @@ function sfSendPaygentCredit($arrData, $arrInput, $uniqid) {
 	$arrSend['card_valid_term'] = $arrInput['card_month'].$arrInput['card_year'];
 	// 支払い区分、分割回数の取得
 	list($payment_class, $split_count) = split("-", $arrInput['payment_class']);
-		
 	// 支払い区分
 	/*
 	 * 10:1回
@@ -230,7 +228,6 @@ function sfSendPaygentConveni($arrData, $arrInput, $uniqid) {
 	$arrSend = sfGetPaygentShare(PAYGENT_CONVENI, $arrData['order_id'], $arrPaymentDB[0]);
 	
 	/** 個別電文 **/
-	
 	// 決済金額
 	$arrSend['payment_amount'] = $arrData['payment_total'];
 	// 利用者姓
@@ -286,24 +283,24 @@ function sfSendPaygentATM($arrData, $arrInput, $uniqid) {
 	// 共通データの取得
 	$arrSend = sfGetPaygentShare(PAYGENT_ATM, $arrData['order_id'], $arrPaymentDB[0]);
 	
-	
 	/** 個別電文 **/
-	
 	// 決済金額
 	$arrSend['payment_amount'] = $arrData['payment_total'];
-
 	// 利用者姓
 	$arrSend['customer_family_name'] = $arrInput['customer_family_name'];
 	// 利用者名
 	$arrSend['customer_name'] = $arrInput['customer_name'];	
 	// 利用者姓半角カナ
 	$arrSend['customer_family_name_kana'] = mb_convert_kana($arrInput['customer_family_name_kana'],'k');
+	$arrSend['customer_family_name_kana'] = preg_replace("/ｰ/", "-", $arrSend['customer_family_name_kana']);
 	// 利用者名半角カナ
 	$arrSend['customer_name_kana'] = mb_convert_kana($arrInput['customer_name_kana'],'k');
+	$arrSend['customer_name_kana'] = preg_replace("/ｰ/", "-", $arrSend['customer_name_kana']);
 	// 決済内容
 	$arrSend['payment_detail'] = $arrOtherParam['payment_detail'];
 	// 決済内容半角カナ
 	$arrSend['payment_detail_kana'] = mb_convert_kana($arrOtherParam['payment_detail'],'k');
+	$arrSend['payment_detail_kana'] = preg_replace("/ｰ/", "-", $arrSend['payment_detail_kana']);
 	// 支払期限日
 	$arrSend['payment_limit_date'] = $arrOtherParam['payment_limit_date'];
 	
@@ -344,12 +341,12 @@ function sfSendPaygentBANK($arrData, $arrInput, $uniqid) {
 	$arrSend = sfGetPaygentShare(PAYGENT_BANK, $arrData['order_id'], $arrPaymentDB[0]);
 
 	/** 個別電文 **/
-	
 	//$arrSend['bank_code'] = $arrInput['bank_code'];	
 	// 決済金額
 	$arrSend['amount'] = $arrData['payment_total'];
 	// 請求内容カナ
-	$arrSend['claim_kana'] = $arrOtherParam['claim_kana'];
+	$arrSend['claim_kana'] = mb_convert_kana($arrOtherParam['claim_kana'],'k');
+	$arrSend['claim_kana'] = preg_replace("/ｰ/", "-", $arrSend['claim_kana']);
 	// 請求内容漢字
 	$arrSend['claim_kanji'] = $arrOtherParam['claim_kanji'];	
 	// 利用者姓
@@ -358,8 +355,10 @@ function sfSendPaygentBANK($arrData, $arrInput, $uniqid) {
 	$arrSend['customer_name'] = $arrInput['customer_name'];	
 	// 利用者姓半角カナ
 	$arrSend['customer_family_name_kana'] = mb_convert_kana($arrInput['customer_family_name_kana'],'k');
+	$arrSend['customer_family_name_kana'] = preg_replace("/ｰ/", "-", $arrSend['customer_family_name_kana']);
 	// 利用者名半角カナ
 	$arrSend['customer_name_kana'] = mb_convert_kana($arrInput['customer_name_kana'],'k');
+	$arrSend['customer_name_kana'] = preg_replace("/ｰ/", "-", $arrSend['customer_name_kana']);
 	// PC-Mobile区分
 	/*
 	 * 0:PC
@@ -369,12 +368,11 @@ function sfSendPaygentBANK($arrData, $arrInput, $uniqid) {
 	 */
 	$arrSend['pc_mobile_type'] = '0';
 	// 店舗名
-	$arrSend['merchant_name'] = $arrOtherParam['claim_kanji'];	
+	$arrSend['merchant_name'] = $arrOtherParam['claim_kanji'];
 	// 完了後の戻りＵＲＬ 
-	$arrSend['return_url'] = SSL_URL . "shopping/load_payment_module.php";
+	$arrSend['return_url'] = SITE_URL. "index.php";
 	// 戻りボタンＵＲＬ 
-	$arrSend['stop_return_url'] = SSL_URL . "shopping/load_payment_module.php";
-	
+	$arrSend['stop_return_url'] = SSL_URL. "shopping/load_payment_module.php";
 	// コピーライト	
 	$arrSend['copy_right'] = $arrOtherParam['copy_right'];
 	// 自由メモ欄
