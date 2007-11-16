@@ -87,14 +87,16 @@ $objPage->arrForm = $objFormParam->getFormParamList();
 $objView->assignobj($objPage);
 // フレームを選択(キャンペーンページから遷移なら変更)
 $objCampaignSess->pageView($objView);
-//-------------------------------------------------------------------------------------------------------
+
+//----------------------------------------------------------------------------------
+
 /* パラメータ情報の初期化 */
 function lfInitParam($arrData) {
 	global $objFormParam;
-	$objFormParam->addParam("利用者姓", "customer_family_name", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"), $arrData['order_name01']);
-	$objFormParam->addParam("利用者名", "customer_name", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"), $arrData['order_name02']);
-	$objFormParam->addParam("利用者姓カナ", "customer_family_name_kana", STEXT_LEN, "CKVa", array("EXIST_CHECK", "KANA_CHECK", "MAX_LENGTH_CHECK"), $arrData['order_kana01']);
-	$objFormParam->addParam("利用者名カナ", "customer_name_kana", STEXT_LEN, "CKVa", array("EXIST_CHECK", "KANA_CHECK", "MAX_LENGTH_CHECK"), $arrData['order_kana02']);
+	$objFormParam->addParam("利用者姓", "customer_family_name", PAYGENT_BANK_STEXT_LEN / 2, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"), $arrData['order_name01']);
+	$objFormParam->addParam("利用者名", "customer_name", PAYGENT_BANK_STEXT_LEN / 2, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"), $arrData['order_name02']);
+	$objFormParam->addParam("利用者姓カナ", "customer_family_name_kana", PAYGENT_BANK_STEXT_LEN, "CKVa", array("EXIST_CHECK", "KANA_CHECK", "MAX_LENGTH_CHECK"), $arrData['order_kana01']);
+	$objFormParam->addParam("利用者名カナ", "customer_name_kana", PAYGENT_BANK_STEXT_LEN, "CKVa", array("EXIST_CHECK", "KANA_CHECK", "MAX_LENGTH_CHECK"), $arrData['order_kana02']);
 }
 
 /* 入力内容のチェック */

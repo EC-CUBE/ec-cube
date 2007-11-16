@@ -120,6 +120,13 @@ $arrPaymentClass = array(
 	'80' => 'リボ払い'
 );
 
+// 文字入力制限（byte）
+define ("PAYGENT_BANK_STEXT_LEN", "12");	// ATM，銀行ネットの利用者名（漢字，カナ）
+define ("PAYGENT_CONVENI_STEXT_LEN", "14");	// コンビニの利用者名（漢字）
+define ("PAYGENT_CONVENI_MTEXT_LEN", "20");	// コンビニの利用者名（カナ）
+
+//====================================================================================
+
 /**************************************************************************************************************
  * 関数名	：sfGetPaygentShare
  * 処理内容	：ペイジェント情報送信の共通処理
@@ -150,7 +157,7 @@ function sfGetPaygentShare($telegram_kind, $order_id, $arrParam, $payment_id = "
 	
 	return $arrSend;
 }
-	
+
 /**************************************************************************************************************
  * 関数名	：sfSendPaygentCredit
  * 処理内容	：クレジット情報の送信
@@ -236,8 +243,11 @@ function sfSendPaygentConveni($arrData, $arrInput, $uniqid) {
 	$arrSend['customer_name'] = $arrInput['customer_name'];	
 	// 利用者姓半角カナ
 	$arrSend['customer_family_name_kana'] = mb_convert_kana($arrInput['customer_family_name_kana'],'k');
+	$arrSend['customer_family_name_kana'] = preg_replace("/ﾞ|ﾟ/", "", $arrSend['customer_family_name_kana']);
 	// 利用者名半角カナ
 	$arrSend['customer_name_kana'] = mb_convert_kana($arrInput['customer_name_kana'],'k');
+	$arrSend['customer_name_kana'] = preg_replace("/ﾞ|ﾟ/", "", $arrSend['customer_name_kana']);
+	echo $arrSend['customer_name_kana']. "<br>";
 	// 利用者電話番号
 	$arrSend['customer_tel'] = $arrInput['customer_tel'];
 	// 支払期限日
@@ -250,7 +260,7 @@ function sfSendPaygentConveni($arrData, $arrInput, $uniqid) {
 	// 電文の送付
 	foreach($arrSend as $key => $val) {
 		// Shift-JISにエンコードする必要あり
-		$enc_val = mb_convert_encoding($val, "Shift-JIS", CHAR_CODE);		
+		$enc_val = mb_convert_encoding($val, "Shift-JIS", CHAR_CODE);
 		$p->reqPut($key, $enc_val);
 	}
 	
@@ -293,9 +303,11 @@ function sfSendPaygentATM($arrData, $arrInput, $uniqid) {
 	// 利用者姓半角カナ
 	$arrSend['customer_family_name_kana'] = mb_convert_kana($arrInput['customer_family_name_kana'],'k');
 	$arrSend['customer_family_name_kana'] = preg_replace("/ｰ/", "-", $arrSend['customer_family_name_kana']);
+	$arrSend['customer_family_name_kana'] = preg_replace("/ﾞ|ﾟ/", "", $arrSend['customer_family_name_kana']);
 	// 利用者名半角カナ
 	$arrSend['customer_name_kana'] = mb_convert_kana($arrInput['customer_name_kana'],'k');
 	$arrSend['customer_name_kana'] = preg_replace("/ｰ/", "-", $arrSend['customer_name_kana']);
+	$arrSend['customer_name_kana'] = preg_replace("/ﾞ|ﾟ/", "", $arrSend['customer_name_kana']);
 	// 決済内容
 	$arrSend['payment_detail'] = $arrOtherParam['payment_detail'];
 	// 決済内容半角カナ
@@ -356,9 +368,11 @@ function sfSendPaygentBANK($arrData, $arrInput, $uniqid) {
 	// 利用者姓半角カナ
 	$arrSend['customer_family_name_kana'] = mb_convert_kana($arrInput['customer_family_name_kana'],'k');
 	$arrSend['customer_family_name_kana'] = preg_replace("/ｰ/", "-", $arrSend['customer_family_name_kana']);
+	$arrSend['customer_family_name_kana'] = preg_replace("/ﾞ|ﾟ/", "", $arrSend['customer_family_name_kana']);
 	// 利用者名半角カナ
 	$arrSend['customer_name_kana'] = mb_convert_kana($arrInput['customer_name_kana'],'k');
 	$arrSend['customer_name_kana'] = preg_replace("/ｰ/", "-", $arrSend['customer_name_kana']);
+	$arrSend['customer_name_kana'] = preg_replace("/ﾞ|ﾟ/", "", $arrSend['customer_name_kana']);
 	// PC-Mobile区分
 	/*
 	 * 0:PC
@@ -395,7 +409,6 @@ function sfSendPaygentBANK($arrData, $arrInput, $uniqid) {
 	
 	return $arrRet;
 }
-
 
 /**************************************************************************************************************
  * 関数名	：sfPaygentResponse
@@ -709,21 +722,17 @@ function sfUpdatePaymentStatus($objPaygent, $arrSend) {
 				 * 61:速報取消済
 				 * etc
 				 */
-				/*
-					【指示メモ】	
+				echo $arrRet['trading_id']. "\n";
+				echo $arrRet['payment_status']. "\n\n";
 				
-					現状、EC-CUBEではコンビ二決済・セブンイレブンについて
-					確報を受けて入金済みとされているようですが、
-					セブンの場合は入金後即時に速報が弊社側に届き、
-					入金後２~３日後に確報が届くような仕様となっております。
-					
-					セブンでの決済の場合は「速報検知済み（43）」を受けて
-					入金済みとするように改修していただけませんでしょうか。
-				 */
+				// 入金済みに変更
 				if($arrRet['payment_status'] == '40' || $arrRet['payment_status'] == '43') {
-					// 入金済みに変更する。
 					$arrVal['status'] = ORDER_PRE_END;
+				// キャンセルに変更
+				} elseif($arrRet['payment_status'] == '12') {
+					$arrVal['status'] = ORDER_CANCEL;
 				}
+				
 				// 取得ステータスを記憶する。
 				$arrVal['memo07'] = $arrRet['payment_status'];
 				// 再度照会する場合に使用する。

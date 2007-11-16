@@ -94,7 +94,9 @@ $objPage->arrForm = $objFormParam->getFormParamList();
 $objView->assignobj($objPage);
 // フレームを選択(キャンペーンページから遷移なら変更)
 $objCampaignSess->pageView($objView);
+
 //-------------------------------------------------------------------------------------------------------
+
 /* パラメータ情報の初期化 */
 function lfInitParam() {
 	global $objFormParam;
