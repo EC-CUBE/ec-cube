@@ -722,9 +722,6 @@ function sfUpdatePaymentStatus($objPaygent, $arrSend) {
 				 * 61:速報取消済
 				 * etc
 				 */
-				echo $arrRet['trading_id']. "\n";
-				echo $arrRet['payment_status']. "\n\n";
-				
 				// 入金済みに変更
 				if($arrRet['payment_status'] == '40' || $arrRet['payment_status'] == '43') {
 					$arrVal['status'] = ORDER_PRE_END;
