@@ -247,7 +247,6 @@ function sfSendPaygentConveni($arrData, $arrInput, $uniqid) {
 	// 利用者名半角カナ
 	$arrSend['customer_name_kana'] = mb_convert_kana($arrInput['customer_name_kana'],'k');
 	$arrSend['customer_name_kana'] = preg_replace("/ﾞ|ﾟ/", "", $arrSend['customer_name_kana']);
-	echo $arrSend['customer_name_kana']. "<br>";
 	// 利用者電話番号
 	$arrSend['customer_tel'] = $arrInput['customer_tel'];
 	// 支払期限日
