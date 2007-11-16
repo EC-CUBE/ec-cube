@@ -107,6 +107,9 @@ function next(now, next) {
 												メイ&nbsp;<input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|escape}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" size="20" class="bo20"></td>
 											</tr>
 											<tr><td height="5"></td></tr>
+											<tr>
+												<td class="fs10">※カナに濁点（゛）や半濁点（゜）がある場合、該当記号のみ除外されます。予めご了承ください。</td>
+											</tr>
 										</table>
 										</td>
 									</tr>
