@@ -699,7 +699,7 @@ function sfUpdatePaymentStatus($objPaygent, $arrSend) {
 	$objQuery = new SC_Query();
 	
 	$i = 0;
-	$notice_id = 0;
+	$notice_id = $objQuery->max("dtb_order", "memo10", "memo01 = ?", array(MDL_PAYGENT_ID));
 	
 	// ステータスの取得
 	while($i < 1000) {
@@ -707,6 +707,13 @@ function sfUpdatePaymentStatus($objPaygent, $arrSend) {
 		
 		// 取得成功
 		if($arrRet['success_code'] == '0') {
+			// 未取得決済通知IDの保持
+			if($arrRet['payment_notice_id'] > $notice_id + 1) {
+				for($notice_id++; $notice_id < $arrRet['payment_notice_id']; $notice_id++) {
+					$arrErrId[] = $notice_id;
+					gfPrintLog("決済通知ID=". $notice_id. "が欠番です。");
+				}
+			}
 			$notice_id = $arrRet['payment_notice_id'];
 			sfUpdatePaygentOrder($objQuery, $arrRet);
 		

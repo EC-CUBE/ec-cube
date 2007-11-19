@@ -66,12 +66,13 @@ case 'next':
 	$objPage->arrErr = lfCheckError($arrRet);
 	// 入力エラーなしの場合
 	if(count($objPage->arrErr) == 0) {
-		 // 入力データの取得を行う
+		// 入力データの取得を行う
     	$arrInput = $objFormParam->getHashArray();
 		// クレジット電文送信
-		$arrRet = sfSendPaygentBANK($arrData, $arrInput, $uniqid);		
+		$arrRet = sfSendPaygentBANK($arrData, $arrInput, $uniqid);
+		
 		// 成功
-		if($arrRet['asp_url'] != "") {
+		if(strlen($arrRet['asp_url']) > 0) {
             // 正常に登録されたことを記録しておく
 			$objSiteSess->setRegistFlag();
 			// 登録処理

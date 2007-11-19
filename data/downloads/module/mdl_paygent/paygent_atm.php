@@ -65,10 +65,10 @@ case 'next':
 		 // 入力データの取得を行う
     	$arrInput = $objFormParam->getHashArray();
 		// クレジット電文送信
-		$arrRet = sfSendPaygentATM($arrData, $arrInput, $uniqid);		
+		$arrRet = sfSendPaygentATM($arrData, $arrInput, $uniqid);
 		
 		// 成功
-		if($arrRet['result'] == 0) {
+		if($arrRet['result'] === "0") {
             // 正常に登録されたことを記録しておく
             $objSiteSess->setRegistFlag();
             header("Location: " . URL_SHOP_COMPLETE);
