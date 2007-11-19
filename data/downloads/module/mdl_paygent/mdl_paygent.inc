@@ -719,6 +719,7 @@ function sfUpdatePaymentStatus($objPaygent, $arrSend) {
 		} elseif($arrRet['payment_notice_id'] == "") {
 			$notice_id++;
 			$arrErrId[] = $notice_id;
+			gfPrintLog("決済通知ID=". $notice_id. "が欠番です。");
 		}
 		
 		$i++;
@@ -727,7 +728,12 @@ function sfUpdatePaymentStatus($objPaygent, $arrSend) {
 	// 取得失敗ステータスの再取得
 	for ($i = 0; $i < count($arrErrId); $i++) {
 		$arrRet = sfGetPaymentStatus($objPaygent, $arrSend, $arrErrId[$i]);
-		if($arrRet['success_code'] == '0') sfUpdatePaygentOrder($objQuery, $arrRet);
+		if($arrRet['success_code'] == '0') {
+			sfUpdatePaygentOrder($objQuery, $arrRet);
+		}
+		if($i == count($arrErrId) - 1) {
+			gfPrintLog("差分の再取得が終了しました。");
+		}
 	}
 }
 
