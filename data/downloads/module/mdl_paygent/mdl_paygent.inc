@@ -697,46 +697,37 @@ function sfPaygentTest($arrParam) {
  **************************************************************************************************************/
 function sfUpdatePaymentStatus($objPaygent, $arrSend) {
 	$objQuery = new SC_Query();
+	
 	$i = 0;
+	$notice_id = 0;
+	
 	// ステータスの取得
 	while($i < 1000) {
 		$arrRet = sfGetPaymentStatus($objPaygent, $arrSend);
 		
-		// 取得失敗
-		if($arrRet['success_code'] == '1' || !isset($arrRet['success_code'])) {
+		// 取得成功
+		if($arrRet['success_code'] == '0') {
+			$notice_id = $arrRet['payment_notice_id'];
+			sfUpdatePaygentOrder($objQuery, $arrRet);
+		
+		// 取得完了
+		} elseif($arrRet['success_code'] == '1') {
 			gfPrintLog("差分の取得が終了しました。");
-			return;
+			break;
+		
+		// 取得失敗
+		} elseif($arrRet['payment_notice_id'] == "") {
+			$notice_id++;
+			$arrErrId[] = $notice_id;
 		}
 		
-		// 取得成功		
-		if($arrRet['success_code'] == '0') {
-			if($arrRet['trading_id'] != "") {
-				// 支払ステータスの更新
-				/*
-				 * 10:申込済
-				 * 12:支払期限切れ
-				 * 15:申込中断
-				 * 40:消込済
-				 * 43:速報検知済
-				 * 61:速報取消済
-				 * etc
-				 */
-				// 入金済みに変更
-				if($arrRet['payment_status'] == '40' || $arrRet['payment_status'] == '43') {
-					$arrVal['status'] = ORDER_PRE_END;
-				// キャンセルに変更
-				} elseif($arrRet['payment_status'] == '12') {
-					$arrVal['status'] = ORDER_CANCEL;
-				}
-				
-				// 取得ステータスを記憶する。
-				$arrVal['memo07'] = $arrRet['payment_status'];
-				// 再度照会する場合に使用する。
-				$arrVal['memo10'] = $arrRet['payment_notice_id'];				
-				$objQuery->update("dtb_order", $arrVal, "order_id = ?", array($arrRet['trading_id']));
-			}
-		}	
 		$i++;
+	}
+	
+	// 取得失敗ステータスの再取得
+	for ($i = 0; $i < count($arrErrId); $i++) {
+		$arrRet = sfGetPaymentStatus($objPaygent, $arrSend, $arrErrId[$i]);
+		if($arrRet['success_code'] == '0') sfUpdatePaygentOrder($objQuery, $arrRet);
 	}
 }
 
@@ -768,13 +759,49 @@ function sfGetPaymentStatus($objPaygent, $arrSend, $notice_id = "") {
 		# データが存在する限り、取得
 		$arrRes[] = $objPaygent->resNext(); # 要求結果取得
 	}
-		
+	
 	foreach($arrRes[0] as $key => $val) {
 		// Shift-JISで応答があるので、エンコードする。
 		$arrRes[0][$key] = mb_convert_encoding($val, CHAR_CODE, "Shift-JIS");
 		gfPrintLog($key."->".$arrRes[0][$key]);
 	}
+	
 	return $arrRes[0];
+}
+
+/**************************************************************************************************************
+ * 関数名	：sfUpdatePaygentOrder($objQuery, $arrRet)
+ * 処理内容	：支払ステータス更新
+ * 引数1	：
+ * 引数2	：
+ * 引数3	：
+ * 戻り値	：取得結果
+ **************************************************************************************************************/
+function sfUpdatePaygentOrder($objQuery, $arrRet) {
+	/*
+	 * 10:申込済
+	 * 12:支払期限切れ
+	 * 15:申込中断
+	 * 40:消込済
+	 * 43:速報検知済
+	 * 61:速報取消済
+	 * etc
+	 */
+	if($arrRet['trading_id'] != "") {
+		// 入金済みに変更
+		if($arrRet['payment_status'] == '40' || $arrRet['payment_status'] == '43') {
+			$arrVal['status'] = ORDER_PRE_END;
+		// キャンセルに変更
+		} elseif($arrRet['payment_status'] == '12') {
+			$arrVal['status'] = ORDER_CANCEL;
+		}
+		
+		// 取得ステータスを記憶する。
+		$arrVal['memo07'] = $arrRet['payment_status'];
+		// 再度照会する場合に使用する。
+		$arrVal['memo10'] = $arrRet['payment_notice_id'];
+		$objQuery->update("dtb_order", $arrVal, "order_id = ?", array($arrRet['trading_id']));
+	}
 }
 
 /**************************************************************************************************************
