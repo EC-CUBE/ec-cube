@@ -124,8 +124,12 @@ function next(now, next) {
 								<td align="center" bgcolor="#f7f5f4">
 								<table width="666" border="0" cellspacing="0" cellpadding="6" summary=" ">
 									<tr>
-										<td class="fs12st" align="center">以上の内容で間違いなければ、下記「注文完了ページへ」ボタンをクリックしてください。<br>
-										<span class="orange">※画面が切り替るまで少々時間がかかる場合がございますが、そのままお待ちください。</span></td>
+										<td class="fs12st" align="center">以上の内容で間違いなければ、下記「次へ」ボタンをクリックしてください。<br>
+										<span class="orange">
+										※画面が切り替るまで少々時間がかかる場合がございますが、そのままお待ちください。<br>
+										※決済用サイトに遷移します。ドメインが変わりますが、そのままお手続きを進めてください。
+										</span>
+										</td>
 									</tr>
 									<tr>
 										<td align="center" height="40" bgcolor="#f7f5f4">
