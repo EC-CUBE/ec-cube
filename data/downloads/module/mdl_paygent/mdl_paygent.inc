@@ -640,13 +640,13 @@ function sfPaygentBatch() {
 	
 	//　設定パラメータの取得
 	$arrPaymentDB = sfGetPaymentDB(MDL_PAYGENT_ID);
-
+	
 	$where = "memo01 = ? AND status = ?";
 	$arrOrder = $objQuery->select("order_id", "dtb_order", $where, array(MDL_PAYGENT_ID, ORDER_PAY_WAIT));
 	
 	// 共通データの取得
 	$arrSend = sfGetPaygentShare(PAYGENT_REF, 0, $arrPaymentDB[0]);
-		
+	
 	if(count($arrOrder) > 0) {
 		sfUpdatePaymentStatus($objPaygent, $arrSend);
 	}	
@@ -701,6 +701,8 @@ function sfUpdatePaymentStatus($objPaygent, $arrSend) {
 	$i = 0;
 	$notice_id = $objQuery->max("dtb_order", "memo10", "memo01 = ?", array(MDL_PAYGENT_ID));
 	
+	$objQuery->begin();
+	
 	// ステータスの取得
 	while($i < 1000) {
 		$arrRet = sfGetPaymentStatus($objPaygent, $arrSend);
@@ -735,12 +737,29 @@ function sfUpdatePaymentStatus($objPaygent, $arrSend) {
 	// 取得失敗ステータスの再取得
 	for ($i = 0; $i < count($arrErrId); $i++) {
 		$arrRet = sfGetPaymentStatus($objPaygent, $arrSend, $arrErrId[$i]);
+		
+		// 再取得成功
 		if($arrRet['success_code'] == '0') {
 			sfUpdatePaygentOrder($objQuery, $arrRet);
+		
+		// 再取得失敗
+		} elseif($arrRet['payment_notice_id'] == "") {
+			gfPrintLog("決済通知ID=". $arrErrId[$i]. "の再取得に失敗しました。バッチを強制終了します。");
+			$err_flg = false;
+			break;
 		}
+		
+		// 再取得完了
 		if($i == count($arrErrId) - 1) {
 			gfPrintLog("差分の再取得が終了しました。");
 		}
+	}
+	
+	// コミット成否判定
+	if ($err_flg === false) {
+		$objQuery->rollback();
+	} else {
+		$objQuery->commit();
 	}
 }
 
@@ -753,8 +772,6 @@ function sfUpdatePaymentStatus($objPaygent, $arrSend) {
  * 戻り値	：取得結果
  **************************************************************************************************************/
 function sfGetPaymentStatus($objPaygent, $arrSend, $notice_id = "") {
-	$objQuery = new SC_Query();
-	
 	// 既に取得した差分を取得
 	if($notice_id !== "") {
 		$arrSend['payment_notice_id'] = $notice_id;
