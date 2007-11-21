@@ -11,7 +11,7 @@ require_once(MODULE_PATH . "mdl_epsilon/mdl_epsilon.inc");
 
 class LC_Page {
 	function LC_Page() {
-		if (is_callable(GC_MobileUserAgent) && GC_MobileUserAgent::isMobile()) {
+		if (is_callable("GC_MobileUserAgent", "isMobile") && GC_MobileUserAgent::isMobile()) {
 			$this->tpl_mainpage = MODULE_PATH . "mdl_epsilon/convenience_mobile.tpl";
 		} else {
 			$this->tpl_mainpage = MODULE_PATH . "mdl_epsilon/convenience.tpl";
@@ -30,7 +30,11 @@ global $arrConvenience;
 global $arrConveni_message;
 
 $objPage = new LC_Page();
-$objView = new SC_SiteView();
+if (is_callable("GC_MobileUserAgent", "isMobile") && GC_MobileUserAgent::isMobile()) {
+	$objView = new SC_MobileView();
+} else {
+	$objView = new SC_SiteView();
+}
 $objCampaignSess = new SC_CampaignSession();
 $objSiteInfo = $objView->objSiteInfo;
 $arrInfo = $objSiteInfo->data;
@@ -69,7 +73,7 @@ switch($_POST["mode"]){
 		// 正常に登録されたことを記録しておく
 		$objSiteSess->setRegistFlag();
 		// 確認ページへ移動
-		if (is_callable(GC_MobileUserAgent) && GC_MobileUserAgent::isMobile()) {
+		if (is_callable("GC_MobileUserAgent", "isMobile") && GC_MobileUserAgent::isMobile()) {
 			header("Location: " . gfAddSessionId(URL_SHOP_CONFIRM));
 		} else {
 			header("Location: " . URL_SHOP_CONFIRM);
@@ -209,7 +213,7 @@ switch($_POST["mode"]){
 				// 受注一時テーブルに更新
 				sfRegistTempOrder($uniqid, $sqlval);
 
-				if (is_callable(GC_MobileUserAgent) && GC_MobileUserAgent::isMobile()) {
+				if (is_callable("GC_MobileUserAgent", "isMobile") && GC_MobileUserAgent::isMobile()) {
 					header("Location: " . gfAddSessionId(URL_SHOP_COMPLETE));
 				} else {
 					header("Location: " . URL_SHOP_COMPLETE);

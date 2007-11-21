@@ -11,8 +11,6 @@ require_once(MODULE_PATH . "mdl_epsilon/mdl_epsilon.inc");
 
 class LC_Page {
 	function LC_Page() {
-		/** 必ず指定する **/
-		$this->tpl_mainpage = 'mdl_epsilon/card.tpl';			// メインテンプレート
 		/*
 		 session_start時のno-cacheヘッダーを抑制することで
 		 「戻る」ボタン使用時の有効期限切れ表示を抑制する。
@@ -72,7 +70,7 @@ if($_GET["result"] == "1"){
 	sfRegistTempOrder($uniqid, $arrVal);
 
 	// 完了画面へ
-	if (is_callable(GC_MobileUserAgent) && GC_MobileUserAgent::isMobile()) {
+	if (is_callable("GC_MobileUserAgent", "isMobile") && GC_MobileUserAgent::isMobile()) {
 		header("Location: " .  gfAddSessionId(URL_SHOP_COMPLETE));
 	} else {
 		header("Location: " .  URL_SHOP_COMPLETE);
@@ -134,9 +132,9 @@ function lfSendCredit($arrData, $arrPayment, $arrMainProduct, $again = true){
 		$objSiteSess->setRegistFlag();
 		
 		// 携帯端末の場合は、セッションID・オーダー番号・戻ってくるURLを保存しておく。
-		if (is_callable(GC_MobileUserAgent) && GC_MobileUserAgent::isMobile()) {
-			sfMobileSetExtSessionId('order_number', $arrData['order_id'], 'shopping/load_payment_module.php');
-			sfMobileSetExtSessionId('order_number', $arrData['order_id'], 'shopping/confirm.php');
+		if (is_callable("GC_MobileUserAgent", "isMobile") && GC_MobileUserAgent::isMobile()) {
+			sfMobileSetExtSessionId('order_number', $arrData['order_id'], 'mobile/shopping/load_payment_module.php');
+			sfMobileSetExtSessionId('order_number', $arrData['order_id'], 'mobile/shopping/confirm.php');
 		}
 
 		$url = sfGetXMLValue($arrXML,'RESULT','REDIRECT');
