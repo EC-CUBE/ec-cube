@@ -10,15 +10,14 @@ class LC_Page {
 	var $arrSession;
 	var $tpl_mode;
 	function LC_Page() {
-		$this->tpl_mainpage = 'basis/mail.tpl';
-		$this->tpl_subnavi = 'basis/subnavi.tpl';
-		$this->tpl_mainno = 'basis';
-		$this->tpl_subno = 'mail';
-		$this->tpl_subtitle = 'メール設定';
+		$this->tpl_mainpage = "basis/mail_edit.tpl";
+		$this->tpl_subnavi = "basis/subnavi.tpl";
+		$this->tpl_mainno = "basis";
+		$this->tpl_subno = "mail";
+		$this->tpl_subtitle = "メール設定";
 	}
 }
 
-$conn = new SC_DBConn();
 $objQuery = new SC_Query();
 $objPage = new LC_Page();
 $objView = new SC_AdminView();
@@ -28,31 +27,34 @@ $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
 $objPage->arrMailTEMPLATE = $arrMAILTEMPLATE;
+$objPage->arrSendType = $arrMailType;
 
-$objPage->arrSendType = array("パソコン","携帯");
-
-if ( $_GET['mode'] == 'edit' && sfCheckNumLength($_GET['template_id']) === true ){
-	if ( sfCheckNumLength( $_GET['template_id']) ){
-		$sql = "SELECT * FROM dtb_mailtemplate WHERE template_id = ?";
-		$result = $conn->getAll($sql, array($_GET['template_id']) );
-		if ( $result ){
+// 編集/新規
+if ($_POST['mode'] == "edit") {
+	if (sfCheckNumLength($_POST['template_id']) === true) {
+		$result = $objQuery->select("*", "dtb_mailtemplate", "template_id = ?", array($_POST['template_id']));
+		if ($result) {
 			$objPage->arrForm = $result[0];
 		} else {
-			$objPage->arrForm['template_id'] = $_GET['template_id'];
+			$objPage->arrForm['template_id'] = $_POST['template_id'];
 		}
+	} else {
+		$objPage->arrForm['template_id'] = 0;
 	}
-} elseif ( $_POST['mode'] == 'regist' && sfCheckNumLength( $_POST['template_id']) ){
+
+// 登録
+} elseif ($_POST['mode'] == "regist" && sfCheckNumLength($_POST['template_id']) === true) {
 	// POSTデータの引き継ぎ
 	$objPage->arrForm = lfConvertParam($_POST);
 	$objPage->arrErr = fnErrorCheck($objPage->arrForm);
-	if ( $objPage->arrErr ){
+	if ($objPage->arrErr) {
 		// エラーメッセージ
 		$objPage->tpl_msg = "エラーが発生しました";
 	} else {
 		// 正常
-		lfRegist($conn, $objPage->arrForm);
-		// 完了メッセージ
-		$objPage->tpl_onload = "window.alert('メール設定が完了しました。');";
+		lfRegist($objQuery, $objPage->arrForm, $_POST['template_id']);
+		// 完了ページ
+		$objPage->tpl_mainpage = "basis/mail_complete.tpl";
 	}
 }
 
@@ -61,23 +63,24 @@ $objView->display(MAIN_FRAME);
 
 //-----------------------------------------------------------------------------------------------------------------------------------
 
-function lfRegist( $conn, $data ){
+function lfRegist($objQuery, $arrVal, $id) {
+	$sqlval['template_name'] = $arrVal['template_name'];
+	$sqlval['subject'] = $arrVal['subject'];
+	$sqlval['creator_id'] = $_SESSION['member_id'];
+	$sqlval['body'] = $arrVal['body'];
+	$sqlval['send_type'] = $arrVal['send_type'];
+	$sqlval['update_date'] = "now()";
 	
-	$data['creator_id'] = $_SESSION['member_id'];
-	
-	$sql = "SELECT * FROM dtb_mailtemplate WHERE template_id = ? AND del_flg = 0";
-	$result = $conn->getAll($sql, array($_POST['template_id']) );
-	if ( $result ){
-		$sql_where = "template_id = ". addslashes($_POST['template_id']);
-		$conn->query("UPDATE dtb_mailtemplate SET send_type = ?,template_id = ?, template_name = ?,subject = ?,body = ?,creator_id = ?, update_date = now() WHERE ".$sql_where, $data);
-	}else{
-		$conn->query("INSERT INTO dtb_mailtemplate (send_type,template_id,template_name,subject,body,creator_id,update_date,create_date) values ( ?,?,?,?,?,?,now(),now() )", $data);
+	$result = $objQuery->count("dtb_mailtemplate", "template_id=?", array($id));
+	if ($result > 0) {
+		$objQuery->update("dtb_mailtemplate", $sqlval, "template_id=?", array($id));
+	} else {
+		$sqlval['create_date'] = "now()";
+		$objQuery->insert("dtb_mailtemplate", $sqlval);
 	}
-
 }
 
 function lfConvertParam($array) {
-	
     $new_array["send_type"] = $array["send_type"];
 	$new_array["template_id"] = $array["template_id"];
     $new_array["template_name"] = mb_convert_kana($array["template_name"],"KV");
@@ -89,14 +92,13 @@ function lfConvertParam($array) {
 
 /* 入力エラーのチェック */
 function fnErrorCheck($array) {
-	
 	$objErr = new SC_CheckError($array);
 	$objErr->doFunc(array("メールの種類",'send_type'), array("EXIST_CHECK"));
 	$objErr->doFunc(array("テンプレート",'template_id'), array("EXIST_CHECK"));
     $objErr->doFunc(array("テンプレート",'template_name'), array("EXIST_CHECK"));
 	$objErr->doFunc(array("メールタイトル",'subject',MTEXT_LEN,"BIG"), array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
 	$objErr->doFunc(array("メールの内容",'body',LTEXT_LEN,"BIG"), array("MAX_LENGTH_CHECK","EXIST_CHECK"));
-
+	
 	return $objErr->arrErr;
 }
 

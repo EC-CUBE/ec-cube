@@ -11,7 +11,7 @@ class LC_Page {
 	var $list_data;
 
 	function LC_Page() {
-		$this->tpl_mainpage = 'basis/preview.tpl';
+		$this->tpl_mainpage = "basis/mail_preview.tpl";
 	}
 }
 

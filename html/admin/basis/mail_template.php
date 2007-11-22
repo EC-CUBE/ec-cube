@@ -14,11 +14,11 @@ class LC_Page {
     var $arrMagazineType;
     
     function LC_Page() {
-        $this->tpl_mainpage = 'basis/template.tpl';
-        $this->tpl_mainno = 'basis';
-        $this->tpl_subnavi = 'basis/subnavi.tpl';
-        $this->tpl_subno = 'mail';
-        $this->tpl_subtitle = 'テンプレート設定';
+        $this->tpl_mainpage = "basis/mail_template.tpl";
+        $this->tpl_mainno = "basis";
+        $this->tpl_subnavi = "basis/subnavi.tpl";
+        $this->tpl_subno = "mail";
+        $this->tpl_subtitle = "メール設定";
     }
 }
 
@@ -30,8 +30,7 @@ $objSess = new SC_Session();
 // 認証可否の判定
 sfIsSuccess($objSess);
 
-if ( $_GET['mode'] == "delete" && sfCheckNumLength($_GET['id'])===true ){
-    
+if ($_GET['mode'] == "delete" && sfCheckNumLength($_GET['id'])===true) {
     // 登録削除
     $sql = "UPDATE dtb_mailtemplate SET del_flg = 1 WHERE template_id = ?";
     $conn->query($sql, array($_GET['id']));
@@ -42,7 +41,7 @@ $sql = "SELECT * FROM dtb_mailtemplate WHERE del_flg = 0 ORDER BY template_id AS
 $list_data = $conn->getAll($sql);
 $linemax = count($list_data);
 
-for($i = 0;$i < count($list_data);$i++){
+for ($i = 0; $i < count($list_data); $i++) {
    $split_data = explode(".",$list_data[$i]["create_date"]);
    $list_data[$i]["create_date"] = $split_data[0];    
 }

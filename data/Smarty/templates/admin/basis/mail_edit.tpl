@@ -7,17 +7,44 @@
 *}-->
 <script language="JavaScript">
 <!--
+var flag = 0;
+
+function setFlag(){
+	flag = 1;
+}
+
+function checkFlagAndSubmit(){
+	if ( flag == 1 ){
+		if( confirm('内容が変更されています。続行すれば変更内容は破棄されます。\n宜しいでしょうか？' )){
+			fnSetvalAndSubmit( 'form1', 'mode', 'edit' );
+		} else {
+			return false;
+		}
+	} else {
+		fnSetvalAndSubmit( 'form1', 'mode', 'edit' );
+	}
+}
+
 function lfnCheckSubmit(){
 	
 	fm = document.form1;
 	var err = '';
 	
+	if ( ! fm["send_type"][0].checked && ! fm["send_type"][1].checked ){
+		if ( err ) err += '\n';
+		err += 'メールの形式を入力して下さい。';
+	}
 	if ( ! fm["subject"].value ){
+		if ( err ) err += '\n';
 		err += 'Subjectを入力して下さい。';
 	}
 	if ( ! fm["body"].value ){
 		if ( err ) err += '\n';
-		err += '本文を入力して下さい。';
+		err += 'メールの本文を入力して下さい。';
+	}
+	if( ! fm["template_name"]){
+		if ( err ) err += '\n';
+		err += 'テンプレートの名前を入力して下さい。';
 	}
 	if ( err ){
 		alert(err);
@@ -35,9 +62,9 @@ function lfnCheckSubmit(){
 
 <!--★★メインコンテンツ★★-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" onSubmit="return lfnCheckSubmit();">
-<input type="hidden" name="mode" value="<!--{$mode}-->">
-<input type="hidden" name="template_id" value="<!--{$arrForm.template_id}-->">
+<form name="form1" id="form1" method="POST" action="<!--{$smarty.server.PHP_SELF|escape}-->" onsubmit="return lfnCheckSubmit();" >
+<input type="hidden" name="mode" value="regist">
+<input type="hidden" name="template_id" value="<!--{$arrForm.template_id|escape}-->">
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
 			<!--▼SUB NAVI-->
@@ -64,7 +91,7 @@ function lfnCheckSubmit(){
 									</tr>
 									<tr>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--コンテンツタイトル-->配信内容設定：<!--{$title}--></span></td>
+										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--コンテンツタイトル-->テンプレート編集</span></td>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 									</tr>
 									<tr>
@@ -78,24 +105,53 @@ function lfnCheckSubmit(){
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec">メール形式<span class="red"> *</span></td>
-										<td bgcolor="#ffffff"><span <!--{if $arrErr.mail_method}--><!--{sfSetErrorStyle}--><!--{/if}-->><!--{html_radios name="mail_method" options=$arrMagazineType separator="&nbsp;" selected=$arrForm.mail_method}--></span>
-										<!--{if $arrErr.mail_method}--><br><span class="red12"><!--{$arrErr.mail_method}--></span><!--{/if}-->
-										</td>
-									</tr>
-									<tr>
-										<td bgcolor="#f2f1ec" class="fs12n">Subject<span class="red"> *</span></td>
 										<td bgcolor="#ffffff">
-										<input type="text" name="subject" size="65" class="box65" <!--{if $arrErr.subject}--><!--{sfSetErrorStyle}--><!--{/if}--> value="<!--{$arrForm.template_name|escape}-->" />
-										<!--{if $arrErr.subject}--><br><span class="red12"><!--{$arrErr.subject}--></span><!--{/if}-->
+										<!--{assign var=key value="send_type"}-->
+										<!--{if $arrForm.template_id == 1}-->
+											<input type="radio" name="send_type" value="<!--{$smarty.const.MAIL_TYPE_PC}-->" id="send_type_0" checked="checked" /><label for="send_type_0">パソコン</label>&nbsp;
+										<!--{elseif $arrForm.template_id == 2}-->
+											<input type="radio" name="send_type" value="<!--{$smarty.const.MAIL_TYPE_MOBILE}-->" id="send_type_1" checked="checked" /><label for="send_type_1">携帯</label>&nbsp;
+										<!--{else}-->
+											<!--{html_radios_ex name="send_type" options=$arrSendType separator="&nbsp;" selected=$arrForm[$key]}-->
+										<!--{/if}-->
 										</td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" colspan="2" class="fs12n">本文<span class="red"> *</span>（名前差し込み時は {name} といれてください）</td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">テンプレート<span class="red"> *</span></td>
+										<td bgcolor="#ffffff" width="557" class="fs10n">
+										<!--{assign var=key value="template_name"}-->
+										<span class="red12"><!--{$arrErr[$key]}--></span>
+										<input type="text" name="template_name" value="<!--{$arrForm[$key]|escape}-->" onChange="setFlag();" size="30" class="box30" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
+										</td>
 									</tr>
 									<tr>
-										<td bgcolor="#ffffff" colspan="2">
-										<textarea name="body" cols="90" rows="40" class="area90" <!--{if $arrErr.body}--><!--{sfSetErrorStyle}--><!--{/if}-->><!--{$arrForm.body|escape}--></textarea>
-										<!--{if $arrErr.body}--><br><span class="red12"><!--{$arrErr.body}--></span><!--{/if}-->
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">メールタイトル<span class="red"> *</span></td>
+										<td bgcolor="#ffffff" width="557" class="fs10n">
+										<!--{assign var=key value="subject"}-->
+										<span class="red12"><!--{$arrErr[$key]}--></span>
+										<input type="text" name="subject" value="<!--{$arrForm[$key]|escape}-->" onChange="setFlag();" size="30" class="box30" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
+										</td>
+									</tr>
+									<tr>
+										<td bgcolor="#f2f1ec" colspan="2" class="fs12n"><span class="red"> *</span>名前を差し込む場合は、{name}と入力して下さい。<br>
+										<span class="red"> *</span>注文情報を差し込む場合は、{order}と入力して下さい。</td>
+									</tr>
+									<tr>
+										<td bgcolor="#f2f1ec" width="160" class="fs12">本文</td>
+										<td bgcolor="#ffffff" width="557" class="fs10">
+										<!--{assign var=key value="body"}-->
+										<span class="red12"><!--{$arrErr[$key]}--></span>
+										<textarea name="body" cols="75" rows="20" class="area75" onChange="setFlag();" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{$arrForm[$key]|escape}--></textarea><br />
+										<span class="red"> （上限<!--{$smarty.const.LTEXT_LEN}-->文字）
+										</span>
+						
+										<div align="right">
+											<input type="button" width="110" height="30" value="文字数カウント" onclick="fnCharCount('form1','body','cnt_body');" border="0" name="next" id="next" />
+											<br>今までに入力したのは
+											<input type="text" name="cnt_body" size="4" class="box4" readonly = true style="text-align:right">
+											文字です。
+										</div>
+						
 										</td>
 									</tr>
 								</table>
@@ -111,10 +167,7 @@ function lfnCheckSubmit(){
 										<td bgcolor="#e9e7de" align="center">
 										<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 											<tr>
-												<td width="30%"></td>
-												<td width="40%" align = "center" valign="upper"><input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg" width="123" height="24" alt="この内容で登録する" border="0" name="subm"></td>
-												<td width="30%" align = "right" valign="upper"><input type="button" width="110" height="30" value="文字数カウント" onclick="fnCharCount('form1','body','cnt_footer');" border="0" name="next" id="next" />
-												<br><span class="fs10n">今までに入力したのは<input type="text" name="cnt_footer" size="4" class="box4" readonly = true style="text-align:right">文字です。</span></td>
+												<td><input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg" width="123" height="24" alt="この内容で登録する" border="0" name="subm" ></td>
 											</tr>
 										</table>
 										</td>
@@ -139,5 +192,7 @@ function lfnCheckSubmit(){
 			<!--▲登録テーブルここまで-->
 		</td>
 	</tr>
+</form>
 </table>
 <!--★★メインコンテンツ★★-->
+
