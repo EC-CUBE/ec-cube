@@ -21,6 +21,7 @@ class LC_Page {
 		$this->tpl_mainno = 'mail';
 		$this->tpl_subnavi = 'mail/subnavi.tpl';
 		$this->tpl_subno = "template";
+		$this->tpl_subtitle = 'テンプレート設定';
 	}
 }
 
@@ -34,13 +35,6 @@ sfIsSuccess($objSess);
 
 $objPage->arrMagazineType = $arrMagazineType;
 $objPage->mode = "regist";
-
-// idが指定されているときは「編集」表示
-if ( $_REQUEST['template_id'] ){
-	$objPage->title = "編集";
-} else {
-	$objPage->title = "新規登録";
-}
 
 // モードによる処理分岐
 if ( $_GET['mode'] == 'edit' && sfCheckNumLength($_GET['template_id'])===true ){
@@ -70,14 +64,10 @@ if ( $_GET['mode'] == 'edit' && sfCheckNumLength($_GET['template_id'])===true ){
 	
 } 
 
-
-
-
-
-
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
 
+//=============================================================================
 
 function lfRegistData( $arrVal, $id = null ){
 	
@@ -124,7 +114,5 @@ function lfErrorCheck() {
 
 	return $objErr->arrErr;
 }
-
-
 
 ?>

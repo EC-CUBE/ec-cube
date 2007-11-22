@@ -47,15 +47,18 @@ if ($_POST['mode'] == "edit") {
 	// POSTデータの引き継ぎ
 	$objPage->arrForm = lfConvertParam($_POST);
 	$objPage->arrErr = fnErrorCheck($objPage->arrForm);
+	// エラー
 	if ($objPage->arrErr) {
-		// エラーメッセージ
 		$objPage->tpl_msg = "エラーが発生しました";
+	// 正常
 	} else {
-		// 正常
 		lfRegist($objQuery, $objPage->arrForm, $_POST['template_id']);
-		// 完了ページ
-		$objPage->tpl_mainpage = "basis/mail_complete.tpl";
+		sfReload("mode=complete");
 	}
+
+// 完了
+} elseif ($_GET['mode'] == 'complete') {
+	$objPage->tpl_mainpage = "basis/mail_complete.tpl";
 }
 
 $objView->assignobj($objPage);
