@@ -176,7 +176,7 @@ CREATE TABLE dtb_payment (
 );
 
 CREATE TABLE dtb_mailtemplate (
-    template_id SERIAL NOT NULL,
+    template_id SERIAL NOT NULL UNIQUE,
     subject text,
     header text,
     footer text,
