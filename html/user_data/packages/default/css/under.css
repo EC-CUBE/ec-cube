@@ -143,6 +143,6 @@ div#undercolumn_entry div#completetext p{
 
 div#undercolumn_entry dt {
     float: left;
-    width: 4em
+    width: 4em;
     border: 1px solid #FF0000;
 }
