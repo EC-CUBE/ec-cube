@@ -629,12 +629,7 @@ function lfInitWebParam($objWebParam) {
     if(defined('HTML_PATH')) {
         $install_dir = HTML_PATH;
     } else {
-		if (substr(PHP_OS, 0, 3) == 'WIN') {
-			// ウインドウズの場合はパスの区切り記号が違う
-	        $install_dir = realpath(dirname( __FILE__) . "/../");
-		}else{
-	        $install_dir = realpath(dirname( __FILE__) . "/../") . "/";
-		}
+		$install_dir = realpath(dirname( __FILE__) . "/../") . "/";
     }
 
     if(defined('SITE_URL')) {
@@ -822,14 +817,10 @@ function lfMakeConfigFile() {
     global $objDBParam;
 
     $root_dir = $objWebParam->getValue('install_dir');
+    $root_dir = str_replace("\\", "/", $root_dir);
     // 語尾に'/'をつける
     if (!ereg("/$", $root_dir)) {
-		if (substr(PHP_OS, 0, 3) == 'WIN') {
-	        // ウインドウズの場合はパスの区切り記号が違う
-	        $root_dir = $root_dir . "\\";
-		}else{
-	        $root_dir = $root_dir . "/";
-		}
+		$root_dir = $root_dir . "/";
     }
 
     $normal_url = $objWebParam->getValue('normal_url');
@@ -848,16 +839,12 @@ function lfMakeConfigFile() {
     $url_dir = ereg_replace("^https?://[a-zA-Z0-9_:~=&\?\.\-]+", "", $normal_url);
 
     $data_path = SC_Utils_Ex::sfRmDupSlash($root_dir . HTML2DATA_DIR);
-    $data_path = realpath($data_path);
+    $data_path = str_replace("\\", "/", realpath($data_path));
     // 語尾に'/'をつける
     if (!ereg("/$", $data_path)) {
-		if (substr(PHP_OS, 0, 3) == 'WIN') {
-	        // ウインドウズの場合はパスの区切り記号が違う
-        	$data_path = $data_path . "\\";
-		}else{
-	        $data_path = $data_path . "/";
-		}
+		$data_path = $data_path . "/";
     }
+    
     $filepath = $data_path . "install.php";
 
     $config_data =
