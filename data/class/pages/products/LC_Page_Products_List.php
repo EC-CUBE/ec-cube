@@ -381,36 +381,46 @@ class LC_Page_Products_List extends LC_Page {
 
         //価格順
         case 'price':
-            $distinct = "DISTINCT ON (price02_min, product_id)";
-            $col = $distinct . " *";
-            $from = "vw_products_allclass ";
-            $order = "price02_min ASC, product_id ASC";
+            $col = "DISTINCT price02_min, product_id, product_code_min, product_code_max,"
+                . " price01_min, price01_max, price02_max,"
+                . " stock_min, stock_max, stock_unlimited_min,"
+                . " stock_unlimited_max, del_flg, status, name, comment1,"
+                . " comment2, comment3, main_list_comment, main_image,"
+                . " main_list_image, product_flag, deliv_date_id, sale_limit,"
+                . " point_rate, sale_unlimited, create_date, deliv_fee";
+            $from = "vw_products_allclass AS T1";
+            $order = "price02_min, product_id";
             break;
 
         //新着順
         case 'date':
-            $distinct = "DISTINCT ON (create_date, product_id)";
-            $col = $distinct . " *";
-            $from = "vw_products_allclass ";
-            $order = "create_date DESC, product_id ASC";
+            $col = "DISTINCT create_date, product_id, product_code_min, product_code_max,"
+                . " price01_min, price01_max, price02_min, price02_max,"
+                . " stock_min, stock_max, stock_unlimited_min,"
+                . " stock_unlimited_max, del_flg, status, name, comment1,"
+                . " comment2, comment3, main_list_comment, main_image,"
+                . " main_list_image, product_flag, deliv_date_id, sale_limit,"
+                . " point_rate, sale_unlimited, create_date, deliv_fee";
+            $from = "vw_products_allclass AS T1";
+            $order = "create_date DESC, product_id";
             break;
 
         default:
             $col = "DISTINCT T1.product_id, product_code_min, product_code_max,"
-                . " price01_min, price01_max, price02_min, price02_max, "
-                . " stock_min, stock_max, stock_unlimited_min, "
-                . " stock_unlimited_max, del_flg, status, name, comment1, "
-                . " comment2, comment3, main_list_comment, main_image, "
+                . " price01_min, price01_max, price02_min, price02_max,"
+                . " stock_min, stock_max, stock_unlimited_min,"
+                . " stock_unlimited_max, del_flg, status, name, comment1,"
+                . " comment2, comment3, main_list_comment, main_image,"
                 . " main_list_image, product_flag, deliv_date_id, sale_limit,"
                 . " point_rate, sale_unlimited, create_date, deliv_fee, "
                 . " T4.product_rank, T4.category_rank";
-            $from = "vw_products_allclass AS T1 "
+            $from = "vw_products_allclass AS T1"
                 . " JOIN ("
-                . " SELECT max(T3.rank) AS category_rank, "
-                . "        max(T2.rank) AS product_rank, "
+                . " SELECT max(T3.rank) AS category_rank,"
+                . "        max(T2.rank) AS product_rank,"
                 . "        T2.product_id"
-                . "   FROM dtb_product_categories T2  "
-                . "   JOIN dtb_category T3 USING (category_id) "
+                . "   FROM dtb_product_categories T2"
+                . "   JOIN dtb_category T3 USING (category_id)"
                 . " GROUP BY product_id) AS T4 USING (product_id)";
             $order = "T4.category_rank DESC, T4.product_rank DESC";
             break;
@@ -587,13 +597,13 @@ class LC_Page_Products_List extends LC_Page {
         $classcategory_id = "classcategory_id". $product_id;
 
         $classcategory_id_2 = $classcategory_id . "_2";
-        if (!isset($$classcategory_id_2)) $$classcategory_id_2 = "";
-        if (!isset($_POST[$$classcategory_id_2])) $_POST[$$classcategory_id_2] = "";
+        if (!isset($classcategory_id_2)) $classcategory_id_2 = "";
+        if (!isset($_POST[$classcategory_id_2])) $_POST[$classcategory_id_2] = "";
 
         $this->tpl_onload .= "lnSetSelect('" . $classcategory_id ."_1', "
-            . "'" . $$classcategory_id_2 . "',"
+            . "'" . $classcategory_id_2 . "',"
             . "'" . $product_id . "',"
-            . "'" . $_POST[$$classcategory_id_2] ."'); ";
+            . "'" . $_POST[$classcategory_id_2] ."'); ";
 
         // 規格1が設定されている
         if($arrProductsClass[0]['classcategory_id1'] != '0') {
