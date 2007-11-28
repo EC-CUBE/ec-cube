@@ -22,12 +22,11 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 <head>
-<link rel="stylesheet" href="<!--{$smarty.const.URL_DIR}-->css/contents.css" type="text/css">
-<link rel="stylesheet" href="<!--{$smarty.const.URL_DIR}-->css/common.css" type="text/css">
-<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/css.js"></script>
-<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/navi.js"></script>
-<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/site.js"></script>
-<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/win_op.js"></script>
+<link rel="stylesheet" href="<!--{$smarty.const.URL_DIR}--><!--{$smarty.const.USER_DIR}-->css/common.css" type="text/css">
+<script type="text/javascript" src="<!--{$TPL_DIR}-->js/css.js"></script>
+<script type="text/javascript" src="<!--{$TPL_DIR}-->js/navi.js"></script>
+<script type="text/javascript" src="<!--{$TPL_DIR}-->js/site.js"></script>
+<script type="text/javascript" src="<!--{$TPL_DIR}-->js/win_op.js"></script>
 <title><!--{$arrSiteInfo.shop_name}-->/アンケート　<!--{$QUESTION.title|escape}--></title>
 </head>
 <body bgcolor="#ffffff" text="#555555" link="#0099cc" vlink="#CC0000" alink="#993399" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">

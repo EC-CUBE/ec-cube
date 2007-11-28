@@ -27,19 +27,18 @@
 <meta http-equiv="Content-Type" content="text/html; charset=<!--{$smarty.const.CHAR_CODE}-->">
 <meta http-equiv="content-script-type" content="text/javascript">
 <meta http-equiv="content-style-type" content="text/css">
-<link rel="stylesheet" href="<!--{$smarty.const.URL_DIR}-->user_data/css/contents.css" type="text/css" media="all" />
-<link rel="stylesheet" href="<!--{$smarty.const.URL_DIR}-->css/common.css" type="text/css" media="all" />
+<link rel="stylesheet" href="<!--{$smarty.const.URL_DIR}--><!--{$smarty.const.USER_DIR}-->css/common.css" type="text/css" media="all" />
 <link rel="stylesheet" href="<!--{$tpl_css}-->" type="text/css" media="all" />
-<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/css.js"></script>
-<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/navi.js"></script>
-<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/win_op.js"></script>
-<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/site.js"></script>
+<script type="text/javascript" src="<!--{$TPL_DIR}-->js/css.js"></script>
+<script type="text/javascript" src="<!--{$TPL_DIR}-->js/navi.js"></script>
+<script type="text/javascript" src="<!--{$TPL_DIR}-->js/win_op.js"></script>
+<script type="text/javascript" src="<!--{$TPL_DIR}-->js/site.js"></script>
 <title><!--{$arrSiteInfo.shop_name}-->/エラー</title>
 </head>
 
 <body onload="preLoadImg('<!--{$smarty.const.URL_DIR}-->')">
 <noscript>
-<link rel="stylesheet" href="<!--{$smarty.const.URL_DIR}-->css/common.css" type="text/css" />
+<link rel="stylesheet" href="<!--{$smarty.const.URL_DIR}--><!--{$smarty.const.USER_DIR}-->css/common.css" type="text/css" />
 </noscript>
 
 <div align="center">
