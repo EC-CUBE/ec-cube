@@ -382,12 +382,12 @@ class LC_Page_Products_List extends LC_Page {
         //価格順
         case 'price':
             $col = "DISTINCT price02_min, product_id, product_code_min, product_code_max,"
+                . " name, comment1, comment2, comment3,"
+                . " main_list_comment, main_image, main_list_image,"
                 . " price01_min, price01_max, price02_max,"
-                . " stock_min, stock_max, stock_unlimited_min,"
-                . " stock_unlimited_max, del_flg, status, name, comment1,"
-                . " comment2, comment3, main_list_comment, main_image,"
-                . " main_list_image, product_flag, deliv_date_id, sale_limit,"
-                . " point_rate, sale_unlimited, create_date, deliv_fee";
+                . " stock_min, stock_max, stock_unlimited_min, stock_unlimited_max,"
+                . " point_rate, sale_limit, sale_unlimited, deliv_date_id, deliv_fee,"
+                . " status, product_flag, create_date, del_flg";
             $from = "vw_products_allclass AS T1";
             $order = "price02_min, product_id";
             break;
@@ -395,12 +395,12 @@ class LC_Page_Products_List extends LC_Page {
         //新着順
         case 'date':
             $col = "DISTINCT create_date, product_id, product_code_min, product_code_max,"
+                . " name, comment1, comment2, comment3,"
+                . " main_list_comment, main_image, main_list_image,"
                 . " price01_min, price01_max, price02_min, price02_max,"
-                . " stock_min, stock_max, stock_unlimited_min,"
-                . " stock_unlimited_max, del_flg, status, name, comment1,"
-                . " comment2, comment3, main_list_comment, main_image,"
-                . " main_list_image, product_flag, deliv_date_id, sale_limit,"
-                . " point_rate, sale_unlimited, create_date, deliv_fee";
+                . " stock_min, stock_max, stock_unlimited_min, stock_unlimited_max,"
+                . " point_rate, sale_limit, sale_unlimited, deliv_date_id, deliv_fee,"
+                . " status, product_flag, del_flg";
             $from = "vw_products_allclass AS T1";
             $order = "create_date DESC, product_id";
             break;
