@@ -74,8 +74,7 @@ class LC_Page_Admin_System_Rank extends LC_Page {
         }
         
         // ページの表示
-        $location = "Location: " . URL_SYSTEM_TOP . "?pageno=".$_GET['pageno'];
-        header($location);
+        $this->sendRedirect($this->getLocation(URL_SYSTEM_TOP));
     }
 
     /**
