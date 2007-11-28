@@ -212,12 +212,12 @@ function lfGetNewOrder() {
         
         $url = UPDATE_HTTP2 . $query;
         $jsonStr = @file_get_contents($url);
-          
+        
         $objJson = new Services_JSON;
         $arrTmpData = is_string($jsonStr) ? $objJson->decode($jsonStr) : null;
                 
         if (empty($arrTmpData)) {
-            SC_Utils_Ex::sfErrorHeader(">> 更新情報の取得に失敗しました。");
+            sfErrorHeader(">> 更新情報の取得に失敗しました。");
             return array();
         }
         
