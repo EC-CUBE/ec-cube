@@ -20,16 +20,49 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+
 // {{{ requires
-require_once("../require.php");
-require_once(CLASS_EX_PATH . "page_extends/admin/system/LC_Page_Admin_System_Rank_Ex.php");
+require_once(CLASS_PATH . "pages/admin/system/LC_Page_Admin_System_Rank.php");
 
-// }}}
-// {{{ generate page
+/**
+ * システム管理 のページクラス(拡張).
+ *
+ * LC_Page_Admin_System_Rank をカスタマイズする場合はこのクラスを編集する.
+ *
+ * @package Page
+ * @author LOCKON CO.,LTD.
+ * @version $Id$
+ */
+class LC_Page_Admin_System_Rank_Ex extends LC_Page_Admin_System_Rank {
 
-$objPage = new LC_Page_Admin_System_Rank_Ex();
-register_shutdown_function(array($objPage, "destroy"));
-$objPage->init();
-$objPage->process();
+    // }}}
+    // {{{ functions
 
+    /**
+     * Page を初期化する.
+     *
+     * @return void
+     */
+    function init() {
+        parent::init();
+    }
+
+    /**
+     * Page のプロセス.
+     *
+     * @return void
+     */
+    function process() {
+        parent::process();
+    }
+
+    /**
+     * デストラクタ.
+     *
+     * @return void
+     */
+    function destroy() {
+        parent::destroy();
+    }
+}
 ?>
