@@ -62,14 +62,14 @@ class LC_Page_Admin_System_Rank extends LC_Page {
                 $this->lfRunkUp($conn, $_GET['id']);
             // エラー処理
             } else {
-                gfPrintLog("error id=".$_GET['id']);
+                GC_Utils_Ex::gfPrintLog("error id=".$_GET['id']);
             }
         } else if($_GET['move'] == 'down') {
             if(SC_Utils_Ex::sfIsInt($_GET['id'])){
                 $this->lfRunkDown($conn, $_GET['id']);
             // エラー処理
             } else {
-                gfPrintLog("error id=".$_GET['id']);
+                GC_Utils_Ex::gfPrintLog("error id=".$_GET['id']);
             }
         }
         
