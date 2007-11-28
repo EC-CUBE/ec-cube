@@ -92,8 +92,8 @@ OwnersStore.prototype = {
     // show results
     show_result: function(resp, status) {
         var title    = resp.status;
-        var contents = resp.body;
-        var errcode  = resp.errcode || '';
+        var contents = resp.msg;
+        var errcode  = resp.errcode || '1000';
 
         var TB_WIDTH = 400;
         var TB_HEIGHT = 300;
@@ -150,11 +150,11 @@ OwnersStore.prototype = {
            upgrade_url,
             {mode: 'products_list'},
             function(resp, status) {
-                if (resp.status == 'ERROR') {
-                    show(resp, status);
-                } else {
+                if (resp.status == 'SUCCESS') {
                     remove();
-                    $('#ownersstore_products_list').html(resp.body);
+                    $('#ownersstore_products_list').html(resp.msg);
+                } else {
+                    show(resp, status);
                 }
             },
             'json'
