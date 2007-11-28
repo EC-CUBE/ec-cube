@@ -125,7 +125,7 @@ class LC_Page_Admin_System_Input extends LC_Page {
             SC_Utils::sfDispError('');
         }
 
-        $this->initNewMode("new");
+        $this->initNewMode();
 
         $arrErr = $this->validateNewMode();
 
@@ -155,14 +155,16 @@ class LC_Page_Admin_System_Input extends LC_Page {
      * @param void
      * @return void
      */
-    function initNewMode($mode) {
+    function initNewMode($mode = "") {
         $objForm = new SC_FormParam();
 
         $objForm->addParam('名前', 'name', STEXT_LEN, 'KV', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
         $objForm->addParam('所属', 'department', STEXT_LEN, 'KV', array('MAX_LENGTH_CHECK'));
         $objForm->addParam('ログインID', 'login_id', '' , '', array('EXIST_CHECK', 'ALNUM_CHECK'));
-        if ($mode == "new" || ($mode == "edit" && $_POST['password'] != DUMMY_PASS)) {
-            $objForm->addParam('パスワード', 'password', '' , '', array('EXIST_CHECK', 'ALNUM_CHECK'));
+        if ($mode == "edit" && $_POST['password'] == DUMMY_PASS) {
+            $objForm->addParam('パスワード', 'password', '' , '', array('EXIST_CHECK'));
+        } else {
+        	$objForm->addParam('パスワード', 'password', '' , '', array('EXIST_CHECK', 'ALNUM_CHECK'));
         }
         $objForm->addParam('権限', 'authority', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
 
@@ -213,7 +215,6 @@ class LC_Page_Admin_System_Input extends LC_Page {
             SC_Utils::sfDispError('');
         }
 
-        // newアクションと同じパラメータを使用するので。。。分けた方が良い？
         $this->initNewMode("edit");
 
         $arrErr = $this->validateEditMode();
