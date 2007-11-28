@@ -125,7 +125,7 @@ function lfChkConnect(){
         
         // エラーがあるかチェックする
         if(!ereg("^<HTML>",$arrResponse )){
-        	sfPrintR($arrResponse);
+        	gfDebugLog($arrResponse);
             $arrRet["pc_clientip"] = "入力データが正しくありません<br>";
         }
     }
@@ -144,7 +144,7 @@ function lfChkConnect(){
         
         // エラーがあるかチェックする
         if(!ereg("^<HTML>",$arrResponse )){
-        	sfPrintR($arrResponse);
+        	gfDebugLog($arrResponse);
             $arrRet["mobile_clientip"] = "入力データが正しくありません<br>";
         }
     }
