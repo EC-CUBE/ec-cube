@@ -276,6 +276,11 @@ function sfConnectMovilinkURL($order_id) {
 	 * 
 	 */
 	
+	// カラムの存在チェック
+	if(!sfColumnExists("dtb_products", "movilink_code1")){
+	   return;
+	}
+	
 	$objQuery = new SC_Query();
 	$col = "(SELECT movilink_code1 FROM dtb_products WHERE dtb_products.product_id = dtb_order_detail.product_id) AS code,
 			product_id, 
