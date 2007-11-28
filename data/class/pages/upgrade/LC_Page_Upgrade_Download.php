@@ -188,8 +188,10 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
             $this->updateMdlTable($objRet->data);
 
             // 配信サーバへ通知
-            //$objLog->log("* notify to lockon server start");
-            //$this->notifyDownload($objReq->getResponseCookies());
+            $objLog->log("* notify to lockon server start");
+            $objReq = $this->notifyDownload($objReq->getResponseCookies());
+
+            $objLog->log('* dl commi result:' . serialize($objReq));
 
             $objJson->setSUCCESS(array(), 'インストール/アップデートに成功しました。');
             $objJson->display();
@@ -258,8 +260,8 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
      * @retrun
      */
     function notifyDownload($arrCookies) {
-        $objReq = $this->request('download_log', array(), $arrCookies);
-        return true;
+        $objReq = $this->request('download_commit', array(), $arrCookies);
+        return $objReq;
     }
 
     /**
