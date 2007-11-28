@@ -29,6 +29,7 @@
 <meta http-equiv="content-type" content="application/xhtml+xml; charset=<!--{$smarty.const.CHAR_CODE}-->" />
 <meta http-equiv="content-script-type" content="text/javascript" />
 <meta http-equiv="content-style-type" content="text/css" />
+<link rel="stylesheet" href="<!--{$smarty.const.URL_ADMIN_CSS}-->common.css" type="text/css" media="all" />
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/css.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/navi.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/win_op.js"></script>
@@ -131,6 +132,8 @@ function func_submit( id ){
 		</tr>	
 		<!--{/section}-->
 	</table>
+	<br />
+	<br />
 	<!--{/if}-->
 	<!--▲検索結果表示-->
 

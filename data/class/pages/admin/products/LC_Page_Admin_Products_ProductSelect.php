@@ -84,25 +84,18 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page {
 
                 switch ($key) {
                 case 'search_name':
-                    $where .= " AND name ILIKE ?";
+                    $where .= " AND name LIKE ?";
                     $arrval[] = "%$val%";
                     break;
                 case 'search_category_id':
-                    // 子カテゴリIDの取得
-                    $arrRet = $objDb->sfGetChildsID("dtb_category", "parent_category_id", "category_id", $val);
-                    $tmp_where = "";
-                    foreach ($arrRet as $val) {
-                        if($tmp_where == "") {
-                            $tmp_where.= " AND ( category_id = ?";
-                        } else {
-                            $tmp_where.= " OR category_id = ?";
-                        }
-                        $arrval[] = $val;
+                    list($tmp_where, $tmp_arrval) = $objDb->sfGetCatWhere($val);
+                    if($tmp_where != "") {
+                        $where.= " AND product_id IN (SELECT product_id FROM dtb_product_categories WHERE " . $tmp_where . ")";
+                        $arrval = array_merge((array)$arrval, (array)$tmp_arrval);
                     }
-                    $where.= $tmp_where . " )";
                     break;
                 case 'search_product_code':
-                    $where .= " AND product_id IN (SELECT product_id FROM dtb_products_class WHERE product_code ILIKE ? GROUP BY product_id)";
+                    $where .= " AND product_id IN (SELECT product_id FROM dtb_products_class WHERE product_code LIKE ? GROUP BY product_id)";
                     $arrval[] = "$val%";
                     break;
                 default:
