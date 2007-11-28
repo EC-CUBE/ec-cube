@@ -22,9 +22,7 @@
  */
 
 // {{{ requires
-require_once CLASS_PATH . 'pages/LC_Page.php';
-require_once 'utils/LC_Utils_Upgrade.php';
-require_once 'utils/LC_Utils_Upgrade_Log.php';
+require_once 'LC_Page_Upgrade_Base.php';
 
 /**
  * オーナーズストア購入商品一覧を返すページクラス.
@@ -33,7 +31,7 @@ require_once 'utils/LC_Utils_Upgrade_Log.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Upgrade_ProductsList extends LC_Page {
+class LC_Page_Upgrade_ProductsList extends LC_Page_Upgrade_Base {
 
     // }}}
     // {{{ functions
@@ -44,8 +42,7 @@ class LC_Page_Upgrade_ProductsList extends LC_Page {
      * @return void
      */
     function init() {
-        $this->objJson = new Services_Json();
-        $this->objLog  = new LC_Utils_Upgrade_Log('Products List');
+        parent::init();
     }
 
     /**
@@ -53,78 +50,96 @@ class LC_Page_Upgrade_ProductsList extends LC_Page {
      *
      * @return void
      */
-    function process() {
-        $this->objLog->start();
+    function process($mode) {
+        $objLog  = new LC_Upgrade_Helper_Log;
+        $objJson = new LC_Upgrade_Helper_Json;
+
+        $objLog->start($mode);
 
         // 管理画面ログインチェック
-        $this->objLog->log('* admin auth start');
-        if (LC_Utils_Upgrade::isLoggedInAdminPage() !== true) {
-            $arrErr = array(
-                'status'  => OWNERSSTORE_STATUS_ERROR,
-                'errcode' => OWNERSSTORE_ERR_PL_ADMIN_AUTH,
-                'body' => LC_Utils_Upgrade::getErrMessage(OWNERSSTORE_ERR_PL_ADMIN_AUTH)
-            );
-            echo $this->objJson->encode($arrErr);
-            $this->objLog->errLog($arrErr['errcode']);
-            exit;
+        $objLog->log('* admin auth start');
+        if ($this->isLoggedInAdminPage() !== true) {
+            $objJson->setError(OSTORE_E_C_ADMIN_AUTH);
+            $objJson->display();
+            $objLog->error(OSTORE_E_C_ADMIN_AUTH);
+            return;
+        }
+
+        // 認証キーの取得
+        $public_key = $this->getPublicKey();
+        $sha1_key = $this->createSeed();
+
+        $objLog->log('* public key check start');
+        if (empty($public_key)) {
+            $objJson->setError(OSTORE_E_C_NO_KEY);
+            $objJson->display();
+            $objLog->error(OSTORE_E_C_NO_KEY);
+            return;
         }
 
         // リクエストを開始
-        $this->objLog->log('* http request start');
-        $objReq = LC_Utils_Upgrade::request('products_list');
+        $objLog->log('* http request start');
+        $arrPostData = array(
+            'eccube_url' => SITE_URL,
+            'public_key' => sha1($public_key . $sha1_key),
+            'sha1_key'   => $sha1_key
+        );
+        $objReq = $this->request('products_list', $arrPostData);
 
         // リクエストチェック
-        $this->objLog->log('* http request check start');
+        $objLog->log('* http request check start');
         if (PEAR::isError($objReq)) {
-            $arrErr = array(
-                'status'  => OWNERSSTORE_STATUS_ERROR,
-                'errcode' => OWNERSSTORE_ERR_PL_HTTP_REQ,
-                'body' => LC_Utils_Upgrade::getErrMessage(OWNERSSTORE_ERR_PL_HTTP_REQ)
-            );
-            echo $this->objJson->encode($arrErr);
-            $this->objLog->errLog($arrErr['errcode'], $objReq);
-            exit;
+            $objJson->setError(OSTORE_E_C_HTTP_REQ);
+            $objJson->display();
+            $objLogerr(OSTORE_E_C_HTTP_REQ, $objReq);
+            return;
         }
 
         // レスポンスチェック
-        $this->objLog->log('* http response check start');
+        $objLog->log('* http response check start');
         if ($objReq->getResponseCode() !== 200) {
-            $arrErr = array(
-                'status'  => OWNERSSTORE_STATUS_ERROR,
-                'errcode' => OWNERSSTORE_ERR_PL_HTTP_RESP_CODE,
-                'body' => LC_Utils_Upgrade::getErrMessage(OWNERSSTORE_ERR_PL_HTTP_RESP_CODE)
-            );
-            echo $this->objJson->encode($arrErr);
-            $this->objLog->errLog($arrErr['errcode'], $objReq);
-            exit;
+            $objJson->setError(OSTORE_E_C_HTTP_RESP);
+            $objJson->display();
+            $objLog->error(OSTORE_E_C_HTTP_RESP, $objReq);
+            return;
         }
 
         $body = $objReq->getResponseBody();
-        $objRet = $this->objJson->decode($body);
+        $objRet = $objJson->decode($body);
 
         // JSONデータのチェック
-        $this->objLog->log('* json deta check start');
+        $objLog->log('* json deta check start');
         if (empty($objRet)) {
-            $arrErr = array(
-                'status'  => OWNERSSTORE_STATUS_ERROR,
-                'errcode' => OWNERSSTORE_ERR_PL_INVALID_JSON_DATA,
-                'body' => LC_Utils_Upgrade::getErrMessage(OWNERSSTORE_ERR_PL_INVALID_JSON_DATA)
-            );
-            echo $this->objJson->encode($arrErr);
-            $this->objLog->errLog($arrErr['errcode'], $body);
-            exit;
+            $objJson->setError(OSTORE_E_C_FAILED_JSON_PARSE);
+            $objJson->display();
+            $objLog->error(OSTORE_E_C_FAILED_JSON_PARSE, $objReq);
+            return;
         }
 
         // ステータスチェック
-        $this->objLog->log('* json status check start');
-        if ($objRet->status === OWNERSSTORE_STATUS_SUCCESS) {
-            $this->objLog->log('* get products list ok');
-            echo $body;
-            exit;
+        $objLog->log('* json status check start');
+        if ($objRet->status === OSTORE_STATUS_SUCCESS) {
+            $objLog->log('* get products list ok');
+
+            $arrProducts = array();
+
+            foreach ($objRet->data as $product) {
+                $arrProducts[] = get_object_vars($product);
+            }
+            $objView = new SC_AdminView();
+            $objView->assign('arrProducts', $arrProducts);
+            //print_r($arrProducts);
+            $html = $objView->fetch('ownersstore/products_list.tpl');
+
+            $objJson->setSuccess(array(), $html);
+            $objJson->display();
+            $objLog->end();
+            return;
         } else {
+            // 配信サーバ側でエラーを補足
             echo $body;
-            $this->objLog->errLog($objRet->errcode, $objReq);
-            exit;
+            $objLog->error($objRet->errcode, $objReq);
+            return;
         }
     }
 
@@ -134,7 +149,7 @@ class LC_Page_Upgrade_ProductsList extends LC_Page {
      * @return void
      */
     function destroy() {
-        $this->objLog->end();
+        parent::destroy();
     }
 }
 ?>

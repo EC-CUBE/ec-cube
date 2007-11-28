@@ -22,9 +22,8 @@
  */
 
 // {{{ requires
-require_once CLASS_PATH . 'pages/LC_Page.php';
-require_once 'utils/LC_Utils_Upgrade.php';
-require_once 'utils/LC_Utils_Upgrade_Log.php';
+require_once CLASS_PATH . 'pages/upgrade/LC_Page_Upgrade_Base.php';
+require_once DATA_PATH . 'module/Tar.php';
 
 /**
  * オーナーズストアからダウンロードデータを取得する.
@@ -35,7 +34,7 @@ require_once 'utils/LC_Utils_Upgrade_Log.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Upgrade_Download extends LC_Page {
+class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
 
     // }}}
     // {{{ functions
@@ -46,16 +45,7 @@ class LC_Page_Upgrade_Download extends LC_Page {
      * @return void
      */
     function init() {
-        $this->objJson = new Services_Json();
-        $this->objLog = new LC_Utils_Upgrade_Log('Download');
-
-        $this->objForm = new SC_FormParam();
-        $this->objForm->addParam(
-            'product_id', 'product_id', INT_LEN, '',
-            array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK')
-        );
-        $this->objForm->setParam($_POST);
-
+        parent::init();
     }
 
     /**
@@ -63,151 +53,153 @@ class LC_Page_Upgrade_Download extends LC_Page {
      *
      * @return void
      */
-    function process() {
-        $this->objLog->start();
+    function process($mode) {
+        $objLog  = new LC_Upgrade_Helper_Log;
+        $objLog->start($mode);
 
-        // 管理画面ログインチェック
-        $this->objLog->log('* admin auth start');
-        if (LC_Utils_Upgrade::isLoggedInAdminPage() !== true) {
-            $arrErr = array(
-                'status'  => OWNERSSTORE_STATUS_ERROR,
-                'errcode' => OWNERSSTORE_ERR_DL_ADMIN_AUTH,
-                'body' => LC_Utils_Upgrade::getErrMessage(OWNERSSTORE_ERR_DL_ADMIN_AUTH)
-            );
-            echo $this->objJson->encode($arrErr);
-            $this->objLog->errLog($arrErr['errcode']);
-            exit;
+        $objJson = new LC_Upgrade_Helper_Json;
+
+        // アクセスチェック
+        $objLog->log('* auth start');
+        if ($this->isValidAccess($mode) !== true) {
+            // TODO
+            $objJson->setError(OSTORE_E_C_INVALID_ACCESS);
+            $objJson->display();
+            $objLog->error(OSTORE_E_C_INVALID_ACCESS);
+            return;
         }
 
         // パラメーチェック
-        $this->objLog->log('* post parameter check start');
+        $this->initParam();
+        $objLog->log('* post param check start');
         if ($this->objForm->checkError()) {
-            $arrErr = array(
-                'status'  => OWNERSSTORE_STATUS_ERROER,
-                'errcode' => OWNERSSTORE_ERR_DL_POST_PARAM,
-                'body' => LC_Utils_Upgrade::getErrMessage(OWNERSSTORE_ERR_DL_POST_PARAM)
-            );
-            echo $this->objJson->encode($arrErr);
-            $this->objLog->errLog($arrErr['errcode'], $_POST);
-            exit;
+            // TODO
+            $objJson->setError(OSTORE_E_C_INVALID_PARAM);
+            $objJson->display();
+            $objLog->error(OSTORE_E_C_INVALID_PARAM, $_POST);
+            return;
         }
 
-        // TODO CSRF対策が必須
+        if ($mode == 'auto_update'
+        && $this->autoUpdateEnable($this->objForm->getValue('product_id')) !== true) {
+            // TODO
+            $objJson->setError(OSTORE_E_C_AUTOUP_DISABLE);
+            $objJson->display();
+            $objLog->error(OSTORE_E_C_INVALID_PARAM, $_POST);
+            return;
+        }
 
-        // ダウンロードリクエストを開始
-        $this->objLog->log('* http request start');
-        $objReq = LC_Utils_Upgrade::request(
-            'download',
-            array('product_id' => $this->objForm->getValue('product_id'))
+        // TODO CSRF対策
+
+        // 認証キーの取得
+        $public_key = $this->getPublicKey();
+        $sha1_key = $this->createSeed();
+
+        // 認証キーチェック
+        $objLog->log('* public key check start');
+        if (empty($public_key)) {
+            $objJson->setError(OSTORE_E_C_NO_KEY);
+            $objJson->display();
+            $objLog->error(OSTORE_E_C_NO_KEY);
+            return;
+        }
+
+        // リクエストを開始
+        $objLog->log('* http request start');
+        $arrPostData = array(
+            'eccube_url' => SITE_URL,
+            'public_key' => sha1($public_key . $sha1_key),
+            'sha1_key'   => $sha1_key,
+            'product_id' => $this->objForm->getValue('product_id')
         );
+        $objReq = $this->request('download', $arrPostData);
 
-        // リクエストの懸賞
-        $this->objLog->log('* http request check start');
+        // リクエストチェック
+        $objLog->log('* http request check start');
         if (PEAR::isError($objReq)) {
-            $arrErr = array(
-                'status'  => OWNERSSTORE_STATUS_ERROR,
-                'errcode' => OWNERSSTORE_ERR_DL_HTTP_REQ,
-                'body' => LC_Utils_Upgrade::getErrMessage(OWNERSSTORE_ERR_DL_HTTP_REQ)
-            );
-            echo $this->objJson->encode($arrErr);
-            $this->objLog->errLog($arrErr['errcode'], $objReq);
-            exit;
+            $objJson->setError(OSTORE_E_C_HTTP_REQ);
+            $objJson->display();
+            $objLogerr(OSTORE_E_C_HTTP_REQ, $objReq);
+            return;
         }
 
-        // レスポンスの検証
-        $this->objLog->log('* http response check start');
+        // レスポンスチェック
+        $objLog->log('* http response check start');
         if ($objReq->getResponseCode() !== 200) {
-            $arrErr = array(
-                'status'  => OWNERSSTORE_STATUS_ERROR,
-                'errcode' => OWNERSSTORE_ERR_DL_HTTP_RESP_CODE,
-                'body' => LC_Utils_Upgrade::getErrMessage(OWNERSSTORE_ERR_DL_HTTP_RESP_CODE)
-            );
-            echo $this->objJson->encode($arrErr);
-            $this->objLog->errLog($arrErr['errcode'], $objReq);
-            exit;
+            $objJson->setError(OSTORE_E_C_HTTP_RESP);
+            $objJson->display();
+            $objLog->error(OSTORE_E_C_HTTP_RESP, $objReq);
+            return;
         }
 
-        // JSONデータの検証
         $body = $objReq->getResponseBody();
-        $objRet = $this->objJson->decode($body);
+        $objRet = $objJson->decode($body);
 
-        $this->objLog->log('* json data check start');
+        // JSONデータのチェック
+        $objLog->log('* json deta check start');
         if (empty($objRet)) {
-            $arrErr = array(
-                'status'  => OWNERSSTORE_STATUS_ERROR,
-                'errcode' => OWNERSSTORE_ERR_DL_INVALID_JSON_DATA,
-                'body' => LC_Utils_Upgrade::getErrMessage(OWNERSSTORE_ERR_DL_INVALID_JSON_DATA)
-            );
-            echo $this->objJson->encode($arrErr);
-            $this->objLog->errLog($arrErr['errcode'], $objReq);
-            exit;
+            $objJson->setError(OSTORE_E_C_FAILED_JSON_PARSE);
+            $objJson->display();
+            $objLog->error(OSTORE_E_C_FAILED_JSON_PARSE, $objReq);
+            return;
         }
+
         // ダウンロードデータの保存
-        if ($objRet->status === OWNERSSTORE_STATUS_SUCCESS) {
-            $this->objLog->log('* save file start');
+        if ($objRet->status === OSTORE_STATUS_SUCCESS) {
+            $objLog->log('* save file start');
             $time = time();
             $dir  = DATA_PATH . 'downloads/tmp/';
             $filename = $time . '.tar.gz';
 
-            $data = base64_decode($objRet->body);
+            $data = base64_decode($objRet->dl_file);
 
-            $this->objLog->log("* open ${filename} start");
+            $objLog->log("* open ${filename} start");
             if ($fp = fopen($dir . $filename, "w")) {
                 fwrite($fp, $data);
                 fclose($fp);
             } else {
-                $arrErr = array(
-                    'status'  => OWNERSSTORE_STATUS_ERROR,
-                    'errcode' => OWNERSSTORE_ERR_DL_FILE_WRITE,
-                    'body' => LC_Utils_Upgrade::getErrMessage(OWNERSSTORE_ERR_DL_FILE_WRITE)
-                );
-                echo $this->objJson->encode($arrErr);
-                $this->objLog->errLog($arrErr['errcode'], $dir . $filename);
-                exit;
+                $objJson->setError(OSTORE_E_C_FILE_WRITE);
+                $objJson->display();
+                $objLog->error(OSTORE_E_C_FILE_WRITE, $objReq);
+                return;
             }
 
             // ダウンロードアーカイブを展開する
             $exract_dir = $dir . $time;
-            $this->objLog->log("* mkdir ${exract_dir} start");
+            $objLog->log("* mkdir ${exract_dir} start");
             if (!@mkdir($exract_dir)) {
-                $arrErr = array(
-                    'status'  => OWNERSSTORE_STATUS_ERROR,
-                    'errcode' => OWNERSSTORE_ERR_DL_MKDIR,
-                    'body' => LC_Utils_Upgrade::getErrMessage(OWNERSSTORE_ERR_DL_MKDIR)
-                );
-                echo $this->objJson->encode($arrErr);
-                $this->objLog->errLog($arrErr['errcode'], $exract_dir);
-                exit;
+                $objJson->setError(OSTORE_E_C_MKDIR);
+                $objJson->display();
+                $objLog->error(OSTORE_E_C_MKDIR, $objReq);
+                return;
             }
 
-            $this->objLog->log("* extract ${dir}${filename} start");
+            $objLog->log("* extract ${dir}${filename} start");
             $tar = new Archive_Tar($dir . $filename);
             $tar->extract($exract_dir);
 
-            $this->objLog->log("* copy batch start");
-            include_once CLASS_PATH . 'batch/SC_Batch_Update.php';
+            $objLog->log("* copy batch start");
+            @include_once CLASS_PATH . 'batch/SC_Batch_Update.php';
             $objBatch = new SC_Batch_Update();
             $arrCopyLog = $objBatch->execute($exract_dir);
 
             // テーブルの更新
-            $this->objLog->log("* insert/update dtb_module start");
-            $this->updateMdlTable($objRet->product_data);
+            $objLog->log("* insert/update dtb_module start");
+            $this->updateMdlTable($objRet->data);
 
             // 配信サーバへ通知
-            $this->objLog->log("* notify to lockon server start");
-            $this->notifyDownload($objReq->getResponseCookies());
+            //$objLog->log("* notify to lockon server start");
+            //$this->notifyDownload($objReq->getResponseCookies());
 
-            $arrParam = array(
-                'status'  => OWNERSSTORE_STATUS_SUCCESS,
-                'body' => 'インストール/アップデートに成功しました！'
-            );
-            echo $this->objJson->encode($arrParam);
-            $this->objLog->log('* file save ok');
-            exit;
+            $objJson->setSUCCESS(array(), 'インストール/アップデートに成功しました。');
+            $objJson->display();
+            $objLog->end();
+            return;
         } else {
+            // 配信サーバ側でエラーを補足
             echo $body;
-            $this->objLog->errLog($arrErr['errcode'], array($objRet, $objReq));
-            exit;
+            $objLog->error($objRet->errcode, $objReq);
+            return;
         }
     }
 
@@ -217,7 +209,15 @@ class LC_Page_Upgrade_Download extends LC_Page {
      * @return void
      */
     function destroy() {
-        $this->objLog->end();
+        parent::destroy();
+    }
+
+    function initParam() {
+        $this->objForm = new SC_FormParam();
+        $this->objForm->addParam(
+            'product_id', 'product_id', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK')
+        );
+        $this->objForm->setParam($_POST);
     }
 
     /**
@@ -241,6 +241,7 @@ class LC_Page_Upgrade_Download extends LC_Page {
             $arrInsert = array(
                 'module_id' => $objRet->product_id,
                 'module_name' => $objRet->product_code,
+                //'sub_data' => $objRet->sub_data,
                 'auto_update_flg' => '0',
                 'create_date'     => 'NOW()',
                 'update_date' => 'NOW()'
@@ -257,9 +258,55 @@ class LC_Page_Upgrade_Download extends LC_Page {
      * @retrun
      */
     function notifyDownload($arrCookies) {
-        $objReq = LC_Utils_Upgrade::request('download_log', array(), $arrCookies);
-
+        $objReq = $this->request('download_log', array(), $arrCookies);
         return true;
+    }
+
+    /**
+     * アクセスチェック
+     *
+     * @return boolean
+     */
+    function isValidAccess($mode) {
+        $objLog = new LC_Upgrade_Helper_Log;
+        switch ($mode) {
+        case 'download':
+            if ($this->isLoggedInAdminPage() === true) {
+                $objLog->log('* admin login ok');
+                return true;
+            }
+            break;
+        case 'auto_update':
+            $objForm = new SC_FormParam;
+            $objForm->addParam('public_key', 'public_key', MTEXT_LEN, '', array('EXIST_CHECK', 'ALNUM_CHECK', 'MAX_LENGTH_CHECK'));
+            $objForm->addParam('sha1_key', 'sha1_key', MTEXT_LEN, '', array('EXIST_CHECK', 'ALNUM_CHECK', 'MAX_LENGTH_CHECK'));
+            $objForm->setParam($_POST);
+
+            if ($objForm->CheckError()) {
+                $objLog->log('* invalid param');
+                return false;
+            }
+
+            $public_key = $this->getPublicKey();
+            if (empty($public_key)) {
+                $objLog->log('* public_key not found');
+                return false;
+            }
+
+            $sha1_key = $objForm->getValue('sha1_key');
+            $public_key_sha1 = $objForm->getValue('public_key');
+
+            if ($this->isValidIP()
+            && $public_key_sha1 === sha1($public_key . $sha1_key)) {
+                $objLog->log('* auto update login ok');
+                return true;
+            }
+            break;
+        default:
+            $objLog->log('* mode invalid ' . $mode);
+            return false;
+        }
+        return false;
     }
 }
 ?>
