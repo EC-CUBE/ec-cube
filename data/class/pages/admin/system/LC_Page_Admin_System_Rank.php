@@ -58,18 +58,18 @@ class LC_Page_Admin_System_Rank extends LC_Page {
         // ランキングの変更
         if($_GET['move'] == 'up') {
             // 正当な数値であった場合
-            if(SC_Utils_Ex::sfIsInt($_GET['id'])){
+            if(SC_Utils::sfIsInt($_GET['id'])){
                 $this->lfRunkUp($conn, $_GET['id']);
             // エラー処理
             } else {
-                GC_Utils_Ex::gfPrintLog("error id=".$_GET['id']);
+                GC_Utils::gfPrintLog("error id=".$_GET['id']);
             }
         } else if($_GET['move'] == 'down') {
-            if(SC_Utils_Ex::sfIsInt($_GET['id'])){
+            if(SC_Utils::sfIsInt($_GET['id'])){
                 $this->lfRunkDown($conn, $_GET['id']);
             // エラー処理
             } else {
-                GC_Utils_Ex::gfPrintLog("error id=".$_GET['id']);
+                GC_Utils::gfPrintLog("error id=".$_GET['id']);
             }
         }
         
