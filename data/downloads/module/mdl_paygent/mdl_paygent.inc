@@ -14,15 +14,14 @@ $paygent_module_dir = "jp/co/ks/merchanttool/connectmodule/";
 
 // モジュールファイルの存在チェック
 if(!file_exists($paygent_credit_php_dir . "/" . $paygent_module_dir)) {
-	print("ペイジェント提供モジュールを設置してください。");
-	exit;
+	sfErrorHeader(">> ペイジェント提供モジュールを設置してください。");
+} else {
+	// paygentモジュールの読込
+	include_once($paygent_module_dir . "entity/ResponseDataFactory.php");
+	include_once($paygent_module_dir . "system/PaygentB2BModule.php");
+	include_once($paygent_module_dir . "exception/PaygentB2BModuleConnectException.php");
+	include_once($paygent_module_dir . "exception/PaygentB2BModuleException.php");
 }
-
-// paygentモジュールの読込
-include_once($paygent_module_dir . "entity/ResponseDataFactory.php");
-include_once($paygent_module_dir . "system/PaygentB2BModule.php");
-include_once($paygent_module_dir . "exception/PaygentB2BModuleConnectException.php");
-include_once($paygent_module_dir . "exception/PaygentB2BModuleException.php");
 
 // ペイジェント決済のモジュールID（dtb_moduleと合わせる）
 define("MDL_PAYGENT_ID", 9);
