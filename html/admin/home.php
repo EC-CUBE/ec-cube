@@ -4,7 +4,9 @@
  *
  * http://www.lockon.co.jp/
  */
+
 require_once("./require.php");
+require_once DATA_PATH . 'module/Services/JSON.php';
 
 class LC_Page {
 	var $arrSession;
@@ -196,26 +198,43 @@ function lfGetNewOrder() {
 	return $arrRet;
 }
 
-// お知らせ取得
-function lfGetInfo() {
-	// 更新情報を最新にする
-	$objQuery = new SC_Query();
-	$path = UPDATE_HTTP . "info.txt";
-	$fp = @fopen($path, "rb");
-	
-	$arrRet = array();
-	if(!$fp) {
-		sfErrorHeader(">> " . $path . "の取得に失敗しました。");
-	} else {
-		while (!feof($fp)) {
-			$arrRet[] = $arrCSV = fgetcsv($fp, UPDATE_CSV_LINE_MAX);
-		}
-		fclose($fp);
-	}
-	
-	return $arrRet;
-}
-
+    /**
+     * リリース情報を取得する.
+     *
+     * @return unknown
+     */
+    function lfGetInfo() {
+        $query = '';
+        // TODO サイト情報の送信可否設定を行う
+        if (true) {
+            $query = '?site_url=' . SITE_URL . '&eccube_version=' . ECCUBE_VERSION;
+        }
+        
+        $url = UPDATE_HTTP2 . $query;
+        $jsonStr = @file_get_contents($url);
+          
+        $objJson = new Services_JSON;
+        $arrTmpData = is_string($jsonStr) ? $objJson->decode($jsonStr) : null;
+                
+        if (empty($arrTmpData)) {
+            SC_Utils_Ex::sfErrorHeader(">> 更新情報の取得に失敗しました。");
+            return array();
+        }
+        
+        $arrTemp = array();
+        foreach ($arrTmpData as $objData) {
+            $arrTemp[] = get_object_vars($objData);            
+        }
+        
+        foreach($arrTemp as $array) {
+            foreach($array as $key => $val) {
+                $temp[$key] = mb_convert_encoding($val, CHAR_CODE, 'UTF-8');
+            }
+            $arrInfo[] = $temp;
+        }
+        
+        return $arrInfo;
+    }
 
 
 ?>
