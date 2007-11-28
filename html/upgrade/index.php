@@ -20,6 +20,8 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+//$_SERVER['REQUEST_METHOD'] = 'POST';
+//$_POST['mode'] = 'products_list';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header("HTTP/1.1 400 Bad Request");
@@ -29,31 +31,23 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 // {{{ requires
 require_once '../require.php';
 require_once '../admin/require.php';
-require_once DATA_PATH . 'module/Services/JSON.php';
-require_once DATA_PATH . 'module/Request.php';
-require_once DATA_PATH . "module/Tar.php";
 
 // }}}
 // {{{ generate page
 
-$objPage = lfPageFactory();
+$mode = isset($_POST['mode']) ? $_POST['mode'] : '';
+$objPage = lfPageFactory($mode);
 $objPage->init();
 register_shutdown_function(array($objPage, "destroy"));
-$objPage->process();
+$objPage->process($mode);
 
 
-function lfPageFactory() {
-    $mode = isset($_POST['mode']) ? $_POST['mode'] : '';
-
+function lfPageFactory($mode) {
     $prefix = 'LC_Page_Upgrade_';
     $file   = CLASS_PATH . "pages/upgrade/${prefix}";
     $class  = $prefix;
 
     switch ($mode) {
-    case 'echo_key':
-        $file  .= 'EchoKey.php';
-        $class .= 'EchoKey';
-        break;
     case 'products_list':
         $file  .= 'ProductsList.php';
         $class .= 'ProductsList';
