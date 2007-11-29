@@ -52,7 +52,7 @@ class LC_Upgrade_Helper_Log {
      * @param string $message
      */
     function log($message) {
-        GC_Utils::gfPrintLog($message, OWNERSSTORE_LOG_PATH);
+        GC_Utils::gfPrintLog($message, OSTORE_LOG_PATH);
     }
     /**
      * エラーメッセージを出力
