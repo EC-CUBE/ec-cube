@@ -1186,6 +1186,13 @@ CREATE TABLE mtb_ownersstore_err (
     PRIMARY KEY (id)
 ) TYPE=InnoDB;
 
+CREATE TABLE mtb_ownersstore_ips (
+    id int2,
+    name text,
+    rank int2 NOT NULL DEFAULT 0,
+    PRIMARY KEY (id)
+) TYPE=InnoDB;
+
 CREATE TABLE mtb_constants (
     id text,
     name text,

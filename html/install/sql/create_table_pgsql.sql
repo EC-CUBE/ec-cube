@@ -1187,6 +1187,13 @@ CREATE TABLE mtb_ownersstore_err (
     PRIMARY KEY (id)
 );
 
+CREATE TABLE mtb_ownersstore_ips (
+    id text,
+    name text,
+    rank int2 NOT NULL DEFAULT 0,
+    PRIMARY KEY (id)
+);
+
 CREATE TABLE mtb_constants (
     id text,
     name text,

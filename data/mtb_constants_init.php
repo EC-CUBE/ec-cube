@@ -624,88 +624,46 @@ define('MOBILE_DETAIL_P_HTML', MOBILE_URL_DIR . "products/detail.php?product_id=
 define('MOBILE_URL_SHOP_COMPLETE', MOBILE_URL_DIR . "shopping/complete.php");
 /** モジュール追加用画面 */
 define('MOBILE_URL_SHOP_MODULE', MOBILE_URL_DIR . "shopping/load_payment_module.php");
-/** オーナーズストア通信ステータス(成功) */
-define('OWNERSSTORE_STATUS_SUCCESS', "SUCCESS");
-/** オーナーズストア通信ステータス(失敗) */
-define('OWNERSSTORE_STATUS_ERROR', "ERROR");
-/** オーナーズストア通信エラーコード */
-define('OWNERSSTORE_ERR_EK_KEY_MISSING', 100);
-/** オーナーズストア通信エラーコード */
-define('OWNERSSTORE_ERR_EK_POST_PARAM', 101);
-/** オーナーズストア通信エラーコード */
-define('OWNERSSTORE_ERR_PL_ADMIN_AUTH', 200);
-/** オーナーズストア通信エラーコード */
-define('OWNERSSTORE_ERR_PL_TRANSACTION', 201);
-/** オーナーズストア通信エラーコード */
-define('OWNERSSTORE_ERR_PL_HTTP_REQ', 202);
-/** オーナーズストア通信エラーコード */
-define('OWNERSSTORE_ERR_PL_HTTP_RESP_CODE', 203);
-/** オーナーズストア通信エラーコード */
-define('OWNERSSTORE_ERR_PL_INVALID_JSON_DATA', 204);
-/** オーナーズストア通信エラーコード */
-define('OWNERSSTORE_ERR_DL_ADMIN_AUTH', 300);
-/** オーナーズストア通信エラーコード */
-define('OWNERSSTORE_ERR_DL_TRANSACTION', 301);
-/** オーナーズストア通信エラーコード */
-define('OWNERSSTORE_ERR_DL_HTTP_REQ', 302);
-/** オーナーズストア通信エラーコード */
-define('OWNERSSTORE_ERR_DL_HTTP_RESP_CODE', 303);
-/** オーナーズストア通信エラーコード */
-define('OWNERSSTORE_ERR_DL_POST_PARAM', 304);
-/** オーナーズストア通信エラーコード */
-define('OWNERSSTORE_ERR_DL_FILE_WRITE', 305);
-/** オーナーズストア通信エラーコード */
-define('OWNERSSTORE_ERR_DL_MKDIR', 306);
-/** オーナーズストア通信エラーコード */
-define('OWNERSSTORE_ERR_DL_EXTRACT_ARCHIVE', 307);
-/** オーナーズストア通信エラーコード */
-define('OWNERSSTORE_ERR_DL_UPDATE_BATCH', 308);
-/** オーナーズストア通信エラーコード */
-define('OWNERSSTORE_ERR_DL_INVALID_JSON_DATA', 309);
-/** オーナーズストア通信エラーコード */
-define('OWNERSSTORE_ERR_SERVER_PL_POST_PARAM', 400);
-/** オーナーズストア通信エラーコード */
-define('OWNERSSTORE_ERR_SERVER_PL_NO_USER', 401);
-/** オーナーズストア通信エラーコード */
-define('OWNERSSTORE_ERR_SERVER_PL_HTTP_REQ', 402);
-/** オーナーズストア通信エラーコード */
-define('OWNERSSTORE_ERR_SERVER_PL_HTTP_RESP_CODE', 403);
-/** オーナーズストア通信エラーコード */
-define('OWNERSSTORE_ERR_SERVER_PL_AUTH', 404);
-/** オーナーズストア通信エラーコード */
-define('OWNERSSTORE_ERR_SERVER_DL_POST_PARAM', 500);
-/** オーナーズストア通信エラーコード */
-define('OWNERSSTORE_ERR_SERVER_DL_NO_USER', 501);
-/** オーナーズストア通信エラーコード */
-define('OWNERSSTORE_ERR_SERVER_DL_HTTP_REQ', 502);
-/** オーナーズストア通信エラーコード */
-define('OWNERSSTORE_ERR_SERVER_DL_HTTP_RESP_CODE', 503);
-/** オーナーズストア通信エラーコード */
-define('OWNERSSTORE_ERR_SERVER_DL_AUTH', 504);
-/** オーナーズストア通信エラーコード */
-define('OWNERSSTORE_ERR_SERVER_DL_DOWNLOAD', 505);
 /** オーナーズストアURL */
-define('OWNERSSTORE_URL', "http://store.ec-cube.net/");
-/** アップデート機能アクセス許可IP */
-define('OWNERSSTORE_IP', "210.188.195.143");
+define('OSTORE_URL', "http://store.ec-cube.net/");
+/** オーナーズストアURL */
+define('OSTORE_SSLURL', "https://store.ec-cube.net/");
 /** オーナーズストアログパス */
-define('OWNERSSTORE_LOG_PATH', DATA_PATH . "logs/ownersstore.log");
+define('OSTORE_LOG_PATH', DATA_PATH . "logs/ownersstore.log");
+/** オーナーズストア通信ステータス */
+define('OSTORE_STATUS_ERROR', ERROR);
+/** オーナーズストア通信ステータス */
+define('OSTORE_STATUS_SUCCESS', SUCCESS);
 /** オーナーズストア通信エラーコード */
-define('OWNERSSTORE_ERR_EK_INVALID_IP', 102);
+define('OSTORE_E_UNKNOWN', 1000);
 /** オーナーズストア通信エラーコード */
-define('OWNERSSTORE_ERR_AU_INVALID_IP', 600);
+define('OSTORE_E_INVALID_PARAM', 1001);
 /** オーナーズストア通信エラーコード */
-define('OWNERSSTORE_ERR_AU_POST_PARAM', 601);
+define('OSTORE_E_NO_CUSTOMER', 1002);
 /** オーナーズストア通信エラーコード */
-define('OWNERSSTORE_ERR_AU_NO_UPDATE', 602);
+define('OSTORE_E_WRONG_URL_PASS', 1003);
 /** オーナーズストア通信エラーコード */
-define('OWNERSSTORE_ERR_AU_HTTP_REQ', 603);
+define('OSTORE_E_NO_PRODUCTS', 1004);
 /** オーナーズストア通信エラーコード */
-define('OWNERSSTORE_ERR_AU_HTTP_RESP_CODE', 604);
+define('OSTORE_E_NO_DL_DATA', 1005);
 /** オーナーズストア通信エラーコード */
-define('OWNERSSTORE_ERR_AU_INVALID_JSON_DATA', 605);
+define('OSTORE_E_DL_DATA_OPEN', 1006);
 /** オーナーズストア通信エラーコード */
-define('OWNERSSTORE_ERR_AU_FILE_WRITE', 606);
+define('OSTORE_E_C_ADMIN_AUTH', 2001);
 /** オーナーズストア通信エラーコード */
-define('OWNERSSTORE_ERR_AU_MKDIR', 607);
+define('OSTORE_E_C_HTTP_REQ', 2002);
+/** オーナーズストア通信エラーコード */
+define('OSTORE_E_C_HTTP_RESP', 2003);
+/** オーナーズストア通信エラーコード */
+define('OSTORE_E_C_FAILED_JSON_PARSE', 2004);
+/** オーナーズストア通信エラーコード */
+define('OSTORE_E_C_NO_KEY', 2005);
+/** オーナーズストア通信エラーコード */
+define('OSTORE_E_C_INVALID_ACCESS', 2006);
+/** オーナーズストア通信エラーコード */
+define('OSTORE_E_C_INVALID_PARAM', 2007);
+/** オーナーズストア通信エラーコード */
+define('OSTORE_E_C_AUTOUP_DISABLE', 2008);
+/** オーナーズストア通信エラーコード */
+define('OSTORE_E_C_PERMISSION', 2009);
 ?>
