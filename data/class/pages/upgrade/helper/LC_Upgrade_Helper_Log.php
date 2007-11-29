@@ -63,7 +63,7 @@ class LC_Upgrade_Helper_Log {
     function error($code, $val = null) {
         $format = '* error! code:%s / debug:%s';
         $message = sprintf($format, $code, serialize($val));
-        $this->log($message, OWNERSSTORE_LOG_PATH);
+        $this->log($message);
         $this->end();
     }
 }
