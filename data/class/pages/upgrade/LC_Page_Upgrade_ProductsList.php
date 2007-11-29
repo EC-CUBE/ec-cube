@@ -91,7 +91,7 @@ class LC_Page_Upgrade_ProductsList extends LC_Page_Upgrade_Base {
         if (PEAR::isError($objReq)) {
             $objJson->setError(OSTORE_E_C_HTTP_REQ);
             $objJson->display();
-            $objLogerr(OSTORE_E_C_HTTP_REQ, $objReq);
+            $objLog->error(OSTORE_E_C_HTTP_REQ, $objReq);
             return;
         }
 
