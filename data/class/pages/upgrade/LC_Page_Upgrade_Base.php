@@ -2,7 +2,7 @@
 // {{{ requires
 require_once CLASS_PATH . 'pages/LC_Page.php';
 require_once CLASS_PATH . 'pages/upgrade/helper/LC_Upgrade_Helper_LOG.php';
-require_once CLASS_PATH . 'pages/upgrade/helper/LC_Upgrade_Helper_JSON.php';
+require_once CLASS_PATH . 'pages/upgrade/helper/LC_Upgrade_Helper_Json.php';
 require_once DATA_PATH . 'module/Request.php';
 
 /**

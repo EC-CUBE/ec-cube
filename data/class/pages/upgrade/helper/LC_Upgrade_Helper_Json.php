@@ -1,5 +1,5 @@
 <?php
-require_once DATA_PATH . 'module/Services/Json.php';
+require_once DATA_PATH . 'module/Services/JSON.php';
 /**
  * Enter description here...
  *
