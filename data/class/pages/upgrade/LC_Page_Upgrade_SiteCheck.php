@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once CLASS_PATH . 'pages/LC_Page.php';
+require_once 'LC_Page_Upgrade_Base.php';
 
 /**
  * サイトチェック用クラス.
@@ -31,7 +31,7 @@ require_once CLASS_PATH . 'pages/LC_Page.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Upgrade_SiteCheck extends LC_Page {
+class LC_Page_Upgrade_SiteCheck extends LC_Page_Upgrade_Base {
 
     // }}}
     // {{{ functions
@@ -48,36 +48,28 @@ class LC_Page_Upgrade_SiteCheck extends LC_Page {
      *
      * @return void
      */
-    function process() {
+    function process($mode) {
+        $objLog  = new LC_Upgrade_Helper_LOG;
+        $objJson = new LC_Upgrade_Helper_Json;
+
+        $objLog->start($mode);
+
         if ($this->isValidIP() !== true) {
-            exit;
+            $objJson->setError(OSTORE_E_C_INVALID_ACCESS);
+            $objJson->display();
+            $objLog->error(OSTORE_E_C_INVALID_ACCESS);
+            return;
         }
 
-        $objReq = new HTTP_Request();
-        $objReq->setUrl(OWNERSSTORE_URL . 'upgrade/index.php');
-        $objReq->setMethod('POST');
-        $objReq->addPostData('mode', 'site_check');
-        $objReq->addPostData('eccube_version', ECCUBE_VERSION);
-
-        if (PEAR::isError($e = $objReq->sendRequest())) {
-            exit;
-        }
-
-        if ($objReq->getResponseCode() !== 200) {
-            exit;
-        }
-
-        $objJson = new Services_JSON();
-        $objRet  = $objJson->decode($objReq->getResponseBody());
-
-        if (!empty($objRet) && $objRet->status == OWNERSSTORE_STATUS_SUCCESS) {
-            $arrParam = array(
-                'status' => OWNERSSTORE_STATUS_SUCCESS,
-                'id'     => $objRet->id,
-            );
-            echo $objJson->encode($arrParam);
-            exit;
-        }
+        $objDB = new SC_Helper_DB;
+        $arrSystemInfo = array(
+            'eccube_version' => ECCUBE_VERSION,
+            'php_version'    => phpversion(),
+            'db_version'     => $objDB->sfGetDBVersion()
+        );
+        $objJson->setSuccess($arrSystemInfo);
+        $objJson->display();
+        $objLog->end();
     }
 
     /**
@@ -86,12 +78,5 @@ class LC_Page_Upgrade_SiteCheck extends LC_Page {
      * @return void
      */
     function destroy() {}
-
-    function isValidIP() {
-        if ($_SERVER['REMOTE_ADDR'] === OWNERSSTORE_IP) {
-            return true;
-        }
-        return false;
-    }
 }
 ?>
