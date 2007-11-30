@@ -631,39 +631,41 @@ define('OSTORE_SSLURL', "https://store.ec-cube.net/");
 /** オーナーズストアログパス */
 define('OSTORE_LOG_PATH', DATA_PATH . "logs/ownersstore.log");
 /** オーナーズストア通信ステータス */
-define('OSTORE_STATUS_ERROR', ERROR);
+define('OSTORE_STATUS_ERROR', 'ERROR');
 /** オーナーズストア通信ステータス */
-define('OSTORE_STATUS_SUCCESS', SUCCESS);
+define('OSTORE_STATUS_SUCCESS', 'SUCCESS');
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_UNKNOWN', 1000);
+define('OSTORE_E_UNKNOWN', '1000');
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_INVALID_PARAM', 1001);
+define('OSTORE_E_INVALID_PARAM', '1001');
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_NO_CUSTOMER', 1002);
+define('OSTORE_E_NO_CUSTOMER', '1002');
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_WRONG_URL_PASS', 1003);
+define('OSTORE_E_WRONG_URL_PASS', '1003');
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_NO_PRODUCTS', 1004);
+define('OSTORE_E_NO_PRODUCTS', '1004');
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_NO_DL_DATA', 1005);
+define('OSTORE_E_NO_DL_DATA', '1005');
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_DL_DATA_OPEN', 1006);
+define('OSTORE_E_DL_DATA_OPEN', '1006');
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_C_ADMIN_AUTH', 2001);
+define('OSTORE_E_DLLOG_AUTH', '1007');
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_C_HTTP_REQ', 2002);
+define('OSTORE_E_C_ADMIN_AUTH', '2001');
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_C_HTTP_RESP', 2003);
+define('OSTORE_E_C_HTTP_REQ', '2002');
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_C_FAILED_JSON_PARSE', 2004);
+define('OSTORE_E_C_HTTP_RESP', '2003');
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_C_NO_KEY', 2005);
+define('OSTORE_E_C_FAILED_JSON_PARSE', '2004');
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_C_INVALID_ACCESS', 2006);
+define('OSTORE_E_C_NO_KEY', '2005');
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_C_INVALID_PARAM', 2007);
+define('OSTORE_E_C_INVALID_ACCESS', '2006');
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_C_AUTOUP_DISABLE', 2008);
+define('OSTORE_E_C_INVALID_PARAM', '2007');
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_C_PERMISSION', 2009);
+define('OSTORE_E_C_AUTOUP_DISABLE', '2008');
+/** オーナーズストア通信エラーコード */
+define('OSTORE_E_C_PERMISSION', '2009');
 ?>
