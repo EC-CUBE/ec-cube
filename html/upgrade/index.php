@@ -53,12 +53,9 @@ function lfPageFactory($mode) {
         $class .= 'ProductsList';
         break;
     case 'download':
+    case 'auto_update':
         $file  .= 'Download.php';
         $class .= 'Download';
-        break;
-    case 'auto_update':
-        $file  .= 'AutoUpdate.php';
-        $class .= 'AutoUpdate';
         break;
     case 'site_check':
         $file  .= 'SiteCheck.php';
