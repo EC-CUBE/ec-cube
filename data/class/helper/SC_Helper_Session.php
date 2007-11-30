@@ -22,7 +22,7 @@
       *
       * 各関数をセッションハンドラに保存する
       */
-     function SC_Heler_Session() {
+     function SC_Helper_Session() {
          $objDb = new SC_Helper_DB_Ex();
          if($objDb->sfTabaleExists("dtb_session")) {
              session_set_save_handler(array(&$this, "sfSessOpen"),

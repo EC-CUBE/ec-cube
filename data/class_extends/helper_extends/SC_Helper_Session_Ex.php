@@ -31,7 +31,7 @@ require_once(CLASS_PATH . "helper/SC_Helper_Session.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id$
+ * @version $Id:SC_Helper_Session_Ex.php 16741 2007-11-08 00:43:24Z adachi $
  */
 class SC_Helper_Session_Ex extends SC_Helper_Session {
 
@@ -42,7 +42,7 @@ class SC_Helper_Session_Ex extends SC_Helper_Session {
      * デフォルトコンストラクタ.
      */
     function SC_Helper_Session_Ex() {
-        parent::SC_Heler_Session();
+        parent::SC_Helper_Session();
     }
 }
 ?>
