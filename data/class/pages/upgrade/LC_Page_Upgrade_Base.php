@@ -33,7 +33,7 @@ class LC_Page_Upgrade_Base extends LC_Page {
      * @return boolean
      */
     function autoUpdateEnable($product_id) {
-        $where = 'product_id = ?';
+        $where = 'module_id = ?';
         $objQuery = new SC_Query();
         $arrRet = $objQuery->select('auto_update_flg', 'dtb_module', $where, array($product_id));
 

@@ -79,11 +79,12 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
             return;
         }
 
+        $objLog->log('* auto update check start');
         if ($mode == 'auto_update'
         && $this->autoUpdateEnable($this->objForm->getValue('product_id')) !== true) {
             $objJson->setError(OSTORE_E_C_AUTOUP_DISABLE);
             $objJson->display();
-            $objLog->error(OSTORE_E_C_INVALID_PARAM, $_POST);
+            $objLog->error(OSTORE_E_C_AUTOUP_DISABLE, $_POST);
             return;
         }
 
@@ -110,7 +111,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
             'sha1_key'   => $sha1_key,
             'product_id' => $this->objForm->getValue('product_id')
         );
-        $objReq = $this->request('download', $arrPostData);
+        $objReq = $this->request($mode, $arrPostData);
 
         // リクエストチェック
         $objLog->log('* http request check start');
@@ -200,7 +201,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
 
             // 配信サーバへ通知
             $objLog->log("* notify to lockon server start");
-            $objReq = $this->notifyDownload($objReq->getResponseCookies());
+            $objReq = $this->notifyDownload($mode, $objReq->getResponseCookies());
 
             $objLog->log('* dl commit result:' . serialize($objReq));
 
@@ -271,8 +272,11 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
      * @param array #arrCookies Cookie配列
      * @retrun
      */
-    function notifyDownload($arrCookies) {
-        $objReq = $this->request('download_commit', array(), $arrCookies);
+    function notifyDownload($mode, $arrCookies) {
+        $arrPOSTParams = array(
+            'eccube_url' => SITE_URL
+        );
+        $objReq = $this->request($mode . '_commit', $arrPOSTParams, $arrCookies);
         return $objReq;
     }
 
