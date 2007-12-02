@@ -296,11 +296,13 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
             $objForm->addParam('sha1_key', 'sha1_key', MTEXT_LEN, '', array('EXIST_CHECK', 'ALNUM_CHECK', 'MAX_LENGTH_CHECK'));
             $objForm->setParam($_POST);
 
+            $objLog->log('* param check start');
             if ($objForm->CheckError()) {
                 $objLog->log('* invalid param');
                 return false;
             }
 
+            $objLog->log('* public_key check start');
             $public_key = $this->getPublicKey();
             if (empty($public_key)) {
                 $objLog->log('* public_key not found');
@@ -310,6 +312,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
             $sha1_key = $objForm->getValue('sha1_key');
             $public_key_sha1 = $objForm->getValue('public_key');
 
+            $objLog->log('* ip check start');
             if ($this->isValidIP()
             && $public_key_sha1 === sha1($public_key . $sha1_key)) {
                 $objLog->log('* auto update login ok');
