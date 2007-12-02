@@ -149,7 +149,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
             $dir  = DATA_PATH . 'downloads/tmp/';
             $filename = $time . '.tar.gz';
 
-            $data = base64_decode($objRet->dl_file);
+            $data = base64_decode($objRet->data->dl_file);
 
             $objLog->log("* open ${filename} start");
             if ($fp = @fopen($dir . $filename, "w")) {
