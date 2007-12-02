@@ -12,7 +12,7 @@
         <td align="center">
             <a href="<!--{$smarty.const.OSTORE_URL}-->products/detail.php?product_id=<!--{$product.product_id}-->"
                target="_blank">
-                <img src="<!--{$smarty.const.OSTORE_SSLURL}-->upload/save_image/<!--{$product.main_list_image}-->">
+                <img src="<!--{$smarty.const.OSTORE_SSLURL}-->upload/save_image/<!--{$product.main_list_image}-->" width="50" height="50">
             </a>
         </td>
         <td align="center">
@@ -21,7 +21,7 @@
                     <!--{$product.name}-->
                 </a>
             </p>
-            <p>(Version.<!--{$product.version|default:"--"}-->　<!--{$product.last_update_date|sfDispDBDate:false}-->)</p>
+            <p>Version.<!--{$product.version|default:"--"}-->　<!--{$product.last_update_date|sfDispDBDate:false}--></p>
         </td>
         <td align="center"><!--{$product.installed_version|default:"--"}--></td>
         
