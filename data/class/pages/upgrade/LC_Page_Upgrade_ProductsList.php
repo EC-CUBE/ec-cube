@@ -128,9 +128,17 @@ class LC_Page_Upgrade_ProductsList extends LC_Page_Upgrade_Base {
             }
             $objView = new SC_AdminView();
             $objView->assign('arrProducts', $arrProducts);
-            //print_r($arrProducts);
-            $html = $objView->fetch('ownersstore/products_list.tpl');
 
+            $template = 'admin/ownersstore/products_list.tpl';
+
+            if (!$objView->_smarty->template_exists($template)) {
+                $objLog->log('* template not exist, use default template');
+                $objLog->log($objView->_smarty->template_dir);
+
+                $template = DATA_PATH . 'Smarty/templates/default/' . $template;
+            }
+
+            $html = $objView->fetch('ownersstore/products_list.tpl');
             $objJson->setSuccess(array(), $html);
             $objJson->display();
             $objLog->end();
