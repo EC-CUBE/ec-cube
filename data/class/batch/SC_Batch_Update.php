@@ -172,7 +172,7 @@ class SC_Batch_Update extends SC_Batch {
             @fclose($handle);
             $arrLog['ok'][] =  "バックアップ用ファイルの作成に成功しました: " . $bkupPath . 'distinfo.php';
         } else {
-            $arrLog['err'][] = "バックアップ用ファイルの作成に成功しました: " . $bkupPath . 'distinfo.php';
+            $arrLog['err'][] = "バックアップ用ファイルの作成に失敗しました: " . $bkupPath . 'distinfo.php';
         }
         umask($oldMask);
         return $arrLog;
@@ -225,6 +225,8 @@ class SC_Batch_Update extends SC_Batch {
             $src .= "'${key}' => '${value}',\n";
         }
         $src .= ");\n?>";
+
+        return $src;
     }
 }
 ?>
