@@ -69,6 +69,9 @@ class LC_Page_Admin_OwnersStore_Log extends LC_Page {
                 SC_Utils::sfDispError('');
             }
             $this->arrLogDetail = $this->getLogDetail($objForm->getValue('log_id'));
+            if (count($this->arrLogDetail) == 0) {
+                SC_Utils::sfDispError('');
+            }
             $this->tpl_mainpage = 'ownersstore/log_detail.tpl';
             break;
         default:
