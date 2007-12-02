@@ -10,20 +10,20 @@
 <!--{foreach from=$arrProducts item=product name=products_list_loop}-->
     <tr bgcolor="#ffffff" class="fs12">
         <td align="center">
-            <a href="<!--{$smarty.const.OSTORE_URL}-->products/detail.php?product_id=<!--{$product.product_id}-->"
+            <a href="<!--{$smarty.const.OSTORE_URL}-->products/detail.php?product_id=<!--{$product.product_id|escape}-->"
                target="_blank">
-                <img src="<!--{$smarty.const.OSTORE_SSLURL}-->upload/save_image/<!--{$product.main_list_image}-->" width="50" height="50">
+                <img src="<!--{$smarty.const.OSTORE_SSLURL}-->upload/save_image/<!--{$product.main_list_image|escape}-->" width="50" height="50">
             </a>
         </td>
         <td align="center">
             <p>
-                <a href="<!--{$smarty.const.SITE_URL}-->products/detail.php?product_id=<!--{$product.product_id}-->" target="_blank">
+                <a href="<!--{$smarty.const.SITE_URL}-->products/detail.php?product_id=<!--{$product.product_id|escape}-->" target="_blank">
                     <!--{$product.name}-->
                 </a>
             </p>
-            <p>Version.<!--{$product.version|default:"--"}-->　<!--{$product.last_update_date|sfDispDBDate:false}--></p>
+            <p>Version.<!--{$product.version|default:"--"}-->　<!--{$product.last_update_date|sfDispDBDate:false|escape}--></p>
         </td>
-        <td align="center"><!--{$product.installed_version|default:"--"}--></td>
+        <td align="center"><!--{$product.installed_version|default:"--"|escape}--></td>
         
         <!--{* ダウンロード対象商品 かつ 受注ステータスが「入金済み」なら各種ボタンを表示する *}-->
         <!--{if $product.download_flg}-->
@@ -32,12 +32,12 @@
             <!--{* インストール済み かつ 新バージョンが公開している場合 はアップデートボタン表示 *}-->
             <!--{if $product.installed_flg && $product.version_up_flg}-->
                 <span class="icon_confirm">
-                <a href="" onclick="OwnersStore.download(<!--{$product.product_id}-->);return false;">アップデート</a>
+                <a href="" onclick="OwnersStore.download(<!--{$product.product_id|escape}-->);return false;">アップデート</a>
                 </span>
             <!--{* 未インストールならインストールボタン表示 *}-->
             <!--{elseif !$product.installed_flg}-->
                 <span class="icon_confirm">
-                <a href="" onclick="OwnersStore.download(<!--{$product.product_id}-->);return false;">インストール</a>
+                <a href="" onclick="OwnersStore.download(<!--{$product.product_id|escape}-->);return false;">インストール</a>
                 </span>
             <!--{else}-->
                 --
@@ -63,7 +63,7 @@
         <td align="center">--</td>
         <!--{/if}-->
         
-        <td align="center"><!--{$product.status}--></td>
+        <td align="center"><!--{$product.status|escape|nl2br}--></td>
     </tr>
 <!--{/foreach}-->
 </table>
