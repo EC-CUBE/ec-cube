@@ -726,11 +726,12 @@ INSERT INTO mtb_ownersstore_err VALUES ('2001', '管理画面の認証に失敗�
 INSERT INTO mtb_ownersstore_err VALUES ('2002', '配信サーバへ接続できません。', 9);
 INSERT INTO mtb_ownersstore_err VALUES ('2003', '配信サーバへ接続できません。', 10);
 INSERT INTO mtb_ownersstore_err VALUES ('2004', '配信サーバでエラーが発生しました。', 11);
-INSERT INTO mtb_ownersstore_err VALUES ('2005', '認証キーが設定されていません。<br />・設定メニューで認証キーを設定してください。', 12);
+INSERT INTO mtb_ownersstore_err VALUES ('2005', '認証キーが設定されていません。<br />・「認証キー設定」で認証キーを設定してください。', 12);
 INSERT INTO mtb_ownersstore_err VALUES ('2006', '不正なアクセスです。', 13);
 INSERT INTO mtb_ownersstore_err VALUES ('2007', '不正なパラメータが送信されました。', 14);
 INSERT INTO mtb_ownersstore_err VALUES ('2008', '自動アップデートが無効です', 15);
-INSERT INTO mtb_ownersstore_err VALUES ('2009', 'ファイルの書き込みに失敗しました。<br />・書き込み権限が正しく設定されていません。', 16);
+INSERT INTO mtb_ownersstore_err VALUES ('2009', 'ファイルの書き込みに失敗しました。<br />・書き込み権限が正しく設定されていません。<br />・data/downloads/tmpディレクトリに書き込み権限があるかどうか確認してください', 16);
+INSERT INTO mtb_ownersstore_err VALUES ('2010', 'ファイルの書き込みに失敗しました。<br />・「ログ管理」で詳細を確認してください。', 17);
 INSERT INTO mtb_ownersstore_ips VALUES (0, '210.188.195.143', 0);
 INSERT INTO mtb_constants VALUES ('SAMPLE_ADDRESS1','"市区町村名（例：千代田区神田神保町）"',1,'フロント表示関連');
 INSERT INTO mtb_constants VALUES ('SAMPLE_ADDRESS2','"番地・ビル名（例：1-3-5）"',2,'フロント表示関連');
@@ -1067,3 +1068,4 @@ INSERT INTO mtb_constants VALUES ('OSTORE_E_C_INVALID_ACCESS', '"2006"', 518, '�
 INSERT INTO mtb_constants VALUES ('OSTORE_E_C_INVALID_PARAM', '"2007"', 519, 'オーナーズストア通信エラーコード');
 INSERT INTO mtb_constants VALUES ('OSTORE_E_C_AUTOUP_DISABLE', '"2008"', 520, 'オーナーズストア通信エラーコード');
 INSERT INTO mtb_constants VALUES ('OSTORE_E_C_PERMISSION', '"2009"', 521, 'オーナーズストア通信エラーコード');
+INSERT INTO mtb_constants VALUES ('OSTORE_E_C_BATCH_ERR', '"2010"', 522, 'オーナーズストア通信エラーコード');

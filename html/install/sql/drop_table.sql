@@ -50,6 +50,7 @@ DROP TABLE dtb_user_regist;
 DROP TABLE dtb_templates;
 DROP TABLE dtb_table_comment;
 DROP TABLE dtb_ownersstore_settings;
+DROP TABLE dtb_module_update_logs;
 DROP TABLE mtb_work;
 DROP TABLE mtb_wday;
 DROP TABLE mtb_track_back_status;

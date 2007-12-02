@@ -1,3 +1,13 @@
+create table dtb_module_update_logs(
+    module_id serial,
+    buckup_path text,
+    error_flg int2 default 0,
+    error text,
+    ok text,
+    create_date timestamp NOT NULL DEFAULT now(),
+    update_date timestamp NOT NULL DEFAULT now()
+);
+
 CREATE TABLE dtb_ownersstore_settings (
     public_key text
 );

@@ -668,4 +668,6 @@ define('OSTORE_E_C_INVALID_PARAM', '2007');
 define('OSTORE_E_C_AUTOUP_DISABLE', '2008');
 /** オーナーズストア通信エラーコード */
 define('OSTORE_E_C_PERMISSION', '2009');
+/** オーナーズストア通信エラーコード */
+define('OSTORE_E_C_BATCH_ERR', '2010');
 ?>

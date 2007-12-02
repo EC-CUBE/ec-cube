@@ -73,7 +73,6 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
         $this->initParam();
         $objLog->log('* post param check start');
         if ($this->objForm->checkError()) {
-            // TODO
             $objJson->setError(OSTORE_E_C_INVALID_PARAM);
             $objJson->display();
             $objLog->error(OSTORE_E_C_INVALID_PARAM, $_POST);
@@ -82,7 +81,6 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
 
         if ($mode == 'auto_update'
         && $this->autoUpdateEnable($this->objForm->getValue('product_id')) !== true) {
-            // TODO
             $objJson->setError(OSTORE_E_C_AUTOUP_DISABLE);
             $objJson->display();
             $objLog->error(OSTORE_E_C_INVALID_PARAM, $_POST);
@@ -154,13 +152,13 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
             $data = base64_decode($objRet->dl_file);
 
             $objLog->log("* open ${filename} start");
-            if ($fp = fopen($dir . $filename, "w")) {
-                fwrite($fp, $data);
-                fclose($fp);
+            if ($fp = @fopen($dir . $filename, "w")) {
+                @fwrite($fp, $data);
+                @fclose($fp);
             } else {
-                $objJson->setError(OSTORE_E_C_FILE_WRITE);
+                $objJson->setError(OSTORE_E_C_PERMISSION);
                 $objJson->display();
-                $objLog->error(OSTORE_E_C_FILE_WRITE, $objReq);
+                $objLog->error(OSTORE_E_C_PERMISSION, $dir . $filename);
                 return;
             }
 
@@ -168,9 +166,9 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
             $exract_dir = $dir . $time;
             $objLog->log("* mkdir ${exract_dir} start");
             if (!@mkdir($exract_dir)) {
-                $objJson->setError(OSTORE_E_C_MKDIR);
+                $objJson->setError(OSTORE_E_C_PERMISSION);
                 $objJson->display();
-                $objLog->error(OSTORE_E_C_MKDIR, $objReq);
+                $objLog->error(OSTORE_E_C_PERMISSION, $exract_dir);
                 return;
             }
 
@@ -183,7 +181,20 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
             $objBatch = new SC_Batch_Update();
             $arrCopyLog = $objBatch->execute($exract_dir);
 
-            // テーブルの更新
+            $objLog->log("* copy batch check start");
+            if (count($arrCopyLog['err']) > 0) {
+                $objJson->setError(OSTORE_E_C_PERMISSION);
+                $objJson->display();
+                $objLog->error(OSTORE_E_C_PERMISSION, $arrCopyLog);
+                $this->registerUpdateLog($arrCopyLog, $objRet->data);
+                return;
+            }
+
+            // dtb_module_update_logの更新
+            $objLog->log("* insert dtb_module_update start");
+            $this->registerUpdateLog($arrCopyLog, $objRet->data);
+
+            // dtb_moduleの更新
             $objLog->log("* insert/update dtb_module start");
             $this->updateMdlTable($objRet->data);
 
@@ -191,7 +202,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
             $objLog->log("* notify to lockon server start");
             $objReq = $this->notifyDownload($objReq->getResponseCookies());
 
-            $objLog->log('* dl commi result:' . serialize($objReq));
+            $objLog->log('* dl commit result:' . serialize($objReq));
 
             $objJson->setSUCCESS(array(), 'インストール/アップデートに成功しました。');
             $objJson->display();
@@ -309,6 +320,20 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
             return false;
         }
         return false;
+    }
+
+    function registerUpdateLog($arrLog, $objRet) {
+        $arrInsert = array(
+            'module_id'   => $objRet->product_id,
+            'buckup_path' => $arrLog['buckup_path'],
+            'error_flg'   => count($arrLog['err']),
+            'error'       => implode("\n", $arrLog['err']),
+            'ok'          => implode("\n", $arrLog['ok']),
+            'update_date' => 'NOW()',
+            'create_date' => 'NOW()'
+        );
+        $objQuery = new SC_Query;
+        $objQuery->insert('dtb_module_update_logs', $arrInsert);
     }
 }
 ?>

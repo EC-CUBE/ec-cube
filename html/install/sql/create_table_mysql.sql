@@ -1,3 +1,13 @@
+create table dtb_module_update_logs(
+    module_id int auto_increment primary key NOT NULL,
+    buckup_path text,
+    error_flg smallint DEFAULT 0,
+    error text,
+    ok text,
+    create_date datetime NOT NULL,
+    update_date datetime NOT NULL
+);
+
 CREATE TABLE dtb_ownersstore_settings (
     public_key text
 ) TYPE=InnoDB ;
