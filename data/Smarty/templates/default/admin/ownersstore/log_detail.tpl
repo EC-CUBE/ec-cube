@@ -65,26 +65,30 @@
 									</tr>
 								</table>
 								<!--コンテンツタイトルここまで-->
-								<table width="678" border="0" cellspacing="1" cellpadding="4" summary=" ">
-									<tr bgcolor="#f2f1ec" align="center" class="fs12n">
-										<td width="">ﾓｼﾞｭｰﾙ名</td>
-										<td width="100">ｽﾃｰﾀｽ</td>
-										<td width="100">日時</td>
-										<td width="">詳細</td>
-										<!--{*<td width="">復元</td>*}-->
+								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
+									<tr align="center" class="fs12n">
+										<td bgcolor="#f2f1ec" width="130">ﾓｼﾞｭｰﾙ名</td>
+										<td bgcolor="#ffffff" width="" align="left"><!--{$arrLogDetail.module_name|escape}--></td>
 									</tr>
-								<!--{foreach from=$arrInstallLogs item=log name=log_loop}-->
-									<tr bgcolor="#ffffff" class="fs12">
-										<td align="center"><!--{$log.module_name|escape}--></td>
-										<td align="center"><!--{if $log.error_flg}-->失敗<!--{else}-->成功<!--{/if}--></td>
-										<td><!--{$log.update_date|sfDispDBDate|escape}--></td>
-										<td align="center">
-										    <a href="<!--{$smarty.const.URL_DIR}-->admin/ownersstore/log.php?mode=detail&log_id=<!--{$log.log_id}-->">
-										    詳細</a>
+									<tr align="center" class="fs12n">
+										<td bgcolor="#f2f1ec" width="130">ステータス</td>
+										<td bgcolor="#ffffff" width="" align="left"><!--{if $arrLogDetail.error_flg}-->失敗<!--{else}-->成功<!--{/if}--></td>
+									</tr>
+									<tr align="center" class="fs12n">
+										<td bgcolor="#f2f1ec" width="130">日時</td>
+										<td bgcolor="#ffffff" width="" align="left"><!--{$arrLogDetail.update_date|sfDispDBDate|escape}--></td>
+									</tr>
+									<tr align="center" class="fs12n">
+										<td bgcolor="#f2f1ec" width="130">ﾊﾞｯｸｱｯﾌﾟﾊﾟｽ</td>
+										<td bgcolor="#ffffff" width="" align="left"><!--{$arrLogDetail.buckup_path|wordwrap:100:"\n":true|escape|nl2br}--></td>
+									</tr>
+									<tr align="center" class="fs12n">
+										<td bgcolor="#f2f1ec" width="130">詳細</td>
+										<td bgcolor="#ffffff" width="" align="left">
+										<!--{$arrLogDetail.error|wordwrap:100:"\n":true|escape|nl2br}-->
+										<!--{$arrLogDetail.ok|wordwrap:100:"\n":true|escape|nl2br}-->
 										</td>
-										<!--{*<td align="center"><!--{$log.log_id}--></td>*}-->
 									</tr>
-								<!--{/foreach}-->
 								</table>
 								</td>
 								<td background="<!--{$TPL_DIR}-->img/contents/main_right.jpg"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>

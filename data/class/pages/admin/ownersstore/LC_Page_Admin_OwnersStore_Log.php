@@ -61,18 +61,20 @@ class LC_Page_Admin_OwnersStore_Log extends LC_Page {
         // ログインチェック
         SC_Utils::sfIsSuccess(new SC_Session());
 
-        $arrModuleData = $this->getModuleData();
-        $log = '';
-        if (count($arrModuleData)) {
-            foreach($arrModuleData as $module) {
-                $name = $module['module_name'];
-                $update_date = SC_Utils_Ex::sfDispDBDate($module['update_date']);
-
-                $log .= sprintf("[%s] %s モジュール が更新されました。\n", $update_date, $name);
+        $mode = isset($_GET['mode']) ? $_GET['mode'] : '';
+        switch ($mode) {
+        case 'detail':
+            $objForm = $this->initParam();
+            if ($objForm->checkError()) {
+                sfDispError('');
             }
+            $this->arrLogDetail = $this->getLogDetail($objForm->getValue('log_id'));
+            $this->tpl_mainpage = 'ownersstore/log_detail.tpl';
+            break;
+        default:
+            break;
         }
-
-        $this->log = $log;
+        $this->arrInstallLogs = $this->getLogs();
 
         // ページ出力
         $objView = new SC_AdminView();
@@ -89,11 +91,50 @@ class LC_Page_Admin_OwnersStore_Log extends LC_Page {
         parent::destroy();
     }
 
-    function getModuleData() {
+    function getLogs() {
+        $sql =<<<END
+SELECT
+    *
+FROM
+    dtb_module_update_logs JOIN (
+    SELECT
+        module_id,
+        module_name
+    FROM
+        dtb_module
+    ) AS modules USING(module_id)
+ORDER BY update_date DESC
+END;
         $objQuery = new SC_Query;
-        $objQuery->setOrder('update_date desc');
-        $arrRet = $objQuery->select('*', 'dtb_module');
-        return empty($arrRet) ? array() : $arrRet;
+        $arrRet = $objQuery->getAll($sql);
+        return isset($arrRet) ? $arrRet : array();
+    }
+
+    function initParam() {
+        $objForm = new SC_FormParam();
+        $objForm->addParam('log_id', 'log_id', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objForm->setParam($_GET);
+        return $objForm;
+    }
+
+    function getLogDetail($log_id) {
+            $sql =<<<END
+SELECT
+    *
+FROM
+    dtb_module_update_logs JOIN (
+    SELECT
+        module_id,
+        module_name
+    FROM
+        dtb_module
+    ) AS modules USING(module_id)
+WHERE
+    log_id = ?
+END;
+        $objQuery = new SC_Query;
+        $arrRet = $objQuery->getAll($sql, array($log_id));
+        return isset($arrRet[0]) ? $arrRet[0] : array();
     }
 }
 ?>
