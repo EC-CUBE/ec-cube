@@ -2,7 +2,7 @@
     <tr bgcolor="#f2f1ec" align="center" class="fs12n">
         <td width="">ﾛｺﾞ</td>
         <td width="">名称</td>
-        <td width="">ﾊﾞｰｼﾞｮﾝ</td>
+        <td width="">導入ﾊﾞｰｼﾞｮﾝ</td>
         <td width="">ﾀﾞｳﾝﾛｰﾄﾞ</td>
         <td width="">設定</td>
         <td width="">ｽﾃｰﾀｽ</td>
