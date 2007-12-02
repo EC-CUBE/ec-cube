@@ -1,5 +1,6 @@
 create table dtb_module_update_logs(
-    module_id int auto_increment primary key NOT NULL,
+    log_id int auto_increment primary key NOT NULL,
+    module_id int not null,
     buckup_path text,
     error_flg smallint DEFAULT 0,
     error text,

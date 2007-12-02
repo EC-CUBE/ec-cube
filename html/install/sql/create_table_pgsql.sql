@@ -1,5 +1,6 @@
 create table dtb_module_update_logs(
-    module_id serial,
+    log_id serial NOT NULL,
+    module_id int NOT NULL,
     buckup_path text,
     error_flg int2 default 0,
     error text,
