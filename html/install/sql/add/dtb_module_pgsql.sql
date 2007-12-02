@@ -1,5 +1,6 @@
 CREATE TABLE dtb_module (
     module_id int NOT NULL UNIQUE,
+    module_code text NOT NULL,
     module_name text NOT NULL,
     sub_data text,
     auto_update_flg int2 NOT NULL DEFAULT 0,
