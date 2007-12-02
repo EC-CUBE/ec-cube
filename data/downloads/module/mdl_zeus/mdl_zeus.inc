@@ -106,6 +106,22 @@ function sfPostPaymentData($arrData, $arrInput, $quick_chage = false){
 	            'pubsec' => 'yes'           
 	        );
 		} else {
+		    // ダミーのPost値を生成する。
+		    $arrPost = array(
+                'send' => 'mall',
+                'clientip' => $arrPaymentDB['clientip'],
+                'money' => '0',
+                'telno' => '0',
+                'sendid' => '0',
+                'cardnumber' => '8888888888888888',
+                'email' => $arrData['order_email'],
+                'sendpoint' => 'eccube',
+                'expyy' => '01',    // ダミー値
+                'expmm' => '01',    // ダミー値
+                'div' => '01',
+                'entry' => 'non',
+                'pubsec' => 'yes'           
+            );
 		   gfPrintLog("過去の注文がないか、会員IDがありません。");
 		}
 	}
