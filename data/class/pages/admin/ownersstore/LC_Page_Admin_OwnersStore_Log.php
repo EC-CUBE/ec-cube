@@ -66,7 +66,7 @@ class LC_Page_Admin_OwnersStore_Log extends LC_Page {
         case 'detail':
             $objForm = $this->initParam();
             if ($objForm->checkError()) {
-                sfDispError('');
+                SC_Utils::sfDispError('');
             }
             $this->arrLogDetail = $this->getLogDetail($objForm->getValue('log_id'));
             $this->tpl_mainpage = 'ownersstore/log_detail.tpl';
