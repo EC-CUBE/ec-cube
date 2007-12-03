@@ -7,7 +7,7 @@
 *}-->
 <!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
-<form name="form1" id="form1" method="post" action="/admin/basis/mail_edit.php">
+<form name="form1" id="form1" method="post" action="<!--{$smarty.const.URL_DIR}-->admin/basis/mail_edit.php">
 <input type="hidden" name="mode" value="">
 <input type="hidden" name="template_id" value="">
 	<tr valign="top">
