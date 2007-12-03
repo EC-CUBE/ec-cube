@@ -211,10 +211,12 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
             $objLog->log("* insert dtb_module_update start");
             $this->registerUpdateLog($arrCopyLog, $objRet->data);
 
-            // dtb_moduleの更新
-            $objLog->log("* insert/update dtb_module start");
-            $this->updateMdlTable($objRet->data);
-
+            if ($mode != 'patch_download') {
+	            // dtb_moduleの更新
+	            $objLog->log("* insert/update dtb_module start");
+	            $this->updateMdlTable($objRet->data);
+            }
+            
             // 配信サーバへ通知
             $objLog->log("* notify to lockon server start");
             $objReq = $this->notifyDownload($mode, $objReq->getResponseCookies());
