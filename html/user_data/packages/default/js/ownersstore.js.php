@@ -89,11 +89,11 @@ OwnersStore.prototype = {
         );
         $('#TB_load').show();
     },
+
     // show results
-    show_result: function(resp, status) {
-        var title    = resp.status;
-        var contents = resp.msg;
-        var errcode  = resp.errcode || '1000';
+    show_result: function(resp, status, product_id) {
+        var title    = resp.status || 'ERROR';
+        var contents = resp.msg || '';
 
         var TB_WIDTH = 400;
         var TB_HEIGHT = 300;
@@ -114,7 +114,6 @@ OwnersStore.prototype = {
             $("#TB_ajaxContent")[0].style.width = ajaxContentW +"px";
             $("#TB_ajaxContent")[0].style.height = ajaxContentH +"px";
             $("#TB_ajaxContent")[0].scrollTop = 0;
-
         }
 
         $("#TB_load").remove();
@@ -128,18 +127,29 @@ OwnersStore.prototype = {
         $("#TB_ajaxWindowTitle").html(title);
         $("#TB_ajaxContent").html(contents);
         $("#TB_window").css({display:"block"});
+
+        // DL成功時に設定ボタンを表示
+        if (resp.status == 'SUCCESS' && product_id) {
+            $('#ownersstore_settings_default').hide(); // --を非表示
+            $('#ownersstore_settings').show();         // 設定ボタン表示
+            $('#ownersstore_download').html('--');     // インストール/アップロードボタンを--へ変換
+        }
     },
 
     // exexute install or update
     download: function(product_id) {
         this.show_loading();
+        var show = this.show_result;
         $.post(
             upgrade_url,
             {mode: 'download', product_id: product_id},
-            this.show_result,
+            function(resp, status) {
+                show(resp, status, product_id);
+            },
             'json'
         )
     },
+
     // get products list
     products_list: function() {
         this.show_loading();
@@ -147,7 +157,7 @@ OwnersStore.prototype = {
         var remove = this.remove;
         $().ajaxError(this.show_result);
         $.post(
-           upgrade_url,
+            upgrade_url,
             {mode: 'products_list'},
             function(resp, status) {
                 if (resp.status == 'SUCCESS') {

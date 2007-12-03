@@ -29,6 +29,7 @@
         <!--{if $product.download_flg}-->
         
         <td align="center">
+            <div id="ownersstore_download">
             <!--{* インストール済み かつ 新バージョンが公開している場合 はアップデートボタン表示 *}-->
             <!--{if $product.installed_flg && $product.version_up_flg}-->
                 <span class="icon_confirm">
@@ -42,6 +43,7 @@
             <!--{else}-->
                 --
             <!--{/if}-->
+            </div>
         </td>
             
         <td align="center">
@@ -53,7 +55,14 @@
                 </a>
                 </span>
             <!--{else}-->
-                --
+                <div id='ownersstore_settings' style="display:none">
+                <span class="icon_confirm">
+                <a href="" onclick="win02('../load_module_config.php?module_id=<!--{$product.product_id}-->', 'load', 600, 400);return false;">
+                   設定
+                </a>
+                </span>
+                </div>
+                <div id='ownersstore_settings_default' style="display:bloc">--</div>
             <!--{/if}-->
         </td>
 
