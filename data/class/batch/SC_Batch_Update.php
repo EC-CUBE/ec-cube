@@ -131,7 +131,7 @@ class SC_Batch_Update extends SC_Batch {
                         // バックアップを作成
                         if (file_exists($out)) {
                             $bkupTo = $bkupPathFile . pathinfo($out, PATHINFO_BASENAME);
-                            $bkupDistInfoArray[sha1_file($out)] = $path;
+                            $bkupDistInfoArray[sha1_file($out)] = $out;
 
                             if (!@copy($out, $bkupTo)) {
                                 $arrLog['err'][] = "バックアップファイルの作成に失敗しました: " . $bkupTo;
