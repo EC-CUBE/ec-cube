@@ -72,10 +72,12 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
         // パラメーチェック
         $this->initParam();
         $objLog->log('* post param check start');
-        if ($this->objForm->checkError()) {
+        $arrErr = $this->objForm->checkError();
+        if ($arrErr) {
             $objJson->setError(OSTORE_E_C_INVALID_PARAM);
             $objJson->display();
             $objLog->error(OSTORE_E_C_INVALID_PARAM, $_POST);
+            $objLog->log('* post param check error ' . print_r($arrErr, true));
             return;
         }
 
@@ -105,12 +107,26 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
 
         // リクエストを開始
         $objLog->log('* http request start');
-        $arrPostData = array(
-            'eccube_url' => SITE_URL,
-            'public_key' => sha1($public_key . $sha1_key),
-            'sha1_key'   => $sha1_key,
-            'product_id' => $this->objForm->getValue('product_id')
-        );
+        
+        switch($mode) {
+        case 'patch_download':
+            $arrPostData = array(
+                'eccube_url' => SITE_URL,
+                'public_key' => sha1($public_key . $sha1_key),
+                'sha1_key'   => $sha1_key,
+                'patch_code' => 'latest'
+            );
+            break;
+        default:
+            $arrPostData = array(
+                'eccube_url' => SITE_URL,
+                'public_key' => sha1($public_key . $sha1_key),
+                'sha1_key'   => $sha1_key,
+                'product_id' => $this->objForm->getValue('product_id')
+            );
+            break;
+        }
+        
         $objReq = $this->request($mode, $arrPostData);
 
         // リクエストチェック
