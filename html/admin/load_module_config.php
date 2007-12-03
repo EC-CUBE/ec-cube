@@ -38,10 +38,10 @@ if(!empty($module_id) && is_numeric($module_id)) {
     GC_Utils::gfPrintLog("loading module ====> module_id = " . $module_id);
 
     $objQuery = new SC_Query();
-    $arrRet = $objQuery->select("module_name", "dtb_module", "module_id = ?", array($module_id));
+    $arrRet = $objQuery->select("module_code", "dtb_module", "module_id = ?", array($module_id));
 
-    if (isset($arrRet[0]['module_name'])) {
-        $config_path = MODULE_PATH . $arrRet[0]['module_name'] . '/config.php';
+    if (isset($arrRet[0]['module_code'])) {
+        $config_path = MODULE_PATH . $arrRet[0]['module_code'] . '/config.php';
 
         if (file_exists($config_path)) {
             require_once $config_path;
