@@ -288,12 +288,16 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
     function isValidAccess($mode) {
         $objLog = new LC_Upgrade_Helper_Log;
         switch ($mode) {
+        // モジュールダウンロード
         case 'download':
             if ($this->isLoggedInAdminPage() === true) {
                 $objLog->log('* admin login ok');
                 return true;
             }
             break;
+        // 自動アップロード最新ファイル取得
+        case 'patch_download':
+        // モジュール自動アップロード
         case 'auto_update':
             $objForm = new SC_FormParam;
             $objForm->addParam('public_key', 'public_key', MTEXT_LEN, '', array('EXIST_CHECK', 'ALNUM_CHECK', 'MAX_LENGTH_CHECK'));
@@ -301,8 +305,9 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
             $objForm->setParam($_POST);
 
             $objLog->log('* param check start');
-            if ($objForm->CheckError()) {
-                $objLog->log('* invalid param');
+            $arrErr = $objForm->checkError();
+            if ($arrErr) {
+                $objLog->log('* invalid param ' . print_r($arrErr, true));                
                 return false;
             }
 
