@@ -135,7 +135,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
         $objRet = $objJson->decode($body);
 
         // JSONデータのチェック
-        $objLog->log('* json deta check start');
+        $objLog->log('* json data check start');
         if (empty($objRet)) {
             $objJson->setError(OSTORE_E_C_FAILED_JSON_PARSE);
             $objJson->display();
