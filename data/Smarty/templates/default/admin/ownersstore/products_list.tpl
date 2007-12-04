@@ -25,11 +25,11 @@
         </td>
         <td align="center"><!--{$product.installed_version|default:"--"|escape}--></td>
         
-        <!--{* ダウンロード対象商品 かつ 受注ステータスが「入金済み」なら各種ボタンを表示する *}-->
+        <!--{* ダウンロード対象商品なら各種ボタンを表示する *}-->
         <!--{if $product.download_flg}-->
         
         <td align="center">
-            <div id="ownersstore_download">
+            <div id="ownersstore_download<!--{$product.product_id|escape}-->">
             <!--{* インストール済み かつ 新バージョンが公開している場合 はアップデートボタン表示 *}-->
             <!--{if $product.installed_flg && $product.version_up_flg}-->
                 <span class="icon_confirm">
@@ -41,7 +41,7 @@
                 <a href="" onclick="OwnersStore.download(<!--{$product.product_id|escape}-->);return false;">インストール</a>
                 </span>
             <!--{else}-->
-                --
+                済み
             <!--{/if}-->
             </div>
         </td>
@@ -55,14 +55,14 @@
                 </a>
                 </span>
             <!--{else}-->
-                <div id='ownersstore_settings' style="display:none">
+                <div id='ownersstore_settings<!--{$product.product_id|escape}-->' style="display:none">
                 <span class="icon_confirm">
                 <a href="" onclick="win02('../load_module_config.php?module_id=<!--{$product.product_id}-->', 'load', 600, 400);return false;">
                    設定
                 </a>
                 </span>
                 </div>
-                <div id='ownersstore_settings_default' style="display:bloc">--</div>
+                <div id='ownersstore_settings_default<!--{$product.product_id|escape}-->' style="display:bloc">--</div>
             <!--{/if}-->
         </td>
 

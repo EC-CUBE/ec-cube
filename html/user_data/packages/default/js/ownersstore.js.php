@@ -130,9 +130,9 @@ OwnersStore.prototype = {
 
         // DL成功時に設定ボタンを表示
         if (resp.status == 'SUCCESS' && product_id) {
-            $('#ownersstore_settings_default').hide(); // --を非表示
-            $('#ownersstore_settings').show();         // 設定ボタン表示
-            $('#ownersstore_download').html('--');     // インストール/アップロードボタンを--へ変換
+            $('#ownersstore_settings_default' + product_id).hide(); // --を非表示
+            $('#ownersstore_settings' + product_id).show();         // 設定ボタン表示
+            $('#ownersstore_download' + product_id).html('\u6E08\u307F');     // インストール/アップロードボタンを--へ変換
         }
     },
 
