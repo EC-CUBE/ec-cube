@@ -3,7 +3,7 @@
 CURRENT_DIR=`pwd`
 TMP_DIR=/tmp
 SVN_PATH=file:///home/svn/open/branches/feature-module-update
-ECCUBE_VERSION=2.0.0-beta
+ECCUBE_VERSION=2.0.1
 WRK_DIR=eccube-$ECCUBE_VERSION
 
 if [ ! -d $TMP_DIR ]; then
