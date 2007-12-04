@@ -35,6 +35,23 @@ $arrVal['template_name'] = '受注完了テンプレート(携帯サイト用)';
 
 $objQuery->update("dtb_mailtemplate", $arrVal, "template_id = ?", array('2'));
 
+$arrRet = $objQuery->select("template_id, header, footer, body", "dtb_mailtemplate", "del_flg = 0");
+
+foreach($arrRet as $array) {
+    $arrVal = array();
+    // 本文が未設定の場合
+    if($array['body'] == "") {
+	    $arrVal['body'] = $array['header'] . "\n{order}\n" . $array['footer'];
+	    $objQuery->update("dtb_mailtemplate", $arrVal, "template_id = ?", array($array['template_id']));
+    }
+}
+
+$message.= "データを更新しました。<br />\n";
+print($message);
+
+?>
+
+
 $message.= "データを更新しました。<br />\n";
 print($message);
 
