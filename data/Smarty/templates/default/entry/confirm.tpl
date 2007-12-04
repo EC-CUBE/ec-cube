@@ -114,12 +114,8 @@
         <tr>
           <th>パスワードを忘れた時のヒント<span class="attention">※</span></th>
           <td>
-            <dl>
-              <dt>質問：</dt>
-              <dd><!--{$arrReminder[$list_data.reminder]|escape}--></dd>
-              <dt>答え：</dt>
-              <dd><!--{$list_data.reminder_answer|escape}--></dd>
-            </dl>
+              質問：<!--{$arrReminder[$list_data.reminder]|escape}--><br />
+              答え：<!--{$list_data.reminder_answer|escape}-->
           </td>
         </tr>
         <tr>
