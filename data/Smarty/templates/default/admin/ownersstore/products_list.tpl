@@ -1,11 +1,11 @@
 <table width="678" border="0" cellspacing="1" cellpadding="4" summary=" ">
     <tr bgcolor="#f2f1ec" align="center" class="fs12n">
-        <td width="">ﾛｺﾞ</td>
-        <td width="">名称</td>
-        <td width="">導入ﾊﾞｰｼﾞｮﾝ</td>
-        <td width="">ﾀﾞｳﾝﾛｰﾄﾞ</td>
+        <td width="">ロゴ</td>
+        <td width="">商品名</td>
+        <td width="">導入バージョン</td>
+        <td width="">インストール</td>
         <td width="">設定</td>
-        <td width="">ｽﾃｰﾀｽ</td>
+        <td width="">購入ステータス</td>
     </tr>
 <!--{foreach from=$arrProducts item=product name=products_list_loop}-->
     <tr bgcolor="#ffffff" class="fs12">
