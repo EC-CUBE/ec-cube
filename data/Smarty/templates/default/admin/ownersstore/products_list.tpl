@@ -17,7 +17,7 @@
         </td>
         <td align="center">
             <p>
-                <a href="<!--{$smarty.const.SITE_URL}-->products/detail.php?product_id=<!--{$product.product_id|escape}-->" target="_blank">
+                <a href="<!--{$smarty.const.OSTORE_URL}-->products/detail.php?product_id=<!--{$product.product_id|escape}-->" target="_blank">
                     <!--{$product.name}-->
                 </a>
             </p>
