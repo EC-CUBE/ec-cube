@@ -52,6 +52,7 @@ function lfPageFactory($mode) {
         $file  .= 'ProductsList.php';
         $class .= 'ProductsList';
         break;
+    case 'patch_download':
     case 'download':
     case 'auto_update':
         $file  .= 'Download.php';
@@ -63,6 +64,7 @@ function lfPageFactory($mode) {
         break;
     default:
         header("HTTP/1.1 400 Bad Request");
+        GC_Util::gfPrintLog("modeの値が正しくありません。:".$mode);
         exit();
         break;
     }
