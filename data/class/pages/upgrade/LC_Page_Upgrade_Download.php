@@ -107,7 +107,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
 
         // リクエストを開始
         $objLog->log('* http request start');
-        
+
         switch($mode) {
         case 'patch_download':
             $arrPostData = array(
@@ -126,7 +126,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
             );
             break;
         }
-        
+
         $objReq = $this->request($mode, $arrPostData);
 
         // リクエストチェック
@@ -200,10 +200,11 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
 
             $objLog->log("* copy batch check start");
             if (count($arrCopyLog['err']) > 0) {
-                $objJson->setError(OSTORE_E_C_PERMISSION);
+                $objJson->setError(OSTORE_E_C_BATCH_ERR);
                 $objJson->display();
-                $objLog->error(OSTORE_E_C_PERMISSION, $arrCopyLog);
+                $objLog->error(OSTORE_E_C_BATCH_ERR, $arrCopyLog);
                 $this->registerUpdateLog($arrCopyLog, $objRet->data);
+                $this->updateMdlTable($objRet->data);
                 return;
             }
 
@@ -216,7 +217,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
 	            $objLog->log("* insert/update dtb_module start");
 	            $this->updateMdlTable($objRet->data);
             }
-            
+
             // 配信サーバへ通知
             $objLog->log("* notify to lockon server start");
             $objReq = $this->notifyDownload($mode, $objReq->getResponseCookies());
@@ -325,7 +326,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
             $objLog->log('* param check start');
             $arrErr = $objForm->checkError();
             if ($arrErr) {
-                $objLog->log('* invalid param ' . print_r($arrErr, true));                
+                $objLog->log('* invalid param ' . print_r($arrErr, true));
                 return false;
             }
 
