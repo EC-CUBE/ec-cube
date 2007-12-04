@@ -50,9 +50,3 @@ $message.= "データを更新しました。<br />\n";
 print($message);
 
 ?>
-
-
-$message.= "データを更新しました。<br />\n";
-print($message);
-
-?>
