@@ -134,10 +134,11 @@ class SC_Batch_Update extends SC_Batch {
                             $bkupDistInfoArray[sha1_file($out)] = $out;
 
                             if (!@copy($out, $bkupTo)) {
-                                $arrLog['err'][] = "バックアップファイルの作成に失敗しました: " . $bkupTo;
+                                $arrLog['err'][] = "バックアップファイルの作成に失敗しました: " . $out . ' -> ' . $bkupTo;
                                 break 2;
                             }
-                            $arrLog['ok'][] = "バックアップファイルの作成に成功しました: " . $bkupTo;
+                            $arrLog['ok'][]
+                                 = "バックアップファイルの作成に成功しました: " . $out . ' -> ' . $bkupTo;
                         }
 
                         // ファイルを書き出しモードで開く
@@ -170,9 +171,9 @@ class SC_Batch_Update extends SC_Batch {
             $handle = @fopen($bkupPath . 'distinfo.php', "w");
             @fwrite($handle, $src);
             @fclose($handle);
-            $arrLog['ok'][] =  "バックアップ用ファイルの作成に成功しました: " . $bkupPath . 'distinfo.php';
+            $arrLog['ok'][] =  "distinfoファイルの作成に成功しました: " . $bkupPath . 'distinfo.php';
         } else {
-            $arrLog['err'][] = "バックアップ用ファイルの作成に失敗しました: " . $bkupPath . 'distinfo.php';
+            $arrLog['err'][] = "distinfoファイルの作成に失敗しました: " . $bkupPath . 'distinfo.php';
         }
         umask($oldMask);
         return $arrLog;
