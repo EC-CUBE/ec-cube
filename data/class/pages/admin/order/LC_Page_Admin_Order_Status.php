@@ -68,8 +68,6 @@ class LC_Page_Admin_Order_Status extends LC_Page {
         $objSess = new SC_Session();
         SC_Utils_Ex::sfIsSuccess($objSess);
 
-        //ステータス情報（仮定）
-        $this->SelectedStatus = isset($_POST['status']) ? $_POST['status'] : "";
         $this->arrForm = $_POST;
 
         //支払方法の取得
@@ -122,15 +120,18 @@ class LC_Page_Admin_Order_Status extends LC_Page {
                 $this->lfStatusMove("delete",$_POST['move']);
                 break;
             }
-
+            
+            //ステータス情報
+            $this->SelectedStatus = isset($_POST['status']) ? $_POST['status'] : "";
             //検索結果の表示
             $this->lfStatusDisp($_POST['status'],$_POST['search_pageno']);
             break;
 
         default:
+            //ステータス情報
+            $this->SelectedStatus = ORDER_NEW;
             //デフォルトで新規受付一覧表示
             $this->lfStatusDisp(ORDER_NEW, $_POST['search_pageno']);
-            $this->defaultstatus = ORDER_NEW;
             break;
         }
 
