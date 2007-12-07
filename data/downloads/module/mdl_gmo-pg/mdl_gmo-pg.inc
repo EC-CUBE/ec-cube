@@ -1,0 +1,159 @@
+<?php
+/**
+ * 
+ * @copyright	2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * @version	CVS: $Id: mdl_epsilon.inc 7162 2006-11-18 09:53:33Z kakinaka $
+ * @link		http://www.lockon.co.jp/
+ *
+ */
+require_once(DATA_PATH . "module/Request.php");
+
+/**** ▼定数宣言 *********************************************************************************************/
+
+define("MDL_GMOPG_ID", 11);
+
+/** クレジット決済(試験用) **/
+define ("GMO_ENTRY_URL", "http://mod-i.ccsware.net/ohayou/EntryTran.php");
+define ("GMO_EXEC_URL", "http://mod-i.ccsware.net/ohayou/ExecTran.php");
+// ダミーでよいので入れておかないと正しく動かない
+define ("GMO_RETURL", SITE_URL . "mod-i/recv.php");
+
+// クレジット分割回数
+$arrPaymentClass = array(
+	'01' => '一括払い',
+	'03' => '3回払い',
+	'05' => '5回払い',
+	'06' => '6回払い',
+	'10' => '10回払い'		
+);
+
+// 送信パラメータ
+define ("SECURE_LINK_URL", "https://linkpt.cardservice.co.jp/cgi-bin/secure.cgi");
+
+// 文字数制限
+define ("CLIENTIP_LEN", 5);
+define ("SEND_LEN", 20);
+
+
+/**************************************************************************************************************
+ * 関数名	：sfGetPaymentDB
+ * 処理内容	：必要なデータを取得する。
+ * 引数1	：
+ * 引数2	：
+ * 引数3	：
+ * 戻り値	：取得結果
+ **************************************************************************************************************/
+function sfGetPaymentDB($where = "", $arrWhereVal = array()){
+    global $objQuery;
+    
+    $arrVal = array(MDL_GMOPG_ID);
+    $arrVal = array_merge($arrVal, $arrWhereVal);
+    
+    $arrRet = array();
+    $sql = "SELECT 
+                module_id, 
+                memo01 as gmo_shopid,
+                memo02 as gmo_shoppass,
+				memo03 as gmo_tenantno                
+            FROM dtb_payment WHERE module_id = ? " . $where;
+    $arrRet = $objQuery->getall($sql, $arrVal);
+   
+    return $arrRet;
+}
+
+/**************************************************************************************************************
+ * 関数名	：sfPostPaymentData
+ * 処理内容	：決済データ送信処理
+ * 引数1	：
+ * 引数2	：
+ * 引数3	：
+ * 戻り値	：取得結果
+ **************************************************************************************************************/
+function sfPostPaymentData($arrData, $arrInput, $quick_chage = false){
+	$arrPaymentDB = sfGetPaymentDB(MDL_GMOPG_ID);
+	
+	if(!$quick_chage) {
+		$arrPost = array(
+			'clientip' => $arrPaymentDB['clientip'],
+			'cardnumber' =>  $arrInput['card_no01'].$arrInput['card_no02'].$arrInput['card_no03'].$arrInput['card_no04'],
+			'expyy' => $arrInput['card_year'],
+			'expmm' => $arrInput['card_month'],
+			'telno' => $arrData['order_tel01'].$arrData['order_tel02'].$arrData['order_tel03'],
+			'email' => $arrData['order_email'],
+			'sendid' => $arrData['order_id'],
+			'username' => $arrInput['card_name01'].$arrInput['card_name02'],
+			'money' => $arrData['total'],
+			'sendpoint' => 'eccube',
+			'send' => 'mall',
+			'pubsec' => '',
+			'div' => $arrInput['payment_class']
+		);
+	} else {
+		// クイックチャージを利用する場合
+		$objQuery = new SC_Query();
+		$objQuery->setlimit(1);
+		$objQuery->setorder("create_date DESC");
+		$col = "order_id, order_tel01, order_tel02, order_tel03";
+		$where = "memo01 = ? AND memo03 = ? AND customer_id = ?";
+		$arrRet = $objQuery->select($col, "dtb_order", $where, array(MDL_GMOPG_ID, 'Success_order', $arrData['customer_id']));
+		
+		$arrPost = array(
+			'send' => 'mall',
+			'clientip' => $arrPaymentDB['clientip'],
+			'money' => $arrData['total'],
+			'telno' => $arrRet[0]['order_tel01'].$arrRet[0]['order_tel02'].$arrRet[0]['order_tel03'],
+			'sendid' => $arrRet[0]['order_id'],
+			'cardnumber' => '8888888888888888',
+			'email' => $arrData['order_email'],
+			'sendpoint' => 'eccube',
+			'expyy' => '01',	// ダミー値
+			'expmm' => '01',	// ダミー値
+			'div' => '01',
+ 			'entry' => 'non',
+ 			'pubsec' => 'yes'			
+ 		);
+ 		
+ 		sfPrintR($arrPost);
+	}
+	
+	$req = new HTTP_Request(SECURE_LINK_URL);
+	$req->setMethod(HTTP_REQUEST_METHOD_POST);
+	$req->addPostDataArray($arrPost);
+	
+	if (!PEAR::isError($req->sendRequest())) {
+	    $response = $req->getResponseBody();
+	    $response = mb_convert_encoding($response, "EUC-JP", "Shift-JIS");
+	}
+	$req->clearPostData();
+	gfPrintLog("ゼウス応答結果：".$response);
+
+	// 受注テーブルに記録する
+	$arrVal["memo01"] = MDL_GMOPG_ID;	// モジュールID
+	$arrVal["memo03"] = $response;		// 処理結果
+	// 受注一時テーブルに更新
+	sfRegistTempOrder($arrData['order_temp_id'], $arrVal);
+	
+	if(ereg('Success_order', $response)) {
+		return true;
+	} else {
+		return false;
+	}
+	return $arrVal;
+}
+/**************************************************************************************************************
+ * 関数名	：sfGmoDisp
+ * 処理内容	：共通の表示処理
+ * 引数1	：
+ * 引数2	：
+ * 引数3	：
+ * 戻り値	：取得結果
+ **************************************************************************************************************/
+function sfGmoDisp($objPage, $payment_id) {
+	$objQuery = new SC_Query();
+	// 支払い方法の説明画像を取得する。
+	$arrRet = $objQuery->select("payment_method, payment_image", "dtb_payment", "payment_id = ?", array($payment_id));
+	$objPage->tpl_payment_method = $arrRet[0]['payment_method'];
+	$objPage->tpl_payment_image = $arrRet[0]['payment_image'];
+	return $objPage;
+}
+?>
