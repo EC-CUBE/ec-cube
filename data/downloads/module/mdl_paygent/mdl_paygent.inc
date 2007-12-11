@@ -697,12 +697,14 @@ function sfPaygentTest($arrParam) {
 function sfUpdatePaymentStatus($objPaygent, $arrSend) {
 	$objQuery = new SC_Query();
 	
-	$i = 0;
-	$notice_id = $objQuery->max("dtb_order", "memo10", "memo01 = ?", array(MDL_PAYGENT_ID));
+	if (DB_TYPE == "pgsql") $col = "cast(memo10 AS int4)";
+	elseif (DB_TYPE == "mysql") $col = "cast(memo10 AS SIGNED)";
+	$notice_id = $objQuery->max("dtb_order", $col, "memo01 = ?", array(MDL_PAYGENT_ID));
 	
 	$objQuery->begin();
 	
 	// ステータスの取得
+	$i = 0;
 	while($i < 1000) {
 		$arrRet = sfGetPaymentStatus($objPaygent, $arrSend);
 		
