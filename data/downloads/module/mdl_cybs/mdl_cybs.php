@@ -61,7 +61,7 @@ $objView->display($objPage->tpl_mainpage);
  */
 function lfInitParam($arrParam = null) {
     $objForm = new SC_FormParam;
-    $objForm->addParam('リクエスト先', 'cybs_request_url', INT_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+    $objForm->addParam('リクエスト先', 'cybs_request_url', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
     $objForm->addParam('マーチャントID', 'cybs_merchant_id', MTEXT_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
     $objForm->addParam('鍵・証明書パス', 'cybs_key_path', MTEXT_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'), MDL_CYBS_KEY_PATH);
     $objForm->addParam('サブスクリプションサービス', 'cybs_subs_use', INT_LEN, '', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));

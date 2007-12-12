@@ -62,7 +62,7 @@ function fnCheckSubmit() {
 						<table width="666" border="0" cellspacing="1" cellpadding="10" summary=" ">
 							<tr>
 								<td width="666" class="fs12" bgcolor="#ffffff">
-								<span class="redst"><!--{$tpl_error}--></span>
+								<span class="redst"><!--{$tpl_error|escape|nl2br}--></span>
 								</td>
 							</tr>
 						</table>
