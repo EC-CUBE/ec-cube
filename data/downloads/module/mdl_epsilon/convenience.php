@@ -74,7 +74,7 @@ switch($_POST["mode"]){
 		$objSiteSess->setRegistFlag();
 		// 確認ページへ移動
 		if (is_callable("GC_MobileUserAgent", "isMobile") && GC_MobileUserAgent::isMobile()) {
-			header("Location: " . gfAddSessionId(URL_SHOP_CONFIRM));
+			header("Location: " . gfAddSessionId(MOBILE_URL_SHOP_CONFIRM));
 		} else {
 			header("Location: " . URL_SHOP_CONFIRM);
 		}
@@ -214,7 +214,7 @@ switch($_POST["mode"]){
 				sfRegistTempOrder($uniqid, $sqlval);
 
 				if (is_callable("GC_MobileUserAgent", "isMobile") && GC_MobileUserAgent::isMobile()) {
-					header("Location: " . gfAddSessionId(URL_SHOP_COMPLETE));
+					header("Location: " . gfAddSessionId(MOBILE_URL_SHOP_COMPLETE));
 				} else {
 					header("Location: " . URL_SHOP_COMPLETE);
 				}

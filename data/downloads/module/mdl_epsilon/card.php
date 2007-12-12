@@ -71,7 +71,7 @@ if($_GET["result"] == "1"){
 
 	// ´°Î»²èÌÌ¤Ø
 	if (is_callable("GC_MobileUserAgent", "isMobile") && GC_MobileUserAgent::isMobile()) {
-		header("Location: " .  gfAddSessionId(URL_SHOP_COMPLETE));
+		header("Location: " .  gfAddSessionId(MOBILE_URL_SHOP_COMPLETE));
 	} else {
 		header("Location: " .  URL_SHOP_COMPLETE);
 	}
