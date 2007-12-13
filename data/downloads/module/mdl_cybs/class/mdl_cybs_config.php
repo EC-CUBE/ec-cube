@@ -49,6 +49,7 @@ class Mdl_Cybs_Config {
      * @return array
      */
     function _getConfig() {
+        // FIXME cybs_key_pathは使用しない
         $sql =<<<END
 SELECT
     module_id,

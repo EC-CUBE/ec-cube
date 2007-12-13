@@ -113,14 +113,6 @@
                                             </td>
                                         </tr>
                                         <tr class="fs12n">
-                                            <td width="" bgcolor="#f3f3f3">鍵・証明書パス<span class="red"> ※</span></td>
-                                            <td width="300" bgcolor="#ffffff">
-                                            <!--{assign var=key value="cybs_key_path"}-->
-                                            <span class="red12"><!--{$arrErr[$key]}--></span>
-                                            <input type="text" name="<!--{$key}-->" style="ime-mode:disabled; <!--{$arrErr[$key]|sfGetErrorColor}-->" value="<!--{$arrForm[$key].value}-->" class="box40" maxlength="<!--{$arrForm[$key].length}-->">
-                                            </td>
-                                        </tr>
-                                        <tr class="fs12n">
                                             <td width="" bgcolor="#f3f3f3">サブスクリプションサービス</td>
                                             <td width="300" bgcolor="#ffffff">
                                             <!--{assign var=key value="cybs_subs_use"}-->

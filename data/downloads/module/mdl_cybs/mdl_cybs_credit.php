@@ -153,8 +153,6 @@ function lfSendRequest($arrForm, $arrData) {
 
     $objRequest->add_request("server_host", $arrCybsRequestURL[$arrConfig['cybs_request_url']]);
     $objRequest->add_request("server_port", "80");
-    $objRequest->add_request("ics_applications", "ics_auth");
-    $objRequest->add_request("merchant_id", $arrConfig['cybs_merchant_id']);
     $objRequest->add_request("customer_cc_number", $cardNo);
     $objRequest->add_request("customer_cc_expmo", $expMo);
     $objRequest->add_request("customer_cc_expyr", $expyr);
@@ -167,23 +165,29 @@ function lfSendRequest($arrForm, $arrData) {
     $objRequest->add_request("bill_state", lfToSjis($arrPref[$arrData['order_pref']]));
     $objRequest->add_request("bill_zip", $arrData['order_zip01'] . $arrData['order_zip02']);
     $objRequest->add_request("bill_country", "JP");
+    $objRequest->add_request("merchant_id", $arrConfig['cybs_merchant_id']);
     $objRequest->add_request("merchant_ref_number", $arrData['order_id']);
     $objRequest->add_request("currency", "JPY");
-    // »ÙÊ§¤¤ÊýË¡
-    list($method, $paytimes) = split("-", $arrForm['paymethod']);
-    $objRequest->add_request("jpo_payment_method", $method);
-    if ($paytimes > 0) $objRequest->add_request("jpo_installments", $paytimes);
 
-    $objRequest->add_request("offer0", "offerid:0^amount:" . $arrData['payment_total']);
+    if ($arrConfig['cybs_subs_use']) {
+        lfAddSubsParam($objRequest, $arrConfig, $arrData);
+    } else {
+        lfAddAuthParam($objRequest, $arrForm, $arrData);
+    }
 
     $request_array = $objRequest->requests;
     gfPrintLog(print_r($request_array, true), MDL_CYBS_LOG);
-
+gfPrintLog(print_r($arrConfig, true), MDL_CYBS_LOG);
     if( ($result = cybs_send($request_array)) == false ) {
       print("error");
       gfPrintLog('#### cybs_send() error ###' , MDL_CYBS_LOG);
       exit;
     }
+
+sfPrintR($request_array);
+ksort($result);
+sfPrintR($result);
+
     return $result;
 }
 
@@ -242,4 +246,33 @@ function lfRegisterOrderTemp($uniqid, $arrForm, $arrResults) {
     $objQuery->update("dtb_order_temp", $sqlval, "order_temp_id = ?", array($uniqid));
 }
 
+function lfAddSubsParam(&$objRequest, $arrConfig, $arrData) {
+    global $arrSubsFrequency;
+    $objCustomer = new SC_Customer;
+
+    if ($objCustomer->isLoginSuccess()) {
+        $customer_id = $objCustomer->getValue('customer_id');
+        $objRequest->add_request("customer_account_id", $customer_id);
+        gfPrintLog('-> cybs subs user=' . $customer_id);
+    } else {
+        gfPrintLog('-> cybs subs not customer');
+    }
+
+    $objRequest->add_request("ics_applications", "ics_pay_subscription_create");
+    $objRequest->add_request('card_type', MDL_CYBS_SUBS_CARD); // XXX
+    $objRequest->add_request('recurring_disable_auto_auth', 'N');
+    $objRequest->add_request('recurring_frequency', $arrSubsFrequency[MDL_CYBS_SUBS_FREQ]); // XXX
+    $objRequest->add_request('recurring_payment_amount', (string)$arrData['payment_total']);
+}
+
+function lfAddAuthParam(&$objRequest, $arrForm, $arrData) {
+    $objRequest->add_request("ics_applications", "ics_auth");
+
+    // »ÙÊ§¤¤ÊýË¡
+    list($method, $paytimes) = split("-", $arrForm['paymethod']);
+    $objRequest->add_request("jpo_payment_method", $method);
+    if ($paytimes > 0) $objRequest->add_request("jpo_installments", $paytimes);
+
+    $objRequest->add_request("offer0", "offerid:0^amount:" . $arrData['payment_total']);
+}
 ?>
