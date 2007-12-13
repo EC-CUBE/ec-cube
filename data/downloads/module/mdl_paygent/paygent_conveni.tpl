@@ -148,7 +148,7 @@ function next(now, next) {
 								<td align="center" bgcolor="#f7f5f4">
 								<table width="666" border="0" cellspacing="0" cellpadding="6" summary=" ">
 									<tr>
-										<td class="fs12st" align="center">以上の内容で間違いなければ、下記「注文完了ページへ」ボタンをクリックしてください。<br>
+										<td class="fs12st" align="center">以上の内容で間違いなければ、下記「次へ」ボタンをクリックしてください。<br>
 										<span class="orange">※画面が切り替るまで少々時間がかかる場合がございますが、そのままお待ちください。</span></td>
 									</tr>
 									<tr>

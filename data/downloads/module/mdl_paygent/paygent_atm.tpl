@@ -79,7 +79,7 @@ function next(now, next) {
 										<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 											<tr>
 												<!--{assign var=key1 value="customer_family_name"}-->
-												<!--{assign var=key2 value="customer_name"}-->								
+												<!--{assign var=key2 value="customer_name"}-->
 												<td class="fs12">
 												<span class="red"><!--{$arrErr[$key1]}--></span>
 												<span class="red"><!--{$arrErr[$key2]}--></span>
@@ -99,7 +99,7 @@ function next(now, next) {
 										<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 											<tr>
 												<!--{assign var=key1 value="customer_family_name_kana"}-->
-												<!--{assign var=key2 value="customer_name_kana"}-->								
+												<!--{assign var=key2 value="customer_name_kana"}-->
 												<td class="fs12">
 												<span class="red"><!--{$arrErr[$key1]}--></span>
 												<span class="red"><!--{$arrErr[$key2]}--></span>
@@ -124,7 +124,7 @@ function next(now, next) {
 								<td align="center" bgcolor="#f7f5f4">
 								<table width="666" border="0" cellspacing="0" cellpadding="6" summary=" ">
 									<tr>
-										<td class="fs12st" align="center">以上の内容で間違いなければ、下記「注文完了ページへ」ボタンをクリックしてください。<br>
+										<td class="fs12st" align="center">以上の内容で間違いなければ、下記「次へ」ボタンをクリックしてください。<br>
 										<span class="orange">※画面が切り替るまで少々時間がかかる場合がございますが、そのままお待ちください。</span></td>
 									</tr>
 									<tr>

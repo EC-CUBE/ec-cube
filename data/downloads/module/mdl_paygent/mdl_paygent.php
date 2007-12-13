@@ -2,7 +2,7 @@
 /**
  * 
  * @copyright	2000-2007 LOCKON CO.,LTD. All Rights Reserved.
- * @version	CVS: $Id: mdl_epsilon.php 1.2 2006-12-04 06:08:28Z kakinaka $
+ * @version	CVS: $Id: mdl_epsilon.php 1.3 2007-12-13 11:50:00Z satou $
  * @link		http://www.lockon.co.jp/
  *
  */
@@ -107,7 +107,7 @@ function lfInitParam($objFormParam) {
 	$objFormParam->addParam("支払期限日", "atm_limit_date", 2, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"), $arrDefault['atm_limit_date']);
 	$objFormParam->addParam("表示店舗名(カナ)", "payment_detail", 12, "KVa", array("MAX_LENGTH_CHECK", "KANA_CHECK"), $arrDefault['payment_detail']);
 	$objFormParam->addParam("支払期限日", "asp_payment_term", 2, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"), $arrDefault['asp_payment_term']);
-	$objFormParam->addParam("表示店舗名(全角)", "claim_kanji", 12, "KVa", array("MAX_LENGTH_CHECK"), $arrDefault['claim_kanji']);
+	$objFormParam->addParam("表示店舗名(漢字)", "claim_kanji", 12, "KVa", array("MAX_LENGTH_CHECK"), $arrDefault['claim_kanji']);
 	$objFormParam->addParam("表示店舗名(カナ)", "claim_kana", 12, "KVa", array("MAX_LENGTH_CHECK", "KANA_CHECK"), $arrDefault['claim_kana']);
 	$objFormParam->addParam("利用決済", "payment", "", "", array("EXIST_CHECK"));
 	$objFormParam->addParam("決済ページ用コピーライト(半角英数)", "copy_right", 64, "KVa", array("MAX_LENGTH_CHECK"));
@@ -127,13 +127,13 @@ function lfCheckError(){
 			$arrErr['atm_limit_date'] = "※ 支払期限日は、0〜60日までの間で設定してください。<br>";
 	}
     if(isset($_POST['payment_detail']) && $_POST['payment_detail'] == '') {
-            $arrErr['payment_detail'] = "※ 支払説明文（カナ）を入力してください。<br>";
+            $arrErr['payment_detail'] = "※ 表示店舗名(カナ)を入力してください。<br>";
     }
     if(isset($_POST['claim_kanji']) && $_POST['claim_kanji'] == '') {
-            $arrErr['claim_kanji'] = "※ 支払説明文（漢字）を入力してください。<br>";
+            $arrErr['claim_kanji'] = "※ 表示店舗名（漢字）を入力してください。<br>";
     }
     if(isset($_POST['claim_kana']) && $_POST['claim_kana'] == '') {
-            $arrErr['claim_kana'] = "※ 支払説明文（カナ）を入力してください。<br>";
+            $arrErr['claim_kana'] = "※ 表示店舗名（カナ）を入力してください。<br>";
     }
 	
     

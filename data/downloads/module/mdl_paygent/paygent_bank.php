@@ -9,7 +9,11 @@ require_once(MODULE_PATH . "mdl_paygent/mdl_paygent.inc");
 class LC_Page {
 	function LC_Page() {
 		/** 必ず指定する **/
-		$this->tpl_mainpage = MODULE_PATH . 'mdl_paygent/paygent_bank.tpl';		// メインテンプレート
+		if (GC_MobileUserAgent::isMobile()) {
+			$this->tpl_mainpage = MODULE_PATH . "mdl_paygent/paygent_bank_mobile.tpl";
+		} else {
+			$this->tpl_mainpage = MODULE_PATH . "mdl_paygent/paygent_bank.tpl";
+		}
 		/*
 		 session_start時のno-cacheヘッダーを抑制することで
 		 「戻る」ボタン使用時の有効期限切れ表示を抑制する。
@@ -20,16 +24,15 @@ class LC_Page {
 }
 
 $objPage = new LC_Page();
-$objView = new SC_SiteView();
+if (GC_MobileUserAgent::isMobile()) {
+	$objView = new SC_MobileView();
+} else {
+	$objView = new SC_SiteView();
+}
 $objCampaignSess = new SC_CampaignSession();
 $objCustomer = new SC_Customer();
 $objSiteInfo = $objView->objSiteInfo;
 $arrInfo = $objSiteInfo->data;
-
-if (GC_MobileUserAgent::isMobile()) {
-	sfDispSiteError(FREE_ERROR_MSG, "", false, "銀行ネット決済は、ご使用の機種には対応しておりません。", true);
-	exit;
-}
 
 // パラメータ管理クラス
 $objFormParam = new SC_FormParam();
@@ -56,8 +59,11 @@ switch($_POST['mode']) {
 case 'return':
 	// 正常な推移であることを記録しておく
 	$objSiteSess->setRegistFlag();
-	header("Location: " . URL_SHOP_CONFIRM);
-	exit;
+	if (GC_MobileUserAgent::isMobile()) {
+		header("Location: " . gfAddSessionId(MOBILE_URL_SHOP_CONFIRM));
+	} else {
+		header("Location: " . URL_SHOP_CONFIRM);
+	}
 	break;
 // 次へ
 case 'next':
@@ -505,4 +511,4 @@ function lfReduceStock($objQuery, $arrID, $quantity) {
 	}
 }
 
-?>?>
+?>
