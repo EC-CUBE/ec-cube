@@ -60,10 +60,10 @@ function sfGetPaymentDB($module_id, $where = "", $arrWhereVal = array()){
  * 引数3	：
  * 戻り値	：取得結果
  **************************************************************************************************************/
-function sfPostPaymentData($arrData, $arrInput, $quick_chage = false){
+function sfPostPaymentData($arrData, $arrInput, $quick_charge = false){
 	$arrPaymentDB = sfGetPaymentDB(MDL_ZEUS_ID);
 	
-	if(!$quick_chage) {
+	if(!$quick_charge) {
 		$arrPost = array(
 			'clientip' => $arrPaymentDB['clientip'],
 			'cardnumber' =>  $arrInput['card_no01'].$arrInput['card_no02'].$arrInput['card_no03'].$arrInput['card_no04'],
@@ -150,6 +150,7 @@ function sfPostPaymentData($arrData, $arrInput, $quick_chage = false){
 	}
 	return $arrVal;
 }
+
 /**************************************************************************************************************
  * 関数名	：sfZeusDisp
  * 処理内容	：共通の表示処理
@@ -166,4 +167,27 @@ function sfZeusDisp($objPage, $payment_id) {
 	$objPage->tpl_payment_image = $arrRet[0]['payment_image'];
 	return $objPage;
 }
+
+/**************************************************************************************************************
+ * 関数名  ：sfEnableQuickCharge
+ * 処理内容 ：クイックチャージの使用判定
+ * 引数1  ：
+ * 引数2  ：
+ * 引数3  ：
+ * 戻り値  ：取得結果
+ **************************************************************************************************************/
+function sfEnableQuickCharge($customer_id) {
+    $objQuery = new SC_Query();
+    $objQuery->setlimit(1);
+    $objQuery->setorder("create_date DESC");
+    $col = "order_id, order_tel01, order_tel02, order_tel03";
+    $where = "memo01 = ? AND memo03 = ? AND customer_id = ?";
+    $arrRet = $objQuery->select($col, "dtb_order", $where, array(MDL_ZEUS_ID, 'Success_order', $customer_id));
+    if(count($arrRet) > 0 && $customer_id > 0) {
+        return true;
+    }
+    return false;
+}
+
+
 ?>
