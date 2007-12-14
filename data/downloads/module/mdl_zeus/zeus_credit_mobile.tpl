@@ -12,10 +12,12 @@
 <!--{* 決済時のエラーを表示 *}-->
 <font color="red"><!--{$tpl_error}--></font>
 
+<!--{if $quick_charge_ok == true}-->
 <form method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <input type="hidden" name="mode" value="quick_charge">
 <center><input type="submit" name="quick_charge" value="前回利用したカードで注文"></center>
 </form>
+<!--{/if}-->
 
 <form method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <input type="hidden" name="mode" value="next">
