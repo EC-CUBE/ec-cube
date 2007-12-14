@@ -987,6 +987,7 @@ INSERT INTO mtb_constants VALUES ('ADMIN_NEWS_STARTYEAR','2005',264,'新着情�
 INSERT INTO mtb_constants VALUES ('ENTRY_CUSTOMER_TEMP_SUBJECT','"会員仮登録が完了いたしました。"',265,'会員登録');
 INSERT INTO mtb_constants VALUES ('ENTRY_CUSTOMER_REGIST_SUBJECT','"本会員登録が完了いたしました。"',266,'会員登録');
 INSERT INTO mtb_constants VALUES ('ENTRY_LIMIT_HOUR','1',267,'再入会制限時間（単位: 時間)');
+INSERT INTO mtb_constants VALUES ('RECOMMEND_PRODUCT_MAX','6',268,'関連商品表示数');
 INSERT INTO mtb_constants VALUES ('RECOMMEND_NUM','8',268,'オススメ商品表示数');
 INSERT INTO mtb_constants VALUES ('BEST_MAX','5',269,'ベスト商品の最大登録数');
 INSERT INTO mtb_constants VALUES ('BEST_MIN','3',270,'ベスト商品の最小登録数（登録数が満たない場合は表示しない。)');
