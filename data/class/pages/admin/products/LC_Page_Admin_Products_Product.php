@@ -433,16 +433,23 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         }
 
         if($arrList['product_id'] == "") {
-            // product_id 取得
-            $product_id = $objQuery->nextval("dtb_products", "product_id");
-            $sqlval['product_id'] = $product_id;
-
+            // product_id 取得（PostgreSQLの場合）
+            if(DB_TYPE=='pgsql'){
+                $product_id = $objQuery->nextval("dtb_products", "product_id");
+                $sqlval['product_id'] = $product_id;
+            }
+            
             // INSERTの実行
             $sqlval['create_date'] = "Now()";
             $objQuery->insert("dtb_products", $sqlval);
-
+            
+            // product_id 取得（MySQLの場合）
+            if(DB_TYPE=='mysql'){
+                $product_id = $objQuery->nextval("dtb_products", "product_id");
+            }
+            
             // カテゴリを更新
-            $objDb->updateProductCategories($arrList['category_id'], $sqlval['product_id']);
+            $objDb->updateProductCategories($arrList['category_id'], $product_id);
 
             // コピー商品の場合には規格もコピーする
             if($_POST["copy_product_id"] != "" and SC_Utils_Ex::sfIsInt($_POST["copy_product_id"])){
@@ -469,10 +476,10 @@ class LC_Page_Admin_Products_Product extends LC_Page {
 
             // UPDATEの実行
             $where = "product_id = ?";
-            $objQuery->update("dtb_products", $sqlval, $where, array($arrList['product_id']));
+            $objQuery->update("dtb_products", $sqlval, $where, array($product_id));
 
             // カテゴリを更新
-            $objDb->updateProductCategories($arrList['category_id'], $arrList['product_id']);
+            $objDb->updateProductCategories($arrList['category_id'], $product_id);
         }
 
         // 規格登録
