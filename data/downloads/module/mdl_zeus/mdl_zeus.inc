@@ -85,7 +85,7 @@ function sfPostPaymentData($arrData, $arrInput, $quick_charge = false){
 		$objQuery->setlimit(1);
 		$objQuery->setorder("create_date DESC");
 		$col = "order_id, order_tel01, order_tel02, order_tel03";
-		$where = "memo01 = ? AND memo03 = ? AND customer_id = ?";
+		$where = "memo01 = ? AND memo03 = ? AND customer_id = ? AND del_flg = 0";
 		$arrRet = $objQuery->select($col, "dtb_order", $where, array(MDL_ZEUS_ID, 'Success_order', $arrData['customer_id']));
 		
 		// 過去の注文があり、顧客登録されている。
@@ -93,7 +93,7 @@ function sfPostPaymentData($arrData, $arrInput, $quick_charge = false){
            $arrPost = array(
 	            'send' => 'mall',
 	            'clientip' => $arrPaymentDB['clientip'],
-	            'money' => $arrData['total'],
+	            'money' => $arrData['payment_total'],
 	            'telno' => $arrRet[0]['order_tel01'].$arrRet[0]['order_tel02'].$arrRet[0]['order_tel03'],
 	            'sendid' => $arrRet[0]['order_id'],
 	            'cardnumber' => '8888888888888888',
@@ -103,7 +103,7 @@ function sfPostPaymentData($arrData, $arrInput, $quick_charge = false){
 	            'expmm' => '01',    // ダミー値
 	            'div' => '01',
 	            'entry' => 'non',
-	            'pubsec' => 'yes'           
+	            'pubsec' => 'yes'
 	        );
 		} else {
 		    // ダミーのPost値を生成する。
@@ -120,9 +120,9 @@ function sfPostPaymentData($arrData, $arrInput, $quick_charge = false){
                 'expmm' => '01',    // ダミー値
                 'div' => '01',
                 'entry' => 'non',
-                'pubsec' => 'yes'           
+                'pubsec' => 'yes'
             );
-		   gfPrintLog("過去の注文がないか、会員IDがありません。");
+		    gfPrintLog("過去の注文がないか、会員IDがありません。");
 		}
 	}
 	
@@ -181,7 +181,7 @@ function sfEnableQuickCharge($customer_id) {
     $objQuery->setlimit(1);
     $objQuery->setorder("create_date DESC");
     $col = "order_id, order_tel01, order_tel02, order_tel03";
-    $where = "memo01 = ? AND memo03 = ? AND customer_id = ?";
+    $where = "memo01 = ? AND memo03 = ? AND customer_id = ? AND del_flg = 0";
     $arrRet = $objQuery->select($col, "dtb_order", $where, array(MDL_ZEUS_ID, 'Success_order', $customer_id));
     if(count($arrRet) > 0 && $customer_id > 0) {
         return true;
