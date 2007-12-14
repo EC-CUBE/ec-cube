@@ -108,7 +108,7 @@ $objDate->setStartYear(RELEASE_YEAR);
 $objDate->setEndYear(RELEASE_YEAR + CREDIT_ADD_YEAR);
 $objPage->arrYear = $objDate->getZeroYear();
 $objPage->arrMonth = $objDate->getZeroMonth();
-
+ 
 // 過去の注文を検索する。
 $objPage->quick_charge_ok = sfEnableQuickCharge($arrData['customer_id']);
 

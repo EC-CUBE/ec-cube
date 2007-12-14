@@ -87,7 +87,7 @@ function sfPostPaymentData($arrData, $arrInput, $quick_charge = false){
 		$col = "order_id, order_tel01, order_tel02, order_tel03";
 		$where = "memo01 = ? AND memo03 = ? AND customer_id = ? AND del_flg = 0";
 		$arrRet = $objQuery->select($col, "dtb_order", $where, array(MDL_ZEUS_ID, 'Success_order', $arrData['customer_id']));
-		
+		 
 		// 過去の注文があり、顧客登録されている。
 		if(count($arrRet) > 0 && $arrData['customer_id'] > 0) {
            $arrPost = array(
