@@ -61,7 +61,7 @@ function fnChangeDisabled(list, disable) {
 		<!--購入手続きの流れ-->
 		<table width="700" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
-				<td><img src="/img/shopping/flow03.gif" width="700" height="36" alt="購入手続きの流れ"></td>
+				<td><img src="<!--{$smarty.const.URL_DIR}-->img/shopping/flow03.gif" width="700" height="36" alt="購入手続きの流れ"></td>
 
 			</tr>
 			<tr><td height="15"></td></tr>
@@ -71,15 +71,15 @@ function fnChangeDisabled(list, disable) {
 		<!--▼MAIN CONTENTS-->				
 				<table width="666" border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr>
-						<td colspan="3"><img src="/img/contents/contents_title_top.gif" width="666" height="7" alt=""></td>
+						<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_top.gif" width="666" height="7" alt=""></td>
 					</tr>
 					<tr>
-						<td background="/img/contents/contents_title_left_bg.gif"><img src="/img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
+						<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
 						<td bgcolor="#636469" width="638" class="fs16n"><strong><span class="white"><!--{$tpl_payment_method}--></span><strong></td>
-						<td background="/img/contents/contents_title_right_bg.gif"><img src="/img/common/_.gif" width="18" height="1" alt=""></td>
+						<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 					</tr>
 					<tr>
-						<td colspan="3"><img src="/img/contents/contents_title_bottom.gif" width="666" height="7" alt=""></td>
+						<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_bottom.gif" width="666" height="7" alt=""></td>
 					</tr>
 					<tr><td height="15"></td></tr>
 				</table>
@@ -214,8 +214,8 @@ function fnChangeDisabled(list, disable) {
 									</tr>
 									<tr>
 										<td align="center" height="40" bgcolor="#f7f5f4">
-											<a href="#" onclick="document.form2.submit(); return false;" onmouseover="chgImgImageSubmit('/img/common/b_back_on.gif',back03)" onmouseout="chgImgImageSubmit('/img/common/b_back.gif',back03)"><img src="/img/common/b_back.gif" width="150" height="30" alt="戻る" border="0" name="back03" id="back03"/></a><img src="/img/_.gif" width="12" height="" alt="" />
-											<input type="image" onclick="return fnCheckSubmit();" onmouseover="chgImgImageSubmit('/img/common/b_next_on.gif',this)" onmouseout="chgImgImageSubmit('/img/common/b_next.gif',this)" src="/img/common/b_next.gif" width="150" height="30" alt="次へ" border="0" name="next" id="next" />
+											<a href="#" onclick="document.form2.submit(); return false;" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_back_on.gif',back03)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif',back03)"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="戻る" border="0" name="back03" id="back03"/></a><img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="12" height="" alt="" />
+											<input type="image" onclick="return fnCheckSubmit();" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_next_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_next.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/common/b_next.gif" width="150" height="30" alt="次へ" border="0" name="next" id="next" />
 										</td>
 									</tr>
 								</table>

@@ -86,7 +86,7 @@ function win_open(URL){
 											</td>
 										</tr>
 									</table>
-									
+
 									<table width="442" border="0" cellspacing="0" cellpadding="0" summary=" ">
 										<tr><td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bar.jpg" width="442" height="10" alt=""></td></tr>
 									</table>
@@ -94,6 +94,16 @@ function win_open(URL){
 									<table width="442" border="0" cellspacing="1" cellpadding="8" summary=" ">
 										<tr class="fs12n">
 											<td colspan="2" width="90" bgcolor="#f3f3f3">■設定項目</td>
+										</tr>
+										<tr class="fs12n">
+											<td width="" bgcolor="#f3f3f3">接続先URL</td>
+											<td width="300" bgcolor="#ffffff">
+											・<!--{$smarty.const.GMO_ENTRY_URL}--><br>
+											・<!--{$smarty.const.GMO_EXEC_URL}--><br>
+											・<!--{$smarty.const.GMO_3D_URL}--><br><br>
+											※接続先URLを変更する場合は、下記ファイルに設定されている「GMO_ENTRY_URL」「GMO_EXEC_URL」「GMO_3D_URL」の値を変更してください<br>
+											<!--{$smarty.const.GMO_INC_PATH|wordwrap:50:"<br>":true}-->
+											</td>
 										</tr>
 										<tr class="fs12n">
 											<td width="" bgcolor="#f3f3f3">ショップID<span class="red"> ※</span></td>
@@ -119,8 +129,22 @@ function win_open(URL){
 											<input type="text" name="<!--{$key}-->" style="ime-mode:disabled; <!--{$arrErr[$key]|sfGetErrorColor}-->" value="<!--{$arrForm[$key].value}-->" class="box20" maxlength="<!--{$arrForm[$key].length}-->">
 											</td>
 										</tr>
+										<tr class="fs12n">
+											<td width="" bgcolor="#f3f3f3">3Dセキュア認証</td>
+											<td width="300" bgcolor="#ffffff" aligin="left">
+											<!--{assign var=key value="gmo_3d"}-->
+											<span class="red12"><!--{$arrErr[$key]}--></span>
+											<input type="checkbox"
+												   name="<!--{$key}-->"
+												   style="<!--{$arrErr[$key]|sfGetErrorColor}-->"
+												   value="1"
+												   maxlength="<!--{$arrForm[$key].length}-->" <!--{if $arrForm[$key].value}--> checked <!--{/if}-->> 使用する場合はチェックを入れてください<br>
+												   ※3Dセキュア認証を使用するにはSSL環境が必要です<br>
+												   ※モバイルは未対応です(通常の決済が実行されます)
+											</td>
+										</tr>
 									</table>
-									
+
 									<table width="442" border="0" cellspacing="0" cellpadding="0" summary=" ">
 										<tr>
 											<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="5" alt=""></td>
