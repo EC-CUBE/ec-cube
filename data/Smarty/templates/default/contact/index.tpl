@@ -121,7 +121,7 @@
                    name="addr02"
                    value="<!--{$addr02|default:$arrData.addr02|escape}-->"
                    style="<!--{$arrErr.addr02|sfGetErrorColor}-->" /><br />
-            <!--{$smarty.const.SAMPLE_ADDRESS1}-->
+            <!--{$smarty.const.SAMPLE_ADDRESS2}-->
           </p>
           
           <p class="mini"><em>住所は2つに分けてご記入いただけます。マンション名は必ず記入してください。</em></p>
