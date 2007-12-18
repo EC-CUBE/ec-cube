@@ -72,8 +72,8 @@
       <a href="<!--{$smarty.const.URL_DIR}-->products/detail.php?product_id=<!--{$arrBestProducts[$cnt2].product_id}-->"><!--{$arrBestProducts[$cnt2].name|escape}--></a>
       </h3>
 
-<!--{assign var=price01 value=`$arrBestProducts[cnt].price01_min`}-->
-<!--{assign var=price02 value=`$arrBestProducts[cnt].price02_min`}-->
+<!--{assign var=price01 value=`$arrBestProducts[$cnt2].price01_min`}-->
+<!--{assign var=price02 value=`$arrBestProducts[$cnt2].price02_min`}-->
 
       <p>価格<span class="mini">(税込)</span>：<span class="price">
 <!--{if $price02 == ""}-->
