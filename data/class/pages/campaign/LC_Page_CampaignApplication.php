@@ -119,7 +119,7 @@ class LC_Page_CampaignApplication extends LC_Page {
                     $orverlapping_flg = $objQuery->get("dtb_campaign", "orverlapping_flg", "campaign_id = ?", array($objCampaignSess->getCampaignId()));
 
                     if($orverlapping_flg) {
-                        if($this->lfOverlappingCheck($objCustomer->getValue('customer_id', $objQuery))) {
+                        if($this->lfOverlappingCheck($objCustomer->getValue('customer_id'), $objQuery)) {
                             $this->arrErr['login_email'] = "※ 複数回ご応募することは出来ません。";
                         }
                     }
