@@ -616,7 +616,7 @@ CREATE TABLE dtb_order (
     credit_result text,
     credit_msg text,
     update_date datetime,
-    commit_date text,
+    commit_date datetime,
     del_flg  smallint NOT NULL DEFAULT 0,
     deliv_date text,
     conveni_data text,
