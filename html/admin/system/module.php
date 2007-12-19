@@ -134,10 +134,10 @@ function lfMakeDirectory($path) {
 		$pos++; // 文字発見位置を一文字進める
 		$dir = substr($path, 0, $pos);
 		
-		// すでに存在するかどうか調べる
-		if(!file_exists($dir)) {
-			mkdir($dir);
-		}
+	    // 既に存在せず、書き込み可能である場合
+        if(!file_exists($dir) && is_writable(dirname($dir))) {
+            mkdir($dir);
+        }
 		$cnt++; // 無限ループ対策
 	}
 }
