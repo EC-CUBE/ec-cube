@@ -22,6 +22,9 @@
  */
 *}-->
 <body bgcolor="#ffffff" text="#555555" link="#3a75af" vlink="#3a75af" alink="#3a75af">
+<!--{* Moba8リクエスト用 *}-->
+<!--{$tpl_conv_page|sfRequestMoba8:$tpl_aff_option}-->
+
 <!--▼MAIN-->
 <!--{include file=$tpl_mainpage}-->
 <!--▲MAIN-->

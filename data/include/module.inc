@@ -110,4 +110,14 @@ function sfAlterMemo(){
 	}
 }
 
+/*------------- ▼A8FLYタグ出力 -------------*/
+if (file_exists(MODULE_PATH. "mdl_a8/include.php") === TRUE) {
+	require_once(MODULE_PATH. "mdl_a8/include.php");
+}
+
+/*------------- ▼Moba8FLY連携 -------------*/
+if (file_exists(MODULE_PATH. "mdl_moba8/include.php") === TRUE) {
+	require_once(MODULE_PATH. "mdl_moba8/include.php");
+}
+
 ?>

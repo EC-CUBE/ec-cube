@@ -59,7 +59,6 @@ class LC_Page_Regist extends LC_Page {
      * @return void
      */
     function process() {
-        $objQuery = new SC_Query();
         $objView = new SC_SiteView();
         $objSiteInfo = $objView->objSiteInfo;
         $objCustomer = new SC_Customer();
@@ -70,23 +69,26 @@ class LC_Page_Regist extends LC_Page {
         // キャンペーンからの登録の場合の処理
 
         if(!empty($_GET["cp"])) {
-            $etc_val = array("cp" => $_GET['cp']);
+            $etc_val['cp'] = $_GET['cp'];
         }
 
         //--　本登録完了のためにメールから接続した場合
         if ($_GET["mode"] == "regist") {
-
             //-- 入力チェック
             $this->arrErr = $this->lfErrorCheck($_GET);
             if ($this->arrErr) {
                 SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, "", true, $this->arrErr["id"]);
+            
             } else {
                 $registSecretKey = $this->lfRegistData($_GET);			//本会員登録（フラグ変更）
                 $this->lfSendRegistMail($registSecretKey);				//本会員登録完了メール送信
 
                 // ログイン済みの状態にする。
-                $email = $objQuery->get("dtb_customer", "email", "secret_key = ?", array($registSecretKey));
-                $objCustomer->setLogin($email);
+                $objQuery = new SC_Query();
+                $arrRet = $objQuery->select("customer_id, email", "dtb_customer", "secret_key = ?", array($registSecretKey));
+                $objCustomer->setLogin($arrRet[0]['email']);
+                $etc_val['ci'] = $arrRet[0]['customer_id'];
+                $_SERVER['QUERY_STRING'] = NULL;
                 $this->sendRedirect($this->getLocation("./complete.php", $etc_val));
                 exit;
             }
@@ -116,7 +118,6 @@ class LC_Page_Regist extends LC_Page {
      * @return void
      */
     function mobileProcess() {
-        $objQuery = new SC_Query();
         $objView = new SC_MobileView();
         $objSiteInfo = $objView->objSiteInfo;
         $objCustomer = new SC_Customer();
@@ -138,7 +139,7 @@ class LC_Page_Regist extends LC_Page {
                 $this->lfSendRegistMail($registSecretKey);				//本会員登録完了メール送信
 
                 // ログイン済みの状態にする。
-
+                $objQuery = new SC_Query();
                 $email = $objQuery->get("dtb_customer", "email", "secret_key = ?", array($registSecretKey));
                 $objCustomer->setLogin($email);
                 $this->sendRedirect($this->getLocation("./complete.php"), true);
@@ -236,7 +237,6 @@ class LC_Page_Regist extends LC_Page {
 
     //---- 入力エラーチェック
     function lfErrorCheck($array) {
-
         $objQuery = new SC_Query();
         $objErr = new SC_CheckError($array);
 

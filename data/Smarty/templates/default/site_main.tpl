@@ -20,6 +20,9 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 <body onload="preLoadImg('<!--{$smarty.const.URL_DIR}-->'); <!--{$tpl_onload}-->">
+<!--{* A8タグ表示用 *}-->
+<!--{$tpl_conv_page|sfPrintA8Tag:$tpl_aff_option}-->
+
 <!--{$GLOBAL_ERR}-->
 <noscript>
   <p>JavaScript を有効にしてご利用下さい.</p>

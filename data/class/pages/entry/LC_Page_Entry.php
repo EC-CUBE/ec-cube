@@ -206,7 +206,8 @@ class LC_Page_Entry extends LC_Page {
                     $objMail->sendMail();
 
                     // 完了ページに移動させる。
-                    $this->sendRedirect($this->getLocation("./complete.php"));
+                    $customer_id = $objQuery->get("dtb_customer", "customer_id", "secret_key = ?", array($this->uniqid));
+                    $this->sendRedirect($this->getLocation("./complete.php", array("ci" => $customer_id)));
                     exit;
                 }
             }
@@ -462,7 +463,6 @@ class LC_Page_Entry extends LC_Page {
 
                     // 空メールを受信済みの場合はすぐに本登録完了にする。
                     if (isset($_SESSION['mobile']['kara_mail_from'])) {
-
                         $param = array("mode" => "regist",
                                        "id" => $this->uniqid,
                                        session_name() => session_id());
@@ -485,7 +485,8 @@ class LC_Page_Entry extends LC_Page {
 
                     // 仮会員が有効の場合
                     if(CUSTOMER_CONFIRM_MAIL == true) {
-
+                        // Moba8パラメーターを保持する場合はカラム追加
+                        if (isset($_SESSION['a8'])) $this->etc_value = "&a8=". $_SESSION['a8'];
                         $subject = $objHelperMail->sfMakeSubject($objQuery, $objMailText, $this, '会員登録のご確認');
                         $toCustomerMail = $objMailText->fetch("mail_templates/customer_mail.tpl");
                     } else {

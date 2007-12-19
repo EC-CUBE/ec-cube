@@ -43,8 +43,6 @@ require_once(CLASS_EX_PATH . "SC_Initial_Mobile_Ex.php");
 $objInit = new SC_Initial_Mobile_Ex();
 $objInit->init();
 
-//require_once($include_dir . "/.." . HTML2DATA_DIR . "conf/conf.php");
-//require_once($include_dir . "/.." . HTML2DATA_DIR . "conf/mobile_conf.php");
 require_once($include_dir . "/.." . HTML2DATA_DIR . "include/module.inc");
 require_once(CLASS_EX_PATH . "util_extends/GC_Utils_Ex.php");
 require_once(CLASS_EX_PATH . "util_extends/SC_Utils_Ex.php");
@@ -86,4 +84,10 @@ if (!defined('SKIP_MOBILE_INIT')) {
     $objMobile = new SC_Helper_Mobile_Ex();
     $objMobile->sfMobileInit();
 }
+
+// Moba8対応（Moba8パラメータ引き継ぎ）
+if (function_exists("sfGetMoba8Param") == TRUE) {
+	sfGetMoba8Param($_GET['a8']);
+}
+
 ?>
