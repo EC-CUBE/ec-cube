@@ -224,7 +224,9 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
 
             $objLog->log('* dl commit result:' . serialize($objReq));
 
-            $objJson->setSUCCESS(array(), 'インストール/アップデートに成功しました。');
+            $productData = $objRet->data;
+            $productData->dl_file = '';
+            $objJson->setSUCCESS($productData, 'インストール/アップデートに成功しました。');
             $objJson->display();
             $objLog->end();
             return;

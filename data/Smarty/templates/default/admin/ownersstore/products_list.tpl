@@ -23,7 +23,11 @@
             </p>
             <p>Version.<!--{$product.version|default:"--"}-->　<!--{$product.last_update_date|sfDispDBDate:false|escape}--></p>
         </td>
-        <td align="center"><!--{$product.installed_version|default:"--"|escape}--></td>
+        <td align="center">
+            <div id="ownersstore_version<!--{$product.product_id|escape}-->">
+            <!--{$product.installed_version|default:"--"|escape}-->
+            </div>
+        </td>
         
         <!--{* ダウンロード対象商品なら各種ボタンを表示する *}-->
         <!--{if $product.download_flg}-->
