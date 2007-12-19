@@ -14,13 +14,13 @@
  * [注釈] 引数は１，２ともカンマ区切りになっていること
  *----------------------------------------------------------------------*/
 function gfDownloadCsv($header, $contents){
-	
+
 	$fiest_name = date("YmdHis") .".csv";
-	
+
 	/* HTTPヘッダの出力 */
 	Header("Content-disposition: attachment; filename=${fiest_name}");
 	Header("Content-type: application/octet-stream; name=${fiest_name}");
-	
+
 	$return = $header.$contents;
 	if (mb_detect_encoding($return) == CHAR_CODE){						//文字コード変換
 		$return = mb_convert_encoding($return,'SJIS',CHAR_CODE);
@@ -37,24 +37,24 @@ function gfDownloadCsv($header, $contents){
  * [依存] -
  * [注釈] -
  *----------------------------------------------------------------------*/
-function gfSetCsv( $array, $arrayIndex = "" ){	
+function gfSetCsv( $array, $arrayIndex = "" ){
 	//引数$arrayIndexは、$arrayが連想配列のときに添え字を指定してやるために使用する
-	
+
 	$return = "";
 	for ($i=0; $i<count($array); $i++){
-		
+
 		for ($j=0; $j<count($array[$i]); $j++ ){
 			if ( $j > 0 ) $return .= ",";
-			$return .= "\"";			
+			$return .= "\"";
 			if ( $arrayIndex ){
-				$return .= mb_ereg_replace("<","＜",mb_ereg_replace( "\"","\"\"",$array[$i][$arrayIndex[$j]] )) ."\"";			
+				$return .= mb_ereg_replace("<","＜",mb_ereg_replace( "\"","\"\"",$array[$i][$arrayIndex[$j]] )) ."\"";
 			} else {
 				$return .= mb_ereg_replace("<","＜",mb_ereg_replace( "\"","\"\"",$array[$i][$j] )) ."\"";
 			}
 		}
-		$return .= "\n";			
+		$return .= "\n";
 	}
-	
+
 	return $return;
 }
 
@@ -86,15 +86,10 @@ function gfGetAge($dbdate)
  * [注釈] -
  *----------------------------------------------------------------------*/
 function gfDebugLog($obj, $path = DEBUG_LOG_PATH){
-		gfPrintLog("*** start Debug ***");
-		ob_start();
-		print_r($obj);
-		$buffer = ob_get_contents();
-		ob_end_clean();
-		$fp = fopen($path, "a+");
-		fwrite( $fp, $buffer."\n" );
-		fclose( $fp );
-		gfPrintLog("*** end Debug ***");
+        $debugStr = print_r($obj, true);
+        gfPrintLog("*** start Debug ***", $path);
+        gfPrintLog($debugStr, $path);
+        gfPrintLog("*** end Debug ***", $path);
 
 		// ログテーション
 		gfLogRotation(MAX_LOG_QUANTITY, MAX_LOG_SIZE, $path);
@@ -126,26 +121,26 @@ function gfPrintLog($mess, $path = '') {
 		fwrite( $fp, $today." [".$_SERVER['PHP_SELF']."] ".$mess." from ". $_SERVER['REMOTE_ADDR']. "\n" );
 		fclose( $fp );
 	}
-	
+
 	// ログテーション
 	gfLogRotation(MAX_LOG_QUANTITY, MAX_LOG_SIZE, $path);
 }
 
-/**			
- * ログローテーション機能			
- *			
+/**
+ * ログローテーション機能
+ *
  * @param integer $max_log 最大ファイル数
  * @param integer $max_size 最大サイズ
  * @param string  $path ファイルパス
  * @return void なし
- */			
+ */
 function gfLogRotation($max_log, $max_size, $path) {
-	
+
 	// ディレクトリ名を取得
 	$dirname = dirname($path);
 	// ファイル名を取得
 	$basename = basename($path);
-	
+
 	// ファイルが最大サイズを超えていないかチェック
 	if(filesize($path) > $max_size) {
 		if ($dh = opendir($dirname)) {
@@ -155,16 +150,16 @@ function gfLogRotation($max_log, $max_size, $path) {
 					$arrLog[] = $file;
 				}
 			}
-			
+
 			// ファイルログが最大個数なら以上なら古いファイルから削除する
 			$count = count($arrLog);
 			if($count >= $max_log) {
 				$diff = $count - $max_log;
 				for($i = 0; $diff >= $i ; $i++) {
 					unlink($dirname. "/" .array_pop($arrLog));
-				}	
+				}
 			}
-			
+
 			// ログファイルの添え字をずらす
 			$count = count($arrLog);
 			for($i = $count; 1 <= $i; $i--) {
@@ -172,10 +167,10 @@ function gfLogRotation($max_log, $max_size, $path) {
 				@copy("$dirname/" . $arrLog[$i - 1], "$path.$move_number");
 			}
 			$ret = copy($path, "$path.1");
-			
+
 			// 新規ログファイルを作成
 			if($ret) {
-				unlink($path);			
+				unlink($path);
 				touch($path);
 				chmod($path, 0666);
 			}
@@ -192,21 +187,21 @@ function gfLogRotation($max_log, $max_size, $path) {
  * [注釈] -
  *----------------------------------------------------------------------*/
 function gfMakePassword($pwLength) {
-	
+
 	// 乱数表のシードを決定
 	srand((double)microtime() * 54234853);
-	
+
 	// パスワード文字列の配列を作成
 	$character = "abcdefghkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ2345679";
 	$pw = preg_split("//", $character, 0, PREG_SPLIT_NO_EMPTY);
-	
+
 	$password = "";
 	for($i = 0; $i<$pwLength; $i++ ) {
 		$password .= $pw[array_rand($pw, 1)];
 	}
 
 	return $password;
-} 
+}
 
 /*----------------------------------------------------------------------
  * [名称] sf_explodeExt
