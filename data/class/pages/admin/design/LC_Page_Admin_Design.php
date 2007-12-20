@@ -120,10 +120,10 @@ class LC_Page_Admin_Design extends LC_Page {
             $page_id = $_POST['page_id'];
             if ($_POST['mode'] == 'preview') {
                 $page_id = '0';
-            } 
+            }
             $masterData = new SC_DB_MasterData_Ex();
             $arrTarget = $masterData->getMasterData("mtb_target");
-            
+
             // 更新用にデータを整える
             $arrUpdBlocData = array();
             $arrTargetFlip = array_flip($arrTarget);
@@ -158,7 +158,7 @@ class LC_Page_Admin_Design extends LC_Page {
                 $bloc_row = $this->lfGetRowID($arrUpdBlocData, $val);
                 $arrUpdBlocData[$key]['bloc_row'] = $bloc_row;
                 $arrUpdBlocData[$key]['page_id']    =  $page_id;    // ページID
-                
+
                 /*
                 ターゲットID 1:レフトナビ 2:ライトナビ 3:イン画面上部 4:メイン画面下部 5:欄外
                 */
@@ -430,10 +430,10 @@ class LC_Page_Admin_Design extends LC_Page {
         $ret = "";                      // データ更新結果格納用
         $arrUpdData = array();          // 更新データ生成用
         $filename = $arrPageData[0]['filename'];
-        
+
         $arrPreData = $objLayout->lfgetPageData(" page_id = ? " , array("0"));
 
-        // tplファイルの削除
+        // XXX tplファイルの削除
         $del_tpl = USER_PATH . "templates/" . $filename . '.tpl';
 
         if (file_exists($del_tpl)){
@@ -445,11 +445,17 @@ class LC_Page_Admin_Design extends LC_Page {
         // filename が空の場合にはMYページと判断
         if($filename == ""){
             $tplfile = TEMPLATE_DIR . "mypage/index";
+            $filename = 'mypage';
         }
 
         // プレビュー用tplファイルのコピー
-        copy($tplfile . ".tpl", USER_PATH . "templates/"
-             . TEMPLATE_NAME . "/" . $filename . ".tpl");
+        $copyTo = USER_PATH . "templates/preview/" . TEMPLATE_NAME . "/" . $filename . ".tpl";
+
+        if (!is_dir(dirname($copyTo))) {
+            mkdir(dirname($copyTo));
+        }
+
+        copy($tplfile . ".tpl", $copyTo);
 
         // 更新データの取得
         $sql = "select page_name, header_chk, footer_chk from dtb_pagelayout where page_id = ?";
