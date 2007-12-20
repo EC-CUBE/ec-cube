@@ -462,7 +462,7 @@ function sfPaygentResponse($telegram_kind, $objPaygent, $uniqid, $arrInput) {
 	// コンビニ決済の場合
 	case PAYGENT_CONVENI:
 		// タイトルを設定する
-		$arrMemo['title'] = sfSetConvMSG("コンビニお支払情報", true);
+		$arrMemo['title'] = sfSetConvMSG("コンビニお支払", true);
 		// 決済ベンダ受付番号（コンビニによって名称が異なる）
 		switch ($arrInput['cvs_company_id']) {
 		// セブンイレブン
@@ -520,7 +520,7 @@ function sfPaygentResponse($telegram_kind, $objPaygent, $uniqid, $arrInput) {
 	// ATM決済の場合
 	case PAYGENT_ATM:
 		// タイトルを設定する
-		$arrMemo['title'] = sfSetConvMSG("ATMお支払情報", true);	
+		$arrMemo['title'] = sfSetConvMSG("ATMお支払", true);	
 		$arrMemo['pay_center_number'] = sfSetConvMSG("収納機関番号", $arrRes[0]['pay_center_number']);
 		$arrMemo['customer_number'] = sfSetConvMSG("お客様番号", $arrRes[0]['customer_number']);
 		$arrMemo['conf_number'] = sfSetConvMSG("確認番号", $arrRes[0]['conf_number']);
