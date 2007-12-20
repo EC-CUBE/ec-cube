@@ -95,9 +95,7 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
 						<!--{if $arrErr.page_id_err != ""}-->
 						<table width="678" border="0" cellspacing="1" cellpadding="5" summary=" ">
 							<tr>
-								<td bgcolor="#ffffff" align="center" class="fs14">
-									<span class="red"><strong><!--{$arrErr.page_id_err}--></strong></span>
-								</td>
+								<td bgcolor="#ffffff" align="center" class="fs12st red"><!--{$arrErr.page_id_err}--></td>
 							</tr>
 						</table>
 						<!--{/if}-->
