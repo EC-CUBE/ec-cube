@@ -24,13 +24,6 @@
 // {{{ requires
 require_once(CLASS_PATH . "pages/LC_Page.php");
 
-// SC_SendMailの拡張
-if(file_exists(MODULE2_PATH . "module_inc.php")) {
-    require_once(MODULE2_PATH . "module_inc.php");
-} else {
-    require_once(CLASS_EX_PATH . "SC_SendMail_Ex.php");
-}
-
 /**
  * メール配信履歴 のページクラス.
  *
@@ -39,7 +32,8 @@ if(file_exists(MODULE2_PATH . "module_inc.php")) {
  * @version $Id$
  */
 class LC_Page_Admin_Mail_Sendmail extends LC_Page {
-
+    
+	var $objMail;
     // }}}
     // {{{ functions
 
@@ -49,6 +43,15 @@ class LC_Page_Admin_Mail_Sendmail extends LC_Page {
      * @return void
      */
     function init() {
+    	 // SC_SendMailの拡張
+	    if(file_exists(MODULE_PATH . "mdl_speedmail/SC_SpeedMail.php")) {
+	        require_once(MODULE_PATH . "mdl_speedmail/SC_SpeedMail.php");
+	        // SpeedMail対応
+	        $this->objMail = new SC_SpeedMail();
+	    } else {
+	        $this->objMail = new SC_SendMail_Ex();
+	    }
+    	
         parent::init();
     }
 
@@ -105,7 +108,6 @@ class LC_Page_Admin_Mail_Sendmail extends LC_Page {
 
         //---- 送信結果フラグ用SQL
         $sql_flag ="UPDATE dtb_send_customer SET send_flag = ? WHERE send_id = ? AND customer_id = ?";
-        $objMail = new SC_SendMail_Ex();
 
         //----　メール生成と送信
         for( $i = 0; $i < $count; $i++ ) {
@@ -125,7 +127,7 @@ class LC_Page_Admin_Mail_Sendmail extends LC_Page {
                 $subjectBody = ereg_replace( "{name}", $customerName , $mail_data[$i][0]["subject"] );
                 $mailBody = ereg_replace( "{name}", $customerName ,  $mail_data[$i][0]["body"] );
 
-                $objMail->setItem(
+                $this->objMail->setItem(
                                                 $list_data[$i][$j]["email"]
                                                ,$subjectBody
                                                ,$mailBody
@@ -138,10 +140,10 @@ class LC_Page_Admin_Mail_Sendmail extends LC_Page {
 
                 //-- テキストメール配信の場合
                 if( $mail_data[$i][0]["mail_method"] == 2 ) {
-                    $sendResut = $objMail->sendMail();
+                    $sendResut = $this->objMail->sendMail();
                 //--  HTMLメール配信の場合
                 } else {
-                    $sendResut = $objMail->sendHtmlMail();
+                    $sendResut = $this->objMail->sendHtmlMail();
                 }
 
                 //-- 送信完了なら1、失敗なら-1をメール送信結果フラグとしてDBに挿入
@@ -164,15 +166,15 @@ class LC_Page_Admin_Mail_Sendmail extends LC_Page {
             //---　送信完了　報告メール
             $compSubject =  date("Y年m月d日H時i分" . "  下記メールの配信が完了しました。" );
             // 管理者宛に変更
-            $objMail->setTo($objSite->data["email03"]);
-            $objMail->setSubject($compSubject);
+            $this->objMail->setTo($objSite->data["email03"]);
+            $this->objMail->setSubject($compSubject);
 
             //-- テキストメール配信の場合
             if( $mail_data[$i][0]["mail_method"] == 2 ) {
-                $sendResut = $objMail->sendMail();
+                $sendResut = $this->objMail->sendMail();
             //--  HTMLメール配信の場合
             } else {
-                $sendResut = $objMail->sendHtmlMail();
+                $sendResut = $this->objMail->sendHtmlMail();
             }
         }
         if ($_GET['mode'] = "now") {
