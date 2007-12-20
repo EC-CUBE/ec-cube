@@ -21,7 +21,9 @@
  *}-->
 <body onload="preLoadImg('<!--{$smarty.const.URL_DIR}-->'); <!--{$tpl_onload}-->">
 <!--{* A8タグ表示用 *}-->
-<!--{$tpl_conv_page|sfPrintA8Tag:$tpl_aff_option}-->
+<!--{if "sfPrintA8Tag"|function_exists === TRUE}-->
+<!--{include file=`$smarty.const.MODULE_PATH`mdl_a8/print_a8_tag.tpl}-->
+<!--{/if}-->
 
 <!--{$GLOBAL_ERR}-->
 <noscript>
