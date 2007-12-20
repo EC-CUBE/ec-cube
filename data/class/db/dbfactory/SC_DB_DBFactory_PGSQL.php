@@ -152,5 +152,16 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
         $arrColList = SC_Utils_Ex::sfswaparray($arrColList, false);
         return $arrColList[0];
     }
+    
+    
+    /**
+     * 文字コード情報を取得する
+     * 
+     * @return array 文字コード情報
+     */
+     function getCharSet() {
+     	// 未実装
+     	return array();
+     }
 }
 ?>

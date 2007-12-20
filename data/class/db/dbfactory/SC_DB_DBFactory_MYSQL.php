@@ -68,7 +68,18 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
         $sql = $this->sfChangeRANDOM($sql);
         return $sql;
     }
-
+    
+    /**
+     * 文字コード情報を取得する
+     * 
+     * @return array 文字コード情報
+     */
+     function getCharSet() {
+     	$objQuery = new SC_Query();
+     	$arrRet = $objQuery->getAll("SHOW VARIABLES LIKE 'char%'");
+     	return $arrRet;
+     }
+    
     /**
      * テーブルの存在チェックを行う SQL 文を返す.
      *

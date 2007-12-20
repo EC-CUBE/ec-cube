@@ -1913,6 +1913,31 @@ class SC_Utils {
 
         return $str;
     }
+    
+   /**
+     * 配列をテーブルタグで出力する。
+     * 
+     * @return string
+     */
+    function getTableTag($array) {
+        $html = "<table>";
+        $html.= "<tr>";
+        foreach($array[0] as $key => $val) {
+            $html.="<th>$key</th>";
+        }
+        $html.= "</tr>";
+        
+        $cnt = count($array);
+        
+        for($i = 0; $i < $cnt; $i++) {
+            $html.= "<tr>";       	
+        	foreach($array[$i] as $val) {
+                $html.="<td>$val</td>";
+            }
+            $html.= "</tr>";
+        }
+        return $html;
+    }
 
     /**
      * 出力バッファをフラッシュし, バッファリングを開始する.
