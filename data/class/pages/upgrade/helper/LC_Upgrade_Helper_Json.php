@@ -73,4 +73,22 @@ class LC_Upgrade_Helper_Json extends Services_JSON {
         header("Content-Type: text/javascript; charset=UTF-8");
         echo $this->encode($this->arrData);
     }
+
+    /**
+     * JSONデータをデコードする.
+     *
+     * php5.2.0からpreg_match関数に渡せるデータ長に制限がある(?)ため,
+     * Services_JSONが正常に動作しなくなる.
+     * そのため5.2.0以上の場合は組み込み関数のjson_decode()を使用する.
+     *
+     * @param string $str
+     * @return StdClass
+     */
+    function decode($str) {
+        if (version_compare(phpversion(), '5.2.0', '>=')) {
+            return json_decode($str);
+        }
+
+        return parent::decode($str);
+    }
 }
