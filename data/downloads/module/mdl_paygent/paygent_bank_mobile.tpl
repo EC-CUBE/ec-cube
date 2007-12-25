@@ -23,8 +23,8 @@
 <!--{assign var=key2 value="customer_name"}-->
 <font color="#ff0000"><!--{$arrErr[$key1]}--></font>
 <font color="#ff0000"><!--{$arrErr[$key2]}--></font>
-姓<input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|escape}-->" maxlength="<!--{$arrForm[$key1].length}-->" istyle="1" size="15"><br>
-名<input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|escape}-->" maxlength="<!--{$arrForm[$key2].length}-->" istyle="1" size="15">
+姓<input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|escape}-->" istyle="1" size="15"><br>
+名<input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|escape}-->" istyle="1" size="15">
 <br><br>
 
 利用者(カナ)<br>
@@ -33,8 +33,8 @@
 <!--{assign var=key2 value="customer_name_kana"}-->
 <font color="#ff0000"><!--{$arrErr[$key1]}--></font>
 <font color="#ff0000"><!--{$arrErr[$key2]}--></font>
-セイ<input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|escape}-->" maxlength="<!--{$arrForm[$key1].length}-->" istyle="2" size="15"><br>
-メイ<input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|escape}-->" maxlength="<!--{$arrForm[$key2].length}-->" istyle="2" size="15">
+セイ<input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|escape}-->" istyle="2" size="15"><br>
+メイ<input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|escape}-->" istyle="2" size="15">
 <br><br>
 
 <br>

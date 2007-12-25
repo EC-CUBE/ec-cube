@@ -63,8 +63,8 @@
 <!--{assign var=key1 value="card_name02"}-->								
 <font color="#ff0000"><!--{$arrErr[$key1]}--></font>
 <font color="#ff0000"><!--{$arrErr[$key2]}--></font>
-Ì¾<input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|escape}-->" maxlength="<!--{$arrForm[$key1].length}-->" istyle="3" size="15"><br>
-À«<input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|escape}-->" maxlength="<!--{$arrForm[$key2].length}-->" istyle="3" size="15">
+Ì¾<input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|escape}-->" istyle="3" size="15"><br>
+À«<input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|escape}-->" istyle="3" size="15">
 <br><br>
 
 <br>

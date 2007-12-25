@@ -121,8 +121,8 @@ $arrPaymentClass = array(
 
 // 文字入力制限（byte）
 define ("PAYGENT_BANK_STEXT_LEN", "12");	// ATM，銀行ネットの利用者名（漢字，カナ）
-define ("PAYGENT_CONVENI_STEXT_LEN", "14");	// コンビニの利用者名（漢字）
-define ("PAYGENT_CONVENI_MTEXT_LEN", "20");	// コンビニの利用者名（カナ）
+define ("PAYGENT_CONVENI_STEXT_LEN", "14");	// コンビニの利用者名（カナ）
+define ("PAYGENT_CONVENI_MTEXT_LEN", "20");	// コンビニの利用者名（漢字）
 
 //====================================================================================
 
@@ -510,7 +510,11 @@ function sfPaygentResponse($telegram_kind, $objPaygent, $uniqid, $arrInput) {
 		// 支払期日
 		$arrMemo['payment_limit_date'] = sfSetConvMSG("お支払期日", date("Y年m月d日", strtotime($arrRes[0]['payment_limit_date'])));
 		// ヘルプ画面
-		$arrMemo['help_url'] = sfSetConvMSG("お支払方法の説明", "http://www.paygent.co.jp/service/pay_cvs.html"); 
+		if (GC_MobileUserAgent::isMobile()) {
+			$arrMemo['help_url'] = sfSetConvMSG("お支払方法の説明", "http://www.paygent.co.jp/mb/pay_help/conv.html");
+		} else {
+			$arrMemo['help_url'] = sfSetConvMSG("お支払方法の説明", "http://www.paygent.co.jp/service/pay_cvs.html");
+		} 
 				
 		// 受注テーブルに保存
 		$arrVal["memo02"] = serialize($arrMemo);
@@ -527,7 +531,11 @@ function sfPaygentResponse($telegram_kind, $objPaygent, $uniqid, $arrInput) {
 		// 支払期日
 		$arrMemo['payment_limit_date'] = sfSetConvMSG("お支払期日", date("Y年m月d日", strtotime($arrRes[0]['payment_limit_date'])));
 		// ヘルプ画面
-		$arrMemo['help_url'] = sfSetConvMSG("お支払方法の説明", "http://www.paygent.co.jp/service/pay_atm.html"); 
+		if (GC_MobileUserAgent::isMobile()) {
+			$arrMemo['help_url'] = sfSetConvMSG("お支払方法の説明", "http://www.paygent.co.jp/mb/pay_help/atm.html");
+		} else {
+			$arrMemo['help_url'] = sfSetConvMSG("お支払方法の説明", "http://www.paygent.co.jp/service/pay_atm.html");
+		}
 		
 		// 受注テーブルに保存
 		$arrVal["memo02"] = serialize($arrMemo);
