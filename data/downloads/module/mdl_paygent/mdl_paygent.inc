@@ -715,52 +715,55 @@ function sfUpdatePaymentStatus($objPaygent, $arrSend) {
 	$i = 0;
 	while($i < 1000) {
 		$arrRet = sfGetPaymentStatus($objPaygent, $arrSend);
-		
-		// 取得成功
-		if($arrRet['success_code'] == '0') {
-			// 未取得決済通知IDの保持
-			if($arrRet['payment_notice_id'] > $notice_id + 1) {
-				for($notice_id++; $notice_id < $arrRet['payment_notice_id']; $notice_id++) {
-					$arrErrId[] = $notice_id;
-					gfPrintLog("決済通知ID=". $notice_id. "が欠番です。");
+		if ($arrRet['result'] == 0) {
+			// 取得成功
+			if($arrRet['success_code'] == '0') {
+				// 未取得決済通知IDの保持
+				if($arrRet['payment_notice_id'] > $notice_id + 1) {
+					for($notice_id++; $notice_id < $arrRet['payment_notice_id']; $notice_id++) {
+						$arrErrId[] = $notice_id;
+						gfPrintLog("決済通知ID=". $notice_id. "が欠番です。");
+					}
 				}
+				$notice_id = $arrRet['payment_notice_id'];
+				sfUpdatePaygentOrder($objQuery, $arrRet);
+			// 取得完了
+			} elseif($arrRet['success_code'] == '1') {
+				gfPrintLog("差分の取得が終了しました。");
+				break;
+			// 取得失敗
+			} elseif($arrRet['payment_notice_id'] == "") {
+				$notice_id++;
+				$arrErrId[] = $notice_id;
+				gfPrintLog("決済通知ID=". $notice_id. "が欠番です。");
 			}
-			$notice_id = $arrRet['payment_notice_id'];
-			sfUpdatePaygentOrder($objQuery, $arrRet);
-		
-		// 取得完了
-		} elseif($arrRet['success_code'] == '1') {
-			gfPrintLog("差分の取得が終了しました。");
+		} else {
+			gfPrintLog("差分照会が異常終了しました。");
 			break;
-		
-		// 取得失敗
-		} elseif($arrRet['payment_notice_id'] == "") {
-			$notice_id++;
-			$arrErrId[] = $notice_id;
-			gfPrintLog("決済通知ID=". $notice_id. "が欠番です。");
 		}
-		
 		$i++;
 	}
 	
 	// 取得失敗ステータスの再取得
 	for ($i = 0; $i < count($arrErrId); $i++) {
 		$arrRet = sfGetPaymentStatus($objPaygent, $arrSend, $arrErrId[$i]);
-		
-		// 再取得成功
-		if($arrRet['success_code'] == '0') {
-			sfUpdatePaygentOrder($objQuery, $arrRet);
-		
-		// 再取得失敗
-		} elseif($arrRet['payment_notice_id'] == "") {
-			gfPrintLog("決済通知ID=". $arrErrId[$i]. "の再取得に失敗しました。バッチを強制終了します。");
-			$err_flg = false;
+		if ($arrRet['result'] == 0) {
+			// 再取得成功
+			if($arrRet['success_code'] == '0') {
+				sfUpdatePaygentOrder($objQuery, $arrRet);
+			// 再取得失敗
+			} elseif($arrRet['payment_notice_id'] == "") {
+				gfPrintLog("決済通知ID=". $arrErrId[$i]. "の再取得に失敗しました。バッチを強制終了します。");
+				$err_flg = false;
+				break;
+			}
+			// 再取得完了
+			if($i == count($arrErrId) - 1) {
+				gfPrintLog("差分の再取得が終了しました。");
+			}
+		} else {
+			gfPrintLog("差分照会（リトライ）が異常終了しました。");
 			break;
-		}
-		
-		// 再取得完了
-		if($i == count($arrErrId) - 1) {
-			gfPrintLog("差分の再取得が終了しました。");
 		}
 	}
 	
@@ -798,6 +801,8 @@ function sfGetPaymentStatus($objPaygent, $arrSend, $notice_id = "") {
 		# データが存在する限り、取得
 		$arrRes[] = $objPaygent->resNext(); # 要求結果取得
 	}
+	
+	$arrRes[0]['result'] = $objPaygent->getResultStatus(); # 処理結果 0=正常終了, 1=異常終了
 	
 	foreach($arrRes[0] as $key => $val) {
 		// Shift-JISで応答があるので、エンコードする。
