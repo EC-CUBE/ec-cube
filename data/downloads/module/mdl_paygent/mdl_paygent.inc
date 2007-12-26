@@ -763,6 +763,7 @@ function sfUpdatePaymentStatus($objPaygent, $arrSend) {
 			}
 		} else {
 			gfPrintLog("差分照会（リトライ）が異常終了しました。");
+			$err_flg = false;
 			break;
 		}
 	}
