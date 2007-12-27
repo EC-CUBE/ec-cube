@@ -126,7 +126,7 @@ class SC_UploadFile {
             if ($val == $keyname) {
                 // 一時ファイルの場合削除する。
                 if($this->temp_file[$cnt] != "") {
-                    $objImage->deleteImage($this->temp_file[$cnt], $this->save_dir);
+                    $objImage->deleteImage($this->temp_file[$cnt], $this->temp_dir);
                 }
                 $this->temp_file[$cnt] = "";
                 $this->save_file[$cnt] = "";
