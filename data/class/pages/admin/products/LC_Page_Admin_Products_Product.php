@@ -169,7 +169,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         case 'complete':
             $this->tpl_mainpage = 'products/complete.tpl';
 
-            $this->tpl_product_id = $this->lfRegistProduct($_POST);		// データ登録
+            $this->arrFrom['product_id'] = $this->lfRegistProduct($_POST);		// データ登録
 
             // 件数カウントバッチ実行
             $objDb->sfCategory_Count($objQuery);
@@ -687,10 +687,8 @@ class LC_Page_Admin_Products_Product extends LC_Page {
 
             if($forced) $this->objUpFile->save_file[$arrImageKey[$to_key]] = "";
 
-            if((isset($this->objUpFile->temp_file[$arrImageKey[$to_key]])
-                   && $this->objUpFile->temp_file[$arrImageKey[$to_key]] == ""
-                and isset($this->objUpFile->save_file[$arrImageKey[$to_key]])
-                       && $this->objUpFile->save_file[$arrImageKey[$to_key]] == "")) {
+            if(empty($this->objUpFile->temp_file[$arrImageKey[$to_key]]) && 
+               empty($this->objUpFile->save_file[$arrImageKey[$to_key]])) {
 
                 $path = $this->objUpFile->makeThumb($from_path, $to_w, $to_h);
                 $this->objUpFile->temp_file[$arrImageKey[$to_key]] = basename($path);
