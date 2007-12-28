@@ -207,6 +207,12 @@
 									<!--{/if}-->
 									</td>
 								</tr>
+								
+								<!--{* オペビルダー用 *}-->
+								<!--{if "sfViewAdminOpe"|function_exists === TRUE}-->
+								<!--{include file=`$smarty.const.MODULE_PATH`mdl_opebuilder/admin_ope_view.tpl}-->
+								<!--{/if}-->
+								
 								<!--{section name=cnt loop=$smarty.const.PRODUCTSUB_MAX}-->
 								<!--▼商品<!--{$smarty.section.cnt.iteration}-->-->
 								<tr>

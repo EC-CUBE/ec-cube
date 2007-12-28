@@ -307,7 +307,12 @@ function selectAll(target) {
 									</tr>		
 									*}-->
 								</table>
-
+								
+								<!--{* オペビルダー用 *}-->
+								<!--{if "sfViewAdminOpe"|function_exists === TRUE}-->
+								<!--{include file=`$smarty.const.MODULE_PATH`mdl_opebuilder/admin_ope_view.tpl}-->
+								<!--{/if}-->
+								
 								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr height="36" align="center">
 										<td bgcolor="#cccccc"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="1" height="10" alt=""></td>

@@ -50,7 +50,7 @@
 							<tr class="fs12" >
 								<td height="150" bgcolor="#ffffff" class="fs18n" align="center">登録が完了致しました。<br /> <br /> <br />
 								<a href="./product.php">→続けて登録を行う</a><br /> <br /> <br />
-								<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('pre_edit', 'product_id', '<!--{$tpl_product_id}-->'); return false;">→この商品の規格を登録する</a></td>
+								<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('pre_edit', 'product_id', '<!--{$arrForm.product_id}-->'); return false;">→この商品の規格を登録する</a></td>
 							</tr>
 						</table>
 						<!--完了メッセージテーブルここまで-->
@@ -70,4 +70,9 @@
 	</tr>
 </form>
 </table>
-<!--★★メインコンテンツ★★-->		
+<!--★★メインコンテンツ★★-->
+
+<!--{* オペビルダー用 *}-->
+<!--{if "sfViewAdminOpe"|function_exists === TRUE}-->
+<!--{include file=`$smarty.const.MODULE_PATH`mdl_opebuilder/admin_ope_view.tpl}-->
+<!--{/if}-->
