@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package packagerversion="1.6.0" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
+ <name>SOAP</name>
+ <channel>pear.php.net</channel>
+ <summary>SOAP Client/Server for PHP</summary>
+ <description>Implementation of SOAP protocol and services</description>
+ <lead>
+  <name>Jan Schneider</name>
+  <user>yunosh</user>
+  <email>jan@horde.org</email>
+  <active>yes</active>
+ </lead>
+ <lead>
+  <name>Chuck Hagenbuch</name>
+  <user>chagenbu</user>
+  <email>chuck@horde.org</email>
+  <active>no</active>
+ </lead>
+ <lead>
+  <name>Shane Caraveo</name>
+  <user>shane</user>
+  <email>shane@php.net</email>
+  <active>no</active>
+ </lead>
+ <lead>
+  <name>Al Baker</name>
+  <user>abaker</user>
+  <email>abaker@php.net</email>
+  <active>no</active>
+ </lead>
+ <lead>
+  <name>Arnaud Limbourg</name>
+  <user>arnaud</user>
+  <email>arnaud@php.net</email>
+  <active>no</active>
+ </lead>
+ <date>2007-06-29</date>
+ <time>17:11:23</time>
+ <version>
+  <release>0.11.0</release>
+  <api>0.11.0</api>
+ </version>
+ <stability>
+  <release>beta</release>
+  <api>beta</api>
+ </stability>
+ <license uri="http://www.php.net/license">PHP License</license>
+ <notes>* Remove SOAP_RAW_CONVERT and SOAP_OBJECT_STRUCT settings.
+* Don&apos;t decode base64 encoded data automatically to be consistent with other encodings like hexBinary that aren&apos;t decoded either (Bug #9840).
+* Always close HTTP connections on requests to avoid keep-alive request (Maik Greubel, Bug #11123).
+* Fix serializing of arrays (Bugs #10283, #10635).
+* Fix MIME type quoting when using MIME attachments (Bug #10023).
+* Fix values of multiple arrays in result object being dismissed on SOAP to PHP-object conversion (Christian Weiske, Bug #2627).
+* Fix wrong Content-Type header on HTTPS requests (Christian Weiske, Bug #6213).
+* Fix empty arrays in SOAP responses being converted to empty string instead of empty array (Christian Weiske, Bug #10131).
+* Fix timezones in Type/dateTime.php not being converted correctly (Christian Weiske, Bug #10206).</notes>
+ <contents>
+  <dir baseinstalldir="SOAP" name="/">
+   <file baseinstalldir="SOAP" md5sum="9559e379c3becea8aeee54b914423854" name="example/attachment.php" role="doc" />
+   <file baseinstalldir="SOAP" md5sum="b020797e29e8e64376c0c07ef75e0213" name="example/client.php" role="doc" />
+   <file baseinstalldir="SOAP" md5sum="fc8a7de5818fc0c90793fde12ca0ca63" name="example/com_client.php" role="doc" />
+   <file baseinstalldir="SOAP" md5sum="2b413f1e68aab19fbb75fdc5f8b9c0e8" name="example/disco_server.php" role="doc" />
+   <file baseinstalldir="SOAP" md5sum="a9c530db7dd292c74c4e52d74b703e4e" name="example/email_client.php" role="doc" />
+   <file baseinstalldir="SOAP" md5sum="9c5f82116808ff9bf712dd1e8b1926ad" name="example/email_gateway.php" role="doc" />
+   <file baseinstalldir="SOAP" md5sum="bd8bdced809cfce44a6a2b3c2fd0e7ee" name="example/email_pop_gateway.php" role="doc" />
+   <file baseinstalldir="SOAP" md5sum="feb3535b72a820095e71794784bef51a" name="example/email_pop_server.php" role="doc" />
+   <file baseinstalldir="SOAP" md5sum="3c3b91a5833b265803efc1f13be8bb25" name="example/email_server.php" role="doc" />
+   <file baseinstalldir="SOAP" md5sum="5e0a9c93d55bab8ca49a3618b7745e99" name="example/example_server.php" role="doc" />
+   <file baseinstalldir="SOAP" md5sum="6b209f62024135e5939a34d6c08f3c14" name="example/example_types.php" role="doc" />
+   <file baseinstalldir="SOAP" md5sum="0c5fe107da15351c51d458b4d11704cc" name="example/server.php" role="doc" />
+   <file baseinstalldir="SOAP" md5sum="f43e9c93d8f3dcc4c8db335add85052c" name="example/server2.php" role="doc" />
+   <file baseinstalldir="SOAP" md5sum="dad27403ba186d6f28588b690b695d34" name="example/smtp.php" role="doc" />
+   <file baseinstalldir="SOAP" md5sum="58d8c6715bc962a7cb2f6485a38a6294" name="example/stockquote.php" role="doc" />
+   <file baseinstalldir="SOAP" md5sum="9170adaf7ac611d5592636d1cb3ba020" name="example/tcp_client.php" role="doc" />
+   <file baseinstalldir="SOAP" md5sum="ccc9acb5b161dd84ccec6d19a5579b59" name="example/tcp_daemon.pl" role="doc" />
+   <file baseinstalldir="SOAP" md5sum="e5d8dc13139bcb5951aad270b37dd515" name="example/tcp_server.php" role="doc" />
+   <file baseinstalldir="SOAP" md5sum="33c0068eaa6f21f209b8c93525824642" name="example/wsdl_client.php" role="doc" />
+   <file baseinstalldir="SOAP" md5sum="43b5245ae178f28c3dc78f3cff584299" name="Server/Email.php" role="php" />
+   <file baseinstalldir="SOAP" md5sum="506481286f6a94aaa6d592249bb6fe4e" name="Server/Email_Gateway.php" role="php" />
+   <file baseinstalldir="SOAP" md5sum="b8424ce597eb3eaee849a1ae951a36c0" name="Server/TCP.php" role="php" />
+   <file baseinstalldir="SOAP" md5sum="1c525226171b9b99966b4ed3eb7373f8" name="tools/genproxy.php" role="php" />
+   <file baseinstalldir="SOAP" md5sum="bacf397ba0e1569f542b72cb7c152cc3" name="Transport/HTTP.php" role="php" />
+   <file baseinstalldir="SOAP" md5sum="5a20d622c55bbf2e6304abb93bed34c7" name="Transport/SMTP.php" role="php" />
+   <file baseinstalldir="SOAP" md5sum="18b2224fe5c4ca3bc679d0d5d2601fe7" name="Transport/TCP.php" role="php" />
+   <file baseinstalldir="SOAP" md5sum="75bf753d4cceb4a16a9d0c40ee3f6dcf" name="Type/dateTime.php" role="php" />
+   <file baseinstalldir="SOAP" md5sum="57f91357f69e236ada838a2c7de35c70" name="Type/duration.php" role="php" />
+   <file baseinstalldir="SOAP" md5sum="16796001ac468d58c537dde94113bf12" name="Type/hexBinary.php" role="php" />
+   <file baseinstalldir="SOAP" md5sum="de2892f3c51856a37372127e9fd14617" name="Base.php" role="php">
+    <tasks:replace from="@version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="SOAP" md5sum="75299ff975d014ff037cac43d97d0796" name="Client.php" role="php" />
+   <file baseinstalldir="SOAP" md5sum="bca057623598956b278b4077571f7805" name="Disco.php" role="php" />
+   <file baseinstalldir="SOAP" md5sum="37309521cf2ec329d8ccfe6644ae8d8e" name="Fault.php" role="php" />
+   <file baseinstalldir="SOAP" md5sum="19bdf70d5f921b8cc85c8063a5541c43" name="Parser.php" role="php" />
+   <file baseinstalldir="SOAP" md5sum="27e6e319d92d9fa0aa1d1432f7f16c5d" name="Server.php" role="php" />
+   <file baseinstalldir="SOAP" md5sum="fa7376f1c015da685a6534f9cd483d6c" name="Transport.php" role="php" />
+   <file baseinstalldir="SOAP" md5sum="d3cfdea9ee3d97736fe3c881bc498f2d" name="Value.php" role="php" />
+   <file baseinstalldir="SOAP" md5sum="62a9ddff55d489dc2943d35a47421e6d" name="WSDL.php" role="php" />
+  </dir>
+ </contents>
+ <compatible>
+  <name>Services_Weather</name>
+  <channel>pear.php.net</channel>
+  <min>1.4.0</min>
+  <max>1.4.0</max>
+ </compatible>
+ <dependencies>
+  <required>
+   <php>
+    <min>4.3</min>
+   </php>
+   <pearinstaller>
+    <min>1.4.0b1</min>
+   </pearinstaller>
+   <package>
+    <name>PEAR</name>
+    <channel>pear.php.net</channel>
+   </package>
+   <package>
+    <name>HTTP_Request</name>
+    <channel>pear.php.net</channel>
+   </package>
+  </required>
+  <optional>
+   <package>
+    <name>Mail</name>
+    <channel>pear.php.net</channel>
+   </package>
+   <package>
+    <name>Mail_Mime</name>
+    <channel>pear.php.net</channel>
+   </package>
+   <package>
+    <name>Net_DIME</name>
+    <channel>pear.php.net</channel>
+   </package>
+  </optional>
+ </dependencies>
+ <phprelease />
+</package>
