@@ -123,6 +123,7 @@ function updateModuleTable($arrProductsList) {
             $objQuery->update($table, $arrUpdate, $where, array($arrProduct['product_id']));
         } else {
             $arrInsert = array(
+                'module_id'   => $arrProduct['product_id'],
                 'module_code' => $arrProduct['code'],
                 'module_name' => $arrProduct['name'],
                 'auto_update_flg' => '0',
