@@ -85,9 +85,9 @@ function sfPostPaymentData($arrData, $arrInput, $quick_charge = false){
 		$objQuery->setlimit(1);
 		$objQuery->setorder("create_date DESC");
 		$col = "order_id, order_tel01, order_tel02, order_tel03";
-		$where = "memo01 = ? AND memo03 = ? AND customer_id = ? AND del_flg = 0";
+		$where = "memo01 = ? AND memo03 = ? AND memo04 is NULL AND customer_id = ? AND del_flg = 0";
 		$arrRet = $objQuery->select($col, "dtb_order", $where, array(MDL_ZEUS_ID, 'Success_order', $arrData['customer_id']));
-		 
+		
 		// 過去の注文があり、顧客登録されている。
 		if(count($arrRet) > 0 && $arrData['customer_id'] > 0) {
            $arrPost = array(
@@ -105,6 +105,7 @@ function sfPostPaymentData($arrData, $arrInput, $quick_charge = false){
 	            'entry' => 'non',
 	            'pubsec' => 'yes'
 	        );
+	        $arrVal["memo04"] = 'quick_charge:' . $arrRet[0]['order_id'];        // 処理結果
 		} else {
 		    // ダミーのPost値を生成する。
 		    $arrPost = array(
@@ -122,6 +123,7 @@ function sfPostPaymentData($arrData, $arrInput, $quick_charge = false){
                 'entry' => 'non',
                 'pubsec' => 'yes'
             );
+            $arrVal["memo04"] = 'quick_charge:0';        // 処理結果
 		    gfPrintLog("過去の注文がないか、会員IDがありません。");
 		}
 	}
@@ -129,6 +131,11 @@ function sfPostPaymentData($arrData, $arrInput, $quick_charge = false){
 	$req = new HTTP_Request(SECURE_LINK_URL);
 	$req->setMethod(HTTP_REQUEST_METHOD_POST);
 	$req->addPostDataArray($arrPost);
+	
+	// カード番号を削除してログを残す。
+	$arrTemp = $arrPost;
+	$arrTemp['cardnumber'] = '****************';
+	gfDebugLog($arrTemp);
 	
 	if (!PEAR::isError($req->sendRequest())) {
 	    $response = $req->getResponseBody();
@@ -140,6 +147,8 @@ function sfPostPaymentData($arrData, $arrInput, $quick_charge = false){
 	// 受注テーブルに記録する
 	$arrVal["memo01"] = MDL_ZEUS_ID;	// モジュールID
 	$arrVal["memo03"] = $response;		// 処理結果
+	// ※memo04はquick_chargeで使用する。
+	
 	// 受注一時テーブルに更新
 	sfRegistTempOrder($arrData['order_temp_id'], $arrVal);
 	
