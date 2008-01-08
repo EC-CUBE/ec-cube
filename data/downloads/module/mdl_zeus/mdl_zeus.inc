@@ -79,13 +79,14 @@ function sfPostPaymentData($arrData, $arrInput, $quick_charge = false){
 			'pubsec' => '',
 			'div' => $arrInput['payment_class']
 		);
+		$arrVal["memo04"] = 'normal';
 	} else {
 		// クイックチャージを利用する場合
 		$objQuery = new SC_Query();
 		$objQuery->setlimit(1);
 		$objQuery->setorder("create_date DESC");
 		$col = "order_id, order_tel01, order_tel02, order_tel03";
-		$where = "memo01 = ? AND memo03 = ? AND memo04 is NULL AND customer_id = ? AND del_flg = 0";
+		$where = "memo01 = ? AND memo03 = ? AND memo04 is 'normal' AND customer_id = ? AND del_flg = 0";
 		$arrRet = $objQuery->select($col, "dtb_order", $where, array(MDL_ZEUS_ID, 'Success_order', $arrData['customer_id']));
 		
 		// 過去の注文があり、顧客登録されている。
