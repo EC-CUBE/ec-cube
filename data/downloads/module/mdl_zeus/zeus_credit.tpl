@@ -114,7 +114,9 @@ function fnChangeDisabled(list, disable) {
 								<td bgcolor="#cccccc">
 								<table width="666" border="0" cellspacing="1" cellpadding="10" summary=" ">
 									<tr>
-										<td class="fs12" bgcolor="#f3f3f3" align="center"><input type="submit" name="quick_check" onclick="return fnCheckSubmit();" value="前回利用したカードで注文する"></td>
+										<td class="fs12" bgcolor="#f3f3f3" align="center"><input type="submit" name="quick_check" onclick="return fnCheckSubmit();" value="前回利用したカードで注文する"><br />
+										※これまでご利用いただいた直近のカードで決済が行われます。
+										</td>
 									</tr>
 								</table>
 								</td>
