@@ -79,7 +79,7 @@ function sfPostPaymentData($arrData, $arrInput, $quick_charge = false){
 			'pubsec' => '',
 			'div' => $arrInput['payment_class']
 		);
-		$arrVal["memo04"] = 'normal';
+		$arrVal["memo04"] = 'normal_order';
 	} else {
 		// クイックチャージを利用する場合
         $arrRet = sfGetQuickChargeOrder($arrData['customer_id']);
@@ -202,7 +202,7 @@ function sfGetQuickChargeOrder($customer_id) {
     $objQuery->setlimit(1);
     $objQuery->setorder("create_date DESC");
     $col = "order_id, order_tel01, order_tel02, order_tel03";
-    $where = "memo01 = ? AND memo03 = ? AND memo04 = 'normal' AND customer_id = ? AND del_flg = 0";
+    $where = "memo01 = ? AND memo03 = ? AND memo04 = 'normal_order' AND customer_id = ? AND del_flg = 0";
     $arrRet = $objQuery->select($col, "dtb_order", $where, array(MDL_ZEUS_ID, 'Success_order', $customer_id));
     return $arrRet;
 }
