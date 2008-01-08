@@ -203,7 +203,7 @@ function sfGetQuickChargeOrder($customer_id) {
     $objQuery->setorder("create_date DESC");
     $col = "order_id, order_tel01, order_tel02, order_tel03";
     $where = "memo01 = ? AND memo03 = ? AND memo04 = 'normal' AND customer_id = ? AND del_flg = 0";
-    $arrRet = $objQuery->select($col, "dtb_order", $where, array(MDL_ZEUS_ID, 'Success_order', $arrData['customer_id']));
+    $arrRet = $objQuery->select($col, "dtb_order", $where, array(MDL_ZEUS_ID, 'Success_order', $customer_id);
     return $arrRet;
 }
 ?>
