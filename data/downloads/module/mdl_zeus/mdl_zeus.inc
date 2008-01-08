@@ -82,7 +82,7 @@ function sfPostPaymentData($arrData, $arrInput, $quick_charge = false){
 		$arrVal["memo04"] = 'normal';
 	} else {
 		// クイックチャージを利用する場合
-        $arrRet = sfGetQuickChargeOrder($customer_id);
+        $arrRet = sfGetQuickChargeOrder($arrData['customer_id']);
 		
 		// 過去の注文があり、顧客登録されている。
 		if(count($arrRet) > 0 && $arrData['customer_id'] > 0) {
