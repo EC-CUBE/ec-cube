@@ -82,12 +82,7 @@ function sfPostPaymentData($arrData, $arrInput, $quick_charge = false){
 		$arrVal["memo04"] = 'normal';
 	} else {
 		// クイックチャージを利用する場合
-		$objQuery = new SC_Query();
-		$objQuery->setlimit(1);
-		$objQuery->setorder("create_date DESC");
-		$col = "order_id, order_tel01, order_tel02, order_tel03";
-		$where = "memo01 = ? AND memo03 = ? AND memo04 is 'normal' AND customer_id = ? AND del_flg = 0";
-		$arrRet = $objQuery->select($col, "dtb_order", $where, array(MDL_ZEUS_ID, 'Success_order', $arrData['customer_id']));
+        $arrRet = sfGetQuickChargeOrder($customer_id);
 		
 		// 過去の注文があり、顧客登録されている。
 		if(count($arrRet) > 0 && $arrData['customer_id'] > 0) {
@@ -187,17 +182,28 @@ function sfZeusDisp($objPage, $payment_id) {
  * 戻り値  ：取得結果
  **************************************************************************************************************/
 function sfEnableQuickCharge($customer_id) {
-    $objQuery = new SC_Query();
-    $objQuery->setlimit(1);
-    $objQuery->setorder("create_date DESC");
-    $col = "order_id, order_tel01, order_tel02, order_tel03";
-    $where = "memo01 = ? AND memo03 = ? AND customer_id = ? AND del_flg = 0";
-    $arrRet = $objQuery->select($col, "dtb_order", $where, array(MDL_ZEUS_ID, 'Success_order', $customer_id));
+    $arrRet = sfGetQuickChargeOrder($customer_id);
     if(count($arrRet) > 0 && $customer_id > 0) {
         return true;
     }
     return false;
 }
 
-
+/**************************************************************************************************************
+ * 関数名  ：sfGetQuickChargeOrder
+ * 処理内容 ：クイックチャージの使用判定
+ * 引数1  ：
+ * 引数2  ：
+ * 引数3  ：
+ * 戻り値  ：取得結果
+ **************************************************************************************************************/
+function sfGetQuickChargeOrder($customer_id) {
+    $objQuery = new SC_Query();
+    $objQuery->setlimit(1);
+    $objQuery->setorder("create_date DESC");
+    $col = "order_id, order_tel01, order_tel02, order_tel03";
+    $where = "memo01 = ? AND memo03 = ? AND memo04 = 'normal' AND customer_id = ? AND del_flg = 0";
+    $arrRet = $objQuery->select($col, "dtb_order", $where, array(MDL_ZEUS_ID, 'Success_order', $arrData['customer_id']));
+    return $arrRet;
+}
 ?>
