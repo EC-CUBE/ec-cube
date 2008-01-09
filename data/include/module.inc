@@ -120,4 +120,9 @@ if (file_exists(MODULE_PATH. "mdl_moba8/include.php") === TRUE) {
 	require_once(MODULE_PATH. "mdl_moba8/include.php");
 }
 
+/*------------- ▼オペビルダー連携 -------------*/
+if (file_exists(MODULE_PATH. "mdl_opebuilder/include.php") === TRUE) {
+	require_once(MODULE_PATH. "mdl_opebuilder/include.php");
+}
+
 ?>

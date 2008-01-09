@@ -30,7 +30,12 @@
 <!--ﾀｲﾄﾙここまで-->
 <!--詳細ここから-->
 <!--{assign var=key value="main_image"}-->
+<!--{* オペビルダー用 *}-->
+<!--{if "sfViewDetailOpe"|function_exists === TRUE}-->
+<!--{include file=`$smarty.const.MODULE_PATH`mdl_opebuilder/detail_ope_mb_view.tpl}-->
+<!--{else}-->
 <img src="<!--{$arrFile[$key].filepath}-->"><br>
+<!--{/if}-->
 <!--★詳細ﾒｲﾝｺﾒﾝﾄ★-->
 [emoji:76]<!--{$arrProduct.main_comment|nl2br}--><br>
 <br>

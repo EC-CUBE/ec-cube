@@ -103,6 +103,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         }
 
         // FORMデータの引き継ぎ
+        $this->arrForm['status'] = DEFAULT_PRODUCT_DISP;	// 公開・非公開のデフォルト値
         $this->arrForm = $_POST;
 
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
@@ -205,8 +206,6 @@ class LC_Page_Admin_Products_Product extends LC_Page {
             $this->lfProductPage();		// 商品登録ページ
             break;
         default:
-            // 公開・非公開のデフォルト値
-            $this->arrForm['status'] = DEFAULT_PRODUCT_DISP;
             $this->lfProductPage();		// 商品登録ページ
             break;
         }
