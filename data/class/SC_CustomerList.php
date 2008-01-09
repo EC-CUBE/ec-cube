@@ -324,7 +324,7 @@ class SC_CustomerList extends SC_SelectSql {
 
             //カテゴリーで絞込みが可能の場合
             if($tmp_where != "") {
-                $this->setWhere( " customer_id IN (SELECT distinct customer_id FROM dtb_order WHERE order_id IN (SELECT distinct order_id FROM dtb_order_detail WHERE product_id IN (SELECT product_id FROM dtb_products WHERE ".$tmp_where." ))) ");
+                $this->setWhere( " customer_id IN (SELECT distinct customer_id FROM dtb_order WHERE order_id IN (SELECT distinct order_id FROM dtb_order_detail WHERE product_id IN (SELECT product_id FROM dtb_product_categories WHERE ".$tmp_where." ))) ");
                 $this->arrVal = array_merge((array)$this->arrVal, (array)$tmp_arrval);
             }
         }
