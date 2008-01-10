@@ -357,7 +357,7 @@ INSERT INTO dtb_category (category_name,parent_category_id,level,rank,creator_id
 INSERT INTO dtb_category (category_name,parent_category_id,level,rank,creator_id,create_date,update_date,del_flg) VALUES ('アイス', 3, 3, 1, 2, now(), now(), 0);
 
 INSERT INTO dtb_product_categories (product_id,category_id,rank) VALUES (1,5,1);
-INSERT INTO dtb_product_categories (product_id,category_id,rank) VALUES (2,4,2);
+INSERT INTO dtb_product_categories (product_id,category_id,rank) VALUES (2,4,1);
 
 INSERT INTO dtb_category_count VALUES (4, 1, now());
 INSERT INTO dtb_category_count VALUES (5, 1, now());

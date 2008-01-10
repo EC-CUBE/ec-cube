@@ -760,16 +760,16 @@ class SC_Helper_DB {
                                     "category_id = ?",
                                     array($category_id));
 
-        $max = 0;
+        $max = "0";
         foreach ($arrCat as $val) {
             // 同一商品が存在する場合は登録しない
             if ($val["product_id"] == $product_id) {
                 return;
             }
             // 最上位ランクを取得
-            $max = ($max > $val["rank"]) ? $val["rank"] : $max;
+            $max = ($max < $val["rank"]) ? $val["rank"] : $max;
         }
-        $sqlval["rank"] = $max;
+        $sqlval["rank"] = $max + 1;
         $objQuery->insert("dtb_product_categories", $sqlval);
     }
 
@@ -1095,6 +1095,9 @@ class SC_Helper_DB {
             $up_id = $objQuery->get($table, $colname, $where, array($uprank));
             // ランク入れ替えの実行
             $sqlup = "UPDATE $table SET rank = ? WHERE $colname = ?";
+            if($andwhere != "") {
+                $sqlup.= " AND $andwhere";
+            }
             $objQuery->exec($sqlup, array($rank + 1, $id));
             $objQuery->exec($sqlup, array($rank, $up_id));
         }
@@ -1131,6 +1134,9 @@ class SC_Helper_DB {
             $down_id = $objQuery->get($table, $colname, $where, array($downrank));
             // ランク入れ替えの実行
             $sqlup = "UPDATE $table SET rank = ? WHERE $colname = ?";
+            if($andwhere != "") {
+                $sqlup.= " AND $andwhere";
+            }
             $objQuery->exec($sqlup, array($rank - 1, $id));
             $objQuery->exec($sqlup, array($rank, $down_id));
         }
