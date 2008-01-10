@@ -60,7 +60,7 @@ function lnSetSelect(form, name1, name2, val) {
     <!--{if $arrProduct.main_large_image != ""}-->
     <!--★画像★-->
       <a href="javascript:void(win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&amp;image=main_large_image<!--{if $smarty.get.admin == 'on'}-->&amp;admin=on<!--{/if}-->','detail_image','<!--{$arrFile.main_large_image.width+60}-->', '<!--{$arrFile.main_large_image.height+80}-->'))">
-        <img src="<!--{$arrFile[$key].filepath}-->" width="<!--{$smarty.const.NORMAL_IMAGE_WIDTH}-->" height="<!--{$smarty.const.NORMAL_IMAGE_HEIGHT}-->" alt="<!--{$arrProduct.name|escape}-->" class="picture" />
+        <img src="<!--{$arrFile[$key].filepath}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" alt="<!--{$arrProduct.name|escape}-->" class="picture" />
       </a>
       <p>
       <!--★拡大する★-->
@@ -69,7 +69,7 @@ function lnSetSelect(form, name1, name2, val) {
        </a>
       </p>
       <!--{else}-->
-      <img src="<!--{$arrFile[$key].filepath}-->" width="<!--{$smarty.const.NORMAL_IMAGE_WIDTH}-->" height="<!--{$smarty.const.NORMAL_IMAGE_HEIGHT}-->" alt="<!--{$arrProduct.name|escape}-->" class="picture" />
+      <img src="<!--{$arrFile[$key].filepath}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" alt="<!--{$arrProduct.name|escape}-->" class="picture" />
       <!--{/if}-->
     </div>
 
