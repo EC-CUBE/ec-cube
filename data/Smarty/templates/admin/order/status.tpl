@@ -201,7 +201,7 @@
 		}
 		
 		if(selectflag == 0 && checkflag == 1){ 
-		document.form1.mode.value = 'search';
+		document.form1.mode.value = 'move';
 		document.form1.submit(); 
 		}
 	}

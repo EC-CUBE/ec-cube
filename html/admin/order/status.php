@@ -39,58 +39,55 @@ $objPage->arrForm = $_POST;
 $objPage->arrPayment = sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
 
 switch ($_POST['mode']){
-case 'search':
+//ステータス移動
+case 'move':
     switch($_POST['change_status']){
     //新規受付
     case ORDER_NEW:
         lfStatusMove(ORDER_NEW, $_POST['move']);
         break;
-    
     //入金待ち
     case ORDER_PAY_WAIT:
         lfStatusMove(ORDER_PAY_WAIT, $_POST['move']);
         break;
-    
     //キャンセル
     case ORDER_CANCEL:
         lfStatusMove(ORDER_CANCEL, $_POST['move']);
         break;
-    
     //取り寄せ中
     case ORDER_BACK_ORDER:
         lfStatusMove(ORDER_BACK_ORDER, $_POST['move']);
         break;
-    
     //発送済み
     case ORDER_DELIV:
         lfStatusMove(ORDER_DELIV, $_POST['move']);
         break;
-    
     //入金済み
     case ORDER_PRE_END:
         lfStatusMove(ORDER_PRE_END, $_POST['move']);
         break;
-    
     //削除
     case 'delete':
         lfStatusMove("delete", $_POST['move']);
         break;
-    
     default:
         break;
     }
-    
-    //検索結果の表示
-    lfStatusDisp($_POST['status'], $_POST['search_pageno']);
-    $objPage->SelectedStatus = $_POST['status'];
     break;
-    
+
+//サブナビ検索
+case 'search':
+    break;
+
 //デフォルトで新規受付一覧表示
 default:
-    lfStatusDisp(ORDER_NEW, $_POST['search_pageno']);
-    $objPage->SelectedStatus = ORDER_NEW;
+    $_POST['status'] = ORDER_NEW;
     break;
 }
+
+//検索結果の表示
+lfStatusDisp($_POST['status'], $_POST['search_pageno']);
+$objPage->SelectedStatus = $_POST['status'];
 
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
