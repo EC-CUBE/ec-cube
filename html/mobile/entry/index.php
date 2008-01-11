@@ -262,11 +262,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             
             // 仮会員が有効の場合
 			if(CUSTOMER_CONFIRM_MAIL == true) {
+				// メールテンプレ設定
 				$subject = sfMakesubject('会員登録のご確認');
 				$toCustomerMail = $objMailText->fetch("mail_templates/customer_mail.tpl");
+			// 仮会員が無効の場合
 			} else {
+				// メールテンプレ設定
 				$subject = sfMakesubject('会員登録のご完了');
 				$toCustomerMail = $objMailText->fetch("mail_templates/customer_regist_mail.tpl");
+				// 会員登録ポイント付与
+				sfSetWelcomePoint($objPage->uniqid, $CONF);
 				// ログイン状態にする
 				$objCustomer->setLogin($_POST["email"]);
 			}

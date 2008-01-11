@@ -139,11 +139,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			
 			// 仮会員が有効の場合
 			if(CUSTOMER_CONFIRM_MAIL == true) {
+				// メールテンプレ設定
 				$subject = sfMakesubject('会員登録のご確認');
 				$toCustomerMail = $objMailText->fetch("mail_templates/customer_mail.tpl");
+			// 仮会員が無効の場合
 			} else {
+				// メールテンプレ設定
 				$subject = sfMakesubject('会員登録のご完了');
 				$toCustomerMail = $objMailText->fetch("mail_templates/customer_regist_mail.tpl");
+				// 会員登録ポイント付与
+				sfSetWelcomePoint($objPage->uniqid, $CONF);
 				// ログイン状態にする
 				$objCustomer->setLogin($_POST["email"]);
 			}
@@ -247,10 +252,7 @@ function lfRegistData ($array, $arrRegistColumn, $arrRejectRegistColumn, $confir
 	$objQuery = new SC_Query();
 	$objQuery->insert("dtb_customer", $arrRegist);
 
-
 /* メルマガ会員機能は現在停止中　2007/03/07
-
-
 	//--　非会員でメルマガ登録しているかの判定
 	$sql = "SELECT count(*) FROM dtb_customer_mail WHERE email = ?";
 	$mailResult = $objConn->getOne($sql, array($arrRegist["email"]));

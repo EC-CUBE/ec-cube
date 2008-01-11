@@ -44,14 +44,16 @@ if ($_GET["mode"] == "regist") {
 		$objPage->tpl_title = 'エラー';
 
 	} else {
-		//$objPage->tpl_mainpage = 'regist/complete.tpl';
-		//$objPage->tpl_title = ' 会員登録(完了ページ)';
-		$registSecretKey = lfRegistData($_GET);			//本会員登録（フラグ変更）
-		lfSendRegistMail($registSecretKey);				//本会員登録完了メール送信
-
+		//本会員登録（フラグ変更）
+		$registSecretKey = lfRegistData($_GET);
+		//本会員登録完了メール送信
+		lfSendRegistMail($registSecretKey);
+		// 会員登録ポイント付与
+		sfSetWelcomePoint($registSecretKey, $CONF);
 		// ログイン済みの状態にする。
 		$email = $objQuery->get("dtb_customer", "email", "secret_key = ?", array($registSecretKey));
 		$objCustomer->setLogin($email);
+		
 		header("Location: ./complete.php$etc_val");
 		exit;
 	}
@@ -89,28 +91,7 @@ function lfRegistData($array) {
 	
 	$objQuery = new SC_Query();
 	$where = "secret_key = ? AND status = 1";
-	
-	$arrRet = $objQuery->select("point", "dtb_customer", $where, array($array["id"]));
-	// 会員登録時の加算ポイント(購入時会員登録の場合は、ポイント加算）
-	$arrRegist['point'] = $arrRet[0]['point'] + addslashes($arrInfo['welcome_point']);
-	
 	$objQuery->update("dtb_customer", $arrRegist, $where, array($array["id"]));
-
-	/* 購入時の自動会員登録は行わないためDEL
-	// 購入時登録の場合、その回の購入を会員購入とみなす。
-	// 会員情報の読み込み
-	$where1 = "secret_key = ? AND status = 2";
-	$customer = $objQuery->select("*", "dtb_customer", $where1, array($secret));
-	// 初回購入情報の読み込み
-	$order_temp_id = $objQuery->get("dtb_order_temp", "order_temp_id");
-	// 購入情報の更新
-	if ($order_temp_id != null) {
-		$arrCustomer['customer_id'] = $customer[0]['customer_id'];
-		$where3 = "order_temp_id = ?";
-		$objQuery->update("dtb_order_temp", $arrCustomer, $where3, array($order_temp_id));
-		$objQuery->update("dtb_order", $arrCustomer, $where3, array($order_temp_id));
-	}
-	*/
 
 	$sql = "SELECT mailmaga_flg FROM dtb_customer WHERE email = ?";
 	$result = $objConn->getOne($sql, array($email));

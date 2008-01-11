@@ -1343,6 +1343,25 @@ function sfPrePoint($price, $point_rate, $rule = POINT_RULE, $product_id = "") {
     return $ret;
 }
 
+/* 会員登録ポイント付与 */
+function sfSetWelcomePoint($secret_key, $CONF) {
+    $objQuery = new SC_Query();
+    
+    // ポイント付与
+    $col = "point";
+    $where = "secret_key = ? AND status = 2";
+    $arrRet = $objQuery->select($col, "dtb_customer", $where, array($secret_key));
+    $sqlval['point'] = $arrRet[0]['point'] + $CONF['welcome_point'];
+    
+    // ポイントが不足している場合
+    if($sqlval['point'] < 0) {
+        $objQuery->rollback();
+        sfDispSiteError(LACK_POINT);
+    }
+    
+    $objQuery->update("dtb_customer", $sqlval, $where, array($secret_key));
+}
+
 /* 規格分類の件数取得 */
 function sfGetClassCatCount() {
     $sql = "select count(dtb_class.class_id) as count, dtb_class.class_id ";
