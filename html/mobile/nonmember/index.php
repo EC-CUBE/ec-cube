@@ -87,14 +87,6 @@ default:
     }
     // ユーザユニークIDの取得
     $uniqid = $objSiteSess->getUniqId();
-//    $objQuery = new SC_Query();
-//    $where = "order_temp_id = ?";
-//    $arrRet = $objQuery->select("*", "dtb_order_temp", $where, array($uniqid));
-//    sfprintr($arrRet);
-//    // DB値の取得
-//    $objFormParam->setParam($arrRet[0]);
-//    $objFormParam->setValue('order_email_check', $arrRet[0]['order_email']);
-//    $objFormParam->setDBDate($arrRet[0]['order_birth']);
     break;
 }
 
@@ -112,7 +104,7 @@ $objPage->arrDay = $objDate->getDay();
 
 // 入力値の取得
 $objPage->arrForm = $objFormParam->getFormParamList();
-sfprintr($_SESSION);
+
 //objPageの情報をobjViewに格納
 $objView->assignobj($objPage);
 $objView->display(SITE_FRAME);
@@ -261,7 +253,7 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
                 $_SESSION['user_info'][$key] = $val;
             }
         }
-//        sfprintr($_SESSION['user_info']);
+
        if($_POST["mode2"] == "deliv"){
             $_SESSION['user_info']['mode2'] = "deliv"; 
             header("Location:" . gfAddSessionId("./deliv.php"));
