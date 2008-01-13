@@ -128,7 +128,7 @@ define('ORDER_STATUS_MAX', 50);
 /** フロントレビュー書き込み最大数 */
 define('REVIEW_REGIST_MAX', 5);
 /** デバッグモード(true：sfPrintRやDBのエラーメッセージを出力する、false：出力しない) */
-define('DEBUG_MODE', 0);
+define('DEBUG_MODE', false);
 /** 管理ユーザID(メンテナンス用表示されない。) */
 define('ADMIN_ID', "1");
 /** 会員登録時に仮会員確認メールを送信するか（true:仮会員、false:本会員） */
