@@ -118,6 +118,7 @@
                                 <td bgcolor="#ffffff" width="194"><!--{if $arrErr.name}--><span class="red12"><!--{$arrErr.name}--></span><br><!--{/if}--><input type="text" name="name" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$arrForm.name|escape}-->" size="30" class="box30" <!--{if $arrErr.name}--><!--{sfSetErrorStyle}--><!--{/if}--> /></td>
                                 <td bgcolor="#f2f1ec" width="110">顧客名（カナ）</td>
                                 <td bgcolor="#ffffff" width="195"><!--{if $arrErr.kana}--><span class="red12"><!--{$arrErr.kana}--></span><br><!--{/if}--><input type="text" name="kana" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$arrForm.kana|escape}-->" size="30" class="box30" <!--{if $arrErr.kana}--><!--{sfSetErrorStyle}--><!--{/if}--> /></td>
+                            </tr>
                             <tr class="fs12n">
                                 <td bgcolor="#f2f1ec" width="110">性別</td>
                                 <td bgcolor="#ffffff" width="194"><!--{html_checkboxes name="sex" options=$arrSex separator="&nbsp;" selected=$arrForm.sex}--></td>
