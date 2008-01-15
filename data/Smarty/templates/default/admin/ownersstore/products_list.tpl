@@ -12,7 +12,7 @@
         <td align="center">
             <a href="<!--{$smarty.const.OSTORE_URL}-->products/detail.php?product_id=<!--{$product.product_id|escape}-->"
                target="_blank">
-                <img src="<!--{$smarty.const.OSTORE_SSLURL}-->upload/save_image/<!--{$product.main_list_image|escape}-->" width="50" height="50">
+                <img src="<!--{$smarty.const.OSTORE_SSLURL}-->resize.php?image=<!--{$product.main_list_image|escape}-->&width=50&height=50">
             </a>
         </td>
         <td align="center">
