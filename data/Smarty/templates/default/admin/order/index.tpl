@@ -317,7 +317,11 @@
 					<td bgcolor="#cccccc">
 					<!--検索結果表示テーブル-->
 					<table width="840" border="0" cellspacing="1" cellpadding="5" summary=" ">
-
+						<!--{* ペイジェントモジュール連携用 *}-->
+						<!--{assign var=path value=`$smarty.const.MODULE_PATH`mdl_paygent/paygent_order_index.tpl}-->
+						<!--{if file_exists($path)}-->
+							<!--{include file=$path}-->
+						<!--{else}-->
 						<tr bgcolor="#636469" align="center" class="fs12n">
 							<td width="130"><span class="white">受注日</span></td>
 							<td width="70"><span class="white">受注番号</span></td>
@@ -347,7 +351,7 @@
 							<td align="center"><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('delete', 'order_id', <!--{$arrResults[cnt].order_id}-->); return false;"><span class="icon_delete">削除</span></a></td>
 						</tr>
 						<!--{/section}-->
-
+						<!--{/if}-->
 					</table>
 					<!--検索結果表示テーブル-->
 					</td>

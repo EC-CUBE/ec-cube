@@ -24,6 +24,11 @@
 // {{{ requires
 require_once(CLASS_PATH . "pages/LC_Page.php");
 
+/* ペイジェント決済モジュール連携用 */
+if (file_exists(MODULE_PATH . 'mdl_paygent/include.php') === TRUE) {
+	require_once(MODULE_PATH . 'mdl_paygent/include.php');
+}
+
 /**
  * 受注管理 のページクラス.
  *
@@ -55,6 +60,11 @@ class LC_Page_Admin_Order extends LC_Page {
         $this->arrORDERSTATUS_COLOR = $masterData->getMasterData("mtb_order_status_color");
         $this->arrSex = $masterData->getMasterData("mtb_sex");
         $this->arrPageMax = $masterData->getMasterData("mtb_page_max");
+        
+        /* ペイジェント決済モジュール連携用 */
+        if(function_exists("sfPaygentOrderPage")) {
+            $this->arrDispKind = sfPaygentOrderPage();
+        }
     }
 
     /**

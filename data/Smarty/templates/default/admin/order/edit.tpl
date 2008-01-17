@@ -76,7 +76,13 @@
 								<td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td>
 							</tr>
 						</table>
-
+						
+						<!--{* ペイジェントモジュール連携用 *}-->
+						<!--{assign var=path value=`$smarty.const.MODULE_PATH`mdl_paygent/paygent_order.tpl}-->
+						<!--{if file_exists($path)}-->
+							<!--{include file=$path}-->
+						<!--{/if}-->
+						
 						<!--▼お客様情報ここから-->
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 							<tr class="fs12n">

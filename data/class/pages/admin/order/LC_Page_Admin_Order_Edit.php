@@ -24,6 +24,11 @@
 // {{{ requires
 require_once(CLASS_PATH . "pages/LC_Page.php");
 
+/* ペイジェント決済モジュール連携用 */
+if (file_exists(MODULE_PATH . 'mdl_paygent/include.php') === TRUE) {
+	require_once(MODULE_PATH . 'mdl_paygent/include.php');
+}
+
 /**
  * 受注修正 のページクラス.
  *
@@ -58,6 +63,11 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
 		$this->arrPref = $masterData->getMasterData("mtb_pref",
                                  array("pref_id", "pref_name", "rank"));
 		$this->arrORDERSTATUS = $masterData->getMasterData("mtb_order_status");
+        
+        /* ペイジェント決済モジュール連携用 */
+        if(function_exists("sfPaygentOrderPage")) {
+            $this->arrDispKind = sfPaygentOrderPage();
+        }
     }
 
     /**
@@ -132,6 +142,10 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
             if(count($this->arrErr) == 0) {
                 $this->arrErr = $this->lfCheek($arrInfo);
             }
+            break;
+        /* ペイジェント決済モジュール連携用 */
+        case 'paygent_order':
+            $this->paygent_return = sfPaygentOrder($_POST['paygent_type'], $order_id);
             break;
         default:
             break;
