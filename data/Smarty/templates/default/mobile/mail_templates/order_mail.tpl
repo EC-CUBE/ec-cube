@@ -27,14 +27,24 @@
 ご注文番号：<!--{$arrOrder.order_id}-->
 お支払合計：￥ <!--{$arrOrder.payment_total|number_format|default:0}-->
 ご決済方法：<!--{$arrOrder.payment_method}-->
-　お届け日：<!--{$arrOrder.deliv_date|default:"指定なし"}-->
+お届け日：<!--{$arrOrder.deliv_date|default:"指定なし"}-->
 お届け時間：<!--{$arrOrder.deliv_time|default:"指定なし"}-->
-◎お届け先
-　お名前　：<!--{$arrOrder.deliv_name01}--> <!--{$arrOrder.deliv_name02}-->　様
-　郵便番号：〒<!--{$arrOrder.deliv_zip01}-->-<!--{$arrOrder.deliv_zip02}-->
-　ご住所　：<!--{$arrOrder.deliv_pref}--><!--{$arrOrder.deliv_addr01}--><!--{$arrOrder.deliv_addr02}-->
-　電話番号：<!--{$arrOrder.deliv_tel01}-->-<!--{$arrOrder.deliv_tel02}-->-<!--{$arrOrder.deliv_tel03}-->
 
+◎お届け先
+お名前　：<!--{$arrOrder.deliv_name01}--> <!--{$arrOrder.deliv_name02}-->　様
+郵便番号：〒<!--{$arrOrder.deliv_zip01}-->-<!--{$arrOrder.deliv_zip02}-->
+ご住所　：<!--{$arrOrder.deliv_pref}--><!--{$arrOrder.deliv_addr01}--><!--{$arrOrder.deliv_addr02}-->
+電話番号：<!--{$arrOrder.deliv_tel01}-->-<!--{$arrOrder.deliv_tel02}-->-<!--{$arrOrder.deliv_tel03}-->
+
+<!--{if $arrOther.title.value }--> 
+■<!--{$arrOther.title.name}-->情報 
+<!--{foreach key=key item=item from=$arrOther}--> 
+<!--{if $key != "title"}--> 
+<!--{if $item.name != ""}--><!--{$item.name}-->：<!--{/if}--><!--{$item.value}--> 
+<!--{/if}--> 
+<!--{/foreach}--> 
+
+<!--{/if}-->
 ■ご注文商品明細
 <!--{section name=cnt loop=$arrOrderDetail}-->
 商品名: <!--{$arrOrderDetail[cnt].product_name}--> <!--{$arrOrderDetail[cnt].classcategory_name1}--> <!--{$arrOrderDetail[cnt].classcategory_name2}-->
