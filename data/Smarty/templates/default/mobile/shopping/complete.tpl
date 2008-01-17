@@ -30,16 +30,16 @@
 どうぞ、今後とも、<!--{$arrInfo.shop_name|escape}-->をよろしくお願いします。<br>
 <br> 
 
-<!--{if $arrOther.title.value }--> 
-<!-- ▼その他の決済情報 --> 
-■<!--{$arrOther.title.name}-->情報<br> 
-<!--{foreach key=key item=item from=$arrOther}--> 
-<!--{if $key != "title"}--> 
-<!--{if $item.name != ""}--><!--{$item.name}-->：<!--{/if}--><!--{$item.value|nl2br}--><br> 
-<!--{/if}--> 
-<!--{/foreach}--> 
-<br> 
-<!-- ▲その他の決済情報 --> 
+<!--{if $arrOther.title.value }-->
+<!-- ▼その他の決済情報 -->
+■<!--{$arrOther.title.name}-->情報<br>
+<!--{foreach key=key item=item from=$arrOther}-->
+<!--{if $key != "title"}-->
+<!--{if $item.name != ""}--><!--{$item.name}-->：<!--{/if}--><!--{$item.value|nl2br}--><br>
+<!--{/if}-->
+<!--{/foreach}-->
+<br>
+<!-- ▲その他の決済情報 -->
 <!--{/if}-->
 
 <a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページに戻る</a><br>

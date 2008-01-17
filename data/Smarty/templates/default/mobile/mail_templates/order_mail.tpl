@@ -36,13 +36,13 @@
 ご住所　：<!--{$arrOrder.deliv_pref}--><!--{$arrOrder.deliv_addr01}--><!--{$arrOrder.deliv_addr02}-->
 電話番号：<!--{$arrOrder.deliv_tel01}-->-<!--{$arrOrder.deliv_tel02}-->-<!--{$arrOrder.deliv_tel03}-->
 
-<!--{if $arrOther.title.value }--> 
-■<!--{$arrOther.title.name}-->情報 
-<!--{foreach key=key item=item from=$arrOther}--> 
-<!--{if $key != "title"}--> 
-<!--{if $item.name != ""}--><!--{$item.name}-->：<!--{/if}--><!--{$item.value}--> 
-<!--{/if}--> 
-<!--{/foreach}--> 
+<!--{if $arrOther.title.value }-->
+■<!--{$arrOther.title.name}-->情報
+<!--{foreach key=key item=item from=$arrOther}-->
+<!--{if $key != "title"}-->
+<!--{if $item.name != ""}--><!--{$item.name}-->：<!--{/if}--><!--{$item.value}-->
+<!--{/if}-->
+<!--{/foreach}-->
 
 <!--{/if}-->
 ■ご注文商品明細
