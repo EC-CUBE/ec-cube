@@ -187,7 +187,7 @@ class LC_Page_Shopping_Complete extends LC_Page {
 
             // 完了メール送信
             if($order_id != "") {
-                $mailHelper->sfSendOrderMail($order_id, '1');
+                $mailHelper->sfSendOrderMail($order_id, '2');
             }
 
             //その他情報の取得
@@ -200,7 +200,7 @@ class LC_Page_Shopping_Complete extends LC_Page {
                 foreach($arrOther as $key => $val){
                     // URLの場合にはリンクつきで表示させる
                     if (preg_match('/^(https?|ftp)(:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+)$/', $val["value"])) {
-                        $arrOther[$key]["value"] = "<a href='#' onClick=\"window.open('". $val["value"] . "'); \" >" . $val["value"] ."</a>";
+                        $arrOther[$key]["value"] = "<a href='". $val["value"]. "'>". $val["value"]. "</a>";
                     }
                 }
 

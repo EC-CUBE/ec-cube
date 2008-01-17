@@ -605,7 +605,7 @@ INSERT INTO mtb_mail_template VALUES ('1', '注文受付メール',0);
 INSERT INTO mtb_mail_template VALUES ('2', '注文キャンセル受付メール',1);
 INSERT INTO mtb_mail_template VALUES ('3', '取り寄せ確認メール',2);
 INSERT INTO mtb_mail_tpl_path VALUES ('1', 'mail_templates/order_mail.tpl',0);
-INSERT INTO mtb_mail_tpl_path VALUES ('2', 'mail_templates/order_mail.tpl',1);
+INSERT INTO mtb_mail_tpl_path VALUES ('2', 'mobile/mail_templates/order_mail.tpl',1);
 INSERT INTO mtb_mail_tpl_path VALUES ('3', 'mail_templates/order_mail.tpl',2);
 INSERT INTO mtb_mail_tpl_path VALUES ('4', 'mail_templates/contact_mail.tpl',3);
 INSERT INTO mtb_job VALUES ('1', '公務員',0);
