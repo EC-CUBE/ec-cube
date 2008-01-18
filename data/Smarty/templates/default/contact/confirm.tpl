@@ -82,9 +82,9 @@
              alt="戻る" name="back02" id="back02" />
       </a>
       <input type="image"
-             onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_complete_on.gif',this)"
-             onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_complete.gif',this)"
-             src="<!--{$TPL_DIR}-->img/common/b_complete.gif" alt="完了ページへ" name="send" id="send" class="box150" />
+             onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_send_on.gif',this)"
+             onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_send.gif',this)"
+             src="<!--{$TPL_DIR}-->img/common/b_send.gif" alt="送信" name="send" id="send" class="box150" />
        </div>
      </form>
    </div>
