@@ -27,7 +27,14 @@ $arrCybsRequestURL = array(
 // ¸°¡¦¾ÚÌÀ½ñ¤Î¥Ñ¥¹
 define('MDL_CYBS_KEY_PATH', '/opt/CyberSource/SDK/keys/');
 
-// »ÙÊ§¤¤ÊýË¡
+/**
+ *  »ÙÊ§¤¤ÊýË¡
+ *  array(
+ *      '[»ÙÊ§¤¤ÊýË¡]-[Ê¬³ä²ó¿ô]' => '»ÙÊ§¤¤ÊýË¡Ì¾¾Î¡¦Ê¬³ä²ó¿ô',
+ *      '[»ÙÊ§¤¤ÊýË¡]-[Ê¬³ä²ó¿ô]' => '»ÙÊ§¤¤ÊýË¡Ì¾¾Î¡¦Ê¬³ä²ó¿ô',
+ *      ...
+ *  );
+ */
 $arrPayMethod = array(
     '1-0' => "°ì³çÊ§¤¤",
     '4-3' => "Ê¬³ä3²óÊ§¤¤",
