@@ -170,7 +170,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         case 'complete':
             $this->tpl_mainpage = 'products/complete.tpl';
 
-            $this->arrFrom['product_id'] = $this->lfRegistProduct($_POST);		// データ登録
+            $this->arrForm['product_id'] = $this->lfRegistProduct($_POST);		// データ登録
 
             // 件数カウントバッチ実行
             $objDb->sfCategory_Count($objQuery);
