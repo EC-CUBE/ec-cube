@@ -141,7 +141,7 @@ function lfSendRequest($arrForm, $arrData) {
     global $arrCybsRequestURL;
     global $arrPref;
 
-    $objConfig =& new Mdl_Cybs_Config;
+    $objConfig =& Mdl_Cybs_Config::getInstanse();
     $objRequest = new CYBS_REQ;
 
     $arrConfig = $objConfig->getConfig();
@@ -177,16 +177,12 @@ function lfSendRequest($arrForm, $arrData) {
 
     $request_array = $objRequest->requests;
     gfPrintLog(print_r($request_array, true), MDL_CYBS_LOG);
-gfPrintLog(print_r($arrConfig, true), MDL_CYBS_LOG);
+    gfPrintLog(print_r($arrConfig, true), MDL_CYBS_LOG);
     if( ($result = cybs_send($request_array)) == false ) {
       print("error");
       gfPrintLog('#### cybs_send() error ###' , MDL_CYBS_LOG);
       exit;
     }
-
-sfPrintR($request_array);
-ksort($result);
-sfPrintR($result);
 
     return $result;
 }
@@ -240,7 +236,7 @@ function lfToSjis($str) {
 function lfRegisterOrderTemp($uniqid, $arrForm, $arrResults) {
     $sqlval = array();
     $sqlval['memo03'] = $arrForm['card_name01'] . " " . $arrForm['card_name02'];
-    $sqlval['memo02'] = serialize($arrResults['auth_auth_code']);
+    //$sqlval['memo02'] = serialize($arrResults['auth_auth_code']);
 
     $objQuery = new SC_Query;
     $objQuery->update("dtb_order_temp", $sqlval, "order_temp_id = ?", array($uniqid));
