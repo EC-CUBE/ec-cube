@@ -57,7 +57,7 @@ function fnCheckSubmit() {
         <tr>
           <td class="phototd">
             <a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="win01('<!--{$smarty.const.URL_DIR}-->products/detail_image.php?product_id=<!--{$arrProductsClass[cnt].product_id}-->&amp;image=main_image','detail_image','<!--{$arrProductsClass[cnt].tpl_image_width}-->','<!--{$arrProductsClass[cnt].tpl_image_height}-->'); return false;" target="_blank">
-              <img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$arrProductsClass[cnt].main_list_image}-->&amp;width=65&amp;height=65" alt="<!--{$arrProductsClass[cnt].name|escape}-->" />
+              <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$arrProductsClass[cnt].main_list_image}-->&amp;width=65&amp;height=65" alt="<!--{$arrProductsClass[cnt].name|escape}-->" />
             </a>
           </td>
           <td>
