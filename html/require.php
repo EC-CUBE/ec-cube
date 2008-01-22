@@ -77,6 +77,9 @@ require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_Mail_Ex.php");
 require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_Mobile_Ex.php");
 include_once($include_dir . "/require_plugin.php");
 
+// セッションハンドラ開始
+$objSession = new SC_Helper_Session_Ex();
+
 // インストールチェック
 SC_Utils_Ex::sfInitInstall();
 
