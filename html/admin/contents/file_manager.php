@@ -62,9 +62,9 @@ case 'view':
 		}
 	}
 	break;
+	
 // ファイルダウンロード
 case 'download':
-
 	// エラーチェック
 	$arrErr = lfErrorCheck();
 	if(!is_array($arrErr)) {
@@ -78,6 +78,7 @@ case 'download':
 		}
 	}
 	break;
+	
 // ファイル削除
 case 'delete':
 	// エラーチェック
@@ -86,6 +87,7 @@ case 'delete':
 		sfDeleteDir($_POST['select_file']);
 	}
 	break;
+	
 // ファイル作成
 case 'create':
 	// エラーチェック
@@ -101,6 +103,7 @@ case 'create':
 		}
 	}
 	break;
+	
 // ファイルアップロード
 case 'upload':
 	// 画像保存処理
@@ -111,10 +114,12 @@ case 'upload':
 		$tpl_onload .= "alert('ファイルをアップロードしました。');";
 	}
 	break;
+	
 // フォルダ移動
 case 'move':
-	$now_dir = $_POST['tree_select_file'];
+	$now_dir = lfCheckSelectDir($_POST['tree_select_file']);
 	break;
+	
 // 初期表示
 default :
 	break;
@@ -187,6 +192,28 @@ function lfCreateErrorCheck() {
 function lfInitFile() {
 	global $objUpFile;
 	$objUpFile->addFile("ファイル", 'upload_file', array(), FILE_SIZE, true, 0, 0, false);
+}
+
+/*
+ * 関数名：lfCheckSelectDir()
+ * 引数１：ディレクトリ
+ * 説明：選択ディレクトリがUSER_PATH以下かチェック
+ */
+function lfCheckSelectDir($dir) {
+	$top_dir = USER_PATH;
+	// USER_PATH以下の場合
+	if (preg_match("@^\Q". $top_dir. "\E@", $dir) > 0) {
+		// 相対パスがある場合、USER_PATHを返す.
+		if (preg_match("@\Q..\E@", $dir) > 0) {
+			return $top_dir;
+		// 相対パスがない場合、そのままディレクトリパスを返す.
+		} else {
+			return $dir;
+		}
+	// USER_PATH以下でない場合、USER_PATHを返す.
+	} else {
+		return $top_dir;
+	}
 }
 
 /* 
