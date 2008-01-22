@@ -196,6 +196,20 @@ div#under02column_shopping table.delivname td {
     width: 550px;
 }
 
+/* 決済モジュール(決済情報入力画面)
+----------------------------------------------- */
+div#under02column_shopping .box60 {
+    width: 60px;
+    padding: 2px;
+    border: 1px solid #ccc;
+}
+
+div#under02column_shopping .box120 {
+    width: 120px;
+    padding: 2px;
+    border: 1px solid #ccc;
+}
+
 /* ログイン
 ----------------------------------------------- */
 div#under02column_login {
