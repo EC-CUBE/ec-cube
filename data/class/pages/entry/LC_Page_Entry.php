@@ -73,6 +73,11 @@ class LC_Page_Entry extends LC_Page {
         $CONF = $objDb->sf_getBasisData();
         $objDate = new SC_Date(START_BIRTH_YEAR, date("Y",strtotime("now")));
 
+        // 規約ページからの遷移でなければエラー画面へ遷移する
+        if (empty($_POST) && basename($_SERVER['HTTP_REFERER']) != 'kiyaku.php') {
+            SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", true);
+        }
+
         // レイアウトデザインを取得
         $layout = new SC_Helper_PageLayout_Ex();
         $layout->sfGetPageLayout($this, false, DEF_LAYOUT);
