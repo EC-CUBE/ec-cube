@@ -21,6 +21,12 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+/**
+ * SQLの構築・実行を行う
+ *
+ * @author LOCKON CO.,LTD.
+ * @version $Id$
+ */
 class SC_Query {
     var $option;
     var $where;
@@ -28,18 +34,24 @@ class SC_Query {
     var $groupby;
     var $order;
 
-    // コンストラクタ
-    /*
-        $err_disp:エラー表示を行うか
-        $new：新規に接続を行うか
+    /**
+     * コンストラクタ.
+     *
+     * @param $dsn
+     * @param boolean $err_disp エラー表示を行うかどうか
+     * @param boolean $new 新規に接続を行うかどうか
+     * @return SC_Query
      */
     function SC_Query($dsn = "", $err_disp = true, $new = false) {
         $this->conn = new SC_DBconn($dsn, $err_disp, $new);
         $this->where = "";
-        return $this->conn;
     }
 
-    // エラー判定
+    /**
+     *  エラー判定を行う.
+     *
+     * @return boolean
+     */
     function isError() {
         if(PEAR::isError($this->conn->conn)) {
             return true;
@@ -47,7 +59,14 @@ class SC_Query {
         return false;
     }
 
-    // COUNT文の実行
+    /**
+     * COUNT文を実行する.
+     *
+     * @param string $table テーブル名
+     * @param string $where where句
+     * @param array $arrval プレースホルダ
+     * @return integer 件数
+     */
     function count($table, $where = "", $arrval = array()) {
         if(strlen($where) <= 0) {
             $sqlse = "SELECT COUNT(*) FROM $table";
@@ -59,6 +78,15 @@ class SC_Query {
         return $ret;
     }
 
+    /**
+     * SELECT文を実行する.
+     *
+     * @param string $col カラム名. 複数カラムの場合はカンマ区切りで書く
+     * @param string $table テーブル名
+     * @param string $where WHERE句
+     * @param array $arrval プレースホルダ
+     * @return array|null
+     */
     function select($col, $table, $where = "", $arrval = array()){
         $sqlse = $this->getsql($col, $table, $where);
         // DBに依存した SQL へ変換
@@ -68,6 +96,12 @@ class SC_Query {
         return $ret;
     }
 
+    /**
+     * 直前に実行されたSQL文を取得する.
+     *
+     * @param boolean $disp trueの場合、画面出力を行う.
+     * @return string SQL文
+     */
     function getLastQuery($disp = true) {
         $sql = $this->conn->conn->last_query;
         if($disp) {
@@ -196,10 +230,13 @@ class SC_Query {
         }
     }
 
-
-    // INSERT文の生成・実行
-    // $table   :テーブル名
-    // $sqlval  :列名 => 値の格納されたハッシュ配列
+    /**
+     * INSERT文を実行する.
+     *
+     * @param string $table テーブル名
+     * @param array $sqlval array('カラム名' => '値',...)の連想配列
+     * @return
+     */
     function insert($table, $sqlval) {
         $strcol = '';
         $strval = '';
@@ -239,7 +276,7 @@ class SC_Query {
         return $ret;
     }
 
-        // INSERT文の生成・実行
+    // INSERT文の生成・実行
     // $table   :テーブル名
     // $sqlval  :列名 => 値の格納されたハッシュ配列
     function fast_insert($table, $sqlval) {
@@ -272,11 +309,16 @@ class SC_Query {
         return $ret;
     }
 
-
-    // UPDATE文の生成・実行
-    // $table   :テーブル名
-    // $sqlval  :列名 => 値の格納されたハッシュ配列
-    // $where   :WHERE文字列
+    /**
+     * UPDATE文を実行する.
+     *
+     * @param string $table テーブル名
+     * @param array $sqlval array('カラム名' => '値',...)の連想配列
+     * @param string $where WHERE句
+     * @param array $arradd $addcol用のプレースホルダ配列
+     * @param string $addcol 追加カラム
+     * @return
+     */
     function update($table, $sqlval, $where = "", $arradd = "", $addcol = "") {
         $strcol = '';
         $strval = '';
@@ -397,7 +439,14 @@ class SC_Query {
         return $this->conn->getCol($sqlse, $col, $arrval);
     }
 
-    // レコードの削除
+    /**
+     * レコードの削除
+     *
+     * @param string $table テーブル名
+     * @param string $where WHERE句
+     * @param array $arrval プレースホルダ
+     * @return
+     */
     function delete($table, $where = "", $arrval = array()) {
         if(strlen($where) <= 0) {
             $sqlde = "DELETE FROM $table";
@@ -454,7 +503,12 @@ class SC_Query {
         return $result;
     }
 
-    // auto_incrementを取得する
+    /**
+     * auto_incrementを取得する.
+     *
+     * @param string $table_name テーブル名
+     * @return integer
+     */
     function get_auto_increment($table_name){
         // ロックする
         $this->query("LOCK TABLES $table_name WRITE");
