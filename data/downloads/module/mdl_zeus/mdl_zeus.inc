@@ -142,6 +142,7 @@ function sfPostPaymentData($arrData, $arrInput, $quick_charge = false){
 
 	// 受注テーブルに記録する
 	$arrVal["memo01"] = MDL_ZEUS_ID;	// モジュールID
+	$arrVal["memo02"] = "";             // コンビニ情報等
 	$arrVal["memo03"] = $response;		// 処理結果
 	// ※memo04はquick_chargeで使用する。
 	

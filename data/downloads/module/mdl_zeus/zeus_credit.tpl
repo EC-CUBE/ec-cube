@@ -62,7 +62,6 @@ function fnChangeDisabled(list, disable) {
 		<table width="700" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
 				<td><img src="/img/shopping/flow03.gif" width="700" height="36" alt="購入手続きの流れ"></td>
-
 			</tr>
 			<tr><td height="15"></td></tr>
 		</table>
