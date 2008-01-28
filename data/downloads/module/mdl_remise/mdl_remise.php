@@ -2,7 +2,8 @@
 /**
  *
  * @copyright	2000-2007 LOCKON CO.,LTD. All Rights Reserved.
- * @version	CVS: $Id$
+ * モジュールバージョン表記
+ * @version ### ### 1.2
  * @link		http://www.lockon.co.jp/
  *
  */
