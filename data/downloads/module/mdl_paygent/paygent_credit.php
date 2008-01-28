@@ -72,21 +72,38 @@ case 'next':
 		// クレジット電文送信
 		$arrRet = sfSendPaygentCredit($arrData, $arrInput, $uniqid);
 		
-		// 成功
-		if($arrRet['result'] === "0") {
-            // 正常に登録されたことを記録しておく
+		// 成功（3Dセキュア未対応）
+		if ($arrRet['result'] === "0") {
+            // 正常に登録されたことを記録
             $objSiteSess->setRegistFlag();
 			if (GC_MobileUserAgent::isMobile()) {
-				header("Location: " . gfAddSessionId(MOBILE_URL_SHOP_COMPLETE));
+				header("Location: ". gfAddSessionId(MOBILE_URL_SHOP_COMPLETE));
 			} else {
-				header("Location: " . URL_SHOP_COMPLETE);
+				header("Location: ". URL_SHOP_COMPLETE);
 			}
+		// 成功（3Dセキュア対応）
+		} elseif ($arrRet['result'] === "7") {
+			// カード会社画面へ遷移（ACS支払人認証要求HTMLを表示）
+			print mb_convert_encoding($arrRet['out_acs_html'], CHAR_CODE, "Shift-JIS");
+			exit;
+		// 失敗
 		} else {
-			// 失敗
 			$objPage->tpl_error = "認証に失敗しました。お手数ですが入力内容をご確認ください。";
 		}
 	}
 	break;
+}
+
+// 3Dセキュア実施後
+if ($_GET['mode'] == "credit_3d" && $_GET['uniqid'] == $uniqid) {
+	// クレジット電文送信（3Dセキュア実施後）
+	$arrRet = sfSendPaygetnCredit3d($arrData, $_POST, $uniqid);
+	// 成功
+	if ($arrRet['result'] === "0") {
+		// 正常に登録されたことを記録
+		$objSiteSess->setRegistFlag();
+		header("Location: ". URL_SHOP_COMPLETE);
+	}
 }
 
 $objDate = new SC_Date();

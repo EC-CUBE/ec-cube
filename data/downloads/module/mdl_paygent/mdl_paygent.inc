@@ -41,17 +41,17 @@ define("MDL_PAYGENT_ID", 9);
 	060：銀行ネット決済ASP
 	090：決済情報照会
 	091：差分照会
-*/ 
-define("PAYGENT_BANK", '060');
+*/
 define("PAYGENT_ATM", '010');
-define("PAYGENT_CONVENI", '030');
 define("PAYGENT_CREDIT", '020');
-// バッチで使用する。
-define("PAYGENT_REF", '091');
-
 define("PAYGENT_AUTH_CANCEL", '021');
 define("PAYGENT_CARD_COMMIT", '022');
 define("PAYGENT_CARD_COMMIT_CANCEL", '023');
+define("PAYGENT_CARD_3D", '024');
+define("PAYGENT_CONVENI", '030');
+define("PAYGENT_BANK", '060');
+// バッチで使用する。
+define("PAYGENT_REF", '091');
 
 // 無限ループを避ける
 define("PAYGENT_REF_LOOP", 1000);
@@ -170,7 +170,7 @@ function sfSendPaygentCredit($arrData, $arrInput, $uniqid) {
 	$p = new PaygentB2BModule();
 	$p->init();
 	
-	//　クレジット用パラメータの取得
+	// クレジット用パラメータの取得
 	$arrPaymentDB = sfGetPaymentDB(MDL_PAYGENT_ID, "AND memo03 = 1");
 	$arrOtherParam = unserialize($arrPaymentDB[0]['other_param']);
 	
@@ -195,18 +195,64 @@ function sfSendPaygentCredit($arrData, $arrInput, $uniqid) {
 	 */
 	$arrSend['payment_class'] = $payment_class;
 	// 分割回数
-	$arrSend['split_count'] = $split_count;	
-	// 3Dセキュア扶養区分
-	$arrSend['3dsecure_ryaku'] = '1';
+	$arrSend['split_count'] = $split_count;
+	/** 3Dセキュア関連 **/
+	if ($arrOtherParam['credit_3d'] != 1 || GC_MobileUserAgent::isMobile()) {
+		// 3Dセキュア不要区分
+		$arrSend['3dsecure_ryaku'] = '1';
+	} else {
+		// HttpAccept
+		$arrSend['http_accept'] = $_SERVER['HTTP_ACCEPT'];
+		// HttpUserAgent
+		$arrSend['http_user_agent'] = $_SERVER['HTTP_USER_AGENT'];
+		// 3Dセキュア戻りURL
+		$arrSend['term_url'] = SSL_URL. "shopping/load_payment_module.php?mode=credit_3d&uniqid=". $uniqid;
+	}
 	
 	// 電文の送付
 	foreach($arrSend as $key => $val) {
 		$p->reqPut($key, $val);
 	}
-	
 	// 電文の送信
 	$p->post();
+	// 応答を処理
+	$arrRet = sfPaygentResponse(PAYGENT_CREDIT, $p, $uniqid, $arrInput);
+	
+	return $arrRet;
+}
 
+/**************************************************************************************************************
+ * 関数名	：sfSendPaygentCredit3d
+ * 処理内容	：3Dセキュア情報の送信
+ * 引数1	：
+ * 引数2	：
+ * 引数3	：
+ * 戻り値	：取得結果
+ **************************************************************************************************************/
+function sfSendPaygetnCredit3d($arrData, $arrInput, $uniqid) {
+	// 接続モジュールのインスタンス取得 (コンストラクタ)と初期化
+	$p = new PaygentB2BModule();
+	$p->init();
+	
+	// クレジット用パラメータの取得
+	$arrPaymentDB = sfGetPaymentDB(MDL_PAYGENT_ID, "AND memo03 = 1");
+	$arrOtherParam = unserialize($arrPaymentDB[0]['other_param']);
+	
+	// 共通データの取得
+	$arrSend = sfGetPaygentShare(PAYGENT_CARD_3D, $arrData['order_id'], $arrPaymentDB[0], $arrData['memo06']);
+	
+	/** 個別電文 **/
+	// ACS応答
+	$arrSend['PaRes'] = $arrInput['PaRes'];
+	// マーチャントデータ
+	$arrSend['MD'] = $arrInput['MD'];
+	
+	// 電文の送付
+	foreach($arrSend as $key => $val) {
+		$p->reqPut($key, $val);
+	}
+	// 電文の送信
+	$p->post();
 	// 応答を処理
 	$arrRet = sfPaygentResponse(PAYGENT_CREDIT, $p, $uniqid, $arrInput);
 	
@@ -226,7 +272,7 @@ function sfSendPaygentConveni($arrData, $arrInput, $uniqid) {
 	$p = new PaygentB2BModule();
 	$p->init();
 	
-	//　コンビニ用パラメータの取得
+	// コンビニ用パラメータの取得
 	$arrPaymentDB = sfGetPaymentDB(MDL_PAYGENT_ID, "AND memo03 = 2");
 	$arrOtherParam = unserialize($arrPaymentDB[0]['other_param']);
 	
@@ -261,10 +307,8 @@ function sfSendPaygentConveni($arrData, $arrInput, $uniqid) {
 		$enc_val = mb_convert_encoding($val, "Shift-JIS", CHAR_CODE);
 		$p->reqPut($key, $enc_val);
 	}
-	
 	// 電文の送信
 	$p->post();
-
 	// 応答を処理
 	$arrRet = sfPaygentResponse(PAYGENT_CONVENI, $p, $uniqid, $arrInput);
 		
@@ -284,7 +328,7 @@ function sfSendPaygentATM($arrData, $arrInput, $uniqid) {
 	$p = new PaygentB2BModule();
 	$p->init();
 	
-	//　ATM決済用パラメータの取得
+	// ATM決済用パラメータの取得
 	$arrPaymentDB = sfGetPaymentDB(MDL_PAYGENT_ID, "AND memo03 = 3");
 	$arrOtherParam = unserialize($arrPaymentDB[0]['other_param']);
 	
@@ -320,10 +364,8 @@ function sfSendPaygentATM($arrData, $arrInput, $uniqid) {
 		$enc_val = mb_convert_encoding($val, "Shift-JIS", CHAR_CODE);		
 		$p->reqPut($key, $enc_val);
 	}
-	
 	// 電文の送信
 	$p->post();
-	
 	// 応答を処理
 	$arrRet = sfPaygentResponse(PAYGENT_ATM, $p, $uniqid, $arrInput);
 	
@@ -343,7 +385,7 @@ function sfSendPaygentBANK($arrData, $arrInput, $uniqid) {
 	$p = new PaygentB2BModule();
 	$p->init();
 	
-	//　銀行NET用パラメータの取得
+	// 銀行NET用パラメータの取得
 	$arrPaymentDB = sfGetPaymentDB(MDL_PAYGENT_ID, "AND memo03 = 4");
 	$arrOtherParam = unserialize($arrPaymentDB[0]['other_param']);
 	
@@ -398,10 +440,8 @@ function sfSendPaygentBANK($arrData, $arrInput, $uniqid) {
 		$enc_val = mb_convert_encoding($val, "Shift-JIS", CHAR_CODE);
 		$p->reqPut($key, $enc_val);
 	}
-	
 	// 電文の送信
 	$p->post();
-	
 	// 応答を処理
 	$arrRet = sfPaygentResponse(PAYGENT_BANK, $p, $uniqid, $arrInput);
 	

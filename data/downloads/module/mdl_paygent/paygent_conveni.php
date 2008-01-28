@@ -32,6 +32,7 @@ if (GC_MobileUserAgent::isMobile()) {
 $objCampaignSess = new SC_CampaignSession();
 $objSiteInfo = $objView->objSiteInfo;
 $arrInfo = $objSiteInfo->data;
+
 // パラメータ管理クラス
 $objFormParam = new SC_FormParam();
 

@@ -20,7 +20,12 @@ $arrCredit = array(
 	1 => 'VISA, MASTER, Diners',
 	2 => 'JCB, AMEX'
 );
-	
+
+$arrActive = array(
+	1 => '要',
+	0 => '不要'
+);
+
 //ページ管理クラス
 class LC_Page {
 	//コンストラクタ
@@ -34,6 +39,8 @@ class LC_Page {
 		$this->arrCredit = $arrCredit;
 		global $arrConvenience;
 		$this->arrConvenience = $arrConvenience;
+		global $arrActive;
+		$this->arrActive = $arrActive;
 	}
 }
 $objPage = new LC_Page();
@@ -93,6 +100,7 @@ function lfInitParam($objFormParam) {
     $arrSiteInfo = sf_getBasisData();
     // デフォルト値
     $arrDefault  = array(
+        'credit_3d' => "0",
         'conveni_limit_date' => 15,
         'atm_limit_date'     => 30,
         'payment_detail' => $arrSiteInfo['shop_kana'],
@@ -103,6 +111,7 @@ function lfInitParam($objFormParam) {
 	$objFormParam->addParam("マーチャントID", "merchant_id", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
 	$objFormParam->addParam("接続ID", "connect_id", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
 	$objFormParam->addParam("接続パスワード", "connect_password", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("3Dセキュア", "credit_3d", "", "n", array("EXIST_CHECK"), $arrDefault['credit_3d']);
 	$objFormParam->addParam("支払期限日", "conveni_limit_date", 2, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"), $arrDefault['conveni_limit_date']);
 	$objFormParam->addParam("支払期限日", "atm_limit_date", 2, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"), $arrDefault['atm_limit_date']);
 	$objFormParam->addParam("表示店舗名(カナ)", "payment_detail", 12, "KVa", array("MAX_LENGTH_CHECK", "KANA_CHECK"), $arrDefault['payment_detail']);
@@ -135,9 +144,6 @@ function lfCheckError(){
     if(isset($_POST['claim_kana']) && $_POST['claim_kana'] == '') {
             $arrErr['claim_kana'] = "※ 表示店舗名（カナ）を入力してください。<br>";
     }
-	
-    
-    
     /** 共通電文 **/	
 	// マーチャントID
 	$arrParam['merchant_id'] = $objFormParam->getValue('merchant_id');
@@ -173,6 +179,8 @@ function lfLoadData(){
 		switch($val['payment']) {
 		// クレジット
 		case '1':
+			$arrParam = unserialize($val['other_param']);
+			$arrDisp['credit_3d'] = $arrParam['credit_3d'];
 			break;
 		// コンビニ
 		case '2':
@@ -204,7 +212,7 @@ function lfLoadData(){
 function lfUpdPaymentDB($module_id){
 	global $objQuery;
 	global $objSess;
-		
+	
 	// 関連する支払い方法のdel_flgを削除にしておく
 	$del_sql = "UPDATE dtb_payment SET del_flg = 1 WHERE module_id = ? ";
 	$arrDel = array($module_id);
@@ -214,13 +222,14 @@ function lfUpdPaymentDB($module_id){
 	foreach($_POST["payment"] as $key => $val){
 		// ランクの最大値を取得する
 		$max_rank = $objQuery->getone("SELECT max(rank) FROM dtb_payment");
-
-		// 支払方法データを取得			
+		// 支払方法データを取得
 		$arrPaymentData = sfGetPaymentDB(MDL_PAYGENT_ID, "AND memo03 = ?", array($val));
 		
 		// クレジットにチェックが入っていればクレジットを登録する
 		if($val == 1){
-			$arrData = array(			
+			$arrParam = array();
+			$arrParam['credit_3d'] = $_POST['credit_3d'];
+			$arrData = array(
 				"payment_method" => "PAYGENTクレジット"
 				,"fix" => 3
 				,"creator_id" => $objSess->member_id
@@ -233,7 +242,7 @@ function lfUpdPaymentDB($module_id){
 				,"memo02" => $_POST["connect_id"]
 				,"memo03" => $val
 				,"memo04" => $_POST["connect_password"]
-				,"memo05" => ""
+				,"memo05" => serialize($arrParam)
 				,"del_flg" => "0"
 				,"charge_flg" => "2"
 				,"upper_rule_max" => CHARGE_MAX
@@ -245,7 +254,6 @@ function lfUpdPaymentDB($module_id){
 		if($val == 2){
 			$arrParam = array();
 			$arrParam['payment_limit_date'] = $_POST['conveni_limit_date'];
-			
 			$arrData = array(
 				"payment_method" => "PAYGENTコンビニ"
 				,"fix" => 3
@@ -271,7 +279,6 @@ function lfUpdPaymentDB($module_id){
 			$arrParam = array();
 			$arrParam['payment_detail'] = $_POST['payment_detail'];
 			$arrParam['payment_limit_date'] = $_POST['atm_limit_date'];
-			
 			$arrData = array(
 				"payment_method" => "PAYGENTATM決済"
 				,"fix" => 3

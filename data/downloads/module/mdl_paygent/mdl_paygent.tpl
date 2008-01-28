@@ -33,7 +33,7 @@ function lfnCheckPayment(){
 
 	for(pi = 0; pi < payment.length; pi++) {
 		// クレジットの場合
-		list = new Array('credit[]');
+		list = new Array('credit[]', 'credit_3d');
 		if(fm[payment[pi]][0].checked){
 			fnChangeDisabled(list, false);
 		}else{
@@ -187,9 +187,20 @@ function win_open(URL){
 										</tr>
 										
 										<tr class="fs12n">
-											<td colspan="2" width="90" bgcolor="#f3f3f3">▼コンビニ設定</td>
+											<td colspan="2" width="90" bgcolor="#f3f3f3">▼クレジット決済設定</td>
 										</tr>
-																				
+										<tr class="fs12n">
+											<td width="" bgcolor="#f3f3f3">3Dセキュア</td>
+											<td width="" bgcolor="#ffffff">
+											<!--{assign var=key value="credit_3d"}-->
+											<span class="red12"><!--{$arrErr[$key]}--></span>
+											<!--{html_radios name="$key" options=$arrActive selected=$arrForm[$key].value style=$arrErr[$key]|sfGetErrorColor}-->
+											</td>
+										</tr>
+										
+										<tr class="fs12n">
+											<td colspan="2" width="90" bgcolor="#f3f3f3">▼コンビニ決済設定</td>
+										</tr>
 										<tr class="fs12n">
 											<td width="" bgcolor="#f3f3f3">支払期限日</td>
 											<td width="" bgcolor="#ffffff">
@@ -202,7 +213,6 @@ function win_open(URL){
 										<tr class="fs12n">
 											<td colspan="2" width="90" bgcolor="#f3f3f3">▼ATM決済設定</td>
 										</tr>
-										
 										<tr class="fs12n">
 											<td width="" bgcolor="#f3f3f3">支払期限日</td>
 											<td width="" bgcolor="#ffffff">
