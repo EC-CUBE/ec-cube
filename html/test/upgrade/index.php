@@ -117,7 +117,7 @@ function updateModuleTable($arrProductsList) {
                 'module_code' => $arrProduct['code'],
                 'module_name' => $arrProduct['name'],
                 'auto_update_flg' => '0',
-                'del_flg' => '0,',
+                'del_flg' => '0',
                 'update_date' => 'NOW()',
             );
             $objQuery->update($table, $arrUpdate, $where, array($arrProduct['product_id']));
@@ -127,7 +127,7 @@ function updateModuleTable($arrProductsList) {
                 'module_code' => $arrProduct['code'],
                 'module_name' => $arrProduct['name'],
                 'auto_update_flg' => '0',
-                'del_flg' => '0,',
+                'del_flg' => '0',
                 'update_date' => 'NOW()',
                 'create_date' => 'NOW()',
             );
