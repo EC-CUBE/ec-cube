@@ -41,9 +41,15 @@ chmod -R 777 $WRK_DIR/data/logs
 chmod -R 777 $WRK_DIR/html/cp
 
 echo "complession files..."
+
+echo "create tar archive..."
 tar cfp $WRK_DIR.tar $WRK_DIR
 gzip -9 $WRK_DIR.tar
 mv $WRK_DIR.tar.gz $CURRENT_DIR/
+
+echo "create tar archive..."
+zip -r $WRK_DIR.zip $WRK_DIR
+mv $WRK_DIR.zip $CURRENT_DIR/
 rm -rf $WRK_DIR
 
 echo "finished successful!"
