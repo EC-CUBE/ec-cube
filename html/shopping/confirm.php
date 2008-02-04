@@ -28,7 +28,7 @@ class LC_Page {
 		 「戻る」ボタン使用時の有効期限切れ表示を抑制する。
 		 private-no-expire:クライアントのキャッシュを許可する。
 		*/
-		session_cache_limiter('private-no-expire');		
+		session_cache_limiter('private-no-expire');
 
 	}
 }
@@ -107,18 +107,15 @@ case 'confirm':
 		$order_id = $objQuery->get_auto_increment("dtb_order");
 	}
 	$arrData["order_id"] = $order_id;
-    
+
     // セッション情報を保持
     $arrData['session'] = serialize($_SESSION);
-    	
-    // セッション情報を保持
-    $arrData['session'] = serialize($_SESSION);
-    
+
 	// 集計結果を受注一時テーブルに反映
 	sfRegistTempOrder($uniqid, $arrData);
 	// 正常に登録されたことを記録しておく
 	$objSiteSess->setRegistFlag();
-	
+
 	// 決済方法により画面切替
 	if(!empty($module_id)) {
 		$_SESSION["payment_id"] = $arrData['payment_id'];
