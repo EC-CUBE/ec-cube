@@ -258,7 +258,8 @@ class LC_Page_Entry extends LC_Page {
 
         // 空メール
         if (isset($_SESSION['mobile']['kara_mail_from'])) {
-            $this->tpl_kara_mail_from = $_POST['email'] = $_SESSION['mobile']['kara_mail_from'];
+            $_POST['email'] = $_SESSION['mobile']['kara_mail_from'];
+            $this->tpl_kara_mail_from = $_POST['email'];
         } elseif (MOBILE_USE_KARA_MAIL) {
             $token = $objMobile->gfPrepareKaraMail('entry/index.php');
             if ($token !== false) {
