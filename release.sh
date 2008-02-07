@@ -2,7 +2,7 @@
 
 CURRENT_DIR=`pwd`
 TMP_DIR=/tmp
-SVN_PATH=file:///home/svn/open/branches/feature-module-update
+SVN_PATH=file:///home/svn/open/branches/version-2
 ECCUBE_VERSION=2.0.1
 WRK_DIR=eccube-$ECCUBE_VERSION
 
@@ -47,10 +47,11 @@ tar cfp $WRK_DIR.tar $WRK_DIR
 gzip -9 $WRK_DIR.tar
 mv $WRK_DIR.tar.gz $CURRENT_DIR/
 
-echo "create tar archive..."
+echo "create zip archive..."
 zip -r $WRK_DIR.zip $WRK_DIR
 mv $WRK_DIR.zip $CURRENT_DIR/
 rm -rf $WRK_DIR
 
 echo "finished successful!"
 echo $CURRENT_DIR/$WRK_DIR.tar.gz
+echo $CURRENT_DIR/$WRK_DIR.zip
