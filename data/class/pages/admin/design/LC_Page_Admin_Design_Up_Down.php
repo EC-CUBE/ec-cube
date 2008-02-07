@@ -65,12 +65,12 @@ class LC_Page_Admin_Design_Up_Down extends LC_Page {
 		$objSession = new SC_Session();
 		SC_Utils::sfIsSuccess($objSession);
 		$this->now_template = $this->lfGetNowTemplate();
-		
+
 		// uniqidをテンプレートへ埋め込み
 		$this->uniqid = $objSession->getUniqId();
-		
+
 		switch($this->lfGetMode()) {
-		
+
 		// ダウンロードボタン押下時の処理
 		case 'download':
 		    break;
@@ -101,12 +101,12 @@ class LC_Page_Admin_Design_Up_Down extends LC_Page {
 		    $this->lfAddTemplates($objForm, $objUpFile);
 		    $this->tpl_onload = "alert('テンプレートファイルをアップロードしました。');";
 		    break;
-		
+
 		// 初回表示
 		default:
 		    break;
 		}
-		
+
 		// 画面の表示
 		$objView = new SC_AdminView();
 		$objView->assignobj($this);
@@ -141,7 +141,7 @@ class LC_Page_Admin_Design_Up_Down extends LC_Page {
 	    $pkg_dir = SMARTY_TEMPLATES_DIR . $objForm->getValue('template_code');
 	    $objUpFile = new SC_UploadFile(TEMPLATE_TEMP_DIR, $pkg_dir);
 	    $objUpFile->addFile("テンプレートファイル", 'template_file', array(), TEMPLATE_SIZE, true, 0, 0, false);
-	
+
 	    return $objUpFile;
 	}
 	/**
@@ -152,11 +152,11 @@ class LC_Page_Admin_Design_Up_Down extends LC_Page {
 	 */
 	function lfInitUpload() {
 	    $objForm = new SC_FormParam;
-	
+
 	    $objForm->addParam("テンプレートコード", "template_code", STEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK", "ALNUM_CHECK"));
 	    $objForm->addParam("テンプレート名", "template_name", STEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
 	    $objForm->setParam($_POST);
-	
+
 	    return $objForm;
 	}
 	/**
@@ -170,14 +170,14 @@ class LC_Page_Admin_Design_Up_Down extends LC_Page {
 	    if (!empty($arrErr)) {
 	        return $arrErr;
 	    }
-	
+
 	    $arrForm = $objForm->getHashArray();
-	
+
 	    // 同名のフォルダが存在する場合はエラー
 	    if(file_exists(USER_TEMPLATE_PATH . $arrForm['template_code'])) {
 	        $arrErr['template_code'] = "※ 同名のファイルがすでに存在します。<br/>";
 	    }
-	
+
 	    // 登録不可の文字列チェック
 	    $arrIgnoreCode = array(
 	        'admin', 'mobile', 'default'
@@ -185,14 +185,14 @@ class LC_Page_Admin_Design_Up_Down extends LC_Page {
 	    if(in_array($arrForm['template_code'], $arrIgnoreCode)) {
 	        $arrErr['template_code'] = "※ このテンプレートコードは使用できません。<br/>";
 	    }
-	
+
 	    // DBにすでに登録されていないかチェック
 	    $objQuery = new SC_Query();
 	    $ret = $objQuery->count("dtb_templates", "template_code = ?", array($arrForm['template_code']));
 	    if(!empty($ret)) {
 	        $arrErr['template_code'] = "※ すでに登録されているテンプレートコードです。<br/>";
 	    }
-	
+
 	    // ファイルの拡張子チェック(.tar/tar.gzのみ許可)
 	    $errFlag = true;
 	    $array_ext = explode(".", $_FILES['template_file']['name']);
@@ -208,11 +208,11 @@ class LC_Page_Admin_Design_Up_Down extends LC_Page {
 	    if ($ext== 'tar.gz') {
 	        $errFlag = false;
 	    }
-	
+
 	    if($errFlag) {
 	        $arrErr['template_file'] = "※ アップロードするテンプレートファイルで許可されている形式は、tar/tar.gzです。<br />";
 	    }
-	
+
 	    return $arrErr;
 	}
 	/**
@@ -233,22 +233,22 @@ class LC_Page_Admin_Design_Up_Down extends LC_Page {
 	    if(!file_exists($compile_dir)) {
 		    mkdir($compile_dir);
 	    }
-	    	    
+
 	    // 一時フォルダから保存ディレクトリへ移動
 	    $objUpFile->moveTempFile();
-	    
+
 	    // 解凍
 	    SC_Helper_FileManager::unpackFile($template_dir . "/" . $_FILES['template_file']['name']);
 	    // ユーザデータの下のファイルをコピーする
-        $from_dir = SMARTY_TEMPLATES_DIR . $template_code . "/_packages/";	    
+        $from_dir = SMARTY_TEMPLATES_DIR . $template_code . "/_packages/";
 	    $to_dir = USER_PATH . "packages/" . $template_code . "/";
 	    SC_Utils::sfMakeDir($to_dir);
         SC_Utils::sfCopyDir($from_dir, $to_dir);
-	    
+
 	    // DBにテンプレート情報を保存
 	    $this->lfRegisterTemplates($objForm->getHashArray());
 	}
-	
+
 	/**
 	 * dtb_templatesへ入力内容を登録する.
 	 *
@@ -256,8 +256,11 @@ class LC_Page_Admin_Design_Up_Down extends LC_Page {
 	 * @return void
 	 */
 	function lfRegisterTemplates($arrForm) {
-	    $objQuery = new SC_Query();
-	    $objQuery->insert('dtb_templates', $arrForm);
+        $objQuery = new SC_Query();
+        $sqlval = $arrForm;
+        $sqlval['create_date'] = "now()";
+        $sqlval['update_date'] = "now()";
+        $objQuery->insert('dtb_templates', $sqlval);
 	}
 
 	/**
@@ -272,7 +275,7 @@ class LC_Page_Admin_Design_Up_Down extends LC_Page {
 	        'include',
 	        'templates'
 	    );
-	
+
 	    foreach ($arrDirs as $dir) {
 	        $from = USER_PATH .  $dir;
 	        SC_Utils::sfCopyDir($from, $to, '', true);
@@ -287,7 +290,7 @@ class LC_Page_Admin_Design_Up_Down extends LC_Page {
 	function lfCopyTplPackage($to) {
 	    $nowTpl = $this->lfGetNowTemplate();
 	    if (!$nowTpl) return;
-	
+
 	    $from = TPL_PKG_PATH . $nowTpl . '/';
 	    SC_Utils::sfCopyDir($from, $to, '');
 	}
@@ -304,6 +307,6 @@ class LC_Page_Admin_Design_Up_Down extends LC_Page {
 	        return $arrRet[0]['top_tpl'];
 	    }
 	    return null;
-	}    
+	}
 }
 ?>
