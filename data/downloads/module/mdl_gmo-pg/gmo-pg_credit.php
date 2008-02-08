@@ -135,7 +135,7 @@ case 'regist':
     // ExecTrainで通信エラーなしの場合
     if (!$access_err && !$credit_err) {
         // 3Dセキュアが有効な場合はリダイレクトページを出力する
-        if (lfEnable3D()) {
+        if (lfEnable3D() && isset($arrExecRet['ACSUrl'])) {
             gfPrintLog('-> 3D secure is enable.', GMO_LOG_PATH);
             $_SESSION['GMO']['3d']['memo'] = array(
                 'memo02' => serialize(array()),
@@ -427,8 +427,9 @@ function lfGetPostArray($text) {
 
 function lfParseExecResponse($queryString) {
     // 3Dセキュアでない場合はlfGetPostArray()でparseする
-    if (!lfEnable3D()) {
-        return lfGetPostArray($queryString);
+    $arrRet = lfGetPostArray($queryString);
+    if (empty($arrRet['ACSUrl'])) {
+        return $arrRet;
     }
 
     $arrRet = array();
