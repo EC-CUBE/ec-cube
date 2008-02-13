@@ -137,7 +137,7 @@ class LC_Page_Shopping extends LC_Page {
             $this->lfSetNonMember($this);
             // ※breakなし
         default:
-            if(isset($_GET['form']) && $_GET['from'] == 'nonmember') {
+            if(isset($_GET['from']) && $_GET['from'] == 'nonmember') {
                 $this->lfSetNonMember($this);
             }
             // ユーザユニークIDの取得
