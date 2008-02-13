@@ -212,11 +212,9 @@ class LC_Page {
 
         // $path が / で始まっている場合
         if (substr($path, 0, 1) == "/") {
-            $realPath = realpath(substr_replace(HTML_PATH, "",
-                                strlen(HTML_PATH) - strlen(URL_DIR),
-                                strlen(URL_DIR)) . $path);
+            $realPath = realpath(HTML_PATH . substr_replace($path, "", 0, strlen(URL_DIR)));
+        // 相対パスの場合
         } else {
-            // 相対パスの場合
             $realPath = realpath($path);
         }
 
