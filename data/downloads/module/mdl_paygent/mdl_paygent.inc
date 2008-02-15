@@ -530,7 +530,7 @@ function sfPaygentResponse($telegram_kind, $objPaygent, $uniqid, $arrInput) {
 		}
 		$arrMemo['receipt_number'] = sfSetConvMSG($receipt_num_name, $arrRes[0]['receipt_number']);
 		// 払込票URL(PC) ： セブンイレブンの場合のみ払込票URLが有効なので表示する。
-		if($arrRes[0]['receipt_print_url'] != "" && $arrInput['cvs_company_id'] == CODE_SEVENELEVEN) {
+		if($arrInput['cvs_company_id'] == CODE_SEVENELEVEN && !GC_MobileUserAgent::isMobile()) {
 			$arrMemo['receipt_print_url'] = sfSetConvMSG("払込票URL", $arrRes[0]['receipt_print_url']);
 		}
 		// 確認番号 ： ローソン，ファミリーマートのみ確認番号が必要なので表示する。
@@ -554,8 +554,7 @@ function sfPaygentResponse($telegram_kind, $objPaygent, $uniqid, $arrInput) {
 			$arrMemo['help_url'] = sfSetConvMSG("お支払方法の説明", "http://www.paygent.co.jp/mb/pay_help/conv.html");
 		} else {
 			$arrMemo['help_url'] = sfSetConvMSG("お支払方法の説明", "http://www.paygent.co.jp/service/pay_cvs.html");
-		} 
-				
+		}
 		// 受注テーブルに保存
 		$arrVal["memo02"] = serialize($arrMemo);
 		// 初期ステータスを設定する。
@@ -576,7 +575,6 @@ function sfPaygentResponse($telegram_kind, $objPaygent, $uniqid, $arrInput) {
 		} else {
 			$arrMemo['help_url'] = sfSetConvMSG("お支払方法の説明", "http://www.paygent.co.jp/service/pay_atm.html");
 		}
-		
 		// 受注テーブルに保存
 		$arrVal["memo02"] = serialize($arrMemo);
 		// 初期ステータスを設定する。
