@@ -79,7 +79,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
 
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
-        switch($_POST['mode']) {
+        switch ($_POST['mode']) {
             case 'csv_upload':
                 $err = false;
                 // エラーチェック
@@ -98,7 +98,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
                 // IEのために256バイト空文字出力
                 echo str_pad('',256);
 
-                if(empty($arrErr['csv_file'])) {
+                if (empty($arrErr['csv_file'])) {
                     // 一時ファイル名の取得
                     $filepath = $this->objUpFile->getTempFilePath('csv_file');
                     // エンコード
@@ -117,13 +117,13 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
 
                     echo "■　CSV登録進捗状況 <br/><br/>\n";
 
-                    while(!feof($fp) && !$err) {
+                    while (!feof($fp) && !$err) {
                         $arrCSV = fgetcsv($fp, CSV_LINE_MAX);
 
                         // 行カウント
                         $line++;
 
-                        if($line <= 1) {
+                        if ($line <= 1) {
                             continue;
                         }
 
@@ -131,12 +131,12 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
                         $max = count($arrCSV);
 
                         // 項目数が1以下の場合は無視する
-                        if($max <= 1) {
+                        if ($max <= 1) {
                             continue;
                         }
 
                         // 項目数チェック
-                        if($max != $colmax) {
+                        if ($max != $colmax) {
                             echo "※ 項目数が" . $max . "個検出されました。項目数は" . $colmax . "個になります。</br>\n";
                             $err = true;
                         } else {
@@ -151,7 +151,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
                         }
 
                         // 入力エラーチェック
-                        if(count($arrCSVErr) > 0) {
+                        if (count($arrCSVErr) > 0) {
                             echo "<font color=\"red\">■" . $line . "行目でエラーが発生しました。</font></br>\n";
                             foreach($arrCSVErr as $val) {
                                 $this->printError($val);
@@ -159,18 +159,18 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
                             $err = true;
                         }
 
-                        if(!$err) {
+                        if (!$err) {
                             $this->lfRegistProduct($objQuery, $line);
                             $regist++;
                         }
                         $arrParam = $this->objFormParam->getHashArray();
 
-                        if(!$err) echo $line." / ".$rec_count. "行目　（カテゴリID：".$arrParam['category_id']." / カテゴリ名：".$arrParam['category_name'].")\n<br />";
+                        if (!$err) echo $line." / ".$rec_count. "行目　（カテゴリID：".$arrParam['category_id']." / カテゴリ名：".$arrParam['category_name'].")\n<br />";
                         flush();
                     }
                     fclose($fp);
 
-                    if(!$err) {
+                    if (!$err) {
                         $objQuery->commit();
                         echo "■" . $regist . "件のレコードを登録しました。";
                         // カテゴリ件数カウント関数の実行
@@ -211,8 +211,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
      * @return void
      */
     function lfInitFile() {
-        $this->objUpFile->addFile("CSVファイル", 'csv_file', array('csv'),
-        CSV_SIZE, true, 0, 0, false);
+        $this->objUpFile->addFile("CSVファイル", 'csv_file', array('csv'), CSV_SIZE, true, 0, 0, false);
     }
 
     /**
@@ -238,19 +237,13 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
         $arrRet = $this->objFormParam->getHashArray();
         
         //カテゴリID
-        $update = false;
-        if($arrRet['category_id'] != ""){
+        if ($arrRet['category_id'] == 0) {
+            $category_id = $objQuery->max("dtb_category", "category_id") + 1;
+            $sqlval['category_id'] = $category_id;
+            $update = false;
+        } else {
             $sqlval['category_id'] = $arrRet['category_id'];
             $update = true;
-        }else{
-            $category_id = $objQuery->max("dtb_category","category_id")+1;
-            $sqlval['category_id'] = $category_id;
-            $count = $objQuery->count("dtb_category", "category_id = ?", array($arrRet['category_id']));
-            if($count == 0){
-                $update = false;
-            }else{
-                $update = true;
-            }
         }
         
         // カテゴリ名
@@ -262,27 +255,28 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
             $sqlval['level'] = 1;
         } else {
             $sqlval['parent_category_id'] = $arrRet['parent_category_id'];
-            $parent_level = $objQuery->get('dtb_category','level',"category_id = ?",array($sqlval['parent_category_id']));
-            $sqlval['level'] = $parent_level+1;
+            $parent_level = $objQuery->get("dtb_category", "level", "category_id = ?", array($sqlval['parent_category_id']));
+            $sqlval['level'] = $parent_level + 1;
         }
         
         // その他
         $time = date("Y-m-d H:i:s");
-        if($line != "") {
+        if ($line != "") {
             $microtime = sprintf("%06d", $line);
             $time .= ".$microtime";
         }
         $sqlval['update_date'] = $time;
         $sqlval['creator_id'] = $_SESSION['member_id'];
-
-        // UPDATE
-        if($update) {
+        
+        // 更新
+        if ($update) {
             echo "UPDATE　";
             $where = "category_id = ?";
             $objQuery->update("dtb_category", $sqlval, $where, array($sqlval['category_id']));
         
         // 新規登録
         } else {
+            echo "INSERT　";
             $sqlval['create_date'] = $time;
             // ランク
             if ($sqlval['parent_category_id'] == 0) {
@@ -297,7 +291,6 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
                 $sqlup = "UPDATE dtb_category SET rank = (rank + 1) WHERE rank >= ?";
                 $objQuery->exec($sqlup, array($sqlval['rank']));
             }
-            echo "INSERT　";
             $objQuery->insert("dtb_category", $sqlval);
         }
     }
@@ -321,25 +314,25 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
         }
         
         // 存在する親カテゴリIDかチェック
-        if(count($objErr->arrErr) == 0) {
-            if($parent_category_id != 0){
+        if (count($objErr->arrErr) == 0) {
+            if ($parent_category_id != 0){
                 $count = $objQuery->count("dtb_category", "category_id = ?", array($parent_category_id));
-                if($count == 0) {
+                if ($count == 0) {
                     $objErr->arrErr['parent_category_id'] = "※ 指定の親カテゴリID(".$parent_category_id.")は、存在しません。";
                 }
             }
         }
         
         // 階層チェック
-        if(!isset($objErr->arrErr['category_name']) && !isset($objErr->arrErr['parent_category_id'])) {
+        if (!isset($objErr->arrErr['category_name']) && !isset($objErr->arrErr['parent_category_id'])) {
             $level = $objQuery->get("dtb_category", "level", "category_id = ?", array($parent_category_id));
-            if($level >= LEVEL_MAX) {
+            if ($level >= LEVEL_MAX) {
                 $objErr->arrErr['category_name'] = "※ ".LEVEL_MAX."階層以上の登録はできません。<br>";
             }
         }
 
         // 重複チェック
-        if(!isset($objErr->arrErr['category_name']) && !isset($objErr->arrErr['parent_category_id'])) {
+        if (!isset($objErr->arrErr['category_name']) && !isset($objErr->arrErr['parent_category_id'])) {
             $where = "parent_category_id = ? AND category_name = ?";
             $arrCat = $objQuery->select("category_id, category_name", "dtb_category", $where, array($parent_category_id, $arrRet['category_name']));
             if (empty($arrCat)) {
