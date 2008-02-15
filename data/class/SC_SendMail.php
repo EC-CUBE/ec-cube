@@ -203,18 +203,16 @@ class SC_SendMail {
         $arrHeader['Subject'] = $this->subject;
         $arrHeader['From'] = $this->from;
         $arrHeader['Return-Path'] = $this->return_path;
-
         if($this->reply_to != "") {
             $arrHeader['Reply-To'] = $this->reply_to;
         }
-
         if($this->cc != "") {
             $arrHeader['Cc'] = $this->cc;
         }
-
         if($this->bcc != "") {
             $arrHeader['Bcc'] = $this->bcc;
         }
+        $arrHeader['Date'] = date("D, j M Y H:i:s O");
         return $arrHeader;
     }
 
