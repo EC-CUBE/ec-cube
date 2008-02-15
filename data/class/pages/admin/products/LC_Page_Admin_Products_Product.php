@@ -561,12 +561,12 @@ class LC_Page_Admin_Products_Product extends LC_Page {
             $objErr->doFunc(array("通常価格", "price01", PRICE_LEN), array("ZERO_CHECK", "SPTAB_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
             $objErr->doFunc(array("商品価格", "price02", PRICE_LEN), array("EXIST_CHECK", "NUM_CHECK", "ZERO_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
 
-            if(isset($array['stock_unlinited']) && $array['stock_unlimited'] != "1") {
+            if(!isset($array['stock_unlinited']) && $array['stock_unlimited'] != "1") {
                 $objErr->doFunc(array("在庫数", "stock", AMOUNT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
             }
         }
 
-        if(isset($array['sale_unlimited']) && $array['sale_unlimited'] != "1") {
+        if(!isset($array['sale_unlimited']) && $array['sale_unlimited'] != "1") {
             $objErr->doFunc(array("購入制限", "sale_limit", AMOUNT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "ZERO_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
         }
 
