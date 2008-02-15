@@ -63,8 +63,6 @@ class LC_Page_Mypage_Delivery extends LC_Page {
     function process() {
         $objView = new SC_SiteView();
         $objCustomer = new SC_Customer();
-        $objQuery = new SC_Query();
-        $objConn = new SC_DBConn();
 
         //ログイン判定
         if(!$objCustomer->isLoginSuccess()) {
@@ -80,40 +78,32 @@ class LC_Page_Mypage_Delivery extends LC_Page {
         $objLayout = new SC_Helper_PageLayout_Ex();
         $objLayout->sfGetPageLayout($this, false, "mypage/index.php");
 
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
+        $mode = isset($_POST['mode']) ? $_POST['mode'] : '';
+        $customerId = $objCustomer->getValue('customer_id');
 
-        //削除
-        if($_POST['mode'] == 'delete') {
-            //不正アクセス判定
-            $flag = $objQuery->count("dtb_other_deliv", "customer_id=? AND other_deliv_id=?", array($objCustomer->getValue('customer_id'), $_POST['other_deliv_id']));
-            if($flag > 0) {
-                //削除
-                $objQuery->delete("dtb_other_deliv", "other_deliv_id=?", array($_POST['other_deliv_id']));
-            } else {
+        switch($mode) {
+
+        // お届け先の削除
+        case 'delete':
+            $objForm = $this->initParam();
+            if ($objForm->checkError()) {
                 SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
+                exit;
             }
+
+            $this->deleteOtherDeliv($customerId, $objForm->getValue('other_deliv_id'));
+            break;
+
+        // お届け先の表示
+        default:
+            break;
         }
 
-        $this->tpl_pageno = isset($_POST['pageno']) ? $_POST['pageno'] : "";
+        //別のお届け先情報
+        $this->arrOtherDeliv = $this->getOtherDeliv($customerId);
 
-        $from = "dtb_other_deliv";
-        $where = "customer_id=?";
-        $arrval = array($objCustomer->getValue('customer_id'));
-        $order = "other_deliv_id DESC";
-
-        //お届け先登録件数取得
-        $linemax = $objQuery->count($from, $where, $arrval);
-
-        $this->tpl_linemax = $linemax;
-
-        // 表示順序
-        $objQuery->setorder($order);
-
-        //別のお届け先情報表示
-        $this->arrOtherDeliv = $objQuery->select("*", $from, $where, $arrval);
-
-        //お届け先登録数をテンプレートに渡す
-        $objPge->deliv_cnt = count($this->arrOtherDeliv);
+        //お届け先登録数
+        $this->tpl_linemax = count($this->arrOtherDeliv);;
 
         $objView->assignobj($this);
         $objView->display(SITE_FRAME);
@@ -126,6 +116,44 @@ class LC_Page_Mypage_Delivery extends LC_Page {
      */
     function destroy() {
         parent::destroy();
+    }
+
+    /**
+     * フォームパラメータの初期化
+     *
+     * @return SC_FormParam
+     */
+    function initParam() {
+        $objForm = new SC_FormParam();
+        $objForm->addParam('お届け先ID', 'other_deliv_id', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objForm->setParam($_POST);
+        $objForm->convParam();
+        return $objForm;
+    }
+
+    /**
+     * お届け先の取得
+     *
+     * @param integer $customerId
+     * @return array
+     */
+    function getOtherDeliv($customerId) {
+        $objQuery = new SC_Query;
+        $objQuery->setorder('other_deliv_id DESC');
+        $arrRet = $objQuery->select('*', 'dtb_other_deliv', 'customer_id = ?', array($customerId));
+        return empty($arrRet) ? array() : $arrRet;
+    }
+
+    /**
+     * お届け先の削除
+     *
+     * @param integer $customerId
+     * @param integer $delivId
+     */
+    function deleteOtherDeliv($customerId, $delivId) {
+        $where = 'customer_id = ? AND other_deliv_id = ?';
+        $objQuery = new SC_Query;
+        $objQuery->delete("dtb_other_deliv", $where, array($customerId, $delivId));
     }
 }
 ?>
