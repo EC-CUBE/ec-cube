@@ -175,7 +175,7 @@ class LC_Page_Inquiry extends LC_Page {
 
 
         //----　ページ表示
-        $objView->_smarty->register_modifier("lfArray_Search_key_Smarty", array("LC_Page_Inquiry", "lfArray_Search_key_Smarty"));
+        $objView->_smarty->register_function("lfArray_Search_key_Smarty", array("LC_Page_Inquiry", "lfArray_Search_key_Smarty"));
         $objView->assignobj($this);
         $objView->display($this->tpl_mainpage);
     }
