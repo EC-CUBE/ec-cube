@@ -63,7 +63,7 @@
 								</tr>
 								<tr>
 									<td background="<!--{$TPL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$TPL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-									<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--コンテンツタイトル-->カテゴリー設定</span></td>
+									<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--コンテンツタイトル-->レビュー編集</span></td>
 									<td background="<!--{$TPL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 								</tr>
 								<tr>
@@ -91,7 +91,7 @@
 									<td bgcolor="#ffffff"><!--{$arrReview.create_date|sfDispDBDate}--></td>
 								</tr>
 								<tr class="fs12n">
-									<td bgcolor="#f2f1ec">投稿者名</td>
+									<td bgcolor="#f2f1ec">投稿者名<span class="red"> *</span></td>
 									<td bgcolor="#ffffff"><span class="red12"><!--{$arrErr.reviewer_name}--></span>
 									<input type="text" class="box60" name="reviewer_name" value="<!--{$arrReview.reviewer_name|escape}-->" style="<!--{$arrErr.reviewer_name|sfGetErrorColor}-->" size=30><span class="red12"></td>
 								</tr>
@@ -105,7 +105,7 @@
 									<td bgcolor="#ffffff"><!--{html_radios_ex name="sex" options=$arrSex selected=$arrReview.sex}--></td>
 								</tr>
 								<tr class="fs12n">
-									<td bgcolor="#f2f1ec">おすすめレベル</td>
+									<td bgcolor="#f2f1ec">おすすめレベル<span class="red"> *</span></td>
 									<td bgcolor="#ffffff">
 									<!--{assign var=key value="recommend_level"}-->
 									<span class="red12"><!--{$arrErr.recommend_level}--></span>
@@ -116,12 +116,12 @@
 									</td>
 								</tr>
 								<tr class="fs12n">
-									<td bgcolor="#f2f1ec">タイトル</td>
+									<td bgcolor="#f2f1ec">タイトル<span class="red"> *</span></td>
 									<td bgcolor="#ffffff"><span class="red12"><!--{$arrErr.title}--></span>
 									<input type="text" class="box60" name="title" value="<!--{$arrReview.title|escape}-->" style="<!--{$arrErr.title|sfGetErrorColor}-->" size=30><span class="red12"></td>
 								</tr>
 								<tr class="fs12n">
-									<td bgcolor="#f2f1ec">コメント</td>
+									<td bgcolor="#f2f1ec">コメント<span class="red"> *</span></td>
 									<td bgcolor="#ffffff"><span class="red12"><!--{$arrErr.comment}--></span>
 									<textarea name="comment" rows="20" cols="60" class="area60" wrap="soft" style="<!--{$arrErr.comment|sfGetErrorColor}-->" ><!--{$arrReview.comment|escape}--></textarea></td>
 								</tr>
