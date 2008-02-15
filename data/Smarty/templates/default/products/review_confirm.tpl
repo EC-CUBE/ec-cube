@@ -36,7 +36,7 @@
 <meta name="keywords" content="<!--{$arrPageLayout.keyword|escape}-->" />
 <title><!--{$arrSiteInfo.shop_name}-->/お客様の声書き込み（確認ページ）</title>
 </head>
-<body onload="preLoadImg()">
+<body onload="preLoadImg('<!--{$TPL_DIR}-->')">
 <a name="top" id="top"></a>
 <div id="windowcolumn">
   <div id="windowarea">

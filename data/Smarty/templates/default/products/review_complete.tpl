@@ -37,7 +37,7 @@
 <title><!--{$arrSiteInfo.shop_name}-->/お客様の声書き込み（完了ページ）</title>
 </head>
 
-<body onload="preLoadImg()">
+<body onload="preLoadImg('<!--{$TPL_DIR}-->')">
 <div id="windowcolumn">
   <div id="windowarea">
     <h2><img src="<!--{$TPL_DIR}-->img/products/review_title.jpg" width="500" height="40" alt="お客様の声書き込み" /></h2>

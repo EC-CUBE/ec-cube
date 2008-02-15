@@ -36,7 +36,7 @@
 <title><!--{$arrSiteInfo.shop_name}-->/エラー</title>
 </head>
 
-<body onload="preLoadImg('<!--{$smarty.const.URL_DIR}-->')">
+<body onload="preLoadImg('<!--{$TPL_DIR}-->')">
 <noscript>
 <link rel="stylesheet" href="<!--{$smarty.const.URL_DIR}--><!--{$smarty.const.USER_DIR}-->css/common.css" type="text/css" />
 </noscript>

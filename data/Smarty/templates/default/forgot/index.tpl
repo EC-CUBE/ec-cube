@@ -37,7 +37,7 @@
 <title><!--{$arrSiteInfo.shop_name}-->/パスワードを忘れた方(入力ページ)</title>
 </head>
 
-<body onload="preLoadImg('<!--{$smarty.const.URL_DIR}-->')">
+<body onload="preLoadImg('<!--{$TPL_DIR}-->')">
 <noscript>
  <p>JavaScriptを有効にしてご利用下さい</p>
 </noscript>

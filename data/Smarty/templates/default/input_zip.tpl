@@ -37,7 +37,7 @@
 <meta name="keywords" content="<!--{$arrPageLayout.keyword|escape}-->" />
 </head>
 
-<body onload="preLoadImg('<!--{$smarty.const.URL_DIR}-->'); <!--{$tpl_onload}--> <!--{$tpl_start}-->">
+<body onload="preLoadImg('<!--{$TPL_DIR}-->'); <!--{$tpl_onload}--> <!--{$tpl_start}-->">
 <noscript>
   <p>JavaScript を有効にしてご利用下さい.</p>
 </noscript>

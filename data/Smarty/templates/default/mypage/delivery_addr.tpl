@@ -33,7 +33,7 @@
 <title><!--{$arrSiteInfo.shop_name}-->/<!--{$tpl_title|escape}--></title>
 </head>
 
-<body onload="preLoadImg('<!--{$smarty.const.URL_DIR}-->'); <!--{$tpl_onload}-->">
+<body onload="preLoadImg('<!--{$TPL_DIR}-->'); <!--{$tpl_onload}-->">
 <noscript>
   <p><em>JavaScriptを有効にしてご利用下さい.</em></p>
 </noscript>
