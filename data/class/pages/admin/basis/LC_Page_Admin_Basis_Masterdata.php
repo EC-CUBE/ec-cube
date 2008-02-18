@@ -55,6 +55,9 @@ class LC_Page_Admin_Basis_Masterdata extends LC_Page {
      * @return void
      */
     function process() {
+
+        SC_Utils_Ex::sfIsSuccess(new SC_Session);
+
         $objView = new SC_AdminView();
         $this->arrMasterDataName = $this->getMasterDataNames(array("mtb_pref",
                                                                    "mtb_zip",
