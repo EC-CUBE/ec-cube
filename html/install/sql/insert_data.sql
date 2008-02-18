@@ -767,6 +767,7 @@ INSERT INTO mtb_constants VALUES ('CREDIT_HTTP_DOMAIN','"http://rcv.ec-cube.net/
 INSERT INTO mtb_constants VALUES ('CREDIT_HTTP_ANALYZE_PROGRAM','"rcv_credit.php"',37,'決済受信用URL');
 INSERT INTO mtb_constants VALUES ('CREDIT_HTTP_ANALYZE_URL','CREDIT_HTTP_DOMAIN . CREDIT_HTTP_ANALYZE_PROGRAM',38,'決済受信用URL');
 INSERT INTO mtb_constants VALUES ('CHAR_CODE','"UTF-8"',39,'文字コード');
+INSERT INTO mtb_constants VALUES ('LOCALE','"ja_JP.UTF-8"',40,'ロケール設定');
 INSERT INTO mtb_constants VALUES ('ECCUBE_PAYMENT','"EC-CUBE"',41,'決済モジュール付与文言');
 INSERT INTO mtb_constants VALUES ('PEAR_DB_DEBUG','9',42,'PEAR::DBのデバッグモード');
 INSERT INTO mtb_constants VALUES ('LOAD_BATCH_PASS','3600',43,'バッチを実行する最短の間隔(秒)');
