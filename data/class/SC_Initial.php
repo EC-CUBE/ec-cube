@@ -118,7 +118,7 @@ class SC_Initial {
         ini_set("mbstring.internal_encoding", CHAR_CODE);
         ini_set("mbstring.detect_order", "auto");
         ini_set("mbstring.substitute_character", "none");
-        ロケールを明示的に設定
+        //ロケールを明示的に設定
         setlocale(LC_ALL, LOCALE);
     }
 
