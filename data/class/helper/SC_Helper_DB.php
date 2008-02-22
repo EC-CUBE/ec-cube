@@ -563,6 +563,55 @@ class SC_Helper_DB {
     }
 
     /**
+     * カテゴリツリーの取得を複数カテゴリーで行う.
+     *
+     * @param integer $product_id 商品ID
+     * @param bool $count_check 登録商品数のチェックを行う場合 true
+     * @return array カテゴリツリーの配列
+     */
+    function sfGetMultiCatTree($product_id, $count_check = false) {
+        $objQuery = new SC_Query();
+        $col = "";
+        $col .= " cat.category_id,";
+        $col .= " cat.category_name,";
+        $col .= " cat.parent_category_id,";
+        $col .= " cat.level,";
+        $col .= " cat.rank,";
+        $col .= " cat.creator_id,";
+        $col .= " cat.create_date,";
+        $col .= " cat.update_date,";
+        $col .= " cat.del_flg, ";
+        $col .= " ttl.product_count";
+        $from = "dtb_category as cat left join dtb_category_total_count as ttl on ttl.category_id = cat.category_id";
+        // 登録商品数のチェック
+        if($count_check) {
+            $where = "del_flg = 0 AND product_count > 0";
+        } else {
+            $where = "del_flg = 0";
+        }
+        $objQuery->setoption("ORDER BY rank DESC");
+        $arrRet = $objQuery->select($col, $from, $where);
+
+        $arrCategory_id = $this->sfGetCategoryId($product_id, $status);
+
+        $arrCatTree = array();
+        foreach ($arrCategory_id as $pkey => $parent_category_id) {
+            $arrParentID = $this->sfGetParents($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $parent_category_id);
+
+            foreach($arrParentID as $pid) {
+                foreach($arrRet as $key => $array) {
+                    if($array['category_id'] == $pid) {
+                        $arrCatTree[$pkey][] = $arrRet[$key];
+                        break;
+                    }
+                }
+            }
+        }
+
+        return $arrCatTree;
+    }
+
+    /**
      * 親カテゴリーを連結した文字列を取得する.
      *
      * @param integer $category_id カテゴリID
