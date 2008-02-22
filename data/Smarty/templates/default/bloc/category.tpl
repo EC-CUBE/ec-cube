@@ -24,61 +24,42 @@
   <img src="<!--{$TPL_DIR}-->/img/side/title_cat.jpg" width="166" height="35" alt="商品カテゴリー" />
 </h2>
 <div id="categoryarea">
+  <ul id="categorytree">
+  <!--{assign var=preLev value=1}-->
+  <!--{assign var=firstdone value=0}-->
   <!--{section name=cnt loop=$arrTree}-->
-
-      <!--{* 階層を level へ *}-->
-      <!--{assign var=level value="`$arrTree[cnt].level`}-->
-
-      <!--{* 最上位階層のリスト終了タグ *}-->
-      <!--{if $level == 1 && !$smarty.section.cnt.first}-->
-          </dl>
+    <!--{* 表示フラグがTRUEなら表示 *}-->
+    <!--{if $arrTree[cnt].display == 1}-->
+    <!--{assign var=level value=`$arrTree[cnt].level`}-->
+    <!--{assign var=levdiff value=`$level-$preLev`}-->
+      <!--{if $levdiff > 0}-->
+          <ul>
+      <!--{elseif $levdiff == 0 && $firstdone == 1}-->
+          </li>
+      <!--{elseif $levdiff < 0}-->
+        <!--{section name=d loop=`$levdiff*-1`}-->
+            </li>
+          </ul>
+        <!--{/section}-->
+        </li>
       <!--{/if}-->
-
-      <!--{* カテゴリ名を disp_name へ *}-->
-      <!--{assign var=disp_name value="`$arrTree[cnt].category_name`"}-->
-
-      <!--{* 表示カテゴリのみ *}-->
-      <!--{if $arrTree[cnt].display == 1}-->
-
-          <!--{* 選択したカテゴリ *}-->
-          <!--{if in_array($arrTree[cnt].category_id, $tpl_category_id) || in_array($arrTree[cnt].category_id, $root_parent_id)}-->
-              <!--{if $level == 1}-->
-                  <dl><dt class="onmark">
-              <!--{else}-->
-                  <dd>
-              <!--{/if}-->
-
-          <!--{* 未選択カテゴリ *}-->
-          <!--{else}-->
-              <!--{if $level == 1}-->
-                  <dl><dt>
-              <!--{else}-->
-                  <dd>
-              <!--{/if}-->
-          <!--{/if}-->
-
-          <!--{* 選択したカテゴリ *}-->
-          <!--{if in_array($arrTree[cnt].category_id, $tpl_category_id) }-->
-              <a href="<!--{$smarty.const.URL_DIR}-->products/list.php?category_id=<!--{$arrTree[cnt].category_id}-->" class="onlink"><!--{$disp_name|sfCutString:20|escape}-->(<!--{$arrTree[cnt].product_count|default:0}-->)</a>
-
-          <!--{* 未選択カテゴリ *}-->
-          <!--{else}-->
-              <a href="<!--{$smarty.const.URL_DIR}-->products/list.php?category_id=<!--{$arrTree[cnt].category_id}-->"><!--{$disp_name|sfCutString:20|escape}-->(<!--{$arrTree[cnt].product_count|default:0}-->)</a>
-          <!--{/if}-->
-
-          <!--{if $level == 1}-->
-            </dt>
-          <!--{else}-->
-            </dd>
-          <!--{/if}-->
-
+    <li class="level<!--{$level}--><!--{if in_array($arrTree[cnt].category_id, $tpl_category_id) }--> onmark<!--{/if}-->"><a href="<!--{$smarty.const.URL_DIR}-->products/list.php?category_id=<!--{$arrTree[cnt].category_id}-->"<!--{if in_array($arrTree[cnt].category_id, $tpl_category_id) }--> class="onlink"<!--{/if}-->><!--{$arrTree[cnt].category_name|escape}-->(<!--{$arrTree[cnt].product_count|default:0}-->)</a>
+    <!--{if $firstdone == 0}--><!--{assign var=firstdone value=1}--><!--{/if}-->
+    <!--{assign var=preLev value=`$level`}-->
+    <!--{/if}-->
+    <!--{* セクションの最後に閉じタグを追加 *}-->
+    <!--{if $smarty.section.cnt.last}-->
+      <!--{if $preLev-1 > 0 }-->
+        <!--{section name=d loop=`$preLev-1`}-->
+          </li>
+        </ul>
+        <!--{/section}-->
+        </li>
+      <!--{else}-->
+        </li>
       <!--{/if}-->
-
-      <!--{* 最後に閉じるリスト終了タグ *}-->
-      <!--{if $smarty.section.cnt.last}-->
-        </dl>
-      <!--{/if}-->
-
-    <!--{/section}-->
+    <!--{/if}-->
+  <!--{/section}-->
+  </ul>
 </div>
 <!--商品カテゴリーここまで-->

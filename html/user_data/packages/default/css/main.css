@@ -219,35 +219,27 @@ div#cartarea .btn {
 ----------------------------------------------- */
 div#categoryarea {
     width: 144px;
-    padding: 0 10px;
+    padding: 10px;
     border: solid 1px #ccc;
     background-color: #fff1e3;
 }
 
-div#categoryarea dl {
-    padding: 10px 0;
-    background: url("../img/side/line_146.gif") no-repeat bottom;
-}
-
-div#categoryarea dl.end {
-    padding: 10px 0;
-    background: url("") no-repeat bottom;
-}
-
-div#categoryarea dl dt {
+div#categoryarea li {
     padding: 0 0 0 20px;
+    background: url("../img/common/arrow_blue.gif") 0 3px no-repeat;
+}
+div#categoryarea li.onmark {
+    background: url("../img/common/arrow_red.gif") 0 3px no-repeat;
+}
+div#categoryarea li.level1 {
     font-weight: bold;
-    background: url("../img/common/arrow_blue.gif") no-repeat;
 }
-
-div#categoryarea dl dt.onmark {
-    padding: 0 0 0 20px;
-    font-weight: bold;
-    background: url("../img/common/arrow_red.gif") no-repeat;
+div#categoryarea li.level1 li {
+    font-weight: normal;
 }
-
-div#categoryarea dl dd {
-    padding: 0 0 0 20px;
+div#categoryarea li a {
+    display: block;
+    padding: 3px 0;
 }
 
 a.onlink {  text-decoration: underline; }
