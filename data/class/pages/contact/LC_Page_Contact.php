@@ -37,6 +37,28 @@ class LC_Page_Contact extends LC_Page {
     // {{{ functions
 
     /**
+     * フォーム値変換用カラム
+     *
+     *
+     */
+     var $arrConvertColumn = array(
+                                     array(  "column" => "name01",		"convert" => "aKV" ),
+                                     array(  "column" => "name02",		"convert" => "aKV" ),
+                                     array(  "column" => "kana01",		"convert" => "CKV" ),
+                                     array(  "column" => "kana02",		"convert" => "CKV" ),
+                                     array(  "column" => "zip01",		"convert" => "n" ),
+                                     array(  "column" => "zip02",		"convert" => "n" ),
+                                     array(  "column" => "pref",		"convert" => "n" ),
+                                     array(  "column" => "addr01",		"convert" => "aKV" ),
+                                     array(  "column" => "addr02",		"convert" => "aKV" ),
+                                     array(  "column" => "email",		"convert" => "a" ),
+                                     array(  "column" => "tel01",		"convert" => "n" ),
+                                     array(  "column" => "tel02",		"convert" => "n" ),
+                                     array(  "column" => "tel03",		"convert" => "n" ),
+                                     array(  "column" => "contents",   "convert" => "aKV")
+                                  );
+
+    /**
      * Page を初期化する.
      *
      * @return void
@@ -75,66 +97,25 @@ class LC_Page_Contact extends LC_Page {
         $layout->sfGetPageLayout($this, false, DEF_LAYOUT);
 
         //フォーム値変換用カラム
-        $arrConvertColumn = array(
-                                     array(  "column" => "name01",		"convert" => "aKV" ),
-                                     array(  "column" => "name02",		"convert" => "aKV" ),
-                                     array(  "column" => "kana01",		"convert" => "CKV" ),
-                                     array(  "column" => "kana02",		"convert" => "CKV" ),
-                                     array(  "column" => "zip01",		"convert" => "n" ),
-                                     array(  "column" => "zip02",		"convert" => "n" ),
-                                     array(  "column" => "pref",		"convert" => "n" ),
-                                     array(  "column" => "addr01",		"convert" => "aKV" ),
-                                     array(  "column" => "addr02",		"convert" => "aKV" ),
-                                     array(  "column" => "email",		"convert" => "a" ),
-                                     array(  "column" => "tel01",		"convert" => "n" ),
-                                     array(  "column" => "tel02",		"convert" => "n" ),
-                                     array(  "column" => "tel03",		"convert" => "n" ),
-                                     array(  "column" => "contents",   "convert" => "aKV")
-                                  );
+        $arrConvertColumn = $this->lfGetConvertColumn();
 
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
         switch ($_POST['mode']) {
             case 'confirm':
-            // エラーチェック
-            $this->arrForm = $_POST;
-            $this->arrForm['email'] = strtolower($_POST['email']);
-            $this->arrForm = $this->lfConvertParam($this->arrForm,$arrConvertColumn);
-            $this->arrErr = $this->lfErrorCheck($this->arrForm);
-            if ( ! $this->arrErr ){
-                // エラー無しで完了画面
-                $this->tpl_mainpage = 'contact/confirm.tpl';
-                $this->tpl_title = 'お問い合わせ(確認ページ)';
-            } else {
-                foreach ($this->arrForm as $key => $val){
-                    $this->$key = $val;
-                }
-            }
-            break;
+              $this->lfContactConfirm();
+              break;
 
             case 'return':
-            foreach ($_POST as $key => $val){
-                $this->$key = $val;
-                }
-            break;
+              $this->lfContactReturn();
+              break;
 
             case 'complete':
-            $this->arrForm = $_POST;
-            $this->arrForm['email'] = strtolower($_POST['email']);
-            $this->arrForm = $this->lfConvertParam($this->arrForm,$arrConvertColumn);
-            $this->arrErr = $this->lfErrorCheck($this->arrForm);
-            if(!$this->arrErr) {
-                $this->lfSendMail($CONF, $this);
-                // 完了ページへ移動する
-                $this->sendRedirect($this->getLocation("./complete.php", array(), true));
-                exit;
-            } else {
-                SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
-            }
-            break;
+              $this->lfContactComplete();
+              break;
 
             default:
-            break;
+              break;
         }
 
         //----　ページ表示
@@ -180,6 +161,59 @@ class LC_Page_Contact extends LC_Page {
 
     // }}}
     // {{{ protected functions
+
+    /**
+     * 確認画面
+     *
+     * @return void
+     */
+    function lfContactConfirm() {
+        // エラーチェック
+        $this->arrForm = $_POST;
+        $this->arrForm['email'] = strtolower($_POST['email']);
+        $this->arrForm = $this->lfConvertParam($this->arrForm,$this->arrConvertColumn);
+        $this->arrErr = $this->lfErrorCheck($this->arrForm);
+        if ( ! $this->arrErr ){
+            // エラー無しで完了画面
+            $this->tpl_mainpage = 'contact/confirm.tpl';
+            $this->tpl_title = 'お問い合わせ(確認ページ)';
+        } else {
+            foreach ($this->arrForm as $key => $val){
+                $this->$key = $val;
+            }
+        }
+    }
+
+    /**
+     * 前に戻る
+     *
+     * @return void
+     */
+    function lfContactReturn() {
+        foreach ($_POST as $key => $val){
+            $this->$key = $val;
+        }
+    }
+
+    /**
+     * 完了ページへ
+     *
+     * @return void
+     */
+    function lfContactComplete() {
+        $this->arrForm = $_POST;
+        $this->arrForm['email'] = strtolower($_POST['email']);
+        $this->arrForm = $this->lfConvertParam($this->arrForm,$this->arrConvertColumn);
+        $this->arrErr = $this->lfErrorCheck($this->arrForm);
+        if(!$this->arrErr) {
+            $this->lfSendMail($CONF, $this);
+            // 完了ページへ移動する
+            $this->sendRedirect($this->getLocation("./complete.php", array(), true));
+            exit;
+        } else {
+            SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
+        }
+    }
 
     //エラーチェック処理部
     function lfErrorCheck($array) {
