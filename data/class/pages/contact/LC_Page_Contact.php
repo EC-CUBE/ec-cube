@@ -96,9 +96,6 @@ class LC_Page_Contact extends LC_Page {
         $layout = new SC_Helper_PageLayout_Ex();
         $layout->sfGetPageLayout($this, false, DEF_LAYOUT);
 
-        //フォーム値変換用カラム
-        $arrConvertColumn = $this->lfGetConvertColumn();
-
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
         switch ($_POST['mode']) {
