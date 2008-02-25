@@ -199,10 +199,16 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page {
         $objErr->doFunc(array("日", "day", INT_LEN), array("SELECT_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
         if(!isset($objErr->arrErr['date'])) {
             $objQuery = new SC_Query();
-            $arrRet = $objQuery->select("count(holiday_id)", "dtb_holiday", "del_flg = 0 AND month = ? AND day = ?", array($_POST['month'], $_POST['day']));
-            // 編集中のレコード以外に同じ名称が存在する場合
+            $where = "del_flg = 0 AND month = ? AND day = ?";
+            $arrval = array($_POST['month'], $_POST['day']);
+            if (!empty($_POST['holiday_id'])) {
+                $where .= " AND holiday_id <> ?";
+                $arrval[] = $_POST['holiday_id'];
+            }
+            $arrRet = $objQuery->select("count(holiday_id)", "dtb_holiday", $where, $arrval);
+            // 編集中のレコード以外に同じ日付が存在する場合
             if ($arrRet[0]['count'] > 0) {
-                $objErr->arrErr['date'] = "※ 既に同じ内容の登録が存在します。<br>";
+                $objErr->arrErr['date'] = "※ 既に同じ日付の登録が存在します。<br>";
             }
         }
         return $objErr->arrErr;
