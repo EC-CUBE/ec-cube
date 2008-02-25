@@ -8,9 +8,15 @@
  */
 
 // ルミーズモジュールバージョン
-define('MDL_REMISE_VERSION', 1.2);
+define('MDL_REMISE_VERSION', 1.3);
 // ルミーズモジュールID
 define("MDL_REMISE_ID", 5);
+
+// カード用結果通知ログパス
+define("REMISE_LOG_PATH_CARD_RET", DATA_PATH . "logs/remise_card_result.log");
+
+// モバイルコンビニ完了テンプレート用ログバス
+define("REMISE_LOG_PATH_CONVENI_RET", DATA_PATH . "logs/remise_cv_finish.log");
 
 // EC-CUBE・ルミーズ共通ID
 define("MDL_REMISE_POST_VALUE", A0000155);
@@ -44,6 +50,8 @@ $arrCreditDivide = array(
 
 // クレジット結果ステータス
 define("REMISE_PAYMENT_CHARGE_OK", "<SDBKDATA>STATUS=800</SDBKDATA>");
+// クレジット結果ステータス(モバイル)
+define("REMISE_PAYMENT_CHARGE_OK_MOBILE", "<SDBKDATA>STATUS=900</SDBKDATA>");
 
 // コンビニ収納受信フラグ(0:自動受信しない 1:自動受信する)
 define("REMISE_CONVENIENCE_RECIVE", 1);
@@ -95,4 +103,19 @@ $arrConvenience = array(
 	,D011 => "ヤマザキデイリーストア"
 );
 
+/**
+ * エリオが使用可能かどうかを返す
+ *
+ * @return boolean
+ */
+function lfIsRemiseELIOEnable() {
+    if (REMISE_ELIO_USE && GC_MobileUserAgent::isNonMobile()) {
+        return true;
+    }
+    return false;
+}
+
+// 決済方法方法(モバイル完了処理に使用)
+define('REMISE_PAY_TYPE_CONVENI', 1);
+define('REMISE_PAY_TYPE_CREDIT', 2);
 ?>

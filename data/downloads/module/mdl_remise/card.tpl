@@ -81,23 +81,17 @@ function lfMethodChecked() {
 				分割払いを選択した場合は、分割回数を選択し、一番下の「ご注文完了ページへ」ボタンをクリックしてください。</td>
 			</tr>
 			<tr><td height="20"></td></tr>
+			<!--{* 戻るボタン用フォーム *}-->
 			<form name="form2" id="form2" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 			<input type="hidden" name="mode" value="">
 			</form>
+			<!--{* 決済入力用フォーム *}-->
 			<form name="form1" id="form1" method="post" action="<!--{$arrSendData.SEND_URL|escape}-->">
-			<input type="hidden" name="SHOPCO" value="<!--{$arrSendData.SHOPCO|escape}-->">
-			<input type="hidden" name="HOSTID" value="<!--{$arrSendData.HOSTID|escape}-->">
-			<input type="hidden" name="S_TORIHIKI_NO" value="<!--{$arrSendData.S_TORIHIKI_NO|escape}-->">
-			<input type="hidden" name="MAIL" value="<!--{$arrSendData.MAIL|escape}-->">
-			<input type="hidden" name="AMOUNT" value="<!--{$arrSendData.AMOUNT|escape}-->">
-			<input type="hidden" name="TAX" value="<!--{$arrSendData.TAX|escape}-->">
-			<input type="hidden" name="TOTAL" value="<!--{$arrSendData.TOTAL|escape}-->">
-			<input type="hidden" name="JOB" value="<!--{$arrSendData.JOB|escape}-->">
-			<input type="hidden" name="ITEM" value="<!--{$arrSendData.ITEM|escape}-->">
-			<input type="hidden" name="RETURL" value="<!--{$arrSendData.RETURL|escape}-->">
-			<input type="hidden" name="NG_RETURL" value="<!--{$arrSendData.NG_RETURL|escape}-->">
-			<input type="hidden" name="EXITURL" value="<!--{$arrSendData.EXITURL|escape}-->">
-			<input type="hidden" name="REMARKS3" value="<!--{$arrSendData.REMARKS3|escape}-->">
+			<!--{foreach from=$arrSendData key=key item=val}-->
+			    <!--{if $key != 'SEND_URL'}-->
+			    <input type="hidden" name="<!--{$key|escape}-->" value="<!--{$val|escape}-->">
+			    <!--{/if}-->
+			<!--{/foreach}-->
 
 			<tr>
 				<td bgcolor="#cccccc">

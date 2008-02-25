@@ -11,14 +11,17 @@ require_once(MODULE_PATH . "mdl_remise/mdl_remise.inc");
 
 class LC_Page {
 	function LC_Page() {
-		$this->tpl_mainpage = MODULE_PATH . "mdl_remise/convenience.tpl";
+        $template = GC_MobileUserAgent::isMobile()
+            ? MODULE_PATH . 'mdl_remise/convenience_mobile.tpl'
+            : MODULE_PATH . 'mdl_remise/convenience.tpl';
+        $this->tpl_mainpage = $template;            // メインテンプレート
 		$this->tpl_title = "コンビニ決済";
 		/*
 		 session_start時のno-cacheヘッダーを抑制することで
 		 「戻る」ボタン使用時の有効期限切れ表示を抑制する。
 		 private-no-expire:クライアントのキャッシュを許可する。
 		*/
-		session_cache_limiter('private-no-expire');		
+		session_cache_limiter('private-no-expire');
 	}
 }
 
@@ -26,7 +29,7 @@ global $arrConvenience;
 global $arrConveni_message;
 
 $objPage = new LC_Page();
-$objView = new SC_SiteView();
+$objView = GC_MobileUserAgent::isMobile() ? new SC_MobileView() : new SC_SiteView();
 $objSiteInfo = $objView->objSiteInfo;
 $arrInfo = $objSiteInfo->data;
 
@@ -70,12 +73,12 @@ switch($_POST["mode"]){
 if (isset($_POST["X-R_CODE"])) {
 
 	$err_detail = "";
-	
+
 	// 通信時エラー
 	if ($_POST["X-R_CODE"] != $arrRemiseErrorWord["OK"]) {
 		$err_detail = $_POST["X-R_CODE"];
 		sfDispSiteError(FREE_ERROR_MSG, "", false, "購入処理中に以下のエラーが発生しました。<br /><br /><br />・" . $err_detail);
-	
+
 	// 通信結果正常
 	} else {
 
@@ -90,10 +93,10 @@ if (isset($_POST["X-R_CODE"])) {
 		if ($arrData["payment_total"] != $_POST["X-TOTAL"]) {
 			sfDispSiteError(FREE_ERROR_MSG, "", false, "購入処理中に以下のエラーが発生しました。<br /><br /><br />・請求金額と支払い金額が違います。");
 		}
-		
+
 		// 正常な推移であることを記録しておく
 		$objSiteSess->setRegistFlag();
-		
+
 		// ルミーズからの値の取得
 		$job_id = lfSetConvMSG("ジョブID(REMISE)", $_POST["X-JOB_ID"]);
 		$payment_limit = lfSetConvMSG("支払い期限", $_POST["X-PAYDATE"]);
@@ -107,21 +110,21 @@ if (isset($_POST["X-R_CODE"])) {
 		} else {
 			$payment_url = lfSetConvMSG("注文番号", $_POST["X-PAY_NO2"]);
 		}
-		
+
 		$arrRet['cv_type'] = $conveni_type;				// コンビニの種類
 		$arrRet['cv_payment_url'] = $payment_url;		// 払込票URL(PC)
 		$arrRet['cv_receipt_no'] = $receipt_no;			// 払込票番号
 		$arrRet['cv_payment_limit'] = $payment_limit;	// 支払い期限
 		$arrRet['title'] = lfSetConvMSG("コンビニ決済", true);
-		
+
 		// 決済送信データ作成
 		$arrModule['module_id'] = MDL_REMISE_ID;
 		$arrModule['payment_total'] = $arrData["payment_total"];
 		$arrModule['payment_id'] = PAYMENT_CONVENIENCE_ID;
-		
+
 		// ステータスは未入金にする
 		$sqlval['status'] = 2;
-		
+
 		// コンビニ決済情報を格納
 		$sqlval['conveni_data'] = serialize($arrRet);
 		$sqlval['memo01'] = PAYMENT_CONVENIENCE_ID;
@@ -137,54 +140,13 @@ if (isset($_POST["X-R_CODE"])) {
 	}
 }
 
-// EC-CUBE側の通知用URL
-$retUrl = SITE_URL . 'shopping/load_payment_module.php?module_id=' . MDL_REMISE_ID;
-$exitUrl = SITE_URL . 'shopping/load_payment_module.php';
-$tel = $arrData["order_tel01"].$arrData["order_tel02"].$arrData["order_tel03"];
-
-// 住所整形
-$pref = $arrPref[$arrData["order_pref"]];
-$address1 = mb_convert_kana($arrData["order_addr01"], "ASKHV");
-$address2 = mb_convert_kana($arrData["order_addr02"], "ASKHV");
-
-// 商品名整形(最大7個のため、商品代金として全体で出力する)
-$itemName = "商品代金";
-$itemPlace = $arrData["payment_total"] - $arrData["deliv_fee"];
-
-$arrSendData = array(
-	'SEND_URL' => $arrPayment[0]["memo05"],		// 接続先URL
-	'S_TORIHIKI_NO' => $arrData["order_id"],		// 請求番号(EC-CUBE)
-	'MAIL' => $arrData["order_email"],				// メールアドレス
-	'NAME1' => $arrData["order_name01"],			// ユーザー名1
-	'NAME2' => $arrData["order_name02"],			// ユーザー名2
-	'KANA1' => $arrData["order_kana01"],			// ユーザー名(カナ)1
-	'KANA2' => $arrData["order_kana02"],			// ユーザー名(カナ)2
-	'TEL' => $tel,									// 電話番号
-	'YUBIN1' => $arrData["order_zip01"],			// 郵便番号1
-	'YUBIN2' => $arrData["order_zip02"],			// 郵便番号2
-	'ADD1' => $pref,								// 住所1
-	'ADD2' => $address1,							// 住所2
-	'ADD3' => $address2,							// 住所3
-	'MSUM_01' => $arrData["subtotal"],				// 金額
-	'TAX' => $arrData["deliv_fee"],					// 送料 + 税
-	'TOTAL' => $arrData["payment_total"],			// 合計金額
-	'SHOPCO' => $arrPayment[0]["memo01"],			// 店舗コード
-	'HOSTID' => $arrPayment[0]["memo02"],			// ホストID
-	'RETURL' => $retUrl,							// 完了通知URL
-	'NG_RETURL' => $retUrl,						// NG完了通知URL
-	'EXITURL' => $exitUrl,							// 戻り先URL
-	'MNAME_01' => $itemName,						// 商品名
-	'MSUM_01' => $itemPlace,						// 商品代金合計(送料+税以外)
-	'REMARKS3' => MDL_REMISE_POST_VALUE
-);
-
-$objPage->arrSendData = $arrSendData;
+$objPage->arrSendData = lfCreateSendData($arrData, $arrPayment, $uniqid);
 $objPage->arrForm =$objFormParam->getHashArray();
 $objView->assignobj($objPage);
 
 // 出力内容をSJISにする(ルミーズ対応)
 mb_http_output(REMISE_SEND_ENCODE);
-$objView->display(MODULE_PATH . "mdl_remise/convenience.tpl");
+$objView->display(SITE_FRAME);
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -192,4 +154,52 @@ function lfSetConvMSG($name, $value){
 	return array("name" => $name, "value" => $value);
 }
 
+function lfCreateSendData($arrData, $arrPayment, $uniqid) {
+    // 電話番号整形
+    $tel = $arrData["order_tel01"].$arrData["order_tel02"].$arrData["order_tel03"];
+    // 住所整形
+    global $arrPref;
+    $pref = $arrPref[$arrData["order_pref"]];
+    $address1 = mb_convert_kana($arrData["order_addr01"], "ASKHV");
+    $address2 = mb_convert_kana($arrData["order_addr02"], "ASKHV");
+
+    $arrSendData = array(
+        'SHOPCO' => $arrPayment[0]["memo01"],           // 店舗コード
+        'HOSTID' => $arrPayment[0]["memo02"],           // ホストID
+        'S_TORIHIKI_NO' => $arrData["order_id"],        // 請求番号(EC-CUBE)
+        'NAME1' => $arrData["order_name01"],            // ユーザー名1
+        'NAME2' => $arrData["order_name02"],            // ユーザー名2
+        'YUBIN1' => $arrData["order_zip01"],            // 郵便番号1
+        'YUBIN2' => $arrData["order_zip02"],            // 郵便番号2
+        'ADD1' => $pref,                                // 住所1
+        'ADD2' => $address1,                            // 住所2
+        'ADD3' => $address2,                            // 住所3
+        'TEL' => $tel,                                  // 電話番号
+        'MAIL' => $arrData["order_email"],              // メールアドレス
+        'TOTAL' => $arrData["payment_total"],           // 合計金額
+        'TAX' => '0',                                   // 送料 + 税
+        'MNAME_01' => "商品代金",                        // 最大7個のため、商品代金として全体で出力する
+        'MSUM_01' => $arrData["payment_total"],         // 商品代金合計
+        'REMARKS3' => MDL_REMISE_POST_VALUE
+    );
+
+    // モバイルパラメータ
+    if (GC_MobileUserAgent::isMobile()) {
+        $arrSendData['SEND_URL'] = $arrPayment[0]["memo07"];
+        $arrSendData['TMPURL']   = SSL_URL . 'user_data/remise_recv.php';
+        $arrSendData['OPT']      = $uniqid;
+        $arrSendData['EXITURL']  = SITE_URL;
+        gfPrintLog("uniqid: $uniqid", REMISE_LOG_PATH_CONVENI_RET);
+    // PCパラメータ
+    } else {
+        $arrSendData['SEND_URL']  = $arrPayment[0]["memo05"];
+        $arrSendData['RETURL']    = SSL_URL . 'shopping/load_payment_module.php';
+        $arrSendData['NG_RETURL'] = SSL_URL . 'shopping/load_payment_module.php';
+        $arrSendData['EXITURL']   = SSL_URL . 'shopping/load_payment_module.php';
+        $arrSendData['KANA1']   = $arrData["order_kana01"];
+        $arrSendData['KANA2']   = $arrData["order_kana02"];
+    }
+
+    return $arrSendData;
+}
 ?>

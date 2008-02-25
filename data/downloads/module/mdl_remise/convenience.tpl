@@ -3,98 +3,60 @@
  *
  * http://www.lockon.co.jp/
  *}-->
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html lang="ja">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=<!--{$smarty.const.CHAR_CODE}-->">
-<meta http-equiv="content-script-type" content="text/javascript">
-<meta http-equiv="content-style-type" content="text/css">
-<link rel="stylesheet" href="<!--{$smarty.const.URL_DIR}-->user_data/css/contents.css" type="text/css" media="all" />
-<link rel="stylesheet" href="<!--{$smarty.const.URL_DIR}-->css/common.css" type="text/css" media="all" />
-<link rel="stylesheet" href="<!--{$tpl_css}-->" type="text/css" media="all" />
-<title><!--{$arrSiteInfo.shop_name}-->/<!--{$tpl_title|escape}--></title>
-<meta name="author" content="<!--{$arrPageLayout.author|escape}-->">
-<meta name="description" content="<!--{$arrPageLayout.description|escape}-->">
-<meta name="keywords" content="<!--{$arrPageLayout.keyword|escape}-->">
-
+<!--▼CONTENTS-->
 <script type="text/javascript">
 <!--
-	function preLoadImg(URL){
-		arrImgList = new Array (
-			URL+"img/header/basis_on.jpg",URL+"img/header/product_on.jpg",URL+"img/header/customer_on.jpg",URL+"img/header/order_on.jpg",
-			URL+"img/header/sales_on.jpg",URL+"img/header/mail_on.jpg",URL+"img/header/contents_on.jpg",
-			URL+"img/header/mainpage_on.gif",URL+"img/header/sitecheck_on.gif",URL+"img/header/logout.gif",
-			URL+"img/contents/btn_search_on.jpg",URL+"img/contents/btn_regist_on.jpg",
-			URL+"img/contents/btn_csv_on.jpg",URL+"img/contents/arrow_left.jpg",URL+"img/contents/arrow_right.jpg"
-		);
-		arrPreLoad = new Array();
-		for (i in arrImgList) {
-			arrPreLoad[i] = new Image();
-			arrPreLoad[i].src = arrImgList[i];
-		}
-		preLoadFlag = "true";
-	}
+function preLoadImg(URL){
+    arrImgList = new Array (
+        URL+"img/header/basis_on.jpg",URL+"img/header/product_on.jpg",URL+"img/header/customer_on.jpg",URL+"img/header/order_on.jpg",
+        URL+"img/header/sales_on.jpg",URL+"img/header/mail_on.jpg",URL+"img/header/contents_on.jpg",
+        URL+"img/header/mainpage_on.gif",URL+"img/header/sitecheck_on.gif",URL+"img/header/logout.gif",
+        URL+"img/contents/btn_search_on.jpg",URL+"img/contents/btn_regist_on.jpg",
+        URL+"img/contents/btn_csv_on.jpg",URL+"img/contents/arrow_left.jpg",URL+"img/contents/arrow_right.jpg"
+    );
+    arrPreLoad = new Array();
+    for (i in arrImgList) {
+        arrPreLoad[i] = new Image();
+        arrPreLoad[i].src = arrImgList[i];
+    }
+    preLoadFlag = "true";
+}
 
-	function chgImg(fileName,imgName){
-		if (preLoadFlag == "true") {
-			document.images[imgName].src = fileName;
-		}
-	}
+function chgImg(fileName,imgName){
+    if (preLoadFlag == "true") {
+        document.images[imgName].src = fileName;
+    }
+}
 
-	function chgImgImageSubmit(fileName,imgObj){
-		imgObj.src = fileName;
-	}
+function chgImgImageSubmit(fileName,imgObj){
+    imgObj.src = fileName;
+}
+function fnFormModeSubmit(form, mode, keyname, keyid) {
+    document.forms[form]['mode'].value = mode;
+    if(keyname != "" && keyid != "") {
+        document.forms[form][keyname].value = keyid;
+    }
+    document.forms[form].submit();
+}
+// 支払い方法が選択されているかを判定する
+function lfMethodChecked() {
+    var methods = document.form1.METHOD;
+    var checked = false;
 
-	function fnFormModeSubmit(form, mode, keyname, keyid) {
-		document.forms[form]['mode'].value = mode;
-		if(keyname != "" && keyid != "") {
-			document.forms[form][keyname].value = keyid;
-		}
-		document.forms[form].submit();
-	}
+    var max = methods.length;
+    for (var i = 0; i < max; i++) {
+        if (methods[i].checked) {
+            checked = true;
+        }
+    }
+    if (checked) {
+        document.form1.submit();
+    } else {
+        alert('支払い方法を選択してください。');
+    }
+}
 //-->
-
 </script>
-</head>
-
-<!-- ▼ ＢＯＤＹ部 スタート -->
-<body bgcolor="#ffe9e6" text="#555555" link="#3a75af" vlink="#3a75af" alink="#3a75af" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="preLoadImg('/'); ">
-<noscript>
-<link rel="stylesheet" href="/css/common.css" type="text/css" />
-</noscript>
-
-<div align="center">
-<a name="top" id="top"></a>
-
-<!--▼HEADER-->
-<!--{if $arrPageLayout.header_chk != 2}--> 
-<!--{assign var=header_dir value="`$smarty.const.HTML_PATH`user_data/include/header.tpl"}-->
-<!--{include file= $header_dir}-->
-<!--{/if}-->
-<!--▲HEADER-->
-
-<!--▼MAIN-->
-<div id="base">
-<table width="780" border="0" cellspacing="0" cellpadding="0" summary=" ">
-	<tr>
-		<td bgcolor="#cccccc" width="1"><img src="/img/_.gif" width="1" height="10" alt="" /></td>
-		<td bgcolor="#ffffff" width="1"><img src="/img/_.gif" width="5" height="1" alt="" /></td>
-		<td bgcolor="#ffffff" align="left" width=100%> 
-
-		
-		<table width="100%" border="0" cellspacing="0" cellpadding="0" summary=" ">
-
-			<tr valign="top">
-				<!--▼左ナビ-->
-								<!--▲左ナビ-->
-			
-				<td align="center" width=100%>
-			        <table border="0" cellspacing="0" cellpadding="0" summary=" ">
-			        
-					<!--▼メイン上部-->
-										<!--▲メイン上部-->
-					
-					<tr><td align="center">
 <!--▼CONTENTS-->
 <table width="760" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
@@ -122,29 +84,11 @@
 			<input type="hidden" name="mode" value="">
 			</form>
 			<form name="form1" id="form1" method="post" action="<!--{$arrSendData.SEND_URL|escape}-->">
-			<input type="hidden" name="SHOPCO" value="<!--{$arrSendData.SHOPCO|escape}-->">
-			<input type="hidden" name="HOSTID" value="<!--{$arrSendData.HOSTID|escape}-->">
-			<input type="hidden" name="S_TORIHIKI_NO" value="<!--{$arrSendData.S_TORIHIKI_NO|escape}-->">
-			<input type="hidden" name="MAIL" value="<!--{$arrSendData.MAIL|escape}-->">
-			<input type="hidden" name="NAME1" value="<!--{$arrSendData.NAME1|escape}-->">
-			<input type="hidden" name="NAME2" value="<!--{$arrSendData.NAME2|escape}-->">
-			<input type="hidden" name="KANA1" value="<!--{$arrSendData.KANA1|escape}-->">
-			<input type="hidden" name="KANA2" value="<!--{$arrSendData.KANA2|escape}-->">
-			<input type="hidden" name="TEL" value="<!--{$arrSendData.TEL|escape}-->">
-			<input type="hidden" name="YUBIN1" value="<!--{$arrSendData.YUBIN1|escape}-->">
-			<input type="hidden" name="YUBIN2" value="<!--{$arrSendData.YUBIN2|escape}-->">
-			<input type="hidden" name="ADD1" value="<!--{$arrSendData.ADD1|escape}-->">
-			<input type="hidden" name="ADD2" value="<!--{$arrSendData.ADD2|escape}-->">
-			<input type="hidden" name="ADD3" value="<!--{$arrSendData.ADD3|escape}-->">
-			<input type="hidden" name="TOTAL" value="<!--{$arrSendData.TOTAL|escape}-->">
-			<input type="hidden" name="TAX" value="<!--{$arrSendData.TAX|escape}-->">
-			<input type="hidden" name="RETURL" value="<!--{$arrSendData.RETURL|escape}-->">
-			<input type="hidden" name="EXITURL" value="<!--{$arrSendData.EXITURL|escape}-->">
-			<input type="hidden" name="NG_RETURL" value="<!--{$arrSendData.NG_RETURL|escape}-->">
-			<input type="hidden" name="MNAME_01" value="<!--{$arrSendData.MNAME_01|escape}-->">
-			<input type="hidden" name="MSUM_01" value="<!--{$arrSendData.MSUM_01|escape}-->">
-			<input type="hidden" name="REMARKS3" value="<!--{$arrSendData.REMARKS3|escape}-->">
-			
+			<!--{foreach from=$arrSendData key=key item=value}-->
+			<!--{if $key != 'SEND_URL'}-->
+			<input type="hidden" name="<!--{$key|escape}-->" value="<!--{$value|escape}-->">
+			<!--{/if}-->
+			<!--{/foreach}-->
 			<tr><td height="20"></td></tr>
 			
 			<tr>
@@ -187,42 +131,3 @@
 	</tr>
 </table>
 <!--▲CONTENTS-->
-</td></tr>
-					
-					<!--▼メイン下部-->
-					<tr><td align="center">
-										</td><tr>
-					<!--▲メイン下部-->					
-	
-					</table>
-				</td>
-
-				<!--▼右ナビ-->
-								<!--▲右ナビ-->
-
-			</tr>
-		</table>
-		<td bgcolor="#ffffff"><img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="9" height="1" alt="" /></td>
-		<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="1" height="10" alt="" /></td>
-		</td>
-	</tr>
-</table>
-
-</div>
-<!--▲MAIN-->
-
-<!--▼FOTTER-->
-<!--{if $arrPageLayout.footer_chk != 2}--> 
-<!--{include file="`$smarty.const.HTML_PATH`user_data/include/footer.tpl"}-->
-<!--{/if}-->
-<!--▲FOTTER-->
-</div>
-<!--{* EBiSタグ表示用 *}-->
-<!--{$tpl_mainpage|sfPrintEbisTag}-->
-<!--{* アフィリエイトタグ表示用 *}-->
-<!--{$tpl_conv_page|sfPrintAffTag:$tpl_aff_option}-->
-
-
-</body><!-- ▲ ＢＯＤＹ部 エンド -->
-
-</html>

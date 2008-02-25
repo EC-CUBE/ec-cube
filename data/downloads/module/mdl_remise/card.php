@@ -5,13 +5,15 @@
  * http://www.lockon.co.jp/
  */
 require_once("../require.php");
-require_once(DATA_PATH . "module/Request.php");
 require_once(MODULE_PATH . "mdl_remise/mdl_remise.inc");
 
 class LC_Page {
     function LC_Page() {
         /** 必ず指定する **/
-        $this->tpl_mainpage = MODULE_PATH . 'mdl_remise/card.tpl';			// メインテンプレート
+        $template = GC_MobileUserAgent::isMobile()
+            ? MODULE_PATH . 'mdl_remise/card_mobile.tpl'
+            : MODULE_PATH . 'mdl_remise/card.tpl';
+        $this->tpl_mainpage = $template;			// メインテンプレート
         $this->tpl_title = "カード決済";
         /*
          session_start時のno-cacheヘッダーを抑制することで
@@ -23,9 +25,8 @@ class LC_Page {
 }
 
 $objPage = new LC_Page();
-$objView = new SC_SiteView();
-$objSiteInfo = $objView->objSiteInfo;
-$arrInfo = $objSiteInfo->data;
+$objView = GC_MobileUserAgent::isMobile() ? new SC_MobileView() : new SC_SiteView();
+$arrInfo = sf_getBasisData();
 
 // パラメータ管理クラス
 $objFormParam = new SC_FormParam();
@@ -59,12 +60,15 @@ switch($_POST["mode"]){
         // 正常に登録されたことを記録しておく
         $objSiteSess->setRegistFlag();
         // 確認ページへ移動
-        header("Location: " . URL_SHOP_CONFIRM);
+        $url = GC_MobileUserAgent::isMobile()
+            ? gfAddSessionId(MOBILE_URL_SHOP_COMFIRM)
+            : URL_SHOP_COMPLETE;
+        header("Location: " . $url);
         exit;
         break;
 }
 
-// ルミーズからの返信があった場合
+// ルミーズサイトのカード入力画面から遷移した場合(POSTで遷移する/PCのみ。モバイルはルミーズ側で完結する)
 if (isset($_POST["X-R_CODE"])) {
 
     $err_detail = "";
@@ -113,30 +117,9 @@ if (isset($_POST["X-R_CODE"])) {
 
         // 完了画面へ
         header("Location: " .  URL_SHOP_COMPLETE);
+        exit;
     }
 }
-
-// EC-CUBE側の通知用URL
-$retUrl = SITE_URL . 'shopping/load_payment_module.php?module_id=' . MDL_REMISE_ID;
-$exitUrl = SITE_URL . 'shopping/load_payment_module.php';
-
-$arrSendData = array(
-    'SEND_URL'      => $arrPayment[0]["memo04"],    // 接続先URL
-    'S_TORIHIKI_NO' => $arrData["order_id"],        // オーダー番号
-    'MAIL'          => $arrData["order_email"],     // メールアドレス
-    'AMOUNT'        => $arrData["payment_total"],   // 金額
-    'TAX'           => '0',                         // 送料 + 税
-    'TOTAL'         => $arrData["payment_total"],   // 合計金額
-    'SHOPCO'        => $arrPayment[0]["memo01"],    // 店舗コード
-    'HOSTID'        => $arrPayment[0]["memo02"],    // ホストID
-    'JOB'           => REMISE_PAYMENT_JOB_CODE,     // ジョブコード
-    'ITEM'          => '0000120',                   // 商品コード(ルミーズ固定)
-    'RETURL'        => $retUrl,                     // 完了通知URL
-    'NG_RETURL'     => $retUrl,                     // NG完了通知URL
-    'EXITURL'       => $exitUrl,                    // 戻り先URL
-    'REMARKS3'      => MDL_REMISE_POST_VALUE,
-    'ELIO'          => 1                            // ELIO決済
-);
 
 // 支払い方法表示処理
 $objFormParam->setValue("credit_method", $arrPayment[0]["memo08"]);
@@ -156,7 +139,7 @@ foreach($arrCreditDivide as $key => $val) {
 
 $objPage->arrCreMet = $arrCreMet;
 $objPage->arrCreDiv = $arrCreDiv;
-$objPage->arrSendData = $arrSendData;
+$objPage->arrSendData = lfCreateSendData($arrData, $arrPayment, $uniqid);;
 
 $objView->assignobj($objPage);
 
@@ -171,4 +154,33 @@ function lfInitParam() {
     $objFormParam->addParam("支払い方法", "credit_method");
 }
 
+function lfCreateSendData($arrData, $arrPayment, $uniqid) {
+    $arrSendData = array(
+        'S_TORIHIKI_NO' => $arrData["order_id"],        // オーダー番号
+        'MAIL'          => $arrData["order_email"],     // メールアドレス
+        'AMOUNT'        => $arrData["payment_total"],   // 金額
+        'TAX'           => '0',                         // 送料 + 税
+        'TOTAL'         => $arrData["payment_total"],   // 合計金額
+        'SHOPCO'        => $arrPayment[0]["memo01"],    // 店舗コード
+        'HOSTID'        => $arrPayment[0]["memo02"],    // ホストID
+        'JOB'           => REMISE_PAYMENT_JOB_CODE,     // ジョブコード
+        'ITEM'          => '0000120',                   // 商品コード(ルミーズ固定)
+        'REMARKS3'      => MDL_REMISE_POST_VALUE,
+    );
+
+    if (GC_MobileUserAgent::isMobile()) {
+        $arrSendData['SEND_URL'] = $arrPayment[0]["memo06"];
+        $arrSendData['TMPURL']   = ''; // ルミーズ側で処理を完結させるため、空の値を入れる
+        $arrSendData['OPT']      = $uniqid;
+        $arrSendData['EXITURL']  = SITE_URL;
+
+    } else {
+        $arrSendData['SEND_URL']  = $arrPayment[0]["memo04"];
+        $arrSendData['RETURL']    = SSL_URL . 'shopping/load_payment_module.php';
+        $arrSendData['NG_RETURL'] = SSL_URL . 'shopping/load_payment_module.php';
+        $arrSendData['EXITURL']   = SSL_URL . 'shopping/load_payment_module.php';
+    }
+
+    return $arrSendData;
+}
 ?>
