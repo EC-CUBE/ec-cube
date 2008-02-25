@@ -12,6 +12,8 @@ insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg, create_
 insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg, create_date, update_date ) values ('新着情報',	'bloc/news.tpl', 'news','frontparts/bloc/news.php', 1, now(), now());
 insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg, create_date, update_date ) values ('ログイン',	'bloc/login.tpl', 'login','frontparts/bloc/login.php', 1, now(), now());
 insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg, create_date, update_date ) values ('オススメ商品', 'bloc/best5.tpl', 'best5','frontparts/bloc/best5.php', 1, now(), now());
+INSERT INTO dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg, create_date, update_date ) VALUES ('カレンダー', 'bloc/calendar.tpl', 'calendar', 'frontparts/bloc/calendar.php', 1, now(), now());
+
 
 insert into dtb_pagelayout (page_name,url,php_dir,tpl_dir,filename,edit_flg, create_date, update_date)values('TOPページ','index.php',' ','user_data/templates/','top',2,now(),now());
 insert into dtb_pagelayout (page_name,url,php_dir,tpl_dir,filename,edit_flg, create_date, update_date)values('商品一覧ページ','products/list.php',' ','user_data/templates/','list',2,now(),now());
@@ -452,6 +454,39 @@ VALUES ('第11条（本規約の改定）','当社は、本規約を任意に改
 INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date)
 VALUES ('第12条（準拠法、管轄裁判所）','本規約に関して紛争が生じた場合、当社本店所在地を管轄する地方裁判所を第一審の専属的合意管轄裁判所とします。 ',
 1,0,Now(),0, now());
+
+
+INSERT INTO dtb_holiday (title, month, day, rank, creator_id, update_date, del_flg, create_date)
+VALUES ('元旦(1月1日)','1', '1' ,100, 0, now(), 0, now());
+INSERT INTO dtb_holiday (title, month, day, rank, creator_id, update_date, del_flg, create_date)
+VALUES ('成人の日(1月第2月曜日)','1', '14' ,98, 0, now(), 0, now());
+INSERT INTO dtb_holiday (title, month, day, rank, creator_id, update_date, del_flg, create_date)
+VALUES ('建国記念の日(2月11日)','2', '11' ,96, 0, now(), 0, now());
+INSERT INTO dtb_holiday (title, month, day, rank, creator_id, update_date, del_flg, create_date)
+VALUES ('春分の日(3月21日)','3', '21' ,94, 0, now(), 0, now());
+INSERT INTO dtb_holiday (title, month, day, rank, creator_id, update_date, del_flg, create_date)
+VALUES ('昭和の日(4月29日)','4', '29' ,92, 0, now(), 0, now());
+INSERT INTO dtb_holiday (title, month, day, rank, creator_id, update_date, del_flg, create_date)
+VALUES ('憲法記念日(5月3日)','5', '3' ,90, 0, now(), 0, now());
+INSERT INTO dtb_holiday (title, month, day, rank, creator_id, update_date, del_flg, create_date)
+VALUES ('みどりの日(5月4日)','5', '4' ,88, 0, now(), 0, now());
+INSERT INTO dtb_holiday (title, month, day, rank, creator_id, update_date, del_flg, create_date)
+VALUES ('こどもの日(5月5日)','5', '5' ,86, 0, now(), 0, now());
+INSERT INTO dtb_holiday (title, month, day, rank, creator_id, update_date, del_flg, create_date)
+VALUES ('海の日(7月第3月曜日)','7', '21' ,84, 0, now(), 0, now());
+INSERT INTO dtb_holiday (title, month, day, rank, creator_id, update_date, del_flg, create_date)
+VALUES ('敬老の日(9月第3月曜日)','9', '15' ,82, 0, now(), 0, now());
+INSERT INTO dtb_holiday (title, month, day, rank, creator_id, update_date, del_flg, create_date)
+VALUES ('秋分の日(9月23日)','9', '23' ,80, 0, now(), 0, now());
+INSERT INTO dtb_holiday (title, month, day, rank, creator_id, update_date, del_flg, create_date)
+VALUES ('体育の日(10月第2月曜日)','10', '13' ,78, 0, now(), 0, now());
+INSERT INTO dtb_holiday (title, month, day, rank, creator_id, update_date, del_flg, create_date)
+VALUES ('文化の日(11月3日)','11', '3' ,76, 0, now(), 0, now());
+INSERT INTO dtb_holiday (title, month, day, rank, creator_id, update_date, del_flg, create_date)
+VALUES ('勤労感謝の日(11月23日)','11', '23' ,74, 0, now(), 0, now());
+INSERT INTO dtb_holiday (title, month, day, rank, creator_id, update_date, del_flg, create_date)
+VALUES ('天皇誕生日(12月23日)','12', '23' ,72, 0, now(), 0, now());
+
 
 INSERT INTO mtb_pref (pref_id, pref_name, rank) VALUES ('1', '北海道', '1');
 INSERT INTO mtb_pref (pref_id, pref_name, rank) VALUES ('2', '青森県', '2');

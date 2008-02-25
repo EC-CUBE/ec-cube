@@ -24,6 +24,18 @@ CREATE TABLE dtb_kiyaku (
     del_flg  smallint NOT NULL DEFAULT 0
 ) TYPE=InnoDB ;
 
+CREATE TABLE dtb_holiday (
+    holiday_id auto_increment primary key NOT NULL,
+    title text NOT NULL,
+    month smallint NOT NULL,
+    day smallint NOT NULL,
+    rank int NOT NULL DEFAULT 0,
+    creator_id int NOT NULL,
+    create_date datetime NOT NULL,
+    update_date datetimep NOT NULL,
+    del_flg  smallint NOT NULL DEFAULT 0
+) TYPE=InnoDB ;
+
 CREATE TABLE mtb_zip (
     code text,
     old_zipcode text,
