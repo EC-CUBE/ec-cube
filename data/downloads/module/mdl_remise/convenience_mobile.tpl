@@ -5,7 +5,7 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<center>クレジット決済</center>
+<center>コンビニ決済</center>
 
 <hr>
 
