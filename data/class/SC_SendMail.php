@@ -42,6 +42,7 @@ class SC_SendMail {
 
     // コンストラクタ
     function SC_SendMail() {
+        $this->arrRecip = array();
         $this->to = "";
         $this->subject = "";
         $this->body = "";
@@ -61,9 +62,17 @@ class SC_SendMail {
                                         $this->getBackendParams($this->backend));
     }
 
+    // 送信先の設定
+    function setRecip($recipient) {
+        $this->arrRecip[] = $recipient;
+    }
+    
     // 宛先の設定
     function setTo($to, $to_name = "") {
-        $this->to = $this->getNameAddress($to_name, $to);
+        if($to != "") {
+            $this->to = $this->getNameAddress($to_name, $to);
+            $this->setRecip($to);
+        }
     }
 
     // 送信元の設定
@@ -75,6 +84,7 @@ class SC_SendMail {
     function setCc($cc, $cc_name = "") {
         if($cc != "") {
             $this->cc = $this->getNameAddress($cc_name, $cc);
+            $this->setRecip($cc);
         }
     }
 
@@ -82,6 +92,7 @@ class SC_SendMail {
     function setBCc($bcc) {
         if($bcc != "") {
             $this->bcc = $bcc;
+            $this->setRecip($bcc);
         }
     }
 
@@ -149,11 +160,11 @@ class SC_SendMail {
             return $name_address;
     }
 
-    function setItem( $to, $subject, $body, $fromaddress, $from_name, $reply_to="", $return_path="", $errors_to="", $bcc="", $cc ="" ) {
+    function setItem($to, $subject, $body, $fromaddress, $from_name, $reply_to="", $return_path="", $errors_to="", $bcc="", $cc ="") {
         $this->setBase($to, $subject, $body, $fromaddress, $from_name, $reply_to, $return_path, $errors_to, $bcc, $cc);
     }
 
-    function setItemHtml( $to, $subject, $body, $fromaddress, $from_name, $reply_to="", $return_path="", $errors_to="", $bcc="", $cc ="" ) {
+    function setItemHtml($to, $subject, $body, $fromaddress, $from_name, $reply_to="", $return_path="", $errors_to="", $bcc="", $cc ="") {
         $this->setBase($to, $subject, $body, $fromaddress, $from_name, $reply_to, $return_path, $errors_to, $bcc, $cc);
     }
 
@@ -236,7 +247,7 @@ class SC_SendMail {
     function sendMail() {
         $header = $this->getTEXTHeader();
         // メール送信
-        $result = $this->objMail->send($this->to, $header, $this->body);
+        $result = $this->objMail->send($this->arrRecip, $header, $this->body);
         if (PEAR::isError($result)) {
             GC_Utils_Ex::gfPrintLog($result->getMessage());
             GC_Utils_Ex::gfDebugLog($header);
@@ -249,7 +260,7 @@ class SC_SendMail {
     function sendHtmlMail() {
         $header = $this->getHTMLHeader();
         // メール送信
-        $result = $this->objMail->send($this->to, $header, $this->body);
+        $result = $this->objMail->send($this->arrRecip, $header, $this->body);
         if (PEAR::isError($result)) {
             GC_Utils_Ex::gfPrintLog($result->getMessage());
             GC_Utils_Ex::gfDebugLog($header);
