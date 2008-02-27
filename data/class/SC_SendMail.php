@@ -180,9 +180,9 @@ class SC_SendMail {
          $cc            -> カーボンコピー
          $bcc           -> ブラインドカーボンコピー
     */
-    function setBase( $to, $subject, $body, $fromaddress, $from_name, $reply_to="", $return_path="", $errors_to="", $bcc="", $cc ="" ) {
+    function setBase($to, $subject, $body, $fromaddress, $from_name, $reply_to="", $return_path="", $errors_to="", $bcc="", $cc ="") {
         // 宛先設定
-        $this->to = $to;
+        $this->setTo($to);
         // 件名設定
         $this->setSubject($subject);
         // 本文設定(iso-2022-jpだと特殊文字が？で送信されるのでJISを使用する)
