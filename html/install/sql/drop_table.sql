@@ -91,3 +91,4 @@ DROP TABLE mtb_authority;
 DROP TABLE mtb_allowed_tag;
 DROP TABLE mtb_ownersstore_err;
 DROP TABLE mtb_ownersstore_ips;
+DROP TABLE dtb_holiday;
