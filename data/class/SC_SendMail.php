@@ -63,15 +63,15 @@ class SC_SendMail {
     }
 
     // 送信先の設定
-    function setRecip($recipient) {
-        $this->arrRecip[] = $recipient;
+    function setRecip($key, $recipient) {
+        $this->arrRecip[$key] = $recipient;
     }
     
     // 宛先の設定
     function setTo($to, $to_name = "") {
         if($to != "") {
             $this->to = $this->getNameAddress($to_name, $to);
-            $this->setRecip($to);
+            $this->setRecip("To", $to);
         }
     }
 
@@ -84,7 +84,7 @@ class SC_SendMail {
     function setCc($cc, $cc_name = "") {
         if($cc != "") {
             $this->cc = $this->getNameAddress($cc_name, $cc);
-            $this->setRecip($cc);
+            $this->setRecip("Cc", $cc);
         }
     }
 
@@ -92,7 +92,7 @@ class SC_SendMail {
     function setBCc($bcc) {
         if($bcc != "") {
             $this->bcc = $bcc;
-            $this->setRecip($bcc);
+            $this->setRecip("Bcc", $bcc);
         }
     }
 
@@ -242,12 +242,26 @@ class SC_SendMail {
         $arrHeader['Content-Transfer-Encoding'] = "ISO-2022-JP";
         return $arrHeader;
     }
+    
+    // 送信先を返す
+    function getRecip() {
+        switch ($this->backend) {
+        case "mail":
+            return $this->to;
+            break;
+        case "sendmail":
+        case "smtp":
+        default:
+            return $this->arrRecip;
+            break;
+        }
+    }
 
     //  TXTメール送信を実行する
     function sendMail() {
         $header = $this->getTEXTHeader();
         // メール送信
-        $result = $this->objMail->send($this->arrRecip, $header, $this->body);
+        $result = $this->objMail->send($this->getRecip(), $header, $this->body);
         if (PEAR::isError($result)) {
             GC_Utils_Ex::gfPrintLog($result->getMessage());
             GC_Utils_Ex::gfDebugLog($header);
@@ -260,7 +274,7 @@ class SC_SendMail {
     function sendHtmlMail() {
         $header = $this->getHTMLHeader();
         // メール送信
-        $result = $this->objMail->send($this->arrRecip, $header, $this->body);
+        $result = $this->objMail->send($this->getRecip(), $header, $this->body);
         if (PEAR::isError($result)) {
             GC_Utils_Ex::gfPrintLog($result->getMessage());
             GC_Utils_Ex::gfDebugLog($header);
@@ -278,7 +292,7 @@ class SC_SendMail {
     function getBackendParams($backend) {
         switch ($backend) {
         case "mail":
-			$arrParams = array();
+            $arrParams = array();
             break;
         case "sendmail":
             $arrParams = array('sendmail_path' => '/usr/bin/sendmail',
@@ -291,6 +305,7 @@ class SC_SendMail {
                                'host' => $this->host,
                                'port' => $this->port
                                );
+            break;
         }
         return $arrParams;
     }
