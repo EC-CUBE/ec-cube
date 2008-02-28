@@ -78,7 +78,7 @@ div#mycontentsarea p.delivempty {
     clear: both;
     width: 500px;
     margin: 30px auto;
-    padding: 10px;
+    padding: 10px 0;
     border: solid 5px #CCC;
     text-align: center;
 }

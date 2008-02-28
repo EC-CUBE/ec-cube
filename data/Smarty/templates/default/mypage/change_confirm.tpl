@@ -25,7 +25,7 @@
 <div id="mypagecolumn">
   <h2 class="title"><img src="<!--{$TPL_DIR}-->img/mypage/title.jpg" width="700" height="40" alt="MYページ" /></h2>
     <!--{include file=$tpl_navi}-->
-
+    <div id="mycontentsarea">
     <h3><img src="<!--{$TPL_DIR}-->img/mypage/subtitle02.gif" width="515" height="32" alt="会員登録内容変更" /></h3>
     <p>下記の内容で送信してもよろしいでしょうか？<br />
       よろしければ、一番下の「会員登録完了へ」ボタンをクリックしてください。</p>
