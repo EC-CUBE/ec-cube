@@ -85,20 +85,20 @@ SC_Utils_Ex::sfInitInstall();
 
 // 携帯端末の場合は mobile 以下へリダイレクトする。
 if (SC_MobileUserAgent::isMobile()) {
+    $url = "";
+    if (SC_Utils_Ex::sfIsHTTPS()) {
+        $url = MOBILE_SSL_URL;
+    } else {
+        $url = MOBILE_SITE_URL;
+    }
+    
     if (preg_match('|^' . URL_DIR . '(.*)$|', $_SERVER['REQUEST_URI'], $matches)) {
         $path = $matches[1];
     } else {
         $path = '';
     }
-
-    $url = "";
-    if (SC_Utils_Ex::sfIsHTTPS()) {
-        $url = SSL_URL;
-    } else {
-        $url = SITE_URL;
-    }
-    header("Location: "
-           .  SC_Utils_Ex::sfRmDupSlash($url . URL_DIR . "mobile/" . $path));
+    
+    header("Location: ". SC_Utils_Ex::sfRmDupSlash($url . $path));
     exit;
 }
 
