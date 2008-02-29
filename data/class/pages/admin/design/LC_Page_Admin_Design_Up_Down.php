@@ -256,8 +256,11 @@ class LC_Page_Admin_Design_Up_Down extends LC_Page {
 	 * @return void
 	 */
 	function lfRegisterTemplates($arrForm) {
-	    $objQuery = new SC_Query();
-	    $objQuery->insert('dtb_templates', $arrForm);
+        $objQuery = new SC_Query();
+        $sqlval = $arrForm;
+        $sqlval['create_date'] = "now()";
+        $sqlval['update_date'] = "now()";
+        $objQuery->insert('dtb_templates', $sqlval);
 	}
 
 	/**

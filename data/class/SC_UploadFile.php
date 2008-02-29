@@ -107,9 +107,8 @@ class SC_UploadFile {
                             } else {
                                 $this->temp_file[$cnt] = $_FILES[$keyname]['name'];
                             }
-                            $result  = copy($_FILES[$keyname]['tmp_name'], $this->temp_dir. "/". $this->temp_file[$cnt]);
-                            GC_Utils_Ex::gfPrintLog($_FILES[$keyname]['name']." -> ".$this->temp_dir. "/". $this->temp_file[$cnt]);
-                        }
+                            $result  = copy($_FILES[$keyname]['tmp_name'], $this->temp_dir . $this->temp_file[$cnt]);
+                            GC_Utils_Ex::gfPrintLog($_FILES[$keyname]['name']." -> ". $this->temp_dir . $this->temp_file[$cnt]);                        }
                     }
                 }
                 $cnt++;
@@ -142,7 +141,7 @@ class SC_UploadFile {
         foreach($this->keyname as $val) {
             if ($val == $keyname) {
                 if($this->temp_file[$cnt] != "") {
-                    $filepath = $this->temp_dir . "/" . $this->temp_file[$cnt];
+                    $filepath = $this->temp_dir . $this->temp_file[$cnt];
                 }
             }
             $cnt++;

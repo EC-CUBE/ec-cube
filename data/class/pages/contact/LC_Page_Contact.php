@@ -199,7 +199,8 @@ class LC_Page_Contact extends LC_Page {
      */
     function lfContactComplete() {
         $this->arrForm = $_POST;
-        $this->arrForm['email'] = strtolower($_POST['email']);
+        $this->arrForm['email']   = isset($_POST['email']) ? strtolower($_POST['email']) : '';
+        $this->arrForm['email02'] = isset($_POST['email02']) ? strtolower($_POST['email02']) : '';
         $this->arrForm = $this->lfConvertParam($this->arrForm,$this->arrConvertColumn);
         $this->arrErr = $this->lfErrorCheck($this->arrForm);
         if(!$this->arrErr) {
