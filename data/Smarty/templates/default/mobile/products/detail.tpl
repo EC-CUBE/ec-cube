@@ -29,8 +29,23 @@
 <hr>
 <!--ﾀｲﾄﾙここまで-->
 <!--詳細ここから-->
-<!--{assign var=key value="main_image"}-->
-<img src="<!--{$arrFile[$key].filepath}-->"><br>
+<!--{if $smarty.get.image != ''}-->
+  <!--{assign var=key value="`$smarty.get.image`"}-->
+<!--{else}-->
+  <!--{assign var=key value="main_image"}-->
+<!--{/if}-->
+<img src="<!--{$arrFile[$key].filepath}-->">
+<!--{if count($arrFile) > 1}-->
+<br>画像
+  <!--{foreach from=$arrFile item=i key=k name=image}-->
+    <!--{if $k == $smarty.get.image || ($smarty.get.image == "" && $k == "main_image")}-->
+[<!--{$smarty.foreach.image.index+1}-->]
+    <!--{else}-->
+[<a href="<!--{$smarty.server.PHP_SELF|escape}-->?product_id=<!--{$smarty.get.product_id}-->&image=<!--{$k}-->"><!--{$smarty.foreach.image.index+1}--></a>]
+    <!--{/if}-->
+  <!--{/foreach}-->
+<!--{/if}-->
+<br>
 <!--{* オペビルダー用 *}-->
 <!--{if "sfViewDetailOpe"|function_exists === TRUE}-->
 <!--{include file=`$smarty.const.MODULE_PATH`mdl_opebuilder/detail_ope_mb_view.tpl}-->
