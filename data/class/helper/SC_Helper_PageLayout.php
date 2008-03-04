@@ -101,11 +101,14 @@ class SC_Helper_PageLayout {
         $arrPageLayout['MainHead']  = $this->lfGetNavi($arrNavi,2);	// メイン上部
         $arrPageLayout['RightNavi'] = $this->lfGetNavi($arrNavi,3);	// RIGHT NAVI
         $arrPageLayout['MainFoot']  = $this->lfGetNavi($arrNavi,4);	// メイン下部
-        
+
         GC_Utils::gfDebugLog($arrPageLayout);
-                
+        
         $objPage->arrPageLayout = $arrPageLayout;
         
+        // カラム数を取得する
+        $objPage->tpl_column_num = $this->lfGetColumnNum($arrPageLayout);
+
         GC_Utils::gfDebugLog($debug_message);
     }
 
@@ -229,6 +232,23 @@ class SC_Helper_PageLayout {
             }
         }
         return $arrRet;
+    }
+
+    /**
+     * カラム数を取得する.
+     * 
+     * @param array $arrPageLayout レイアウト情報の配列
+     * @return integer $col_num カラム数
+     */
+    function lfGetColumnNum($arrPageLayout) {
+        // メインは確定
+        $col_num = 1;
+        // LEFT NAVI
+        if (count($arrPageLayout['LeftNavi']) > 0) $col_num++;
+        // RIGHT NAVI
+        if (count($arrPageLayout['RightNavi']) > 0) $col_num++;
+        
+        return $col_num;
     }
 
     /**

@@ -170,16 +170,6 @@ div#leftcolumn h2 {
     padding: 15px 0 0 0;
 }
 
-div#centercolumn {
-    float: left;
-    width: 432px;
-    padding: 15px 0 0 0;
-}
-
-div#centercolumn h2 {
-    padding: 15px 0 0 0;
-}
-
 div#rightcolumn {
     float: left;
     width: 166px;
@@ -189,9 +179,32 @@ div#rightcolumn h2 {
     padding: 15px 0 0 0;
 }
 
-/* 1カラム設定
+/* メインコンテンツ
 ----------------------------------------------- */
-div#one_column {
+/* 3カラム設定 */
+div#three_maincolumn {
+    float: left;
+    width: 432px;
+    padding: 15px 0 0 0;
+}
+
+div#three_maincolumn h2 {
+    padding: 15px 0 0 0;
+}
+
+/* 2カラム設定 */
+div#two_maincolumn {
+    float: left;
+    width: 598px;
+    padding: 15px 0 0 0;
+}
+
+div#two_maincolumn h2 {
+    padding: 15px 0 0 0;
+}
+
+/* 1カラム設定 */
+div#one_maincolumn {
     padding: 10px 0 0 0;
 }
 
@@ -216,7 +229,6 @@ div#cartarea .btn {
     padding: 0;
     text-align: center;
 }
-
 
 /* カテゴリー
 ----------------------------------------------- */
@@ -258,7 +270,6 @@ a.onlink:link { color: #ff0000; }
 a.onlink:visited { color: #ff0000; }
 a.onlink:hover { color: #ff0000; }
 
-
 /* ガイドリンク
 ----------------------------------------------- */
 #guidearea {
@@ -292,7 +303,6 @@ div#loginarea .btn {
     border: solid 1px #ccc;
 }
 
-
 /* 検索
 ----------------------------------------------- */
 div#searcharea {
@@ -313,7 +323,6 @@ div#searcharea .btn {
     width: 142px;
     border: solid 1px #ccc;
 }
-
 
 /* バナー
 ----------------------------------------------- */
