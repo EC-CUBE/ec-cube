@@ -243,7 +243,7 @@ function fnChangeDisabled(list, disable) {
 					</tr>
 				</table>
 				</form>
-				<form name="form2" id="form2" method="post" action="./load_payment_module.php" autocomplete="off">
+				<form name="form3" id="form3" method="post" action="./load_payment_module.php" autocomplete="off">
 				<input type="hidden" name="mode" value="return">			
 				</form>
 				<!--¢¥MAIN CONTENTS-->
