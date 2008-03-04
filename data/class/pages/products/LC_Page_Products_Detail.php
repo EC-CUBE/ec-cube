@@ -212,10 +212,7 @@ class LC_Page_Products_Detail extends LC_Page {
         // 関連カテゴリを取得
         $this->arrRelativeCat = $objDb->sfGetMultiCatTree($tmp_id);
 
-        // DBからのデータを引き継ぐ
-        $this->objUpFile->setDBFileList($this->arrProduct);
-        // ファイル表示用配列を渡す
-        $this->arrFile = $this->objUpFile->getFormFileList(IMAGE_TEMP_URL, IMAGE_SAVE_URL, true);
+        $this->lfSetFile();
         // 支払方法の取得
         $this->arrPayment = $this->lfGetPayment();
         // 入力情報を渡す
@@ -439,10 +436,8 @@ class LC_Page_Products_Detail extends LC_Page {
         $tpl_subtitle = $arrFirstCat['name'];
         $this->tpl_subtitle = $tpl_subtitle;
 
-        // DBからのデータを引き継ぐ
-        $this->objUpFile->setDBFileList($this->arrProduct);
-        // ファイル表示用配列を渡す
-        $this->arrFile = $this->objUpFile->getFormFileList(IMAGE_TEMP_URL, IMAGE_SAVE_URL, true);
+        // ファイル情報のセット
+        $this->lfSetFile();
         // 支払方法の取得
         $this->arrPayment = $this->lfGetPayment();
         // 入力情報を渡す
@@ -822,6 +817,25 @@ class LC_Page_Products_Detail extends LC_Page {
         if (!isset($this->arrForm['quantity']['value'])) $this->arrForm['quantity']['value'] = "";
         $value = $this->arrForm['quantity']['value'];
         $this->arrForm['quantity']['value'] = htmlspecialchars($value, ENT_QUOTES, CHAR_CODE);
+    }
+
+    /*
+     * ファイルの情報をセットする
+     *
+     */
+    function lfSetFile() {
+        // DBからのデータを引き継ぐ
+        $this->objUpFile->setDBFileList($this->arrProduct);
+        // ファイル表示用配列を渡す
+        $this->arrFile = $this->objUpFile->getFormFileList(IMAGE_TEMP_URL, IMAGE_SAVE_URL, true);
+
+        // サブ画像の有無を判定
+        $this->subImageFlag = false;
+        for ($i = 1; $i <= PRODUCTSUB_MAX; $i++) {
+            if ($this->arrFile["sub_image" . $i]["filepath"] != "") {
+                $this->subImageFlag = true;
+            }
+        }
     }
 }
 ?>

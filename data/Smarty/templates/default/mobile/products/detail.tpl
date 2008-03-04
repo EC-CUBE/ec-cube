@@ -35,15 +35,26 @@
   <!--{assign var=key value="main_image"}-->
 <!--{/if}-->
 <img src="<!--{$arrFile[$key].filepath}-->">
-<!--{if count($arrFile) > 1}-->
+<!--{if $subImageFlag == true}-->
 <br>画像
-  <!--{foreach from=$arrFile item=i key=k name=image}-->
-    <!--{if $k == $smarty.get.image || ($smarty.get.image == "" && $k == "main_image")}-->
-[<!--{$smarty.foreach.image.index+1}-->]
+  <!--{if ($smarty.get.image == "" || $smarty.get.image == "main_image")}-->
+[1]
+  <!--{else}-->
+[<a href="<!--{$smarty.server.PHP_SELF|escape}-->?product_id=<!--{$smarty.get.product_id}-->&image=main_image">1</a>]
+  <!--{/if}-->
+  
+  <!--{assign var=num value="2"}-->
+  <!--{section name=cnt loop=$smarty.const.PRODUCTSUB_MAX}-->
+  <!--{assign var=key value="sub_image`$smarty.section.cnt.iteration`"}-->
+  <!--{if $arrFile[$key].filepath != ""}-->
+    <!--{if $key == $smarty.get.image}-->
+[<!--{$num}-->]
     <!--{else}-->
-[<a href="<!--{$smarty.server.PHP_SELF|escape}-->?product_id=<!--{$smarty.get.product_id}-->&image=<!--{$k}-->"><!--{$smarty.foreach.image.index+1}--></a>]
+[<a href="<!--{$smarty.server.PHP_SELF|escape}-->?product_id=<!--{$smarty.get.product_id}-->&image=<!--{$key}-->"><!--{$num}--></a>]
     <!--{/if}-->
-  <!--{/foreach}-->
+    <!--{assign var=num value="`$num+1`"}-->
+  <!--{/if}-->
+  <!--{/section}-->
 <!--{/if}-->
 <br>
 <!--{* オペビルダー用 *}-->
