@@ -230,7 +230,7 @@ function fnChangeDisabled(list, disable) {
 									</tr>
 									<tr>
 										<td align="center" height="40" bgcolor="#f7f5f4">
-											<a href="#" onclick="document.form2.submit(); return false;" onmouseover="chgImgImageSubmit('/img/common/b_back_on.gif',back03)" onmouseout="chgImgImageSubmit('/img/common/b_back.gif',back03)"><img src="/img/common/b_back.gif" width="150" height="30" alt="Ìá¤ë" border="0" name="back03" id="back03"/></a><img src="/img/_.gif" width="12" height="" alt="" />
+											<a href="#" onclick="document.form3.submit(); return false;" onmouseover="chgImgImageSubmit('/img/common/b_back_on.gif',back03)" onmouseout="chgImgImageSubmit('/img/common/b_back.gif',back03)"><img src="/img/common/b_back.gif" width="150" height="30" alt="Ìá¤ë" border="0" name="back03" id="back03"/></a><img src="/img/_.gif" width="12" height="" alt="" />
 											<input type="image" onclick="return fnCheckSubmit();" onmouseover="chgImgImageSubmit('/img/common/b_next_on.gif',this)" onmouseout="chgImgImageSubmit('/img/common/b_next.gif',this)" src="/img/common/b_next.gif" width="150" height="30" alt="¼¡¤Ø" border="0" name="next" id="next" />
 										</td>
 									</tr>
