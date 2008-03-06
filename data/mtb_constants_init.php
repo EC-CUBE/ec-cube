@@ -134,11 +134,11 @@ define('DEBUG_MODE', false);
 /** 管理ユーザID(メンテナンス用表示されない。) */
 define('ADMIN_ID', "1");
 /** 会員登録時に仮会員確認メールを送信するか（true:仮会員、false:本会員） */
-define('CUSTOMER_CONFIRM_MAIL', 0);
+define('CUSTOMER_CONFIRM_MAIL', false);
 /** メルマガ配信抑制(false:OFF、true:ON) */
-define('MELMAGA_SEND', 1);
+define('MELMAGA_SEND', true);
 /** メイルマガジンバッチモード(true:バッチで送信する ※要cron設定、false:リアルタイムで送信する) */
-define('MELMAGA_BATCH_MODE', 0);
+define('MELMAGA_BATCH_MODE', false);
 /** ログイン画面フレーム */
 define('LOGIN_FRAME', "login_frame.tpl");
 /** 管理画面フレーム */
@@ -168,7 +168,7 @@ define('POINT_VALUE', 1);
 /** 管理モード 1:有効　0:無効(納品時) */
 define('ADMIN_MODE', 0);
 /** 売上集計バッチモード(true:バッチで集計する ※要cron設定、false:リアルタイムで集計する) */
-define('DAILY_BATCH_MODE', 0);
+define('DAILY_BATCH_MODE', false);
 /** ログファイル最大数(ログテーション) */
 define('MAX_LOG_QUANTITY', 5);
 /** 1つのログファイルに保存する最大容量(byte) */

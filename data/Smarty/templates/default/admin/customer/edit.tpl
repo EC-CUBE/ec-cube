@@ -167,7 +167,7 @@
 										<td bgcolor="#ffffff" width="527" class="fs10n"><span class="red12"><!--{$arrErr.email}--></span><input type="text" name="email" value="<!--{$list_data.email|escape}-->" size="60" class="box60" <!--{if $arrErr.email != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /></td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="190" class="fs12n">メールアドレス(モバイル)</td>
+										<td bgcolor="#f2f1ec" width="190" class="fs12n">携帯メールアドレス</td>
 										<td bgcolor="#ffffff" width="527" class="fs10n"><span class="red12"><!--{$arrErr.email_mobile}--></span><input type="text" name="email_mobile" value="<!--{$list_data.email_mobile|escape}-->" size="60" class="box60" <!--{if $arrErr.email_mobile != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /></td>
 									</tr>
 									<tr class="fs12n">

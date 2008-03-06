@@ -118,7 +118,7 @@ function func_return(){
 										<td bgcolor="#ffffff" width="527"><!--{$arrForm.email|escape}--></td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="190">メールアドレス(モバイル)</td>
+										<td bgcolor="#f2f1ec" width="190">携帯メールアドレス</td>
 										<td bgcolor="#ffffff" width="527"><!--{$arrForm.email_mobile|escape}--></td>
 									</tr>
 									<tr class="fs12n">

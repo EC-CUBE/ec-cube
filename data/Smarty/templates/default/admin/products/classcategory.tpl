@@ -112,7 +112,7 @@
 
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" " bgcolor="#cccccc">
 							<tr bgcolor="#f2f1ec" align="center" class="fs12n">
-								<td width="439">規格名</td>
+								<td width="439">分類名</td>
 								<td width="50">編集</td>
 								<td width="50">削除</td>
 								<td width="70">移動</td>
