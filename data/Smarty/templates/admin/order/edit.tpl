@@ -70,6 +70,10 @@
 						<!--▼お客様情報ここから-->
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 							<tr class="fs12n">
+								<td bgcolor="#f2f1ec" width="110">帳票出力</td>
+								<td bgcolor="#ffffff"><a href="./" onClick="win02('../pdf.d/input.php?order_id=<!--{$arrDisp.order_id}-->','pdf','1000','800'); return false;">帳票を出力するにはこちらをクリックして下さい。</a></td>
+							</tr>
+							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">対応状況</td>
 								<td bgcolor="#ffffff">
 									<!--{assign var=key value="status"}-->

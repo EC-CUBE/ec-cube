@@ -338,16 +338,17 @@
 							<!--{include file=$path}-->
 						<!--{else}-->
 							<tr bgcolor="#636469" align="center" class="fs12n">
-								<td width="120"><span class="white">受注日</span></td>
-								<td width="70"><span class="white">受注番号</span></td>
-								<td width="120"><span class="white">顧客名</span></td>
+								<td width="100"><span class="white">受注日</span></td>
+								<td width="65"><span class="white">受注番号</span></td>
+								<td width="110"><span class="white">顧客名</span></td>
 								<td width="75"><span class="white">支払方法</span></td>
-								<td width="80"><span class="white">購入金額(円)</span></td>
-								<td width="120"><span class="white">発送日</span></td>
+								<td width="60"><span class="white">購入金額(円)</span></td>
+								<td width="100"><span class="white">発送日</span></td>
 								<td width="75"><span class="white">対応状況</span></td>
-								<td width="50"><span class="white">編集</span></td>
-								<td width="50"><span class="white">メール</span></td>
-								<td width="50"><span class="white">削除</span></td>
+								<td width="90"><span class="white">帳票</span></td>
+								<td width="45"><span class="white">編集</span></td>
+								<td width="45"><span class="white">メール</span></td>
+								<td width="45"><span class="white">削除</span></td>
 								
 							</tr>
 							
@@ -362,6 +363,7 @@
 								<td align="right"><!--{$arrResults[cnt].total|number_format}--></td>
 								<td align="center"><!--{$arrResults[cnt].commit_date|sfDispDBDate|default:"未発送"}--></td>
 								<td align="center"><!--{$arrORDERSTATUS[$status]}--></td>
+								<td align="center"><a href="./" onClick="win02('../pdf.d/input.php?order_id=<!--{$arrResults[cnt].order_id}-->','pdf','1000','800'); return false;">帳票生成</a><br /></td>
 								<td align="center"><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnChangeAction('<!--{$smarty.const.URL_ORDER_EDIT}-->'); fnModeSubmit('pre_edit', 'order_id', '<!--{$arrResults[cnt].order_id}-->'); return false;"><span class="icon_edit">編集</span></a></td>
 								<td align="center"><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnChangeAction('<!--{$smarty.const.URL_ORDER_MAIL}-->'); fnModeSubmit('pre_edit', 'order_id', '<!--{$arrResults[cnt].order_id}-->'); return false;"><span class="icon_mail">通知</span></a></td>
 								<td align="center"><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('delete', 'order_id', <!--{$arrResults[cnt].order_id}-->); return false;"><span class="icon_delete">削除</span></a></td>
