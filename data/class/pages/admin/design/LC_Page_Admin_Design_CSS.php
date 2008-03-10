@@ -89,8 +89,8 @@ class LC_Page_Admin_Design_CSS extends LC_Page {
         $css_path = $css_dir . $css_name . '.css';
 
         // CSSファイルの読み込み
-        if($css_name != '' && file_exists($css_path)){
-            $css_data = file_get_contents($css_path);
+        if($css_name != ''){
+            $css_data = $objFileManager->sfReadFile($css_path);
         }
         // テキストエリアに表示
         $this->css_data = $css_data;
@@ -130,19 +130,19 @@ class LC_Page_Admin_Design_CSS extends LC_Page {
     }
 
     function lfExecuteConfirm($css_dir, $css_name, $old_css_name, $css_path) {
+        $objFileManager = new SC_Helper_FileManager_Ex();
+
         // エラーチェック
         $this->arrErr = $this->lfErrorCheck($_POST, $css_dir);
 
         // エラーがなければ更新処理を行う
         if (count($this->arrErr) == 0) {
             // 旧ファイルの削除
-            if ($old_css_name != '' && $old_css_name != $css_name && file_exists($css_dir . $old_css_name . '.css')) {
-                unlink($css_dir . $old_css_name . '.css');
+            if ($old_css_name != '' && $old_css_name != $css_name) {
+                $objFileManager->sfDeleteDir($css_dir . $old_css_name . '.css');
             }
             // プレビュー用テンプレートに書き込み
-            $fp = fopen($css_path,"w"); // TODO
-            fwrite($fp, $_POST['css']);
-            fclose($fp);
+            $objFileManager->sfWriteFile($css_path, $_POST['css']);
 
             $this->tpl_onload="alert('登録が完了しました。');";
             $this->old_css_name = $css_name;
@@ -151,9 +151,11 @@ class LC_Page_Admin_Design_CSS extends LC_Page {
     }
 
     function lfExecuteDelete($css_path) {
+        $objFileManager = new SC_Helper_FileManager_Ex();
+
         // css_name が空でない場合にはdeleteを実行
-        if ($_POST['css_name'] !== '' && file_exists($css_path)) {
-            unlink($css_path);
+        if ($_POST['css_name'] !== '') {
+            $objFileManager->sfDeleteDir($css_path);
         }
         $this->sendRedirect($this->getLocation("./css.php"));
     }
