@@ -249,7 +249,13 @@ class SC_Helper_Mobile {
 
         if (basename(dirname($_SERVER['SCRIPT_NAME'])) != 'unsupported') {
             $this->lfMobileCheckCompatibility();
-            $this->lfMobileInitSession();
+            /**
+             * 共有SSL対応のため、SC_SessionFactory_useRequest::initSession()へ移行
+             * また、他のセッション関連メソッドもSC_SessionFactory_useRequestのインスタンスから呼び出すこと
+             *
+             * @see data/class/session/sessionfactory/SC_SessionFactory_useRequest.php
+             */
+            // $this->lfMobileInitSession();
         }
 
         $this->lfMobileInitOutput();

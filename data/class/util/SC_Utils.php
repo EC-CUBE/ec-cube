@@ -955,27 +955,12 @@ class SC_Utils {
         return $arrRet;
     }
 
-    /* ドメイン間で有効なセッションのスタート */
-    function sfDomainSessionStart() {
-        $ret = session_id();
-    /*
-        ヘッダーを送信していてもsession_start()が必要なページがあるので
-        コメントアウトしておく
-        if($ret == "" && !headers_sent()) {
-    */
-        if($ret == "") {
-            /* セッションパラメータの指定
-             ・ブラウザを閉じるまで有効
-             ・すべてのパスで有効
-             ・同じドメイン間で共有 */
-            session_set_cookie_params (0, "/", DOMAIN_NAME);
-
-            if(!ini_get("session.auto_start")){
-                // セッション開始
-                session_start();
-            }
-        }
-    }
+    /**
+     * ドメイン間で有効なセッションのスタート
+     * 共有SSL対応のための修正により、この関数は廃止します。
+     * セッションはrequire.phpを読み込んだ際に開始されます。
+     */
+    function sfDomainSessionStart() {}
 
     /* 文字列に強制的に改行を入れる */
     function sfPutBR($str, $size) {
@@ -1913,10 +1898,10 @@ class SC_Utils {
 
         return $str;
     }
-    
+
    /**
      * 配列をテーブルタグで出力する。
-     * 
+     *
      * @return string
      */
     function getTableTag($array) {
@@ -1926,11 +1911,11 @@ class SC_Utils {
             $html.="<th>$key</th>";
         }
         $html.= "</tr>";
-        
+
         $cnt = count($array);
-        
+
         for($i = 0; $i < $cnt; $i++) {
-            $html.= "<tr>";       	
+            $html.= "<tr>";
         	foreach($array[$i] as $val) {
                 $html.="<td>$val</td>";
             }

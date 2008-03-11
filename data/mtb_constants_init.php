@@ -624,6 +624,10 @@ define('MOBILE_DETAIL_P_HTML', MOBILE_URL_DIR . "products/detail.php?product_id=
 define('MOBILE_URL_SHOP_COMPLETE', MOBILE_URL_DIR . "shopping/complete.php");
 /** モジュール追加用画面 */
 define('MOBILE_URL_SHOP_MODULE', MOBILE_URL_DIR . "shopping/load_payment_module.php");
+/** セッション維持の方法 */
+define('SESSION_KEEP_METHOD', 'useCookie');
+/** セッションの存続時間 (秒) */
+define('SESSION_LIFETIME', 1800);
 /** オーナーズストアURL */
 define('OSTORE_URL', "http://store.ec-cube.net/");
 /** オーナーズストアURL */

@@ -79,6 +79,11 @@ include_once($include_dir . "/require_plugin.php");
 // セッションハンドラ開始
 $objSession = new SC_Helper_Session_Ex();
 
+// セッション初期化・開始
+require_once CLASS_PATH . 'session/SC_SessionFactory.php';
+$sessionFactory = SC_SessionFactory::getInstance();
+$sessionFactory->initSession();
+
 // モバイルサイト用の初期処理を実行する。
 if (!defined('SKIP_MOBILE_INIT')) {
     $objMobile = new SC_Helper_Mobile_Ex();
