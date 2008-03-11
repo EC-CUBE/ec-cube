@@ -158,6 +158,12 @@ class LC_Page_Mypage_Change extends LC_Page {
                 $objDb->sfEditCustomerData($this->arrForm, $arrRegistColumn);
                 //セッション情報を最新の状態に更新する
                 $this->objCustomer->updateSession();
+
+                // Do楽SNS連携モジュールユーザ情報更新処理
+                if (function_exists('sfUpdateSourakuSNSUserInfo')) {
+                    sfUpdateSourakuSNSUserInfo();
+                }
+
                 //完了ページへ
                 $this->sendRedirect($this->getLocation("./change_complete.php"));
                 exit;

@@ -1,128 +1,75 @@
 <?php
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
 
-// タグ出力用クラス
-class LC_EbisPage {
-	function LC_EbisPage() {
-		$this->tpl_mainpage = MODULE_PATH . "ebis_tag_text.tpl";
-	}
+if (!defined('ECCUBE_INSTALLE')) {
+    return;
 }
 
-// エビスタグの発行
-function sfPrintEbisTag($pid = "") {
-	$objQuery = new SC_Query();
-	$arrRet = $objQuery->select("sub_data", "dtb_module", "module_id = ?", array(EBIS_TAG_MID));
-	$arrSubData = unserialize($arrRet[0]['sub_data']);
-	$arrEbis = array();
-	
-	if($arrSubData['cid'] != "") {
-		$arrEbis['cid'] = $arrSubData['cid'];
-	} else {
-		return;
-	}
-	
-	// 「/」が重複しているものへの対応
-	$php_self = ereg_replace("[/]+", "/", $_SERVER['PHP_SELF']);
-	// PHPファイルの後ろに「/」がついてしまっているものへの対応
-	$php_self = ereg_replace(".php[/]+$", ".php", $php_self);
-	
-	if(!is_array($pid) && $pid != "") {
-		if(!ereg(".tpl$", $pid)) {
-			// ページIDを上書きする
-			$arrEbis['pid'] = $pid;
-		} else {
-			// テンプレートのパスが与えられている場合
-			$temp_id = ereg_replace(HTML_PATH,"",$pid);			
-			$temp_id = ereg_replace("^[/]+","",$temp_id);
-			$temp_id = ereg_replace(".tpl$","",$temp_id);
-			$temp_id = ereg_replace("[\./]","_",$temp_id);
-			$arrEbis['pid'] = $temp_id;
-		}
-	}	
-	
-	// 商品一覧ページは、特殊IDを発行
-	if(ereg("/products/list.php\?category_id=[0-9]+$", $_SERVER["REQUEST_URI"])) {
-		$filename = basename($_SERVER["REQUEST_URI"]);
-		$arrEbis['pid'] = ereg_replace("list.php\?category_id=", "list-c", $filename);
-	}
-	
-	// 商品詳細ページは、特殊IDを発行
-	if(ereg("/products/detail.php\?product_id=[0-9]+$", $_SERVER["REQUEST_URI"])) {
-		$filename = basename($_SERVER["REQUEST_URI"]);
-		$arrEbis['pid'] = ereg_replace("detail.php\?product_id=", "detail-p", $filename);
-	}
-	
-	// ID割り当てされていないページは、自動的に生成する。
-	if($arrEbis['pid'] == "") {				
-		$temp_id = ereg_replace("^[/]+","",$_SERVER['PHP_SELF']);
-		$temp_id = ereg_replace(".php$","",$temp_id);
-		$temp_id = ereg_replace("[\./]","_",$temp_id);
-		$arrEbis['pid'] = $temp_id;
-	}
-			
-	// ページIDが登録されている場合のみタグを出力する。
-	if($arrEbis['pid'] != "") {
-		$objSubPage = new LC_EbisPage();
-		$objSubPage->arrEbis = $arrEbis;
-		$objSubView = new SC_SiteView();
-		$objSubView->assignobj($objSubPage);
-		$objSubView->display($objSubPage->tpl_mainpage);
-	}
+// {{{ requires
+require_once CLASS_PATH . 'SC_DbConn.php';
+require_once CLASS_PATH . 'SC_Query.php';
+require_once CLASS_PATH . 'db/SC_DB_DBFactory.php';
+
+/**
+ * ダウンロード済みモジュールのinclude.phpを読み込む.
+ * テンプレート関数用.
+ *
+ * クラス化したかったが、グローバル変数をかなり使ってたので断念.
+ * そのうち変数名とか衝突しそう...
+ *
+ * sfPrintEbisTag(), sfPrintAffTag()は今は使用しない関数だが、
+ * 互換性維持のため残しておく.
+ */
+
+/**
+ * インクルードするモジュールの一覧
+ * XXX dtb_moduleとかに保持したい...
+ */
+$_arrModule = array(
+    'mdl_a8',
+    'mdl_moba8',
+    'mdl_opebuilder',
+    'mdl_souraku',
+);
+
+$_objQuery = new SC_Query;
+$_arrModuleCode = $_objQuery->getCol('dtb_module', 'module_code');
+
+if (is_array($_arrModuleCode)) {
+    foreach ($_arrModuleCode as $_moduleCode) {
+        $_file = MODULE_PATH . "$_moduleCode/include.php";
+        if (isset($_arrModule[$_moduleCode]) && file_exists($_file)) {
+            include_once($_file);
+        }
+    }
 }
 
-// コンバージョンタグの発行
-function sfPrintAffTag($conv_page, $option) {
-	if(is_numeric($conv_page)) {
-		// sub_dataよりタグ情報を読み込む
-		$objQuery = new SC_Query();
-		$arrRet = $objQuery->select("sub_data", "dtb_module", "module_id = ?", array(AFF_TAG_MID));
-		$arrSubData = unserialize($arrRet[0]['sub_data']);
-		$aff_tag = $arrSubData[$conv_page];
-		
-		$array = split("\|", $option);
-		
-		// 特定文字の置き換え
-		foreach($array as $each) {
-			list($key, $value) = split("=", $each);
-			$aff_tag = ereg_replace("\[\[" . $key . "\]\]", $value, $aff_tag);
-		}
-		print($aff_tag);		
-	}
-}
+// グローバル変数は残しておきたくないのでunset
+unset(
+    $_arrModule, $_objQuery, $_arrModuleCode,
+    $_moduleCode, $_file
+);
 
-// dtb_paymentに汎用項目が存在していなければ追加する
-function sfAlterMemo(){
-	$objQuery = new SC_Query();
-	
-	// 汎用項目の存在チェック
-	if(!sfColumnExists("dtb_payment", "memo01")){
-		
-		// モジュールIDを追加
-		$objQuery->query("alter table dtb_payment add module_id int4;");
-		
-		// モジュールパスを追加
-		$objQuery->query("alter table dtb_payment add module_path text;");
-		
-		// 汎用項目を10個追加
-		for($i=1; $i<=9; $i++){
-			$objQuery->query("alter table dtb_payment add memo0".$i." text;");
-		}
-		$objQuery->query("alter table dtb_payment add memo10 text;");
-	}
-}
-
-/*------------- ▼A8FLYタグ出力 -------------*/
-if (file_exists(MODULE_PATH. "mdl_a8/include.php") === TRUE) {
-	require_once(MODULE_PATH. "mdl_a8/include.php");
-}
-
-/*------------- ▼Moba8FLY連携 -------------*/
-if (file_exists(MODULE_PATH. "mdl_moba8/include.php") === TRUE) {
-	require_once(MODULE_PATH. "mdl_moba8/include.php");
-}
-
-/*------------- ▼オペビルダー連携 -------------*/
-if (file_exists(MODULE_PATH. "mdl_opebuilder/include.php") === TRUE) {
-	require_once(MODULE_PATH. "mdl_opebuilder/include.php");
-}
-
-?>
+// 互換性保持のため空の関数を残しておく
+function sfPrintEbisTag() {}
+function sfPrintAffTag() {}
