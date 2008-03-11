@@ -129,6 +129,20 @@ class SC_SessionFactory_UseRequest extends SC_SessionFactory {
      * @return boolean セッションデータが有効な場合は true、無効な場合は false を返す。
      */
     function validateSession() {
+        /**
+         * PCサイトでは
+         *  ・セッションデータが適切に設定されているか
+         *  ・UserAgent
+         *  ・IPアドレス
+         *  ・有効期限
+         * モバイルサイトでは
+         *  ・セッションデータが適切に設定されているか
+         *  ・機種名
+         *  ・IPアドレス
+         *  ・有効期限
+         *  ・phone_id
+         * がチェックされる
+         */
         return $this->state->validateSessionData();
     }
 

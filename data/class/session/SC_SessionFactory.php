@@ -28,6 +28,19 @@ require_once CLASS_PATH . 'session/sessionfactory/SC_SessionFactory_UseRequest.p
 /**
  * セッションの初期化処理を抽象化するファクトリークラス.
  *
+ * このクラスはセッションの維持方法を管理するクラスです.
+ * 他のセッション管理クラスとは若干異なります.
+ *
+ * EC-CUBE2.1.1ベータ版から、
+ * 管理画面＞基本情報＞パラメータ管理で、セッションの維持方法を
+ * ・Cookieを使用する場合
+ * ・リクエストパラメータを使用する場合
+ * の2種類が選択できますが、どちらの設定であっても下記のように呼び出すことで
+ * 適切にセッションを開始することができます.
+ *
+ * $sessionFactory = SC_SessionFactory::getInstance()
+ * $sessionFactory->initSession();
+ *
  * @package SC_Session
  * @author LOCKON CO.,LTD.
  * @version $Id$
