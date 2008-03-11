@@ -41,12 +41,10 @@
 <!--{* ▼CONTENTS *}-->
 <div id="container">
 
-  <!--{if $tpl_column_num > 1}-->
   <!--{* ▼LEFT COLUMN *}-->
+  <!--{if $arrPageLayout.LeftNavi|@count > 0}-->
   <div id="leftcolumn">
-
     <!--{* ▼左ナビ *}-->
-    <!--{if $arrPageLayout.LeftNavi|@count > 0}-->
       <!--{foreach key=LeftNaviKey item=LeftNaviItem from=$arrPageLayout.LeftNavi}-->
         <!-- ▼<!--{$LeftNaviItem.bloc_name}--> ここから-->
           <!--{if $LeftNaviItem.php_path != ""}-->
@@ -56,17 +54,19 @@
           <!--{/if}-->
         <!-- ▲<!--{$LeftNaviItem.bloc_name}--> ここまで-->
       <!--{/foreach}-->
-    <!--{/if}-->
     <!--{* ▲左ナビ *}-->
   </div>
+  <!--{/if}-->
   <!--{* ▲LEFT COLUMN *}-->
-  <!--{/if}-->
 
-  <!--{if $tpl_column_num == 3}-->
   <!--{* ▼CENTER COLUMN *}-->
-  <div id="centercolumn">
+  <!--{if $tpl_column_num == 3}-->
+  <div id="three_maincolumn">
+  <!--{elseif $tpl_column_num == 2}-->
+  <div id="two_maincolumn">
+  <!--{elseif $tpl_column_num == 1}-->
+  <div id="one_maincolumn">
   <!--{/if}-->
-
     <!--{* ▼メイン上部 *}-->
     <!--{if $arrPageLayout.MainHead|@count > 0}-->
       <!--{foreach key=MainHeadKey item=MainHeadItem from=$arrPageLayout.MainHead}-->
@@ -80,15 +80,11 @@
       <!--{/foreach}-->
     <!--{/if}-->
     <!--{* ▲メイン上部 *}-->
-
-    <!--{if $tpl_column_num == 1}-->
-    <div id="one_column">
-    <!--{/if}-->
+    
+    <!--{* ▼メイン *}-->
     <!--{include file=$tpl_mainpage}-->
-    <!--{if $tpl_column_num == 1}-->
-    </div>
-    <!--{/if}-->
-
+    <!--{* ▲メイン *}-->
+    
     <!--{* ▼メイン下部 *}-->
     <!--{if $arrPageLayout.MainFoot|@count > 0}-->
       <!--{foreach key=MainFootKey item=MainFootItem from=$arrPageLayout.MainFoot}-->
@@ -102,15 +98,13 @@
       <!--{/foreach}-->
     <!--{/if}-->
     <!--{* ▲メイン下部 *}-->
-
-  <!--{if $tpl_column_num == 3}-->
   </div>
   <!--{* ▲CENTER COLUMN *}-->
 
   <!--{* ▼RIGHT COLUMN *}-->
+  <!--{if $arrPageLayout.RightNavi|@count > 0}-->
   <div id="rightcolumn">
     <!--{* ▼右ナビ *}-->
-    <!--{if $arrPageLayout.RightNavi|@count > 0}-->
       <!--{foreach key=RightNaviKey item=RightNaviItem from=$arrPageLayout.RightNavi}-->
         <!-- ▼<!--{$RightNaviItem.bloc_name}--> ここから-->
         <!--{if $RightNaviItem.php_path != ""}-->
@@ -120,11 +114,10 @@
         <!--{/if}-->
         <!-- ▲<!--{$RightNaviItem.bloc_name}--> ここまで-->
       <!--{/foreach}-->
-    <!--{/if}-->
     <!--{* ▲右ナビ *}-->
   </div>
-  <!--{* ▲RIGHT COLUMN *}-->
   <!--{/if}-->
+  <!--{* ▲RIGHT COLUMN *}-->
 
 </div>
 <!--{* ▲CONTENTS *}-->
