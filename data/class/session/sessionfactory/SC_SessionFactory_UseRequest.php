@@ -168,12 +168,13 @@ class SC_SessionFactory_UseRequest extends SC_SessionFactory {
     function initSession() {
         // セッションIDの受け渡しにクッキーを使用しない。
         ini_set('session.use_cookies', '0');
-        ini_set('session.use_trans_sid', '1');
 
         // パラメーターから有効なセッションIDを取得する。
         $sessionId = $this->getSessionId();
 
-        session_start();
+        if (!$sessionId) {
+            session_start();
+        }
 
         // セッションIDまたはセッションデータが無効な場合は、セッションIDを再生成
         // し、セッションデータを初期化する。
