@@ -250,10 +250,10 @@ class SC_Helper_Mobile {
         if (basename(dirname($_SERVER['SCRIPT_NAME'])) != 'unsupported') {
             $this->lfMobileCheckCompatibility();
             /**
-             * 共有SSL対応のため、SC_SessionFactory_useRequest::initSession()へ移行
-             * また、他のセッション関連メソッドもSC_SessionFactory_useRequestのインスタンスから呼び出すこと
+             * 共有SSL対応のため、SC_SessionFactory_UseRequest::initSession()へ移行
+             * また、他のセッション関連メソッドもSC_SessionFactory_UseRequestのインスタンスから呼び出すこと
              *
-             * @see data/class/session/sessionfactory/SC_SessionFactory_useRequest.php
+             * @see data/class/session/sessionfactory/SC_SessionFactory_UseRequest.php
              */
             // $this->lfMobileInitSession();
         }

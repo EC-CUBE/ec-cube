@@ -35,7 +35,7 @@ require_once CLASS_PATH . 'session/SC_SessionFactory.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class SC_SessionFactory_useRequest extends SC_SessionFactory {
+class SC_SessionFactory_UseRequest extends SC_SessionFactory {
 
     var $state = null;
 

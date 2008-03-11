@@ -23,7 +23,7 @@
 
 // {{{ requires
 require_once CLASS_PATH . 'session/sessionfactory/SC_SessionFactory_UseCookie.php';
-require_once CLASS_PATH . 'session/sessionfactory/SC_SessionFactory_useRequest.php';
+require_once CLASS_PATH . 'session/sessionfactory/SC_SessionFactory_UseRequest.php';
 
 /**
  * セッションの初期化処理を抽象化するファクトリークラス.
@@ -43,10 +43,15 @@ class SC_SessionFactory {
      * @return SC_SessionFactory
      */
     function getInstance() {
-        switch(SESSION_KEEP_METHOD) {
+
+        $type = defined('SESSION_KEEP_METHOD')
+            ? SESSION_KEEP_METHOD
+            : '';
+
+        switch($type) {
         // セッションの維持にリクエストパラメータを使用する
         case 'useRequest':
-            $session = new SC_SessionFactory_useRequest;
+            $session = new SC_SessionFactory_UseRequest;
             defined('MOBILE_SITE')
                 ? $session->setState('mobile')
                 : $session->setState('pc');
@@ -55,7 +60,7 @@ class SC_SessionFactory {
         // クッキーを使用する
         case 'useCookie':
         default:
-            $session = new SC_SessionFactory_useCookie;
+            $session = new SC_SessionFactory_UseCookie;
             break;
         }
 
