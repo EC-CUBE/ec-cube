@@ -111,11 +111,11 @@ class LC_Page_Admin_Design_Template extends LC_Page {
 		    // DBへ使用するテンプレートを登録
 		    $this->lfRegisterTemplate($template_code);
 
-		    // テンプレートの上書き
-		    $this->lfChangeTemplate($template_code);
-
 		    // XXX コンパイルファイルのクリア処理を行う
 		    $objView->_smarty->clear_compiled_tpl();
+
+		    // ブロック位置を更新
+		    $this->lfChangeBloc($template_code);
 
 		    // 完了メッセージ
 		    $this->tpl_onload="alert('登録が完了しました。');";
@@ -252,19 +252,44 @@ class LC_Page_Admin_Design_Template extends LC_Page {
         $masterData->createCache("mtb_constants", $mtb_constants, true,
                                  array("id", "remarks", "rank"));
 	}
-	/**
-	 * テンプレートを上書きコピーする.
-	 */
-	function lfChangeTemplate($template_code){
-	    $from = TPL_PKG_PATH . $template_code . '/user_edit/';
 
-	    if (!file_exists($from)) {
-	        $mess = $from . 'は存在しません';
-	    } else {
-	        $to = USER_PATH;
-	        $mess = sfCopyDir($from, $to, '', true);
+	/**
+	 * ブロック位置の更新
+	 */
+	function lfChangeBloc($template_code) {
+	    $objQuery = new SC_Query();
+	    $filepath = USER_TEMPLATE_PATH. $template_code. "/sql/update_bloc.sql";
+	    
+	    // ブロック位置更新SQLファイル有
+	    if(file_exists($filepath)) {
+	        if($fp = fopen($filepath, "r")) {
+	            $sql = fread($fp, filesize($filepath));
+	            fclose($fp);
+	        }
+	        // 改行、タブを1スペースに変換
+	        $sql = preg_replace("/[\r\n\t]/", " " ,$sql);
+	        $sql_split = split(";", $sql);
+	        foreach($sql_split as $key => $val){
+	            if (trim($val) != "") {
+	                $objQuery->query($val);
+	            }
+	        }
 	    }
-	    return $mess;
+	}
+
+	/**
+	 * テンプレートパッケージの削除
+	 */
+	function lfDeleteTemplate($template_code) {
+	    // DB更新
+	    $objQuery = new SC_Query();
+	    $objQuery->delete('dtb_templates', 'template_code = ?', array($template_code));
+	    // テンプレート削除
+	    $templates_dir = SMARTY_TEMPLATES_DIR. $template_code. "/";
+	    SC_Utils_Ex::sfDelFile($templates_dir);
+	    // ユーザーデータ削除
+	    $user_dir = USER_TEMPLATE_PATH. $template_code. "/";
+	    SC_Utils_Ex::sfDelFile($user_dir);
 	}
 
 	function lfGetAllTemplates() {
@@ -273,13 +298,6 @@ class LC_Page_Admin_Design_Template extends LC_Page {
 	    if (empty($arrRet)) return array();
 
 	    return $arrRet;
-	}
-
-	function lfDeleteTemplate($template_code) {
-	    $objQuery = new SC_Query();
-	    $objQuery->delete('dtb_templates', 'template_code = ?', array($template_code));
-
-	    SC_Utils_Ex::sfDelFile(TPL_PKG_PATH . $template_code);
 	}
 }
 ?>
