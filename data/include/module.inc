@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-if (!defined('ECCUBE_INSTALLE')) {
+if (!defined('ECCUBE_INSTALL')) {
     return;
 }
 
@@ -43,7 +43,7 @@ require_once CLASS_PATH . 'db/SC_DB_DBFactory.php';
 
 /**
  * インクルードするモジュールの一覧
- * XXX dtb_moduleとかに保持したい...
+ * FIXME dtb_moduleとかに保持する
  */
 $_arrModule = array(
     'mdl_a8',
@@ -58,7 +58,7 @@ $_arrModuleCode = $_objQuery->getCol('dtb_module', 'module_code');
 if (is_array($_arrModuleCode)) {
     foreach ($_arrModuleCode as $_moduleCode) {
         $_file = MODULE_PATH . "$_moduleCode/include.php";
-        if (isset($_arrModule[$_moduleCode]) && file_exists($_file)) {
+        if (in_array($_moduleCode, $_arrModule) && file_exists($_file)) {
             include_once($_file);
         }
     }
