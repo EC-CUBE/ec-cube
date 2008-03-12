@@ -13,7 +13,7 @@
  * @category   Networking
  * @package    Net_UserAgent_Mobile
  * @author     KUBO Atsuhiro <iteman@users.sourceforge.net>
- * @copyright  2003-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>
+ * @copyright  2003-2008 KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
  * @version    CVS: $Id$
  * @link       http://www.au.kddi.com/ezfactory/tec/spec/4_4.html
@@ -22,8 +22,8 @@
  * @since      File available since Release 0.1.0
  */
 
-require_once(dirname(__FILE__) . '/Common.php');
-require_once(dirname(__FILE__) . '/Display.php');
+require_once 'Net/UserAgent/Mobile/Common.php';
+require_once 'Net/UserAgent/Mobile/Display.php';
 
 // {{{ Net_UserAgent_Mobile_EZweb
 
@@ -58,9 +58,9 @@ require_once(dirname(__FILE__) . '/Display.php');
  * @category   Networking
  * @package    Net_UserAgent_Mobile
  * @author     KUBO Atsuhiro <iteman@users.sourceforge.net>
- * @copyright  2003-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>
+ * @copyright  2003-2008 KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    Release: 0.30.0
+ * @version    Release: 0.31.0
  * @link       http://www.au.kddi.com/ezfactory/tec/spec/4_4.html
  * @link       http://www.au.kddi.com/ezfactory/tec/spec/new_win/ezkishu.html
  * @see        Net_UserAgent_Mobile_Common
@@ -80,18 +80,6 @@ class Net_UserAgent_Mobile_EZweb extends Net_UserAgent_Mobile_Common
     /**#@+
      * @access private
      */
-
-    /**
-     * name of the model like 'P502i'
-     * @var string
-     */
-    var $_model = '';
-
-    /**
-     * device ID like 'TS21'
-     * @var string
-     */
-    var $_deviceID = '';
 
     /**
      * server string like 'UP.Link/3.2.1.2'
@@ -140,7 +128,7 @@ class Net_UserAgent_Mobile_EZweb extends Net_UserAgent_Mobile_Common
      */
     function isTUKa()
     {
-        $tuka = substr($this->_deviceID, 2, 1);
+        $tuka = substr($this->_rawModel, 2, 1);
         if ($this->isWAP2()) {
             if ($tuka == 'U') {
                 return true;
@@ -158,17 +146,17 @@ class Net_UserAgent_Mobile_EZweb extends Net_UserAgent_Mobile_Common
     // {{{ parse()
 
     /**
-     * parse HTTP_USER_AGENT string
+     * Parses HTTP_USER_AGENT string.
+     *
+     * @param string $userAgent User-Agent string
      */
-    function parse()
+    function parse($userAgent)
     {
-        $agent = $this->getUserAgent();
-
-        if (preg_match('/^KDDI-(.*)/', $agent, $matches)) {
+        if (preg_match('/^KDDI-(.*)/', $userAgent, $matches)) {
 
             // KDDI-TS21 UP.Browser/6.0.2.276 (GUI) MMP/1.1
             $this->_xhtmlCompliant = true;
-            list($this->_deviceID, $browser, $opt, $this->_serverName) =
+            list($this->_rawModel, $browser, $opt, $this->_serverName) =
                 explode(' ', $matches[1], 4);
             list($this->name, $version) = explode('/', $browser);
             $this->version = "$version $opt";
@@ -176,17 +164,15 @@ class Net_UserAgent_Mobile_EZweb extends Net_UserAgent_Mobile_Common
 
             // UP.Browser/3.01-HI01 UP.Link/3.4.5.2
             @list($browser, $this->_serverName, $comment) =
-                explode(' ', $agent, 3);
+                explode(' ', $userAgent, 3);
             list($this->name, $software) = explode('/', $browser);
-            list($this->version, $this->_deviceID) =
+            list($this->version, $this->_rawModel) =
                 explode('-', $software);
             if ($comment) {
                 $this->_comment =
                     preg_replace('/^\((.*)\)$/', '$1', $comment);
             }
         }
-
-        $this->_model = $this->_deviceID;
     }
 
     // }}}
@@ -202,12 +188,12 @@ class Net_UserAgent_Mobile_EZweb extends Net_UserAgent_Mobile_Common
     function makeDisplay()
     {
         @list($width, $height) =
-            explode(',', $this->getHeader('x-up-devcap-screenpixels'));
+            explode(',', $this->getHeader('X-UP-DEVCAP-SCREENPIXELS'));
         $screenDepth =
-            explode(',', $this->getHeader('x-up-devcap-screendepth'));
+            explode(',', $this->getHeader('X-UP-DEVCAP-SCREENDEPTH'));
         $depth = $screenDepth[0] ? pow(2, (integer)$screenDepth[0]) : 0;
         $color =
-            $this->getHeader('x-up-devcap-iscolor') === '1' ? true : false;
+            $this->getHeader('X-UP-DEVCAP-ISCOLOR') === '1' ? true : false;
         return new Net_UserAgent_Mobile_Display(array(
                                                       'width'  => $width,
                                                       'height' => $height,
@@ -218,29 +204,16 @@ class Net_UserAgent_Mobile_EZweb extends Net_UserAgent_Mobile_Common
     }
 
     // }}}
-    // {{{ getModel()
-
-    /**
-     * returns name of the model (device ID) like 'TS21'
-     *
-     * @return string
-     */
-    function getModel()
-    {
-        return $this->_model;
-    }
-
-    // }}}
     // {{{ getDeviceID()
 
     /**
-     * returns device ID like 'TS21'
+     * Returns the device ID of the user agent.
      *
      * @return string
      */
     function getDeviceID()
     {
-        return $this->_deviceID;
+        return $this->_rawModel;
     }
 
     // }}}
@@ -318,7 +291,7 @@ class Net_UserAgent_Mobile_EZweb extends Net_UserAgent_Mobile_Common
      */
     function isWIN()
     {
-        return substr($this->_deviceID, 2, 1) == 3 ? true : false;
+        return substr($this->_rawModel, 2, 1) == 3 ? true : false;
     }
 
     /**#@-*/
@@ -344,4 +317,3 @@ class Net_UserAgent_Mobile_EZweb extends Net_UserAgent_Mobile_Common
  * indent-tabs-mode: nil
  * End:
  */
-?>

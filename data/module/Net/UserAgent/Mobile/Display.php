@@ -59,7 +59,7 @@
  * @author     KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @copyright  2003-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    Release: 0.30.0
+ * @version    Release: 0.31.0
  * @since      Class available since Release 0.1
  */
 class Net_UserAgent_Mobile_Display
@@ -265,4 +265,3 @@ class Net_UserAgent_Mobile_Display
  * indent-tabs-mode: nil
  * End:
  */
-?>

@@ -13,15 +13,15 @@
  * @category   Networking
  * @package    Net_UserAgent_Mobile
  * @author     KUBO Atsuhiro <iteman@users.sourceforge.net>
- * @copyright  2003-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>
+ * @copyright  2003-2008 KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
  * @version    CVS: $Id$
  * @see        Net_UserAgent_Mobile_Common
  * @since      File available since Release 0.1.0
  */
 
-require_once(dirname(__FILE__) . '/Common.php');
-require_once(dirname(__FILE__) . '/Display.php');
+require_once 'Net/UserAgent/Mobile/Common.php';
+require_once 'Net/UserAgent/Mobile/Display.php';
 
 // {{{ Net_UserAgent_Mobile_NonMobile
 
@@ -43,9 +43,9 @@ require_once(dirname(__FILE__) . '/Display.php');
  * @category   Networking
  * @package    Net_UserAgent_Mobile
  * @author     KUBO Atsuhiro <iteman@users.sourceforge.net>
- * @copyright  2003-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>
+ * @copyright  2003-2008 KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    Release: 0.30.0
+ * @version    Release: 0.31.0
  * @see        Net_UserAgent_Mobile_Common
  * @since      Class available since Release 0.1.0
  */
@@ -87,12 +87,13 @@ class Net_UserAgent_Mobile_NonMobile extends Net_UserAgent_Mobile_Common
     // {{{ parse()
 
     /**
-     * parse HTTP_USER_AGENT string
+     * Parses HTTP_USER_AGENT string.
+     *
+     * @param string $userAgent User-Agent string
      */
-    function parse()
+    function parse($userAgent)
     {
-        @list($this->name, $this->version) =
-            explode('/', $this->getUserAgent());
+        @list($this->name, $this->version) = explode('/', $userAgent);
     }
 
     // }}}
@@ -108,32 +109,6 @@ class Net_UserAgent_Mobile_NonMobile extends Net_UserAgent_Mobile_Common
     function makeDisplay()
     {
         return new Net_UserAgent_Mobile_Display(null);
-    }
-
-    // }}}
-    // {{{ getModel()
-
-    /**
-     * returns name of the model
-     *
-     * @return string
-     */
-    function getModel()
-    {
-        return '';
-    }
-
-    // }}}
-    // {{{ getDeviceID()
-
-    /**
-     * returns device ID
-     *
-     * @return string
-     */
-    function getDeviceID()
-    {
-        return '';
     }
 
     // }}}
@@ -185,4 +160,3 @@ class Net_UserAgent_Mobile_NonMobile extends Net_UserAgent_Mobile_Common
  * indent-tabs-mode: nil
  * End:
  */
-?>
