@@ -24,6 +24,18 @@ CREATE TABLE dtb_kiyaku (
     del_flg  int2 NOT NULL DEFAULT 0
 );
 
+CREATE TABLE dtb_holiday (
+    holiday_id serial NOT NULL,
+    title text NOT NULL,
+    month int2 NOT NULL,
+    day int2 NOT NULL,
+    rank int4 NOT NULL DEFAULT 0,
+    creator_id int4 NOT NULL,
+    create_date timestamp NOT NULL DEFAULT now(),
+    update_date timestamp NOT NULL,
+    del_flg  int2 NOT NULL DEFAULT 0
+);
+
 CREATE TABLE mtb_zip (
     code text,
     old_zipcode text,

@@ -1,4 +1,4 @@
-@charset "utf-8";
+﻿@charset "utf-8";
 
 
 /* FLASH
@@ -9,7 +9,7 @@ div#flasharea {
 }
 
 
-/* ニュース
+/* 繝九Η繝シ繧ケ
 ----------------------------------------------- */
 div#newsarea {
     width: 400px;
@@ -33,7 +33,7 @@ div#newsarea dl dt {
 }
 
 
-/* おすすめ
+/* 縺翫☆縺吶ａ
 ----------------------------------------------- */
 div#recomendarea {
     width: 400px;
@@ -80,3 +80,32 @@ div.recomendleft h3 {
 div.recomendright h3 {
     font-size: 100%;
 }
+
+/* ブロック - カレンダー
+----------------------------------------------- */
+#block-calendar {border: 1px solid #CCCCCC;padding: 0 0 10px;}
+#block-calendar h2 {
+/*
+    height: 29px;
+    text-indent: -9999em;
+    background: url(../images/tit-calendar.gif) 0 0 no-repeat;
+*/
+}
+#block-calendar table {
+    border-collapse: collapse;
+    margin: 0 auto 10px;
+    text-align:center;
+}
+#block-calendar th, #block-calendar td {
+    padding: 2px;
+    border: 1px solid #CCCCCC;
+}
+#block-calendar th {
+    background: #FF8144;
+    color: #FFFFFF;
+}
+#block-calendar .off {
+    background: #FFEECC;
+    color: #E04A00;
+}
+#block-calendar caption {color: #DD4400;}
