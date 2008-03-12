@@ -52,6 +52,7 @@ class SC_Batch_Update extends SC_Batch {
      * @return void
      */
     function execute($target = ".") {
+        $msg = '';
         $oldMask = umask(0);
         $bkupDistInfoArray = array(); //バックアップファイル用のdistinfoファイル内容
         $bkupPath = DATA_PATH . 'downloads/backup/update_' . time() . '/';
@@ -65,7 +66,9 @@ class SC_Batch_Update extends SC_Batch {
         );
 
         if (!is_writable($bkupPath) || !is_writable($bkupPathFile)) {
-            $arrLog['err'][] = 'バックアップディレクトリの作成に失敗しました';
+            $msg = 'バックアップディレクトリの作成に失敗しました';
+            $arrLog['err'][] = $msg;
+            $this->printLog($msg);
             return $arrLog;
         }
 
@@ -92,7 +95,9 @@ class SC_Batch_Update extends SC_Batch {
 
                 // 除外ファイルをスキップ
                 if (in_array($fileName, $excludeArray)) {
-                    $arrLog['ok'][] = "次のファイルは除外されました: " . $path;
+                    //$arrLog['ok'][] = "次のファイルは除外されました: " . $path;
+                    $msg = "次のファイルは除外されました: " . $path;
+                    $this->printLog($msg);
                     continue;
                 }
 
@@ -112,21 +117,16 @@ class SC_Batch_Update extends SC_Batch {
                         if (!empty($distinfo[$sha1])) {
                             $out = $distinfo[$sha1];
                         } else {
-                            $arrLog['err'][] = "ハッシュ値が一致しないため, コピー先が取得できません: " . $path;
+                            $msg = "ハッシュ値が一致しないため, コピー先が取得できません: " . $path;
+                            $arrLog['err'][] = $msg;
+                            $this->printLog($msg);
                             break 2;
                         }
 
-                        // パーミッションチェック
-                        /**
-                        if ($check_only) {
-                            if(!is_writable($out)) {
-                                $this->mkdir_p($out);
-                                if (!is_writable($out)) {
-                                    $arrLog['err'][] = "コピー先に書き込み権限がありません: " . $out;
-                                }
-                            }
-                            continue;
-                        }**/
+                        if ($sha1 == sha1_file($out)) {
+                            $msg = "同じ内容のファイルをスキップしました: " . $out;
+                            $this->printLog($msg);
+                        }
 
                         // バックアップを作成
                         if (file_exists($out)) {
@@ -134,11 +134,13 @@ class SC_Batch_Update extends SC_Batch {
                             $bkupDistInfoArray[sha1_file($out)] = $out;
 
                             if (!@copy($out, $bkupTo)) {
-                                $arrLog['err'][] = "バックアップファイルの作成に失敗しました: " . $out . ' -> ' . $bkupTo;
+                                $msg = "バックアップファイルの作成に失敗しました: " . $out . ' -> ' . $bkupTo;
+                                $arrLog['err'][] = $msg;
+                                $this->printLog($msg);
                                 break 2;
                             }
-                            $arrLog['ok'][]
-                                 = "バックアップファイルの作成に成功しました: " . $out . ' -> ' . $bkupTo;
+                            $msg = "バックアップファイルの作成に成功しました: " . $out . ' -> ' . $bkupTo;
+                            $this->printLog($msg);
                         }
 
                         // ファイルを書き出しモードで開く
@@ -148,18 +150,24 @@ class SC_Batch_Update extends SC_Batch {
                             $this->mkdir_p($out);
                             $handle = @fopen($out, "w");
                             if (!$handle) {
-                                $arrLog['err'][] = "コピー先に書き込み権限がありません: " . $out;
+                                $msg = "コピー先に書き込み権限がありません: " . $out;
+                                $arrLog['err'][] = $msg;
+                                $this->printLog($msg);
                                 continue;
                             }
                         }
 
                         // 取得した内容を書き込む
                         if (fwrite($handle, $contents) === false) {
-                            $arrLog['err'][] = "コピー先に書き込み権限がありません: " . $out;
+                            $msg = "コピー先に書き込み権限がありません: " . $out;
+                            $arrLog['err'][] = $msg;
+                            $this->printLog($msg);
                             continue;
                         }
 
-                        $arrLog['ok'][] =  "ファイルのコピーに成功しました: " . $out;
+                        $msg =  "ファイルのコピーに成功しました: " . $out;
+                        $arrLog['ok'][] = $msg;
+                        $this->printLog($msg);
                         // ファイルを閉じる
                         fclose($handle);
                     }
@@ -171,9 +179,12 @@ class SC_Batch_Update extends SC_Batch {
             $handle = @fopen($bkupPath . 'distinfo.php', "w");
             @fwrite($handle, $src);
             @fclose($handle);
-            $arrLog['ok'][] =  "distinfoファイルの作成に成功しました: " . $bkupPath . 'distinfo.php';
+            $msg = "distinfoファイルの作成に成功しました: " . $bkupPath . 'distinfo.php';
+            $this->printLog($msg);
         } else {
-            $arrLog['err'][] = "distinfoファイルの作成に失敗しました: " . $bkupPath . 'distinfo.php';
+            $msg = "distinfoファイルの作成に失敗しました: " . $bkupPath . 'distinfo.php';
+            $arrLog['err'][] = $msg;
+            $this->printLog($msg);
         }
         umask($oldMask);
         return $arrLog;
@@ -228,6 +239,10 @@ class SC_Batch_Update extends SC_Batch {
         $src .= ");\n?>";
 
         return $src;
+    }
+
+    function printLog($msg) {
+        GC_Utils::gfPrintLog($msg, DATA_PATH . 'logs/ownersstore_batch_update.log');
     }
 }
 ?>
