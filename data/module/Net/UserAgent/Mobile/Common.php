@@ -13,11 +13,13 @@
  * @category   Networking
  * @package    Net_UserAgent_Mobile
  * @author     KUBO Atsuhiro <iteman@users.sourceforge.net>
- * @copyright  2003-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>
+ * @copyright  2003-2008 KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
  * @version    CVS: $Id$
  * @since      File available since Release 0.1
  */
+
+require_once dirname(__FILE__) . '/../Mobile.php';
 
 // {{{ Net_UserAgent_Mobile_Common
 
@@ -30,9 +32,9 @@
  * @category   Networking
  * @package    Net_UserAgent_Mobile
  * @author     KUBO Atsuhiro <iteman@users.sourceforge.net>
- * @copyright  2003-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>
+ * @copyright  2003-2008 KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    Release: 0.30.0
+ * @version    Release: 0.31.0
  * @since      Class available since Release 0.1
  */
 class Net_UserAgent_Mobile_Common extends PEAR
@@ -48,13 +50,13 @@ class Net_UserAgent_Mobile_Common extends PEAR
      * User-Agent name like 'DoCoMo'
      * @var string
      */
-    var $name = '';
+    var $name;
 
     /**
      * User-Agent version number like '1.0'
      * @var string
      */
-    var $version = '';
+    var $version;
 
     /**#@-*/
 
@@ -69,17 +71,34 @@ class Net_UserAgent_Mobile_Common extends PEAR
     var $_display;
 
     /**
-     * Net_UserAgent_Mobile_Request_XXX object
-     * @var object {@link Net_UserAgent_Mobile_Request_Env}
-     */
-    var $_request;
-
-    /**
      * {@link Net_UserAgent_Mobile_Error} object for error handling in the
      *     constructor
      * @var object
      **/
-    var $_error = null;
+    var $_error;
+
+    /**
+     * The User-Agent string.
+     * @var string
+     * @since Property available since Release 0.31.0
+     **/
+    var $_userAgent;
+
+    /**
+     * The model name of the user agent.
+     *
+     * @var string
+     * @since Property available since Release 0.31.0
+     */
+    var $_model;
+
+    /**
+     * The raw model name of the user agent.
+     *
+     * @var string
+     * @since Property available since Release 0.31.0
+     */
+    var $_rawModel;
 
     /**#@-*/
 
@@ -93,16 +112,18 @@ class Net_UserAgent_Mobile_Common extends PEAR
     /**
      * constructor
      *
-     * @param object $request a {@link Net_UserAgent_Mobile_Request_Env}
-     *     object
+     * @param string $userAgent User-Agent string
      */
-    function Net_UserAgent_Mobile_Common($request)
+    function Net_UserAgent_Mobile_Common($userAgent)
     {
         parent::PEAR('Net_UserAgent_Mobile_Error');
-        $this->_request = $request;
-        if (Net_UserAgent_Mobile::isError($result = $this->parse())) {
+
+        $result = $this->parse($userAgent);
+        if (Net_UserAgent_Mobile::isError($result)) {
             $this->isError($result);
         }
+
+        $this->_userAgent = $userAgent;
     }
 
     // }}}
@@ -174,7 +195,7 @@ class Net_UserAgent_Mobile_Common extends PEAR
      */
     function getUserAgent()
     {
-        return $this->getHeader('User-Agent');
+        return $this->_userAgent;
     }
 
     // }}}
@@ -188,7 +209,7 @@ class Net_UserAgent_Mobile_Common extends PEAR
      */
     function getHeader($header)
     {
-        return $this->_request->get($header);
+        return @$_SERVER[ 'HTTP_' . str_replace('-', '_', $header) ];
     }
 
     // }}}
@@ -255,14 +276,12 @@ class Net_UserAgent_Mobile_Common extends PEAR
     // {{{ parse()
 
     /**
-     * parse HTTP_USER_AGENT string (should be implemented in subclasses)
+     * Parses HTTP_USER_AGENT string.
      *
+     * @param string $userAgent User-Agent string
      * @abstract
      */
-    function parse()
-    {
-        die();
-    }
+    function parse($userAgent) {}
 
     // }}}
     // {{{ makeDisplay()
@@ -421,6 +440,66 @@ class Net_UserAgent_Mobile_Common extends PEAR
         die();
     }
 
+    // }}}
+    // {{{ isSoftBank()
+
+    /**
+     * Returns whether the agent is SoftBank or not.
+     *
+     * @return boolean
+     * @since Method available since Release 0.31.0
+     */
+    function isSoftBank()
+    {
+        return false;
+    }
+
+    // }}}
+    // {{{ isWillcom()
+
+    /**
+     * Returns whether the agent is Willcom or not.
+     *
+     * @return boolean
+     * @since Method available since Release 0.31.0
+     */
+    function isWillcom()
+    {
+        return false;
+    }
+
+    // }}}
+    // {{{ getModel()
+
+    /**
+     * Returns the model name of the user agent.
+     *
+     * @return string
+     * @since Method available since Release 0.31.0
+     */
+    function getModel()
+    {
+        if (is_null($this->_model)) {
+            return $this->_rawModel;
+        } else {
+            return $this->_model;
+        }
+    }
+
+    // }}}
+    // {{{ getRawModel()
+
+    /**
+     * Returns the raw model name of the user agent.
+     *
+     * @return string
+     * @since Method available since Release 0.31.0
+     */
+    function getRawModel()
+    {
+        return $this->_rawModel;
+    }
+
     /**#@-*/
 
     /**#@+
@@ -444,4 +523,3 @@ class Net_UserAgent_Mobile_Common extends PEAR
  * indent-tabs-mode: nil
  * End:
  */
-?>
