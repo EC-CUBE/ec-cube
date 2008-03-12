@@ -151,7 +151,7 @@ class LC_Page_Shopping extends LC_Page {
 
             // DB値の取得
             $this->objFormParam->setParam($arrRet[0]);
-            $this->objFormParam->setValue('order_email_check', $arrRet[0]['order_email']);
+            $this->objFormParam->setValue('order_email02', $arrRet[0]['order_email']);
             $this->objFormParam->setDBDate($arrRet[0]['order_birth']);
             break;
         }
@@ -282,7 +282,7 @@ class LC_Page_Shopping extends LC_Page {
 
             // DB値の取得
             $this->objFormParam->setParam($arrRet[0]);
-            $this->objFormParam->setValue('order_email_check', $arrRet[0]['order_email']);
+            $this->objFormParam->setValue('order_email02', $arrRet[0]['order_email']);
             $this->objFormParam->setDBDate($arrRet[0]['order_birth']);
             break;
         }
@@ -346,7 +346,7 @@ class LC_Page_Shopping extends LC_Page {
         $this->objFormParam->addParam("FAX番号2", "order_fax02", TEL_ITEM_LEN, "n", array("MAX_LENGTH_CHECK" ,"NUM_CHECK"));
         $this->objFormParam->addParam("FAX番号3", "order_fax03", TEL_ITEM_LEN, "n", array("MAX_LENGTH_CHECK" ,"NUM_CHECK"));
         $this->objFormParam->addParam("メールアドレス", "order_email", STEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "NO_SPTAB", "MAX_LENGTH_CHECK", "EMAIL_CHECK", "EMAIL_CHAR_CHECK"));
-        $this->objFormParam->addParam("メールアドレス（確認）", "order_email_check", STEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "NO_SPTAB", "MAX_LENGTH_CHECK", "EMAIL_CHECK", "EMAIL_CHAR_CHECK"), "", false);
+        $this->objFormParam->addParam("メールアドレス（確認）", "order_email02", STEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "NO_SPTAB", "MAX_LENGTH_CHECK", "EMAIL_CHECK", "EMAIL_CHAR_CHECK"), "", false);
         $this->objFormParam->addParam("年", "year", INT_LEN, "n", array("MAX_LENGTH_CHECK"), "", false);
         $this->objFormParam->addParam("月", "month", INT_LEN, "n", array("MAX_LENGTH_CHECK"), "", false);
         $this->objFormParam->addParam("日", "day", INT_LEN, "n", array("MAX_LENGTH_CHECK"), "", false);
@@ -423,7 +423,7 @@ class LC_Page_Shopping extends LC_Page {
         $objErr->doFunc(array("FAX", "deliv_fax01", "deliv_fax02", "deliv_fax03", TEL_ITEM_LEN), array("TEL_CHECK"));
         $objErr->doFunc(array("郵便番号", "deliv_zip01", "deliv_zip02"), array("ALL_EXIST_CHECK"));
         $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_DATE"));
-        $objErr->doFunc(array("メールアドレス", "メールアドレス（確認）", "order_email", "order_email_check"), array("EQUAL_CHECK"));
+        $objErr->doFunc(array("メールアドレス", "メールアドレス（確認）", "order_email", "order_email02"), array("EQUAL_CHECK"));
 
         return $objErr->arrErr;
     }
