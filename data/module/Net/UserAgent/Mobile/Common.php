@@ -19,7 +19,7 @@
  * @since      File available since Release 0.1
  */
 
-require_once 'Net/UserAgent/Mobile.php';
+require_once dirname(__FILE__) . '/../Mobile.php';
 
 // {{{ Net_UserAgent_Mobile_Common
 

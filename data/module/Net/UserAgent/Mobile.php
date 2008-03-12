@@ -19,7 +19,7 @@
  * @since      File available since Release 0.1
  */
 
-require_once 'PEAR.php';
+require_once dirname(__FILE__) . '/../../PEAR.php';
 
 // {{{ constants
 
@@ -150,7 +150,8 @@ class Net_UserAgent_Mobile
         $class = "Net_UserAgent_Mobile_$driver";
 
         if (!class_exists($class)) {
-            $file = str_replace('_', '/', $class) . '.php';
+        	
+            $file = dirname(__FILE__) . "/Mobile/{$driver}.php";
             if (!include_once $file) {
                 return PEAR::raiseError(null,
                                         NET_USERAGENT_MOBILE_ERROR_NOT_FOUND,

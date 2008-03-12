@@ -21,9 +21,9 @@
  * @since      File available since Release 0.1
  */
 
-require_once 'Net/UserAgent/Mobile/Common.php';
-require_once 'Net/UserAgent/Mobile/Display.php';
-require_once 'Net/UserAgent/Mobile/DoCoMoDisplayMap.php';
+require_once dirname(__FILE__) . '/Common.php';
+require_once dirname(__FILE__) . '/Display.php';
+require_once dirname(__FILE__) . '/DoCoMoDisplayMap.php';
 
 // {{{ Net_UserAgent_Mobile_DoCoMo
 
