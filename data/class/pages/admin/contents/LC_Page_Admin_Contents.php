@@ -111,7 +111,7 @@ class LC_Page_Admin_Contents extends LC_Page {
 
         //----　編集データ取得
         if ($_POST["mode"] == "search" && is_numeric($_POST["news_id"])) {
-            $sql = "SELECT *, cast(substring(news_date,1, 10) as date) as cast_news_date FROM dtb_news WHERE news_id = ? ";
+            $sql = "SELECT *, cast(news_date as date) as cast_news_date FROM dtb_news WHERE news_id = ? ";
             $result = $conn->getAll($sql, array($_POST["news_id"]));
             foreach($result[0] as $key => $val ){
                 $this->$key = $val;
@@ -167,7 +167,7 @@ class LC_Page_Admin_Contents extends LC_Page {
 
 
         //---- 全データ取得
-        $sql = "SELECT *, cast(substring(news_date,1, 10) as date) as cast_news_date FROM dtb_news WHERE del_flg = '0' ORDER BY rank DESC";
+        $sql = "SELECT *, cast(news_date as date) as cast_news_date FROM dtb_news WHERE del_flg = '0' ORDER BY rank DESC";
         $this->list_data = $conn->getAll($sql);
         $this->line_max = count($this->list_data);
         $sql = "SELECT MAX(rank) FROM dtb_news WHERE del_flg = '0'";        // rankの最大値を取得

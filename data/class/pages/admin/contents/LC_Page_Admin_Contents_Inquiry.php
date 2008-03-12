@@ -97,7 +97,7 @@ class LC_Page_Admin_Contents_Inquiry extends LC_Page {
                               , "3"=>"チェックボックス", "4"=>"ラジオボタン"
                               );
 
-        $sql = "SELECT *, cast(substring(create_date, 1, 10) as date) as disp_date FROM dtb_question WHERE del_flg = 0 ORDER BY question_id";
+        $sql = "SELECT *, cast(create_date as date) as disp_date FROM dtb_question WHERE del_flg = 0 ORDER BY question_id";
         $result = $conn->getAll($sql);
         $this->list_data = $result;
 
