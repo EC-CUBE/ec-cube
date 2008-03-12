@@ -91,16 +91,21 @@ if (SC_MobileUserAgent::isMobile()) {
     } else {
         $url = MOBILE_SITE_URL;
     }
-    
+
     if (preg_match('|^' . URL_DIR . '(.*)$|', $_SERVER['REQUEST_URI'], $matches)) {
         $path = $matches[1];
     } else {
         $path = '';
     }
-    
+
     header("Location: ". SC_Utils_Ex::sfRmDupSlash($url . $path));
     exit;
 }
+
+// セッション初期化・開始
+require_once CLASS_PATH . 'session/SC_SessionFactory.php';
+$sessionFactory = SC_SessionFactory::getInstance();
+$sessionFactory->initSession();
 
 // 絵文字変換 (除去) フィルターを組み込む。
 ob_start(array('SC_MobileEmoji', 'handler'));

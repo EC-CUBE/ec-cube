@@ -69,9 +69,13 @@ require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_Session_Ex.php");
 require_once($include_dir . "/.." . HTML2DATA_DIR . "module/Mail.php");
 require_once($include_dir . "/.." . HTML2DATA_DIR . "module/Mail/mime.php");
 
-// セッションハンドラ開始
-$objSession = new SC_Helper_Session_Ex();
-
 // インストールチェック
 SC_Utils_Ex::sfInitInstall();
+
+// セッションハンドラ開始
+$objSession = new SC_Helper_Session_Ex();
+// セッション初期化・開始
+require_once CLASS_PATH . 'session/SC_SessionFactory.php';
+$sessionFactory = SC_SessionFactory::getInstance();
+$sessionFactory->initSession();
 ?>

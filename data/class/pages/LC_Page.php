@@ -105,7 +105,7 @@ class LC_Page {
      * @param string $url リダイレクト先 URL
      * @param boolean $isMobile モバイル用にセッションIDを付与する場合 true
      * @return void|boolean $url に SITE_URL 及び, SSL_URL を含まない場合 false,
-     *                       正常に遷移可能な場合は, $url の URL へ遷移する.
+     *                       正常に遷移可能な場合は, $url の ロケーションヘッダを出力する.
      * @see Net_URL
      */
     function sendRedirect($url, $isMobile = false) {
@@ -117,11 +117,15 @@ class LC_Page {
             if (!empty($_SERVER['QUERY_STRING'])) {
                 $netURL->addRawQueryString($_SERVER['QUERY_STRING']);
             }
-            if ($isMobile) {
+
+            $session = SC_SessionFactory::getInstance();
+            if ($isMobile || $session->useCookie() == false) {
                 $netURL->addQueryString(session_name(), session_id());
             }
+
             $netURL->addQueryString(TRANSACTION_ID_NAME, $this->getToken());
             header("Location: " . $netURL->getURL());
+            return;
         }
         return false;
     }
