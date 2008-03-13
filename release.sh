@@ -3,8 +3,8 @@
 CURRENT_DIR=`pwd`
 TMP_DIR=/tmp
 SVN_REPO=file:///home/svn/open
-SVN_PATH=$REPOS/branches/version-2
-SVN_TAGS=$REPOS/tags
+SVN_PATH=$SVN_REPO/branches/version-2
+SVN_TAGS=$SVN_REPO/tags
 ECCUBE_VERSION=2.1.1-beta
 WRK_DIR=eccube-$ECCUBE_VERSION
 
