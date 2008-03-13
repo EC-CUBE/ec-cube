@@ -27,20 +27,16 @@ require_once("../" . HTML2DATA_DIR . "module/Request.php");
 define("INSTALL_LOG", "./temp/install.log");
 ini_set("max_execution_time", 300);
 
-class LC_Page {
-    function LC_Page() {
-        $this->arrDB_TYPE = array(
-            'pgsql' => 'PostgreSQL',
-            'mysql' => 'MySQL'
-        );
-        $this->arrDB_PORT = array(
-            'pgsql' => '',
-            'mysql' => ''
-        );
-    }
-}
+$objPage = new StdClass;
+$objPage->arrDB_TYPE = array(
+    'pgsql' => 'PostgreSQL',
+    'mysql' => 'MySQL'
+);
+$objPage->arrDB_PORT = array(
+    'pgsql' => '',
+    'mysql' => ''
+);
 
-$objPage = new LC_Page();
 $objDb = new SC_Helper_DB_Ex();
 
 // テンプレートコンパイルディレクトリの書込み権限チェック
@@ -844,7 +840,7 @@ function lfMakeConfigFile() {
     if (!ereg("/$", $data_path)) {
 		$data_path = $data_path . "/";
     }
-    
+
     $filepath = $data_path . "install.php";
 
     $config_data =

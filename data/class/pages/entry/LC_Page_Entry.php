@@ -74,7 +74,7 @@ class LC_Page_Entry extends LC_Page {
         $objDate = new SC_Date(START_BIRTH_YEAR, date("Y",strtotime("now")));
 
         // 規約ページからの遷移でなければエラー画面へ遷移する
-        if (empty($_POST) && basename($_SERVER['HTTP_REFERER']) != 'kiyaku.php') {
+        if (empty($_POST) && !preg_match('/kiyaku.php/', basename($_SERVER['HTTP_REFERER']))) {
             SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", true);
         }
 
