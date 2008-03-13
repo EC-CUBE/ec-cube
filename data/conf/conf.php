@@ -125,6 +125,8 @@ define("ECCUBE_PAYMENT", "EC-CUBE");
 
 // PEAR::DBのデバッグモード
 define('PEAR_DB_DEBUG', 9);
+// PEAR::DBの持続的接続オプション
+define('PEAR_DB_PERSISTENT', false);
 
 //バッチを実行する最短の間隔(秒)
 define("LOAD_BATCH_PASS", 3600);
