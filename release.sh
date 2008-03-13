@@ -2,8 +2,10 @@
 
 CURRENT_DIR=`pwd`
 TMP_DIR=/tmp
-SVN_PATH=file:///home/svn/open/branches/version-2
-ECCUBE_VERSION=2.0.1
+SVN_REPO=file:///home/svn/open
+SVN_PATH=$REPOS/branches/version-2
+SVN_TAGS=$REPOS/tags
+ECCUBE_VERSION=2.1.1-beta
 WRK_DIR=eccube-$ECCUBE_VERSION
 
 if [ ! -d $TMP_DIR ]; then
@@ -20,10 +22,9 @@ rm -rf $WRK_DIR/.project
 rm -rf $WRK_DIR/test
 rm -rf $WRK_DIR/templates
 rm -rf $WRK_DIR/convert.php
-rm -rf $WRK_DIR/release.sh
+rm -rf $WRK_DIR/*.sh
 rm -rf $WRK_DIR/html/test
 rm -rf $WRK_DIR/data/downloads/module/*
-rm -rf $WRK_DIR/data/downloads/module2/*
 find ./$WRK_DIR -name "dummy" -delete
 find ./$WRK_DIR -name "info.php" -delete
 
