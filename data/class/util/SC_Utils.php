@@ -488,23 +488,25 @@ class SC_Utils {
     }
 
     // 配列の値をカンマ区切りで返す。
-    function sfGetCommaList($array, $space=true) {
+    function sfGetCommaList($array, $space=true, $arrPop = array()) {
         if (count($array) > 0) {
             $line = "";
             foreach($array as $val) {
-                if ($space) {
-                    $line .= $val . ", ";
-                }else{
-                    $line .= $val . ",";
+                if (!in_array($val, $arrPop)) {
+                    if ($space) {
+                        $line .= $val . ", ";
+                    } else {
+                        $line .= $val . ",";
+                    }
                 }
             }
             if ($space) {
                 $line = ereg_replace(", $", "", $line);
-            }else{
+            } else {
                 $line = ereg_replace(",$", "", $line);
             }
             return $line;
-        }else{
+        } else {
             return false;
         }
 
