@@ -44,9 +44,11 @@
 		<tr><td><img src="<!--{$TPL_DIR}-->img/contents/navi_subline.gif" width="140" height="2" alt=""></td></tr>
 		<tr><td class=<!--{if $tpl_subno_csv != 'campaign'}-->"subnavi"<!--{else}-->"subnavi-on"<!--{/if}-->><a href="./csv.php?tpl_subno_csv=<!--{$arrSubnavi.4}-->" onMouseOver="naviStyleChange('campaign_sub', '#b7b7b7')" <!--{if $tpl_subno_csv != 'campaign'}-->onMouseOut="naviStyleChange('campaign_sub', '#818287')"<!--{/if}--> id="campaign_sub"><span class="subnavi_text">キャンペーン</span></a></td></tr>
 		<tr><td><img src="<!--{$TPL_DIR}-->img/contents/navi_subline.gif" width="140" height="2" alt=""></td></tr>
+		<tr><td class=<!--{if $tpl_subno_csv != 'category'}-->"subnavi"<!--{else}-->"subnavi-on"<!--{/if}-->><a href="./csv.php?tpl_subno_csv=<!--{$arrSubnavi.5}-->" onMouseOver="naviStyleChange('category_sub', '#b7b7b7')" <!--{if $tpl_subno_csv != 'category'}-->onMouseOut="naviStyleChange('category_sub', '#818287')"<!--{/if}--> id="category_sub"><span class="subnavi_text">カテゴリ</span></a></td></tr>
+		<tr><td><img src="<!--{$TPL_DIR}-->img/contents/navi_subline.gif" width="140" height="2" alt=""></td></tr>
 		<tr><td class=<!--{if $tpl_subno_csv != 'csv_sql'}-->"subnavi"<!--{else}-->"subnavi-on"<!--{/if}-->><a href="./csv_sql.php" onMouseOver="naviStyleChange('csv_sql', '#b7b7b7')" <!--{if $tpl_subno_csv != 'csv_sql'}-->onMouseOut="naviStyleChange('csv_sql', '#818287')"<!--{/if}--> id="csv_sql"><span class="subnavi_text">高度な設定</span></a></td></tr>
 		<tr><td><img src="<!--{$TPL_DIR}-->img/contents/navi_subline.gif" width="140" height="2" alt=""></td></tr>
 	<!--{/if}-->
-	
+
 	<!--ナビ-->
 </table>

@@ -47,7 +47,7 @@
 					<tr>
 						<td background="<!--{$TPL_DIR}-->img/contents/main_left.jpg"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 						<td bgcolor="#cccccc">
-						
+
 							<!--▼登録テーブルここから-->
 							<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 								<tr>
@@ -64,12 +64,13 @@
 								<tr>
 									<td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td>
 								</tr>
-							</table>	
-							
+							</table>
+
 							<table width="678" border="0" cellspacing="1" cellpadding="5" summary=" " bgcolor="#cccccc">
 								<tr bgcolor="#ffffff">
 									<!--▼画面左-->
 									<td width="250" valign="top" class="fs12">
+									<a href="#" onmouseover="chgImg('<!--{$TPL_DIR}-->img/contents/btn_csv_on.jpg','btn_csv');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/contents/btn_csv.jpg','btn_csv');" onclick="fnModeSubmit('csv','','');" ><img src="<!--{$TPL_DIR}-->img/contents/btn_csv.jpg" width="99" height="22" alt="CSV DOWNLOAD" border="0" name="btn_csv" id="btn_csv"></a><br />
 									<a href="<!--{$smarty.server.PHP_SELF|escape}-->">▼ホーム</a><br>
 									<!--{section name=cnt loop=$arrTree}-->
 										<!--{assign var=level value="`$arrTree[cnt].level`}-->
@@ -82,7 +83,7 @@
 
 										<!--{* スペース繰り返し *}-->
 										<!--{section name=n loop=$level}-->　　<!--{/section}-->
-										
+
 										<!--{* カテゴリ名表示 *}-->
 										<!--{assign var=disp_name value="`$arrTree[cnt].category_id`.`$arrTree[cnt].category_name`"}-->
 										<!--{if $arrTree[cnt].level != $smarty.const.LEVEL_MAX}-->
@@ -97,28 +98,28 @@
 											<img src="<!--{$smarty.const.URL_DIR}-->misc/closef.gif" border="0">
 											<!--{$disp_name|sfCutString:20|escape}--></a><br>
 										<!--{/if}-->
-										
+
 										<!--{if $arrTree[cnt].display == true}-->
 											<div id="f<!--{$arrTree[cnt].category_id}-->">
 										<!--{else}-->
 											<div id="f<!--{$arrTree[cnt].category_id}-->" style="display:none">
-										<!--{/if}-->						
-										
+										<!--{/if}-->
+
 										<!--{assign var=before_level value="`$arrTree[cnt].level`}-->
-									<!--{/section}-->				
-									
+									<!--{/section}-->
+
 									</td>
-									
-									<!--▼画面右-->				
+
+									<!--▼画面右-->
 									<td width="428" valign="top">
-									
+
 									<span class="red12"><!--{$arrErr.category_name}--></span>
 									<input type="text" name="category_name" value="<!--{$arrForm.category_name|escape}-->" size="30" class="box30" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/>
 									<input type="submit" name="button" value="登録"/><span class="red10"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
-									<table width="428" border="0" cellspacing="0" cellpadding="0" summary=" ">	
+									<table width="428" border="0" cellspacing="0" cellpadding="0" summary=" ">
 										<tr><td height="15"></td></tr>
 									</table>
-									
+
 									<!--{if count($arrList) > 0}-->
 									<table border="0" cellspacing="1" cellpadding="5" summary=" " bgcolor="#cccccc">
 										<tr bgcolor="#f2f1ec" align="center" class="fs12n">
@@ -159,11 +160,11 @@
 										</tr>
 										<!--{/section}-->
 									</table>
-					
+
 									<!--{else}-->
 									<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 										<tr>
-											<td  class="fs12n">この階層には、カテゴリが登録されていません。</td>
+											<td class="fs12n">この階層には、カテゴリが登録されていません。</td>
 										</tr>
 									</table>
 									<!--{/if}-->
@@ -189,4 +190,4 @@
 	</tr>
 </form>
 </table>
-<!--★★メインコンテンツ★★-->		
+<!--★★メインコンテンツ★★
