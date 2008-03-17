@@ -137,6 +137,9 @@ class LC_Page_Admin_Products extends LC_Page {
             $objQuery = new SC_Query();
             $objQuery->delete("dtb_products_class", "product_id = ?", array($_POST['product_id']));
 
+            // お気に入り商品削除
+            $objQuery->delete("dtb_customer_favorite_products", "product_id = ?", array($_POST['product_id']));
+
             // 件数カウントバッチ実行
             $objDb->sfCategory_Count($objQuery);
         }
@@ -271,6 +274,7 @@ class LC_Page_Admin_Products extends LC_Page {
                     $where = "product_id IN (SELECT product_id FROM vw_products_nonclass AS noncls  WHERE $where)";
                     $sqlval['del_flg'] = 1;
                     $objQuery->update("dtb_products", $sqlval, $where, $arrval);
+                    $objQuery->delete("dtb_customer_favorite_products", $where);
                     break;
                 default:
                     // 読み込む列とテーブルの指定
