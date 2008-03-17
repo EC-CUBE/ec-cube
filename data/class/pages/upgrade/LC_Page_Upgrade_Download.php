@@ -218,7 +218,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
 
             // DB更新ファイルの読み込み、実行
             $objLog->log("* file execute start");
-            $this->fileExecute();
+            $this->fileExecute($objRet->data->product_code);
 
             // 配信サーバへ通知
             $objLog->log("* notify to lockon server start");
@@ -379,8 +379,8 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
      * 他の変数・関数とかぶらないよう、
      * LC_Update_Updater::execute()で処理を実行する.
      */
-    function fileExecute() {
-        $file = DATA_PATH . 'downloads/update/update.php';
+    function fileExecute($productCode) {
+        $file = DATA_PATH . 'downloads/update/' . $productCode . '_update.php';
         if (file_exists($file)) {
             @include_once $file;
             if (class_exists('LC_Update_Updater')) {
