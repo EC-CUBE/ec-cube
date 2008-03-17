@@ -678,4 +678,6 @@ define('OSTORE_E_C_AUTOUP_DISABLE', '2008');
 define('OSTORE_E_C_PERMISSION', '2009');
 /** オーナーズストア通信エラーコード */
 define('OSTORE_E_C_BATCH_ERR', '2010');
+/** お気に入り商品登録(有効:1 無効:0) */
+define('OPTION_FAVOFITE_PRODUCT','1');
 ?>

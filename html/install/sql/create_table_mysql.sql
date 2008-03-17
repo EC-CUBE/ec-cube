@@ -462,6 +462,13 @@ CREATE TABLE dtb_customer_reading (
     update_date datetime NOT NULL
 ) TYPE=InnoDB ;
 
+CREATE TABLE dtb_customer_favorite_products (
+    customer_id int NOT NULL,
+    product_id int NOT NULL,
+    create_date datetime NOT NULL,
+    update_date datetime NOT NULL,
+) TYPE=InnoDB ;
+
 CREATE TABLE dtb_category_count (
     category_id int NOT NULL,
     product_count int NOT NULL,

@@ -28,6 +28,13 @@
   <!--{else}-->
     <li><a href="./index.php" onmouseover="chgImg('<!--{$TPL_DIR}-->img/mypage/navi01_on.jpg','m_navi01');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/mypage/navi01.jpg','m_navi01');"><img src="<!--{$TPL_DIR}-->img/mypage/navi01.jpg" width="170" height="30" alt="購入履歴一覧" border="0" name="m_navi01" /></a></li>
   <!--{/if}-->
+  <!--{if $smarty.const.OPTION_FAVOFITE_PRODUCT == 1}-->
+  <!--{if $tpl_mypageno == 'favorite'}-->
+    <li><a href="./favorite.php">お気に入り商品</a></li>
+  <!--{else}-->
+    <li><a href="./favorite.php">お気に入り商品</a></li>
+  <!--{/if}-->
+  <!--{/if}-->
   <!--{if $tpl_mypageno == 'change'}-->
     <li><a href="./change.php"><img src="<!--{$TPL_DIR}-->img/mypage/navi02_on.jpg" width="170" height="30" alt="会員登録内容変更" border="0" name="m_navi02" /></a></li>
   <!--{else}-->

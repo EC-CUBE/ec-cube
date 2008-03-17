@@ -1113,5 +1113,6 @@ INSERT INTO mtb_constants VALUES ('OSTORE_E_C_INVALID_PARAM', '"2007"', 519, '�
 INSERT INTO mtb_constants VALUES ('OSTORE_E_C_AUTOUP_DISABLE', '"2008"', 520, 'オーナーズストア通信エラーコード');
 INSERT INTO mtb_constants VALUES ('OSTORE_E_C_PERMISSION', '"2009"', 521, 'オーナーズストア通信エラーコード');
 INSERT INTO mtb_constants VALUES ('OSTORE_E_C_BATCH_ERR', '"2010"', 522, 'オーナーズストア通信エラーコード');
+INSERT INTO mtb_constants VALUES ('OPTION_FAVOFITE_PRODUCT','1',523,'お気に入り商品登録(有効:1 無効:0)');
 
 INSERT INTO dtb_module (module_id,module_code,module_name,update_date,create_date)values(0,0,'patch',now(),now());
