@@ -70,7 +70,7 @@ class LC_Page_Admin_Basis_Masterdata extends LC_Page {
         case "edit":
             // POST 文字列の妥当性チェック
             $this->checkMasterDataName();
-            $this->errorMessage = $this->checkUniqueId();
+            $this->errorMessage = $this->checkUniqueID();
 
             if (empty($this->errorMessage)) {
                 // 取得したデータからマスタデータを生成
