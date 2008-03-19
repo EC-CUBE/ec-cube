@@ -34,18 +34,16 @@
         
         <td align="center">
             <div id="ownersstore_download<!--{$product.product_id|escape}-->">
-            <!--{* インストール済み かつ 新バージョンが公開している場合 はアップデートボタン表示 *}-->
-            <!--{if $product.installed_flg && $product.version_up_flg}-->
+            <!--{*  新バージョンが公開している場合 はアップデートボタン表示 *}-->
+            <!--{if $product.$product.version_up_flg}-->
                 <span class="icon_confirm">
                 <a href="" onclick="OwnersStore.download(<!--{$product.product_id|escape}-->);return false;">アップデート</a>
                 </span>
-            <!--{* 未インストールならインストールボタン表示 *}-->
-            <!--{elseif !$product.installed_flg}-->
-                <span class="icon_confirm">
-                <a href="" onclick="OwnersStore.download(<!--{$product.product_id|escape}-->);return false;">インストール</a>
-                </span>
+            <!--{* それ以外はならダウンロードボタン表示 *}-->
             <!--{else}-->
-                済み
+                <span class="icon_confirm">
+                <a href="" onclick="OwnersStore.download(<!--{$product.product_id|escape}-->);return false;">ダウンロード</a>
+                </span>
             <!--{/if}-->
             </div>
         </td>
