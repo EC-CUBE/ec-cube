@@ -35,7 +35,7 @@
         <td align="center">
             <div id="ownersstore_download<!--{$product.product_id|escape}-->">
             <!--{*  新バージョンが公開している場合 はアップデートボタン表示 *}-->
-            <!--{if $product.$product.version_up_flg}-->
+            <!--{if $product.version_up_flg}-->
                 <span class="icon_confirm">
                 <a href="" onclick="OwnersStore.download(<!--{$product.product_id|escape}-->);return false;">アップデート</a>
                 </span>
