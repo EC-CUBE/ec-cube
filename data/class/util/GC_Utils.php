@@ -206,6 +206,7 @@ class GC_Utils {
                 if($ret) {
                     unlink($path);
                     touch($path);
+                    chmod($path, 0666);
                 }
             }
         }
