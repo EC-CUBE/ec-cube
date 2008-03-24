@@ -114,6 +114,9 @@ class LC_Page_Admin_Design_Template extends LC_Page {
 		    // XXX コンパイルファイルのクリア処理を行う
 		    $objView->_smarty->clear_compiled_tpl();
 
+		    // common.cssの内容を更新
+		    $this->lfChangeCommonCss($template_code);
+
 		    // ブロック位置を更新
 		    $this->lfChangeBloc($template_code);
 
@@ -253,6 +256,26 @@ class LC_Page_Admin_Design_Template extends LC_Page {
                                  array("id", "remarks", "rank"));
 	}
 
+	/**
+	 * common.cssの更新
+	 */
+    function lfChangeCommonCss($template_code) {
+        $css_path = USER_PATH . "css/common.css";
+        
+        // ファイル内容取得
+        $css_data = file_get_contents($css_path);
+        
+        // ファイル内容更新
+        $pt = '/(@import url\("\.\.\/packages\/.+\/css\/import\.css"\);)/';
+        $rp = '@import url("../packages/'. $template_code. '/css/import.css");';
+        $css = preg_replace($pt, $rp, $css_data);
+        
+        // ファイル更新
+        $fp = fopen($css_path,"w");
+        fwrite($fp, $css);
+        fclose($fp);
+    }
+	
 	/**
 	 * ブロック位置の更新
 	 */
