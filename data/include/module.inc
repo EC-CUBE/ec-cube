@@ -52,6 +52,7 @@ $_arrModule = array(
     'mdl_moba8',
     'mdl_opebuilder',
     'mdl_souraku',
+    'mdl_ts',
 );
 
 $_objQuery = new SC_Query;

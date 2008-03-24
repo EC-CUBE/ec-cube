@@ -224,6 +224,10 @@ function fnCheckSubmit() {
         </tbody>
       </table>
 
+      <!--{if 'sfTSRequest'|function_exists}-->
+        <!--{''|sfTSPrintOrderBox}-->
+      <!--{/if}-->
+      
       <div class="tblareabtn">
         <a href="./payment.php" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_back_on.gif',back03)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_back.gif',back03)"><img src="<!--{$TPL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="戻る" border="0" name="back03" id="back03" /></a>&nbsp;
         <!--{if $payment_type != ""}-->
