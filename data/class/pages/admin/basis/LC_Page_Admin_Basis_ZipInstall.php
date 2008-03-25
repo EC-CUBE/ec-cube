@@ -76,6 +76,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page {
         print("\n");
         $this->myFlush();
 
+#('http://www.post.japanpost.jp/zipcode/dl/kogaki/lzh/ken_all.lzh')
         if(!$fp) {
             SC_Utils_Ex::sfErrorHeader(">> " . ZIP_CSV_FILE_PATH . "の取得に失敗しました。");
         } else {
