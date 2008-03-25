@@ -85,7 +85,7 @@ class LC_Upgrade_Helper_Json extends Services_JSON {
      * @return StdClass
      */
     function decode($str) {
-        if (version_compare(phpversion(), '5.2.0', '>=')) {
+        if (function_exists('json_decode')) {
             LC_Upgrade_Helper_Log::log(' *use json_decode()');
             return json_decode($str);
         }
