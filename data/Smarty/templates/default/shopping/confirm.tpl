@@ -224,8 +224,8 @@ function fnCheckSubmit() {
         </tbody>
       </table>
 
-      <!--{if 'sfTSRequest'|function_exists}-->
-        <!--{''|sfTSPrintOrderBox}-->
+      <!--{if 'sfTSPrintOrderBox'|function_exists}-->
+        <!--{'sfTSPrintOrderBox'|call_user_func}-->
       <!--{/if}-->
       
       <div class="tblareabtn">
