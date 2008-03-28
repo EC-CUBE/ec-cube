@@ -179,8 +179,8 @@ class LC_Page_Admin_Products extends LC_Page {
                             $view_where = $where;
                             break;
                         case 'search_name':			// 商品名
-                            $where .= " AND name ILIKE ?";
-                            $view_where .= " AND name ILIKE ?";
+                            $where .= " AND name LIKE ?";
+                            $view_where .= " AND name LIKE ?";
                             $arrval[] = "%$val%";
                             break;
                         case 'search_category_id':	// カテゴリー
