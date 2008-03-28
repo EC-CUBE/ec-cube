@@ -345,8 +345,10 @@ function lfnDispChange(){
 							<td>
 							<!--{* カテゴリ名 *}-->
 							<div id="disp_cat<!--{$smarty.section.cnt.iteration}-->" style="display:<!--{$cat_flg}-->">
-							<!--{assign var=key value=$arrProducts[cnt].category_id}-->
-							<!--{$arrCatList[$key]|sfTrim}-->
+              <!--{foreach from=$arrProducts[cnt].categories item=category_id name=categories}-->
+							<!--{$arrCatList[$category_id]|sfTrim}-->
+              <!--{if !$smarty.foreach.categories.last}--><br /><!--{/if}-->
+              <!--{/foreach}-->
 							</div>
 
 							<!--{* URL *}-->
