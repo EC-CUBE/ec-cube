@@ -7,6 +7,22 @@ class Mdl_Cybs_Config {
     var $arrConfig;
 
     /**
+     * dtb_paymentのmemo**へ登録する項目を増やす場合は、
+     * この配列にmemoに対応するキー名を追加し、
+     * テンプレート側で追加したキー名を使用する
+     *
+     * @see $this->_getConfig()
+     * @see $this->createSqlArray()
+     * @var array
+     */
+    var $arrPaymentMemoCols = array(
+        'memo01' => 'cybs_request_url',
+        'memo02' => 'cybs_merchant_id',
+        'memo03' => 'cybs_ondemand_use',
+        'memo04' => 'cybs_3d_use'
+    );
+
+    /**
      * Mdl_Cybs_Configのインスタンスを取得する.
      * インスタンス生成はnew演算子を使用せずgetInstanse()を使用する
      *
@@ -49,14 +65,16 @@ class Mdl_Cybs_Config {
      * @return array
      */
     function _getConfig() {
-        // FIXME cybs_key_pathは使用しない
+        // memo01~memo10
+        $arrMemo = array();
+        foreach ($this->arrPaymentMemoCols as $k => $v) {
+            $arrMemo[] = "$k as $v";
+        }
+        $memoCols = implode(',', $arrMemo);
         $sql =<<<END
 SELECT
     module_id,
-    memo01 as cybs_request_url,
-    memo02 as cybs_merchant_id,
-    memo03 as cybs_key_path,
-    memo04 as cybs_subs_use
+    $memoCols
 FROM
     dtb_payment
 WHERE
@@ -100,10 +118,10 @@ END;
         $arrData["fix"] = 3;
         $arrData["module_id"] = MDL_CYBS_ID;
         $arrData["module_path"] = MODULE_PATH . "mdl_cybs/mdl_cybs_credit.php";
-        $arrData["memo01"] = $objForm->getValue('cybs_request_url');
-        $arrData["memo02"] = $objForm->getValue('cybs_merchant_id');
-        $arrData["memo03"] = $objForm->getValue('cybs_key_path');
-        $arrData["memo04"] = $objForm->getValue('cybs_subs_use');
+        // memo01~memo10
+        foreach ($this->arrPaymentMemoCols as $k => $v) {
+            $arrData[$k] = $objForm->getValue($v);
+        }
         $arrData["del_flg"] = "0";
         $arrData["creator_id"] = $objSess->member_id;
         $arrData["update_date"] = "NOW()";
