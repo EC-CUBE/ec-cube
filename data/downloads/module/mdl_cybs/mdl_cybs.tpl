@@ -113,9 +113,20 @@
                                             </td>
                                         </tr>
                                         <tr class="fs12n">
-                                            <td width="" bgcolor="#f3f3f3">サブスクリプションサービス</td>
+                                            <td width="" bgcolor="#f3f3f3">オンデマンド課金</td>
                                             <td width="300" bgcolor="#ffffff">
-                                            <!--{assign var=key value="cybs_subs_use"}-->
+                                            <!--{assign var=key value="cybs_ondemand_use"}-->
+                                            <span class="red12"><!--{$arrErr[$key]}--></span>
+                                            <input type="checkbox"
+                                                   name="<!--{$key}-->"
+                                                   value="1"
+                                                   style="<!--{$arrErr[$key]|sfGetErrorColor}-->" <!--{if $arrForm[$key].value == 1}-->checked<!--{/if}-->>使用する場合はチェックを入れてください。
+                                            </td>
+                                        </tr>
+                                        <tr class="fs12n">
+                                            <td width="" bgcolor="#f3f3f3">本人認証サービス<br>(3Dセキュア認証)</td>
+                                            <td width="300" bgcolor="#ffffff">
+                                            <!--{assign var=key value="cybs_3d_use"}-->
                                             <span class="red12"><!--{$arrErr[$key]}--></span>
                                             <input type="checkbox"
                                                    name="<!--{$key}-->"

@@ -19,7 +19,7 @@ class LC_Page {
 $objPage = new LC_Page;
 $objView = new SC_AdminView;
 
-$objForm = lfInitParam();
+$objForm = lfInitParam($_POST);
 $objPage->arrForm = $objForm->getFormParamList();
 
 $mode = isset($_POST['mode']) ? $_POST['mode'] : '';
@@ -33,7 +33,7 @@ case 'edit':
 
     $objConfig =& Mdl_Cybs_Config::getInstanse();
     $objConfig->registerConfig($objConfig->createSqlArray($objForm));
-    $objPage->tpl_onload = 'alert("登録完了しました。"); window.close();';
+    $objPage->tpl_onload = 'alert("登録完了しました。\n基本情報＞支払方法設定より詳細設定をしてください。"); window.close();';
     break;
 
 // 通常表示
@@ -41,7 +41,7 @@ default:
     // DBの登録値を取得する.
     $objConfig =& Mdl_Cybs_Config::getInstanse();
     $arrConfig = $objConfig->getConfig();
-
+sfPrintR($arrConfig);
     // DBに値が登録されていればその値を表示させる
     if (!empty($arrConfig)) {
         $objForm = lfInitParam($arrConfig);
@@ -59,16 +59,14 @@ $objView->display($objPage->tpl_mainpage);
  * @param array
  * @return SC_FormParam
  */
-function lfInitParam($arrParam = null) {
+function lfInitParam($arrParam) {
     $objForm = new SC_FormParam;
     $objForm->addParam('リクエスト先', 'cybs_request_url', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
     $objForm->addParam('マーチャントID', 'cybs_merchant_id', MTEXT_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
-    $objForm->addParam('サブスクリプションサービス', 'cybs_subs_use', INT_LEN, '', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-
-    if (empty($arrParam)) {
-        $arrParam = $_POST;
-    }
+    $objForm->addParam('オンデマンド課金', 'cybs_ondemand_use', 1, '', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+    $objForm->addParam('3Dセキュア認証', 'cybs_3d_use', 1, '', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
     $objForm->setParam($arrParam);
+    $objForm->convParam();
     return $objForm;
 }
 /**
@@ -91,7 +89,7 @@ function lfCheckError($objForm) {
  */
 function lfIsInstalledCybsExt() {
     if (!extension_loaded(MDL_CYBS_EXT)) {
-        if (!dl(MDL_CYBS_EXT)) {
+        if (@!dl(MDL_CYBS_EXT)) {
             return false;
         }
     }
