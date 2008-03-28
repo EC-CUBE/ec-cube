@@ -125,8 +125,9 @@ class LC_Page_Admin_Products_Category extends LC_Page {
                 $this->arrErr['category_name'] = "※ 子カテゴリが存在するため削除できません。<br>";
             }
             // 登録商品のチェック
-            $where = "category_id = ? AND del_flg = 0";
-            $count = $objQuery->count("dtb_products", $where, array($_POST['category_id']));
+            $table = "dtb_product_categories AS T1 LEFT JOIN dtb_products AS T2 ON T1.product_id = T2.product_id";
+            $where = "T1.category_id = ? AND T2.del_flg = 0";
+            $count = $objQuery->count($table, $where, array($_POST['category_id']));
             if($count != 0) {
                 $this->arrErr['category_name'] = "※ カテゴリ内に商品が存在するため削除できません。<br>";
             }
