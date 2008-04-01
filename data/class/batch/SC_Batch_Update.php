@@ -123,9 +123,10 @@ class SC_Batch_Update extends SC_Batch {
                             break 2;
                         }
 
-                        if ($sha1 == sha1_file($out)) {
+                        if (file_exists($out) && $sha1 == sha1_file($out)) {
                             $msg = "同じ内容のファイルをスキップしました: " . $out;
                             $this->printLog($msg);
+                            continue;
                         }
 
                         // バックアップを作成

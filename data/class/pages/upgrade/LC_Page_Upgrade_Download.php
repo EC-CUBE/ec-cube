@@ -212,11 +212,13 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
             $objLog->log("* insert dtb_module_update start");
             $this->registerUpdateLog($arrCopyLog, $objRet->data);
 
-            if ($mode != 'patch_download') {
-	            // dtb_moduleの更新
-	            $objLog->log("* insert/update dtb_module start");
-	            $this->updateMdlTable($objRet->data);
-            }
+            // dtb_moduleの更新
+            $objLog->log("* insert/update dtb_module start");
+            $this->updateMdlTable($objRet->data);
+
+            // DB更新ファイルの読み込み、実行
+            $objLog->log("* file execute start");
+            $this->fileExecute($objRet->data->product_code);
 
             // 配信サーバへ通知
             $objLog->log("* notify to lockon server start");
@@ -368,6 +370,24 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
         );
         $objQuery = new SC_Query;
         $objQuery->insert('dtb_module_update_logs', $arrInsert);
+    }
+
+    /**
+     * DB更新ファイルの読み込み、実行
+     *
+     * パッチ側でupdate.phpを用意する.
+     * 他の変数・関数とかぶらないよう、
+     * LC_Update_Updater::execute()で処理を実行する.
+     */
+    function fileExecute($productCode) {
+        $file = DATA_PATH . 'downloads/update/' . $productCode . '_update.php';
+        if (file_exists($file)) {
+            @include_once $file;
+            if (class_exists('LC_Update_Updater')) {
+                $update = new LC_Update_Updater;
+                $update->execute();
+            }
+        }
     }
 }
 ?>

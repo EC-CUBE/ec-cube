@@ -123,6 +123,11 @@ class LC_Page_Shopping_Complete extends LC_Page {
             if($total != "") {
                 $this->tpl_aff_option.= "|total=$total";
             }
+
+            // TradeSafe連携用
+            if (function_exists('sfTSRequest')) {
+                sfTSRequest($order_id);
+            }
         }
 
         // キャンペーンからの遷移かチェック
@@ -191,7 +196,6 @@ class LC_Page_Shopping_Complete extends LC_Page {
             }
 
             //その他情報の取得
-
             $other_data = $objQuery->get("dtb_order", "memo02", "order_id = ? ", array($order_id));
             if($other_data != "") {
                 $arrOther = unserialize($other_data);
@@ -215,6 +219,11 @@ class LC_Page_Shopping_Complete extends LC_Page {
             $total = $objQuery->get("dtb_order", "total", "order_id = ? ", array($order_id));
             if($total != "") {
                 $this->tpl_aff_option.= "|total=$total";
+            }
+
+            // TS連携モジュールの実行
+            if (function_exists('sfTSRequest')) {
+                sfTSRequest($order_id);
             }
         }
 

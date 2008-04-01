@@ -374,7 +374,7 @@ class LC_Page_Products_List extends LC_Page {
 
         $objQuery = new SC_Query();
         $objDb = new SC_Helper_DB_Ex();
-        $this->tpl_pageno = isset($_POST['pageno']) ? $_POST['pageno'] : "";
+        $this->tpl_pageno = defined("MOBILE_SITE") ? @$_GET['pageno'] : @$_POST['pageno'];
 
         //表示順序
         switch($orderby) {

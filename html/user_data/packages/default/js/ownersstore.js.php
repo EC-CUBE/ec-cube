@@ -132,7 +132,7 @@ OwnersStore.prototype = {
         if (resp.status == 'SUCCESS' && product_id) {
             $('#ownersstore_settings_default' + product_id).hide(); // --を非表示
             $('#ownersstore_settings' + product_id).show();         // 設定ボタン表示
-            $('#ownersstore_download' + product_id).html('\u6E08\u307F');     // インストール/アップロードボタンを--へ変換
+            $('#ownersstore_download' + product_id).html('\u30C0\u30A6\u30F3\u30ED\u30FC\u30C9');     // アップデートボタンを「ダウンロード」へ変換
             $('#ownersstore_version' + product_id).html(resp.data.version);
         }
     },
