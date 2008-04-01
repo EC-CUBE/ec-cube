@@ -218,9 +218,19 @@ class SC_Batch_Update extends SC_Batch {
     function mkdir_p($path){
         $path = dirname($path);
         $path = str_replace ('\\', '/', $path);
-
-        $arrDirs = explode("/", $path);
-        $dir = '';
+        
+        // HTML_PATH/DATA_PATHの判別
+        if (preg_match("@".HTML_PATH."@", $path) > 0) {
+            $dir = HTML_PATH;
+            $re_path = preg_replace("@".HTML_PATH."@", "", $path);
+        } elseif (preg_match("@".DATA_PATH."@", $path) > 0) {
+            $dir = DATA_PATH;
+            $re_path = preg_replace("@".DATA_PATH."@", "", $path);
+        } else {
+            $dir = "";
+            $re_path = $path;
+        }
+        $arrDirs = explode("/", $re_path);
 
         foreach($arrDirs as $n){
             $dir .= $n . '/';
