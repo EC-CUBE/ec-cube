@@ -137,7 +137,7 @@ class LC_Page_Admin_Design_Template extends LC_Page {
 		    }
 
 		    $template_code = $objForm->getValue('template_code_temp');
-		    if ($template_code == $this->lfGetNowTemplate()) {
+		    if ($template_code == DEFAULT_TEMPLATE_NAME) {
 		        $this->tpl_onload = "alert('選択中のテンプレートは削除出来ません');";
 		        break;
 		    }
@@ -172,7 +172,7 @@ class LC_Page_Admin_Design_Template extends LC_Page {
 
 		// defaultパラメータのセット
 		$this->templates = $this->lfGetAllTemplates();
-		$this->now_template = $this->lfGetNowtemplate();
+		$this->now_template = DEFAULT_TEMPLATE_NAME;
 
 		// 画面の表示
 		$objView->assignobj($this);
@@ -223,21 +223,6 @@ class LC_Page_Admin_Design_Template extends LC_Page {
 	    $objForm->setParam($_POST);
 
 	    return $objForm;
-	}
-
-	/**
-	 * 現在適用しているテンプレートパッケージ名を取得する.
-	 *
-	 * @param void
-	 * @return string テンプレートパッケージ名
-	 */
-	function lfGetNowTemplate() {
-	    $objQuery = new SC_Query();
-	    $arrRet = $objQuery->select('top_tpl', 'dtb_baseinfo');
-	    if (isset($arrRet[0]['top_tpl'])) {
-	        return $arrRet[0]['top_tpl'];
-	    }
-	    return null;
 	}
 
 	/**
