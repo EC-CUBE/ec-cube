@@ -46,7 +46,7 @@
 	<tr bgcolor="<!--{$color}-->" class="fs12">
 		<td align="center"><!--{*順位*}--><!--{$smarty.section.cnt.iteration}--></td>
 		<td align="right"><!--{*商品番号*}--><!--{$arrResults[cnt].product_code|escape}--></td>
-		<td align="left"><!--{*商品名*}--><!--{$arrResults[cnt].name|sfCutString:40|escape}--></td>
+		<td align="left"><!--{*商品名*}--><!--{$arrResults[cnt].product_name|sfCutString:40|escape}--></td>
 		<td align="right"><!--{*購入件数*}--><!--{$arrResults[cnt].order_count}-->件</td>
 		<td align="right"><!--{*点数*}--><!--{$arrResults[cnt].products_count}--></td>
 		<td align="right"><!--{*単価*}--><!--{$arrResults[cnt].price|number_format}-->円</td>
