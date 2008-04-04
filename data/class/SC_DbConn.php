@@ -44,6 +44,9 @@ class SC_DbConn{
 
         // Debugモード指定
         $options['debug'] = PEAR_DB_DEBUG;
+        // 持続的接続オプション
+        $options['persistent'] = PEAR_DB_PERSISTENT;
+
         // 既に接続されていないか、新規接続要望の場合は接続する。
         if(!isset($objDbConn->connection) || $new) {
             if($dsn != "") {
