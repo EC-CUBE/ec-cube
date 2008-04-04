@@ -33,7 +33,7 @@ require_once(CLASS_PATH . "pages/mypage/LC_Page_Mypage_History.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Mypage_History_Ex extends LC_Page_Mypage_Hisotory {
+class LC_Page_Mypage_History_Ex extends LC_Page_Mypage_History {
 
     // }}}
     // {{{ functions
