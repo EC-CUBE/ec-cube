@@ -86,8 +86,9 @@ class LC_Page_Admin_Mail_Template extends LC_Page {
         }
 
 
-        $sql = "SELECT *, (substring(create_date, 1, 19)) as disp_date FROM dtb_mailmaga_template WHERE del_flg = 0 ORDER BY create_date DESC";
+        $sql = "SELECT *, create_date as disp_date FROM dtb_mailmaga_template WHERE del_flg = 0 ORDER BY create_date DESC";
         $this->list_data = $conn->getAll($sql);
+		$this->list_data['disp_date'] = substr($this->list_data['disp_date'], 0, 19);
 
         $objView->assignobj($this);
         $objView->display(MAIN_FRAME);
