@@ -187,6 +187,27 @@ class SC_Helper_CSV {
         return $data;
     }
 
+    // CSV出力データを作成する。(カテゴリ)
+    function lfGetCategoryCSV($where, $option, $arrval, $arrOutputCols) {
+        $objDb = new SC_Helper_DB_Ex();
+
+        $from = "dtb_category";
+        $cols = SC_Utils_Ex::sfGetCommaList($arrOutputCols);
+
+        $objQuery = new SC_Query();
+        $objQuery->setoption($option);
+
+        $list_data = $objQuery->select($cols, $from, $where, $arrval);
+        $max = count($list_data);
+
+        if (!isset($data)) $data = "";
+        for($i = 0; $i < $max; $i++) {
+            // 各項目をCSV出力用に変換する。
+            $data .= $this->lfMakeCSV($list_data[$i]);
+        }
+        return $data;
+    }
+
     // CSV出力データを作成する。
     function lfGetCSV($from, $where, $option, $arrval, $arrCsvOutputCols = "") {
 
@@ -333,14 +354,16 @@ class SC_Helper_CSV {
                                   1 => 'product',
                                   2 => 'customer',
                                   3 => 'order',
-                                  4 => 'campaign'
+                                  4 => 'campaign',
+                                  5 => 'category'
                                   );
 
         $this->arrSubnaviName = array(
                                       1 => '商品管理',
                                       2 => '顧客管理',
                                       3 => '受注管理',
-                                      4 => 'キャンペーン'
+                                      4 => 'キャンペーン',
+                                      5 => 'カテゴリ'
                                       );
 
 
