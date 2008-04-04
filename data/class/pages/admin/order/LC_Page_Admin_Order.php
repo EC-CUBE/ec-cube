@@ -145,7 +145,7 @@ class LC_Page_Admin_Order extends LC_Page {
                         }elseif(DB_TYPE == "mysql"){
                             $where .= " AND concat(order_name01,order_name02) ILIKE ?";
                         }
-                        $nonsp_val = ereg_replace("[ 　]+","",$val);
+                        $nonsp_val = mb_ereg_replace("[ 　]+","",$val);
                         $arrval[] = "%$nonsp_val%";
                         break;
                     case 'search_order_kana':
@@ -154,7 +154,7 @@ class LC_Page_Admin_Order extends LC_Page {
                         }elseif(DB_TYPE == "mysql"){
                             $where .= " AND concat(order_kana01,order_kana02) ILIKE ?";
                         }
-                        $nonsp_val = ereg_replace("[ 　]+","",$val);
+                        $nonsp_val = mb_ereg_replace("[ 　]+","",$val);
                         $arrval[] = "%$nonsp_val%";
                         break;
                     case 'search_order_id1':
