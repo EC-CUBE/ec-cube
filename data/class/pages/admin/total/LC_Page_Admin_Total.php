@@ -59,6 +59,7 @@ class LC_Page_Admin_Total extends LC_Page {
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrWDAY = $masterData->getMasterData("mtb_wday");
         $this->arrSex = $masterData->getMasterData("mtb_sex");
+        $this->arrJob = $masterData->getMasterData("mtb_job");
         // ページタイトル
         $this->arrTitle[''] = "期間別集計";
         $this->arrTitle['term'] = "期間別集計";
@@ -637,7 +638,7 @@ class LC_Page_Admin_Total extends LC_Page {
         list($where, $arrval) = $this->lfGetWhereMember('create_date', $sdate, $edate, $type);
 
         // 会員集計の取得
-        $col = "COUNT(*) AS order_count, SUM(total) AS total, (AVG(total)) AS total_average, order_sex";
+        $col = "COUNT(*) AS order_count, SUM(total) AS total, trunc(AVG(total)) AS total_average, order_sex";
         $from = "dtb_order";
         $objQuery = new SC_Query();
         $objQuery->setGroupBy("order_sex");
@@ -676,7 +677,7 @@ class LC_Page_Admin_Total extends LC_Page {
 
         $where .= " and del_flg=0 and status <> " . ORDER_CANCEL;
 
-        $sql = "SELECT T1.product_id, T1.product_code, T1.product_name as name, T1.products_count, T1.order_count, T1.price, T1.total ";
+        $sql = "SELECT T1.product_id, T1.product_code, T1.product_name, T1.products_count, T1.order_count, T1.price, T1.total ";
         $sql.= "FROM ( ";
         $sql.= "SELECT product_id, product_name, product_code, price, ";
         $sql.= "COUNT(*) AS order_count, ";
@@ -697,17 +698,15 @@ class LC_Page_Admin_Total extends LC_Page {
         // 円グラフの生成
         if($graph) {
             $image_key = "products_" . $type;
-            $objPage->tpl_image = $this->lfGetGraphPie($objPage->arrResults, "name", $image_key, "(売上比率)", $sdate, $edate);
+            $objPage->tpl_image = $this->lfGetGraphPie($objPage->arrResults, "product_name", $image_key, "(売上比率)", $sdate, $edate);
         }
     }
 
     /** 職業別集計 **/
     function lfGetOrderJob($type, $sdate, $edate, &$objPage, $graph = true) {
-        global $arrJob;
-
         list($where, $arrval) = $this->lfGetWhereMember('T2.create_date', $sdate, $edate, $type);
 
-        $sql = "SELECT job, count(*) AS order_count, SUM(total) AS total, (AVG(total)) AS total_average ";
+        $sql = "SELECT job, count(*) AS order_count, SUM(total) AS total, trunc(AVG(total)) AS total_average ";
         $sql.= "FROM dtb_customer AS T1 LEFT JOIN dtb_order AS T2 USING ( customer_id ) WHERE $where AND T2.del_flg = 0 and T2.status <> " . ORDER_CANCEL;
         $sql.= " GROUP BY job ORDER BY total DESC";
 
@@ -718,7 +717,7 @@ class LC_Page_Admin_Total extends LC_Page {
         for($i = 0; $i < $max; $i++) {
             $job_key = $objPage->arrResults[$i]['job'];
             if($job_key != "") {
-                $objPage->arrResults[$i]['job_name'] = $arrJob[$job_key];
+                $objPage->arrResults[$i]['job_name'] = $this->arrJob[$job_key];
             } else {
                 $objPage->arrResults[$i]['job_name'] = "未回答";
             }
