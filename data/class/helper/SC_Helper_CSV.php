@@ -237,6 +237,9 @@ class SC_Helper_CSV {
             case 'order_pref':
                 $tmp = $this->arrPref[$val];
                 break;
+            case 'deliv_pref':
+                $tmp = $this->arrPref[$val];
+                break;
             default:
                 $tmp = $val;
                 break;
