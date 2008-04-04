@@ -90,7 +90,7 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page {
 
             if(count($arrErr) == 0) {
                 if($objCustomer->getCustomerDataFromEmailPass($arrForm['login_pass'], $arrForm['login_email'], true)) {
-                    $this->sendRedirect($this->getLocation($_POST['url'], array(), false));
+                    $this->sendRedirect($this->getLocation(URL_DIR, array(), false));
                     exit;
                 } else {
                     $arrForm['login_email'] = strtolower($arrForm['login_email']);
@@ -118,7 +118,7 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page {
             if ($mypage_url_search == 2){
                 $this->sendRedirect($this->getLocation(URL_DIR . "mypage/login.php", array(), false));
             }else{
-                $this->sendRedirect($this->getLocation($_POST['url'], array(), false));
+                $this->sendRedirect($this->getLocation(URL_DIR, array(), false));
             }
             exit;
             break;
