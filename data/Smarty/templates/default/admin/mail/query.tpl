@@ -75,7 +75,7 @@ self.moveTo(20,20);self.focus();
 										</tr>
 										<tr>
 											<td background="<!--{$TPL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$TPL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-											<td bgcolor="#636469" width="600" class="fs14n"><span class="white"><!--コンテンツタイトル-->メンバー登録/編集</span></td>
+											<td bgcolor="#636469" width="600" class="fs14n"><span class="white"><!--コンテンツタイトル-->配信条件</span></td>
 											<td background="<!--{$TPL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 										</tr>
 										<tr>
