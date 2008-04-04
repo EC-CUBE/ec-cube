@@ -104,7 +104,7 @@ class SC_Helper_CSV {
         $objDb = new SC_Helper_DB_Ex();
 
         $from = "vw_product_class AS prdcls";
-        $cols = SC_Utils_Ex::sfGetCommaList($arrOutputCols);
+        $cols = SC_Utils_Ex::sfGetCommaList($arrOutputCols, true, array('category_id'));
 
         $objQuery = new SC_Query();
         $objQuery->setoption($option);
@@ -113,29 +113,37 @@ class SC_Helper_CSV {
         $max = count($list_data);
 
         // 規格分類名一覧
-        $arrClassCatName = $objDb->sfGetIDValueList("dtb_classcategory", "classcategory_id", "name");
+        if (!empty($arrOutputCols['classcategory_id1']) || !empty($arrOutputCols['classcategory_id2'])) {
+            $arrClassCatName = $objDb->sfGetIDValueList("dtb_classcategory", "classcategory_id", "name");
+        }
 
         if (!isset($data)) $data = "";
         for($i = 0; $i < $max; $i++) {
             // 関連商品情報の付与
-            $list_data[$i]['classcategory_id1'] = $arrClassCatName[$list_data[$i]['classcategory_id1']];
-            $list_data[$i]['classcategory_id2'] = $arrClassCatName[$list_data[$i]['classcategory_id2']];
+            if (in_array('classcategory_id1', $arrOutputCols)) {
+                $list_data[$i]['classcategory_id1'] = $arrClassCatName[$list_data[$i]['classcategory_id1']];
+            }
+            if (in_array('classcategory_id2', $arrOutputCols)) {
+                $list_data[$i]['classcategory_id2'] = $arrClassCatName[$list_data[$i]['classcategory_id2']];
+            }
 
-            $arrCategory_id = $objQuery->getCol("dtb_product_categories",
-                              "category_id",
-                              "product_id = ?",
-                              array($list_data[$i]['product_id']));
+            if (in_array('category_id', $arrOutputCols)) {
+                $arrCategory_id = $objQuery->getCol("dtb_product_categories",
+                                  "category_id",
+                                  "product_id = ?",
+                                  array($list_data[$i]['product_id']));
 
-            // カテゴリID 付与
-            for ($j = 0; $j < count($arrCategory_id); $j++) {
-                $list_data[$i]['category_id'] .= $arrCategory_id[$j];
-                if ($j < count($arrCategory_id) - 1) {
-                    $list_data[$i]['category_id'] .= "|";
+                // カテゴリID 付与
+                for ($j = 0; $j < count($arrCategory_id); $j++) {
+                    $list_data[$i]['category_id'] .= $arrCategory_id[$j];
+                    if ($j < count($arrCategory_id) - 1) {
+                        $list_data[$i]['category_id'] .= "|";
+                    }
                 }
             }
 
             // 各項目をCSV出力用に変換する。
-            $data .= $this->lfMakeProductsCSV($list_data[$i]);
+            $data .= $this->lfMakeProductsCSV($list_data[$i], $arrOutputCols);
         }
         return $data;
     }
@@ -222,21 +230,21 @@ class SC_Helper_CSV {
     }
 
     // 各項目をCSV出力用に変換する。(商品)
-    function lfMakeProductsCSV($list) {
+    function lfMakeProductsCSV($list, $arrOutputCols) {
         $line = "";
         if(is_array($list)) {
-            foreach($list as $key => $val) {
+            foreach($arrOutputCols as $key) {
                 $tmp = "";
                 switch($key) {
                 case 'point_rate':
                     if($val == "") {
                         $tmp = '0';
                     } else {
-                        $tmp = $val;
+                        $tmp = $list[$key];
                     }
                     break;
                 default:
-                    $tmp = $val;
+                    $tmp = $list[$key];
                     break;
                 }
 
