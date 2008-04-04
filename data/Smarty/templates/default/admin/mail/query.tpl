@@ -109,7 +109,10 @@ self.moveTo(20,20);self.focus();
 											<td bgcolor="#f0f0f0" width="110">配信形式</td>
 											<td bgcolor="#ffffff" width="198"><!--{$list_data.htmlmail_disp|escape|default:"（未指定）"}--></td>
 											<td bgcolor="#f0f0f0" width="110">購入回数</td>
-											<td bgcolor="#ffffff" width="199"><!--{if $list_data.buy_times_from}--><!--{$list_data.buy_times_from|escape}-->回 〜 <!--{$list_data.buy_times_to|escape}-->回<!--{else}-->（未指定）<!--{/if}--></td>
+											<td bgcolor="#ffffff" width="199">
+												<!--{if $list_data.buy_times_from == null}-->（未指定）<!--{else}--><!--{$list_data.buy_times_from|escape}-->回<!--{/if}--> 〜 
+												<!--{if $list_data.buy_times_to == null}-->（未指定）<!--{else}--><!--{$list_data.buy_times_to|escape}-->回<!--{/if}-->
+											</td>
 										</tr>
 										<tr class="fs12n">
 										<!--{*非会員は選択できない
@@ -121,7 +124,10 @@ self.moveTo(20,20);self.focus();
 											<td bgcolor="#f0f0f0" width="110">購入商品コード</td>
 											<td bgcolor="#ffffff" width="198"><!--{$list_data.buy_product_code|escape|default:"（未指定）"}--></td>
 											<td bgcolor="#f0f0f0" width="110">購入金額</td>
-											<td bgcolor="#ffffff" width="199"><!--{if $list_data.buy_total_from}--><!--{$list_data.buy_total_from|escape}-->円 〜 <!--{$list_data.buy_total_to|escape}-->円<!--{else}-->（未指定）<!--{/if}--></td>
+											<td bgcolor="#ffffff" width="199">
+												<!--{if $list_data.buy_total_from == null}-->（未指定）<!--{else}--><!--{$list_data.buy_total_from|escape}-->円<!--{/if}--> 〜 
+												<!--{if $list_data.buy_total_to == null}-->（未指定）<!--{else}--><!--{$list_data.buy_total_to|escape}-->円<!--{/if}-->
+											</td>
 										</tr>
 										<tr class="fs12n">
 											<td bgcolor="#f0f0f0" width="110">メールアドレス</td>
