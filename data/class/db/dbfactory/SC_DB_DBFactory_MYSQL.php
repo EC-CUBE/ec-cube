@@ -216,7 +216,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
      * @return string 変換後の SQL 文
      */
     function sfChangeILIKE($sql){
-        $changesql = eregi_replace("(ILIKE )", "LIKE BINARY ", $sql);
+        $changesql = eregi_replace("(ILIKE )", "LIKE ", $sql);
         return $changesql;
     }
 
