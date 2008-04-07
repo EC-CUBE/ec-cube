@@ -311,6 +311,14 @@ class LC_Page_Admin_Products extends LC_Page {
 
                     // 検索結果の取得
                     $this->arrProducts = $objQuery->select($col, $from, $where, $arrval);
+
+                    // 各商品ごとのカテゴリIDを取得
+                    if (count($this->arrProducts) > 0) {
+                        foreach ($this->arrProducts as $key => $val) {
+                            $this->arrProducts[$key]["categories"] = $objDb->sfGetCategoryId($val["product_id"]);
+                            $objDb->g_category_on = false;
+                        }
+                    }
                 }
             }
         }
