@@ -158,33 +158,64 @@
 								</td>
 							</tr>
 							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" width="110">登録・更新日</td>
+								<td bgcolor="#f2f1ec" width="110">受注日</td>
 								<td bgcolor="#ffffff" width="499" colspan="3">
 									<span class="red"><!--{$arrErr.search_startyear}--></span>
 									<span class="red"><!--{$arrErr.search_endyear}--></span>		
-									<select name="search_startyear"  style="<!--{$arrErr.search_startyear|sfGetErrorColor}-->">
+									<select name="search_sorderyear"  style="<!--{$arrErr.search_sorderyear|sfGetErrorColor}-->">
 									<option value="">----</option>
-									<!--{html_options options=$arrRegistYear selected=$arrForm.search_startyear.value}-->
+									<!--{html_options options=$arrRegistYear selected=$arrForm.search_sorderyear.value}-->
 									</select>年
-									<select name="search_startmonth" style="<!--{$arrErr.search_startyear|sfGetErrorColor}-->">
+									<select name="search_sordermonth" style="<!--{$arrErr.search_sorderyear|sfGetErrorColor}-->">
 									<option value="">--</option>
-									<!--{html_options options=$arrMonth selected=$arrForm.search_startmonth.value}-->
+									<!--{html_options options=$arrMonth selected=$arrForm.search_sordermonth.value}-->
 									</select>月
-									<select name="search_startday" style="<!--{$arrErr.search_startyear|sfGetErrorColor}-->">
+									<select name="search_sorderday" style="<!--{$arrErr.search_sorderyear|sfGetErrorColor}-->">
 									<option value="">--</option>
-									<!--{html_options options=$arrDay selected=$arrForm.search_startday.value}-->
+									<!--{html_options options=$arrDay selected=$arrForm.search_sorderday.value}-->
 									</select>日〜
-									<select name="search_endyear" style="<!--{$arrErr.search_endyear|sfGetErrorColor}-->">
+									<select name="search_eorderyear" style="<!--{$arrErr.search_eorderyear|sfGetErrorColor}-->">
 									<option value="">----</option>
-									<!--{html_options options=$arrRegistYear selected=$arrForm.search_endyear.value}-->
+									<!--{html_options options=$arrRegistYear selected=$arrForm.search_eorderyear.value}-->
 									</select>年
-									<select name="search_endmonth" style="<!--{$arrErr.search_endyear|sfGetErrorColor}-->">
+									<select name="search_eordermonth" style="<!--{$arrErr.search_eorderyear|sfGetErrorColor}-->">
 									<option value="">--</option>
-									<!--{html_options options=$arrMonth selected=$arrForm.search_endmonth.value}-->
+									<!--{html_options options=$arrMonth selected=$arrForm.search_eordermonth.value}-->
 									</select>月
-									<select name="search_endday" style="<!--{$arrErr.search_endyear|sfGetErrorColor}-->">
+									<select name="search_eorderday" style="<!--{$arrErr.search_eorderyear|sfGetErrorColor}-->">
 									<option value="">--</option>
-									<!--{html_options options=$arrDay selected=$arrForm.search_endday.value}-->
+									<!--{html_options options=$arrDay selected=$arrForm.search_eorderday.value}-->
+									</select>日
+								</td>
+							</tr>
+							<tr class="fs12n">
+								<td bgcolor="#f2f1ec" width="110">更新日</td>
+								<td bgcolor="#ffffff" width="499" colspan="3">
+									<span class="red"><!--{$arrErr.search_startyear}--></span>
+									<span class="red"><!--{$arrErr.search_endyear}--></span>		
+									<select name="search_supdateyear"  style="<!--{$arrErr.search_supdateyear|sfGetErrorColor}-->">
+									<option value="">----</option>
+									<!--{html_options options=$arrRegistYear selected=$arrForm.search_supdateyear.value}-->
+									</select>年
+									<select name="search_supdatemonth" style="<!--{$arrErr.search_supdateyear|sfGetErrorColor}-->">
+									<option value="">--</option>
+									<!--{html_options options=$arrMonth selected=$arrForm.search_supdatemonth.value}-->
+									</select>月
+									<select name="search_supdateday" style="<!--{$arrErr.search_supdateyear|sfGetErrorColor}-->">
+									<option value="">--</option>
+									<!--{html_options options=$arrDay selected=$arrForm.search_supdateday.value}-->
+									</select>日〜
+									<select name="search_eupdateyear" style="<!--{$arrErr.search_eupdateyear|sfGetErrorColor}-->">
+									<option value="">----</option>
+									<!--{html_options options=$arrRegistYear selected=$arrForm.search_eupdateyear.value}-->
+									</select>年
+									<select name="search_eupdatemonth" style="<!--{$arrErr.search_eupdateyear|sfGetErrorColor}-->">
+									<option value="">--</option>
+									<!--{html_options options=$arrMonth selected=$arrForm.search_eupdatemonth.value}-->
+									</select>月
+									<select name="search_eupdateday" style="<!--{$arrErr.search_eupdateyear|sfGetErrorColor}-->">
+									<option value="">--</option>
+									<!--{html_options options=$arrDay selected=$arrForm.search_eupdateday.value}-->
 									</select>日
 								</td>
 							</tr>
