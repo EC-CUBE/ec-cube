@@ -160,29 +160,40 @@ END;
     /**
      * 会員のサブスクリプションIDを返す.
      *
+     * array(
+     *    'subs_id' => '***',
+     *    'merchant_ref_number' => '***',
+     * ),
+     * array(
+     *    'subs_id' => '***',
+     *    'merchant_ref_number' => '***',
+     * ),
+     * ...
+     *
      * @return array
      */
     function getSubsIds() {
         $objCustomer = new SC_Customer;
         $objCustomer->updateSession();
-        $subsIdsString = $objCustomer->getValue('cybs_subs_id');
+        $subsDataString = $objCustomer->getValue('cybs_subs_id');
 
-        if (is_null($subsIdsString)) {
+        if (is_null($subsDataString)) {
             return array();
         }
 
-        $arrSubsIds = unserialize($subsIdsString);
+        $subsData = unserialize($subsDataString);
 
-        return is_array($arrSubsIds) ? $arrSubsIds : array();
+        return is_array($subsData) ? $subsData : array();
     }
 
     /**
      * サブスクリプションIDを顧客テーブルに登録する.
      *
      * @param string $subsId
+     * @param integer $merchant_ref_number
      * @param array $arrSubsResults
      */
-    function addSubsId($subsId) {
+    function addSubsId($subsId, $merchant_ref_number) {
         if (!$this->canAddSubsId()) {
             return;
         }
@@ -191,11 +202,16 @@ END;
 
         $arrSubsId = $this->getSubsIds();
 
-        print_r($arrSubsId);
         // サブスクリプションIDが既に存在する場合は追加しない
-        if (in_array($subsId, $arrSubsId)) return;
+        foreach($arrSubsId as $subs) {
+            if ($subs['subs_id'] == $subsId) {
+                return;
+            }
+        }
 
-        $arrSubsId[] = $subsId;
+        $arrSubsId[] = array(
+            'subs_id' => $subsId,
+            'merchant_ref_number' => $merchant_ref_number);
         $arrUpdate = array('cybs_subs_id' => serialize($arrSubsId));
 
         $objQuery = new SC_Query;
@@ -208,8 +224,8 @@ END;
      * @return boolean
      */
     function canAddSubsId() {
-        $arrSubsIds = $this->getSubsIds();
-        if (is_array($arrSubsIds) && count($arrSubsIds) < MDL_CYBS_SUBS_ID_MAX) {
+        $arrSubsData = $this->getSubsIds();
+        if (is_array($arrSubsData) && count($arrSubsData) < MDL_CYBS_SUBS_ID_MAX) {
             return true;
         }
         return false;

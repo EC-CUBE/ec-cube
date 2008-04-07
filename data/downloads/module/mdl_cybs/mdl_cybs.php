@@ -22,6 +22,8 @@ $objView = new SC_AdminView;
 $objForm = lfInitParam($_POST);
 $objPage->arrForm = $objForm->getFormParamList();
 
+sfAlterMemo(); // dtb_memoにmemoカラムを追加する
+
 $mode = isset($_POST['mode']) ? $_POST['mode'] : '';
 switch($mode) {
 // 入力項目の登録

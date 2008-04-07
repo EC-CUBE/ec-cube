@@ -89,4 +89,15 @@ $arrCardCompany = array(
     '027' => 'Nicos',
 );
 
+define('MDL_CYBS_CREDIT_STATUS_AUTH', '1'); // 与信
+define('MDL_CYBS_CREDIT_STATUS_AUTHCANCEL', '2');// 与信取り消し
+define('MDL_CYBS_CREDIT_STATUS_CAPTURE', '3'); // 売上
+define('MDL_CYBS_CREDIT_STATUS_RETURN', '4'); // 返金
+
+$arrCybsCreditStatus = array(
+    MDL_CYBS_CREDIT_STATUS_AUTH => '与信',
+    MDL_CYBS_CREDIT_STATUS_AUTHCANCEL => '与信取消',
+    MDL_CYBS_CREDIT_STATUS_CAPTURE => '売上',
+    MDL_CYBS_CREDIT_STATUS_RETURN => '返金'
+);
 ?>

@@ -176,25 +176,25 @@ function fnCheckSubmit() {
 								</td>
 							</tr>
 							<!--{if $enable_ondemand}-->
-                            <tr>
-                                <td class="fs12" bgcolor="#f3f3f3">このカード情報を登録する</td>
-                                <td bgcolor="#ffffff">
-                                <table cellspacing="0" cellpadding="0" summary=" ">
-                                    <tr>
-                                        <!--{assign var=key value="register_ondemand"}-->
-                                        <td class="fs12n">
-                                        <span class="red"><!--{$arrErr[$key]}--></span>
-                                        <input type="checkbox"
-                                               name="<!--{$key}-->"
-                                               value="1"
-                                               maxlength="<!--{$arrForm[$key].length}-->"
-                                               style="<!--{$arrErr[$key]|sfGetErrorColor}-->" <!--{if $arrForm[$key].value}-->checked=checked<!--{/if}-->>カード情報を登録する<br>
-                                               ※カードを登録すると、次回以降登録したカードを使用することが出来ます。
-                                        </select></td>
-                                    </tr>
-                                </table>
-                                </td>
-                            </tr>
+							<tr>
+								<td class="fs12" bgcolor="#f3f3f3">このカード情報を登録する</td>
+								<td bgcolor="#ffffff">
+								<table cellspacing="0" cellpadding="0" summary=" ">
+									<tr>
+										<!--{assign var=key value="register_ondemand"}-->
+										<td class="fs12n">
+										<span class="red"><!--{$arrErr[$key]}--></span>
+										<input type="checkbox"
+											   name="<!--{$key}-->"
+											   value="1"
+											   maxlength="<!--{$arrForm[$key].length}-->"
+											   style="<!--{$arrErr[$key]|sfGetErrorColor}-->" <!--{if $arrForm[$key].value}-->checked=checked<!--{/if}-->>カード情報を登録する<br>
+											   ※カードを登録すると、次回以降登録したカードを使用することが出来ます。
+										</select></td>
+									</tr>
+								</table>
+								</td>
+							</tr>
 							<!--{/if}-->
 						</table>
 						</td>
@@ -217,10 +217,72 @@ function fnCheckSubmit() {
 								</td>
 							</tr>
 						</table>
+						</td>
+					</tr>
+				</table>
+
+				<!--{if $enable_ondemand && $cardCount > 0}-->
+				<table width="666" border="0" cellspacing="0" cellpadding="0" summary=" ">
+					<tr><td height="5" class="fs12"></td></tr>
+					<tr>
+						<td bgcolor="#cccccc">
+						<table width="666" border="0" cellspacing="1" cellpadding="10" summary=" ">
+							<tr>
+								<td class="fs12" bgcolor="#f3f3f3">登録済みのカードを使用する場合は、使用するカードを選択して下さい。</td>
+							</tr>
+						</table>
+						</td>
+					</tr>
+					<tr><td height="5" class="fs12"></td></tr>
+					<tr>
+						<td bgcolor="#cccccc">
+						<table width="666" border="0" cellspacing="1" cellpadding="10" summary=" ">
+							<tr>
+								<td class="fs12" bgcolor="#f3f3f3">選択</td>
+								<td class="fs12" bgcolor="#f3f3f3">カード番号</td>
+								<td class="fs12" bgcolor="#f3f3f3">有効期限</td>
+							</tr>
+							<!--{if $arrErr.subs_id}-->
+                            <tr>
+                                <td class="fs12" bgcolor="#ffffff" colspan="3"><span class="red"><!--{$arrErr.subs_id}--></span></td>
+                            </tr>
+                            <!--{/if}-->
+							<!--{foreach from=$arrCard item=card}-->
+							<tr>
+								<td class="fs12" bgcolor="#ffffff"><input type="radio" name="subs_id" value="<!--{$card.pay_subscription_retrieve_subscription_id}-->"></td>
+								<td class="fs12" bgcolor="#ffffff"><!--{$card.pay_subscription_retrieve_customer_cc_number}--></td>
+								<td class="fs12" bgcolor="#ffffff">
+									<!--{$card.pay_subscription_retrieve_customer_cc_expmo}-->月/<!--{$card.pay_subscription_retrieve_customer_cc_expyr}-->
+								</td>
+							</tr>
+							<!--{/foreach}-->
+						</table>
+						</td>
+					</tr>
+				</table>
+
+				<table width="666" border="0" cellspacing="0" cellpadding="0" summary=" ">
+					<tr><td height="5"></td></tr>
+					<tr>
+						<td align="center" bgcolor="#f7f5f4">
+						<table width="666" border="0" cellspacing="0" cellpadding="6" summary=" ">
+							<tr>
+								<td class="fs12st" align="center">以上の内容で間違いなければ、下記「注文完了ページへ」ボタンをクリックしてください。<br>
+								<span class="orange">※画面が切り替るまで少々時間がかかる場合がございますが、そのままお待ちください。</span></td>
+							</tr>
+							<tr>
+								<td align="center" height="40" bgcolor="#f7f5f4">
+									<a href="#" onclick="document.form2.submit(); return false;" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_back_on.gif',back03)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif',back03)"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="戻る" border="0" name="back03" id="back03"/></a><img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="12" height="" alt="" />
+									<input type="image" onclick="document.form1['mode'].value = 'ondemand'; return fnCheckSubmit();" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_next_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_next.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/common/b_next.gif" width="150" height="30" alt="次へ" border="0" name="next" id="next" />
+								</td>
+							</tr>
+						</table>
 
 						</td>
 					</tr>
 				</table>
+				<!--{/if}-->
+
 				</td>
 			</tr>
 		</table>
