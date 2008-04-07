@@ -115,6 +115,17 @@ function fnCheckSubmit() {
 								</td>
 							</tr>
 							<tr>
+								<td class="fs12" bgcolor="#f3f3f3">カード会社</td>
+								<!--{assign var=key value="card_company"}-->
+								<td  bgcolor="#ffffff" class="fs12">
+								<span class="red"><!--{$arrErr[$key]}--></span>
+								<select name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" >
+								<option value="">--</option>
+								<!--{html_options options=$arrCardCompany selected=$arrForm[$key].value}-->
+								</select>
+								</td>
+							</tr>
+							<tr>
 								<td class="fs12" bgcolor="#f3f3f3">有効期限</td>
 								<!--{assign var=key1 value="card_month"}-->
 								<!--{assign var=key2 value="card_year"}-->
@@ -164,6 +175,27 @@ function fnCheckSubmit() {
 								</table>
 								</td>
 							</tr>
+							<!--{if $enable_ondemand}-->
+                            <tr>
+                                <td class="fs12" bgcolor="#f3f3f3">このカード情報を登録する</td>
+                                <td bgcolor="#ffffff">
+                                <table cellspacing="0" cellpadding="0" summary=" ">
+                                    <tr>
+                                        <!--{assign var=key value="register_ondemand"}-->
+                                        <td class="fs12n">
+                                        <span class="red"><!--{$arrErr[$key]}--></span>
+                                        <input type="checkbox"
+                                               name="<!--{$key}-->"
+                                               value="1"
+                                               maxlength="<!--{$arrForm[$key].length}-->"
+                                               style="<!--{$arrErr[$key]|sfGetErrorColor}-->" <!--{if $arrForm[$key].value}-->checked=checked<!--{/if}-->>カード情報を登録する<br>
+                                               ※カードを登録すると、次回以降登録したカードを使用することが出来ます。
+                                        </select></td>
+                                    </tr>
+                                </table>
+                                </td>
+                            </tr>
+							<!--{/if}-->
 						</table>
 						</td>
 					</tr>

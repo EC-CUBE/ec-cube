@@ -11,21 +11,48 @@ define('MDL_CYBS_ID', 14);
 define('MDL_CYBS_LOG', DATA_PATH . 'logs/cybs.log');
 
 // 拡張モジュール名
-define('MDL_CYBS_EXT', 'mod_cybs.so');
+define('MDL_CYBS_MOD_CYBS', 'mod_cybs');
+
+// サブスクリプションID登録数上限
+define('MDL_CYBS_SUBS_ID_MAX', 5);
+
+/**
+ * mod_cybsをロードする
+ *
+ * @return boolean
+ */
+function lfLoadModCybs() {
+    if (!extension_loaded(MDL_CYBS_MOD_CYBS)) {
+        if (@!dl(MDL_CYBS_MOD_CYBS . ".so")) {
+            return false;
+        }
+    }
+    return true;
+}
 
 // 本番URL
 define('MDL_CYBS_REQUEST_URL', 'ics2.ic3.com');
 // テストURL
 define('MDL_CYBS_REQUEST_URL_TEST', 'ics2test.ic3.com');
 
+// ICSエラー
+$arrIcsErr = array(
+    'DCALL' => 'カード会社が与信判定を取り消しました。',
+    'DCARDEXPIRED' => 'カードの有効期限切れです。',
+    'DCARDREFUSED' => 'カード会社が与信を承認しませんでした。',
+    'DINVALIDCARD' => 'クレジットカード番号が正しくありません。',
+    'DINVALIDDATA' => 'リクエストに含まれるデータが不正です。',
+    'DMISSINGFIELD' => 'リクエストに必須フィールドが欠けています。',
+    'ESYSTEM' => 'システムエラーが発生しました。',
+    'ETIMEOUT' => 'リクエストがタイムアウトしました。',
+    'DAUTHENTICATE' => 'ユーザは本人認証登録をしています。',
+);
+
 // リクエスト先URL配列
 $arrCybsRequestURL = array(
     '1' => MDL_CYBS_REQUEST_URL_TEST,
     '2' => MDL_CYBS_REQUEST_URL
 );
-
-// 鍵・証明書のパス
-define('MDL_CYBS_KEY_PATH', '/opt/CyberSource/SDK/keys/');
 
 /**
  *  支払い方法
@@ -45,47 +72,21 @@ $arrPayMethod = array(
     '5-0' => "リボルビング払い"
 );
 
-// ics_authのエラーメッセージ
-$arrIcsAuthErr = array(
-    'DCALL' => 'カード会社が与信判定を取り消しました。',
-    'DCARDEXPIRED' => 'カードの有効期限切れです。',
-    'DCARDREFUSED' => 'カード会社が与信を承認しませんでした。',
-    'DINVALIDCARD' => 'クレジットカード番号が正しくありません。',
-    'DINVALIDDATA' => 'リクエストに含まれるデータが不正です。',
-    'DMISSINGFIELD' => 'リクエストに必須フィールドが欠けています。',
-    'ESYSTEM' => 'システムエラーが発生しました。',
-    'ETIMEOUT' => 'リクエストがタイムアウトしました。',
+// カード会社の種類
+$arrCardCompany = array(
+    '001' => 'Visa',
+    '002' => 'MasterCard',
+    '003' => 'American Express',
+    '004' => 'Discover',
+    '005' => 'Diners Club',
+    '006' => 'Carte Blanche',
+    '007' => 'JCB',
+    '008' => 'Optima',
+    '010' => 'Benificial Private Label',
+    '014' => 'EnRoute',
+    '017' => 'MBNA',
+    '021' => 'JAL',
+    '027' => 'Nicos',
 );
 
-// 使用する課金頻度
-define('MDL_CYBS_SUBS_FREQ', '1');
-
-// 課金頻度
-$arrSubsFrequency = array(
-    '1' => 'weekly',
-    '2' => 'bi-weekly',
-    '3' => 'semi-monthly',
-    '4' => 'monthly',
-    '5' => 'quarterly',
-    '6' => 'quad-weekly',
-    '7' => 'semi-annually',
-    '8' => 'annually',
-);
-
-// 課金頻度の表示名
-$arrSubsFrequencyDisp = array(
-    '1' => '週1 回',
-    '2' => '2 週1 回',
-    '3' => '半月1回',
-    '4' => '1 ヶ月1 回',
-    '5' => '3 ヶ月1 回',
-    '6' => '4 週1 回',
-    '7' => '半年1回',
-    '8' => '1 年1 回',
-);
-
-// サブスクリプションを使用するカードの種類
-define('MDL_CYBS_SUBS_CARD', '001');
-
-//
 ?>

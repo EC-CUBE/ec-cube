@@ -12,7 +12,7 @@ class LC_Page {
         //メインテンプレートの指定
         $this->tpl_mainpage = MODULE_PATH . 'mdl_cybs/mdl_cybs.tpl';
         $this->tpl_subtitle = 'サイバーソース決済モジュール';
-        $this->extension_installed = lfIsInstalledCybsExt();
+        $this->extension_installed = lfLoadModCybs();
     }
 }
 
@@ -41,7 +41,7 @@ default:
     // DBの登録値を取得する.
     $objConfig =& Mdl_Cybs_Config::getInstanse();
     $arrConfig = $objConfig->getConfig();
-sfPrintR($arrConfig);
+
     // DBに値が登録されていればその値を表示させる
     if (!empty($arrConfig)) {
         $objForm = lfInitParam($arrConfig);
@@ -82,17 +82,4 @@ function lfCheckError($objForm) {
     return null;
 }
 
-/**
- * mod_cybsがインストール済みかチェックする.
- *
- * @return boolean
- */
-function lfIsInstalledCybsExt() {
-    if (!extension_loaded(MDL_CYBS_EXT)) {
-        if (@!dl(MDL_CYBS_EXT)) {
-            return false;
-        }
-    }
-    return true;
-}
 ?>

@@ -128,5 +128,91 @@ END;
 
         return $arrData;
     }
+
+    /**
+     * 3Dセキュアを利用するかどうか
+     *
+     * @return boolean
+     */
+    function use3D() {
+        $use3D = $this->getConfig('cybs_3d_use');
+
+        return $use3D
+            ? true
+            : false;
+    }
+
+    /**
+     * オンデマンド課金が有効かどうか
+     *
+     * @return boolean
+     */
+    function enableOndemand() {
+        // 非会員は無効
+        $objCustomer = new SC_Customer;
+        if (!$objCustomer->isLoginSuccess()) return false;
+
+        $useOndemand = $this->getConfig('cybs_ondemand_use');
+
+        return $useOndemand ? true : false;
+    }
+
+    /**
+     * 会員のサブスクリプションIDを返す.
+     *
+     * @return array
+     */
+    function getSubsIds() {
+        $objCustomer = new SC_Customer;
+        $objCustomer->updateSession();
+        $subsIdsString = $objCustomer->getValue('cybs_subs_id');
+
+        if (is_null($subsIdsString)) {
+            return array();
+        }
+
+        $arrSubsIds = unserialize($subsIdsString);
+
+        return is_array($arrSubsIds) ? $arrSubsIds : array();
+    }
+
+    /**
+     * サブスクリプションIDを顧客テーブルに登録する.
+     *
+     * @param string $subsId
+     * @param array $arrSubsResults
+     */
+    function addSubsId($subsId) {
+        if (!$this->canAddSubsId()) {
+            return;
+        }
+        $objCustomer = new SC_Customer;
+        $customerId = $objCustomer->getValue('customer_id');
+
+        $arrSubsId = $this->getSubsIds();
+
+        print_r($arrSubsId);
+        // サブスクリプションIDが既に存在する場合は追加しない
+        if (in_array($subsId, $arrSubsId)) return;
+
+        $arrSubsId[] = $subsId;
+        $arrUpdate = array('cybs_subs_id' => serialize($arrSubsId));
+
+        $objQuery = new SC_Query;
+        $objQuery->update('dtb_customer', $arrUpdate, 'customer_id = ?', array($customerId));
+    }
+
+    /**
+     * サブスクリプションの登録数がMaxかどうかを判定する
+     *
+     * @return boolean
+     */
+    function canAddSubsId() {
+        $arrSubsIds = $this->getSubsIds();
+        if (is_array($arrSubsIds) && count($arrSubsIds) < MDL_CYBS_SUBS_ID_MAX) {
+            return true;
+        }
+        return false;
+    }
 }
 ?>
