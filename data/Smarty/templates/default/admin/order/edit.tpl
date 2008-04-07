@@ -86,6 +86,19 @@
 						<!--▼お客様情報ここから-->
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 							<tr class="fs12n">
+							<td bgcolor="#f2f1ec" width="110">帳票</td>
+							<td bgcolor="#ffffff">
+							  <input type="button" name="address_input" value="帳票の作成" onclick="win02('pdf.php?order_id=<!--{$arrDisp.order_id}-->','pdf_input','500','650'); return false;" />
+							</td>
+							</tr>
+						</table>
+						
+						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
+							<tr><td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td></tr>
+						</table>
+						
+						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
+							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">対応状況</td>
 								<td bgcolor="#ffffff">
 									<!--{assign var=key value="status"}-->
