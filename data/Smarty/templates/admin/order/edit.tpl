@@ -76,6 +76,19 @@
 						<!--¢§¤ªµÒÍÍ¾ðÊó¤³¤³¤«¤é-->
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 							<tr class="fs12n">
+							<td bgcolor="#f2f1ec" width="110">Ä¢É¼</td>
+							<td bgcolor="#ffffff">
+							  <input type="button" name="address_input" value="Ä¢É¼¤ÎºîÀ®" onclick="win02('../pdf.d/input.php?order_id=<!--{$arrDisp.order_id}-->','pdf_input','500','650'); return false;" />
+							</td>
+							</tr>
+						</table>
+						
+						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
+							<tr><td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td></tr>
+						</table>
+						
+						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
+							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">ÂÐ±þ¾õ¶·</td>
 								<td bgcolor="#ffffff">
 									<!--{assign var=key value="status"}-->
