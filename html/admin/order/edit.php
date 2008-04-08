@@ -10,11 +10,15 @@ if(file_exists(MODULE_PATH . 'mdl_paygent/mdl_paygent.inc')) {
 	require_once(MODULE_PATH . 'mdl_paygent/mdl_paygent.inc');
 }
 
+if(file_exists(MODULE_PATH . "mdl_cybs/mdl_cybs.inc")) {
+    require_once(MODULE_PATH . "mdl_cybs/mdl_cybs.inc");
+}
+
 class LC_Page {
 	function LC_Page() {
 		$this->tpl_mainpage = 'order/edit.tpl';
 		$this->tpl_subnavi = 'order/subnavi.tpl';
-		$this->tpl_mainno = 'order';		
+		$this->tpl_mainno = 'order';
 		$this->tpl_subno = 'index';
 		$this->tpl_subtitle = '受注管理';
 		global $arrPref;
@@ -70,7 +74,7 @@ case 'order_id':
 case 'edit':
 	// POST情報で上書き
 	$objFormParam->setParam($_POST);
-	
+
 	// 入力値の変換
 	$objFormParam->convParam();
 	$objPage->arrErr = lfCheckError($arrRet);
@@ -99,8 +103,24 @@ case 'cheek':
 case 'paygent_order':
 	$objPage->paygent_return = sfPaygentOrder($_POST['paygent_type'], $order_id);
 	break;
+
+// サイバーソース 与信ステータスの変更
+case 'cybs_change_auth_status':
+    $objPage = sfCybsChangeAuthStatus($objPage, $_POST['cybs_auth_status']);
+    break;
+
+// サイバーソース 各種連携処理
+case 'cybs_do_ics_application':
+    $objPage = sfCybsDoIcsApplication($objPage, $_POST['cybs_app']);
+    break;
+
 default:
 	break;
+}
+
+// サイバーソース用受注編集ページの初期化
+if(function_exists("sfCybsOrderPage")) {
+    $objPage = sfCybsOrderPage($objPage);
 }
 
 // 支払い方法の取得
@@ -148,7 +168,7 @@ function lfInitParam() {
 	$objFormParam->addParam("配達日", "deliv_date", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
 	$objFormParam->addParam("お支払方法名称", "payment_method");
 	$objFormParam->addParam("配送時間", "deliv_time");
-	
+
 	// 受注詳細情報
 	$objFormParam->addParam("単価", "price", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"), '0');
 	$objFormParam->addParam("個数", "quantity", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"), '0');
@@ -191,7 +211,7 @@ function lfGetOrderData($order_id) {
 		$arrRet = sfSwapArray($arrRet);
 		$objPage->arrDisp = array_merge($objPage->arrDisp, $arrRet);
 		$objFormParam->setParam($arrRet);
-		
+
 		// その他支払い情報を表示
 		if($objPage->arrDisp["memo02"] != "") $objPage->arrDisp["payment_info"] = unserialize($objPage->arrDisp["memo02"]);
 		if($objPage->arrDisp["memo01"] == PAYMENT_CREDIT_ID){
@@ -221,16 +241,16 @@ function lfCheckError() {
 	$arrRet =  $objFormParam->getHashArray();
 	$objErr = new SC_CheckError($arrRet);
 	$objErr->arrErr = $objFormParam->checkError();
-	
+
 	return $objErr->arrErr;
 }
 
 /* 計算処理 */
 function lfCheek($arrInfo) {
 	global $objFormParam;
-		
+
 	$arrVal = $objFormParam->getHashArray();
-			
+
 	// 商品の種類数
 	$max = count($arrVal['quantity']);
 	$subtotal = 0;
@@ -244,25 +264,25 @@ function lfCheek($arrInfo) {
 		// 加算ポイントの計算
 		$totalpoint += sfPrePoint($arrVal['price'][$i], $arrVal['point_rate'][$i]) * $arrVal['quantity'][$i];
 	}
-	
+
 	// 消費税
-	$arrVal['tax'] = $totaltax;	
+	$arrVal['tax'] = $totaltax;
 	// 小計
 	$arrVal['subtotal'] = $subtotal;
 	// 合計
 	$arrVal['total'] = $subtotal - $arrVal['discount'] + $arrVal['deliv_fee'] + $arrVal['charge'];
 	// お支払い合計
 	$arrVal['payment_total'] = $arrVal['total'] - ($arrVal['use_point'] * POINT_VALUE);
-	
+
 	// 加算ポイント
 	$arrVal['add_point'] = sfGetAddPoint($totalpoint, $arrVal['use_point'], $arrInfo);
-		
+
 	list($arrVal['point'], $arrVal['total_point']) = sfGetCustomerPoint($_POST['order_id'], $arrVal['use_point'], $arrVal['add_point']);
-		
+
 	if($arrVal['total'] < 0) {
 		$arrErr['total'] = '合計額がマイナス表示にならないように調整して下さい。<br />';
 	}
-	
+
 	if($arrVal['payment_total'] < 0) {
 		$arrErr['payment_total'] = 'お支払い合計額がマイナス表示にならないように調整して下さい。<br />';
 	}
@@ -279,32 +299,32 @@ function lfCheek($arrInfo) {
 function lfRegistData($order_id) {
 	global $objFormParam;
 	$objQuery = new SC_Query();
-	
+
 	$objQuery->begin();
 
 	// 入力データを渡す。
 	$arrRet =  $objFormParam->getHashArray();
-	
+
 	foreach($arrRet as $key => $val) {
 		// 配列は登録しない
 		if(!is_array($val)) {
 			$sqlval[$key] = $val;
 		}
 	}
-	
+
 	unset($sqlval['total_point']);
 	unset($sqlval['point']);
-			
+
 	$where = "order_id = ?";
-	
+
 	// 受注ステータスの判定
 	if ($sqlval['status'] == ODERSTATUS_COMMIT) {
 		// 受注テーブルの発送済み日を更新する
 		$sqlval['commit_date'] = "Now()";
 	}
-    
+
     $sqlval['update_date'] = "Now()";
-	
+
 	// 受注テーブルの更新
 	$objQuery->update("dtb_order", $sqlval, $where, array($order_id));
 
@@ -316,7 +336,7 @@ function lfRegistData($order_id) {
 	$sql .= "     ,deliv_time = (SELECT deliv_time FROM dtb_delivtime WHERE time_id = ? AND deliv_id = (SELECT deliv_id FROM dtb_payment WHERE payment_id = ? ))";
 	$sql .= "     ,update_date = NOW()";
 	$sql .= " WHERE order_id = ?";
-	
+
 	if ($arrRet['deliv_time_id'] == "") {
 		$deliv_time_id = 0;
 	}else{
@@ -328,7 +348,7 @@ function lfRegistData($order_id) {
 	// 受注詳細データの更新
 	$arrDetail = $objFormParam->getSwapArray(array("product_id", "product_code", "product_name", "price", "quantity", "point_rate", "classcategory_id1", "classcategory_id2", "classcategory_name1", "classcategory_name2"));
 	$objQuery->delete("dtb_order_detail", $where, array($order_id));
-	
+
 	$max = count($arrDetail);
 	for($i = 0; $i < $max; $i++) {
 		$sqlval = array();
@@ -342,7 +362,7 @@ function lfRegistData($order_id) {
 		$sqlval['classcategory_id1'] = $arrDetail[$i]['classcategory_id1'];
 		$sqlval['classcategory_id2'] = $arrDetail[$i]['classcategory_id2'];
 		$sqlval['classcategory_name1'] = $arrDetail[$i]['classcategory_name1'];
-		$sqlval['classcategory_name2'] = $arrDetail[$i]['classcategory_name2'];		
+		$sqlval['classcategory_name2'] = $arrDetail[$i]['classcategory_name2'];
 		$objQuery->insert("dtb_order_detail", $sqlval);
 	}
 	$objQuery->commit();
