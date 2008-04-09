@@ -1,13 +1,13 @@
-<h2>本人認証サービスを開始します。このままでしばらくお待ちください。</h2>
+<p>本人認証サービスを開始します。このままでしばらくお待ちください。</p>
 <form name="ACSCall" action="<!--{$AcsUrl}-->" method="POST">
 
 <noscript>
 <br />
 <br />
 <center>
-<h2>
+<p>
 画面が移動しない場合は「OK」ボタンをクリックしてください。
-</h2>
+</p>
 <input type="submit" value="OK">
 </center>
 </noscript>

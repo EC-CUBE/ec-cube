@@ -12,7 +12,7 @@ class LC_Page {
         //メインテンプレートの指定
         $this->tpl_mainpage = MODULE_PATH . 'mdl_cybs/mdl_cybs.tpl';
         $this->tpl_subtitle = 'サイバーソース決済モジュール';
-        $this->extension_installed = lfLoadModCybs();
+        $this->extension_installed = sfCybsLoadModCybs();
     }
 }
 

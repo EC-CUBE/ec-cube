@@ -237,16 +237,21 @@ function fnCheckSubmit() {
 					<tr>
 						<td bgcolor="#cccccc">
 						<table width="666" border="0" cellspacing="1" cellpadding="10" summary=" ">
+							<!--{if $arrErr.subs_id}-->
+							<tr>
+								<td class="fs12" bgcolor="#ffffff" colspan="3"><span class="red"><!--{$arrErr.subs_id}--></span></td>
+							</tr>
+							<!--{/if}-->
+							<!--{if $arrErr.ondemand_paymethod}-->
+							<tr>
+								<td class="fs12" bgcolor="#ffffff" colspan="3"><span class="red"><!--{$arrErr.ondemand_paymethod}--></span></td>
+							</tr>
+							<!--{/if}-->
 							<tr>
 								<td class="fs12" bgcolor="#f3f3f3">選択</td>
 								<td class="fs12" bgcolor="#f3f3f3">カード番号</td>
 								<td class="fs12" bgcolor="#f3f3f3">有効期限</td>
 							</tr>
-							<!--{if $arrErr.subs_id}-->
-                            <tr>
-                                <td class="fs12" bgcolor="#ffffff" colspan="3"><span class="red"><!--{$arrErr.subs_id}--></span></td>
-                            </tr>
-                            <!--{/if}-->
 							<!--{foreach from=$arrCard item=card}-->
 							<tr>
 								<td class="fs12" bgcolor="#ffffff"><input type="radio" name="subs_id" value="<!--{$card.pay_subscription_retrieve_subscription_id}-->"></td>
@@ -256,6 +261,27 @@ function fnCheckSubmit() {
 								</td>
 							</tr>
 							<!--{/foreach}-->
+						</table>
+						</td>
+					</tr>
+					<tr><td height="5" class="fs12"></td></tr>
+					<tr>
+						<td bgcolor="#cccccc">
+						<table width="666" border="0" cellspacing="1" cellpadding="10" summary=" ">
+							<tr>
+								<td class="fs12" bgcolor="#f3f3f3">お支払い方法</td>
+								<td bgcolor="#ffffff">
+								<table cellspacing="0" cellpadding="0" summary=" ">
+									<tr>
+										<!--{assign var=key value="ondemand_paymethod"}-->
+										<td class="fs12n">
+										<select name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" >
+										<!--{html_options options=$arrPayMethod selected=$arrForm[$key].value}-->
+										</select></td>
+									</tr>
+								</table>
+								</td>
+							</tr>
 						</table>
 						</td>
 					</tr>
