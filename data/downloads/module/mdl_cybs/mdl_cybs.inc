@@ -372,7 +372,14 @@ function sfCybsCSVDownload($where, $arrval) {
             $order['req_token'])) . ",,,,,,,\r\n";
     }
 
-    $batchId = uniqid('');
+    $batchId = '';
+    $objQuery = new SC_Query;
+    if (DB_TYPE == 'pgsql') {
+        $batchId = $objQuery->nextval('dtb_cybs_batch_id', 'batch_id');
+    } elseif (DB_TYPE == 'mysql') {
+        $batchId = $batchId = $objQuery->get_auto_increment('dtb_cybs_batch_id');
+    }
+
     $recordCount = count($arrayOrder);
 
     $head1 = "batchID=$batchId,transactionType=capture,recordCount=$recordCount,,,,,,,,,\r\n";
