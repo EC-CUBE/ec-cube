@@ -11,11 +11,15 @@ if(file_exists(MODULE_PATH . 'mdl_paygent/mdl_paygent.inc')) {
 	require_once(MODULE_PATH . 'mdl_paygent/mdl_paygent.inc');
 }
 
+if(file_exists(MODULE_PATH . 'mdl_cybs/mdl_cybs.inc')) {
+    require_once(MODULE_PATH . 'mdl_cybs/mdl_cybs.inc');
+}
+
 class LC_Page {
 	function LC_Page() {
 		$this->tpl_mainpage = 'order/index.tpl';
 		$this->tpl_subnavi = 'order/subnavi.tpl';
-		$this->tpl_mainno = 'order';		
+		$this->tpl_mainno = 'order';
 		$this->tpl_subno = 'index';
 		$this->tpl_pager = DATA_PATH . 'Smarty/templates/admin/pager.tpl';
 		$this->tpl_subtitle = '受注管理';
@@ -59,7 +63,7 @@ foreach ($_POST as $key => $val) {
 			default:
 				$objPage->arrHidden[$key] = $val;
 				break;
-		}		
+		}
 	}
 }
 
@@ -75,12 +79,13 @@ if($_POST['mode'] == 'delete') {
 		$where = "order_id = ?";
 		$sqlval['del_flg'] = '1';
 		$objQuery->update("dtb_order", $sqlval, $where, array($_POST['order_id']));
-	}	
+	}
 }
 
 switch($_POST['mode']) {
 case 'delete':
 case 'csv':
+case 'cybs_csv':
 case 'delete_all':
 case 'search':
 	// 入力値の変換
@@ -95,7 +100,7 @@ case 'search':
 				continue;
 			}
 			$val = sfManualEscape($val);
-			
+
 			switch ($key) {
 				case 'search_order_name':
 					if(DB_TYPE == "pgsql"){
@@ -135,11 +140,11 @@ case 'search':
 							$arrval[] = $element;
 						}
 					}
-					
+
 					if($tmp_where != "") {
 						$tmp_where .= ")";
 						$where .= " $tmp_where ";
-					}					
+					}
 					break;
 				case 'search_order_tel':
 					if(DB_TYPE == "pgsql"){
@@ -166,7 +171,7 @@ case 'search':
 							$arrval[] = $element;
 						}
 					}
-					
+
 					if($tmp_where != "") {
 						$tmp_where .= ")";
 						$where .= " $tmp_where ";
@@ -214,32 +219,41 @@ case 'search':
 					$where.= " AND status = ?";
 					$arrval[] = $val;
 					break;
+				// サイバーソース与信ステータスの検索
+				case 'search_cybs_auth_status':
+                    $where.= " AND memo06 = ?";
+                    $arrval[] = MDL_CYBS_AUTH_STATUS_AUTH;
 				default:
 					break;
 			}
 		}
-		
+
 		$order = "update_date DESC";
-		
+
 		switch($_POST['mode']) {
 		case 'csv':
 			// オプションの指定
 			$option = "ORDER BY $order";
-			
+
 			// CSV出力タイトル行の作成
 			$arrCsvOutput = sfSwapArray(sfgetCsvOutput(3, " WHERE csv_id = 3 AND status = 1"));
-			
+
 			if (count($arrCsvOutput) <= 0) break;
-			
+
 			$arrCsvOutputCols = $arrCsvOutput['col'];
 			$arrCsvOutputTitle = $arrCsvOutput['disp_name'];
 			$head = sfGetCSVList($arrCsvOutputTitle);
 			$data = lfGetCSV("dtb_order", $where, $option, $arrval, $arrCsvOutputCols);
-			
+
 			// CSVを送信する。
 			sfCSVDownload($head.$data);
 			exit;
 			break;
+	    // サイバーソース用CSVダウンロード
+		case 'cybs_csv':
+		    sfCybsCSVDownload($where, $arrval);
+		    exit;
+		    break;
 		case 'delete_all':
 			// 検索結果をすべて削除
 			$sqlval['del_flg'] = 1;
@@ -250,24 +264,24 @@ case 'search':
 			// 読み込む列とテーブルの指定
 			$col = "*";
 			$from = "dtb_order";
-			
+
 			$objQuery = new SC_Query();
 			// 行数の取得
 			$linemax = $objQuery->count($from, $where, $arrval);
 			$objPage->tpl_linemax = $linemax;				// 何件が該当しました。表示用
-			
+
 			// ページ送りの処理
-			if(is_numeric($_POST['search_page_max'])) {	
+			if(is_numeric($_POST['search_page_max'])) {
 				$page_max = $_POST['search_page_max'];
 			} else {
 				$page_max = SEARCH_PMAX;
 			}
-			
+
 			// ページ送りの取得
 			$objNavi = new SC_PageNavi($_POST['search_pageno'], $linemax, $page_max, "fnNaviSearchPage", NAVI_PMAX);
 			$startno = $objNavi->start_row;
 			$objPage->arrPagenavi = $objNavi->arrPagenavi;
-		
+
 			// 取得範囲の指定(開始行番号、行数のセット)
 			$objQuery->setlimitoffset($page_max, $startno);
 			// 表示順序
@@ -277,7 +291,7 @@ case 'search':
 		}
 	}
 	break;
-	
+
 default:
 	break;
 }
@@ -339,6 +353,7 @@ function lfInitParam() {
 	$objFormParam->addParam("終了日", "search_ebirthyear", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
 	$objFormParam->addParam("終了日", "search_ebirthmonth", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
 	$objFormParam->addParam("終了日", "search_ebirthday", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+    $objFormParam->addParam("サイバーソース与信ステータス", "search_cybs_auth_status", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
 }
 
 /* 入力内容のチェック */
@@ -348,7 +363,7 @@ function lfCheckError() {
 	$arrRet =  $objFormParam->getHashArray();
 	$objErr = new SC_CheckError($arrRet);
 	$objErr->arrErr = $objFormParam->checkError();
-	
+
 	// 特殊項目チェック
 	$objErr->doFunc(array("受注番号1", "受注番号2", "search_order_id1", "search_order_id2"), array("GREATER_CHECK"));
 	$objErr->doFunc(array("年齢1", "年齢2", "search_age1", "search_age2"), array("GREATER_CHECK"));
@@ -356,7 +371,7 @@ function lfCheckError() {
 	$objErr->doFunc(array("開始日", "search_startyear", "search_startmonth", "search_startday"), array("CHECK_DATE"));
 	$objErr->doFunc(array("終了日", "search_endyear", "search_endmonth", "search_endday"), array("CHECK_DATE"));
 	$objErr->doFunc(array("開始日", "終了日", "search_startyear", "search_startmonth", "search_startday", "search_endyear", "search_endmonth", "search_endday"), array("CHECK_SET_TERM"));
-	
+
 	$objErr->doFunc(array("開始日", "search_sbirthyear", "search_sbirthmonth", "search_sbirthday"), array("CHECK_DATE"));
 	$objErr->doFunc(array("終了日", "search_ebirthyear", "search_ebirthmonth", "search_ebirthday"), array("CHECK_DATE"));
 	$objErr->doFunc(array("開始日", "終了日", "search_sbirthyear", "search_sbirthmonth", "search_sbirthday", "search_ebirthyear", "search_ebirthmonth", "search_ebirthday"), array("CHECK_SET_TERM"));
