@@ -1,0 +1,151 @@
+<?php
+/**
+ * 
+ * @copyright   2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * @version CVS: $Id: 1.0 2006-06-04 06:38:01Z matsumura $
+ * @link        http://www.lockon.co.jp/
+ *
+ */
+ 
+class LC_Page {
+    
+    function LC_Page() {
+        $this->tpl_mainpage = MODULE_PATH . "blayn/blayn.tpl";
+        $this->tpl_title = "ブレインIP登録";
+        $this->tpl_subtitle = "ブレインIP設定モジュール";
+    }
+}
+$objPage = new LC_Page();
+$objView = new SC_AdminView();
+$objQuery = new SC_Query();
+$objFormParam = new SC_FormParam;
+
+// 初期化
+lfIntiParam();
+
+$objFormParam->setParam($_POST);
+$objPage->arrIP = $objFormParam->getHashArray();
+
+$url = SITE_URL . "admin/system/module.php";
+$tpl_onload  = "onload = \"opener_reload('" .$url. "');window.close();\"";
+
+switch ($_POST['mode']) {
+    
+    case 'regist':
+        // エラーチェック
+        $objPage->arrErr = lfErrorcheck();
+        if(count($objPage->arrErr) <= 0) {
+            // 一旦テーブルの値をすべて消去（lfGetIPでwhere指定の手間を省くため）
+            lfDelete();
+            // 登録
+            lfRegist();
+            $objPage->tpl_onload = $tpl_onload;            
+        }
+    break;
+    
+    
+    default:
+        // 初期表示
+        $objPage->arrIP = lfGetIP();
+}
+
+// 初期表示以外は'regist'を通らせる
+$objPage->mode = 'regist';
+
+$objView->assignobj($objPage);      //変数をテンプレートにアサインする
+$objView->display($objPage->tpl_mainpage);      //テンプレートの出力
+
+// ------------------------------------------------------------------------------------------------------
+
+/**
+ * 値の初期化
+ * 
+ * @return void なし
+ */
+function lfIntiParam() {
+    
+    global $objFormParam;
+    
+        $objFormParam->addParam("IPアドレス1", "blayn_ip01", INT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("IPアドレス2", "blayn_ip02", INT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("IPアドレス3", "blayn_ip03", INT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("IPアドレス4", "blayn_ip04", INT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+}
+
+
+/**
+ * エラーチェック
+ * 
+ * @return array $arr->arrErr
+ */
+function lfErrorcheck() {
+    
+    global $objFormParam;
+    
+    $arrList = $objFormParam->getHashArray();
+    $objErr = new SC_CheckError($arrList);
+    $arrErr->arrErr = $objFormParam->checkError();
+
+    return $arrErr->arrErr;
+    
+}
+
+
+/**
+ * IPアドレス登録
+ * 
+ * @return void なし
+ */
+function lfRegist() {
+    
+    global $objQuery;
+    global $objFormParam;
+    
+    $arrPost = $objFormParam->getHashArray();
+    // IPアドレスの形に整形
+    $blayn_ip .= $arrPost['blayn_ip01'];
+    $blayn_ip .= "." . $arrPost['blayn_ip02'];
+    $blayn_ip .= "." . $arrPost['blayn_ip03'];
+    $blayn_ip .= "." . $arrPost['blayn_ip04'];
+    
+    $sqlVal['blayn_ip'] = $blayn_ip;
+    $objQuery->insert("dtb_blayn", $sqlVal);
+}
+
+
+/**
+ * テーブルの値全消去
+ * 
+ * @return void なし
+ */
+function lfDelete() {
+    
+    global $objQuery;
+    
+    $objQuery->delete("dtb_blayn");
+}
+
+
+/**
+ * IPアドレス取得
+ * 
+ * @return array $arrRet
+ */
+function lfGetIP() {
+    
+    global $objQuery;
+    
+    $arrSql = $objQuery->select("blayn_ip", "dtb_blayn");
+    // フォームに入れる形に整形
+    $arrRet = split("\.", $arrSql[0]['blayn_ip']);
+    
+    // Smartyに表示させるために整形
+    $arrRet[blayn_ip01] = $arrRet[0];
+    $arrRet[blayn_ip02] = $arrRet[1];
+    $arrRet[blayn_ip03] = $arrRet[2];
+    $arrRet[blayn_ip04] = $arrRet[3];
+        
+    return $arrRet;
+}
+
+?>

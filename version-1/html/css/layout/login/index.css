@@ -1,0 +1,117 @@
+/*
+ * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
+@charset "<!--{$smarty.const.CHAR_CODE}-->";
+
+/***コンテンツ***/
+#containerfull #maintitle{
+border: 0;
+margin: 0 0 15px 0;
+padding: 0;
+width: 700px;
+}
+
+#containerfull #subtitle01{
+border: 0;
+margin: 0 0 15px 0;
+padding: 0;
+width: 700px;
+}
+
+#containerfull #subtitle02{
+border: 0;
+margin: 30px 0 15px 0;
+padding: 0;
+width: 700px;
+}
+
+/*コメント*/
+#containerfull #comment{
+border: 0;
+margin: 0 0 15px 0;
+padding: 0;
+width: 570px;
+}
+
+/**テーブル**/
+
+/*枠*/
+#containerfull #frame{
+border-width: 1px;
+border-color: #ccc;
+border-style: solid;
+margin: 0;
+padding: 0;
+width: 700px;
+text-align: center;
+}
+
+#containerfull #frameunder{
+border: 0;
+margin: 0;
+padding: 0;
+width: 700px;
+background: #ccc;
+}
+
+/*ログインエリア*/
+#containerfull #frame #loginarea{
+border: 0;
+margin: 20px auto;
+padding: 0;
+width: 628px;
+height: 80px;
+background: #ecf5ff;
+text-align: center;
+}
+
+#containerfull #frame #loginarea #loginleft{
+border: 0;
+margin: 0;
+padding: 0;
+width: 430px;
+text-align: center;
+}
+
+#containerfull #frame #loginarea #loginright{
+border: 0;
+margin: 0;
+padding: 0;
+width: 200px;
+}
+
+#containerfull #frame #loginarea #loginleft #logintitle{
+border: 0;
+margin: 0;
+padding: 0;
+width: 100px;
+}
+
+/*コンテンツ行*/
+#frameunder #left{
+background: #ecf5ff;
+width: 170px;
+}
+
+#frameunder #right{
+background: #fff;
+width: 507px;
+}
+
+/*ボタン*/
+#containerfull #button{
+border: 0;
+margin: 30px 0 15px 0;
+padding: 0;
+text-align: center;
+}
+
+/*ベリサイン*/
+#containerfull #verisign{
+border: 0;
+margin: 35px 65px;
+padding: 0;
+width: 570px;
+}
