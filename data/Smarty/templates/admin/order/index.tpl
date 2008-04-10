@@ -217,6 +217,18 @@
 									円
 								</td>
 							</tr>
+                            <!--{* サイバーソースCSVダウンロード連携用 *}-->
+                            <!--{assign var=cybspath value=`$smarty.const.MODULE_PATH`mdl_cybs/mdl_cybs.inc}-->
+                            <!--{if file_exists($cybspath)}-->
+                            <tr class="fs12n">
+                                <td bgcolor="#f2f1ec" width="110">サイバーソース</td>
+                                <td bgcolor="#ffffff" width="499" colspan="3">
+                                    <!--{assign var=key value="search_cybs_auth_status"}-->
+                                    <span class="red12"><!--{$arrErr[$key]}--></span>
+                                    <input type="checkbox" name="<!--{$key}-->" value="1" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"<!--{if $arrForm[$key].value}--> checked="checked"<!--{/if}--> /> ステータスが「与信」のものを絞り込む
+                                </td>
+                            </tr>
+                            <!--{/if}-->
 						</table>
 						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr>
@@ -310,6 +322,12 @@
 				<td><a href="#" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/contents/btn_csv_on.jpg','btn_csv');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/contents/btn_csv.jpg','btn_csv');"  onclick="fnModeSubmit('csv','','');" ><img src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_csv.jpg" width="99" height="22" alt="CSV DOWNLOAD" border="0" name="btn_csv" id="btn_csv"></a></td>
 				<td><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="8" height="1" alt=""></td>
 				<td><a href="../contents/csv.php?tpl_subno_csv=order"><span class="fs12n"> >> CSV出力項目設定 </span></a></td>
+                <!--{* サイバーソースCSVダウンロード連携用 *}-->
+                <!--{assign var=cybspath value=`$smarty.const.MODULE_PATH`mdl_cybs/mdl_cybs.inc}-->
+                <!--{if file_exists($cybspath)}-->
+                    <td><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="8" height="1" alt=""></td>
+                    <td><a href="#" onclick="fnModeSubmit('cybs_csv','','');"><span class="fs12n"> >> ｻｲﾊﾞｰｿｰｽ売上ﾊﾞｯﾁCSV</span></a></td>
+                <!--{/if}-->
 			</tr>
 		</table>
 		</td>

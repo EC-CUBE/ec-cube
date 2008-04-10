@@ -202,13 +202,6 @@ END;
 
         $arrSubsId = $this->getSubsIds();
 
-        // サブスクリプションIDが既に存在する場合は追加しない
-        foreach($arrSubsId as $subs) {
-            if ($subs['subs_id'] == $subsId) {
-                return;
-            }
-        }
-
         $arrSubsId[] = array(
             'subs_id' => $subsId,
             'merchant_ref_number' => $merchant_ref_number);

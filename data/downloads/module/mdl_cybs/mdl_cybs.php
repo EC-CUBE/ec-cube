@@ -12,7 +12,7 @@ class LC_Page {
         //メインテンプレートの指定
         $this->tpl_mainpage = MODULE_PATH . 'mdl_cybs/mdl_cybs.tpl';
         $this->tpl_subtitle = 'サイバーソース決済モジュール';
-        $this->extension_installed = lfLoadModCybs();
+        $this->extension_installed = sfCybsLoadModCybs();
     }
 }
 
@@ -35,6 +35,7 @@ case 'edit':
 
     $objConfig =& Mdl_Cybs_Config::getInstanse();
     $objConfig->registerConfig($objConfig->createSqlArray($objForm));
+    lfCreateBatchIdTable();
     $objPage->tpl_onload = 'alert("登録完了しました。\n基本情報＞支払方法設定より詳細設定をしてください。"); window.close();';
     break;
 
@@ -82,6 +83,27 @@ function lfCheckError($objForm) {
     if ($arrErr) return $arrErr;
 
     return null;
+}
+
+/**
+ * バッチID取得用のテーブルを作成する
+ *
+ */
+function lfCreateBatchIdTable() {
+    $objQuery = new SC_Query();
+    if (sfTabaleExists('dtb_cybs_batch_id')) {
+        return;
+    }
+    $sql_mysql = "create table dtb_cybs_batch_id(batch_id int auto_increment primary key NOT NULL) TYPE=InnoDB;";
+    $sql_pgsql = "create table dtb_cybs_batch_id(batch_id serial NOT NULL);";
+
+    $sql = '';
+    if (DB_TYPE == 'pgsql') {
+        $sql = $sql_pgsql;
+    } elseif (DB_TYPE == 'mysql') {
+        $sql = $sql_mysql;
+    }
+    $objQuery->query($sql);
 }
 
 ?>

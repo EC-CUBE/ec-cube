@@ -22,6 +22,16 @@
 <!--{include file='css/contents.tpl'}-->
 <title><!--{$tpl_subtitle}--></title>
 <script type="text/javascript">
+function toggleBox(checkbox, id) {
+    var checked = checkbox.checked;
+    var target  = document.getElementById(id);
+    
+    if (checked) {
+        target.disabled = true;
+    } else {
+        target.disabled = false;
+    }
+}
 </script>
 </head>
 
@@ -117,7 +127,9 @@
                                             <td width="300" bgcolor="#ffffff">
                                             <!--{assign var=key value="cybs_ondemand_use"}-->
                                             <span class="red12"><!--{$arrErr[$key]}--></span>
-                                            <input type="checkbox"
+                                            <input onclick="toggleBox(this, 'cybs_3d_check');"
+                                                   id="cybs_obdemand_check"
+                                                   type="checkbox"
                                                    name="<!--{$key}-->"
                                                    value="1"
                                                    style="<!--{$arrErr[$key]|sfGetErrorColor}-->" <!--{if $arrForm[$key].value == 1}-->checked<!--{/if}-->>使用する場合はチェックを入れてください。
@@ -128,7 +140,9 @@
                                             <td width="300" bgcolor="#ffffff">
                                             <!--{assign var=key value="cybs_3d_use"}-->
                                             <span class="red12"><!--{$arrErr[$key]}--></span>
-                                            <input type="checkbox"
+                                            <input onclick="toggleBox(this, 'cybs_obdemand_check');"
+                                                   id="cybs_3d_check"
+                                                   type="checkbox"
                                                    name="<!--{$key}-->"
                                                    value="1"
                                                    style="<!--{$arrErr[$key]|sfGetErrorColor}-->" <!--{if $arrForm[$key].value == 1}-->checked<!--{/if}-->>使用する場合はチェックを入れてください。
