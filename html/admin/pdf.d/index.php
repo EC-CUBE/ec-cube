@@ -170,7 +170,7 @@ $pdf->Text(26, 136, sjis_conv($objPage->arrDisp['deliv_addr02']));							//§™∆œ§
 $pdf->Text(26, 140, sjis_conv($objPage->arrDisp['deliv_name01']."°°".$objPage->arrDisp['deliv_name02']."°°ÕÕ"));	//§™∆œ§±¿Ëª·Ãæ
 
 $pdf->Text(144, 121, sjis_conv($objPage->arrDisp['create_date']));    //§¥√Ì ∏∆¸
-$pdf->Text(144, 131, sjis_conv($objPage->arrDisp['order_disp_id']));  //√Ì ∏»÷πÊ
+$pdf->Text(144, 131, sjis_conv($objPage->arrDisp['order_id']));  //√Ì ∏»÷πÊ
 
 $pdf->SetFont('SJIS', 'B', 15);
 $pdf->Cell(0, 10, sjis_conv($objPage->tpl_title), 0, 2, 'C', 0, '');  // ∏ΩÒ•ø•§•»•Î° «º… ΩÒ°¶¿¡µ·ΩÒ°À
