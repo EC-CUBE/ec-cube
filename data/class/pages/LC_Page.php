@@ -212,7 +212,7 @@ class LC_Page {
      * @return string $path の存在する http(s):// から始まる絶対パス
      * @see Net_URL
      */
-function getLocation($path, $param = array(), $useSSL = "escape") {
+    function getLocation($path, $param = array(), $useSSL = "escape") {
         $rootPath = $this->getRootPath($path);
 
         // スキーマを定義
@@ -258,7 +258,7 @@ function getLocation($path, $param = array(), $useSSL = "escape") {
         } else {
             $htmlPath = rtrim(HTML_PATH, "/");
             $rootPath = str_replace($htmlPath, "", $realPath);
-            $rootPath = substr_replace($rootPath, "", 0, strlen(URL_DIR));
+            $rootPath = ltrim($rootPath, "/");
         }
         
         return $rootPath;
