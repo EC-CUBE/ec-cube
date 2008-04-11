@@ -258,7 +258,7 @@ class LC_Page {
         } else {
             $htmlPath = rtrim(HTML_PATH, "/");
             $rootPath = str_replace($htmlPath, "", $realPath);
-            $rootPath = substr_replace($rootPath, "", 0, strlen(URL_DIR));
+            $rootPath = ltrim($rootPath, "/");
         }
         
         return $rootPath;
