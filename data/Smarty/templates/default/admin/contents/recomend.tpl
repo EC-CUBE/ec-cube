@@ -42,6 +42,7 @@ function lfnCheckSubmit( fm ){
 		if(window.confirm('内容を登録しても宜しいですか')){
 			return true;
 		}
+		return false;
 	}
 }
 
