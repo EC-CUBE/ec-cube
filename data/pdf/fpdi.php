@@ -460,7 +460,9 @@ class FPDI extends FPDF_TPL {
 }
 
 // for PHP5
-if (!class_exists('fpdi')) {
-    class fpdi extends FPDI {}
+if (version_compare("5", PHP_VERSION, "<")) {
+    if (!class_exists('fpdi')) {
+        class fpdi extends FPDI {}
+    }
 }
 ?>
