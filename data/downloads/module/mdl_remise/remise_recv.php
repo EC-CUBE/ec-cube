@@ -110,7 +110,7 @@ function lfRemiseCreditResultCheck(){
             $arrCarier = array('imode', 'ezweb', 'jsky');
             if (isset($_POST["CARIER_TYPE"]) && in_array($_POST["CARIER_TYPE"], $arrCarier)) {
                 gfPrintLog("Mobile Complete Start", $log_path);
-                if (lfMobileComplete()) {
+                if (lfMobileComplete(REMISE_PAY_TYPE_CREDIT)) {
                     gfPrintLog("Mobile Complete Success", $log_path);
                     print(REMISE_PAYMENT_CHARGE_OK_MOBILE);
                 } else {
