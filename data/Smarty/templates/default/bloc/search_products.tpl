@@ -34,6 +34,14 @@
           <!--{html_options options=$arrCatList selected=$category_id}-->
         </select>
       </p>
+      <!--{if $arrMakerList}-->
+      <p>メーカーから選ぶ
+        <select name="maker_id" class="box142">
+          <option label="すべてのメーカー" value="">すべてのメーカー</option>
+          <!--{html_options options=$arrMakerList selected=$maker_id}-->
+        </select>
+      </p>
+      <!--{/if}-->
       <p><img src="<!--{$TPL_DIR}-->img/side/search_name.gif" width="66" height="10" alt="商品名を入力" /></p>
       <p><input type="text" name="name" class="box142" maxlength="50" value="<!--{$smarty.get.name|escape}-->" /></p>
       <p class="btn"><input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/side/button_search_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/side/button_search.gif',this)" src="<!--{$TPL_DIR}-->img/side/button_search.gif" class="box51" alt="検索" name="search" /></p>

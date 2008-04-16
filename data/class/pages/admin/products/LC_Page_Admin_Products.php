@@ -142,6 +142,7 @@ class LC_Page_Admin_Products extends LC_Page {
 
             // 件数カウントバッチ実行
             $objDb->sfCategory_Count($objQuery);
+            $objDb->sfMaker_Count($objQuery);
         }
 
 

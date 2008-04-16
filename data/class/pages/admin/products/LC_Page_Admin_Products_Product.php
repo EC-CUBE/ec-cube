@@ -69,6 +69,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         $this->arrSTATUS_IMAGE = $masterData->getMasterData("mtb_status_image");
         $this->arrDELIVERYDATE = $masterData->getMasterData("mtb_delivery_date");
         $this->arrAllowedTag = $masterData->getMasterData("mtb_allowed_tag");
+        $this->arrMaker = SC_Helper_DB_Ex::sfGetIDValueList("dtb_maker", "maker_id", "name");
         $this->tpl_nonclass = true;
     }
 
@@ -174,6 +175,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
 
             // 件数カウントバッチ実行
             $objDb->sfCategory_Count($objQuery);
+            $objDb->sfMaker_Count($objQuery);
             // 一時ファイルを本番ディレクトリに移動する
             $this->objUpFile->moveTempFile();
 
@@ -398,7 +400,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
                             "main_list_comment", "main_comment", "point_rate",
                             "deliv_fee", "comment1", "comment2", "comment3",
                             "comment4", "comment5", "comment6", "main_list_comment",
-                            "sale_limit", "sale_unlimited", "deliv_date_id");
+                            "sale_limit", "sale_unlimited", "deliv_date_id", "maker_id");
         $arrList = SC_Utils_Ex::arrayDefineIndexes($arrList, $checkArray);
 
         // INSERTする値を作成する。
@@ -419,6 +421,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         $sqlval['sale_limit'] = $arrList['sale_limit'];
         $sqlval['sale_unlimited'] = $arrList['sale_unlimited'];
         $sqlval['deliv_date_id'] = $arrList['deliv_date_id'];
+        $sqlval['maker_id'] = $arrList['maker_id'];
         $sqlval['update_date'] = "Now()";
         $sqlval['creator_id'] = $_SESSION['member_id'];
         $arrRet = $this->objUpFile->getDBFileList();
@@ -555,6 +558,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         $objErr->doFunc(array("検索ワード", "comment3", LLTEXT_LEN), array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $objErr->doFunc(array("メーカーURL", "comment1", URL_LEN), array("SPTAB_CHECK", "URL_CHECK", "MAX_LENGTH_CHECK"));
         $objErr->doFunc(array("発送日目安", "deliv_date_id", INT_LEN), array("NUM_CHECK"));
+        $objErr->doFunc(array("メーカー", 'maker_id', INT_LEN), array("NUM_CHECK"));
 
         if($this->tpl_nonclass) {
             $objErr->doFunc(array("商品コード", "product_code", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK","MAX_LENGTH_CHECK","MAX_LENGTH_CHECK"));

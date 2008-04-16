@@ -124,7 +124,7 @@ class LC_Page_Products_List extends LC_Page {
             }
 
             // 商品一覧の表示処理
-            $this->lfDispProductsList($arrCategory_id[0], $_GET['name'], $this->disp_number, $_POST['orderby']);
+            $this->lfDispProductsList($arrCategory_id[0], $_GET['name'], $_GET['maker_id'], $this->disp_number, $_POST['orderby']);
 
             // 検索条件を画面に表示
             // カテゴリー検索条件
@@ -133,6 +133,13 @@ class LC_Page_Products_List extends LC_Page {
             }else{
                 $arrCat = $conn->getOne("SELECT category_name FROM dtb_category WHERE category_id = ?", $arrCategory_id);
                 $arrSearch['category'] = $arrCat;
+            }
+
+            // メーカー検索条件
+            if (strlen($_GET['maker_id']) == 0) {
+                $arrSearch['maker'] = "指定なし";
+            }else{
+                $arrSearch['maker'] = $name = $conn->getOne("SELECT name FROM dtb_maker WHERE maker_id = ?", $_GET['maker_id']);
             }
 
             // 商品名検索条件
@@ -268,7 +275,7 @@ class LC_Page_Products_List extends LC_Page {
             }
 
             // 商品一覧の表示処理
-            $this->lfDispProductsList($arrCategory_id[0], $_GET['name'], $this->disp_number, $_REQUEST['orderby']);
+            $this->lfDispProductsList($arrCategory_id[0], $_GET['name'], $_GET['maker_id'], $this->disp_number, $_REQUEST['orderby']);
 
             // 検索条件を画面に表示
             // カテゴリー検索条件
@@ -370,7 +377,7 @@ class LC_Page_Products_List extends LC_Page {
     }
 
     /* 商品一覧の表示 */
-    function lfDispProductsList($category_id, $name, $disp_num, $orderby) {
+    function lfDispProductsList($category_id, $name, $maker_id, $disp_num, $orderby) {
 
         $objQuery = new SC_Query();
         $objDb = new SC_Helper_DB_Ex();
@@ -443,6 +450,12 @@ class LC_Page_Products_List extends LC_Page {
             $ret = SC_Utils_Ex::sfManualEscape($name);
             $arrval[] = "%$ret%";
             $arrval[] = "%$ret%";
+        }
+
+        // メーカーらのWHERE文字列取得
+        if ( $maker_id ) {
+            $where .= " AND maker_id = ? ";
+            $arrval[] = $maker_id;
         }
 
         if (empty($arrval)) {

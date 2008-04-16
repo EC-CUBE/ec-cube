@@ -1536,5 +1536,102 @@ class SC_Helper_DB {
         return false;
     }
 
+    /**
+     * メーカー商品数数の登録を行う.
+     *
+     * @param SC_Query $objQuery SC_Query インスタンス
+     * @return void
+     */
+    function sfMaker_Count($objQuery){
+        $sql = "";
+
+        //テーブル内容の削除
+        $objQuery->query("DELETE FROM dtb_maker_count");
+
+        //各メーカーの商品数を数えて格納
+        $sql = " INSERT INTO dtb_maker_count(maker_id, product_count, create_date) ";
+        $sql .= " SELECT T1.maker_id, count(T2.maker_id), now() ";
+        $sql .= " FROM dtb_maker AS T1 LEFT JOIN dtb_products AS T2";
+        $sql .= " ON T1.maker_id = T2.maker_id ";
+        $sql .= " WHERE T2.del_flg = 0 AND T2.status = 1 ";
+        $sql .= " GROUP BY T1.maker_id, T2.maker_id ";
+        $objQuery->query($sql);
+    }
+
+    /**
+     * 選択中の商品のメーカーを取得する.
+     *
+     * @param integer $product_id プロダクトID
+     * @param integer $maker_id メーカーID
+     * @return array 選択中の商品のメーカーIDの配列
+     *
+     */
+    function sfGetMakerId($product_id, $maker_id = 0, $closed = false) {
+        if ($closed) {
+            $status = "";
+        } else {
+            $status = "status = 1";
+        }
+
+        if(!$this->g_maker_on) {
+            $this->g_maker_on = true;
+            $maker_id = (int) $maker_id;
+            $product_id = (int) $product_id;
+            if(SC_Utils_Ex::sfIsInt($maker_id) && $this->sfIsRecord("dtb_maker","maker_id", $maker_id)) {
+                $this->g_maker_id = array($maker_id);
+            } else if (SC_Utils_Ex::sfIsInt($product_id) && $this->sfIsRecord("dtb_products","product_id", $product_id, $status)) {
+                $objQuery = new SC_Query();
+                $where = "product_id = ?";
+                $maker_id = $objQuery->getCol("dtb_productes", "maker_id", "product_id = ?", array($product_id));
+                $this->g_maker_id = $maker_id;
+            } else {
+                // 不正な場合は、空の配列を返す。
+                $this->g_maker_id = array();
+            }
+        }
+        return $this->g_maker_id;
+    }
+
+    /**
+     * メーカーの取得を行う.
+     *
+     * $products_check:true商品登録済みのものだけ取得する
+     *
+     * @param string $addwhere 追加する WHERE 句
+     * @param bool $products_check 商品の存在するカテゴリのみ取得する場合 true
+     * @return array カテゴリツリーの配列
+     */
+    function sfGetMakerList($addwhere = "", $products_check = false) {
+        $objQuery = new SC_Query();
+        $where = "del_flg = 0";
+
+        if($addwhere != "") {
+            $where.= " AND $addwhere";
+        }
+
+        $objQuery->setoption("ORDER BY rank DESC");
+
+        if($products_check) {
+            $col = "T1.maker_id, name";
+            $from = "dtb_maker AS T1 LEFT JOIN dtb_maker_count AS T2 ON T1.maker_id = T2.maker_id";
+            $where .= " AND product_count > 0";
+        } else {
+            $col = "maker_id, name";
+            $from = "dtb_maker";
+        }
+
+        $arrRet = $objQuery->select($col, $from, $where);
+
+        $max = count($arrRet);
+        for($cnt = 0; $cnt < $max; $cnt++) {
+            $id = $arrRet[$cnt]['maker_id'];
+            $name = $arrRet[$cnt]['name'];
+            $arrList[$id].= $name;
+        }
+        return $arrList;
+    }
+
+
+
 }
 ?>

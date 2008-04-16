@@ -211,6 +211,16 @@ function selectAll(target) {
 										</td>
 									</tr>
 									<tr>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">メーカー<span class="red"> *</span></td>
+										<td bgcolor="#ffffff" width="557" class="fs10n">
+										<span class="red12"><!--{$arrErr.maker_id}--></span>
+										<select name="maker_id" style="<!--{$arrErr.maker_id|sfGetErrorColor}-->">
+										<option value="">選択してください</option>
+										<!--{html_options options=$arrMaker selected=$arrForm.maker_id}-->
+										</select>
+										</td>
+									</tr>
+									<tr>
 										<td bgcolor="#f2f1ec" width="160" class="fs12n">メーカーURL</td>
 										<td bgcolor="#ffffff" width="557" class="fs10n">
 										<span class="red12"><!--{$arrErr.comment1}--></span>

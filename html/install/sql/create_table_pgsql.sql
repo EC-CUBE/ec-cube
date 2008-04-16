@@ -274,6 +274,7 @@ CREATE TABLE dtb_products (
     sale_limit numeric,
     sale_unlimited int2 DEFAULT 0,
     category_id int4,
+    maker_id int4,
     rank int4,
     status int2 NOT NULL DEFAULT 2,
     product_flag text,
@@ -950,6 +951,22 @@ id    serial,
 table_name    text,
 column_name    text,
 description    text
+);
+
+CREATE TABLE dtb_maker (
+    maker_id serial NOT NULL,
+    name text NOT NULL,
+    rank int4 NOT NULL DEFAULT 0,
+    creator_id int4 NOT NULL,
+    create_date timestamp NOT NULL DEFAULT now(),
+    update_date timestamp NOT NULL,
+    del_flg  int2 NOT NULL DEFAULT 0
+);
+
+CREATE TABLE dtb_maker_count (
+    maker_id int4 NOT NULL,
+    product_count int4 NOT NULL,
+    create_date timestamp NOT NULL DEFAULT Now()
 );
 
 CREATE TABLE mtb_permission (

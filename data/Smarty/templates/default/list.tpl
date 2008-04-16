@@ -61,6 +61,7 @@ function lnSetSelect(name1, name2, id, val) {
   <!--{if $tpl_subtitle == "検索結果"}-->
     <ul class="pagecondarea">
       <li><strong>商品カテゴリ：</strong><!--{$arrSearch.category|escape}--></li>
+      <!--{if $arrSearch.maker}--><li><strong>メーカー：</strong><!--{$arrSearch.maker|escape}--></li><!--{/if}-->
       <li><strong>商品名：</strong><!--{$arrSearch.name|escape}--></li>
     </ul>
   <!--{/if}-->

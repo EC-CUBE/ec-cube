@@ -274,6 +274,7 @@ CREATE TABLE dtb_products (
     sale_limit numeric,
     sale_unlimited smallint DEFAULT 0,
     category_id int,
+    maker_id int,
     rank int,
     status smallint NOT NULL DEFAULT 2,
     product_flag text,
@@ -949,6 +950,23 @@ CREATE TABLE dtb_table_comment
     column_name    text,
     description    text
 ) TYPE=InnoDB ;
+
+CREATE TABLE dtb_maker (
+    maker_id auto_increment primary keyl,
+    name text NOT NULL,
+    rank int NOT NULL DEFAULT 0,
+    creator_id int NOT NULL,
+    create_date datetime NOT NULL DEFAULT now(),
+    update_date datetime NOT NULL,
+    del_flg  smallint NOT NULL DEFAULT 0
+) TYPE=InnoDB ;
+
+CREATE TABLE dtb_maker_count (
+    maker_id int NOT NULL,
+    product_count int NOT NULL,
+    create_date datetime NOT NULL DEFAULT Now()
+) TYPE=InnoDB ;
+
 
 CREATE TABLE mtb_permission (
     id text,

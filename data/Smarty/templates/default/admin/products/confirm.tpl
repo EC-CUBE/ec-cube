@@ -149,6 +149,12 @@
 									</td>
 								</tr>
 								<tr>
+									<td bgcolor="#f2f1ec" width="160" class="fs12n">メーカー</td>
+									<td bgcolor="#ffffff" width="557" class="fs12n">
+									<!--{$arrMaker[$arrForm.maker_id]|escape}-->
+									</td>
+								</tr>
+								<tr>
 									<td bgcolor="#f2f1ec" width="160" class="fs12n">メーカーURL</td>
 									<td bgcolor="#ffffff" width="557" class="fs12n">
 									<!--{$arrForm.comment1|escape|sfPutBR:$smarty.const.LINE_LIMIT_SIZE}-->
