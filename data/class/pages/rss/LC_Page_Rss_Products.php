@@ -84,6 +84,9 @@ class LC_Page_Rss_Products extends LC_Page {
 
                 // ポイント計算
                 $arrProduct[$key]["point"] = SC_Utils_Ex::sfPrePoint($arrProduct[$key]["price02"], $arrProduct[$key]["point_rate"], POINT_RULE, $arrProduct[$key]["product_id"]);
+
+                // 在庫無制限
+                $arrProduct[$key]["stock_unlimited"] = ($arrProduct[$key]["stock_unlimited"] == 1) ? "在庫無制限" : NULL;
             }
         }elseif($mode == "list"){
             //商品一覧を取得
@@ -168,11 +171,14 @@ class LC_Page_Rss_Products extends LC_Page {
         $sql .= "   ,cls.product_code ";
         $sql .= "   ,cls.price01 ";
         $sql .= "   ,cls.price02 ";
+        $sql .= "   ,cls.stock ";
+        $sql .= "   ,cls.stock_unlimited ";
         $sql .= "   ,cls.classcategory_id1 ";
         $sql .= "   ,cls.classcategory_id2 ";
         $sql .= "   ,(SELECT name FROM dtb_classcategory AS clscat WHERE clscat.classcategory_id = cls.classcategory_id1) AS classcategory_name1 ";
         $sql .= "   ,(SELECT name FROM dtb_classcategory AS clscat WHERE clscat.classcategory_id = cls.classcategory_id2) AS classcategory_name2 ";
         $sql .= "   ,(SELECT category_name FROM dtb_category AS cat WHERE cat.category_id = prod.category_id) AS category_name";
+        $sql .= "   ,prod.update_date ";
         $sql .= " FROM dtb_products AS prod, dtb_products_class AS cls";
         $sql .= " WHERE prod.product_id = cls.product_id AND prod.del_flg = 0 AND prod.status = 1";
 
