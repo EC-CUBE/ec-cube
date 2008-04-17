@@ -486,8 +486,8 @@ X-NAME => LOCKON from 211.0.149.169
     $objForm->addParam('金額',             'X-AMOUNT',        8, '',  array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
     $objForm->addParam('税送料',            'X-TAX',           7, '',  array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
     $objForm->addParam('合計金額',          'X-TOTAL',         8, '',  array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-    $objForm->addParam('承認番号',          'X-REFAPPROVED',   7, '',  array('EXIST_CHECK', 'ALNUM_CHECK', 'MAX_LENGTH_CHECK'));
-    $objForm->addParam('仕向先コード',      'X-REFFORWARDED',  7, '',  array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+    $objForm->addParam('承認番号',          'X-REFAPPROVED',   7, '',  array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+    $objForm->addParam('仕向先コード',      'X-REFFORWARDED',  7, '',  array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
     $objForm->addParam('エラーコード',      'X-ERRCODE',       3, '',  array('MAX_LENGTH_CHECK'));
     $objForm->addParam('エラー詳細コード',   'X-ERRINFO',        9, '',   array('EXIST_CHECK', 'NUM_CHECK', 'NUM_COUNT_CHECK'));
     $objForm->addParam('エラーレベル',       'X-ERRLEVEL',      1, '',  array('EXIST_CHECK', 'NUM_CHECK', 'NUM_COUNT_CHECK'));
