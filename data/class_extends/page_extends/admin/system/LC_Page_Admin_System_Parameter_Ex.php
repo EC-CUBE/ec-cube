@@ -22,18 +22,18 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/admin/basis/LC_Page_Admin_Basis_Masterdata.php");
+require_once(CLASS_PATH . "pages/admin/system/LC_Page_Admin_System_Parameter.php");
 
 /**
- * マスタデータ管理 のページクラス(拡張).
+ * パラメータ設定 のページクラス(拡張).
  *
- * LC_Page_Admin_Basis_Masterdata をカスタマイズする場合はこのクラスを編集する.
+ * LC_Page_Admin_System_Parameter をカスタマイズする場合はこのクラスを編集する.
  *
  * @package Page
  * @author LOCKON CO.,LTD.
  * @version $Id:LC_Page_Admin_Basis_Ex.php 15532 2007-08-31 14:39:46Z nanasess $
  */
-class LC_Page_Admin_Basis_Masterdata_Ex extends LC_Page_Admin_Basis_Masterdata {
+class LC_Page_Admin_System_Parameter_Ex extends LC_Page_Admin_System_Parameter {
 
     // }}}
     // {{{ functions

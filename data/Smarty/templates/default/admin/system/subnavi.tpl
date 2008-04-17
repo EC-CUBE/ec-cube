@@ -27,5 +27,9 @@
 	<tr><td><img src="<!--{$TPL_DIR}-->img/contents/navi_line.gif" width="140" height="2" alt=""></td></tr>
 	<tr><td class=<!--{if $tpl_subno != 'bkup'}-->"navi"<!--{else}-->"navi-on"<!--{/if}-->><a href="./bkup.php" onMouseOver="naviStyleChange('bkup', '#a5a5a5')" <!--{if $tpl_subno != 'bkup'}-->onMouseOut="naviStyleChange('bkup', '#636469')"<!--{/if}--> id="bkup"><img src="<!--{$TPL_DIR}-->img/contents/icon.jpg" width="15" height="9" alt="" border="0"><span class="navi_text">バックアップ管理</span></a></td></tr>
 	<tr><td><img src="<!--{$TPL_DIR}-->img/contents/navi_line.gif" width="140" height="2" alt=""></td></tr>
+	<tr><td class=<!--{if $tpl_subno != 'parameter'}-->"navi"<!--{else}-->"navi-on"<!--{/if}-->><a href="./parameter.php" onMouseOver="naviStyleChange('parameter', '#a5a5a5')" <!--{if $tpl_subno != 'parameter'}-->onMouseOut="naviStyleChange('parameter', '#636469')"<!--{/if}--> id="parameter"><img src="<!--{$TPL_DIR}-->img/contents/icon.jpg" width="15" height="9" alt="" border="0"><span class="navi_text">パラメータ設定</span></a></td></tr>
+	<tr><td><img src="<!--{$TPL_DIR}-->img/contents/navi_line.gif" width="140" height="2" alt=""></td></tr>
+	<tr><td class=<!--{if $tpl_subno != 'masterdata'}-->"navi"<!--{else}-->"navi-on"<!--{/if}-->><a href="./masterdata.php" onMouseOver="naviStyleChange('masterdata', '#a5a5a5')" <!--{if $tpl_subno != 'masterdata'}-->onMouseOut="naviStyleChange('masterdata', '#636469')"<!--{/if}--> id="masterdata"><img src="<!--{$TPL_DIR}-->img/contents/icon.jpg" width="15" height="9" alt="" border="0"><span class="navi_text">マスタデータ管理</span></a></td></tr>
+	<tr><td><img src="<!--{$TPL_DIR}-->img/contents/navi_line.gif" width="140" height="2" alt=""></td></tr>
 	<!--ナビ-->
 </table>

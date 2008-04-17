@@ -31,7 +31,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Basis_Parameter extends LC_Page {
+class LC_Page_Admin_System_Parameter extends LC_Page {
 
     // {{{ properties
 
@@ -54,10 +54,10 @@ class LC_Page_Admin_Basis_Parameter extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->tpl_mainpage = 'basis/parameter.tpl';
-        $this->tpl_subnavi = 'basis/subnavi.tpl';
+        $this->tpl_mainpage = 'system/parameter.tpl';
+        $this->tpl_subnavi = 'system/subnavi.tpl';
         $this->tpl_subno = 'parameter';
-        $this->tpl_mainno = 'basis';
+        $this->tpl_mainno = 'system';
     }
 
     /**
