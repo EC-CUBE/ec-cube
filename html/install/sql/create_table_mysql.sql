@@ -467,7 +467,7 @@ CREATE TABLE dtb_customer_favorite_products (
     customer_id int NOT NULL,
     product_id int NOT NULL,
     create_date datetime NOT NULL,
-    update_date datetime NOT NULL,
+    update_date datetime NOT NULL
 ) TYPE=InnoDB ;
 
 CREATE TABLE dtb_category_count (
@@ -952,11 +952,11 @@ CREATE TABLE dtb_table_comment
 ) TYPE=InnoDB ;
 
 CREATE TABLE dtb_maker (
-    maker_id auto_increment primary keyl,
+    maker_id INT auto_increment primary key,
     name text NOT NULL,
     rank int NOT NULL DEFAULT 0,
     creator_id int NOT NULL,
-    create_date datetime NOT NULL DEFAULT now(),
+    create_date datetime NOT NULL,
     update_date datetime NOT NULL,
     del_flg  smallint NOT NULL DEFAULT 0
 ) TYPE=InnoDB ;
@@ -964,7 +964,7 @@ CREATE TABLE dtb_maker (
 CREATE TABLE dtb_maker_count (
     maker_id int NOT NULL,
     product_count int NOT NULL,
-    create_date datetime NOT NULL DEFAULT Now()
+    create_date datetime NOT NULL
 ) TYPE=InnoDB ;
 
 
