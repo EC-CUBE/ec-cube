@@ -202,6 +202,15 @@
 									円
 								</td>
 							</tr>
+                            <tr class="fs12n">
+                                <td bgcolor="#f2f1ec" width="110">購入商品</td>
+                                <td bgcolor="#ffffff" width="499" colspan="3">
+                                    <!--{assign var=key value="search_product_name"}-->
+                                    <span class="red12"><!--{$arrErr[$key1]}--></span>
+                                    <span class="red12"><!--{$arrErr[$key2]}--></span>
+                                    <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"  size="6" class="box30" />
+                                </td>
+                            </tr>
 						</table>
 						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr>

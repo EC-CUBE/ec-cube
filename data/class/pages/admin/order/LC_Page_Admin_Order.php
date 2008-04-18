@@ -26,11 +26,11 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
 
 /* ペイジェント決済モジュール連携用 */
 if (file_exists(MODULE_PATH . 'mdl_paygent/include.php') === TRUE) {
-	require_once(MODULE_PATH . 'mdl_paygent/include.php');
+    require_once(MODULE_PATH . 'mdl_paygent/include.php');
 }
 
 /**
- * 受注管理 のページクラス.
+ * 受注管理 のページクラス
  *
  * @package Page
  * @author LOCKON CO.,LTD.
@@ -60,7 +60,7 @@ class LC_Page_Admin_Order extends LC_Page {
         $this->arrORDERSTATUS_COLOR = $masterData->getMasterData("mtb_order_status_color");
         $this->arrSex = $masterData->getMasterData("mtb_sex");
         $this->arrPageMax = $masterData->getMasterData("mtb_page_max");
-        
+
         /* ペイジェント決済モジュール連携用 */
         if(function_exists("sfPaygentOrderPage")) {
             $this->arrDispKind = sfPaygentOrderPage();
@@ -90,20 +90,20 @@ class LC_Page_Admin_Order extends LC_Page {
         foreach ($_POST as $key => $val) {
             if (ereg("^search_", $key)) {
                 switch($key) {
-                case 'search_order_sex':
-                case 'search_payment_id':
-                    $this->arrHidden[$key] = SC_Utils_Ex::sfMergeParamCheckBoxes($val);
-                    break;
-                default:
-                    $this->arrHidden[$key] = $val;
-                    break;
+                    case 'search_order_sex':
+                    case 'search_payment_id':
+                        $this->arrHidden[$key] = SC_Utils_Ex::sfMergeParamCheckBoxes($val);
+                        break;
+                    default:
+                        $this->arrHidden[$key] = $val;
+                        break;
                 }
             }
         }
 
         // ページ送り用
         $this->arrHidden['search_pageno'] =
-            isset($_POST['search_pageno']) ? $_POST['search_pageno'] : "";
+        isset($_POST['search_pageno']) ? $_POST['search_pageno'] : "";
 
         // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess($objSess);
@@ -121,203 +121,215 @@ class LC_Page_Admin_Order extends LC_Page {
         }
 
         switch($_POST['mode']) {
-        case 'delete':
-        case 'csv':
-        case 'delete_all':
-        case 'search':
-            // 入力値の変換
-            $this->objFormParam->convParam();
-            $this->arrErr = $this->lfCheckError($arrRet);
-            $arrRet = $this->objFormParam->getHashArray();
-            // 入力なし
-            if (count($this->arrErr) == 0) {
-                $where = "del_flg = 0";
-                foreach ($arrRet as $key => $val) {
-                    if($val == "") {
-                        continue;
-                    }
-                    $val = SC_Utils_Ex::sfManualEscape($val);
+            case 'delete':
+            case 'csv':
+            case 'delete_all':
+            case 'search':
+                // 入力値の変換
+                $this->objFormParam->convParam();
+                $this->arrErr = $this->lfCheckError($arrRet);
+                $arrRet = $this->objFormParam->getHashArray();
+                // 入力なし
+                if (count($this->arrErr) == 0) {
+                    $where = "del_flg = 0";
+                    foreach ($arrRet as $key => $val) {
+                        if($val == "") {
+                            continue;
+                        }
+                        $val = SC_Utils_Ex::sfManualEscape($val);
 
-                    switch ($key) {
-                    case 'search_order_name':
-                        if(DB_TYPE == "pgsql"){
-                            $where .= " AND order_name01||order_name02 ILIKE ?";
-                        }elseif(DB_TYPE == "mysql"){
-                            $where .= " AND concat(order_name01,order_name02) ILIKE ?";
-                        }
-                        $nonsp_val = ereg_replace("[ 　]+","",$val);
-                        $arrval[] = "%$nonsp_val%";
-                        break;
-                    case 'search_order_kana':
-                        if(DB_TYPE == "pgsql"){
-                            $where .= " AND order_kana01||order_kana02 ILIKE ?";
-                        }elseif(DB_TYPE == "mysql"){
-                            $where .= " AND concat(order_kana01,order_kana02) ILIKE ?";
-                        }
-                        $nonsp_val = ereg_replace("[ 　]+","",$val);
-                        $arrval[] = "%$nonsp_val%";
-                        break;
-                    case 'search_order_id1':
-                        $where .= " AND order_id >= ?";
-                        $arrval[] = $val;
-                        break;
-                    case 'search_order_id2':
-                        $where .= " AND order_id <= ?";
-                        $arrval[] = $val;
-                        break;
-                    case 'search_order_sex':
-                        $tmp_where = "";
-                        foreach($val as $element) {
-                            if($element != "") {
-                                if($tmp_where == "") {
-                                    $tmp_where .= " AND (order_sex = ?";
-                                } else {
-                                    $tmp_where .= " OR order_sex = ?";
+                        switch ($key) {
+
+                            case 'search_product_name':
+                                if(DB_TYPE == "pgsql"){
+//                                    $val = mb_convert_encoding($val,"UTF-8",mb_detect_encoding($val));
+                                    $where .= " AND (SELECT COUNT(*) FROM dtb_order_detail od WHERE od.order_id = dtb_order.order_id AND od.product_name ILIKE ?) > 0";
+                                    $nonsp_val = ereg_replace("[ 　]+","",$val);
+                                    $arrval[] = "%$nonsp_val%";
+                                }elseif(DB_TYPE == "mysql"){
+                                    $where .= " AND (SELECT COUNT(*) FROM dtb_order_detail od WHERE od.order_id = dtb_order.order_id AND od.product_name LIKE ?) > 0";
+                                    $nonsp_val = ereg_replace("[ 　]+","",$val);
+                                    $arrval[] = "%$nonsp_val%";
                                 }
-                                $arrval[] = $element;
-                            }
-                        }
-
-                        if($tmp_where != "") {
-                            $tmp_where .= ")";
-                            $where .= " $tmp_where ";
-                        }
-                        break;
-                    case 'search_order_tel':
-                        if(DB_TYPE == "pgsql"){
-                            $where .= " AND (order_tel01||order_tel02||order_tel03) ILIKE ?";
-                        }elseif(DB_TYPE == "mysql"){
-                            $where .= " AND concat(order_tel01,order_tel02,order_tel03) ILIKE ?";
-                        }
-                        $nonmark_val = ereg_replace("[()-]+","",$val);
-                        $arrval[] = "$nonmark_val%";
-                        break;
-                    case 'search_order_email':
-                        $where .= " AND order_email ILIKE ?";
-                        $arrval[] = "%$val%";
-                        break;
-                    case 'search_payment_id':
-                        $tmp_where = "";
-                        foreach($val as $element) {
-                            if($element != "") {
-                                if($tmp_where == "") {
-                                    $tmp_where .= " AND (payment_id = ?";
-                                } else {
-                                    $tmp_where .= " OR payment_id = ?";
+                                break;
+                            case 'search_order_name':
+                                if(DB_TYPE == "pgsql"){
+                                    $where .= " AND order_name01||order_name02 ILIKE ?";
+                                }elseif(DB_TYPE == "mysql"){
+                                    $where .= " AND concat(order_name01,order_name02) ILIKE ?";
                                 }
-                                $arrval[] = $element;
+                                $nonsp_val = ereg_replace("[ 　]+","",$val);
+                                $arrval[] = "%$nonsp_val%";
+                                break;
+                            case 'search_order_kana':
+                                if(DB_TYPE == "pgsql"){
+                                    $where .= " AND order_kana01||order_kana02 ILIKE ?";
+                                }elseif(DB_TYPE == "mysql"){
+                                    $where .= " AND concat(order_kana01,order_kana02) ILIKE ?";
+                                }
+                                $nonsp_val = ereg_replace("[ 　]+","",$val);
+                                $arrval[] = "%$nonsp_val%";
+                                break;
+                            case 'search_order_id1':
+                                $where .= " AND order_id >= ?";
+                                $arrval[] = $val;
+                                break;
+                            case 'search_order_id2':
+                                $where .= " AND order_id <= ?";
+                                $arrval[] = $val;
+                                break;
+                            case 'search_order_sex':
+                                $tmp_where = "";
+                                foreach($val as $element) {
+                                    if($element != "") {
+                                        if($tmp_where == "") {
+                                            $tmp_where .= " AND (order_sex = ?";
+                                        } else {
+                                            $tmp_where .= " OR order_sex = ?";
+                                        }
+                                        $arrval[] = $element;
+                                    }
+                                }
+
+                                if($tmp_where != "") {
+                                    $tmp_where .= ")";
+                                    $where .= " $tmp_where ";
+                                }
+                                break;
+                            case 'search_order_tel':
+                                if(DB_TYPE == "pgsql"){
+                                    $where .= " AND (order_tel01||order_tel02||order_tel03) ILIKE ?";
+                                }elseif(DB_TYPE == "mysql"){
+                                    $where .= " AND concat(order_tel01,order_tel02,order_tel03) ILIKE ?";
+                                }
+                                $nonmark_val = ereg_replace("[()-]+","",$val);
+                                $arrval[] = "$nonmark_val%";
+                                break;
+                            case 'search_order_email':
+                                $where .= " AND order_email ILIKE ?";
+                                $arrval[] = "%$val%";
+                                break;
+                            case 'search_payment_id':
+                                $tmp_where = "";
+                                foreach($val as $element) {
+                                    if($element != "") {
+                                        if($tmp_where == "") {
+                                            $tmp_where .= " AND (payment_id = ?";
+                                        } else {
+                                            $tmp_where .= " OR payment_id = ?";
+                                        }
+                                        $arrval[] = $element;
+                                    }
+                                }
+
+                                if($tmp_where != "") {
+                                    $tmp_where .= ")";
+                                    $where .= " $tmp_where ";
+                                }
+                                break;
+                            case 'search_total1':
+                                $where .= " AND total >= ?";
+                                $arrval[] = $val;
+                                break;
+                            case 'search_total2':
+                                $where .= " AND total <= ?";
+                                $arrval[] = $val;
+                                break;
+                            case 'search_startyear':
+                                $date = SC_Utils_Ex::sfGetTimestamp($_POST['search_startyear'], $_POST['search_startmonth'], $_POST['search_startday']);
+                                $where.= " AND update_date >= ?";
+                                $arrval[] = $date;
+                                break;
+                            case 'search_endyear':
+                                $date = SC_Utils_Ex::sfGetTimestamp($_POST['search_endyear'], $_POST['search_endmonth'], $_POST['search_endday'], true);
+                                $where.= " AND update_date <= ?";
+                                $arrval[] = $date;
+                                break;
+                            case 'search_sbirthyear':
+                                $date = SC_Utils_Ex::sfGetTimestamp($_POST['search_sbirthyear'], $_POST['search_sbirthmonth'], $_POST['search_sbirthday']);
+                                $where.= " AND order_birth >= ?";
+                                $arrval[] = $date;
+                                break;
+                            case 'search_ebirthyear':
+                                $date = SC_Utils_Ex::sfGetTimestamp($_POST['search_ebirthyear'], $_POST['search_ebirthmonth'], $_POST['search_ebirthday'], true);
+                                $where.= " AND order_birth <= ?";
+                                $arrval[] = $date;
+                                break;
+                            case 'search_order_status':
+                                $where.= " AND status = ?";
+                                $arrval[] = $val;
+                                break;
+                            default:
+                                if (!isset($arrval)) $arrval = array();
+                                break;
+                        }
+                    }
+
+                    $order = "update_date DESC";
+
+                    switch($_POST['mode']) {
+                        case 'csv':
+
+                            require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_CSV_Ex.php");
+                            $objCSV = new SC_Helper_CSV_Ex();
+                            // オプションの指定
+                            $option = "ORDER BY $order";
+
+                            // CSV出力タイトル行の作成
+                            $arrCsvOutput = SC_Utils_Ex::sfSwapArray($objCSV->sfgetCsvOutput(3, " WHERE csv_id = 3 AND status = 1"));
+
+                            if (count($arrCsvOutput) <= 0) break;
+
+                            $arrCsvOutputCols = $arrCsvOutput['col'];
+                            $arrCsvOutputTitle = $arrCsvOutput['disp_name'];
+                            $head = SC_Utils_Ex::sfGetCSVList($arrCsvOutputTitle);
+                            $data = $objCSV->lfGetCSV("dtb_order", $where, $option, $arrval, $arrCsvOutputCols);
+
+                            // CSVを送信する。
+                            SC_Utils_Ex::sfCSVDownload($head.$data);
+                            exit;
+                            break;
+                        case 'delete_all':
+                            // 検索結果をすべて削除
+                            $sqlval['del_flg'] = 1;
+                            $objQuery = new SC_Query();
+                            $objQuery->update("dtb_order", $sqlval, $where, $arrval);
+                            break;
+                        default:
+                            // 読み込む列とテーブルの指定
+                            $col = "*";
+                            $from = "dtb_order";
+
+                            $objQuery = new SC_Query();
+                            // 行数の取得
+                            $linemax = $objQuery->count($from, $where, $arrval);
+                            $this->tpl_linemax = $linemax;               // 何件が該当しました。表示用
+                            // ページ送りの処理
+                            if(is_numeric($_POST['search_page_max'])) {
+                                $page_max = $_POST['search_page_max'];
+                            } else {
+                                $page_max = SEARCH_PMAX;
                             }
-                        }
 
-                        if($tmp_where != "") {
-                            $tmp_where .= ")";
-                            $where .= " $tmp_where ";
-                        }
-                        break;
-                    case 'search_total1':
-                        $where .= " AND total >= ?";
-                        $arrval[] = $val;
-                        break;
-                    case 'search_total2':
-                        $where .= " AND total <= ?";
-                        $arrval[] = $val;
-                        break;
-                    case 'search_startyear':
-                        $date = SC_Utils_Ex::sfGetTimestamp($_POST['search_startyear'], $_POST['search_startmonth'], $_POST['search_startday']);
-                        $where.= " AND update_date >= ?";
-                        $arrval[] = $date;
-                        break;
-                    case 'search_endyear':
-                        $date = SC_Utils_Ex::sfGetTimestamp($_POST['search_endyear'], $_POST['search_endmonth'], $_POST['search_endday'], true);
-                        $where.= " AND update_date <= ?";
-                        $arrval[] = $date;
-                        break;
-                    case 'search_sbirthyear':
-                        $date = SC_Utils_Ex::sfGetTimestamp($_POST['search_sbirthyear'], $_POST['search_sbirthmonth'], $_POST['search_sbirthday']);
-                        $where.= " AND order_birth >= ?";
-                        $arrval[] = $date;
-                        break;
-                    case 'search_ebirthyear':
-                        $date = SC_Utils_Ex::sfGetTimestamp($_POST['search_ebirthyear'], $_POST['search_ebirthmonth'], $_POST['search_ebirthday'], true);
-                        $where.= " AND order_birth <= ?";
-                        $arrval[] = $date;
-                        break;
-                    case 'search_order_status':
-                        $where.= " AND status = ?";
-                        $arrval[] = $val;
-                        break;
-                    default:
-                        if (!isset($arrval)) $arrval = array();
-                        break;
-                    }
-                }
-
-                $order = "update_date DESC";
-
-                switch($_POST['mode']) {
-                case 'csv':
-
-                    require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_CSV_Ex.php");
-                    $objCSV = new SC_Helper_CSV_Ex();
-                    // オプションの指定
-                    $option = "ORDER BY $order";
-
-                    // CSV出力タイトル行の作成
-                    $arrCsvOutput = SC_Utils_Ex::sfSwapArray($objCSV->sfgetCsvOutput(3, " WHERE csv_id = 3 AND status = 1"));
-
-                    if (count($arrCsvOutput) <= 0) break;
-
-                    $arrCsvOutputCols = $arrCsvOutput['col'];
-                    $arrCsvOutputTitle = $arrCsvOutput['disp_name'];
-                    $head = SC_Utils_Ex::sfGetCSVList($arrCsvOutputTitle);
-                    $data = $objCSV->lfGetCSV("dtb_order", $where, $option, $arrval, $arrCsvOutputCols);
-
-                    // CSVを送信する。
-                    SC_Utils_Ex::sfCSVDownload($head.$data);
-                    exit;
-                    break;
-                case 'delete_all':
-                    // 検索結果をすべて削除
-                    $sqlval['del_flg'] = 1;
-                    $objQuery = new SC_Query();
-                    $objQuery->update("dtb_order", $sqlval, $where, $arrval);
-                    break;
-                default:
-                    // 読み込む列とテーブルの指定
-                    $col = "*";
-                    $from = "dtb_order";
-
-                    $objQuery = new SC_Query();
-                    // 行数の取得
-                    $linemax = $objQuery->count($from, $where, $arrval);
-                    $this->tpl_linemax = $linemax;               // 何件が該当しました。表示用
-
-                    // ページ送りの処理
-                    if(is_numeric($_POST['search_page_max'])) {
-                        $page_max = $_POST['search_page_max'];
-                    } else {
-                        $page_max = SEARCH_PMAX;
-                    }
-
-                    // ページ送りの取得
-                    $objNavi = new SC_PageNavi($this->arrHidden['search_pageno'],
-                                               $linemax, $page_max,
+                            // ページ送りの取得
+                            $objNavi = new SC_PageNavi($this->arrHidden['search_pageno'],
+                            $linemax, $page_max,
                                                "fnNaviSearchPage", NAVI_PMAX);
-                    $startno = $objNavi->start_row;
-                    $this->arrPagenavi = $objNavi->arrPagenavi;
+                            $startno = $objNavi->start_row;
+                            $this->arrPagenavi = $objNavi->arrPagenavi;
 
-                    // 取得範囲の指定(開始行番号、行数のセット)
-                    $objQuery->setlimitoffset($page_max, $startno);
-                    // 表示順序
-                    $objQuery->setorder($order);
-                    // 検索結果の取得
-                    $this->arrResults = $objQuery->select($col, $from, $where, $arrval);
+                            // 取得範囲の指定(開始行番号、行数のセット)
+                            $objQuery->setlimitoffset($page_max, $startno);
+                            // 表示順序
+                            $objQuery->setorder($order);
+                            // 検索結果の取得
+                            $this->arrResults = $objQuery->select($col, $from, $where, $arrval);
+                    }
                 }
-            }
-            break;
+                break;
 
-        default:
-            break;
+                        default:
+                            break;
         }
 
         $objDate = new SC_Date();
@@ -340,7 +352,7 @@ class LC_Page_Admin_Order extends LC_Page {
         $this->arrPayment = SC_Utils_Ex::sfArrKeyValue($arrRet, 'payment_id', 'payment_method');
 
         $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
+                $objView->display(MAIN_FRAME);
     }
 
     /**
@@ -380,6 +392,8 @@ class LC_Page_Admin_Order extends LC_Page {
         $this->objFormParam->addParam("終了日", "search_ebirthyear", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
         $this->objFormParam->addParam("終了日", "search_ebirthmonth", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
         $this->objFormParam->addParam("終了日", "search_ebirthday", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $this->objFormParam->addParam("購入商品","search_product_name",STEXT_LEN,"KVa",array("MAX_LENGTH_CHECK"));
+
     }
 
     /* 入力内容のチェック */
@@ -396,7 +410,6 @@ class LC_Page_Admin_Order extends LC_Page {
         $objErr->doFunc(array("開始日", "search_startyear", "search_startmonth", "search_startday"), array("CHECK_DATE"));
         $objErr->doFunc(array("終了日", "search_endyear", "search_endmonth", "search_endday"), array("CHECK_DATE"));
         $objErr->doFunc(array("開始日", "終了日", "search_startyear", "search_startmonth", "search_startday", "search_endyear", "search_endmonth", "search_endday"), array("CHECK_SET_TERM"));
-
         $objErr->doFunc(array("開始日", "search_sbirthyear", "search_sbirthmonth", "search_sbirthday"), array("CHECK_DATE"));
         $objErr->doFunc(array("終了日", "search_ebirthyear", "search_ebirthmonth", "search_ebirthday"), array("CHECK_DATE"));
         $objErr->doFunc(array("開始日", "終了日", "search_sbirthyear", "search_sbirthmonth", "search_sbirthday", "search_ebirthyear", "search_ebirthmonth", "search_ebirthday"), array("CHECK_SET_TERM"));
