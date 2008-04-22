@@ -318,7 +318,7 @@ class LC_Page_Mypage_Change extends LC_Page {
                 } elseif ($_POST["mode"] == "set2") {
                     $checkVal = array("sex", "year", "month", "day", "zip01", "zip02");
                 } else {
-                    $checkVal = array("pref", "addr01", "addr02", "tel01", "tel02", "tel03", "mail_flag");
+                    $checkVal = array("pref", "addr01", "addr02", "tel01", "tel02", "tel03", "mailmaga_flg");
                 }
 
                 foreach($this->arrForm as $key => $val) {
@@ -359,7 +359,7 @@ class LC_Page_Mypage_Change extends LC_Page {
                 if ($_POST["mode"] == "set1") {
                     $checkVal = array("sex", "year", "month", "day", "zip01", "zip02");
                 } elseif ($_POST["mode"] == "set2") {
-                    $checkVal = array("pref", "addr01", "addr02", "tel01", "tel02", "tel03", "mail_flag");
+                    $checkVal = array("pref", "addr01", "addr02", "tel01", "tel02", "tel03", "mailmaga_flg");
                 } else {
                     $checkVal = array();
                 }
