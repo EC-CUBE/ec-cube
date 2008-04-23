@@ -79,6 +79,14 @@ function fnIsCartOn(){
 									<tr>
 										<td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td>
 									</tr>
+									<!--{if $arrErr.campaign_template_path || $arrErr.campaign_path}-->
+									<tr>
+										<td colspan="3" background="<!--{$TPL_DIR}-->img/contents/main_bar.jpg">
+											<span class="red"><!--{$arrErr.campaign_template_path}--></span>
+											<span class="red"><!--{$arrErr.campaign_path}--></span>
+										</td>
+									</tr>
+									<!--{/if}-->
 								</table>
 
 								<!--▼登録テーブルここから-->
@@ -86,7 +94,7 @@ function fnIsCartOn(){
 									<thead>
 									<tr>
 										<td bgcolor="#f2f1ec" width="140" class="fs12n">キャンペーン名<span class="red"> *</span></td>
-										<td bgcolor="#ffffff" width="538" class="fs12n"><span class="red"><!--{$arrErr.campaign_name}--></span><input type="text" name="campaign_name" size="60" class="box60"  value="<!--{$arrForm.campaign_name|escape}-->" <!--{if $arrErr.campaign_name}-->style="background-color:<!--{$smarty.const.ERR_COLOR|escape}-->"<!--{/if}--> maxlength="<!--{$smarty.const.STEXT_LEN}-->"/></span>
+										<td bgcolor="#ffffff" width="538" class="fs12n"><span class="red"><!--{$arrErr.campaign_name}--></span><input type="text" name="campaign_name" size="60" class="box60"  value="<!--{$arrForm.campaign_name|escape}-->" <!--{if $arrErr.campaign_name}-->style="background-color:<!--{$smarty.const.ERR_COLOR|escape}-->"<!--{/if}--> maxlength="<!--{$smarty.const.STEXT_LEN}-->"/></span></td>
 									</tr>
 									</thead>
 									<tfoot>
