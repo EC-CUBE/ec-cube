@@ -707,6 +707,20 @@ class SC_Helper_DB {
      */
     function sfGetLevelCatList($parent_zero = true) {
         $objQuery = new SC_Query();
+
+        // カテゴリ名リストを取得
+        $col = "category_id, parent_category_id, category_name";
+        $where = "del_flg = 0";
+        $objQuery->setoption("ORDER BY level");
+        $arrRet = $objQuery->select($col, "dtb_category", $where);
+        $arrCatName = array();
+        foreach ($arrRet as $arrTmp) {
+            $arrCatName[$arrTmp['category_id']] =
+                (($arrTmp['parent_category_id'] > 0)?
+                    $arrCatName[$arrTmp['parent_category_id']] : "")
+                . CATEGORY_HEAD . $arrTmp['category_name'];
+        }
+
         $col = "category_id, parent_category_id, category_name, level";
         $where = "del_flg = 0";
         $objQuery->setoption("ORDER BY rank DESC");
@@ -724,23 +738,7 @@ class SC_Helper_DB {
                 $arrValue[$cnt] = $arrRet[$cnt]['category_id'];
             }
 
-            $arrOutput[$cnt] = "";
-
-            // 子カテゴリから親カテゴリを検索
-            $parent_category_id = $arrRet[$cnt]['parent_category_id'];
-            for($cat_cnt = $arrRet[$cnt]['level']; $cat_cnt > 1; $cat_cnt--) {
-
-                foreach ($arrRet as $arrCat) {
-                    // 親が見つかったら順番に代入
-                    if ($arrCat['category_id'] == $parent_category_id) {
-
-                        $arrOutput[$cnt] = CATEGORY_HEAD
-                            . $arrCat['category_name'] . $arrOutput[$cnt];
-                        $parent_category_id = $arrCat['parent_category_id'];
-                    }
-                }
-            }
-            $arrOutput[$cnt].= CATEGORY_HEAD . $arrRet[$cnt]['category_name'];
+            $arrOutput[$cnt] = $arrCatName[$arrRet[$cnt]['category_id']];
         }
 
         return array($arrValue, $arrOutput);
