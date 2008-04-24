@@ -93,7 +93,7 @@ class SC_SelectSql {
         $date1 = $from_year . "/" . $from_month . "/" . $from_day;
 
         // TO
-        $date2 = mktime (0, 0, 0, $to_month, $to_day,  $to_year);
+        $date2 = @mktime (0, 0, 0, $to_month, $to_day,  $to_year);
         $date2 = $date2 + 86400;
         // SQL文のdate関数に与えるフォーマットは、yyyy/mm/ddで指定する。
         $date2 = date('Y/m/d', $date2);
