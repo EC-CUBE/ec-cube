@@ -914,21 +914,29 @@ class SC_Helper_DB {
         $objQuery->query($sql);
 
         //子カテゴリ内の商品数を集計する
-        $arrCat = $objQuery->getAll("SELECT * FROM dtb_category");
 
-        $sql = "";
-        foreach($arrCat as $key => $val){
+        // 最下層(level=5)のカテゴリから順に足し合わせていく。
+        for ($i = 5; $i >= 1; --$i) {
+            $sql = " INSERT INTO dtb_category_total_count (category_id, product_count, create_date) ";
+            $sql .= " SELECT category_id, SUM(product_count), NOW() ";
+            $sql .= " FROM (SELECT T1.parent_category_id AS category_id, T2.product_count ";
+            $sql .= " FROM dtb_category AS T1, dtb_category_total_count AS T2 ";
+            $sql .= " WHERE T2.category_id = T1.category_id AND T1.level = ? ";
+            $sql .= " UNION ALL SELECT T3.category_id, T4.product_count ";
+            $sql .= " FROM dtb_category AS T3, dtb_category_count AS T4 ";
+            $sql .= " WHERE T4.category_id = T3.category_id AND T3.level = ?) AS T5 ";
+            $sql .= " GROUP BY category_id; ";
 
-            // 子ID一覧を取得
-            $arrRet = $this->sfGetChildrenArray('dtb_category', 'parent_category_id', 'category_id', $val['category_id']);
-            $line = SC_Utils_Ex::sfGetCommaList($arrRet);
-
-            $sql = " INSERT INTO dtb_category_total_count(category_id, product_count, create_date) ";
-            $sql .= " SELECT ?, SUM(product_count), now() FROM dtb_category_count ";
-            $sql .= " WHERE category_id IN (" . $line . ")";
-
-            $objQuery->query($sql, array($val['category_id']));
+            $objQuery->query($sql, array($i+1, $i));
         }
+
+        // データの構成を改修前と同じにするための処理(不要？)
+        $sql = " INSERT INTO dtb_category_total_count (category_id, product_count, create_date) ";
+        $sql .= " SELECT category_id, NULL, NOW() FROM dtb_category AS T1 ";
+        $sql .= " WHERE NOT EXISTS(SELECT * FROM dtb_category_total_count ";
+        $sql .= " WHERE category_id = T1.category_id); ";
+
+        $objQuery->query($sql);
     }
 
     /**
