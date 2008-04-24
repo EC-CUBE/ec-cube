@@ -692,16 +692,7 @@ class SC_Helper_DB {
         for($cnt = 0; $cnt < $max; $cnt++) {
             $id = $arrRet[$cnt]['category_id'];
             $name = $arrRet[$cnt]['category_name'];
-            $arrList[$id] = "";
-            /*
-            for($n = 1; $n < $arrRet[$cnt]['level']; $n++) {
-                $arrList[$id].= "　";
-            }
-            */
-            for($cat_cnt = 0; $cat_cnt < $arrRet[$cnt]['level']; $cat_cnt++) {
-                $arrList[$id].= $head;
-            }
-            $arrList[$id].= $name;
+            $arrList[$id] = str_repeat($head, $arrRet[$cnt]['level']) . $name;
         }
         return $arrList;
     }
