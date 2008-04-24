@@ -440,12 +440,16 @@ class LC_Page_Admin_Design extends LC_Page {
             unlink($del_tpl);
         }
 
-        $tplfile = TEMPLATE_DIR . $filename;
-
         // filename が空の場合にはMYページと判断
         if($filename == ""){
             $tplfile = TEMPLATE_DIR . "mypage/index";
             $filename = 'mypage';
+        } else {
+            if (file_exists(TEMPLATE_FTP_DIR . $filename . ".tpl")) {
+                $tplfile = TEMPLATE_FTP_DIR . $filename;
+            } else {
+                $tplfile = TEMPLATE_DIR . $filename;
+            }
         }
 
         // プレビュー用tplファイルのコピー
