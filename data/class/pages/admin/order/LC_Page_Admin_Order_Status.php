@@ -78,62 +78,33 @@ class LC_Page_Admin_Order_Status extends LC_Page {
 
         switch ($_POST['mode']){
 
-        case 'search':
+        case 'update':
             if (!isset($_POST['change_status'])) $_POST['change_status'] = "";
-            switch($_POST['change_status']){
-
-            default:
-                break;
-
-                //新規受付
-            case ORDER_NEW:
-                $this->lfStatusMove(ORDER_NEW, $_POST['move']);
-                break;
-
-                //入金待ち
-            case ORDER_PAY_WAIT:
-                $this->lfStatusMove(ORDER_PAY_WAIT, $_POST['move']);
-                break;
-
-                //キャンセル
-            case ORDER_CANCEL:
-                $this->lfStatusMove(ORDER_CANCEL, $_POST['move']);
-                break;
-
-                //取り寄せ中
-            case ORDER_BACK_ORDER:
-                $this->lfStatusMove(ORDER_BACK_ORDER, $_POST['move']);
-                break;
-
-                //発送済み
-            case ORDER_DELIV:
-                $this->lfStatusMove(ORDER_DELIV, $_POST['move']);
-                break;
-
-                //入金済み
-            case ORDER_PRE_END:
-                $this->lfStatusMove(ORDER_PRE_END, $_POST['move']);
-                break;
-
-                //削除
-            case 'delete':
+            if ($_POST['change_status'] == 'delete') {
                 $this->lfStatusMove("delete",$_POST['move']);
-                break;
+            } elseif (!empty($_POST['change_status'])) {
+                $this->lfStatusMove($_POST['change_status'], $_POST['move']);
             }
-            
             //ステータス情報
-            $this->SelectedStatus = isset($_POST['status']) ? $_POST['status'] : "";
-            //検索結果の表示
-            $this->lfStatusDisp($_POST['status'],$_POST['search_pageno']);
+            $status = isset($_POST['status']) ? $_POST['status'] : "";
+            break;
+
+        case 'search':
+            //ステータス情報
+            $status = isset($_POST['status']) ? $_POST['status'] : "";
             break;
 
         default:
             //ステータス情報
-            $this->SelectedStatus = ORDER_NEW;
             //デフォルトで新規受付一覧表示
-            $this->lfStatusDisp(ORDER_NEW, $_POST['search_pageno']);
+            $status = ORDER_NEW;
             break;
         }
+
+        //ステータス情報
+        $this->SelectedStatus = $status;
+        //検索結果の表示
+        $this->lfStatusDisp($status, $_POST['search_pageno']);
 
         $objView->assignobj($this);
         $objView->display(MAIN_FRAME);
@@ -153,10 +124,11 @@ class LC_Page_Admin_Order_Status extends LC_Page {
 
         $select ="*";
         $from = "dtb_order";
-        $where="del_flg=0 AND status=?";
+        $where = "del_flg = 0 AND status = ?";
+        $arrval[] = $status;
         $order = "order_id DESC";
 
-        $linemax = $objQuery->count("dtb_order", "del_flg = 0 AND status=?", array($status));
+        $linemax = $objQuery->count($from, $where, $arrval);
         $this->tpl_linemax = $linemax;
 
         // ページ送りの処理
@@ -176,7 +148,7 @@ class LC_Page_Admin_Order_Status extends LC_Page {
         $objQuery->setorder($order);
 
         //検索結果の取得
-        $this->arrStatus = $objQuery->select($select, $from, $where, array($status));
+        $this->arrStatus = $objQuery->select($select, $from, $where, $arrval);
     }
 
     //ステータス情報の更新（削除）
