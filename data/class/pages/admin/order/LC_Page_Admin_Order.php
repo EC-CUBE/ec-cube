@@ -144,11 +144,11 @@ class LC_Page_Admin_Order extends LC_Page {
                                 if(DB_TYPE == "pgsql"){
 //                                    $val = mb_convert_encoding($val,"UTF-8",mb_detect_encoding($val));
                                     $where .= " AND (SELECT COUNT(*) FROM dtb_order_detail od WHERE od.order_id = dtb_order.order_id AND od.product_name ILIKE ?) > 0";
-                                    $nonsp_val = ereg_replace("[ 　]+","",$val);
+                                    $nonsp_val = mb_ereg_replace("[ 　]+","",$val);
                                     $arrval[] = "%$nonsp_val%";
                                 }elseif(DB_TYPE == "mysql"){
                                     $where .= " AND (SELECT COUNT(*) FROM dtb_order_detail od WHERE od.order_id = dtb_order.order_id AND od.product_name LIKE ?) > 0";
-                                    $nonsp_val = ereg_replace("[ 　]+","",$val);
+                                    $nonsp_val = mb_ereg_replace("[ 　]+","",$val);
                                     $arrval[] = "%$nonsp_val%";
                                 }
                                 break;
@@ -158,7 +158,7 @@ class LC_Page_Admin_Order extends LC_Page {
                                 }elseif(DB_TYPE == "mysql"){
                                     $where .= " AND concat(order_name01,order_name02) ILIKE ?";
                                 }
-                                $nonsp_val = ereg_replace("[ 　]+","",$val);
+                                $nonsp_val = mb_ereg_replace("[ 　]+","",$val);
                                 $arrval[] = "%$nonsp_val%";
                                 break;
                             case 'search_order_kana':
@@ -167,7 +167,7 @@ class LC_Page_Admin_Order extends LC_Page {
                                 }elseif(DB_TYPE == "mysql"){
                                     $where .= " AND concat(order_kana01,order_kana02) ILIKE ?";
                                 }
-                                $nonsp_val = ereg_replace("[ 　]+","",$val);
+                                $nonsp_val = mb_ereg_replace("[ 　]+","",$val);
                                 $arrval[] = "%$nonsp_val%";
                                 break;
                             case 'search_order_id1':
