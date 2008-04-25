@@ -67,8 +67,10 @@ class LC_Page_FrontParts_Bloc_Best5 extends LC_Page_FrontParts_Bloc {
         //おすすめ商品表示
         $this->arrBestProducts = $this->lfGetRanking();
 
-        $objView->assignobj($this);
-        $objView->display($this->tpl_mainpage);
+        if (!empty($this->arrBestProducts)) {
+            $objView->assignobj($this);
+            $objView->display($this->tpl_mainpage);
+        }
     }
 
     /**
