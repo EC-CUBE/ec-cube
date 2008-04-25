@@ -783,7 +783,7 @@ INSERT INTO mtb_constants VALUES ('DB_ERROR_MAIL_SUBJECT','"OS_TEST_ERROR"',7,'D
 INSERT INTO mtb_constants VALUES ('ZIP_DSN','DEFAULT_DSN',8,'郵便番号専用DB');
 INSERT INTO mtb_constants VALUES ('USER_URL','SITE_URL . USER_DIR',9,'ユーザー作成ページ等');
 INSERT INTO mtb_constants VALUES ('AUTH_MAGIC','"31eafcbd7a81d7b401a7fdc12bba047c02d1fae6"',10,'認証用 magic');
-INSERT INTO mtb_constants VALUES ('USER_TEMPLATE_DIR','"templates/"',17,'テンプレートファイル保存先');
+INSERT INTO mtb_constants VALUES ('USER_TEMPLATE_DIR','"templates/"',16,'テンプレートファイル保存先');
 INSERT INTO mtb_constants VALUES ('USER_PACKAGE_DIR','"packages/"',17,'テンプレートファイル保存先');
 INSERT INTO mtb_constants VALUES ('USER_TEMPLATE_PATH','USER_PATH . USER_PACKAGE_DIR',18,'テンプレートファイル保存先');
 INSERT INTO mtb_constants VALUES ('TEMPLATE_TEMP_DIR','HTML_PATH . "upload/temp_template/"',19,'テンプレートファイル一時保存先');
