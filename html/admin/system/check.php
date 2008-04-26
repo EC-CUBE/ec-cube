@@ -28,10 +28,10 @@ $conn = new SC_DbConn();
 
 // 認証可否の判定
 $objSess = new SC_Session();
-sfIsSuccess($objSess);
+SC_Utils_Ex::sfIsSuccess($objSess);
 
 // GET値の正当性を判定する
-if(sfIsInt($_GET['id']) && ($_GET['no'] == 1 || $_GET['no'] == 0)){
+if(SC_Utils_Ex::sfIsInt($_GET['id']) && ($_GET['no'] == 1 || $_GET['no'] == 0)){
 	$sqlup = "UPDATE dtb_member SET work = ? WHERE member_id = ?";
 	$conn->query($sqlup, array($_GET['no'], $_GET['id']));
 } else {
