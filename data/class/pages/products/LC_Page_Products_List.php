@@ -252,7 +252,7 @@ class LC_Page_Products_List extends LC_Page {
         }elseif (empty($arrCategory_id)) {
             $tpl_subtitle = "全商品";
         }else{
-            $arrFirstCat = $objDb->sfGetFirstCat($arrCategory_id);
+            $arrFirstCat = $objDb->sfGetFirstCat($arrCategory_id[0]);
             $tpl_subtitle = $arrFirstCat['name'];
         }
 
