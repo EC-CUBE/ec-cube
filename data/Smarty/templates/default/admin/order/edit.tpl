@@ -30,14 +30,41 @@
 		document.form1.submit();
 		return false;
 	}
+
+	function fnCopyFromOrderData() {
+    df = document.form1;
+		df.deliv_name01.value = df.order_name01.value;
+		df.deliv_name02.value = df.order_name02.value;
+		df.deliv_kana01.value = df.order_kana01.value;
+		df.deliv_kana02.value = df.order_kana02.value;
+		df.deliv_zip01.value = df.order_zip01.value;
+		df.deliv_zip02.value = df.order_zip02.value;
+		df.deliv_tel01.value = df.order_tel01.value;
+		df.deliv_tel02.value = df.order_tel02.value;
+		df.deliv_tel03.value = df.order_tel03.value;
+		df.deliv_pref.value = df.order_pref.value;
+		df.deliv_addr01.value = df.order_addr01.value;
+		df.deliv_addr02.value = df.order_addr02.value;
+	}
+
+
 //-->
 </script>
 <!--★★メインコンテンツ★★-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
-<input type="hidden" name="mode" value="edit">
+<input type="hidden" name="mode" value="<!--{$tpl_mode|default:"edit"}-->">
 <input type="hidden" name="order_id" value="<!--{$tpl_order_id}-->">
 <input type="hidden" name="edit_customer_id" value="<!--{$tpl_order_id}-->">
+<input type="hidden" name="anchor_key" value="">
+<input type="hidden" id="add_product_id" name="add_product_id" value="">
+<input type="hidden" id="add_classcategory_id1" name="add_classcategory_id1" value="">
+<input type="hidden" id="add_classcategory_id2" name="add_classcategory_id2" value="">
+<input type="hidden" id="edit_product_id" name="edit_product_id" value="">
+<input type="hidden" id="edit_classcategory_id1" name="edit_classcategory_id1" value="">
+<input type="hidden" id="edit_classcategory_id2" name="edit_classcategory_id2" value="">
+<input type="hidden" id="no" name="no" value="">
+<input type="hidden" id="delete_no" name="delete_no" value="">
 	<tr valign="top">
 		<td background="<!--{$TPL_DIR}-->img/contents/navi_bg.gif" height="402">
 			<!--▼SUB NAVI-->
@@ -85,10 +112,12 @@
 						
 						<!--▼お客様情報ここから-->
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
+              <!--{if $tpl_mode != 'add'}-->
 							<tr class="fs12n">
-							<td bgcolor="#f2f1ec" width="110">帳票出力</td>
-							<td bgcolor="#ffffff"><a href="./" onClick="win02('pdf.php?order_id=<!--{$arrDisp.order_id}-->','pdf','1000','800'); return false;">帳票を出力するにはこちらをクリックして下さい。</a></td>
+								<td bgcolor="#f2f1ec" width="110">帳票出力</td>
+								<td bgcolor="#ffffff"><a href="./" onClick="win02('pdf.php?order_id=<!--{$arrForm.order_id.value}-->','pdf','1000','800'); return false;">帳票を出力するにはこちらをクリックして下さい。</a></td>
 							</tr>
+              <!--{/if}-->
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">対応状況</td>
 								<td bgcolor="#ffffff">
@@ -102,7 +131,7 @@
 							</tr>
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">発送日</td>
-								<td bgcolor="#ffffff"><!--{$arrDisp.commit_date|sfDispDBDate|default:"未発送"}--></td>
+								<td bgcolor="#ffffff"><!--{$arrForm.commit_date|sfDispDBDate|default:"未発送"}--></td>
 							</tr>
 						</table>
 						
@@ -117,13 +146,14 @@
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="717" colspan="4">▼お客様情報</td>
 							</tr>
+              <!--{if $tpl_mode != 'add'}-->
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">受注番号</td>
-								<td bgcolor="#ffffff" width="248"><!--{$arrDisp.order_id}--></td>
+								<td bgcolor="#ffffff" width="248"><!--{$arrForm.order_id.value}--></td>
 								<td bgcolor="#f2f1ec" width="110">顧客ID</td>
 								<td bgcolor="#ffffff" width="249">
-								<!--{if $arrDisp.customer_id > 0}-->
-									<!--{$arrDisp.customer_id}-->
+								<!--{if $arrForm.customer_id.value > 0}-->
+									<!--{$arrForm.customer_id.value}-->
 								<!--{else}-->
 									（非会員）
 								<!--{/if}-->
@@ -131,29 +161,95 @@
 							</tr>
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">受注日</td>
-								<td bgcolor="#ffffff" width="607" colspan="3"><!--{$arrDisp.create_date|sfDispDBDate}--></td>
+								<td bgcolor="#ffffff" width="607" colspan="3"><!--{$arrForm.create_date.value|sfDispDBDate}--></td>
 							</tr>
+              <!--{/if}-->
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">顧客名</td>
-								<td bgcolor="#ffffff" width="248"><!--{$arrDisp.order_name01|escape}--> <!--{$arrDisp.order_name02|escape}--></td>
+								<td bgcolor="#ffffff" width="248">
+								<!--{assign var=key1 value="order_name01"}-->
+								<!--{assign var=key2 value="order_name02"}-->
+								<span class="red12"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></span>
+								<input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|escape}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" size="15" class="box15" />
+								<input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|escape}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" size="15" class="box15" />
+								</td>
 								<td bgcolor="#f2f1ec" width="110">顧客名（カナ）</td>
-								<td bgcolor="#ffffff" width="249"><!--{$arrDisp.order_kana01|escape}--> <!--{$arrDisp.order_kana02|escape}--></td>
+								<td bgcolor="#ffffff" width="249">
+								<!--{assign var=key1 value="order_kana01"}-->
+								<!--{assign var=key2 value="order_kana02"}-->
+								<span class="red12"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></span>
+								<input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|escape}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" size="15" class="box15" />
+								<input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|escape}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" size="15" class="box15" />
+								</td>
 							</tr>
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">メールアドレス</td>
-								<td bgcolor="#ffffff" width="248"><a href="mailto:<!--{$arrDisp.order_email|escape}-->"><!--{$arrDisp.order_email|escape}--></a></td>
+								<td bgcolor="#ffffff" width="248">
+								<!--{assign var=key1 value="order_email"}-->
+								<span class="red12"><!--{$arrErr[$key1]}--></span>
+								<input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|escape}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" size="30" class="box30" />
+                </td>
 								<td bgcolor="#f2f1ec" width="110">TEL</td>
-								<td bgcolor="#ffffff" width="249"><!--{$arrDisp.order_tel01}-->-<!--{$arrDisp.order_tel02}-->-<!--{$arrDisp.order_tel03}--></td>
+								<td bgcolor="#ffffff" width="249">
+								<!--{assign var=key1 value="order_tel01"}-->
+								<!--{assign var=key2 value="order_tel02"}-->
+								<!--{assign var=key3 value="order_tel03"}-->
+								<span class="red12"><!--{$arrErr[$key1]}--></span>
+								<span class="red12"><!--{$arrErr[$key2]}--></span>
+								<span class="red12"><!--{$arrErr[$key3]}--></span>
+								<input type="text" name="<!--{$arrForm[$key1].keyname}-->" value="<!--{$arrForm[$key1].value|escape}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" size="6" class="box6" /> - 
+								<input type="text" name="<!--{$arrForm[$key2].keyname}-->" value="<!--{$arrForm[$key2].value|escape}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->"  size="6" class="box6" /> - 
+								<input type="text" name="<!--{$arrForm[$key3].keyname}-->" value="<!--{$arrForm[$key3].value|escape}-->" maxlength="<!--{$arrForm[$key3].length}-->" style="<!--{$arrErr[$key3]|sfGetErrorColor}-->" size="6" class="box6" />
+								</td>
 							</tr>
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">住所</td>
-								<td bgcolor="#ffffff" width="607" colspan="3">〒<!--{$arrDisp.order_zip01}-->-<!--{$arrDisp.order_zip02}--><br>
-								<!--{assign var=key value=$arrDisp.order_pref}-->
-								<!--{$arrPref[$key]}--><!--{$arrDisp.order_addr01|escape}--><!--{$arrDisp.order_addr02|escape}--></td>
+								<td bgcolor="#ffffff" width="607" colspan="3">
+								<table border="0" cellspacing="0" cellpadding="0" summary=" ">
+									<tr>
+										<!--{assign var=key1 value="order_zip01"}-->
+										<!--{assign var=key2 value="order_zip02"}-->
+										<span class="red12"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></span>
+										〒
+										<input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|escape}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->"  size="6" class="box6" />
+								 		- 
+										<input type="text"  name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|escape}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->"  size="6" class="box6" />
+										<input type="button" name="address_input" value="住所入力" onclick="fnCallAddress('<!--{$smarty.const.URL_INPUT_ZIP}-->', 'order_zip01', 'order_zip02', 'order_pref', 'order_addr01');" />
+									<td>
+									</td>
+									</tr>
+									<tr>
+									<td>
+										<!--{assign var=key value="order_pref"}-->
+										<span class="red12"><!--{$arrErr[$key]}--></span>
+										<select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">							
+										<option value="" selected="">都道府県を選択</option>
+										<!--{html_options options=$arrPref selected=$arrForm[$key].value}-->
+										</select>
+									</td>
+									</tr>
+									<tr><td height="5"></td></tr>
+									<tr class="fs10n">
+										<td>
+										<!--{assign var=key value="order_addr01"}-->
+										<span class="red12"><!--{$arrErr[$key]}--></span>
+										<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" size="60" class="box60" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
+										</td>
+										</tr>
+										<tr><td height="5"></td></tr>
+										<tr class="fs10n">
+											<td>
+											<!--{assign var=key value="order_addr02"}-->
+											<span class="red12"><!--{$arrErr[$key]}--></span>
+											<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" size="60" class="box60" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
+											</td>
+										</tr>
+								</table>
+								</td>
 							</tr>
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">備考</td>
-								<td bgcolor="#ffffff" width="607" colspan="3"><!--{$arrDisp.message|escape|nl2br}--></td>
+								<td bgcolor="#ffffff" width="607" colspan="3"><!--{$arrForm.message|escape|nl2br}--></td>
 							</tr>
 						</table>
 						<!--▲お客様情報ここまで-->
@@ -165,7 +261,7 @@
 						<!--▼配送先情報ここから-->
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" width="717" colspan="4">▼配送先情報</td>
+								<td bgcolor="#f2f1ec" width="717" colspan="4">▼配送先情報<input type="button" name="input_from_order_data" value="上記お客様情報をコピー" onclick="fnCopyFromOrderData();" /></td>
 							</tr>
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">お名前</td>
@@ -251,11 +347,14 @@
 						</table>
 
 						<!--▼受注商品情報ここから-->
+            <a name="order_products"></a>
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="717" colspan="7">▼受注商品情報
-								<input type="button" name="cheek" value="計算結果の確認" onclick="fnModeSubmit('cheek','','');" />
+								<input type="button" name="cheek" value="計算結果の確認" onclick="fnModeSubmit('cheek','anchor_key','order_products');" />
+								<input type="button" name="add_product" value="商品の追加" onclick="win03('./product_select.php<!--{if $tpl_order_id}-->?order_id=<!--{$tpl_order_id}--><!--{/if}-->', 'search', '500', '500'); " />
 								<br />
+								<span class="red12"><!--{$arrErr.product_id}--></span>
 								<span class="red12"><!--{$arrErr.quantity}--></span>
 								<span class="red12"><!--{$arrErr.price}--></span>
 								</td>
@@ -271,18 +370,27 @@
 							<!--{section name=cnt loop=$arrForm.quantity.value}-->
 							<!--{assign var=key value="`$smarty.section.cnt.index`"}-->
 							<tr bgcolor="#ffffff" class="fs12">
-								<td width="140"><!--{$arrDisp.product_code[$key]|escape}--></td>
-								<td width="215"><!--{$arrDisp.product_name[$key]|escape}-->/<!--{$arrDisp.classcategory_name1[$key]|escape|default:"(なし)"}-->/<!--{$arrDisp.classcategory_name2[$key]|escape|default:"(なし)"}--></td>
-								<input type="hidden" name="product_id[]" value="<!--{$arrDisp.product_id[$key]}-->">
-								<input type="hidden" name="product_code[]" value="<!--{$arrDisp.product_code[$key]}-->">
-								<input type="hidden" name="product_name[]" value="<!--{$arrDisp.product_name[$key]}-->">
-								<input type="hidden" name="point_rate[]" value="<!--{$arrDisp.point_rate[$key]}-->">	
-								<input type="hidden" name="classcategory_id1[]" value="<!--{$arrDisp.classcategory_id1[$key]}-->">	
-								<input type="hidden" name="classcategory_id2[]" value="<!--{$arrDisp.classcategory_id2[$key]}-->">
-								<input type="hidden" name="classcategory_name1[]" value="<!--{$arrDisp.classcategory_name1[$key]}-->">	
-								<input type="hidden" name="classcategory_name2[]" value="<!--{$arrDisp.classcategory_name2[$key]}-->">				
-								<td width="84" align="center"><input type="text" name="price[]" value="<!--{$arrForm.price.value[$key]|escape}-->" size="6" class="box6" maxlength="<!--{$arrForm.price.length}-->"/> 円</td>
-								<td width="45" align="center"><input type="text" name="quantity[]" value="<!--{$arrForm.quantity.value[$key]|escape}-->" size="3" class="box3" maxlength="<!--{$arrForm.quantity.length}-->"/></td>
+								<td width="140">
+									<!--{$arrForm.product_code.value[$key]|escape}-->
+									<input type="hidden" name="product_code[<!--{$key}-->]" value="<!--{$arrForm.product_code.value[$key]}-->" id="product_code_<!--{$key}-->">
+								</td>
+								<td width="215">
+									<!--{$arrForm.product_name.value[$key]|escape}-->/<!--{$arrForm.classcategory_name1.value[$key]|escape|default:"(なし)"}-->/<!--{$arrForm.classcategory_name2.value[$key]|escape|default:"(なし)"}-->
+									<input type="hidden" name="product_name[<!--{$key}-->]" value="<!--{$arrForm.product_name.value[$key]}-->" id="product_name_<!--{$key}-->">
+									<input type="hidden" name="classcategory_name1[<!--{$key}-->]" value="<!--{$arrForm.classcategory_name1.value[$key]}-->" id="classcategory_name1_<!--{$key}-->">	
+									<input type="hidden" name="classcategory_name2[<!--{$key}-->]" value="<!--{$arrForm.classcategory_name2.value[$key]}-->" id="classcategory_name2_<!--{$key}-->">
+									<br />
+									<input type="button" name="change" value="変更" onclick="win03('./product_select.php?no=<!--{$key}--><!--{if $tpl_order_id}-->&order_id=<!--{$tpl_order_id}--><!--{/if}-->', 'search', '500', '500'); " >
+							    <!--{if $product_count > 1}-->
+									<input type="button" name="delete" value="削除" onclick="fnSetFormVal('form1', 'delete_no', <!--{$key}-->); fnModeSubmit('delete_product','anchor_key','order_products');" />
+							    <!--{/if}-->
+								</td>
+								<input type="hidden" name="product_id[<!--{$key}-->]" value="<!--{$arrForm.product_id.value[$key]}-->" id="product_id_<!--{$key}-->">
+								<input type="hidden" name="point_rate[<!--{$key}-->]" value="<!--{$arrForm.point_rate.value[$key]}-->" id="point_rate_<!--{$key}-->">	
+								<input type="hidden" name="classcategory_id1[<!--{$key}-->]" value="<!--{$arrForm.classcategory_id1.value[$key]}-->" id="classcategory_id1_<!--{$key}-->">	
+								<input type="hidden" name="classcategory_id2[<!--{$key}-->]" value="<!--{$arrForm.classcategory_id2.value[$key]}-->" id="classcategory_id2_<!--{$key}-->">
+								<td width="84" align="center"><input type="text" name="price[<!--{$key}-->]" value="<!--{$arrForm.price.value[$key]|escape}-->" size="6" class="box6" maxlength="<!--{$arrForm.price.length}-->" id="price_<!--{$key}-->"/> 円</td>
+								<td width="45" align="center"><input type="text" name="quantity[<!--{$key}-->]" value="<!--{$arrForm.quantity.value[$key]|escape}-->" size="3" class="box3" maxlength="<!--{$arrForm.quantity.length}-->"/></td>
 								<!--{assign var=price value=`$arrForm.price.value[$key]`}-->
 								<!--{assign var=quantity value=`$arrForm.quantity.value[$key]`}-->
 								<td width="84" align="right"><!--{$price|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}--> 円</td>
@@ -353,8 +461,8 @@
 								 pt</td>
 							</tr>
 							<tr bgcolor="#ffffff" class="fs12n">
-								<!--{if $arrDisp.customer_id > 0}-->
-								<td colspan="5" align="right">現在ポイント（ポイントの修正は<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="return fnEdit('<!--{$arrDisp.customer_id}-->');">顧客編集</a>から手動にてお願い致します。）</td>
+								<!--{if $arrForm.customer_id > 0}-->
+								<td colspan="5" align="right">現在ポイント（ポイントの修正は<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="return fnEdit('<!--{$arrForm.customer_id}-->');">顧客編集</a>から手動にてお願い致します。）</td>
 								<td align="right">
 								<!--{$arrForm.point.value|number_format}-->
 								 pt</td>
@@ -364,7 +472,7 @@
 							</tr>
 							<!--{*
 							<tr bgcolor="#ffffff" class="fs12n">
-								<td colspan="5" align="right">反映後ポイント（ポイントの変更は<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="return fnEdit('<!--{$arrDisp.customer_id}-->');">顧客編集</a>から手動にてお願い致します。）</td>
+								<td colspan="5" align="right">反映後ポイント（ポイントの変更は<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="return fnEdit('<!--{$arrForm.customer_id}-->');">顧客編集</a>から手動にてお願い致します。）</td>
 								<td align="right">
 								<span class="red12"><!--{$arrErr.total_point}--></span>
 								<!--{$arrForm.total_point.value}-->
@@ -384,13 +492,13 @@
 								</select></td>
 							</tr>
 							
-							<!--{if $arrDisp.payment_info|@count > 0}-->
+							<!--{if $arrForm.payment_info|@count > 0}-->
 							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" colspan="6">▼<!--{$arrDisp.payment_type}-->情報</td>
+								<td bgcolor="#f2f1ec" colspan="6">▼<!--{$arrForm.payment_type}-->情報</td>
 							</tr>
 							<tr class="fs12n">
 								<td bgcolor="#ffffff" colspan="6">
-									<!--{foreach key=key item=item from=$arrDisp.payment_info}-->
+									<!--{foreach key=key item=item from=$arrForm.payment_info}-->
 									<!--{if $key != "title"}--><!--{if $item.name != ""}--><!--{$item.name}-->：<!--{/if}--><!--{$item.value}--><br/><!--{/if}-->
 									<!--{/foreach}-->
 								</td>
