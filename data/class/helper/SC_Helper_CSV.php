@@ -113,7 +113,7 @@ class SC_Helper_CSV {
         $max = count($list_data);
 
         // 規格分類名一覧
-        if (!empty($arrOutputCols['classcategory_id1']) || !empty($arrOutputCols['classcategory_id2'])) {
+        if (in_array('classcategory_id1', $arrOutputCols) || in_array('classcategory_id2', $arrOutputCols)) {
             $arrClassCatName = $objDb->sfGetIDValueList("dtb_classcategory", "classcategory_id", "name");
         }
 
