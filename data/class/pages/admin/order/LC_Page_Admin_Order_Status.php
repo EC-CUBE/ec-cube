@@ -80,9 +80,7 @@ class LC_Page_Admin_Order_Status extends LC_Page {
 
         case 'update':
             if (!isset($_POST['change_status'])) $_POST['change_status'] = "";
-            if ($_POST['change_status'] == 'delete') {
-                $this->lfStatusMove("delete",$_POST['move']);
-            } elseif (!empty($_POST['change_status'])) {
+            if (!empty($_POST['change_status'])) {
                 $this->lfStatusMove($_POST['change_status'], $_POST['move']);
             }
             //ステータス情報
