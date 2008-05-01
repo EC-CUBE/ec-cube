@@ -75,7 +75,7 @@ self.moveTo(20,20);self.focus();
 										</tr>
 										<tr>
 											<td background="<!--{$TPL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$TPL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-											<td bgcolor="#636469" width="600" class="fs14n"><span class="white"><!--コンテンツタイトル-->メンバー登録/編集</span></td>
+											<td bgcolor="#636469" width="600" class="fs14n"><span class="white"><!--コンテンツタイトル-->配信条件</span></td>
 											<td background="<!--{$TPL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 										</tr>
 										<tr>
@@ -161,6 +161,10 @@ self.moveTo(20,20);self.focus();
 											<td bgcolor="#ffffff" width="198"><!--{$list_data.buy_product_name|escape|default:"（未指定）"}--></td>
 											<td bgcolor="#f0f0f0" width="110">カテゴリ</td>
 											<td bgcolor="#ffffff" width="199"><!--{$list_data.category_name|escape|default:"（未指定）"}--></td>
+										</tr>
+										<tr class="fs12n">
+											<td bgcolor="#f0f0f0" width="110">キャンペーン</td>
+											<td bgcolor="#ffffff" colspan="3"><!--{$arrCampaignList[$list_data.campaign_id]}--></td>						
 										</tr>
 									</table>
 	
