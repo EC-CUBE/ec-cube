@@ -229,7 +229,7 @@
 								<td width="45" align="center"><!--{$arrForm.quantity.value[$key]|escape}--></td>
 								<!--{assign var=price value=`$arrForm.price.value[$key]`}-->
 								<!--{assign var=quantity value=`$arrForm.quantity.value[$key]`}-->
-								<td width="94" align="right"><!--{if $price != 0}--><!--{$price|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|sfMultiply:$quantity|number_format}-->円<!--{else}-->無料<!--{/if}--></td>
+								<td align="right"><!--{if $price != 0}--><!--{$price|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|sfMultiply:$quantity|number_format}-->円<!--{else}-->無料<!--{/if}--></td>
 							</tr>
 							<!--{/section}-->
 							<tr bgcolor="#ffffff" class="fs12n">
@@ -297,7 +297,7 @@
 								<td colspan="5" align="right">反映後ポイント（ポイントの変更は<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="return fnEdit('<!--{$arrForm.customer_id.value}-->');">顧客編集</a>から手動にてお願い致します。）</td>
 								<td align="right">
 								<span class="red12"><!--{$arrErr.total_point}--></span>
-								<!--{$arrForm.total_point.value}-->
+								<!--{$arrForm.total_point.value|number_format}-->
 								 pt</td>
 							</tr>
 							*}-->
