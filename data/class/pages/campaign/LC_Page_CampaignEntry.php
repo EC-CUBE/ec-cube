@@ -163,8 +163,8 @@ class LC_Page_CampaignEntry extends LC_Page {
 
                     // 仮登録完了メール送信
                     $this->CONF = $CONF;
-                    $this->to_name01 = $_POST['name01'];
-                    $this->to_name02 = $_POST['name02'];
+                    $this->name01 = $_POST['name01'];
+                    $this->name02 = $_POST['name02'];
                     $objMailText = new SC_SiteView();
                     $objMailText->assignobj($this);
                     $objHelperMail = new SC_Helper_Mail_Ex();
