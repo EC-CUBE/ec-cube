@@ -1,5 +1,17 @@
 <script type="text/javascript">
 <!--
+var send = true;
+
+function fnCheckSubmit() {
+    if(send) {
+        send = false;
+        return true;
+    } else {
+        alert("只今、処理中です。しばらくお待ち下さい。");
+        return false;
+    }
+}
+
 function next(now, next) {
 	if (now.value.length >= now.getAttribute('maxlength')) {
 	next.focus();
@@ -135,7 +147,7 @@ function next(now, next) {
 									<tr>
 										<td align="center" height="40" bgcolor="#f7f5f4">
 											<a href="#" onclick="document.form2.submit(); return false;" onmouseover="chgImgImageSubmit('/img/common/b_back_on.gif',back03)" onmouseout="chgImgImageSubmit('/img/common/b_back.gif',back03)"><img src="/img/common/b_back.gif" width="150" height="30" alt="戻る" border="0" name="back03" id="back03"/></a><img src="/img/_.gif" width="12" height="" alt="" />
-											<input type="image" onmouseover="chgImgImageSubmit('/img/common/b_next_on.gif',this)" onmouseout="chgImgImageSubmit('/img/common/b_next.gif',this)" src="/img/common/b_next.gif" width="150" height="30" alt="次へ" border="0" name="next" id="next" />
+											<input type="image" onclick="return fnCheckSubmit();" onmouseover="chgImgImageSubmit('/img/common/b_next_on.gif',this)" onmouseout="chgImgImageSubmit('/img/common/b_next.gif',this)" src="/img/common/b_next.gif" width="150" height="30" alt="次へ" border="0" name="next" id="next" />
 										</td>
 									</tr>
 								</table>
