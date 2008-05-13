@@ -66,11 +66,20 @@
 								</tr>
 							</table>
 
+							<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" " style="background-image: url(<!--{$TPL_DIR}-->img/contents/main_bar.jpg);"> 
+								<tr> 
+									<td width="105"><a href="#" onmouseover="chgImg('<!--{$TPL_DIR}-->img/contents/btn_csv_on.jpg','btn_csv');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/contents/btn_csv.jpg','btn_csv');" onclick="fnModeSubmit('csv','','');" ><img src="<!--{$TPL_DIR}-->img/contents/btn_csv.jpg" width="99" height="22" alt="CSV DOWNLOAD" border="0" name="btn_csv" id="btn_csv"></a></td> 
+									<td><a href="../contents/csv.php?tpl_subno_csv=category"><span class="fs12n"> >> CSV出力項目設定 </span></a></td> 
+								</tr> 
+								<tr> 
+									<td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td> 
+								</tr> 
+							</table> 
+							
 							<table width="678" border="0" cellspacing="1" cellpadding="5" summary=" " bgcolor="#cccccc">
 								<tr bgcolor="#ffffff">
 									<!--▼画面左-->
 									<td width="250" valign="top" class="fs12">
-									<a href="#" onmouseover="chgImg('<!--{$TPL_DIR}-->img/contents/btn_csv_on.jpg','btn_csv');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/contents/btn_csv.jpg','btn_csv');" onclick="fnModeSubmit('csv','','');" ><img src="<!--{$TPL_DIR}-->img/contents/btn_csv.jpg" width="99" height="22" alt="CSV DOWNLOAD" border="0" name="btn_csv" id="btn_csv"></a><br />
 									<a href="<!--{$smarty.server.PHP_SELF|escape}-->">▼ホーム</a><br>
 									<!--{section name=cnt loop=$arrTree}-->
 										<!--{assign var=level value="`$arrTree[cnt].level`}-->
