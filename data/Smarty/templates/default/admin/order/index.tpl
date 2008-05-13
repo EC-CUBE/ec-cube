@@ -304,6 +304,7 @@
 				<td><a href="#" onmouseover="chgImg('<!--{$TPL_DIR}-->img/contents/btn_csv_on.jpg','btn_csv');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/contents/btn_csv.jpg','btn_csv');"  onclick="fnModeSubmit('csv','','');" ><img src="<!--{$TPL_DIR}-->img/contents/btn_csv.jpg" width="99" height="22" alt="CSV DOWNLOAD" border="0" name="btn_csv" id="btn_csv"></a></td>
 				<td><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="8" height="1" alt=""></td>
 				<td><a href="../contents/csv.php?tpl_subno_csv=order"><span class="fs12n"> >> CSV出力項目設定 </span></a></td>
+				<td><input type="button" name="pdf" value="PDF一括出力" onclick="fnSelectCheckSubmit();"></td>
 			</tr>
 		</table>
 		</td>
@@ -339,7 +340,7 @@
 							<td width="60"><span class="white">購入金額(円)</span></td>
 							<td width="100"><span class="white">全商品発送日</span></td>
 							<td width="75"><span class="white">対応状況</span></td>
-							<td width="90"><span class="white">帳票</span></td>
+							<td width="90"><span class="white">帳票</span><br /><input type="button" name="btn01" value="全て選択" onclick="fnBoxChecked(true);"> <input type="button" name="btn01" value="全て解除" onclick="fnBoxChecked(false);"></td>
 							<td width="45"><span class="white">編集</span></td>
 							<td width="45"><span class="white">メール</span></td>
 							<td width="45"><span class="white">削除</span></td>
@@ -356,7 +357,7 @@
 							<td align="right"><!--{$arrResults[cnt].total|number_format}--></td>
 							<td align="center"><!--{$arrResults[cnt].commit_date|sfDispDBDate|default:"未発送"}--></td>
 							<td align="center"><!--{$arrORDERSTATUS[$status]}--></td>
-							<td align="center"><a href="./" onClick="win02('pdf.php?order_id=<!--{$arrResults[cnt].order_id}-->','pdf','1000','800'); return false;">帳票生成</a><br /></td>
+							<td align="center"><a href="./" onClick="win02('pdf.php?order_id=<!--{$arrResults[cnt].order_id}-->','pdf','1000','800'); return false;">帳票生成</a><br /><input type="checkbox" name="pdf_order_id[]" value="<!--{$arrResults[cnt].order_id}-->" ></td>
 							<td align="center"><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnChangeAction('<!--{$smarty.const.URL_ORDER_EDIT}-->'); fnModeSubmit('pre_edit', 'order_id', '<!--{$arrResults[cnt].order_id}-->'); return false;"><span class="icon_edit">編集</span></a></td>
 							<td align="center"><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnChangeAction('<!--{$smarty.const.URL_ORDER_MAIL}-->'); fnModeSubmit('pre_edit', 'order_id', '<!--{$arrResults[cnt].order_id}-->'); return false;"><span class="icon_mail">通知</span></a></td>
 							<td align="center"><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('delete', 'order_id', <!--{$arrResults[cnt].order_id}-->); return false;"><span class="icon_delete">削除</span></a></td>
@@ -378,3 +379,50 @@
 <!--★★検索結果一覧★★-->		
 
 <!--{/if}-->
+<script type="text/javascript">
+<!--
+	function fnSelectCheckSubmit(){ 
+
+		var fm = document.form1;
+				
+		var i;
+		var checkflag = 0;
+		var max = fm["pdf_order_id[]"].length;
+		
+		if(max) {
+			for (i=0;i<max;i++){
+				if(fm["pdf_order_id[]"][i].checked == true){
+					checkflag = 1;
+				}
+			}
+		} else {
+			if(fm["pdf_order_id[]"].checked == true) {
+				checkflag = 1;
+			}
+		}
+
+		if(checkflag == 0){
+			alert('チェックボックスが選択されていません');
+			return false;
+		}
+		
+		if(checkflag == 1){ 
+      window.open("about:blank", "pdf", "width=1000,height=800,scrollbars=yes,resizable=yes,toolbar=no,location=no,directories=no,status=no");
+      document.form1.target = "pdf";
+		  document.form1.mode.value = 'pdf';
+		  document.form1.action = 'pdf.php';
+		  document.form1.submit(); 
+		}
+	}
+	
+	function fnBoxChecked(check){
+		var count;
+		var fm = document.form1;
+		var max = fm["pdf_order_id[]"].length;
+		for(count=0; count<max; count++){
+			fm["pdf_order_id[]"][count].checked = check;
+		}
+	}
+	
+//-->
+</script>

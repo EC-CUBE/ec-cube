@@ -26,7 +26,9 @@
 
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
 <input type="hidden" name="mode" value="confirm">
-<input type="hidden" name="order_id" value="<!--{$arrForm.order_id}-->">
+<!--{foreach from=$arrForm.order_id item=order_id}-->
+<input type="hidden" name="order_id[]" value="<!--{$order_id}-->">
+<!--{/foreach}-->
 <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
 
 <table width="440" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -38,7 +40,11 @@
 <table width="440" border="0" cellspacing="1" cellpadding="8" summary=" ">
   <tr class="fs12n">
     <td width="120" bgcolor="#f3f3f3">受注番号</td>
-    <td width="307" bgcolor="#ffffff"><!--{$arrForm.order_id}--></td>
+    <td width="307" bgcolor="#ffffff">
+    <!--{foreach from=$arrForm.order_id item=order_id}-->
+    <!--{$order_id}-->,
+    <!--{/foreach}-->
+    </td>
   </tr>
   <tr class="fs12n">
     <td width="120" bgcolor="#f3f3f3">発行日</td>
