@@ -204,7 +204,7 @@ class LC_Page_Contact extends LC_Page {
         $this->arrForm = $this->lfConvertParam($this->arrForm,$this->arrConvertColumn);
         $this->arrErr = $this->lfErrorCheck($this->arrForm);
         if(!$this->arrErr) {
-            $this->lfSendMail($CONF, $this);
+            $this->lfSendMail($this);
             // 完了ページへ移動する
             $this->sendRedirect($this->getLocation("./complete.php", array(), true));
             exit;
@@ -268,8 +268,9 @@ class LC_Page_Contact extends LC_Page {
 
     // ------------  メール送信 ------------
 
-    function lfSendMail($CONF, &$objPage){
-
+    function lfSendMail(&$objPage){
+        $objDb = new SC_Helper_DB_Ex();
+        $CONF = $objDb->sf_getBasisData();			// 店舗基本情報
         $objQuery = new SC_Query();
         $objMailText = new SC_SiteView();
         $objSiteInfo = $this->objView->objSiteInfo;
