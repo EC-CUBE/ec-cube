@@ -7,7 +7,7 @@ require_once MODULE_PATH . "mdl_cybs/class/mdl_cybs_config.php";
 require_once MODULE_PATH . "mdl_cybs/class/mdl_cybs_request.php";
 
 /**
- * dtb_order memo仕様
+ * dtb_order memo
  * memo06 与信ステータス $arrCybsAuthStatus参照
  * memo07 request_token
  * memo08 request_id
@@ -48,14 +48,15 @@ define('MDL_CYBS_REQUEST_URL_TEST', 'ics2test.ic3.com');
 
 // ICSエラー
 $arrCybsIcsErr = array(
-    'DCALL' => 'カード会社が与信判定を取り消しました。',
-    'DCARDEXPIRED' => 'カードの有効期限切れです。',
-    'DCARDREFUSED' => 'カード会社が与信を承認しませんでした。',
-    'DINVALIDCARD' => 'クレジットカード番号が正しくありません。',
-    'DINVALIDDATA' => 'リクエストに含まれるデータが不正です。',
+    'DCALL'         => 'ご指定のカードは利用できません。エラーの理由など、詳細につきましてはカード会社へ直接お問い合わせ下さいませ。',
+    'DCARDEXPIRED'  => 'カードの有効期限切れです。',
+    'DCARDREFUSED'  => 'ご指定のカードは利用できません。エラーの理由など、詳細につきましてはカード会社へ直接お問い合わせ下さいませ。',
+    'DINVALIDCARD'  => 'クレジットカード番号が正しくありません。',
+    'DINVALIDDATA'  => 'リクエストに含まれるデータが不正です。',
     'DMISSINGFIELD' => 'リクエストに必須フィールドが欠けています。',
-    'ESYSTEM' => 'システムエラーが発生しました。',
-    'ETIMEOUT' => 'リクエストがタイムアウトしました。',
+    'ESYSTEM'       => 'システムエラーが発生しました。',
+    'ETIMEOUT'      => 'リクエストがタイムアウトしました。',
+    'DAUTHENTICATIONFAILED' => '本人認証に失敗しました。',
 );
 
 // リクエスト先URL配列
@@ -87,16 +88,8 @@ $arrCybsCardCompany = array(
     '001' => 'Visa',
     '002' => 'MasterCard',
     '003' => 'American Express',
-    '004' => 'Discover',
     '005' => 'Diners Club',
-    '006' => 'Carte Blanche',
     '007' => 'JCB',
-    '008' => 'Optima',
-    '010' => 'Benificial Private Label',
-    '014' => 'EnRoute',
-    '017' => 'MBNA',
-    '021' => 'JAL',
-    '027' => 'Nicos',
 );
 
 // 与信ステータス
@@ -174,7 +167,7 @@ function sfCybsIsError($arrResults) {
             $ret = true;
             break;
         }
-        $msg = "処理が拒否されました。入力内容に間違いがないかご確認ください。\n";
+        $msg = "処理が拒否されました。\n";
         $rflag = $arrResults['ics_rflag'];
         $err = isset($arrCybsIcsErr[$rflag]) ? $arrCybsIcsErr[$rflag] : "エラーコード：$rflag";
         $ret = PEAR::raiseError($msg . $err);

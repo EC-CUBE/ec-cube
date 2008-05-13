@@ -1,7 +1,7 @@
 <?php
 /**
  * モジュールバージョン表記
- * @version CVS: $Id$
+ * @version ### ### 1.0
  */
 require_once 'mdl_cybs.inc';
 require_once 'class/mdl_cybs_config.php';
@@ -35,7 +35,8 @@ case 'edit':
 
     $objConfig =& Mdl_Cybs_Config::getInstanse();
     $objConfig->registerConfig($objConfig->createSqlArray($objForm));
-    lfCreateBatchIdTable();
+    lfCreateBatchIdTable(); // バッチID採番用テーブル
+    lfAlterSubsIdCol();     // dtb_cubstomerにサブスクリプションIDを保持するカラムを追加
     $objPage->tpl_onload = 'alert("登録完了しました。\n基本情報＞支払方法設定より詳細設定をしてください。"); window.close();';
     break;
 
@@ -105,5 +106,8 @@ function lfCreateBatchIdTable() {
     }
     $objQuery->query($sql);
 }
-
+//$table_name, $col_name, $col_type = "", $dsn = "", $add = false
+function lfAlterSubsIdCol() {
+    sfColumnExists('dtb_customer', 'cybs_subs_id', 'text', "", true);
+}
 ?>

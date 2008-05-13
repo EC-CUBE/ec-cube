@@ -175,7 +175,7 @@ function fnCheckSubmit() {
 								</table>
 								</td>
 							</tr>
-							<!--{if $enable_ondemand}-->
+							<!--{if $enable_ondemand && $can_add_subsid}-->
 							<tr>
 								<td class="fs12" bgcolor="#f3f3f3">このカード情報を登録する</td>
 								<td bgcolor="#ffffff">
@@ -257,7 +257,7 @@ function fnCheckSubmit() {
 								<td class="fs12" bgcolor="#ffffff"><input type="radio" name="subs_id" value="<!--{$card.pay_subscription_retrieve_subscription_id}-->"></td>
 								<td class="fs12" bgcolor="#ffffff"><!--{$card.pay_subscription_retrieve_customer_cc_number}--></td>
 								<td class="fs12" bgcolor="#ffffff">
-									<!--{$card.pay_subscription_retrieve_customer_cc_expmo}-->月/<!--{$card.pay_subscription_retrieve_customer_cc_expyr}-->
+									<!--{$card.pay_subscription_retrieve_customer_cc_expmo}-->月/<!--{$card.pay_subscription_retrieve_customer_cc_expyr}-->年
 								</td>
 							</tr>
 							<!--{/foreach}-->

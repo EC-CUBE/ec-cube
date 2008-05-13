@@ -81,30 +81,6 @@ case 'register':
         break;
     }
 
-    /**
-     * オンデマンド課金が有効で、かつカードを登録するにチェックが入っていた場合は、
-     * サブスクリプションを作成する
-     */
-    if ($objCybs->enableOndemand() && $objForm->getValue('register_ondemand')) {
-        // 登録件数のチェック
-        if (!$objCybs->canAddSubsId()) {
-            $objPage->tpl_error = '登録出来るカードの件数は' . MDL_CYBS_SUBS_ID_MAX . "件までです。\n";
-            gfPrintLog(' -> ondemand error: over card max ', MDL_CYBS_LOG);
-            break;
-        }
-        // オンデマンド課金のリクエストを送信する
-        $arrResults = sfCybsSendRequest(lfCreateOndemandParam($objForm->getHashArray(), $arrData));
-        if (PEAR::isError($e = sfCybsIsError($arrResults))) {
-            $objPage->tpl_error = $e->getMessage();
-            gfPrintLog(' -> ondemand error: ' . $e->getMessage(), MDL_CYBS_LOG);
-            gfPrintLog(print_r($arrResults, true), MDL_CYBS_LOG);
-            break;
-        }
-        // サブスクリプションIDを顧客テーブルへ追加する
-        $subsId = $arrResults['pay_subscription_create_subscription_id'];
-        $objCybs->addSubsId($subsId, $arrResults['merchant_ref_number']);
-    }
-
     $authAddParam = null; // チャージバック用追加パラメータ
 
     // 3Dセキュア使用設定判定
@@ -143,15 +119,24 @@ case 'register':
         if ($objForm->getValue('card_company') === '002') $authAddParam['ucaf_collection_indicator'] = '1';
     }
 
-    $arrSendParam = array();
-    // オンデマンド決済時のパラメータ構築
+    $arrSendParam = lfCreateAuthParam($objForm->getHashArray(), $arrData, $authAddParam);
+    /**
+     * オンデマンド課金が有効で、かつカードを登録するにチェックが入っていた場合は、
+     * サブスクリプション作成パラメータを追加する
+     */
     if ($objCybs->enableOndemand() && $objForm->getValue('register_ondemand')) {
-        $arrSendParam = lfCreateAuthParam($objForm->getHashArray(), $arrData);
-        $arrSendParam = lfCreateOndemandAuthParam($subsId, $arrSendParam);
-
-    // 通常決済のパラメータ構築
-    } else {
-        $arrSendParam = lfCreateAuthParam($objForm->getHashArray(), $arrData, $authAddParam);
+        //$arrSendParam = lfCreateAuthParam($objForm->getHashArray(), $arrData);
+        //$arrSendParam = lfCreateOndemandAuthParam($subsId, $arrSendParam);
+        // 登録件数のチェック
+        if (!$objCybs->canAddSubsId()) {
+            $objPage->tpl_error = '登録出来るカードの件数は' . MDL_CYBS_SUBS_ID_MAX . "件までです。\n";
+            gfPrintLog(' -> ondemand error: over card max ', MDL_CYBS_LOG);
+            break;
+        }
+        $arrSendParam['ics_applications']           .= ',ics_pay_subscription_create';
+        $arrSendParam['recurring_disable_auto_auth'] = 'Y';
+        $arrSendParam['recurring_frequency']         = 'on-demand';
+        $arrSendParam['card_type']                   = $objForm->getValue('card_company');
     }
 
     // 与信リクエストを送信する
@@ -161,6 +146,11 @@ case 'register':
         gfPrintLog(' -> auth error: ' . $e->getMessage(), MDL_CYBS_LOG);
         gfPrintLog(print_r($arrResults, true), MDL_CYBS_LOG);
         break;
+    }
+
+    // サブスクリプションIDを顧客テーブルへ追加する
+    if (isset($arrResults['pay_subscription_create_subscription_id'])) {
+        $objCybs->addSubsId($arrResults['pay_subscription_create_subscription_id'], $arrResults['merchant_ref_number']);
     }
 
     $objSiteSess->setRegistFlag();
@@ -231,15 +221,12 @@ case 'return':
 default:
 }
 
-lfSetCardInfo($objPage); // 登録済みカード情報をセットする
+lfSetCybsCardInfo($objPage); // 登録済みカード情報をセットする
 
 $objView->assignobj($objPage);
 $objView->display(SITE_FRAME);
 
-sfPrintR($_POST, 'blue');
-sfPrintR($objPage, 'red');
-
-function lfSetCardInfo(&$objPage) {
+function lfSetCybsCardInfo(&$objPage) {
     $objCybs =& Mdl_Cybs_Config::getInstanse();
     // オンデマンド課金が無効ならreturn
     if (!$objCybs->enableOndemand()) {
@@ -248,9 +235,12 @@ function lfSetCardInfo(&$objPage) {
 
     // サブスクリプションIDを取得
     $arrSubsIds = $objCybs->getSubsIds();
+
     $objPage->cardCount = 0; // サブスクリプションの登録件数
+
     foreach ($arrSubsIds as $subs) {
-        $arrResults = sfCybsSendRequest(lfCreateOndemandRetParam($subs['subs_id'], $subs['merchant_ref_number']));
+        $arrSendParam = lfCreateOndemandRetParam($subs['subs_id'], $subs['merchant_ref_number']);
+        $arrResults = sfCybsSendRequest($arrSendParam);
 
         if (PEAR::isError($e = sfCybsIsError($arrResults))) {
             $objPage->tpl_error = $e->getMessage();
@@ -505,60 +495,6 @@ function lfCreateValidateParam($arrForm, $arrData) {
     return $arrSendParam;
 }
 
-/**
- * オンデマンド課金のパラメータを構築する
- *
- * @param array $arrForm フォームパラメータ(カード情報など)
- * @param array $arrData 一時受注データ
- * @return array
- */
-function lfCreateOndemandParam($arrForm, $arrData) {
-    global $arrCybsRequestURL;
-    global $arrPref;
-    $objCustomer = new SC_Customer;
-
-    $objConfig =& Mdl_Cybs_Config::getInstanse();
-    $arrConfig = $objConfig->getConfig();
-
-    $cardNo = $arrForm['card_no01'] . $arrForm['card_no02'] . $arrForm['card_no03'] . $arrForm['card_no04'];
-    $expMo = $arrForm['card_month'];
-    $expYr = '20' . $arrForm['card_year'];
-    $phoneNo = $arrData['order_tel01'] . $arrData['order_tel02'] . $arrData['order_tel03'];
-
-    $arrSendParam = array(
-        "ics_applications"    => "ics_pay_subscription_create",
-        "server_host"         => $arrCybsRequestURL[$arrConfig['cybs_request_url']],
-        "server_port"         => "80",
-        "customer_account_id" => $objCustomer->getValue('customer_id'),
-        "customer_cc_number"  => $cardNo,
-        "customer_cc_expmo"   => $expMo,
-        "customer_cc_expyr"   => $expYr,
-        "customer_firstname"  => lfToSjis($arrData['order_name02']),
-        "customer_lastname"   => lfToSjis($arrData['order_name01']),
-        "customer_email"      => $arrData['order_email'],
-        "customer_phone"      => $phoneNo,
-        "bill_address1"       => lfToSjis($arrData['order_addr02']),
-        "bill_city"           => lfToSjis($arrData['order_addr01']),
-        "bill_state"          => lfToSjis($arrPref[$arrData['order_pref']]),
-        "bill_zip"            => $arrData['order_zip01'] . $arrData['order_zip02'],
-        "bill_country"        => "JP",
-        "merchant_id"         => $arrConfig['cybs_merchant_id'],
-        "merchant_ref_number" => $arrData['order_id'],
-        "currency"            => "JPY",
-        /**
-        "ship_to_address1"    => lfToSjis($arrData['deliv_addr02']),
-        "ship_to_city"        => lfToSjis($arrData['deliv_addr01']),
-        "ship_to_country"     => lfToSjis($arrPref[$arrData['deliv_pref']]),
-        "ship_to_state"       => $arrData['deliv_zip01'] . $arrData['deliv_zip02'],
-        "ship_to_zip"         => "JP",
-        */
-        "recurring_disable_auto_auth" => 'Y',
-        "recurring_frequency" => 'on-demand',
-        "card_type"           => $arrForm['card_company'],
-    );
-
-    return $arrSendParam;
-}
 
 /**
  * SJISへ変換する
@@ -584,7 +520,6 @@ function lfRegisterOrderTemp($uniqid, $arrResults, $arrForm) {
         'memo09' => $arrForm['paymethod']
         //'memo10' => $arrResults[''],
     );
-    gfPrintLog(print_r($arrResults, true), MDL_CYBS_LOG);
     $objQuery = new SC_Query;
     $objQuery->update("dtb_order_temp", $sqlval, "order_temp_id = ?", array($uniqid));
 }
