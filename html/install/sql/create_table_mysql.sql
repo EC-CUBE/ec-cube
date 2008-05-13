@@ -285,6 +285,7 @@ CREATE TABLE dtb_products (
     comment4 text,
     comment5 text,
     comment6 text,
+    note text,
     file1 text,
     file2 text,
     file3 text,

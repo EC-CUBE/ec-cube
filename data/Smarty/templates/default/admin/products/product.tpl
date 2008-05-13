@@ -239,6 +239,12 @@ function selectAll(target) {
 										<textarea name="comment3" cols="60" rows="8" class="area60" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" style="<!--{$arrErr.comment3|sfGetErrorColor}-->"><!--{$arrForm.comment3|escape}--></textarea><br /><span class="red"> （上限<!--{$smarty.const.LLTEXT_LEN}-->文字）</span></td>
 									</tr>
 									<tr>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">備考欄(SHOP専用)</td>
+										<td bgcolor="#ffffff" width="557" class="fs10n">
+										<span class="red12"><!--{$arrErr.note}--></span>
+										<textarea name="note" cols="60" rows="8" class="area60" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" style="<!--{$arrErr.note|sfGetErrorColor}-->"><!--{$arrForm.note|escape}--></textarea><br /><span class="red"> （上限<!--{$smarty.const.LLTEXT_LEN}-->文字）</span></td>
+									</tr>
+									<tr>
 										<td bgcolor="#f2f1ec" width="160" class="fs12n">一覧-メインコメント<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="557" class="fs10n">
 										<span class="red12"><!--{$arrErr.main_list_comment}--></span>

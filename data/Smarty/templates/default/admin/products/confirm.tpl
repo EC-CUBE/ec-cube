@@ -175,6 +175,12 @@
 									</td>
 								</tr>
 								<tr>
+									<td bgcolor="#f2f1ec" width="160" class="fs12n">備考欄(SHOP専用)</td>
+									<td bgcolor="#ffffff" width="557" class="fs12n">
+									<!--{$arrForm.note|escape}-->
+									</td>
+								</tr>
+								<tr>
 									<td bgcolor="#f2f1ec" width="160" class="fs12n">一覧-メインコメント</td>
 									<td bgcolor="#ffffff" width="557" class="fs12n">
 									<!--{$arrForm.main_list_comment|escape|nl2br}-->
