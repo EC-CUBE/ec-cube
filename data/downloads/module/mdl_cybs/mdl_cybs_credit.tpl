@@ -251,14 +251,21 @@ function fnCheckSubmit() {
 								<td class="fs12" bgcolor="#f3f3f3">選択</td>
 								<td class="fs12" bgcolor="#f3f3f3">カード番号</td>
 								<td class="fs12" bgcolor="#f3f3f3">有効期限</td>
+								<td class="fs12" bgcolor="#f3f3f3">削除</td>
 							</tr>
-							<!--{foreach from=$arrCard item=card}-->
+							<input type="hidden" name="delete_subs_index" value="">
+							<!--{foreach from=$arrCard item=card name="card_loop"}-->
 							<tr>
 								<td class="fs12" bgcolor="#ffffff"><input type="radio" name="subs_id" value="<!--{$card.pay_subscription_retrieve_subscription_id}-->"></td>
 								<td class="fs12" bgcolor="#ffffff"><!--{$card.pay_subscription_retrieve_customer_cc_number}--></td>
 								<td class="fs12" bgcolor="#ffffff">
 									<!--{$card.pay_subscription_retrieve_customer_cc_expmo}-->月/<!--{$card.pay_subscription_retrieve_customer_cc_expyr}-->年
 								</td>
+								<td class="fs12" bgcolor="#ffffff">
+
+									<input type="button"
+										   value="削除"
+										   onclick="fnModeSubmit('delete', 'delete_subs_index', '<!--{$smarty.foreach.card_loop.index}-->');"></td>
 							</tr>
 							<!--{/foreach}-->
 						</table>

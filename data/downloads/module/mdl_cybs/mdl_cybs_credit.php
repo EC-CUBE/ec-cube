@@ -24,6 +24,7 @@ if (!sfCybsLoadModCybs()) {
 
 class LC_Page {
     function LC_Page() {
+        $this->tpl_css      = URL_DIR . 'css/layout/shopping/confirm.css';
         $this->tpl_mainpage = MODULE_PATH . 'mdl_cybs/mdl_cybs_credit.tpl';
         // 支払い方法
         global $arrCybsPayMethod;
@@ -71,6 +72,8 @@ $arrData = sfTotalConfirm($arrData, $objPage, $objCartSess, $arrInfo);
 
 $objForm = lfInitParam($_POST);
 $objPage->arrForm = $objForm->getFormParamList();
+
+$objCybs->deleteSubsId(200);
 
 switch(lfGetMode()) {
 
@@ -211,6 +214,15 @@ case 'verify3d':
     exit;
     break;
 
+// カードの削除
+case 'delete':
+    // 入力項目の検証
+    $index = $objForm->getValue('delete_subs_index');
+    if (isset($index) && is_numeric($index)) {
+        $objCybs->deleteSubsId($index);
+    }
+    break;
+
 // 戻るボタン押下時
 case 'return':
     $objSiteSess->setRegistFlag();
@@ -304,7 +316,7 @@ function lfInitParam($arrParam) {
     $objForm->addParam("支払方法", "paymethod", STEXT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
     $objForm->addParam("カード情報の登録", "register_ondemand", 1, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
     $objForm->addParam("使用するカード", "subs_id", MTEXT_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
-    $objForm->addParam("支払方法", "ondemand_paymethod", STEXT_LEN, "n", array("MAX_LENGTH_CHECK"));
+    $objForm->addParam("削除カード", "delete_subs_index", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
     $objForm->setParam($arrParam);
     $objForm->convParam();
     return $objForm;

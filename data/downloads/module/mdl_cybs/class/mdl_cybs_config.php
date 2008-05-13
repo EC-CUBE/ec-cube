@@ -212,6 +212,32 @@ END;
     }
 
     /**
+     * サブスクリプションIDを削除する
+     *
+     * @param integer $index
+     */
+    function deleteSubsId($index) {
+        $objCustomer = new SC_Customer;
+        $customerId = $objCustomer->getValue('customer_id');
+
+        $arrSubsId = $this->getSubsIds();
+        $arrNewSubsId = array();
+
+        $count = count($arrSubsId);
+        if ($count) {
+            for ($i=0; $i < $count; $i++) {
+                if ($i == $index) continue;
+                $arrNewSubsId[] = $arrSubsId[$i];
+            }
+        }
+
+        $arrUpdate = array('cybs_subs_id' => serialize($arrNewSubsId));
+
+        $objQuery = new SC_Query;
+        $objQuery->update('dtb_customer', $arrUpdate, 'customer_id = ?', array($customerId));
+    }
+
+    /**
      * サブスクリプションの登録数がMaxかどうかを判定する
      *
      * @return boolean
