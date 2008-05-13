@@ -48,7 +48,9 @@ $objCampaignSess = new SC_CampaignSession();
 $arrInfo = sf_getBasisData();
 
 $objCybs =& Mdl_Cybs_Config::getInstanse();
-$objPage->enable_ondemand = $objCybs->enableOndemand(); //オンデマンド課金の使用可否
+$objPage->enable_ondemand = $objCybs->enableOndemand(); // オンデマンド課金の使用可否
+$objPage->can_add_subsid  = $objCybs->canAddSubsId();   // カード登録数上限の判定
+
 $objPage->tpl_payment_method = 'サイバーソース決済';
 
 $objDate = new SC_Date();
@@ -106,7 +108,7 @@ case 'register':
     $authAddParam = null; // チャージバック用追加パラメータ
 
     // 3Dセキュア使用設定判定
-    if ($objCybs->use3D() && !$objCybs->enableOndemand()) {
+    if ($objCybs->use3D() && lfIs3DCard($objForm->getValue('card_company'))) {
         // 3Dセキュアリクエストを送信する
         $arrResults = sfCybsSendRequest(lfCreateEnrollParam($objForm->getHashArray(), $arrData));
         // エラー処理
@@ -457,11 +459,13 @@ function lfCreateEnrollParam($arrForm, $arrData) {
         'pa_http_accept'      => $_SERVER['HTTP_ACCEPT'],
         'pa_http_user_agent'  => $_SERVER['HTTP_USER_AGENT'],
         'pa_merchant_country_code' => 'JP',
-        //'pa_merchant_id'      => $arrConfig['cybs_merchant_id'], // サイバーソースのマーチャントIDとは別
+        //'pa_merchant_id'      => $arrConfig['cybs_merchant_id'],
         'pa_merchant_name'    => lfToSjis($arrInfo['shop_name']),
         'pa_merchant_url'     => SSL_URL,
-        'offer0'              => "amount:" . $arrData['payment_total']
     );
+
+    $arrSendParam["offer0"] = "amount:" . $arrData['payment_total'];
+
     return $arrSendParam;
 }
 
@@ -491,8 +495,9 @@ function lfCreateValidateParam($arrForm, $arrData) {
         "merchant_id"         => $arrConfig['cybs_merchant_id'],
         "merchant_ref_number" => $arrData['order_id'],
         'pa_signedpares'      => trim($arrForm['PaRes']),
-        'offer0'              => "amount:" . $arrData['payment_total']
     );
+
+    $arrSendParam["offer0"] = "amount:" . $arrData['payment_total'];
 
     $arrSendParam = lfCreateAuthParam($arrCardData, $arrData, $arrSendParam);
     $arrSendParam["ics_applications"] = "ics_pa_validate,ics_auth";
@@ -582,5 +587,19 @@ function lfRegisterOrderTemp($uniqid, $arrResults, $arrForm) {
     gfPrintLog(print_r($arrResults, true), MDL_CYBS_LOG);
     $objQuery = new SC_Query;
     $objQuery->update("dtb_order_temp", $sqlval, "order_temp_id = ?", array($uniqid));
+}
+
+/**
+ * 3D対応カードかどうかをチェックする
+ *
+ * @paramカード種別 $cardtype
+ * @return boolean
+ */
+function lfIs3DCard($cardtype) {
+    $arrCardType = array('001', '002', '007');
+    if (in_array($cardtype, $arrCardType)) {
+        return true;
+    }
+    return false;
 }
 ?>
