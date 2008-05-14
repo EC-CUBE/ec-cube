@@ -49,8 +49,6 @@ $objCampaignSess = new SC_CampaignSession();
 $arrInfo = sf_getBasisData();
 
 $objCybs =& Mdl_Cybs_Config::getInstanse();
-$objPage->enable_ondemand = $objCybs->enableOndemand(); // オンデマンド課金の使用可否
-$objPage->can_add_subsid  = $objCybs->canAddSubsId();   // カード登録数上限の判定
 
 $objPage->tpl_payment_method = 'サイバーソース決済';
 
@@ -72,8 +70,6 @@ $arrData = sfTotalConfirm($arrData, $objPage, $objCartSess, $arrInfo);
 
 $objForm = lfInitParam($_POST);
 $objPage->arrForm = $objForm->getFormParamList();
-
-$objCybs->deleteSubsId(200);
 
 switch(lfGetMode()) {
 
@@ -235,6 +231,9 @@ default:
 
 lfSetCybsCardInfo($objPage); // 登録済みカード情報をセットする
 
+$objPage->enable_ondemand = $objCybs->enableOndemand(); // オンデマンド課金の使用可否
+$objPage->can_add_subsid  = $objCybs->canAddSubsId();   // カード登録数上限の判定
+
 $objView->assignobj($objPage);
 $objView->display(SITE_FRAME);
 
@@ -316,6 +315,7 @@ function lfInitParam($arrParam) {
     $objForm->addParam("支払方法", "paymethod", STEXT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
     $objForm->addParam("カード情報の登録", "register_ondemand", 1, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
     $objForm->addParam("使用するカード", "subs_id", MTEXT_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+    $objForm->addParam("支払い方法", "ondemand_paymethod", INT_LEN, "n", array("MAX_LENGTH_CHECK"));
     $objForm->addParam("削除カード", "delete_subs_index", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
     $objForm->setParam($arrParam);
     $objForm->convParam();
