@@ -460,6 +460,21 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         $sqlval['update_date'] = 'Now()';
         $sqlval['customer_id'] = $objCustomer->getValue('customer_id');
         $sqlval['deliv_check'] = '-1';
+        $sqlval['order_name01'] = $objCustomer->getValue('name01');
+        $sqlval['order_name02'] = $objCustomer->getValue('name02');
+        $sqlval['order_kana01'] = $objCustomer->getValue('kana01');
+        $sqlval['order_kana02'] = $objCustomer->getValue('kana02');
+        $sqlval['order_zip01'] = $objCustomer->getValue('zip01');
+        $sqlval['order_zip02'] = $objCustomer->getValue('zip02');
+        $sqlval['order_pref'] = $objCustomer->getValue('pref');
+        $sqlval['order_addr01'] = $objCustomer->getValue('addr01');
+        $sqlval['order_addr02'] = $objCustomer->getValue('addr02');
+        $sqlval['order_tel01'] = $objCustomer->getValue('tel01');
+        $sqlval['order_tel02'] = $objCustomer->getValue('tel02');
+        $sqlval['order_tel03'] = $objCustomer->getValue('tel03');
+        $sqlval['order_fax01'] = $objCustomer->getValue('fax01');
+        $sqlval['order_fax02'] = $objCustomer->getValue('fax02');
+        $sqlval['order_fax03'] = $objCustomer->getValue('fax03');
         $sqlval['deliv_name01'] = $objCustomer->getValue('name01');
         $sqlval['deliv_name02'] = $objCustomer->getValue('name02');
         $sqlval['deliv_kana01'] = $objCustomer->getValue('kana01');
@@ -472,7 +487,6 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         $sqlval['deliv_tel01'] = $objCustomer->getValue('tel01');
         $sqlval['deliv_tel02'] = $objCustomer->getValue('tel02');
         $sqlval['deliv_tel03'] = $objCustomer->getValue('tel03');
-
         $sqlval['deliv_fax01'] = $objCustomer->getValue('fax01');
         $sqlval['deliv_fax02'] = $objCustomer->getValue('fax02');
         $sqlval['deliv_fax03'] = $objCustomer->getValue('fax03');
