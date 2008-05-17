@@ -135,7 +135,8 @@ class SC_Batch_Daily extends SC_Batch {
             $objQuery = new SC_Query();
             $arrRet = $objQuery->select("order_date, create_date", "dtb_bat_order_daily", "order_date = ?", array($batch_date));
             // すでにバッチ処理が終了しているかチェックする。
-            if(count($arrRet) > 0) {
+            $count = count($arrRet);
+            if( $count > 0 ) {
                 list($create_date) = split("\.", $arrRet[0]['create_date']);
                 list($order_date) = split("\.", $arrRet[0]['order_date']);
                 $create_time = strtotime($create_date);
