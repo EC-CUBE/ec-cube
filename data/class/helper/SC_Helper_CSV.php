@@ -230,8 +230,9 @@ class SC_Helper_CSV {
     // 各項目をCSV出力用に変換する。
     function lfMakeCSV($list) {
         $line = "";
-
-        foreach($list as $key => $val) {
+		
+		reset($list);
+        while(list($key, $val) = each($list)){
             $tmp = "";
             switch($key) {
             case 'order_pref':
@@ -257,21 +258,21 @@ class SC_Helper_CSV {
     function lfMakeProductsCSV($list, $arrOutputCols) {
         $line = "";
         if(is_array($list)) {
-            foreach($arrOutputCols as $key) {
+			reset($arrOutputCols);
+        	while(list($key, $val) = each($arrOutputCols)){
                 $tmp = "";
                 switch($key) {
                 case 'point_rate':
                     if($val == "") {
                         $tmp = '0';
                     } else {
-                        $tmp = $list[$key];
+                        $tmp = $list[$val];
                     }
                     break;
                 default:
-                    $tmp = $list[$key];
+                    $tmp = $list[$val];
                     break;
                 }
-
                 $tmp = str_replace("\"", "\\\"", $tmp);
                 $line .= "\"".$tmp."\",";
             }
@@ -284,8 +285,8 @@ class SC_Helper_CSV {
     // 各項目をCSV出力用に変換する。(レビュー)
     function lfMakeReviewCSV($list) {
         $line = "";
-
-        foreach($list as $key => $val) {
+		reset($list);
+    	while(list($key, $val) = each($list)){
             $tmp = "";
             switch($key) {
             case 'sex':
@@ -313,10 +314,9 @@ class SC_Helper_CSV {
 
     // 各項目をCSV出力用に変換する。(トラックバック)
     function lfMakeTrackbackCSV($list) {
-
         $line = "";
-
-        foreach($list as $key => $val) {
+		reset($list);
+    	while(list($key, $val) = each($list)){
             $tmp = "";
             switch($key) {
             case 'status':
