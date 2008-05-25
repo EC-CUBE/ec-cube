@@ -29,6 +29,11 @@ if (file_exists(MODULE_PATH . 'mdl_paygent/include.php') === TRUE) {
 	require_once(MODULE_PATH . 'mdl_paygent/include.php');
 }
 
+/* F-REGI決済モジュール連携用 */
+if (file_exists(MODULE_PATH. 'mdl_fregi/LC_Page_Mdl_Fregi_Config.php') === TRUE) {
+    require_once(MODULE_PATH. 'mdl_fregi/LC_Page_Mdl_Fregi_Config.php');
+}
+
 /**
  * 受注修正 のページクラス.
  *
@@ -67,6 +72,14 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         /* ペイジェント決済モジュール連携用 */
         if(function_exists("sfPaygentOrderPage")) {
             $this->arrDispKind = sfPaygentOrderPage();
+        }
+        
+        /* F-REGI決済モジュール連携用 */
+        if (file_exists(MODULE_PATH. 'mdl_fregi/LC_Page_Mdl_Fregi_Config.php') === TRUE) {
+            global $arrFregiPayment;
+            $this->arrFregiPayment = $arrFregiPayment;
+            global $arrFregiDispKind;
+            $this->arrFregiDispKind = $arrFregiDispKind;
         }
     }
 
@@ -146,6 +159,17 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         /* ペイジェント決済モジュール連携用 */
         case 'paygent_order':
             $this->paygent_return = sfPaygentOrder($_POST['paygent_type'], $order_id);
+            break;
+        /* F-REGI決済モジュール連携用 */
+        case 'fregi_status':
+            $objFregiConfig = new LC_Page_Mdl_Fregi_Config();
+            $this->fregi_err = $objFregiConfig->getSaleInfo($order_id, $this->arrDisp);
+            $this->lfGetOrderData($order_id);
+            break;
+        case 'fregi_card':
+            $objFregiConfig = new LC_Page_Mdl_Fregi_Config();
+            $this->fregi_card_err = $objFregiConfig->setCardInfo($_POST['card_status'], $order_id, $this->arrDisp);
+            $this->lfGetOrderData($order_id);
             break;
         default:
             break;
