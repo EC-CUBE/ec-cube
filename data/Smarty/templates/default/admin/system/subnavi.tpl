@@ -31,5 +31,7 @@
 	<tr><td><img src="<!--{$TPL_DIR}-->img/contents/navi_line.gif" width="140" height="2" alt=""></td></tr>
 	<tr><td class=<!--{if $tpl_subno != 'masterdata'}-->"navi"<!--{else}-->"navi-on"<!--{/if}-->><a href="./masterdata.php" onMouseOver="naviStyleChange('masterdata', '#a5a5a5')" <!--{if $tpl_subno != 'masterdata'}-->onMouseOut="naviStyleChange('masterdata', '#636469')"<!--{/if}--> id="masterdata"><img src="<!--{$TPL_DIR}-->img/contents/icon.jpg" width="15" height="9" alt="" border="0"><span class="navi_text">マスタデータ管理</span></a></td></tr>
 	<tr><td><img src="<!--{$TPL_DIR}-->img/contents/navi_line.gif" width="140" height="2" alt=""></td></tr>
+    <tr><td class=<!--{if $tpl_subno != 'system'}-->"navi"<!--{else}-->"navi-on"<!--{/if}-->><a href="./system.php" onMouseOver="naviStyleChange('system', '#a5a5a5')" <!--{if $tpl_subno != 'system'}-->onMouseOut="naviStyleChange('system', '#636469')"<!--{/if}--> id="system"><img src="<!--{$TPL_DIR}-->img/contents/icon.jpg" width="15" height="9" alt="" border="0"><span class="navi_text">システム情報</span></a></td></tr>
+    <tr><td><img src="<!--{$TPL_DIR}-->img/contents/navi_line.gif" width="140" height="2" alt=""></td></tr>
 	<!--ナビ-->
 </table>
