@@ -63,6 +63,14 @@
 								</table>
 								
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
+                                    <tr class="fs12n">
+                                        <td colspan="3" bgcolor="#f2f1ec">
+                                        <ul>
+                                            <li>データベースのバックアップを行います。</li>
+                                            <li>テンプレートファイル等はバックアップされません。</li>
+                                        </ul>                                        
+                                        </td>
+                                    </tr>
 									<tr align="center" class="fs12n">
 										<td bgcolor="#f2f1ec" width="130">バックアップ名<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="548" align=left>
