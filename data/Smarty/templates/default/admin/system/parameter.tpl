@@ -64,7 +64,7 @@
 
 <table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 <tr>
-  <td bgcolor="#f2f1ec" colspan="2" class="red">
+  <td bgcolor="#f2f1ec" colspan="2" class="red fs12st">
     <ul>
       <li>パラメータの値がPHP定数として設定されます。</li>
       <li>文字列は「&quot;」で囲んで下さい。</li>
