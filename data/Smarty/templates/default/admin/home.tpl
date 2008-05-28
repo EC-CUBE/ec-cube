@@ -57,7 +57,11 @@
 							<tr>
 								<td bgcolor="#f2f1ec" class="fs12">DBバージョン</td>
 								<td bgcolor="#ffffff" class="fs12" align="right"><!--{$db_version}--></td>
-							</tr>							
+							</tr>
+                            <tr>
+                                <td bgcolor="#f2f1ec" class="fs12">詳細</td>
+                                <td bgcolor="#ffffff" class="fs12" align="right"><a href="<!--{$smarty.const.URL_DIR}-->admin/system/system.php">システム設定＞システム情報</a></td>
+                            </tr>
 						</table>
 						
 						<!--ショップの状況ここから-->

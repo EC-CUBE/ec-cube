@@ -84,6 +84,7 @@ class LC_Page_Admin_System_System extends LC_Page {
             break;
         }
 
+        $this->arrSystemInfo = $this->getSystemInfo();
 
         $objView->assignobj($this);
         $objView->display(MAIN_FRAME);
@@ -96,5 +97,25 @@ class LC_Page_Admin_System_System extends LC_Page {
      */
     function destroy() {
         parent::destroy();
+    }
+
+    /**
+     * システム情報を取得する
+     *
+     * @return array
+     */
+    function getSystemInfo() {
+        $objDB = SC_DB_DBFactory::getInstance();
+
+        $arrSystemInfo = array(
+            array('title' => 'EC-CUBE',  'value' => ECCUBE_VERSION),
+            array('title' => 'OS',       'value' => php_uname()),
+            array('title' => 'DBサーバ',  'value' => $objDB->sfGetDBVersion()),
+            array('title' => 'WEBサーバ', 'value' => $_SERVER['SERVER_SOFTWARE']),
+            array('title' => 'PHP',      'value' => phpversion()),
+            array('title' => 'GD',       'value' => extension_loaded('GD') ? 'Loaded' : '--'),
+        );
+
+        return $arrSystemInfo;
     }
 }
