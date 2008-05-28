@@ -29,12 +29,6 @@
       <img src="<!--{$TPL_DIR}-->img/shopping/complete_title.jpg" width="700" height="40" alt="ご注文完了" />
     </h2>
 
-    <!-- ▼クレジット(コンビニ)決済 -->
-    <!--{if $arrModuleParam.module_id > 0 }-->
-      <img src="<!--{$smarty.const.CREDIT_HTTP_ANALYZE_URL}-->?mid=<!--{$arrModuleParam.module_id}-->&tid=<!--{$arrModuleParam.payment_total}-->&pid=<!--{$arrModuleParam.payment_id}-->" width="0" height="0" border="0" style="width: 0px; height: 0px" />
-    <!--{/if}-->
-    <!-- ▲クレジット(コンビニ)決済 -->
-
     <!-- ▼その他決済情報を表示する場合は表示 -->
     <!--{if $arrOther.title.value }-->
     <p><em>■<!--{$arrOther.title.name}-->情報</em><br />
