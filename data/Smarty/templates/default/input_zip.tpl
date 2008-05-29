@@ -1,7 +1,7 @@
 <!--{*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2008 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -19,7 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
-<!--{include file="`$smarty.const.TEMPLATE_DIR`popup_header.tpl" subtitle="住所検索"}-->
+<!--{include file="`$smarty.const.TEMPLATE_DIR`popup_header.tpl" subtitle="住所検索" disable_wincol=1}-->
 
   <div id="zipsearchcolumn">
     <h2><img src="<!--{$TPL_DIR}-->img/common/zip_title.jpg" width="460" height="40" alt="住所検索" /></h2>

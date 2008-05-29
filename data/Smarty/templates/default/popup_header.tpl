@@ -2,7 +2,7 @@
 <!--{*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2008 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -41,4 +41,4 @@
 <a name="top" id="top"></a>
 
 <!--▼CONTENTS-->
-<div id="windowcolumn">
+<!--{if !$disable_wincol}--><div id="windowcolumn"><!--{/if}-->
