@@ -1,5 +1,4 @@
 <!--{*
-/*
  * This file is part of EC-CUBE
  *
  * Copyright(c) 2000-2008 LOCKON CO.,LTD. All Rights Reserved.
@@ -19,16 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- */
-*}-->
-<!--{include file="`$smarty.const.TEMPLATE_DIR`popup_header.tpl" subtitle="エラー"}-->
-
-<div id="compbox">
-<span class="red"><!--{$tpl_error}--></span><br />
+ *}-->
 </div>
-
-<div class="button">
-<a href="javascript:window.close()" onmouseOver="chgImg('<!--{$TPL_DIR}-->img/button/close_on.jpg','close');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/close.jpg','close');"><img src="<!--{$TPL_DIR}-->img/button/close.jpg" width="129" height="32" alt="閉じる" name="close" id="close" /></a>
-</div>
-
-<!--{include file="`$smarty.const.TEMPLATE_DIR`popup_footer.tpl"}-->
+</body>
+</html>

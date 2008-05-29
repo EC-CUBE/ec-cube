@@ -1,8 +1,8 @@
-<!--{printXMLDeclaration}--><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--{*
+/*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2008 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -19,27 +19,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
  *}-->
-<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=<!--{$smarty.const.CHAR_CODE}-->" />
-<meta http-equiv="Content-Script-Type" content="text/javascript" />
-<meta http-equiv="Content-Style-Type" content="text/css" />
-<link rel="stylesheet" href="<!--{$smarty.const.URL_DIR}--><!--{$smarty.const.USER_DIR}-->css/common.css" type="text/css" media="all" />
-<link rel="alternate" type="application/rss+xml" title="RSS" href="<!--{$smarty.const.SITE_URL}-->/rss/index.php" />
-<script type="text/javascript" src="<!--{$TPL_DIR}-->js/css.js"></script>
-<script type="text/javascript" src="<!--{$TPL_DIR}-->js/navi.js"></script>
-<script type="text/javascript" src="<!--{$TPL_DIR}-->js/win_op.js"></script>
-<script type="text/javascript" src="<!--{$TPL_DIR}-->js/site.js"></script>
-<meta name="author" content="<!--{$arrPageLayout.author|escape}-->" />
-<meta name="description" content="<!--{$arrPageLayout.description|escape}-->" />
-<meta name="keywords" content="<!--{$arrPageLayout.keyword|escape}-->" />
-<title><!--{$arrSiteInfo.shop_name}-->/お客様の声書き込み（入力ページ）</title>
-</head>
-<body onload="preLoadImg('<!--{$TPL_DIR}-->')">
-<a name="top" id="top"></a>
+<!--{include file="`$smarty.const.TEMPLATE_DIR`popup_header.tpl" subtitle="お客様の声書き込み（入力ページ）"}-->
 
-<div id="windowcolumn">
   <div id="windowarea">
     <h2><img src="<!--{$TPL_DIR}-->img/products/review_title.jpg" width="500" height="40" alt="お客様の声書き込み" /></h2>
     <p class="windowtext">以下の商品について、お客様のご意見、ご感想をどしどしお寄せください。<br />
@@ -99,6 +82,5 @@
         </div>
       </form>
     </div>
-  </div>
-</body>
-</html>
+
+<!--{include file="`$smarty.const.TEMPLATE_DIR`popup_footer.tpl"}-->
