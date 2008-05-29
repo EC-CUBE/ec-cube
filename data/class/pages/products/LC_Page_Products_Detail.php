@@ -209,6 +209,9 @@ class LC_Page_Products_Detail extends LC_Page {
         $arrFirstCat = $objDb->sfGetFirstCat($arrCategory_id[0]);
         $this->tpl_subtitle = $arrFirstCat['name'];
 
+        // 関連カテゴリを取得
+        $this->arrRelativeCat = $objDb->sfGetMultiCatTree($tmp_id);
+
         // DBからのデータを引き継ぐ
         $this->objUpFile->setDBFileList($this->arrProduct);
         // ファイル表示用配列を渡す
