@@ -59,8 +59,9 @@ class SC_Helper_PageLayout {
             $objPage->tpl_mainpage = USER_PATH . "templates/preview/"
                 . TEMPLATE_NAME . "/" . $arrPageData[0]['filename'] . ".tpl";
         }
-		
-        foreach($arrPageData[0] as $key => $val) {
+        
+        reset($arrPageData[0]);
+		while( list($key,$val) = each($arrPageData[0]) ){
         	 $debug_message.= "arrPageData[$key]：" . $val . "\n";
         }
         
@@ -119,43 +120,41 @@ class SC_Helper_PageLayout {
      * @param array $arrVal WHERE句の条件値
      * @return array ページ情報を格納した配列
      */
-    function lfgetPageData($where = '', $arrVal = ''){
-        $objDBConn = new SC_DbConn;		// DB操作オブジェクト
-        $sql = "";						// データ取得SQL生成用
+    function lfgetPageData($addwhere = '', $sqlval = ''){
+        $objQuery = new SC_Query;		// DB操作オブジェクト
         $arrRet = array();				// データ取得用
 
-        // SQL生成
-        $sql .= " SELECT";
-        $sql .= " page_id";				// ページID
-        $sql .= " ,page_name";			// 名称
-        $sql .= " ,url";				// URL
-        $sql .= " ,php_dir";			// php保存先ディレクトリ
-        $sql .= " ,tpl_dir";			// tpl保存先ディレクトリ
-        $sql .= " ,filename";			// ファイル名称
-        $sql .= " ,header_chk ";		// ヘッダー使用FLG
-        $sql .= " ,footer_chk ";		// フッター使用FLG
-        $sql .= " ,edit_flg ";			// 編集可能FLG
-        $sql .= " ,author";				// authorタグ
-        $sql .= " ,description";		// descriptionタグ
-        $sql .= " ,keyword";			// keywordタグ
-        $sql .= " ,update_url";			// 更新URL
-        $sql .= " ,create_date";		// データ作成日
-        $sql .= " ,update_date";		// データ更新日
-        $sql .= " FROM ";
-        $sql .= "     dtb_pagelayout";
-        $sql .= " WHERE ";
-
+        // SQL文生成
+        // 取得するカラム
+        $col  = " page_id";				// ページID
+        $col .= " ,page_name";			// 名称
+        $col .= " ,url";				// URL
+        $col .= " ,php_dir";			// php保存先ディレクトリ
+        $col .= " ,tpl_dir";			// tpl保存先ディレクトリ
+        $col .= " ,filename";			// ファイル名称
+        $col .= " ,header_chk ";		// ヘッダー使用FLG
+        $col .= " ,footer_chk ";		// フッター使用FLG
+        $col .= " ,edit_flg ";			// 編集可能FLG
+        $col .= " ,author";				// authorタグ
+        $col .= " ,description";		// descriptionタグ
+        $col .= " ,keyword";			// keywordタグ
+        $col .= " ,update_url";			// 更新URL
+        $col .= " ,create_date";		// データ作成日
+        $col .= " ,update_date";		// データ更新日
+        
+        // 取得するテーブル
+        $table = "dtb_pagelayout";
+        
         // where句の指定があれば追加
-        if ($where != '') {
-            $sql .= " " . $where . " ";
-        }else{
-            $sql .= " page_id <> 0 ";
-        }
-
-        $sql .= " ORDER BY page_id";
-
-        $arrRet = $objDBConn->getAll($sql, $arrVal);
-
+        $where = ($addwhere != '') ? $addwhere : "page_id <> 0";
+        
+        // 並び変え
+        $objQuery->setOrder('page_id');
+        
+        // SQL実行
+        $arrRet = $objQuery->select($col, $table, $where, $sqlval);
+        
+        // 結果を返す
         return $arrRet;
     }
 
@@ -167,33 +166,32 @@ class SC_Helper_PageLayout {
      * @return array ナビ情報の配列
      */
     function lfGetNaviData($url, $preview=false){
-        $objDBConn = new SC_DbConn;		// DB操作オブジェクト
+        $objQuery = new SC_Query;		// DB操作オブジェクト
         $sql = "";						// データ取得SQL生成用
         $arrRet = array();				// データ取得用
         $arrData = array();
 
         // SQL文生成
-        $sql = "";
-        $sql .= " SELECT ";
-        $sql .= "     target_id ";
-        $sql .= "     ,(SELECT bloc_name FROM dtb_bloc AS bloc WHERE bloc.bloc_id = pos.bloc_id) AS bloc_name";
-        $sql .= "     ,(SELECT tpl_path FROM dtb_bloc AS bloc WHERE bloc.bloc_id = pos.bloc_id) AS tpl_path";
-        $sql .= "     ,(SELECT php_path FROM dtb_bloc AS bloc WHERE bloc.bloc_id = pos.bloc_id) AS php_path";
-        $sql .= " FROM";
-        $sql .= "     dtb_blocposition AS pos";
-        $sql .= " WHERE";
+        // 取得するカラム
+        $col = "target_id, bloc_name, tpl_path, php_path";
+        
+        // 取得するテーブル
+        $table = "dtb_blocposition AS pos, dtb_bloc AS bloc";
+        
+        // where文生成
+        $where = "bloc.bloc_id = pos.bloc_id";
         if ($preview == true) {
-            $sql .= "     page_id = (SELECT page_id FROM dtb_pagelayout WHERE page_id = '0')";
+            $where .= " AND EXISTS (SELECT page_id FROM dtb_pagelayout AS lay WHERE page_id = '0' AND pos.page_id = lay.page_id)";
         }else{
-            $sql .= "     page_id = (SELECT page_id FROM dtb_pagelayout WHERE page_id <> '0' AND url = ?)";
-            $arrData = array($url);
+            $where .= " AND EXISTS (SELECT page_id FROM dtb_pagelayout AS lay WHERE url = ? AND page_id <> '0' AND pos.page_id = lay.page_id)";
+            $sqlval = array($url);
         }
-        $sql .= " ORDER BY target_id,bloc_row";
-        $sql .= " ";
-
+        // 並び変え
+        $objQuery->setOrder('target_id, bloc_row');
+        
         // SQL実行
-        $arrRet = $objDBConn->getAll($sql, $arrData);
-
+        $arrRet = $objQuery->select($col, $table, $where, $sqlval);
+                                            
         // 結果を返す
         return $arrRet;
     }
@@ -207,9 +205,10 @@ class SC_Helper_PageLayout {
      */
     function lfGetNavi($arrNavi, $target_id) {
         $arrRet = array();
-        if(is_array($arrNavi)) {
-            foreach($arrNavi as $key => $val){
-                // 指定された箇所と同じデータだけを取得する
+        if(is_array($arrNavi) === true) {
+        	reset($arrNavi);
+            while( list($key,$val)= each($arrNavi) ){
+            	// 指定された箇所と同じデータだけを取得する
                 if ($target_id == $val['target_id']){
                     if ($val['php_path'] != '') {
                         $arrNavi[$key]['php_path'] = HTML_PATH . $val['php_path'];
@@ -258,8 +257,8 @@ class SC_Helper_PageLayout {
      * @return integer 削除数
      */
     function lfDelPageData($page_id){
-        // DBへデータを更新する
-        $objDBConn = new SC_DbConn;		// DB操作オブジェクト
+    	// DBへデータを更新する
+        $objQuery = new SC_Query;		// DB操作オブジェクト
         $sql = "";						// データ更新SQL生成用
         $ret = ""; 						// データ更新結果格納用
         $arrDelData = array();			// 更新データ生成用
@@ -268,11 +267,8 @@ class SC_Helper_PageLayout {
         if ($page_id != '') {
 
             $arrPageData = $this->lfgetPageData(" page_id = ? " , array($page_id));
-            // SQL生成
-            $sql = " DELETE FROM dtb_pagelayout WHERE page_id = ?";
-
             // SQL実行
-            $ret = $objDBConn->query($sql,array($page_id));
+            $ret = $objQuery->delete("dtb_pagelayout", "page_id = ?", array($page_id));
 
             // ファイルの削除
             $this->lfDelFile($arrPageData[0]);
