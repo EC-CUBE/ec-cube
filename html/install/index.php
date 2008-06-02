@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2008 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -617,7 +617,8 @@ function lfInitWebParam($objWebParam) {
     if(defined('HTML_PATH')) {
         $install_dir = HTML_PATH;
     } else {
-		$install_dir = realpath(dirname( __FILE__) . "/../") . "/";
+		$install_dir = realpath(dirname( __FILE__) . "/../");
+		$install_dir = rtrim($install_dir, '\\/') . '/';
     }
 
     if(defined('SITE_URL')) {
