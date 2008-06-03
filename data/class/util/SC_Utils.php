@@ -1921,6 +1921,32 @@ echo $template_path;
     }
 
    /**
+     * CSV出力用データ取得
+     * 
+     * @return string
+     */
+    function getCSVData($array, $arrayIndex) {
+        for ($i = 0; $i < count($array); $i++){
+            // インデックスが設定されている場合
+            if (is_array($arrayIndex) && 0 < count($arrayIndex)){
+                for ($j = 0; $j < count($arrayIndex); $j++ ){
+                    if ( $j > 0 ) $return .= ",";
+                    $return .= "\"";
+                    $return .= mb_ereg_replace("<","＜",mb_ereg_replace( "\"","\"\"",$array[$i][$arrayIndex[$j]] )) ."\"";
+                }
+            } else {
+                for ($j = 0; $j < count($array[$i]); $j++ ){
+                    if ( $j > 0 ) $return .= ",";
+                    $return .= "\"";
+                    $return .= mb_ereg_replace("<","＜",mb_ereg_replace( "\"","\"\"",$array[$i][$j] )) ."\"";
+                }
+            }
+            $return .= "\n";    
+        }
+        return $return;
+    }
+    
+   /**
      * 配列をテーブルタグで出力する。
      *
      * @return string

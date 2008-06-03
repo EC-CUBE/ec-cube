@@ -424,26 +424,7 @@ class LC_Page_Admin_Mail extends LC_Page {
         $result = $conn->getAll($sql, array($send_id) );
 
         if ( $result ){
-            $return = $this->lfGetCSVData( $result, $arrTitle);
-        }
-        return $return;
-    }
-
-    //---- CSV出力用データ取得
-    function lfGetCSVData( $array, $arrayIndex){
-
-        for ($i=0; $i<count($array); $i++){
-
-            for ($j=0; $j<count($array[$i]); $j++ ){
-                if ( $j > 0 ) $return .= ",";
-                $return .= "\"";
-                if ( $arrayIndex ){
-                    $return .= mb_ereg_replace("<","＜",mb_ereg_replace( "\"","\"\"",$array[$i][$arrayIndex[$j]] )) ."\"";
-                } else {
-                    $return .= mb_ereg_replace("<","＜",mb_ereg_replace( "\"","\"\"",$array[$i][$j] )) ."\"";
-                }
-            }
-            $return .= "\n";
+            $return = SC_Utils_Ex::getCSVData( $result, $arrTitle);
         }
         return $return;
     }
