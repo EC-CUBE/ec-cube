@@ -63,7 +63,7 @@ class LC_Page_FrontParts_Bloc_SearchProducts extends LC_Page_FrontParts_Bloc {
         if(is_array($arrRet)) {
             // 文字サイズを制限する
             foreach($arrRet as $key => $val) {
-                $arrRet[$key] = SC_Utils_Ex::sfCutString($val, SEARCH_CATEGORY_LEN);
+                $arrRet[$key] = SC_Utils_Ex::sfCutString($val, SEARCH_CATEGORY_LEN, false);
             }
         }
         $this->arrCatList = $arrRet;
