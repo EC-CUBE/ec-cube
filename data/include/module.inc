@@ -30,7 +30,7 @@ if (!defined('ECCUBE_INSTALL')
 // {{{ requires
 require_once CLASS_PATH . 'SC_DbConn.php';
 require_once CLASS_PATH . 'SC_Query.php';
-require_once CLASS_PATH . 'db/SC_DB_DBFactory.php';
+require_once CLASS_EX_PATH . 'db_extends/SC_DB_DBFactory_Ex.php';
 
 /**
  * ダウンロード済みモジュールのinclude.phpを読み込む.

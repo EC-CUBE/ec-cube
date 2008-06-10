@@ -144,7 +144,7 @@ class LC_Page_Admin_System_Masterdata extends LC_Page {
      * @return array マスタデータ名の配列
      */
     function getMasterDataNames($ignores = array()) {
-        $dbFactory = SC_DB_DBFactory::getInstance();
+        $dbFactory = SC_DB_DBFactory_Ex::getInstance();
         $arrMasterDataName = $dbFactory->findTableNames("mtb_");
 
         $i = 0;

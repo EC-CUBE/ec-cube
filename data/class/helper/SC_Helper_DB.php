@@ -54,7 +54,7 @@ class SC_Helper_DB {
      * @return string データベースのバージョン
      */
     function sfGetDBVersion($dsn = "") {
-        $dbFactory = SC_DB_DBFactory::getInstance();
+        $dbFactory = SC_DB_DBFactory_Ex::getInstance();
         return $dbFactory->sfGetDBVersion($dsn);
     }
 
@@ -66,7 +66,7 @@ class SC_Helper_DB {
      * @return テーブルが存在する場合 true
      */
     function sfTabaleExists($table_name, $dsn = "") {
-        $dbFactory = SC_DB_DBFactory::getInstance();
+        $dbFactory = SC_DB_DBFactory_Ex::getInstance();
         $dsn = $dbFactory->getDSN($dsn);
 
         $objQuery = new SC_Query($dsn, true, true);
@@ -99,7 +99,7 @@ class SC_Helper_DB {
      * 				 引数 $add == false でカラムが存在しない場合 false
      */
     function sfColumnExists($table_name, $col_name, $col_type = "", $dsn = "", $add = false) {
-        $dbFactory = SC_DB_DBFactory::getInstance();
+        $dbFactory = SC_DB_DBFactory_Ex::getInstance();
         $dsn = $dbFactory->getDSN($dsn);
 
         // テーブルが無ければエラー
@@ -145,7 +145,7 @@ class SC_Helper_DB {
      * 				 引数 $add == false でインデックスが存在しない場合 false
      */
     function sfIndexExists($table_name, $col_name, $index_name, $length = "", $dsn = "", $add = false) {
-        $dbFactory = SC_DB_DBFactory::getInstance();
+        $dbFactory = SC_DB_DBFactory_Ex::getInstance();
         $dsn = $dbFactory->getDSN($dsn);
 
         // テーブルが無ければエラー
@@ -179,7 +179,7 @@ class SC_Helper_DB {
      *               $add == false で, データが存在しない場合 false
      */
     function sfDataExists($table_name, $where, $arrval, $dsn = "", $sql = "", $add = false) {
-        $dbFactory = SC_DB_DBFactory::getInstance();
+        $dbFactory = SC_DB_DBFactory_Ex::getInstance();
         $dsn = $dbFactory->getDSN($dsn);
 
         $objQuery = new SC_Query($dsn, true, true);

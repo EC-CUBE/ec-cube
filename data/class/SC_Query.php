@@ -90,7 +90,7 @@ class SC_Query {
     function select($col, $table, $where = "", $arrval = array()){
         $sqlse = $this->getsql($col, $table, $where);
         // DBに依存した SQL へ変換
-        $dbFactory = SC_DB_DBFactory::getInstance();
+        $dbFactory = SC_DB_DBFactory_Ex::getInstance();
         $sqlse = $dbFactory->sfChangeMySQL($sqlse);
         $ret = $this->conn->getAll($sqlse, $arrval);
         return $ret;
