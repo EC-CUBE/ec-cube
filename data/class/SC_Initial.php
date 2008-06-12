@@ -118,6 +118,15 @@ class SC_Initial {
         ini_set("mbstring.internal_encoding", CHAR_CODE);
         ini_set("mbstring.detect_order", "auto");
         ini_set("mbstring.substitute_character", "none");
+        
+        mb_language('ja'); // mb_internal_encoding() より前に
+        // TODO 他に mb_language() している箇所の削除を検討
+        // TODO .htaccess の mbstring.language を削除できないか検討
+        
+        mb_internal_encoding(CHAR_CODE); // mb_language() より後で
+        // TODO 上の「ini_set("mbstring.internal_encoding", CHAR_CODE);」を削除できないか検討
+        // TODO .htaccess の mbstring.internal_encoding を削除できないか検討
+        
         //ロケールを明示的に設定
         setlocale(LC_ALL, LOCALE);
     }
