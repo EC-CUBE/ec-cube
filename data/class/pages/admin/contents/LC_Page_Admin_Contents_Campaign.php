@@ -101,13 +101,13 @@ class LC_Page_Admin_Contents_Campaign extends LC_Page {
             // 編集押下時
         case 'update':
             // キャンペーン情報を取得
-            $this->arrForm = $this->lfGetCampaign($campaign_id, &$objQuery);
+            $this->arrForm = $this->lfGetCampaign($campaign_id, $objQuery);
             $this->is_update = true;
             break;
             // 削除押下時
         case 'delete':
             // 削除
-            $this->lfDeleteCampaign($campaign_id, &$objQuery);
+            $this->lfDeleteCampaign($campaign_id, $objQuery);
             // キャンペーンTOPへリダイレクト
             $this->sendRedirect($this->getLocation(URL_CAMPAIGN_TOP));
             break;
