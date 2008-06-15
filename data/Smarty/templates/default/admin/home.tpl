@@ -58,6 +58,10 @@
 								<td bgcolor="#f2f1ec" class="fs12">DBバージョン</td>
 								<td bgcolor="#ffffff" class="fs12" align="right"><!--{$db_version}--></td>
 							</tr>							
+							<tr>
+								<td bgcolor="#f2f1ec" class="fs12">OSバージョン</td>
+								<td bgcolor="#ffffff" class="fs12" align="right"><!--{$os_version|escape}--></td>
+							</tr>
 						</table>
 						
 						<!--ショップの状況ここから-->

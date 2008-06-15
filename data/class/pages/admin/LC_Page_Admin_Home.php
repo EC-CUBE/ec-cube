@@ -68,6 +68,9 @@ class LC_Page_Admin_Home extends LC_Page {
         // PHPバージョンの取得
         $this->php_version = "PHP " . phpversion();
 
+        // OSバージョンの取得
+        $this->os_version = php_uname('s') . ' ' . php_uname('r');
+
         // 現在の会員数
         $this->customer_cnt = $this->lfGetCustomerCnt($conn);
 
