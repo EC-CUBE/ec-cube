@@ -1,0 +1,40 @@
+#tree{
+    height: 410px;
+    width: 308px;
+    overflow: auto;
+    margin: 0px;
+    background-color : #FFFFFF;
+    border-style: solid;
+    border-color: #C0C0C0;
+    border-width: 1px
+}
+#filemanager-block-tree {
+    float: left;
+    width: 328px;
+    height: 430px;
+}
+
+#file_view {
+    height: 380px;
+    width: 330px;
+    overflow: auto;
+    background-color : #FFFFFF;
+    border-style: solid;
+    border-color: #C0C0C0;
+    border-width: 1px
+}
+#filemanager-block-table {
+    margin: 0 0 20px 0;
+}
+
+#now_dir {
+    height: 20px;
+    width: 300px;
+    padding-left: 3px;
+    margin: 0 0 10px 0;
+    overflow: hidden;
+    background-color : #FFFFFF;
+    border-style: solid;
+    border-color: #C0C0C0;
+    border-width: 1px
+}

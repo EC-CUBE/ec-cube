@@ -429,5 +429,15 @@ function fnDispChange(disp_id, inner_id, disp_flg){
 	}
 }
 
-
-
+// ページ読み込み時の処理
+$(function(){
+// ヘッダナビゲーション
+    $("#navi > li").hover(
+        function(){
+            $(this).addClass("sfhover");
+        },
+        function(){
+            $(this).removeClass("sfhover");
+        }
+    );
+});
