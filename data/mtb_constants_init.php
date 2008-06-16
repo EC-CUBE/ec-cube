@@ -550,6 +550,8 @@ define('OS_TYPE', "LINUX");
 define('SMTP_HOST', "127.0.0.1");
 /** SMTPポート */
 define('SMTP_PORT', "25");
+/** アップデート時にサイト情報を送出するか */
+define('UPDATE_SEND_SITE_INFO', false);
 /** デフォルトテンプレート名 */
 define('DEFAULT_TEMPLATE_NAME', "default");
 /** テンプレート名 */

@@ -1049,6 +1049,7 @@ INSERT INTO mtb_constants VALUES ('MAIL_BACKEND','"smtp"',285,'Pear::Mail バッ
 INSERT INTO mtb_constants VALUES ('OS_TYPE','"LINUX"',286,'OS種別:WIN|LINUX');
 INSERT INTO mtb_constants VALUES ('SMTP_HOST','"127.0.0.1"',287,'SMTPサーバー');
 INSERT INTO mtb_constants VALUES ('SMTP_PORT','"25"',288,'SMTPポート');
+INSERT INTO mtb_constants VALUES ('UPDATE_SEND_SITE_INFO','false',289,'アップデート時にサイト情報を送出するか');
 INSERT INTO mtb_constants VALUES ('DEFAULT_TEMPLATE_NAME', '"default"', 300,'デフォルトテンプレート名');
 INSERT INTO mtb_constants VALUES ('TEMPLATE_NAME', 'DEFAULT_TEMPLATE_NAME', 301,'テンプレート名');
 INSERT INTO mtb_constants VALUES ('SMARTY_TEMPLATES_DIR',' DATA_PATH . "Smarty/templates/"', 301,'SMARTYテンプレート');
