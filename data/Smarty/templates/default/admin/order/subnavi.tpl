@@ -25,11 +25,11 @@
 <!--
 // モードとキーを指定してSUBMITを行う。
 function fnSubFormStatusSubmit(mode, keyname, keyid) {
-	document.subFormStatus['mode'].value = mode;
-	if(keyname != "" && keyid != "") {
-		document.subFormStatus[keyname].value = keyid;
-	}
-	document.subFormStatus.submit();
+    document.subFormStatus['mode'].value = mode;
+    if(keyname != "" && keyid != "") {
+        document.subFormStatus[keyname].value = keyid;
+    }
+    document.subFormStatus.submit();
 }
 //-->
 </script>
@@ -39,14 +39,22 @@ function fnSubFormStatusSubmit(mode, keyname, keyid) {
 <input type="hidden" name="search_pageno" value="<!--{$tpl_pageno}-->" />
 <input type="hidden" name="order_id" value="" />
 <ul id="navi-order" class="level1">
-<li<!--{if $tpl_subno == 'index'}--> class="on"<!--{/if}--> id="navi-order-index"><a href="<!--{$smarty.const.URL_DIR}-->admin/order/index.php"><span>受注管理</span></a></li>
-<li<!--{if $tpl_subno != 'add'}--> class="on"<!--{/if}--> id="navi-order-add"><a href="<!--{$smarty.const.URL_DIR}-->admin/order/edit.php?mode=add"><span>新規受注入力</span></a></li>
-<li<!--{if $tpl_subno == 'status'}--> class="on"<!--{/if}--> id="navi-order-status"><a href="<!--{$smarty.const.URL_DIR}-->admin/order/status.php"><span>ステータス管理</span></a>
-<ul id="navi-status-sub" class="level2">
-  <!--{foreach key=key item=item from=$arrORDERSTATUS}-->
-    <li<!--{if $key == $SelectedStatus || $key == $defaultstatus}--> class="on"<!--{/if}--> id="navi-status-<!--{$key}-->"><a href="#" onclick="document.form1.search_pageno.value='1'; fnModeSubmit('search','status','<!--{$key}-->' );"><span><!--{$item}--></span></a></li>
-  <!--{/foreach}-->
-</ul>
-</li>
+    <li id="navi-order-index"
+        class="<!--{if $tpl_mainno == 'order' && $tpl_subno == 'index'}-->on<!--{/if}-->"
+    ><a href="<!--{$smarty.const.URL_DIR}-->admin/order/index.php"><span>受注管理</span></a></li>
+    <li id="navi-order-add"
+        class="<!--{if $tpl_mainno == 'order' && $tpl_subno == 'add'}-->on<!--{/if}-->"
+    ><a href="<!--{$smarty.const.URL_DIR}-->admin/order/edit.php?mode=add"><span>新規受注入力</span></a></li>
+    <li id="navi-order-status"
+        class="<!--{if $tpl_mainno == 'order' && $tpl_subno == 'status'}-->on<!--{/if}-->"
+    ><a href="<!--{$smarty.const.URL_DIR}-->admin/order/status.php"><span>ステータス管理</span></a>
+        <ul id="navi-status-sub" class="level2">
+            <!--{foreach key=key item=item from=$arrORDERSTATUS}-->
+                <li id="navi-status-<!--{$key}-->"
+                    class="<!--{if $tpl_mainno == 'order' && $tpl_subno == 'status' && ($key == $SelectedStatus || $key == $defaultstatus)}-->on<!--{/if}-->"
+                ><a href="#" onclick="document.form1.search_pageno.value='1'; fnModeSubmit('search','status','<!--{$key}-->' );"><span><!--{$item}--></span></a></li>
+            <!--{/foreach}-->
+        </ul>
+    </li>
 </ul>
 </form>
