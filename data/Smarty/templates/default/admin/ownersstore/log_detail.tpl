@@ -31,7 +31,7 @@
   <h2><!--{$tpl_subtitle}--></h2>
   <table class="form">
     <tr>
-      <th>ﾓｼﾞｭｰﾙ名</th>
+      <th>モジュール名</th>
       <td><!--{$arrLogDetail.module_name|escape}--></td>
     </tr>
     <tr>
@@ -40,10 +40,10 @@
     </tr>
     <tr>
       <th>日時</th>
-      <td width="" align="left"><!--{$arrLogDetail.update_date|sfDispDBDate|escape}--></td>
+      <td><!--{$arrLogDetail.update_date|sfDispDBDate|escape}--></td>
     </tr>
     <tr>
-      <th>ﾊﾞｯｸｱｯﾌﾟﾊﾟｽ</th>
+      <th>バックアップパス</th>
       <td><!--{$arrLogDetail.buckup_path|wordwrap:100:"
 ":true|escape|nl2br}--></td>
     </tr>
