@@ -22,9 +22,19 @@
  */
 *}-->
 <ul id="navi-total" class="level1">
-<li<!--{if ($arrForm.page.value == 'term' || $arrForm.page.value == '')}--> class="on"<!--{/if}--> id="navi-total-term"><a href="<!--{$smarty.const.URL_DIR}-->admin/total/index.php?page=term"><span>期間別集計</span></a></li>
-<li<!--{if ($arrForm.page.value == 'products')}--> class="on"<!--{/if}--> id="navi-total-products"><a href="<!--{$smarty.const.URL_DIR}-->admin/total/index.php?page=products"><span>商品別集計</span></a></li>
-<li<!--{if ($arrForm.page.value == 'age')}--> class="on"<!--{/if}--> id="navi-total-age"><a href="<!--{$smarty.const.URL_DIR}-->admin/total/index.php?page=age"><span>年代別集計</span></a></li>
-<li<!--{if ($arrForm.page.value == 'job')}--> class="on"<!--{/if}--> id="navi-total-job"><a href="<!--{$smarty.const.URL_DIR}-->admin/total/index.php?page=job"><span>職業別集計</span></a></li>
-<li<!--{if ($arrForm.page.value == 'member')}--> class="on"<!--{/if}--> id="navi-total-member"><a href="<!--{$smarty.const.URL_DIR}-->admin/total/index.php?page=member"><span>会員別集計</span></a></li>
+    <li id="navi-total-term"
+        class="<!--{if ($tpl_mainno == 'total' && ($arrForm.page.value == 'term' || $arrForm.page.value == ''))}-->on<!--{/if}-->"
+    ><a href="<!--{$smarty.const.URL_DIR}-->admin/total/index.php?page=term"><span>期間別集計</span></a></li>
+    <li id="navi-total-products"
+        class="<!--{if ($tpl_mainno == 'total' && $arrForm.page.value == 'products')}-->on<!--{/if}-->"
+    ><a href="<!--{$smarty.const.URL_DIR}-->admin/total/index.php?page=products"><span>商品別集計</span></a></li>
+    <li id="navi-total-age"
+        class="<!--{if ($tpl_mainno == 'total' && $arrForm.page.value == 'age')}-->on<!--{/if}-->"
+    ><a href="<!--{$smarty.const.URL_DIR}-->admin/total/index.php?page=age"><span>年代別集計</span></a></li>
+    <li id="navi-total-job"
+        class="<!--{if ($tpl_mainno == 'total' && $arrForm.page.value == 'job')}-->on<!--{/if}-->"
+    ><a href="<!--{$smarty.const.URL_DIR}-->admin/total/index.php?page=job"><span>職業別集計</span></a></li>
+    <li id="navi-total-member"
+        class="<!--{if ($tpl_mainno == 'total' && $arrForm.page.value == 'member')}-->on<!--{/if}-->"
+    ><a href="<!--{$smarty.const.URL_DIR}-->admin/total/index.php?page=member"><span>会員別集計</span></a></li>
 </ul>
