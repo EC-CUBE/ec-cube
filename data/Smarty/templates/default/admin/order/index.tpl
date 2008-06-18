@@ -98,7 +98,7 @@
         <select name="search_sbirthday" style="<!--{$arrErr.search_sbirthyear|sfGetErrorColor}-->">
         <option value="">--</option>
         <!--{html_options options=$arrDay selected=$arrForm.search_sbirthday.value}-->
-        </select>日?
+        </select>日～
         <select name="search_ebirthyear" style="<!--{$arrErr.search_ebirthyear|sfGetErrorColor}-->">
         <option value="">----</option>
         <!--{html_options options=$arrBirthYear selected=$arrForm.search_ebirthyear.value}-->
@@ -145,7 +145,7 @@
         <select name="search_sorderday" style="<!--{$arrErr.search_sorderyear|sfGetErrorColor}-->">
         <option value="">--</option>
         <!--{html_options options=$arrDay selected=$arrForm.search_sorderday.value}-->
-        </select>日?
+        </select>日～
         <select name="search_eorderyear" style="<!--{$arrErr.search_eorderyear|sfGetErrorColor}-->">
         <option value="">----</option>
         <!--{html_options options=$arrRegistYear selected=$arrForm.search_eorderyear.value}-->
