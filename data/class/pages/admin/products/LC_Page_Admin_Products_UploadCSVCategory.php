@@ -49,6 +49,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
         $this->tpl_subnavi = 'products/subnavi.tpl';
         $this->tpl_mainno = 'products';
         $this->tpl_subno = 'upload_csv_category';
+        $this->tpl_subtitle = 'カテゴリ登録CSV';
     }
 
     /**

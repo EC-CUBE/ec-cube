@@ -25,7 +25,7 @@
 require_once(CLASS_PATH . "pages/LC_Page.php");
 
 /**
- * 会員規約設定 のページクラス.
+ * 定休日管理のページクラス.
  *
  * @package Page
  * @author LOCKON CO.,LTD.
@@ -46,7 +46,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page {
         $this->tpl_mainpage = 'basis/holiday.tpl';
         $this->tpl_subnavi = 'basis/subnavi.tpl';
         $this->tpl_subno = 'holiday';
-        $this->tpl_subtitle = '定休日登録';
+        $this->tpl_subtitle = '定休日管理';
         $this->tpl_mainno = 'basis';
     }
 

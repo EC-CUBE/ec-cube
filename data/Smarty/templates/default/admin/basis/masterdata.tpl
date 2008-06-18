@@ -22,7 +22,6 @@
  */
 *}-->
 <div id="basis" class="contents-main">
-  <h2>マスタデータ管理</h2>
   <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
   <input type="hidden" name="mode" value="show" />
   <div id="basis-masterdata-select">

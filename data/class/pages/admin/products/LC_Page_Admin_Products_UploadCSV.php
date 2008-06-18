@@ -25,7 +25,7 @@
 require_once(CLASS_PATH . "pages/LC_Page.php");
 
 /**
- * CSV アップロード のページクラス.
+ * 商品登録CSVのページクラス.
  *
  * @package Page
  * @author LOCKON CO.,LTD.
@@ -53,6 +53,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page {
         $this->tpl_subnavi = 'products/subnavi.tpl';
         $this->tpl_mainno = 'products';
         $this->tpl_subno = 'upload_csv';
+        $this->tpl_subtitle = '商品登録CSV';
     }
 
     /**

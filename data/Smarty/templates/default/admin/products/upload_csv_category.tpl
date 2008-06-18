@@ -25,8 +25,6 @@
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" enctype="multipart/form-data" onSubmit="winSubmit('','form1', 'upload', 500, 400)">
 <input type="hidden" name="mode" value="csv_upload" />
 <div id="products" class="contents-main">
-  <h2>カテゴリ登録CSV</h2>
-
   <!--{if $tpl_errtitle != ""}-->
   <p>
     <span class="attention"><!--{$tpl_errtitle}--><br />

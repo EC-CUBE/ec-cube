@@ -25,7 +25,6 @@
 <input type="hidden" name="search_pageno" value="" />
 <input type="hidden" name="mode" value="" />
 <div id="mail" class="contents-main">
-  <h2>配信履歴</h2>
   <table class="list center">
     <tr>
       <th>配信開始時刻</th>

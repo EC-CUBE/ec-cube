@@ -58,6 +58,7 @@ class LC_Page_Admin_Basis_Parameter extends LC_Page {
         $this->tpl_subnavi = 'basis/subnavi.tpl';
         $this->tpl_subno = 'parameter';
         $this->tpl_mainno = 'basis';
+        $this->tpl_subtitle = 'パラメータ設定';
     }
 
     /**

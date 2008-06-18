@@ -47,6 +47,7 @@ class LC_Page_Admin_Basis_Masterdata extends LC_Page {
         $this->tpl_subnavi = 'basis/subnavi.tpl';
         $this->tpl_subno = 'masterdata';
         $this->tpl_mainno = 'basis';
+        $this->tpl_subtitle = 'マスタデータ管理';
     }
 
     /**

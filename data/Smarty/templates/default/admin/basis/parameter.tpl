@@ -24,7 +24,6 @@
 <form name="form1" id="form1" method="post" action="./parameter.php">
 <input type="hidden" name="mode" value="update" />
 <div id="basis" class="contents-main">
-  <h2>パラメータ設定</h2>
   <ul>
     <li>パラメータの値がPHP定数として設定されます。</li>
     <li>文字列は「&quot;」で囲んで下さい。</li>
