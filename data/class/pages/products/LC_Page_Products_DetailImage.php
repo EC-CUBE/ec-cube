@@ -57,14 +57,14 @@ class LC_Page_Products_DetailImage extends LC_Page {
         $objDb = new SC_Helper_DB_Ex();
 
         // 管理ページからの確認の場合は、非公開の商品も表示する。
-        if(isset($_GET['admim']) && $_GET['admin'] == 'on') {
+        if (isset($_GET['admim']) && $_GET['admin'] == 'on') {
             $where = "del_flg = 0";
         } else {
             $where = "del_flg = 0 AND status = 1";
         }
 
         // 値の正当性チェック
-        if(!SC_Utils_Ex::sfIsInt($_GET['product_id']) || !$objDb->sfIsRecord("dtb_products", "product_id", $_GET['product_id'], $where)) {
+        if (!SC_Utils_Ex::sfIsInt($_GET['product_id']) || !$objDb->sfIsRecord("dtb_products", "product_id", $_GET['product_id'], $where)) {
             SC_Utils_Ex::sfDispSiteError(PRODUCT_NOT_FOUND);
         }
 
@@ -74,22 +74,23 @@ class LC_Page_Products_DetailImage extends LC_Page {
         $objQuery = new SC_Query();
         $col = "name, $image_key";
         $arrRet = $objQuery->select($col, "dtb_products", "product_id = ?", array($_GET['product_id']));
-		$image_path = IMAGE_SAVE_DIR . $arrRet[0][$image_key];
-		
-		if(file_exists($image_path)) {
-	        list($width, $height) = getimagesize($image_path);
-		} else {
-			$width = 0;
-			$height = 0;
-		}
-	    
-		$this->tpl_width = $width;
-	    $this->tpl_height = $height;
+        $image_path = IMAGE_SAVE_DIR . $arrRet[0][$image_key];
+        
+        if (file_exists($image_path)) {
+            list($width, $height) = getimagesize($image_path);
+        } else {
+            $width = 0;
+            $height = 0;
+        }
+        
+        $this->tpl_width = $width;
+        $this->tpl_height = $height;
         $this->tpl_table_width = $this->tpl_width + 20;
         $this->tpl_table_height = $this->tpl_height + 20;
 
         $this->tpl_image = $arrRet[0][$image_key];
         $this->tpl_name = $arrRet[0]['name'];
+        $this->tpl_image_key = $image_key;
 
         $objView->assignobj($this);
         $objView->display($this->tpl_mainpage);

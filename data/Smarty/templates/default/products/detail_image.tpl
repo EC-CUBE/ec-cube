@@ -21,7 +21,7 @@
  *}-->
 <!--{include file="`$smarty.const.TEMPLATE_DIR`popup_header.tpl" subtitle="拡大画像"}-->
 
-<!--{if $tpl_width > 300}-->
+<!--{if $tpl_image_key == 'main_large_image'}-->
   <!--{assign var=id value=bigimage}-->
 <!--{else}-->
   <!--{assign var=id value=cartimage}-->
