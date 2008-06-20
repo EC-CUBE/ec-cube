@@ -25,7 +25,7 @@
 require_once(CLASS_PATH . "pages/LC_Page.php");
 
 /**
- * 商品登録(規格)のページクラス.
+ * 商品登録(商品規格)のページクラス.
  *
  * @package Page
  * @author LOCKON CO.,LTD.

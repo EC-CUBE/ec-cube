@@ -26,7 +26,7 @@
 function lfnDispChange(){
   inner_id = 'switch';
 
-  cnt = form1.item_cnt.value;
+  cnt = document.form1.item_cnt.value;
   
   if($('#disp_url1').css("display") == 'none'){
     for (i = 1; i <= cnt; i++) {
@@ -187,38 +187,40 @@ function lfnDispChange(){
   <!--検索結果表示テーブル-->
   <table class="list" id="products-search-result">
     <tr>
-      <th>商品ID</th>
-      <th>商品画像</th>
-      <th>商品コード</th>
-      <th>価格(円)</th>
+      <th rowspan="2">商品ID</th>
+      <th rowspan="2">商品画像</th>
+      <th rowspan="2">商品コード</th>
+      <th rowspan="2">価格(円)</th>
       <th>商品名</th>
-      <th>カテゴリ <a href="#" onClick="lfnDispChange();"> >> URL表示</a></th>
-      <th>在庫</th>
-      <th>種別</th>
-      <th>編集</th>
-      <th>確認</th>
+      <th rowspan="2">在庫</th>
+      <th rowspan="2">種別</th>
+      <th rowspan="2">編集</th>
+      <th rowspan="2">確認</th>
       <!--{if $smarty.const.OPTION_CLASS_REGIST == 1}-->
-      <th>規格</th>
+      <th rowspan="2">規格</th>
       <!--{/if}-->
-      <th>削除</th>
-      <th>複製</th>
+      <th rowspan="2">削除</th>
+      <th rowspan="2">複製</th>
+    </tr>
+    <tr>
+      <th><a href="#" onClick="lfnDispChange(); return false;">カテゴリ ⇔ URL</a></th>
     </tr>
 
     <!--{section name=cnt loop=$arrProducts}-->
     <!--▼商品<!--{$smarty.section.cnt.iteration}-->-->
     <!--{assign var=status value="`$arrProducts[cnt].status`"}-->
     <tr style="background:<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->;">
-      <td><!--{$arrProducts[cnt].product_id}--></td>
-      <td>
-      <!--{if $arrProducts[cnt].main_list_image != ""}-->
-        <!--{assign var=image_path value="`$arrProducts[cnt].main_list_image`"}-->
-      <!--{else}-->
-        <!--{assign var=image_path value="`$smarty.const.NO_IMAGE_DIR`"}-->
-      <!--{/if}-->
+      <td rowspan="2"><!--{$arrProducts[cnt].product_id}--></td>
+      <td rowspan="2">
+        <!--{if $arrProducts[cnt].main_list_image != ""}-->
+          <!--{assign var=image_path value="`$arrProducts[cnt].main_list_image`"}-->
+        <!--{else}-->
+          <!--{assign var=image_path value="`$smarty.const.NO_IMAGE_DIR`"}-->
+        <!--{/if}-->
       <img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&amp;width=65&amp;height=65">
       </td>
-      <td><!--{$arrProducts[cnt].product_code|escape|default:"-"}--></td>
-      <td class="right">
+      <td rowspan="2"><!--{$arrProducts[cnt].product_code|escape|default:"-"}--></td>
+      <td rowspan="2" class="right">
         <!--{* 価格 *}-->
         <!--{if $arrProducts[cnt].price02 != ""}-->
         <!--{$arrProducts[cnt].price02|number_format}-->
@@ -227,6 +229,26 @@ function lfnDispChange(){
         <!--{/if}-->
       </td>
       <td><!--{$arrProducts[cnt].name|escape}--></td>
+      <td rowspan="2">
+        <!--{* 在庫 *}-->
+        <!--{if $arrProducts[cnt].stock_unlimited == '1'}-->
+        無制限
+        <!--{else}-->
+        <!--{$arrProducts[cnt].stock|escape|default:"-"}-->
+        <!--{/if}-->
+      </td>
+      <!--{* 表示 *}-->
+      <!--{assign var=key value=$arrProducts[cnt].status}-->
+      <td rowspan="2"><!--{$arrDISP[$key]}--></td>
+      <td rowspan="2"><span class="icon_edit"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnChangeAction('./product.php'); fnModeSubmit('pre_edit', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >編集</a></span></td>
+      <td rowspan="2"><span class="icon_confirm"><a href="<!--{$smarty.const.SITE_URL|sfTrimURL}-->/products/detail.php?product_id=<!--{$arrProducts[cnt].product_id}-->&amp;admin=on" target="_blank">確認</a></span></td>
+      <!--{if $smarty.const.OPTION_CLASS_REGIST == 1}-->
+      <td rowspan="2"><span class="icon_class"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnChangeAction('./product_class.php'); fnModeSubmit('pre_edit', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >規格</a></span></td>
+      <!--{/if}-->
+      <td rowspan="2"><span class="icon_delete"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnSetFormValue('category_id', '<!--{$arrProducts[cnt].category_id}-->'); fnModeSubmit('delete', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;">削除</a></span></td>
+      <td rowspan="2"><span class="icon_copy"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnChangeAction('./product.php'); fnModeSubmit('copy', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >複製</a></span></td>
+    </tr>
+    <tr>
       <td>
         <!--{* カテゴリ名 *}-->
         <div id="disp_cat<!--{$smarty.section.cnt.iteration}-->" style="display:<!--{$cat_flg}-->">
@@ -241,24 +263,6 @@ function lfnDispChange(){
         <!--{$smarty.const.SITE_URL|sfTrimURL}-->/products/detail.php?product_id=<!--{$arrProducts[cnt].product_id}-->
         </div>
       </td>
-      <td>
-        <!--{* 在庫 *}-->
-        <!--{if $arrProducts[cnt].stock_unlimited == '1'}-->
-        無制限
-        <!--{else}-->
-        <!--{$arrProducts[cnt].stock|escape|default:"-"}-->
-        <!--{/if}-->
-      </td>
-      <!--{* 表示 *}-->
-      <!--{assign var=key value=$arrProducts[cnt].status}-->
-      <td><!--{$arrDISP[$key]}--></td>
-      <td><span class="icon_edit"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnChangeAction('./product.php'); fnModeSubmit('pre_edit', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >編集</a></span></td>
-      <td><span class="icon_confirm"><a href="<!--{$smarty.const.SITE_URL|sfTrimURL}-->/products/detail.php?product_id=<!--{$arrProducts[cnt].product_id}-->&amp;admin=on" target="_blank">確認</a></span></td>
-      <!--{if $smarty.const.OPTION_CLASS_REGIST == 1}-->
-      <td><span class="icon_class"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnChangeAction('./product_class.php'); fnModeSubmit('pre_edit', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >規格</a></span></td>
-      <!--{/if}-->
-      <td><span class="icon_delete"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnSetFormValue('category_id', '<!--{$arrProducts[cnt].category_id}-->'); fnModeSubmit('delete', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;">削除</a></span></td>
-      <td><span class="icon_copy"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnChangeAction('./product.php'); fnModeSubmit('copy', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >複製</a></span></td>
     </tr>
     <!--▲商品<!--{$smarty.section.cnt.iteration}-->-->
     <!--{/section}-->

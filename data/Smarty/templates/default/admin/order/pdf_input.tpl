@@ -38,7 +38,9 @@ function lfPopwinSubmit(formName) {
 
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
 <input type="hidden" name="mode" value="confirm" />
-<input type="hidden" name="order_id" value="<!--{$arrForm.order_id}-->" />
+<!--{foreach from=$arrForm.order_id item=order_id}-->
+<input type="hidden" name="order_id[]" value="<!--{$order_id}-->">
+<!--{/foreach}-->
 <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->" />
 
   <h2><!--コンテンツタイトル-->帳票の作成</h2>
@@ -46,7 +48,11 @@ function lfPopwinSubmit(formName) {
   <table class="form">
     <tr>
       <th>受注番号</th>
-      <td><!--{$arrForm.order_id}--></td>
+      <td>
+        <!--{foreach from=$arrForm.order_id item=order_id}-->
+        <!--{$order_id}-->,
+        <!--{/foreach}-->
+      </td>
     </tr>
     <tr>
       <th>発行日<span class="attention">※</span></th>

@@ -322,8 +322,8 @@
       <input type="hidden" name="classcategory_id1[<!--{$key}-->]" value="<!--{$arrForm.classcategory_id1.value[$key]}-->" id="classcategory_id1_<!--{$key}-->" />
       <input type="hidden" name="classcategory_id2[<!--{$key}-->]" value="<!--{$arrForm.classcategory_id2.value[$key]}-->" id="classcategory_id2_<!--{$key}-->" />
       </td>
-      <td> 円</td>
-      <td></td>
+      <td align="center"><input type="text" name="price[<!--{$key}-->]" value="<!--{$arrForm.price.value[$key]|escape}-->" size="6" class="box6" maxlength="<!--{$arrForm.price.length}-->" id="price_<!--{$key}-->"/> 円</td>
+      <td align="center"><input type="text" name="quantity[<!--{$key}-->]" value="<!--{$arrForm.quantity.value[$key]|escape}-->" size="3" class="box3" maxlength="<!--{$arrForm.quantity.length}-->"/></td>
       <!--{assign var=price value=`$arrForm.price.value[$key]`}-->
       <!--{assign var=quantity value=`$arrForm.quantity.value[$key]`}-->
       <td><!--{$price|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}--> 円</td>
