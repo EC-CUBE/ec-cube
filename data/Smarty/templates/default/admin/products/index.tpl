@@ -36,7 +36,7 @@ function lfnDispChange(){
       disp_id = 'disp_cat'+i;
       $('#' + disp_id).css("display", "none");
       
-      $('#' + inner_id).html('  URL <a href="#" onClick="lfnDispChange();"> >> カテゴリ表示<\/a>');
+      $('#' + inner_id).html('  URL <a href="#" onClick="lfnDispChange();"> &gt;&gt; カテゴリ表示<\/a>');
     }
   }else{
     for (i = 1; i <= cnt; i++) {
@@ -46,7 +46,7 @@ function lfnDispChange(){
       disp_id = 'disp_cat'+i;
       $('#' + disp_id).css("display", "");
       
-      $('#' + inner_id).html('  カテゴリ <a href="#" onClick="lfnDispChange();"> >> URL表示<\/a>');
+      $('#' + inner_id).html('  カテゴリ <a href="#" onClick="lfnDispChange();"> &gt;&gt; URL表示<\/a>');
     }
   }
 
@@ -176,10 +176,10 @@ function lfnDispChange(){
     <span class="attention"><!--検索結果数--><!--{$tpl_linemax}-->件</span>&nbsp;が該当しました。
     <!--検索結果-->
     <!--{if $smarty.const.ADMIN_MODE == '1'}-->
-    <button type="button" onclick="fnModeSubmit('delete_all','','');"><span>検索結果をすべて削除</span></button>
+    <button type="button" onclick="fnModeSubmit('delete_all','','');">検索結果をすべて削除</button>
     <!--{/if}-->
-    <button type="button" onclick="fnModeSubmit('csv','','');"><span>CSV DOWNLOAD</span></button>
-    <a href="../contents/csv.php?tpl_subno_csv=product"> >> CSV出力項目設定</a>
+    <button type="button" onclick="fnModeSubmit('csv','','');">CSV DOWNLOAD</button>
+    <a href="../contents/csv.php?tpl_subno_csv=product"> &gt;&gt; CSV出力項目設定</a>
   </p>
   <!--{include file=$tpl_pager}-->
 

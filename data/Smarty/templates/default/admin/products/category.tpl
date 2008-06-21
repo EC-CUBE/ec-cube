@@ -29,8 +29,8 @@
   <h2>カテゴリー設定(最大<!--{$smarty.const.LEVEL_MAX}-->階層まで)</h2>
 
   <div class="btn">
-    <button type="button" onclick="fnModeSubmit('csv','','');"><span>CSV DOWNLOAD</span></button>
-    <a href="../contents/csv.php?tpl_subno_csv=category"><span> >> CSV出力項目設定 </span></a>
+    <button type="button" onclick="fnModeSubmit('csv','','');">CSV DOWNLOAD</button>
+    <a href="../contents/csv.php?tpl_subno_csv=category">&gt;&gt; CSV出力項目設定</a>
   </div>
 
   <!--{* ▼画面左 *}-->

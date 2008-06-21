@@ -29,7 +29,7 @@
     <!--{foreach name=page key=key item=item from=$arrPageData}-->
     <input type="hidden" name="disp_flg<!--{$item.page_id}-->" value="<!--{$disp_flg[$item.page_id]}-->" />
     <!-- <!--{$item.page_name}--> ここから -->
-    <h2><!--{$item.page_name}--> <!--{$item.url}--><a href="#" id="switch<!--{$item.page_id}-->" style="float:right " onClick="fnDispChange('disp<!--{$item.page_id}-->', 'switch<!--{$item.page_id}-->', 'disp_flg<!--{$item.page_id}-->');"><!--{if $disp_flg[$item.page_id] == ""}--> >> 非表示<!--{else}--> << 表示<!--{/if}--></a></h2>
+    <h2><!--{$item.page_name}--> <!--{$item.url}--><a href="#" id="switch<!--{$item.page_id}-->" style="float:right " onClick="fnDispChange('disp<!--{$item.page_id}-->', 'switch<!--{$item.page_id}-->', 'disp_flg<!--{$item.page_id}-->');"><!--{if $disp_flg[$item.page_id] == ""}--> &gt;&gt; 非表示<!--{else}--> << 表示<!--{/if}--></a></h2>
     
     <div id="disp<!--{$item.page_id}-->" style="display:<!--{$disp_flg[$item.page_id]}-->">
       <table>

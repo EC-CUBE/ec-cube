@@ -2,6 +2,11 @@
 
 * { margin: 0; padding: 0; }
 
+/* 上記による Fierfox 2 崩れ対応 */
+option {
+    margin-right: 0.5em;
+}
+
 html {height: 100%;}
 body {
     font-size: 80%;

@@ -190,8 +190,8 @@ function ChangeSize(button, TextArea, Max, Min, row_tmp){
       </td>
       <td>
         <div class="btn">
-          <button type="button" onClick="fnReplaceOption('choice_list[]', 'output_list[]');"><span><< 追加</span></button><br/>
-          <button type="button" onClick="fnReplaceOption('output_list[]', 'choice_list[]');"><span>削除 >></span></button>
+          <button type="button" onClick="fnReplaceOption('choice_list[]', 'output_list[]');"><< 追加</button><br/>
+          <button type="button" onClick="fnReplaceOption('output_list[]', 'choice_list[]');">削除 &gt;&gt;</button>
         </div>
       </td>
       <td>

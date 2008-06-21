@@ -241,8 +241,8 @@
     <!--{if $smarty.const.ADMIN_MODE == '1'}-->
     <button type="button" onclick="fnModeSubmit('delete_all','','');"><span>検索結果をすべて削除</span></button>
     <!--{/if}-->
-    <button type="button" onclick="fnModeSubmit('csv','','');"><span>CSV DOWNLOAD</span></button>
-    <a href="../contents/csv.php?tpl_subno_csv=order"><span> >> CSV出力項目設定 </span></a>
+    <button type="button" onclick="fnModeSubmit('csv','','');">CSV DOWNLOAD</button>
+    <a href="../contents/csv.php?tpl_subno_csv=order">&gt;&gt; CSV出力項目設定</a>
     <button type="button" onclick="fnSelectCheckSubmit();"><span>PDF一括出力</span></button>
   </p>
   <!--{include file=$tpl_pager}-->
@@ -266,8 +266,8 @@
       <th>対応状況</th>
       <th>
         帳票<br />
-        <button type="button" onclick="fnBoxChecked(true);"><span>全て選択</span></button>
-        <button type="button" onclick="fnBoxChecked(false);"><span>全て解除</span></button>
+        <button type="button" onclick="fnBoxChecked(true);">全て選択</button>
+        <button type="button" onclick="fnBoxChecked(false);">全て解除</button>
       </th>
       <th>編集</th>
       <th>メール</th>

@@ -189,7 +189,7 @@
       <th>パスワード<span class="attention"> *</span></th>
       <td>
         <span class="attention"><!--{$arrErr.password}--></span>
-        <input type="password" name="password" value="<!--{$list_data.password|escape}-->" size="30" class="box30" <!--{if $arrErr.password != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />　半角英数小文字4?10文字（記号不可）
+        <input type="password" name="password" value="<!--{$list_data.password|escape}-->" size="30" class="box30" <!--{if $arrErr.password != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />　半角英数小文字4～10文字（記号不可）
       </td>
     </tr>
     <tr>
@@ -241,7 +241,7 @@
 <input type="hidden" name="edit_customer_id" value="<!--{$edit_customer_id}-->" >
 
   <h2>購入履歴一覧</h2>
-　<p><span class="attention"><!--購入履歴一覧--><!--{$tpl_linemax}-->件</span>&nbsp;が該当しました。</p>
+  <p><span class="attention"><!--購入履歴一覧--><!--{$tpl_linemax}-->件</span>&nbsp;が該当しました。</p>
 
   <!--{include file=$tpl_pager}-->
 

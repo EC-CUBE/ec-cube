@@ -163,21 +163,17 @@ function init () {
   <h2>編集可能ページ</h2>
 
   <table class="list center">
-  <!--{foreach key=key item=item from=$arrEditPage}-->
+  <!--{foreach item=item from=$arrEditPage}-->
     <tr style="background-color:<!--{if $item.page_id == $page_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->;">
       <td>
         <a href="<!--{$smarty.server.PHP_SELF|escape}-->?page_id=<!--{$item.page_id}-->" ><!--{$item.page_name}--></a>
       </td>
       <td>
-        <div class="btn">
-          <button type='button' onclick="location.href='./main_edit.php?page_id=<!--{$item.page_id}-->'"><span>メイン編集</span></button>
-        </div>
+        <button type='button' onclick="location.href='./main_edit.php?page_id=<!--{$item.page_id}-->'"><span>メイン編集</span></button>
       </td>
       <td>
         <!--{if $item.edit_flg == 1}-->
-        <div class="btn">
           <button type='button' onclick="fnTargetSelf(); fnFormModeSubmit('form1','delete','','');"><span>削除</span></button>
-        </div>
         <!--{/if}-->
       </td>
     </tr>
@@ -190,7 +186,7 @@ function init () {
 
 
 
-<!--{foreach key=key item=item from=$tpl_arrBloc name="bloc_loop"}-->
+<!--{foreach item=item from=$tpl_arrBloc name="bloc_loop"}-->
 <div align="center" target_id="<!--{$item.target_id}-->" did="<!--{$smarty.foreach.bloc_loop.iteration}-->" class="dragged_elm" id="<!--{$item.target_id}-->"
    style="left:350px; top:0px; filter: alpha(opacity=100); opacity: 1; width: 120px;">
    <!--{$item.name}-->

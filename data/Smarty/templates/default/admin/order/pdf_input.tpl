@@ -48,11 +48,7 @@ function lfPopwinSubmit(formName) {
   <table class="form">
     <tr>
       <th>受注番号</th>
-      <td>
-        <!--{foreach from=$arrForm.order_id item=order_id}-->
-        <!--{$order_id}-->,
-        <!--{/foreach}-->
-      </td>
+      <td><!--{$arrForm.order_id|@join:', '}--></td>
     </tr>
     <tr>
       <th>発行日<span class="attention">※</span></th>

@@ -27,7 +27,7 @@
 <div id="basis" class="contents-main">
   <h2>配送業者登録</h2>
 
-  <table>
+  <table class="list">
     <tr>
       <th>配送業者</th>
       <th>名称</th>

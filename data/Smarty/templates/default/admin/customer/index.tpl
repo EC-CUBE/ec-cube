@@ -109,27 +109,27 @@
       <td>
         <!--{if $arrErr.b_start_year || $arrErr.b_end_year}--><span class="attention"><!--{$arrErr.b_start_year}--><!--{$arrErr.b_end_year}--></span><br /><!--{/if}-->
         <select name="b_start_year" <!--{if $arrErr.b_start_year || $arrErr.b_end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
-          <option value="" selected="selected">------</option>
+          <option value="" selected="selected">----</option>
           <!--{html_options options=$arrYear selected=$arrForm.b_start_year}-->
         </select>年
         <select name="b_start_month" <!--{if $arrErr.b_start_year || $arrErr.b_end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
-          <option value="" selected="selected">----</option>
+          <option value="" selected="selected">--</option>
           <!--{html_options options=$arrMonth selected=$arrForm.b_start_month}-->
         </select>月
         <select name="b_start_day" <!--{if $arrErr.b_start_year || $arrErr.b_end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
-          <option value="" selected="selected">----</option>
+          <option value="" selected="selected">--</option>
           <!--{html_options options=$arrDay selected=$arrForm.b_start_day}-->
         </select>日～
         <select name="b_end_year" <!--{if $arrErr.b_start_year || $arrErr.b_end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
-          <option value="" selected="selected">------</option>
+          <option value="" selected="selected">----</option>
           <!--{html_options options=$arrYear selected=$arrForm.b_end_year}-->
         </select>年
         <select name="b_end_month" <!--{if $arrErr.b_start_year || $arrErr.b_end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
-          <option value="" selected="selected">----</option>
+          <option value="" selected="selected">--</option>
           <!--{html_options options=$arrMonth selected=$arrForm.b_end_month}-->
         </select>月
         <select name="b_end_day" <!--{if $arrErr.b_start_year || $arrErr.b_end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
-          <option value="" selected="selected">----</option>
+          <option value="" selected="selected">--</option>
           <!--{html_options options=$arrDay selected=$arrForm.b_end_day}-->
         </select>日
       </td>
@@ -228,7 +228,7 @@
       </td>
     </tr>
     <tr>
-      <th>購入商品<br />コード</th>
+      <th>購入商品コード</th>
       <td>
         <!--{if $arrErr.buy_product_code}--><span class="attention"><!--{$arrErr.buy_product_code}--></span><!--{/if}-->
         <input type="text" name="buy_product_code" value="<!--{$arrForm.buy_product_code}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" style="<!--{$arrErr.buy_product_code|sfGetErrorColor}-->" >
@@ -278,10 +278,10 @@
     <span class="attention"><!--検索結果数--><!--{$tpl_linemax}-->件</span>&nbsp;が該当しました。
     <!--検索結果-->
     <!--{if $smarty.const.ADMIN_MODE == '1'}-->
-    <button type="button" onclick="fnModeSubmit('delete_all','','');"><span>検索結果をすべて削除</span></button>
+    <button type="button" onclick="fnModeSubmit('delete_all','','');">検索結果をすべて削除</button>
     <!--{/if}-->
-    <button type="button" onclick="fnModeSubmit('csv','','');"><span>CSV DOWNLOAD</span></button>
-    <a href="../contents/csv.php?tpl_subno_csv=customer"> >> CSV出力項目設定</a>
+    <button type="button" onclick="fnModeSubmit('csv','','');">CSV DOWNLOAD</button>
+    <a href="../contents/csv.php?tpl_subno_csv=customer"> &gt;&gt; CSV出力項目設定</a>
   </p>
   <!--{include file=$tpl_pager}-->
 
