@@ -13,8 +13,10 @@ rm -rf $WRK_DIR/release.sh
 rm -rf $WRK_DIR/html/test
 rm -rf $WRK_DIR/data/downloads/module/*
 rm -rf $WRK_DIR/data/downloads/module2/*
-find ./$WRK_DIR -name "dummy" -delete
-find ./$WRK_DIR -name "info.php" -delete
+find $WRK_DIR -name "dummy" -delete
+find $WRK_DIR -name "info.php" -delete
+find $WRK_DIR -name ".svn" -type d -print0 | xargs -0 rm -rf
+# find $WRK_DIR -iname "*.bak" -delete
 
 echo "set permissions..."
 chmod 666 $WRK_DIR/data/install.php
@@ -29,4 +31,4 @@ chmod -R 777 $WRK_DIR/data/class
 chmod -R 777 $WRK_DIR/data/logs
 chmod -R 777 $WRK_DIR/html/cp
 
-echo "finished successful!"
+echo "finished."
