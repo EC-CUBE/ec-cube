@@ -54,6 +54,15 @@
     return false;
   }
 
+  function fnReSendMail(customer_id) {
+    if (confirm('仮登録メールを再送しても宜しいですか？')) {
+      document.form1.mode.value = "resend_mail"
+      document.form1['edit_customer_id'].value = customer_id;
+      document.form1.submit();
+      return false;
+    }
+  }
+
   function fnSubmit() {
     document.form1.submit();
     return false;
@@ -80,6 +89,10 @@
     <tr>
       <th>顧客名（カナ）</th>
       <td><!--{if $arrErr.kana}--><span class="attention"><!--{$arrErr.kana}--></span><br /><!--{/if}--><input type="text" name="kana" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$arrForm.kana|escape}-->" size="30" class="box30" <!--{if $arrErr.kana}--><!--{sfSetErrorStyle}--><!--{/if}--> /></td>
+    </tr>
+    <tr>
+      <th>会員状態</th>
+      <td><!--{html_checkboxes name="status" options=$arrStatus separator="&nbsp;" selected=$arrForm.status}--></td>
     </tr>
     <tr>
       <th>都道府県</th>
@@ -253,18 +266,21 @@
   </div>
 </form>
 
-<!--{if count($arrErr) == 0 and ($smarty.post.mode == 'search' or $smarty.post.mode == 'delete') }-->
+<!--{if count($arrErr) == 0 and ($smarty.post.mode == 'search' or $smarty.post.mode == 'delete' or $smarty.post.mode == 'resend_mail') }-->
 
 <!--★★検索結果一覧★★-->
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <!--{foreach from=$smarty.post key="key" item="item"}-->
-<!--{if $key ne "mode" && $key ne "del_mode" && $key ne "edit_customer_id" && $key ne "del_customer_id" && $key ne "search_pageno" && $key ne "csv_mode" && $key ne "job" && $key ne "sex"}--><input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->"><!--{/if}-->
+<!--{if $key ne "mode" && $key ne "del_mode" && $key ne "edit_customer_id" && $key ne "del_customer_id" && $key ne "search_pageno" && $key ne "csv_mode" && $key ne "job" && $key ne "sex" && $key ne "status"}--><input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->"><!--{/if}-->
 <!--{/foreach}-->
 <!--{foreach from=$smarty.post.job key="key" item="item"}-->
 <input type="hidden" name="job[]" value=<!--{$item}-->>
 <!--{/foreach}-->
 <!--{foreach from=$smarty.post.sex key="key" item="item"}-->
 <input type="hidden" name="sex[]" value=<!--{$item}-->>
+<!--{/foreach}-->
+<!--{foreach from=$smarty.post.status key="key" item="item"}-->
+<input type="hidden" name="status[]" value=<!--{$item}-->>
 <!--{/foreach}-->
 <input type="hidden" name="mode" value="search" />
 <input type="hidden" name="del_mode" value="" />
@@ -315,7 +331,7 @@
     </tr>
     <tr>
       <td><!--{assign var=pref value=$search_data[data].pref}--><!--{$arrPref[$pref]}--></td>
-      <td><!--{mailto address=$search_data[data].email encode="javascript"}--></a></td>
+      <td><!--{mailto address=$search_data[data].email encode="javascript"}--></a><!--{if $search_data[data].status eq 1}--><br /><a href="#" onclick="return fnReSendMail('<!--{$search_data[data].customer_id|escape}-->');">仮登録メール再送</a><!--{/if}--></td>
     </tr>
     <!--顧客<!--{$smarty.section.data.iteration}-->-->
     <!--{/section}-->
