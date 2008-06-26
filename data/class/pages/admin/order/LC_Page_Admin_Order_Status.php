@@ -158,6 +158,7 @@ class LC_Page_Admin_Order_Status extends LC_Page {
         $table = 'dtb_order';
         $where = 'order_id = ?';
         $arrUpdate = array('update_date' => 'NOW()');
+	$col = 'customer_id, add_point';
 
         $delflg  = '1'; // 削除フラグ
         $message = '';  // ステータス変更後にポップアップするメッセージの内容
@@ -180,6 +181,17 @@ class LC_Page_Admin_Order_Status extends LC_Page {
         if ( isset($arrMove) ){
             foreach ( $arrMove as $val ){
                 if ( $val != "" ) {
+		if ( $status_id == ORDER_DELIV ) {
+		$arrRet = $objQuery->select($col, $table, $where, array($val));
+		$customer_id = $arrRet[0]['customer_id'];
+		$add_point = $arrRet[0]['add_point'];
+		if($customer_id != "" && $customer_id >= 1) {
+		    $arrRet = $objQuery->select("point", 'dtb_customer', 'customer_id = ?', array($customer_id));
+		    $arrRet[0]['point']+= $add_point;
+		    $sqlval['point'] = $arrRet[0]['point'];
+		    $objQuery->update('dtb_customer', $sqlval, 'customer_id = ?', array($customer_id));
+		   }
+		}
                     $objQuery->update($table, $arrUpdate, $where, array($val));
                 }
 

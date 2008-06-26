@@ -623,7 +623,7 @@ class LC_Page_Shopping_Complete extends LC_Page {
         $sqlval['last_buy_date'] = "Now()";
         $sqlval['buy_times']++;
         $sqlval['buy_total']+= $arrData['total'];
-        $sqlval['point'] = ($sqlval['point'] + $arrData['add_point'] - $arrData['use_point']);
+        $sqlval['point'] = ($sqlval['point'] - $arrData['use_point']);
 
         // ポイントが不足している場合
         if($sqlval['point'] < 0) {
