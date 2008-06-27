@@ -196,7 +196,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
 
         /* GMOPG連携用 */
         case 'gmopg_order_edit':
-            require_once(MODULE_PATH . 'mdl_gmopg/class/LC_MDL_GMOPG_OrderEdit.php');
+            require_once(MODULE_PATH . 'mdl_gmopg/class/LC_Mdl_GMOPG_OrderEdit.php');
             $objGMOOrderEdit = new LC_MDL_GMOPG_OrderEdit;
             $this->gmopg_order_edit_result = $objGMOOrderEdit->proccess();
             $this->lfGetOrderData($order_id);
