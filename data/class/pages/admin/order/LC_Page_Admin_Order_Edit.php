@@ -24,6 +24,11 @@
 // {{{ requires
 require_once(CLASS_PATH . "pages/LC_Page.php");
 
+/* GMO決済モジュール連携用 */
+if (file_exists(MODULE_PATH . 'mdl_gmopg/inc/include.php') === TRUE) {
+    require_once(MODULE_PATH . 'mdl_gmopg/inc/include.php');
+}
+
 /* ペイジェント決済モジュール連携用 */
 if (file_exists(MODULE_PATH . 'mdl_paygent/include.php') === TRUE) {
 	require_once(MODULE_PATH . 'mdl_paygent/include.php');
