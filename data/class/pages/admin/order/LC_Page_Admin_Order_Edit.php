@@ -35,9 +35,10 @@ if (file_exists(MODULE_PATH. 'mdl_fregi/LC_Page_Mdl_Fregi_Config.php') === TRUE)
 }
 
 /* SPS決済モジュール連携用 */
-if ( file_exists(MODULE_PATH . 'mdl_sps/request.php') === TRUE ) {
+if (file_exists(MODULE_PATH . 'mdl_sps/request.php') === TRUE) {
     require_once(MODULE_PATH . 'mdl_sps/request.php');
 }
+
 
 /**
  * 受注修正 のページクラス.
@@ -192,6 +193,14 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
             $this->lfGetOrderData($order_id);
             $this->tpl_onload = "window.alert('".$sps_return."');";
             break;
+
+        /* GMOPG連携用 */
+        case 'gmopg_order_edit':
+            require_once(MODULE_PATH . 'mdl_gmopg/class/LC_MDL_GMOPG_OrderEdit.php');
+            $objGMOOrderEdit = new LC_MDL_GMOPG_OrderEdit;
+            $this->gmopg_order_edit_result = $objGMOOrderEdit->proccess();
+            $this->lfGetOrderData($order_id);
+            break;
         default:
             break;
         }
@@ -224,6 +233,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         } else {
             $objView->display('order/disp.tpl');
         }
+        $this->p($this);
     }
 
     /**
