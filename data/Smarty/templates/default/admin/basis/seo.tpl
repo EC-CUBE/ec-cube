@@ -53,7 +53,7 @@
         </tr>
       </table>
     
-      <div class="btn"><button type="button" onclick="document.form1.page_id.value = <!--{$item.page_id}-->;"><span>この内容で登録する</span></button></div>
+      <div class="btn"><button type="submit" onclick="document.form1.page_id.value = <!--{$item.page_id}-->;"><span>この内容で登録する</span></button></div>
     
     </div>
     <!-- <!--{$item.page_name}--> ここまで -->
