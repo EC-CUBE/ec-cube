@@ -29,6 +29,15 @@ $objQuery = new SC_Query();
 // 前のページで正しく登録手続きが行われた記録があるか判定
 SC_Utils::sfIsPrePage($objSiteSess);
 
+// SPSモジュール連携用
+if (file_exists(MODULE_PATH . 'mdl_sps/inc/include.php')
+ && !$objCartSess->getTotalQuantity()) {
+
+    require_once MODULE_PATH . 'mdl_sps/inc/include.php';
+    header("Location: " . ERROR_URL);
+    exit;
+}
+
 // アクセスの正当性の判定
 $uniqid = SC_Utils::sfCheckNormalAccess($objSiteSess, $objCartSess);
 
