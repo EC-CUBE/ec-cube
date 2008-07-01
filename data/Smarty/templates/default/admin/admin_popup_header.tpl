@@ -35,6 +35,12 @@
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/jquery.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/admin.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/css.js"></script>
+<!--{if $tpl_javascript != ""}-->
+<script type="text/javascript">//<![CDATA[
+    <!--{$tpl_javascript}-->
+//]]>
+</script>
+<!--{/if}-->
 <!--{include file='css/contents.tpl'}-->
 <title><!--{$subtitle}--></title>
 </head>
