@@ -58,7 +58,7 @@
 					<tr>
 						<td background="<!--{$TPL_DIR}-->img/contents/main_left.jpg"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 						<td bgcolor="#cccccc">
-						
+
 						<!--登録テーブルここから-->
 						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr>
@@ -76,14 +76,39 @@
 								<td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td>
 							</tr>
 						</table>
-						
+
+						<!--{* GMOPG連携用 *}-->
+						<!--{assign var=path value=`$smarty.const.MODULE_PATH`mdl_gmopg/templates/order_edit.tpl}-->
+						<!--{if file_exists($path)}-->
+							<!--{include file=$path}-->
+						<!--{/if}-->
+
+						<!--{* SPS連携用 *}-->
+						<!--{assign var=sps_path value=`$smarty.const.MODULE_PATH`mdl_sps/templates/sps_request.tpl}-->
+						<!--{if file_exists($sps_path) && $paymentType[0].module_code == $smarty.const.MDL_SPS_CODE && $paymentType[0].memo03 == $smarty.const.SPS_CREDIT}-->
+							<!--{include file=$sps_path}-->
+						<!--{/if}-->
+
 						<!--{* ペイジェントモジュール連携用 *}-->
 						<!--{assign var=path value=`$smarty.const.MODULE_PATH`mdl_paygent/paygent_order.tpl}-->
 						<!--{if file_exists($path)}-->
 							<!--{include file=$path}-->
 						<!--{/if}-->
-						
+
 						<!--▼お客様情報ここから-->
+						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
+							<tr class="fs12n">
+							<td bgcolor="#f2f1ec" width="110">帳票</td>
+							<td bgcolor="#ffffff">
+							  <input type="button" name="address_input" value="帳票の作成" onclick="win02('pdf.php?order_id=<!--{$arrDisp.order_id}-->','pdf_input','500','650'); return false;" />
+							</td>
+							</tr>
+						</table>
+
+						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
+							<tr><td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td></tr>
+						</table>
+
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">対応状況</td>
@@ -101,11 +126,17 @@
 								<td bgcolor="#ffffff"><!--{$arrDisp.commit_date|sfDispDBDate|default:"未発送"}--></td>
 							</tr>
 						</table>
-						
+
 						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr><td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td></tr>
 						</table>
-						
+
+						<!--{* F-REGI決済モジュール用 *}-->
+						<!--{assign var=path value=`$smarty.const.MODULE_PATH`mdl_fregi/fregi_order.tpl}-->
+						<!--{if file_exists($path)}-->
+							<!--{include file=$path}-->
+						<!--{/if}-->
+
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 							<!--{foreach key=key item=item from=$arrSearchHidden}-->
 								<input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->">
@@ -153,11 +184,11 @@
 							</tr>
 						</table>
 						<!--▲お客様情報ここまで-->
-						
+
 						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr><td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td></tr>
 						</table>
-						
+
 						<!--▼配送先情報ここから-->
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 							<tr class="fs12n">
@@ -189,7 +220,7 @@
 								<span class="red12"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></span>
 								〒
 								<input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|escape}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->"  size="6" class="box6" />
-								 - 
+								 -
 								<input type="text"  name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|escape}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->"  size="6" class="box6" />
 								<input type="button" name="address_input" value="住所入力" onclick="fnCallAddress('<!--{$smarty.const.URL_INPUT_ZIP}-->', 'deliv_zip01', 'deliv_zip02', 'deliv_pref', 'deliv_addr01');" />
 								</td>
@@ -201,8 +232,8 @@
 								<span class="red12"><!--{$arrErr[$key1]}--></span>
 								<span class="red12"><!--{$arrErr[$key2]}--></span>
 								<span class="red12"><!--{$arrErr[$key3]}--></span>
-								<input type="text" name="<!--{$arrForm[$key1].keyname}-->" value="<!--{$arrForm[$key1].value|escape}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" size="6" class="box6" /> - 
-								<input type="text" name="<!--{$arrForm[$key2].keyname}-->" value="<!--{$arrForm[$key2].value|escape}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->"  size="6" class="box6" /> - 
+								<input type="text" name="<!--{$arrForm[$key1].keyname}-->" value="<!--{$arrForm[$key1].value|escape}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" size="6" class="box6" /> -
+								<input type="text" name="<!--{$arrForm[$key2].keyname}-->" value="<!--{$arrForm[$key2].value|escape}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->"  size="6" class="box6" /> -
 								<input type="text" name="<!--{$arrForm[$key3].keyname}-->" value="<!--{$arrForm[$key3].value|escape}-->" maxlength="<!--{$arrForm[$key3].length}-->" style="<!--{$arrErr[$key3]|sfGetErrorColor}-->" size="6" class="box6" />
 								</td>
 							</tr>
@@ -214,7 +245,7 @@
 									<td>
 										<!--{assign var=key value="deliv_pref"}-->
 										<span class="red12"><!--{$arrErr[$key]}--></span>
-										<select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">							
+										<select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
 										<option value="" selected="">都道府県を選択</option>
 										<!--{html_options options=$arrPref selected=$arrForm[$key].value}-->
 										</select>
@@ -272,11 +303,11 @@
 								<input type="hidden" name="product_id[]" value="<!--{$arrDisp.product_id[$key]}-->">
 								<input type="hidden" name="product_code[]" value="<!--{$arrDisp.product_code[$key]}-->">
 								<input type="hidden" name="product_name[]" value="<!--{$arrDisp.product_name[$key]}-->">
-								<input type="hidden" name="point_rate[]" value="<!--{$arrDisp.point_rate[$key]}-->">	
-								<input type="hidden" name="classcategory_id1[]" value="<!--{$arrDisp.classcategory_id1[$key]}-->">	
+								<input type="hidden" name="point_rate[]" value="<!--{$arrDisp.point_rate[$key]}-->">
+								<input type="hidden" name="classcategory_id1[]" value="<!--{$arrDisp.classcategory_id1[$key]}-->">
 								<input type="hidden" name="classcategory_id2[]" value="<!--{$arrDisp.classcategory_id2[$key]}-->">
-								<input type="hidden" name="classcategory_name1[]" value="<!--{$arrDisp.classcategory_name1[$key]}-->">	
-								<input type="hidden" name="classcategory_name2[]" value="<!--{$arrDisp.classcategory_name2[$key]}-->">				
+								<input type="hidden" name="classcategory_name1[]" value="<!--{$arrDisp.classcategory_name1[$key]}-->">
+								<input type="hidden" name="classcategory_name2[]" value="<!--{$arrDisp.classcategory_name2[$key]}-->">
 								<td width="84" align="center"><input type="text" name="price[]" value="<!--{$arrForm.price.value[$key]|escape}-->" size="6" class="box6" maxlength="<!--{$arrForm.price.length}-->"/> 円</td>
 								<td width="45" align="center"><input type="text" name="quantity[]" value="<!--{$arrForm.quantity.value[$key]|escape}-->" size="3" class="box3" maxlength="<!--{$arrForm.quantity.length}-->"/></td>
 								<!--{assign var=price value=`$arrForm.price.value[$key]`}-->
@@ -379,7 +410,7 @@
 								<!--{html_options options=$arrPayment selected=$arrForm[$key].value}-->
 								</select></td>
 							</tr>
-							
+
 							<!--{if $arrDisp.payment_info|@count > 0}-->
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" colspan="6">▼<!--{$arrDisp.payment_type}-->情報</td>
@@ -392,7 +423,7 @@
 								</td>
 							</tr>
 							<!--{/if}-->
-							
+
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" colspan="6">▼時間指定</td>
 							</tr>
@@ -400,7 +431,7 @@
 								<td bgcolor="#ffffff" colspan="6">
 								<!--{assign var=key value="deliv_time_id"}-->
 								<span class="red12"><!--{$arrErr[$key]}--></span>
-								<select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">	
+								<select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
 								<option value="" selected="0">指定無し</option>
 								<!--{html_options options=$arrDelivTime selected=$arrForm[$key].value}-->
 								</select>
@@ -429,7 +460,7 @@
 							</tr>
 						</table>
 						<!--▲受注商品情報ここまで-->
-				
+
 						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr>
 								<td bgcolor="#cccccc"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="1" height="5" alt=""></td>
@@ -442,7 +473,7 @@
 								<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr>
 										<td>
-											<!--{if count($arrSearchHidden) > 0}-->		
+											<!--{if count($arrSearchHidden) > 0}-->
 											<a href="#" onmouseover="chgImg('<!--{$TPL_DIR}-->img/contents/btn_search_back_on.jpg','back');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/contents/btn_search_back.jpg','back');" onclick="fnChangeAction('<!--{$smarty.const.URL_SEARCH_ORDER}-->'); fnModeSubmit('search','',''); return false;"><img src="<!--{$TPL_DIR}-->img/contents/btn_search_back.jpg" width="123" height="24" alt="検索画面に戻る" border="0" name="back"></a>
 											<!--{/if}-->
 											<input type="image" onMouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/contents/btn_regist.jpg',this)" src="<!--{$TPL_DIR}-->img/contents/btn_regist.jpg" width="123" height="24" alt="この内容で登録する" border="0" name="subm" onclick="return fnConfirm();">
@@ -475,4 +506,4 @@
 	</tr>
 </form>
 </table>
-<!--★★メインコンテンツ★★-->		
+<!--★★メインコンテンツ★★-->

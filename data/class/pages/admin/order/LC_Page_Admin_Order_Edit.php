@@ -24,10 +24,26 @@
 // {{{ requires
 require_once(CLASS_PATH . "pages/LC_Page.php");
 
+/* GMO決済モジュール連携用 */
+if (file_exists(MODULE_PATH . 'mdl_gmopg/inc/include.php') === TRUE) {
+    require_once(MODULE_PATH . 'mdl_gmopg/inc/include.php');
+}
+
 /* ペイジェント決済モジュール連携用 */
 if (file_exists(MODULE_PATH . 'mdl_paygent/include.php') === TRUE) {
 	require_once(MODULE_PATH . 'mdl_paygent/include.php');
 }
+
+/* F-REGI決済モジュール連携用 */
+if (file_exists(MODULE_PATH. 'mdl_fregi/LC_Page_Mdl_Fregi_Config.php') === TRUE) {
+    require_once(MODULE_PATH. 'mdl_fregi/LC_Page_Mdl_Fregi_Config.php');
+}
+
+/* SPS決済モジュール連携用 */
+if (file_exists(MODULE_PATH . 'mdl_sps/request.php') === TRUE) {
+    require_once(MODULE_PATH . 'mdl_sps/request.php');
+}
+
 
 /**
  * 受注修正 のページクラス.
@@ -63,10 +79,18 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
 		$this->arrPref = $masterData->getMasterData("mtb_pref",
                                  array("pref_id", "pref_name", "rank"));
 		$this->arrORDERSTATUS = $masterData->getMasterData("mtb_order_status");
-        
+
         /* ペイジェント決済モジュール連携用 */
         if(function_exists("sfPaygentOrderPage")) {
             $this->arrDispKind = sfPaygentOrderPage();
+        }
+
+        /* F-REGI決済モジュール連携用 */
+        if (file_exists(MODULE_PATH. 'mdl_fregi/LC_Page_Mdl_Fregi_Config.php') === TRUE) {
+            global $arrFregiPayment;
+            $this->arrFregiPayment = $arrFregiPayment;
+            global $arrFregiDispKind;
+            $this->arrFregiDispKind = $arrFregiDispKind;
         }
     }
 
@@ -147,6 +171,41 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         case 'paygent_order':
             $this->paygent_return = sfPaygentOrder($_POST['paygent_type'], $order_id);
             break;
+        /* F-REGI決済モジュール連携用 */
+        case 'fregi_status':
+            $objFregiConfig = new LC_Page_Mdl_Fregi_Config();
+            $this->fregi_err = $objFregiConfig->getSaleInfo($order_id, $this->arrDisp);
+            $this->lfGetOrderData($order_id);
+            break;
+        case 'fregi_card':
+            $objFregiConfig = new LC_Page_Mdl_Fregi_Config();
+            $this->fregi_card_err = $objFregiConfig->setCardInfo($_POST['card_status'], $order_id, $this->arrDisp);
+            $this->lfGetOrderData($order_id);
+            break;
+        /* SPS決済モジュール連携用 */
+        case 'sps_request':
+            $objErr = new SC_CheckError($_POST);
+            $objErr->doFunc(array("年","sps_year"), array('EXIST_CHECK'));
+            $objErr->doFunc(array("月","sps_month"), array('EXIST_CHECK'));
+            $objErr->doFunc(array("日","sps_date"), array('EXIST_CHECK'));
+            $objErr->doFunc(array("売上・返金日", "sps_year", "sps_month", "sps_date"), array("CHECK_DATE"));
+            if ($objErr->arrErr) {
+                $this->arrErr = $objErr->arrErr;
+                break;
+            }
+            $sps_return = sfSpsRequest( $order_id, $_POST['request_type'] );
+            // DBから受注情報を再読込
+            $this->lfGetOrderData($order_id);
+            $this->tpl_onload = "window.alert('".$sps_return."');";
+            break;
+
+        /* GMOPG連携用 */
+        case 'gmopg_order_edit':
+            require_once(MODULE_PATH . 'mdl_gmopg/class/LC_Mdl_GMOPG_OrderEdit.php');
+            $objGMOOrderEdit = new LC_MDL_GMOPG_OrderEdit;
+            $this->gmopg_order_edit_result = $objGMOOrderEdit->proccess();
+            $this->lfGetOrderData($order_id);
+            break;
         default:
             break;
         }
@@ -160,6 +219,17 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         $this->arrForm = $this->objFormParam->getFormParamList();
 
         $this->arrInfo = $arrInfo;
+
+        /**
+         * SPS決済 クレジット判定用処理
+         */
+        $objQuery = new SC_Query();
+        $this->paymentType = $objQuery->getall("SELECT module_code, memo03 FROM dtb_payment WHERE payment_id = ? ", array($this->arrForm["payment_id"]['value']));
+        $objDate = new SC_Date();
+        $objDate->setStartYear(RELEASE_YEAR);
+        $this->arrYear = $objDate->getYear();
+        $this->arrMonth = $objDate->getMonth();
+        $this->arrDay = $objDate->getDay();
 
         $objView->assignobj($this);
         // 表示モード判定
