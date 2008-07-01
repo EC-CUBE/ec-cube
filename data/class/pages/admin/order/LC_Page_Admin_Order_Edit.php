@@ -238,7 +238,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         } else {
             $objView->display('order/disp.tpl');
         }
-        $this->p($this);
     }
 
     /**
