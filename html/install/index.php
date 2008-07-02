@@ -789,6 +789,8 @@ function lfExecuteSQL($filepath, $dsn, $disp_err = true) {
                         $arrErr['all'].= $arrKey[0] . "<br>";
                         $objPage->update_mess.=">> テーブル構成の変更に失敗しました。<br>";
                         GC_Utils_Ex::gfPrintLog($ret->userinfo, INSTALL_LOG);
+                    } else {
+                        GC_Utils_Ex::gfPrintLog("OK:". $val, INSTALL_LOG);
                     }
                 }
             }
