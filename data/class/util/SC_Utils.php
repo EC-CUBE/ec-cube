@@ -240,6 +240,7 @@ class SC_Utils {
             } else {
                 header("Location: ".URL_CART_TOP);
             }
+            exit;
         }
         return $uniqid;
     }
@@ -1922,7 +1923,7 @@ echo $template_path;
 
    /**
      * CSV出力用データ取得
-     * 
+     *
      * @return string
      */
     function getCSVData($array, $arrayIndex) {
@@ -1941,11 +1942,11 @@ echo $template_path;
                     $return .= mb_ereg_replace("<","＜",mb_ereg_replace( "\"","\"\"",$array[$i][$j] )) ."\"";
                 }
             }
-            $return .= "\n";    
+            $return .= "\n";
         }
         return $return;
     }
-    
+
    /**
      * 配列をテーブルタグで出力する。
      *
