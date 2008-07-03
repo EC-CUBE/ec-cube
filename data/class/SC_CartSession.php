@@ -61,7 +61,7 @@ class SC_CartSession {
     function checkChangeCart() {
         $change = false;
         $max = $this->getMax();
-        for($i = 0; $i <= $max; $i++) {
+        for($i = 1; $i <= $max; $i++) {
             if ($_SESSION[$this->key][$i]['quantity'] != $_SESSION[$this->key_tmp][$i]['quantity']) {
                 $change = true;
                 break;
