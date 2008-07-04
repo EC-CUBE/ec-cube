@@ -23,8 +23,14 @@ if(!file_exists($paygent_credit_php_dir . "/" . $paygent_module_dir)) {
 	include_once($paygent_module_dir . "exception/PaygentB2BModuleException.php");
 }
 
+require_once($paygent_credit_php_dir. "/LC_Helper_Send_Payment.php");
+
 // ペイジェント決済のモジュールID（dtb_moduleと合わせる）
 define("MDL_PAYGENT_ID", 9);
+define("MDL_PAYGENT_CODE", "mdl_paygent");
+
+// ログファイルパス（EC-CUBEサイド）
+define("PAYGENT_LOG_PATH", DATA_PATH. "logs/paygent_cube.log");
 
 // ペイジェントの各払込の対応番号
 /*
@@ -35,6 +41,9 @@ define("MDL_PAYGENT_ID", 9);
 	022：ｶｰﾄﾞ決済売上
 	023：ｶｰﾄﾞ決済売上ｷｬﾝｾﾙ
 	024：ｶｰﾄﾞ決済3Dｵｰｿﾘ
+	025:ｶｰﾄﾞ情報設定
+	026:ｶｰﾄﾞ情報削除
+	027:ｶｰﾄﾞ情報照会
 	030：ｺﾝﾋﾞﾆ決済(番号方式)申込
 	040：ｺﾝﾋﾞﾆ決済(払込票方式)申込
 	050：銀行ﾈｯﾄ決済申込
@@ -48,6 +57,9 @@ define("PAYGENT_AUTH_CANCEL", '021');
 define("PAYGENT_CARD_COMMIT", '022');
 define("PAYGENT_CARD_COMMIT_CANCEL", '023');
 define("PAYGENT_CARD_3D", '024');
+define("PAYGENT_CARD_STOCK_SET", '025');
+define("PAYGENT_CARD_STOCK_DEL", '026');
+define("PAYGENT_CARD_STOCK_GET", '027');
 define("PAYGENT_CONVENI", '030');
 define("PAYGENT_BANK", '060');
 // バッチで使用する。
@@ -208,6 +220,18 @@ function sfSendPaygentCredit($arrData, $arrInput, $uniqid) {
 		// 3Dセキュア戻りURL
 		$arrSend['term_url'] = SSL_URL. "shopping/load_payment_module.php?mode=credit_3d&uniqid=". $uniqid;
 	}
+	/** カード情報お預かり機能 **/
+	if ($arrInput['stock'] == 1) {
+		// 不要
+		unset($arrSend['card_number']);
+		unset($arrSend['card_valid_term']);
+		// カード情報お預かりモード
+		$arrSend['stock_card_mode'] = "1";
+		// 顧客ID
+		$arrSend['customer_id'] = $arrData['customer_id'];
+		// 顧客カードID
+		$arrSend['customer_card_id'] = $arrInput['CardSeq'];
+	}
 	
 	// 電文の送付
 	foreach($arrSend as $key => $val) {
@@ -257,6 +281,109 @@ function sfSendPaygetnCredit3d($arrData, $arrInput, $uniqid) {
 	$arrRet = sfPaygentResponse(PAYGENT_CREDIT, $p, $uniqid, $arrInput);
 	
 	return $arrRet;
+}
+
+/**
+ * 関数名：sfSetPaygentCreditStock
+ * 処理内容：カード情報の設定
+ * 戻り値：取得結果
+ */
+function sfSetPaygentCreditStock($arrData, $arrInput) {
+    // 接続モジュールのインスタンス取得 (コンストラクタ)と初期化
+    $p = new PaygentB2BModule();
+    $p->init();
+
+    // 設定パラメータの取得
+    $arrPaymentDB = sfGetPaymentDB(MDL_PAYGENT_ID);
+
+    // 共通データの取得
+    $arrSend = sfGetPaygentShare(PAYGENT_CARD_STOCK_SET, 0, $arrPaymentDB[0]);
+
+    /** 個別電文 **/
+    // 顧客ID
+    $arrSend['customer_id'] = $arrData['customer_id'];
+    // カード番号
+    $arrSend['card_number'] = $arrInput['card_no01'].$arrInput['card_no02'].$arrInput['card_no03'].$arrInput['card_no04'];
+    // カード有効期限(MMYY)
+    $arrSend['card_valid_term'] = $arrInput['card_month'].$arrInput['card_year'];
+    // カード名義人
+    $arrSend['cardholder_name'] = $arrInput['card_name01']." ".$arrInput['card_name02'];
+
+    // 電文の送付
+    foreach($arrSend as $key => $val) {
+        $p->reqPut($key, $val);
+    }
+    $p->post();
+    // 応答を処理
+    $arrRet = sfPaygentResponseCard(PAYGENT_CARD_STOCK_SET, $p, $arrData['customer_id']);
+
+    return $arrRet;
+}
+
+/**
+ * 関数名：sfDelPaygentCreditStock
+ * 処理内容：カード情報の削除
+ * 戻り値：取得結果
+ */
+function sfDelPaygentCreditStock($arrData, $arrInput) {
+    // 接続モジュールのインスタンス取得 (コンストラクタ)と初期化
+    $p = new PaygentB2BModule();
+    $p->init();
+
+    // 設定パラメータの取得
+    $arrPaymentDB = sfGetPaymentDB(MDL_PAYGENT_ID);
+
+    // 共通データの取得
+    $arrSend = sfGetPaygentShare(PAYGENT_CARD_STOCK_DEL, 0, $arrPaymentDB[0]);
+
+    /** 個別電文 **/
+    // 顧客ID
+    $arrSend['customer_id'] = $arrData['customer_id'];
+    // 顧客カードID
+    $arrSend['customer_card_id'] = $arrInput['CardSeq'];
+
+    // 電文の送付
+    foreach($arrSend as $key => $val) {
+        $p->reqPut($key, $val);
+    }
+    $p->post();
+    // 応答を処理
+    $arrRet = sfPaygentResponseCard(PAYGENT_CARD_STOCK_DEL, $p, $arrData['customer_id']);
+
+    return $arrRet;
+}
+
+/**
+ * 関数名：sfGetPaygentCreditStock
+ * 処理内容：カード情報の照会
+ * 戻り値：取得結果
+ */
+function sfGetPaygentCreditStock($arrData) {
+    // 接続モジュールのインスタンス取得 (コンストラクタ)と初期化
+    $p = new PaygentB2BModule();
+    $p->init();
+
+    // 設定パラメータの取得
+    $arrPaymentDB = sfGetPaymentDB(MDL_PAYGENT_ID);
+
+    // 共通データの取得
+    $arrSend = sfGetPaygentShare(PAYGENT_CARD_STOCK_GET, 0, $arrPaymentDB[0]);
+
+    /** 個別電文 **/
+    // 顧客ID
+    $arrSend['customer_id'] = $arrData['customer_id'];
+    // 顧客カードID
+    $arrSend['customer_card_id'] = $arrInput['delete_card'];
+
+    // 電文の送付
+    foreach($arrSend as $key => $val) {
+        $p->reqPut($key, $val);
+    }
+    $p->post();
+    // 応答を処理
+    $arrRet = sfPaygentResponseCard(PAYGENT_CARD_STOCK_GET, $p, $arrData['customer_id']);
+
+    return $arrRet;
 }
 
 /**************************************************************************************************************
@@ -464,30 +591,22 @@ function sfPaygentResponse($telegram_kind, $objPaygent, $uniqid, $arrInput) {
 	$resultStatus = $objPaygent->getResultStatus(); # 処理結果 0=正常終了, 1=異常終了
 	$responseCode = $objPaygent->getResponseCode(); # 異常終了時、レスポンスコードが取得できる
 	$responseDetail = $objPaygent->getResponseDetail(); # 異常終了時、レスポンス詳細が取得できる
-
-	// Shift-JISで応答があるので、エンコードする。
 	$responseDetail = mb_convert_encoding($responseDetail, CHAR_CODE, "Shift-JIS");	
 	
-	$arrResOther['result'] = $resultStatus;
-	$arrResOther['code'] = $responseCode;
-	$arrResOther['detail'] = $responseDetail;
-	
 	// 取得した値をログに保存する。
-	foreach($arrResOther as $key => $val) {
-		gfPrintLog($key."->".$val);
+	if ($resultStatus == 1) {
+		$arrResOther['result'] = $resultStatus;
+		$arrResOther['code'] = $responseCode;
+		$arrResOther['detail'] = $responseDetail;
+		foreach($arrResOther as $key => $val) {
+			gfPrintLog($key."->".$val, PAYGENT_LOG_PATH);
+		}
 	}
 		
 	// レスポンスの取得
 	while($objPaygent->hasResNext()) {
 		# データが存在する限り、取得
 		$arrRes[] = $objPaygent->resNext(); # 要求結果取得
-	}
-	
-	$arrRes[0]['result'] = $resultStatus; 
-	
-	// 取得した値をログに保存する。
-	foreach($arrRes[0] as $key => $val) {
-		gfPrintLog($key."->".$val);
 	}
 	
 	// 決済毎に異なる処理
@@ -553,7 +672,7 @@ function sfPaygentResponse($telegram_kind, $objPaygent, $uniqid, $arrInput) {
 		if (GC_MobileUserAgent::isMobile()) {
 			$arrMemo['help_url'] = sfSetConvMSG("お支払方法の説明", "http://www.paygent.co.jp/mb/pay_help/conv.html");
 		} else {
-			$arrMemo['help_url'] = sfSetConvMSG("お支払方法の説明", "http://www.paygent.co.jp/service/pay_cvs.html");
+			$arrMemo['help_url'] = sfSetConvMSG("お支払方法の説明", "http://www.paygent.co.jp/merchant_info/help/shophelp_cvs.html");
 		}
 		// 受注テーブルに保存
 		$arrVal["memo02"] = serialize($arrMemo);
@@ -573,7 +692,7 @@ function sfPaygentResponse($telegram_kind, $objPaygent, $uniqid, $arrInput) {
 		if (GC_MobileUserAgent::isMobile()) {
 			$arrMemo['help_url'] = sfSetConvMSG("お支払方法の説明", "http://www.paygent.co.jp/mb/pay_help/atm.html");
 		} else {
-			$arrMemo['help_url'] = sfSetConvMSG("お支払方法の説明", "http://www.paygent.co.jp/service/pay_atm.html");
+			$arrMemo['help_url'] = sfSetConvMSG("お支払方法の説明", "http://www.paygent.co.jp/merchant_info/help/shophelp_atm.html");
 		}
 		// 受注テーブルに保存
 		$arrVal["memo02"] = serialize($arrMemo);
@@ -607,8 +726,73 @@ function sfPaygentResponse($telegram_kind, $objPaygent, $uniqid, $arrInput) {
 	// 受注一時テーブルに更新
 	sfRegistTempOrder($uniqid, $arrVal);
 	
-	// 承認番号とメッセージを返す
+	// 結果とメッセージを返却
+	$arrRes[0]['result'] = $resultStatus;
+	if (preg_match('/^[P|E]/', $responseCode) <= 0) {
+		$arrRes[0]['response'] = "<br />". $responseDetail. "（". $responseCode. "）";
+	} else {
+		$arrRes[0]['response'] = "（". $responseCode. "）";
+	}
 	return $arrRes[0];
+}
+
+/**
+ * 関数名：sfPaygentResponseCard
+ * 処理内容：応答を処理する
+ * 戻り値：取得結果
+ */
+function sfPaygentResponseCard($telegram_kind, $objPaygent, $customer_id) {
+    $objQuery = new SC_Query();
+
+    // 処理結果取得（共通）
+    $resultStatus = $objPaygent->getResultStatus(); # 処理結果 0=正常終了, 1=異常終了
+    $responseCode = $objPaygent->getResponseCode(); # 異常終了時、レスポンスコードが取得できる
+    $responseDetail = $objPaygent->getResponseDetail(); # 異常終了時、レスポンス詳細が取得できる
+    $responseDetail = mb_convert_encoding($responseDetail, CHAR_CODE, "Shift-JIS");
+
+    // 異常終了
+    if ($resultStatus == 1) {
+        $arrResOther['result'] = $resultStatus;
+        $arrResOther['code'] = $responseCode;
+        $arrResOther['detail'] = $responseDetail;
+        foreach($arrResOther as $key => $val) {
+            gfPrintLog($key."->".$val, PAYGENT_LOG_PATH);
+        }
+    
+    // 正常終了
+    } else {
+        // レスポンスの取得
+        $arrRes[0]['result'] = $resultStatus;
+        while($objPaygent->hasResNext()) {
+            // データが存在する限り取得
+            $arrRes[] = $objPaygent->resNext(); # 要求結果取得
+        }
+        $num_card = (isset($arrRes[1]['num_of_cards'])) ? $arrRes[1]['num_of_cards'] : "0";
+        switch($telegram_kind) {
+        // カード情報設定
+        case PAYGENT_CARD_STOCK_SET:
+            if ($num_card > 0) {
+                $objQuery->update("dtb_customer", array("paygent_card" => 1), "customer_id = ?", array($customer_id));
+            }
+            break;
+        // カード情報削除
+        case PAYGENT_CARD_STOCK_DEL:
+            if ($num_card <= 0) {
+                $objQuery->update("dtb_customer", array("paygent_card" => 0), "customer_id = ?", array($customer_id));
+            }
+            break;
+        default:
+            break;
+        }
+    }
+    
+    // 結果とメッセージを返却
+    if (preg_match('/^[P|E]/', $responseCode) <= 0) {
+        $arrRes[0]['response'] = "<br />". $responseDetail. "（". $responseCode. "）";
+    } else {
+        $arrRes[0]['response'] = "（". $responseCode. "）";
+    }
+    return $arrRes;
 }
 
 /**************************************************************************************************************
@@ -637,6 +821,7 @@ function sfPaygentDisp($objPage, $payment_id) {
 	$arrRet = $objQuery->select("payment_method, payment_image", "dtb_payment", "payment_id = ?", array($payment_id));
 	$objPage->tpl_payment_method = $arrRet[0]['payment_method'];
 	$objPage->tpl_payment_image = $arrRet[0]['payment_image'];
+	$objPage->tpl_title = $arrRet[0]['payment_method'];
 	return $objPage;
 }
 
@@ -760,23 +945,23 @@ function sfUpdatePaymentStatus($objPaygent, $arrSend) {
 				if($arrRet['payment_notice_id'] > $notice_id + 1) {
 					for($notice_id++; $notice_id < $arrRet['payment_notice_id']; $notice_id++) {
 						$arrErrId[] = $notice_id;
-						gfPrintLog("決済通知ID=". $notice_id. "が欠番です。");
+						gfPrintLog("決済通知ID=". $notice_id. "が欠番です。", PAYGENT_LOG_PATH);
 					}
 				}
 				$notice_id = $arrRet['payment_notice_id'];
 				sfUpdatePaygentOrder($objQuery, $arrRet);
 			// 取得完了
 			} elseif($arrRet['success_code'] == '1') {
-				gfPrintLog("差分の取得が終了しました。");
+				gfPrintLog("差分の取得が終了しました。", PAYGENT_LOG_PATH);
 				break;
 			// 取得失敗
 			} elseif($arrRet['payment_notice_id'] == "") {
 				$notice_id++;
 				$arrErrId[] = $notice_id;
-				gfPrintLog("決済通知ID=". $notice_id. "が欠番です。");
+				gfPrintLog("決済通知ID=". $notice_id. "が欠番です。", PAYGENT_LOG_PATH);
 			}
 		} else {
-			gfPrintLog("差分照会が異常終了しました。");
+			gfPrintLog("差分照会が異常終了しました。", PAYGENT_LOG_PATH);
 			break;
 		}
 		$i++;
@@ -791,16 +976,16 @@ function sfUpdatePaymentStatus($objPaygent, $arrSend) {
 				sfUpdatePaygentOrder($objQuery, $arrRet);
 			// 再取得失敗
 			} elseif($arrRet['payment_notice_id'] == "") {
-				gfPrintLog("決済通知ID=". $arrErrId[$i]. "の再取得に失敗しました。バッチを強制終了します。");
+				gfPrintLog("決済通知ID=". $arrErrId[$i]. "の再取得に失敗しました。バッチを強制終了します。", PAYGENT_LOG_PATH);
 				$err_flg = false;
 				break;
 			}
 			// 再取得完了
 			if($i == count($arrErrId) - 1) {
-				gfPrintLog("差分の再取得が終了しました。");
+				gfPrintLog("差分の再取得が終了しました。", PAYGENT_LOG_PATH);
 			}
 		} else {
-			gfPrintLog("差分照会（リトライ）が異常終了しました。");
+			gfPrintLog("差分照会（リトライ）が異常終了しました。", PAYGENT_LOG_PATH);
 			$err_flg = false;
 			break;
 		}
@@ -840,13 +1025,14 @@ function sfGetPaymentStatus($objPaygent, $arrSend, $notice_id = "") {
 		# データが存在する限り、取得
 		$arrRes[] = $objPaygent->resNext(); # 要求結果取得
 	}
-	
 	$arrRes[0]['result'] = $objPaygent->getResultStatus(); # 処理結果 0=正常終了, 1=異常終了
 	
 	foreach($arrRes[0] as $key => $val) {
 		// Shift-JISで応答があるので、エンコードする。
 		$arrRes[0][$key] = mb_convert_encoding($val, CHAR_CODE, "Shift-JIS");
-		gfPrintLog($key."->".$arrRes[0][$key]);
+		if ($arrRes[0]['result'] == 1) {
+			gfPrintLog($key."->".$arrRes[0][$key], PAYGENT_LOG_PATH);
+		}
 	}
 	
 	return $arrRes[0];
@@ -936,18 +1122,18 @@ function sfPaygentOrder($paygent_type, $order_id) {
 		# データが存在する限り、取得
 		$arrRes[] = $objPaygent->resNext(); # 要求結果取得
 	}
-
-	$resultStatus = $objPaygent->getResultStatus(); # 処理結果 0=正常終了, 1=異常終了
-	gfPrintLog('result'."->".$resultStatus);
+	$arrRes[0]['result'] = $objPaygent->getResultStatus(); # 処理結果 0=正常終了, 1=異常終了
 	
 	foreach($arrRes[0] as $key => $val) {
 		// Shift-JISで応答があるので、エンコードする。
 		$arrRes[0][$key] = mb_convert_encoding($val, CHAR_CODE, "Shift-JIS");
-		gfPrintLog($key."->".$arrRes[0][$key]);
+		if ($arrRes[0]['result'] == 1) {
+			gfPrintLog($key."->".$arrRes[0][$key], PAYGENT_LOG_PATH);
+		}
 	}
 	
 	// 正常終了
-	if($resultStatus == '0') {
+	if($arrRes[0]['result'] === '0') {
 		$objQuery = new SC_Query();
 		$arrVal['memo09'] = $kind;
 		$objQuery->update("dtb_order", $arrVal, "order_id = ?", array($order_id));

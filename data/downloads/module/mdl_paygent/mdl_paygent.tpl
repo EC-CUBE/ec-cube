@@ -33,7 +33,7 @@ function lfnCheckPayment(){
 
 	for(pi = 0; pi < payment.length; pi++) {
 		// クレジットの場合
-		list = new Array('credit[]', 'credit_3d');
+		list = new Array('credit[]', 'credit_3d', 'stock_card');
 		if(fm[payment[pi]][0].checked){
 			fnChangeDisabled(list, false);
 		}else{
@@ -193,6 +193,14 @@ function win_open(URL){
 											<td width="" bgcolor="#f3f3f3">3Dセキュア</td>
 											<td width="" bgcolor="#ffffff">
 											<!--{assign var=key value="credit_3d"}-->
+											<span class="red12"><!--{$arrErr[$key]}--></span>
+											<!--{html_radios name="$key" options=$arrActive selected=$arrForm[$key].value style=$arrErr[$key]|sfGetErrorColor}-->
+											</td>
+										</tr>
+										<tr class="fs12n">
+											<td width="" bgcolor="#f3f3f3">カード情報お預かり機能</td>
+											<td width="" bgcolor="#ffffff">
+											<!--{assign var=key value="stock_card"}-->
 											<span class="red12"><!--{$arrErr[$key]}--></span>
 											<!--{html_radios name="$key" options=$arrActive selected=$arrForm[$key].value style=$arrErr[$key]|sfGetErrorColor}-->
 											</td>

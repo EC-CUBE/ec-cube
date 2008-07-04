@@ -69,7 +69,7 @@ case 'return':
 case 'next':
 	// 入力値の変換
 	$objFormParam->convParam();
-	$objPage->arrErr = lfCheckError($arrRet);
+	$objPage->arrErr = lfCheckError();
 	// 入力エラーなしの場合
 	if(count($objPage->arrErr) == 0) {
 		// 入力データの取得を行う
@@ -81,6 +81,7 @@ case 'next':
 		if(strlen($arrRet['asp_url']) > 0) {
             // 正常に登録されたことを記録しておく
 			$objSiteSess->setRegistFlag();
+			LC_Helper_Send_Payment::sendPaymentData(MDL_PAYGENT_CODE, $arrData['payment_total']);
 			// 登録処理
 			$objQuery->begin();
 			$order_id = lfDoComplete($objQuery, $uniqid);
@@ -103,7 +104,7 @@ case 'next':
 			header("Location: " . $arrRet['asp_url']);
 		// 失敗
 		} else {
-			$objPage->tpl_error = "認証に失敗しました。お手数ですが入力内容をご確認ください。";
+			$objPage->tpl_error = "決済に失敗しました。". $arrRet['response'];
 		}
 	}
 	break;

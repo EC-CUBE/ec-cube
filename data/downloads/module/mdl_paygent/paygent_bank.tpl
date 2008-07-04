@@ -136,7 +136,9 @@ function next(now, next) {
 								<td align="center" bgcolor="#f7f5f4">
 								<table width="666" border="0" cellspacing="0" cellpadding="6" summary=" ">
 									<tr>
-										<td class="fs12st" align="center">以上の内容で間違いなければ、下記「次へ」ボタンをクリックしてください。<br>
+										<td class="fs12st">
+										<a href="http://www.paygent.co.jp/merchant_info/help/shophelp_netbank.html" target="_blank">『お支払方法の説明』</a>を事前にご確認ください。<br>
+										以上の内容で間違いなければ、下記「次へ」ボタンをクリックしてください。<br>
 										<span class="orange">
 										※決済用サイトに遷移します。ドメインが変わりますが、そのままお手続きを進めてください。<br>
 										※決済用サイトに遷移しますと、ご注文完了となり、内容変更ができません。予めご了承ください。<br>

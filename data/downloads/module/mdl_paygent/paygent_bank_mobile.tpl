@@ -13,11 +13,11 @@
 下記に必要事項を入力してください。<br><br>
 
 <!--{if $tpl_payment_image != ""}-->
-ご利用いただける金融機関の種類<br>
+■ご利用いただける金融機関の種類<br>
 <img src="<!--{$smarty.const.IMAGE_SAVE_URL}--><!--{$tpl_payment_image}-->"><br><br>
 <!--{/if}-->
 
-利用者<br>
+■利用者<br>
 <font size="2">※ 特殊な漢字は使用できない場合がございます。</font><br>
 <!--{assign var=key1 value="customer_family_name"}-->
 <!--{assign var=key2 value="customer_name"}-->
@@ -27,7 +27,7 @@
 名<input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|escape}-->" istyle="1" size="15">
 <br><br>
 
-利用者(カナ)<br>
+■利用者(カナ)<br>
 <font size="2">※カナに濁点（゛）や半濁点（゜）がある場合、該当記号のみ除外されます。予めご了承ください。</font><br>
 <!--{assign var=key1 value="customer_family_name_kana"}-->
 <!--{assign var=key2 value="customer_name_kana"}-->
@@ -45,11 +45,11 @@
 ※決済用サイトに遷移しますと、ご注文完了となり、内容変更ができません。予めご了承ください。<br>
 ※画面が切り替るまで少々時間がかかる場合がございますが、そのままお待ちください。<br>
 </font>
-<center><input type="submit" value="次へ">
+<center><input type="submit" value="次へ"></center>
 </form>
 <form action="./load_payment_module.php" method="post">
 <input type="hidden" name="mode" value="return">
-<input type="submit" value="戻る"></center>
+<center><input type="submit" value="戻る"></center>
 </form>
 
 <br>

@@ -65,7 +65,7 @@ case 'return':
 case 'next':
 	// 入力値の変換
 	$objFormParam->convParam();
-	$objPage->arrErr = lfCheckError($arrRet);
+	$objPage->arrErr = lfCheckError();
 	// 入力エラーなしの場合
 	if(count($objPage->arrErr) == 0) {
 		 // 入力データの取得を行う
@@ -77,6 +77,7 @@ case 'next':
 		if($arrRet['result'] === "0") {
             // 正常に登録されたことを記録しておく
             $objSiteSess->setRegistFlag();
+            LC_Helper_Send_Payment::sendPaymentData(MDL_PAYGENT_CODE, $arrData['payment_total']);
 			if (GC_MobileUserAgent::isMobile()) {
 				
 				header("Location: " . gfAddSessionId(MOBILE_URL_SHOP_COMPLETE));
@@ -85,7 +86,7 @@ case 'next':
 			}
 		} else {
 			// 失敗
-			$objPage->tpl_error = "認証に失敗しました。お手数ですが入力内容をご確認ください。";
+			$objPage->tpl_error = "決済に失敗しました。". $arrRet['response'];
 		}
 	}
 	break;

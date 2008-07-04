@@ -1,14 +1,48 @@
+<style type="text/css">
+<!--
+table.stockcard_back {
+    width: 500px;
+    border: 0; 
+    margin: 5px auto;
+}
+
+table.stockcard {
+    width: 500px;
+    border: 0;
+    text-align: center;
+}
+
+table.stockcard td {
+    text-align: center;
+    white-space: nowrap;
+}
+-->
+</style>
 <script type="text/javascript">
 <!--
 var send = true;
 
-function fnCheckSubmit() {
+function fnCheckSubmit(mode) {
     if(send) {
         send = false;
+        fnModeSubmit(mode,'','');
         return true;
     } else {
         alert("只今、処理中です。しばらくお待ち下さい。");
         return false;
+    }
+}
+
+function fnCngStock() {
+    arr_obj = new Array('card_no', 'card_exp', 'card_hold', 'card_stock');
+    flg = document.form1.stock.checked;
+    for (i=0; i < arr_obj.length; i++) {
+        obj = document.all && document.all(arr_obj[i]) || document.getElementById && document.getElementById(arr_obj[i]);
+        if (flg) {
+            obj.style.display = "none";
+        } else {
+            obj.style.display = "";
+        }
     }
 }
 
@@ -35,7 +69,7 @@ function next(now, next) {
 		</table>
 		<!--購入手続きの流れ-->
 		
-		<!--▼MAIN CONTENTS-->				
+		<!--▼MAIN CONTENTS-->
 				<table width="666" border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr>
 						<td colspan="3"><img src="/img/contents/contents_title_top.gif" width="666" height="7" alt=""></td>
@@ -82,8 +116,8 @@ function next(now, next) {
 								<table width="666" border="0" cellspacing="1" cellpadding="10" summary=" ">
 									<!--{if $tpl_payment_image != ""}-->
 									<tr>
-										<td width="170" class="fs12" bgcolor="#f3f3f3">ご利用いただけるカードの種類</td>
-										<td width="453" bgcolor="#ffffff">
+										<td class="fs12" bgcolor="#f3f3f3">ご利用いただけるカードの種類</td>
+										<td bgcolor="#ffffff">
 										<img src="<!--{$smarty.const.IMAGE_SAVE_URL}--><!--{$tpl_payment_image}-->">
 										</td>
 									</tr>
@@ -91,14 +125,43 @@ function next(now, next) {
 									<tr>
 										<td class="fs12" bgcolor="#f3f3f3">支払回数</td>
 										<!--{assign var=key1 value="payment_class"}-->
-										<td  bgcolor="#ffffff" class="fs12">
+										<td bgcolor="#ffffff" class="fs12">
 										<span class="red"><!--{$arrErr[$key1]}--></span>
 										<select name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|escape}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" >
 										<!--{html_options options=$arrPaymentClass selected=$arrForm[$key1].value}-->
 										</select>
 										</td>
 									</tr>
+									<!--{if $cnt_card >= 1}-->
 									<tr>
+										<td class="fs12" bgcolor="#f3f3f3">登録カード</td>
+										<td class="fs12" bgcolor="#ffffff">
+											<!--{assign var=key1 value="CardSeq"}-->
+											<span class="red"><!--{$arrErr[$key1]}--></span>
+											<input type="checkbox" name="stock" value="1" onclick="fnCngStock();" <!--{if $smarty.post.stock == 1}-->checked<!--{/if}-->>登録カードを利用する
+											<table class="stockcard_back" cellspacing="0" cellpadding="0"><tr><td bgcolor="#cccccc">
+											<table class="stockcard" cellspacing="1" cellpadding="10">
+												<tr>
+													<td class="fs12" bgcolor="#f3f3f3">選択</td>
+													<td class="fs12" bgcolor="#f3f3f3">カード番号</td>
+													<td class="fs12" bgcolor="#f3f3f3">有効期限</td>
+													<td class="fs12" bgcolor="#f3f3f3">カード名義</td>
+												</tr>
+												<!--{foreach name=cardloop from=$arrCardInfo item=card}-->
+												<tr>
+													<td class="fs12" bgcolor="#ffffff"><input type="radio" name="<!--{$key1}-->" value="<!--{$card[$key1]}-->" <!--{if $smarty.post.$key1 == $card[$key1]}-->checked<!--{/if}-->></td>
+													<td class="fs12" bgcolor="#ffffff"><!--{$card.CardNo}--></td>
+													<td class="fs12" bgcolor="#ffffff"><!--{$card.Expire|substr:0:2}-->月/<!--{$card.Expire|substr:2:4}-->年</td>
+													<td class="fs12" bgcolor="#ffffff"><!--{$card.HolderName}--></td>
+												</tr>
+												<!--{/foreach}-->
+											</table>
+											</td></tr></table>
+											<input type="button" onClick="return fnCheckSubmit('deletecard');" value="選択カードの削除">
+										</td>
+									</tr>
+									<!--{/if}-->
+									<tr id="card_no">
 										<td class="fs12" bgcolor="#f3f3f3">カード番号</td>
 										<td class="fs12" bgcolor="#ffffff">
 										<table border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -126,7 +189,7 @@ function next(now, next) {
 										</table>
 										</td>
 									</tr>
-									<tr>
+									<tr id="card_exp">
 										<td class="fs12" bgcolor="#f3f3f3">有効期限</td>
 										<!--{assign var=key1 value="card_month"}-->
 										<!--{assign var=key2 value="card_year"}-->
@@ -142,13 +205,13 @@ function next(now, next) {
 										<!--{html_options options=$arrYear selected=$arrForm[$key2].value}-->
 										</select>年</td>
 									</tr>
-									<tr>
-										<td class="fs12" bgcolor="#f3f3f3">カード名義（ローマ字氏名）</td>
+									<tr id="card_hold">
+										<td class="fs12" bgcolor="#f3f3f3">カード名義（ローマ字）</td>
 										<td bgcolor="#ffffff">
 										<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 											<tr>
 												<!--{assign var=key2 value="card_name01"}-->
-												<!--{assign var=key1 value="card_name02"}-->								
+												<!--{assign var=key1 value="card_name02"}-->
 												<td class="fs12">
 												<span class="red"><!--{$arrErr[$key1]}--></span>
 												<span class="red"><!--{$arrErr[$key2]}--></span>
@@ -162,6 +225,15 @@ function next(now, next) {
 										</table>
 										</td>
 									</tr>
+									<!--{if $stock_flg == 1}-->
+									<tr id="card_stock">
+										<td class="fs12" bgcolor="#f3f3f3">カード登録</td>
+										<td bgcolor="#ffffff">
+											<span class="fs12"><input type="checkbox" name="stock_new" value="1" <!--{if $smarty.post.stock_new == 1}-->checked<!--{/if}-->>登録する</span><br />
+											<span class="fs10">カード情報を登録しておくと、次回以降の購入時にカード情報入力が省略でき、大変便利です。<br />最大5件まで登録できます。</span>
+										</td>
+									</tr>
+									<!--{/if}-->
 								</table>
 								</td>
 							</tr>
@@ -173,13 +245,13 @@ function next(now, next) {
 								<td align="center" bgcolor="#f7f5f4">
 								<table width="666" border="0" cellspacing="0" cellpadding="6" summary=" ">
 									<tr>
-										<td class="fs12st" align="center">以上の内容で間違いなければ、下記「次へ」ボタンをクリックしてください。<br>
+										<td class="fs12st">以上の内容で間違いなければ、下記「次へ」ボタンをクリックしてください。<br>
 										<span class="orange">※画面が切り替るまで少々時間がかかる場合がございますが、そのままお待ちください。</span></td>
 									</tr>
 									<tr>
 										<td align="center" height="40" bgcolor="#f7f5f4">
 											<a href="#" onclick="document.form2.submit(); return false;" onmouseover="chgImgImageSubmit('/img/common/b_back_on.gif',back03)" onmouseout="chgImgImageSubmit('/img/common/b_back.gif',back03)"><img src="/img/common/b_back.gif" width="150" height="30" alt="戻る" border="0" name="back03" id="back03"/></a><img src="/img/_.gif" width="12" height="" alt="" />
-											<input type="image" onclick="return fnCheckSubmit();"  onmouseover="chgImgImageSubmit('/img/common/b_next_on.gif',this)" onmouseout="chgImgImageSubmit('/img/common/b_next.gif',this)" src="/img/common/b_next.gif" width="150" height="30" alt="次へ" border="0" name="next" id="next" />
+											<input type="image" onclick="return fnCheckSubmit('next');"  onmouseover="chgImgImageSubmit('/img/common/b_next_on.gif',this)" onmouseout="chgImgImageSubmit('/img/common/b_next.gif',this)" src="/img/common/b_next.gif" width="150" height="30" alt="次へ" border="0" name="next" id="next" />
 										</td>
 									</tr>
 								</table>

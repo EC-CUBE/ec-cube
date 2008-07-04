@@ -13,11 +13,11 @@
 下記に必要事項を入力してください。<br><br>
 
 <!--{if $tpl_payment_image != ""}-->
-ご利用いただけるコンビニの種類<br>
+■ご利用いただけるコンビニの種類<br>
 <img src="<!--{$smarty.const.IMAGE_SAVE_URL}--><!--{$tpl_payment_image}-->"><br><br>
 <!--{/if}-->
 
-コンビニ選択<br>
+■コンビニ選択<br>
 <!--{assign var=key1 value="cvs_company_id"}-->
 <font color="#ff0000"><!--{$arrErr[$key1]}--></font>
 <select name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|escape}-->" maxlength="<!--{$arrForm[$key1].length}-->">
@@ -26,7 +26,7 @@
 </select>
 <br><br>
 
-利用者<br>
+■利用者<br>
 <font size="2">※ 特殊な漢字は使用できない場合がございます。</font><br>
 <!--{assign var=key1 value="customer_family_name"}-->
 <!--{assign var=key2 value="customer_name"}-->
@@ -36,7 +36,7 @@
 名<input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|escape}-->" istyle="1" size="15">
 <br><br>
 
-利用者(カナ)<br>
+■利用者(カナ)<br>
 <font size="2">※カナに濁点（゛）や半濁点（゜）がある場合、該当記号のみ除外されます。予めご了承ください。</font><br>
 <!--{assign var=key1 value="customer_family_name_kana"}-->
 <!--{assign var=key2 value="customer_name_kana"}-->
@@ -46,7 +46,7 @@
 メイ<input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|escape}-->" istyle="2" size="15">
 <br><br>
 
-お電話番号<br>
+■お電話番号<br>
 <!--{assign var=key1 value="customer_tel"}-->
 <font color="#ff0000"><!--{$arrErr[$key1]}--></font>
 <input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|escape}-->" istyle="4" size="20">
@@ -56,11 +56,11 @@
 
 以上の内容で間違いなければ、下記「次へ」ボタンをクリックしてください。<br>
 <font size="2" color="#ff6600">※画面が切り替るまで少々時間がかかる場合がございますが、そのままお待ちください。</font><br>
-<center><input type="submit" value="次へ">
+<center><input type="submit" value="次へ"></center>
 </form>
 <form action="./load_payment_module.php" method="post">
 <input type="hidden" name="mode" value="return">
-<input type="submit" value="戻る"></center>
+<center><input type="submit" value="戻る"></center>
 </form>
 
 <br>
