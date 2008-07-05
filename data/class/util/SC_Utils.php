@@ -1418,33 +1418,35 @@ class SC_Utils {
         }
 
         $fileArray=glob( $src."*" );
-        foreach( $fileArray as $key => $data_ ){
-            // CVS管理ファイルはコピーしない
-            if(ereg("/CVS/Entries", $data_)) {
-                break;
-            }
-            if(ereg("/CVS/Repository", $data_)) {
-                break;
-            }
-            if(ereg("/CVS/Root", $data_)) {
-                break;
-            }
-
-            mb_ereg("^(.*[\/])(.*)",$data_, $matches);
-            $data=$matches[2];
-            if( is_dir( $data_ ) ){
-                $mess = SC_Utils::sfCopyDir( $data_.'/', $des.$data.'/', $mess);
-            }else{
-                if(!$override && file_exists($des.$data)) {
-                    $mess.= $des.$data . "：ファイルが存在します\n";
-                } else {
-                    if(@copy( $data_, $des.$data)) {
-                        $mess.= $des.$data . "：コピー成功\n";
-                    } else {
-                        $mess.= $des.$data . "：コピー失敗\n";
-                    }
+        if (is_array($fileArray)) {
+            foreach( $fileArray as $key => $data_ ){
+                // CVS管理ファイルはコピーしない
+                if(ereg("/CVS/Entries", $data_)) {
+                    break;
                 }
-                $mod=stat($data_ );
+                if(ereg("/CVS/Repository", $data_)) {
+                    break;
+                }
+                if(ereg("/CVS/Root", $data_)) {
+                    break;
+                }
+                
+                mb_ereg("^(.*[\/])(.*)",$data_, $matches);
+                $data=$matches[2];
+                if( is_dir( $data_ ) ){
+                    $mess = SC_Utils::sfCopyDir( $data_.'/', $des.$data.'/', $mess);
+                }else{
+                    if(!$override && file_exists($des.$data)) {
+                        $mess.= $des.$data . "：ファイルが存在します\n";
+                    } else {
+                        if(@copy( $data_, $des.$data)) {
+                            $mess.= $des.$data . "：コピー成功\n";
+                        } else {
+                            $mess.= $des.$data . "：コピー失敗\n";
+                        }
+                    }
+                    $mod=stat($data_ );
+                }
             }
         }
         umask($oldmask);
