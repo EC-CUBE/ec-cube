@@ -65,7 +65,7 @@
   <ul id="sites">
     <li><a href="<!--{$smarty.const.URL_DIR}-->admin/ownersstore/index.php"><span>OWNERS STORE</span></a></li>
     <li><a href="<!--{$smarty.const.URL_HOME}-->"><span>MAIN PAGE</span></a></li>
-    <li><a href="<!--{$smarty.const.SITE_URL}-->"><span>SITE CHECK</span></a></li>
+    <li><a href="<!--{$smarty.const.SITE_URL}-->" target="_blank"><span>SITE CHECK</span></a></li>
   </ul>
   <p>
     WELCOME!&nbsp;<span><!--{* ログイン名 *}--><!--{$smarty.session.login_name|escape}--></span>&nbsp;様&nbsp;
