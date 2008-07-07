@@ -157,17 +157,17 @@ function fnDrow(id, tree) {
 // 階層ツリーメニュー表示・非表示処理
 function fnTreeMenu(tName, imgName, path) {
 
-	tMenu = document.all[tName].style;
+	tMenu = $("#" + tName);
 
-	if(tMenu.display == 'none') {
+	if(tMenu.css("display") == 'none') {
 		fnChgImg(IMG_MINUS, imgName);
-		tMenu.display = "block";
+		tMenu.show();
 		// 階層の開いた状態を保持
 		arrTreeStatus.push(path);
 
 	} else {
 		fnChgImg(IMG_PLUS, imgName);
-		tMenu.display = "none";
+		tMenu.hide();
 		// 閉じ状態を保持
 		fnDelTreeStatus(path);
 	}

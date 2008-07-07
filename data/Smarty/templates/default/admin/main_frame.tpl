@@ -32,10 +32,10 @@
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/navi.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/win_op.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/site.js"></script>
-<script type="text/javascript" src="<!--{$TPL_DIR}-->js/file_manager.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/jquery.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/admin.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/css.js"></script>
+<script type="text/javascript" src="<!--{$TPL_DIR}-->js/file_manager.js"></script>
 <title><!--{$smarty.const.ADMIN_TITLE}--></title>
 <script type="text/javascript">
 <!--

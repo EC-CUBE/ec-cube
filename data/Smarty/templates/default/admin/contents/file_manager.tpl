@@ -28,7 +28,7 @@
 <input type="hidden" name="tree_status" value="" />
 <input type="hidden" name="select_file" value="" />
 <div id="admin-contents" class="contents-main">
-<div id="contents-filemanager-directory">
+<div id="contents-filemanager-tree">
   ディレクトリ
   <div id="tree"></div>
 </div>

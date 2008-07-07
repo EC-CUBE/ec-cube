@@ -1,3 +1,8 @@
+#contents-filemanager-tree {
+    float: left;
+    width: 328px;
+    height: 430px;
+}
 #tree{
     height: 410px;
     width: 308px;
@@ -8,12 +13,9 @@
     border-color: #C0C0C0;
     border-width: 1px
 }
-#filemanager-block-tree {
-    float: left;
-    width: 328px;
-    height: 430px;
+#contents-filemanager-nowdir {
+    margin: 0 0 20px 0;
 }
-
 #file_view {
     height: 380px;
     width: 330px;
@@ -23,10 +25,6 @@
     border-color: #C0C0C0;
     border-width: 1px
 }
-#filemanager-block-table {
-    margin: 0 0 20px 0;
-}
-
 #now_dir {
     height: 20px;
     width: 300px;
