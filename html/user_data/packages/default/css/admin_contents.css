@@ -364,6 +364,39 @@ body > #container {
 #order-status-list th.id {width: 40px;}
 
 
+/* デザイン管理
+----------------------------------------------- */
+/* レイアウト管理 */
+div.dragged-elm {
+    position:   absolute;
+    border:     1px solid black;
+    background: rgb(195,217,255);
+    color:      #333;
+    cursor:     move;
+    padding:    5px 2px;
+    font-size:  10pt;
+    text-align: center;
+}
+div.drop-target {
+    border:      0px solid gray;
+    position:    relative;
+    text-align:  center;
+    color:       #333;
+}
+#design-layout-body {
+    width: 450px;
+    margin: 0 auto;
+}
+#design-layout-wrap-unused {width:164px;}
+#layout-left, #layout-right {
+    width: 150px;
+    height: 400px;
+    vertical-align: top;
+}
+#layout-main-head, #layout-main-foot { vertical-align: top; }
+#layout-header, #layout-footer, #layout-main { text-align: center; }
+
+
 /* フォーム
 ----------------------------------------------- */
 div.btn {

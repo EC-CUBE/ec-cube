@@ -296,8 +296,8 @@ function onMouseMove(evt) {
     moveElm ( gDragged, nowleft, nowtop );
 	
     for ( var i = 0; i < all_elms.length; i++ ) {
-    	// drop_target上にきた場合にのみ処理を行う
-	    if ( isEventOnElm ( evt, all_elms[i].id ) ) {	    
+    	// drop-target上にきた場合にのみ処理を行う
+	    if ( isEventOnElm ( evt, all_elms[i].id ) ) {
             if ( all_elms[i].attributes['tid'] ) {
 	            var tid = getAttrValue ( all_elms[i], 'tid' );
 	            
@@ -357,7 +357,7 @@ function onMouseUp(evt) {
 	
 	// 背景色を戻す
 	for ( var i = 0; i < all_elms.length; i++ ) {
-    	// drop_target上にきた場合にのみ処理を行う
+    	// drop-target上にきた場合にのみ処理を行う
 	    if ( isEventOnElm ( evt, all_elms[i].id ) && all_elms[i].attributes['tid']) {
 			// 背景色の変更
 			all_elms[i].style.background="#ffffff";
@@ -386,16 +386,14 @@ function isEventOnElm (evt, drop_target_id) {
     var evtX = getEventX(evt) + getPageScrollX();
     var evtY = getEventY(evt) + getPageScrollY();
     
-    var drop_target = document.getElementById( drop_target_id );
+    var drop_target = $("#" + drop_target_id );
 
-	drp_left = getX( drop_target );
-	drp_top = getY( drop_target );
+    var offset = drop_target.offset();
+    var x = offset.left;
+    var y = offset.top;
 
-    var x = drp_left;
-    var y = drp_top;
-
-	var width = getWidth ( drop_target );
-	var height = getHeight ( drop_target );
+	var width = drop_target.width();
+	var height = drop_target.height();
     
 //	alert(evtX +" / "+ x +" / "+ evtY +" / "+ y +" / "+ width +" / "+ height);
 
@@ -407,8 +405,8 @@ function fnSortObj(){
 	fnSetTargetHeight();
     for ( var cnt = 0; cnt < all_elms.length; cnt++ ) {
 
-		// classが drop_target の場合のみ処理を行う
-        if ( getAttrValue ( all_elms[cnt], 'class' ) == 'drop_target' ) {
+		// classが drop-target の場合のみ処理を行う
+        if ( getAttrValue ( all_elms[cnt], 'class' ) == 'drop-target' ) {
         	var tid = getAttrValue ( all_elms[cnt], 'tid' );
 			
 			// 配列の並び替え
@@ -435,8 +433,8 @@ function fnCreateArr( addEvt , top , left ){
 	arrObjtmp['Unused'] = Array();
 
 	for ( var i = 1; i < all_elms.length; i++ ) {
-		// classが dragged_elm の場合のみ処理を行う
-		if ( getAttrValue ( all_elms[i], 'class' ) == 'dragged_elm' ) {
+		// classが dragged-elm の場合のみ処理を行う
+		if ( getAttrValue ( all_elms[i], 'class' ) == "dragged-elm" ) {
         
 			// マウスダウンイベントと関連付けを行う
 			if (addEvt == 0) {
@@ -530,44 +528,40 @@ function fnSetTargetHeight(){
 	var UnusedHeight = defUnused;
 
 	// 高さ計算
-    for ( var cnt = 0; cnt < all_elms.length; cnt++ ) {
+    $(".drop-target").each(function(){
 		var target_height = 0;
-    
-		// classが drop_target の場合のみ処理を行う
-        if ( getAttrValue ( all_elms[cnt], 'class' ) == 'drop_target' ) {
-        	var tid = getAttrValue ( all_elms[cnt], 'tid' );
+        var tid = $(this).attr("tid");
 
-			for ( var j = 0; j < arrObj[tid].length; j++ ) {
-				target_height = target_height + arrObj[tid][j].margin + arrObj[tid][j].height;
-			}
-
-			// 下の幅
-			target_height = target_height + 20;
-
-			// 左右ナビ、未使用領域の高さを保持
-			if (tid == 'LeftNavi' || tid == 'RightNavi' || tid == 'Unused') {
-				if (NaviHeight < target_height) {
-					NaviHeight = target_height;
-				}
-			}
-
-			// メイン上部領域の高さを保持
-			if (tid == 'MainHead') {
-				if (target_height > defMainNavi) {
-					MainHeadHeight = target_height;
-				}
-			}
-
-			// メイン下部領域の高さを保持
-			if (tid == 'MainFoot') {
-				if (target_height > defMainNavi) {
-					MainFootHeight = target_height;
-				}
-			}	
+        for ( var j = 0; j < arrObj[tid].length; j++ ) {
+            target_height = target_height + arrObj[tid][j].margin + arrObj[tid][j].height;
         }
-	}
 
-	// メイン領域の高さを保持
+        // 下の幅
+        target_height = target_height + 20;
+
+        // 左右ナビ、未使用領域の高さを保持
+        if (tid == 'LeftNavi' || tid == 'RightNavi' || tid == 'Unused') {
+            if (NaviHeight < target_height) {
+                NaviHeight = target_height;
+            }
+        }
+
+        // メイン上部領域の高さを保持
+        if (tid == 'MainHead') {
+            if (target_height > defMainNavi) {
+                MainHeadHeight = target_height;
+            }
+        }
+
+        // メイン下部領域の高さを保持
+        if (tid == 'MainFoot') {
+            if (target_height > defMainNavi) {
+                MainFootHeight = target_height;
+            }
+        }
+    });
+
+    // メイン領域の高さを保持
 //	alert(NaviHeight+"/"+MainHeadHeight+"/"+MainFootHeight);
 	MainHeight = NaviHeight - ( MainHeadHeight + MainFootHeight );
 	if (MainHeight < defMain) {
@@ -579,35 +573,23 @@ function fnSetTargetHeight(){
 		NaviHeight = MainHeadHeight + MainFootHeight + MainHeight;	
 	}
 	// 変更
-    for ( var cnt = 0; cnt < all_elms.length; cnt++ ) {
-    	var target_height = 0;
+    $(".drop-target").each(function(){
+        var tid = $(this).attr("tid");
 
-		// classが drop_target の場合のみ処理を行う
-        if ( getAttrValue ( all_elms[cnt], 'class' ) == 'drop_target' ) {
-        	var tid = getAttrValue ( all_elms[cnt], 'tid' );
-        	
-        	// tidによって処理を分ける
-			if (tid == 'LeftNavi' || tid == 'RightNavi') {
-				target_height = NaviHeight;
-			}else if (tid == 'MainHead' ) {
-				target_height = MainHeadHeight;
-			}else if (tid == 'MainFoot') {
-				target_height = MainFootHeight;
-			}else if (tid == 'Unused'){
-				target_height = NaviHeight+100;
-			}
-
-			all_elms[cnt].style.height = target_height;
-		}
-	}
+        // tidによって処理を分ける
+        if (tid == 'LeftNavi' || tid == 'RightNavi') {
+            $(this).height(NaviHeight);
+        }else if (tid == 'MainHead' ) {
+            $(this).height(MainHeadHeight);
+        }else if (tid == 'MainFoot') {
+            $(this).height(MainFootHeight);
+        }else if (tid == 'Unused'){
+            $(this).height(NaviHeight+100);
+        }
+    });
 	
 	// メインテーブルの高さも変更
-    for (var i = 0; i < all_td.length; i++) {
-    	name = getAttrValue ( all_td[i], 'name' );
-		if (name == 'Main') {
-			all_td[i].height = MainHeight-2;
-		}
-    }
+    $("#layout-main").height(MainHeight-2);
 }
 
 //ウインドウサイズ取得
@@ -659,33 +641,28 @@ function fnMoveObject() {
     // ウィンドウの幅変更比率を取得
 	var moveX = GetWindowSize("width") - scrX;
 	var BlankX = ( GetWindowSize("width") - 878 ) / 2
-	
-	for ( var i = 0; i < all_elms.length; i++) {
-		if (all_elms[i].style.left != "" ) {
 
-			var elm_class = getAttrValue ( all_elms[i], 'class' );
+    $(".drop-target").each(function(){
+        if ($(this).css("left") == "") {
+            var tid = $(this).attr('tid');
 
-			if (elm_class == 'drop_target') {
-				var tid = getAttrValue ( all_elms[i], 'tid' );
-				
-				if (tid == 'LeftNavi') {
-					LeftMargin = marginLeftNavi;
-				}else if (tid == 'RightNavi') {
-					LeftMargin = marginRightNavi;
-				}else if (tid == 'MainHead' || tid == 'MainFoot') {
-					LeftMargin = marginMain;
-				}else{
-					LeftMargin = marginUnused;
-				}
+            if (tid == 'LeftNavi') {
+                LeftMargin = marginLeftNavi;
+            }else if (tid == 'RightNavi') {
+                LeftMargin = marginRightNavi;
+            }else if (tid == 'MainHead' || tid == 'MainFoot') {
+                LeftMargin = marginMain;
+            }else{
+                LeftMargin = marginUnused;
+            }
 
-				if (BlankX > 0) {
-					all_elms[i].style.left = BlankX + LeftMargin + 'px';
-				}else{
-					all_elms[i].style.left = LeftMargin + 'px';
-				}
-			}
-		}
-	}
+            if (BlankX > 0) {
+                $(this).css("left", BlankX + LeftMargin + 'px');
+            }else{
+                $(this).css("left", LeftMargin + 'px');
+            }
+        }
+    });
 	
 	scrX = GetWindowSize("width");
 	scrY = GetWindowSize("height");
