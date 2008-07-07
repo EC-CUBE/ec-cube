@@ -21,7 +21,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-?<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" enctype="multipart/form-data">
+<h2>確認</h2>
+<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" enctype="multipart/form-data">
 <!--{foreach key=key item=item from=$arrForm}-->
 <input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->" />
 <!--{/foreach}-->

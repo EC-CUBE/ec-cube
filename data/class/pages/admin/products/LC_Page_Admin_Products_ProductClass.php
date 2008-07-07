@@ -83,7 +83,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
         switch($_POST['mode']) {
-            // 規格削除要求
+        // 規格削除要求
         case 'delete':
             $objQuery = new SC_Query();
 
@@ -116,7 +116,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
             $this->lfProductClassPage();   // 規格登録ページ
             break;
 
-            // 編集要求
+        // 編集要求
         case 'pre_edit':
             $objQuery = new SC_Query();
             $where = "product_id = ? AND NOT(classcategory_id1 = 0 AND classcategory_id2 = 0) ";
@@ -129,7 +129,8 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
 
             $this->lfProductClassPage();   // 規格登録ページ
             break;
-            // 規格組み合わせ表示
+            
+        // 規格組み合わせ表示
         case 'disp':
             $this->arrForm['select_class_id1'] = $_POST['select_class_id1'];
             $this->arrForm['select_class_id2'] = $_POST['select_class_id2'];
@@ -142,7 +143,8 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
 
             $this->lfProductClassPage();   // 規格登録ページ
             break;
-            // 規格登録要求
+            
+        // 規格登録要求
         case 'edit':
             // 入力値の変換
             $this->arrForm = $this->lfConvertParam($_POST);
@@ -159,7 +161,8 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
                 $this->lfProductClassPage();   // 規格登録ページ
             }
             break;
-            // 確認ページからの戻り
+            
+        // 確認ページからの戻り
         case 'confirm_return':
             // フォームパラメータの引き継ぎ
             $this->arrForm = $_POST;
@@ -170,12 +173,14 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
             $this->arrClassCat = $this->lfGetClassCatListDisp($_POST['class_id1'], $_POST['class_id2'], false);
             $this->lfProductClassPage();   // 規格登録ページ
             break;
+            
         case 'complete':
             // 完了ページ設定
             $this->tpl_mainpage = 'products/product_class_complete.tpl';
             // 商品規格の登録
             $this->lfInsertProductClass($_POST, $_POST['product_id']);
             break;
+            
         default:
             $this->lfProductClassPage();   // 規格登録ページ
             break;
