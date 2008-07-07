@@ -338,6 +338,7 @@ body > #container {
 ----------------------------------------------- */
 #home-main {margin-right: 300px;}
 #home-main table {width: 100%;}
+* html #home-main table {width: 99%;}
 
 #home .shop-info {margin: 0 0 20px;}
 #home .shop-info td {text-align:right;width: 60%;}
