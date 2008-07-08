@@ -224,24 +224,24 @@ function fnGetMyBrowser() {
 
 // imgタグの画像変更
 function fnChgImg(fileName,imgName){
-	document.getElementById(imgName).src = fileName;
+	$("#" + imgName).attr("src", fileName);
 }
 
 // ファイル選択
 function fnSelectFile(id, val) {
-	if(old_select_id != '') document.getElementById(old_select_id).style.backgroundColor = '';
-	document.getElementById(id).style.backgroundColor = val;
+	if(old_select_id != '') $("#" + old_select_id).children("td").css("background-color", "#FFFFFF");
+	$("#" + id).children("td").css("background-color", val);
 	old_select_id = id;
 }
 
 // 背景色を変える
 function fnChangeBgColor(id, val) {
 	if (old_select_id != id) {
-		document.getElementById(id).style.backgroundColor = val;
+		$("#" + id).children("td").css("background-color", val);
 	}
 }
 
 // test
 function view_test(id) {
-	document.getElementById(id).value=tree
+	$("#" + id).val(tree)
 }
