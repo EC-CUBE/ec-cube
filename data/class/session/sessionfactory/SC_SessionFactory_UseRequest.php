@@ -464,7 +464,7 @@ class LC_UseRequest_State_Mobile extends LC_UseRequest_State {
     function LC_UseRequest_State_Mobile() {
         $this->namespace = 'mobile';
         $this->lifetime  = MOBILE_SESSION_LIFETIME;
-        $this->validate  = array('NameSpace', 'Model', 'Ip', 'Expire');
+        $this->validate  = array('NameSpace', 'Model', 'Expire');
     }
 
     /**
