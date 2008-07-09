@@ -41,7 +41,7 @@
     ファイル名：<input type="text" name="filename" value="<!--{$arrBlocData.filename|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.filename != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" />.tpl<span class="attention"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
   </div>
   <div>
-    <textarea name="bloc_html" cols="75" rows="<!--{$text_row}-->"><!--{$arrBlocData.tpl_data|smarty:nodefaults}--></textarea>
+    <textarea name="bloc_html" rows="<!--{$text_row}-->" style="width: 100%;"><!--{$arrBlocData.tpl_data|smarty:nodefaults}--></textarea>
     <input type="hidden" name="html_area_row" value="<!--{$text_row}-->" />
   </div>
   <div class="btn">

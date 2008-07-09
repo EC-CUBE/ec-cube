@@ -21,6 +21,11 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
+<!--{*
+
+XXX: ヘッダーとフッターでwrapの設定が違うのは疑問。それぞれの良し悪しはともかく、統一を。
+
+*}-->
 <div id="design" class="contents-main">
   <!--{* ▼ヘッダー編集ここから *}-->
   <h2>ヘッダー編集</h2>
@@ -41,7 +46,7 @@
   <input type="hidden" name="division" value="header" />
   <input type="hidden" name="header_row" value="<!--{$header_row}-->" />
   <input type="hidden" name="browser_type" value="" />
-    <textarea name="header" cols=90 rows=<!--{$header_row}--> align="left" wrap=off style="width: 650px;"><!--{$header_data|smarty:nodefaults}--></textarea>
+    <textarea name="header" rows="<!--{$header_row}-->" wrap="off" style="width: 100%;"><!--{$header_data|smarty:nodefaults}--></textarea>
     <div class="btn">
       <button type="button" onClick="ChangeSize(this, header, 50, 13, header_row)"><span><!--{if $header_row > 13}-->小さくする<!--{else}-->大きくする<!--{/if}--></span></button>
     </div>
@@ -69,7 +74,7 @@
   <input type="hidden" name="division" value="footer" />
   <input type="hidden" name="footer_row" value=<!--{$footer_row}--> />
   <input type="hidden" name="browser_type" value="" />
-    <textarea name="footer" cols="90" rows="<!--{$footer_row}-->"><!--{$footer_data|smarty:nodefaults}--></textarea>
+    <textarea name="footer" rows="<!--{$footer_row}-->" style="width: 100%;"><!--{$footer_data|smarty:nodefaults}--></textarea>
     <div align="right">
       <button type="button" onClick="ChangeSize(this, footer, 50, 13, footer_row)"><span><!--{if $footer_row > 13}-->小さくする<!--{else}-->大きくする<!--{/if}--></span></button>
     </div>

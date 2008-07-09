@@ -79,7 +79,7 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
   <label for="header-chk"><input type="checkbox" name="header_chk" id="header-chk" <!--{$arrPageData.header_chk}--> />共通のヘッダーを使用する</label>&nbsp;
   <label for="footer-chk"><input type="checkbox" name="footer_chk" id="footer-chk" <!--{$arrPageData.footer_chk}--> />共通のフッターを使用する</label>
   <div>
-    <textarea name="tpl_data" cols=90 rows=<!--{$text_row}-->><!--{$arrPageData.tpl_data|escape|smarty:nodefaults}--></textarea>
+    <textarea name="tpl_data" rows=<!--{$text_row}--> style="width: 100%;"><!--{$arrPageData.tpl_data|escape|smarty:nodefaults}--></textarea>
     <input type="hidden" name="html_area_row" value="<!--{$text_row}-->" />
   </div>
   <div class="btn">
