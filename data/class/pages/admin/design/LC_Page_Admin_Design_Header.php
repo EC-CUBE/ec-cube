@@ -50,7 +50,6 @@ class LC_Page_Admin_Design_Header extends LC_Page {
         $this->tpl_subno = "header";
         $this->tpl_mainno = "design";
         $this->tpl_subtitle = 'ヘッダー･フッター編集';
-        $this->tpl_onload = 'comment_start(); comment_end();';
     }
 
     /**
