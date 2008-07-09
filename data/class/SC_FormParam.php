@@ -163,6 +163,7 @@ class SC_FormParam {
                 case 'EMAIL_CHECK':
                 case 'EMAIL_CHAR_CHECK':
                 case 'ALNUM_CHECK':
+                case 'GRAPH_CHECK':
                 case 'KANA_CHECK':
                 case 'URL_CHECK':
                 case 'SPTAB_CHECK':
