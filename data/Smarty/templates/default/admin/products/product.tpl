@@ -188,7 +188,7 @@ function selectAll(target) {
       </td>
     </tr>
     <tr>
-      <th>メーカー<span class="attention"> *</span></th>
+      <th>メーカー</th>
       <td>
         <span class="attention"><!--{$arrErr.maker_id}--></span>
         <select name="maker_id" style="<!--{$arrErr.maker_id|sfGetErrorColor}-->">
