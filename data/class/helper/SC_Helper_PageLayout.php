@@ -45,23 +45,24 @@ class SC_Helper_PageLayout {
      */
     function sfGetPageLayout(&$objPage, $preview = false, $url = ""){
         $debug_message = "";
-    	$arrPageLayout = array();
+        $arrPageLayout = array();
 
         // 現在のURLの取得
         if ($preview === false) {
             if ($url == "") {
                 $url = "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
             }
+            $url2 = preg_replace('|^' . preg_quote(SITE_URL) . '|', '', $url);
             // URLを元にページデザインを取得
-            $arrPageData = $this->lfgetPageData(" url = ? " , array($url));
+            $arrPageData = $this->lfgetPageData(" url IN (?, ?) " , array($url2, $url)); // $url は従来互換
         }else{
             $arrPageData = $this->lfgetPageData(" page_id = ? " , array("0"));
             $objPage->tpl_mainpage = USER_PATH . "templates/preview/"
                 . TEMPLATE_NAME . "/" . $arrPageData[0]['filename'] . ".tpl";
         }
-		
+        
         foreach($arrPageData[0] as $key => $val) {
-        	 $debug_message.= "arrPageData[$key]：" . $val . "\n";
+            $debug_message.= "arrPageData[$key]：" . $val . "\n";
         }
         
         $debug_message.= "TEMPLATE_NAME：".TEMPLATE_NAME . "\n";
@@ -97,10 +98,10 @@ class SC_Helper_PageLayout {
         // 全ナビデータを取得する
         $arrNavi = $this->lfGetNaviData($url, $preview);
 
-        $arrPageLayout['LeftNavi']  = $this->lfGetNavi($arrNavi,1);	// LEFT NAVI
-        $arrPageLayout['MainHead']  = $this->lfGetNavi($arrNavi,2);	// メイン上部
-        $arrPageLayout['RightNavi'] = $this->lfGetNavi($arrNavi,3);	// RIGHT NAVI
-        $arrPageLayout['MainFoot']  = $this->lfGetNavi($arrNavi,4);	// メイン下部
+        $arrPageLayout['LeftNavi']  = $this->lfGetNavi($arrNavi,1);    // LEFT NAVI
+        $arrPageLayout['MainHead']  = $this->lfGetNavi($arrNavi,2);    // メイン上部
+        $arrPageLayout['RightNavi'] = $this->lfGetNavi($arrNavi,3);    // RIGHT NAVI
+        $arrPageLayout['MainFoot']  = $this->lfGetNavi($arrNavi,4);    // メイン下部
 
         GC_Utils::gfDebugLog($arrPageLayout);
         
@@ -120,27 +121,27 @@ class SC_Helper_PageLayout {
      * @return array ページ情報を格納した配列
      */
     function lfgetPageData($where = '', $arrVal = ''){
-        $objDBConn = new SC_DbConn;		// DB操作オブジェクト
-        $sql = "";						// データ取得SQL生成用
-        $arrRet = array();				// データ取得用
+        $objDBConn = new SC_DbConn;     // DB操作オブジェクト
+        $sql = "";                      // データ取得SQL生成用
+        $arrRet = array();              // データ取得用
 
         // SQL生成
         $sql .= " SELECT";
-        $sql .= " page_id";				// ページID
-        $sql .= " ,page_name";			// 名称
-        $sql .= " ,url";				// URL
-        $sql .= " ,php_dir";			// php保存先ディレクトリ
-        $sql .= " ,tpl_dir";			// tpl保存先ディレクトリ
-        $sql .= " ,filename";			// ファイル名称
-        $sql .= " ,header_chk ";		// ヘッダー使用FLG
-        $sql .= " ,footer_chk ";		// フッター使用FLG
-        $sql .= " ,edit_flg ";			// 編集可能FLG
-        $sql .= " ,author";				// authorタグ
-        $sql .= " ,description";		// descriptionタグ
-        $sql .= " ,keyword";			// keywordタグ
-        $sql .= " ,update_url";			// 更新URL
-        $sql .= " ,create_date";		// データ作成日
-        $sql .= " ,update_date";		// データ更新日
+        $sql .= " page_id";             // ページID
+        $sql .= " ,page_name";          // 名称
+        $sql .= " ,url";                // URL
+        $sql .= " ,php_dir";            // php保存先ディレクトリ
+        $sql .= " ,tpl_dir";            // tpl保存先ディレクトリ
+        $sql .= " ,filename";           // ファイル名称
+        $sql .= " ,header_chk ";        // ヘッダー使用FLG
+        $sql .= " ,footer_chk ";        // フッター使用FLG
+        $sql .= " ,edit_flg ";          // 編集可能FLG
+        $sql .= " ,author";             // authorタグ
+        $sql .= " ,description";        // descriptionタグ
+        $sql .= " ,keyword";            // keywordタグ
+        $sql .= " ,update_url";         // 更新URL
+        $sql .= " ,create_date";        // データ作成日
+        $sql .= " ,update_date";        // データ更新日
         $sql .= " FROM ";
         $sql .= "     dtb_pagelayout";
         $sql .= " WHERE ";
@@ -167,9 +168,9 @@ class SC_Helper_PageLayout {
      * @return array ナビ情報の配列
      */
     function lfGetNaviData($url, $preview=false){
-        $objDBConn = new SC_DbConn;		// DB操作オブジェクト
-        $sql = "";						// データ取得SQL生成用
-        $arrRet = array();				// データ取得用
+        $objDBConn = new SC_DbConn;     // DB操作オブジェクト
+        $sql = "";                      // データ取得SQL生成用
+        $arrRet = array();              // データ取得用
         $arrData = array();
 
         // SQL文生成
@@ -214,12 +215,12 @@ class SC_Helper_PageLayout {
                     if ($val['php_path'] != '') {
                         $arrNavi[$key]['php_path'] = HTML_PATH . $val['php_path'];
                     }else{
-                    	$user_block_path = USER_TEMPLATE_PATH . TEMPLATE_NAME . "/" . $val['tpl_path'];
-                    	if(is_file($user_block_path)) {
-                    	   $arrNavi[$key]['tpl_path'] = $user_block_path;
-                    	} else {
-                           $arrNavi[$key]['tpl_path'] = TEMPLATE_DIR . $val['tpl_path'];
-                    	}
+                        $user_block_path = USER_TEMPLATE_PATH . TEMPLATE_NAME . "/" . $val['tpl_path'];
+                        if(is_file($user_block_path)) {
+                            $arrNavi[$key]['tpl_path'] = $user_block_path;
+                        } else {
+                            $arrNavi[$key]['tpl_path'] = TEMPLATE_DIR . $val['tpl_path'];
+                        }
                     }
                     
                     // phpから呼び出されるか、tplファイルが存在する場合
@@ -259,10 +260,10 @@ class SC_Helper_PageLayout {
      */
     function lfDelPageData($page_id){
         // DBへデータを更新する
-        $objDBConn = new SC_DbConn;		// DB操作オブジェクト
-        $sql = "";						// データ更新SQL生成用
-        $ret = ""; 						// データ更新結果格納用
-        $arrDelData = array();			// 更新データ生成用
+        $objDBConn = new SC_DbConn; // DB操作オブジェクト
+        $sql = "";                  // データ更新SQL生成用
+        $ret = "";                  // データ更新結果格納用
+        $arrDelData = array();      // 更新データ生成用
 
         // page_id が空でない場合にはdeleteを実行
         if ($page_id != '') {

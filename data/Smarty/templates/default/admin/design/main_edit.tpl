@@ -70,10 +70,10 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
   </div>
   <!--{/if}-->
   URL：<!--{if $arrPageData.edit_flg == 2}-->
-      <!--{$smarty.const.SITE_URL}--><!--{$arrPageData.url|escape}-->
-      <input type="hidden" name="url" value="<!--{$arrPageData.filename|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" />
+      <!--{$smarty.const.SITE_URL|escape}--><!--{$arrPageData.url|escape}-->
+      <input type="hidden" name="url" value="<!--{$arrPageData.filename|escape}-->" />
     <!--{else}-->
-      <!--{$user_URL}--><input type="text" name="url" value="<!--{$arrPageData.directory|escape}--><!--{$arrPageData.filename|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.url != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}--> ime-mode: disabled;" size="40" class="box40" />.php<span class="attention"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
+      <!--{$user_URL|escape}--><input type="text" name="url" value="<!--{$arrPageData.directory|escape}--><!--{$arrPageData.filename|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.url != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}--> ime-mode: disabled;" size="40" class="box40" />.php<span class="attention"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
     <!--{/if}--><br />
 
   <label for="header-chk"><input type="checkbox" name="header_chk" id="header-chk" <!--{$arrPageData.header_chk}--> />共通のヘッダーを使用する</label>&nbsp;
@@ -95,7 +95,7 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
   <h2>編集可能画面一覧</h2>
   <table class="list center">
     <!--{foreach key=key item=item from=$arrPageList}-->
-    <tr style="background-color:<!--{if $item.page_id == $page_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->;">
+    <tr style="<!--{if $item.page_id == $page_id}-->background-color: <!--{$smarty.const.SELECT_RGB}-->;<!--{/if}-->">
       <td>
         <a href="<!--{$smarty.server.PHP_SELF|escape}-->?page_id=<!--{$item.page_id}-->" ><!--{$item.page_name}--></a>
       </td>
