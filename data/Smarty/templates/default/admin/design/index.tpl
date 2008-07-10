@@ -9,37 +9,10 @@ function fnTargetSelf(){
   document.form1.target = "_self";
 }
 
-// 初期処理
-function init () {
-    document.body.ondrag = function () { return false; };
-    document.body.onselectstart = function () { return false; };
-
-    // ウィンドウサイズを取得
-  scrX = GetWindowSize("width");
-  scrY = GetWindowSize("height");
-
-  // ウィンドウサイズ変更イベントに関連付け
-    window.onresize = fnMoveObject;
-
-  // divタグを取得
-  all_elms = document.getElementsByTagName ( 'div' );
-
-  all_dragged = $(".dragged-elm");
-  all_target = $(".drop-target");
-
-  // 配列作成
-  fnCreateArr(0);
-
-  // alerttest(0);
-
-    // 並び替え
-  fnMoveObject();
-
-  <!--{$complate_msg}-->
-}
-
 </script>
 
+<script type="text/javascript" src="<!--{$TPL_DIR}-->js/ui.core.js"></script>
+<script type="text/javascript" src="<!--{$TPL_DIR}-->js/ui.sortable.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/layout_design.js"></script>
 
 
@@ -67,17 +40,59 @@ function init () {
           <tr>
             <!--{* 左ナビテーブルここから *}-->
             <td rowspan="3" id="layout-left">
-              <div tid="LeftNavi" class="drop-target" id="t1" style="width: 145px; height: 100px;"></div>
+              <div id="LeftNavi" class="ui-sortable" style="position: relative; width: 145px; height: 100px;">
+                <!--{assign var="firstflg" value=false}-->
+                <!--{foreach key=key item=item from=$tpl_arrBloc name="bloc_loop"}-->
+                <!--{if $item.target_id == "LeftNavi"}-->
+                <div class="sort<!--{if !$firstflg}--> first<!--{/if}-->">
+                  <!--{$item.name}-->
+                  <input type="hidden" class="name" name="name_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.name}-->" />
+                  <input type="hidden" class="id" name="id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_id}-->" />
+                  <input type="hidden" class="target-id" name="target_id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.target_id}-->" />
+                  <input type="hidden" class="top" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->" />
+                </div>
+                <!--{assign var="firstflg" value=true}-->
+                <!--{/if}-->
+                <!--{/foreach}-->
+              </div>
             </td>
             <!--{* 左ナビテーブルここまで *}-->
             <!--{* メイン上部テーブルここから *}-->
             <td id="layout-main-head">
-              <div tid="MainHead" class="drop-target" id="t2" style="width: 145px; height: 100px;"></div>
+              <div id="MainHead" class="ui-sortable" style="position: relative; width: 145px; height: 100px;">
+                <!--{assign var="firstflg" value=false}-->
+                <!--{foreach key=key item=item from=$tpl_arrBloc name="bloc_loop"}-->
+                <!--{if $item.target_id == "MainHead"}-->
+                <div class="sort<!--{if !$firstflg}--> first<!--{/if}-->">
+                  <!--{$item.name}-->
+                  <input type="hidden" class="name" name="name_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.name}-->" />
+                  <input type="hidden" class="id" name="id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_id}-->" />
+                  <input type="hidden" class="target-id" name="target_id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.target_id}-->" />
+                  <input type="hidden" class="top" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->" />
+                </div>
+                <!--{assign var="firstflg" value=true}-->
+                <!--{/if}-->
+                <!--{/foreach}-->
+              </div>
             </td>
             <!--{* メイン上部テーブルここまで *}-->
             <!--{* 右ナビここから *}-->
             <td rowspan="3" id="layout-right">
-              <div tid="RightNavi" class="drop-target" id="t3" style="width: 145px; height: 100px;"></div>
+              <div id="RightNavi" class="ui-sortable" style="position: relative; width: 145px; height: 100px;">
+                <!--{assign var="firstflg" value=false}-->
+                <!--{foreach key=key item=item from=$tpl_arrBloc name="bloc_loop"}-->
+                <!--{if $item.target_id == "RightNavi"}-->
+                <div class="sort<!--{if !$firstflg}--> first<!--{/if}-->">
+                  <!--{$item.name}-->
+                  <input type="hidden" class="name" name="name_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.name}-->" />
+                  <input type="hidden" class="id" name="id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_id}-->" />
+                  <input type="hidden" class="target-id" name="target_id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.target_id}-->" />
+                  <input type="hidden" class="top" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->" />
+                </div>
+                <!--{assign var="firstflg" value=true}-->
+                <!--{/if}-->
+                <!--{/foreach}-->
+              </div>
             </td>
             <!--{* 右ナビここまで *}-->
           </tr>
@@ -89,7 +104,21 @@ function init () {
           <!--{* メイン下部ここから *}-->
           <tr>
             <td id="layout-main-foot">
-              <div tid="MainFoot" class="drop-target" id="t4" style="width: 145px; height: 100px;"></div>
+              <div id="MainFoot" class="ui-sortable" style="position: relative; width: 145px; height: 100px;">
+                <!--{assign var="firstflg" value=false}-->
+                <!--{foreach key=key item=item from=$tpl_arrBloc name="bloc_loop"}-->
+                <!--{if $item.target_id == "MainFoot"}-->
+                <div class="sort<!--{if !$firstflg}--> first<!--{/if}-->">
+                  <!--{$item.name}-->
+                  <input type="hidden" class="name" name="name_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.name}-->" />
+                  <input type="hidden" class="id" name="id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_id}-->" />
+                  <input type="hidden" class="target-id" name="target_id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.target_id}-->" />
+                  <input type="hidden" class="top" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->" />
+                </div>
+                <!--{assign var="firstflg" value=true}-->
+                <!--{/if}-->
+                <!--{/foreach}-->
+              </div>
             </td>
           </tr>
           <!--{* メイン下部ここまで *}-->
@@ -102,7 +131,21 @@ function init () {
 
       <!--{* ▼未使用ブロックここから *}-->
       <td>
-        <div tid="Unused" class="drop-target" id="t5" style="width: 160px; height: 500px;"></div>
+        <div id="Unused" class="ui-sortable" style="position: relative; width: 145px; height: 500px;">
+          <!--{assign var="firstflg" value=false}-->
+          <!--{foreach key=key item=item from=$tpl_arrBloc name="bloc_loop"}-->
+          <!--{if $item.target_id == "Unused"}-->
+          <div class="sort<!--{if !$firstflg}--> first<!--{/if}-->">
+            <!--{$item.name}-->
+            <input type="hidden" class="name" name="name_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.name}-->" />
+            <input type="hidden" class="id" name="id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_id}-->" />
+            <input type="hidden" class="target-id" name="target_id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.target_id}-->" />
+            <input type="hidden" class="top" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->" />
+          </div>
+          <!--{assign var="firstflg" value=true}-->
+          <!--{/if}-->
+          <!--{/foreach}-->
+        </div>
         <div class="btn"><button type='button' onclick="fnTargetSelf(); fnFormModeSubmit('form1','new_bloc','','');"><span>新規ブロック作成</span></button></div>
       </td>
       <!--{* ▲未使用ブロックここまで *}-->
@@ -118,7 +161,6 @@ function init () {
 
   <!--▼ページ一覧　ここから-->
   <h2>編集可能ページ</h2>
-
   <table class="list center">
   <!--{foreach key=key item=item from=$arrEditPage}-->
     <tr style="background-color:<!--{if $item.page_id == $page_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->;">
@@ -140,17 +182,5 @@ function init () {
     <button type='button' onclick="fnTargetSelf(); fnFormModeSubmit('form1','new_page','','');"><span>新規ページ作成</span></button>
   </div>
   <!--▲ページ一覧　ここまで-->
-
-
-
-<!--{foreach key=key item=item from=$tpl_arrBloc name="bloc_loop"}-->
-<div target_id="<!--{$item.target_id}-->" did="<!--{$smarty.foreach.bloc_loop.iteration}-->" class="dragged-elm" style="left:350px; top:0px; filter: alpha(opacity=100); opacity: 1;width: 120px;">
-   <!--{$item.name}-->
-</div>
-<input type="hidden" name="name_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.name}-->" />
-<input type="hidden" name="id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_id}-->" />
-<input type="hidden" name="target_id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.target_id}-->" />
-<input type="hidden" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->" />
-<!--{/foreach}-->
 </div>
 </form>

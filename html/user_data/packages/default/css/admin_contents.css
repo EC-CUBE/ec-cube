@@ -367,34 +367,41 @@ body > #container {
 /* デザイン管理
 ----------------------------------------------- */
 /* レイアウト管理 */
-div.dragged-elm {
-    position:   absolute;
+div.sort {
     border:     1px solid black;
     background: rgb(195,217,255);
     color:      #333;
-    cursor:     move;
     padding:    5px 2px;
+    margin:     5px 0px;
     font-size:  10pt;
     text-align: center;
+    width:      140px;
 }
-div.drop-target {
-    border:      0px solid gray;
-    position:    relative;
-    text-align:  center;
-    color:       #333;
-}
+.placeholder { border:1px dashed #AAA; }
+
 #design-layout-body {
     width: 450px;
     margin: 0 auto;
 }
-#design-layout-wrap-unused {width:164px;}
-#layout-left, #layout-right {
-    width: 150px;
+#design-layout-body td {
+    width: 145px;
+    vertical-align: top;
+    text-align: center;
+}
+#design-layout-wrap-unused {width:145px;}
+#LeftNavi, #RightNavi {
+    width: 140px;
+    min-height: 400px;
+    height: auto !important;
     height: 400px;
     vertical-align: top;
 }
-#layout-main-head, #layout-main-foot { vertical-align: top; }
-#layout-header, #layout-footer, #layout-main { text-align: center; }
+#design-layout-body #MainHead, #design-layout-body #MainFoot {
+    min-height: 100px;
+    height: auto !important;
+    height: 100px;
+}
+#design-layout-body td#layout-main {vertical-align: middle;}
 
 
 /* フォーム
