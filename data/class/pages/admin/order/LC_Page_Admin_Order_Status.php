@@ -47,6 +47,7 @@ class LC_Page_Admin_Order_Status extends LC_Page {
         $this->tpl_subnavi = 'order/subnavi.tpl';
         $this->tpl_mainno = 'order';
         $this->tpl_subno = 'status';
+        $this->tpl_subtitle = 'ステータス管理';
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrORDERSTATUS = $masterData->getMasterData("mtb_order_status");

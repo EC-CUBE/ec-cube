@@ -21,11 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<form name="subFormStatus" id="subFormStatus" method="post" action="<!--{$smarty.const.URL_DIR}-->admin/order/status.php" >
-<input type="hidden" name="mode" value="" />
-<input type="hidden" name="status" value="<!--{if $arrForm.status == ""}-->1<!--{else}--><!--{$arrForm.status}--><!--{/if}-->" />
-<input type="hidden" name="search_pageno" value="<!--{$tpl_pageno}-->" />
-<input type="hidden" name="order_id" value="" />
 <ul id="navi-order" class="level1">
     <li id="navi-order-index"
         class="<!--{if $tpl_mainno == 'order' && $tpl_subno == 'index'}-->on<!--{/if}-->"
@@ -35,14 +30,5 @@
     ><a href="<!--{$smarty.const.URL_DIR}-->admin/order/edit.php?mode=add"><span>新規受注入力</span></a></li>
     <li id="navi-order-status"
         class="<!--{if $tpl_mainno == 'order' && $tpl_subno == 'status'}-->on<!--{/if}-->"
-    ><a href="<!--{$smarty.const.URL_DIR}-->admin/order/status.php"><span>ステータス管理</span></a>
-        <ul id="navi-status-sub" class="level2">
-            <!--{foreach key=key item=item from=$arrORDERSTATUS}-->
-                <li id="navi-status-<!--{$key}-->"
-                    class="<!--{if $tpl_mainno == 'order' && $tpl_subno == 'status' && ($key == $SelectedStatus || $key == $defaultstatus)}-->on<!--{/if}-->"
-                ><a href="#" onclick="document.form1.search_pageno.value='1'; fnModeSubmit('search','status','<!--{$key}-->' );"><span><!--{$item}--></span></a></li>
-            <!--{/foreach}-->
-        </ul>
-    </li>
+    ><a href="<!--{$smarty.const.URL_DIR}-->admin/order/status.php"><span>ステータス管理</span></a></li>
 </ul>
-</form>

@@ -27,7 +27,17 @@
 <input type="hidden" name="search_pageno" value="<!--{$tpl_pageno}-->" >
 <input type="hidden" name="order_id" value="" />
 <div id="order" class="contents-main">
-  <h2>ステータス管理</h2>
+  <h2>抽出条件</h2>
+    <!--{foreach key=key item=item from=$arrORDERSTATUS}-->
+      <a
+        style="padding-right: 1em;"
+        <!--{if $key != $SelectedStatus}-->
+          href="#"
+          onclick="document.form1.search_pageno.value='1'; fnModeSubmit('search','status','<!--{$key}-->' );"
+        <!--{/if}-->
+      ><!--{$item}--></a>
+    <!--{/foreach}-->
+  <h2>編集</h2>
   <!--{* 登録テーブルここから *}-->
   <!--{if $tpl_linemax > 0 }-->
   <div>
@@ -40,7 +50,7 @@
       <!--{/foreach}-->
       <option value="delete">削除</option>
     </select>
-    <button type="button" onclick="fnSelectCheckSubmit();"><span>反映</span></button>
+    <button type="button" onclick="fnSelectCheckSubmit();"><span>移動</span></button>
   </div>
 
   <p>
