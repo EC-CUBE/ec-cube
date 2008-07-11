@@ -1084,10 +1084,10 @@ function listdirs($dir) {
     global $alldirs;
     $dirs = glob($dir . '/*');
     if (is_array($dirs) && count($dirs) > 0) {
-        foreach ($dirs as $d) $alldirs[] = $d;
-    }
-    if (is_array($dirs)) {
-        foreach ($dirs as $dir) listdirs($dir);
+        foreach ($dirs as $d) {
+            $alldirs[] = $d;
+            listdirs($d);
+        }
     }
     return $alldirs;
 }

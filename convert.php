@@ -115,13 +115,13 @@ foreach ($fileArrays as $path) {
  * @see http://www.php.net/glob
  */
 function listdirs($dir) {
-    static $alldirs = array();
+    static $alldirs = array(); // FIXME 1実行で複数回外部から呼ばれると累積されない? 参照渡しで持ちまわるのが妥当な気がする。html\install\index.php に良い実装が存在する気がする。ただし、このファイルはインクルード用で無いようなので、これで良いのかも。
     $dirs = glob($dir . '/*');
-    if (is_array($dirs) && count($dirs) > 0) {
-        foreach ($dirs as $d) $alldirs[] = $d;
-    }
     if (is_array($dirs)) {
-        foreach ($dirs as $dir) listdirs($dir);
+        foreach ($dirs as $d) {
+            $alldirs[] = $d;
+            listdirs($d);
+        }
     }
     return $alldirs;
 }
