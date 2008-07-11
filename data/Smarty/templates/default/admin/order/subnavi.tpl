@@ -21,18 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<script type="text/javascript">
-<!--
-// モードとキーを指定してSUBMITを行う。
-function fnSubFormStatusSubmit(mode, keyname, keyid) {
-    document.subFormStatus['mode'].value = mode;
-    if(keyname != "" && keyid != "") {
-        document.subFormStatus[keyname].value = keyid;
-    }
-    document.subFormStatus.submit();
-}
-//-->
-</script>
 <form name="subFormStatus" id="subFormStatus" method="post" action="<!--{$smarty.const.URL_DIR}-->admin/order/status.php" >
 <input type="hidden" name="mode" value="" />
 <input type="hidden" name="status" value="<!--{if $arrForm.status == ""}-->1<!--{else}--><!--{$arrForm.status}--><!--{/if}-->" />
