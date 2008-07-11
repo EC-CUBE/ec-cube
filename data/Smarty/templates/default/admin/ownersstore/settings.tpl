@@ -26,10 +26,6 @@
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <div id="ownersstore" class="contents-main">
 
-  <!--{include file=$tpl_subnavi}-->
-
-  <h2><!--{$tpl_subtitle}--></h2>
-  
   <!--入力項目ここから-->
   <p><span class="attention">※認証キーは<a href="<!--{$smarty.const.OSTORE_URL}-->" target="_blank">EC-CUBEオーナーズストア</a>で取得できます。</span></p>
   <table class="form">

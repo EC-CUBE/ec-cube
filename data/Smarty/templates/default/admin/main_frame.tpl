@@ -63,7 +63,6 @@
   <div id="logo"><a href="<!--{$smarty.const.URL_DIR}-->admin/home.php"><img src="<!--{$TPL_DIR}-->img/admin/header/logo.jpg" width="230" height="50" alt="EC CUBE" /></a></div>
   <!--{* ▼NAVI *}-->
   <ul id="sites">
-    <li><a href="<!--{$smarty.const.URL_DIR}-->admin/ownersstore/index.php"><span>OWNERS STORE</span></a></li>
     <li><a href="<!--{$smarty.const.URL_HOME}-->"><span>MAIN PAGE</span></a></li>
     <li><a href="<!--{$smarty.const.SITE_URL}-->" target="_blank"><span>SITE CHECK</span></a></li>
   </ul>
@@ -72,32 +71,45 @@
     <a href="<!--{$smarty.const.URL_LOGOUT}-->">LOGOUT</a>
   </p>
   <ul id="navi">
-    <li<!--{if $tpl_mainno eq "basis"}--> class="on"<!--{/if}-->><a href="<!--{$smarty.const.URL_DIR}-->admin/basis/index.php"><span>基本情報管理</span></a>
+    <li id="navi-basis" <!--{if $tpl_mainno eq "basis"}--> class="on"<!--{/if}-->>
+      <a href="<!--{$smarty.const.URL_DIR}-->admin/basis/index.php"><span>基本情報管理</span></a>
       <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`basis/subnavi.tpl"}-->
     </li>
-    <li<!--{if $tpl_mainno eq "products"}--> class="on"<!--{/if}-->><a href="<!--{$smarty.const.URL_DIR}-->admin/products/index.php"><span>商品管理</span></a>
+    <li id="navi-products" <!--{if $tpl_mainno eq "products"}--> class="on"<!--{/if}-->>
+      <a href="<!--{$smarty.const.URL_DIR}-->admin/products/index.php"><span>商品管理</span></a>
       <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`products/subnavi.tpl"}-->
     </li>
-    <li<!--{if $tpl_mainno eq "customer"}--> class="on"<!--{/if}-->><a href="<!--{$smarty.const.URL_DIR}-->admin/customer/index.php"><span>顧客管理</span></a>
+    <li id="navi-customer" <!--{if $tpl_mainno eq "customer"}--> class="on"<!--{/if}-->>
+      <a href="<!--{$smarty.const.URL_DIR}-->admin/customer/index.php"><span>顧客管理</span></a>
       <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`customer/subnavi.tpl"}-->
     </li>
-    <li<!--{if $tpl_mainno eq "order"}--> class="on"<!--{/if}-->><a href="<!--{$smarty.const.URL_DIR}-->admin/order/index.php"><span>受注管理</span></a>
+    <li id="navi-order" <!--{if $tpl_mainno eq "order"}--> class="on"<!--{/if}-->>
+      <a href="<!--{$smarty.const.URL_DIR}-->admin/order/index.php"><span>受注管理</span></a>
       <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`order/subnavi.tpl"}-->
     </li>
-    <li<!--{if $tpl_mainno eq "total"}--> class="on"<!--{/if}-->><a href="<!--{$smarty.const.URL_DIR}-->admin/total/index.php"><span>売上集計</span></a>
+    <li id="navi-total" <!--{if $tpl_mainno eq "total"}--> class="on"<!--{/if}-->>
+      <a href="<!--{$smarty.const.URL_DIR}-->admin/total/index.php"><span>売上集計</span></a>
       <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`total/subnavi.tpl"}-->
     </li>
-    <li<!--{if $tpl_mainno eq "mail"}--> class="on"<!--{/if}-->><a href="<!--{$smarty.const.URL_DIR}-->admin/mail/index.php"><span>メルマガ管理</span></a>
+    <li id="navi-mail" <!--{if $tpl_mainno eq "mail"}--> class="on"<!--{/if}-->>
+      <a href="<!--{$smarty.const.URL_DIR}-->admin/mail/index.php"><span>メルマガ管理</span></a>
       <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`mail/subnavi.tpl"}-->
     </li>
-    <li<!--{if $tpl_mainno eq "contents"}--> class="on"<!--{/if}-->><a href="<!--{$smarty.const.URL_DIR}-->admin/contents/index.php"><span>コンテンツ管理</span></a>
+    <li id="navi-contents" <!--{if $tpl_mainno eq "contents"}--> class="on"<!--{/if}-->>
+      <a href="<!--{$smarty.const.URL_DIR}-->admin/contents/index.php"><span>コンテンツ管理</span></a>
       <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`contents/subnavi.tpl"}-->
     </li>
-    <li<!--{if $tpl_mainno eq "design"}--> class="on"<!--{/if}-->><a href="<!--{$smarty.const.URL_DIR}-->admin/design/index.php"><span>デザイン管理</span></a>
+    <li id="navi-design" <!--{if $tpl_mainno eq "design"}--> class="on"<!--{/if}-->>
+      <a href="<!--{$smarty.const.URL_DIR}-->admin/design/index.php"><span>デザイン管理</span></a>
       <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`design/subnavi.tpl"}-->
     </li>
-    <li<!--{if $tpl_mainno eq "system"}--> class="on"<!--{/if}-->><a href="<!--{$smarty.const.URL_DIR}-->admin/system/index.php"><span>システム設定</span></a>
+    <li id="navi-system" <!--{if $tpl_mainno eq "system"}--> class="on"<!--{/if}-->>
+      <a href="<!--{$smarty.const.URL_DIR}-->admin/system/index.php"><span>システム設定</span></a>
       <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`system/subnavi.tpl"}-->
+    </li>
+    <li id="navi-ownersstore" <!--{if $tpl_mainno eq "ownersstore"}--> class="on"<!--{/if}-->>
+      <a href="<!--{$smarty.const.URL_DIR}-->admin/ownersstore/index.php"><span>OWNERS STORE</span></a>
+      <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`ownersstore/subnavi.tpl"}-->
     </li>
   </ul>
   <!--{* ▲NAVI *}-->

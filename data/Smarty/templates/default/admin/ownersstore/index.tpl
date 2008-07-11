@@ -36,10 +36,6 @@ OwnersStore.download();やOwnersStore.products_list();を呼び出すことで
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <div id="ownersstore" class="contents-main">
 
-  <!--{include file=$tpl_subnavi}-->
-  
-  <h2><!--{$tpl_subtitle}--></h2> 
-
   <!--購入商品一覧ここから-->
   <div id="ownersstore_products_list"></div>
   <!--購入商品一覧ここまで-->

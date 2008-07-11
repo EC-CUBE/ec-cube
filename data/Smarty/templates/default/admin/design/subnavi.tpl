@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<ul id="navi-design" class="level1">
+<ul class="level1">
 <li<!--{if $tpl_subno == 'layout'}--> class="on"<!--{/if}--> id="navi-design-layout"><a href="<!--{$smarty.const.URL_DIR}-->admin/design/index.php"><span>レイアウト設定</span></a></li>
 <li<!--{if $tpl_subno == 'main_edit'}--> class="on"<!--{/if}--> id="navi-design-main"><a href="<!--{$smarty.const.URL_DIR}-->admin/design/main_edit.php"><span>ページ詳細設定</span></a></li>
 <li<!--{if $tpl_subno == 'bloc'}--> class="on"<!--{/if}--> id="navi-design-bloc"><a href="<!--{$smarty.const.URL_DIR}-->admin/design/bloc.php"><span>ブロック編集</span></a></li>

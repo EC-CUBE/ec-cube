@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<ul id="navi-total" class="level1">
+<ul class="level1">
     <li id="navi-total-term"
         class="<!--{if ($tpl_mainno == 'total' && ($arrForm.page.value == 'term' || $arrForm.page.value == ''))}-->on<!--{/if}-->"
     ><a href="<!--{$smarty.const.URL_DIR}-->admin/total/index.php?page=term"><span>期間別集計</span></a></li>

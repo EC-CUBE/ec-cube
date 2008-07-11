@@ -21,6 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<ul id="navi-customer" class="level1">
+<ul class="level1">
 <li<!--{if $tpl_subno == 'index'}--> class="on"<!--{/if}--> id="navi-customer-index"><a href="<!--{$smarty.const.URL_DIR}-->admin/customer/index.php"><span>顧客マスタ</span></a></li>
 </ul>

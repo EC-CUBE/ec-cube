@@ -25,9 +25,6 @@
 <input type="hidden" name="mode" value="register" />
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <div id="ownersstore" class="contents-main">
-  <!--{include file=$tpl_subnavi}-->
-
-  <h2><!--{$tpl_subtitle}--></h2>
 
   <table class="list center">
     <tr>

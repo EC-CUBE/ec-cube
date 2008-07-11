@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<ul id="navi-basis" class="level1">
+<ul class="level1">
 <li<!--{if $tpl_subno == 'index'}--> class="on"<!--{/if}--> id="navi-basis-index"><a href="<!--{$smarty.const.URL_DIR}-->admin/basis/index.php"><span>SHOPマスタ</span></a></li>
 <li<!--{if $tpl_subno == 'tradelaw'}--> class="on"<!--{/if}--> id="navi-basis-tradelaw"><a href="<!--{$smarty.const.URL_DIR}-->admin/basis/tradelaw.php"><span>特定商取引法</span></a></li>
 <li<!--{if $tpl_subno == 'delivery'}--> class="on"<!--{/if}--> id="navi-basis-delivery"><a href="<!--{$smarty.const.URL_DIR}-->admin/basis/delivery.php"><span>配送設定</span></a></li>

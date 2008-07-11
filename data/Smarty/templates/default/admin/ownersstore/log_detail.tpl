@@ -26,9 +26,8 @@
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <div id="ownersstore" class="contents-main">
 
-  <!--{include file=$tpl_subnavi}-->
-
-  <h2><!--{$tpl_subtitle}--></h2>
+  <h2>詳細</h2>
+  
   <table class="form">
     <tr>
       <th>モジュール名</th>

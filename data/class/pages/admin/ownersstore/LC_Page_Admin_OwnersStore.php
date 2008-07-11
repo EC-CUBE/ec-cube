@@ -46,7 +46,6 @@ class LC_Page_Admin_OwnersStore extends LC_Page {
         parent::init();
 
         $this->tpl_mainpage = 'ownersstore/index.tpl';
-        $this->tpl_subnavi  = 'ownersstore/subnavi.tpl';
         $this->tpl_mainno   = 'ownersstore';
         $this->tpl_subno    = 'index';
         $this->tpl_subtitle = '購入商品一覧';

@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<ul id="navi-order" class="level1">
+<ul class="level1">
     <li id="navi-order-index"
         class="<!--{if $tpl_mainno == 'order' && $tpl_subno == 'index'}-->on<!--{/if}-->"
     ><a href="<!--{$smarty.const.URL_DIR}-->admin/order/index.php"><span>受注管理</span></a></li>

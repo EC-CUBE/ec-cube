@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<ul id="navi-products" class="level1">
+<ul class="level1">
 <li<!--{if $tpl_subno == 'index'}--> class="on"<!--{/if}--> id="navi-products-index"><a href="<!--{$smarty.const.URL_DIR}-->admin/products/index.php"><span>商品マスタ</span></a></li>
 <li<!--{if $tpl_subno == 'product'}--> class="on"<!--{/if}--> id="navi-products-product"><a href="<!--{$smarty.const.URL_DIR}-->admin/products/product.php"><span>商品登録</span></a></li>
 <li<!--{if $tpl_subno == 'upload_csv'}--> class="on"<!--{/if}--> id="navi-products-uploadcsv"><a href="<!--{$smarty.const.URL_DIR}-->admin/products/upload_csv.php"><span>商品登録CSV</span></a></li>
