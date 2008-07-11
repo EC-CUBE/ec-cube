@@ -191,7 +191,7 @@ case 'step3':
             $objPage->tpl_message.="×：テーブルコメントの書込みに失敗しました。<br>";
         }
     }
-        
+
     if(count($objPage->arrErr) == 0) {
         // 設定ファイルの生成
         lfMakeConfigFile();
@@ -779,9 +779,7 @@ function lfExecuteSQL($filepath, $dsn, $disp_err = true) {
             $sql = preg_replace("/[\r\n\t]/"," ",$sql);
             $sql_split = split(";",$sql);
             foreach($sql_split as $key => $val){
-                // タイムアウト防止
-                echo ' ';
-                lfFlush();
+                SC_Utils::sfFlush();
                 if (trim($val) != "") {
                     $ret = $objDB->query($val);
                     if(PEAR::isError($ret) && $disp_err) {
@@ -1096,11 +1094,3 @@ function initdirs() {
     global $alldirs;
     $alldirs = array();
 }
-
-function lfFlush() {
-    flush();
-    ob_end_flush();
-    ob_start();
-}
-
-?>
