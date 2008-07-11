@@ -944,7 +944,6 @@ INSERT INTO mtb_constants VALUES ('LOGIN_ERROR','1',177,'ログイン失敗');
 INSERT INTO mtb_constants VALUES ('ACCESS_ERROR','2',178,'アクセス失敗（タイムアウト等）');
 INSERT INTO mtb_constants VALUES ('AUTH_ERROR','3',179,'アクセス権限違反');
 INSERT INTO mtb_constants VALUES ('INVALID_MOVE_ERRORR','4',180,'不正な遷移エラー');
-INSERT INTO mtb_constants VALUES ('PRODUCTS_LIST_MAX','15',181,'商品一覧表示数');
 INSERT INTO mtb_constants VALUES ('MEMBER_PMAX','10',182,'メンバー管理ページ表示行数');
 INSERT INTO mtb_constants VALUES ('SEARCH_PMAX','10',183,'検索ページ表示行数');
 INSERT INTO mtb_constants VALUES ('NAVI_PMAX','4',184,'ページ番号の最大表示個数');

@@ -337,8 +337,6 @@ define('ACCESS_ERROR', 2);
 define('AUTH_ERROR', 3);
 /** 不正な遷移エラー */
 define('INVALID_MOVE_ERRORR', 4);
-/** 商品一覧表示数 */
-define('PRODUCTS_LIST_MAX', 15);
 /** メンバー管理ページ表示行数 */
 define('MEMBER_PMAX', 10);
 /** 検索ページ表示行数 */
