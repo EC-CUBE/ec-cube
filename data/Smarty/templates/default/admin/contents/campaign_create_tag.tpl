@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`admin_popup_header.tpl" subtitle="ECサイト管理者ページ"}-->
+<!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`admin_popup_header.tpl"}-->
 
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.REQUEST_URI|escape}-->">
 <input name="mode" type="hidden" value="search" />

@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`admin_popup_header.tpl" subtitle="EC CUBE 管理者画面"}-->
+<!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`admin_popup_header.tpl"}-->
 
 <table class="form">
   <tr>

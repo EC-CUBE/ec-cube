@@ -44,7 +44,7 @@ class SC_CustomerList extends SC_SelectSql {
         }
 
         if($mode == "customer") {
-            // 管理者ページ顧客検索の場合仮登録会員も検索
+            // 管理機能顧客検索の場合仮登録会員も検索
             //$this->setWhere( "(status = 1 OR status = 2) AND del_flg = 0 ");
             $this->setWhere( " del_flg = 0 ");
             // 登録日を示すカラム

@@ -89,7 +89,7 @@ class LC_Page_Error_SystemError extends LC_Page_Error {
     }
 
     /**
-     * 管理ページかどうかを判定する.
+     * 管理機能かどうかを判定する.
      *
      * @return boolean
      */

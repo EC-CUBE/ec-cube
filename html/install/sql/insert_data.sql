@@ -903,7 +903,7 @@ INSERT INTO mtb_constants VALUES ('FILE_SIZE','10000',130,'ファイル管理画
 INSERT INTO mtb_constants VALUES ('TEMPLATE_SIZE','10000',131,'アップできるテンプレートファイル制限(KB)');
 INSERT INTO mtb_constants VALUES ('LEVEL_MAX','5',132,'カテゴリの最大階層');
 INSERT INTO mtb_constants VALUES ('CATEGORY_MAX','1000',133,'最大カテゴリ登録数');
-INSERT INTO mtb_constants VALUES ('ADMIN_TITLE','"ECサイト管理ページ"',134,'管理ページタイトル');
+INSERT INTO mtb_constants VALUES ('ADMIN_TITLE','"管理機能"',134,'管理機能タイトル');
 INSERT INTO mtb_constants VALUES ('SELECT_RGB','"#ffffdf"',135,'編集時強調表示色');
 INSERT INTO mtb_constants VALUES ('DISABLED_RGB','"#C9C9C9"',136,'入力項目無効時の表示色');
 INSERT INTO mtb_constants VALUES ('ERR_COLOR','"#ffe8e8"',137,'エラー時表示色');
@@ -936,7 +936,7 @@ INSERT INTO mtb_constants VALUES ('URL_SEARCH_ORDER','URL_DIR . "admin/order/ind
 INSERT INTO mtb_constants VALUES ('URL_ORDER_MAIL','URL_DIR . "admin/order/mail.php"',170,'注文編集ページ');
 INSERT INTO mtb_constants VALUES ('URL_LOGOUT','URL_DIR . "admin/logout.php"',171,'ログアウトページ');
 INSERT INTO mtb_constants VALUES ('URL_SYSTEM_CSV','URL_DIR . "admin/system/member_csv.php"',172,'システム管理CSV出力ページ');
-INSERT INTO mtb_constants VALUES ('URL_ADMIN_CSS','URL_DIR . "admin/css/"',173,'管理ページ用CSS保管ディレクトリ');
+INSERT INTO mtb_constants VALUES ('URL_ADMIN_CSS','URL_DIR . "admin/css/"',173,'管理機能用CSS保管ディレクトリ');
 INSERT INTO mtb_constants VALUES ('URL_CAMPAIGN_TOP','URL_DIR . "admin/contents/campaign.php"',174,'キャンペーン登録ページ');
 INSERT INTO mtb_constants VALUES ('URL_CAMPAIGN_DESIGN','URL_DIR . "admin/contents/campaign_design.php"',175,'キャンペーンデザイン設定ページ');
 INSERT INTO mtb_constants VALUES ('SUCCESS','0',176,'アクセス成功');
@@ -1057,9 +1057,9 @@ INSERT INTO mtb_constants VALUES ('TEMPLATE_NAME', 'DEFAULT_TEMPLATE_NAME', 301,
 INSERT INTO mtb_constants VALUES ('SMARTY_TEMPLATES_DIR',' DATA_PATH . "Smarty/templates/"', 302,'SMARTYテンプレート');
 INSERT INTO mtb_constants VALUES ('TPL_DIR','URL_DIR . USER_DIR . USER_PACKAGE_DIR . TEMPLATE_NAME . "/"', 303,'SMARTYテンプレート');
 INSERT INTO mtb_constants VALUES ('TEMPLATE_DIR','SMARTY_TEMPLATES_DIR . TEMPLATE_NAME . "/"', 304,'SMARTYテンプレート');
-INSERT INTO mtb_constants VALUES ('TEMPLATE_ADMIN_DIR','TEMPLATE_DIR . "admin/"', 305,'SMARTYテンプレート(管理ページ)');
+INSERT INTO mtb_constants VALUES ('TEMPLATE_ADMIN_DIR','TEMPLATE_DIR . "admin/"', 305,'SMARTYテンプレート(管理機能)');
 INSERT INTO mtb_constants VALUES ('COMPILE_DIR','DATA_PATH . "Smarty/templates_c/" . TEMPLATE_NAME . "/"',306,'SMARTYコンパイル');
-INSERT INTO mtb_constants VALUES ('COMPILE_ADMIN_DIR','COMPILE_DIR . "admin/"',307,'SMARTYコンパイル(管理ページ)');
+INSERT INTO mtb_constants VALUES ('COMPILE_ADMIN_DIR','COMPILE_DIR . "admin/"',307,'SMARTYコンパイル(管理機能)');
 INSERT INTO mtb_constants VALUES ('TEMPLATE_FTP_DIR','USER_PATH . USER_PACKAGE_DIR . TEMPLATE_NAME . "/"', 308,'SMARTYテンプレート(FTP許可)');
 INSERT INTO mtb_constants VALUES ('COMPILE_FTP_DIR','COMPILE_DIR . USER_DIR', 309,'SMARTYコンパイル(FTP許可)');
 INSERT INTO mtb_constants VALUES ('BLOC_DIR','"bloc/"', 310,'ブロックファイル保存先');

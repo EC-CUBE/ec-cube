@@ -255,8 +255,8 @@ define('TEMPLATE_SIZE', 10000);
 define('LEVEL_MAX', 5);
 /** 最大カテゴリ登録数 */
 define('CATEGORY_MAX', 1000);
-/** 管理ページタイトル */
-define('ADMIN_TITLE', "ECサイト管理ページ");
+/** 管理機能タイトル */
+define('ADMIN_TITLE', "管理機能");
 /** 編集時強調表示色 */
 define('SELECT_RGB', "#ffffdf");
 /** 入力項目無効時の表示色 */
@@ -321,7 +321,7 @@ define('URL_ORDER_MAIL', URL_DIR . "admin/order/mail.php");
 define('URL_LOGOUT', URL_DIR . "admin/logout.php");
 /** システム管理CSV出力ページ */
 define('URL_SYSTEM_CSV', URL_DIR . "admin/system/member_csv.php");
-/** 管理ページ用CSS保管ディレクトリ */
+/** 管理機能用CSS保管ディレクトリ */
 define('URL_ADMIN_CSS', URL_DIR . "admin/css/");
 /** キャンペーン登録ページ */
 define('URL_CAMPAIGN_TOP', URL_DIR . "admin/contents/campaign.php");
@@ -560,11 +560,11 @@ define('SMARTY_TEMPLATES_DIR',  DATA_PATH . "Smarty/templates/");
 define('TPL_DIR', URL_DIR . USER_DIR . USER_PACKAGE_DIR . TEMPLATE_NAME . "/");
 /** SMARTYテンプレート */
 define('TEMPLATE_DIR', SMARTY_TEMPLATES_DIR . TEMPLATE_NAME . "/");
-/** SMARTYテンプレート(管理ページ) */
+/** SMARTYテンプレート(管理機能) */
 define('TEMPLATE_ADMIN_DIR', TEMPLATE_DIR . "admin/");
 /** SMARTYコンパイル */
 define('COMPILE_DIR', DATA_PATH . "Smarty/templates_c/" . TEMPLATE_NAME . "/");
-/** SMARTYコンパイル(管理ページ) */
+/** SMARTYコンパイル(管理機能) */
 define('COMPILE_ADMIN_DIR', COMPILE_DIR . "admin/");
 /** SMARTYテンプレート(FTP許可) */
 define('TEMPLATE_FTP_DIR', USER_PATH . USER_PACKAGE_DIR . TEMPLATE_NAME . "/");

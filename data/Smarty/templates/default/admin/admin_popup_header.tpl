@@ -42,7 +42,7 @@
 </script>
 <!--{/if}-->
 <!--{include file='css/contents.tpl'}-->
-<title><!--{$subtitle}--></title>
+<title><!--{$smarty.const.ADMIN_TITLE}--> <!--{$tpl_subtitle}--></title>
 </head>
 
 <body id="popup"<!--{if $tpl_onload || $tpl_start}--> onLoad="<!--{$tpl_onload}--> <!--{$tpl_start}-->"<!--{/if}-->>

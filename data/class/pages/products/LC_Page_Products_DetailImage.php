@@ -57,6 +57,7 @@ class LC_Page_Products_DetailImage extends LC_Page {
         $objDb = new SC_Helper_DB_Ex();
 
         // 管理ページからの確認の場合は、非公開の商品も表示する。
+        // XXX 若干脆弱な気がする。ログイン状態か確認するのが望ましいかと。
         if (isset($_GET['admim']) && $_GET['admin'] == 'on') {
             $where = "del_flg = 0";
         } else {
