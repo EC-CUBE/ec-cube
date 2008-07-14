@@ -53,8 +53,8 @@
    <!--{if count($arrProductsClass) > 0}-->
    
    <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
-   <!--{if function_exists('sfGMOCartDisplay')}-->
-     <!--{''|sfGMOCartDisplay}-->
+   <!--{if 'sfGMOCartDisplay'|function_exists}-->
+     <!--{'sfGMOCartDisplay'|call_user_func}-->
    <!--{/if}-->
    
      <input type="hidden" name="mode" value="confirm" />
