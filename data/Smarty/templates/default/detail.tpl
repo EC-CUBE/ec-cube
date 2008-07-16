@@ -198,8 +198,8 @@ function lnSetSelect(form, name1, name2, val) {
             <img src="<!--{$TPL_DIR}-->img/products/b_cartin.gif" width="115" height="25" alt="カゴに入れる" name="cart" id="cart" />
           </a>
         </p>
-        <!--{if function_exists(sfGMODetailDisplay)}--><!--{* GMOワンクリック *}-->
-          <!--{''|sfGMODetailDisplay}-->
+        <!--{if 'sfGMODetailDisplay'|function_exists}--><!--{* GMOワンクリック *}-->
+          <!--{'sfGMODetailDisplay'|call_user_func}-->
         <!--{/if}-->
         <!--{else}-->
         <div class="attention">申し訳ございませんが、只今品切れ中です。</div>
