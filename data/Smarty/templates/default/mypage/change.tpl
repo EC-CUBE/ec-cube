@@ -36,8 +36,8 @@
     <table summary="会員登録内容変更 " class="delivname">
       <!--{include file="`$smarty.const.TEMPLATE_DIR`frontparts/form_personal_input.tpl" flgFields=3 emailMobile=true prefix=""}-->
     </table>
-    <!--{if function_exists('sfGMOMypageDisplay')}-->
-      <!--{''|sfGMOMypageDisplay}-->
+    <!--{if 'sfGMOMypageDisplay'|function_exists}-->
+      <!--{'sfGMOMypageDisplay'|call_user_func}-->
     <!--{/if}-->
     <div class="tblareabtn">
       <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_confirm_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_confirm.gif',this)" src="<!--{$TPL_DIR}-->img/common/b_confirm.gif" class="box150" alt="確認ページへ" name="refusal" id="refusal" />
