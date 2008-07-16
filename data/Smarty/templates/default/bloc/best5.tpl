@@ -44,14 +44,10 @@
 <!--{assign var=price01 value=`$arrBestProducts[cnt].price01_min`}-->
 <!--{assign var=price02 value=`$arrBestProducts[cnt].price02_min`}-->
 
-      <p>価格<span class="mini">(税込)</span>：<span class="price">
-<!--{if $price02 == ""}-->
-  <!--{$price01|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
-<!--{else}-->
-  <!--{$price02|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
-<!--{/if}-->円
-        </span>
+      <p><!--{$smarty.const.SALE_PRICE_TITLE}--><span class="mini">(税込)</span>：
+        <span class="price"><!--{$price02|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}--> 円</span>
       </p>
+
       <p class="mini"><!--{$arrBestProducts[cnt].comment|escape|nl2br}--></p>
     </div>
 
@@ -75,12 +71,8 @@
 <!--{assign var=price01 value=`$arrBestProducts[$cnt2].price01_min`}-->
 <!--{assign var=price02 value=`$arrBestProducts[$cnt2].price02_min`}-->
 
-      <p>価格<span class="mini">(税込)</span>：<span class="price">
-<!--{if $price02 == ""}-->
-  <!--{$price01|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
-<!--{else}-->
-  <!--{$price02|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
-<!--{/if}-->円</span>
+      <p><!--{$smarty.const.SALE_PRICE_TITLE}--><span class="mini">(税込)</span>：
+        <span class="price"><!--{$price02|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}--> 円</span>
       </p>
 
       <p class="mini"><!--{$arrBestProducts[$cnt2].comment|escape|nl2br}--></p>

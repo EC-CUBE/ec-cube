@@ -35,12 +35,8 @@
 	<hr>
 	<!--{section name=cnt loop=$arrProductsClass}-->
 		<!--{* 商品名 *}--><!--{$arrProductsClass[cnt].name|escape}--><br>
-		<!--{* 価格 *}-->
-		<!--{if $arrProductsClass[cnt].price02 != ""}-->
-			\<!--{$arrProductsClass[cnt].price02|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
-		<!--{else}-->
-			\<!--{$arrProductsClass[cnt].price01|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
-		<!--{/if}-->
+		<!--{* 販売価格 *}-->
+		\<!--{$arrProductsClass[cnt].price02|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
 		× <!--{$arrProductsClass[cnt].quantity}--><br>
 		<!--{* 詳細 *}-->
 		<!--{if $arrProductsClass[cnt].classcategory_name1 != ""}-->

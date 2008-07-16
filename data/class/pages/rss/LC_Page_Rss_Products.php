@@ -71,7 +71,7 @@ class LC_Page_Rss_Products extends LC_Page {
 
             // 値のセットし直し
             foreach($arrProduct as $key => $val){
-                //商品価格を税込みに編集
+                //販売価格を税込みに編集
                 $arrProduct[$key]["price02"] = SC_Utils_Ex::sfPreTax($arrProduct[$key]["price02"], $arrSiteInfo["tax"], $arrSiteInfo["tax_rule"]);
 
                 // 画像ファイルのURLセット
@@ -93,7 +93,7 @@ class LC_Page_Rss_Products extends LC_Page {
 
             // 値のセットし直し
             foreach($arrProduct as $key => $val){
-                //商品価格を税込みに編集
+                //販売価格を税込みに編集
                 $arrProduct[$key]["price01_max"] = SC_Utils_Ex::sfPreTax($arrProduct[$key]["price01_max"], $arrSiteInfo["tax"], $arrSiteInfo["tax_rule"]);
                 $arrProduct[$key]["price01_min"] = SC_Utils_Ex::sfPreTax($arrProduct[$key]["price01_min"], $arrSiteInfo["tax"], $arrSiteInfo["tax_rule"]);
                 $arrProduct[$key]["price02_max"] = SC_Utils_Ex::sfPreTax($arrProduct[$key]["price02_max"], $arrSiteInfo["tax"], $arrSiteInfo["tax_rule"]);

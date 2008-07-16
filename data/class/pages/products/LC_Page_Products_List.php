@@ -386,7 +386,7 @@ class LC_Page_Products_List extends LC_Page {
         //表示順序
         switch($orderby) {
 
-        //価格順
+        //販売価格順
         case 'price':
             $col = "DISTINCT price02_min, product_id, product_code_min, product_code_max,"
                 . " name, comment1, comment2, comment3,"

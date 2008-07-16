@@ -30,7 +30,7 @@
         <th width="40">削除</th>
         <th width="60">商品画像</th>
         <th width="200">商品名</th>
-        <th width="200">価格</th>
+        <th width="200"><!--{$smarty.const.SALE_PRICE_TITLE}--></th>
       </tr>
       <!--{section name=cnt loop=$arrFavorite}-->
       <!--{if $arrFavorite[cnt].main_list_image != ""}-->

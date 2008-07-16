@@ -128,7 +128,7 @@ function lnSetSelect(name1, name2, id, val) {
                     
                     <p>
                         <span class="pricebox">
-                            価格<span class="mini">(税込)</span>：
+                            <!--{$smarty.const.SALE_PRICE_TITLE}--><span class="mini">(税込)</span>：
                             <span class="price">
                             <!--{if $arrProducts[cnt].price02_min == $arrProducts[cnt].price02_max}-->
                                 <!--{$arrProducts[cnt].price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->

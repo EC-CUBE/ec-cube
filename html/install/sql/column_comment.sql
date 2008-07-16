@@ -202,8 +202,8 @@ INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_p
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_products_class','stock','在庫数');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_products_class','stock_unlimited','在庫制限（1:無制限)');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_products_class','sale_limit','販売制限');
-INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_products_class','price01','価格');
-INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_products_class','price02','商品価格');
+INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_products_class','price01','通常価格');
+INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_products_class','price02','販売価格');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_products_class','status','状態（表示:1、非表示:2）');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_products_class','creator_id','作成者ID');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_products_class','create_date','作成日時');

@@ -45,7 +45,7 @@
 <!--{if $i+1<9}--><!--{$i+1|numeric_emoji}--><!--{else}-->[<!--{$i+1}-->]<!--{/if}-->
 <!-- 商品名 --><!--{$arrProduct.name|escape}--><br>
 
-価格：
+<!--{$smarty.const.SALE_PRICE_TITLE}-->：
 <!--{if $arrProduct.price02_min == $arrProduct.price02_max}-->
 ￥<!--{$arrProduct.price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
 <!--{else}-->

@@ -65,16 +65,17 @@
 [emoji:76]<!--{$arrProduct.main_comment|nl2br}--><br>
 <br>
 <!--ｱｲｺﾝ-->
-<!--★価格★-->
-<font color="#FF0000">価格(税込):
+<!--★販売価格★-->
+<font color="#FF0000"><!--{$smarty.const.SALE_PRICE_TITLE}-->(税込):
 <!--{if $arrProduct.price02_min == $arrProduct.price02_max}-->
 	<!--{$arrProduct.price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
 <!--{else}-->
 	<!--{$arrProduct.price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->･<!--{$arrProduct.price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
 <!--{/if}-->
 円</font><br/>
+<!--★通常価格★-->
 <!--{if $arrProduct.price01_max > 0}-->
-<font color="#FF0000">参考市場価格:
+<font color="#FF0000"><!--{$smarty.const.NORMAL_PRICE_TITLE}-->:
 <!--{if $arrProduct.price01_min == $arrProduct.price01_max}-->
 <!--{$arrProduct.price01_min|number_format}-->
 <!--{else}-->
