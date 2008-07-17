@@ -105,7 +105,7 @@ function lnSetSelect(name1, name2, id, val) {
                     <!--アイコン-->
                     <!--商品ステータス-->
                     <!--{if count($arrProducts[cnt].product_flag) > 0}-->
-                        <ul>
+                        <ul class="status_icon">
                             <!--{section name=flg loop=$arrProducts[cnt].product_flag|count_characters}-->
                                 <!--{if $arrProducts[cnt].product_flag[flg] == "1"}-->
                                     <!--{assign var=key value="`$smarty.section.flg.iteration`"}-->

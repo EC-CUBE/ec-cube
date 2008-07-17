@@ -69,7 +69,7 @@
 手数料 ￥ <!--{$arrOrder.charge|number_format|default:0}-->
 ===============================================================
 合　計 ￥ <!--{$arrOrder.payment_total|number_format|default:0}-->
-<!--{if $arrOrder.customer_id}-->
+<!--{if $arrOrder.customer_id && $smarty.const.USE_POINT !== false}-->
 ===============================================================
 <!--{* ご注文前のポイント {$tpl_user_point} pt *}-->
 ご使用ポイント <!--{$arrOrder.use_point|default:0}--> pt

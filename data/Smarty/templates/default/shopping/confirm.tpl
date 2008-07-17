@@ -86,12 +86,14 @@ function fnCheckSubmit() {
           <th colspan="4" class="resulttd">小計</th>
           <td class="pricetd"><!--{$tpl_total_pretax|number_format}-->円</td>
         </tr>
-        <tr>
-          <th colspan="4" class="resulttd">値引き（ポイントご使用時）</th>
-          <td class="pricetd">
-          <!--{assign var=discount value=`$arrData.use_point*$smarty.const.POINT_VALUE`}-->
-           -<!--{$discount|number_format|default:0}-->円</td>
-        </tr>
+        <!--{if $smarty.const.USE_POINT !== false}-->
+          <tr>
+            <th colspan="4" class="resulttd">値引き（ポイントご使用時）</th>
+            <td class="pricetd">
+            <!--{assign var=discount value=`$arrData.use_point*$smarty.const.POINT_VALUE`}-->
+             -<!--{$discount|number_format|default:0}-->円</td>
+          </tr>
+        <!--{/if}-->
         <tr>
           <th colspan="4" class="resulttd">送料</th>
           <td class="pricetd"><!--{$arrData.deliv_fee|number_format}-->円</td>
@@ -107,7 +109,7 @@ function fnCheckSubmit() {
       </table>
 
     <!--{* ログイン済みの会員のみ *}-->
-    <!--{if $tpl_login == 1 || $arrData.member_check == 1}-->
+    <!--{if ($tpl_login == 1 || $arrData.member_check == 1) && $smarty.const.USE_POINT !== false}-->
       <table summary="ポイント確認" class="delivname">
         <tr>
           <th>ご注文前のポイント</th>
@@ -215,7 +217,7 @@ function fnCheckSubmit() {
           <th>その他お問い合わせ</th>
           <td><!--{$arrData.message|escape|nl2br}--></td>
         </tr>
-        <!--{if $tpl_login == 1}-->
+        <!--{if $tpl_login == 1 && $smarty.const.USE_POINT !== false}-->
         <tr>
           <th>ポイント使用</th>
           <td><!--{$arrData.use_point|default:0}-->Pt</td>

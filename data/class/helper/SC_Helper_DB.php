@@ -1481,13 +1481,17 @@ class SC_Helper_DB {
         // お支払い合計
         $arrData['payment_total'] = $arrData['total'] - ($arrData['use_point'] * POINT_VALUE);
         // 加算ポイントの計算
-        $arrData['add_point'] = SC_Utils::sfGetAddPoint($objPage->tpl_total_point, $arrData['use_point'], $arrInfo);
-
-        if($objCustomer != "") {
-            // 誕生日月であった場合
-            if($objCustomer->isBirthMonth()) {
-                $arrData['birth_point'] = BIRTH_MONTH_POINT;
-                $arrData['add_point'] += $arrData['birth_point'];
+        if (USE_POINT === false) {
+            $arrData['add_point'] = 0;
+        } else {
+            $arrData['add_point'] = SC_Utils::sfGetAddPoint($objPage->tpl_total_point, $arrData['use_point'], $arrInfo);
+            
+            if($objCustomer != "") {
+                // 誕生日月であった場合
+                if($objCustomer->isBirthMonth()) {
+                    $arrData['birth_point'] = BIRTH_MONTH_POINT;
+                    $arrData['add_point'] += $arrData['birth_point'];
+                }
             }
         }
 

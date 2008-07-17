@@ -76,7 +76,7 @@ function lnSetSelect(form, name1, name2, val) {
         <div id="detailrightblock">
             <!--アイコン-->
             <!--{if count($arrProduct.product_flag) > 0}-->
-            <ul>
+            <ul class="status_icon">
                 <!--{section name=flg loop=$arrProduct.product_flag|count_characters}-->
                 <!--{if $arrProduct.product_flag[flg] == "1"}-->
                 <li>
@@ -124,16 +124,18 @@ function lnSetSelect(form, name1, name2, val) {
             </div>
 
             <!--★ポイント★-->
-            <div><span class="price">ポイント：
-                <!--{if $arrProduct.price02_min == $arrProduct.price02_max}-->
-                    <!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->
-                <!--{else}-->
-                    <!--{if $arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id == $arrProduct.price02_max|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->
+            <!--{if $smarty.const.USE_POINT !== false}-->
+                <div><span class="price">ポイント：
+                    <!--{if $arrProduct.price02_min == $arrProduct.price02_max}-->
                         <!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->
                     <!--{else}-->
-                        <!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->〜<!--{$arrProduct.price02_max|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->
-                    <!--{/if}-->
-                <!--{/if}-->Pt</span></div>
+                        <!--{if $arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id == $arrProduct.price02_max|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->
+                            <!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->
+                        <!--{else}-->
+                            <!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}--><!--{$arrProduct.price02_max|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->
+                        <!--{/if}-->
+                    <!--{/if}-->Pt</span></div>
+            <!--{/if}-->
 
             <!--★関連カテゴリ★-->
             <div>関連カテゴリ：
@@ -273,7 +275,7 @@ function lnSetSelect(form, name1, name2, val) {
         <h2><img src="<!--{$TPL_DIR}-->img/products/title_voice.jpg" width="580" height="30" alt="この商品に対するお客様の声" /></h2>
 
         <!--{if count($arrReview) < $smarty.const.REVIEW_REGIST_MAX}-->
-        <!--★新規コメントを書き込む★-->
+            <!--★新規コメントを書き込む★-->
             <a href="./review.php"
                  onclick="win02('./review.php?product_id=<!--{$arrProduct.product_id}-->','review','580','580'); return false;"
                  onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_comment_on.gif','review');"
@@ -298,22 +300,22 @@ function lnSetSelect(form, name1, name2, val) {
 
 
     <!--{if $arrTrackbackView == "ON"}-->
-    <!--▼トラックバック-->
-    <div id="trackbackarea">
-        <h2><img src="<!--{$TPL_DIR}-->img/products/title_tb.jpg" width="580" height="30" alt="この商品に対するトラックバック" /></h2>
-        <h3>この商品のトラックバック先URL</h3>
-        <input type="text" name="trackback" value="<!--{$trackback_url}-->" size="100" class="box500" />
+        <!--▼トラックバック-->
+        <div id="trackbackarea">
+            <h2><img src="<!--{$TPL_DIR}-->img/products/title_tb.jpg" width="580" height="30" alt="この商品に対するトラックバック" /></h2>
+            <h3>この商品のトラックバック先URL</h3>
+            <input type="text" name="trackback" value="<!--{$trackback_url}-->" size="100" class="box500" />
 
-        <!--{if $arrTrackback}-->
-            <ul>
-            <!--{section name=cnt loop=$arrTrackback}-->
-                <li><strong><!--{$arrTrackback[cnt].create_date|sfDispDBDate:false}-->　<a href="<!--{$arrTrackback[cnt].url}-->" target="_blank"><!--{$arrTrackback[cnt].title|escape}--></a> from <!--{$arrTrackback[cnt].blog_name|escape}--></strong>
-                    <p><!--{$arrTrackback[cnt].excerpt|escape|mb_strimwidth:0:200:"..."}--></p></li>
-            <!--{/section}-->
-            </ul>
-        <!--{/if}-->
-    <!--▲トラックバック-->
-    </div>
+            <!--{if $arrTrackback}-->
+                <ul>
+                <!--{section name=cnt loop=$arrTrackback}-->
+                    <li><strong><!--{$arrTrackback[cnt].create_date|sfDispDBDate:false}-->　<a href="<!--{$arrTrackback[cnt].url}-->" target="_blank"><!--{$arrTrackback[cnt].title|escape}--></a> from <!--{$arrTrackback[cnt].blog_name|escape}--></strong>
+                        <p><!--{$arrTrackback[cnt].excerpt|escape|mb_strimwidth:0:200:"..."}--></p></li>
+                <!--{/section}-->
+                </ul>
+            <!--{/if}-->
+        </div>
+        <!--▲トラックバック-->
     <!--{/if}-->
 
 
@@ -328,14 +330,14 @@ function lnSetSelect(form, name1, name2, val) {
                 <!--{if $arrRecommend[cnt].product_id}-->
                 <!-- 左列 -->
                 <div class="whoboughtleft">
-                <!--{if $arrRecommend[cnt].main_list_image != ""}-->
-                    <!--{assign var=image_path value="`$arrRecommend[cnt].main_list_image`"}-->
-                <!--{else}-->
-                    <!--{assign var=image_path value="`$smarty.const.NO_IMAGE_DIR`"}-->
-                <!--{/if}-->
-
+                    <!--{if $arrRecommend[cnt].main_list_image != ""}-->
+                        <!--{assign var=image_path value="`$arrRecommend[cnt].main_list_image`"}-->
+                    <!--{else}-->
+                        <!--{assign var=image_path value="`$smarty.const.NO_IMAGE_DIR`"}-->
+                    <!--{/if}-->
+                    
                     <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id}-->">
-                     <img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[cnt].name|escape}-->" />
+                        <img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[cnt].name|escape}-->" />
                     </a>
 
                     <!--{assign var=price02_min value=`$arrRecommend[cnt].price02_min`}-->
@@ -343,11 +345,11 @@ function lnSetSelect(form, name1, name2, val) {
                     <h3><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id}-->"><!--{$arrRecommend[cnt].name|escape}--></a></h3>
 
                     <p><!--{$smarty.const.SALE_PRICE_TITLE}--><span class="mini">(税込)</span>：<span class="price">
-                    <!--{if $price02_min == $price02_max}-->
-                        <!--{$price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
-                    <!--{else}-->
-                        <!--{$price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}--><!--{$price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
-                    <!--{/if}-->円</span></p>
+                        <!--{if $price02_min == $price02_max}-->
+                            <!--{$price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
+                        <!--{else}-->
+                            <!--{$price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}--><!--{$price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
+                        <!--{/if}-->円</span></p>
                     <p class="mini"><!--{$arrRecommend[cnt].comment|escape|nl2br}--></p>
                 </div>
                 <!-- 左列 -->
@@ -359,25 +361,27 @@ function lnSetSelect(form, name1, name2, val) {
                 <!--{if $arrRecommend[cnt].product_id}-->
                 <!-- 右列 -->
                 <div class="whoboughtright">
-                    <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id}-->">
                     <!--{if $arrRecommend[cnt].main_list_image != ""}-->
                         <!--{assign var=image_path value="`$arrRecommend[cnt].main_list_image`"}-->
                     <!--{else}-->
                         <!--{assign var=image_path value="`$smarty.const.NO_IMAGE_DIR`"}-->
                     <!--{/if}-->
+                    
+                    <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id}-->">
                         <img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[cnt].name|escape}-->" />
                     </a>
+                    
                     <!--{assign var=price02_min value=`$arrRecommend[cnt].price02_min`}-->
                     <!--{assign var=price02_max value=`$arrRecommend[cnt].price02_max`}-->
                     <h3><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id}-->"><!--{$arrRecommend[cnt].name|escape}--></a></h3>
 
                     <p><!--{$smarty.const.SALE_PRICE_TITLE}--><span class="mini">(税込)</span>：<span class="price">
 
-                    <!--{if $price02_min == $price02_max}-->
-                        <!--{$price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
-                    <!--{else}-->
-                        <!--{$price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}--><!--{$price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
-                    <!--{/if}-->円</span></p>
+                        <!--{if $price02_min == $price02_max}-->
+                            <!--{$price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
+                        <!--{else}-->
+                            <!--{$price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}--><!--{$price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
+                        <!--{/if}-->円</span></p>
                     <p class="mini"><!--{$arrRecommend[cnt].comment|escape|nl2br}--></p>
                 </div>
                 <!-- 右列 -->

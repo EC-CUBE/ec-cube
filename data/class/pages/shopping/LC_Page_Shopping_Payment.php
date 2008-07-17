@@ -369,8 +369,13 @@ class LC_Page_Shopping_Payment extends LC_Page {
         $objErr = new SC_CheckError($arrRet);
         $objErr->arrErr = $this->objFormParam->checkError();
 
+        if (USE_POINT === false) {
+            $_POST['point_check'] = "";
+            $_POST['use_point'] = "0";
+        }
+        
         if (!isset($_POST['point_check'])) $_POST['point_check'] = "";
-
+        
         if($_POST['point_check'] == '1') {
             $objErr->doFunc(array("ポイントを使用する", "point_check"), array("EXIST_CHECK"));
             $objErr->doFunc(array("ポイント", "use_point"), array("EXIST_CHECK"));

@@ -53,8 +53,11 @@
   <!-- 現在のポイント ここから -->
   <!--{if $point_disp !== false}-->
      <li>ようこそ <br />
-       <!--{$CustomerName1|escape}--> <!--{$CustomerName2|escape}-->様<br />
-       現在の所持ポイントは<em><!--{$CustomerPoint|number_format|escape|default:"0"}-->pt</em>です。</li>
+       <!--{$CustomerName1|escape}--> <!--{$CustomerName2|escape}-->様
+       <!--{if $smarty.const.USE_POINT !== false}-->
+         <br />現在の所持ポイントは<em><!--{$CustomerPoint|number_format|escape|default:"0"}-->pt</em>です。
+       <!--{/if}-->
+     </li>
 <!--{/if}-->
 <!-- 現在のポイント ここまで -->
   </ul>
