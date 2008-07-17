@@ -20,6 +20,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 <!--▼FOTTER-->
-<div id="pagetop"><a href="#top"><img src="<!--{$TPL_DIR}-->img/common/pagetop.gif" width="100" height="10" alt="このページのTOPへ" /></a></div>
+<div id="pagetop" style="clear: both;"><a href="#top"><img src="<!--{$TPL_DIR}-->img/common/pagetop.gif" width="100" height="10" alt="このページのTOPへ" /></a></div>
 <div id="fotter">Copyright(C)2000-2007 EC-CUBE All rights reserved.</div>
 <!--▲FOTTER-->
