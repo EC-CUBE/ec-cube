@@ -56,36 +56,36 @@ function lnSetSelect(form, name1, name2, val) {
     <div id="detailarea">
         <div id="detailphotoblock">
 
-        <!--{assign var=key value="main_image"}-->
-        <!--{if $arrProduct.main_large_image != ""}-->
-        <!--★画像★-->
-            <a href="javascript:void(win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&amp;image=main_large_image<!--{if $smarty.get.admin == 'on'}-->&amp;admin=on<!--{/if}-->','detail_image','<!--{$arrFile.main_large_image.width+60}-->', '<!--{$arrFile.main_large_image.height+80}-->'))">
-                <img src="<!--{$arrFile[$key].filepath}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" alt="<!--{$arrProduct.name|escape}-->" class="picture" />
-            </a>
-            <p>
-            <!--★拡大する★-->
-                <a href="javascript:void(win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&amp;image=main_large_image<!--{if $smarty.get.admin == 'on'}-->&amp;admin=on<!--{/if}-->','detail_image','<!--{$arrFile.main_large_image.width+60}-->', '<!--{$arrFile.main_large_image.height+80}-->'))" onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_expansion_on.gif','expansion01');" onMouseOut="chgImg('<!--{$TPL_DIR}-->img/products/b_expansion.gif','expansion01');">
-                    <img src="<!--{$TPL_DIR}-->img/products/b_expansion.gif" width="85" height="13" alt="画像を拡大する" name="expansion01" id="expansion01" />
-             </a>
-            </p>
+            <!--{assign var=key value="main_image"}-->
+            <!--{if $arrProduct.main_large_image != ""}-->
+                <!--★画像★-->
+                <a href="javascript:void(win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&amp;image=main_large_image<!--{if $smarty.get.admin == 'on'}-->&amp;admin=on<!--{/if}-->','detail_image','<!--{$arrFile.main_large_image.width+60}-->', '<!--{$arrFile.main_large_image.height+80}-->'))">
+                    <img src="<!--{$arrFile[$key].filepath}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" alt="<!--{$arrProduct.name|escape}-->" class="picture" />
+                </a>
+                <p>
+                <!--★拡大する★-->
+                    <a href="javascript:void(win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&amp;image=main_large_image<!--{if $smarty.get.admin == 'on'}-->&amp;admin=on<!--{/if}-->','detail_image','<!--{$arrFile.main_large_image.width+60}-->', '<!--{$arrFile.main_large_image.height+80}-->'))" onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_expansion_on.gif','expansion01');" onMouseOut="chgImg('<!--{$TPL_DIR}-->img/products/b_expansion.gif','expansion01');">
+                        <img src="<!--{$TPL_DIR}-->img/products/b_expansion.gif" width="85" height="13" alt="画像を拡大する" name="expansion01" id="expansion01" />
+                 </a>
+                </p>
             <!--{else}-->
-            <img src="<!--{$arrFile[$key].filepath}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" alt="<!--{$arrProduct.name|escape}-->" class="picture" />
+                <img src="<!--{$arrFile[$key].filepath}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" alt="<!--{$arrProduct.name|escape}-->" class="picture" />
             <!--{/if}-->
         </div>
 
         <div id="detailrightblock">
             <!--アイコン-->
             <!--{if count($arrProduct.product_flag) > 0}-->
-            <ul class="status_icon">
-                <!--{section name=flg loop=$arrProduct.product_flag|count_characters}-->
-                <!--{if $arrProduct.product_flag[flg] == "1"}-->
-                <li>
-                    <!--{assign var=key value="`$smarty.section.flg.iteration`"}-->
-                    <img src="<!--{$TPL_DIR}--><!--{$arrSTATUS_IMAGE[$key]}-->" width="65" height="17" alt="<!--{$arrSTATUS[$key]}-->" id="icon<!--{$key}-->" />
-                </li>
-                <!--{/if}-->
-                <!--{/section}-->
-            </ul>
+                <ul class="status_icon">
+                    <!--{section name=flg loop=$arrProduct.product_flag|count_characters}-->
+                    <!--{if $arrProduct.product_flag[flg] == "1"}-->
+                    <li>
+                        <!--{assign var=key value="`$smarty.section.flg.iteration`"}-->
+                        <img src="<!--{$TPL_DIR}--><!--{$arrSTATUS_IMAGE[$key]}-->" width="65" height="17" alt="<!--{$arrSTATUS[$key]}-->" id="icon<!--{$key}-->" />
+                    </li>
+                    <!--{/if}-->
+                    <!--{/section}-->
+                </ul>
             <!--{/if}-->
 
             <!--★商品コード★-->
@@ -231,41 +231,41 @@ function lnSetSelect(form, name1, name2, val) {
 
     <!--▼サブコメント-->
     <!--{section name=cnt loop=$smarty.const.PRODUCTSUB_MAX}-->
-    <!--{assign var=key value="sub_title`$smarty.section.cnt.iteration`"}-->
+        <!--{assign var=key value="sub_title`$smarty.section.cnt.iteration`"}-->
         <!--{if $arrProduct[$key] != ""}-->
-    <div class="subarea">
-        <h3><!--★サブタイトル★--><!--{$arrProduct[$key]|escape}--></h3>
-        <!--{assign var=ckey value="sub_comment`$smarty.section.cnt.iteration`"}-->
+            <div class="subarea">
+                <h3><!--★サブタイトル★--><!--{$arrProduct[$key]|escape}--></h3>
+                <!--{assign var=ckey value="sub_comment`$smarty.section.cnt.iteration`"}-->
 
-        <!--▼拡大写真-->
-        <!--{assign var=key value="sub_image`$smarty.section.cnt.iteration`"}-->
-        <!--{assign var=lkey value="sub_large_image`$smarty.section.cnt.iteration`"}-->
-        <!--{if $arrFile[$key].filepath != ""}-->
-        <div class="subtext"><!--★サブテキスト★--><!--{$arrProduct[$ckey]|nl2br}--></div>
-            <div class="subphotoimg">
-            <!--{if $arrFile[$lkey].filepath != ""}-->
-                <a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&amp;image=<!--{$lkey}--><!--{if $smarty.get.admin == 'on'}-->&amp;admin=on<!--{/if}-->','detail_image','<!--{$arrFile[$lkey].width+60}-->','<!--{$arrFile[$lkey].height+80}-->'); return false;" target="_blank">
-            <!--{/if}-->
-            <!--サブ画像-->
-                <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrProduct.name|escape}-->" width="<!--{$smarty.const.NORMAL_SUBIMAGE_WIDTH}-->" height="<!--{$smarty.const.NORMAL_SUBIMAGE_WIDTH}-->" />
-            <!--{if $arrFile[$lkey].filepath != ""}-->
-                </a>
-                <p>
-                    <a href="<!--{$smarty.server.PHP_SELF|escape}-->"
-                         onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&amp;image=<!--{$lkey}--><!--{if $smarty.get.admin == 'on'}-->&amp;admin=on<!--{/if}-->','detail_image','<!--{$arrFile[$lkey].width+60}-->','<!--{$arrFile[$lkey].height+80}-->'); return false;"
-                         onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_expansion_on.gif','expansion02');"
-                         onmouseout="chgImg('<!--{$TPL_DIR}-->img/products/b_expansion.gif','expansion02');" target="_blank">
-                        <img src="<!--{$TPL_DIR}-->img/products/b_expansion.gif" width="85" height="13" alt="画像を拡大する" />
-                    </a>
-                </p>
-            <!--{/if}-->
+                <!--▼拡大写真-->
+                <!--{assign var=key value="sub_image`$smarty.section.cnt.iteration`"}-->
+                <!--{assign var=lkey value="sub_large_image`$smarty.section.cnt.iteration`"}-->
+                <!--{if $arrFile[$key].filepath != ""}-->
+                    <div class="subtext"><!--★サブテキスト★--><!--{$arrProduct[$ckey]|nl2br}--></div>
+                    <div class="subphotoimg">
+                        <!--{if $arrFile[$lkey].filepath != ""}-->
+                            <a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&amp;image=<!--{$lkey}--><!--{if $smarty.get.admin == 'on'}-->&amp;admin=on<!--{/if}-->','detail_image','<!--{$arrFile[$lkey].width+60}-->','<!--{$arrFile[$lkey].height+80}-->'); return false;" target="_blank">
+                        <!--{/if}-->
+                        <!--サブ画像-->
+                            <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrProduct.name|escape}-->" width="<!--{$smarty.const.NORMAL_SUBIMAGE_WIDTH}-->" height="<!--{$smarty.const.NORMAL_SUBIMAGE_WIDTH}-->" />
+                        <!--{if $arrFile[$lkey].filepath != ""}-->
+                            </a>
+                            <p>
+                                <a href="<!--{$smarty.server.PHP_SELF|escape}-->"
+                                     onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&amp;image=<!--{$lkey}--><!--{if $smarty.get.admin == 'on'}-->&amp;admin=on<!--{/if}-->','detail_image','<!--{$arrFile[$lkey].width+60}-->','<!--{$arrFile[$lkey].height+80}-->'); return false;"
+                                     onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_expansion_on.gif','expansion02');"
+                                     onmouseout="chgImg('<!--{$TPL_DIR}-->img/products/b_expansion.gif','expansion02');" target="_blank">
+                                    <img src="<!--{$TPL_DIR}-->img/products/b_expansion.gif" width="85" height="13" alt="画像を拡大する" />
+                                </a>
+                            </p>
+                        <!--{/if}-->
+                    </div>
+                    <!--▲拡大写真-->
+                <!--{else}-->
+                    <p><!--★サブテキスト★--><!--{$arrProduct[$ckey]|nl2br}--></p>
+                <!--{/if}-->
             </div>
-            <!--▲拡大写真-->
-        <!--{else}-->
-            <p><!--★サブテキスト★--><!--{$arrProduct[$ckey]|nl2br}--></p>
         <!--{/if}-->
-    </div>
-    <!--{/if}-->
     <!--{/section}-->
     <!--▲サブコメント-->
 
@@ -285,15 +285,15 @@ function lnSetSelect(form, name1, name2, val) {
         <!--{/if}-->
 
         <!--{if count($arrReview) > 0}-->
-        <ul>
-        <!--{section name=cnt loop=$arrReview}-->
-            <li>
-                <p class="voicedate"><!--{$arrReview[cnt].create_date|sfDispDBDate:false}-->　投稿者：<!--{if $arrReview[cnt].reviewer_url}--><a href="<!--{$arrReview[cnt].reviewer_url}-->" target="_blank"><!--{$arrReview[cnt].reviewer_name|escape}--></a><!--{else}--><!--{$arrReview[cnt].reviewer_name|escape}--><!--{/if}-->　おすすめレベル：<span class="price"><!--{assign var=level value=$arrReview[cnt].recommend_level}--><!--{$arrRECOMMEND[$level]|escape}--></span></p>
-                <p class="voicetitle"><!--{$arrReview[cnt].title|escape}--></p>
-                <p class="voicecomment"><!--{$arrReview[cnt].comment|escape|nl2br}--></p>
-            </li>
-        <!--{/section}-->
-        </ul>
+            <ul>
+                <!--{section name=cnt loop=$arrReview}-->
+                    <li>
+                        <p class="voicedate"><!--{$arrReview[cnt].create_date|sfDispDBDate:false}-->　投稿者：<!--{if $arrReview[cnt].reviewer_url}--><a href="<!--{$arrReview[cnt].reviewer_url}-->" target="_blank"><!--{$arrReview[cnt].reviewer_name|escape}--></a><!--{else}--><!--{$arrReview[cnt].reviewer_name|escape}--><!--{/if}-->　おすすめレベル：<span class="price"><!--{assign var=level value=$arrReview[cnt].recommend_level}--><!--{$arrRECOMMEND[$level]|escape}--></span></p>
+                        <p class="voicetitle"><!--{$arrReview[cnt].title|escape}--></p>
+                        <p class="voicecomment"><!--{$arrReview[cnt].comment|escape|nl2br}--></p>
+                    </li>
+                <!--{/section}-->
+            </ul>
         <!--{/if}-->
     </div>
     <!--お客様の声ここまで-->
