@@ -664,4 +664,24 @@ define('OSTORE_E_C_AUTOUP_DISABLE', '2008');
 define('OSTORE_E_C_PERMISSION', '2009');
 /** オーナーズストア通信エラーコード */
 define('OSTORE_E_C_BATCH_ERR', '2010');
+
+/** コスメコム商品ID制限文字数 */
+define('CC_ITEM_LEN', 16);
+/** 仕入価格名称 */
+define('BUYING_UNIT_TITLE', "下代");
+/** クレジットカード番号(4桁×4桁) */
+define('CREDIT_SUM_LEN', 16);
+/** コスメコム商品IDの必須長さ */
+define('CC_ITEM_ID_LEN', 16);
+/** クレジットカード名義の長さ */
+define('CREDIT_NAME_LEN', 40);
+/** 在庫表示あり */
+define('STOCK_TYPE_DISPLAY', 3);
+/** 商品ステータス(欠品中) */
+define('PRODUCT_STATUS_STOCKOUT_INSIDE', 2);
+/** 商品ステータス(廃番) */
+define('PRODUCT_STATUS_ABOLITION_TURN', 3);
+/** 廃番商品購入エラー */
+define('PRODUCT_NOT_FOUNT_ABOLITION_TURN', 22);
+
 ?>

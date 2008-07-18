@@ -21,21 +21,22 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-$include_dir = realpath(dirname( __FILE__));
-require_once($include_dir . "/define.php");
+$require_php_dir = realpath(dirname( __FILE__));
+require_once($require_php_dir . "/define.php");
+
 if (!defined("CLASS_PATH")) {
     /** クラスパス */
-    define("CLASS_PATH", $include_dir . HTML2DATA_DIR . "class/");
+    define("CLASS_PATH", $require_php_dir . HTML2DATA_DIR . "class/");
 }
 
 if (!defined("CLASS_EX_PATH")) {
     /** クラスパス */
-    define("CLASS_EX_PATH", $include_dir . HTML2DATA_DIR . "class_extends/");
+    define("CLASS_EX_PATH", $require_php_dir . HTML2DATA_DIR . "class_extends/");
 }
 
 if (!defined("CACHE_PATH")) {
     /** キャッシュ生成ディレクトリ */
-    define("CACHE_PATH", $include_dir . HTML2DATA_DIR . "cache/");
+    define("CACHE_PATH", $require_php_dir . HTML2DATA_DIR . "cache/");
 }
 require_once(CLASS_EX_PATH . "SC_Initial_Ex.php");
 // アプリケーション初期化処理
@@ -43,7 +44,7 @@ $objInit = new SC_Initial_Ex();
 $objInit->init();
 
 
-require_once($include_dir . HTML2DATA_DIR . "include/module.inc");
+require_once($require_php_dir . HTML2DATA_DIR . "include/module.inc");
 require_once(CLASS_EX_PATH . "util_extends/GC_Utils_Ex.php");
 require_once(CLASS_EX_PATH . "util_extends/SC_Utils_Ex.php");
 require_once(CLASS_EX_PATH . "db_extends/SC_DB_MasterData_Ex.php");
@@ -75,7 +76,7 @@ require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_DB_Ex.php");
 require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_Session_Ex.php");
 require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_Mail_Ex.php");
 require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_Mobile_Ex.php");
-include_once($include_dir . "/require_plugin.php");
+include_once($require_php_dir . "/require_plugin.php");
 
 // セッションハンドラ開始
 $objSession = new SC_Helper_Session_Ex();
