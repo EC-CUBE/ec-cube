@@ -20,5 +20,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-require_once(realpath(dirname( __FILE__)) . "/../require.php");
+$admin_require_php_dir = realpath(dirname( __FILE__));
+require_once($admin_require_php_dir . "/../define.php");
+require_once($admin_require_php_dir . "/../" . HTML2DATA_DIR . "require_base.php");
 ?>

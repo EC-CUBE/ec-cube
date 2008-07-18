@@ -23,7 +23,8 @@
 
 $current_dir = realpath(dirname(__FILE__));
 require_once($current_dir . "/../module/DB.php");
-
+require_once($current_dir . "/util/SC_Utils.php");
+require_once($current_dir . "/util/GC_Utils.php");
 $objDbConn = "";
 
 class SC_DbConn{
