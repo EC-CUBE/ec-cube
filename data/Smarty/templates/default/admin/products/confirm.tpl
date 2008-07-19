@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
+<h2>確認</h2>
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" enctype="multipart/form-data">
   <!--{foreach key=key item=item from=$arrForm}-->
   <input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->" />
@@ -139,7 +140,7 @@
     <tr>
       <th>備考欄(SHOP専用)</th>
       <td>
-        <!--{$arrForm.note|escape}-->
+        <!--{$arrForm.note|escape|nl2br}-->
       </td>
     </tr>
     <tr>
@@ -242,7 +243,7 @@
       商品コード:<!--{$arrRecommend[$recommend_no].product_code_min}--><br />
       商品名:<!--{$arrRecommend[$recommend_no].name|escape}--><br />
       コメント:<br />
-      <!--{$arrRecommend[$recommend_no].comment|escape}-->
+      <!--{$arrRecommend[$recommend_no].comment|escape|nl2br}-->
       <!--{/if}-->
       </td>
     </tr>
