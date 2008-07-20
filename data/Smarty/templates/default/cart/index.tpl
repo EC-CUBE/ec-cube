@@ -49,7 +49,11 @@
       <!--{/if}-->
     </p>
 
-   <!--{if $tpl_message != ""}-->
+   <!--{if strlen($tpl_error) != 0}-->
+    <p class="attention"><!--{$tpl_error|escape}--></p>
+   <!--{/if}-->
+   
+   <!--{if strlen($tpl_message) != 0}-->
     <p class="attention"><!--{$tpl_message|escape}--></p>
    <!--{/if}-->
 
@@ -67,7 +71,7 @@
          <th>小計</th>
        </tr>
       <!--{section name=cnt loop=$arrProductsClass}-->
-       <tr>
+       <tr style="<!--{if $arrProductsClass[cnt].error}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->">
          <td><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnChangeAction('<!--{$smarty.server.PHP_SELF|escape}-->'); fnModeSubmit('delete', 'cart_no', '<!--{$arrProductsClass[cnt].cart_no}-->'); return false;">削除</a>
          </td>
          <td class="phototd">
@@ -101,7 +105,7 @@
      <!--{/section}-->
      <tr>
        <th colspan="5" class="resulttd">小計</th>
-       <td class="pricetd"><!--{$tpl_total_pretax|number_format}--></td>
+       <td class="pricetd"><!--{$tpl_total_pretax|number_format}-->円</td>
     </tr>
     <tr>
       <th colspan="5" class="resulttd">合計</th>
@@ -122,17 +126,19 @@
   </table>
   <p class="mini">※商品写真は参考用写真です。ご注文のカラーと異なる写真が表示されている場合でも、商品番号に記載されているカラー表示で間違いございませんのでご安心ください。</p>
   <div class="tblareabtn">
-    <p>
-      <img src="<!--{$TPL_DIR}-->img/cart/text.gif" width="390" height="30" alt="上記内容でよろしければ「レジへ行く」ボタンをクリックしてください。" />
-    </p>
+    <!--{if strlen($tpl_error) == 0}-->
+      <p>上記内容でよろしければ「購入手続きへ」ボタンをクリックしてください。</p>
+    <!--{/if}-->
 
-   <!--{if $tpl_prev_url != ""}-->
-     <p>
-       <a href="<!--{$tpl_prev_url}-->" onmouseover="chgImg('<!--{$TPL_DIR}-->img/cart/b_pageback_on.gif','back');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/cart/b_pageback.gif','back');">
-         <img src="<!--{$TPL_DIR}-->img/cart/b_pageback.gif" width="150" height="30" alt="買い物を続ける" name="back" id="back" />
-       </a>&nbsp;&nbsp;
-   <!--{/if}-->
-       <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/cart/b_buystep_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/cart/b_buystep.gif',this)" src="<!--{$TPL_DIR}-->img/cart/b_buystep.gif" class="box150"  alt="購入手続きへ" name="confirm" />
+    <p>
+      <!--{if $tpl_prev_url != ""}-->
+        <a href="<!--{$tpl_prev_url}-->" onmouseover="chgImg('<!--{$TPL_DIR}-->img/cart/b_pageback_on.gif','back');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/cart/b_pageback.gif','back');">
+          <img src="<!--{$TPL_DIR}-->img/cart/b_pageback.gif" width="150" height="30" alt="買い物を続ける" name="back" id="back" />
+          </a>&nbsp;&nbsp;
+      <!--{/if}-->
+      <!--{if strlen($tpl_error) == 0}-->
+        <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/cart/b_buystep_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/cart/b_buystep.gif',this)" src="<!--{$TPL_DIR}-->img/cart/b_buystep.gif" class="box150"  alt="購入手続きへ" name="confirm" />
+      <!--{/if}-->
      </p>
   </div>
 </form>

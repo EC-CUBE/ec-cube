@@ -298,45 +298,43 @@ class SC_Helper_DB {
 	}
 
         // カート内情報の取得
-        $arrCart = $objCartSess->getCartList();
-        $max = count($arrCart);
+        $arrQuantityInfo_by_product = array();
         $cnt = 0;
-
-        for ($i = 0; $i < $max; $i++) {
+        foreach ($objCartSess->getCartList() as $arrCart) {
             // 商品規格情報の取得
-            $arrData = $this->sfGetProductsClass($arrCart[$i]['id']);
+            $arrData = $this->sfGetProductsClass($arrCart['id']);
             $limit = "";
             // DBに存在する商品
             if (count($arrData) > 0) {
 
                 // 購入制限数を求める。
                 if ($arrData['stock_unlimited'] != '1' && $arrData['sale_unlimited'] != '1') {
-                    if($arrData['sale_limit'] < $arrData['stock']) {
-                        $limit = $arrData['sale_limit'];
-                    } else {
-                        $limit = $arrData['stock'];
-                    }
-                } else {
-                    if ($arrData['sale_unlimited'] != '1') {
-                        $limit = $arrData['sale_limit'];
-                    }
-                    if ($arrData['stock_unlimited'] != '1') {
-                        $limit = $arrData['stock'];
-                    }
+                    $limit = min($arrData['sale_limit'], $arrData['stock']);
+                } elseif ($arrData['sale_unlimited'] != '1') {
+                    $limit = $arrData['sale_limit'];
+                } elseif ($arrData['stock_unlimited'] != '1') {
+                    $limit = $arrData['stock'];
                 }
 
-                if($limit != "" && $limit < $arrCart[$i]['quantity']) {
+                if($limit != "" && $limit < $arrCart['quantity']) {
                     // カート内商品数を制限に合わせる
-                    $objCartSess->setProductValue($arrCart[$i]['id'], 'quantity', $limit);
+                    $objCartSess->setProductValue($arrCart['id'], 'quantity', $limit);
                     $quantity = $limit;
-                    $objPage->tpl_message = "※「" . $arrData['name'] . "」は販売制限しております、一度にこれ以上の購入はできません。";
+                    $objPage->tpl_message = "※「" . $arrData['name'] . "」は販売制限(または在庫が不足)しております、一度にこれ以上の購入はできません。\n";
                 } else {
-                    $quantity = $arrCart[$i]['quantity'];
+                    $quantity = $arrCart['quantity'];
                 }
-
+                
+                // (商品規格単位でなく)商品単位での評価のための準備
+                $product_id = $arrCart['id'][0];
+                $arrQuantityInfo_by_product[$product_id]['product_id'] = $product_id;
+                $arrQuantityInfo_by_product[$product_id]['quantity'] += $quantity;
+                $arrQuantityInfo_by_product[$product_id]['sale_unlimited'] = $arrData['sale_unlimited'];
+                $arrQuantityInfo_by_product[$product_id]['sale_limit'] = $arrData['sale_limit'];
+                
                 $objPage->arrProductsClass[$cnt] = $arrData;
                 $objPage->arrProductsClass[$cnt]['quantity'] = $quantity;
-                $objPage->arrProductsClass[$cnt]['cart_no'] = $arrCart[$i]['cart_no'];
+                $objPage->arrProductsClass[$cnt]['cart_no'] = $arrCart['cart_no'];
                 $objPage->arrProductsClass[$cnt]['class_name1'] =
                     isset($arrClassName[$arrData['class_id1']])
                         ? $arrClassName[$arrData['class_id1']] : "";
@@ -364,27 +362,38 @@ class SC_Helper_DB {
                 $objPage->arrProductsClass[$cnt]["tpl_image_height"] = $image_height + 80;
                 // 価格の登録
                 if ($arrData['price02'] != "") {
-                    $objCartSess->setProductValue($arrCart[$i]['id'], 'price', $arrData['price02']);
+                    $objCartSess->setProductValue($arrCart['id'], 'price', $arrData['price02']);
                     $objPage->arrProductsClass[$cnt]['uniq_price'] = $arrData['price02'];
                 } else {
-                    $objCartSess->setProductValue($arrCart[$i]['id'], 'price', $arrData['price01']);
+                    $objCartSess->setProductValue($arrCart['id'], 'price', $arrData['price01']);
                     $objPage->arrProductsClass[$cnt]['uniq_price'] = $arrData['price01'];
                 }
                 // ポイント付与率の登録
-		if (USE_POINT !== false) {
-                $objCartSess->setProductValue($arrCart[$i]['id'], 'point_rate', $arrData['point_rate']);
-		}
+                if (USE_POINT !== false) {
+                    $objCartSess->setProductValue($arrCart['id'], 'point_rate', $arrData['point_rate']);
+                }
                 // 商品ごとの合計金額
-                $objPage->arrProductsClass[$cnt]['total_pretax'] = $objCartSess->getProductTotal($arrInfo, $arrCart[$i]['id']);
+                $objPage->arrProductsClass[$cnt]['total_pretax'] = $objCartSess->getProductTotal($arrInfo, $arrCart['id']);
                 // 送料の合計を計算する
-                $objPage->tpl_total_deliv_fee+= ($arrData['deliv_fee'] * $arrCart[$i]['quantity']);
+                $objPage->tpl_total_deliv_fee+= ($arrData['deliv_fee'] * $arrCart['quantity']);
                 $cnt++;
             } else {
                 // DBに商品が見つからない場合はカート商品の削除
-                $objCartSess->delProductKey('id', $arrCart[$i]['id']);
+                $objCartSess->delProductKey('id', $arrCart['id']);
             }
         }
-
+        
+        foreach ($arrQuantityInfo_by_product as $QuantityInfo) {
+            if($QuantityInfo['sale_unlimited'] != '1' && $QuantityInfo['sale_limit'] != '' && $QuantityInfo['sale_limit'] < $QuantityInfo['quantity']) {
+                // カート内商品数を制限に合わせる
+                $objPage->tpl_error = "※「" . $arrData['name'] . "」は個数「{$QuantityInfo['sale_limit']}」以下に販売制限しております。一度にこれ以上の購入はできません。\n";
+                foreach (array_keys($objPage->arrProductsClass) as $key) {
+                    $ProductsClass =& $objPage->arrProductsClass[$key];
+                    $ProductsClass['error'] = true;
+                }
+            }
+        }
+        
         // 全商品合計金額(税込み)
         $objPage->tpl_total_pretax = $objCartSess->getAllProductsTotal($arrInfo);
         // 全商品合計消費税
