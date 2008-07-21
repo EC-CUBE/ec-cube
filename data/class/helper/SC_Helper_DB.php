@@ -528,8 +528,8 @@ class SC_Helper_DB {
             $point = $arrRet[0]['point'];
             $total_point = $arrRet[0]['point'] - $use_point + $add_point;
 	} else {
-	    $total_point = "";
-            $point = "";
+	    $total_point = 0;
+            $point = 0;
 	}
         } else {
             $total_point = "";
