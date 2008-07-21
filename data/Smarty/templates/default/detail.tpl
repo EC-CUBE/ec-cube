@@ -191,7 +191,7 @@ function lnSetSelect(form, name1, name2, val) {
                     <!--{/if}-->
 
                 <dl>
-                    <dt>個&nbsp;&nbsp;数</dt>
+                    <dt>数量</dt>
                     <dd><input type="text" name="quantity" class="box54" value="<!--{$arrForm.quantity.value|default:1}-->" maxlength="<!--{$smarty.const.INT_LEN}-->" style="<!--{$arrErr.quantity|sfGetErrorColor}-->" />
                      <!--{if $arrErr.quantity != ""}-->
                      <br /><span class="attention"><!--{$arrErr.quantity}--></span>

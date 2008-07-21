@@ -534,7 +534,7 @@ INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_o
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_order_detail','classcategory_name1','規格名1');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_order_detail','classcategory_name2','規格名2');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_order_detail','price','価格');
-INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_order_detail','quantity','個数');
+INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_order_detail','quantity','数量');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_order_detail','point_rate','ポイント付与率');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('mtb_pref','pref_id','都道府県ID');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('mtb_pref','pref_name','都道府県名');

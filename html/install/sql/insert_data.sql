@@ -827,7 +827,7 @@ INSERT INTO mtb_constants VALUES ('PDF_DIR','DATA_PATH . "pdf/"',53,'PDF格納�
 INSERT INTO mtb_constants VALUES ('BAT_ORDER_AGE','70',54,'何歳まで集計の対象とするか');
 INSERT INTO mtb_constants VALUES ('PRODUCTS_TOTAL_MAX','15',55,'商品集計で何位まで表示するか');
 INSERT INTO mtb_constants VALUES ('DEFAULT_PRODUCT_DISP','2',56,'1:公開 2:非公開');
-INSERT INTO mtb_constants VALUES ('DELIV_FREE_AMOUNT','0',57,'送料無料購入個数（0の場合は、何個買っても無料にならない)');
+INSERT INTO mtb_constants VALUES ('DELIV_FREE_AMOUNT','0',57,'送料無料購入数量（0の場合は、いくつ買っても無料にならない)');
 INSERT INTO mtb_constants VALUES ('INPUT_DELIV_FEE','1',58,'配送料の設定画面表示(有効:1 無効:0)');
 INSERT INTO mtb_constants VALUES ('OPTION_PRODUCT_DELIV_FEE','0',59,'商品ごとの送料設定(有効:1 無効:0)');
 INSERT INTO mtb_constants VALUES ('OPTION_DELIV_FEE','1',60,'配送業者ごとの配送料を加算する(有効:1 無効:0)');
@@ -946,7 +946,7 @@ INSERT INTO mtb_constants VALUES ('AUTH_ERROR','3',179,'アクセス権限違反
 INSERT INTO mtb_constants VALUES ('INVALID_MOVE_ERRORR','4',180,'不正な遷移エラー');
 INSERT INTO mtb_constants VALUES ('MEMBER_PMAX','10',182,'メンバー管理ページ表示行数');
 INSERT INTO mtb_constants VALUES ('SEARCH_PMAX','10',183,'検索ページ表示行数');
-INSERT INTO mtb_constants VALUES ('NAVI_PMAX','4',184,'ページ番号の最大表示個数');
+INSERT INTO mtb_constants VALUES ('NAVI_PMAX','4',184,'ページ番号の最大表示数量');
 INSERT INTO mtb_constants VALUES ('PRODUCTSUB_MAX','5',185,'商品サブ情報最大数');
 INSERT INTO mtb_constants VALUES ('DELIVTIME_MAX','16',186,'配送時間の最大表示数');
 INSERT INTO mtb_constants VALUES ('DELIVFEE_MAX','47',187,'配送料金の最大表示数');
@@ -972,7 +972,7 @@ INSERT INTO mtb_constants VALUES ('INT_LEN','8',206,'検査数値用桁数(INT)'
 INSERT INTO mtb_constants VALUES ('CREDIT_NO_LEN','4',207,'クレジットカードの文字数');
 INSERT INTO mtb_constants VALUES ('SEARCH_CATEGORY_LEN','18',208,'検索カテゴリ最大表示文字数(byte)');
 INSERT INTO mtb_constants VALUES ('FILE_NAME_LEN','10',209,'ファイル名表示文字数');
-INSERT INTO mtb_constants VALUES ('SALE_LIMIT_MAX','10',210,'購入制限なしの場合の最大購入個数');
+INSERT INTO mtb_constants VALUES ('SALE_LIMIT_MAX','10',210,'購入制限なしの場合の最大購入数量');
 INSERT INTO mtb_constants VALUES ('SITE_TITLE','"ＥＣ-ＣＵＢＥ  テストサイト"',211,'HTMLタイトル');
 INSERT INTO mtb_constants VALUES ('COOKIE_EXPIRE','365',212,'クッキー保持期限(日)');
 INSERT INTO mtb_constants VALUES ('PRODUCT_NOT_FOUND','1',213,'指定商品ページがない');

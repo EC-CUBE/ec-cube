@@ -58,7 +58,7 @@
 <!--{section name=cnt loop=$arrOrderDetail}-->
 商品名: <!--{$arrOrderDetail[cnt].product_name}--> <!--{$arrOrderDetail[cnt].classcategory_name1}--> <!--{$arrOrderDetail[cnt].classcategory_name2}-->
 商品コード: <!--{$arrOrderDetail[cnt].product_code}-->
-数量：<!--{$arrOrderDetail[cnt].quantity}--> 個
+数量：<!--{$arrOrderDetail[cnt].quantity}-->
 金額：￥ <!--{$arrOrderDetail[cnt].price|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
 
 <!--{/section}-->

@@ -27,7 +27,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
 /** CSV ファイルの最大行数 */
 define("ZIP_CSV_LINE_MAX", 8192);
 
-/** 画像の表示個数 */
+/** 画像の表示数量 */
 define("IMAGE_MAX", 680);
 
 /** 郵便番号CSV ファイルのパス */

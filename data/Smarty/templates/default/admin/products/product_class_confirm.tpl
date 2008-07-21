@@ -36,7 +36,7 @@
       <th>規格1(<!--{$arrClass[$class_id1]|default:"未選択"}-->)</th>
       <th>規格2(<!--{$arrClass[$class_id2]|default:"未選択"}-->)</th>
       <th>商品コード</th>
-      <th>在庫(個)</th>
+      <th>在庫数</th>
       <th><!--{$smarty.const.NORMAL_PRICE_TITLE}-->(円)</th>
       <th><!--{$smarty.const.SALE_PRICE_TITLE}-->(円)</th>
     </tr>

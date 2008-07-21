@@ -87,7 +87,7 @@ class LC_Page_FrontParts_Bloc_Cart extends LC_Page_FrontParts_Bloc {
             // 購入金額合計
             $ProductsTotal = $objCart->getAllProductsTotal($arrInfo);
 
-            // 合計個数
+            // 合計数量
             $TotalQuantity = $objCart->getTotalQuantity();
 
             // 送料無料までの金額

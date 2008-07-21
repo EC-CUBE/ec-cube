@@ -1454,7 +1454,7 @@ class SC_Helper_DB {
         if (!isset($arrData['charge'])) $arrData['charge'] = "";
         if (!isset($arrData['use_point'])) $arrData['use_point'] = "";
 
-        // 商品の合計個数
+        // 商品の合計数量
         $total_quantity = $objCartSess->getTotalQuantity(true);
 
         // 税金の取得

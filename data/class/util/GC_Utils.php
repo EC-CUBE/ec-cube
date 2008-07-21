@@ -182,7 +182,7 @@ class GC_Utils {
                     }
                 }
 
-                // ファイルログが最大個数なら以上なら古いファイルから削除する
+                // ファイルログが最大数量なら以上なら古いファイルから削除する
                 $count = count($arrLog);
                 if($count >= $max_log) {
                     $diff = $count - $max_log;

@@ -187,22 +187,24 @@ class SC_CartSession {
     function getAllProductsPoint() {
         // ポイント合計
         $total = 0;
-        $max = $this->getMax();
-        for($i = 0; $i <= $max; $i++) {
-            $price = $_SESSION[$this->key][$i]['price'];
-            $quantity = $_SESSION[$this->key][$i]['quantity'];
+        if (USE_POINT !== false) {
+            $max = $this->getMax();
+            for($i = 0; $i <= $max; $i++) {
+                $price = $_SESSION[$this->key][$i]['price'];
+                $quantity = $_SESSION[$this->key][$i]['quantity'];
 
-            if (!isset($_SESSION[$this->key][$i]['point_rate'])) {
-                $_SESSION[$this->key][$i]['point_rate'] = "";
-            }
-            $point_rate = $_SESSION[$this->key][$i]['point_rate'];
+                if (!isset($_SESSION[$this->key][$i]['point_rate'])) {
+                    $_SESSION[$this->key][$i]['point_rate'] = "";
+                }
+                $point_rate = $_SESSION[$this->key][$i]['point_rate'];
 
-            if (!isset($_SESSION[$this->key][$i]['id'][0])) {
-                $_SESSION[$this->key][$i]['id'][0] = "";
+                if (!isset($_SESSION[$this->key][$i]['id'][0])) {
+                    $_SESSION[$this->key][$i]['id'][0] = "";
+                }
+                $id = $_SESSION[$this->key][$i]['id'][0];
+                $point = SC_Utils_Ex::sfPrePoint($price, $point_rate, POINT_RULE, $id);
+                $total+= ($point * $quantity);
             }
-            $id = $_SESSION[$this->key][$i]['id'][0];
-            $point = SC_Utils_Ex::sfPrePoint($price, $point_rate, POINT_RULE, $id);
-            $total+= ($point * $quantity);
         }
         return $total;
     }
@@ -321,7 +323,7 @@ class SC_CartSession {
         }
     }
 
-    // 個数の増加
+    // 数量の増加
     function upQuantity($cart_no) {
         $max = $this->getMax();
         for($i = 0; $i <= $max; $i++) {
@@ -333,7 +335,7 @@ class SC_CartSession {
         }
     }
 
-    // 個数の減少
+    // 数量の減少
     function downQuantity($cart_no) {
         $max = $this->getMax();
         for($i = 0; $i <= $max; $i++) {

@@ -101,7 +101,7 @@ define('BAT_ORDER_AGE', 70);
 define('PRODUCTS_TOTAL_MAX', 15);
 /** 1:公開 2:非公開 */
 define('DEFAULT_PRODUCT_DISP', 2);
-/** 送料無料購入個数（0の場合は、何個買っても無料にならない) */
+/** 送料無料購入数量（0の場合は、いくつ買っても無料にならない) */
 define('DELIV_FREE_AMOUNT', 0);
 /** 配送料の設定画面表示(有効:1 無効:0) */
 define('INPUT_DELIV_FEE', 1);
@@ -341,7 +341,7 @@ define('INVALID_MOVE_ERRORR', 4);
 define('MEMBER_PMAX', 10);
 /** 検索ページ表示行数 */
 define('SEARCH_PMAX', 10);
-/** ページ番号の最大表示個数 */
+/** ページ番号の最大表示数量 */
 define('NAVI_PMAX', 4);
 /** 商品サブ情報最大数 */
 define('PRODUCTSUB_MAX', 5);
@@ -392,7 +392,7 @@ define('CREDIT_NO_LEN', 4);
 define('SEARCH_CATEGORY_LEN', 18);
 /** ファイル名表示文字数 */
 define('FILE_NAME_LEN', 10);
-/** 購入制限なしの場合の最大購入個数 */
+/** 購入制限なしの場合の最大購入数量 */
 define('SALE_LIMIT_MAX', 10);
 /** HTMLタイトル */
 define('SITE_TITLE', "ＥＣ-ＣＵＢＥ  テストサイト");

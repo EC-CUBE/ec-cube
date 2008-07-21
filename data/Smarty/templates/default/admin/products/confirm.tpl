@@ -82,10 +82,10 @@
       <th>在庫数</th>
       <td>
       <!--{if $arrForm.stock_unlimited == 1}-->
-      無制限
+        無制限
       <!--{else}-->
-      <!--{$arrForm.stock|escape}-->
-      個<!--{/if}-->
+        <!--{$arrForm.stock|escape}-->
+      <!--{/if}-->
       </td>
     </tr>
     <!--{/if}-->
@@ -105,10 +105,10 @@
       <th>購入制限</th>
       <td>
       <!--{if $arrForm.sale_unlimited == 1}-->
-      無制限
+        無制限
       <!--{else}-->
-      <!--{$arrForm.sale_limit|escape}-->
-      個<!--{/if}-->
+        <!--{$arrForm.sale_limit|escape}-->
+      <!--{/if}-->
       </td>
     </tr>
     <tr>

@@ -67,7 +67,7 @@
          <th>商品写真</th>
          <th>商品名</th>
          <th>単価</th>
-         <th>個数</th>
+         <th>数量</th>
          <th>小計</th>
        </tr>
       <!--{section name=cnt loop=$arrProductsClass}-->

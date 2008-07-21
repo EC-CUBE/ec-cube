@@ -98,7 +98,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
             $this->tpl_back_url = URL_SHOP_TOP . "?from=nonmember";
         }
 
-        // 金額の取得 (購入途中で売り切れた場合にはこの関数内にてその商品の個数が０になる)
+        // 金額の取得 (購入途中で売り切れた場合にはこの関数内にてその商品の数量が０になる)
         $objDb->sfTotalCart($this, $objCartSess, $arrInfo);
 
         if (empty($arrData)) $arrData = array();
@@ -209,7 +209,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
             $this->tpl_user_point = $this->objCustomer->getValue('point');
         }
 
-        // 金額の取得 (購入途中で売り切れた場合にはこの関数内にてその商品の個数が０になる)
+        // 金額の取得 (購入途中で売り切れた場合にはこの関数内にてその商品の数量が０になる)
         $objDb->sfTotalCart($this, $objCartSess, $arrInfo);
         if (empty($arrData)) $arrData = array();
         $this->arrData = $objDb->sfTotalConfirm($arrData, $this, $objCartSess, $arrInfo);
