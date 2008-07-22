@@ -202,7 +202,7 @@ function lnSetSelect(form, name1, name2, val) {
 
                 <!--{if $tpl_stock_find}-->
                 <p class="btn">
-                    <!--{if $smarty.const.OPTION_FAVOFITE_PRODUCT == 1}-->
+                    <!--{if $smarty.const.OPTION_FAVOFITE_PRODUCT == 1 && $tpl_login}-->
                         <!--{assign var=add_favorite value="add_favorite`$product_id`"}-->
                         <!--{if $arrErr[$add_favorite]}--><div class="attention"><!--{$arrErr[$add_favorite]}--></div><!--{/if}-->
                         <!--{if !$arrProduct.favorite_count}-->
