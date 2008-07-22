@@ -40,7 +40,7 @@ function fnFormModeSubmit(form, mode, keyname, keyid) {
 }
 // 支払い方法が選択されているかを判定する
 function lfMethodChecked() {
-	var methods = document.form1.METHOD;
+	var methods = document.getElementsByName("METHOD");
 	var checked = false;
 
 	var max = methods.length;
