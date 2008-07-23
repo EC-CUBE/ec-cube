@@ -30,9 +30,9 @@
   <!--{/if}-->
   <!--{if $smarty.const.OPTION_FAVOFITE_PRODUCT == 1}-->
   <!--{if $tpl_mypageno == 'favorite'}-->
-    <li><a href="./favorite.php">お気に入り商品</a></li>
+    <li><a href="./favorite.php"><img src="<!--{$TPL_DIR}-->img/mypage/navi_favorite_on.gif" width="170" height="30" alt="お気に入り一覧" border="0" name="m_navi_favorite" /></a></li>
   <!--{else}-->
-    <li><a href="./favorite.php">お気に入り商品</a></li>
+    <li><a href="./favorite.php" onmouseover="chgImg('<!--{$TPL_DIR}-->img/mypage/navi_favorite_on.gif','m_navi_favorite');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/mypage/navi_favorite.gif','m_navi_favorite');"><img src="<!--{$TPL_DIR}-->img/mypage/navi_favorite.gif" width="170" height="30" alt="お気に入り一覧" border="0" name="m_navi_favorite" /></a></li>
   <!--{/if}-->
   <!--{/if}-->
   <!--{if $tpl_mypageno == 'change'}-->
