@@ -45,7 +45,7 @@
 
 </head>
 
-<body onload="preLoadImg('<!--{$TPL_DIR}-->'); <!--{$tpl_onload}-->">
+<body onload="preLoadImg('<!--{$TPL_DIR}-->'); <!--{$tpl_onload}-->" class="<!--{if strlen($tpl_authority) >= 1}-->authority_<!--{$tpl_authority}--><!--{/if}-->">
 <!--{$GLOBAL_ERR}-->
 <noscript>
   <p>JavaScript を有効にしてご利用下さい.</p>
@@ -72,43 +72,43 @@
   </p>
   <ul id="navi">
     <li id="navi-basis" class="<!--{if $tpl_mainno eq "basis"}-->on<!--{/if}-->">
-      <a href="<!--{$smarty.const.URL_DIR}-->admin/basis/index.php"><span>基本情報管理</span></a>
+      <a><span>基本情報管理</span></a>
       <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`basis/subnavi.tpl"}-->
     </li>
     <li id="navi-products" class="<!--{if $tpl_mainno eq "products"}-->on<!--{/if}-->">
-      <a href="<!--{$smarty.const.URL_DIR}-->admin/products/index.php"><span>商品管理</span></a>
+      <a><span>商品管理</span></a>
       <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`products/subnavi.tpl"}-->
     </li>
     <li id="navi-customer" class="<!--{if $tpl_mainno eq "customer"}-->on<!--{/if}-->">
-      <a href="<!--{$smarty.const.URL_DIR}-->admin/customer/index.php"><span>顧客管理</span></a>
+      <a><span>顧客管理</span></a>
       <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`customer/subnavi.tpl"}-->
     </li>
     <li id="navi-order" class="<!--{if $tpl_mainno eq "order"}-->on<!--{/if}-->">
-      <a href="<!--{$smarty.const.URL_DIR}-->admin/order/index.php"><span>受注管理</span></a>
+      <a><span>受注管理</span></a>
       <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`order/subnavi.tpl"}-->
     </li>
     <li id="navi-total" class="<!--{if $tpl_mainno eq "total"}-->on<!--{/if}-->">
-      <a href="<!--{$smarty.const.URL_DIR}-->admin/total/index.php"><span>売上集計</span></a>
+      <a><span>売上集計</span></a>
       <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`total/subnavi.tpl"}-->
     </li>
     <li id="navi-mail" class="<!--{if $tpl_mainno eq "mail"}-->on<!--{/if}-->">
-      <a href="<!--{$smarty.const.URL_DIR}-->admin/mail/index.php"><span>メルマガ管理</span></a>
+      <a><span>メルマガ管理</span></a>
       <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`mail/subnavi.tpl"}-->
     </li>
     <li id="navi-contents" class="<!--{if $tpl_mainno eq "contents"}-->on<!--{/if}-->">
-      <a href="<!--{$smarty.const.URL_DIR}-->admin/contents/index.php"><span>コンテンツ管理</span></a>
+      <a><span>コンテンツ管理</span></a>
       <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`contents/subnavi.tpl"}-->
     </li>
     <li id="navi-design" class="<!--{if $tpl_mainno eq "design"}-->on<!--{/if}-->">
-      <a href="<!--{$smarty.const.URL_DIR}-->admin/design/index.php"><span>デザイン管理</span></a>
+      <a><span>デザイン管理</span></a>
       <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`design/subnavi.tpl"}-->
     </li>
     <li id="navi-system" class="<!--{if $tpl_mainno eq "system"}-->on<!--{/if}-->">
-      <a href="<!--{$smarty.const.URL_DIR}-->admin/system/index.php"><span>システム設定</span></a>
+      <a><span>システム設定</span></a>
       <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`system/subnavi.tpl"}-->
     </li>
     <li id="navi-ownersstore" class="<!--{if $tpl_mainno eq "ownersstore"}-->on<!--{/if}-->">
-      <a href="<!--{$smarty.const.URL_DIR}-->admin/ownersstore/index.php"><span>OWNERS STORE</span></a>
+      <a><span>OWNERS STORE</span></a>
       <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`ownersstore/subnavi.tpl"}-->
     </li>
   </ul>

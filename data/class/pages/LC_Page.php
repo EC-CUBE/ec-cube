@@ -80,7 +80,9 @@ class LC_Page {
      *
      * @return void
      */
-    function init() {}
+    function init() {
+        $this->tpl_authority = $_SESSION['authority'];
+    }
 
     /**
      * Page のプロセス.

@@ -31,7 +31,7 @@
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/navi.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/jquery.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/thickbox.js"></script>
-<title>EC CUBE 管理者画面</title>
+<title>管理機能</title>
 </head>
 
 <body>

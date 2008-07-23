@@ -149,18 +149,16 @@ a:hover { color: #f9a406; text-decoration: underline; }
 #navi li.sfhover a span {background: url(../img/admin/header/navi_on_right.jpg) right 0 no-repeat;}
 
 #navi li ul {
-	position: absolute;
+    position: absolute;
     top: 30px;
-	left: -999em;
-	height: auto;
-	width: 14.4em;
-	w\idth: 13.9em;
-	font-weight: normal;
+    left: -999em;
+    height: auto;
+    width: 14.4em;
+    font-weight: normal;
     clear: both;
 }
 #navi li li, #navi li li a, #navi li li a span {
-	width: 14.4em;
-	w\idth: 13.9em;
+    width: 14.4em;
     height: 2em;
     line-height: 2em;
     display: block;
@@ -179,11 +177,11 @@ a:hover { color: #f9a406; text-decoration: underline; }
     margin: -1.75em 0 0 12em;
 }
 #navi li:hover ul ul, #navi li:hover ul ul ul, #navi li.sfhover ul ul, #navi li.sfhover ul ul ul {
-	left: -999em;
+    left: -999em;
 }
 #navi li:hover ul, #navi li li:hover ul, #navi li li li:hover ul,
 #navi li.sfhover ul, #navi li li.sfhover ul, #navi li li li.sfhover ul {
-	left: auto;
+    left: auto;
 }
 
 
@@ -451,11 +449,11 @@ div.btn {
 ** Details: http://www.positioniseverything.net/easyclearing.html
 */
 .clear-block:after {
-  content: ".";
-  display: block;
-  height: 0;
-  clear: both;
-  visibility: hidden;
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
 }
 
 .clear-block {
@@ -464,9 +462,30 @@ div.btn {
 
 /* Hides from IE-mac \*/
 * html .clear-block {
-  height: 1%;
+    height: 1%;
 }
 .clear-block {
-  display: block;
+    display: block;
 }
 /* End hide from IE-mac */
+
+/* 権限 */
+x-dummy
+,.authority_1 #navi-basis-control
+,.authority_1 #navi-basis-parameter
+,.authority_1 #navi-basis-masterdata
+,.authority_1 #navi-contents-file
+,.authority_1 #navi-design
+,.authority_1 #navi-design-bloc
+,.authority_1 #navi-design-template
+,.authority_1 #navi-design-add
+,.authority_1 #navi-system
+,.authority_1 #navi-ownersstore
+{
+    /* display: none; --- IE で不具合 */
+    height: 0;
+    width: 0;
+    overflow: hidden;
+    border: none;
+    visibility: hidden;
+}

@@ -72,7 +72,7 @@ self.moveTo(20,20);self.focus();
   </td>
   </tr>
   <tr>
-    <th>管理権限</th>
+    <th>権限</th>
     <td>
       <!--{if $arrErr.authority}--><span class="attention"><!--{$arrErr.authority}--></span><!--{/if}-->
       <select name="authority">
