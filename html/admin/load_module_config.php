@@ -1,14 +1,8 @@
 <?php
-/**
- * モジュール設定スクリプトをロードする。
- * GETのクエリにmodule_idを渡す。
- *
- * 管理画面から呼び出すことを想定しているので、
- * 認証は外さないこと
- *
+/*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2008 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -26,6 +20,15 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+
+/**
+ * モジュール設定スクリプトをロードする。
+ * GETのクエリにmodule_idを渡す。
+ *
+ * 管理画面から呼び出すことを想定しているので、
+ * 認証は外さないこと
+ */
+
 require_once 'require.php';
 
 // 認証可否の判定
