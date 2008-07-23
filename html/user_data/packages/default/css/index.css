@@ -36,13 +36,12 @@ div#newsarea dl dt {
 /* 縺翫☆縺吶ａ
 ----------------------------------------------- */
 div#recomendarea {
-    width: 400px;
-    margin: 0 auto;
+    margin: 0 10px;
 }
 
 div.recomendblock {
     clear: both;
-    width: 400px;
+    width: 100%;
     padding: 10px 0;
     overflow: auto;
     background: url("../img/common/line_402.gif") no-repeat bottom;
@@ -50,7 +49,7 @@ div.recomendblock {
 
 div.recomendleft {
     float: left;
-    margin: 0 5px 0 0;
+    width: 47.5%;
 }
 
 div.recomendleft p {
@@ -59,7 +58,7 @@ div.recomendleft p {
 
 div.recomendright {
     float: right;
-    width: 190px;
+    width: 47.5%;
     position: relative;
 }
 
