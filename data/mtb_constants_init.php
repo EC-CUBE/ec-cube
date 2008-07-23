@@ -121,7 +121,7 @@ define('TV_IMAGE_HEIGHT', 95);
 define('TV_PRODUCTS_MAX', 10);
 /** 会員登録変更(マイページ)パスワード用 */
 define('DEFAULT_PASSWORD', "UAhgGR3L");
-/** おすすめ商品数 */
+/** 関連商品数 */
 define('RECOMMEND_PRODUCT_MAX', 6);
 /** 別のお届け先最大登録数 */
 define('DELIV_ADDR_MAX', 20);
@@ -508,7 +508,7 @@ define('ENTRY_CUSTOMER_TEMP_SUBJECT', "会員仮登録が完了いたしまし�
 define('ENTRY_CUSTOMER_REGIST_SUBJECT', "本会員登録が完了いたしました。");
 /** 再入会制限時間（単位: 時間) */
 define('ENTRY_LIMIT_HOUR', 1);
-/** オススメ商品表示数 */
+/** おすすめ商品表示数 */
 define('RECOMMEND_NUM', 8);
 /** ベスト商品の最大登録数 */
 define('BEST_MAX', 5);

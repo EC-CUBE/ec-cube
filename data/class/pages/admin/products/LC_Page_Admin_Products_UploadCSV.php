@@ -281,8 +281,8 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page {
         $this->objFormParam->addParam("発送日目安", "deliv_date_id", INT_LEN, "n", array("MAX_LENGTH_CHECK","NUM_CHECK"));
 
         for ($cnt = 1; $cnt <= RECOMMEND_PRODUCT_MAX; $cnt++) {
-            $this->objFormParam->addParam("おすすめ商品($cnt)", "recommend_product_id$cnt", INT_LEN, "n", array("MAX_LENGTH_CHECK","NUM_CHECK"));
-            $this->objFormParam->addParam("詳細-サブコメント($cnt)", "recommend_comment$cnt", LTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
+            $this->objFormParam->addParam("関連商品($cnt)", "recommend_product_id$cnt", INT_LEN, "n", array("MAX_LENGTH_CHECK","NUM_CHECK"));
+            $this->objFormParam->addParam("関連商品コメント($cnt)", "recommend_comment$cnt", LTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
         }
 
         $this->objFormParam->addParam("商品カテゴリ", "category_id", STEXT_LEN, "n", array("EXIST_CHECK", "SPTAB_CHECK"));
@@ -379,7 +379,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page {
         // 規格登録
         $this->lfRegistProductClass($objQuery, $arrRet, $sqlval['product_id'], $arrRet['product_class_id']);
 
-        // おすすめ商品登録
+        // 関連商品登録
         $objQuery->delete("dtb_recommend_products", "product_id = ?", array($sqlval['product_id']));
         for($i = 1; $i <= RECOMMEND_PRODUCT_MAX; $i++) {
             $keyname = "recommend_product_id" . $i;

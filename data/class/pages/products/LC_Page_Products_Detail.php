@@ -246,7 +246,7 @@ class LC_Page_Products_Detail extends LC_Page {
         $this->trackback_url = TRACKBACK_TO_URL . $tmp_id;
         // タイトルに商品名を入れる
         $this->tpl_title = "商品詳細 ". $this->arrProduct["name"];
-        //オススメ商品情報表示
+        //関連商品情報表示
         $this->arrRecommend = $this->lfPreGetRecommendProducts($tmp_id);
         //この商品を買った人はこんな商品も買っています
         $this->arrRelateProducts = $this->lfGetRelateProducts($tmp_id);
@@ -461,7 +461,7 @@ class LC_Page_Products_Detail extends LC_Page {
         $this->arrReview = $this->lfGetReviewData($tmp_id);
         // タイトルに商品名を入れる
         $this->tpl_title = "商品詳細 ". $this->arrProduct["name"];
-        //オススメ商品情報表示
+        //関連商品情報表示
         $this->arrRecommend = $this->lfPreGetRecommendProducts($tmp_id);
         //この商品を買った人はこんな商品も買っています
         $this->arrRelateProducts = $this->lfGetRelateProducts($tmp_id);
@@ -708,7 +708,7 @@ class LC_Page_Products_Detail extends LC_Page {
         return $arrRet;
     }
 
-    /* 登録済みオススメ商品の読み込み */
+    /* 登録済み関連商品の読み込み */
     function lfPreGetRecommendProducts($product_id) {
         $arrRecommend = array();
         $objQuery = new SC_Query();

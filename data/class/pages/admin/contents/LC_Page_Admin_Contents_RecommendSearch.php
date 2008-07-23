@@ -25,7 +25,7 @@
 require_once(CLASS_PATH . "pages/LC_Page.php");
 
 /**
- * おすすめ管理検索 のページクラス.
+ * おすすめ商品管理 商品検索のページクラス.
  *
  * @package Page
  * @author LOCKON CO.,LTD.

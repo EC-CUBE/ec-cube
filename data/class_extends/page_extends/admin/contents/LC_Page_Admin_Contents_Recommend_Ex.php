@@ -25,7 +25,7 @@
 require_once(CLASS_PATH . "pages/admin/contents/LC_Page_Admin_Contents_Recommend.php");
 
 /**
- * おすすめ管理 のページクラス(拡張).
+ * おすすめ商品管理 のページクラス(拡張).
  *
  * LC_Page_Admin_Contents_Recommend をカスタマイズする場合はこのクラスを編集する.
  *

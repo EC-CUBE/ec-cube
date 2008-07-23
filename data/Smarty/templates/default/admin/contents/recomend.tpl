@@ -33,7 +33,7 @@ function lfnCheckSubmit( fm ){
   */
   if ( ! fm["comment"].value ){
     if ( err ) err += '';
-    err += 'オススメコメントを入力して下さい。';
+    err += 'コメントを入力して下さい。';
   }
   if ( err ){
     alert(err);
@@ -69,13 +69,13 @@ function lfnCheckSetItem( rank ){
     <tr>
       <th>#</th>
       <th>画像</th>
+      <th>商品名</th>
       <th>削除</th>
       <th>変更</th>
-      <th>商品名</th>
       <th>コメント</th>
     </tr>
     <!--{section name=cnt loop=$tpl_disp_max}-->
-    <!--▼おすすめ<!--{$smarty.section.cnt.iteration}-->-->
+    <!--▼おすすめ商品<!--{$smarty.section.cnt.iteration}-->-->
     <tr>
       <th><!--{$smarty.section.cnt.iteration}--></th>
       <td>
@@ -111,7 +111,7 @@ function lfnCheckSetItem( rank ){
         </form>
       </td>
     </tr>
-  <!--▲おすすめ<!--{$smarty.section.cnt.iteration}-->-->
+  <!--▲おすすめ商品<!--{$smarty.section.cnt.iteration}-->-->
   <!--{/section}-->
   </table>
 </div>

@@ -136,7 +136,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
                 // 商品ステータスの変換
                 $arrRet = SC_Utils_Ex::sfSplitCBValue($this->arrForm['product_flag'], "product_flag");
                 $this->arrForm = array_merge($this->arrForm, $arrRet);
-                // DBからおすすめ商品の読み込み
+                // DBから関連商品の読み込み
                 $this->arrRecommend = $this->lfPreGetRecommendProducts($_POST['product_id']);
 
                 // 規格登録ありなし判定
@@ -203,7 +203,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
             $this->tpl_nonclass = $this->lfCheckNonClass($_POST['product_id']);
             $this->lfProductPage();		// 商品登録ページ
             break;
-        // おすすめ商品選択
+        // 関連商品選択
         case 'recommend_select' :
             $this->lfProductPage();		// 商品登録ページ
             break;
@@ -213,7 +213,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         }
 
         if($_POST['mode'] != 'pre_edit') {
-            // おすすめ商品の読み込み
+            // 関連商品の読み込み
             $this->arrRecommend = $this->lfGetRecommendProducts();
         }
 
@@ -255,7 +255,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         parent::destroy();
     }
 
-    /* おすすめ商品の読み込み */
+    /* 関連商品の読み込み */
     function lfGetRecommendProducts() {
         $objQuery = new SC_Query();
         $arrRecommend = array();
@@ -276,9 +276,9 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         return $arrRecommend;
     }
 
-    /* おすすめ商品の登録 */
+    /* 関連商品の登録 */
     function lfInsertRecommendProducts($objQuery, $arrList, $product_id) {
-        // 一旦オススメ商品をすべて削除する
+        // 一旦関連商品をすべて削除する
         $objQuery->delete("dtb_recommend_products", "product_id = ?", array($product_id));
         $sqlval['product_id'] = $product_id;
         $rank = RECOMMEND_PRODUCT_MAX;
@@ -302,7 +302,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         }
     }
 
-    /* 登録済みおすすめ商品の読み込み */
+    /* 登録済み関連商品の読み込み */
     function lfPreGetRecommendProducts($product_id) {
         $arrRecommend = array();
         $objQuery = new SC_Query();
@@ -488,7 +488,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         // 規格登録
         SC_Utils_Ex::sfInsertProductClass($objQuery, $arrList, $product_id);
 
-        // おすすめ商品登録
+        // 関連商品登録
         $this->lfInsertRecommendProducts($objQuery, $arrList, $product_id);
 
         $objQuery->commit();
@@ -527,7 +527,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
             $arrConvList["sub_comment$cnt"] = "KVa";
         }
 
-        // おすすめ商品
+        // 関連商品
         for ($cnt = 1; $cnt <= RECOMMEND_PRODUCT_MAX; $cnt++) {
             $arrConvList["recommend_comment$cnt"] = "KVa";
         }
@@ -589,7 +589,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
             if(isset($_POST["recommend_id$cnt"])
                && $_POST["recommend_id$cnt"] != ""
                && $_POST["recommend_delete$cnt"] != 1) {
-                $objErr->doFunc(array("おすすめ商品コメント$cnt", "recommend_comment$cnt", LTEXT_LEN), array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+                $objErr->doFunc(array("関連商品コメント$cnt", "recommend_comment$cnt", LTEXT_LEN), array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
             }
         }
 

@@ -138,7 +138,7 @@ function lnSetSelect(form, name1, name2, val) {
             <!--{/if}-->
 
             <!--★関連カテゴリ★-->
-            <div>関連カテゴリ：
+            <div class="relative_cat">関連カテゴリ：
                 <!--{section name=r loop=$arrRelativeCat}-->
                 <p>
                     <!--{section name=s loop=$arrRelativeCat[r]}-->
@@ -319,10 +319,10 @@ function lnSetSelect(form, name1, name2, val) {
     <!--{/if}-->
 
 
-    <!--▼オススメ商品-->
+    <!--▼関連商品-->
     <!--{if $arrRecommend}-->
         <div id="whoboughtarea">
-            <h2><img src="<!--{$TPL_DIR}-->img/products/title_recommend.jpg" width="580" height="30" alt="オススメ商品" /></h2>
+            <h2><img src="<!--{$TPL_DIR}-->img/products/title_recommend.jpg" width="580" height="30" alt="その他のオススメ商品(関連商品)" /></h2>
             <div class="whoboughtblock">
 
             <!--{section name=cnt loop=$arrRecommend}-->
@@ -394,7 +394,7 @@ function lnSetSelect(form, name1, name2, val) {
         <!--{/section}-->
         </div>
     <!--{/if}-->
-    <!--▲オススメ商品-->
+    <!--▲関連商品-->
     
 </div>
 <!--▲CONTENTS-->

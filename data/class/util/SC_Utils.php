@@ -916,7 +916,7 @@ class SC_Utils {
         return ($id . $random);
     }
 
-    // カテゴリ別オススメ品の取得
+    // カテゴリ別おすすめ商品の取得
     function sfGetBestProducts( $conn, $category_id = 0){
         // 既に登録されている内容を取得する
         $sql = "SELECT name, main_image, main_list_image, price01_min, price01_max, price02_min, price02_max, point_rate,

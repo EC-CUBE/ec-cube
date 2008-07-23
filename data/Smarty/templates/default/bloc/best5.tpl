@@ -19,10 +19,10 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
-<!--▼おすすめ情報ここから-->
+<!--▼おすすめ商品-->
 <div id="recomendarea">
   <h2>
-    <img src="<!--{$TPL_DIR}-->img/top/osusume.jpg" width="400" height="29" alt="おすすめ情報" />
+    <img src="<!--{$TPL_DIR}-->img/top/osusume.jpg" width="400" height="29" alt="おすすめ商品" />
   </h2>
   <!--{section name=cnt loop=$arrBestProducts step=2}-->
   <div class="recomendblock">
@@ -81,4 +81,4 @@
   </div>
   <!--{/section}-->
 </div>
-<!--▲おすすめ情報ここまで-->
+<!--▲おすすめ商品-->
