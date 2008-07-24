@@ -44,7 +44,7 @@
 <!--{assign var=price01 value=`$arrBestProducts[cnt].price01_min`}-->
 <!--{assign var=price02 value=`$arrBestProducts[cnt].price02_min`}-->
 
-      <p><!--{$smarty.const.SALE_PRICE_TITLE}--><span class="mini">(税込)</span>：
+      <p class="sale_price"><!--{$smarty.const.SALE_PRICE_TITLE}--><span class="mini">(税込)</span>：
         <span class="price"><!--{$price02|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}--> 円</span>
       </p>
 
@@ -71,7 +71,7 @@
 <!--{assign var=price01 value=`$arrBestProducts[$cnt2].price01_min`}-->
 <!--{assign var=price02 value=`$arrBestProducts[$cnt2].price02_min`}-->
 
-      <p><!--{$smarty.const.SALE_PRICE_TITLE}--><span class="mini">(税込)</span>：
+      <p class="sale_price"><!--{$smarty.const.SALE_PRICE_TITLE}--><span class="mini">(税込)</span>：
         <span class="price"><!--{$price02|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}--> 円</span>
       </p>
 

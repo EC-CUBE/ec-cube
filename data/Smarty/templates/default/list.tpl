@@ -127,7 +127,7 @@ function lnSetSelect(name1, name2, id, val) {
                     <p class="listcomment"><!--{$arrProducts[cnt].main_list_comment|escape|nl2br}--></p>
                     
                     <p>
-                        <span class="pricebox">
+                        <span class="pricebox sale_price">
                             <!--{$smarty.const.SALE_PRICE_TITLE}--><span class="mini">(税込)</span>：
                             <span class="price">
                             <!--{if $arrProducts[cnt].price02_min == $arrProducts[cnt].price02_max}-->

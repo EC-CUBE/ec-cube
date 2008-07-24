@@ -103,7 +103,7 @@ function lnSetSelect(form, name1, name2, val) {
             <h2><!--{$arrProduct.name|escape}--></h2>
             
             <!--★販売価格★-->
-            <div><!--{$smarty.const.SALE_PRICE_TITLE}--><span class="mini">(税込)</span>：
+            <div class="sale_price"><!--{$smarty.const.SALE_PRICE_TITLE}--><span class="mini">(税込)</span>：
                 <span class="price">
                     <!--{if $arrProduct.price02_min == $arrProduct.price02_max}-->
                         <!--{$arrProduct.price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
@@ -112,7 +112,7 @@ function lnSetSelect(form, name1, name2, val) {
                     <!--{/if}-->円</span></div>
             
             <!--★通常価格★-->
-            <div>
+            <div class="normal_price">
                 <!--{if $arrProduct.price01_max > 0}-->
                 <span class="price"><!--{$smarty.const.NORMAL_PRICE_TITLE}-->：
                     <!--{if $arrProduct.price01_min == $arrProduct.price01_max}-->
@@ -344,7 +344,7 @@ function lnSetSelect(form, name1, name2, val) {
                     <!--{assign var=price02_max value=`$arrRecommend[cnt].price02_max`}-->
                     <h3><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id}-->"><!--{$arrRecommend[cnt].name|escape}--></a></h3>
 
-                    <p><!--{$smarty.const.SALE_PRICE_TITLE}--><span class="mini">(税込)</span>：<span class="price">
+                    <p class="sale_price"><!--{$smarty.const.SALE_PRICE_TITLE}--><span class="mini">(税込)</span>：<span class="price">
                         <!--{if $price02_min == $price02_max}-->
                             <!--{$price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
                         <!--{else}-->
@@ -375,7 +375,7 @@ function lnSetSelect(form, name1, name2, val) {
                     <!--{assign var=price02_max value=`$arrRecommend[cnt].price02_max`}-->
                     <h3><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id}-->"><!--{$arrRecommend[cnt].name|escape}--></a></h3>
 
-                    <p><!--{$smarty.const.SALE_PRICE_TITLE}--><span class="mini">(税込)</span>：<span class="price">
+                    <p class="sale_price"><!--{$smarty.const.SALE_PRICE_TITLE}--><span class="mini">(税込)</span>：<span class="price">
 
                         <!--{if $price02_min == $price02_max}-->
                             <!--{$price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->

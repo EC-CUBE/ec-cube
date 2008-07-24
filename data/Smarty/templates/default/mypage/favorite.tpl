@@ -53,7 +53,7 @@
         <th width="40">削除</th>
         <th width="60">商品画像</th>
         <th width="200">商品名</th>
-        <th width="200"><!--{$smarty.const.SALE_PRICE_TITLE}--><span class="mini">(税込)</span></th>
+        <th width="200" class="sale_price"><!--{$smarty.const.SALE_PRICE_TITLE}--><span class="mini">(税込)</span></th>
       </tr>
       <!--{section name=cnt loop=$arrFavorite}-->
       <!--{if $arrFavorite[cnt].main_list_image != ""}-->
@@ -66,7 +66,7 @@
        <td><a href="javascript:fnModeSubmit('delete_favorite','product_id','<!--{$product_id}-->');">削除</a></td>
        <td><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$product_id}-->"><img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&width=65&height=65"></a></td>
        <td><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$product_id}-->"><!--{$arrFavorite[cnt].name}--></a></td>
-       <td class="right">
+       <td class="right sale_price">
         <span class="price">
           <!--{if $arrFavorite[cnt].price02_min == $arrFavorite[cnt].price02_max}-->
             <!--{$arrFavorite[cnt].price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
