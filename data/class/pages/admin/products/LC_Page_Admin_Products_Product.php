@@ -541,7 +541,8 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         }
 
         if (!isset($array['product_flag'])) $array['product_flag'] = "";
-        $array['product_flag'] = SC_Utils_Ex::sfMergeCheckBoxes($array['product_flag'], count($this->arrSTATUS));
+        $max = max(array_keys($this->arrSTATUS));
+        $array['product_flag'] = SC_Utils_Ex::sfMergeCheckBoxes($array['product_flag'], $max);
 
         return $array;
     }
