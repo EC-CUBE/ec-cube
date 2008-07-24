@@ -112,16 +112,17 @@ function lnSetSelect(form, name1, name2, val) {
                     <!--{/if}-->円</span></div>
             
             <!--★通常価格★-->
-            <div class="normal_price">
-                <!--{if $arrProduct.price01_max > 0}-->
-                <span class="price"><!--{$smarty.const.NORMAL_PRICE_TITLE}-->：
-                    <!--{if $arrProduct.price01_min == $arrProduct.price01_max}-->
-                        <!--{$arrProduct.price01_min|number_format}-->
-                    <!--{else}-->
-                        <!--{$arrProduct.price01_min|number_format}-->〜<!--{$arrProduct.price01_max|number_format}-->
-                    <!--{/if}-->円</span>
-                <!--{/if}-->
-            </div>
+            <!--{if $arrProduct.price01_max > 0}-->
+                <div class="normal_price">
+                    <!--{$smarty.const.NORMAL_PRICE_TITLE}-->：
+                    <span class="price">
+                        <!--{if $arrProduct.price01_min == $arrProduct.price01_max}-->
+                            <!--{$arrProduct.price01_min|number_format}-->
+                        <!--{else}-->
+                            <!--{$arrProduct.price01_min|number_format}--><!--{$arrProduct.price01_max|number_format}-->
+                        <!--{/if}-->円</span>
+                </div>
+            <!--{/if}-->
 
             <!--★ポイント★-->
             <!--{if $smarty.const.USE_POINT !== false}-->

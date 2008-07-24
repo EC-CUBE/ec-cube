@@ -50,7 +50,17 @@ h1,h2,h3,h4,h5 {
     font-size: 100%;
     line-height: 150%;
 }
-.price { color: #ff0000; font-weight: bold; }
+.price {
+}
+/* FIXME ポイントがクラス「price」を利用しているようだが、専用のクラスを用意すべき。 */
+.sale_price {
+    color: #ff0000;
+}
+.sale_price .price {
+    font-weight: bold;
+}
+.normal_price {
+}
 .attention { color: #ff0000; }
 .mini { font-size: 90%; }
 em {
