@@ -326,6 +326,12 @@ class LC_Page_Products_Detail extends LC_Page {
             $tmp_id = $_GET['product_id'];
         }
 
+        // 値の正当性チェック
+        if(!SC_Utils_Ex::sfIsInt($tmp_id)
+                || !$objDb->sfIsRecord("dtb_products", "product_id", $tmp_id, 'del_flg = 0 AND status = 1')) {
+            SC_Utils_Ex::sfDispSiteError(PRODUCT_NOT_FOUND);
+        }
+
         // ログイン判定
         if($objCustomer->isLoginSuccess(true)) {
             //お気に入りボタン表示
