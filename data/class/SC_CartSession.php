@@ -364,7 +364,7 @@ class SC_CartSession {
             if($val['quantity'] == 0){
                 // 売り切れ商品をカートから削除する
                 $this->delProduct($val['cart_no']);
-                sfDispSiteError(SOLD_OUT, "", true, "", $is_mobile);
+                SC_Utils_Ex::sfDispSiteError(SOLD_OUT, "", true, "", $is_mobile);
             }
         }
     }
