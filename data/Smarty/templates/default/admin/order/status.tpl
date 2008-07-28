@@ -217,7 +217,7 @@
 		}
 		
 		if(selectflag == 0 && checkflag == 1){ 
-		document.form1.mode.value = 'search';
+		document.form1.mode.value = 'update';
 		document.form1.submit(); 
 		}
 	}
