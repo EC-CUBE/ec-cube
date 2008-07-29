@@ -48,7 +48,7 @@
         <span class="price"><!--{$price02|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}--> 円</span>
       </p>
 
-      <p class="mini"><!--{$arrBestProducts[cnt].comment|escape|nl2br}--></p>
+      <p class="mini comment"><!--{$arrBestProducts[cnt].comment|escape|nl2br}--></p>
     </div>
 
     <div class="recomendright">
@@ -75,7 +75,7 @@
         <span class="price"><!--{$price02|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}--> 円</span>
       </p>
 
-      <p class="mini"><!--{$arrBestProducts[$cnt2].comment|escape|nl2br}--></p>
+      <p class="mini comment"><!--{$arrBestProducts[$cnt2].comment|escape|nl2br}--></p>
       <!--{/if}-->
     </div>
   </div>
