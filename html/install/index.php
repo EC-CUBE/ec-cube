@@ -22,7 +22,7 @@
  */
 require_once("../require.php");
 $INSTALL_DIR = realpath(dirname( __FILE__));
-require_once("../" . HTML2DATA_DIR . "module/Request.php");
+require_once(DATA_PATH . "module/Request.php");
 
 define("INSTALL_LOG", "./temp/install.log");
 ini_set("max_execution_time", 300);
@@ -381,15 +381,15 @@ function lfDispStep0($objPage) {
 
     // プログラムで書込みされるファイル・ディレクトリ
     $arrWriteFile = array(
-        ".." . HTML2DATA_DIR . "install.php",
-        "../user_data",
-        "../cp",
-        "../upload",
-        ".." . HTML2DATA_DIR . "cache/",
-        ".." . HTML2DATA_DIR . "class/",
-        ".." . HTML2DATA_DIR . "Smarty/",
-        ".." . HTML2DATA_DIR . "logs/",
-        ".." . HTML2DATA_DIR . "downloads/"
+        DATA_PATH . "install.php",
+        HTML_PATH . "user_data",
+        HTML_PATH . "cp",
+        HTML_PATH . "upload",
+        DATA_PATH . "cache/",
+        DATA_PATH . "class/",
+        DATA_PATH . "Smarty/",
+        DATA_PATH . "logs/",
+        DATA_PATH . "downloads/"
     );
 
     $mess = "";
@@ -433,43 +433,43 @@ function lfDispStep0($objPage) {
 
     // 権限エラー等が発生していない場合
     if(!$err_file) {
-        $path = ".." . HTML2DATA_DIR . "Smarty/templates_c/admin";
+        $path = DATA_PATH . "Smarty/templates_c/admin";
         if(!file_exists($path)) {
             mkdir($path);
         }
-        $path = ".." . HTML2DATA_DIR . "Smarty/templates_c/mobile";
+        $path = DATA_PATH . "Smarty/templates_c/mobile";
         if(!file_exists($path)) {
             mkdir($path);
         }
-        $path = "../upload/temp_template";
+        $path = HTML_PATH . "upload/temp_template";
         if(!file_exists($path)) {
             mkdir($path);
         }
-        $path = "../upload/save_image";
+        $path = HTML_PATH . "upload/save_image";
         if(!file_exists($path)) {
             mkdir($path);
         }
-        $path = "../upload/temp_image";
+        $path = HTML_PATH . "upload/temp_image";
         if(!file_exists($path)) {
             mkdir($path);
         }
-        $path = "../upload/graph_image";
+        $path = HTML_PATH . "upload/graph_image";
         if(!file_exists($path)) {
             mkdir($path);
         }
-        $path = "../upload/mobile_image";
+        $path = HTML_PATH . "upload/mobile_image";
         if(!file_exists($path)) {
             mkdir($path);
         }
-        $path = "../upload/csv";
+        $path = HTML_PATH . "upload/csv";
         if(!file_exists($path)) {
             mkdir($path);
         }
-        $path = ".." . HTML2DATA_DIR . "downloads/module";
+        $path = DATA_PATH . "downloads/module";
         if(!file_exists($path)) {
             mkdir($path);
         }
-        $path = ".." . HTML2DATA_DIR . "downloads/update";
+        $path = DATA_PATH . "downloads/update";
         if(!file_exists($path)) {
             mkdir($path);
         }
@@ -496,26 +496,8 @@ function lfDispStep0_1($objPage) {
     $objPage->tpl_mainpage = 'step0_1.tpl';
     $objPage->tpl_mode = 'step0_1';
     // ファイルコピー
-    $objPage->copy_mess = SC_Utils_Ex::sfCopyDir("./user_data/", "../user_data/", $objPage->copy_mess);
-    $objPage->copy_mess = SC_Utils_Ex::sfCopyDir("./save_image/", "../upload/save_image/", $objPage->copy_mess);
-    return $objPage;
-}
-
-// STEP0_2画面の表示(ファイルのコピー)
-function lfDispStep0_2($objPage) {
-    global $objWebParam;
-    global $objDBParam;
-    // hiddenに入力値を保持
-    $objPage->arrHidden = $objWebParam->getHashArray();
-    // hiddenに入力値を保持
-    $objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
-    $objPage->arrHidden['db_skip'] = $_POST['db_skip'];
-    $objPage->arrHidden['agreement'] = $_POST['agreement'];
-    $objPage->tpl_mainpage = 'step0_1.tpl';
-    $objPage->tpl_mode = 'step0_1';
-    // ファイルコピー
-    $objPage->copy_mess =  SC_Utils_Ex::sfCopyDir("./user_data/", "../user_data/", $objPage->copy_mess);
-    $objPage->copy_mess =  SC_Utils_Ex::sfCopyDir("./save_image/", "../upload/save_image/", $objPage->copy_mess);
+    $objPage->copy_mess = SC_Utils_Ex::sfCopyDir("./user_data/", HTML_PATH . "user_data/", $objPage->copy_mess);
+    $objPage->copy_mess = SC_Utils_Ex::sfCopyDir("./save_image/", HTML_PATH . "upload/save_image/", $objPage->copy_mess);
     return $objPage;
 }
 
@@ -622,12 +604,6 @@ function lfDispComplete($objPage) {
 function lfInitWebParam($objWebParam) {
     global $objDb;
 
-    if(defined('HTML_PATH')) {
-        $install_dir = HTML_PATH;
-    } else {
-		$install_dir = realpath(dirname( __FILE__) . "/../") . "/";
-    }
-
     if(defined('SITE_URL')) {
         $normal_url = SITE_URL;
     } else {
@@ -657,7 +633,6 @@ function lfInitWebParam($objWebParam) {
     $objWebParam->addParam("管理者：メールアドレス", "admin_mail", MTEXT_LEN, "", array("EXIST_CHECK","EMAIL_CHECK","EMAIL_CHAR_CHECK","MAX_LENGTH_CHECK"), $admin_mail);
     $objWebParam->addParam("管理者：ログインID", "login_id", MTEXT_LEN, "", array("EXIST_CHECK","EXIST_CHECK", "ALNUM_CHECK"));
     $objWebParam->addParam("管理者：パスワード", "login_pass", MTEXT_LEN, "", array("EXIST_CHECK","EXIST_CHECK", "ALNUM_CHECK"));
-    $objWebParam->addParam("インストールディレクトリ", "install_dir", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $install_dir);
     $objWebParam->addParam("URL(通常)", "normal_url", MTEXT_LEN, "", array("EXIST_CHECK","URL_CHECK","MAX_LENGTH_CHECK"), $normal_url);
     $objWebParam->addParam("URL(セキュア)", "secure_url", MTEXT_LEN, "", array("EXIST_CHECK","URL_CHECK","MAX_LENGTH_CHECK"), $secure_url);
     $objWebParam->addParam("ドメイン", "domain", MTEXT_LEN, "", array("MAX_LENGTH_CHECK"));
@@ -811,14 +786,8 @@ function lfExecuteSQL($filepath, $dsn, $disp_err = true) {
 function lfMakeConfigFile() {
     global $objWebParam;
     global $objDBParam;
-
-    $root_dir = $objWebParam->getValue('install_dir');
-    $root_dir = str_replace("\\", "/", $root_dir);
-    // 語尾に'/'をつける
-    if (!ereg("/$", $root_dir)) {
-		$root_dir = $root_dir . "/";
-    }
-
+    global $INSTALL_DIR;
+    
     $normal_url = $objWebParam->getValue('normal_url');
     // 語尾に'/'をつける
     if (!ereg("/$", $normal_url)) {
@@ -834,19 +803,11 @@ function lfMakeConfigFile() {
     // ディレクトリの取得
     $url_dir = ereg_replace("^https?://[a-zA-Z0-9_:~=&\?\.\-]+", "", $normal_url);
 
-    $data_path = SC_Utils_Ex::sfRmDupSlash($root_dir . HTML2DATA_DIR);
-    $data_path = str_replace("\\", "/", realpath($data_path));
-    // 語尾に'/'をつける
-    if (!ereg("/$", $data_path)) {
-		$data_path = $data_path . "/";
-    }
-
-    $filepath = $data_path . "install.php";
+    $filepath = DATA_PATH . "install.php";
 
     $config_data =
     "<?php\n".
     "    define ('ECCUBE_INSTALL', 'ON');\n" .
-    "    define ('HTML_PATH', '" . $root_dir . "');\n" .
     "    define ('SITE_URL', '" . $normal_url . "');\n" .
     "    define ('SSL_URL', '" . $secure_url . "');\n" .
     "    define ('URL_DIR', '" . $url_dir . "');\n" .
@@ -857,7 +818,6 @@ function lfMakeConfigFile() {
     "    define ('DB_SERVER', '" . $objDBParam->getValue('db_server') . "');\n" .
     "    define ('DB_NAME', '" . $objDBParam->getValue('db_name') . "');\n" .
     "    define ('DB_PORT', '" . $objDBParam->getValue('db_port') .  "');\n" .
-    "    define ('DATA_PATH', '".$data_path."');\n" .
     "    define ('MOBILE_HTML_PATH', HTML_PATH . 'mobile/');\n" .
     "    define ('MOBILE_SITE_URL', SITE_URL . 'mobile/');\n" .
     "    define ('MOBILE_SSL_URL', SSL_URL . 'mobile/');\n" .
@@ -868,37 +828,6 @@ function lfMakeConfigFile() {
         fwrite($fp, $config_data);
         fclose($fp);
     }
-/* install_mobile.incは使用しない用に変更
-
-    // モバイル版の設定ファイル install_mobile.inc を作成する。
-    $filepath = $data_path . "install_mobile.inc";
-
-    $config_data =
-    "<?php\n".
-    "    define ('ECCUBE_INSTALL', 'ON');\n" .
-    "    define ('HTML_PATH', '" . $root_dir . "mobile/');\n" .
-    "    define ('PC_HTML_PATH', '" . $root_dir . "');\n" .
-    "    define ('SITE_URL', '" . $normal_url . "mobile/');\n" .
-    "    define ('PC_SITE_URL', '" . $normal_url . "');\n" .
-    "    define ('SSL_URL', '" . $secure_url . "mobile/');\n" .
-    "    define ('PC_SSL_URL', '" . $secure_url . "');\n" .
-    "    define ('URL_DIR', '" . $url_dir . "mobile/');\n" .
-    "    define ('PC_URL_DIR', '" . $url_dir . "');\n" .
-    "    define ('DOMAIN_NAME', '" . $objWebParam->getValue('domain') . "');\n" .
-    "    define ('DB_TYPE', '" . $objDBParam->getValue('db_type') . "');\n" .
-    "    define ('DB_USER', '" . $objDBParam->getValue('db_user') . "');\n" .
-    "    define ('DB_PASSWORD', '" . $objDBParam->getValue('db_password') . "');\n" .
-    "    define ('DB_SERVER', '" . $objDBParam->getValue('db_server') . "');\n" .
-    "    define ('DB_NAME', '" . $objDBParam->getValue('db_name') . "');\n" .
-    "    define ('DB_PORT', '" . $objDBParam->getValue('db_port') .  "');\n" .
-    "    define ('DATA_PATH', '".$data_path."');\n" .
-    "?>";
-
-    if($fp = fopen($filepath,"w")) {
-        fwrite($fp, $config_data);
-        fclose($fp);
-    }
-*/
 }
 
 // テーブルの追加（既にテーブルが存在する場合は作成しない）
