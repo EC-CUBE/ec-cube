@@ -37,7 +37,8 @@ class SC_Initial {
     function SC_Initial() {
 
         /** EC-CUBEのバージョン */
-        define('ECCUBE_VERSION', "2.1.1-beta");
+        // XXX SVNのリビジョンを付加できたら良いと思う。(方法が分からない。)
+        define('ECCUBE_VERSION', "2.1.1-comu");
     }
 
     // }}}
