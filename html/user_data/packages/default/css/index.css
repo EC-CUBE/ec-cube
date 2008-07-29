@@ -47,35 +47,33 @@ div.recomendblock {
     background: url("../img/common/line_402.gif") no-repeat bottom;
 }
 
-div.recomendleft {
-    float: left;
+div.recomendleft,
+div.recomendright {
     width: 47.5%;
 }
 
-div.recomendleft p {
-    margin: 0 0 5px 0;
+div.recomendleft {
+    float: left;
 }
 
 div.recomendright {
     float: right;
-    width: 47.5%;
     position: relative;
 }
 
-div.recomendleft img, div.recomendright img {
+div.recomendleft p,
+div.recomendright p {
+    margin: 0 0 5px 0;
+}
+
+div.recomendleft img,
+div.recomendright img {
     display: block;
     float: left;
     margin: 0 5px 0 0;
 }
 
-div.recomendright p {
-    margin: 0 0 5px 0;
-}
-
-div.recomendleft h3 {
-    font-size: 100%;
-}
-
+div.recomendleft h3,
 div.recomendright h3 {
     font-size: 100%;
 }
