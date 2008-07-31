@@ -110,7 +110,7 @@ class SC_SendMail {
 
     // 件名の設定
     function setSubject($subject) {
-        $this->subject = mb_encode_mimeheader($subject);
+        $this->subject = mb_encode_mimeheader($subject, "JIS", 'B', "\n");
     }
 
     // 本文の設定
@@ -150,9 +150,9 @@ class SC_SendMail {
                 $_name = ereg_replace(">","＞", $_name);
                 if(OS_TYPE != 'WIN') {
                     // windowsでは文字化けするので使用しない。
-                    $_name = mb_convert_encoding($_name,"JIS",CHAR_CODE);
+                    // $_name = mb_convert_encoding($_name,"JIS",CHAR_CODE);
                 }
-                $_name = mb_encode_mimeheader($_name);
+                $_name = mb_encode_mimeheader($_name, "JIS", 'B', "\n");
                 $name_address = "\"". $_name . "\"<" . $mail_address . ">";
             } else {
                 $name_address = $mail_address;
