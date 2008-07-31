@@ -58,5 +58,5 @@
 <br>
 
 <!-- ▼フッター ここから -->
-<center>LOCKON CO.,LTD.</center>
+<!--{include file='footer.tpl'}-->
 <!-- ▲フッター ここまで -->
