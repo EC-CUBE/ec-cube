@@ -354,6 +354,8 @@ class LC_Page_Shopping_Payment extends LC_Page {
                 if($data['upper_rule'] >= $total_pretax) {
                     $arrPayment[] = $data;
                 }
+			//上限、下限が共に0の場合
+            } elseif($data['rule'] == "0" && $data['upper_rule'] == "0") {
             //設定なし
             } else {
                 $arrPayment[] = $data;
