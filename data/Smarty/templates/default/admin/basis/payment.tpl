@@ -44,9 +44,8 @@
         <td align="right"><!--{$arrPaymentListFree[cnt].charge|escape|number_format}--></td>
       <!--{/if}-->
       <td align="center">
-        <!--{if $arrPaymentListFree[cnt].rule > 0}--><!--{$arrPaymentListFree[cnt].rule|escape|number_format}--><!--{else}-->0<!--{/if}-->円
-         ～ 
-        <!--{if $arrPaymentListFree[cnt].upper_rule > 0}--><!--{$arrPaymentListFree[cnt].upper_rule|escape|number_format}-->円<!--{else}-->無制限<!--{/if}-->
+        <!--{if $arrPaymentListFree[cnt].rule > 0}--><!--{$arrPaymentListFree[cnt].rule|escape|number_format}--><!--{else}-->0<!--{/if}-->円 
+        <!--{if $arrPaymentListFree[cnt].upper_rule > 0}-->～<!--{$arrPaymentListFree[cnt].upper_rule|escape|number_format}-->円<!--{elseif $arrPaymentListFree[cnt].upper_rule == "0"}--><!--{else}-->～無制限<!--{/if}-->
       <td><!--{assign var=key value="`$arrPaymentListFree[cnt].deliv_id`"}--><!--{$arrDelivList[$key]|default:"未登録"}--></td>
       <td align="center"><!--{if $arrPaymentListFree[cnt].fix != 1}--><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="win03('./payment_input.php?mode=pre_edit&amp;payment_id=<!--{$arrPaymentListFree[cnt].payment_id}-->','payment_input','530','400'); return false;">編集</a><!--{else}-->-<!--{/if}--></td>
       <td align="center"><!--{if $arrPaymentListFree[cnt].fix != 1}--><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('delete', 'payment_id', <!--{$arrPaymentListFree[cnt].payment_id}-->); return false;">削除</a><!--{else}-->-<!--{/if}--></td>
