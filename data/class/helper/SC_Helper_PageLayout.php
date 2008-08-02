@@ -96,7 +96,7 @@ class SC_Helper_PageLayout {
         $arrPageLayout = $arrPageData[0];
 
         // 全ナビデータを取得する
-        $arrNavi = $this->lfGetNaviData($url, $preview);
+        $arrNavi = $this->lfGetNaviData($arrPageLayout['page_id'], $preview);
 
         $arrPageLayout['LeftNavi']  = $this->lfGetNavi($arrNavi,1);    // LEFT NAVI
         $arrPageLayout['MainHead']  = $this->lfGetNavi($arrNavi,2);    // メイン上部
@@ -167,11 +167,12 @@ class SC_Helper_PageLayout {
      * @param boolean $preview プレビュー表示の場合 true
      * @return array ナビ情報の配列
      */
-    function lfGetNaviData($url, $preview=false){
+    function lfGetNaviData($page_id, $preview=false){
         $objDBConn = new SC_DbConn;     // DB操作オブジェクト
         $sql = "";                      // データ取得SQL生成用
         $arrRet = array();              // データ取得用
-        $arrData = array();
+
+        $arrData = array($page_id);
 
         // SQL文生成
         $sql = "";
@@ -183,12 +184,7 @@ class SC_Helper_PageLayout {
         $sql .= " FROM";
         $sql .= "     dtb_blocposition AS pos";
         $sql .= " WHERE";
-        if ($preview == true) {
-            $sql .= "     page_id = (SELECT page_id FROM dtb_pagelayout WHERE page_id = '0')";
-        }else{
-            $sql .= "     page_id = (SELECT page_id FROM dtb_pagelayout WHERE page_id <> '0' AND url = ?)";
-            $arrData = array($url);
-        }
+        $sql .= "     page_id = ?";
         $sql .= " ORDER BY target_id,bloc_row";
         $sql .= " ";
 
