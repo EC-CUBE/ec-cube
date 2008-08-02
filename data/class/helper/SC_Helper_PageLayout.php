@@ -96,7 +96,7 @@ class SC_Helper_PageLayout {
         $arrPageLayout = $arrPageData[0];
 
         // 全ナビデータを取得する
-        $arrNavi = $this->lfGetNaviData($arrPageLayout['page_id'], $preview);
+        $arrNavi = $this->lfGetNaviData($arrPageLayout['page_id']);
 
         $arrPageLayout['LeftNavi']  = $this->lfGetNavi($arrNavi,1);    // LEFT NAVI
         $arrPageLayout['MainHead']  = $this->lfGetNavi($arrNavi,2);    // メイン上部
@@ -164,10 +164,9 @@ class SC_Helper_PageLayout {
      * ナビ情報を取得する.
      *
      * @param string $url ページのURL
-     * @param boolean $preview プレビュー表示の場合 true
      * @return array ナビ情報の配列
      */
-    function lfGetNaviData($page_id, $preview=false){
+    function lfGetNaviData($page_id){
         $objDBConn = new SC_DbConn;     // DB操作オブジェクト
         $sql = "";                      // データ取得SQL生成用
         $arrRet = array();              // データ取得用
