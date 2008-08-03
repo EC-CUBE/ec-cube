@@ -6,7 +6,8 @@ create table dtb_module_update_logs(
     error text,
     ok text,
     create_date timestamp NOT NULL DEFAULT now(),
-    update_date timestamp NOT NULL DEFAULT now()
+    update_date timestamp NOT NULL DEFAULT now(),
+    PRIMARY KEY (log_id)
 );
 
 CREATE TABLE dtb_ownersstore_settings (
@@ -21,7 +22,8 @@ CREATE TABLE dtb_kiyaku (
     creator_id int4 NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp NOT NULL,
-    del_flg  int2 NOT NULL DEFAULT 0
+    del_flg int2 NOT NULL DEFAULT 0,
+    PRIMARY KEY (kiyaku_id)
 );
 
 CREATE TABLE dtb_holiday (
@@ -33,7 +35,8 @@ CREATE TABLE dtb_holiday (
     creator_id int4 NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp NOT NULL,
-    del_flg  int2 NOT NULL DEFAULT 0
+    del_flg int2 NOT NULL DEFAULT 0,
+    PRIMARY KEY (holiday_id)
 );
 
 CREATE TABLE mtb_zip (
@@ -66,7 +69,7 @@ CREATE TABLE dtb_bat_order_daily_age (
 );
 
 CREATE TABLE dtb_update (
-    module_id int4 NOT NULL UNIQUE,
+    module_id int4 NOT NULL,
     module_name text NOT NULL,
     now_version text,
     latest_version text NOT NULL,
@@ -79,7 +82,8 @@ CREATE TABLE dtb_update (
     del_flg int2 NOT NULL DEFAULT 0,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp,
-    release_date timestamp NOT NULL
+    release_date timestamp NOT NULL,
+    PRIMARY KEY (module_id)
 );
 
 CREATE TABLE dtb_baseinfo (
@@ -153,20 +157,23 @@ CREATE TABLE dtb_deliv (
     del_flg int2 NOT NULL DEFAULT 0,
     creator_id int4 NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
-    update_date timestamp
+    update_date timestamp,
+    PRIMARY KEY (deliv_id)
 );
 
 CREATE TABLE dtb_delivtime (
     deliv_id int4 NOT NULL,
     time_id serial NOT NULL,
-    deliv_time text NOT NULL
+    deliv_time text NOT NULL,
+    PRIMARY KEY (time_id)
 );
 
 CREATE TABLE dtb_delivfee (
     deliv_id int4 NOT NULL,
     fee_id serial NOT NULL,
     fee text NOT NULL,
-    pref int2
+    pref int2,
+    PRIMARY KEY (fee_id)
 );
 
 CREATE TABLE dtb_payment (
@@ -199,7 +206,8 @@ CREATE TABLE dtb_payment (
     memo07 text,
     memo08 text,
     memo09 text,
-    memo10 text
+    memo10 text,
+    PRIMARY KEY (payment_id)
 );
 
 CREATE TABLE dtb_mailtemplate (
@@ -214,7 +222,7 @@ CREATE TABLE dtb_mailtemplate (
 );
 
 CREATE TABLE dtb_mailmaga_template (
-    template_id serial NOT NULL UNIQUE,
+    template_id serial NOT NULL,
     subject text,
     charge_image text,
     mail_method int4,
@@ -240,7 +248,8 @@ CREATE TABLE dtb_mailmaga_template (
     del_flg int2 NOT NULL DEFAULT 0,
     creator_id int4 NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
-    update_date timestamp
+    update_date timestamp,
+    PRIMARY KEY (template_id)
 );
 
 CREATE TABLE dtb_send_history (
@@ -256,7 +265,8 @@ CREATE TABLE dtb_send_history (
     del_flg int2 NOT NULL DEFAULT 0,
     creator_id int4 NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
-    update_date timestamp NOT NULL DEFAULT now()
+    update_date timestamp NOT NULL DEFAULT now(),
+    PRIMARY KEY (send_id)
 );
 
 CREATE TABLE dtb_send_customer (
@@ -268,7 +278,7 @@ CREATE TABLE dtb_send_customer (
 );
 
 CREATE TABLE dtb_products (
-    product_id serial NOT NULL UNIQUE,
+    product_id serial NOT NULL,
     name text,
     deliv_fee numeric,
     sale_limit numeric,
@@ -325,11 +335,12 @@ CREATE TABLE dtb_products (
     creator_id int4 NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp,
-    deliv_date_id int4
+    deliv_date_id int4,
+    PRIMARY KEY (product_id)
 );
 
 CREATE TABLE dtb_products_class (
-    product_class_id serial NOT NULL UNIQUE,
+    product_class_id serial NOT NULL,
     product_id int4 NOT NULL,
     classcategory_id1 int4 NOT NULL DEFAULT 0,
     classcategory_id2 int4 NOT NULL DEFAULT 0,
@@ -342,7 +353,8 @@ CREATE TABLE dtb_products_class (
     status int2,
     creator_id int4 NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
-    update_date timestamp
+    update_date timestamp,
+    PRIMARY KEY (product_class_id)
 );
 
 CREATE TABLE dtb_class (
@@ -353,8 +365,9 @@ CREATE TABLE dtb_class (
     creator_id int4 NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp,
-    del_flg  int2 NOT NULL DEFAULT 0,
-    product_id int4
+    del_flg int2 NOT NULL DEFAULT 0,
+    product_id int4,
+    PRIMARY KEY (class_id)
 );
 
 CREATE TABLE dtb_classcategory (
@@ -366,7 +379,8 @@ CREATE TABLE dtb_classcategory (
     creator_id int4 NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp,
-    del_flg  int2 NOT NULL DEFAULT 0
+    del_flg int2 NOT NULL DEFAULT 0,
+    PRIMARY KEY (classcategory_id)
 );
 
 CREATE TABLE dtb_category (
@@ -378,7 +392,7 @@ CREATE TABLE dtb_category (
     creator_id int4 NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp,
-    del_flg  int2 NOT NULL DEFAULT 0
+    del_flg int2 NOT NULL DEFAULT 0
 );
 
 CREATE TABLE dtb_product_categories (
@@ -454,7 +468,8 @@ CREATE TABLE dtb_review (
     creator_id int4 NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp,
-    del_flg  int2 NOT NULL DEFAULT 0
+    del_flg int2 NOT NULL DEFAULT 0,
+    PRIMARY KEY (review_id)
 );
 
 CREATE TABLE dtb_customer_reading (
@@ -485,7 +500,7 @@ CREATE TABLE dtb_category_total_count (
 );
 
 CREATE TABLE dtb_news (
-    news_id serial NOT NULL UNIQUE,
+    news_id serial NOT NULL,
     news_date timestamp,
     rank int4,
     news_title text NOT NULL,
@@ -496,7 +511,8 @@ CREATE TABLE dtb_news (
     creator_id int4 NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp,
-    del_flg  int2 NOT NULL DEFAULT 0
+    del_flg int2 NOT NULL DEFAULT 0,
+    PRIMARY KEY (news_id)
 );
 
 CREATE TABLE dtb_best_products (
@@ -509,7 +525,8 @@ CREATE TABLE dtb_best_products (
     creator_id int4 NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp,
-    del_flg  int2 NOT NULL DEFAULT 0
+    del_flg int2 NOT NULL DEFAULT 0,
+    PRIMARY KEY (best_id)
 );
 
 CREATE TABLE dtb_mail_history (
@@ -519,7 +536,8 @@ CREATE TABLE dtb_mail_history (
     template_id int4,
     creator_id int4 NOT NULL,
     subject text,
-    mail_body text
+    mail_body text,
+    PRIMARY KEY (send_id)
 );
 
 CREATE TABLE dtb_customer (
@@ -557,12 +575,13 @@ CREATE TABLE dtb_customer (
     status int2 NOT NULL DEFAULT 1,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp DEFAULT now(),
-    del_flg  int2 NOT NULL DEFAULT 0,
+    del_flg int2 NOT NULL DEFAULT 0,
     cell01 text,
     cell02 text,
     cell03 text,
     mobile_phone_id text,
-    mailmaga_flg int2
+    mailmaga_flg int2,
+    PRIMARY KEY (customer_id)
 );
 
 CREATE INDEX dtb_customer_mobile_phone_id_key ON dtb_customer (mobile_phone_id);
@@ -570,10 +589,11 @@ CREATE INDEX dtb_customer_mobile_phone_id_key ON dtb_customer (mobile_phone_id);
 CREATE TABLE dtb_customer_mail_temp (
     email text NOT NULL UNIQUE,
     mail_flag int2,
-    temp_id text NOT NULL UNIQUE,
+    temp_id text NOT NULL,
     end_flag int2,
     update_date timestamp NOT NULL DEFAULT Now(),
-    create_data timestamp NOT NULL DEFAULT Now()
+    create_data timestamp NOT NULL DEFAULT Now(),
+    PRIMARY KEY (temp_id)
 );
 
 CREATE TABLE dtb_order (
@@ -639,7 +659,7 @@ CREATE TABLE dtb_order (
     credit_msg text,
     update_date timestamp,
     commit_date timestamp,
-    del_flg  int2 NOT NULL DEFAULT 0,
+    del_flg int2 NOT NULL DEFAULT 0,
     deliv_date text,
     conveni_data text,
     cell01 text,
@@ -655,7 +675,8 @@ CREATE TABLE dtb_order (
     memo08 text,
     memo09 text,
     memo10 text,
-    campaign_id int4
+    campaign_id int4,
+    PRIMARY KEY (order_id)
 );
 
 CREATE TABLE dtb_order_temp (
@@ -722,7 +743,7 @@ CREATE TABLE dtb_order_temp (
     credit_msg text,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp,
-    del_flg  int2 NOT NULL DEFAULT 0,
+    del_flg int2 NOT NULL DEFAULT 0,
     deliv_date text,
     conveni_data text,
     cell01 text,
@@ -756,7 +777,8 @@ CREATE TABLE dtb_other_deliv (
     addr02 text,
     tel01 text,
     tel02 text,
-    tel03 text
+    tel03 text,
+    PRIMARY KEY (other_deliv_id)
 );
 
 CREATE TABLE dtb_order_detail (
@@ -793,7 +815,8 @@ CREATE TABLE dtb_member (
     creator_id int4 NOT NULL,
     update_date timestamp,
     create_date timestamp NOT NULL DEFAULT now(),
-    login_date timestamp
+    login_date timestamp,
+    PRIMARY KEY (member_id)
 );
 
 CREATE TABLE dtb_question (
@@ -801,7 +824,8 @@ CREATE TABLE dtb_question (
     question_name text,
     question text,
     create_date timestamp NOT NULL DEFAULT now(),
-    del_flg  int2 NOT NULL DEFAULT 0
+    del_flg int2 NOT NULL DEFAULT 0,
+    PRIMARY KEY (question_id)
 );
 
 CREATE TABLE dtb_question_result (
@@ -829,7 +853,8 @@ CREATE TABLE dtb_question_result (
     question05 text,
     question06 text,
     create_date timestamp NOT NULL DEFAULT now(),
-    del_flg  int2 NOT NULL DEFAULT 0
+    del_flg int2 NOT NULL DEFAULT 0,
+    PRIMARY KEY (result_id)
 );
 
 CREATE TABLE dtb_bat_relate_products (
@@ -855,7 +880,8 @@ CREATE TABLE dtb_campaign (
     search_condition text,
     del_flg int2 NOT NULL DEFAULT 0,
     create_date timestamp NOT NULL,
-    update_date timestamp NOT NULL DEFAULT now()
+    update_date timestamp NOT NULL DEFAULT now(),
+    PRIMARY KEY (campaign_id)
 );
 
 CREATE TABLE dtb_campaign_detail (
@@ -879,7 +905,8 @@ CREATE TABLE dtb_pagelayout (
     keyword text,
     update_url text,
     create_date timestamp NOT NULL DEFAULT now(),
-    update_date timestamp NOT NULL DEFAULT now()
+    update_date timestamp NOT NULL DEFAULT now(),
+    PRIMARY KEY (page_id)
 );
 
 CREATE TABLE dtb_bloc (
@@ -890,7 +917,8 @@ CREATE TABLE dtb_bloc (
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp NOT NULL DEFAULT now(),
     php_path text,
-    del_flg int2 NOT NULL DEFAULT 0
+    del_flg int2 NOT NULL DEFAULT 0,
+    PRIMARY KEY (bloc_id)
 );
 
 CREATE TABLE dtb_blocposition (
@@ -909,7 +937,8 @@ CREATE TABLE dtb_csv (
     rank int4,
     status int2 NOT NULL DEFAULT 1,
     create_date timestamp NOT NULL DEFAULT now(),
-    update_date timestamp NOT NULL DEFAULT now()
+    update_date timestamp NOT NULL DEFAULT now(),
+    PRIMARY KEY (no)
 );
 
 CREATE TABLE dtb_csv_sql (
@@ -917,7 +946,8 @@ CREATE TABLE dtb_csv_sql (
     sql_name text NOT NULL,
     csv_sql text,
     update_date timestamp NOT NULL DEFAULT now(),
-    create_date timestamp NOT NULL DEFAULT now()
+    create_date timestamp NOT NULL DEFAULT now(),
+    PRIMARY KEY (sql_id)
 );
 
 CREATE TABLE dtb_user_regist (
@@ -935,23 +965,24 @@ CREATE TABLE dtb_user_regist (
     status int2 NOT NULL,
     del_flg int2 DEFAULT 0,
     create_date timestamp NOT NULL,
-    update_date timestamp NOT NULL DEFAULT now()
+    update_date timestamp NOT NULL DEFAULT now(),
+    PRIMARY KEY (user_id)
 );
 
-create table dtb_templates
-(
-template_code        text        NOT NULL UNIQUE    ,
-template_name        text            ,
-create_date        timestamp        NOT NULL    default now(),
-update_date        timestamp        NOT NULL    default now()
+create table dtb_templates (
+    template_code        text        NOT NULL,
+    template_name        text            ,
+    create_date        timestamp        NOT NULL    default now(),
+    update_date        timestamp        NOT NULL    default now(),
+    PRIMARY KEY (template_code)
 );
 
-create table dtb_table_comment
-(
-id    serial,
-table_name    text,
-column_name    text,
-description    text
+create table dtb_table_comment (
+    id    serial,
+    table_name    text,
+    column_name    text,
+    description    text,
+    PRIMARY KEY (id)
 );
 
 CREATE TABLE dtb_maker (
@@ -961,7 +992,8 @@ CREATE TABLE dtb_maker (
     creator_id int4 NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp NOT NULL,
-    del_flg  int2 NOT NULL DEFAULT 0
+    del_flg int2 NOT NULL DEFAULT 0,
+    PRIMARY KEY (maker_id)
 );
 
 CREATE TABLE dtb_maker_count (

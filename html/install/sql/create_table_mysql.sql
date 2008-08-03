@@ -21,7 +21,7 @@ CREATE TABLE dtb_kiyaku (
     creator_id int NOT NULL,
     create_date datetime NOT NULL ,
     update_date datetime NOT NULL,
-    del_flg  smallint NOT NULL DEFAULT 0
+    del_flg smallint NOT NULL DEFAULT 0
 ) TYPE=InnoDB ;
 
 CREATE TABLE dtb_holiday (
@@ -33,7 +33,7 @@ CREATE TABLE dtb_holiday (
     creator_id int NOT NULL,
     create_date datetime NOT NULL,
     update_date datetime NOT NULL,
-    del_flg  smallint NOT NULL DEFAULT 0
+    del_flg smallint NOT NULL DEFAULT 0
 ) TYPE=InnoDB ;
 
 CREATE TABLE mtb_zip (
@@ -66,7 +66,7 @@ CREATE TABLE dtb_bat_order_daily_age (
 ) TYPE=InnoDB ;
 
 CREATE TABLE dtb_update (
-    module_id int NOT NULL UNIQUE,
+    module_id int NOT NULL,
     module_name text NOT NULL,
     now_version text,
     latest_version text NOT NULL,
@@ -79,7 +79,8 @@ CREATE TABLE dtb_update (
     del_flg smallint NOT NULL DEFAULT 0,
     create_date datetime NOT NULL ,
     update_date datetime,
-    release_date datetime NOT NULL
+    release_date datetime NOT NULL,
+    PRIMARY KEY (module_id)
 ) TYPE=InnoDB ;
 
 CREATE TABLE dtb_baseinfo (
@@ -214,7 +215,7 @@ CREATE TABLE dtb_mailtemplate (
 ) TYPE=InnoDB ;
 
 CREATE TABLE dtb_mailmaga_template (
-    template_id int auto_increment primary key NOT NULL UNIQUE,
+    template_id int auto_increment primary key NOT NULL,
     subject text,
     charge_image text,
     mail_method int,
@@ -268,7 +269,7 @@ CREATE TABLE dtb_send_customer (
 ) TYPE=InnoDB ;
 
 CREATE TABLE dtb_products (
-    product_id int auto_increment primary key NOT NULL UNIQUE,
+    product_id int auto_increment primary key NOT NULL,
     name text,
     deliv_fee numeric,
     sale_limit numeric,
@@ -329,7 +330,7 @@ CREATE TABLE dtb_products (
 ) TYPE=InnoDB ;
 
 CREATE TABLE dtb_products_class (
-    product_class_id int auto_increment primary key NOT NULL UNIQUE,
+    product_class_id int auto_increment primary key NOT NULL,
     product_id int NOT NULL,
     classcategory_id1 int NOT NULL DEFAULT 0,
     classcategory_id2 int NOT NULL DEFAULT 0,
@@ -353,7 +354,7 @@ CREATE TABLE dtb_class (
     creator_id int NOT NULL,
     create_date datetime NOT NULL ,
     update_date datetime,
-    del_flg  smallint NOT NULL DEFAULT 0,
+    del_flg smallint NOT NULL DEFAULT 0,
     product_id int
 ) TYPE=InnoDB ;
 
@@ -366,7 +367,7 @@ CREATE TABLE dtb_classcategory (
     creator_id int NOT NULL,
     create_date datetime NOT NULL ,
     update_date datetime,
-    del_flg  smallint NOT NULL DEFAULT 0
+    del_flg smallint NOT NULL DEFAULT 0
 ) TYPE=InnoDB ;
 
 CREATE TABLE dtb_category (
@@ -378,7 +379,7 @@ CREATE TABLE dtb_category (
     creator_id int NOT NULL,
     create_date datetime NOT NULL ,
     update_date datetime,
-    del_flg  smallint NOT NULL DEFAULT 0
+    del_flg smallint NOT NULL DEFAULT 0
 ) TYPE=InnoDB ;
 
 CREATE TABLE dtb_product_categories (
@@ -454,7 +455,7 @@ CREATE TABLE dtb_review (
     creator_id int NOT NULL,
     create_date datetime,
     update_date datetime,
-    del_flg  smallint NOT NULL DEFAULT 0
+    del_flg smallint NOT NULL DEFAULT 0
 ) TYPE=InnoDB ;
 
 CREATE TABLE dtb_customer_reading (
@@ -484,7 +485,7 @@ CREATE TABLE dtb_category_total_count (
 ) TYPE=InnoDB ;
 
 CREATE TABLE dtb_news (
-    news_id int auto_increment primary key NOT NULL UNIQUE,
+    news_id int auto_increment primary key NOT NULL,
     news_date datetime,
     rank int,
     news_title text NOT NULL,
@@ -495,7 +496,7 @@ CREATE TABLE dtb_news (
     creator_id int NOT NULL,
     create_date datetime NOT NULL ,
     update_date datetime,
-    del_flg  smallint NOT NULL DEFAULT 0
+    del_flg smallint NOT NULL DEFAULT 0
 ) TYPE=InnoDB ;
 
 CREATE TABLE dtb_best_products (
@@ -508,7 +509,7 @@ CREATE TABLE dtb_best_products (
     creator_id int NOT NULL,
     create_date datetime NOT NULL ,
     update_date datetime,
-    del_flg  smallint NOT NULL DEFAULT 0
+    del_flg smallint NOT NULL DEFAULT 0
 ) TYPE=InnoDB ;
 
 CREATE TABLE dtb_mail_history (
@@ -556,7 +557,7 @@ CREATE TABLE dtb_customer (
     status smallint NOT NULL DEFAULT 1,
     create_date datetime NOT NULL ,
     update_date datetime ,
-    del_flg  smallint NOT NULL DEFAULT 0,
+    del_flg smallint NOT NULL DEFAULT 0,
     cell01 text,
     cell02 text,
     cell03 text,
@@ -569,10 +570,11 @@ CREATE INDEX dtb_customer_mobile_phone_id_key ON dtb_customer (mobile_phone_id(6
 CREATE TABLE dtb_customer_mail_temp (
     email varchar(50) NOT NULL UNIQUE,
     mail_flag smallint,
-    temp_id varchar(50) NOT NULL UNIQUE,
+    temp_id varchar(50) NOT NULL,
     end_flag smallint,
-    update_date datetime NOT NULL ,
-    create_data datetime NOT NULL
+    update_date datetime NOT NULL,
+    create_data datetime NOT NULL,
+    PRIMARY KEY (temp_id)
 ) TYPE=InnoDB ;
 
 CREATE TABLE dtb_order (
@@ -638,7 +640,7 @@ CREATE TABLE dtb_order (
     credit_msg text,
     update_date datetime,
     commit_date datetime,
-    del_flg  smallint NOT NULL DEFAULT 0,
+    del_flg smallint NOT NULL DEFAULT 0,
     deliv_date text,
     conveni_data text,
     cell01 text,
@@ -721,7 +723,7 @@ CREATE TABLE dtb_order_temp (
     credit_msg text,
     create_date datetime NOT NULL ,
     update_date datetime,
-    del_flg  smallint NOT NULL DEFAULT 0,
+    del_flg smallint NOT NULL DEFAULT 0,
     deliv_date text,
     conveni_data text,
     cell01 text,
@@ -773,7 +775,7 @@ CREATE TABLE dtb_order_detail (
 ) TYPE=InnoDB ;
 
 CREATE TABLE mtb_pref (
-    pref_id smallint NOT NULL,
+    pref_id smallint primary key NOT NULL,
     pref_name text,
     rank smallint NOT NULL DEFAULT 0
 ) TYPE=InnoDB ;
@@ -799,7 +801,7 @@ CREATE TABLE dtb_question (
     question_name text,
     question text,
     create_date datetime NOT NULL ,
-    del_flg  smallint NOT NULL DEFAULT 0
+    del_flg smallint NOT NULL DEFAULT 0
 ) TYPE=InnoDB ;
 
 CREATE TABLE dtb_question_result (
@@ -827,7 +829,7 @@ CREATE TABLE dtb_question_result (
     question05 text,
     question06 text,
     create_date datetime NOT NULL ,
-    del_flg  smallint NOT NULL DEFAULT 0
+    del_flg smallint NOT NULL DEFAULT 0
 ) TYPE=InnoDB ;
 
 CREATE TABLE dtb_bat_relate_products (
@@ -938,7 +940,7 @@ CREATE TABLE dtb_user_regist (
 
 CREATE TABLE dtb_templates
 (
-    template_code        varchar(50) NOT NULL UNIQUE    ,
+    template_code        varchar(50) primary key NOT NULL,
     template_name        text            ,
     create_date        datetime        NOT NULL    ,
     update_date        datetime        NOT NULL
@@ -959,7 +961,7 @@ CREATE TABLE dtb_maker (
     creator_id int NOT NULL,
     create_date datetime NOT NULL,
     update_date datetime NOT NULL,
-    del_flg  smallint NOT NULL DEFAULT 0
+    del_flg smallint NOT NULL DEFAULT 0
 ) TYPE=InnoDB ;
 
 CREATE TABLE dtb_maker_count (
