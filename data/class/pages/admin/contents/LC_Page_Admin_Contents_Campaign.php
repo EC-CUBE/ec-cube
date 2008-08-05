@@ -203,6 +203,13 @@ class LC_Page_Admin_Contents_Campaign extends LC_Page {
         $objErr->doFunc(array("停止日時", "end_year", "end_month", "end_day", "end_hour", "end_minute", "0"), array("CHECK_DATE2"));
         $objErr->doFunc(array("開始日時", "停止日時", "start_year", "start_month", "start_day", "start_hour", "start_minute", "00", "end_year", "end_month", "end_day", "end_hour", "end_minute", "59"), array("CHECK_SET_TERM2"));
 
+        if (!is_writable(CAMPAIGN_TEMPLATE_PATH)) {
+            $objErr->arrErr['campaign_template_path'] = "※" . CAMPAIGN_TEMPLATE_PATH . " へ書き込み権限を与えてください。 <br/>";
+        }
+        if (!is_writable(CAMPAIGN_PATH)) {
+            $objErr->arrErr['campaign_path'] = "※" . CAMPAIGN_PATH . " へ書き込み権限を与えてください。<br/>";
+        }
+
         if(count($objErr->arrErr) <= 0) {
 
             // 編集時用に元のディレクトリ名を取得する。
