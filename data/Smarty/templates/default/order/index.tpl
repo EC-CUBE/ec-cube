@@ -22,9 +22,7 @@
 <!--▼CONTENTS-->
 <div id="undercolumn">
   <div id="undercolumn_order">
-    <h2 class="title">
-      <img src="<!--{$TPL_DIR}-->img/aboutshopping/transaction_title.jpg" width="580" height="40" alt="特定商取引に関する法律に基づく表記" />
-    </h2>
+    <h2 class="title"><!--{$tpl_title|escape}--></h2>
     <table summary="特定商取引に関する法律に基づく表記">
       <tr>
         <th>販売業者</th>

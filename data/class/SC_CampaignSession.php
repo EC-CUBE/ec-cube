@@ -72,11 +72,14 @@ class SC_CampaignSession {
 
     /* キャンペーンページならフレームを変更 */
     function pageView($objView, $site_frame = SITE_FRAME) {
-        if($this->getIsCampaign()) {
-            $objView->display(CAMPAIGN_TEMPLATE_PATH . $this->getCampaignDir()  . "/active/site_frame.tpl");
-        } else {
-            $objView->display($site_frame);
+        // XXX キャンペーン削除で不具合があったので、応急処置をしています。(テスト不十分)
+        if ($this->getIsCampaign()) {
+            $site_frame_campaign = CAMPAIGN_TEMPLATE_PATH . $this->getCampaignDir()  . "/active/site_frame.tpl";
+            if (file_exists($site_frame_campaign)) {
+                $site_frame = $site_frame_campaign;
+            }
         }
+        $objView->display($site_frame);
     }
 }
 ?>

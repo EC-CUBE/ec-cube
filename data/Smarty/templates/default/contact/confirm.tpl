@@ -22,9 +22,7 @@
 
 <div id="undercolumn">
   <div id="undercolumn_contact">
-    <h2 class="title">
-      <img src="<!--{$TPL_DIR}-->img/contact/title.jpg" width="580" height="40" alt="お問い合わせ" />
-    </h2>
+    <h2 class="title"><!--{$tpl_title|escape}--></h2>
     <p>下記入力内容で送信してもよろしいでしょうか？<br />
       よろしければ、一番下の「送信」ボタンをクリックしてください。</p>
     <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">

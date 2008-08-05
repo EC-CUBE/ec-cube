@@ -63,22 +63,11 @@ p.pagenumberarea .number{
 
 /* タイトル
 ----------------------------------------------- */
-div#listtitle {
-    width: 580px;
-    margin: 0 0 10px 0;
-    border-top: 2px solid #ff0000;
-    border-left: 1px solid #ccc;
-    border-right: 1px solid #ccc;
-    border-bottom: 2px solid #999;
+.product h2.title {
+    border-color: #f00 #ccc;
     background: url("../img/products/title_icon.gif") no-repeat left center;
     background-color: #ffebca;
 }
-
-div#listtitle h2 {
-    padding: 10px 0 10px 30px;
-    font-size: 140%;
-}
-
 
 /* 商品
 ----------------------------------------------- */
@@ -179,25 +168,6 @@ div.listrightblock .box54 {
 }
 
 /* 商品詳細 */
-
-/* タイトル
------------------------------------------------ */
-div#detailtitle {
-    width: 580px;
-    margin: 0 0 10px 0;
-    border-top: 2px solid #ff0000;
-    border-left: 1px solid #ccc;
-    border-right: 1px solid #ccc;
-    border-bottom: 2px solid #999;
-    background: url("../img/products/title_icon.gif") no-repeat left center;
-    background-color: #ffebca;
-}
-
-div#detailtitle h2 {
-    padding: 10px 0 10px 30px;
-    font-size: 140%;
-}
-
 
 /* 商品
 ----------------------------------------------- */

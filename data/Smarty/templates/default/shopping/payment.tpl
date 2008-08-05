@@ -25,8 +25,7 @@
     <p class="flowarea">
       <img src="<!--{$TPL_DIR}-->img/shopping/flow02.gif" width="700" height="36" alt="購入手続きの流れ" />
     </p>
-    <h2 class="title">
-      <img src="<!--{$TPL_DIR}-->img/shopping/payment_title.jpg" width="700" height="40" alt="お支払い方法、お届け時間等の指定" /></h2>
+    <h2 class="title"><!--{$tpl_title|escape}--></h2>
 
     <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
       <input type="hidden" name="mode" value="confirm" />

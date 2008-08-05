@@ -22,9 +22,7 @@
 <!--▼CONTENTS-->
 <div id="undercolumn">
   <div id="undercolumn_entry">
-    <h2 class="title">
-      <img src="<!--{$TPL_DIR}-->img/entry/title.jpg" width="580" height="40" alt="会員登録" />
-    </h2>
+    <h2 class="title"><!--{$tpl_title|escape}--></h2>
     <div id="completetext">
       <em>本登録が完了いたしました。<br />
         それではショッピングをお楽しみください。</em>

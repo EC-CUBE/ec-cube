@@ -36,7 +36,7 @@ function fnCheckAfterOpenWin(){
 
 <!--▼CONTENTS-->
 <div id="mypagecolumn">
-  <h2 class="title"><img src="<!--{$TPL_DIR}-->img/mypage/title.jpg" width="700" height="40" alt="MYページ" /></h2>
+  <h2 class="title"><!--{$tpl_title|escape}--></h2>
 <!--{include file=$tpl_navi}-->
   <div id="mycontentsarea">
     <h3><img src="<!--{$TPL_DIR}-->img/mypage/subtitle03.gif" width="515" height="32" alt="お届け先追加・変更" /></h3>

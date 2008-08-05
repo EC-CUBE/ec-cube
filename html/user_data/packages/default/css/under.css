@@ -8,11 +8,6 @@ div#undercolumn {
     margin: 15px auto 0 auto;
 }
 
-div#undercolumn h2.title{
-    width: 580px;
-    margin: 0 0 15px 0;
-}
-
 div#undercolumn table {
     width: 570px;
 }

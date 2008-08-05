@@ -25,7 +25,7 @@
 require_once(CLASS_PATH . "pages/LC_Page.php");
 
 /**
- * 特定商取引に関する法律 のページクラス.
+ * 特定商取引に関する法律に基づく表記 のページクラス.
  *
  * @package Page
  * @author LOCKON CO.,LTD.
@@ -45,7 +45,7 @@ class LC_Page_Order extends LC_Page {
         parent::init();
         $this->tpl_mainpage = 'order/index.tpl';
         $this->tpl_page_category = 'order';
-        $this->tpl_title = '特定商取引に関する法律';
+        $this->tpl_title = '特定商取引に関する法律に基づく表記';
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData("mtb_pref",

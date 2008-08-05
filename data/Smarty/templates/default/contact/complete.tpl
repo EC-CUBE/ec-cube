@@ -22,9 +22,7 @@
 <!--▼CONTENTS-->
 <div id="undercolumn">
   <div id="undercolumn_contact">
-    <h2 class="title">
-      <img src="<!--{$TPL_DIR}-->img/contact/title.jpg" width="580" height="40" alt="お問い合わせ" />
-    </h2>
+    <h2 class="title"><!--{$tpl_title|escape}--></h2>
     <div id="completetext">
       お問い合わせ内容の送信が完了いたしました。<br />
       万一、ご回答メールが届かない場合は、トラブルの可能性もありますので大変お手数ではございますがもう一度お問い合わせいただくか、お電話にてお問い合わせください。<br />

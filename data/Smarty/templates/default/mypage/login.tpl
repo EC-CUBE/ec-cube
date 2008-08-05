@@ -24,9 +24,7 @@
 <!--▼CONTENTS-->
 <div id="under02column">
   <div id="under02column_login">
-    <h2 class="title">
-      <img src="<!--{$TPL_DIR}-->img/login/title.jpg" width="700" height="40" alt="ログイン" />
-   </h2>
+    <h2 class="title"><!--{$tpl_title|escape}--></h2>
     <form name="login_mypage" id="login_mypage" method="post" action="./login_check.php" onsubmit="return fnCheckLogin('login_mypage')">
     <input type="hidden" name="mode" value="login" />
    <div class="loginarea">

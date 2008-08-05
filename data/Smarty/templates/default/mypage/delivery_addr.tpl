@@ -24,9 +24,7 @@
 <!--{include file="`$smarty.const.TEMPLATE_DIR`popup_header.tpl" subtitle="新しいお届け先の追加・変更"}-->
 
   <div id="windowarea">
-    <h2>
-      <img src="<!--{$TPL_DIR}-->img/shopping/delivadd_title.jpg" width="500" height="40" alt="新しいお届け先の追加・変更" />
-    </h2>
+    <h2 class="title"><!--{$tpl_title|escape}--></h2>
     <p class="windowtext">下記項目にご入力ください。「<span class="attention">※</span>」印は入力必須項目です。<br />
       入力後、一番下の「確認ページへ」ボタンをクリックしてください。</p>
 

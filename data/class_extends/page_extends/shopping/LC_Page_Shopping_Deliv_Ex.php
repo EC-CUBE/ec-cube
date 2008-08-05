@@ -25,7 +25,7 @@
 require_once(CLASS_PATH . "pages/shopping/LC_Page_Shopping_Deliv.php");
 
 /**
- * お届け先指定 のページクラス(拡張).
+ * お届け先の指定 のページクラス(拡張).
  *
  * LC_Page_Shopping_Deliv をカスタマイズする場合はこのクラスを編集する.
  *

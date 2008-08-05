@@ -23,7 +23,7 @@
 *}-->
 <!--▼CONTENTS-->
 <div id="mypagecolumn">
-  <h2 class="title"><img src="<!--{$TPL_DIR}-->img/mypage/title.jpg" width="700" height="40" alt="MYページ" /></h2>
+  <h2 class="title"><!--{$tpl_title|escape}--></h2>
   <!--{include file=$tpl_navi}-->
   <form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
   <input type="hidden" name="mode" value="complete" />

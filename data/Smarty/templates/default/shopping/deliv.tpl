@@ -25,9 +25,7 @@
     <p class="flowarea">
       <img src="<!--{$TPL_DIR}-->img/shopping/flow01.gif" width="700" height="36" alt="購入手続きの流れ" />
     </p>
-    <h2 class="title">
-      <img src="<!--{$TPL_DIR}-->img/shopping/deliv_title.jpg" width="700" height="40" alt="お届け先の指定" />
-    </h2>
+    <h2 class="title"><!--{$tpl_title|escape}--></h2>
 
     <p>下記一覧よりお届け先住所を選択して、「選択したお届け先に送る」ボタンをクリックしてください。<br />
       一覧にご希望の住所が無い場合は、「新しいお届け先を追加する」より追加登録してください。<br />

@@ -25,7 +25,7 @@
 require_once(CLASS_PATH . "pages/LC_Page.php");
 
 /**
- * お届け先指定 のページクラス.
+ * お届け先の指定 のページクラス.
  *
  * @package Page
  * @author LOCKON CO.,LTD.
@@ -56,7 +56,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         $this->tpl_css = URL_DIR.'css/layout/shopping/index.css';
         $masterData = new SC_DB_MasterData();
         $this->arrPref = $masterData->getMasterData("mtb_pref", array("pref_id", "pref_name", "rank"));
-        $this->tpl_title = "お届け先指定";
+        $this->tpl_title = "お届け先の指定";
 
         $this->allowClientCache();
     }

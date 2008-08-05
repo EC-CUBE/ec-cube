@@ -22,9 +22,7 @@
 <!--▼CONTENTS-->
 <div id="under02column">
   <div id="under02column_login">
-    <h2 class="title">
-      <img src="<!--{$TPL_DIR}-->img/login/title.jpg" width="700" height="40" alt="ログイン" />
-   </h2>
+    <h2 class="title"><!--{$tpl_title|escape}--></h2>
     <form name="member_form" id="member_form" method="post" action="./deliv.php" onsubmit="return fnCheckLogin('member_form')">
    <div class="loginarea">
      <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />

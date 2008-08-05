@@ -37,7 +37,7 @@ function fnCheckSubmit() {
 <div id="under02column">
   <div id="under02column_shopping">
     <p class="flowarea"><img src="<!--{$TPL_DIR}-->img/shopping/flow03.gif" width="700" height="36" alt="購入手続きの流れ" /></p>
-    <h2 class="title"><img src="<!--{$TPL_DIR}-->img/shopping/confirm_title.jpg" width="700" height="40" alt="ご入力内容のご確認" /></h2>
+    <h2 class="title"><!--{$tpl_title|escape}--></h2>
 
     <p>下記ご注文内容で送信してもよろしいでしょうか？<br />
       よろしければ、一番下の「<!--{if $payment_type != ""}-->次へ<!--{else}-->ご注文完了ページへ<!--{/if}-->」ボタンをクリックしてください。</p>

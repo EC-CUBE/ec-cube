@@ -25,7 +25,7 @@
 require_once(CLASS_PATH . "pages/order/LC_Page_Order.php");
 
 /**
- * 特定商取引に関する法律 のページクラス(拡張).
+ * 特定商取引に関する法律に基づく表記 のページクラス(拡張).
  *
  * LC_Page_Order をカスタマイズする場合はこのクラスを編集する.
  *

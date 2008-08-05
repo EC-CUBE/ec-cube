@@ -21,9 +21,8 @@
  *}-->
 <!--▼CONTENTS-->
 <div id="undercolumn">
-  
   <div id="undercolumn_contact">
-    <h2 class="title"><img src="<!--{$TPL_DIR}-->img/contact/title.jpg" width="580" height="40" alt="お問い合わせ" /></h2>
+    <h2 class="title"><!--{$tpl_title|escape}--></h2>
     
     <p>お問い合わせはメールにて承っています。<br />
     内容によっては回答をさしあげるのにお時間をいただくこともございます。また、土日、祝祭日、年末年始、夏季期間は翌営業日以降の対応となりますのでご了承ください。</p>

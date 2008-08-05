@@ -22,9 +22,7 @@
  <!--▼CONTENTS-->
 <div id="undercolumn">
   <div id="undercolumn_entry">
-    <h2 class="title">
-      <img src="<!--{$TPL_DIR}-->img/entry/title.jpg" width="580" height="40" alt="会員登録" />
-    </h2>
+    <h2 class="title"><!--{$tpl_title|escape}--></h2>
     <p>ご登録されますと、まずは仮会員となります。<br />
       入力されたメールアドレスに、ご連絡が届きますので、本会員になった上でお買い物をお楽しみください。</p>
     <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">

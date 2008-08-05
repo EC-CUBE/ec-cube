@@ -56,7 +56,7 @@ class LC_Page_Cart extends LC_Page {
         parent::init();
         $this->tpl_mainpage = 'cart/index.tpl';
         $this->tpl_column_num = 1;
-        $this->tpl_title = "カゴの中を見る";
+        $this->tpl_title = "現在のカゴの中";
     }
 
     /**

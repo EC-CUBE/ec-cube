@@ -25,9 +25,7 @@
     <p class="flowarea">
       <img src="<!--{$TPL_DIR}-->img/shopping/flow04.gif" width="700" height="36" alt="購入手続きの流れ" />
     </p>
-    <h2>
-      <img src="<!--{$TPL_DIR}-->img/shopping/complete_title.jpg" width="700" height="40" alt="ご注文完了" />
-    </h2>
+    <h2 class="title"><!--{$tpl_title|escape}--></h2>
 
     <!-- ▼クレジット(コンビニ)決済 -->
     <!--{if $arrModuleParam.module_id > 0 }-->

@@ -49,9 +49,13 @@ function lnSetSelect(form, name1, name2, val) {
 </script>
 
 <!--▼CONTENTS-->
-<div id="undercolumn">
-    <div id="detailtitle"><h2><!--★タイトル★--><!--{$tpl_subtitle|escape}--></h2></div>
-    <p class="main_comment"><!--★詳細メインコメント★--><!--{$arrProduct.main_comment|nl2br}--></p>
+<div id="undercolumn" class="product product_detail">
+    
+    <!--★タイトル★-->
+    <h2 class="title"><!--{$tpl_subtitle|escape}--></h2>
+    
+    <!--★詳細メインコメント★-->
+    <p class="main_comment"><!--{$arrProduct.main_comment|nl2br}--></p>
 
     <div id="detailarea">
         <div id="detailphotoblock">

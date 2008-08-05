@@ -25,7 +25,7 @@
 <div id="undercolumn">
 
   <div id="undercolumn_aboutus">
-    <h2 class="title"><img src="<!--{$TPL_DIR}-->img/aboutus/title.jpg" width="580" height="40" alt="当サイトについて" /></h2>
+    <h2 class="title"><!--{$tpl_title|escape}--></h2>
 
     <table summary="当サイトについて">
 
