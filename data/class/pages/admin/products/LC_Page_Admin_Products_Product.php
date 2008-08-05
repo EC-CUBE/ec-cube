@@ -95,6 +95,9 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         // Hiddenからのデータを引き継ぐ
         $this->objUpFile->setHiddenFileList($_POST);
 
+        // 規格の有り無し判定
+        $this->tpl_nonclass = $this->lfCheckNonClass($_POST['product_id']);
+
         // 検索パラメータの引き継ぎ
         foreach ($_POST as $key => $val) {
             if (ereg("^search_", $key)) {
@@ -138,20 +141,14 @@ class LC_Page_Admin_Products_Product extends LC_Page {
                 // DBからおすすめ商品の読み込み
                 $this->arrRecommend = $this->lfPreGetRecommendProducts($_POST['product_id']);
 
-                // 規格登録ありなし判定
-                $this->tpl_nonclass = $this->lfCheckNonClass($_POST['product_id']);
                 $this->lfProductPage();		// 商品登録ページ
             }
             break;
         // 商品登録・編集
         case 'edit':
-            // 規格登録ありなし判定
-            $tpl_nonclass = $this->lfCheckNonClass($_POST['product_id']);
-
             if($_POST['product_id'] == "" and SC_Utils_Ex::sfIsInt($_POST['copy_product_id'])){
-                $tpl_nonclass = $this->lfCheckNonClass($_POST['copy_product_id']);
+                $this->tpl_nonclass = $this->lfCheckNonClass($_POST['copy_product_id']);
             }
-            $this->tpl_nonclass = $tpl_nonclass;
 
             // 入力値の変換
             $this->arrForm = $this->lfConvertParam($this->arrForm);
@@ -197,8 +194,6 @@ class LC_Page_Admin_Products_Product extends LC_Page {
             break;
         // 確認ページからの戻り
         case 'confirm_return':
-            // 規格登録ありなし判定
-            $this->tpl_nonclass = $this->lfCheckNonClass($_POST['product_id']);
             $this->lfProductPage();		// 商品登録ページ
             break;
         // おすすめ商品選択
@@ -437,16 +432,16 @@ class LC_Page_Admin_Products_Product extends LC_Page {
                 $product_id = $objQuery->nextval("dtb_products", "product_id");
                 $sqlval['product_id'] = $product_id;
             }
-            
+
             // INSERTの実行
             $sqlval['create_date'] = "Now()";
             $objQuery->insert("dtb_products", $sqlval);
-            
+
             // product_id 取得（MySQLの場合）
             if(DB_TYPE=='mysql'){
                 $product_id = $objQuery->nextval("dtb_products", "product_id");
             }
-            
+
             // カテゴリを更新
             $objDb->updateProductCategories($arrList['category_id'], $product_id);
 
@@ -686,7 +681,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
 
             if($forced) $this->objUpFile->save_file[$arrImageKey[$to_key]] = "";
 
-            if(empty($this->objUpFile->temp_file[$arrImageKey[$to_key]]) && 
+            if(empty($this->objUpFile->temp_file[$arrImageKey[$to_key]]) &&
                empty($this->objUpFile->save_file[$arrImageKey[$to_key]])) {
 
                 $path = $this->objUpFile->makeThumb($from_path, $to_w, $to_h);
