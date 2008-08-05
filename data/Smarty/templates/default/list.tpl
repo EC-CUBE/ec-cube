@@ -58,7 +58,7 @@ function lnSetSelect(name1, name2, id, val) {
         <input type="hidden" name="product_id" value="" />
         
         <!--★タイトル★-->
-        <h2 class="title"><!--{$tpl_subtitle}--></h2>
+        <h2 class="title"><!--{$tpl_subtitle|escape}--></h2>
         
         <!--▼検索条件-->
         <!--{if $tpl_subtitle == "検索結果"}-->
