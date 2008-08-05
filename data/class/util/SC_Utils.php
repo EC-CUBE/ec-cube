@@ -1021,23 +1021,48 @@ class SC_Utils {
         return $ret;
     }
 
+    /**
+     * テキストファイルの文字エンコーディングを変換する.
+     *
+     * $filepath に存在するテキストファイルの文字エンコーディングを変換する.
+     * 変換前の文字エンコーディングは, mb_detect_order で設定した順序で自動検出する.
+     * 変換後は, 変換前のファイル名に「enc_」というプレフィクスを付与し,
+     * $out_dir で指定したディレクトリへ出力する
+     *
+     * TODO $filepath のファイルがバイナリだった場合の扱い
+     * TODO fwrite などでのエラーハンドリング
+     *
+     * @access public
+     * @param string $filepath 変換するテキストファイルのパス
+     * @param string $enc_type 変換後のファイルエンコーディングの種類を表す文字列
+     * @param string $out_dir 変換後のファイルを出力するディレクトリを表す文字列
+     * @return string 変換後のテキストファイルのパス
+     */
     function sfEncodeFile($filepath, $enc_type, $out_dir) {
         $ifp = fopen($filepath, "r");
 
-        $basename = basename($filepath);
-        $outpath = $out_dir . "enc_" . $basename;
+        // 正常にファイルオープンした場合
+        if ($ifp !== false) {
 
-        $ofp = fopen($outpath, "w+");
+            $basename = basename($filepath);
+            $outpath = $out_dir . "enc_" . $basename;
 
-        while(!feof($ifp)) {
-            $line = fgets($ifp);
-            $line = mb_convert_encoding($line, $enc_type, "auto");
-            fwrite($ofp,  $line);
+            $ofp = fopen($outpath, "w+");
+
+            while(!feof($ifp)) {
+                $line = fgets($ifp);
+                $line = mb_convert_encoding($line, $enc_type, "auto");
+                fwrite($ofp,  $line);
+            }
+
+            fclose($ofp);
+            fclose($ifp);
         }
-
-        fclose($ofp);
-        fclose($ifp);
-
+        // ファイルが開けなかった場合はエラーページを表示
+          else {
+              SC_Utils::sfDispError('');
+              exit;
+        }
         return     $outpath;
     }
 
