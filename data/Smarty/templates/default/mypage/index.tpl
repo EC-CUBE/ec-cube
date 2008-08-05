@@ -43,7 +43,6 @@
       <!--{$tpl_strnavi}-->
       <!--▲ページナビ-->
     </div>
-    <p>※最大<!--{$smarty.const.SEARCH_PMAX}-->件まで表示します。</p>
 
     <table summary="購入履歴">
       <tr>
