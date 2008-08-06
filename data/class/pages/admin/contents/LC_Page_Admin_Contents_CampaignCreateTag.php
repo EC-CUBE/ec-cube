@@ -86,18 +86,11 @@ class LC_Page_Admin_Contents_CampaignCreateTag extends LC_Page {
                     $arrval[] = "%$val%";
                     break;
                 case 'search_category_id':
-                    // 子カテゴリIDの取得
-                    $arrRet = $objDb->sfGetChildsID("dtb_category", "parent_category_id", "category_id", $val);
-                    $tmp_where = "";
-                    foreach ($arrRet as $val) {
-                        if($tmp_where == "") {
-                            $tmp_where.= " AND ( category_id = ?";
-                        } else {
-                            $tmp_where.= " OR category_id = ?";
-                        }
-                        $arrval[] = $val;
+                        list($tmp_where, $tmp_arrval) = $objDb->sfGetCatWhere($val); 
+                        if($tmp_where != "") { 
+                            $where.= " AND product_id IN (SELECT product_id FROM dtb_product_categories WHERE " . $tmp_where . ")"; 
+                            $arrval = array_merge((array)$arrval, (array)$tmp_arrval);
                     }
-                    $where.= $tmp_where . " )";
                     break;
                 case 'search_product_id':
                     if($val != "") {
@@ -168,7 +161,12 @@ class LC_Page_Admin_Contents_CampaignCreateTag extends LC_Page {
         parent::destroy();
     }
 
-    /* 取得文字列の変換 */
+
+    /**
+     * 取得する文字数の変換を行うメソッド
+     *
+     * @return void
+     */
     function lfConvertParam() {
         /*
          *	文字列の変換
@@ -189,7 +187,13 @@ class LC_Page_Admin_Contents_CampaignCreateTag extends LC_Page {
         }
     }
 
-    /* タグを生成 */
+    /**
+     * キャンペーンページのための商品用タグを生成するメソッド
+     *
+     * @param string $product_id 商品ID
+     * @return void
+     */
+    
     function lfGetCreateTag($product_id) {
         // 書き込みタグ
         $read_file = file_get_contents(CAMPAIGN_BLOC_PATH . "cart_tag.tpl");
