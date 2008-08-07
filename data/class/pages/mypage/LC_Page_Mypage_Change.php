@@ -286,7 +286,7 @@ class LC_Page_Mypage_Change extends LC_Page {
             }
 
             // emailはすべて小文字で処理
-            $this->paramToLower($arrMailType);
+            $this->paramToLower($_POST );
 
             //-- 入力データの変換
             $this->arrForm = $this->lfConvertParam($this->arrForm, $arrRegistColumn);
@@ -374,7 +374,7 @@ class LC_Page_Mypage_Change extends LC_Page {
                     $checkVal = array();
                 }
 
-                foreach($_POST as $key => $val) {
+                foreach($this->arrForm as $key => $val) {
                     if ($key != "return" && $key != "mode" && $key != "confirm" && $key != session_name() && !in_array($key, $checkVal)) {
                         $this->list_data[ $key ] = $val;
                     }
@@ -433,7 +433,7 @@ class LC_Page_Mypage_Change extends LC_Page {
         $this->arrForm = $this->lfConvertParam($this->arrForm, $arrRegistColumn);
 
         // emailはすべて小文字で処理
-        $this->paramToLower($arrMailType);
+        $this->paramToLower($arrRegistColumn);
 
         //エラーチェック
         $this->arrErr = $isMobile
@@ -663,8 +663,6 @@ class LC_Page_Mypage_Change extends LC_Page {
         $arrRegist["update_date"] = "now()"; 	// 更新日
         $arrRegist["first_buy_date"] = "";	 	// 最初の購入日
 
-        // 携帯メールアドレス
-        //$arrRegist['email_mobile'] = $arrRegist['email'];
 
         //-- 仮登録実行
         $this->objQuery->insert("dtb_customer", $arrRegist);
@@ -848,12 +846,12 @@ class LC_Page_Mypage_Change extends LC_Page {
      * @return void
      */
     function paramToLower(&$arrParam) {
-
-        foreach ($arrParam as $param) {
-            if (!isset($this->arrForm[$param])) {
-                $this->arrForm[$param] = "";
+        foreach ($arrParam as $key => $val) {
+            if (!isset($val)) {
+                $this->arrForm[$key] = "";
+            }elseif($key == 'email' || $key == 'email_mobile'){
+                $this->arrForm[$key] = strtolower($val);
             }
-            $this->arrForm[$param] = strtolower($this->arrForm[$param]);
         }
     }
 }
