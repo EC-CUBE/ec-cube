@@ -107,7 +107,13 @@ class LC_Page_FrontParts_Bloc_Best5 extends LC_Page_FrontParts_Bloc {
 
         $col = "DISTINCT A.*, name, price02_min, price01_min, main_list_image ";
         $from = "dtb_best_products AS A INNER JOIN vw_products_allclass AS allcls using(product_id)";
-        $where = "status = 1";
+        $where = "allcls.del_flg = 0 AND allcls.status = 1";
+        
+        // 在庫無し商品の非表示
+        if (NOSTOCK_HIDDEN === true) {
+            $where .= ' AND (allcls.stock_max >= 1 OR allcls.stock_unlimited_max = 1)';
+        }
+        
         $order = "rank";
         $objQuery->setorder($order);
 

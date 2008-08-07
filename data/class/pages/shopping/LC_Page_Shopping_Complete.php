@@ -638,6 +638,8 @@ class LC_Page_Shopping_Complete extends LC_Page {
 
     // 在庫を減らす処理
     function lfReduceStock(&$objQuery, $arrID, $quantity) {
+        $objDb = new SC_Helper_DB_Ex();
+        
         $where = "product_id = ? AND classcategory_id1 = ? AND classcategory_id2 = ?";
         $arrRet = $objQuery->select("stock, stock_unlimited", "dtb_products_class", $where, $arrID);
 
@@ -657,6 +659,13 @@ class LC_Page_Shopping_Complete extends LC_Page {
             }
             $objQuery->update("dtb_products_class", $sqlval, $where, $arrID);
         }
+        
+        // 在庫無し商品の非表示対応
+        if (NOSTOCK_HIDDEN === true) {
+	        // 件数カウントバッチ実行
+	        $objDb->sfCategory_Count($objQuery);
+        }
+        
     }
 
     // GETの値をインサート用に整える

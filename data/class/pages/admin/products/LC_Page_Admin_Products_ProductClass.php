@@ -47,7 +47,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
         $this->tpl_subnavi = 'products/subnavi.tpl';
         $this->tpl_mainno = 'products';
         $this->tpl_subno = 'product';
-        $this->tpl_subtitle = '商品登録';
+        $this->tpl_subtitle = '商品登録(商品規格)';
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrSRANK = $masterData->getMasterData("mtb_srank");
@@ -86,6 +86,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
         // 規格削除要求
         case 'delete':
             $objQuery = new SC_Query();
+            $objDb = new SC_Helper_DB_Ex();
 
             $objQuery->setLimitOffset(1);
             $where = "product_id = ? AND NOT (classcategory_id1 = 0 AND classcategory_id2 = 0)";
@@ -112,7 +113,13 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
 
                 $objQuery->commit();
             }
-
+            
+	        // 在庫無し商品の非表示対応
+	        if (NOSTOCK_HIDDEN === true) {
+	            // 件数カウントバッチ実行
+	            $objDb->sfCategory_Count($objQuery);
+	        }
+            
             $this->lfProductClassPage();   // 規格登録ページ
             break;
 
@@ -333,6 +340,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
     /* 規格の登録 */
     function lfInsertProductClass($arrList, $product_id) {
         $objQuery = new SC_Query();
+        $objDb = new SC_Helper_DB_Ex();
 
         $objQuery->begin();
 
@@ -360,7 +368,10 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
             }
             $cnt++;
         }
-
+        
+        // 件数カウントバッチ実行
+        $objDb->sfCategory_Count($objQuery);
+        
         $objQuery->commit();
     }
 

@@ -552,6 +552,8 @@ define('SMTP_PORT', "25");
 define('UPDATE_SEND_SITE_INFO', false);
 /** ポイントを利用するか(true:利用する、false:利用しない) (false は一部対応) */
 define('USE_POINT', ture);
+/** 在庫無し商品の非表示(true:非表示、false:表示) */
+define('NOSTOCK_HIDDEN', false);
 /** デフォルトテンプレート名 */
 define('DEFAULT_TEMPLATE_NAME', "default");
 /** テンプレート名 */

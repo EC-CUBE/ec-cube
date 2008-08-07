@@ -927,9 +927,15 @@ class SC_Helper_DB {
         $sql .= " SELECT T1.category_id, count(T2.category_id), now() ";
         $sql .= " FROM dtb_category AS T1 LEFT JOIN dtb_product_categories AS T2";
         $sql .= " ON T1.category_id = T2.category_id ";
-        $sql .= " LEFT JOIN dtb_products AS T3";
-        $sql .= " ON T2.product_id = T3.product_id";
-        $sql .= " WHERE T3.del_flg = 0 AND T3.status = 1 ";
+        $sql .= " LEFT JOIN vw_products_allclass AS allcls";
+        $sql .= " ON T2.product_id = allcls.product_id";
+        $sql .= " WHERE allcls.del_flg = 0 AND allcls.status = 1 ";
+        
+        // 在庫無し商品の非表示
+        if (NOSTOCK_HIDDEN === true) {
+            $sql .= ' AND (allcls.stock_max >= 1 OR allcls.stock_unlimited_max = 1)';
+        }
+        
         $sql .= " GROUP BY T1.category_id, T2.category_id ";
         $objQuery->query($sql);
 

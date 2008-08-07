@@ -395,7 +395,7 @@ class LC_Page_Products_List extends LC_Page {
                 . " stock_min, stock_max, stock_unlimited_min, stock_unlimited_max,"
                 . " point_rate, sale_limit, sale_unlimited, deliv_date_id, deliv_fee,"
                 . " status, product_flag, create_date, del_flg";
-            $from = "vw_products_allclass AS T1";
+            $from = "vw_products_allclass AS allcls";
             $order = "price02_min, product_id";
             break;
 
@@ -408,12 +408,12 @@ class LC_Page_Products_List extends LC_Page {
                 . " stock_min, stock_max, stock_unlimited_min, stock_unlimited_max,"
                 . " point_rate, sale_limit, sale_unlimited, deliv_date_id, deliv_fee,"
                 . " status, product_flag, del_flg";
-            $from = "vw_products_allclass AS T1";
+            $from = "vw_products_allclass AS allcls";
             $order = "create_date DESC, product_id";
             break;
 
         default:
-            $col = "DISTINCT T1.product_id, product_code_min, product_code_max,"
+            $col = "DISTINCT allcls.product_id, product_code_min, product_code_max,"
                 . " price01_min, price01_max, price02_min, price02_max,"
                 . " stock_min, stock_max, stock_unlimited_min,"
                 . " stock_unlimited_max, del_flg, status, name, comment1,"
@@ -421,7 +421,7 @@ class LC_Page_Products_List extends LC_Page {
                 . " main_list_image, product_flag, deliv_date_id, sale_limit,"
                 . " point_rate, sale_unlimited, create_date, deliv_fee, "
                 . " T4.product_rank, T4.category_rank";
-            $from = "vw_products_allclass AS T1"
+            $from = "vw_products_allclass AS allcls"
                 . " JOIN ("
                 . " SELECT max(T3.rank) AS category_rank,"
                 . "        max(T2.rank) AS product_rank,"
@@ -435,6 +435,12 @@ class LC_Page_Products_List extends LC_Page {
 
         // 商品検索条件の作成（未削除、表示）
         $where = "del_flg = 0 AND status = 1 ";
+        
+        // 在庫無し商品の非表示
+        if (NOSTOCK_HIDDEN === true) {
+            $where .= ' AND (allcls.stock_max >= 1 OR allcls.stock_unlimited_max = 1)';
+        }
+        
         // カテゴリからのWHERE文字列取得
         if ( $category_id ) {
             list($tmp_where, $arrval) = $objDb->sfGetCatWhere($category_id);

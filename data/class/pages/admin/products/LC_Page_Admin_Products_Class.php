@@ -44,10 +44,10 @@ class LC_Page_Admin_Products_Class extends LC_Page {
     function init() {
         parent::init();
         $this->tpl_mainpage = 'products/class.tpl';
-		$this->tpl_subnavi = 'products/subnavi.tpl';
-		$this->tpl_subno = 'class';
-		$this->tpl_subtitle = '規格登録';
-		$this->tpl_mainno = 'products';
+        $this->tpl_subnavi = 'products/subnavi.tpl';
+        $this->tpl_subno = 'class';
+        $this->tpl_subtitle = '規格登録';
+        $this->tpl_mainno = 'products';
     }
 
     /**
@@ -79,9 +79,9 @@ class LC_Page_Admin_Products_Class extends LC_Page {
             $this->arrErr = $this->lfErrorCheck();
             if(count($this->arrErr) <= 0) {
                 if($_POST['class_id'] == "") {
-                    $this->lfInsertClass($this->arrForm);	// 新規作成
+                    $this->lfInsertClass($this->arrForm); // 新規作成
                 } else {
-                    $this->lfUpdateClass($this->arrForm);	// 既存編集
+                    $this->lfUpdateClass($this->arrForm); // 既存編集
                 }
                 // 再表示
                 $this->reload();
