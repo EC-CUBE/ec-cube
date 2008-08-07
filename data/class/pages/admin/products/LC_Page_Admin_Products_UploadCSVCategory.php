@@ -148,7 +148,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
                             // 入力値の変換
                             $this->objFormParam->convParam();
                             // <br>なしでエラー取得する。
-                            $arrCSVErr = $this->lfCheckError();
+                            $arrCSVErr = $this->lfCheckError($arrCSV);
                         }
 
                         // 入力エラーチェック
@@ -161,7 +161,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
                         }
 
                         if (!$err) {
-                            $this->lfRegistProduct($objQuery, $line);
+                            $this->lfRegistProduct($objQuery, $line,$arrCSV);
                             $regist++;
                         }
                         $arrParam = $this->objFormParam->getHashArray();
@@ -234,20 +234,24 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
      * @param string|integer $line 処理中の行数
      * @return void
      */
-    function lfRegistProduct($objQuery, $line = "") {
+    function lfRegistProduct($objQuery, $line = "",$arrCSV) {
+        
         $objDb = new SC_Helper_DB_Ex();
-        $arrRet = $this->objFormParam->getHashArray();
+        $arrRet['category_id'] = $arrCSV[0];
+        $arrRet['category_name'] = $arrCSV[1];
+        $arrRet['parent_category_id'] = $arrCSV[2];
         
-        //カテゴリID
-        if ($arrRet['category_id'] == 0) {
-            $category_id = $objQuery->max("dtb_category", "category_id") + 1;
-            $sqlval['category_id'] = $category_id;
+        //存在確認
+        $count = $objQuery->count("dtb_category","category_id = ?",array($arrRet['category_id']));
+        if($count == 0){
             $update = false;
-        } else {
-            $sqlval['category_id'] = $arrRet['category_id'];
+        }else if($count == 1){
             $update = true;
+        }else{
+            echo "ERROR";
+            return;
         }
-        
+        $sqlval['category_id'] = $arrRet['category_id'];
         // カテゴリ名
         $sqlval['category_name'] = $arrRet['category_name'];
 
@@ -280,6 +284,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
         } else {
             echo "INSERT　";
             $sqlval['create_date'] = $time;
+//            var_dump($sqlval);
             // ランク
             if ($sqlval['parent_category_id'] == 0) {
                 // ROOT階層で最大のランクを取得する。
@@ -292,8 +297,10 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
                 // 追加レコードのランク以上のレコードを一つあげる。
                 $sqlup = "UPDATE dtb_category SET rank = (rank + 1) WHERE rank >= ?";
                 $objQuery->exec($sqlup, array($sqlval['rank']));
+                
             }
             $objQuery->insert("dtb_category", $sqlval);
+            $objQuery->getLastQuery();
         }
     }
 
@@ -302,9 +309,14 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
      *
      * @return void
      */
-    function lfCheckError() {
-        $arrRet =  $this->objFormParam->getHashArray();
+    function lfCheckError($arrCSV) {
+//        $arrRet =  $this->objFormParam->getHashArray();
+        $arrRet['category_id'] = $arrCSV[0];
+        $arrRet['category_name'] = $arrCSV[1];
+        $arrRet['parent_category_id'] = $arrCSV[2];
+        
         $objQuery = new SC_Query();
+        
         $objErr = new SC_CheckError($arrRet);
         $objErr->arrErr = $this->objFormParam->checkError(false);
         
@@ -342,7 +354,20 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
             }
             // 編集中のレコード以外に同じ名称が存在する場合
             if ($arrCat[0]['category_id'] != $arrRet['category_id'] && $arrCat[0]['category_name'] == $arrRet['category_name']) {
-                $objErr->arrErr['category_name'] = "※ 既に同じ内容の登録が存在します。<br>";
+                echo $arrCat[0]['category_id'];
+                echo "#######--------- line is ".__LINE__." on ".__FILE__."--------########<br/>";
+                        
+                echo $arrRet['category_id'];
+                echo "#######--------- line is ".__LINE__." on ".__FILE__."--------########<br/>";
+                        
+                echo  $arrCat[0]['category_name'] ;
+                echo "#######--------- line is ".__LINE__." on ".__FILE__."--------########<br/>";
+                        echo  $arrRet['category_name'];
+                        echo "#######--------- line is ".__LINE__." on ".__FILE__."--------########<br/>";
+                                
+                
+                $objErr->arrErr['category_name'] = "※ 既に同じ内容の登録が存在します。</br>";
+                
             }
         }
         return $objErr->arrErr;
