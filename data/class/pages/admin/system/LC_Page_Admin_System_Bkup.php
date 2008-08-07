@@ -196,8 +196,6 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
         $ret = $this->lfGetBkupData("WHERE bkup_name = ?", array($array['bkup_name']));
         if (count($ret) > 0) {
             $objErr->arrErr['bkup_name'] = "バックアップ名が重複しています。別名を入力してください。";
-        } else {
-            $objErr->arrErr = array();
         }
 
         return $objErr->arrErr;
