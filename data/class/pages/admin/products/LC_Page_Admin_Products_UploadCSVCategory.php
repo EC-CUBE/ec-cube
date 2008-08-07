@@ -341,7 +341,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
                 $arrCat = array(array("category_id" => "", "category_name" => ""));
             }
             // 編集中のレコード以外に同じ名称が存在する場合
-            if ($arrCat[0]['category_id'] != $arrRet['category_id'] && $arrCat[0]['category_name'] == $_POST['category_name']) {
+            if ($arrCat[0]['category_id'] != $arrRet['category_id'] && $arrCat[0]['category_name'] == $arrRet['category_name']) {
                 $objErr->arrErr['category_name'] = "※ 既に同じ内容の登録が存在します。<br>";
             }
         }
