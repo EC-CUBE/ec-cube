@@ -445,13 +445,19 @@ class LC_Page_Products_List extends LC_Page {
         }
 
         // 商品名をwhere文に
-        $name = ereg_replace(",", "", $name);
-        if ( strlen($name) > 0 ){
-            $name = trim(mb_convert_kana($name, 's')); // 半角/全角スペースを削除
-            $where .= " AND ( name ILIKE ? OR comment3 ILIKE ?) ";
-            $ret = SC_Utils_Ex::sfManualEscape($name);
-            $arrval[] = "%$ret%";
-            $arrval[] = "%$ret%";
+        $name = ereg_replace(",", "", $name);// XXX
+        // 全角スペースを半角スペースに変換
+        $name = str_replace('　', ' ', $name);
+        // スペースでキーワードを分割
+        $names = preg_split("/ +/", $name);
+        // 分割したキーワードを一つずつwhere文に追加
+        foreach ($names as $val) {
+            if ( strlen($val) > 0 ){
+                $where .= " AND ( name ILIKE ? OR comment3 ILIKE ?) ";
+                $ret = SC_Utils_Ex::sfManualEscape($val);
+                $arrval[] = "%$ret%";
+                $arrval[] = "%$ret%";
+            }
         }
 
         if (empty($arrval)) {
