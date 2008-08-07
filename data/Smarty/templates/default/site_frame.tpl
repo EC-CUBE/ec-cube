@@ -31,7 +31,7 @@
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/navi.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/win_op.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/site.js"></script>
-<title><!--{$arrSiteInfo.shop_name|escape}-->/<!--{$tpl_title|escape}--></title>
+<title><!--{$arrSiteInfo.shop_name|escape}--> / <!--{if $tpl_subtitle|strlen >= 1}--><!--{$tpl_subtitle|escape}--><!--{else}--><!--{$tpl_title|escape}--><!--{/if}--></title>
 <meta name="author" content="<!--{$arrPageLayout.author|escape}-->" />
 <meta name="description" content="<!--{$arrPageLayout.description|escape}-->" />
 <meta name="keywords" content="<!--{$arrPageLayout.keyword|escape}-->" />

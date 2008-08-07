@@ -219,11 +219,15 @@ class LC_Page_Products_Detail extends LC_Page {
         } else {
           $this->tpl_sale_limit = $this->arrProduct['sale_limit'];
         }
+        
         // サブタイトルを取得
+        $this->tpl_subtitle = $this->arrProduct['name'];
+        
+        // 大カテゴリーを取得
         $arrCategory_id = $objDb->sfGetCategoryId($arrRet[0]['product_id'], $status);
         $arrFirstCat = $objDb->sfGetFirstCat($arrCategory_id[0]);
-        $this->tpl_subtitle = $arrFirstCat['name'];
-
+        $this->tpl_FirstCatName = $arrFirstCat['name'];
+        
         // 関連カテゴリを取得
         $this->arrRelativeCat = $objDb->sfGetMultiCatTree($tmp_id);
 
@@ -244,8 +248,6 @@ class LC_Page_Products_Detail extends LC_Page {
             $this->arrTrackback = $this->lfGetTrackbackData($tmp_id);
         }
         $this->trackback_url = TRACKBACK_TO_URL . $tmp_id;
-        // タイトルに商品名を入れる
-        $this->tpl_title = "商品詳細 ". $this->arrProduct["name"];
         //関連商品情報表示
         $this->arrRecommend = $this->lfPreGetRecommendProducts($tmp_id);
         //この商品を買った人はこんな商品も買っています
