@@ -20,6 +20,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 <!--▼おすすめ情報ここから-->
+<!--{if count($arrBestProducts) > 0}-->
 <div id="recomendarea">
   <h2>
     <img src="<!--{$TPL_DIR}-->img/top/osusume.jpg" width="400" height="29" alt="おすすめ情報" />
@@ -89,4 +90,5 @@
   </div>
   <!--{/section}-->
 </div>
+<!--{/if}-->
 <!--▲おすすめ情報ここまで-->
