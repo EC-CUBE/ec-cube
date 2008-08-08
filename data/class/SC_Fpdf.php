@@ -126,6 +126,8 @@ class SC_Fpdf {
     }
 
     function setOrderData() {
+        $objInfo = new SC_SiteInfo(); 
+        $arrInfo = $objInfo->data; 
         // DBから受注情報を読み込む
         $this->lfGetOrderData($this->arrData['order_id']);
 
