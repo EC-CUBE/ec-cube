@@ -168,6 +168,10 @@ self.moveTo(20,20);self.focus();
 											<td bgcolor="#f0f0f0" width="110">カテゴリ</td>
 											<td bgcolor="#ffffff" width="199"><!--{$list_data.category_name|escape|default:"（未指定）"}--></td>
 										</tr>
+										<tr class="fs12n"> 
+                                            <td bgcolor="#f0f0f0" width="110">キャンペーン</td> 
+                                            <td bgcolor="#ffffff" colspan="3"><!--{$arrCampaignList[$list_data.campaign_id]|escape|default:"（未指定）"}--></td>                         
+                                        </tr> 
 									</table>
 	
 									<table width="640" border="0" cellspacing="0" cellpadding="0" summary=" ">
