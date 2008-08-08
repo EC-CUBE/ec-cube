@@ -284,7 +284,7 @@ class SC_Utils {
         Header("Pragma: ");
 
         if (mb_internal_encoding() == CHAR_CODE){
-            $data = mb_convert_encoding($data,'SJIS',CHAR_CODE);
+            $data = mb_convert_encoding($data,'SJIS-Win',CHAR_CODE);
         }
 
         /* データを出力 */
