@@ -755,7 +755,7 @@ class SC_Utils {
     }
 
     /* 規格の登録 */
-    function sfInsertProductClass($objQuery, $arrList, $product_id) {
+    function sfInsertProductClass($objQuery, $arrList, $product_id , $product_class_id = "") {
         // すでに規格登録があるかどうかをチェックする。
         $where = "product_id = ? AND classcategory_id1 <> 0 AND classcategory_id1 <> 0";
         $count = $objQuery->count("dtb_products_class", $where,  array($product_id));
@@ -771,6 +771,9 @@ class SC_Utils {
             $arrList = SC_Utils_Ex::arrayDefineIndexes($arrList, $checkArray);
 
             $sqlval['product_id'] = $product_id;
+            if(strlen($product_class_id ) > 0 ){
+                $sqlval['product_class_id'] = $product_class_id;
+            }
             $sqlval['classcategory_id1'] = '0';
             $sqlval['classcategory_id2'] = '0';
             $sqlval['product_code'] = $arrList["product_code"];

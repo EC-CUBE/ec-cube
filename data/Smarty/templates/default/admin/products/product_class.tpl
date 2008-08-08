@@ -150,6 +150,7 @@
 											<input type="hidden" name="classcategory_id2:<!--{$smarty.section.cnt.iteration}-->" value="<!--{$arrClassCat[cnt].classcategory_id2}-->">
 											<input type="hidden" name="name1:<!--{$smarty.section.cnt.iteration}-->" value="<!--{$arrClassCat[cnt].name1}-->">
 											<input type="hidden" name="name2:<!--{$smarty.section.cnt.iteration}-->" value="<!--{$arrClassCat[cnt].name2}-->">
+											<input type="hidden" name="product_class_id:<!--{$smarty.section.cnt.iteration}-->" value="<!--{$arrClassCat[cnt].product_class_id}-->">
 											<!--{assign var=key value="check:`$smarty.section.cnt.iteration`"}-->
 											<td align="center"><input type="checkbox" name="check:<!--{$smarty.section.cnt.iteration}-->" value="1" <!--{if $arrForm[$key] == 1}-->checked="checked"<!--{/if}-->></td>
 											<td><!--{$arrClassCat[cnt].name1}--></td>

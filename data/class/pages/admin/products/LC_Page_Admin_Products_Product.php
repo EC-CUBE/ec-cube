@@ -234,7 +234,6 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         }
         // サブ情報表示・非表示のチェックに使用する。
         $this->sub_find = $sub_find;
-
         $objView->assignobj($this);
         $objView->display(MAIN_FRAME);
     }
@@ -328,7 +327,10 @@ class LC_Page_Admin_Products_Product extends LC_Page {
                                                       "category_id",
                                                       "product_id = ?",
                                                       array($product_id));
-
+        //編集時に規格IDが変わってしまうのを防ぐために規格が登録されていなければ規格IDを取得する
+        if( $this->lfCheckNonClass($_POST['product_id']) ){
+            $arrRet[0]['product_class_id'] = SC_Utils::sfGetProductClassId($product_id,"0","0");
+        }
         return $arrRet[0];
     }
 
@@ -477,7 +479,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         }
 
         // 規格登録
-        SC_Utils_Ex::sfInsertProductClass($objQuery, $arrList, $product_id);
+        SC_Utils_Ex::sfInsertProductClass($objQuery, $arrList, $product_id , $arrList['product_class_id'] );
 
         // おすすめ商品登録
         $this->lfInsertRecommendProducts($objQuery, $arrList, $product_id);
