@@ -44,7 +44,8 @@ class LC_Page_Mypage_Delivery extends LC_Page {
     function init() {
         parent::init();
         $this->tpl_mainpage = TEMPLATE_DIR .'mypage/delivery.tpl';
-        $this->tpl_title = "MYページ/お届け先追加･変更";
+        $this->tpl_title = 'MYページ';
+        $this->tpl_subtitle = 'お届け先追加･変更';
         $this->tpl_navi = TEMPLATE_DIR . 'mypage/navi.tpl';
         $this->tpl_mainno = 'mypage';
         $this->tpl_mypageno = 'delivery';

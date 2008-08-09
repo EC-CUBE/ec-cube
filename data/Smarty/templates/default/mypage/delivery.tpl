@@ -39,7 +39,7 @@ function fnCheckAfterOpenWin(){
   <h2 class="title"><!--{$tpl_title|escape}--></h2>
 <!--{include file=$tpl_navi}-->
   <div id="mycontentsarea">
-    <h3><img src="<!--{$TPL_DIR}-->img/mypage/subtitle03.gif" width="515" height="32" alt="お届け先追加・変更" /></h3>
+    <h3><!--{$tpl_subtitle|escape}--></h3>
     <p>登録住所以外へのご住所へ送付される場合等にご利用いただくことができます。<br />
      ※最大<!--{$smarty.const.DELIV_ADDR_MAX}-->件まで登録できます。</p>
 

@@ -60,7 +60,8 @@ class LC_Page_Mypage_HistoryDetail extends LC_Page {
      */
     function mobileInit() {
         $this->tpl_mainpage = 'mypage/history_detail.tpl';
-        $this->tpl_title = "MYページ/購入履歴詳細";
+        $this->tpl_title = 'MYページ';
+        $this->tpl_subtitle = '購入履歴詳細';
     }
 
     /**

@@ -219,6 +219,35 @@ div#one_maincolumn {
     padding: 10px 0 0 0;
 }
 
+/* リストをボタンのような外観に
+----------------------------------------------- */
+ul.button_like li {
+    margin: 0;
+    padding: 0;
+}
+ul.button_like li a {
+    display: block;
+    padding: 7px 0 7px 15px;
+    text-decoration: none;
+    border: 1px solid;
+    border-color: #ccc #999 #999 #ccc;
+    background: url("../img/common/button_like_bg.gif") 5px 7px no-repeat;
+    outline: none;
+    margin: 0;
+}
+ul.button_like li a:link,
+ul.button_like li a:visited {
+    color: #000;
+}
+ul.button_like li a:hover,
+ul.button_like li a.selected:link,
+ul.button_like li a.selected:visited {
+    color: #f60;
+}
+ul.button_like li a:active {
+    border-color: #999 #ccc #ccc #999;
+}
+
 /* カゴの中
 ----------------------------------------------- */
 div#cartarea {
@@ -277,34 +306,9 @@ a.onlink:hover { color: #ff0000; }
 
 /* ガイドリンク
 ----------------------------------------------- */
-#guidearea {
+#guidearea ul.button_like {
     margin-top: 1em;
-}
-#guidearea li {
     font-size: 11px;
-    margin: 0;
-    padding: 0;
-}
-#guidearea li a {
-    display: block;
-    padding: 7px 0 7px 15px;
-    text-decoration: none;
-    border: 1px solid;
-    border-color: #ccc #999 #999 #ccc;
-    background: url("../img/bloc/guide/bg.gif") 5px 7px no-repeat;
-    outline: none;
-    margin: 0;
-}
-#guidearea li a:link,
-#guidearea li a:visited {
-    color: #000;
-}
-#guidearea li a:hover ,
-#guidearea li a.selected {
-    color: #ff6600;
-}
-#guidearea li a:active {
-    border-color: #999 #ccc #ccc #999;
 }
 
 /* ログイン

@@ -21,7 +21,7 @@
  *}-->
 <!--▼リンクここから-->
 <div id="guidearea">
-  <ul>
+  <ul class="button_like">
     
     <!--{* IE不具合対策としてli要素の後に空白を入れないようにすること
     *}--><li>

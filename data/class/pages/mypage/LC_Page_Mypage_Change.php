@@ -45,7 +45,8 @@ class LC_Page_Mypage_Change extends LC_Page {
     function init() {
         parent::init();
         $this->tpl_mainpage = TEMPLATE_DIR . 'mypage/change.tpl';
-        $this->tpl_title = 'MYページ/会員登録内容変更(入力ページ)';
+        $this->tpl_title = 'MYページ';
+        $this->tpl_subtitle = '会員登録内容変更(入力ページ)';
         $this->tpl_navi = TEMPLATE_DIR . 'mypage/navi.tpl';
         $this->tpl_mainno = 'mypage';
         $this->tpl_mypageno = 'change';
@@ -135,7 +136,7 @@ class LC_Page_Mypage_Change extends LC_Page {
 
                 //確認ページへ
                 $this->tpl_mainpage = TEMPLATE_DIR . 'mypage/change_confirm.tpl';
-                $this->tpl_title = 'MYページ/会員登録内容変更(確認ページ)';
+                $this->tpl_subtitle = '会員登録内容変更(確認ページ)';
                 $passlen = strlen($this->arrForm['password']);
                 $this->passlen = $this->lfPassLen($passlen);
             } else {

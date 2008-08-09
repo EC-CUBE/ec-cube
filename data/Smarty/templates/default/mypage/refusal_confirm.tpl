@@ -29,7 +29,7 @@
   <input type="hidden" name="mode" value="complete" />
   <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->" />
   <div id="mycontentsarea">
-    <h3><img src="<!--{$TPL_DIR}-->img/mypage/subtitle04.gif" width="515" height="32" alt="退会手続き" /></h3>
+    <h3><!--{$tpl_subtitle|escape}--></h3>
     <div id="completetext">
       <p>退会手続きを実行してもよろしいでしょうか？</p>
       <div class="tblareabtn">

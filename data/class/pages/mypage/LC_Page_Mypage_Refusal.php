@@ -44,7 +44,8 @@ class LC_Page_Mypage_Refusal extends LC_Page {
     function init() {
         parent::init();
         $this->tpl_mainpage = TEMPLATE_DIR . 'mypage/refusal.tpl';
-        $this->tpl_title = "MYページ/退会手続き(入力ページ)";
+        $this->tpl_title = 'MYページ';
+        $this->tpl_subtitle = '退会手続き(入力ページ)';
         $this->tpl_navi = TEMPLATE_DIR . 'mypage/navi.tpl';
         $this->tpl_mainno = 'mypage';
         $this->tpl_mypageno = 'refusal';
@@ -83,7 +84,7 @@ class LC_Page_Mypage_Refusal extends LC_Page {
         case 'confirm':
 
             $this->tpl_mainpage = TEMPLATE_DIR . 'mypage/refusal_confirm.tpl';
-            $this->tpl_title = "MYページ/退会手続き(確認ページ)";
+            $this->tpl_subtitle = '退会手続き(確認ページ)';
 
             // 確認ページを経由したことを登録
             $objSiteSess->setRegistFlag();

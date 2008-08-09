@@ -29,11 +29,11 @@
     <!--{include file=`$smarty.const.TEMPLATE_DIR`mypage/navi.tpl}-->
   <!--{/if}-->
 
-  <div id="mypage-contents">
+  <div id="mycontentsarea">
     <form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
     <input type="hidden" name="order_id" value="" />
     <input type="hidden" name="pageno" value="<!--{$tpl_pageno}-->" />
-    <h3>お気に入り一覧</h3>
+    <h3><!--{$tpl_subtitle|escape}--></h3>
 
 <!--{if $tpl_linemax > 0}-->
 

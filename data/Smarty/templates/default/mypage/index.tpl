@@ -33,7 +33,7 @@
     <form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
     <input type="hidden" name="order_id" value="" />
     <input type="hidden" name="pageno" value="<!--{$tpl_pageno}-->" />
-    <h3><img src="<!--{$TPL_DIR}-->img/mypage/subtitle01.gif" width="515" height="32" alt="購入履歴一覧" /></h3>
+    <h3><!--{$tpl_subtitle|escape}--></h3>
 
 <!--{if $tpl_linemax > 0}-->
 

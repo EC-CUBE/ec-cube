@@ -26,7 +26,7 @@
   <h2 class="title"><!--{$tpl_title|escape}--></h2>
   <!--{include file=$tpl_navi}-->
   <div id="mycontentsarea">
-    <h3><img src="<!--{$TPL_DIR}-->img/mypage/subtitle05.gif" width="515" height="32" alt="購入履歴詳細" /></h3>
+    <h3><!--{$tpl_subtitle|escape}--></h3>
     <p class="myconditionarea">
     <strong>購入日時：&nbsp;</strong><!--{$arrDisp.create_date|sfDispDBDate}--><br />
     <strong>注文番号：&nbsp;</strong><!--{$arrDisp.order_id}--><br />

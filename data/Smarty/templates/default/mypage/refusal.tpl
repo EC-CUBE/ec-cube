@@ -26,7 +26,7 @@
   <h2 class="title"><!--{$tpl_title|escape}--></h2>
   <!--{include file=$tpl_navi}-->
   <div id="mycontentsarea">
-    <h3><img src="<!--{$TPL_DIR}-->img/mypage/subtitle04.gif" width="515" height="32" alt="退会手続き" /></h3>
+    <h3><!--{$tpl_subtitle|escape}--></h3>
     <form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
       <input type="hidden" name="mode" value="confirm" />
       <div id="completetext">
