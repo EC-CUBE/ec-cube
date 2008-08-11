@@ -774,7 +774,7 @@ class SC_Utils {
             $sqlval['classcategory_id2'] = '0';
             $sqlval['product_code'] = $arrList["product_code"];
             $sqlval['stock'] = $arrList["stock"];
-            $sqlval['stock_unlimited'] = $arrList["stock_unlimited"];
+            $sqlval['stock_unlimited'] = ($arrList["stock_unlimited"]) ? '1' : '0';
             $sqlval['price01'] = $arrList['price01'];
             $sqlval['price02'] = $arrList['price02'];
             $sqlval['creator_id'] = $_SESSION['member_id'];

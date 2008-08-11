@@ -357,7 +357,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
                 $sqlval['classcategory_id2'] = $arrList["classcategory_id2:".$cnt];
                 $sqlval['product_code'] = $arrList["product_code:".$cnt];
                 $sqlval['stock'] = $arrList["stock:".$cnt];
-                $sqlval['stock_unlimited'] = $arrList["stock_unlimited:".$cnt];
+                $sqlval['stock_unlimited'] = ($arrList["stock_unlimited:".$cnt]) ? '1' : '0';
                 $sqlval['price01'] = $arrList['price01:'.$cnt];
                 $sqlval['price02'] = $arrList['price02:'.$cnt];
                 $sqlval['creator_id'] = $_SESSION['member_id'];

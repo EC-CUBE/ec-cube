@@ -346,7 +346,7 @@ CREATE TABLE dtb_products_class (
     classcategory_id2 int4 NOT NULL DEFAULT 0,
     product_code text,
     stock numeric,
-    stock_unlimited int2 DEFAULT 0,
+    stock_unlimited int2 NOT NULL DEFAULT 0,
     sale_limit numeric,
     price01 numeric,
     price02 numeric,
