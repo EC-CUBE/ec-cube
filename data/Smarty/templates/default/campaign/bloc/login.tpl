@@ -21,7 +21,7 @@
  *}-->
 <!--▼会員登録がお済みのお客様-->
 <div id="under02column_login">
-    <h2 class="title">
+    <h2 class="title" style="text-align:center;">
       <img src="<!--{$TPL_DIR}-->img/login/title.jpg" width="700" height="40" alt="ログイン" />
    </h2>
     <form name="member_form" id="member_form" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" onsubmit="return fnCheckLogin('member_form')">
