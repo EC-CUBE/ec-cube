@@ -507,8 +507,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
                 $sqlval[$key] = $val;
             }
         }
-        $order_id = $objQuery->nextval('dtb_order', 'order_id');
-        $sqlval['order_id'] = $order_id;
         $sqlval['create_date'] = "Now()";
 
         // 注文ステータス:指定が無ければ新規受付に設定
@@ -520,7 +518,8 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         if($sqlval["customer_id"] == ""){
             $sqlval['customer_id'] = '0';
         }
-
+        
+        unset($sqlval['order_id']); 
         unset($sqlval['total_point']);
         unset($sqlval['point']);
 
@@ -534,7 +533,8 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
 
         // 受注テーブルの登録
         $objQuery->insert("dtb_order", $sqlval);
-
+        $order_id = $objQuery->currval('dtb_order', 'order_id'); 
+        
         $sql = "";
         $sql .= " UPDATE";
         $sql .= "     dtb_order";
