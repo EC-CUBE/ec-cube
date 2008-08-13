@@ -77,9 +77,8 @@ function sfZaikoUpdate() {
         $cnt = "0";
         foreach($_POST['product'] as $key => $val) {
             $table = "dtb_products_class";
-            $where = "product_id = ? AND product_code = ?";
+            $where = "product_code = ?";
             $arrval = array();
-            $arrval[] = empty($val['product_id']) ? "0" : $val['product_id'];
             $arrval[] = empty($val['product_code']) ? "0" : $val['product_code'];
             // ºß¸Ë¹¹¿·
             if (sfDataExists($table, $where, $arrval) === true) {
@@ -89,7 +88,7 @@ function sfZaikoUpdate() {
             } else {
                 $cnt++;
                 if ($cnt == "1") $mes = "NG\n";
-                $mes .= "no_product(product_id=". $arrval[0]. ",product_code=". $arrval[1]. ")\n";
+                $mes .= "no_product(product_code=". $arrval[1]. ")\n";
             }
         }
         // À®¸ù
