@@ -778,7 +778,7 @@ INSERT INTO mtb_constants VALUES ('SAMPLE_ADDRESS2','"番地・ビル名（例�
 INSERT INTO mtb_constants VALUES ('USER_DIR','"user_data/"',3,'ユーザファイル保存先');
 INSERT INTO mtb_constants VALUES ('USER_PATH','HTML_PATH . USER_DIR',4,'ユーザファイル保存先');
 INSERT INTO mtb_constants VALUES ('USER_INC_PATH','USER_PATH . "include/"',5,'ユーザインクルードファイル保存先');
-INSERT INTO mtb_constants VALUES ('DB_ERROR_MAIL_TO','"error-ml@lockon.co.jp"',6,'DBエラーメール送信先');
+INSERT INTO mtb_constants VALUES ('DB_ERROR_MAIL_TO','""',6,'DBエラーメール送信先');
 INSERT INTO mtb_constants VALUES ('DB_ERROR_MAIL_SUBJECT','"OS_TEST_ERROR"',7,'DBエラーメール件名');
 INSERT INTO mtb_constants VALUES ('ZIP_DSN','DEFAULT_DSN',8,'郵便番号専用DB');
 INSERT INTO mtb_constants VALUES ('USER_URL','SITE_URL . USER_DIR',9,'ユーザー作成ページ等');
@@ -1069,8 +1069,8 @@ INSERT INTO mtb_constants VALUES ('MOBILE_SESSION_LIFETIME', '1800', 402,'モバ
 INSERT INTO mtb_constants VALUES ('MOBILE_USE_KARA_MAIL', 'false', 403,'空メール機能を使用するかどうか(true:送信する、false:送信しない)');
 INSERT INTO mtb_constants VALUES ('MOBILE_KARA_MAIL_ADDRESS_USER', '"eccube"', 404,'空メール受け付けアドレスのユーザー名部分');
 INSERT INTO mtb_constants VALUES ('MOBILE_KARA_MAIL_ADDRESS_DELIMITER', '"+"', 405,'空メール受け付けアドレスのユーザー名とコマンドの間の区切り文字 qmail の場合は -');
-INSERT INTO mtb_constants VALUES ('MOBILE_KARA_MAIL_ADDRESS_DOMAIN', '"mobile.ec-cube.net"', 406,'空メール受け付けアドレスのドメイン部分');
-INSERT INTO mtb_constants VALUES ('MOBILE_ADDITIONAL_MAIL_DOMAINS', '"rebelt.co.jp, lockon.co.jp"', 407,'携帯のメールアドレスではないが、携帯だとみなすドメインのリスト 任意の数の「,」「 」で区切る。');
+INSERT INTO mtb_constants VALUES ('MOBILE_KARA_MAIL_ADDRESS_DOMAIN', '""', 406,'空メール受け付けアドレスのドメイン部分');
+INSERT INTO mtb_constants VALUES ('MOBILE_ADDITIONAL_MAIL_DOMAINS', '""', 407,'携帯のメールアドレスではないが、携帯だとみなすドメインのリスト 任意の数の「,」「 」で区切る。');
 INSERT INTO mtb_constants VALUES ('MOBILE_IMAGE_DIR', 'HTML_PATH . "upload/mobile_image"', 408,'携帯電話向け変換画像保存ディレクトリ');
 INSERT INTO mtb_constants VALUES ('MOBILE_IMAGE_URL', 'URL_DIR . "upload/mobile_image"', 409,'携帯電話向け変換画像保存ディレクトリ');
 INSERT INTO mtb_constants VALUES ('MOBILE_URL_SITE_TOP', 'MOBILE_URL_DIR . "index.php"', 410,'モバイルURL');
