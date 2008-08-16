@@ -377,6 +377,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
            sale_unlimited,
            create_date,
            deliv_fee,
+           update_date,
            rank
            ,(SELECT rank AS category_rank
                FROM dtb_category AS T4
@@ -402,7 +403,8 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
                    T0.create_date,
                    T0.deliv_fee,
                    T00.category_id,
-                   T00.rank
+                   T0.rank,
+                   T0.update_date
               FROM dtb_products AS T0
          LEFT JOIN dtb_product_categories AS T00
              USING (product_id)) AS T1 

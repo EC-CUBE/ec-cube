@@ -76,7 +76,8 @@ CREATE VIEW vw_products_allclass AS
             T5.point_rate,
             T5.sale_unlimited,
             T5.create_date,
-            T5.deliv_fee
+            T5.deliv_fee,
+            T5.update_date
        FROM
              ((SELECT T1.product_id,
                       T1.del_flg,
@@ -96,7 +97,8 @@ CREATE VIEW vw_products_allclass AS
                       T1.create_date,
                       T1.deliv_fee,
                       T2.category_id,
-                      T1.rank
+                      T1.rank,
+                      T1.update_date
                  FROM dtb_products AS T1
             LEFT JOIN dtb_product_categories AS T2
                    ON T1.product_id = T2.product_id) AS T3
