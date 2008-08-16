@@ -111,7 +111,7 @@ function fnIsCartOn(){
       <td>
         <!--{if $arrErr.directory_name}--><span class="attention"><!--{$arrErr.directory_name}--></span><!--{/if}-->
         <input type="text" name="directory_name" size="60" class="box60"  value="<!--{$arrForm.directory_name|escape}-->" <!--{if $arrErr.directory_name}-->style="background-color:<!--{$smarty.const.ERR_COLOR|escape}-->"<!--{/if}--> maxlength="<!--{$smarty.const.STEXT_LEN}-->"/></span><br/>
-        <span>※<!--{$smarty.const.SITE_URL|sfTrimURL}--><!--{$smarty.const.URL_DIR|sfTrimURL}--><!--{$smarty.const.CAMPAIGN_URL}-->入力したディレクリ名/ でアクセス出来るようになります。</span>
+        <span>※<!--{$smarty.const.SITE_URL}--><!--{$smarty.const.CAMPAIGN_DIR}-->入力したディレクリ名/ でアクセス出来るようになります。</span>
       </td>
     </tr>
     <tr>
