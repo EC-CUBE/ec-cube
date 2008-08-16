@@ -319,9 +319,6 @@ VALUES ('おなべ', NULL, 5, NULL, NULL, 1, 1, '11001', 5, NULL, NULL, '鍋,な
 
 INSERT INTO dtb_products_class (product_id,classcategory_id1,classcategory_id2,product_code,stock,stock_unlimited,sale_limit,price01,price02,status,creator_id,create_date,update_date)
 VALUES (1, 3, 6, 'ice-01', NULL, 1, NULL, 150, 120, NULL, 2, now(), now());
-DELETE FROM dtb_products_class;
-INSERT INTO dtb_products_class (product_id,classcategory_id1,classcategory_id2,product_code,stock,stock_unlimited,sale_limit,price01,price02,status,creator_id,create_date,update_date)
-VALUES (1, 3, 6, 'ice-01', NULL, 1, NULL, 150, 120, NULL, 2, now(), now());
 INSERT INTO dtb_products_class (product_id,classcategory_id1,classcategory_id2,product_code,stock,stock_unlimited,sale_limit,price01,price02,status,creator_id,create_date,update_date)
 VALUES (1, 3, 5, 'ice-01', NULL, 1, NULL, 150, 120, NULL, 2, now(), now());
 INSERT INTO dtb_products_class (product_id,classcategory_id1,classcategory_id2,product_code,stock,stock_unlimited,sale_limit,price01,price02,status,creator_id,create_date,update_date)
@@ -339,7 +336,7 @@ VALUES (1, 1, 5, 'ice-01', NULL, 1, NULL, 150, 120, NULL, 2, now(), now());
 INSERT INTO dtb_products_class (product_id,classcategory_id1,classcategory_id2,product_code,stock,stock_unlimited,sale_limit,price01,price02,status,creator_id,create_date,update_date)
 VALUES (1, 1, 4, 'ice-01', NULL, 1, NULL, 150, 120, NULL, 2, now(), now());
 INSERT INTO dtb_products_class (product_id,classcategory_id1,classcategory_id2,product_code,stock,stock_unlimited,sale_limit,price01,price02,status,creator_id,create_date,update_date)
-VALUES (2, 0, 0, 'nabe-01', 100, NULL, NULL, 1700, 1650, NULL, 2, now(), now());
+VALUES (2, 0, 0, 'nabe-01', 100, 0, NULL, 1700, 1650, NULL, 2, now(), now());
 
 INSERT INTO dtb_recommend_products (product_id, recommend_product_id, rank,comment,status,creator_id,create_date,update_date) VALUES (2, 1, 4, 'お口直しに。', 0, 2, now(), now());
 
