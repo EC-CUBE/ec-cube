@@ -53,6 +53,7 @@ class LC_Page_Shopping extends LC_Page {
         parent::init();
         $this->tpl_mainpage = 'shopping/index.tpl';
         $this->tpl_column_num = 1;
+        $this->tpl_title = 'ログイン';
         $masterData = new SC_DB_MasterData();
         $this->arrPref = $masterData->getMasterData("mtb_pref", array("pref_id", "pref_name", "rank"));
         $this->arrSex = $masterData->getMasterData("mtb_sex");
@@ -326,6 +327,7 @@ class LC_Page_Shopping extends LC_Page {
     /* 非会員入力ページのセット */
     function lfSetNonMember(&$objPage) {
         $objPage->tpl_mainpage = 'shopping/nonmember_input.tpl';
+        $this->tpl_title = 'お客様情報入力';
     }
 
     /* パラメータ情報の初期化 */
