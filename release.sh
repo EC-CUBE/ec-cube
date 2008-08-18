@@ -5,7 +5,7 @@ TMP_DIR=/tmp
 SVN_REPO=file:///home/svn/open
 SVN_PATH=$SVN_REPO/branches/version-2
 SVN_TAGS=$SVN_REPO/tags
-ECCUBE_VERSION=2.1.1-beta
+ECCUBE_VERSION=2.3.0-rc1
 WRK_DIR=eccube-$ECCUBE_VERSION
 
 if [ ! -d $TMP_DIR ]; then
