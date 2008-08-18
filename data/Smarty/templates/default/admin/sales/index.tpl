@@ -66,7 +66,7 @@
 				</select>月
 				<select name="day_from">
 				<option selected="selected">--</option>
-				</select>日〜
+				</select>日～
 				<select name="year_to">
 				<option selected="selected">--</option>
 				</select>年

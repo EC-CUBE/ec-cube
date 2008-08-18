@@ -103,7 +103,7 @@ class SC_SelectSql {
             $this->setWhere( $column ." >= '" . $date1 . "'");
         }
 
-        //　開始〜終了
+        //　開始～終了
         if( ( $from_year != "" ) && ( $from_month != "" ) && ( $from_day != "" ) &&
             ( $to_year != "" ) && ( $to_month != "" ) && ( $to_day != "" ) ) {
             $this->setWhere( $column ." >= '" . $date1 ."' AND ". $column . " < date('" . $date2 . "')" );

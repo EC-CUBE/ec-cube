@@ -172,7 +172,7 @@ function lnSetSelect(name1, name2, id, val) {
       <!--{assign var=codemax value=`$arrProducts[cnt].product_code_max`}-->
       <!--{* 商品コード *}-->
       <!--{if $codemin != $codemax}-->
-        <!--{$codemin|escape}-->〜<!--{$codemax|escape}-->
+        <!--{$codemin|escape}-->～<!--{$codemax|escape}-->
       <!--{else}-->
         <!--{$codemin|escape}-->
       <!--{/if}-->

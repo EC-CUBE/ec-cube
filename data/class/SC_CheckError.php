@@ -481,7 +481,7 @@ class SC_CheckError {
         // $this->arrParam[$value[0]] = mb_convert_kana($this->arrParam[$value[0]], "n");
         $count = strlen($this->arrParam[$value[1]]);
         if( ( $count > 0 ) && $value[2] > $count || $value[3] < $count ) {
-            $this->arrErr[$value[1]] =  "※ $value[0]は$value[2]桁〜$value[3]桁で入力して下さい。<br />";
+            $this->arrErr[$value[1]] =  "※ $value[0]は$value[2]桁～$value[3]桁で入力して下さい。<br />";
         }
     }
 

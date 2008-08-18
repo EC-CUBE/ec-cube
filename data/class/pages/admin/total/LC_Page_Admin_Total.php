@@ -548,7 +548,7 @@ class LC_Page_Admin_Total extends LC_Page {
             $objGraphBar = new SC_GraphBar();
 
             foreach(array_keys($arrList) as $val) {
-                $arrKey[] = ereg_replace("〜", "-", $val);
+                $arrKey[] = ereg_replace("～", "-", $val);
             }
 
             // グラフ描画
@@ -752,9 +752,9 @@ class LC_Page_Admin_Total extends LC_Page {
             $end_age = $objPage->arrResults[$i]['end_age'];
             if($start_age != "" || $end_age != "") {
                 if($end_age != 999) {
-                    $objPage->arrResults[$i]['age_name'] = $start_age . "〜" . $end_age . "歳";
+                    $objPage->arrResults[$i]['age_name'] = $start_age . "～" . $end_age . "歳";
                 } else {
-                    $objPage->arrResults[$i]['age_name'] = $start_age . "歳〜";
+                    $objPage->arrResults[$i]['age_name'] = $start_age . "歳～";
                 }
             } else {
                 $objPage->arrResults[$i]['age_name'] = "未回答";

@@ -165,8 +165,8 @@ class LC_Page_Admin_Basis_Payment_Input extends LC_Page {
     function lfInitParam() {
         $this->objFormParam->addParam("支払方法", "payment_method", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("手数料", "charge", PRICE_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("利用条件(〜円以上)", "rule", PRICE_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("利用条件(〜円以下)", "upper_rule", PRICE_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $this->objFormParam->addParam("利用条件(～円以上)", "rule", PRICE_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $this->objFormParam->addParam("利用条件(～円以下)", "upper_rule", PRICE_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("配送サービス", "deliv_id", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("固定", "fix");
     }
@@ -233,7 +233,7 @@ class LC_Page_Admin_Basis_Payment_Input extends LC_Page {
         }
 
         // 利用条件チェック
-        $objErr->doFunc(array("利用条件(〜円以上)", "利用条件(〜円以下)", "rule", "upper_rule"), array("GREATER_CHECK"));
+        $objErr->doFunc(array("利用条件(～円以上)", "利用条件(～円以下)", "rule", "upper_rule"), array("GREATER_CHECK"));
 
         return $objErr->arrErr;
     }

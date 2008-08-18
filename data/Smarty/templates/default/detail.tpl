@@ -97,7 +97,7 @@ function lnSetSelect(form, name1, name2, val) {
             <!--{assign var=codemax value=`$codecnt-1`}-->
             <div>商品コード：
                 <!--{if $codecnt > 1}-->
-                    <!--{$arrProductCode.0}-->〜<!--{$arrProductCode[$codemax]}-->
+                    <!--{$arrProductCode.0}-->～<!--{$arrProductCode[$codemax]}-->
                 <!--{else}-->
                     <!--{$arrProductCode.0}-->
                 <!--{/if}-->
@@ -112,7 +112,7 @@ function lnSetSelect(form, name1, name2, val) {
                     <!--{if $arrProduct.price02_min == $arrProduct.price02_max}-->
                         <!--{$arrProduct.price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
                     <!--{else}-->
-                        <!--{$arrProduct.price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->〜<!--{$arrProduct.price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
+                        <!--{$arrProduct.price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->～<!--{$arrProduct.price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
                     <!--{/if}-->円</span></div>
             
             <!--★通常価格★-->

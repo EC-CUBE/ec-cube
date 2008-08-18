@@ -185,7 +185,7 @@
     <div class="attention"><!--{$arrErr.password}--><!--{$arrErr.password02}--></div>
     <!--{/if}-->
     <input type="password" name="password" value="<!--{$arrForm.password}-->" maxlength="<!--{$smarty.const.PASSWORD_LEN2}-->" style="<!--{$arrErr.password|sfGetErrorColor}-->" size="15" class="box120" />
-    <p><em>半角英数字4〜10文字でお願いします。（記号不可）</em></p>
+    <p><em>半角英数字4～10文字でお願いします。（記号不可）</em></p>
     <input type="password" name="password02" value="<!--{$arrForm.password02}-->" maxlength="<!--{$smarty.const.PASSWORD_LEN2}-->" style="<!--{$arrErr.password02|sfGetErrorColor}-->" size="15" class="box120" />
     <p><em>確認のために2度入力してください。</em></p>
   </td>

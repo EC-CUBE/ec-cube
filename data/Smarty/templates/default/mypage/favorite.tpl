@@ -71,7 +71,7 @@
           <!--{if $arrFavorite[cnt].price02_min == $arrFavorite[cnt].price02_max}-->
             <!--{$arrFavorite[cnt].price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
           <!--{else}-->
-            <!--{$arrFavorite[cnt].price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->〜<!--{$arrFavorite[cnt].price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
+            <!--{$arrFavorite[cnt].price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->～<!--{$arrFavorite[cnt].price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
           <!--{/if}-->円</span>
        </td>
      </tr>
