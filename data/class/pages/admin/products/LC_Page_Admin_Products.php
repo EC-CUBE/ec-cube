@@ -272,16 +272,15 @@ class LC_Page_Admin_Products extends LC_Page {
                     break;
                 case 'delete_all':
                     // 検索結果をすべて削除
-                    $where = "product_id IN (SELECT product_id FROM vw_products_allclass AS allcls  WHERE $where)";
+                    $where = "product_id IN (SELECT product_id FROM vw_products_allclass_detail AS alldtl WHERE $where)";
                     $sqlval['del_flg'] = 1;
                     $objQuery->update("dtb_products", $sqlval, $where, $arrval);
-                    $objQuery->delete("dtb_customer_favorite_products", $where);
+                    $objQuery->delete("dtb_customer_favorite_products", $where, $arrval);
                     break;
                 default:
                     // 読み込む列とテーブルの指定
-                    // XXX DISTINCT は応急処置。update_date は DISTINCT のため。
-                    $col = "DISTINCT product_id, name, main_list_image, status, product_code_min, product_code_max, price02_min, price02_max, stock_min, stock_max, stock_unlimited_min, stock_unlimited_max, update_date";
-                    $from = "vw_products_allclass AS allcls ";
+                    $col = "product_id, name, main_list_image, status, product_code_min, product_code_max, price02_min, price02_max, stock_min, stock_max, stock_unlimited_min, stock_unlimited_max, update_date";
+                    $from = "vw_products_allclass_detail AS alldtl ";
 
                     // 行数の取得
                     $linemax = $objQuery->count("dtb_products", $view_where, $arrval);
