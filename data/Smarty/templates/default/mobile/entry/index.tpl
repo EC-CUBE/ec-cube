@@ -42,7 +42,7 @@
 	（半角英数字<!--{$smarty.const.PASSWORD_LEN1}-->文字以上<!--{$smarty.const.PASSWORD_LEN2}-->文字以内）<br>
 	<font color="#FF0000"><!--{$arrErr.password}--></font>
 	<!--{assign var="size" value="`$smarty.const.PASSWORD_LEN2+2`"}-->
-	<input type="text" name="password" value="<!--{$arrForm.password}-->" istyle="4" maxlength="<!--{$smarty.const.PASSWORD_LEN2}-->" size="<!--{$size}-->"><br>
+	<input type="password" name="password" value="<!--{$arrForm.password}-->" istyle="4" maxlength="<!--{$smarty.const.PASSWORD_LEN2}-->" size="<!--{$size}-->"><br>
 
 	【パスワード確認用の質問】<font color="#FF0000">※</font><br>
 	<font color="#FF0000"><!--{$arrErr.reminder}--></font>
