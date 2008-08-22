@@ -54,7 +54,7 @@ class SC_Helper_DB {
      * @return string データベースのバージョン
      */
     function sfGetDBVersion($dsn = "") {
-        $dbFactory = SC_DB_DBFactory::getInstance();
+        $dbFactory = SC_DB_DBFactory_Ex::getInstance();
         return $dbFactory->sfGetDBVersion($dsn);
     }
 
@@ -66,7 +66,7 @@ class SC_Helper_DB {
      * @return テーブルが存在する場合 true
      */
     function sfTabaleExists($table_name, $dsn = "") {
-        $dbFactory = SC_DB_DBFactory::getInstance();
+        $dbFactory = SC_DB_DBFactory_Ex::getInstance();
         $dsn = $dbFactory->getDSN($dsn);
 
         $objQuery = new SC_Query($dsn, true, true);
@@ -99,7 +99,7 @@ class SC_Helper_DB {
      * 				 引数 $add == false でカラムが存在しない場合 false
      */
     function sfColumnExists($table_name, $col_name, $col_type = "", $dsn = "", $add = false) {
-        $dbFactory = SC_DB_DBFactory::getInstance();
+        $dbFactory = SC_DB_DBFactory_Ex::getInstance();
         $dsn = $dbFactory->getDSN($dsn);
 
         // テーブルが無ければエラー
@@ -145,7 +145,7 @@ class SC_Helper_DB {
      * 				 引数 $add == false でインデックスが存在しない場合 false
      */
     function sfIndexExists($table_name, $col_name, $index_name, $length = "", $dsn = "", $add = false) {
-        $dbFactory = SC_DB_DBFactory::getInstance();
+        $dbFactory = SC_DB_DBFactory_Ex::getInstance();
         $dsn = $dbFactory->getDSN($dsn);
 
         // テーブルが無ければエラー
@@ -179,7 +179,7 @@ class SC_Helper_DB {
      *               $add == false で, データが存在しない場合 false
      */
     function sfDataExists($table_name, $where, $arrval, $dsn = "", $sql = "", $add = false) {
-        $dbFactory = SC_DB_DBFactory::getInstance();
+        $dbFactory = SC_DB_DBFactory_Ex::getInstance();
         $dsn = $dbFactory->getDSN($dsn);
 
         $objQuery = new SC_Query($dsn, true, true);
@@ -293,9 +293,7 @@ class SC_Helper_DB {
 
         $objPage->tpl_total_pretax = 0;		// 費用合計(税込み)
         $objPage->tpl_total_tax = 0;		// 消費税合計
-	if (USE_POINT !== false) {
         $objPage->tpl_total_point = 0;		// ポイント合計
-	}
 
         // カート内情報の取得
         $arrQuantityInfo_by_product = array();
@@ -399,9 +397,7 @@ class SC_Helper_DB {
         // 全商品合計消費税
         $objPage->tpl_total_tax = $objCartSess->getAllProductsTax($arrInfo);
         // 全商品合計ポイント
-	if (USE_POINT !== false) {
         $objPage->tpl_total_point = $objCartSess->getAllProductsPoint();
-	}
 
         return $objPage;
     }
@@ -943,16 +939,21 @@ class SC_Helper_DB {
 
         // 最下層(level=5)のカテゴリから順に足し合わせていく。
         for ($i = 5; $i >= 1; --$i) {
-            $sql = " INSERT INTO dtb_category_total_count (category_id, product_count, create_date) ";
-            $sql .= " SELECT category_id, SUM(product_count), NOW() ";
-            $sql .= " FROM (SELECT T1.parent_category_id AS category_id, T2.product_count ";
-            $sql .= " FROM dtb_category AS T1, dtb_category_total_count AS T2 ";
-            $sql .= " WHERE T2.category_id = T1.category_id AND T1.level = ? ";
-            $sql .= " UNION ALL SELECT T3.category_id, T4.product_count ";
-            $sql .= " FROM dtb_category AS T3, dtb_category_count AS T4 ";
-            $sql .= " WHERE T4.category_id = T3.category_id AND T3.level = ?) AS T5 ";
-            $sql .= " GROUP BY category_id; ";
-
+            $sql = <<< __EOS__
+                INSERT INTO dtb_category_total_count (category_id, product_count, create_date)
+                SELECT category_id, SUM(product_count), NOW()
+                FROM
+                    (
+                        SELECT T1.parent_category_id AS category_id, T2.product_count
+                        FROM dtb_category AS T1, dtb_category_total_count AS T2
+                        WHERE T2.category_id = T1.category_id AND T1.level = ?
+                        UNION ALL
+                        SELECT T3.category_id, T4.product_count
+                        FROM dtb_category AS T3, dtb_category_count AS T4
+                        WHERE T4.category_id = T3.category_id AND T3.level = ?
+                    ) AS T5
+                GROUP BY category_id;
+__EOS__;
             $objQuery->query($sql, array($i+1, $i));
         }
 
