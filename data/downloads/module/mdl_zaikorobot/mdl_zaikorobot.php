@@ -22,7 +22,7 @@
  */
 /*
  * モジュールバージョン表記
- * @version ### ### 1.0
+ * @version ### ### 1.2
  */
 require_once(MODULE_PATH . "mdl_zaikorobot/mdl_zaikorobot.inc");
 
@@ -68,7 +68,7 @@ case 'edit':
     break;
 default:
     // データのロード
-    lfLoadData();	
+    lfLoadData();
     break;
 }
 
@@ -81,10 +81,10 @@ $objView->display($objPage->tpl_mainpage);
 
 /**
  * パラメータ情報の初期化
- */ 
+ */
 function lfInitParam($objFormParam) {
     $objFormParam->addParam("ID", "id", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-    $objFormParam->addParam("パスワード", "pass", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));	
+    $objFormParam->addParam("パスワード", "pass", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
     return $objFormParam;
 }
 

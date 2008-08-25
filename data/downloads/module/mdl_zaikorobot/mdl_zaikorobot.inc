@@ -88,7 +88,7 @@ function sfZaikoUpdate() {
             } else {
                 $cnt++;
                 if ($cnt == "1") $mes = "NG\n";
-                $mes .= "no_product(product_code=". $arrval[1]. ")\n";
+                $mes .= "no_product(product_code=". $arrval[0]. ")\n";
             }
         }
         // À®¸ù
