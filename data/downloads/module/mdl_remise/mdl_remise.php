@@ -3,7 +3,7 @@
  *
  * @copyright	2000-2007 LOCKON CO.,LTD. All Rights Reserved.
  * モジュールバージョン表記
- * @version ### ### 1.4
+ * @version ### ### 1.5
  * @link		http://www.lockon.co.jp/
  *
  */
