@@ -77,7 +77,12 @@ class LC_Page_Sitemap extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->staticURL = array(SITE_URL, MOBILE_SITE_URL, SITE_URL . "rss/index.php");
+
+        $this->staticURL[] = SITE_URL;
+        $this->staticURL[] = SITE_URL . 'rss/index.php';
+        if (USE_MOBILE !== false) {
+            $this->staticURL[] = MOBILE_SITE_URL;
+        }
     }
 
     /**
@@ -127,21 +132,12 @@ class LC_Page_Sitemap extends LC_Page {
         foreach($products as $product) {
             $this->createSitemap($product['url'], '', 'daily');
         }
-        $mobileProducts = $this->getAllProducts(true);
-        foreach($mobileProducts as $mobileProduct) {
-            $this->createSitemap($mobileProduct['url'], '', 'daily');
-        }
 
         // 商品詳細ページを処理
         $details = $this->getAllDetail();
         foreach($details as $detail) {
             $this->createSitemap($detail['url'],
                                  $this->date2W3CDatetime($detail['update_date']));
-        }
-        $mobileDetails = $this->getAllDetail(true);
-        foreach($mobileDetails as $mobileDetail) {
-            $this->createSitemap($mobileDetail['url'], 
-                                 $this->date2W3CDatetime($mobileDetail['update_date']));
         }
 
         print("</urlset>\n");
@@ -221,24 +217,27 @@ class LC_Page_Sitemap extends LC_Page {
     /**
      * すべての商品一覧ページを取得する.
      *
-     * @param boolean $isMobile モバイルページを取得する場合 true
      * @return array 検索エンジンからアクセス可能な商品一覧ページの情報
      */
-    function getAllProducts($isMobile = false) {
+    function getAllProducts() {
+        
+        // XXX: 商品登録の無いカテゴリーは除外する方が良い気もする
         $conn = new SC_DBConn();
         $sql = "SELECT category_id FROM dtb_category WHERE del_flg = 0";
         $result = $conn->getAll($sql);
 
-        $mobile = "";
-        if ($isMobile) {
-            $mobile = "mobile/";
-        }
-
         $arrRet = array();
-        for ($i = 0; $i < count($result); $i++) {
+        foreach ($result as $row) {
             // :TODO: カテゴリの最終更新日を取得できるようにする
-            $page = array("url" => SITE_URL . sprintf("%sproducts/list.php?category_id=%d", $mobile, $result[$i]['category_id']));
-            $arrRet[$i] = $page;
+            
+            $page["url"] = SITE_URL . 'products/list.php?category_id=' . $row['category_id'];
+            $arrRet[] = $page;
+            
+            // モバイルサイト
+            if (USE_MOBILE !== false) {
+                $page["url"] = MOBILE_SITE_URL . 'products/list.php?category_id=' . $row['category_id'];
+                $arrRet[] = $page;
+            }
         }
         return $arrRet;
     }
@@ -246,24 +245,26 @@ class LC_Page_Sitemap extends LC_Page {
     /**
      * すべての商品詳細ページを取得する.
      *
-     * @param boolean $isMobile モバイルページを取得する場合 true
      * @return array 検索エンジンからアクセス可能な商品詳細ページの情報
      */
-    function getAllDetail($isMobile = false) {
+    function getAllDetail() {
         $conn = new SC_DBConn();
         $sql = "SELECT product_id, update_date FROM dtb_products WHERE del_flg = 0 AND status = 1";
         $result = $conn->getAll($sql);
 
-        $mobile = "";
-        if ($isMobile) {
-            $mobile = "mobile/";
-        }
-
         $arrRet = array();
-        for ($i = 0; $i < count($result); $i++) {
-            $page = array("url" => SITE_URL. sprintf("%sproducts/detail.php?product_id=%d", $mobile, $result[$i]['product_id']),
-                          "update_date" => $result[$i]['update_date']);
-            $arrRet[$i] = $page;
+        foreach ($result as $row) {
+            
+            $page["update_date"] = $row['update_date'];
+            
+            $page["url"] = SITE_URL . 'products/detail.php?product_id=' . $row['product_id'];
+            $arrRet[] = $page;
+            
+            // モバイルサイト
+            if (USE_MOBILE !== false) {
+                $page["url"] = MOBILE_SITE_URL . 'products/detail.php?product_id=' . $row['product_id'];
+                $arrRet[] = $page;
+            }
         }
         return $arrRet;
     }
@@ -277,26 +278,26 @@ class LC_Page_Sitemap extends LC_Page {
      * @return ブロック情報
      */
     function getPageData($where = '', $arrVal = ''){
-        $objDBConn = new SC_DbConn;		// DB操作オブジェクト
-        $sql = "";						// データ取得SQL生成用
-        $arrRet = array();				// データ取得用
+        $objDBConn = new SC_DbConn;     // DB操作オブジェクト
+        $sql = "";                      // データ取得SQL生成用
+        $arrRet = array();              // データ取得用
 
         // SQL生成(url と update_date 以外は不要？)
         $sql .= " SELECT";
-        $sql .= " page_id";				// ページID
-        $sql .= " ,page_name";			// 名称
-        $sql .= " ,url";				// URL
-        $sql .= " ,php_dir";			// php保存先ディレクトリ
-        $sql .= " ,tpl_dir";			// tpl保存先ディdレクトリ
-        $sql .= " ,filename";			// ファイル名称
-        $sql .= " ,header_chk ";		// ヘッダー使用FLG
-        $sql .= " ,footer_chk ";		// フッター使用FLG
-        $sql .= " ,author";				// authorタグ
-        $sql .= " ,description";		// descriptionタグ
-        $sql .= " ,keyword";			// keywordタグ
-        $sql .= " ,update_url";			// 更新URL
-        $sql .= " ,create_date";		// データ作成日
-        $sql .= " ,update_date";		// データ更新日
+        $sql .= " page_id";             // ページID
+        $sql .= " ,page_name";          // 名称
+        $sql .= " ,url";                // URL
+        $sql .= " ,php_dir";            // php保存先ディレクトリ
+        $sql .= " ,tpl_dir";            // tpl保存先ディdレクトリ
+        $sql .= " ,filename";           // ファイル名称
+        $sql .= " ,header_chk ";        // ヘッダー使用FLG
+        $sql .= " ,footer_chk ";        // フッター使用FLG
+        $sql .= " ,author";             // authorタグ
+        $sql .= " ,description";        // descriptionタグ
+        $sql .= " ,keyword";            // keywordタグ
+        $sql .= " ,update_url";         // 更新URL
+        $sql .= " ,create_date";        // データ作成日
+        $sql .= " ,update_date";        // データ更新日
         $sql .= " FROM ";
         $sql .= "     dtb_pagelayout";
 
@@ -305,7 +306,7 @@ class LC_Page_Sitemap extends LC_Page {
             $sql .= " WHERE " . $where;
         }
 
-        $sql .= " ORDER BY 	page_id";
+        $sql .= " ORDER BY page_id";
 
         return $objDBConn->getAll($sql, $arrVal);
     }

@@ -38,8 +38,15 @@ class SC_Initial_Mobile extends SC_Initial {
      * コンストラクタ.
      */
     function SC_Initial_Mobile() {
+        
         parent::SC_Initial();
-
+        
+        // XXX モバイルはパラメータを読まないようなのでこの方法は使えなかった
+        // // モバイルサイトを利用しない設定の場合、落とす。
+        // if (USE_MOBILE === false) {
+        //     exit;
+        // }
+        
         define('MOBILE_SITE', true);
     }
 }
