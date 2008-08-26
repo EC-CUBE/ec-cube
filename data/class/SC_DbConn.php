@@ -61,6 +61,11 @@ class SC_DbConn{
                 }
             }
         }
+        
+        if (DB_TYPE == 'mysql') {
+            $objDbConn->query('SET NAMES utf8');
+        }
+        
         $this->conn = $objDbConn;
         $this->error_mail_to = DB_ERROR_MAIL_TO;
         $this->error_mail_title = DB_ERROR_MAIL_SUBJECT;
