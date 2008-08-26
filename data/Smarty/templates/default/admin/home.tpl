@@ -45,7 +45,7 @@
       <table summary="システム情報" class="shop-info">
         <tr>
           <th>EC-CUBEバージョン</td>
-          <td><!--{$smarty.const.ECCUBE_VERSION}--> ($Rev$)</td>
+          <td><!--{$smarty.const.ECCUBE_VERSION}--></td>
         </tr>
         <tr>
           <th>PHPバージョン</td>
