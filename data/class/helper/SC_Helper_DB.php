@@ -912,58 +912,63 @@ class SC_Helper_DB {
      * @return void
      */
     function sfCategory_Count($objQuery){
-        $sql = "";
 
         //テーブル内容の削除
         $objQuery->query("DELETE FROM dtb_category_count");
         $objQuery->query("DELETE FROM dtb_category_total_count");
 
-        //各カテゴリ内の商品数を数えて格納
-        $sql = " INSERT INTO dtb_category_count(category_id, product_count, create_date) ";
-        $sql .= " SELECT T1.category_id, count(T2.category_id), now() ";
-        $sql .= " FROM dtb_category AS T1 LEFT JOIN dtb_product_categories AS T2";
-        $sql .= " ON T1.category_id = T2.category_id ";
-        $sql .= " LEFT JOIN vw_products_allclass_detail AS alldtl";
-        $sql .= " ON T2.product_id = alldtl.product_id";
-        $sql .= " WHERE alldtl.del_flg = 0 AND alldtl.status = 1 ";
-        
+        $sql_where .= 'alldtl.del_flg = 0 AND alldtl.status = 1';
         // 在庫無し商品の非表示
         if (NOSTOCK_HIDDEN === true) {
-            $sql .= ' AND (alldtl.stock_max >= 1 OR alldtl.stock_unlimited_max = 1)';
+            $sql_where .= ' AND (alldtl.stock_max >= 1 OR alldtl.stock_unlimited_max = 1)';
         }
+
+        //各カテゴリ内の商品数を数えて格納
+        $sql = <<< __EOS__
+            INSERT INTO dtb_category_count(category_id, product_count, create_date)
+            SELECT T1.category_id, count(T2.category_id), now()
+            FROM dtb_category AS T1
+                LEFT JOIN dtb_product_categories AS T2
+                    ON T1.category_id = T2.category_id
+                LEFT JOIN vw_products_allclass_detail AS alldtl
+                    ON T2.product_id = alldtl.product_id
+            WHERE $sql_where
+            GROUP BY T1.category_id, T2.category_id
+__EOS__;
         
-        $sql .= " GROUP BY T1.category_id, T2.category_id ";
         $objQuery->query($sql);
 
         //子カテゴリ内の商品数を集計する
-
-        // 最下層(level=5)のカテゴリから順に足し合わせていく。
-        for ($i = 5; $i >= 1; --$i) {
+        
+        // カテゴリ情報を取得
+        $arrCat = $objQuery->select('category_id', 'dtb_category');
+        
+        foreach ($arrCat as $row) {
+            $category_id = $row['category_id'];
+            $arrval = array();
+            
+            $arrval[] = $category_id;
+            
+            list($tmp_where, $tmp_arrval) = $this->sfGetCatWhere($category_id);
+            if ($tmp_where != "") {
+                $sql_where_product_ids = "alldtl.product_id IN (SELECT product_id FROM dtb_product_categories WHERE " . $tmp_where . ")";
+                $arrval = array_merge((array)$arrval, (array)$tmp_arrval);
+            } else {
+                $sql_where_product_ids = '0<>0'; // 一致させない
+            }
+            
             $sql = <<< __EOS__
                 INSERT INTO dtb_category_total_count (category_id, product_count, create_date)
-                SELECT category_id, SUM(product_count), NOW()
-                FROM
-                    (
-                        SELECT T1.parent_category_id AS category_id, T2.product_count
-                        FROM dtb_category AS T1, dtb_category_total_count AS T2
-                        WHERE T2.category_id = T1.category_id AND T1.level = ?
-                        UNION ALL
-                        SELECT T3.category_id, T4.product_count
-                        FROM dtb_category AS T3, dtb_category_count AS T4
-                        WHERE T4.category_id = T3.category_id AND T3.level = ?
-                    ) AS T5
-                GROUP BY category_id;
+                SELECT
+                    ?
+                    ,count(*)
+                    ,now()
+                FROM vw_products_allclass_detail AS alldtl
+                WHERE ($sql_where) AND ($sql_where_product_ids)
 __EOS__;
-            $objQuery->query($sql, array($i+1, $i));
+            
+            $objQuery->query($sql, $arrval);
         }
-
-        // データの構成を改修前と同じにするための処理(不要？)
-        $sql = " INSERT INTO dtb_category_total_count (category_id, product_count, create_date) ";
-        $sql .= " SELECT category_id, NULL, NOW() FROM dtb_category AS T1 ";
-        $sql .= " WHERE NOT EXISTS(SELECT * FROM dtb_category_total_count ";
-        $sql .= " WHERE category_id = T1.category_id); ";
-
-        $objQuery->query($sql);
     }
 
     /**
