@@ -61,7 +61,7 @@ class SC_SessionFactory_UseCookie extends SC_SessionFactory {
     /**
      * Cookieを使用するかどうか
      *
-     * @return boolean 常にfalseを返す
+     * @return boolean 常に true を返す
      */
     function useCookie() {
         return true;
