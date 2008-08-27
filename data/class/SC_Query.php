@@ -269,7 +269,6 @@ class SC_Query {
         // 文末の","を削除
         $strval = ereg_replace(",$","",$strval);
         $sqlin = "INSERT INTO $table(" . $strcol. ") VALUES (" . $strval . ")";
-        echo $sqlin;exit;
         // INSERT文の実行
         $ret = $this->conn->query($sqlin, $arrval);
 
