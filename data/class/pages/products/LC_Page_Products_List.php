@@ -72,8 +72,13 @@ class LC_Page_Products_List extends LC_Page {
      * @return void
      */
     function process() {
+        $objView = new SC_SiteView();
         $conn = new SC_DBConn();
         $objDb = new SC_Helper_DB_Ex();
+
+        // レイアウトデザインを取得
+        $helper = new SC_Helper_PageLayout_Ex();
+        $helper->sfGetPageLayout($this, false, DEF_LAYOUT);
 
         //表示件数の選択
         if(isset($_POST['disp_number'])
@@ -197,7 +202,8 @@ class LC_Page_Products_List extends LC_Page {
         $this->category_id = $arrCategory_id[0];
         $this->arrSearch = $arrSearch;
 
-        SC_Utils_Ex::sfCustomDisplay($this);
+        $objView->assignobj($this);
+        $objView->display(SITE_FRAME);
     }
 
     /**
@@ -217,6 +223,7 @@ class LC_Page_Products_List extends LC_Page {
      * @return void
      */
     function mobileProcess() {
+        $objView = new SC_MobileView();
         $conn = new SC_DBConn();
         $objDb = new SC_Helper_DB_Ex();
 
@@ -342,7 +349,6 @@ class LC_Page_Products_List extends LC_Page {
             $this->tpl_next_page = $objURL->path . '?' . $objURL->getQueryString();
         }
 
-
         $this->tpl_subtitle = $tpl_subtitle;
         $this->tpl_search_mode = $tpl_search_mode;
 
@@ -354,7 +360,9 @@ class LC_Page_Products_List extends LC_Page {
         $this->category_id = $arrCategory_id[0];
         $this->arrSearch = $arrSearch;
         $this->tpl_mainpage = MOBILE_TEMPLATE_DIR . "products/list.tpl";
-        SC_Utils_Ex::sfCustomDisplay($this, true);
+        
+        $objView->assignobj($this);
+        $objView->display(SITE_FRAME);
     }
 
     /**

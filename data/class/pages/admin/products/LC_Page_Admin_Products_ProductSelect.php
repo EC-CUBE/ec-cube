@@ -84,7 +84,7 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page {
 
                 switch ($key) {
                 case 'search_name':
-                    $where .= " AND name LIKE ?";
+                    $where .= " AND name ILIKE ?";
                     $arrval[] = "%$val%";
                     break;
                 case 'search_category_id':

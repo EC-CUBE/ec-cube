@@ -1255,10 +1255,11 @@ class SC_Utils {
         return $time;
     }
 
-    // 出力の際にテンプレートを切り替えられる
-    /*
-        index.php?tpl=test.tpl
-    */
+    /**
+     * テンプレートを切り替えて出力する
+     *
+     * @deprecated 2008/04/02以降使用不可
+     */
     function sfCustomDisplay(&$objPage, $is_mobile = false) {
         $basename = basename($_SERVER["REQUEST_URI"]);
 
@@ -1277,7 +1278,7 @@ class SC_Utils {
         }
 
         $template_path = TEMPLATE_FTP_DIR . $tpl_name;
-
+echo $template_path;
         if($is_mobile === true) {
             $objView = new SC_MobileView();
             $objView->assignobj($objPage);
