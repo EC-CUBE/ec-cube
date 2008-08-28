@@ -433,14 +433,6 @@ function lfDispStep0($objPage) {
 
     // 権限エラー等が発生していない場合
     if(!$err_file) {
-        $path = DATA_PATH . "Smarty/templates_c/admin";
-        if(!file_exists($path)) {
-            mkdir($path);
-        }
-        $path = DATA_PATH . "Smarty/templates_c/mobile";
-        if(!file_exists($path)) {
-            mkdir($path);
-        }
         $path = HTML_PATH . "upload/temp_template";
         if(!file_exists($path)) {
             mkdir($path);

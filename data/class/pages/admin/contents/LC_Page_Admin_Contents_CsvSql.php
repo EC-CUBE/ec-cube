@@ -147,7 +147,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page {
                 }
                 $header .= "\n";
 
-                $data = $this->lfGetCSVData($arrCsvOutputData, $arrKey);
+                $data = SC_Utils_Ex::getCSVData($arrCsvOutputData, $arrKey);
                 // CSV出力
                 SC_Utils_Ex::sfCSVDownload($header.$data);
                 exit;
@@ -409,26 +409,6 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page {
 
         // 結果を返す
         return $ret;
-    }
-
-
-    //---- CSV出力用データ取得
-    function lfGetCSVData( $array, $arrayIndex){
-        $return = "";
-        for ($i=0; $i<count($array); $i++){
-            for ($j=0; $j<count($array[$i]); $j++ ){
-                if ( $j > 0 ) $return .= ",";
-                $return .= "\"";
-                if ( $arrayIndex ){
-                    $return .= mb_ereg_replace("<","＜",mb_ereg_replace( "\"","\"\"",$array[$i][$arrayIndex[$j]] )) ."\"";
-                } else {
-                    $return .= mb_ereg_replace("<","＜",mb_ereg_replace( "\"","\"\"",$array[$i][$j] )) ."\"";
-                }
-            }
-            $return .= "\n";
-        }
-
-        return $return;
     }
 }
 ?>

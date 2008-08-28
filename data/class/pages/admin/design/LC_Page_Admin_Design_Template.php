@@ -295,6 +295,9 @@ class LC_Page_Admin_Design_Template extends LC_Page {
 	    // テンプレート削除
 	    $templates_dir = SMARTY_TEMPLATES_DIR. $template_code. "/";
 	    SC_Utils_Ex::sfDelFile($templates_dir);
+	    // コンパイル削除
+	    $templates_c_dir = DATA_PATH. "Smarty/templates_c/". $template_code. "/";
+	    SC_Utils_Ex::sfDelFile($templates_c_dir);
 	    // ユーザーデータ削除
 	    $user_dir = USER_TEMPLATE_PATH. $template_code. "/";
 	    SC_Utils_Ex::sfDelFile($user_dir);

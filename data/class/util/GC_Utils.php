@@ -178,27 +178,31 @@ class GC_Utils {
                 while (($file = readdir($dh)) !== false) {
                     // ログローテーションにて作成されたファイルを取得
                     if(ereg("^". $basename . "\." , $file)) {
-                        $arrLog[] = $file;
+                        $arrFile[] = $file;
                     }
                 }
 
-                // ファイルログが最大数量なら以上なら古いファイルから削除する
-                $count = count($arrLog);
-                if($count >= $max_log) {
-                    $diff = $count - $max_log;
-                    for($i = 0; $diff >= $i ; $i++) {
-                        unlink($dirname. "/" .array_pop($arrLog));
+                // ローテーションにて作成されたログファイルが存在しない場合は実行しない
+                if(is_array($arrFile)) {
+                    // ソートを行う
+                    $arrLog = natcasesort($arrFile);
+                    
+                    // ファイルログが最大個数なら以上なら古いファイルから削除する
+                    $count = count($arrLog);
+                    if($count >= $max_log) {
+                        $diff = $count - $max_log;
+                        for($i = 0; $diff >= $i ; $i++) {
+                            unlink($dirname. "/" .array_pop($arrLog));
+                        }
                     }
-                }
-
-                // ログファイルの添え字をずらす
-                $count = count($arrLog);
-                for($i = $count; 1 <= $i; $i--) {
-                    $move_number = $i + 1;
-
-                    if(file_exists("$path.$move_number")) unlink("$path.$move_number");
-                    copy("$dirname/" . $arrLog[$i - 1], "$path.$move_number");
-
+    
+                    // ログファイルの添え字をずらす
+                    $count = count($arrLog);
+                    for($i = $count; 1 <= $i; $i--) {
+                        $move_number = $i + 1;
+                        if(file_exists("$path.$move_number")) unlink("$path.$move_number");
+                        copy("$dirname/" . $arrLog[$i - 1], "$path.$move_number");
+                    }
                 }
                 $ret = copy($path, "$path.1");
 
@@ -211,7 +215,7 @@ class GC_Utils {
             }
         }
     }
-
+    
     /*----------------------------------------------------------------------
      * [名称] gfMakePassword
      * [概要] ランダムパスワード生成（英数字）
