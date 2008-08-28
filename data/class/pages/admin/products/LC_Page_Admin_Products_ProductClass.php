@@ -133,7 +133,6 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
                 // 規格組み合わせ一覧の取得(DBの値を優先する。)
                 $this->arrClassCat = $this->lfGetClassCatListEdit($_POST['product_id']);
             }
-
             $this->lfProductClassPage();   // 規格登録ページ
             break;
             
@@ -147,7 +146,6 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
                 // 規格組み合わせ一覧の取得
                 $this->arrClassCat = $this->lfGetClassCatListDisp($_POST['select_class_id1'], $_POST['select_class_id2']);
             }
-
             $this->lfProductClassPage();   // 規格登録ページ
             break;
             
@@ -229,16 +227,24 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
         $product_name = $objQuery->getOne("SELECT name FROM dtb_products WHERE product_id = ?", array($_POST['product_id']));
         $this->arrForm['product_name'] = $product_name;
     }
-
+    
+    /**
+     * デフォルトの表示
+     *
+     * @param object $objQuery
+     * @param integer $product_id 製品のID
+     * @param integer $max 表示される最大値
+     */
     function lfSetDefaultClassCat($objQuery, $product_id, $max) {
 
         // デフォルト値の読込
-        $col = "product_code, price01, price02, stock, stock_unlimited";
+        $col = "product_class_id, product_code, price01, price02, stock, stock_unlimited";
         $arrRet = $objQuery->select($col, "dtb_products_class", "product_id = ? AND classcategory_id1 = 0 AND classcategory_id2 = 0", array($product_id));;
 
         if(count($arrRet) > 0) {
             $no = 1;
             for($cnt = 0; $cnt < $max; $cnt++) {
+                $this->arrForm["product_class_id:".$no] = $arrRet[0]['product_class_id'];
                 $this->arrForm["product_code:".$no] = $arrRet[0]['product_code'];
                 $this->arrForm['stock:'.$no] = $arrRet[0]['stock'];
                 $this->arrForm['price01:'.$no] = $arrRet[0]['price01'];
@@ -265,7 +271,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
             $sql.= "FROM vw_cross_class AS crs_cls ";
             $sql.= "WHERE class_id1 = ? AND class_id2 = 0 ORDER BY rank1 DESC;";
             $arrRet = $objQuery->getall($sql, array($class_id1));
-
+            
         }
 
         $max = count($arrRet);
@@ -311,12 +317,11 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
 
         // デフォルト値を設定
         $this->lfSetDefaultClassCat($objQuery, $product_id, $max);
-
         $no = 1;
-
         for($cnt = 0; $cnt < $max; $cnt++) {
             $this->arrForm["classcategory_id1:".$no] = $arrList[$cnt]['classcategory_id1'];
             $this->arrForm["classcategory_id2:".$no] = $arrList[$cnt]['classcategory_id2'];
+            $this->arrForm["product_class_id:".$no] = $arrList[$cnt]['product_class_id'];
             if($arrList[$cnt]['product_id'] != "") {
                 $this->arrForm["product_code:".$no] = $arrList[$cnt]['product_code'];
                 $this->arrForm['stock:'.$no] = $arrList[$cnt]['stock'];
@@ -355,6 +360,9 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
                 $sqlval['product_id'] = $product_id;
                 $sqlval['classcategory_id1'] = $arrList["classcategory_id1:".$cnt];
                 $sqlval['classcategory_id2'] = $arrList["classcategory_id2:".$cnt];
+                if( strlen($arrList["product_class_id:".$cnt]) > 0 ){
+                    $sqlval['product_class_id'] = $arrList["product_class_id:".$cnt];
+                }
                 $sqlval['product_code'] = $arrList["product_code:".$cnt];
                 $sqlval['stock'] = $arrList["stock:".$cnt];
                 $sqlval['stock_unlimited'] = ($arrList["stock_unlimited:".$cnt]) ? '1' : '0';

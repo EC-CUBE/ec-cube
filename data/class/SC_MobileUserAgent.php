@@ -127,7 +127,7 @@ class SC_MobileUserAgent {
 
         // 携帯端末だと認識されたが、User-Agent の形式が未知の場合
         if (Net_UserAgent_Mobile::isError($objAgent)) {
-            gfPrintLog($objAgent->toString());
+            GC_Utils_Ex::gfPrintLog($objAgent->toString());
             return false;
         }
 
