@@ -235,6 +235,7 @@ class SC_Helper_CSV {
             $tmp = "";
             switch($key) {
             case 'order_pref':
+            case 'deliv_pref':
                 $tmp = $this->arrPref[$val];
                 break;
             default:

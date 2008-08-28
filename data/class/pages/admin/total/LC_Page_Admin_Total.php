@@ -637,7 +637,7 @@ class LC_Page_Admin_Total extends LC_Page {
         list($where, $arrval) = $this->lfGetWhereMember('create_date', $sdate, $edate, $type);
 
         // 会員集計の取得
-        $col = "COUNT(*) AS order_count, SUM(total) AS total, (AVG(total)) AS total_average, order_sex";
+        $col = "COUNT(*) AS order_count, SUM(total) AS total, trunc(AVG(total)) AS total_average, order_sex";
         $from = "dtb_order";
         $objQuery = new SC_Query();
         $objQuery->setGroupBy("order_sex");
@@ -703,11 +703,9 @@ class LC_Page_Admin_Total extends LC_Page {
 
     /** 職業別集計 **/
     function lfGetOrderJob($type, $sdate, $edate, &$objPage, $graph = true) {
-        global $arrJob;
-
         list($where, $arrval) = $this->lfGetWhereMember('T2.create_date', $sdate, $edate, $type);
 
-        $sql = "SELECT job, count(*) AS order_count, SUM(total) AS total, (AVG(total)) AS total_average ";
+        $sql = "SELECT job, count(*) AS order_count, SUM(total) AS total, trunc(AVG(total)) AS total_average ";
         $sql.= "FROM dtb_customer AS T1 LEFT JOIN dtb_order AS T2 USING ( customer_id ) WHERE $where AND T2.del_flg = 0 and T2.status <> " . ORDER_CANCEL;
         $sql.= " GROUP BY job ORDER BY total DESC";
 

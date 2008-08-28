@@ -391,6 +391,7 @@ class SC_CustomerList extends SC_SelectSql {
                 dtb_customer.tel02,
                 dtb_customer.tel03,
                 dtb_customer.pref,
+                dtb_customer.create_date,
                 dtb_customer.mailmaga_flg";
 
         return $column;

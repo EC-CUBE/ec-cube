@@ -111,6 +111,9 @@ class SC_SendMail {
     // 件名の設定
     function setSubject($subject) {
         $this->subject = mb_encode_mimeheader($subject, "JIS", 'B', "\n");
+        $this->subject = str_replace("\x0D\x0A", "\n", $this->subject);
+        $this->subject = str_replace("\x0D", "\n", $this->subject);
+        $this->subject = str_replace("\x0A", "\n", $this->subject);
     }
 
     // 本文の設定

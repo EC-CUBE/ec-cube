@@ -309,8 +309,8 @@ class LC_Page_Admin_Customer extends LC_Page {
 
                     //-　都道府県/職業の変換
                     for($i = 0; $i < count($this->search_data); $i ++) {
-                        $this->search_data[$i]["pref"] = $arrPref[ $this->search_data[$i]["pref"] ];
-                        $this->search_data[$i]["job"]  = $arrJob[ $this->search_data[$i]["job"] ];
+                        $this->search_data[$i]["pref"] = $this->arrPref[ $this->search_data[$i]["pref"] ];
+                        $this->search_data[$i]["job"]  = $this->arrJob[ $this->search_data[$i]["job"] ];
                     }
 
                     //-　CSV出力
