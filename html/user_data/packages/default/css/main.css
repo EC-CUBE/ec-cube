@@ -359,6 +359,36 @@ div#searcharea .btn {
     border: solid 1px #ccc;
 }
 
+/* カレンダー
+----------------------------------------------- */
+#block-calendar {
+}
+
+#block-calendar table {
+    border-collapse: collapse;
+    margin: 0 auto 10px;
+    text-align:center;
+}
+
+#block-calendar th, #block-calendar td {
+    padding: 2px;
+    border: 1px solid #CCCCCC;
+}
+
+#block-calendar th {
+    background: #FF8144;
+    color: #FFFFFF;
+}
+
+#block-calendar .off {
+    background: #FFEECC;
+    color: #E04A00;
+}
+
+#block-calendar caption {
+    color: #DD4400;
+}
+
 
 /* バナー
 ----------------------------------------------- */

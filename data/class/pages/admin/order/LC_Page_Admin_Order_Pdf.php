@@ -162,9 +162,9 @@ class LC_Page_Admin_Order_Pdf extends LC_Page {
         $this->objFormParam->addParam("帳票の種類", "type", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
         $this->objFormParam->addParam("ダウンロード方法", "download", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
         $this->objFormParam->addParam("帳票タイトル", "title", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("帳票メッセージ1行目", "msg1", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("帳票メッセージ2行目", "msg2", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("帳票メッセージ3行目", "msg3", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
+        $this->objFormParam->addParam("帳票メッセージ1行目", "msg1", STEXT_LEN*3/5, "KVa", array("MAX_LENGTH_CHECK"));
+        $this->objFormParam->addParam("帳票メッセージ2行目", "msg2", STEXT_LEN*3/5, "KVa", array("MAX_LENGTH_CHECK"));
+        $this->objFormParam->addParam("帳票メッセージ3行目", "msg3", STEXT_LEN*3/5, "KVa", array("MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("備考1行目", "etc1", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("備考2行目", "etc2", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("備考3行目", "etc3", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));

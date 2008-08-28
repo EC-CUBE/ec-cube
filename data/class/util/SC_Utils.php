@@ -126,7 +126,7 @@ class SC_Utils {
         $objPage->objSiteSess = $objSiteSess;
         $objPage->return_top = $return_top;
         $objPage->err_msg = $err_msg;
-        $objPage->is_mobile = $is_mobile;
+        $objPage->is_mobile = (defined('MOBILE_SITE')) ? true : false;
         $objPage->process();
         exit;
     }

@@ -329,8 +329,8 @@ class LC_Page_Admin_Products extends LC_Page {
         }
 
         // カテゴリの読込
-        $this->arrCatList = $objDb->sfGetCategoryList();
-        $this->arrCatIDName = $this->lfGetIDName($this->arrCatList);
+        list($this->arrCatKey, $this->arrCatVal) = $objDb->sfGetLevelCatList(false);
+        $this->arrCatList = $this->lfGetIDName($this->arrCatKey, $this->arrCatVal);
 
         // 画面の表示
         $objView->assignobj($this);
@@ -398,11 +398,11 @@ class LC_Page_Admin_Products extends LC_Page {
     }
 
     // カテゴリIDをキー、カテゴリ名を値にする配列を返す。
-    function lfGetIDName($arrCatList) {
-        $max = count($arrCatList);
+    function lfGetIDName($arrCatKey, $arrCatVal) {
+        $max = count($arrCatKey);
         for ($cnt = 0; $cnt < $max; $cnt++ ) {
-            $key = isset($arrCatList[$cnt]['category_id']) ? $arrCatList[$cnt]['category_id'] : "";
-            $val = isset($arrCatList[$cnt]['category_name']) ? $arrCatList[$cnt]['category_name'] : "";
+            $key = isset($arrCatKey[$cnt]) ? $arrCatKey[$cnt] : "";
+            $val = isset($arrCatVal[$cnt]) ? $arrCatVal[$cnt] : "";
             $arrRet[$key] = $val;
         }
         return $arrRet;

@@ -215,26 +215,7 @@ class LC_Page {
      * @see Net_URL
      */
     function getLocation($path, $param = array(), $useSSL = "escape") {
-
-        // $path が / で始まっている場合
-        if (substr($path, 0, 1) == "/") {
-            $realPath = realpath(HTML_PATH . substr_replace($path, "", 0, strlen(URL_DIR))); 
-        // 相対パスの場合
-        } else {
-            $realPath = realpath($path);
-        }
-
-        // FIXME OS依存の処理は別クラスに分ける？
-        // Windowsの場合は, ディレクトリの区切り文字を\から/に変換する
-        if (substr(PHP_OS, 0, 3) == 'WIN') {
-            $realPath = str_replace("\\", "/", $realPath);
-            $htmlPath = str_replace("\\", "/", HTML_PATH);
-            $rootPath = str_replace($htmlPath, "", $realPath);
-        } else {
-            // HTML_PATH を削除した文字列を取得.
-            $rootPath = str_replace(HTML_PATH, "", $realPath);
-        }
-
+        $rootPath = $this->getRootPath($path);
 
         // スキーマを定義
         if ($useSSL === true) {
@@ -260,6 +241,31 @@ class LC_Page {
         return $netURL->getURL();
     }
 
+    function getRootPath($path) {
+        // $path が / で始まっている場合
+        if (substr($path, 0, 1) == "/") {
+            $realPath = realpath(HTML_PATH . substr_replace($path, "", 0, strlen(URL_DIR)));
+        // 相対パスの場合
+        } else {
+            $realPath = realpath($path);
+        }
+
+        // HTML_PATH を削除した文字列を取得.
+        // FIXME OS依存の処理は別クラスに分ける？
+        // Windowsの場合は, ディレクトリの区切り文字を\から/に変換する
+        if (substr(PHP_OS, 0, 3) == 'WIN') {
+            $realPath = str_replace("\\", "/", $realPath);
+            $htmlPath = str_replace("\\", "/", HTML_PATH);
+            $rootPath = str_replace($htmlPath, "", $realPath);
+        } else {
+            $htmlPath = rtrim(HTML_PATH, "/");
+            $rootPath = str_replace($htmlPath, "", $realPath);
+            $rootPath = ltrim($rootPath, "/");
+        }
+        
+        return $rootPath;
+    }
+    
     /**
      * ページをリロードする.
      *
