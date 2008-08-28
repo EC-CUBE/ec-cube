@@ -51,20 +51,10 @@ define('UPDATE_CSV_LINE_MAX', 4096);
 define('UPDATE_CSV_COL_MAX', 13);
 /** モジュール管理用CSVカラム数 */
 define('MODULE_CSV_COL_MAX', 16);
-/** エビスタグ機能のモジュールID */
-define('EBIS_TAG_MID', 1);
-/** アフィリエイトタグ機能のモジュールID */
-define('AFF_TAG_MID', 3);
 /** 商品購入完了 */
 define('AFF_SHOPPING_COMPLETE', 1);
 /** ユーザ登録完了 */
 define('AFF_ENTRY_COMPLETE', 2);
-/** 決済受信用URL */
-define('CREDIT_HTTP_DOMAIN', "http://rcv.ec-cube.net/");
-/** 決済受信用URL */
-define('CREDIT_HTTP_ANALYZE_PROGRAM', "rcv_credit.php");
-/** 決済受信用URL */
-define('CREDIT_HTTP_ANALYZE_URL', CREDIT_HTTP_DOMAIN . CREDIT_HTTP_ANALYZE_PROGRAM);
 /** 文字コード */
 define('CHAR_CODE', "UTF-8");
 /** ロケール設定 */
@@ -185,10 +175,6 @@ define('HTML_TEMPLATE_SUB_MAX', 12);
 define('LINE_LIMIT_SIZE', 60);
 /** 誕生日月ポイント */
 define('BIRTH_MONTH_POINT', 0);
-/** クレジットカード(ベリトランス) モジュール格納ディレクトリ */
-define('CGI_DIR', HTML_PATH . "../cgi-bin/");
-/** コアCGI */
-define('CGI_FILE', "mauthonly.cgi");
 /** ルートカテゴリID */
 define('ROOT_CATEGORY_1', 2);
 /** ルートカテゴリID */

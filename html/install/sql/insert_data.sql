@@ -800,13 +800,8 @@ INSERT INTO mtb_constants VALUES ('UPDATE_HTTP','"http://sv01.ec-cube.net/info/i
 INSERT INTO mtb_constants VALUES ('UPDATE_CSV_LINE_MAX','4096',29,'アップデート管理用CSV1行辺りの最大文字数');
 INSERT INTO mtb_constants VALUES ('UPDATE_CSV_COL_MAX','13',30,'アップデート管理用CSVカラム数');
 INSERT INTO mtb_constants VALUES ('MODULE_CSV_COL_MAX','16',31,'モジュール管理用CSVカラム数');
-INSERT INTO mtb_constants VALUES ('EBIS_TAG_MID','1',32,'エビスタグ機能のモジュールID');
-INSERT INTO mtb_constants VALUES ('AFF_TAG_MID','3',33,'アフィリエイトタグ機能のモジュールID');
 INSERT INTO mtb_constants VALUES ('AFF_SHOPPING_COMPLETE','1',34,'商品購入完了');
 INSERT INTO mtb_constants VALUES ('AFF_ENTRY_COMPLETE','2',35,'ユーザ登録完了');
-INSERT INTO mtb_constants VALUES ('CREDIT_HTTP_DOMAIN','"http://rcv.ec-cube.net/"',36,'決済受信用URL');
-INSERT INTO mtb_constants VALUES ('CREDIT_HTTP_ANALYZE_PROGRAM','"rcv_credit.php"',37,'決済受信用URL');
-INSERT INTO mtb_constants VALUES ('CREDIT_HTTP_ANALYZE_URL','CREDIT_HTTP_DOMAIN . CREDIT_HTTP_ANALYZE_PROGRAM',38,'決済受信用URL');
 INSERT INTO mtb_constants VALUES ('CHAR_CODE','"UTF-8"',39,'文字コード');
 INSERT INTO mtb_constants VALUES ('LOCALE','"ja_JP.UTF-8"',40,'ロケール設定');
 INSERT INTO mtb_constants VALUES ('ECCUBE_PAYMENT','"EC-CUBE"',41,'決済モジュール付与文言');
@@ -866,8 +861,6 @@ INSERT INTO mtb_constants VALUES ('FORGOT_MAIL','0',95,'パスワード忘れの
 INSERT INTO mtb_constants VALUES ('HTML_TEMPLATE_SUB_MAX','12',96,'登録できるサブ商品の数');
 INSERT INTO mtb_constants VALUES ('LINE_LIMIT_SIZE','60',97,'文字数が多すぎるときに強制改行するサイズ(半角)');
 INSERT INTO mtb_constants VALUES ('BIRTH_MONTH_POINT','0',98,'誕生日月ポイント');
-INSERT INTO mtb_constants VALUES ('CGI_DIR','HTML_PATH . "../cgi-bin/"',99,'クレジットカード(ベリトランス) モジュール格納ディレクトリ');
-INSERT INTO mtb_constants VALUES ('CGI_FILE','"mauthonly.cgi"',100,'コアCGI');
 INSERT INTO mtb_constants VALUES ('ROOT_CATEGORY_1','2',101,'ルートカテゴリID');
 INSERT INTO mtb_constants VALUES ('ROOT_CATEGORY_2','3',102,'ルートカテゴリID');
 INSERT INTO mtb_constants VALUES ('ROOT_CATEGORY_3','4',103,'ルートカテゴリID');

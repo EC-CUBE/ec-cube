@@ -404,7 +404,7 @@ function selectAll(target) {
       <!--{else}-->
         <!--{assign var=image_path value="`$smarty.const.NO_IMAGE_DIR`"}-->
       <!--{/if}-->
-        <img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&width=65&height=65" alt="<!--{$arrRecommend[$recommend_no].name|escape}-->" />
+        <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&width=65&height=65" alt="<!--{$arrRecommend[$recommend_no].name|escape}-->" />
       </th>
       <td>
         <a name="<!--{$anckey}-->"></a>
