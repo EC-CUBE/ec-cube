@@ -21,74 +21,12 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-$include_dir = realpath(dirname( __FILE__)) . '/';
+$require_php_dir = realpath(dirname( __FILE__)) . '/';
 
 if (!defined("HTML_PATH")) {
-    define("HTML_PATH", realpath($include_dir . '../') . '/');
+    define("HTML_PATH", realpath($require_php_dir . '../') . '/');
 }
 
 require_once(HTML_PATH . "define.php");
-
-if (!defined("DATA_PATH")) {
-    define("DATA_PATH", HTML_PATH . HTML2DATA_DIR);
-}
-
-if (!defined("CLASS_PATH")) {
-    /** クラスパス */
-    define("CLASS_PATH", DATA_PATH . "class/");
-}
-
-if (!defined("CLASS_EX_PATH")) {
-    /** クラスパス */
-    define("CLASS_EX_PATH", DATA_PATH . "class_extends/");
-}
-
-if (!defined("CACHE_PATH")) {
-    /** キャッシュ生成ディレクトリ */
-    define("CACHE_PATH", DATA_PATH . "cache/");
-}
-require_once(CLASS_EX_PATH . "SC_Initial_Ex.php");
-// アプリケーション初期化処理
-$objInit = new SC_Initial_Ex();
-$objInit->init();
-
-
-require_once(DATA_PATH . "include/module.inc");
-require_once(CLASS_EX_PATH . "util_extends/GC_Utils_Ex.php");
-require_once(CLASS_EX_PATH . "util_extends/SC_Utils_Ex.php");
-require_once(CLASS_EX_PATH . "db_extends/SC_DB_MasterData_Ex.php");
-require_once(CLASS_EX_PATH . "db_extends/SC_DB_DBFactory_Ex.php");
-require_once(CLASS_PATH . "SC_View.php");
-require_once(CLASS_PATH . "SC_DbConn.php");
-require_once(CLASS_PATH . "SC_Session.php");
-require_once(CLASS_PATH . "SC_Query.php");
-require_once(CLASS_PATH . "SC_SelectSql.php");
-require_once(CLASS_PATH . "SC_CheckError.php");
-require_once(CLASS_PATH . "SC_PageNavi.php");
-require_once(CLASS_PATH . "SC_Date.php");
-require_once(CLASS_PATH . "SC_Image.php");
-require_once(CLASS_PATH . "SC_UploadFile.php");
-require_once(CLASS_PATH . "SC_SiteInfo.php");
-require_once(CLASS_PATH . "SC_SendMail.php");
-require_once(CLASS_PATH . "SC_FormParam.php");
-require_once(CLASS_PATH . "SC_CustomerList.php");
-require_once(CLASS_PATH . "SC_Customer.php");
-require_once(CLASS_PATH . "SC_Pdf.php");
-require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_PageLayout_Ex.php");
-require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_DB_Ex.php");
-require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_Session_Ex.php");
-
-require_once(DATA_PATH . "module/Mail.php");
-require_once(DATA_PATH . "module/Mail/mime.php");
-
-// インストールチェック
-SC_Utils_Ex::sfInitInstall();
-
-// セッションハンドラ開始
-$objSession = new SC_Helper_Session_Ex();
-
-// セッション初期化・開始
-require_once CLASS_PATH . 'session/SC_SessionFactory.php';
-$sessionFactory = SC_SessionFactory::getInstance();
-$sessionFactory->initSession();
+require_once(HTML_PATH . HTML2DATA_DIR . "require_base.php");
 ?>
