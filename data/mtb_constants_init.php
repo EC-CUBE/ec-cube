@@ -10,7 +10,7 @@ define('USER_PATH', HTML_PATH . USER_DIR);
 /** ユーザインクルードファイル保存先 */
 define('USER_INC_PATH', USER_PATH . "include/");
 /** DBエラーメール送信先 */
-define('DB_ERROR_MAIL_TO', "error-ml@lockon.co.jp");
+define('DB_ERROR_MAIL_TO', "");
 /** DBエラーメール件名 */
 define('DB_ERROR_MAIL_SUBJECT', "OS_TEST_ERROR");
 /** 郵便番号専用DB */
@@ -595,9 +595,9 @@ define('MOBILE_KARA_MAIL_ADDRESS_USER', "eccube");
 /** 空メール受け付けアドレスのユーザー名とコマンドの間の区切り文字 qmail の場合は - */
 define('MOBILE_KARA_MAIL_ADDRESS_DELIMITER', "+");
 /** 空メール受け付けアドレスのドメイン部分 */
-define('MOBILE_KARA_MAIL_ADDRESS_DOMAIN', "mobile.ec-cube.net");
+define('MOBILE_KARA_MAIL_ADDRESS_DOMAIN', "");
 /** 携帯のメールアドレスではないが、携帯だとみなすドメインのリスト 任意の数の「,」「 」で区切る。 */
-define('MOBILE_ADDITIONAL_MAIL_DOMAINS', "rebelt.co.jp, lockon.co.jp");
+define('MOBILE_ADDITIONAL_MAIL_DOMAINS', "");
 /** 携帯電話向け変換画像保存ディレクトリ */
 define('MOBILE_IMAGE_DIR', HTML_PATH . "upload/mobile_image");
 /** 携帯電話向け変換画像保存ディレクトリ */

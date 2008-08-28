@@ -462,6 +462,18 @@ class SC_CheckError {
         }
     }
 
+    /*　英数記号の判定　*/
+    // value[0] = 項目名 value[1] = 判定対象文字列
+    function GRAPH_CHECK( $value ) {				// 入力文字が英数記号以外ならエラーを返す
+        if(isset($this->arrErr[$value[1]])) {
+            return;
+        }
+        $this->createParam($value);
+        if( strlen($this->arrParam[$value[1]]) > 0 && ! EregI("^[[:graph:]]+$", $this->arrParam[$value[1]] ) ) {
+            $this->arrErr[$value[1]] = "※ " . $value[0] . "は英数記号で入力してください。<br />";
+        }
+    }
+
     /*　必須選択の判定　*/
     // value[0] = 項目名 value[1] = 判定対象
     function ZERO_CHECK( $value ) {				// 入力値で0が許されない場合エラーを返す
