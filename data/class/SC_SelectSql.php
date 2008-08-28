@@ -89,11 +89,13 @@ class SC_SelectSql {
     //--　期間検索（○年○月○日か~○年○月○日まで）
     function selectTermRange($from_year, $from_month, $from_day, $to_year, $to_month, $to_day, $column) {
 
-        // FROM
+        // 開始期間の構築
         $date1 = $from_year . "/" . $from_month . "/" . $from_day;
 
-        // TO
-        $date2 = @mktime (0, 0, 0, $to_month, $to_day,  $to_year);
+        // 終了期間の構築
+        // @see http://svn.ec-cube.net/open_trac/ticket/328
+        // FIXME とりあえずintvalで対策...
+        $date2 = mktime (0, 0, 0, intval($to_month), intval($to_day), intval($to_year));
         $date2 = $date2 + 86400;
         // SQL文のdate関数に与えるフォーマットは、yyyy/mm/ddで指定する。
         $date2 = date('Y/m/d', $date2);

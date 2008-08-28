@@ -381,7 +381,7 @@
       <td class="right">
         <!--{assign var=key value="use_point"}-->
         <span class="attention"><!--{$arrErr[$key]}--></span>
-        <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape|default:0}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"  size="5" class="box6" />
+        <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape|number_format|default:0}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"  size="5" class="box6" />
          pt
       </td>
     </tr>

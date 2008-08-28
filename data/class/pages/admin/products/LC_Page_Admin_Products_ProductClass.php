@@ -217,13 +217,13 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
 
         // 規格分類が登録されていない規格は表示しないようにする。
         $arrClassCatCount = SC_Utils_Ex::sfGetClassCatCount();
-
-        foreach($arrClass as $key => $val) {
-            if($arrClassCatCount[$key] > 0) {
-                $this->arrClass[$key] = $arrClass[$key];
+        if (count($arrClass) > 0) {
+            foreach($arrClass as $key => $val) {
+                if($arrClassCatCount[$key] > 0) {
+                    $this->arrClass[$key] = $arrClass[$key];
+                }
             }
         }
-
         // 商品名を取得
         $objQuery = new SC_Query();
         $product_name = $objQuery->getOne("SELECT name FROM dtb_products WHERE product_id = ?", array($_POST['product_id']));

@@ -279,7 +279,13 @@ class LC_Page_Shopping_Complete extends LC_Page {
         return $arrEbis;
     }
 
-    // 完了処理
+    /**
+     * 購入完了処理
+     *
+     * @param object $objQuery
+     * @param string $uniqid
+     * @return string $order_id
+     */
     function lfDoComplete(&$objQuery, $uniqid) {
         $objDb = new SC_Helper_DB_Ex();
 
@@ -411,7 +417,7 @@ class LC_Page_Shopping_Complete extends LC_Page {
         $objMail = new SC_SendMail();
         $objMail->setItem(
                             ''										//　宛先
-                            , $mailHelper->sfMakeSubject("会員登録のご確認")		//　サブジェクト
+                            , $mailHelper->sfMakeSubject($objQuery,$objMailView,$objMailPage,"会員登録のご確認")		//　サブジェクト
                             , $body									//　本文
                             , $arrInfo['email03']					//　配送元アドレス
                             , $arrInfo['shop_name']					//　配送元　名前
