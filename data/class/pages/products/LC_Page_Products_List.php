@@ -626,7 +626,7 @@ class LC_Page_Products_List extends LC_Page {
 
         $classcategory_id_2 = $classcategory_id . "_2";
         if (!isset($classcategory_id_2)) $classcategory_id_2 = "";
-        if (!isset($_POST[$classcategory_id_2])) $_POST[$classcategory_id_2] = "";
+        if (!isset($_POST[$classcategory_id_2]) || !is_numeric($_POST[$classcategory_id_2])) $_POST[$classcategory_id_2] = "";
 
         $this->tpl_onload .= "lnSetSelect('" . $classcategory_id ."_1', "
             . "'" . $classcategory_id_2 . "',"

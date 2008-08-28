@@ -70,7 +70,7 @@ class SC_DbConn{
         $this->error_mail_to = DB_ERROR_MAIL_TO;
         $this->error_mail_title = DB_ERROR_MAIL_SUBJECT;
         $this->err_disp = $err_disp;
-        $this->dbFactory = SC_DB_DBFactory::getInstance();
+        $this->dbFactory = SC_DB_DBFactory_Ex::getInstance();
     }
 
     // クエリの実行

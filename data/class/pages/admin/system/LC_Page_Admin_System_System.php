@@ -106,7 +106,7 @@ class LC_Page_Admin_System_System extends LC_Page {
      * @return array
      */
     function getSystemInfo() {
-        $objDB = SC_DB_DBFactory::getInstance();
+        $objDB = SC_DB_DBFactory_Ex::getInstance();
 
         $arrSystemInfo = array(
             array('title' => 'EC-CUBE',  'value' => ECCUBE_VERSION),
