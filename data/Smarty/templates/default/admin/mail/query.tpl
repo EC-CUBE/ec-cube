@@ -133,7 +133,7 @@ self.moveTo(20,20);self.focus();
     </tr>
     <tr>
       <th>キャンペーン</th>
-      <td><!--{$arrCampaignList[$list_data.campaign_id]}--></td>
+      <td><!--{$arrCampaignList[$list_data.campaign_id]|escape|default:"（未指定）"}--></td>
     </tr>
   </table>
 

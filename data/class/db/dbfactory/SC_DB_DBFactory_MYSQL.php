@@ -66,6 +66,8 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
         $sql = $this->sfChangeILIKE($sql);
         // RANDOM()をRAND()に変換する
         $sql = $this->sfChangeRANDOM($sql);
+        // TRUNCをTRUNCATEに変換する
+        $sql = $this->sfChangeTrunc($sql);
         return $sql;
     }
     
@@ -213,6 +215,18 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
         return $changesql;
     }
 
+    /**
+     * TRUNC() を TRUNCATE() に変換する.
+     *
+     * @access private
+     * @param string $sql SQL文
+     * @return string 変換後の SQL 文
+     */
+    function sfChangeTrunc($sql){
+        $changesql = eregi_replace("( TRUNC)", " TRUNCATE", $sql);
+        return $changesql;
+    }
+    
     /**
      * WHERE 句置換用の配列を返す.
      *

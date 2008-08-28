@@ -199,9 +199,9 @@ class LC_Page_Admin_Order extends LC_Page {
                                 break;
                             case 'search_order_tel':
                                 if(DB_TYPE == "pgsql"){
-                                    $where .= " AND (order_tel01 || order_tel02 || order_tel03 LIKE ?)";
+                                    $where .= " AND (order_tel01 || order_tel02 || order_tel03 ILIKE ?)";
                                 }elseif(DB_TYPE == "mysql"){
-                                    $where .= " AND concat(order_tel01,order_tel02,order_tel03) LIKE ?";
+                                    $where .= " AND concat(order_tel01,order_tel02,order_tel03) ILIKE ?";
                                 }
                                 $nonmark_val = ereg_replace("[()-]+","",$val);
                                 $arrval[] = "%$nonmark_val%";
