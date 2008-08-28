@@ -24,4 +24,6 @@
 <ul class="level1">
 <li<!--{if $tpl_subno == 'index'}--> class="on"<!--{/if}--> id="navi-system-index"><a href="<!--{$smarty.const.URL_DIR}-->admin/system/index.php"><span>メンバー管理</span></a></li>
 <li<!--{if $tpl_subno == 'bkup'}--> class="on"<!--{/if}--> id="navi-system-bkup"><a href="<!--{$smarty.const.URL_DIR}-->admin/system/bkup.php"><span>バックアップ管理</span></a></li>
+<li<!--{if $tpl_subno == 'parameter'}--> class="on"<!--{/if}--> id="navi-system-parameter"><a href="<!--{$smarty.const.URL_DIR}-->admin/system/parameter.php"><span>パラメータ設定</span></a></li>
+<li<!--{if $tpl_subno == 'masterdata'}--> class="on"<!--{/if}--> id="navi-system-masterdata"><a href="<!--{$smarty.const.URL_DIR}-->admin/system/masterdata.php"><span>マスタデータ管理</span></a></li>
 </ul>
