@@ -120,30 +120,29 @@ class SC_Helper_PageLayout {
      * @param array $arrVal WHERE句の条件値
      * @return array ページ情報を格納した配列
      */
-    function lfgetPageData($where, $where_vals=array()) {
-        $objQuery = new SC_Query;		// DB操作オブジェクト
+    function lfgetPageData($where = '', $where_vals = array()) {
+        $objQuery = new SC_Query;       // DB操作オブジェクト
         $arrRet = array();              // データ取得用
 
         // 取得するカラム
-        $col  = " page_id";				// ページID
-        $col .= " ,page_name";			// 名称
-        $col .= " ,url";				// URL
-        $col .= " ,php_dir";			// php保存先ディレクトリ
-        $col .= " ,tpl_dir";			// tpl保存先ディレクトリ
-        $col .= " ,filename";			// ファイル名称
-        $col .= " ,header_chk ";		// ヘッダー使用FLG
-        $col .= " ,footer_chk ";		// フッター使用FLG
-        $col .= " ,edit_flg ";			// 編集可能FLG
-        $col .= " ,author";				// authorタグ
-        $col .= " ,description";		// descriptionタグ
-        $col .= " ,keyword";			// keywordタグ
-        $col .= " ,update_url";			// 更新URL
-        $col .= " ,create_date";		// データ作成日
-        $col .= " ,update_date";		// データ更新日
+        $col  = " page_id";             // ページID
+        $col .= " ,page_name";          // 名称
+        $col .= " ,url";                // URL
+        $col .= " ,php_dir";            // php保存先ディレクトリ
+        $col .= " ,tpl_dir";            // tpl保存先ディレクトリ
+        $col .= " ,filename";           // ファイル名称
+        $col .= " ,header_chk ";        // ヘッダー使用FLG
+        $col .= " ,footer_chk ";        // フッター使用FLG
+        $col .= " ,edit_flg ";          // 編集可能FLG
+        $col .= " ,author";             // authorタグ
+        $col .= " ,description";        // descriptionタグ
+        $col .= " ,keyword";            // keywordタグ
+        $col .= " ,update_url";         // 更新URL
+        $col .= " ,create_date";        // データ作成日
+        $col .= " ,update_date";        // データ更新日
         
         // 取得するテーブル
         $table = "dtb_pagelayout";
-
         
         // 並び変え
         $objQuery->setOrder('page_id');
