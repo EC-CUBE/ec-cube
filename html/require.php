@@ -23,7 +23,6 @@
 
 // rtrim は PHP バージョン依存対策
 define("HTML_PATH", rtrim(realpath(rtrim(realpath(dirname(__FILE__)), '/\\') . '/'), '/\\') . '/');
-echo HTML_PATH;
 
 require_once(HTML_PATH . "define.php");
 require_once(HTML_PATH . HTML2DATA_DIR . "require_base.php");
