@@ -21,11 +21,9 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-$require_php_dir = realpath(dirname( __FILE__)) . '/';
-
-if (!defined("HTML_PATH")) {
-    define("HTML_PATH", realpath($require_php_dir) . '/');
-}
+// rtrim は PHP バージョン依存対策
+define("HTML_PATH", rtrim(realpath(rtrim(realpath(dirname(__FILE__)), '/\\') . '/'), '/\\') . '/');
+echo HTML_PATH;
 
 require_once(HTML_PATH . "define.php");
 require_once(HTML_PATH . HTML2DATA_DIR . "require_base.php");

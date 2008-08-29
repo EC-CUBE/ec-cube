@@ -22,11 +22,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-$require_php_dir = realpath(dirname( __FILE__)) . '/';
-
-if (!defined("HTML_PATH")) {
-    define("HTML_PATH", realpath($require_php_dir . '../') . '/');
-}
+// rtrim は PHP バージョン依存対策
+define("HTML_PATH", rtrim(realpath(rtrim(realpath(dirname(__FILE__)), '/\\') . '/../'), '/\\') . '/');
 
 require_once(HTML_PATH . "define.php");
 define('MOBILE_SITE', true);
@@ -34,7 +31,7 @@ require_once(HTML_PATH . HTML2DATA_DIR . "require_base.php");
 
 // モバイルサイトを利用しない設定の場合、落とす。
 if (USE_MOBILE === false) {
-	// XXX PCサイトにリダイレクトする方がスマートか? 若しくはHTTPエラーとすべきか?
+    // XXX PCサイトにリダイレクトする方がスマートか? 若しくはHTTPエラーとすべきか?
     exit;
 }
 

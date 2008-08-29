@@ -21,8 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-$require_base_php_dir = realpath(dirname( __FILE__));
-
 if (!defined("DATA_PATH")) {
     define("DATA_PATH", HTML_PATH . HTML2DATA_DIR);
 }
