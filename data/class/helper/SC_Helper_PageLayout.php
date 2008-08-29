@@ -120,7 +120,7 @@ class SC_Helper_PageLayout {
      * @param array $arrVal WHERE句の条件値
      * @return array ページ情報を格納した配列
      */
-    function lfgetPageData($where = '', $where_vals = array()) {
+    function lfgetPageData($where = 'page_id <> 0', $where_vals = array()) {
         $objQuery = new SC_Query;       // DB操作オブジェクト
         $arrRet = array();              // データ取得用
 
