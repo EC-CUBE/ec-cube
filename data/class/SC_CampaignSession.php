@@ -72,8 +72,13 @@ class SC_CampaignSession {
 
     /* キャンペーンページならフレームを変更 */
     function pageView($objView, $site_frame = SITE_FRAME) {
-        if($this->getIsCampaign()) {
-            $objView->display(CAMPAIGN_TEMPLATE_PATH . $this->getCampaignDir()  . "/active/site_frame.tpl");
+        $self_path = explode("/",$_SERVER['PHP_SELF']);
+        $campaign_dir = explode("/",CAMPAIGN_DIR);
+        
+        $is_campaign = array_search( $campaign_dir[0] , $self_path );
+        
+        if( strlen($is_campaign) > 0 ) {
+            $objView->display($site_frame);
         } else {
             $objView->display($site_frame);
         }
