@@ -226,7 +226,7 @@ class LC_Page_Admin_Customer extends LC_Page {
             $this->uniqid = $arrRet[0]['secret_key'];
 
 
-            $subject = $mailHelper->sfMakesubject($objQuery, $objMailText, $this, '会員登録のご確認');
+            $subject = $mailHelper->sfMakesubject('会員登録のご確認');
             $toCustomerMail = $objMailText->fetch("mail_templates/customer_mail.tpl");
 
             $objMail = new SC_SendMail();

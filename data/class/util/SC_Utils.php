@@ -1212,7 +1212,7 @@ class SC_Utils {
             break;
         }
         $objConn->query("COMMIT");
-        $subject = sfMakeSubject('メルマガ仮登録が完了しました。');
+        $subject = 'メルマガ仮登録が完了しました';
         $objPage->tpl_url = SSL_URL."mailmagazine/regist.php?temp_id=".$arrRegistMailMagazine['temp_id'];
         switch ($mail_flag){
             case '1':
@@ -1229,7 +1229,7 @@ class SC_Utils {
             $objPage->tpl_name = "解除";
             break;
         }
-            $objPage->tpl_email = $email;
+        $objPage->tpl_email = $email;
         sfSendTplMail($email, $subject, 'mail_templates/mailmagazine_temp.tpl', $objPage);
     }
 

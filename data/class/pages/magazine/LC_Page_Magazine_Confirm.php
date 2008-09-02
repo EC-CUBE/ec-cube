@@ -115,7 +115,7 @@ class LC_Page_Magazine_Confirm extends LC_Page {
                 //　解除
             } elseif ($_REQUEST['mode'] == 'cancel') {
                 $uniqId = $this->lfGetSecretKey($_POST["email"], $objConn);
-                $subject = $helperMail->sfMakesubject($objQuery, $objMailText, $this,'メルマガ解除のご確認');
+                $subject = $helperMail->sfMakesubject('メルマガ解除のご確認');
             }
             $objDb = new SC_Helper_DB_Ex();
             $CONF = $objDb->sf_getBasisData();

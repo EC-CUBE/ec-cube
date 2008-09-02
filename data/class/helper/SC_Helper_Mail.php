@@ -68,7 +68,8 @@ class SC_Helper_Mail {
         if ($from_name == "") $from_name = $arrInfo['shop_name'];
         if ($reply_to == "") $reply_to = $arrInfo['email03'];
         $error = $arrInfo['email04'];
-        $tosubject = $tmp_subject;
+        $tosubject = $this->sfMakeSubject($tmp_subject);
+        
         $objSendMail->setItem('', $tosubject, $body, $from_address, $from_name, $reply_to, $error, $error);
         $objSendMail->setTo($to, $to_name);
         $objSendMail->sendMail();    // メール送信
@@ -144,9 +145,7 @@ class SC_Helper_Mail {
         $bcc = $arrInfo['email01'];
         $from = $arrInfo['email03'];
         $error = $arrInfo['email04'];
-
-        $tosubject = $this->sfMakeSubject($objQuery, $objMailView,
-                                             $objPage, $tmp_subject);
+        $tosubject = $this->sfMakeSubject($tmp_subject);
 
         $objSendMail->setItem('', $tosubject, $body, $from, $arrInfo['shop_name'], $from, $error, $error, $bcc);
         $objSendMail->setTo($arrOrder["order_email"], $arrOrder["order_name01"] . " ". $arrOrder["order_name02"] ." 様");
@@ -163,7 +162,7 @@ class SC_Helper_Mail {
     }
 
     // テンプレートを使用したメールの送信
-    function sfSendTplMail($to, $subject, $tplpath, &$objPage) {
+    function sfSendTplMail($to, $tmp_subject, $tplpath, &$objPage) {
         $objMailView = new SC_SiteView();
         $objSiteInfo = new SC_SiteInfo();
         $arrInfo = $objSiteInfo->data;
@@ -178,12 +177,14 @@ class SC_Helper_Mail {
         $bcc = $arrInfo['email01'];
         $from = $arrInfo['email03'];
         $error = $arrInfo['email04'];
-        $objSendMail->setItem($to, $subject, $body, $from, $arrInfo['shop_name'], $from, $error, $error, $bcc);
+        $tosubject = $this->sfMakeSubject($tmp_subject);
+        
+        $objSendMail->setItem($to, $tosubject, $body, $from, $arrInfo['shop_name'], $from, $error, $error, $bcc);
         $objSendMail->sendMail();
     }
 
     // 通常のメール送信
-    function sfSendMail($to, $subject, $body) {
+    function sfSendMail($to, $tmp_subject, $body) {
         $objSiteInfo = new SC_SiteInfo();
         $arrInfo = $objSiteInfo->data;
         // メール送信処理
@@ -191,21 +192,26 @@ class SC_Helper_Mail {
         $bcc = $arrInfo['email01'];
         $from = $arrInfo['email03'];
         $error = $arrInfo['email04'];
-        $objSendMail->setItem($to, $subject, $body, $from, $arrInfo['shop_name'], $from, $error, $error, $bcc);
+        $tosubject = $this->sfMakeSubject($tmp_subject);
+        
+        $objSendMail->setItem($to, $tosubject, $body, $from, $arrInfo['shop_name'], $from, $error, $error, $bcc);
         $objSendMail->sendMail();
     }
 
     //件名にテンプレートを用いる
-    function sfMakeSubject(&$objQuery, &$objMailView, &$objPage, $subject){
-
+    function sfMakeSubject($subject) {
+        $objQuery = new SC_Query();
+        $objMailView = new SC_SiteView();
+        $objTplAssign = new stdClass;
+        
         $arrInfo = $objQuery->select("*","dtb_baseinfo");
         $arrInfo = $arrInfo[0];
-        $objPage->tpl_shopname=$arrInfo['shop_name'];
-        $objPage->tpl_infoemail=$subject;
-        $objMailView->assignobj($objPage);
-        $mailtitle = $objMailView->fetch('mail_templates/mail_title.tpl');
-        $ret = $mailtitle.$subject;
-        return $ret;
+        $objTplAssign->tpl_shopname=$arrInfo['shop_name'];
+        $objTplAssign->tpl_infoemail=$subject; // 従来互換
+        $objTplAssign->tpl_mailtitle=$subject;
+        $objMailView->assignobj($objTplAssign);
+        $subject = $objMailView->fetch('mail_templates/mail_title.tpl');
+        return $subject;
     }
 
     // メール配信履歴への登録

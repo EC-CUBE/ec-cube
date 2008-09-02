@@ -185,10 +185,10 @@ class LC_Page_Entry extends LC_Page {
                     $objQuery = new SC_Query();
                     // 仮会員が有効の場合
                     if(CUSTOMER_CONFIRM_MAIL == true) {
-                        $subject = $mailHelper->sfMakesubject($objQuery, $objMailText, $this, '会員登録のご確認');
+                        $subject = $mailHelper->sfMakesubject('会員登録のご確認');
                         $toCustomerMail = $objMailText->fetch("mail_templates/customer_mail.tpl");
                     } else {
-                        $subject = $mailHelper->sfMakesubject($objQuery, $objMailText, $this, '会員登録のご完了');
+                        $subject = $mailHelper->sfMakesubject('会員登録のご完了');
                         $toCustomerMail = $objMailText->fetch("mail_templates/customer_regist_mail.tpl");
                         // ログイン状態にする
                         $objCustomer->setLogin($_POST["email"]);
@@ -493,10 +493,10 @@ class LC_Page_Entry extends LC_Page {
                     if(CUSTOMER_CONFIRM_MAIL == true) {
                         // Moba8パラメーターを保持する場合はカラム追加
                         if (isset($_SESSION['a8'])) $this->etc_value = "&a8=". $_SESSION['a8'];
-                        $subject = $objHelperMail->sfMakeSubject($objQuery, $objMailText, $this, '会員登録のご確認');
+                        $subject = $objHelperMail->sfMakeSubject('会員登録のご確認');
                         $toCustomerMail = $objMailText->fetch("mail_templates/customer_mail.tpl");
                     } else {
-                        $subject = $objHelperMail->sfMakesubject($objQuery, $objMailText, $this, '会員登録のご完了');
+                        $subject = $objHelperMail->sfMakesubject('会員登録のご完了');
                         $toCustomerMail = $objMailText->fetch("mail_templates/customer_regist_mail.tpl");
                         // ログイン状態にする
                         $objCustomer->setLogin($_POST["email"]);

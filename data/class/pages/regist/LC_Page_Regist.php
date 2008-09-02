@@ -275,7 +275,7 @@ class LC_Page_Regist extends LC_Page {
         $objMailText->assign("name01", $data["name01"]);
         $objMailText->assign("name02", $data["name02"]);
         $toCustomerMail = $objMailText->fetch("mail_templates/customer_regist_mail.tpl");
-        $subject = $objHelperMail->sfMakesubject($objQuery, $objMailText, $this, '会員登録が完了しました。');
+        $subject = $objHelperMail->sfMakesubject('会員登録が完了しました。');
         $objMail = new SC_SendMail();
 
         $objMail->setItem(

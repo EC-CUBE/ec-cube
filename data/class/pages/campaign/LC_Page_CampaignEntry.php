@@ -170,7 +170,7 @@ class LC_Page_CampaignEntry extends LC_Page {
                     $objHelperMail = new SC_Helper_Mail_Ex();
                     $objQuery = new SC_Query();
 
-                    $subject = $objHelperMail->sfMakeSubject($objQuery, $objMailText, $this, '会員登録のご確認');
+                    $subject = $objHelperMail->sfMakeSubject('会員登録のご確認');
 
                     $toCustomerMail = $objMailText->fetch("mail_templates/customer_mail.tpl");
                     $objMail = new SC_SendMail();

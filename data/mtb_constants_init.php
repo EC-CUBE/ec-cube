@@ -380,8 +380,6 @@ define('SEARCH_CATEGORY_LEN', 18);
 define('FILE_NAME_LEN', 10);
 /** 購入制限なしの場合の最大購入数量 */
 define('SALE_LIMIT_MAX', 10);
-/** HTMLタイトル */
-define('SITE_TITLE', "ＥＣ-ＣＵＢＥ  テストサイト");
 /** クッキー保持期限(日) */
 define('COOKIE_EXPIRE', 365);
 /** 指定商品ページがない */

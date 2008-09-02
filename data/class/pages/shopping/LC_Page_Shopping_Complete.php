@@ -417,7 +417,7 @@ class LC_Page_Shopping_Complete extends LC_Page {
         $objMail = new SC_SendMail();
         $objMail->setItem(
                             ''										//　宛先
-                            , $mailHelper->sfMakeSubject($objQuery,$objMailView,$objMailPage,"会員登録のご確認")		//　サブジェクト
+                            , $mailHelper->sfMakeSubject("会員登録のご確認")		//　サブジェクト
                             , $body									//　本文
                             , $arrInfo['email03']					//　配送元アドレス
                             , $arrInfo['shop_name']					//　配送元　名前

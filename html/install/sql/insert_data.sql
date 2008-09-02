@@ -5,240 +5,240 @@ CREATE INDEX dtb_category_category_id_key ON dtb_category(category_id);
 INSERT INTO dtb_member (name, login_id, password, creator_id, authority, work, del_flg, create_date, update_date)
 VALUES ('dummy','dummy',' ',0,0,1,1, now(), now());
 
-insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg, create_date, update_date ) values ('カテゴリ',	'bloc/category.tpl', 'category','frontparts/bloc/category.php', 1, now(), now());
-insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg, create_date, update_date ) values ('利用ガイド','bloc/guide.tpl', 'guide','', 1, now(), now());
-insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg, create_date, update_date ) values ('かごの中',	'bloc/cart.tpl', 'cart','frontparts/bloc/cart.php', 1, now(), now());
-insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg, create_date, update_date ) values ('商品検索',	'bloc/search_products.tpl', 'search_products','frontparts/bloc/search_products.php', 1, now(), now());
-insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg, create_date, update_date ) values ('新着情報',	'bloc/news.tpl', 'news','frontparts/bloc/news.php', 1, now(), now());
-insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg, create_date, update_date ) values ('ログイン',	'bloc/login.tpl', 'login','frontparts/bloc/login.php', 1, now(), now());
-insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg, create_date, update_date ) values ('おすすめ商品', 'bloc/best5.tpl', 'best5','frontparts/bloc/best5.php', 1, now(), now());
+INSERT INTO dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg, create_date, update_date ) VALUES ('カテゴリ',	'bloc/category.tpl', 'category','frontparts/bloc/category.php', 1, now(), now());
+INSERT INTO dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg, create_date, update_date ) VALUES ('利用ガイド','bloc/guide.tpl', 'guide','', 1, now(), now());
+INSERT INTO dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg, create_date, update_date ) VALUES ('かごの中',	'bloc/cart.tpl', 'cart','frontparts/bloc/cart.php', 1, now(), now());
+INSERT INTO dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg, create_date, update_date ) VALUES ('商品検索',	'bloc/search_products.tpl', 'search_products','frontparts/bloc/search_products.php', 1, now(), now());
+INSERT INTO dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg, create_date, update_date ) VALUES ('新着情報',	'bloc/news.tpl', 'news','frontparts/bloc/news.php', 1, now(), now());
+INSERT INTO dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg, create_date, update_date ) VALUES ('ログイン',	'bloc/login.tpl', 'login','frontparts/bloc/login.php', 1, now(), now());
+INSERT INTO dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg, create_date, update_date ) VALUES ('おすすめ商品', 'bloc/best5.tpl', 'best5','frontparts/bloc/best5.php', 1, now(), now());
 INSERT INTO dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg, create_date, update_date ) VALUES ('カレンダー', 'bloc/calendar.tpl', 'calendar', 'frontparts/bloc/calendar.php', 1, now(), now());
 
 
-insert into dtb_pagelayout (page_name,url,php_dir,tpl_dir,filename,edit_flg, create_date, update_date)values('TOPページ','index.php',' ','user_data/templates/','top',2,now(),now());
-insert into dtb_pagelayout (page_name,url,php_dir,tpl_dir,filename,edit_flg, create_date, update_date)values('商品一覧ページ','products/list.php',' ','user_data/templates/','list',2,now(),now());
-insert into dtb_pagelayout (page_name,url,php_dir,tpl_dir,filename,edit_flg, create_date, update_date)values('商品詳細ページ','products/detail.php',' ','user_data/templates/','detail',2,now(),now());
-insert into dtb_pagelayout (page_name,url,php_dir,tpl_dir,filename,edit_flg, create_date, update_date)values('MYページ','mypage/index.php',' ','','',2,now(),now());
+INSERT INTO dtb_pagelayout (page_name,url,php_dir,tpl_dir,filename,edit_flg, create_date, update_date) VALUES ('TOPページ','index.php',' ','user_data/templates/','top',2,now(),now());
+INSERT INTO dtb_pagelayout (page_name,url,php_dir,tpl_dir,filename,edit_flg, create_date, update_date) VALUES ('商品一覧ページ','products/list.php',' ','user_data/templates/','list',2,now(),now());
+INSERT INTO dtb_pagelayout (page_name,url,php_dir,tpl_dir,filename,edit_flg, create_date, update_date) VALUES ('商品詳細ページ','products/detail.php',' ','user_data/templates/','detail',2,now(),now());
+INSERT INTO dtb_pagelayout (page_name,url,php_dir,tpl_dir,filename,edit_flg, create_date, update_date) VALUES ('MYページ','mypage/index.php',' ','','',2,now(),now());
 
-insert into dtb_pagelayout (page_id,page_name,url, create_date, update_date)values(0, 'プレビューデータ',' ',now(),now());
+INSERT INTO dtb_pagelayout (page_id,page_name,url, create_date, update_date) VALUES (0, 'プレビューデータ',' ',now(),now());
 update dtb_pagelayout set page_id = 0 where page_id = 5;
 
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(1,1,1,2,'category');
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(1,1,2,3,'guide');
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(1,1,3,1,'cart');
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(1,3,4,2,'search_products');
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(1,4,5,1,'news');
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(1,3,6,1,'login');
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(1,4,7,2,'best5');
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(2,1,1,2,'category');
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(2,1,2,3,'guide');
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(2,1,3,1,'cart');
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(2,5,4,0,'search_products');
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(2,5,5,0,'news');
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(2,5,6,0,'login');
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(2,5,7,0,'best5');
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(3,1,1,2,'category');
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(3,1,2,3,'guide');
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(3,1,3,1,'cart');
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(3,5,4,0,'search_products');
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(3,5,5,0,'news');
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(3,5,6,0,'login');
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(3,5,7,0,'best5');
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename) VALUES (1,1,1,2,'category');
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename) VALUES (1,1,2,3,'guide');
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename) VALUES (1,1,3,1,'cart');
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename) VALUES (1,3,4,2,'search_products');
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename) VALUES (1,4,5,1,'news');
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename) VALUES (1,3,6,1,'login');
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename) VALUES (1,4,7,2,'best5');
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename) VALUES (2,1,1,2,'category');
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename) VALUES (2,1,2,3,'guide');
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename) VALUES (2,1,3,1,'cart');
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename) VALUES (2,5,4,0,'search_products');
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename) VALUES (2,5,5,0,'news');
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename) VALUES (2,5,6,0,'login');
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename) VALUES (2,5,7,0,'best5');
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename) VALUES (3,1,1,2,'category');
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename) VALUES (3,1,2,3,'guide');
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename) VALUES (3,1,3,1,'cart');
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename) VALUES (3,5,4,0,'search_products');
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename) VALUES (3,5,5,0,'news');
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename) VALUES (3,5,6,0,'login');
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename) VALUES (3,5,7,0,'best5');
 
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'product_id','商品ID',1,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'product_class_id','規格ID',2,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'classcategory_id1','規格名1',3,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'classcategory_id2','規格名2',4,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'name','商品名',5,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'status','公開フラグ',6,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'product_flag','商品ステータス',7,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'product_code','商品コード',8,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'price01','通常価格',9,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'price02','販売価格',10,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'stock','在庫数',11,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'deliv_fee','送料',12,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'point_rate','ポイント付与率',13,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'sale_limit','購入制限',14,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'comment1','メーカーURL',15,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'comment3','検索ワード',16,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'main_list_comment','一覧-メインコメント',17,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'main_list_image','一覧-メイン画像',18,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'main_comment','詳細-メインコメント',19,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'main_image','詳細-メイン画像',20,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'main_large_image','詳細-メイン拡大画像 ',21,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'file1','カラー比較画像',22,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'file2','商品詳細ファイル    ',23,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'sub_title1','詳細-サブタイトル（1）',24,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'sub_comment1','詳細-サブコメント（1）',25,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'sub_image1','詳細-サブ画像（1）',26,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'sub_large_image1','詳細-サブ拡大画像（1）',27,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'sub_title2','詳細-サブタイトル（2）',28,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'sub_comment2','詳細-サブコメント（2）',29,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'sub_image2','詳細-サブ画像（2）',30,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'sub_large_image2','詳細-サブ拡大画像（2）',31,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'sub_title3','詳細-サブタイトル（3）',32,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'sub_comment3','詳細-サブコメント（3）',33,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'sub_image3','詳細-サブ画像（3）',34,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'sub_large_image3','詳細-サブ拡大画像（3）',35,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'sub_title4','詳細-サブタイトル（4）',36,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'sub_comment4','詳細-サブコメント（4）',37,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'sub_image4','詳細-サブ画像（4）',38,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'sub_large_image4','詳細-サブ拡大画像（4）',39,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'sub_title5','詳細-サブタイトル（5）',40,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'sub_comment5','詳細-サブコメント（5）',41,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'sub_image5','詳細-サブ画像（5）',42,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'sub_large_image5','詳細-サブ拡大画像（5）',43,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'deliv_date_id','発送日目安',44,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'(SELECT recommend_product_id FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY update_date DESC limit 1) AS recommend_product_id1','関連商品(1)',45,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'(SELECT comment FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY update_date DESC limit 1) AS recommend_comment1','関連商品コメント(1)',46,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'(SELECT recommend_product_id FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY update_date DESC limit 1 offset 1) AS recommend_product_id2','関連商品(2)',47,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'(SELECT comment FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY update_date DESC limit 1 offset 1) AS recommend_comment2','関連商品コメント(2)',48,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'(SELECT recommend_product_id FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY update_date DESC limit 1 offset 2) AS recommend_product_id3','関連商品(3)',49,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'(SELECT comment FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY update_date DESC limit 1 offset 2) AS recommend_comment3','関連商品コメント(3)',50,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'(SELECT recommend_product_id FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY update_date DESC limit 1 offset 3) AS recommend_product_id4','関連商品(4)',51,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'(SELECT comment FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY update_date DESC limit 1 offset 3) AS recommend_comment4','関連商品コメント(4)',52,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'(SELECT recommend_product_id FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY update_date DESC limit 1 offset 4) AS recommend_product_id5','関連商品(5)',53,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'(SELECT comment FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY update_date DESC limit 1 offset 4) AS recommend_comment5','関連商品コメント(5)',54,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'(SELECT recommend_product_id FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY update_date DESC limit 1 offset 5) AS recommend_product_id6','関連商品(6)',55,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'(SELECT comment FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY update_date DESC limit 1 offset 5) AS recommend_comment6','関連商品コメント(6)',56,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'category_id','カテゴリID',57,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(2,'customer_id','顧客ID',1,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(2,'name01','名前1',2,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(2,'name02','名前2',3,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(2,'kana01','フリガナ1',4,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(2,'kana02','フリガナ2',5,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(2,'zip01', '郵便番号1',6,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(2,'zip02', '郵便番号2',7,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(2,'pref', '都道府県',8,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(2,'addr01', '住所1',9,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(2,'addr02', '住所2',10,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(2,'email', 'E-MAIL',11,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(2,'tel01', 'TEL1',12,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(2,'tel02', 'TEL2',13,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(2,'tel03', 'TEL3',14,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(2,'fax01', 'FAX1',15,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(2,'fax02', 'FAX2',16,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(2,'fax03', 'FAX3',17,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(2,'sex', '性別',18,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(2,'job', '職業',19,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(2,'birth', '誕生日',20,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(2,'first_buy_date', '初回購入日',21,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(2,'last_buy_date', '最終購入日',22,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(2,'buy_times', '購入回数',23,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(2,'point', 'ポイント残高',24,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(2,'note', '備考',25,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(2,'create_date','登録日',26,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(2,'update_date','更新日',   27,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'order_id','注文ID',1,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'customer_id','顧客ID',2,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'message','要望等',3,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'order_name01','顧客名1',4,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'order_name02','顧客名2',5,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'order_kana01','顧客名カナ1',6,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'order_kana02','顧客名カナ2',7,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'order_email','メールアドレス',8,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'order_tel01','電話番号1',9,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'order_tel02','電話番号2',10,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'order_tel03','電話番号3',11,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'order_fax01','FAX1',12,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'order_fax02','FAX2',13,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'order_fax03','FAX3',14,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'order_zip01','郵便番号1',15,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'order_zip02','郵便番号2',16,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'order_pref','都道府県',17,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'order_addr01','住所1',18,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'order_addr02','住所2',19,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'order_sex','性別',20,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'order_birth','生年月日',21,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'order_job','職種',22,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'deliv_name01','配送先名前',23,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'deliv_name02','配送先名前',24,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'deliv_kana01','配送先カナ',25,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'deliv_kana02','配送先カナ',26,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'deliv_tel01','電話番号1',27,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'deliv_tel02','電話番号2',28,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'deliv_tel03','電話番号3',29,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'deliv_fax01','FAX1',30,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'deliv_fax02','FAX2',31,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'deliv_fax03','FAX3',32,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'deliv_zip01','郵便番号1',33,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'deliv_zip02','郵便番号2',34,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'deliv_pref','都道府県',35,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'deliv_addr01','住所1',36,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'deliv_addr02','住所2',37,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'subtotal','小計',38,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'discount','値引き',39,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'deliv_fee','送料',40,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'charge','手数料',41,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'use_point','使用ポイント',42,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'add_point','加算ポイント',43,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'tax','税金',44,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'total','合計',45,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'payment_total','お支払い合計',46,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'payment_method','支払い方法',47,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'deliv_time','配送時間',48,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'deliv_no','配送伝票番号',49,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'note','SHOPメモ',50,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'status','対応状況',51,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'create_date','注文日時',52,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'update_date','更新日時',53,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'order_id','注文ID',1,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'campaign_id','キャンペーンID',2,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'customer_id','顧客ID',3,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'message','要望等',4,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'order_name01','顧客名1',5,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'order_name02','顧客名2',6,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'order_kana01','顧客名カナ1',7,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'order_kana02','顧客名カナ2',8,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'order_email','メールアドレス',9,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'order_tel01','電話番号1',10,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'order_tel02','電話番号2',11,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'order_tel03','電話番号3',12,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'order_fax01','FAX1',13,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'order_fax02','FAX2',14,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'order_fax03','FAX3',15,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'order_zip01','郵便番号1',16,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'order_zip02','郵便番号2',17,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'order_pref','都道府県',18,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'order_addr01','住所1',19,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'order_addr02','住所2',20,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'order_sex','性別',21,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'order_birth','生年月日',22,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'order_job','職種',23,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'deliv_name01','配送先名前',24,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'deliv_name02','配送先名前',25,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'deliv_kana01','配送先カナ',26,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'deliv_kana02','配送先カナ',27,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'deliv_tel01','電話番号1',28,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'deliv_tel02','電話番号2',29,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'deliv_tel03','電話番号3',30,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'deliv_fax01','FAX1',31,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'deliv_fax02','FAX2',32,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'deliv_fax03','FAX3',33,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'deliv_zip01','郵便番号1',34,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'deliv_zip02','郵便番号2',35,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'deliv_pref','都道府県',36,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'deliv_addr01','住所1',37,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'deliv_addr02','住所2',38,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'payment_total','お支払い合計',39,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,status)values(5,'category_id','カテゴリID',1,2);
-insert into dtb_csv(csv_id,col,disp_name,rank,status)values(5,'category_name','カテゴリ名',2,2);
-insert into dtb_csv(csv_id,col,disp_name,rank,status)values(5,'parent_category_id','親カテゴリID',3,2);
-insert into dtb_csv(csv_id,col,disp_name,status)values(5,'level','階層',2);
-insert into dtb_csv(csv_id,col,disp_name,status)values(5,'rank','表示ランク',2);
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'product_id','商品ID',1,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'product_class_id','規格ID',2,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'classcategory_id1','規格名1',3,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'classcategory_id2','規格名2',4,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'name','商品名',5,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'status','公開フラグ',6,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'product_flag','商品ステータス',7,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'product_code','商品コード',8,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'price01','通常価格',9,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'price02','販売価格',10,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'stock','在庫数',11,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'deliv_fee','送料',12,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'point_rate','ポイント付与率',13,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'sale_limit','購入制限',14,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'comment1','メーカーURL',15,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'comment3','検索ワード',16,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'main_list_comment','一覧-メインコメント',17,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'main_list_image','一覧-メイン画像',18,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'main_comment','詳細-メインコメント',19,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'main_image','詳細-メイン画像',20,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'main_large_image','詳細-メイン拡大画像 ',21,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'file1','カラー比較画像',22,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'file2','商品詳細ファイル    ',23,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'sub_title1','詳細-サブタイトル（1）',24,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'sub_comment1','詳細-サブコメント（1）',25,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'sub_image1','詳細-サブ画像（1）',26,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'sub_large_image1','詳細-サブ拡大画像（1）',27,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'sub_title2','詳細-サブタイトル（2）',28,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'sub_comment2','詳細-サブコメント（2）',29,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'sub_image2','詳細-サブ画像（2）',30,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'sub_large_image2','詳細-サブ拡大画像（2）',31,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'sub_title3','詳細-サブタイトル（3）',32,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'sub_comment3','詳細-サブコメント（3）',33,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'sub_image3','詳細-サブ画像（3）',34,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'sub_large_image3','詳細-サブ拡大画像（3）',35,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'sub_title4','詳細-サブタイトル（4）',36,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'sub_comment4','詳細-サブコメント（4）',37,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'sub_image4','詳細-サブ画像（4）',38,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'sub_large_image4','詳細-サブ拡大画像（4）',39,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'sub_title5','詳細-サブタイトル（5）',40,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'sub_comment5','詳細-サブコメント（5）',41,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'sub_image5','詳細-サブ画像（5）',42,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'sub_large_image5','詳細-サブ拡大画像（5）',43,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'deliv_date_id','発送日目安',44,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'(SELECT recommend_product_id FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY update_date DESC limit 1) AS recommend_product_id1','関連商品(1)',45,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'(SELECT comment FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY update_date DESC limit 1) AS recommend_comment1','関連商品コメント(1)',46,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'(SELECT recommend_product_id FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY update_date DESC limit 1 offset 1) AS recommend_product_id2','関連商品(2)',47,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'(SELECT comment FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY update_date DESC limit 1 offset 1) AS recommend_comment2','関連商品コメント(2)',48,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'(SELECT recommend_product_id FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY update_date DESC limit 1 offset 2) AS recommend_product_id3','関連商品(3)',49,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'(SELECT comment FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY update_date DESC limit 1 offset 2) AS recommend_comment3','関連商品コメント(3)',50,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'(SELECT recommend_product_id FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY update_date DESC limit 1 offset 3) AS recommend_product_id4','関連商品(4)',51,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'(SELECT comment FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY update_date DESC limit 1 offset 3) AS recommend_comment4','関連商品コメント(4)',52,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'(SELECT recommend_product_id FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY update_date DESC limit 1 offset 4) AS recommend_product_id5','関連商品(5)',53,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'(SELECT comment FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY update_date DESC limit 1 offset 4) AS recommend_comment5','関連商品コメント(5)',54,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'(SELECT recommend_product_id FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY update_date DESC limit 1 offset 5) AS recommend_product_id6','関連商品(6)',55,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'(SELECT comment FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY update_date DESC limit 1 offset 5) AS recommend_comment6','関連商品コメント(6)',56,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'category_id','カテゴリID',57,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (2,'customer_id','顧客ID',1,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (2,'name01','名前1',2,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (2,'name02','名前2',3,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (2,'kana01','フリガナ1',4,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (2,'kana02','フリガナ2',5,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (2,'zip01', '郵便番号1',6,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (2,'zip02', '郵便番号2',7,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (2,'pref', '都道府県',8,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (2,'addr01', '住所1',9,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (2,'addr02', '住所2',10,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (2,'email', 'E-MAIL',11,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (2,'tel01', 'TEL1',12,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (2,'tel02', 'TEL2',13,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (2,'tel03', 'TEL3',14,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (2,'fax01', 'FAX1',15,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (2,'fax02', 'FAX2',16,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (2,'fax03', 'FAX3',17,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (2,'sex', '性別',18,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (2,'job', '職業',19,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (2,'birth', '誕生日',20,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (2,'first_buy_date', '初回購入日',21,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (2,'last_buy_date', '最終購入日',22,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (2,'buy_times', '購入回数',23,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (2,'point', 'ポイント残高',24,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (2,'note', '備考',25,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (2,'create_date','登録日',26,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (2,'update_date','更新日',27,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'order_id','注文ID',1,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'customer_id','顧客ID',2,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'message','要望等',3,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'order_name01','顧客名1',4,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'order_name02','顧客名2',5,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'order_kana01','顧客名カナ1',6,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'order_kana02','顧客名カナ2',7,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'order_email','メールアドレス',8,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'order_tel01','電話番号1',9,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'order_tel02','電話番号2',10,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'order_tel03','電話番号3',11,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'order_fax01','FAX1',12,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'order_fax02','FAX2',13,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'order_fax03','FAX3',14,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'order_zip01','郵便番号1',15,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'order_zip02','郵便番号2',16,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'order_pref','都道府県',17,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'order_addr01','住所1',18,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'order_addr02','住所2',19,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'order_sex','性別',20,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'order_birth','生年月日',21,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'order_job','職種',22,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'deliv_name01','配送先名前',23,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'deliv_name02','配送先名前',24,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'deliv_kana01','配送先カナ',25,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'deliv_kana02','配送先カナ',26,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'deliv_tel01','電話番号1',27,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'deliv_tel02','電話番号2',28,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'deliv_tel03','電話番号3',29,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'deliv_fax01','FAX1',30,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'deliv_fax02','FAX2',31,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'deliv_fax03','FAX3',32,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'deliv_zip01','郵便番号1',33,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'deliv_zip02','郵便番号2',34,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'deliv_pref','都道府県',35,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'deliv_addr01','住所1',36,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'deliv_addr02','住所2',37,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'subtotal','小計',38,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'discount','値引き',39,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'deliv_fee','送料',40,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'charge','手数料',41,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'use_point','使用ポイント',42,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'add_point','加算ポイント',43,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'tax','税金',44,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'total','合計',45,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'payment_total','お支払い合計',46,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'payment_method','支払い方法',47,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'deliv_time','配送時間',48,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'deliv_no','配送伝票番号',49,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'note','SHOPメモ',50,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'status','対応状況',51,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'create_date','注文日時',52,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'update_date','更新日時',53,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'order_id','注文ID',1,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'campaign_id','キャンペーンID',2,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'customer_id','顧客ID',3,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'message','要望等',4,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'order_name01','顧客名1',5,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'order_name02','顧客名2',6,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'order_kana01','顧客名カナ1',7,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'order_kana02','顧客名カナ2',8,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'order_email','メールアドレス',9,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'order_tel01','電話番号1',10,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'order_tel02','電話番号2',11,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'order_tel03','電話番号3',12,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'order_fax01','FAX1',13,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'order_fax02','FAX2',14,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'order_fax03','FAX3',15,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'order_zip01','郵便番号1',16,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'order_zip02','郵便番号2',17,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'order_pref','都道府県',18,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'order_addr01','住所1',19,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'order_addr02','住所2',20,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'order_sex','性別',21,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'order_birth','生年月日',22,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'order_job','職種',23,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'deliv_name01','配送先名前',24,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'deliv_name02','配送先名前',25,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'deliv_kana01','配送先カナ',26,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'deliv_kana02','配送先カナ',27,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'deliv_tel01','電話番号1',28,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'deliv_tel02','電話番号2',29,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'deliv_tel03','電話番号3',30,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'deliv_fax01','FAX1',31,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'deliv_fax02','FAX2',32,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'deliv_fax03','FAX3',33,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'deliv_zip01','郵便番号1',34,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'deliv_zip02','郵便番号2',35,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'deliv_pref','都道府県',36,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'deliv_addr01','住所1',37,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'deliv_addr02','住所2',38,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'payment_total','お支払い合計',39,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,status) VALUES (5,'category_id','カテゴリID',1,2);
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,status) VALUES (5,'category_name','カテゴリ名',2,2);
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,status) VALUES (5,'parent_category_id','親カテゴリID',3,2);
+INSERT INTO dtb_csv(csv_id,col,disp_name,status) VALUES (5,'level','階層',2);
+INSERT INTO dtb_csv(csv_id,col,disp_name,status) VALUES (5,'rank','表示ランク',2);
 
-INSERT INTO dtb_templates (template_code, template_name, create_date, update_date) VALUES('default','デフォルト', now(), now());
+INSERT INTO dtb_templates (template_code, template_name, create_date, update_date) VALUES ('default','デフォルト', now(), now());
 
-insert into dtb_mailtemplate (template_id, subject, header, footer, creator_id, update_date, create_date) values (
+INSERT INTO dtb_mailtemplate (template_id, subject, header, footer, creator_id, update_date, create_date) VALUES (
 1,
-'ご注文ありがとうございます。',
-'この度はご注文いただき誠に有難うございます。
+'ご注文ありがとうございます',
+'この度はご注文いただき誠にありがとうございます。
 下記ご注文内容にお間違えがないかご確認下さい。
 
 ',
 '
 
-==============================================================☆
+===============================================================
 
 
 このメッセージはお客様へのお知らせ専用ですので、
@@ -248,10 +248,15 @@ insert into dtb_mailtemplate (template_id, subject, header, footer, creator_id, 
 ご質問やご不明な点がございましたら、こちらからお願いいたします。
 http://------.co.jp
 
-',0,Now(), now());
+',0,now(), now());
+INSERT INTO dtb_mailtemplate (template_id, subject, header, footer, creator_id, update_date, create_date) VALUES (
+5,
+'お問い合わせを受け付けました',
+'',
+'',0,now(), now());
 
-insert into dtb_news (news_date,rank, news_title, news_comment, creator_id, create_date, update_date)
-values(now(),1,'サイトオープンいたしました!','一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！',1, now(), now());
+INSERT INTO dtb_news (news_date,rank, news_title, news_comment, creator_id, create_date, update_date)
+VALUES (now(),1,'サイトオープンいたしました!','一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！',1, now(), now());
 
 INSERT INTO dtb_deliv (name,service_name,confirm_url,rank,status,del_flg,creator_id,create_date,update_date)
 VALUES ('サンプル業者', 'サンプル業者', '', 1, 1, 0, 2, now(), now());
@@ -376,7 +381,7 @@ INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date
 VALUES ('第1条（会員）','1. 「会員」とは、当社が定める手続に従い本規約に同意の上、入会の申し込みを行う個人をいいます。
 2. 「会員情報」とは、会員が当社に開示した会員の属性に関する情報および会員の取引に関する履歴等の情報をいいます。
 3. 本規約は、すべての会員に適用され、登録手続時および登録後にお守りいただく規約です。',
-12,0,Now(),0, now());
+12,0,now(),0, now());
 
 INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date)
 VALUES ('第2条（登録）','1. 会員資格
@@ -389,16 +394,16 @@ VALUES ('第2条（登録）','1. 会員資格
 (1)パスワードは会員本人のみが利用できるものとし、第三者に譲渡・貸与できないものとします。
 (2)パスワードは、他人に知られることがないよう定期的に変更する等、会員本人が責任をもって管理してください。
 (3)パスワードを用いて当社に対して行われた意思表示は、会員本人の意思表示とみなし、そのために生じる支払等はすべて会員の責任となります。',
-11,0,Now(),0, now());
+11,0,now(),0, now());
 
 INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date)
 VALUES ('第3条（変更）','1. 会員は、氏名、住所など当社に届け出た事項に変更があった場合には、速やかに当社に連絡するものとします。
 2. 変更登録がなされなかったことにより生じた損害について、当社は一切責任を負いません。また、変更登録がなされた場合でも、変更登録前にすでに手続がなされた取引は、変更登録前の情報に基づいて行われますのでご注意ください。',
-10,0,Now(),0, now());
+10,0,now(),0, now());
 
 INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date)
 VALUES ('第4条（退会）','会員が退会を希望する場合には、会員本人が退会手続きを行ってください。所定の退会手続の終了後に、退会となります。',
-9,0,Now(),0, now());
+9,0,now(),0, now());
 
 INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date)
 VALUES ('第5条（会員資格の喪失及び賠償義務）','1. 会員が、会員資格取得申込の際に虚偽の申告をしたとき、通信販売による代金支払債務を怠ったとき、その他当社が会員として不適当と認める事由があるときは、当社は、会員資格を取り消すことができることとします。
@@ -407,7 +412,7 @@ VALUES ('第5条（会員資格の喪失及び賠償義務）','1. 会員が、�
 (2)当ホームページにアクセスして情報を改ざんしたり、当ホームページに有害なコンピュータプログラムを送信するなどして、当社の営業を妨害すること
 (3)当社が扱う商品の知的所有権を侵害する行為をすること
 (4)その他、この利用規約に反する行為をすること',
-8,0,Now(),0, now());
+8,0,now(),0, now());
 
 INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date)
 VALUES ('第6条（会員情報の取扱い）','1. 当社は、原則として会員情報を会員の事前の同意なく第三者に対して開示することはありません。ただし、次の各号の場合には、会員の事前の同意なく、当社は会員情報その他のお客様情報を開示できるものとします。
@@ -415,7 +420,7 @@ VALUES ('第6条（会員情報の取扱い）','1. 当社は、原則として�
 (2)当社の権利、利益、名誉等を保護するために必要であると当社が判断した場合
 2. 会員情報につきましては、当社の「個人情報保護への取組み」に従い、当社が管理します。当社は、会員情報を、会員へのサービス提供、サービス内容の向上、サービスの利用促進、およびサービスの健全かつ円滑な運営の確保を図る目的のために、当社おいて利用することができるものとします。
 3. 当社は、会員に対して、メールマガジンその他の方法による情報提供（広告を含みます）を行うことができるものとします。会員が情報提供を希望しない場合は、当社所定の方法に従い、その旨を通知して頂ければ、情報提供を停止します。ただし、本サービス運営に必要な情報提供につきましては、会員の希望により停止をすることはできません。',
-7,0,Now(),0, now());
+7,0,now(),0, now());
 
 INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date)
 VALUES ('第7条（禁止事項）','本サービスの利用に際して、会員に対し次の各号の行為を行うことを禁止します。
@@ -429,7 +434,7 @@ VALUES ('第7条（禁止事項）','本サービスの利用に際して、会�
 7. 当社のサーバその他のコンピュータに不正にアクセスすること
 8. パスワードを第三者に貸与・譲渡すること、または第三者と共用すること
 9. その他当社が不適切と判断すること',
-6,0,Now(),0, now());
+6,0,now(),0, now());
 
 INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date)
 VALUES ('第8条（サービスの中断・停止等）','1. 当社は、本サービスの稼動状態を良好に保つために、次の各号の一に該当する場合、予告なしに、本サービスの提供全てあるいは一部を停止することがあります。
@@ -437,25 +442,25 @@ VALUES ('第8条（サービスの中断・停止等）','1. 当社は、本サ�
 (2)システムに負荷が集中した場合
 (3)火災、停電、第三者による妨害行為などによりシステムの運用が困難になった場合
 (4)その他、止むを得ずシステムの停止が必要と当社が判断した場合',
-5,0,Now(),0, now());
+5,0,now(),0, now());
 
 INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date)
 VALUES ('第9条（サービスの変更・廃止）','当社は、その判断によりサービスの全部または一部を事前の通知なく、適宜変更・廃止できるものとします。',
-4,0,Now(),0, now());
+4,0,now(),0, now());
 
 INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date)
 VALUES ('第10条（免責）','1. 通信回線やコンピュータなどの障害によるシステムの中断・遅滞・中止・データの消失、データへの不正アクセスにより生じた損害、その他当社のサービスに関して会員に生じた損害について、当社は一切責任を負わないものとします。
 2. 当社は、当社のウェブページ・サーバ・ドメインなどから送られるメール・コンテンツに、コンピュータ・ウィルスなどの有害なものが含まれていないことを保証いたしません。
 3. 会員が本規約等に違反したことによって生じた損害については、当社は一切責任を負いません。',
-3,0,Now(),0, now());
+3,0,now(),0, now());
 
 INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date)
 VALUES ('第11条（本規約の改定）','当社は、本規約を任意に改定できるものとし、また、当社において本規約を補充する規約（以下「補充規約」といいます）を定めることができます。本規約の改定または補充は、改定後の本規約または補充規約を当社所定のサイトに掲示したときにその効力を生じるものとします。この場合、会員は、改定後の規約および補充規約に従うものと致します。',
-2,0,Now(),0, now());
+2,0,now(),0, now());
 
 INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date)
 VALUES ('第12条（準拠法、管轄裁判所）','本規約に関して紛争が生じた場合、当社本店所在地を管轄する地方裁判所を第一審の専属的合意管轄裁判所とします。 ',
-1,0,Now(),0, now());
+1,0,now(),0, now());
 
 
 INSERT INTO dtb_holiday (title, month, day, rank, creator_id, update_date, del_flg, create_date)
@@ -964,7 +969,6 @@ INSERT INTO mtb_constants VALUES ('CREDIT_NO_LEN','4',207,'クレジットカー
 INSERT INTO mtb_constants VALUES ('SEARCH_CATEGORY_LEN','18',208,'検索カテゴリ最大表示文字数(byte)');
 INSERT INTO mtb_constants VALUES ('FILE_NAME_LEN','10',209,'ファイル名表示文字数');
 INSERT INTO mtb_constants VALUES ('SALE_LIMIT_MAX','10',210,'購入制限なしの場合の最大購入数量');
-INSERT INTO mtb_constants VALUES ('SITE_TITLE','"ＥＣ-ＣＵＢＥ  テストサイト"',211,'HTMLタイトル');
 INSERT INTO mtb_constants VALUES ('COOKIE_EXPIRE','365',212,'クッキー保持期限(日)');
 INSERT INTO mtb_constants VALUES ('PRODUCT_NOT_FOUND','1',213,'指定商品ページがない');
 INSERT INTO mtb_constants VALUES ('CART_EMPTY','2',214,'カート内が空');
@@ -1112,4 +1116,4 @@ INSERT INTO mtb_constants VALUES ('OSTORE_E_C_PERMISSION', '"2009"', 521, 'オ�
 INSERT INTO mtb_constants VALUES ('OSTORE_E_C_BATCH_ERR', '"2010"', 522, 'オーナーズストア通信エラーコード');
 INSERT INTO mtb_constants VALUES ('OPTION_FAVOFITE_PRODUCT','1',523,'お気に入り商品登録(有効:1 無効:0)');
 
-INSERT INTO dtb_module (module_id,module_code,module_name,update_date,create_date)values(0,0,'patch',now(),now());
+INSERT INTO dtb_module (module_id,module_code,module_name,update_date,create_date) VALUES (0,0,'patch',now(),now());
