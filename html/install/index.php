@@ -749,8 +749,6 @@ function lfExecuteSQL($filepath, $dsn, $disp_err = true) {
         $objDB = DB::connect($dsn, $options);
         // 接続エラー
         if(!PEAR::isError($objDB)) {
-            // 改行、タブを1スペースに変換
-            $sql = preg_replace("/[\r\n\t]/"," ",$sql);
             $sql_split = split(";",$sql);
             foreach($sql_split as $key => $val){
                 SC_Utils::sfFlush();
