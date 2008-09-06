@@ -258,6 +258,20 @@ class SC_DbConn{
 
         exit();
     }
+
+    /**
+     * 直前に実行されたSQL文を取得する.
+     *
+     * @param boolean $disp trueの場合、画面出力を行う.
+     * @return string SQL文
+     */
+    function getLastQuery($disp = true) {
+        $sql = $this->conn->last_query;
+        if($disp) {
+            print($sql.";<br />\n");
+        }
+        return $sql;
+    }
 }
 
 ?>

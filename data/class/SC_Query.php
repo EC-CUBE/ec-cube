@@ -95,16 +95,13 @@ class SC_Query {
 
     /**
      * 直前に実行されたSQL文を取得する.
+     * SC_DBconn::getLastQuery() を利用.
      *
      * @param boolean $disp trueの場合、画面出力を行う.
      * @return string SQL文
      */
     function getLastQuery($disp = true) {
-        $sql = $this->conn->conn->last_query;
-        if($disp) {
-            print($sql.";<br />\n");
-        }
-        return $sql;
+        return $this->conn->getLastQuery($disp);
     }
 
     function commit() {
