@@ -84,38 +84,39 @@
         <th>商品名</th>
         <th>移動</th>
       </tr>
+      <!--{assign var=rank value=$tpl_start_row}-->
       <!--{section name=cnt loop=$arrProductsList}-->
-      <tr>
-        <!--{assign var=db_rank value="`$arrProductsList[cnt].rank`"}-->
-        <!--{assign var=rank value="`$tpl_linemax-$db_rank+1`"}-->
-        <td align="center"><!--{$rank}--></td>
-        <td><!--{$arrProductsList[cnt].product_code|escape|default:"-"}--></td>
-        <td align="center">
-          <!--{* 商品画像 *}-->
-          <!--{if $arrProductsList[cnt].main_list_image != ""}-->
-            <!--{assign var=image_path value=`$arrProductsList[cnt].main_list_image`}-->
-          <!--{else}-->
-            <!--{assign var=image_path value=$smarty.const.NO_IMAGE_URL}-->
+        <tr>
+          <!--{assign var=db_rank value="`$arrProductsList[cnt].rank`"}-->
+          <!--{assign var=rank value=`$rank+1`}-->
+          <td align="center"><!--{$rank}--></td>
+          <td><!--{$arrProductsList[cnt].product_code|escape|default:"-"}--></td>
+          <td align="center">
+            <!--{* 商品画像 *}-->
+            <!--{if $arrProductsList[cnt].main_list_image != ""}-->
+              <!--{assign var=image_path value=`$arrProductsList[cnt].main_list_image`}-->
+            <!--{else}-->
+              <!--{assign var=image_path value=$smarty.const.NO_IMAGE_URL}-->
+            <!--{/if}-->
+            <img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&amp;width=65&amp;height=65" alt="<!--{$arrProducts[cnt].name|escape}-->">
+          </td>
+          <td align="center">
+            <!--{$arrProductsList[cnt].name|escape}-->
+          </td>
+          
+          <td align="center">
+          <!--{* 移動 *}-->
+          <!--{if !(count($arrProductsList) == 1 && $rank == 1)}-->
+          <input type="text" name="pos-<!--{$arrProductsList[cnt].product_id}-->" size="3" class="box3" />番目へ<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('move','product_id', '<!--{$arrProductsList[cnt].product_id}-->'); return false;">移動</a><br />
           <!--{/if}-->
-          <img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&amp;width=65&amp;height=65" alt="<!--{$arrProducts[cnt].name|escape}-->">
-        </td>
-        <td align="center">
-          <!--{$arrProductsList[cnt].name|escape}-->
-        </td>
-        
-        <td align="center">
-        <!--{* 移動 *}-->
-        <!--{if !(count($arrProductsList) == 1 && $rank == 1)}-->
-        <input type="text" name="pos-<!--{$arrProductsList[cnt].product_id}-->" size="3" class="box3" />番目へ<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('move','product_id', '<!--{$arrProductsList[cnt].product_id}-->'); return false;">移動</a><br />
-        <!--{/if}-->
-        <!--{if !($smarty.section.cnt.first && $tpl_disppage eq 1) }-->
-        <a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('up','product_id', '<!--{$arrProductsList[cnt].product_id}-->'); return false;">上へ</a>
-        <!--{/if}-->
-        <!--{if !($smarty.section.cnt.last && $tpl_disppage eq $tpl_pagemax) }-->
-        <a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('down','product_id', '<!--{$arrProductsList[cnt].product_id}-->'); return false;">下へ</a>
-        <!--{/if}-->
-        </td>
-      </tr>
+          <!--{if !($smarty.section.cnt.first && $tpl_disppage eq 1) }-->
+          <a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('up','product_id', '<!--{$arrProductsList[cnt].product_id}-->'); return false;">上へ</a>
+          <!--{/if}-->
+          <!--{if !($smarty.section.cnt.last && $tpl_disppage eq $tpl_pagemax) }-->
+          <a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('down','product_id', '<!--{$arrProductsList[cnt].product_id}-->'); return false;">下へ</a>
+          <!--{/if}-->
+          </td>
+        </tr>
       <!--{/section}-->
     </table>
     
