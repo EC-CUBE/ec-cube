@@ -24,7 +24,6 @@
 	function preLoadImg(URL){
 
 		arrImgList = new Array (
-			URL+"img/header/contents_on.jpg",
 			URL+"img/contents/btn_search_on.jpg",URL+"img/contents/btn_regist_on.jpg",
 			URL+"img/contents/btn_csv_on.jpg",URL+"img/contents/arrow_left.jpg",URL+"img/contents/arrow_right.jpg"
 		);
