@@ -184,7 +184,11 @@ class SC_Query {
     }
 
     function setgroupby($str) {
-        $this->groupby = "GROUP BY " . $str;
+        if (strlen($str) == 0) {
+            $this->groupby = '';
+        } else {
+            $this->groupby = "GROUP BY " . $str;
+        }
     }
 
     function andwhere($str) {
@@ -208,7 +212,11 @@ class SC_Query {
     }
 
     function setorder($str) {
-        $this->order = "ORDER BY " . $str;
+        if (strlen($str) == 0) {
+            $this->order = '';
+        } else {
+            $this->order = "ORDER BY " . $str;
+        }
     }
 
 
