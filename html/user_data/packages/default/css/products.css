@@ -16,7 +16,6 @@ p.conditionarea {
 ----------------------------------------------- */
 .pagenumberarea, .pagecondarea {
     clear: both;
-    width: 560px;
     margin: 20px 0;
     padding: 10px;
     background-color: #f3f3f3;
@@ -237,11 +236,11 @@ div.subarea {
 }
 
 div.subarea h3 {
-    width: 560px;
     font-size: 120%;
     margin: 0 0 10px 0;
     padding: 5px 10px;
     background-color: #e4e4e4;
+    clear: both;
 }
 
 div.subtext {
