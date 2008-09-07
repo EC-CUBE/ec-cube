@@ -444,7 +444,8 @@ __EOS__;
                 SELECT
                     alldtl.*,
                     dtb_category.rank AS category_rank,
-                    T2.category_id
+                    T2.category_id,
+                    T2.rank AS product_rank
                 FROM
                     {$sql['vw_products_allclass_detail']} AS alldtl
                     LEFT JOIN
