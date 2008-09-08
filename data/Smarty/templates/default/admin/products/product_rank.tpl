@@ -75,7 +75,11 @@
     <!--{* ▼ページナビ *}-->
     <!--{$tpl_strnavi}-->
     <!--{* ▲ページナビ *}-->
-            
+    
+    <!--{if $smarty.const.ADMIN_MODE == '1'}-->
+        <p class="right"><button type="button" onclick="fnModeSubmit('renumber', '', '');">内部順位再割り当て</button></p>
+    <!--{/if}-->
+    
     <table class="list">
       <tr>
         <th>順位</th>
@@ -87,10 +91,12 @@
       <!--{assign var=rank value=$tpl_start_row}-->
       <!--{section name=cnt loop=$arrProductsList}-->
         <tr>
-          <!--{assign var=db_rank value="`$arrProductsList[cnt].rank`"}-->
           <!--{assign var=rank value=`$rank+1`}-->
-          <td align="center"><!--{$rank}--></td>
-          <td><!--{$arrProductsList[cnt].product_code|escape|default:"-"}--></td>
+          <td align="center">
+            <!--{$rank}-->
+            <!--{if $arrProductsList[cnt].status == "2"}--><br />(非公開)<!--{/if}-->
+          </td>
+          <td><!--{from_to from=$arrProductsList[cnt].product_code_min to=$arrProductsList[cnt].product_code_max separator="～<br />"}--></td>
           <td align="center">
             <!--{* 商品画像 *}-->
             <!--{if $arrProductsList[cnt].main_list_image != ""}-->

@@ -56,7 +56,7 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page {
      * @return void
      */
     function process() {
-        $conn = new SC_DBConn();
+        $objQuery = new SC_Query();
         $objView = new SC_AdminView();
         $objSess = new SC_Session();
         $objDb = new SC_Helper_DB_Ex();
@@ -92,6 +92,29 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page {
             // カテゴリの切替は、ページ番号をクリアする。
             $this->tpl_pageno = "";
             break;
+            
+        case 'renumber':
+            $sql = <<< __EOS__
+                UPDATE dtb_product_categories tgt
+                SET
+                    rank =
+                        (
+                            SELECT COUNT(*)
+                            FROM dtb_product_categories t_in
+                            WHERE t_in.category_id = tgt.category_id
+                                AND (
+                                    t_in.rank < tgt.rank
+                                    OR (
+                                        t_in.rank = tgt.rank
+                                        AND t_in.product_id < tgt.product_id
+                                    )
+                                )
+                        ) + 1
+                WHERE tgt.category_id = ?
+__EOS__;
+            $objQuery->query($sql, array($_POST['parent_category_id']));
+            break;
+        
         default:
             break;
         }
@@ -116,10 +139,9 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page {
     /* 商品読み込み */
     function lfGetProduct($category_id) {
         $objQuery = new SC_Query();
-        $col = "T2.product_id, name, main_list_image, T2.rank, product_code";
-        $table = "vw_products_nonclass AS noncls "
-            . " LEFT JOIN dtb_product_categories AS T2 USING (product_id)";
-        $where = "del_flg = 0 AND T2.category_id = ?";
+        $col = "product_id, name, main_list_image, product_code_min, product_code_max, status";
+        $table = "vw_products_allclass AS allcls";
+        $where = "del_flg = 0 AND category_id = ?";
 
         // 行数の取得
         $linemax = $objQuery->count($table, $where, array($category_id));
@@ -129,14 +151,14 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page {
         $objNavi = new SC_PageNavi($this->tpl_pageno, $linemax, SEARCH_PMAX, "fnNaviPage", NAVI_PMAX);
         $startno = $objNavi->start_row;
         $this->tpl_start_row = $objNavi->start_row;
-        $this->tpl_strnavi = $objNavi->strnavi;		// Navi表示文字列
-        $this->tpl_pagemax = $objNavi->max_page;		// ページ最大数（「上へ下へ」表示判定用）
-        $this->tpl_disppage = $objNavi->now_page;	// 表示ページ番号（「上へ下へ」表示判定用）
+        $this->tpl_strnavi = $objNavi->strnavi;     // Navi表示文字列
+        $this->tpl_pagemax = $objNavi->max_page;    // ページ最大数（「上へ下へ」表示判定用）
+        $this->tpl_disppage = $objNavi->now_page;   // 表示ページ番号（「上へ下へ」表示判定用）
 
         // 取得範囲の指定(開始行番号、行数のセット)
-        if(DB_TYPE != "mysql") $objQuery->setlimitoffset(SEARCH_PMAX, $startno);
+        $objQuery->setlimitoffset(SEARCH_PMAX, $startno);
 
-        $objQuery->setorder("rank DESC");
+        $objQuery->setorder("product_rank DESC, product_id DESC");
 
         $arrRet = $objQuery->select($col, $table, $where, array($category_id));
         return $arrRet;

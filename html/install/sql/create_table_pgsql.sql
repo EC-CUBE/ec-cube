@@ -398,7 +398,7 @@ CREATE TABLE dtb_category (
 CREATE TABLE dtb_product_categories (
     product_id int4 NOT NULL,
     category_id int4 NOT NULL,
-    rank int4,
+    rank int4 NOT NULL,
     PRIMARY KEY(product_id, category_id)
 );
 
