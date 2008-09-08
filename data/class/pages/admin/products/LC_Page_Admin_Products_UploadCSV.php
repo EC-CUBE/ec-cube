@@ -227,6 +227,13 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page {
      * @return void
      */
     function lfInitParam() {
+        
+        // 商品ステータスの上限文字数の算出
+        $masterData = new SC_DB_MasterData_Ex();
+        $arrSTATUS = $masterData->getMasterData("mtb_status");
+        $product_flag_maxlen = max(array_keys($arrSTATUS));
+        unset($arrSTATUS);
+        unset($masterData);
 
         $this->objFormParam->addParam("商品ID", "product_id", INT_LEN, "n", array("MAX_LENGTH_CHECK","NUM_CHECK"));
         $this->objFormParam->addParam("商品規格ID", "product_class_id", INT_LEN, "n", array("MAX_LENGTH_CHECK","NUM_CHECK"));
@@ -236,7 +243,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page {
 
         $this->objFormParam->addParam("商品名", "name", STEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("公開フラグ(1:公開 2:非公開)", "status", INT_LEN, "n", array("EXIST_CHECK","MAX_LENGTH_CHECK","NUM_CHECK"));
-        $this->objFormParam->addParam("商品ステータス", "product_flag", INT_LEN, "n", array("EXIST_CHECK","MAX_LENGTH_CHECK","NUM_CHECK"));
+        $this->objFormParam->addParam("商品ステータス", "product_flag", $product_flag_maxlen, "n", array("EXIST_CHECK","MAX_LENGTH_CHECK","NUM_CHECK"));
         $this->objFormParam->addParam("商品コード", "product_code", STEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam(NORMAL_PRICE_TITLE, "price01", PRICE_LEN, "n", array("MAX_LENGTH_CHECK","NUM_CHECK"));
         $this->objFormParam->addParam(SALE_PRICE_TITLE, "price02", PRICE_LEN, "n", array("EXIST_CHECK","MAX_LENGTH_CHECK","NUM_CHECK"));
