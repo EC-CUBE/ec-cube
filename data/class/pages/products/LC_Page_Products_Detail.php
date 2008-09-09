@@ -730,10 +730,10 @@ class LC_Page_Products_Detail extends LC_Page {
                 . "        T2.product_id"
                 . "   FROM dtb_product_categories T2  "
                 . " GROUP BY product_id) AS T3 USING (product_id)";
-        $objQuery->setorder("product_rank DESC");
+        $objQuery->setorder("T3.product_rank DESC");
         for($i = 0; $i < $max; $i++) {
             $where = "del_flg = 0 AND T3.product_id = ? AND status = 1";
-            $arrProductInfo = $objQuery->select("DISTINCT main_list_image, price02_min, price02_max, price01_min, price01_max, name, point_rate, product_rank", $from, $where, array($arrRet[$i]['recommend_product_id']));
+            $arrProductInfo = $objQuery->select("DISTINCT main_list_image, price02_min, price02_max, price01_min, price01_max, name, point_rate, T3.product_rank", $from, $where, array($arrRet[$i]['recommend_product_id']));
 
             if(count($arrProductInfo) > 0) {
                 $arrRecommend[$no] = $arrProductInfo[0];
