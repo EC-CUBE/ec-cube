@@ -25,7 +25,7 @@
 <!--
   
   function fnReturn() {
-    document.form_search.action = './index.php';
+    document.form_search.action = './<!--{$smarty.const.DIR_INDEX_URL}-->';
     document.form_search.submit();
     return false;
   }
@@ -55,7 +55,7 @@
 <!--{/foreach}-->
 </form>
 
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+<form name="form1" id="form1" method="post" action="?">
 <input type="hidden" name="mode" value="confirm" />
 <input type="hidden" name="edit_email" value="<!--{$tpl_edit_email}-->" />
 <input type="hidden" name="customer_id" value="<!--{$list_data.customer_id|escape}-->" />

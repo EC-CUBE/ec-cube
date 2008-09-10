@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<form name="form1" id="form1" method="post" action="./class.php">
+<form name="form1" id="form1" method="post" action="?">
 <input type="hidden" name="mode" value="edit" />
 <input type="hidden" name="class_id" value="<!--{$tpl_class_id}-->" />
 <div id="products" class="contents-main">

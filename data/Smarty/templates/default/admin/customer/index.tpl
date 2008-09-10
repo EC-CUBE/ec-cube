@@ -72,7 +72,7 @@
 
 
 <div id="customer" class="contents-main">
-<form name="form_search" id="form_search" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+<form name="form_search" id="form_search" method="post" action="?">
 <input type="hidden" name="mode" value="search" />
   <h2>検索条件設定</h2>
 
@@ -269,7 +269,7 @@
 <!--{if count($arrErr) == 0 and ($smarty.post.mode == 'search' or $smarty.post.mode == 'delete' or $smarty.post.mode == 'resend_mail') }-->
 
 <!--★★検索結果一覧★★-->
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+<form name="form1" id="form1" method="post" action="?">
 <!--{foreach from=$smarty.post key="key" item="item"}-->
 <!--{if $key ne "mode" && $key ne "del_mode" && $key ne "edit_customer_id" && $key ne "del_customer_id" && $key ne "search_pageno" && $key ne "csv_mode" && $key ne "job" && $key ne "sex" && $key ne "status"}--><input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->"><!--{/if}-->
 <!--{/foreach}-->

@@ -23,7 +23,7 @@
 *}-->
 <div id="mynavarea">
     <ul class="button_like"><!--{* IE不具合対策(空白を入れない)
-        *}--><li><a href="index.php" class="<!--{if $tpl_mypageno == 'index'}--> selected<!--{/if}-->">
+        *}--><li><a href="./<!--{$smarty.const.DIR_INDEX_URL}-->" class="<!--{if $tpl_mypageno == 'index'}--> selected<!--{/if}-->">
             購入履歴一覧</a></li><!--{* IE不具合対策(空白を入れない)
         *}--><!--{if $smarty.const.OPTION_FAVOFITE_PRODUCT == 1}--><!--{* IE不具合対策(空白を入れない)
             *}--><li><a href="favorite.php" class="<!--{if $tpl_mypageno == 'favorite'}--> selected<!--{/if}-->">

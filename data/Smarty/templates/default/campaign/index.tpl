@@ -82,7 +82,7 @@ function fnGetIds() {
 function init() {
     if(<!--{$tpl_init}-->) {
         var ids = fnGetIds();
-        location.href = './index.php?init=1&ids=' + ids;
+        location.href = '?init=1&ids=' + ids;
     } else {
         <!--{$tpl_onload}-->
     }
@@ -92,7 +92,7 @@ window.onload = init;
 
 //-->
 </script>
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+<form name="form1" id="form1" method="post" action="?">
 <input type="hidden" name="mode" value="cart" />
 <input type="hidden" name="product_id" value="" />
 <input type="hidden" name="cp" value="true" />

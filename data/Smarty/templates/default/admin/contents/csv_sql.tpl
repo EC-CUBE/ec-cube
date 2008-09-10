@@ -48,7 +48,7 @@ function fnTargetSelf(){
 </script>
 
 
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+<form name="form1" id="form1" method="post" action="?">
 <input type="hidden" name="mode" value="confirm" />
 <input type="hidden" name="sql_id" value="<!--{$sql_id}-->" />
 <input type="hidden" name="csv_output_id" value="" />

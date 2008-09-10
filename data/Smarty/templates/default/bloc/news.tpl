@@ -24,7 +24,7 @@
     <img src="<!--{$TPL_DIR}-->img/top/news.jpg" width="400" height="29" alt="新着情報" />
   </h2>
 
-  <p>☆★☆ 新着情報は<a href="<!--{$smarty.const.URL_DIR}-->rss/index.php" target="_blank">RSS</a>で配信しています。★☆★</p>
+  <p>☆★☆ 新着情報は<a href="<!--{$smarty.const.URL_DIR}-->rss/<!--{$smarty.const.DIR_INDEX_URL}-->" target="_blank">RSS</a>で配信しています。★☆★</p>
 
 <!--{section name=data loop=$arrNews}-->
   <dl>

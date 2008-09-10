@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<form name="form1" id="form1" method="POST" action="<!--{$smarty.server.PHP_SELF|escape}-->" >
+<form name="form1" id="form1" method="POST" action="?" >
 <input type="hidden" name="mode" value="" />
 <input type="hidden" name="status" value="<!--{if $arrForm.status == ""}-->1<!--{else}--><!--{$arrForm.status}--><!--{/if}-->" />
 <input type="hidden" name="search_pageno" value="<!--{$tpl_pageno}-->" >

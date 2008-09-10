@@ -29,7 +29,7 @@
     
     <p class="mini"><em>※ご注文に関するお問い合わせには、必ず「ご注文番号」と「お名前」をご記入の上、メールくださいますようお願いいたします。</em></p>
     
-    <form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+    <form name="form1" method="post" action="?">
     <input type="hidden" name="mode" value="confirm" />
     
     <table summary="お問い合わせ">

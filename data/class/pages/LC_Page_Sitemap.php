@@ -78,7 +78,7 @@ class LC_Page_Sitemap extends LC_Page {
     function init() {
         parent::init();
 
-        $this->staticURL[] = SITE_URL . 'rss/index.php';
+        $this->staticURL[] = SITE_URL . 'rss/' . DIR_INDEX_URL;
         if (USE_MOBILE !== false) {
             $this->staticURL[] = MOBILE_SITE_URL;
         }
@@ -312,6 +312,7 @@ class LC_Page_Sitemap extends LC_Page {
             if (!preg_match('|^https?://|i', $page['url'])) {
                 $page['url'] = SITE_URL . $page['url'];
             }
+            $page['url'] = preg_replace('|/' . preg_quote(DIR_INDEX_FILE) . '$|', '/' . DIR_INDEX_URL, $page['url']);
         }
         unset($page);
         

@@ -22,7 +22,7 @@
  */
 *}-->
 <ul class="level1">
-<li<!--{if $tpl_subno == 'layout'}--> class="on"<!--{/if}--> id="navi-design-layout"><a href="<!--{$smarty.const.URL_DIR}-->admin/design/index.php"><span>レイアウト設定</span></a></li>
+<li<!--{if $tpl_subno == 'layout'}--> class="on"<!--{/if}--> id="navi-design-layout"><a href="<!--{$smarty.const.URL_DIR}-->admin/design/<!--{$smarty.const.DIR_INDEX_URL}-->"><span>レイアウト設定</span></a></li>
 <li<!--{if $tpl_subno == 'main_edit'}--> class="on"<!--{/if}--> id="navi-design-main"><a href="<!--{$smarty.const.URL_DIR}-->admin/design/main_edit.php"><span>ページ詳細設定</span></a></li>
 <li<!--{if $tpl_subno == 'bloc'}--> class="on"<!--{/if}--> id="navi-design-bloc"><a href="<!--{$smarty.const.URL_DIR}-->admin/design/bloc.php"><span>ブロック編集</span></a></li>
 <li<!--{if $tpl_subno == 'header'}--> class="on"<!--{/if}--> id="navi-design-header"><a href="<!--{$smarty.const.URL_DIR}-->admin/design/header.php"><span>ﾍｯﾀﾞｰ/ﾌｯﾀｰ設定</span></a></li>

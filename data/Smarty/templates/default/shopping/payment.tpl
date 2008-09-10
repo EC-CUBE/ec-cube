@@ -27,7 +27,7 @@
     </p>
     <h2 class="title"><!--{$tpl_title|escape}--></h2>
 
-    <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+    <form name="form1" id="form1" method="post" action="?">
       <input type="hidden" name="mode" value="confirm" />
       <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->" />
       <div class="payarea">

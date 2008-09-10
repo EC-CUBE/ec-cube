@@ -130,7 +130,7 @@ function fnChangeRadio(name, no, id, pageno) {
 
 // 管理者メンバーページの切替
 function fnMemberPage(pageno) {
-	location.href = "./index.php?pageno=" + pageno;
+	location.href = "?pageno=" + pageno;
 }
 
 // ページナビで使用する

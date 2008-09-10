@@ -27,7 +27,7 @@
   <!--{include file=$tpl_navi}-->
   <div id="mycontentsarea">
     <h3><!--{$tpl_subtitle|escape}--></h3>
-    <form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+    <form name="form1" method="post" action="?">
       <input type="hidden" name="mode" value="confirm" />
       <div id="completetext">
         会員を退会された場合には、現在保存されている購入履歴や、お届け先などの情報は、すべて削除されますがよろしいでしょうか？

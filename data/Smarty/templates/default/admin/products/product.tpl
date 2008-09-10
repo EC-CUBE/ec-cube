@@ -50,7 +50,7 @@ function selectAll(target) {
 
 </script>
 
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" enctype="multipart/form-data">
+<form name="form1" id="form1" method="post" action="?" enctype="multipart/form-data">
 <!--{foreach key=key item=item from=$arrSearchHidden}-->
 <input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->" />
 <!--{/foreach}-->

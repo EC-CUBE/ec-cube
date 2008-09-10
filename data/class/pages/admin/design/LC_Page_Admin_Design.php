@@ -191,16 +191,16 @@ class LC_Page_Admin_Design extends LC_Page {
             // プレビュー処理
             if ($_POST['mode'] == 'preview') {
                 if ($page_id === "") {
-                    $this->sendRedirect($this->getLocation("./index.php"));
+                    $this->sendRedirect($this->getLocation(DIR_INDEX_URL));
                 }
                 $this->lfSetPreData($arrPageData, $objLayout);
 
                 $_SESSION['preview'] = "ON";
 
-                $this->sendRedirect($this->getLocation(URL_DIR . "preview/index.php", array("filename" => $arrPageData[0]["filename"])));
+                $this->sendRedirect($this->getLocation(URL_DIR . "preview/" . DIR_INDEX_URL, array("filename" => $arrPageData[0]["filename"])));
 
             }else{
-                $this->sendRedirect($this->getLocation("./index.php",
+                $this->sendRedirect($this->getLocation(DIR_INDEX_URL,
                                             array("page_id" => $page_id,
                                                   "msg" => "on")));
 
@@ -210,7 +210,7 @@ class LC_Page_Admin_Design extends LC_Page {
         // データ削除処理 ベースデータでなければファイルを削除
         if ($_POST['mode'] == 'delete' and  !$objLayout->lfCheckBaseData($page_id)) {
             $objLayout->lfDelPageData($page_id);
-            $this->sendRedirect($this->getLocation("./index.php"));
+            $this->sendRedirect($this->getLocation(DIR_INDEX_URL));
         }
 
         // ブロック情報を画面配置用に編集

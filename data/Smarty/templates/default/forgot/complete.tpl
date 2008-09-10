@@ -25,7 +25,7 @@
     <h2><img src="<!--{$TPL_DIR}-->img/forget/title.jpg" width="500" height="40" alt="パスワードを忘れた方" /></h2>
     <p>パスワードの発行が完了いたしました。ログインには下記のパスワードをご利用ください。<br />
     ※下記パスワードは、MYページの「会員登録内容変更」よりご変更いただけます。</p>
-    <form action="<!--{$smarty.server.PHP_SELF|escape}-->" method="post" name="form1">
+    <form action="?" method="post" name="form1">
       <div id="completebox">
         <p><em><!--{$temp_password}--></em></p>
       </div>

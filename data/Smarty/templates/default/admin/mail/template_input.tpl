@@ -51,7 +51,7 @@ function lfnCheckSubmit(){
 </script>
 
 
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" onSubmit="return lfnCheckSubmit();">
+<form name="form1" id="form1" method="post" action="?" onSubmit="return lfnCheckSubmit();">
 <input type="hidden" name="mode" value="<!--{$mode}-->" />
 <input type="hidden" name="template_id" value="<!--{$arrForm.template_id}-->" />
 <div id="mail" class="contents-main">

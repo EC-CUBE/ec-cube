@@ -35,7 +35,7 @@ function lfc_del_product( pname ){
 </script>
 
 
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" enctype="multipart/form-data">
+<form name="form1" id="form1" method="post" action="?" enctype="multipart/form-data">
 <input type="hidden" name="template_id" value="<!--{$arrForm.template_id|escape}-->" />
 <input type="hidden" name="mail_method" value="3" />
 <input type="hidden" name="image_key" value="" />

@@ -50,9 +50,9 @@
 <!--{else}-->
 <a href="entry/new.php" accesskey="3"><!--{3|numeric_emoji}-->会員登録</a><br>
 <!--{/if}-->
-<a href="guide/index.php" accesskey="4"><!--{4|numeric_emoji}-->ご利用ガイド</a><br>
-<a href="contact/index.php" accesskey="5"><!--{5|numeric_emoji}-->お問い合せ</a><br>
-<a href="mypage/index.php" accesskey="6" utn><!--{6|numeric_emoji}-->MYページ</a><br>
+<a href="guide/<!--{$smarty.const.DIR_INDEX_URL}-->" accesskey="4"><!--{4|numeric_emoji}-->ご利用ガイド</a><br>
+<a href="contact/<!--{$smarty.const.DIR_INDEX_URL}-->" accesskey="5"><!--{5|numeric_emoji}-->お問い合せ</a><br>
+<a href="mypage/<!--{$smarty.const.DIR_INDEX_URL}-->" accesskey="6" utn><!--{6|numeric_emoji}-->MYページ</a><br>
 <!-- ▲メニュー ここまで -->
 
 <br>

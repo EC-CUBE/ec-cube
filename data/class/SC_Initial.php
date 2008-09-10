@@ -54,6 +54,7 @@ class SC_Initial {
         $this->requireInitialConfig();
         $this->defineDSN();
         $this->setErrorReporting();
+        $this->defineDirectoryIndex();
         $this->defineConstants();
         $this->mbstringInit();
         $this->createCacheDir();
@@ -130,6 +131,29 @@ class SC_Initial {
         
         //ロケールを明示的に設定
         setlocale(LC_ALL, LOCALE);
+    }
+
+    /**
+     * 定数 DIR_INDEX_URL を設定する.
+     *
+     * @access protected
+     * @return void
+     */
+    function defineDirectoryIndex() {
+        
+        // DirectoryIndex の実ファイル名
+        if (!defined('DIR_INDEX_FILE')) {
+            define('DIR_INDEX_FILE', 'index.php');
+        }
+        
+        // DIR_INDEX_FILE にアクセスする時の URL のファイル名部を定義する
+        if (USE_FILENAME_DIR_INDEX === true) {
+            // ファイル名を使用する
+            define('DIR_INDEX_URL', DIR_INDEX_FILE);
+        } else {
+            // ファイル名を使用しない
+            define('DIR_INDEX_URL', '');
+        }
     }
 
     /**

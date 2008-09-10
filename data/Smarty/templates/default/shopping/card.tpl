@@ -53,7 +53,7 @@
 				<div id="maintitle"><img src="../img/shopping/card_title.jpg" width="700" height="40" alt="クレジットカード決済" /></div>
 				<div class="fs12n" id="comment01">下記項目にクレジットカード情報をご入力くださいませ。<br />
 				入力後、一番下の「ご注文完了ページへ」ボタンをクリックしてください。</div>
-				<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+				<form name="form1" id="form1" method="post" action="?">
 				<input type="hidden" name="mode" value="regist">
 				<input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
 				<span class="redst"><!--{$tpl_error}--></span>

@@ -20,7 +20,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 <table width="502" border="0" cellspacing="1" cellpadding="0" summary=" ">
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+<form name="form1" id="form1" method="post" action="?">
 <input type="hidden" name="mode" value="<!--{$tpl_mode}-->">
 
 <!--{foreach key=key item=item from=$arrHidden}-->
@@ -32,7 +32,7 @@
     <td align="center" class="fs12">
         <strong>EC CUBE インストールが完了しました。</strong><br>
         <br>
-        <a href="<!--{$tpl_sslurl}-->admin/">管理画面</a>にログインできます。
+        <a href="<!--{$tpl_sslurl}-->admin/<!--{$smarty.const.DIR_INDEX_URL}-->">管理画面</a>にログインできます。
     </td>
 </tr>
 <tr>

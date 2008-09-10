@@ -22,7 +22,7 @@
  */
 *}-->
 <div id="mail" class="contents-main">
-<form name="form_search" id="form_search" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+<form name="form_search" id="form_search" method="post" action="?">
 <input type="hidden" name="mode" value="search" />
   <h2>配信先検索条件設定</h2>
 
@@ -279,7 +279,7 @@
 
 <!--{if count($arrErr) == 0 and ($smarty.post.mode == 'search' or $smarty.post.mode == 'delete' or $smarty.post.mode == 'back') }-->
 
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+<form name="form1" id="form1" method="post" action="?">
 <input type="hidden" name="mode" value="" />
 <input type="hidden" name="search_pageno" value="<!--{$tpl_pageno}-->" />
 <input type="hidden" name="result_email" value="" />

@@ -25,7 +25,7 @@
 <hr>
 
 <!--▼CONTENTS-->
-<form name="login_mypage" id="login_mypage" method="post" action="./index.php">
+<form name="login_mypage" id="login_mypage" method="post" action="./<!--{$smarty.const.DIR_INDEX_URL}-->">
 	<input type="hidden" name="mode" value="login" >
 <!--{if !$tpl_valid_phone_id}-->
 	▼メールアドレス<br>
@@ -40,7 +40,7 @@
 	<!--{assign var=key value="login_pass"}--><font color="#FF0000"><!--{$arrErr[$key]}--></font>
 	<input type="password" name="<!--{$key}-->" size="40" istyle="3"><br>
 	<center><input type="submit" value="送信" name="log"></center><br>
-	<a href="<!--{$smarty.const.MOBILE_URL_DIR}-->forgot/index.php">パスワードをお忘れの方はこちら</a><br>
+	<a href="<!--{$smarty.const.MOBILE_URL_DIR}-->forgot/<!--{$smarty.const.DIR_INDEX_URL}-->">パスワードをお忘れの方はこちら</a><br>
 </form>
 <!--▲CONTENTS-->
 

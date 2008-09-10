@@ -22,7 +22,7 @@
  */
 *}-->
 <ul class="level1">
-<li<!--{if $tpl_subno == 'index'}--> class="on"<!--{/if}--> id="navi-products-index"><a href="<!--{$smarty.const.URL_DIR}-->admin/products/index.php"><span>商品マスタ</span></a></li>
+<li<!--{if $tpl_subno == 'index'}--> class="on"<!--{/if}--> id="navi-products-index"><a href="<!--{$smarty.const.URL_DIR}-->admin/products/<!--{$smarty.const.DIR_INDEX_URL}-->"><span>商品マスタ</span></a></li>
 <li<!--{if $tpl_subno == 'product'}--> class="on"<!--{/if}--> id="navi-products-product"><a href="<!--{$smarty.const.URL_DIR}-->admin/products/product.php"><span>商品登録</span></a></li>
 <li<!--{if $tpl_subno == 'upload_csv'}--> class="on"<!--{/if}--> id="navi-products-uploadcsv"><a href="<!--{$smarty.const.URL_DIR}-->admin/products/upload_csv.php"><span>商品登録CSV</span></a></li>
 <li<!--{if $tpl_subno == 'class'}--> class="on"<!--{/if}--> id="navi-products-class"><a href="<!--{$smarty.const.URL_DIR}-->admin/products/class.php"><span>規格管理</span></a></li>

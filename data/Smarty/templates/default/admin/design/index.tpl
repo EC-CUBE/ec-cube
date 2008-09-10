@@ -16,7 +16,7 @@ function fnTargetSelf(){
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/layout_design.js"></script>
 
 
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" >
+<form name="form1" id="form1" method="post" action="?">
 <input type="hidden" name="mode" value="" />
 <input type="hidden" name="page_id" value="<!--{$page_id}-->" />
 <input type="hidden" name="bloc_cnt" value="<!--{$bloc_cnt}-->" />

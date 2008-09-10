@@ -50,18 +50,3 @@ function winSubmit(URL,formName,Winname,Wwidth,Wheight){
 	WIN.focus();
 }
 //-->
-
-<!--
-	function ChangeParent()
-	{
-		window.opener.location.href="../contact/index.php";
-	}
-//-->
-
-
-<!--//
-function CloseChild()
-{
-	window.close();
-}
-//-->

@@ -261,7 +261,7 @@ class LC_Page_Entry extends LC_Page {
             $_POST['email'] = $_SESSION['mobile']['kara_mail_from'];
             $this->tpl_kara_mail_from = $_POST['email'];
         } elseif (MOBILE_USE_KARA_MAIL) {
-            $token = $objMobile->gfPrepareKaraMail('entry/index.php');
+            $token = $objMobile->gfPrepareKaraMail('entry/' . DIR_INDEX_URL);
             if ($token !== false) {
                 $this->tpl_mainpage = 'entry/mail.tpl';
                 $this->tpl_title = '会員登録(空メール)';
@@ -472,14 +472,14 @@ class LC_Page_Entry extends LC_Page {
                         $param = array("mode" => "regist",
                                        "id" => $this->uniqid,
                                        session_name() => session_id());
-                        $this->sendRedirect($this->getLocation(MOBILE_URL_DIR . "regist/index.php", $param));
+                        $this->sendRedirect($this->getLocation(MOBILE_URL_DIR . "regist/" . DIR_INDEX_URL, $param));
                         exit;
                     }
 
                     $this->tpl_mainpage = 'entry/complete.tpl';
                     $this->tpl_title = '会員登録(完了ページ)';
 
-                    $objMobile->sfMobileSetExtSessionId('id', $this->uniqid, 'regist/index.php');
+                    $objMobile->sfMobileSetExtSessionId('id', $this->uniqid, 'regist/' . DIR_INDEX_URL);
 
                     //　仮登録完了メール送信
                     $this->to_name01 = $_POST['name01'];

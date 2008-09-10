@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->"  enctype="multipart/form-data">
+<form name="form1" method="post" action="?"  enctype="multipart/form-data">
 <input type="hidden" name="mode" value="" />
 <input type="hidden" name="now_file" value="<!--{$tpl_now_dir}-->" />
 <input type="hidden" name="tree_select_file" value="" />

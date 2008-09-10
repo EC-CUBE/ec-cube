@@ -27,7 +27,7 @@
   <tr>
     <th>月度集計</th>
     <td>
-      <form name="search_form1" id="search_form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+      <form name="search_form1" id="search_form1" method="post" action="?">
         <input type="hidden" name="mode" value="search" />
         <input type="hidden" name="form" value="1" />
         <input type="hidden" name="page" value="<!--{$arrForm.page.value}-->" />
@@ -49,7 +49,7 @@
   <tr>
     <th>期間集計</th>
     <td>
-      <form name="search_form2" id="search_form2" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+      <form name="search_form2" id="search_form2" method="post" action="?">
         <input type="hidden" name="mode" value="search" />
         <input type="hidden" name="form" value="2" />
         <input type="hidden" name="page" value="<!--{$arrForm.page.value}-->" />
@@ -92,7 +92,7 @@
 
 <!--{* 検索結果一覧ここから *}-->
 <!--{if count($arrResults) > 0}-->
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+<form name="form1" id="form1" method="post" action="?">
 <input type="hidden" name="mode" value="search" />
 <input type="hidden" name="type" value="<!--{$arrForm.type.value}-->" />
 <input type="hidden" name="page" value="<!--{$arrForm.page.value}-->" />
@@ -126,7 +126,7 @@
 </form>
 <!--{else}-->
   <!--{if $smarty.post.mode == 'search'}-->
-  <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+  <form name="form1" id="form1" method="post" action="?">
   <input type="hidden" name="mode" value="search" />
   <input type="hidden" name="type" value="<!--{$arrForm.type.value}-->" />
   <input type="hidden" name="page" value="<!--{$arrForm.page.value}-->" />

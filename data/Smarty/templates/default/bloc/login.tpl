@@ -49,7 +49,7 @@
         <p><img src="<!--{$TPL_DIR}-->img/side/icon_pw.gif" width="40" height="22" alt="パスワード" /><input type="password" name="login_pass" class="box96" /></p>
       </div>
         <p class="mini">
-          <a href="<!--{$smarty.const.SSL_URL|sfTrimURL}-->/forgot/index.php" onclick="win01('<!--{$smarty.const.SSL_URL|sfTrimURL}-->/forgot/index.php','forget','600','400'); return false;" target="_blank">パスワードを忘れた方はこちら</a>
+          <a href="<!--{$smarty.const.SSL_URL|sfTrimURL}-->/forgot/<!--{$smarty.const.DIR_INDEX_URL}-->" onclick="win01('<!--{$smarty.const.SSL_URL|sfTrimURL}-->/forgot/<!--{$smarty.const.DIR_INDEX_URL}-->','forget','600','400'); return false;" target="_blank">パスワードを忘れた方はこちら</a>
         </p>
         <p>
           <input type="checkbox" name="login_memory" value="1" <!--{$tpl_login_memory|sfGetChecked:1}--> />

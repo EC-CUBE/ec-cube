@@ -25,7 +25,7 @@
     <h2 class="title"><!--{$tpl_title|escape}--></h2>
     <p>下記の内容で送信してもよろしいでしょうか？<br />
       よろしければ、一番下の「会員登録完了へ」ボタンをクリックしてください。</p>
-    <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+    <form name="form1" id="form1" method="post" action="?">
       <input type="hidden" name="mode" value="complete">
       <!--{foreach from=$list_data key=key item=item}-->
         <input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->" />

@@ -25,15 +25,15 @@
     
     <!--{* IE不具合対策としてli要素の後に空白を入れないようにすること
     *}--><li>
-        <a href="<!--{$smarty.const.URL_DIR}-->abouts/index.php"
+        <a href="<!--{$smarty.const.URL_DIR}-->abouts/<!--{$smarty.const.DIR_INDEX_URL}-->"
             class="<!--{if $tpl_page_category == "abouts"}--> selected<!--{/if}-->"
         >当サイトについて</a></li><!--{* IE不具合対策(空白を入れない)
     *}--><li>
-        <a href="<!--{$smarty.const.URL_DIR}-->contact/index.php"
+        <a href="<!--{$smarty.const.URL_DIR}-->contact/<!--{$smarty.const.DIR_INDEX_URL}-->"
             class="<!--{if $tpl_page_category == "contact"}--> selected<!--{/if}-->"
         >お問い合わせ</a></li><!--{* IE不具合対策(空白を入れない)
     *}--><li>
-        <a href="<!--{$smarty.const.URL_DIR}-->order/index.php"
+        <a href="<!--{$smarty.const.URL_DIR}-->order/<!--{$smarty.const.DIR_INDEX_URL}-->"
             class="<!--{if $tpl_page_category == "order"}--> selected<!--{/if}-->"
         >特定商取引に関する法律</a></li><!--{* IE不具合対策(空白を入れない)
     *}--></ul>

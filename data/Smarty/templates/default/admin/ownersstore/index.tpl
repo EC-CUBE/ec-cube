@@ -33,7 +33,7 @@ OwnersStore.download();やOwnersStore.products_list();を呼び出すことで
 <link rel="stylesheet" href="<!--{$TPL_DIR}-->css/thickbox.css" type="text/css" media="screen" />
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/ownersstore.js.php"></script>
 
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+<form name="form1" id="form1" method="post" action="?">
 <div id="ownersstore" class="contents-main">
 
   <!--購入商品一覧ここから-->

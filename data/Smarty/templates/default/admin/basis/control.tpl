@@ -32,7 +32,7 @@
     <tr>
       <td><strong><!--{$arrControlList[cnt].control_title|escape}--></strong><br /><!--{$arrControlList[cnt].control_text|escape}--></td>
       <td align="center">
-        <form name="form<!--{$smarty.section.cnt.index}-->" id="form<!--{$smarty.section.cnt.index}-->" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+        <form name="form<!--{$smarty.section.cnt.index}-->" id="form<!--{$smarty.section.cnt.index}-->" method="post" action="?">
         <input type="hidden" name="mode" value="edit" />
         <input type="hidden" name="control_id" value="<!--{$arrControlList[cnt].control_id}-->" />
         <select name="control_flg" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">

@@ -22,5 +22,5 @@
  */
 *}-->
 <ul class="level1">
-<li<!--{if $tpl_subno == 'index'}--> class="on"<!--{/if}--> id="navi-customer-index"><a href="<!--{$smarty.const.URL_DIR}-->admin/customer/index.php"><span>顧客マスタ</span></a></li>
+<li<!--{if $tpl_subno == 'index'}--> class="on"<!--{/if}--> id="navi-customer-index"><a href="<!--{$smarty.const.URL_DIR}-->admin/customer/<!--{$smarty.const.DIR_INDEX_URL}-->"><span>顧客マスタ</span></a></li>
 </ul>

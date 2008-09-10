@@ -31,7 +31,7 @@
       よろしければ、一番下の「会員登録完了へ」ボタンをクリックしてください。</p>
 
 
-    <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+    <form name="form1" id="form1" method="post" action="?">
       <input type="hidden" name="mode" value="complete" />
       <input type="hidden" name="customer_id" value="<!--{$arrForm.customer_id|escape}-->" />
       <!--{foreach from=$arrForm key=key item=item}-->

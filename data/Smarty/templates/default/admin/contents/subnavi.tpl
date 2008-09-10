@@ -22,7 +22,7 @@
  */
 *}-->
 <ul class="level1">
-<li<!--{if $tpl_subno == 'index'}--> class="on"<!--{/if}--> id="navi-contents-index"><a href="<!--{$smarty.const.URL_DIR}-->admin/contents/index.php"><span>新着情報管理</span></a></li>
+<li<!--{if $tpl_subno == 'index'}--> class="on"<!--{/if}--> id="navi-contents-index"><a href="<!--{$smarty.const.URL_DIR}-->admin/contents/<!--{$smarty.const.DIR_INDEX_URL}-->"><span>新着情報管理</span></a></li>
 <li<!--{if $tpl_subno == 'recommend'}--> class="on"<!--{/if}--> id="navi-contents-recommend"><a href="<!--{$smarty.const.URL_DIR}-->admin/contents/recommend.php"><span>おすすめ商品管理</span></a></li>
 <li<!--{if $tpl_subno == 'inquiry'}--> class="on"<!--{/if}--> id="navi-contents-inquiry"><a href="<!--{$smarty.const.URL_DIR}-->admin/contents/inquiry.php"><span>アンケート管理</span></a></li>
 <li<!--{if $tpl_subno == 'campaign'}--> class="on"<!--{/if}--> id="navi-contents-campaign"><a href="<!--{$smarty.const.URL_DIR}-->admin/contents/campaign.php"><span>キャンペーン管理</span></a></li>

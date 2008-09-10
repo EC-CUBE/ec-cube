@@ -35,7 +35,7 @@ function fnIsCartOn(){
 </script>
 
 <div id="admin-contents" class="contents-main">
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+<form name="form1" id="form1" method="post" action="?">
 <input type="hidden" name="mode" value="" />
 <input type="hidden" name="campaign_id" value="<!--{$campaign_id}-->" />
 <input type="hidden" name="is_update" value="<!--{$is_update}-->" />

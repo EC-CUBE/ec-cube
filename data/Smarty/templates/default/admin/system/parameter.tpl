@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<form name="form1" id="form1" method="post" action="./parameter.php">
+<form name="form1" id="form1" method="post" action="?">
 <input type="hidden" name="mode" value="update" />
 <div id="basis" class="contents-main">
   <ul class="red fs12st">

@@ -25,7 +25,7 @@
     <h2><img src="<!--{$TPL_DIR}-->img/forget/title.jpg" width="500" height="40" alt="パスワードを忘れた方" /></h2>
     <p>ご登録時のメールアドレスを入力して「次へ」ボタンをクリックしてください。<br />
       <span class="attention">※新しくパスワードを発行いたしますので、お忘れになったパスワードはご利用できなくなります。</span></p>
-    <form action="<!--{$smarty.server.PHP_SELF|escape}-->" method="post" name="form1">
+    <form action="?" method="post" name="form1">
       <input type="hidden" name="mode" value="mail_check" />
       <div id="completebox">
         <p>メールアドレス：&nbsp;<!--★メールアドレス入力★--><input type="text" name="email" value="<!--{$tpl_login_email|escape}-->" size="40" class="box300" style="<!--{$errmsg|sfGetErrorColor}-->; ime-mode: disabled;" /></p>

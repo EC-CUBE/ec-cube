@@ -11,7 +11,7 @@ function func_return(){
 
 <div id="inquiry">
   <h1><!--{$QUESTION.title|escape}--></h1>
-  <form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+  <form name="form1" method="post" action="?">
     <input type="hidden" name="mode" value="regist">
     <!--{foreach key=key item=item from=$arrHidden}-->
     <input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->" />

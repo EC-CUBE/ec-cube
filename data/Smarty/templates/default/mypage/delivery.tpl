@@ -50,7 +50,7 @@ function fnCheckAfterOpenWin(){
     </p>
 
     <!--{if $tpl_linemax > 0}-->
-    <form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" >
+    <form name="form1" method="post" action="?" >
       <input type="hidden" name="mode" value="" />
       <input type="hidden" name="other_deliv_id" value="" />
       <input type="hidden" name="pageno" value="<!--{$tpl_pageno}-->" />

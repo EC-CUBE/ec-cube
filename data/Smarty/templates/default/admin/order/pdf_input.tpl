@@ -36,7 +36,7 @@ function lfPopwinSubmit(formName) {
 //-->
 </script>
 
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
+<form name="form1" id="form1" method="post" action="?">
 <input type="hidden" name="mode" value="confirm" />
 <!--{foreach from=$arrForm.order_id item=order_id}-->
 <input type="hidden" name="order_id[]" value="<!--{$order_id}-->">

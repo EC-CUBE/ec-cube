@@ -22,7 +22,7 @@
  */
 *}-->
 <!--★★メインコンテンツ★★-->
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" enctype="multipart/form-data" onSubmit="winSubmit('','form1', 'upload', 500, 400)">
+<form name="form1" id="form1" method="post" action="?" enctype="multipart/form-data" onSubmit="winSubmit('','form1', 'upload', 500, 400)">
 <input type="hidden" name="mode" value="csv_upload" />
 <div id="products" class="contents-main">
   <!--{if $tpl_errtitle != ""}-->

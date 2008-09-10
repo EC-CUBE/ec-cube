@@ -30,7 +30,7 @@
     <!--{include file=`$smarty.const.TEMPLATE_DIR`mypage/navi.tpl}-->
   <!--{/if}-->
   <div id="mycontentsarea">
-    <form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+    <form name="form1" method="post" action="?">
     <input type="hidden" name="order_id" value="" />
     <input type="hidden" name="pageno" value="<!--{$tpl_pageno}-->" />
     <h3><!--{$tpl_subtitle|escape}--></h3>
@@ -59,7 +59,7 @@
        <!--{assign var=payment_id value="`$arrOrder[cnt].payment_id`"}-->
        <td><!--{$arrPayment[$payment_id]|escape}--></td>
        <td class="pricetd"><!--{$arrOrder[cnt].payment_total|number_format}-->円</td>
-       <td class="centertd"><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnChangeAction('./history.php'); fnKeySubmit('order_id','<!--{$arrOrder[cnt].order_id}-->'); return false">詳細</a></td>
+       <td class="centertd"><a href="?" onclick="fnChangeAction('./history.php'); fnKeySubmit('order_id','<!--{$arrOrder[cnt].order_id}-->'); return false">詳細</a></td>
      </tr>
      <!--{/section}-->
     </table>

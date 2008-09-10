@@ -3,7 +3,7 @@
 <div id="inquiry">
   <h1><!--{$QUESTION.title|escape}--></h1>
 
-  <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+  <form name="form1" id="form1" method="post" action="?">
     <input type="hidden" name="question_id" value="<!--{$question_id}-->" />
     <input type="hidden" name="mode" value="confirm" />
     <div id="inquiry-contents"><!--{$QUESTION.contents|escape|nl2br}--></div>

@@ -172,7 +172,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
                 }
             }
             $_SESSION['preview'] = "ON";
-            $this->sendRedirect($this->getLocation(URL_DIR . "preview/index.php", array("filename" => $arrPageData[0]["filename"])));
+            $this->sendRedirect($this->getLocation(URL_DIR . "preview/" . DIR_INDEX_URL, array("filename" => $arrPageData[0]["filename"])));
         }
 
         // データ登録処理

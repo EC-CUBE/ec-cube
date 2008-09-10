@@ -40,7 +40,7 @@ function func_submit( id ){
 </script>
 　
 <!--▼検索フォーム-->
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.REQUEST_URI|escape}-->">
+<form name="form1" id="form1" method="post" action="?">
 <input name="mode" type="hidden" value="search" />
 <input name="anchor_key" type="hidden" value="" />
 <input name="search_pageno" type="hidden" value="" />

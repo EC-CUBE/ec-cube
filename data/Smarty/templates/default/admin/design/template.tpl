@@ -34,7 +34,7 @@ function submitRegister() {
 // -->
 </script>
 
-<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+<form name="form1" method="post" action="?">
 <input type="hidden" name="mode" value="" />
 <input type="hidden" name="template_code_temp" value="" />
 <input type="hidden" name="uniqid" value="<!--{$uniqid}-->" />

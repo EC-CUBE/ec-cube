@@ -44,7 +44,7 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
 </script>
 
 
-<form name="form_edit" id="form_edit" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" >
+<form name="form_edit" id="form_edit" method="post" action="?" >
 <input type="hidden" name="mode" value="" />
 <input type="hidden" name="page_id" value="<!--{$page_id}-->" />
 
@@ -100,7 +100,7 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
         <a href="<!--{$smarty.server.PHP_SELF|escape}-->?page_id=<!--{$item.page_id}-->" ><!--{$item.page_name}--></a>
       </td>
       <td>
-        <button type="button" name="layout<!--{$item.page_id}-->" onclick="location.href='./index.php?page_id=<!--{$item.page_id}-->';"><span>レイアウト</span></button>
+        <button type="button" name="layout<!--{$item.page_id}-->" onclick="location.href='./<!--{$smarty.const.DIR_INDEX_URL}-->?page_id=<!--{$item.page_id}-->';"><span>レイアウト</span></button>
         <input type="hidden" value="<!--{$item.page_id}-->" name="del_id<!--{$item.page_id}-->" />
       </td>
       <td>

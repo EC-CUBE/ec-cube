@@ -53,7 +53,7 @@
 				<div id="maintitle"><img src="../img/shopping/conveni_title.jpg" width="700" height="40" alt="コンビニ決済" /></div>
 				<div class="fs12n" id="comment01">下記から、お支払いするコンビニをご選択くださいませ。<br />
 				選択後、一番下の「ご注文完了ページへ」ボタンをクリックしてください。</div>
-				<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+				<form name="form1" id="form1" method="post" action="?">
 				<input type="hidden" name="mode" value="complete">
 				<input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
 				<span class="red12st"><!--{$arrErr.convenience}--></span>

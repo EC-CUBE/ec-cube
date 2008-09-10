@@ -98,7 +98,7 @@ function lfnCheckSetItem( rank ){
         </a>
       </td>
       <td>
-        <form name="form<!--{$smarty.section.cnt.iteration}-->" id="form<!--{$smarty.section.cnt.iteration}-->" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+        <form name="form<!--{$smarty.section.cnt.iteration}-->" id="form<!--{$smarty.section.cnt.iteration}-->" method="post" action="?">
         <input type="hidden" name="mode" value="regist" />
         <input type="hidden" name="product_id" value="<!--{$arrItems[$smarty.section.cnt.iteration].product_id|escape}-->" />
         <input type="hidden" name="category_id" value="<!--{$category_id|escape}-->" />

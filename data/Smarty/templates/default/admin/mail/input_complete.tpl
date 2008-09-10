@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+<form name="form1" id="form1" method="post" action="?">
 <!--{foreach key=key item=val from=$arrHidden}-->  
 <input type="hidden" name="<!--{$key}-->" value="<!--{$val|escape}-->" />
 <!--{/foreach}-->
@@ -31,7 +31,7 @@
   <div class="message">
     メール配信設定が完了しました。指定時刻にメール配信が始まります。<br />
     配信履歴にて配信履歴がご覧いただけます。<br />
-    <a href="./index.php">→続けて設定する</a>
+    <a href="./<!--{$smarty.const.DIR_INDEX_URL}-->">→続けて設定する</a>
   </div>
   <div class="btn">
     <button type="button" name="subm02" onClick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_back', '' )"><span>テンプレート設定画面へ戻る</span></button>
@@ -48,7 +48,7 @@
   <div class="message">
     メール配信設定が完了しました。指定時刻にメール配信が始まります。<br />
     配信履歴にて配信履歴がご覧いただけます。<br />
-    <a href="./index.php">→続けて設定する</a>
+    <a href="./<!--{$smarty.const.DIR_INDEX_URL}-->">→続けて設定する</a>
   </div>
 </div>
 </form>

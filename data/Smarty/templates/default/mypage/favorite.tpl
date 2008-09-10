@@ -30,7 +30,7 @@
   <!--{/if}-->
 
   <div id="mycontentsarea">
-    <form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+    <form name="form1" method="post" action="?">
     <input type="hidden" name="order_id" value="" />
     <input type="hidden" name="pageno" value="<!--{$tpl_pageno}-->" />
     <h3><!--{$tpl_subtitle|escape}--></h3>

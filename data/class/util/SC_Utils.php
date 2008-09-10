@@ -1268,7 +1268,7 @@ class SC_Utils {
         $basename = basename($_SERVER["REQUEST_URI"]);
 
         if($basename == "") {
-            $path = $_SERVER["REQUEST_URI"] . "index.php";
+            $path = $_SERVER["REQUEST_URI"] . DIR_INDEX_URL;
         } else {
             $path = $_SERVER["REQUEST_URI"];
         }

@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" >
+<form name="form1" id="form1" method="post" action="?" >
 <input type="hidden" name="mode" value="complete" />
 <input type="hidden" name="review_id" value="<!--{$tpl_review_id}-->" />
 <input type="hidden" name="pre_status" value="<!--{$tpl_pre_status}-->" />

@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP}-->">
+<form name="form1" id="form1" method="post" action="?">
 <input type="hidden" name="search_pageno" value="" />
 <input type="hidden" name="mode" value="" />
 <div id="mail" class="contents-main">
@@ -42,7 +42,7 @@
       <td><!--{$arrDataList[cnt].end_date|sfDispDBDate|escape}--></td>
       <td class="left"><!--{$arrDataList[cnt].subject|escape}--></td>
       <td><a href="./preview.php?send_id=<!--{$arrDataList[cnt].send_id|escape}-->" target="_blank">確認</a></td>
-      <td><a href="#" onclick="win03('./index.php?mode=query&amp;send_id=<!--{$arrDataList[cnt].send_id|escape}-->','query','720','420'); return false;">確認</a></td>
+      <td><a href="#" onclick="win03('./<!--{$smarty.const.DIR_INDEX_URL}-->?mode=query&amp;send_id=<!--{$arrDataList[cnt].send_id|escape}-->','query','720','420'); return false;">確認</a></td>
       <td><!--{$arrDataList[cnt].send_count|escape}--></td>
       <td><!--{$arrDataList[cnt].complete_count|escape}--></td>
       <td><a href="<!--{$smarty.server.PHP_SELF|escape}-->?mode=delete&send_id=<!--{$arrDataList[cnt].send_id|escape}-->" onclick="return window.confirm('配信履歴を削除しても宜しいでしょうか');">削除</a></td>

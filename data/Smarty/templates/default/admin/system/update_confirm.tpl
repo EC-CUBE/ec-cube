@@ -36,7 +36,7 @@ FTPの接続が成功しました。<br/>
 	<!--{/if}-->
 <!--{/section}-->
 
-<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+<form name="form1" method="post" action="?">
 <input type="hidden" name="mode" value="install">
 <input type="hidden" name="update_id" value="<!--{$smarty.post.update_id}-->">
 <input type="button" name="back" value="戻る" onclick="location.href='./update.php'";>　<input type="submit" value="インストール">

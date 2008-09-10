@@ -76,7 +76,7 @@ class LC_Page_Mypage_Refusal extends LC_Page {
 
         // レイアウトデザインを取得
         $objLayout = new SC_Helper_PageLayout_Ex();
-        $objLayout->sfGetPageLayout($this, false, "mypage/index.php");
+        $objLayout->sfGetPageLayout($this, false, "mypage/" . DIR_INDEX_URL);
 
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
@@ -142,7 +142,7 @@ class LC_Page_Mypage_Refusal extends LC_Page {
         }
 
         if (isset($_POST['no'])) {
-            $this->sendRedirect($this->getLocation("./index.php"), true);
+            $this->sendRedirect($this->getLocation(DIR_INDEX_URL), true);
             exit;
         } elseif (isset($_POST['complete'])){
             //会員削除

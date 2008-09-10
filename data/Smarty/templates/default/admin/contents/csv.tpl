@@ -168,7 +168,7 @@ function ChangeSize(button, TextArea, Max, Min, row_tmp){
 
 
 
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" onsubmit="lfnCheckList('output_list[]')">
+<form name="form1" id="form1" method="post" action="?" onsubmit="lfnCheckList('output_list[]')">
 <input type="hidden" name="mode" value="confirm" />
 <input type="hidden" name="tpl_subno_csv" value="<!--{$tpl_subno_csv}-->" />
 <div id="admin-contents" class="contents-main">

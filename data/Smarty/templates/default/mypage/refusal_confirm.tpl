@@ -25,7 +25,7 @@
 <div id="mypagecolumn">
   <h2 class="title"><!--{$tpl_title|escape}--></h2>
   <!--{include file=$tpl_navi}-->
-  <form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+  <form name="form1" method="post" action="?">
   <input type="hidden" name="mode" value="complete" />
   <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->" />
   <div id="mycontentsarea">

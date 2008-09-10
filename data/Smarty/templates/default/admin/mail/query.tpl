@@ -31,7 +31,7 @@ self.moveTo(20,20);self.focus();
 </head>
 
 
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+<form name="form1" id="form1" method="post" action="?">
 <input type="hidden" name="mode" value="search" />
 <div id="mail" class="contents-main">
   <h2>配信条件</h2>

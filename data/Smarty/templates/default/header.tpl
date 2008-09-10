@@ -43,7 +43,7 @@
         </a>
       </li>
       <li>
-        <a href="<!--{$smarty.const.URL_DIR}-->cart/index.php"
+        <a href="<!--{$smarty.const.URL_CART_TOP}-->"
            onmouseover="chgImg('<!--{$TPL_DIR}-->img/header/cartin_on.gif','cartin');"
            onmouseout="chgImg('<!--{$TPL_DIR}-->img/header/cartin.gif','cartin');">
           <img src="<!--{$TPL_DIR}-->img/header/cartin.gif" width="95" height="20" alt="カゴの中を見る" name="cartin" id="cartin" />

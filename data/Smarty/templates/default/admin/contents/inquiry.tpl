@@ -74,7 +74,7 @@
 </script>
 
 <div id="admin-contents" class="contents-main">
-<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->?mode=regist" onSubmit="return func_check(); false;">
+<form name="form1" method="post" action="?mode=regist" onSubmit="return func_check(); false;">
 <input type="hidden" name="question_id" value="<!--{$QUESTION_ID}-->" />
   <h2><!--{if $QUESTION_ID}-->修正<!--{else}-->新規<!--{/if}-->登録</h2>
   <!--{if $MESSAGE != ""}-->
@@ -138,7 +138,7 @@
   </div>
 </form>
 
-<form name="form2" method="post" action="<!--{$smaryt.server.PHP_SELF|escape}-->">
+<form name="form2" method="post" action="?">
   <h2>登録済みアンケート</h2>
   <table class="list center">
     <tr>
@@ -154,7 +154,7 @@
       <td class="main"><a href="<!--{$smarty.server.PHP_SELF|escape}-->?question_id=<!--{$list_data[data].question_id}-->">編集</a></td>
       <td><!--{$list_data[data].disp_date}--></td>
       <td class="left"><!--{$list_data[data].question_name|escape}--></td>
-      <td><a href="<!--{$smarty.const.SITE_URL}-->inquiry/index.php?question_id=<!--{$list_data[data].question_id}-->" target="_blank">参照</a></td>
+      <td><a href="<!--{$smarty.const.SITE_URL}-->inquiry/<!--{$smarty.const.DIR_INDEX_URL}-->?question_id=<!--{$list_data[data].question_id}-->" target="_blank">参照</a></td>
       <td><a href="<!--{$smarty.server.PHP_SELF|escape}-->?mode=csv&amp;question_id=<!--{$list_data[data].question_id}-->">download</a></td>
       <td><a href="<!--{$smarty.server.PHP_SELF|escape}-->?mode=delete&amp;question_id=<!--{$list_data[data].question_id}-->" onClick="return delete_check()">削除</a></td>
     </tr>

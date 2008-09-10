@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<form name="form_bloc" id="form_bloc" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" >
+<form name="form_bloc" id="form_bloc" method="post" action="?" >
 <input type="hidden" name="mode" value="" />
 <input type="hidden" name="bloc_id" value="<!--{$bloc_id}-->" />
   <!--{* ▼ブロック編集ここから *}-->
