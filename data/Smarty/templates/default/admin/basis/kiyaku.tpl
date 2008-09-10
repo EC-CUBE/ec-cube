@@ -43,7 +43,7 @@
       </td>
     </tr>
   </table>
-  <div class="btn"><button type="button"><span>この内容で登録する</span></button></div>
+  <div class="btn"><button type="submit"><span>この内容で登録する</span></button></div>
 
   <table class="list">
     <tr>
