@@ -59,10 +59,6 @@ class LC_Page_Sitemap extends LC_Page {
     /** 動的に生成しないページの配列 */
     var $staticURL;
 
-
-    /** ページデータ */
-    var $arrPageData;
-
     /** ページリスト */
     var $arrPageList;
 
@@ -77,7 +73,9 @@ class LC_Page_Sitemap extends LC_Page {
      */
     function init() {
         parent::init();
-
+        
+        $this->staticURL = array();
+        
         $this->staticURL[] = SITE_URL . 'rss/' . DIR_INDEX_URL;
         if (USE_MOBILE !== false) {
             $this->staticURL[] = MOBILE_SITE_URL;
