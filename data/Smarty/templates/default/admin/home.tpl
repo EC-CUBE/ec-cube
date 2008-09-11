@@ -56,10 +56,6 @@
                     <td><!--{$db_version}--></td>
                 </tr>
                 <tr>
-                    <th>OSバージョン</th>
-                    <td><!--{$os_version|escape}--></td>
-                </tr>
-                <tr>
                     <th>詳細</td>
                     <td><a href="<!--{$smarty.const.URL_DIR}-->admin/system/system.php">システム設定＞システム情報</a></td>
                 </tr>
@@ -140,3 +136,70 @@
 
 </div>
 <!--{* ▲CONTENTS *}-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
