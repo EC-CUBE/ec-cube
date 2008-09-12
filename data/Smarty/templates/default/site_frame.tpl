@@ -32,9 +32,15 @@
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/win_op.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/site.js"></script>
 <title><!--{$arrSiteInfo.shop_name|escape}--> / <!--{if $tpl_subtitle|strlen >= 1}--><!--{$tpl_subtitle|escape}--><!--{else}--><!--{$tpl_title|escape}--><!--{/if}--></title>
-<meta name="author" content="<!--{$arrPageLayout.author|escape}-->" />
-<meta name="description" content="<!--{$arrPageLayout.description|escape}-->" />
-<meta name="keywords" content="<!--{$arrPageLayout.keyword|escape}-->" />
+<!--{if $arrPageLayout.author|strlen >= 1}-->
+    <meta name="author" content="<!--{$arrPageLayout.author|escape}-->" />
+<!--{/if}-->
+<!--{if $arrPageLayout.description|strlen >= 1}-->
+    <meta name="description" content="<!--{$arrPageLayout.description|escape}-->" />
+<!--{/if}-->
+<!--{if $arrPageLayout.keyword|strlen >= 1}-->
+    <meta name="keywords" content="<!--{$arrPageLayout.keyword|escape}-->" />
+<!--{/if}-->
 
 <script type="text/javascript">//<![CDATA[
     <!--{$tpl_javascript}-->
