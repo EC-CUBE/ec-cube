@@ -25,7 +25,7 @@
 <!--{* channel要素 *}-->
 <channel>
 <title> <!--{$site_title|sf_mb_convert_encoding:$encode|escape}--> </title>
-<link> <!--{$smarty.const.SITE_URL}--> </link>
+<link> <!--{$smarty.const.URL_SITE_TOP}--> </link>
 <description> <!--{$description|sf_mb_convert_encoding:$encode|escape}--> </description>
 <language>ja</language>
 <managingEditor><!--{$email|escape}--></managingEditor>
@@ -40,7 +40,7 @@
 		<!--{* １つのitem要素を出力する *}-->
 		<item>
 			<!--{if $arrNews[cnt].news_url == '' }-->
-				<link> <!--{$smarty.const.SITE_URL}--> </link>
+				<link> <!--{$smarty.const.URL_SITE_TOP}--> </link>
 			<!--{else}-->
 				<link> <!--{$arrNews[cnt].news_url|escape}--></link>
 			<!--{/if}-->

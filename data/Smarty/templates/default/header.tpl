@@ -22,7 +22,7 @@
 <!--▼HEADER-->
 <div id="header">
   <h1>
-    <a href="<!--{$smarty.const.SITE_URL}-->">
+    <a href="<!--{$smarty.const.URL_SITE_TOP}-->">
       <em><!--{$arrSiteInfo.shop_name|escape}-->/<!--{$tpl_title|escape}--></em>
     </a>
   </h1>

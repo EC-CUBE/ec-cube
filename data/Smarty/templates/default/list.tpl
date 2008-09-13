@@ -51,7 +51,7 @@ function lnSetSelect(name1, name2, id, val) {
 
 <!--▼CONTENTS-->
 <div id="undercolumn" class="product product_list">
-    <form name="form1" id="form1" method="post" action="?">
+    <form name="form1" id="form1" method="post" action="<!--{$smarty.server.REQUEST_URI|escape}-->">
         <input type="hidden" name="pageno" value="<!--{$tpl_pageno}-->" />
         <input type="hidden" name="mode" value="" />
         <input type="hidden" name="orderby" value="<!--{$orderby}-->" />

@@ -155,7 +155,7 @@ function lnSetSelect(form, name1, name2, val) {
             </div>
 
 
-            <form name="form1" id="form1" method="post" action="?">
+            <form name="form1" id="form1" method="post" action="<!--{$smarty.server.REQUEST_URI|escape}-->">
                 <input type="hidden" name="mode" value="cart" />
                 <input type="hidden" name="product_id" value="<!--{$tpl_product_id}-->" />
                 <input type="hidden" name="favorite_product_id" value="" />
