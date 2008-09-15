@@ -403,7 +403,7 @@
     </tr>
     <tr>
       <!--{if $arrForm.customer_id > 0}-->
-      <th colspan="5" class="right">現在ポイント（ポイントの修正は<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="return fnEdit('<!--{$arrForm.customer_id}-->');">顧客編集</a>から手動にてお願い致します。）</th>
+      <th colspan="5" class="right">現在ポイント（ポイントの修正は<a href="?" onclick="return fnEdit('<!--{$arrForm.customer_id}-->');">顧客編集</a>から手動にてお願い致します。）</th>
       <td class="right">
         <!--{$arrForm.point.value|number_format}-->
          pt
@@ -414,7 +414,7 @@
     </tr>
     <!--{*
     <tr>
-      <th colspan="5" class="right">反映後ポイント（ポイントの変更は<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="return fnEdit('<!--{$arrForm.customer_id}-->');">顧客編集</a>から手動にてお願い致します。）</th>
+      <th colspan="5" class="right">反映後ポイント（ポイントの変更は<a href="?" onclick="return fnEdit('<!--{$arrForm.customer_id}-->');">顧客編集</a>から手動にてお願い致します。）</th>
       <td class="right">
         <span class="attention"><!--{$arrErr.total_point}--></span>
         <!--{$arrForm.total_point.value|number_format}-->

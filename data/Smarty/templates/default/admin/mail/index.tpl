@@ -333,7 +333,7 @@
       <!--{if $arrResults[i].customer_id != ""}-->
       <td class="center">-</td>
       <!--{else}-->
-      <td class="center"><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnFormModeSubmit('form1','delete','result_email','<!--{$arrResults[i].email|escape}-->'); return false;">削除</a></td>
+      <td class="center"><a href="?" onclick="fnFormModeSubmit('form1','delete','result_email','<!--{$arrResults[i].email|escape}-->'); return false;">削除</a></td>
       <!--{/if}-->
     </tr>
     <!--{/section}-->

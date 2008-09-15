@@ -84,21 +84,18 @@ class LC_Page_Cart extends LC_Page {
 
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
-        /*
-         * FIXME reload() を使った方が良いが無限ループしてしまう...
-         */
         switch($_POST['mode']) {
         case 'up':
             $objCartSess->upQuantity($_POST['cart_no']);
-            SC_Utils_Ex::sfReload();
+            $this->reload(); // PRG pattern
             break;
         case 'down':
             $objCartSess->downQuantity($_POST['cart_no']);
-            SC_Utils_Ex::sfReload();
+            $this->reload(); // PRG pattern
             break;
         case 'delete':
             $objCartSess->delProduct($_POST['cart_no']);
-            SC_Utils_Ex::sfReload();
+            $this->reload(); // PRG pattern
             break;
         case 'confirm':
             // カート内情報の取得

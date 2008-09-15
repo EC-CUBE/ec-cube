@@ -39,14 +39,14 @@
       <tr>
         <td><!--{$arrDelivList[cnt].name|escape}--></td>
         <td><!--{$arrDelivList[cnt].service_name|escape}--></td>
-        <td align="center"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnChangeAction('./delivery_input.php'); fnModeSubmit('pre_edit', 'deliv_id', <!--{$arrDelivList[cnt].deliv_id}-->); return false;">変更</a></td>
-        <td align="center"><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('delete', 'deliv_id', <!--{$arrDelivList[cnt].deliv_id}-->); return false;">削除</a></td>
+        <td align="center"><a href="?" onclick="fnChangeAction('./delivery_input.php'); fnModeSubmit('pre_edit', 'deliv_id', <!--{$arrDelivList[cnt].deliv_id}-->); return false;">変更</a></td>
+        <td align="center"><a href="?" onclick="fnModeSubmit('delete', 'deliv_id', <!--{$arrDelivList[cnt].deliv_id}-->); return false;">削除</a></td>
         <td align="center">
         <!--{if $smarty.section.cnt.iteration != 1}-->
-        <a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('up','deliv_id', '<!--{$arrDelivList[cnt].deliv_id}-->'); return false;">上へ</a>
+        <a href="?" onclick="fnModeSubmit('up','deliv_id', '<!--{$arrDelivList[cnt].deliv_id}-->'); return false;">上へ</a>
         <!--{/if}-->
         <!--{if $smarty.section.cnt.iteration != $smarty.section.cnt.last}-->
-        <a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('down','deliv_id', '<!--{$arrDelivList[cnt].deliv_id}-->'); return false;">下へ</a>
+        <a href="?" onclick="fnModeSubmit('down','deliv_id', '<!--{$arrDelivList[cnt].deliv_id}-->'); return false;">下へ</a>
         <!--{/if}-->
         </td>
       </tr>

@@ -80,7 +80,7 @@
         </td>
         <td class="centertd">
         <!--{if !$smarty.section.cnt.first}-->
-          <a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('delete', 'other_deliv_id', '<!--{$arrAddr[cnt].other_deliv_id}-->'); return false">削除</a>
+          <a href="?" onclick="fnModeSubmit('delete', 'other_deliv_id', '<!--{$arrAddr[cnt].other_deliv_id}-->'); return false">削除</a>
         <!--{/if}-->
         </td>
       </tr>

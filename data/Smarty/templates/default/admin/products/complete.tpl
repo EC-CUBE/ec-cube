@@ -27,7 +27,7 @@
   <div class="message">
     登録が完了致しました。<br />
     <a href="./product.php">→続けて登録を行う</a><br />
-    <a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('pre_edit', 'product_id', '<!--{$arrForm.product_id}-->'); return false;">→この商品の規格を登録する</a>
+    <a href="?" onclick="fnModeSubmit('pre_edit', 'product_id', '<!--{$arrForm.product_id}-->'); return false;">→この商品の規格を登録する</a>
   </div>
 </form>
 <!--{* オペビルダー用 *}-->

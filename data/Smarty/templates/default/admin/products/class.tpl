@@ -57,7 +57,7 @@
       <td align="center"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnClassCatPage(<!--{$arrClass[cnt].class_id}-->); return false;">分類登録</a></td>
       <td align="center">
       <!--{if $tpl_class_id != $arrClass[cnt].class_id}-->
-      <a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('pre_edit', 'class_id', <!--{$arrClass[cnt].class_id}-->); return false;">編集</a>
+      <a href="?" onclick="fnModeSubmit('pre_edit', 'class_id', <!--{$arrClass[cnt].class_id}-->); return false;">編集</a>
       <!--{else}-->
       編集中
       <!--{/if}-->
@@ -66,15 +66,15 @@
       <!--{if $arrClassCatCount[$class_id] > 0}-->
       -
       <!--{else}-->
-      <a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('delete', 'class_id', <!--{$arrClass[cnt].class_id}-->); return false;">削除</a>
+      <a href="?" onclick="fnModeSubmit('delete', 'class_id', <!--{$arrClass[cnt].class_id}-->); return false;">削除</a>
       <!--{/if}-->
       </td>
       <td align="center">
       <!--{if $smarty.section.cnt.iteration != 1}-->
-      <a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('up', 'class_id', <!--{$arrClass[cnt].class_id}-->); return false;">上へ</a>
+      <a href="?" onclick="fnModeSubmit('up', 'class_id', <!--{$arrClass[cnt].class_id}-->); return false;">上へ</a>
       <!--{/if}-->
       <!--{if $smarty.section.cnt.iteration != $smarty.section.cnt.last}-->
-      <a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('down', 'class_id', <!--{$arrClass[cnt].class_id}-->); return false;">下へ</a>
+      <a href="?" onclick="fnModeSubmit('down', 'class_id', <!--{$arrClass[cnt].class_id}-->); return false;">下へ</a>
       <!--{/if}-->
       </td>
     </tr>

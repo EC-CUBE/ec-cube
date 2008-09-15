@@ -72,7 +72,7 @@
         </tr>
       </table>
       <div class="tblareabtn">
-      <a href="<!--{$smarty.server.PHP_SELF|escape}-->"
+      <a href="?"
          onclick="fnModeSubmit('return', '', ''); return false;"
          onmouseover="chgImg('<!--{$TPL_DIR}-->img/common/b_back_on.gif','back02');"
          onmouseout="chgImg('<!--{$TPL_DIR}-->img/common/b_back.gif','back02');">

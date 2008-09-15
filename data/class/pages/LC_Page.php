@@ -281,11 +281,11 @@ class LC_Page {
     function reload($queryString = array(), $removeQueryString = false) {
 
         // 現在の URL を取得
-        $netURL = new Net_URL();
+        $netURL = new Net_URL($_SERVER['REQUEST_URI']);
 
         if ($removeQueryString) {
             $netURL->querystring = array();
-            $_SERVER['QUERY_STRING'] = '';
+            $_SERVER['QUERY_STRING'] = ''; // sendRedirect() での処理用らしい
         }
 
         // QueryString を付与
