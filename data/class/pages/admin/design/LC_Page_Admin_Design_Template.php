@@ -142,7 +142,6 @@ class LC_Page_Admin_Design_Template extends LC_Page {
 		    	$this->tpl_onload = "alert('選択中のテンプレートは削除出来ません');";
 		        break;
 		    }
-			exit;
 		    $this->lfDeleteTemplate($template_code);
 		    break;
 
