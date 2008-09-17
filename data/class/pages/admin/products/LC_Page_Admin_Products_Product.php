@@ -457,7 +457,8 @@ class LC_Page_Admin_Products_Product extends LC_Page {
                 // コピーしない列
                 unset($arrColList[$arrColList_tmp["product_class_id"]]);	 //規格ID
                 unset($arrColList[$arrColList_tmp["product_id"]]);			 //商品ID
-
+				unset($arrColList[$arrColList_tmp["create_date"]]);
+                
                 $col = SC_Utils_Ex::sfGetCommaList($arrColList);
 
                 $objQuery->query("INSERT INTO dtb_products_class (product_id, ". $col .") SELECT ?, " . $col. " FROM dtb_products_class WHERE product_id = ? ORDER BY product_class_id", array($product_id, $_POST["copy_product_id"]));
@@ -477,10 +478,13 @@ class LC_Page_Admin_Products_Product extends LC_Page {
             // カテゴリを更新
             $objDb->updateProductCategories($arrList['category_id'], $product_id);
         }
-
-        // 規格登録
-        SC_Utils_Ex::sfInsertProductClass($objQuery, $arrList, $product_id , $arrList['product_class_id'] );
-
+        
+        //商品登録の時は規格を生成する。複製の場合は規格も複製されるのでこの処理は不要。
+        if( $_POST["copy_product_id"] == "" ){
+        	// 規格登録
+        	SC_Utils_Ex::sfInsertProductClass($objQuery, $arrList, $product_id , $arrList['product_class_id'] );
+        }
+        
         // おすすめ商品登録
         $this->lfInsertRecommendProducts($objQuery, $arrList, $product_id);
 
