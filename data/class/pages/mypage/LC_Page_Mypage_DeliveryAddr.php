@@ -105,29 +105,29 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page {
                                  );
 
 
-        switch ($_POST['mode']){
-        case 'edit':
-            $_POST = $this->lfConvertParam($_POST,$arrRegistColumn);
-            $this->arrErr = $this->lfErrorCheck($_POST);
-            if ($this->arrErr){
-                foreach ($_POST as $key => $val){
-                    $this->$key = $val;
-                }
-            }else{
-                //別のお届け先登録数の取得
-                $deliv_count = $objQuery->count("dtb_other_deliv", "customer_id=?", array($objCustomer->getValue('customer_id')));
-                if ($deliv_count < DELIV_ADDR_MAX or isset($_POST['other_deliv_id'])){
-                    $this->lfRegistData($_POST,$arrRegistColumn, $objCustomer);
-                }
-                $this->tpl_onload = "fnUpdateParent('". $this->getLocation($_POST['ParentPage']) ."'); window.close();";
-            }
-            break;
-        }
-
         if ($_GET['other_deliv_id'] != ""){
             //別のお届け先情報取得
             $arrOtherDeliv = $objQuery->select("*", "dtb_other_deliv", "other_deliv_id=? ", array($_SESSION['other_deliv_id']));
-            $this->arrOtherDeliv = $arrOtherDeliv[0];
+            $this->arrForm = $arrOtherDeliv[0];
+        }
+
+        switch ($_POST['mode']) {
+            case 'edit':
+                $_POST = $this->lfConvertParam($_POST,$arrRegistColumn);
+                $this->arrErr = $this->lfErrorCheck($_POST);
+                if ($this->arrErr){
+                    foreach ($_POST as $key => $val){
+                        if ($val != "") $this->arrForm[$key] = $val;
+                    }
+                } else {
+                    //別のお届け先登録数の取得
+                    $deliv_count = $objQuery->count("dtb_other_deliv", "customer_id=?", array($objCustomer->getValue('customer_id')));
+                    if ($deliv_count < DELIV_ADDR_MAX or isset($_POST['other_deliv_id'])){
+                        $this->lfRegistData($_POST,$arrRegistColumn, $objCustomer);
+                    }
+                    $this->tpl_onload = "fnUpdateParent('". $this->getLocation($_POST['ParentPage']) ."'); window.close();";
+                }
+                break;
         }
 
         $objView->assignobj($this);
