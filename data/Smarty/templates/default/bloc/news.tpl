@@ -27,8 +27,9 @@
   <p>☆★☆ 新着情報は<a href="<!--{$smarty.const.URL_DIR}-->rss/<!--{$smarty.const.DIR_INDEX_URL}-->" target="_blank">RSS</a>で配信しています。★☆★</p>
 
 <!--{section name=data loop=$arrNews}-->
+<!--{assign var="date_array" value="-"|explode:$arrNews[data].news_date_disp}-->
   <dl>
-    <dt><!--{$arrNews[data].news_date_disp|date_format:"%Y年%m月%d日"}--></dt>
+    <dt><!--{$date_array[0]}-->年<!--{$date_array[1]}-->月<!--{$date_array[2]}-->日</dt>
     <dd>
       <!--{if $arrNews[data].news_url}-->
       <a href="<!--{$arrNews[data].news_url}-->"
