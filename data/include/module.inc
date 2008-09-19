@@ -44,12 +44,14 @@ require_once CLASS_EX_PATH . 'db_extends/SC_DB_DBFactory_Ex.php';
  */
 
 /**
- * インクルードするモジュールの一覧
+ * 常にinclude.phpを呼び出すモジュールの一覧を$_arrModuleに定義している
  * FIXME dtb_moduleとかに保持する
+ * TODO  dtb_module内にカラムを追加して判定するか、include.phpで定義するかに変更する必要有り。
  */
 $_arrModule = array(
     'mdl_a8',
     'mdl_moba8',
+    'mdl_janet',
     'mdl_opebuilder',
     'mdl_souraku',
     'mdl_ts',
