@@ -55,7 +55,7 @@ function lnSetSelect(form, name1, name2, val) {
     <h2 class="title"><!--{$tpl_FirstCatName|escape}--></h2>
     
     <!--★詳細メインコメント★-->
-    <p class="main_comment"><!--{$arrProduct.main_comment|nl2br}--></p>
+    <div class="main_comment"><!--{$arrProduct.main_comment|nl2br_html}--></div>
 
     <div id="detailarea">
         <div id="detailphotoblock">
@@ -241,12 +241,13 @@ function lnSetSelect(form, name1, name2, val) {
             <div class="subarea">
                 <h3><!--★サブタイトル★--><!--{$arrProduct[$key]|escape}--></h3>
                 <!--{assign var=ckey value="sub_comment`$smarty.section.cnt.iteration`"}-->
-
+                
+                <div class="subtext"><!--★サブテキスト★--><!--{$arrProduct[$ckey]|nl2br_html}--></div>
+                
                 <!--▼拡大写真-->
                 <!--{assign var=key value="sub_image`$smarty.section.cnt.iteration`"}-->
                 <!--{assign var=lkey value="sub_large_image`$smarty.section.cnt.iteration`"}-->
                 <!--{if $arrFile[$key].filepath != ""}-->
-                    <div class="subtext"><!--★サブテキスト★--><!--{$arrProduct[$ckey]|nl2br}--></div>
                     <div class="subphotoimg">
                         <!--{if $arrFile[$lkey].filepath != ""}-->
                             <a href="?" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&amp;image=<!--{$lkey}--><!--{if $smarty.get.admin == 'on'}-->&amp;admin=on<!--{/if}-->','detail_image','<!--{$arrFile[$lkey].width+60}-->','<!--{$arrFile[$lkey].height+80}-->'); return false;" target="_blank">
@@ -266,8 +267,6 @@ function lnSetSelect(form, name1, name2, val) {
                         <!--{/if}-->
                     </div>
                     <!--▲拡大写真-->
-                <!--{else}-->
-                    <p><!--★サブテキスト★--><!--{$arrProduct[$ckey]|nl2br}--></p>
                 <!--{/if}-->
             </div>
         <!--{/if}-->

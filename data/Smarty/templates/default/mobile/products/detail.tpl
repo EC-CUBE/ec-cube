@@ -62,7 +62,7 @@
 <!--{include file=`$smarty.const.MODULE_PATH`mdl_opebuilder/detail_ope_mb_view.tpl}-->
 <!--{/if}-->
 <!--★詳細ﾒｲﾝｺﾒﾝﾄ★-->
-[emoji:76]<!--{$arrProduct.main_comment|nl2br}--><br>
+[emoji:76]<!--{$arrProduct.main_comment|nl2br_html}--><br>
 <br>
 <!--ｱｲｺﾝ-->
 <!--★販売価格★-->
