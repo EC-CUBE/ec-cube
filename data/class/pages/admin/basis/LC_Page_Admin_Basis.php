@@ -51,6 +51,15 @@ class LC_Page_Admin_Basis extends LC_Page {
         $this->arrPref = $masterData->getMasterData("mtb_pref", array("pref_id", "pref_name", "rank"));
         $this->arrTAXRULE = $masterData->getMasterData("mtb_taxrule");
         $this->tpl_subtitle = 'SHOPマスタ';
+
+        //定休日用配列
+        $this->arrRegularHoliday[0] = '日';
+        $this->arrRegularHoliday[1] = '月';
+        $this->arrRegularHoliday[2] = '火';
+        $this->arrRegularHoliday[3] = '水';
+        $this->arrRegularHoliday[4] = '木';
+        $this->arrRegularHoliday[5] = '金';
+        $this->arrRegularHoliday[6] = '土';
     }
 
     /**
@@ -81,6 +90,7 @@ class LC_Page_Admin_Basis extends LC_Page {
 
             // 入力データの変換
             $this->arrForm = $this->lfConvertParam($this->arrForm);
+            $this->arrForm['regular_holiday_ids'] = $_POST['regular_holiday_ids'];  // 定休日情報を付加
             // 入力データのエラーチェック
             $this->arrErr = $this->lfErrorCheck($this->arrForm);
 
@@ -97,11 +107,19 @@ class LC_Page_Admin_Basis extends LC_Page {
                 }
                 $this->tpl_onload = "window.alert('SHOPマスタの登録が完了しました。');";
             }
+            if( empty($this->arrForm['regular_holiday_ids']) ) {
+                $this->arrSel = array();
+            } else {
+                $this->arrSel = $this->arrForm['regular_holiday_ids'];
+            }
         } else {
             $arrCol = $this->lfGetCol();
             $col	= SC_Utils_Ex::sfGetCommaList($arrCol);
             $arrRet = $objQuery->select($col, "dtb_baseinfo");
             $this->arrForm = $arrRet[0];
+
+            $regular_holiday_ids = explode('|', $this->arrForm['regular_holiday_ids']);
+            $this->arrForm['regular_holiday_ids'] = $regular_holiday_ids;
         }
 
         $objView->assignobj($this);
@@ -144,7 +162,8 @@ class LC_Page_Admin_Basis extends LC_Page {
             "tax_rule",
             "free_rule",
             "good_traded",
-            "message"
+            "message",
+            "regular_holiday_ids"
 
         );
         return $arrCol;
@@ -154,7 +173,12 @@ class LC_Page_Admin_Basis extends LC_Page {
         $objQuery = new SC_Query();
         $arrCol = $this->lfGetCol();
         foreach($arrCol as $val) {
-            $sqlval[$val] = $array[$val];
+            //配列の場合は、パイプ区切りの文字列に変換
+            if(is_array($array[$val])) {
+                $sqlval[$val] = implode("|", $array[$val]);
+            } else {
+                $sqlval[$val] = $array[$val];
+            }
         }
         $sqlval['update_date'] = 'Now()';
         // UPDATEの実行

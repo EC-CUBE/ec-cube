@@ -144,7 +144,8 @@ CREATE TABLE dtb_baseinfo (
     detail_tpl text,
     mypage_tpl text,
     good_traded text,
-    message text
+    message text,
+    regular_holiday_ids text
 );
 
 CREATE TABLE dtb_deliv (

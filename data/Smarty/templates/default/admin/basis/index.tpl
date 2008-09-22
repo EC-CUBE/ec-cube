@@ -169,6 +169,17 @@
     </tr>
   </table>
 
+  <h2>定休日設定</h2>
+  <table id="basis-index-func">
+    <tr>
+      <th>定休日</th>
+      <td>
+        <span class="attention"><!--{$arrErr.regular_holiday_ids}--></span>
+        <!--{html_checkboxes name="regular_holiday_ids" options=$arrRegularHoliday selected=$arrForm.regular_holiday_ids}-->
+      </td>
+    </tr>
+  </table>
+
   <h2>SHOP機能</h2>
   <table id="basis-index-func">
     <tr>
