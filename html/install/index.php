@@ -433,7 +433,8 @@ function lfDispStep0($objPage) {
 
     // 権限エラー等が発生していない場合
     if(!$err_file) {
-        $path = "../upload/temp_template";
+        umask(0);
+    	$path = "../upload/temp_template";
         if(!file_exists($path)) {
             mkdir($path);
         }
