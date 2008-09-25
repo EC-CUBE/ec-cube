@@ -201,7 +201,7 @@
 									<tr><td height="5"></td></tr>
 									<tr>
 										<td class="fs12n"><span class="red"><!--{$arrErr.reminder_answer}--></span><input type="text" name="reminder_answer" value="<!--{$arrForm.reminder_answer|escape}-->" style="<!--{$arrErr.reminder_answer|sfGetErrorColor}-->; ime-mode: active;" size=40 class="box40" /></td>
-									</tr>
+									</tr> 
 								</table>
 								</td>
 							</tr>
