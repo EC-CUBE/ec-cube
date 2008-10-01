@@ -250,9 +250,6 @@ class SC_Query {
             $strcol .= $key . ',';
             if(eregi("^Now\(\)$", $val)) {
                 $strval .= 'Now(),';
-            // 先頭に~があるとプレースホルダーしない。
-            } else if(ereg("^~", $val)) {
-                $strval .= ereg_replace("^~", "", $val).",";
             } else {
                 $strval .= '?,';
                 if($val != ""){
@@ -327,9 +324,6 @@ class SC_Query {
         foreach ($sqlval as $key => $val) {
             if(eregi("^Now\(\)$", $val)) {
                 $strcol .= $key . '= Now(),';
-            // 先頭に~があるとプレースホルダーしない。
-            } else if(ereg("^~", $val)) {
-                $strcol .= $key . "=" . ereg_replace("^~", "", $val) . ",";
             } else {
                 $strcol .= $key . '= ?,';
                 if($val != ""){
