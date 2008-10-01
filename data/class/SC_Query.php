@@ -324,8 +324,6 @@ class SC_Query {
             if(eregi("^Now\(\)$", $val)) {
                 $strcol .= $key . '= Now(),';
             // 先頭に~があるとプレースホルダーしない。
-            } else if(ereg("^~", $val)) {
-                $strcol .= $key . "=" . ereg_replace("^~", "", $val) . ",";
             } else {
                 $strcol .= $key . '= ?,';
                 if($val != ""){
