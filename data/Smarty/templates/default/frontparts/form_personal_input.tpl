@@ -126,7 +126,7 @@
     <!--{if $arrErr[$key1] || $arrErr[$key2]}-->
     <div class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></div>
     <!--{/if}-->
-    <input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1]}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->; ime-mode: disabled;" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" size="40" class="box300" /><br />
+    <input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1]|escape}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->; ime-mode: disabled;" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" size="40" class="box300" /><br />
     <input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2]|default:$arrForm[$key1]|escape}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->; ime-mode: disabled;" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" size="40" class="box300" /><br />
     <p class="mini"><em>確認のため2度入力してください。</em></p>
   </td>
@@ -184,9 +184,9 @@
     <!--{if $arrErr.password || $arrErr.password02}-->
     <div class="attention"><!--{$arrErr.password}--><!--{$arrErr.password02}--></div>
     <!--{/if}-->
-    <input type="password" name="password" value="<!--{$arrForm.password}-->" maxlength="<!--{$smarty.const.PASSWORD_LEN2}-->" style="<!--{$arrErr.password|sfGetErrorColor}-->" size="15" class="box120" />
+    <input type="password" name="password" value="<!--{$arrForm.password|escape}-->" maxlength="<!--{$smarty.const.PASSWORD_LEN2}-->" style="<!--{$arrErr.password|sfGetErrorColor}-->" size="15" class="box120" />
     <p><em>半角英数字4〜10文字でお願いします。（記号不可）</em></p>
-    <input type="password" name="password02" value="<!--{$arrForm.password02}-->" maxlength="<!--{$smarty.const.PASSWORD_LEN2}-->" style="<!--{$arrErr.password02|sfGetErrorColor}-->" size="15" class="box120" />
+    <input type="password" name="password02" value="<!--{$arrForm.password02|escape}-->" maxlength="<!--{$smarty.const.PASSWORD_LEN2}-->" style="<!--{$arrErr.password02|sfGetErrorColor}-->" size="15" class="box120" />
     <p><em>確認のために2度入力してください。</em></p>
   </td>
 </tr>
@@ -202,7 +202,7 @@
       <!--{html_options options=$arrReminder selected=$arrForm.reminder}-->
     </select>
     <br />
-    答え：<input type="text" name="reminder_answer" value="<!--{$arrForm.reminder_answer}-->" style="<!--{$arrErr.reminder_answer|sfGetErrorColor}-->; ime-mode: active;" size="40" class="box260" />
+    答え：<input type="text" name="reminder_answer" value="<!--{$arrForm.reminder_answer|escape}-->" style="<!--{$arrErr.reminder_answer|sfGetErrorColor}-->; ime-mode: active;" size="40" class="box260" />
   </td>
 </tr>
 <tr>
