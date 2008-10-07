@@ -68,7 +68,7 @@ class LC_Page_Admin_Design_Template extends LC_Page {
 	    $this->tpl_subtitle = 'テンプレート設定';
 	    $this->arrErr  = array();
 	    $this->arrForm = array();
-	    $this->tpl_select = DEFAULT_TEMPLATE_NAME;
+	    $this->tpl_select = TEMPLATE_NAME;
 	   	ini_set("max_execution_time", 300);
     }
 
@@ -138,7 +138,7 @@ class LC_Page_Admin_Design_Template extends LC_Page {
 			
 		    //現在使用中のテンプレートとデフォルトのテンプレートは削除できないようにする
 		    $template_code = $objForm->getValue('template_code_temp');
-		    if ($template_code == DEFAULT_TEMPLATE_NAME || $template_code == 'default') {
+		    if ($template_code == TEMPLATE_NAME || $template_code == DEFAULT_TEMPLATE_NAME) {
 		    	$this->tpl_onload = "alert('選択中のテンプレートは削除出来ません');";
 		        break;
 		    }
@@ -172,8 +172,7 @@ class LC_Page_Admin_Design_Template extends LC_Page {
 
 		// defaultパラメータのセット
 		$this->templates = $this->lfGetAllTemplates();
-		$this->now_template = DEFAULT_TEMPLATE_NAME;
-
+		$this->now_template = TEMPLATE_NAME;
 		// 画面の表示
 		$objView->assignobj($this);
 		$objView->display(MAIN_FRAME);
@@ -231,7 +230,7 @@ class LC_Page_Admin_Design_Template extends LC_Page {
 	function lfRegisterTemplate($template_code) {
 	    $objQuery = new SC_Query();
 	    $sqlval['name'] = "\"" . $template_code . "\"";
-		$objQuery->update("mtb_constants", $sqlval, "id = ?", array('DEFAULT_TEMPLATE_NAME'));
+		$objQuery->update("mtb_constants", $sqlval, "id = ?", array('TEMPLATE_NAME'));
 		// キャッシュを生成
 		$masterData = new SC_DB_MasterData_Ex();
 		// 更新したデータを取得
