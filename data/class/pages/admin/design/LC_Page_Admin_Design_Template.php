@@ -116,7 +116,10 @@ class LC_Page_Admin_Design_Template extends LC_Page {
 
 		    // common.cssの内容を更新
 		    $this->lfChangeCommonCss($template_code);
-
+			
+		    // テンプレートのコピー
+			$this->lfCopyTemplate($template_code);
+		    
 		    // ブロック位置を更新
 		    $this->lfChangeBloc($template_code);
 
@@ -309,5 +312,107 @@ class LC_Page_Admin_Design_Template extends LC_Page {
 
 	    return $arrRet;
 	}
+	
+	/**
+	 * テンプレート変更時に既に存在するキャンペーンのテンプレートがない場合はテンプレートを生成する
+	 *
+	 */
+	function lfCopyTemplate($template_code){
+		//すべてのキャンペーンのテンプレートファイルを確認
+	    $objQuery = new SC_Query();
+	    $sql = "SELECT directory_name,cart_flg FROM dtb_campaign WHERE del_flg = 0";
+	    $result = $objQuery->getall( $sql );
+	    //デザインテンプレートディレクトリにファイルが存在するか確認
+	    foreach( $result as $key => $val ){
+			//index.phpが存在すればキャンペーンのテンプレートがあると判定
+			//全部チェックした方がいいか？
+	    	$campaign_template_file_path = SMARTY_TEMPLATES_DIR.$template_code ."/". CAMPAIGN_TEMPLATE_DIR . $val['directory_name'] . "/" .CAMPAIGN_TEMPLATE_ACTIVE .  "site_frame.tpl";
+	    	var_dump("<font color='red'>$campaign_template_file_path</font><br>");
+	    	if(!file_exists($campaign_template_file_path)){
+	    		var_dump("<font color='red'>test</font>");
+	    		//ファイルがなければコピーして作成
+			    $this->lfCreateTemplate(SMARTY_TEMPLATES_DIR.$template_code ."/" . CAMPAIGN_TEMPLATE_DIR , $val['directory_name'],$val['cart_flg'] );
+	    	}
+	    }
+	}
+	
+   /*
+     * 関数名：lfCreateTemplate()
+     * 引数1 ：ディレクトリパス
+     * 引数2 ：作成ファイル名
+     * 説明　：キャンペーンの初期テンプレート作成
+     * 戻り値：無し
+     */
+    function lfCreateTemplate($dir, $file , $cart_flg) {
+		umask(0);
+        $objFileManager = new SC_Helper_FileManager_Ex();
+		
+        // 作成ファイルディレクトリ
+        $create_dir = $dir . $file;
+        $create_active_dir = $create_dir . "/" . CAMPAIGN_TEMPLATE_ACTIVE;
+        $create_end_dir = $create_dir . "/" . CAMPAIGN_TEMPLATE_END;
+        // デフォルトファイルディレクトリ
+        $default_dir = TEMPLATE_DIR . CAMPAIGN_TEMPLATE_DIR;
+        $default_active_dir = $default_dir . "/" . CAMPAIGN_TEMPLATE_ACTIVE;
+        $default_end_dir = $default_dir . "/" . CAMPAIGN_TEMPLATE_END;
+
+        $ret = $objFileManager->sfCreateFile($create_dir, 0755);
+        $ret = $objFileManager->sfCreateFile($create_active_dir, 0755);
+        $ret = $objFileManager->sfCreateFile($create_end_dir, 0755);
+
+        // キャンペーン実行PHPをコピー
+        $ret = $objFileManager->sfCreateFile(CAMPAIGN_PATH . $file);
+        copy(HTML_PATH . CAMPAIGN_TEMPLATE_DIR . "index.php", CAMPAIGN_PATH . $file . "/index.php");
+        copy(HTML_PATH . CAMPAIGN_TEMPLATE_DIR . "application.php", CAMPAIGN_PATH . $file . "/application.php");
+        copy(HTML_PATH . CAMPAIGN_TEMPLATE_DIR . "complete.php", CAMPAIGN_PATH . $file . "/complete.php");
+        copy(HTML_PATH . CAMPAIGN_TEMPLATE_DIR . "entry.php", CAMPAIGN_PATH . $file . "/entry.php");
+
+        // デフォルトテンプレート作成(キャンペーン中)
+        $header = $this->lfGetFileContents($default_active_dir."header.tpl");
+        SC_Utils_Ex::sfWriteFile($header, $create_active_dir."header.tpl", "w");
+        $contents = $this->lfGetFileContents($default_active_dir."contents.tpl");
+        if(!$cart_flg) {
+            $contents .= "\n" . '<!--{*ログインフォーム*}-->' . "\n";
+            $contents .= $this->lfGetFileContents(CAMPAIGN_BLOC_PATH . "login.tpl");
+            $contents .= '<!--{*会員登録フォーム*}-->'."\n";
+            $contents .= $this->lfGetFileContents(CAMPAIGN_BLOC_PATH . "entry.tpl");
+        }
+        SC_Utils_Ex::sfWriteFile($contents, $create_active_dir."contents.tpl", "w");
+        $footer = $this->lfGetFileContents($default_active_dir."footer.tpl");
+        SC_Utils_Ex::sfWriteFile($footer, $create_active_dir."footer.tpl", "w");
+
+        // サイトフレーム作成
+        $site_frame  = $header."\n";
+        $site_frame .= '<script type="text/javascript" src="<!--{$TPL_DIR}-->js/navi.js"></script>'."\n";
+        $site_frame .= '<script type="text/javascript" src="<!--{$TPL_DIR}-->js/site.js"></script>'."\n";
+        $site_frame .= '<!--{include file=$tpl_mainpage}-->'."\n";
+        $site_frame .= $footer."\n";
+        SC_Utils_Ex::sfWriteFile($site_frame, $create_active_dir."site_frame.tpl", "w");
+
+        /* デフォルトテンプレート作成(キャンペーン終了) */
+        $header = $this->lfGetFileContents($default_end_dir."header.tpl");
+        SC_Utils_Ex::sfWriteFile($header, $create_end_dir."header.tpl", "w");
+        $contents = $this->lfGetFileContents($default_end_dir."contents.tpl");
+        SC_Utils_Ex::sfWriteFile($contents, $create_end_dir."contents.tpl", "w");
+        $footer = $this->lfGetFileContents($default_end_dir."footer.tpl");
+        SC_Utils_Ex::sfWriteFile($footer, $create_end_dir."footer.tpl", "w");
+    }
+    
+    /*
+     * 関数名：lfGetFileContents()
+     * 引数1 ：ファイルパス
+     * 説明　：ファイル読込
+     * 戻り値：無し
+     */
+    function lfGetFileContents($read_file) {
+
+        if(file_exists($read_file)) {
+            $contents = file_get_contents($read_file);
+        } else {
+            $contents = "";
+        }
+
+        return $contents;
+    }
 }
 ?>
