@@ -186,7 +186,7 @@ class LC_Page_Admin_Products_Review extends LC_Page {
                         break;
 
                     case 'search_recommend_level':
-                        $where.= " AND recommend_level LIKE ? ";
+                        $where.= " AND recommend_level = ? ";
                         $arrval[] = $val;
                         break;
 
