@@ -153,6 +153,7 @@ class LC_Page_Shopping_Confirm extends LC_Page {
             }else{
                 $this->sendRedirect($this->getLocation(URL_SHOP_COMPLETE));
             }
+            exit;
             break;
         default:
             break;
@@ -257,6 +258,7 @@ class LC_Page_Shopping_Confirm extends LC_Page {
             }else{
                 $this->sendRedirect($this->getLocation(MOBILE_URL_SHOP_COMPLETE), true);
             }
+            exit;
             break;
         default:
             break;

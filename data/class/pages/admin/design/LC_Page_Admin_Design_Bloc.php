@@ -153,6 +153,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page {
                 $this->sendRedirect($this->getLocation("./bloc.php",
                                             array("bloc_id" => $bloc_id,
                                                   "msg" => "on")));
+                exit;
             }else{
                 // エラーがあれば入力時のデータを表示する
                 $this->arrBlocData = $_POST;
@@ -188,6 +189,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page {
                 }
             }
             $this->sendRedirect($this->getLocation("./bloc.php"));
+            exit;
         	break;
         default:
         	if(isset($_POST['mode'])) {

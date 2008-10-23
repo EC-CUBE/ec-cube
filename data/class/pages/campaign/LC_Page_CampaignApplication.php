@@ -129,6 +129,7 @@ class LC_Page_CampaignApplication extends LC_Page {
                         $this->lfRegistCampaignOrder($objCustomer->getValue('customer_id'), $objQuery);
                         // 完了ページへリダイレクト
                         $this->sendRedirect($this->getLocation(CAMPAIGN_URL . "$dir_name/complete.php"));
+                        exit;
                     }
                 }
             }

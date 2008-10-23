@@ -95,6 +95,7 @@ class LC_Page_Admin_Contents_Campaign extends LC_Page {
 
                 // キャンペーンTOPへリダイレクト
                 $this->sendRedirect($this->getLocation(URL_CAMPAIGN_TOP));
+                exit;
             }
 
             break;
@@ -110,6 +111,7 @@ class LC_Page_Admin_Contents_Campaign extends LC_Page {
             $this->lfDeleteCampaign($campaign_id, &$objQuery);
             // キャンペーンTOPへリダイレクト
             $this->sendRedirect($this->getLocation(URL_CAMPAIGN_TOP));
+            exit;
             break;
             // CSV出力
         case 'csv':

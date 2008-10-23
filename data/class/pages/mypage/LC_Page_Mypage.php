@@ -178,6 +178,7 @@ class LC_Page_MyPage extends LC_Page {
                     if (!$objMobile->gfIsMobileMailAddress($objCustomer->getValue('email'))) {
                         if (!$objCustomer->hasValue('email_mobile')) {
                             $this->sendRedirect($this->getLocation("../entry/email_mobile.php"), true);
+                            exit;
                         }
                     }
                 } else {

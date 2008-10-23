@@ -119,12 +119,14 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page {
             // 新規作成
         case "new_page":
             $this->sendRedirect($this->getLocation("./csv_sql.php"));
+            exit;
             break;
 
             // データ削除
         case "delete":
             $this->lfDelData($sql_id);
             $this->sendRedirect($this->getLocation("./csv_sql.php"));
+            exit;
             break;
 
         case "csv_output":

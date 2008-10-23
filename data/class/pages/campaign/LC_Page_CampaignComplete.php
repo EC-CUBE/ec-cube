@@ -61,6 +61,7 @@ class LC_Page_CampaignComplete extends LC_Page {
         // キャンペーンページからの遷移で無い場合はTOPページへ
         if(!$objCampaignSess->getIsCampaign()) {
             $this->sendRedirect($this->getLocation(URL_DIR));
+            exit;
         }
 
         // 入力情報を渡す

@@ -64,6 +64,7 @@ class LC_Page_Mypage_Login extends LC_Page {
         // ログイン判定
         if($objCustomer->isLoginSuccess()) {
             $this->sendRedirect($this->getLocation("./index.php"));
+            exit;
         } else {
             // クッキー判定
             $this->tpl_login_email = $objCookie->getCookie('login_email');
