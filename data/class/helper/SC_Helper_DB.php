@@ -1201,8 +1201,7 @@ class SC_Helper_DB {
         $rank = $objQuery->get($tableName, "rank", "$keyIdColumn = ?", array($keyId));
 
         $max = $objQuery->max($tableName, "rank", $where);
-
-        // 値の調整（逆順）
+		// 値の調整（逆順）
         if($pos > $max) {
             $position = 1;
         } else if($pos < 1) {
@@ -1210,7 +1209,7 @@ class SC_Helper_DB {
         } else {
             $position = $max - $pos + 1;
         }
-
+		
         //入れ替え先の順位が入れ換え元の順位より大きい場合
         if( $position > $rank ) $term = "rank - 1";
 
@@ -1225,17 +1224,14 @@ class SC_Helper_DB {
         if($where != "") {
             $sql.= " AND $where";
         }
-
-        if( $position > $rank ) $objQuery->exec( $sql, array( $rank + 1, $position ));
-        if( $position < $rank ) $objQuery->exec( $sql, array( $position, $rank - 1 ));
-
-        // 指定した順位へrankを書き換える。
+		if( $position > $rank ) $objQuery->exec( $sql, array($rank, $position));
+        if( $position < $rank ) $objQuery->exec( $sql, array($position, $rank));
+       	// 指定した順位へrankを書き換える。
         $sql  = "UPDATE $tableName SET rank = ? WHERE $keyIdColumn = ? ";
         if($where != "") {
             $sql.= " AND $where";
         }
-
-        $objQuery->exec( $sql, array( $position, $keyId ) );
+		$objQuery->exec( $sql, array( $position, $keyId ) );
         $objQuery->commit();
     }
 
