@@ -50,6 +50,8 @@ class SC_MobileUserAgent {
             return 'ezweb';
         case 'V':
             return 'softbank';
+		case 'S':
+            return 'softbank';
         default:
             return false;
         }
