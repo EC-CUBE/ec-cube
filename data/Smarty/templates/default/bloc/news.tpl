@@ -28,7 +28,7 @@
 
 <!--{section name=data loop=$arrNews}-->
   <dl>
-    <dt><!--{$arrNews[data].news_date_disp|date_format:"%Y年%m月%d日"}--></dt>
+    <dt><!--{$arrNews[data].news_date_disp|date_format:"%Y&#24180;%m&#26376;%d&#26085;"}--></dt>
     <dd>
       <!--{if $arrNews[data].news_url}-->
       <a href="<!--{$arrNews[data].news_url}-->"
