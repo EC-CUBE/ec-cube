@@ -151,7 +151,7 @@ function fnIsCartOn(){
 										<td bgcolor="#f2f1ec" width="140" class="fs12n">ディレクトリ名<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="538">
 											<span class="red12"><!--{$arrErr.directory_name}--></span><input type="text" name="directory_name" size="60" class="box60"  value="<!--{$arrForm.directory_name|escape}-->" <!--{if $arrErr.directory_name}-->style="background-color:<!--{$smarty.const.ERR_COLOR|escape}-->"<!--{/if}--> maxlength="<!--{$smarty.const.STEXT_LEN}-->"/></span><br/>
-											<span class="fs10">※|<!--{$smarty.const.SITE_URL}--><!--{$smarty.const.CAMPAIGN_DIR}-->入力したディレクリ名/ でアクセス出来るようになります。</span>
+											<span class="fs10">※<!--{$smarty.const.SITE_URL}--><!--{$smarty.const.CAMPAIGN_DIR}-->入力したディレクリ名/ でアクセス出来るようになります。</span>
 										</td>
 									</tr>
 									<tr>
