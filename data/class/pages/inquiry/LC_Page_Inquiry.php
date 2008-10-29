@@ -87,13 +87,15 @@ class LC_Page_Inquiry extends LC_Page {
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
         if ( ( ! $_POST['mode'] == 'confirm' ) && ( ! is_numeric($_REQUEST['question_id']) ) ){
-            echo "不正アクセス";
-            exit;
+            SC_Utils_Ex::sfDispSiteError(PAGE_ERROR);
         }
 
         // テンプレート登録項目取得
         $sql = "SELECT question_id, question FROM dtb_question WHERE question_id = ?";
         $result = $conn->getAll( $sql, array($_REQUEST['question_id']) );
+		if ( count($result) <= 0 ){
+            SC_Utils_Ex::sfDispSiteError(PAGE_ERROR);
+        }
         $this->QUESTION = $this->lfGetArrInput( unserialize( $result[0]['question'] ) );
 
         $this->question_id = $_REQUEST['question_id'];
