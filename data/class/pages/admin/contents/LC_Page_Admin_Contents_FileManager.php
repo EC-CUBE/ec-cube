@@ -70,9 +70,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page {
         $objFileManager = new SC_Helper_FileManager_Ex();
 
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
-
-        $tpl_onload = "";
-
+		
         // 現在の階層を取得
         if($_POST['mode'] != "") {
             $now_dir = $_POST['now_file'];
@@ -143,7 +141,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page {
                     // 作成エラー
                     $arrErr['create_file'] = "※ ".$_POST['create_file']."の作成に失敗しました。<br/>";
                 } else {
-                    $tpl_onload .= "alert('フォルダを作成しました。');";
+                    $this->tpl_onload .= "alert('フォルダを作成しました。');";
                 }
             }
             break;
@@ -154,7 +152,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page {
             if($ret != "") {
                 $arrErr['upload_file'] = $ret;
             } else {
-                $tpl_onload .= "alert('ファイルをアップロードしました。');";
+                $this->tpl_onload .= "alert('ファイルをアップロードしました。');";
             }
             break;
             // フォルダ移動
@@ -187,7 +185,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page {
         // ツリーを表示する divタグid, ツリー配列変数名, 現在ディレクトリ, 選択ツリーhidden名, ツリー状態hidden名, mode hidden名
         $treeView = "fnTreeView('tree', arrTree, '$now_dir', 'tree_select_file', 'tree_status', 'move');";
         if (!empty($this->tpl_onload)) {
-            $this->tpl_onload .= $treeView . $tpl_onload;
+            $this->tpl_onload .= $treeView;
         } else {
             $this->tpl_onload = $treeView;
         }
