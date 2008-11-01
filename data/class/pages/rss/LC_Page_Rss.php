@@ -68,7 +68,7 @@ class LC_Page_RSS extends LC_Page {
 
         //新着情報をセット
         $this->arrNews = $arrNews;
-        $this->timestamp = SC_Utils_Ex::sf_mktime("r", $arrNews[0]['HOUR'], $arrNews[0]['MINUTE'], $arrNews[0]['SECOND'], $arrNews[0]['MONTH'], $arrNews[0]['DAY'], $arrNews[0]['YEAR']);
+        $this->timestamp = SC_Utils_Ex::sf_mktime("r", $arrNews[0]['hour'], $arrNews[0]['minute'], $arrNews[0]['second'], $arrNews[0]['month'], $arrNews[0]['day'], $arrNews[0]['year']);
 
         //店名をセット
         $this->site_title = $arrNews[0]['shop_name'];

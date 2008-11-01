@@ -127,7 +127,7 @@ class LC_Page {
 
             $netURL->addQueryString(TRANSACTION_ID_NAME, $this->getToken());
             header("Location: " . $netURL->getURL());
-            return;
+            return true;
         }
         return false;
     }
