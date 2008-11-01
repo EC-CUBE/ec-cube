@@ -209,7 +209,8 @@ class SC_Initial {
      */
     function createCacheDir() {
         if (defined("HTML_PATH")) {
-            if (!file_exists(COMPILE_DIR)) {
+            umask(0);
+        	if (!file_exists(COMPILE_DIR)) {
                 mkdir(COMPILE_DIR);
             }
 

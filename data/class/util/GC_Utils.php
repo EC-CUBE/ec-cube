@@ -171,7 +171,8 @@ class GC_Utils {
         $dirname = dirname($path);
         // ファイル名を取得
         $basename = basename($path);
-
+		//umask値を777にする。スクリプトが終われば元のumask値に戻る。
+		umask(0);
         // ファイルが最大サイズを超えていないかチェック
         if(filesize($path) > $max_size) {
             if ($dh = opendir($dirname)) {
