@@ -541,7 +541,7 @@ define('NOSTOCK_HIDDEN', false);
 /** デフォルトテンプレート名 */
 define('DEFAULT_TEMPLATE_NAME', "default");
 /** テンプレート名 */
-define('TEMPLATE_NAME', DEFAULT_TEMPLATE_NAME);
+define('TEMPLATE_NAME', "default");
 /** SMARTYテンプレート */
 define('SMARTY_TEMPLATES_DIR',  DATA_PATH . "Smarty/templates/");
 /** SMARTYテンプレート */
@@ -549,7 +549,7 @@ define('TPL_DIR', URL_DIR . USER_DIR . USER_PACKAGE_DIR . TEMPLATE_NAME . "/");
 /** SMARTYテンプレート */
 define('TEMPLATE_DIR', SMARTY_TEMPLATES_DIR . TEMPLATE_NAME . "/");
 /** SMARTYテンプレート(管理機能) */
-define('TEMPLATE_ADMIN_DIR', TEMPLATE_DIR . "admin/");
+define('TEMPLATE_ADMIN_DIR',  SMARTY_TEMPLATES_DIR . DEFAULT_TEMPLATE_NAME . "/admin/");
 /** SMARTYコンパイル */
 define('COMPILE_DIR', DATA_PATH . "Smarty/templates_c/" . TEMPLATE_NAME . "/");
 /** SMARTYコンパイル(管理機能) */

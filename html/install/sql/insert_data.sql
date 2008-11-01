@@ -1051,11 +1051,11 @@ INSERT INTO mtb_constants VALUES ('USE_POINT','true',290,'ポイントを利用�
 INSERT INTO mtb_constants VALUES ('NOSTOCK_HIDDEN','false',291,'在庫無し商品の非表示(true:非表示、false:表示)');
 INSERT INTO mtb_constants VALUES ('USE_MOBILE','true',292,'モバイルサイトを利用するか(true:利用する、false:利用しない) (false は一部対応)');
 INSERT INTO mtb_constants VALUES ('DEFAULT_TEMPLATE_NAME', '"default"', 300,'デフォルトテンプレート名');
-INSERT INTO mtb_constants VALUES ('TEMPLATE_NAME', 'DEFAULT_TEMPLATE_NAME', 301,'テンプレート名');
+INSERT INTO mtb_constants VALUES ('TEMPLATE_NAME', '"default"', 301,'テンプレート名');
 INSERT INTO mtb_constants VALUES ('SMARTY_TEMPLATES_DIR',' DATA_PATH . "Smarty/templates/"', 302,'SMARTYテンプレート');
 INSERT INTO mtb_constants VALUES ('TPL_DIR','URL_DIR . USER_DIR . USER_PACKAGE_DIR . TEMPLATE_NAME . "/"', 303,'SMARTYテンプレート');
 INSERT INTO mtb_constants VALUES ('TEMPLATE_DIR','SMARTY_TEMPLATES_DIR . TEMPLATE_NAME . "/"', 304,'SMARTYテンプレート');
-INSERT INTO mtb_constants VALUES ('TEMPLATE_ADMIN_DIR','TEMPLATE_DIR . "admin/"', 305,'SMARTYテンプレート(管理機能)');
+INSERT INTO mtb_constants VALUES ('TEMPLATE_ADMIN_DIR','SMARTY_TEMPLATES_DIR . DEFAULT_TEMPLATE_NAME . "/admin/"', 305,'SMARTYテンプレート(管理機能)');
 INSERT INTO mtb_constants VALUES ('COMPILE_DIR','DATA_PATH . "Smarty/templates_c/" . TEMPLATE_NAME . "/"',306,'SMARTYコンパイル');
 INSERT INTO mtb_constants VALUES ('COMPILE_ADMIN_DIR','COMPILE_DIR . "admin/"',307,'SMARTYコンパイル(管理機能)');
 INSERT INTO mtb_constants VALUES ('TEMPLATE_FTP_DIR','USER_PATH . USER_PACKAGE_DIR . TEMPLATE_NAME . "/"', 308,'SMARTYテンプレート(FTP許可)');
