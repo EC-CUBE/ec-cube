@@ -76,6 +76,7 @@ class LC_Page_Campaign extends LC_Page {
         $cart_flg = $objQuery->get("dtb_campaign", "cart_flg", "campaign_id = ?", array($campaign_id));
         if(!$cart_flg) {
             $this->sendRedirect($this->getLocation(CAMPAIGN_URL . "$dir_name/application.php"));
+            exit;
         }
 
         // キャンペーンが開催中かをチェック

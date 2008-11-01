@@ -173,6 +173,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
             }
             $_SESSION['preview'] = "ON";
             $this->sendRedirect($this->getLocation(URL_DIR . "preview/" . DIR_INDEX_URL, array("filename" => $arrPageData[0]["filename"])));
+            exit;
         }
 
         // データ登録処理
@@ -207,6 +208,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
                 $this->sendRedirect($this->getLocation("./main_edit.php",
                                         array("page_id" => $page_id,
                                               "msg"     => "on")));
+                exit;
             } else {
                 // エラーがあれば入力時のデータを表示する
                 $this->arrPageData = $_POST;
@@ -221,6 +223,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
         if ($_POST['mode'] == 'delete' and !$this->objLayout->lfCheckBaseData($page_id)) {
             $this->objLayout->lfDelPageData($_POST['page_id']);
             $this->sendRedirect($this->getLocation("./main_edit.php"));
+            exit;
         }
 
         // 画面の表示

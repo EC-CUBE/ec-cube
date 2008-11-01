@@ -299,6 +299,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
             if (!$objMobile->gfIsMobileMailAddress($objCustomer->getValue('email'))) {
                 if (!$objCustomer->hasValue('email_mobile')) {
                     $this->sendRedirect($this->getLocation("../entry/email_mobile.php"), true);
+                    exit;
                 }
             }
             break;

@@ -129,6 +129,7 @@ class LC_Page_Cart extends LC_Page {
                 $objCartSess->saveCurrentCart($uniqid);
                 // 購入ページへ
                 $this->sendRedirect(URL_SHOP_TOP);
+                exit;
             }
             break;
         default:

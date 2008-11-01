@@ -81,6 +81,7 @@ class LC_Page_Admin_Contents_FileView extends LC_Page {
             print($objFileManager->sfReadFile(USER_PATH . $_GET['file']));
         } else {
             $this->sendRedirect(USER_URL . $_GET['file']);
+            exit;
         }
     }
 

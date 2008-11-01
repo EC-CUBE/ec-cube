@@ -108,11 +108,13 @@ class LC_Page_Admin_Design extends LC_Page {
         // 新規ブロック作成
         if ($_POST['mode'] == 'new_bloc') {
             $this->sendRedirect($this->getLocation("./bloc.php"));
+            exit;
         }
 
         // 新規ページ作成
         if ($_POST['mode'] == 'new_page') {
             $this->sendRedirect($this->getLocation("./main_edit.php"));
+            exit;
         }
 
         // データ登録処理
@@ -192,17 +194,20 @@ class LC_Page_Admin_Design extends LC_Page {
             if ($_POST['mode'] == 'preview') {
                 if ($page_id === "") {
                     $this->sendRedirect($this->getLocation(DIR_INDEX_URL));
+                    exit;
                 }
                 $this->lfSetPreData($arrPageData, $objLayout);
 
                 $_SESSION['preview'] = "ON";
 
                 $this->sendRedirect($this->getLocation(URL_DIR . "preview/" . DIR_INDEX_URL, array("filename" => $arrPageData[0]["filename"])));
+                exit;
 
             }else{
                 $this->sendRedirect($this->getLocation(DIR_INDEX_URL,
                                             array("page_id" => $page_id,
                                                   "msg" => "on")));
+				exit;
 
             }
         }
@@ -211,6 +216,7 @@ class LC_Page_Admin_Design extends LC_Page {
         if ($_POST['mode'] == 'delete' and  !$objLayout->lfCheckBaseData($page_id)) {
             $objLayout->lfDelPageData($page_id);
             $this->sendRedirect($this->getLocation(DIR_INDEX_URL));
+            exit;
         }
 
         // ブロック情報を画面配置用に編集

@@ -76,6 +76,7 @@ class LC_Page_Admin_Contents_CampaignDesign extends LC_Page {
         // 正しく値が取得できない場合はキャンペーンTOPへ
         if($arrForm['campaign_id'] == "" || $arrForm['status'] == "") {
             $this->sendRedirect($this->getLocation(URL_CAMPAIGN_TOP));
+            exit;
         }
 
         switch($arrForm['status']) {
@@ -124,6 +125,7 @@ class LC_Page_Admin_Contents_CampaignDesign extends LC_Page {
         case 'return':
             // 登録ページへ戻る
             $this->sendRedirect($this->getLocation(URL_CAMPAIGN_TOP));
+            exit;
             break;
         default:
             break;

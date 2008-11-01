@@ -57,6 +57,7 @@ class LC_Page_Admin_Contents_CampaignPreview extends LC_Page {
         // 正しく値が取得できない場合はキャンペーンTOPへ
         if($_GET['campaign_id'] == "" || $_GET['status'] == "") {
             $this->sendRedirect($this->getLocation(URL_CAMPAIGN_TOP));
+            exit;
         }
 
         // statusの判別

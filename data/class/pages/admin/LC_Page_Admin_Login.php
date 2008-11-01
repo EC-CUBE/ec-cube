@@ -72,6 +72,7 @@ class LC_Page_Admin_Login extends LC_Page {
         if($ret) {
             // 成功
             $this->sendRedirect($this->getLocation(URL_HOME));
+            exit;
         } else {
             // エラーページの表示
             SC_Utils_Ex::sfDispError(LOGIN_ERROR);
