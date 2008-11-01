@@ -135,13 +135,13 @@ class LC_Page_Admin_Design_Template extends LC_Page {
 		    if ($objForm->checkError()) {
 		        SC_Utils::sfDispError('');
 		    }
-			
-		    //現在使用中のテンプレートとデフォルトのテンプレートは削除できないようにする
+
 		    $template_code = $objForm->getValue('template_code_temp');
-		    if ($template_code == DEFAULT_TEMPLATE_NAME || $template_code == 'default') {
-		    	$this->tpl_onload = "alert('選択中のテンプレートは削除出来ません');";
+		    if ($template_code == DEFAULT_TEMPLATE_NAME) {
+		        $this->tpl_onload = "alert('選択中のテンプレートは削除出来ません');";
 		        break;
 		    }
+
 		    $this->lfDeleteTemplate($template_code);
 		    break;
 
