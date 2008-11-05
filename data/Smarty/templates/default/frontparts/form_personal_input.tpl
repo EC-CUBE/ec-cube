@@ -113,7 +113,7 @@
     <div class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></div>
     <!--{/if}-->
     <input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1]|escape}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->; ime-mode: disabled;" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" size="40" class="box300" /><br />
-    <input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2]|default:$arrForm[$key1]|escape}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->; ime-mode: disabled;" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" size="40" class="box300" /><br />
+    <input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2]|default:$arrForm[$key1]|escape}-->" style="<!--{$arrErr[$key1]|cat:$arrErr[$key2]|sfGetErrorColor}-->; ime-mode: disabled;" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" size="40" class="box300" /><br />
     <p class="mini"><em>確認のため2度入力してください。</em></p>
   </td>
 </tr>
@@ -127,7 +127,7 @@
     <div class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></div>
     <!--{/if}-->
     <input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1]|escape}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->; ime-mode: disabled;" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" size="40" class="box300" /><br />
-    <input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2]|default:$arrForm[$key1]|escape}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->; ime-mode: disabled;" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" size="40" class="box300" /><br />
+    <input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2]|default:$arrForm[$key1]|escape}-->" style="<!--{$arrErr[$key1]|cat:$arrErr[$key2]|sfGetErrorColor}-->; ime-mode: disabled;" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" size="40" class="box300" /><br />
     <p class="mini"><em>確認のため2度入力してください。</em></p>
   </td>
 </tr>
@@ -139,8 +139,10 @@
     <!--{if $arrErr[$key1]}-->
     <div class="attention"><!--{$arrErr[$key1]}--></div>
     <!--{/if}-->
-    <input type="radio" id="man" name="<!--{$key1}-->" value="1" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" <!--{if $arrForm[$key1] eq 1}--> checked="checked" <!--{/if}--> /><label for="man">男性</label>
-    <input type="radio" id="woman" name="<!--{$key1}-->" value="2" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" <!--{if $arrForm[$key1] eq 2}--> checked="checked" <!--{/if}--> /><label for="woman">女性</label>
+    <span style="<!--{$arrErr[$key1]|sfGetErrorColor}-->">
+        <input type="radio" id="man" name="<!--{$key1}-->" value="1" <!--{if $arrForm[$key1] eq 1}--> checked="checked" <!--{/if}--> /><label for="man">男性</label>
+        <input type="radio" id="woman" name="<!--{$key1}-->" value="2" <!--{if $arrForm[$key1] eq 2}--> checked="checked" <!--{/if}--> /><label for="woman">女性</label>
+    </span>
   </td>
 </tr>
 <tr>
@@ -186,7 +188,7 @@
     <!--{/if}-->
     <input type="password" name="password" value="<!--{$arrForm.password|escape}-->" maxlength="<!--{$smarty.const.PASSWORD_LEN2}-->" style="<!--{$arrErr.password|sfGetErrorColor}-->" size="15" class="box120" />
     <p><em>半角英数字4～10文字でお願いします。（記号不可）</em></p>
-    <input type="password" name="password02" value="<!--{$arrForm.password02|escape}-->" maxlength="<!--{$smarty.const.PASSWORD_LEN2}-->" style="<!--{$arrErr.password02|sfGetErrorColor}-->" size="15" class="box120" />
+    <input type="password" name="password02" value="<!--{$arrForm.password02|escape}-->" maxlength="<!--{$smarty.const.PASSWORD_LEN2}-->" style="<!--{$arrErr.password|cat:$arrErr.password02|sfGetErrorColor}-->" size="15" class="box120" />
     <p><em>確認のために2度入力してください。</em></p>
   </td>
 </tr>
@@ -211,9 +213,11 @@
     <!--{if $arrErr.mailmaga_flg}-->
     <div class="attention"><!--{$arrErr.mailmaga_flg}--></div>
     <!--{/if}-->
-    <input type="radio" name="mailmaga_flg" value="1" id="html" style="<!--{$arrErr.mailmaga_flg|sfGetErrorColor}-->" <!--{if $arrForm.mailmaga_flg eq 1}--> checked="checked" <!--{/if}--> /><label for="html">HTMLメール＋テキストメールを受け取る</label><br />
-    <input type="radio" name="mailmaga_flg" value="2" id="text" style="<!--{$arrErr.mailmaga_flg|sfGetErrorColor}-->" <!--{if $arrForm.mailmaga_flg eq 2}--> checked="checked" <!--{/if}--> /><label for="text">テキストメールを受け取る</label><br />
-    <input type="radio" name="mailmaga_flg" value="3" id="no" style="<!--{$arrErr.mailmaga_flg|sfGetErrorColor}-->" <!--{if $arrForm.mailmaga_flg eq 3}--> checked="checked" <!--{/if}--> /><label for="no">受け取らない</label>
+    <span style="<!--{$arrErr.mailmaga_flg|sfGetErrorColor}-->">
+        <input type="radio" name="mailmaga_flg" value="1" id="html" <!--{if $arrForm.mailmaga_flg eq 1}--> checked="checked" <!--{/if}--> /><label for="html">HTMLメール＋テキストメールを受け取る</label><br />
+        <input type="radio" name="mailmaga_flg" value="2" id="text" <!--{if $arrForm.mailmaga_flg eq 2}--> checked="checked" <!--{/if}--> /><label for="text">テキストメールを受け取る</label><br />
+        <input type="radio" name="mailmaga_flg" value="3" id="no" <!--{if $arrForm.mailmaga_flg eq 3}--> checked="checked" <!--{/if}--> /><label for="no">受け取らない</label>
+    </span>
   </td>
 </tr>
 <!--{/if}-->
