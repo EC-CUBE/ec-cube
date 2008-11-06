@@ -28,6 +28,7 @@ $arrErr = fnErrorCheck();
 // 入力エラーの場合は終了
 if(count($arrErr) > 0) {
 	$objPage->tpl_start = "window.close();";
+	sfDispSiteError(CUSTOMER_ERROR);
 }
 
 // 郵便番号検索文作成
@@ -75,8 +76,7 @@ function fnErrorCheck() {
 	// 郵便番号
 	$objErr->doFunc( array("郵便番号1",'zip1',ZIP01_LEN ) ,array( "NUM_CHECK", "NUM_COUNT_CHECK" ) );
 	$objErr->doFunc( array("郵便番号2",'zip2',ZIP02_LEN ) ,array( "NUM_CHECK", "NUM_COUNT_CHECK" ) );
-
-	return $objErr->arrErr;
+    return $objErr->arrErr;
 }
 
 /**
