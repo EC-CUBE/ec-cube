@@ -123,15 +123,22 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page {
                     //別のお届け先登録数の取得
                     $deliv_count = $objQuery->count("dtb_other_deliv", "customer_id=?", array($objCustomer->getValue('customer_id')));
                     if ($deliv_count < DELIV_ADDR_MAX or isset($_POST['other_deliv_id'])){
-                        $deliv_count = $objQuery->count("dtb_other_deliv","customer_id=? and other_deliv_id = ?" ,array($objCustomer->getValue('customer_id'), $_POST['other_deliv_id']));
-                            if ($deliv_count == 1) {
-                            $this->lfRegistData($_POST,$arrRegistColumn, $objCustomer);
-                        } else {
-                            SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
+                        if(strlen($_POST['other_deliv_id'] != 0)){
+                            $deliv_count = $objQuery->count("dtb_other_deliv","customer_id=? and other_deliv_id = ?" ,array($objCustomer->getValue('customer_id'), $_POST['other_deliv_id']));
+                            if ($deliv_count == 0) {
+                                SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
+                            }else{
+                                $this->lfRegistData($_POST,$arrRegistColumn, $objCustomer);                                
+                            }
+                        }else{
+                            $this->lfRegistData($_POST,$arrRegistColumn, $objCustomer);                            
                         }
                     }
-                    
-                    $this->tpl_onload = "fnUpdateParent('". $this->getLocation($_POST['ParentPage']) ."'); window.close();";
+                        if( $_POST['ParentPage'] == MYPAGE_DELIVADDR_URL || $_POST['ParentPage'] == URL_DELIV_TOP ){
+                            $this->tpl_onload = "fnUpdateParent('". $this->getLocation($_POST['ParentPage']) ."'); window.close();";
+                        }else{
+                            SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
+                        }
                 }
                 break;
         }
