@@ -74,10 +74,21 @@ switch ($_POST['mode']){
 		}else{
 			//別のお届け先登録数の取得
 			$deliv_count = $objQuery->count("dtb_other_deliv", "customer_id=?", array($objCustomer->getValue('customer_id')));
-			if ($deliv_count < DELIV_ADDR_MAX or isset($_POST['other_deliv_id'])){
-				lfRegistData($_POST,$arrRegistColumn);
-			}
-			$objPage->tpl_onload = "fnUpdateParent('".$_POST['ParentPage']."'); window.close();";
+            if ($deliv_count < DELIV_ADDR_MAX or isset($_POST['other_deliv_id'])){
+            // 既存お届け先の編集のとき、不正な other_deliv_id が指定されたらエラー画面へ。
+                if(strlen($_POST['other_deliv_id']) != 0) {
+                    $deliv_count = $objQuery->count("dtb_other_deliv","customer_id=? and other_deliv_id = ?" ,array($objCustomer->getValue('customer_id'),$_POST['other_deliv_id']));
+                    if($deliv_count != 1) {
+                        sfDispSiteError(CUSTOMER_ERROR);
+                    }
+                }
+            lfRegistData($_POST,$arrRegistColumn);
+            } 
+            if($_POST['ParentPage'] == MYPAGE_DELIVADDR_URL || $_POST['ParentPage'] == URL_DELIV_TOP){
+                $objPage->tpl_onload = "fnUpdateParent('".$_POST['ParentPage']."'); window.close();";
+            }else{
+                sfDispSiteError(CUSTOMER_ERROR);
+            }
 		}
 		break;
 }
