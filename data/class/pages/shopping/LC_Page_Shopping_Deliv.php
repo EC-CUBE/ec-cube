@@ -154,6 +154,12 @@ class LC_Page_Shopping_Deliv extends LC_Page {
             // 別のお届け先がチェックされている場合
             } elseif($_POST['deliv_check'] >= 1) {
                 if (SC_Utils_Ex::sfIsInt($_POST['deliv_check'])) {
+                    $objQuery = new SC_Query();
+                    $deliv_count = $objQuery->count("dtb_other_deliv","customer_id=? and other_deliv_id = ?" ,array($objCustomer->getValue('customer_id'), $_POST['deliv_check']));
+                    if ($deliv_count != 1) {
+                        SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
+                    }
+                    
                     // 登録済みの別のお届け先を受注一時テーブルに書き込む
                     $this->lfRegistOtherDelivData($uniqid, $objCustomer, $_POST['deliv_check']);
                     // 正常に登録されたことを記録しておく
@@ -334,6 +340,11 @@ class LC_Page_Shopping_Deliv extends LC_Page {
             // お届け先がチェックされている場合には更新処理を行う
             if ($_POST['deli'] != "") {
                 if (SC_Utils_Ex::sfIsInt($_POST['other_deliv_id'])) {
+                    $objQuery = new SC_Query();
+                    $deliv_count = $objQuery->count("dtb_other_deliv","customer_id=? and other_deliv_id = ?" ,array($objCustomer->getValue('customer_id'), $_POST['other_deliv_id']));
+                    if ($deliv_count != 1) {
+                        SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
+                    }
                     // 登録済みの別のお届け先を受注一時テーブルに書き込む
                     $this->lfRegistOtherDelivData($uniqid, $objCustomer, $_POST['other_deliv_id']);
                     // 正常に登録されたことを記録しておく
@@ -347,25 +358,6 @@ class LC_Page_Shopping_Deliv extends LC_Page {
                 $arrErr['deli'] = '※ お届け先を選択してください。';
             }
             break;
-
-            /*
-            // 別のお届け先を指定
-            case 'new_addr':
-            // 入力値の変換
-            $this->objFormParam->convParam();
-            $this->arrErr = lfCheckError($arrRet);
-            // 入力エラーなし
-            if(count($this->arrErr) == 0) {
-            // DBへお届け先を登録
-            lfRegistNewAddrData($uniqid, $objCustomer);
-            // 正常に登録されたことを記録しておく
-            $objSiteSess->setRegistFlag();
-            // お支払い方法選択ページへ移動
-            header("Location: " . URL_SHOP_PAYMENT);
-            exit;
-            }
-            break;
-            */
 
             // 前のページに戻る
         case 'return':
