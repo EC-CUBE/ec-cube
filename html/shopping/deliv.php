@@ -112,6 +112,10 @@ case 'customer_addr':
 	// 別のお届け先がチェックされている場合
 	} elseif($_POST['deliv_check'] >= 1) {
 		if (sfIsInt($_POST['deliv_check'])) {
+			$deliv_count = $objQuery->count("dtb_other_deliv","customer_id=? and other_deliv_id = ?" ,array($objCustomer->getValue('customer_id'), $_POST['deliv_check']));
+			if ($deliv_count != 1) {
+            	sfDispSiteError(CUSTOMER_ERROR);
+            }
 			// 登録済みの別のお届け先を受注一時テーブルに書き込む
 			lfRegistOtherDelivData($uniqid, $objCustomer, $_POST['deliv_check']);
 			// 正常に登録されたことを記録しておく
@@ -119,6 +123,7 @@ case 'customer_addr':
 			// お支払い方法選択ページへ移動
 			header("Location: " . URL_SHOP_PAYMENT);
 			exit;
+
 		}
 	}else{
 		// エラーを返す
