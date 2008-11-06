@@ -184,6 +184,28 @@ function lfCheckError($arrData) {
 			$objErr->arrErr['use_point'] = "※ ご利用ポイントがご購入金額を超えています。<br />";
 		}
 	}
+	
+	//お支払方法の整合性
+	$objView = new SC_SiteView();
+	$objSiteInfo = $objView->objSiteInfo;
+	$arrInfo = $objSiteInfo->data;
+	$objCartSess = new SC_CartSession();
+    $arrInfo = $objSiteInfo->data;
+    // 購入金額の取得得
+    $total_pretax = $objCartSess->getAllProductsTotal($arrInfo);
+    // 支払い方法の取得
+    $arrPayment = lfGetPayment($total_pretax);
+    $pay_flag = true;
+    foreach ($arrPayment as $key => $payment) {
+    	if ($payment['payment_id'] == $arrRet['payment_id']) {
+    			$pay_flag = false;
+       			break;
+       		}
+   	}
+    if ($pay_flag) {
+    	sfDispSiteError(CUSTOMER_ERROR);
+    }
+
 	return $objErr->arrErr;
 }
 
