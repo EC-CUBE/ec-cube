@@ -122,7 +122,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page {
                 } else {
                     //別のお届け先登録数の取得
                     $deliv_count = $objQuery->count("dtb_other_deliv", "customer_id=?", array($objCustomer->getValue('customer_id')));
-                    if ($deliv_count < DELIV_ADDR_MAX or strlen($_POST['other_deliv_id'])){
+                    if ($deliv_count < DELIV_ADDR_MAX or isset($_POST['other_deliv_id'])){
                         if(strlen($_POST['other_deliv_id'] != 0)){
                             $deliv_count = $objQuery->count("dtb_other_deliv","customer_id=? and other_deliv_id = ?" ,array($objCustomer->getValue('customer_id'), $_POST['other_deliv_id']));
                             if ($deliv_count == 0) {
