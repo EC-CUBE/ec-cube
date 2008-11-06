@@ -133,8 +133,13 @@ case 'customer_addr':
 case 'other_addr':
 	// お届け先がチェックされている場合には更新処理を行う
 	if ($_POST['deli'] != "") {
-		if (sfIsInt($_POST['other_deliv_id'])) {
-			// 登録済みの別のお届け先を受注一時テーブルに書き込む
+		$objQuery = new SC_Query();
+	    if (sfIsInt($_POST['other_deliv_id'])) {
+			    $deliv_count = $objQuery->count("dtb_other_deliv","customer_id=? and other_deliv_id = ?" ,array($objCustomer->getValue('customer_id'), $_POST['other_deliv_id']));
+            if ($deliv_count != 1) {
+                sfDispSiteError(CUSTOMER_ERROR);
+            }
+		    // 登録済みの別のお届け先を受注一時テーブルに書き込む
 			lfRegistOtherDelivData($uniqid, $objCustomer, $_POST['other_deliv_id']);
 			// 正常に登録されたことを記録しておく
 			$objSiteSess->setRegistFlag();
