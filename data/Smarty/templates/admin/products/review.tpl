@@ -158,10 +158,10 @@
 	<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 	<input type="hidden" name="mode" value="search">
 	<input type="hidden" name="review_id" value="">
-	<input type="hidden" name="search_pageno" value="<!--{$tpl_pageno}-->">
+	<input type="hidden" name="search_pageno" value="<!--{$tpl_pageno|escape}-->">
 	<!--{foreach key=key item=item from=$arrHidden}-->
 	<!--{if $key ne "search_pageno"}-->
-	<input type="hidden" name="<!--{$key}-->" value="<!--{$item}-->" >
+	<input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->" >
 	<!--{/if}-->
 	<!--{/foreach}-->
 		<tr><td colspan="2"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/search_line.jpg" width="878" height="12" alt=""></td></tr>

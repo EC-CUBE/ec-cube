@@ -33,8 +33,11 @@ if(!sfIsInt($_GET['product_id']) || !sfIsRecord("dtb_products", "product_id", $_
 
 $image_key = $_GET['image'];
 
-$objQuery = new SC_Query();
+
 $col = "name, $image_key";
+if(!sfColumnExists("dtb_products",$_GET['image'])){
+	sfDispSiteError(PRODUCT_NOT_FOUND);	
+}
 $arrRet = $objQuery->select($col, "dtb_products", "product_id = ?", array($_GET['product_id']));
 
 list($width, $height) = getimagesize(IMAGE_SAVE_DIR . $arrRet[0][$image_key]);
