@@ -56,13 +56,13 @@ class LC_Page_InputZip extends LC_Page {
         $objView = new SC_SiteView(false);
 
         // 入力エラーチェック
-        $arrErr = $this->fnErrorCheck();
-
+        $arrErr = $this->fnErrorCheck($_GET);
         // 入力エラーの場合は終了
         if(count($arrErr) > 0) {
             $this->tpl_start = "window.close();";
+            SC_Utils::sfDispSiteError(CUSTOMER_ERROR);
         }
-
+        
         // 郵便番号検索文作成
         $zipcode = $_GET['zip1'].$_GET['zip2'];
         $zipcode = mb_convert_kana($zipcode ,"n");
@@ -87,7 +87,7 @@ class LC_Page_InputZip extends LC_Page {
 
         /*
          総務省からダウンロードしたデータをそのままインポートすると
-         以下のような文字列が入っているので	対策する。
+         以下のような文字列が入っているので  対策する。
          ・（１~１９丁目）
          ・以下に掲載がない場合
         */
@@ -122,15 +122,36 @@ class LC_Page_InputZip extends LC_Page {
     /* 入力エラーのチェック */
     function fnErrorCheck() {
         // エラーメッセージ配列の初期化
-        $objErr = new SC_CheckError();
+        $objErr = new SC_CheckError($array);
 
         // 郵便番号
         $objErr->doFunc( array("郵便番号1",'zip1',ZIP01_LEN ) ,array( "NUM_COUNT_CHECK" ) );
         $objErr->doFunc( array("郵便番号2",'zip2',ZIP02_LEN ) ,array( "NUM_COUNT_CHECK" ) );
+        // 親ウィンドウの戻り値を格納するinputタグのnameのエラーチェック
+        if (!$this->lfInputNameCheck($array['input1'])) {
+            $objErr->arrErr['input1'] = "※ 入力形式が不正です。<br />";
+        }
+        if (!$this->lfInputNameCheck($array['input2'])) {
+            $objErr->arrErr['input2'] = "※ 入力形式が不正です。<br />";
+        }
 
         return $objErr->arrErr;
     }
-
+	
+	/**
+ * エラーチェック
+ *
+ * @param string $value
+ * @return エラーなし：true エラー：false
+ */
+    function lfInputNameCheck($value) {
+        // 半角英数字と_（アンダーバー）以外の文字を使用していたらエラー
+        if(strlen($value) > 0 && !ereg("^[a-zA-Z0-9_]+$", $value)) {
+            return false;
+        }
+        
+        return true;
+    }
 
 }
 ?>

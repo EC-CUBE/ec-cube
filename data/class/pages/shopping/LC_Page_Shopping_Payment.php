@@ -393,6 +393,27 @@ class LC_Page_Shopping_Payment extends LC_Page {
                 $objErr->arrErr['use_point'] = "※ ご利用ポイントがご購入金額を超えています。<br>";
             }
         }
+        
+        $objView = new SC_MobileView();
+        $objSiteInfo = $objView->objSiteInfo;
+        $arrInfo = $objSiteInfo->data;
+        $objCartSess = new SC_CartSession();
+        $arrInfo = $objSiteInfo->data;
+        // 購入金額の取得得
+        $total_pretax = $objCartSess->getAllProductsTotal($arrInfo);
+        // 支払い方法の取得
+        $arrPayment = $this->lfGetPayment($total_pretax);
+        $pay_flag = true;
+        foreach ($arrPayment as $key => $payment) {
+            if ($payment['payment_id'] == $arrRet['payment_id']) {
+                $pay_flag = false;
+                break;
+            }
+        }
+        if ($pay_flag) {
+            SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
+        }
+        
         return $objErr->arrErr;
     }
 

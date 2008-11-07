@@ -73,7 +73,12 @@ class LC_Page_Products_DetailImage extends LC_Page {
         $image_key = $_GET['image'];
 
         $objQuery = new SC_Query();
+         // カラムが存在していなければエラー画面を表示
+        if(!$objDb->sfColumnExists("dtb_products",$image_key)){
+            SC_Utils_Ex::sfDispSiteError(PRODUCT_NOT_FOUND);
+        }
         $col = "name, $image_key";
+        
         $arrRet = $objQuery->select($col, "dtb_products", "product_id = ?", array($_GET['product_id']));
         $image_path = IMAGE_SAVE_DIR . $arrRet[0][$image_key];
         

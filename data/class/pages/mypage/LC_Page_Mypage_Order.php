@@ -102,11 +102,17 @@ class LC_Page_Mypage_Order extends LC_Page {
     // 受注詳細データの取得
     function lfGetOrderDetail($order_id) {
         $objQuery = new SC_Query();
+        $objCustomer = new SC_Customer();
+        //customer_idを検証
+        $customer_id = $objCustomer->getValue("customer_id");
+        $order_count = $objQuery->count("dtb_order", "order_id = ? and customer_id = ?", array($order_id, $customer_id));
+        if ($order_count != 1) return array();
         $col = "product_id, classcategory_id1, classcategory_id2, quantity";
         $where = "order_id = ?";
         $objQuery->setorder("classcategory_id1, classcategory_id2");
         $arrRet = $objQuery->select($col, "dtb_order_detail", $where, array($order_id));
         return $arrRet;
     }
+    
 }
 ?>
