@@ -56,7 +56,7 @@ class LC_Page_Admin_Contents_Inquiry extends LC_Page {
                              '回答ID',
                              '質問ID',
                              '回答日時',
-                             '回答名',
+                             'アンケートタイトル',
                              '顧客名1',
                              '顧客名2',
                              '顧客名カナ1',
@@ -168,7 +168,40 @@ class LC_Page_Admin_Contents_Inquiry extends LC_Page {
 
             $objCSV = new SC_Helper_CSV_Ex();
             $head = SC_Utils_Ex::sfGetCSVList($this->arrCVSTITLE);
-            $list_data = $conn->getAll("SELECT result_id,question_id,question_date,question_name,name01,name02,kana01,kana02,zip01,zip02,pref,addr01,addr02,tel01,tel02,tel03,mail01,question01,question02,question03,question04,question05,question06 FROM dtb_question_result WHERE del_flg = 0 AND question_id = ? ORDER BY result_id ASC",array($_GET['question_id']));
+            $sql =<<<__EOS__
+                SELECT
+                     dtb_question_result.result_id
+                    ,dtb_question_result.question_id
+                    ,dtb_question_result.create_date
+                    ,dtb_question.question_name
+                    ,dtb_question_result.name01
+                    ,dtb_question_result.name02
+                    ,dtb_question_result.kana01
+                    ,dtb_question_result.kana02
+                    ,dtb_question_result.zip01
+                    ,dtb_question_result.zip02
+                    ,dtb_question_result.pref
+                    ,dtb_question_result.addr01
+                    ,dtb_question_result.addr02
+                    ,dtb_question_result.tel01
+                    ,dtb_question_result.tel02
+                    ,dtb_question_result.tel03
+                    ,dtb_question_result.mail01
+                    ,dtb_question_result.question01
+                    ,dtb_question_result.question02
+                    ,dtb_question_result.question03
+                    ,dtb_question_result.question04
+                    ,dtb_question_result.question05
+                    ,dtb_question_result.question06
+                FROM dtb_question_result
+                    LEFT JOIN dtb_question
+                        ON dtb_question_result.question_id = dtb_question.question_id
+                WHERE 0=0
+                    AND dtb_question_result.del_flg = 0
+                    AND dtb_question_result.question_id = ?
+                ORDER BY dtb_question_result.result_id ASC
+__EOS__;
+            $list_data = $conn->getAll($sql, array($_GET['question_id']));
             $data = "";
             for($i = 0; $i < count($list_data); $i++) {
                 // 各項目をCSV出力用に変換する。
