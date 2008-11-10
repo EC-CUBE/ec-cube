@@ -83,7 +83,7 @@ case 'deliv_date':
 	
 	// 入力値の変換
 	$objFormParam->convParam();
-	$objPage->arrErr = lfCheckError($objPage->arrData);
+	$objPage->arrErr = lfCheckError($objPage->arrData, $arrInfo, $objCartSess );
 	if (!isset($objPage->arrErr['payment_id'])) {
 		// 支払い方法の入力エラーなし
 		$objPage->tpl_mainpage = 'shopping/deliv_date.tpl';
@@ -99,7 +99,7 @@ case 'deliv_date':
 case 'confirm':
 	// 入力値の変換
 	$objFormParam->convParam();
-	$objPage->arrErr = lfCheckError($objPage->arrData );
+	$objPage->arrErr = lfCheckError($objPage->arrData, $arrInfo, $objCartSess );
 	// 入力エラーなし
 	if(count($objPage->arrErr) == 0) {
 		// DBへのデータ登録
@@ -199,7 +199,7 @@ function lfGetPayment($total_pretax) {
 }
 
 /* 入力内容のチェック */
-function lfCheckError($arrData) {
+function lfCheckError($arrData, $arrInfo, $objCartSess ) {
 	global $objFormParam;
 	global $objCustomer;
 	// 入力データを渡す。
@@ -222,12 +222,7 @@ function lfCheckError($arrData) {
 		}
 	}
 	
-   //お支払方法の整合性
-    $objView = new SC_SiteView();
-    $objSiteInfo = $objView->objSiteInfo;
-    $arrInfo = $objSiteInfo->data;
-    $objCartSess = new SC_CartSession();
-    $arrInfo = $objSiteInfo->data;
+   	//お支払方法の整合性
     // 購入金額の取得得
     $total_pretax = $objCartSess->getAllProductsTotal($arrInfo);
     // 支払い方法の取得
