@@ -78,7 +78,7 @@ case 'deliv_date':
 	
     // 入力値の変換
 	$objFormParam->convParam();
-	$objPage->arrErr = lfCheckError($objPage->arrDatalfCheckError($objPage->arrData, $arrInfo, $objCartSess );
+	$objPage->arrErr = lfCheckError($objPage->arrData, $arrInfo, $objCartSess );
 	if (!isset($objPage->arrErr['payment_id'])) {
 		// 支払い方法の入力エラーなし
 		$objPage->tpl_mainpage = 'nonmember/deliv_date.tpl';
