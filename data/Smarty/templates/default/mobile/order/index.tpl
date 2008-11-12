@@ -55,12 +55,6 @@
 <a href="<!--{$arrRet.law_url}-->"><!--{$arrRet.law_url}--></a><br>
 <hr>
 
-<!--{if $arrRet.law_term07}-->
-[emoji:76]<font color="#800000">資格・免許</font><br>
-<!--{$arrRet.law_term07}--><br>
-<hr>
-<!--{/if}-->
-
 [emoji:113]<font color="#800000">商品以外の必要代金</font><br>
 <!--{$arrRet.law_term01}--><br>
 <hr>
