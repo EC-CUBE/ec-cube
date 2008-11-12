@@ -52,31 +52,31 @@
 <hr>
 
 [emoji:e11]<font color="#800000">サイトURL</font><br>
-<a href="<!--{$arrRet.law_url}-->"><!--{$arrRet.law_url}--></a><br>
+<a href="<!--{$arrRet.law_url|escape}-->"><!--{$arrRet.law_url|escape}--></a><br>
 <hr>
 
 [emoji:113]<font color="#800000">商品以外の必要代金</font><br>
-<!--{$arrRet.law_term01}--><br>
+<!--{$arrRet.law_term01|escape|nl2br}--><br>
 <hr>
 
 [emoji:146]<font color="#800000">注文方法</font><br>
-<!--{$arrRet.law_term02}--><br>
+<!--{$arrRet.law_term02|escape|nl2br}--><br>
 <hr>
 
 [emoji:42]<font color="#800000">支払方法</font><br>
-<!--{$arrRet.law_term03}--><br>
+<!--{$arrRet.law_term03|escape|nl2br}--><br>
 <hr>
 
 [emoji:176]<font color="#800000">支払期限</font><br>
-<!--{$arrRet.law_term04}--><br>
+<!--{$arrRet.law_term04|escape|nl2br}--><br>
 <hr>
 
 [emoji:72]<font color="#800000">引渡し時期</font><br>
-<!--{$arrRet.law_term05}--><br>
+<!--{$arrRet.law_term05|escape|nl2br}--><br>
 <hr>
 
 [emoji:e42]<font color="#800000">返品・交換について</font><br>
-<!--{$arrRet.law_term06}--><br>
+<!--{$arrRet.law_term06|escape|nl2br}--><br>
 <hr>
 
 <a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->カート見る</a><br>
