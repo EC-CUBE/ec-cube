@@ -398,7 +398,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
                 break;
             }
         }
-        if ($pay_flag) {
+        if ($pay_flag && $arrRet['payment_id'] != "") {
             SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
         }
         
