@@ -103,7 +103,7 @@ class LC_Page_Admin_Basis_Payment_Input extends LC_Page {
         // 画像のアップロード
         case 'upload_image':
             // ファイル存在チェック
-            $this->arrErr = array_merge($this->arrErr, $this->objUpFile->checkEXISTS($_POST['image_key']));
+            $this->arrErr = $this->objUpFile->checkEXISTS($_POST['image_key']);
             // 画像保存処理
             $this->arrErr[$_POST['image_key']] = $this->objUpFile->makeTempFile($_POST['image_key']);
             break;
