@@ -834,7 +834,7 @@ class LC_Page_Entry extends LC_Page {
 
         $objErr->doFunc(array("性別", "sex") ,array("SELECT_CHECK", "NUM_CHECK"));
         $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_DATE"));
-        if (isset($array['year'])) {
+        if (isset($array['year']) && strlen($array['year']) > 0) {
             $objErr->doFunc(array("生年月日 (年)", "year", $this->objDate->getStartYear()), array("MIN_CHECK"));
             $objErr->doFunc(array("生年月日 (年)", "year", $this->objDate->getEndYear()), array("MAX_CHECK"));
         }
