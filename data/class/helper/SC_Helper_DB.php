@@ -1415,7 +1415,10 @@ __EOS__;
      * @param integer $payment_id 支払い方法ID
      * @return string 指定の都道府県, 支払い方法の配送料金
      */
-    function sfGetDelivFee($pref, $payment_id = "") {
+    function sfGetDelivFee($arrData) {
+        $pref = $arrData['deliv_pref'];
+        $payment_id = is_set($arrData['payment_id']) ? $arrData['payment_id'] : "";
+
         $objQuery = new SC_Query();
 
         $deliv_id = "";
@@ -1485,10 +1488,7 @@ __EOS__;
         // 配送業者の送料が有効の場合
         if (OPTION_DELIV_FEE == 1) {
             // 送料の合計を計算する
-            $arrData['deliv_fee']
-                += $this->sfGetDelivFee($arrData['deliv_pref'],
-                                           $arrData['payment_id']);
-
+            $arrData['deliv_fee'] += $this->sfGetDelivFee($arrData);
         }
 
         // 送料無料の購入数が設定されている場合
