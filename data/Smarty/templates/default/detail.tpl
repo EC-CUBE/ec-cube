@@ -123,7 +123,7 @@ function lnSetSelect(form, name1, name2, val) {
                         <!--{if $arrProduct.price01_min == $arrProduct.price01_max}-->
                             <!--{$arrProduct.price01_min|number_format}-->
                         <!--{else}-->
-                            <!--{$arrProduct.price01_min|number_format}--><!--{$arrProduct.price01_max|number_format}-->
+                            <!--{$arrProduct.price01_min|number_format}-->～<!--{$arrProduct.price01_max|number_format}-->
                         <!--{/if}-->円</span>
                 </div>
             <!--{/if}-->
@@ -137,7 +137,7 @@ function lnSetSelect(form, name1, name2, val) {
                         <!--{if $arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id == $arrProduct.price02_max|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->
                             <!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->
                         <!--{else}-->
-                            <!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}--><!--{$arrProduct.price02_max|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->
+                            <!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->～<!--{$arrProduct.price02_max|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->
                         <!--{/if}-->
                     <!--{/if}-->Pt</span></div>
             <!--{/if}-->
@@ -352,7 +352,7 @@ function lnSetSelect(form, name1, name2, val) {
                         <!--{if $price02_min == $price02_max}-->
                             <!--{$price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
                         <!--{else}-->
-                            <!--{$price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}--><!--{$price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
+                            <!--{$price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->～<!--{$price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
                         <!--{/if}-->円</span></p>
                     <p class="mini"><!--{$arrRecommend[cnt].comment|escape|nl2br}--></p>
                 </div>
@@ -384,7 +384,7 @@ function lnSetSelect(form, name1, name2, val) {
                         <!--{if $price02_min == $price02_max}-->
                             <!--{$price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
                         <!--{else}-->
-                            <!--{$price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}--><!--{$price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
+                            <!--{$price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->～<!--{$price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
                         <!--{/if}-->円</span></p>
                     <p class="mini"><!--{$arrRecommend[cnt].comment|escape|nl2br}--></p>
                 </div>
