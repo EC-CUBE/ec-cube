@@ -159,7 +159,7 @@ class LC_Page_Admin_Order_Status extends LC_Page {
         $table = 'dtb_order';
         $where = 'order_id = ?';
         $arrUpdate = array('update_date' => 'NOW()');
-	$col = 'customer_id, add_point';
+	$col = 'customer_id, add_point, use_point, status';
 
         $delflg  = '1'; // 削除フラグ
         $message = '';  // ステータス変更後にポップアップするメッセージの内容
@@ -183,16 +183,64 @@ class LC_Page_Admin_Order_Status extends LC_Page {
             foreach ( $arrMove as $val ){
                 if ( $val != "" ) {
 		if ( $status_id == ORDER_DELIV ) {
-		$arrRet = $objQuery->select($col, $table, $where, array($val));
-		$customer_id = $arrRet[0]['customer_id'];
-		$add_point = $arrRet[0]['add_point'];
-		if($customer_id != "" && $customer_id >= 1) {
-		    $arrRet = $objQuery->select("point", 'dtb_customer', 'customer_id = ?', array($customer_id));
-		    $arrRet[0]['point']+= $add_point;
-		    $sqlval['point'] = $arrRet[0]['point'];
-		    $objQuery->update('dtb_customer', $sqlval, 'customer_id = ?', array($customer_id));
-		   }
-		}
+        $arrRet = $objQuery->select($col, $table, $where, array($val));
+        $customer_id = $arrRet[0]['customer_id'];
+        $add_point = $arrRet[0]['add_point'];
+        $status = $arrRet[0]['status'];
+        if($customer_id != "" && $customer_id >= 1) {
+            $arrRet = $objQuery->select("point", 'dtb_customer', 'customer_id = ?', array($customer_id));
+            $arrRet[0]['point']+= $add_point;
+            $sqlval['point'] = $arrRet[0]['point'];
+            $objQuery->update('dtb_customer', $sqlval, 'customer_id = ?', array($customer_id));
+          }
+        }
+         elseif ( $status_id == ORDER_CANCEL ) {
+            $arrRet = $objQuery->select($col, $table, $where, array($val));
+            $customer_id = $arrRet[0]['customer_id'];
+            $add_point = $arrRet[0]['add_point'];
+            $use_point = $arrRet[0]['use_point'];
+            $status = $arrRet[0]['status'];
+            if($customer_id != "" && $customer_id >= 1) {
+               if($status == 5) {
+               $arrRet = $objQuery->select("point", 'dtb_customer', 'customer_id = ?', array($customer_id));
+               $arrRet[0]['point']-= $add_point;
+               $arrRet[0]['point']+= $use_point;
+               $sqlval['point'] = $arrRet[0]['point'];
+               $objQuery->update('dtb_customer', $sqlval, 'customer_id = ?', array($customer_id));
+            } else {
+               $arrRet = $objQuery->select("point", 'dtb_customer', 'customer_id = ?', array($customer_id));
+               $arrRet[0]['point']+= $use_point;
+               $sqlval['point'] = $arrRet[0]['point'];
+               $objQuery->update('dtb_customer', $sqlval, 'customer_id = ?', array($customer_id));
+            }
+          }
+        }
+        else {
+            $arrRet = $objQuery->select($col, $table, $where, array($val));
+            $customer_id = $arrRet[0]['customer_id'];
+            $add_point = $arrRet[0]['add_point'];
+            $use_point = $arrRet[0]['use_point'];
+            $status = $arrRet[0]['status'];
+            if($customer_id != "" && $customer_id >= 1) {
+               if($status == 5) {
+               $arrRet = $objQuery->select("point", 'dtb_customer', 'customer_id = ?', array($customer_id));
+               $arrRet[0]['point']-= $add_point;
+               $sqlval['point'] = $arrRet[0]['point'];
+               $objQuery->update('dtb_customer', $sqlval, 'customer_id = ?', array($customer_id));
+            }
+             elseif($status == 3) {
+               $arrRet = $objQuery->select("point", 'dtb_customer', 'customer_id = ?', array($customer_id));
+               $arrRet[0]['point']-= $use_point;
+               $sqlval['point'] = $arrRet[0]['point'];
+               $objQuery->update('dtb_customer', $sqlval, 'customer_id = ?', array($customer_id));
+            }
+            else {
+               $arrRet = $objQuery->select("point", 'dtb_customer', 'customer_id = ?', array($customer_id));
+               $sqlval['point'] = $arrRet[0]['point'];
+               $objQuery->update('dtb_customer', $sqlval, 'customer_id = ?', array($customer_id));
+            }
+          }
+         }
                     $objQuery->update($table, $arrUpdate, $where, array($val));
                 }
 
