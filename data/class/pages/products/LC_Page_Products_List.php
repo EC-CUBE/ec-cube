@@ -107,8 +107,8 @@ class LC_Page_Products_List extends LC_Page {
         } elseif (empty($arrCategory_id[0])) {
             $tpl_subtitle = "全商品";
         } else {
-            $arrFirstCat = $objDb->sfGetFirstCat($arrCategory_id[0]);
-            $tpl_subtitle = $arrFirstCat['name'];
+            $arrCat = $objDb->sfGetCat($arrCategory_id[0]);
+            $tpl_subtitle = $arrCat['name'];
         }
 
         $objQuery = new SC_Query();
@@ -259,8 +259,8 @@ class LC_Page_Products_List extends LC_Page {
         }elseif (empty($arrCategory_id)) {
             $tpl_subtitle = "全商品";
         }else{
-            $arrFirstCat = $objDb->sfGetFirstCat($arrCategory_id[0]);
-            $tpl_subtitle = $arrFirstCat['name'];
+            $arrCat = $objDb->sfGetCat($arrCategory_id[0]);
+            $tpl_subtitle = $arrCat['name'];
         }
 
         $objQuery = new SC_Query();

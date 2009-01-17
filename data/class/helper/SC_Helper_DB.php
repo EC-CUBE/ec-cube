@@ -653,6 +653,22 @@ class SC_Helper_DB {
     }
 
     /**
+     * 指定したカテゴリーIDのカテゴリーを取得する.
+     *
+     * @param integer $category_id カテゴリID
+     * @return array 指定したカテゴリーIDのカテゴリー
+     */
+    function sfGetCat($category_id){
+        $objQuery = new SC_Query();
+
+        // カテゴリーを取得する
+        $arrVal = array($category_id);
+        $res = $objQuery->select('category_id AS id, category_name AS name', 'dtb_category', 'category_id = ?', $arrVal);
+
+        return $res[0];
+    }
+
+    /**
      * 指定したカテゴリーIDの大カテゴリーを取得する.
      *
      * @param integer $category_id カテゴリID
