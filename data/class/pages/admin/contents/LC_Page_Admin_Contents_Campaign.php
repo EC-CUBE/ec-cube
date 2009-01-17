@@ -142,7 +142,7 @@ class LC_Page_Admin_Contents_Campaign extends LC_Page {
 
         // キャンペーン期間用
         $objDate = new SC_Date();
-        $this->arrYear = $objDate->getYear();
+        $this->arrYear = $objDate->getYear(min(date('Y'), $this->arrForm['start_year']));
         $this->arrMonth = $objDate->getMonth();
         $this->arrDay = $objDate->getDay();
         $this->arrHour = $objDate->getHour();
