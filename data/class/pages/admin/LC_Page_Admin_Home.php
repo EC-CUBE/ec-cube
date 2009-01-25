@@ -197,7 +197,7 @@ class LC_Page_Admin_Home extends LC_Page {
     // 品切れ商品番号の取得
     function lfGetSoldOut() {
         $objQuery = new SC_Query();
-        $where = "product_id IN (SELECT product_id FROM dtb_products_class WHERE stock_unlimited IS NULL AND stock <= 0)";
+        $where = "product_id IN (SELECT product_id FROM dtb_products_class WHERE stock_unlimited = 0 AND stock <= 0)";
         $arrRet = $objQuery->select("product_id, name", "dtb_products", $where);
         return $arrRet;
     }
