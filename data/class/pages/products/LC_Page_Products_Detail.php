@@ -222,11 +222,6 @@ class LC_Page_Products_Detail extends LC_Page {
         // サブタイトルを取得
         $this->tpl_subtitle = $this->arrProduct['name'];
         
-        // 大カテゴリーを取得
-        $arrCategory_id = $objDb->sfGetCategoryId($arrRet[0]['product_id'], $status);
-        $arrFirstCat = $objDb->sfGetFirstCat($arrCategory_id[0]);
-        $this->tpl_FirstCatName = $arrFirstCat['name'];
-        
         // 関連カテゴリを取得
         $this->arrRelativeCat = $objDb->sfGetMultiCatTree($tmp_id);
 
@@ -454,9 +449,7 @@ class LC_Page_Products_Detail extends LC_Page {
         }
 
         // サブタイトルを取得
-        $arrFirstCat = $objDb->sfGetFirstCat($arrRet[0]['category_id']);
-        $tpl_subtitle = $arrFirstCat['name'];
-        $this->tpl_subtitle = $tpl_subtitle;
+        $this->tpl_subtitle = $this->arrProduct["name"];
 
         // ファイル情報のセット
         $this->lfSetFile();

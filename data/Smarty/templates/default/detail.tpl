@@ -52,7 +52,7 @@ function lnSetSelect(form, name1, name2, val) {
 <div id="undercolumn" class="product product_detail">
     
     <!--★タイトル★-->
-    <h2 class="title"><!--{$tpl_FirstCatName|escape}--></h2>
+    <h2 class="title"><!--{$tpl_subtitle|escape}--></h2>
     
     <!--★詳細メインコメント★-->
     <div class="main_comment"><!--{$arrProduct.main_comment|nl2br_html}--></div>
