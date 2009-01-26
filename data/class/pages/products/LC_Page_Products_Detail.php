@@ -110,7 +110,6 @@ class LC_Page_Products_Detail extends LC_Page {
         $this->lfInitFile();
 
         // 管理機能からの確認の場合は、非公開の商品も表示する。
-        // XXX 若干脆弱な気がする。ログイン状態か確認するのが望ましいかと。
         if(isset($_GET['admin']) && $_GET['admin'] == 'on') {
             SC_Utils_Ex::sfIsSuccess(new SC_Session());
             $status = true;
