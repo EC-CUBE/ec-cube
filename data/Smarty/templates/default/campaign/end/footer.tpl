@@ -19,14 +19,9 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
-
-<!--▼FOTTER-->
-<div id="fotterarea">
-	<div id="pagetop"><a href="/index.php"><img src="<!--{$TPL_DIR}-->img/common/pagetop.gif" width="120" height="16" alt="PAGE TOP" /></a></div>
-	<div id="fotternavi">
-
-		<div class="lownavi"><a href="/order/index.php"><img src="<!--{$TPL_DIR}-->img/common/low.gif" width="118" height="10" alt="特定商取引に関する法律"></a></div>
-		<div class="copy"><img src="<!--{$TPL_DIR}-->img/common/copyright.gif" width="158" height="8" alt="(C)EC-CUBE ALL RIGHTS RESERVED."></div>
-	</div>
 </div>
-<!--▲FOTTER-->
+</div>
+<div id="pagetop"><a href="#top"><img src="<!--{$TPL_DIR}-->img/common/pagetop.gif" width="100" height="10" alt="このページのTOPへ" /></a></div>
+<div id="fotter">Copyright(C)2000-2007 EC-CUBE All rights reserved.</div>
+</body>
+</html>
