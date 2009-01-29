@@ -403,7 +403,7 @@
     </tr>
     <tr>
       <!--{if $arrForm.customer_id > 0}-->
-      <th colspan="5" class="right">現在ポイント（ポイントの修正は<a href="?" onclick="return fnEdit('<!--{$arrForm.customer_id}-->');">顧客編集</a>から手動にてお願い致します。）</th>
+      <th colspan="5" class="right">現在ポイント（ポイントの修正は<a href="?" onclick="return fnEdit('<!--{$arrForm.customer_id.value}-->');">顧客編集</a>から手動にてお願い致します。）</th>
       <td class="right">
         <!--{$arrForm.point.value|number_format}-->
          pt
@@ -412,16 +412,6 @@
       <th colspan="5" class="right">現在ポイント</th><td align="center">（なし）</td>
       <!--{/if}-->
     </tr>
-    <!--{*
-    <tr>
-      <th colspan="5" class="right">反映後ポイント（ポイントの変更は<a href="?" onclick="return fnEdit('<!--{$arrForm.customer_id}-->');">顧客編集</a>から手動にてお願い致します。）</th>
-      <td class="right">
-        <span class="attention"><!--{$arrErr.total_point}--></span>
-        <!--{$arrForm.total_point.value|number_format}-->
-         pt
-      </td>
-    </tr>
-    *}-->
   </table>
 
   <table class="form">
