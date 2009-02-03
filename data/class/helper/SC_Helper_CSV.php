@@ -119,21 +119,22 @@ class SC_Helper_CSV {
 
         if (!isset($data)) $data = "";
         for($i = 0; $i < $max; $i++) {
-            // 関連商品情報の付与
+            // 規格名1
             if (in_array('classcategory_id1', $arrOutputCols)) {
                 $list_data[$i]['classcategory_id1'] = $arrClassCatName[$list_data[$i]['classcategory_id1']];
             }
+            // 規格名2
             if (in_array('classcategory_id2', $arrOutputCols)) {
                 $list_data[$i]['classcategory_id2'] = $arrClassCatName[$list_data[$i]['classcategory_id2']];
             }
 
+            // カテゴリID
             if (in_array('category_id', $arrOutputCols)) {
                 $arrCategory_id = $objQuery->getCol("dtb_product_categories",
                                   "category_id",
                                   "product_id = ?",
                                   array($list_data[$i]['product_id']));
 
-                // カテゴリID 付与
                 for ($j = 0; $j < count($arrCategory_id); $j++) {
                     $list_data[$i]['category_id'] .= $arrCategory_id[$j];
                     if ($j < count($arrCategory_id) - 1) {
