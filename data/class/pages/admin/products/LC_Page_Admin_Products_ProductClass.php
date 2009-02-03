@@ -428,8 +428,8 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
         while($array["classcategory_id1:".$no] != "") {
             if($array["check:".$no] == 1) {
                 $objErr->doFunc(array("商品コード", "product_code:".$no, STEXT_LEN), array("MAX_LENGTH_CHECK"));
-                $objErr->doFunc(array(NORMAL_PRICE_TITLE, "price01:".$no, PRICE_LEN), array("ZERO_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
-                $objErr->doFunc(array(SALE_PRICE_TITLE, "price02:".$no, PRICE_LEN), array("EXIST_CHECK", "ZERO_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+                $objErr->doFunc(array(NORMAL_PRICE_TITLE, "price01:".$no, PRICE_LEN), array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+                $objErr->doFunc(array(SALE_PRICE_TITLE, "price02:".$no, PRICE_LEN), array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
 
                 if($array["stock_unlimited:".$no] != '1') {
                     $objErr->doFunc(array("在庫数", "stock:".$no, AMOUNT_LEN), array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
