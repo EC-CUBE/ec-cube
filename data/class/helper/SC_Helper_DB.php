@@ -1433,7 +1433,7 @@ __EOS__;
      */
     function sfGetDelivFee($arrData) {
         $pref = $arrData['deliv_pref'];
-        $payment_id = is_set($arrData['payment_id']) ? $arrData['payment_id'] : "";
+        $payment_id = isset($arrData['payment_id']) ? $arrData['payment_id'] : "";
 
         $objQuery = new SC_Query();
 
