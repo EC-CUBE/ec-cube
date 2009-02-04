@@ -335,29 +335,32 @@ class LC_Page_Shopping_Payment extends LC_Page {
     function lfGetPayment($total_pretax) {
         $objQuery = new SC_Query();
         $objQuery->setorder("rank DESC");
-        //削除されていない支払方法を取得
+        // 削除されていない支払方法を取得
         $arrRet = $objQuery->select("payment_id, payment_method, rule, upper_rule, note, payment_image", "dtb_payment", "del_flg = 0 AND deliv_id IN (SELECT deliv_id FROM dtb_deliv WHERE del_flg = 0) ");
-        //利用条件から支払可能方法を判定
+        // 配列初期化
+        $data = array();
+        // 選択可能な支払方法を判定
         foreach($arrRet as $data) {
-            //下限と上限が設定されている
-            if($data['rule'] > 0 && $data['upper_rule'] > 0) {
-                if($data['rule'] <= $total_pretax && $data['upper_rule'] >= $total_pretax) {
+            // 下限と上限が設定されている
+            if (strlen($data['rule']) != 0 && strlen($data['upper_rule']) != 0) {
+                if ($data['rule'] <= $total_pretax && $data['upper_rule'] >= $total_pretax) {
                     $arrPayment[] = $data;
                 }
-            //下限のみ設定されている
-            } elseif($data['rule'] > 0) {
+            }
+            // 下限のみ設定されている
+            elseif (strlen($data['rule']) != 0) {
                 if($data['rule'] <= $total_pretax) {
                     $arrPayment[] = $data;
                 }
-            //上限のみ設定されている
-            } elseif($data['upper_rule'] > 0) {
+            }
+            // 上限のみ設定されている
+            elseif (strlen($data['upper_rule']) != 0) {
                 if($data['upper_rule'] >= $total_pretax) {
                     $arrPayment[] = $data;
                 }
-			//上限、下限が共に0の場合
-            } elseif($data['rule'] == "0" && $data['upper_rule'] == "0") {
-            //設定なし
-            } else {
+            }
+            // いずれも設定なし
+            else {
                 $arrPayment[] = $data;
             }
         }
