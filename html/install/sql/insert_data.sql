@@ -221,9 +221,9 @@ INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'deliv_addr01','住所1',37,now(),now());
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'deliv_addr02','住所2',38,now(),now());
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'payment_total','お支払い合計',39,now(),now());
-INSERT INTO dtb_csv(csv_id,col,disp_name,rank,status) VALUES (5,'category_id','カテゴリID',1,2);
-INSERT INTO dtb_csv(csv_id,col,disp_name,rank,status) VALUES (5,'category_name','カテゴリ名',2,2);
-INSERT INTO dtb_csv(csv_id,col,disp_name,rank,status) VALUES (5,'parent_category_id','親カテゴリID',3,2);
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank) VALUES (5,'category_id','カテゴリID',1);
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank) VALUES (5,'category_name','カテゴリ名',2);
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank) VALUES (5,'parent_category_id','親カテゴリID',3);
 INSERT INTO dtb_csv(csv_id,col,disp_name,status) VALUES (5,'level','階層',2);
 INSERT INTO dtb_csv(csv_id,col,disp_name,status) VALUES (5,'rank','表示ランク',2);
 
