@@ -154,7 +154,7 @@
       <td>
         <!--{assign var=key value="good_traded"}-->
         <span class="attention"><!--{$arrErr[$key]}--></span>
-        <textarea name="<!--{$key}-->" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key]|escape}--></textarea>
+        <textarea name="<!--{$key}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key]|escape}--></textarea>
         <span class="attention"> （上限<!--{$smarty.const.LLTEXT_LEN}-->文字）</span>
       </td>
     </tr>
@@ -163,14 +163,14 @@
       <td>
         <!--{assign var=key value="message"}-->
         <span class="attention"><!--{$arrErr[$key]}--></span>
-        <textarea name="<!--{$key}-->" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key]|escape}--></textarea>
+        <textarea name="<!--{$key}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key]|escape}--></textarea>
         <span class="attention"> （上限<!--{$smarty.const.LLTEXT_LEN}-->文字）</span>
       </td>
     </tr>
   </table>
 
   <h2>定休日設定</h2>
-  <table id="basis-index-func">
+  <table id="basis-index-holiday">
     <tr>
       <th>定休日</th>
       <td>
