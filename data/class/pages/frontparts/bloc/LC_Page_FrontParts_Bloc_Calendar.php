@@ -62,8 +62,11 @@ class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc {
             $objView = new SC_SiteView();
         }
 
-        // 定休日取得取得
+        // 休日取得取得
         $this->arrHoliday = $this->lfGetHoliday();
+
+        // 定休日取得取得
+        $this->arrRegularHoliday = $this->lfGetRegularHoliday();
 
         // カレンダーデータ取得
         $this->arrCalendar = $this->lfGetCalendar(2);
@@ -126,7 +129,7 @@ class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc {
                 $arrCalendar[$j][$i]['year'] = $year;
                 $arrCalendar[$j][$i]['month'] = $month;
                 $arrCalendar[$j][$i]['day'] = $Day->day;
-                if ($this->lfCheckHoliday($month, $Day->day) || $Day->first || $Day->last) {
+                if ($this->lfCheckHoliday($month, $Day->day)) {
                     $arrCalendar[$j][$i]['holiday'] = true;
                 } else {
                     $arrCalendar[$j][$i]['holiday'] = false;
@@ -151,10 +154,22 @@ class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc {
         return $arrHoliday;
     }
 
+    // 定休日取得
+    function lfGetRegularHoliday() {
+        $objSIteInfo = new SC_SiteInfo();
+        $arrRegularHoliday = explode('|', $objSIteInfo->data['regular_holiday_ids']);
+        return $arrRegularHoliday;
+    }
     // 休日チェック
     function lfCheckHoliday($month, $day) {
         if (!empty($this->arrHoliday[$month])) {
             if (in_array($day, $this->arrHoliday[$month])) {
+                return true;
+            }
+        }
+        if (!empty($this->arrRegularHoliday)) {
+            $w = date('w', mktime(0,0,0 ,$month, $day, date('Y')));
+            if (in_array($w, $this->arrRegularHoliday)) {
                 return true;
             }
         }
