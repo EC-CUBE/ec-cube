@@ -1201,7 +1201,7 @@ class SC_Helper_DB {
         $rank = $objQuery->get($tableName, "rank", "$keyIdColumn = ?", array($keyId));
 
         $max = $objQuery->max($tableName, "rank", $where);
-		// 値の調整（逆順）
+        // 値の調整（逆順）
         if($pos > $max) {
             $position = 1;
         } else if($pos < 1) {
@@ -1209,7 +1209,7 @@ class SC_Helper_DB {
         } else {
             $position = $max - $pos + 1;
         }
-		
+
         //入れ替え先の順位が入れ換え元の順位より大きい場合
         if( $position > $rank ) $term = "rank - 1";
 
@@ -1224,14 +1224,14 @@ class SC_Helper_DB {
         if($where != "") {
             $sql.= " AND $where";
         }
-		if( $position > $rank ) $objQuery->exec( $sql, array($rank, $position));
+        if( $position > $rank ) $objQuery->exec( $sql, array($rank, $position));
         if( $position < $rank ) $objQuery->exec( $sql, array($position, $rank));
-       	// 指定した順位へrankを書き換える。
+           // 指定した順位へrankを書き換える。
         $sql  = "UPDATE $tableName SET rank = ? WHERE $keyIdColumn = ? ";
         if($where != "") {
             $sql.= " AND $where";
         }
-		$objQuery->exec( $sql, array( $position, $keyId ) );
+        $objQuery->exec( $sql, array( $position, $keyId ) );
         $objQuery->commit();
     }
 
@@ -1373,7 +1373,10 @@ class SC_Helper_DB {
      * @param integer $payment_id 支払い方法ID
      * @return string 指定の都道府県, 支払い方法の配送料金
      */
-    function sfGetDelivFee($pref, $payment_id = "") {
+    function sfGetDelivFee($arrData) {
+        $pref = $arrData['deliv_pref'];
+        $payment_id = isset($arrData['payment_id']) ? $arrData['payment_id'] : "";
+
         $objQuery = new SC_Query();
 
         $deliv_id = "";
@@ -1443,10 +1446,7 @@ class SC_Helper_DB {
         // 配送業者の送料が有効の場合
         if (OPTION_DELIV_FEE == 1) {
             // 送料の合計を計算する
-            $arrData['deliv_fee']
-                += $this->sfGetDelivFee($arrData['deliv_pref'],
-                                           $arrData['payment_id']);
-
+            $arrData['deliv_fee'] += $this->sfGetDelivFee($arrData);
         }
 
         // 送料無料の購入数が設定されている場合
