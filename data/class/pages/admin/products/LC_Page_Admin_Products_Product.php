@@ -395,7 +395,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
                             "main_list_comment", "main_comment", "point_rate",
                             "deliv_fee", "comment1", "comment2", "comment3",
                             "comment4", "comment5", "comment6", "main_list_comment",
-                            "sale_limit", "sale_unlimited", "deliv_date_id");
+                            "sale_limit", "sale_unlimited", "deliv_date_id", "note");
         $arrList = SC_Utils_Ex::arrayDefineIndexes($arrList, $checkArray);
 
         // INSERTする値を作成する。
@@ -416,6 +416,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         $sqlval['sale_limit'] = $arrList['sale_limit'];
         $sqlval['sale_unlimited'] = $arrList['sale_unlimited'];
         $sqlval['deliv_date_id'] = $arrList['deliv_date_id'];
+        $sqlval['note'] = $arrList['note'];
         $sqlval['update_date'] = "Now()";
         $sqlval['creator_id'] = $_SESSION['member_id'];
         $arrRet = $this->objUpFile->getDBFileList();
@@ -457,8 +458,8 @@ class LC_Page_Admin_Products_Product extends LC_Page {
                 // コピーしない列
                 unset($arrColList[$arrColList_tmp["product_class_id"]]);	 //規格ID
                 unset($arrColList[$arrColList_tmp["product_id"]]);			 //商品ID
-				unset($arrColList[$arrColList_tmp["create_date"]]);
-                
+                unset($arrColList[$arrColList_tmp["create_date"]]);
+
                 $col = SC_Utils_Ex::sfGetCommaList($arrColList);
 
                 $objQuery->query("INSERT INTO dtb_products_class (product_id, ". $col .") SELECT ?, " . $col. " FROM dtb_products_class WHERE product_id = ? ORDER BY product_class_id", array($product_id, $_POST["copy_product_id"]));
@@ -478,13 +479,13 @@ class LC_Page_Admin_Products_Product extends LC_Page {
             // カテゴリを更新
             $objDb->updateProductCategories($arrList['category_id'], $product_id);
         }
-        
+
         //商品登録の時は規格を生成する。複製の場合は規格も複製されるのでこの処理は不要。
         if( $_POST["copy_product_id"] == "" ){
-        	// 規格登録
-        	SC_Utils_Ex::sfInsertProductClass($objQuery, $arrList, $product_id , $arrList['product_class_id'] );
+            // 規格登録
+            SC_Utils_Ex::sfInsertProductClass($objQuery, $arrList, $product_id , $arrList['product_class_id'] );
         }
-        
+
         // おすすめ商品登録
         $this->lfInsertRecommendProducts($objQuery, $arrList, $product_id);
 
@@ -507,6 +508,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         $arrConvList['name'] = "KVa";
         $arrConvList['main_list_comment'] = "KVa";
         $arrConvList['main_comment'] = "KVa";
+        $arrConvList['note'] = "KVa";
         $arrConvList['price01'] = "n";
         $arrConvList['price02'] = "n";
         $arrConvList['stock'] = "n";
@@ -553,6 +555,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         $objErr->doFunc(array("詳細-メインコメント", "main_comment", $this->arrAllowedTag), array("HTML_TAG_CHECK"));
         $objErr->doFunc(array("ポイント付与率", "point_rate", PERCENTAGE_LEN), array("EXIST_CHECK", "NUM_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $objErr->doFunc(array("商品送料", "deliv_fee", PRICE_LEN), array("NUM_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $objErr->doFunc(array("備考欄(SHOP専用)", "note", LLTEXT_LEN), array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $objErr->doFunc(array("検索ワード", "comment3", LLTEXT_LEN), array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $objErr->doFunc(array("メーカーURL", "comment1", URL_LEN), array("SPTAB_CHECK", "URL_CHECK", "MAX_LENGTH_CHECK"));
         $objErr->doFunc(array("発送日目安", "deliv_date_id", INT_LEN), array("NUM_CHECK"));
