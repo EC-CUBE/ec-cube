@@ -1485,9 +1485,6 @@ __EOS__;
         if (!isset($arrData['charge'])) $arrData['charge'] = "";
         if (!isset($arrData['use_point'])) $arrData['use_point'] = "";
 
-        // 商品の合計数量
-        $total_quantity = $objCartSess->getTotalQuantity(true);
-
         // 税金の取得
         $arrData['tax'] = $objPage->tpl_total_tax;
         // 小計の取得
@@ -1508,7 +1505,10 @@ __EOS__;
         }
 
         // 送料無料の購入数が設定されている場合
-        if(DELIV_FREE_AMOUNT > 0) {
+        if (DELIV_FREE_AMOUNT > 0) {
+            // 商品の合計数量
+            $total_quantity = $objCartSess->getTotalQuantity(true);
+            
             if($total_quantity >= DELIV_FREE_AMOUNT) {
                 $arrData['deliv_fee'] = 0;
             }
