@@ -73,6 +73,10 @@ class LC_Page_Entry extends LC_Page {
         $CONF = $objDb->sf_getBasisData();
         $objDate = new SC_Date(START_BIRTH_YEAR, date("Y",strtotime("now")));
 
+        $ssl_url  = rtrim(SSL_URL,"/");
+        $ssl_url .= $_SERVER['PHP_SELF'];
+
+
         // 規約ページからの遷移でなければエラー画面へ遷移する
         if (empty($_POST) && !preg_match('/kiyaku.php/', basename($_SERVER['HTTP_REFERER']))) {
             SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", true);
@@ -122,8 +126,32 @@ class LC_Page_Entry extends LC_Page {
                 SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", true);
             }
 
+            //空白・改行の削除
+            $_POST["name01"] = preg_replace('/^[ 　\r\n]*(.*?)[ 　\r\n]*$/u', '$1', $_POST["name01"]);
+            $_POST["name02"] = preg_replace('/^[ 　\r\n]*(.*?)[ 　\r\n]*$/u', '$1', $_POST["name02"]);
+            $_POST["kana01"] = preg_replace('/^[ 　\r\n]*(.*?)[ 　\r\n]*$/u', '$1', $_POST["kana01"]);
+            $_POST["kana02"] = preg_replace('/^[ 　\r\n]*(.*?)[ 　\r\n]*$/u', '$1', $_POST["kana02"]);
+            $_POST["zip01"] = preg_replace('/^[ 　\r\n]*(.*?)[ 　\r\n]*$/u', '$1', $_POST["zip01"]);
+            $_POST["zip02"] = preg_replace('/^[ 　\r\n]*(.*?)[ 　\r\n]*$/u', '$1', $_POST["zip02"]);
+            $_POST["addr01"] = preg_replace('/^[ 　\r\n]*(.*?)[ 　\r\n]*$/u', '$1', $_POST["addr01"]);
+            $_POST["addr02"] = preg_replace('/^[ 　\r\n]*(.*?)[ 　\r\n]*$/u', '$1', $_POST["addr02"]);
+            $_POST["tel01"] = preg_replace('/^[ 　\r\n]*(.*?)[ 　\r\n]*$/u', '$1', $_POST["tel01"]);
+            $_POST["tel02"] = preg_replace('/^[ 　\r\n]*(.*?)[ 　\r\n]*$/u', '$1', $_POST["tel02"]);
+            $_POST["tel03"] = preg_replace('/^[ 　\r\n]*(.*?)[ 　\r\n]*$/u', '$1', $_POST["tel03"]);
+            $_POST["fax01"] = preg_replace('/^[ 　\r\n]*(.*?)[ 　\r\n]*$/u', '$1', $_POST["fax01"]);
+            $_POST["fax02"] = preg_replace('/^[ 　\r\n]*(.*?)[ 　\r\n]*$/u', '$1', $_POST["fax02"]);
+            $_POST["fax03"] = preg_replace('/^[ 　\r\n]*(.*?)[ 　\r\n]*$/u', '$1', $_POST["fax03"]);
+            $_POST["email"] = preg_replace('/^[ 　\r\n]*(.*?)[ 　\r\n]*$/u', '$1', $_POST["email"]);
+            $_POST["email02"] = preg_replace('/^[ 　\r\n]*(.*?)[ 　\r\n]*$/u', '$1', $_POST["email02"]);
+            $_POST["password"] = preg_replace('/^[ 　\r\n]*(.*?)[ 　\r\n]*$/u', '$1', $_POST["password"]);
+            $_POST["password02"] = preg_replace('/^[ 　\r\n]*(.*?)[ 　\r\n]*$/u', '$1', $_POST["password02"]);
+            $_POST["reminder_answer"] = preg_replace('/^[ 　\r\n]*(.*?)[ 　\r\n]*$/u', '$1', $_POST["reminder_answer"]);
+
             //-- POSTデータの引き継ぎ
             $this->arrForm = $_POST;
+
+            //SSL用
+            $this->arrForm[ssl_url] = $ssl_url;
 
             if($this->arrForm['year'] == '----') {
                 $this->arrForm['year'] = '';
@@ -606,9 +634,6 @@ class LC_Page_Entry extends LC_Page {
         if ($isMobile) {
             // 携帯メールアドレス
             $arrRegist['email_mobile'] = $arrRegist['email'];
-			//PHONE_IDを取り出す
-			$phoneId = SC_MobileUserAgent::getId();
-        	$arrRegist['mobile_phone_id'] =  $phoneId;
         }
 
         //-- 仮登録実行
@@ -828,17 +853,23 @@ class LC_Page_Entry extends LC_Page {
     //---- 入力エラーチェック
     function lfErrorCheck2($array) {
         $objErr = new SC_CheckError($array);
-		$objErr->doFunc(array("郵便番号1", "zip01", ZIP01_LEN ) ,array("EXIST_CHECK", "SPTAB_CHECK" ,"NUM_CHECK", "NUM_COUNT_CHECK"));
+
+        $objErr->doFunc(array("郵便番号1", "zip01", ZIP01_LEN ) ,array("EXIST_CHECK", "SPTAB_CHECK" ,"NUM_CHECK", "NUM_COUNT_CHECK"));
         $objErr->doFunc(array("郵便番号2", "zip02", ZIP02_LEN ) ,array("EXIST_CHECK", "SPTAB_CHECK" ,"NUM_CHECK", "NUM_COUNT_CHECK"));
         $objErr->doFunc(array("郵便番号", "zip01", "zip02"), array("ALL_EXIST_CHECK"));
 
         $objErr->doFunc(array("性別", "sex") ,array("SELECT_CHECK", "NUM_CHECK"));
-        $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_DATE"));
-        if (isset($array['year']) && strlen($array['year']) > 0) {
+        $objErr->doFunc(array("生年月日 (年)", "year", 4), array("EXIST_CHECK", "SPTAB_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK"));
+        if (!isset($objErr->arrErr['year'])) {
             $objErr->doFunc(array("生年月日 (年)", "year", $this->objDate->getStartYear()), array("MIN_CHECK"));
             $objErr->doFunc(array("生年月日 (年)", "year", $this->objDate->getEndYear()), array("MAX_CHECK"));
         }
-		return $objErr->arrErr;
+        $objErr->doFunc(array("生年月日 (月日)", "month", "day"), array("SELECT_CHECK"));
+        if (!isset($objErr->arrErr['year']) && !isset($objErr->arrErr['month']) && !isset($objErr->arrErr['day'])) {
+            $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_DATE"));
+        }
+
+        return $objErr->arrErr;
     }
 
     //---- 入力エラーチェック

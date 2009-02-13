@@ -43,7 +43,7 @@
        </div>
           <!--{/if}-->
         <!--{else}-->
-        <p><img src="<!--{$TPL_DIR}-->img/side/icon_mail.gif" width="40" height="21" alt="メールアドレス" /><input type="text" name="login_email" class="box96" value="<!--{$tpl_login_email|escape}-->" /></p>
+        <p><img src="<!--{$TPL_DIR}-->img/side/icon_mail.gif" width="40" height="21" alt="メールアドレス" /><input type="text" name="login_email" class="box96" value="<!--{$tpl_login_email|escape}-->" style="ime-mode: disabled;"/></p>
         <p><img src="<!--{$TPL_DIR}-->img/side/icon_pw.gif" width="40" height="22" alt="パスワード" /><input type="password" name="login_pass" class="box96" /></p>
       </div>
         <p class="mini">
