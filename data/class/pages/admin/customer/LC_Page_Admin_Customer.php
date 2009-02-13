@@ -63,6 +63,9 @@ class LC_Page_Admin_Customer extends LC_Page {
         $this->arrHtmlmail[1] = $this->arrMAILMAGATYPE[1];
         $this->arrHtmlmail[2] = $this->arrMAILMAGATYPE[2];
 
+        $this->arrStatus[1] = "仮会員";
+        $this->arrStatus[2] = "本会員";
+
         //---- CSVダウンロード用
         $this->arrColumnCSV = array(0  => array("sql" => "customer_id",
                                                 "csv" => "customer_id",
@@ -181,6 +184,7 @@ class LC_Page_Admin_Customer extends LC_Page {
         foreach ($_POST as $key => $val) {
             switch($key) {
             case 'sex':
+            case 'status':
                 $this->arrHidden[$key] = SC_Utils_Ex::sfMergeParamCheckBoxes($val);
                 if(!is_array($val)) {
                     $this->arrForm[$key] = split("-", $val);
@@ -207,7 +211,43 @@ class LC_Page_Admin_Customer extends LC_Page {
                 $objQuery->conn->query($sql, array($_POST["edit_customer_id"]));
             }
         }
-        if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == "delete" || $_POST['mode'] == "delete_all") {
+        //if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == "delete" || $_POST['mode'] == "delete_all") {
+        // 登録メール再送
+        if ($_POST['mode'] == "resend_mail") {
+            $CONF = $objDb->sf_getBasisData();
+            $this->CONF = $CONF;
+            $objMailText = new SC_SiteView();
+            $objMailText->assignobj($this);
+            $mailHelper = new SC_Helper_Mail_Ex();
+
+            $arrRet = $objQuery->select("name01, name02, secret_key, email", "dtb_customer","customer_id = ? AND del_flg <> 1 AND status = 1", array($_POST["edit_customer_id"]));
+
+            $this->name01 = $arrRet[0]['name01'];
+            $this->name02 = $arrRet[0]['name02'];
+            $this->uniqid = $arrRet[0]['secret_key'];
+
+            $subject = $mailHelper->sfMakesubject($objQuery, $objMailText, $this, '会員登録のご確認');
+            $toCustomerMail = $objMailText->fetch("mail_templates/customer_mail.tpl");
+
+            $objMail = new SC_SendMail();
+            $objMail->setItem(
+                                ''                  //　宛先
+                                , $subject          //　サブジェクト
+                                , $toCustomerMail   //　本文
+                                , $CONF["email03"]  //　配送元アドレス
+                                , $CONF["shop_name"]//　配送元　名前
+                                , $CONF["email03"]  //　reply_to
+                                , $CONF["email04"]  //　return_path
+                                , $CONF["email04"]  //  Errors_to
+                             );
+            // 宛先の設定
+            $name = $this->name01 . $this->name02 ." 様";
+            $objMail->setTo($arrRet[0]["email"], $name);
+            $objMail->sendMail();
+
+        }
+        if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == "delete" || $_POST['mode'] == "delete_all" || $_POST['mode'] == "resend_mail") {
+
             // 入力文字の強制変換
             $this->lfConvertParam();
             // エラーチェック
