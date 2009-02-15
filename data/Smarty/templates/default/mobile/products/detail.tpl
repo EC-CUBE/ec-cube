@@ -70,7 +70,7 @@
 <!--{if $arrProduct.price02_min == $arrProduct.price02_max}-->
 	<!--{$arrProduct.price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
 <!--{else}-->
-	<!--{$arrProduct.price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->･<!--{$arrProduct.price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
+	<!--{$arrProduct.price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->～<!--{$arrProduct.price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
 <!--{/if}-->
 円</font><br/>
 <!--★通常価格★-->
@@ -79,7 +79,7 @@
 <!--{if $arrProduct.price01_min == $arrProduct.price01_max}-->
 <!--{$arrProduct.price01_min|number_format}-->
 <!--{else}-->
-<!--{$arrProduct.price01_min|number_format}-->･<!--{$arrProduct.price01_max|number_format}-->
+<!--{$arrProduct.price01_min|number_format}-->～<!--{$arrProduct.price01_max|number_format}-->
 <!--{/if}-->
 円</font><br>
 <!--{/if}-->
