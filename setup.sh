@@ -8,7 +8,6 @@ rm -rf $WRK_DIR/.buildpath
 rm -rf $WRK_DIR/.project
 rm -rf $WRK_DIR/test
 rm -rf $WRK_DIR/templates
-rm -rf $WRK_DIR/convert.php
 rm -rf $WRK_DIR/release.sh
 rm -rf $WRK_DIR/html/test
 rm -rf $WRK_DIR/data/downloads/module/*
