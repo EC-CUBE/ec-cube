@@ -634,6 +634,9 @@ class LC_Page_Entry extends LC_Page {
         if ($isMobile) {
             // 携帯メールアドレス
             $arrRegist['email_mobile'] = $arrRegist['email'];
+            //PHONE_IDを取り出す
+            $phoneId = SC_MobileUserAgent::getId();
+            $arrRegist['mobile_phone_id'] =  $phoneId;
         }
 
         //-- 仮登録実行
@@ -860,7 +863,7 @@ class LC_Page_Entry extends LC_Page {
 
         $objErr->doFunc(array("性別", "sex") ,array("SELECT_CHECK", "NUM_CHECK"));
         $objErr->doFunc(array("生年月日 (年)", "year", 4), array("EXIST_CHECK", "SPTAB_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK"));
-        if (!isset($objErr->arrErr['year'])) {
+        if (!isset($objErr->arrErr['year']) && strlen($array['year'] > 0)) {
             $objErr->doFunc(array("生年月日 (年)", "year", $this->objDate->getStartYear()), array("MIN_CHECK"));
             $objErr->doFunc(array("生年月日 (年)", "year", $this->objDate->getEndYear()), array("MAX_CHECK"));
         }
