@@ -194,13 +194,11 @@
                                         <td bgcolor="#f2f1ec" colspan="2">▼定休日設定</td>
                                     </tr>
                                     <tr class="fs12n">
-                                        <tr class="fs12n">
-                                            <td bgcolor="#f2f1ec" width="180">定休日</td>
-                                            <td>
-                                                <span class="attention"><!--{$arrErr.regular_holiday_ids}--></span>
-                                                <!--{html_checkboxes name="regular_holiday_ids" options=$arrRegularHoliday selected=$arrForm.regular_holiday_ids}-->
-                                            </td>
-                                        </tr>
+                                        <td bgcolor="#f2f1ec" width="180">定休日</td>
+                                        <td bgcolor="#ffffff" width="537">
+                                            <span class="attention"><!--{$arrErr.regular_holiday_ids}--></span>
+                                            <!--{html_checkboxes name="regular_holiday_ids" options=$arrRegularHoliday selected=$arrForm.regular_holiday_ids}-->
+                                        </td>
                                     </tr>
                                     <tr class="fs12n">
                                         <td bgcolor="#f2f1ec" colspan="2">▼SHOP機能</td>
