@@ -81,8 +81,6 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page {
             $this->objFormParam->toLower('login_email');
             $arrErr = $this->objFormParam->checkError();
 
-            $this->p($arrErr);
-
             // エラーの場合はエラー画面に遷移
             if (count($arrErr) > 0) {
                 SC_Utils_Ex::sfDispSiteError(TEMP_LOGIN_ERROR);
