@@ -54,7 +54,6 @@ table {
 }
 th, td {padding: 5px;border:1px solid #CCCCCC;}
 th {background: #f2f1ec;font-weight:normal;text-align:left;}
-td {background: #FFFFFF;}
 
 table.list th { text-align: center; }
 table.list th.left { text-align: left; }
