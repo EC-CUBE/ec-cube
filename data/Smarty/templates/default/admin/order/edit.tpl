@@ -287,7 +287,8 @@
                         <!--▼配送先情報ここから-->
                         <table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
                             <tr class="fs12n">
-                                <td bgcolor="#f2f1ec" width="717" colspan="4">▼配送先情報<input type="button" name="input_from_order_data" value="上記お客様情報をコピー" onclick="fnCopyFromOrderData();" /></td>
+                                <td bgcolor="#f2f1ec" width="717" colspan="4">▼配送先情報
+                                &nbsp;&nbsp;&nbsp;<input type="button" name="input_from_order_data" value="上記お客様情報をコピー" onclick="fnCopyFromOrderData();" /></td>
                             </tr>
                             <tr class="fs12n">
                                 <td bgcolor="#f2f1ec" width="110">お名前</td>

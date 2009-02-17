@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /*
  * This file is part of EC-CUBE
  *
@@ -32,12 +32,12 @@ define('PDF_TEMPLATE_DIR', DATA_PATH . 'pdf/');
 define('PDF_IMG_DIR', HTML_PATH. USER_DIR. USER_PACKAGE_DIR. TEMPLATE_NAME. '/img/pdf/');
 
 class SC_Fpdf {
-    function SC_Fpdf($arrData, $tpl_pdf = "template_nouhin01.pdf") {
+    function SC_Fpdf($download, $title, $tpl_pdf = "template_nouhin01.pdf") {
         $this->arrData = $arrData;
         // デフォルトの設定
         $this->tpl_pdf = PDF_TEMPLATE_DIR . $tpl_pdf;  // テンプレートファイル
-        $this->pdf_download = $arrData[download];      // PDFのダウンロード形式（0:表示、1:ダウンロード）
-        $this->tpl_title = $arrData['title'];
+        $this->pdf_download = $download;      // PDFのダウンロード形式（0:表示、1:ダウンロード）
+        $this->tpl_title = $title;
         $this->tpl_dispmode = "real";      // 表示モード
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData("mtb_pref", array("pref_id", "pref_name", "rank"));
@@ -67,6 +67,11 @@ class SC_Fpdf {
 
         // PDFを読み込んでページ数を取得
         $pageno = $this->pdf->setSourceFile($this->tpl_pdf);
+    }
+
+
+    function setData($arrData) {
+        $this->arrData = $arrData;
 
         // ページ番号よりIDを取得
         $tplidx = $this->pdf->ImportPage(1);
@@ -91,14 +96,15 @@ class SC_Fpdf {
         $this->setEtcData();
 
         //ロゴ画像
-        $this->pdf->Image(PDF_IMG_DIR. 'logo.png', 124, 46, 60);
+        $logo_file = PDF_TEMPLATE_DIR . 'logo.png';
+        $this->pdf->Image($logo_file, 124, 46, 40);
 
-        $this->createPdf();
     }
 
     function setShopData() {
         // ショップ情報
-		$objInfo = new SC_SiteInfo();
+
+        $objInfo = new SC_SiteInfo();
         $arrInfo = $objInfo->data;
 
         $this->lfText(125, 60, $arrInfo['shop_name'], 8, 'B');          //ショップ名
@@ -109,15 +115,17 @@ class SC_Fpdf {
         $text = $this->arrPref[$arrInfo['law_pref']].$arrInfo['law_addr01'];
         $this->lfText(125, 74, $text, 8);  //都道府県+住所1
         $this->lfText(125, 77, $arrInfo['law_addr02'], 8);          //住所2
+
         $text = "TEL: ".$arrInfo['law_tel01']."-".$arrInfo['law_tel02']."-".$arrInfo['law_tel03'];
-		//FAX番号が存在しない場合は表示していない
-		//."　"."FAX: ".$arrInfo['law_fax01']."-".$arrInfo['law_fax02']."-".$arrInfo['law_fax03']
-		if(strlen($arrInfo['law_fax01']) > 0){
-			$text .= "　"."FAX: ".$arrInfo['law_fax01']."-".$arrInfo['law_fax02']."-".$arrInfo['law_fax03'];
-		}
+        if ( strlen($arrInfo['law_fax01']) > 0 && strlen($arrInfo['law_fax02']) > 0 && strlen($arrInfo['law_fax03']) > 0 ) {
+            $text .= "　FAX: ".$arrInfo['law_fax01']."-".$arrInfo['law_fax02']."-".$arrInfo['law_fax03'];
+        }
         $this->lfText(125, 80, $text, 8);  //TEL・FAX
-        $text = "Email: ".$arrInfo['law_email'];
-        $this->lfText(125, 83, $text, 8);      //Email
+
+        if ( strlen($arrInfo['law_email']) > 0 ) {
+            $text = "Email: ".$arrInfo['law_email'];
+            $this->lfText(125, 83, $text, 8);      //Email
+        }
     }
 
     function setMessageData() {
@@ -130,8 +138,9 @@ class SC_Fpdf {
     }
 
     function setOrderData() {
-        $objInfo = new SC_SiteInfo(); 
-        $arrInfo = $objInfo->data; 
+        // ショップ情報
+        $objInfo = new SC_SiteInfo();
+        $arrInfo = $objInfo->data;
         // DBから受注情報を読み込む
         $this->lfGetOrderData($this->arrData['order_id']);
 
@@ -164,7 +173,7 @@ class SC_Fpdf {
         $this->pdf->Cell(67, 8, $this->sjis_conv(number_format($this->arrDisp['payment_total'])." 円"), 0, 2, 'R', 0, '');
         $this->pdf->Cell(0, 45, '', 0, 2, '', 0, '');
 
-        $this->pdf->SetFont('SJIS', '', 9);
+        $this->pdf->SetFont('SJIS', '', 8);
 
         $monetary_unit = $this->sjis_conv("円");
         $point_unit = $this->sjis_conv("pt");
@@ -274,12 +283,12 @@ class SC_Fpdf {
     function createPdf() {
         // PDFをブラウザに送信
 ob_clean();
-        if($this->pdf_download == 1) {
-          $filename = "nouhinsyo-No".$this->arrData['order_id'].".pdf";
+        if ($this->pdf->PageNo() == 1) {
+            $filename = "nouhinsyo-No".$this->arrData['order_id'].".pdf";
+          } else {
+            $filename = "nouhinsyo.pdf";
+          }
           $this->pdf->Output($this->sjis_conv($filename), D);
-        } else {
-          $this->pdf->Output();
-        }
 
         // 入力してPDFファイルを閉じる
         $this->pdf->Close();
