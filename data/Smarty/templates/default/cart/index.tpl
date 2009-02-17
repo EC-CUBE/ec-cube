@@ -25,6 +25,7 @@
     <h2 class="title">
       <img src="<!--{$TPL_DIR}-->img/cart/title.jpg" width="700" height="40" alt="現在のカゴの中" />
     </h2>
+    <!--{if $smarty.const.USE_POINT === true || count($arrProductsClass) > 0}-->
     <p class="totalmoneyarea">
       <!--★ポイント案内★-->
       <!--{if $smarty.const.USE_POINT === true}-->
@@ -47,6 +48,7 @@
         <!--{/if}-->
       <!--{/if}-->
     </p>
+    <!--{/if}-->
 
    <!--{if $tpl_message != ""}-->
     <p class="attention"><!--{$tpl_message|escape}--></p>
