@@ -50,7 +50,7 @@
 	<!--{$list_data.name01|escape}-->　<!--{$list_data.name02|escape}--><br>
 	<!--{$list_data.kana01|escape}-->　<!--{$list_data.kana02|escape}--><br>
 	<!--{if $list_data.sex eq 1}-->男性<!--{else}-->女性<!--{/if}--><br>
-	<!--{if strlen($list_data.year) > 0 && strlen($list_data.month) > 0 && strlen($list_data.day) > 0}--><!--{$list_data.year|escape}-->年<!--{$list_data.month|escape}-->月<!--{$list_data.day|escape}-->日生まれ<!--{else}-->未登録<!--{/if}--><br>
+	<!--{if strlen($list_data.year) > 0 && strlen($list_data.month) > 0 && strlen($list_data.day) > 0}--><!--{$list_data.year|escape}-->年<!--{$list_data.month|escape}-->月<!--{$list_data.day|escape}-->日生まれ<!--{else}-->生年月日 未登録<!--{/if}--><br>
 	〒<!--{$list_data.zip01|escape}--> - <!--{$list_data.zip02|escape}--><br>
 	<!--{$arrPref[$list_data.pref]|escape}--><!--{$list_data.addr01|escape}--><!--{$list_data.addr02|escape}--><br>
 	<!--{$list_data.tel01|escape}-->-<!--{$list_data.tel02|escape}-->-<!--{$list_data.tel03|escape}--><br>
