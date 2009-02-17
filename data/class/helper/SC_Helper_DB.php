@@ -293,7 +293,9 @@ class SC_Helper_DB {
 
         $objPage->tpl_total_pretax = 0;		// 費用合計(税込み)
         $objPage->tpl_total_tax = 0;		// 消費税合計
-        $objPage->tpl_total_point = 0;		// ポイント合計
+        if (USE_POINT === true) {
+            $objPage->tpl_total_point = 0;		// ポイント合計
+        }
 
         // カート内情報の取得
         $arrCart = $objCartSess->getCartList();
@@ -369,7 +371,9 @@ class SC_Helper_DB {
                     $objPage->arrProductsClass[$cnt]['uniq_price'] = $arrData['price01'];
                 }
                 // ポイント付与率の登録
-                $objCartSess->setProductValue($arrCart[$i]['id'], 'point_rate', $arrData['point_rate']);
+                if (USE_POINT === true) {
+                    $objCartSess->setProductValue($arrCart[$i]['id'], 'point_rate', $arrData['point_rate']);
+                }
                 // 商品ごとの合計金額
                 $objPage->arrProductsClass[$cnt]['total_pretax'] = $objCartSess->getProductTotal($arrInfo, $arrCart[$i]['id']);
                 // 送料の合計を計算する
@@ -386,7 +390,9 @@ class SC_Helper_DB {
         // 全商品合計消費税
         $objPage->tpl_total_tax = $objCartSess->getAllProductsTax($arrInfo);
         // 全商品合計ポイント
-        $objPage->tpl_total_point = $objCartSess->getAllProductsPoint();
+        if (USE_POINT === true) {
+            $objPage->tpl_total_point = $objCartSess->getAllProductsPoint();
+        }
 
         return $objPage;
     }
@@ -508,12 +514,17 @@ class SC_Helper_DB {
         $arrRet = $objQuery->select("customer_id", "dtb_order", "order_id = ?", array($order_id));
         $customer_id = $arrRet[0]['customer_id'];
         if($customer_id != "" && $customer_id >= 1) {
-            $arrRet = $objQuery->select("point", "dtb_customer", "customer_id = ?", array($customer_id));
-            $point = $arrRet[0]['point'];
-            $total_point = $arrRet[0]['point'] - $use_point + $add_point;
+            if (USE_POINT === true) {
+                $arrRet = $objQuery->select("point", "dtb_customer", "customer_id = ?", array($customer_id));
+                $point = $arrRet[0]['point'];
+                $total_point = $arrRet[0]['point'] - $use_point + $add_point;
+            } else {
+                $total_point = "";
+                $point = "";
+            }
         } else {
-            $total_point = "";
-            $point = "";
+            $total_point = 0;
+            $point = 0;
         }
         return array($point, $total_point);
     }
@@ -1471,13 +1482,17 @@ class SC_Helper_DB {
         // お支払い合計
         $arrData['payment_total'] = $arrData['total'] - ($arrData['use_point'] * POINT_VALUE);
         // 加算ポイントの計算
-        $arrData['add_point'] = SC_Utils::sfGetAddPoint($objPage->tpl_total_point, $arrData['use_point'], $arrInfo);
+        if (USE_POINT === false) {
+            $arrData['add_point'] = 0;
+        } else {
+            $arrData['add_point'] = SC_Utils::sfGetAddPoint($objPage->tpl_total_point, $arrData['use_point'], $arrInfo);
 
-        if($objCustomer != "") {
-            // 誕生日月であった場合
-            if($objCustomer->isBirthMonth()) {
-                $arrData['birth_point'] = BIRTH_MONTH_POINT;
-                $arrData['add_point'] += $arrData['birth_point'];
+            if($objCustomer != "") {
+                // 誕生日月であった場合
+                if($objCustomer->isBirthMonth()) {
+                    $arrData['birth_point'] = BIRTH_MONTH_POINT;
+                    $arrData['add_point'] += $arrData['birth_point'];
+                }
             }
         }
 
