@@ -163,22 +163,14 @@ class LC_Page_Shopping extends LC_Page {
             $this->tpl_login_memory = "1";
         }
 
-        // 選択用日付の取得
-        $objDate = new SC_Date(START_BIRTH_YEAR);
-        $this->arrYear = $objDate->getYear('', 1950);    //　日付プルダウン設定
-        $this->arrMonth = $objDate->getMonth();
-        $this->arrDay = $objDate->getDay();
-
-        if($this->year == '') {
-            $this->year = '----';
-        }
+        // 生年月日選択肢の取得
+        $objDate = new SC_Date(START_BIRTH_YEAR, date("Y",strtotime("now")));
+        $this->arrYear = $objDate->getYear('', 1950, '');
+        $this->arrMonth = $objDate->getMonth(true);
+        $this->arrDay = $objDate->getDay(true);
 
         // 入力値の取得
         $this->arrForm = $this->objFormParam->getFormParamList();
-
-        if(empty($this->arrForm['year']['value'])){
-            $this->arrForm['year']['value'] = '----';
-        }
 
         $this->transactionid = $this->getToken();
         $objView->assignobj($this);
@@ -228,87 +220,10 @@ class LC_Page_Shopping extends LC_Page {
         // 携帯端末IDが一致する会員が存在するかどうかをチェックする。
         $this->tpl_valid_phone_id = $objCustomer->checkMobilePhoneId();
 
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
-
-        switch($_POST['mode']) {
-        case 'nonmember_confirm':
-            $this->lfSetNonMember($this);
-            // ※breakなし
-        case 'confirm':
-            // 入力値の変換
-            $this->objFormParam->convParam();
-            $this->objFormParam->toLower('order_mail');
-            $this->objFormParam->toLower('order_mail_check');
-
-            $this->arrErr = $this->lfCheckError();
-
-            // 入力エラーなし
-            if(count($this->arrErr) == 0) {
-                // DBへのデータ登録
-                $this->lfRegistData($uniqid);
-
-                // お届け先のコピー
-                $this->lfCopyDeliv($uniqid, $_POST);
-
-                // 正常に登録されたことを記録しておく
-                $objSiteSess->setRegistFlag();
-                // お支払い方法選択ページへ移動
-                $this->sendRedirect($this->getLocation(MOBILE_URL_SHOP_PAYMENT), true);
-                exit;
-            }
-
-            break;
-            // 前のページに戻る
-        case 'return':
-            // 確認ページへ移動
-            $this->sendRedirect($this->getLocation(MOBILE_URL_CART_TOP), true);
-            exit;
-            break;
-        case 'nonmember':
-            $this->lfSetNonMember($this);
-            // ※breakなし
-        default:
-            if($_GET['from'] == 'nonmember') {
-                $this->lfSetNonMember($this);
-            }
-            // ユーザユニークIDの取得
-            $uniqid = $objSiteSess->getUniqId();
-            $objQuery = new SC_Query();
-            $where = "order_temp_id = ?";
-            $arrRet = $objQuery->select("*", "dtb_order_temp", $where, array($uniqid));
-
-            if (empty($arrRet)) $arrRet = array(
-                                                array('order_email' => "",
-                                                      'order_birth' => ""));
-
-            // DB値の取得
-            $this->objFormParam->setParam($arrRet[0]);
-            $this->objFormParam->setValue('order_email02', $arrRet[0]['order_email']);
-            $this->objFormParam->setDBDate($arrRet[0]['order_birth']);
-            break;
-        }
-
         // クッキー判定
         $this->tpl_login_email = $objCookie->getCookie('login_email');
         if($this->tpl_login_email != "") {
             $this->tpl_login_memory = "1";
-        }
-
-        // 選択用日付の取得
-        $objDate = new SC_Date(START_BIRTH_YEAR);
-        $this->arrYear = $objDate->getYear('', 1950);    //　日付プルダウン設定
-        $this->arrMonth = $objDate->getMonth();
-        $this->arrDay = $objDate->getDay();
-
-        if($this->year == '') {
-            $this->year = '----';
-        }
-
-        // 入力値の取得
-        $this->arrForm = $this->objFormParam->getFormParamList();
-
-        if($this->arrForm['year']['value'] == ""){
-            $this->arrForm['year']['value'] = '----';
         }
 
         $objView->assignobj($this);
@@ -424,7 +339,7 @@ class LC_Page_Shopping extends LC_Page {
         $objErr->doFunc(array("TEL", "deliv_tel01", "deliv_tel02", "deliv_tel03", TEL_ITEM_LEN), array("TEL_CHECK"));
         $objErr->doFunc(array("FAX", "deliv_fax01", "deliv_fax02", "deliv_fax03", TEL_ITEM_LEN), array("TEL_CHECK"));
         $objErr->doFunc(array("郵便番号", "deliv_zip01", "deliv_zip02"), array("ALL_EXIST_CHECK"));
-        $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_DATE"));
+        $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_BIRTHDAY"));
         $objErr->doFunc(array("メールアドレス", "メールアドレス（確認）", "order_email", "order_email02"), array("EQUAL_CHECK"));
 
         return $objErr->arrErr;

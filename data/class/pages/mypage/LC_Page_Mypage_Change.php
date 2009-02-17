@@ -78,11 +78,11 @@ class LC_Page_Mypage_Change extends LC_Page {
         $objLayout = new SC_Helper_PageLayout_Ex();
         $objLayout->sfGetPageLayout($this, false, "mypage/index.php");
 
-        //日付プルダウン設定
-        $objDate = new SC_Date(1901);
-        $this->arrYear = $objDate->getYear();
-        $this->arrMonth = $objDate->getMonth();
-        $this->arrDay = $objDate->getDay();
+        // 生年月日選択肢の取得
+        $objDate = new SC_Date(START_BIRTH_YEAR, date("Y",strtotime("now")));
+        $this->arrYear = $objDate->getYear('', 1950, '');
+        $this->arrMonth = $objDate->getMonth(true);
+        $this->arrDay = $objDate->getDay(true);
 
         // ログインチェック
         if (!$this->objCustomer->isLoginSuccess()){
@@ -221,10 +221,11 @@ class LC_Page_Mypage_Change extends LC_Page {
         $CONF = $objDb->sf_getBasisData();					// 店舗基本情報
         $objConn = new SC_DbConn();
         $objView = new SC_MobileView();
-        $this->objDate = new SC_Date(START_BIRTH_YEAR, date("Y",strtotime("now")));
-        $this->arrYear = $this->objDate->getYear();
-        $this->arrMonth = $this->objDate->getMonth();
-        $this->arrDay = $this->objDate->getDay();
+        
+        // 生年月日選択肢の取得
+        $objDate = new SC_Date();
+        $this->arrMonth = $objDate->getMonth(true);
+        $this->arrDay = $objDate->getDay(true);
 
         $this->objQuery = new SC_Query();
         $this->objCustomer = new SC_Customer();
@@ -502,7 +503,7 @@ class LC_Page_Mypage_Change extends LC_Page {
         $objErr->doFunc(array("FAX番号", "fax01", "fax02", "fax03", TEL_LEN) ,array("TEL_CHECK"));
         $objErr->doFunc(array("ご性別", "sex") ,array("SELECT_CHECK", "NUM_CHECK"));
         $objErr->doFunc(array("ご職業", "job") ,array("NUM_CHECK"));
-        $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_DATE"));
+        $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_BIRTHDAY"));
         $objErr->doFunc(array("パスワード", 'password', PASSWORD_LEN1, PASSWORD_LEN2), array("EXIST_CHECK", "ALNUM_CHECK", "NUM_RANGE_CHECK"));
         $objErr->doFunc(array("パスワード(確認)", 'password02', PASSWORD_LEN1, PASSWORD_LEN2), array("EXIST_CHECK", "ALNUM_CHECK", "NUM_RANGE_CHECK"));
         $objErr->doFunc(array("パスワード", 'パスワード(確認)', 'password', 'password02'), array("EQUAL_CHECK"));
@@ -686,7 +687,7 @@ class LC_Page_Mypage_Change extends LC_Page {
         $objErr->doFunc(array("FAX番号", "fax01", "fax02", "fax03", TEL_LEN) ,array("TEL_CHECK"));
         $objErr->doFunc(array("性別", "sex") ,array("SELECT_CHECK", "NUM_CHECK"));
         $objErr->doFunc(array("ご職業", "job") ,array("NUM_CHECK"));
-        $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_DATE"));
+        $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_BIRTHDAY"));
         $objErr->doFunc(array("パスワード", 'password', PASSWORD_LEN1, PASSWORD_LEN2), array("EXIST_CHECK", "ALNUM_CHECK", "NUM_RANGE_CHECK"));
         $objErr->doFunc(array("パスワード確認用の質問", "reminder") ,array("SELECT_CHECK", "NUM_CHECK"));
         $objErr->doFunc(array("パスワード確認用の質問の答え", "reminder_answer", STEXT_LEN) ,array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
@@ -747,14 +748,7 @@ class LC_Page_Mypage_Change extends LC_Page {
         $objErr->doFunc(array("郵便番号", "zip01", "zip02"), array("ALL_EXIST_CHECK"));
 
         $objErr->doFunc(array("性別", "sex") ,array("SELECT_CHECK", "NUM_CHECK"));
-        $objErr->doFunc(array("生年月日 (年)", "year", 4), array("SPTAB_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK"));
-        if (!empty($array["year"])) {
-            $objErr->doFunc(array("生年月日 (年)", "year", $this->objDate->getStartYear()), array("MIN_CHECK"));
-            $objErr->doFunc(array("生年月日 (年)", "year", $this->objDate->getEndYear()), array("MAX_CHECK"));
-        }
-        if (!isset($objErr->arrErr['year']) && !isset($objErr->arrErr['month']) && !isset($objErr->arrErr['day'])) {
-            $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_DATE"));
-        }
+        $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_BIRTHDAY"));
 
         return $objErr->arrErr;
     }

@@ -151,17 +151,16 @@
         <tr>
           <th>生年月日</th>
           <td>
-           <span class="attention"><!--{$arrErr.year}--><!--{$arrErr.month}--><!--{$arrErr.day}--></span>
-            <select name="year" style="<!--{$arrErr.year|sfGetErrorColor}-->">
-              <!--{html_options options=$arrYear selected=$arrForm.year.value}-->
+            <!--{assign var=errBirth value="`$arrErr.year``$arrErr.month``$arrErr.day`"}-->
+            <span class="attention"><!--{$errBirth}--></span>
+            <select name="year" style="<!--{$errBirth|sfGetErrorColor}-->">
+              <!--{html_options options=$arrYear selected=$arrForm.year.value|default:''}-->
             </select>年
-            <select name="month" style="<!--{$arrErr.year|sfGetErrorColor}-->">
-              <option value="">--</option>
-              <!--{html_options options=$arrMonth selected=$arrForm.month.value}-->
+            <select name="month" style="<!--{$errBirth|sfGetErrorColor}-->">
+              <!--{html_options options=$arrMonth selected=$arrForm.month.value|default:''}-->
             </select>月
-            <select name="day" style="<!--{$arrErr.year|sfGetErrorColor}-->">
-              <option value="">--</option>
-              <!--{html_options options=$arrDay selected=$arrForm.day.value}-->
+            <select name="day" style="<!--{$errBirth|sfGetErrorColor}-->">
+              <!--{html_options options=$arrDay selected=$arrForm.day.value|default:''}-->
             </select>日
           </td>
         </tr>

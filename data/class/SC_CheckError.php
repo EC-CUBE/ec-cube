@@ -717,6 +717,39 @@ class SC_CheckError {
         }
     }
 
+    //誕生日チェック
+    // value[0] = 項目名
+    // value[1] = YYYY
+    // value[2] = MM
+    // value[3] = DD
+    function CHECK_BIRTHDAY($value) {
+        if (isset($this->arrErr[$value[1]])) {
+            return;
+        }
+
+        $this->createParam($value);
+        // 年が入力されている。
+        if ($this->arrParam[$value[1]] > 0) {
+            
+            // 年の数字チェック、最小数値制限チェック
+            $this->doFunc(array($value[0].'(年)', $value[1], START_BIRTH_YEAR), array("NUM_CHECK", "MIN_CHECK"));
+            // 上のチェックでエラーある場合、中断する。
+            if (isset($this->arrErr[$value[1]])) {
+                return;
+            }
+            
+            // 年の最大数値制限チェック
+            $this->doFunc(array($value[0].'(年)', $value[1], date("Y",strtotime("now"))), array("MAX_CHECK"));
+            // 上のチェックでエラーある場合、中断する。
+            if (isset($this->arrErr[$value[1]])) {
+                return;
+            }
+        }
+        
+        // XXX createParam() が二重に呼ばれる問題を抱える
+        $this->CHECK_DATE($value);
+    }
+
     /*-----------------------------------------------------------------*/
     /*	CHECK_SET_TERM
     /*	年月日に別れた2つの期間の妥当性をチェックし、整合性と期間を返す

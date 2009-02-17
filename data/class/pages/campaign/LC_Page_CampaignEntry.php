@@ -51,10 +51,12 @@ class LC_Page_CampaignEntry extends LC_Page {
                                 array("pref_id", "pref_name", "rank"));
         $this->arrJob = $masterData->getMasterData("mtb_job");
         $this->arrReminder = $masterData->getMasterData("mtb_reminder");
-        $this->objDate = new SC_Date(START_BIRTH_YEAR, date("Y",strtotime("now")));
-        $this->arrYear = $this->objDate->getYear('', 1950);	//　日付プルダウン設定
-        $this->arrMonth = $this->objDate->getMonth();
-        $this->arrDay = $this->objDate->getDay();
+        
+        // 生年月日選択肢の取得
+        $objDate = new SC_Date(START_BIRTH_YEAR, date("Y",strtotime("now")));
+        $this->arrYear = $objDate->getYear('', 1950, '');
+        $this->arrMonth = $objDate->getMonth(true);
+        $this->arrDay = $objDate->getDay(true);
     }
 
     /**
@@ -113,10 +115,6 @@ class LC_Page_CampaignEntry extends LC_Page {
 
             //-- POSTデータの引き継ぎ
             $this->arrForm = $_POST;
-
-            if($this->arrForm['year'] == '----') {
-                $this->arrForm['year'] = '';
-            }
 
             $this->arrForm['email'] = strtolower($this->arrForm['email']);		// emailはすべて小文字で処理
             $this->arrForm['email02'] = strtolower($this->arrForm['email02']);	// emailはすべて小文字で処理
@@ -198,10 +196,6 @@ class LC_Page_CampaignEntry extends LC_Page {
                     exit;
                 }
             }
-        }
-
-        if($this->year == '') {
-            $this->year = '----';
         }
 
         //---- ページ表示
@@ -368,7 +362,7 @@ class LC_Page_CampaignEntry extends LC_Page {
         $objErr->doFunc(array("パスワードを忘れたときのヒント 質問", "reminder") ,array("SELECT_CHECK", "NUM_CHECK"));
         $objErr->doFunc(array("パスワードを忘れたときのヒント 答え", "reminder_answer", STEXT_LEN) ,array("EXIST_CHECK","SPTAB_CHECK" , "MAX_LENGTH_CHECK"));
         $objErr->doFunc(array("メールマガジン", "mailmaga_flg") ,array("SELECT_CHECK", "NUM_CHECK"));
-        $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_DATE"));
+        $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_BIRTHDAY"));
 
 
         return $objErr->arrErr;

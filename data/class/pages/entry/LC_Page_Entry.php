@@ -51,10 +51,12 @@ class LC_Page_Entry extends LC_Page {
                                 array("pref_id", "pref_name", "rank"));
         $this->arrJob = $masterData->getMasterData("mtb_job");
         $this->arrReminder = $masterData->getMasterData("mtb_reminder");
-        $this->objDate = new SC_Date(START_BIRTH_YEAR, date("Y",strtotime("now")));
-        $this->arrYear = $this->objDate->getYear('', 1950);	//　日付プルダウン設定
-        $this->arrMonth = $this->objDate->getMonth();
-        $this->arrDay = $this->objDate->getDay();
+        
+        // 生年月日選択肢の取得
+        $objDate = new SC_Date(START_BIRTH_YEAR, date("Y",strtotime("now")));
+        $this->arrYear = $objDate->getYear('', 1950, '');
+        $this->arrMonth = $objDate->getMonth(true);
+        $this->arrDay = $objDate->getDay(true);
     }
 
     /**
@@ -71,7 +73,6 @@ class LC_Page_Entry extends LC_Page {
         $objCampaignSess = new SC_CampaignSession();
         $objDb = new SC_Helper_DB_Ex();
         $CONF = $objDb->sf_getBasisData();
-        $objDate = new SC_Date(START_BIRTH_YEAR, date("Y",strtotime("now")));
 
         // 規約ページからの遷移でなければエラー画面へ遷移する
         if (empty($_POST) && !preg_match('/kiyaku.php/', basename($_SERVER['HTTP_REFERER']))) {
@@ -79,8 +80,8 @@ class LC_Page_Entry extends LC_Page {
         }
 
         // レイアウトデザインを取得
-        $layout = new SC_Helper_PageLayout_Ex();
-        $layout->sfGetPageLayout($this, false, DEF_LAYOUT);
+        $objLayout = new SC_Helper_PageLayout_Ex();
+        $objLayout->sfGetPageLayout($this, false, DEF_LAYOUT);
 
         //---- 登録用カラム配列
         $arrRegistColumn = array(
@@ -124,11 +125,6 @@ class LC_Page_Entry extends LC_Page {
 
             //-- POSTデータの引き継ぎ
             $this->arrForm = $_POST;
-
-            if($this->arrForm['year'] == '----') {
-                $this->arrForm['year'] = '';
-            }
-
             $this->arrForm['email'] = strtolower($this->arrForm['email']);		// emailはすべて小文字で処理
             $this->arrForm['email02'] = strtolower($this->arrForm['email02']);	// emailはすべて小文字で処理
 
@@ -181,14 +177,15 @@ class LC_Page_Entry extends LC_Page {
                     $objMailText = new SC_SiteView();
                     $objMailText->assignobj($this);
 
-                    $mailHelper = new SC_Helper_Mail_Ex();
+                    $objHelperMail = new SC_Helper_Mail_Ex();
                     $objQuery = new SC_Query();
+
                     // 仮会員が有効の場合
                     if(CUSTOMER_CONFIRM_MAIL == true) {
-                        $subject = $mailHelper->sfMakesubject('会員登録のご確認');
+                        $subject = $objHelperMail->sfMakeSubject('会員登録のご確認');
                         $toCustomerMail = $objMailText->fetch("mail_templates/customer_mail.tpl");
                     } else {
-                        $subject = $mailHelper->sfMakesubject('会員登録のご完了');
+                        $subject = $objHelperMail->sfMakeSubject('会員登録のご完了');
                         $toCustomerMail = $objMailText->fetch("mail_templates/customer_regist_mail.tpl");
                         // ログイン状態にする
                         $objCustomer->setLogin($_POST["email"]);
@@ -196,15 +193,16 @@ class LC_Page_Entry extends LC_Page {
 
                     $objMail = new SC_SendMail();
                     $objMail->setItem(
-                                        ''									//　宛先
-                                        , $subject							//　サブジェクト
-                                        , $toCustomerMail					//　本文
-                                        , $CONF["email03"]					//　配送元アドレス
-                                        , $CONF["shop_name"]				//　配送元　名前
-                                        , $CONF["email03"]					//　reply_to
-                                        , $CONF["email04"]					//　return_path
-                                        , $CONF["email04"]					//  Errors_to
-                                    );
+                                          ''                    // 宛先
+                                        , $subject              // サブジェクト
+                                        , $toCustomerMail       // 本文
+                                        , $CONF["email03"]      // 配送元アドレス
+                                        , $CONF["shop_name"]    // 配送元 名前
+                                        , $CONF["email03"]      // reply_to
+                                        , $CONF["email04"]      // return_path
+                                        , $CONF["email04"]      // Errors_to
+                                        , $CONF["email01"]      // Bcc
+                    );
                     // 宛先の設定
                     $name = $_POST["name01"] . $_POST["name02"] ." 様";
                     $objMail->setTo($_POST["email"], $name);
@@ -216,10 +214,6 @@ class LC_Page_Entry extends LC_Page {
                     exit;
                 }
             }
-        }
-
-        if($this->year == '') {
-            $this->year = '----';
         }
 
         $this->transactionid = $this->getToken();
@@ -254,7 +248,6 @@ class LC_Page_Entry extends LC_Page {
         $objConn = new SC_DbConn();
         $objView = new SC_MobileView();
         $objCustomer = new SC_Customer();
-        $objDate = new SC_Date(START_BIRTH_YEAR, date("Y",strtotime("now")));
 
         // 空メール
         if (isset($_SESSION['mobile']['kara_mail_from'])) {
@@ -312,12 +305,6 @@ class LC_Page_Entry extends LC_Page {
 
             //-- POSTデータの引き継ぎ
             $this->arrForm = $_POST;
-
-            if(isset($this->arrForm['year'])
-               && $this->arrForm['year'] == '----') {
-                $this->arrForm['year'] = '';
-            }
-
             $this->arrForm['email'] = strtolower($this->arrForm['email']);		// emailはすべて小文字で処理
 
             //-- 入力データの変換
@@ -496,7 +483,7 @@ class LC_Page_Entry extends LC_Page {
                         $subject = $objHelperMail->sfMakeSubject('会員登録のご確認');
                         $toCustomerMail = $objMailText->fetch("mail_templates/customer_mail.tpl");
                     } else {
-                        $subject = $objHelperMail->sfMakesubject('会員登録のご完了');
+                        $subject = $objHelperMail->sfMakeSubject('会員登録のご完了');
                         $toCustomerMail = $objMailText->fetch("mail_templates/customer_regist_mail.tpl");
                         // ログイン状態にする
                         $objCustomer->setLogin($_POST["email"]);
@@ -504,16 +491,16 @@ class LC_Page_Entry extends LC_Page {
 
                     $objMail = new SC_SendMail();
                     $objMail->setItem(
-                                      ''									//　宛先
-                                      , $subject							//　サブジェクト
-                                      , $toCustomerMail					//　本文
-                                      , $CONF["email03"]					//　配送元アドレス
-                                      , $CONF["shop_name"]				//　配送元　名前
-                                      , $CONF["email03"]					//　reply_to
-                                      , $CONF["email04"]					//　return_path
-                                      , $CONF["email04"]					//  Errors_to
-                                      , $CONF["email01"]					//  Bcc
-                                      );
+                                        ''                  // 宛先
+                                      , $subject            // サブジェクト
+                                      , $toCustomerMail     // 本文
+                                      , $CONF["email03"]    // 配送元アドレス
+                                      , $CONF["shop_name"]  // 配送元 名前
+                                      , $CONF["email03"]    // reply_to
+                                      , $CONF["email04"]    // return_path
+                                      , $CONF["email04"]    // Errors_to
+                                      , $CONF["email01"]    // Bcc
+                    );
                     // 宛先の設定
                     $name = $_POST["name01"] . $_POST["name02"] ." 様";
                     $objMail->setTo($_POST["email"], $name);
@@ -731,7 +718,7 @@ class LC_Page_Entry extends LC_Page {
         $objErr->doFunc(array("パスワードを忘れたときのヒント 答え", "reminder_answer", STEXT_LEN) ,array("EXIST_CHECK","SPTAB_CHECK" , "MAX_LENGTH_CHECK"));
         $objErr->doFunc(array("メールマガジン", "mailmaga_flg") ,array("SELECT_CHECK", "NUM_CHECK"));
 
-        $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_DATE"));
+        $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_BIRTHDAY"));
         $objErr->doFunc(array("メールマガジン", 'mailmaga_flg'), array("SELECT_CHECK"));
         return $objErr->arrErr;
     }
@@ -831,15 +818,7 @@ class LC_Page_Entry extends LC_Page {
         $objErr->doFunc(array("郵便番号", "zip01", "zip02"), array("ALL_EXIST_CHECK"));
 
         $objErr->doFunc(array("性別", "sex") ,array("SELECT_CHECK", "NUM_CHECK"));
-        $objErr->doFunc(array("生年月日 (年)", "year", 4), array("EXIST_CHECK", "SPTAB_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK"));
-        if (!isset($objErr->arrErr['year'])) {
-            $objErr->doFunc(array("生年月日 (年)", "year", $this->objDate->getStartYear()), array("MIN_CHECK"));
-            $objErr->doFunc(array("生年月日 (年)", "year", $this->objDate->getEndYear()), array("MAX_CHECK"));
-        }
-        $objErr->doFunc(array("生年月日 (月日)", "month", "day"), array("SELECT_CHECK"));
-        if (!isset($objErr->arrErr['year']) && !isset($objErr->arrErr['month']) && !isset($objErr->arrErr['day'])) {
-            $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_DATE"));
-        }
+        $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_BIRTHDAY"));
 
         return $objErr->arrErr;
     }

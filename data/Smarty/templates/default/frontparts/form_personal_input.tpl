@@ -161,21 +161,19 @@
 <tr>
   <th>生年月日</th>
   <td>
-    <!--{if $arrErr.year || $arrErr.month || $arrErr.day}-->
-    <div class="attention"><!--{$arrErr.year}--><!--{$arrErr.month}--><!--{$arrErr.day}--></div>
+    <!--{assign var=errBirth value="`$arrErr.year``$arrErr.month``$arrErr.day`"}-->
+    <!--{if $errBirth}-->
+      <div class="attention"><!--{$errBirth}--></div>
     <!--{/if}-->
-    <select name="year" style="<!--{$arrErr.year|sfGetErrorColor}-->">
-      <option value="" selected="selected">--</option>
-      <!--{html_options options=$arrYear selected=$arrForm.year}-->
-    </select>&nbsp;年
-    <select name="month" style="<!--{$arrErr.month|sfGetErrorColor}-->">
-      <option value="" selected="selected">--</option>
-      <!--{html_options options=$arrMonth selected=$arrForm.month}-->
-    </select>&nbsp;月
-    <select name="day" style="<!--{$arrErr.day|sfGetErrorColor}-->">
-      <option value="" selected="selected">--</option>
-      <!--{html_options options=$arrDay selected=$arrForm.day}-->
-    </select>&nbsp;日
+    <select name="year" style="<!--{$errBirth|sfGetErrorColor}-->">
+      <!--{html_options options=$arrYear selected=$arrForm.year|default:''}-->
+    </select>年
+    <select name="month" style="<!--{$errBirth|sfGetErrorColor}-->">
+      <!--{html_options options=$arrMonth selected=$arrForm.month|default:''}-->
+    </select>月
+    <select name="day" style="<!--{$errBirth|sfGetErrorColor}-->">
+      <!--{html_options options=$arrDay selected=$arrForm.day|default:''}-->
+    </select>日
   </td>
 </tr>
 <!--{if $flgFields > 2}-->
