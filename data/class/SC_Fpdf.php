@@ -176,7 +176,7 @@ class SC_Fpdf {
         $this->pdf->SetFont('SJIS', '', 8);
 
         $monetary_unit = $this->sjis_conv("円");
-        $point_unit = $this->sjis_conv("ポイント");
+        $point_unit = $this->sjis_conv("Pt");
 
         // 購入商品情報
         for ($i = 0; $i < count($this->arrDisp['quantity']); $i++) {
