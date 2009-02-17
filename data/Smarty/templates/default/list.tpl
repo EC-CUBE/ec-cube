@@ -99,7 +99,7 @@ function lnSetSelect(name1, name2, id, val) {
        <!--アイコン-->
        <!--商品ステータス-->
        <!--{if count($arrProducts[cnt].product_flag) > 0}-->
-       <ul>
+       <ul class="status_icon">
          <!--{section name=flg loop=$arrProducts[cnt].product_flag|count_characters}-->
            <!--{if $arrProducts[cnt].product_flag[flg] == "1"}-->
              <!--{assign var=key value="`$smarty.section.flg.iteration`"}-->
@@ -138,7 +138,7 @@ function lnSetSelect(name1, name2, id, val) {
            <!--▼買い物かご-->
            <div class="in_cart">
              <dl>
-           
+
          <!--{assign var=class1 value=classcategory_id`$id`_1}-->
          <!--{assign var=class2 value=classcategory_id`$id`_2}-->
          <!--{if $tpl_classcat_find1[$id]}-->
@@ -164,7 +164,7 @@ function lnSetSelect(name1, name2, id, val) {
              <!--{/if}-->
            </dd>
          <!--{/if}-->
-         
+
          <!--{assign var=quantity value=quantity`$id`}-->
            <dt>個数：</dt>
            <dd><input type="text" name="<!--{$quantity}-->" size="3" class="box54" value="<!--{$arrForm[$quantity]|default:1}-->" maxlength="<!--{$smarty.const.INT_LEN}-->" style="<!--{$arrErr[$quantity]|sfGetErrorColor}-->" />
