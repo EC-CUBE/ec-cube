@@ -536,6 +536,8 @@ define('OS_TYPE', "LINUX");
 define('SMTP_HOST', "127.0.0.1");
 /** SMTPポート */
 define('SMTP_PORT', "25");
+/** ポイントを利用するか(true:利用する、false:利用しない) (false は一部対応) */
+define('USE_POINT', true);
 /** デフォルトテンプレート名 */
 define('DEFAULT_TEMPLATE_NAME', "default");
 /** テンプレート名 */
