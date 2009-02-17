@@ -92,16 +92,18 @@
     </table>
 
     <!-- 使用ポイントここから -->
-    <table summary="使用ポイント">
-      <tr>
-        <th>ご使用ポイント</th>
-        <td class="pricetd"><!--{assign var=key value="use_point"}--><!--{$arrDisp[$key]|number_format|default:0}--> pt</td>
-      </tr>
-      <tr>
-        <th>今回加算されるポイント</th>
-        <td class="pricetd"><!--{$arrDisp.add_point|number_format|default:0}--> pt</td>
-      </tr>
-    </table>
+    <!--{if $smarty.const.USE_POINT === true}-->
+      <table summary="使用ポイント">
+        <tr>
+          <th>ご使用ポイント</th>
+          <td class="pricetd"><!--{assign var=key value="use_point"}--><!--{$arrDisp[$key]|number_format|default:0}--> pt</td>
+        </tr>
+        <tr>
+          <th>今回加算されるポイント</th>
+          <td class="pricetd"><!--{$arrDisp.add_point|number_format|default:0}--> pt</td>
+        </tr>
+      </table>
+    <!--{/if}-->
     <!-- 使用ポイントここまで -->
 
     <table summary="お届け先" class="delivname">
