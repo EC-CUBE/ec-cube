@@ -151,8 +151,9 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
 
             // 入力値の変換
             $this->objFormParam->convParam();
-            $this->arrErr = $this->lfCheek($arrInfo);
             $this->arrErr = $this->lfCheckError();
+            $this->arrErr = array_merge( (array) $this->arrErr, (array)$this->lfCheek($arrInfo) );
+
             if(count($this->arrErr) == 0) {
                 #if(count($this->arrErr) == 0) {
                     if ($_POST['mode'] == 'add') {
@@ -197,7 +198,10 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
                     $arrData[$key] = $val;
                 }
             }
-            $this->lfReCheek($arrData, $arrInfo);
+            // 情報上書き
+            $this->objFormParam->setParam($arrData);
+            // 入力値の変換
+            $this->objFormParam->convParam();
             break;
         /* 商品追加ポップアップより商品選択後、商品情報取得*/
         case 'select_product_detail':
@@ -216,7 +220,10 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
                     $arrData[$key] = $val;
                 }
             }
-            $this->lfReCheek($arrData, $arrInfo);
+            // 情報上書き
+            $this->objFormParam->setParam($arrData);
+            // 入力値の変換
+            $this->objFormParam->convParam();
             break;
         /* F-REGI決済モジュール連携用 */
         case 'fregi_status':
