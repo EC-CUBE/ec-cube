@@ -50,11 +50,13 @@
         }
 
         if(checkflag == 1){
-      window.open("about:blank", "pdf", "width=1000,height=800,scrollbars=yes,resizable=yes,toolbar=no,location=no,directories=no,status=no");
-      document.form1.target = "pdf";
-          document.form1.mode.value = 'pdf';
-          document.form1.action = 'pdf.php';
-          document.form1.submit();
+            var WIN;
+            WIN = window.open("about:blank", "pdf", "width=500,height=600,scrollbars=yes,resizable=yes,toolbar=no,location=no,directories=no,status=no");
+            document.form1.target = "pdf";
+            document.form1.mode.value = 'pdf';
+            document.form1.action = 'pdf.php';
+            document.form1.submit();
+            WIN.focus();
         }
     }
 
