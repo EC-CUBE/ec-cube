@@ -27,7 +27,7 @@
     </h2>
     <p>ご登録されますと、まずは仮会員となります。<br />
       入力されたメールアドレスに、ご連絡が届きますので、本会員になった上でお買い物をお楽しみください。</p>
-    <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+    <form name="form1" id="form1" method="post" action="<!--{$arrForm.ssl_url|escape}-->">
       <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
       <input type="hidden" name="mode" value="confirm" />
 
