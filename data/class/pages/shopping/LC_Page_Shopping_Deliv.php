@@ -84,7 +84,12 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         $this->objFormParam->setParam($_POST);
 
         $this->objLoginFormParam = new SC_FormParam();	// ログインフォーム用
-        $this->lfInitLoginFormParam();						// 初期設定
+        $this->lfInitLoginFormParam();
+        //パスワード・Eメールにある空白をトリム
+        $_POST["login_email"] = preg_replace('/^[ 　\r\n]*(.*?)[ 　\r\n]*$/u', '$1', $_POST["login_email"]);
+        $_POST["login_pass"] = trim($_POST["login_pass"]); //認証用
+        $_POST["login_pass1"] = $_POST["login_pass"];      //最小桁数比較用
+        $_POST["login_pass2"] = $_POST["login_pass"];      //最大桁数比較用
         $this->objLoginFormParam->setParam($_POST);		// POST値の取得
 
         // ユーザユニークIDの取得と購入状態の正当性をチェック
@@ -159,7 +164,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
                     if ($deliv_count != 1) {
                         SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
                     }
-                    
+
                     // 登録済みの別のお届け先を受注一時テーブルに書き込む
                     $this->lfRegistOtherDelivData($uniqid, $objCustomer, $_POST['deliv_check']);
                     // 正常に登録されたことを記録しておく
@@ -428,7 +433,9 @@ class LC_Page_Shopping_Deliv extends LC_Page {
     function lfInitLoginFormParam() {
         $this->objLoginFormParam->addParam("記憶する", "login_memory", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
         $this->objLoginFormParam->addParam("メールアドレス", "login_email", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-        $this->objLoginFormParam->addParam("パスワード", "login_pass", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+        $this->objLoginFormParam->addParam("パスワード", "login_pass", PASSWORD_LEN1, "", array("EXIST_CHECK"));
+        $this->objLoginFormParam->addParam("パスワード", "login_pass1", PASSWORD_LEN1, "", array("EXIST_CHECK", "MIN_LENGTH_CHECK"));
+        $this->objLoginFormParam->addParam("パスワード", "login_pass2", PASSWORD_LEN2, "", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
     }
 
     /* DBへデータの登録 */
