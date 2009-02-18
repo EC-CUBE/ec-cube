@@ -344,7 +344,12 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         $this->objFormParam->addParam("値引き", "discount", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"), '0');
         $this->objFormParam->addParam("送料", "deliv_fee", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
         $this->objFormParam->addParam("手数料", "charge", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $this->objFormParam->addParam("利用ポイント", "use_point", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+
+        // ポイント機能ON時のみ
+        if( USE_POINT === true ){
+            $this->objFormParam->addParam("利用ポイント", "use_point", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+        }
+
         $this->objFormParam->addParam("お支払い方法", "payment_id", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
         $this->objFormParam->addParam("配送時間ID", "deliv_time_id", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
         $this->objFormParam->addParam("対応状況", "status", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
@@ -469,7 +474,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         if($arrVal['payment_total'] < 0) {
             $arrErr['payment_total'] = 'お支払い合計額がマイナス表示にならないように調整して下さい。<br />';
         }
-
         if($arrVal['total_point'] < 0) {
             $arrErr['total_point'] = '最終保持ポイントがマイナス表示にならないように調整して下さい。<br />';
         }
@@ -486,7 +490,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         #if(count($this->arrErr) == 0) {
             $this->arrErr = $this->lfCheek($arrInfo);
         #}
-        $this->arrErr = $this->lfCheckError();
     }
     /* DB登録処理 */
     function lfRegistData($order_id) {

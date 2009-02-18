@@ -407,7 +407,7 @@
                                     <input type="hidden" name="classcategory_name1[<!--{$key}-->]" value="<!--{$arrForm.classcategory_name1.value[$key]}-->" id="classcategory_name1_<!--{$key}-->">
                                     <input type="hidden" name="classcategory_name2[<!--{$key}-->]" value="<!--{$arrForm.classcategory_name2.value[$key]}-->" id="classcategory_name2_<!--{$key}-->">
                                     <br />
-                                    <input type="button" name="change" value="変更" onclick="win03('./product_select.php?no=<!--{$key}--><!--{if $tpl_order_id}-->&order_id=<!--{$tpl_order_id}--><!--{/if}-->', 'search', '500', '500'); " >
+                                    <input type="button" name="change" value="変更" onclick="win03('<!--{$smarty.const.SITE_URL}-->admin/products/product_select.php?no=<!--{$key}--><!--{if $tpl_order_id}-->&order_id=<!--{$tpl_order_id}--><!--{/if}-->', 'search', '500', '500'); " >
                                     <!--{if $product_count > 1}-->
                                         <input type="button" name="delete" value="削除" onclick="fnSetFormVal('form1', 'delete_no', <!--{$key}-->); fnModeSubmit('delete_product','anchor_key','order_products');" />
                                     <!--{/if}-->
@@ -467,38 +467,40 @@
                                 <!--{$arrForm.payment_total.value|number_format}-->
                                  円</td>
                             </tr>
-                            <tr bgcolor="#ffffff" class="fs12n">
-                                <td colspan="5" align="right">使用ポイント</td>
-                                <td align="right">
-                                <!--{assign var=key value="use_point"}-->
-                                <span class="red12"><!--{$arrErr[$key]}--></span>
-                                <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape|default:0}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"  size="5" class="box6" />
-                                 pt</td>
-                            </tr>
-                            <!--{if $arrForm.birth_point.value > 0}-->
-                            <tr bgcolor="#ffffff" class="fs12n">
-                                <td colspan="5" align="right">お誕生日ポイント</td>
-                                <td align="right">
-                                <!--{$arrForm.birth_point.value|number_format}-->
-                                 pt</td>
-                            </tr>
-                            <!--{/if}-->
-                            <tr bgcolor="#ffffff" class="fs12n">
-                                <td colspan="5" align="right">加算ポイント</td>
-                                <td align="right">
-                                <!--{$arrForm.add_point.value|number_format|default:0}-->
-                                 pt</td>
-                            </tr>
-                            <tr bgcolor="#ffffff" class="fs12n">
-                                <!--{if $arrForm.customer_id > 0}-->
-                                <td colspan="5" align="right">現在ポイント（ポイントの修正は<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="return fnEdit('<!--{$arrForm.customer_id}-->');">顧客編集</a>から手動にてお願い致します。）</td>
-                                <td align="right">
-                                <!--{$arrForm.point.value|number_format}-->
-                                 pt</td>
-                                <!--{else}-->
-                                <td colspan="5" align="right">現在ポイント</td><td align="center">（なし）</td>
+                            <!--{if $smarty.const.USE_POINT === true}-->
+                                <tr bgcolor="#ffffff" class="fs12n">
+                                    <td colspan="5" align="right">使用ポイント</td>
+                                    <td align="right">
+                                    <!--{assign var=key value="use_point"}-->
+                                    <span class="red12"><!--{$arrErr[$key]}--></span>
+                                    <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape|default:0}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"  size="5" class="box6" />
+                                     pt</td>
+                                </tr>
+                                <!--{if $arrForm.birth_point.value > 0}-->
+                                <tr bgcolor="#ffffff" class="fs12n">
+                                    <td colspan="5" align="right">お誕生日ポイント</td>
+                                    <td align="right">
+                                    <!--{$arrForm.birth_point.value|number_format}-->
+                                     pt</td>
+                                </tr>
                                 <!--{/if}-->
-                            </tr>
+                                <tr bgcolor="#ffffff" class="fs12n">
+                                    <td colspan="5" align="right">加算ポイント</td>
+                                    <td align="right">
+                                    <!--{$arrForm.add_point.value|number_format|default:0}-->
+                                     pt</td>
+                                </tr>
+                                <tr bgcolor="#ffffff" class="fs12n">
+                                    <!--{if $arrForm.customer_id > 0}-->
+                                    <td colspan="5" align="right">現在ポイント（ポイントの修正は<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="return fnEdit('<!--{$arrForm.customer_id}-->');">顧客編集</a>から手動にてお願い致します。）</td>
+                                    <td align="right">
+                                    <!--{$arrForm.point.value|number_format}-->
+                                     pt</td>
+                                    <!--{else}-->
+                                    <td colspan="5" align="right">現在ポイント</td><td align="center">（なし）</td>
+                                    <!--{/if}-->
+                                </tr>
+                            <!--{/if}-->
                             <!--{*
                             <tr bgcolor="#ffffff" class="fs12n">
                                 <td colspan="5" align="right">反映後ポイント（ポイントの変更は<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="return fnEdit('<!--{$arrForm.customer_id}-->');">顧客編集</a>から手動にてお願い致します。）</td>
