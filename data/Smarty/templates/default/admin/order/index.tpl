@@ -24,7 +24,7 @@
 <!--★★メインコンテンツ★★-->
 <script type="text/javascript">
 <!--
-    function fnSelectCheckSubmit(){
+    function fnSelectCheckSubmit(action){
 
         var fm = document.form1;
 
@@ -50,14 +50,18 @@
         }
 
         if(checkflag == 1){
-            var WIN;
-            WIN = window.open("about:blank", "pdf", "width=500,height=600,scrollbars=yes,resizable=yes,toolbar=no,location=no,directories=no,status=no");
-            document.form1.target = "pdf";
-            document.form1.mode.value = 'pdf';
-            document.form1.action = 'pdf.php';
-            document.form1.submit();
-            WIN.focus();
+            fnOpenPdfSettingPage(action);
         }
+    }
+
+    function fnOpenPdfSettingPage(action){
+        var WIN;
+        WIN = window.open("about:blank", "pdf", "width=500,height=600,scrollbars=yes,resizable=yes,toolbar=no,location=no,directories=no,status=no");
+        document.form1.target = "pdf";
+        document.form1.mode.value = 'pdf';
+        document.form1.action = action;
+        document.form1.submit();
+        WIN.focus();
     }
 
     function fnBoxChecked(check){
@@ -374,7 +378,7 @@
                 <td><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="8" height="1" alt=""></td>
                 <td><a href="#" onmouseover="chgImg('<!--{$TPL_DIR}-->img/contents/btn_csv_on.jpg','btn_csv');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/contents/btn_csv.jpg','btn_csv');"    onclick="fnModeSubmit('csv','','');" ><img src="<!--{$TPL_DIR}-->img/contents/btn_csv.jpg" width="99" height="22" alt="CSV DOWNLOAD" border="0" name="btn_csv" id="btn_csv"></a></td>
                 <td><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="8" height="1" alt=""></td>
-                <td><a href="#" onmouseover="chgImg('<!--{$TPL_DIR}-->img/contents/btn_pdf_on.jpg','btn_pdf');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/contents/btn_pdf.jpg','btn_pdf');"  onclick="fnSelectCheckSubmit(); return false;" ><img src="<!--{$TPL_DIR}-->img/contents/btn_pdf.jpg" width="99" height="24" alt="PDF DOWNLOAD" border="0" name="btn_pdf" id="btn_pdf"></a></td>
+                <td><a href="#" onmouseover="chgImg('<!--{$TPL_DIR}-->img/contents/btn_pdf_on.jpg','btn_pdf');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/contents/btn_pdf.jpg','btn_pdf');"  onclick="fnSelectCheckSubmit('pdf.php'); return false;" ><img src="<!--{$TPL_DIR}-->img/contents/btn_pdf.jpg" width="99" height="24" alt="PDF DOWNLOAD" border="0" name="btn_pdf" id="btn_pdf"></a></td>
                 <td><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="8" height="1" alt=""></td>
                 <td><a href="../contents/csv.php?tpl_subno_csv=order"><span class="fs12n"> >> CSV出力項目設定 </span></a></td>
             </tr>
@@ -430,7 +434,7 @@
                             <td align="right"><!--{$arrResults[cnt].total|number_format}--></td>
                             <td align="center"><!--{$arrResults[cnt].commit_date|sfDispDBDate|default:"未発送"}--></td>
                             <td align="center"><!--{$arrORDERSTATUS[$status]}--></td>
-                            <td align="center"><a href="./" onClick="win02('pdf.php?order_id=<!--{$arrResults[cnt].order_id}-->','pdf_input','500','650'); return false;"><span class="icon_class">帳票</span></a><input type="checkbox" name="pdf_order_id[]" value="<!--{$arrResults[cnt].order_id}-->" >
+                            <td align="center"><a href="./" onClick="fnOpenPdfSettingPage('pdf.php?order_id=<!--{$arrResults[cnt].order_id}-->','pdf_input','500','650'); return false;"><span class="icon_class">帳票</span></a><input type="checkbox" name="pdf_order_id[]" value="<!--{$arrResults[cnt].order_id}-->" >
                             </td>
                             <td align="center"><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnChangeAction('<!--{$smarty.const.URL_ORDER_EDIT}-->'); fnModeSubmit('pre_edit', 'order_id', '<!--{$arrResults[cnt].order_id}-->'); return false;"><span class="icon_edit">編集</span></a></td>
                             <td align="center"><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnChangeAction('<!--{$smarty.const.URL_ORDER_MAIL}-->'); fnModeSubmit('pre_edit', 'order_id', '<!--{$arrResults[cnt].order_id}-->'); return false;"><span class="icon_mail">通知</span></a></td>
