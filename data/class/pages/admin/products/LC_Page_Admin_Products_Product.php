@@ -106,7 +106,6 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         }
 
         // FORMデータの引き継ぎ
-        $this->arrForm['status'] = DEFAULT_PRODUCT_DISP;	// 公開・非公開のデフォルト値
         $this->arrForm = $_POST;
 
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
@@ -345,7 +344,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
             $this->arrForm['category_id'] = unserialize($this->arrForm['category_id']);
         }
         if($this->arrForm['status'] == "") {
-            $this->arrForm['status'] = 1;
+            $this->arrForm['status'] = DEFAULT_PRODUCT_DISP;
         }
 
         if(isset($this->arrForm['product_flag']) && !is_array($this->arrForm['product_flag'])) {
