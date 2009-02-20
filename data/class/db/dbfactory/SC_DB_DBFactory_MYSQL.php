@@ -70,18 +70,18 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
         $sql = $this->sfChangeTrunc($sql);
         return $sql;
     }
-    
+
     /**
      * 文字コード情報を取得する
-     * 
+     *
      * @return array 文字コード情報
      */
      function getCharSet() {
-     	$objQuery = new SC_Query();
-     	$arrRet = $objQuery->getAll("SHOW VARIABLES LIKE 'char%'");
-     	return $arrRet;
+         $objQuery = new SC_Query();
+         $arrRet = $objQuery->getAll("SHOW VARIABLES LIKE 'char%'");
+         return $arrRet;
      }
-    
+
     /**
      * テーブルの存在チェックを行う SQL 文を返す.
      *
@@ -245,7 +245,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
         $changesql = eregi_replace("( TRUNC)", " TRUNCATE", $sql);
         return $changesql;
     }
-    
+
     /**
      * WHERE 句置換用の配列を返す.
      *
@@ -340,6 +340,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
                     T1.creator_id,
                     T1.create_date,
                     T1.update_date,
+                    T1.note,
                     T1.deliv_date_id,
                     T2.product_id_sub,
                     T2.product_code,
@@ -395,8 +396,8 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
            ,(SELECT rank AS category_rank
                FROM dtb_category AS T4
               WHERE T1.category_id = T4.category_id) as category_rank
-           ,(SELECT category_id AS sub_category_id 
-               FROM dtb_category T4 
+           ,(SELECT category_id AS sub_category_id
+               FROM dtb_category T4
               WHERE T1.category_id = T4.category_id) as category_id
       FROM (SELECT T0.product_id,
                    T0.del_flg,
@@ -419,7 +420,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
                    T00.rank
               FROM dtb_products AS T0
          LEFT JOIN dtb_product_categories AS T00
-             USING (product_id)) AS T1 
+             USING (product_id)) AS T1
 RIGHT JOIN (SELECT product_id as product_id_sub,
                    MIN(product_code) AS product_code_min,
                    MAX(product_code) AS product_code_max,
@@ -431,7 +432,7 @@ RIGHT JOIN (SELECT product_id as product_id_sub,
                    MAX(stock) AS stock_max,
                    MIN(stock_unlimited) AS stock_unlimited_min,
                    MAX(stock_unlimited) AS stock_unlimited_max
-              FROM dtb_products_class GROUP BY product_id) AS T2 
+              FROM dtb_products_class GROUP BY product_id) AS T2
                 ON T1.product_id = T2.product_id_sub
             ) ',
 
