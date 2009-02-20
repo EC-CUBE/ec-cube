@@ -221,9 +221,9 @@ class LC_Page_Admin_Products extends LC_Page {
                             foreach ($val as $element){
                                 if ($element != ""){
                                     if ($tmp_where == ""){
-                                        $tmp_where.="AND (status LIKE ? ";
+                                        $tmp_where.="AND (status = ? ";
                                     }else{
-                                        $tmp_where.="OR status LIKE ? ";
+                                        $tmp_where.="OR status = ? ";
                                     }
                                     $arrval[]=$element;
                                 }
