@@ -4,3 +4,4 @@ CREATE TABLE dtb_session (
     create_date timestamp NOT NULL,
     update_date timestamp NOT NULL
 );
+CREATE INDEX dtb_session_sess_id_key ON dtb_session (sess_id);
