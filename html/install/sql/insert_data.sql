@@ -221,11 +221,11 @@ insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'
 insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'deliv_addr01','住所1',37,now(),now());
 insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'deliv_addr02','住所2',38,now(),now());
 insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'payment_total','お支払い合計',39,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,status)values(5,'category_id','カテゴリID',1,2);
-insert into dtb_csv(csv_id,col,disp_name,rank,status)values(5,'category_name','カテゴリ名',2,2);
-insert into dtb_csv(csv_id,col,disp_name,rank,status)values(5,'parent_category_id','親カテゴリID',3,2);
-insert into dtb_csv(csv_id,col,disp_name,status)values(5,'level','階層',2);
-insert into dtb_csv(csv_id,col,disp_name,status)values(5,'rank','表示ランク',2);
+insert into dtb_csv(csv_id,col,disp_name,rank,status,create_date,update_date)values(5,'category_id','カテゴリID',1,2,now(),now());
+insert into dtb_csv(csv_id,col,disp_name,rank,status,create_date,update_date)values(5,'category_name','カテゴリ名',2,2,now(),now());
+insert into dtb_csv(csv_id,col,disp_name,rank,status,create_date,update_date)values(5,'parent_category_id',' 親カテゴリID',3,2,now(),now());
+insert into dtb_csv(csv_id,col,disp_name,status,create_date,update_date)values(5,'level','階層',2,now(),now());
+insert into dtb_csv(csv_id,col,disp_name,status,create_date,update_date)values(5,'rank','表示ランク',2,now(),now());
 
 INSERT INTO dtb_templates (template_code, template_name, create_date, update_date) VALUES('default','デフォルト', now(), now());
 
