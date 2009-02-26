@@ -124,7 +124,7 @@ class LC_Page_Admin_Contents_Inquiry extends LC_Page {
                         $question_id = $objQuery->nextval('dtb_question', 'question_id');
                     }
 
-                    $sql_val = array( 'question' => $value, 'question_name' => $_POST['title'] ,'question_id' => $question_id ,'create_date' => 'now');
+                    $sql_val = array( 'question' => $value, 'question_name' => $_POST['title'] ,'question_id' => $question_id ,'create_date' => 'now()');
                     $objQuery->insert('dtb_question', $sql_val);
                     $this->MESSAGE = "登録が完了しました";
 
