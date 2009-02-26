@@ -289,7 +289,7 @@ class LC_Page_Admin_Mail extends LC_Page {
             //-- 時刻設定の取得
             $this->arrNowDate['year'] = isset($_POST['send_year']) ? $_POST['send_year'] : "";
             $this->arrNowDate['month'] = isset($_POST['send_month']) ? $_POST['send_month'] : "";
-            $this->arrNowDate['day'] = isset($_POST['send_day']) ? $_POST['send_month'] : "";
+            $this->arrNowDate['day'] = isset($_POST['send_day']) ? $_POST['send_day'] : "";
             $this->arrNowDate['hour'] = isset($_POST['send_hour']) ? $_POST['send_hour'] : "";
             $this->arrNowDate['minutes'] = isset($_POST['send_minutes']) ? $_POST['send_minutes'] : "";
 

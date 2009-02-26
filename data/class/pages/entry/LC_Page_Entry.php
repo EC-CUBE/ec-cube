@@ -606,6 +606,9 @@ class LC_Page_Entry extends LC_Page {
         if ($isMobile) {
             // 携帯メールアドレス
             $arrRegist['email_mobile'] = $arrRegist['email'];
+			//PHONE_IDを取り出す
+			$phoneId = SC_MobileUserAgent::getId();
+        	$arrRegist['mobile_phone_id'] =  $phoneId;
         }
 
         //-- 仮登録実行
@@ -825,23 +828,17 @@ class LC_Page_Entry extends LC_Page {
     //---- 入力エラーチェック
     function lfErrorCheck2($array) {
         $objErr = new SC_CheckError($array);
-
-        $objErr->doFunc(array("郵便番号1", "zip01", ZIP01_LEN ) ,array("EXIST_CHECK", "SPTAB_CHECK" ,"NUM_CHECK", "NUM_COUNT_CHECK"));
+		$objErr->doFunc(array("郵便番号1", "zip01", ZIP01_LEN ) ,array("EXIST_CHECK", "SPTAB_CHECK" ,"NUM_CHECK", "NUM_COUNT_CHECK"));
         $objErr->doFunc(array("郵便番号2", "zip02", ZIP02_LEN ) ,array("EXIST_CHECK", "SPTAB_CHECK" ,"NUM_CHECK", "NUM_COUNT_CHECK"));
         $objErr->doFunc(array("郵便番号", "zip01", "zip02"), array("ALL_EXIST_CHECK"));
 
         $objErr->doFunc(array("性別", "sex") ,array("SELECT_CHECK", "NUM_CHECK"));
-        $objErr->doFunc(array("生年月日 (年)", "year", 4), array("EXIST_CHECK", "SPTAB_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK"));
-        if (!isset($objErr->arrErr['year'])) {
+        $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_DATE"));
+        if (isset($array['year']) && strlen($array['year']) > 0) {
             $objErr->doFunc(array("生年月日 (年)", "year", $this->objDate->getStartYear()), array("MIN_CHECK"));
             $objErr->doFunc(array("生年月日 (年)", "year", $this->objDate->getEndYear()), array("MAX_CHECK"));
         }
-        $objErr->doFunc(array("生年月日 (月日)", "month", "day"), array("SELECT_CHECK"));
-        if (!isset($objErr->arrErr['year']) && !isset($objErr->arrErr['month']) && !isset($objErr->arrErr['day'])) {
-            $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_DATE"));
-        }
-
-        return $objErr->arrErr;
+		return $objErr->arrErr;
     }
 
     //---- 入力エラーチェック

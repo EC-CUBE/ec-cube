@@ -98,7 +98,12 @@ class SC_Customer {
      *                 は false を返す。
      */
     function checkMobilePhoneId() {
-        if (!isset($_SESSION['mobile']['phone_id']) || $_SESSION['mobile']['phone_id'] === false) {
+        //docomo用にデータを取り出す。
+		if(SC_MobileUserAgent::getCarrier() == 'docomo'){
+			if($_SESSION['mobile']['phone_id'] == "" && strlen($_SESSION['mobile']['phone_id']) == 0)
+				$_SESSION['mobile']['phone_id'] = SC_MobileUserAgent::getId();
+		}
+		if (!isset($_SESSION['mobile']['phone_id']) || $_SESSION['mobile']['phone_id'] === false) {
             return false;
         }
 
@@ -117,7 +122,12 @@ class SC_Customer {
      *                 それ以外の場合は false を返す。
      */
     function getCustomerDataFromMobilePhoneIdPass($pass) {
-        if (!isset($_SESSION['mobile']['phone_id']) || $_SESSION['mobile']['phone_id'] === false) {
+        //docomo用にデータを取り出す。
+		if(SC_MobileUserAgent::getCarrier() == 'docomo'){
+			if($_SESSION['mobile']['phone_id'] == "" && strlen($_SESSION['mobile']['phone_id']) == 0)
+				$_SESSION['mobile']['phone_id'] = SC_MobileUserAgent::getId();
+		}
+		if (!isset($_SESSION['mobile']['phone_id']) || $_SESSION['mobile']['phone_id'] === false) {
             return false;
         }
 

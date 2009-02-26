@@ -327,9 +327,7 @@ class LC_Page_Admin_Design_Template extends LC_Page {
 			//index.phpが存在すればキャンペーンのテンプレートがあると判定
 			//全部チェックした方がいいか？
 	    	$campaign_template_file_path = SMARTY_TEMPLATES_DIR.$template_code ."/". CAMPAIGN_TEMPLATE_DIR . $val['directory_name'] . "/" .CAMPAIGN_TEMPLATE_ACTIVE .  "site_frame.tpl";
-	    	var_dump("<font color='red'>$campaign_template_file_path</font><br>");
 	    	if(!file_exists($campaign_template_file_path)){
-	    		var_dump("<font color='red'>test</font>");
 	    		//ファイルがなければコピーして作成
 			    $this->lfCreateTemplate(SMARTY_TEMPLATES_DIR.$template_code ."/" . CAMPAIGN_TEMPLATE_DIR , $val['directory_name'],$val['cart_flg'] );
 	    	}

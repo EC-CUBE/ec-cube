@@ -113,7 +113,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
         case 'confirm':
             // 入力値の変換
             $this->objFormParam->convParam();
-            $this->arrErr = $this->lfCheckError($this->arrData );
+            $this->arrErr = $this->lfCheckError($this->arrData, $arrInfo, $objCartSess );
             // 入力エラーなし
             if(count($this->arrErr) == 0) {
                 // DBへのデータ登録
@@ -238,7 +238,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
         case 'deliv_date':
             // 入力値の変換
             $this->objFormParam->convParam();
-            $this->arrErr = $this->lfCheckError($this->arrData);
+            $this->arrErr = $this->lfCheckError($this->arrData, $arrInfo, $objCartSess);
             if (!isset($this->arrErr['payment_id'])) {
                 // 支払い方法の入力エラーなし
                 $this->tpl_mainpage = 'shopping/deliv_date.tpl';
@@ -254,7 +254,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
         case 'confirm':
             // 入力値の変換
             $this->objFormParam->convParam();
-            $this->arrErr = $this->lfCheckError($this->arrData );
+            $this->arrErr = $this->lfCheckError($this->arrData, $arrInfo, $objCartSess);
             // 入力エラーなし
             if(count($this->arrErr) == 0) {
                 // DBへのデータ登録
@@ -363,7 +363,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
     }
 
     /* 入力内容のチェック */
-    function lfCheckError($arrData) {
+    function lfCheckError($arrData, $arrInfo, $objCartSess) {
         // 入力データを渡す。
         $arrRet =  $this->objFormParam->getHashArray();
         $objErr = new SC_CheckError($arrRet);
@@ -387,11 +387,6 @@ class LC_Page_Shopping_Payment extends LC_Page {
             }
         }
         
-        $objView = new SC_MobileView();
-        $objSiteInfo = $objView->objSiteInfo;
-        $arrInfo = $objSiteInfo->data;
-        $objCartSess = new SC_CartSession();
-        $arrInfo = $objSiteInfo->data;
         // 購入金額の取得得
         $total_pretax = $objCartSess->getAllProductsTotal($arrInfo);
         // 支払い方法の取得
@@ -403,7 +398,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
                 break;
             }
         }
-        if ($pay_flag) {
+        if ($pay_flag && $arrRet['payment_id'] != "") {
             SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
         }
         

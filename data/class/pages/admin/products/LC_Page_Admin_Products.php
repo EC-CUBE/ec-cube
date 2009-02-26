@@ -221,9 +221,9 @@ class LC_Page_Admin_Products extends LC_Page {
                             foreach ($val as $element){
                                 if ($element != ""){
                                     if ($tmp_where == ""){
-                                        $tmp_where.="AND (status LIKE ? ";
+                                        $tmp_where.="AND (status = ? ";
                                     }else{
-                                        $tmp_where.="OR status LIKE ? ";
+                                        $tmp_where.="OR status = ? ";
                                     }
                                     $arrval[]=$element;
                                 }
@@ -267,10 +267,18 @@ class LC_Page_Admin_Products extends LC_Page {
                     exit;
                     break;
                 case 'delete_all':
+                    // 検索結果の取得
+                    $col = "product_id";
+                    $from = "vw_products_nonclass AS noncls ";
+                    $arrProducts = $objQuery->select($col, $from, $where, $arrval);
                     // 検索結果をすべて削除
-                    $where = "product_id IN (SELECT product_id FROM vw_products_nonclass AS noncls  WHERE $where)";
                     $sqlval['del_flg'] = 1;
-                    $objQuery->update("dtb_products", $sqlval, $where, $arrval);
+                    $where = "product_id = ?";
+                    if (count($arrProducts) > 0) {
+                        foreach ($arrProducts as $key => $val) {
+                            $objQuery->update("dtb_products", $sqlval, $where, array($arrProducts[$key]["product_id"]));
+                        }
+                    }
                     break;
                 default:
                     // 読み込む列とテーブルの指定

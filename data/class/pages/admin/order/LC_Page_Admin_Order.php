@@ -26,7 +26,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
 
 /* ペイジェント決済モジュール連携用 */
 if (file_exists(MODULE_PATH . 'mdl_paygent/include.php') === TRUE) {
-	require_once(MODULE_PATH . 'mdl_paygent/include.php');
+  require_once(MODULE_PATH . 'mdl_paygent/include.php');
 }
 
 /**
@@ -60,7 +60,7 @@ class LC_Page_Admin_Order extends LC_Page {
         $this->arrORDERSTATUS_COLOR = $masterData->getMasterData("mtb_order_status_color");
         $this->arrSex = $masterData->getMasterData("mtb_sex");
         $this->arrPageMax = $masterData->getMasterData("mtb_page_max");
-        
+
         /* ペイジェント決済モジュール連携用 */
         if(function_exists("sfPaygentOrderPage")) {
             $this->arrDispKind = sfPaygentOrderPage();
@@ -401,7 +401,7 @@ class LC_Page_Admin_Order extends LC_Page {
     /* 入力内容のチェック */
     function lfCheckError() {
         // 入力データを渡す。
-        $arrRet =  $this->objFormParam->getHashArray();
+        $arrRet = $this->objFormParam->getHashArray();
         $objErr = new SC_CheckError($arrRet);
         $objErr->arrErr = $this->objFormParam->checkError();
 
@@ -409,9 +409,13 @@ class LC_Page_Admin_Order extends LC_Page {
         $objErr->doFunc(array("受注番号1", "受注番号2", "search_order_id1", "search_order_id2"), array("GREATER_CHECK"));
         $objErr->doFunc(array("年齢1", "年齢2", "search_age1", "search_age2"), array("GREATER_CHECK"));
         $objErr->doFunc(array("購入金額1", "購入金額2", "search_total1", "search_total2"), array("GREATER_CHECK"));
-        $objErr->doFunc(array("開始日", "search_startyear", "search_startmonth", "search_startday"), array("CHECK_DATE"));
-        $objErr->doFunc(array("終了日", "search_endyear", "search_endmonth", "search_endday"), array("CHECK_DATE"));
-        $objErr->doFunc(array("開始日", "終了日", "search_startyear", "search_startmonth", "search_startday", "search_endyear", "search_endmonth", "search_endday"), array("CHECK_SET_TERM"));
+        $objErr->doFunc(array("開始日", "search_sorderyear", "search_sordermonth", "search_sorderday"), array("CHECK_DATE"));
+        $objErr->doFunc(array("終了日", "search_eorderyear", "search_eordermonth", "search_eorderday"), array("CHECK_DATE"));
+        $objErr->doFunc(array("開始日", "終了日", "search_sorderyear", "search_sordermonth", "search_sorderday", "search_eorderyear", "search_eordermonth", "search_eorderday"), array("CHECK_SET_TERM"));
+
+        $objErr->doFunc(array("開始日", "search_supdateyear", "search_supdatemonth", "search_supdateday"), array("CHECK_DATE"));
+        $objErr->doFunc(array("終了日", "search_eupdateyear", "search_eupdatemonth", "search_eupdateday"), array("CHECK_DATE"));
+        $objErr->doFunc(array("開始日", "終了日", "search_supdateyear", "search_supdatemonth", "search_supdateday", "search_eupdateyear", "search_eupdatemonth", "search_eupdateday"), array("CHECK_SET_TERM"));
 
         $objErr->doFunc(array("開始日", "search_sbirthyear", "search_sbirthmonth", "search_sbirthday"), array("CHECK_DATE"));
         $objErr->doFunc(array("終了日", "search_ebirthyear", "search_ebirthmonth", "search_ebirthday"), array("CHECK_DATE"));

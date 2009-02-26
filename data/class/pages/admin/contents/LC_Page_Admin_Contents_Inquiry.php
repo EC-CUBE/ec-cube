@@ -56,7 +56,7 @@ class LC_Page_Admin_Contents_Inquiry extends LC_Page {
                              '回答ID',
                              '質問ID',
                              '回答日時',
-                             '回答名',
+                             'アンケートタイトル',
                              '顧客名1',
                              '顧客名2',
                              '顧客名カナ1',
@@ -85,7 +85,7 @@ class LC_Page_Admin_Contents_Inquiry extends LC_Page {
      * @return void
      */
     function process() {
-        $conn = new SC_DBConn();
+        $objQuery = new SC_Query();
         $objView = new SC_AdminView();
         $objSess = new SC_Session();
 
@@ -97,8 +97,7 @@ class LC_Page_Admin_Contents_Inquiry extends LC_Page {
                               , "3"=>"チェックボックス", "4"=>"ラジオボタン"
                               );
 
-        $sql = "SELECT *, cast(create_date as date) as disp_date FROM dtb_question WHERE del_flg = 0 ORDER BY question_id";
-        $result = $conn->getAll($sql);
+        $result = $objQuery->select('*, cast(create_date as date) as disp_date', 'dtb_question', 'del_flg = 0 ORDER BY question_id');
         $this->list_data = $result;
 
         if (!isset($_GET['mode'])) $_GET['mode'] = "";
@@ -118,7 +117,6 @@ class LC_Page_Admin_Contents_Inquiry extends LC_Page {
             if ( ! $error  ){
                 // 新規登録
                 if ( ! is_numeric($_POST['question_id']) ){
-                    $objQuery = new SC_Query();
 
                     //登録
                     $value = serialize($_POST);
@@ -126,8 +124,8 @@ class LC_Page_Admin_Contents_Inquiry extends LC_Page {
                         $question_id = $objQuery->nextval('dtb_question', 'question_id');
                     }
 
-                    $sql_val = array( $value, $_POST['title'] ,$question_id );
-                    $conn->query("INSERT INTO dtb_question ( question, question_name, question_id, create_date) VALUES (?, ?, ?, now())", $sql_val );
+                    $sql_val = array( 'question' => $value, 'question_name' => $_POST['title'] ,'question_id' => $question_id ,'create_date' => 'now');
+                    $objQuery->insert('dtb_question', $sql_val);
                     $this->MESSAGE = "登録が完了しました";
 
                     if (DB_TYPE == "mysql") {
@@ -141,8 +139,8 @@ class LC_Page_Admin_Contents_Inquiry extends LC_Page {
                 } else {
                     //編集
                     $value = serialize($_POST);
-                    $sql_val = array( $value, $_POST['title'] ,$_POST['question_id'] );
-                    $conn->query("UPDATE dtb_question SET question = ?, question_name = ? WHERE question_id = ?", $sql_val );
+                    $sql_val = array( 'question'=>$value, 'question_name'=>$_POST['title'] );
+                    $objQuery->update('dtb_question', $sql_val, 'question_id = ?',  array($_POST['question_id']) );
                     $this->MESSAGE = "編集が完了しました";
                     $this->QUESTION_ID = $_POST['question_id'];
                     $this->reload(null, true);
@@ -158,8 +156,8 @@ class LC_Page_Admin_Contents_Inquiry extends LC_Page {
         // 削除ボタン押下時
         } elseif ( ( $_GET['mode'] == 'delete' ) && ( SC_Utils_Ex::sfCheckNumLength($_GET['question_id']) )  ){
 
-            $sql = "UPDATE dtb_question SET del_flg = 1 WHERE question_id = ?";
-            $conn->query( $sql, array( $_GET['question_id'] ) );
+            $sqlval = array('del_flg' => 1);
+            $objQuery->update('dtb_question', $sqlval, 'question_id = ?', array( $_GET['question_id'] ) );
             $this->reload(null, true);
 
         // CSVダウンロードボタン押下時
@@ -168,7 +166,41 @@ class LC_Page_Admin_Contents_Inquiry extends LC_Page {
 
             $objCSV = new SC_Helper_CSV_Ex();
             $head = SC_Utils_Ex::sfGetCSVList($this->arrCVSTITLE);
-            $list_data = $conn->getAll("SELECT result_id,question_id,question_date,question_name,name01,name02,kana01,kana02,zip01,zip02,pref,addr01,addr02,tel01,tel02,tel03,mail01,question01,question02,question03,question04,question05,question06 FROM dtb_question_result WHERE del_flg = 0 AND question_id = ? ORDER BY result_id ASC",array($_GET['question_id']));
+            $sql =<<<__EOS__
+                    SELECT
+                         dtb_question_result.result_id
+                        ,dtb_question_result.question_id
+                        ,dtb_question_result.create_date
+                        ,dtb_question.question_name
+                        ,dtb_question_result.name01
+                        ,dtb_question_result.name02
+                        ,dtb_question_result.kana01
+                        ,dtb_question_result.kana02
+                        ,dtb_question_result.zip01
+                        ,dtb_question_result.zip02
+                        ,dtb_question_result.pref
+                        ,dtb_question_result.addr01
+                        ,dtb_question_result.addr02
+                        ,dtb_question_result.tel01
+                        ,dtb_question_result.tel02
+                        ,dtb_question_result.tel03
+                        ,dtb_question_result.mail01
+                        ,dtb_question_result.question01
+                        ,dtb_question_result.question02
+                        ,dtb_question_result.question03
+                        ,dtb_question_result.question04
+                        ,dtb_question_result.question05
+                        ,dtb_question_result.question06
+                    FROM dtb_question_result
+                        LEFT JOIN dtb_question
+                            ON dtb_question_result.question_id = dtb_question.question_id
+                    WHERE 0=0
+                        AND dtb_question_result.del_flg = 0
+                        AND dtb_question_result.question_id = ?
+                    ORDER BY dtb_question_result.result_id ASC
+__EOS__;
+
+            $list_data = $objQuery->getAll($sql, array($_GET['question_id']));
             $data = "";
             for($i = 0; $i < count($list_data); $i++) {
                 // 各項目をCSV出力用に変換する。
@@ -185,7 +217,7 @@ class LC_Page_Admin_Contents_Inquiry extends LC_Page {
             if ( is_numeric($_GET['question_id']) ){
 
                 $sql = "SELECT question FROM dtb_question WHERE question_id = ?";
-                $result = $conn->getOne($sql, array($_GET['question_id']));
+                $result = $objQuery->getOne($sql, array($_GET['question_id']));
 
                 if ( $result ){
                     $_POST = unserialize( $result );
