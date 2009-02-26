@@ -28,7 +28,7 @@
 ご注文、有り難うございました。<br>
 商品到着をお楽しみにお待ち下さいませ。<br>
 どうぞ、今後とも、<!--{$arrInfo.shop_name|escape}-->をよろしくお願いします。<br>
-<br> 
+<br>
 
 <!--{if $arrOther.title.value }-->
 <!-- ▼その他の決済情報 -->
@@ -48,5 +48,5 @@
 <hr>
 
 <!-- ▼フッター ここから -->
-<center>LOCKON CO.,LTD.</center>
+<!--{include file='footer.tpl'}-->
 <!-- ▲フッター ここまで -->
