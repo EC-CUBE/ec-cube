@@ -1627,7 +1627,7 @@ __EOS__;
             } else if (SC_Utils_Ex::sfIsInt($product_id) && $this->sfIsRecord("dtb_products","product_id", $product_id, $status)) {
                 $objQuery = new SC_Query();
                 $where = "product_id = ?";
-                $maker_id = $objQuery->getCol("dtb_productes", "maker_id", "product_id = ?", array($product_id));
+                $maker_id = $objQuery->getCol("dtb_products", "maker_id", "product_id = ?", array($product_id));
                 $this->g_maker_id = $maker_id;
             } else {
                 // 不正な場合は、空の配列を返す。
