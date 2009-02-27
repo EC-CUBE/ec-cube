@@ -358,43 +358,41 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page {
             $sqlval['status'] = 2;
         }
 
-        if($arrRet['product_id'] != "" && $arrRet['product_class_id'] != "") {
+        if($sqlval['product_id'] != "" && $sqlval['product_class_id'] != "") {
 
             // UPDATEの実行
             $where = "product_id = ?";
             $objQuery->update("dtb_products", $sqlval, $where, array($sqlval['product_id']));
+            
+            $product_id = $sqlval['product_id'];
         } else {
-
             // 新規登録
-            // postgresqlとmysqlとで処理を分ける
-            if (DB_TYPE == "pgsql") {
-                $product_id = $objQuery->nextval("dtb_products","product_id");
-            }elseif (DB_TYPE == "mysql") {
-                $product_id = $objQuery->get_auto_increment("dtb_products");
-            }
-            $sqlval['product_id'] = $product_id;
-            $sqlval['create_date'] = $time;
 
+            unset($sqlval['product_id']);
+            $sqlval['create_date'] = $time;
+            
             // INSERTの実行
             $objQuery->insert("dtb_products", $sqlval);
+            
+            $product_id = $objQuery->currval("dtb_products","product_id");
         }
 
         // カテゴリ登録
         $arrCategory_id = explode("|", $arrRet["category_id"]);
-        $objDb->updateProductCategories($arrCategory_id, $sqlval['product_id']);
+        $objDb->updateProductCategories($arrCategory_id, $product_id);
 
         // 規格登録
-        $this->lfRegistProductClass($objQuery, $arrRet, $sqlval['product_id'], $arrRet['product_class_id']);
+        $this->lfRegistProductClass($objQuery, $arrRet, $product_id, $arrRet['product_class_id']);
 
         // 関連商品登録
-        $objQuery->delete("dtb_recommend_products", "product_id = ?", array($sqlval['product_id']));
+        $objQuery->delete("dtb_recommend_products", "product_id = ?", array($product_id));
         for($i = 1; $i <= RECOMMEND_PRODUCT_MAX; $i++) {
             $keyname = "recommend_product_id" . $i;
             $comment_key = "recommend_comment" . $i;
             if($arrRet[$keyname] != "") {
                 $arrProduct = $objQuery->select("product_id", "dtb_products", "product_id = ?", array($arrRet[$keyname]));
                 if($arrProduct[0]['product_id'] != "") {
-                    $arrval['product_id'] = $sqlval['product_id'];
+                    $arrval['product_id'] = $product_id;
                     $arrval['recommend_product_id'] = $arrProduct[0]['product_id'];
                     $arrval['comment'] = $arrRet[$comment_key];
                     $arrval['update_date'] = "Now()";
