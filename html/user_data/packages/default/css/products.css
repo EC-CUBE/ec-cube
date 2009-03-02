@@ -155,9 +155,8 @@ div.listrightblock .cartbtn {
 }
 
 div.listrightblock .cartbtn img {
-    display: block;
     width: 115px;
-    margin: 5px auto 0 auto;
+    margin: 5px 0 0 0;
 }
 
 div.listrightblock .box54 {
