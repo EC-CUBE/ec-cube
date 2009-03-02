@@ -29,7 +29,7 @@
             class="<!--{if $tpl_page_category == "abouts"}--> selected<!--{/if}-->"
         >当サイトについて</a></li><!--{* IE不具合対策(空白を入れない)
     *}--><li>
-        <a href="<!--{$smarty.const.URL_DIR}-->contact/<!--{$smarty.const.DIR_INDEX_URL}-->"
+        <a href="<!--{$smarty.const.SSL_URL}-->contact/<!--{$smarty.const.DIR_INDEX_URL}-->"
             class="<!--{if $tpl_page_category == "contact"}--> selected<!--{/if}-->"
         >お問い合わせ</a></li><!--{* IE不具合対策(空白を入れない)
     *}--><li>
