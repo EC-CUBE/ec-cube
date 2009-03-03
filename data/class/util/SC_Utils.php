@@ -622,8 +622,8 @@ class SC_Utils {
     }
 
     function sfTrim($str) {
-        $ret = ereg_replace("^[　 \n\r]*", "", $str);
-        $ret = ereg_replace("[　 \n\r]*$", "", $ret);
+        $ret = mb_ereg_replace("^[　 \n\r]*", "", $str);
+        $ret = mb_ereg_replace("[　 \n\r]*$", "", $ret);
         return $ret;
     }
 
@@ -1992,7 +1992,7 @@ echo $template_path;
 
         for($i = 0; $i < $cnt; $i++) {
             $html.= "<tr>";
-        	foreach($array[$i] as $val) {
+            foreach($array[$i] as $val) {
                 $html.="<td>$val</td>";
             }
             $html.= "</tr>";
