@@ -177,8 +177,7 @@ class LC_Page_Cart extends LC_Page {
     function mobileProcess() {
 
         // 買い物を続ける場合
-        if (!isset($_REQUEST['continue'])) $_REQUEST['continue'] = "";
-        if($_REQUEST['continue']) {
+        if ($_REQUEST['mode'] == 'continue') {
             $this->sendRedirect($this->getLocation(MOBILE_URL_SITE_TOP), true);
             exit;
         }
@@ -197,8 +196,6 @@ class LC_Page_Cart extends LC_Page {
         if($objCartSess->getCancelPurchase()) {
             $this->tpl_message = "商品購入中にｶｰﾄ内容が変更されましたので､お手数ですが購入手続きをやり直して下さい｡";
         }
-
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
         switch($_POST['mode']) {
         case 'confirm':

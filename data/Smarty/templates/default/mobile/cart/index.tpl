@@ -63,10 +63,11 @@
 		<!--{$arrData.birth_point|number_format}-->pt<br>
 	<!--{/if}-->
 	<br>
-	<center><input type="submit" value="注文する" name="confirm"></center>
+	<center><input type="submit" value="注文する"></center>
 </form>
 <form method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
-	<center><input type="submit" value="お買物を続ける" name="continue"></center>
+	<input type="hidden" name="mode" value="continue">
+	<center><input type="submit" value="お買物を続ける"></center>
 </form>
 <!--{else}-->
 	※現在ｶｰﾄ内に商品はございません｡<br>
