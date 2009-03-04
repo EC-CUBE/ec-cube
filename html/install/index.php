@@ -99,6 +99,8 @@ case 'step2':
     //入力値のエラーチェック
     $objPage->arrErr = lfCheckDBError($objDBParam);
     if(count($objPage->arrErr) == 0) {
+        // 設定ファイルの生成
+        lfMakeConfigFile();
         $objPage = lfDispStep3($objPage);
     } else {
         $objPage = lfDispStep2($objPage);
@@ -135,8 +137,6 @@ case 'step3':
         // スキップする場合には次画面へ遷移
         $skip = $_POST["db_skip"];
         if ($skip == "on") {
-            // 設定ファイルの生成
-            lfMakeConfigFile();
             $objPage = lfDispComplete($objPage);
             //$objPage = lfDispStep4($objPage);
             break;
@@ -193,8 +193,6 @@ case 'step3':
     }
 
     if(count($objPage->arrErr) == 0) {
-        // 設定ファイルの生成
-        lfMakeConfigFile();
         $objPage = lfDispStep3($objPage);
         $objPage->tpl_mode = 'step4';
     } else {
@@ -704,7 +702,6 @@ function lfCheckWebError($objFormParam) {
 // 入力内容のチェック
 function lfCheckDBError($objFormParam) {
     global $objPage;
-    global $objDb;
 
     // 入力データを渡す。
     $arrRet =  $objFormParam->getHashArray();
@@ -715,14 +712,14 @@ function lfCheckDBError($objFormParam) {
     if(count($objErr->arrErr) == 0) {
         // 接続確認
         $dsn = $arrRet['db_type']."://".$arrRet['db_user'].":".$arrRet['db_password']."@".$arrRet['db_server'].":".$arrRet['db_port']."/".$arrRet['db_name'];
-        define("DB_TYPE", $arrRet['db_type']);
         // Debugモード指定
         $options['debug'] = PEAR_DB_DEBUG;
         $objDB = DB::connect($dsn, $options);
         // 接続成功
         if(!PEAR::isError($objDB)) {
+            $dbFactory = SC_DB_DBFactory_Ex::getInstance();
             // データベースバージョン情報の取得
-            $objPage->tpl_db_version = $objDb->sfGetDBVersion($dsn);
+            $objPage->tpl_db_version = $dbFactory->sfGetDBVersion($dsn);
         } else {
             $objErr->arrErr['all'] = ">> " . $objDB->message . "<br>";
             // エラー文を取得する
