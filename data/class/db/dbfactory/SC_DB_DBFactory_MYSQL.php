@@ -45,7 +45,6 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
      */
     function sfGetDBVersion($dsn = "") {
         $objQuery = new SC_Query($this->getDSN($dsn), true, true);
-        list($db_type) = split(":", $dsn);
         $val = $objQuery->getOne("select version()");
         return "MySQL " . $val;
     }
