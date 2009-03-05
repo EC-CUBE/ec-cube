@@ -393,7 +393,8 @@ CREATE TABLE dtb_category (
     creator_id int4 NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp,
-    del_flg int2 NOT NULL DEFAULT 0
+    del_flg int2 NOT NULL DEFAULT 0,
+    PRIMARY KEY (category_id)
 );
 
 CREATE TABLE dtb_product_categories (
