@@ -25,6 +25,7 @@
 <input type="hidden" name="mode" value="edit" />
 <input type="hidden" name="parent_category_id" value="<!--{$arrForm.parent_category_id}-->">
 <input type="hidden" name="category_id" value="<!--{$arrForm.category_id}-->">
+<input type="hidden" name="keySet" value="">
 <div id="products" class="contents-main">
   <h2>カテゴリー設定(最大<!--{$smarty.const.LEVEL_MAX}-->階層まで)</h2>
 
@@ -88,8 +89,37 @@
     <button type="submit" onclick="fnModeSubmit('edit','','');"><span>登録</span></button><span class="attention">（上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
     
     <!--{if count($arrList) > 0}-->
-    <table class="list">
-      <tr>
+<script type="text/javascript">
+// カテゴリーテーブルのイニシャライズ
+$(document).ready(function() {
+    $("#categoryTable").tableDnD({
+	    onDragClass: "movingHandle",
+        onDrop: function(table, row) {
+            var rows = table.tBodies[0].rows;
+            var keys = row.id;
+
+            for (var i = 0; i < rows.length; i++) {
+                if (row.id == rows[i].id) {
+                    keys += "-" + i;
+                    break;
+                }
+            }
+
+            fnModeSubmit('moveByDnD','keySet', keys);
+        },
+        dragHandle: "dragHandle"
+    });
+
+    $("#categoryTable tr").hover(function() {
+        $(this.cells[0]).addClass('activeHandle');
+    }, function() {
+        $(this.cells[0]).removeClass('activeHandle');
+    });
+});
+</script>
+    <table class="list" id="categoryTable">
+      <tr class="nodrop nodrag">
+	  	<th width="40">移動</th>
         <th>ID</th>
         <th>カテゴリ名</th>
         <th>編集</th>
@@ -97,8 +127,9 @@
         <th>移動</th>
       </tr>
       <!--{section name=cnt loop=$arrList}-->
-      <tr style="background:<!--{if $arrForm.category_id != $arrList[cnt].category_id}-->#ffffff<!--{else}--><!--{$smarty.const.SELECT_RGB}--><!--{/if}-->;" align="left">
-        <td class="center"><!--{$arrList[cnt].category_id}--></td>
+      <tr id="<!--{$arrList[cnt].category_id}-->" style="background:<!--{if $arrForm.category_id != $arrList[cnt].category_id}-->#ffffff<!--{else}--><!--{$smarty.const.SELECT_RGB}--><!--{/if}-->;" align="left">
+        <td class="dragHandle">&sect;</td>
+		<td class="center"><!--{$arrList[cnt].category_id}--></td>
         <td>
         <!--{if $arrList[cnt].level != $smarty.const.LEVEL_MAX}-->
           <a href="?" onclick="fnModeSubmit('tree', 'parent_category_id', <!--{$arrList[cnt].category_id}-->); return false"><!--{$arrList[cnt].category_name|escape}--></a>
