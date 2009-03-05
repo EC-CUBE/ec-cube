@@ -487,3 +487,16 @@ x-dummy
     border: none;
     visibility: hidden;
 }
+
+/* DnD並び替え系の設定 */
+tr.movingHandle td {
+    background-color: #EEE;
+}
+.dragHandle { /* ハンドルの設定 */
+    text-align: center;
+	font-weight: bold;
+	cursor: n-resize;
+}
+.activeHandle { /* アクティブハンドルの設定 */
+    color: #F9A406;
+}
