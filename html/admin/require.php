@@ -22,8 +22,8 @@
  */
 
 // rtrim ‚Í PHP ƒo[ƒWƒ‡ƒ“ˆË‘¶‘Îô
-define("HTML_PATH", rtrim(realpath(rtrim(realpath(dirname(__FILE__)), '/\\') . '/../'), '/\\') . '/');
+define('HTML_PATH', rtrim(realpath(rtrim(realpath(dirname(__FILE__)), '/\\') . '/../'), '/\\') . '/');
 
-require_once(HTML_PATH . "define.php");
-require_once(HTML_PATH . HTML2DATA_DIR . "require_base.php");
+require_once HTML_PATH . 'define.php';
+require_once HTML_PATH . HTML2DATA_DIR . 'require_base.php';
 ?>

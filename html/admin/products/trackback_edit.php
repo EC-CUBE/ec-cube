@@ -21,14 +21,14 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 // {{{ requires
-require_once("../../require.php");
-require_once(CLASS_EX_PATH . "page_extends/admin/products/LC_Page_Admin_Products_TrackbackEdit_Ex.php");
+require_once '../require.php';
+require_once CLASS_EX_PATH . 'page_extends/admin/products/LC_Page_Admin_Products_TrackbackEdit_Ex.php';
 
 // }}}
 // {{{ generate page
 
 $objPage = new LC_Page_Admin_Products_TrackbackEdit_Ex();
-register_shutdown_function(array($objPage, "destroy"));
+register_shutdown_function(array($objPage, 'destroy'));
 $objPage->init();
 $objPage->process();
 ?>
