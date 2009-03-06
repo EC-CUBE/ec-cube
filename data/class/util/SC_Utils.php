@@ -1546,8 +1546,7 @@ echo $template_path;
     }
 
     function sfFlush($output = " ", $sleep = 0){
-        // 実行時間を制限しない
-        set_time_limit(0);
+        ob_flush();
         // 出力をバッファリングしない(==日本語自動変換もしない)
         ob_end_clean();
 
@@ -1559,7 +1558,6 @@ echo $template_path;
         // 出力をフラッシュする
         flush();
 
-        ob_flush();
         ob_start();
 
         // 時間のかかる処理

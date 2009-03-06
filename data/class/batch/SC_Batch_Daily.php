@@ -43,6 +43,8 @@ class SC_Batch_Daily extends SC_Batch {
      *                    指定しない場合は, 内部関数が実行されない.
      */
     function SC_Batch_Daily($argv = "") {
+        // 実行時間を制限しない
+        set_time_limit(0);
 
         if (!empty($argv)) {
             $this->execute($argv);

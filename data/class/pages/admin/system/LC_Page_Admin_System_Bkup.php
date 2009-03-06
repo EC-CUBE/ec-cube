@@ -203,6 +203,9 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
 
     // バックアップファイル作成
     function lfCreateBkupData($bkup_name){
+        // 実行時間を制限しない
+        set_time_limit(0);
+        
         $objQuery = new SC_Query();
         $csv_data = "";
         $csv_autoinc = "";
@@ -464,6 +467,9 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
 
     // バックアップファイルをリストアする
     function lfRestore($bkup_name){
+        // 実行時間を制限しない
+        set_time_limit(0);
+        
         $objQuery = new SC_Query("", false);
         $csv_data = "";
         $err = true;
