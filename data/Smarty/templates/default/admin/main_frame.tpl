@@ -36,9 +36,6 @@
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/admin.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/css.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/file_manager.js"></script>
-<!--{if $tpl_mainno == "products" && $tpl_subno == 'category'}-->
-<script type="text/javascript" src="<!--{$TPL_DIR}-->js/jquery.tablednd.js"></script>
-<!--{/if}-->
 <title><!--{$smarty.const.ADMIN_TITLE}--></title>
 <script type="text/javascript">
 <!--
