@@ -313,43 +313,47 @@
     function fnSelectCheckSubmit(){ 
 
         var fm = document.form1;
-                
-        var i;
-        var checkflag = 0;
+        
+        if (!fm["pdf_order_id[]"]) {
+            return false;
+        }
+        
+        var checkflag = false;
         var max = fm["pdf_order_id[]"].length;
         
-        if(max) {
-            for (i=0;i<max;i++){
+        if (max) {
+            for (var i=0; i<max; i++) {
                 if(fm["pdf_order_id[]"][i].checked == true){
-                    checkflag = 1;
+                    checkflag = true;
                 }
             }
         } else {
             if(fm["pdf_order_id[]"].checked == true) {
-                checkflag = 1;
+                checkflag = true;
             }
         }
 
-        if(checkflag == 0){
+        if(!checkflag){
             alert('チェックボックスが選択されていません');
             return false;
         }
         
-        if(checkflag == 1){ 
-            window.open("about:blank", "pdf", "width=1000,height=800,scrollbars=yes,resizable=yes,toolbar=no,location=no,directories=no,status=no");
-            document.form1.target = "pdf";
-            document.form1.mode.value = 'pdf';
-            document.form1.action = 'pdf.php';
-            document.form1.submit(); 
-        }
+        window.open("about:blank", "pdf", "width=1000,height=800,scrollbars=yes,resizable=yes,toolbar=no,location=no,directories=no,status=no");
+        fm.target = "pdf";
+        fm.mode.value = 'pdf';
+        fm.action = 'pdf.php';
+        fm.submit(); 
     }
     
     function fnBoxChecked(check){
-        var count;
         var fm = document.form1;
         var max = fm["pdf_order_id[]"].length;
-        for(count=0; count<max; count++){
-            fm["pdf_order_id[]"][count].checked = check;
+        if (max) {
+            for (var i=0; i<max; i++) {
+                fm["pdf_order_id[]"][i].checked = check;
+            }
+        } else {
+            fm["pdf_order_id[]"].checked = check;
         }
     }
     
