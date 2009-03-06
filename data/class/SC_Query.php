@@ -252,11 +252,7 @@ class SC_Query {
                 $strval .= 'Now(),';
             } else {
                 $strval .= '?,';
-                if($val != ""){
-                    $arrval[] = $val;
-                } else {
-                    $arrval[] = NULL;
-                }
+                $arrval[] = $val;
             }
             $find = true;
         }
@@ -270,39 +266,6 @@ class SC_Query {
         $sqlin = "INSERT INTO $table(" . $strcol. ") VALUES (" . $strval . ")";
         // INSERT文の実行
         $ret = $this->conn->query($sqlin, $arrval);
-
-        return $ret;
-    }
-
-    // INSERT文の生成・実行
-    // $table   :テーブル名
-    // $sqlval  :列名 => 値の格納されたハッシュ配列
-    function fast_insert($table, $sqlval) {
-        $strcol = '';
-        $strval = '';
-        $find = false;
-
-        foreach ($sqlval as $key => $val) {
-                $strcol .= $key . ',';
-                if($val != ""){
-                    $eval = pg_escape_string($val);
-                    $strval .= "'$eval',";
-                } else {
-                    $strval .= "NULL,";
-                }
-                $find = true;
-        }
-        if(!$find) {
-            return false;
-        }
-        // 文末の","を削除
-        $strcol = ereg_replace(",$","",$strcol);
-        // 文末の","を削除
-        $strval = ereg_replace(",$","",$strval);
-        $sqlin = "INSERT INTO $table(" . $strcol. ") VALUES (" . $strval . ")";
-
-        // INSERT文の実行
-        $ret = $this->conn->query($sqlin);
 
         return $ret;
     }
@@ -326,11 +289,7 @@ class SC_Query {
                 $strcol .= $key . '= Now(),';
             } else {
                 $strcol .= $key . '= ?,';
-                if($val != ""){
-                    $arrval[] = $val;
-                } else {
-                    $arrval[] = NULL;
-                }
+                $arrval[] = $val;
             }
             $find = true;
         }
@@ -362,7 +321,7 @@ class SC_Query {
             }
         }
 
-        // INSERT文の実行
+        // UPDATE文の実行
         $ret = $this->conn->query($sqlup, $arrval);
         return $ret;
     }
