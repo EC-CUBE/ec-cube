@@ -18,7 +18,7 @@
  * @author     Stig Bakken <ssb@php.net>
  * @author     Tomas V.V.Cox <cox@idecnet.com>
  * @author     Daniel Convissor <danielc@php.net>
- * @copyright  1997-2005 The PHP Group
+ * @copyright  1997-2007 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
  * @version    CVS: $Id$
  * @link       http://pear.php.net/package/DB
@@ -27,13 +27,12 @@
 /**
  * Obtain the PEAR class so it can be extended from
  */
-
 if(!defined('DB_PHP_DIR')) {
 	$DB_PHP_DIR = realpath(dirname( __FILE__));
 	define("DB_PHP_DIR", $DB_PHP_DIR);	
 }
-
 require_once DB_PHP_DIR . '/PEAR.php';
+
 
 // {{{ constants
 // {{{ error codes
@@ -429,9 +428,9 @@ define('DB_PORTABILITY_ALL', 63);
  * @author     Stig Bakken <ssb@php.net>
  * @author     Tomas V.V.Cox <cox@idecnet.com>
  * @author     Daniel Convissor <danielc@php.net>
- * @copyright  1997-2005 The PHP Group
+ * @copyright  1997-2007 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    Release: @package_version@
+ * @version    Release: 1.7.14RC1
  * @link       http://pear.php.net/package/DB
  */
 class DB
@@ -472,7 +471,7 @@ class DB
             return $tmp;
         }
 
-        @$obj =& new $classname;
+        @$obj = new $classname;
 
         foreach ($options as $option => $value) {
             $test = $obj->setOption($option, $value);
@@ -549,7 +548,7 @@ class DB
             return $tmp;
         }
 
-        @$obj =& new $classname;
+        @$obj = new $classname;
 
         foreach ($options as $option => $value) {
             $test = $obj->setOption($option, $value);
@@ -560,7 +559,11 @@ class DB
 
         $err = $obj->connect($dsninfo, $obj->getOption('persistent'));
         if (DB::isError($err)) {
-            $err->addUserInfo($dsn);
+            if (is_array($dsn)) {
+                $err->addUserInfo(DB::getDSNString($dsn, true));
+            } else {
+                $err->addUserInfo($dsn);
+            }
             return $err;
         }
 
@@ -577,7 +580,7 @@ class DB
      */
     function apiVersion()
     {
-        return '@package_version@';
+        return '1.7.14RC1';
     }
 
     // }}}
@@ -630,7 +633,7 @@ class DB
     {
         $manips = 'INSERT|UPDATE|DELETE|REPLACE|'
                 . 'CREATE|DROP|'
-                . 'LOAD DATA|SELECT .* INTO|COPY|'
+                . 'LOAD DATA|SELECT .* INTO .* FROM|COPY|'
                 . 'ALTER|GRANT|REVOKE|'
                 . 'LOCK|UNLOCK';
         if (preg_match('/^\s*"?(' . $manips . ')\s+/i', $query)) {
@@ -813,13 +816,11 @@ class DB
         // process the different protocol options
         $parsed['protocol'] = (!empty($proto)) ? $proto : 'tcp';
         $proto_opts = rawurldecode($proto_opts);
+        if (strpos($proto_opts, ':') !== false) {
+            list($proto_opts, $parsed['port']) = explode(':', $proto_opts);
+        }
         if ($parsed['protocol'] == 'tcp') {
-            if (strpos($proto_opts, ':') !== false) {
-                list($parsed['hostspec'],
-                     $parsed['port']) = explode(':', $proto_opts);
-            } else {
-                $parsed['hostspec'] = $proto_opts;
-            }
+            $parsed['hostspec'] = $proto_opts;
         } elseif ($parsed['protocol'] == 'unix') {
             $parsed['socket'] = $proto_opts;
         }
@@ -853,6 +854,82 @@ class DB
     }
 
     // }}}
+    // {{{ getDSNString()
+
+    /**
+     * Returns the given DSN in a string format suitable for output.
+     *
+     * @param array|string the DSN to parse and format
+     * @param boolean true to hide the password, false to include it
+     * @return string
+     */
+    function getDSNString($dsn, $hidePassword) {
+        /* Calling parseDSN will ensure that we have all the array elements
+         * defined, and means that we deal with strings and array in the same
+         * manner. */
+        $dsnArray = DB::parseDSN($dsn);
+        
+        if ($hidePassword) {
+            $dsnArray['password'] = 'PASSWORD';
+        }
+
+        /* Protocol is special-cased, as using the default "tcp" along with an
+         * Oracle TNS connection string fails. */
+        if (is_string($dsn) && strpos($dsn, 'tcp') === false && $dsnArray['protocol'] == 'tcp') {
+            $dsnArray['protocol'] = false;
+        }
+        
+        // Now we just have to construct the actual string. This is ugly.
+        $dsnString = $dsnArray['phptype'];
+        if ($dsnArray['dbsyntax']) {
+            $dsnString .= '('.$dsnArray['dbsyntax'].')';
+        }
+        $dsnString .= '://'
+                     .$dsnArray['username']
+                     .':'
+                     .$dsnArray['password']
+                     .'@'
+                     .$dsnArray['protocol'];
+        if ($dsnArray['socket']) {
+            $dsnString .= '('.$dsnArray['socket'].')';
+        }
+        if ($dsnArray['protocol'] && $dsnArray['hostspec']) {
+            $dsnString .= '+';
+        }
+        $dsnString .= $dsnArray['hostspec'];
+        if ($dsnArray['port']) {
+            $dsnString .= ':'.$dsnArray['port'];
+        }
+        $dsnString .= '/'.$dsnArray['database'];
+        
+        /* Option handling. Unfortunately, parseDSN simply places options into
+         * the top-level array, so we'll first get rid of the fields defined by
+         * DB and see what's left. */
+        unset($dsnArray['phptype'],
+              $dsnArray['dbsyntax'],
+              $dsnArray['username'],
+              $dsnArray['password'],
+              $dsnArray['protocol'],
+              $dsnArray['socket'],
+              $dsnArray['hostspec'],
+              $dsnArray['port'],
+              $dsnArray['database']
+        );
+        if (count($dsnArray) > 0) {
+            $dsnString .= '?';
+            $i = 0;
+            foreach ($dsnArray as $key => $value) {
+                if (++$i > 1) {
+                    $dsnString .= '&';
+                }
+                $dsnString .= $key.'='.$value;
+            }
+        }
+
+        return $dsnString;
+    }
+    
+    // }}}
 }
 
 // }}}
@@ -865,9 +942,9 @@ class DB
  * @category   Database
  * @package    DB
  * @author     Stig Bakken <ssb@php.net>
- * @copyright  1997-2005 The PHP Group
+ * @copyright  1997-2007 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    Release: @package_version@
+ * @version    Release: 1.7.14RC1
  * @link       http://pear.php.net/package/DB
  */
 class DB_Error extends PEAR_Error
@@ -912,9 +989,9 @@ class DB_Error extends PEAR_Error
  * @category   Database
  * @package    DB
  * @author     Stig Bakken <ssb@php.net>
- * @copyright  1997-2005 The PHP Group
+ * @copyright  1997-2007 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    Release: @package_version@
+ * @version    Release: 1.7.14RC1
  * @link       http://pear.php.net/package/DB
  */
 class DB_result
@@ -1094,7 +1171,7 @@ class DB_result
             $fetchmode = DB_FETCHMODE_ASSOC;
             $object_class = $this->fetchmode_object_class;
         }
-        if ($this->limit_from !== null) {
+        if (is_null($rownum) && $this->limit_from !== null) {
             if ($this->row_counter === null) {
                 $this->row_counter = $this->limit_from;
                 // Skip rows
@@ -1126,7 +1203,7 @@ class DB_result
                 if ($object_class == 'stdClass') {
                     $arr = (object) $arr;
                 } else {
-                    $arr = &new $object_class($arr);
+                    $arr = new $object_class($arr);
                 }
             }
             return $arr;
@@ -1176,7 +1253,7 @@ class DB_result
             $fetchmode = DB_FETCHMODE_ASSOC;
             $object_class = $this->fetchmode_object_class;
         }
-        if ($this->limit_from !== null) {
+        if (is_null($rownum) && $this->limit_from !== null) {
             if ($this->row_counter === null) {
                 $this->row_counter = $this->limit_from;
                 // Skip rows
@@ -1258,10 +1335,33 @@ class DB_result
             while ($res->fetchInto($tmp, DB_FETCHMODE_ORDERED)) {
                 $i++;
             }
-            return $i;
+            $count = $i;
         } else {
-            return $this->dbh->numRows($this->result);
+            $count = $this->dbh->numRows($this->result);
         }
+
+        /* fbsql is checked for here because limit queries are implemented
+         * using a TOP() function, which results in fbsql_num_rows still
+         * returning the total number of rows that would have been returned,
+         * rather than the real number. As a result, we'll just do the limit
+         * calculations for fbsql in the same way as a database with emulated
+         * limits. Unfortunately, we can't just do this in DB_fbsql::numRows()
+         * because that only gets the result resource, rather than the full
+         * DB_Result object. */
+        if (($this->dbh->features['limit'] === 'emulate'
+             && $this->limit_from !== null)
+            || $this->dbh->phptype == 'fbsql') {
+            $limit_count = is_null($this->limit_count) ? $count : $this->limit_count;
+            if ($count < $this->limit_from) {
+                $count = 0;
+            } elseif ($count < ($this->limit_from + $limit_count)) {
+                $count -= $this->limit_from;
+            } else {
+                $count = $limit_count;
+            }
+        }
+
+        return $count;
     }
 
     // }}}
@@ -1354,9 +1454,9 @@ class DB_result
  * @category   Database
  * @package    DB
  * @author     Stig Bakken <ssb@php.net>
- * @copyright  1997-2005 The PHP Group
+ * @copyright  1997-2007 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    Release: @package_version@
+ * @version    Release: 1.7.14RC1
  * @link       http://pear.php.net/package/DB
  * @see        DB_common::setFetchMode()
  */
