@@ -54,7 +54,7 @@
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <input type="hidden" name="mode" value="<!--{$tpl_mode|default:"edit"}-->">
 <input type="hidden" name="order_id" value="<!--{$tpl_order_id}-->">
-<input type="hidden" name="edit_customer_id" value="<!--{$tpl_order_id}-->">
+<input type="hidden" name="edit_customer_id" value="">
 <input type="hidden" name="anchor_key" value="">
 <input type="hidden" id="add_product_id" name="add_product_id" value="">
 <input type="hidden" id="add_classcategory_id1" name="add_classcategory_id1" value="">
@@ -152,7 +152,7 @@
                             </tr>
                             <tr class="fs12n">
                                 <td bgcolor="#f2f1ec" width="110">発送日</td>
-                                <td bgcolor="#ffffff"><!--{$arrForm.commit_date|sfDispDBDate|default:"未発送"}--></td>
+                                <td bgcolor="#ffffff"><!--{$arrForm.commit_date.value|sfDispDBDate|default:"未発送"}--></td>
                             </tr>
                         </table>
 
@@ -171,9 +171,12 @@
                                 <input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->">
                             <!--{/foreach}-->
                             <tr class="fs12n">
-                                <td bgcolor="#f2f1ec" width="717" colspan="4">▼お客様情報</td>
+                                <td bgcolor="#f2f1ec" width="717" colspan="4">▼お客様情報
+                                <!--{if $tpl_mode == 'add'}-->
+                                    &nbsp;&nbsp;&nbsp;<input type="button" name="address_input" value="顧客検索" onclick="fnOpenWindow('<!--{$smarty.const.SITE_URL}-->admin/customer/search_customer.php','search','500','650'); return false;" />
+                                <!--{/if}-->
+                                </td>
                             </tr>
-                            <!--{if $tpl_mode != 'add'}-->
                                 <tr class="fs12n">
                                     <td bgcolor="#f2f1ec" width="110">受注番号</td>
                                     <td bgcolor="#ffffff" width="248"><!--{$arrForm.order_id.value}--></td>
@@ -181,6 +184,7 @@
                                     <td bgcolor="#ffffff" width="249">
                                     <!--{if $arrForm.customer_id.value > 0}-->
                                         <!--{$arrForm.customer_id.value}-->
+                                        <input type="hidden" name="customer_id" value="<!--{$arrForm.customer_id.value}-->">
                                     <!--{else}-->
                                         （非会員）
                                     <!--{/if}-->
@@ -189,8 +193,8 @@
                                 <tr class="fs12n">
                                     <td bgcolor="#f2f1ec" width="110">受注日</td>
                                     <td bgcolor="#ffffff" width="607" colspan="3"><!--{$arrForm.create_date.value|sfDispDBDate}--></td>
+                                    <input type="hidden" name="create_date" value="<!--{$arrForm.create_date.value}-->">
                                 </tr>
-                            <!--{/if}-->
                             <tr class="fs12n">
                                 <td bgcolor="#f2f1ec" width="110">顧客名</td>
                                 <td bgcolor="#ffffff" width="248">
