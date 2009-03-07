@@ -95,6 +95,12 @@
     </tr>
   </table>
 
+  <!--{* F-REGI決済モジュール用 *}-->
+  <!--{assign var=path value=`$smarty.const.MODULE_PATH`mdl_fregi/fregi_order.tpl}-->
+  <!--{if file_exists($path)}-->
+    <!--{include file=$path}-->
+  <!--{/if}-->
+
   <!--{foreach key=key item=item from=$arrSearchHidden}-->
   <input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->" />
   <!--{/foreach}-->
