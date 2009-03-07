@@ -24,6 +24,11 @@
 // {{{ requires
 require_once(CLASS_PATH . "pages/LC_Page.php");
 
+/* GMO決済モジュール連携用 */
+if (file_exists(MODULE_PATH . 'mdl_gmopg/inc/include.php') === TRUE) {
+    require_once(MODULE_PATH . 'mdl_gmopg/inc/include.php');
+}
+
 /* ペイジェント決済モジュール連携用 */
 if (file_exists(MODULE_PATH . 'mdl_paygent/include.php') === TRUE) {
   require_once(MODULE_PATH . 'mdl_paygent/include.php');
@@ -35,9 +40,10 @@ if (file_exists(MODULE_PATH. 'mdl_fregi/LC_Page_Mdl_Fregi_Config.php') === TRUE)
 }
 
 /* SPS決済モジュール連携用 */
-if ( file_exists(MODULE_PATH . 'mdl_sps/request.php') === TRUE ) {
+if (file_exists(MODULE_PATH . 'mdl_sps/request.php') === TRUE) {
     require_once(MODULE_PATH . 'mdl_sps/request.php');
 }
+
 
 /**
  * 受注修正 のページクラス.
@@ -203,6 +209,14 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
             // DBから受注情報を再読込
             $this->lfGetOrderData($order_id);
             $this->tpl_onload = "window.alert('".$sps_return."');";
+            break;
+
+        /* GMOPG連携用 */
+        case 'gmopg_order_edit':
+            require_once(MODULE_PATH . 'mdl_gmopg/class/LC_Mdl_GMOPG_OrderEdit.php');
+            $objGMOOrderEdit = new LC_MDL_GMOPG_OrderEdit;
+            $this->gmopg_order_edit_result = $objGMOOrderEdit->proccess();
+            $this->lfGetOrderData($order_id);
             break;
         // 商品削除
         case 'delete_product':

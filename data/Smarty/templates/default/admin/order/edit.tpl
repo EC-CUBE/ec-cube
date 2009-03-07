@@ -94,6 +94,13 @@
       <td><!--{$arrForm.commit_date|sfDispDBDate|default:"未発送"}--></td>
     </tr>
   </table>
+
+						<!--{* GMOPG連携用 *}-->
+						<!--{assign var=path value=`$smarty.const.MODULE_PATH`mdl_gmopg/templates/order_edit.tpl}-->
+						<!--{if file_exists($path)}-->
+							<!--{include file=$path}-->
+						<!--{/if}-->
+
   <!--{* SPS連携用 *}-->
   <!--{assign var=sps_path value=`$smarty.const.MODULE_PATH`mdl_sps/templates/sps_request.tpl}-->
   <!--{if file_exists($sps_path) && $paymentType[0].module_id == $smarty.const.MDL_SPS_ID && $paymentType[0].memo03 == $smarty.const.SPS_CREDIT}-->
