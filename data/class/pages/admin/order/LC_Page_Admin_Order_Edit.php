@@ -281,13 +281,15 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         /**
          * SPS決済 クレジット判定用処理
          */
-        $objQuery = new SC_Query();
-        $this->paymentType = $objQuery->getall("SELECT module_code, memo03 FROM dtb_payment WHERE payment_id = ? ", array($this->arrForm["payment_id"]['value']));
-        $objDate = new SC_Date();
-        $objDate->setStartYear(RELEASE_YEAR);
-        $this->arrYear = $objDate->getYear();
-        $this->arrMonth = $objDate->getMonth();
-        $this->arrDay = $objDate->getDay();
+        if (file_exists(MODULE_PATH . 'mdl_sps/request.php') === TRUE) {
+            $objQuery = new SC_Query();
+            $this->paymentType = $objQuery->getall("SELECT module_code, memo03 FROM dtb_payment WHERE payment_id = ? ", array($this->arrForm["payment_id"]['value']));
+            $objDate = new SC_Date();
+            $objDate->setStartYear(RELEASE_YEAR);
+            $this->arrYear = $objDate->getYear();
+            $this->arrMonth = $objDate->getMonth();
+            $this->arrDay = $objDate->getDay();
+        }
 
         $objView->assignobj($this);
         // 表示モード判定
