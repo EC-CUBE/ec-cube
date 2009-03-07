@@ -206,21 +206,24 @@ function lnSetSelect(form, name1, name2, val) {
                 <!--{/if}-->
 
                 <!--{if $tpl_stock_find}-->
-                <p class="btn">
-                    <!--{if $smarty.const.OPTION_FAVOFITE_PRODUCT == 1 && $tpl_login}-->
-                        <!--{assign var=add_favorite value="add_favorite`$product_id`"}-->
-                        <!--{if $arrErr[$add_favorite]}--><div class="attention"><!--{$arrErr[$add_favorite]}--></div><!--{/if}-->
-                        <!--{if !$arrProduct.favorite_count}-->
-                        <a href="javascript:fnModeSubmit('add_favorite','favorite_product_id','<!--{$arrProduct.product_id}-->');">[お気に入りに追加]</a><br />
-                        <!--{else}-->
-                        [お気に入り登録済]<br />
+                    <p class="btn">
+                        <!--{if $smarty.const.OPTION_FAVOFITE_PRODUCT == 1 && $tpl_login}-->
+                            <!--{assign var=add_favorite value="add_favorite`$product_id`"}-->
+                            <!--{if $arrErr[$add_favorite]}--><div class="attention"><!--{$arrErr[$add_favorite]}--></div><!--{/if}-->
+                            <!--{if !$arrProduct.favorite_count}-->
+                            <a href="javascript:fnModeSubmit('add_favorite','favorite_product_id','<!--{$arrProduct.product_id}-->');">[お気に入りに追加]</a><br />
+                            <!--{else}-->
+                            [お気に入り登録済]<br />
+                            <!--{/if}-->
                         <!--{/if}-->
+                        <!--★カゴに入れる★-->
+                        <a href="javascript:void(document.form1.submit())" onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_cartin_on.gif','cart');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/products/b_cartin.gif','cart');">
+                            <img src="<!--{$TPL_DIR}-->img/products/b_cartin.gif" width="115" height="25" alt="カゴに入れる" name="cart" id="cart" />
+                        </a>
+                    </p>
+                    <!--{if function_exists(sfGMODetailDisplay)}--><!--{* GMOワンクリック *}-->
+                        <!--{''|sfGMODetailDisplay}-->
                     <!--{/if}-->
-                    <!--★カゴに入れる★-->
-                    <a href="javascript:void(document.form1.submit())" onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_cartin_on.gif','cart');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/products/b_cartin.gif','cart');">
-                        <img src="<!--{$TPL_DIR}-->img/products/b_cartin.gif" width="115" height="25" alt="カゴに入れる" name="cart" id="cart" />
-                    </a>
-                </p>
                 <!--{else}-->
                 <div class="attention">申し訳ございませんが、只今品切れ中です。</div>
                 <!--{/if}-->

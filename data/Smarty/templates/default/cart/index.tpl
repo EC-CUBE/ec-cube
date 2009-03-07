@@ -56,7 +56,12 @@
    <!--{/if}-->
 
    <!--{if count($arrProductsClass) > 0}-->
+   
    <form name="form1" id="form1" method="post" action="?">
+   <!--{if function_exists('sfGMOCartDisplay')}-->
+     <!--{''|sfGMOCartDisplay}-->
+   <!--{/if}-->
+   
      <input type="hidden" name="mode" value="confirm" />
      <input type="hidden" name="cart_no" value="" />
      <table summary="商品情報">

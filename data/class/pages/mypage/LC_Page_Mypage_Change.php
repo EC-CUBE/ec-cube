@@ -24,6 +24,10 @@
 // {{{ requires
 require_once(CLASS_PATH . "pages/LC_Page.php");
 
+if (file_exists(MODULE_PATH . "mdl_gmopg/inc/function.php")) {
+    require_once(MODULE_PATH . "mdl_gmopg/inc/function.php");
+}
+
 /**
  * 登録内容変更 のページクラス.
  *
@@ -150,6 +154,12 @@ class LC_Page_Mypage_Change extends LC_Page {
             $this->lfFormReturn($this->arrForm,$this);
             break;
 
+        case 'gmo_oneclick':
+            sfGMOMypageEdit();
+            $this->arrForm = $this->lfGetCustomerData();
+            $this->arrForm['password'] = DEFAULT_PASSWORD;
+            $this->arrForm['password02'] = DEFAULT_PASSWORD;
+            break;
         case 'complete':
             //エラーなしでかつメールアドレスが重複していない場合
             if ($this->checkErrorTotal($arrRegistColumn, $arrMailType)) {

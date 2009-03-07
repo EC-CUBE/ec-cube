@@ -24,6 +24,9 @@
 // {{{ requires
 require_once(CLASS_PATH . "pages/LC_Page.php");
 
+if (file_exists(MODULE_PATH . "mdl_gmopg/inc/function.php")) {
+    require_once(MODULE_PATH . "mdl_gmopg/inc/function.php");
+}
 /**
  * 商品詳細 のページクラス.
  *
@@ -180,6 +183,10 @@ class LC_Page_Products_Detail extends LC_Page {
                 $classcategory_id1 = $_POST['classcategory_id1'];
                 $classcategory_id2 = $_POST['classcategory_id2'];
 
+                if (!empty($_POST['gmo_oneclick'])) {
+                    $objCartSess->delAllProducts();
+                }
+
                 // 規格1が設定されていない場合
                 if(!$this->tpl_classcat_find1) {
                     $classcategory_id1 = '0';
@@ -192,6 +199,17 @@ class LC_Page_Products_Detail extends LC_Page {
 
                 $objCartSess->setPrevURL($_SERVER['REQUEST_URI']);
                 $objCartSess->addProduct(array($_POST['product_id'], $classcategory_id1, $classcategory_id2), $this->objFormParam->getValue('quantity'));
+
+                if (!empty($_POST['gmo_oneclick'])) {
+                    $objSiteSess = new SC_SiteSession;
+                    $objSiteSess->setRegistFlag();
+                    $objCartSess->saveCurrentCart($objSiteSess->getUniqId());
+
+                    $this->sendRedirect($this->getLocation(
+                        URL_DIR . 'user_data/gmopg_oneclick_confirm.php', array(), true));
+                    exit;
+                }
+
                 $this->sendRedirect($this->getLocation(URL_CART_TOP));
                 exit;
             }
