@@ -87,31 +87,43 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
   </div>
 
   <div class="btn">
-    <button type='button' name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form_edit','confirm','','');"><span>登録</span></button>
+    <button type='button' name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form_edit','confirm','','');"><span>登録する</span></button>
     <button type='button' name='preview' onclick="doPreview(); "><span>プレビュー</span></button>
   </div>
 
 
-  <h2>編集可能画面一覧</h2>
+  <h2>編集可能ページ一覧</h2>
   <table class="list center">
+    <tr>
+      <th>名称</th>
+      <th>レイアウト</th>
+      <th><strong>ページ詳細</strong></th>
+      <th>削除</th>
+    </tr>
     <!--{foreach key=key item=item from=$arrPageList}-->
     <tr style="<!--{if $item.page_id == $page_id}-->background-color: <!--{$smarty.const.SELECT_RGB}-->;<!--{/if}-->">
       <td>
-        <a href="<!--{$smarty.server.PHP_SELF|escape}-->?page_id=<!--{$item.page_id}-->" ><!--{$item.page_name}--></a>
+        <!--{$item.page_name}-->
       </td>
       <td>
-        <button type="button" name="layout<!--{$item.page_id}-->" onclick="location.href='./<!--{$smarty.const.DIR_INDEX_URL}-->?page_id=<!--{$item.page_id}-->';"><span>レイアウト</span></button>
-        <input type="hidden" value="<!--{$item.page_id}-->" name="del_id<!--{$item.page_id}-->" />
+        <a href="./<!--{$smarty.const.DIR_INDEX_URL}-->?page_id=<!--{$item.page_id}-->" >編集</a>
+      </td>
+      <td>
+        <!--{if $item.filename|strlen >= 1}-->
+          <a href="?page_id=<!--{$item.page_id}-->"><strong>編集</strong></a>
+        <!--{/if}-->
       </td>
       <td>
         <!--{if $item.edit_flg == 1}-->
-        <button type="button" name="del<!--{$item.page_id}-->" onclick="fnTargetSelf(); fnFormModeSubmit('form_edit','delete','page_id',this.name.substr(3));"><span>削除</span></button>
-        <input type="hidden" value="<!--{$item.page_id}-->" name="del_id<!--{$item.page_id}-->" />
+          <a href="?" onclick="fnTargetSelf(); fnFormModeSubmit('form_edit','delete','page_id',this.name.substr(3));">削除</a>
+          <input type="hidden" value="<!--{$item.page_id}-->" name="del_id<!--{$item.page_id}-->" />
         <!--{/if}-->
       </td>
     </tr>
     <!--{/foreach}-->
   </table>
-  <div class="btn"><button type='button' onclick="location.href='http://<!--{$smarty.server.HTTP_HOST}--><!--{$smarty.server.PHP_SELF|escape}-->'"><span>新規ページ作成</span></button></div>
+  <div class="btn addnew">
+    <button type='button' onclick="location.href='http://<!--{$smarty.server.HTTP_HOST}--><!--{$smarty.server.PHP_SELF|escape}-->'"><span>ページを新規入力</span></button>
+  </div>
 
 </form>

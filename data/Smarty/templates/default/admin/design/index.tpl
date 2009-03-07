@@ -146,40 +146,51 @@ function fnTargetSelf(){
           <!--{/if}-->
           <!--{/foreach}-->
         </div>
-        <div class="btn"><button type='button' onclick="fnTargetSelf(); fnFormModeSubmit('form1','new_bloc','','');"><span>新規ブロック作成</span></button></div>
+        <div class="btn"><button type='button' onclick="fnTargetSelf(); fnFormModeSubmit('form1','new_bloc','','');"><span>ブロックを新規入力</span></button></div>
       </td>
       <!--{* ▲未使用ブロックここまで *}-->
     </tr>
     </tbody>
   </table>
   <div class="btn">
-    <button type='button' name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form1','confirm','','');"><span>保存</span></button>
+    <button type='button' name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form1','confirm','','');"><span>登録する</span></button>
     <button type='button' name='preview' onclick="doPreview();"<!--{if $page_id == "0" or $exists_page == "0" }--> DISABLED<!--{/if}-->><span>プレビュー</span></button>
   </div>
   <!--▲レイアウト編集　ここまで-->
 
 
   <!--▼ページ一覧　ここから-->
-  <h2>編集可能ページ</h2>
+  <h2>編集可能ページ一覧</h2>
   <table class="list center">
+    <tr>
+      <th>名称</th>
+      <th><strong>レイアウト</strong></th>
+      <th>ページ詳細</th>
+      <th>削除</th>
+    </tr>
   <!--{foreach key=key item=item from=$arrEditPage}-->
     <tr style="background-color:<!--{if $item.page_id == $page_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->;">
       <td>
-        <a href="<!--{$smarty.server.PHP_SELF|escape}-->?page_id=<!--{$item.page_id}-->" ><!--{$item.page_name}--></a>
+        <!--{$item.page_name}-->
       </td>
       <td>
-        <button type='button' onclick="location.href='./main_edit.php?page_id=<!--{$item.page_id}-->'"><span>メイン編集</span></button>
+        <a href="?page_id=<!--{$item.page_id}-->" ><strong>編集</strong></a>
+      </td>
+      <td>
+        <!--{if $item.filename|strlen >= 1}-->
+          <a href="main_edit.php?page_id=<!--{$item.page_id}-->">編集</a>
+        <!--{/if}-->
       </td>
       <td>
         <!--{if $item.edit_flg == 1}-->
-        <button type='button' onclick="fnTargetSelf(); fnFormModeSubmit('form1','delete','','');"><span>削除</span></button>
+          <a href="?" onclick="fnTargetSelf(); fnFormModeSubmit('form1','delete','','');">削除</a>
         <!--{/if}-->
       </td>
     </tr>
   <!--{/foreach}-->
   </table>
-  <div class="btn">
-    <button type='button' onclick="fnTargetSelf(); fnFormModeSubmit('form1','new_page','','');"><span>新規ページ作成</span></button>
+  <div class="btn addnew">
+    <button type='button' onclick="fnTargetSelf(); fnFormModeSubmit('form1','new_page','','');"><span>ページを新規入力</span></button>
   </div>
   <!--▲ページ一覧　ここまで-->
 </div>

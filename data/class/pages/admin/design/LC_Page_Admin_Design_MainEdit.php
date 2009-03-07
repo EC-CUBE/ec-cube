@@ -88,7 +88,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
         if (is_numeric($page_id) and $page_id != '') {
             $arrPageData = $this->objLayout->lfgetPageData(" page_id = ? " , array($page_id));
 
-            if ($arrPageData[0]['tpl_dir'] === "") {
+            if (strlen($arrPageData[0]['filename']) == 0) {
                 $this->arrErr['page_id_err'] = "※ 指定されたページは編集できません。";
                 // 画面の表示
                 $objView->assignobj($this);
