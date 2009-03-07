@@ -101,11 +101,11 @@
 							<!--{include file=$path}-->
 						<!--{/if}-->
 
-  <!--{* SPS連携用 *}-->
-  <!--{assign var=sps_path value=`$smarty.const.MODULE_PATH`mdl_sps/templates/sps_request.tpl}-->
-  <!--{if file_exists($sps_path) && $paymentType[0].module_id == $smarty.const.MDL_SPS_ID && $paymentType[0].memo03 == $smarty.const.SPS_CREDIT}-->
-    <!--{include file=$sps_path}-->
-  <!--{/if}-->
+						<!--{* SPS連携用 *}-->
+						<!--{assign var=sps_path value=`$smarty.const.MODULE_PATH`mdl_sps/templates/sps_request.tpl}-->
+						<!--{if file_exists($sps_path) && $paymentType[0].module_code == $smarty.const.MDL_SPS_CODE && $paymentType[0].memo03 == $smarty.const.SPS_CREDIT}-->
+							<!--{include file=$sps_path}-->
+						<!--{/if}-->
 
   <!--{* F-REGI決済モジュール用 *}-->
   <!--{assign var=path value=`$smarty.const.MODULE_PATH`mdl_fregi/fregi_order.tpl}-->
