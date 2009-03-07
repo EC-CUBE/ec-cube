@@ -776,7 +776,6 @@ function lfExecuteSQL($filepath, $dsn, $disp_err = true) {
 function lfMakeConfigFile() {
     global $objWebParam;
     global $objDBParam;
-    global $INSTALL_DIR;
     
     $normal_url = $objWebParam->getValue('normal_url');
     // 語尾に'/'をつける
