@@ -424,6 +424,7 @@ class SC_Utils {
 
     // チェックボックスの値を分解
     function sfSplitCBValue($val, $keyname = "") {
+        $arr = array();
         $len = strlen($val);
         $no = 1;
         for ($cnt = 0; $cnt < $len; $cnt++) {
