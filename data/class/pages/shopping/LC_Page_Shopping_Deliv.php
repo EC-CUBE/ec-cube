@@ -86,10 +86,8 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         $this->objLoginFormParam = new SC_FormParam();	// ログインフォーム用
         $this->lfInitLoginFormParam();
         //パスワード・Eメールにある空白をトリム
-        $_POST["login_email"] = preg_replace('/^[ 　\r\n]*(.*?)[ 　\r\n]*$/u', '$1', $_POST["login_email"]);
-        $_POST["login_pass"] = trim($_POST["login_pass"]); //認証用
-        $_POST["login_pass1"] = $_POST["login_pass"];      //最小桁数比較用
-        $_POST["login_pass2"] = $_POST["login_pass"];      //最大桁数比較用
+        $this->lfConvertEmail($_POST["login_email"]);
+        $this->lfConvertLoginPass($_POST["login_pass"]);
         $this->objLoginFormParam->setParam($_POST);		// POST値の取得
 
         // ユーザユニークIDの取得と購入状態の正当性をチェック
@@ -248,6 +246,9 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         // パラメータ情報の初期化
         $this->lfInitParam();
         // POST値の取得
+        $this->lfConvertEmail($_POST["login_email"]);
+        $this->lfConvertLoginPass($_POST["login_pass"]);
+
         $this->objFormParam->setParam($_POST);
 
         $this->objLoginFormParam = new SC_FormParam();	// ログインフォーム用
@@ -537,6 +538,28 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         }
         $objErr->doFunc(array("TEL", "deliv_tel01", "deliv_tel02", "deliv_tel03", TEL_ITEM_LEN), array("TEL_CHECK"));
         return $objErr->arrErr;
+    }
+
+    /**
+     * 入力されたEmailから余分な改行・空白を削除する
+     *
+     * @param string $_POST["login_email"]
+     */
+    function lfConvertEmail(){
+        if( strlen($_POST["login_email"]) < 1 ){ return ; }
+        $_POST["login_email"] = preg_replace('/^[ 　\r\n]*(.*?)[ 　\r\n]*$/u', '$1', $_POST["login_email"]);
+    }
+
+    /**
+     * 入力されたPassから余分な空白を削除し、最小桁数・最大桁数チェック用に変数に入れる
+     *
+     * @param string $_POST["login_pass"]
+     */
+    function lfConvertLoginPass(){
+    if( strlen($_POST["login_pass"]) < 1 ){ return ; }
+        $_POST["login_pass"] = trim($_POST["login_pass"]); //認証用
+        $_POST["login_pass1"] = $_POST["login_pass"];      //最小桁数比較用
+        $_POST["login_pass2"] = $_POST["login_pass"];      //最大桁数比較用
     }
 }
 ?>
