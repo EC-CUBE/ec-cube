@@ -24,6 +24,7 @@
     <img src="<!--{$TPL_DIR}-->/img/side/title_cat.jpg" width="166" height="35" alt="商品カテゴリー" />
 </h2>
 <div id="categoryarea">
+<!--{strip}-->
     <ul id="categorytree">
     <!--{assign var=preLev value=1}-->
     <!--{assign var=firstdone value=0}-->
@@ -61,5 +62,6 @@
         <!--{/if}-->
     <!--{/section}-->
     </ul>
+<!--{/strip}-->
 </div>
 <!--商品カテゴリーここまで-->

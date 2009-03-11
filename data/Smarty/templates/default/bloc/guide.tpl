@@ -21,21 +21,21 @@
  *}-->
 <!--▼リンクここから-->
 <div id="guidearea">
+<!--{strip}-->
   <ul class="button_like">
-    
-    <!--{* IE不具合対策としてli要素の後に空白を入れないようにすること
-    *}--><li>
+    <li>
         <a href="<!--{$smarty.const.URL_DIR}-->abouts/<!--{$smarty.const.DIR_INDEX_URL}-->"
             class="<!--{if $tpl_page_category == "abouts"}--> selected<!--{/if}-->"
-        >当サイトについて</a></li><!--{* IE不具合対策(空白を入れない)
-    *}--><li>
+        >当サイトについて</a></li>
+    <li>
         <a href="<!--{$smarty.const.SSL_URL}-->contact/<!--{$smarty.const.DIR_INDEX_URL}-->"
             class="<!--{if $tpl_page_category == "contact"}--> selected<!--{/if}-->"
-        >お問い合わせ</a></li><!--{* IE不具合対策(空白を入れない)
-    *}--><li>
+        >お問い合わせ</a></li>
+    <li>
         <a href="<!--{$smarty.const.URL_DIR}-->order/<!--{$smarty.const.DIR_INDEX_URL}-->"
             class="<!--{if $tpl_page_category == "order"}--> selected<!--{/if}-->"
-        >特定商取引に関する法律</a></li><!--{* IE不具合対策(空白を入れない)
-    *}--></ul>
+        >特定商取引に関する法律</a></li>
+  </ul>
+<!--{/strip}-->
 </div>
 <!--▲リンクここまで-->
