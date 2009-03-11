@@ -133,7 +133,7 @@
   </table>
 
   <div class="btn">
-    <button type="submit"><span>アンケートを<!--{if $QUESTION_ID}-->修正<!--{else}-->作成<!--{/if}--></span></button>
+    <button type="submit"><span>登録する</span></button>
     <button type="reset"><span>内容をクリア</span></button>
   </div>
 </form>

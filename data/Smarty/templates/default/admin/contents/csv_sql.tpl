@@ -74,8 +74,8 @@ function fnTargetSelf(){
   </table>
   <!--{/if}-->
 
-  <div class="btn">
-    <button type='button' name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form1','new_page','','');"><span>新規SQL作成</span></button>
+  <div class="btn addnew">
+    <button type='button' name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form1','new_page','','');"><span>SQLを新規入力</span></button>
   </div>
 
 
@@ -101,8 +101,8 @@ function fnTargetSelf(){
   </table>
 
   <div class="btn">
-    <button type="submit" name="subm" onClick="mode.value='confirm'; fnTargetSelf();"><span>実行する</span></button>
-    <button type="submit" name="subm" onClick="doPreview(); return false;"><span>確認ページへ</span></button>
+    <button type="submit" name="subm" onClick="mode.value='confirm'; fnTargetSelf();"><span>この内容で登録する</span></button>
+    <button type="submit" name="subm" onClick="doPreview(); return false;"><span>構文エラーを確認する</span></button>
   </div>
 
 

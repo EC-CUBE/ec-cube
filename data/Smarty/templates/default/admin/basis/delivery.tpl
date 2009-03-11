@@ -52,6 +52,8 @@
       </tr>
     <!--{/section}-->
   </table>
-  <div class="btn"><button type="button" name="subm2" onclick="fnChangeAction('./delivery_input.php'); fnModeSubmit('pre_edit','','');"><span>配送業者<!--{if $smarty.const.INPUT_DELIV_FEE}-->・配送料<!--{/if}-->を追加</span></button></div>
+  <div class="btn addnew">
+    <button type="button" name="subm2" onclick="fnChangeAction('./delivery_input.php'); fnModeSubmit('pre_edit','','');"><span>配送業者<!--{if $smarty.const.INPUT_DELIV_FEE}-->・配送料<!--{/if}-->を新規入力</span></button>
+  </div>
 </div>
 </form>

@@ -48,7 +48,7 @@
     <button type="button" onClick="ChangeSize(this, bloc_html, 50, 13, html_area_row)"><span><!--{if $text_row > 13}-->小さくする<!--{else}-->大きくする<!--{/if}--></span></button>
   </div>
   <div class="btn">
-    <button type='button' name='subm' onclick="fnFormModeSubmit('form_bloc','confirm','','');"><span>登録</span></button>
+    <button type='button' name='subm' onclick="fnFormModeSubmit('form_bloc','confirm','','');"><span>登録する</span></button>
     <button type='button' name='preview' onclick="fnFormModeSubmit('form_bloc','preview','','');"><span>プレビュー</span></button>
   </div>
   <!--{* ▲ブロック編集ここまで *}-->
@@ -71,8 +71,8 @@
     <!--{/foreach}-->
   </table>
 
-  <div class="btn">
-    <button type='button' name='subm' onclick="location.href='http://<!--{$smarty.server.HTTP_HOST}--><!--{$smarty.server.PHP_SELF|escape}-->'"><span>新規ブロック作成</span></button>
+  <div class="btn addnew">
+    <button type='button' name='subm' onclick="location.href='http://<!--{$smarty.server.HTTP_HOST}--><!--{$smarty.server.PHP_SELF|escape}-->'"><span>ブロックを新規入力</span></button>
   </div>
   <!--{* ▲ブロック一覧ここまで *}-->
 

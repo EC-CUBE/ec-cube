@@ -76,8 +76,8 @@
     </tr>
     <!--{/if}-->
   </table>
-  <div class="btn">
-    <button type="button" onclick="location.href='http://<!--{$smarty.server.HTTP_HOST}--><!--{$smarty.server.PHP_SELF|escape}-->'"><span>新規CSS作成</span></button>
+  <div class="btn addnew">
+    <button type="button" onclick="location.href='http://<!--{$smarty.server.HTTP_HOST}--><!--{$smarty.server.PHP_SELF|escape}-->'"><span>CSSを新規入力</span></button>
   </div>
   <!--▲CSSファイル一覧　ここまで-->
 

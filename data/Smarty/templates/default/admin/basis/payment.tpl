@@ -60,6 +60,8 @@
     </tr>
     <!--{/section}-->
   </table>
-  <div class="btn"><button type="button" name="subm2" onclick="win03('./payment_input.php','payment_input','550','400');"><span>支払方法を追加</span></button></div>
+  <div class="btn addnew">
+    <button type="button" name="subm2" onclick="win03('./payment_input.php','payment_input','550','400');"><span>支払方法を新規入力</span></button>
+  </div>
 </div>
 </form>

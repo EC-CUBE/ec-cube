@@ -63,8 +63,8 @@
   <!--{* ▲フッター編集ここまで *}-->
 
   <div class="btn">
-    <button type="button" onclick="fnFormModeSubmit('form1', 'return', '', ''); return false;"><span>登録ページへ戻る</span></button>
-    <button type="button" onclick="fnFormModeSubmit('form1', 'regist', '', ''); return false;"><span>保存</span></button>
+    <button type="button" onclick="fnFormModeSubmit('form1', 'return', '', ''); return false;"><span>一覧ページへ戻る</span></button>
+    <button type="button" onclick="fnFormModeSubmit('form1', 'regist', '', ''); return false;"><span>登録する</span></button>
     <button type="button" onclick="fnFormModeSubmit('form1', 'preview', '', ''); return false;"><span>プレビュー</span></button>
   </div>
 
