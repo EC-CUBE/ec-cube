@@ -1,5 +1,4 @@
 <?php
-require('fpdf.php');
 require('fpdi.php');
 
 $SJIS_widths=array(' '=>278,'!'=>299,'"'=>353,'#'=>614,'$'=>614,'%'=>721,'&'=>735,'\''=>216,
@@ -13,8 +12,7 @@ $SJIS_widths=array(' '=>278,'!'=>299,'"'=>353,'#'=>614,'$'=>614,'%'=>721,'&'=>73
     'n'=>579,'o'=>550,'p'=>578,'q'=>566,'r'=>410,'s'=>444,'t'=>340,'u'=>575,'v'=>512,'w'=>760,
     'x'=>503,'y'=>529,'z'=>453,'{'=>326,'|'=>380,'}'=>326,'~'=>387);
 
-//class PDF_Japanese extends FPDF
-class PDF_Japanese extends FPDI //ïœçX
+class PDF_Japanese extends FPDI
 {
 function AddCIDFont($family,$style,$name,$cw,$CMap,$registry)
 {
