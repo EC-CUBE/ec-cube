@@ -593,6 +593,9 @@ class LC_Page_Entry extends LC_Page {
         if ($isMobile) {
             // 携帯メールアドレス
             $arrRegist['email_mobile'] = $arrRegist['email'];
+			//PHONE_IDを取り出す
+			$phoneId = SC_MobileUserAgent::getId();
+        	$arrRegist['mobile_phone_id'] =  $phoneId;
         }
 
         //-- 仮登録実行
