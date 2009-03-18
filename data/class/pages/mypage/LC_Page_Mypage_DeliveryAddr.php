@@ -124,7 +124,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page {
                     if ($_POST['ParentPage'] == MYPAGE_DELIVADDR_URL || $_POST['ParentPage'] == URL_DELIV_TOP) {
                         $this->tpl_onload = "fnUpdateParent('". $this->getLocation($_POST['ParentPage']) ."'); window.close();";
                     } else {
-                        SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR . 'E1');
+                        SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
                     }
                     
                     $this->lfRegistData($_POST, $arrRegistColumn, $objCustomer);
