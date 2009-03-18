@@ -142,7 +142,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
                     // DBから関連商品の読み込み
                     $this->arrRecommend = $this->lfPreGetRecommendProducts($_POST['product_id']);
 
-                    $this->lfProductPage();        // 商品登録ページ
+                    $this->lfProductPage();     // 商品登録ページ
                 }
                 break;
                 // 商品登録・編集
@@ -161,14 +161,14 @@ class LC_Page_Admin_Products_Product extends LC_Page {
                 if(count($this->arrErr) == 0) {
                     $this->lfProductConfirmPage(); // 確認ページ
                 } else {
-                    $this->lfProductPage();        // 商品登録ページ
+                    $this->lfProductPage();     // 商品登録ページ
                 }
                 break;
                 // 確認ページから完了ページへ
             case 'complete':
                 $this->tpl_mainpage = 'products/complete.tpl';
 
-                $this->arrForm['product_id'] = $this->lfRegistProduct($_POST);        // データ登録
+                $this->arrForm['product_id'] = $this->lfRegistProduct($_POST);      // データ登録
 
                 // 件数カウントバッチ実行
                 $objDb->sfCategory_Count($objQuery);
@@ -196,14 +196,14 @@ class LC_Page_Admin_Products_Product extends LC_Page {
                 break;
                 // 確認ページからの戻り
             case 'confirm_return':
-                $this->lfProductPage();        // 商品登録ページ
+                $this->lfProductPage();     // 商品登録ページ
                 break;
                 // 関連商品選択
             case 'recommend_select' :
-                $this->lfProductPage();        // 商品登録ページ
+                $this->lfProductPage();     // 商品登録ページ
                 break;
             default:
-                $this->lfProductPage();        // 商品登録ページ
+                $this->lfProductPage();     // 商品登録ページ
                 break;
         }
 
@@ -218,7 +218,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         // サブ情報の入力があるかどうかチェックする
         $sub_find = false;
         for ($cnt = 1; $cnt <= PRODUCTSUB_MAX; $cnt++) {
-            if(    (isset($this->arrForm['sub_title'.$cnt])
+            if( (isset($this->arrForm['sub_title'.$cnt])
             && !empty($this->arrForm['sub_title'.$cnt])) ||
             (isset($this->arrForm['sub_comment'.$cnt])
             && !empty($this->arrForm['sub_comment'.$cnt])) ||
@@ -470,7 +470,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
 
                     // コピーしない列
                     unset($arrColList[$arrColList_tmp["product_class_id"]]);     //規格ID
-                    unset($arrColList[$arrColList_tmp["product_id"]]);             //商品ID
+                    unset($arrColList[$arrColList_tmp["product_id"]]);           //商品ID
                     unset($arrColList[$arrColList_tmp["create_date"]]);
 
                     $col = SC_Utils_Ex::sfGetCommaList($arrColList);
@@ -510,11 +510,11 @@ class LC_Page_Admin_Products_Product extends LC_Page {
     /* 取得文字列の変換 */
     function lfConvertParam($array) {
         /*
-         *    文字列の変換
-         *    K :  「半角(ﾊﾝｶｸ)片仮名」を「全角片仮名」に変換
-         *    C :  「全角ひら仮名」を「全角かた仮名」に変換
-         *    V :  濁点付きの文字を一文字に変換。"K","H"と共に使用します
-         *    n :  「全角」数字を「半角(ﾊﾝｶｸ)」に変換
+         *  文字列の変換
+         *  K :  「半角(ﾊﾝｶｸ)片仮名」を「全角片仮名」に変換
+         *  C :  「全角ひら仮名」を「全角かた仮名」に変換
+         *  V :  濁点付きの文字を一文字に変換。"K","H"と共に使用します
+         *  n :  「全角」数字を「半角(ﾊﾝｶｸ)」に変換
          */
 
         // スポット商品
