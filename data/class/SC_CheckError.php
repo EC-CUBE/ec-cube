@@ -517,7 +517,7 @@ class SC_CheckError {
             return;
         }
         $this->createParam($value);
-        if(strlen($this->arrParam[$value[1]]) > 0 && !ereg("^[^@]+@[^.]+\..+", $this->arrParam[$value[1]])) {
+        if(strlen($this->arrParam[$value[1]]) > 0 && !ereg("^[^@]+@[^.^@]+\..+", $this->arrParam[$value[1]])) {
             $this->arrErr[$value[1]] = "※ " . $value[0] . "の形式が不正です。<br />";
         }
     }
