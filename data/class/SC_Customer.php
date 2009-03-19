@@ -125,9 +125,6 @@ class SC_Customer {
 		if(SC_MobileUserAgent::getCarrier() == 'docomo'){
 			if($_SESSION['mobile']['phone_id'] == "" && strlen($_SESSION['mobile']['phone_id']) == 0)
 				$_SESSION['mobile']['phone_id'] = SC_MobileUserAgent::getId();
-		} 
-		if(SC_MobileUserAgent::getCarrier() == 'docomo'){
-			$_SESSION['mobile']['phone_id'] = SC_MobileUserAgent::getId();
 		}
 		if (!isset($_SESSION['mobile']['phone_id']) || $_SESSION['mobile']['phone_id'] === false) {
             return false;
