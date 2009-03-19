@@ -65,8 +65,10 @@ class LC_Page_Preview extends LC_Page {
             // 画面の表示
             $objView->assignobj($this);
             $objView->display(SITE_FRAME);
+
+            return;
         }
-		SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", false, "", true);
+        SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", false, "", true);
     }
 
     /**
