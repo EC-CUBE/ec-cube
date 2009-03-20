@@ -255,7 +255,7 @@ INSERT INTO dtb_mailtemplate (template_id, subject, header, footer, creator_id, 
 '',0,now(), now());
 
 INSERT INTO dtb_news (news_date,rank, news_title, news_comment, creator_id, create_date, update_date)
-VALUES (now(),1,'サイトオープンいたしました!','一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！',1, now(), now());
+VALUES (CAST(now() AS date),1,'サイトオープンいたしました!','一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！',1, now(), now());
 
 INSERT INTO dtb_deliv (name,service_name,confirm_url,rank,status,del_flg,creator_id,create_date,update_date)
 VALUES ('サンプル業者', 'サンプル業者', '', 1, 1, 0, 2, now(), now());
