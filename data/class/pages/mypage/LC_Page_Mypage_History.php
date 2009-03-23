@@ -51,6 +51,9 @@ class LC_Page_Mypage_History extends LC_Page {
         $this->tpl_mainno = 'mypage';
         $this->tpl_mypageno = 'index';
         $this->allowClientCache();
+
+        $masterData = new SC_DB_MasterData_Ex();
+        $this->arrMAILTEMPLATE = $masterData->getMasterData("mtb_mail_template");
     }
 
     /**
@@ -90,6 +93,13 @@ class LC_Page_Mypage_History extends LC_Page {
             $this->CustomerName1 = $objCustomer->getvalue('name01');
             $this->CustomerName2 = $objCustomer->getvalue('name02');
             $this->CustomerPoint = $objCustomer->getvalue('point');
+        }
+
+        if(SC_Utils_Ex::sfIsInt($_POST['order_id'])) {
+            $col = "send_date, subject, template_id, send_id";
+            $where = "order_id = ?";
+            $objQuery->setorder("send_date DESC");
+            $this->arrMailHistory = $objQuery->select($col, "dtb_mail_history", $where, array($_POST['order_id']));
         }
 
         $masterData = new SC_DB_MasterData_Ex();

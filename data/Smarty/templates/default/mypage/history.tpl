@@ -147,6 +147,26 @@
       </tbody>
     </table>
 
+    <br />
+
+    <h3>メール配信履歴一覧</h3>
+    <table>
+      <tr>
+        <th>処理日</th>
+        <th>通知メール</th>
+        <th>件名</th>
+      </tr>
+      <!--{section name=cnt loop=$arrMailHistory}-->
+      <tr class="center">
+        <td><!--{$arrMailHistory[cnt].send_date|sfDispDBDate|escape}--></td>
+        <!--{assign var=key value="`$arrMailHistory[cnt].template_id`"}-->
+        <td><!--{$arrMAILTEMPLATE[$key]|escape}--></td>
+        <td><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="win01('./mail_view.php?send_id=<!--{$arrMailHistory[cnt].send_id}-->','mail_view','650','800'); return false;"><!--{$arrMailHistory[cnt].subject|escape}--></a></td>
+      </tr>
+      <!--{/section}-->
+    </table>
+  </div>
+
     <div class="tblareabtn">
       <a href="./<!--{$smarty.const.DIR_INDEX_URL}-->" onmouseover="chgImg('<!--{$TPL_DIR}-->img/common/b_back_on.gif','change');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/common/b_back.gif','change');"><img src="<!--{$TPL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="戻る" name="change" id="change" /></a>
     </div>
