@@ -1546,16 +1546,24 @@ echo $template_path;
         return true;
     }
 
-    function sfFlush($output = " ", $sleep = 0){
-        ob_flush();
+    /**
+     * ブラウザに強制的に送出する
+     *
+     * @param boolean|string $output 半角スペース256文字+改行を出力するか。または、送信する文字列を指定。
+     * @return void
+     */
+    function sfFlush($output = false, $sleep = 0){
         // 出力をバッファリングしない(==日本語自動変換もしない)
-        ob_end_clean();
+        while (@ob_end_flush());
 
-        // IEのために256バイト空文字出力
-        echo str_pad('',256);
+        if ($output === true) {
+            // IEのために半角スペース256文字+改行を出力
+            //echo str_repeat(' ', 256) . "\n";
+            echo str_pad('', 256) . "\n";
+        } else if ($output !== false) {
+            echo $output;
+        }
 
-        // 出力はブランクだけでもいいと思う
-        echo $output;
         // 出力をフラッシュする
         flush();
 
@@ -2003,17 +2011,6 @@ echo $template_path;
             $html.= "</tr>";
         }
         return $html;
-    }
-
-    /**
-     * 出力バッファをフラッシュし, バッファリングを開始する.
-     *
-     * @return void
-     */
-    function flush() {
-        flush();
-        ob_end_flush();
-        ob_start();
     }
 
     /* デバッグ用 ------------------------------------------------------------------------------------------------*/
