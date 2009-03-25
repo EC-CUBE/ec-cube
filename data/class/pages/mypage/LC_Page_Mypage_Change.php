@@ -353,14 +353,6 @@ class LC_Page_Mypage_Change extends LC_Page {
                     $passlen = strlen($this->arrForm['password']);
                     $this->passlen = $this->lfPassLen($passlen);
 
-                    // メール受け取り
-                    if (!isset($_POST['mailmaga_flg'])) $_POST['mailmaga_flg'] = "";
-                    if (strtolower($_POST['mailmaga_flg']) == "on") {
-                        $_POST['mailmaga_flg']  = "2";
-                    } else {
-                        $_POST['mailmaga_flg']  = "3";
-                    }
-
                     $this->tpl_mainpage = 'mypage/change_confirm.tpl';
                     $this->tpl_title = '登録変更(確認ページ)';
 
@@ -534,17 +526,24 @@ class LC_Page_Mypage_Change extends LC_Page {
          *  n :  「全角」数字を「半角(ﾊﾝｶｸ)」に変換
          *  a :  全角英数字を半角英数字に変換する
          */
-        // カラム名とコンバート情報
-        foreach ($arrRegistColumn as $data) {
-            $arrConvList[ $data["column"] ] = $data["convert"];
-        }
 
-        // 文字変換
-        foreach ($arrConvList as $key => $val) {
-            // POSTされてきた値のみ変換する。
-            if (isset($array[$key])) {
-                if(strlen(($array[$key])) > 0) {
-                    $array[$key] = mb_convert_kana($array[$key] ,$val);
+        foreach ($arrRegistColumn as $registColumn) {
+            $key = $registColumn["column"];
+            $mb_convert_kana_option = $registColumn["convert"];
+            $val =& $array[$key];
+            
+            // 文字変換
+            // XXX 文字列のみを変換するようにした方が良い気もする。
+            if (strlen($val) > 0) {
+                $val = mb_convert_kana($val ,$mb_convert_kana_option);
+            }
+            
+            // メールマガジン
+            if ($key == 'mailmaga_flg') {
+                if (strtolower($val) == "on") {
+                    $val = "2";
+                } else if ($val != "2") {
+                    $val = "3";
                 }
             }
         }
