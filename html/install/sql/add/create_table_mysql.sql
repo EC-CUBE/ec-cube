@@ -7,7 +7,7 @@ create table dtb_module_update_logs(
     ok text,
     create_date datetime NOT NULL,
     update_date datetime NOT NULL
-);
+) TYPE=InnoDB ;
 
 CREATE TABLE dtb_ownersstore_settings (
     public_key text
@@ -455,6 +455,13 @@ CREATE TABLE dtb_review (
     create_date datetime,
     update_date datetime,
     del_flg  smallint NOT NULL DEFAULT 0
+) TYPE=InnoDB ;
+
+CREATE TABLE dtb_customer_favorite_products (
+    customer_id int NOT NULL,
+    product_id int NOT NULL,
+    create_date datetime NOT NULL,
+    update_date datetime NOT NULL,
 ) TYPE=InnoDB ;
 
 CREATE TABLE dtb_customer_reading (

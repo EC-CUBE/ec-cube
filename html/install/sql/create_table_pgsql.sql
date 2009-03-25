@@ -464,6 +464,14 @@ CREATE TABLE dtb_customer_reading (
     update_date timestamp NOT NULL DEFAULT NOW()
 );
 
+CREATE TABLE dtb_customer_favorite_products (
+    customer_id int4 NOT NULL,
+    product_id int4 NOT NULL,
+    create_date timestamp NOT NULL DEFAULT now(),
+    update_date timestamp NOT NULL DEFAULT now(),
+    PRIMARY KEY (customer_id, product_id)
+);
+
 CREATE TABLE dtb_category_count (
     category_id int4 NOT NULL,
     product_count int4 NOT NULL,

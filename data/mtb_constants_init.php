@@ -666,4 +666,8 @@ define('OSTORE_E_C_AUTOUP_DISABLE', '2008');
 define('OSTORE_E_C_PERMISSION', '2009');
 /** オーナーズストア通信エラーコード */
 define('OSTORE_E_C_BATCH_ERR', '2010');
+/** お気に入り商品登録(有効:1 無効:0) */
+define('OPTION_FAVOFITE_PRODUCT','1');
+/** お気に入り商品を表示する際に、在庫なし商品の表示・非表示(非表示:true 表示:false) */
+define('NOSTOCK_HIDDEN', false);
 ?>

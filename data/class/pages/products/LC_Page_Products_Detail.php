@@ -86,6 +86,21 @@ class LC_Page_Products_Detail extends LC_Page {
         $helper = new SC_Helper_PageLayout_Ex();
         $helper->sfGetPageLayout($this, false, "products/detail.php");
 
+        // ログイン中のユーザが商品をお気に入りにいれる処理
+        if( $objCustomer->isLoginSuccess() === true && strlen($_POST['mode']) > 0 && $_POST['mode'] == "add_favorite" && strlen($_POST['favorite_product_id']) > 0 ) {
+            // 値の正当性チェック
+            if(!SC_Utils_Ex::sfIsInt($_POST['favorite_product_id']) || !$objDb->sfIsRecord("dtb_products", "product_id", $_POST['favorite_product_id'], "del_flg = 0 AND status = 1")) {
+                SC_Utils_Ex::sfDispSiteError(PRODUCT_NOT_FOUND);
+                exit;
+            } else {
+                $this->arrErr = $this->lfCheckError();
+                if(count($this->arrErr) == 0) {
+                    $customer_id = $objCustomer->getValue('customer_id');
+                    $this->lfRegistFavoriteProduct($customer_id, $_POST['favorite_product_id']);
+                }
+            }
+        }
+
         // パラメータ管理クラス
         $this->objFormParam = new SC_FormParam();
         // パラメータ情報の初期化
@@ -120,7 +135,7 @@ class LC_Page_Products_Detail extends LC_Page {
             SC_Utils_Ex::sfDispSiteError(PRODUCT_NOT_FOUND);
         }
         // ログイン判定
-        if($objCustomer->isLoginSuccess()) {
+        if($objCustomer->isLoginSuccess() === true) {
             //お気に入りボタン表示
             $this->tpl_login = true;
 
@@ -207,7 +222,7 @@ class LC_Page_Products_Detail extends LC_Page {
 
         $objQuery = new SC_Query();
         // DBから商品情報を取得する。
-        $arrRet = $objQuery->select("*", "vw_products_allclass_detail AS alldtl", "product_id = ?", array($tmp_id));
+        $arrRet = $objQuery->select("*, (SELECT count(*) FROM dtb_customer_favorite_products WHERE product_id = alldtl.product_id AND customer_id = ?) AS favorite_count", "vw_products_allclass_detail AS alldtl", "product_id = ?", array($objCustomer->getValue('customer_id'), $tmp_id));
         $this->arrProduct = $arrRet[0];
 
         // 商品コードの取得
@@ -753,17 +768,26 @@ class LC_Page_Products_Detail extends LC_Page {
 
     /* 入力内容のチェック */
     function lfCheckError() {
-        // 入力データを渡す。
-        $arrRet =  $this->objFormParam->getHashArray();
-        $objErr = new SC_CheckError($arrRet);
-        $objErr->arrErr = $this->objFormParam->checkError();
+        if ($_POST['mode'] == "add_favorite") {
+            $objCustomer = new SC_Customer();
+            $objErr = new SC_CheckError();
+            $customer_id = $objCustomer->getValue('customer_id');
+            if (SC_Helper_DB_Ex::sfDataExists('dtb_customer_favorite_products', 'customer_id = ? AND product_id = ?', array($customer_id, $favorite_product_id))) {
+                $objErr->arrErr['add_favorite'.$favorite_product_id] = "※ この商品は既にお気に入りに追加されています。<br />";
+            }
+        } else {
+            // 入力データを渡す。
+            $arrRet =  $this->objFormParam->getHashArray();
+            $objErr = new SC_CheckError($arrRet);
+            $objErr->arrErr = $this->objFormParam->checkError();
 
-        // 複数項目チェック
-        if ($this->tpl_classcat_find1) {
-            $objErr->doFunc(array("規格1", "classcategory_id1"), array("EXIST_CHECK"));
-        }
-        if ($this->tpl_classcat_find2) {
-            $objErr->doFunc(array("規格2", "classcategory_id2"), array("EXIST_CHECK"));
+            // 複数項目チェック
+            if ($this->tpl_classcat_find1) {
+                $objErr->doFunc(array("規格1", "classcategory_id1"), array("EXIST_CHECK"));
+            }
+            if ($this->tpl_classcat_find2) {
+                $objErr->doFunc(array("規格2", "classcategory_id2"), array("EXIST_CHECK"));
+            }
         }
 
         return $objErr->arrErr;
@@ -846,6 +870,26 @@ class LC_Page_Products_Detail extends LC_Page {
         if (!isset($this->arrForm['quantity']['value'])) $this->arrForm['quantity']['value'] = "";
         $value = $this->arrForm['quantity']['value'];
         $this->arrForm['quantity']['value'] = htmlspecialchars($value, ENT_QUOTES, CHAR_CODE);
+    }
+
+        /*
+     * お気に入り商品登録
+     */
+    function lfRegistFavoriteProduct($customer_id, $product_id) {
+        $objQuery = new SC_Query();
+        $objConn = new SC_DbConn();
+        $count = $objConn->getOne("SELECT COUNT(*) FROM dtb_customer_favorite_products WHERE customer_id = ? AND product_id = ?", array($customer_id, $product_id));
+
+        if ($count == 0) {
+            $sqlval['customer_id'] = $customer_id;
+            $sqlval['product_id'] = $product_id;
+            $sqlval['update_date'] = "now()";
+            $sqlval['create_date'] = "now()";
+
+            $objQuery->begin();
+            $objQuery->insert('dtb_customer_favorite_products', $sqlval);
+            $objQuery->commit();
+        }
     }
 }
 ?>
