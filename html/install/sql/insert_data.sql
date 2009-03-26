@@ -1110,5 +1110,6 @@ INSERT INTO mtb_constants VALUES ('OSTORE_E_C_PERMISSION', '"2009"', 521, 'オ�
 INSERT INTO mtb_constants VALUES ('OSTORE_E_C_BATCH_ERR', '"2010"', 522, 'オーナーズストア通信エラーコード');
 INSERT INTO mtb_constants VALUES ('OPTION_FAVOFITE_PRODUCT','1',523,'お気に入り商品登録(有効:1 無効:0)');
 INSERT INTO mtb_constants VALUES ('NOSTOCK_HIDDEN','false',524,'お気に入り商品を表示する際の、在庫なし商品表示・非表示(非表示:true 表示:false)');
+INSERT INTO mtb_constants VALUES ('IMAGE_RENAME','true',525,'画像リネーム設定（商品画像のみ）(true:リネームする、false:リネームしない)');
 
 INSERT INTO dtb_module (module_id,module_code,module_name,update_date,create_date)values(0,0,'patch',now(),now());

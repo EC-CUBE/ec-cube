@@ -193,8 +193,6 @@ define('ROOT_CATEGORY_7', 8);
 define('PAYMENT_CREDIT_ID', 1);
 /** コンビニ決済 */
 define('PAYMENT_CONVENIENCE_ID', 2);
-/** 画像リネーム設定（商品画像のみ） */
-define('IMAGE_RENAME', true);
 /** 拡大画像横 */
 define('LARGE_IMAGE_WIDTH', 500);
 /** 拡大画像縦 */
@@ -672,4 +670,6 @@ define('OSTORE_E_C_BATCH_ERR', '2010');
 define('OPTION_FAVOFITE_PRODUCT','1');
 /** お気に入り商品を表示する際に、在庫なし商品の表示・非表示(非表示:true 表示:false) */
 define('NOSTOCK_HIDDEN', false);
+/** 画像リネーム設定（商品画像のみ） */
+define('IMAGE_RENAME', true);
 ?>
