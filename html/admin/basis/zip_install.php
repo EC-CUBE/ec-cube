@@ -25,8 +25,6 @@
 require_once '../require.php';
 require_once CLASS_EX_PATH . 'page_extends/admin/basis/LC_Page_Admin_Basis_ZipInstall_Ex.php';
 
-ini_set('max_execution_time', 600);
-
 // }}}
 // {{{ generate page
 

@@ -69,19 +69,17 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page {
         $fp = fopen(ZIP_CSV_FILE_PATH, "r");
         $img_path = USER_URL . "packages/" . TEMPLATE_NAME . "/img/";
 
+        echo ('<html>');
+        echo ('<body bgcolor="#494E5F">');
         // 一部のIEは256バイト以上受け取ってから表示を開始する。
-        for($i = 0; $i < 256; $i++) {
-            print(" ");
-        }
-        print("\n");
-        $this->myFlush();
+        SC_Utils_Ex::sfFlush(true);
 
 #('http://www.post.japanpost.jp/zipcode/dl/kogaki/lzh/ken_all.lzh')
         if(!$fp) {
             SC_Utils_Ex::sfErrorHeader(">> " . ZIP_CSV_FILE_PATH . "の取得に失敗しました。");
         } else {
             print("<img src='". $img_path . "install/main_w.jpg'><br>");
-            $this->myFlush();
+            SC_Utils_Ex::sfFlush();
 
             // CSVの件数を数える
             $line = 0;
@@ -91,7 +89,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page {
             }
 
             print("<img src='". $img_path ."install/space_w.gif'>");
-            $this->myFlush();
+            SC_Utils_Ex::sfFlush();
 
             // ファイルポインタを戻す
             fseek($fp, 0);
@@ -99,45 +97,47 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page {
             // 画像を一個表示する件数を求める。
             $disp_line = intval($line / IMAGE_MAX);
 
-            // 既に書き込まれたデータを数える
-            $end_cnt = $objQuery->count("mtb_zip");
+            $objQuery->begin();
+            $objQuery->delete('mtb_zip');
             $cnt = 1;
             $img_cnt = 0;
             while (!feof($fp)) {
                 $arrCSV = fgetcsv($fp, ZIP_CSV_LINE_MAX);
-
-                // すでに書き込まれたデータを飛ばす。
-                if($cnt > $end_cnt) {
-                    $sqlval['code'] = $arrCSV[0];
-                    $sqlval['old_zipcode'] = $arrCSV[1];
-                    $sqlval['zipcode'] = $arrCSV[2];
-                    $sqlval['state_kana'] = $arrCSV[3];
-                    $sqlval['city_kana'] = $arrCSV[4];
-                    $sqlval['town_kana'] = $arrCSV[5];
-                    $sqlval['state'] = $arrCSV[6];
-                    $sqlval['city'] = $arrCSV[7];
-                    $sqlval['town'] = $arrCSV[8];
-                    $sqlval['flg1'] = $arrCSV[9];
-                    $sqlval['flg2'] = $arrCSV[10];
-                    $sqlval['flg3'] = $arrCSV[11];
-                    $sqlval['flg4'] = $arrCSV[12];
-                    $sqlval['flg5'] = $arrCSV[13];
-                    $sqlval['flg6'] = $arrCSV[14];
-                    $objQuery->insert("mtb_zip", $sqlval);
-                }
-
+                // $sqlval['code'] = $arrCSV[0];
+                // $sqlval['old_zipcode'] = $arrCSV[1];
+                $sqlval['zipcode'] = $arrCSV[2];
+                // $sqlval['state_kana'] = $arrCSV[3];
+                // $sqlval['city_kana'] = $arrCSV[4];
+                // $sqlval['town_kana'] = $arrCSV[5];
+                $sqlval['state'] = mb_convert_encoding($arrCSV[6], CHAR_CODE, 'sjis-win');
+                $sqlval['city'] = mb_convert_encoding($arrCSV[7], CHAR_CODE, 'sjis-win');
+                $sqlval['town'] = mb_convert_encoding($arrCSV[8], CHAR_CODE, 'sjis-win');
+                // $sqlval['flg1'] = $arrCSV[9];
+                // $sqlval['flg2'] = $arrCSV[10];
+                // $sqlval['flg3'] = $arrCSV[11];
+                // $sqlval['flg4'] = $arrCSV[12];
+                // $sqlval['flg5'] = $arrCSV[13];
+                // $sqlval['flg6'] = $arrCSV[14];
+                $objQuery->insert("mtb_zip", $sqlval);
                 $cnt++;
                 // $disp_line件ごとに進捗表示する
                 if($cnt % $disp_line == 0 && $img_cnt < IMAGE_MAX) {
                     print("<img src='". $img_path ."install/graph_1_w.gif'>");
-                    $this->myFlush();
+                    SC_Utils_Ex::sfFlush();
                     $img_cnt++;
+                }
+                // 暴走スレッドが残留する確率を軽減したタイムアウト防止のロジック
+                // TODO 動作が安定していれば、SC_Utils 辺りに移動したい。
+                if (!get_cfg_var('safe_mode')) {
+                    // タイムアウトをリセット
+                    set_time_limit((int)get_cfg_var('max_execution_time'));
                 }
             }
             fclose($fp);
+            $objQuery->commit();
 
             print("<img src='". $img_path ."install/space_w.gif'><br>\n");
-            print("<table width='700' height='50' border='0' cellpadding='0' cellspacing='0' bgcolor='#494E5F'>\n");
+            print("<table width='700' height='50' border='0' cellpadding='0' cellspacing='0'>\n");
             print("<tr>\n");
             print("<td align='center'><a href='javascript:window.close()'><img src='". $img_path ."install/close.gif' alt='CLOSE' width='85' height='22' border='0' /></a></td>\n");
             print("</tr>\n");
@@ -152,17 +152,6 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page {
      */
     function destroy() {
         parent::destroy();
-    }
-
-    /**
-     * 出力バッファをフラッシュし, バッファリングを開始する.
-     *
-     * @return void
-     */
-    function myFlush() {
-        flush();
-        ob_end_flush();
-        ob_start();
     }
 }
 ?>
