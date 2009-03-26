@@ -392,6 +392,7 @@ class LC_Page_Products_List extends LC_Page {
         $this->tpl_pageno = defined("MOBILE_SITE") ? @$_GET['pageno'] : @$_POST['pageno'];
         $arrval = array();
         $arrval_order = array();
+        $arrval_category = array();
         
         // カテゴリからのWHERE文字列取得
         if ( $category_id ) {
