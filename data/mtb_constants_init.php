@@ -193,6 +193,8 @@ define('ROOT_CATEGORY_7', 8);
 define('PAYMENT_CREDIT_ID', 1);
 /** コンビニ決済 */
 define('PAYMENT_CONVENIENCE_ID', 2);
+/** 画像リネーム設定（商品画像のみ） */
+define('IMAGE_RENAME', true);
 /** 拡大画像横 */
 define('LARGE_IMAGE_WIDTH', 500);
 /** 拡大画像縦 */

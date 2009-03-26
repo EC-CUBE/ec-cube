@@ -179,7 +179,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
             // ファイル存在チェック
             $this->arrErr = array_merge((array)$this->arrErr, (array)$this->objUpFile->checkEXISTS($_POST['image_key']));
             // 画像保存処理
-            $this->arrErr[$_POST['image_key']] = $this->objUpFile->makeTempFile($_POST['image_key']);
+            $this->arrErr[$_POST['image_key']] = $this->objUpFile->makeTempFile($_POST['image_key'],IMAGE_RENAME);
 
             // 中、小画像生成
             $this->lfSetScaleImage();
