@@ -692,12 +692,35 @@ class LC_Page_Admin_Products_Product extends LC_Page {
             if(empty($this->objUpFile->temp_file[$arrImageKey[$to_key]]) &&
                empty($this->objUpFile->save_file[$arrImageKey[$to_key]])) {
 
-                $path = $this->objUpFile->makeThumb($from_path, $to_w, $to_h);
+                // リネームする際は、自動生成される画像名に一意となるように、Suffixを付ける
+                $dst_file = $this->objUpFile->lfGetTmpImageName(IMAGE_RENAME, "", $this->objUpFile->temp_file[$arrImageKey[$from_key]]) . $this->lfGetAddSuffix($to_key);
+                $path = $this->objUpFile->makeThumb($from_path, $to_w, $to_h, $dst_file);
                 $this->objUpFile->temp_file[$arrImageKey[$to_key]] = basename($path);
             }
         }else{
             return "";
         }
+    }
+
+    // リネームする際は、自動生成される画像名に一意となるように、Suffixを付ける
+    function lfGetAddSuffix($to_key){
+        if( IMAGE_RENAME === true ){ return ; }
+
+        // 自動生成される画像名
+        $dist_name = "";
+        switch($to_key){
+            case "main_list_image":
+                $dist_name = '_s';
+                break;
+            case "main_image":
+                $dist_name = '_m';
+                break;
+            default;
+                $arrRet = explode('sub_image', $to_key);
+                $dist_name = '_sub' .$arrRet[1];
+                break;
+        }
+        return $dist_name;
     }
 }
 ?>

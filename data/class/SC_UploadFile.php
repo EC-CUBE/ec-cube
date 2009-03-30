@@ -73,7 +73,7 @@ class SC_UploadFile {
 
     // アップロードされたファイルを保存する。
     // FIXME see. http://www.php.net/manual/en/features.file-upload.php
-    function makeTempFile($keyname, $rename = true) {
+    function makeTempFile($keyname, $rename = IMAGE_RENAME) {
         $objErr = new SC_CheckError();
         $cnt = 0;
         $arrKeyname = array_flip($this->keyname);
@@ -339,14 +339,15 @@ class SC_UploadFile {
      * @param int $keyname
      * @return strgin $dst_file
      */
-    function lfGetTmpImageName($rename, $keyname){
+    function lfGetTmpImageName($rename, $keyname = "", $uploadfile = ""){
 
         if( $rename === true ){
             // 一意なIDを取得し、画像名をリネームし保存
             $uniqname = date("mdHi") . "_" . uniqid("");
         } else {
             // アップロードした画像名で保存
-            $uniqname =  preg_replace('/(.+)\.(.+?)$/','$1',$_FILES[$keyname]['name']);
+            $uploadfile = strlen($uploadfile) > 0 ? $uploadfile : $_FILES[$keyname]['name'];
+            $uniqname =  preg_replace('/(.+)\.(.+?)$/','$1', $uploadfile);
         }
         $dst_file = $this->temp_dir . $uniqname;
         return $dst_file;
