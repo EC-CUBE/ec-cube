@@ -165,6 +165,7 @@ function lfPopwinSubmit(formName) {
                                     <span style="font-size: 80%;">※未入力時は表示されません。</span><br />
                                 </td>
                             </tr>
+                            <!--{if $smarty.const.USE_POINT === true}-->
                             <tr class="fs12">
                                 <td width="120" bgcolor="#f3f3f3">ポイント表記</td>
                                 <td width="307" bgcolor="#ffffff">
@@ -172,6 +173,9 @@ function lfPopwinSubmit(formName) {
                                     <span style="font-size: 80%;">※「する」を選択されても、お客様が非会員の場合は表示されません。</span>
                                 </td>
                             </tr>
+                            <!--{else}-->
+                                <input type="hidden" name="disp_point" value="0" />
+                            <!--{/if}-->
                         </table>
 
                         <table width="440" border="0" cellspacing="0" cellpadding="0" summary=" ">
