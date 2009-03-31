@@ -533,12 +533,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
 
         $where = "order_id = ?";
 
-        // 受注ステータスの判定
-        if ($sqlval['status'] == ODERSTATUS_COMMIT) {
-            // 受注テーブルの発送済み日を更新する
-            $addcol['commit_date'] = "Now()";
-        }
-
         /*
          * XXX 本来なら配列だが, update 関数を string として
          *     チェックしているため...
@@ -554,6 +548,11 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         $sql .= " SET";
         $sql .= "     payment_method = (SELECT payment_method FROM dtb_payment WHERE payment_id = ?)";
         $sql .= "     ,deliv_time = (SELECT deliv_time FROM dtb_delivtime WHERE time_id = ? AND deliv_id = (SELECT deliv_id FROM dtb_payment WHERE payment_id = ? ))";
+        // 受注ステータスの判定
+        if ($sqlval['status'] == ODERSTATUS_COMMIT) {
+            // 受注テーブルの発送済み日を更新する
+            $sql .= "     ,commit_date = 'NOW()'";
+        }
         $sql .= " WHERE order_id = ?";
 
         if ($arrRet['deliv_time_id'] == "") {
@@ -567,6 +566,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         // 受注詳細データの更新
         $arrDetail = $this->objFormParam->getSwapArray(array("product_id", "product_code", "product_name", "price", "quantity", "point_rate", "classcategory_id1", "classcategory_id2", "classcategory_name1", "classcategory_name2"));
         $objQuery->delete("dtb_order_detail", $where, array($order_id));
+
 
         $max = count($arrDetail);
         for($i = 0; $i < $max; $i++) {
@@ -584,6 +584,8 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
             $sqlval['classcategory_name2'] = $arrDetail[$i]['classcategory_name2'];
             $objQuery->insert("dtb_order_detail", $sqlval);
         }
+
+
         $objQuery->commit();
     }
 
