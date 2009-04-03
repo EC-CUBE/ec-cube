@@ -54,15 +54,23 @@ class LC_Page_Mypage_MailView extends LC_Page {
     function process() {
         $objView = new SC_SiteView();
         $objSess = new SC_Session();
+        $objCustomer = new SC_Customer();
 
-        // 認証可否の判定
-        SC_Utils_Ex::sfIsSuccess($objSess);
+        // ログインチェック
+        if(!$objCustomer->isLoginSuccess()) {
+            SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
+        }
 
         if(SC_Utils_Ex::sfIsInt($_GET['send_id'])) {
             $objQuery = new SC_Query();
             $col = "subject, mail_body";
-            $where = "send_id = ?";
-            $arrRet = $objQuery->select($col, "dtb_mail_history", $where, array($_GET['send_id']));
+            $where = "send_id = ? AND customer_id = ?";
+            $arrval = array($_GET['send_id'], $objCustomer->getValue('customer_id'));
+            $arrRet = $objQuery->select($col, "dtb_mail_history LEFT JOIN dtb_order USING(order_id)", $where, $arrval);
+
+            if (empty($arrRet)) {
+                SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
+            }
             $this->tpl_subject = $arrRet[0]['subject'];
             $this->tpl_body = $arrRet[0]['mail_body'];
         }
