@@ -383,7 +383,7 @@
                             <tr class="fs12n">
                                 <td bgcolor="#f2f1ec" width="717" colspan="7">▼受注商品情報
                                 <input type="button" name="cheek" value="計算結果の確認" onclick="fnModeSubmit('cheek','anchor_key','order_products');" />
-                                <input type="button" name="add_product" value="商品の追加" onclick="win03('<!--{$smarty.const.SITE_URL}-->admin/products/product_select.php<!--{if $tpl_order_id}-->?order_id=<!--{$tpl_order_id}--><!--{/if}-->', 'search', '500', '500'); " />
+                                <input type="button" name="add_product" value="商品の追加" onclick="win03('<!--{$smarty.const.SITE_URL}-->admin/order/product_select.php<!--{if $tpl_order_id}-->?order_id=<!--{$tpl_order_id}--><!--{/if}-->', 'search', '500', '500'); " />
                                 <br />
                                 <span class="red12"><!--{$arrErr.product_id}--></span>
                                 <span class="red12"><!--{$arrErr.quantity}--></span>
