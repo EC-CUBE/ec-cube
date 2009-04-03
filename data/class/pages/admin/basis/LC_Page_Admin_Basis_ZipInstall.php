@@ -101,6 +101,12 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page {
             $objQuery->delete('mtb_zip');
             $cnt = 1;
             $img_cnt = 0;
+            $safe_mode = (boolean)ini_get('safe_mode');
+            $max_execution_time
+                = is_numeric(ini_get('max_execution_time'))
+                ? intval(ini_get('max_execution_time'))
+                : intval(get_cfg_var('max_execution_time'))
+            ;
             while (!feof($fp)) {
                 $arrCSV = fgetcsv($fp, ZIP_CSV_LINE_MAX);
                 // $sqlval['code'] = $arrCSV[0];
@@ -128,9 +134,9 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page {
                 }
                 // 暴走スレッドが残留する確率を軽減したタイムアウト防止のロジック
                 // TODO 動作が安定していれば、SC_Utils 辺りに移動したい。
-                if (!get_cfg_var('safe_mode')) {
+                if (!$safe_mode) {
                     // タイムアウトをリセット
-                    set_time_limit((int)get_cfg_var('max_execution_time'));
+                    set_time_limit($max_execution_time);
                 }
             }
             fclose($fp);
