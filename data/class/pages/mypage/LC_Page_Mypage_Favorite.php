@@ -94,13 +94,13 @@ class LC_Page_MyPage_Favorite extends LC_Page {
             $this->tpl_pageno = htmlspecialchars($_POST['pageno'], ENT_QUOTES, CHAR_CODE);
         }
 
-        $col = "allcls.*";
-        $from = "dtb_customer_favorite_products AS dcfp LEFT JOIN vw_products_allclass AS allcls USING(product_id)";
+        $col = "alldtl.*";
+        $from = "dtb_customer_favorite_products AS dcfp LEFT JOIN vw_products_allclass_detail AS alldtl USING(product_id)";
         
-        $where = "allcls.del_flg = 0 AND allcls.status = 1 AND dcfp.customer_id = ?";
+        $where = "alldtl.del_flg = 0 AND alldtl.status = 1 AND dcfp.customer_id = ?";
         // 在庫無し商品の非表示
         if (NOSTOCK_HIDDEN === true) {
-            $where .= ' AND (allcls.stock_max >= 1 OR allcls.stock_unlimited_max = 1)';
+            $where .= ' AND (alldtl.stock_max >= 1 OR alldtl.stock_unlimited_max = 1)';
         }
 
         $arrval = array($objCustomer->getvalue('customer_id'));
