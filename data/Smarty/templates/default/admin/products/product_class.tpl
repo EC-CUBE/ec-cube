@@ -133,7 +133,7 @@
     <!--{/section}-->
   </table>
 
-  <div class="btn"><button type="submit"><span>この内容で登録する</span></button></div>
+  <div class="btn"><button type="submit"><span>確認ページへ</span></button></div>
   
   <!--{/if}-->
   
