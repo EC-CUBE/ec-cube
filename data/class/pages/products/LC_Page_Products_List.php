@@ -401,88 +401,14 @@ class LC_Page_Products_List extends LC_Page {
                 $where_category = "AND $tmp_where";
             }
         }
-
-        $col = <<< __EOS__
-             product_id
-            ,product_code_min
-            ,product_code_max
-            ,name
-            ,comment1
-            ,comment2
-            ,comment3
-            ,main_list_comment
-            ,main_image
-            ,main_list_image
-            ,price01_min
-            ,price01_max
-            ,price02_min
-            ,price02_max
-            ,stock_min
-            ,stock_max
-            ,stock_unlimited_min
-            ,stock_unlimited_max
-            ,point_rate
-            ,sale_limit
-            ,sale_unlimited
-            ,deliv_date_id
-            ,deliv_fee
-            ,status
-            ,product_flag
-            ,del_flg
-__EOS__;
-        $from = "vw_products_allclass AS allcls";
         
-        //表示順序
-        switch($orderby) {
-
-            //販売価格順
-            case 'price':
-                $order = "price02_min, product_id";
-                break;
-
-            //新着順
-            case 'date':
-                $order = "create_date DESC, product_id";
-                break;
-
-            default:
-                $order = <<< __EOS__
-                    (
-                        SELECT
-                             T3.rank
-                        FROM
-                            dtb_product_categories T2
-                            JOIN dtb_category T3
-                                USING (category_id)
-                        WHERE T2.product_id = allcls.product_id
-                            $where_category
-                        ORDER BY T3.rank DESC, T2.rank DESC
-                        LIMIT 1
-                    ) DESC
-                    ,(
-                        SELECT
-                            T2.rank
-                        FROM
-                            dtb_product_categories T2
-                            JOIN dtb_category T3
-                                USING (category_id)
-                        WHERE T2.product_id = allcls.product_id
-                            $where_category
-                        ORDER BY T3.rank DESC, T2.rank DESC
-                        LIMIT 1
-                    ) DESC
-                    ,product_id
-__EOS__;
-                $arrval_order = array_merge($arrval_category, $arrval_category);
-                break;
-        }
-
+        // ▼対象商品IDの抽出
         // 商品検索条件の作成（未削除、表示）
         $where = "del_flg = 0 AND status = 1 ";
         
         // 在庫無し商品の非表示
         if (NOSTOCK_HIDDEN === true) {
-            $where .= ' AND (allcls.stock_max >= 1 OR allcls.stock_unlimited_max = 1)';
+            $where .= ' AND (stock_max >= 1 OR stock_unlimited_max = 1)';
         }
         
         if (strlen($where_category) >= 1) {
@@ -512,11 +438,11 @@ __EOS__;
             $arrval[] = $maker_id;
         }
         
+        $arrProduct_id = $objQuery->getCol('vw_products_allclass AS allcls', 'DISTINCT product_id', $where, $arrval);
+        // ▲対象商品IDの抽出
+        
         // 行数の取得
-        $linemax = count($objQuery->getAll("SELECT DISTINCT product_id "
-                                         . "FROM vw_products_allclass AS allcls "
-                                         . (!empty($where) ? " WHERE " . $where
-                                                           : ""), $arrval));
+        $linemax = count($arrProduct_id);
 
         $this->tpl_linemax = $linemax;   // 何件が該当しました。表示用
 
@@ -528,15 +454,99 @@ __EOS__;
         // 表示文字列
         $this->tpl_strnavi = empty($strnavi) ? "&nbsp;" : $strnavi;
         $startno = $this->objNavi->start_row;                 // 開始行
+        
+        // ▼商品詳細取得
+        $col = <<< __EOS__
+             product_id
+            ,product_code_min
+            ,product_code_max
+            ,name
+            ,comment1
+            ,comment2
+            ,comment3
+            ,main_list_comment
+            ,main_image
+            ,main_list_image
+            ,price01_min
+            ,price01_max
+            ,price02_min
+            ,price02_max
+            ,stock_min
+            ,stock_max
+            ,stock_unlimited_min
+            ,stock_unlimited_max
+            ,point_rate
+            ,sale_limit
+            ,sale_unlimited
+            ,deliv_date_id
+            ,deliv_fee
+            ,status
+            ,product_flag
+            ,del_flg
+__EOS__;
+        
+        $from = "vw_products_allclass_detail AS alldtl";
+        
+        // WHERE 句
+        $where = '0=0';
+        if (is_array($arrProduct_id) && !empty($arrProduct_id)) {
+            $where .= ' AND product_id IN (' . implode(',', $arrProduct_id) . ')';
+        }
+        
+        //表示順序
+        switch($orderby) {
 
+            //販売価格順
+            case 'price':
+                $order = "price02_min, product_id";
+                break;
+
+            //新着順
+            case 'date':
+                $order = "create_date DESC, product_id";
+                break;
+
+            default:
+                $order = <<< __EOS__
+                    (
+                        SELECT
+                             T3.rank
+                        FROM
+                            dtb_product_categories T2
+                            JOIN dtb_category T3
+                                USING (category_id)
+                        WHERE T2.product_id = alldtl.product_id
+                            $where_category
+                        ORDER BY T3.rank DESC, T2.rank DESC
+                        LIMIT 1
+                    ) DESC
+                    ,(
+                        SELECT
+                            T2.rank
+                        FROM
+                            dtb_product_categories T2
+                            JOIN dtb_category T3
+                                USING (category_id)
+                        WHERE T2.product_id = alldtl.product_id
+                            $where_category
+                        ORDER BY T3.rank DESC, T2.rank DESC
+                        LIMIT 1
+                    ) DESC
+                    ,product_id
+__EOS__;
+                $arrval_order = array_merge($arrval_category, $arrval_category);
+                break;
+        }
+        
         // 取得範囲の指定(開始行番号、行数のセット)
         $objQuery->setlimitoffset($disp_num, $startno);
         // 表示順序
         $objQuery->setorder($order);
-
+        
         // 検索結果の取得
-        $this->arrProducts = $objQuery->select($col, $from, $where, array_merge($arrval, $arrval_order));
-
+        $this->arrProducts = $objQuery->select($col, $from, $where, $arrval_order);
+        // ▲商品詳細取得
+        
         // 規格名一覧
         $arrClassName = $objDb->sfGetIDValueList("dtb_class", "class_id", "name");
         // 規格分類名一覧
