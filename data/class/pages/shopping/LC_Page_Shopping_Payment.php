@@ -69,7 +69,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
 
         $objView = new SC_SiteView();
         $objSiteSess = new SC_SiteSession();
-        $objCartSess = new SC_CartSession();
+        $objCartSess = new SC_CartSession_Ex();
         $objCampaignSess = new SC_CampaignSession();
         $objDb = new SC_Helper_DB_Ex();
         $this->objCustomer = new SC_Customer();
@@ -185,7 +185,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
     function mobileProcess() {
         $objView = new SC_MobileView();
         $objSiteSess = new SC_SiteSession();
-        $objCartSess = new SC_CartSession();
+        $objCartSess = new SC_CartSession_Ex();
         $this->objCustomer = new SC_Customer();
         $objDb = new SC_Helper_DB_Ex();
         $objSiteInfo = $objView->objSiteInfo;
@@ -465,7 +465,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
 
     /* 配達日一覧を取得する */
     function lfGetDelivDate() {
-        $objCartSess = new SC_CartSession();
+        $objCartSess = new SC_CartSession_Ex();
         $objQuery = new SC_Query();
         // 商品IDの取得
         $max = $objCartSess->getMax();

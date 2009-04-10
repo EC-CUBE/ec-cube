@@ -101,7 +101,7 @@ class LC_Page_Regist_Complete extends LC_Page {
         $objView = new SC_MobileView();
 
         // カートが空かどうかを確認する。
-        $objCartSess = new SC_CartSession("", false);
+        $objCartSess = new SC_CartSession_Ex("", false);
         $this->tpl_cart_empty = count($objCartSess->getCartList()) < 1;
 
         $objView->assignobj($this);

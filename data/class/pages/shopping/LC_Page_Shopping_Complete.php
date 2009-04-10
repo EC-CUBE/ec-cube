@@ -65,7 +65,7 @@ class LC_Page_Shopping_Complete extends LC_Page {
         $conn = new SC_DBConn();
         $objView = new SC_SiteView();
         $this->objSiteSess = new SC_SiteSession();
-        $this->objCartSess = new SC_CartSession();
+        $this->objCartSess = new SC_CartSession_Ex();
         $this->objCampaignSess = new SC_CampaignSession();
         $objSiteInfo = $objView->objSiteInfo;
         $this->arrInfo = $objSiteInfo->data;
@@ -169,7 +169,7 @@ class LC_Page_Shopping_Complete extends LC_Page {
         $conn = new SC_DBConn();
         $objView = new SC_MobileView();
         $this->objSiteSess = new SC_SiteSession();
-        $this->objCartSess = new SC_CartSession();
+        $this->objCartSess = new SC_CartSession_Ex();
         $objSiteInfo = $objView->objSiteInfo;
         $this->arrInfo = $objSiteInfo->data;
         $this->objCustomer = new SC_Customer();

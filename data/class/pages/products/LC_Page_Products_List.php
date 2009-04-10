@@ -169,7 +169,7 @@ class LC_Page_Products_List extends LC_Page {
                 // 入力値の変換
                 $this->arrErr = $this->lfCheckError($_POST['product_id']);
                 if(count($this->arrErr) == 0) {
-                    $objCartSess = new SC_CartSession();
+                    $objCartSess = new SC_CartSession_Ex();
                     $classcategory_id = "classcategory_id". $_POST['product_id'];
                     $classcategory_id1 = $_POST[$classcategory_id. '_1'];
                     $classcategory_id2 = $_POST[$classcategory_id. '_2'];
@@ -309,7 +309,7 @@ class LC_Page_Products_List extends LC_Page {
                 // 入力値の変換
                 $this->arrErr = $this->lfCheckError($_POST['product_id']);
                 if(count($this->arrErr) == 0) {
-                    $objCartSess = new SC_CartSession();
+                    $objCartSess = new SC_CartSession_Ex();
                     $classcategory_id = "classcategory_id". $_POST['product_id'];
                     $classcategory_id1 = $_POST[$classcategory_id. '_1'];
                     $classcategory_id2 = $_POST[$classcategory_id. '_2'];

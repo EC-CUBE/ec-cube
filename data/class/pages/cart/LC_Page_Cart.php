@@ -71,7 +71,7 @@ class LC_Page_Cart extends LC_Page {
         global $objCampaignSess;
 
         $objView = new SC_SiteView(false);
-        $objCartSess = new SC_CartSession("", false);
+        $objCartSess = new SC_CartSession_Ex("", false);
         $objSiteSess = new SC_SiteSession();
         $objCampaignSess = new SC_CampaignSession();
         $objSiteInfo = $objView->objSiteInfo;
@@ -186,7 +186,7 @@ class LC_Page_Cart extends LC_Page {
         }
 
         $objView = new SC_MobileView(false);
-        $objCartSess = new SC_CartSession("", false);
+        $objCartSess = new SC_CartSession_Ex("", false);
         $objSiteSess = new SC_SiteSession();
         $objSiteInfo = $objView->objSiteInfo;
         $objCustomer = new SC_Customer();

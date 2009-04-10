@@ -65,7 +65,7 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         global $objCampaignSess;
 
         $objView = new SC_SiteView();
-        $objCartSess = new SC_CartSession();
+        $objCartSess = new SC_CartSession_Ex();
         $objSiteInfo = $objView->objSiteInfo;
         $objSiteSess = new SC_SiteSession();
         $objCampaignSess = new SC_CampaignSession();
@@ -182,7 +182,7 @@ class LC_Page_Shopping_Confirm extends LC_Page {
      */
     function mobileProcess() {
         $objView = new SC_MobileView();
-        $objCartSess = new SC_CartSession();
+        $objCartSess = new SC_CartSession_Ex();
         $objSiteInfo = $objView->objSiteInfo;
         $objSiteSess = new SC_SiteSession();
         $objCustomer = new SC_Customer();

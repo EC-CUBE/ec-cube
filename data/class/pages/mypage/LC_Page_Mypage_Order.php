@@ -69,7 +69,7 @@ class LC_Page_Mypage_Order extends LC_Page {
      */
     function mobileProcess() {
         $objCustomer = new SC_Customer();
-        $objCartSess = new SC_CartSession();
+        $objCartSess = new SC_CartSession_Ex();
 
         //受注詳細データの取得
         $arrDisp = $this->lfGetOrderDetail($_POST['order_id']);

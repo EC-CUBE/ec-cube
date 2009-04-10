@@ -71,7 +71,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
 
         $objView = new SC_SiteView();
         $objSiteSess = new SC_SiteSession();
-        $objCartSess = new SC_CartSession();
+        $objCartSess = new SC_CartSession_Ex();
         $objCampaignSess = new SC_CampaignSession();
         $objCustomer = new SC_Customer();
         // クッキー管理クラス
@@ -234,7 +234,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
     function mobileProcess() {
         $objView = new SC_MobileView();
         $objSiteSess = new SC_SiteSession();
-        $objCartSess = new SC_CartSession();
+        $objCartSess = new SC_CartSession_Ex();
         $objCustomer = new SC_Customer();
         // クッキー管理クラス
         $objCookie = new SC_Cookie(COOKIE_EXPIRE);

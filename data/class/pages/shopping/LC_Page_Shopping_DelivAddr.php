@@ -75,7 +75,7 @@ class LC_Page_Shopping_DelivAddr extends LC_Page {
         $objQuery = new SC_Query();
         $objCustomer = new SC_Customer();
         $objSiteSess = new SC_SiteSession();
-        $objCartSess = new SC_CartSession();
+        $objCartSess = new SC_CartSession_Ex();
 
         //ログイン判定
         if (!$objCustomer->isLoginSuccess(true)){
