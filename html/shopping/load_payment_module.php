@@ -23,7 +23,7 @@
 require_once("../require.php");
 
 $objSiteSess = new SC_SiteSession();
-$objCartSess = new SC_CartSession_Ex();
+$objCartSess = new SC_CartSession();
 $objQuery = new SC_Query();
 
 // 前のページで正しく登録手続きが行われた記録があるか判定

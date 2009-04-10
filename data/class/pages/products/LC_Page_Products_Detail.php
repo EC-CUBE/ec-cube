@@ -179,7 +179,7 @@ class LC_Page_Products_Detail extends LC_Page {
             $this->objFormParam->convParam();
             $this->arrErr = $this->lfCheckError();
             if(count($this->arrErr) == 0) {
-                $objCartSess = new SC_CartSession_Ex();
+                $objCartSess = new SC_CartSession();
                 $classcategory_id1 = $_POST['classcategory_id1'];
                 $classcategory_id2 = $_POST['classcategory_id2'];
 
@@ -429,7 +429,7 @@ class LC_Page_Products_Detail extends LC_Page {
             $this->objFormParam->convParam();
             $this->arrErr = $this->lfCheckError();
             if(count($this->arrErr) == 0) {
-                $objCartSess = new SC_CartSession_Ex();
+                $objCartSess = new SC_CartSession();
                 $classcategory_id1 = $_POST['classcategory_id1'];
                 $classcategory_id2 = $_POST['classcategory_id2'];
 

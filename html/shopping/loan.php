@@ -55,7 +55,7 @@ class LC_Page {
 $objPage = new LC_Page();
 $objView = new SC_SiteView();
 $objSiteSess = new SC_SiteSession();
-$objCartSess = new SC_CartSession_Ex();
+$objCartSess = new SC_CartSession();
 $objCampaignSess = new SC_CampaignSession();
 $objCustomer = new SC_Customer();
 $objSiteInfo = $objView->objSiteInfo;

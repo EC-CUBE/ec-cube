@@ -63,7 +63,7 @@ require_once(CLASS_PATH . "SC_UploadFile.php");
 require_once(CLASS_PATH . "SC_SiteInfo.php");
 require_once(CLASS_EX_PATH . "SC_SendMail_Ex.php");
 require_once(CLASS_PATH . "SC_FormParam.php");
-require_once(CLASS_EX_PATH . 'SC_CartSession_Ex.php');
+require_once(CLASS_PATH . "SC_CartSession.php");
 require_once(CLASS_PATH . "SC_SiteSession.php");
 require_once(CLASS_PATH . "SC_CampaignSession.php");
 require_once(CLASS_PATH . "SC_Customer.php");

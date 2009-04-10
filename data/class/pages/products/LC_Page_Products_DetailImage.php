@@ -53,7 +53,7 @@ class LC_Page_Products_DetailImage extends LC_Page {
      */
     function process() {
         $objView = new SC_SiteView();
-        $objCartSess = new SC_CartSession_Ex("", false);
+        $objCartSess = new SC_CartSession("", false);
         $objDb = new SC_Helper_DB_Ex();
 
         // 管理ページからの確認の場合は、非公開の商品も表示する。

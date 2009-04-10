@@ -196,7 +196,9 @@ class SC_SiteView extends SC_View{
         SC_Utils_Ex::sfDomainSessionStart();
 
         if($cart){
-            $objCartSess = new SC_CartSession_Ex();
+            $include_dir = realpath(dirname( __FILE__));
+            require_once($include_dir . "/SC_CartSession.php");
+            $objCartSess = new SC_CartSession();
             $objCartSess->setPrevURL($_SERVER['REQUEST_URI']);
         }
     }

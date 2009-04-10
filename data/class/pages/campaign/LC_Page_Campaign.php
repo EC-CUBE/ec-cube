@@ -98,7 +98,7 @@ class LC_Page_Campaign extends LC_Page {
         case 'cart':
             $this->arrErr = $this->lfCheckError($_POST['product_id']);
             if(count($this->arrErr) == 0) {
-                $objCartSess = new SC_CartSession_Ex();
+                $objCartSess = new SC_CartSession();
                 $classcategory_id = "classcategory_id". $_POST['product_id'];
                 $classcategory_id1 = $_POST[$classcategory_id. '_1'];
                 $classcategory_id2 = $_POST[$classcategory_id. '_2'];

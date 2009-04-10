@@ -73,7 +73,7 @@ class LC_Page_Shopping extends LC_Page {
         $conn = new SC_DBConn();
         $objView = new SC_SiteView();
         $objSiteSess = new SC_SiteSession();
-        $objCartSess = new SC_CartSession_Ex();
+        $objCartSess = new SC_CartSession();
         $objCampaignSess = new SC_CampaignSession();
         $objCustomer = new SC_Customer();
         $objCookie = new SC_Cookie();
@@ -197,7 +197,7 @@ class LC_Page_Shopping extends LC_Page {
         $conn = new SC_DBConn();
         $objView = new SC_MobileView();
         $objSiteSess = new SC_SiteSession();
-        $objCartSess = new SC_CartSession_Ex();
+        $objCartSess = new SC_CartSession();
         $objCustomer = new SC_Customer();
         $objCookie = new SC_Cookie();
         $this->objFormParam = new SC_FormParam();            // フォーム用
