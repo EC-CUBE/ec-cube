@@ -151,17 +151,15 @@ function selectAll(target) {
     </tr>
     <!--{/if}-->
 
-    <!--{* 送料の個別指定は次期開発で追加予定
     <tr>
       <th>商品送料</th>
       <td>
         <span class="attention"><!--{$arrErr.deliv_fee}--></span>
         <input type="text" name="deliv_fee" value="<!--{$arrForm.deliv_fee|escape}-->" size="6" class="box6" maxlength="<!--{$smarty.const.PRICE_LEN}-->" style="<!--{if $arrErr.deliv_fee != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->"/>円
         <span class="attention"> （半角数字で入力）</span>
+        <!--{if $smarty.const.OPTION_PRODUCT_DELIV_FEE != 1}--><br /><span class="attention">※現在無効です</span> (パラメータ OPTION_PRODUCT_DELIV_FEE)<!--{/if}-->
       </td>
     </tr>
-    *}-->
-
     <tr>
       <th>ポイント付与率<span class="attention"> *</span></th>
       <td>

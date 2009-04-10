@@ -1495,13 +1495,14 @@ __EOS__;
 
         // 商品ごとの送料が有効の場合
         if (OPTION_PRODUCT_DELIV_FEE == 1) {
-            $arrData['deliv_fee']+= $objCartSess->getAllProductsDelivFee();
+            // 全商品の合計送料を加算する
+            $this->lfAddAllProductsDelivFee($arrData, $objPage, $objCartSess);
         }
 
         // 配送業者の送料が有効の場合
         if (OPTION_DELIV_FEE == 1) {
-            // 送料の合計を計算する
-            $arrData['deliv_fee'] += $this->sfGetDelivFee($arrData);
+            // 都道府県、支払い方法から配送料金を加算する
+            $this->lfAddDelivFee($arrData);
         }
 
         // 送料無料の購入数が設定されている場合
@@ -1676,7 +1677,30 @@ __EOS__;
         return $arrList;
     }
 
+    /**
+     * 全商品の合計送料を加算する
+     */
+    function lfAddAllProductsDelivFee(&$arrData, &$objPage, &$objCartSess) {
+        $objQuery = new SC_Query();
+        $max = $objCartSess->getMax();
+        for ($i = 0; $i <= $max; $i++) {
+            // 商品送料
+            $deliv_fee = $objQuery->getOne('SELECT deliv_fee FROM dtb_products WHERE product_id = ?', array($_SESSION[$objCartSess->key][$i]['id'][0]));
+            // 数量
+            $quantity = $_SESSION[$objCartSess->key][$i]['quantity'];
+            // 合算
+            $arrData['deliv_fee'] += $deliv_fee * $quantity;
+        }
+    }
 
+    /**
+     * 都道府県、支払い方法から配送料金を加算する.
+     *
+     * @param array $arrData
+     */
+    function lfAddDelivFee(&$arrData) {
+        $arrData['deliv_fee'] += $this->sfGetDelivFee($arrRet);
+    }
 
 }
 ?>

@@ -347,19 +347,6 @@ class SC_CartSession {
         }
     }
 
-    // 全商品の合計送料
-    function getAllProductsDelivFee() {
-        // ポイント合計
-        $total = 0;
-        $max = $this->getMax();
-        for($i = 0; $i <= $max; $i++) {
-            $deliv_fee = $_SESSION[$this->key][$i]['deliv_fee'];
-            $quantity = $_SESSION[$this->key][$i]['quantity'];
-            $total+= ($deliv_fee * $quantity);
-        }
-        return $total;
-    }
-
     // カートの中の売り切れチェック
     function chkSoldOut($arrCartList, $is_mobile = false){
         foreach($arrCartList as $key => $val){

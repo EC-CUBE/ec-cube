@@ -89,6 +89,13 @@
       </td>
     </tr>
     <!--{/if}-->
+
+    <tr>
+      <th>商品送料</th>
+      <td>
+        <!--{$arrForm.deliv_fee|escape}-->
+        円</td>
+    </tr>
     <tr>
       <th>ポイント付与率</th>
       <td>
