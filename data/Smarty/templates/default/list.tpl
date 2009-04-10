@@ -98,7 +98,7 @@ function lnSetSelect(name1, name2, id, val) {
             <div class="listarea">
                 <div class="listphoto">
                     <!--★画像★-->
-                    <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProducts[cnt].product_id}-->" class="over"><!--商品写真--><img src="<!--{$smarty.const.IMAGE_SAVE_URL|sfTrimURL}-->/<!--{$arrProducts[cnt].main_list_image}-->" alt="<!--{$arrProducts[cnt].name|escape}-->" class="picture" /></a>
+                    <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProducts[cnt].product_id}-->" class="over"><!--商品写真--><img src="<!--{$smarty.const.IMAGE_SAVE_URL|sfTrimURL}-->/<!--{$arrProducts[cnt].main_list_image|sfNoImageMainList|escape}-->" alt="<!--{$arrProducts[cnt].name|escape}-->" class="picture" /></a>
                 </div>
                 
                 <div class="listrightblock">

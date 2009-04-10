@@ -28,14 +28,9 @@
   <!--{section name=cnt loop=$arrBestProducts step=2}-->
   <div class="recomendblock">
     <div class="recomendleft">
-    <!--{if $arrBestProducts[cnt].main_list_image != ""}-->
-      <!--{assign var=image_path value="`$arrBestProducts[cnt].main_list_image`"}-->
-    <!--{else}-->
-      <!--{assign var=image_path value="`$smarty.const.NO_IMAGE_DIR`"}-->
-    <!--{/if}-->
 
       <a href="<!--{$smarty.const.URL_DIR}-->products/detail.php?product_id=<!--{$arrBestProducts[cnt].product_id}-->">
-        <img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&amp;width=48&amp;height=48" alt="<!--{$arrBestProducts[cnt].name|escape}-->" />
+        <img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$arrBestProducts[cnt].main_list_image|sfNoImageMainList|escape}-->&amp;width=48&amp;height=48" alt="<!--{$arrBestProducts[cnt].name|escape}-->" />
       </a>
 
       <h3>
@@ -55,14 +50,9 @@
     <div class="recomendright">
       <!--{assign var=cnt2 value=`$smarty.section.cnt.iteration*$smarty.section.cnt.step-1` }-->
       <!--{if $arrBestProducts[$cnt2]|count > 0}-->
-        <!--{if $arrBestProducts[$cnt2].main_list_image != ""}-->
-          <!--{assign var=image_path value="`$arrBestProducts[$cnt2].main_list_image`"}-->
-        <!--{else}-->
-          <!--{assign var=image_path value="`$smarty.const.NO_IMAGE_DIR`"}-->
-        <!--{/if}-->
 
       <a href="<!--{$smarty.const.URL_DIR}-->products/detail.php?product_id=<!--{$arrBestProducts[$cnt2].product_id}-->">
-        <img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&amp;width=48&amp;height=48" alt="<!--{$arrBestProducts[$cnt2].name|escape}-->" />
+        <img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$arrBestProducts[$cnt2].main_list_image|sfNoImageMainList|escape}-->&amp;width=48&amp;height=48" alt="<!--{$arrBestProducts[$cnt2].name|escape}-->" />
       </a>
 
       <h3>

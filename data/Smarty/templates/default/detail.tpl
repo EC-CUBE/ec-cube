@@ -64,7 +64,7 @@ function lnSetSelect(form, name1, name2, val) {
             <!--{if $arrProduct.main_large_image != ""}-->
                 <!--★画像★-->
                 <a href="javascript:void(win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&amp;image=main_large_image<!--{if $smarty.get.admin == 'on'}-->&amp;admin=on<!--{/if}-->','detail_image','<!--{$arrFile.main_large_image.width+60}-->', '<!--{$arrFile.main_large_image.height+80}-->'))">
-                    <img src="<!--{$arrFile[$key].filepath}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" alt="<!--{$arrProduct.name|escape}-->" class="picture" />
+                    <img src="<!--{$arrFile[$key].filepath|escape}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" alt="<!--{$arrProduct.name|escape}-->" class="picture" />
                 </a>
                 <p>
                 <!--★拡大する★-->
@@ -337,14 +337,9 @@ function lnSetSelect(form, name1, name2, val) {
                 <!--{if $arrRecommend[cnt].product_id}-->
                 <!-- 左列 -->
                 <div class="whoboughtleft">
-                    <!--{if $arrRecommend[cnt].main_list_image != ""}-->
-                        <!--{assign var=image_path value="`$arrRecommend[cnt].main_list_image`"}-->
-                    <!--{else}-->
-                        <!--{assign var=image_path value="`$smarty.const.NO_IMAGE_DIR`"}-->
-                    <!--{/if}-->
                     
                     <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id}-->">
-                        <img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[cnt].name|escape}-->" />
+                        <img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$arrRecommend[cnt].main_list_image|sfNoImageMainList|escape}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[cnt].name|escape}-->" />
                     </a>
 
                     <!--{assign var=price02_min value=`$arrRecommend[cnt].price02_min`}-->
@@ -368,14 +363,9 @@ function lnSetSelect(form, name1, name2, val) {
                 <!--{if $arrRecommend[cnt].product_id}-->
                 <!-- 右列 -->
                 <div class="whoboughtright">
-                    <!--{if $arrRecommend[cnt].main_list_image != ""}-->
-                        <!--{assign var=image_path value="`$arrRecommend[cnt].main_list_image`"}-->
-                    <!--{else}-->
-                        <!--{assign var=image_path value="`$smarty.const.NO_IMAGE_DIR`"}-->
-                    <!--{/if}-->
                     
                     <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id}-->">
-                        <img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[cnt].name|escape}-->" />
+                        <img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$arrRecommend[cnt].main_list_image|sfNoImageMainList|escape}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[cnt].name|escape}-->" />
                     </a>
                     
                     <!--{assign var=price02_min value=`$arrRecommend[cnt].price02_min`}-->

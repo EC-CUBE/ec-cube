@@ -242,7 +242,13 @@ class LC_Page_Products_Detail extends LC_Page {
         
         // 関連カテゴリを取得
         $this->arrRelativeCat = $objDb->sfGetMultiCatTree($tmp_id);
-
+        
+        // 画像ファイル指定がない場合の置換処理
+        $this->arrProduct['main_list_image']
+            = SC_Utils_Ex::sfNoImageMainList($this->arrProduct['main_list_image']);
+        $this->arrProduct['main_image']
+            = SC_Utils_Ex::sfNoImageMain($this->arrProduct['main_image']);
+        
         $this->lfSetFile();
         // 支払方法の取得
         $this->arrPayment = $this->lfGetPayment();
@@ -468,7 +474,13 @@ class LC_Page_Products_Detail extends LC_Page {
 
         // サブタイトルを取得
         $this->tpl_subtitle = $this->arrProduct["name"];
-
+        
+        // 画像ファイル指定がない場合の置換処理
+        $this->arrProduct['main_list_image']
+            = SC_Utils_Ex::sfNoImageMainList($this->arrProduct['main_list_image']);
+        $this->arrProduct['main_image']
+            = SC_Utils_Ex::sfNoImageMain($this->arrProduct['main_image']);
+        
         // ファイル情報のセット
         $this->lfSetFile();
         // 支払方法の取得

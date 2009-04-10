@@ -82,12 +82,7 @@ function func_submit( id ){
   <!--▼商品<!--{$smarty.section.cnt.iteration}-->-->
   <tr>
     <td align="center">
-    <!--{if $arrProducts[cnt].main_list_image != ""}-->
-      <!--{assign var=image_path value="`$arrProducts[cnt].main_list_image`"}-->
-    <!--{else}-->
-      <!--{assign var=image_path value="`$smarty.const.NO_IMAGE_DIR`"}-->
-    <!--{/if}-->
-      <img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[$recommend_no].name|escape}-->" />
+      <img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$arrProducts[cnt].main_list_image|sfNoImageMainList|escape}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[$recommend_no].name|escape}-->" />
     </td>  
     <td><!--{$arrProducts[cnt].product_code|escape|default:"-"}--></td>
     <td><!--{$arrProducts[cnt].name|escape}--></td>

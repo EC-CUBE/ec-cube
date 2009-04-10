@@ -79,12 +79,9 @@ function lfnCheckSetItem( rank ){
     <tr>
       <th><!--{$smarty.section.cnt.iteration}--></th>
       <td>
-        <!--{if $arrItems[$smarty.section.cnt.iteration].main_list_image != ""}-->
-          <!--{assign var=image_path value="`$smarty.const.IMAGE_SAVE_URL`/`$arrItems[$smarty.section.cnt.iteration].main_list_image`"}-->
-        <!--{else}-->
-          <!--{assign var=image_path value="`$smarty.const.NO_IMAGE_URL`"}-->
+        <!--{if $arrItems[$smarty.section.cnt.iteration].product_id}-->
+          <img src="<!--{$smarty.const.IMAGE_SAVE_URL}--><!--{$arrItems[$smarty.section.cnt.iteration].main_list_image|sfNoImageMainList|escape}-->" alt="<!--{$arrItems[$smarty.section.cnt.iteration].name|escape}-->" />
         <!--{/if}-->
-        <img src="<!--{$image_path}-->" alt="" />
       </td>
       <td><!--{$arrItems[$smarty.section.cnt.iteration].name|escape}--></td>
       <td>

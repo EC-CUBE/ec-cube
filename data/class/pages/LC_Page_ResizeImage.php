@@ -57,21 +57,18 @@ class LC_Page_ResizeImage extends LC_Page {
         $file = NO_IMAGE_DIR;
 
         // NO_IMAGE_DIR以外のファイル名が渡された場合、ファイル名のチェックを行う
-        if ( isset($_GET['image']) && $_GET['image'] !== NO_IMAGE_DIR) {
+        if (strlen($_GET['image']) >= 1 && $_GET['image'] !== NO_IMAGE_DIR) {
 
-            // ファイル名が正しい場合だけ、$fileを設定
-            if ( $this->lfCheckFileName() === true ) {
-                $file = IMAGE_SAVE_DIR . $_GET['image'];
-            } else {
+            // ファイル名が正しく、ファイルが存在する場合だけ、$fileを設定
+            if (!$this->lfCheckFileName()) {
                 GC_Utils_Ex::gfPrintLog('invalid access :resize_image.php $_GET["image"]=' . $_GET['image']);
+            }
+            else if (file_exists(IMAGE_SAVE_DIR . $_GET['image'])) {
+                $file = IMAGE_SAVE_DIR . $_GET['image'];
             }
         }
 
-        if(file_exists($file)){
-            $objThumb->Main($file, $_GET["width"], $_GET["height"], "", true);
-        }else{
-            $objThumb->Main(NO_IMAGE_DIR, $_GET["width"], $_GET["height"], "", true);
-        }
+        $objThumb->Main($file, $_GET["width"], $_GET["height"], "", true);
     }
 
     /**

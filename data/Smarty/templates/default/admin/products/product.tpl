@@ -249,7 +249,7 @@ function selectAll(target) {
     </tr>
     <tr>
       <!--{assign var=key value="main_list_image"}-->
-      <th>一覧-メイン画像<span class="attention"> *</span><br />[<!--{$smarty.const.SMALL_IMAGE_WIDTH}-->×<!--{$smarty.const.SMALL_IMAGE_HEIGHT}-->]</th>
+      <th>一覧-メイン画像<br />[<!--{$smarty.const.SMALL_IMAGE_WIDTH}-->×<!--{$smarty.const.SMALL_IMAGE_HEIGHT}-->]</th>
       <td>
         <a name="<!--{$key}-->"></a>
         <a name="main_image"></a>
@@ -264,7 +264,7 @@ function selectAll(target) {
     </tr>
     <tr>
       <!--{assign var=key value="main_image"}-->
-      <th>詳細-メイン画像<span class="attention"> *</span><br />[<!--{$smarty.const.NORMAL_IMAGE_WIDTH}-->×<!--{$smarty.const.NORMAL_IMAGE_HEIGHT}-->]</th>
+      <th>詳細-メイン画像<br />[<!--{$smarty.const.NORMAL_IMAGE_WIDTH}-->×<!--{$smarty.const.NORMAL_IMAGE_HEIGHT}-->]</th>
       <td>
         <span class="attention"><!--{$arrErr[$key]}--></span>
         <!--{if $arrFile[$key].filepath != ""}-->
@@ -400,12 +400,9 @@ function selectAll(target) {
       <!--{assign var=key value="recommend_id`$smarty.section.cnt.iteration`"}-->
       <!--{assign var=anckey value="recommend_no`$smarty.section.cnt.iteration`"}-->
       <th>関連商品(<!--{$smarty.section.cnt.iteration}-->)<br />
-      <!--{if $arrRecommend[$recommend_no].main_list_image != ""}-->
-        <!--{assign var=image_path value="`$arrRecommend[$recommend_no].main_list_image`"}-->
-      <!--{else}-->
-        <!--{assign var=image_path value="`$smarty.const.NO_IMAGE_DIR`"}-->
-      <!--{/if}-->
-        <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&width=65&height=65" alt="<!--{$arrRecommend[$recommend_no].name|escape}-->" />
+        <!--{if $arrRecommend[$recommend_no].product_id}-->
+          <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$arrRecommend[$recommend_no].main_list_image|sfNoImageMainList|escape}-->&width=65&height=65" alt="<!--{$arrRecommend[$recommend_no].name|escape}-->" />
+        <!--{/if}-->
       </th>
       <td>
         <a name="<!--{$anckey}-->"></a>

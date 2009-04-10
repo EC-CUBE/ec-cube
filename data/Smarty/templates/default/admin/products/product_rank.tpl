@@ -99,12 +99,7 @@
           <td><!--{from_to from=$arrProductsList[cnt].product_code_min to=$arrProductsList[cnt].product_code_max separator="～<br />"}--></td>
           <td align="center">
             <!--{* 商品画像 *}-->
-            <!--{if $arrProductsList[cnt].main_list_image != ""}-->
-              <!--{assign var=image_path value=`$arrProductsList[cnt].main_list_image`}-->
-            <!--{else}-->
-              <!--{assign var=image_path value=$smarty.const.NO_IMAGE_URL}-->
-            <!--{/if}-->
-            <img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&amp;width=65&amp;height=65" alt="<!--{$arrProducts[cnt].name|escape}-->">
+            <img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$arrProductsList[cnt].main_list_image|sfNoImageMainList|escape}-->&amp;width=65&amp;height=65" alt="<!--{$arrProducts[cnt].name|escape}-->">
           </td>
           <td align="center">
             <!--{$arrProductsList[cnt].name|escape}-->

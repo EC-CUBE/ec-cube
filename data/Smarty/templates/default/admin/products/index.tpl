@@ -212,12 +212,7 @@ function lfnDispChange(){
     <tr style="background:<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->;">
       <td rowspan="2"><!--{$arrProducts[cnt].product_id}--></td>
       <td rowspan="2">
-        <!--{if $arrProducts[cnt].main_list_image != ""}-->
-          <!--{assign var=image_path value="`$arrProducts[cnt].main_list_image`"}-->
-        <!--{else}-->
-          <!--{assign var=image_path value="`$smarty.const.NO_IMAGE_DIR`"}-->
-        <!--{/if}-->
-      <img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&amp;width=65&amp;height=65">
+      <img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$arrProducts[cnt].main_list_image|sfNoImageMainList|escape}-->&amp;width=65&amp;height=65">
       </td>
       <td rowspan="2"><!--{$arrProducts[cnt].product_code_min|escape}-->
         <!--{if $arrProducts[cnt].product_code_min != $arrProducts[cnt].product_code_max}-->

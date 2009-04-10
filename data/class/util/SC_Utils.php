@@ -2013,6 +2013,32 @@ echo $template_path;
         return $html;
     }
 
+   /**
+     * 一覧-メイン画像のファイル指定がない場合、専用の画像ファイルに書き換える。
+     *
+     * @param string &$filename ファイル名
+     * @return string
+     */
+    function sfNoImageMainList($filename = '') {
+        if (strlen($filename) == 0 || substr($filename, -1, 1) == '/') {
+            $filename .= 'noimage_main_list.jpg';
+        }
+        return $filename;
+    }
+
+   /**
+     * 詳細-メイン画像のファイル指定がない場合、専用の画像ファイルに書き換える。
+     *
+     * @param string &$filename ファイル名
+     * @return string
+     */
+    function sfNoImageMain($filename = '') {
+        if (strlen($filename) == 0 || substr($filename, -1, 1) == '/') {
+            $filename .= 'noimage_main.png';
+        }
+        return $filename;
+    }
+
     /* デバッグ用 ------------------------------------------------------------------------------------------------*/
     function sfPrintR($obj) {
         print("<div style='font-size: 12px;color: #00FF00;'>\n");
