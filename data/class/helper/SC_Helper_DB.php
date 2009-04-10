@@ -1681,16 +1681,25 @@ __EOS__;
      * 全商品の合計送料を加算する
      */
     function lfAddAllProductsDelivFee(&$arrData, &$objPage, &$objCartSess) {
+        $arrData['deliv_fee'] += $this->lfCalcAllProductsDelivFee($arrData, $objCartSess);
+    }
+
+    /**
+     * 全商品の合計送料を計算する
+     */
+    function lfCalcAllProductsDelivFee(&$arrData, &$objCartSess) {
         $objQuery = new SC_Query();
+        $deliv_fee_total = 0;
         $max = $objCartSess->getMax();
         for ($i = 0; $i <= $max; $i++) {
             // 商品送料
             $deliv_fee = $objQuery->getOne('SELECT deliv_fee FROM dtb_products WHERE product_id = ?', array($_SESSION[$objCartSess->key][$i]['id'][0]));
             // 数量
             $quantity = $_SESSION[$objCartSess->key][$i]['quantity'];
-            // 合算
-            $arrData['deliv_fee'] += $deliv_fee * $quantity;
+            // 累積
+            $deliv_fee_total += $deliv_fee * $quantity;
         }
+        return $deliv_fee_total;
     }
 
     /**
