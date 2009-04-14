@@ -104,12 +104,12 @@ self.moveTo(20,20);self.focus();
                                         <tr class="fs12">
                                             <td width="90" bgcolor="#f3f3f3">ログインＩＤ</td>
                                             <td width="337" bgcolor="#ffffff"><!--{if $arrErr.login_id}--><span class="red"><!--{$arrErr.login_id}--></span><!--{/if}--><input type="text" name="login_id" size="20" class="box20"  value="<!--{$arrForm.login_id}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/>　<span class="red">※必須入力</span><br />
-                                            ※半角英数字・15文字以内</td>
+                                            ※半角英数字<!--{$smarty.const.ID_MIN_LEN}-->〜<!--{$smarty.const.ID_MAX_LEN}-->文字</td>
                                         </tr>
                                         <tr class="fs12">
                                             <td width="90" bgcolor="#f3f3f3">パスワード</td>
                                             <td width="337" bgcolor="#ffffff"><!--{if $arrErr.password}--><span class="red"><!--{$arrErr.password}--></span><!--{/if}--><input type="password" name="password" size="20" class="box20" value="<!--{$arrForm.password}-->" onfocus="<!--{$tpl_onfocus}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/>　<span class="red">※必須入力</span><br />
-                                            ※半角英数字・15文字以内</td>
+                                            ※半角英数字<!--{$smarty.const.ID_MIN_LEN}-->〜<!--{$smarty.const.ID_MAX_LEN}-->文字</td>
                                         </tr>
                                         <tr class="fs12n">
                                             <td width="90" bgcolor="#f3f3f3">管理権限</td>
