@@ -23,7 +23,7 @@
 *}-->
 <script type="text/javascript">
 <!--
-	
+
 	function fnReturn() {
 		document.form_search.action = './index.php';
 		document.form_search.submit();
@@ -37,7 +37,7 @@
 		document.form2.action = '../order/edit.php';
 		document.form2.submit();
 	}
-	
+
 //-->
 </script>
 
@@ -204,13 +204,13 @@
 											</select>月
 											<select name="day" <!--{if $arrErr.year != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> >
 												<option value="" selected="selected">----</option>
-												<!--{html_options options=$arrDay selected=$list_data.day"}-->		
+												<!--{html_options options=$arrDay selected=$list_data.day"}-->
 											</select>日
 										</td>
 									</tr>
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec" width="190">パスワード<span class="red"> *</span></td>
-										<td class="red10" bgcolor="#ffffff" width="527"><span class="red12"><!--{$arrErr.password}--></span><input type="password" name="password" value="<!--{$list_data.password|escape}-->" size="30" class="box30" <!--{if $arrErr.password != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />　半角英数小文字4〜10文字（記号不可）</td>
+										<td class="red10" bgcolor="#ffffff" width="527"><span class="red12"><!--{$arrErr.password}--></span><input type="password" name="password" value="<!--{$list_data.password|escape}-->" size="30" class="box30" <!--{if $arrErr.password != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />　半角英数小文字<!--{$smarty.const.PASSWORD_LEN1}-->〜<!--{$smarty.const.PASSWORD_LEN2}-->文字（記号不可）</td>
 									</tr>
 									<tr>
 										<td bgcolor="#f2f1ec" width="190" class="fs12">パスワードを忘れたときのヒント<span class="red"> *</span></td>
@@ -332,7 +332,7 @@
 		</td>
 		<td align="right">
 			<!--{include file=$tpl_pager}-->
-		</td>									
+		</td>
 	</tr>
 	<tr><td bgcolor="cbcbcb" colspan="2"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="1" height="5" alt=""></td></tr>
 </table>
@@ -374,6 +374,6 @@
 		</td>
 	</tr>
 </form>
-</table>		
-<!--★★検索結果一覧★★-->		
+</table>
+<!--★★検索結果一覧★★-->
 
