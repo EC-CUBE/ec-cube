@@ -246,7 +246,7 @@ function lfnDispChange(){
       <td rowspan="2"><span class="icon_delete"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnSetFormValue('category_id', '<!--{$arrProducts[cnt].category_id}-->'); fnModeSubmit('delete', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;">削除</a></span></td>
       <td rowspan="2"><span class="icon_copy"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnChangeAction('./product.php'); fnModeSubmit('copy', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >複製</a></span></td>
     </tr>
-    <tr>
+    <tr style="background:<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->;">
       <td>
         <!--{* カテゴリ名 *}-->
         <div id="disp_cat<!--{$smarty.section.cnt.iteration}-->" style="display:<!--{$cat_flg}-->">
