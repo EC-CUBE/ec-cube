@@ -50,6 +50,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
         $this->tpl_subtitle = 'バックアップ管理';
 
         $this->bkup_dir = DATA_PATH . "downloads/backup/";
+        $this->bkup_ext = '.tar.gz';
 
     }
 
@@ -113,7 +114,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
 
             // 削除
         case 'delete':
-            $del_file = $this->bkup_dir.$_POST['list_name'] . ".tar.gz";
+            $del_file = $this->bkup_dir.$_POST['list_name'] . $this->bkup_ext;
             // ファイルの削除
             if(is_file($del_file)){
                 $ret = unlink($del_file);
@@ -127,8 +128,8 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
 
             // ダウンロード
         case 'download' :
-            $filename = $_POST['list_name'] . ".tar.gz";
-            $dl_file = $this->bkup_dir.$_POST['list_name'] . ".tar.gz";
+            $filename = $_POST['list_name'] . $this->bkup_ext;
+            $dl_file = $this->bkup_dir.$_POST['list_name'] . $this->bkup_ext;
 
             // ダウンロード開始
             Header("Content-disposition: attachment; filename=${filename}");
@@ -318,7 +319,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
             $copy_mess = SC_Utils_Ex::sfCopyDir("../../user_data/css/",$css_dir, $copy_mess);
             **/
             //圧縮フラグTRUEはgzip圧縮をおこなう
-            $tar = new Archive_Tar($this->bkup_dir . $bkup_name.".tar.gz", TRUE);
+            $tar = new Archive_Tar($this->bkup_dir . $bkup_name . $this->bkup_ext, TRUE);
 
             //bkupフォルダに移動する
             chdir($this->bkup_dir);
@@ -480,7 +481,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
         chdir($this->bkup_dir);
 
         //圧縮フラグTRUEはgzip解凍をおこなう
-        $tar = new Archive_Tar($bkup_name . ".tar.gz", TRUE);
+        $tar = new Archive_Tar($bkup_name . $this->bkup_ext, TRUE);
 
         //指定されたフォルダ内に解凍する
         $err = $tar->extract("./");
