@@ -306,7 +306,7 @@ class LC_Page_Admin_Products extends LC_Page {
                         // 各商品ごとのカテゴリIDを取得
                         if (count($this->arrProducts) > 0) {
                             foreach ($this->arrProducts as $key => $val) {
-                                $this->arrProducts[$key]["categories"] = $objDb->sfGetCategoryId($val["product_id"]);
+                                $this->arrProducts[$key]["categories"] = $objDb->sfGetCategoryId($val["product_id"], 0, true);
                                 $objDb->g_category_on = false;
                             }
                         }
