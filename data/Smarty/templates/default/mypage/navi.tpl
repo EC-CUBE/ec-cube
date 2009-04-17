@@ -34,7 +34,7 @@
         </li>
         <!--{if $smarty.const.OPTION_FAVOFITE_PRODUCT == 1}-->
             <li>
-                <!--{if $tpl_mypageno == 'delivery'}-->
+                <!--{if $tpl_mypageno == 'favorite'}-->
                     <a href="<!--{$SITE_URL}-->/mypage/favorite.php"><img src="<!--{$TPL_DIR}-->img/mypage/navi05_on.jpg" width="170" height="30" alt="お気に入り商品一覧" border="0" name="m_navi05" /></a>
                 <!--{else}-->
                     <a href="<!--{$SITE_URL}-->/mypage/favorite.php" onmouseover="chgImg('<!--{$TPL_DIR}-->img/mypage/navi05_on.jpg','m_navi05');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/mypage/navi05.jpg','m_navi05');"><img src="<!--{$TPL_DIR}-->img/mypage/navi05.jpg" width="170" height="30" alt="お気に入り商品一覧" border="0" name="m_navi05" /></a>
