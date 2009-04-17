@@ -94,19 +94,51 @@ class LC_Page_MyPage_Favorite extends LC_Page {
             $this->tpl_pageno = htmlspecialchars($_POST['pageno'], ENT_QUOTES, CHAR_CODE);
         }
 
-        $col = "allcls.*";
-        $from = "dtb_customer_favorite_products AS dcfp LEFT JOIN vw_products_allclass AS allcls USING(product_id)";
-        
-        $where = "allcls.del_flg = 0 AND allcls.status = 1 AND dcfp.customer_id = ?";
+        $sql = "SELECT *
+                FROM
+                   (SELECT
+                        T2.product_id AS product_id_main,
+                        T2.del_flg ,
+                        T2.status ,
+                        T2.name ,
+                        T2.main_list_image ,
+                        T1.create_date ,
+                        T1.customer_id
+                    FROM
+                       (SELECT
+                            product_id AS product_id_c ,
+                            create_date ,
+                            customer_id
+                        FROM
+                           dtb_customer_favorite_products
+                        WHERE
+                           customer_id = ?
+                        ) AS T1 INNER JOIN dtb_products AS T2 ON T1.product_id_c = T2.product_id AND T2.del_flg = 0 AND T2.status = 1
+                    ) AS T3 INNER JOIN
+                        (SELECT
+                            product_id ,
+                            MIN(price02) AS price02_min ,
+                            MAX(price02) AS price02_max ,
+                            MAX(stock) AS stock_max ,
+                            MAX(stock_unlimited) AS stock_unlimited_max
+                         FROM
+                            dtb_products_class
+                         GROUP BY
+                            product_id
+                    ) AS T4 ON T3.product_id_main = T4.product_id";
         // 在庫無し商品の非表示
         if (NOSTOCK_HIDDEN === true) {
-            $where .= ' AND (allcls.stock_max >= 1 OR allcls.stock_unlimited_max = 1)';
+            $sql .= " WHERE stock_max >= 1 OR stock_unlimited_max = 1";
         }
+        $sql .= " ORDER BY create_date DESC";
 
         $arrval = array($objCustomer->getvalue('customer_id'));
-        $order = "product_id DESC";
 
-        $linemax = $objQuery->count($from, $where, $arrval);
+        //お気に入りの取得
+        $this->arrFavorite = $objQuery->getall($sql, $arrval);
+
+        //お気に入りの数を取得
+        $linemax = count($this->arrFavorite);
         $this->tpl_linemax = $linemax;
 
         // ページ送りの取得
@@ -119,9 +151,6 @@ class LC_Page_MyPage_Favorite extends LC_Page {
         // 表示順序
         $objQuery->setorder($order);
 
-        //お気に入りの取得
-        $this->arrFavorite = $objQuery->select($col, $from, $where, $arrval);
-
         // パラメータ管理クラス
         $this->objFormParam = new SC_FormParam();
         // POST値の取得
@@ -129,8 +158,8 @@ class LC_Page_MyPage_Favorite extends LC_Page {
 
         // 入力情報を渡す
         $this->arrForm = $this->objFormParam->getFormParamList();
-        $objView->assignobj($this);				//$objpage内の全てのテンプレート変数をsmartyに格納
-        $objView->display(SITE_FRAME);				//パスとテンプレート変数の呼び出し、実行
+        $objView->assignobj($this);    //$objpage内の全てのテンプレート変数をsmartyに格納
+        $objView->display(SITE_FRAME); //パスとテンプレート変数の呼び出し、実行
     }
 
     /**
@@ -225,8 +254,8 @@ class LC_Page_MyPage_Favorite extends LC_Page {
             $this->CustomerName2 = $objCustomer->getvalue('name02');
         }
 
-        $objView->assignobj($this);				//$objpage内の全てのテンプレート変数をsmartyに格納
-        $objView->display(SITE_FRAME);				//パスとテンプレート変数の呼び出し、実行
+        $objView->assignobj($this);       //$objpage内の全てのテンプレート変数をsmartyに格納
+        $objView->display(SITE_FRAME);    //パスとテンプレート変数の呼び出し、実行
 
     }
 
