@@ -122,12 +122,13 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page {
         $where = "del_flg = 0 AND T2.category_id = ?";
 
         // 行数の取得
-        $linemax = $objQuery->count($table, "T2.category_id = ?", array($category_id));
-        // 順位、該当件数表示用
+        $linemax = $objQuery->count($table, $where, array($category_id));
+        // 該当件数表示用
         $this->tpl_linemax = $linemax;
 
         $objNavi = new SC_PageNavi($this->tpl_pageno, $linemax, SEARCH_PMAX, "fnNaviPage", NAVI_PMAX);
         $startno = $objNavi->start_row;
+        $this->tpl_start_row = $objNavi->start_row;
         $this->tpl_strnavi = $objNavi->strnavi;		// Navi表示文字列
         $this->tpl_pagemax = $objNavi->max_page;		// ページ最大数（「上へ下へ」表示判定用）
         $this->tpl_disppage = $objNavi->now_page;	// 表示ページ番号（「上へ下へ」表示判定用）
