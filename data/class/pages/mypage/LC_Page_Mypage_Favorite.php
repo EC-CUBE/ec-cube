@@ -94,9 +94,8 @@ class LC_Page_MyPage_Favorite extends LC_Page {
             $this->tpl_pageno = htmlspecialchars($_POST['pageno'], ENT_QUOTES, CHAR_CODE);
         }
 
-        $sql = "SELECT *
-                FROM
-                   (SELECT
+        $col = "*";
+        $from =" (SELECT
                         T2.product_id AS product_id_main,
                         T2.del_flg ,
                         T2.status ,
@@ -111,9 +110,7 @@ class LC_Page_MyPage_Favorite extends LC_Page {
                             customer_id
                         FROM
                            dtb_customer_favorite_products
-                        WHERE
-                           customer_id = ?
-                        ) AS T1 INNER JOIN dtb_products AS T2 ON T1.product_id_c = T2.product_id AND T2.del_flg = 0 AND T2.status = 1
+                        ) AS T1 INNER JOIN dtb_products AS T2 ON T1.product_id_c = T2.product_id
                     ) AS T3 INNER JOIN
                         (SELECT
                             product_id ,
@@ -126,19 +123,17 @@ class LC_Page_MyPage_Favorite extends LC_Page {
                          GROUP BY
                             product_id
                     ) AS T4 ON T3.product_id_main = T4.product_id";
+        $where = "customer_id = ? AND del_flg = 0 AND status = 1";
         // 在庫無し商品の非表示
         if (NOSTOCK_HIDDEN === true) {
-            $sql .= " WHERE stock_max >= 1 OR stock_unlimited_max = 1";
+            $where .= " AND (stock_max >= 1 OR stock_unlimited_max = 1)";
         }
-        $sql .= " ORDER BY create_date DESC";
+        $order = "create_date DESC";
 
         $arrval = array($objCustomer->getvalue('customer_id'));
 
-        //お気に入りの取得
-        $this->arrFavorite = $objQuery->getall($sql, $arrval);
-
         //お気に入りの数を取得
-        $linemax = count($this->arrFavorite);
+        $linemax = $objQuery->count($from, $where, $arrval);
         $this->tpl_linemax = $linemax;
 
         // ページ送りの取得
@@ -150,6 +145,9 @@ class LC_Page_MyPage_Favorite extends LC_Page {
         $objQuery->setlimitoffset(SEARCH_PMAX, $startno);
         // 表示順序
         $objQuery->setorder($order);
+
+        //お気に入りの取得
+        $this->arrFavorite = $objQuery->select($col, $from, $where, $arrval);
 
         // パラメータ管理クラス
         $this->objFormParam = new SC_FormParam();

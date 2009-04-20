@@ -43,7 +43,6 @@
       <!--{$tpl_strnavi}-->
       <!--▲ページナビ-->
     </div>
-    <p>※最大20件まで表示します。</p>
 
     <form name="form1" id="form1" method="post" action="<!--{$smarty.const.SITE_URL}-->products/detail.php">
     <input type="hidden" name="mode" value="cart" />
