@@ -30,6 +30,8 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @package Page
  * @author LOCKON CO.,LTD.
  * @version $Id:LC_Page_Admin_Products_UploadCSV.php 15532 2007-08-31 14:39:46Z nanasess $
+ *
+ * FIXME 同一商品IDで商品規格違いを登録できない。(更新は可能)
  */
 class LC_Page_Admin_Products_UploadCSV extends LC_Page {
 
@@ -358,7 +360,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page {
             $sqlval['status'] = 2;
         }
 
-        if($sqlval['product_id'] != "" && $sqlval['product_class_id'] != "") {
+        if($sqlval['product_id'] != "") {
 
             // UPDATEの実行
             $where = "product_id = ?";
