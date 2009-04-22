@@ -667,7 +667,8 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
             (
                 bkup_name   text,
                 bkup_memo   text,
-                create_date timestamp
+                create_date timestamp,
+                PRIMARY KEY (bkup_name)
             );
         ";
 
