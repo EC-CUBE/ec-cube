@@ -354,9 +354,9 @@ class LC_Page_Mypage_Change extends LC_Page {
                     // メール受け取り
                     if (!isset($_POST['mailmaga_flg'])) $_POST['mailmaga_flg'] = "";
                     if (strtolower($_POST['mailmaga_flg']) == "on") {
-                        $_POST['mailmaga_flg']  = "2";
+                        $this->arrForm['mailmaga_flg'] = "2";
                     } else {
-                        $_POST['mailmaga_flg']  = "3";
+                        $this->arrForm['mailmaga_flg'] = "3";
                     }
 
                     $this->tpl_mainpage = 'mypage/change_confirm.tpl';
