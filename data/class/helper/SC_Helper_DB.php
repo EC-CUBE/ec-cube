@@ -623,7 +623,7 @@ class SC_Helper_DB {
         $objQuery->setoption("ORDER BY rank DESC");
         $arrRet = $objQuery->select($col, $from, $where);
 
-        $arrCategory_id = $this->sfGetCategoryId($product_id, $status);
+        $arrCategory_id = $this->sfGetCategoryId($product_id);
 
         $arrCatTree = array();
         foreach ($arrCategory_id as $pkey => $parent_category_id) {

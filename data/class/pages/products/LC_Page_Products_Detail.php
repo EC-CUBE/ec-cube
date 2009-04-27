@@ -238,7 +238,7 @@ class LC_Page_Products_Detail extends LC_Page {
           $this->tpl_sale_limit = $this->arrProduct['sale_limit'];
         }
         // サブタイトルを取得
-        $arrCategory_id = $objDb->sfGetCategoryId($arrRet[0]['product_id'], $status);
+        $arrCategory_id = $objDb->sfGetCategoryId($arrRet[0]['product_id'],'',$status);
         $arrFirstCat = $objDb->sfGetFirstCat($arrCategory_id[0]);
         $this->tpl_subtitle = $arrFirstCat['name'];
 
