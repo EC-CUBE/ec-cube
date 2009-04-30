@@ -40,7 +40,7 @@
       <td><!--{$arrMailHistory[cnt].send_date|sfDispDBDate|escape}--></td>
       <!--{assign var=key value="`$arrMailHistory[cnt].template_id`"}-->
       <td><!--{$arrMAILTEMPLATE[$key]|escape}--></td>
-      <td><a href="?" onclick="win01('./mail_view.php?send_id=<!--{$arrMailHistory[cnt].send_id}-->','mail_view','650','800'); return false;"><!--{$arrMailHistory[cnt].subject|escape}--></a></td>
+      <td><a href="?" onclick="win02('./mail_view.php?send_id=<!--{$arrMailHistory[cnt].send_id}-->','mail_view','650','800'); return false;"><!--{$arrMailHistory[cnt].subject|escape}--></a></td>
     </tr>
     <!--{/section}-->
   </table>
