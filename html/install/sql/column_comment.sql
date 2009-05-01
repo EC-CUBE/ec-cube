@@ -323,7 +323,7 @@ INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_b
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_best_products','update_date','更新日時');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_best_products','del_flg ','0:既定、1:削除');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_mail_history','send_id','送信ID');
-INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_mail_history','order_id','注文ID');
+INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_mail_history','order_id','注文番号');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_mail_history','send_date','送信日時');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_mail_history','template_id','メールテンプレートID');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_mail_history','creator_id','管理者ID');
@@ -374,7 +374,7 @@ INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_c
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_customer_mail_temp','end_flag','0:未処理 1:処理済');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_customer_mail_temp','update_date','更新日');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_customer_mail_temp','create_data','作成日');
-INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_order','order_id','注文ID');
+INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_order','order_id','注文番号');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_order','order_temp_id','注文一時ID');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_order','customer_id','顧客ID(非会員の場合は、0)');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_order','message','要望等');
@@ -525,7 +525,7 @@ INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_o
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_other_deliv','tel01','電話番号1');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_other_deliv','tel02','電話番号2');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_other_deliv','tel03','電話番号3');
-INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_order_detail','order_id','注文ID');
+INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_order_detail','order_id','注文番号');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_order_detail','product_id','商品ID');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_order_detail','classcategory_id1','規格分類ID1');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_order_detail','classcategory_id2','規格分類ID2');

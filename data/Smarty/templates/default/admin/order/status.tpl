@@ -65,7 +65,7 @@
 
   <table class="list center">
     <tr>
-      <th>受注番号</th>
+      <th>注文番号</th>
       <th>受注日</th>
       <th>顧客名</th>
       <th>支払方法</th>

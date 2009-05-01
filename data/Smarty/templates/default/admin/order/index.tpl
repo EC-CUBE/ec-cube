@@ -28,7 +28,7 @@
     <!--{* 検索条件設定テーブルここから *}-->
     <table>
         <tr>
-            <th>受注番号</th>
+            <th>注文番号</th>
             <td>
                 <!--{assign var=key1 value="search_order_id1"}-->
                 <!--{assign var=key2 value="search_order_id2"}-->
@@ -258,7 +258,7 @@
         <!--{else}-->
         <tr>
             <th>受注日</th>
-            <th>受注番号</th>
+            <th>注文番号</th>
             <th>顧客名</th>
             <th>支払方法</th>
             <th>購入金額(円)</th>

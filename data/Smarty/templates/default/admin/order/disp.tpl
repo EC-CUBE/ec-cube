@@ -45,7 +45,7 @@
   <h3>お客様情報</h3>
   <table class="form">
     <tr>
-      <th>受注番号</th>
+      <th>注文番号</th>
       <td><!--{$arrForm.order_id.value}--></td>
     </tr>
     <tr>

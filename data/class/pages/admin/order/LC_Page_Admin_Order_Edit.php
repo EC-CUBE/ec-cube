@@ -376,7 +376,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         $this->objFormParam->addParam("最終保持ポイント", "total_point");
         $this->objFormParam->addParam("顧客ID", "customer_id");
         $this->objFormParam->addParam("現在のポイント", "point");
-        $this->objFormParam->addParam("受注番号", "order_id");
+        $this->objFormParam->addParam("注文番号", "order_id");
         $this->objFormParam->addParam("受注日", "create_date");
     }
 

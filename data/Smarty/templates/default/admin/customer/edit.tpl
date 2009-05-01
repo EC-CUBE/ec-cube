@@ -250,7 +250,7 @@
     <table class="list">
       <tr>
         <th>日付</th>
-        <th>受注番号</th>
+        <th>注文番号</th>
         <th>購入金額</th>
         <th>発送日</th>
         <th>支払方法</th>

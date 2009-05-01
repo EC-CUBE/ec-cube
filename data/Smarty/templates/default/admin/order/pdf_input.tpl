@@ -47,7 +47,7 @@ function lfPopwinSubmit(formName) {
 
   <table class="form">
     <tr>
-      <th>受注番号</th>
+      <th>注文番号</th>
       <td><!--{$arrForm.order_id|@join:', '}--></td>
     </tr>
     <tr>

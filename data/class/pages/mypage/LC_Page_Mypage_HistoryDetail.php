@@ -117,7 +117,7 @@ class LC_Page_Mypage_HistoryDetail extends LC_Page {
 
     //受注詳細データの取得
     function lfGetOrderData($order_id) {
-        //受注番号が数字であれば
+        //注文番号が数字であれば
         if(SC_Utils_Ex::sfIsInt($order_id)) {
             // DBから受注情報を読み込む
             $objQuery = new SC_Query();

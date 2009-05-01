@@ -470,7 +470,7 @@ class LC_Page_Shopping_Complete extends LC_Page {
             $sqlval['deliv_tel03'] = $arrData['order_tel03'];
         }
 
-        $order_id = $arrData['order_id'];		// オーダーID
+        $order_id = $arrData['order_id'];		// 注文番号
         $sqlval['create_date'] = 'now()';		// 受注日
 
         // キャンペーンID

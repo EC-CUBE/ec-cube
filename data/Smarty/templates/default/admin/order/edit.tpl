@@ -120,7 +120,7 @@
   <table class="form">
     <!--{if $tpl_mode != 'add'}-->
     <tr>
-      <th>受注番号</th>
+      <th>注文番号</th>
       <td><!--{$arrForm.order_id.value}--></td>
     </tr>
     <tr>

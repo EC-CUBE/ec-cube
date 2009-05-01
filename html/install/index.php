@@ -941,7 +941,7 @@ function lfAddData($dsn) {
     // CSVテーブル
     if($objDb->sfTabaleExists('dtb_csv', $dsn)) {
         lfInsertCSVData(1,'category_id','カテゴリID',53,'now()','now()', $dsn);
-        lfInsertCSVData(4,'order_id','注文ID',1,'now()','now()', $dsn);
+        lfInsertCSVData(4,'order_id','注文番号',1,'now()','now()', $dsn);
         lfInsertCSVData(4,'campaign_id','キャンペーンID',2,'now()','now()', $dsn);
         lfInsertCSVData(4,'customer_id','顧客ID',3,'now()','now()', $dsn);
         lfInsertCSVData(4,'message','要望等',4,'now()','now()', $dsn);
