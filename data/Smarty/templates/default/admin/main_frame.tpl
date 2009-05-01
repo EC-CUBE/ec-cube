@@ -61,7 +61,6 @@
 <!--{* ▼HEADER *}-->
 <div id="header">
   <div id="logo"><a href="<!--{$smarty.const.URL_DIR}-->admin/home.php"><img src="<!--{$TPL_DIR}-->img/admin/header/logo.jpg" width="230" height="50" alt="EC CUBE" /></a></div>
-  <!--{* ▼NAVI *}-->
   <ul id="sites">
     <li><a href="<!--{$smarty.const.URL_HOME}-->"><span>MAIN PAGE</span></a></li>
     <li><a href="<!--{$smarty.const.SITE_URL}--><!--{$smarty.const.DIR_INDEX_URL}-->" target="_blank"><span>SITE CHECK</span></a></li>
@@ -70,51 +69,53 @@
     WELCOME!&nbsp;<span><!--{* ログイン名 *}--><!--{$smarty.session.login_name|escape}--></span>&nbsp;様&nbsp;
     <a href="<!--{$smarty.const.URL_LOGOUT}-->">LOGOUT</a>
   </p>
-  <ul id="navi">
-    <li id="navi-basis" class="<!--{if $tpl_mainno eq "basis"}-->on<!--{/if}-->">
-      <a><span>基本情報管理</span></a>
-      <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`basis/subnavi.tpl"}-->
-    </li>
-    <li id="navi-products" class="<!--{if $tpl_mainno eq "products"}-->on<!--{/if}-->">
-      <a><span>商品管理</span></a>
-      <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`products/subnavi.tpl"}-->
-    </li>
-    <li id="navi-customer" class="<!--{if $tpl_mainno eq "customer"}-->on<!--{/if}-->">
-      <a><span>顧客管理</span></a>
-      <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`customer/subnavi.tpl"}-->
-    </li>
-    <li id="navi-order" class="<!--{if $tpl_mainno eq "order"}-->on<!--{/if}-->">
-      <a><span>受注管理</span></a>
-      <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`order/subnavi.tpl"}-->
-    </li>
-    <li id="navi-total" class="<!--{if $tpl_mainno eq "total"}-->on<!--{/if}-->">
-      <a><span>売上集計</span></a>
-      <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`total/subnavi.tpl"}-->
-    </li>
-    <li id="navi-mail" class="<!--{if $tpl_mainno eq "mail"}-->on<!--{/if}-->">
-      <a><span>メルマガ管理</span></a>
-      <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`mail/subnavi.tpl"}-->
-    </li>
-    <li id="navi-contents" class="<!--{if $tpl_mainno eq "contents"}-->on<!--{/if}-->">
-      <a><span>コンテンツ管理</span></a>
-      <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`contents/subnavi.tpl"}-->
-    </li>
-    <li id="navi-design" class="<!--{if $tpl_mainno eq "design"}-->on<!--{/if}-->">
-      <a><span>デザイン管理</span></a>
-      <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`design/subnavi.tpl"}-->
-    </li>
-    <li id="navi-system" class="<!--{if $tpl_mainno eq "system"}-->on<!--{/if}-->">
-      <a><span>システム設定</span></a>
-      <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`system/subnavi.tpl"}-->
-    </li>
-    <li id="navi-ownersstore" class="<!--{if $tpl_mainno eq "ownersstore"}-->on<!--{/if}-->">
-      <a><span>OWNERS STORE</span></a>
-      <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`ownersstore/subnavi.tpl"}-->
-    </li>
-  </ul>
-  <!--{* ▲NAVI *}-->
 </div>
 <!--{* ▲HEADER *}-->
+<!--{* ▼NAVI *}-->
+<ul id="navi">
+    <li id="navi-basis" class="<!--{if $tpl_mainno eq "basis"}-->on<!--{/if}-->">
+        <a><span>基本情報管理</span></a>
+        <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`basis/subnavi.tpl"}-->
+    </li>
+    <li id="navi-products" class="<!--{if $tpl_mainno eq "products"}-->on<!--{/if}-->">
+        <a><span>商品管理</span></a>
+        <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`products/subnavi.tpl"}-->
+    </li>
+    <li id="navi-customer" class="<!--{if $tpl_mainno eq "customer"}-->on<!--{/if}-->">
+        <a><span>顧客管理</span></a>
+        <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`customer/subnavi.tpl"}-->
+    </li>
+    <li id="navi-order" class="<!--{if $tpl_mainno eq "order"}-->on<!--{/if}-->">
+        <a><span>受注管理</span></a>
+        <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`order/subnavi.tpl"}-->
+    </li>
+    <li id="navi-total" class="<!--{if $tpl_mainno eq "total"}-->on<!--{/if}-->">
+        <a><span>売上集計</span></a>
+        <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`total/subnavi.tpl"}-->
+    </li>
+    <li id="navi-mail" class="<!--{if $tpl_mainno eq "mail"}-->on<!--{/if}-->">
+        <a><span>メルマガ管理</span></a>
+        <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`mail/subnavi.tpl"}-->
+    </li>
+    <li id="navi-contents" class="<!--{if $tpl_mainno eq "contents"}-->on<!--{/if}-->">
+        <a><span>コンテンツ管理</span></a>
+        <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`contents/subnavi.tpl"}-->
+    </li>
+    <li id="navi-design" class="<!--{if $tpl_mainno eq "design"}-->on<!--{/if}-->">
+        <a><span>デザイン管理</span></a>
+        <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`design/subnavi.tpl"}-->
+    </li>
+    <li id="navi-system" class="<!--{if $tpl_mainno eq "system"}-->on<!--{/if}-->">
+        <a><span>システム設定</span></a>
+        <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`system/subnavi.tpl"}-->
+    </li>
+    <li id="navi-ownersstore" class="<!--{if $tpl_mainno eq "ownersstore"}-->on<!--{/if}-->">
+        <a><span>OWNERS STORE</span></a>
+        <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`ownersstore/subnavi.tpl"}-->
+    </li>
+</ul>
+<div style="clear: both;"></div>
+<!--{* ▲NAVI *}-->
 
 <!--{if $smarty.server.PHP_SELF != $smarty.const.URL_HOME && $tpl_subtitle}-->
 <h1><!--{$tpl_subtitle}--></h1>

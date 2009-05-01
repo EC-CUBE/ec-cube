@@ -82,7 +82,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
     position: relative;
     z-index: 9999;
     width: 100%;
-    height: 80px;
+    height: 50px;
     margin: 0;
     padding: 0;
     background: url(../img/admin/header/header_back.jpg) 0 0 repeat-x;
@@ -115,19 +115,15 @@ a:hover { color: #f9a406; text-decoration: underline; }
 
 /* ヘッダーナビ
 ----------------------------------------------- */
-#navi {
-    position: absolute;
-    top: 50px;
-    left: 0px;
-    width: 100%;
+#navi, #navi li {
     height: 30px;
     background: url(../img/admin/header/navi_back.jpg) 0 0 repeat-x;
 }
 #navi li, #navi li a, #navi li a span {
-    height: 30px;
     line-height: 30px;
     display: block;
     float: left;
+    white-space: nowrap;
 }
 #navi li {
     position: relative;
