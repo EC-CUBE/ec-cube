@@ -357,6 +357,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
         // すべての規格を登録する。
         while($arrList["classcategory_id1:".$cnt] != "") {
             if($arrList["check:".$cnt] == 1) {
+                $sqlval = array();
                 $sqlval['product_id'] = $product_id;
                 $sqlval['classcategory_id1'] = $arrList["classcategory_id1:".$cnt];
                 $sqlval['classcategory_id2'] = $arrList["classcategory_id2:".$cnt];
