@@ -623,8 +623,8 @@ class SC_Utils {
     }
 
     function sfTrim($str) {
-        $ret = ereg_replace("^[　 \n\r]*", "", $str);
-        $ret = ereg_replace("[　 \n\r]*$", "", $ret);
+        $ret = mb_ereg_replace("^[　 \n\r]*", "", $str);
+        $ret = mb_ereg_replace("[　 \n\r]*$", "", $ret);
         return $ret;
     }
 
