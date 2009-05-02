@@ -432,7 +432,7 @@ function fnDispChange(disp_id, inner_id, disp_flg){
 // ページ読み込み時の処理
 $(function(){
 // ヘッダナビゲーション
-    $("#navi > li").hover(
+    $("#navi li").hover(
         function(){
             $(this).addClass("sfhover");
         },
