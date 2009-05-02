@@ -1,4 +1,4 @@
-﻿<script type="text/javascript">
+<script type="text/javascript">
 
 function doPreview(){
   document.form1.mode.value="preview"

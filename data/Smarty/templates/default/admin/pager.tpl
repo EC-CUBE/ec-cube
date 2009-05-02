@@ -1,4 +1,4 @@
-﻿<!--{* ★ ページャここから ★ *}-->
+<!--{* ★ ページャここから ★ *}-->
 <div class="pager">
   <ul>
   <!--{foreach from=$arrPagenavi.arrPageno key="key" item="item"}-->

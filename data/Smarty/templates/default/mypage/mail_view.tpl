@@ -1,4 +1,4 @@
-﻿<!--{include file="`$smarty.const.TEMPLATE_DIR`popup_header.tpl" subtitle="MYページ/メール履歴詳細"}-->
+<!--{include file="`$smarty.const.TEMPLATE_DIR`popup_header.tpl" subtitle="MYページ/メール履歴詳細"}-->
 
 <table class="form">
   <tr>
