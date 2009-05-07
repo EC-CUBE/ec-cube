@@ -210,10 +210,10 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
         $objQuery = new SC_Query();
         $csv_data = "";
         $csv_autoinc = "";
-        $err = true;
+        $success = true;
 
         $bkup_dir = $this->bkup_dir;
-        if (!is_dir(dirname($bkup_dir))) $err = mkdir(dirname($bkup_dir));
+        if (!is_dir(dirname($bkup_dir))) $success = mkdir(dirname($bkup_dir));
         $bkup_dir = $bkup_dir . $bkup_name . "/";
 
         // 全テーブル取得
@@ -265,14 +265,14 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
         // CSV出力
         // ディレクトリが存在していなければ作成する
         if (!is_dir(dirname($csv_file))) {
-            $err = mkdir(dirname($csv_file));
+            $success = mkdir(dirname($csv_file));
         }
-        if ($err) {
+        if ($success) {
             // dataをCSV出力
             $fp = fopen($csv_file,"w");
             if($fp) {
                 if($csv_data != ""){
-                    $err = fwrite($fp, $csv_data);
+                    $success = fwrite($fp, $csv_data);
                 }
                 fclose($fp);
             }
@@ -281,40 +281,40 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
             $fp = fopen($csv_autoinc_file,"w");
             if($fp) {
                 if($csv_autoinc != ""){
-                    $err = fwrite($fp, $csv_autoinc);
+                    $success = fwrite($fp, $csv_autoinc);
                 }
                 fclose($fp);
             }
         }
 
         // 各種ファイルコピー
-        if ($err) {
+        if ($success) {
             /**
             // 商品画像ファイルをコピー
             // ディレクトリが存在していなければ作成する
             $image_dir = $bkup_dir . "save_image/";
-            if (!is_dir(dirname($image_dir))) $err = mkdir(dirname($image_dir));
+            if (!is_dir(dirname($image_dir))) $success = mkdir(dirname($image_dir));
             $copy_mess = "";
             $copy_mess = SC_Utils_Ex::sfCopyDir("../../upload/save_image/",$image_dir, $copy_mess);
 
             // テンプレートファイルをコピー
             // ディレクトリが存在していなければ作成する
             $templates_dir = $bkup_dir . "templates/";
-            if (!is_dir(dirname($templates_dir))) $err = mkdir(dirname($templates_dir));
+            if (!is_dir(dirname($templates_dir))) $success = mkdir(dirname($templates_dir));
             $copy_mess = "";
             $copy_mess = SC_Utils_Ex::sfCopyDir("../../user_data/templates/",$templates_dir, $copy_mess);
 
             // インクルードファイルをコピー
             // ディレクトリが存在していなければ作成する
             $inc_dir = $bkup_dir . "include/";
-            if (!is_dir(dirname($inc_dir))) $err = mkdir(dirname($inc_dir));
+            if (!is_dir(dirname($inc_dir))) $success = mkdir(dirname($inc_dir));
             $copy_mess = "";
             $copy_mess = SC_Utils_Ex::sfCopyDir("../../user_data/include/",$inc_dir, $copy_mess);
 
             // CSSファイルをコピー
             // ディレクトリが存在していなければ作成する
             $css_dir = $bkup_dir . "css/";
-            if (!is_dir(dirname($css_dir))) $err = mkdir(dirname($css_dir));
+            if (!is_dir(dirname($css_dir))) $success = mkdir(dirname($css_dir));
             $copy_mess = "";
             $copy_mess = SC_Utils_Ex::sfCopyDir("../../user_data/css/",$css_dir, $copy_mess);
             **/
@@ -331,7 +331,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
             if ($zip) SC_Utils_Ex::sfDelFile($bkup_dir);
         }
 
-        if (!$err) {
+        if (!$success) {
             $arrErr['bkup_name'] = "バックアップに失敗しました。";
             // バックアップデータの削除
             SC_Utils_Ex::sfDelFile($bkup_dir);
@@ -473,7 +473,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
         
         $objQuery = new SC_Query("", false);
         $csv_data = "";
-        $err = true;
+        $success = true;
 
         $bkup_dir = $this->bkup_dir . $bkup_name . "/";
 
@@ -484,26 +484,26 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
         $tar = new Archive_Tar($bkup_name . $this->bkup_ext, TRUE);
 
         //指定されたフォルダ内に解凍する
-        $err = $tar->extract("./");
+        $success = $tar->extract("./");
 
         // 無事解凍できれば、リストアを行う
-        if ($err) {
+        if ($success) {
 
             // トランザクション開始
             $objQuery->begin();
 
             // DBをクリア
-            $err = $this->lfDeleteAll($objQuery);
+            $success = $this->lfDeleteAll($objQuery);
 
             // INSERT実行
-            if ($err) $err = $this->lfExeInsertSQL($objQuery, $bkup_dir . "bkup_data.csv");
+            if ($success) $success = $this->lfExeInsertSQL($objQuery, $bkup_dir . "bkup_data.csv");
 
             // 自動採番の値をセット
-            if ($err) $this->lfSetAutoInc($objQuery, $bkup_dir . "autoinc_data.csv");
+            if ($success) $this->lfSetAutoInc($objQuery, $bkup_dir . "autoinc_data.csv");
 
             // 各種ファイルのコピー
             /**
-            if ($err) {
+            if ($success) {
                 // 画像のコピー
                 $image_dir = $bkup_dir . "save_image/";
                 $copy_mess = "";
@@ -529,7 +529,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
             }**/
 
             // リストア成功ならコミット失敗ならロールバック
-            if ($err) {
+            if ($success) {
                 $objQuery->commit();
                 $this->restore_msg = "リストア終了しました。";
                 $this->restore_err = true;
