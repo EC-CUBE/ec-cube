@@ -45,7 +45,7 @@
     </div>
     <p>※最大20件まで表示します。</p>
 
-    <form name="form1" id="form1" method="post" action="<!--{$smarty.const.SITE_URL}-->products/detail.php">
+    <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
     <input type="hidden" name="mode" value="cart" />
     <input type="hidden" name="product_id" value="" />
     <table summary="お気に入り" id="mypage-history-list" class="list">
