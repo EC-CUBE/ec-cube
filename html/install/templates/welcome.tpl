@@ -20,7 +20,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 <table width="502" border="0" cellspacing="1" cellpadding="0" summary=" ">
-<form name="form1" id="form1" method="post" action="?">
+<form name="form1" id="form1" method="post" action="./<!--{$smarty.const.DIR_INDEX_URL}-->">
 <input type="hidden" name="mode" value="<!--{$tpl_mode}-->">
 
 <!--{foreach key=key item=item from=$arrHidden}-->
