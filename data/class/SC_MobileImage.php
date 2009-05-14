@@ -58,6 +58,7 @@ class SC_MobileImage {
                     $imageFileSize = $data[7];
                     $imageType     = $data[6];
                     $imageWidth    = $data[5];
+                    $imageHeight   = $data[4];
                     break;
                 }
             }
@@ -84,6 +85,7 @@ class SC_MobileImage {
             $imageConverter->setOutputDir(MOBILE_IMAGE_DIR);
             $imageConverter->setImageType($imageType);
             $imageConverter->setImageWidth($imageWidth);
+            $imageConverter->setImageHeight($imageHeight);
             $imageConverter->setFileSize($imageFileSize);
 
             // HTML中のIMGタグを変換後のファイルパスに置換する
