@@ -136,6 +136,10 @@ class ImageConverter {
 			$info['convert'] = TRUE;
 		}
 
+		if ($height_was_null) {
+		    $this->outputImageHeigh = NULL;
+		}
+
 		$info['outputImagePath']  = $outputImagePath;
 		$info['outputImageName']  = $outputImageName;
 		return $info;
