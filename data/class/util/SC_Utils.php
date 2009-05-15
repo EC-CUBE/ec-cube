@@ -902,6 +902,7 @@ class SC_Utils {
 
     /* 加算ポイントの計算式 */
     function sfGetAddPoint($totalpoint, $use_point, $arrInfo) {
+        if( USE_POINT === false ) return ;
         // 購入商品の合計ポイントから利用したポイントのポイント換算価値を引く方式
         $add_point = $totalpoint - intval($use_point * ($arrInfo['point_rate'] / 100));
 
@@ -1992,7 +1993,7 @@ echo $template_path;
 
         for($i = 0; $i < $cnt; $i++) {
             $html.= "<tr>";
-            foreach($array[$i] as $val) {
+          foreach($array[$i] as $val) {
                 $html.="<td>$val</td>";
             }
             $html.= "</tr>";

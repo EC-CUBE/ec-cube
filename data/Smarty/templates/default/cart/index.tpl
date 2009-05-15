@@ -25,14 +25,17 @@
     <h2 class="title">
       <img src="<!--{$TPL_DIR}-->img/cart/title.jpg" width="700" height="40" alt="現在のカゴの中" />
     </h2>
+    <!--{if $smarty.const.USE_POINT === true || count($arrProductsClass) > 0}-->
     <p class="totalmoneyarea">
-      <!--{if $tpl_login}-->
-      <!--メインコメント-->
-        <!--{$tpl_name|escape}--> 様の、現在の所持ポイントは「<em><!--{$tpl_user_point|number_format|default:0}--> pt</em>」です。<br />
-      <!--{else}-->
-        <!--メインコメント-->ポイント制度をご利用になられる場合は、会員登録後ログインしていだだきますようお願い致します。<br />
+      <!--★ポイント案内★-->
+      <!--{if $smarty.const.USE_POINT === true}-->
+        <!--{if $tpl_login}-->
+          <!--{$tpl_name|escape}--> 様の、現在の所持ポイントは「<em><!--{$tpl_user_point|number_format|default:0}--> pt</em>」です。<br />
+        <!--{else}-->
+          ポイント制度をご利用になられる場合は、会員登録後ログインしていだだきますようお願い致します。<br />
+        <!--{/if}-->
       <!--{/if}-->
-      ポイントは商品購入時に1pt＝<!--{$smarty.const.POINT_VALUE}-->円として使用することができます。<br />
+
       <!--{* カゴの中に商品がある場合にのみ表示 *}-->
       <!--{if count($arrProductsClass) > 0 }-->
         お買い上げ商品の合計金額は「<em><!--{$tpl_total_pretax|number_format}-->円</em>」です。
@@ -45,18 +48,19 @@
         <!--{/if}-->
       <!--{/if}-->
     </p>
+    <!--{/if}-->
 
    <!--{if $tpl_message != ""}-->
     <p class="attention"><!--{$tpl_message|escape}--></p>
    <!--{/if}-->
 
    <!--{if count($arrProductsClass) > 0}-->
-   
+
    <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
    <!--{if 'sfGMOCartDisplay'|function_exists}-->
      <!--{'sfGMOCartDisplay'|call_user_func}-->
    <!--{/if}-->
-   
+
      <input type="hidden" name="mode" value="confirm" />
      <input type="hidden" name="cart_no" value="" />
      <table summary="商品情報">
@@ -109,16 +113,18 @@
       <th colspan="5" class="resulttd">合計</th>
       <td class="pricetd"><em><!--{$arrData.total-$arrData.deliv_fee|number_format}-->円</em></td>
     </tr>
-    <!--{if $arrData.birth_point > 0}-->
-    <tr>
-      <th colspan="5" class="resulttd">お誕生月ポイント</th>
-      <td class="pricetd"><!--{$arrData.birth_point|number_format}-->pt</td>
-    </tr>
-    <!--{/if}-->
-    <tr>
-      <th colspan="5" class="resulttd">今回加算ポイント</th>
-      <td class="pricetd"><!--{$arrData.add_point|number_format}-->pt</td>
-    </tr>
+      <!--{if $smarty.const.USE_POINT === true}-->
+        <!--{if $arrData.birth_point > 0}-->
+        <tr>
+          <th colspan="5" class="resulttd">お誕生月ポイント</th>
+          <td class="pricetd"><!--{$arrData.birth_point|number_format}-->pt</td>
+        </tr>
+        <!--{/if}-->
+        <tr>
+          <th colspan="5" class="resulttd">今回加算ポイント</th>
+          <td class="pricetd"><!--{$arrData.add_point|number_format}-->pt</td>
+        </tr>
+      <!--{/if}-->
   </table>
   <p class="mini">※商品写真は参考用写真です。ご注文のカラーと異なる写真が表示されている場合でも、商品番号に記載されているカラー表示で間違いございませんのでご安心ください。</p>
   <div class="tblareabtn">

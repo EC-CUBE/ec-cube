@@ -140,7 +140,8 @@ CREATE TABLE dtb_baseinfo (
     detail_tpl text,
     mypage_tpl text,
     good_traded text,
-    message text
+    message text,
+    regular_holiday_ids text
 );
 
 CREATE TABLE dtb_deliv (
@@ -284,6 +285,7 @@ CREATE TABLE dtb_products (
     comment4 text,
     comment5 text,
     comment6 text,
+    note text,
     file1 text,
     file2 text,
     file3 text,
@@ -460,6 +462,14 @@ CREATE TABLE dtb_customer_reading (
     customer_id int4 NOT NULL,
     create_date timestamp NOT NULL,
     update_date timestamp NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE dtb_customer_favorite_products (
+    customer_id int4 NOT NULL,
+    product_id int4 NOT NULL,
+    create_date timestamp NOT NULL DEFAULT now(),
+    update_date timestamp NOT NULL DEFAULT now(),
+    PRIMARY KEY (customer_id, product_id)
 );
 
 CREATE TABLE dtb_category_count (

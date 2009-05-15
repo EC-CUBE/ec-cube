@@ -70,18 +70,18 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
         $sql = $this->sfChangeTrunc($sql);
         return $sql;
     }
-    
+
     /**
      * 文字コード情報を取得する
-     * 
+     *
      * @return array 文字コード情報
      */
      function getCharSet() {
-     	$objQuery = new SC_Query();
-     	$arrRet = $objQuery->getAll("SHOW VARIABLES LIKE 'char%'");
-     	return $arrRet;
+         $objQuery = new SC_Query();
+         $arrRet = $objQuery->getAll("SHOW VARIABLES LIKE 'char%'");
+         return $arrRet;
      }
-    
+
     /**
      * テーブルの存在チェックを行う SQL 文を返す.
      *
@@ -245,7 +245,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
         $changesql = eregi_replace("( TRUNC)", " TRUNCATE", $sql);
         return $changesql;
     }
-    
+
     /**
      * WHERE 句置換用の配列を返す.
      *
@@ -340,6 +340,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
                     T1.creator_id,
                     T1.create_date,
                     T1.update_date,
+                    T1.note,
                     T1.deliv_date_id,
                     T2.product_id_sub,
                     T2.product_code,
@@ -363,77 +364,58 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
                 AS T2
                 ON T1.product_id = T2.product_id_sub) ',
 
-            "vw_products_allclass" => '
-   (SELECT T1.product_id,
-           product_code_min,
-           product_code_max,
-           price01_min,
-           price01_max,
-           price02_min,
-           price02_max,
-           stock_min,
-           stock_max,
-           stock_unlimited_min,
-           stock_unlimited_max,
-           del_flg,
-           status,
-           name,
-           comment1,
-           comment2,
-           comment3,
-           main_list_comment,
-           main_image,
-           main_list_image,
-           product_flag,
-           deliv_date_id,
-           sale_limit,
-           point_rate,
-           sale_unlimited,
-           create_date,
-           deliv_fee,
-           rank
-           ,(SELECT rank AS category_rank
-               FROM dtb_category AS T4
-              WHERE T1.category_id = T4.category_id) as category_rank
-           ,(SELECT category_id AS sub_category_id 
-               FROM dtb_category T4 
-              WHERE T1.category_id = T4.category_id) as category_id
-      FROM (SELECT T0.product_id,
-                   T0.del_flg,
-                   T0.status,
-                   T0.name,
-                   T0.comment1,
-                   T0.comment2,
-                   T0.comment3,
-                   T0.main_list_comment,
-                   T0.main_image,
-                   T0.main_list_image,
-                   T0.product_flag,
-                   T0.deliv_date_id,
-                   T0.sale_limit,
-                   T0.point_rate,
-                   T0.sale_unlimited,
-                   T0.create_date,
-                   T0.deliv_fee,
-                   T00.category_id,
-                   T00.rank
-              FROM dtb_products AS T0
-         LEFT JOIN dtb_product_categories AS T00
-             USING (product_id)) AS T1 
-RIGHT JOIN (SELECT product_id as product_id_sub,
-                   MIN(product_code) AS product_code_min,
-                   MAX(product_code) AS product_code_max,
-                   MIN(price01) AS price01_min,
-                   MAX(price01) AS price01_max,
-                   MIN(price02) AS price02_min,
-                   MAX(price02) AS price02_max,
-                   MIN(stock) AS stock_min,
-                   MAX(stock) AS stock_max,
-                   MIN(stock_unlimited) AS stock_unlimited_min,
-                   MAX(stock_unlimited) AS stock_unlimited_max
-              FROM dtb_products_class GROUP BY product_id) AS T2 
-                ON T1.product_id = T2.product_id_sub
-            ) ',
+        "vw_products_allclass" => '
+               (SELECT
+                    T2.product_id
+                    ,T1.product_code_min
+                    ,T1.product_code_max
+                    ,T1.price01_min
+                    ,T1.price01_max
+                    ,T1.price02_min
+                    ,T1.price02_max
+                    ,T1.stock_min
+                    ,T1.stock_max
+                    ,T1.stock_unlimited_min
+                    ,T1.stock_unlimited_max
+                    ,T2.del_flg
+                    ,T2.status
+                    ,T2.name
+                    ,T2.comment1
+                    ,T2.comment2
+                    ,T2.comment3
+                    ,T2.main_list_comment
+                    ,T2.main_image
+                    ,T2.main_list_image
+                    ,T2.product_flag
+                    ,T2.deliv_date_id
+                    ,T2.sale_limit
+                    ,T2.point_rate
+                    ,T2.sale_unlimited
+                    ,T2.create_date
+                    ,T2.deliv_fee
+                    ,T3.rank
+                    ,T4.rank AS category_rank
+                    ,T4.category_id
+                FROM
+                    (
+                        (dtb_products AS T2 RIGHT JOIN
+                            (SELECT
+                                product_id AS product_id_sub
+                                ,MIN(product_code) AS product_code_min
+                                ,MAX(product_code) AS product_code_max
+                                ,MIN(price01) AS price01_min
+                                ,MAX(price01) AS price01_max
+                                ,MIN(price02) AS price02_min
+                                ,MAX(price02) AS price02_max
+                                ,MIN(stock) AS stock_min
+                                ,MAX(stock) AS stock_max
+                                ,MIN(stock_unlimited) AS stock_unlimited_min
+                                ,MAX(stock_unlimited) AS stock_unlimited_max
+                            FROM dtb_products_class GROUP BY product_id
+                            ) AS T1 ON T1.product_id_sub = T2.product_id
+                        ) LEFT JOIN dtb_product_categories AS T3 ON T2.product_id = T3.product_id
+                    ) LEFT JOIN dtb_category AS T4 ON T3.category_id = T4.category_id
+                ) ',
 
             "vw_products_allclass_detail" => '
                 (SELECT product_id,price01_min,price01_max,price02_min,price02_max,stock_min,stock_max,stock_unlimited_min,stock_unlimited_max,

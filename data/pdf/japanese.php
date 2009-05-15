@@ -532,7 +532,7 @@ function Footer()
     //フォントを設定。 Arial italic 8
     $this->SetFont('Arial','I',8);
     //現在のページ番号と総ページ数を出力
-    $this->Cell(0,10,''.$this->PageNo().' / {nb}',0,0,'C');
+    #$this->Cell(0,10,''.$this->PageNo().' / {nb}',0,0,'C');
 }
 
 }

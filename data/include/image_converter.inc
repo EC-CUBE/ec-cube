@@ -29,9 +29,29 @@ class ImageConverter {
 		$outputImageName  = sha1($inputImagePath . '_' . $this->outputImageWidth . '_' . $this->outputFileSize . '_' . $filestat['mtime']) . '.' . $this->outputImageType;
 		$outputImagePath  = $this->outputImageDir . '/' . $outputImageName;
 
-		// 変換後の画像の高さが指定されていない場合、変換後の画像の横幅から求める
 		if (is_null($this->outputImageHeight)) {
-			$this->outputImageHeight = $inputImageHeight * ($this->outputImageWidth / $inputImageWidth);
+		  $height_was_null = TRUE;
+		  $this->outputImageHeight = $inputImageHeight * ($this->outputImageWidth / $inputImageWidth);
+		} else {
+		  $height_was_null = FALSE;
+		}
+		if ($inputImageWidth <= $this->outputImageWidth) {
+		  if ($inputImageHeight <= $this->outputImageHeight) {
+		    $this->outputImageWidth  = $inputImageWidth;
+		    $this->outputImageHeight = $inputImageHeight;
+		  } else {
+		    $this->outputImageWidth = $inputImageWidth * ($this->outputImageHeight / $inputImageHeight);
+		  }
+		} else {
+		  if ($inputImageHeight <= $this->outputImageHeight) {
+		    $this->outputImageHeight = $inputImageHeight * ($this->outputImageWidth / $inputImageWidth);
+		  } else {
+		    if ($this->outputImageWidth / $inputImageWidth < $this->outputImageHeight / $inputImageHeight) {
+		      $this->outputImageHeight = $inputImageHeight * ($this->outputImageWidth / $inputImageWidth);
+		    } else {
+		      $this->outputImageWidth = $inputImageWidth * ($this->outputImageHeight / $inputImageHeight);
+		    }
+		  }
 		}
 
 		// ファイルが存在するか確認し、存在しない場合のみ作成する
@@ -126,8 +146,8 @@ class ImageConverter {
 	function setOutputDir($outputDir)   { $this->outputImageDir   = $outputDir;  }
 	function setImageType($imageType)   { $this->outputImageType  = $imageType;  }
 	function setImageWidth($imageWidth) { $this->outputImageWidth = $imageWidth; }
+	function setImageHeight($imageHeight) { $this->outputImageHeight = $imageHeight; }
 	function setFileSize($fileSize)     { $this->outputFileSize   = $fileSize;   }
-	// function setImageHeight($imageHeight) { $this->outputImageHeight = $imageHeight; }
 
 	// Getter
 	function getOutputDir()   { return $this->outputDir;         }

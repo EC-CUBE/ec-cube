@@ -100,24 +100,24 @@
       </div>
 
       <!-- ▼ポイント使用 ここから -->
-      <!--{if $tpl_login == 1}-->
-    <div class="pointarea">
-      <h3><img src="<!--{$TPL_DIR}-->img/shopping/subtitle_point.jpg" width="670" height="32" alt="ポイント使用の指定" /></h3>
+      <!--{if $tpl_login == 1 && $smarty.const.USE_POINT === true}-->
+        <div class="pointarea">
+          <h3><img src="<!--{$TPL_DIR}-->img/shopping/subtitle_point.jpg" width="670" height="32" alt="ポイント使用の指定" /></h3>
 
-        <p><span class="attention">1ポイントを1円</span>として使用する事ができます。<br />
-          使用する場合は、「ポイントを使用する」にチェックを入れた後、使用するポイントをご記入ください。</p>
-      <div>
-        <p><!--{$objCustomer->getValue('name01')|escape}--> <!--{$objCustomer->getValue('name02')|escape}-->様の、現在の所持ポイントは「<em><!--{$tpl_user_point|default:0}-->Pt</em>」です。</p>
-        <p>今回ご購入合計金額：<span class="price"><!--{$arrData.subtotal|number_format}-->円</span><span class="attention">（送料、手数料を含みません。）</span></p>
-        <ul>
-          <li><input type="radio" id="point_on" name="point_check" value="1" <!--{$arrForm.point_check.value|sfGetChecked:1}--> onclick="fnCheckInputPoint();" /><label for="point_on">ポイントを使用する</label></li>
-           <!--{assign var=key value="use_point"}-->
+          <p><span class="attention">1ポイントを1円</span>として使用する事ができます。<br />
+            使用する場合は、「ポイントを使用する」にチェックを入れた後、使用するポイントをご記入ください。</p>
+        <div>
+          <p><!--{$objCustomer->getValue('name01')|escape}--> <!--{$objCustomer->getValue('name02')|escape}-->様の、現在の所持ポイントは「<em><!--{$tpl_user_point|default:0}-->Pt</em>」です。</p>
+          <p>今回ご購入合計金額：<span class="price"><!--{$arrData.subtotal|number_format}-->円</span><span class="attention">（送料、手数料を含みません。）</span></p>
+          <ul>
+            <li><input type="radio" id="point_on" name="point_check" value="1" <!--{$arrForm.point_check.value|sfGetChecked:1}--> onclick="fnCheckInputPoint();" /><label for="point_on">ポイントを使用する</label></li>
+              <!--{assign var=key value="use_point"}-->
 
-           <li class="underline">今回のお買い物で、<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|default:$tpl_user_point}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="6" class="box60" />&nbsp;ポイントを使用する。<span class="attention"><!--{$arrErr[$key]}--></span></li>
-           <li><input type="radio" id="point_off" name="point_check" value="2" <!--{$arrForm.point_check.value|sfGetChecked:2}--> onclick="fnCheckInputPoint();" /><label for="point_off">ポイントを使用しない</label></li>
-         </ul>
+             <li class="underline">今回のお買い物で、<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|default:$tpl_user_point}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="6" class="box60" />&nbsp;ポイントを使用する。<span class="attention"><!--{$arrErr[$key]}--></span></li>
+             <li><input type="radio" id="point_off" name="point_check" value="2" <!--{$arrForm.point_check.value|sfGetChecked:2}--> onclick="fnCheckInputPoint();" /><label for="point_off">ポイントを使用しない</label></li>
+           </ul>
+        </div>
       </div>
-    </div>
       <!--{/if}-->
       <!-- ▲ポイント使用 ここまで -->
 

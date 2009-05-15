@@ -154,6 +154,7 @@ INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_p
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_products','comment4','コメント4');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_products','comment5','コメント5');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_products','comment6','コメント6');
+INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_products','note','備考欄(SHOP専用)');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_products','file1','アップロードファイル1');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_products','file2','アップロードファイル2');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_products','file3','アップロードファイル3');

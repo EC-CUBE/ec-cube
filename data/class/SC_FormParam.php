@@ -153,6 +153,7 @@ class SC_FormParam {
         // 連想配列の取得
         $arrRet = $this->getHashArray($keyname);
         $objErr = new SC_CheckError($arrRet);
+
         $cnt = 0;
         foreach($this->keyname as $val) {
             foreach($this->arrCheck[$cnt] as $func) {
@@ -195,6 +196,7 @@ class SC_FormParam {
                     }
                     break;
                 case 'MAX_LENGTH_CHECK':
+                case 'MIN_LENGTH_CHECK':
                 case 'NUM_COUNT_CHECK':
                     if(!is_array($this->param[$cnt])) {
                         $objErr->doFunc(array($this->disp_name[$cnt], $val, $this->length[$cnt]), array($func));

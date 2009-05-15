@@ -125,7 +125,8 @@ class LC_Page {
 
             $netURL->addQueryString(TRANSACTION_ID_NAME, $this->getToken());
             header("Location: " . $netURL->getURL());
-            return true;
+            //return true;
+            exit();
         }
         return false;
     }
@@ -260,10 +261,10 @@ class LC_Page {
             $rootPath = str_replace($htmlPath, "", $realPath);
             $rootPath = ltrim($rootPath, "/");
         }
-        
+
         return $rootPath;
     }
-    
+
     /**
      * ページをリロードする.
      *

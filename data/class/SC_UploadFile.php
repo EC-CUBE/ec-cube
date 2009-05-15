@@ -58,12 +58,7 @@ class SC_UploadFile {
         $this->image[] = $image;
     }
     // サムネイル画像の作成
-    function makeThumb($src_file, $width, $height) {
-        // 一意なIDを取得する。
-        $uniqname = date("mdHi") . "_" . uniqid("");
-
-        $dst_file = $this->temp_dir . $uniqname;
-
+    function makeThumb($src_file, $width, $height, $dst_file) {
         $objThumb = new gdthumb();
         $ret = $objThumb->Main($src_file, $width, $height, $dst_file);
 
@@ -78,7 +73,7 @@ class SC_UploadFile {
 
     // アップロードされたファイルを保存する。
     // FIXME see. http://www.php.net/manual/en/features.file-upload.php
-    function makeTempFile($keyname, $rename = true) {
+    function makeTempFile($keyname, $rename = IMAGE_RENAME) {
         $objErr = new SC_CheckError();
         $cnt = 0;
         $arrKeyname = array_flip($this->keyname);
@@ -97,7 +92,9 @@ class SC_UploadFile {
                     if(!isset($objErr->arrErr[$keyname])) {
                         // 画像ファイルの場合
                         if($this->image[$cnt]) {
-                            $this->temp_file[$cnt] = $this->makeThumb($_FILES[$keyname]['tmp_name'], $this->width[$cnt], $this->height[$cnt]);
+                            // 保存用の画像名を取得する
+                            $dst_file = $this->lfGetTmpImageName($rename, $keyname);
+                            $this->temp_file[$cnt] = $this->makeThumb($_FILES[$keyname]['tmp_name'], $this->width[$cnt], $this->height[$cnt], $dst_file);
                         // 画像ファイル以外の場合
                         } else {
                             // 一意なファイル名を作成する。
@@ -333,6 +330,27 @@ class SC_UploadFile {
 
         // ファイル名だけ返す
         return basename($path);
+    }
+
+    /**
+     * 一時保存用のファイル名を生成する
+     *
+     * @param string $rename
+     * @param int $keyname
+     * @return strgin $dst_file
+     */
+    function lfGetTmpImageName($rename, $keyname = "", $uploadfile = ""){
+
+        if( $rename === true ){
+            // 一意なIDを取得し、画像名をリネームし保存
+            $uniqname = date("mdHi") . "_" . uniqid("");
+        } else {
+            // アップロードした画像名で保存
+            $uploadfile = strlen($uploadfile) > 0 ? $uploadfile : $_FILES[$keyname]['name'];
+            $uniqname =  preg_replace('/(.+)\.(.+?)$/','$1', $uploadfile);
+        }
+        $dst_file = $this->temp_dir . $uniqname;
+        return $dst_file;
     }
 }
 ?>

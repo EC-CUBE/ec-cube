@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once("../../require.php");
+require_once("../require.php");
 require_once(CLASS_EX_PATH . "page_extends/admin/products/LC_Page_Admin_Products_ReviewEdit_Ex.php");
 
 // }}}
