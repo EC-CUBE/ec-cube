@@ -702,7 +702,25 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
     function lfInsertProduct($product_id, $classcategory_id1, $classcategory_id2) {
         $arrProduct = $this->lfGetProductsClass($product_id, $classcategory_id1, $classcategory_id2);
         $this->arrForm = $this->objFormParam->getFormParamList();
-        $this->lfSetProductData($arrProduct);
+        $existes = false;
+        $existes_key = NULL;
+        if (!empty($this->arrForm['product_id']['value'])) {
+            foreach ($this->arrForm['product_id']['value'] AS $key=>$val) {
+                if ($val == $product_id && $this->arrForm['product_id']['classcategory_id1'][$key] == $classcategory_id1 && $this->arrForm['product_id']['classcategory_id2'][$key] == $classcategory_id2) {
+                    // 既に同じ賞品がある場合
+                    $existes = true;
+                    $existes_key = $key;
+                }
+            }
+        }
+
+        if ($existes) {
+            // 既に同じ賞品がある場合
+            ++$this->arrForm['quantity']['value'][$existes_key];
+        } else {
+            // 既に同じ賞品がない場合
+            $this->lfSetProductData($arrProduct);
+        }
     }
 
     function lfUpdateProduct($product_id, $classcategory_id1, $classcategory_id2, $no) {
