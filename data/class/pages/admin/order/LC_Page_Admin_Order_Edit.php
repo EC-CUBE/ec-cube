@@ -707,7 +707,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         if (!empty($this->arrForm['product_id']['value'])) {
             foreach ($this->arrForm['product_id']['value'] AS $key=>$val) {
                 if ($val == $product_id && $this->arrForm['product_id']['classcategory_id1'][$key] == $classcategory_id1 && $this->arrForm['product_id']['classcategory_id2'][$key] == $classcategory_id2) {
-                    // 既に同じ賞品がある場合
+                    // 既に同じ商品がある場合
                     $existes = true;
                     $existes_key = $key;
                 }
@@ -715,10 +715,10 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         }
 
         if ($existes) {
-            // 既に同じ賞品がある場合
+            // 既に同じ商品がある場合
             ++$this->arrForm['quantity']['value'][$existes_key];
         } else {
-            // 既に同じ賞品がない場合
+            // 既に同じ商品がない場合
             $this->lfSetProductData($arrProduct);
         }
     }
