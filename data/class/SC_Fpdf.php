@@ -233,7 +233,7 @@ class SC_Fpdf {
         $arrOrder[$i][0] = "";
         $arrOrder[$i][1] = "";
         $arrOrder[$i][2] = $this->sjis_conv("値引き");
-        $arrOrder[$i][3] = "- ".number_format($this->arrDisp['use_point'] + $this->arrDisp['discount']).$monetary_unit;
+        $arrOrder[$i][3] = "- ".number_format(($this->arrDisp['use_point'] * POINT_VALUE) + $this->arrDisp['discount']).$monetary_unit;
 
         $i++;
         $arrOrder[$i][0] = "";
