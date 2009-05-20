@@ -27,7 +27,7 @@
 class SC_CustomerList extends SC_SelectSql {
 
     var $arrColumnCSV;
-	    	
+
     function SC_CustomerList($array, $mode = '') {
         parent::SC_SelectSql($array);
         
@@ -196,13 +196,13 @@ class SC_CustomerList extends SC_SelectSql {
             if (!isset($this->arrSql['mail_type'])) $this->arrSql['mail_type'] = "";
             // PCサイトメールが指定されている場合
             if ( strlen($this->arrSql['mail_type']) > 0 && $this->arrSql['mail_type'] == 1) {
-				// 携帯ドメインを外す。
-            	foreach($arrMobileDomain as $mobile_domain) {
-					$this->setWhere(" dtb_customer.email NOT ILIKE '%$mobile_domain' ");            		
-            	}
+                // 携帯ドメインを外す。
+                foreach($arrMobileDomain as $mobile_domain) {
+                    $this->setWhere(" dtb_customer.email NOT ILIKE '%$mobile_domain' ");
+                }
             // 携帯サイトメールが指定されている場合
             } else if( strlen($this->arrSql['mail_type']) > 0 && $this->arrSql['mail_type'] == 2) {
-				$this->setWhere( " dtb_customer.email_mobile <> ''  ");
+                $this->setWhere( " dtb_customer.email_mobile <> ''  ");
             }
         }
 
