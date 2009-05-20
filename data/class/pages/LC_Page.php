@@ -127,7 +127,8 @@ class LC_Page {
 
             $netURL->addQueryString(TRANSACTION_ID_NAME, $this->getToken());
             header("Location: " . $netURL->getURL());
-            return true;
+            //return true;
+            exit();
         }
         return false;
     }
@@ -254,14 +255,14 @@ class LC_Page {
         // Windowsの場合は, ディレクトリの区切り文字を\から/に変換する
         $realPath = str_replace("\\", "/", $realPath);
         $htmlPath = str_replace("\\", "/", HTML_PATH);
-        
+
         $htmlPath = rtrim($htmlPath, "/");
         $rootPath = str_replace($htmlPath, "", $realPath);
         $rootPath = ltrim($rootPath, "/");
         
         return $rootPath;
     }
-    
+
     /**
      * ページをリロードする.
      *
