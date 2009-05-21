@@ -23,21 +23,21 @@
 *}-->
 <script type="text/javascript">
 <!--
-  
-  function fnReturn() {
-    document.form_search.action = './<!--{$smarty.const.DIR_INDEX_URL}-->';
-    document.form_search.submit();
-    return false;
-  }
 
-  function fnOrderidSubmit(order_id, order_id_value) {
-    if(order_id != "" && order_id_value != "") {
-      document.form2[order_id].value = order_id_value;
-    }
-    document.form2.action = '../order/edit.php';
-    document.form2.submit();
-  }
-  
+	function fnReturn() {
+		document.form_search.action = './<!--{$smarty.const.DIR_INDEX_URL}-->';
+		document.form_search.submit();
+		return false;
+	}
+
+	function fnOrderidSubmit(order_id, order_id_value) {
+		if(order_id != "" && order_id_value != "") {
+			document.form2[order_id].value = order_id_value;
+		}
+		document.form2.action = '../order/edit.php';
+		document.form2.submit();
+	}
+
 //-->
 </script>
 
@@ -181,7 +181,7 @@
         </select>月
         <select name="day" <!--{if $arrErr.year != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> >
           <option value="" selected="selected">----</option>
-          <!--{html_options options=$arrDay selected=$list_data.day"}-->    
+          <!--{html_options options=$arrDay selected=$list_data.day"}-->
         </select>日
       </td>
     </tr>
@@ -189,7 +189,7 @@
       <th>パスワード<span class="attention"> *</span></th>
       <td>
         <span class="attention"><!--{$arrErr.password}--></span>
-        <input type="password" name="password" value="<!--{$list_data.password|escape}-->" size="30" class="box30" <!--{if $arrErr.password != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />　半角英数小文字4～10文字（記号不可）
+        <input type="password" name="password" value="<!--{$list_data.password|escape}-->" size="30" class="box30" <!--{if $arrErr.password != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />　半角英数小文字<!--{$smarty.const.PASSWORD_LEN1}-->～<!--{$smarty.const.PASSWORD_LEN2}-->文字（記号不可）
       </td>
     </tr>
     <tr>
