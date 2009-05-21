@@ -74,6 +74,9 @@ class LC_Page_Entry extends LC_Page {
         $objDb = new SC_Helper_DB_Ex();
         $CONF = $objDb->sf_getBasisData();
 
+        $ssl_url  = rtrim(SSL_URL,"/");
+        $ssl_url .= $_SERVER['PHP_SELF'];
+
         // 規約ページからの遷移でなければエラー画面へ遷移する
         if (empty($_POST) && !preg_match('/kiyaku.php/', basename($_SERVER['HTTP_REFERER']))) {
             SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", true);
@@ -123,8 +126,33 @@ class LC_Page_Entry extends LC_Page {
                 SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", true);
             }
 
+            //空白・改行の削除
+            $_POST["name01"] = preg_replace('/^[ 　\r\n]*(.*?)[ 　\r\n]*$/u', '$1', $_POST["name01"]);
+            $_POST["name02"] = preg_replace('/^[ 　\r\n]*(.*?)[ 　\r\n]*$/u', '$1', $_POST["name02"]);
+            $_POST["kana01"] = preg_replace('/^[ 　\r\n]*(.*?)[ 　\r\n]*$/u', '$1', $_POST["kana01"]);
+            $_POST["kana02"] = preg_replace('/^[ 　\r\n]*(.*?)[ 　\r\n]*$/u', '$1', $_POST["kana02"]);
+            $_POST["zip01"] = preg_replace('/^[ 　\r\n]*(.*?)[ 　\r\n]*$/u', '$1', $_POST["zip01"]);
+            $_POST["zip02"] = preg_replace('/^[ 　\r\n]*(.*?)[ 　\r\n]*$/u', '$1', $_POST["zip02"]);
+            $_POST["addr01"] = preg_replace('/^[ 　\r\n]*(.*?)[ 　\r\n]*$/u', '$1', $_POST["addr01"]);
+            $_POST["addr02"] = preg_replace('/^[ 　\r\n]*(.*?)[ 　\r\n]*$/u', '$1', $_POST["addr02"]);
+            $_POST["tel01"] = preg_replace('/^[ 　\r\n]*(.*?)[ 　\r\n]*$/u', '$1', $_POST["tel01"]);
+            $_POST["tel02"] = preg_replace('/^[ 　\r\n]*(.*?)[ 　\r\n]*$/u', '$1', $_POST["tel02"]);
+            $_POST["tel03"] = preg_replace('/^[ 　\r\n]*(.*?)[ 　\r\n]*$/u', '$1', $_POST["tel03"]);
+            $_POST["fax01"] = preg_replace('/^[ 　\r\n]*(.*?)[ 　\r\n]*$/u', '$1', $_POST["fax01"]);
+            $_POST["fax02"] = preg_replace('/^[ 　\r\n]*(.*?)[ 　\r\n]*$/u', '$1', $_POST["fax02"]);
+            $_POST["fax03"] = preg_replace('/^[ 　\r\n]*(.*?)[ 　\r\n]*$/u', '$1', $_POST["fax03"]);
+            $_POST["email"] = preg_replace('/^[ 　\r\n]*(.*?)[ 　\r\n]*$/u', '$1', $_POST["email"]);
+            $_POST["email02"] = preg_replace('/^[ 　\r\n]*(.*?)[ 　\r\n]*$/u', '$1', $_POST["email02"]);
+            $_POST["password"] = preg_replace('/^[ 　\r\n]*(.*?)[ 　\r\n]*$/u', '$1', $_POST["password"]);
+            $_POST["password02"] = preg_replace('/^[ 　\r\n]*(.*?)[ 　\r\n]*$/u', '$1', $_POST["password02"]);
+            $_POST["reminder_answer"] = preg_replace('/^[ 　\r\n]*(.*?)[ 　\r\n]*$/u', '$1', $_POST["reminder_answer"]);
+
             //-- POSTデータの引き継ぎ
             $this->arrForm = $_POST;
+
+            //SSL用
+            $this->arrForm['ssl_url'] = $ssl_url;
+
             $this->arrForm['email'] = strtolower($this->arrForm['email']);		// emailはすべて小文字で処理
             $this->arrForm['email02'] = strtolower($this->arrForm['email02']);	// emailはすべて小文字で処理
 
@@ -593,9 +621,6 @@ class LC_Page_Entry extends LC_Page {
         if ($isMobile) {
             // 携帯メールアドレス
             $arrRegist['email_mobile'] = $arrRegist['email'];
-			//PHONE_IDを取り出す
-			$phoneId = SC_MobileUserAgent::getId();
-        	$arrRegist['mobile_phone_id'] =  $phoneId;
         }
 
         //-- 仮登録実行
@@ -815,6 +840,7 @@ class LC_Page_Entry extends LC_Page {
     //---- 入力エラーチェック
     function lfErrorCheck2($array) {
         $objErr = new SC_CheckError($array);
+
         $objErr->doFunc(array("郵便番号1", "zip01", ZIP01_LEN ) ,array("EXIST_CHECK", "SPTAB_CHECK" ,"NUM_CHECK", "NUM_COUNT_CHECK"));
         $objErr->doFunc(array("郵便番号2", "zip02", ZIP02_LEN ) ,array("EXIST_CHECK", "SPTAB_CHECK" ,"NUM_CHECK", "NUM_COUNT_CHECK"));
         $objErr->doFunc(array("郵便番号", "zip01", "zip02"), array("ALL_EXIST_CHECK"));
