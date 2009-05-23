@@ -162,7 +162,7 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page {
             for($cnt = 1; $cnt <= DELIVTIME_MAX; $cnt++) {
                 $sqlval = array();
                 $keyname = "deliv_time".$cnt;
-                $arrval = array($deliv_id, ($cnt * $deliv_id));
+                $arrval = array($deliv_id, $cnt);
                 // 既存データの有無を確認
                 $curData = $objQuery->select("*", $table, $where, $arrval);
 
@@ -176,7 +176,7 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page {
                     // DBに情報がなければ登録
                     else {
                         $sqlval['deliv_id'] = $deliv_id;
-                        $sqlval['time_id'] = ($cnt * $deliv_id);
+                        $sqlval['time_id'] = $cnt;
                         $objQuery->insert($table, $sqlval);
                     }
                 }
@@ -220,7 +220,7 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page {
                 $keyname = "deliv_time$cnt";
                 if($arrRet[$keyname] != "") {
                     $sqlval['deliv_id'] = $deliv_id;
-                    $sqlval['time_id'] = ($cnt * $deliv_id);
+                    $sqlval['time_id'] = $cnt;
                     $sqlval['deliv_time'] = $arrRet[$keyname];
                     // INSERTの実行
                     $objQuery->insert("dtb_delivtime", $sqlval);

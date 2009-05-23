@@ -551,23 +551,11 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
 
         // 受注テーブルの更新
         $objQuery->update("dtb_order", $sqlval, $where, array($order_id), $addcol);
-
-        $sql = "";
-        $sql .= " UPDATE";
-        $sql .= "     dtb_order";
-        $sql .= " SET";
-        $sql .= "     payment_method = (SELECT payment_method FROM dtb_payment WHERE payment_id = ?)";
-        $sql .= "     ,deliv_time = (SELECT deliv_time FROM dtb_delivtime WHERE time_id = ? AND deliv_id = (SELECT deliv_id FROM dtb_payment WHERE payment_id = ? ))";
-        $sql .= " WHERE order_id = ?";
-
-        if ($arrRet['deliv_time_id'] == "") {
-            $deliv_time_id = 0;
-        }else{
-            $deliv_time_id = $arrRet['deliv_time_id'];
-        }
-        $arrUpdData = array($arrRet['payment_id'], $deliv_time_id, $arrRet['payment_id'], $order_id);
-        $objQuery->query($sql, $arrUpdData);
-
+        
+        // 受注テーブルの名称列を更新
+        $objDb = new SC_Helper_DB_Ex();
+        $objDb->sfUpdateOrderNameCol($order_id);
+        
         // 受注詳細データの更新
         $arrDetail = $this->objFormParam->getSwapArray(array("product_id", "product_code", "product_name", "price", "quantity", "point_rate", "classcategory_id1", "classcategory_id2", "classcategory_name1", "classcategory_name2"));
         $objQuery->delete("dtb_order_detail", $where, array($order_id));
@@ -659,22 +647,10 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         $objQuery->insert("dtb_order", $sqlval);
         $order_id = $objQuery->currval('dtb_order', 'order_id'); 
         
-        $sql = "";
-        $sql .= " UPDATE";
-        $sql .= "     dtb_order";
-        $sql .= " SET";
-        $sql .= "     payment_method = (SELECT payment_method FROM dtb_payment WHERE payment_id = ?)";
-        $sql .= "     ,deliv_time = (SELECT deliv_time FROM dtb_delivtime WHERE time_id = ? AND deliv_id = (SELECT deliv_id FROM dtb_payment WHERE payment_id = ? ))";
-        $sql .= " WHERE order_id = ?";
-
-        if ($arrRet['deliv_time_id'] == "") {
-            $deliv_time_id = 0;
-        }else{
-            $deliv_time_id = $arrRet['deliv_time_id'];
-        }
-        $arrUpdData = array($arrRet['payment_id'], $deliv_time_id, $arrRet['payment_id'], $order_id);
-        $objQuery->query($sql, $arrUpdData);
-
+        // 受注テーブルの名称列を更新
+        $objDb = new SC_Helper_DB_Ex();
+        $objDb->sfUpdateOrderNameCol($order_id);
+        
         // 受注詳細データの更新
         $arrDetail = $this->objFormParam->getSwapArray(array("product_id", "product_code", "product_name", "price", "quantity", "point_rate", "classcategory_id1", "classcategory_id2", "classcategory_name1", "classcategory_name2"));
         $objQuery->delete("dtb_order_detail", $where, array($order_id));

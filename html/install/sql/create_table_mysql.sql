@@ -160,8 +160,9 @@ CREATE TABLE dtb_deliv (
 
 CREATE TABLE dtb_delivtime (
     deliv_id int NOT NULL,
-    time_id int auto_increment primary key NOT NULL,
-    deliv_time text NOT NULL
+    time_id int NOT NULL,
+    deliv_time text NOT NULL,
+    PRIMARY KEY (deliv_id, time_id)
 ) TYPE=InnoDB ;
 
 CREATE TABLE dtb_delivfee (

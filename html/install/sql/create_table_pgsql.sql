@@ -164,9 +164,9 @@ CREATE TABLE dtb_deliv (
 
 CREATE TABLE dtb_delivtime (
     deliv_id int4 NOT NULL,
-    time_id serial NOT NULL,
+    time_id int4 NOT NULL,
     deliv_time text NOT NULL,
-    PRIMARY KEY (time_id)
+    PRIMARY KEY (deliv_id, time_id)
 );
 
 CREATE TABLE dtb_delivfee (

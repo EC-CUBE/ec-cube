@@ -309,8 +309,8 @@ INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 45);
 INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 46);
 INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 47);
 
-INSERT INTO dtb_delivtime (deliv_id, deliv_time) VALUES (1, '午前');
-INSERT INTO dtb_delivtime (deliv_id, deliv_time) VALUES (1, '午後');
+INSERT INTO dtb_delivtime (deliv_id, time_id, deliv_time) VALUES (1, 1, '午前');
+INSERT INTO dtb_delivtime (deliv_id, time_id, deliv_time) VALUES (1, 2, '午後');
 
 INSERT INTO dtb_payment (payment_method,charge,rule,deliv_id,rank,note,fix,status,del_flg,creator_id,create_date,update_date,payment_image,upper_rule) VALUES ('郵便振替', 0, NULL, 1, 4, NULL, 2, 1, 0, 1, now(), now(), NULL, NULL);
 INSERT INTO dtb_payment (payment_method,charge,rule,deliv_id,rank,note,fix,status,del_flg,creator_id,create_date,update_date,payment_image,upper_rule) VALUES ('現金書留', 0, NULL, 1, 3, NULL, 2, 1, 0, 1, now(), now(), NULL, NULL);

@@ -424,6 +424,9 @@ class SC_Helper_DB {
             } else {
                 $objQuery->update("dtb_order_temp", $sqlval, $where, array($uniqid));
             }
+            
+            // 受注_Tempテーブルの名称列を更新
+            $this->sfUpdateOrderNameCol($uniqid, true);
         }
     }
 
@@ -1711,5 +1714,33 @@ __EOS__;
         $arrData['deliv_fee'] += $this->sfGetDelivFee($arrRet);
     }
 
+    /**
+     * 受注の名称列を更新する
+     *
+     * @param integer $order_id 更新対象の注文番号
+     * @param boolean $temp_table 更新対象は「受注_Temp」か
+     */
+    function sfUpdateOrderNameCol($order_id, $temp_table = false) {
+        $objQuery = new SC_Query();
+        
+        if ($temp_table) {
+            $table = 'dtb_order_temp';
+            $sql_where = 'WHERE order_temp_id = ?';
+        } else {
+            $table = 'dtb_order';
+            $sql_where = 'WHERE order_id = ?';
+        }
+        
+        $sql = <<< __EOS__
+            UPDATE
+                $table tgt
+            SET
+                 payment_method = (SELECT payment_method FROM dtb_payment WHERE payment_id = tgt.payment_id)
+                ,deliv_time = (SELECT deliv_time FROM dtb_delivtime WHERE time_id = tgt.deliv_time_id AND deliv_id = tgt.deliv_id)
+            $sql_where
+__EOS__;
+        
+        $objQuery->query($sql, array($order_id));
+    }
 }
 ?>

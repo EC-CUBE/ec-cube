@@ -419,39 +419,21 @@ class LC_Page_Shopping_Payment extends LC_Page {
     function lfGetPaymentInfo($payment_id) {
         $objQuery = new SC_Query();
         $where = "payment_id = ?";
-        $arrRet = $objQuery->select("payment_method, charge", "dtb_payment", $where, array($payment_id));
-        return (array($arrRet[0]['payment_method'], $arrRet[0]['charge']));
-    }
-
-    /* 配送時間文字列の取得 */
-    function lfGetDelivTimeInfo($time_id) {
-        $objQuery = new SC_Query();
-        $where = "time_id = ?";
-        $arrRet = $objQuery->select("deliv_id, deliv_time", "dtb_delivtime", $where, array($time_id));
-        return (array($arrRet[0]['deliv_id'], $arrRet[0]['deliv_time']));
+        $arrRet = $objQuery->select("charge, deliv_id", "dtb_payment", $where, array($payment_id));
+        return (array($arrRet[0]['charge'], $arrRet[0]['deliv_id']));
     }
 
     /* DBへデータの登録 */
     function lfRegistData($uniqid) {
-        $arrRet = $this->objFormParam->getHashArray();
+        $objDb = new SC_Helper_DB_Ex();
+        
         $sqlval = $this->objFormParam->getDbArray();
         // 登録データの作成
         $sqlval['order_temp_id'] = $uniqid;
         $sqlval['update_date'] = 'Now()';
 
-        if($sqlval['payment_id'] != "") {
-            list($sqlval['payment_method'], $sqlval['charge']) = $this->lfGetPaymentInfo($sqlval['payment_id']);
-        } else {
-            $sqlval['payment_id'] = '0';
-            $sqlval['payment_method'] = "";
-        }
-
-        if($sqlval['deliv_time_id'] != "") {
-            list($sqlval['deliv_id'], $sqlval['deliv_time']) = $this->lfGetDelivTimeInfo($sqlval['deliv_time_id']);
-        } else {
-            $sqlval['deliv_time_id'] = '0';
-            $sqlval['deliv_id'] = '0';
-            $sqlval['deliv_time'] = "";
+        if (strlen($sqlval['payment_id']) >= 1) {
+            list($sqlval['charge'], $sqlval['deliv_id']) = $this->lfGetPaymentInfo($sqlval['payment_id']);
         }
 
         // 使用ポイントの設定
@@ -459,7 +441,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
             $sqlval['use_point'] = 0;
         }
 
-        $objDb = new SC_Helper_DB_Ex();
+        // 受注_Tempテーブルに登録
         $objDb->sfRegistTempOrder($uniqid, $sqlval);
     }
 
