@@ -207,6 +207,10 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
             $this->objFormParam->setParam($arrData);
             // 入力値の変換
             $this->objFormParam->convParam();
+            $this->arrErr = $this->lfCheckError();
+            if(count($this->arrErr) == 0) {
+                $this->arrErr = $this->lfCheek($arrInfo, $_POST['mode']);
+            }
             break;
         /* 商品追加ポップアップより商品選択後、商品情報取得*/
         case 'select_product_detail':
@@ -229,6 +233,10 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
             $this->objFormParam->setParam($arrData);
             // 入力値の変換
             $this->objFormParam->convParam();
+            $this->arrErr = $this->lfCheckError();
+            if(count($this->arrErr) == 0) {
+                $this->arrErr = $this->lfCheek($arrInfo, $_POST['mode']);
+            }
             break;
         /* 顧客検索ポップアップより顧客指定後、顧客情報取得*/
         case 'search_customer':
