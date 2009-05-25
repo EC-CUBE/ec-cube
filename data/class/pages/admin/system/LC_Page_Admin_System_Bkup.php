@@ -662,10 +662,11 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
 
         if(!in_array("dtb_bkup", $arrTableList)){
             // 存在していなければ作成
+            // MySQL でプライマリキーを設定するため bkup_name は varchar(50) とした。
             $cre_sql = "
             create table dtb_bkup
             (
-                bkup_name   text,
+                bkup_name   varchar(50),
                 bkup_memo   text,
                 create_date timestamp,
                 PRIMARY KEY (bkup_name)
