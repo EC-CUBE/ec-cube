@@ -23,13 +23,7 @@
 *}-->
 <form name="form1" id="form1" method="post" action="?" >
 <input type="hidden" name="mode" value="complete" />
-<input type="hidden" name="review_id" value="<!--{$tpl_review_id}-->" />
-<input type="hidden" name="pre_status" value="<!--{$tpl_pre_status}-->" />
-<!--{foreach key=key item=item from=$arrReview}-->
-<!--{if $key ne "mode"}-->
-<input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->" />
-<!--{/if}-->
-<!--{/foreach}-->
+<input type="hidden" name="review_id" value="<!--{$arrReview.review_id|escape}-->" />
 <!--{foreach key=key item=item from=$arrSearchHidden}-->
 <input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->" />
 <!--{/foreach}-->
