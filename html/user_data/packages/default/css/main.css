@@ -270,6 +270,11 @@ div#cartarea .btn {
     text-align: center;
 }
 
+div#cartarea .price {
+    color: #FF0000;
+    font-weight: bold;
+}
+
 
 /* カテゴリー
 ----------------------------------------------- */
