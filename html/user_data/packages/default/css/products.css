@@ -286,6 +286,10 @@ div#customervoicearea li {
     background: url("../img/common/line_580.gif") no-repeat bottom;
 }
 
+.recommend_level {
+    color: #FF0000;
+}
+
 /* トラックバック
 ----------------------------------------------- */
 div#trackbackarea {

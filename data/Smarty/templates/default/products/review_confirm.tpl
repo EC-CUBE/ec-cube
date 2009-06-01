@@ -50,7 +50,7 @@
           </tr>
           <tr>
             <th>おすすめレベル<span class="attention">※</span></th>
-            <td><span class="attention"><!--{$arrRECOMMEND[$arrForm.recommend_level]}--></span></td>
+            <td><span class="recommend_level"><!--{$arrRECOMMEND[$arrForm.recommend_level]}--></span></td>
           </tr>
           <tr>
             <th>タイトル<span class="attention">※</span></th>
