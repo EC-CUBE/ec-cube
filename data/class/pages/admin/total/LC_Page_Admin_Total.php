@@ -637,7 +637,7 @@ class LC_Page_Admin_Total extends LC_Page {
         list($where, $arrval) = $this->lfGetWhereMember('create_date', $sdate, $edate, $type);
 
         // 会員集計の取得
-        $col = "COUNT(*) AS order_count, SUM(total) AS total, trunc(AVG(total)) AS total_average, order_sex";
+        $col = "COUNT(*) AS order_count, SUM(total) AS total, trunc(AVG(total),0) AS total_average, order_sex";
         $from = "dtb_order";
         $objQuery = new SC_Query();
         $objQuery->setGroupBy("order_sex");
@@ -682,7 +682,7 @@ class LC_Page_Admin_Total extends LC_Page {
         $sql.= "COUNT(*) AS order_count, ";
         $sql.= "SUM(quantity) AS products_count, ";
         $sql.= "(price * sum(quantity)) AS total ";
-        $sql.= "FROM dtb_order_detail WHERE order_id IN (SELECT order_id FROM dtb_order WHERE $where ) ";
+        $sql.= "FROM dtb_order_detail AS T2 WHERE EXISTS (SELECT 1 FROM dtb_order AS T3 WHERE T2.order_id = T3.order_id AND $where ) ";
         $sql.= "GROUP BY product_id, product_name, product_code, price ";
         $sql.= ") AS T1 ";
         $sql.= "ORDER BY T1.total DESC ";
@@ -705,7 +705,7 @@ class LC_Page_Admin_Total extends LC_Page {
     function lfGetOrderJob($type, $sdate, $edate, &$objPage, $graph = true) {
         list($where, $arrval) = $this->lfGetWhereMember('T2.create_date', $sdate, $edate, $type);
 
-        $sql = "SELECT job, count(*) AS order_count, SUM(total) AS total, trunc(AVG(total)) AS total_average ";
+        $sql = "SELECT job, count(*) AS order_count, SUM(total) AS total, trunc(AVG(total),0) AS total_average ";
         $sql.= "FROM dtb_customer AS T1 LEFT JOIN dtb_order AS T2 USING ( customer_id ) WHERE $where AND T2.del_flg = 0 and T2.status <> " . ORDER_CANCEL;
         $sql.= " GROUP BY job ORDER BY total DESC";
 
