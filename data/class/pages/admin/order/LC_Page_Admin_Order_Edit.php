@@ -31,7 +31,7 @@ if (file_exists(MODULE_PATH . 'mdl_gmopg/inc/include.php') === TRUE) {
 
 /* ペイジェント決済モジュール連携用 */
 if (file_exists(MODULE_PATH . 'mdl_paygent/include.php') === TRUE) {
-  require_once(MODULE_PATH . 'mdl_paygent/include.php');
+    require_once(MODULE_PATH . 'mdl_paygent/include.php');
 }
 
 /* F-REGI決済モジュール連携用 */
@@ -183,6 +183,41 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         case 'paygent_order':
             $this->paygent_return = sfPaygentOrder($_POST['paygent_type'], $order_id);
             break;
+        /* 商品削除*/
+        case 'delete_product':
+            $delete_no = $_POST['delete_no'];
+            foreach ($_POST AS $key=>$val) {
+                if (is_array($val)) {
+                    foreach ($val AS $k=>$v) {
+                        if ($k != $delete_no) {
+                            $arrData[$key][] = $v;
+                        }
+                    }
+                } else {
+                    $arrData[$key] = $val;
+                }
+            }
+            $this->lfReCheek($arrData, $arrInfo);
+            break;
+        /* 商品追加ポップアップより商品選択後、商品情報取得*/
+        case 'select_product_detail':
+            // POST情報で上書き
+            $this->objFormParam->setParam($_POST);
+            if (!empty($_POST['add_product_id'])) {
+                $this->lfInsertProduct($_POST['add_product_id'], $_POST['add_classcategory_id1'], $_POST['add_classcategory_id2']);
+            } elseif (!empty($_POST['edit_product_id'])) {
+                $this->lfUpdateProduct($_POST['edit_product_id'], $_POST['edit_classcategory_id1'], $_POST['edit_classcategory_id2'], $_POST['no']);
+            }
+            $arrData = $_POST;
+            foreach ($this->arrForm AS $key=>$val) {
+                if (is_array($val)) {
+                    $arrData[$key] = $this->arrForm[$key]['value'];
+                } else {
+                    $arrData[$key] = $val;
+                }
+            }
+            $this->lfReCheek($arrData, $arrInfo);
+            break;
         /* F-REGI決済モジュール連携用 */
         case 'fregi_status':
             $objFregiConfig = new LC_Page_Mdl_Fregi_Config();
@@ -217,43 +252,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
             $objGMOOrderEdit = new LC_MDL_GMOPG_OrderEdit;
             $this->gmopg_order_edit_result = $objGMOOrderEdit->proccess();
             $this->lfGetOrderData($order_id);
-            break;
-        // 商品削除
-        case 'delete_product':
-            $delete_no = $_POST['delete_no'];
-            foreach ($_POST AS $key=>$val) {
-                if (is_array($val)) {
-                    foreach ($val AS $k=>$v) {
-                        if ($k != $delete_no) {
-                            $arrData[$key][] = $v;
-                        }
-                    }
-                } else {
-                    $arrData[$key] = $val;
-                }
-            }
-            $this->lfReCheek($arrData, $arrInfo);
-            break;
-        // 商品追加ポップアップより商品選択後、商品情報取得
-        case 'select_product_detail':
-            // POST情報で上書き
-            $this->objFormParam->setParam($_POST);
-            if (!empty($_POST['add_product_id'])) {
-                $this->lfInsertProduct($_POST['add_product_id'], $_POST['add_classcategory_id1'], $_POST['add_classcategory_id2']);
-
-            } elseif (!empty($_POST['edit_product_id'])) {
-                $this->lfUpdateProduct($_POST['edit_product_id'], $_POST['edit_classcategory_id1'], $_POST['edit_classcategory_id2'], $_POST['no']);
-            }
-
-            $arrData = $_POST;
-            foreach ($this->arrForm AS $key=>$val) {
-                if (is_array($val)) {
-                    $arrData[$key] = $this->arrForm[$key]['value'];
-                } else {
-                    $arrData[$key] = $val;
-                }
-            }
-            $this->lfReCheek($arrData, $arrInfo);
             break;
         default:
             break;
@@ -300,7 +298,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         }
     }
 
-
     /**
      * デストラクタ.
      *
@@ -312,7 +309,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
 
     /* パラメータ情報の初期化 */
     function lfInitParam() {
-        
+
         // お客様情報
         $this->objFormParam->addParam("顧客名1", "order_name01", STEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("顧客名2", "order_name02", STEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
@@ -341,6 +338,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         $this->objFormParam->addParam("電話番号1", "deliv_tel01", TEL_ITEM_LEN, "n", array("MAX_LENGTH_CHECK" ,"NUM_CHECK"));
         $this->objFormParam->addParam("電話番号2", "deliv_tel02", TEL_ITEM_LEN, "n", array("MAX_LENGTH_CHECK" ,"NUM_CHECK"));
         $this->objFormParam->addParam("電話番号3", "deliv_tel03", TEL_ITEM_LEN, "n", array("MAX_LENGTH_CHECK" ,"NUM_CHECK"));
+
 
         // 受注商品情報
         $this->objFormParam->addParam("値引き", "discount", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"), '0');
@@ -490,7 +488,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         #}
         $this->arrErr = $this->lfCheckError();
     }
-
     /* DB登録処理 */
     function lfRegistData($order_id) {
         $objQuery = new SC_Query();
@@ -604,7 +601,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         if($sqlval["customer_id"] == ""){
             $sqlval['customer_id'] = '0';
         }
-        
+
         unset($sqlval['order_id']); 
         unset($sqlval['total_point']);
         unset($sqlval['point']);
@@ -646,11 +643,11 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         // 受注テーブルの登録
         $objQuery->insert("dtb_order", $sqlval);
         $order_id = $objQuery->currval('dtb_order', 'order_id'); 
-        
+
         // 受注テーブルの名称列を更新
         $objDb = new SC_Helper_DB_Ex();
         $objDb->sfUpdateOrderNameCol($order_id);
-        
+
         // 受注詳細データの更新
         $arrDetail = $this->objFormParam->getSwapArray(array("product_id", "product_code", "product_name", "price", "quantity", "point_rate", "classcategory_id1", "classcategory_id2", "classcategory_name1", "classcategory_name2"));
         $objQuery->delete("dtb_order_detail", $where, array($order_id));
@@ -673,7 +670,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         }
         $objQuery->commit();
     }
-
 
     function lfInsertProduct($product_id, $classcategory_id1, $classcategory_id2) {
         $arrProduct = $this->lfGetProductsClass($product_id, $classcategory_id1, $classcategory_id2);
