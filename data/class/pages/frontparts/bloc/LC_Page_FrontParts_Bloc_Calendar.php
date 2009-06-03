@@ -129,7 +129,6 @@ class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc {
                 $arrCalendar[$j][$i]['year'] = $year;
                 $arrCalendar[$j][$i]['month'] = $month;
                 $arrCalendar[$j][$i]['day'] = $Day->day;
-                #if ($this->lfCheckHoliday($month, $Day->day) || $Day->first || $Day->last) {
                 if ($this->lfCheckHoliday($year, $month, $Day->day)) {
                     $arrCalendar[$j][$i]['holiday'] = true;
                 } else {
@@ -161,7 +160,6 @@ class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc {
         $arrRegularHoliday = explode('|', $objSIteInfo->data['regular_holiday_ids']);
         return $arrRegularHoliday;
     }
-
 
     // 休日チェック
     function lfCheckHoliday($year, $month, $day) {

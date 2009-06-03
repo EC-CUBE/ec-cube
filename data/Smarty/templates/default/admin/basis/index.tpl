@@ -74,7 +74,7 @@
       <td>
         <p>
           <span class="attention"><!--{$arrErr.pref}--></span>
-          <select name="pref" style="<!--{if $arrErr.pref != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" >              
+          <select name="pref" style="<!--{if $arrErr.pref != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" >
             <option value="" selected="selected">都道府県を選択</option>
             <!--{html_options options=$arrPref selected=$arrForm.pref}-->
           </select>
@@ -95,8 +95,8 @@
       <th>TEL</th>
       <td>
         <span class="attention"><!--{$arrErr.tel01}--></span>
-        <input type="text" name="tel01" value="<!--{$arrForm.tel01}-->" maxlength="6" size="6" class="box6" style="<!--{if $arrErr.tel01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" /> - 
-        <input type="text" name="tel02" value="<!--{$arrForm.tel02}-->" maxlength="6" size="6" class="box6" style="<!--{if $arrErr.tel01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" /> - 
+        <input type="text" name="tel01" value="<!--{$arrForm.tel01}-->" maxlength="6" size="6" class="box6" style="<!--{if $arrErr.tel01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" /> -
+        <input type="text" name="tel02" value="<!--{$arrForm.tel02}-->" maxlength="6" size="6" class="box6" style="<!--{if $arrErr.tel01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" /> -
         <input type="text" name="tel03" value="<!--{$arrForm.tel03}-->" maxlength="6" size="6" class="box6" style="<!--{if $arrErr.tel01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" />
       </td>
     </tr>
@@ -104,8 +104,8 @@
       <th>FAX</th>
       <td>
         <span class="attention"><!--{$arrErr.fax01}--></span>
-        <input type="text" name="fax01" value="<!--{$arrForm.fax01}-->" maxlength="6" size="6" class="box6" style="<!--{if $arrErr.fax01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" /> - 
-        <input type="text" name="fax02" value="<!--{$arrForm.fax02}-->" maxlength="6" size="6" class="box6" style="<!--{if $arrErr.fax02 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" /> - 
+        <input type="text" name="fax01" value="<!--{$arrForm.fax01}-->" maxlength="6" size="6" class="box6" style="<!--{if $arrErr.fax01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" /> -
+        <input type="text" name="fax02" value="<!--{$arrForm.fax02}-->" maxlength="6" size="6" class="box6" style="<!--{if $arrErr.fax02 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" /> -
         <input type="text" name="fax03" value="<!--{$arrForm.fax03}-->" maxlength="6" size="6" class="box6" style="<!--{if $arrErr.fax03 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" />
       </td>
     </tr>
