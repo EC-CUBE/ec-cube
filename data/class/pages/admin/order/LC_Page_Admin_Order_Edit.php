@@ -87,7 +87,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
 
         /* ペイジェント決済モジュール連携用 */
         if(function_exists("sfPaygentOrderPage")) {
-            $this->arrFormKind = sfPaygentOrderPage();
+            $this->arrDispKind = sfPaygentOrderPage();
         }
 
         /* F-REGI決済モジュール連携用 */
@@ -440,6 +440,8 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
             }else{
                 $this->arrForm["payment_type"] = "お支払い";
             }
+            //受注データを表示用配列に代入（各EC-CUBEバージョンと決済モジュールとのデータ連携保全のため）
+            $this->arrDisp = $this->arrForm;
         }
     }
 
