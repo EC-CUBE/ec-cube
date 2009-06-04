@@ -23,29 +23,31 @@
 <div id="under02column">
   <div id="under02column_cart">
     <h2 class="title"><!--{$tpl_title|escape}--></h2>
-    <p class="totalmoneyarea">
-      <!--★ポイント案内★-->
-      <!--{if $smarty.const.USE_POINT !== false}-->
-        <!--{if $tpl_login}-->
-          <!--{$tpl_name|escape}--> 様の、現在の所持ポイントは「<em><!--{$tpl_user_point|number_format|default:0}--> pt</em>」です。<br />
-        <!--{else}-->
-          ポイント制度をご利用になられる場合は、会員登録後ログインしていだだきますようお願い致します。<br />
-        <!--{/if}-->
-        ポイントは商品購入時に1pt＝<!--{$smarty.const.POINT_VALUE}-->円として使用することができます。<br />
-      <!--{/if}-->
-      
-      <!--{* カゴの中に商品がある場合にのみ表示 *}-->
-      <!--{if count($arrProductsClass) > 0 }-->
-        お買い上げ商品の合計金額は「<em><!--{$tpl_total_pretax|number_format}-->円</em>」です。
-        <!--{if $arrInfo.free_rule > 0}-->
-          <!--{if $arrData.deliv_fee|number_format > 0}-->
-            あと「<em><!--{$tpl_deliv_free|number_format}-->円</em>」で送料無料です！！
+    <!--{if $smarty.const.USE_POINT !== false || count($arrProductsClass) > 0}-->
+      <p class="totalmoneyarea">
+        <!--★ポイント案内★-->
+        <!--{if $smarty.const.USE_POINT !== false}-->
+          <!--{if $tpl_login}-->
+            <!--{$tpl_name|escape}--> 様の、現在の所持ポイントは「<em><!--{$tpl_user_point|number_format|default:0}--> pt</em>」です。<br />
           <!--{else}-->
-            現在、「<em>送料無料</em>」です！！
+            ポイント制度をご利用になられる場合は、会員登録後ログインしていだだきますようお願い致します。<br />
+          <!--{/if}-->
+          ポイントは商品購入時に1pt＝<!--{$smarty.const.POINT_VALUE}-->円として使用することができます。<br />
+        <!--{/if}-->
+        
+        <!--{* カゴの中に商品がある場合にのみ表示 *}-->
+        <!--{if count($arrProductsClass) > 0 }-->
+          お買い上げ商品の合計金額は「<em><!--{$tpl_total_pretax|number_format}-->円</em>」です。
+          <!--{if $arrInfo.free_rule > 0}-->
+            <!--{if $arrData.deliv_fee|number_format > 0}-->
+              あと「<em><!--{$tpl_deliv_free|number_format}-->円</em>」で送料無料です！！
+            <!--{else}-->
+              現在、「<em>送料無料</em>」です！！
+            <!--{/if}-->
           <!--{/if}-->
         <!--{/if}-->
-      <!--{/if}-->
-    </p>
+      </p>
+    <!--{/if}-->
 
    <!--{if strlen($tpl_error) != 0}-->
     <p class="attention"><!--{$tpl_error|escape}--></p>
