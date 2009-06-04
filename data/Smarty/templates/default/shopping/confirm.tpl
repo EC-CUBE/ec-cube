@@ -122,7 +122,7 @@ function fnCheckSubmit() {
         <!--{if $arrData.birth_point > 0}-->
         <tr>
           <th>お誕生月ポイント</th>
-          <th>+<!--{$arrData.birth_point|number_format|default:0}-->Pt</td>
+          <td>+<!--{$arrData.birth_point|number_format|default:0}-->Pt</td>
         </tr>
         <!--{/if}-->
         <tr>
