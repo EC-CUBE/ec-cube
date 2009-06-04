@@ -256,7 +256,7 @@ function lnSetSelect(form, name1, name2, val) {
                             <a href="?" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&amp;image=<!--{$lkey}--><!--{if $smarty.get.admin == 'on'}-->&amp;admin=on<!--{/if}-->','detail_image','<!--{$arrFile[$lkey].width+60}-->','<!--{$arrFile[$lkey].height+80}-->'); return false;" target="_blank">
                         <!--{/if}-->
                         <!--サブ画像-->
-                            <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrProduct.name|escape}-->" width="<!--{$smarty.const.NORMAL_SUBIMAGE_WIDTH}-->" height="<!--{$smarty.const.NORMAL_SUBIMAGE_WIDTH}-->" />
+                            <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrProduct.name|escape}-->" width="<!--{$smarty.const.NORMAL_SUBIMAGE_WIDTH}-->" height="<!--{$smarty.const.NORMAL_SUBIMAGE_HEIGHT}-->" />
                         <!--{if $arrFile[$lkey].filepath != ""}-->
                             </a>
                             <p>
