@@ -22,7 +22,7 @@
  */
 
 /*----------------------------------------------------------------------
- * [名称] GC_Fpdf
+ * [名称] SC_Fpdf
  * [概要] pdfファイルを表示する。
  *----------------------------------------------------------------------
  */
@@ -31,7 +31,6 @@ require(DATA_PATH . 'pdf/japanese.php');
 define('PDF_TEMPLATE_DIR', DATA_PATH . 'pdf/');
 
 class SC_Fpdf {
-      
     function SC_Fpdf($download, $title, $tpl_pdf = "template_nouhin01.pdf") {
         // デフォルトの設定
         $this->tpl_pdf = PDF_TEMPLATE_DIR . $tpl_pdf;  // テンプレートファイル
@@ -66,7 +65,6 @@ class SC_Fpdf {
 
         // PDFを読み込んでページ数を取得
         $pageno = $this->pdf->setSourceFile($this->tpl_pdf);
-        #$this->createPdf();
     }
 
     function setData($arrData) {
@@ -97,6 +95,7 @@ class SC_Fpdf {
 
     function setShopData() {
         // ショップ情報
+
         $objInfo = new SC_SiteInfo();
         $arrInfo = $objInfo->data;
 
@@ -108,6 +107,7 @@ class SC_Fpdf {
         $text = $this->arrPref[$arrInfo['law_pref']].$arrInfo['law_addr01'];
         $this->lfText(125, 74, $text, 8);  //都道府県+住所1
         $this->lfText(125, 77, $arrInfo['law_addr02'], 8);          //住所2
+
         $text = "TEL: ".$arrInfo['law_tel01']."-".$arrInfo['law_tel02']."-".$arrInfo['law_tel03'];
 		//FAX番号が存在する場合、表示する
         if (strlen($arrInfo['law_fax01']) > 0) {
@@ -115,7 +115,7 @@ class SC_Fpdf {
         }
         $this->lfText(125, 80, $text, 8);  //TEL・FAX
 
-        if (!empty($arrInfo['law_email'])) {
+        if ( strlen($arrInfo['law_email']) > 0 ) {
             $text = "Email: ".$arrInfo['law_email'];
             $this->lfText(125, 83, $text, 8);      //Email
         }
@@ -138,7 +138,6 @@ class SC_Fpdf {
         // ショップ情報
         $objInfo = new SC_SiteInfo();
         $arrInfo = $objInfo->data;
-
         // DBから受注情報を読み込む
         $this->lfGetOrderData($this->arrData['order_id']);
 
@@ -231,7 +230,7 @@ class SC_Fpdf {
         $arrOrder[$i][0] = "";
         $arrOrder[$i][1] = "";
         $arrOrder[$i][2] = $this->sjis_conv("値引き");
-        $arrOrder[$i][3] = "- ".number_format($this->arrDisp['use_point'] + $this->arrDisp['discount']).$monetary_unit;
+        $arrOrder[$i][3] = "- ".number_format(($this->arrDisp['use_point'] * POINT_VALUE) + $this->arrDisp['discount']).$monetary_unit;
 
         $i++;
         $arrOrder[$i][0] = "";

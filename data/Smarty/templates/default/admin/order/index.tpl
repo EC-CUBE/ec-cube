@@ -21,6 +21,57 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
+<script type="text/javascript">
+<!--
+    function fnSelectCheckSubmit(){ 
+
+        var fm = document.form1;
+        
+        if (!fm["pdf_order_id[]"]) {
+            return false;
+        }
+        
+        var checkflag = false;
+        var max = fm["pdf_order_id[]"].length;
+        
+        if (max) {
+            for (var i=0; i<max; i++) {
+                if(fm["pdf_order_id[]"][i].checked == true){
+                    checkflag = true;
+                }
+            }
+        } else {
+            if(fm["pdf_order_id[]"].checked == true) {
+                checkflag = true;
+            }
+        }
+
+        if(!checkflag){
+            alert('チェックボックスが選択されていません');
+            return false;
+        }
+        
+        window.open("about:blank", "pdf", "width=1000,height=800,scrollbars=yes,resizable=yes,toolbar=no,location=no,directories=no,status=no");
+        fm.target = "pdf";
+        fm.mode.value = 'pdf';
+        fm.action = 'pdf.php';
+        fm.submit(); 
+    }
+    
+    function fnBoxChecked(check){
+        var fm = document.form1;
+        var max = fm["pdf_order_id[]"].length;
+        if (max) {
+            for (var i=0; i<max; i++) {
+                fm["pdf_order_id[]"][i].checked = check;
+            }
+        } else {
+            fm["pdf_order_id[]"].checked = check;
+        }
+    }
+    
+//-->
+</script>
 <div id="order" class="contents-main">
 <form name="search_form" id="search_form" method="post" action="?">
 <input type="hidden" name="mode" value="search" />
@@ -307,55 +358,3 @@
 </form>
 <!--{/if}-->
 </div>
-
-<script type="text/javascript">
-<!--
-    function fnSelectCheckSubmit(){ 
-
-        var fm = document.form1;
-        
-        if (!fm["pdf_order_id[]"]) {
-            return false;
-        }
-        
-        var checkflag = false;
-        var max = fm["pdf_order_id[]"].length;
-        
-        if (max) {
-            for (var i=0; i<max; i++) {
-                if(fm["pdf_order_id[]"][i].checked == true){
-                    checkflag = true;
-                }
-            }
-        } else {
-            if(fm["pdf_order_id[]"].checked == true) {
-                checkflag = true;
-            }
-        }
-
-        if(!checkflag){
-            alert('チェックボックスが選択されていません');
-            return false;
-        }
-        
-        window.open("about:blank", "pdf", "width=1000,height=800,scrollbars=yes,resizable=yes,toolbar=no,location=no,directories=no,status=no");
-        fm.target = "pdf";
-        fm.mode.value = 'pdf';
-        fm.action = 'pdf.php';
-        fm.submit(); 
-    }
-    
-    function fnBoxChecked(check){
-        var fm = document.form1;
-        var max = fm["pdf_order_id[]"].length;
-        if (max) {
-            for (var i=0; i<max; i++) {
-                fm["pdf_order_id[]"][i].checked = check;
-            }
-        } else {
-            fm["pdf_order_id[]"].checked = check;
-        }
-    }
-    
-//-->
-</script>
