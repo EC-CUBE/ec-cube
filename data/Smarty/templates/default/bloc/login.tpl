@@ -31,9 +31,9 @@
       <div id="login">
         <!--{if $tpl_login}-->
         <p>ようこそ<br />
-          <!--{$tpl_name1|escape}--> <!--{$tpl_name2|escape}--> 様
+          <!--{$tpl_name1|escape}--> <!--{$tpl_name2|escape}--> 様<br />
           <!--{if $smarty.const.USE_POINT !== false}-->
-            <br />所持ポイント：<span class="price"> <!--{$tpl_user_point|number_format|default:0}--> pt</span>
+            所持ポイント：<span class="price"> <!--{$tpl_user_point|number_format|default:0}--> pt</span>
           <!--{/if}-->
         </p>
           <!--{if !$tpl_disable_logout}-->
