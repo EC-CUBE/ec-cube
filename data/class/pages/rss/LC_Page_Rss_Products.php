@@ -59,7 +59,7 @@ class LC_Page_Rss_Products extends LC_Page {
         $objSiteInfo = new SC_SiteInfo();
 
         //店舗情報をセット
-        $arrSiteInfo = $objSiteInfo->data;
+        $this->arrSiteInfo = $objSiteInfo->data;
 
         //商品IDを取得
         $product_id = $_GET['product_id'];
@@ -72,7 +72,7 @@ class LC_Page_Rss_Products extends LC_Page {
             // 値のセットし直し
             foreach($arrProduct as $key => $val){
                 //販売価格を税込みに編集
-                $arrProduct[$key]["price02"] = SC_Utils_Ex::sfPreTax($arrProduct[$key]["price02"], $arrSiteInfo["tax"], $arrSiteInfo["tax_rule"]);
+                $arrProduct[$key]["price02"] = SC_Helper_DB_Ex::sfPreTax($arrProduct[$key]["price02"]);
 
                 // 画像ファイルのURLセット
                 (file_exists(IMAGE_SAVE_DIR . $arrProduct[$key]["main_list_image"])) ? $dir = IMAGE_SAVE_URL_RSS : $dir = IMAGE_TEMP_URL_RSS;
@@ -97,8 +97,8 @@ class LC_Page_Rss_Products extends LC_Page {
             // 値のセットし直し
             foreach($arrProduct as $key => $val){
                 //販売価格を税込みに編集
-                $arrProduct[$key]["price02_max"] = SC_Utils_Ex::sfPreTax($arrProduct[$key]["price02_max"], $arrSiteInfo["tax"], $arrSiteInfo["tax_rule"]);
-                $arrProduct[$key]["price02_min"] = SC_Utils_Ex::sfPreTax($arrProduct[$key]["price02_min"], $arrSiteInfo["tax"], $arrSiteInfo["tax_rule"]);
+                $arrProduct[$key]["price02_max"] = SC_Helper_DB_Ex::sfPreTax($arrProduct[$key]["price02_max"]);
+                $arrProduct[$key]["price02_min"] = SC_Helper_DB_Ex::sfPreTax($arrProduct[$key]["price02_min"]);
 
                 // 画像ファイルのURLセット
                 (file_exists(IMAGE_SAVE_DIR . $arrProduct[$key]["main_list_image"])) ? $dir = IMAGE_SAVE_URL_RSS : $dir = IMAGE_TEMP_URL_RSS;
@@ -119,9 +119,6 @@ class LC_Page_Rss_Products extends LC_Page {
         if(is_array(SC_Utils_Ex::sfswaparray($arrProduct))){
             $this->arrProductKeys = array_keys(SC_Utils_Ex::sfswaparray($arrProduct));
         }
-
-        //店舗情報をセット
-        $this->arrSiteInfo = $arrSiteInfo;
 
         //セットしたデータをテンプレートファイルに出力
         $objView->assignobj($this);

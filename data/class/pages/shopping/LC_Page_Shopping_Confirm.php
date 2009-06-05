@@ -70,7 +70,6 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         $objSiteSess = new SC_SiteSession();
         $objCampaignSess = new SC_CampaignSession();
         $objCustomer = new SC_Customer();
-        $arrInfo = $objSiteInfo->data;
         $objQuery = new SC_Query();
         $objDb = new SC_Helper_DB_Ex();
 
@@ -82,11 +81,11 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         $this->tpl_uniqid = $uniqid;
 
         // カート集計処理
-        $objDb->sfTotalCart($this, $objCartSess, $arrInfo);
+        $objDb->sfTotalCart($this, $objCartSess);
         // 一時受注テーブルの読込
         $arrData = $objDb->sfGetOrderTemp($uniqid);
         // カート集計を元に最終計算
-        $arrData = $objDb->sfTotalConfirm($arrData, $this, $objCartSess, $arrInfo, $objCustomer, $objCampaignSess);
+        $arrData = $objDb->sfTotalConfirm($arrData, $this, $objCartSess, $objCustomer);
         // キャンペーンからの遷移で送料が無料だった場合の処理
         if($objCampaignSess->getIsCampaign()) {
             $deliv_free_flg = $objQuery->get("dtb_campaign", "deliv_free_flg", "campaign_id = ?", array($objCampaignSess->getCampaignId()));
@@ -160,7 +159,7 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         }
 
         $this->arrData = $arrData;
-        $this->arrInfo = $arrInfo;
+        $this->arrInfo = $objSiteInfo->data;
         $objView->assignobj($this);
         // フレームを選択(キャンペーンページから遷移なら変更)
         $objCampaignSess->pageView($objView);
@@ -186,7 +185,6 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         $objSiteInfo = $objView->objSiteInfo;
         $objSiteSess = new SC_SiteSession();
         $objCustomer = new SC_Customer();
-        $arrInfo = $objSiteInfo->data;
         $objQuery = new SC_Query();
         $objDb = new SC_Helper_DB_Ex();
 
@@ -198,11 +196,11 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         $this->tpl_uniqid = $uniqid;
 
         // カート集計処理
-        $objDb->sfTotalCart($this, $objCartSess, $arrInfo);
+        $objDb->sfTotalCart($this, $objCartSess);
         // 一時受注テーブルの読込
         $arrData = $objDb->sfGetOrderTemp($uniqid);
         // カート集計を元に最終計算
-        $arrData = $objDb->sfTotalConfirm($arrData, $this, $objCartSess, $arrInfo, $objCustomer);
+        $arrData = $objDb->sfTotalConfirm($arrData, $this, $objCartSess, $objCustomer);
 
         // カート内の商品の売り切れチェック
         $objCartSess->chkSoldOut($objCartSess->getCartList());
@@ -264,7 +262,7 @@ class LC_Page_Shopping_Confirm extends LC_Page {
             break;
         }
         $this->arrData = $arrData;
-        $this->arrInfo = $arrInfo;
+        $this->arrInfo = $objSiteInfo->data;
         $objView->assignobj($this);
         $objView->display(SITE_FRAME);
     }

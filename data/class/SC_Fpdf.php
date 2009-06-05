@@ -135,9 +135,6 @@ class SC_Fpdf {
     }
 
     function setOrderData() {
-        // ショップ情報
-        $objInfo = new SC_SiteInfo();
-        $arrInfo = $objInfo->data;
         // DBから受注情報を読み込む
         $this->lfGetOrderData($this->arrData['order_id']);
 
@@ -182,7 +179,7 @@ class SC_Fpdf {
           $data[0] = $this->arrDisp['quantity'][$i];
 
           // 税込金額（単価）
-          $data[1] = SC_Utils_Ex::sfPreTax($this->arrDisp['price'][$i], $arrInfo['tax'], $arrInfo['tax_rule']);
+          $data[1] = SC_Helper_DB_Ex::sfPreTax($this->arrDisp['price'][$i]);
 
           // 小計（商品毎）
           $data[2] = $data[0] * $data[1];

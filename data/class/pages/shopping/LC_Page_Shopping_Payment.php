@@ -73,8 +73,6 @@ class LC_Page_Shopping_Payment extends LC_Page {
         $objCampaignSess = new SC_CampaignSession();
         $objDb = new SC_Helper_DB_Ex();
         $this->objCustomer = new SC_Customer();
-        $objSiteInfo = $objView->objSiteInfo;
-        $arrInfo = $objSiteInfo->data;
 
         // パラメータ管理クラス
         $this->objFormParam = new SC_FormParam();
@@ -99,10 +97,10 @@ class LC_Page_Shopping_Payment extends LC_Page {
         }
 
         // 金額の取得 (購入途中で売り切れた場合にはこの関数内にてその商品の数量が０になる)
-        $objDb->sfTotalCart($this, $objCartSess, $arrInfo);
+        $objDb->sfTotalCart($this, $objCartSess);
 
         if (empty($arrData)) $arrData = array();
-        $this->arrData = $objDb->sfTotalConfirm($arrData, $this, $objCartSess, $arrInfo);
+        $this->arrData = $objDb->sfTotalConfirm($arrData, $this, $objCartSess);
 
         // カート内の商品の売り切れチェック
         $objCartSess->chkSoldOut($objCartSess->getCartList());
@@ -148,10 +146,8 @@ class LC_Page_Shopping_Payment extends LC_Page {
             break;
         }
 
-        // 店舗情報の取得
-        $arrInfo = $objSiteInfo->data;
         // 購入金額の取得得
-        $total_pretax = $objCartSess->getAllProductsTotal($arrInfo);
+        $total_pretax = $objCartSess->getAllProductsTotal();
         // 支払い方法の取得
         $this->arrPayment = $this->lfGetPayment($total_pretax);
         // 配送時間の取得
@@ -188,8 +184,6 @@ class LC_Page_Shopping_Payment extends LC_Page {
         $objCartSess = new SC_CartSession();
         $this->objCustomer = new SC_Customer();
         $objDb = new SC_Helper_DB_Ex();
-        $objSiteInfo = $objView->objSiteInfo;
-        $arrInfo = $objSiteInfo->data;
 
         // パラメータ管理クラス
         $this->objFormParam = new SC_FormParam();
@@ -210,9 +204,9 @@ class LC_Page_Shopping_Payment extends LC_Page {
         }
 
         // 金額の取得 (購入途中で売り切れた場合にはこの関数内にてその商品の数量が０になる)
-        $objDb->sfTotalCart($this, $objCartSess, $arrInfo);
+        $objDb->sfTotalCart($this, $objCartSess);
         if (empty($arrData)) $arrData = array();
-        $this->arrData = $objDb->sfTotalConfirm($arrData, $this, $objCartSess, $arrInfo);
+        $this->arrData = $objDb->sfTotalConfirm($arrData, $this, $objCartSess);
 
         // カート内の商品の売り切れチェック
         $objCartSess->chkSoldOut($objCartSess->getCartList(), true);
@@ -294,10 +288,8 @@ class LC_Page_Shopping_Payment extends LC_Page {
             break;
         }
 
-        // 店舗情報の取得
-        $arrInfo = $objSiteInfo->data;
         // 購入金額の取得得
-        $total_pretax = $objCartSess->getAllProductsTotal($arrInfo);
+        $total_pretax = $objCartSess->getAllProductsTotal();
         // 支払い方法の取得
         $this->arrPayment = $this->lfGetPayment($total_pretax);
         // 配送時間の取得
@@ -397,13 +389,9 @@ class LC_Page_Shopping_Payment extends LC_Page {
             }
         }
 
-        $objView = new SC_MobileView();
-        $objSiteInfo = $objView->objSiteInfo;
-        $arrInfo = $objSiteInfo->data;
         $objCartSess = new SC_CartSession();
-        $arrInfo = $objSiteInfo->data;
         // 購入金額の取得得
-        $total_pretax = $objCartSess->getAllProductsTotal($arrInfo);
+        $total_pretax = $objCartSess->getAllProductsTotal();
         // 支払い方法の取得
         $arrPayment = $this->lfGetPayment($total_pretax);
         $pay_flag = true;

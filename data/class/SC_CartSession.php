@@ -89,8 +89,14 @@ class SC_CartSession {
         return (max($arrRet) + 1);
     }
 
-    // 商品ごとの合計価格
-    function getProductTotal($arrInfo, $id) {
+    /**
+     * 商品ごとの合計価格
+     * XXX 実際には、「商品」ではなく、「カートの明細行(≒商品規格)」のような気がします。
+     *
+     * @param integer $id
+     * @return string 商品ごとの合計価格(税込み)
+     */
+    function getProductTotal($id) {
         $max = $this->getMax();
         for($i = 0; $i <= $max; $i++) {
             if(isset($_SESSION[$this->key][$i]['id'])
@@ -99,7 +105,7 @@ class SC_CartSession {
                 // 税込み合計
                 $price = $_SESSION[$this->key][$i]['price'];
                 $quantity = $_SESSION[$this->key][$i]['quantity'];
-                $pre_tax = SC_Utils_Ex::sfPreTax($price, $arrInfo['tax'], $arrInfo['tax_rule']);
+                $pre_tax = SC_Helper_DB_Ex::sfPreTax($price);
                 $total = $pre_tax * $quantity;
                 return $total;
             }
@@ -147,7 +153,7 @@ class SC_CartSession {
 
 
     // 全商品の合計価格
-    function getAllProductsTotal($arrInfo) {
+    function getAllProductsTotal() {
         // 税込み合計
         $total = 0;
         $max = $this->getMax();
@@ -163,21 +169,21 @@ class SC_CartSession {
             }
             $quantity = $_SESSION[$this->key][$i]['quantity'];
 
-            $pre_tax = SC_Utils::sfPreTax($price, $arrInfo['tax'], $arrInfo['tax_rule']);
+            $pre_tax = SC_Helper_DB_Ex::sfPreTax($price);
             $total+= ($pre_tax * $quantity);
         }
         return $total;
     }
 
     // 全商品の合計税金
-    function getAllProductsTax($arrInfo) {
+    function getAllProductsTax() {
         // 税合計
         $total = 0;
         $max = $this->getMax();
         for($i = 0; $i <= $max; $i++) {
             $price = $_SESSION[$this->key][$i]['price'];
             $quantity = $_SESSION[$this->key][$i]['quantity'];
-            $tax = SC_Utils_Ex::sfTax($price, $arrInfo['tax'], $arrInfo['tax_rule']);
+            $tax = SC_Helper_DB_Ex::sfTax($price);
             $total+= ($tax * $quantity);
         }
         return $total;

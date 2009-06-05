@@ -628,25 +628,18 @@ class SC_Utils {
         return $ret;
     }
 
-    /* 税金計算 */
-    function sfTax($price, $tax = null, $tax_rule = null) {
-        // 店舗基本情報を取得
-        static $CONF;
-        if (
-               is_null($CONF)
-            && (is_null($tax) || is_null($tax_rule))
-        ) {
-            $CONF = SC_Helper_DB_Ex::sf_getBasisData();
-        }
-        
-        if (is_null($tax)) {
-            $tax = $CONF['tax'];
-        }
-        
-        if (is_null($tax_rule)) {
-            $tax_rule = $CONF['tax_rule'];
-        }
-        
+    /**
+     * 税金額を返す
+     *
+     * ・店舗基本情報に基づいた計算は SC_Helper_DB::sfTax() を使用する
+     *
+     * @param integer $price 計算対象の金額
+     * @param integer $tax 税率(%単位)
+     *     XXX integer のみか不明
+     * @param integer $tax_rule 端数処理
+     * @return integer 税金額
+     */
+    function sfTax($price, $tax, $tax_rule) {
         $real_tax = $tax / 100;
         $ret = $price * $real_tax;
         switch($tax_rule) {
@@ -670,8 +663,18 @@ class SC_Utils {
         return $ret;
     }
 
-    /* 税金付与 */
-    function sfPreTax($price, $tax = null, $tax_rule = null) {
+    /**
+     * 税金付与した金額を返す
+     * 
+     * ・店舗基本情報に基づいた計算は SC_Helper_DB::sfTax() を使用する
+     *
+     * @param integer $price 計算対象の金額
+     * @param integer $tax 税率(%単位)
+     *     XXX integer のみか不明
+     * @param integer $tax_rule 端数処理
+     * @return integer 税金付与した金額
+     */
+    function sfPreTax($price, $tax, $tax_rule) {
         return $price + SC_Utils_Ex::sfTax($price, $tax, $tax_rule);
     }
 
@@ -897,10 +900,19 @@ class SC_Utils {
         return $return;
     }
 
-    /* 加算ポイントの計算式 */
-    function sfGetAddPoint($totalpoint, $use_point, $arrInfo) {
+    /**
+     * 加算ポイントの計算
+     *
+     * ・店舗基本情報に基づいた計算は SC_Helper_DB::sfGetAddPoint() を使用する
+     *
+     * @param integer $totalpoint
+     * @param integer $use_point
+     * @param integer $point_rate
+     * @return integer 加算ポイント
+     */
+    function sfGetAddPoint($totalpoint, $use_point, $point_rate) {
         // 購入商品の合計ポイントから利用したポイントのポイント換算価値を引く方式
-        $add_point = $totalpoint - intval($use_point * ($arrInfo['point_rate'] / 100));
+        $add_point = $totalpoint - intval($use_point * ($point_rate / 100));
 
         if($add_point < 0) {
             $add_point = '0';

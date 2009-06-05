@@ -200,15 +200,24 @@ class SC_Helper_DB {
     /**
      * 店舗基本情報を取得する.
      *
+     * @param boolean $force 強制的にDB取得するか
      * @return array 店舗基本情報の配列
      */
-    function sf_getBasisData() {
-        $objQuery = new SC_Query();
-        $arrRet = $objQuery->select('*', 'dtb_baseinfo');
-
-        if (isset($arrRet[0])) return $arrRet[0];
-
-        return array();
+    function sf_getBasisData($force = false) {
+        static $data;
+        
+        if ($force || !isset($data)) {
+            $objQuery = new SC_Query();
+            $arrRet = $objQuery->select('*', 'dtb_baseinfo');
+            
+            if (isset($arrRet[0])) {
+                $data = $arrRet[0];
+            } else {
+                $data = array();
+            }
+        }
+        
+        return $data;
     }
 
     /* 選択中のアイテムのルートカテゴリIDを取得する */
@@ -281,10 +290,9 @@ class SC_Helper_DB {
      *
      * @param LC_Page $objPage ページクラスのインスタンス
      * @param SC_CartSession $objCartSess カートセッションのインスタンス
-     * @param array $arrInfo 商品情報の配列
      * @return LC_Page 集計処理後のページクラスインスタンス
      */
-    function sfTotalCart(&$objPage, $objCartSess, $arrInfo) {
+    function sfTotalCart(&$objPage, $objCartSess) {
 
         // 規格名一覧
         $arrClassName = $this->sfGetIDValueList("dtb_class", "class_id", "name");
@@ -371,7 +379,7 @@ class SC_Helper_DB {
                     $objCartSess->setProductValue($arrCart['id'], 'point_rate', $arrData['point_rate']);
                 }
                 // 商品ごとの合計金額
-                $objPage->arrProductsClass[$cnt]['total_pretax'] = $objCartSess->getProductTotal($arrInfo, $arrCart['id']);
+                $objPage->arrProductsClass[$cnt]['total_pretax'] = $objCartSess->getProductTotal($arrCart['id']);
                 // 送料の合計を計算する
                 $objPage->tpl_total_deliv_fee+= ($arrData['deliv_fee'] * $arrCart['quantity']);
                 $cnt++;
@@ -393,9 +401,9 @@ class SC_Helper_DB {
         }
         
         // 全商品合計金額(税込み)
-        $objPage->tpl_total_pretax = $objCartSess->getAllProductsTotal($arrInfo);
+        $objPage->tpl_total_pretax = $objCartSess->getAllProductsTotal();
         // 全商品合計消費税
-        $objPage->tpl_total_tax = $objCartSess->getAllProductsTax($arrInfo);
+        $objPage->tpl_total_tax = $objCartSess->getAllProductsTax();
         // 全商品合計ポイント
         if (USE_POINT !== false) {
             $objPage->tpl_total_point = $objCartSess->getAllProductsPoint();
@@ -1479,11 +1487,13 @@ __EOS__;
      * @param array $arrData 各種情報
      * @param LC_Page $objPage LC_Page インスタンス
      * @param SC_CartSession $objCartSess SC_CartSession インスタンス
-     * @param array $arrInfo 店舗情報の配列
      * @param SC_Customer $objCustomer SC_Customer インスタンス
      * @return array 最終計算後の配列
      */
-    function sfTotalConfirm($arrData, &$objPage, &$objCartSess, $arrInfo, $objCustomer = "") {
+    function sfTotalConfirm($arrData, &$objPage, &$objCartSess, $objCustomer = "") {
+        // 店舗基本情報を取得する
+        $arrInfo = SC_Helper_DB_Ex::sf_getBasisData();
+        
         // 未定義変数を定義
         if (!isset($arrData['deliv_pref'])) $arrData['deliv_pref'] = "";
         if (!isset($arrData['payment_id'])) $arrData['payment_id'] = "";
@@ -1537,7 +1547,7 @@ __EOS__;
         $arrData['payment_total'] = $arrData['total'] - ($arrData['use_point'] * POINT_VALUE);
         // 加算ポイントの計算
         if (USE_POINT !== false) {
-            $arrData['add_point'] = SC_Utils::sfGetAddPoint($objPage->tpl_total_point, $arrData['use_point'], $arrInfo);
+            $arrData['add_point'] = SC_Helper_DB_Ex::sfGetAddPoint($objPage->tpl_total_point, $arrData['use_point']);
                 
             if($objCustomer != "") {
                 // 誕生日月であった場合
@@ -1746,6 +1756,46 @@ __EOS__;
 __EOS__;
         
         $objQuery->query($sql, array($order_id));
+    }
+
+    /**
+     * 店舗基本情報に基づいて税金額を返す
+     *
+     * @param integer $price 計算対象の金額
+     * @return integer 税金額
+     */
+    function sfTax($price) {
+        // 店舗基本情報を取得
+        $CONF = SC_Helper_DB_Ex::sf_getBasisData();
+        
+        return SC_Utils_Ex::sfTax($price, $CONF['tax'], $CONF['tax_rule']);
+    }
+
+    /**
+     * 店舗基本情報に基づいて税金付与した金額を返す
+     * 
+     * @param integer $price 計算対象の金額
+     * @return integer 税金付与した金額
+     */
+    function sfPreTax($price, $tax = null, $tax_rule = null) {
+        // 店舗基本情報を取得
+        $CONF = SC_Helper_DB_Ex::sf_getBasisData();
+        
+        return SC_Utils_Ex::sfPreTax($price, $CONF['tax'], $CONF['tax_rule']);
+    }
+
+    /**
+     * 店舗基本情報に基づいて加算ポイントを返す
+     *
+     * @param integer $totalpoint
+     * @param integer $use_point
+     * @return integer 加算ポイント
+     */
+    function sfGetAddPoint($totalpoint, $use_point) {
+        // 店舗基本情報を取得
+        $CONF = SC_Helper_DB_Ex::sf_getBasisData();
+        
+        return SC_Utils_Ex::sfGetAddPoint($totalpoint, $use_point, $CONF['point_rate']);
     }
 }
 ?>

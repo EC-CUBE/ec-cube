@@ -85,7 +85,7 @@ class LC_Page_FrontParts_Bloc_Cart extends LC_Page_FrontParts_Bloc {
             // 店舗情報の取得
             $arrInfo = $objSiteInfo->data;
             // 購入金額合計
-            $ProductsTotal = $objCart->getAllProductsTotal($arrInfo);
+            $ProductsTotal = $objCart->getAllProductsTotal();
 
             // 合計数量
             $TotalQuantity = $objCart->getTotalQuantity();

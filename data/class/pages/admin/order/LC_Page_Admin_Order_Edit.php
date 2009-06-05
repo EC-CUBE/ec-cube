@@ -31,7 +31,7 @@ if (file_exists(MODULE_PATH . 'mdl_gmopg/inc/include.php') === TRUE) {
 
 /* ペイジェント決済モジュール連携用 */
 if (file_exists(MODULE_PATH . 'mdl_paygent/include.php') === TRUE) {
-    require_once(MODULE_PATH . 'mdl_paygent/include.php');
+  require_once(MODULE_PATH . 'mdl_paygent/include.php');
 }
 
 /* F-REGI決済モジュール連携用 */
@@ -108,9 +108,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         $conn = new SC_DBConn();
         $objView = new SC_AdminView();
         $objSess = new SC_Session();
-        $objSiteInfo = new SC_SiteInfo();
         $objDb = new SC_Helper_DB_Ex();
-        $arrInfo = $objSiteInfo->data;
 
         // パラメータ管理クラス
         $this->objFormParam = new SC_FormParam();
@@ -151,7 +149,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
 
             // 入力値の変換
             $this->objFormParam->convParam();
-            $this->arrErr = $this->lfCheek($arrInfo);
+            $this->arrErr = $this->lfCheek();
             $this->arrErr = $this->lfCheckError();
             if(count($this->arrErr) == 0) {
                 #if(count($this->arrErr) == 0) {
@@ -176,7 +174,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
             $this->objFormParam->convParam();
             $this->arrErr = $this->lfCheckError();
             #if(count($this->arrErr) == 0) {
-                $this->arrErr = $this->lfCheek($arrInfo);
+                $this->arrErr = $this->lfCheek();
             #}
             break;
         /* ペイジェント決済モジュール連携用 */
@@ -197,7 +195,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
                     $arrData[$key] = $val;
                 }
             }
-            $this->lfReCheek($arrData, $arrInfo);
+            $this->lfReCheek($arrData);
             break;
         /* 商品追加ポップアップより商品選択後、商品情報取得*/
         case 'select_product_detail':
@@ -216,7 +214,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
                     $arrData[$key] = $val;
                 }
             }
-            $this->lfReCheek($arrData, $arrInfo);
+            $this->lfReCheek($arrData);
             break;
         /* F-REGI決済モジュール連携用 */
         case 'fregi_status':
@@ -274,7 +272,8 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         }
         $this->tpl_onload .= $anchor_hash;
 
-        $this->arrInfo = $arrInfo;
+        $objSiteInfo = new SC_SiteInfo();
+        $this->arrInfo = $objSiteInfo->data;
 
         /**
          * SPS決済 クレジット判定用処理
@@ -429,7 +428,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
     }
 
     /* 計算処理 */
-    function lfCheek($arrInfo) {
+    function lfCheek() {
         $objDb = new SC_Helper_DB_Ex();
         $arrVal = $this->objFormParam->getHashArray();
         $arrErr = array();
@@ -441,9 +440,9 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         $totaltax = 0;
         for($i = 0; $i < $max; $i++) {
             // 小計の計算
-            $subtotal += SC_Utils_Ex::sfPreTax($arrVal['price'][$i], $arrInfo['tax'], $arrInfo['tax_rule']) * $arrVal['quantity'][$i];
+            $subtotal += SC_Helper_DB_Ex::sfPreTax($arrVal['price'][$i]) * $arrVal['quantity'][$i];
             // 小計の計算
-            $totaltax += SC_Utils_Ex::sfTax($arrVal['price'][$i], $arrInfo['tax'], $arrInfo['tax_rule']) * $arrVal['quantity'][$i];
+            $totaltax += SC_Helper_DB_Ex::sfTax($arrVal['price'][$i]) * $arrVal['quantity'][$i];
             // 加算ポイントの計算
             $totalpoint += SC_Utils_Ex::sfPrePoint($arrVal['price'][$i], $arrVal['point_rate'][$i]) * $arrVal['quantity'][$i];
         }
@@ -458,7 +457,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         $arrVal['payment_total'] = $arrVal['total'] - ($arrVal['use_point'] * POINT_VALUE);
 
         // 加算ポイント
-        $arrVal['add_point'] = SC_Utils_Ex::sfGetAddPoint($totalpoint, $arrVal['use_point'], $arrInfo);
+        $arrVal['add_point'] = SC_Helper_DB_Ex::sfGetAddPoint($totalpoint, $arrVal['use_point']);
 
         list($arrVal['point'], $arrVal['total_point']) = $objDb->sfGetCustomerPoint($_POST['order_id'], $arrVal['use_point'], $arrVal['add_point']);
 
@@ -478,13 +477,13 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         return $arrErr;
     }
 
-    function lfReCheek($arrData, $arrInfo) {
+    function lfReCheek($arrData) {
         // 情報上書き
         $this->objFormParam->setParam($arrData);
         // 入力値の変換
         $this->objFormParam->convParam();
         #if(count($this->arrErr) == 0) {
-            $this->arrErr = $this->lfCheek($arrInfo);
+            $this->arrErr = $this->lfCheek();
         #}
         $this->arrErr = $this->lfCheckError();
     }

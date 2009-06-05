@@ -77,8 +77,6 @@ class LC_Page_Cart extends LC_Page {
         $objSiteInfo = $objView->objSiteInfo;
         $objCustomer = new SC_Customer();
         $db = new SC_Helper_DB_Ex();
-        // 基本情報の取得
-        $arrInfo = $objSiteInfo->data;
 
         // 商品購入中にカート内容が変更された。
         if($objCartSess->getCancelPurchase()) {
@@ -140,10 +138,11 @@ class LC_Page_Cart extends LC_Page {
         }
 
         // カート集計処理
-        $db->sfTotalCart($this, $objCartSess, $arrInfo);
-        $this->arrData = $db->sfTotalConfirm($this->arrData, $this, $objCartSess, $arrInfo, $objCustomer);
+        $db->sfTotalCart($this, $objCartSess);
+        $this->arrData = $db->sfTotalConfirm($this->arrData, $this, $objCartSess, $objCustomer);
 
-        $this->arrInfo = $arrInfo;
+        // 基本情報の取得
+        $this->arrInfo = $objSiteInfo->data;
 
         // ログイン判定
         if($objCustomer->isLoginSuccess()) {
@@ -191,9 +190,6 @@ class LC_Page_Cart extends LC_Page {
         $objSiteInfo = $objView->objSiteInfo;
         $objCustomer = new SC_Customer();
         $objDb = new SC_Helper_DB_Ex();
-
-        // 基本情報の取得
-        $arrInfo = $objSiteInfo->data;
 
         // 商品購入中にカート内容が変更された。
         if($objCartSess->getCancelPurchase()) {
@@ -264,10 +260,11 @@ class LC_Page_Cart extends LC_Page {
         if (empty($arrData)) {
             $arrData = array();
         }
-        $objDb->sfTotalCart($this, $objCartSess, $arrInfo);
-        $this->arrData = $objDb->sfTotalConfirm($arrData, $this, $objCartSess, $arrInfo, $objCustomer);
+        $objDb->sfTotalCart($this, $objCartSess);
+        $this->arrData = $objDb->sfTotalConfirm($arrData, $this, $objCartSess, $objCustomer);
 
-        $this->arrInfo = $arrInfo;
+        // 基本情報の取得
+        $this->arrInfo = $objSiteInfo->data;
 
         // ログイン判定
         if($objCustomer->isLoginSuccess(true)) {
