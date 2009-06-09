@@ -97,7 +97,7 @@ class LC_Page_MyPage_Favorite extends LC_Page {
         $col = "alldtl.*";
         $from = "dtb_customer_favorite_products AS dcfp LEFT JOIN vw_products_allclass_detail AS alldtl USING(product_id)";
         
-        $where = "alldtl.del_flg = 0 AND alldtl.status = 1 AND dcfp.customer_id = ?";
+        $where = "dcfp.customer_id = ? AND alldtl.del_flg = 0 AND alldtl.status = 1";
         // 在庫無し商品の非表示
         if (NOSTOCK_HIDDEN === true) {
             $where .= ' AND (alldtl.stock_max >= 1 OR alldtl.stock_unlimited_max = 1)';
