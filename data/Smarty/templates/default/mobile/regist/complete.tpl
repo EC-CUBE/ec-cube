@@ -50,5 +50,5 @@ E-mail：<a href="mailto:<!--{$arrSiteInfo.email02|escape}-->"><!--{$arrSiteInfo
 <hr>
 
 <!-- ▼フッター ここから -->
-<!--{include file='footer.tpl'}-->
+<center><!--{include file='footer.tpl'}--></center>
 <!-- ▲フッター ここまで -->

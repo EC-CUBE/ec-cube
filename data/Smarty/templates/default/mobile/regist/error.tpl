@@ -36,5 +36,5 @@
 <br>
 
 <!-- ▼フッター ここから -->
-<!--{include file='footer.tpl'}-->
+<center><!--{include file='footer.tpl'}--></center>
 <!-- ▲フッター ここまで -->
