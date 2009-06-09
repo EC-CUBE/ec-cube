@@ -72,7 +72,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
     
     /**
      * 文字コード情報を取得する
-     * 
+     *
      * @return array 文字コード情報
      */
     function getCharSet() {
@@ -415,6 +415,7 @@ __EOS__;
                     T1.creator_id,
                     T1.create_date,
                     T1.update_date,
+                    T1.note,
                     T1.deliv_date_id,
                     T2.product_id_sub,
                     T2.product_code,
