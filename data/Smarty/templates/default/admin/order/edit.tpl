@@ -317,7 +317,7 @@
                 <input type="hidden" name="classcategory_name1[<!--{$key}-->]" value="<!--{$arrForm.classcategory_name1.value[$key]}-->" id="classcategory_name1_<!--{$key}-->" />
                 <input type="hidden" name="classcategory_name2[<!--{$key}-->]" value="<!--{$arrForm.classcategory_name2.value[$key]}-->" id="classcategory_name2_<!--{$key}-->" />
                 <br />
-                <input type="button" name="change" value="変更" onclick="win03('<!--{$smarty.const.SITE_URL}-->admin/products/product_select.php?no=<!--{$key}--><!--{if $tpl_order_id}-->&order_id=<!--{$tpl_order_id}--><!--{/if}-->', 'search', '500', '500'); " />
+                <input type="button" name="change" value="変更" onclick="win03('<!--{$smarty.const.SITE_URL}-->admin/order/product_select.php?no=<!--{$key}--><!--{if $tpl_order_id}-->&order_id=<!--{$tpl_order_id}--><!--{/if}-->', 'search', '500', '500'); " />
                 <!--{if $product_count > 1}-->
                     <input type="button" name="delete" value="削除" onclick="fnSetFormVal('form1', 'delete_no', <!--{$key}-->); fnModeSubmit('delete_product','anchor_key','order_products');" />
                 <!--{/if}-->

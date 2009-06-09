@@ -149,7 +149,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
 
             // 入力値の変換
             $this->objFormParam->convParam();
-            $this->arrErr = array_merge((array)$this->lfCheckError(), (array)$this->lfCheek($_POST['mode']));
+            $this->arrErr = $this->lfCheckError();
 
             if(count($this->arrErr) == 0) {
                 if ($_POST['mode'] == 'add') {
@@ -177,7 +177,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
             $this->objFormParam->setParam($_POST);
             // 入力値の変換
             $this->objFormParam->convParam();
-            $this->arrErr = array_merge((array)$this->lfCheckError(), (array)$this->lfCheek($_POST['mode']));
+            $this->arrErr = $this->lfCheckError();
             break;
         /* ペイジェント決済モジュール連携用 */
         case 'paygent_order':
@@ -201,6 +201,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
             $this->objFormParam->setParam($arrData);
             // 入力値の変換
             $this->objFormParam->convParam();
+            $this->arrErr = $this->lfCheckError();
             break;
         /* 商品追加ポップアップより商品選択後、商品情報取得*/
         case 'select_product_detail':
@@ -223,6 +224,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
             $this->objFormParam->setParam($arrData);
             // 入力値の変換
             $this->objFormParam->convParam();
+            $this->arrErr = $this->lfCheckError();
             break;
         /* 顧客検索ポップアップより顧客指定後、顧客情報取得*/
         case 'search_customer':
@@ -447,11 +449,15 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         $objErr = new SC_CheckError($arrRet);
         $objErr->arrErr = $this->objFormParam->checkError();
 
-        return $objErr->arrErr;
+        if (count($objErr->arrErr) >= 1) {
+            return $objErr->arrErr;
+        }
+        
+        return $this->lfCheek();
     }
 
     /* 計算処理 */
-    function lfCheek($mode = "") {
+    function lfCheek() {
         $objDb = new SC_Helper_DB_Ex();
         $arrVal = $this->objFormParam->getHashArray();
         $arrErr = array();
@@ -495,7 +501,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
             $arrErr['payment_total'] = 'お支払い合計額がマイナス表示にならないように調整して下さい。<br />';
         }
         //新規追加受注のみ
-        if ($mode == "add") {
+        if ($_POST['mode'] == "add") {
             if ($arrVal['total_point'] < 0) {
                     $arrErr['use_point'] = '最終保持ポイントがマイナス表示にならないように調整して下さい。<br />';
             }
