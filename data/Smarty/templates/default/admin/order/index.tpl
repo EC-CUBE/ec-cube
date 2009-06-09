@@ -23,7 +23,7 @@
 *}-->
 <script type="text/javascript">
 <!--
-    function fnSelectCheckSubmit(){ 
+    function fnSelectCheckSubmit(action){
 
         var fm = document.form1;
         
@@ -51,11 +51,16 @@
             return false;
         }
         
+        fnOpenPdfSettingPage(action);
+    }
+
+    function fnOpenPdfSettingPage(action){
+        var fm = document.form1;
         var WIN;
         WIN = window.open("about:blank", "pdf", "width=500,height=600,scrollbars=yes,resizable=yes,toolbar=no,location=no,directories=no,status=no");
         fm.target = "pdf";
         fm.mode.value = 'pdf';
-        fm.action = 'pdf.php';
+        fm.action = action;
         fm.submit(); 
         WIN.focus();
     }
@@ -296,7 +301,7 @@
         <!--{/if}-->
         <button type="button" onclick="fnModeSubmit('csv','','');">CSV DOWNLOAD</button>
         <a href="../contents/csv.php?tpl_subno_csv=order">&gt;&gt; CSV出力項目設定</a>
-        <button type="button" onclick="fnSelectCheckSubmit();"><span>PDF一括出力</span></button>
+        <button type="button" onclick="fnSelectCheckSubmit('pdf.php');"><span>PDF一括出力</span></button>
     </p>
     <!--{include file=$tpl_pager}-->
 
