@@ -145,7 +145,7 @@ __EOS__;
 
         // 行数の取得
         $linemax = $objQuery->count($table, $where, array($category_id));
-        // 何件が該当しました。表示用
+        // 該当件数表示用
         $this->tpl_linemax = $linemax;
 
         $objNavi = new SC_PageNavi($this->tpl_pageno, $linemax, SEARCH_PMAX, "fnNaviPage", NAVI_PMAX);
