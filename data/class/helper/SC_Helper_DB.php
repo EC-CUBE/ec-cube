@@ -529,15 +529,15 @@ class SC_Helper_DB {
         $objQuery = new SC_Query();
         $arrRet = $objQuery->select("customer_id", "dtb_order", "order_id = ?", array($order_id));
         $customer_id = $arrRet[0]['customer_id'];
-        if($customer_id != "" && $customer_id >= 1) {
-	if (USE_POINT !== false) {
-            $arrRet = $objQuery->select("point", "dtb_customer", "customer_id = ?", array($customer_id));
-            $point = $arrRet[0]['point'];
-            $total_point = $arrRet[0]['point'] - $use_point + $add_point;
-	} else {
-	    $total_point = 0;
-            $point = 0;
-	}
+        if ($customer_id != "" && $customer_id >= 1) {
+            if (USE_POINT !== false) {
+                $arrRet = $objQuery->select("point", "dtb_customer", "customer_id = ?", array($customer_id));
+                $point = $arrRet[0]['point'];
+                $total_point = $arrRet[0]['point'] - $use_point + $add_point;
+            } else {
+                $total_point = 0;
+                $point = 0;
+            }
         } else {
             $total_point = "";
             $point = "";
