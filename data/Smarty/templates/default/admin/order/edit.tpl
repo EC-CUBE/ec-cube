@@ -288,7 +288,7 @@
     <h2 id="order_products">
         <a name="order_products">受注商品情報</a>
         <input type="button" name="cheek" value="計算結果の確認" onclick="fnModeSubmit('cheek','anchor_key','order_products');" />
-        <input type="button" name="add_product" value="商品の追加" onclick="win03('./product_select.php<!--{if $tpl_order_id}-->?order_id=<!--{$tpl_order_id}--><!--{/if}-->', 'search', '500', '500'); " />
+        <input type="button" name="add_product" value="商品の追加" onclick="win03('<!--{$smarty.const.SITE_URL}-->admin/order/product_select.php<!--{if $tpl_order_id}-->?order_id=<!--{$tpl_order_id}--><!--{/if}-->', 'search', '500', '500'); " />
     </h2>
     <!--{if $arrErr.product_id || $arrErr.quantity || $arrErr.price}-->
             <span class="attention"><!--{$arrErr.product_id}--></span>

@@ -27,7 +27,7 @@
 <!--
 self.moveTo(20,20);self.focus();
 
-function func_submit(product_id, class_name1, class_name2){
+function func_submit(product_id, class_name1, class_name2) {
   var err_text = '';
   var fm = window.opener.document.form1;
   var fm1 = window.opener.document;
@@ -71,6 +71,7 @@ function func_submit(product_id, class_name1, class_name2){
   fm.anchor_key.value = 'order_products';
   fm.submit();
   window.close();
+
   return true;
 }
 //-->
@@ -105,6 +106,7 @@ function lnSetSelect(name1, name2, id, val) {
 }
 //]]>
 </script>
+
 
 <script type="text/javascript">//<![CDATA[
     <!--{$tpl_javascript}-->
@@ -174,6 +176,7 @@ function lnSetSelect(name1, name2, id, val) {
     </td>
     <td>
       <!--{$arrProducts[cnt].name|escape}-->
+
       <!--{assign var=class1 value=classcategory_id`$id`_1}-->
       <!--{assign var=class2 value=classcategory_id`$id`_2}-->
       <!--{if $tpl_classcat_find1[$id]}-->
@@ -204,7 +207,7 @@ function lnSetSelect(name1, name2, id, val) {
       <input type="hidden" name="<!--{$class2}-->" id="<!--{$class2}-->" value="" />
       <!--{/if}-->
     </td>
-    <td class="center"><a href="" onClick="return func_submit('<!--{$arrProducts[cnt].product_id}-->', '<!--{$tpl_class_name1[$id]}-->', '<!--{$tpl_class_name2[$id]}-->')">決定</a></td>
+    <td class="center"><a href="" onclick="return func_submit('<!--{$arrProducts[cnt].product_id}-->', '<!--{$tpl_class_name1[$id]}-->', '<!--{$tpl_class_name2[$id]}-->')">決定</a></td>
   </tr>
   <!--▲商品<!--{$smarty.section.cnt.iteration}-->-->
   <!--{sectionelse}-->

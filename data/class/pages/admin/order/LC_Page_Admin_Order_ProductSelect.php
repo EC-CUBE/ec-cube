@@ -44,7 +44,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page {
     function init() {
         parent::init();
         $this->tpl_mainpage = 'order/product_select.tpl';
-        $this->tpl_mainno = 'products';
+        $this->tpl_mainno = 'order';
         $this->tpl_subnavi = '';
         $this->tpl_subno = "";
         $this->tpl_subtitle = '商品選択';
@@ -66,6 +66,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page {
         SC_Utils_Ex::sfIsSuccess($objSess);
 
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
+
         if ($_GET['no'] != '') {
             $this->tpl_no = strval($_GET['no']);
         } elseif ($_POST['no'] != '') {
@@ -89,7 +90,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page {
 
                 switch ($key) {
                 case 'search_name':
-                    $where .= " AND name LIKE ?";
+                    $where .= " AND name ILIKE ?";
                     $arrval[] = "%$val%";
                     break;
                 case 'search_category_id':
@@ -108,29 +109,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page {
                 }
             }
 
-
-/************
-            if (!empty($_GET['order_id'])) {
-                $arrOrderDetails = $objQuery->select('product_id', 'dtb_order_detail', 'order_id = ?', array($_GET['order_id']));
-                $tmp_where = '';
-                foreach ($arrOrderDetails AS $key=>$val) {
-                    if($tmp_where == "") {
-                        $tmp_where.= " product_id NOT IN ( ?";
-                    } else {
-                        $tmp_where.= ",? ";
-                    }
-                    $arrval[] = $val['product_id'];
-                }
-                $tmp_where.= " ) ";
-                $where .= " AND " .$tmp_where;
-            }
-************/
-
             // 読み込む列とテーブルの指定
-            #$col = "product_id, name, category_id, main_list_image, status, product_code, price01, price02, stock, stock_unlimited, point_rate, classcategory_id1, classcategory_id2, (SELECT name FROM dtb_classcategory WHERE classcategory_id = classcategory_id1) AS classcategory_name1, (SELECT name FROM dtb_classcategory WHERE classcategory_id = classcategory_id2) AS classcategory_name2";
-            #$from = "vw_products_nonclass AS noncls ";
-            #$order = "update_date DESC, product_id DESC ";
-
             $col = "DISTINCT T1.product_id, product_code_min, product_code_max,"
                 . " price01_min, price01_max, price02_min, price02_max,"
                 . " stock_min, stock_max, stock_unlimited_min,"
@@ -182,8 +161,10 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page {
 
             // 規格名一覧
             $arrClassName = $objDb->sfGetIDValueList("dtb_class", "class_id", "name");
+
             // 規格分類名一覧
             $arrClassCatName = $objDb->sfGetIDValueList("dtb_classcategory", "classcategory_id", "name");
+
             // 規格セレクトボックス設定
             for($i = 0; $i < count($this->arrProducts); $i++) {
                 $this->lfMakeSelect($this->arrProducts[$i]['product_id'], $arrClassName, $arrClassCatName);
@@ -386,7 +367,5 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page {
             $this->tpl_sale_limit[$product['product_id']] = $product['sale_limit'];
         }
     }
-
-
 }
 ?>
