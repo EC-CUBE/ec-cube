@@ -109,13 +109,17 @@ function lfPopwinSubmit(formName) {
         <span style="font-size: 80%;">※未入力時は表示されません。</span><br />
       </td>
     </tr>
-    <tr>
-      <th>ポイント表記</th>
-      <td>
-        <input type="radio" name="disp_point" value="1" checked="checked" />する　<input type="radio" name="disp_point" value="0" />しない<br />
-        <span style="font-size: 80%;">※「する」を選択されても、お客様が非会員の場合は表示されません。</span>
-      </td>
-    </tr>
+    <!--{if $smarty.const.USE_POINT !== false}-->
+      <tr>
+        <th>ポイント表記</th>
+        <td>
+          <input type="radio" name="disp_point" value="1" checked="checked" />する　<input type="radio" name="disp_point" value="0" />しない<br />
+          <span style="font-size: 80%;">※「する」を選択されても、お客様が非会員の場合は表示されません。</span>
+        </td>
+      </tr>
+    <!--{else}-->
+      <input type="hidden" name="disp_point" value="0" />
+    <!--{/if}-->
   </table>
 
   <div class="btn">
