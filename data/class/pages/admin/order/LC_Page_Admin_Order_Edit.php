@@ -153,18 +153,23 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
             $this->arrErr = array_merge((array)$this->arrErr, (array)$this->lfCheek());
 
             if(count($this->arrErr) == 0) {
-                #if(count($this->arrErr) == 0) {
-                    if ($_POST['mode'] == 'add') {
-                        $this->lfRegistNewData();
-                        $text = "'新規受注を登録しました。'";
-                    } else {
-                        $this->lfRegistData($_POST['order_id']);
-                        $text = "'受注履歴を編集しました。'";
-                    }
-                    // DBから受注情報を再読込
-                    $this->lfGetOrderData($order_id);
-                    $this->tpl_onload = "window.alert(".$text.");";
-                #}
+                if ($_POST['mode'] == 'add') {
+                $order_id = $this->lfRegistNewData();
+
+                $this->tpl_order_id = $order_id;
+                $this->tpl_mode = 'edit';
+
+                $arrData['order_id'] = $order_id;
+                $this->objFormParam->setParam($arrData);
+
+                    $text = "'新規受注を登録しました。'";
+                } else {
+                    $this->lfRegistData($_POST['order_id']);
+                    $text = "'受注履歴を編集しました。'";
+                }
+                // DBから受注情報を再読込
+                $this->lfGetOrderData($order_id);
+                $this->tpl_onload = "window.alert(".$text.");";
             }
             break;
             // 再計算
@@ -222,6 +227,15 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
             $this->objFormParam->setParam($arrData);
             // 入力値の変換
             $this->objFormParam->convParam();
+            break;
+        /* 顧客検索ポップアップより顧客指定後、顧客情報取得*/
+        case 'search_customer':
+            // POST情報で上書き
+            $this->objFormParam->setParam($_POST);
+
+            // 検索結果から顧客IDを指定された場合、顧客情報をフォームに代入する
+            $this->lfSetCustomerInfo($_POST['edit_customer_id']);
+
             break;
         /* F-REGI決済モジュール連携用 */
         case 'fregi_status':
@@ -387,6 +401,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         $this->objFormParam->addParam("現在のポイント", "point");
         $this->objFormParam->addParam("注文番号", "order_id");
         $this->objFormParam->addParam("受注日", "create_date");
+        $this->objFormParam->addParam("発送日", "commit_date");
     }
 
     function lfGetOrderData($order_id) {
@@ -678,6 +693,8 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
             $objQuery->insert("dtb_order_detail", $sqlval);
         }
         $objQuery->commit();
+
+        return $order_id;
     }
 
     function lfInsertProduct($product_id, $classcategory_id1, $classcategory_id2) {
@@ -740,6 +757,45 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         $arrProduct['classcategory_name2'] = $arrClassCatName[$arrRet['classcategory_id2']];
 
         return $arrProduct;
+    }
+
+    /**
+     * 検索結果から顧客IDを指定された場合、顧客情報をフォームに代入する
+     * @param int $edit_customer_id 顧客ID
+     */
+    function lfSetCustomerInfo($edit_customer_id = ""){
+        // 顧客IDが指定されている場合のみ、処理を実行する
+        if( $edit_customer_id === "" ) return ;
+
+        // 検索で選択された顧客IDが入力されている場合
+        if( is_null($edit_customer_id) === false && 0 < strlen($edit_customer_id) && SC_Utils_Ex::sfIsInt($edit_customer_id) ){
+            $objQuery = new SC_Query();
+
+            // 顧客情報を取得する
+            $arrCustomerInfo = $objQuery->select('*', 'dtb_customer', 'customer_id = ? AND del_flg = 0', array($edit_customer_id));
+
+            // 顧客情報を取得する事が出来たら、テンプレートに値を渡す
+            if( 0 < count($arrCustomerInfo) && is_array($arrCustomerInfo) === true){
+                // カラム名にorder_を付ける(テンプレート側でorder_がついている為
+                foreach($arrCustomerInfo[0] as $index=>$customer_info){
+                    // customer_idにはorder_を付けないようにする
+                    $order_index = ($index == 'customer_id') ? $index : 'order_'.$index;
+                    $arrCustomer[$order_index] = $customer_info;
+                }
+            }
+
+            // hiddenに渡す
+            $this->edit_customer_id = $edit_customer_id;
+
+            // 受注日に現在の時刻を取得し、表示させる
+            $create_date = $objQuery->getall('SELECT now() as create_date;');
+            $arrCustomer['create_date'] = $create_date[0]['create_date'];
+
+            // 情報上書き
+            $this->objFormParam->setParam($arrCustomer);
+            // 入力値の変換
+            $this->objFormParam->convParam();
+        }
     }
 }
 ?>

@@ -53,7 +53,7 @@
 <form name="form1" id="form1" method="post" action="?">
 <input type="hidden" name="mode" value="<!--{$tpl_mode|default:"edit"}-->" />
 <input type="hidden" name="order_id" value="<!--{$tpl_order_id}-->" />
-<input type="hidden" name="edit_customer_id" value="<!--{$tpl_order_id}-->" />
+<input type="hidden" name="edit_customer_id" value="" />
 <input type="hidden" name="anchor_key" value="" />
 <input type="hidden" id="add_product_id" name="add_product_id" value="" />
 <input type="hidden" id="add_classcategory_id1" name="add_classcategory_id1" value="" />
@@ -92,7 +92,7 @@
         </tr>
         <tr>
             <th>発送日</th>
-            <td><!--{$arrForm.commit_date|sfDispDBDate|default:"未発送"}--></td>
+            <td><!--{$arrForm.commit_date.value|sfDispDBDate|default:"未発送"}--></td>
         </tr>
     </table>
 
@@ -117,9 +117,12 @@
     <!--{foreach key=key item=item from=$arrSearchHidden}-->
     <input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->" />
     <!--{/foreach}-->
-    <h2>お客様情報</h2>
+    <h2>お客様情報
+        <!--{if $tpl_mode == 'add'}-->
+            <input type="button" name="address_input" value="顧客検索" onclick="fnOpenWindow('<!--{$smarty.const.SITE_URL}-->admin/customer/search_customer.php','search','500','650'); return false;" />
+        <!--{/if}-->
+    </h2>
     <table class="form">
-        <!--{if $tpl_mode != 'add'}-->
         <tr>
             <th>注文番号</th>
             <td><!--{$arrForm.order_id.value}--></td>
@@ -127,18 +130,19 @@
         <tr>
             <th>受注日</th>
             <td><!--{$arrForm.create_date.value|sfDispDBDate}--></td>
+            <input type="hidden" name="create_date" value="<!--{$arrForm.create_date.value}-->" />
         </tr>
         <tr>
             <th>顧客ID</th>
             <td>
                 <!--{if $arrForm.customer_id.value > 0}-->
                     <!--{$arrForm.customer_id.value}-->
+                    <input type="hidden" name="customer_id" value="<!--{$arrForm.customer_id.value}-->" />
                 <!--{else}-->
                     （非会員）
                 <!--{/if}-->
             </td>
         </tr>
-        <!--{/if}-->
         <tr>
             <th>顧客名</th>
             <td>
