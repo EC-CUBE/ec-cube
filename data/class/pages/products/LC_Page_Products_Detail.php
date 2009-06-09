@@ -86,7 +86,8 @@ class LC_Page_Products_Detail extends LC_Page {
         $helper = new SC_Helper_PageLayout_Ex();
         $helper->sfGetPageLayout($this, false, "products/detail.php");
 
-        if(isset($_POST['mode']) && $_POST['favorite_product_id'] != "" && $_POST['mode'] == "add_favorite") {
+        // ログイン中のユーザが商品をお気に入りにいれる処理
+        if ($objCustomer->isLoginSuccess() === true && strlen($_POST['mode']) > 0 && $_POST['mode'] == "add_favorite" && strlen($_POST['favorite_product_id']) > 0 ) {
             // 値の正当性チェック
             if(!SC_Utils_Ex::sfIsInt($_POST['favorite_product_id']) || !$objDb->sfIsRecord("dtb_products", "product_id", $_POST['favorite_product_id'], "del_flg = 0 AND status = 1")) {
                 SC_Utils_Ex::sfDispSiteError(PRODUCT_NOT_FOUND);
@@ -134,7 +135,7 @@ class LC_Page_Products_Detail extends LC_Page {
             SC_Utils_Ex::sfDispSiteError(PRODUCT_NOT_FOUND);
         }
         // ログイン判定
-        if($objCustomer->isLoginSuccess()) {
+        if ($objCustomer->isLoginSuccess() === true) {
             //お気に入りボタン表示
             $this->tpl_login = true;
 
@@ -885,6 +886,8 @@ class LC_Page_Products_Detail extends LC_Page {
         if ($count == 0) {
             $sqlval['customer_id'] = $customer_id;
             $sqlval['product_id'] = $product_id;
+            $sqlval['update_date'] = "now()";
+            $sqlval['create_date'] = "now()";
 
             $objQuery->begin();
             $objQuery->insert('dtb_customer_favorite_products', $sqlval);

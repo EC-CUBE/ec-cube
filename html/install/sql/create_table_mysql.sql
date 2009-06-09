@@ -7,7 +7,7 @@ create table dtb_module_update_logs(
     ok text,
     create_date datetime NOT NULL,
     update_date datetime NOT NULL
-);
+) TYPE=InnoDB ;
 
 CREATE TABLE dtb_ownersstore_settings (
     public_key text

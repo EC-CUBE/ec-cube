@@ -43,9 +43,8 @@
       <!--{$tpl_strnavi}-->
       <!--▲ページナビ-->
     </div>
-    <p>※最大20件まで表示します。</p>
 
-    <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+    <form name="form1" id="form1" method="post" action="?">
     <input type="hidden" name="mode" value="cart" />
     <input type="hidden" name="product_id" value="" />
     <table summary="お気に入り" id="mypage-history-list" class="list">
@@ -58,9 +57,9 @@
       <!--{section name=cnt loop=$arrFavorite}-->
       <!--{assign var=product_id value="`$arrFavorite[cnt].product_id`"}-->
       <tr>
-       <td><a href="javascript:fnModeSubmit('delete_favorite','product_id','<!--{$product_id}-->');">削除</a></td>
-       <td><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$product_id}-->"><img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$arrFavorite[cnt].main_list_image|sfNoImageMainList|escape}-->&width=65&height=65"></a></td>
-       <td><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$product_id}-->"><!--{$arrFavorite[cnt].name}--></a></td>
+       <td><a href="javascript:fnModeSubmit('delete_favorite','product_id','<!--{$product_id|escape}-->');">削除</a></td>
+       <td><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$product_id|escape}-->"><img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$arrFavorite[cnt].main_list_image|sfNoImageMainList|escape}-->&width=65&height=65"></a></td>
+       <td><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$product_id|escape}-->"><!--{$arrFavorite[cnt].name}--></a></td>
        <td class="right sale_price">
         <span class="price">
           <!--{if $arrFavorite[cnt].price02_min == $arrFavorite[cnt].price02_max}-->

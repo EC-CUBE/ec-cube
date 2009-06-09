@@ -77,7 +77,7 @@ class LC_Page_MyPage_Favorite extends LC_Page {
         if(!$objCustomer->isLoginSuccess()) {
             SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
         }else {
-            //マイページトップ顧客情報表示用
+            // マイページトップ顧客情報表示用
             $this->CustomerName1 = $objCustomer->getvalue('name01');
             $this->CustomerName2 = $objCustomer->getvalue('name02');
             $this->CustomerPoint = $objCustomer->getvalue('point');
@@ -89,7 +89,7 @@ class LC_Page_MyPage_Favorite extends LC_Page {
             $this->lfDeleteFavoriteProduct($customer_id, $_POST['product_id']);
         }
 
-        //ページ送り用
+        // ページ送り用
         if (isset($_POST['pageno'])) {
             $this->tpl_pageno = htmlspecialchars($_POST['pageno'], ENT_QUOTES, CHAR_CODE);
         }
@@ -102,10 +102,11 @@ class LC_Page_MyPage_Favorite extends LC_Page {
         if (NOSTOCK_HIDDEN === true) {
             $where .= ' AND (alldtl.stock_max >= 1 OR alldtl.stock_unlimited_max = 1)';
         }
+        $order = "create_date DESC";
 
         $arrval = array($objCustomer->getvalue('customer_id'));
-        $order = "product_id DESC";
 
+        // お気に入りの数を取得
         $linemax = $objQuery->count($from, $where, $arrval);
         $this->tpl_linemax = $linemax;
 
@@ -119,7 +120,7 @@ class LC_Page_MyPage_Favorite extends LC_Page {
         // 表示順序
         $objQuery->setorder($order);
 
-        //お気に入りの取得
+        // お気に入りの取得
         $this->arrFavorite = $objQuery->select($col, $from, $where, $arrval);
 
         // パラメータ管理クラス
