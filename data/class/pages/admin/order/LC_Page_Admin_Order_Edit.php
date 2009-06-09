@@ -149,8 +149,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
 
             // 入力値の変換
             $this->objFormParam->convParam();
-            $this->arrErr = $this->lfCheckError();
-            $this->arrErr = array_merge((array)$this->arrErr, (array)$this->lfCheek());
+            $this->arrErr = array_merge((array)$this->lfCheckError(), (array)$this->lfCheek($_POST['mode']));
 
             if(count($this->arrErr) == 0) {
                 if ($_POST['mode'] == 'add') {
@@ -178,10 +177,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
             $this->objFormParam->setParam($_POST);
             // 入力値の変換
             $this->objFormParam->convParam();
-            $this->arrErr = $this->lfCheckError();
-            #if(count($this->arrErr) == 0) {
-                $this->arrErr = $this->lfCheek();
-            #}
+            $this->arrErr = array_merge((array)$this->lfCheckError(), (array)$this->lfCheek($_POST['mode']));
             break;
         /* ペイジェント決済モジュール連携用 */
         case 'paygent_order':
@@ -455,7 +451,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
     }
 
     /* 計算処理 */
-    function lfCheek() {
+    function lfCheek($mode = "") {
         $objDb = new SC_Helper_DB_Ex();
         $arrVal = $this->objFormParam->getHashArray();
         $arrErr = array();
@@ -486,17 +482,23 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         // 加算ポイント
         $arrVal['add_point'] = SC_Helper_DB_Ex::sfGetAddPoint($totalpoint, $arrVal['use_point']);
 
-        list($arrVal['point'], $arrVal['total_point']) = $objDb->sfGetCustomerPoint($_POST['order_id'], $arrVal['use_point'], $arrVal['add_point']);
-
-        if($arrVal['total'] < 0) {
+        if (strlen($_POST['customer_id']) > 0){
+            list($arrVal['point'], $arrVal['total_point']) = $objDb->sfGetCustomerPointFromCid($_POST['customer_id'], $arrVal['use_point'], $arrVal['add_point']);
+        }else{
+            list($arrVal['point'], $arrVal['total_point']) = $objDb->sfGetCustomerPoint($_POST['order_id'], $arrVal['use_point'], $arrVal['add_point']);
+        }
+        if ($arrVal['total'] < 0) {
             $arrErr['total'] = '合計額がマイナス表示にならないように調整して下さい。<br />';
         }
 
-        if($arrVal['payment_total'] < 0) {
+        if ($arrVal['payment_total'] < 0) {
             $arrErr['payment_total'] = 'お支払い合計額がマイナス表示にならないように調整して下さい。<br />';
         }
-        if($arrVal['total_point'] < 0) {
-            $arrErr['total_point'] = '最終保持ポイントがマイナス表示にならないように調整して下さい。<br />';
+        //新規追加受注のみ
+        if ($mode == "add") {
+            if ($arrVal['total_point'] < 0) {
+                    $arrErr['use_point'] = '最終保持ポイントがマイナス表示にならないように調整して下さい。<br />';
+            }
         }
 
         $this->objFormParam->setParam($arrVal);

@@ -548,6 +548,26 @@ class SC_Helper_DB {
     }
 
     /**
+     * 顧客番号、利用ポイント、加算ポイントから最終ポイントを取得する.
+     *
+     * @param integer $customer_id 顧客番号
+     * @param integer $use_point 利用ポイント
+     * @param integer $add_point 加算ポイント
+     * @return array 最終ポイントの配列
+     */
+    function sfGetCustomerPointFromCid($customer_id, $use_point, $add_point) {
+        $objQuery = new SC_Query();
+        if (USE_POINT === true) {
+                $arrRet = $objQuery->select("point", "dtb_customer", "customer_id = ?", array($customer_id));
+                $point = $arrRet[0]['point'];
+                $total_point = $arrRet[0]['point'] - $use_point + $add_point;
+        } else {
+            $total_point = 0;
+            $point = 0;
+        }
+        return array($point, $total_point);
+    }
+    /**
      * カテゴリツリーの取得を行う.
      *
      * @param integer $parent_category_id 親カテゴリID
