@@ -51,11 +51,13 @@
             return false;
         }
         
-        window.open("about:blank", "pdf", "width=1000,height=800,scrollbars=yes,resizable=yes,toolbar=no,location=no,directories=no,status=no");
+        var WIN;
+        WIN = window.open("about:blank", "pdf", "width=500,height=600,scrollbars=yes,resizable=yes,toolbar=no,location=no,directories=no,status=no");
         fm.target = "pdf";
         fm.mode.value = 'pdf';
         fm.action = 'pdf.php';
         fm.submit(); 
+        WIN.focus();
     }
     
     function fnBoxChecked(check){
