@@ -536,15 +536,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         if ($sqlval['status'] == ODERSTATUS_COMMIT) {
             // 受注テーブルの発送済み日を更新する
             $addcol['commit_date'] = "Now()";
-            // 発送済みに変更の際ポイント付与
-            $customer_id = $sqlval['customer_id'];
-            $add_point = $sqlval['add_point'];
-            if($customer_id != "" && $customer_id >= 1) {
-                $arrRet = $objQuery->select("point", 'dtb_customer', 'customer_id = ?', array($customer_id));
-                $arrRet[0]['point']+= $add_point;
-                $sqlval2['point'] = $arrRet[0]['point'];
-                $objQuery->update('dtb_customer', $sqlval2, 'customer_id = ?', array($customer_id));
-            }
         }
 
         /*
@@ -619,15 +610,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         if ($sqlval['status'] == ODERSTATUS_COMMIT) {
             // 受注テーブルの発送済み日を更新する
             $sqlval['commit_date'] = "Now()";
-            // 発送済みに変更の際ポイント付与
-            $customer_id = $sqlval['customer_id'];
-            $add_point = $sqlval['add_point'];
-            if($customer_id != "" && $customer_id >= 1) {
-                $arrRet = $objQuery->select("point", 'dtb_customer', 'customer_id = ?', array($customer_id));
-                $arrRet[0]['point']+= $add_point;
-                $sqlval2['point'] = $arrRet[0]['point'];
-                $objQuery->update('dtb_customer', $sqlval2, 'customer_id = ?', array($customer_id));
-            }
         }
 
         // 受注テーブルの登録
