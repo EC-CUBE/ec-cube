@@ -282,7 +282,6 @@ class SC_Query {
      */
     function update($table, $sqlval, $where = "", $arradd = "", $addcol = "") {
         $strcol = '';
-        $strval = '';
         $find = false;
         foreach ($sqlval as $key => $val) {
             if(eregi("^Now\(\)$", $val)) {
@@ -305,8 +304,6 @@ class SC_Query {
 
         // 文末の","を削除
         $strcol = ereg_replace(",$","",$strcol);
-        // 文末の","を削除
-        $strval = ereg_replace(",$","",$strval);
 
         if($where != "") {
             $sqlup = "UPDATE $table SET $strcol WHERE $where";
