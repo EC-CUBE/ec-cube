@@ -555,7 +555,7 @@ class SC_Helper_DB {
      */
     function sfGetCustomerPointFromCid($customer_id, $use_point, $add_point) {
         $objQuery = new SC_Query();
-        if (USE_POINT === true) {
+        if (USE_POINT !== false) {
                 $arrRet = $objQuery->select("point", "dtb_customer", "customer_id = ?", array($customer_id));
                 $point = $arrRet[0]['point'];
                 $total_point = $arrRet[0]['point'] - $use_point + $add_point;
