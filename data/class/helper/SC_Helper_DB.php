@@ -1285,7 +1285,7 @@ __EOS__;
         $objQuery->begin();
 
         // 自身のランクを取得する
-        $rank = $objQuery->get($tableName, "rank", "$keyIdColumn = ?", array($keyId));
+        $rank = $objQuery->get($tableName, "rank", "$keyIdColumn = ? AND " . $where, array($keyId));
 
         $max = $objQuery->max($tableName, "rank", $where);
 
