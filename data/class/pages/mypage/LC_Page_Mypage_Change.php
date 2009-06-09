@@ -353,6 +353,14 @@ class LC_Page_Mypage_Change extends LC_Page {
                     $passlen = strlen($this->arrForm['password']);
                     $this->passlen = $this->lfPassLen($passlen);
 
+                    // メール受け取り
+                    if (!isset($_POST['mailmaga_flg'])) $_POST['mailmaga_flg'] = "";
+                    if (strtolower($_POST['mailmaga_flg']) == "on") {
+                        $this->arrForm['mailmaga_flg'] = "2";
+                    } else {
+                        $this->arrForm['mailmaga_flg'] = "3";
+                    }
+
                     $this->tpl_mainpage = 'mypage/change_confirm.tpl';
                     $this->tpl_title = '登録変更(確認ページ)';
 
@@ -536,15 +544,6 @@ class LC_Page_Mypage_Change extends LC_Page {
             // XXX 文字列のみを変換するようにした方が良い気もする。
             if (strlen($val) > 0) {
                 $val = mb_convert_kana($val ,$mb_convert_kana_option);
-            }
-            
-            // メールマガジン
-            if ($key == 'mailmaga_flg') {
-                if (strtolower($val) == "on") {
-                    $val = "2";
-                } else if ($val != "2") {
-                    $val = "3";
-                }
             }
         }
         return $array;
