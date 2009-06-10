@@ -58,11 +58,22 @@
         var fm = document.form1;
         var WIN;
         WIN = window.open("about:blank", "pdf", "width=500,height=600,scrollbars=yes,resizable=yes,toolbar=no,location=no,directories=no,status=no");
+        
+        // 退避
+        tmpTarget = fm.target;
+        tmpMode = fm.mode.value;
+        tmpAction = fm.action;
+        
         fm.target = "pdf";
         fm.mode.value = 'pdf';
         fm.action = action;
-        fm.submit(); 
+        fm.submit();
         WIN.focus();
+        
+        // 復元
+        fm.target = tmpTarget;
+        fm.mode.value = tmpMode;
+        fm.action = tmpAction;
     }
     
     function fnBoxChecked(check){
