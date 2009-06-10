@@ -123,7 +123,6 @@ class LC_Page_Admin_Order extends LC_Page {
         switch($_POST['mode']) {
             case 'delete':
             case 'csv':
-            case 'pdf':
             case 'delete_all':
             case 'search':
                 // 入力値の変換
@@ -299,11 +298,6 @@ class LC_Page_Admin_Order extends LC_Page {
                             // CSVを送信する。
                             SC_Utils_Ex::sfCSVDownload($head.$data);
                             exit;
-                            break;
-                        case 'pdf':
-                            $objFpdf = new SC_Fpdf(1, '納品書');
-                            $objFpdf->setData($arrRet);
-                            $objFpdf->createPdf();
                             break;
                         case 'delete_all':
                             // 検索結果をすべて削除
