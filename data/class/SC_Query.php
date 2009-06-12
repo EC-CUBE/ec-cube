@@ -276,51 +276,49 @@ class SC_Query {
      * @param string $table テーブル名
      * @param array $sqlval array('カラム名' => '値',...)の連想配列
      * @param string $where WHERE句
-     * @param array $arradd $addcol用のプレースホルダ配列
-     * @param string $addcol 追加カラム
+     * @param array $arrValIn $where,$arrRawSql用のプレースホルダ配列
+     * @param string $arrRawSql 追加カラム
      * @return
      */
-    function update($table, $sqlval, $where = "", $arradd = "", $addcol = "") {
-        $strcol = '';
+    function update($table, $sqlval, $where = "", $arrValIn = array(), $arrRawSql = array()) {
+        $arrCol = array();
+        $arrVal = array();
         $find = false;
         foreach ($sqlval as $key => $val) {
-            if(eregi("^Now\(\)$", $val)) {
-                $strcol .= $key . '= Now(),';
+            if (eregi("^Now\(\)$", $val)) {
+                $arrCol[] = $key . '= Now()';
             } else {
-                $strcol .= $key . '= ?,';
-                $arrval[] = $val;
+                $arrCol[] = $key . '= ?';
+                $arrVal[] = $val;
             }
             $find = true;
         }
-        if(!$find) {
+
+        if ($arrRawSql != "") {
+            foreach($arrRawSql as $key => $val) {
+                $arrCol[] = "$key = $val";
+            }
+        }
+
+        if (empty($arrCol)) {
             return false;
         }
 
-        if($addcol != "") {
-            foreach($addcol as $key => $val) {
-                $strcol .= "$key = $val,";
-            }
-        }
-
         // 文末の","を削除
-        $strcol = ereg_replace(",$","",$strcol);
+        $strcol = implode(', ', $arrCol);
 
-        if($where != "") {
-            $sqlup = "UPDATE $table SET $strcol WHERE $where";
-        } else {
-            $sqlup = "UPDATE $table SET $strcol";
+        if (is_array($arrValIn)) { // 旧版との互換用
+            // プレースホルダー用に配列を追加
+            $arrVal = array_merge($arrVal, $arrValIn);
         }
 
-        if(is_array($arradd)) {
-            // プレースホルダー用に配列を追加
-            foreach($arradd as $val) {
-                $arrval[] = $val;
-            }
+        $sqlup = "UPDATE $table SET $strcol";
+        if (strlen($where) >= 1) {
+            $sqlup .= " WHERE $where";
         }
 
         // UPDATE文の実行
-        $ret = $this->conn->query($sqlup, $arrval);
-        return $ret;
+        return $this->conn->query($sqlup, $arrVal);
     }
 
     // MAX文の実行
@@ -366,17 +364,24 @@ class SC_Query {
 
     }
 
-    // 一行を取得
-    function getrow($table, $col, $where = "", $arrval = array()) {
-        if(strlen($where) <= 0) {
-            $sqlse = "SELECT $col FROM $table";
-        } else {
-            $sqlse = "SELECT $col FROM $table WHERE $where";
+    /**
+     * 一行をカラム名をキーとした連想配列として取得
+     *
+     * @param string $table テーブル名
+     * @param string $col カラム名
+     * @param string $where WHERE句
+     * @param array $arrVal プレースホルダ配列
+     * @param integer $fetchmode 使用するフェッチモード。デフォルトは DB_FETCHMODE_ASSOC。
+     * @return array array('カラム名' => '値', ...)の連想配列
+     */
+    function getRow($table, $col, $where = "", $arrVal = array(), $fetchmode = DB_FETCHMODE_ASSOC) {
+        $sqlse = "SELECT $col FROM $table";
+        
+        if (strlen($where) >= 1) {
+            $sqlse .= " WHERE $where";
         }
         // SQL文の実行
-        $ret = $this->conn->getRow($sqlse, $arrval);
-
-        return $ret;
+        return $this->conn->getRow($sqlse, $arrVal ,$fetchmode);
     }
 
     // 1列取得

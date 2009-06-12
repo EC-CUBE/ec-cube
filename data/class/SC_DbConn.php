@@ -26,7 +26,7 @@ require_once($current_dir . "/../module/DB.php");
 
 $objDbConn = "";
 
-class SC_DbConn{
+class SC_DbConn {
 
     var $conn;
     var $result;
@@ -85,7 +85,7 @@ class SC_DbConn{
         }
 
         if ($this->conn->isError($result) && !$ignore_err){
-            $this->send_err_mail ($result, $n);
+            $this->send_err_mail($result, $n);
         }
 
         $this->result = $result;
@@ -104,25 +104,30 @@ class SC_DbConn{
             $result = $this->conn->getOne($n);
         }
         if ($this->conn->isError($result)){
-            $this->send_err_mail ($result ,$n);
+            $this->send_err_mail($result ,$n);
         }
         $this->result = $result;
 
         return $this->result;
     }
-
-    function getRow($n, $arr = ""){
-
+    
+    /**
+     * クエリを実行し、最初の行を返す
+     *
+     * @param string $sql SQL クエリ
+     * @param array $arrVal プリペアドステートメントの実行時に使用される配列。配列の要素数は、クエリ内のプレースホルダの数と同じでなければなりません。 
+     * @param integer $fetchmode 使用するフェッチモード。デフォルトは DB_FETCHMODE_ASSOC。
+     * @return array データを含む1次元配列。失敗した場合に DB_Error オブジェクトを返します。
+     */
+    function getRow($sql, $arrVal = array(), $fetchmode = DB_FETCHMODE_ASSOC) {
+        
         // mysqlの場合にはビュー表を変換する
-        if (DB_TYPE == "mysql") $n = $this->dbFactory->sfChangeMySQL($n);
-
-        if ( $arr ) {
-            $result = $this->conn->getRow($n, $arr);
-        } else {
-            $result = $this->conn->getRow($n);
-        }
+        if (DB_TYPE == "mysql") $sql = $this->dbFactory->sfChangeMySQL($sql);
+        
+        $result = $this->conn->getRow($sql, $arrVal ,$fetchmode);
+        
         if ($this->conn->isError($result)){
-            $this->send_err_mail ($result ,$n);
+            $this->send_err_mail($result ,$sql);
         }
         $this->result = $result;
         return $this->result;
@@ -167,7 +172,7 @@ class SC_DbConn{
         }
 
         if ($this->conn->isError($result)){
-            $this->send_err_mail ($result, $n);
+            $this->send_err_mail($result, $n);
         }
         $this->result = $result;
 
@@ -183,7 +188,7 @@ class SC_DbConn{
         }
 
         if ($this->conn->isError($result)){
-            $this->send_err_mail ($result, $n);
+            $this->send_err_mail($result, $n);
         }
         $this->result = $result;
         return $this->result;

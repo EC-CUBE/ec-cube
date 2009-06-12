@@ -251,7 +251,7 @@ class LC_Page_Magazine_Confirm extends LC_Page {
         $mailResult = $objConn->getRow($sql, array($email));
 
         // NULLも購読とみなす
-        if (count($mailResult) == 0 or ($mailResult[1] != null and $mailResult[1] != 2 )) {
+        if (count($mailResult) == 0 or ($mailResult['mailmaga_flg'] != null and $mailResult['mailmaga_flg'] != 2 )) {
             return false;
         } else {
             return true;
