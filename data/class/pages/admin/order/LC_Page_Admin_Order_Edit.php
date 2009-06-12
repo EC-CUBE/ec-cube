@@ -153,13 +153,13 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
 
             if(count($this->arrErr) == 0) {
                 if ($_POST['mode'] == 'add') {
-                $order_id = $this->lfRegistNewData();
+                    $order_id = $this->lfRegistNewData();
 
-                $this->tpl_order_id = $order_id;
-                $this->tpl_mode = 'edit';
+                    $this->tpl_order_id = $order_id;
+                    $this->tpl_mode = 'edit';
 
-                $arrData['order_id'] = $order_id;
-                $this->objFormParam->setParam($arrData);
+                    $arrData['order_id'] = $order_id;
+                    $this->objFormParam->setParam($arrData);
 
                     $text = "'新規受注を登録しました。'";
                 } else {
@@ -522,45 +522,52 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
             $this->arrErr = $this->lfCheek();
         #}
     }
-    /* DB登録処理 */
+
+    /**
+     * DB更新処理
+     *
+     * @param integer $order_id 注文番号
+     * @return void
+     */
     function lfRegistData($order_id) {
         $objQuery = new SC_Query();
 
         $objQuery->begin();
 
         // 入力データを渡す。
-        $arrRet =  $this->objFormParam->getHashArray();
-        foreach($arrRet as $key => $val) {
+        $arrRet = $this->objFormParam->getHashArray();
+        foreach ($arrRet as $key => $val) {
             // 配列は登録しない
-            if(!is_array($val)) {
+            if (!is_array($val)) {
                 $sqlval[$key] = $val;
             }
         }
+        $sqlval['update_date'] = 'Now()';
 
         unset($sqlval['total_point']);
         unset($sqlval['point']);
+        unset($sqlval['commit_date']);
 
         $where = "order_id = ?";
 
-        // 受注ステータスの判定
-        if ($sqlval['status'] == ODERSTATUS_COMMIT) {
-            // 受注テーブルの発送済み日を更新する
-            $sqlval['commit_date'] = "Now()";
-        }
+        // 受注.対応状況の更新
+        SC_Helper_DB_Ex::sfUpdateOrderStatus($order_id, $sqlval['status'], $sqlval['add_point'], $sqlval['use_point']);
+        unset($sqlval['status']);
+        unset($sqlval['add_point']);
+        unset($sqlval['use_point']);
 
         // 受注テーブルの更新
         $objQuery->update("dtb_order", $sqlval, $where, array($order_id));
         
         // 受注テーブルの名称列を更新
-        $objDb = new SC_Helper_DB_Ex();
-        $objDb->sfUpdateOrderNameCol($order_id);
+        SC_Helper_DB_Ex::sfUpdateOrderNameCol($order_id);
         
         // 受注詳細データの更新
         $arrDetail = $this->objFormParam->getSwapArray(array("product_id", "product_code", "product_name", "price", "quantity", "point_rate", "classcategory_id1", "classcategory_id2", "classcategory_name1", "classcategory_name2"));
         $objQuery->delete("dtb_order_detail", $where, array($order_id));
 
         $max = count($arrDetail);
-        for($i = 0; $i < $max; $i++) {
+        for ($i = 0; $i < $max; $i++) {
             $sqlval = array();
             $sqlval['order_id'] = $order_id;
             $sqlval['product_id']  = $arrDetail[$i]['product_id'];
@@ -579,7 +586,11 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         $objQuery->commit();
     }
 
-    /* DB登録処理(追加) */
+    /**
+     * DB登録処理
+     *
+     * @return integer 注文番号
+     */
     function lfRegistNewData() {
         $objQuery = new SC_Query();
 
@@ -587,50 +598,53 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
 
         // 入力データを渡す。
         $arrRet =  $this->objFormParam->getHashArray();
-        foreach($arrRet as $key => $val) {
+        foreach ($arrRet as $key => $val) {
             // 配列は登録しない
-            if(!is_array($val)) {
+            if (!is_array($val)) {
                 $sqlval[$key] = $val;
             }
         }
-        $sqlval['create_date'] = "Now()";
 
-        // 注文ステータス:指定が無ければ新規受付に設定
-        if($sqlval["status"] == ""){
-            $sqlval['status'] = '1';
-        }
-
-        // customer_id
-        if($sqlval["customer_id"] == ""){
-            $sqlval['customer_id'] = '0';
-        }
-
+        // 受注テーブルに書き込まない列を除去
         unset($sqlval['order_id']); 
         unset($sqlval['total_point']);
         unset($sqlval['point']);
+        unset($sqlval['commit_date']);
 
-        $where = "order_id = ?";
+        // ポイントは別登録
+        $addPoint = $sqlval['add_point'];
+        $usePoint = $sqlval['use_point'];
+        $sqlval['add_point'] = 0;
+        $sqlval['use_point'] = 0;
 
-        // 受注ステータスの判定
-        if ($sqlval['status'] == ODERSTATUS_COMMIT) {
-            // 受注テーブルの発送済み日を更新する
-            $sqlval['commit_date'] = "Now()";
+        // 注文ステータス:指定が無ければ新規受付に設定
+        if (strlen($sqlval['status']) == 0) {
+            $sqlval['status'] = ORDER_NEW;
         }
+        // customer_id
+        if ($sqlval["customer_id"] == "") {
+            $sqlval['customer_id'] = '0';
+        }
+
+        $sqlval['create_date'] = 'Now()';       // 受注日
+        $sqlval['update_date'] = 'Now()';       // 更新日時
 
         // 受注テーブルの登録
         $objQuery->insert("dtb_order", $sqlval);
         $order_id = $objQuery->currval('dtb_order', 'order_id'); 
 
+        // 受注.対応状況の更新
+        SC_Helper_DB_Ex::sfUpdateOrderStatus($order_id, null, $addPoint, $usePoint);
+
         // 受注テーブルの名称列を更新
-        $objDb = new SC_Helper_DB_Ex();
-        $objDb->sfUpdateOrderNameCol($order_id);
+        SC_Helper_DB_Ex::sfUpdateOrderNameCol($order_id);
 
         // 受注詳細データの更新
         $arrDetail = $this->objFormParam->getSwapArray(array("product_id", "product_code", "product_name", "price", "quantity", "point_rate", "classcategory_id1", "classcategory_id2", "classcategory_name1", "classcategory_name2"));
-        $objQuery->delete("dtb_order_detail", $where, array($order_id));
+        $objQuery->delete("dtb_order_detail", 'order_id = ?', array($order_id));
 
         $max = count($arrDetail);
-        for($i = 0; $i < $max; $i++) {
+        for ($i = 0; $i < $max; $i++) {
             $sqlval = array();
             $sqlval['order_id'] = $order_id;
             $sqlval['product_id']  = $arrDetail[$i]['product_id'];
@@ -645,6 +659,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
             $sqlval['classcategory_name2'] = $arrDetail[$i]['classcategory_name2'];
             $objQuery->insert("dtb_order_detail", $sqlval);
         }
+
         $objQuery->commit();
 
         return $order_id;

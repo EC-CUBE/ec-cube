@@ -1815,5 +1815,99 @@ __EOS__;
         
         return SC_Utils_Ex::sfGetAddPoint($totalpoint, $use_point, $CONF['point_rate']);
     }
+
+    /**
+     * 受注.対応状況の更新
+     *
+     * ・必ず呼び出し元でトランザクションブロックを開いておくこと。
+     *
+     * @param integer $orderId 注文番号
+     * @param integer|null $newStatus 対応状況 (null=変更無し)
+     * @param integer|null $newAddPoint 加算ポイント (null=変更無し)
+     * @param integer|null $newUsePoint ポイント (null=変更無し)
+     * @return void
+     */
+    function sfUpdateOrderStatus($orderId, $newStatus = null, $newAddPoint = null, $newUsePoint = null) {
+        $objQuery = new SC_Query();
+        
+        $arrOrderOld = $objQuery->getRow('dtb_order', 'status, add_point, use_point, customer_id', 'order_id = ?', array($orderId));
+        
+        // 対応状況
+        if (is_null($newStatus)) {
+            $newStatus = $arrOrderOld['status'];
+        }
+        
+        if (USE_POINT !== false) {
+            $addPoint = 0;
+            
+            // 使用ポイント
+            if (!is_null($newUsePoint)) {
+                $addPoint += $arrOrderOld['use_point']; // 変更前のポイントを戻す
+                $addPoint -= $newUsePoint;              // 変更後のポイントを引く
+            }
+            
+            // ▼加算ポイント
+            // 変更前の状態が加算対象の場合、
+            if (SC_Utils_Ex::sfIsAddPoint($arrOrderOld['status'])) {
+                $addPoint -= $arrOrderOld['add_point'];
+            }
+            
+            // 変更後の状態が加算対象の場合、
+            if (SC_Utils_Ex::sfIsAddPoint($newStatus)) {
+                $addPoint += is_null($newAddPoint) ? $arrOrderOld['add_point'] : $newAddPoint;
+            }
+            // ▲加算ポイント
+            
+            if ($addPoint != 0) {
+                // ▼顧客テーブルの更新
+                $sqlval = array();
+                $where = '';
+                $arrVal = array();
+                $arrRawSql = array();
+                
+                $sqlval['update_date'] = 'Now()';
+                $arrRawSql['point'] = 'point + ?';
+                $arrVal[] = $addPoint;
+                $where .= 'customer_id = ?';
+                $arrVal[] = $arrOrderOld['customer_id'];
+                
+                $objQuery->update('dtb_customer', $sqlval, $where, $arrVal, $arrRawSql);
+                // ▲顧客テーブルの更新
+                
+                // ポイントをマイナスした場合、
+                if ($addPoint < 0) {
+                    $sql = 'SELECT point FROM dtb_customer WHERE customer_id = ?';
+                    $point = $objQuery->getone($sql, array($arrOrderOld['customer_id']));
+                    // 変更後のポイントがマイナスの場合、
+                    if ($point < 0) {
+                        // ロールバック
+                        $objQuery->rollback();
+                        // エラー
+                        SC_Utils_Ex::sfDispSiteError(LACK_POINT);
+                    }
+                }
+            }
+        }
+        
+        // ▼受注テーブルの更新
+        $sqlval = array();
+        if (USE_POINT !== false) {
+            if (!is_null($newAddPoint)) {
+                $sqlval['add_point'] = $newAddPoint;
+            }
+            if (!is_null($newUsePoint)) {
+                $sqlval['use_point'] = $newUsePoint;
+            }
+        }
+        // ステータスが発送済みに変更の場合、発送日を更新
+        if ($arrOrderOld['status'] != ORDER_DELIV && $newStatus == ORDER_DELIV) {
+            $sqlval['commit_date'] = 'Now()';
+        }
+        $sqlval['status'] = $newStatus;
+        $sqlval['update_date'] = 'Now()';
+        
+        $objQuery->update('dtb_order', $sqlval, 'order_id = ?', array($orderId));
+        // ▲受注テーブルの更新
+    }
 }
 ?>

@@ -434,28 +434,38 @@ class LC_Page_Shopping_Complete extends LC_Page {
         return $customer_id;
     }
 
-    // 受注テーブルへ登録
+    /**
+     * 受注テーブルへ登録
+     *
+     * @return integer 注文番号
+     */
     function lfRegistOrder($objQuery, $arrData, $objCampaignSess = null) {
         $sqlval = $arrData;
 
         // 受注テーブルに書き込まない列を除去
-        unset($sqlval['mailmaga_flg']);		// メルマガチェック
-        unset($sqlval['deliv_check']);		// 別のお届け先チェック
-        unset($sqlval['point_check']);		// ポイント利用チェック
-        unset($sqlval['member_check']);		// 購入時会員チェック
-        unset($sqlval['password']);			// ログインパスワード
-        unset($sqlval['reminder']);			// リマインダー質問
-        unset($sqlval['reminder_answer']);	// リマインダー答え
-        unset($sqlval['mail_flag']);		// メールフラグ
-        unset($sqlval['session']);		    // セッション情報
+        unset($sqlval['mailmaga_flg']);     // メルマガチェック
+        unset($sqlval['deliv_check']);      // 別のお届け先チェック
+        unset($sqlval['point_check']);      // ポイント利用チェック
+        unset($sqlval['member_check']);     // 購入時会員チェック
+        unset($sqlval['password']);         // ログインパスワード
+        unset($sqlval['reminder']);         // リマインダー質問
+        unset($sqlval['reminder_answer']);  // リマインダー答え
+        unset($sqlval['mail_flag']);        // メールフラグ
+        unset($sqlval['session']);          // セッション情報
+
+        // ポイントは別登録
+        $addPoint = $sqlval['add_point'];
+        $usePoint = $sqlval['use_point'];
+        $sqlval['add_point'] = 0;
+        $sqlval['use_point'] = 0;
 
         // 注文ステータス:指定が無ければ新規受付に設定
-        if($sqlval["status"] == ""){
-            $sqlval['status'] = '1';
+        if (strlen($sqlval['status']) == 0) {
+            $sqlval['status'] = ORDER_NEW;
         }
 
         // 別のお届け先を指定していない場合、配送先に登録住所をコピーする。
-        if($arrData["deliv_check"] == "-1") {
+        if ($arrData["deliv_check"] == "-1") {
             $sqlval['deliv_name01'] = $arrData['order_name01'];
             $sqlval['deliv_name02'] = $arrData['order_name02'];
             $sqlval['deliv_kana01'] = $arrData['order_kana01'];
@@ -470,19 +480,23 @@ class LC_Page_Shopping_Complete extends LC_Page {
             $sqlval['deliv_tel03'] = $arrData['order_tel03'];
         }
 
-        $order_id = $arrData['order_id'];		// 注文番号
-        $sqlval['create_date'] = 'now()';		// 受注日
+        $order_id = $arrData['order_id'];       // 注文番号
+        $sqlval['create_date'] = 'Now()';       // 受注日
+        $sqlval['update_date'] = 'Now()';       // 更新日時
 
         // キャンペーンID
         if (!defined("MOBILE_SITE")) {
-            if($objCampaignSess->getIsCampaign()) $sqlval['campaign_id'] = $objCampaignSess->getCampaignId();
+            if ($objCampaignSess->getIsCampaign()) $sqlval['campaign_id'] = $objCampaignSess->getCampaignId();
         }
 
         // ゲットの値をインサート
         //$sqlval = lfGetInsParam($sqlval);
 
-        // INSERTの実行
+        // 受注テーブルの登録
         $objQuery->insert("dtb_order", $sqlval);
+
+        // 受注.対応状況の更新
+        SC_Helper_DB_Ex::sfUpdateOrderStatus($order_id, null, $addPoint, $usePoint);
 
         return $order_id;
     }
@@ -546,7 +560,7 @@ class LC_Page_Shopping_Complete extends LC_Page {
         $arrOrder = $objQuery->select($cols, "dtb_order", "order_id = ?", array($order_id));
 
         $sqlval = $arrOrder[0];
-        $sqlval['create_date'] = 'now()';
+        $sqlval['create_date'] = 'Now()';
 
         // INSERTの実行
         $objQuery->insert("dtb_campaign_order", $sqlval);
@@ -618,7 +632,7 @@ class LC_Page_Shopping_Complete extends LC_Page {
 
     /* 購入情報を会員テーブルに登録する */
     function lfSetCustomerPurchase($customer_id, $arrData, &$objQuery) {
-        $col = "first_buy_date, last_buy_date, buy_times, buy_total, point";
+        $col = "first_buy_date, last_buy_date, buy_times, buy_total";
         $where = "customer_id = ?";
         $arrRet = $objQuery->select($col, "dtb_customer", $where, array($customer_id));
         $sqlval = $arrRet[0];
@@ -629,13 +643,6 @@ class LC_Page_Shopping_Complete extends LC_Page {
         $sqlval['last_buy_date'] = "Now()";
         $sqlval['buy_times']++;
         $sqlval['buy_total']+= $arrData['total'];
-        $sqlval['point'] = ($sqlval['point'] + $arrData['add_point'] - $arrData['use_point']);
-
-        // ポイントが不足している場合
-        if($sqlval['point'] < 0) {
-            $objQuery->rollback();
-            SC_Utils_Ex::sfDispSiteError(LACK_POINT);
-        }
 
         $objQuery->update("dtb_customer", $sqlval, $where, array($customer_id));
     }

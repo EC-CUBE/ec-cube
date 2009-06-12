@@ -63,7 +63,6 @@ class LC_Page_Admin_Order_Status extends LC_Page {
         $objView = new SC_AdminView();
         $objSess = new SC_Session();
         $objDb = new SC_Helper_DB_Ex();
-        $objQuery = new SC_Query();
 
         // 認証可否の判定
         $objSess = new SC_Session();
@@ -81,9 +80,22 @@ class LC_Page_Admin_Order_Status extends LC_Page {
 
         case 'update':
             if (!isset($_POST['change_status'])) $_POST['change_status'] = "";
-            if (!empty($_POST['change_status'])) {
-                $this->lfStatusMove($_POST['change_status'], $_POST['move']);
+            
+            switch ($_POST['change_status']) {
+                case '':
+                    break;
+                
+                // 削除
+                case 'delete':
+                    $this->lfDelete($_POST['move']);
+                    break;
+                
+                // 更新
+                default:
+                    $this->lfStatusMove($_POST['change_status'], $_POST['move']);
+                    break;
             }
+            
             //ステータス情報
             $status = isset($_POST['status']) ? $_POST['status'] : "";
             break;
@@ -150,44 +162,55 @@ class LC_Page_Admin_Order_Status extends LC_Page {
         $this->arrStatus = $objQuery->select($select, $from, $where, $arrval);
     }
 
-    //ステータス情報の更新（削除）
-    function lfStatusMove($status_id, $arrMove){
+    /**
+     * ステータス情報の更新
+     */
+    function lfStatusMove($statusId, $arrOrderId) {
         $objQuery = new SC_Query();
+        
+        if (!isset($arrOrderId) || !is_array($arrOrderId)) {
+            return false;
+        }
         $masterData = new SC_DB_MasterData_Ex();
         $arrORDERSTATUS = $masterData->getMasterData("mtb_order_status");
-
-        $table = 'dtb_order';
-        $where = 'order_id = ?';
-        $arrUpdate = array('update_date' => 'NOW()');
-
-        $delflg  = '1'; // 削除フラグ
-        $message = '';  // ステータス変更後にポップアップするメッセージの内容
-
-        if ( $status_id == 'delete' ) {
-            $arrUpdate['del_flg'] = $delflg;
-            $message = '削除';
+        
+        $objQuery->begin();
+        
+        foreach ($arrOrderId as $orderId) {
+            SC_Helper_DB_Ex::sfUpdateOrderStatus($orderId, $statusId);
         }
-        // ステータスが発送済みの時は発送日を更新
-        elseif ( $status_id == ORDER_DELIV ) {
-            $arrUpdate['status'] = $status_id;
-            $arrUpdate['commit_date'] = 'NOW()';
-            $message = $arrORDERSTATUS[$status_id] . 'へ移動';
-        }
-        else {
-            $arrUpdate['status'] = $status_id;
-            $message = $arrORDERSTATUS[$status_id] . 'へ移動';
-        }
+        
+        $objQuery->commit();
+        
+        $this->tpl_onload = "window.alert('選択項目を" . $arrORDERSTATUS[$statusId] . "へ移動しました。');";
+        return true;
+    }
 
-        if ( isset($arrMove) ){
-            foreach ( $arrMove as $val ){
-                if ( $val != "" ) {
-                    $objQuery->update($table, $arrUpdate, $where, array($val));
-                }
-
-            }
+    /**
+     * 受注テーブルの論理削除
+     */
+    function lfDelete($arrOrderId) {
+        $objQuery = new SC_Query();
+        
+        if (!isset($arrOrderId) || !is_array($arrOrderId)) {
+            return false;
         }
-
-        $this->tpl_onload = "window.alert('選択項目を" . $message . "しました。');";
+        
+        $arrUpdate = array(
+             'del_flg' => 1
+            ,'update_date' => 'Now()'
+        );
+        
+        $objQuery->begin();
+        
+        foreach ($arrOrderId as $orderId) {
+            $objQuery->update('dtb_order', $arrUpdate, 'order_id = ?', array($orderId));
+        }
+        
+        $objQuery->commit();
+        
+        $this->tpl_onload = "window.alert('選択項目を削除しました。');";
+        return true;
     }
 }
 ?>
