@@ -76,10 +76,6 @@ class LC_Page_Products_List extends LC_Page {
         $conn = new SC_DBConn();
         $objDb = new SC_Helper_DB_Ex();
 
-        // レイアウトデザインを取得
-        $helper = new SC_Helper_PageLayout_Ex();
-        $helper->sfGetPageLayout($this, false, DEF_LAYOUT);
-
         //表示件数の選択
         if(isset($_POST['disp_number'])
            && SC_Utils_Ex::sfIsInt($_POST['disp_number'])) {
