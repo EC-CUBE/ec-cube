@@ -1460,8 +1460,7 @@ __EOS__;
     /**
      * 都道府県、支払い方法から配送料金を取得する.
      *
-     * @param integer $pref 都道府県ID
-     * @param integer $payment_id 支払い方法ID
+     * @param array $arrData 各種情報
      * @return string 指定の都道府県, 支払い方法の配送料金
      */
     function sfGetDelivFee($arrData) {
@@ -1743,10 +1742,10 @@ __EOS__;
     /**
      * 都道府県、支払い方法から配送料金を加算する.
      *
-     * @param array $arrData
+     * @param array $arrData 各種情報
      */
     function lfAddDelivFee(&$arrData) {
-        $arrData['deliv_fee'] += $this->sfGetDelivFee($arrRet);
+        $arrData['deliv_fee'] += $this->sfGetDelivFee($arrData);
     }
 
     /**
