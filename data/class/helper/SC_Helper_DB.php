@@ -333,10 +333,10 @@ class SC_Helper_DB {
                 
                 // (商品規格単位でなく)商品単位での評価のための準備
                 $product_id = $arrCart['id'][0];
-                $arrQuantityInfo_by_product[$product_id]['product_id'] = $product_id;
                 $arrQuantityInfo_by_product[$product_id]['quantity'] += $quantity;
                 $arrQuantityInfo_by_product[$product_id]['sale_unlimited'] = $arrData['sale_unlimited'];
                 $arrQuantityInfo_by_product[$product_id]['sale_limit'] = $arrData['sale_limit'];
+                $arrQuantityInfo_by_product[$product_id]['name'] = $arrData['name'];
                 
                 $objPage->arrProductsClass[$cnt] = $arrData;
                 $objPage->arrProductsClass[$cnt]['quantity'] = $quantity;
@@ -389,13 +389,15 @@ class SC_Helper_DB {
             }
         }
         
-        foreach ($arrQuantityInfo_by_product as $QuantityInfo) {
-            if($QuantityInfo['sale_unlimited'] != '1' && $QuantityInfo['sale_limit'] != '' && $QuantityInfo['sale_limit'] < $QuantityInfo['quantity']) {
-                // カート内商品数を制限に合わせる
-                $objPage->tpl_error = "※「" . $arrData['name'] . "」は個数「{$QuantityInfo['sale_limit']}」以下に販売制限しております。一度にこれ以上の購入はできません。\n";
+        foreach ($arrQuantityInfo_by_product as $product_id => $quantityInfo) {
+            if ($quantityInfo['sale_unlimited'] != '1' && $quantityInfo['sale_limit'] != '' && $quantityInfo['sale_limit'] < $quantityInfo['quantity']) {
+                $objPage->tpl_error = "※「{$quantityInfo['name']}」は個数「{$quantityInfo['sale_limit']}」以下に販売制限しております。一度にこれ以上の購入はできません。\n";
+                // 販売制限に引っかかった商品をマークする
                 foreach (array_keys($objPage->arrProductsClass) as $key) {
                     $ProductsClass =& $objPage->arrProductsClass[$key];
-                    $ProductsClass['error'] = true;
+                    if ($ProductsClass['product_id'] == $product_id) {
+                        $ProductsClass['error'] = true;
+                    }
                 }
             }
         }
