@@ -628,7 +628,19 @@ class SC_Utils {
     }
 
     /* 税金計算 */
-    function sfTax($price, $tax, $tax_rule) {
+    function sfTax($price, $tax = null, $tax_rule = null) {
+        // 店舗基本情報を取得
+        static $CONF;
+        if (is_null($CONF) && (is_null($tax) || is_null($tax_rule))) {
+            $CONF = SC_Helper_DB_Ex::sf_getBasisData();
+         }
+        if (is_null($tax)) {
+            $tax = $CONF['tax'];
+        }
+        if (is_null($tax_rule)) {
+            $tax_rule = $CONF['tax_rule'];
+        }
+
         $real_tax = $tax / 100;
         $ret = $price * $real_tax;
         switch($tax_rule) {
@@ -653,29 +665,8 @@ class SC_Utils {
     }
 
     /* 税金付与 */
-    function sfPreTax($price, $tax, $tax_rule) {
-        $real_tax = $tax / 100;
-        $ret = $price * (1 + $real_tax);
-
-        switch($tax_rule) {
-        // 四捨五入
-        case 1:
-            $ret = round($ret);
-            break;
-        // 切り捨て
-        case 2:
-            $ret = floor($ret);
-            break;
-        // 切り上げ
-        case 3:
-            $ret = ceil($ret);
-            break;
-        // デフォルト:切り上げ
-        default:
-            $ret = ceil($ret);
-            break;
-        }
-        return $ret;
+    function sfPreTax($price, $tax = null, $tax_rule = null) {
+        return $price + SC_Utils_Ex::sfTax($price, $tax, $tax_rule);
     }
 
     // 桁数を指定して四捨五入
