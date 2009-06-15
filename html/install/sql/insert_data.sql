@@ -131,7 +131,7 @@ insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(2,'
 insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(2,'note', '備考',25,now(),now());
 insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(2,'create_date','登録日',26,now(),now());
 insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(2,'update_date','更新日',27,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'order_id','注文ID',1,now(),now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'order_id','注文番号',1,now(),now());
 insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'customer_id','顧客ID',2,now(),now());
 insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'message','要望等',3,now(),now());
 insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'order_name01','顧客名1',4,now(),now());
@@ -184,7 +184,7 @@ insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'
 insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'status','対応状況',51,now(),now());
 insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'create_date','注文日時',52,now(),now());
 insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'update_date','更新日時',53,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'order_id','注文ID',1,now(),now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'order_id','注文番号',1,now(),now());
 insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'campaign_id','キャンペーンID',2,now(),now());
 insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'customer_id','顧客ID',3,now(),now());
 insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'message','要望等',4,now(),now());

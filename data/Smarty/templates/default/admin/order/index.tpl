@@ -115,7 +115,7 @@
                         <!--検索条件設定テーブルここから-->
                         <table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
                             <tr class="fs12n">
-                                <td bgcolor="#f2f1ec" width="110">受注番号</td>
+                                <td bgcolor="#f2f1ec" width="110">注文番号</td>
                                 <td bgcolor="#ffffff" width="194">
                                     <!--{assign var=key1 value="search_order_id1"}-->
                                     <!--{assign var=key2 value="search_order_id2"}-->
@@ -410,7 +410,7 @@
                         <!--{else}-->
                         <tr bgcolor="#636469" align="center" class="fs12n">
                             <td width="100"><span class="white">受注日</span></td>
-                            <td width="65"><span class="white">受注番号</span></td>
+                            <td width="65"><span class="white">注文番号</span></td>
                             <td width="110"><span class="white">顧客名</span></td>
                             <td width="90"><span class="white">支払方法</span></td>
                             <td width="70"><span class="white">購入金額(円)</span></td>

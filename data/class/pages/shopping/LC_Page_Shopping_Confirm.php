@@ -128,7 +128,7 @@ class LC_Page_Shopping_Confirm extends LC_Page {
             exit;
             break;
         case 'confirm':
-            // この時点でオーダーIDを確保しておく（クレジット、コンビニ決済で必要なため）
+            // この時点で注文番号を確保しておく（クレジット、コンビニ決済で必要なため）
             // postgresqlとmysqlとで処理を分ける
             if (DB_TYPE == "pgsql") {
                 $order_id = $objQuery->nextval("dtb_order","order_id");
@@ -234,7 +234,7 @@ class LC_Page_Shopping_Confirm extends LC_Page {
             exit;
             break;
         case 'confirm':
-            // この時点でオーダーIDを確保しておく（クレジット、コンビニ決済で必要なため）
+            // この時点で注文番号を確保しておく（クレジット、コンビニ決済で必要なため）
             // postgresqlとmysqlとで処理を分ける
             if (DB_TYPE == "pgsql") {
                 $order_id = $objQuery->nextval("dtb_order","order_id");

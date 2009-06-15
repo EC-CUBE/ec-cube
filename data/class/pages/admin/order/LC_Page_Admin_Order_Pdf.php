@@ -126,7 +126,7 @@ class LC_Page_Admin_Order_Pdf extends LC_Page {
             $arrForm['msg2'] = '下記の内容にて納品させていただきます。';
             $arrForm['msg3'] = 'ご確認いただきますよう、お願いいたします。';
 
-            // 受注番号があったら、セットする
+            // 注文番号があったら、セットする
             if(SC_Utils_Ex::sfIsInt($_GET['order_id'])) {
                   $arrForm['order_id'][0] = $_GET['order_id'];
             } elseif (is_array($_POST['pdf_order_id'])) {
@@ -155,7 +155,7 @@ class LC_Page_Admin_Order_Pdf extends LC_Page {
 
     /* パラメータ情報の初期化 */
     function lfInitParam() {
-        $this->objFormParam->addParam("受注番号", "order_id", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $this->objFormParam->addParam("注文番号", "order_id", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
         $this->objFormParam->addParam("発行日", "year", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
         $this->objFormParam->addParam("発行日", "month", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
         $this->objFormParam->addParam("発行日", "day", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
