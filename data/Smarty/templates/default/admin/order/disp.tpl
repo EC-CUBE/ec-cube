@@ -99,7 +99,7 @@
                             </tr>
                             <tr class="fs12n">
                                 <td bgcolor="#f0f0f0" width="110">発送日</td>
-                                <td bgcolor="#ffffff"><!--{$arrForm.commit_date|sfDispDBDate|default:"未発送"}--></td>
+                                <td bgcolor="#ffffff"><!--{$arrForm.commit_date.value|sfDispDBDate|default:"未発送"}--></td>
                             </tr>
                         </table>
 
