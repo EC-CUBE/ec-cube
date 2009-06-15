@@ -250,7 +250,7 @@
     <tr>
       <th>カテゴリ</th>
       <td>
-        <select name="category_id" style="<!--{if $arrErr.category_id != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->">
+        <select name="category_id" style="<!--{if $arrErr.category_id != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->">
           <option value="">選択してください</option>
           <!--{html_options options=$arrCatList selected=$arrForm.category_id}-->
         </select>

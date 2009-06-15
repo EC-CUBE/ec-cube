@@ -46,7 +46,7 @@
                 <!--{if $arrErr.bkup_memo}-->
                 <span class="attention"><!--{$arrErr.bkup_memo}--></span>
                 <!--{/if}-->
-                <textarea name="bkup_memo" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" cols="60" rows="5" class="area60" style="<!--{if $arrErr.bkup_memo != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" ><!--{$arrForm.bkup_memo|escape}--></textarea>
+                <textarea name="bkup_memo" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" cols="60" rows="5" class="area60" style="<!--{if $arrErr.bkup_memo != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" ><!--{$arrForm.bkup_memo|escape}--></textarea>
                 <span class="attention"> （上限<!--{$smarty.const.MTEXT_LEN}-->文字）</span>
             </td>
         </tr>

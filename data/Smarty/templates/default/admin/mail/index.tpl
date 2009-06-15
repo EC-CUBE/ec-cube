@@ -253,7 +253,7 @@
         <tr>
             <th>カテゴリ</th>
             <td>
-                <select name="category_id" style="<!--{if $arrErr.category_id != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->">
+                <select name="category_id" style="<!--{if $arrErr.category_id != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->">
                     <option value="">選択してください</option>
                     <!--{html_options options=$arrCatList selected=$list_data.category_id}-->
                 </select>
@@ -262,7 +262,7 @@
         <tr>
             <th>キャンペーン</th>
             <td>
-                <select name="campaign_id" style="<!--{if $arrErr.campaign_id != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->">
+                <select name="campaign_id" style="<!--{if $arrErr.campaign_id != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->">
                     <option value="">選択してください</option>
                     <!--{html_options options=$arrCampaignList selected=$list_data.campaign_id}-->
                 </select>

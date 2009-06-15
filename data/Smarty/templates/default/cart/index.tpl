@@ -76,7 +76,7 @@
          <th>小計</th>
        </tr>
       <!--{section name=cnt loop=$arrProductsClass}-->
-       <tr style="<!--{if $arrProductsClass[cnt].error}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->">
+       <tr style="<!--{if $arrProductsClass[cnt].error}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->">
          <td><a href="?" onclick="fnModeSubmit('delete', 'cart_no', '<!--{$arrProductsClass[cnt].cart_no}-->'); return false;">削除</a>
          </td>
          <td class="phototd">

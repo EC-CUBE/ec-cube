@@ -83,7 +83,7 @@ function lfnDispChange(){
     <tr>
       <th>カテゴリ</th>
       <td>
-        <select name="search_category_id" style="<!--{if $arrErr.search_category_id != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->">
+        <select name="search_category_id" style="<!--{if $arrErr.search_category_id != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->">
         <option value="">選択してください</option>
         <!--{html_options options=$arrCatList selected=$arrForm.search_category_id}-->
         </select>
