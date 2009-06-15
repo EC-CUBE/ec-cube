@@ -242,24 +242,35 @@ class LC_Page {
         return $netURL->getURL();
     }
 
+    /**
+     * EC-CUBE のWEBルート(/html/)を / としたパスを返す
+     *
+     * @param string $path 結果を取得するためのパス
+     * @return string EC-CUBE のWEBルート(/html/)を / としたパス
+     */
     function getRootPath($path) {
+        // Windowsの場合は, ディレクトリの区切り文字を\から/に変換する
+        $path = str_replace('\\', '/', $path);
+        $htmlPath = str_replace('\\', '/', HTML_PATH);
+        
         // $path が / で始まっている場合
-        if (substr($path, 0, 1) == "/") {
-            $realPath = realpath(HTML_PATH . substr_replace($path, "", 0, strlen(URL_DIR)));
+        if (substr($path, 0, 1) == '/') {
+            $realPath = realpath($htmlPath . substr_replace($path, '', 0, strlen(URL_DIR)));
         // 相対パスの場合
         } else {
             $realPath = realpath($path);
         }
-
-        // HTML_PATH を削除した文字列を取得.
-        // Windowsの場合は, ディレクトリの区切り文字を\から/に変換する
-        $realPath = str_replace("\\", "/", $realPath);
-        $htmlPath = str_replace("\\", "/", HTML_PATH);
-
-        $htmlPath = rtrim($htmlPath, "/");
-        $rootPath = str_replace($htmlPath, "", $realPath);
-        $rootPath = ltrim($rootPath, "/");
+        $realPath = str_replace('\\', '/', $realPath);
         
+        // $path が / で終わっている場合、realpath によって削られた末尾の / を復元する。
+        if (substr($path, -1, 1) == '/' && substr($realPath, -1, 1) != '/') {
+            $realPath .= '/';
+        }
+        
+        // HTML_PATH を削除した文字列を取得.
+        $rootPath = str_replace($htmlPath, '', $realPath);
+        $rootPath = ltrim($rootPath, '/');
+
         return $rootPath;
     }
 
