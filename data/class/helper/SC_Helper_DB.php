@@ -391,7 +391,7 @@ class SC_Helper_DB {
         
         foreach ($arrQuantityInfo_by_product as $product_id => $quantityInfo) {
             if ($quantityInfo['sale_unlimited'] != '1' && $quantityInfo['sale_limit'] != '' && $quantityInfo['sale_limit'] < $quantityInfo['quantity']) {
-                $objPage->tpl_error = "※「{$quantityInfo['name']}」は個数「{$quantityInfo['sale_limit']}」以下に販売制限しております。一度にこれ以上の購入はできません。\n";
+                $objPage->tpl_error = "※「{$quantityInfo['name']}」は数量「{$quantityInfo['sale_limit']}」以下に販売制限しております。一度にこれ以上の購入はできません。\n";
                 // 販売制限に引っかかった商品をマークする
                 foreach (array_keys($objPage->arrProductsClass) as $key) {
                     $ProductsClass =& $objPage->arrProductsClass[$key];
