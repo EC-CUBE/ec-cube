@@ -503,5 +503,6 @@ table.layout td {
     border: none;
     margin: 0;
     padding: 0;
+    width: auto;
     vertical-align: top;
 }
