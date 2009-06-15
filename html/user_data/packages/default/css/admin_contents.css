@@ -496,3 +496,12 @@ tr.movingHandle td {
 .activeHandle { /* アクティブハンドルの設定 */
     color: #F9A406;
 }
+
+table.layout,
+table.layout th,
+table.layout td {
+    border: none;
+    margin: 0;
+    padding: 0;
+    vertical-align: top;
+}

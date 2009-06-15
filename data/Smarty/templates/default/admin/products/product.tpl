@@ -83,7 +83,7 @@ function selectAll(target) {
       <th>商品カテゴリ<span class="attention"> *</span></th>
       <td>
         <span class="attention"><!--{$arrErr.category_id}--></span>
-        <table>
+        <table class="layout">
           <tr>
             <td>
               <select name="category_id[]" id="category_id" style="<!--{if $arrErr.category_id != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}--> height: 120px;" onchange="" size="10" multiple>
