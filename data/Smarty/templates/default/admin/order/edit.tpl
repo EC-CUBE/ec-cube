@@ -496,7 +496,7 @@
                                 </tr>
                                 <tr bgcolor="#ffffff" class="fs12n">
                                     <!--{if $arrForm.customer_id > 0}-->
-                                    <td colspan="5" align="right">現在ポイント（ポイントの修正は<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="return fnEdit('<!--{$arrForm.customer_id}-->');">顧客編集</a>から手動にてお願い致します。）</td>
+                                    <td colspan="5" align="right">現在ポイント（ポイントの修正は<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="return fnEdit('<!--{$arrForm.customer_id.value}-->');">顧客編集</a>から手動にてお願い致します。）</td>
                                     <td align="right">
                                     <!--{$arrForm.point.value|number_format}-->
                                      pt</td>
