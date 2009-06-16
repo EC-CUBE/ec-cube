@@ -911,7 +911,7 @@ INSERT INTO mtb_constants VALUES ('IMAGE_TEMP_URL','URL_DIR . "upload/temp_image
 INSERT INTO mtb_constants VALUES ('IMAGE_SAVE_URL','URL_DIR . "upload/save_image/"',153,'画像保存先URL');
 INSERT INTO mtb_constants VALUES ('IMAGE_TEMP_URL_RSS','SITE_URL . "upload/temp_image/"',154,'RSS用画像一時保存URL');
 INSERT INTO mtb_constants VALUES ('IMAGE_SAVE_URL_RSS','SITE_URL . "upload/save_image/"',155,'RSS用画像保存先URL');
-INSERT INTO mtb_constants VALUES ('CSV_TEMP_DIR','HTML_PATH . "upload/csv/"',156,'エンコードCSVの一時保存先');
+INSERT INTO mtb_constants VALUES ('CSV_TEMP_DIR','DATA_PATH . "upload/csv/"',156,'エンコードCSVの一時保存先');
 INSERT INTO mtb_constants VALUES ('NO_IMAGE_URL','URL_DIR . "misc/blank.gif"',157,'画像がない場合に表示');
 INSERT INTO mtb_constants VALUES ('NO_IMAGE_DIR','HTML_PATH . "misc/blank.gif"',158,'画像がない場合に表示');
 INSERT INTO mtb_constants VALUES ('URL_SYSTEM_TOP','URL_DIR . "admin/system/index.php"',159,'システム管理トップ');

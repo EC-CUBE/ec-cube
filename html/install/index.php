@@ -389,7 +389,8 @@ function lfDispStep0($objPage) {
         ".." . HTML2DATA_DIR . "class/",
         ".." . HTML2DATA_DIR . "Smarty/",
         ".." . HTML2DATA_DIR . "logs/",
-        ".." . HTML2DATA_DIR . "downloads/"
+        ".." . HTML2DATA_DIR . "downloads/",
+        ".." . HTML2DATA_DIR . "upload/"
     );
 
     $mess = "";
@@ -463,6 +464,10 @@ function lfDispStep0($objPage) {
             mkdir($path);
         }
         $path = ".." . HTML2DATA_DIR . "downloads/update";
+        if(!file_exists($path)) {
+            mkdir($path);
+        }
+        $path = ".." . HTML2DATA_DIR . "upload/csv";
         if(!file_exists($path)) {
             mkdir($path);
         }
