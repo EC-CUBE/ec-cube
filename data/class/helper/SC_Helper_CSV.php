@@ -230,8 +230,8 @@ class SC_Helper_CSV {
     // 各項目をCSV出力用に変換する。
     function lfMakeCSV($list) {
         $line = "";
-
-        reset($list);
+		
+		reset($list);
         while(list($key, $val) = each($list)){
             $tmp = "";
             switch($key) {
@@ -258,8 +258,8 @@ class SC_Helper_CSV {
     function lfMakeProductsCSV($list, $arrOutputCols) {
         $line = "";
         if(is_array($list)) {
-            reset($arrOutputCols);
-            while(list($key, $val) = each($arrOutputCols)){
+			reset($arrOutputCols);
+        	while(list($key, $val) = each($arrOutputCols)){
                 $tmp = "";
                 switch($key) {
                 case 'point_rate':
@@ -285,8 +285,8 @@ class SC_Helper_CSV {
     // 各項目をCSV出力用に変換する。(レビュー)
     function lfMakeReviewCSV($list) {
         $line = "";
-        reset($list);
-        while(list($key, $val) = each($list)){
+		reset($list);
+    	while(list($key, $val) = each($list)){
             $tmp = "";
             switch($key) {
             case 'sex':
@@ -315,8 +315,8 @@ class SC_Helper_CSV {
     // 各項目をCSV出力用に変換する。(トラックバック)
     function lfMakeTrackbackCSV($list) {
         $line = "";
-        reset($list);
-        while(list($key, $val) = each($list)){
+		reset($list);
+    	while(list($key, $val) = each($list)){
             $tmp = "";
             switch($key) {
             case 'status':
@@ -358,8 +358,7 @@ class SC_Helper_CSV {
                                   2 => 'customer',
                                   3 => 'order',
                                   4 => 'campaign',
-                                  5 => 'category',
-                                  6 => 'csv_sql'
+                                  5 => 'category'
                                   );
 
         $this->arrSubnaviName = array(
@@ -367,8 +366,8 @@ class SC_Helper_CSV {
                                       2 => '顧客管理',
                                       3 => '受注管理',
                                       4 => 'キャンペーン',
-                                      5 => 'カテゴリ',
-                                      6 => '高度な設定');
+                                      5 => 'カテゴリ'
+                                      );
 
 
         $this->arrREVIEW_CVSCOL = array(
