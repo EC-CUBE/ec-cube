@@ -214,7 +214,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page {
         $this->sql_id = $sql_id;			// 選択されているSQL
 
         // POSTされたデータをセットする
-        if (count($_POST) > 0) {
+        if (isset($_POST['sql_name']) && isset($_POST['csv_sql'])){
             $arrSqlData[0]['sql_name'] = isset($_POST['sql_name']) ? $_POST['sql_name'] : "";
             $arrSqlData[0]['csv_sql'] = isset($_POST['csv_sql']) ? $_POST['csv_sql'] : "";
         }
