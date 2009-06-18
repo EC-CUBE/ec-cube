@@ -41,7 +41,7 @@
         <table summary="お支払方法選択">
           <tr>
             <th>選択</th>
-            <th colspan="<!--{if $arrPayment[cnt].payment_image == ""}-->2<!--{else}-->3<!--{/if}-->">お支払方法</th>
+            <th colspan="<!--{if $arrPayment[cnt].payment_image|strlen >= 1}-->2<!--{/if}-->">お支払方法</th>
           </tr>
           <!--{section name=cnt loop=$arrPayment}-->
           <tr>
