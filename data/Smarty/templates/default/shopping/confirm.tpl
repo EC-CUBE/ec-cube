@@ -126,12 +126,12 @@ function fnCheckSubmit() {
         </tr>
         <!--{/if}-->
         <tr>
-          <th>今回加算されるポイント</th>
+          <th>今回加算予定のポイント</th>
           <td>+<!--{$arrData.add_point|number_format|default:0}-->Pt</td>
         </tr>
         <tr>
         <!--{assign var=total_point value=`$tpl_user_point-$arrData.use_point+$arrData.add_point`}-->
-          <th>ご注文完了後のポイント</th>
+          <th>加算後のポイント</th>
           <td><!--{$total_point|number_format}-->Pt</td>
         </tr>
       </table>
@@ -217,12 +217,6 @@ function fnCheckSubmit() {
           <th>その他お問い合わせ</th>
           <td><!--{$arrData.message|escape|nl2br}--></td>
         </tr>
-        <!--{if $tpl_login == 1 && $smarty.const.USE_POINT !== false}-->
-        <tr>
-          <th>ポイント使用</th>
-          <td><!--{$arrData.use_point|default:0}-->Pt</td>
-        </tr>
-        <!--{/if}-->
         </tbody>
       </table>
 
