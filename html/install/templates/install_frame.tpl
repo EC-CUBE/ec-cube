@@ -33,7 +33,7 @@
 <title>EC CUBE インストール画面</title>
 </head>
 
-<body bgcolor="#ffffff" text="#000000" link="#006699" vlink="#006699" alink="#006699" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="preLoadImg('<!--{$smarty.const.URL_DIR}-->');<!--{$tpl_onload}-->">
+<body bgcolor="#ffffff" text="#000000" link="#006699" vlink="#006699" alink="#006699" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <noscript>
 <link rel="stylesheet" href="../<!--{$default_dir}-->/css/common.css" type="text/css" >
 </noscript>
