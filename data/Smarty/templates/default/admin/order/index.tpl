@@ -224,8 +224,8 @@
                             <tr class="fs12n">
                                 <td bgcolor="#f2f1ec" width="110">受注日</td>
                                 <td bgcolor="#ffffff" width="499" colspan="3">
-                                    <span class="red"><!--{$arrErr.search_startyear}--></span>
-                                    <span class="red"><!--{$arrErr.search_endyear}--></span>
+                                    <span class="red"><!--{$arrErr.search_sorderyear}--></span>
+                                    <span class="red"><!--{$arrErr.search_eorderyear}--></span>
                                     <select name="search_sorderyear"    style="<!--{$arrErr.search_sorderyear|sfGetErrorColor}-->">
                                     <option value="">----</option>
                                     <!--{html_options options=$arrRegistYear selected=$arrForm.search_sorderyear.value}-->
@@ -255,8 +255,8 @@
                             <tr class="fs12n">
                                 <td bgcolor="#f2f1ec" width="110">更新日</td>
                                 <td bgcolor="#ffffff" width="499" colspan="3">
-                                    <span class="red"><!--{$arrErr.search_startyear}--></span>
-                                    <span class="red"><!--{$arrErr.search_endyear}--></span>
+                                    <span class="red"><!--{$arrErr.search_supdateyear}--></span>
+                                    <span class="red"><!--{$arrErr.search_eupdateyear}--></span>
                                     <select name="search_supdateyear"    style="<!--{$arrErr.search_supdateyear|sfGetErrorColor}-->">
                                     <option value="">----</option>
                                     <!--{html_options options=$arrRegistYear selected=$arrForm.search_supdateyear.value}-->
