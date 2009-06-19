@@ -57,11 +57,22 @@
     function fnOpenPdfSettingPage(action){
         var WIN;
         WIN = window.open("about:blank", "pdf", "width=500,height=600,scrollbars=yes,resizable=yes,toolbar=no,location=no,directories=no,status=no");
+
+        // 退避
+        tmpTarget = document.form1.target;
+        tmpMode = document.form1.mode.value;
+        tmpAction = document.form1.action;
+
         document.form1.target = "pdf";
         document.form1.mode.value = 'pdf';
         document.form1.action = action;
         document.form1.submit();
         WIN.focus();
+
+        // 復元
+        document.form1.target = tmpTarget;
+        document.form1.mode.value = tmpMode;
+        document.form1.action = tmpAction;
     }
 
     function fnBoxChecked(check){
