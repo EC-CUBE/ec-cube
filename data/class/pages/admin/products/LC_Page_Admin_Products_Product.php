@@ -449,22 +449,31 @@ class LC_Page_Admin_Products_Product extends LC_Page {
 
             // コピー商品の場合には規格もコピーする
             if($_POST["copy_product_id"] != "" and SC_Utils_Ex::sfIsInt($_POST["copy_product_id"])){
-                // dtb_products_class のカラムを取得
-                $dbFactory = SC_DB_DBFactory_Ex::getInstance();
-                $arrColList = $dbFactory->sfGetColumnList("dtb_products_class", $objQuery);
-                $arrColList_tmp = array_flip($arrColList);
 
-                // コピーしない列
-                unset($arrColList[$arrColList_tmp["product_class_id"]]);	 //規格ID
-                unset($arrColList[$arrColList_tmp["product_id"]]);			 //商品ID
-                unset($arrColList[$arrColList_tmp["create_date"]]);
+                if($this->tpl_nonclass)
+                {
+                    //規格なしの場合、コピーは価格等の入力が発生しているため、その内容で追加登録を行う
+                    $arrList['product_id'] = $product_id;
+                    $this->lfCopyProductClass($arrList, $objQuery);
+                }
+                else
+                {
+                    //規格がある場合のコピーは複製元の内容で追加登録を行う
+                    // dtb_products_class のカラムを取得
+                    $dbFactory = SC_DB_DBFactory_Ex::getInstance();
+                    $arrColList = $dbFactory->sfGetColumnList("dtb_products_class", $objQuery);
+                    $arrColList_tmp = array_flip($arrColList);
 
-                $col = SC_Utils_Ex::sfGetCommaList($arrColList);
+                    // コピーしない列
+                    unset($arrColList[$arrColList_tmp["product_class_id"]]);    //規格ID
+                    unset($arrColList[$arrColList_tmp["product_id"]]);            //商品ID
+                    unset($arrColList[$arrColList_tmp["create_date"]]);
 
-                $objQuery->query("INSERT INTO dtb_products_class (product_id, create_date, ". $col .") SELECT ?, now(), " . $col. " FROM dtb_products_class WHERE product_id = ? ORDER BY product_class_id", array($product_id, $_POST["copy_product_id"]));
+                    $col = SC_Utils_Ex::sfGetCommaList($arrColList);
 
+                    $objQuery->query("INSERT INTO dtb_products_class (product_id, create_date, ". $col .") SELECT ?, now(), " . $col. " FROM dtb_products_class WHERE product_id = ? ORDER BY product_class_id", array($product_id, $_POST["copy_product_id"]));
+                }
             }
-
         } else {
             $product_id = $arrList['product_id'];
             // 削除要求のあった既存ファイルの削除
@@ -721,6 +730,59 @@ class LC_Page_Admin_Products_Product extends LC_Page {
                 break;
         }
         return $dist_name;
+    }
+
+    /**
+    * dtb_products_classの複製
+    * 複製後、価格や商品コードを更新する
+    *
+    * @param array $arrList
+    * @param array $objQuery
+    * @return bool
+    */
+    function lfCopyProductClass($arrList,$objQuery)
+    {
+        // 複製元のdtb_products_classを取得（規格なしのため、1件のみの取得）
+        $col = "*";
+        $table = "dtb_products_class";
+        $where = "product_id = ?";
+        $arrProductClass = $objQuery->select($col, $table, $where, array($arrList["copy_product_id"]));
+
+        //トランザクション開始
+        $objQuery->begin();
+        $err_flag = false;
+        //非編集項目はコピー、編集項目は上書きして登録
+        foreach($arrProductClass as $records)
+        {
+            foreach($records as $key => $value)
+            {
+                if(isset($arrList[$key]))
+                {
+                    $records[$key] = $arrList[$key];
+                }
+            }
+            unset($records["product_class_id"]);
+            unset($records["update_date"]);
+
+            $records["create_date"] = "Now()";
+            $objQuery->insert($table, $records);
+            //エラー発生時は中断
+            if($objQuery->isError())
+            {
+                $err_flag = true;
+                continue;
+	        }
+        }
+        //トランザクション終了
+        if($err_flag)
+        {
+            $objQuery->rollback();
+        }
+        else
+        {
+            $objQuery->commit();
+        }
+        return !$err_flag;
     }
 }
 ?>
