@@ -316,7 +316,7 @@ class LC_Page {
      * @return void
      */
     function allowClientCache() {
-        session_cache_limiter('private-no-expire');
+        session_cache_limiter('private_no_expire');
     }
 
     /**
