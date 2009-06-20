@@ -95,22 +95,22 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page {
             
         case 'renumber':
             $sql = <<< __EOS__
-                UPDATE dtb_product_categories tgt
+                UPDATE dtb_product_categories
                 SET
                     rank =
                         (
                             SELECT COUNT(*)
                             FROM dtb_product_categories t_in
-                            WHERE t_in.category_id = tgt.category_id
+                            WHERE t_in.category_id = dtb_product_categories.category_id
                                 AND (
-                                    t_in.rank < tgt.rank
+                                    t_in.rank < dtb_product_categories.rank
                                     OR (
-                                        t_in.rank = tgt.rank
-                                        AND t_in.product_id < tgt.product_id
+                                        t_in.rank = dtb_product_categories.rank
+                                        AND t_in.product_id < dtb_product_categories.product_id
                                     )
                                 )
                         ) + 1
-                WHERE tgt.category_id = ?
+                WHERE dtb_product_categories.category_id = ?
 __EOS__;
             $objQuery->query($sql, array($_POST['parent_category_id']));
             break;

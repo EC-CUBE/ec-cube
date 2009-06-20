@@ -1758,19 +1758,19 @@ __EOS__;
         $objQuery = new SC_Query();
         
         if ($temp_table) {
-            $table = 'dtb_order_temp';
+            $tgt_table = 'dtb_order_temp';
             $sql_where = 'WHERE order_temp_id = ?';
         } else {
-            $table = 'dtb_order';
+            $tgt_table = 'dtb_order';
             $sql_where = 'WHERE order_id = ?';
         }
         
         $sql = <<< __EOS__
             UPDATE
-                $table tgt
+                {$tgt_table}
             SET
-                 payment_method = (SELECT payment_method FROM dtb_payment WHERE payment_id = tgt.payment_id)
-                ,deliv_time = (SELECT deliv_time FROM dtb_delivtime WHERE time_id = tgt.deliv_time_id AND deliv_id = tgt.deliv_id)
+                 payment_method = (SELECT payment_method FROM dtb_payment WHERE payment_id = {$tgt_table}.payment_id)
+                ,deliv_time = (SELECT deliv_time FROM dtb_delivtime WHERE time_id = {$tgt_table}.deliv_time_id AND deliv_id = {$tgt_table}.deliv_id)
             $sql_where
 __EOS__;
         
