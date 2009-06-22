@@ -212,7 +212,7 @@
         </tr>
         <tr>
             <th>備考</th>
-            <td><!--{$arrForm.message|escape|nl2br}--></td>
+            <td><!--{$arrForm.message.value|escape|nl2br}--></td>
         </tr>
     </table>
     <!--▲お客様情報ここまで-->
