@@ -271,9 +271,6 @@ class LC_Page_Mypage_Change extends LC_Page {
                                  array(  "column" => "mailmaga_flg", "convert" => "n" )
                                  );
 
-        //---- 登録除外用カラム配列
-        $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile02", "password02");
-
         $this->arrForm = $this->lfGetCustomerData();
         $this->arrForm['password'] = DEFAULT_PASSWORD;
 
@@ -281,14 +278,6 @@ class LC_Page_Mypage_Change extends LC_Page {
 
             //-- POSTデータの引き継ぎ
             $this->arrForm = array_merge($this->arrForm, $_POST);
-
-            if (!isset($this->arrForm['year'])) $this->arrForm['year'] = "";
-            if($this->arrForm['year'] == '----') {
-                $this->arrForm['year'] = '';
-            }
-
-            // emailはすべて小文字で処理
-            $this->paramToLower($_POST );
 
             //-- 入力データの変換
             $this->arrForm = $this->lfConvertParam($this->arrForm, $arrRegistColumn);
@@ -430,12 +419,8 @@ class LC_Page_Mypage_Change extends LC_Page {
      * @return bool エラーの無い場合 true
      */
     function checkErrorTotal(&$arrRegistColumn, &$arrMailType, $isMobile = false) {
-        //-- 入力データの変換
-        $this->arrForm = $_POST;
-        $this->arrForm = $this->lfConvertParam($this->arrForm, $arrRegistColumn);
-
-        // emailはすべて小文字で処理
-        $this->paramToLower($arrRegistColumn);
+        // 入力データの変換
+        $this->arrForm = $this->lfConvertParam($_POST, $arrRegistColumn);
 
         //エラーチェック
         $this->arrErr = $isMobile
@@ -540,10 +525,17 @@ class LC_Page_Mypage_Change extends LC_Page {
             $mb_convert_kana_option = $registColumn["convert"];
             $val =& $array[$key];
             
+            // string 型以外は変換対象外とする
+            if (!is_string($val)) continue;
+            
             // 文字変換
-            // XXX 文字列のみを変換するようにした方が良い気もする。
             if (strlen($val) > 0) {
                 $val = mb_convert_kana($val ,$mb_convert_kana_option);
+            }
+            
+            // メールアドレスは小文字に変換
+            if ($key == 'email' || $key == 'email02' || $key == 'email_mobile' || $key == 'email_mobile02') {
+                $val = strtolower($val);
             }
         }
         return $array;
@@ -629,47 +621,6 @@ class LC_Page_Mypage_Change extends LC_Page {
 
     // }}}
     // {{{ mobile functions
-
-    /**
-     * TODO
-     * @deprecated 未使用?
-     */
-    function lfRegistDataMobile ($array, $arrRegistColumn,
-                                 $arrRejectRegistColumn) {
-
-        // 仮登録
-        foreach ($arrRegistColumn as $data) {
-            if (strlen($array[ $data["column"] ]) > 0 && ! in_array($data["column"], $arrRejectRegistColumn)) {
-                $arrRegist[ $data["column"] ] = $array[ $data["column"] ];
-            }
-        }
-
-        // 誕生日が入力されている場合
-        if (strlen($array["year"]) > 0 ) {
-            $arrRegist["birth"] = $array["year"] ."/". $array["month"] ."/". $array["day"] ." 00:00:00";
-        }
-
-        // パスワードの暗号化
-        $arrRegist["password"] = sha1($arrRegist["password"] . ":" . AUTH_MAGIC);
-
-        $count = 1;
-        while ($count != 0) {
-            $uniqid = SC_Utils_Ex::sfGetUniqRandomId("t");
-            $count = $objConn->getOne("SELECT COUNT(*) FROM dtb_customer WHERE secret_key = ?", array($uniqid));
-        }
-
-        $arrRegist["secret_key"] = $uniqid;		// 仮登録ID発行
-        $arrRegist["create_date"] = "now()"; 	// 作成日
-        $arrRegist["update_date"] = "now()"; 	// 更新日
-        $arrRegist["first_buy_date"] = "";	 	// 最初の購入日
-
-
-        //-- 仮登録実行
-        $this->objQuery->insert("dtb_customer", $arrRegist);
-
-        return $uniqid;
-    }
-
 
     //エラーチェック
 
@@ -775,77 +726,6 @@ class LC_Page_Mypage_Change extends LC_Page {
         $objErr->doFunc(array("電話番号", "tel01", "tel02", "tel03",TEL_ITEM_LEN) ,array("TEL_CHECK"));
 
         return $objErr->arrErr;
-    }
-
-    // 郵便番号から住所の取得
-    function lfGetAddress($zipcode) {
-        global $arrPref;
-
-        $conn = new SC_DBconn(ZIP_DSN);
-
-        // 郵便番号検索文作成
-        $zipcode = mb_convert_kana($zipcode ,"n");
-        $sqlse = "SELECT state, city, town FROM mtb_zip WHERE zipcode = ?";
-
-        $data_list = $conn->getAll($sqlse, array($zipcode));
-
-        // インデックスと値を反転させる。
-        $arrREV_PREF = array_flip($arrPref);
-
-        /*
-          総務省からダウンロードしたデータをそのままインポートすると
-          以下のような文字列が入っているので	対策する。
-          ・（１・１９丁目）
-          ・以下に掲載がない場合
-        */
-        $town =  $data_list[0]['town'];
-        $town = ereg_replace("（.*）$","",$town);
-        $town = ereg_replace("以下に掲載がない場合","",$town);
-        $data_list[0]['town'] = $town;
-        $data_list[0]['state'] = $arrREV_PREF[$data_list[0]['state']];
-
-        return $data_list;
-    }
-
-    //顧客情報の取得
-    function lfGetCustomerDataMobile(){
-
-        //顧客情報取得
-        $ret = $this->objQuery->select("*","dtb_customer","customer_id=?", array($this->objCustomer->getValue('customer_id')));
-        $arrForm = $ret[0];
-        //$arrForm['email'] = $arrForm['email_mobile'];
-
-        //メルマガフラグ取得
-        // TODO たぶん未使用
-        $arrForm['mailmaga_flg'] = $this->objQuery->get("dtb_customer","mailmaga_flg","email_mobile=?", array($this->objCustomer->getValue('email_mobile')));
-
-        //誕生日の年月日取得
-        if (isset($arrForm['birth'])){
-            $birth = split(" ", $arrForm["birth"]);
-            list($year, $month, $day) = split("-",$birth[0]);
-
-            $arrForm['year'] = $year;
-            $arrForm['month'] = $month;
-            $arrForm['day'] = $day;
-
-        }
-        return $arrForm;
-    }
-
-    /**
-     * フォームパラメータの内容を小文字に変換する.
-     *
-     * @param array $arrParam パラメータ名の配列
-     * @return void
-     */
-    function paramToLower(&$arrParam) {
-        foreach ($arrParam as $key => $val) {
-            if (!isset($val)) {
-                $this->arrForm[$key] = "";
-            }elseif($key == 'email' || $key == 'email_mobile'){
-                $this->arrForm[$key] = strtolower($val);
-            }
-        }
     }
 }
 ?>
