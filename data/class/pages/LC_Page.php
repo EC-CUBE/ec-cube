@@ -316,7 +316,11 @@ class LC_Page {
      * @return void
      */
     function allowClientCache() {
-        session_cache_limiter('private_no_expire');
+        $cache_expire = session_cache_expire() * 60;
+        header('Pragma:');
+        header('Expires:');
+        header("Cache-Control: private, max-age={$cache_expire}, pre-check={$cache_expire}");
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
     }
 
     /**
