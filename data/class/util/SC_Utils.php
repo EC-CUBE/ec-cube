@@ -268,6 +268,18 @@ class SC_Utils {
         return false;
     }
 
+    /*
+     * 桁が0で埋められているかを判定する
+     * 
+     * @param string $value 検査対象
+     * @return boolean 0で埋められている
+     */
+    function sfIsZeroFilling($value) {
+        if (strlen($value) > 1 && $value{0} === '0')
+            return true;
+        return false;
+    }
+
     function sfCSVDownload($data, $prefix = ""){
 
         if($prefix == "") {

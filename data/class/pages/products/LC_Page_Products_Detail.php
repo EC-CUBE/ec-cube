@@ -77,6 +77,9 @@ class LC_Page_Products_Detail extends LC_Page {
      * @return void
      */
     function process() {
+        // プロダクトIDの正当性チェック
+        $product_id = $this->lfCheckProductId();
+
         $objView = new SC_SiteView();
         $objCustomer = new SC_Customer();
         $objQuery = new SC_Query();
@@ -113,27 +116,6 @@ class LC_Page_Products_Detail extends LC_Page {
         // ファイル情報の初期化
         $this->lfInitFile();
 
-        // 管理機能からの確認の場合は、非公開の商品も表示する。
-        if(isset($_GET['admin']) && $_GET['admin'] == 'on') {
-            SC_Utils_Ex::sfIsSuccess(new SC_Session());
-            $status = true;
-            $where = "del_flg = 0";
-        } else {
-            $status = false;
-            $where = "del_flg = 0 AND status = 1";
-        }
-
-        if(isset($_POST['mode']) && $_POST['mode'] != "") {
-            $tmp_id = $_POST['product_id'];
-        } else {
-            $tmp_id = $_GET['product_id'];
-        }
-
-        // 値の正当性チェック
-        if(!SC_Utils_Ex::sfIsInt($_GET['product_id'])
-                || !$objDb->sfIsRecord("dtb_products", "product_id", $tmp_id, $where)) {
-            SC_Utils_Ex::sfDispSiteError(PRODUCT_NOT_FOUND);
-        }
         // ログイン判定
         if ($objCustomer->isLoginSuccess() === true) {
             //お気に入りボタン表示
@@ -150,7 +132,7 @@ class LC_Page_Products_Detail extends LC_Page {
             //閲覧数が設定数以下
             if ($rpcnt < CUSTOMER_READING_MAX){
                 //閲覧履歴に新規追加
-                lfRegistReadingData($tmp_id, $objCustomer->getValue('customer_id'));
+                lfRegistReadingData($product_id, $objCustomer->getValue('customer_id'));
             } else {
                 //閲覧履歴の中で一番古いものを削除して新規追加
                 $oldsql = "SELECT MIN(update_date) FROM ".$table." WHERE customer_id = ?";
@@ -160,17 +142,16 @@ class LC_Page_Products_Detail extends LC_Page {
                 //削除
                 $objQuery->delete($table, $where, $arrval);
                 //追加
-                lfRegistReadingData($tmp_id, $objCustomer->getValue('customer_id'));
+                lfRegistReadingData($product_id, $objCustomer->getValue('customer_id'));
             }
         */
         }
 
-
         // 規格選択セレクトボックスの作成
-        $this->lfMakeSelect($tmp_id);
+        $this->lfMakeSelect($product_id);
 
         // 商品IDをFORM内に保持する。
-        $this->tpl_product_id = $tmp_id;
+        $this->tpl_product_id = $product_id;
 
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
@@ -222,12 +203,12 @@ class LC_Page_Products_Detail extends LC_Page {
 
         $objQuery = new SC_Query();
         // DBから商品情報を取得する。
-        $arrRet = $objQuery->select("*, (SELECT count(*) FROM dtb_customer_favorite_products WHERE product_id = alldtl.product_id AND customer_id = ?) AS favorite_count", "vw_products_allclass_detail AS alldtl", "product_id = ?", array($objCustomer->getValue('customer_id'), $tmp_id));
+        $arrRet = $objQuery->select("*, (SELECT count(*) FROM dtb_customer_favorite_products WHERE product_id = alldtl.product_id AND customer_id = ?) AS favorite_count", "vw_products_allclass_detail AS alldtl", "product_id = ?", array($objCustomer->getValue('customer_id'), $product_id));
         $this->arrProduct = $arrRet[0];
 
         // 商品コードの取得
         $code_sql = "SELECT product_code FROM dtb_products_class AS prdcls WHERE prdcls.product_id = ? GROUP BY product_code ORDER BY product_code";
-        $arrProductCode = $objQuery->getall($code_sql, array($tmp_id));
+        $arrProductCode = $objQuery->getall($code_sql, array($product_id));
         $arrProductCode = SC_Utils_Ex::sfswaparray($arrProductCode);
         $this->arrProductCode = $arrProductCode["product_code"];
 
@@ -242,7 +223,7 @@ class LC_Page_Products_Detail extends LC_Page {
         $this->tpl_subtitle = $this->arrProduct['name'];
         
         // 関連カテゴリを取得
-        $this->arrRelativeCat = $objDb->sfGetMultiCatTree($tmp_id);
+        $this->arrRelativeCat = $objDb->sfGetMultiCatTree($product_id);
         
         // 画像ファイル指定がない場合の置換処理
         $this->arrProduct['main_list_image']
@@ -256,7 +237,7 @@ class LC_Page_Products_Detail extends LC_Page {
         // 入力情報を渡す
         $this->arrForm = $this->objFormParam->getFormParamList();
         //レビュー情報の取得
-        $this->arrReview = $this->lfGetReviewData($tmp_id);
+        $this->arrReview = $this->lfGetReviewData($product_id);
         // トラックバック情報の取得
 
         // トラックバック機能の稼働状況チェック
@@ -264,13 +245,13 @@ class LC_Page_Products_Detail extends LC_Page {
             $this->arrTrackbackView = "OFF";
         } else {
             $this->arrTrackbackView = "ON";
-            $this->arrTrackback = $this->lfGetTrackbackData($tmp_id);
+            $this->arrTrackback = $this->lfGetTrackbackData($product_id);
         }
-        $this->trackback_url = TRACKBACK_TO_URL . $tmp_id;
+        $this->trackback_url = TRACKBACK_TO_URL . $product_id;
         //関連商品情報表示
-        $this->arrRecommend = $this->lfPreGetRecommendProducts($tmp_id);
+        $this->arrRecommend = $this->lfPreGetRecommendProducts($product_id);
         //この商品を買った人はこんな商品も買っています
-        $this->arrRelateProducts = $this->lfGetRelateProducts($tmp_id);
+        $this->arrRelateProducts = $this->lfGetRelateProducts($product_id);
 
         $this->lfConvertParam();
 
@@ -305,6 +286,9 @@ class LC_Page_Products_Detail extends LC_Page {
      * @return void
      */
     function mobileProcess() {
+        // プロダクトIDの正当性チェック
+        $product_id = $this->lfCheckProductId();
+        
         $objView = new SC_MobileView();
         $objCustomer = new SC_Customer();
         $objQuery = new SC_Query();
@@ -322,20 +306,6 @@ class LC_Page_Products_Detail extends LC_Page {
         // ファイル情報の初期化
         $this->lfInitFile();
 
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
-
-        if(!empty($_POST['mode'])) {
-            $tmp_id = $_POST['product_id'];
-        } else {
-            $tmp_id = $_GET['product_id'];
-        }
-
-        // 値の正当性チェック
-        if(!SC_Utils_Ex::sfIsInt($tmp_id)
-                || !$objDb->sfIsRecord("dtb_products", "product_id", $tmp_id, 'del_flg = 0 AND status = 1')) {
-            SC_Utils_Ex::sfDispSiteError(PRODUCT_NOT_FOUND);
-        }
-
         // ログイン判定
         if($objCustomer->isLoginSuccess(true)) {
             //お気に入りボタン表示
@@ -352,7 +322,7 @@ class LC_Page_Products_Detail extends LC_Page {
                //閲覧数が設定数以下
                if ($rpcnt < CUSTOMER_READING_MAX){
                //閲覧履歴に新規追加
-               lfRegistReadingData($tmp_id, $objCustomer->getValue('customer_id'));
+               lfRegistReadingData($product_id, $objCustomer->getValue('customer_id'));
                } else {
                //閲覧履歴の中で一番古いものを削除して新規追加
                $oldsql = "SELECT MIN(update_date) FROM ".$table." WHERE customer_id = ?";
@@ -362,17 +332,17 @@ class LC_Page_Products_Detail extends LC_Page {
                //削除
                $objQuery->delete($table, $where, $arrval);
                //追加
-               lfRegistReadingData($tmp_id, $objCustomer->getValue('customer_id'));
+               lfRegistReadingData($product_id, $objCustomer->getValue('customer_id'));
                }
             */
         }
 
 
         // 規格選択セレクトボックスの作成
-        $this->lfMakeSelectMobile($this, $tmp_id);
+        $this->lfMakeSelectMobile($this, $product_id);
 
         // 商品IDをFORM内に保持する。
-        $this->tpl_product_id = $tmp_id;
+        $this->tpl_product_id = $product_id;
 
         switch($_POST['mode']) {
         case 'select':
@@ -446,12 +416,12 @@ class LC_Page_Products_Detail extends LC_Page {
 
         $objQuery = new SC_Query();
         // DBから商品情報を取得する。
-        $arrRet = $objQuery->select("*", "vw_products_allclass_detail AS alldtl", "product_id = ?", array($tmp_id));
+        $arrRet = $objQuery->select("*", "vw_products_allclass_detail AS alldtl", "product_id = ?", array($product_id));
         $this->arrProduct = $arrRet[0];
 
         // 商品コードの取得
         $code_sql = "SELECT product_code FROM dtb_products_class AS prdcls WHERE prdcls.product_id = ? GROUP BY product_code ORDER BY product_code";
-        $arrProductCode = $objQuery->getall($code_sql, array($tmp_id));
+        $arrProductCode = $objQuery->getall($code_sql, array($product_id));
         $arrProductCode = SC_Utils_Ex::sfswaparray($arrProductCode);
         $this->arrProductCode = $arrProductCode["product_code"];
 
@@ -478,16 +448,51 @@ class LC_Page_Products_Detail extends LC_Page {
         // 入力情報を渡す
         $this->arrForm = $this->objFormParam->getFormParamList();
         //レビュー情報の取得
-        $this->arrReview = $this->lfGetReviewData($tmp_id);
+        $this->arrReview = $this->lfGetReviewData($product_id);
         // タイトルに商品名を入れる
         $this->tpl_title = "商品詳細 ". $this->arrProduct["name"];
         //関連商品情報表示
-        $this->arrRecommend = $this->lfPreGetRecommendProducts($tmp_id);
+        $this->arrRecommend = $this->lfPreGetRecommendProducts($product_id);
         //この商品を買った人はこんな商品も買っています
-        $this->arrRelateProducts = $this->lfGetRelateProducts($tmp_id);
+        $this->arrRelateProducts = $this->lfGetRelateProducts($product_id);
 
         $objView->assignobj($this);
         $objView->display(SITE_FRAME);
+    }
+
+    /* プロダクトIDの正当性チェック */
+    function lfCheckProductId() {
+        // 管理機能からの確認の場合は、非公開の商品も表示する。
+        if (isset($_GET['admin']) && $_GET['admin'] == 'on') {
+            SC_Utils_Ex::sfIsSuccess(new SC_Session());
+            $status = true;
+            $where = 'del_flg = 0';
+        } else {
+            $status = false;
+            $where = 'del_flg = 0 AND status = 1';
+        }
+
+        if (defined('MOBILE_SITE')) {
+            if (!isset($_POST['mode'])) $_POST['mode'] = "";
+            if (!empty($_POST['mode'])) {
+                $product_id = $_POST['product_id'];
+            } else {
+                $product_id = $_GET['product_id'];
+            }
+        } else {
+            if(isset($_POST['mode']) && $_POST['mode'] != '') {
+                $product_id = $_POST['product_id'];
+            } else {
+                $product_id = $_GET['product_id'];
+            }
+        }
+
+        $objDb = new SC_Helper_DB_Ex();
+        if(!SC_Utils_Ex::sfIsInt($product_id)
+            || SC_Utils_Ex::sfIsZeroFilling($product_id)
+            || !$objDb->sfIsRecord('dtb_products', 'product_id', (array)$product_id, $where))
+            SC_Utils_Ex::sfDispSiteError(PRODUCT_NOT_FOUND);
+        return $product_id;
     }
 
     /* ファイル情報の初期化 */
@@ -778,17 +783,17 @@ class LC_Page_Products_Detail extends LC_Page {
     }
 
     //閲覧履歴新規登録
-    function lfRegistReadingData($tmp_id, $customer_id){
+    function lfRegistReadingData($product_id, $customer_id){
         $objQuery = new SC_Query;
         $sqlval['customer_id'] = $customer_id;
-        $sqlval['reading_product_id'] = $tmp_id;
+        $sqlval['reading_product_id'] = $product_id;
         $sqlval['create_date'] = 'NOW()';
         $sqlval['update_date'] = 'NOW()';
         $objQuery->insert("dtb_customer_reading", $sqlval);
     }
 
     //この商品を買った人はこんな商品も買っています FIXME
-    function lfGetRelateProducts($tmp_id) {
+    function lfGetRelateProducts($product_id) {
         $objQuery = new SC_Query;
         //自動抽出
         $objQuery->setorder("random()");
@@ -798,7 +803,7 @@ class LC_Page_Products_Detail extends LC_Page {
         $col = "name, main_list_image, price01_min, price02_min, price01_max, price02_max, point_rate";
         $from = "vw_products_allclass AS allcls ";
         $where = "del_flg = 0 AND status = 1 AND (stock_max <> 0 OR stock_max IS NULL) AND product_id = ? ";
-        $arrval[] = $tmp_id;
+        $arrval[] = $product_id;
         //結果の取得
         $arrProducts = $objQuery->select($col, $from, $where, $arrval);
 

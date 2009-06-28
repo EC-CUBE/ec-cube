@@ -72,6 +72,9 @@ class LC_Page_Products_List extends LC_Page {
      * @return void
      */
     function process() {
+        // カテゴリIDの正当性チェック
+        $this->lfCheckCategoryId();
+
         $objView = new SC_SiteView();
         $conn = new SC_DBConn();
         $objDb = new SC_Helper_DB_Ex();
@@ -219,6 +222,9 @@ class LC_Page_Products_List extends LC_Page {
      * @return void
      */
     function mobileProcess() {
+        // カテゴリIDの正当性チェック
+        $this->lfCheckCategoryId();
+
         $objView = new SC_MobileView();
         $conn = new SC_DBConn();
         $objDb = new SC_Helper_DB_Ex();
@@ -368,6 +374,19 @@ class LC_Page_Products_List extends LC_Page {
      */
     function destroy() {
         parent::destroy();
+    }
+
+    /* カテゴリIDの正当性チェック */
+    function lfCheckCategoryId() {
+        $objDb = new SC_Helper_DB_Ex();
+        $category_id = $_POST['category_id'] ? $_POST['category_id'] : $_GET['category_id'];
+        if (!defined('MOBILE_SITE') && !isset($_REQUEST['category_id']))
+            SC_Utils_Ex::sfDispSiteError(CATEGORY_NOT_FOUND);
+        if ($category_id
+                && (!SC_Utils_Ex::sfIsInt($category_id)
+                || SC_Utils_Ex::sfIsZeroFilling($category_id)
+                || !$objDb->sfIsRecord('dtb_category', 'category_id', (array)$category_id, 'del_flg = 0')))
+            SC_Utils_Ex::sfDispSiteError(CATEGORY_NOT_FOUND);
     }
 
     /* カテゴリIDがルートかどうかの判定 */
