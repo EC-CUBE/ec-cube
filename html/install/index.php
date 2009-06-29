@@ -60,7 +60,9 @@ $objDBParam = lfInitDBParam($objDBParam);
 $objWebParam->setParam($_POST);
 $objDBParam->setParam($_POST);
 
-switch($_POST['mode']) {
+$mode = isset($_POST['mode_overwrite']) ? $_POST['mode_overwrite'] : $_POST['mode'];
+
+switch($mode) {
 // ようこそ
 case 'welcome':
     //$objPage = lfDispAgreement($objPage);
@@ -375,7 +377,6 @@ function lfDispStep0($objPage) {
     $objPage->arrHidden['db_skip'] = $_POST['db_skip'];
     $objPage->arrHidden['agreement'] = $_POST['agreement'];
     $objPage->tpl_mainpage = 'step0.tpl';
-    $objPage->tpl_mode = 'step0';
 
     // プログラムで書込みされるファイル・ディレクトリ
     $arrWriteFile = array(
@@ -403,20 +404,20 @@ function lfDispStep0($objPage) {
 
         foreach ($arrDirs as $path) {
             if(file_exists($path)) {
-                $mode = lfGetFileMode($path);
+                $filemode = lfGetFileMode($path);
                 $real_path = realpath($path);
 
                 // ディレクトリの場合
                 if(is_dir($path)) {
                     if(!is_writable($path)) {
-                        $mess.= ">> ×：$real_path($mode) <br>ユーザ書込み権限(777, 707等)を付与して下さい。<br>";
+                        $mess.= ">> ×：$real_path($filemode) <br>ユーザ書込み権限(777, 707等)を付与して下さい。<br>";
                         $err_file = true;
                     } else {
                         GC_Utils_Ex::gfPrintLog("WRITABLE：".$path, INSTALL_LOG);
                     }
                 } else {
                     if(!is_writable($path)) {
-                        $mess.= ">> ×：$real_path($mode) <br>ユーザ書込み権限(666, 606等)を付与して下さい。<br>";
+                        $mess.= ">> ×：$real_path($filemode) <br>ユーザ書込み権限(666, 606等)を付与して下さい。<br>";
                         $err_file = true;
                     } else {
                         GC_Utils_Ex::gfPrintLog("WRITABLE：".$path, INSTALL_LOG);
@@ -429,8 +430,13 @@ function lfDispStep0($objPage) {
         }
     }
 
-    // 権限エラー等が発生していない場合
-    if(!$err_file) {
+    // 問題点を検出している場合
+    if ($err_file) {
+        $objPage->tpl_mode = 'return_step0';
+    }
+    // 問題点を検出していない場合
+    else {
+        $objPage->tpl_mode = 'step0';
         umask(0);
         $path = HTML_PATH . "upload/temp_template";
         if(!file_exists($path)) {

@@ -43,24 +43,25 @@
 </tr>
 </table>
 
-<!--{if !$err_file}-->
 <table width="502" border="0" cellspacing="1" cellpadding="0" summary=" ">
-<tr><td height="15"></td></tr>
-<tr><td align="left" class="fs12">必要なファイルのコピーを開始します。</td></tr>
+    <tr><td height="15"></td></tr>
+    <tr><td align="left" class="fs12">
+        <!--{if $err_file}-->
+            <p>[次へ進む] をクリックすると、チェックを再実行します。</p>
+            <div><input type="checkbox" name="mode_overwrite" value="step0" id="mode_overwrite"> <label for="mode_overwrite">問題点を無視して次へ進む (上級者向け)</label></div>
+            <div class="red">※ 問題点を解決せずに無視して進めると、トラブルの原因となる場合があります。</div>
+        <!--{else}-->
+            必要なファイルのコピーを開始します。
+        <!--{/if}-->
+    </td></tr>
 </table>
-<!--{/if}-->
 
 <table width="500" border="0" cellspacing="1" cellpadding="8" summary=" ">
     <tr><td height="20"></td></tr>
     <tr>
         <td align="center">
-        <!--{if !$err_file}-->
-        <a href="#" onmouseover="chgImg('../<!--{$default_dir}-->/img/install/back_on.jpg','back')" onmouseout="chgImg('../<!--{$default_dir}-->/img/install/back.jpg','back')" onclick="document.form1['mode'].value='return_welcome';document.form1.submit();" /><img  width="105" src="../<!--{$default_dir}-->/img/install/back.jpg"  height="24" alt="前へ戻る" border="0" name="back"></a>
-        <input type="image" onMouseover="chgImgImageSubmit('../<!--{$default_dir}-->/img/install/next_on.jpg',this)" onMouseout="chgImgImageSubmit('../<!--{$default_dir}-->/img/install/next.jpg',this)" src="../<!--{$default_dir}-->/img/install/next.jpg" width="105" height="24" alt="次へ進む" border="0" name="next">
-        <!--{else}-->
-        <a href="#" onmouseover="chgImg('../<!--{$default_dir}-->/img/install/back_on.jpg','back')" onmouseout="chgImg('../<!--{$default_dir}-->/img/install/back.jpg','back')" onclick="document.form1['mode'].value='return_welcome';document.form1.submit();" /><img  width="105" src="../<!--{$default_dir}-->/img/install/back.jpg"  height="24" alt="前へ戻る" border="0" name="back"></a>
-        <img src="../<!--{$default_dir}-->/img/install/next_off.jpg" width="105" height="24" alt="次へ進む" border="0" name="next">
-        <!--{/if}-->
+            <a href="#" onmouseover="chgImg('../<!--{$default_dir}-->/img/install/back_on.jpg','back')" onmouseout="chgImg('../<!--{$default_dir}-->/img/install/back.jpg','back')" onclick="document.form1['mode'].value='return_welcome';document.form1.submit();" /><img  width="105" src="../<!--{$default_dir}-->/img/install/back.jpg"  height="24" alt="前へ戻る" border="0" name="back"></a>
+            <input type="image" onMouseover="chgImgImageSubmit('../<!--{$default_dir}-->/img/install/next_on.jpg',this)" onMouseout="chgImgImageSubmit('../<!--{$default_dir}-->/img/install/next.jpg',this)" src="../<!--{$default_dir}-->/img/install/next.jpg" width="105" height="24" alt="次へ進む" border="0" name="next">
         </td>
     </tr>
     <tr><td height="30"></td></tr>
