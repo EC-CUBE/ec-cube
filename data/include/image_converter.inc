@@ -30,28 +30,28 @@ class ImageConverter {
         $outputImagePath  = $this->outputImageDir . '/' . $outputImageName;
 
         if (is_null($this->outputImageHeight)) {
-          $height_was_null = TRUE;
-          $this->outputImageHeight = $inputImageHeight * ($this->outputImageWidth / $inputImageWidth);
+            $height_was_null = TRUE;
+            $this->outputImageHeight = $inputImageHeight * ($this->outputImageWidth / $inputImageWidth);
         } else {
-          $height_was_null = FALSE;
+            $height_was_null = FALSE;
         }
         if ($inputImageWidth <= $this->outputImageWidth) {
-          if ($inputImageHeight <= $this->outputImageHeight) {
-            $this->outputImageWidth  = $inputImageWidth;
-            $this->outputImageHeight = $inputImageHeight;
-          } else {
-            $this->outputImageWidth = $inputImageWidth * ($this->outputImageHeight / $inputImageHeight);
-          }
-        } else {
-          if ($inputImageHeight <= $this->outputImageHeight) {
-            $this->outputImageHeight = $inputImageHeight * ($this->outputImageWidth / $inputImageWidth);
-          } else {
-            if ($this->outputImageWidth / $inputImageWidth < $this->outputImageHeight / $inputImageHeight) {
-              $this->outputImageHeight = $inputImageHeight * ($this->outputImageWidth / $inputImageWidth);
+            if ($inputImageHeight <= $this->outputImageHeight) {
+                $this->outputImageWidth  = $inputImageWidth;
+                $this->outputImageHeight = $inputImageHeight;
             } else {
-              $this->outputImageWidth = $inputImageWidth * ($this->outputImageHeight / $inputImageHeight);
+                $this->outputImageWidth = $inputImageWidth * ($this->outputImageHeight / $inputImageHeight);
             }
-          }
+        } else {
+            if ($inputImageHeight <= $this->outputImageHeight) {
+                $this->outputImageHeight = $inputImageHeight * ($this->outputImageWidth / $inputImageWidth);
+            } else {
+                if ($this->outputImageWidth / $inputImageWidth < $this->outputImageHeight / $inputImageHeight) {
+                    $this->outputImageHeight = $inputImageHeight * ($this->outputImageWidth / $inputImageWidth);
+                } else {
+                    $this->outputImageWidth = $inputImageWidth * ($this->outputImageHeight / $inputImageHeight);
+                }
+            }
         }
 
         // ファイルが存在するか確認し、存在しない場合のみ作成する
