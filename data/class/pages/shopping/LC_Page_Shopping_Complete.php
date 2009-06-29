@@ -51,7 +51,7 @@ class LC_Page_Shopping_Complete extends LC_Page {
         $this->arrCONVENIENCE = $masterData->getMasterData("mtb_convenience");
         $this->arrCONVENIMESSAGE = $masterData->getMasterData("mtb_conveni_message");
 
-        $this->allowClientCache();
+        //$this->allowClientCache();
     }
 
     /**

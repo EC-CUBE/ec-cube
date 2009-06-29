@@ -59,7 +59,7 @@ class LC_Page_Shopping extends LC_Page {
         $this->arrSex = $masterData->getMasterData("mtb_sex");
         $this->arrJob = $masterData->getMasterData("mtb_job");
         $this->tpl_onload = 'fnCheckInputDeliv();';
-        $this->allowClientCache();
+        //$this->allowClientCache();
     }
 
     /**

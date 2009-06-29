@@ -47,10 +47,9 @@ class SC_SessionFactory_UseCookie extends SC_SessionFactory {
      * ・同じドメイン間で共有
      **/
     function initSession() {
+        ini_set('session.cache_limiter', 'none');
         if (session_id() === "") {
-
             session_set_cookie_params(0, "/", DOMAIN_NAME);
-
             if (!ini_get("session.auto_start")) {
                 // セッション開始
                 session_start();

@@ -58,7 +58,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         $this->arrPref = $masterData->getMasterData("mtb_pref", array("pref_id", "pref_name", "rank"));
         $this->tpl_title = "お届け先の指定";
 
-        $this->allowClientCache();
+        //$this->allowClientCache();
     }
 
     /**

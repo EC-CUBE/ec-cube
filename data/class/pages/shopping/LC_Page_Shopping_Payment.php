@@ -56,7 +56,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
         $this->tpl_onload = 'fnCheckInputPoint();';
         $this->tpl_title = "お支払方法・お届け時間等の指定";
 
-        $this->allowClientCache();
+        //$this->allowClientCache();
     }
 
     /**
