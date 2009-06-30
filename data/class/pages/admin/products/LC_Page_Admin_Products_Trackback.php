@@ -168,7 +168,7 @@ class LC_Page_Admin_Products_Trackback extends LC_Page {
 
                     case 'search_startyear':
                         if (isset($_POST['search_startyear']) && isset($_POST['search_startmonth']) && isset($_POST['search_startday'])) {
-                            $date = sfGetTimestamp($_POST['search_startyear'], $_POST['search_startmonth'], $_POST['search_startday']);
+                            $date = SC_Utils_Ex::sfGetTimestamp($_POST['search_startyear'], $_POST['search_startmonth'], $_POST['search_startday']);
                             $where.= " AND A.create_date >= ? ";
                             $arrval[] = $date;
                         }
@@ -176,7 +176,7 @@ class LC_Page_Admin_Products_Trackback extends LC_Page {
 
                     case 'search_endyear':
                         if (isset($_POST['search_startyear']) && isset($_POST['search_startmonth']) && isset($_POST['search_startday'])) {
-                            $date = sfGetTimestamp($_POST['search_endyear'], $_POST['search_endmonth'], $_POST['search_endday']);
+                            $date = SC_Utils_Ex::sfGetTimestamp($_POST['search_endyear'], $_POST['search_endmonth'], $_POST['search_endday']);
 
                             $end_date = date("Y/m/d",strtotime("1 day" ,strtotime($date)));
 
