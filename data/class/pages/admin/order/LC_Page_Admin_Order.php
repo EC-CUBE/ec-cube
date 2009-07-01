@@ -229,7 +229,7 @@ class LC_Page_Admin_Order extends LC_Page {
                         $arrval[] = $date;
                         break;
                     case 'search_eorderyear':
-                        $date = SC_Utils_Ex::sfGetTimestamp($_POST['search_eorderyear'], $_POST['search_eordermonth'], $_POST['search_eorderday']);
+                        $date = SC_Utils_Ex::sfGetTimestamp($_POST['search_eorderyear'], $_POST['search_eordermonth'], $_POST['search_eorderday'], true);
                         $where.= " AND create_date <= ?";
                         $arrval[] = $date;
                         break;
