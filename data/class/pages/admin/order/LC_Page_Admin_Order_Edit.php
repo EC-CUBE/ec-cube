@@ -567,7 +567,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         // 受注ステータスの判定
         if ($sqlval['status'] == ODERSTATUS_COMMIT) {
             // 受注テーブルの発送済み日を更新する
-            $sql .= "     ,commit_date = 'NOW()'";
+            $sql .= "     ,commit_date = NOW()";
         }
         $sql .= " WHERE order_id = ?";
 
