@@ -1019,7 +1019,7 @@ INSERT INTO mtb_constants VALUES ('ORDER_PRE_END','6',259,'入金済み');
 INSERT INTO mtb_constants VALUES ('ORDER_CANCEL','3',260,'キャンセル');
 INSERT INTO mtb_constants VALUES ('ORDER_BACK_ORDER','4',261,'取り寄せ中');
 INSERT INTO mtb_constants VALUES ('ORDER_DELIV','5',262,'発送済み');
-INSERT INTO mtb_constants VALUES ('ODERSTATUS_COMMIT','ORDER_DELIV',263,'受注ステータス変更の際にポイント等を加算するステータス番号（発送済み）');
+INSERT INTO mtb_constants VALUES ('ODERSTATUS_COMMIT','ORDER_DELIV',263,'受注完了時のステータス番号');
 INSERT INTO mtb_constants VALUES ('ADMIN_NEWS_STARTYEAR','2005',264,'新着情報管理画面 開始年(西暦) ');
 INSERT INTO mtb_constants VALUES ('ENTRY_CUSTOMER_TEMP_SUBJECT','"会員仮登録が完了いたしました。"',265,'会員登録');
 INSERT INTO mtb_constants VALUES ('ENTRY_CUSTOMER_REGIST_SUBJECT','"本会員登録が完了いたしました。"',266,'会員登録');
