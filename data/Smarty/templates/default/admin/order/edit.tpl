@@ -112,7 +112,7 @@
 
                         <!--{* SPS連携用 *}-->
                         <!--{assign var=sps_path value=`$smarty.const.MODULE_PATH`mdl_sps/templates/sps_request.tpl}-->
-                        <!--{if file_exists($sps_path) && $paymentType[0].module_code == $smarty.const.MDL_SPS_CODE && $paymentType[0].memo03 == $smarty.const.SPS_CREDIT}-->
+                        <!--{if file_exists($sps_path) && $paymentType[0].module_code == $smarty.const.MDL_SPS_CODE}-->
                             <!--{include file=$sps_path}-->
                         <!--{/if}-->
 
