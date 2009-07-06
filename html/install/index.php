@@ -25,6 +25,7 @@ $INSTALL_DIR = realpath(dirname( __FILE__));
 require_once("../" . HTML2DATA_DIR . "module/Request.php");
 
 define("INSTALL_LOG", "./temp/install.log");
+define("INSTALL_INFO_URL", "http://www.ec-cube.net/install_info/index.php");
 ini_set("max_execution_time", 300);
 
 $objPage = new StdClass;
@@ -304,7 +305,6 @@ case 'complete':
         $response1 = "";
     }
     $req->clearPostData();
-
     break;
 case 'return_step0':
     $objPage = lfDispStep0($objPage);
@@ -327,7 +327,6 @@ default:
     $objPage = lfDispWelcome($objPage);
     break;
 }
-
 //フォーム用のパラメータを返す
 $objPage->arrForm = $objWebParam->getFormParamList();
 $objPage->arrForm = array_merge($objPage->arrForm, $objDBParam->getFormParamList());
@@ -613,6 +612,8 @@ function lfDispComplete($objPage) {
         $secure_url = $secure_url . "/";
     }
     $objPage->tpl_sslurl = $secure_url;
+    //EC-CUBEオフィシャルサイトからのお知らせURL
+    $objPage->install_info_url = INSTALL_INFO_URL;
     return $objPage;
 }
 
