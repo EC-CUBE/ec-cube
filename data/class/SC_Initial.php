@@ -37,7 +37,7 @@ class SC_Initial {
     function SC_Initial() {
 
         /** EC-CUBEのバージョン */
-        define('ECCUBE_VERSION', "2.4.0 RC2");
+        define('ECCUBE_VERSION', "2.4.1");
     }
 
     // }}}
