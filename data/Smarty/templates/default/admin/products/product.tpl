@@ -41,6 +41,13 @@ function fnMoveSelect(select, target) {
       $(this).attr({selected: false});
     }
   });
+  // IE7再描画不具合対策
+  if ($.browser.msie && $.browser.version >= 7) {
+    $('#' + select).hide();
+    $('#' + select).show();
+    $('#' + target).hide();
+    $('#' + target).show();
+  }
 }
 
 // target の子要素を選択状態にする
