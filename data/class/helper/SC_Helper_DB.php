@@ -95,8 +95,8 @@ class SC_Helper_DB {
      * @param string $dsn データソース名
      * @param bool $add カラムの作成も行う場合 true
      * @return bool カラムが存在する場合とカラムの生成に成功した場合 true,
-     * 			     テーブルが存在しない場合 false,
-     * 				 引数 $add == false でカラムが存在しない場合 false
+     *               テーブルが存在しない場合 false,
+     *               引数 $add == false でカラムが存在しない場合 false
      */
     function sfColumnExists($table_name, $col_name, $col_type = "", $dsn = "", $add = false) {
         $dbFactory = SC_DB_DBFactory_Ex::getInstance();
@@ -141,8 +141,8 @@ class SC_Helper_DB {
      * @param string $dsn データソース名
      * @param bool $add インデックスの生成もする場合 true
      * @return bool インデックスが存在する場合とインデックスの生成に成功した場合 true,
-     * 			     テーブルが存在しない場合 false,
-     * 				 引数 $add == false でインデックスが存在しない場合 false
+     *               テーブルが存在しない場合 false,
+     *               引数 $add == false でインデックスが存在しない場合 false
      */
     function sfIndexExists($table_name, $col_name, $index_name, $length = "", $dsn = "", $add = false) {
         $dbFactory = SC_DB_DBFactory_Ex::getInstance();
@@ -223,7 +223,7 @@ class SC_Helper_DB {
     /* 選択中のアイテムのルートカテゴリIDを取得する */
     function sfGetRootId() {
 
-        if(!$this->g_root_on)	{
+        if(!$this->g_root_on)   {
             $this->g_root_on = true;
             $objQuery = new SC_Query();
 
@@ -299,9 +299,9 @@ class SC_Helper_DB {
         // 規格分類名一覧
         $arrClassCatName = $this->sfGetIDValueList("dtb_classcategory", "classcategory_id", "name");
 
-        $objPage->tpl_total_pretax = 0;		// 費用合計(税込み)
-        $objPage->tpl_total_tax = 0;		// 消費税合計
-        $objPage->tpl_total_point = 0;		// ポイント合計
+        $objPage->tpl_total_pretax = 0;     // 費用合計(税込み)
+        $objPage->tpl_total_tax = 0;        // 消費税合計
+        $objPage->tpl_total_point = 0;      // ポイント合計
 
         // カート内情報の取得
         $arrQuantityInfo_by_product = array();
@@ -1285,7 +1285,12 @@ __EOS__;
         $objQuery->begin();
 
         // 自身のランクを取得する
-        $rank = $objQuery->get($tableName, "rank", "$keyIdColumn = ? AND " . $where, array($keyId));
+        if($where != "") {
+            $getWhere = "$keyIdColumn = ? AND " . $where;
+        } else {
+            $getWhere = "$keyIdColumn = ?";
+        }
+        $rank = $objQuery->get($tableName, "rank", $getWhere, array($keyId));
 
         $max = $objQuery->max($tableName, "rank", $where);
 
@@ -1559,9 +1564,9 @@ __EOS__;
         }
 
         // 合計の計算
-        $arrData['total'] = $objPage->tpl_total_pretax;	// 商品合計
-        $arrData['total']+= $arrData['deliv_fee'];		// 送料
-        $arrData['total']+= $arrData['charge'];			// 手数料
+        $arrData['total'] = $objPage->tpl_total_pretax; // 商品合計
+        $arrData['total']+= $arrData['deliv_fee'];      // 送料
+        $arrData['total']+= $arrData['charge'];         // 手数料
         // お支払い合計
         $arrData['payment_total'] = $arrData['total'] - ($arrData['use_point'] * POINT_VALUE);
         // 加算ポイントの計算
