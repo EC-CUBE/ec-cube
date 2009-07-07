@@ -144,7 +144,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
                     $this->lfProductPage();     // 商品登録ページ
                 }
                 break;
-                // 商品登録・編集
+            // 商品登録・編集
             case 'edit':
                 if($_POST['product_id'] == "" and SC_Utils_Ex::sfIsInt($_POST['copy_product_id'])){
                     $this->tpl_nonclass = $this->lfCheckNonClass($_POST['copy_product_id']);
@@ -163,7 +163,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
                     $this->lfProductPage();     // 商品登録ページ
                 }
                 break;
-                // 確認ページから完了ページへ
+            // 確認ページから完了ページへ
             case 'complete':
                 $this->tpl_mainpage = 'products/complete.tpl';
 
@@ -176,28 +176,28 @@ class LC_Page_Admin_Products_Product extends LC_Page {
                 $this->objUpFile->moveTempFile();
 
                 break;
-                // 画像のアップロード
+            // 画像のアップロード
             case 'upload_image':
                 // ファイル存在チェック
                 $this->arrErr = array_merge((array)$this->arrErr, (array)$this->objUpFile->checkEXISTS($_POST['image_key']));
                 // 画像保存処理
-                $this->arrErr[$_POST['image_key']] = $this->objUpFile->makeTempFile($_POST['image_key']);
+                $this->arrErr[$_POST['image_key']] = $this->objUpFile->makeTempFile($_POST['image_key'],IMAGE_RENAME);
 
                 // 中、小画像生成
                 $this->lfSetScaleImage();
 
                 $this->lfProductPage(); // 商品登録ページ
                 break;
-                // 画像の削除
+            // 画像の削除
             case 'delete_image':
                 $this->objUpFile->deleteFile($_POST['image_key']);
                 $this->lfProductPage(); // 商品登録ページ
                 break;
-                // 確認ページからの戻り
+            // 確認ページからの戻り
             case 'confirm_return':
                 $this->lfProductPage();     // 商品登録ページ
                 break;
-                // 関連商品選択
+            // 関連商品選択
             case 'recommend_select' :
                 $this->lfProductPage();     // 商品登録ページ
                 break;
@@ -706,12 +706,37 @@ class LC_Page_Admin_Products_Product extends LC_Page {
             if(empty($this->objUpFile->temp_file[$arrImageKey[$to_key]]) &&
             empty($this->objUpFile->save_file[$arrImageKey[$to_key]])) {
 
-                $path = $this->objUpFile->makeThumb($from_path, $to_w, $to_h);
+                // リネームする際は、自動生成される画像名に一意となるように、Suffixを付ける
+                $dst_file = $this->objUpFile->lfGetTmpImageName(IMAGE_RENAME, "", $this->objUpFile->temp_file[$arrImageKey[$from_key]]) . $this->lfGetAddSuffix($to_key);
+                $path = $this->objUpFile->makeThumb($from_path, $to_w, $to_h, $dst_file);
                 $this->objUpFile->temp_file[$arrImageKey[$to_key]] = basename($path);
             }
         }else{
             return "";
         }
+    }
+
+    /**
+     * リネームする際は、自動生成される画像名に一意となるように、Suffixを付ける
+     */
+    function lfGetAddSuffix($to_key){
+        if( IMAGE_RENAME === true ){ return ; }
+
+        // 自動生成される画像名
+        $dist_name = "";
+        switch($to_key){
+            case "main_list_image":
+                $dist_name = '_s';
+                break;
+            case "main_image":
+                $dist_name = '_m';
+                break;
+            default;
+                $arrRet = explode('sub_image', $to_key);
+                $dist_name = '_sub' .$arrRet[1];
+                break;
+        }
+        return $dist_name;
     }
     /**
      * dtb_products_classの複製

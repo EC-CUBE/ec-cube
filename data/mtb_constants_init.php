@@ -668,4 +668,6 @@ define('OSTORE_E_C_PERMISSION', '2009');
 define('OSTORE_E_C_BATCH_ERR', '2010');
 /** お気に入り商品登録(有効:1 無効:0) */
 define('OPTION_FAVOFITE_PRODUCT','1');
+/** 画像リネーム設定（商品画像のみ） */
+define('IMAGE_RENAME', true);
 ?>
