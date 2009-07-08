@@ -1145,7 +1145,7 @@ __EOS__;
         $tmp_where = "";
         foreach ($arrRet as $val) {
             if($tmp_where == "") {
-                $tmp_where.= " category_id IN ( ?";
+                $tmp_where.= "category_id IN ( ?";
             } else {
                 $tmp_where.= ",? ";
             }

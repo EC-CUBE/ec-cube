@@ -411,10 +411,7 @@ class LC_Page_Products_List extends LC_Page {
         
         // カテゴリからのWHERE文字列取得
         if ( $category_id ) {
-            list($tmp_where, $arrval_category) = $objDb->sfGetCatWhere($category_id);
-            if (strlen($tmp_where) >= 1) {
-                $where_category = "AND $tmp_where";
-            }
+            list($where_category, $arrval_category) = $objDb->sfGetCatWhere($category_id);
         }
         
         // ▼対象商品IDの抽出
@@ -427,7 +424,7 @@ class LC_Page_Products_List extends LC_Page {
         }
         
         if (strlen($where_category) >= 1) {
-            $where.= " $where_category";
+            $where.= " AND $where_category";
             $arrval = array_merge($arrval, $arrval_category);
         }
 
@@ -525,16 +522,21 @@ __EOS__;
                 break;
 
             default:
+                if (strlen($where_category) >= 1) {
+                    $dtb_product_categories = "(SELECT * FROM dtb_product_categories WHERE $where_category)";
+                    $arrval_order = array_merge($arrval_category, $arrval_category);
+                } else {
+                    $dtb_product_categories = 'dtb_product_categories';
+                }
                 $order = <<< __EOS__
                     (
                         SELECT
                              T3.rank
                         FROM
-                            dtb_product_categories T2
+                            $dtb_product_categories T2
                             JOIN dtb_category T3
                                 USING (category_id)
                         WHERE T2.product_id = alldtl.product_id
-                            $where_category
                         ORDER BY T3.rank DESC, T2.rank DESC
                         LIMIT 1
                     ) DESC
@@ -542,17 +544,15 @@ __EOS__;
                         SELECT
                             T2.rank
                         FROM
-                            dtb_product_categories T2
+                            $dtb_product_categories T2
                             JOIN dtb_category T3
                                 USING (category_id)
                         WHERE T2.product_id = alldtl.product_id
-                            $where_category
                         ORDER BY T3.rank DESC, T2.rank DESC
                         LIMIT 1
                     ) DESC
                     ,product_id
 __EOS__;
-                $arrval_order = array_merge($arrval_category, $arrval_category);
                 break;
         }
         
