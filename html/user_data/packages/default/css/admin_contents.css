@@ -506,3 +506,13 @@ table.layout td {
     width: auto;
     vertical-align: top;
 }
+
+/* ログ表示用 */
+.log td {
+    padding-top: 0;
+    padding-bottom: 0;
+    vertical-align: top;
+}
+.log .date {
+    white-space: nowrap;
+}
