@@ -57,11 +57,22 @@
     function fnOpenPdfSettingPage(action){
         var WIN;
         WIN = window.open("about:blank", "pdf", "width=500,height=600,scrollbars=yes,resizable=yes,toolbar=no,location=no,directories=no,status=no");
+
+        // 退避
+        tmpTarget = document.form1.target;
+        tmpMode = document.form1.mode.value;
+        tmpAction = document.form1.action;
+
         document.form1.target = "pdf";
         document.form1.mode.value = 'pdf';
         document.form1.action = action;
         document.form1.submit();
         WIN.focus();
+
+        // 復元
+        document.form1.target = tmpTarget;
+        document.form1.mode.value = tmpMode;
+        document.form1.action = tmpAction;
     }
 
     function fnBoxChecked(check){
@@ -115,7 +126,7 @@
                         <!--検索条件設定テーブルここから-->
                         <table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
                             <tr class="fs12n">
-                                <td bgcolor="#f2f1ec" width="110">受注番号</td>
+                                <td bgcolor="#f2f1ec" width="110">注文番号</td>
                                 <td bgcolor="#ffffff" width="194">
                                     <!--{assign var=key1 value="search_order_id1"}-->
                                     <!--{assign var=key2 value="search_order_id2"}-->
@@ -213,8 +224,8 @@
                             <tr class="fs12n">
                                 <td bgcolor="#f2f1ec" width="110">受注日</td>
                                 <td bgcolor="#ffffff" width="499" colspan="3">
-                                    <span class="red"><!--{$arrErr.search_startyear}--></span>
-                                    <span class="red"><!--{$arrErr.search_endyear}--></span>
+                                    <span class="red"><!--{$arrErr.search_sorderyear}--></span>
+                                    <span class="red"><!--{$arrErr.search_eorderyear}--></span>
                                     <select name="search_sorderyear"    style="<!--{$arrErr.search_sorderyear|sfGetErrorColor}-->">
                                     <option value="">----</option>
                                     <!--{html_options options=$arrRegistYear selected=$arrForm.search_sorderyear.value}-->
@@ -244,8 +255,8 @@
                             <tr class="fs12n">
                                 <td bgcolor="#f2f1ec" width="110">更新日</td>
                                 <td bgcolor="#ffffff" width="499" colspan="3">
-                                    <span class="red"><!--{$arrErr.search_startyear}--></span>
-                                    <span class="red"><!--{$arrErr.search_endyear}--></span>
+                                    <span class="red"><!--{$arrErr.search_supdateyear}--></span>
+                                    <span class="red"><!--{$arrErr.search_eupdateyear}--></span>
                                     <select name="search_supdateyear"    style="<!--{$arrErr.search_supdateyear|sfGetErrorColor}-->">
                                     <option value="">----</option>
                                     <!--{html_options options=$arrRegistYear selected=$arrForm.search_supdateyear.value}-->
@@ -410,7 +421,7 @@
                         <!--{else}-->
                         <tr bgcolor="#636469" align="center" class="fs12n">
                             <td width="100"><span class="white">受注日</span></td>
-                            <td width="65"><span class="white">受注番号</span></td>
+                            <td width="65"><span class="white">注文番号</span></td>
                             <td width="110"><span class="white">顧客名</span></td>
                             <td width="90"><span class="white">支払方法</span></td>
                             <td width="70"><span class="white">購入金額(円)</span></td>

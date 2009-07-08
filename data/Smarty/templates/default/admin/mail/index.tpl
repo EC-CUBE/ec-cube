@@ -405,7 +405,7 @@
                         <tr bgcolor="#636469" align="center" class="fs12n">
                             <td width="20"><span class="white">#</span></td>
                             <td width="80"><span class="white">会員番号</span></td>
-                            <td width="80"><span class="white">受注番号</span></td>
+                            <td width="80"><span class="white">注文番号</span></td>
                             <td width="140"><span class="white">名前</span></td>
                             <td width="190"><span class="white">メールアドレス</span></td>
                             <td width="101"><span class="white">希望配信</span></td>

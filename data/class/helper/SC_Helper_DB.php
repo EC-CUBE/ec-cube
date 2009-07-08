@@ -502,9 +502,9 @@ class SC_Helper_DB {
     }
 
     /**
-     * 受注番号、利用ポイント、加算ポイントから最終ポイントを取得する.
+     * 注文番号、利用ポイント、加算ポイントから最終ポイントを取得する.
      *
-     * @param integer $order_id 受注番号
+     * @param integer $order_id 注文番号
      * @param integer $use_point 利用ポイント
      * @param integer $add_point 加算ポイント
      * @return array 最終ポイントの配列

@@ -122,7 +122,6 @@ class SC_Fpdf {
             $text = "Email: ".$arrInfo['law_email'];
             $this->lfText(125, 83, $text, 8);      //Email
         }
-
         //ロゴ画像
         $logo_file = PDF_TEMPLATE_DIR . 'logo.png';
         $this->pdf->Image($logo_file, 124, 46, 40);

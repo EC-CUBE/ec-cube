@@ -229,15 +229,15 @@ function lnSetSelect(form, name1, name2, val) {
 
   <!--▼サブコメントここから-->
   <!--{section name=cnt loop=$smarty.const.PRODUCTSUB_MAX}-->
-  <!--{assign var=key value="sub_title`$smarty.section.cnt.iteration`"}-->
+  <!--{assign var=key value="sub_title`$smarty.section.cnt.index+1`"}-->
     <!--{if $arrProduct[$key] != ""}-->
   <div class="subarea">
     <h3><!--★サブタイトル★--><!--{$arrProduct[$key]|escape}--></h3>
-    <!--{assign var=ckey value="sub_comment`$smarty.section.cnt.iteration`"}-->
+    <!--{assign var=ckey value="sub_comment`$smarty.section.cnt.index+1`"}-->
 
     <!--拡大写真がある場合ここから-->
-    <!--{assign var=key value="sub_image`$smarty.section.cnt.iteration`"}-->
-    <!--{assign var=lkey value="sub_large_image`$smarty.section.cnt.iteration`"}-->
+    <!--{assign var=key value="sub_image`$smarty.section.cnt.index+1`"}-->
+    <!--{assign var=lkey value="sub_large_image`$smarty.section.cnt.index+1`"}-->
     <!--{if $arrFile[$key].filepath != ""}-->
     <div class="subtext"><!--★サブテキスト★--><!--{$arrProduct[$ckey]|nl2br}--></div>
       <div class="subphotoimg">

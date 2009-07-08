@@ -274,7 +274,7 @@ define('IMAGE_TEMP_URL_RSS', SITE_URL . "upload/temp_image/");
 /** RSS用画像保存先URL */
 define('IMAGE_SAVE_URL_RSS', SITE_URL . "upload/save_image/");
 /** エンコードCSVの一時保存先 */
-define('CSV_TEMP_DIR', HTML_PATH . "upload/csv/");
+define('CSV_TEMP_DIR', DATA_PATH . "upload/csv/");
 /** 画像がない場合に表示 */
 define('NO_IMAGE_URL', URL_DIR . "misc/blank.gif");
 /** 画像がない場合に表示 */
@@ -486,7 +486,7 @@ define('ORDER_CANCEL', 3);
 define('ORDER_BACK_ORDER', 4);
 /** 発送済み */
 define('ORDER_DELIV', 5);
-/** 受注ステータス変更の際にポイント等を加算するステータス番号（発送済み） */
+/** 受注完了時のステータス番号 */
 define('ODERSTATUS_COMMIT', ORDER_DELIV);
 /** 新着情報管理画面 開始年(西暦)  */
 define('ADMIN_NEWS_STARTYEAR', 2005);

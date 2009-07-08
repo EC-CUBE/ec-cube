@@ -272,17 +272,6 @@ class LC_Page_Products_Detail extends LC_Page {
         //この商品を買った人はこんな商品も買っています
         $this->arrRelateProducts = $this->lfGetRelateProducts($tmp_id);
 
-        // 拡大画像のウィンドウサイズをセット
-        if (isset($this->arrFile["main_large_image"])) {
-            $image_path = IMAGE_SAVE_DIR . basename($this->arrFile["main_large_image"]["filepath"]);
-        } else {
-            $image_path = "";
-        }
-
-        list($large_width, $large_height) = getimagesize($image_path);
-        $this->tpl_large_width = $large_width + 60;
-        $this->tpl_large_height = $large_height + 80;
-
         $this->lfConvertParam();
 
         $objView->assignobj($this);
@@ -494,13 +483,6 @@ class LC_Page_Products_Detail extends LC_Page {
         $this->arrRecommend = $this->lfPreGetRecommendProducts($tmp_id);
         //この商品を買った人はこんな商品も買っています
         $this->arrRelateProducts = $this->lfGetRelateProducts($tmp_id);
-
-        // 拡大画像のウィンドウサイズをセット
-        if (!empty($this->arrFile["main_large_image"])) {
-            list($large_width, $large_height) = getimagesize(IMAGE_SAVE_DIR . basename($this->arrFile["main_large_image"]["filepath"]));
-        }
-        $this->tpl_large_width = isset($large_width) ? $large_width + 60 : 0;
-        $this->tpl_large_height = isset($large_height) ? $large_height + 80 : 0;
 
         $objView->assignobj($this);
         $objView->display(SITE_FRAME);

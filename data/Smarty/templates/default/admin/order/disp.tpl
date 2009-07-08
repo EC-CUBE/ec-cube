@@ -112,7 +112,7 @@
                                 <td bgcolor="#f0f0f0" colspan="4">▼お客様情報</td>
                             </tr>
                             <tr class="fs12n">
-                                <td bgcolor="#f0f0f0" width="110">受注番号</td>
+                                <td bgcolor="#f0f0f0" width="110">注文番号</td>
                                 <td bgcolor="#ffffff" width="248"><!--{$arrForm.order_id.value}--></td>
                                 <td bgcolor="#f0f0f0" width="110">顧客ID</td>
                                 <td bgcolor="#ffffff" width="249">

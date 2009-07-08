@@ -154,6 +154,8 @@ class LC_Page_Shopping_Payment extends LC_Page {
         $total_pretax = $objCartSess->getAllProductsTotal($arrInfo);
         // 支払い方法の取得
         $this->arrPayment = $this->lfGetPayment($total_pretax);
+        // 支払い方法の画像があるなしを取得（$img_show true:ある false:なし）
+        $this->img_show = $this->lfGetImgShow($this->arrPayment);
         // 配送時間の取得
         $arrRet = $objDb->sfGetDelivTime($this->objFormParam->getValue('payment_id'));
         $this->arrDelivTime = SC_Utils_Ex::sfArrKeyValue($arrRet, 'time_id', 'deliv_time');
@@ -559,6 +561,18 @@ class LC_Page_Shopping_Payment extends LC_Page {
         // DB値の取得
         $this->objFormParam->setParam($arrRet[0]);
         return $this->objFormParam;
+    }
+
+    /* 支払い方法の画像があるなしを取得（$img_show true:ある false:なし） */
+    function lfGetImgShow($arrPayment) {
+        $img_show = false;
+        foreach ($this->arrPayment as $payment) {
+            if (strlen($payment["payment_image"]) > 0 ){
+                $img_show = true;
+                break;
+            }
+        }
+        return $img_show;
     }
 }
 ?>

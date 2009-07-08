@@ -201,7 +201,7 @@ class LC_Page_Admin_Mail extends LC_Page {
 
             $this->list_data = $list_data;
             $this->arrCampaignList = $this->lfGetCampaignList($objQuery);
-            
+
             $objView->assignobj($this);
             $objView->display($tpl_path);
             exit;
@@ -401,7 +401,7 @@ class LC_Page_Admin_Mail extends LC_Page {
         parent::destroy();
     }
 
-    // 商品コードで検索された場合にヒットした受注番号を取得する。
+    // 商品コードで検索された場合にヒットした注文番号を取得する。
     function lfGetCustomerOrderId($keyword) {
         $arrCustomerOrderId = null;
         if($keyword != "") {

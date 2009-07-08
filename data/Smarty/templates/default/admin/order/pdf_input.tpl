@@ -99,7 +99,7 @@ function lfPopwinSubmit(formName) {
 
                         <table width="440" border="0" cellspacing="1" cellpadding="8" summary=" ">
                             <tr class="fs12n">
-                                <td width="120" bgcolor="#f3f3f3">受注番号</td>
+                                <td width="120" bgcolor="#f3f3f3">注文番号</td>
                                     <td width="307" bgcolor="#ffffff">
                                     <!--{foreach name=order_id from=$arrForm.order_id item=order_id}-->
                                         <!--{$order_id|escape}--><!--{if $smarty.foreach.order_id.last === false}-->,<!--{/if}-->

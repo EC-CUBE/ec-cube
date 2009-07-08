@@ -87,7 +87,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
 
         /* ペイジェント決済モジュール連携用 */
         if(function_exists("sfPaygentOrderPage")) {
-            $this->arrFormKind = sfPaygentOrderPage();
+            $this->arrDispKind = sfPaygentOrderPage();
         }
 
         /* F-REGI決済モジュール連携用 */
@@ -371,7 +371,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
 
         // 受注商品情報
         $this->objFormParam->addParam("値引き", "discount", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"), '0');
-        $this->objFormParam->addParam("送料", "deliv_fee", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $this->objFormParam->addParam("送料", "deliv_fee", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"), '0');
         $this->objFormParam->addParam("手数料", "charge", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
 
         // ポイント機能ON時のみ
@@ -408,7 +408,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         $this->objFormParam->addParam("最終保持ポイント", "total_point");
         $this->objFormParam->addParam("顧客ID", "customer_id");
         $this->objFormParam->addParam("現在のポイント", "point");
-        $this->objFormParam->addParam("受注番号", "order_id");
+        $this->objFormParam->addParam("注文番号", "order_id");
         $this->objFormParam->addParam("受注日", "create_date");
         $this->objFormParam->addParam("発送日", "commit_date");
     }
@@ -440,6 +440,8 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
             }else{
                 $this->arrForm["payment_type"] = "お支払い";
             }
+            //受注データを表示用配列に代入（各EC-CUBEバージョンと決済モジュールとのデータ連携保全のため）
+            $this->arrDisp = $this->arrForm;
         }
     }
 
@@ -565,7 +567,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         // 受注ステータスの判定
         if ($sqlval['status'] == ODERSTATUS_COMMIT) {
             // 受注テーブルの発送済み日を更新する
-            $sql .= "     ,commit_date = 'NOW()'";
+            $sql .= "     ,commit_date = NOW()";
         }
         $sql .= " WHERE order_id = ?";
 
@@ -696,7 +698,26 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
     function lfInsertProduct($product_id, $classcategory_id1, $classcategory_id2) {
         $arrProduct = $this->lfGetProductsClass($product_id, $classcategory_id1, $classcategory_id2);
         $this->arrForm = $this->objFormParam->getFormParamList();
-        $this->lfSetProductData($arrProduct);
+        $existes = false;
+        $existes_key = NULL;
+        // 既に同じ商品がないか、確認する
+        if (!empty($this->arrForm['product_id']['value'])) {
+            foreach ($this->arrForm['product_id']['value'] AS $key=>$val) {
+                if ($val == $product_id && $this->arrForm['product_id']['classcategory_id1'][$key] == $classcategory_id1 && $this->arrForm['product_id']['classcategory_id2'][$key] == $classcategory_id2) {
+                    // 既に同じ商品がある
+                    $existes = true;
+                    $existes_key = $key;
+                }
+            }
+        }
+
+        if ($existes) {
+            // 既に同じ商品がある場合
+            ++$this->arrForm['quantity']['value'][$existes_key];
+        } else {
+            // 既に同じ商品がない場合
+            $this->lfSetProductData($arrProduct);
+        }
     }
 
     function lfUpdateProduct($product_id, $classcategory_id1, $classcategory_id2, $no) {

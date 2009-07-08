@@ -229,7 +229,7 @@ class LC_Page_Admin_Order extends LC_Page {
                         $arrval[] = $date;
                         break;
                     case 'search_eorderyear':
-                        $date = SC_Utils_Ex::sfGetTimestamp($_POST['search_eorderyear'], $_POST['search_eordermonth'], $_POST['search_eorderday']);
+                        $date = SC_Utils_Ex::sfGetTimestamp($_POST['search_eorderyear'], $_POST['search_eordermonth'], $_POST['search_eorderday'], true);
                         $where.= " AND create_date <= ?";
                         $arrval[] = $date;
                         break;
@@ -370,8 +370,8 @@ class LC_Page_Admin_Order extends LC_Page {
 
     /* パラメータ情報の初期化 */
     function lfInitParam() {
-        $this->objFormParam->addParam("受注番号1", "search_order_id1", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $this->objFormParam->addParam("受注番号2", "search_order_id2", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $this->objFormParam->addParam("注文番号1", "search_order_id1", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $this->objFormParam->addParam("注文番号2", "search_order_id2", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
         $this->objFormParam->addParam("対応状況", "search_order_status", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
         $this->objFormParam->addParam("顧客名", "search_order_name", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("顧客名(カナ)", "search_order_kana", STEXT_LEN, "KVCa", array("KANA_CHECK","MAX_LENGTH_CHECK"));
@@ -412,7 +412,7 @@ class LC_Page_Admin_Order extends LC_Page {
         $objErr->arrErr = $this->objFormParam->checkError();
 
         // 特殊項目チェック
-        $objErr->doFunc(array("受注番号1", "受注番号2", "search_order_id1", "search_order_id2"), array("GREATER_CHECK"));
+        $objErr->doFunc(array("注文番号1", "注文番号2", "search_order_id1", "search_order_id2"), array("GREATER_CHECK"));
         $objErr->doFunc(array("年齢1", "年齢2", "search_age1", "search_age2"), array("GREATER_CHECK"));
         $objErr->doFunc(array("購入金額1", "購入金額2", "search_total1", "search_total2"), array("GREATER_CHECK"));
         $objErr->doFunc(array("開始日", "search_sorderyear", "search_sordermonth", "search_sorderday"), array("CHECK_DATE"));

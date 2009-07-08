@@ -348,7 +348,7 @@
 					<table width="840" border="0" cellspacing="1" cellpadding="5" summary=" ">
 						<tr bgcolor="#636469" align="center" class="fs10n">
 							<td width="160"><span class="white">日付</span></td>
-							<td width="140"><span class="white">受注番号</span></td>
+							<td width="140"><span class="white">注文番号</span></td>
 							<td width="140"><span class="white">購入金額</span></td>
 							<td width="160"><span class="white">発送日</span></td>
 							<td width="140"><span class="white">支払方法</span></td>

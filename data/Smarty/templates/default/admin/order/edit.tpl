@@ -112,7 +112,7 @@
 
                         <!--{* SPS連携用 *}-->
                         <!--{assign var=sps_path value=`$smarty.const.MODULE_PATH`mdl_sps/templates/sps_request.tpl}-->
-                        <!--{if file_exists($sps_path) && $paymentType[0].module_code == $smarty.const.MDL_SPS_CODE && $paymentType[0].memo03 == $smarty.const.SPS_CREDIT}-->
+                        <!--{if file_exists($sps_path) && $paymentType[0].module_code == $smarty.const.MDL_SPS_CODE}-->
                             <!--{include file=$sps_path}-->
                         <!--{/if}-->
 
@@ -178,7 +178,7 @@
                                 </td>
                             </tr>
                                 <tr class="fs12n">
-                                    <td bgcolor="#f2f1ec" width="110">受注番号</td>
+                                    <td bgcolor="#f2f1ec" width="110">注文番号</td>
                                     <td bgcolor="#ffffff" width="248"><!--{$arrForm.order_id.value}--></td>
                                     <td bgcolor="#f2f1ec" width="110">顧客ID</td>
                                     <td bgcolor="#ffffff" width="249">
@@ -385,6 +385,8 @@
                                 <input type="button" name="cheek" value="計算結果の確認" onclick="fnModeSubmit('cheek','anchor_key','order_products');" />
                                 <input type="button" name="add_product" value="商品の追加" onclick="win03('<!--{$smarty.const.SITE_URL}-->admin/order/product_select.php<!--{if $tpl_order_id}-->?order_id=<!--{$tpl_order_id}--><!--{/if}-->', 'search', '500', '500'); " />
                                 <br />
+                                <span class="red">（商品の追加、及び数量の変更に伴う在庫数の変更は手動にてお願いします。)</span>
+                                <br />
                                 <span class="red12"><!--{$arrErr.product_id}--></span>
                                 <span class="red12"><!--{$arrErr.quantity}--></span>
                                 <span class="red12"><!--{$arrErr.price}--></span>
@@ -496,7 +498,7 @@
                                 </tr>
                                 <tr bgcolor="#ffffff" class="fs12n">
                                     <!--{if $arrForm.customer_id > 0}-->
-                                    <td colspan="5" align="right">現在ポイント（ポイントの修正は<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="return fnEdit('<!--{$arrForm.customer_id}-->');">顧客編集</a>から手動にてお願い致します。）</td>
+                                    <td colspan="5" align="right">現在ポイント（ポイントの修正は<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="return fnEdit('<!--{$arrForm.customer_id.value}-->');">顧客編集</a>から手動にてお願い致します。）</td>
                                     <td align="right">
                                     <!--{$arrForm.point.value|number_format}-->
                                      pt</td>
