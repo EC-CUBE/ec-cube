@@ -55,7 +55,7 @@
      </div>
      <p class="inputtext02">
        パスワードを忘れた方は<a href="<!--{$smarty.const.SSL_URL|sfTrimURL}-->/forgot/index.php" onclick="win01('<!--{$smarty.const.SSL_URL|sfTrimURL}-->/forgot/index.php','forget','600','400'); return false;" target="_blank">こちら</a>からパスワードの再発行を行ってください。<br />
-      メールアドレスを忘れた方は、お手数ですが、<a href="<!--{$smarty.const.URL_DIR}-->contact/index.php">お問い合わせページ</a>からお問い合わせください。
+      メールアドレスを忘れた方は、お手数ですが、<a href="<!--{$smarty.const.SSL_URL}-->contact/index.php">お問い合わせページ</a>からお問い合わせください。
      </p>
    </div>
     </form>
