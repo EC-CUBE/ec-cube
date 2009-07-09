@@ -85,8 +85,19 @@ function lnSetSelect(name1, name2, id, val) {
                 <!--{else}-->
                     <strong>新着順</strong>
                 <!--{/if}-->
+                  表示件数
+                    <select name="disp_number" onchange="javascript:fnModeSubmit('','disp_number',this.value);">
+                <!--{foreach from=$arrPRODUCTLISTMAX item="dispnum" key="num"}-->
+	                <!--{if $num == $disp_number}-->
+	                <option value="<!--{$num}-->" selected="selected" ><!--{$dispnum}--></option>
+	                <!--{else}-->
+	                <option value="<!--{$num}-->" ><!--{$dispnum}--></option>
+	                <!--{/if}-->
+                <!--{/foreach}-->
+                    </select>
                 </li>
             </ul>
+            
         <!--{else}-->
             <!--{include file="frontparts/search_zero.tpl"}-->
         <!--{/if}-->
@@ -217,6 +228,16 @@ function lnSetSelect(name1, name2, id, val) {
                     <!--{else}-->
                         <strong>新着順</strong>
                     <!--{/if}-->
+                                      表示件数
+                    <select name="disp_number" onchange="javascript:fnModeSubmit('','disp_number',this.value);">
+                <!--{foreach from=$arrPRODUCTLISTMAX item="dispnum" key="num"}-->
+                    <!--{if $num == $disp_number}-->
+                    <option value="<!--{$num}-->" selected="selected" ><!--{$dispnum}--></option>
+                    <!--{else}-->
+                    <option value="<!--{$num}-->" ><!--{$dispnum}--></option>
+                    <!--{/if}-->
+                <!--{/foreach}-->
+                    </select>
                 </li>
             </ul>
         <!--{/if}-->
