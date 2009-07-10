@@ -39,6 +39,13 @@
     <!--{/if}-->
     </p>
 
+    <!--{* (開発者向けレビュー)
+    <form action="order.php" method="post">
+        <input type="hidden" name="order_id" value="<!--{$arrDisp.order_id}-->">
+        <input type="submit" name="submit" value="再注文">
+    </form>
+    *}-->
+
     <table summary="購入商品詳細">
       <tr>
         <th>商品コード</th>
@@ -169,6 +176,7 @@
     <div class="tblareabtn">
       <a href="./<!--{$smarty.const.DIR_INDEX_URL}-->" onmouseover="chgImg('<!--{$TPL_DIR}-->img/common/b_back_on.gif','change');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/common/b_back.gif','change');"><img src="<!--{$TPL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="戻る" name="change" id="change" /></a>
     </div>
+
   </div>
 </div>
 <!--▲CONTENTS-->
