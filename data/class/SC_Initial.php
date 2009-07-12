@@ -102,6 +102,10 @@ class SC_Initial {
      */
     function setErrorReporting() {
         error_reporting(E_ALL & ~E_NOTICE);
+        // PHP 5.3.0対応
+        if (error_reporting() > 6143) {
+            error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_USER_DEPRECATED);
+        }
     }
 
     /**
@@ -210,7 +214,7 @@ class SC_Initial {
     function createCacheDir() {
         if (defined("HTML_PATH")) {
             umask(0);
-        	if (!file_exists(COMPILE_DIR)) {
+            if (!file_exists(COMPILE_DIR)) {
                 mkdir(COMPILE_DIR);
             }
 
