@@ -47,6 +47,7 @@ class LC_Page_FrontParts_Bloc_Login extends LC_Page_FrontParts_Bloc {
         $this->setTplMainpage($bloc_file);
         $this->tpl_login = false;
         $this->tpl_disable_logout = false;
+        $this->httpCacheControl('nocache');
     }
 
     /**

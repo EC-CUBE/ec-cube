@@ -63,7 +63,6 @@ class LC_Page_Products_List extends LC_Page {
 
         $this->tpl_class_name1 = array();
         $this->tpl_class_name2 = array();
-        $this->allowClientCache();
     }
 
     /**
@@ -404,7 +403,7 @@ class LC_Page_Products_List extends LC_Page {
 
         $objQuery = new SC_Query();
         $objDb = new SC_Helper_DB_Ex();
-        $this->tpl_pageno = defined("MOBILE_SITE") ? @$_GET['pageno'] : @$_POST['pageno'];
+        $this->tpl_pageno = @$_GET['pageno'];
         $arrval = array();
         $arrval_order = array();
         $arrval_category = array();
@@ -460,9 +459,9 @@ class LC_Page_Products_List extends LC_Page {
 
         // ページ送りの取得
         $this->objNavi = new SC_PageNavi($this->tpl_pageno, $linemax, $disp_num, "fnNaviPage", NAVI_PMAX);
-
         $strnavi = $this->objNavi->strnavi;
-        $strnavi = str_replace('onclick="fnNaviPage', 'onclick="form1.mode.value=\''.'\'; fnNaviPage', $strnavi);
+        $strnavi = preg_replace('/list\.php.*?\'([0-9]+)\'.*?\"/', 'list.php?category_id=' . $category_id . '&amp;pageno=$1"', $strnavi);
+ 
         // 表示文字列
         $this->tpl_strnavi = empty($strnavi) ? "&nbsp;" : $strnavi;
         $startno = $this->objNavi->start_row;                 // 開始行

@@ -44,7 +44,6 @@ class LC_Page_CampaignApplication extends LC_Page {
     function init() {
         parent::init();
         $this->tpl_mainpage = TEMPLATE_DIR . '/campaign/application.tpl';
-        $this->allowClientCache();
     }
 
     /**

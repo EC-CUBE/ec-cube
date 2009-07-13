@@ -55,8 +55,6 @@ class LC_Page_Admin_Products extends LC_Page {
         $this->arrDISP = $masterData->getMasterData("mtb_disp");
         $this->arrSTATUS = $masterData->getMasterData("mtb_status");
         $this->arrPRODUCTSTATUS_COLOR = $masterData->getMasterData("mtb_product_status_color");
-
-        $this->allowClientCache();
     }
 
     /**

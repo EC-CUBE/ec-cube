@@ -65,6 +65,7 @@ class LC_Page_Admin_Order extends LC_Page {
         if(function_exists("sfPaygentOrderPage")) {
             $this->arrDispKind = sfPaygentOrderPage();
         }
+        $this->httpCacheControl('nocache');
     }
 
     /**

@@ -63,8 +63,7 @@ class LC_Page_Mypage_Change extends LC_Page {
         $this->arrJob = $masterData->getMasterData("mtb_job");
         $this->arrMAILMAGATYPE = $masterData->getMasterData("mtb_mail_magazine_type");
         $this->arrSex = $masterData->getMasterData("mtb_sex");
-        $this->allowClientCache();
-
+        $this->httpCacheControl('nocache');
     }
 
     /**

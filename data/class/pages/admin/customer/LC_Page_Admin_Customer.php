@@ -151,6 +151,7 @@ class LC_Page_Admin_Customer extends LC_Page {
                                                 "csv" => "update_date",
                                                 "header" => "更新日")
                                     );
+        $this->httpCacheControl('nocache');
     }
 
     /**

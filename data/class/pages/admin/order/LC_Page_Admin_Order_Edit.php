@@ -97,6 +97,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
             global $arrFregiDispKind;
             $this->arrFregiDispKind = $arrFregiDispKind;
         }
+        $this->httpCacheControl('nocache');
     }
 
     /**

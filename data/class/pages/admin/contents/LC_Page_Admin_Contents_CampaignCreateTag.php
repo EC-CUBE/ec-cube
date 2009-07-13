@@ -46,7 +46,6 @@ class LC_Page_Admin_Contents_CampaignCreateTag extends LC_Page {
         $this->tpl_mainpage = 'contents/campaign_create_tag.tpl';
         $this->tpl_mainno = 'create';
         $this->tpl_subtitle = '商品設定';
-        $this->allowClientCache();
     }
 
     /**

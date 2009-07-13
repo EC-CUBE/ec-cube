@@ -52,8 +52,7 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         $this->arrSex = $masterData->getMasterData("mtb_sex");
         $this->arrMAILMAGATYPE = $masterData->getMasterData("mtb_mail_magazine_type");
         $this->arrReminder = $masterData->getMasterData("mtb_reminder");
-
-        //$this->allowClientCache();
+        $this->httpCacheControl('nocache');
     }
 
     /**

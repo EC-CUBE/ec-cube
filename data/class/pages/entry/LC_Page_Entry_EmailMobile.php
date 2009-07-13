@@ -61,7 +61,6 @@ class LC_Page_Entry_EmailMobile extends LC_Page {
     function mobileInit() {
         $this->tpl_mainpage = 'entry/email_mobile.tpl';
         $this->tpl_title = '携帯メール登録';
-        $this->allowClientCache();
     }
 
     /**

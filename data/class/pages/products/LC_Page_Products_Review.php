@@ -60,6 +60,7 @@ class LC_Page_Products_Review extends LC_Page {
         $this->arrRECOMMEND = $masterData->getMasterData("mtb_recommend");
         $this->arrSex = $masterData->getMasterData("mtb_sex");
         $this->arrReviewDenyURL = $masterData->getMasterData("mtb_review_deny_url");
+        $this->httpCacheControl('nocache');
     }
 
     /**

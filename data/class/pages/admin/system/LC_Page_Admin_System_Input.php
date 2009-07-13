@@ -50,6 +50,8 @@ class LC_Page_Admin_System_Input extends LC_Page {
         // マスタ-データから権限配列を取得
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrAUTHORITY = $masterData->getMasterData('mtb_authority');
+        
+        $this->httpCacheControl('nocache');
     }
 
     /**

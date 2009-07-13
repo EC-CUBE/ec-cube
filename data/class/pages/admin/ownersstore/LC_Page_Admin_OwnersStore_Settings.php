@@ -57,6 +57,7 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page {
         $this->tpl_mainno   = 'ownersstore';
         $this->tpl_subno    = 'settings';
         $this->tpl_subtitle = '認証キー設定';
+        $this->httpCacheControl('nocache');
     }
 
     /**

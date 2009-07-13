@@ -51,7 +51,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page {
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrMAILTEMPLATE = $masterData->getMasterData("mtb_mail_template");
-
+        $this->httpCacheControl('nocache');
     }
 
     /**

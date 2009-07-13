@@ -50,11 +50,10 @@ class LC_Page_Mypage_History extends LC_Page {
         $this->tpl_column_num = 1;
         $this->tpl_mainno = 'mypage';
         $this->tpl_mypageno = 'index';
-        $this->allowClientCache();
-
+        $this->httpCacheControl('nocache');
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrMAILTEMPLATE = $masterData->getMasterData("mtb_mail_template");
-    }
+   }
 
     /**
      * Page のプロセス.
@@ -74,7 +73,7 @@ class LC_Page_Mypage_History extends LC_Page {
         //不正アクセス判定
         $from = "dtb_order";
         $where = "del_flg = 0 AND customer_id = ? AND order_id = ? ";
-        $arrval = array($objCustomer->getValue('customer_id'), $_POST['order_id']);
+        $arrval = array($objCustomer->getValue('customer_id'), $_GET['order_id']);
         //DBに情報があるか判定
         $cnt = $objQuery->count($from, $where, $arrval);
         //ログインしていない、またはDBに情報が無い場合
@@ -82,7 +81,7 @@ class LC_Page_Mypage_History extends LC_Page {
             SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
         } else {
             //受注詳細データの取得
-            $this->arrDisp = $this->lfGetOrderData($_POST['order_id']);
+            $this->arrDisp = $this->lfGetOrderData($_GET['order_id']);
             // 支払い方法の取得
             $this->arrPayment = $objDb->sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
             // 配送時間の取得
@@ -95,11 +94,11 @@ class LC_Page_Mypage_History extends LC_Page {
             $this->CustomerPoint = $objCustomer->getvalue('point');
         }
 
-        if(SC_Utils_Ex::sfIsInt($_POST['order_id'])) {
+        if(SC_Utils_Ex::sfIsInt($_GET['order_id'])) {
             $col = "send_date, subject, template_id, send_id";
             $where = "order_id = ?";
             $objQuery->setorder("send_date DESC");
-            $this->arrMailHistory = $objQuery->select($col, "dtb_mail_history", $where, array($_POST['order_id']));
+            $this->arrMailHistory = $objQuery->select($col, "dtb_mail_history", $where, array($_GET['order_id']));
         }
 
         $masterData = new SC_DB_MasterData_Ex();
@@ -126,7 +125,7 @@ class LC_Page_Mypage_History extends LC_Page {
     function mobileInit() {
         $this->tpl_mainpage = MOBILE_TEMPLATE_DIR . 'mypage/history.tpl';
         $this->tpl_title = 'MYページ/購入履歴一覧';
-        $this->allowClientCache();
+        $this->httpCacheControl('nocache');
     }
 
     /**

@@ -46,6 +46,7 @@ class LC_Page_Admin_Customer_SearchCustomer extends LC_Page
     {
         parent::init();
         $this->tpl_mainpage = 'customer/search_customer.tpl';
+        $this->httpCacheControl('nocache');
     }
 
     /**

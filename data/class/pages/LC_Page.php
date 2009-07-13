@@ -307,20 +307,32 @@ class LC_Page {
     }
 
     /**
-     * クライアントのキャッシュを許可する.
-     *
-     * session_start時のno-cacheヘッダーを抑制することで
-     * 「戻る」ボタン使用時の有効期限切れ表示を抑制する.
+     * クライアント・プロキシのキャッシュを制御する.
      *
      * @access protected
+     * @param string $mode (nocache/private)
      * @return void
      */
-    function allowClientCache() {
-        $cache_expire = session_cache_expire() * 60;
-        header('Pragma:');
-        header('Expires:');
-        header("Cache-Control: private, max-age={$cache_expire}, pre-check={$cache_expire}");
-        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+    function httpCacheControl($mode = '') {
+        switch ($mode) {
+            case 'nocache':
+                header('Pragma: no-cache');
+                header('Expires: Thu, 19 Nov 1981 08:52:00 GMT');
+                header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
+                header('Last-Modified:');
+                break;
+                
+            case 'private':
+                $cache_expire = session_cache_expire() * 60;
+                header('Pragma: no-cache');                                                            // anti-proxy
+                header('Expires:');                                                                    // anti-mozilla
+                header("Cache-Control: private, max-age={$cache_expire}, pre-check={$cache_expire}");  // HTTP/1.1 client
+                header('Last-Modified:');
+                break;
+                
+            default:
+                break;
+        }
     }
 
     /**

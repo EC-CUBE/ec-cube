@@ -57,6 +57,8 @@ class LC_Page_Entry extends LC_Page {
         $this->arrYear = $objDate->getYear('', 1950, '');
         $this->arrMonth = $objDate->getMonth(true);
         $this->arrDay = $objDate->getDay(true);
+        
+        $this->httpCacheControl('nocache');
     }
 
     /**
@@ -126,7 +128,7 @@ class LC_Page_Entry extends LC_Page {
                 SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", true);
             }
 
-            //空白・改行の削除
+            // 空白・改行の削除
             $_POST["name01"] = preg_replace('/^[ 　\r\n]*(.*?)[ 　\r\n]*$/u', '$1', $_POST["name01"]);
             $_POST["name02"] = preg_replace('/^[ 　\r\n]*(.*?)[ 　\r\n]*$/u', '$1', $_POST["name02"]);
             $_POST["kana01"] = preg_replace('/^[ 　\r\n]*(.*?)[ 　\r\n]*$/u', '$1', $_POST["kana01"]);
@@ -150,7 +152,7 @@ class LC_Page_Entry extends LC_Page {
             //-- POSTデータの引き継ぎ
             $this->arrForm = $_POST;
 
-            //SSL用
+            // SSL用
             $this->arrForm['ssl_url'] = $ssl_url;
 
             $this->arrForm['email'] = strtolower($this->arrForm['email']);		// emailはすべて小文字で処理
@@ -159,7 +161,7 @@ class LC_Page_Entry extends LC_Page {
             //-- 入力データの変換
             $this->arrForm = $this->lfConvertParam($this->arrForm, $arrRegistColumn);
 
-            //--　入力エラーチェック
+            //-- 入力エラーチェック
             $this->arrErr = $this->lfErrorCheck($this->arrForm);
 
             if ($this->arrErr || $_POST["mode"] == "return") {		// 入力エラーのチェック
@@ -169,7 +171,7 @@ class LC_Page_Entry extends LC_Page {
 
             } else {
 
-                //--　確認
+                //-- 確認
                 if ($_POST["mode"] == "confirm") {
                     foreach($this->arrForm as $key => $val) {
                         if ($key != "mode" && $key != "subm") $this->list_data[ $key ] = $val;
@@ -184,7 +186,7 @@ class LC_Page_Entry extends LC_Page {
 
                 }
 
-                //--　会員登録と完了画面
+                //-- 会員登録と完了画面
                 if ($_POST["mode"] == "complete") {
                     // キャンペーンからの遷移の時用の値
                     if($objCampaignSess->getIsCampaign()) {
@@ -199,7 +201,7 @@ class LC_Page_Entry extends LC_Page {
                     $this->tpl_mainpage = 'entry/complete.tpl';
                     $this->tpl_title = '会員登録(完了ページ)';
 
-                    //　完了メール送信
+                    // 完了メール送信
                     $this->name01 = $_POST['name01'];
                     $this->name02 = $_POST['name02'];
                     $objMailText = new SC_SiteView();
@@ -246,7 +248,7 @@ class LC_Page_Entry extends LC_Page {
 
         $this->transactionid = $this->getToken();
 
-        //----　ページ表示
+        //---- ページ表示
         $objView->assignobj($this);
         // フレームを選択(キャンペーンページから遷移なら変更)
         $objCampaignSess->pageView($objView);
@@ -260,7 +262,7 @@ class LC_Page_Entry extends LC_Page {
     function mobileInit() {
         $this->init();
         $this->tpl_mainpage = 'entry/index.tpl';		// メインテンプレート
-        $this->tpl_title .= '会員登録(1/3)';			//　ページタイトル
+        $this->tpl_title .= '会員登録(1/3)';			// ページタイトル
     }
 
     /**
@@ -353,7 +355,7 @@ class LC_Page_Entry extends LC_Page {
                 }
             }
 
-            //--　入力エラーチェック
+            //-- 入力エラーチェック
             if ($_POST["mode"] == "set1") {
                 $this->arrErr = $this->lfErrorCheck1($this->arrForm);
                 $this->tpl_mainpage = 'entry/index.tpl';
@@ -392,7 +394,7 @@ class LC_Page_Entry extends LC_Page {
 
             } else {
 
-                //--　テンプレート設定
+                //-- テンプレート設定
                 if ($_POST["mode"] == "set1") {
                     $this->tpl_mainpage = 'entry/set1.tpl';
                     $this->tpl_title = '会員登録(2/3)';
@@ -406,11 +408,11 @@ class LC_Page_Entry extends LC_Page {
                         $this->addr01 = @$address[0]['city'] . @$address[0]['town'];
                     }
                 } elseif ($_POST["mode"] == "confirm") {
-                    //パスワード表示
+                    // パスワード表示
                     $passlen = strlen($this->arrForm['password']);
                     $this->passlen = $this->lfPassLen($passlen);
 
-                    //メール受け取り
+                    // メール受け取り
                     if (!isset($this->arrForm['mailmaga_flg'])) $this->arrForm['mailmaga_flg']  = "";
                     if (strtolower($this->arrForm['mailmaga_flg']) == "on") {
                         $this->arrForm['mailmaga_flg']  = "2";
@@ -440,7 +442,7 @@ class LC_Page_Entry extends LC_Page {
                 }
 
 
-                //--　仮登録と完了画面
+                //-- 仮登録と完了画面
                 if ($_POST["mode"] == "complete") {
 
                     // 確認画面で再度エラーチェックを行う。（画面1）
@@ -449,7 +451,7 @@ class LC_Page_Entry extends LC_Page {
                         $this->tpl_mainpage = 'entry/index.tpl';
                         $this->tpl_title = '会員登録(1/3)';
                         $this->arrErr = $arrErr;
-                        //----　ページ表示
+                        //---- ページ表示
                         $objView->assignobj($this);
                         $objView->display(SITE_FRAME);
                         exit();
@@ -461,7 +463,7 @@ class LC_Page_Entry extends LC_Page {
                         $this->tpl_mainpage = 'entry/set1.tpl';
                         $this->tpl_title = '会員登録(2/3)';
                         $this->arrErr = $arrErr;
-                        //----　ページ表示
+                        //---- ページ表示
                         $objView->assignobj($this);
                         $objView->display(SITE_FRAME);
                         exit();
@@ -473,7 +475,7 @@ class LC_Page_Entry extends LC_Page {
                         $this->tpl_mainpage = 'entry/set2.tpl';
                         $this->tpl_title = '会員登録(3/3)';
                         $this->arrErr = $arrErr;
-                        //----　ページ表示
+                        //---- ページ表示
                         $objView->assignobj($this);
                         $objView->display(SITE_FRAME);
                         exit();
@@ -496,7 +498,7 @@ class LC_Page_Entry extends LC_Page {
 
                     $objMobile->sfMobileSetExtSessionId('id', $this->uniqid, 'regist/' . DIR_INDEX_URL);
 
-                    //　仮登録完了メール送信
+                    // 仮登録完了メール送信
                     $this->to_name01 = $_POST['name01'];
                     $this->to_name02 = $_POST['name02'];
                     $objMailText = new SC_MobileView();
@@ -541,7 +543,7 @@ class LC_Page_Entry extends LC_Page {
             }
         }
 
-        //----　ページ表示
+        //---- ページ表示
         $objView->assignobj($this);
         $objView->display(SITE_FRAME);
     }
@@ -633,14 +635,14 @@ class LC_Page_Entry extends LC_Page {
         $objQuery->insert("dtb_customer", $arrRegist);
 
 
-    /* メルマガ会員機能は現在停止中　2007/03/07
+    /* メルマガ会員機能は現在停止中 2007/03/07
 
 
-        //--　非会員でメルマガ登録しているかの判定
+        //-- 非会員でメルマガ登録しているかの判定
         $sql = "SELECT count(*) FROM dtb_customer_mail WHERE email = ?";
         $mailResult = $objConn->getOne($sql, array($arrRegist["email"]));
 
-        //--　メルマガ仮登録実行
+        //-- メルマガ仮登録実行
         $arrRegistMail["email"] = $arrRegist["email"];
         if ($array["mailmaga_flg"] == 1) {
             $arrRegistMail["mailmaga_flg"] = 4;
@@ -654,7 +656,7 @@ class LC_Page_Entry extends LC_Page {
         // 非会員でメルマガ登録している場合
         if ($mailResult == 1) {
             $objQuery->update("dtb_customer_mail", $arrRegistMail, "email = '" .addslashes($arrRegistMail["email"]). "'");
-        } else {				//　新規登録の場合
+        } else {				// 新規登録の場合
             $arrRegistMail["create_date"] = "now()";
             $objQuery->insert("dtb_customer_mail", $arrRegistMail);
         }
@@ -664,7 +666,7 @@ class LC_Page_Entry extends LC_Page {
         return $uniqid;
     }
 
-    //----　取得文字列の変換
+    //---- 取得文字列の変換
     function lfConvertParam($array, $arrRegistColumn) {
         /*
          *	文字列の変換
@@ -707,7 +709,7 @@ class LC_Page_Entry extends LC_Page {
         $objErr->doFunc(array('メールアドレス(確認)', "email02", MTEXT_LEN) ,array("NO_SPTAB", "EXIST_CHECK", "EMAIL_CHECK","SPTAB_CHECK" , "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
         $objErr->doFunc(array('メールアドレス', 'メールアドレス(確認)', "email", "email02") ,array("EQUAL_CHECK"));
 
-        //現会員の判定 →　現会員もしくは仮登録中は、メアド一意が前提になってるので同じメアドで登録不可
+        // 現会員の判定 → 現会員もしくは仮登録中は、メアド一意が前提になってるので同じメアドで登録不可
         if (strlen($array["email"]) > 0) {
             $array["email"] = strtolower($array["email"]);
             $objQuery = new SC_Query();
@@ -809,7 +811,7 @@ class LC_Page_Entry extends LC_Page {
         $objErr->doFunc(array("お名前（カナ/名）", 'kana02', STEXT_LEN), array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK", "KANA_CHECK"));
         $objErr->doFunc(array('メールアドレス', "email", MTEXT_LEN) ,array("NO_SPTAB", "EXIST_CHECK", "EMAIL_CHECK", "SPTAB_CHECK" ,"EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK", "MOBILE_EMAIL_CHECK"));
 
-        //現会員の判定 →　現会員もしくは仮登録中は、メアド一意が前提になってるので同じメアドで登録不可
+        // 現会員の判定 → 現会員もしくは仮登録中は、メアド一意が前提になってるので同じメアドで登録不可
         if (strlen($array["email"]) > 0) {
             $array['email'] = strtolower($array['email']);
             $objQuery = new SC_Query();

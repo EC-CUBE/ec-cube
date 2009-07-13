@@ -44,6 +44,7 @@ class LC_Page_Admin_Order_MailView extends LC_Page {
     function init() {
         parent::init();
         $this->tpl_mainpage = 'order/mail_view.tpl';
+        $this->httpCacheControl('nocache');
     }
 
     /**

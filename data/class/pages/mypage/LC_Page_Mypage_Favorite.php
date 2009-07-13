@@ -55,7 +55,6 @@ class LC_Page_MyPage_Favorite extends LC_Page {
         $this->tpl_column_num = 1;
         $this->tpl_mainno = 'mypage';
         $this->tpl_mypageno = 'favorite';
-        $this->allowClientCache();
     }
 
     /**
@@ -142,7 +141,6 @@ class LC_Page_MyPage_Favorite extends LC_Page {
     function mobileInit() {
         $this->tpl_mainpage = 'mypage/favorite.tpl';
         $this->tpl_title = 'MYページ/お気に入り一覧';
-        $this->allowClientCache();
     }
 
     /**

@@ -50,8 +50,6 @@ class LC_Page_Shopping_Complete extends LC_Page {
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrCONVENIENCE = $masterData->getMasterData("mtb_convenience");
         $this->arrCONVENIMESSAGE = $masterData->getMasterData("mtb_conveni_message");
-
-        //$this->allowClientCache();
     }
 
     /**

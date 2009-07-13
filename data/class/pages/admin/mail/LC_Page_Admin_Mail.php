@@ -137,6 +137,8 @@ class LC_Page_Admin_Mail extends LC_Page {
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
         if (!isset($_POST['buy_product_code'])) $_POST['buy_product_code'] = "";
         if (!isset($_GET['mode'])) $_GET['mode'] = "";
+        
+        $this->httpCacheControl('nocache');
     }
 
     /**
