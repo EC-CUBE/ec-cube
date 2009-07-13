@@ -4,31 +4,51 @@
 /**
  * PHP versions 4 and 5
  *
- * LICENSE: This source file is subject to version 3.0 of the PHP license
- * that is available through the world-wide-web at the following URI:
- * http://www.php.net/license/3_0.txt.  If you did not receive a copy of
- * the PHP License and are unable to obtain it through the web, please
- * send a note to license@php.net so we can mail you a copy immediately.
+ * Copyright (c) 2003-2009 KUBO Atsuhiro <kubo@iteman.jp>,
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category   Networking
  * @package    Net_UserAgent_Mobile
- * @author     KUBO Atsuhiro <iteman@users.sourceforge.net>
- * @copyright  2003-2008 KUBO Atsuhiro <iteman@users.sourceforge.net>
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @author     KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2003-2009 KUBO Atsuhiro <kubo@iteman.jp>
+ * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version    CVS: $Id$
+ * @link       http://creation.mb.softbank.jp/
  * @since      File available since Release 0.20.0
  */
 
 require_once dirname(__FILE__) . '/Common.php';
 require_once dirname(__FILE__) . '/Display.php';
+require_once dirname(__FILE__) . '/../Mobile.php';
 
 // {{{ Net_UserAgent_Mobile_SoftBank
 
 /**
  * SoftBank implementation
  *
- * Net_UserAgent_Mobile_SoftBank is a subclass of
- * {@link Net_UserAgent_Mobile_Common}, which implements SoftBank user agents.
+ * Net_UserAgent_Mobile_SoftBank is a subclass of {@link Net_UserAgent_Mobile_Common},
+ * which implements SoftBank user agents.
  *
  * SYNOPSIS:
  * <code>
@@ -58,13 +78,11 @@ require_once dirname(__FILE__) . '/Display.php';
  *
  * @category   Networking
  * @package    Net_UserAgent_Mobile
- * @author     KUBO Atsuhiro <iteman@users.sourceforge.net>
- * @copyright  2003-2008 KUBO Atsuhiro <iteman@users.sourceforge.net>
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    Release: 0.31.0
- * @link       http://developers.vodafone.jp/dp/tool_dl/web/useragent.php
- * @link       http://developers.vodafone.jp/dp/tool_dl/web/position.php
- * @see        Net_UserAgent_Mobile_Common
+ * @author     KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2003-2009 KUBO Atsuhiro <kubo@iteman.jp>
+ * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
+ * @version    Release: 1.0.0
+ * @link       http://creation.mb.softbank.jp/
  * @since      Class available since Release 0.20.0
  */
 class Net_UserAgent_Mobile_SoftBank extends Net_UserAgent_Mobile_Common
@@ -92,7 +110,7 @@ class Net_UserAgent_Mobile_SoftBank extends Net_UserAgent_Mobile_Common
      * terminal unique serial number
      * @var string
      */
-    var $_serialNumber = null;
+    var $_serialNumber;
 
     /**
      * vendor code like 'SH'
@@ -104,7 +122,7 @@ class Net_UserAgent_Mobile_SoftBank extends Net_UserAgent_Mobile_Common
      * vendor version like '0001a'
      * @var string
      */
-    var $_vendorVersion = null;
+    var $_vendorVersion;
 
     /**
      * Java profiles
@@ -163,7 +181,7 @@ class Net_UserAgent_Mobile_SoftBank extends Net_UserAgent_Mobile_Common
      * Parses HTTP_USER_AGENT string.
      *
      * @param string $userAgent User-Agent string
-     * @return mixed void, or a PEAR error object on error
+     * @throws Net_UserAgent_Mobile_Error
      */
     function parse($userAgent)
     {
@@ -207,14 +225,11 @@ class Net_UserAgent_Mobile_SoftBank extends Net_UserAgent_Mobile_Common
     /**
      * create a new {@link Net_UserAgent_Mobile_Display} class instance
      *
-     * @return object a newly created {@link Net_UserAgent_Mobile_Display}
-     *     object
-     * @see Net_UserAgent_Mobile_Display
+     * @return Net_UserAgent_Mobile_Display
      */
     function makeDisplay() 
     {
-        @list($width, $height) =
-            explode('*', $this->getHeader('X-JPHONE-DISPLAY'));
+        @list($width, $height) = explode('*', $this->getHeader('X-JPHONE-DISPLAY'));
         $color = false;
         $depth = 0;
         if ($color_string = $this->getHeader('X-JPHONE-COLOR')) {
@@ -222,8 +237,8 @@ class Net_UserAgent_Mobile_SoftBank extends Net_UserAgent_Mobile_Common
             $color = $matches[1] === 'C' ? true : false;
             $depth = $matches[2];
         }
-        return new Net_UserAgent_Mobile_Display(array(
-                                                      'width'  => $width,
+
+        return new Net_UserAgent_Mobile_Display(array('width'  => $width,
                                                       'height' => $height,
                                                       'depth'  => $depth,
                                                       'color'  => $color)
@@ -247,8 +262,8 @@ class Net_UserAgent_Mobile_SoftBank extends Net_UserAgent_Mobile_Common
     // {{{ getSerialNumber()
 
     /**
-     * return terminal unique serial number. returns null if user forbids to
-     * send his/her serial number.
+     * return terminal unique serial number. returns null if user forbids to send
+     * his/her serial number.
      *
      * @return string
      */
@@ -418,6 +433,22 @@ class Net_UserAgent_Mobile_SoftBank extends Net_UserAgent_Mobile_Common
         return true;
     }
 
+    // }}}
+    // {{{ getUID()
+
+    /**
+     * Gets the UID of a subscriber.
+     *
+     * @return string
+     * @since Method available since Release 1.0.0RC1
+     */
+    function getUID()
+    {
+        if (array_key_exists('HTTP_X_JPHONE_UID', $_SERVER)) {
+            return $_SERVER['HTTP_X_JPHONE_UID'];
+        }
+    }
+
     /**#@-*/
 
     /**#@+
@@ -431,11 +462,10 @@ class Net_UserAgent_Mobile_SoftBank extends Net_UserAgent_Mobile_Common
      * parse HTTP_USER_AGENT string for the Vodafone 3G aegnt
      *
      * @param array $agent parts of the User-Agent string
-     * @return mixed void, or a PEAR error object on error
+     * @throws Net_UserAgent_Mobile_Error
      */
-    function _parseVodafone(&$agent)
+    function _parseVodafone($agent)
     {
-        $count = count($agent);
         $this->_packetCompliant = true;
 
         // Vodafone/1.0/V702NK/NKJ001 Series60/2.6 Nokia6630/2.39.148 Profile/MIDP-2.0 Configuration/CLDC-1.1
@@ -447,6 +477,7 @@ class Net_UserAgent_Mobile_SoftBank extends Net_UserAgent_Mobile_Common
             if (!preg_match('!^SN(.+)!', $serialNumber, $matches)) {
                 return $this->noMatch();
             }
+
             $this->_serialNumber = $matches[1];
         }
 
@@ -457,8 +488,8 @@ class Net_UserAgent_Mobile_SoftBank extends Net_UserAgent_Mobile_Common
         $this->_vendor = $matches[1];
         $this->_vendorVersion = $matches[2];
 
-        for ($i = 2; $i < $count; ++$i) {
-            list($key, $value) = explode('/', $agent[$i]);
+        for ($i = 2, $count = count($agent); $i < $count; ++$i) {
+            @list($key, $value) = explode('/', $agent[$i]);
             $this->_javaInfo[$key] = $value;
         }
     }
@@ -470,9 +501,9 @@ class Net_UserAgent_Mobile_SoftBank extends Net_UserAgent_Mobile_Common
      * parse HTTP_USER_AGENT string for the ancient agent
      *
      * @param array $agent parts of the User-Agent string
-     * @return mixed void, or a PEAR error object on error
+     * @throws Net_UserAgent_Mobile_Error
      */
-    function _parseJphone(&$agent)
+    function _parseJphone($agent)
     {
         $count = count($agent);
         $this->_is3G = false;
@@ -481,30 +512,31 @@ class Net_UserAgent_Mobile_SoftBank extends Net_UserAgent_Mobile_Common
 
             // J-PHONE/4.0/J-SH51/SNJSHA3029293 SH/0001aa Profile/MIDP-1.0 Configuration/CLDC-1.0 Ext-Profile/JSCL-1.1.0
             $this->_packetCompliant = true;
-            @list($this->name, $this->version, $this->_rawModel,
-                  $serialNumber) = explode('/', $agent[0]);
+            @list($this->name, $this->version, $this->_rawModel, $serialNumber) =
+                explode('/', $agent[0]);
             if ($serialNumber) {
                 if (!preg_match('!^SN(.+)!', $serialNumber, $matches)) {
                     return $this->noMatch();
                 }
+
                 $this->_serialNumber = $matches[1];
             }
 
-            list($this->_vendor, $this->_vendorVersion) =
-                explode('/', $agent[1]);
+            @list($this->_vendor, $this->_vendorVersion) = explode('/', $agent[1]);
             for ($i = 2; $i < $count; ++$i) {
-                list($key, $value) = explode('/', $agent[$i]);
+                @list($key, $value) = explode('/', $agent[$i]);
                 $this->_javaInfo[$key] = $value;
             }
         } else {
 
             // J-PHONE/2.0/J-DN02
-            @list($this->name, $this->version, $this->_rawModel,
-                  $serialNumber) = explode('/', $agent[0]);
+            @list($this->name, $this->version, $this->_rawModel, $serialNumber) =
+                explode('/', $agent[0]);
             if ($serialNumber) {
                 if (!preg_match('!^SN(.+)!', $serialNumber, $matches)) {
                     return $this->noMatch();
                 }
+
                 $this->_serialNumber = $matches[1];
             }
 
@@ -525,20 +557,18 @@ class Net_UserAgent_Mobile_SoftBank extends Net_UserAgent_Mobile_Common
      * parse HTTP_USER_AGENT string for the Motorola 3G aegnt
      *
      * @param array $agent parts of the User-Agent string
-     * @return mixed void, or a PEAR error object on error
      */
-    function _parseMotorola(&$agent)
+    function _parseMotorola($agent)
     {
-        $count = count($agent);
         $this->_packetCompliant = true;
         $this->_vendor = 'MOT';
 
         // MOT-V980/80.2F.2E. MIB/2.2.1 Profile/MIDP-2.0 Configuration/CLDC-1.1
-        list($this->_rawModel, $this->_vendorVersion) = explode('/', $agent[0]);
+        @list($this->_rawModel, $this->_vendorVersion) = explode('/', $agent[0]);
         $this->_model = substr(strrchr($this->_rawModel, '-'), 1);
 
-        for ($i = 2; $i < $count; ++$i) {
-            list($key, $value) = explode('/', $agent[$i]);
+        for ($i = 2, $count = count($agent); $i < $count; ++$i) {
+            @list($key, $value) = explode('/', $agent[$i]);
             $this->_javaInfo[$key] = $value;
         }
     }
