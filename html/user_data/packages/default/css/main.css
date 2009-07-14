@@ -219,6 +219,19 @@ div#one_maincolumn {
     padding: 10px 0 0 0;
 }
 
+/* 上下のブロックエリア
+----------------------------------------------- */
+div#topcolumn{
+	clear:both;	
+	margin-bottom:12px;
+	margin-top:12px;
+}
+div#bottomcolumn{
+	clear: both;
+	margin-bottom:12px;
+	margin-top:12px;	
+}
+
 /* リストをボタンのような外観に
 ----------------------------------------------- */
 ul.button_like li {

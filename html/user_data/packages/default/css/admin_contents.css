@@ -370,6 +370,13 @@ div.sort {
     text-align: center;
     width:      140px;
 }
+#TopNavi div.sort,#BottomNavi div.sort{
+	width:95%;
+	margin: 5px auto 5px;
+	
+}
+
+
 .placeholder { border:1px dashed #AAA; }
 
 #design-layout-body {
@@ -394,6 +401,14 @@ div.sort {
     height: auto !important;
     height: 100px;
 }
+#TopNavi,#BottomNavi{
+	width:95%;
+	min-height: 60px;
+	height:auto !important;
+	vertical-align: top;
+	text-align: center;
+}
+
 #design-layout-body td#layout-main {vertical-align: middle;}
 
 

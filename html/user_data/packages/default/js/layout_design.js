@@ -38,7 +38,7 @@
     };
     
     $(document).ready(function(){
-        var els = ['#MainHead', '#MainFoot', '#LeftNavi', '#RightNavi', '#Unused'];
+        var els = ['#MainHead', '#MainFoot', '#LeftNavi', '#RightNavi','#TopNavi','#BottomNavi', '#Unused'];
         var $els = $(els.toString());
         
         $els.each(function(){

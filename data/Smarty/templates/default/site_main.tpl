@@ -41,6 +41,24 @@
 <!--{* ▼CONTENTS *}-->
 <div id="container">
 
+<!--{* ▼TOP COLUMN*}-->
+  <!--{if $arrPageLayout.LeftNavi|@count > 0}-->
+  <div id="topcolumn">
+    <!--{* ▼上ナビ *}-->
+      <!--{foreach key=TopNaviKey item=TopNaviItem from=$arrPageLayout.TopNavi}-->
+        <!-- ▼<!--{$TopNaviItem.bloc_name}--> ここから-->
+          <!--{if $TopNaviItem.php_path != ""}-->
+            <!--{include_php file=$TopNaviItem.php_path}-->
+          <!--{else}-->
+            <!--{include file=$TopNaviItem.tpl_path}-->
+          <!--{/if}-->
+        <!-- ▲<!--{$TopNaviItem.bloc_name}--> ここまで-->
+      <!--{/foreach}-->
+    <!--{* ▲上ナビ *}-->
+  </div>
+  <!--{/if}-->
+<!--{* ▲TOP COLUMN*}-->
+
   <!--{* ▼LEFT COLUMN *}-->
   <!--{if $arrPageLayout.LeftNavi|@count > 0}-->
   <div id="leftcolumn">
@@ -118,6 +136,24 @@
   </div>
   <!--{/if}-->
   <!--{* ▲RIGHT COLUMN *}-->
+  
+      <!--{* ▼BOTTOM COLUMN*}-->
+      <!--{if $arrPageLayout.LeftNavi|@count > 0}-->
+      <div id="bottomcolumn">
+        <!--{* ▼下ナビ *}-->
+          <!--{foreach key=BottomNaviKey item=BottomNaviItem from=$arrPageLayout.BottomNavi}-->
+            <!-- ▼<!--{$BottomNaviItem.bloc_name}--> ここから-->
+              <!--{if $BottomNaviItem.php_path != ""}-->
+                <!--{include_php file=$BottomNaviItem.php_path}-->
+              <!--{else}-->
+                <!--{include file=$BottomNaviItem.tpl_path}-->
+              <!--{/if}-->
+            <!-- ▲<!--{$BottomNaviItem.bloc_name}--> ここまで-->
+          <!--{/foreach}-->
+        <!--{* ▲下ナビ *}-->
+      </div>
+      <!--{/if}-->
+    <!--{* ▲BOTTOM COLUMN*}-->
 
 </div>
 <!--{* ▲CONTENTS *}-->

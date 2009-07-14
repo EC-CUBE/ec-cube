@@ -38,6 +38,27 @@ function fnTargetSelf(){
             <td colspan="3" id="layout-header">ヘッダー部</td>
           </tr>
           <tr>
+            <!-- ★☆★ 上部ナビテーブル ☆★☆ -->
+            <td colspan="3" id="layout-top">
+                <div id="TopNavi" class="ui-sortable" style="position: relative; width: 468px; ">
+                <!--{assign var="firstflg" value=false}-->
+                <!--{foreach key=key item=item from=$tpl_arrBloc name="bloc_loop"}-->
+                <!--{if $item.target_id == "TopNavi"}-->
+                <div class="sort<!--{if !$firstflg}--> first<!--{/if}-->">
+                  <!--{$item.name}-->
+                  <input type="hidden" class="name" name="name_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.name}-->" />
+                  <input type="hidden" class="id" name="id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_id}-->" />
+                  <input type="hidden" class="target-id" name="target_id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.target_id}-->" />
+                  <input type="hidden" class="top" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->" />
+                </div>
+                <!--{assign var="firstflg" value=true}-->
+                <!--{/if}-->
+                <!--{/foreach}-->
+              </div>
+            </td>
+            <!-- ★☆★ 上部ナビテーブル ☆★☆ -->          
+          </tr>
+          <tr>
             <!--{* 左ナビテーブルここから *}-->
             <td rowspan="3" id="layout-left">
               <div id="LeftNavi" class="ui-sortable" style="position: relative; width: 145px; height: 100px;">
@@ -121,7 +142,28 @@ function fnTargetSelf(){
               </div>
             </td>
           </tr>
+          <tr>
           <!--{* メイン下部ここまで *}-->
+             <!-- ★☆★ 下部ナビテーブル ☆★☆ -->
+            <td colspan="3" id="layout-top">
+                <div id="BottomNavi" class="ui-sortable" style="position: relative; width: 468px; ">
+                <!--{assign var="firstflg" value=false}-->
+                <!--{foreach key=key item=item from=$tpl_arrBloc name="bloc_loop"}-->
+                <!--{if $item.target_id == "BottomNavi"}-->
+                <div class="sort<!--{if !$firstflg}--> first<!--{/if}-->">
+                  <!--{$item.name}-->
+                  <input type="hidden" class="name" name="name_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.name}-->" />
+                  <input type="hidden" class="id" name="id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_id}-->" />
+                  <input type="hidden" class="target-id" name="target_id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.target_id}-->" />
+                  <input type="hidden" class="top" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->" />
+                </div>
+                <!--{assign var="firstflg" value=true}-->
+                <!--{/if}-->
+                <!--{/foreach}-->
+              </div>
+            </td>
+            <!-- ★☆★ 下部ナビテーブル ☆★☆ --> 
+            </tr>
           <tr>
             <td colspan="3" id="layout-footer">フッター部</td>
           </tr>

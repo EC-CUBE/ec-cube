@@ -56,6 +56,7 @@ function lnSetSelect(name1, name2, id, val) {
         <input type="hidden" name="mode" value="" />
         <input type="hidden" name="orderby" value="<!--{$orderby|escape}-->" />
         <input type="hidden" name="product_id" value="" />
+        <input type="hidden" name="disp_number" value="" />
         
         <!--★タイトル★-->
         <h2 class="title"><!--{$tpl_subtitle|escape}--></h2>
@@ -86,7 +87,7 @@ function lnSetSelect(name1, name2, id, val) {
                     <strong>新着順</strong>
                 <!--{/if}-->
                   表示件数
-                    <select name="disp_number" onchange="javascript:fnModeSubmit('','disp_number',this.value);">
+                    <select name="disp_number_top" onchange="javascript:fnModeSubmit('','disp_number',this.value);">
                 <!--{foreach from=$arrPRODUCTLISTMAX item="dispnum" key="num"}-->
 	                <!--{if $num == $disp_number}-->
 	                <option value="<!--{$num}-->" selected="selected" ><!--{$dispnum}--></option>
@@ -228,9 +229,9 @@ function lnSetSelect(name1, name2, id, val) {
                     <!--{else}-->
                         <strong>新着順</strong>
                     <!--{/if}-->
-                                      表示件数
-                    <select name="disp_number" onchange="javascript:fnModeSubmit('','disp_number',this.value);">
-                <!--{foreach from=$arrPRODUCTLISTMAX item="dispnum" key="num"}-->
+                     表示件数
+                    <select name="disp_number_bottom" onchange="javascript:fnModeSubmit('','disp_number',this.value);">
+                    <!--{foreach from=$arrPRODUCTLISTMAX item="dispnum" key="num"}-->
                     <!--{if $num == $disp_number}-->
                     <option value="<!--{$num}-->" selected="selected" ><!--{$dispnum}--></option>
                     <!--{else}-->
