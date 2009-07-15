@@ -280,7 +280,6 @@ case 'complete':
 
     $objQuery->query($sql, array($login_id, $login_pass));
 
-    global $GLOBAL_ERR;
     $GLOBAL_ERR = "";
     $objPage = lfDispComplete($objPage);
 
