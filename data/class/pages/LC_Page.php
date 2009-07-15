@@ -253,6 +253,11 @@ class LC_Page {
         $path = str_replace('\\', '/', $path);
         $htmlPath = str_replace('\\', '/', HTML_PATH);
         
+        // PHP 5.1 対策 ( http://xoops.ec-cube.net/modules/newbb/viewtopic.php?topic_id=4277&forum=9 )
+        if (strlen($path) == 0) {
+            $path = '.';
+        }
+        
         // $path が / で始まっている場合
         if (substr($path, 0, 1) == '/') {
             $realPath = realpath($htmlPath . substr_replace($path, '', 0, strlen(URL_DIR)));
