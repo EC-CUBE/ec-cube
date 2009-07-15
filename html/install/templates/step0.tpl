@@ -29,7 +29,7 @@
 <!--{/foreach}-->
 
 <tr><td height="30"></td></tr>
-<tr><td align="left" class="fs12st">■アクセス権限のチェック</td></tr>
+<tr><td align="left" class="fs12st">■チェック結果</td></tr>
 <tr>
     <td bgcolor="#cccccc">
     <table width="500" border="0" cellspacing="1" cellpadding="8" summary=" ">
@@ -46,7 +46,7 @@
 <table width="502" border="0" cellspacing="1" cellpadding="0" summary=" ">
     <tr><td height="15"></td></tr>
     <tr><td align="left" class="fs12">
-        <!--{if $err_file}-->
+        <!--{if $hasErr}-->
             <p>[次へ進む] をクリックすると、チェックを再実行します。</p>
             <div><input type="checkbox" name="mode_overwrite" value="step0" id="mode_overwrite"> <label for="mode_overwrite">問題点を無視して次へ進む (上級者向け)</label></div>
             <div class="red">※ 問題点を解決せずに無視して進めると、トラブルの原因となる場合があります。</div>

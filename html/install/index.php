@@ -365,7 +365,7 @@ function lfDispAgreement($objPage) {
     return $objPage;
 }
 
-// STEP0画面の表示(ファイル権限チェック)
+// STEP0画面の表示(チェック)
 function lfDispStep0($objPage) {
     global $objWebParam;
     global $objDBParam;
@@ -391,7 +391,7 @@ function lfDispStep0($objPage) {
     );
 
     $mess = "";
-    $err_file = false;
+    $hasErr = false;
     foreach($arrWriteFile as $val) {
         // listdirsの保持データを初期化
         initdirs();
@@ -410,27 +410,32 @@ function lfDispStep0($objPage) {
                 if(is_dir($path)) {
                     if(!is_writable($path)) {
                         $mess.= ">> ×：$real_path($filemode) <br>ユーザ書込み権限(777, 707等)を付与して下さい。<br>";
-                        $err_file = true;
+                        $hasErr = true;
                     } else {
                         GC_Utils_Ex::gfPrintLog("WRITABLE：".$path, INSTALL_LOG);
                     }
                 } else {
                     if(!is_writable($path)) {
                         $mess.= ">> ×：$real_path($filemode) <br>ユーザ書込み権限(666, 606等)を付与して下さい。<br>";
-                        $err_file = true;
+                        $hasErr = true;
                     } else {
                         GC_Utils_Ex::gfPrintLog("WRITABLE：".$path, INSTALL_LOG);
                     }
                 }
             } else {
                 $mess.= ">> ×：$path が見つかりません。<br>";
-                $err_file = true;
+                $hasErr = true;
             }
         }
     }
 
+    if (ini_get('safe_mode')) {
+        $mess .= ">> ×：PHPのセーフモードが有効になっています。<br>";
+        $hasErr = true;
+    }
+
     // 問題点を検出している場合
-    if ($err_file) {
+    if ($hasErr) {
         $objPage->tpl_mode = 'return_step0';
     }
     // 問題点を検出していない場合
@@ -473,7 +478,7 @@ function lfDispStep0($objPage) {
     }
 
     $objPage->mess = $mess;
-    $objPage->err_file = $err_file;
+    $objPage->hasErr = $hasErr;
 
     return $objPage;
 }
