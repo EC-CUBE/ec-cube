@@ -52,6 +52,7 @@ class SC_Helper_PageLayout {
             if ($url == "") {
                 $url = "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
             }
+            
             $url2 = preg_replace('|^' . preg_quote(SITE_URL) . '|', '', $url);
             // URLを元にページデザインを取得
             $arrPageData = $this->lfgetPageData("url IN (?, ?) AND page_id <> 0" , array($url2, $url)); // $url は従来互換
@@ -60,7 +61,7 @@ class SC_Helper_PageLayout {
             $objPage->tpl_mainpage = USER_PATH . "templates/preview/"
                 . TEMPLATE_NAME . "/" . $arrPageData[0]['filename'] . ".tpl";
         }
-        
+                
         foreach($arrPageData[0] as $key => $val) {
             $debug_message.= "arrPageData[$key]：" . $val . "\n";
         }
@@ -123,6 +124,7 @@ class SC_Helper_PageLayout {
      * @return array ページ情報を格納した配列
      */
     function lfgetPageData($where = 'page_id <> 0', $where_vals = array()) {
+                
         $objQuery = new SC_Query;       // DB操作オブジェクト
         $arrRet = array();              // データ取得用
 
@@ -166,13 +168,13 @@ class SC_Helper_PageLayout {
         $objQuery = new SC_Query;		// DB操作オブジェクト
 
         // 取得するカラム
-        $col = "target_id, bloc_name, tpl_path, php_path";
+        $col = "target_id, bloc_name, tpl_path, php_path,anywhere";
         
         // 取得するテーブル
         $table = "dtb_blocposition AS pos INNER JOIN dtb_bloc AS bloc ON bloc.bloc_id = pos.bloc_id";
         
         // where文生成
-        $where = "page_id = ?";
+        $where = "anywhere = 1 OR page_id = ?";
         $where_vals[] = $page_id;
 
         // 並び変え
@@ -180,7 +182,7 @@ class SC_Helper_PageLayout {
         
         // SQL実行
         $arrRet = $objQuery->select($col, $table, $where, $where_vals);
-                                            
+        
         // 結果を返す
         return $arrRet;
     }
@@ -197,7 +199,7 @@ class SC_Helper_PageLayout {
         if(is_array($arrNavi)) {
             foreach($arrNavi as $key => $val){
                 // 指定された箇所と同じデータだけを取得する
-                if ($target_id == $val['target_id']){
+                if ($target_id == $val['target_id'] ){
                     if ($val['php_path'] != '') {
                         $arrNavi[$key]['php_path'] = HTML_PATH . $val['php_path'];
                     }else{

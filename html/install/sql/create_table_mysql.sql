@@ -900,7 +900,8 @@ CREATE TABLE dtb_blocposition (
     target_id int,
     bloc_id int,
     bloc_row int,
-    filename text
+    filename text,
+    anywhere int
 ) TYPE=InnoDB ;
 
 CREATE TABLE dtb_csv (

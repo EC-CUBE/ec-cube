@@ -928,7 +928,8 @@ CREATE TABLE dtb_blocposition (
     target_id int4,
     bloc_id int4,
     bloc_row int4,
-    filename text
+    filename text,
+    anywhere int2
 );
 
 CREATE TABLE dtb_csv (
