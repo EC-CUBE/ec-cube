@@ -105,6 +105,10 @@ class SC_Helper_PageLayout {
         $arrPageLayout['MainFoot']  = $this->lfGetNavi($arrNavi,4);    // メイン下部
         $arrPageLayout['TopNavi'] = $this->lfGetNavi($arrNavi,5); //上部
         $arrPageLayout['BottomNavi'] = $this->lfGetNavi($arrNavi,6); //下部
+        $arrPageLayout['HeaderTopNavi'] = $this->lfGetNavi($arrNavi,7); //上部
+        $arrPageLayout['FooterBottomNavi'] = $this->lfGetNavi($arrNavi,8); //下部
+        $arrPageLayout['HeadNavi'] = $this->lfGetNavi($arrNavi,9); //上部
+        
         
         GC_Utils::gfDebugLog($arrPageLayout);
         

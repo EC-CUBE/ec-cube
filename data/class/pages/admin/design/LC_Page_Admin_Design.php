@@ -167,9 +167,9 @@ class LC_Page_Admin_Design extends LC_Page {
                 $arrUpdBlocData[$key]['page_id']    =  $page_id;    // ページID
 
                 /*
-                ターゲットID 1:レフトナビ 2:ライトナビ 3:イン画面上部 4:メイン画面下部  5:画面上部 6:画面下部 7:欄外
+                ターゲットID 1:レフトナビ 2:ライトナビ 3:イン画面上部 4:メイン画面下部  5:画面上部 6:画面下部 7:ヘッダより上 8:フッタより下 9:HEADタグ内 10:欄外
                 */
-                if ($arrUpdBlocData[$key]['target_id'] == 7) {
+                if ($arrUpdBlocData[$key]['target_id'] == 10) {
                     $arrUpdBlocData[$key]['bloc_row'] = "0";
                 }
 

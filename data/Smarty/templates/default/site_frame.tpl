@@ -46,6 +46,23 @@
     <!--{$tpl_javascript}-->
 //]]>
 </script>
+<!--{* ▼Head COLUMN*}-->
+  <!--{if $arrPageLayout.LeftNavi|@count > 0}-->
+  <div id="headcolumn">
+    <!--{* ▼上ナビ *}-->
+      <!--{foreach key=HeadNaviKey item=HeadNaviItem from=$arrPageLayout.HeadNavi}-->
+        <!--{* ▼<!--{$HeadNaviItem.bloc_name}--> ここから*}-->
+          <!--{if $HeadNaviItem.php_path != ""}-->
+            <!--{include_php file=$HeadNaviItem.php_path}-->
+          <!--{else}-->
+            <!--{include file=$HeadNaviItem.tpl_path}-->
+          <!--{/if}-->
+        <!--{* ▲<!--{$HeadNaviItem.bloc_name}--> ここまで*}-->
+      <!--{/foreach}-->
+    <!--{* ▲上ナビ *}-->
+  </div>
+  <!--{/if}-->
+<!--{* ▲Head COLUMN*}-->
 </head>
 
 <!-- ▼BODY部 スタート -->

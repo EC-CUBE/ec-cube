@@ -32,6 +32,23 @@
 
 <a name="top" id="top"></a>
 
+<!--{* ▼HeaderHeaderTop COLUMN*}-->
+  <!--{if $arrPageLayout.LeftNavi|@count > 0}-->
+  <div id="headertopcolumn">
+    <!--{* ▼上ナビ *}-->
+      <!--{foreach key=HeaderTopNaviKey item=HeaderTopNaviItem from=$arrPageLayout.HeaderTopNavi}-->
+        <!-- ▼<!--{$HeaderTopNaviItem.bloc_name}--> ここから-->
+          <!--{if $HeaderTopNaviItem.php_path != ""}-->
+            <!--{include_php file=$HeaderTopNaviItem.php_path}-->
+          <!--{else}-->
+            <!--{include file=$HeaderTopNaviItem.tpl_path}-->
+          <!--{/if}-->
+        <!-- ▲<!--{$HeaderTopNaviItem.bloc_name}--> ここまで-->
+      <!--{/foreach}-->
+    <!--{* ▲上ナビ *}-->
+  </div>
+  <!--{/if}-->
+<!--{* ▲HeaderHeaderTop COLUMN*}-->
 <!--{* ▼HEADER *}-->
 <!--{if $arrPageLayout.header_chk != 2}-->
 <!--{include file= $header_tpl}-->
@@ -163,6 +180,23 @@
 <!--{include file=$footer_tpl}-->
 <!--{/if}-->
 <!--{* ▲FOTTER *}-->
+<!--{* ▼FooterBottom COLUMN*}-->
+  <!--{if $arrPageLayout.LeftNavi|@count > 0}-->
+  <div id="footerbottomcolumn">
+    <!--{* ▼上ナビ *}-->
+      <!--{foreach key=FooterBottomNaviKey item=FooterBottomNaviItem from=$arrPageLayout.FooterBottomNavi}-->
+        <!-- ▼<!--{$FooterBottomNaviItem.bloc_name}--> ここから-->
+          <!--{if $FooterBottomNaviItem.php_path != ""}-->
+            <!--{include_php file=$FooterBottomNaviItem.php_path}-->
+          <!--{else}-->
+            <!--{include file=$FooterBottomNaviItem.tpl_path}-->
+          <!--{/if}-->
+        <!-- ▲<!--{$FooterBottomNaviItem.bloc_name}--> ここまで-->
+      <!--{/foreach}-->
+    <!--{* ▲上ナビ *}-->
+  </div>
+  <!--{/if}-->
+<!--{* ▲FooterBottom COLUMN*}-->
 
 <!--{* EBiSタグ表示用 *}-->
 <!--{$tpl_mainpage|sfPrintEbisTag}-->

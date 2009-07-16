@@ -370,7 +370,7 @@ div.sort {
     text-align: center;
     width:      140px;
 }
-#TopNavi div.sort,#BottomNavi div.sort{
+#TopNavi div.sort,#BottomNavi div.sort,#FooterBottomNavi div.sort,#HeaderTopNavi div.sort,#HeadNavi div.sort{
 	width:95%;
 	margin: 5px auto 5px;
 	
@@ -401,12 +401,16 @@ div.sort {
     height: auto !important;
     height: 100px;
 }
-#TopNavi,#BottomNavi{
+#TopNavi,#BottomNavi,#HeadNavi,#HeaderTopNavi,#FooterBottomNavi{
 	width:95%;
 	min-height: 60px;
 	height:auto !important;
 	vertical-align: top;
 	text-align: center;
+}
+
+div#HeadNavi{
+	background-image: url(../img/admin/contents/head-bg.jpg);	
 }
 
 #design-layout-body td#layout-main {vertical-align: middle;}

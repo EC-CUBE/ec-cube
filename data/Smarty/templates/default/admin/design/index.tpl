@@ -34,6 +34,50 @@ function fnTargetSelf(){
       <!--{* ▼レイアウトここから *}-->
       <td>
         <table id="design-layout-body">
+                          <tr>
+            <!-- ★☆★ HEADタグ内テーブル ☆★☆ -->
+            <td colspan="3" id="layout-head">
+                <div id="HeadNavi" class="ui-sortable" style="position: relative; width: 468px; ">
+                <!--{assign var="firstflg" value=false}-->
+                <!--{foreach key=key item=item from=$tpl_arrBloc name="bloc_loop"}-->
+                <!--{if $item.target_id == "HeadNavi"}-->
+                <div class="sort<!--{if !$firstflg}--> first<!--{/if}-->">
+                  <!--{$item.name}-->
+                  <input type="hidden" class="name" name="name_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.name}-->" />
+                  <input type="hidden" class="id" name="id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_id}-->" />
+                  <input type="hidden" class="target-id" name="target_id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.target_id}-->" />
+                  <input type="hidden" class="top" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->" />
+                  <label>(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{$item.anywhere_selected}-->  />全ページ)</label> 
+                </div>
+                <!--{assign var="firstflg" value=true}-->
+                <!--{/if}-->
+                <!--{/foreach}-->
+              </div>
+            </td>
+            <!-- ★☆★ Headタグ内テーブル ☆★☆ -->          
+          </tr>
+                  <tr>
+            <!-- ★☆★ ヘッダより上部ナビテーブル ☆★☆ -->
+            <td colspan="3" id="layout-headertop">
+                <div id="HeaderTopNavi" class="ui-sortable" style="position: relative; width: 468px; ">
+                <!--{assign var="firstflg" value=false}-->
+                <!--{foreach key=key item=item from=$tpl_arrBloc name="bloc_loop"}-->
+                <!--{if $item.target_id == "HeaderTopNavi"}-->
+                <div class="sort<!--{if !$firstflg}--> first<!--{/if}-->">
+                  <!--{$item.name}-->
+                  <input type="hidden" class="name" name="name_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.name}-->" />
+                  <input type="hidden" class="id" name="id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_id}-->" />
+                  <input type="hidden" class="target-id" name="target_id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.target_id}-->" />
+                  <input type="hidden" class="top" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->" />
+                  <label>(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{$item.anywhere_selected}-->  />全ページ)</label> 
+                </div>
+                <!--{assign var="firstflg" value=true}-->
+                <!--{/if}-->
+                <!--{/foreach}-->
+              </div>
+            </td>
+            <!-- ★☆★ ヘッダより上部ナビテーブル ☆★☆ -->          
+          </tr>
           <tr>
             <td colspan="3" id="layout-header">ヘッダー部</td>
           </tr>
@@ -178,13 +222,35 @@ function fnTargetSelf(){
           <tr>
             <td colspan="3" id="layout-footer">フッター部</td>
           </tr>
+                            <tr>
+            <!-- ★☆★ フッタより下部ナビテーブル ☆★☆ -->
+            <td colspan="3" id="layout-footerbottom">
+                <div id="FooterBottomNavi" class="ui-sortable" style="position: relative; width: 468px; ">
+                <!--{assign var="firstflg" value=false}-->
+                <!--{foreach key=key item=item from=$tpl_arrBloc name="bloc_loop"}-->
+                <!--{if $item.target_id == "FooterBottomNavi"}-->
+                <div class="sort<!--{if !$firstflg}--> first<!--{/if}-->">
+                  <!--{$item.name}-->
+                  <input type="hidden" class="name" name="name_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.name}-->" />
+                  <input type="hidden" class="id" name="id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_id}-->" />
+                  <input type="hidden" class="target-id" name="target_id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.target_id}-->" />
+                  <input type="hidden" class="top" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->" />
+                  <label>(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{$item.anywhere_selected}-->  />全ページ)</label> 
+                </div>
+                <!--{assign var="firstflg" value=true}-->
+                <!--{/if}-->
+                <!--{/foreach}-->
+              </div>
+            </td>
+            <!-- ★☆★ フッタより下部ナビテーブル ☆★☆ -->          
+          </tr>
         </table>
       </td>
       <!--{* ▲レイアウトここまで *}-->
 
       <!--{* ▼未使用ブロックここから *}-->
       <td>
-        <div id="Unused" class="ui-sortable" style="position: relative; width: 145px; height: 500px;">
+        <div id="Unused" class="ui-sortable" style="position: relative; width: 145px; height: 800px;">
           <!--{assign var="firstflg" value=false}-->
           <!--{foreach key=key item=item from=$tpl_arrBloc name="bloc_loop"}-->
           <!--{if $item.target_id == "Unused"}-->
