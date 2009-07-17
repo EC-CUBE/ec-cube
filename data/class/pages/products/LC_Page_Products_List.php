@@ -78,24 +78,32 @@ class LC_Page_Products_List extends LC_Page {
         $conn = new SC_DBConn();
         $objDb = new SC_Helper_DB_Ex();
 
-        //表示件数の選択
-        if(isset($_POST['disp_number'])
-           && SC_Utils_Ex::sfIsInt($_POST['disp_number'])) {
-            $this->disp_number = $_POST['disp_number'];
+        // 表示件数・順序の初期化
+        if (!isset($_GET['pageno'])) unset($_SESSION['products_list']);
+
+        // 表示件数の選択
+        if (isset($_POST['disp_number']) && SC_Utils_Ex::sfIsInt($_POST['disp_number'])) {
+            $this->disp_number = $_SESSION['products_list']['disp_number'] = $_POST['disp_number'];
         } else {
-            //最小表示件数を選択
-            $this->disp_number = current(array_keys($this->arrPRODUCTLISTMAX));
+            $this->disp_number = isset($_SESSION['products_list']['disp_number'])
+                ? $_SESSION['products_list']['disp_number']
+                : current(array_keys($this->arrPRODUCTLISTMAX));
         }
 
-        //表示順序の保存
-        $this->orderby = isset($_POST['orderby']) ? $_POST['orderby'] : "";
+        // 表示順序の保存
+        if (isset($_POST['orderby'])) {
+            $this->orderby = $_SESSION['products_list']['orderby'] = $_POST['orderby'];
+        } else {
+            $this->orderby = isset($_SESSION['products_list']['orderby'])
+                ? $_SESSION['products_list']['orderby']
+                : "";
+        }
 
         // GETのカテゴリIDを元に正しいカテゴリIDを取得する。
         $arrCategory_id = $objDb->sfGetCategoryId("", $_GET['category_id']);
 
         if (!isset($_GET['mode'])) $_GET['mode'] = "";
         if (!isset($_GET['name'])) $_GET['name'] = "";
-        if (!isset($_POST['orderby'])) $_POST['orderby'] = "";
         if (empty($arrCategory_id)) $arrCategory_id = array("0");
 
         // タイトル編集
@@ -127,7 +135,7 @@ class LC_Page_Products_List extends LC_Page {
             }
 
             // 商品一覧の表示処理
-            $this->lfDispProductsList($arrCategory_id[0], $_GET['name'], $_GET['maker_id'], $this->disp_number, $_POST['orderby']);
+            $this->lfDispProductsList($arrCategory_id[0], $_GET['name'], $_GET['maker_id'], $this->disp_number, $this->orderby);
 
             // 検索条件を画面に表示
             // カテゴリー検索条件
