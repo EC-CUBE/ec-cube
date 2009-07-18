@@ -37,8 +37,9 @@ class SC_Initial {
     function SC_Initial() {
 
         /** EC-CUBEのバージョン */
-        // XXX SVNのリビジョンを付加できたら良いと思う。(方法が分からない。)
         define('ECCUBE_VERSION', "2.4.0-comu");
+        /** EC-CUBEのSVNリビジョン番号 */
+        define('ECCUBE_REVISION', "$Revision$");
     }
 
     // }}}
@@ -104,7 +105,7 @@ class SC_Initial {
         error_reporting(E_ALL & ~E_NOTICE);
         // PHP 5.3.0対応
         if (error_reporting() > 6143) {
-            error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_USER_DEPRECATED);
+            error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
         }
     }
 
