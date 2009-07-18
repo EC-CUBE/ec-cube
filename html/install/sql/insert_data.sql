@@ -33,17 +33,17 @@ INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename,anywhe
 INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename,anywhere) VALUES (2,1,1,2,'category',0);
 INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename,anywhere) VALUES (2,1,2,3,'guide',0);
 INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename,anywhere) VALUES (2,1,3,1,'cart',0);
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename,anywhere) VALUES (2,7,4,0,'search_products',0);
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename,anywhere) VALUES (2,7,5,0,'news',0);
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename,anywhere) VALUES (2,7,6,0,'login',0);
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename,anywhere) VALUES (2,7,7,0,'best5',0);
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename,anywhere) VALUES (2,10,4,0,'search_products',0);
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename,anywhere) VALUES (2,10,5,0,'news',0);
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename,anywhere) VALUES (2,10,6,0,'login',0);
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename,anywhere) VALUES (2,10,7,0,'best5',0);
 INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename,anywhere) VALUES (3,1,1,2,'category',0);
 INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename,anywhere) VALUES (3,1,2,3,'guide',0);
 INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename,anywhere) VALUES (3,1,3,1,'cart',0);
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename,anywhere) VALUES (3,7,4,0,'search_products',0);
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename,anywhere) VALUES (3,7,5,0,'news',0);
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename,anywhere) VALUES (3,7,6,0,'login',0);
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename,anywhere) VALUES (3,7,7,0,'best5',0);
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename,anywhere) VALUES (3,10,4,0,'search_products',0);
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename,anywhere) VALUES (3,10,5,0,'news',0);
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename,anywhere) VALUES (3,10,6,0,'login',0);
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename,anywhere) VALUES (3,10,7,0,'best5',0);
 
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'product_id','商品ID',1,now(),now());
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'product_class_id','規格ID',2,now(),now());
