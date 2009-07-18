@@ -151,6 +151,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
     width: 14.4em;
     font-weight: normal;
     clear: both;
+    z-index: 100;
 }
 #navi li li, #navi li li a, #navi li li a span {
     width: 14.4em;
