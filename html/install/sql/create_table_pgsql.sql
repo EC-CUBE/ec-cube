@@ -929,7 +929,7 @@ CREATE TABLE dtb_blocposition (
     bloc_id int4,
     bloc_row int4,
     filename text,
-    anywhere int2
+    anywhere int2 DEFAULT 0 NOT NULL
 );
 
 CREATE TABLE dtb_csv (

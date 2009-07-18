@@ -901,7 +901,7 @@ CREATE TABLE dtb_blocposition (
     bloc_id int,
     bloc_row int,
     filename text,
-    anywhere int
+    anywhere int DEFAULT 0 NOT NULL
 ) TYPE=InnoDB ;
 
 CREATE TABLE dtb_csv (
