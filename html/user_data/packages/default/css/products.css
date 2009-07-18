@@ -23,6 +23,7 @@ p.conditionarea {
 
 ul.pagenumberarea {
     height: 2.5ex;
+    padding:0px;
 }
 
 ul.pagecondarea {
@@ -37,6 +38,7 @@ ul.pagenumberarea li {
 ul.pagenumberarea li.left {
     text-align: left;
     white-space: nowrap;
+    margin-left:10px;
     width: 27.9%;
 }
 
@@ -47,11 +49,11 @@ ul.pagenumberarea li.center {
 }
 
 ul.pagenumberarea li.right {
-	float:right;
+    float:right;
     text-align: right;
     white-space: nowrap;
     width: 38.7%;
-    
+    margin-right:10px;
 }
 
 .pagenumberarea .pagenumber{
