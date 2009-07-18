@@ -54,7 +54,7 @@
    <!--{/if}-->
    
    <!--{if strlen($tpl_message) != 0}-->
-    <p class="attention"><!--{$tpl_message|escape}--></p>
+    <p class="attention"><!--{$tpl_message|escape|nl2br}--></p>
    <!--{/if}-->
 
    <!--{if count($arrProductsClass) > 0}-->

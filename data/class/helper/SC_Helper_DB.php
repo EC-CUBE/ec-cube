@@ -322,11 +322,11 @@ class SC_Helper_DB {
                     $limit = $arrData['stock'];
                 }
 
-                if($limit != "" && $limit < $arrCart['quantity']) {
+                if ($limit != "" && $limit < $arrCart['quantity']) {
                     // カート内商品数を制限に合わせる
                     $objCartSess->setProductValue($arrCart['id'], 'quantity', $limit);
                     $quantity = $limit;
-                    $objPage->tpl_message = "※「" . $arrData['name'] . "」は販売制限(または在庫が不足)しております。一度にこれ以上の購入はできません。\n";
+                    $objPage->tpl_message .= "※「" . $arrData['name'] . "」は販売制限(または在庫が不足)しております。一度に数量{$limit}以上の購入はできません。\n";
                 } else {
                     $quantity = $arrCart['quantity'];
                 }
