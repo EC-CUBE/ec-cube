@@ -496,11 +496,8 @@ class LC_Page_Admin_Design extends LC_Page {
 
 		// 更新データの取得
 		$sql = "select page_id,page_name, header_chk, footer_chk from dtb_pagelayout where page_id = ? OR page_id = (SELECT page_id FROM dtb_blocposition WHERE anywhere = 1)" ;
-		echo("####<br/>\n\n".__LINE__ ." in file:".__FILE__."<br/>\n\n ####");
 		
 		$ret = $objDBConn->getAll($sql, array($arrPageData[0]['page_id']));
-		$objDBConn->getLastQuery();
-				echo("####<br/>\n\n".__LINE__ ." in file:".__FILE__."<br/>\n\n ####");
 
 		// dbデータのコピー
 		$sql = " update dtb_pagelayout set ";
@@ -524,8 +521,6 @@ class LC_Page_Admin_Design extends LC_Page {
 //		,$ret[0]['anywhere']
 		 
 		);
-		var_dump($arrUpdData);
-				echo("####<br/>\n\n".__LINE__ ." in file:".__FILE__."<br/>\n\n ####");
 
 		$objDBConn->query($sql,$arrUpdData);
 	}
