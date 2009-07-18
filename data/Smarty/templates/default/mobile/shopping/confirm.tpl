@@ -60,7 +60,7 @@
 
 【ご注文内容】<br>
 <!--{section name=cnt loop=$arrProductsClass}-->
-<!--{$arrProductsClass[cnt].name}--> <!--{$arrProductsClass[cnt].quantity|number_format}-->個<br>
+<!--{$arrProductsClass[cnt].name}--> <!--{$arrProductsClass[cnt].quantity|number_format}--><br>
 <!--{/section}-->
 
 <br>

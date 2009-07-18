@@ -78,7 +78,7 @@ function fnCheckSubmit() {
            <!--{$arrProductsClass[cnt].price01|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
          <!--{/if}-->
          </td>
-         <td><!--{$arrProductsClass[cnt].quantity|number_format}-->個</td>
+         <td><!--{$arrProductsClass[cnt].quantity|number_format}--></td>
          <td class="pricetd"><!--{$arrProductsClass[cnt].total_pretax|number_format}-->円</td>
        </tr>
        <!--{/section}-->
