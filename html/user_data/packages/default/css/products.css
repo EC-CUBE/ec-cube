@@ -37,16 +37,21 @@ ul.pagenumberarea li {
 ul.pagenumberarea li.left {
     text-align: left;
     white-space: nowrap;
+    width: 27.9%;
 }
 
 ul.pagenumberarea li.center {
     text-align: center;
     white-space: pre;
+    width: 27.9%
 }
 
 ul.pagenumberarea li.right {
+	float:right;
     text-align: right;
     white-space: nowrap;
+    width: 38.7%;
+    
 }
 
 .pagenumberarea .pagenumber{

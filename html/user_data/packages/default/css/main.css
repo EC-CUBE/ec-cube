@@ -222,14 +222,12 @@ div#one_maincolumn {
 /* 上下のブロックエリア
 ----------------------------------------------- */
 div#topcolumn{
-	clear:both;	
-	margin-bottom:12px;
-	margin-top:12px;
+	clear:both;
+	margin:0px;	
 }
 div#bottomcolumn{
 	clear: both;
-	margin-bottom:12px;
-	margin-top:12px;	
+	margin:0px;
 }
 
 /* リストをボタンのような外観に
