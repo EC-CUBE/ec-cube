@@ -33,7 +33,7 @@
 <a name="top" id="top"></a>
 
 <!--{* ▼HeaderHeaderTop COLUMN*}-->
-  <!--{if $arrPageLayout.LeftNavi|@count > 0}-->
+  <!--{if $arrPageLayout.HeaderTopNavi|@count > 0}-->
   <div id="headertopcolumn">
     <!--{* ▼上ナビ *}-->
       <!--{foreach key=HeaderTopNaviKey item=HeaderTopNaviItem from=$arrPageLayout.HeaderTopNavi}-->
@@ -59,7 +59,7 @@
 <div id="container">
 
 <!--{* ▼TOP COLUMN*}-->
-  <!--{if $arrPageLayout.LeftNavi|@count > 0}-->
+  <!--{if $arrPageLayout.TopNavi|@count > 0}-->
   <div id="topcolumn">
     <!--{* ▼上ナビ *}-->
       <!--{foreach key=TopNaviKey item=TopNaviItem from=$arrPageLayout.TopNavi}-->
@@ -155,7 +155,7 @@
   <!--{* ▲RIGHT COLUMN *}-->
   
       <!--{* ▼BOTTOM COLUMN*}-->
-      <!--{if $arrPageLayout.LeftNavi|@count > 0}-->
+      <!--{if $arrPageLayout.BottomNavi|@count > 0}-->
       <div id="bottomcolumn">
         <!--{* ▼下ナビ *}-->
           <!--{foreach key=BottomNaviKey item=BottomNaviItem from=$arrPageLayout.BottomNavi}-->
@@ -181,7 +181,7 @@
 <!--{/if}-->
 <!--{* ▲FOTTER *}-->
 <!--{* ▼FooterBottom COLUMN*}-->
-  <!--{if $arrPageLayout.LeftNavi|@count > 0}-->
+  <!--{if $arrPageLayout.FooterBottomNavi|@count > 0}-->
   <div id="footerbottomcolumn">
     <!--{* ▼上ナビ *}-->
       <!--{foreach key=FooterBottomNaviKey item=FooterBottomNaviItem from=$arrPageLayout.FooterBottomNavi}-->
