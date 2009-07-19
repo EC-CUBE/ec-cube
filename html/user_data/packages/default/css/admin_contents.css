@@ -118,6 +118,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 #navi, #navi li {
     height: 30px;
     background: url(../img/admin/header/navi_back.jpg) 0 0 repeat-x;
+    z-index:90;
 }
 #navi li, #navi li a, #navi li a span {
     line-height: 30px;
