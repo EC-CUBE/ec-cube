@@ -145,7 +145,7 @@ class LC_Page_Admin_Design extends LC_Page {
                 $arrUpdBlocData[$upd_cnt]['id']         = $_POST['id_'.$upd_cnt];                           // ブロックID
                 $arrUpdBlocData[$upd_cnt]['target_id']  = $arrTargetFlip[$_POST['target_id_'.$upd_cnt]];    // ターゲットID
                 $arrUpdBlocData[$upd_cnt]['top']        = $_POST['top_'.$upd_cnt];                          // TOP座標
-                $arrUpdBlocData[$upd_cnt]['anywhere']   = $_POST['anywhere_'.$upd_cnt];                     //全ページ適用か
+                $arrUpdBlocData[$upd_cnt]['anywhere']   = $_POST['anywhere_'.$upd_cnt];                     // 全ページ適用か
                 $arrUpdBlocData[$upd_cnt]['update_url'] = $_SERVER['HTTP_REFERER'];                         // 更新URL
 
             }
@@ -187,11 +187,11 @@ class LC_Page_Admin_Design extends LC_Page {
 
                 // insertデータ生成
                 $arrInsData = array($page_id,
-                $arrUpdBlocData[$key]['target_id'],
-                $arrUpdBlocData[$key]['id'],
-                $arrUpdBlocData[$key]['bloc_row'],
-                $arrUpdBlocData[$key]['id'],
-                $arrUpdBlocData[$key]['anywhere']
+                    $arrUpdBlocData[$key]['target_id'],
+                    $arrUpdBlocData[$key]['id'],
+                    $arrUpdBlocData[$key]['bloc_row'],
+                    $arrUpdBlocData[$key]['id'],
+                    $arrUpdBlocData[$key]['anywhere'] ? 1 : 0
                 );
                 $count = $objDBConn->getOne("SELECT COUNT(*) FROM dtb_blocposition WHERE anywhere = 1 AND bloc_id = ?",array($arrUpdBlocData[$key]['id']));
 
