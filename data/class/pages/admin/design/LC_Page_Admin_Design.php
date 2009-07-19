@@ -145,7 +145,7 @@ class LC_Page_Admin_Design extends LC_Page {
 				$arrUpdBlocData[$upd_cnt]['id']         = $_POST['id_'.$upd_cnt];                           // ブロックID
 				$arrUpdBlocData[$upd_cnt]['target_id']  = $arrTargetFlip[$_POST['target_id_'.$upd_cnt]];    // ターゲットID
 				$arrUpdBlocData[$upd_cnt]['top']        = $_POST['top_'.$upd_cnt];                          // TOP座標
-				$arrUpdBlocData[$upd_cnt]['anywhere']        = $_POST['anywhere_'.$upd_cnt];                     //全ページ適用か
+				$arrUpdBlocData[$upd_cnt]['anywhere']   = $_POST['anywhere_'.$upd_cnt];                     //全ページ適用か
 				$arrUpdBlocData[$upd_cnt]['update_url'] = $_SERVER['HTTP_REFERER'];                         // 更新URL
 
 			}
@@ -291,238 +291,238 @@ class LC_Page_Admin_Design extends LC_Page {
 	 * デストラクタ.
 	 *
 	 * @return void
-	 */
-	function destroy() {
-		parent::destroy();
-	}
+     */
+    function destroy() {
+        parent::destroy();
+    }
 
-	/**
-	 * 編集可能なページ情報を取得する.
-	 *
-	 * @param string $sel Select句文
-	 * @param string $where Where句文
-	 * @param array $arrVa Where句の絞込条件値
-	 * @return array ページレイアウト情報の配列
-	 */
-	function lfgetLayoutData($sel = '' , $from = '', $where = '', $arrVal = ''){
-		$objDBConn = new SC_DbConn;     // DB操作オブジェクト
-		$sql = "";                      // データ取得SQL生成用
-		$arrRet = array();              // データ取得用
+    /**
+     * 編集可能なページ情報を取得する.
+     *
+     * @param string $sel Select句文
+     * @param string $where Where句文
+     * @param array $arrVa Where句の絞込条件値
+     * @return array ページレイアウト情報の配列
+     */
+    function lfgetLayoutData($sel = '' , $from = '', $where = '', $arrVal = ''){
+        $objDBConn = new SC_DbConn;     // DB操作オブジェクト
+        $sql = "";                      // データ取得SQL生成用
+        $arrRet = array();              // データ取得用
 
-		// SQL生成
+        // SQL生成
 
-		$sql = "";
-		$sql .= " select ";
-		$sql .= "     lay.page_id ";
-		$sql .= "     ,lay.page_name ";
-		$sql .= "     ,lay.url ";
-		$sql .= "     ,lay.author ";
-		$sql .= "     ,lay.description ";
-		$sql .= "     ,lay.keyword ";
-		$sql .= "     ,lay.update_url ";
-		$sql .= "     ,lay.create_date ";
-		$sql .= "     ,lay.update_date ";
+        $sql = "";
+        $sql .= " select ";
+        $sql .= "     lay.page_id ";
+        $sql .= "     ,lay.page_name ";
+        $sql .= "     ,lay.url ";
+        $sql .= "     ,lay.author ";
+        $sql .= "     ,lay.description ";
+        $sql .= "     ,lay.keyword ";
+        $sql .= "     ,lay.update_url ";
+        $sql .= "     ,lay.create_date ";
+        $sql .= "     ,lay.update_date ";
 
-		// Select句の指定があれば追加
-		if ($sel != '') {
-			$sql .= $sel;
-		}
+        // Select句の指定があれば追加
+        if ($sel != '') {
+            $sql .= $sel;
+        }
 
-		$sql .= " from dtb_pagelayout AS lay ";
-		// From句の指定があれば追加
-		if ($from != '') {
-			$sql .= $from;
-		}
+        $sql .= " from dtb_pagelayout AS lay ";
+        // From句の指定があれば追加
+        if ($from != '') {
+            $sql .= $from;
+        }
 
-		// where句の指定があれば追加
-		if ($where != '') {
-			$sql .= $where;
-		}else{
-			$sql .= " ORDER BY lay.page_id ";
-		}
+        // where句の指定があれば追加
+        if ($where != '') {
+            $sql .= $where;
+        }else{
+            $sql .= " ORDER BY lay.page_id ";
+        }
 
-		$arrRet = $objDBConn->getAll($sql, $arrVal);
+        $arrRet = $objDBConn->getAll($sql, $arrVal);
 
-		return $arrRet;
-	}
+        return $arrRet;
+    }
 
-	/**
-	 * ブロック情報を取得する.
-	 *
-	 * @param string $where Where句文
-	 * @param array $arrVal Where句の絞込条件値
-	 * @return array ブロック情報の配列
-	 */
-	function lfgetBlocData($where = '', $arrVal = ''){
-		$objDBConn = new SC_DbConn;     // DB操作オブジェクト
-		$sql = "";                      // データ取得SQL生成用
-		$arrRet = array();              // データ取得用
+    /**
+     * ブロック情報を取得する.
+     *
+     * @param string $where Where句文
+     * @param array $arrVal Where句の絞込条件値
+     * @return array ブロック情報の配列
+     */
+    function lfgetBlocData($where = '', $arrVal = ''){
+        $objDBConn = new SC_DbConn;     // DB操作オブジェクト
+        $sql = "";                      // データ取得SQL生成用
+        $arrRet = array();              // データ取得用
 
-		// SQL生成
-		$sql = "";
-		$sql .= " SELECT ";
-		$sql .= "   bloc_id";
-		$sql .= "   ,bloc_name";
-		$sql .= "   ,tpl_path";
-		$sql .= "   ,filename";
-		$sql .= "   ,update_date";
-		$sql .= " FROM ";
-		$sql .= "   dtb_bloc";
+        // SQL生成
+        $sql = "";
+        $sql .= " SELECT ";
+        $sql .= "   bloc_id";
+        $sql .= "   ,bloc_name";
+        $sql .= "   ,tpl_path";
+        $sql .= "   ,filename";
+        $sql .= "   ,update_date";
+        $sql .= " FROM ";
+        $sql .= "   dtb_bloc";
 
-		// where句の指定があれば追加
-		if ($where != '') {
-			$sql .= " WHERE " . $where;
-		}
+        // where句の指定があれば追加
+        if ($where != '') {
+            $sql .= " WHERE " . $where;
+        }
 
-		$sql .= " ORDER BY  bloc_id";
+        $sql .= " ORDER BY  bloc_id";
 
-		$arrRet = $objDBConn->getAll($sql, $arrVal);
+        $arrRet = $objDBConn->getAll($sql, $arrVal);
 
-		return $arrRet;
-	}
+        return $arrRet;
+    }
 
-	/**
-	 * ブロック情報の配列を生成する.
-	 *
-	 * @param array $arrBloc Bloc情報
-	 * @param array $tpl_arrBloc データをセットする配列
-	 * @param integer $cnt 配列番号
-	 * @return array データをセットした配列
-	 */
-	function lfSetBlocData($arrBloc, $val, $tpl_arrBloc, $cnt) {
-		$masterData = new SC_DB_MasterData_Ex();
-		$arrTarget = $masterData->getMasterData("mtb_target");
+    /**
+     * ブロック情報の配列を生成する.
+     *
+     * @param array $arrBloc Bloc情報
+     * @param array $tpl_arrBloc データをセットする配列
+     * @param integer $cnt 配列番号
+     * @return array データをセットした配列
+     */
+    function lfSetBlocData($arrBloc, $val, $tpl_arrBloc, $cnt) {
+        $masterData = new SC_DB_MasterData_Ex();
+        $arrTarget = $masterData->getMasterData("mtb_target");
 
-		$tpl_arrBloc[$cnt]['target_id'] = $arrTarget[$val['target_id']];
-		$tpl_arrBloc[$cnt]['bloc_id'] = $val['bloc_id'];
-		$tpl_arrBloc[$cnt]['bloc_row'] =
-		isset($val['bloc_row']) ? $val['bloc_row'] : "";
-		$tpl_arrBloc[$cnt]['anywhere'] = $val['anywhere'];
-		if($val['anywhere'] == 1){
-			$tpl_arrBloc[$cnt]['anywhere_selected'] = 'checked="checked"';
-		}
-		foreach($arrBloc as $bloc_key => $bloc_val){
-			if ($bloc_val['bloc_id'] == $val['bloc_id']) {
-				$bloc_name = $bloc_val['bloc_name'];
-				break;
-			}
-		}
-		$tpl_arrBloc[$cnt]['name'] = $bloc_name;
+        $tpl_arrBloc[$cnt]['target_id'] = $arrTarget[$val['target_id']];
+        $tpl_arrBloc[$cnt]['bloc_id'] = $val['bloc_id'];
+        $tpl_arrBloc[$cnt]['bloc_row'] =
+        isset($val['bloc_row']) ? $val['bloc_row'] : "";
+        $tpl_arrBloc[$cnt]['anywhere'] = $val['anywhere'];
+        if($val['anywhere'] == 1){
+            $tpl_arrBloc[$cnt]['anywhere_selected'] = 'checked="checked"';
+        }
+        foreach($arrBloc as $bloc_key => $bloc_val){
+            if ($bloc_val['bloc_id'] == $val['bloc_id']) {
+                $bloc_name = $bloc_val['bloc_name'];
+                break;
+            }
+        }
+        $tpl_arrBloc[$cnt]['name'] = $bloc_name;
 
-		return $tpl_arrBloc;
-	}
+        return $tpl_arrBloc;
+    }
 
-	/**
-	 * ブロックIDが配列に追加されているかのチェックを行う.
-	 *
-	 * @param array $arrBloc Bloc情報
-	 * @param array $arrChkData チェックを行うデータ配列
-	 * @return bool 存在する場合 true
-	 */
-	function lfChkBloc($arrBloc, $arrChkData) {
-		foreach($arrChkData as $key => $val){
-			if ($val['bloc_id'] === $arrBloc['bloc_id'] ) {
-				// 配列に存在すればTrueを返す
-				return true;
-			}
-		}
+    /**
+     * ブロックIDが配列に追加されているかのチェックを行う.
+     *
+     * @param array $arrBloc Bloc情報
+     * @param array $arrChkData チェックを行うデータ配列
+     * @return bool 存在する場合 true
+     */
+    function lfChkBloc($arrBloc, $arrChkData) {
+        foreach($arrChkData as $key => $val){
+            if ($val['bloc_id'] === $arrBloc['bloc_id'] ) {
+                // 配列に存在すればTrueを返す
+                return true;
+            }
+        }
 
-		// 配列に存在しなければFlaseを返す
-		return false;
-	}
+        // 配列に存在しなければFlaseを返す
+        return false;
+    }
 
-	/**
-	 * ブロックIDが何番目に配置されているかを調べる.
-	 *
-	 * @param array $arrUpdData 更新情報
-	 * @param array $arrObj チェックを行うデータ配列
-	 * @return integer 順番
-	 */
-	function lfGetRowID($arrUpdData, $arrObj){
-		$no = 0; // カウント用（同じデータが必ず1件あるので、初期値は0）
+    /**
+     * ブロックIDが何番目に配置されているかを調べる.
+     *
+     * @param array $arrUpdData 更新情報
+     * @param array $arrObj チェックを行うデータ配列
+     * @return integer 順番
+     */
+    function lfGetRowID($arrUpdData, $arrObj){
+        $no = 0; // カウント用（同じデータが必ず1件あるので、初期値は0）
 
-		// 対象データが何番目に配置されているのかを取得する。
-		foreach ($arrUpdData as $key => $val) {
-			if ($val['target_id'] === $arrObj['target_id'] and $val['top'] <= $arrObj['top']){
-				$no++;
-			}
-		}
-		// 番号を返す
-		return $no;
-	}
+        // 対象データが何番目に配置されているのかを取得する。
+        foreach ($arrUpdData as $key => $val) {
+            if ($val['target_id'] === $arrObj['target_id'] and $val['top'] <= $arrObj['top']){
+                $no++;
+            }
+        }
+        // 番号を返す
+        return $no;
+    }
 
-	/**
-	 * プレビューするデータを DB に保存する.
-	 *
-	 * @param array $arrPageData ページ情報の配列
-	 * @return void
-	 */
-	function lfSetPreData($arrPageData, &$objLayout){
-		$objDBConn = new SC_DbConn;     // DB操作オブジェクト
-		$sql = "";                      // データ更新SQL生成用
-		$ret = "";                      // データ更新結果格納用
-		$arrUpdData = array();          // 更新データ生成用
-		$filename = $arrPageData[0]['filename'];
+    /**
+     * プレビューするデータを DB に保存する.
+     *
+     * @param array $arrPageData ページ情報の配列
+     * @return void
+     */
+    function lfSetPreData($arrPageData, &$objLayout){
+        $objDBConn = new SC_DbConn;     // DB操作オブジェクト
+        $sql = "";                      // データ更新SQL生成用
+        $ret = "";                      // データ更新結果格納用
+        $arrUpdData = array();          // 更新データ生成用
+        $filename = $arrPageData[0]['filename'];
 
-		$arrPreData = $objLayout->lfgetPageData(" page_id = ? " , array("0"));
+        $arrPreData = $objLayout->lfgetPageData(" page_id = ? " , array("0"));
 
-		// XXX tplファイルの削除
-		$del_tpl = USER_PATH . "templates/" . $filename . '.tpl';
+        // XXX tplファイルの削除
+        $del_tpl = USER_PATH . "templates/" . $filename . '.tpl';
 
-		if (file_exists($del_tpl)){
-			unlink($del_tpl);
-		}
+        if (file_exists($del_tpl)){
+            unlink($del_tpl);
+        }
 
-		// filename が空の場合にはMYページと判断
-		if($filename == ""){
-			$tplfile = TEMPLATE_DIR . "mypage/index";
-			$filename = 'mypage';
-		} else {
-			if (file_exists(TEMPLATE_FTP_DIR . $filename . ".tpl")) {
-				$tplfile = TEMPLATE_FTP_DIR . $filename;
-			} else {
-				$tplfile = TEMPLATE_DIR . $filename;
-			}
-		}
+        // filename が空の場合にはMYページと判断
+        if($filename == ""){
+            $tplfile = TEMPLATE_DIR . "mypage/index";
+            $filename = 'mypage';
+        } else {
+            if (file_exists(TEMPLATE_FTP_DIR . $filename . ".tpl")) {
+                $tplfile = TEMPLATE_FTP_DIR . $filename;
+            } else {
+                $tplfile = TEMPLATE_DIR . $filename;
+            }
+        }
 
-		// プレビュー用tplファイルのコピー
-		$copyTo = USER_PATH . "templates/preview/" . TEMPLATE_NAME . "/" . $filename . ".tpl";
+        // プレビュー用tplファイルのコピー
+        $copyTo = USER_PATH . "templates/preview/" . TEMPLATE_NAME . "/" . $filename . ".tpl";
 
-		if (!is_dir(dirname($copyTo))) {
-			mkdir(dirname($copyTo));
-		}
+        if (!is_dir(dirname($copyTo))) {
+            mkdir(dirname($copyTo));
+        }
 
-		copy($tplfile . ".tpl", $copyTo);
+        copy($tplfile . ".tpl", $copyTo);
 
-		// 更新データの取得
-		$sql = "select page_id,page_name, header_chk, footer_chk from dtb_pagelayout where page_id = ? OR page_id = (SELECT page_id FROM dtb_blocposition WHERE anywhere = 1)" ;
-		
-		$ret = $objDBConn->getAll($sql, array($arrPageData[0]['page_id']));
+        // 更新データの取得
+        $sql = "select page_id,page_name, header_chk, footer_chk from dtb_pagelayout where page_id = ? OR page_id = (SELECT page_id FROM dtb_blocposition WHERE anywhere = 1)" ;
+        
+        $ret = $objDBConn->getAll($sql, array($arrPageData[0]['page_id']));
 
-		// dbデータのコピー
-		$sql = " update dtb_pagelayout set ";
-		$sql .= "     page_name = ?";
-		$sql .= "     ,header_chk = ?";
-		$sql .= "     ,footer_chk = ?";
-		$sql .= "     ,url = ?";
-		$sql .= "     ,tpl_dir = ?";
-		$sql .= "     ,filename = ?";
-//		$sql .= "     ,anywhere = ?";
-		$sql .= " where page_id = 0";
-		var_dump($ret);
-				echo("####<br/>\n\n".__LINE__ ." in file:".__FILE__."<br/>\n\n ####");
+        // dbデータのコピー
+        $sql = " update dtb_pagelayout set ";
+        $sql .= "     page_name = ?";
+        $sql .= "     ,header_chk = ?";
+        $sql .= "     ,footer_chk = ?";
+        $sql .= "     ,url = ?";
+        $sql .= "     ,tpl_dir = ?";
+        $sql .= "     ,filename = ?";
+//      $sql .= "     ,anywhere = ?";
+        $sql .= " where page_id = 0";
+        var_dump($ret);
+                echo("####<br/>\n\n".__LINE__ ." in file:".__FILE__."<br/>\n\n ####");
 
-		$arrUpdData = array($ret[0]['page_id']
-		,$ret[0]['page_id']
-		,$ret[0]['page_id']
-		,USER_DIR . "templates/" . TEMPLATE_NAME . "/"
-		,USER_DIR . "templates/" . TEMPLATE_NAME . "/"
-		,$filename
-//		,$ret[0]['anywhere']
-		 
-		);
+        $arrUpdData = array($ret[0]['page_id']
+        ,$ret[0]['page_id']
+        ,$ret[0]['page_id']
+        ,USER_DIR . "templates/" . TEMPLATE_NAME . "/"
+        ,USER_DIR . "templates/" . TEMPLATE_NAME . "/"
+        ,$filename
+//      ,$ret[0]['anywhere']
+         
+        );
 
-		$objDBConn->query($sql,$arrUpdData);
-	}
+        $objDBConn->query($sql,$arrUpdData);
+    }
 }
 ?>
