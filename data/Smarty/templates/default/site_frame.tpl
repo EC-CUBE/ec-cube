@@ -47,8 +47,7 @@
 //]]>
 </script>
 <!--{* ▼Head COLUMN*}-->
-  <!--{if $arrPageLayout.LeftNavi|@count > 0}-->
-  <div id="headcolumn">
+  <!--{if $arrPageLayout.HeadNavi|@count > 0}-->
     <!--{* ▼上ナビ *}-->
       <!--{foreach key=HeadNaviKey item=HeadNaviItem from=$arrPageLayout.HeadNavi}-->
         <!--{* ▼<!--{$HeadNaviItem.bloc_name}--> ここから*}-->
@@ -60,7 +59,6 @@
         <!--{* ▲<!--{$HeadNaviItem.bloc_name}--> ここまで*}-->
       <!--{/foreach}-->
     <!--{* ▲上ナビ *}-->
-  </div>
   <!--{/if}-->
 <!--{* ▲Head COLUMN*}-->
 </head>
