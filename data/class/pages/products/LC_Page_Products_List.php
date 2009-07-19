@@ -81,7 +81,7 @@ class LC_Page_Products_List extends LC_Page {
         // 表示件数・順序の初期化
         if (!isset($_GET['pageno'])) unset($_SESSION['products_list']);
 
-        // 表示件数の選択
+        // 表示件数の取得
         if (isset($_POST['disp_number']) && SC_Utils_Ex::sfIsInt($_POST['disp_number'])) {
             $this->disp_number = $_SESSION['products_list']['disp_number'] = $_POST['disp_number'];
         } else {
@@ -90,7 +90,7 @@ class LC_Page_Products_List extends LC_Page {
                 : current(array_keys($this->arrPRODUCTLISTMAX));
         }
 
-        // 表示順序の保存
+        // 表示順序の取得
         if (isset($_POST['orderby'])) {
             $this->orderby = $_SESSION['products_list']['orderby'] = $_POST['orderby'];
         } else {
@@ -407,7 +407,7 @@ class LC_Page_Products_List extends LC_Page {
     }
 
     /* 商品一覧の表示 */
-    function lfDispProductsList($category_id, $name, $maker_id, $disp_num, $orderby) {
+    function lfDispProductsList($category_id, $name, $maker_id, $disp_number, $orderby) {
 
         $objQuery = new SC_Query();
         $objDb = new SC_Helper_DB_Ex();
@@ -457,8 +457,8 @@ class LC_Page_Products_List extends LC_Page {
             $arrval[] = $maker_id;
         }
         
+        // 対象商品IDの抽出
         $arrProduct_id = $objQuery->getCol('vw_products_allclass AS allcls', 'DISTINCT product_id', $where, $arrval);
-        // ▲対象商品IDの抽出
         
         // 行数の取得
         $linemax = count($arrProduct_id);
@@ -466,7 +466,7 @@ class LC_Page_Products_List extends LC_Page {
         $this->tpl_linemax = $linemax;   // 何件が該当しました。表示用
 
         // ページ送りの取得
-        $this->objNavi = new SC_PageNavi($this->tpl_pageno, $linemax, $disp_num, "fnNaviPage", NAVI_PMAX);
+        $this->objNavi = new SC_PageNavi($this->tpl_pageno, $linemax, $disp_number, "fnNaviPage", NAVI_PMAX);
         $strnavi = $this->objNavi->strnavi;
         $strnavi = preg_replace('/list\.php.*?\'([0-9]+)\'.*?\"/', 'list.php?category_id=' . $category_id . '&amp;pageno=$1"', $strnavi);
  
@@ -515,15 +515,15 @@ __EOS__;
             $where .= ' AND 0<>0';
         }
         
-        //表示順序
-        switch($orderby) {
+        // 表示順序
+        switch ($orderby) {
 
-            //販売価格順
+            // 販売価格順
             case 'price':
                 $order = "price02_min, product_id";
                 break;
 
-            //新着順
+            // 新着順
             case 'date':
                 $order = "create_date DESC, product_id";
                 break;
@@ -564,7 +564,7 @@ __EOS__;
         }
         
         // 取得範囲の指定(開始行番号、行数のセット)
-        $objQuery->setlimitoffset($disp_num, $startno);
+        $objQuery->setlimitoffset($disp_number, $startno);
         // 表示順序
         $objQuery->setorder($order);
         
@@ -577,12 +577,10 @@ __EOS__;
         // 規格分類名一覧
         $arrClassCatName = $objDb->sfGetIDValueList("dtb_classcategory", "classcategory_id", "name");
         // 規格セレクトボックス設定
-        if($disp_num == 15) {
-            for($i = 0; $i < count($this->arrProducts); $i++) {
-                $this->lfMakeSelect($this->arrProducts[$i]['product_id'], $arrClassName, $arrClassCatName);
-                // 購入制限数を取得
-                $this->lfGetSaleLimit($this->arrProducts[$i]);
-            }
+        for ($i = 0; $i < count($this->arrProducts); $i++) {
+            $this->lfMakeSelect($this->arrProducts[$i]['product_id'], $arrClassName, $arrClassCatName);
+            // 購入制限数を取得
+            $this->lfGetSaleLimit($this->arrProducts[$i]);
         }
     }
 
