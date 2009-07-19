@@ -24,9 +24,13 @@
 // {{{ requires
 require_once(CLASS_PATH . "pages/LC_Page.php");
 
+/** ターゲットID 未使用 */
+define('TARGET_ID_UNUSED', 0);
+
 /**
  * デザイン管理 のページクラス.
  *
+ * ターゲットID 0:未使用 1:レフトナビ 2:ライトナビ 3:イン画面上部 4:メイン画面下部  5:画面上部 6:画面下部 7:ヘッダより上 8:フッタより下 9:HEADタグ内
  * @package Page
  * @author LOCKON CO.,LTD.
  * @version $Id$
@@ -161,17 +165,14 @@ class LC_Page_Admin_Design extends LC_Page {
 
             // ブロックの順序を取得し、更新を行う
             foreach($arrUpdBlocData as $key => $val){
+                if ($arrUpdBlocData[$key]['target_id'] == TARGET_ID_UNUSED) {
+                    continue;
+                }
+
                 // ブロックの順序を取得
                 $bloc_row = $this->lfGetRowID($arrUpdBlocData, $val);
                 $arrUpdBlocData[$key]['bloc_row'] = $bloc_row;
                 $arrUpdBlocData[$key]['page_id']    =  $page_id;    // ページID
-
-                /*
-                 ターゲットID 1:レフトナビ 2:ライトナビ 3:イン画面上部 4:メイン画面下部  5:画面上部 6:画面下部 7:ヘッダより上 8:フッタより下 9:HEADタグ内 10:欄外
-                 */
-                if ($arrUpdBlocData[$key]['target_id'] == 10) {
-                    $arrUpdBlocData[$key]['bloc_row'] = "0";
-                }
 
                 // insert文生成
                 $ins_sql = "";
@@ -252,11 +253,10 @@ class LC_Page_Admin_Design extends LC_Page {
             }
         }
 
-
         // 未使用のブロックデータを追加
         foreach($arrBloc as $key => $val){
             if (!$this->lfChkBloc($val, $tpl_arrBloc)) {
-                $val['target_id'] = 10;  // 未使用に追加する
+                $val['target_id'] = TARGET_ID_UNUSED; // 未使用に追加する
                 $tpl_arrBloc = $this->lfSetBlocData($arrBloc, $val, $tpl_arrBloc, $cnt);
                 $cnt++;
             }else{
