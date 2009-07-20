@@ -81,6 +81,9 @@ class LC_Page_Shopping_Confirm extends LC_Page {
 
         // カート集計処理
         $objDb->sfTotalCart($this, $objCartSess);
+        if (strlen($this->tpl_message) >= 1) {
+            SC_Utils_Ex::sfDispSiteError(SOLD_OUT, '', true);
+        }
         // 一時受注テーブルの読込
         $arrData = $objDb->sfGetOrderTemp($uniqid);
         // カート集計を元に最終計算

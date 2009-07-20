@@ -265,7 +265,7 @@ class SC_Helper_DB {
         $objQuery = new SC_Query();
         $col = "product_id, deliv_fee, name, product_code, main_list_image, main_image, price01, price02, point_rate, product_class_id, classcategory_id1, classcategory_id2, class_id1, class_id2, stock, stock_unlimited, sale_limit, sale_unlimited";
         $table = "vw_product_class AS prdcls";
-        $where = "product_id = ? AND classcategory_id1 = ? AND classcategory_id2 = ?";
+        $where = "product_id = ? AND classcategory_id1 = ? AND classcategory_id2 = ? AND status = 1";
         $objQuery->setorder("rank1 DESC, rank2 DESC");
         $arrRet = $objQuery->select($col, $table, $where, array($product_id, $classcategory_id1, $classcategory_id2));
         return $arrRet[0];
@@ -383,8 +383,9 @@ class SC_Helper_DB {
                 // 送料の合計を計算する
                 $objPage->tpl_total_deliv_fee+= ($arrData['deliv_fee'] * $arrCart['quantity']);
                 $cnt++;
-            } else {
-                // DBに商品が見つからない場合はカート商品の削除
+            } else { // DBに商品が見つからない場合、
+                $objPage->tpl_message .= "※現時点で販売していない商品が含まれておりました。該当商品をカートから削除しました。\n";
+                // カート商品の削除
                 $objCartSess->delProductKey('id', $arrCart['id']);
             }
         }
