@@ -746,7 +746,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
      * @param array $objQuery
      * @return bool
      */
-    protected function lfCopyProductClass($arrList,$objQuery)
+    function lfCopyProductClass($arrList,$objQuery)
     {
         // 複製元のdtb_products_classを取得（1件しかないはず）
         $col = "*";
