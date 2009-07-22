@@ -2,10 +2,11 @@ Index: html/user_data/plugins/plugin_menu.tpl
 ===================================================================
 --- html/user_data/plugins/plugin_menu.tpl	(リビジョン 0)
 +++ html/user_data/plugins/plugin_menu.tpl	(リビジョン 0)
-@@ -0,0 +1,31 @@
+@@ -0,0 +1,33 @@
 +<ul id="navi-plugin-menu" class="level1">
 +</ul>
 +<script type="text/javascript">
++//<![CDATA[
 +$(function(){
 +	$.ajax({
 +    url: '<!--{$smarty.const.PLUGIN_URL}-->plugins.xml',
@@ -21,7 +22,7 @@ Index: html/user_data/plugins/plugin_menu.tpl
 +            var item_path = $(this).find("path").text();
 +
 +            $("<li id='navi-plugin-index'></li>")
-+                .html("<a href='javascript:;'><span>" + item_text + "</span></a>")
++               .html("<a href='javascript:;'><span>" + item_text + "</span></a>")
 +               .appendTo('ul#navi-plugin-menu')
 +               .click(function() {
 +                   win03('<!--{$smarty.const.PLUGIN_URL}-->' + item_path 
@@ -33,6 +34,7 @@ Index: html/user_data/plugins/plugin_menu.tpl
 +    }
 +    });
 +});
++//]]>
 +</script>
 Index: html/user_data/plugins/plugins.xml
 ===================================================================
@@ -449,11 +451,12 @@ Index: data/Smarty/templates/default/admin/main_frame.tpl
 ===================================================================
 --- data/Smarty/templates/default/admin/main_frame.tpl	(リビジョン 18218)
 +++ data/Smarty/templates/default/admin/main_frame.tpl	(作業コピー)
-@@ -112,6 +112,9 @@
+@@ -112,6 +112,10 @@
      <li id="navi-ownersstore" class="<!--{if $tpl_mainno eq "ownersstore"}-->on<!--{/if}-->">
          <a><span>OWNERS STORE</span></a>
          <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`ownersstore/subnavi.tpl"}-->
 +    <li id="navi-plugin" class="<!--{if $tpl_mainno eq "plugin"}-->on<!--{/if}-->">
++    </li>
 +      <a><span>プラグイン設定</span></a>
 +      <!--{include file="`$smarty.const.PLUGIN_PATH`plugin_menu.tpl"}-->
      </li>
