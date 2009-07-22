@@ -510,7 +510,7 @@ Index: data/mtb_constants_init.php
 ===================================================================
 --- data/mtb_constants_init.php	(リビジョン 18218)
 +++ data/mtb_constants_init.php	(作業コピー)
-@@ -670,4 +670,11 @@
+@@ -670,4 +670,10 @@
  define('OPTION_FAVOFITE_PRODUCT','1');
  /** 画像リネーム設定（商品画像のみ） */
  define('IMAGE_RENAME', true);
@@ -521,7 +521,6 @@ Index: data/mtb_constants_init.php
 +/** プラグイン URL */
 +define("PLUGIN_URL", USER_URL . PLUGIN_DIR);
  ?>
-+
 Index: data/class/pages/LC_Page.php
 ===================================================================
 --- data/class/pages/LC_Page.php	(リビジョン 18218)
