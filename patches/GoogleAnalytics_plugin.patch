@@ -60,9 +60,8 @@ Index: html/user_data/plugins/google_analytics/sql/insert.sql
 ===================================================================
 --- html/user_data/plugins/google_analytics/sql/insert.sql	(リビジョン 0)
 +++ html/user_data/plugins/google_analytics/sql/insert.sql	(リビジョン 0)
-@@ -0,0 +1,2 @@
+@@ -0,0 +1,1 @@
 +INSERT INTO dtb_bloc (bloc_name, tpl_path, filename, php_path, del_flg) VALUES ('Google Analytics', 'user_data/plugins/google_analytics/tpl/ga.tpl', 'google_analytics', 'user_data/plugins/google_analytics/ga.php', 1);
-+INSERT INTO dtb_blocposition (page_id, target_id, bloc_id, bloc_row, filename, anywhere) VALUES (1, 10, (SELECT bloc_id FROM dtb_bloc WHERE filename = 'google_analytics'), 0, 'google_analytics', 1);
 \ No newline at end of file
 Index: html/user_data/plugins/google_analytics/tpl/ga.tpl
 ===================================================================
@@ -455,8 +454,8 @@ Index: data/Smarty/templates/default/admin/main_frame.tpl
      <li id="navi-ownersstore" class="<!--{if $tpl_mainno eq "ownersstore"}-->on<!--{/if}-->">
          <a><span>OWNERS STORE</span></a>
          <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`ownersstore/subnavi.tpl"}-->
-+    <li id="navi-plugin" class="<!--{if $tpl_mainno eq "plugin"}-->on<!--{/if}-->">
 +    </li>
++    <li id="navi-plugin" class="<!--{if $tpl_mainno eq "plugin"}-->on<!--{/if}-->">
 +      <a><span>プラグイン設定</span></a>
 +      <!--{include file="`$smarty.const.PLUGIN_PATH`plugin_menu.tpl"}-->
      </li>
