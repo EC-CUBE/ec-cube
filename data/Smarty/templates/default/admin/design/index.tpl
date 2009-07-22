@@ -198,7 +198,7 @@ function fnTargetSelf(){
           <tr>
           <!--{* メイン下部ここまで *}-->
              <!-- ★☆★ 下部ナビテーブル ☆★☆ -->
-            <td colspan="3" id="layout-top">
+            <td colspan="3" id="layout-bottom">
                 <div id="BottomNavi" class="ui-sortable" style="position: relative; width: 468px; ">
                 <!--{assign var="firstflg" value=false}-->
                 <!--{foreach key=key item=item from=$tpl_arrBloc name="bloc_loop"}-->
