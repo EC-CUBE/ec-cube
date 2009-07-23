@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// rtrim ‚Í PHP ƒo[ƒWƒ‡ƒ“ˆË‘¶‘Îô
+// rtrim ã¯ PHP ãƒãƒ¼ã‚¸ãƒ§ãƒ³ä¾å­˜å¯¾ç­–
 define('HTML_PATH', rtrim(realpath(rtrim(realpath(dirname(__FILE__)), '/\\') . '/../'), '/\\') . '/');
 
 require_once HTML_PATH . 'define.php';
