@@ -535,7 +535,7 @@ define('SMTP_PORT', "25");
 /** アップデート時にサイト情報を送出するか */
 define('UPDATE_SEND_SITE_INFO', false);
 /** ポイントを利用するか(true:利用する、false:利用しない) (false は一部対応) */
-define('USE_POINT', ture);
+define('USE_POINT', true);
 /** 在庫無し商品の非表示(true:非表示、false:表示) */
 define('NOSTOCK_HIDDEN', false);
 /** デフォルトテンプレート名 */
