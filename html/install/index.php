@@ -974,10 +974,10 @@ function lfAddData($dsn) {
         lfInsertCSVData(4,'order_sex','性別',21,'now()','now()', $dsn);
         lfInsertCSVData(4,'order_birth','生年月日',22,'now()','now()', $dsn);
         lfInsertCSVData(4,'order_job','職種',23,'now()','now()', $dsn);
-        lfInsertCSVData(4,'deliv_name01','配送先名前',24,'now()','now()', $dsn);
-        lfInsertCSVData(4,'deliv_name02','配送先名前',25,'now()','now()', $dsn);
-        lfInsertCSVData(4,'deliv_kana01','配送先カナ',26,'now()','now()', $dsn);
-        lfInsertCSVData(4,'deliv_kana02','配送先カナ',27,'now()','now()', $dsn);
+        lfInsertCSVData(4,'deliv_name01','お届け先名前',24,'now()','now()', $dsn);
+        lfInsertCSVData(4,'deliv_name02','お届け先名前',25,'now()','now()', $dsn);
+        lfInsertCSVData(4,'deliv_kana01','お届け先カナ',26,'now()','now()', $dsn);
+        lfInsertCSVData(4,'deliv_kana02','お届け先カナ',27,'now()','now()', $dsn);
         lfInsertCSVData(4,'deliv_tel01','電話番号1',28,'now()','now()', $dsn);
         lfInsertCSVData(4,'deliv_tel02','電話番号2',29,'now()','now()', $dsn);
         lfInsertCSVData(4,'deliv_tel03','電話番号3',30,'now()','now()', $dsn);

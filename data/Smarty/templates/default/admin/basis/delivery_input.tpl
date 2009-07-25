@@ -61,7 +61,7 @@
       </tr>    
       <!--{/if}-->
       <tr>
-      <th>配送時間<!--{$keyno}--></td>
+      <th>お届け時間<!--{$keyno}--></td>
       <!--{if $smarty.section.cnt.last}-->
       <!--{assign var=colspan value="3"}-->  
       <!--{else}-->
@@ -70,7 +70,7 @@
       <td colspan="<!--{$colspan}-->">
       <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="20" class="box20" /></td>
     <!--{else}-->
-      <th>配送時間<!--{$keyno}--></td>
+      <th>お届け時間<!--{$keyno}--></td>
       <td><input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" size="20" class="box20" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" /> </td>
       </tr>
     <!--{/if}-->

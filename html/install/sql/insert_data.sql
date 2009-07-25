@@ -144,10 +144,10 @@ INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'order_sex','性別',20,now(),now());
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'order_birth','生年月日',21,now(),now());
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'order_job','職種',22,now(),now());
-INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'deliv_name01','配送先名前',23,now(),now());
-INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'deliv_name02','配送先名前',24,now(),now());
-INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'deliv_kana01','配送先カナ',25,now(),now());
-INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'deliv_kana02','配送先カナ',26,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'deliv_name01','お届け先名前',23,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'deliv_name02','お届け先名前',24,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'deliv_kana01','お届け先カナ',25,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'deliv_kana02','お届け先カナ',26,now(),now());
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'deliv_tel01','電話番号1',27,now(),now());
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'deliv_tel02','電話番号2',28,now(),now());
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'deliv_tel03','電話番号3',29,now(),now());
@@ -169,7 +169,7 @@ INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'total','合計',45,now(),now());
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'payment_total','お支払い合計',46,now(),now());
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'payment_method','支払い方法',47,now(),now());
-INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'deliv_time','配送時間',48,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'deliv_time','お届け時間',48,now(),now());
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'deliv_no','配送伝票番号',49,now(),now());
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'note','SHOPメモ',50,now(),now());
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'status','対応状況',51,now(),now());
@@ -198,10 +198,10 @@ INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'order_sex','性別',21,now(),now());
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'order_birth','生年月日',22,now(),now());
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'order_job','職種',23,now(),now());
-INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'deliv_name01','配送先名前',24,now(),now());
-INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'deliv_name02','配送先名前',25,now(),now());
-INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'deliv_kana01','配送先カナ',26,now(),now());
-INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'deliv_kana02','配送先カナ',27,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'deliv_name01','お届け先名前',24,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'deliv_name02','お届け先名前',25,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'deliv_kana01','お届け先カナ',26,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'deliv_kana02','お届け先カナ',27,now(),now());
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'deliv_tel01','電話番号1',28,now(),now());
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'deliv_tel02','電話番号2',29,now(),now());
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'deliv_tel03','電話番号3',30,now(),now());
@@ -942,7 +942,7 @@ INSERT INTO mtb_constants VALUES ('MEMBER_PMAX','10',182,'メンバー管理ペ�
 INSERT INTO mtb_constants VALUES ('SEARCH_PMAX','10',183,'検索ページ表示行数');
 INSERT INTO mtb_constants VALUES ('NAVI_PMAX','4',184,'ページ番号の最大表示数量');
 INSERT INTO mtb_constants VALUES ('PRODUCTSUB_MAX','5',185,'商品サブ情報最大数');
-INSERT INTO mtb_constants VALUES ('DELIVTIME_MAX','16',186,'配送時間の最大表示数');
+INSERT INTO mtb_constants VALUES ('DELIVTIME_MAX','16',186,'お届け時間の最大表示数');
 INSERT INTO mtb_constants VALUES ('DELIVFEE_MAX','47',187,'配送料金の最大表示数');
 INSERT INTO mtb_constants VALUES ('STEXT_LEN','50',188,'短い項目の文字数（名前など)');
 INSERT INTO mtb_constants VALUES ('SMTEXT_LEN','100',189,'');
@@ -996,7 +996,7 @@ INSERT INTO mtb_constants VALUES ('URL_SHOP_TOP','SSL_URL . "shopping/" . DIR_IN
 INSERT INTO mtb_constants VALUES ('URL_ENTRY_TOP','SSL_URL . "entry/" . DIR_INDEX_URL',238,'会員登録ページTOP');
 INSERT INTO mtb_constants VALUES ('URL_SITE_TOP','URL_DIR . DIR_INDEX_URL',239,'サイトトップ');
 INSERT INTO mtb_constants VALUES ('URL_CART_TOP','URL_DIR . "cart/" . DIR_INDEX_URL',240,'カートトップ');
-INSERT INTO mtb_constants VALUES ('URL_DELIV_TOP','URL_DIR . "shopping/deliv.php"',241,'配送時間設定');
+INSERT INTO mtb_constants VALUES ('URL_DELIV_TOP','URL_DIR . "shopping/deliv.php"',241,'お届け先設定');
 INSERT INTO mtb_constants VALUES ('URL_MYPAGE_TOP','SSL_URL . "mypage/login.php"',242,'Myページトップ');
 INSERT INTO mtb_constants VALUES ('URL_SHOP_CONFIRM','URL_DIR . "shopping/confirm.php"',243,'購入確認ページ');
 INSERT INTO mtb_constants VALUES ('URL_SHOP_PAYMENT','URL_DIR . "shopping/payment.php"',244,'お支払い方法選択ページ');
@@ -1027,7 +1027,7 @@ INSERT INTO mtb_constants VALUES ('RECOMMEND_PRODUCT_MAX','6',268,'関連商品�
 INSERT INTO mtb_constants VALUES ('RECOMMEND_NUM','8',269,'おすすめ商品表示数');
 INSERT INTO mtb_constants VALUES ('BEST_MAX','5',270,'ベスト商品の最大登録数');
 INSERT INTO mtb_constants VALUES ('BEST_MIN','3',271,'ベスト商品の最小登録数（登録数が満たない場合は表示しない。)');
-INSERT INTO mtb_constants VALUES ('DELIV_DATE_END_MAX','21',272,'配達可能な日付以降のプルダウン表示最大日数');
+INSERT INTO mtb_constants VALUES ('DELIV_DATE_END_MAX','21',272,'お届け可能日以降のプルダウン表示最大日数');
 INSERT INTO mtb_constants VALUES ('PURCHASE_CUSTOMER_REGIST','0',273,'購入時強制会員登録(1:有効　0:無効)');
 INSERT INTO mtb_constants VALUES ('RELATED_PRODUCTS_MAX','3',274,'この商品を買った人はこんな商品も買っています　表示件数');
 INSERT INTO mtb_constants VALUES ('CV_PAYMENT_LIMIT','14',275,'支払期限');

@@ -92,8 +92,8 @@
     </tr>
 </table>
 
-<!--▼配送先情報ここから-->
-<h3>配送先情報</h3>
+<!--▼お届け先情報ここから-->
+<h3>お届け先情報</h3>
 <table class="form">
     <tr>
         <th>お名前</th>
@@ -142,7 +142,7 @@
         </td>
     </tr>
 </table>
-<!--▲配送先情報ここまで-->
+<!--▲お届け先情報ここまで-->
 
 <h3>受注商品情報</h3>
 <table class="list">
@@ -256,14 +256,14 @@
     </tr>
     <!--{/if}-->
     <tr>
-        <th>時間指定</th>
+        <th>お届け時間</th>
         <td>
             <!--{assign var=deliv_time_id value="`$arrForm.deliv_time_id.value`"}-->
             <!--{$arrDelivTime[$deliv_time_id]|default:"指定なし"}-->
         </td>
     </tr>
     <tr>
-        <th>配達日指定</th>
+        <th>お届け日</th>
         <td>
             <!--{assign var=key value="deliv_date"}-->
             <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><!--{/if}-->

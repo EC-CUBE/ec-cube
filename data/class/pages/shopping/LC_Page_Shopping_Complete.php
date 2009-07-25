@@ -462,7 +462,7 @@ class LC_Page_Shopping_Complete extends LC_Page {
             $sqlval['status'] = ORDER_NEW;
         }
 
-        // 別のお届け先を指定していない場合、配送先に登録住所をコピーする。
+        // 別のお届け先を指定していない場合、お届け先に登録住所をコピーする。
         if ($arrData["deliv_check"] == "-1") {
             $sqlval['deliv_name01'] = $arrData['order_name01'];
             $sqlval['deliv_name02'] = $arrData['order_name02'];

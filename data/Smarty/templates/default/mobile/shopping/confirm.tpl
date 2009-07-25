@@ -33,7 +33,7 @@
 
 <br>
 
-【配送先】<br>
+【お届け先】<br>
 <!--{* 別のお届け先が選択されている場合 *}-->
 <!--{if $arrData.deliv_check >= 1}-->
 <!--{$arrData.deliv_name01|escape}--> <!--{$arrData.deliv_name02|escape}--><br>
@@ -47,7 +47,7 @@
 
 <br>
 
-【配送日時指定】<br>
+【お届け日時指定】<br>
 日：<!--{$arrData.deliv_date|escape|default:"指定なし"}--><br>
 時間：<!--{$arrData.deliv_time|escape|default:"指定なし"}--><br>
 

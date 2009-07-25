@@ -1437,10 +1437,10 @@ __EOS__;
     }
 
     /**
-     * 配送時間を取得する.
+     * お届け時間を取得する.
      *
      * @param integer $payment_id 支払い方法ID
-     * @return array 配送時間の配列
+     * @return array お届け時間の配列
      */
     function sfGetDelivTime($payment_id = "") {
         $objQuery = new SC_Query();

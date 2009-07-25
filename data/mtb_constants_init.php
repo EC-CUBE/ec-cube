@@ -331,7 +331,7 @@ define('SEARCH_PMAX', 10);
 define('NAVI_PMAX', 4);
 /** 商品サブ情報最大数 */
 define('PRODUCTSUB_MAX', 5);
-/** 配送時間の最大表示数 */
+/** お届け時間の最大表示数 */
 define('DELIVTIME_MAX', 16);
 /** 配送料金の最大表示数 */
 define('DELIVFEE_MAX', 47);
@@ -438,7 +438,7 @@ define('URL_ENTRY_TOP', SSL_URL . "entry/" . DIR_INDEX_URL);
 define('URL_SITE_TOP', URL_DIR . DIR_INDEX_URL);
 /** カートトップ */
 define('URL_CART_TOP', URL_DIR . "cart/" . DIR_INDEX_URL);
-/** 配送時間設定 */
+/** お届け先設定 */
 define('URL_DELIV_TOP', URL_DIR . "shopping/deliv.php");
 /** Myページトップ */
 define('URL_MYPAGE_TOP', SSL_URL . "mypage/login.php");
@@ -498,7 +498,7 @@ define('RECOMMEND_NUM', 8);
 define('BEST_MAX', 5);
 /** ベスト商品の最小登録数（登録数が満たない場合は表示しない。) */
 define('BEST_MIN', 3);
-/** 配達可能な日付以降のプルダウン表示最大日数 */
+/** お届け可能日以降のプルダウン表示最大日数 */
 define('DELIV_DATE_END_MAX', 21);
 /** 購入時強制会員登録(1:有効　0:無効) */
 define('PURCHASE_CUSTOMER_REGIST', 0);

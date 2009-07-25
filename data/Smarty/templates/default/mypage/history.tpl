@@ -32,10 +32,10 @@
     <strong>注文番号：&nbsp;</strong><!--{$arrDisp.order_id}--><br />
     <strong>お支払い方法：&nbsp;</strong><!--{$arrPayment[$arrDisp.payment_id]|escape}-->
     <!--{if $arrDisp.deliv_time_id != ""}--><br />
-    <strong>お届け時間指定：&nbsp;</strong><!--{$arrDelivTime[$arrDisp.deliv_time_id]|escape}-->
+    <strong>お届け時間：&nbsp;</strong><!--{$arrDelivTime[$arrDisp.deliv_time_id]|escape}-->
     <!--{/if}-->
     <!--{if $arrDisp.deliv_date != ""}--><br />
-    <strong>お届け日指定：&nbsp;</strong><!--{$arrDisp.deliv_date|escape}-->
+    <strong>お届け日：&nbsp;</strong><!--{$arrDisp.deliv_date|escape}-->
     <!--{/if}-->
     </p>
 

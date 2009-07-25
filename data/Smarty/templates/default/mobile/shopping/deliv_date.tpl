@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<center>配達日時指定</center>
+<center>お届け日時指定</center>
 
 <hr>
 
@@ -34,7 +34,7 @@
 <!--<input type="hidden" name="point_check" value="2">-->
 <!--{/if}-->
 
-■配送日指定<br>
+■お届け日<br>
 <!--{assign var=key value="deliv_date"}-->
 <!--{if $arrErr[$key] != ""}-->
 <font color="red"><!--{$arrErr[$key]}--></font>
@@ -49,7 +49,7 @@
 <!--{/if}-->
 <br><br>
 
-■時間帯指定<br>
+■お届け時間<br>
 <!--{assign var=key value="deliv_time_id"}-->
 <!--{if $arrErr[$key] != ""}-->
 <font color="red"><!--{$arrErr[$key]}--></font>

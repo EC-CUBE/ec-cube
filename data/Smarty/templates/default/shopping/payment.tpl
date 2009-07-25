@@ -64,10 +64,10 @@
         <h3><img src="<!--{$TPL_DIR}-->img/shopping/subtitle02.gif" width="670" height="33" alt="お届け時間の指定" /></h3>
         <p>ご希望の方は、お届け時間を選択してください。</p>
         <div>
-          <!--★配達日指定★-->
+          <!--★お届け日★-->
           <!--{assign var=key value="deliv_date"}-->
           <span class="attention"><!--{$arrErr[$key]}--></span>
-          <em>お届け日指定：</em>
+          <em>お届け日：</em>
           <!--{if !$arrDelivDate}-->
             ご指定頂けません。
           <!--{else}-->
@@ -76,9 +76,10 @@
               <!--{html_options options=$arrDelivDate selected=$arrForm[$key].value}-->
             </select>
           <!--{/if}-->
+          <!--★お届け時間★-->
           <!--{assign var=key value="deliv_time_id"}-->
           <span class="attention"><!--{$arrErr[$key]}--></span>
-          <em>お届け時間指定：</em>
+          <em>お届け時間：</em>
           <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
             <option value="" selected="">指定なし</option>
             <!--{html_options options=$arrDelivTime selected=$arrForm[$key].value}-->

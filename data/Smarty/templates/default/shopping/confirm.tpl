@@ -194,10 +194,10 @@ function fnCheckSubmit() {
       </table>
       <!--お届け先ここまで-->
 
-      <table summary="お支払方法・お届け時間の指定・その他お問い合わせ" class="delivname">
+      <table summary="お支払方法・お届け日時の指定・その他お問い合わせ" class="delivname">
         <thead>
         <tr>
-          <th colspan="2">▼お支払方法・お届け時間の指定・その他お問い合わせ</th>
+          <th colspan="2">▼お支払方法・お届け日時の指定・その他お問い合わせ</th>
         </tr>
         </thead>
         <tbody>

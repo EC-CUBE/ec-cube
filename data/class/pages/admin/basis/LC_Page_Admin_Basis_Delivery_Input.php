@@ -121,7 +121,7 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page {
         $this->objFormParam->addParam("伝票No.確認URL", "confirm_url", STEXT_LEN, "n", array("URL_CHECK", "MAX_LENGTH_CHECK"), "http://");
 
         for($cnt = 1; $cnt <= DELIVTIME_MAX; $cnt++) {
-            $this->objFormParam->addParam("配送時間$cnt", "deliv_time$cnt", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
+            $this->objFormParam->addParam("お届け時間$cnt", "deliv_time$cnt", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
         }
 
         if(INPUT_DELIV_FEE) {
@@ -156,7 +156,7 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page {
             $where = "deliv_id = ?";
             $objQuery->update("dtb_deliv", $sqlval, $where, array($deliv_id));
 
-            // 配送時間の登録
+            // お届け時間の登録
             $table = "dtb_delivtime";
             $where = "deliv_id = ? AND time_id = ?";
             for($cnt = 1; $cnt <= DELIVTIME_MAX; $cnt++) {
@@ -215,7 +215,7 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page {
             }
 
             $sqlval = array();
-            // 配送時間の設定
+            // お届け時間の設定
             for($cnt = 1; $cnt <= DELIVTIME_MAX; $cnt++) {
                 $keyname = "deliv_time$cnt";
                 if($arrRet[$keyname] != "") {
@@ -256,7 +256,7 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page {
         $table = "dtb_deliv";
         $arrRet = $objQuery->select($col, $table, $where, array($deliv_id));
         $this->objFormParam->setParam($arrRet[0]);
-        // 配送時間の取得
+        // お届け時間の取得
         $col = "deliv_time";
         $where = "deliv_id = ?  ORDER BY time_id";
         $table = "dtb_delivtime";

@@ -84,7 +84,7 @@ class LC_Page_Mypage_History extends LC_Page {
             $this->arrDisp = $this->lfGetOrderData($_GET['order_id']);
             // 支払い方法の取得
             $this->arrPayment = $objDb->sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
-            // 配送時間の取得
+            // お届け時間の取得
             $arrRet = $objDb->sfGetDelivTime($this->arrDisp['payment_id']);
             $this->arrDelivTime = SC_Utils_Ex::sfArrKeyValue($arrRet, 'time_id', 'deliv_time');
 

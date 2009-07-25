@@ -217,8 +217,8 @@
     </table>
     <!--▲お客様情報ここまで-->
 
-    <!--▼配送先情報ここから-->
-    <h2>配送先情報
+    <!--▼お届け先情報ここから-->
+    <h2>お届け先情報
         <input type="button" name="input_from_order_data" value="上記お客様情報をコピー" onclick="fnCopyFromOrderData();" />
     </h2>
     <table class="form">
@@ -282,7 +282,7 @@
             </td>
         </tr>
     </table>
-    <!--▲配送先情報ここまで-->
+    <!--▲お届け先情報ここまで-->
 
     <!--▼受注商品情報ここから-->
     <h2 id="order_products">
@@ -445,7 +445,7 @@
         <!--{/if}-->
         
         <tr>
-            <th>時間指定</th>
+            <th>お届け時間</th>
             <td>
                 <!--{assign var=key value="deliv_time_id"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -455,13 +455,20 @@
                 </select>
             </td>
         </tr>
-        <!--{assign var=key value="deliv_date"}-->
+        <!--{assign var=key value="deliv_date_year"}-->
         <tr>
-            <th>配達日指定</th>
+            <th>お届け日</th>
             <td>
-                <!--{assign var=key value="deliv_date"}-->
-                <span class="attention"><!--{$arrErr[$key]}--></span>
-                <!--{$arrForm[$key].value|default:"指定なし"}-->
+                <span class="attention"><!--{$arrErr.deliv_date_year}--></span>
+                <select name="deliv_date_year" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
+                    <!--{html_options options=$arrYearDelivDate selected=$arrForm.deliv_date_year.value|default:""}-->
+                </select>年
+                <select name="deliv_date_month" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
+                    <!--{html_options options=$arrMonthDelivDate selected=$arrForm.deliv_date_month.value|default:""}-->
+                </select>月
+                <select name="deliv_date_day" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
+                    <!--{html_options options=$arrDayDelivDate selected=$arrForm.deliv_date_day.value|default:""}-->
+                </select>日
             </td>
         </tr>
         <tr>

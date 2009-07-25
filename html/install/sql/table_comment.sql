@@ -1,6 +1,6 @@
 INSERT INTO dtb_table_comment(table_name,description) values ('dtb_baseinfo','基本情報');
 INSERT INTO dtb_table_comment(table_name,description) values ('dtb_deliv','配送業者');
-INSERT INTO dtb_table_comment(table_name,description) values ('dtb_delivtime','配送時間');
+INSERT INTO dtb_table_comment(table_name,description) values ('dtb_delivtime','お届け時間');
 INSERT INTO dtb_table_comment(table_name,description) values ('dtb_delivfee','配送料金');
 INSERT INTO dtb_table_comment(table_name,description) values ('dtb_payment','支払方法');
 INSERT INTO dtb_table_comment(table_name,description) values ('dtb_mailtemplate','ﾒｰﾙﾃﾝﾌﾟﾚｰﾄ');
