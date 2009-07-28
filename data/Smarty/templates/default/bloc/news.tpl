@@ -31,17 +31,16 @@
   <dl>
     <dt><!--{$date_array[0]}-->年<!--{$date_array[1]}-->月<!--{$date_array[2]}-->日</dt>
     <dd>
-      <!--{if $arrNews[data].news_url}-->
-      <a href="<!--{$arrNews[data].news_url}-->"
-        <!--{if $arrNews[data].link_method eq "2"}-->
-        target="_blank"
-        <!--{/if}-->>
-      <!--{/if}-->
-      <!--{$arrNews[data].news_title|escape|nl2br}-->
+      <a
         <!--{if $arrNews[data].news_url}-->
-      </a>
-        <!--{/if}--><br />
-        <!--{$arrNews[data].news_comment|escape|nl2br}-->
+          href="<!--{$arrNews[data].news_url}-->"
+          <!--{if $arrNews[data].link_method eq "2"}-->
+            target="_blank"
+          <!--{/if}-->
+        <!--{/if}-->
+      >
+        <!--{$arrNews[data].news_title|escape|nl2br}--></a><br />
+      <!--{$arrNews[data].news_comment|escape|nl2br}-->
      </dd>
   </dl>
 <!--{/section}-->

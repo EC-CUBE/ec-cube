@@ -77,8 +77,7 @@
          onmouseover="chgImg('<!--{$TPL_DIR}-->img/common/b_back_on.gif','back02');"
          onmouseout="chgImg('<!--{$TPL_DIR}-->img/common/b_back.gif','back02');">
         <img src="<!--{$TPL_DIR}-->img/common/b_back.gif" width="150" height="30"
-             alt="戻る" name="back02" id="back02" />
-      </a>
+             alt="戻る" name="back02" id="back02" /></a>
       <input type="image"
              onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_send_on.gif',this)"
              onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_send.gif',this)"

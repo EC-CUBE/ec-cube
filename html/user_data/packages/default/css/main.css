@@ -40,10 +40,16 @@ br.clear {
 }
 /* リンク指定
 ----------------------------------------------- */
-a { text-decoration: underline; }
-a:link { color: #3a75af; }
-a:visited { color: #3a75af; }
-a:hover { color: #ff6600; }
+a:link {
+    color: #3a75af;
+    text-decoration: underline;
+}
+a:visited {
+    color: #3a75af;
+}
+a:hover {
+    color: #ff6600;
+}
 /* フォント
 ----------------------------------------------- */
 h1,h2,h3,h4,h5 {
@@ -314,10 +320,16 @@ div#categoryarea li a {
     padding: 3px 0;
 }
 
-a.onlink {  text-decoration: underline; }
-a.onlink:link { color: #ff0000; }
-a.onlink:visited { color: #ff0000; }
-a.onlink:hover { color: #ff0000; }
+a.onlink:link {
+    color: #ff0000;
+    text-decoration: underline;
+}
+a.onlink:visited {
+    color: #ff0000;
+}
+a.onlink:hover {
+    color: #ff0000;
+}
 
 
 /* ガイドリンク

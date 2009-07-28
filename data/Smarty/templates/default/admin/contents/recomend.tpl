@@ -91,8 +91,7 @@ function lfnCheckSetItem( rank ){
       </td>
       <td>
         <a href="#" onclick="lfnCheckSetItem('<!--{$smarty.section.cnt.iteration}-->'); return false;" target="_blank">
-        <!--{if $arrItems[$smarty.section.cnt.iteration].product_id}-->商品変更<!--{else}-->商品選択<!--{/if}-->
-        </a>
+          <!--{if $arrItems[$smarty.section.cnt.iteration].product_id}-->商品変更<!--{else}-->商品選択<!--{/if}--></a>
       </td>
       <td>
         <form name="form<!--{$smarty.section.cnt.iteration}-->" id="form<!--{$smarty.section.cnt.iteration}-->" method="post" action="?">

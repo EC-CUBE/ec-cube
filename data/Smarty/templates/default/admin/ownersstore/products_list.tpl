@@ -34,14 +34,12 @@
     <tr>
         <td>
             <a href="<!--{$smarty.const.OSTORE_URL}-->products/detail.php?product_id=<!--{$product.product_id|escape}-->" target="_blank">
-                <img src="<!--{$smarty.const.OSTORE_SSLURL}-->resize.php?image=<!--{$product.main_list_image|escape}-->&width=50&height=50" />
-            </a>
+                <img src="<!--{$smarty.const.OSTORE_SSLURL}-->resize.php?image=<!--{$product.main_list_image|escape}-->&width=50&height=50" /></a>
         </td>
         <td>
             <p>
                 <a href="<!--{$smarty.const.OSTORE_URL}-->products/detail.php?product_id=<!--{$product.product_id|escape}-->" target="_blank">
-                    <!--{$product.name}-->
-                </a>
+                    <!--{$product.name}--></a>
             </p>
             <p>Version.<!--{$product.version|default:"--"}-->　<!--{$product.last_update_date|sfDispDBDate:false|escape}--></p>
         </td>
@@ -75,15 +73,13 @@
             <!--{if $product.installed_flg}-->
                 <span class="icon_confirm">
                 <a href="#" onclick="win02('../load_module_config.php?module_id=<!--{$product.product_id}-->', 'load', 600, 400);return false;">
-                   設定
-                </a>
+                   設定</a>
                 </span>
             <!--{else}-->
                 <div id='ownersstore_settings<!--{$product.product_id|escape}-->' style="display:none">
                 <span class="icon_confirm">
                 <a href="#" onclick="win02('../load_module_config.php?module_id=<!--{$product.product_id}-->', 'load', 600, 400);return false;">
-                   設定
-                </a>
+                   設定</a>
                 </span>
                 </div>
                 <div id='ownersstore_settings_default<!--{$product.product_id|escape}-->' style="display:bloc">--</div>

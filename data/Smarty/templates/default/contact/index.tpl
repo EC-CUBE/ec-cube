@@ -89,8 +89,7 @@
           </p>
           <p class="zipimg">
             <a href="javascript:fnCallAddress('<!--{$smarty.const.URL_INPUT_ZIP}-->', 'zip01', 'zip02', 'pref', 'addr01');">
-              <img src="<!--{$TPL_DIR}-->img/common/address.gif" width="86" height="20" alt="住所自動入力" />
-            </a>
+              <img src="<!--{$TPL_DIR}-->img/common/address.gif" width="86" height="20" alt="住所自動入力" /></a>
             <span class="mini">&nbsp;郵便番号を入力後、クリックしてください。</span>
           </p>
         </td>
