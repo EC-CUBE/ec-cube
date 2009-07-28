@@ -458,10 +458,6 @@ define('URL_SHOP_CONVENIENCE', URL_DIR . "shopping/convenience.php");
 define('URL_SHOP_MODULE', URL_DIR . "shopping/load_payment_module.php");
 /** 商品トップ */
 define('URL_PRODUCTS_TOP', URL_DIR . "products/top.php");
-/** 商品一覧(HTML出力) */
-define('LIST_P_HTML', URL_DIR . "products/list-p");
-/** 商品一覧(HTML出力) */
-define('LIST_C_HTML', URL_DIR . "products/list.php?mode=search&category_id=");
 /** 商品詳細(HTML出力) */
 define('DETAIL_P_HTML', URL_DIR . "products/detail.php?product_id=");
 /** マイページお届け先URL */
