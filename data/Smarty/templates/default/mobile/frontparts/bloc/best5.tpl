@@ -27,8 +27,7 @@
 
 <!-- ▼おすすめ商品コメント ここから -->
 <a href="<!--{$smarty.const.MOBILE_DETAIL_P_HTML}--><!--{$arrProduct.product_id}-->">
-<!--{$arrProduct.comment|escape|nl2br}-->
-</a>
+<!--{$arrProduct.comment|escape|nl2br}--></a>
 <!-- ▲おすすめ商品コメント ここまで -->
 
 <!--{if !$smarty.foreach.best_products.last}--><br><br><!--{/if}-->
