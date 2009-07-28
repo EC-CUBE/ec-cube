@@ -387,8 +387,6 @@ class LC_Page_Products_List extends LC_Page {
     function lfCheckCategoryId() {
         $objDb = new SC_Helper_DB_Ex();
         $category_id = $_POST['category_id'] ? $_POST['category_id'] : $_GET['category_id'];
-        if (!defined('MOBILE_SITE') && !isset($_REQUEST['category_id']))
-            SC_Utils_Ex::sfDispSiteError(CATEGORY_NOT_FOUND);
         if ($category_id
                 && (!SC_Utils_Ex::sfIsInt($category_id)
                 || SC_Utils_Ex::sfIsZeroFilling($category_id)
