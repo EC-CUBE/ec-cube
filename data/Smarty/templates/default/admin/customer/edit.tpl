@@ -153,7 +153,9 @@
                 <th>ご性別<span class="attention"> *</span></th>
                 <td>
                     <span class="attention"><!--{$arrErr.sex}--></span>
-                    <input type="radio" name="sex" value="1" <!--{if $arrErr.sex != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> <!--{if $list_data.sex eq 1}-->checked<!--{/if}--> />男性 <input type="radio" name="sex" value="2" <!--{if $arrErr.sex != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> <!--{if $list_data.sex eq 2}-->checked<!--{/if}--> />女性
+                    <span <!--{if $arrErr.sex != ""}--><!--{sfSetErrorStyle}--><!--{/if}-->>
+                        <!--{html_radios name="sex" options=$arrSex separator=" " selected=$list_data.sex}-->
+                    </span>
                 </td>
             </tr>
             <tr>

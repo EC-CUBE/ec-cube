@@ -318,23 +318,21 @@
       <th>都道府県</th>
       <th>メールアドレス</th>
     </tr>
-    <!--{section name=data loop=$search_data}-->
-    <!--顧客<!--{$smarty.section.data.iteration}-->-->
-    <tr>
-      <td class="center" rowspan="2"><!--{if $search_data[data].status eq 1}-->仮<!--{else}-->本<!--{/if}--></td>
-      <td><!--{$search_data[data].customer_id|escape}--></td>
-      <td rowspan="2"><!--{$search_data[data].name01|escape}--> <!--{$search_data[data].name02|escape}-->(<!--{$search_data[data].kana01|escape}--> <!--{$search_data[data].kana02|escape}-->)</td>
-      <td class="center" rowspan="2"><!--{if $search_data[data].sex eq 1}-->男性<!--{else}-->女性<!--{/if}--></td>
-      <td><!--{$search_data[data].tel01|escape}-->-<!--{$search_data[data].tel02|escape}-->-<!--{$search_data[data].tel03|escape}--></td>
-      <td class="center" rowspan="2"><span class="icon_edit"><a href="#" onclick="return fnEdit('<!--{$search_data[data].customer_id|escape}-->');">編集</a></span></td>
-      <td class="center" rowspan="2"><span class="icon_delete"><a href="#" onclick="return fnDelete('<!--{$search_data[data].customer_id|escape}-->');">削除</a></span></td>
-    </tr>
-    <tr>
-      <td><!--{assign var=pref value=$search_data[data].pref}--><!--{$arrPref[$pref]}--></td>
-      <td><!--{mailto address=$search_data[data].email encode="javascript"}--></a><!--{if $search_data[data].status eq 1}--><br /><a href="#" onclick="return fnReSendMail('<!--{$search_data[data].customer_id|escape}-->');">仮登録メール再送</a><!--{/if}--></td>
-    </tr>
-    <!--顧客<!--{$smarty.section.data.iteration}-->-->
-    <!--{/section}-->
+    <!--{foreach from=$search_data item=row}-->
+      <tr>
+        <td class="center" rowspan="2"><!--{if $row.status eq 1}-->仮<!--{else}-->本<!--{/if}--></td>
+        <td><!--{$row.customer_id|escape}--></td>
+        <td rowspan="2"><!--{$row.name01|escape}--> <!--{$row.name02|escape}-->(<!--{$row.kana01|escape}--> <!--{$row.kana02|escape}-->)</td>
+        <td class="center" rowspan="2"><!--{$arrSex[$row.sex]|escape}--></td>
+        <td><!--{$row.tel01|escape}-->-<!--{$row.tel02|escape}-->-<!--{$row.tel03|escape}--></td>
+        <td class="center" rowspan="2"><span class="icon_edit"><a href="#" onclick="return fnEdit('<!--{$row.customer_id|escape}-->');">編集</a></span></td>
+        <td class="center" rowspan="2"><span class="icon_delete"><a href="#" onclick="return fnDelete('<!--{$row.customer_id|escape}-->');">削除</a></span></td>
+      </tr>
+      <tr>
+        <td><!--{assign var=pref value=$row.pref}--><!--{$arrPref[$pref]}--></td>
+        <td><!--{mailto address=$row.email encode="javascript"}--></a><!--{if $row.status eq 1}--><br /><a href="#" onclick="return fnReSendMail('<!--{$row.customer_id|escape}-->');">仮登録メール再送</a><!--{/if}--></td>
+      </tr>
+    <!--{/foreach}-->
   </table>
   <!--検索結果表示テーブル-->
 

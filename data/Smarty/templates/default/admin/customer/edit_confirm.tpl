@@ -95,7 +95,7 @@ function func_return(){
             </tr>
             <tr>
                 <th>ご性別<span class="attention"> *</span></th>
-                <td><!--{if $arrForm.sex eq 1}-->男性<!--{else}-->女性<!--{/if}--></td>
+                <td><!--{$arrSex[$arrForm.sex]|escape}--></td>
             </tr>
             <tr>
                 <th>ご職業</th>
