@@ -130,7 +130,7 @@ function func_return(){
             </tr>
         </table>
         <div class="btn">
-            <button type="button" onclick="func_return(); return false;"><span>検索画面に戻る</span></button>
+            <button type="button" onclick="func_return(); return false;"><span>編集画面に戻る</span></button>
             <button type="submit"><span>この内容で登録する</span></button>
         </div>
     </div>
