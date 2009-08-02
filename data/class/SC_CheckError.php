@@ -31,13 +31,8 @@ class SC_CheckError {
     var $arrParam;
 
     // チェック対象の値が含まれる配列をセットする。
-    function SC_CheckError($array = "") {
-        if($array != "") {
-            $this->arrParam = $array;
-        } else {
-            $this->arrParam = $_POST;
-        }
-
+    function SC_CheckError($array = $_POST) {
+        $this->arrParam = $array;
     }
 
     function doFunc($value, $arrFunc) {
