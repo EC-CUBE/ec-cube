@@ -80,7 +80,7 @@ class LC_Page_FrontParts_Bloc_SearchProducts extends LC_Page_FrontParts_Bloc {
         }
         $this->arrMakerList = $arrRet;
 
-        $objSubView = new SC_SiteView();
+        $objSubView = new SC_SiteView(false);
         $objSubView->assignobj($this);
         $objSubView->display($this->tpl_mainpage);
     }

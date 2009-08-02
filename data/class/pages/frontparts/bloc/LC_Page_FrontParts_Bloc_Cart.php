@@ -53,7 +53,7 @@ class LC_Page_FrontParts_Bloc_Cart extends LC_Page_FrontParts_Bloc {
      * @return void
      */
     function process() {
-        $objSubView = new SC_SiteView();
+        $objSubView = new SC_SiteView(false);
         $objCart = new SC_CartSession();
         $objSiteInfo = new SC_SiteInfo;
 

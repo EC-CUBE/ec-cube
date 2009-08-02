@@ -56,7 +56,7 @@ class LC_Page_FrontParts_Bloc_Best5 extends LC_Page_FrontParts_Bloc {
         if (defined("MOBILE_SITE") && MOBILE_SITE) {
             $objView = new SC_MobileView();
         } else {
-            $objView = new SC_SiteView();
+            $objView = new SC_SiteView(false);
         }
         $objSiteInfo = $objView->objSiteInfo;
 

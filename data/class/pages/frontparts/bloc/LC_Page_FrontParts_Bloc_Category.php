@@ -53,7 +53,7 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc {
      * @return void
      */
     function process() {
-        $objSubView = new SC_SiteView();
+        $objSubView = new SC_SiteView(false);
         $objDb = new SC_Helper_DB_Ex();
 
         // 選択中のカテゴリIDを判定する

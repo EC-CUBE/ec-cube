@@ -59,7 +59,7 @@ class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc {
         if (defined("MOBILE_SITE") && MOBILE_SITE) {
             $objView = new SC_MobileView();
         } else {
-            $objView = new SC_SiteView();
+            $objView = new SC_SiteView(false);
         }
 
         // 休日取得取得

@@ -80,7 +80,7 @@ class LC_Page_FrontParts_Bloc_Login extends LC_Page_FrontParts_Bloc {
         }
 
         $this->tpl_disable_logout = $this->lfCheckDisableLogout();
-        $objSubView = new SC_SiteView();
+        $objSubView = new SC_SiteView(false);
         $this->transactionid = $this->getToken();
         $objSubView->assignobj($this);
         $objSubView->display($this->tpl_mainpage);
