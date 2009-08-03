@@ -466,8 +466,11 @@ class LC_Page_Products_List extends LC_Page {
         // ページ送りの取得
         $this->objNavi = new SC_PageNavi($this->tpl_pageno, $linemax, $disp_number, "fnNaviPage", NAVI_PMAX);
         $strnavi = $this->objNavi->strnavi;
-        $strnavi = preg_replace('/list\.php.*?\'([0-9]+)\'.*?\"/', 'list.php?category_id=' . $category_id . '&amp;pageno=$1"', $strnavi);
- 
+        $query_string = htmlentities($_SERVER['QUERY_STRING'], ENT_QUOTES, CHAR_CODE);
+        if (preg_match('|&pageno=|', $query_string))
+            $query_string = preg_replace('|&pageno=[0-9]+|', '', $query_string);
+        $strnavi = preg_replace('|list\.php.*?\'([0-9]+)\'.*?\"|', 'list.php?' . $query_string . '&amp;pageno=$1"', $strnavi); 
+
         // 表示文字列
         $this->tpl_strnavi = empty($strnavi) ? "&nbsp;" : $strnavi;
         $startno = $this->objNavi->start_row;                 // 開始行
