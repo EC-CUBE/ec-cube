@@ -941,25 +941,6 @@ class SC_Utils {
         return ($id . $random);
     }
 
-    // カテゴリ別おすすめ商品の取得
-    function sfGetBestProducts( $conn, $category_id = 0){
-        $sql = '';
-        // 既に登録されている内容を取得する
-        $sql .= "SELECT name, main_image, main_list_image, price01_min, price01_max, price02_min, price02_max, point_rate,
-                 A.product_id, A.comment FROM dtb_best_products as A LEFT JOIN vw_products_allclass AS allcls
-                USING (product_id) WHERE A.category_id = ? AND A.del_flg = 0 AND allcls.del_flg = 0 AND allcls.status = 1";
-        
-        // 在庫無し商品の非表示
-        if (NOSTOCK_HIDDEN === true) {
-            $sql .= ' AND (allcls.stock_max >= 1 OR allcls.stock_unlimited_max = 1)';
-        }
-        
-        $sql .= " ORDER BY A.rank";
-        $arrItems = $conn->getAll($sql, array($category_id));
-
-        return $arrItems;
-    }
-
     // 特殊制御文字の手動エスケープ
     function sfManualEscape($data) {
         // 配列でない場合

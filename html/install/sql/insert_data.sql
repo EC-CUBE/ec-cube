@@ -1023,8 +1023,6 @@ INSERT INTO mtb_constants VALUES ('ENTRY_CUSTOMER_REGIST_SUBJECT','"本会員登
 INSERT INTO mtb_constants VALUES ('ENTRY_LIMIT_HOUR','1',267,'再入会制限時間（単位: 時間)');
 INSERT INTO mtb_constants VALUES ('RECOMMEND_PRODUCT_MAX','6',268,'関連商品表示数');
 INSERT INTO mtb_constants VALUES ('RECOMMEND_NUM','8',269,'おすすめ商品表示数');
-INSERT INTO mtb_constants VALUES ('BEST_MAX','5',270,'ベスト商品の最大登録数');
-INSERT INTO mtb_constants VALUES ('BEST_MIN','3',271,'ベスト商品の最小登録数（登録数が満たない場合は表示しない。)');
 INSERT INTO mtb_constants VALUES ('DELIV_DATE_END_MAX','21',272,'お届け可能日以降のプルダウン表示最大日数');
 INSERT INTO mtb_constants VALUES ('PURCHASE_CUSTOMER_REGIST','0',273,'購入時強制会員登録(1:有効　0:無効)');
 INSERT INTO mtb_constants VALUES ('RELATED_PRODUCTS_MAX','3',274,'この商品を買った人はこんな商品も買っています　表示件数');

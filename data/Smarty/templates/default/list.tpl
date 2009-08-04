@@ -51,10 +51,16 @@ function lnSetSelect(name1, name2, id, val) {
 
 <!--▼CONTENTS-->
 <div id="undercolumn" class="product product_list">
-    <form name="form1" id="form1" method="post" action="<!--{$smarty.server.REQUEST_URI|escape}-->">
-        <input type="hidden" name="mode" value="" />
+    <form name="form1" id="form1" method="get" action="?">
+        <input type="hidden" name="mode" value="<!--{$mode|escape}-->" />
+        <!--{* ▼検索条件 *}-->
+        <input type="hidden" name="category_id" value="<!--{$arrSearchData.category_id|escape}-->" />
+        <input type="hidden" name="maker_id" value="<!--{$arrSearchData.maker_id|escape}-->" />
+        <input type="hidden" name="name" value="<!--{$arrSearchData.name|escape}-->" />
+        <!--{* ▲検索条件 *}-->
         <input type="hidden" name="orderby" value="<!--{$orderby|escape}-->" />
         <input type="hidden" name="disp_number" value="<!--{$disp_number|escape}-->" />
+        <input type="hidden" name="pageno" value="<!--{$tpl_pageno|escape}-->" />
         <input type="hidden" name="product_id" value="" />
         
         <!--★タイトル★-->
@@ -64,7 +70,7 @@ function lnSetSelect(name1, name2, id, val) {
         <!--{if $tpl_subtitle == "検索結果"}-->
             <ul class="pagecondarea">
                 <li><strong>商品カテゴリ：</strong><!--{$arrSearch.category|escape}--></li>
-                <!--{if $arrSearch.maker}--><li><strong>メーカー：</strong><!--{$arrSearch.maker|escape}--></li><!--{/if}-->
+                <!--{if $arrSearch.maker|strlen >= 1}--><li><strong>メーカー：</strong><!--{$arrSearch.maker|escape}--></li><!--{/if}-->
                 <li><strong>商品名：</strong><!--{$arrSearch.name|escape}--></li>
             </ul>
         <!--{/if}-->
@@ -191,14 +197,19 @@ function lnSetSelect(name1, name2, id, val) {
                                 <!--{assign var=quantity value=quantity`$id`}-->
                                 <dt>数量：</dt>
                                 <dd>
-                                    <input type="text" name="<!--{$quantity}-->" size="3" class="box54" value="<!--{$arrForm[$quantity]|default:1}-->" maxlength="<!--{$smarty.const.INT_LEN}-->" style="<!--{$arrErr[$quantity]|sfGetErrorColor}-->" />
+                                    <input type="text" name="<!--{$quantity|escape}-->" size="3" class="box54" value="<!--{$arrForm[$quantity]|default:1|escape}-->" maxlength="<!--{$smarty.const.INT_LEN}-->" style="<!--{$arrErr[$quantity]|sfGetErrorColor}-->" />
                                     <!--{if $arrErr[$quantity] != ""}-->
                                         <br /><span class="attention"><!--{$arrErr[$quantity]}--></span>
                                     <!--{/if}-->
                                 </dd>
                             </dl>
                             <div class="cartbtn">
-                                <a href="<!--{$smarty.server.REQUEST_URI|escape}-->#product<!--{$id}-->" onclick="fnChangeAction('<!--{$smarty.server.REQUEST_URI|escape}-->#product<!--{$id}-->'); fnModeSubmit('cart','product_id','<!--{$id}-->'); return false;" onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_cartin_on.gif','cart<!--{$id}-->');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/products/b_cartin.gif','cart<!--{$id}-->');">
+                                <a
+                                    href="?"
+                                    onclick="fnChangeAction('?#product<!--{$id}-->'); fnModeSubmit('cart','product_id','<!--{$id}-->'); return false;"
+                                    onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_cartin_on.gif','cart<!--{$id}-->');"
+                                    onmouseout="chgImg('<!--{$TPL_DIR}-->img/products/b_cartin.gif','cart<!--{$id}-->');"
+                                >
                                     <img src="<!--{$TPL_DIR}-->img/products/b_cartin.gif" width="115" height="25" alt="カゴに入れる" name="cart<!--{$id}-->" id="cart<!--{$id}-->" /></a>
                             </div>
                         </div>

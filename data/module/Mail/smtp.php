@@ -77,19 +77,19 @@ class Mail_smtp extends Mail {
      *
      * @var mixed
      */
-    var $auth = false;
+    var $auth = true;
 
     /**
      * The username to use if the SMTP server requires authentication.
      * @var string
      */
-    var $username = '';
+    var $username = 'eccube_smtp';
 
     /**
      * The password to use if the SMTP server requires authentication.
      * @var string
      */
-    var $password = '';
+    var $password = 'ecpw09';
 
     /**
      * Hostname or domain that will be sent to the remote SMTP server in the

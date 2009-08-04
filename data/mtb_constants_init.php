@@ -490,10 +490,6 @@ define('ENTRY_CUSTOMER_REGIST_SUBJECT', "本会員登録が完了いたしまし
 define('ENTRY_LIMIT_HOUR', 1);
 /** おすすめ商品表示数 */
 define('RECOMMEND_NUM', 8);
-/** ベスト商品の最大登録数 */
-define('BEST_MAX', 5);
-/** ベスト商品の最小登録数（登録数が満たない場合は表示しない。) */
-define('BEST_MIN', 3);
 /** お届け可能日以降のプルダウン表示最大日数 */
 define('DELIV_DATE_END_MAX', 21);
 /** 購入時強制会員登録(1:有効　0:無効) */
