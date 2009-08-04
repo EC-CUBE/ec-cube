@@ -348,7 +348,8 @@ class LC_Page_Products_List extends LC_Page {
         $this->tpl_linemax = $linemax;   // 何件が該当しました。表示用
 
         // ページ送りの取得
-        $this->objNavi = new SC_PageNavi($this->tpl_pageno, $linemax, $this->disp_number, "fnNaviPage", NAVI_PMAX, 'pageno=#page#');
+        $urlParam = "category_id={$this->arrSearchData['category_id']}&pageno=#page#";
+        $this->objNavi = new SC_PageNavi($this->tpl_pageno, $linemax, $this->disp_number, "fnNaviPage", NAVI_PMAX, $urlParam);
         $strnavi = $this->objNavi->strnavi;
 
         // 表示文字列
