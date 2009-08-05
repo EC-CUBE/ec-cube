@@ -19,28 +19,32 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-	var preLoadFlag = "false";
+var preLoadFlag = "false";
 
-	function preLoadImg(URL){
+function preLoadImg(URL){
 
-		arrImgList = new Array (
-			URL+"img/contents/btn_search_on.jpg",URL+"img/contents/btn_regist_on.jpg",
-			URL+"img/contents/btn_csv_on.jpg",URL+"img/contents/arrow_left.jpg",URL+"img/contents/arrow_right.jpg"
-		);
-		arrPreLoad = new Array();
-		for (i in arrImgList) {
-			arrPreLoad[i] = new Image();
-			arrPreLoad[i].src = arrImgList[i];
-		}
-		preLoadFlag = "true";
-	}
+    arrImgList = new Array (
+        URL+"img/contents/btn_search_on.jpg",URL+"img/contents/btn_regist_on.jpg",
+        URL+"img/contents/btn_csv_on.jpg",URL+"img/contents/arrow_left.jpg",URL+"img/contents/arrow_right.jpg"
+    );
+    arrPreLoad = new Array();
+    for (i in arrImgList) {
+        arrPreLoad[i] = new Image();
+        arrPreLoad[i].src = arrImgList[i];
+    }
+    preLoadFlag = "true";
+}
 
-	function chgImg(fileName,imgName){
-		if (preLoadFlag == "true") {
-			document.images[imgName].src = fileName;
-		}
-	}
-	
-	function chgImgImageSubmit(fileName,imgObj){
-	imgObj.src = fileName;
-	}
+function chgImg(fileName,img){
+    if (preLoadFlag == "true") {
+        if (typeof(img) == "object") {
+            img.src = fileName;
+        } else {
+            document.images[img].src = fileName;
+        }
+    }
+}
+
+function chgImgImageSubmit(fileName,imgObj){
+imgObj.src = fileName;
+}
