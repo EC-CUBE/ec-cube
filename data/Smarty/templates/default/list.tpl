@@ -21,9 +21,10 @@
  *}-->
 <script type="text/javascript">//<![CDATA[
 // セレクトボックスに項目を割り当てる。
-function lnSetSelect(name1, name2, id, val) {
-    sele1 = document.form1[name1];
-    sele2 = document.form1[name2];
+function fnSetSelect(form, val) {
+    sele1 = form['classcategory_id1'];
+    sele2 = form['classcategory_id2'];
+    id = form['product_id'].value;
     lists = eval('lists' + id);
     vals = eval('vals' + id);
 
@@ -46,6 +47,26 @@ function lnSetSelect(name1, name2, id, val) {
         }
     }
 }
+// 並び順を変更
+function fnChangeOrderby(orderby) {
+    fnSetVal('orderby', orderby);
+    fnSetVal('pageno', 1);
+    fnSubmit();
+}
+// カゴに入れる
+function fnInCart(productForm) {
+    var product_id = productForm["product_id"].value;
+    fnChangeAction("?#product" + product_id);
+    if (productForm["classcategory_id1"]) {
+        fnSetVal("classcategory_id1", productForm["classcategory_id1"].value);
+    }
+    if (productForm["classcategory_id2"]) {
+        fnSetVal("classcategory_id2", productForm["classcategory_id2"].value);
+    }
+    fnSetVal("quantity", productForm["quantity"].value);
+    fnSetVal("product_id", productForm["product_id"].value);
+    fnSubmit();
+}
 //]]>
 </script>
 
@@ -58,126 +79,137 @@ function lnSetSelect(name1, name2, id, val) {
         <input type="hidden" name="maker_id" value="<!--{$arrSearchData.maker_id|escape}-->" />
         <input type="hidden" name="name" value="<!--{$arrSearchData.name|escape}-->" />
         <!--{* ▲検索条件 *}-->
+        <!--{* ▼ページナビ関連 *}-->
         <input type="hidden" name="orderby" value="<!--{$orderby|escape}-->" />
         <input type="hidden" name="disp_number" value="<!--{$disp_number|escape}-->" />
         <input type="hidden" name="pageno" value="<!--{$tpl_pageno|escape}-->" />
+        <!--{* ▲ページナビ関連 *}-->
+        <!--{* ▼注文関連 *}-->
         <input type="hidden" name="product_id" value="" />
-        
-        <!--★タイトル★-->
-        <h2 class="title"><!--{$tpl_subtitle|escape}--></h2>
-        
-        <!--▼検索条件-->
-        <!--{if $tpl_subtitle == "検索結果"}-->
-            <ul class="pagecondarea">
-                <li><strong>商品カテゴリ：</strong><!--{$arrSearch.category|escape}--></li>
-                <!--{if $arrSearch.maker|strlen >= 1}--><li><strong>メーカー：</strong><!--{$arrSearch.maker|escape}--></li><!--{/if}-->
-                <li><strong>商品名：</strong><!--{$arrSearch.name|escape}--></li>
-            </ul>
-        <!--{/if}-->
-        <!--▲検索条件-->
+        <input type="hidden" name="classcategory_id1" value="" />
+        <input type="hidden" name="classcategory_id2" value="" />
+        <input type="hidden" name="quantity" value="" />
+        <!--{* ▲注文関連 *}-->
+    </form>
+    
+    <!--★タイトル★-->
+    <h2 class="title"><!--{$tpl_subtitle|escape}--></h2>
+    
+    <!--▼検索条件-->
+    <!--{if $tpl_subtitle == "検索結果"}-->
+        <ul class="pagecondarea">
+            <li><strong>商品カテゴリ：</strong><!--{$arrSearch.category|escape}--></li>
+            <!--{if $arrSearch.maker|strlen >= 1}--><li><strong>メーカー：</strong><!--{$arrSearch.maker|escape}--></li><!--{/if}-->
+            <li><strong>商品名：</strong><!--{$arrSearch.name|escape}--></li>
+        </ul>
+    <!--{/if}-->
+    <!--▲検索条件-->
 
-        <!--▼件数-->
+    <!--▼ページナビ(上部)-->
+    <form name="page_navi_top" id="page_navi_top" action="?">
         <!--{if $tpl_linemax > 0}-->
             <ul class="pagenumberarea">
                 <li class="left"><span class="pagenumber"><!--{$tpl_linemax}--></span>件の商品がございます。</li>
                 <li class="center"><!--{$tpl_strnavi}--></li>
-                <li class="right"><!--{if $orderby != 'price'}-->
-                    <a href="javascript:fnModeSubmit('', 'orderby', 'price')">価格順</a>
-                <!--{else}-->
-                    <strong>価格順</strong>
-                <!--{/if}-->&nbsp;
-                <!--{if $orderby != "date"}-->
-                    <a href="javascript:fnModeSubmit('', 'orderby', 'date')">新着順</a>
-                <!--{else}-->
-                    <strong>新着順</strong>
-                <!--{/if}-->
-                  表示件数
-                    <select name="disp_number_top" onchange="javascript:fnModeSubmit('','disp_number',this.value);">
-                <!--{foreach from=$arrPRODUCTLISTMAX item="dispnum" key="num"}-->
-	                <!--{if $num == $disp_number}-->
-	                <option value="<!--{$num}-->" selected="selected" ><!--{$dispnum}--></option>
-	                <!--{else}-->
-	                <option value="<!--{$num}-->" ><!--{$dispnum}--></option>
-	                <!--{/if}-->
-                <!--{/foreach}-->
+                <li class="right">
+                    <!--{if $orderby != 'price'}-->
+                        <a href="javascript:fnChangeOrderby('price');">価格順</a>
+                    <!--{else}-->
+                        <strong>価格順</strong>
+                    <!--{/if}-->&nbsp;
+                    <!--{if $orderby != "date"}-->
+                        <a href="javascript:fnChangeOrderby('date');">新着順</a>
+                    <!--{else}-->
+                        <strong>新着順</strong>
+                    <!--{/if}-->
+                    表示件数
+                    <select name="disp_number" onchange="javascript:fnModeSubmit('','disp_number',this.value);">
+                        <!--{foreach from=$arrPRODUCTLISTMAX item="dispnum" key="num"}-->
+                            <!--{if $num == $disp_number}-->
+                                <option value="<!--{$num}-->" selected="selected" ><!--{$dispnum}--></option>
+                            <!--{else}-->
+                                <option value="<!--{$num}-->" ><!--{$dispnum}--></option>
+                            <!--{/if}-->
+                        <!--{/foreach}-->
                     </select>
                 </li>
             </ul>
-            
         <!--{else}-->
             <!--{include file="frontparts/search_zero.tpl"}-->
         <!--{/if}-->
-        <!--▲件数-->
+    </form>
+    <!--▲ページナビ(上部)-->
 
-        <!--{section name=cnt loop=$arrProducts}-->
-            <!--{assign var=id value=$arrProducts[cnt].product_id}-->
-            <!--▼商品-->
-            <div class="listarea">
-                <div class="listphoto">
-                    <!--★画像★-->
-                    <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProducts[cnt].product_id}-->" class="over"><!--商品写真--><img src="<!--{$smarty.const.IMAGE_SAVE_URL|sfTrimURL}-->/<!--{$arrProducts[cnt].main_list_image|sfNoImageMainList|escape}-->" alt="<!--{$arrProducts[cnt].name|escape}-->" class="picture" /></a>
-                </div>
+    <!--{foreach from=$arrProducts item=arrProduct}-->
+        <!--{assign var=id value=$arrProduct.product_id}-->
+        <!--▼商品-->
+        <div class="listarea">
+            <a name="product<!--{$id|escape}-->" />
+            <div class="listphoto">
+                <!--★画像★-->
+                <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProduct.product_id}-->" class="over"><!--商品写真--><img src="<!--{$smarty.const.IMAGE_SAVE_URL|sfTrimURL}-->/<!--{$arrProduct.main_list_image|sfNoImageMainList|escape}-->" alt="<!--{$arrProduct.name|escape}-->" class="picture" /></a>
+            </div>
+            
+            <div class="listrightblock">
+                <!--アイコン-->
+                <!--商品ステータス-->
+                <!--{if count($arrProduct.product_flag) > 0}-->
+                    <ul class="status_icon">
+                        <!--{section name=flg loop=$arrProduct.product_flag|count_characters}-->
+                            <!--{if $arrProduct.product_flag[flg] == "1"}-->
+                                <!--{assign var=key value="`$smarty.section.flg.iteration`"}-->
+                                <li><img src="<!--{$TPL_DIR}--><!--{$arrSTATUS_IMAGE[$key]}-->" width="65" height="17" alt="<!--{$arrSTATUS[$key]}-->"/></li>
+                                <!--{assign var=sts_cnt value=$sts_cnt+1}-->
+                            <!--{/if}-->
+                        <!--{/section}-->
+                    </ul>
+                <!--{/if}-->
+                <!--商品ステータス-->
+                <!--アイコン-->
                 
-                <div class="listrightblock">
-                    <!--アイコン-->
-                    <!--商品ステータス-->
-                    <!--{if count($arrProducts[cnt].product_flag) > 0}-->
-                        <ul class="status_icon">
-                            <!--{section name=flg loop=$arrProducts[cnt].product_flag|count_characters}-->
-                                <!--{if $arrProducts[cnt].product_flag[flg] == "1"}-->
-                                    <!--{assign var=key value="`$smarty.section.flg.iteration`"}-->
-                                    <li><img src="<!--{$TPL_DIR}--><!--{$arrSTATUS_IMAGE[$key]}-->" width="65" height="17" alt="<!--{$arrSTATUS[$key]}-->"/></li>
-                                    <!--{assign var=sts_cnt value=$sts_cnt+1}-->
-                                <!--{/if}-->
-                            <!--{/section}-->
-                        </ul>
-                    <!--{/if}-->
-                    <!--商品ステータス-->
-                    <!--アイコン-->
+                <!--★商品名★-->
+                <h3>
+                    <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProduct.product_id}-->"><!--{$arrProduct.name|escape}--></a>
+                </h3>
+                
+                <!--★コメント★-->
+                <p class="listcomment"><!--{$arrProduct.main_list_comment|escape|nl2br}--></p>
+                
+                <p>
+                    <span class="pricebox sale_price">
+                        <!--{$smarty.const.SALE_PRICE_TITLE}--><span class="mini">(税込)</span>：
+                        <span class="price">
+                        <!--{if $arrProduct.price02_min == $arrProduct.price02_max}-->
+                            <!--{$arrProduct.price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
+                        <!--{else}-->
+                            <!--{$arrProduct.price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->～<!--{$arrProduct.price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
+                        <!--{/if}-->円</span>
+                    </span>
                     
-                    <!--★商品名★-->
-                    <h3>
-                        <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProducts[cnt].product_id}-->"><!--{$arrProducts[cnt].name|escape}--></a>
-                    </h3>
-                    
-                    <!--★コメント★-->
-                    <p class="listcomment"><!--{$arrProducts[cnt].main_list_comment|escape|nl2br}--></p>
-                    
-                    <p>
-                        <span class="pricebox sale_price">
-                            <!--{$smarty.const.SALE_PRICE_TITLE}--><span class="mini">(税込)</span>：
-                            <span class="price">
-                            <!--{if $arrProducts[cnt].price02_min == $arrProducts[cnt].price02_max}-->
-                                <!--{$arrProducts[cnt].price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
-                            <!--{else}-->
-                                <!--{$arrProducts[cnt].price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->～<!--{$arrProducts[cnt].price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
-                            <!--{/if}-->円</span>
-                        </span>
-                        
-                        <!--★詳細ボタン★-->
-                        <span class="btnbox">
-                            <!--{assign var=name value="detail`$smarty.section.cnt.iteration`"}-->
-                            <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProducts[cnt].product_id}-->" onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_detail_on.gif','<!--{$name}-->');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/products/b_detail.gif','<!--{$name}-->');">
-                                <img src="<!--{$TPL_DIR}-->img/products/b_detail.gif" width="115" height="25" alt="詳しくはこちら" name="<!--{$name}-->" id="<!--{$name}-->" /></a>
-                        </span>
-                    </p>
+                    <!--★詳細ボタン★-->
+                    <span class="btnbox">
+                        <!--{assign var=name value="detail`$id`"}-->
+                        <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProduct.product_id}-->" onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_detail_on.gif','<!--{$name}-->');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/products/b_detail.gif','<!--{$name}-->');">
+                            <img src="<!--{$TPL_DIR}-->img/products/b_detail.gif" width="115" height="25" alt="詳しくはこちら" name="<!--{$name}-->" id="<!--{$name}-->" /></a>
+                    </span>
+                </p>
 
-                    <!--{if $arrProducts[cnt].stock_max == 0 && $arrProducts[cnt].stock_unlimited_max != 1}-->
-                        <p class="soldout"><em>申し訳ございませんが、只今品切れ中です。</em></p>
-                    <!--{else}-->
-                        <!--▼買い物かご-->
+                <!--{if $arrProduct.stock_max == 0 && $arrProduct.stock_unlimited_max != 1}-->
+                    <p class="soldout"><em>申し訳ございませんが、只今品切れ中です。</em></p>
+                <!--{else}-->
+                    <!--▼買い物かご-->
+                    <form name="product_form<!--{$id|escape}-->" action="?">
+                        <input type="hidden" name="product_id" value="<!--{$id|escape}-->" />
                         <div class="in_cart">
-                            <!--{assign var=class1 value=classcategory_id`$id`_1}-->
-                            <!--{assign var=class2 value=classcategory_id`$id`_2}-->
                             <dl>
                                 <!--{if $tpl_classcat_find1[$id]}-->
                                     <dt><!--{$tpl_class_name1[$id]|escape}-->：</dt>
                                     <dd>
-                                        <select name="<!--{$class1}-->" style="<!--{$arrErr[$class1]|sfGetErrorColor}-->" onchange="lnSetSelect('<!--{$class1}-->', '<!--{$class2}-->', '<!--{$id}-->','');">
+                                        <select name="classcategory_id1" style="<!--{$arrProduct.arrErr.classcategory_id1|sfGetErrorColor}-->" onchange="fnSetSelect(this.form);">
                                         <option value="">選択してください</option>
-                                        <!--{html_options options=$arrClassCat1[$id] selected=$arrForm[$class1]}-->
+                                        <!--{html_options options=$arrClassCat1[$id] selected=$arrProduct.classcategory_id1}-->
                                         </select>
-                                        <!--{if $arrErr[$class1] != ""}-->
+                                        <!--{if $arrProduct.arrErr.classcategory_id1 != ""}-->
                                             <br /><span class="attention">※ <!--{$tpl_class_name1[$id]}-->を入力して下さい。</span>
                                         <!--{/if}-->
                                     </dd>
@@ -185,72 +217,75 @@ function lnSetSelect(name1, name2, id, val) {
                                 <!--{if $tpl_classcat_find2[$id]}-->
                                     <dt><!--{$tpl_class_name2[$id]|escape}-->：</dt>
                                     <dd>
-                                        <select name="<!--{$class2}-->" style="<!--{$arrErr[$class2]|sfGetErrorColor}-->">
+                                        <select name="classcategory_id2" style="<!--{$arrProduct.arrErr.classcategory_id2|sfGetErrorColor}-->">
                                         <option value="">選択してください</option>
                                         </select>
-                                        <!--{if $arrErr[$class2] != ""}-->
+                                        <!--{if $arrProduct.arrErr.classcategory_id2 != ""}-->
                                             <br /><span class="attention">※ <!--{$tpl_class_name2[$id]}-->を入力して下さい。</span>
                                         <!--{/if}-->
                                     </dd>
                                 <!--{/if}-->
 
-                                <!--{assign var=quantity value=quantity`$id`}-->
                                 <dt>数量：</dt>
                                 <dd>
-                                    <input type="text" name="<!--{$quantity|escape}-->" size="3" class="box54" value="<!--{$arrForm[$quantity]|default:1|escape}-->" maxlength="<!--{$smarty.const.INT_LEN}-->" style="<!--{$arrErr[$quantity]|sfGetErrorColor}-->" />
-                                    <!--{if $arrErr[$quantity] != ""}-->
-                                        <br /><span class="attention"><!--{$arrErr[$quantity]}--></span>
+                                    <input type="text" name="quantity" size="3" class="box54" value="<!--{$arrProduct.quantity|default:1|escape}-->" maxlength="<!--{$smarty.const.INT_LEN}-->" style="<!--{$arrProduct.arrErr.quantity|sfGetErrorColor}-->" />
+                                    <!--{if $arrProduct.arrErr.quantity != ""}-->
+                                        <br /><span class="attention"><!--{$arrProduct.arrErr.quantity}--></span>
                                     <!--{/if}-->
                                 </dd>
                             </dl>
                             <div class="cartbtn">
-                                <a
-                                    href="?"
-                                    onclick="fnChangeAction('?#product<!--{$id}-->'); fnModeSubmit('cart','product_id','<!--{$id}-->'); return false;"
-                                    onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_cartin_on.gif','cart<!--{$id}-->');"
-                                    onmouseout="chgImg('<!--{$TPL_DIR}-->img/products/b_cartin.gif','cart<!--{$id}-->');"
-                                >
-                                    <img src="<!--{$TPL_DIR}-->img/products/b_cartin.gif" width="115" height="25" alt="カゴに入れる" name="cart<!--{$id}-->" id="cart<!--{$id}-->" /></a>
+                                <input
+                                    type="image"
+                                    id="cart<!--{$id}-->"
+                                    src="<!--{$TPL_DIR}-->img/products/b_cartin.gif"
+                                    alt="カゴに入れる"
+                                    onclick="fnInCart(this.form); return false;"
+                                    onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_cartin_on.gif', this);"
+                                    onmouseout="chgImg('<!--{$TPL_DIR}-->img/products/b_cartin.gif', this);"
+                                />
                             </div>
                         </div>
-                        <!--▲買い物かご-->
-                    <!--{/if}-->
-                    
-                </div>
+                    </form>
+                    <!--▲買い物かご-->
+                <!--{/if}-->
+                
             </div>
-            <!--▲商品-->
-        <!--{/section}-->
+        </div>
+        <!--▲商品-->
+    <!--{/foreach}-->
 
-        <!--▼件数-->
+    <!--▼ページナビ(下部)-->
+    <form name="page_navi_bottom" id="page_navi_bottom" action="?">
         <!--{if $tpl_linemax > 0}-->
             <ul class="pagenumberarea">
                 <li class="left"><span class="pagenumber"><!--{$tpl_linemax}--></span>件の商品がございます。</li>
                 <li class="center"><!--{$tpl_strnavi}--></li>
                 <li class="right">
                     <!--{if $orderby != 'price'}-->
-                        <a href="javascript:fnModeSubmit('', 'orderby', 'price')">価格順</a>
+                        <a href="javascript:fnChangeOrderby('price');">価格順</a>
                     <!--{else}-->
                         <strong>価格順</strong>
                     <!--{/if}-->&nbsp;
                     <!--{if $orderby != "date"}-->
-                        <a href="javascript:fnModeSubmit('', 'orderby', 'date')">新着順</a>
+                        <a href="javascript:fnChangeOrderby('date');">新着順</a>
                     <!--{else}-->
                         <strong>新着順</strong>
                     <!--{/if}-->
                      表示件数
-                    <select name="disp_number_bottom" onchange="javascript:fnModeSubmit('','disp_number',this.value);">
-                    <!--{foreach from=$arrPRODUCTLISTMAX item="dispnum" key="num"}-->
-                    <!--{if $num == $disp_number}-->
-                    <option value="<!--{$num}-->" selected="selected" ><!--{$dispnum}--></option>
-                    <!--{else}-->
-                    <option value="<!--{$num}-->" ><!--{$dispnum}--></option>
-                    <!--{/if}-->
-                <!--{/foreach}-->
+                    <select name="disp_number" onchange="javascript:fnModeSubmit('','disp_number',this.value);">
+                        <!--{foreach from=$arrPRODUCTLISTMAX item="dispnum" key="num"}-->
+                            <!--{if $num == $disp_number}-->
+                                <option value="<!--{$num}-->" selected="selected" ><!--{$dispnum}--></option>
+                            <!--{else}-->
+                                <option value="<!--{$num}-->" ><!--{$dispnum}--></option>
+                            <!--{/if}-->
+                        <!--{/foreach}-->
                     </select>
                 </li>
             </ul>
         <!--{/if}-->
-        <!--▲件数-->
     </form>
+    <!--▲ページナビ(下部)-->
 </div>
 <!--▲CONTENTS-->

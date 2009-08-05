@@ -179,6 +179,10 @@ function fnSetFormSubmit(form, key, val) {
 	return false;
 }
 
+function fnSetVal(key, val) {
+	fnSetFormVal('form1', key, val);
+}
+
 function fnSetFormVal(form, key, val) {
 	document.forms[form][key].value = val;
 }
@@ -199,7 +203,7 @@ function fnSearchPageNavi(pageno) {
 	document.form1.submit();
 	}
 
-	function fnSubmit(){
+function fnSubmit(){
 	document.form1.submit();
 }
 

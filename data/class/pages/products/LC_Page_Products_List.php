@@ -82,7 +82,7 @@ class LC_Page_Products_List extends LC_Page {
     function process() {
         $this->lfLoadParam();
 
-        $objView = new SC_SiteView($this->mode != 'cart');
+        $objView = new SC_SiteView(!$this->inCart);
         $conn = new SC_DBConn();
         $objDb = new SC_Helper_DB_Ex();
 
@@ -129,30 +129,39 @@ class LC_Page_Products_List extends LC_Page {
         $layout = new SC_Helper_PageLayout_Ex();
         $layout->sfGetPageLayout($this, false, "products/list.php");
 
-        if ($this->mode == 'cart') {
-            // 値の正当性チェック
+        if ($this->inCart) {
+            // 商品IDの正当性チェック
             if (!SC_Utils_Ex::sfIsInt($this->arrForm['product_id']) || !$objDb->sfIsRecord("dtb_products", "product_id", $this->arrForm['product_id'], "del_flg = 0 AND status = 1")) {
                 SC_Utils_Ex::sfDispSiteError(PRODUCT_NOT_FOUND);
             }
-            // 入力値の変換
-            $this->arrErr = $this->lfCheckError($this->arrForm['product_id']);
-            if (count($this->arrErr) == 0) {
-                $classcategory_id = "classcategory_id". $this->arrForm['product_id'];
-                $classcategory_id1 = $this->arrForm[$classcategory_id. '_1'];
-                $classcategory_id2 = $this->arrForm[$classcategory_id. '_2'];
-                $quantity = "quantity". $this->arrForm['product_id'];
+            $product_id = $this->arrForm['product_id'];
+            // 入力内容のチェック
+            $arrErr = $this->lfCheckError($product_id);
+            if (count($arrErr) == 0) {
+                $classcategory_id1 = $this->arrForm['classcategory_id1'];
+                $classcategory_id2 = $this->arrForm['classcategory_id2'];
                 // 規格1が設定されていない場合
-                if (!$this->tpl_classcat_find1[$this->arrForm['product_id']]) {
+                if (!$this->tpl_classcat_find1[$product_id]) {
                     $classcategory_id1 = '0';
                 }
                 // 規格2が設定されていない場合
-                if (!$this->tpl_classcat_find2[$this->arrForm['product_id']]) {
+                if (!$this->tpl_classcat_find2[$product_id]) {
                     $classcategory_id2 = '0';
                 }
                 $objCartSess = new SC_CartSession();
-                $objCartSess->addProduct(array($this->arrForm['product_id'], $classcategory_id1, $classcategory_id2), $this->arrForm[$quantity]);
+                $objCartSess->addProduct(array($product_id, $classcategory_id1, $classcategory_id2), $this->arrForm['quantity']);
                 $this->sendRedirect($this->getLocation(URL_CART_TOP));
                 exit;
+            }
+            $this->tpl_onload .= "fnSetSelect(document.product_form{$product_id}, '{$this->arrForm['classcategory_id2']}');";
+            foreach (array_keys($this->arrProducts) as $key) {
+                $arrProduct =& $this->arrProducts[$key];
+                if ($arrProduct['product_id'] == $product_id) {
+                    $arrProduct['classcategory_id1'] = $this->arrForm['classcategory_id1'];
+                    $arrProduct['classcategory_id2'] = $this->arrForm['classcategory_id2'];
+                    $arrProduct['quantity'] = $this->arrForm['quantity'];
+                    $arrProduct['arrErr'] = $arrErr;
+                }
             }
         }
 
@@ -572,17 +581,10 @@ __EOS__;
         $this->tpl_javascript.= $vals.");\n";
 
         // 選択されている規格2ID
-        $classcategory_id = "classcategory_id". $product_id;
-
-        $classcategory_id_2 = $classcategory_id . "_2";
-        if (!isset($classcategory_id_2)) $classcategory_id_2 = "";
-        if (!isset($this->arrForm[$classcategory_id_2]) || !is_numeric($this->arrForm[$classcategory_id_2])) $this->arrForm[$classcategory_id_2] = "";
-
-        $this->tpl_onload .= "lnSetSelect('" . $classcategory_id ."_1', "
-            . "'" . $classcategory_id_2 . "',"
-            . "'" . $product_id . "',"
-            . "'" . $this->arrForm[$classcategory_id_2] ."'); ";
-
+        if (!isset($this->arrForm['classcategory_id2']) || !is_numeric($this->arrForm['classcategory_id2'])) {
+            $this->arrForm['classcategory_id2'] = '';
+        }
+        
         // 規格1が設定されている
         if ($arrProductsClass[0]['classcategory_id1'] != '0') {
             $classcat_find1 = true;
@@ -619,17 +621,14 @@ __EOS__;
         // 入力データを渡す。
         $objErr = new SC_CheckError($this->arrForm);
 
-        $classcategory_id1 = "classcategory_id". $id. "_1";
-        $classcategory_id2 = "classcategory_id". $id. "_2";
-        $quantity = "quantity". $id;
         // 複数項目チェック
         if ($this->tpl_classcat_find1[$id]) {
-            $objErr->doFunc(array("規格1", $classcategory_id1, INT_LEN), array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+            $objErr->doFunc(array("規格1", 'classcategory_id1', INT_LEN), array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
         }
         if ($this->tpl_classcat_find2[$id]) {
-            $objErr->doFunc(array("規格2", $classcategory_id2, INT_LEN), array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+            $objErr->doFunc(array("規格2", 'classcategory_id2', INT_LEN), array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
         }
-        $objErr->doFunc(array("数量", $quantity, INT_LEN), array("EXIST_CHECK", "ZERO_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objErr->doFunc(array("数量", 'quantity', INT_LEN), array("EXIST_CHECK", "ZERO_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
 
         return $objErr->arrErr;
     }
@@ -668,6 +667,7 @@ __EOS__;
             $this->disp_number = current(array_keys($this->arrPRODUCTLISTMAX));
         }
         $this->tpl_pageno = $this->arrForm['pageno'];
+        $this->inCart = strlen($this->arrForm['product_id']) >= 1;
     }
 }
 ?>
