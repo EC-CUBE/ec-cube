@@ -48,13 +48,16 @@ class LC_Page_Products_List extends LC_Page {
 
     var $mode;
 
-    /* 検索条件(内部データ) */
+    /** 検索条件(内部データ) */
     var $arrSearchData = array();
 
-    /* 検索条件(表示用) */
+    /** 検索条件(表示用) */
     var $arrSearch = array();
 
     var $tpl_subtitle = '';
+
+    /** ランダム文字列 **/
+    var $tpl_rnd = '';
 
     // }}}
     // {{{ functions
@@ -164,6 +167,8 @@ class LC_Page_Products_List extends LC_Page {
                 }
             }
         }
+
+        $this->tpl_rnd = SC_Utils_Ex::sfGetRandomString(3);
 
         $objView->assignobj($this);
         $objView->display(SITE_FRAME);

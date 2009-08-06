@@ -96,6 +96,7 @@ function fnInCart(productForm) {
         <input type="hidden" name="classcategory_id2" value="" />
         <input type="hidden" name="quantity" value="" />
         <!--{* ▲注文関連 *}-->
+        <input type="hidden" name="rnd" value="<!--{$tpl_rnd|escape}-->" />
     </form>
     
     <!--★タイトル★-->
