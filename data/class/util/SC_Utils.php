@@ -2079,5 +2079,16 @@ echo $template_path;
         
         return false;
     }
+
+    /**
+     * ランダムな文字列を取得する
+     * 
+     * @param integer $length 文字数
+     * @return string ランダムな文字列
+     */
+    function sfGetRandomString($length = 1) {
+        require_once(dirname(__FILE__) . '/../../module/Text/Password.php');
+        return Text_Password::create($length);
+    }
 }
 ?>
