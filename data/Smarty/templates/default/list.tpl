@@ -53,6 +53,12 @@ function fnChangeOrderby(orderby) {
     fnSetVal('pageno', 1);
     fnSubmit();
 }
+// 表示件数を変更
+function fnChangeDispNumber(dispNumber) {
+    fnSetVal('disp_number', dispNumber);
+    fnSetVal('pageno', 1);
+    fnSubmit();
+}
 // カゴに入れる
 function fnInCart(productForm) {
     var product_id = productForm["product_id"].value;
@@ -123,7 +129,7 @@ function fnInCart(productForm) {
                         <strong>新着順</strong>
                     <!--{/if}-->
                     表示件数
-                    <select name="disp_number" onchange="javascript:fnModeSubmit('','disp_number',this.value);">
+                    <select name="disp_number" onchange="javascript:fnChangeDispNumber(this.value);">
                         <!--{foreach from=$arrPRODUCTLISTMAX item="dispnum" key="num"}-->
                             <!--{if $num == $disp_number}-->
                                 <option value="<!--{$num}-->" selected="selected" ><!--{$dispnum}--></option>
@@ -273,7 +279,7 @@ function fnInCart(productForm) {
                         <strong>新着順</strong>
                     <!--{/if}-->
                      表示件数
-                    <select name="disp_number" onchange="javascript:fnModeSubmit('','disp_number',this.value);">
+                    <select name="disp_number" onchange="javascript:fnChangeDispNumber(this.value);">
                         <!--{foreach from=$arrPRODUCTLISTMAX item="dispnum" key="num"}-->
                             <!--{if $num == $disp_number}-->
                                 <option value="<!--{$num}-->" selected="selected" ><!--{$dispnum}--></option>
