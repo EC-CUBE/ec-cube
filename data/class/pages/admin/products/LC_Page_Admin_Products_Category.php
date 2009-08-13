@@ -192,6 +192,7 @@ class LC_Page_Admin_Products_Category extends LC_Page {
             $head = SC_Utils_Ex::sfGetCSVList($arrOutputTitle);
 
             $where = "del_flg = 0";
+            $arrval = array();
             $data = $objCSV->lfGetCategoryCSV($where, $option, $arrval, $arrOutputCols);
 
             // CSVを送信する。
