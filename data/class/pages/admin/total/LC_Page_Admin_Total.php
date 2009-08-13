@@ -22,7 +22,6 @@
  */
 
 // {{{ requires
-require_once("../../require.php");
 require_once(CLASS_PATH . "pages/LC_Page.php");
 require_once(CLASS_EX_PATH . "batch_extends/SC_Batch_Daily_Ex.php");
 require_once(CLASS_PATH . "graph/SC_GraphPie.php");
