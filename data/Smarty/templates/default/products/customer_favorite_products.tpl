@@ -1,6 +1,6 @@
 <!--{* お気に入り追加機能ON && 会員がログイン中 ⇒ お気に入りに追加するボタンを表示させる *}-->
 <!--{if $smarty.const.OPTION_FAVOFITE_PRODUCT == 1 && $tpl_login === true}-->
-    <!--{assign var=add_favorite value="add_favorite`$product_id`"}-->
+    <!--{assign var=add_favorite value="add_favorite`$add_favorite_product_id`"}-->
     <!--{if $arrErr[$add_favorite]}-->
         <div class="attention"><!--{$arrErr[$add_favorite]}--></div>
     <!--{/if}-->
