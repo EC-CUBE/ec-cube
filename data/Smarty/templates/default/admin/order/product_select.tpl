@@ -182,7 +182,7 @@ function lnSetSelect(name1, name2, id, val) {
       <!--{if $tpl_classcat_find1[$id]}-->
       <dt><!--{$tpl_class_name1[$id]|escape}-->：</dt>
       <dd>
-        <select name="<!--{$class1}-->" id="<!--{$class1}-->" style="<!--{$arrErr[$class1]|sfGetErrorColor}-->" onchange="lnSetSelect('<!--{$class1}-->', '<!--{$class2}-->', '<!--{$id}-->','');">
+        <select name="<!--{$class1}-->" id="<!--{$class1}-->" style="<!--{$arrErr[$class1]|sfGetErrorColor}-->"  <!--{if $tpl_classcat_find2[$id]}--> onchange="lnSetSelect('<!--{$class1}-->', '<!--{$class2}-->', '<!--{$id}-->','');"<!--{/if}-->>
           <option value="">選択してください</option>
           <!--{html_options options=$arrClassCat1[$id] selected=$arrForm[$class1]}-->
         </select>
