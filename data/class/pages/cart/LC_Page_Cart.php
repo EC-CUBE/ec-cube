@@ -76,7 +76,7 @@ class LC_Page_Cart extends LC_Page {
         $objCampaignSess = new SC_CampaignSession();
         $objSiteInfo = $objView->objSiteInfo;
         $objCustomer = new SC_Customer();
-        $db = new SC_Helper_DB_Ex();
+        $objDb = new SC_Helper_DB_Ex();
 
         // 商品購入中にカート内容が変更された。
         if($objCartSess->getCancelPurchase()) {
@@ -105,7 +105,7 @@ class LC_Page_Cart extends LC_Page {
             $cnt = 0;
             for ($i = 0; $i < $max; $i++) {
                 // 商品規格情報の取得
-                $this->arrData = $db->sfGetProductsClass($arrRet[$i]['id']);
+                $this->arrData = $objDb->sfGetProductsClass($arrRet[$i]['id']);
                 // DBに存在する商品
                 if($this->arrData != "") {
                     $cnt++;
@@ -138,8 +138,8 @@ class LC_Page_Cart extends LC_Page {
         }
 
         // カート集計処理
-        $db->sfTotalCart($this, $objCartSess);
-        $this->arrData = $db->sfTotalConfirm($this->arrData, $this, $objCartSess, $objCustomer);
+        $objDb->sfTotalCart($this, $objCartSess);
+        $this->arrData = $objDb->sfTotalConfirm($this->arrData, $this, $objCartSess, $objCustomer);
 
         // 基本情報の取得
         $this->arrInfo = $objSiteInfo->data;
