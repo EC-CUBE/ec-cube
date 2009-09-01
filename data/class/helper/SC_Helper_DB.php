@@ -266,7 +266,6 @@ class SC_Helper_DB {
         $col = "product_id, deliv_fee, name, product_code, main_list_image, main_image, price01, price02, point_rate, product_class_id, classcategory_id1, classcategory_id2, class_id1, class_id2, stock, stock_unlimited, sale_limit, sale_unlimited";
         $table = "vw_product_class AS prdcls";
         $where = "product_id = ? AND classcategory_id1 = ? AND classcategory_id2 = ? AND status = 1";
-        $objQuery->setorder("rank1 DESC, rank2 DESC");
         $arrRet = $objQuery->select($col, $table, $where, array($product_id, $classcategory_id1, $classcategory_id2));
         return $arrRet[0];
     }
