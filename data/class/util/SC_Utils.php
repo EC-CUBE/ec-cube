@@ -82,7 +82,7 @@ class SC_Utils {
         if( !defined('ECCUBE_INSTALL') ) {
             if( !ereg('/install/', $_SERVER['PHP_SELF']) ) {
                 // インストールページに遷移させる
-                header('Location: /install/');
+                header('Location: ./install/');
                 exit;
             }
         } else {
