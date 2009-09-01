@@ -260,9 +260,17 @@ class SC_Utils {
         return     $date;
     }
 
-    // INT型の数値チェック
+    /**
+     *  INT型の数値チェック
+     *  ・FIXME: マイナス値の扱いが不明確
+     *  ・XXX: INT_LENには収まるが、INT型の範囲を超えるケースに対応できないのでは?
+     *  
+     *  @param mixed $value
+     *  @return bool
+     */
+    // 
     function sfIsInt($value) {
-        if($value != "" && strlen($value) <= INT_LEN && is_numeric($value)) {
+        if (strlen($value) >= 1 && strlen($value) <= INT_LEN && is_numeric($value)) {
             return true;
         }
         return false;

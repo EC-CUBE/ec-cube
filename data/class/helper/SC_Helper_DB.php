@@ -828,9 +828,9 @@ class SC_Helper_DB {
             $this->g_category_on = true;
             $category_id = (int) $category_id;
             $product_id = (int) $product_id;
-            if(SC_Utils_Ex::sfIsInt($category_id) && $this->sfIsRecord("dtb_category","category_id", $category_id)) {
+            if (SC_Utils_Ex::sfIsInt($category_id) && $category_id != 0 && $this->sfIsRecord("dtb_category","category_id", $category_id)) {
                 $this->g_category_id = array($category_id);
-            } else if (SC_Utils_Ex::sfIsInt($product_id) && $this->sfIsRecord("dtb_products","product_id", $product_id, $status)) {
+            } else if (SC_Utils_Ex::sfIsInt($product_id) && $product_id != 0 && $this->sfIsRecord("dtb_products","product_id", $product_id, $status)) {
                 $objQuery = new SC_Query();
                 $where = "product_id = ?";
                 $category_id = $objQuery->getCol("dtb_product_categories", "category_id", "product_id = ?", array($product_id));
@@ -1661,13 +1661,13 @@ __EOS__;
             $status = "status = 1";
         }
 
-        if(!$this->g_maker_on) {
+        if (!$this->g_maker_on) {
             $this->g_maker_on = true;
             $maker_id = (int) $maker_id;
             $product_id = (int) $product_id;
-            if(SC_Utils_Ex::sfIsInt($maker_id) && $this->sfIsRecord("dtb_maker","maker_id", $maker_id)) {
+            if (SC_Utils_Ex::sfIsInt($maker_id) && $maker_id != 0 && $this->sfIsRecord("dtb_maker","maker_id", $maker_id)) {
                 $this->g_maker_id = array($maker_id);
-            } else if (SC_Utils_Ex::sfIsInt($product_id) && $this->sfIsRecord("dtb_products","product_id", $product_id, $status)) {
+            } else if (SC_Utils_Ex::sfIsInt($product_id) && $product_id != 0 && $this->sfIsRecord("dtb_products","product_id", $product_id, $status)) {
                 $objQuery = new SC_Query();
                 $where = "product_id = ?";
                 $maker_id = $objQuery->getCol("dtb_products", "maker_id", "product_id = ?", array($product_id));
