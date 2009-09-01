@@ -201,9 +201,9 @@ class LC_Page_MyPage_Favorite extends LC_Page {
                     $ret = $objQuery->count("dtb_customer", $where, array($arrForm['login_email'], $arrForm['login_email']));
 
                     if($ret > 0) {
-                        SC_Utils_Ex::sfDispSiteError(TEMP_LOGIN_ERROR, "", false, "", true);
+                        SC_Utils_Ex::sfDispSiteError(TEMP_LOGIN_ERROR);
                     } else {
-                        SC_Utils_Ex::sfDispSiteError(SITE_LOGIN_ERROR, "", false, "", true);
+                        SC_Utils_Ex::sfDispSiteError(SITE_LOGIN_ERROR);
                     }
                 }
             }

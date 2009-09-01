@@ -146,7 +146,7 @@ class LC_Page_Magazine_Confirm extends LC_Page {
                                 array(session_name() => session_id())));
             exit;
         } else {
-            SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
+            SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
         }
 
         $objView = new SC_MobileView();

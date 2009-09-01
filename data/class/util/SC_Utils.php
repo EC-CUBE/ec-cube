@@ -114,7 +114,7 @@ class SC_Utils {
     }
 
     /* サイトエラーページの表示 */
-    function sfDispSiteError($type, $objSiteSess = "", $return_top = false, $err_msg = "", $is_mobile = false) {
+    function sfDispSiteError($type, $objSiteSess = "", $return_top = false, $err_msg = "") {
         global $objCampaignSess;
 
         require_once(CLASS_EX_PATH . "page_extends/error/LC_Page_Error_Ex.php");
@@ -208,11 +208,11 @@ class SC_Utils {
     }
 
     /* 前のページで正しく登録が行われたか判定 */
-    function sfIsPrePage(&$objSiteSess, $is_mobile = false) {
+    function sfIsPrePage(&$objSiteSess) {
         $ret = $objSiteSess->isPrePage();
         if($ret != true) {
             // エラーページの表示
-            SC_Utils::sfDispSiteError(PAGE_ERROR, $objSiteSess, false, "", $is_mobile);
+            SC_Utils::sfDispSiteError(PAGE_ERROR, $objSiteSess);
         }
     }
 

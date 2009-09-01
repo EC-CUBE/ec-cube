@@ -174,7 +174,7 @@ class LC_Page_Shopping_Complete extends LC_Page {
         $mailHelper = new SC_Helper_Mail_Ex();
 
         // 前のページで正しく登録手続きが行われたか判定
-        SC_Utils_Ex::sfIsPrePage($this->objSiteSess, true);
+        SC_Utils_Ex::sfIsPrePage($this->objSiteSess);
         // ユーザユニークIDの取得と購入状態の正当性をチェック
         $uniqid = SC_Utils_Ex::sfCheckNormalAccess($this->objSiteSess, $this->objCartSess);
         if ($uniqid != "") {
@@ -535,11 +535,7 @@ class LC_Page_Shopping_Complete extends LC_Page {
                 // INSERTの実行
                 $objQuery->insert("dtb_order_detail", $sqlval);
             } else {
-                if (defined("MOBILE_SITE")) {
-                    SC_Utils_Ex::sfDispSiteError(CART_NOT_FOUND, "", false, "", true);
-                } else {
-                    SC_Utils_Ex::sfDispSiteError(CART_NOT_FOUND);
-                }
+                SC_Utils_Ex::sfDispSiteError(CART_NOT_FOUND);
             }
         }
     }

@@ -263,7 +263,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         // ログインチェック
         if($_POST['mode'] != 'login' && !$objCustomer->isLoginSuccess(true)) {
             // 不正アクセスとみなす
-            SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
+            SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
         }
 
         switch($_POST['mode']) {
@@ -288,9 +288,9 @@ class LC_Page_Shopping_Deliv extends LC_Page {
                     $ret = $objQuery->count("dtb_customer", $where, array($arrForm['login_email'], $arrForm['login_email']));
 
                     if($ret > 0) {
-                        SC_Utils_Ex::sfDispSiteError(TEMP_LOGIN_ERROR, "", false, "", true);
+                        SC_Utils_Ex::sfDispSiteError(TEMP_LOGIN_ERROR);
                     } else {
-                        SC_Utils_Ex::sfDispSiteError(SITE_LOGIN_ERROR, "", false, "", true);
+                        SC_Utils_Ex::sfDispSiteError(SITE_LOGIN_ERROR);
                     }
                 }
             } else {

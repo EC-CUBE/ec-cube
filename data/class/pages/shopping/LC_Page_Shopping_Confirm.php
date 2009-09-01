@@ -187,7 +187,7 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         $objDb = new SC_Helper_DB_Ex();
 
         // 前のページで正しく登録手続きが行われた記録があるか判定
-        SC_Utils_Ex::sfIsPrePage($objSiteSess, true);
+        SC_Utils_Ex::sfIsPrePage($objSiteSess);
 
         // ユーザユニークIDの取得と購入状態の正当性をチェック
         $uniqid = SC_Utils_Ex::sfCheckNormalAccess($objSiteSess, $objCartSess);

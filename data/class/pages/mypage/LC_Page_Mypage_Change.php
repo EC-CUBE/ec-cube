@@ -384,7 +384,7 @@ class LC_Page_Mypage_Change extends LC_Page {
                         $this->sendRedirect($this->getLocation("./change_complete.php"), true);
                         exit;
                     } else {
-                        SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
+                        SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
                     }
                 }
             }

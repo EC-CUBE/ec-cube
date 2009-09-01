@@ -133,7 +133,7 @@ class LC_Page_Mypage_Refusal extends LC_Page {
 
         //ログイン判定
         if (!$objCustomer->isLoginSuccess(true)){
-            SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
+            SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
         }else {
             //マイページトップ顧客情報表示用
             $this->CustomerName1 = $objCustomer->getvalue('name01');

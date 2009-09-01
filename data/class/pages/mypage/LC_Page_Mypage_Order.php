@@ -59,7 +59,7 @@ class LC_Page_Mypage_Order extends LC_Page {
 
         //ログインしていない、またはDBに情報が無い場合
         if (!$objCustomer->isLoginSuccess(true) or count($arrDisp) == 0){
-            SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
+            SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
         }
 
         for($num = 0; $num < count($arrDisp); $num++) {
@@ -96,7 +96,7 @@ class LC_Page_Mypage_Order extends LC_Page {
 
         //ログインしていない、またはDBに情報が無い場合
         if (!$objCustomer->isLoginSuccess(true) or count($arrDisp) == 0){
-            SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
+            SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
         }
 
         for($num = 0; $num < count($arrDisp); $num++) {

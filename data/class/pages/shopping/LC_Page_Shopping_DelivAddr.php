@@ -79,7 +79,7 @@ class LC_Page_Shopping_DelivAddr extends LC_Page {
 
         //ログイン判定
         if (!$objCustomer->isLoginSuccess(true)){
-            SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
+            SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
         }
 
         $this->arrForm = $_POST;
@@ -176,7 +176,7 @@ class LC_Page_Shopping_DelivAddr extends LC_Page {
                 $this->sendRedirect($this->getLocation(MOBILE_URL_SHOP_PAYMENT), true);
                 exit;
             } else {
-                SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
+                SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
             }
             break;
         default:

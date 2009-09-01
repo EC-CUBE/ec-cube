@@ -122,7 +122,7 @@ class LC_Page_Products_CategoryList extends LC_Page {
         $arrCategory_id = $objDb->sfGetCategoryId('', $category_id);
         $category_id = $arrCategory_id[0];
         if ($category_id == 0) {
-            SC_Utils_Ex::sfDispSiteError(CATEGORY_NOT_FOUND, "", false, "", true);
+            SC_Utils_Ex::sfDispSiteError(CATEGORY_NOT_FOUND);
         }
 
         $arrCategory = null;	// 選択されたカテゴリー
@@ -148,7 +148,7 @@ class LC_Page_Products_CategoryList extends LC_Page {
         }
 
         if (!isset($arrCategory)) {
-            SC_Utils_Ex::sfDispSiteError(CATEGORY_NOT_FOUND, "", false, "", true);
+            SC_Utils_Ex::sfDispSiteError(CATEGORY_NOT_FOUND);
         }
 
         // 子カテゴリーの商品数を合計する。

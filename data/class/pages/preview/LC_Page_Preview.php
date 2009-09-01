@@ -68,7 +68,7 @@ class LC_Page_Preview extends LC_Page {
 
             return;
         }
-        SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", false, "", true);
+        SC_Utils_Ex::sfDispSiteError(PAGE_ERROR);
     }
 
     /**

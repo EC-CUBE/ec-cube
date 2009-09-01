@@ -76,7 +76,7 @@ class LC_Page_Magazine_Regist extends LC_Page {
         $key = $_GET['id'];
 
         if (empty($key) or !lfExistKey($key, $objQuery))  {
-            SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", false, "", true);
+            SC_Utils_Ex::sfDispSiteError(PAGE_ERROR);
         } else {
             $this->lfChangeData($key, $objQuery);
         }

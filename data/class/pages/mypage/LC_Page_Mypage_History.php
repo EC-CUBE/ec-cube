@@ -143,7 +143,7 @@ class LC_Page_Mypage_History extends LC_Page {
 
         // ログインチェック
         if(!isset($_SESSION['customer'])) {
-            SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
+            SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
         }
 
         $col = "order_id, create_date, payment_id, payment_total";

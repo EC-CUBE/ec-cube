@@ -85,7 +85,7 @@ class LC_Page_Mypage_HistoryDetail extends LC_Page {
 
         //ログインしていない、またはDBに情報が無い場合
         if (!$objCustomer->isLoginSuccess(true) or $cnt == 0){
-            SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
+            SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
         } else {
             //受注詳細データの取得
             $this->arrDisp = $this->lfGetOrderData($_POST['order_id']);
