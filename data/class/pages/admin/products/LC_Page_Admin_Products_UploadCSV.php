@@ -351,12 +351,6 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page {
         $sqlval['update_date'] = $time;
         $sqlval['creator_id'] = $_SESSION['member_id'];
 
-        if($sqlval['sale_limit'] == "") {
-            $sqlval['sale_unlimited'] = '1';
-        } else {
-            $sqlval['sale_unlimited'] = '0';
-        }
-
         if($sqlval['status'] == "") {
             $sqlval['status'] = 2;
         }

@@ -142,7 +142,6 @@ INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_p
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_products','name','商品名');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_products','deliv_fee','商品送料');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_products','sale_limit','購入制限数');
-INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_products','sale_unlimited','購入制限（1:購入制限無し)');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_products','category_id','商品カテゴリー');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_products','rank','表示ランク');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_products','status','1:表示、2:非表示、3:削除');

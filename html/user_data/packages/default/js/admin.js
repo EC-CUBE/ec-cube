@@ -278,19 +278,6 @@ function fnCheckStockNoLimit(no, icolor) {
 	}
 }
 
-// 購入制限数判定
-function fnCheckSaleLimit(icolor) {
-	list = new Array(
-		'sale_limit'
-		);
-	if(document.form1['sale_unlimited'].checked) {
-		fnChangeDisabled(list, icolor);
-		document.form1['sale_limit'].value = "";
-	} else {
-		fnChangeDisabled(list, '');
-	}
-}
-
 // 在庫数判定
 function fnCheckAllStockLimit(max, icolor) {
 	for(no = 1; no <= max; no++) {

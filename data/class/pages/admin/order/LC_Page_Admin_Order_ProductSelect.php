@@ -116,7 +116,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page {
                 . " stock_unlimited_max, del_flg, status, name, comment1,"
                 . " comment2, comment3, main_list_comment, main_image,"
                 . " main_list_image, product_flag, deliv_date_id, sale_limit,"
-                . " point_rate, sale_unlimited, create_date, deliv_fee, "
+                . " point_rate, create_date, deliv_fee, "
                 . " T4.product_rank, T4.category_rank";
             $from = "vw_products_allclass AS T1"
                 . " JOIN ("
@@ -359,12 +359,12 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page {
     }
 
     // 購入制限数の設定
-    function lfGetSaleLimit($product) {
+    function lfGetSaleLimit($arrProduct) {
         //在庫が無限または購入制限値が設定値より大きい場合
-        if($product['sale_unlimited'] == 1 || $product['sale_limit'] > SALE_LIMIT_MAX) {
-            $this->tpl_sale_limit[$product['product_id']] = SALE_LIMIT_MAX;
+        if (!SC_Utils_Ex::sfIsInt($arrProduct['sale_limit']) || $arrProduct['sale_limit'] > SALE_LIMIT_MAX) {
+            $this->tpl_sale_limit[$arrProduct['product_id']] = SALE_LIMIT_MAX;
         } else {
-            $this->tpl_sale_limit[$product['product_id']] = $product['sale_limit'];
+            $this->tpl_sale_limit[$arrProduct['product_id']] = $arrProduct['sale_limit'];
         }
     }
 }

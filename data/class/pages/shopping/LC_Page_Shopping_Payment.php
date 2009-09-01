@@ -94,14 +94,13 @@ class LC_Page_Shopping_Payment extends LC_Page {
             $this->tpl_back_url = URL_SHOP_TOP . "?from=nonmember";
         }
 
-        // 金額の取得 (購入途中で売り切れた場合にはこの関数内にてその商品の数量が０になる)
+        // カート内商品の集計処理を行う
         $objDb->sfTotalCart($this, $objCartSess);
+        if (strlen($this->tpl_message) >= 1) {
+            SC_Utils_Ex::sfDispSiteError(SOLD_OUT, '', true);
+        }
 
-        if (empty($arrData)) $arrData = array();
-        $this->arrData = $objDb->sfTotalConfirm($arrData, $this, $objCartSess);
-
-        // カート内の商品の売り切れチェック
-        $objCartSess->chkSoldOut($objCartSess->getCartList());
+        $this->arrData = $objDb->sfTotalConfirm(array(), $this, $objCartSess);
 
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
@@ -109,7 +108,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
         case 'confirm':
             // 入力値の変換
             $this->objFormParam->convParam();
-            $this->arrErr = $this->lfCheckError($this->arrData );
+            $this->arrErr = $this->lfCheckError($this->arrData);
             // 入力エラーなし
             if(count($this->arrErr) == 0) {
                 // DBへのデータ登録
@@ -203,11 +202,11 @@ class LC_Page_Shopping_Payment extends LC_Page {
 
         // 金額の取得 (購入途中で売り切れた場合にはこの関数内にてその商品の数量が０になる)
         $objDb->sfTotalCart($this, $objCartSess);
-        if (empty($arrData)) $arrData = array();
-        $this->arrData = $objDb->sfTotalConfirm($arrData, $this, $objCartSess);
-
-        // カート内の商品の売り切れチェック
-        $objCartSess->chkSoldOut($objCartSess->getCartList(), true);
+        if (strlen($this->tpl_message) >= 1) {
+            SC_Utils_Ex::sfDispSiteError(SOLD_OUT, '', true);
+        }
+        
+        $this->arrData = $objDb->sfTotalConfirm(array(), $this, $objCartSess);
 
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
@@ -246,7 +245,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
         case 'confirm':
             // 入力値の変換
             $this->objFormParam->convParam();
-            $this->arrErr = $this->lfCheckError($this->arrData );
+            $this->arrErr = $this->lfCheckError($this->arrData);
             // 入力エラーなし
             if(count($this->arrErr) == 0) {
                 // DBへのデータ登録

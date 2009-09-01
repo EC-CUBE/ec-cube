@@ -186,11 +186,11 @@ function selectAll(target) {
       </td>
     </tr>
     <tr>
-      <th>購入制限<span class="attention"> *</span></th>
+      <th>購入制限</th>
       <td>
         <span class="attention"><!--{$arrErr.sale_limit}--></span>
         <input type="text" name="sale_limit" value="<!--{$arrForm.sale_limit|escape}-->" size="6" class="box6" maxlength="<!--{$smarty.const.AMOUNT_LEN}-->" style="<!--{if $arrErr.sale_limit != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/>
-        <input type="checkbox" name="sale_unlimited" value="1" <!--{if $arrForm.sale_unlimited == "1"}-->checked<!--{/if}--> onclick="fnCheckSaleLimit('<!--{$smarty.const.DISABLED_RGB}-->');"/>無制限
+        <span class="attention"> （半角数字で入力）</span>
       </td>
     </tr>
     <tr>

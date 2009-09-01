@@ -263,7 +263,7 @@ class SC_Helper_DB {
 
         // 商品規格取得
         $objQuery = new SC_Query();
-        $col = "product_id, deliv_fee, name, product_code, main_list_image, main_image, price01, price02, point_rate, product_class_id, classcategory_id1, classcategory_id2, class_id1, class_id2, stock, stock_unlimited, sale_limit, sale_unlimited";
+        $col = "product_id, deliv_fee, name, product_code, main_list_image, main_image, price01, price02, point_rate, product_class_id, classcategory_id1, classcategory_id2, class_id1, class_id2, stock, stock_unlimited, sale_limit";
         $table = "vw_product_class AS prdcls";
         $where = "product_id = ? AND classcategory_id1 = ? AND classcategory_id2 = ? AND status = 1";
         $arrRet = $objQuery->select($col, $table, $where, array($product_id, $classcategory_id1, $classcategory_id2));
@@ -308,24 +308,31 @@ class SC_Helper_DB {
         foreach ($objCartSess->getCartList() as $arrCart) {
             // 商品規格情報の取得
             $arrData = $this->sfGetProductsClass($arrCart['id']);
-            $limit = "";
+            $limit = null;
             // DBに存在する商品
             if (count($arrData) > 0) {
 
                 // 購入制限数を求める。
-                if ($arrData['stock_unlimited'] != '1' && $arrData['sale_unlimited'] != '1') {
+                if ($arrData['stock_unlimited'] != '1' && SC_Utils_Ex::sfIsInt($arrData['sale_limit'])) {
                     $limit = min($arrData['sale_limit'], $arrData['stock']);
-                } elseif ($arrData['sale_unlimited'] != '1') {
+                } elseif (SC_Utils_Ex::sfIsInt($arrData['sale_limit'])) {
                     $limit = $arrData['sale_limit'];
                 } elseif ($arrData['stock_unlimited'] != '1') {
                     $limit = $arrData['stock'];
                 }
 
-                if ($limit != "" && $limit < $arrCart['quantity']) {
-                    // カート内商品数を制限に合わせる
-                    $objCartSess->setProductValue($arrCart['id'], 'quantity', $limit);
-                    $quantity = $limit;
-                    $objPage->tpl_message .= "※「" . $arrData['name'] . "」は販売制限(または在庫が不足)しております。一度に数量{$limit}以上の購入はできません。\n";
+                if (!is_null($limit) && $arrCart['quantity'] > $limit) {
+                    if ($limit > 0) {
+                        // カート内商品数を制限に合わせる
+                        $objCartSess->setProductValue($arrCart['id'], 'quantity', $limit);
+                        $quantity = $limit;
+                        $objPage->tpl_message .= "※「" . $arrData['name'] . "」は販売制限(または在庫が不足)しております。一度に数量{$limit}以上の購入はできません。\n";
+                    } else {
+                        // 売り切れ商品をカートから削除する
+                        $objCartSess->delProduct($arrCart['cart_no']);
+                        $objPage->tpl_message .= "※「" . $arrData['name'] . "」は売り切れました。\n";
+                        break;
+                    }
                 } else {
                     $quantity = $arrCart['quantity'];
                 }
@@ -333,7 +340,6 @@ class SC_Helper_DB {
                 // (商品規格単位でなく)商品単位での評価のための準備
                 $product_id = $arrCart['id'][0];
                 $arrQuantityInfo_by_product[$product_id]['quantity'] += $quantity;
-                $arrQuantityInfo_by_product[$product_id]['sale_unlimited'] = $arrData['sale_unlimited'];
                 $arrQuantityInfo_by_product[$product_id]['sale_limit'] = $arrData['sale_limit'];
                 $arrQuantityInfo_by_product[$product_id]['name'] = $arrData['name'];
                 
@@ -383,14 +389,14 @@ class SC_Helper_DB {
                 $objPage->tpl_total_deliv_fee+= ($arrData['deliv_fee'] * $arrCart['quantity']);
                 $cnt++;
             } else { // DBに商品が見つからない場合、
-                $objPage->tpl_message .= "※現時点で販売していない商品が含まれておりました。該当商品をカートから削除しました。\n";
+                $objPage->tpl_message .= "※ 現時点で販売していない商品が含まれておりました。該当商品をカートから削除しました。\n";
                 // カート商品の削除
-                $objCartSess->delProductKey('id', $arrCart['id']);
+                $objCartSess->delProduct($arrCart['cart_no']);
             }
         }
         
         foreach ($arrQuantityInfo_by_product as $product_id => $quantityInfo) {
-            if ($quantityInfo['sale_unlimited'] != '1' && $quantityInfo['sale_limit'] != '' && $quantityInfo['sale_limit'] < $quantityInfo['quantity']) {
+            if (SC_Utils_Ex::sfIsInt($quantityInfo['sale_limit']) && $quantityInfo['quantity'] > $quantityInfo['sale_limit']) {
                 $objPage->tpl_error = "※「{$quantityInfo['name']}」は数量「{$quantityInfo['sale_limit']}」以下に販売制限しております。一度にこれ以上の購入はできません。\n";
                 // 販売制限に引っかかった商品をマークする
                 foreach (array_keys($objPage->arrProductsClass) as $key) {

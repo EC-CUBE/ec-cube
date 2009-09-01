@@ -283,7 +283,6 @@ CREATE TABLE dtb_products (
     name text,
     deliv_fee numeric,
     sale_limit numeric,
-    sale_unlimited int2 DEFAULT 0,
     category_id int4,
     maker_id int4,
     rank int4,

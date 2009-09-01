@@ -111,11 +111,7 @@
     <tr>
       <th>購入制限</th>
       <td>
-      <!--{if $arrForm.sale_unlimited == 1}-->
-        無制限
-      <!--{else}-->
-        <!--{$arrForm.sale_limit|escape}-->
-      <!--{/if}-->
+        <!--{$arrForm.sale_limit|default:'無制限'|escape}-->
       </td>
     </tr>
     <tr>

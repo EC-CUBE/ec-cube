@@ -213,7 +213,7 @@ class LC_Page_Products_Detail extends LC_Page {
         $this->arrProductCode = $arrProductCode["product_code"];
 
         // 購入制限数を取得
-        if($this->arrProduct['sale_unlimited'] == 1 || $this->arrProduct['sale_limit'] > SALE_LIMIT_MAX) {
+        if (!SC_Utils_Ex::sfIsInt($this->arrProduct['sale_limit']) || $this->arrProduct['sale_limit'] > SALE_LIMIT_MAX) {
           $this->tpl_sale_limit = SALE_LIMIT_MAX;
         } else {
           $this->tpl_sale_limit = $this->arrProduct['sale_limit'];
@@ -426,7 +426,7 @@ class LC_Page_Products_Detail extends LC_Page {
         $this->arrProductCode = $arrProductCode["product_code"];
 
         // 購入制限数を取得
-        if($this->arrProduct['sale_unlimited'] == 1 || $this->arrProduct['sale_limit'] > SALE_LIMIT_MAX) {
+        if (!SC_Utils_Ex::sfIsInt($this->arrProduct['sale_limit']) || $this->arrProduct['sale_limit'] > SALE_LIMIT_MAX) {
             $this->tpl_sale_limit = SALE_LIMIT_MAX;
         } else {
             $this->tpl_sale_limit = $this->arrProduct['sale_limit'];

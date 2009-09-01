@@ -98,10 +98,6 @@ class LC_Page_Shopping_Confirm extends LC_Page {
             }
         }
 
-
-        // カート内の商品の売り切れチェック
-        $objCartSess->chkSoldOut($objCartSess->getCartList());
-
         // 会員ログインチェック
         if($objCustomer->isLoginSuccess()) {
             $this->tpl_login = '1';
@@ -199,13 +195,13 @@ class LC_Page_Shopping_Confirm extends LC_Page {
 
         // カート集計処理
         $objDb->sfTotalCart($this, $objCartSess);
+        if (strlen($this->tpl_message) >= 1) {
+            SC_Utils_Ex::sfDispSiteError(SOLD_OUT, '', true);
+        }
         // 一時受注テーブルの読込
         $arrData = $objDb->sfGetOrderTemp($uniqid);
         // カート集計を元に最終計算
         $arrData = $objDb->sfTotalConfirm($arrData, $this, $objCartSess, $objCustomer);
-
-        // カート内の商品の売り切れチェック
-        $objCartSess->chkSoldOut($objCartSess->getCartList());
 
         // 会員ログインチェック
         if($objCustomer->isLoginSuccess(true)) {

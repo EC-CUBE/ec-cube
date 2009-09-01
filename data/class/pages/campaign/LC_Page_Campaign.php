@@ -356,12 +356,12 @@ class LC_Page_Campaign extends LC_Page {
     }
 
     // 購入制限数の設定
-    function lfGetSaleLimit($product) {
+    function lfGetSaleLimit($arrProduct) {
         //在庫が無限または購入制限値が設定値より大きい場合
-        if($product['sale_unlimited'] == 1 || $product['sale_limit'] > SALE_LIMIT_MAX) {
-            $this->tpl_sale_limit[$product['product_id']] = SALE_LIMIT_MAX;
+        if (!SC_Utils_Ex::sfIsInt($arrProduct['sale_limit']) || $arrProduct['sale_limit'] > SALE_LIMIT_MAX) {
+            $this->tpl_sale_limit[$arrProduct['product_id']] = SALE_LIMIT_MAX;
         } else {
-            $this->tpl_sale_limit[$product['product_id']] = $product['sale_limit'];
+            $this->tpl_sale_limit[$arrProduct['product_id']] = $arrProduct['sale_limit'];
         }
     }
 

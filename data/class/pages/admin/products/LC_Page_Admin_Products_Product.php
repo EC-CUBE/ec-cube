@@ -369,7 +369,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
             $anchor_hash = "";
         }
 
-        $this->tpl_onload = "fnCheckSaleLimit('" . DISABLED_RGB . "'); fnCheckStockLimit('" . DISABLED_RGB . "'); fnMoveSelect('category_id_unselect', 'category_id');" . $anchor_hash;
+        $this->tpl_onload = "fnCheckStockLimit('" . DISABLED_RGB . "'); fnMoveSelect('category_id_unselect', 'category_id');" . $anchor_hash;
     }
 
     /* ファイル情報の初期化 */
@@ -396,7 +396,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
                             "main_list_comment", "main_comment", "point_rate",
                             "deliv_fee", "comment1", "comment2", "comment3",
                             "comment4", "comment5", "comment6", "main_list_comment",
-                            "sale_limit", "sale_unlimited", "deliv_date_id", "maker_id", "note");
+                            "sale_limit", "deliv_date_id", "maker_id", "note");
         $arrList = SC_Utils_Ex::arrayDefineIndexes($arrList, $checkArray);
 
         // INSERTする値を作成する。
@@ -415,7 +415,6 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         $sqlval['comment6'] = $arrList['comment6'];
         $sqlval['main_list_comment'] = $arrList['main_list_comment'];
         $sqlval['sale_limit'] = $arrList['sale_limit'];
-        $sqlval['sale_unlimited'] = $arrList['sale_unlimited'];
         $sqlval['deliv_date_id'] = $arrList['deliv_date_id'];
         $sqlval['maker_id'] = $arrList['maker_id'];
         $sqlval['note'] = $arrList['note'];
@@ -583,9 +582,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
             }
         }
 
-        if(!isset($array['sale_unlimited']) && $array['sale_unlimited'] != "1") {
-            $objErr->doFunc(array("購入制限", "sale_limit", AMOUNT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "ZERO_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
-        }
+        $objErr->doFunc(array("購入制限", "sale_limit", AMOUNT_LEN), array("SPTAB_CHECK", "ZERO_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
 
         for ($cnt = 1; $cnt <= PRODUCTSUB_MAX; $cnt++) {
             $objErr->doFunc(array("詳細-サブタイトル$cnt", "sub_title$cnt", STEXT_LEN), array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));

@@ -353,17 +353,6 @@ class SC_CartSession {
         }
     }
 
-    // カートの中の売り切れチェック
-    function chkSoldOut($arrCartList, $is_mobile = false){
-        foreach($arrCartList as $key => $val){
-            if($val['quantity'] == 0){
-                // 売り切れ商品をカートから削除する
-                $this->delProduct($val['cart_no']);
-                SC_Utils_Ex::sfDispSiteError(SOLD_OUT, "", true, "", $is_mobile);
-            }
-        }
-    }
-
     /**
      * カートの中のキャンペーン商品のチェック
      * @param integer $campaign_id キャンペーンID

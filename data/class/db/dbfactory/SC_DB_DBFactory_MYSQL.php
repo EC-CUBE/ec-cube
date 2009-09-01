@@ -258,7 +258,6 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
                     dtb_products.name,
                     dtb_products.deliv_fee,
                     dtb_products.sale_limit,
-                    dtb_products.sale_unlimited,
                     dtb_products.maker_id,
                     dtb_products.rank,
                     dtb_products.status,

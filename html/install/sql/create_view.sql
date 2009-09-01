@@ -64,7 +64,6 @@ CREATE VIEW vw_products_allclass_detail AS
         dtb_products."name",
         dtb_products.deliv_fee,
         dtb_products.sale_limit,
-        dtb_products.sale_unlimited,
         dtb_products.maker_id,
         dtb_products.rank,
         dtb_products.status,
