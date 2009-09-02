@@ -52,6 +52,20 @@ function fnCheckStock(form) {
     classcat_id2 = form.classcategory_id2 ? form.classcategory_id2.value : 0;
     classcat2 = classCategories[classcat_id1][classcat_id2];
     
+    // 商品コード
+    eleDefault = document.getElementById('product_code_default');
+    eleDynamic = document.getElementById('product_code_dynamic');
+    if (
+           classcat2
+        && typeof classcat2.product_code != 'undefined'
+    ) {
+        eleDefault.style.display = 'none';
+        eleDynamic.innerHTML = classcat2.product_code;
+    } else {
+        eleDefault.style.display = '';
+        eleDynamic.innerHTML = '';
+    }
+    
     // 在庫(品切れ)
     eleDefault = document.getElementById('cartbtn_default');
     eleDynamic = document.getElementById('cartbtn_dynamic');
@@ -158,14 +172,14 @@ function fnCheckStock(form) {
             <!--▲商品ステータス-->
 
             <!--★商品コード★-->
-            <!--{assign var=codecnt value=$arrProductCode|@count}-->
-            <!--{assign var=codemax value=`$codecnt-1`}-->
             <div>商品コード：
-                <!--{if $codecnt > 1}-->
-                    <!--{$arrProductCode.0}-->～<!--{$arrProductCode[$codemax]}-->
-                <!--{else}-->
-                    <!--{$arrProductCode.0}-->
-                <!--{/if}-->
+                <span id="product_code_default">
+                    <!--{if $arrProduct.product_code_min == $arrProduct.product_code_max}-->
+                        <!--{$arrProduct.product_code_min|escape}-->
+                    <!--{else}-->
+                        <!--{$arrProduct.product_code_min|escape}-->～<!--{$arrProduct.product_code_max|escape}-->
+                    <!--{/if}-->
+                </span><span id="product_code_dynamic"></span>
             </div>
             
             <!--★商品名★-->

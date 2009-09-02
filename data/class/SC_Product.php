@@ -129,6 +129,9 @@ class SC_Product {
                 // XXX sfPrePoint() の第4パラメータは、処理にバグがあるため現状省略している。(http://xoops.ec-cube.net/modules/newbb/viewtopic.php?topic_id=3540&forum=1&post_id=13853#forumpost13853)
                 $classCategories[$productsClass1][$productsClass2]['point']
                     = SC_Utils_Ex::sfPrePoint($productsClass['price02'], $productsClass['point_rate']);
+                
+                // 商品コード
+                $classCategories[$productsClass1][$productsClass2]['product_code'] = $productsClass['product_code'];
             }
             
             $this->classCategories[$productId] = $classCategories;
@@ -148,8 +151,8 @@ class SC_Product {
         
         // 商品規格取得
         $objQuery = new SC_Query();
-        $col = "product_id, classcategory_id1, classcategory_id2, class_id1, class_id2, stock, stock_unlimited, price01, price02, point_rate";
-        $table = "vw_product_class AS prdcls";
+        $col = 'product_id, classcategory_id1, classcategory_id2, class_id1, class_id2, stock, stock_unlimited, price01, price02, point_rate, product_code';
+        $table = 'vw_product_class AS prdcls';
         $where = 'product_id IN (' . implode(', ', array_pad(array(), count($arrProductId), '?')) . ')';
         $objQuery->setorder("product_id, rank1 DESC, rank2 DESC");
         $arrRet = $objQuery->select($col, $table, $where, $arrProductId);
