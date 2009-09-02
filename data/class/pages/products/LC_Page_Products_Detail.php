@@ -150,58 +150,83 @@ class LC_Page_Products_Detail extends LC_Page {
         // 規格選択セレクトボックスの作成
         $this->lfMakeSelect($product_id);
 
+        require_once CLASS_PATH . 'SC_Product.php';
+        $objProduct = new SC_Product($product_id);
+        // 規格1クラス名
+        $this->tpl_class_name1 = $objProduct->className1[$product_id];
+
+        // 規格2クラス名
+        $this->tpl_class_name2 = $objProduct->className2[$product_id];
+        
+        // 規格1
+        $this->arrClassCat1 = $objProduct->classCats1[$product_id];
+
+        // 規格1が設定されている
+        $this->tpl_classcat_find1 = $objProduct->classCat1_find[$product_id];
+        // 規格2が設定されている
+        $this->tpl_classcat_find2 = $objProduct->classCat2_find[$product_id];
+
+        $this->tpl_stock_find = $objProduct->stock_find[$product_id];
+
+        require_once DATA_PATH . 'module/Services/JSON.php';
+        $objJson = new Services_JSON();
+        $this->tpl_javascript .= 'classCategories = ' . $objJson->encode($objProduct->classCategories[$product_id]) . ';';
+        $this->tpl_javascript .= 'function lnOnLoad(){' . $this->js_lnOnload . '}';
+        $this->tpl_onload .= 'lnOnLoad();';
+
         // 商品IDをFORM内に保持する。
         $this->tpl_product_id = $product_id;
 
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
-
+        $arrErr = array();
+        
         switch($_POST['mode']) {
-        case 'cart':
-            // 入力値の変換
-            $this->objFormParam->convParam();
-            $this->arrErr = $this->lfCheckError();
-            if(count($this->arrErr) == 0) {
-                $objCartSess = new SC_CartSession();
-                $classcategory_id1 = $_POST['classcategory_id1'];
-                $classcategory_id2 = $_POST['classcategory_id2'];
+            case 'cart':
+                // 入力値の変換
+                $this->objFormParam->convParam();
+                $arrErr = $this->lfCheckError();
+                if (count($arrErr) == 0) {
+                    $objCartSess = new SC_CartSession();
+                    $classcategory_id1 = $_POST['classcategory_id1'];
+                    $classcategory_id2 = $_POST['classcategory_id2'];
 
-                if (!empty($_POST['gmo_oneclick'])) {
-                    $objCartSess->delAllProducts();
-                }
+                    if (!empty($_POST['gmo_oneclick'])) {
+                        $objCartSess->delAllProducts();
+                    }
 
-                // 規格1が設定されていない場合
-                if(!$this->tpl_classcat_find1) {
-                    $classcategory_id1 = '0';
-                }
+                    // 規格1が設定されていない場合
+                    if(!$this->tpl_classcat_find1) {
+                        $classcategory_id1 = '0';
+                    }
 
-                // 規格2が設定されていない場合
-                if(!$this->tpl_classcat_find2) {
-                    $classcategory_id2 = '0';
-                }
+                    // 規格2が設定されていない場合
+                    if(!$this->tpl_classcat_find2) {
+                        $classcategory_id2 = '0';
+                    }
 
-                $objCartSess->setPrevURL($_SERVER['REQUEST_URI']);
-                $objCartSess->addProduct(array($_POST['product_id'], $classcategory_id1, $classcategory_id2), $this->objFormParam->getValue('quantity'));
+                    $objCartSess->setPrevURL($_SERVER['REQUEST_URI']);
+                    $objCartSess->addProduct(array($_POST['product_id'], $classcategory_id1, $classcategory_id2), $this->objFormParam->getValue('quantity'));
 
-                if (!empty($_POST['gmo_oneclick'])) {
-                    $objSiteSess = new SC_SiteSession;
-                    $objSiteSess->setRegistFlag();
-                    $objCartSess->saveCurrentCart($objSiteSess->getUniqId());
+                    if (!empty($_POST['gmo_oneclick'])) {
+                        $objSiteSess = new SC_SiteSession;
+                        $objSiteSess->setRegistFlag();
+                        $objCartSess->saveCurrentCart($objSiteSess->getUniqId());
 
-                    $this->sendRedirect($this->getLocation(
-                        URL_DIR . 'user_data/gmopg_oneclick_confirm.php', array(), true));
+                        $this->sendRedirect($this->getLocation(
+                            URL_DIR . 'user_data/gmopg_oneclick_confirm.php', array(), true));
+                        exit;
+                    }
+
+                    $this->sendRedirect($this->getLocation(URL_CART_TOP));
                     exit;
                 }
+                break;
 
-                $this->sendRedirect($this->getLocation(URL_CART_TOP));
-                exit;
-            }
-            break;
-
-        default:
-            break;
+            default:
+                break;
         }
+        $this->arrErr = $arrErr;
 
-        $objQuery = new SC_Query();
         // DBから商品情報を取得する。
         $arrRet = $objQuery->select("*, (SELECT count(*) FROM dtb_customer_favorite_products WHERE product_id = alldtl.product_id AND customer_id = ?) AS favorite_count", "vw_products_allclass_detail AS alldtl", "product_id = ?", array($objCustomer->getValue('customer_id'), $product_id));
         $this->arrProduct = $arrRet[0];
@@ -509,128 +534,24 @@ class LC_Page_Products_Detail extends LC_Page {
     }
 
     /* 規格選択セレクトボックスの作成 */
-    function lfMakeSelect($product_id) {
+    function lfMakeSelect() {
 
-        $objDb = new SC_Helper_DB_Ex();
-        $classcat_find1 = false;
-        $classcat_find2 = false;
-        // 在庫ありの商品の有無
-        $stock_find = false;
+        // 選択されている規格
+        $classcategory_id1
+            = isset($_POST['classcategory_id1']) && is_numeric($_POST['classcategory_id1'])
+            ? $_POST['classcategory_id1']
+            : '';
 
-        // 規格名一覧
-        $arrClassName = $objDb->sfGetIDValueList("dtb_class", "class_id", "name");
-        // 規格分類名一覧
-        $arrClassCatName = $objDb->sfGetIDValueList("dtb_classcategory", "classcategory_id", "name");
-        // 商品規格情報の取得
-        $arrProductsClass = $this->lfGetProductsClass($product_id);
+        $classcategory_id2
+            = isset($_POST['classcategory_id2']) && is_numeric($_POST['classcategory_id2'])
+            ? $_POST['classcategory_id2']
+            : '';
 
-        // 規格1クラス名の取得
-        $this->tpl_class_name1 = isset($arrClassName[$arrProductsClass[0]['class_id1']])
-                                        ? $arrClassName[$arrProductsClass[0]['class_id1']] : "";
-        // 規格2クラス名の取得
-        $this->tpl_class_name2 = isset($arrClassName[$arrProductsClass[0]['class_id2']])
-                                        ? $arrClassName[$arrProductsClass[0]['class_id2']] : "";
-
-        // すべての組み合わせ数
-        $count = count($arrProductsClass);
-
-        $classcat_id1 = "";
-
-        $arrSele = array();
-        $arrList = array();
-
-        $list_id = 0;
-        $arrList[0] = "\tlist0 = new Array('選択してください'";
-        $arrVal[0] = "\tval0 = new Array(''";
-
-        for ($i = 0; $i < $count; $i++) {
-            // 在庫のチェック
-            if($arrProductsClass[$i]['stock'] <= 0 && $arrProductsClass[$i]['stock_unlimited'] != '1') {
-                continue;
-            }
-
-            $stock_find = true;
-
-            // 規格1のセレクトボックス用
-            if($classcat_id1 != $arrProductsClass[$i]['classcategory_id1']){
-                $arrList[$list_id].=");\n";
-                $arrVal[$list_id].=");\n";
-                $classcat_id1 = $arrProductsClass[$i]['classcategory_id1'];
-                $arrSele[$classcat_id1] = $arrClassCatName[$classcat_id1];
-                $list_id++;
-            }
-
-            // 規格2のセレクトボックス用
-            $classcat_id2 = $arrProductsClass[$i]['classcategory_id2'];
-
-            // セレクトボックス表示値
-            if (!isset($arrList[$list_id])) $arrList[$list_id] = "";
-            if($arrList[$list_id] == "") {
-                $arrList[$list_id] = "\tlist".$list_id." = new Array('選択してください', '".$arrClassCatName[$classcat_id2]."'";
-            } else {
-                $arrList[$list_id].= ", '".$arrClassCatName[$classcat_id2]."'";
-            }
-
-            // セレクトボックスPOST値
-            if (!isset($arrVal[$list_id])) $arrVal[$list_id] = "";
-            if($arrVal[$list_id] == "") {
-                $arrVal[$list_id] = "\tval".$list_id." = new Array('', '".$classcat_id2."'";
-            } else {
-                $arrVal[$list_id].= ", '".$classcat_id2."'";
-            }
-        }
-
-        $arrList[$list_id].=");\n";
-        $arrVal[$list_id].=");\n";
-
-        // 規格1
-        $this->arrClassCat1 = $arrSele;
-
-        $lists = "\tlists = new Array(";
-        $no = 0;
-
-        foreach($arrList as $val) {
-            $this->tpl_javascript.= $val;
-            if ($no != 0) {
-                $lists.= ",list".$no;
-            } else {
-                $lists.= "list".$no;
-            }
-            $no++;
-        }
-        $this->tpl_javascript.=$lists.");\n";
-
-        $vals = "\tvals = new Array(";
-        $no = 0;
-
-        foreach($arrVal as $val) {
-            $this->tpl_javascript.= $val;
-            if ($no != 0) {
-                $vals.= ",val".$no;
-            } else {
-                $vals.= "val".$no;
-            }
-            $no++;
-        }
-        $this->tpl_javascript.=$vals.");\n";
-
-        // 選択されている規格2ID
-        if (!isset($_POST['classcategory_id2'])) $_POST['classcategory_id2'] = "";
-        $this->tpl_onload = "lnSetSelect('form1', 'classcategory_id1', 'classcategory_id2', '" . htmlspecialchars($_POST['classcategory_id2'], ENT_QUOTES) . "');";
-
-        // 規格1が設定されている
-        if($arrProductsClass[0]['classcategory_id1'] != '0') {
-            $classcat_find1 = true;
-        }
-
-        // 規格2が設定されている
-        if($arrProductsClass[0]['classcategory_id2'] != '0') {
-            $classcat_find2 = true;
-        }
-
-        $this->tpl_classcat_find1 = $classcat_find1;
-        $this->tpl_classcat_find2 = $classcat_find2;
-        $this->tpl_stock_find = $stock_find;
+        require_once DATA_PATH . 'module/Services/JSON.php';
+        $this->js_lnOnload .= 'fnSetClassCategories('
+            . 'document.form1, '
+            . Services_JSON::encode($classcategory_id2)
+            . '); ';
     }
 
     /* 規格選択セレクトボックスの作成

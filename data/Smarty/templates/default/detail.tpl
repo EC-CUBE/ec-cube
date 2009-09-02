@@ -20,29 +20,95 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 <script type="text/javascript">//<![CDATA[
-// セレクトボックスに項目を割り当てる。
-function lnSetSelect(form, name1, name2, val) {
+// 規格2に選択肢を割り当てる。
+function fnSetClassCategories(form, classcat_id2_selected) {
+    sele1 = form.classcategory_id1;
+    sele2 = form.classcategory_id2;
 
-    sele11 = document[form][name1];
-    sele12 = document[form][name2];
-
-    if(sele11 && sele12) {
-        index = sele11.selectedIndex;
-
-        // セレクトボックスのクリア
-        count = sele12.options.length;
-        for(i = count; i >= 0; i--) {
-            sele12.options[i] = null;
-        }
-
-        // セレクトボックスに値を割り当てる
-        len = lists[index].length;
-        for(i = 0; i < len; i++) {
-            sele12.options[i] = new Option(lists[index][i], vals[index][i]);
-            if(val != "" && vals[index][i] == val) {
-                sele12.options[i].selected = true;
+    if (sele1) {
+        if (sele2) {
+            // 規格2の選択肢をクリア
+            count = sele2.options.length;
+            for(i = count; i >= 0; i--) {
+                sele2.options[i] = null;
+            }
+            
+            // 規格2に選択肢を割り当てる
+            classcats = classCategories[sele1.value];
+            i = 0;
+            for (var classcat_id2_key in classcats) {
+                sele2.options[i] = new Option(classcats[classcat_id2_key].name, classcat_id2_key);
+                if (classcat_id2_key == classcat_id2_selected) {
+                    sele2.options[i].selected = true;
+                }
+                i++;
             }
         }
+        fnCheckStock(form);
+    }
+}
+function fnCheckStock(form) {
+    classcat_id1 = form.classcategory_id1.value;
+    classcat_id2 = form.classcategory_id2 ? form.classcategory_id2.value : 0;
+    classcat2 = classCategories[classcat_id1][classcat_id2];
+    
+    // 在庫(品切れ)
+    eleDefault = document.getElementById('cartbtn_default');
+    eleDynamic = document.getElementById('cartbtn_dynamic');
+    if (
+           classcat2
+        && classcat2.stock_find === false
+    ) {
+        eleDefault.style.display = 'none';
+        eleDynamic.innerHTML = '申し訳ございませんが、只今品切れ中です。';
+    } else {
+        eleDefault.style.display = '';
+        eleDynamic.innerHTML = '';
+    }
+    
+    // 通常価格
+    eleDefault = document.getElementById('price01_default');
+    eleDynamic = document.getElementById('price01_dynamic');
+    if (
+           classcat2
+        && typeof classcat2.price01 != 'undefined'
+        && String(classcat2.price01).length >= 1
+    ) {
+        eleDefault.style.display = 'none';
+        eleDynamic.innerHTML = classcat2.price01;
+    } else {
+        eleDefault.style.display = '';
+        eleDynamic.innerHTML = '';
+    }
+    
+    // 販売価格
+    eleDefault = document.getElementById('price02_default');
+    eleDynamic = document.getElementById('price02_dynamic');
+    if (
+           classcat2
+        && typeof classcat2.price02 != 'undefined'
+        && String(classcat2.price02).length >= 1
+    ) {
+        eleDefault.style.display = 'none';
+        eleDynamic.innerHTML = classcat2.price02;
+    } else {
+        eleDefault.style.display = '';
+        eleDynamic.innerHTML = '';
+    }
+    
+    // ポイント
+    eleDefault = document.getElementById('point_default');
+    eleDynamic = document.getElementById('point_dynamic');
+    if (
+           classcat2
+        && typeof classcat2.point != 'undefined'
+        && String(classcat2.point).length >= 1
+    ) {
+        eleDefault.style.display = 'none';
+        eleDynamic.innerHTML = classcat2.point;
+    } else {
+        eleDefault.style.display = '';
+        eleDynamic.innerHTML = '';
     }
 }
 //]]>
@@ -76,7 +142,7 @@ function lnSetSelect(form, name1, name2, val) {
         </div>
 
         <div id="detailrightblock">
-            <!--アイコン-->
+            <!--▼商品ステータス-->
             <!--{if count($arrProduct.product_flag) > 0}-->
                 <ul class="status_icon">
                     <!--{section name=flg loop=$arrProduct.product_flag|count_characters}-->
@@ -89,6 +155,7 @@ function lnSetSelect(form, name1, name2, val) {
                     <!--{/section}-->
                 </ul>
             <!--{/if}-->
+            <!--▲商品ステータス-->
 
             <!--★商品コード★-->
             <!--{assign var=codecnt value=$arrProductCode|@count}-->
@@ -107,37 +174,51 @@ function lnSetSelect(form, name1, name2, val) {
             <!--★販売価格★-->
             <div class="sale_price"><!--{$smarty.const.SALE_PRICE_TITLE}--><span class="mini">(税込)</span>：
                 <span class="price">
-                    <!--{if $arrProduct.price02_min == $arrProduct.price02_max}-->
-                        <!--{$arrProduct.price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
-                    <!--{else}-->
-                        <!--{$arrProduct.price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->～<!--{$arrProduct.price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
-                    <!--{/if}-->円</span></div>
+                    <span id="price02_default">
+                        <!--{if $arrProduct.price02_min == $arrProduct.price02_max}-->
+                            <!--{$arrProduct.price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
+                        <!--{else}-->
+                            <!--{$arrProduct.price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->～<!--{$arrProduct.price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
+                        <!--{/if}-->
+                    </span><span id="price02_dynamic"></span>
+                    円
+                </span>
+            </div>
             
             <!--★通常価格★-->
             <!--{if $arrProduct.price01_max > 0}-->
                 <div class="normal_price">
                     <!--{$smarty.const.NORMAL_PRICE_TITLE}-->：
                     <span class="price">
-                        <!--{if $arrProduct.price01_min == $arrProduct.price01_max}-->
-                            <!--{$arrProduct.price01_min|number_format}-->
-                        <!--{else}-->
-                            <!--{$arrProduct.price01_min|number_format}-->～<!--{$arrProduct.price01_max|number_format}-->
-                        <!--{/if}-->円</span>
+                        <span id="price01_default">
+                            <!--{if $arrProduct.price01_min == $arrProduct.price01_max}-->
+                                <!--{$arrProduct.price01_min|number_format}-->
+                            <!--{else}-->
+                                <!--{$arrProduct.price01_min|number_format}-->～<!--{$arrProduct.price01_max|number_format}-->
+                            <!--{/if}-->
+                        </span><span id="price01_dynamic"></span>
+                        円
+                    </span>
                 </div>
             <!--{/if}-->
 
             <!--★ポイント★-->
             <!--{if $smarty.const.USE_POINT !== false}-->
                 <div><span class="price">ポイント：
-                    <!--{if $arrProduct.price02_min == $arrProduct.price02_max}-->
-                        <!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->
-                    <!--{else}-->
-                        <!--{if $arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id == $arrProduct.price02_max|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->
+                    <span id="point_default">
+                        <!--{if $arrProduct.price02_min == $arrProduct.price02_max}-->
                             <!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->
                         <!--{else}-->
-                            <!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->～<!--{$arrProduct.price02_max|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->
+                            <!--{if $arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id == $arrProduct.price02_max|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->
+                                <!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->
+                            <!--{else}-->
+                                <!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->～<!--{$arrProduct.price02_max|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->
+                            <!--{/if}-->
                         <!--{/if}-->
-                    <!--{/if}-->Pt</span></div>
+                        </span><span id="point_dynamic"></span>
+                        Pt
+                    </span>
+                </div>
             <!--{/if}-->
 
             <!--★関連カテゴリ★-->
@@ -152,60 +233,60 @@ function lnSetSelect(form, name1, name2, val) {
                 <!--{/section}-->
             </div>
 
-
-            <form name="form1" id="form1" method="post" action="<!--{$smarty.server.REQUEST_URI|escape}-->">
+            <!--▼買い物かご-->
+            <form name="form1" id="form1" method="post" action="?">
                 <input type="hidden" name="mode" value="cart" />
                 <input type="hidden" name="product_id" value="<!--{$tpl_product_id}-->" />
                 <input type="hidden" name="favorite_product_id" value="" />
-                <!--{if $tpl_classcat_find1}-->
-                <dl>
-                    <dt>
-                        <!--{$tpl_class_name1}-->
-                    </dt>
-                    <dd>
-                        <select name="classcategory_id1"
-                            style="<!--{$arrErr.classcategory_id1|sfGetErrorColor}-->"
-                            onchange="lnSetSelect('form1', 'classcategory_id1', 'classcategory_id2', ''); "
-                        >
-                            <option value="">選択してください</option>
-                            <!--{html_options options=$arrClassCat1 selected=$arrForm.classcategory_id1.value}-->
-                        </select>
-                        <!--{if $arrErr.classcategory_id1 != ""}-->
-                        <br /><span class="attention">※ <!--{$tpl_class_name1}-->を入力して下さい。</span>
-                    <!--{/if}-->
-                    </dd>
-                </dl>
-                <!--{/if}-->
-
+                
                 <!--{if $tpl_stock_find}-->
-                    <!--{if $tpl_classcat_find2}-->
-                <dl>
-                    <dt><!--{$tpl_class_name2}--></dt>
-                    <dd>
-                        <select name="classcategory_id2"
-                                        style="<!--{$arrErr.classcategory_id2|sfGetErrorColor}-->">
-                            <option value="">選択してください</option>
-                        </select>
-                        <!--{if $arrErr.classcategory_id2 != ""}-->
-                            <br /><span class="attention">※ <!--{$tpl_class_name2}-->を入力して下さい。</span>
+                    <dl>
+                        <!--{if $tpl_classcat_find1}-->
+                            <!--▼規格1-->
+                            <dt><!--{$tpl_class_name1|escape}--></dt>
+                            <dd>
+                                <select name="classcategory_id1"
+                                    style="<!--{$arrErr.classcategory_id1|sfGetErrorColor}-->"
+                                    onchange="fnSetClassCategories(this.form);"
+                                >
+                                    <!--{html_options options=$arrClassCat1 selected=$arrForm.classcategory_id1.value}-->
+                                </select>
+                                <!--{if $arrErr.classcategory_id1 != ""}-->
+                                    <br /><span class="attention">※ <!--{$tpl_class_name1}-->を入力して下さい。</span>
+                                <!--{/if}-->
+                            </dd>
+                            <!--▲規格1-->
                         <!--{/if}-->
-                    </dd>
-                </dl>
-                    <!--{/if}-->
+    
+                        <!--{if $tpl_classcat_find2}-->
+                            <!--▼規格2-->
+                            <dt><!--{$tpl_class_name2|escape}--></dt>
+                            <dd>
+                                <select name="classcategory_id2"
+                                    style="<!--{$arrErr.classcategory_id2|sfGetErrorColor}-->"
+                                    onchange="fnCheckStock(this.form);"
+                                >
+                                </select>
+                                <!--{if $arrErr.classcategory_id2 != ""}-->
+                                    <br /><span class="attention">※ <!--{$tpl_class_name2}-->を入力して下さい。</span>
+                                <!--{/if}-->
+                            </dd>
+                            <!--▲規格2-->
+                        <!--{/if}-->
 
-                <dl>
-                    <dt>数量</dt>
-                    <dd><input type="text" name="quantity" class="box54" value="<!--{$arrForm.quantity.value|default:1}-->" maxlength="<!--{$smarty.const.INT_LEN}-->" style="<!--{$arrErr.quantity|sfGetErrorColor}-->" />
-                     <!--{if $arrErr.quantity != ""}-->
-                     <br /><span class="attention"><!--{$arrErr.quantity}--></span>
-                     <!--{/if}-->
-                    </dd>
-                </dl>
+                        <dt>数量</dt>
+                        <dd>
+                            <input type="text" name="quantity" class="box54" value="<!--{$arrForm.quantity.value|default:1}-->" maxlength="<!--{$smarty.const.INT_LEN}-->" style="<!--{$arrErr.quantity|sfGetErrorColor}-->" />
+                            <!--{if $arrErr.quantity != ""}-->
+                                <br /><span class="attention"><!--{$arrErr.quantity}--></span>
+                            <!--{/if}-->
+                        </dd>
+                    </dl>
                 <!--{/if}-->
-
-                <!--{if $tpl_stock_find}-->
-                    <p class="btn">
-                        <!--{if $smarty.const.OPTION_FAVOFITE_PRODUCT == 1 && $tpl_login === true}-->
+                
+                <div class="btn">
+                    <!--{if $smarty.const.OPTION_FAVOFITE_PRODUCT == 1 && $tpl_login === true}-->
+                        <div>
                             <!--{assign var=add_favorite value="add_favorite`$product_id`"}-->
                             <!--{if $arrErr[$add_favorite]}--><div class="attention"><!--{$arrErr[$add_favorite]}--></div><!--{/if}-->
                             <!--{if !$arrProduct.favorite_count}-->
@@ -217,18 +298,27 @@ function lnSetSelect(form, name1, name2, val) {
                             <!--{else}-->
                                 <img src="<!--{$TPL_DIR}-->img/products/add_favolite_product_on.gif" width="115" height="20" alt="お気に入り登録済" name="add_favolite_product" id="add_favolite_product" />
                             <!--{/if}-->
-                        <!--{/if}-->
-                        <!--★カゴに入れる★-->
-                        <a href="javascript:void(document.form1.submit())" onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_cartin_on.gif','cart');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/products/b_cartin.gif','cart');">
-                            <img src="<!--{$TPL_DIR}-->img/products/b_cartin.gif" width="115" height="25" alt="カゴに入れる" name="cart" id="cart" /></a>
-                    </p>
-                    <!--{if 'sfGMODetailDisplay'|function_exists}--><!--{* GMOワンクリック *}-->
-                        <!--{'sfGMODetailDisplay'|call_user_func}-->
+                        </div>
                     <!--{/if}-->
-                <!--{else}-->
-                <div class="attention">申し訳ございませんが、只今品切れ中です。</div>
-                <!--{/if}-->
+                    
+                    <!--{if $tpl_stock_find}-->
+                        <div id="cartbtn_default">
+                            <!--★カゴに入れる★-->
+                            <div>
+                                <a href="javascript:void(document.form1.submit())" onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_cartin_on.gif','cart');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/products/b_cartin.gif','cart');">
+                                    <img src="<!--{$TPL_DIR}-->img/products/b_cartin.gif" width="115" height="25" alt="カゴに入れる" name="cart" id="cart" /></a>
+                            </div>
+                            <!--{if 'sfGMODetailDisplay'|function_exists}--><!--{* GMOワンクリック *}-->
+                                <!--{'sfGMODetailDisplay'|call_user_func}-->
+                            <!--{/if}-->
+                        </div>
+                        <div class="attention" id="cartbtn_dynamic"></div>
+                    <!--{else}-->
+                        <div class="attention">申し訳ございませんが、只今品切れ中です。</div>
+                    <!--{/if}-->
+                </div>
             </form>
+            <!--▲買い物かご-->
 
         </div>
     </div>
@@ -254,13 +344,13 @@ function lnSetSelect(form, name1, name2, val) {
                 <!--{if $arrFile[$key].filepath != ""}-->
                     <div class="subphotoimg">
                         <a
-                            <!--{if $arrFile[$lkey].filepath != ""}-->
+                        <!--{if $arrFile[$lkey].filepath != ""}-->
                                 href="?"
                                 onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&amp;image=<!--{$lkey}--><!--{if $smarty.get.admin == 'on'}-->&amp;admin=on<!--{/if}-->','detail_image','<!--{$arrFile[$lkey].width+60}-->','<!--{$arrFile[$lkey].height+80}-->'); return false;"
                                 target="_blank"
-                            <!--{/if}-->
+                        <!--{/if}-->
                         >
-                            <!--サブ画像-->
+                        <!--サブ画像-->
                             <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrProduct.name|escape}-->" width="<!--{$smarty.const.NORMAL_SUBIMAGE_WIDTH}-->" height="<!--{$smarty.const.NORMAL_SUBIMAGE_HEIGHT}-->" /></a>
                         <!--{if $arrFile[$lkey].filepath != ""}-->
                             <p>

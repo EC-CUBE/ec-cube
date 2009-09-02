@@ -121,10 +121,6 @@ div.listrightblock .pricebox {
     float: left;
 }
 
-div.listrightblock .soldout {
-    clear: both;
-}
-
 div.listrightblock .in_cart {
     margin: 20px auto 5px 130px;
     padding: 10px;
@@ -158,7 +154,6 @@ div.listrightblock dd {
 
 div.listrightblock .cartbtn {
     clear: both;
-    text-align: center;
 }
 
 div.listrightblock .cartbtn img {
@@ -207,11 +202,12 @@ div#detailrightblock h2 {
 }
 
 div#detailrightblock dl {
-    padding: 15px 0 0 0;
+    padding: 0;
 }
 
 div#detailrightblock dt {
     font-weight: bold;
+    margin: 15px 0 0 0;
     padding: 0 0 0 15px;
     background: url("../img/common/arrow_gray.gif") no-repeat left center;
 }
@@ -232,6 +228,12 @@ div#detailrightblock .btn {
     text-align: center;
     vertical-align: top;
     background: url("../img/common/line_280.gif") no-repeat;
+}
+
+/* 商品共通 */
+
+.cartbtn {
+    text-align: center;
 }
 
 /* サブタイトル
