@@ -276,11 +276,12 @@ class SC_Query {
      * @param string $table テーブル名
      * @param array $sqlval array('カラム名' => '値',...)の連想配列
      * @param string $where WHERE句
-     * @param array $arrValIn $where,$arrRawSql用のプレースホルダ配列
-     * @param string $arrRawSql 追加カラム
+     * @param array $arrValIn WHERE句用のプレースホルダ配列 (従来は追加カラム用も兼ねていた)
+     * @param array $arrRawSql 追加カラム
+     * @param array $arrRawSqlVal 追加カラム用のプレースホルダ配列
      * @return
      */
-    function update($table, $sqlval, $where = "", $arrValIn = array(), $arrRawSql = array()) {
+    function update($table, $sqlval, $where = "", $arrValIn = array(), $arrRawSql = array(), $arrRawSqlVal = array()) {
         $arrCol = array();
         $arrVal = array();
         $find = false;
@@ -299,7 +300,9 @@ class SC_Query {
                 $arrCol[] = "$key = $val";
             }
         }
-
+        
+        $arrVal = array_merge($arrVal, $arrRawSqlVal);
+        
         if (empty($arrCol)) {
             return false;
         }

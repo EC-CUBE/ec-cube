@@ -1876,14 +1876,15 @@ __EOS__;
                 $where = '';
                 $arrVal = array();
                 $arrRawSql = array();
+                $arrRawSqlVal = array();
                 
                 $sqlval['update_date'] = 'Now()';
                 $arrRawSql['point'] = 'point + ?';
-                $arrVal[] = $addPoint;
+                $arrRawSqlVal[] = $addPoint;
                 $where .= 'customer_id = ?';
                 $arrVal[] = $arrOrderOld['customer_id'];
                 
-                $objQuery->update('dtb_customer', $sqlval, $where, $arrVal, $arrRawSql);
+                $objQuery->update('dtb_customer', $sqlval, $where, $arrVal, $arrRawSql, $arrRawSqlVal);
                 // ▲顧客テーブルの更新
                 
                 // ポイントをマイナスした場合、
