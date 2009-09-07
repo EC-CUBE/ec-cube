@@ -112,8 +112,9 @@ class LC_Page_Admin_System_Log extends LC_Page {
             
             $arrLogTmp = array_reverse(file($path));
             
-            $body = '';
+            $arrBodyReverse = array();
             foreach ($arrLogTmp as $line) {
+                $line = chop($line);
                 if (preg_match('/^(\d+\/\d+\/\d+ \d+:\d+:\d+) \[([^\]]+)\] (.*)$/', $line, $arrMatch)) {
                     $arrLogLine = array();
                     // 日時
@@ -121,8 +122,9 @@ class LC_Page_Admin_System_Log extends LC_Page {
                     // パス
                     $arrLogLine['path'] = $arrMatch[2];
                     // 内容
-                    $arrLogLine['body'] = $arrMatch[3] . $body;
-                    $body = '';
+                    $arrBodyReverse[] = $arrMatch[3];
+                    $arrLogLine['body'] = implode("\n", array_reverse($arrBodyReverse));
+                    $arrBodyReverse = array();
                     
                     $arrLogs[] = $arrLogLine;
                     
@@ -130,7 +132,7 @@ class LC_Page_Admin_System_Log extends LC_Page {
                     if (count($arrLogs) >= $this->line_max) break 2;
                 } else {
                     // 内容
-                    $body = "\n" . $line . $body;
+                    $arrBodyReverse[] = $line;
                 }
             }
         }
