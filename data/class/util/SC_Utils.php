@@ -131,6 +131,26 @@ class SC_Utils {
         exit;
     }
 
+    /**
+     * 例外エラーページの表示
+     *
+     * @return void
+     */
+    function sfDispException() {
+        require_once(CLASS_EX_PATH . "page_extends/error/LC_Page_Error_SystemError_Ex.php");
+        
+        $objPage = new LC_Page_Error_SystemError_Ex();
+        register_shutdown_function(array($objPage, "destroy"));
+        $objPage->init();
+        if (function_exists("debug_backtrace")) {
+            $objPage->backtrace = debug_backtrace();
+        }
+        GC_Utils_Ex::gfPrintLog($objPage->sfGetErrMsg());
+        $objPage->process();
+        
+        exit();
+    }
+
     /* 認証の可否判定 */
     function sfIsSuccess($objSess, $disp_error = true) {
         $ret = $objSess->IsSuccess();
@@ -2097,6 +2117,46 @@ echo $template_path;
     function sfGetRandomString($length = 1) {
         require_once(dirname(__FILE__) . '/../../module/Text/Password.php');
         return Text_Password::create($length);
+    }
+    
+    /**
+     * 現在の URL を取得する
+     *
+     * @return string 現在のURL
+     */
+    function sfGetUrl() {
+        $url = '';
+        
+        if (SC_Utils_Ex::sfIsHTTPS()) {
+            $url = "https://";
+        } else {
+            $url = "http://";
+        }
+        
+        $url .= $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . '?' . $_SERVER['QUERY_STRING'];
+        
+        return $url;
+    }
+    
+    /**
+     * バックトレースをテキスト形式で出力する
+     *
+     * @return string テキストで表現したバックトレース
+     */
+    function sfBacktraceToString($arrBacktrace) {
+        $string = '';
+        
+        foreach ($arrBacktrace as $backtrace) {
+            if (strlen($backtrace['class']) >= 1) {
+                $func = $backtrace['class'] . $backtrace['type'] . $backtrace['function'];
+            } else {
+                $func = $backtrace['function'];
+            }
+            
+            $string .= $backtrace['file'] . " " . $backtrace['line'] . ":" . $func . "\n";
+        }
+        
+        return $string;
     }
 }
 ?>

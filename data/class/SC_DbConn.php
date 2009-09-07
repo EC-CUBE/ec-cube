@@ -215,52 +215,17 @@ class SC_DbConn {
         $this->conn->disconnect();
     }
 
-    function send_err_mail($result, $sql){
-        $url = '';
-        $errmsg = '';
-
-        if (SC_Utils_Ex::sfIsHTTPS()) {
-            $url = "https://";
-        } else {
-            $url = "http://";
-        }
-        $url .= $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-
-        $errmsg = $url."\n\n";
-        $errmsg.= "SERVER_ADDR:" . $_SERVER['SERVER_ADDR'] . "\n";
-        $errmsg.= "REMOTE_ADDR:" . $_SERVER['REMOTE_ADDR'] . "\n";
-        $errmsg.= "USER_AGENT:" . $_SERVER['HTTP_USER_AGENT'] . "\n\n";
-        $errmsg.= $sql . "\n";
-        $errmsg.= $result->message . "\n\n";
-        $errmsg.= $result->userinfo . "\n\n";
-
-        $arrRbacktrace = array_reverse($result->backtrace);
-
-        foreach($arrRbacktrace as $backtrace) {
-            if($backtrace['class'] != "") {
-                $func = $backtrace['class'] . "->" . $backtrace['function'];
-            } else {
-                $func = $backtrace['function'];
-            }
-
-            $errmsg.= $backtrace['file'] . " " . $backtrace['line'] . ":" . $func . "\n";
-        }
-
+    function send_err_mail($pearResult, $sql){
         require_once(CLASS_EX_PATH . "page_extends/error/LC_Page_Error_SystemError_Ex.php");
-
+        
         $objPage = new LC_Page_Error_SystemError_Ex();
         register_shutdown_function(array($objPage, "destroy"));
         $objPage->init();
+        $objPage->sourceCode = $sql;
+        $objPage->pearResult = $pearResult;
+        GC_Utils_Ex::gfPrintLog($objPage->sfGetErrMsg());
         $objPage->process();
-
-        if (DEBUG_MODE == true) {
-            print('<pre>');
-            print_r(htmlspecialchars($errmsg, ENT_QUOTES, CHAR_CODE));
-            print('</pre>');
-        }
-
-        GC_Utils_Ex::gfPrintLog($errmsg);
-
+        
         exit();
     }
 
