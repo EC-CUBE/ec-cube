@@ -132,7 +132,7 @@ class LC_Page_Admin_Mail_Sendmail extends LC_Page {
                                                ,$subjectBody
                                                ,$mailBody
                                                ,$objSite->data["email03"]                  //　送信元メールアドレス
-                                               ,$objSite->data["company_name"]             //　送信元名
+                                               ,$objSite->data["shop_name"]                //　送信元名
                                                ,$objSite->data["email03"]                  //　reply_to
                                                ,$objSite->data["email04"]                  //　return_path
                                                ,$objSite->data["email04"]                  //　errors_to
