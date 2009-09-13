@@ -9,10 +9,6 @@ define('USER_DIR', "user_data/");
 define('USER_PATH', HTML_PATH . USER_DIR);
 /** ユーザインクルードファイル保存先 */
 define('USER_INC_PATH', USER_PATH . "include/");
-/** DBエラーメール送信先 */
-define('DB_ERROR_MAIL_TO', "");
-/** DBエラーメール件名 */
-define('DB_ERROR_MAIL_SUBJECT', "OS_TEST_ERROR");
 /** 郵便番号専用DB */
 define('ZIP_DSN', DEFAULT_DSN);
 /** ユーザー作成ページ等 */
