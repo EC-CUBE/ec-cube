@@ -185,7 +185,7 @@ class SC_AdminView extends SC_View{
 }
 
 class SC_SiteView extends SC_View{
-    function SC_SiteView($cart = true) {
+    function SC_SiteView($setPrevURL = true) {
         parent::SC_View();
 
         $this->_smarty->template_dir = TEMPLATE_DIR;
@@ -195,7 +195,7 @@ class SC_SiteView extends SC_View{
         // PHP5ではsessionをスタートする前にヘッダー情報を送信していると警告が出るため、先にセッションをスタートするように変更
         SC_Utils_Ex::sfDomainSessionStart();
 
-        if($cart){
+        if ($setPrevURL) {
             $include_dir = realpath(dirname( __FILE__));
             require_once($include_dir . "/SC_CartSession.php");
             $objCartSess = new SC_CartSession();
