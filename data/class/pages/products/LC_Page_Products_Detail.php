@@ -80,7 +80,7 @@ class LC_Page_Products_Detail extends LC_Page {
         // プロダクトIDの正当性チェック
         $product_id = $this->lfCheckProductId();
 
-        $objView = new SC_SiteView();
+        $objView = new SC_SiteView(strlen($_POST['mode']) == 0);
         $objCustomer = new SC_Customer();
         $objQuery = new SC_Query();
         $objDb = new SC_Helper_DB_Ex();
@@ -204,7 +204,6 @@ class LC_Page_Products_Detail extends LC_Page {
                         $classcategory_id2 = '0';
                     }
 
-                    $objCartSess->setPrevURL($_SERVER['REQUEST_URI']);
                     $objCartSess->addProduct(array($_POST['product_id'], $classcategory_id1, $classcategory_id2), $this->objFormParam->getValue('quantity'));
 
                     if (!empty($_POST['gmo_oneclick'])) {
@@ -422,7 +421,6 @@ class LC_Page_Products_Detail extends LC_Page {
                     $classcategory_id2 = '0';
                 }
 
-                $objCartSess->setPrevURL($_SERVER['REQUEST_URI']);
                 $objCartSess->addProduct(array($_POST['product_id'], $classcategory_id1, $classcategory_id2), $this->objFormParam->getValue('quantity'));
                 $this->sendRedirect($this->getLocation(MOBILE_URL_CART_TOP), true);
                 exit;
