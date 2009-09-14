@@ -55,6 +55,7 @@ class SC_Initial {
         $this->defineDSN();
         $this->setErrorReporting();
         $this->defineDirectoryIndex();
+        $this->defineErrorType();
         $this->defineConstants();
         $this->mbstringInit();
         $this->createCacheDir();
@@ -230,6 +231,72 @@ class SC_Initial {
                 mkdir(COMPILE_FTP_DIR);
             }
         }
+    }
+
+    /**
+     * エラー種別を定数定義
+     *
+     * @access protected
+     * @return void
+     */
+    function defineErrorType() {
+        // LC_Page_Error用
+        /** 指定商品ページがない */
+        define('PRODUCT_NOT_FOUND', 1);
+        /** カート内が空 */
+        define('CART_EMPTY', 2);
+        /** ページ推移エラー */
+        define('PAGE_ERROR', 3);
+        /** 購入処理中のカート商品追加エラー */
+        define('CART_ADD_ERROR', 4);
+        /** 他にも購入手続きが行われた場合 */
+        define('CANCEL_PURCHASE', 5);
+        /** 指定カテゴリページがない */
+        define('CATEGORY_NOT_FOUND', 6);
+        /** ログインに失敗 */
+        define('SITE_LOGIN_ERROR', 7);
+        /** 会員専用ページへのアクセスエラー */
+        define('CUSTOMER_ERROR', 8);
+        /** 購入時の売り切れエラー */
+        define('SOLD_OUT', 9);
+        /** カート内商品の読込エラー */
+        define('CART_NOT_FOUND', 10);
+        /** ポイントの不足 */
+        define('LACK_POINT', 11);
+        /** 仮登録者がログインに失敗 */
+        define('TEMP_LOGIN_ERROR', 12);
+        /** URLエラー */
+        define('URL_ERROR', 13);
+        /** ファイル解凍エラー */
+        define('EXTRACT_ERROR', 14);
+        /** FTPダウンロードエラー */
+        define('FTP_DOWNLOAD_ERROR', 15);
+        /** FTPログインエラー */
+        define('FTP_LOGIN_ERROR', 16);
+        /** FTP接続エラー */
+        define('FTP_CONNECT_ERROR', 17);
+        /** DB作成エラー */
+        define('CREATE_DB_ERROR', 18);
+        /** DBインポートエラー */
+        define('DB_IMPORT_ERROR', 19);
+        /** 設定ファイル存在エラー */
+        define('FILE_NOT_FOUND', 20);
+        /** 書き込みエラー */
+        define('WRITE_FILE_ERROR', 21);
+        /** DB接続エラー */
+        define('DB_CONNECT_ERROR', 22);
+        /** フリーメッセージ */
+        define('FREE_ERROR_MSG', 999);
+
+        // LC_Page_Error_DispError用
+        /** ログイン失敗 */
+        define('LOGIN_ERROR', 1);
+        /** アクセス失敗（タイムアウト等） */
+        define('ACCESS_ERROR', 2);
+        /** アクセス権限違反 */
+        define('AUTH_ERROR', 3);
+        /** 不正な遷移エラー */
+        define('INVALID_MOVE_ERRORR', 4);
     }
 }
 ?>
