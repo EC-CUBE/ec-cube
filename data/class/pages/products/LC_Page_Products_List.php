@@ -558,9 +558,9 @@ __EOS__;
         } else {
             //最小表示件数を選択
             $this->disp_number = current(array_keys($this->arrPRODUCTLISTMAX));
-    }
+        }
         $this->tpl_pageno = $this->arrForm['pageno'];
         $this->inCart = strlen($this->arrForm['product_id']) >= 1;
-            }
+    }
 }
 ?>
