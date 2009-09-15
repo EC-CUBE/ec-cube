@@ -58,11 +58,11 @@ class SC_DbConn {
                     return;
                 }
             }
-        }
-        
-        if (DB_TYPE == 'mysql') {
-            $objDbConn->query('SET NAMES utf8');
-        }
+            }
+            
+            if (DB_TYPE == 'mysql') {
+                $objDbConn->query('SET NAMES utf8');
+            }
         
         $this->conn = $objDbConn;
         $this->err_disp = $err_disp;
@@ -217,7 +217,7 @@ class SC_DbConn {
         $objPage = new LC_Page_Error_SystemError_Ex();
         register_shutdown_function(array($objPage, "destroy"));
         $objPage->init();
-        $objPage->sourceCode = $sql;
+        $objPage->addDebugMsg($sql);
         $objPage->pearResult = $pearResult;
         GC_Utils_Ex::gfPrintLog($objPage->sfGetErrMsg());
         $objPage->process();

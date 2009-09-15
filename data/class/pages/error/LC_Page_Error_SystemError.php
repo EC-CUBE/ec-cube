@@ -34,14 +34,14 @@ require_once(CLASS_PATH . "pages/error/LC_Page_Error.php");
  */
 class LC_Page_Error_SystemError extends LC_Page_Error {
     
-    /** ソースコード */
-    var $sourceCode;
-    
     /** PEAR_Error */
     var $pearResult;
     
     /** PEAR_Error がセットされていない場合用のバックトレーススタック */
     var $backtrace;
+
+    /** デバッグ用のメッセージ配列 */
+    var $arrDebugMsg = array();
 
     // }}}
     // {{{ functions
@@ -126,9 +126,10 @@ class LC_Page_Error_SystemError extends LC_Page_Error {
         $errmsg .= $this->lfGetErrMsgHead();
         $errmsg .= "\n";
         
-        // エラーとなったソースコードが明示的に指定されている場合
-        if (!is_null($this->sourceCode)) {
-            $errmsg .= $this->sourceCode . "\n";
+        // デバッグ用のメッセージが指定されている場合
+        if (!empty($this->arrDebugMsg)) {
+            $errmsg .= implode("\n\n", $this->arrDebugMsg) . "\n";
+            $errmsg .= "\n";
         }
         
         // PEAR エラーを伴う場合
@@ -158,11 +159,20 @@ class LC_Page_Error_SystemError extends LC_Page_Error {
         $errmsg = '';
         $errmsg .= SC_Utils_Ex::sfGetUrl() . "\n";
         $errmsg .= "\n";
-        $errmsg .= "SERVER_ADDR:" . $_SERVER['SERVER_ADDR'] . "\n";
-        $errmsg .= "REMOTE_ADDR:" . $_SERVER['REMOTE_ADDR'] . "\n";
-        $errmsg .= "USER_AGENT:" . $_SERVER['HTTP_USER_AGENT'] . "\n";
+        $errmsg .= "SERVER_ADDR: " . $_SERVER['SERVER_ADDR'] . "\n";
+        $errmsg .= "REMOTE_ADDR: " . $_SERVER['REMOTE_ADDR'] . "\n";
+        $errmsg .= "USER_AGENT: " . $_SERVER['HTTP_USER_AGENT'] . "\n";
         
         return $errmsg;
+    }
+
+    /**
+     * デバッグ用のメッセージを追加
+     *
+     * @return void
+     */
+    function addDebugMsg($debugMsg) {
+        $this->arrDebugMsg[] = rtrim($debugMsg, "\n");
     }
 }
 ?>
