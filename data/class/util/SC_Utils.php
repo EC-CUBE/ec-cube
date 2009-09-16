@@ -134,14 +134,18 @@ class SC_Utils {
     /**
      * 例外エラーページの表示
      *
+     * @param string $debugMsg デバッグ用のメッセージ
      * @return void
      */
-    function sfDispException() {
+    function sfDispException($debugMsg = null) {
         require_once(CLASS_EX_PATH . "page_extends/error/LC_Page_Error_SystemError_Ex.php");
         
         $objPage = new LC_Page_Error_SystemError_Ex();
         register_shutdown_function(array($objPage, "destroy"));
         $objPage->init();
+        if (!is_null($debugMsg)) {
+            $objPage->addDebugMsg($debugMsg);
+        }
         if (function_exists("debug_backtrace")) {
             $objPage->backtrace = debug_backtrace();
         }
