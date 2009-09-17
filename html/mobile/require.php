@@ -1,6 +1,5 @@
 <?php
-/**
- *
+/*
  * This file is part of EC-CUBE
  *
  * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
@@ -25,9 +24,9 @@
 // rtrim は PHP バージョン依存対策
 define("HTML_PATH", rtrim(realpath(rtrim(realpath(dirname(__FILE__)), '/\\') . '/../'), '/\\') . '/');
 
-require_once(HTML_PATH . "define.php");
+require_once HTML_PATH . 'define.php';
 define('MOBILE_SITE', true);
-require_once(HTML_PATH . HTML2DATA_DIR . "require_base.php");
+require_once HTML_PATH . HTML2DATA_DIR . 'require_base.php';
 
 // モバイルサイトを利用しない設定の場合、落とす。
 if (USE_MOBILE === false) {

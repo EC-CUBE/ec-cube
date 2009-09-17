@@ -55,7 +55,7 @@ class LC_Page_Error_SystemError extends LC_Page_Error {
         parent::init();
 
         $this->tpl_title = 'システムエラー';
-        $this->adminPage = $this->isAdminPage();
+        $this->adminPage = SC_Utils_Ex::sfIsAdminFunction();
 
         if ($this->adminPage) {
             $this->tpl_mainpage = 'login_error.tpl';
@@ -107,15 +107,6 @@ class LC_Page_Error_SystemError extends LC_Page_Error {
         parent::destroy();
     }
 
-    /**
-     * 管理機能かどうかを判定する.
-     *
-     * @return boolean
-     */
-    function isAdminPage() {
-        return preg_match('|/admin/|', $_SERVER['PHP_SELF']);
-    }
-    
     /**
      * エラーメッセージを生成する
      *

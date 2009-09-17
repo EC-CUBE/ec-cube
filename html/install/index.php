@@ -20,7 +20,15 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-require_once("../require.php");
+// ▼require.php 相当
+// rtrim は PHP バージョン依存対策
+define('HTML_PATH', rtrim(realpath(rtrim(realpath(dirname(__FILE__)), '/\\') . '/../'), '/\\') . '/');
+
+require_once HTML_PATH . 'define.php';
+define('INSTALL_FUNCTION', true);
+require_once HTML_PATH . HTML2DATA_DIR . 'require_base.php';
+// ▲require.php 相当
+
 $INSTALL_DIR = realpath(dirname( __FILE__));
 require_once(DATA_PATH . "module/Request.php");
 

@@ -76,15 +76,13 @@ class SC_Utils {
     // インストール初期処理
     function sfInitInstall() {
         // インストール済みが定義されていない。
-        if(!defined('ECCUBE_INSTALL')) {
-            if(!ereg("/install/", $_SERVER['PHP_SELF'])) {
-                header("Location: ./install/"); // TODO 絶対URL にする
-            }
-        } else {
-            $path = HTML_PATH . "install/index.php";
-            if(file_exists($path)) {
-                SC_Utils::sfErrorHeader("&gt;&gt; /install/index.phpは、インストール完了後にファイルを削除してください。");
-            }
+        if (!defined('ECCUBE_INSTALL')) {
+            header("Location: ./install/" . DIR_INDEX_URL); // TODO 絶対URL にする
+            exit;
+        }
+        $path = HTML_PATH . "install/index.php";
+        if(file_exists($path)) {
+            SC_Utils::sfErrorHeader("&gt;&gt; /install/index.phpは、インストール完了後にファイルを削除してください。");
         }
     }
 
@@ -2161,6 +2159,51 @@ echo $template_path;
         }
         
         return $string;
+    }
+
+    /**
+     * 管理機能かを判定
+     *
+     * @return bool 管理機能か
+     */
+    function sfIsAdminFunction() {
+        return defined('ADMIN_FUNCTION') && ADMIN_FUNCTION;
+    }
+
+    /**
+     * フロント機能かを判定
+     *
+     * @return bool フロント機能か
+     */
+    function sfIsFrontFunction() {
+        return SC_Utils_Ex::sfIsPcSite() || SC_Utils_Ex::sfIsMobileSite();
+    }
+
+    /**
+     * フロント機能PCサイトかを判定
+     *
+     * @return bool フロント機能PCサイトか
+     */
+    function sfIsPcSite() {
+        return defined('FRONT_FUNCTION_PC_SITE') && FRONT_FUNCTION_PC_SITE;
+    }
+
+    /**
+     * フロント機能モバイル機能かを判定
+     *
+     * @return bool フロント機能モバイル機能か
+     */
+    function sfIsMobileSite() {
+        return defined('MOBILE_SITE') && MOBILE_SITE;
+    }
+
+    /**
+     * インストール機能かを判定
+     *
+     * @return bool インストール機能か
+     */
+    function sfIsInstallFunction() {
+        return defined('INSTALL_FUNCTION') && INSTALL_FUNCTION;
     }
 }
 ?>

@@ -45,7 +45,6 @@ require_once(CLASS_EX_PATH . "SC_Initial_Ex.php");
 $objInit = new SC_Initial_Ex();
 $objInit->init();
 
-require_once(DATA_PATH . "include/module.inc");
 require_once(CLASS_EX_PATH . "util_extends/GC_Utils_Ex.php");
 require_once(CLASS_EX_PATH . "util_extends/SC_Utils_Ex.php");
 require_once(CLASS_EX_PATH . "db_extends/SC_DB_MasterData_Ex.php");
@@ -75,21 +74,25 @@ require_once(CLASS_PATH . "SC_MobileEmoji.php");
 require_once(CLASS_PATH . "SC_MobileImage.php");
 require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_PageLayout_Ex.php");
 require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_DB_Ex.php");
-require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_Session_Ex.php");
 require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_Mail_Ex.php");
 require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_Mobile_Ex.php");
+require_once(DATA_PATH . "include/module.inc");
 include_once(DATA_PATH . "require_plugin.php");
 
-// セッションハンドラ開始
-$objSession = new SC_Helper_Session_Ex();
+// インストール中で無い場合、
+if (!SC_Utils_Ex::sfIsInstallFunction()) {
+    // インストールチェック
+    SC_Utils_Ex::sfInitInstall();
 
-// インストールチェック
-SC_Utils_Ex::sfInitInstall();
+    // セッションハンドラ開始
+    require_once CLASS_EX_PATH . 'helper_extends/SC_Helper_Session_Ex.php';
+    $objSession = new SC_Helper_Session_Ex();
 
-// セッション初期化・開始
-require_once CLASS_PATH . 'session/SC_SessionFactory.php';
-$sessionFactory = SC_SessionFactory::getInstance();
-$sessionFactory->initSession();
+    // セッション初期化・開始
+    require_once CLASS_PATH . 'session/SC_SessionFactory.php';
+    $sessionFactory = SC_SessionFactory::getInstance();
+    $sessionFactory->initSession();
+}
 
 // 絵文字変換 (除去) フィルターを組み込む。
 ob_start(array('SC_MobileEmoji', 'handler'));
