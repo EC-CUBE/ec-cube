@@ -270,7 +270,7 @@ define('IMAGE_TEMP_URL_RSS', SITE_URL . "upload/temp_image/");
 /** RSS用画像保存先URL */
 define('IMAGE_SAVE_URL_RSS', SITE_URL . "upload/save_image/");
 /** エンコードCSVの一時保存先 */
-define('CSV_TEMP_DIR', HTML_PATH . "upload/csv/");
+define('CSV_TEMP_DIR', DATA_PATH . "upload/csv/");
 /** 画像がない場合に表示 */
 define('NO_IMAGE_URL', URL_DIR . "misc/blank.gif");
 /** 画像がない場合に表示 */

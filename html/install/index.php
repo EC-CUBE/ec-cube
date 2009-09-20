@@ -395,7 +395,8 @@ function lfDispStep0($objPage) {
         DATA_PATH . "class/",
         DATA_PATH . "Smarty/",
         DATA_PATH . "logs/",
-        DATA_PATH . "downloads/"
+        DATA_PATH . "downloads/",
+        DATA_PATH . "upload/",
     );
 
     $mess = "";
@@ -470,15 +471,15 @@ function lfDispStep0($objPage) {
         if(!file_exists($path)) {
             mkdir($path);
         }
-        $path = HTML_PATH . "upload/csv";
-        if(!file_exists($path)) {
-            mkdir($path);
-        }
         $path = DATA_PATH . "downloads/module";
         if(!file_exists($path)) {
             mkdir($path);
         }
         $path = DATA_PATH . "downloads/update";
+        if(!file_exists($path)) {
+            mkdir($path);
+        }
+        $path = DATA_PATH . "upload/csv";
         if(!file_exists($path)) {
             mkdir($path);
         }
