@@ -91,6 +91,7 @@ class SC_Fpdf {
         $this->setMessageData();
         $this->setOrderData();
         $this->setEtcData();
+
     }
 
     function setShopData() {
