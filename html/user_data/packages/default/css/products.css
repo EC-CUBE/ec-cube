@@ -14,55 +14,39 @@ p.conditionarea {
 
 /* ページ送り
 ----------------------------------------------- */
-.pagenumberarea, .pagecondarea {
+.pagenumberarea,
+.pagecondarea {
     clear: both;
-    margin: 20px 0;
-    padding: 10px;
+}
+
+/* 背景色(改行対策) */
+.pagenumberarea,
+.pagenumberarea .navi,
+.pagenumberarea .change,
+.pagecondarea {
     background-color: #f3f3f3;
 }
 
-ul.pagenumberarea {
-    height: 2.5ex;
-    padding:0px;
+.pagenumberarea {
+    margin: 1em 0;
+    padding: 1ex 1em;
 }
 
-ul.pagecondarea {
+.pagecondarea {
+    margin: 20px 0;
+    padding: 10px;
     border: 1px solid #CCCCCC;
 }
 
-ul.pagenumberarea li {
-    float: left;
-    width: 32.9%;
-}
-
-ul.pagenumberarea li.left {
-    text-align: left;
-    white-space: nowrap;
-    margin-left:10px;
-    width: 27.9%;
-}
-
-ul.pagenumberarea li.center {
+.pagenumberarea .navi {
+    padding-right: 38%;
     text-align: center;
-    white-space: pre;
-    width: 27.9%
 }
 
-ul.pagenumberarea li.right {
-    float:right;
+.pagenumberarea .change {
+    float: right;
     text-align: right;
     white-space: nowrap;
-    width: 38.7%;
-    margin-right:10px;
-}
-
-.pagenumberarea .pagenumber{
-    color: #ff0000;
-    font-weight: bold;
-}
-
-p.pagenumberarea .number{
-    font-weight: bold;
 }
 
 /* 商品一覧 */
@@ -164,6 +148,11 @@ div.listrightblock .cartbtn img {
 div.listrightblock .box54 {
     width: 54px;
     border: solid 1px #ccc;
+}
+
+.product_list .pagenumber{
+    color: #ff0000;
+    font-weight: bold;
 }
 
 /* 商品詳細 */

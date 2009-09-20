@@ -148,42 +148,52 @@ function fnCheckStock(form) {
     <!--{/if}-->
     <!--▲検索条件-->
 
-    <!--▼ページナビ(上部)-->
-    <form name="page_navi_top" id="page_navi_top" action="?">
-        <!--{if $tpl_linemax > 0}-->
-            <ul class="pagenumberarea">
-                <li class="left"><span class="pagenumber"><!--{$tpl_linemax}--></span>件の商品がございます。</li>
-                <li class="center"><!--{$tpl_strnavi}--></li>
-                <li class="right">
-                    <!--{if $orderby != 'price'}-->
-                        <a href="javascript:fnChangeOrderby('price');">価格順</a>
-                    <!--{else}-->
-                        <strong>価格順</strong>
-                    <!--{/if}-->&nbsp;
-                    <!--{if $orderby != "date"}-->
-                            <a href="javascript:fnChangeOrderby('date');">新着順</a>
-                    <!--{else}-->
-                        <strong>新着順</strong>
-                    <!--{/if}-->
-                    表示件数
-                    <select name="disp_number" onchange="javascript:fnChangeDispNumber(this.value);">
-                        <!--{foreach from=$arrPRODUCTLISTMAX item="dispnum" key="num"}-->
-                            <!--{if $num == $disp_number}-->
-                            <option value="<!--{$num}-->" selected="selected" ><!--{$dispnum}--></option>
-                            <!--{else}-->
-                            <option value="<!--{$num}-->" ><!--{$dispnum}--></option>
-                            <!--{/if}-->
-                        <!--{/foreach}-->
-                    </select>
-                </li>
-            </ul>
-        <!--{else}-->
-            <!--{include file="frontparts/search_zero.tpl"}-->
-        <!--{/if}-->
-    </form>
-    <!--▲ページナビ(上部)-->
+    <!--▼ページナビ(本文)-->
+    <!--{capture name=page_navi_body}-->
+        <div class="pagenumberarea">
+            <div class="change">
+                <!--{if $orderby != 'price'}-->
+                    <a href="javascript:fnChangeOrderby('price');">価格順</a>
+                <!--{else}-->
+                    <strong>価格順</strong>
+                <!--{/if}-->&nbsp;
+                <!--{if $orderby != "date"}-->
+                        <a href="javascript:fnChangeOrderby('date');">新着順</a>
+                <!--{else}-->
+                    <strong>新着順</strong>
+                <!--{/if}-->
+                表示件数
+                <select name="disp_number" onchange="javascript:fnChangeDispNumber(this.value);">
+                    <!--{foreach from=$arrPRODUCTLISTMAX item="dispnum" key="num"}-->
+                        <!--{if $num == $disp_number}-->
+                        <option value="<!--{$num}-->" selected="selected" ><!--{$dispnum}--></option>
+                        <!--{else}-->
+                        <option value="<!--{$num}-->" ><!--{$dispnum}--></option>
+                        <!--{/if}-->
+                    <!--{/foreach}-->
+                </select>
+            </div>
+            <div class="navi"><!--{$tpl_strnavi}--></div>
+        </div>
+    <!--{/capture}-->
+    <!--▲ページナビ(本文)-->
 
-    <!--{foreach from=$arrProducts item=arrProduct}-->
+    <!--{foreach from=$arrProducts item=arrProduct name=arrProducts}-->
+
+        <!--{if $smarty.foreach.arrProducts.first}-->
+            <!--▼件数-->
+            <div>
+                <span class="pagenumber"><!--{$tpl_linemax}--></span>件の商品がございます。
+            </div>
+            <!--▲件数-->
+            
+            <!--▼ページナビ(上部)-->
+            <form name="page_navi_top" id="page_navi_top" action="?">
+                <!--{if $tpl_linemax > 0}--><!--{$smarty.capture.page_navi_body|smarty:nodefaults}--><!--{/if}-->
+            </form>
+            <!--▲ページナビ(上部)-->
+        <!--{/if}-->
+
         <!--{assign var=id value=$arrProduct.product_id}-->
         <!--{assign var=arrErr value=$arrProduct.arrErr}-->
         <!--▼商品-->
@@ -311,39 +321,18 @@ function fnCheckStock(form) {
             </div>
         </div>
         <!--▲商品-->
+
+        <!--{if $smarty.foreach.arrProducts.last}-->
+            <!--▼ページナビ(下部)-->
+            <form name="page_navi_bottom" id="page_navi_bottom" action="?">
+                <!--{if $tpl_linemax > 0}--><!--{$smarty.capture.page_navi_body|smarty:nodefaults}--><!--{/if}-->
+            </form>
+            <!--▲ページナビ(下部)-->
+        <!--{/if}-->
+
+    <!--{foreachelse}-->
+        <!--{include file="frontparts/search_zero.tpl"}-->
     <!--{/foreach}-->
 
-    <!--▼ページナビ(下部)-->
-    <form name="page_navi_bottom" id="page_navi_bottom" action="?">
-        <!--{if $tpl_linemax > 0}-->
-            <ul class="pagenumberarea">
-                <li class="left"><span class="pagenumber"><!--{$tpl_linemax}--></span>件の商品がございます。</li>
-                <li class="center"><!--{$tpl_strnavi}--></li>
-                <li class="right">
-                    <!--{if $orderby != 'price'}-->
-                        <a href="javascript:fnChangeOrderby('price');">価格順</a>
-                    <!--{else}-->
-                        <strong>価格順</strong>
-                    <!--{/if}-->&nbsp;
-                    <!--{if $orderby != "date"}-->
-                        <a href="javascript:fnChangeOrderby('date');">新着順</a>
-                    <!--{else}-->
-                        <strong>新着順</strong>
-                    <!--{/if}-->
-                     表示件数
-                    <select name="disp_number" onchange="javascript:fnChangeDispNumber(this.value);">
-                    <!--{foreach from=$arrPRODUCTLISTMAX item="dispnum" key="num"}-->
-                    <!--{if $num == $disp_number}-->
-                    <option value="<!--{$num}-->" selected="selected" ><!--{$dispnum}--></option>
-                    <!--{else}-->
-                    <option value="<!--{$num}-->" ><!--{$dispnum}--></option>
-                    <!--{/if}-->
-                <!--{/foreach}-->
-                    </select>
-                </li>
-            </ul>
-        <!--{/if}-->
-    </form>
-    <!--▲ページナビ(下部)-->
 </div>
 <!--▲CONTENTS-->
