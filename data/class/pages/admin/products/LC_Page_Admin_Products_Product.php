@@ -451,16 +451,16 @@ class LC_Page_Admin_Products_Product extends LC_Page {
 
             // コピー商品の場合には規格もコピーする
             if($_POST["copy_product_id"] != "" and SC_Utils_Ex::sfIsInt($_POST["copy_product_id"])){
-            
+
                 if($this->tpl_nonclass)
                 {
-                    //規格がない場合のコピーは価格等の入力が発生しているので、その内容で追加登録
+                    //規格なしの場合、コピーは価格等の入力が発生しているため、その内容で追加登録を行う
                     $arrList['product_id'] = $product_id;
                     $this->lfCopyProductClass($arrList, $objQuery);
                 }
                 else
                 {
-                    //規格がある場合のコピーは複製元の内容で追加登録
+                    //規格がある場合のコピーは複製元の内容で追加登録を行う
                     // dtb_products_class のカラムを取得
                     $dbFactory = SC_DB_DBFactory_Ex::getInstance();
                     $arrColList = $dbFactory->sfGetColumnList("dtb_products_class", $objQuery);
@@ -476,7 +476,6 @@ class LC_Page_Admin_Products_Product extends LC_Page {
                     $objQuery->query("INSERT INTO dtb_products_class (product_id, create_date, ". $col .") SELECT ?, now(), " . $col. " FROM dtb_products_class WHERE product_id = ? ORDER BY product_class_id", array($product_id, $_POST["copy_product_id"]));
                 }
             }
-
         } else {
             $product_id = $arrList['product_id'];
             // 削除要求のあった既存ファイルの削除
@@ -735,6 +734,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         }
         return $dist_name;
     }
+
     /**
      * dtb_products_classの複製
      * 複製後、価格や商品コードを更新する
@@ -745,7 +745,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
      */
     function lfCopyProductClass($arrList,$objQuery)
     {
-        // 複製元のdtb_products_classを取得（1件しかないはず）
+        // 複製元のdtb_products_classを取得（規格なしのため、1件のみの取得）
         $col = "*";
         $table = "dtb_products_class";
         $where = "product_id = ?";
@@ -766,7 +766,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
             }
             unset($records["product_class_id"]);
             unset($records["update_date"]);
-            
+
             $records["create_date"] = "Now()";
             $objQuery->insert($table, $records);
             //エラー発生時は中断
