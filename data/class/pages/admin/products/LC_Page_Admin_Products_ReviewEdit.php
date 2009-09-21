@@ -90,7 +90,7 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page {
                     array("column" => "reviewer_url", "convert" => "KVa"),
                     array("column" => "sex", "convert" => "n")
                 );
-                
+
                 // フォーム値の変換
                 $arrReview = $this->lfConvertParam($_POST, $arrRegistColumn);
                 $this->arrErr = $this->lfCheckError($arrReview);
@@ -104,14 +104,14 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page {
                 else {
                     // レビュー情報の更新
                     $this->lfRegistReviewData($arrReview, $arrRegistColumn);
-                    
+
                     // レビュー情報のDB取得
                     $this->arrReview = $this->lfGetReviewData($arrReview['review_id']);
-                    
+
                     $this->tpl_onload = "alert('登録が完了しました。');";
                 }
                 break;
-            
+
             default:
                 // レビュー情報のDB取得
                 $this->arrReview = $this->lfGetReviewData($_POST['review_id']);
@@ -130,7 +130,6 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page {
     function destroy() {
         parent::destroy();
     }
-
 
     /**
      * 入力エラーチェック
@@ -186,11 +185,10 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page {
         $from = "dtb_review AS A LEFT JOIN dtb_products AS B ON A.product_id = B.product_id ";
         $where = "A.del_flg = 0 AND B.del_flg = 0 AND review_id = ? ";
         $arrReview = $this->objQuery->select($select, $from, $where, array($review_id));
-        
         if (empty($arrReview)) {
             SC_Utils_Ex::sfDispError("");
         }
-        
+
         return $arrReview[0];
     }
 
@@ -203,7 +201,7 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page {
             $arrRegist[ $data["column"] ] = $arrReview[ $data["column"] ];
         }
         $arrRegist['update_date'] = 'now()';
-        
+
         // 更新実行
         $this->objQuery->update("dtb_review", $arrRegist, "review_id = ?", array($arrReview['review_id']));
     }
