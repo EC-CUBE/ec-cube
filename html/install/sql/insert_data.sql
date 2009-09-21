@@ -758,6 +758,7 @@ INSERT INTO mtb_mobile_domain VALUES (2, 'ezweb.ne.jp', 1);
 INSERT INTO mtb_mobile_domain VALUES (3, 'softbank.ne.jp', 2);
 INSERT INTO mtb_mobile_domain VALUES (4, 'vodafone.ne.jp', 3);
 INSERT INTO mtb_mobile_domain VALUES (5, 'pdx.ne.jp', 4);
+INSERT INTO mtb_mobile_domain VALUES (6, 'disney.ne.jp', 5);
 INSERT INTO mtb_ownersstore_err VALUES ('1000', '不明なエラーが発生しました。', 0);
 INSERT INTO mtb_ownersstore_err VALUES ('1001', '不正なパラメータが送信されました。', 1);
 INSERT INTO mtb_ownersstore_err VALUES ('1002', '認証に失敗しました。<br />・仮会員の方は、本会員登録を行ってください<br />・認証キーが正しく設定されているか確認してください', 2);
