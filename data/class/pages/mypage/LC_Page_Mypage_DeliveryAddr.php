@@ -65,6 +65,8 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page {
         // GETでページを指定されている場合には指定ページに戻す
         if (isset($_GET['page'])) {
             $ParentPage = htmlspecialchars($_GET['page'],ENT_QUOTES);
+        }else if(isset($_POST['ParentPage'])) {
+            $ParentPage = htmlspecialchars($_POST['ParentPage'],ENT_QUOTES);
         }
         $this->ParentPage = $ParentPage;
 
