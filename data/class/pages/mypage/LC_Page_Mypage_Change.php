@@ -437,7 +437,7 @@ class LC_Page_Mypage_Change extends LC_Page {
                                  "del_flg=0 AND " . $mailType . "= ?",
                                   array($this->arrForm[$mailType]));
                 if ($email_cnt > 0){
-                    $arrMailType2[$mailTypeValue] = false;
+                    $arrMailType2[$mailType] = false;
                     $this->arrErr[$mailType] .= "既に使用されているメールアドレスです。";
                 }
             }
