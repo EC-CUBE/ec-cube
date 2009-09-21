@@ -147,7 +147,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page {
                     $header .= $data;
                     $i ++;
                 }
-                $header .= "\n\r";
+                $header .= "\r\n";
 
                 $data = SC_Utils_Ex::getCSVData($arrCsvOutputData, $arrKey);
                 // CSV出力
