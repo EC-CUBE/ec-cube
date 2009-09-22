@@ -518,15 +518,14 @@ class LC_Page_Mypage_Change extends LC_Page {
          *  n :  「全角」数字を「半角(ﾊﾝｶｸ)」に変換
          *  a :  全角英数字を半角英数字に変換する
          */
-
         foreach ($arrRegistColumn as $registColumn) {
             $key = $registColumn["column"];
             $mb_convert_kana_option = $registColumn["convert"];
             $val =& $array[$key];
-            
+
             // string 型以外は変換対象外とする
             if (!is_string($val)) continue;
-            
+
             // 文字変換
             if (strlen($val) > 0) {
                 $val = mb_convert_kana($val ,$mb_convert_kana_option);
