@@ -70,7 +70,25 @@
     <!--{if file_exists($path)}-->
         <!--{include file=$path}-->
     <!--{/if}-->
-    
+
+                        <!--{* GMOPG連携用 *}-->
+                        <!--{assign var=path value=`$smarty.const.MODULE_PATH`mdl_gmopg/templates/order_edit.tpl}-->
+                        <!--{if file_exists($path)}-->
+                            <!--{include file=$path}-->
+                        <!--{/if}-->
+
+                        <!--{* SPS連携用 *}-->
+                        <!--{assign var=sps_path value=`$smarty.const.MODULE_PATH`mdl_sps/templates/sps_request.tpl}-->
+                        <!--{if file_exists($sps_path) && $paymentType[0].module_code == $smarty.const.MDL_SPS_CODE}-->
+                            <!--{include file=$sps_path}-->
+                        <!--{/if}-->
+
+                        <!--{* ペイジェントモジュール連携用 *}-->
+                        <!--{assign var=path value=`$smarty.const.MODULE_PATH`mdl_paygent/paygent_order.tpl}-->
+                        <!--{if file_exists($path)}-->
+                            <!--{include file=$path}-->
+                        <!--{/if}-->
+
     <!--▼お客様情報ここから-->
     <table class="form">
         <!--{if $tpl_mode != 'add'}-->
@@ -95,24 +113,6 @@
             <td><!--{$arrForm.commit_date.value|sfDispDBDate|default:"未発送"}--></td>
         </tr>
     </table>
-
-						<!--{* GMOPG連携用 *}-->
-						<!--{assign var=path value=`$smarty.const.MODULE_PATH`mdl_gmopg/templates/order_edit.tpl}-->
-						<!--{if file_exists($path)}-->
-							<!--{include file=$path}-->
-						<!--{/if}-->
-
-						<!--{* SPS連携用 *}-->
-						<!--{assign var=sps_path value=`$smarty.const.MODULE_PATH`mdl_sps/templates/sps_request.tpl}-->
-						<!--{if file_exists($sps_path) && $paymentType[0].module_code == $smarty.const.MDL_SPS_CODE && $paymentType[0].memo03 == $smarty.const.SPS_CREDIT}-->
-							<!--{include file=$sps_path}-->
-						<!--{/if}-->
-
-    <!--{* F-REGI決済モジュール用 *}-->
-    <!--{assign var=path value=`$smarty.const.MODULE_PATH`mdl_fregi/fregi_order.tpl}-->
-    <!--{if file_exists($path)}-->
-        <!--{include file=$path}-->
-    <!--{/if}-->
 
     <!--{foreach key=key item=item from=$arrSearchHidden}-->
     <input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->" />
