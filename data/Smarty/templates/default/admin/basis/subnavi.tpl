@@ -30,7 +30,7 @@
 <li<!--{if $tpl_subno == 'mail'}--> class="on"<!--{/if}--> id="navi-basis-mail"><a href="<!--{$smarty.const.URL_DIR}-->admin/basis/mail.php"><span>メール設定</span></a></li>
 <li<!--{if $tpl_subno == 'seo'}--> class="on"<!--{/if}--> id="navi-basis-seo"><a href="<!--{$smarty.const.URL_DIR}-->admin/basis/seo.php"><span>SEO管理</span></a></li>
 <li<!--{if $tpl_subno == 'kiyaku'}--> class="on"<!--{/if}--> id="navi-basis-kiyaku"><a href="<!--{$smarty.const.URL_DIR}-->admin/basis/kiyaku.php"><span>会員規約設定</span></a></li>
-<li<!--{if $tpl_subno == 'zip_install'}--> class="on"<!--{/if}--> id="navi-basis-zip"><a href="#" onclick="win03('<!--{$smarty.const.URL_DIR}-->admin/basis/zip_install.php', 'install', '750', '350');"><span>郵便番号DB登録</span></a></li>
+<li<!--{if $tpl_subno == 'zip_install'}--> class="on"<!--{/if}--> id="navi-basis-zip"><a href="<!--{$smarty.const.URL_DIR}-->admin/basis/zip_install.php"><span>郵便番号DB登録</span></a></li>
 <li<!--{if $tpl_subno == 'control'}--> class="on"<!--{/if}--> id="navi-basis-control"><a href="<!--{$smarty.const.URL_DIR}-->admin/basis/control.php"><span>サイト管理設定</span></a></li>
 <li<!--{if $tpl_subno == 'holiday'}--> class="on"<!--{/if}--> id="navi-basis-holiday"><a href="<!--{$smarty.const.URL_DIR}-->admin/basis/holiday.php"><span>定休日管理</span></a></li>
 </ul>
