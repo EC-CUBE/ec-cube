@@ -312,6 +312,17 @@ class LC_Page {
     }
 
     /**
+     * 互換性確保用メソッド
+     *
+     * @access protected
+     * @return void
+     * @deprecated 決済モジュール互換のため
+     */
+    function allowClientCache() {
+        LC_Page::httpCacheControl('private');
+    }
+
+    /**
      * クライアント・プロキシのキャッシュを制御する.
      *
      * @access protected
