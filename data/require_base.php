@@ -93,7 +93,4 @@ if (!SC_Utils_Ex::sfIsInstallFunction()) {
     $sessionFactory = SC_SessionFactory::getInstance();
     $sessionFactory->initSession();
 }
-
-// 絵文字変換 (除去) フィルターを組み込む。
-ob_start(array('SC_MobileEmoji', 'handler'));
 ?>

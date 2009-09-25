@@ -31,4 +31,6 @@ require_once HTML_PATH . HTML2DATA_DIR . 'require_base.php';
 // 携帯端末の場合、モバイルサイトへリダイレクトする
 SC_MobileUserAgent::sfAutoRedirectMobileSite();
 
+// 絵文字変換 (除去) フィルターを組み込む。
+ob_start(array('SC_MobileEmoji', 'handler'));
 ?>
