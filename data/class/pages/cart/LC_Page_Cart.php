@@ -139,7 +139,7 @@ class LC_Page_Cart extends LC_Page {
 
         // カート集計処理
         $objDb->sfTotalCart($this, $objCartSess);
-        $this->arrData = $objDb->sfTotalConfirm($this->arrData, $this, $objCartSess, $objCustomer);
+        $this->arrData = $objDb->sfTotalConfirm($this->arrData, $this, $objCartSess, null, $objCustomer);
 
         // 基本情報の取得
         $this->arrInfo = $objSiteInfo->data;
@@ -261,7 +261,7 @@ class LC_Page_Cart extends LC_Page {
             $arrData = array();
         }
         $objDb->sfTotalCart($this, $objCartSess);
-        $this->arrData = $objDb->sfTotalConfirm($arrData, $this, $objCartSess, $objCustomer);
+        $this->arrData = $objDb->sfTotalConfirm($arrData, $this, $objCartSess, null, $objCustomer);
 
         // 基本情報の取得
         $this->arrInfo = $objSiteInfo->data;

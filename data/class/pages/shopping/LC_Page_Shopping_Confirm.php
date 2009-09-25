@@ -87,7 +87,7 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         // 一時受注テーブルの読込
         $arrData = $objDb->sfGetOrderTemp($uniqid);
         // カート集計を元に最終計算
-        $arrData = $objDb->sfTotalConfirm($arrData, $this, $objCartSess, $objCustomer);
+        $arrData = $objDb->sfTotalConfirm($arrData, $this, $objCartSess, null, $objCustomer);
         // キャンペーンからの遷移で送料が無料だった場合の処理
         if($objCampaignSess->getIsCampaign()) {
             $deliv_free_flg = $objQuery->get("dtb_campaign", "deliv_free_flg", "campaign_id = ?", array($objCampaignSess->getCampaignId()));
@@ -201,7 +201,7 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         // 一時受注テーブルの読込
         $arrData = $objDb->sfGetOrderTemp($uniqid);
         // カート集計を元に最終計算
-        $arrData = $objDb->sfTotalConfirm($arrData, $this, $objCartSess, $objCustomer);
+        $arrData = $objDb->sfTotalConfirm($arrData, $this, $objCartSess, null, $objCustomer);
 
         // 会員ログインチェック
         if($objCustomer->isLoginSuccess(true)) {

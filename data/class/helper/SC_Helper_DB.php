@@ -289,9 +289,10 @@ class SC_Helper_DB {
      *
      * @param LC_Page $objPage ページクラスのインスタンス
      * @param SC_CartSession $objCartSess カートセッションのインスタンス
+     * @param null $dummy1 互換性確保用(決済モジュール互換のため)
      * @return LC_Page 集計処理後のページクラスインスタンス
      */
-    function sfTotalCart(&$objPage, $objCartSess) {
+    function sfTotalCart(&$objPage, $objCartSess, $dummy1 = null) {
 
         // 規格名一覧
         $arrClassName = $this->sfGetIDValueList("dtb_class", "class_id", "name");
@@ -1517,10 +1518,11 @@ __EOS__;
      * @param array $arrData 各種情報
      * @param LC_Page $objPage LC_Page インスタンス
      * @param SC_CartSession $objCartSess SC_CartSession インスタンス
+     * @param null $dummy1 互換性確保用(決済モジュール互換のため)
      * @param SC_Customer $objCustomer SC_Customer インスタンス
      * @return array 最終計算後の配列
      */
-    function sfTotalConfirm($arrData, &$objPage, &$objCartSess, $objCustomer = "") {
+    function sfTotalConfirm($arrData, &$objPage, &$objCartSess, $dummy1 = null, $objCustomer = "") {
         // 店舗基本情報を取得する
         $arrInfo = SC_Helper_DB_Ex::sf_getBasisData();
         
