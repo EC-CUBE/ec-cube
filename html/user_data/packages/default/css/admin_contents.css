@@ -361,61 +361,56 @@ body > #container {
 
 /* デザイン管理
 ----------------------------------------------- */
-/* レイアウト管理 */
-div.sort {
+/* レイアウト設定 */
+
+.design-layout {
+    table-layout: fixed;
+}
+.design-layout th,
+.design-layout td {
+    vertical-align: top;
+    text-align: center;
+}
+#design-layout-used {
+    width: 525px;
+}
+#design-layout-unused {
+    width: 175px;
+}
+.design-layout #LeftNavi,
+.design-layout #MainHead,
+.design-layout #RightNavi {
+    width: 33.33%;
+}
+.design-layout #TopNavi,
+.design-layout #HeadNavi,
+.design-layout #HeaderTopNavi,
+.design-layout #LeftNavi,
+.design-layout #MainHead,
+.design-layout #MainFoot,
+.design-layout #RightNavi,
+.design-layout #BottomNavi,
+.design-layout #FooterBottomNavi,
+.design-layout #Unused {
+    padding-bottom: 20px;
+    height: 10px; /* IE6応急処置 */
+}
+.design-layout div.sort {
     border:     1px solid black;
     background: rgb(195,217,255);
     color:      #333;
     padding:    5px 2px;
-    margin:     5px 0px;
+    margin:     5px 0;
     font-size:  10pt;
     text-align: center;
-    width:      140px;
 }
-#TopNavi div.sort,#BottomNavi div.sort,#FooterBottomNavi div.sort,#HeaderTopNavi div.sort,#HeadNavi div.sort{
-	width:95%;
-	margin: 5px auto 5px;
-	
+.design-layout .anywherecheck {
+    white-space: nowrap;
 }
-
-
-.placeholder { border:1px dashed #AAA; }
-
-#design-layout-body {
-    width: 450px;
-    margin: 0 auto;
+.placeholder {
+    border: 1px dashed #AAA;
+    height: 20px;
 }
-#design-layout-body td {
-    width: 145px;
-    vertical-align: top;
-    text-align: center;
-}
-#design-layout-wrap-unused {width:145px;}
-#LeftNavi, #RightNavi {
-    width: 140px;
-    min-height: 400px;
-    height: auto !important;
-    height: 400px;
-    vertical-align: top;
-}
-#design-layout-body #MainHead, #design-layout-body #MainFoot {
-    min-height: 100px;
-    height: auto !important;
-    height: 100px;
-}
-#TopNavi,#BottomNavi,#HeadNavi,#HeaderTopNavi,#FooterBottomNavi{
-	width:95%;
-	min-height: 60px;
-	height:auto !important;
-	vertical-align: top;
-	text-align: center;
-}
-
-div#HeadNavi{
-	background-image: url(../img/admin/contents/head-bg.jpg);	
-}
-
-#design-layout-body td#layout-main {vertical-align: middle;}
 
 
 /* フォーム

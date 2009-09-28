@@ -32,7 +32,7 @@
     };
     
     var sortableUpdate = function(e, ui){
-        updateUpDown(ui.element[0]);
+        updateUpDown(this);
         if(ui.sender)
             updateUpDown(ui.sender[0]);
     };
