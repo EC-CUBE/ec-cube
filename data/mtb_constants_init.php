@@ -123,7 +123,7 @@ define('DEBUG_MODE', false);
 define('ADMIN_ID', "1");
 /** 会員登録時に仮会員確認メールを送信するか（true:仮会員、false:本会員） */
 define('CUSTOMER_CONFIRM_MAIL', false);
-/** メルマガ配信抑制(false:OFF、true:ON) */
+/** メルマガ配信(true:配信する、false:配信しない) */
 define('MELMAGA_SEND', true);
 /** メイルマガジンバッチモード(true:バッチで送信する ※要cron設定、false:リアルタイムで送信する) */
 define('MELMAGA_BATCH_MODE', false);
