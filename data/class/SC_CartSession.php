@@ -248,7 +248,6 @@ class SC_CartSession {
     function setPrevURL($url) {
         // 前頁として記録しないページを指定する。
         $arrExclude = array(
-            "detail_image.php",
             "/shopping/"
         );
         $exclude = false;

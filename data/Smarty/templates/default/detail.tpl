@@ -19,6 +19,10 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
+<script type="text/javascript" src="<!--{$TPL_DIR}-->js/jquery-1.3.2.min.js"></script>
+<script type="text/javascript" src="<!--{$TPL_DIR}-->js/jquery.easing.1.3.js"></script>
+<script type="text/javascript" src="<!--{$TPL_DIR}-->jquery.fancybox/jquery.fancybox-1.2.1.pack.js"></script>
+<link rel="stylesheet" href="<!--{$TPL_DIR}-->jquery.fancybox/jquery.fancybox.css" type="text/css" media="screen" />
 <script type="text/javascript">//<![CDATA[
 // 規格2に選択肢を割り当てる。
 function fnSetClassCategories(form, classcat_id2_selected) {
@@ -125,6 +129,10 @@ function fnCheckStock(form) {
         eleDynamic.innerHTML = '';
     }
 }
+$(document).ready(function() {
+    $("a.expansion").fancybox({
+    });
+});
 //]]>
 </script>
 
@@ -141,18 +149,23 @@ function fnCheckStock(form) {
         <div id="detailphotoblock">
 
             <!--{assign var=key value="main_image"}-->
-            <!--{if $arrProduct.main_large_image != ""}-->
-                <!--★画像★-->
-                <a href="javascript:void(win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&amp;image=main_large_image<!--{if $smarty.get.admin == 'on'}-->&amp;admin=on<!--{/if}-->','detail_image','<!--{$arrFile.main_large_image.width+60}-->', '<!--{$arrFile.main_large_image.height+80}-->'))">
-                    <img src="<!--{$arrFile[$key].filepath|escape}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" alt="<!--{$arrProduct.name|escape}-->" class="picture" /></a>
-                <p>
+            
+            <!--★画像★-->
+            <a
+                <!--{if $arrProduct.main_large_image|strlen >= 1}-->
+                    href="<!--{$smarty.const.IMAGE_SAVE_URL}--><!--{$arrProduct.main_large_image|escape}-->"
+                    class="expansion"
+                    onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_expansion_on.gif','expansion01');"
+                    onmouseout="chgImg('<!--{$TPL_DIR}-->img/products/b_expansion.gif','expansion01');"
+                    target="_blank"
+                <!--{/if}-->
+            >
+                <img src="<!--{$arrFile[$key].filepath|escape}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" alt="<!--{$arrProduct.name|escape}-->" class="picture" /><br />
                 <!--★拡大する★-->
-                    <a href="javascript:void(win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&amp;image=main_large_image<!--{if $smarty.get.admin == 'on'}-->&amp;admin=on<!--{/if}-->','detail_image','<!--{$arrFile.main_large_image.width+60}-->', '<!--{$arrFile.main_large_image.height+80}-->'))" onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_expansion_on.gif','expansion01');" onMouseOut="chgImg('<!--{$TPL_DIR}-->img/products/b_expansion.gif','expansion01');">
-                        <img src="<!--{$TPL_DIR}-->img/products/b_expansion.gif" width="85" height="13" alt="画像を拡大する" name="expansion01" id="expansion01" /></a>
-                </p>
-            <!--{else}-->
-                <img src="<!--{$arrFile[$key].filepath}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" alt="<!--{$arrProduct.name|escape}-->" class="picture" />
-            <!--{/if}-->
+                <!--{if $arrProduct.main_large_image|strlen >= 1}-->
+                    <img src="<!--{$TPL_DIR}-->img/products/b_expansion.gif" width="85" height="13" alt="画像を拡大する" name="expansion01" id="expansion01" />
+                <!--{/if}-->
+            </a>
         </div>
 
         <div id="detailrightblock">
@@ -352,32 +365,28 @@ function fnCheckStock(form) {
                 
                 <div class="subtext"><!--★サブテキスト★--><!--{$arrProduct[$ckey]|nl2br_html}--></div>
                 
-                <!--▼拡大写真-->
+                <!--▼サブ画像-->
                 <!--{assign var=key value="sub_image`$smarty.section.cnt.index+1`"}-->
                 <!--{assign var=lkey value="sub_large_image`$smarty.section.cnt.index+1`"}-->
-                <!--{if $arrFile[$key].filepath != ""}-->
+                <!--{if $arrProduct[$lkey]|strlen >= 1}-->
                     <div class="subphotoimg">
                         <a
-                        <!--{if $arrFile[$lkey].filepath != ""}-->
-                                href="?"
-                                onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&amp;image=<!--{$lkey}--><!--{if $smarty.get.admin == 'on'}-->&amp;admin=on<!--{/if}-->','detail_image','<!--{$arrFile[$lkey].width+60}-->','<!--{$arrFile[$lkey].height+80}-->'); return false;"
+                            <!--{if $arrProduct[$lkey]|strlen >= 1}-->
+                                href="<!--{$smarty.const.IMAGE_SAVE_URL}--><!--{$arrProduct[$lkey]|escape}-->"
+                                class="expansion"
+                                onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_expansion_on.gif', 'expansion_<!--{$lkey|escape}-->');"
+                                onmouseout="chgImg('<!--{$TPL_DIR}-->img/products/b_expansion.gif', 'expansion_<!--{$lkey|escape}-->');"
                                 target="_blank"
-                        <!--{/if}-->
+                            <!--{/if}-->
                         >
-                        <!--サブ画像-->
-                            <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrProduct.name|escape}-->" width="<!--{$smarty.const.NORMAL_SUBIMAGE_WIDTH}-->" height="<!--{$smarty.const.NORMAL_SUBIMAGE_HEIGHT}-->" /></a>
-                        <!--{if $arrFile[$lkey].filepath != ""}-->
-                            <p>
-                                <a href="?"
-                                     onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&amp;image=<!--{$lkey}--><!--{if $smarty.get.admin == 'on'}-->&amp;admin=on<!--{/if}-->','detail_image','<!--{$arrFile[$lkey].width+60}-->','<!--{$arrFile[$lkey].height+80}-->'); return false;"
-                                     onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_expansion_on.gif','expansion02');"
-                                     onmouseout="chgImg('<!--{$TPL_DIR}-->img/products/b_expansion.gif','expansion02');" target="_blank">
-                                    <img src="<!--{$TPL_DIR}-->img/products/b_expansion.gif" width="85" height="13" alt="画像を拡大する" /></a>
-                            </p>
-                        <!--{/if}-->
+                            <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrProduct.name|escape}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" /><br />
+                            <!--{if $arrProduct[$lkey]|strlen >= 1}-->
+                                <img src="<!--{$TPL_DIR}-->img/products/b_expansion.gif" width="85" height="13" alt="画像を拡大する" id="expansion_<!--{$lkey|escape}-->" />
+                            <!--{/if}-->
+                        </a>
                     </div>
-                    <!--▲拡大写真-->
                 <!--{/if}-->
+                <!--▲サブ画像-->
             </div>
         <!--{/if}-->
     <!--{/section}-->

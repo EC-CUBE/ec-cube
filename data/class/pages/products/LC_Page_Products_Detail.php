@@ -244,8 +244,6 @@ class LC_Page_Products_Detail extends LC_Page {
         $this->arrRelativeCat = $objDb->sfGetMultiCatTree($product_id);
         
         // 画像ファイル指定がない場合の置換処理
-        $this->arrProduct['main_list_image']
-            = SC_Utils_Ex::sfNoImageMainList($this->arrProduct['main_list_image']);
         $this->arrProduct['main_image']
             = SC_Utils_Ex::sfNoImageMain($this->arrProduct['main_image']);
         
@@ -447,8 +445,6 @@ class LC_Page_Products_Detail extends LC_Page {
         $this->tpl_subtitle = $this->arrProduct["name"];
         
         // 画像ファイル指定がない場合の置換処理
-        $this->arrProduct['main_list_image']
-            = SC_Utils_Ex::sfNoImageMainList($this->arrProduct['main_list_image']);
         $this->arrProduct['main_image']
             = SC_Utils_Ex::sfNoImageMain($this->arrProduct['main_image']);
         
@@ -508,12 +504,9 @@ class LC_Page_Products_Detail extends LC_Page {
 
     /* ファイル情報の初期化 */
     function lfInitFile() {
-        $this->objUpFile->addFile("一覧-メイン画像", 'main_list_image', array('jpg','gif'),IMAGE_SIZE, true, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT);
         $this->objUpFile->addFile("詳細-メイン画像", 'main_image', array('jpg'), IMAGE_SIZE, true, NORMAL_IMAGE_WIDTH, NORMAL_IMAGE_HEIGHT);
-        $this->objUpFile->addFile("詳細-メイン拡大画像", 'main_large_image', array('jpg'), IMAGE_SIZE, false, LARGE_IMAGE_HEIGHT, LARGE_IMAGE_HEIGHT);
         for ($cnt = 1; $cnt <= PRODUCTSUB_MAX; $cnt++) {
             $this->objUpFile->addFile("詳細-サブ画像$cnt", "sub_image$cnt", array('jpg'), IMAGE_SIZE, false, NORMAL_SUBIMAGE_HEIGHT, NORMAL_SUBIMAGE_HEIGHT);
-            $this->objUpFile->addFile("詳細-サブ拡大画像$cnt", "sub_large_image$cnt", array('jpg'), IMAGE_SIZE, false, LARGE_SUBIMAGE_HEIGHT, LARGE_SUBIMAGE_HEIGHT);
         }
         $this->objUpFile->addFile("商品比較画像", 'file1', array('jpg'), IMAGE_SIZE, false, NORMAL_IMAGE_HEIGHT, NORMAL_IMAGE_HEIGHT);
         $this->objUpFile->addFile("商品詳細ファイル", 'file2', array('pdf'), PDF_SIZE, false, 0, 0, false);
