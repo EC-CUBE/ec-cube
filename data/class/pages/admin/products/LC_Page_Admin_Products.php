@@ -260,6 +260,10 @@ class LC_Page_Admin_Products extends LC_Page {
                         $sqlval['del_flg'] = 1;
                         $objQuery->update("dtb_products", $sqlval, $where, $arrval);
                         $objQuery->delete("dtb_customer_favorite_products", $where, $arrval);
+
+                        // 件数カウントバッチ実行
+                        $objDb->sfCategory_Count($objQuery);
+
                         break;
                     default:
                         // 読み込む列とテーブルの指定
