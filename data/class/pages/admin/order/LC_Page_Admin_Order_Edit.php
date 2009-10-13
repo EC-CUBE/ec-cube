@@ -549,30 +549,11 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
     function lfRegistData($order_id) {
         $objQuery = new SC_Query();
 
-        $objQuery->begin();
-
-        // 入力データを渡す。
-        $arrRet = $this->objFormParam->getHashArray();
-        foreach ($arrRet as $key => $val) {
-            // 配列は登録しない
-            if (!is_array($val)) {
-                $sqlval[$key] = $val;
-            }
-        }
-        $sqlval['update_date'] = 'Now()';
-        
-        if (strlen($sqlval['deliv_date_year']) >= 0) {
-            $sqlval['deliv_date'] = $sqlval['deliv_date_year'] . '-' . $sqlval['deliv_date_month'] . '-' . $sqlval['deliv_date_day'];
-        }
-        unset($sqlval['deliv_date_year']);
-        unset($sqlval['deliv_date_month']);
-        unset($sqlval['deliv_date_day']);
-        
-        unset($sqlval['total_point']);
-        unset($sqlval['point']);
-        unset($sqlval['commit_date']);
+        $sqlval = $this->lfMakeSqlvalForDtbOrder();
 
         $where = "order_id = ?";
+
+        $objQuery->begin();
 
         // 受注.対応状況の更新
         SC_Helper_DB_Ex::sfUpdateOrderStatus($order_id, $sqlval['status'], $sqlval['add_point'], $sqlval['use_point']);
@@ -618,22 +599,10 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
     function lfRegistNewData() {
         $objQuery = new SC_Query();
 
-        $objQuery->begin();
-
-        // 入力データを渡す。
-        $arrRet =  $this->objFormParam->getHashArray();
-        foreach ($arrRet as $key => $val) {
-            // 配列は登録しない
-            if (!is_array($val)) {
-                $sqlval[$key] = $val;
-            }
-        }
+        $sqlval = $this->lfMakeSqlvalForDtbOrder();
 
         // 受注テーブルに書き込まない列を除去
         unset($sqlval['order_id']); 
-        unset($sqlval['total_point']);
-        unset($sqlval['point']);
-        unset($sqlval['commit_date']);
 
         // ポイントは別登録
         $addPoint = $sqlval['add_point'];
@@ -651,7 +620,8 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         }
 
         $sqlval['create_date'] = 'Now()';       // 受注日
-        $sqlval['update_date'] = 'Now()';       // 更新日時
+
+        $objQuery->begin();
 
         // 受注テーブルの登録
         $objQuery->insert("dtb_order", $sqlval);
@@ -790,5 +760,40 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
             $this->objFormParam->convParam();
         }
     }
+
+    /**
+     * 受注テーブルの登録・更新用データの共通部分を作成する
+     *
+     * @return array
+     */
+    function lfMakeSqlvalForDtbOrder() {
+
+        // 入力データを取得する
+        $sqlval = $this->objFormParam->getHashArray();
+        foreach ($sqlval as $key => $val) {
+            // 配列は登録しない
+            if (is_array($val)) {
+                unset($sqlval[$key]);
+            }
+        }
+
+        // 受注テーブルに書き込まない列を除去
+        unset($sqlval['total_point']);
+        unset($sqlval['point']);
+        unset($sqlval['commit_date']);
+
+        // お届け日
+        if (strlen($sqlval['deliv_date_year']) >= 1) {
+            $sqlval['deliv_date'] = $sqlval['deliv_date_year'] . '-' . $sqlval['deliv_date_month'] . '-' . $sqlval['deliv_date_day'];
+        }
+        unset($sqlval['deliv_date_year']);
+        unset($sqlval['deliv_date_month']);
+        unset($sqlval['deliv_date_day']);
+
+        // 更新日時
+        $sqlval['update_date'] = 'Now()';
+
+        return $sqlval;
+   }
 }
 ?>
