@@ -108,6 +108,7 @@ class LC_Page_Admin_Order_Pdf extends LC_Page {
                     $objFpdf->setData($arrPdfData);
                 }
                 $objFpdf->createPdf();
+                exit;
             }
             break;
         default:
