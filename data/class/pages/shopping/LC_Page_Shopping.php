@@ -117,9 +117,6 @@ class LC_Page_Shopping extends LC_Page {
                 // DBへのデータ登録
                 $this->lfRegistData($uniqid);
 
-                // お届け先のコピー
-                $this->lfCopyDeliv($uniqid, $_POST);
-
                 // 正常に登録されたことを記録しておく
                 $objSiteSess->setRegistFlag();
                 // お支払い方法選択ページへ移動
@@ -290,10 +287,15 @@ class LC_Page_Shopping extends LC_Page {
         $arrRet = $this->objFormParam->getHashArray();
         $sqlval = $this->objFormParam->getDbArray();
         // 登録データの作成
-        $sqlval['order_temp_id'] = $uniqid;
         $sqlval['order_birth'] = SC_Utils_Ex::sfGetTimestamp($arrRet['year'], $arrRet['month'], $arrRet['day']);
         $sqlval['update_date'] = 'Now()';
         $sqlval['customer_id'] = '0';
+
+        // お届け先を指定しない場合、
+        if ($sqlval['deliv_check'] != '1') {
+            // 受注一時テーブルに登録する顧客(お客様情報)をお届け先へコピーする
+            $this->lfCopyDeliv($sqlval);
+        }
 
         // 既存データのチェック
         $objQuery = new SC_Query();
@@ -301,6 +303,7 @@ class LC_Page_Shopping extends LC_Page {
         $cnt = $objQuery->count("dtb_order_temp", $where, array($uniqid));
         // 既存データがない場合
         if ($cnt == 0) {
+            $sqlval['order_temp_id'] = $uniqid;
             $sqlval['create_date'] = 'Now()';
             $objQuery->insert("dtb_order_temp", $sqlval);
         } else {
@@ -345,27 +348,25 @@ class LC_Page_Shopping extends LC_Page {
         return $objErr->arrErr;
     }
 
-    // 受注一時テーブルのお届け先をコピーする
-    function lfCopyDeliv($uniqid, $arrData) {
-        $objQuery = new SC_Query();
-
-        // 別のお届け先を指定していない場合、お届け先に登録住所をコピーする。
-        if($arrData["deliv_check"] != "1") {
-            $sqlval['deliv_name01'] = $arrData['order_name01'];
-            $sqlval['deliv_name02'] = $arrData['order_name02'];
-            $sqlval['deliv_kana01'] = $arrData['order_kana01'];
-            $sqlval['deliv_kana02'] = $arrData['order_kana02'];
-            $sqlval['deliv_pref'] = $arrData['order_pref'];
-            $sqlval['deliv_zip01'] = $arrData['order_zip01'];
-            $sqlval['deliv_zip02'] = $arrData['order_zip02'];
-            $sqlval['deliv_addr01'] = $arrData['order_addr01'];
-            $sqlval['deliv_addr02'] = $arrData['order_addr02'];
-            $sqlval['deliv_tel01'] = $arrData['order_tel01'];
-            $sqlval['deliv_tel02'] = $arrData['order_tel02'];
-            $sqlval['deliv_tel03'] = $arrData['order_tel03'];
-            $where = "order_temp_id = ?";
-            $objQuery->update("dtb_order_temp", $sqlval, $where, array($uniqid));
-        }
+    /**
+     * 受注一時テーブルに登録する顧客(お客様情報)をお届け先へコピーする
+     *
+     * @param array $sqlval
+     * @return void
+     */
+    function lfCopyDeliv(&$sqlval) {
+        $sqlval['deliv_name01'] = $sqlval['order_name01'];
+        $sqlval['deliv_name02'] = $sqlval['order_name02'];
+        $sqlval['deliv_kana01'] = $sqlval['order_kana01'];
+        $sqlval['deliv_kana02'] = $sqlval['order_kana02'];
+        $sqlval['deliv_pref']   = $sqlval['order_pref'];
+        $sqlval['deliv_zip01']  = $sqlval['order_zip01'];
+        $sqlval['deliv_zip02']  = $sqlval['order_zip02'];
+        $sqlval['deliv_addr01'] = $sqlval['order_addr01'];
+        $sqlval['deliv_addr02'] = $sqlval['order_addr02'];
+        $sqlval['deliv_tel01']  = $sqlval['order_tel01'];
+        $sqlval['deliv_tel02']  = $sqlval['order_tel02'];
+        $sqlval['deliv_tel03']  = $sqlval['order_tel03'];
     }
 }
 ?>
