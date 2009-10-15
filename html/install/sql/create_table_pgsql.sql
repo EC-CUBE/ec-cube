@@ -2,7 +2,7 @@ create table dtb_module_update_logs(
     log_id serial NOT NULL,
     module_id int NOT NULL,
     buckup_path text,
-    error_flg int2 default 0,
+    error_flg smallint DEFAULT 0,
     error text,
     ok text,
     create_date timestamp NOT NULL DEFAULT now(),
@@ -18,24 +18,24 @@ CREATE TABLE dtb_kiyaku (
     kiyaku_id serial NOT NULL,
     kiyaku_title text NOT NULL,
     kiyaku_text text NOT NULL,
-    rank int4 NOT NULL DEFAULT 0,
-    creator_id int4 NOT NULL,
+    rank int NOT NULL DEFAULT 0,
+    creator_id int NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp NOT NULL,
-    del_flg int2 NOT NULL DEFAULT 0,
+    del_flg smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (kiyaku_id)
 );
 
 CREATE TABLE dtb_holiday (
     holiday_id serial NOT NULL,
     title text NOT NULL,
-    month int2 NOT NULL,
-    day int2 NOT NULL,
-    rank int4 NOT NULL DEFAULT 0,
-    creator_id int4 NOT NULL,
+    month smallint NOT NULL,
+    day smallint NOT NULL,
+    rank int NOT NULL DEFAULT 0,
+    creator_id int NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp NOT NULL,
-    del_flg int2 NOT NULL DEFAULT 0,
+    del_flg smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (holiday_id)
 );
 
@@ -61,15 +61,15 @@ CREATE TABLE dtb_bat_order_daily_age (
     order_count numeric NOT NULL DEFAULT 0,
     total numeric NOT NULL DEFAULT 0,
     total_average numeric NOT NULL DEFAULT 0,
-    start_age int2,
-    end_age int2,
-    member int2,
+    start_age smallint,
+    end_age smallint,
+    member smallint,
     order_date timestamp DEFAULT now(),
     create_date timestamp NOT NULL DEFAULT now()
 );
 
 CREATE TABLE dtb_update (
-    module_id int4 NOT NULL,
+    module_id int NOT NULL,
     module_name text NOT NULL,
     now_version text,
     latest_version text NOT NULL,
@@ -79,7 +79,7 @@ CREATE TABLE dtb_update (
     install_sql text,
     uninstall_sql text,
     other_files text,
-    del_flg int2 NOT NULL DEFAULT 0,
+    del_flg smallint NOT NULL DEFAULT 0,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp,
     release_date timestamp NOT NULL,
@@ -91,7 +91,7 @@ CREATE TABLE dtb_baseinfo (
     company_kana text,
     zip01 text,
     zip02 text,
-    pref int2,
+    pref smallint,
     addr01 text,
     addr02 text,
     tel01 text,
@@ -105,7 +105,7 @@ CREATE TABLE dtb_baseinfo (
     law_manager text,
     law_zip01 text,
     law_zip02 text,
-    law_pref int2,
+    law_pref smallint,
     law_addr01 text,
     law_addr02 text,
     law_tel01 text,
@@ -127,7 +127,7 @@ CREATE TABLE dtb_baseinfo (
     law_term09 text,
     law_term10 text,
     tax numeric NOT NULL DEFAULT 5,
-    tax_rule int2 NOT NULL DEFAULT 1,
+    tax_rule smallint NOT NULL DEFAULT 1,
     email01 text,
     email02 text,
     email03 text,
@@ -153,27 +153,27 @@ CREATE TABLE dtb_deliv (
     name text,
     service_name text,
     confirm_url text,
-    rank int4,
-    status int2 NOT NULL DEFAULT 1,
-    del_flg int2 NOT NULL DEFAULT 0,
-    creator_id int4 NOT NULL,
+    rank int,
+    status smallint NOT NULL DEFAULT 1,
+    del_flg smallint NOT NULL DEFAULT 0,
+    creator_id int NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp,
     PRIMARY KEY (deliv_id)
 );
 
 CREATE TABLE dtb_delivtime (
-    deliv_id int4 NOT NULL,
-    time_id int4 NOT NULL,
+    deliv_id int NOT NULL,
+    time_id int NOT NULL,
     deliv_time text NOT NULL,
     PRIMARY KEY (deliv_id, time_id)
 );
 
 CREATE TABLE dtb_delivfee (
-    deliv_id int4 NOT NULL,
+    deliv_id int NOT NULL,
     fee_id serial NOT NULL,
     fee text NOT NULL,
-    pref int2,
+    pref smallint,
     PRIMARY KEY (fee_id)
 );
 
@@ -182,21 +182,21 @@ CREATE TABLE dtb_payment (
     payment_method text,
     charge numeric,
     rule numeric,
-    deliv_id int4 DEFAULT 0,
-    rank int4,
+    deliv_id int DEFAULT 0,
+    rank int,
     note text,
-    fix int2,
-    status int2 NOT NULL DEFAULT 1,
-    del_flg int2 NOT NULL DEFAULT 0,
-    creator_id int4 NOT NULL,
+    fix smallint,
+    status smallint NOT NULL DEFAULT 1,
+    del_flg smallint NOT NULL DEFAULT 0,
+    creator_id int NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp,
     payment_image text,
     upper_rule numeric,
-    charge_flg int2 DEFAULT 1,
+    charge_flg smallint DEFAULT 1,
     rule_min numeric,
     upper_rule_max numeric,
-    module_id int4,
+    module_id int,
     module_path text,
     memo01 text,
     memo02 text,
@@ -212,12 +212,12 @@ CREATE TABLE dtb_payment (
 );
 
 CREATE TABLE dtb_mailtemplate (
-    template_id int4 NOT NULL,
+    template_id int NOT NULL,
     subject text,
     header text,
     footer text,
-    creator_id int4 NOT NULL,
-    del_flg int2 NOT NULL DEFAULT 0,
+    creator_id int NOT NULL,
+    del_flg smallint NOT NULL DEFAULT 0,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp NOT NULL
 );
@@ -226,28 +226,28 @@ CREATE TABLE dtb_mailmaga_template (
     template_id serial NOT NULL,
     subject text,
     charge_image text,
-    mail_method int4,
+    mail_method int,
     header text,
     body text,
     main_title text,
     main_comment text,
-    main_product_id int4,
+    main_product_id int,
     sub_title text,
     sub_comment text,
-    sub_product_id01 int4,
-    sub_product_id02 int4,
-    sub_product_id03 int4,
-    sub_product_id04 int4,
-    sub_product_id05 int4,
-    sub_product_id06 int4,
-    sub_product_id07 int4,
-    sub_product_id08 int4,
-    sub_product_id09 int4,
-    sub_product_id10 int4,
-    sub_product_id11 int4,
-    sub_product_id12 int4,
-    del_flg int2 NOT NULL DEFAULT 0,
-    creator_id int4 NOT NULL,
+    sub_product_id01 int,
+    sub_product_id02 int,
+    sub_product_id03 int,
+    sub_product_id04 int,
+    sub_product_id05 int,
+    sub_product_id06 int,
+    sub_product_id07 int,
+    sub_product_id08 int,
+    sub_product_id09 int,
+    sub_product_id10 int,
+    sub_product_id11 int,
+    sub_product_id12 int,
+    del_flg smallint NOT NULL DEFAULT 0,
+    creator_id int NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp,
     PRIMARY KEY (template_id)
@@ -255,27 +255,27 @@ CREATE TABLE dtb_mailmaga_template (
 
 CREATE TABLE dtb_send_history (
     send_id serial NOT NULL,
-    mail_method int2,
+    mail_method smallint,
     subject text,
     body text,
-    send_count int4,
-    complete_count int4 NOT NULL DEFAULT 0,
+    send_count int,
+    complete_count int NOT NULL DEFAULT 0,
     start_date timestamp,
     end_date timestamp,
     search_data text,
-    del_flg int2 NOT NULL DEFAULT 0,
-    creator_id int4 NOT NULL,
+    del_flg smallint NOT NULL DEFAULT 0,
+    creator_id int NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp NOT NULL DEFAULT now(),
     PRIMARY KEY (send_id)
 );
 
 CREATE TABLE dtb_send_customer (
-    customer_id int4,
+    customer_id int,
     send_id serial NOT NULL,
     email text,
     name text,
-    send_flag int2
+    send_flag smallint
 );
 
 CREATE TABLE dtb_products (
@@ -283,10 +283,10 @@ CREATE TABLE dtb_products (
     name text,
     deliv_fee numeric,
     sale_limit numeric,
-    category_id int4,
-    maker_id int4,
-    rank int4,
-    status int2 NOT NULL DEFAULT 2,
+    category_id int,
+    maker_id int,
+    rank int,
+    status smallint NOT NULL DEFAULT 2,
     product_flag text,
     point_rate numeric,
     comment1 text,
@@ -331,27 +331,27 @@ CREATE TABLE dtb_products (
     sub_comment6 text,
     sub_image6 text,
     sub_large_image6 text,
-    del_flg int2 NOT NULL DEFAULT 0,
-    creator_id int4 NOT NULL,
+    del_flg smallint NOT NULL DEFAULT 0,
+    creator_id int NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp,
-    deliv_date_id int4,
+    deliv_date_id int,
     PRIMARY KEY (product_id)
 );
 
 CREATE TABLE dtb_products_class (
     product_class_id serial NOT NULL,
-    product_id int4 NOT NULL,
-    classcategory_id1 int4 NOT NULL DEFAULT 0,
-    classcategory_id2 int4 NOT NULL DEFAULT 0,
+    product_id int NOT NULL,
+    classcategory_id1 int NOT NULL DEFAULT 0,
+    classcategory_id2 int NOT NULL DEFAULT 0,
     product_code text,
     stock numeric,
-    stock_unlimited int2 NOT NULL DEFAULT 0,
+    stock_unlimited smallint NOT NULL DEFAULT 0,
     sale_limit numeric,
     price01 numeric,
     price02 numeric,
-    status int2,
-    creator_id int4 NOT NULL,
+    status smallint,
+    creator_id int NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp,
     PRIMARY KEY (product_class_id)
@@ -360,46 +360,46 @@ CREATE TABLE dtb_products_class (
 CREATE TABLE dtb_class (
     class_id serial NOT NULL,
     name text,
-    status int2,
-    rank int4,
-    creator_id int4 NOT NULL,
+    status smallint,
+    rank int,
+    creator_id int NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp,
-    del_flg int2 NOT NULL DEFAULT 0,
-    product_id int4,
+    del_flg smallint NOT NULL DEFAULT 0,
+    product_id int,
     PRIMARY KEY (class_id)
 );
 
 CREATE TABLE dtb_classcategory (
     classcategory_id serial NOT NULL,
     name text,
-    class_id int4 NOT NULL,
-    status int2,
-    rank int4,
-    creator_id int4 NOT NULL,
+    class_id int NOT NULL,
+    status smallint,
+    rank int,
+    creator_id int NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp,
-    del_flg int2 NOT NULL DEFAULT 0,
+    del_flg smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (classcategory_id)
 );
 
 CREATE TABLE dtb_category (
     category_id serial NOT NULL,
     category_name text,
-    parent_category_id int4 NOT NULL DEFAULT 0,
-    level int4 NOT NULL,
-    rank int4,
-    creator_id int4 NOT NULL,
+    parent_category_id int NOT NULL DEFAULT 0,
+    level int NOT NULL,
+    rank int,
+    creator_id int NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp,
-    del_flg int2 NOT NULL DEFAULT 0,
+    del_flg smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (category_id)
 );
 
 CREATE TABLE dtb_product_categories (
-    product_id int4 NOT NULL,
-    category_id int4 NOT NULL,
-    rank int4 NOT NULL,
+    product_id int NOT NULL,
+    category_id int NOT NULL,
+    rank int NOT NULL,
     PRIMARY KEY(product_id, category_id)
 );
 
@@ -417,10 +417,10 @@ CREATE TABLE dtb_bat_order_daily (
     total_average numeric NOT NULL DEFAULT 0,
     order_date timestamp NOT NULL DEFAULT now(),
     create_date timestamp NOT NULL DEFAULT now(),
-    year int2 NOT NULL,
-    month int2 NOT NULL,
-    day int2 NOT NULL,
-    wday int2 NOT NULL,
+    year smallint NOT NULL,
+    month smallint NOT NULL,
+    day smallint NOT NULL,
+    wday smallint NOT NULL,
     key_day text NOT NULL,
     key_month text NOT NULL,
     key_year text NOT NULL,
@@ -439,117 +439,117 @@ CREATE TABLE dtb_bat_order_daily_hour (
     women_nonmember numeric NOT NULL DEFAULT 0,
     total numeric NOT NULL DEFAULT 0,
     total_average numeric NOT NULL DEFAULT 0,
-    hour int2 NOT NULL DEFAULT 0,
+    hour smallint NOT NULL DEFAULT 0,
     order_date timestamp DEFAULT now(),
     create_date timestamp NOT NULL DEFAULT now()
 );
 
 CREATE TABLE dtb_recommend_products (
-    product_id int4 NOT NULL,
-    recommend_product_id int4 NOT NULL,
-    rank int4 NOT NULL,
+    product_id int NOT NULL,
+    recommend_product_id int NOT NULL,
+    rank int NOT NULL,
     comment text,
-    status int2 NOT NULL DEFAULT 0,
-    creator_id int4 NOT NULL,
+    status smallint NOT NULL DEFAULT 0,
+    creator_id int NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp NOT NULL DEFAULT now()
 );
 
 CREATE TABLE dtb_review (
     review_id serial NOT NULL,
-    product_id int4 NOT NULL,
+    product_id int NOT NULL,
     reviewer_name text NOT NULL,
     reviewer_url text,
-    sex int2,
-    customer_id int4,
-    recommend_level int2 NOT NULL,
+    sex smallint,
+    customer_id int,
+    recommend_level smallint NOT NULL,
     title text NOT NULL,
     comment text NOT NULL,
-    status int2 DEFAULT 2,
-    creator_id int4 NOT NULL,
+    status smallint DEFAULT 2,
+    creator_id int NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp,
-    del_flg int2 NOT NULL DEFAULT 0,
+    del_flg smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (review_id)
 );
 
 CREATE TABLE dtb_customer_reading (
-    reading_product_id int4 NOT NULL,
-    customer_id int4 NOT NULL,
+    reading_product_id int NOT NULL,
+    customer_id int NOT NULL,
     create_date timestamp NOT NULL,
     update_date timestamp NOT NULL DEFAULT NOW()
 );
 
 CREATE TABLE dtb_customer_favorite_products (
-    customer_id int4 NOT NULL,
-    product_id int4 NOT NULL,
+    customer_id int NOT NULL,
+    product_id int NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp NOT NULL DEFAULT now(),
     PRIMARY KEY (customer_id, product_id)
 );
 
 CREATE TABLE dtb_category_count (
-    category_id int4 NOT NULL,
-    product_count int4 NOT NULL,
+    category_id int NOT NULL,
+    product_count int NOT NULL,
     create_date timestamp NOT NULL DEFAULT Now()
 );
 
 CREATE TABLE dtb_category_total_count (
-    category_id int4 NOT NULL,
-    product_count int4,
+    category_id int NOT NULL,
+    product_count int,
     create_date timestamp NOT NULL DEFAULT Now()
 );
 
 CREATE TABLE dtb_news (
     news_id serial NOT NULL,
     news_date timestamp,
-    rank int4,
+    rank int,
     news_title text NOT NULL,
     news_comment text,
     news_url text,
-    news_select int2 NOT NULL DEFAULT 0,
+    news_select smallint NOT NULL DEFAULT 0,
     link_method text,
-    creator_id int4 NOT NULL,
+    creator_id int NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp,
-    del_flg int2 NOT NULL DEFAULT 0,
+    del_flg smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (news_id)
 );
 
 CREATE TABLE dtb_best_products (
     best_id serial NOT NULL,
-    category_id int4 NOT NULL,
-    rank int4 NOT NULL DEFAULT 0,
-    product_id int4 NOT NULL,
+    category_id int NOT NULL,
+    rank int NOT NULL DEFAULT 0,
+    product_id int NOT NULL,
     title text,
     comment text,
-    creator_id int4 NOT NULL,
+    creator_id int NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp,
-    del_flg int2 NOT NULL DEFAULT 0,
+    del_flg smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (best_id)
 );
 
 CREATE TABLE dtb_mail_history (
-    send_id serial  NOT NULL,
-    order_id int4 NOT NULL,
+    send_id serial NOT NULL,
+    order_id int NOT NULL,
     send_date timestamp,
-    template_id int4,
-    creator_id int4 NOT NULL,
+    template_id int,
+    creator_id int NOT NULL,
     subject text,
     mail_body text,
     PRIMARY KEY (send_id)
 );
 
 CREATE TABLE dtb_customer (
-    customer_id serial  NOT NULL,
+    customer_id serial NOT NULL,
     name01 text NOT NULL,
     name02 text NOT NULL,
     kana01 text NOT NULL,
     kana02 text NOT NULL,
     zip01 text,
     zip02 text,
-    pref int2,
+    pref smallint,
     addr01 text,
     addr02 text,
     email text NOT NULL,
@@ -560,11 +560,11 @@ CREATE TABLE dtb_customer (
     fax01 text,
     fax02 text,
     fax03 text,
-    sex int2,
-    job int2,
+    sex smallint,
+    job smallint,
     birth timestamp,
     password text,
-    reminder int2,
+    reminder smallint,
     reminder_answer text,
     secret_key text NOT NULL UNIQUE,
     first_buy_date timestamp,
@@ -573,15 +573,15 @@ CREATE TABLE dtb_customer (
     buy_total numeric DEFAULT 0,
     point numeric DEFAULT 0,
     note text,
-    status int2 NOT NULL DEFAULT 1,
+    status smallint NOT NULL DEFAULT 1,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp DEFAULT now(),
-    del_flg int2 NOT NULL DEFAULT 0,
+    del_flg smallint NOT NULL DEFAULT 0,
     cell01 text,
     cell02 text,
     cell03 text,
     mobile_phone_id text,
-    mailmaga_flg int2,
+    mailmaga_flg smallint,
     PRIMARY KEY (customer_id)
 );
 
@@ -589,9 +589,9 @@ CREATE INDEX dtb_customer_mobile_phone_id_key ON dtb_customer (mobile_phone_id);
 
 CREATE TABLE dtb_customer_mail_temp (
     email text NOT NULL UNIQUE,
-    mail_flag int2,
+    mail_flag smallint,
     temp_id text NOT NULL,
-    end_flag int2,
+    end_flag smallint,
     update_date timestamp NOT NULL DEFAULT Now(),
     create_data timestamp NOT NULL DEFAULT Now(),
     PRIMARY KEY (temp_id)
@@ -600,7 +600,7 @@ CREATE TABLE dtb_customer_mail_temp (
 CREATE TABLE dtb_order (
     order_id serial NOT NULL,
     order_temp_id text,
-    customer_id int4 NOT NULL,
+    customer_id int NOT NULL,
     message text,
     order_name01 text,
     order_name02 text,
@@ -618,9 +618,9 @@ CREATE TABLE dtb_order (
     order_pref text,
     order_addr01 text,
     order_addr02 text,
-    order_sex int2,
+    order_sex smallint,
     order_birth timestamp,
-    order_job int4,
+    order_job int,
     deliv_name01 text,
     deliv_name02 text,
     deliv_kana01 text,
@@ -646,21 +646,21 @@ CREATE TABLE dtb_order (
     tax numeric,
     total numeric,
     payment_total numeric,
-    payment_id int4,
+    payment_id int,
     payment_method text,
-    deliv_id int4,
-    deliv_time_id int4,
+    deliv_id int,
+    deliv_time_id int,
     deliv_time text,
     deliv_no text,
     note text,
-    status int2,
+    status smallint,
     create_date timestamp NOT NULL DEFAULT now(),
     loan_result text,
     credit_result text,
     credit_msg text,
     update_date timestamp,
     commit_date timestamp,
-    del_flg int2 NOT NULL DEFAULT 0,
+    del_flg smallint NOT NULL DEFAULT 0,
     deliv_date text,
     conveni_data text,
     cell01 text,
@@ -676,13 +676,13 @@ CREATE TABLE dtb_order (
     memo08 text,
     memo09 text,
     memo10 text,
-    campaign_id int4,
+    campaign_id int,
     PRIMARY KEY (order_id)
 );
 
 CREATE TABLE dtb_order_temp (
     order_temp_id text NOT NULL,
-    customer_id int4 NOT NULL,
+    customer_id int NOT NULL,
     message text,
     order_name01 text,
     order_name02 text,
@@ -700,9 +700,9 @@ CREATE TABLE dtb_order_temp (
     order_pref text,
     order_addr01 text,
     order_addr02 text,
-    order_sex int2,
+    order_sex smallint,
     order_birth timestamp,
-    order_job int4,
+    order_job int,
     deliv_name01 text,
     deliv_name02 text,
     deliv_kana01 text,
@@ -728,29 +728,29 @@ CREATE TABLE dtb_order_temp (
     tax numeric,
     total numeric,
     payment_total numeric,
-    payment_id int4,
+    payment_id int,
     payment_method text,
-    deliv_id int4,
-    deliv_time_id int4,
+    deliv_id int,
+    deliv_time_id int,
     deliv_time text,
     deliv_no text,
     note text,
-    mail_flag int2,
-    status int2,
-    deliv_check int2,
-    point_check int2,
+    mail_flag smallint,
+    status smallint,
+    deliv_check smallint,
+    point_check smallint,
     loan_result text,
     credit_result text,
     credit_msg text,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp,
-    del_flg int2 NOT NULL DEFAULT 0,
+    del_flg smallint NOT NULL DEFAULT 0,
     deliv_date text,
     conveni_data text,
     cell01 text,
     cell02 text,
     cell03 text,
-    order_id int4,
+    order_id int,
     memo01 text,
     memo02 text,
     memo03 text,
@@ -766,7 +766,7 @@ CREATE TABLE dtb_order_temp (
 
 CREATE TABLE dtb_other_deliv (
     other_deliv_id serial NOT NULL,
-    customer_id int4 NOT NULL,
+    customer_id int NOT NULL,
     name01 text,
     name02 text,
     kana01 text,
@@ -783,10 +783,10 @@ CREATE TABLE dtb_other_deliv (
 );
 
 CREATE TABLE dtb_order_detail (
-    order_id int4 NOT NULL,
-    product_id int4 NOT NULL,
-    classcategory_id1 int4 NOT NULL,
-    classcategory_id2 int4 NOT NULL,
+    order_id int NOT NULL,
+    product_id int NOT NULL,
+    classcategory_id1 int NOT NULL,
+    classcategory_id2 int NOT NULL,
     product_name text NOT NULL,
     product_code text,
     classcategory_name1 text,
@@ -797,9 +797,9 @@ CREATE TABLE dtb_order_detail (
 );
 
 CREATE TABLE mtb_pref (
-    pref_id int2 NOT NULL,
+    pref_id smallint NOT NULL,
     pref_name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (pref_id)
 );
 
@@ -809,11 +809,11 @@ CREATE TABLE dtb_member (
     department text,
     login_id text NOT NULL,
     password text NOT NULL,
-    authority int2 NOT NULL,
-    rank int4 NOT NULL DEFAULT 0,
-    work int2 NOT NULL DEFAULT 1,
-    del_flg int2 NOT NULL DEFAULT 0,
-    creator_id int4 NOT NULL,
+    authority smallint NOT NULL,
+    rank int NOT NULL DEFAULT 0,
+    work smallint NOT NULL DEFAULT 1,
+    del_flg smallint NOT NULL DEFAULT 0,
+    creator_id int NOT NULL,
     update_date timestamp,
     create_date timestamp NOT NULL DEFAULT now(),
     login_date timestamp,
@@ -825,13 +825,13 @@ CREATE TABLE dtb_question (
     question_name text,
     question text,
     create_date timestamp NOT NULL DEFAULT now(),
-    del_flg int2 NOT NULL DEFAULT 0,
+    del_flg smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (question_id)
 );
 
 CREATE TABLE dtb_question_result (
     result_id serial NOT NULL,
-    question_id int4 NOT NULL,
+    question_id int NOT NULL,
     question_date timestamp,
     question_name text,
     name01 text,
@@ -840,7 +840,7 @@ CREATE TABLE dtb_question_result (
     kana02 text,
     zip01 text,
     zip02 text,
-    pref int2,
+    pref smallint,
     addr01 text,
     addr02 text,
     tel01 text,
@@ -854,14 +854,14 @@ CREATE TABLE dtb_question_result (
     question05 text,
     question06 text,
     create_date timestamp NOT NULL DEFAULT now(),
-    del_flg int2 NOT NULL DEFAULT 0,
+    del_flg smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (result_id)
 );
 
 CREATE TABLE dtb_bat_relate_products (
-    product_id int4,
-    relate_product_id int4,
-    customer_id int4,
+    product_id int,
+    relate_product_id int,
+    customer_id int,
     create_date timestamp DEFAULT now()
 );
 
@@ -869,25 +869,25 @@ CREATE TABLE dtb_campaign (
     campaign_id serial NOT NULL,
     campaign_name text,
     campaign_point_rate numeric NOT NULL,
-    campaign_point_type int2,
+    campaign_point_type smallint,
     start_date timestamp NOT NULL,
     end_date timestamp NOT NULL,
     directory_name text NOT NULL,
-    limit_count int4 NOT NULL DEFAULT 0,
-    total_count int4 NOT NULL DEFAULT 0,
-    orverlapping_flg int2 NOT NULL DEFAULT 0,
-    cart_flg int2 NOT NULL DEFAULT 0,
-    deliv_free_flg int2 NOT NULL DEFAULT 0,
+    limit_count int NOT NULL DEFAULT 0,
+    total_count int NOT NULL DEFAULT 0,
+    orverlapping_flg smallint NOT NULL DEFAULT 0,
+    cart_flg smallint NOT NULL DEFAULT 0,
+    deliv_free_flg smallint NOT NULL DEFAULT 0,
     search_condition text,
-    del_flg int2 NOT NULL DEFAULT 0,
+    del_flg smallint NOT NULL DEFAULT 0,
     create_date timestamp NOT NULL,
     update_date timestamp NOT NULL DEFAULT now(),
     PRIMARY KEY (campaign_id)
 );
 
 CREATE TABLE dtb_campaign_detail (
-    campaign_id int4 NOT NULL,
-    product_id int4 NOT NULL,
+    campaign_id int NOT NULL,
+    product_id int NOT NULL,
     campaign_point_rate numeric NOT NULL
 );
 
@@ -898,9 +898,9 @@ CREATE TABLE dtb_pagelayout (
     php_dir text,
     tpl_dir text,
     filename text,
-    header_chk int2 DEFAULT 1,
-    footer_chk int2 DEFAULT 1,
-    edit_flg int2 DEFAULT 1,
+    header_chk smallint DEFAULT 1,
+    footer_chk smallint DEFAULT 1,
+    edit_flg smallint DEFAULT 1,
     author text,
     description text,
     keyword text,
@@ -918,26 +918,26 @@ CREATE TABLE dtb_bloc (
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp NOT NULL DEFAULT now(),
     php_path text,
-    del_flg int2 NOT NULL DEFAULT 0,
+    del_flg smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (bloc_id)
 );
 
 CREATE TABLE dtb_blocposition (
-    page_id int4 NOT NULL,
-    target_id int4,
-    bloc_id int4,
-    bloc_row int4,
+    page_id int NOT NULL,
+    target_id int,
+    bloc_id int,
+    bloc_row int,
     filename text,
-    anywhere int2 DEFAULT 0 NOT NULL
+    anywhere smallint DEFAULT 0 NOT NULL
 );
 
 CREATE TABLE dtb_csv (
     no serial,
-    csv_id int4 NOT NULL,
+    csv_id int NOT NULL,
     col text,
     disp_name text,
-    rank int4,
-    status int2 NOT NULL DEFAULT 1,
+    rank int,
+    status smallint NOT NULL DEFAULT 1,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp NOT NULL DEFAULT now(),
     PRIMARY KEY (no)
@@ -964,323 +964,323 @@ CREATE TABLE dtb_user_regist (
     url text,
     note text,
     secret_key text NOT NULL UNIQUE,
-    status int2 NOT NULL,
-    del_flg int2 DEFAULT 0,
+    status smallint NOT NULL,
+    del_flg smallint DEFAULT 0,
     create_date timestamp NOT NULL,
     update_date timestamp NOT NULL DEFAULT now(),
     PRIMARY KEY (user_id)
 );
 
 create table dtb_templates (
-    template_code        text        NOT NULL,
-    template_name        text            ,
-    create_date        timestamp        NOT NULL    default now(),
-    update_date        timestamp        NOT NULL    default now(),
+    template_code text NOT NULL,
+    template_name text,
+    create_date timestamp NOT NULL DEFAULT now(),
+    update_date timestamp NOT NULL DEFAULT now(),
     PRIMARY KEY (template_code)
 );
 
 create table dtb_table_comment (
-    id    serial,
-    table_name    text,
-    column_name    text,
-    description    text,
+    id serial,
+    table_name text,
+    column_name text,
+    description text,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE dtb_maker (
     maker_id serial NOT NULL,
     name text NOT NULL,
-    rank int4 NOT NULL DEFAULT 0,
-    creator_id int4 NOT NULL,
+    rank int NOT NULL DEFAULT 0,
+    creator_id int NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp NOT NULL,
-    del_flg int2 NOT NULL DEFAULT 0,
+    del_flg smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (maker_id)
 );
 
 CREATE TABLE dtb_maker_count (
-    maker_id int4 NOT NULL,
-    product_count int4 NOT NULL,
+    maker_id int NOT NULL,
+    product_count int NOT NULL,
     create_date timestamp NOT NULL DEFAULT Now()
 );
 
 CREATE TABLE mtb_permission (
     id text,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE mtb_disable_logout (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE mtb_authority (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE mtb_work (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE mtb_disp (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE mtb_class (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE mtb_srank (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE mtb_status (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE mtb_status_image (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE mtb_allowed_tag (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE mtb_page_max (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE mtb_magazine_type (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE mtb_mail_magazine_type (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE mtb_recommend (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE mtb_taxrule (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE mtb_mail_template (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE mtb_mail_tpl_path (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE mtb_job (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE mtb_reminder (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE mtb_sex (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE mtb_page_rows (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE mtb_mail_type (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE mtb_order_status (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE mtb_product_status_color (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE mtb_order_status_color (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE mtb_wday (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE mtb_delivery_date (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE mtb_product_list_max (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE mtb_convenience (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE mtb_conveni_message (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE mtb_db (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE mtb_target (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE mtb_review_deny_url (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE mtb_track_back_status (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE mtb_site_control_track_back (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE mtb_site_control_affiliate (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE mtb_mobile_domain (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE mtb_ownersstore_err (
     id text,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE mtb_ownersstore_ips (
     id text,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE mtb_constants (
     id text,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     remarks text,
     PRIMARY KEY (id)
 );
