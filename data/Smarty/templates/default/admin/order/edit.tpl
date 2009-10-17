@@ -456,20 +456,18 @@
                 </select>
             </td>
         </tr>
-        <!--{assign var=key value="deliv_date_year"}-->
         <tr>
             <th>お届け日</th>
             <td>
-                <span class="attention"><!--{$arrErr.deliv_date_year}--></span>
-                <select name="deliv_date_year" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
-                    <!--{html_options options=$arrYearDelivDate selected=$arrForm.deliv_date_year.value|default:""}-->
-                </select>年
-                <select name="deliv_date_month" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
-                    <!--{html_options options=$arrMonthDelivDate selected=$arrForm.deliv_date_month.value|default:""}-->
-                </select>月
-                <select name="deliv_date_day" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
-                    <!--{html_options options=$arrDayDelivDate selected=$arrForm.deliv_date_day.value|default:""}-->
-                </select>日
+                <!--{assign var=key value="deliv_date"}-->
+                <span class="attention"><!--{$arrErr[$key]}--></span>
+                <input
+                    name="<!--{$key|escape}-->"
+                    value="<!--{$arrForm[$key].value|escape}-->"
+                    style="<!--{$arrErr[$key]|sfGetErrorColor}-->"
+                    size="30"
+                    maxlength="<!--{$arrForm[$key].length}-->"
+                >
             </td>
         </tr>
         <tr>
