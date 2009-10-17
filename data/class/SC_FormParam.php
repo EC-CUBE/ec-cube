@@ -21,7 +21,14 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-/* パラメータ管理クラス */
+/**
+ * パラメータ管理クラス
+ *
+ * :XXX: addParam と setParam で言う「パラメータ」が用語として競合しているように感じる。(2009/10/17 Seasoft 塚田)
+ *
+ * @package SC
+ * @author LOCKON CO.,LTD.
+ */
 class SC_FormParam {
 
     var $param;
@@ -37,6 +44,15 @@ class SC_FormParam {
     // コンストラクタ
     function SC_FormParam() {
         $this->check_dir = IMAGE_SAVE_DIR;
+        $this->initParam();
+    }
+
+    /**
+     * パラメータの初期化
+     *
+     * @return void
+     */
+    function initParam() {
         $this->disp_name = array();
         $this->keyname = array();
         $this->length = array();
