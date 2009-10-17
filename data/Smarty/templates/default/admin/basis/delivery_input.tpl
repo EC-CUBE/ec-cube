@@ -23,7 +23,8 @@
 *}-->
 <form name="form1" id="form1" method="post" action="">
 <input type="hidden" name="mode" value="edit" />
-<input type="hidden" name="deliv_id" value="<!--{$tpl_deliv_id}-->" />
+<!--{assign var=key value="deliv_id"}-->
+<input type="hidden" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" />
 <div id="basis" class="contents-main">
   <h2>配送業者登録</h2>
 

@@ -55,6 +55,7 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page {
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData("mtb_pref", array("pref_id", "pref_name", "rank"));
         $this->tpl_subtitle = '配送業者設定';
+        $this->mode = isset($_POST['mode']) ? $_POST['mode'] : '';
     }
 
     /**
@@ -75,29 +76,27 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page {
         $this->objFormParam = new SC_FormParam();
         // パラメータ情報の初期化
         $this->lfInitParam();
-        // POST値の取得
+        // POST値をパラメータとする
         $this->objFormParam->setParam($_POST);
+        // 入力値の変換
+        $this->objFormParam->convParam();
+        $this->arrErr = $this->lfCheckError();
 
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
-
-        switch($_POST['mode']) {
-        case 'edit':
-            // 入力値の変換
-            $this->objFormParam->convParam();
-            $this->arrErr = $this->lfCheckError();
-            if(count($this->arrErr) == 0) {
-                $this->tpl_deliv_id = $this->lfRegistData();
-                $this->tpl_onload = "window.alert('配送業者設定が完了しました。');";
-            }
-            break;
-        case 'pre_edit':
-            if($_POST['deliv_id'] != "") {
-                $this->lfGetDelivData($_POST['deliv_id']);
-                $this->tpl_deliv_id = $_POST['deliv_id'];
-            }
-            break;
-        default:
-            break;
+        switch ($this->mode) {
+            case 'edit':
+                if (count($this->arrErr) == 0) {
+                    $this->objFormParam->setValue('deliv_id', $this->lfRegistData());
+                    $this->tpl_onload = "window.alert('配送業者設定が完了しました。');";
+                }
+                break;
+            case 'pre_edit':
+                if (count($this->arrErr) > 0) {
+                    SC_Utils_Ex::sfDispException();
+                }
+                $this->lfGetDelivData($this->objFormParam->getValue('deliv_id'));
+                break;
+            default:
+                break;
         }
 
         $this->arrForm = $this->objFormParam->getFormParamList();
@@ -115,19 +114,36 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page {
     }
 
     /* パラメータ情報の初期化 */
-    function lfInitParam() {
-        $this->objFormParam->addParam("配送業者名", "name", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("名称", "service_name", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("伝票No.確認URL", "confirm_url", STEXT_LEN, "n", array("URL_CHECK", "MAX_LENGTH_CHECK"), "http://");
+    function lfInitParam($mode = null) {
 
-        for($cnt = 1; $cnt <= DELIVTIME_MAX; $cnt++) {
-            $this->objFormParam->addParam("お届け時間$cnt", "deliv_time$cnt", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
-        }
+        if (is_null($mode)) $mode = $this->mode;
 
-        if(INPUT_DELIV_FEE) {
-            for($cnt = 1; $cnt <= DELIVFEE_MAX; $cnt++) {
-                $this->objFormParam->addParam("配送料金$cnt", "fee$cnt", PRICE_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-            }
+        $this->objFormParam->initParam();
+
+        switch ($mode) {
+            case 'edit':
+                $this->objFormParam->addParam('配送業者ID', 'deliv_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                $this->objFormParam->addParam("配送業者名", "name", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+                $this->objFormParam->addParam("名称", "service_name", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+                $this->objFormParam->addParam("伝票No.確認URL", "confirm_url", STEXT_LEN, "n", array("URL_CHECK", "MAX_LENGTH_CHECK"), "http://");
+
+                for($cnt = 1; $cnt <= DELIVTIME_MAX; $cnt++) {
+                    $this->objFormParam->addParam("お届け時間$cnt", "deliv_time$cnt", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
+                }
+
+                if(INPUT_DELIV_FEE) {
+                    for($cnt = 1; $cnt <= DELIVFEE_MAX; $cnt++) {
+                        $this->objFormParam->addParam("配送料金$cnt", "fee$cnt", PRICE_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+                    }
+                }
+                break;
+
+            case 'pre_edit':
+                $this->objFormParam->addParam('配送業者ID', 'deliv_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                break;
+
+            default:
+                break;
         }
     }
 
@@ -250,6 +266,10 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page {
     /* 配送業者情報の取得 */
     function lfGetDelivData($deliv_id) {
         $objQuery = new SC_Query();
+
+        // パラメータ情報の初期化
+        $this->lfInitParam('edit');
+
         // 配送業者一覧の取得
         $col = "deliv_id, name, service_name, confirm_url";
         $where = "deliv_id = ?";
