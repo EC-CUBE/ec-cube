@@ -33,7 +33,7 @@
       <td><input type="text" name="search_reviewer_name" value="<!--{$arrForm.search_reviewer_name|escape}-->" size="30" class="box30" /></td>
     </tr>
     <tr>
-      <th>ホームページアドレス</th>
+      <th>投稿者URL</th>
       <td><input type="text" name="search_reviewer_url" value="<!--{$arrForm.search_reviewer_url}-->" size="30" class="box30" /></td>
     </tr>
     <tr>

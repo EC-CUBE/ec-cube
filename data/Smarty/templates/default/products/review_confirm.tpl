@@ -41,7 +41,7 @@
             <td><!--{$arrForm.reviewer_name|escape}--></td>
           </tr>
           <tr>
-            <th>メールアドレス</th>
+            <th>投稿者URL</th>
             <td><!--{$arrForm.reviewer_url|escape}--></td>
           </tr>
           <tr>

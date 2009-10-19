@@ -187,7 +187,7 @@ class LC_Page_Products_Review extends LC_Page {
         $objErr = new SC_CheckError();
         $objErr->doFunc(array("商品ID", "product_id", INT_LEN), array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
         $objErr->doFunc(array("投稿者名", "reviewer_name", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("URL", "reviewer_url", MTEXT_LEN), array("NO_SPTAB", "SPTAB_CHECK", "MAX_LENGTH_CHECK", "URL_CHECK"));
+        $objErr->doFunc(array("投稿者URL", "reviewer_url", MTEXT_LEN), array("NO_SPTAB", "SPTAB_CHECK", "MAX_LENGTH_CHECK", "URL_CHECK"));
         $objErr->doFunc(array("おすすめレベル", "recommend_level"), array("SELECT_CHECK"));
         $objErr->doFunc(array("タイトル", "title", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $objErr->doFunc(array("コメント", "comment", LTEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));

@@ -55,7 +55,7 @@
                 </td>
             </tr>
             <tr>
-                <th>ホームページアドレス</th>
+                <th>投稿者URL</th>
                 <td>
                     <!--{if $arrErr.reviewer_url}--><span class="attention"><!--{$arrErr.reviewer_url}--></span><!--{/if}-->
                     <input type="text" class="box60" name="reviewer_url" maxlength="<!--{$smarty.const.URL_LEN}-->" value="<!--{$arrReview.reviewer_url|escape}-->" style="<!--{$arrErr.reviewer_url|sfGetErrorColor}-->" size=30>
