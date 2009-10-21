@@ -86,143 +86,25 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
 
         // page_id が指定されている場合にはテンプレートデータの取得
         if (is_numeric($page_id) and $page_id != '') {
-            $arrPageData = $this->objLayout->lfgetPageData(" page_id = ? " , array($page_id));
-
-            if (strlen($arrPageData[0]['filename']) == 0) {
-                $this->arrErr['page_id_err'] = "※ 指定されたページは編集できません。";
-                // 画面の表示
-                $objView->assignobj($this);
-                $objView->display(MAIN_FRAME);
-                exit;
-            }
-
-            // テンプレートファイルが存在していれば読み込む
-            $tpl_file =  USER_TEMPLATE_PATH . "/" . TEMPLATE_NAME . "/" . $arrPageData[0]['filename'] . ".tpl";
-            if (file_exists($tpl_file)){
-                $arrPageData[0]['tpl_data'] = file_get_contents($tpl_file);
-            // 存在してなければ, 指定されたテンプレートのファイルを読み込む
-            } else {
-                $arrPageData[0]['tpl_data'] = file_get_contents(TEMPLATE_DIR . $arrPageData[0]['filename'] . ".tpl");
-            }
-
-            // チェックボックスの値変更
-            $arrPageData[0]['header_chk'] = SC_Utils_Ex::sfChangeCheckBox($arrPageData[0]['header_chk'], true);
-            $arrPageData[0]['footer_chk'] = SC_Utils_Ex::sfChangeCheckBox($arrPageData[0]['footer_chk'], true);
-
-            // ディレクトリを画面表示用に編集
-            $arrPageData[0]['directory'] = str_replace(USER_DIR, '', $arrPageData[0]['php_dir']);
-
-            $this->arrPageData = $arrPageData[0];
+            $this->lfGetPageData($page_id, $objView);
         }
 
-        // プレビュー処理
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
         
+        // プレビュー処理
         if ($_POST['mode'] == 'preview') {
-
-            $page_id_old = $page_id;
-            // プレビューの場合ページIDを0にセットする。
-            $page_id = "0";
-            $url = basename($_POST['url']);
-            
-            $tmpPost = $_POST;
-            $tmpPost['page_id'] = $page_id;
-            $tmpPost['url'] = $url;
-            $tmpPost['tpl_dir'] = USER_PATH . "templates/preview/";
-            
-            $arrPreData = $this->objLayout->lfgetPageData("page_id = ?" , array($page_id));
-            
-            // tplファイルの削除 (XXX: 処理の意図が不明。存在していると都合が悪いファイル?)
-            $del_tpl = USER_PATH . "templates/" . $arrPreData[0]['filename'] . '.tpl';
-            if (file_exists($del_tpl)){
-                unlink($del_tpl);
-            }
-
-            // DBへデータを更新する
-            $this->lfEntryPageData($tmpPost);
-
-            // TPLファイル作成
-            $preview_tpl = USER_PATH . "templates/preview/" . TEMPLATE_NAME . "/" . $url . '.tpl';
-            $this->lfCreateFile($preview_tpl);
-            
-            // blocposition を削除
-            $objDBConn = new SC_DbConn;		// DB操作オブジェクト
-            $sql = 'delete from dtb_blocposition where page_id = 0';
-            $ret = $objDBConn->query($sql);
-
-            if ($page_id_old != "") {
-                // 登録データを取得
-                $sql = "SELECT 0, target_id, bloc_id, bloc_row FROM dtb_blocposition WHERE page_id = ?";
-                $ret = $objDBConn->getAll($sql,array($page_id_old));
-
-                if (count($ret) > 0) {
-
-                    // blocposition を複製
-                    $sql = " insert into dtb_blocposition (";
-                    $sql .= "     page_id,";
-                    $sql .= "     target_id,";
-                    $sql .= "     bloc_id,";
-                    $sql .= "     bloc_row";
-                    $sql .= "     )values(?, ?, ?, ?)";
-
-                    // 取得件数文INSERT実行
-                    foreach($ret as $key => $val){
-                        $ret = $objDBConn->query($sql,$val);
-                    }
-                }
-            }
-            $_SESSION['preview'] = "ON";
-            $this->sendRedirect($this->getLocation(URL_DIR . "preview/" . DIR_INDEX_URL, array("filename" => $arrPageData[0]["filename"])));
+            $this->lfPreviewPageData($page_id);
             exit;
         }
 
         // データ登録処理
         if ($_POST['mode'] == 'confirm') {
-
-            // エラーチェック
-            $this->arrErr = $this->lfErrorCheck($_POST);
-
-            // エラーがなければ更新処理を行う
-            if (count($this->arrErr) == 0) {
-                // DBへデータを更新する
-                $this->lfEntryPageData($_POST);
-
-                // ベースデータでなければファイルを削除し、PHPファイルを作成する
-                if (!$this->objLayout->lfCheckBaseData($page_id)) {
-                    // ファイル削除
-                    $this->objLayout->lfDelFile($arrPageData[0]);
-                    // PHPファイル作成
-                    $this->lfCreatePHPFile($_POST['url']);
-                }
-
-                // TPLファイル作成
-                $cre_tpl = USER_TEMPLATE_PATH . "/" . TEMPLATE_NAME . "/" . basename($_POST['url']) . '.tpl';
-                $this->lfCreateFile($cre_tpl);
-
-                // 新規作成の場合、
-                if ($page_id == '') {
-                    // ページIDを取得する
-                    $arrPageData = $this->objLayout->lfgetPageData(" url = ? AND page_id <> 0" , array(USER_DIR . $_POST['url'] . '.php'));
-                    $page_id = $arrPageData[0]['page_id'];
-                }
-                $this->sendRedirect($this->getLocation("./main_edit.php",
-                                        array("page_id" => $page_id,
-                                              "msg"     => "on")));
-                exit;
-            } else {
-                // エラーがあれば入力時のデータを表示する
-                $this->arrPageData = $_POST;
-                $this->arrPageData['header_chk'] = SC_Utils_Ex::sfChangeCheckBox(SC_Utils_Ex::sfChangeCheckBox($_POST['header_chk']), true);
-                $this->arrPageData['footer_chk'] = SC_Utils_Ex::sfChangeCheckBox(SC_Utils_Ex::sfChangeCheckBox($_POST['footer_chk']), true);
-                $this->arrPageData['directory'] = '';
-                $this->arrPageData['filename'] = $_POST['url'];
-            }
+            $this->lfConfirmPageData($page_id);
         }
 
         // データ削除処理 ベースデータでなければファイルを削除
         if ($_POST['mode'] == 'delete' and !$this->objLayout->lfCheckBaseData($page_id)) {
-            $this->objLayout->lfDelPageData($_POST['page_id']);
-            $this->sendRedirect($this->getLocation("./main_edit.php"));
+            $this->lfDeletePageData($page_id);
             exit;
         }
 
@@ -238,6 +120,154 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
      */
     function destroy() {
         parent::destroy();
+    }
+
+    /**
+     * ページデータを取得する.
+     *
+     * @param integer $page_id ページID
+     * @param object $objView ビューオブジェクト
+     * @return void
+     */
+    function lfGetPageData($page_id, $objView){
+        $arrPageData = $this->objLayout->lfgetPageData(" page_id = ? " , array($page_id));
+
+        if (strlen($arrPageData[0]['filename']) == 0) {
+            $this->arrErr['page_id_err'] = "※ 指定されたページは編集できません。";
+            // 画面の表示
+            $objView->assignobj($this);
+            $objView->display(MAIN_FRAME);
+            exit;
+        }
+
+        // テンプレートファイルが存在していれば読み込む
+        $tpl_file =  USER_TEMPLATE_PATH . "/" . TEMPLATE_NAME . "/" . $arrPageData[0]['filename'] . ".tpl";
+        if (file_exists($tpl_file)){
+            $arrPageData[0]['tpl_data'] = file_get_contents($tpl_file);
+        // 存在してなければ, 指定されたテンプレートのファイルを読み込む
+        } else {
+            $arrPageData[0]['tpl_data'] = file_get_contents(TEMPLATE_DIR . $arrPageData[0]['filename'] . ".tpl");
+        }
+
+        // チェックボックスの値変更
+        $arrPageData[0]['header_chk'] = SC_Utils_Ex::sfChangeCheckBox($arrPageData[0]['header_chk'], true);
+        $arrPageData[0]['footer_chk'] = SC_Utils_Ex::sfChangeCheckBox($arrPageData[0]['footer_chk'], true);
+
+        // ディレクトリを画面表示用に編集
+        $arrPageData[0]['directory'] = str_replace(USER_DIR, '', $arrPageData[0]['php_dir']);
+
+        $this->arrPageData = $arrPageData[0];
+    }
+
+    /**
+     * プレビュー画面を表示する.
+     *
+     * @param integer $page_id ページID
+     * @return void
+     */
+    function lfPreviewPageData($page_id){
+
+        $page_id_old = $page_id;
+        // プレビューの場合ページIDを0にセットする。
+        $page_id = "0";
+        $url = basename($_POST['url']);
+        
+        $tmpPost = $_POST;
+        $tmpPost['page_id'] = $page_id;
+        $tmpPost['url'] = $url;
+        $tmpPost['tpl_dir'] = USER_PATH . "templates/preview/";
+        
+        $arrPreData = $this->objLayout->lfgetPageData("page_id = ?" , array($page_id));
+        
+        // tplファイルの削除 (XXX: 処理の意図が不明。存在していると都合が悪いファイル?)
+        $del_tpl = USER_PATH . "templates/" . $arrPreData[0]['filename'] . '.tpl';
+        if (file_exists($del_tpl)){
+            unlink($del_tpl);
+        }
+
+        // DBへデータを更新する
+        $this->lfEntryPageData($tmpPost);
+
+        // TPLファイル作成
+        $preview_tpl = USER_PATH . "templates/preview/" . TEMPLATE_NAME . "/" . $url . '.tpl';
+        $this->lfCreateFile($preview_tpl, $_POST['tpl_data']);
+        
+        // blocposition を削除
+        $objDBConn = new SC_DbConn;		// DB操作オブジェクト
+        $sql = 'delete from dtb_blocposition where page_id = 0';
+        $ret = $objDBConn->query($sql);
+
+        if ($page_id_old != "") {
+            // 登録データを取得
+            $sql = "SELECT 0, target_id, bloc_id, bloc_row FROM dtb_blocposition WHERE page_id = ?";
+            $ret = $objDBConn->getAll($sql,array($page_id_old));
+
+            if (count($ret) > 0) {
+
+                // blocposition を複製
+                $sql = " insert into dtb_blocposition (";
+                $sql .= "     page_id,";
+                $sql .= "     target_id,";
+                $sql .= "     bloc_id,";
+                $sql .= "     bloc_row";
+                $sql .= "     )values(?, ?, ?, ?)";
+
+                // 取得件数文INSERT実行
+                foreach($ret as $key => $val){
+                    $ret = $objDBConn->query($sql,$val);
+                }
+            }
+        }
+        $_SESSION['preview'] = "ON";
+        $this->sendRedirect($this->getLocation(URL_DIR . "preview/" . DIR_INDEX_URL, array("filename" => $arrPageData[0]["filename"])));
+
+    }
+
+    /**
+     * データ登録処理.
+     *
+     * @param integer $page_id ページID
+     * @return void
+     */
+    function lfConfirmPageData($page_id){
+        // エラーチェック
+        $this->arrErr = $this->lfErrorCheck($_POST);
+
+        // エラーがなければ更新処理を行う
+        if (count($this->arrErr) == 0) {
+            // DBへデータを更新する
+            $this->lfEntryPageData($_POST);
+
+            // ベースデータでなければファイルを削除し、PHPファイルを作成する
+            if (!$this->objLayout->lfCheckBaseData($page_id)) {
+                // ファイル削除
+                $this->objLayout->lfDelFile($this->arrPageData);
+                // PHPファイル作成
+                $this->lfCreatePHPFile($_POST['url']);
+            }
+
+            // TPLファイル作成
+            $cre_tpl = USER_TEMPLATE_PATH . "/" . TEMPLATE_NAME . "/" . basename($_POST['url']) . '.tpl';
+            $this->lfCreateFile($cre_tpl, $_POST['tpl_data']);
+
+            // 新規作成の場合、
+            if ($page_id == '') {
+                // ページIDを取得する
+                $arrPageData = $this->objLayout->lfgetPageData(" url = ? AND page_id <> 0" , array(USER_DIR . $_POST['url'] . '.php'));
+                $page_id = $arrPageData[0]['page_id'];
+            }
+            $this->sendRedirect($this->getLocation("./main_edit.php",
+                                    array("page_id" => $page_id,
+                                          "msg"     => "on")));
+            exit;
+        } else {
+            // エラーがあれば入力時のデータを表示する
+            $this->arrPageData = $_POST;
+            $this->arrPageData['header_chk'] = SC_Utils_Ex::sfChangeCheckBox(SC_Utils_Ex::sfChangeCheckBox($_POST['header_chk']), true);
+            $this->arrPageData['footer_chk'] = SC_Utils_Ex::sfChangeCheckBox(SC_Utils_Ex::sfChangeCheckBox($_POST['footer_chk']), true);
+            $this->arrPageData['directory'] = '';
+            $this->arrPageData['filename'] = $_POST['url'];
+        }
     }
 
     /**
@@ -348,6 +378,17 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
     }
 
     /**
+     * ページデータを削除する.
+     *
+     * @param integer $page_id ページID
+     * @return void
+     */
+    function lfDeletePageData($page_id){
+        $this->objLayout->lfDelPageData($_POST['page_id']);
+        $this->sendRedirect($this->getLocation("./main_edit.php"));
+    }
+
+    /**
      * 入力項目のエラーチェックを行う.
      *
      * @param array $arrData 入力データ
@@ -402,9 +443,10 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
      * ファイルを作成する.
      *
      * @param string $path テンプレートファイルのパス
+     * @param string $data テンプレートの内容
      * @return void
      */
-    function lfCreateFile($path){
+    function lfCreateFile($path, $data){
 
         // ディレクトリが存在していなければ作成する
         if (!is_dir(dirname($path))) {
@@ -413,7 +455,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
 
         // ファイル作成
         $fp = fopen($path,"w");
-        fwrite($fp, $_POST['tpl_data']); // FIXME いきなり POST はちょっと...
+        fwrite($fp, $data); // FIXME いきなり POST はちょっと...
         fclose($fp);
     }
 
