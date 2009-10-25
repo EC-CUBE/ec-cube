@@ -61,9 +61,11 @@ class SC_Helper_PageLayout {
             $objPage->tpl_mainpage = USER_PATH . "templates/preview/"
                 . TEMPLATE_NAME . "/" . $arrPageData[0]['filename'] . ".tpl";
         }
-                
-        foreach($arrPageData[0] as $key => $val) {
-            $debug_message.= "arrPageData[$key]：" . $val . "\n";
+
+        if (!empty($arrPageData[0])) {
+            foreach($arrPageData[0] as $key => $val) {
+                $debug_message.= "arrPageData[$key]：" . $val . "\n";
+            }
         }
         
         $debug_message.= "TEMPLATE_NAME：".TEMPLATE_NAME . "\n";

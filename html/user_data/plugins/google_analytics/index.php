@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2009 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -20,20 +20,15 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+// {{{ requires
+require_once("../../../admin/require.php");
+require_once(USER_PATH . 'plugins/google_analytics/classes/pages/LC_Page_Admin_GoogleAnalytics.php');
 
-// load plugins
-/* -----------------------------------------------------------------------------
- * TODO PHP4 でも使えるように, XML パーサーをファクトリークラスで実装する
- * ----------------------------------------------------------------------------*/
-if (version_compare("5", PHP_VERSION, "<")) {
-    $plugins = file_get_contents(USER_PATH . "plugins/plugins.xml");
-    $xml = new SimpleXMLElement($plugins);
-    foreach ($xml->plugin as $plugin) {
+// }}}
+// {{{ generate page
 
-        $requireFile = USER_PATH . "plugins/" . $plugin->path . "/require.php";
-        if (file_exists($requireFile)) {
-            include_once($requireFile);
-        }
-    }
-}
+$objPage = new LC_Page_Admin_GoogleAnalytics();
+register_shutdown_function(array($objPage, 'destroy'));
+$objPage->init();
+$objPage->process();
 ?>

@@ -606,4 +606,10 @@ define('OSTORE_E_C_BATCH_ERR', '2010');
 define('OPTION_FAVOFITE_PRODUCT','1');
 /** 画像リネーム設定（商品画像のみ） */
 define('IMAGE_RENAME', true);
+/** プラグインディレクトリ */
+define("PLUGIN_DIR", "plugins/");
+/** プラグイン保存先 */
+define("PLUGIN_PATH", USER_PATH . PLUGIN_DIR);
+/** プラグイン URL */
+define("PLUGIN_URL", USER_URL . PLUGIN_DIR);
 ?>

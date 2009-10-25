@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<plugins>
+  <plugin>
+    <name>Google Analytics</name>
+    <path>google_analytics</path>
+  </plugin>
+</plugins>

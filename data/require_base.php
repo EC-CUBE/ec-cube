@@ -77,7 +77,6 @@ require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_DB_Ex.php");
 require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_Mail_Ex.php");
 require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_Mobile_Ex.php");
 require_once(DATA_PATH . "include/module.inc");
-include_once(DATA_PATH . "require_plugin.php");
 
 // インストール中で無い場合、
 if (!SC_Utils_Ex::sfIsInstallFunction()) {
@@ -93,4 +92,6 @@ if (!SC_Utils_Ex::sfIsInstallFunction()) {
     $sessionFactory = SC_SessionFactory::getInstance();
     $sessionFactory->initSession();
 }
+// プラグインを読み込む
+//require_once(DATA_PATH . "require_plugin.php");
 ?>

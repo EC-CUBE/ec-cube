@@ -82,6 +82,9 @@ class LC_Page {
      */
     function init() {
         $this->tpl_authority = $_SESSION['authority'];
+        // XXX すべてのページで宣言するべき
+        $layout = new SC_Helper_PageLayout_Ex();
+        $layout->sfGetPageLayout($this, false);
     }
 
     /**
