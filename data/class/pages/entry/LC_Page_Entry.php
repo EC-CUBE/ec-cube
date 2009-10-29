@@ -25,7 +25,7 @@
 require_once(CLASS_PATH . "pages/LC_Page.php");
 
 /**
- * 会員登録(入力ページ) のページクラス.
+ * 会員登録のページクラス.
  *
  * @package Page
  * @author LOCKON CO.,LTD.
@@ -38,6 +38,19 @@ class LC_Page_Entry extends LC_Page {
 
     /**
      * Page を初期化する.
+     *
+     * 以下のプロパティの初期化を行う.
+     * - tpl_mainpage
+     * - tpl_title
+     * - year
+     * - arrPref (mtb_pref からマスタデータを取得する)
+     * - arrJob (mtb_job からマスタデータを取得する)
+     * - arrReminder (mtb_reminder からマスタデータを取得する)
+     * - arrYear
+     * - arrMonth
+     * - arrDay
+     *
+     * また, クライアント・プロキシのキャッシュ制御を "nocache" に設定する.
      *
      * @return void
      */
@@ -64,6 +77,58 @@ class LC_Page_Entry extends LC_Page {
     /**
      * Page のプロセス.
      *
+     * 一般ユーザーが個人情報を入力し, 会員登録を行う.
+     * 会員登録完了時, ユーザーのメールアドレスと店舗管理者へ会員登録完了
+     * の通知メールを送信する.
+     *
+     * 以下のように遷移を行う. 遷移の際, トランザクショントークンを使用し,
+     * 不正な遷移が発生した場合はエラーページを表示する.
+     *
+     * <ol>
+     *   <li>入力フォーム($_POST['mode'] == '')
+     *     <ul>
+     *       <li>入力チェックがエラーの場合($_POST['mode'] == 'return')</li>
+     *       <li>$_POST が空かつ, $_SERVER['HTTP_REFERER'] に "kiyaku.php"
+     *       の文字列が存在しない場合はエラーページを表示する</li>
+     *     </ul>
+     *   </li>
+     *   <li>入力確認画面($_POST['mode'] == 'confirm')</li>
+     *   <li>登録完了処理($_POST['mode'] == 'complete')</li>
+     *   <li>登録完了画面へリダイレクトを行う</li>
+     * </ol>
+     *
+     * 仮会員登録が有効な場合, 3 の登録完了画面の前に, 仮会員登録メールを送信し,
+     * ユーザーが本会員登録用 URL をクリックした時点で登録を完了する.
+     *
+     * このページでユーザーが入力した情報は, 空文字, 改行を削除する.
+     * メールアドレスは, すべて小文字に変換する.
+     *
+     * 使用するスーパーグローバル変数
+     * - $_SERVER['PHP_SELF']
+     * - $_SERVER['HTTP_REFERER']
+     * - $_SERVER["REQUEST_METHOD"]
+     * - $_POST["name01"]
+     * - $_POST["name02"]
+     * - $_POST["kana01"]
+     * - $_POST["kana02"]
+     * - $_POST["zip01"]
+     * - $_POST["zip02"]
+     * - $_POST["addr01"]
+     * - $_POST["addr02"]
+     * - $_POST["tel01"]
+     * - $_POST["tel02"]
+     * - $_POST["tel03"]
+     * - $_POST["fax01"]
+     * - $_POST["fax02"]
+     * - $_POST["fax03"]
+     * - $_POST["email"]
+     * - $_POST["email02"]
+     * - $_POST["password"]
+     * - $_POST["password02"]
+     * - $_POST["reminder_answer"]
+     * - $_POST["mode"]('return', 'confirm', 'complate')
+     *
+     * @global $objCampaignSess
      * @return void
      */
     function process() {
