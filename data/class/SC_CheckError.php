@@ -517,7 +517,23 @@ class SC_CheckError {
             return;
         }
         $this->createParam($value);
-        if(strlen($this->arrParam[$value[1]]) > 0 && !ereg("^[^@]+@[^.^@]+\..+", $this->arrParam[$value[1]])) {
+
+        $wsp           = '[\x20\x09]';
+        $vchar         = '[\x21-\x7e]';
+        $quoted_pair   = "\\\\(?:$vchar|$wsp)";
+        $qtext         = '[\x21\x23-\x5b\x5d-\x7e]';
+        $qcontent      = "(?:$qtext|$quoted_pair)";
+        $quoted_string = "\"$qcontent*\"";
+        $atext         = '[a-zA-Z0-9!#$%&\'*+\-\/\=?^_`{|}~]';
+        $dot_atom_text = "$atext+(?:[.]$atext+)*";
+        $dot_atom      = $dot_atom_text;
+        $local_part    = "(?:$dot_atom|$quoted_string)";
+        $domain        = $dot_atom;
+        $addr_spec     = "${local_part}[@]$domain";
+
+        $regexp = "/\A${addr_spec}\z/";
+
+        if(strlen($this->arrParam[$value[1]]) > 0 && !preg_match($regexp, $this->arrParam[$value[1]])) {
             $this->arrErr[$value[1]] = "※ " . $value[0] . "の形式が不正です。<br />";
         }
     }
