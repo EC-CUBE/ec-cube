@@ -25,6 +25,8 @@
 /* -----------------------------------------------------------------------------
  * TODO PHP4 でも使えるように, XML パーサーをファクトリークラスで実装する
  * ----------------------------------------------------------------------------*/
+define('DEBUG_LOAD_PLUGIN', true);
+
 if (version_compare("5", PHP_VERSION, "<")) {
     $plugins = file_get_contents(USER_PATH . "plugins/plugins.xml");
     $xml = new SimpleXMLElement($plugins);

@@ -113,12 +113,12 @@
         <a><span>OWNERS STORE</span></a>
         <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`ownersstore/subnavi.tpl"}-->
     </li>
-<!--{*
-    <li id="navi-plugin" class="<!--{if $tpl_mainno eq "plugin"}-->on<!--{/if}-->">
-      <a><span>プラグイン設定</span></a>
-      <!--{include file="`$smarty.const.PLUGIN_PATH`plugin_menu.tpl"}-->
-    </li>
-*}-->
+    <!--{if "DEBUG_LOAD_PLUGIN"|defined && $smarty.const.DEBUG_LOAD_PLUGIN}-->
+        <li id="navi-plugin" class="<!--{if $tpl_mainno eq "plugin"}-->on<!--{/if}-->">
+          <a><span>プラグイン設定</span></a>
+          <!--{include file="`$smarty.const.PLUGIN_PATH`plugin_menu.tpl"}-->
+        </li>
+    <!--{/if}-->
 </ul>
 <div style="clear: both;"></div>
 <!--{* ▲NAVI *}-->
