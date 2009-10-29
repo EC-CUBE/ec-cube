@@ -82,7 +82,7 @@
               <!--{assign var=key value="order_addr02"}-->
               <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" size="40"  maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box380" /><br />
               <!--{$smarty.const.SAMPLE_ADDRESS2}--></p>
-            <p class="mini"><em>住所は2つに分けてご記入いただけます。マンション名は必ず記入してください。</em></p></td>
+            <p class="mini"><em>住所は2つに分けてご記入ください。マンション名は必ず記入してください。</em></p></td>
         </tr>
         <tr>
           <th>電話番号<span class="attention">※</span></th>
@@ -221,7 +221,7 @@
               <!--{assign var=key value="deliv_addr02"}-->
               <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" size="40"  maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box380" /><br />
               <!--{$smarty.const.SAMPLE_ADDRESS2}--></p>
-            <p class="mini"><em>住所は2つに分けてご記入いただけます。マンション名は必ず記入してください。</em></p>
+            <p class="mini"><em>住所は2つに分けてご記入ください。マンション名は必ず記入してください。</em></p>
 
           </td>
         </tr>

@@ -76,7 +76,7 @@
      <!--{$smarty.const.SAMPLE_ADDRESS1}--></p>
     <p class="mini"><input type="text" name="<!--{$key5}-->" value="<!--{$arrForm[$key5]|escape}-->" size="60" class="box300" style="<!--{$arrErr[$key5]|sfGetErrorColor}-->; ime-mode: active;" /><br />
       <!--{$smarty.const.SAMPLE_ADDRESS2}--></p>
-    <p class="mini"><em>住所は2つに分けてご記入いただけます。マンション名は必ず記入してください。</em></p>
+    <p class="mini"><em>住所は2つに分けてご記入ください。マンション名は必ず記入してください。</em></p>
   </td>
 </tr>
 <tr>
