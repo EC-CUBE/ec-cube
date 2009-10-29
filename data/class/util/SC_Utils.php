@@ -2205,5 +2205,37 @@ echo $template_path;
     function sfIsInstallFunction() {
         return defined('INSTALL_FUNCTION') && INSTALL_FUNCTION;
     }
+
+    // 郵便番号から住所の取得
+    function sfGetAddress($zipcode) {
+
+        $conn = new SC_DBconn(ZIP_DSN);
+
+        $masterData = new SC_DB_MasterData_Ex();
+        $arrPref = $masterData->getMasterData("mtb_pref", array("pref_id", "pref_name", "rank"));
+        // インデックスと値を反転させる。
+        $arrREV_PREF = array_flip($arrPref);
+
+        // 郵便番号検索文作成
+        $zipcode = mb_convert_kana($zipcode ,"n");
+        $sqlse = "SELECT state, city, town FROM mtb_zip WHERE zipcode = ?";
+
+        $data_list = $conn->getAll($sqlse, array($zipcode));
+        if (empty($data_list)) return array();
+
+        /*
+         総務省からダウンロードしたデータをそのままインポートすると
+         以下のような文字列が入っているので 対策する。
+         ・（１・１９丁目）
+         ・以下に掲載がない場合
+        */
+        $town =  $data_list[0]['town'];
+        $town = ereg_replace("（.*）$","",$town);
+        $town = ereg_replace("以下に掲載がない場合","",$town);
+        $data_list[0]['town'] = $town;
+		$data_list[0]['state'] = $arrREV_PREF[$data_list[0]['state']];
+
+        return $data_list;
+    }
 }
 ?>

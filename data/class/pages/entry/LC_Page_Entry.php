@@ -468,7 +468,7 @@ class LC_Page_Entry extends LC_Page {
                     $this->tpl_title = '会員登録(3/3)';
 
                     if (@$this->arrForm['pref'] == "" && @$this->arrForm['addr01'] == "" && @$this->arrForm['addr02'] == "") {
-                        $address = $this->lfGetAddress($_REQUEST['zip01'].$_REQUEST['zip02']);
+                        $address = SC_Utils_Ex::sfGetAddress($_REQUEST['zip01'].$_REQUEST['zip02']);
                         $this->pref = @$address[0]['state'];
                         $this->addr01 = @$address[0]['city'] . @$address[0]['town'];
                     }
@@ -834,35 +834,6 @@ class LC_Page_Entry extends LC_Page {
 
     // }}}
     // {{{ mobile functions
-
-    // 郵便番号から住所の取得
-    function lfGetAddress($zipcode) {
-
-        $conn = new SC_DBconn(ZIP_DSN);
-
-        // 郵便番号検索文作成
-        $zipcode = mb_convert_kana($zipcode ,"n");
-        $sqlse = "SELECT state, city, town FROM mtb_zip WHERE zipcode = ?";
-
-        $data_list = $conn->getAll($sqlse, array($zipcode));
-
-        // インデックスと値を反転させる。
-        $arrREV_PREF = array_flip($this->arrPref);
-
-        /*
-         総務省からダウンロードしたデータをそのままインポートすると
-         以下のような文字列が入っているので	対策する。
-         ・（１・１９丁目）
-         ・以下に掲載がない場合
-        */
-        $town =  $data_list[0]['town'];
-        $town = ereg_replace("（.*）$","",$town);
-        $town = ereg_replace("以下に掲載がない場合","",$town);
-        $data_list[0]['town'] = $town;
-        $data_list[0]['state'] = $arrREV_PREF[$data_list[0]['state']];
-
-        return $data_list;
-    }
 
     //---- 入力エラーチェック
     function lfErrorCheck1($array) {

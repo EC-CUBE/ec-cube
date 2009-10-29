@@ -52,7 +52,6 @@ class LC_Page_InputZip extends LC_Page {
      * @return void
      */
     function process() {
-        $conn = new SC_DBconn(ZIP_DSN);
         $objView = new SC_SiteView(false);
 
         // 入力エラーチェック
@@ -62,41 +61,18 @@ class LC_Page_InputZip extends LC_Page {
             $this->tpl_start = "window.close();";
             SC_Utils::sfDispSiteError(CUSTOMER_ERROR);
         }
-        
+
         // 郵便番号検索文作成
         $zipcode = $_GET['zip1'].$_GET['zip2'];
-        $zipcode = mb_convert_kana($zipcode ,"n");
-        $sqlse = "SELECT state, city, town FROM mtb_zip WHERE zipcode = ?";
 
-        $data_list = $conn->getAll($sqlse, array($zipcode));
-        if (empty($data_list)) $data_list = array();
-
-        $masterData = new SC_DB_MasterData_Ex();
-        $arrPref = $masterData->getMasterData("mtb_pref", array("pref_id", "pref_name", "rank"));
-        // インデックスと値を反転させる。
-        $arrREV_PREF = array_flip($arrPref);
-
-        if (!empty($data_list)) {
-            $this->tpl_state = isset($arrREV_PREF[$data_list[0]['state']])
-                ? $arrREV_PREF[$data_list[0]['state']] : "";
-            $this->tpl_city = isset($data_list[0]['city']) ? $data_list[0]['city'] : "";
-            $town =  isset($data_list[0]['town']) ? $data_list[0]['town'] : "";
-        } else {
-            $town = "";
-        }
-
-        /*
-         総務省からダウンロードしたデータをそのままインポートすると
-         以下のような文字列が入っているので  対策する。
-         ・（１~１９丁目）
-         ・以下に掲載がない場合
-        */
-        $town = ereg_replace("（.*）$","",$town);
-        $town = ereg_replace("以下に掲載がない場合","",$town);
-        $this->tpl_town = $town;
+        $data_list = SC_Utils_Ex::sfGetAddress($zipcode);
 
         // 郵便番号が発見された場合
         if(!empty($data_list)) {
+            $this->tpl_state = $data_list[0]['state'];
+            $this->tpl_city = $data_list[0]['city'];
+            $this->tpl_town = $data_list[0]['town'];
+
             $func = "fnPutAddress('" . $_GET['input1'] . "','" . $_GET['input2']. "');";
             $this->tpl_onload = "$func";
             $this->tpl_start = "window.close();";
