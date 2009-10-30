@@ -35,31 +35,34 @@ function fnIsopener() {
 
 // 郵便番号入力呼び出し.
 function fnCallAddress(php_url, tagname1, tagname2, input1, input2) {
-	zip1 = document.form1[tagname1].value;
-	zip2 = document.form1[tagname2].value;
-	
-	if(zip1.length == 3 && zip2.length == 4) {
-		url = php_url + "?zip1=" + zip1 + "&zip2=" + zip2 + "&input1=" + input1 + "&input2=" + input2;
-		window.open(url,"nomenu","width=500,height=350,scrollbars=yes,resizable=yes,toolbar=no,location=no,directories=no,status=no");
-	} else {
-		alert("郵便番号を正しく入力して下さい。");
+    zip1 = document.form1[tagname1].value;
+    zip2 = document.form1[tagname2].value;
+
+    if(zip1.length == 3 && zip2.length == 4) {
+        $.get(
+            php_url,
+            {zip1: zip1, zip2: zip2, input1: input1, input2: input2},
+            function(data) {
+                arrdata = data.split("|");
+                if (arrdata.length > 1) {
+                    fnPutAddress(input1, input2, arrdata[0], arrdata[1], arrdata[2]);
+                } else {
+                    alert(data);
+                }
+            }
+        );
+    } else {
+        alert("郵便番号を正しく入力して下さい。");
 	}
 }
 
 // 郵便番号から検索した住所を渡す.
-function fnPutAddress(input1, input2) {
-	// 親ウィンドウの存在確認。.
-	if(fnIsopener()) {
-		if(document.form1['state'].value != "") {
-			// 項目に値を入力する.
-			state_id = document.form1['state'].value;
-			town = document.form1['city'].value + document.form1['town'].value;
-			window.opener.document.form1[input1].selectedIndex = state_id;
-			window.opener.document.form1[input2].value = town;
-		}
-	} else {
-		window.close();
-	}		
+function fnPutAddress(input1, input2, state, city, town) {
+    if(state != "") {
+        // 項目に値を入力する.
+        document.form1[input1].selectedIndex = state;
+        document.form1[input2].value = city + town;
+    }
 }
 
 function fnOpenNoMenu(URL) {
@@ -78,18 +81,18 @@ function fnSetFocus(name) {
 
 // セレクトボックスに項目を割り当てる.
 function fnSetSelect(name1, name2, val) {
-	sele1 = document.form1[name1]; 
+	sele1 = document.form1[name1];
 	sele2 = document.form1[name2];
-	
+
 	if(sele1 && sele2) {
 		index=sele1.selectedIndex;
-		
-		// セレクトボックスのクリア	
+
+		// セレクトボックスのクリア
 		count=sele2.options.length
 		for(i = count; i >= 0; i--) {
 			sele2.options[i]=null;
 		}
-		
+
 		// セレクトボックスに値を割り当てる。
 		len = lists[index].length
 		for(i = 0; i < len; i++) {
@@ -162,7 +165,7 @@ function fnFormModeSubmit(form, mode, keyname, keyid) {
 		if(!window.confirm('登録しても宜しいですか')){
 			return;
 		}
-		break;		
+		break;
 	default:
 		break;
 	}
@@ -213,7 +216,7 @@ function fnCheckInputPoint() {
 		list = new Array(
 						'use_point'
 						);
-	
+
 		if(!document.form1['point_check'][0].checked) {
 			color = "#dddddd";
 			flag = true;
@@ -221,7 +224,7 @@ function fnCheckInputPoint() {
 			color = "";
 			flag = false;
 		}
-		
+
 		len = list.length
 		for(i = 0; i < len; i++) {
 			if(document.form1[list[i]]) {
@@ -252,7 +255,7 @@ function fnCheckInputDeliv() {
 						'deliv_tel02',
 						'deliv_tel03'
 						);
-	
+
 		if(!document.form1['deliv_check'].checked) {
 			fnChangeDisabled(list, '#dddddd');
 		} else {
@@ -285,7 +288,7 @@ var g_savecolor = new Array();
 
 function fnChangeDisabled(list, color) {
 	len = list.length;
-	
+
 	for(i = 0; i < len; i++) {
 		if(document.form1[list[i]]) {
 			if(color == "") {
@@ -296,8 +299,8 @@ function fnChangeDisabled(list, color) {
 				// 無効にする。
 				document.form1[list[i]].disabled = true;
 				g_savecolor[list[i]] = document.form1[list[i]].style.backgroundColor;
-				document.form1[list[i]].style.backgroundColor = color;//"#f0f0f0";	
-			}			
+				document.form1[list[i]].style.backgroundColor = color;//"#f0f0f0";
+			}
 		}
 	}
 }
@@ -306,7 +309,7 @@ function fnChangeDisabled(list, color) {
 // ログイン時の入力チェック
 function fnCheckLogin(formname) {
 	var lstitem = new Array();
-	
+
 	if(formname == 'login_mypage'){
 	lstitem[0] = 'mypage_login_email';
 	lstitem[1] = 'mypage_login_pass';
@@ -317,7 +320,7 @@ function fnCheckLogin(formname) {
 	var max = lstitem.length;
 	var errflg = false;
 	var cnt = 0;
-	
+
 	//　必須項目のチェック
 	for(cnt = 0; cnt < max; cnt++) {
 		if(document.forms[formname][lstitem[cnt]].value == "") {
@@ -325,14 +328,14 @@ function fnCheckLogin(formname) {
 			break;
 		}
 	}
-	
-	// 必須項目が入力されていない場合	
+
+	// 必須項目が入力されていない場合
 	if(errflg == true) {
 		alert('メールアドレス/パスワードを入力して下さい。');
 		return false;
 	}
 }
-	
+
 // 時間の計測.
 function fnPassTime(){
 	end_time = new Date();
@@ -348,7 +351,7 @@ function fnUpdateParent(url) {
 		window.opener.location.href = url;
 	} else {
 		window.close();
-	}		
+	}
 }
 
 //特定のキーをSUBMITする.
@@ -370,7 +373,7 @@ function fnCharCount(form,sch,cnt) {
 
 // テキストエリアのサイズを変更する.
 function ChangeSize(button, TextArea, Max, Min, row_tmp){
-	
+
 	if(TextArea.rows <= Min){
 		TextArea.rows=Max; button.value="小さくする"; row_tmp.value=Max;
 	}else{
