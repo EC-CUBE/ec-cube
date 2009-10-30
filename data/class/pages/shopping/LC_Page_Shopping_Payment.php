@@ -23,13 +23,14 @@
 
 // {{{ requires
 require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(DATA_PATH . 'module/Services/JSON.php');
 
 /**
  * 支払い方法選択 のページクラス.
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id:LC_Page_Shopping_Payment.php 15532 2007-08-31 14:39:46Z nanasess $
+ * @version $Id:LC_Page_Shopping_Payment.php 15532 2009-10-30 20:04:46Z satou $
  */
 class LC_Page_Shopping_Payment extends LC_Page {
 
@@ -135,7 +136,8 @@ class LC_Page_Shopping_Payment extends LC_Page {
             break;
         // 支払い方法が変更された場合
         case 'payment':
-            // ここのbreakは、意味があるので外さないで下さい。
+            // 配送時間の配列を生成
+            $this->lfSetDelivTime();
             break;
         default:
             // 受注一時テーブルからの情報を格納
@@ -149,10 +151,6 @@ class LC_Page_Shopping_Payment extends LC_Page {
         $this->arrPayment = $this->lfGetPayment($total_pretax);
         // 支払い方法の画像があるなしを取得（$img_show true:ある false:なし）
         $this->img_show = $this->lfGetImgShow($this->arrPayment);
-        // お届け時間の取得
-        $arrRet = $objDb->sfGetDelivTime($this->objFormParam->getValue('payment_id'));
-        $this->arrDelivTime = SC_Utils_Ex::sfArrKeyValue($arrRet, 'time_id', 'deliv_time');
-
         // お届け日一覧の取得
         $this->arrDelivDate = $this->lfGetDelivDate();
 
@@ -207,7 +205,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
         if (strlen($this->tpl_message) >= 1) {
             SC_Utils_Ex::sfDispSiteError(SOLD_OUT, '', true);
         }
-        
+
         $this->arrData = $objDb->sfTotalConfirm(array(), $this, $objCartSess);
 
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
@@ -369,9 +367,9 @@ class LC_Page_Shopping_Payment extends LC_Page {
             $_POST['point_check'] = "";
             $_POST['use_point'] = "0";
         }
-        
+
         if (!isset($_POST['point_check'])) $_POST['point_check'] = "";
-        
+
         if($_POST['point_check'] == '1') {
             $objErr->doFunc(array("ポイントを使用する", "point_check"), array("EXIST_CHECK"));
             $objErr->doFunc(array("ポイント", "use_point"), array("EXIST_CHECK"));
@@ -418,7 +416,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
     /* DBへデータの登録 */
     function lfRegistData($uniqid) {
         $objDb = new SC_Helper_DB_Ex();
-        
+
         $sqlval = $this->objFormParam->getDbArray();
         // 登録データの作成
         $sqlval['order_temp_id'] = $uniqid;
@@ -525,7 +523,6 @@ class LC_Page_Shopping_Payment extends LC_Page {
 
     //一時受注テーブルからの情報を格納する
     function lfSetOrderTempData($uniqid) {
-
         $objQuery = new SC_Query();
         $col = "payment_id, use_point, deliv_time_id, message, point_check, deliv_date";
         $from = "dtb_order_temp";
@@ -546,6 +543,18 @@ class LC_Page_Shopping_Payment extends LC_Page {
             }
         }
         return $img_show;
+    }
+
+    /* 配送時間の配列を生成 */
+    function lfSetDelivTime() {
+        $objDb = new SC_Helper_DB_Ex();
+        $objJson = new Services_JSON;
+
+        // 配送時間の取得
+        $arrRet = $objDb->sfGetDelivTime($this->objFormParam->getValue('payment_id'));
+        // JSONエンコード
+        echo $objJson->encode($arrRet);
+        exit;
     }
 }
 ?>

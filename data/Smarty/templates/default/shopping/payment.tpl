@@ -45,7 +45,7 @@
                     </tr>
                     <!--{section name=cnt loop=$arrPayment}-->
                     <tr>
-                        <td class="centertd"><input type="radio" id="pay_<!--{$smarty.section.cnt.iteration}-->" name="<!--{$key}-->" onclick="fnModeSubmit('payment', '', '');" value="<!--{$arrPayment[cnt].payment_id}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" <!--{$arrPayment[cnt].payment_id|sfGetChecked:$arrForm[$key].value}--> />
+                        <td class="centertd"><input type="radio" id="pay_<!--{$smarty.section.cnt.iteration}-->" name="<!--{$key}-->" onclick="fnSetDelivTime('payment','<!--{$key}-->','deliv_time_id');" value="<!--{$arrPayment[cnt].payment_id}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" <!--{$arrPayment[cnt].payment_id|sfGetChecked:$arrForm[$key].value}--> />
                         </td>
                         <td>
                             <label for="pay_<!--{$smarty.section.cnt.iteration}-->"><!--{$arrPayment[cnt].payment_method|escape}--><!--{if $arrPayment[cnt].note != ""}--><!--{/if}--></label>
@@ -82,7 +82,7 @@
                     <!--{assign var=key value="deliv_time_id"}-->
                     <span class="attention"><!--{$arrErr[$key]}--></span>
                     <em>お届け時間：</em>
-                    <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
+                    <select name="<!--{$key}-->" id="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
                         <option value="" selected="">指定なし</option>
                         <!--{html_options options=$arrDelivTime selected=$arrForm[$key].value}-->
                     </select>
