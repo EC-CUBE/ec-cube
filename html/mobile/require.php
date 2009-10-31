@@ -45,4 +45,5 @@ if (function_exists("sfGetMoba8Param") == TRUE) {
     sfGetMoba8Param($_GET['a8']);
 }
 
+ob_start();
 ?>
