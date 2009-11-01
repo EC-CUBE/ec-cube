@@ -59,6 +59,7 @@ class SC_Initial {
         $this->defineConstants();
         $this->mbstringInit();
         $this->createCacheDir();
+        $this->resetSuperglobalsRequest();
     }
 
     /**
@@ -297,6 +298,18 @@ class SC_Initial {
         define('AUTH_ERROR', 3);
         /** 不正な遷移エラー */
         define('INVALID_MOVE_ERRORR', 4);
+    }
+
+    /**
+     * スーパーグローバル変数「$_REQUEST」を再セット
+     *
+     * variables_order ディレクティブによる差を吸収する。
+     *
+     * @access protected
+     * @return void
+     */
+    function resetSuperglobalsRequest() {
+        $_REQUEST = array_merge($_GET, $_POST);
     }
 }
 ?>
