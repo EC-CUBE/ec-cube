@@ -49,11 +49,20 @@
         <h2 class="title"><!--{$tpl_title|escape}--></h2>
 
         <p>下記ご注文内容で送信してもよろしいでしょうか？<br />
-            よろしければ、一番下の「<!--{if $payment_type != ""}-->次へ<!--{else}-->ご注文完了ページへ<!--{/if}-->」ボタンをクリックしてください。</p>
+            よろしければ、「<!--{if $payment_type != ""}-->次へ<!--{else}-->ご注文完了ページへ<!--{/if}-->」ボタンをクリックしてください。</p>
 
         <form name="form1" id="form1" method="post" action="?">
             <input type="hidden" name="mode" value="confirm" />
             <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->" />
+
+            <div class="tblareabtn">
+                <a href="./payment.php" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_back_on.gif',back03)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_back.gif',back03)"><img src="<!--{$TPL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="戻る" border="0" name="back03-top" id="back03-top" /></a>&nbsp;
+                <!--{if $payment_type != ""}-->
+                <input type="image" onclick="return fnCheckSubmit();" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_next_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_next.gif',this)" src="<!--{$TPL_DIR}-->img/common/b_next.gif" alt="次へ" class="box150" name="next-top" id="next-top" />
+                <!--{else}-->
+                <input type="image" onclick="return fnCheckSubmit();" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/shopping/b_ordercomp_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/shopping/b_ordercomp.gif',this)" src="<!--{$TPL_DIR}-->img/shopping/b_ordercomp.gif" alt="ご注文完了ページへ" class="box150" name="next-top" id="next-top" />                <!--{/if}-->
+            </div>
+
             <table summary="ご注文内容確認">
                 <tr>
                     <th>商品写真</th>
