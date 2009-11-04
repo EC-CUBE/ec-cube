@@ -9,11 +9,9 @@
 # 1. 既存の EC-CUBE サイトを移動(PREFIX.YYYYMMDD)
 # 2. SVNリポジトリより checkout(tags/EC_CUBE_VERSION)
 # 3. パーミッション変更
-# 4. dropdb を実行
-# 5. createdb を実行
-# 6. html/install/sql 配下の SQL を実行
-# 8. 管理者権限をアップデート
-# 9. data/install.php を生成
+# 4. html/install/sql 配下の SQL を実行
+# 5. 管理者権限をアップデート
+# 6. data/install.php を生成
 #
 # 使い方
 #
