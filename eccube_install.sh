@@ -41,7 +41,7 @@ SVN_PASSWD=lh1jNhUn
 
 REPOSITORY="https://svn.ec-cube.net/open/tags/"
 
-PGUSER=pgsql
+PGUSER=postgres
 DROPDB=dropdb
 CREATEDB=createdb
 PSQL=psql
