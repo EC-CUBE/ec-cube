@@ -39,12 +39,16 @@ class LC_Page_FrontParts_Bloc extends LC_Page {
      * @return void
      */
     function setTplMainpage($bloc_file) {
-    	$debug_message = "";
-    	$user_bloc_path = USER_TEMPLATE_PATH . TEMPLATE_NAME . "/" . BLOC_DIR . $bloc_file;
-        if (is_file($user_bloc_path)) {
-            $this->tpl_mainpage = $user_bloc_path;
+        $debug_message = "";
+        if (substr($bloc_file, 0, 1) == '/') {
+            $this->tpl_mainpage = $bloc_file;
         } else {
-            $this->tpl_mainpage = BLOC_PATH . $bloc_file;
+            $user_bloc_path = USER_TEMPLATE_PATH . TEMPLATE_NAME . "/" . BLOC_DIR . $bloc_file;
+            if (is_file($user_bloc_path)) {
+                $this->tpl_mainpage = $user_bloc_path;
+            } else {
+                $this->tpl_mainpage = BLOC_PATH . $bloc_file;
+            }
         }
         $debug_message = "block：" . $this->tpl_mainpage . "\n";
         GC_Utils::gfDebugLog($debug_message);
