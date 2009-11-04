@@ -15,9 +15,12 @@
 #
 # 使い方
 #
-# sudo PREFIX=/install/path/to/eccube \
-#      EC_CUBE_VERSION=eccube-2.4.1 ./ec_cube_reinstall.sh
+# # ./ec_cube_install.sh /install/path/to/eccube eccube-2.4.1
 #
+# この場合の DocumentRoot は, /install/path/to/eccube/html になります.
+#
+# 開発コミュニティの関連スレッド
+# http://xoops.ec-cube.net/modules/newbb/viewtopic.php?topic_id=4918&forum=14&post_id=23090#forumpost23090
 #
 #######################################################################
 
