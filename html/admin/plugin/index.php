@@ -22,14 +22,13 @@
  */
 
 // {{{ requires
-$arrPluginInfo = SC_Utils_Ex::sfLoadPluginInfo(dirname(__FILE__) . '/plugin_info.php');
-require_once $arrPluginInfo['fullpath'] . 'classes/pages/LC_Page_FrontParts_Bloc_GoogleAnalytics.php';
+require_once '../require.php';
+require_once CLASS_EX_PATH . 'page_extends/admin/plugin/LC_Page_Admin_Plugin_Ex.php';
 
 // }}}
 // {{{ generate page
 
-$objPage = new LC_Page_FrontParts_Bloc_GoogleAnalytics();
-$objPage->arrPluginInfo = $arrPluginInfo;
+$objPage = new LC_Page_Admin_Plugin_Ex();
 register_shutdown_function(array($objPage, 'destroy'));
 $objPage->init();
 $objPage->process();

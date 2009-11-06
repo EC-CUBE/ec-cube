@@ -33,6 +33,9 @@ require_once CLASS_PATH . "pages/LC_Page.php";
  */
 class LC_Page_Admin_GoogleAnalytics extends LC_Page {
 
+    /** プラグイン情報配列 (呼び出し元でセットする) */
+    var $arrPluginInfo;
+
     // }}}
     // {{{ functions
 
@@ -43,8 +46,10 @@ class LC_Page_Admin_GoogleAnalytics extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->tpl_mainpage = PLUGIN_PATH . 'google_analytics/tpl/index.tpl';
-        $this->tpl_subtitle = "Google Analytics Plugin";
+        $this->tpl_mainpage = $this->arrPluginInfo['fullpath'] . 'tpl/admin/index.tpl';
+        $this->tpl_mainno   = 'plugin';
+        $this->tpl_subno    = $this->arrPluginInfo['path'];
+        $this->tpl_subtitle = "プラグイン「{$this->arrPluginInfo['name']}」の設定";
 
         if (empty($_POST["mode"])) {
             $_POST["mode"] = "";
@@ -101,7 +106,7 @@ class LC_Page_Admin_GoogleAnalytics extends LC_Page {
 
         $objView = new SC_AdminView();
         $objView->assignobj($this);
-        $objView->display($this->tpl_mainpage);
+        $objView->display(MAIN_FRAME);
     }
 
     /**
@@ -117,7 +122,7 @@ class LC_Page_Admin_GoogleAnalytics extends LC_Page {
         $data = "<?php\ndefine('GA_UA', '" 
             . htmlspecialchars($ua, ENT_QUOTES) . "');\n?>\n";
 
-        $configFile = PLUGIN_PATH . "google_analytics/classes/pages/ga_config.php";
+        $configFile = $this->arrPluginInfo['fullpath'] . "classes/pages/ga_config.php";
         $handle = fopen($configFile, "w");
         if (!$handle) {
             return false;

@@ -28,14 +28,20 @@
 define('DEBUG_LOAD_PLUGIN', true);
 
 if (version_compare("5", PHP_VERSION, "<")) {
-    $plugins = file_get_contents(USER_PATH . "plugins/plugins.xml");
-    $xml = new SimpleXMLElement($plugins);
-    foreach ($xml->plugin as $plugin) {
-
-        $requireFile = USER_PATH . "plugins/" . $plugin->path . "/require.php";
+    $pluginsXml = SC_Utils_Ex::sfGetPluginsXml();
+    foreach ($pluginsXml->plugin as $plugin) {
+        $requireFile = PLUGIN_PATH . "{$plugin->path}/require.php";
         if (file_exists($requireFile)) {
-            include_once($requireFile);
+            include_once $requireFile;
         }
     }
+
+    // Smarty に引き渡す目的
+    // FIXME スーパーグローバルを書き換える以外の方法に改める。(グローバル変数にセットして、Smrty 関数で読み出すなど)
+    $_ENV['pluginsXml'] = $pluginsXml;
+
+    // グローバル変数を掃除
+    unset($plugin);
+    unset($pluginsXml);
 }
 ?>

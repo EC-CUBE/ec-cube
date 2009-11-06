@@ -91,7 +91,8 @@ if (!SC_Utils_Ex::sfIsInstallFunction()) {
     require_once CLASS_PATH . 'session/SC_SessionFactory.php';
     $sessionFactory = SC_SessionFactory::getInstance();
     $sessionFactory->initSession();
+
+    // プラグインを読み込む
+    //require_once(DATA_PATH . 'require_plugin.php');
 }
-// プラグインを読み込む
-//require_once(DATA_PATH . "require_plugin.php");
 ?>

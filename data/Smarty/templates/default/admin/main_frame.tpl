@@ -3,7 +3,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2008 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2009 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -115,8 +115,8 @@
     </li>
     <!--{if "DEBUG_LOAD_PLUGIN"|defined && $smarty.const.DEBUG_LOAD_PLUGIN}-->
         <li id="navi-plugin" class="<!--{if $tpl_mainno eq "plugin"}-->on<!--{/if}-->">
-          <a><span>プラグイン設定</span></a>
-          <!--{include file="`$smarty.const.PLUGIN_PATH`plugin_menu.tpl"}-->
+            <a><span>プラグイン</span></a>
+            <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`plugin/subnavi.tpl"}-->
         </li>
     <!--{/if}-->
 </ul>

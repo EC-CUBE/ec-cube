@@ -2237,5 +2237,95 @@ echo $template_path;
 
         return $data_list;
     }
+
+    /**
+     * プラグインが配置されているディレクトリ(フルパス)を取得する
+     *
+     * @param string $file プラグイン情報ファイル(info.php)のパス
+     * @return SimpleXMLElement プラグイン XML
+     */
+    function sfGetPluginFullPathByRequireFilePath($file) {
+        return str_replace('\\', '/', dirname($file)) . '/';
+    }
+
+    /**
+     * プラグインのパスを取得する
+     *
+     * @param string $pluginFullPath プラグインが配置されているディレクトリ(フルパス)
+     * @return SimpleXMLElement プラグイン XML
+     */
+    function sfGetPluginPathByPluginFullPath($pluginFullPath) {
+        return basename(rtrim($pluginFullPath, '/'));
+    }
+
+    /**
+     * プラグイン情報配列の基本形を作成する
+     *
+     * @param string $file プラグイン情報ファイル(info.php)のパス
+     * @return array プラグイン情報配列
+     */
+    function sfMakePluginInfoArray($file) {
+        $fullPath = SC_Utils_Ex::sfGetPluginFullPathByRequireFilePath($file);
+
+        return
+            array(
+                // パス
+                'path' => SC_Utils_Ex::sfGetPluginPathByPluginFullPath($fullPath),
+                // プラグイン名
+                'name' => '未定義',
+                // フルパス
+                'fullpath' => $fullPath,
+                // バージョン
+                'version' => null,
+                // 著作者
+                'auther' => '未定義',
+            )
+        ;
+    }
+
+    /**
+     * プラグイン情報配列を取得する
+     *
+     * TODO include_once を利用することで例外対応をサボタージュしているのを改善する。
+     *
+     * @param string $path プラグインのディレクトリ名
+     * @return array プラグイン情報配列
+     */
+    function sfGetPluginInfoArray($path) {
+        return (array)include_once(PLUGIN_PATH . "$path/plugin_info.php");
+    }
+
+    /**
+     * プラグイン XML を読み込む
+     *
+     * TODO 空だったときを考慮
+     *
+     * @return SimpleXMLElement プラグイン XML
+     */
+    function sfGetPluginsXml() {
+        return simplexml_load_file(PLUGIN_PATH . 'plugins.xml');
+    }
+
+    /**
+     * プラグイン XML を書き込む
+     *
+     * @param SimpleXMLElement $pluginsXml プラグイン XML
+     * @return integer ファイルに書き込まれたバイト数を返します。
+     */
+    function sfPutPluginsXml($pluginsXml) {
+        if (!($pluginsXml instanceof SimpleXMLElement)) SC_Utils_Ex::sfDispException();
+
+        $xml = $pluginsXml->asXML();
+        if (strlen($xml) == 0) SC_Utils_Ex::sfDispException();
+
+        $return = file_put_contents(PLUGIN_PATH . 'plugins.xml', $pluginsXml->asXML());
+        if ($return === false) SC_Utils_Ex::sfDispException();
+
+        return $return;
+    }
+
+    function sfLoadPluginInfo($filenamePluginInfo) {
+        return (array)include_once $filenamePluginInfo;
+    }
 }
 ?>

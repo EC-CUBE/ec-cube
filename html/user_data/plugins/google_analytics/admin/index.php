@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2009 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -20,15 +20,15 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-
 // {{{ requires
-$arrPluginInfo = SC_Utils_Ex::sfLoadPluginInfo(dirname(__FILE__) . '/plugin_info.php');
-require_once $arrPluginInfo['fullpath'] . 'classes/pages/LC_Page_FrontParts_Bloc_GoogleAnalytics.php';
+require_once '../../../../admin/require.php';
+$arrPluginInfo = SC_Utils_Ex::sfLoadPluginInfo('../plugin_info.php');
+require_once $arrPluginInfo['fullpath'] . 'classes/pages/LC_Page_Admin_GoogleAnalytics.php';
 
 // }}}
 // {{{ generate page
 
-$objPage = new LC_Page_FrontParts_Bloc_GoogleAnalytics();
+$objPage = new LC_Page_Admin_GoogleAnalytics();
 $objPage->arrPluginInfo = $arrPluginInfo;
 register_shutdown_function(array($objPage, 'destroy'));
 $objPage->init();

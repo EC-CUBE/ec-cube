@@ -21,23 +21,18 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
-require_once CLASS_PATH . "pages/LC_Page.php";
+require_once(CLASS_PATH . "pages/admin/plugin/LC_Page_Admin_Plugin.php");
 
 /**
- * Google Analytics プラグインを制御するクラス.
+ * プラグイン のページクラス(拡張).
+ *
+ * LC_Page_Admin_Plugin をカスタマイズする場合はこのクラスを編集する.
  *
  * @package Page
- * @author Kentaro Ohkouchi
- * @version $Id$
+ * @author Seasoft 塚田将久
+ * @version $Id:$
  */
-class LC_Page_FrontParts_Bloc_GoogleAnalytics extends LC_Page {
-
-    /** プラグイン情報配列 (呼び出し元でセットする) */
-    var $arrPluginInfo;
-
-    // }}}
-    // {{{ functions
+class LC_Page_Admin_Plugin_Ex extends LC_Page_Admin_Plugin {
 
     /**
      * Page を初期化する.
@@ -46,7 +41,6 @@ class LC_Page_FrontParts_Bloc_GoogleAnalytics extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->tpl_mainpage = $this->arrPluginInfo['fullpath'] . 'tpl/ga.tpl';
     }
 
     /**
@@ -55,9 +49,7 @@ class LC_Page_FrontParts_Bloc_GoogleAnalytics extends LC_Page {
      * @return void
      */
     function process() {
-        $objView = new SC_SiteView();
-        $objView->assignobj($this);
-        $objView->display($this->tpl_mainpage);
+        parent::process();
     }
 
     /**

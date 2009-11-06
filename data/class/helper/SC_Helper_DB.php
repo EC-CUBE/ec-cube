@@ -1913,5 +1913,23 @@ __EOS__;
         $objQuery->update('dtb_order', $sqlval, 'order_id = ?', array($orderId));
         // ▲受注テーブルの更新
     }
+
+    /**
+     * 指定ファイルが存在する場合 SQL として実行
+     *
+     * XXX プラグイン用に追加。将来消すかも。
+     *
+     * @param string $sqlFilePath SQL ファイルのパス
+     * @return void
+     */
+    function sfExecSqlByFile($sqlFilePath) {
+        if (file_exists($sqlFilePath)) {
+            $objQuery = new SC_Query();
+
+            $sql = file_get_contents($sqlFilePath);
+            if ($sql === false) SC_Utils_Ex::sfDispException('ファイルは存在するが読み込めない');
+            $objQuery->query($sql);
+        }
+    }
 }
 ?>

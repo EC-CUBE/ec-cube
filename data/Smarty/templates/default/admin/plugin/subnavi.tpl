@@ -1,4 +1,4 @@
-<?php
+<!--{*
 /*
  * This file is part of EC-CUBE
  *
@@ -20,17 +20,10 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-
-// {{{ requires
-$arrPluginInfo = SC_Utils_Ex::sfLoadPluginInfo(dirname(__FILE__) . '/plugin_info.php');
-require_once $arrPluginInfo['fullpath'] . 'classes/pages/LC_Page_FrontParts_Bloc_GoogleAnalytics.php';
-
-// }}}
-// {{{ generate page
-
-$objPage = new LC_Page_FrontParts_Bloc_GoogleAnalytics();
-$objPage->arrPluginInfo = $arrPluginInfo;
-register_shutdown_function(array($objPage, 'destroy'));
-$objPage->init();
-$objPage->process();
-?>
+*}-->
+<ul class="level1">
+    <li<!--{if $tpl_subno == 'index'}--> class="on"<!--{/if}--> id="navi-plugin-index"><a href="<!--{$smarty.const.URL_DIR}-->admin/plugin/<!--{$smarty.const.DIR_INDEX_URL}-->"><span>プラグイン管理</span></a></li>
+    <!--{foreach from=$smarty.env.pluginsXml->plugin item="plugin"}-->
+        <li<!--{if $tpl_subno == $plugin->path}--> class="on"<!--{/if}--> id="navi-plugin-<!--{$plugin->path|escape}-->"><a href="<!--{$smarty.const.PLUGIN_URL}--><!--{$plugin->path|escape}-->/admin/<!--{$smarty.const.DIR_INDEX_URL}-->"><span><!--{$plugin->name|escape}--></span></a></li>
+    <!--{/foreach}-->
+</ul>
