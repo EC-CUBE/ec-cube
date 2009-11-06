@@ -226,8 +226,8 @@ insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'
 insert into dtb_csv(csv_id,col,disp_name,rank,status,create_date,update_date)values(5,'category_id','カテゴリID',1,1,now(),now());
 insert into dtb_csv(csv_id,col,disp_name,rank,status,create_date,update_date)values(5,'category_name','カテゴリ名',2,1,now(),now());
 insert into dtb_csv(csv_id,col,disp_name,rank,status,create_date,update_date)values(5,'parent_category_id',' 親カテゴリID',3,1,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,status,create_date,update_date)values(5,'level','階層',4,1,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,status,create_date,update_date)values(5,'rank','表示ランク',5,1,now(),now());
+insert into dtb_csv(csv_id,col,disp_name,rank,status,create_date,update_date)values(5,'level','階層',4,2,now(),now());
+insert into dtb_csv(csv_id,col,disp_name,rank,status,create_date,update_date)values(5,'rank','表示ランク',5,2,now(),now());
 
 INSERT INTO dtb_templates (template_code, template_name, create_date, update_date) VALUES('default','デフォルト', now(), now());
 
