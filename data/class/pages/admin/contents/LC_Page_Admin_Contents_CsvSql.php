@@ -147,13 +147,12 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page {
                     $header .= $data;
                     $i ++;
                 }
-                $header .= "\r\n";
+                $header .= "\n";
 
                 $data = SC_Utils_Ex::getCSVData($arrCsvOutputData, $arrKey);
                 // CSV出力
                 SC_Utils_Ex::sfCSVDownload($header.$data);
                 exit;
-                break;
             }else{
                 $this->tpl_onload = "alert('出力データがありません。');";
                 $sql_id = "";
