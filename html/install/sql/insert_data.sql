@@ -999,7 +999,6 @@ INSERT INTO mtb_constants VALUES ('RECOMMEND_PRODUCT_MAX','6',268,'関連商品�
 INSERT INTO mtb_constants VALUES ('RECOMMEND_NUM','8',269,'おすすめ商品表示数');
 INSERT INTO mtb_constants VALUES ('DELIV_DATE_END_MAX','21',272,'お届け可能日以降のプルダウン表示最大日数');
 INSERT INTO mtb_constants VALUES ('PURCHASE_CUSTOMER_REGIST','0',273,'購入時強制会員登録(1:有効　0:無効)');
-INSERT INTO mtb_constants VALUES ('RELATED_PRODUCTS_MAX','3',274,'この商品を買った人はこんな商品も買っています　表示件数');
 INSERT INTO mtb_constants VALUES ('CV_PAYMENT_LIMIT','14',275,'支払期限');
 INSERT INTO mtb_constants VALUES ('CAMPAIGN_REGIST_MAX','20',276,'キャンペーン登録最大数');
 INSERT INTO mtb_constants VALUES ('REVIEW_ALLOW_URL','0',277,'商品レビューでURL書き込みを許可するか否か');

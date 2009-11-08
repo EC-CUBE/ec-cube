@@ -266,8 +266,6 @@ class LC_Page_Products_Detail extends LC_Page {
         $this->trackback_url = TRACKBACK_TO_URL . $product_id;
         //関連商品情報表示
         $this->arrRecommend = $this->lfPreGetRecommendProducts($product_id);
-        //この商品を買った人はこんな商品も買っています
-        $this->arrRelateProducts = $this->lfGetRelateProducts($product_id);
 
         $this->lfConvertParam();
 
@@ -460,8 +458,6 @@ class LC_Page_Products_Detail extends LC_Page {
         $this->tpl_title = "商品詳細 ". $this->arrProduct["name"];
         //関連商品情報表示
         $this->arrRecommend = $this->lfPreGetRecommendProducts($product_id);
-        //この商品を買った人はこんな商品も買っています
-        $this->arrRelateProducts = $this->lfGetRelateProducts($product_id);
 
         $objView->assignobj($this);
         $objView->display(SITE_FRAME);
@@ -690,24 +686,6 @@ class LC_Page_Products_Detail extends LC_Page {
         $sqlval['create_date'] = 'NOW()';
         $sqlval['update_date'] = 'NOW()';
         $objQuery->insert("dtb_customer_reading", $sqlval);
-    }
-
-    //この商品を買った人はこんな商品も買っています FIXME
-    function lfGetRelateProducts($product_id) {
-        $objQuery = new SC_Query;
-        //自動抽出
-        $objQuery->setorder("random()");
-        //表示件数の制限
-        $objQuery->setlimit(RELATED_PRODUCTS_MAX);
-        //検索条件
-        $col = "name, main_list_image, price01_min, price02_min, price01_max, price02_max, point_rate";
-        $from = "vw_products_allclass AS allcls ";
-        $where = "del_flg = 0 AND status = 1 AND (stock_max <> 0 OR stock_max IS NULL) AND product_id = ? ";
-        $arrval[] = $product_id;
-        //結果の取得
-        $arrProducts = $objQuery->select($col, $from, $where, $arrval);
-
-        return $arrProducts;
     }
 
     //商品ごとのレビュー情報を取得する

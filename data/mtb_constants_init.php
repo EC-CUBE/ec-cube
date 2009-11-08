@@ -438,8 +438,6 @@ define('RECOMMEND_NUM', 8);
 define('DELIV_DATE_END_MAX', 21);
 /** 購入時強制会員登録(1:有効　0:無効) */
 define('PURCHASE_CUSTOMER_REGIST', 0);
-/** この商品を買った人はこんな商品も買っています　表示件数 */
-define('RELATED_PRODUCTS_MAX', 3);
 /** 支払期限 */
 define('CV_PAYMENT_LIMIT', 14);
 /** キャンペーン登録最大数 */
