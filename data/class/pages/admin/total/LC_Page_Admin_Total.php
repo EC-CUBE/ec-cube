@@ -444,7 +444,6 @@ class LC_Page_Admin_Total extends LC_Page {
             if($interval < 1) {
                 $interval = 1;
             }
-            $objGraphPie = new SC_GraphPie();
             $objGraphLine = new SC_GraphLine();
 
             // 値のセット
