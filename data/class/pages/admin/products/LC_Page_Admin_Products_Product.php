@@ -115,33 +115,33 @@ class LC_Page_Admin_Products_Product extends LC_Page {
             // 検索画面からの編集
             case 'pre_edit':
             case 'copy' :
-                // 編集時
-                if(SC_Utils_Ex::sfIsInt($_POST['product_id'])){
-                    // DBから商品情報の読込
-                    $arrForm = $this->lfGetProduct($_POST['product_id']);
-                    // DBデータから画像ファイル名の読込
-                    $this->objUpFile->setDBFileList($arrForm);
+                if (!SC_Utils_Ex::sfIsInt($_POST['product_id'])) {
+                    SC_Utils_Ex::sfDispException();
+                }
 
-                    if($_POST['mode'] == "copy"){
-                        $arrForm["copy_product_id"] = $arrForm["product_id"];
-                        $arrForm["product_id"] = "";
-                        // 画像ファイルのコピー
-                        $arrKey = $this->objUpFile->keyname;
-                        $arrSaveFile = $this->objUpFile->save_file;
+                // DBから商品情報の読込
+                $this->arrForm = $this->lfGetProduct($_POST['product_id']);
+                // DBデータから画像ファイル名の読込
+                $this->objUpFile->setDBFileList($this->arrForm);
 
-                        foreach($arrSaveFile as $key => $val){
-                            $this->lfMakeScaleImage($arrKey[$key], $arrKey[$key], true);
-                        }
+                // 商品ステータスの変換
+                $arrRet = SC_Utils_Ex::sfSplitCBValue($this->arrForm['product_flag'], "product_flag");
+                $this->arrForm = array_merge($this->arrForm, $arrRet);
+                // DBから関連商品の読み込み
+                $this->lfPreGetRecommendProducts($_POST['product_id']);
+
+                $this->lfProductPage();     // 商品登録ページ
+
+                if($_POST['mode'] == "copy"){
+                    $this->arrForm["copy_product_id"] = $this->arrForm["product_id"];
+                    $this->arrForm["product_id"] = "";
+                    // 画像ファイルのコピー
+                    $arrKey = $this->objUpFile->keyname;
+                    $arrSaveFile = $this->objUpFile->save_file;
+
+                    foreach($arrSaveFile as $key => $val){
+                        $this->lfMakeScaleImage($arrKey[$key], $arrKey[$key], true);
                     }
-                    $this->arrForm = $arrForm;
-
-                    // 商品ステータスの変換
-                    $arrRet = SC_Utils_Ex::sfSplitCBValue($this->arrForm['product_flag'], "product_flag");
-                    $this->arrForm = array_merge($this->arrForm, $arrRet);
-                    // DBから関連商品の読み込み
-                    $this->arrRecommend = $this->lfPreGetRecommendProducts($_POST['product_id']);
-
-                    $this->lfProductPage();     // 商品登録ページ
                 }
                 break;
             // 商品登録・編集
@@ -206,10 +206,8 @@ class LC_Page_Admin_Products_Product extends LC_Page {
                 break;
         }
 
-        if($_POST['mode'] != 'pre_edit') {
-            // 関連商品の読み込み
-            $this->arrRecommend = $this->lfGetRecommendProducts();
-        }
+        // 関連商品の読み込み
+        $this->arrRecommend = $this->lfGetRecommendProducts();
 
         // 基本情報を渡す
         $this->arrInfo = $objSiteInfo->data;
@@ -248,7 +246,11 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         parent::destroy();
     }
 
-    /* 関連商品の読み込み */
+    /**
+     * 関連商品の名称などを商品マスタから読み込み、一つの配列にまとめて返す
+     *
+     * @return array 関連商品の情報を格納した2次元配列
+     */
     function lfGetRecommendProducts() {
         $objQuery = new SC_Query();
         $arrRecommend = array();
@@ -257,12 +259,12 @@ class LC_Page_Admin_Products_Product extends LC_Page {
             $delkey = "recommend_delete" . $i;
             $commentkey = "recommend_comment" . $i;
 
-            if (!isset($_POST[$delkey])) $_POST[$delkey] = null;
+            if (!isset($this->arrForm[$delkey])) $this->arrForm[$delkey] = null;
 
-            if((isset($_POST[$keyname]) && !empty($_POST[$keyname])) && $_POST[$delkey] != 1) {
-                $arrRet = $objQuery->select("main_list_image, product_code_min, name", "vw_products_allclass AS allcls", "product_id = ?", array($_POST[$keyname]));
+            if((isset($this->arrForm[$keyname]) && !empty($this->arrForm[$keyname])) && $this->arrForm[$delkey] != 1) {
+                $arrRet = $objQuery->select("main_list_image, product_code_min, name", "vw_products_allclass AS allcls", "product_id = ?", array($this->arrForm[$keyname]));
                 $arrRecommend[$i] = $arrRet[0];
-                $arrRecommend[$i]['product_id'] = $_POST[$keyname];
+                $arrRecommend[$i]['product_id'] = $this->arrForm[$keyname];
                 $arrRecommend[$i]['comment'] = $this->arrForm[$commentkey];
             }
         }
@@ -295,23 +297,23 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         }
     }
 
-    /* 登録済み関連商品の読み込み */
+    /**
+     * 指定商品の関連商品をDBから読み込む
+     *
+     * @param string $product_id 商品ID
+     * @return void
+     */
     function lfPreGetRecommendProducts($product_id) {
-        $arrRecommend = array();
         $objQuery = new SC_Query();
         $objQuery->setorder("rank DESC");
         $arrRet = $objQuery->select("recommend_product_id, comment", "dtb_recommend_products", "product_id = ?", array($product_id));
-        $max = count($arrRet);
         $no = 1;
 
-        for($i = 0; $i < $max; $i++) {
-            $arrProductInfo = $objQuery->select("main_list_image, product_code_min, name", "vw_products_allclass AS allcls", "product_id = ?", array($arrRet[$i]['recommend_product_id']));
-            $arrRecommend[$no] = $arrProductInfo[0];
-            $arrRecommend[$no]['product_id'] = $arrRet[$i]['recommend_product_id'];
-            $arrRecommend[$no]['comment'] = $arrRet[$i]['comment'];
+        foreach ($arrRet as $ret) {
+            $this->arrForm['recommend_id' . $no] = $ret['recommend_product_id'];
+            $this->arrForm['recommend_comment' . $no] = $ret['comment'];
             $no++;
         }
-        return $arrRecommend;
     }
 
     /* 商品情報の読み込み */
