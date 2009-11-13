@@ -100,13 +100,8 @@ class LC_Page_Admin_Plugin_Uninstall extends LC_Page {
     function lfUninstall($path) {
         $objQuery = new SC_Query();
 
-        // プラグインにて指定された SQL を実行
-        $sqlPath = PLUGIN_PATH . "$path/" . 'sql/uninstall.sql';
-        if (file_exists($sqlPath)) {
-            $sql = file_get_contents($sqlPath);
-            if ($sql === false) SC_Utils_Ex::sfDispException('ファイルは存在するが読み込めない');
-            $objQuery->query($sql);
-        }
+        // アンインストール SQL を実行
+        SC_Helper_DB_Ex::sfExecSqlByFile(PLUGIN_PATH . "$path/sql/uninstall.sql");
 
         // プラグイン XML から削除
         $this->lfRemoveFromPluginsXml($path);
