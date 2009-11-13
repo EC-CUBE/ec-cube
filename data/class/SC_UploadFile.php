@@ -28,16 +28,36 @@ require_once($SC_UPLOADFILE_DIR . "/../module/gdthumb.php");
 class SC_UploadFile {
     var $temp_dir;
     var $save_dir;
-    var $keyname;	// ファイルinputタグのname
-    var $width;		// 横サイズ
-    var $height;	// 縦サイズ
-    var $arrExt;	// 指定する拡張子
-    var $temp_file;	// 保存されたファイル名
-    var $save_file; // DBから読み出したファイル名
-    var $disp_name;	// 項目名
-    var $size;		// 制限サイズ
-    var $necessary; // 必須の場合:true
-    var $image;		// 画像の場合:true
+
+    /** ファイルinputタグのname */
+    var $keyname = array();
+
+    /** 横サイズ */
+    var $width = array();
+
+    /** 縦サイズ */
+    var $height = array();
+
+    /** 指定する拡張子 */
+    var $arrExt = array();
+
+    /** 保存されたファイル名 */
+    var $temp_file = array();
+
+    /** DBから読み出したファイル名 */
+    var $save_file = array();
+
+    /** 項目名 */
+    var $disp_name = array();
+
+    /** 制限サイズ */
+    var $size = array();
+
+    /** 必須の場合:true */
+    var $necessary = array();
+
+    /** 画像の場合:true */
+    var $image = array();
 
     // ファイル管理クラス
     function SC_UploadFile($temp_dir, $save_dir) {
