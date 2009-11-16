@@ -11,7 +11,8 @@ define("DATA_DIR2HTML", "../html/");
  * true: 使用する, false: 使用しない (初期値: IIS は true、それ以外は false)
  * ※ IIS は、POST 時にファイル名を使用しないと不具合が発生する。(http://support.microsoft.com/kb/247536/ja)
  */
-define('USE_FILENAME_DIR_INDEX', substr($_SERVER['SERVER_SOFTWARE'], 0, 13) == 'Microsoft-IIS');
+define('USE_FILENAME_DIR_INDEX',
+       empty($_SERVER['SERVER_SOFTWARE']) ? false : substr($_SERVER['SERVER_SOFTWARE'], 0, 13) == 'Microsoft-IIS');
 
 /*
  * Local variables:
