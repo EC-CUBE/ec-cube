@@ -52,9 +52,9 @@ class LC_Page_Shopping_Payment extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->tpl_mainpage = 'shopping/payment.tpl';
+        $this->tpl_mainpage = "shopping/payment.tpl";
         $this->tpl_column_num = 1;
-        $this->tpl_onload = 'fnCheckInputPoint();';
+        $this->tpl_onload = "fnCheckInputPoint(); fnSetDelivTime('payment','payment_id','deliv_time_id');";
         $this->tpl_title = "お支払方法・お届け時間等の指定";
     }
 
