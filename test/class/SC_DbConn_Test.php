@@ -93,6 +93,21 @@ class SC_DbConn_Test extends PHPUnit_Framework_TestCase {
     }
 
     /**
+     * SC_DbConn::getAll() のテストケース(エラー).
+     */
+    function testGetAllIsError() {
+
+        // SC_DbConn::getAll() は接続エラーが発生すると 0 を返す
+        $failur_dsn = "pgsql://user:pass@127.0.0.1:/xxxxx";
+        $failurDbConn = new SC_DbConn($failur_dsn, false, true);
+        $this->expected = 0;
+        $this->actual = $failurDbConn->getAll("SELECT * FROM test_table");
+
+        $this->verify();
+    }
+
+
+    /**
      * SC_DbConn::getOne() のテストケース.
      */
     function testGetOne() {
@@ -106,6 +121,22 @@ class SC_DbConn_Test extends PHPUnit_Framework_TestCase {
 
         $this->verify();
     }
+
+    /**
+     * SC_DbConn::getOne() のテストケース(エラー).
+     */
+    function testGetOneIsError() {
+        $this->createTestTable();
+        $this->setTestData(1, "2", "f");
+        $this->setTestData(1, "2", "f");
+        $this->setTestData(1, "2", "f");
+
+        //$this->expected = new PEAR_Error();
+        $this->actual = $this->objDbConn->getOne("SELECT COUNT(*) FROM xxx_table");
+        var_dump($this->actual);
+        $this->verify();
+    }
+
 
     /**
      * SC_DbConn::getRow() のテストケース.
@@ -151,7 +182,7 @@ class SC_DbConn_Test extends PHPUnit_Framework_TestCase {
                                        "column3" => "f"));
         $this->actual = $this->objDbConn->getAll("SELECT * FROM test_table");
 
-        $this->assertEquals(1, $result);
+        //$this->assertEquals(1, $result);
         $this->verify();
     }
 
