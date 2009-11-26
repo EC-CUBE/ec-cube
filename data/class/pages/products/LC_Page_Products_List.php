@@ -102,31 +102,31 @@ class LC_Page_Products_List extends LC_Page {
         $objQuery = new SC_Query();
         $count = $objQuery->count("dtb_best_products", "category_id = ?", array($this->arrSearchData['category_id']));
 
-            // 商品一覧の表示処理
+        // 商品一覧の表示処理
         $this->lfDispProductsList();
 
-            // 検索条件を画面に表示
-            // カテゴリー検索条件
+        // 検索条件を画面に表示
+        // カテゴリー検索条件
         if ($this->arrSearchData['category_id'] == 0) {
             $this->arrSearch['category'] = "指定なし";
         } else {
             $arrCat = $conn->getOne("SELECT category_name FROM dtb_category WHERE category_id = ?", array($this->arrSearchData['category_id']));
             $this->arrSearch['category'] = $arrCat;
-            }
+        }
 
-            // メーカー検索条件
+        // メーカー検索条件
         if (strlen($this->arrSearchData['maker_id']) == 0) {
             $this->arrSearch['maker'] = "指定なし";
         } else {
-            $this->arrSearch['maker'] = $name = $conn->getOne("SELECT name FROM dtb_maker WHERE maker_id = ?", $this->arrSearchData['maker_id']);
-            }
+            $this->arrSearch['maker'] = $conn->getOne("SELECT name FROM dtb_maker WHERE maker_id = ?", $this->arrSearchData['maker_id']);
+        }
 
-            // 商品名検索条件
+        // 商品名検索条件
         if (strlen($this->arrSearchData['name']) == 0) {
             $this->arrSearch['name'] = "指定なし";
         } else {
             $this->arrSearch['name'] = $this->arrSearchData['name'];
-            }
+        }
 
         // レイアウトデザインを取得
         $layout = new SC_Helper_PageLayout_Ex();
