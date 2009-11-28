@@ -29,11 +29,11 @@
   <div class="recomendblock">
     <div class="recomendleft">
 
-      <a href="<!--{$smarty.const.URL_DIR}-->products/detail.php?product_id=<!--{$arrBestProducts[cnt].product_id}-->">
+      <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrBestProducts[cnt].product_id|escape:url}-->">
         <img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$arrBestProducts[cnt].main_list_image|sfNoImageMainList|escape}-->&amp;width=48&amp;height=48" alt="<!--{$arrBestProducts[cnt].name|escape}-->" /></a>
 
       <h3>
-        <a href="<!--{$smarty.const.URL_DIR}-->products/detail.php?product_id=<!--{$arrBestProducts[cnt].product_id}-->"><!--{$arrBestProducts[cnt].name|escape}--></a>
+        <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrBestProducts[cnt].product_id|escape:url}-->"><!--{$arrBestProducts[cnt].name|escape}--></a>
       </h3>
 
 <!--{assign var=price01 value=`$arrBestProducts[cnt].price01_min`}-->
@@ -50,11 +50,11 @@
       <!--{assign var=cnt2 value=`$smarty.section.cnt.iteration*$smarty.section.cnt.step-1` }-->
       <!--{if $arrBestProducts[$cnt2]|count > 0}-->
 
-      <a href="<!--{$smarty.const.URL_DIR}-->products/detail.php?product_id=<!--{$arrBestProducts[$cnt2].product_id}-->">
+      <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrBestProducts[$cnt2].product_id|escape:url}-->">
         <img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$arrBestProducts[$cnt2].main_list_image|sfNoImageMainList|escape}-->&amp;width=48&amp;height=48" alt="<!--{$arrBestProducts[$cnt2].name|escape}-->" /></a>
 
       <h3>
-      <a href="<!--{$smarty.const.URL_DIR}-->products/detail.php?product_id=<!--{$arrBestProducts[$cnt2].product_id}-->"><!--{$arrBestProducts[$cnt2].name|escape}--></a>
+      <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrBestProducts[$cnt2].product_id|escape:url}-->"><!--{$arrBestProducts[$cnt2].name|escape}--></a>
       </h3>
 
 <!--{assign var=price01 value=`$arrBestProducts[$cnt2].price01_min`}-->

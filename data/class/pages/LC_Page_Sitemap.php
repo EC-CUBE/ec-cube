@@ -251,12 +251,12 @@ class LC_Page_Sitemap extends LC_Page {
             
             $page["update_date"] = $row['update_date'];
             
-            $page["url"] = SITE_URL . 'products/detail.php?product_id=' . $row['product_id'];
+            $page["url"] = DETAIL_P_HTML . $row['product_id'];
             $arrRet[] = $page;
             
             // モバイルサイト
             if (USE_MOBILE !== false) {
-                $page["url"] = MOBILE_SITE_URL . 'products/detail.php?product_id=' . $row['product_id'];
+                $page["url"] = MOBILE_DETAIL_P_HTML . $row['product_id'];
                 $arrRet[] = $page;
             }
         }

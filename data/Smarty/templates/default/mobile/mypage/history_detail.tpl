@@ -49,7 +49,7 @@
 【ご注文内容】<br>
 <!--{section name=cnt loop=$arrDisp.quantity}-->
 <!--{$arrDisp.product_name[cnt]|escape}--><br>
-<a href="<!--{$smarty.const.MOBILE_URL_DIR}-->products/detail.php?product_id=<!--{$arrDisp.product_id[cnt]}-->">商品購入詳細→</a><br>
+<a href="<!--{$smarty.const.MOBILE_DETAIL_P_HTML}--><!--{$arrDisp.product_id[cnt]|escape:url}-->">商品詳細→</a><br>
 <!--{/section}-->
 <br>
 【購入金額】<br>

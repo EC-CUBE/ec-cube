@@ -201,7 +201,7 @@ function fnCheckStock(form) {
         <a name="product<!--{$id|escape}-->" />
             <div class="listphoto">
                 <!--★画像★-->
-            <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProduct.product_id}-->" class="over"><!--商品写真--><img src="<!--{$smarty.const.IMAGE_SAVE_URL|sfTrimURL}-->/<!--{$arrProduct.main_list_image|sfNoImageMainList|escape}-->" alt="<!--{$arrProduct.name|escape}-->" class="picture" /></a>
+                <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProduct.product_id|escape:url}-->" class="over"><!--商品写真--><img src="<!--{$smarty.const.IMAGE_SAVE_URL|sfTrimURL}-->/<!--{$arrProduct.main_list_image|sfNoImageMainList|escape}-->" alt="<!--{$arrProduct.name|escape}-->" class="picture" /></a>
             </div>
             
             <div class="listrightblock">
@@ -222,7 +222,7 @@ function fnCheckStock(form) {
                 
                 <!--★商品名★-->
                 <h3>
-                    <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProduct.product_id}-->" name="product<!--{$arrProduct.product_id}-->"><!--{$arrProduct.name|escape}--></a>
+                    <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProduct.product_id|escape:url}-->" name="product<!--{$arrProduct.product_id}-->"><!--{$arrProduct.name|escape}--></a>
                 </h3>
                 
                 <!--★コメント★-->
@@ -244,9 +244,9 @@ function fnCheckStock(form) {
                     
                     <!--★詳細ボタン★-->
                     <span class="btnbox">
-                    <!--{assign var=name value="detail`$id`"}-->
-                    <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProduct.product_id}-->" onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_detail_on.gif','<!--{$name}-->');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/products/b_detail.gif','<!--{$name}-->');">
-                        <img src="<!--{$TPL_DIR}-->img/products/b_detail.gif" width="115" height="25" alt="詳しくはこちら" name="<!--{$name}-->" id="<!--{$name}-->" /></a>
+                        <!--{assign var=name value="detail`$id`"}-->
+                        <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProduct.product_id|escape:url}-->" onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_detail_on.gif','<!--{$name}-->');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/products/b_detail.gif','<!--{$name}-->');">
+                            <img src="<!--{$TPL_DIR}-->img/products/b_detail.gif" width="115" height="25" alt="詳しくはこちら" name="<!--{$name}-->" id="<!--{$name}-->" /></a>
                     </span>
                 </p>
 
