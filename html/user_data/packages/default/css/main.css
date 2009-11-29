@@ -47,7 +47,10 @@ a:link {
 a:visited {
     color: #3a75af;
 }
-a:hover {
+a:link:hover {
+    color: #ff6600;
+}
+a[href]:hover { /* 「a:link:hover」の Firefox 向けハック。上と Grouping 構文で統合すると、IE で動作しなくなる。 */
     color: #ff6600;
 }
 /* フォント
