@@ -416,24 +416,13 @@ class SC_Utils {
 
     // html_checkboxesの値をマージしてSQL検索用に変更する。
     function sfSearchCheckBoxes($array) {
-        $max = 0;
-        $ret = "";
-        foreach($array as $val) {
-            $arrTmp[$val] = "1";
-            if($val > $max) {
-                $max = $val;
-            }
+        $max = max($array);
+        $ret = '';
+        for ($i = 1; $i <= $max; $i++) {
+            $ret .= in_array($i, $array) ? '1' : '_';
         }
-        for($i = 1; $i <= $max; $i++) {
-            if($arrTmp[$i] == "1") {
-                $ret.= "1";
-            } else {
-                $ret.= "_";
-            }
-        }
-
-        if($ret != "") {
-            $ret.= "%";
+        if (strlen($ret) != 0) {
+            $ret .= '%';
         }
         return $ret;
     }
