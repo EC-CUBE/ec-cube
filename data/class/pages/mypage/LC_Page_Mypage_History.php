@@ -53,6 +53,7 @@ class LC_Page_Mypage_History extends LC_Page {
         $this->httpCacheControl('nocache');
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrMAILTEMPLATE = $masterData->getMasterData("mtb_mail_template");
+        $this->arrPref = $masterData->getMasterData("mtb_pref", array("pref_id", "pref_name", "rank"));
    }
 
     /**
@@ -70,40 +71,43 @@ class LC_Page_Mypage_History extends LC_Page {
         $objLayout = new SC_Helper_PageLayout_Ex();
         $objLayout->sfGetPageLayout($this, false, "mypage/index.php");
 
+        // FIXME 他の画面と同様のバリデーションを行なう
+        if (!SC_Utils_Ex::sfIsInt($_GET['order_id'])) {
+            SC_Utils_Ex::sfDispException();
+        }
+
+        $orderId = $_GET['order_id'];
+
         //不正アクセス判定
         $from = "dtb_order";
         $where = "del_flg = 0 AND customer_id = ? AND order_id = ? ";
-        $arrval = array($objCustomer->getValue('customer_id'), $_GET['order_id']);
+        $arrval = array($objCustomer->getValue('customer_id'), $orderId);
         //DBに情報があるか判定
         $cnt = $objQuery->count($from, $where, $arrval);
         //ログインしていない、またはDBに情報が無い場合
         if (!$objCustomer->isLoginSuccess() || $cnt == 0){
             SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
-        } else {
-            //受注詳細データの取得
-            $this->arrDisp = $this->lfGetOrderData($_GET['order_id']);
-            // 支払い方法の取得
-            $this->arrPayment = $objDb->sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
-            // お届け時間の取得
-            $arrRet = $objDb->sfGetDelivTime($this->arrDisp['payment_id']);
-            $this->arrDelivTime = SC_Utils_Ex::sfArrKeyValue($arrRet, 'time_id', 'deliv_time');
-
-            //マイページトップ顧客情報表示用
-            $this->CustomerName1 = $objCustomer->getvalue('name01');
-            $this->CustomerName2 = $objCustomer->getvalue('name02');
-            $this->CustomerPoint = $objCustomer->getvalue('point');
         }
 
-        if(SC_Utils_Ex::sfIsInt($_GET['order_id'])) {
-            $col = "send_date, subject, template_id, send_id";
-            $where = "order_id = ?";
-            $objQuery->setorder("send_date DESC");
-            $this->arrMailHistory = $objQuery->select($col, "dtb_mail_history", $where, array($_GET['order_id']));
-        }
+        //受注詳細データの取得
+        $this->arrDisp = $this->lfGetOrderData($orderId);
+        // 支払い方法の取得
+        $this->arrPayment = $objDb->sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
+        // お届け時間の取得
+        $arrRet = $objDb->sfGetDelivTime($this->arrDisp['payment_id']);
+        $this->arrDelivTime = SC_Utils_Ex::sfArrKeyValue($arrRet, 'time_id', 'deliv_time');
 
-        $masterData = new SC_DB_MasterData_Ex();
-        $this->arrPref = $masterData->getMasterData("mtb_pref",
-                                 array("pref_id", "pref_name", "rank"));
+        //マイページトップ顧客情報表示用
+        $this->CustomerName1 = $objCustomer->getvalue('name01');
+        $this->CustomerName2 = $objCustomer->getvalue('name02');
+        $this->CustomerPoint = $objCustomer->getvalue('point');
+
+        // 受注商品明細の取得
+        $this->tpl_arrOrderDetail = $this->lfGetOrderDetail($orderId);
+
+        // 受注メール送信履歴の取得
+        $this->tpl_arrMailHistory = $this->lfGetMailHistory($orderId);
+
         $objView->assignobj($this);
         $objView->display(SITE_FRAME);
     }
@@ -191,35 +195,52 @@ class LC_Page_Mypage_History extends LC_Page {
         $objView->display(SITE_FRAME);				//パスとテンプレート変数の呼び出し、実行
     }
 
-    //受注詳細データの取得
-    function lfGetOrderData($order_id) {
-        //注文番号が数字であれば
-        if(SC_Utils_Ex::sfIsInt($order_id)) {
-            // DBから受注情報を読み込む
-            $objQuery = new SC_Query();
-            $col = "order_id, create_date, payment_id, subtotal, tax, use_point, add_point, discount, ";
-            $col .= "deliv_fee, charge, payment_total, deliv_name01, deliv_name02, deliv_kana01, deliv_kana02, ";
-            $col .= "deliv_zip01, deliv_zip02, deliv_pref, deliv_addr01, deliv_addr02, deliv_tel01, deliv_tel02, deliv_tel03, deliv_time_id, deliv_date ";
-            $from = "dtb_order";
-            $where = "order_id = ?";
-            $arrRet = $objQuery->select($col, $from, $where, array($order_id));
-            $arrOrder = $arrRet[0];
-            // 受注詳細データの取得
-            $arrRet = $this->lfGetOrderDetail($order_id);
-            $arrOrderDetail = SC_Utils_Ex::sfSwapArray($arrRet);
-            $arrData = array_merge($arrOrder, $arrOrderDetail);
-        }
-        return $arrData;
+    /**
+     * 受注の取得
+     *
+     * @param integer $orderId 注文番号
+     * @return array 受注の内容
+     */
+    function lfGetOrderData($orderId) {
+        // DBから受注情報を読み込む
+        $objQuery = new SC_Query();
+        $col = "order_id, create_date, payment_id, subtotal, tax, use_point, add_point, discount, ";
+        $col .= "deliv_fee, charge, payment_total, deliv_name01, deliv_name02, deliv_kana01, deliv_kana02, ";
+        $col .= "deliv_zip01, deliv_zip02, deliv_pref, deliv_addr01, deliv_addr02, deliv_tel01, deliv_tel02, deliv_tel03, deliv_time_id, deliv_date ";
+        $from = "dtb_order";
+        $where = "order_id = ?";
+        $arrRet = $objQuery->select($col, $from, $where, array($orderId));
+        return $arrRet[0];
     }
 
-    // 受注詳細データの取得
-    function lfGetOrderDetail($order_id) {
+    /**
+     * 受注商品明細の取得
+     *
+     * @param integer $orderId 注文番号
+     * @return array 受注商品明細の内容
+     */
+    function lfGetOrderDetail($orderId) {
         $objQuery = new SC_Query();
         $col = "product_id, product_code, product_name, classcategory_name1, classcategory_name2, price, quantity, point_rate";
+        $col .= ",CASE WHEN EXISTS(SELECT * FROM dtb_products WHERE product_id = dtb_order_detail.product_id AND del_flg = 0) THEN '1' ELSE '0' END AS enable";
         $where = "order_id = ?";
         $objQuery->setorder("classcategory_id1, classcategory_id2");
-        $arrRet = $objQuery->select($col, "dtb_order_detail", $where, array($order_id));
+        $arrRet = $objQuery->select($col, "dtb_order_detail", $where, array($orderId));
         return $arrRet;
+    }
+
+    /**
+     * 受注メール送信履歴の取得
+     *
+     * @param integer $orderId 注文番号
+     * @return array 受注メール送信履歴の内容
+     */
+    function lfGetMailHistory($orderId) {
+        $objQuery = new SC_Query();
+        $col = 'send_date, subject, template_id, send_id';
+        $where = 'order_id = ?';
+        $objQuery->setorder('send_date DESC');
+        $this->arrMailHistory = $objQuery->select($col, 'dtb_mail_history', $where, array($orderId));
     }
 }
 ?>
