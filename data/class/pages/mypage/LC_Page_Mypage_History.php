@@ -222,7 +222,7 @@ class LC_Page_Mypage_History extends LC_Page {
     function lfGetOrderDetail($orderId) {
         $objQuery = new SC_Query();
         $col = "product_id, product_code, product_name, classcategory_name1, classcategory_name2, price, quantity, point_rate";
-        $col .= ",CASE WHEN EXISTS(SELECT * FROM dtb_products WHERE product_id = dtb_order_detail.product_id AND del_flg = 0) THEN '1' ELSE '0' END AS enable";
+        $col .= ",CASE WHEN EXISTS(SELECT * FROM dtb_products WHERE product_id = dtb_order_detail.product_id AND del_flg = 0 AND status = 1) THEN '1' ELSE '0' END AS enable";
         $where = "order_id = ?";
         $objQuery->setorder("classcategory_id1, classcategory_id2");
         $arrRet = $objQuery->select($col, "dtb_order_detail", $where, array($orderId));
