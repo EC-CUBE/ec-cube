@@ -107,6 +107,10 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
 
                     // レコード数を得る
                     $rec_count = $this->lfCSVRecordCount($enc_filepath);
+                    if ($rec_count === false) {
+                        $err = false;
+                        $arrErr['bad_file_pointer'] = "※ 不正なファイルポインタが検出されました";
+                    }
 
                     $fp = fopen($enc_filepath, "r");
                     $line = 0;      // 行数
@@ -338,16 +342,19 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
      * CSVのカウント数を得る.
      *
      * @param string $file_name ファイルパス
-     * @return integer CSV のカウント数
+     * @return mixed CSV のカウント数; $file_name が無効な場合は false
      */
     function lfCSVRecordCount($file_name) {
         $count = 0;
         $fp = fopen($file_name, "r");
-        while(!feof($fp)) {
-            $arrCSV = fgetcsv($fp, CSV_LINE_MAX);
-            $count++;
+        if ($fp !== false) {
+            while(!feof($fp)) {
+                $arrCSV = fgetcsv($fp, CSV_LINE_MAX);
+                $count++;
+            }
+        } else {
+            return false;
         }
-
         return $count-1;
     }
 
