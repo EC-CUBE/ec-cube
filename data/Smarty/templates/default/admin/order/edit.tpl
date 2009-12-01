@@ -47,6 +47,27 @@
         df.deliv_addr01.value = df.order_addr01.value;
         df.deliv_addr02.value = df.order_addr02.value;
     }
+
+    function fnOpenPdfSettingPage(action){
+        var WIN;
+        WIN = window.open("about:blank", "pdf", "width=500,height=600,scrollbars=yes,resizable=yes,toolbar=no,location=no,directories=no,status=no");
+
+        // 退避
+        tmpTarget = document.form1.target;
+        tmpMode = document.form1.mode.value;
+        tmpAction = document.form1.action;
+
+        document.form1.target = "pdf";
+        document.form1.mode.value = 'pdf';
+        document.form1.action = action;
+        document.form1.submit();
+        WIN.focus();
+
+        // 復元
+        document.form1.target = tmpTarget;
+        document.form1.mode.value = tmpMode;
+        document.form1.action = tmpAction;
+    }
 //-->
 </script>
 <!--★★メインコンテンツ★★-->
@@ -128,7 +149,7 @@
                             <tr class="fs12n">
                             <td bgcolor="#f2f1ec" width="110">帳票</td>
                             <td bgcolor="#ffffff">
-                              <input type="button" name="address_input" value="帳票の作成" onclick="win02('pdf.php?order_id=<!--{$arrForm.order_id.value}-->','pdf_input','500','650'); return false;" />
+                              <input type="button" name="address_input" value="帳票の作成" onClick="fnOpenPdfSettingPage('pdf.php?order_id=<!--{$tpl_order_id}-->','pdf_input','500','650'); return false;" />
                             </td>
                             </tr>
                           <!--{/if}-->
