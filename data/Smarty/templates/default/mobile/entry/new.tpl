@@ -26,9 +26,9 @@
 
 ご注文に際して必要な内容（ご自宅住所等）をご登録していただきます。<br>
 ご利用の規約をよくお読みの上、ご登録下さい。<br>
-<a href="kiyaku.php" accesskey="1"><!--{1|numeric_emoji}-->会員規約を読む<br>
-<a href="./<!--{$smarty.const.DIR_INDEX_URL}-->" accesskey="2"><!--{2|numeric_emoji}-->同意して登録へ<br>
-<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="3"><!--{3|numeric_emoji}-->同意しない<br>
+<a href="kiyaku.php" accesskey="1"><!--{1|numeric_emoji}-->会員規約を読む</a><br>
+<a href="./<!--{$smarty.const.DIR_INDEX_URL}-->" accesskey="2"><!--{2|numeric_emoji}-->同意して登録へ</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="3"><!--{3|numeric_emoji}-->同意しない</a><br>
 
 <br>
 <hr>
