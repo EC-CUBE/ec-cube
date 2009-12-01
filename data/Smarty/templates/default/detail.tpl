@@ -60,13 +60,11 @@ function lnSetSelect(form, name1, name2, val) {
     <!--{if $arrProduct.main_large_image != ""}-->
     <!--★画像★-->
       <a href="javascript:void(win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&amp;image=main_large_image<!--{if $smarty.get.admin == 'on'}-->&amp;admin=on<!--{/if}-->','detail_image','<!--{$arrFile.main_large_image.width+60}-->', '<!--{$arrFile.main_large_image.height+80}-->'))">
-        <img src="<!--{$arrFile[$key].filepath}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" alt="<!--{$arrProduct.name|escape}-->" class="picture" />
-      </a>
+        <img src="<!--{$arrFile[$key].filepath}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" alt="<!--{$arrProduct.name|escape}-->" class="picture" /></a>
       <p>
       <!--★拡大する★-->
         <a href="javascript:void(win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&amp;image=main_large_image<!--{if $smarty.get.admin == 'on'}-->&amp;admin=on<!--{/if}-->','detail_image','<!--{$arrFile.main_large_image.width+60}-->', '<!--{$arrFile.main_large_image.height+80}-->'))" onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_expansion_on.gif','expansion01');" onMouseOut="chgImg('<!--{$TPL_DIR}-->img/products/b_expansion.gif','expansion01');">
-          <img src="<!--{$TPL_DIR}-->img/products/b_expansion.gif" width="85" height="13" alt="画像を拡大する" name="expansion01" id="expansion01" />
-       </a>
+          <img src="<!--{$TPL_DIR}-->img/products/b_expansion.gif" width="85" height="13" alt="画像を拡大する" name="expansion01" id="expansion01" /></a>
       </p>
       <!--{else}-->
       <img src="<!--{$arrFile[$key].filepath}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" alt="<!--{$arrProduct.name|escape}-->" class="picture" />
@@ -201,8 +199,7 @@ function lnSetSelect(form, name1, name2, val) {
 
                 <!--{* カゴに入れるボタン *}-->
                 <a href="javascript:void(document.form1.submit());" onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_cartin_on.gif','cart');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/products/b_cartin.gif','cart');">
-                    <img src="<!--{$TPL_DIR}-->img/products/b_cartin.gif" width="115" height="25" alt="カゴに入れる" name="cart" id="cart" />
-                </a>
+                    <img src="<!--{$TPL_DIR}-->img/products/b_cartin.gif" width="115" height="25" alt="カゴに入れる" name="cart" id="cart" /></a>
             </p>
             <!--{if 'sfGMODetailDisplay'|function_exists}--><!--{* GMOワンクリック *}-->
                 <!--{'sfGMODetailDisplay'|call_user_func}-->
@@ -236,11 +233,12 @@ function lnSetSelect(form, name1, name2, val) {
       <div class="subphotoimg">
       <!--{if $arrFile[$lkey].filepath != ""}-->
         <a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&amp;image=<!--{$lkey}--><!--{if $smarty.get.admin == 'on'}-->&amp;admin=on<!--{/if}-->','detail_image','<!--{$arrFile[$lkey].width+60}-->','<!--{$arrFile[$lkey].height+80}-->'); return false;" target="_blank">
+      <!--{else}-->
+        <a>
       <!--{/if}-->
       <!--サブ画像-->
-        <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrProduct.name|escape}-->" width="<!--{$smarty.const.NORMAL_SUBIMAGE_WIDTH}-->" height="<!--{$smarty.const.NORMAL_SUBIMAGE_WIDTH}-->" />
+        <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrProduct.name|escape}-->" width="<!--{$smarty.const.NORMAL_SUBIMAGE_WIDTH}-->" height="<!--{$smarty.const.NORMAL_SUBIMAGE_WIDTH}-->" /></a>
       <!--{if $arrFile[$lkey].filepath != ""}-->
-        </a>
         <p>
           <a href="<!--{$smarty.server.PHP_SELF|escape}-->"
              onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&amp;image=<!--{$lkey}--><!--{if $smarty.get.admin == 'on'}-->&amp;admin=on<!--{/if}-->','detail_image','<!--{$arrFile[$lkey].width+60}-->','<!--{$arrFile[$lkey].height+80}-->'); return false;"
@@ -271,8 +269,7 @@ function lnSetSelect(form, name1, name2, val) {
          onclick="win02('./review.php?product_id=<!--{$arrProduct.product_id}-->','review','580','580'); return false;"
          onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_comment_on.gif','review');"
          onmouseout="chgImg('<!--{$TPL_DIR}-->img/products/b_comment.gif','review');" target="_blank">
-        <img src="<!--{$TPL_DIR}-->img/products/b_comment.gif" width="150" height="22" alt="新規コメントを書き込む" name="review" id="review" />
-      </a>
+        <img src="<!--{$TPL_DIR}-->img/products/b_comment.gif" width="150" height="22" alt="新規コメントを書き込む" name="review" id="review" /></a>
     <!--{/if}-->
 
     <!--{if count($arrReview) > 0}-->
@@ -328,8 +325,7 @@ function lnSetSelect(form, name1, name2, val) {
         <!--{/if}-->
 
         <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id}-->">
-          <img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[cnt].name|escape}-->" />
-        </a>
+          <img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[cnt].name|escape}-->" /></a>
 
         <!--{assign var=price02_min value=`$arrRecommend[cnt].price02_min`}-->
         <!--{assign var=price02_max value=`$arrRecommend[cnt].price02_max`}-->
@@ -358,9 +354,7 @@ function lnSetSelect(form, name1, name2, val) {
           <!--{assign var=image_path value="`$smarty.const.NO_IMAGE_DIR`"}-->
         <!--{/if}-->
         <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id}-->">
-          <img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[cnt].name|escape}-->" />
-        </a>
-
+          <img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[cnt].name|escape}-->" /></a>
         <!--{assign var=price02_min value=`$arrRecommend[cnt].price02_min`}-->
         <!--{assign var=price02_max value=`$arrRecommend[cnt].price02_max`}-->
         <h3><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id}-->"><!--{$arrRecommend[cnt].name|escape}--></a></h3>

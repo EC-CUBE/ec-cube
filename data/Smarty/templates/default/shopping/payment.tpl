@@ -125,8 +125,7 @@
 
       <div class="tblareabtn">
         <a href="<!--{$tpl_back_url|escape}-->" onmouseover="chgImg('<!--{$TPL_DIR}-->img/common/b_back_on.gif','back03')" onmouseout="chgImg('<!--{$TPL_DIR}-->img/common/b_back.gif','back03')">
-          <img src="<!--{$TPL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="戻る" border="0" name="back03" id="back03" />
-        </a>&nbsp;
+          <img src="<!--{$TPL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="戻る" border="0" name="back03" id="back03" /></a>&nbsp;
         <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_next_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_next.gif',this)" src="<!--{$TPL_DIR}-->img/common/b_next.gif" class="box150" alt="次へ" name="next" id="next" />
       </div>
     </form>
