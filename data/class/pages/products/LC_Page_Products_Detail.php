@@ -200,7 +200,7 @@ class LC_Page_Products_Detail extends LC_Page {
                 exit;
             }
             break;
-            
+
         case 'add_favorite':
             // お気に入りに追加する
             $this->lfAddFavoriteProduct($objCustomer);
@@ -723,10 +723,10 @@ class LC_Page_Products_Detail extends LC_Page {
                 . "        T2.product_id"
                 . "   FROM dtb_product_categories T2  "
                 . " GROUP BY product_id) AS T3 USING (product_id)";
-        $objQuery->setorder("product_rank DESC");
+        $objQuery->setorder("T3.product_rank DESC");
         for($i = 0; $i < $max; $i++) {
             $where = "del_flg = 0 AND T3.product_id = ? AND status = 1";
-            $arrProductInfo = $objQuery->select("DISTINCT main_list_image, price02_min, price02_max, price01_min, price01_max, name, point_rate, product_rank", $from, $where, array($arrRet[$i]['recommend_product_id']));
+            $arrProductInfo = $objQuery->select("DISTINCT main_list_image, price02_min, price02_max, price01_min, price01_max, name, point_rate, T3.product_rank", $from, $where, array($arrRet[$i]['recommend_product_id']));
 
             if(count($arrProductInfo) > 0) {
                 $arrRecommend[$no] = $arrProductInfo[0];
@@ -845,11 +845,11 @@ class LC_Page_Products_Detail extends LC_Page {
         if ( $objCustomer->isLoginSuccess() === true && OPTION_FAVOFITE_PRODUCT == 1 ){
             $add_favorite_product_id = $_POST['favorite_product_id'];    // お気に入りに追加する商品ID
             $customer_id = $objCustomer->getValue('customer_id');        // ログイン中の顧客ID
-    
+
             // お気に入りに商品を追加する際のエラーチェックを行う
             $this->arrErr = array();    // エラー内容
             $this->lfCheckAddFavoriteProduct($customer_id, $add_favorite_product_id);
-            
+
             if( count($this->arrErr) == 0 ) {
                 // お気に入りに商品を追加する
                 $this->lfRegistFavoriteProduct($customer_id, $add_favorite_product_id);
@@ -857,7 +857,7 @@ class LC_Page_Products_Detail extends LC_Page {
         }
         return ;
     }
-    
+
     /**
      * 商品をお気に入りにいれる際のエラーチェックを行う
      * @param int $customer_id 顧客ID
@@ -871,14 +871,14 @@ class LC_Page_Products_Detail extends LC_Page {
             SC_Utils_Ex::sfDispSiteError(PRODUCT_NOT_FOUND);
             exit;
         }
-        
+
         // 既にお気に入り商品として追加されていないかチェック
         if (SC_Helper_DB_Ex::sfDataExists( 'dtb_customer_favorite_products', 'customer_id = ? AND product_id = ?', array($customer_id, $add_favorite_product_id)) ) {
             $this->arrErr['add_favorite'.$add_favorite_product_id] = "※ この商品は既にお気に入りに追加されています。<br />";
             $this->add_favorite_product_id = $add_favorite_product_id;
         }
     }
-    
+
     /**
      * お気に入り商品登録
      * @param int $customer_id 顧客ID
