@@ -295,7 +295,7 @@ ob_clean();
 
     // PDF_Japanese::Text へのパーサー
     function lfText($x, $y, $text, $size, $style = '') {
-        $text = mb_convert_encoding($text, "SJIS", CHAR_CODE);
+        $text = mb_convert_encoding($text, "SJIS-win", CHAR_CODE);
 
         $this->pdf->SetFont('SJIS', $style, $size);
         $this->pdf->Text($x, $y, $text);
