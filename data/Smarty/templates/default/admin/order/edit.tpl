@@ -575,7 +575,7 @@
                                 <td bgcolor="#ffffff" colspan="6">
                                 <!--{assign var=key value="deliv_date"}-->
                                 <span class="red12"><!--{$arrErr[$key]}--></span>
-                                <!--{$arrForm[$key].value|default:"指定なし"}-->
+                                <input name="<!--{$key|escape}-->" value="<!--{$arrForm[$key].value|escape}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="20" maxlength="<!--{$arrForm[$key].length}-->" />
                                 </td>
                             </tr>
                             <tr class="fs12n">
