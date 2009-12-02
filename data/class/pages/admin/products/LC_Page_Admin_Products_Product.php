@@ -691,13 +691,9 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         }
 
         if(file_exists($from_path)){
-            // 元画像サイズを取得
-            list($from_w, $from_h) = getimagesize($from_path);
-
             // 生成先の画像サイズを取得
             $to_w = $this->objUpFile->width[$arrImageKey[$to_key]];
             $to_h = $this->objUpFile->height[$arrImageKey[$to_key]];
-
 
             if($forced) $this->objUpFile->save_file[$arrImageKey[$to_key]] = "";
 
