@@ -357,7 +357,7 @@ class SC_UploadFile {
      *
      * @param string $rename
      * @param int $keyname
-     * @return strgin $dst_file
+     * @return string
      */
     function lfGetTmpImageName($rename, $keyname = "", $uploadfile = ""){
 
