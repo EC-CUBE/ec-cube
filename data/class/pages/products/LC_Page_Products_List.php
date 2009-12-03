@@ -245,7 +245,7 @@ class LC_Page_Products_List extends LC_Page {
         if($_GET['mode'] == 'search'){
             $tpl_subtitle = "検索結果";
             $tpl_search_mode = true;
-        }elseif (empty($arrCategory_id)) {
+        }elseif (empty($arrCategory_id[0])) {
             $tpl_subtitle = "全商品";
         }else{
             $arrFirstCat = $objDb->sfGetFirstCat($arrCategory_id[0]);
