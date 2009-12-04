@@ -431,7 +431,7 @@ class LC_Page_Shopping extends LC_Page {
             $objQuery = new SC_Query();
             $arrEmailCheck = $objQuery->select("email, update_date, del_flg", "dtb_customer","email = ? OR email_mobile = ? ORDER BY del_flg", array($array["email"], $array["email"]));
 
-            if(count($arrEmailCheck) > 0) {
+            if(!empty($arrEmailCheck)) {
                 if($arrEmailCheck[0]['del_flg'] != '1') {
                     // 会員である場合
                     $objErr->arrErr["order_email"] .= "※ すでに会員登録で使用されているメールアドレスです。<br />";
