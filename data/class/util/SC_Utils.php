@@ -788,7 +788,7 @@ class SC_Utils {
     /* 規格の登録 */
     function sfInsertProductClass($objQuery, $arrList, $product_id , $product_class_id = "") {
         // すでに規格登録があるかどうかをチェックする。
-        $where = "product_id = ? AND classcategory_id1 <> 0 AND classcategory_id1 <> 0";
+        $where = "product_id = ? AND classcategory_id1 <> 0 AND classcategory_id2 <> 0";
         $count = $objQuery->count("dtb_products_class", $where,  array($product_id));
 
         // すでに規格登録がない場合
@@ -2029,7 +2029,7 @@ echo $template_path;
 
         for($i = 0; $i < $cnt; $i++) {
             $html.= "<tr>";
-        	foreach($array[$i] as $val) {
+            foreach($array[$i] as $val) {
                 $html.="<td>$val</td>";
             }
             $html.= "</tr>";
@@ -2222,7 +2222,7 @@ echo $template_path;
         $town = ereg_replace("（.*）$","",$town);
         $town = ereg_replace("以下に掲載がない場合","",$town);
         $data_list[0]['town'] = $town;
-		$data_list[0]['state'] = $arrREV_PREF[$data_list[0]['state']];
+        $data_list[0]['state'] = $arrREV_PREF[$data_list[0]['state']];
 
         return $data_list;
     }
