@@ -248,6 +248,15 @@ $(document).ready(function() {
                 </div>
             <!--{/if}-->
 
+            <!--▼メーカーURL-->
+            <!--{if $arrProduct.comment1|strlen >= 1}-->
+                <div><span class="comment1">メーカーURL：
+                    <a href="<!--{$arrProduct.comment1|escape}-->">
+                        <!--{$arrProduct.comment1|escape}--></a>
+                </div>
+            <!--{/if}-->
+            <!--▲メーカーURL-->
+
             <!--★関連カテゴリ★-->
             <div class="relative_cat">関連カテゴリ：
                 <!--{section name=r loop=$arrRelativeCat}-->
