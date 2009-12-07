@@ -23,6 +23,7 @@
 
 // {{{ requires
 require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_CSV_Ex.php");
 
 /**
  * CSV 出力項目設定(高度な設定)のページクラス.
@@ -59,6 +60,8 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page {
     function process() {
         $objView = new SC_AdminView();
         $objDbFactory = SC_DB_DBFactory_Ex::getInstance();
+        $objCSV = new SC_Helper_CSV_Ex();
+        $this->arrSubnavi = $objCSV->arrSubnavi;
 
         // 認証可否の判定
         $objSess = new SC_Session();
@@ -147,7 +150,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page {
                     $header .= $data;
                     $i ++;
                 }
-                $header .= "\n\r";
+                $header .= "\r\n";
 
                 $data = SC_Utils_Ex::getCSVData($arrCsvOutputData, $arrKey);
                 // CSV出力
@@ -211,7 +214,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page {
         $this->sql_id = $sql_id;			// 選択されているSQL
 
         // POSTされたデータをセットする
-        if (count($_POST) > 0) {
+        if (isset($_POST['sql_name']) && isset($_POST['csv_sql'])){
             $arrSqlData[0]['sql_name'] = isset($_POST['sql_name']) ? $_POST['sql_name'] : "";
             $arrSqlData[0]['csv_sql'] = isset($_POST['csv_sql']) ? $_POST['csv_sql'] : "";
         }

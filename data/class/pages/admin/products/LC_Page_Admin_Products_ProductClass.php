@@ -215,7 +215,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
         $product_name = $objQuery->getOne("SELECT name FROM dtb_products WHERE product_id = ?", array($_POST['product_id']));
         $this->arrForm['product_name'] = $product_name;
     }
-    
+
     /**
      * デフォルトの表示
      *
@@ -259,7 +259,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
             $sql.= "FROM vw_cross_class AS crs_cls ";
             $sql.= "WHERE class_id1 = ? AND class_id2 = 0 ORDER BY rank1 DESC;";
             $arrRet = $objQuery->getall($sql, array($class_id1));
-            
+
         }
 
         $max = count($arrRet);
@@ -344,6 +344,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
         // すべての規格を登録する。
         while($arrList["classcategory_id1:".$cnt] != "") {
             if($arrList["check:".$cnt] == 1) {
+                $sqlval = array();
                 $sqlval['product_id'] = $product_id;
                 $sqlval['classcategory_id1'] = $arrList["classcategory_id1:".$cnt];
                 $sqlval['classcategory_id2'] = $arrList["classcategory_id2:".$cnt];

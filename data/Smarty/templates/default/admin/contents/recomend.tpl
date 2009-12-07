@@ -24,7 +24,7 @@
 <script language="JavaScript">
 <!--
 function lfnCheckSubmit( fm ){
-	
+
 	var err = '';
 	/*
 	if ( ! fm["title"].value ){
@@ -54,9 +54,9 @@ function lfnCheckSetItem( rank ){
 			if( ! window.confirm('さきほど選択した<!--{$checkRank}-->位の情報は破棄されます。宜しいでしょうか')){
 				flag = false;
 			}
-		} 
+		}
 	}
-	
+
 	if ( flag ){
 		win03('./recommend_search.php?rank=' + rank,'search','500','500');
 	}
@@ -87,7 +87,7 @@ function lfnCheckSetItem( rank ){
 					<tr>
 						<td background="<!--{$TPL_DIR}-->img/contents/main_left.jpg"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 						<td bgcolor="#cccccc">
-						
+
 						<!--登録テーブルここから-->
 						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr>
@@ -132,8 +132,8 @@ function lfnCheckSetItem( rank ){
 								</td>
 								<td bgcolor="#ffffff" width="40" align="center">
 									<a href="#" onclick="lfnCheckSetItem('<!--{$smarty.section.cnt.iteration}-->'); return false;" target="_blank">
-									<!--{if $arrItems[$smarty.section.cnt.iteration].product_id}-->商品<br/>変更<!--{else}-->商品<br/>選択<!--{/if}-->
-									</a></td>
+									<!--{if $arrItems[$smarty.section.cnt.iteration].product_id}-->商品<br/>変更<!--{else}-->商品<br/>選択<!--{/if}--></a>
+								</td>
 								<td bgcolor="#ffffff" width="350">
 								<table width="350" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr class="fs12">
@@ -159,7 +159,7 @@ function lfnCheckSetItem( rank ){
 						</table>
 						<!--▲おすすめ<!--{$smarty.section.cnt.iteration}-->-->
 						<!--{/section}-->
-						
+
 						<!--登録テーブルここまで-->
 						</td>
 						<td background="<!--{$TPL_DIR}-->img/contents/main_right.jpg"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
@@ -177,4 +177,4 @@ function lfnCheckSetItem( rank ){
 		</td>
 	</tr>
 </table>
-<!--★★メインコンテンツ★★-->		
+<!--★★メインコンテンツ★★-->

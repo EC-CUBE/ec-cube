@@ -285,9 +285,6 @@ class LC_Page_Mypage_Change extends LC_Page {
                 $this->arrForm['year'] = '';
             }
 
-            // emailはすべて小文字で処理
-            $this->paramToLower($_POST );
-
             //-- 入力データの変換
             $this->arrForm = $this->lfConvertParam($this->arrForm, $arrRegistColumn);
 
@@ -354,9 +351,9 @@ class LC_Page_Mypage_Change extends LC_Page {
                     // メール受け取り
                     if (!isset($_POST['mailmaga_flg'])) $_POST['mailmaga_flg'] = "";
                     if (strtolower($_POST['mailmaga_flg']) == "on") {
-                        $_POST['mailmaga_flg']  = "2";
+                        $this->arrForm['mailmaga_flg'] = "2";
                     } else {
-                        $_POST['mailmaga_flg']  = "3";
+                        $this->arrForm['mailmaga_flg'] = "3";
                     }
 
                     $this->tpl_mainpage = 'mypage/change_confirm.tpl';
@@ -428,12 +425,11 @@ class LC_Page_Mypage_Change extends LC_Page {
      * @return bool エラーの無い場合 true
      */
     function checkErrorTotal(&$arrRegistColumn, &$arrMailType, $isMobile = false) {
-        //-- 入力データの変換
-        $this->arrForm = $_POST;
-        $this->arrForm = $this->lfConvertParam($this->arrForm, $arrRegistColumn);
-
         // emailはすべて小文字で処理
         $this->paramToLower($arrRegistColumn);
+
+        // 入力データの変換
+        $this->arrForm = $this->lfConvertParam($_POST, $arrRegistColumn);
 
         //エラーチェック
         $this->arrErr = $isMobile
@@ -451,7 +447,7 @@ class LC_Page_Mypage_Change extends LC_Page {
                                  "del_flg=0 AND " . $mailType . "= ?",
                                   array($this->arrForm[$mailType]));
                 if ($email_cnt > 0){
-                    $arrMailType2[$mailTypeValue] = false;
+                    $arrMailType2[$mailType] = false;
                     $this->arrErr[$mailType] .= "既に使用されているメールアドレスです。";
                 }
             }
@@ -532,18 +528,17 @@ class LC_Page_Mypage_Change extends LC_Page {
          *  n :  「全角」数字を「半角(ﾊﾝｶｸ)」に変換
          *  a :  全角英数字を半角英数字に変換する
          */
-        // カラム名とコンバート情報
-        foreach ($arrRegistColumn as $data) {
-            $arrConvList[ $data["column"] ] = $data["convert"];
-        }
+        foreach ($arrRegistColumn as $registColumn) {
+            $key = $registColumn["column"];
+            $mb_convert_kana_option = $registColumn["convert"];
+            $val =& $array[$key];
 
-        // 文字変換
-        foreach ($arrConvList as $key => $val) {
-            // POSTされてきた値のみ変換する。
-            if (isset($array[$key])) {
-                if(strlen(($array[$key])) > 0) {
-                    $array[$key] = mb_convert_kana($array[$key] ,$val);
-                }
+            // string 型以外は変換対象外とする
+            if (!is_string($val)) continue;
+
+            // 文字変換
+            if (strlen($val) > 0) {
+                $val = mb_convert_kana($val ,$mb_convert_kana_option);
             }
         }
         return $array;
@@ -849,7 +844,7 @@ class LC_Page_Mypage_Change extends LC_Page {
         foreach ($arrParam as $key => $val) {
             if (!isset($val)) {
                 $this->arrForm[$key] = "";
-            }elseif($key == 'email' || $key == 'email_mobile'){
+            }elseif($key == 'email' || $key == 'email02' || $key == 'email_mobile' || $key == 'email_mobile02'){
                 $this->arrForm[$key] = strtolower($val);
             }
         }

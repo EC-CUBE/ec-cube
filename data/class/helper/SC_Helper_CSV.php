@@ -143,7 +143,7 @@ class SC_Helper_CSV {
             }
 
             // 各項目をCSV出力用に変換する。
-            $data .= $this->lfMakeProductsCSV($list_data[$i], $arrOutputCols);
+            $data .= $this->lfMakeProductsCSV($list_data[$i]);
         }
         return $data;
     }
@@ -255,22 +255,22 @@ class SC_Helper_CSV {
     }
 
     // 各項目をCSV出力用に変換する。(商品)
-    function lfMakeProductsCSV($list, $arrOutputCols) {
+    function lfMakeProductsCSV($list) {
         $line = "";
         if(is_array($list)) {
-			reset($arrOutputCols);
-        	while(list($key, $val) = each($arrOutputCols)){
+			reset($list);
+        	while(list($key, $val) = each($list)){
                 $tmp = "";
                 switch($key) {
                 case 'point_rate':
                     if($val == "") {
                         $tmp = '0';
                     } else {
-                        $tmp = $list[$val];
+                        $tmp = $val;
                     }
                     break;
                 default:
-                    $tmp = $list[$val];
+                    $tmp = $val;
                     break;
                 }
                 $tmp = str_replace("\"", "\\\"", $tmp);

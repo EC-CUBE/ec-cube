@@ -274,7 +274,7 @@ define('IMAGE_TEMP_URL_RSS', SITE_URL . "upload/temp_image/");
 /** RSS用画像保存先URL */
 define('IMAGE_SAVE_URL_RSS', SITE_URL . "upload/save_image/");
 /** エンコードCSVの一時保存先 */
-define('CSV_TEMP_DIR', HTML_PATH . "upload/csv/");
+define('CSV_TEMP_DIR', DATA_PATH . "upload/csv/");
 /** 画像がない場合に表示 */
 define('NO_IMAGE_URL', URL_DIR . "misc/blank.gif");
 /** 画像がない場合に表示 */
@@ -350,9 +350,9 @@ define('LTEXT_LEN', 3000);
 define('LLTEXT_LEN', 99999);
 /** URLの文字長 */
 define('URL_LEN', 300);
-/** ID・パスワードの文字数制限 */
+/** 管理画面用：ID・パスワードの文字数制限 */
 define('ID_MAX_LEN', 15);
-/** ID・パスワードの文字数制限 */
+/** 管理画面用：ID・パスワードの文字数制限 */
 define('ID_MIN_LEN', 4);
 /** 金額桁数 */
 define('PRICE_LEN', 8);
@@ -368,9 +368,9 @@ define('ZIP02_LEN', 4);
 define('TEL_ITEM_LEN', 6);
 /** 電話番号総数 */
 define('TEL_LEN', 12);
-/** パスワード1 */
+/** フロント画面用：パスワードの最小文字数 */
 define('PASSWORD_LEN1', 4);
-/** パスワード2 */
+/** フロント画面用：パスワードの最大文字数 */
 define('PASSWORD_LEN2', 10);
 /** 検査数値用桁数(INT) */
 define('INT_LEN', 8);
@@ -486,7 +486,7 @@ define('ORDER_CANCEL', 3);
 define('ORDER_BACK_ORDER', 4);
 /** 発送済み */
 define('ORDER_DELIV', 5);
-/** 受注ステータス変更の際にポイント等を加算するステータス番号（発送済み） */
+/** 受注完了時のステータス番号 */
 define('ODERSTATUS_COMMIT', ORDER_DELIV);
 /** 新着情報管理画面 開始年(西暦)  */
 define('ADMIN_NEWS_STARTYEAR', 2005);
@@ -536,6 +536,8 @@ define('OS_TYPE', "LINUX");
 define('SMTP_HOST', "127.0.0.1");
 /** SMTPポート */
 define('SMTP_PORT', "25");
+/** ポイントを利用するか(true:利用する、false:利用しない) (false は一部対応) */
+define('USE_POINT', true);
 /** デフォルトテンプレート名 */
 define('DEFAULT_TEMPLATE_NAME', "default");
 /** テンプレート名 */
@@ -664,4 +666,10 @@ define('OSTORE_E_C_AUTOUP_DISABLE', '2008');
 define('OSTORE_E_C_PERMISSION', '2009');
 /** オーナーズストア通信エラーコード */
 define('OSTORE_E_C_BATCH_ERR', '2010');
+/** お気に入り商品登録(有効:1 無効:0) */
+define('OPTION_FAVOFITE_PRODUCT','1');
+/** お気に入り商品を表示する際に、在庫なし商品の表示・非表示(非表示:true 表示:false) */
+define('NOSTOCK_HIDDEN', false);
+/** 画像リネーム設定（商品画像のみ） */
+define('IMAGE_RENAME', true);
 ?>

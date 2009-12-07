@@ -7,7 +7,7 @@ create table dtb_module_update_logs(
     ok text,
     create_date datetime NOT NULL,
     update_date datetime NOT NULL
-);
+) TYPE=InnoDB ;
 
 CREATE TABLE dtb_ownersstore_settings (
     public_key text
@@ -140,7 +140,8 @@ CREATE TABLE dtb_baseinfo (
     detail_tpl text,
     mypage_tpl text,
     good_traded text,
-    message text
+    message text,
+    regular_holiday_ids text
 ) TYPE=InnoDB ;
 
 CREATE TABLE dtb_deliv (
@@ -284,6 +285,7 @@ CREATE TABLE dtb_products (
     comment4 text,
     comment5 text,
     comment6 text,
+    note text,
     file1 text,
     file2 text,
     file3 text,
@@ -453,6 +455,13 @@ CREATE TABLE dtb_review (
     create_date datetime,
     update_date datetime,
     del_flg  smallint NOT NULL DEFAULT 0
+) TYPE=InnoDB ;
+
+CREATE TABLE dtb_customer_favorite_products (
+    customer_id int NOT NULL,
+    product_id int NOT NULL,
+    create_date datetime NOT NULL,
+    update_date datetime NOT NULL
 ) TYPE=InnoDB ;
 
 CREATE TABLE dtb_customer_reading (

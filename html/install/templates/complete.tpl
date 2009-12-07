@@ -27,7 +27,7 @@
 <input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->">
 <!--{/foreach}-->
 
-<tr><td height="80"></td></tr>
+<tr><td height="30"></td></tr>
 <tr>
     <td align="center" class="fs12">
         <strong>EC CUBE インストールが完了しました。</strong><br>
@@ -40,6 +40,6 @@
         先ほど登録したID、パスワードを用いてログインしてください。
     </td>
 </tr>
-<tr><td height="80"></td></tr>
+<tr><td height="30"></td></tr>
 
 </table>

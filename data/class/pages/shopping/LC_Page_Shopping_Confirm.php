@@ -83,6 +83,9 @@ class LC_Page_Shopping_Confirm extends LC_Page {
 
         // カート集計処理
         $objDb->sfTotalCart($this, $objCartSess, $arrInfo);
+        if (strlen($this->tpl_message) >= 1) {
+            SC_Utils_Ex::sfDispSiteError(SOLD_OUT, '', true);
+        }
         // 一時受注テーブルの読込
         $arrData = $objDb->sfGetOrderTemp($uniqid);
         // カート集計を元に最終計算
@@ -128,7 +131,7 @@ class LC_Page_Shopping_Confirm extends LC_Page {
             exit;
             break;
         case 'confirm':
-            // この時点でオーダーIDを確保しておく（クレジット、コンビニ決済で必要なため）
+            // この時点で注文番号を確保しておく（クレジット、コンビニ決済で必要なため）
             // postgresqlとmysqlとで処理を分ける
             if (DB_TYPE == "pgsql") {
                 $order_id = $objQuery->nextval("dtb_order","order_id");
@@ -234,7 +237,7 @@ class LC_Page_Shopping_Confirm extends LC_Page {
             exit;
             break;
         case 'confirm':
-            // この時点でオーダーIDを確保しておく（クレジット、コンビニ決済で必要なため）
+            // この時点で注文番号を確保しておく（クレジット、コンビニ決済で必要なため）
             // postgresqlとmysqlとで処理を分ける
             if (DB_TYPE == "pgsql") {
                 $order_id = $objQuery->nextval("dtb_order","order_id");

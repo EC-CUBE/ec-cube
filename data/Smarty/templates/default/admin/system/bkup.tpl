@@ -21,7 +21,7 @@
  *}-->
 <!--★★メインコンテンツ★★-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
-<form name="form1" id="form1" method="post" action="">
+<form name="form1" id="form1" method="post" action="" onsubmit="return false;">
 <input type="hidden" name="mode" value="edit">
 <input type="hidden" name="list_name" value="">
 	<tr valign="top">
@@ -44,7 +44,7 @@
 							<tr>
 								<td background="<!--{$TPL_DIR}-->img/contents/main_left.jpg"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 								<td bgcolor="#cccccc">
-								
+
 								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr>
 										<td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/contents_title_top.gif" width="678" height="7" alt=""></td>
@@ -61,14 +61,14 @@
 										<td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td>
 									</tr>
 								</table>
-								
+
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
                                     <tr class="fs12n">
                                         <td colspan="3" bgcolor="#f2f1ec">
                                         <ul>
                                             <li>データベースのバックアップを行います。</li>
                                             <li>テンプレートファイル等はバックアップされません。</li>
-                                        </ul>                                        
+                                        </ul>
                                         </td>
                                     </tr>
 									<tr align="center" class="fs12n">
@@ -113,7 +113,7 @@
 								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr><td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td></tr>
 								</table>
-								
+
 								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr>
 										<td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/contents_title_top.gif" width="678" height="7" alt=""></td>
@@ -130,7 +130,7 @@
 										<td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td>
 									</tr>
 								</table>
-								
+
 								<!--{* 一覧が存在する場合のみ表示する *}-->
 								<!--{if count($arrBkupList) > 0 }-->
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
@@ -145,26 +145,26 @@
 									<!--{section name=cnt loop=$arrBkupList}-->
 									<tr bgcolor="#ffffff" class="fs12">
 										<td ><!--{$arrBkupList[cnt].bkup_name}--></td>
-										<td ><!--{$arrBkupList[cnt].bkup_memo}--></td>			
+										<td ><!--{$arrBkupList[cnt].bkup_memo}--></td>
 										<td align="center"><!--{$arrBkupList[cnt].create_date|sfCutString:19:true:false}--></td>
 										<td align="center"><a href="#" onclick="document.body.style.cursor = 'wait'; fnModeSubmit('restore','list_name','<!--{$arrBkupList[cnt].bkup_name}-->');">restore</a></td>
 										<td align="center"><a href="#" onclick="fnModeSubmit('download','list_name','<!--{$arrBkupList[cnt].bkup_name}-->');">download</a></td>
 										<td align="center">
 											<a href="#" onclick="fnModeSubmit('delete','list_name','<!--{$arrBkupList[cnt].bkup_name}-->');">delete</a>
-										</td>	
+										</td>
 									</tr>
 									<!--{/section}-->
 								</table>
 								<!--{/if}-->
 
-								
+
 								<!--{if $restore_msg != ""}-->
-								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">								
+								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr>
 										<td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td>
 									</tr>
 								</table>
-													
+
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr bgcolor="#ffffff" class="fs12">
 										<td>
@@ -172,10 +172,10 @@
 											<!--{if $restore_err == false}--><input type="button" name="restore_config" value="テーブル構成を無視してリストアする" onClick="document.body.style.cursor = 'wait'; form1.mode.value='restore_config'; form1.list_name.value='<!--{$restore_name}-->'; submit();" /><br><!--{/if}-->
 											<!--{$restore_msg}-->
 										</td>
-									</tr>								
+									</tr>
 								</table>
 								<!--{/if}-->
-								
+
 								</td>
 								<td background="<!--{$TPL_DIR}-->img/contents/main_right.jpg"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 							</tr>

@@ -98,6 +98,13 @@ class LC_Page_Shopping_Payment extends LC_Page {
             $this->tpl_back_url = URL_SHOP_TOP . "?from=nonmember";
         }
 
+        // 一時受注テーブルの読込
+        $arrOrderTemp = $objDb->sfGetOrderTemp($uniqid);
+        //不正遷移チェック（正常に受注情報が格納されていない場合は一旦カート画面まで戻す）
+        if (!$arrOrderTemp){
+            $this->sendRedirect($this->getLocation(URL_CART_TOP));
+            exit;
+        }
         // 金額の取得 (購入途中で売り切れた場合にはこの関数内にてその商品の個数が０になる)
         $objDb->sfTotalCart($this, $objCartSess, $arrInfo);
 
@@ -113,7 +120,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
         case 'confirm':
             // 入力値の変換
             $this->objFormParam->convParam();
-            $this->arrErr = $this->lfCheckError($this->arrData, $arrInfo, $objCartSess );
+            $this->arrErr = $this->lfCheckError($this->arrData );
             // 入力エラーなし
             if(count($this->arrErr) == 0) {
                 // DBへのデータ登録
@@ -154,6 +161,8 @@ class LC_Page_Shopping_Payment extends LC_Page {
         $total_pretax = $objCartSess->getAllProductsTotal($arrInfo);
         // 支払い方法の取得
         $this->arrPayment = $this->lfGetPayment($total_pretax);
+        // 支払い方法の画像があるなしを取得（$img_show true:ある false:なし）
+        $this->img_show = $this->lfGetImgShow($this->arrPayment);
         // 配送時間の取得
         $arrRet = $objDb->sfGetDelivTime($this->objFormParam->getValue('payment_id'));
         $this->arrDelivTime = SC_Utils_Ex::sfArrKeyValue($arrRet, 'time_id', 'deliv_time');
@@ -209,6 +218,13 @@ class LC_Page_Shopping_Payment extends LC_Page {
             $this->tpl_user_point = $this->objCustomer->getValue('point');
         }
 
+        // 一時受注テーブルの読込
+        $arrOrderTemp = $objDb->sfGetOrderTemp($uniqid);
+        //不正遷移チェック（正常に受注情報が格納されていない場合は一旦カート画面まで戻す）
+        if (!$arrOrderTemp){
+            $this->sendRedirect($this->getLocation(MOBILE_URL_CART_TOP));
+            exit;
+        }
         // 金額の取得 (購入途中で売り切れた場合にはこの関数内にてその商品の個数が０になる)
         $objDb->sfTotalCart($this, $objCartSess, $arrInfo);
         if (empty($arrData)) $arrData = array();
@@ -238,7 +254,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
         case 'deliv_date':
             // 入力値の変換
             $this->objFormParam->convParam();
-            $this->arrErr = $this->lfCheckError($this->arrData, $arrInfo, $objCartSess);
+            $this->arrErr = $this->lfCheckError($this->arrData);
             if (!isset($this->arrErr['payment_id'])) {
                 // 支払い方法の入力エラーなし
                 $this->tpl_mainpage = 'shopping/deliv_date.tpl';
@@ -254,7 +270,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
         case 'confirm':
             // 入力値の変換
             $this->objFormParam->convParam();
-            $this->arrErr = $this->lfCheckError($this->arrData, $arrInfo, $objCartSess);
+            $this->arrErr = $this->lfCheckError($this->arrData );
             // 入力エラーなし
             if(count($this->arrErr) == 0) {
                 // DBへのデータ登録
@@ -363,12 +379,16 @@ class LC_Page_Shopping_Payment extends LC_Page {
     }
 
     /* 入力内容のチェック */
-    function lfCheckError($arrData, $arrInfo, $objCartSess) {
+    function lfCheckError($arrData) {
         // 入力データを渡す。
         $arrRet =  $this->objFormParam->getHashArray();
         $objErr = new SC_CheckError($arrRet);
         $objErr->arrErr = $this->objFormParam->checkError();
 
+        if (USE_POINT === false) {
+            $_POST['point_check'] = "";
+            $_POST['use_point'] = "0";
+        }
         if (!isset($_POST['point_check'])) $_POST['point_check'] = "";
 
         if($_POST['point_check'] == '1') {
@@ -386,7 +406,12 @@ class LC_Page_Shopping_Payment extends LC_Page {
                 $objErr->arrErr['use_point'] = "※ ご利用ポイントがご購入金額を超えています。<br>";
             }
         }
-        
+
+        $objView = new SC_MobileView();
+        $objSiteInfo = $objView->objSiteInfo;
+        $arrInfo = $objSiteInfo->data;
+        $objCartSess = new SC_CartSession();
+        $arrInfo = $objSiteInfo->data;
         // 購入金額の取得得
         $total_pretax = $objCartSess->getAllProductsTotal($arrInfo);
         // 支払い方法の取得
@@ -398,10 +423,10 @@ class LC_Page_Shopping_Payment extends LC_Page {
                 break;
             }
         }
-        if ($pay_flag && $arrRet['payment_id'] != "") {
+        if ($pay_flag && $arrRet['payment_id'] != "" ) {
             SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
         }
-        
+
         return $objErr->arrErr;
     }
 
@@ -550,6 +575,18 @@ class LC_Page_Shopping_Payment extends LC_Page {
         // DB値の取得
         $this->objFormParam->setParam($arrRet[0]);
         return $this->objFormParam;
+    }
+
+    /* 支払い方法の画像があるなしを取得（$img_show true:ある false:なし） */
+    function lfGetImgShow($arrPayment) {
+        $img_show = false;
+        foreach ($this->arrPayment as $payment) {
+            if (strlen($payment["payment_image"]) > 0 ){
+                $img_show = true;
+                break;
+            }
+        }
+        return $img_show;
     }
 }
 ?>

@@ -73,12 +73,17 @@ class SC_Utils {
         return $control_flg;
     }
 
-    // インストール初期処理
-    function sfInitInstall() {
-        // インストール済みが定義されていない。
-        if(!defined('ECCUBE_INSTALL')) {
-            if(!ereg("/install/", $_SERVER['PHP_SELF'])) {
-                header("Location: ./install/"); // TODO 絶対URL にする
+    /**
+     * インストール初期処理
+     */
+    function sfInitInstall()
+    {
+        // インストールが完了していない時
+        if( !defined('ECCUBE_INSTALL') ) {
+            if( !ereg('/install/', $_SERVER['PHP_SELF']) ) {
+                // インストールページに遷移させる
+                header('Location: ./install/');
+                exit;
             }
         } else {
             $path = HTML_PATH . "install/index.php";
@@ -622,13 +627,25 @@ class SC_Utils {
     }
 
     function sfTrim($str) {
-        $ret = ereg_replace("^[　 \n\r]*", "", $str);
-        $ret = ereg_replace("[　 \n\r]*$", "", $ret);
+        $ret = mb_ereg_replace("^[　 \n\r]*", "", $str);
+        $ret = mb_ereg_replace("[　 \n\r]*$", "", $ret);
         return $ret;
     }
 
     /* 税金計算 */
-    function sfTax($price, $tax, $tax_rule) {
+    function sfTax($price, $tax = null, $tax_rule = null) {
+        // 店舗基本情報を取得
+        static $CONF;
+        if (is_null($CONF) && (is_null($tax) || is_null($tax_rule))) {
+            $CONF = SC_Helper_DB_Ex::sf_getBasisData();
+         }
+        if (is_null($tax)) {
+            $tax = $CONF['tax'];
+        }
+        if (is_null($tax_rule)) {
+            $tax_rule = $CONF['tax_rule'];
+        }
+
         $real_tax = $tax / 100;
         $ret = $price * $real_tax;
         switch($tax_rule) {
@@ -653,29 +670,8 @@ class SC_Utils {
     }
 
     /* 税金付与 */
-    function sfPreTax($price, $tax, $tax_rule) {
-        $real_tax = $tax / 100;
-        $ret = $price * (1 + $real_tax);
-
-        switch($tax_rule) {
-        // 四捨五入
-        case 1:
-            $ret = round($ret);
-            break;
-        // 切り捨て
-        case 2:
-            $ret = floor($ret);
-            break;
-        // 切り上げ
-        case 3:
-            $ret = ceil($ret);
-            break;
-        // デフォルト:切り上げ
-        default:
-            $ret = ceil($ret);
-            break;
-        }
-        return $ret;
+    function sfPreTax($price, $tax = null, $tax_rule = null) {
+        return $price + SC_Utils_Ex::sfTax($price, $tax, $tax_rule);
     }
 
     // 桁数を指定して四捨五入
@@ -902,6 +898,7 @@ class SC_Utils {
 
     /* 加算ポイントの計算式 */
     function sfGetAddPoint($totalpoint, $use_point, $arrInfo) {
+        if( USE_POINT === false ) return ;
         // 購入商品の合計ポイントから利用したポイントのポイント換算価値を引く方式
         $add_point = $totalpoint - intval($use_point * ($arrInfo['point_rate'] / 100));
 
@@ -1992,7 +1989,7 @@ echo $template_path;
 
         for($i = 0; $i < $cnt; $i++) {
             $html.= "<tr>";
-        	foreach($array[$i] as $val) {
+          foreach($array[$i] as $val) {
                 $html.="<td>$val</td>";
             }
             $html.= "</tr>";

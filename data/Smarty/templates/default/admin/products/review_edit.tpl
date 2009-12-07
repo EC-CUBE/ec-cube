@@ -24,14 +24,8 @@
 <!--★★メインコンテンツ★★-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" >
-<input type="hidden" name="mode" value="complete">
-<input type="hidden" name="review_id" value="<!--{$tpl_review_id}-->" >
-<input type="hidden" name="pre_status" value="<!--{$tpl_pre_status}-->">
-<!--{foreach key=key item=item from=$arrReview}-->
-<!--{if $key ne "mode"}-->
-<input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->">
-<!--{/if}-->
-<!--{/foreach}-->
+<input type="hidden" name="mode" value="complete" />
+<input type="hidden" name="review_id" value="<!--{$arrReview.review_id|escape}-->" />
 <!--{foreach key=key item=item from=$arrSearchHidden}-->
 <input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->">
 <!--{/foreach}-->
@@ -55,7 +49,7 @@
 					<tr>
 						<td background="<!--{$TPL_DIR}-->img/contents/main_left.jpg"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 						<td bgcolor="#cccccc">
-						
+
 							<!--▼登録テーブルここから-->
 							<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 								<tr>
@@ -169,4 +163,4 @@
 	</tr>
 </form>
 </table>
-<!--★★メインコンテンツ★★-->		
+<!--★★メインコンテンツ★★-->

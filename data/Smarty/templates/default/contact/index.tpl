@@ -21,18 +21,18 @@
  *}-->
 <!--▼CONTENTS-->
 <div id="undercolumn">
-  
+
   <div id="undercolumn_contact">
     <h2 class="title"><img src="<!--{$TPL_DIR}-->img/contact/title.jpg" width="580" height="40" alt="お問い合わせ" /></h2>
-    
+
     <p>お問い合わせはメールにて承っています。<br />
     内容によっては回答をさしあげるのにお時間をいただくこともございます。また、土日、祝祭日、年末年始、夏季期間は翌営業日以降の対応となりますのでご了承ください。</p>
-    
+
     <p class="mini"><em>※ご注文に関するお問い合わせには、必ず「ご注文番号」と「お名前」をご記入の上、メールくださいますようお願いいたします。</em></p>
-    
+
     <form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
     <input type="hidden" name="mode" value="confirm" />
-    
+
     <table summary="お問い合わせ">
       <tr>
         <th>お名前<span class="attention">※</span></th>
@@ -90,8 +90,7 @@
           </p>
           <p class="zipimg">
             <a href="javascript:fnCallAddress('<!--{$smarty.const.URL_INPUT_ZIP}-->', 'zip01', 'zip02', 'pref', 'addr01');">
-              <img src="<!--{$TPL_DIR}-->img/common/address.gif" width="86" height="20" alt="住所自動入力" />
-            </a>
+              <img src="<!--{$TPL_DIR}-->img/common/address.gif" width="86" height="20" alt="住所自動入力" /></a>
             <span class="mini">&nbsp;郵便番号を入力後、クリックしてください。</span>
           </p>
         </td>
@@ -100,12 +99,12 @@
         <th>住所</th>
         <td>
           <span class="attention"><!--{$arrErr.pref}--><!--{$arrErr.addr01}--><!--{$arrErr.addr02}--></span>
-          
+
           <select name="pref" style="<!--{$arrErr.pref|sfGetErrorColor}-->">
           <option value="">都道府県を選択</option>
           <!--{html_options options=$arrPref selected=$pref|default:$arrData.pref|escape}-->
           </select>
-          
+
           <p class="mini">
             <input type="text"
                    class="box380"
@@ -114,7 +113,7 @@
                    style="<!--{$arrErr.addr01|sfGetErrorColor}-->" /><br />
             <!--{$smarty.const.SAMPLE_ADDRESS1}-->
           </p>
-          
+
           <p class="mini">
             <input type="text"
                    class="box380"
@@ -123,7 +122,7 @@
                    style="<!--{$arrErr.addr02|sfGetErrorColor}-->" /><br />
             <!--{$smarty.const.SAMPLE_ADDRESS2}-->
           </p>
-          
+
           <p class="mini"><em>住所は2つに分けてご記入いただけます。マンション名は必ず記入してください。</em></p>
         </td>
       </tr>
@@ -131,19 +130,19 @@
         <th>電話番号</th>
         <td>
           <span class="attention"><!--{$arrErr.tel01}--><!--{$arrErr.tel02}--><!--{$arrErr.tel03}--></span>
-          <input type="text" 
+          <input type="text"
                  class="box60"
                  name="tel01"
                  value="<!--{$tel01|default:$arrData.tel01|escape}-->"
                  maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->"
                  style="<!--{$arrErr.tel01|sfGetErrorColor}-->" />&nbsp;-&nbsp;
-          <input type="text" 
+          <input type="text"
                  class="box60"
                  name="tel02"
                  value="<!--{$tel02|default:$arrData.tel02|escape}-->"
                  maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->"
                  style="<!--{$arrErr.tel02|sfGetErrorColor}-->" />&nbsp;-&nbsp;
-          <input type="text" 
+          <input type="text"
                  class="box60"
                  name="tel03"
                  value="<!--{$tel03|default:$arrData.tel03|escape}-->"
@@ -173,7 +172,7 @@
                  style="<!--{$arrErr.email02|sfGetErrorColor}-->" /><br />
           <p class="mini"><em>確認のため2度入力してください。</em></p>
         </td>
-      </tr>        
+      </tr>
       <tr>
         <th>お問い合わせ内容<span class="attention">※</span><br />
         <span class="mini">（全角<!--{$smarty.const.MLTEXT_LEN}-->字以下）</span></th>
@@ -187,7 +186,7 @@
         </td>
       </tr>
     </table>
-    
+
     <div class="tblareabtn">
       <input type="image"
              onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_confirm_on.gif', this)"

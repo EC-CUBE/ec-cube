@@ -10,7 +10,7 @@
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
+ * This program is～ distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
@@ -60,13 +60,11 @@ function lnSetSelect(form, name1, name2, val) {
     <!--{if $arrProduct.main_large_image != ""}-->
     <!--★画像★-->
       <a href="javascript:void(win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&amp;image=main_large_image<!--{if $smarty.get.admin == 'on'}-->&amp;admin=on<!--{/if}-->','detail_image','<!--{$arrFile.main_large_image.width+60}-->', '<!--{$arrFile.main_large_image.height+80}-->'))">
-        <img src="<!--{$arrFile[$key].filepath}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" alt="<!--{$arrProduct.name|escape}-->" class="picture" />
-      </a>
+        <img src="<!--{$arrFile[$key].filepath}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" alt="<!--{$arrProduct.name|escape}-->" class="picture" /></a>
       <p>
       <!--★拡大する★-->
         <a href="javascript:void(win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&amp;image=main_large_image<!--{if $smarty.get.admin == 'on'}-->&amp;admin=on<!--{/if}-->','detail_image','<!--{$arrFile.main_large_image.width+60}-->', '<!--{$arrFile.main_large_image.height+80}-->'))" onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_expansion_on.gif','expansion01');" onMouseOut="chgImg('<!--{$TPL_DIR}-->img/products/b_expansion.gif','expansion01');">
-          <img src="<!--{$TPL_DIR}-->img/products/b_expansion.gif" width="85" height="13" alt="画像を拡大する" name="expansion01" id="expansion01" />
-       </a>
+          <img src="<!--{$TPL_DIR}-->img/products/b_expansion.gif" width="85" height="13" alt="画像を拡大する" name="expansion01" id="expansion01" /></a>
       </p>
       <!--{else}-->
       <img src="<!--{$arrFile[$key].filepath}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" alt="<!--{$arrProduct.name|escape}-->" class="picture" />
@@ -76,7 +74,7 @@ function lnSetSelect(form, name1, name2, val) {
     <div id="detailrightblock">
       <!--アイコン-->
       <!--{if count($arrProduct.product_flag) > 0}-->
-      <ul>
+      <ul class="status_icon">
         <!--{section name=flg loop=$arrProduct.product_flag|count_characters}-->
         <!--{if $arrProduct.product_flag[flg] == "1"}-->
         <li>
@@ -119,16 +117,18 @@ function lnSetSelect(form, name1, name2, val) {
       </div>
 
       <!--★ポイント★-->
-      <div><span class="price">ポイント：
-        <!--{if $arrProduct.price02_min == $arrProduct.price02_max}-->
-          <!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->
-        <!--{else}-->
-          <!--{if $arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id == $arrProduct.price02_max|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->
+      <!--{if $smarty.const.USE_POINT === true}-->
+        <div><span class="price">ポイント：
+          <!--{if $arrProduct.price02_min == $arrProduct.price02_max}-->
             <!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->
           <!--{else}-->
-            <!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->〜<!--{$arrProduct.price02_max|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->
-          <!--{/if}-->
-        <!--{/if}-->Pt</span></div>
+            <!--{if $arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id == $arrProduct.price02_max|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->
+              <!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->
+            <!--{else}-->
+              <!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->〜<!--{$arrProduct.price02_max|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->
+            <!--{/if}-->
+          <!--{/if}-->Pt</span></div>
+      <!--{/if}-->
 
       <!--{* 関連カテゴリ *}-->
       <div>関連カテゴリ：
@@ -146,6 +146,7 @@ function lnSetSelect(form, name1, name2, val) {
       <form name="form1" id="form1" method="post" action="<!--{$smarty.server.REQUEST_URI|escape}-->">
         <input type="hidden" name="mode" value="cart" />
         <input type="hidden" name="product_id" value="<!--{$tpl_product_id}-->" />
+        <input type="hidden" name="favorite_product_id" value="" />
         <!--{if $tpl_classcat_find1}-->
         <dl>
           <dt>
@@ -192,17 +193,19 @@ function lnSetSelect(form, name1, name2, val) {
         <!--{/if}-->
 
         <!--{if $tpl_stock_find}-->
-        <p class="btn">
-          <!--★カゴに入れる★-->
-          <a href="javascript:void(document.form1.submit())" onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_cartin_on.gif','cart');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/products/b_cartin.gif','cart');">
-            <img src="<!--{$TPL_DIR}-->img/products/b_cartin.gif" width="115" height="25" alt="カゴに入れる" name="cart" id="cart" />
-          </a>
-        </p>
-        <!--{if 'sfGMODetailDisplay'|function_exists}--><!--{* GMOワンクリック *}-->
-          <!--{'sfGMODetailDisplay'|call_user_func}-->
-        <!--{/if}-->
+            <p class="btn">
+                <!--{* お気に入りに追加するボタンを表示させる *}-->
+                <!--{include file="./products/customer_favorite_products.tpl"}-->
+
+                <!--{* カゴに入れるボタン *}-->
+                <a href="javascript:void(document.form1.submit());" onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_cartin_on.gif','cart');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/products/b_cartin.gif','cart');">
+                    <img src="<!--{$TPL_DIR}-->img/products/b_cartin.gif" width="115" height="25" alt="カゴに入れる" name="cart" id="cart" /></a>
+            </p>
+            <!--{if 'sfGMODetailDisplay'|function_exists}--><!--{* GMOワンクリック *}-->
+                <!--{'sfGMODetailDisplay'|call_user_func}-->
+            <!--{/if}-->
         <!--{else}-->
-        <div class="attention">申し訳ございませんが、只今品切れ中です。</div>
+            <div class="attention">申し訳ございませんが、只今品切れ中です。</div>
         <!--{/if}-->
       </form>
 
@@ -216,25 +219,26 @@ function lnSetSelect(form, name1, name2, val) {
 
   <!--▼サブコメントここから-->
   <!--{section name=cnt loop=$smarty.const.PRODUCTSUB_MAX}-->
-  <!--{assign var=key value="sub_title`$smarty.section.cnt.iteration`"}-->
+  <!--{assign var=key value="sub_title`$smarty.section.cnt.index+1`"}-->
     <!--{if $arrProduct[$key] != ""}-->
   <div class="subarea">
     <h3><!--★サブタイトル★--><!--{$arrProduct[$key]|escape}--></h3>
-    <!--{assign var=ckey value="sub_comment`$smarty.section.cnt.iteration`"}-->
+    <!--{assign var=ckey value="sub_comment`$smarty.section.cnt.index+1`"}-->
 
     <!--拡大写真がある場合ここから-->
-    <!--{assign var=key value="sub_image`$smarty.section.cnt.iteration`"}-->
-    <!--{assign var=lkey value="sub_large_image`$smarty.section.cnt.iteration`"}-->
+    <!--{assign var=key value="sub_image`$smarty.section.cnt.index+1`"}-->
+    <!--{assign var=lkey value="sub_large_image`$smarty.section.cnt.index+1`"}-->
     <!--{if $arrFile[$key].filepath != ""}-->
     <div class="subtext"><!--★サブテキスト★--><!--{$arrProduct[$ckey]|nl2br}--></div>
       <div class="subphotoimg">
       <!--{if $arrFile[$lkey].filepath != ""}-->
         <a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&amp;image=<!--{$lkey}--><!--{if $smarty.get.admin == 'on'}-->&amp;admin=on<!--{/if}-->','detail_image','<!--{$arrFile[$lkey].width+60}-->','<!--{$arrFile[$lkey].height+80}-->'); return false;" target="_blank">
+      <!--{else}-->
+        <a>
       <!--{/if}-->
       <!--サブ画像-->
-        <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrProduct.name|escape}-->" width="<!--{$smarty.const.NORMAL_SUBIMAGE_WIDTH}-->" height="<!--{$smarty.const.NORMAL_SUBIMAGE_WIDTH}-->" />
+        <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrProduct.name|escape}-->" width="<!--{$smarty.const.NORMAL_SUBIMAGE_WIDTH}-->" height="<!--{$smarty.const.NORMAL_SUBIMAGE_WIDTH}-->" /></a>
       <!--{if $arrFile[$lkey].filepath != ""}-->
-        </a>
         <p>
           <a href="<!--{$smarty.server.PHP_SELF|escape}-->"
              onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&amp;image=<!--{$lkey}--><!--{if $smarty.get.admin == 'on'}-->&amp;admin=on<!--{/if}-->','detail_image','<!--{$arrFile[$lkey].width+60}-->','<!--{$arrFile[$lkey].height+80}-->'); return false;"
@@ -260,13 +264,12 @@ function lnSetSelect(form, name1, name2, val) {
     <h2><img src="<!--{$TPL_DIR}-->img/products/title_voice.jpg" width="580" height="30" alt="この商品に対するお客様の声" /></h2>
 
     <!--{if count($arrReview) < $smarty.const.REVIEW_REGIST_MAX}-->
-    <!--★新規コメントを書き込む★-->
+      <!--★新規コメントを書き込む★-->
       <a href="./review.php"
          onclick="win02('./review.php?product_id=<!--{$arrProduct.product_id}-->','review','580','580'); return false;"
          onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_comment_on.gif','review');"
          onmouseout="chgImg('<!--{$TPL_DIR}-->img/products/b_comment.gif','review');" target="_blank">
-        <img src="<!--{$TPL_DIR}-->img/products/b_comment.gif" width="150" height="22" alt="新規コメントを書き込む" name="review" id="review" />
-      </a>
+        <img src="<!--{$TPL_DIR}-->img/products/b_comment.gif" width="150" height="22" alt="新規コメントを書き込む" name="review" id="review" /></a>
     <!--{/if}-->
 
     <!--{if count($arrReview) > 0}-->
@@ -285,21 +288,21 @@ function lnSetSelect(form, name1, name2, val) {
 
 
   <!--{if $arrTrackbackView == "ON"}-->
-  <!--▼トラックバックここから-->
-  <div id="trackbackarea">
-    <h2><img src="<!--{$TPL_DIR}-->img/products/title_tb.jpg" width="580" height="30" alt="この商品に対するトラックバック" /></h2>
-    <h3>この商品のトラックバック先URL</h3>
-    <input type="text" name="trackback" value="<!--{$trackback_url}-->" size="100" class="box500" />
+    <!--▼トラックバックここから-->
+    <div id="trackbackarea">
+      <h2><img src="<!--{$TPL_DIR}-->img/products/title_tb.jpg" width="580" height="30" alt="この商品に対するトラックバック" /></h2>
+      <h3>この商品のトラックバック先URL</h3>
+      <input type="text" name="trackback" value="<!--{$trackback_url}-->" size="100" class="box500" />
 
-    <!--{if $arrTrackback}-->
-      <ul>
-      <!--{section name=cnt loop=$arrTrackback}-->
-        <li><strong><!--{$arrTrackback[cnt].create_date|sfDispDBDate:false}-->　<a href="<!--{$arrTrackback[cnt].url}-->" target="_blank"><!--{$arrTrackback[cnt].title|escape}--></a> from <!--{$arrTrackback[cnt].blog_name|escape}--></strong>
-          <p><!--{$arrTrackback[cnt].excerpt|escape|mb_strimwidth:0:200:"..."}--></p></li>
-      <!--{/section}-->
-      </ul>
-    <!--{/if}-->
-  <!--▲トラックバックここまで-->
+      <!--{if $arrTrackback}-->
+        <ul>
+        <!--{section name=cnt loop=$arrTrackback}-->
+          <li><strong><!--{$arrTrackback[cnt].create_date|sfDispDBDate:false}-->　<a href="<!--{$arrTrackback[cnt].url}-->" target="_blank"><!--{$arrTrackback[cnt].title|escape}--></a> from <!--{$arrTrackback[cnt].blog_name|escape}--></strong>
+            <p><!--{$arrTrackback[cnt].excerpt|escape|mb_strimwidth:0:200:"..."}--></p></li>
+        <!--{/section}-->
+        </ul>
+      <!--{/if}-->
+    <!--▲トラックバックここまで-->
   </div>
   <!--{/if}-->
 
@@ -315,26 +318,25 @@ function lnSetSelect(form, name1, name2, val) {
       <!--{if $arrRecommend[cnt].product_id}-->
       <!-- 左列 -->
       <div class="whoboughtleft">
-      <!--{if $arrRecommend[cnt].main_list_image != ""}-->
-        <!--{assign var=image_path value="`$arrRecommend[cnt].main_list_image`"}-->
-      <!--{else}-->
-        <!--{assign var=image_path value="`$smarty.const.NO_IMAGE_DIR`"}-->
-      <!--{/if}-->
+        <!--{if $arrRecommend[cnt].main_list_image != ""}-->
+          <!--{assign var=image_path value="`$arrRecommend[cnt].main_list_image`"}-->
+        <!--{else}-->
+          <!--{assign var=image_path value="`$smarty.const.NO_IMAGE_DIR`"}-->
+        <!--{/if}-->
 
         <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id}-->">
-         <img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[cnt].name|escape}-->" />
-        </a>
+          <img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[cnt].name|escape}-->" /></a>
 
         <!--{assign var=price02_min value=`$arrRecommend[cnt].price02_min`}-->
         <!--{assign var=price02_max value=`$arrRecommend[cnt].price02_max`}-->
         <h3><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id}-->"><!--{$arrRecommend[cnt].name|escape}--></a></h3>
 
         <p>価格<span class="mini">(税込)</span>：<span class="price">
-        <!--{if $price02_min == $price02_max}-->
-          <!--{$price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
-        <!--{else}-->
-          <!--{$price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->〜<!--{$price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
-        <!--{/if}-->円</span></p>
+          <!--{if $price02_min == $price02_max}-->
+            <!--{$price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
+          <!--{else}-->
+            <!--{$price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->〜<!--{$price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
+          <!--{/if}-->円</span></p>
         <p class="mini"><!--{$arrRecommend[cnt].comment|escape|nl2br}--></p>
       </div>
       <!-- 左列 -->
@@ -346,25 +348,24 @@ function lnSetSelect(form, name1, name2, val) {
       <!--{if $arrRecommend[cnt].product_id}-->
       <!-- 右列 -->
       <div class="whoboughtright">
-        <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id}-->">
         <!--{if $arrRecommend[cnt].main_list_image != ""}-->
           <!--{assign var=image_path value="`$arrRecommend[cnt].main_list_image`"}-->
         <!--{else}-->
           <!--{assign var=image_path value="`$smarty.const.NO_IMAGE_DIR`"}-->
         <!--{/if}-->
-          <img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[cnt].name|escape}-->" />
-        </a>
+        <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id}-->">
+          <img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[cnt].name|escape}-->" /></a>
         <!--{assign var=price02_min value=`$arrRecommend[cnt].price02_min`}-->
         <!--{assign var=price02_max value=`$arrRecommend[cnt].price02_max`}-->
         <h3><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id}-->"><!--{$arrRecommend[cnt].name|escape}--></a></h3>
 
         <p>価格<span class="mini">(税込)</span>：<span class="price">
 
-        <!--{if $price02_min == $price02_max}-->
-          <!--{$price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
-        <!--{else}-->
-          <!--{$price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->〜<!--{$price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
-        <!--{/if}-->円</span></p>
+         <!--{if $price02_min == $price02_max}-->
+           <!--{$price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
+         <!--{else}-->
+           <!--{$price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->〜<!--{$price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
+         <!--{/if}-->円</span></p>
         <p class="mini"><!--{$arrRecommend[cnt].comment|escape|nl2br}--></p>
       </div>
       <!-- 右列 -->

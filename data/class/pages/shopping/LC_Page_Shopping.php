@@ -425,6 +425,30 @@ class LC_Page_Shopping extends LC_Page {
         $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_DATE"));
         $objErr->doFunc(array("メールアドレス", "メールアドレス（確認）", "order_email", "order_email_check"), array("EQUAL_CHECK"));
 
+        //既存メールアドレスでの登録不可（購入時強制会員登録が有効の場合のみ）
+        if (PURCHASE_CUSTOMER_REGIST == '1' && strlen($arrRet["order_email"]) > 0) {
+            $array['email'] = strtolower($arrRet['order_email']);
+            $objQuery = new SC_Query();
+            $arrEmailCheck = $objQuery->select("email, update_date, del_flg", "dtb_customer","email = ? OR email_mobile = ? ORDER BY del_flg", array($array["email"], $array["email"]));
+
+            if(!empty($arrEmailCheck)) {
+                if($arrEmailCheck[0]['del_flg'] != '1') {
+                    // 会員である場合
+                    $objErr->arrErr["order_email"] .= "※ すでに会員登録で使用されているメールアドレスです。<br />";
+                } else {
+                    // 退会した会員である場合
+                    $leave_time = SC_Utils_Ex::sfDBDatetoTime($arrEmailCheck[0]['update_date']);
+                    $now_time = time();
+                    $pass_time = $now_time - $leave_time;
+                    // 退会から何時間-経過しているか判定する。
+                    $limit_time = ENTRY_LIMIT_HOUR * 3600;
+                    if($pass_time < $limit_time) {
+                        $objErr->arrErr["order_email"] .= "※ 退会から一定期間の間は、同じメールアドレスを使用することはできません。<br />";
+                    }
+                }
+            }
+        }
+
         return $objErr->arrErr;
     }
 

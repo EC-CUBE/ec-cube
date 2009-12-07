@@ -63,8 +63,9 @@ class LC_Page_Admin_Login extends LC_Page {
         if (!isset($_POST['login_id'])) $_POST['login_id'] = "";
         if (!isset($_POST['password'])) $_POST['password'] = "";
 
+
         // 入力判定
-        if(strlen($_POST{'login_id'}) > 0 && strlen($_POST{'password'}) > 0) {
+        if(strlen($_POST{'login_id'}) > 0 && strlen($_POST{'password'}) >= ID_MIN_LEN && strlen($_POST{'password'}) <= ID_MAX_LEN) {
             // 認証パスワードの判定
             $ret = $this->fnCheckPassword($conn);
         }

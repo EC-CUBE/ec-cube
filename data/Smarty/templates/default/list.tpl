@@ -99,7 +99,7 @@ function lnSetSelect(name1, name2, id, val) {
        <!--アイコン-->
        <!--商品ステータス-->
        <!--{if count($arrProducts[cnt].product_flag) > 0}-->
-       <ul>
+       <ul class="status_icon">
          <!--{section name=flg loop=$arrProducts[cnt].product_flag|count_characters}-->
            <!--{if $arrProducts[cnt].product_flag[flg] == "1"}-->
              <!--{assign var=key value="`$smarty.section.flg.iteration`"}-->
@@ -127,8 +127,7 @@ function lnSetSelect(name1, name2, id, val) {
          <span class="btnbox"><!--★詳細ボタン★-->
          <!--{assign var=name value="detail`$smarty.section.cnt.iteration`"}-->
            <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProducts[cnt].product_id}-->" onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_detail_on.gif','<!--{$name}-->');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/products/b_detail.gif','<!--{$name}-->');">
-            <img src="<!--{$TPL_DIR}-->img/products/b_detail.gif" width="115" height="25" alt="詳しくはこちら" name="<!--{$name}-->" id="<!--{$name}-->" />
-           </a>
+            <img src="<!--{$TPL_DIR}-->img/products/b_detail.gif" width="115" height="25" alt="詳しくはこちら" name="<!--{$name}-->" id="<!--{$name}-->" /></a>
          </span>
        </p>
 
@@ -138,7 +137,7 @@ function lnSetSelect(name1, name2, id, val) {
            <!--▼買い物かご-->
            <div class="in_cart">
              <dl>
-           
+
          <!--{assign var=class1 value=classcategory_id`$id`_1}-->
          <!--{assign var=class2 value=classcategory_id`$id`_2}-->
          <!--{if $tpl_classcat_find1[$id]}-->
@@ -164,7 +163,7 @@ function lnSetSelect(name1, name2, id, val) {
              <!--{/if}-->
            </dd>
          <!--{/if}-->
-         
+
          <!--{assign var=quantity value=quantity`$id`}-->
            <dt>個数：</dt>
            <dd><input type="text" name="<!--{$quantity}-->" size="3" class="box54" value="<!--{$arrForm[$quantity]|default:1}-->" maxlength="<!--{$smarty.const.INT_LEN}-->" style="<!--{$arrErr[$quantity]|sfGetErrorColor}-->" />
@@ -175,8 +174,7 @@ function lnSetSelect(name1, name2, id, val) {
          </dl>
              <div class="cartbtn">
              <a href="<!--{$smarty.server.REQUEST_URI|escape}-->#product<!--{$id}-->" onclick="fnChangeAction('<!--{$smarty.server.REQUEST_URI|escape}-->#product<!--{$id}-->'); fnModeSubmit('cart','product_id','<!--{$id}-->'); return false;" onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_cartin_on.gif','cart<!--{$id}-->');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/products/b_cartin.gif','cart<!--{$id}-->');">
-               <img src="<!--{$TPL_DIR}-->img/products/b_cartin.gif" width="115" height="25" alt="カゴに入れる" name="cart<!--{$id}-->" id="cart<!--{$id}-->" />
-             </a>
+               <img src="<!--{$TPL_DIR}-->img/products/b_cartin.gif" width="115" height="25" alt="カゴに入れる" name="cart<!--{$id}-->" id="cart<!--{$id}-->" /></a>
              </div>
            </div>
              <!--▲買い物かご-->

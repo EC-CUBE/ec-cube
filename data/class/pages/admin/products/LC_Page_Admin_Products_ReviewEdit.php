@@ -66,54 +66,56 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page {
         // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess($objSess);
 
-        //検索ワードの引継ぎ
+        // 検索ワードの引継ぎ
         foreach ($_POST as $key => $val){
             if (ereg("^search_", $key)){
                 $this->arrSearchHidden[$key] = $val;
             }
         }
 
-        //取得文字列の変換用カラム
-        $arrRegistColumn = array (
-                                  array( "column" => "update_date"),
-                                  array( "column" => "status"),
-                                  array( "column" => "recommend_level"),
-                                  array(	"column" => "title","convert" => "KVa"),
-                                  array(	"column" => "comment","convert" => "KVa"),
-                                  array(	"column" => "reviewer_name","convert" => "KVa"),
-                                  array(	"column" => "reviewer_url","convert" => "KVa"),
-                                  array(	"column" => "sex","convert" => "n")
-
-                                  );
-
-        //レビューIDを渡す
-        $this->tpl_review_id = isset($_POST['review_id']) ? $_POST['review_id'] : "";
-        //レビュー情報のカラムの取得
-        $this->arrReview = $this->lfGetReviewData($this->tpl_review_id);
-        //登録済みのステータスを渡す
-        $this->tpl_pre_status = $this->arrReview['status'];
-        //商品ごとのレビュー表示数取得
-        $count = $this->objQuery->count("dtb_review", "del_flg=0 AND status=1 AND product_id=?", array($this->arrReview['product_id']));
-        //両方選択可能
+        // 両方選択可能
         $this->tpl_status_change = true;
 
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
-        switch($_POST['mode']) {
-            //登録
-        case 'complete':
-            //フォーム値の変換
-            $arrReview = $this->lfConvertParam($_POST, $arrRegistColumn);
-            $this->arrErr = $this->lfCheckError($arrReview);
-            //エラー無し
-            if (!$this->arrErr){
-                //レビュー情報の編集登録
-                $this->lfRegistReviewData($arrReview, $arrRegistColumn);
-                $this->arrReview = $arrReview;
-                $this->tpl_onload = "confirm('登録が完了しました。');";
-            }
-            break;
-        default:
-            break;
+        switch ($_POST['mode']) {
+            // 登録
+            case 'complete':
+                // 取得文字列の変換用カラム
+                $arrRegistColumn = array (
+                    array("column" => "status"),
+                    array("column" => "recommend_level"),
+                    array("column" => "title", "convert" => "KVa"),
+                    array("column" => "comment", "convert" => "KVa"),
+                    array("column" => "reviewer_name", "convert" => "KVa"),
+                    array("column" => "reviewer_url", "convert" => "KVa"),
+                    array("column" => "sex", "convert" => "n")
+                );
+
+                // フォーム値の変換
+                $arrReview = $this->lfConvertParam($_POST, $arrRegistColumn);
+                $this->arrErr = $this->lfCheckError($arrReview);
+
+                // エラー有り
+                if ($this->arrErr) {
+                    // 入力内容を引き継ぐ
+                    $this->arrReview = $arrReview;
+                }
+                // エラー無し
+                else {
+                    // レビュー情報の更新
+                    $this->lfRegistReviewData($arrReview, $arrRegistColumn);
+
+                    // レビュー情報のDB取得
+                    $this->arrReview = $this->lfGetReviewData($arrReview['review_id']);
+
+                    $this->tpl_onload = "alert('登録が完了しました。');";
+                }
+                break;
+
+            default:
+                // レビュー情報のDB取得
+                $this->arrReview = $this->lfGetReviewData($_POST['review_id']);
+                break;
         }
 
         $objView->assignobj($this);
@@ -129,10 +131,12 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page {
         parent::destroy();
     }
 
-
-    // 入力エラーチェック
-    function lfCheckError($array) {
-        $objErr = new SC_CheckError($array);
+    /**
+     * 入力エラーチェック
+     *
+     */
+    function lfCheckError($arrReview) {
+        $objErr = new SC_CheckError($arrReview);
         $objErr->doFunc(array("おすすめレベル", "recommend_level"), array("SELECT_CHECK"));
         $objErr->doFunc(array("タイトル", "title", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $objErr->doFunc(array("コメント", "comment", LTEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
@@ -142,7 +146,10 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page {
         return $objErr->arrErr;
     }
 
-    //----　取得文字列の変換
+    /**
+     * 取得文字列の変換
+     *
+     */
     function lfConvertParam($array, $arrRegistColumn) {
         /*
          *	文字列の変換
@@ -168,35 +175,35 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page {
         return $array;
     }
 
-    //レビュー情報の取得
+    /**
+     * レビュー情報のDB取得
+     *
+     */
     function lfGetReviewData($review_id){
         $select="review_id, A.product_id, reviewer_name, sex, recommend_level, ";
         $select.="reviewer_url, title, comment, A.status, A.create_date, A.update_date, name";
         $from = "dtb_review AS A LEFT JOIN dtb_products AS B ON A.product_id = B.product_id ";
         $where = "A.del_flg = 0 AND B.del_flg = 0 AND review_id = ? ";
         $arrReview = $this->objQuery->select($select, $from, $where, array($review_id));
-        if(!empty($arrReview)) {
-            $this->arrReview = $arrReview[0];
-        } else {
+        if (empty($arrReview)) {
             SC_Utils_Ex::sfDispError("");
         }
-        return $this->arrReview;
+
+        return $arrReview[0];
     }
 
-    //レビュー情報の編集登録
-    function lfRegistReviewData($array, $arrRegistColumn){
+    /**
+     * レビュー情報の更新
+     *
+     */
+    function lfRegistReviewData($arrReview, $arrRegistColumn){
         foreach ($arrRegistColumn as $data) {
-            if (strlen($array[ $data["column"] ]) > 0 ) {
-                $arrRegist[ $data["column"] ] = $array[ $data["column"] ];
-            }
-            if ($data['column'] == 'update_date'){
-                $arrRegist['update_date'] = 'now()';
-            }
+            $arrRegist[ $data["column"] ] = $arrReview[ $data["column"] ];
         }
-        //登録実行
-        $this->objQuery->begin();
-        $this->objQuery->update("dtb_review", $arrRegist, "review_id='".$_POST['review_id']."'");
-        $this->objQuery->commit();
+        $arrRegist['update_date'] = 'now()';
+
+        // 更新実行
+        $this->objQuery->update("dtb_review", $arrRegist, "review_id = ?", array($arrReview['review_id']));
     }
 }
 ?>

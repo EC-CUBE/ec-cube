@@ -25,6 +25,7 @@ $INSTALL_DIR = realpath(dirname( __FILE__));
 require_once("../" . HTML2DATA_DIR . "module/Request.php");
 
 define("INSTALL_LOG", "./temp/install.log");
+define("INSTALL_INFO_URL", "http://www.ec-cube.net/install_info/index.php");
 ini_set("max_execution_time", 300);
 
 $objPage = new StdClass;
@@ -304,7 +305,6 @@ case 'complete':
         $response1 = "";
     }
     $req->clearPostData();
-
     break;
 case 'return_step0':
     $objPage = lfDispStep0($objPage);
@@ -327,7 +327,6 @@ default:
     $objPage = lfDispWelcome($objPage);
     break;
 }
-
 //フォーム用のパラメータを返す
 $objPage->arrForm = $objWebParam->getFormParamList();
 $objPage->arrForm = array_merge($objPage->arrForm, $objDBParam->getFormParamList());
@@ -389,7 +388,8 @@ function lfDispStep0($objPage) {
         ".." . HTML2DATA_DIR . "class/",
         ".." . HTML2DATA_DIR . "Smarty/",
         ".." . HTML2DATA_DIR . "logs/",
-        ".." . HTML2DATA_DIR . "downloads/"
+        ".." . HTML2DATA_DIR . "downloads/",
+        ".." . HTML2DATA_DIR . "upload/"
     );
 
     $mess = "";
@@ -463,6 +463,10 @@ function lfDispStep0($objPage) {
             mkdir($path);
         }
         $path = ".." . HTML2DATA_DIR . "downloads/update";
+        if(!file_exists($path)) {
+            mkdir($path);
+        }
+        $path = ".." . HTML2DATA_DIR . "upload/csv";
         if(!file_exists($path)) {
             mkdir($path);
         }
@@ -608,6 +612,8 @@ function lfDispComplete($objPage) {
         $secure_url = $secure_url . "/";
     }
     $objPage->tpl_sslurl = $secure_url;
+    //EC-CUBEオフィシャルサイトからのお知らせURL
+    $objPage->install_info_url = INSTALL_INFO_URL;
     return $objPage;
 }
 
@@ -649,8 +655,8 @@ function lfInitWebParam($objWebParam) {
 
     $objWebParam->addParam("店名", "shop_name", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $shop_name);
     $objWebParam->addParam("管理者：メールアドレス", "admin_mail", MTEXT_LEN, "", array("EXIST_CHECK","EMAIL_CHECK","EMAIL_CHAR_CHECK","MAX_LENGTH_CHECK"), $admin_mail);
-    $objWebParam->addParam("管理者：ログインID", "login_id", MTEXT_LEN, "", array("EXIST_CHECK","EXIST_CHECK", "ALNUM_CHECK"));
-    $objWebParam->addParam("管理者：パスワード", "login_pass", MTEXT_LEN, "", array("EXIST_CHECK","EXIST_CHECK", "ALNUM_CHECK"));
+    $objWebParam->addParam("管理者：ログインID", "login_id", ID_MAX_LEN, "", array("EXIST_CHECK","SPTAB_CHECK", "ALNUM_CHECK"));
+    $objWebParam->addParam("管理者：パスワード", "login_pass", ID_MAX_LEN, "", array("EXIST_CHECK","SPTAB_CHECK", "ALNUM_CHECK"));
     $objWebParam->addParam("インストールディレクトリ", "install_dir", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $install_dir);
     $objWebParam->addParam("URL(通常)", "normal_url", MTEXT_LEN, "", array("EXIST_CHECK","URL_CHECK","MAX_LENGTH_CHECK"), $normal_url);
     $objWebParam->addParam("URL(セキュア)", "secure_url", MTEXT_LEN, "", array("EXIST_CHECK","URL_CHECK","MAX_LENGTH_CHECK"), $secure_url);
@@ -719,10 +725,10 @@ function lfCheckWebError($objFormParam) {
     }
 
     // ログインIDチェック
-    $objErr->doFunc(array("管理者：ログインID",'login_id',ID_MIN_LEN , ID_MAX_LEN) ,array("NUM_RANGE_CHECK"));
+    $objErr->doFunc(array("管理者：ログインID",'login_id',ID_MIN_LEN , ID_MAX_LEN) ,array("SPTAB_CHECK" ,"NUM_RANGE_CHECK"));
 
     // パスワードのチェック
-    $objErr->doFunc( array("管理者：パスワード",'login_pass',4 ,15 ) ,array( "NUM_RANGE_CHECK" ) );
+    $objErr->doFunc( array("管理者：パスワード",'login_pass',ID_MIN_LEN ,ID_MAX_LEN ) ,array("SPTAB_CHECK" ,"NUM_RANGE_CHECK" ));
 
     return $objErr->arrErr;
 }
@@ -1017,7 +1023,7 @@ function lfAddData($dsn) {
     // CSVテーブル
     if($objDb->sfTabaleExists('dtb_csv', $dsn)) {
         lfInsertCSVData(1,'category_id','カテゴリID',53,'now()','now()', $dsn);
-        lfInsertCSVData(4,'order_id','注文ID',1,'now()','now()', $dsn);
+        lfInsertCSVData(4,'order_id','注文番号',1,'now()','now()', $dsn);
         lfInsertCSVData(4,'campaign_id','キャンペーンID',2,'now()','now()', $dsn);
         lfInsertCSVData(4,'customer_id','顧客ID',3,'now()','now()', $dsn);
         lfInsertCSVData(4,'message','要望等',4,'now()','now()', $dsn);

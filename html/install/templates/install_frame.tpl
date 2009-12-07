@@ -33,7 +33,7 @@
 <title>EC CUBE インストール画面</title>
 </head>
 
-<body bgcolor="#ffffff" text="#000000" link="#006699" vlink="#006699" alink="#006699" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="preLoadImg('<!--{$smarty.const.URL_DIR}-->');<!--{$tpl_onload}-->">
+<body bgcolor="#ffffff" text="#000000" link="#006699" vlink="#006699" alink="#006699" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <noscript>
 <link rel="stylesheet" href="../<!--{$default_dir}-->/css/common.css" type="text/css" >
 </noscript>
@@ -91,6 +91,18 @@
                     </tr>
                     <tr><td height="40"></td></tr>
                 </table>
+                <!--{if strlen($install_info_url) != 0}-->
+                <table width="562" border="0" cellspacing="0" cellpadding="0" summary=" ">
+                    <tr>
+                        <td align="center">
+                            <iframe src="<!--{$install_info_url}-->" width="562" height="460" frameborder="no" scrolling="no">
+                                                         こちらはEC-CUBEからのお知らせです。この部分は iframe対応ブラウザでご覧下さい。
+                            </iframe>
+                        </td>
+                    </tr>
+                    <tr><td height="20"></td></tr>
+                </table>
+                <!--{/if}-->
                 </td>
             </tr>
         </table>

@@ -29,9 +29,9 @@
     <!--{/if}-->
 
     <!--{if $tpl_page_category != "contact"}-->
-    <li><a href="<!--{$smarty.const.URL_DIR}-->contact/index.php" onmouseover="chgImg('<!--{$TPL_DIR}-->img/side/contact_on.jpg','contact');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/side/contact.jpg','contact');"><img src="<!--{$TPL_DIR}-->img/side/contact.jpg" width="166" height="30" alt="お問い合わせ"  style="border: none" name="contact" id="contact" /></a></li>
+    <li><a href="<!--{$smarty.const.SSL_URL}-->contact/index.php" onmouseover="chgImg('<!--{$TPL_DIR}-->img/side/contact_on.jpg','contact');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/side/contact.jpg','contact');"><img src="<!--{$TPL_DIR}-->img/side/contact.jpg" width="166" height="30" alt="お問い合わせ"  style="border: none" name="contact" id="contact" /></a></li>
     <!--{else}-->
-    <li><a href="<!--{$smarty.const.URL_DIR}-->contact/index.php"><img src="<!--{$TPL_DIR}-->img/side/contact_on.jpg" width="166" height="30" alt="お問い合わせ" style="border: none" name="contact" id="contact" /></a></li>
+    <li><a href="<!--{$smarty.const.SSL_URL}-->contact/index.php"><img src="<!--{$TPL_DIR}-->img/side/contact_on.jpg" width="166" height="30" alt="お問い合わせ" style="border: none" name="contact" id="contact" /></a></li>
     <!--{/if}-->
 
     <!--{if $tpl_page_category != "order"}-->

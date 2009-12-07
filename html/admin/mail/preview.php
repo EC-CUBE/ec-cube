@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once("../../require.php");
+require_once("../require.php");
 require_once(CLASS_EX_PATH . "page_extends/admin/mail/LC_Page_Admin_Mail_Preview_Ex.php");
 
 // }}}

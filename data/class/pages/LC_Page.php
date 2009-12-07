@@ -125,7 +125,8 @@ class LC_Page {
 
             $netURL->addQueryString(TRANSACTION_ID_NAME, $this->getToken());
             header("Location: " . $netURL->getURL());
-            return true;
+            //return true;
+            exit();
         }
         return false;
     }
@@ -249,21 +250,17 @@ class LC_Page {
         }
 
         // HTML_PATH を削除した文字列を取得.
-        // FIXME OS依存の処理は別クラスに分ける？
         // Windowsの場合は, ディレクトリの区切り文字を\から/に変換する
-        if (substr(PHP_OS, 0, 3) == 'WIN') {
-            $realPath = str_replace("\\", "/", $realPath);
-            $htmlPath = str_replace("\\", "/", HTML_PATH);
-            $rootPath = str_replace($htmlPath, "", $realPath);
-        } else {
-            $htmlPath = rtrim(HTML_PATH, "/");
-            $rootPath = str_replace($htmlPath, "", $realPath);
-            $rootPath = ltrim($rootPath, "/");
-        }
-        
+        $realPath = str_replace("\\", "/", $realPath);
+        $htmlPath = str_replace("\\", "/", HTML_PATH);
+
+        $htmlPath = rtrim($htmlPath, "/");
+        $rootPath = str_replace($htmlPath, "", $realPath);
+        $rootPath = ltrim($rootPath, "/");
+
         return $rootPath;
     }
-    
+
     /**
      * ページをリロードする.
      *

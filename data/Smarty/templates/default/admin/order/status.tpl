@@ -71,7 +71,7 @@
 										<tr>
 											<td>
 												<select name="change_status">
-												<option value="" selected="selected" style="<!--{$Errormes|sfGetErrorColor}-->" >選択してください</option> 
+												<option value="" selected="selected" style="<!--{$Errormes|sfGetErrorColor}-->" >選択してください</option>
 												<!--{foreach key=key item=item from=$arrORDERSTATUS}-->
 												<!--{if $key ne $SelectedStatus}-->
 												<option value="<!--{$key}-->" ><!--{$item}--></option>
@@ -94,19 +94,19 @@
 											</td>
 										</tr>
 									</table>
-									
+
 									<table width="650" border="0" cellspacing="0" cellpadding="0" summary=" ">
 										<tr>
 										<td align="right"><input type="button" name="btn01" value="全て選択" onclick="fnBoxChecked(true);"> <input type="button" name="btn01" value="全て解除" onclick="fnBoxChecked(false);"></td>
 										</tr>
 										<tr><td height="10"></td></tr>
 									</table>
-									
+
 									<table width="650" border="0" cellspacing="1" cellpadding="5" summary=" " bgcolor="#cccccc">
 									<tr bgcolor="#f2f1ec" align="center" class="fs12n">
-										<td width="30">受注番号</td>
-										<td width="90">受注日</td>				
-										<td width="100">顧客名</td>				
+										<td width="30">注文番号</td>
+										<td width="90">受注日</td>
+										<td width="100">顧客名</td>
 										<td width="90">支払方法</td>
 										<td width="81">購入金額（円）</td>
 										<td width="70">発送日</td>
@@ -129,7 +129,7 @@
 									<!--{/section}-->
 									</table>
 									<input type="hidden" name="move[]" value="" >
-									
+
 									<table width="650" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr><td height="10"></td></tr>
 									<tr>
@@ -137,7 +137,7 @@
 									</tr>
 									<tr><td height="10"></td></tr>
 									</table>
-									
+
 									<table width="650" border="0" cellspacing="0" cellpadding="0" summary=" ">
 										<tr class="fs12">
 											<td align="center">
@@ -147,17 +147,17 @@
 											</td>
 										</tr>
 									</table>
-									
+
 								<!--{elseif $arrStatus != "" & $tpl_linemax == 0}-->
 									<table width="650" border="0" cellspacing="0" cellpadding="0" summary=" ">
 										<tr class="fs12"><td align="center">該当するデータはありません。</td></tr>
 									</table>
 								<!--{/if}-->
-									
+
 								</td>
 							</tr>
 						</table>
-						
+
 						<!--登録テーブルここまで-->
 
 						</td>
@@ -177,28 +177,28 @@
 	</tr>
 </form>
 </table>
-<!--★★メインコンテンツ★★-->		
+<!--★★メインコンテンツ★★-->
 
 
 <script type="text/javascript">
 <!--
-	function fnSelectCheckSubmit(){ 
+	function fnSelectCheckSubmit(){
 
-		var selectflag = 0; 
+		var selectflag = 0;
 		var fm = document.form1;
-				
-		if(fm.change_status.options[document.form1.change_status.selectedIndex].value == ""){ 
-		selectflag = 1; 
-		} 
-		
-		if(selectflag == 1){ 
-			alert('セレクトボックスが選択されていません'); 
+
+		if(fm.change_status.options[document.form1.change_status.selectedIndex].value == ""){
+		selectflag = 1;
+		}
+
+		if(selectflag == 1){
+			alert('セレクトボックスが選択されていません');
 			return false;
 		}
 		var i;
 		var checkflag = 0;
 		var max = fm["move[]"].length;
-		
+
 		if(max) {
 			for (i=0;i<max;i++){
 				if(fm["move[]"][i].checked == true){
@@ -215,13 +215,13 @@
 			alert('チェックボックスが選択されていません');
 			return false;
 		}
-		
-		if(selectflag == 0 && checkflag == 1){ 
+
+		if(selectflag == 0 && checkflag == 1){
 		document.form1.mode.value = 'update';
-		document.form1.submit(); 
+		document.form1.submit();
 		}
 	}
-	
+
 	function fnBoxChecked(check){
 		var count;
 		var fm = document.form1;
@@ -230,6 +230,6 @@
 			fm["move[]"][count].checked = check;
 		}
 	}
-	
+
 //-->
 </script>

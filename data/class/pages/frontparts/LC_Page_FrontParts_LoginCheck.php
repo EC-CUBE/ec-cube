@@ -66,6 +66,11 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page {
         $this->objFormParam = new SC_FormParam();
         // パラメータ情報の初期化
         $this->lfInitParam();
+        //パスワード・Eメールにある空白をトリム
+        $_POST["login_email"] = preg_replace('/^[ 　\r\n]*(.*?)[ 　\r\n]*$/u', '$1', $_POST["login_email"]);
+        $_POST["login_pass"] = trim($_POST["login_pass"]); //認証用
+        $_POST["login_pass1"] = $_POST["login_pass"];      //最小桁数比較用
+        $_POST["login_pass2"] = $_POST["login_pass"];      //最大桁数比較用
         // POST値の取得
         $this->objFormParam->setParam($_POST);
 
@@ -138,7 +143,9 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page {
     function lfInitParam() {
         $this->objFormParam->addParam("記憶する", "login_memory", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
         $this->objFormParam->addParam("メールアドレス", "login_email", MTEXT_LEN, "a", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "EMAIL_CHECK", "NO_SPTAB" ,"EMAIL_CHAR_CHECK"));
-        $this->objFormParam->addParam("パスワード", "login_pass", MTEXT_LEN, "", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+        $this->objFormParam->addParam("パスワード", "login_pass", PASSWORD_LEN1, "", array("EXIST_CHECK"));
+        $this->objFormParam->addParam("パスワード", "login_pass1", PASSWORD_LEN1, "", array("EXIST_CHECK", "MIN_LENGTH_CHECK"));
+        $this->objFormParam->addParam("パスワード", "login_pass2", PASSWORD_LEN2, "", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
     }
 }
 ?>

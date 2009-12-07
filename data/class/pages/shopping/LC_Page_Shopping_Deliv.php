@@ -84,7 +84,10 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         $this->objFormParam->setParam($_POST);
 
         $this->objLoginFormParam = new SC_FormParam();	// ログインフォーム用
-        $this->lfInitLoginFormParam();						// 初期設定
+        $this->lfInitLoginFormParam();
+        //パスワード・Eメールにある空白をトリム
+        $this->lfConvertEmail($_POST["login_email"]);
+        $this->lfConvertLoginPass($_POST["login_pass"]);
         $this->objLoginFormParam->setParam($_POST);		// POST値の取得
 
         // ユーザユニークIDの取得と購入状態の正当性をチェック
@@ -159,7 +162,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
                     if ($deliv_count != 1) {
                         SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
                     }
-                    
+
                     // 登録済みの別のお届け先を受注一時テーブルに書き込む
                     $this->lfRegistOtherDelivData($uniqid, $objCustomer, $_POST['deliv_check']);
                     // 正常に登録されたことを記録しておく
@@ -243,6 +246,9 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         // パラメータ情報の初期化
         $this->lfInitParam();
         // POST値の取得
+        $this->lfConvertEmail($_POST["login_email"]);
+        $this->lfConvertLoginPass($_POST["login_pass"]);
+
         $this->objFormParam->setParam($_POST);
 
         $this->objLoginFormParam = new SC_FormParam();	// ログインフォーム用
@@ -428,7 +434,9 @@ class LC_Page_Shopping_Deliv extends LC_Page {
     function lfInitLoginFormParam() {
         $this->objLoginFormParam->addParam("記憶する", "login_memory", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
         $this->objLoginFormParam->addParam("メールアドレス", "login_email", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-        $this->objLoginFormParam->addParam("パスワード", "login_pass", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+        $this->objLoginFormParam->addParam("パスワード", "login_pass", PASSWORD_LEN1, "", array("EXIST_CHECK"));
+        $this->objLoginFormParam->addParam("パスワード", "login_pass1", PASSWORD_LEN1, "", array("EXIST_CHECK", "MIN_LENGTH_CHECK"));
+        $this->objLoginFormParam->addParam("パスワード", "login_pass2", PASSWORD_LEN2, "", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
     }
 
     /* DBへデータの登録 */
@@ -452,7 +460,6 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         $sqlval['order_temp_id'] = $uniqid;
         $sqlval['update_date'] = 'Now()';
         $sqlval['customer_id'] = $objCustomer->getValue('customer_id');
-        $sqlval['deliv_check'] = '-1';
         $sqlval['order_name01'] = $objCustomer->getValue('name01');
         $sqlval['order_name02'] = $objCustomer->getValue('name02');
         $sqlval['order_kana01'] = $objCustomer->getValue('kana01');
@@ -468,6 +475,10 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         $sqlval['order_fax01'] = $objCustomer->getValue('fax01');
         $sqlval['order_fax02'] = $objCustomer->getValue('fax02');
         $sqlval['order_fax03'] = $objCustomer->getValue('fax03');
+        $sqlval['order_birth'] = $objCustomer->getValue('birth');
+        $sqlval['order_email'] = $objCustomer->getValue('email');
+
+        $sqlval['deliv_check'] = '-1';
         $sqlval['deliv_name01'] = $objCustomer->getValue('name01');
         $sqlval['deliv_name02'] = $objCustomer->getValue('name02');
         $sqlval['deliv_kana01'] = $objCustomer->getValue('kana01');
@@ -494,7 +505,24 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         $sqlval['order_temp_id'] = $uniqid;
         $sqlval['update_date'] = 'Now()';
         $sqlval['customer_id'] = $objCustomer->getValue('customer_id');
+
+        $sqlval['order_name01'] = $objCustomer->getValue('name01');
+        $sqlval['order_name02'] = $objCustomer->getValue('name02');
+        $sqlval['order_kana01'] = $objCustomer->getValue('kana01');
+        $sqlval['order_kana02'] = $objCustomer->getValue('kana02');
+        $sqlval['order_zip01'] = $objCustomer->getValue('zip01');
+        $sqlval['order_zip02'] = $objCustomer->getValue('zip02');
+        $sqlval['order_pref'] = $objCustomer->getValue('pref');
+        $sqlval['order_addr01'] = $objCustomer->getValue('addr01');
+        $sqlval['order_addr02'] = $objCustomer->getValue('addr02');
+        $sqlval['order_tel01'] = $objCustomer->getValue('tel01');
+        $sqlval['order_tel02'] = $objCustomer->getValue('tel02');
+        $sqlval['order_tel03'] = $objCustomer->getValue('tel03');
+        $sqlval['order_fax01'] = $objCustomer->getValue('fax01');
+        $sqlval['order_fax02'] = $objCustomer->getValue('fax02');
+        $sqlval['order_fax03'] = $objCustomer->getValue('fax03');
         $sqlval['order_birth'] = $objCustomer->getValue('birth');
+        $sqlval['order_email'] = $objCustomer->getValue('email');
 
         $objQuery = new SC_Query();
         $where = "other_deliv_id = ?";
@@ -513,6 +541,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         $sqlval['deliv_tel01'] = $arrRet[0]['tel01'];
         $sqlval['deliv_tel02'] = $arrRet[0]['tel02'];
         $sqlval['deliv_tel03'] = $arrRet[0]['tel03'];
+
         $objDb = new SC_Helper_DB_Ex();
         $objDb->sfRegistTempOrder($uniqid, $sqlval);
     }
@@ -530,6 +559,28 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         }
         $objErr->doFunc(array("TEL", "deliv_tel01", "deliv_tel02", "deliv_tel03", TEL_ITEM_LEN), array("TEL_CHECK"));
         return $objErr->arrErr;
+    }
+
+    /**
+     * 入力されたEmailから余分な改行・空白を削除する
+     *
+     * @param string $_POST["login_email"]
+     */
+    function lfConvertEmail(){
+        if( strlen($_POST["login_email"]) < 1 ){ return ; }
+        $_POST["login_email"] = preg_replace('/^[ 　\r\n]*(.*?)[ 　\r\n]*$/u', '$1', $_POST["login_email"]);
+    }
+
+    /**
+     * 入力されたPassから余分な空白を削除し、最小桁数・最大桁数チェック用に変数に入れる
+     *
+     * @param string $_POST["login_pass"]
+     */
+    function lfConvertLoginPass(){
+    if( strlen($_POST["login_pass"]) < 1 ){ return ; }
+        $_POST["login_pass"] = trim($_POST["login_pass"]); //認証用
+        $_POST["login_pass1"] = $_POST["login_pass"];      //最小桁数比較用
+        $_POST["login_pass2"] = $_POST["login_pass"];      //最大桁数比較用
     }
 }
 ?>
