@@ -224,6 +224,10 @@ class SC_Customer {
     function EndSession() {
         // $_SESSION['customer']の解放
         unset($_SESSION['customer']);
+        $objSiteSess = new SC_SiteSession();
+        $objCartSess = new SC_CartSession();
+        $objSiteSess->unsetUniqId();
+        $objCartSess->delAllProducts();
         // ログに記録する
         GC_Utils_Ex::gfPrintLog("logout : user=".$this->customer_data['customer_id'] ."\t"."ip=". $this->getRemoteHost(), CUSTOMER_LOG_PATH );
     }

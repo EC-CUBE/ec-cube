@@ -78,8 +78,7 @@
          </td>
          <td class="phototd">
            <a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="win01('../products/detail_image.php?product_id=<!--{$arrProductsClass[cnt].product_id}-->&image=main_image','detail_image','<!--{$arrProductsClass[cnt].tpl_image_width}-->','<!--{$arrProductsClass[cnt].tpl_image_height}-->'); return false;" target="_blank">
-           <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$arrProductsClass[cnt].main_list_image}-->&amp;width=65&amp;height=65" alt="<!--{$arrProductsClass[cnt].name|escape}-->" />
-           </a>
+           <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$arrProductsClass[cnt].main_list_image}-->&amp;width=65&amp;height=65" alt="<!--{$arrProductsClass[cnt].name|escape}-->" /></a>
          </td>
          <td><!--{* 商品名 *}--><strong><!--{$arrProductsClass[cnt].name|escape}--></strong><br />
            <!--{if $arrProductsClass[cnt].classcategory_name1 != ""}-->
@@ -135,8 +134,7 @@
    <!--{if $tpl_prev_url != ""}-->
      <p>
        <a href="<!--{$tpl_prev_url}-->" onmouseover="chgImg('<!--{$TPL_DIR}-->img/cart/b_pageback_on.gif','back');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/cart/b_pageback.gif','back');">
-         <img src="<!--{$TPL_DIR}-->img/cart/b_pageback.gif" width="150" height="30" alt="買い物を続ける" name="back" id="back" />
-       </a>&nbsp;&nbsp;
+         <img src="<!--{$TPL_DIR}-->img/cart/b_pageback.gif" width="150" height="30" alt="買い物を続ける" name="back" id="back" /></a>&nbsp;&nbsp;
    <!--{/if}-->
        <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/cart/b_buystep_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/cart/b_buystep.gif',this)" src="<!--{$TPL_DIR}-->img/cart/b_buystep.gif" class="box150"  alt="購入手続きへ" name="confirm" />
      </p>

@@ -98,6 +98,13 @@ class LC_Page_Shopping_Payment extends LC_Page {
             $this->tpl_back_url = URL_SHOP_TOP . "?from=nonmember";
         }
 
+        // 一時受注テーブルの読込
+        $arrOrderTemp = $objDb->sfGetOrderTemp($uniqid);
+        //不正遷移チェック（正常に受注情報が格納されていない場合は一旦カート画面まで戻す）
+        if (!$arrOrderTemp){
+            $this->sendRedirect($this->getLocation(URL_CART_TOP));
+            exit;
+        }
         // 金額の取得 (購入途中で売り切れた場合にはこの関数内にてその商品の個数が０になる)
         $objDb->sfTotalCart($this, $objCartSess, $arrInfo);
 
@@ -211,6 +218,13 @@ class LC_Page_Shopping_Payment extends LC_Page {
             $this->tpl_user_point = $this->objCustomer->getValue('point');
         }
 
+        // 一時受注テーブルの読込
+        $arrOrderTemp = $objDb->sfGetOrderTemp($uniqid);
+        //不正遷移チェック（正常に受注情報が格納されていない場合は一旦カート画面まで戻す）
+        if (!$arrOrderTemp){
+            $this->sendRedirect($this->getLocation(MOBILE_URL_CART_TOP));
+            exit;
+        }
         // 金額の取得 (購入途中で売り切れた場合にはこの関数内にてその商品の個数が０になる)
         $objDb->sfTotalCart($this, $objCartSess, $arrInfo);
         if (empty($arrData)) $arrData = array();

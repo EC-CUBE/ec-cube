@@ -69,6 +69,7 @@ class LC_Page_Admin_Login extends LC_Page {
             // 認証パスワードの判定
             $ret = $this->fnCheckPassword($conn);
         }
+
         if($ret) {
             // 成功
             $this->sendRedirect($this->getLocation(URL_HOME));

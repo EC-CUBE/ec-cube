@@ -174,8 +174,10 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
                 $this->tpl_onload = "window.alert(".$text.");";
             }
             break;
-            // 再計算
+        // 再計算
         case 'cheek':
+        //支払い方法の選択
+        case 'payment':
             // POST情報で上書き
             $this->objFormParam->setParam($_POST);
             // 入力値の変換
@@ -207,10 +209,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
             $this->objFormParam->setParam($arrData);
             // 入力値の変換
             $this->objFormParam->convParam();
-            $this->arrErr = $this->lfCheckError();
-            if(count($this->arrErr) == 0) {
-                $this->arrErr = $this->lfCheek($arrInfo, $_POST['mode']);
-            }
             break;
         /* 商品追加ポップアップより商品選択後、商品情報取得*/
         case 'select_product_detail':
@@ -233,10 +231,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
             $this->objFormParam->setParam($arrData);
             // 入力値の変換
             $this->objFormParam->convParam();
-            $this->arrErr = $this->lfCheckError();
-            if(count($this->arrErr) == 0) {
-                $this->arrErr = $this->lfCheek($arrInfo, $_POST['mode']);
-            }
             break;
         /* 顧客検索ポップアップより顧客指定後、顧客情報取得*/
         case 'search_customer':
@@ -382,7 +376,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         $this->objFormParam->addParam("お支払い方法", "payment_id", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
         $this->objFormParam->addParam("配送時間ID", "deliv_time_id", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
         $this->objFormParam->addParam("対応状況", "status", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $this->objFormParam->addParam("配達日", "deliv_date", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
+        $this->objFormParam->addParam("配達日", "deliv_date", STEXT_LEN, "KVa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("お支払方法名称", "payment_method");
         $this->objFormParam->addParam("配送時間", "deliv_time");
 

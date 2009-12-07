@@ -55,6 +55,10 @@ class LC_Page_Admin_Customer_SearchCustomer extends LC_Page
      */
     function process()
     {
+        // 認証可否の判定
+        $objSess = new SC_Session();
+        SC_Utils_Ex::sfIsSuccess($objSess);
+
         $objView = new SC_AdminView();
         // POSTのモードがsearchなら顧客検索開始
         if($_POST['mode'] == 'search'){

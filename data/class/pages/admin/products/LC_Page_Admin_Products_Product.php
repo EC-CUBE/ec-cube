@@ -724,7 +724,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
             case "main_image":
                 $dist_name = '_m';
                 break;
-            default;
+            default:
                 $arrRet = explode('sub_image', $to_key);
                 $dist_name = '_sub' .$arrRet[1];
                 break;

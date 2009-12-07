@@ -27,15 +27,14 @@
  *----------------------------------------------------------------------
  */
 
-require(DATA_PATH . 'pdf/japanese.php');
-define('PDF_TEMPLATE_DIR', DATA_PATH . 'pdf/');
+require(DATA_PATH . 'module/pdf/japanese.php');
 define('PDF_IMG_DIR', HTML_PATH. USER_DIR. USER_PACKAGE_DIR. TEMPLATE_NAME. '/img/pdf/');
 
 class SC_Fpdf {
     function SC_Fpdf($download, $title, $tpl_pdf = "template_nouhin01.pdf") {
         $this->arrData = $arrData;
         // デフォルトの設定
-        $this->tpl_pdf = PDF_TEMPLATE_DIR . $tpl_pdf;  // テンプレートファイル
+        $this->tpl_pdf = PDF_DIR . $tpl_pdf;  // テンプレートファイル
         $this->pdf_download = $download;      // PDFのダウンロード形式（0:表示、1:ダウンロード）
         $this->tpl_title = $title;
         $this->tpl_dispmode = "real";      // 表示モード
@@ -122,8 +121,9 @@ class SC_Fpdf {
             $text = "Email: ".$arrInfo['law_email'];
             $this->lfText(125, 83, $text, 8);      //Email
         }
+
         //ロゴ画像
-        $logo_file = PDF_TEMPLATE_DIR . 'logo.png';
+        $logo_file = PDF_IMG_DIR . 'logo.png';
         $this->pdf->Image($logo_file, 124, 46, 40);
     }
 
@@ -295,7 +295,7 @@ ob_clean();
 
     // PDF_Japanese::Text へのパーサー
     function lfText($x, $y, $text, $size, $style = '') {
-        $text = mb_convert_encoding($text, "SJIS", CHAR_CODE);
+        $text = mb_convert_encoding($text, "SJIS-win", CHAR_CODE);
 
         $this->pdf->SetFont('SJIS', $style, $size);
         $this->pdf->Text($x, $y, $text);

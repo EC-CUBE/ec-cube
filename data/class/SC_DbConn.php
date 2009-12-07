@@ -62,6 +62,10 @@ class SC_DbConn{
                 }
             }
         }
+        //MySQL文字化け対策(MySQLで文字化けする場合は以下のコメントアウトをはずして動作確認してみてください。)
+        //if (DB_TYPE == 'mysql') {
+        //    $objDbConn->query('SET NAMES utf8');
+        //}
         $this->conn = $objDbConn;
         $this->error_mail_to = DB_ERROR_MAIL_TO;
         $this->error_mail_title = DB_ERROR_MAIL_SUBJECT;

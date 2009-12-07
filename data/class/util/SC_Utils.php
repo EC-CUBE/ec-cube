@@ -73,12 +73,17 @@ class SC_Utils {
         return $control_flg;
     }
 
-    // インストール初期処理
-    function sfInitInstall() {
-        // インストール済みが定義されていない。
-        if(!defined('ECCUBE_INSTALL')) {
-            if(!ereg("/install/", $_SERVER['PHP_SELF'])) {
-                header("Location: ./install/"); // TODO 絶対URL にする
+    /**
+     * インストール初期処理
+     */
+    function sfInitInstall()
+    {
+        // インストールが完了していない時
+        if( !defined('ECCUBE_INSTALL') ) {
+            if( !ereg('/install/', $_SERVER['PHP_SELF']) ) {
+                // インストールページに遷移させる
+                header('Location: ./install/');
+                exit;
             }
         } else {
             $path = HTML_PATH . "install/index.php";
