@@ -72,7 +72,7 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page {
             // 入力文字の強制変換
             $this->lfConvertParam();
 
-            $where = "del_flg = 0 AND status = 1";
+            $where = 'del_flg = 0';
 
             /* 入力エラーなし */
             foreach ($this->arrForm as $key => $val) {

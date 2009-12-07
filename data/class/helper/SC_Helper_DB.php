@@ -249,23 +249,27 @@ class SC_Helper_DB {
      * 商品規格情報を取得する.
      *
      * @param array $arrID 規格ID
+     * @param boolean $includePrivateProducts 非公開商品を含むか
      * @return array 規格情報の配列
      */
-    function sfGetProductsClass($arrID) {
+    function sfGetProductsClass($arrID, $includePrivateProducts = false) {
         list($product_id, $classcategory_id1, $classcategory_id2) = $arrID;
 
-        if($classcategory_id1 == "") {
+        if (strlen($classcategory_id1) == 0) {
             $classcategory_id1 = '0';
         }
-        if($classcategory_id2 == "") {
+        if (strlen($classcategory_id2) == 0) {
             $classcategory_id2 = '0';
         }
 
         // 商品規格取得
         $objQuery = new SC_Query();
-        $col = "product_id, deliv_fee, name, product_code, main_list_image, main_image, price01, price02, point_rate, product_class_id, classcategory_id1, classcategory_id2, class_id1, class_id2, stock, stock_unlimited, sale_limit";
-        $table = "vw_product_class AS prdcls";
-        $where = "product_id = ? AND classcategory_id1 = ? AND classcategory_id2 = ? AND status = 1";
+        $col = 'product_id, deliv_fee, name, product_code, main_list_image, main_image, price01, price02, point_rate, product_class_id, classcategory_id1, classcategory_id2, class_id1, class_id2, stock, stock_unlimited, sale_limit';
+        $table = 'vw_product_class AS prdcls';
+        $where = 'product_id = ? AND classcategory_id1 = ? AND classcategory_id2 = ?';
+        if (!$includePrivateProducts) {
+             $where .= ' AND status = 1';
+        }
         $arrRet = $objQuery->select($col, $table, $where, array($product_id, $classcategory_id1, $classcategory_id2));
         return $arrRet[0];
     }
@@ -286,6 +290,8 @@ class SC_Helper_DB {
 
     /**
      * カート内商品の集計処理を行う.
+     *
+     * 管理機能での利用は想定していないので注意。(非公開商品は除外される。)
      *
      * @param LC_Page $objPage ページクラスのインスタンス
      * @param SC_CartSession $objCartSess カートセッションのインスタンス

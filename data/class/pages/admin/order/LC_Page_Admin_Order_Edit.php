@@ -696,7 +696,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
     function lfGetProductsClass($product_id, $classcategory_id1, $classcategory_id2) {
         $objDb = new SC_Helper_DB_Ex();
         $arrClassCatName = $objDb->sfGetIDValueList("dtb_classcategory", "classcategory_id", "name");
-        $arrRet = $objDb->sfGetProductsClass(array($product_id, $classcategory_id1, $classcategory_id2));
+        $arrRet = $objDb->sfGetProductsClass(array($product_id, $classcategory_id1, $classcategory_id2), true);
 
         $arrProduct['price'] = $arrRet['price02'];
         $arrProduct['quantity'] = 1;
