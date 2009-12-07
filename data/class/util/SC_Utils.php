@@ -785,45 +785,6 @@ class SC_Utils {
         return $arrRet;
     }
 
-    /* 規格の登録 */
-    function sfInsertProductClass($objQuery, $arrList, $product_id , $product_class_id = "") {
-        // すでに規格登録があるかどうかをチェックする。
-        $where = "product_id = ? AND classcategory_id1 <> 0 AND classcategory_id2 <> 0";
-        $count = $objQuery->count("dtb_products_class", $where,  array($product_id));
-
-        // すでに規格登録がない場合
-        if($count == 0) {
-            // 既存規格の削除
-            $where = "product_id = ?";
-            $objQuery->delete("dtb_products_class", $where, array($product_id));
-
-            // 配列の添字を定義
-            $checkArray = array("product_code", "stock", "stock_unlimited", "price01", "price02");
-            $arrList = SC_Utils_Ex::arrayDefineIndexes($arrList, $checkArray);
-
-            $sqlval['product_id'] = $product_id;
-            if(strlen($product_class_id ) > 0 ){
-                $sqlval['product_class_id'] = $product_class_id;
-            }
-            $sqlval['classcategory_id1'] = '0';
-            $sqlval['classcategory_id2'] = '0';
-            $sqlval['product_code'] = $arrList["product_code"];
-            $sqlval['stock'] = $arrList["stock"];
-            $sqlval['stock_unlimited'] = ($arrList["stock_unlimited"]) ? '1' : '0';
-            $sqlval['price01'] = $arrList['price01'];
-            $sqlval['price02'] = $arrList['price02'];
-            $sqlval['creator_id'] = $_SESSION['member_id'];
-            $sqlval['create_date'] = "now()";
-
-            if($_SESSION['member_id'] == "") {
-                $sqlval['creator_id'] = '0';
-            }
-
-            // INSERTの実行
-            $objQuery->insert("dtb_products_class", $sqlval);
-        }
-    }
-
     function sfGetProductClassId($product_id, $classcategory_id1, $classcategory_id2) {
         $where = "product_id = ? AND classcategory_id1 = ? AND classcategory_id2 = ?";
         $objQuery = new SC_Query();
@@ -1679,6 +1640,23 @@ echo $template_path;
             if (!isset($array[$key])) $array[$key] = "";
         }
         return $array;
+    }
+
+    /**
+     * $arrSrc のうち、キーが $arrKey に含まれるものを返す
+     *
+     * $arrSrc に含まない要素は返されない。
+     *
+     * @param array $arrSrc
+     * @param array $arrKey
+     * @return array
+     */
+    function sfArrayIntersectKeys($arrSrc, $arrKey) {
+        $arrRet = array();
+        foreach ($arrKey as $key) {
+            if (isset($arrSrc[$key])) $arrRet[$key] = $arrSrc[$key];
+        }
+        return $arrRet;
     }
 
     /**

@@ -97,7 +97,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         $this->objUpFile->setHiddenFileList($_POST);
 
         // 規格の有り無し判定
-        $this->tpl_nonclass = $this->lfCheckNonClass($_POST['product_id']);
+        $this->tpl_nonclass = !$objDb->sfHasProductClass($_POST['product_id']);
 
         // 検索パラメータの引き継ぎ
         foreach ($_POST as $key => $val) {
@@ -147,7 +147,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
             // 商品登録・編集
             case 'edit':
                 if($_POST['product_id'] == "" and SC_Utils_Ex::sfIsInt($_POST['copy_product_id'])){
-                    $this->tpl_nonclass = $this->lfCheckNonClass($_POST['copy_product_id']);
+                    $this->tpl_nonclass = !$objDb->sfHasProductClass($_POST['copy_product_id']);
                 }
 
                 // 入力値の変換
@@ -319,6 +319,8 @@ class LC_Page_Admin_Products_Product extends LC_Page {
     /* 商品情報の読み込み */
     function lfGetProduct($product_id) {
         $objQuery = new SC_Query();
+        $objDb = new SC_Helper_DB_Ex();
+
         $col = "*";
         $table = "vw_products_nonclass AS noncls ";
         $where = "product_id = ?";
@@ -331,7 +333,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
                                                       "product_id = ?",
         array($product_id));
         //編集時に規格IDが変わってしまうのを防ぐために規格が登録されていなければ規格IDを取得する
-        if( $this->lfCheckNonClass($_POST['product_id']) ){
+        if (!$objDb->sfHasProductClass($_POST['product_id'])) {
             $arrRet[0]['product_class_id'] = SC_Utils::sfGetProductClassId($product_id,"0","0");
         }
         return $arrRet[0];
@@ -432,7 +434,8 @@ class LC_Page_Admin_Products_Product extends LC_Page {
             $sqlval['sub_comment'.$cnt] = $arrList['sub_comment'.$cnt];
         }
 
-        if($arrList['product_id'] == "") {
+        // 新規登録(複製時を含む)
+        if ($arrList['product_id'] == "") {
             // product_id 取得（PostgreSQLの場合）
             if(DB_TYPE=='pgsql'){
                 $product_id = $objQuery->nextval("dtb_products", "product_id");
@@ -448,27 +451,28 @@ class LC_Page_Admin_Products_Product extends LC_Page {
                 $product_id = $objQuery->nextval("dtb_products", "product_id");
             }
 
+            $arrList['product_id'] = $product_id;
+
             // カテゴリを更新
             $objDb->updateProductCategories($arrList['category_id'], $product_id);
 
-            // コピー商品の場合には規格もコピーする
+            // 複製商品の場合には規格も複製する
             if($_POST["copy_product_id"] != "" and SC_Utils_Ex::sfIsInt($_POST["copy_product_id"])){
 
                 if($this->tpl_nonclass)
                 {
-                    //規格なしの場合、コピーは価格等の入力が発生しているため、その内容で追加登録を行う
-                    $arrList['product_id'] = $product_id;
+                    //規格なしの場合、複製は価格等の入力が発生しているため、その内容で追加登録を行う
                     $this->lfCopyProductClass($arrList, $objQuery);
                 }
                 else
                 {
-                    //規格がある場合のコピーは複製元の内容で追加登録を行う
+                    //規格がある場合の複製は複製元の内容で追加登録を行う
                     // dtb_products_class のカラムを取得
                     $dbFactory = SC_DB_DBFactory_Ex::getInstance();
                     $arrColList = $dbFactory->sfGetColumnList("dtb_products_class", $objQuery);
                     $arrColList_tmp = array_flip($arrColList);
 
-                    // コピーしない列
+                    // 複製しない列
                     unset($arrColList[$arrColList_tmp["product_class_id"]]);     //規格ID
                     unset($arrColList[$arrColList_tmp["product_id"]]);           //商品ID
                     unset($arrColList[$arrColList_tmp["create_date"]]);
@@ -478,7 +482,9 @@ class LC_Page_Admin_Products_Product extends LC_Page {
                     $objQuery->query("INSERT INTO dtb_products_class (product_id, create_date, ". $col .") SELECT ?, now(), " . $col. " FROM dtb_products_class WHERE product_id = ? ORDER BY product_class_id", array($product_id, $_POST["copy_product_id"]));
                 }
             }
-        } else {
+        }
+        // 更新
+        else {
             $product_id = $arrList['product_id'];
             // 削除要求のあった既存ファイルの削除
             $arrRet = $this->lfGetProduct($arrList['product_id']);
@@ -495,7 +501,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         //商品登録の時は規格を生成する。複製の場合は規格も複製されるのでこの処理は不要。
         if( $_POST["copy_product_id"] == "" ){
             // 規格登録
-            SC_Utils_Ex::sfInsertProductClass($objQuery, $arrList, $product_id , $arrList['product_class_id'] );
+            $this->lfInsertDummyProductClass($arrList);
         }
 
         // 関連商品登録
@@ -644,19 +650,6 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         $this->arrFile = $this->objUpFile->getFormFileList(IMAGE_TEMP_URL, IMAGE_SAVE_URL);
     }
 
-    /* 規格あり判定用(規格が登録されていない場合:TRUE) */
-    function lfCheckNonClass($product_id) {
-        if(SC_Utils_Ex::sfIsInt($product_id)) {
-            $objQuery  = new SC_Query();
-            $where = "product_id = ? AND classcategory_id1 <> 0 AND classcategory_id1 <> 0";
-            $count = $objQuery->count("dtb_products_class", $where, array($product_id));
-            if($count > 0) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     // 縮小した画像をセットする
     function lfSetScaleImage(){
 
@@ -752,7 +745,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         //トランザクション開始
         $objQuery->begin();
         $err_flag = false;
-        //非編集項目はコピー、編集項目は上書きして登録
+        //非編集項目は複製、編集項目は上書きして登録
         foreach($arrProductClass as $records)
         {
             foreach($records as $key => $value)
@@ -784,6 +777,42 @@ class LC_Page_Admin_Products_Product extends LC_Page {
             $objQuery->commit();
         }
         return !$err_flag;
+    }
+
+    /**
+     * 規格を設定していない商品を商品規格テーブルに登録
+     *
+     * @param array $arrList
+     * @return void
+     */
+    function lfInsertDummyProductClass($arrList) {
+        $objQuery  = new SC_Query();
+        $objDb = new SC_Helper_DB_Ex();
+
+        $product_id = $arrList['product_id'];
+        // 規格登録してある商品の場合、処理しない
+        if ($objDb->sfHasProductClass($product_id)) return;
+
+        // 既存規格の削除
+        $where = 'product_id = ?';
+        $objQuery->delete('dtb_products_class', $where, array($product_id));
+
+        // 配列の添字を定義
+        $checkArray = array('product_class_id', 'product_id', 'product_code', 'stock', 'stock_unlimited', 'price01', 'price02');
+        $sqlval = SC_Utils_Ex::sfArrayIntersectKeys($arrList, $checkArray);
+        $sqlval = SC_Utils_Ex::arrayDefineIndexes($sqlval, $checkArray);
+
+        if (strlen($sqlval['product_class_id']) == 0) {
+            unset($sqlval['product_class_id']);
+        }
+        $sqlval['classcategory_id1'] = '0';
+        $sqlval['classcategory_id2'] = '0';
+        $sqlval['stock_unlimited'] = $sqlval['stock_unlimited'] ? '1' : '0';
+        $sqlval['creator_id'] = strlen($_SESSION['member_id']) >= 1 ? $_SESSION['member_id'] : '0';
+        $sqlval['create_date'] = 'now()';
+
+        // INSERTの実行
+        $objQuery->insert('dtb_products_class', $sqlval);
     }
 }
 ?>

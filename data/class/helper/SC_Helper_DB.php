@@ -1941,5 +1941,21 @@ __EOS__;
             }
         }
     }
+
+    /**
+     * 商品規格を設定しているか
+     *
+     * @param integer $product_id 商品ID
+     * @return bool 商品規格が存在する場合:true, それ以外:false
+     */
+    function sfHasProductClass($product_id) {
+        if (!SC_Utils_Ex::sfIsInt($product_id)) return false;
+
+        $objQuery  = new SC_Query();
+        $where = 'product_id = ? AND (classcategory_id1 <> 0 OR classcategory_id2 <> 0)';
+        $count = $objQuery->count('dtb_products_class', $where, array($product_id));
+
+        return $count >= 1;
+    }
 }
 ?>
