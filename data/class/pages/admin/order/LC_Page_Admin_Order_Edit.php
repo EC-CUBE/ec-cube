@@ -520,16 +520,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         return $arrErr;
     }
 
-    function lfReCheek($arrData) {
-        // 情報上書き
-        $this->objFormParam->setParam($arrData);
-        // 入力値の変換
-        $this->objFormParam->convParam();
-        #if(count($this->arrErr) == 0) {
-            $this->arrErr = $this->lfCheek();
-        #}
-    }
-
     /**
      * DB更新処理
      *
