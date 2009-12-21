@@ -81,8 +81,8 @@ class LC_Page_FrontParts_Bloc_Recommend extends LC_Page_FrontParts_Bloc {
     function lfGetRecommendProducts($product_id) {
 
         $objQuery = new SC_Query();
-        $cols = '*, (SELECT COUNT(*) FROM dtb_order_detail WHERE product_id = allcls.product_id) AS cnt';
-        $from = 'vw_products_allclass AS allcls';
+        $cols = '*, (SELECT COUNT(*) FROM dtb_order_detail WHERE product_id = alldtl.product_id) AS cnt';
+        $from = 'vw_products_allclass_detail AS alldtl';
         $where = <<< __EOS__
             del_flg = 0
             AND status = 1
