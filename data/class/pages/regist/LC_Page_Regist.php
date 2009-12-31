@@ -35,9 +35,6 @@ class LC_Page_Regist extends LC_Page {
 
     // {{{ properties
 
-    /** ページ情報の配列 */
-    var $arrInfo;
-
     /** 設定情報 */
     var $CONF;
 
@@ -64,7 +61,6 @@ class LC_Page_Regist extends LC_Page {
         $objCustomer = new SC_Customer();
         $objDb = new SC_Helper_DB_Ex();
         $this->CONF = $objDb->sf_getBasisData();
-        $this->arrInfo = $objSiteInfo->data;
 
         // キャンペーンからの登録の場合の処理
 
@@ -123,7 +119,6 @@ class LC_Page_Regist extends LC_Page {
         $objCustomer = new SC_Customer();
         $objDb = new SC_Helper_DB_Ex();
         $this->CONF = $objDb->sf_getBasisData();
-        $arrInfo = $objSiteInfo->data;
 
         //--　本登録完了のためにメールから接続した場合
         if ($_GET["mode"] == "regist") {
@@ -170,7 +165,6 @@ class LC_Page_Regist extends LC_Page {
     //---- 登録
     function lfRegistData($array) {
         $objQuery = new SC_Query();
-        $this->arrInfo;
 
         do {
             $secret = SC_Utils_Ex::sfGetUniqRandomId("r");
@@ -187,8 +181,6 @@ class LC_Page_Regist extends LC_Page {
         $where = "secret_key = ? AND status = 1";
 
         $arrRet = $objQuery->select("point", "dtb_customer", $where, array($array["id"]));
-        // 会員登録時の加算ポイント(購入時会員登録の場合は、ポイント加算）
-        $arrRegist['point'] = $arrRet[0]['point'] + $arrInfo['welcome_point'];
 
         $objQuery->update("dtb_customer", $arrRegist, $where, array($array["id"]));
 
