@@ -72,7 +72,7 @@ function func_submit(customer_id){
         </td>
     </tr>
     <tr class="fs12n">
-        <td bgcolor="#f0f0f0">担当者</td>
+        <td bgcolor="#f0f0f0">顧客名</td>
         <td bgcolor="#ffffff">
             <!--{if $arrErr.search_name01}--><span class="red12"><!--{$arrErr.search_name01}--></span><!--{/if}-->
             <!--{if $arrErr.search_name02}--><span class="red12"><!--{$arrErr.search_name02}--></span><!--{/if}-->
@@ -81,7 +81,7 @@ function func_submit(customer_id){
         </td>
     </tr>
     <tr class="fs12n">
-        <td bgcolor="#f0f0f0">担当者(カナ)</td>
+        <td bgcolor="#f0f0f0">顧客名(カナ)</td>
         <td bgcolor="#ffffff">
             <!--{if $arrErr.search_kana01}--><span class="red12"><!--{$arrErr.search_kana01}--></span><!--{/if}-->
             <!--{if $arrErr.search_kana02}--><span class="red12"><!--{$arrErr.search_kana02}--></span><!--{/if}-->
