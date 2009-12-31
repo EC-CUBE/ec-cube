@@ -95,7 +95,7 @@ INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_m
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_mailtemplate','update_date','更新日時');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_mailmaga_template','template_id','テンプレートID');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_mailmaga_template','subject','件名');
-INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_mailmaga_template','charge_image','担当者の写真');
+INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_mailmaga_template','charge_image','メール担当写真');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_mailmaga_template','mail_method','1:テキストメール 2:HTMLメール 3:HTMLTEMPLATE');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_mailmaga_template','header','ヘッダーテキスト');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_mailmaga_template','body','本文（テキスト登録用）');
