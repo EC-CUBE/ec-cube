@@ -303,16 +303,16 @@ class LC_Page_Shopping_Complete extends LC_Page {
             case '0':
                 // 購入時会員登録
                 if(isset($arrData['member_check']) && $arrData['member_check'] == '1') {
-                    // 仮会員登録
-                    $customer_id = $this->lfRegistPreCustomer($arrData, $this->arrInfo);
+                    // 会員登録
+                    $customer_id = $this->lfRegistCustomer($arrData, $this->arrInfo);
                     // 購入集計を顧客テーブルに反映
                     $this->lfSetCustomerPurchase($customer_id, $arrData, $objQuery);
                 }
                 break;
             //有効
             case '1':
-                // 仮会員登録
-                $customer_id = $this->lfRegistPreCustomer($arrData, $this->arrInfo);
+                // 会員登録
+                $customer_id = $this->lfRegistCustomer($arrData, $this->arrInfo);
                 // 購入集計を顧客テーブルに反映
                 $this->lfSetCustomerPurchase($customer_id, $arrData, $objQuery);
                 break;
@@ -344,8 +344,13 @@ class LC_Page_Shopping_Complete extends LC_Page {
         return $order_id;
     }
 
-    // 会員登録（仮登録）
-    function lfRegistPreCustomer($arrData, $arrInfo) {
+    // 会員登録
+    function lfRegistCustomer($arrData, $arrInfo) {
+        $objQuery = new SC_Query();
+
+        //会員登録時に仮会員確認用のメールを送付するか
+        $confirm_flg = CUSTOMER_CONFIRM_MAIL;
+
         // 購入時の会員登録
         $sqlval['name01'] = $arrData['order_name01'];
         $sqlval['name02'] = $arrData['order_name02'];
@@ -368,30 +373,43 @@ class LC_Page_Shopping_Complete extends LC_Page {
         $sqlval['reminder'] = $arrData['reminder'];
         $sqlval['reminder_answer'] = $arrData['reminder_answer'];
 
-        // メルマガ配信用フラグの判定
-        switch($arrData['mail_flag']) {
-        case '1':	// HTMLメール
-            $mail_flag = 4;
-            break;
-        case '2':	// TEXTメール
-            $mail_flag = 5;
-            break;
-        case '3':	// 希望なし
-            $mail_flag = 6;
-            break;
-        default:
-            $mail_flag = 6;
-            break;
+        // 仮会員登録の場合
+        if ($confirm_flg == true) {
+            // 重複しない会員登録キーを発行する。
+            $count = 1;
+            while ($count != 0) {
+                $uniqid = SC_Utils_Ex::sfGetUniqRandomId("t");
+                $count = $objQuery->count("dtb_customer", "secret_key = ?", array($uniqid));
+            }
+            $sqlval["status"] = "1";    // 仮会員
+        //本会員登録
+        } else {
+            // 重複しない会員登録キーを発行する。
+            $count = 1;
+            while ($count != 0) {
+                $uniqid = SC_Utils_Ex::sfGetUniqRandomId("r");
+                $count = $objQuery->count("dtb_customer", "secret_key = ?", array($uniqid));
+            }
+            $sqlval["status"] = "2";    // 本会員
         }
+
         // メルマガフラグ
+        switch ($arrData["mailmaga_flg"]) {
+            case 1: // HTMLメール
+                $mail_flag = 4;
+                break;
+            case 2: // TEXTメール
+                $mail_flag = 5;
+                break;
+            default:
+                $mail_flag = 6;
+                break;
+        }
         $sqlval['mailmaga_flg'] = $mail_flag;
 
-        // 会員仮登録
-        $sqlval['status'] = 1;
         // URL判定用キー
         $sqlval['secret_key'] = SC_Utils_Ex::sfGetUniqRandomId("t");
 
-        $objQuery = new SC_Query();
         $sqlval['create_date'] = "now()";
         $sqlval['update_date'] = "now()";
         $objQuery->insert("dtb_customer", $sqlval);
@@ -400,10 +418,10 @@ class LC_Page_Shopping_Complete extends LC_Page {
         $arrRet = $objQuery->select("customer_id", "dtb_customer", "secret_key = ?", array($sqlval['secret_key']));
         $customer_id = $arrRet[0]['customer_id'];
 
-        //　仮登録完了メール送信
+        //　登録完了メール送信
         $objMailPage = $this;
-        $objMailPage->to_name01 = $arrData['order_name01'];
-        $objMailPage->to_name02 = $arrData['order_name02'];
+        $objMailPage->name01 = $arrData['order_name01'];
+        $objMailPage->name02 = $arrData['order_name02'];
         $objMailPage->CONF = $arrInfo;
         $objMailPage->uniqid = $sqlval['secret_key'];
         $objMailView = new SC_SiteView();
@@ -412,10 +430,22 @@ class LC_Page_Shopping_Complete extends LC_Page {
 
         $mailHelper = new SC_Helper_Mail_Ex();
 
+        //仮会員メール
+        if ($confirm_flg == true) {
+            $subject = $mailHelper->sfMakeSubject('会員登録のご確認');
+            $body = $objMailView->fetch('mail_templates/customer_mail.tpl');
+        //本会員メール
+        } else {
+            $subject = $mailHelper->sfMakeSubject('会員登録のご完了');
+            $body = $objMailView->fetch('mail_templates/customer_regist_mail.tpl');
+            // ログイン状態にする
+            $this->objCustomer->setLogin($arrData['order_email']);
+        }
+
         $objMail = new SC_SendMail();
         $objMail->setItem(
                             ''										//　宛先
-                            , $mailHelper->sfMakeSubject("会員登録のご確認")		//　サブジェクト
+                            , $subject								//　サブジェクト
                             , $body									//　本文
                             , $arrInfo['email03']					//　配送元アドレス
                             , $arrInfo['shop_name']					//　配送元　名前
