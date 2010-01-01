@@ -297,27 +297,13 @@ class LC_Page_Shopping_Complete extends LC_Page {
             // 購入集計を顧客テーブルに反映
             $this->lfSetCustomerPurchase($this->objCustomer->getValue('customer_id'), $arrData, $objQuery);
         } else {
-            //購入時強制会員登録
-            switch(PURCHASE_CUSTOMER_REGIST) {
-            //無効
-            case '0':
-                // 購入時会員登録
-                if(isset($arrData['member_check']) && $arrData['member_check'] == '1') {
-                    // 会員登録
-                    $customer_id = $this->lfRegistCustomer($arrData, $this->arrInfo);
-                    // 購入集計を顧客テーブルに反映
-                    $this->lfSetCustomerPurchase($customer_id, $arrData, $objQuery);
-                }
-                break;
-            //有効
-            case '1':
+            // 購入時強制会員登録が有効の場合
+            if (PURCHASE_CUSTOMER_REGIST == '1') {
                 // 会員登録
                 $customer_id = $this->lfRegistCustomer($arrData, $this->arrInfo);
                 // 購入集計を顧客テーブルに反映
                 $this->lfSetCustomerPurchase($customer_id, $arrData, $objQuery);
-                break;
             }
-
         }
         // 一時テーブルを受注テーブルに格納する
         if (defined("MOBILE_SITE")) {
@@ -474,7 +460,6 @@ class LC_Page_Shopping_Complete extends LC_Page {
         unset($sqlval['mailmaga_flg']);     // メルマガチェック
         unset($sqlval['deliv_check']);      // 別のお届け先チェック
         unset($sqlval['point_check']);      // ポイント利用チェック
-        unset($sqlval['member_check']);     // 購入時会員チェック
         unset($sqlval['password']);         // ログインパスワード
         unset($sqlval['reminder']);         // リマインダー質問
         unset($sqlval['reminder_answer']);  // リマインダー答え

@@ -132,7 +132,7 @@
             </table>
 
             <!--{* ログイン済みの会員のみ *}-->
-            <!--{if ($tpl_login == 1 || $arrData.member_check == 1) && $smarty.const.USE_POINT !== false}-->
+            <!--{if $tpl_login == 1 && $smarty.const.USE_POINT !== false}-->
                 <table summary="ポイント確認" class="delivname">
                     <tr>
                         <th>ご注文前のポイント</th>
