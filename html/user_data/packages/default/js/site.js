@@ -264,25 +264,6 @@ function fnCheckInputDeliv() {
 	}
 }
 
-
-// 購入時会員登録入力制限。
-function fnCheckInputMember() {
-	if(document.form1['member_check']) {
-		list = new Array(
-						'password',
-						'password_confirm',
-						'reminder',
-						'reminder_answer'
-						);
-
-		if(!document.form1['member_check'].checked) {
-			fnChangeDisabled(list, '#dddddd');
-		} else {
-			fnChangeDisabled(list, '');
-		}
-	}
-}
-
 // 最初に設定されていた色を保存しておく。
 var g_savecolor = new Array();
 
