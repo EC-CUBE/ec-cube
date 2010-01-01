@@ -178,6 +178,8 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
             break;
             // 再計算
         case 'cheek':
+        //支払い方法の選択
+        case 'payment':
             // POST情報で上書き
             $this->objFormParam->setParam($_POST);
             // 入力値の変換

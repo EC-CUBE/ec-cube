@@ -427,7 +427,7 @@
             <td>
                 <!--{assign var=key value="payment_id"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
-                <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
+                <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" onchange="fnModeSubmit('payment','anchor_key','order_products');">
                     <option value="" selected="">選択してください</option>
                     <!--{html_options options=$arrPayment selected=$arrForm[$key].value}-->
                 </select>
