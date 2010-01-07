@@ -162,7 +162,6 @@ class LC_Page_Admin_Contents_Inquiry extends LC_Page {
 
                 //エラー表示
                 $this->ERROR = $error;
-var_dump($this->ERROR);
                 $this->QUESTION_ID = $_REQUEST['question_id'];
                 $this->ERROR_COLOR = $this->lfGetErrColor($error, ERR_COLOR);
             }
