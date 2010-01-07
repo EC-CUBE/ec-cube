@@ -456,7 +456,7 @@ class LC_Page_Shopping extends LC_Page {
     function lfCopyDeliv($uniqid, $arrData) {
         $objQuery = new SC_Query();
 
-        // 別のお届け先を指定していない場合、配送先に登録住所をコピーする。
+        // 別のお届け先を指定していない場合、お届け先に登録住所をコピーする。
         if($arrData["deliv_check"] != "1") {
             $sqlval['deliv_name01'] = $arrData['order_name01'];
             $sqlval['deliv_name02'] = $arrData['order_name02'];

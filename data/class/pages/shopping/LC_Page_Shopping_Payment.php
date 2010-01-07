@@ -163,11 +163,11 @@ class LC_Page_Shopping_Payment extends LC_Page {
         $this->arrPayment = $this->lfGetPayment($total_pretax);
         // 支払い方法の画像があるなしを取得（$img_show true:ある false:なし）
         $this->img_show = $this->lfGetImgShow($this->arrPayment);
-        // 配送時間の取得
+        // お届け時間の取得
         $arrRet = $objDb->sfGetDelivTime($this->objFormParam->getValue('payment_id'));
         $this->arrDelivTime = SC_Utils_Ex::sfArrKeyValue($arrRet, 'time_id', 'deliv_time');
 
-        // 配送日一覧の取得
+        // お届け日一覧の取得
         $this->arrDelivDate = $this->lfGetDelivDate();
 
         $this->arrForm = $this->objFormParam->getFormParamList();
@@ -250,7 +250,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
         }
 
         switch($_POST['mode']) {
-            // 支払い方法指定 → 配達日時指定
+            // 支払い方法指定 → お届け日時指定
         case 'deliv_date':
             // 入力値の変換
             $this->objFormParam->convParam();
@@ -258,7 +258,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
             if (!isset($this->arrErr['payment_id'])) {
                 // 支払い方法の入力エラーなし
                 $this->tpl_mainpage = 'shopping/deliv_date.tpl';
-                $this->tpl_title = "配達日時指定";
+                $this->tpl_title = "お届け日時指定";
                 break;
             } else {
                 // ユーザユニークIDの取得
@@ -288,7 +288,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
                 if (!isset($this->arrErr['payment_id'])) {
                     // 支払い方法の入力エラーなし
                     $this->tpl_mainpage = 'shopping/deliv_date.tpl';
-                    $this->tpl_title = "配達日時指定";
+                    $this->tpl_title = "お届け日時指定";
                 }
             }
             break;
@@ -316,11 +316,11 @@ class LC_Page_Shopping_Payment extends LC_Page {
         $total_pretax = $objCartSess->getAllProductsTotal($arrInfo);
         // 支払い方法の取得
         $this->arrPayment = $this->lfGetPayment($total_pretax);
-        // 配送時間の取得
+        // お届け時間の取得
         $arrRet = $objDb->sfGetDelivTime($this->objFormParam->getValue('payment_id'));
         $this->arrDelivTime = SC_Utils_Ex::sfArrKeyValue($arrRet, 'time_id', 'deliv_time');
 
-        // 配送日一覧の取得
+        // お届け日一覧の取得
         $this->arrDelivDate = $this->lfGetDelivDate();
 
         $this->arrForm = $this->objFormParam->getFormParamList();
@@ -342,10 +342,10 @@ class LC_Page_Shopping_Payment extends LC_Page {
     function lfInitParam() {
         $this->objFormParam->addParam("お支払い方法", "payment_id", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
         $this->objFormParam->addParam("ポイント", "use_point", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK", "ZERO_START"));
-        $this->objFormParam->addParam("配達時間", "deliv_time_id", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $this->objFormParam->addParam("お届け時間", "deliv_time_id", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
         $this->objFormParam->addParam("ご質問", "message", LTEXT_LEN, "KVa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("ポイントを使用する", "point_check", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"), '2');
-        $this->objFormParam->addParam("配達日", "deliv_date", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
+        $this->objFormParam->addParam("お届け日", "deliv_date", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
     }
 
     function lfGetPayment($total_pretax) {
@@ -438,7 +438,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
         return (array($arrRet[0]['payment_method'], $arrRet[0]['charge']));
     }
 
-    /* 配送時間文字列の取得 */
+    /* お届け時間文字列の取得 */
     function lfGetDelivTimeInfo($time_id) {
         $objQuery = new SC_Query();
         $where = "time_id = ?";
@@ -478,7 +478,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
         $objDb->sfRegistTempOrder($uniqid, $sqlval);
     }
 
-    /* 配達日一覧を取得する */
+    /* お届け日一覧を取得する */
     function lfGetDelivDate() {
         $objCartSess = new SC_CartSession();
         $objQuery = new SC_Query();
@@ -536,17 +536,17 @@ class LC_Page_Shopping_Payment extends LC_Page {
                 $start_day = "";
                 break;
             }
-            //配達可能日のスタート値から、配達日の配列を取得する
+            //お届け可能日のスタート値から、お届け日の配列を取得する
             $arrDelivDate = $this->lfGetDateArray($start_day, DELIV_DATE_END_MAX);
         }
         return $arrDelivDate;
     }
 
-    //配達可能日のスタート値から、配達日の配列を取得する
+    //お届け可能日のスタート値から、お届け日の配列を取得する
     function lfGetDateArray($start_day, $end_day) {
         $masterData = new SC_DB_MasterData();
         $arrWDAY = $masterData->getMasterData("mtb_wday");
-        //配達可能日のスタート値がセットされていれば
+        //お届け可能日のスタート値がセットされていれば
         if($start_day >= 1) {
             $now_time = time();
             $max_day = $start_day + $end_day;
