@@ -163,7 +163,7 @@ class LC_Page_Admin_Products extends LC_Page {
                     }
 
                     switch ($key) {
-                        case 'search_product_id':	// 商品ID
+                        case 'search_product_id': // 商品ID
                             $where .= " AND product_id = ?";
                             $view_where .= " AND product_id = ?";
                             $arrval[] = $val;
@@ -178,12 +178,12 @@ class LC_Page_Admin_Products extends LC_Page {
                             $arrval[] = "%$val%";
                             $view_where = $where;
                             break;
-                        case 'search_name':			// 商品名
+                        case 'search_name': // 商品名
                             $where .= " AND name ILIKE ?";
                             $view_where .= " AND name ILIKE ?";
                             $arrval[] = "%$val%";
                             break;
-                        case 'search_category_id':	// カテゴリー
+                        case 'search_category_id': // カテゴリー
                             list($tmp_where, $tmp_arrval) = $objDb->sfGetCatWhere($val);
                             if($tmp_where != "") {
                                 $where.= " AND product_id IN (SELECT product_id FROM dtb_product_categories WHERE " . $tmp_where . ")";
@@ -191,23 +191,23 @@ class LC_Page_Admin_Products extends LC_Page {
                                 $arrval = array_merge((array)$arrval, (array)$tmp_arrval);
                             }
                             break;
-                        case 'search_product_code':	// 商品コード
+                        case 'search_product_code': // 商品コード
                             $where .= " AND product_id IN (SELECT product_id FROM dtb_products_class WHERE product_code ILIKE ? GROUP BY product_id)";
                             $view_where .= " AND EXISTS (SELECT product_id FROM dtb_products_class as cls WHERE cls.product_code ILIKE ? AND dtb_products.product_id = cls.product_id GROUP BY cls.product_id )";
                             $arrval[] = "%$val%";
                             break;
-                        case 'search_startyear':	// 登録更新日（FROM）
+                        case 'search_startyear': // 登録更新日（FROM）
                             $date = SC_Utils_Ex::sfGetTimestamp($_POST['search_startyear'], $_POST['search_startmonth'], $_POST['search_startday']);
                             $where.= " AND update_date >= '" . $_POST['search_startyear'] . "/" . $_POST['search_startmonth']. "/" .$_POST['search_startday'] . "'";
                             $view_where.= " AND update_date >= '" . $_POST['search_startyear'] . "/" . $_POST['search_startmonth']. "/" .$_POST['search_startday'] . "'";
                             break;
-                        case 'search_endyear':		// 登録更新日（TO）
+                        case 'search_endyear': // 登録更新日（TO）
                             $date = SC_Utils_Ex::sfGetTimestamp($_POST['search_endyear'], $_POST['search_endmonth'], $_POST['search_endday']);
                             $date = date('Y/m/d', strtotime($date) + 86400);
                             $where.= " AND update_date < date('" . $date . "')";
                             $view_where.= " AND update_date < date('" . $date . "')";
                             break;
-                        case 'search_product_flag':	//種別
+                        case 'search_product_flag': //種別
                             global $arrSTATUS;
                             $search_product_flag = SC_Utils_Ex::sfSearchCheckBoxes($val);
                             if($search_product_flag != "") {
@@ -216,7 +216,7 @@ class LC_Page_Admin_Products extends LC_Page {
                                 $arrval[] = $search_product_flag;
                             }
                             break;
-                        case 'search_status':		// ステータス
+                        case 'search_status': // ステータス
                             $tmp_where = "";
                             foreach ($val as $element){
                                 if ($element != ""){
@@ -243,90 +243,69 @@ class LC_Page_Admin_Products extends LC_Page {
                 $objQuery = new SC_Query();
 
                 switch($_POST['mode']) {
-                case 'csv':
+                    case 'csv':
+                        require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_CSV_Ex.php");
 
-                    require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_CSV_Ex.php");
+                        $objCSV = new SC_Helper_CSV_Ex();
 
-                    $objCSV = new SC_Helper_CSV_Ex();
-                    // オプションの指定
-                    $option = "ORDER BY $order";
-                    // CSV出力タイトル行の作成
-                    $arrOutput = SC_Utils_Ex::sfSwapArray($objCSV->sfgetCsvOutput(1, " WHERE csv_id = 1 AND status = 1"));
+                        // CSVを送信する。正常終了の場合、終了。
+                        $objCSV->sfDownloadProductsCsv($where, $arrval, $order) && exit;
 
-                    if (count($arrOutput) <= 0) break;
+                        break;
+                    case 'delete_all':
+                        // 検索結果をすべて削除
+                        $where = "product_id IN (SELECT product_id FROM vw_products_allclass_detail AS alldtl WHERE $where)";
+                        $sqlval['del_flg'] = 1;
+                        $objQuery->update("dtb_products", $sqlval, $where, $arrval);
+                        $objQuery->delete("dtb_customer_favorite_products", $where, $arrval);
+                        break;
+                    default:
+                        // 読み込む列とテーブルの指定
+                        $col = "product_id, name, main_list_image, status, product_code_min, product_code_max, price02_min, price02_max, stock_min, stock_max, stock_unlimited_min, stock_unlimited_max, update_date";
+                        $from = "vw_products_allclass_detail AS alldtl ";
 
-                    $arrOutputCols = $arrOutput['col'];
-                    $arrOutputTitle = $arrOutput['disp_name'];
+                        // 行数の取得
+                        $linemax = $objQuery->count("dtb_products", $view_where, $arrval);
+                        $this->tpl_linemax = $linemax; // 何件が該当しました。表示用
 
-                    $head = SC_Utils_Ex::sfGetCSVList($arrOutputTitle);
-
-                    $data = $objCSV->lfGetProductsCSV($where, $option, $arrval, $arrOutputCols);
-
-                    // CSVを送信する。
-                    SC_Utils_Ex::sfCSVDownload($head.$data);
-                    exit;
-                    break;
-                case 'delete_all':
-                    // 検索結果の取得
-                    $col = "product_id";
-                    $from = "vw_products_nonclass AS noncls ";
-                    $arrProducts = $objQuery->select($col, $from, $where, $arrval);
-                    // 検索結果をすべて削除
-                    $sqlval['del_flg'] = 1;
-                    $where = "product_id = ?";
-                    if (count($arrProducts) > 0) {
-                        foreach ($arrProducts as $key => $val) {
-                            $objQuery->update("dtb_products", $sqlval, $where, array($arrProducts[$key]["product_id"]));
+                        // ページ送りの処理
+                        if(is_numeric($_POST['search_page_max'])) {
+                            $page_max = $_POST['search_page_max'];
+                        } else {
+                            $page_max = SEARCH_PMAX;
                         }
-                    }
-                    break;
-                default:
-                    // 読み込む列とテーブルの指定
-                    $col = "product_id, name, category_id, main_list_image, status, product_code, price01, price02, stock, stock_unlimited";
-                    $from = "vw_products_nonclass AS noncls ";
 
-                    // 行数の取得
-                    $linemax = $objQuery->count("dtb_products", $view_where, $arrval);
-                    $this->tpl_linemax = $linemax;				// 何件が該当しました。表示用
+                        // ページ送りの取得
+                        $objNavi = new SC_PageNavi($this->arrHidden['search_pageno'], $linemax, $page_max, "fnNaviSearchPage", NAVI_PMAX);
+                        $startno = $objNavi->start_row;
+                        $this->arrPagenavi = $objNavi->arrPagenavi;
 
-                    // ページ送りの処理
-                    if(is_numeric($_POST['search_page_max'])) {
-                        $page_max = $_POST['search_page_max'];
-                    } else {
-                        $page_max = SEARCH_PMAX;
-                    }
-
-                    // ページ送りの取得
-                    $objNavi = new SC_PageNavi($this->arrHidden['search_pageno'], $linemax, $page_max, "fnNaviSearchPage", NAVI_PMAX);
-                    $startno = $objNavi->start_row;
-                    $this->arrPagenavi = $objNavi->arrPagenavi;
-
-                    //キャンペーン商品検索時は、全結果の商品IDを変数に格納する
-                    if(isset($_POST['search_mode']) && $_POST['search_mode'] == 'campaign') {
-                        $arrRet = $objQuery->select($col, $from, $where, $arrval);
-                        if(count($arrRet) > 0) {
-                            $arrRet = sfSwapArray($arrRet);
-                            $pid = implode("-", $arrRet['product_id']);
-                            $this->arrHidden['campaign_product_id'] = $pid;
+                        //キャンペーン商品検索時は、全結果の商品IDを変数に格納する
+                        if(isset($_POST['search_mode']) && $_POST['search_mode'] == 'campaign') {
+                            $arrRet = $objQuery->select($col, $from, $where, $arrval);
+                            if(count($arrRet) > 0) {
+                                $arrRet = sfSwapArray($arrRet);
+                                $pid = implode("-", $arrRet['product_id']);
+                                $this->arrHidden['campaign_product_id'] = $pid;
+                            }
                         }
-                    }
 
-                    // 取得範囲の指定(開始行番号、行数のセット)
-                    //                    if(DB_TYPE != "mysql") $objQuery->setlimitoffset($page_max, $startno);
-                    $objQuery->setlimitoffset($page_max, $startno);
-                    // 表示順序
-                    $objQuery->setorder($order);
+                        // 取得範囲の指定(開始行番号、行数のセット)
+                        //                    if(DB_TYPE != "mysql") $objQuery->setlimitoffset($page_max, $startno);
+                        $objQuery->setlimitoffset($page_max, $startno);
+                        // 表示順序
+                        $objQuery->setorder($order);
 
-                    // 検索結果の取得
-                    $this->arrProducts = $objQuery->select($col, $from, $where, $arrval);
+                        // 検索結果の取得
+                        $this->arrProducts = $objQuery->select($col, $from, $where, $arrval);
 
-                    // 各商品ごとのカテゴリIDを取得
-                    if (count($this->arrProducts) > 0) {
-                        foreach ($this->arrProducts as $key => $val) {
-                            $this->arrProducts[$key]["categories"] = $objDb->sfGetCategoryId($val["product_id"]);
-                            $objDb->g_category_on = false;
+                        // 各商品ごとのカテゴリIDを取得
+                        if (count($this->arrProducts) > 0) {
+                            foreach ($this->arrProducts as $key => $val) {
+                                $this->arrProducts[$key]["categories"] = $objDb->sfGetCategoryId($val["product_id"]);
+                                $objDb->g_category_on = false;
+                            }
                         }
-                    }
                 }
             }
         }
@@ -353,11 +332,11 @@ class LC_Page_Admin_Products extends LC_Page {
     function lfConvertParam() {
         global $objPage;
         /*
-         *	文字列の変換
-         *	K :  「半角(ﾊﾝｶｸ)片仮名」を「全角片仮名」に変換
-         *	C :  「全角ひら仮名」を「全角かた仮名」に変換
-         *	V :  濁点付きの文字を一文字に変換。"K","H"と共に使用します
-         *	n :  「全角」数字を「半角(ﾊﾝｶｸ)」に変換
+         * 文字列の変換
+         * K :  「半角(ﾊﾝｶｸ)片仮名」を「全角片仮名」に変換
+         * C :  「全角ひら仮名」を「全角かた仮名」に変換
+         * V :  濁点付きの文字を一文字に変換。"K","H"と共に使用します
+         * n :  「全角」数字を「半角(ﾊﾝｶｸ)」に変換
          */
         $arrConvList['search_name'] = "KVa";
         $arrConvList['search_product_code'] = "KVa";

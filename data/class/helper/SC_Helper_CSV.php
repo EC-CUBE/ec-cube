@@ -98,54 +98,63 @@ class SC_Helper_CSV {
         return $ret;
     }
 
+    // CSVを送信する。(商品)
+    function sfDownloadProductsCsv($where, $arrval, $order) {
 
-    // CSV出力データを作成する。(商品)
-    function lfGetProductsCSV($where, $option, $arrval, $arrOutputCols) {
-        $objDb = new SC_Helper_DB_Ex();
-
-        $from = "vw_product_class AS prdcls";
-        $cols = SC_Utils_Ex::sfGetCommaList($arrOutputCols, true, array('category_id'));
+        // CSV出力タイトル行の作成
+        $arrOutput = SC_Utils_Ex::sfSwapArray($this->sfgetCsvOutput(1, " WHERE csv_id = 1 AND status = 1"));
+        if (count($arrOutput) <= 0) return false; // 失敗終了
+        $arrOutputCols = $arrOutput['col'];
 
         $objQuery = new SC_Query();
-        $objQuery->setoption($option);
+        $objQuery->setorder($order);
 
-        $list_data = $objQuery->select($cols, $from, $where, $arrval);
-        $max = count($list_data);
+        $dataRows = $objQuery->select(
+             SC_Utils_Ex::sfGetCommaList($arrOutputCols, true, array('category_id'))
+            ,'vw_product_class AS prdcls'
+            ,$where
+            ,$arrval
+        );
 
         // 規格分類名一覧
         if (in_array('classcategory_id1', $arrOutputCols) || in_array('classcategory_id2', $arrOutputCols)) {
+            $objDb = new SC_Helper_DB_Ex();
             $arrClassCatName = $objDb->sfGetIDValueList("dtb_classcategory", "classcategory_id", "name");
         }
 
-        if (!isset($data)) $data = "";
-        for($i = 0; $i < $max; $i++) {
-            // 関連商品情報の付与
+        $outputArray = array();
+
+        // ヘッダ行
+        $outputArray[] = $arrOutput['disp_name'];
+
+        // データ行
+        foreach ($dataRows as $row) {
+            // 規格名1
             if (in_array('classcategory_id1', $arrOutputCols)) {
-                $list_data[$i]['classcategory_id1'] = $arrClassCatName[$list_data[$i]['classcategory_id1']];
-            }
-            if (in_array('classcategory_id2', $arrOutputCols)) {
-                $list_data[$i]['classcategory_id2'] = $arrClassCatName[$list_data[$i]['classcategory_id2']];
+                $row['classcategory_id1'] = $arrClassCatName[$row['classcategory_id1']];
             }
 
+            // 規格名2
+            if (in_array('classcategory_id2', $arrOutputCols)) {
+                $row['classcategory_id2'] = $arrClassCatName[$row['classcategory_id2']];
+            }
+
+            // カテゴリID
             if (in_array('category_id', $arrOutputCols)) {
-                $arrCategory_id = $objQuery->getCol("dtb_product_categories",
+                $row['category_id'] = $objQuery->getCol("dtb_product_categories",
                                   "category_id",
                                   "product_id = ?",
-                                  array($list_data[$i]['product_id']));
+                                   array($row['product_id']));
+         }
 
-                // カテゴリID 付与
-                for ($j = 0; $j < count($arrCategory_id); $j++) {
-                    $list_data[$i]['category_id'] .= $arrCategory_id[$j];
-                    if ($j < count($arrCategory_id) - 1) {
-                        $list_data[$i]['category_id'] .= "|";
-                    }
-                }
-            }
+           $outputArray[] = $row;
+       }
 
-            // 各項目をCSV出力用に変換する。
-            $data .= $this->lfMakeProductsCSV($list_data[$i]);
-        }
-        return $data;
+       // CSVを送信する。
+       $this->lfDownloadCsv($outputArray);
+
+       // 成功終了
+       return ture;
     }
 
     // CSV出力データを作成する。(レビュー)
@@ -187,25 +196,38 @@ class SC_Helper_CSV {
         return $data;
     }
 
-    // CSV出力データを作成する。(カテゴリ)
-    function lfGetCategoryCSV($where, $option, $arrval, $arrOutputCols) {
-        $objDb = new SC_Helper_DB_Ex();
+    // CSVを送信する。(カテゴリ)
+    function sfDownloadCategoryCsv() {
 
-        $from = "dtb_category";
-        $cols = SC_Utils_Ex::sfGetCommaList($arrOutputCols);
+    // CSV出力タイトル行の作成
+    $arrOutput = SC_Utils_Ex::sfSwapArray($this->sfgetCsvOutput(5, " WHERE csv_id = 5 AND status = 1"));
+    if (count($arrOutput) <= 0) return false; // 失敗終了
+        $arrOutputCols = $arrOutput['col'];
 
         $objQuery = new SC_Query();
-        $objQuery->setoption($option);
+        $objQuery->setorder('rank DESC');
 
-        $list_data = $objQuery->select($cols, $from, $where, $arrval);
-        $max = count($list_data);
+        $dataRows = $objQuery->select(
+             SC_Utils_Ex::sfGetCommaList($arrOutputCols)
+            ,'dtb_category'
+            ,'del_flg = 0'
+        );
 
-        if (!isset($data)) $data = "";
-        for($i = 0; $i < $max; $i++) {
-            // 各項目をCSV出力用に変換する。
-            $data .= $this->lfMakeCSV($list_data[$i]);
+        $outputArray = array();
+
+        // ヘッダ行
+        $outputArray[] = $arrOutput['disp_name'];
+
+        // データ行
+        foreach ($dataRows as $row) {
+            $outputArray[] = $row;
         }
-        return $data;
+
+        // CSVを送信する。
+        $this->lfDownloadCsv($outputArray, 'category');
+
+        // 成功終了
+        return ture;
     }
 
     // CSV出力データを作成する。
@@ -230,14 +252,12 @@ class SC_Helper_CSV {
     // 各項目をCSV出力用に変換する。
     function lfMakeCSV($list) {
         $line = "";
-		
-		reset($list);
+
+        eset($list);
         while(list($key, $val) = each($list)){
             $tmp = "";
             switch($key) {
             case 'order_pref':
-                $tmp = $this->arrPref[$val];
-                break;
             case 'deliv_pref':
                 $tmp = $this->arrPref[$val];
                 break;
@@ -254,39 +274,11 @@ class SC_Helper_CSV {
         return $line;
     }
 
-    // 各項目をCSV出力用に変換する。(商品)
-    function lfMakeProductsCSV($list) {
-        $line = "";
-        if(is_array($list)) {
-			reset($list);
-        	while(list($key, $val) = each($list)){
-                $tmp = "";
-                switch($key) {
-                case 'point_rate':
-                    if($val == "") {
-                        $tmp = '0';
-                    } else {
-                        $tmp = $val;
-                    }
-                    break;
-                default:
-                    $tmp = $val;
-                    break;
-                }
-                $tmp = str_replace("\"", "\\\"", $tmp);
-                $line .= "\"".$tmp."\",";
-            }
-            // 文末の","を変換
-            $line = $this->replaceLineSuffix($line);
-        }
-        return $line;
-    }
-
     // 各項目をCSV出力用に変換する。(レビュー)
     function lfMakeReviewCSV($list) {
         $line = "";
-		reset($list);
-    	while(list($key, $val) = each($list)){
+        reset($list);
+        while(list($key, $val) = each($list)){
             $tmp = "";
             switch($key) {
             case 'sex':
@@ -315,8 +307,8 @@ class SC_Helper_CSV {
     // 各項目をCSV出力用に変換する。(トラックバック)
     function lfMakeTrackbackCSV($list) {
         $line = "";
-		reset($list);
-    	while(list($key, $val) = each($list)){
+        reset($list);
+        while(list($key, $val) = each($list)){
             $tmp = "";
             switch($key) {
             case 'status':
@@ -409,6 +401,69 @@ class SC_Helper_CSV {
                                            'A.status',
                                            'A.create_date'
                                            );
+    }
+
+
+    /**
+     * 1次元配列を1行のCSVとして返す
+     * 参考: http://jp.php.net/fputcsv
+     */
+    function sfArrayToCsv($fields, $delimiter = ',', $enclosure = '"', $arrayDelimiter = '|') {
+
+        if( strlen($delimiter) != 1 ) {
+            trigger_error('delimiter must be a single character', E_USER_WARNING);
+            return "";
+        }
+
+        if( strlen($enclosure) < 1 ) {
+            trigger_error('enclosure must be a single character', E_USER_WARNING);
+            return "";
+        }
+
+        foreach (array_keys($fields) as $key) {
+            $field =& $fields[$key];
+
+            // 配列を「|」区切りの文字列に変換する
+            if (is_array($field)) {
+                $field = implode($arrayDelimiter, $field);
+            }
+
+            /* enclose a field that contains a delimiter, an enclosure character, or a newline */
+            if (
+                   is_string($field)
+                && preg_match('/[' . preg_quote($delimiter) . preg_quote($enclosure) . '\\s]/', $field)
+            ) {
+                $field = $enclosure . preg_replace('/' . preg_quote($enclosure) . '/', $enclosure . $enclosure, $field) . $enclosure;
+            }
+        }
+
+        return implode($delimiter, $fields);
+    }
+
+    /**
+     * CSVを送信する。
+     */
+    function lfDownloadCsv($arrayData, $prefix = ""){
+
+        if($prefix == "") {
+            $dir_name = SC_Utils::sfUpDirName();
+            $file_name = $dir_name . date("ymdHis") .".csv";
+        } else {
+            $file_name = $prefix . date("ymdHis") .".csv";
+        }
+
+        /* HTTPヘッダの出力 */
+        Header("Content-disposition: attachment; filename=${file_name}");
+        Header("Content-type: application/octet-stream; name=${file_name}");
+        Header("Cache-Control: ");
+        Header("Pragma: ");
+
+        /* データを出力 */
+        foreach ($arrayData as $lineArray) {
+            $lineString = $this->sfArrayToCsv($lineArray);
+            $lineString = mb_convert_encoding($lineString, 'SJIS-Win');
+            echo $lineString . "\n";
+        }
     }
 }
 ?>
