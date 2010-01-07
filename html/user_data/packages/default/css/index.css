@@ -50,6 +50,7 @@ div.recomendblock {
 
 div.recomendleft {
     float: left;
+    width: 190px;
     margin: 0 5px 0 0;
 }
 
