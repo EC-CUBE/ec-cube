@@ -107,12 +107,13 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
 
                     // レコード数を得る
                     $rec_count = $this->lfCSVRecordCount($enc_filepath);
-                    if ($rec_count === false) {
+                    $fp = fopen($enc_filepath, "r");
+
+                    if ($rec_count === false || $fp === false) {
                         $err = false;
                         $arrErr['bad_file_pointer'] = "※ 不正なファイルポインタが検出されました";
                     }
 
-                    $fp = fopen($enc_filepath, "r");
                     $line = 0;      // 行数
                     $regist = 0;    // 登録数
 
@@ -120,59 +121,60 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
                     $objQuery->begin();
 
                     echo "■　CSV登録進捗状況 <br/><br/>\n";
+                    if ($fp !== false) {
+                        while (!feof($fp) && !$err) {
+                            $arrCSV = fgetcsv($fp, CSV_LINE_MAX);
 
-                    while (!feof($fp) && !$err) {
-                        $arrCSV = fgetcsv($fp, CSV_LINE_MAX);
+                            // 行カウント
+                            $line++;
 
-                        // 行カウント
-                        $line++;
-
-                        if ($line <= 1) {
-                            continue;
-                        }
-
-                        // 項目数カウント
-                        $max = count($arrCSV);
-
-                        // 項目数が1以下の場合は無視する
-                        if ($max <= 1) {
-                            continue;
-                        }
-
-                        // 項目数チェック
-                        if ($max != $colmax) {
-                            echo "※ 項目数が" . $max . "個検出されました。項目数は" . $colmax . "個になります。</br>\n";
-                            $err = true;
-                        } else {
-                            // シーケンス配列を格納する。
-                            $this->objFormParam->setParam($arrCSV, true);
-                            $arrRet = $this->objFormParam->getHashArray();
-                            $this->objFormParam->setParam($arrRet);
-                            // 入力値の変換
-                            $this->objFormParam->convParam();
-                            // <br>なしでエラー取得する。
-                            $arrCSVErr = $this->lfCheckError();
-                        }
-
-                        // 入力エラーチェック
-                        if (count($arrCSVErr) > 0) {
-                            echo "<font color=\"red\">■" . $line . "行目でエラーが発生しました。</font></br>\n";
-                            foreach($arrCSVErr as $val) {
-                                $this->printError($val);
+                            if ($line <= 1) {
+                                continue;
                             }
-                            $err = true;
-                        }
 
-                        if (!$err) {
-                            $this->lfRegistProduct($objQuery, $rec_count, $line);
-                            $regist++;
-                        }
-                        $arrParam = $this->objFormParam->getHashArray();
+                            // 項目数カウント
+                            $max = count($arrCSV);
 
-                        if (!$err) echo $line." / ".$rec_count. "行目　（カテゴリID：".$arrParam['category_id']." / カテゴリ名：".$arrParam['category_name'].")\n<br />";
-                        flush();
+                            // 項目数が1以下の場合は無視する
+                            if ($max <= 1) {
+                                continue;
+                            }
+
+                            // 項目数チェック
+                            if ($max != $colmax) {
+                                echo "※ 項目数が" . $max . "個検出されました。項目数は" . $colmax . "個になります。</br>\n";
+                                $err = true;
+                            } else {
+                                // シーケンス配列を格納する。
+                                $this->objFormParam->setParam($arrCSV, true);
+                                $arrRet = $this->objFormParam->getHashArray();
+                                $this->objFormParam->setParam($arrRet);
+                                // 入力値の変換
+                                $this->objFormParam->convParam();
+                                // <br>なしでエラー取得する。
+                                $arrCSVErr = $this->lfCheckError();
+                            }
+
+                            // 入力エラーチェック
+                            if (count_chars(string[, int mode])($arrCSVErr) > 0) {
+                                echo "<font color=\"red\">■" . $line . "行目でエラーが発生しました。</font></br>\n";
+                                foreach($arrCSVErr as $val) {
+                                    $this->printError($val);
+                                }
+                                $err = true;
+                            }
+
+                            if (!$err) {
+                                $this->lfRegistProduct($objQuery, $rec_count, $line);
+                                $regist++;
+                            }
+                            $arrParam = $this->objFormParam->getHashArray();
+
+                            if (!$err) echo $line." / ".$rec_count. "行目　（カテゴリID：".$arrParam['category_id']." / カテゴリ名：".$arrParam['category_name'].")\n<br />";
+                            flush();
+                        }
+                        fclose($fp);
                     }
-                    fclose($fp);
 
                     if (!$err) {
                         $objQuery->commit();
@@ -191,8 +193,8 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
                 flush();
                 exit;
                 break;
-            default:
-                break;
+        default:
+            break;
         }
 
         $objView->assignobj($this);
