@@ -82,7 +82,24 @@ class SC_Utils {
         if( !defined('ECCUBE_INSTALL') ) {
             if( !ereg('/install/', $_SERVER['PHP_SELF']) ) {
                 // インストールページに遷移させる
-                header('Location: ./install/');
+
+                $script_filename = $_SERVER['SCRIPT_FILENAME'];
+                list($real_root, $tmp) = explode('/html/', $script_filename);
+                $real_root = $real_root . '/html/';
+                $url_dir = $_SERVER['REQUEST_URI'];
+
+                if ($dh = opendir($real_root)) {
+                    $arrDir = array();
+                    while ($entry = readdir($dh)) {
+                        if (is_dir($real_root.$entry) && !in_array($entry, array('.', '..', '.svn', 'install'))) {
+                            $url_dir = rtrim($url_dir, $entry.'/');
+                        }
+                    }
+                    closedir($dh);
+                }
+
+                $location = $url_dir . '/install/';
+                header('Location: ' . $location);
                 exit;
             }
         } else {
