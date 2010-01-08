@@ -261,8 +261,10 @@ class LC_Page_Admin_Products extends LC_Page {
                         break;
                     default:
                         // 読み込む列とテーブルの指定
-                        $col = "product_id, name, main_list_image, status, product_code_min, product_code_max, price02_min, price02_max, stock_min, stock_max, stock_unlimited_min, stock_unlimited_max, update_date";
-                        $from = "vw_products_allclass_detail AS alldtl ";
+                        #$col = "product_id, name, main_list_image, status, product_code_min, product_code_max, price02_min, price02_max, stock_min, stock_max, stock_unlimited_min, stock_unlimited_max, update_date";
+                        #$from = "vw_products_allclass_detail AS alldtl ";
+                        $col = "product_id, name, category_id, main_list_image, status, product_code, price01, price02, stock, stock_unlimited";
+                        $from = "vw_products_nonclass AS noncls ";
 
                         // 行数の取得
                         $linemax = $objQuery->count("dtb_products", $view_where, $arrval);
