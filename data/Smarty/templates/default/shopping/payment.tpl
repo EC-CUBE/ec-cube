@@ -42,7 +42,7 @@
         <table summary="お支払方法選択">
           <tr>
             <th>選択</th>
-            <th colspan="<!--{if $img_show == false}-->2<!--{else}-->3<!--{/if}-->">お支払方法</th>
+            <th colspan="<!--{if $tpl_img_show == false}-->1<!--{else}-->2<!--{/if}-->">お支払方法</th>
           </tr>
           <!--{section name=cnt loop=$arrPayment}-->
           <tr>
@@ -51,13 +51,11 @@
             <td>
               <label for="pay_<!--{$smarty.section.cnt.iteration}-->"><!--{$arrPayment[cnt].payment_method|escape}--><!--{if $arrPayment[cnt].note != ""}--><!--{/if}--></label>
             </td>
-            <!--{if $arrPayment[cnt].payment_image != ""}-->
-                <td>
-                    <img src="<!--{$smarty.const.IMAGE_SAVE_URL}--><!--{$arrPayment[cnt].payment_image}-->" />
-                </td>
-            <!--{elseif $img_show == true}-->
-                <td></td>
-            <!--{/if}-->
+            <td>
+              <!--{if $arrPayment[cnt].payment_image != ""}-->
+              <img src="<!--{$smarty.const.IMAGE_SAVE_URL}--><!--{$arrPayment[cnt].payment_image}-->" />
+              <!--{/if}-->
+            </td>
           </tr>
           <!--{/section}-->
         </table>
