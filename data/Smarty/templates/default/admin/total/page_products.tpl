@@ -24,7 +24,7 @@
 <table id="total-products" class="list">
   <tr>
     <th>順位</th>
-    <th>商品番号</th>
+    <th>商品コード</th>
     <th>商品名</th>
     <th>購入件数</th>
     <th>点数</th>
@@ -45,7 +45,7 @@
 
   <tr class="<!--{$color}-->">
     <td class="center"><!--{*順位*}--><!--{$smarty.section.cnt.iteration}--></td>
-    <td class="right"><!--{*商品番号*}--><!--{$arrResults[cnt].product_code|escape}--></td>
+    <td class="right"><!--{*商品コード*}--><!--{$arrResults[cnt].product_code|escape}--></td>
     <td class="left"><!--{*商品名*}--><!--{$arrResults[cnt].product_name|sfCutString:40|escape}--></td>
     <td class="right"><!--{*購入件数*}--><!--{$arrResults[cnt].order_count}-->件</td>
     <td class="right"><!--{*点数*}--><!--{$arrResults[cnt].products_count}--></td>
@@ -56,7 +56,7 @@
   
   <tr>
     <th>順位</th>
-    <th>商品番号</th>
+    <th>商品コード</th>
     <th>商品名</th>
     <th>購入件数</th>
     <th>点数</th>

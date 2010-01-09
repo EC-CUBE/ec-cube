@@ -74,7 +74,7 @@ function func_submit( id ){
 <table class="list">
   <tr>
     <th>商品画像</th>
-    <th>商品番号</th>
+    <th>商品コード</th>
     <th>商品名</th>
     <th>決定</th>
   </tr>

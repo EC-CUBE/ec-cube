@@ -134,7 +134,7 @@ function lnSetSelect(name1, name2, id, val) {
     <td><input type="text" name="search_name" value="<!--{$arrForm.search_name}-->" size="35" class="box35" /></td>
   </tr>
   <tr>
-    <th>商品番号</th>
+    <th>商品コード</th>
     <td><input type="text" name="search_product_code" value="<!--{$arrForm.search_product_code}-->" size="35" class="box35" /></td>
   </tr>
 </table>
@@ -153,7 +153,7 @@ function lnSetSelect(name1, name2, id, val) {
 <table class="list">
   <tr>
     <th class="image">商品画像</th>
-    <th class="id">商品番号</th>
+    <th class="id">商品コード</th>
     <th class="name">商品名</th>
     <th class="action">決定</th>
   </tr>

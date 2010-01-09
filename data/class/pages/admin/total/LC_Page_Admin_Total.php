@@ -1025,7 +1025,7 @@ class LC_Page_Admin_Total extends LC_Page {
             // 商品別集計
         case 'products':
             $arrTitleCol = array(
-                                 '商品番号',
+                                 '商品コード',
                                  '商品名',
                                  '購入件数',
                                  '点数',
