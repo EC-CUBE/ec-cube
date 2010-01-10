@@ -592,10 +592,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         $sqlval['add_point'] = 0;
         $sqlval['use_point'] = 0;
 
-        // 注文ステータス:指定が無ければ新規受付に設定
-        if (strlen($sqlval['status']) == 0) {
-            $sqlval['status'] = ORDER_NEW;
-        }
         // customer_id
         if ($sqlval["customer_id"] == "") {
             $sqlval['customer_id'] = '0';
