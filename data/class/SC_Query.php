@@ -85,11 +85,12 @@ class SC_Query {
      * @param string $table テーブル名
      * @param string $where WHERE句
      * @param array $arrval プレースホルダ
+     * @param integer $fetchmode 使用するフェッチモード。デフォルトは DB_FETCHMODE_ASSOC。
      * @return array|null
      */
-    function select($col, $table, $where = "", $arrval = array()){
+    function select($col, $table, $where = "", $arrval = array(), $fetchmode = DB_FETCHMODE_ASSOC) {
         $sqlse = $this->getsql($col, $table, $where);
-        $ret = $this->conn->getAll($sqlse, $arrval);
+        $ret = $this->conn->getAll($sqlse, $arrval, $fetchmode);
         return $ret;
     }
 
@@ -146,8 +147,16 @@ class SC_Query {
         return $ret;
     }
 
-    function getall($sql, $arrval = array()) {
-        $ret = $this->conn->getAll($sql, $arrval);
+    /**
+     * クエリを実行し、全ての行を返す
+     *
+     * @param string $sql SQL クエリ
+     * @param array $arrVal プリペアドステートメントの実行時に使用される配列。配列の要素数は、クエリ内のプレースホルダの数と同じでなければなりません。 
+     * @param integer $fetchmode 使用するフェッチモード。デフォルトは DB_FETCHMODE_ASSOC。
+     * @return array データを含む2次元配列。失敗した場合に 0 または DB_Error オブジェクトを返します。
+     */
+    function getall($sql, $arrval = array(), $fetchmode = DB_FETCHMODE_ASSOC) {
+        $ret = $this->conn->getAll($sql, $arrval, $fetchmode);
         return $ret;
     }
 

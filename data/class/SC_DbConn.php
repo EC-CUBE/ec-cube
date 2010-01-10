@@ -146,29 +146,37 @@ class SC_DbConn {
         return $this->result;
     }
 
-    // SELECT文の実行結果を全て取得
-    function getAll($n, $arr = ""){
+    /**
+     * クエリを実行し、全ての行を返す
+     *
+     * @param string $sql SQL クエリ
+     * @param array $arrVal プリペアドステートメントの実行時に使用される配列。配列の要素数は、クエリ内のプレースホルダの数と同じでなければなりません。 
+     * @param integer $fetchmode 使用するフェッチモード。デフォルトは DB_FETCHMODE_ASSOC。
+     * @return array データを含む2次元配列。失敗した場合に 0 または DB_Error オブジェクトを返します。
+     */
+    function getAll($sql, $arrVal = "", $fetchmode = DB_FETCHMODE_ASSOC) {
 
         // mysqlの場合にはビュー表を変換する
-        if (DB_TYPE == "mysql") $n = $this->dbFactory->sfChangeMySQL($n);
+        if (DB_TYPE == "mysql") $sql = $this->dbFactory->sfChangeMySQL($sql);
 
-        if(PEAR::isError($this->conn)) {
-            if(ADMIN_MODE){
+        // XXX このエラー処理はここで行なうべきなのか疑問。また、戻り値も疑問(なお、変更時はドキュメントも変更を)。
+        if (PEAR::isError($this->conn)) {
+            if (ADMIN_MODE) {
                 SC_Utils_Ex::sfErrorHeader("DBへの接続に失敗しました。:" . $this->dsn);
-            }else{
+            } else {
                 SC_Utils_Ex::sfErrorHeader("DBへの接続に失敗しました。:");
             }
             return 0;
         }
 
-        if ( $arr ){
-            $result = $this->conn->getAll($n, $arr, DB_FETCHMODE_ASSOC);
+        if ($arrVal) { // FIXME 判定が曖昧
+            $result = $this->conn->getAll($sql, $arrVal, $fetchmode);
         } else {
-            $result = $this->conn->getAll($n, DB_FETCHMODE_ASSOC);
+            $result = $this->conn->getAll($sql, $fetchmode);
         }
 
-        if ($this->conn->isError($result)){
-            $this->send_err_mail($result, $n);
+        if ($this->conn->isError($result)) {
+            $this->send_err_mail($result, $sql);
         }
         $this->result = $result;
 
