@@ -98,6 +98,15 @@
         </tr>
         <!--{/if}-->
         <tr>
+            <th>注文番号</th>
+            <td><!--{$arrForm.order_id.value}--></td>
+        </tr>
+        <tr>
+            <th>受注日</th>
+            <td><!--{$arrForm.create_date.value|sfDispDBDate}--></td>
+            <input type="hidden" name="create_date" value="<!--{$arrForm.create_date.value}-->" />
+        </tr>
+        <tr>
             <th>対応状況</th>
             <td>
                 <!--{assign var=key value="status"}-->
@@ -123,15 +132,6 @@
         <!--{/if}-->
     </h2>
     <table class="form">
-        <tr>
-            <th>注文番号</th>
-            <td><!--{$arrForm.order_id.value}--></td>
-        </tr>
-        <tr>
-            <th>受注日</th>
-            <td><!--{$arrForm.create_date.value|sfDispDBDate}--></td>
-            <input type="hidden" name="create_date" value="<!--{$arrForm.create_date.value}-->" />
-        </tr>
         <tr>
             <th>顧客ID</th>
             <td>
@@ -213,6 +213,17 @@
         <tr>
             <th>備考</th>
             <td><!--{$arrForm.message.value|escape|nl2br}--></td>
+        </tr>
+        <tr>
+            <th>現在ポイント</th>
+            <td>
+                <!--{if $arrForm.customer_id > 0}-->
+                    <!--{$arrForm.point.value|number_format}-->
+                     pt
+                <!--{else}-->
+                    （非会員）
+            <!--{/if}-->
+            </td>
         </tr>
     </table>
     <!--▲お客様情報ここまで-->
@@ -406,17 +417,6 @@
                     <!--{$arrForm.add_point.value|number_format|default:0}-->
                      pt
                 </td>
-            </tr>
-            <tr>
-                <!--{if $arrForm.customer_id > 0}-->
-                <th colspan="5" class="right">現在ポイント（ポイントの修正は<a href="?" onclick="return fnEdit('<!--{$arrForm.customer_id.value}-->');">顧客編集</a>から手動にてお願い致します。）</th>
-                <td class="right">
-                    <!--{$arrForm.point.value|number_format}-->
-                     pt
-                </td>
-                <!--{else}-->
-                <th colspan="5" class="right">現在ポイント</th><td align="center">（なし）</td>
-                <!--{/if}-->
             </tr>
         <!--{/if}-->
     </table>

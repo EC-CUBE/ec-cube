@@ -2053,6 +2053,23 @@ echo $template_path;
     }
 
     /**
+     * ポイント使用するかの判定
+     * 
+     * @param integer $status 対応状況
+     * @return boolean 使用するか(顧客テーブルから減算するか)
+     */
+    function sfIsUsePoint($status) {
+        switch ($status) {
+            case ORDER_CANCEL:      // キャンセル
+                return false;
+            default:
+                break;
+        }
+
+        return true;
+    }
+
+    /**
      * ポイント加算するかの判定
      * 
      * @param integer $status 対応状況
@@ -2073,7 +2090,7 @@ echo $template_path;
             default:
                 break;
         }
-        
+
         return false;
     }
 

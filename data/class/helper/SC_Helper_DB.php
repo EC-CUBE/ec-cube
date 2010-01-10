@@ -205,18 +205,18 @@ class SC_Helper_DB {
      */
     function sf_getBasisData($force = false) {
         static $data;
-        
+
         if ($force || !isset($data)) {
             $objQuery = new SC_Query();
             $arrRet = $objQuery->select('*', 'dtb_baseinfo');
-            
+
             if (isset($arrRet[0])) {
                 $data = $arrRet[0];
             } else {
                 $data = array();
             }
         }
-        
+
         return $data;
     }
 
@@ -343,13 +343,13 @@ class SC_Helper_DB {
                 } else {
                     $quantity = $arrCart['quantity'];
                 }
-                
+
                 // (商品規格単位でなく)商品単位での評価のための準備
                 $product_id = $arrCart['id'][0];
                 $arrQuantityInfo_by_product[$product_id]['quantity'] += $quantity;
                 $arrQuantityInfo_by_product[$product_id]['sale_limit'] = $arrData['sale_limit'];
                 $arrQuantityInfo_by_product[$product_id]['name'] = $arrData['name'];
-                
+
                 $objPage->arrProductsClass[$cnt] = $arrData;
                 $objPage->arrProductsClass[$cnt]['quantity'] = $quantity;
                 $objPage->arrProductsClass[$cnt]['cart_no'] = $arrCart['cart_no'];
@@ -390,7 +390,7 @@ class SC_Helper_DB {
                 $objCartSess->delProduct($arrCart['cart_no']);
             }
         }
-        
+
         foreach ($arrQuantityInfo_by_product as $product_id => $quantityInfo) {
             if (SC_Utils_Ex::sfIsInt($quantityInfo['sale_limit']) && $quantityInfo['quantity'] > $quantityInfo['sale_limit']) {
                 $objPage->tpl_error = "※「{$quantityInfo['name']}」は数量「{$quantityInfo['sale_limit']}」以下に販売制限しております。一度にこれ以上の購入はできません。\n";
@@ -403,7 +403,7 @@ class SC_Helper_DB {
                 }
             }
         }
-        
+
         // 全商品合計金額(税込み)
         $objPage->tpl_total_pretax = $objCartSess->getAllProductsTotal();
         // 全商品合計消費税
@@ -438,7 +438,7 @@ class SC_Helper_DB {
             } else {
                 $objQuery->update("dtb_order_temp", $sqlval, $where, array($uniqid));
             }
-            
+
             // 受注_Tempテーブルの名称列を更新
             $this->sfUpdateOrderNameCol($uniqid, true);
         }
@@ -986,20 +986,20 @@ class SC_Helper_DB {
             WHERE $sql_where
             GROUP BY T1.category_id, T2.category_id
 __EOS__;
-        
+
         $objQuery->query($sql);
 
         //子カテゴリ内の商品数を集計する
-        
+
         // カテゴリ情報を取得
         $arrCat = $objQuery->select('category_id', 'dtb_category');
-        
+
         foreach ($arrCat as $row) {
             $category_id = $row['category_id'];
             $arrval = array();
-            
+
             $arrval[] = $category_id;
-            
+
             list($tmp_where, $tmp_arrval) = $this->sfGetCatWhere($category_id);
             if ($tmp_where != "") {
                 $sql_where_product_ids = "alldtl.product_id IN (SELECT product_id FROM dtb_product_categories WHERE " . $tmp_where . ")";
@@ -1007,7 +1007,7 @@ __EOS__;
             } else {
                 $sql_where_product_ids = '0<>0'; // 一致させない
             }
-            
+
             $sql = <<< __EOS__
                 INSERT INTO dtb_category_total_count (category_id, product_count, create_date)
                 SELECT
@@ -1017,7 +1017,7 @@ __EOS__;
                 FROM vw_products_allclass_detail AS alldtl
                 WHERE ($sql_where) AND ($sql_where_product_ids)
 __EOS__;
-            
+
             $objQuery->query($sql, $arrval);
         }
     }
@@ -1520,7 +1520,7 @@ __EOS__;
     function sfTotalConfirm($arrData, &$objPage, &$objCartSess, $dummy1 = null, $objCustomer = "") {
         // 店舗基本情報を取得する
         $arrInfo = SC_Helper_DB_Ex::sf_getBasisData();
-        
+
         // 未定義変数を定義
         if (!isset($arrData['deliv_pref'])) $arrData['deliv_pref'] = "";
         if (!isset($arrData['payment_id'])) $arrData['payment_id'] = "";
@@ -1552,7 +1552,7 @@ __EOS__;
         if (DELIV_FREE_AMOUNT > 0) {
             // 商品の合計数量
             $total_quantity = $objCartSess->getTotalQuantity(true);
-            
+
             if($total_quantity >= DELIV_FREE_AMOUNT) {
                 $arrData['deliv_fee'] = 0;
             }
@@ -1575,7 +1575,7 @@ __EOS__;
         // 加算ポイントの計算
         if (USE_POINT !== false) {
             $arrData['add_point'] = SC_Helper_DB_Ex::sfGetAddPoint($objPage->tpl_total_point, $arrData['use_point']);
-                
+
             if($objCustomer != "") {
                 // 誕生日月であった場合
                 if($objCustomer->isBirthMonth()) {
@@ -1764,7 +1764,7 @@ __EOS__;
      */
     function sfUpdateOrderNameCol($order_id, $temp_table = false) {
         $objQuery = new SC_Query();
-        
+
         if ($temp_table) {
             $tgt_table = 'dtb_order_temp';
             $sql_where = 'WHERE order_temp_id = ?';
@@ -1772,7 +1772,7 @@ __EOS__;
             $tgt_table = 'dtb_order';
             $sql_where = 'WHERE order_id = ?';
         }
-        
+
         $sql = <<< __EOS__
             UPDATE
                 {$tgt_table}
@@ -1781,7 +1781,7 @@ __EOS__;
                 ,deliv_time = (SELECT deliv_time FROM dtb_delivtime WHERE time_id = {$tgt_table}.deliv_time_id AND deliv_id = {$tgt_table}.deliv_id)
             $sql_where
 __EOS__;
-        
+
         $objQuery->query($sql, array($order_id));
     }
 
@@ -1794,7 +1794,7 @@ __EOS__;
     function sfTax($price) {
         // 店舗基本情報を取得
         $CONF = SC_Helper_DB_Ex::sf_getBasisData();
-        
+
         return SC_Utils_Ex::sfTax($price, $CONF['tax'], $CONF['tax_rule']);
     }
 
@@ -1807,7 +1807,7 @@ __EOS__;
     function sfPreTax($price, $tax = null, $tax_rule = null) {
         // 店舗基本情報を取得
         $CONF = SC_Helper_DB_Ex::sf_getBasisData();
-        
+
         return SC_Utils_Ex::sfPreTax($price, $CONF['tax'], $CONF['tax_rule']);
     }
 
@@ -1821,7 +1821,7 @@ __EOS__;
     function sfGetAddPoint($totalpoint, $use_point) {
         // 店舗基本情報を取得
         $CONF = SC_Helper_DB_Ex::sf_getBasisData();
-        
+
         return SC_Utils_Ex::sfGetAddPoint($totalpoint, $use_point, $CONF['point_rate']);
     }
 
@@ -1833,62 +1833,79 @@ __EOS__;
      * @param integer $orderId 注文番号
      * @param integer|null $newStatus 対応状況 (null=変更無し)
      * @param integer|null $newAddPoint 加算ポイント (null=変更無し)
-     * @param integer|null $newUsePoint ポイント (null=変更無し)
+     * @param integer|null $newUsePoint 使用ポイント (null=変更無し)
      * @return void
      */
     function sfUpdateOrderStatus($orderId, $newStatus = null, $newAddPoint = null, $newUsePoint = null) {
         $objQuery = new SC_Query();
-        
+
         $arrOrderOld = $objQuery->getRow('dtb_order', 'status, add_point, use_point, customer_id', 'order_id = ?', array($orderId));
-        
-        // 対応状況
+
+        // 対応状況が変更無しの場合、DB値を引き継ぐ
         if (is_null($newStatus)) {
             $newStatus = $arrOrderOld['status'];
         }
-        
+
+        // 使用ポイント、DB値を引き継ぐ
+        if (is_null($newUsePoint)) {
+            $newUsePoint = $arrOrderOld['use_point'];
+        }
+
+        // 加算ポイント、DB値を引き継ぐ
+        if (is_null($newAddPoint)) {
+            $newAddPoint = $arrOrderOld['add_point'];
+        }
+
         if (USE_POINT !== false) {
-            $addPoint = 0;
-            
-            // 使用ポイント
-            if (!is_null($newUsePoint)) {
-                $addPoint += $arrOrderOld['use_point']; // 変更前のポイントを戻す
-                $addPoint -= $newUsePoint;              // 変更後のポイントを引く
+            // 顧客.ポイントの加減値
+            $addCustomerPoint = 0;
+
+            // ▼使用ポイント
+            // 変更前の対応状況が利用対象の場合、変更前の使用ポイント分を戻す
+            if (SC_Utils_Ex::sfIsUsePoint($arrOrderOld['status'])) {
+                $addCustomerPoint += $arrOrderOld['use_point'];
             }
-            
+
+            // 変更後の対応状況が利用対象の場合、変更後の使用ポイント分を引く
+            if (SC_Utils_Ex::sfIsUsePoint($newStatus)) {
+                $addCustomerPoint -= $newUsePoint;
+            }
+            // ▲使用ポイント
+
             // ▼加算ポイント
-            // 変更前の状態が加算対象の場合、
+            // 変更前の対応状況が加算対象の場合、変更前の加算ポイント分を戻す
             if (SC_Utils_Ex::sfIsAddPoint($arrOrderOld['status'])) {
-                $addPoint -= $arrOrderOld['add_point'];
+                $addCustomerPoint -= $arrOrderOld['add_point'];
             }
-            
-            // 変更後の状態が加算対象の場合、
+
+            // 変更後の対応状況が加算対象の場合、変更後の加算ポイント分を足す
             if (SC_Utils_Ex::sfIsAddPoint($newStatus)) {
-                $addPoint += is_null($newAddPoint) ? $arrOrderOld['add_point'] : $newAddPoint;
+                $addCustomerPoint += $newAddPoint;
             }
             // ▲加算ポイント
-            
-            if ($addPoint != 0) {
+
+            if ($addCustomerPoint != 0) {
                 // ▼顧客テーブルの更新
                 $sqlval = array();
                 $where = '';
                 $arrVal = array();
                 $arrRawSql = array();
                 $arrRawSqlVal = array();
-                
+
                 $sqlval['update_date'] = 'Now()';
                 $arrRawSql['point'] = 'point + ?';
-                $arrRawSqlVal[] = $addPoint;
+                $arrRawSqlVal[] = $addCustomerPoint;
                 $where .= 'customer_id = ?';
                 $arrVal[] = $arrOrderOld['customer_id'];
-                
+
                 $objQuery->update('dtb_customer', $sqlval, $where, $arrVal, $arrRawSql, $arrRawSqlVal);
                 // ▲顧客テーブルの更新
-                
-                // ポイントをマイナスした場合、
-                if ($addPoint < 0) {
+
+                // 顧客.ポイントをマイナスした場合、
+                if ($addCustomerPoint < 0) {
                     $sql = 'SELECT point FROM dtb_customer WHERE customer_id = ?';
                     $point = $objQuery->getone($sql, array($arrOrderOld['customer_id']));
-                    // 変更後のポイントがマイナスの場合、
+                    // 変更後の顧客.ポイントがマイナスの場合、
                     if ($point < 0) {
                         // ロールバック
                         $objQuery->rollback();
@@ -1898,16 +1915,12 @@ __EOS__;
                 }
             }
         }
-        
+
         // ▼受注テーブルの更新
         $sqlval = array();
         if (USE_POINT !== false) {
-            if (!is_null($newAddPoint)) {
-                $sqlval['add_point'] = $newAddPoint;
-            }
-            if (!is_null($newUsePoint)) {
-                $sqlval['use_point'] = $newUsePoint;
-            }
+            $sqlval['add_point'] = $newAddPoint;
+            $sqlval['use_point'] = $newUsePoint;
         }
         // ステータスが発送済みに変更の場合、発送日を更新
         if ($arrOrderOld['status'] != ORDER_DELIV && $newStatus == ORDER_DELIV) {
@@ -1915,7 +1928,7 @@ __EOS__;
         }
         $sqlval['status'] = $newStatus;
         $sqlval['update_date'] = 'Now()';
-        
+
         $objQuery->update('dtb_order', $sqlval, 'order_id = ?', array($orderId));
         // ▲受注テーブルの更新
     }
