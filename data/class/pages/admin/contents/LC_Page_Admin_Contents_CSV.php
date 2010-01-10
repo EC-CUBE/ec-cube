@@ -118,15 +118,15 @@ class LC_Page_Admin_Contents_CSV extends LC_Page {
 
         // 出力項目の取得
         $arrOutput = SC_Utils_Ex::sfSwapArray($objCSV->sfgetCsvOutput($subno_csv, "WHERE csv_id = ? AND status = 1", array($subno_id)));
-        $arrOutput = SC_Utils_Ex::sfarrCombine($arrOutput['col'], $arrOutput['disp_name']);
+        $arrOutput = SC_Utils_Ex::sfarrCombine($arrOutput['no'], $arrOutput['disp_name']);
 
         // 非出力項目の取得
         $arrChoice = SC_Utils_Ex::sfSwapArray($objCSV->sfgetCsvOutput($subno_csv, "WHERE csv_id = ? AND status = 2", array($subno_id)));
 
-        if (!isset($arrChoice['col'])) $arrChoice['col'] = array();
+        if (!isset($arrChoice['no'])) $arrChoice['no'] = array();
         if (!isset($arrChoice['disp_name'])) $arrChoice['disp_name'] = array();
 
-        $arrChoice = SC_Utils_Ex::sfarrCombine($arrChoice['col'], $arrChoice['disp_name']);
+        $arrChoice = SC_Utils_Ex::sfarrCombine($arrChoice['no'], $arrChoice['disp_name']);
 
         $this->arrOutput=$arrOutput;
         $this->arrChoice=$arrChoice;
@@ -159,8 +159,8 @@ class LC_Page_Admin_Contents_CSV extends LC_Page {
         // 使用するものだけ、再更新する。
         if (is_array($arrData)) {
             foreach($arrData as $key => $val){
-                $upd_sql = "UPDATE dtb_csv SET status = 1, rank = ? WHERE csv_id = ? AND col = ? ";
-                $objQuery->query($upd_sql, array($key+1, $csv_id,$val));
+                $upd_sql = "UPDATE dtb_csv SET status = 1, rank = ? WHERE csv_id = ? AND no = ? ";
+                $objQuery->query($upd_sql, array($key+1, $csv_id, $val));
             }
         }
     }
