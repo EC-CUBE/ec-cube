@@ -86,7 +86,8 @@ class SC_Utils {
                 $script_filename = $_SERVER['SCRIPT_FILENAME'];
                 list($real_root, $tmp) = explode('/html/', $script_filename);
                 $real_root = $real_root . '/html/';
-                $url_dir = $_SERVER['REQUEST_URI'];
+                $script_name = $_SERVER['SCRIPT_NAME'];
+                $url_dir = rtrim($script_name, basename($script_name));
 
                 if ($dh = opendir($real_root)) {
                     $arrDir = array();
