@@ -477,6 +477,9 @@ __EOS__;
         $where = '0=0';
         if (is_array($arrProduct_id) && !empty($arrProduct_id)) {
             $where .= ' AND product_id IN (' . implode(',', $arrProduct_id) . ')';
+        } else {
+            // 一致させない
+            $where .= ' AND 0<>0';
         }
 
         //表示順序
