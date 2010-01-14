@@ -168,7 +168,10 @@
                                     <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
                                     <option value="">選択してください</option>
                                     <!--{html_options options=$arrORDERSTATUS selected=$arrForm[$key].value}-->
-                                    </select>
+                                    </select><br />
+                                    <!--{if $smarty.get.mode != 'add'}-->
+                                    <span class="red12">※ <!--{$arrORDERSTATUS[$smarty.const.ORDER_CANCEL]}-->に変更時には、在庫数を手動で戻してください。</span>
+                                    <!--{/if}-->
                                 </td>
                             </tr>
                             <tr class="fs12n">
