@@ -23,6 +23,9 @@
 
  */
 $mobile_require_php_dir = realpath(dirname( __FILE__));
+
+require_once($mobile_require_php_dir . "/../handle_error.php");
+
 require_once($mobile_require_php_dir . "/../define.php");
 
 define('MOBILE_SITE', true);

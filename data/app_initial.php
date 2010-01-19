@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2009 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -23,30 +23,22 @@
 
 $require_base_php_dir = realpath(dirname( __FILE__));
 
+if (!defined("CLASS_PATH")) {
+    /** クラスパス */
+    define("CLASS_PATH", $require_base_php_dir . "/class/");
+}
+
+if (!defined("CLASS_EX_PATH")) {
+    /** クラスパス */
+    define("CLASS_EX_PATH", $require_base_php_dir . "/class_extends/");
+}
+
+if (!defined("CACHE_PATH")) {
+    /** キャッシュ生成ディレクトリ */
+    define("CACHE_PATH", $require_base_php_dir . "/cache/");
+}
+require_once(CLASS_EX_PATH . "SC_Initial_Ex.php");
 // アプリケーション初期化処理
-require_once($require_base_php_dir . "/app_initial.php");
-
-// モジュールの読み込み
-require_once($require_base_php_dir . "/include/module.inc");
-
-// 各種クラス読み込み
-require_once($require_base_php_dir . "/require_classes.php");
-
-// TODO プラグイン読み込み
-include_once($require_base_php_dir . "/require_plugin.php");
-
-// セッションハンドラ開始
-$objSession = new SC_Helper_Session_Ex();
-
-// インストールチェック
-SC_Utils_Ex::sfInitInstall();
-
-// セッション初期化・開始
-require_once CLASS_PATH . 'session/SC_SessionFactory.php';
-$sessionFactory = SC_SessionFactory::getInstance();
-$sessionFactory->initSession();
-
-// 絵文字変換 (除去) フィルターを組み込む。
-ob_start(array('SC_MobileEmoji', 'handler'));
-
+$objInit = new SC_Initial_Ex();
+$objInit->init();
 ?>

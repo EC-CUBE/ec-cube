@@ -241,13 +241,6 @@ class SC_DbConn{
             $errmsg.= $backtrace['file'] . " " . $backtrace['line'] . ":" . $func . "\n";
         }
 
-        require_once(CLASS_EX_PATH . "page_extends/error/LC_Page_Error_SystemError_Ex.php");
-
-        $objPage = new LC_Page_Error_SystemError_Ex();
-        register_shutdown_function(array($objPage, "destroy"));
-        $objPage->init();
-        $objPage->process();
-
         if (DEBUG_MODE == true) {
             print('<pre>');
             print_r(htmlspecialchars($errmsg, ENT_QUOTES, CHAR_CODE));
@@ -255,7 +248,7 @@ class SC_DbConn{
         }
 
         GC_Utils_Ex::gfPrintLog($errmsg);
-
+        trigger_error($errmsg, E_USER_ERROR);
         exit();
     }
 }
