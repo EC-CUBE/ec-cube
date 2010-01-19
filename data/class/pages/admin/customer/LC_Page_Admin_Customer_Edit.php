@@ -293,7 +293,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page {
             $checkMail = ereg_replace( "_", "#_", $array["email"]);
             $result = $this->objConn->getAll($sql, array($checkMail, $array["customer_id"]));
             if (count($result) > 0) {
-                $objErr->arrErr["email"] .= "※ すでに登録されているメールアドレスです。";
+                $objErr->arrErr["email"] .= "※ すでに登録されているメールアドレスです。<br>";
             }
         }
 
@@ -305,7 +305,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page {
             $checkMail = ereg_replace( "_", "#_", $array["email_mobile"]);
             $result = $this->objConn->getAll($sql, array($checkMail, $array["customer_id"]));
             if (count($result) > 0) {
-                $objErr->arrErr["email_mobile"] .= "※ すでに登録されているメールアドレス(モバイル)です。";
+                $objErr->arrErr["email_mobile"] .= "※ すでに登録されているメールアドレス(モバイル)です。<br>";
             }
         }
 
