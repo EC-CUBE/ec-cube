@@ -30,7 +30,7 @@
     <div class="recomendleft">
 
       <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrBestProducts[cnt].product_id|escape:url}-->">
-        <img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$arrBestProducts[cnt].main_list_image|sfNoImageMainList|escape}-->&amp;width=48&amp;height=48" alt="<!--{$arrBestProducts[cnt].name|escape}-->" /></a>
+        <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$arrBestProducts[cnt].main_list_image|sfNoImageMainList|escape}-->&amp;width=48&amp;height=48" alt="<!--{$arrBestProducts[cnt].name|escape}-->" /></a>
 
       <h3>
         <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrBestProducts[cnt].product_id|escape:url}-->"><!--{$arrBestProducts[cnt].name|escape}--></a>
@@ -51,7 +51,7 @@
       <!--{if $arrBestProducts[$cnt2]|count > 0}-->
 
       <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrBestProducts[$cnt2].product_id|escape:url}-->">
-        <img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$arrBestProducts[$cnt2].main_list_image|sfNoImageMainList|escape}-->&amp;width=48&amp;height=48" alt="<!--{$arrBestProducts[$cnt2].name|escape}-->" /></a>
+        <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$arrBestProducts[$cnt2].main_list_image|sfNoImageMainList|escape}-->&amp;width=48&amp;height=48" alt="<!--{$arrBestProducts[$cnt2].name|escape}-->" /></a>
 
       <h3>
       <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrBestProducts[$cnt2].product_id|escape:url}-->"><!--{$arrBestProducts[$cnt2].name|escape}--></a>

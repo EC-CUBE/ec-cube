@@ -73,7 +73,7 @@
   <!--▼商品<!--{$smarty.section.cnt.iteration}-->-->
   <tr>
     <td class="center">
-      <img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$arrProducts[cnt].main_list_image|sfNoImageMainList|escape}-->&width=65&height=65" alt="<!--{$arrRecommend[$recommend_no].name|escape}-->" />
+      <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$arrProducts[cnt].main_list_image|sfNoImageMainList|escape}-->&width=65&height=65" alt="<!--{$arrRecommend[$recommend_no].name|escape}-->" />
     </td>  
     <td><!--{$arrProducts[cnt].product_code|escape|default:"-"}--></td>
     <td><!--{$arrProducts[cnt].name|escape}--></td>

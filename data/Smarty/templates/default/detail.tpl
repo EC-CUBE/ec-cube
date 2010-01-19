@@ -463,7 +463,7 @@ $(document).ready(function() {
                 <div class="whoboughtleft">
                     
                     <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id|escape:url}-->">
-                        <img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$arrRecommend[cnt].main_list_image|sfNoImageMainList|escape}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[cnt].name|escape}-->" /></a>
+                        <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$arrRecommend[cnt].main_list_image|sfNoImageMainList|escape}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[cnt].name|escape}-->" /></a>
 
                     <!--{assign var=price02_min value=`$arrRecommend[cnt].price02_min`}-->
                     <!--{assign var=price02_max value=`$arrRecommend[cnt].price02_max`}-->
@@ -488,7 +488,7 @@ $(document).ready(function() {
                 <div class="whoboughtright">
                     
                     <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id|escape:url}-->">
-                        <img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$arrRecommend[cnt].main_list_image|sfNoImageMainList|escape}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[cnt].name|escape}-->" /></a>
+                        <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$arrRecommend[cnt].main_list_image|sfNoImageMainList|escape}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[cnt].name|escape}-->" /></a>
                     
                     <!--{assign var=price02_min value=`$arrRecommend[cnt].price02_min`}-->
                     <!--{assign var=price02_max value=`$arrRecommend[cnt].price02_max`}-->
