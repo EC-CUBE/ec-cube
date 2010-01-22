@@ -160,7 +160,7 @@ class SC_Initial {
                 $arrResult[$key] = $this->checkConvertEncoding($val);
             } else {
                 $encoding = mb_detect_encoding($val);
-                if (CHAR_CODE != $encoding) {
+                if ($encoding !== false && $encoding != CHAR_CODE) {
                     $arrResult[$key] = mb_convert_encoding($val, CHAR_CODE, $encoding);
                 } else {
                     $arrResult[$key] = $val;
