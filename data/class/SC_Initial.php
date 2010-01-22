@@ -156,11 +156,15 @@ class SC_Initial {
     function checkConvertEncoding($arrMethod) {
         $arrResult = array();
         foreach ($arrMethod as $key => $val) {
-            $encoding = mb_detect_encoding($val);
-            if (CHAR_CODE != $encoding) {
-                $arrResult[$key] = mb_convert_encoding($val, CHAR_CODE, $encoding);
+            if (is_array($val)) {
+                $arrResult[$key] = $this->checkConvertEncoding($val);
             } else {
-                $arrResult[$key] = $val;
+                $encoding = mb_detect_encoding($val);
+                if (CHAR_CODE != $encoding) {
+                    $arrResult[$key] = mb_convert_encoding($val, CHAR_CODE, $encoding);
+                } else {
+                    $arrResult[$key] = $val;
+                }
             }
         }
         return $arrResult;
