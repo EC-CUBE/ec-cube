@@ -55,6 +55,7 @@ class SC_Initial {
         $this->setErrorReporting();
         $this->defineConstants();
         $this->mbstringInit();
+        $this->checkConvertEncodingAll();
         $this->createCacheDir();
     }
 
@@ -120,6 +121,49 @@ class SC_Initial {
         ini_set("mbstring.substitute_character", "none");
         //ロケールを明示的に設定
         setlocale(LC_ALL, LOCALE);
+    }
+
+    /**
+     * 文字エンコーディングをチェックし, CHAR_CODE に変換する.
+     *
+     * $_GET, $_POST, $_REQUEST の文字エンコーディングをチェックし, CHAR_CODE と
+     * 一致しない場合は, CHAR_CODE へ変換する.
+     *
+     * @access protected
+     * @return void
+     * @see $this->checkConvertEncoding()
+     */
+    function checkConvertEncodingAll() {
+        $_GET = $this->checkConvertEncoding($_GET);
+        $_POST = $this->checkConvertEncoding($_POST);
+        $_REQUEST = $this->checkConvertEncoding($_REQUEST);
+    }
+
+    /**
+     * 配列の要素の文字エンコーディングをチェックし, CHAR_CODE に変換して返す.
+     *
+     * 引数の配列の要素の文字エンコーディングをチェックし, CHAR_CODE と一致しない
+     * 場合は, CHAR_CODE へ変換して返す.
+     *
+     * 文字エンコーディングの判別は, mb_detect_encoding に依存します.
+     *
+     * @access private
+     * @param array $arrMethod チェック対象の配列
+     * @return array 変換後の配列
+     * @see mb_detect_encoding()
+     * @see mb_convert_encoding()
+     */
+    function checkConvertEncoding($arrMethod) {
+        $arrResult = array();
+        foreach ($arrMethod as $key => $val) {
+            $encoding = mb_detect_encoding($val);
+            if (CHAR_CODE != $encoding) {
+                $arrResult[$key] = mb_convert_encoding($val, CHAR_CODE, $encoding);
+            } else {
+                $arrResult[$key] = $val;
+            }
+        }
+        return $arrResult;
     }
 
     /**
