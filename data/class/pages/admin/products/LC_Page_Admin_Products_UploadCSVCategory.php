@@ -105,14 +105,15 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
                     $enc_filepath = SC_Utils_Ex::sfEncodeFile($filepath,
                     CHAR_CODE, CSV_TEMP_DIR);
 
-                    // レコード数を得る
-                    $rec_count = $this->lfCSVRecordCount($enc_filepath);
                     $fp = fopen($enc_filepath, "r");
 
-                    if ($rec_count === false || $fp === false) {
-                        $err = false;
-                        $arrErr['bad_file_pointer'] = "※ 不正なファイルポインタが検出されました";
+                    // 無効なファイルポインタが渡された場合はエラー表示
+                    if ($fp === false) {
+                        SC_Utils_Ex::sfDispError("");
                     }
+
+                    // レコード数を得る
+                    $rec_count = $this->lfCSVRecordCount($fp);
 
                     $line = 0;      // 行数
                     $regist = 0;    // 登録数
@@ -121,60 +122,58 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
                     $objQuery->begin();
 
                     echo "■　CSV登録進捗状況 <br/><br/>\n";
-                    if ($fp !== false) {
-                        while (!feof($fp) && !$err) {
-                            $arrCSV = fgetcsv($fp, CSV_LINE_MAX);
+                    while (!feof($fp) && !$err) {
+                        $arrCSV = fgetcsv($fp, CSV_LINE_MAX);
 
-                            // 行カウント
-                            $line++;
+                        // 行カウント
+                        $line++;
 
-                            if ($line <= 1) {
-                                continue;
-                            }
-
-                            // 項目数カウント
-                            $max = count($arrCSV);
-
-                            // 項目数が1以下の場合は無視する
-                            if ($max <= 1) {
-                                continue;
-                            }
-
-                            // 項目数チェック
-                            if ($max != $colmax) {
-                                echo "※ 項目数が" . $max . "個検出されました。項目数は" . $colmax . "個になります。</br>\n";
-                                $err = true;
-                            } else {
-                                // シーケンス配列を格納する。
-                                $this->objFormParam->setParam($arrCSV, true);
-                                $arrRet = $this->objFormParam->getHashArray();
-                                $this->objFormParam->setParam($arrRet);
-                                // 入力値の変換
-                                $this->objFormParam->convParam();
-                                // <br>なしでエラー取得する。
-                                $arrCSVErr = $this->lfCheckError();
-                            }
-
-                            // 入力エラーチェック
-                            if (count_chars(string[, int mode])($arrCSVErr) > 0) {
-                                echo "<font color=\"red\">■" . $line . "行目でエラーが発生しました。</font></br>\n";
-                                foreach($arrCSVErr as $val) {
-                                    $this->printError($val);
-                                }
-                                $err = true;
-                            }
-
-                            if (!$err) {
-                                $this->lfRegistProduct($objQuery, $rec_count, $line);
-                                $regist++;
-                            }
-                            $arrParam = $this->objFormParam->getHashArray();
-
-                            if (!$err) echo $line." / ".$rec_count. "行目　（カテゴリID：".$arrParam['category_id']." / カテゴリ名：".$arrParam['category_name'].")\n<br />";
-                            flush();
+                        if ($line <= 1) {
+                            continue;
                         }
-                        fclose($fp);
+
+                        // 項目数カウント
+                        $max = count($arrCSV);
+
+                        // 項目数が1以下の場合は無視する
+                        if ($max <= 1) {
+                            continue;
+                        }
+
+                        // 項目数チェック
+                        if ($max != $colmax) {
+                            echo "※ 項目数が" . $max . "個検出されました。項目数は" . $colmax . "個になります。</br>\n";
+                            $err = true;
+                        } else {
+                            // シーケンス配列を格納する。
+                            $this->objFormParam->setParam($arrCSV, true);
+                            $arrRet = $this->objFormParam->getHashArray();
+                            $this->objFormParam->setParam($arrRet);
+                            // 入力値の変換
+                            $this->objFormParam->convParam();
+                            // <br>なしでエラー取得する。
+                            $arrCSVErr = $this->lfCheckError();
+                        }
+
+                        // 入力エラーチェック
+                        if (count($arrCSVErr) > 0) {
+                            echo "<font color=\"red\">■" . $line . "行目でエラーが発生しました。</font></br>\n";
+                            foreach($arrCSVErr as $val) {
+                                $this->printError($val);
+                            }
+                            $err = true;
+                        }
+
+                        if (!$err) {
+                            $this->lfRegistProduct($objQuery, $rec_count, $line);
+                            $regist++;
+                        }
+                        $arrParam = $this->objFormParam->getHashArray();
+
+                        if (!$err) echo $line." / ".$rec_count. "行目　（カテゴリID：".$arrParam['category_id']." / カテゴリ名：".$arrParam['category_name'].")\n<br />";
+                        flush();
                     }
+                    fclose($fp);
 
                     if (!$err) {
                         $objQuery->commit();
@@ -343,21 +342,21 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
     /**
      * CSVのカウント数を得る.
      *
-     * @param string $file_name ファイルパス
-     * @return mixed CSV のカウント数; $file_name が無効な場合は false
+     * @param resource $fp fopenを使用して作成したファイルポインタ
+     * @return integer CSV のカウント数
      */
-    function lfCSVRecordCount($file_name) {
+    function lfCSVRecordCount($fp) {
         $count = 0;
-        $fp = fopen($file_name, "r");
-        if ($fp !== false) {
-            while(!feof($fp)) {
-                $arrCSV = fgetcsv($fp, CSV_LINE_MAX);
-                $count++;
-            }
-        } else {
-            return false;
+        while(!feof($fp)) {
+            $arrCSV = fgetcsv($fp, CSV_LINE_MAX);
+            $count++;
         }
-        return $count-1;
+        // ファイルポインタを戻す
+        if (rewind($fp)) {
+            return $count-1;
+        } else {
+            SC_Utils_Ex::sfDispError("");
+        }
     }
 
     /**
