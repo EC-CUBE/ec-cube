@@ -58,7 +58,7 @@ class SC_DB_MasterData {
      * マスタデータを取得する.
      *
      * 以下の順序でマスタデータを取得する.
-     * 1. MASTER_DATA_DIR のマスタデータキャッシュを include_once() で読み込む
+     * 1. MASTER_DATA_DIR のマスタデータキャッシュを include() で読み込む
      * 2. 1 で読み込んだ値をチェックし, 値が変数定義されていれば値を返す.
      *    されていなければ, 次の処理を行う.
      * 3. 値が未定義の場合は, DBからマスタデータを取得する.
@@ -78,7 +78,7 @@ class SC_DB_MasterData {
         // 可変変数を定義
         $valiable = "_" . $name . "_master";
         // キャッシュを読み込み
-        @include_once(MASTER_DATA_DIR . $name . ".php");
+        @include(MASTER_DATA_DIR . $name . ".php");
 
         // キャッシュがあれば, キャッシュの値を返す.
         if (!empty($$valiable)) {
