@@ -70,7 +70,7 @@ class LC_Page_Forgot extends LC_Page {
         if (defined("MOBILE_SITE") && MOBILE_SITE) {
             $objView = new SC_MobileView();
         } else {
-            $objView = new SC_SiteView();
+            $objView = new SC_SiteView(false);
         }
 
         $objSess = new SC_Session();
@@ -220,7 +220,7 @@ class LC_Page_Forgot extends LC_Page {
         //　パスワード変更お知らせメール送信
         $this->customer_name = $customer_name;
         $this->temp_password = $temp_password;
-        $objMailText = new SC_SiteView();
+        $objMailText = new SC_SiteView(false);
         $objMailText->assignobj($this);
 
         $toCustomerMail = $objMailText->fetch("mail_templates/forgot_mail.tpl");
