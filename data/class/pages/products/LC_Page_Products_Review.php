@@ -105,7 +105,7 @@ class LC_Page_Products_Review extends LC_Page {
             }
 
             //エラーチェック
-            if($this->arrErr == ""){
+            if (empty($this->arrErr)) {
                 //重複タイトルでない
                 if($flag == 0){
                     //商品名の取得
@@ -138,7 +138,7 @@ class LC_Page_Products_Review extends LC_Page {
             //重複メッセージの判定
             $flag = $objQuery->count("dtb_review","product_id = ? AND title = ? ", array($arrForm['product_id'], $arrForm['title']));
             //エラーチェック
-            if ($arrErr == ""){
+            if (empty($this->arrErr)) {
                 //重複タイトルでない
                 if($flag == 0) {
                     //登録実行
