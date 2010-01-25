@@ -377,7 +377,7 @@ $(document).ready(function() {
                 <!--▼サブ画像-->
                 <!--{assign var=key value="sub_image`$smarty.section.cnt.index+1`"}-->
                 <!--{assign var=lkey value="sub_large_image`$smarty.section.cnt.index+1`"}-->
-                <!--{if $arrProduct[$lkey]|strlen >= 1}-->
+                <!--{if $arrProduct[$key]|strlen >= 1}-->
                     <div class="subphotoimg">
                         <a
                             <!--{if $arrProduct[$lkey]|strlen >= 1}-->
