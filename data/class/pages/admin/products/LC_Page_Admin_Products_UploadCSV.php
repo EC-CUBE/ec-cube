@@ -89,7 +89,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page {
             // エラーチェック
             $arrErr['csv_file'] = $this->objUpFile->makeTempFile('csv_file');
 
-            if($arrErr['css_file'] == "") {
+            if($arrErr['csv_file'] == "") {
                 $arrErr = $this->objUpFile->checkEXISTS();
             }
 
