@@ -440,7 +440,8 @@ class SC_Helper_DB {
             }
 
             // 受注_Tempテーブルの名称列を更新
-            $this->sfUpdateOrderNameCol($uniqid, true);
+            // ・決済モジュールに対応するため、static メソッドとして扱う
+            SC_Helper_DB_Ex::sfUpdateOrderNameCol($uniqid, true);
         }
     }
 
@@ -1761,6 +1762,7 @@ __EOS__;
      *
      * @param integer $order_id 更新対象の注文番号
      * @param boolean $temp_table 更新対象は「受注_Temp」か
+     * @static
      */
     function sfUpdateOrderNameCol($order_id, $temp_table = false) {
         $objQuery = new SC_Query();
