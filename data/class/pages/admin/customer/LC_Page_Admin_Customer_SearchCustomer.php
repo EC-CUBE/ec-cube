@@ -76,9 +76,8 @@ class LC_Page_Admin_Customer_SearchCustomer extends LC_Page
 
             // エラーチェック
             $this->arrErr = $this->lfCheckError();
-            if( is_array($this->arrErr) === true && 0 < count($this->arrErr) ){
-                $is_select = false;
-            }else{
+            $is_select = empty($this->arrErr);
+            if ($is_select) {
                 $where = "del_flg = 0";
 
                 // 検索
@@ -111,8 +110,6 @@ class LC_Page_Admin_Customer_SearchCustomer extends LC_Page
                         }
                     }
                 }
-
-                $is_select = true;
             }
 
 

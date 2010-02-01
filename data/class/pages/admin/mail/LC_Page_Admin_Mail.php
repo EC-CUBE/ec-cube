@@ -227,7 +227,7 @@ class LC_Page_Admin_Mail extends LC_Page {
             $this->arrErr = $this->lfErrorCheck($this->list_data);
 
             //-- 検索開始
-            if (!is_array($this->arrErr)) {
+            if (empty($this->arrErr)) {
                 $this->list_data['name'] = isset($this->list_data['name'])
                     ? SC_Utils_Ex::sfManualEscape($this->list_data['name']) : "";
                 // hidden要素作成
@@ -274,7 +274,7 @@ class LC_Page_Admin_Mail extends LC_Page {
             //-- 入力エラーのチェック
             $this->arrErr = $this->lfErrorCheck($this->list_data);
             //-- エラーなし
-            if (!is_array($this->arrErr)) {
+            if (empty($this->arrErr)) {
                 //-- 現在時刻の取得
                 $this->arrNowDate = $this->lfGetNowDate();
                 $this->arrHidden = $this->lfGetHidden($this->list_data); // hidden要素作成
@@ -299,7 +299,7 @@ class LC_Page_Admin_Mail extends LC_Page {
             $this->arrErr = $this->lfErrorCheck($this->list_data);
 
             //-- 検索開始
-            if ( ! is_array($this->arrErr)) {
+            if (empty($this->arrErr)) {
                 $this->list_data['name'] = isset($this->list_data['name']) ? SC_Utils_Ex::sfManualEscape($this->list_data['name']) : "";
                 $this->arrHidden = $this->lfGetHidden($this->list_data); // hidden要素作成
 
@@ -349,7 +349,7 @@ class LC_Page_Admin_Mail extends LC_Page {
             $this->arrHidden = $this->lfGetHidden($this->list_data); // hidden要素作成
 
             //-- 検索開始
-            if ( ! is_array($this->arrErr)) {
+            if (empty($this->arrErr)) {
                 $this->list_data['name'] =
                     isset($this->list_data['name'])
                     ? SC_Utils_Ex::sfManualEscape($this->list_data['name']) : "";

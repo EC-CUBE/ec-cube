@@ -146,8 +146,8 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
         // バックアップリストを取得する
         $arrBkupList = $this->lfGetBkupData("ORDER BY create_date DESC");
         // テンプレートファイルに渡すデータをセット
-        $this->arrErr = isset($arrErr) ? $arrErr : "";
-        $this->arrForm = isset($arrForm) ? $arrForm : "";
+        $this->arrErr = isset($arrErr) ? $arrErr : array();
+        $this->arrForm = isset($arrForm) ? $arrForm : array();
         $this->arrBkupList = $arrBkupList;
 
         $objView->assignobj($this);		//変数をテンプレートにアサインする
