@@ -144,35 +144,43 @@
 								<!--{if $ERROR.contents}--><br><span class="red"><!--{$ERROR.contents}--></span><!--{/if}--></td>
 							</tr>		
 							<!--{section name=question loop=$cnt_question}-->
+              <!--{assign var=index value=$smarty.section.question.index}-->
 							<tr class="fs12n">
 								<td width="140" bgcolor="#f2f1ec">質問<!--{$smarty.section.question.iteration}--><!--{if $smarty.section.question.iteration eq 1}--><span class="red">*</span><!--{/if}--></td>
 								<td width="637" bgcolor="#ffffff">
-								<input type="text" name="question[<!--{$smarty.section.question.index}-->][name]" size="70" class="box70" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$smarty.post.question[$smarty.section.question.index].name|escape}-->" <!--{if $ERROR.question[$smarty.section.question.index].name}--><!--{sfSetErrorStyle}--><!--{/if}-->>
-								<!--{if $ERROR.question[$smarty.section.question.index].name}--><br><span class="red"><!--{$ERROR.question[$smarty.section.question.index].name}--></span><!--{/if}-->
+								<input type="text" name="question[<!--{$index}-->][name]" size="70" class="box70" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$smarty.post.question[$index].name|escape}-->" <!--{if $ERROR.question[$index].name}--><!--{sfSetErrorStyle}--><!--{/if}-->>
+								<!--{if $ERROR.question[$index].name}--><br><span class="red"><!--{$ERROR.question[$index].name}--></span><!--{/if}-->
 								</td>
 							</tr>
 							<tr class="fs12n" bgcolor="#ffffff">
 								<td colspan="2">
-								<span style=background-color:"<!--{$ERROR_COLOR.question[$smarty.section.question.index].kind}-->">
-								<!--{html_radios_ex onClick="func_disp(`$smarty.section.question.index`)" name="question[`$smarty.section.question.index`][kind]" options="$arrQuestion" selected="`$smarty.post.question[$smarty.section.question.index].kind`"}-->
+								<span style=background-color:"<!--{$ERROR_COLOR.question[$index].kind}-->">
+								<!--{html_radios_ex onClick="func_disp(`$index`)" name="question[`$index`][kind]" options="$arrQuestion" selected="`$smarty.post.question[$index].kind`"}-->
 								</span>
-								<!--{if $ERROR.question[$smarty.section.question.index].kind}--><br><span class="red"><!--{$ERROR.question[$smarty.section.question.index].kind}--></span><!--{/if}-->
+								<!--{if $ERROR.question[$index].kind}--><br><span class="red"><!--{$ERROR.question[$index].kind}--></span><!--{/if}-->
 								</td>
 							</tr>
+              <!--{** 回答 **}-->
 							<tr class="fs12n" bgcolor="#ffffff"><td colspan="2">
-								<table id="TD<!--{$smarty.section.question.index}-->">
-								<tr class="fs12n" bgcolor="#ffffff">
-									<td colspan="2">1 <input type="text" name="question[<!--{$smarty.section.question.index}-->][option][0]" size="40" class="box40" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$smarty.post.question[$smarty.section.question.index].option.0|escape}-->" <!--{if $ERROR.question[$smarty.section.question.index].kind}--><!--{sfSetErrorStyle}--><!--{/if}-->>　2 <input type="text" name="question[<!--{$smarty.section.question.index}-->][option][1]" size="40" class="box40" value="<!--{$smarty.post.question[$smarty.section.question.index].option.1|escape}-->" <!--{if $ERROR.question[$smarty.section.question.index].kind}--><!--{sfSetErrorStyle}--><!--{/if}-->></td>
-								</tr>
-								<tr class="fs12n" bgcolor="#ffffff">
-									<td colspan="2">3 <input type="text" name="question[<!--{$smarty.section.question.index}-->][option][2]" size="40" class="box40" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$smarty.post.question[$smarty.section.question.index].option.2|escape}-->">　4 <input type="text" name="question[<!--{$smarty.section.question.index}-->][option][3]" size="40" class="box40" value="<!--{$smarty.post.question[$smarty.section.question.index].option.3|escape}-->"></td>
-								</tr>
-								<tr class="fs12n" bgcolor="#ffffff">
-									<td colspan="2">5 <input type="text" name="question[<!--{$smarty.section.question.index}-->][option][4]" size="40" class="box40" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$smarty.post.question[$smarty.section.question.index].option.4|escape}-->">　6 <input type="text" name="question[<!--{$smarty.section.question.index}-->][option][5]" size="40" class="box40" value="<!--{$smarty.post.question[$smarty.section.question.index].option.5|escape}-->"></td>
-								</tr>
-								<tr class="fs12n" bgcolor="#ffffff">
-									<td colspan="2">7 <input type="text" name="question[<!--{$smarty.section.question.index}-->][option][6]" size="40" class="box40" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$smarty.post.question[$smarty.section.question.index].option.6|escape}-->">　8 <input type="text" name="question[<!--{$smarty.section.question.index}-->][option][7]" size="40" class="box40" value="<!--{$smarty.post.question[$smarty.section.question.index].option.7|escape}-->"></td>
-								</tr>
+								<table id="TD<!--{$index}-->">
+							  <!--{section name=option loop=4 start=0 max=7}-->
+								  <tr class="fs12n" bgcolor="#ffffff">
+								  	<td colspan="2">
+                      <!--{assign var=option_index1 value=$smarty.section.option.index*2}-->
+                      <!--{assign var=option_index2 value=$option_index1+1}-->
+                      <!--{assign var=num1 value=$option_index1+1}-->
+                      <!--{assign var=num2 value=$option_index2+1}-->
+                      <!--{** 回答エラー **}-->
+                      <!--{assign var=error1 value=$ERROR.question[$index].option[$option_index1]}-->
+								      <!--{if $error1}--><span class="red"><!--{$error1}--></span><br /><!--{/if}-->
+                      <!--{assign var=error2 value=$ERROR.question[$index].option[$option_index2]}-->
+								      <!--{if $error2}--><span class="red"><!--{$error2}--></span><br /><!--{/if}-->
+                      <!--{** 回答フォーム **}-->
+                      <!--{$num1}--> <input type="text" name="question[<!--{$index}-->][option][<!--{$option_index1}-->]" size="40" class="box40" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$smarty.post.question[$index].option[$option_index1]|escape}-->" <!--{if $error1}--><!--{sfSetErrorStyle}--><!--{/if}-->>　
+                      <!--{$num2}--> <input type="text" name="question[<!--{$index}-->][option][<!--{$option_index2}-->]" size="40" class="box40" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$smarty.post.question[$index].option[$option_index2]|escape}-->" <!--{if $error2}--><!--{sfSetErrorStyle}--><!--{/if}-->>
+                    </td>
+								  </tr>
+                <!--{/section}-->
 								</table>
 							</td></tr>
 							<!--{/section}-->
