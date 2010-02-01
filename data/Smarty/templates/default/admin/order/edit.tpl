@@ -309,10 +309,10 @@
                             <tr><td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td></tr>
                         </table>
 
-                        <!--▼配送先情報ここから-->
+                        <!--▼お届け先情報ここから-->
                         <table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
                             <tr class="fs12n">
-                                <td bgcolor="#f2f1ec" width="717" colspan="4">▼配送先情報
+                                <td bgcolor="#f2f1ec" width="717" colspan="4">▼お届け先情報
                                 &nbsp;&nbsp;&nbsp;<input type="button" name="input_from_order_data" value="上記お客様情報をコピー" onclick="fnCopyFromOrderData();" /></td>
                             </tr>
                             <tr class="fs12n">
@@ -392,7 +392,7 @@
                                 </td>
                             </tr>
                         </table>
-                        <!--▲配送先情報ここまで-->
+                        <!--▲お届け先情報ここまで-->
 
                         <table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
                             <tr><td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td></tr>
@@ -555,7 +555,7 @@
                             <!--{/if}-->
 
                             <tr class="fs12n">
-                                <td bgcolor="#f2f1ec" colspan="6">▼時間指定</td>
+                                <td bgcolor="#f2f1ec" colspan="6">▼お届け指定</td>
                             </tr>
                             <tr class="fs12n">
                                 <td bgcolor="#ffffff" colspan="6">
@@ -569,13 +569,20 @@
                             </tr>
                             <!--{assign var=key value="deliv_date"}-->
                             <tr class="fs12n">
-                                <td bgcolor="#f2f1ec" colspan="6">▼配達日指定</td>
+                                <td bgcolor="#f2f1ec" colspan="6">▼お届け日指定</td>
                             </tr>
                             <tr class="fs12n">
                                 <td bgcolor="#ffffff" colspan="6">
-                                <!--{assign var=key value="deliv_date"}-->
-                                <span class="red12"><!--{$arrErr[$key]}--></span>
-                                <input name="<!--{$key|escape}-->" value="<!--{$arrForm[$key].value|escape}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="20" maxlength="<!--{$arrForm[$key].length}-->" />
+                                  <span class="attention"><!--{$arrErr.deliv_date_year}--></span> 
+                                  <select name="deliv_date_year" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"> 
+                                    <!--{html_options options=$arrYearDelivDate selected=$arrForm.deliv_date_year.value|default:""}--> 
+                                  </select>年 
+                                  <select name="deliv_date_month" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"> 
+                                    <!--{html_options options=$arrMonthDelivDate selected=$arrForm.deliv_date_month.value|default:""}--> 
+                                  </select>月 
+                                  <select name="deliv_date_day" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"> 
+                                    <!--{html_options options=$arrDayDelivDate selected=$arrForm.deliv_date_day.value|default:""}--> 
+                                  </select>日
                                 </td>
                             </tr>
                             <tr class="fs12n">

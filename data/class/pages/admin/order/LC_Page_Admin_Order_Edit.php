@@ -110,6 +110,10 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         $objSess = new SC_Session();
         $objSiteInfo = new SC_SiteInfo();
         $objDb = new SC_Helper_DB_Ex();
+        $objDate = new SC_Date(1901); 
+ 	      $this->arrYearDelivDate = $objDate->getYear('', date('Y'), ''); 
+ 		    $this->arrMonthDelivDate = $objDate->getMonth(true); 
+ 		    $this->arrDayDelivDate = $objDate->getDay(true);
         $arrInfo = $objSiteInfo->data;
 
         // パラメータ管理クラス
@@ -282,7 +286,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
 
         // 支払い方法の取得
         $this->arrPayment = $objDb->sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
-        // 配送時間の取得
+        // お届け時間の取得
         $arrRet = $objDb->sfGetDelivTime($this->objFormParam->getValue('payment_id'));
         $this->arrDelivTime = SC_Utils_Ex::sfArrKeyValue($arrRet, 'time_id', 'deliv_time');
 
@@ -348,7 +352,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         $this->objFormParam->addParam("電話番号2", "order_tel02", TEL_ITEM_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK" ,"NUM_CHECK"));
         $this->objFormParam->addParam("電話番号3", "order_tel03", TEL_ITEM_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK" ,"NUM_CHECK"));
 
-        // 配送先情報
+        // お届け先情報
         $this->objFormParam->addParam("お名前1", "deliv_name01", STEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("お名前2", "deliv_name02", STEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("フリガナ1", "deliv_kana01", STEXT_LEN, "KVCa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
@@ -374,11 +378,14 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         }
 
         $this->objFormParam->addParam("お支払い方法", "payment_id", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $this->objFormParam->addParam("配送時間ID", "deliv_time_id", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $this->objFormParam->addParam("お届け時間ID", "deliv_time_id", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
         $this->objFormParam->addParam("対応状況", "status", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
         $this->objFormParam->addParam("配達日", "deliv_date", STEXT_LEN, "KVa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	      $this->objFormParam->addParam("お届け日(年)", "deliv_date_year", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK")); 
+ 		    $this->objFormParam->addParam("お届け日(月)", "deliv_date_month", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK")); 
+ 		    $this->objFormParam->addParam("お届け日(日)", "deliv_date_day", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK")); 
         $this->objFormParam->addParam("お支払方法名称", "payment_method");
-        $this->objFormParam->addParam("配送時間", "deliv_time");
+        $this->objFormParam->addParam("お届け時間", "deliv_time");
 
         // 受注詳細情報
         $this->objFormParam->addParam("単価", "price", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"), '0');
@@ -405,6 +412,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         $this->objFormParam->addParam("注文番号", "order_id");
         $this->objFormParam->addParam("受注日", "create_date");
         $this->objFormParam->addParam("発送日", "commit_date");
+        $this->objFormParam->addParam("お届け日", "deliv_date"); 
     }
 
     function lfGetOrderData($order_id) {
@@ -418,7 +426,13 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
             list($point, $total_point) = $objDb->sfGetCustomerPoint($order_id, $arrRet[0]['use_point'], $arrRet[0]['add_point']);
             $this->objFormParam->setValue('total_point', $total_point);
             $this->objFormParam->setValue('point', $point);
+            $delivDate = split(" ", $arrRet[0]["deliv_date"]); 
+ 	          $delivDate = split("-", $delivDate[0]); 
+ 	          $this->objFormParam->setValue('deliv_date_year', $delivDate[0]); 
+ 	          $this->objFormParam->setValue('deliv_date_month', isset($delivDate[1]) ? $delivDate[1] : ""); 
+ 	          $this->objFormParam->setValue('deliv_date_day', isset($delivDate[2]) ? $delivDate[2] : "");
             $this->arrForm = $arrRet[0];
+
             // 受注詳細データの取得
             $arrRet = $this->lfGetOrderDetail($order_id);
             $arrRet = SC_Utils_Ex::sfSwapArray($arrRet);
@@ -455,6 +469,12 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         $arrRet =  $this->objFormParam->getHashArray();
         $objErr = new SC_CheckError($arrRet);
         $objErr->arrErr = $this->objFormParam->checkError();
+
+        $objErr->doFunc(array("お届け日", "deliv_date_year", "deliv_date_month", "deliv_date_day"), array("CHECK_DATE"));
+
+        if (count($objErr->arrErr) >= 1) {
+            return $objErr->arrErr;
+        }
 
         return $objErr->arrErr;
     }
@@ -537,9 +557,18 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
                 $sqlval[$key] = $val;
             }
         }
+        $sqlval['update_date'] = 'Now()';
+
+        if (strlen($sqlval['deliv_date_year']) >= 0) {
+            $sqlval['deliv_date'] = $sqlval['deliv_date_year'] . '-' . $sqlval['deliv_date_month'] . '-' . $sqlval['deliv_date_day'];
+        }
+        unset($sqlval['deliv_date_year']);
+        unset($sqlval['deliv_date_month']);
+        unset($sqlval['deliv_date_day']);
 
         unset($sqlval['total_point']);
         unset($sqlval['point']);
+        unset($sqlval['commit_date']);
 
         $where = "order_id = ?";
 
