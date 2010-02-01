@@ -314,14 +314,20 @@ class SC_Helper_DB {
                     if($arrData['sale_limit'] < $arrData['stock']) {
                         $limit = $arrData['sale_limit'];
                     } else {
-                        $limit = $arrData['stock'];
+                        // 購入制限数を在庫数に
+                        #$limit = $arrData['stock'];
+                        // 購入制限数をSALE_LIMIT_MAXに
+                        $limit = SALE_LIMIT_MAX;
                     }
                 } else {
                     if ($arrData['sale_unlimited'] != '1') {
                         $limit = $arrData['sale_limit'];
                     }
                     if ($arrData['stock_unlimited'] != '1') {
-                        $limit = $arrData['stock'];
+                        // 購入制限数を在庫数に
+                        #$limit = $arrData['stock'];
+                        // 購入制限数をSALE_LIMIT_MAXに
+                        $limit = SALE_LIMIT_MAX;
                     }
                 }
 
