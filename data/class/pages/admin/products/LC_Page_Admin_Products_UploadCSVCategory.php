@@ -105,14 +105,16 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
                     $enc_filepath = SC_Utils_Ex::sfEncodeFile($filepath,
                     CHAR_CODE, CSV_TEMP_DIR);
 
-                    // レコード数を得る
-                    $rec_count = $this->lfCSVRecordCount($enc_filepath);
-                    if ($rec_count === false) {
-                        $err = false;
-                        $arrErr['bad_file_pointer'] = "※ 不正なファイルポインタが検出されました";
+                    $fp = fopen($enc_filepath, "r");
+
+                    // 無効なファイルポインタが渡された場合はエラー表示
+                    if ($fp === false) {
+                        SC_Utils_Ex::sfDispError("");
                     }
 
-                    $fp = fopen($enc_filepath, "r");
+                    // レコード数を得る
+                    $rec_count = $this->lfCSVRecordCount($fp);
+
                     $line = 0;      // 行数
                     $regist = 0;    // 登録数
 
@@ -120,7 +122,6 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
                     $objQuery->begin();
 
                     echo "■　CSV登録進捗状況 <br/><br/>\n";
-
                     while (!feof($fp) && !$err) {
                         $arrCSV = fgetcsv($fp, CSV_LINE_MAX);
 
@@ -191,8 +192,8 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
                 flush();
                 exit;
                 break;
-            default:
-                break;
+        default:
+            break;
         }
 
         $objView->assignobj($this);
@@ -341,21 +342,21 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
     /**
      * CSVのカウント数を得る.
      *
-     * @param string $file_name ファイルパス
-     * @return mixed CSV のカウント数; $file_name が無効な場合は false
+     * @param resource $fp fopenを使用して作成したファイルポインタ
+     * @return integer CSV のカウント数
      */
-    function lfCSVRecordCount($file_name) {
+    function lfCSVRecordCount($fp) {
         $count = 0;
-        $fp = fopen($file_name, "r");
-        if ($fp !== false) {
-            while(!feof($fp)) {
-                $arrCSV = fgetcsv($fp, CSV_LINE_MAX);
-                $count++;
-            }
-        } else {
-            return false;
+        while(!feof($fp)) {
+            $arrCSV = fgetcsv($fp, CSV_LINE_MAX);
+            $count++;
         }
-        return $count-1;
+        // ファイルポインタを戻す
+        if (rewind($fp)) {
+            return $count-1;
+        } else {
+            SC_Utils_Ex::sfDispError("");
+        }
     }
 
     /**
