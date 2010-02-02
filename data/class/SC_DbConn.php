@@ -220,16 +220,22 @@ class SC_DbConn {
     }
 
     function send_err_mail($pearResult, $sql){
-        require_once(CLASS_EX_PATH . "page_extends/error/LC_Page_Error_SystemError_Ex.php");
-        
-        $objPage = new LC_Page_Error_SystemError_Ex();
-        register_shutdown_function(array($objPage, "destroy"));
-        $objPage->init();
-        $objPage->addDebugMsg($sql);
-        $objPage->pearResult = $pearResult;
-        GC_Utils_Ex::gfPrintLog($objPage->sfGetErrMsg());
-        $objPage->process();
-        
+
+        $errmsg = $sql . "\n\n";
+
+        // PEAR エラーを伴う場合
+        if (!is_null($pearResult)) {
+            $errmsg .= $pearResult->message . "\n\n";
+            $errmsg .= $pearResult->userinfo . "\n\n";
+            $errmsg .= SC_Utils_Ex::sfBacktraceToString($pearResult->backtrace);
+        }
+        // (上に該当せず)バックトレースを生成できる環境(一般的には PHP 4 >= 4.3.0, PHP 5)の場合
+        else if (function_exists("debug_backtrace")) {
+            $errmsg .= SC_Utils_Ex::sfBacktraceToString(array_slice(debug_backtrace(), 2));
+        }
+
+        GC_Utils_Ex::gfPrintLog($errmsg);
+        trigger_error($errmsg, E_USER_ERROR);
         exit();
     }
 
@@ -247,5 +253,4 @@ class SC_DbConn {
         return $sql;
     }
 }
-
 ?>

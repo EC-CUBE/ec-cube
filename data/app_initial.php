@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2009 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,17 +21,23 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// rtrim は PHP バージョン依存対策
-define("HTML_PATH", rtrim(realpath(rtrim(realpath(dirname(__FILE__)), '/\\') . '/'), '/\\') . '/');
+if (!defined("CLASS_PATH")) {
+    /** クラスパス */
+    define("CLASS_PATH", DATA_PATH . "class/");
+}
 
-require_once HTML_PATH . 'handle_error.php';
-require_once HTML_PATH . 'define.php';
-define('FRONT_FUNCTION_PC_SITE', true);
-require_once HTML_PATH . HTML2DATA_DIR . 'require_base.php';
+if (!defined("CLASS_EX_PATH")) {
+    /** クラスパス */
+    define("CLASS_EX_PATH", DATA_PATH . "class_extends/");
+}
 
-// 携帯端末の場合、モバイルサイトへリダイレクトする
-SC_MobileUserAgent::sfAutoRedirectMobileSite();
+if (!defined("CACHE_PATH")) {
+    /** キャッシュ生成ディレクトリ */
+    define("CACHE_PATH", DATA_PATH . "cache/");
+}
 
-// 絵文字変換 (除去) フィルターを組み込む。
-ob_start(array('SC_MobileEmoji', 'handler'));
+require_once(CLASS_EX_PATH . "SC_Initial_Ex.php");
+// アプリケーション初期化処理
+$objInit = new SC_Initial_Ex();
+$objInit->init();
 ?>
