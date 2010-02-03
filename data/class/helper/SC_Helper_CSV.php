@@ -154,7 +154,7 @@ class SC_Helper_CSV {
        $this->lfDownloadCsv($outputArray);
 
        // 成功終了
-       return ture;
+       return true;
     }
 
     // CSV出力データを作成する。(レビュー)
@@ -227,7 +227,7 @@ class SC_Helper_CSV {
         $this->lfDownloadCsv($outputArray, 'category');
 
         // 成功終了
-        return ture;
+        return true;
     }
 
     // CSV出力データを作成する。
@@ -253,7 +253,7 @@ class SC_Helper_CSV {
     function lfMakeCSV($list) {
         $line = "";
 
-        eset($list);
+        reset($list);
         while(list($key, $val) = each($list)){
             $tmp = "";
             switch($key) {
