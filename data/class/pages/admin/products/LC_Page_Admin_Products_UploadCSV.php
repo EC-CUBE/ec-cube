@@ -96,11 +96,14 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page {
                 $arrErr = $this->objUpFile->checkEXISTS();
             }
 
+            $objView->assignobj($this);
+            $objView->display('admin_popup_header.tpl');
+
             // 実行時間を制限しない
             set_time_limit(0);
 
             // 出力をバッファリングしない(==日本語自動変換もしない)
-            ob_end_clean();
+            ob_end_flush();
 
             // IEのために256バイト空文字出力
             echo str_pad('',256);
@@ -198,6 +201,10 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page {
             }
             echo "<br/><a href=\"javascript:window.close()\">→閉じる</a>";
             flush();
+
+            $objView->assignobj($this);
+            $objView->display('admin_popup_footer.tpl');
+
             exit;
             break;
         default:
