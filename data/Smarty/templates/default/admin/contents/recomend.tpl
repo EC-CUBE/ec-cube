@@ -100,7 +100,7 @@ function lfnCheckSetItem( rank ){
         <input type="hidden" name="category_id" value="<!--{$category_id|escape}-->" />
         <input type="hidden" name="rank" value="<!--{$arrItems[$smarty.section.cnt.iteration].rank|escape}-->" />
         <span class="attention"><!--{$arrErr[$smarty.section.cnt.iteration].comment}--></span>
-        <textarea name="comment" cols="45" rows="4" style="width: 337px; height: 82px; " <!--{$arrItems[$smarty.section.cnt.iteration].product_id|sfGetEnabled}-->><!--{$arrItems[$smarty.section.cnt.iteration].comment}--></textarea>
+        <textarea name="comment" cols="45" rows="4" style="width: 337px; height: 82px; <!--{$arrErr[$smarty.section.cnt.iteration].comment|sfGetErrorColor}-->" <!--{$arrItems[$smarty.section.cnt.iteration].product_id|sfGetEnabled}-->><!--{$arrItems[$smarty.section.cnt.iteration].comment}--></textarea>
         <!--{if $arrItems[$smarty.section.cnt.iteration].product_id}-->
         <br /><button type="submit" onclick="return lfnCheckSubmit(document.form<!--{$smarty.section.cnt.iteration}-->);"><span>登録する</span></button>
         <!--{/if}-->

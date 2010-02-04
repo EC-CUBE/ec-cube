@@ -122,8 +122,11 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page {
             $this->arrItems[$data['rank']] = $data;
         }
 
-        // 商品変更時は、選択された商品に一時的に置き換える
-        if ( $_POST['mode'] == 'set_item'){
+        // 商品変更時 or 登録エラー時は、選択された商品に一時的に置き換える
+        if (
+            $_POST['mode'] == 'set_item'
+            || $_POST['mode'] == 'regist' && !empty($this->arrErr[$this->arrForm['rank']])
+        ) {
             $sql = "SELECT product_id, name, main_list_image FROM dtb_products WHERE product_id = ? AND del_flg = 0";
             $result = $conn->getAll($sql, array($_POST['product_id']));
             if ( $result ){
