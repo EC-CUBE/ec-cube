@@ -53,7 +53,7 @@ class SC_Helper_PageLayout {
                 $url = "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
             }
             
-            $url2 = preg_replace('|^' . preg_quote(SITE_URL) . '|', '', $url);
+            $url2 = preg_replace('|^' . preg_quote(URL_DIR) . '|', '', $_SERVER['PHP_SELF']);
             // URLを元にページデザインを取得
             $arrPageData = $this->lfgetPageData("url IN (?, ?) AND page_id <> 0" , array($url2, $url)); // $url は従来互換
         } else {
