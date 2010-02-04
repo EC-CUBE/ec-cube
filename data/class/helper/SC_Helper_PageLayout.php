@@ -50,7 +50,7 @@ class SC_Helper_PageLayout {
         // 現在のURLの取得
         if ($preview === false) {
             if ($url == "") {
-                $url = "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
+                $url = SITE_URL . preg_replace('|^' . preg_quote(URL_DIR) . '|', '' , $_SERVER['PHP_SELF']);
             }
             // URLを元にページデザインを取得
             $arrPageData = $this->lfgetPageData(" url = ? " , array($url));
