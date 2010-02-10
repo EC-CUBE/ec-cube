@@ -98,9 +98,9 @@ class LC_Page_Entry extends LC_Page {
                                      array(  "column" => "addr01", "convert" => "aKV" ),
                                      array(  "column" => "addr02", "convert" => "aKV" ),
                                      array(  "column" => "email", "convert" => "a" ),
-                                     array(  "column" => "email2", "convert" => "a" ),
+                                     array(  "column" => "email02", "convert" => "a" ),
                                      array(  "column" => "email_mobile", "convert" => "a" ),
-                                     array(  "column" => "email_mobile2", "convert" => "a" ),
+                                     array(  "column" => "email_mobile02", "convert" => "a" ),
                                      array(  "column" => "tel01", "convert" => "n" ),
                                      array(  "column" => "tel02", "convert" => "n" ),
                                      array(  "column" => "tel03", "convert" => "n" ),
@@ -110,6 +110,9 @@ class LC_Page_Entry extends LC_Page {
                                      array(  "column" => "sex", "convert" => "n" ),
                                      array(  "column" => "job", "convert" => "n" ),
                                      array(  "column" => "birth", "convert" => "n" ),
+                                     array(  "column" => "year", "convert" => "n" ),
+                                     array(  "column" => "month", "convert" => "n" ),
+                                     array(  "column" => "day", "convert" => "n" ),
                                      array(  "column" => "reminder", "convert" => "n" ),
                                      array(  "column" => "reminder_answer", "convert" => "aKV"),
                                      array(  "column" => "password", "convert" => "a" ),
@@ -167,8 +170,8 @@ class LC_Page_Entry extends LC_Page {
             $this->arrErr = $this->lfErrorCheck($this->arrForm);
 
             if ($this->arrErr || $_POST["mode"] == "return") {		// 入力エラーのチェック
-                foreach($this->arrForm as $key => $val) {
-                    $this->$key = $val;
+                foreach($arrRegistColumn as $key) {
+                    $this->$key['column'] = $this->arrForm[$key['column']];
                 }
 
             } else {
@@ -314,9 +317,9 @@ class LC_Page_Entry extends LC_Page {
                                  array(  "column" => "addr01", "convert" => "aKV" ),
                                  array(  "column" => "addr02", "convert" => "aKV" ),
                                  array(  "column" => "email", "convert" => "a" ),
-                                 array(  "column" => "email2", "convert" => "a" ),
+                                 array(  "column" => "email02", "convert" => "a" ),
                                  array(  "column" => "email_mobile", "convert" => "a" ),
-                                 array(  "column" => "email_mobile2", "convert" => "a" ),
+                                 array(  "column" => "email_mobile02", "convert" => "a" ),
                                  array(  "column" => "tel01", "convert" => "n" ),
                                  array(  "column" => "tel02", "convert" => "n" ),
                                  array(  "column" => "tel03", "convert" => "n" ),
@@ -326,6 +329,9 @@ class LC_Page_Entry extends LC_Page {
                                  array(  "column" => "sex", "convert" => "n" ),
                                  array(  "column" => "job", "convert" => "n" ),
                                  array(  "column" => "birth", "convert" => "n" ),
+                                 array(  "column" => "year", "convert" => "n" ),
+                                 array(  "column" => "month", "convert" => "n" ),
+                                 array(  "column" => "day", "convert" => "n" ),
                                  array(  "column" => "reminder", "convert" => "n" ),
                                  array(  "column" => "reminder_answer", "convert" => "aKV"),
                                  array(  "column" => "password", "convert" => "a" ),
@@ -381,8 +387,8 @@ class LC_Page_Entry extends LC_Page {
                 $this->tpl_title = '会員登録(3/3)';
             }
 
-            foreach($this->arrForm as $key => $val) {
-                $this->$key = $val;
+            foreach($arrRegistColumn as $key) {
+                $this->$key['column'] = $this->arrForm[$key['column']];
             }
 
             if ($this->arrErr || !empty($_POST["return"])) {		// 入力エラーのチェック
