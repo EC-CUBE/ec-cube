@@ -86,6 +86,7 @@ class LC_Page_Contact extends LC_Page {
                                      array(  "column" => "addr01",		"convert" => "aKV" ),
                                      array(  "column" => "addr02",		"convert" => "aKV" ),
                                      array(  "column" => "email",		"convert" => "a" ),
+                                     array(  "column" => "email02",		"convert" => "a" ),
                                      array(  "column" => "tel01",		"convert" => "n" ),
                                      array(  "column" => "tel02",		"convert" => "n" ),
                                      array(  "column" => "tel03",		"convert" => "n" ),
@@ -107,15 +108,15 @@ class LC_Page_Contact extends LC_Page {
                 $this->tpl_mainpage = 'contact/confirm.tpl';
                 $this->tpl_title = 'お問い合わせ(確認ページ)';
             } else {
-                foreach ($this->arrForm as $key => $val){
-                    $this->$key = $val;
+                foreach ($arrConvertColumn as $key) {
+                    $this->$key['column'] = $this->arrForm[$key['column']];
                 }
             }
             break;
 
             case 'return':
-            foreach ($_POST as $key => $val){
-                $this->$key = $val;
+                foreach ($arrConvertColumn as $key) {
+                    $this->$key['column'] = $_POST[$key['column']];
                 }
             break;
 

@@ -168,7 +168,10 @@
                                     <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
                                     <option value="">選択してください</option>
                                     <!--{html_options options=$arrORDERSTATUS selected=$arrForm[$key].value}-->
-                                    </select>
+                                    </select><br />
+                                    <!--{if $smarty.get.mode != 'add'}-->
+                                    <span class="red12">※ <!--{$arrORDERSTATUS[$smarty.const.ORDER_CANCEL]}-->に変更時には、在庫数を手動で戻してください。</span>
+                                    <!--{/if}-->
                                 </td>
                             </tr>
                             <tr class="fs12n">
@@ -309,10 +312,10 @@
                             <tr><td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td></tr>
                         </table>
 
-                        <!--▼配送先情報ここから-->
+                        <!--▼お届け先情報ここから-->
                         <table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
                             <tr class="fs12n">
-                                <td bgcolor="#f2f1ec" width="717" colspan="4">▼配送先情報
+                                <td bgcolor="#f2f1ec" width="717" colspan="4">▼お届け先情報
                                 &nbsp;&nbsp;&nbsp;<input type="button" name="input_from_order_data" value="上記お客様情報をコピー" onclick="fnCopyFromOrderData();" /></td>
                             </tr>
                             <tr class="fs12n">
@@ -392,7 +395,7 @@
                                 </td>
                             </tr>
                         </table>
-                        <!--▲配送先情報ここまで-->
+                        <!--▲お届け先情報ここまで-->
 
                         <table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
                             <tr><td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td></tr>
@@ -406,7 +409,9 @@
                                 <input type="button" name="cheek" value="計算結果の確認" onclick="fnModeSubmit('cheek','anchor_key','order_products');" />
                                 <input type="button" name="add_product" value="商品の追加" onclick="win03('<!--{$smarty.const.SITE_URL}-->admin/order/product_select.php<!--{if $tpl_order_id}-->?order_id=<!--{$tpl_order_id}--><!--{/if}-->', 'search', '500', '500'); " />
                                 <br />
+<!--{**
                                 <span class="red">（商品の追加、及び数量の変更に伴う在庫数の変更は手動にてお願いします。)</span>
+**}-->
                                 <br />
                                 <span class="red12"><!--{$arrErr.product_id}--></span>
                                 <span class="red12"><!--{$arrErr.quantity}--></span>
@@ -555,7 +560,7 @@
                             <!--{/if}-->
 
                             <tr class="fs12n">
-                                <td bgcolor="#f2f1ec" colspan="6">▼時間指定</td>
+                                <td bgcolor="#f2f1ec" colspan="6">▼お届け指定</td>
                             </tr>
                             <tr class="fs12n">
                                 <td bgcolor="#ffffff" colspan="6">
@@ -569,13 +574,20 @@
                             </tr>
                             <!--{assign var=key value="deliv_date"}-->
                             <tr class="fs12n">
-                                <td bgcolor="#f2f1ec" colspan="6">▼配達日指定</td>
+                                <td bgcolor="#f2f1ec" colspan="6">▼お届け日指定</td>
                             </tr>
                             <tr class="fs12n">
                                 <td bgcolor="#ffffff" colspan="6">
-                                <!--{assign var=key value="deliv_date"}-->
-                                <span class="red12"><!--{$arrErr[$key]}--></span>
-                                <input name="<!--{$key|escape}-->" value="<!--{$arrForm[$key].value|escape}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="20" maxlength="<!--{$arrForm[$key].length}-->" />
+                                  <span class="attention"><!--{$arrErr.deliv_date_year}--></span> 
+                                  <select name="deliv_date_year" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"> 
+                                    <!--{html_options options=$arrYearDelivDate selected=$arrForm.deliv_date_year.value|default:""}--> 
+                                  </select>年 
+                                  <select name="deliv_date_month" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"> 
+                                    <!--{html_options options=$arrMonthDelivDate selected=$arrForm.deliv_date_month.value|default:""}--> 
+                                  </select>月 
+                                  <select name="deliv_date_day" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"> 
+                                    <!--{html_options options=$arrDayDelivDate selected=$arrForm.deliv_date_day.value|default:""}--> 
+                                  </select>日
                                 </td>
                             </tr>
                             <tr class="fs12n">

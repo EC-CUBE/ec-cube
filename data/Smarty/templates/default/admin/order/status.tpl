@@ -69,7 +69,7 @@
 								<!--{if $tpl_linemax > 0 }-->
 									<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 										<tr>
-											<td>
+											<td align="center">
 												<select name="change_status">
 												<option value="" selected="selected" style="<!--{$Errormes|sfGetErrorColor}-->" >選択してください</option>
 												<!--{foreach key=key item=item from=$arrORDERSTATUS}-->
@@ -79,8 +79,12 @@
 												<!--{/foreach}-->
 												<option value="delete">削除</option>
 												</select>
+											<input type="button" name="regist" value="反映" onclick="fnSelectCheckSubmit();"></td>
+										</tr>
+										<tr>
+											<td>
+                        <span class="red12">※ <!--{$arrORDERSTATUS[$smarty.const.ORDER_CANCEL]}-->もしくは、削除に変更時には、在庫数を手動で戻してください。</span><br />
 											</td>
-											<td><input type="button" name="regist" value="反映" onclick="fnSelectCheckSubmit();"></td>
 										</tr>
 									</table>
 

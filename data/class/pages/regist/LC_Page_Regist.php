@@ -78,7 +78,7 @@ class LC_Page_Regist extends LC_Page {
             $this->arrErr = $this->lfErrorCheck($_GET);
             if ($this->arrErr) {
                 SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, "", true, $this->arrErr["id"]);
-            
+
             } else {
                 $registSecretKey = $this->lfRegistData($_GET);			//本会員登録（フラグ変更）
                 $this->lfSendRegistMail($registSecretKey);				//本会員登録完了メール送信
@@ -185,9 +185,9 @@ class LC_Page_Regist extends LC_Page {
 
         $where = "secret_key = ? AND status = 1";
 
-        $arrRet = $objQuery->select("point", "dtb_customer", $where, array($array["id"]));
-        // 会員登録時の加算ポイント(購入時会員登録の場合は、ポイント加算）
-        $arrRegist['point'] = $arrRet[0]['point'] + $this->arrInfo['welcome_point'];
+        // 会員登録時の加算ポイント(購入時会員登録かつ仮会員登録専用）
+        //$arrRet = $objQuery->select("point", "dtb_customer", $where, array($array["id"]));
+        //$arrRegist['point'] = $arrRet[0]['point'] + $this->arrInfo['welcome_point'];
 
         $objQuery->update("dtb_customer", $arrRegist, $where, array($array["id"]));
 

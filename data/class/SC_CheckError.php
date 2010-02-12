@@ -295,12 +295,19 @@ class SC_CheckError {
             $this->arrErr[$value[1]] .= "※ " . $value[0] . "はすべての項目を入力してください。<br />";
         }
 
+        $total_count = 0;
         for($i = 1; $i <= 3; $i++) {
             if(strlen($this->arrParam[$value[$i]]) > 0 && strlen($this->arrParam[$value[$i]]) > $value[4]) {
                 $this->arrErr[$value[$i]] .= "※ " . $value[0] . $i . "は" . $value[4] . "字以内で入力してください。<br />";
             } else if (strlen($this->arrParam[$value[$i]]) > 0 && !EregI("^[[:digit:]]+$", $this->arrParam[$value[$i]])) {
                 $this->arrErr[$value[$i]] .= "※ " . $value[0] . $i . "は数字で入力してください。<br />";
             }
+            $total_count += strlen($this->arrParam[$value[$i]]);
+        }
+
+        // 合計値チェック
+        if ($total_count > TEL_LEN) {
+            $this->arrErr[$value[3]] .= "※ " . $value[0] . "は" . TEL_LEN . "文字以内で入力してください。<br />";
         }
     }
 

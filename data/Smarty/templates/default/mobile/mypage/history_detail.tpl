@@ -27,7 +27,7 @@
 ■<!--{$arrDisp.create_date|sfDispDBDate}--><br>
 注文番号:<!--{$arrDisp.order_id}--><br>
 <br>
-【配送先】<br>
+【お届け先】<br>
 	<!--{assign var=key1 value="deliv_name01"}--><!--{assign var=key2 value="deliv_name02"}-->
 	<!--{$arrDisp[$key1]|escape}-->&nbsp;<!--{$arrDisp[$key2]|escape}--><br>
 	<!--{assign var=key1 value="deliv_zip01"}--><!--{assign var=key2 value="deliv_zip02"}-->
@@ -36,7 +36,7 @@
 	<!--{assign var=key value="deliv_addr01"}--><!--{$arrDisp[$key]|escape}-->
 	<!--{assign var=key value="deliv_addr02"}--><!--{$arrDisp[$key]|escape}--><br>
 <br>
-【配送日時指定】<br>
+【お届け日時指定】<br>
 <!--{if $arrDisp.deliv_date eq "" and $arrDelivTime[$arrDisp.deliv_time_id] eq ""}-->
 	指定なし<br>
 <!--{else}-->
