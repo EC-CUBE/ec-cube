@@ -221,12 +221,6 @@ class LC_Page_Products_Detail extends LC_Page {
         $arrProductCode = SC_Utils_Ex::sfswaparray($arrProductCode);
         $this->arrProductCode = $arrProductCode["product_code"];
 
-        // 購入制限数を取得
-        if($this->arrProduct['sale_unlimited'] == 1 || $this->arrProduct['sale_limit'] > SALE_LIMIT_MAX) {
-          $this->tpl_sale_limit = SALE_LIMIT_MAX;
-        } else {
-          $this->tpl_sale_limit = $this->arrProduct['sale_limit'];
-        }
         // サブタイトルを取得
         $arrCategory_id = $objDb->sfGetCategoryId($arrRet[0]['product_id'],'',$status);
         $arrFirstCat = $objDb->sfGetFirstCat($arrCategory_id[0]);
@@ -444,13 +438,6 @@ class LC_Page_Products_Detail extends LC_Page {
         $arrProductCode = $objQuery->getall($code_sql, array($tmp_id));
         $arrProductCode = SC_Utils_Ex::sfswaparray($arrProductCode);
         $this->arrProductCode = $arrProductCode["product_code"];
-
-        // 購入制限数を取得
-        if($this->arrProduct['sale_unlimited'] == 1 || $this->arrProduct['sale_limit'] > SALE_LIMIT_MAX) {
-            $this->tpl_sale_limit = SALE_LIMIT_MAX;
-        } else {
-            $this->tpl_sale_limit = $this->arrProduct['sale_limit'];
-        }
 
         // サブタイトルを取得
         $arrFirstCat = $objDb->sfGetFirstCat($arrRet[0]['category_id']);

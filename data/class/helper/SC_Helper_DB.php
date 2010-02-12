@@ -314,14 +314,20 @@ class SC_Helper_DB {
                     if($arrData['sale_limit'] < $arrData['stock']) {
                         $limit = $arrData['sale_limit'];
                     } else {
-                        $limit = $arrData['stock'];
+                        // 購入制限数を在庫数に
+                        #$limit = $arrData['stock'];
+                        // 購入制限数をSALE_LIMIT_MAXに
+                        $limit = SALE_LIMIT_MAX;
                     }
                 } else {
                     if ($arrData['sale_unlimited'] != '1') {
                         $limit = $arrData['sale_limit'];
                     }
                     if ($arrData['stock_unlimited'] != '1') {
-                        $limit = $arrData['stock'];
+                        // 購入制限数を在庫数に
+                        #$limit = $arrData['stock'];
+                        // 購入制限数をSALE_LIMIT_MAXに
+                        $limit = SALE_LIMIT_MAX;
                     }
                 }
 
@@ -1377,10 +1383,10 @@ class SC_Helper_DB {
     }
 
     /**
-     * 配送時間を取得する.
+     * お届け時間を取得する.
      *
      * @param integer $payment_id 支払い方法ID
-     * @return array 配送時間の配列
+     * @return array お届け時間の配列
      */
     function sfGetDelivTime($payment_id = "") {
         $objQuery = new SC_Query();

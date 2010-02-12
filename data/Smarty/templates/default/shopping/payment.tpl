@@ -42,7 +42,7 @@
         <table summary="お支払方法選択">
           <tr>
             <th>選択</th>
-            <th colspan="<!--{if $img_show == false}-->2<!--{else}-->3<!--{/if}-->">お支払方法</th>
+            <th colspan="<!--{if $img_show == false}-->1<!--{else}-->2<!--{/if}-->">お支払方法</th>
           </tr>
           <!--{section name=cnt loop=$arrPayment}-->
           <tr>
@@ -51,12 +51,12 @@
             <td>
               <label for="pay_<!--{$smarty.section.cnt.iteration}-->"><!--{$arrPayment[cnt].payment_method|escape}--><!--{if $arrPayment[cnt].note != ""}--><!--{/if}--></label>
             </td>
+           <!--{if $img_show}-->
+            <td>
             <!--{if $arrPayment[cnt].payment_image != ""}-->
-                <td>
-                    <img src="<!--{$smarty.const.IMAGE_SAVE_URL}--><!--{$arrPayment[cnt].payment_image}-->" />
-                </td>
-            <!--{elseif $img_show == true}-->
-                <td></td>
+              <img src="<!--{$smarty.const.IMAGE_SAVE_URL}--><!--{$arrPayment[cnt].payment_image}-->" />
+            <!--{/if}-->
+            </td>
             <!--{/if}-->
           </tr>
           <!--{/section}-->
@@ -67,7 +67,7 @@
         <h3><img src="<!--{$TPL_DIR}-->img/shopping/subtitle02.gif" width="670" height="33" alt="お届け時間の指定" /></h3>
         <p>ご希望の方は、お届け時間を選択してください。</p>
         <div>
-          <!--★配達日指定★-->
+          <!--★お届け日★-->
           <!--{assign var=key value="deliv_date"}-->
           <span class="attention"><!--{$arrErr[$key]}--></span>
           <em>お届け日指定：</em>
@@ -79,9 +79,10 @@
               <!--{html_options options=$arrDelivDate selected=$arrForm[$key].value}-->
             </select>
           <!--{/if}-->
+          <!--★お届け時間★-->
           <!--{assign var=key value="deliv_time_id"}-->
           <span class="attention"><!--{$arrErr[$key]}--></span>
-          <em>お届け時間指定：</em>
+          <em>お届け時間：</em>
           <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
             <option value="" selected="">指定なし</option>
             <!--{html_options options=$arrDelivTime selected=$arrForm[$key].value}-->

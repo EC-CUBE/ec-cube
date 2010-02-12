@@ -155,10 +155,10 @@
                             <tr><td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td></tr>
                         </table>
 
-                        <!--▼配送先情報ここから-->
+                        <!--▼お届け先情報ここから-->
                         <table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
                             <tr class="fs12n">
-                                <td bgcolor="#f2f1ec" width="717" colspan="4">▼配送先情報</td>
+                                <td bgcolor="#f2f1ec" width="717" colspan="4">▼お届け先情報</td>
                             </tr>
                             <tr class="fs12n">
                                 <td bgcolor="#f2f1ec" width="110">お名前</td>
@@ -203,7 +203,7 @@
                                 </td>
                             </tr>
                         </table>
-                        <!--▲配送先情報ここまで-->
+                        <!--▲お届け先情報ここまで-->
 
                         <table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
                             <tr><td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td></tr>
@@ -322,7 +322,7 @@
                             </tr>
                             <!--{/if}-->
                             <tr class="fs12n">
-                                <td bgcolor="#f0f0f0" colspan="5">▼時間指定</td>
+                                <td bgcolor="#f0f0f0" colspan="5">▼お届け指定</td>
                             </tr>
                             <tr class="fs12n">
                                 <td bgcolor="#ffffff" colspan="5" height="24">
@@ -330,7 +330,7 @@
                                 <!--{$arrDelivTime[$deliv_time_id]|default:"指定なし"}--></td>
                             </tr>
                             <tr class="fs12n">
-                                <td bgcolor="#f0f0f0" colspan="6">▼配達日指定</td>
+                                <td bgcolor="#f0f0f0" colspan="6">▼お届け日指定</td>
                             </tr>
                             <tr class="fs12n">
                                 <td bgcolor="#ffffff" colspan="6">

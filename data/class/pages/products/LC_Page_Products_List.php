@@ -477,6 +477,9 @@ __EOS__;
         $where = '0=0';
         if (is_array($arrProduct_id) && !empty($arrProduct_id)) {
             $where .= ' AND product_id IN (' . implode(',', $arrProduct_id) . ')';
+        } else {
+            // 一致させない
+            $where .= ' AND 0<>0';
         }
 
         //表示順序
@@ -541,8 +544,6 @@ __EOS__;
         if($disp_num == 15) {
             for($i = 0; $i < count($this->arrProducts); $i++) {
                 $this->lfMakeSelect($this->arrProducts[$i]['product_id'], $arrClassName, $arrClassCatName);
-                // 購入制限数を取得
-                $this->lfGetSaleLimit($this->arrProducts[$i]);
             }
         }
     }
@@ -713,16 +714,6 @@ __EOS__;
         $objErr->doFunc(array("個数", $quantity, INT_LEN), array("EXIST_CHECK", "ZERO_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
 
         return $objErr->arrErr;
-    }
-
-    // 購入制限数の設定
-    function lfGetSaleLimit($product) {
-        //在庫が無限または購入制限値が設定値より大きい場合
-        if($product['sale_unlimited'] == 1 || $product['sale_limit'] > SALE_LIMIT_MAX) {
-            $this->tpl_sale_limit[$product['product_id']] = SALE_LIMIT_MAX;
-        } else {
-            $this->tpl_sale_limit[$product['product_id']] = $product['sale_limit'];
-        }
     }
 
     //支払方法の取得

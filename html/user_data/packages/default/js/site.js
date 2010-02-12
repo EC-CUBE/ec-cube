@@ -126,6 +126,11 @@ function fnModeSubmit(mode, keyname, keyid) {
 			return;
 		}
 		break;
+	case 'delete_order':
+		if(!window.confirm('在庫数は手動で戻してください。\n一度削除したデータは、元に戻せません。\n削除しても宜しいですか？')){
+			return;
+		}
+		break;
 	case 'confirm':
 		if(!window.confirm('登録しても宜しいですか')){
 			return;
