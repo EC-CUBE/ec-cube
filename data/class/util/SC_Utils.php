@@ -77,7 +77,17 @@ class SC_Utils {
     function sfInitInstall() {
         // インストール済みが定義されていない。
         if (!defined('ECCUBE_INSTALL')) {
-            header("Location: ./install/" . DIR_INDEX_URL); // TODO 絶対URL にする
+            // ここから2つ上はdataディレクトリ
+            $eccube_data_dir = realpath(dirname(__FILE__) . '/../../');
+            // dataディレクトリとDATA_DIR2HTMLからhtmlディレクトリを取得。
+            $eccube_html_dir = realpath($eccube_data_dir . '/' . DATA_DIR2HTML);
+            // htmlディレクトリとDOCUMENT_ROOTの相対パスがURL_DIR
+            $document_root = realpath($_SERVER['DOCUMENT_ROOT']);
+            $url_dir = preg_replace('|^' . preg_quote($document_root) . '|', '', $eccube_html_dir);
+            // installページへのURLを生成。
+            $location = realpath('/' . $url_dir . '/install/index.php');
+
+            header('Location: ' . $location);
             exit;
         }
         $path = HTML_PATH . "install/index.php";
