@@ -110,10 +110,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         $objSess = new SC_Session();
         $objSiteInfo = new SC_SiteInfo();
         $objDb = new SC_Helper_DB_Ex();
-        $objDate = new SC_Date(1901); 
-        $this->arrYearDelivDate = $objDate->getYear('', date('Y'), ''); 
-        $this->arrMonthDelivDate = $objDate->getMonth(true); 
-        $this->arrDayDelivDate = $objDate->getDay(true);
         $arrInfo = $objSiteInfo->data;
 
         // パラメータ管理クラス
@@ -409,7 +405,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         $this->objFormParam->addParam("注文番号", "order_id");
         $this->objFormParam->addParam("受注日", "create_date");
         $this->objFormParam->addParam("発送日", "commit_date");
-        $this->objFormParam->addParam("お届け日", "deliv_date"); 
     }
 
     function lfGetOrderData($order_id) {
@@ -423,11 +418,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
             list($point, $total_point) = $objDb->sfGetCustomerPoint($order_id, $arrRet[0]['use_point'], $arrRet[0]['add_point']);
             $this->objFormParam->setValue('total_point', $total_point);
             $this->objFormParam->setValue('point', $point);
-            $delivDate = split(" ", $arrRet[0]["deliv_date"]); 
-            $delivDate = split("-", $delivDate[0]); 
-            $this->objFormParam->setValue('deliv_date_year', $delivDate[0]); 
-            $this->objFormParam->setValue('deliv_date_month', isset($delivDate[1]) ? $delivDate[1] : ""); 
-            $this->objFormParam->setValue('deliv_date_day', isset($delivDate[2]) ? $delivDate[2] : "");
             $this->arrForm = $arrRet[0];
 
             // 受注詳細データの取得
@@ -466,8 +456,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         $arrRet =  $this->objFormParam->getHashArray();
         $objErr = new SC_CheckError($arrRet);
         $objErr->arrErr = $this->objFormParam->checkError();
-
-        $objErr->doFunc(array("お届け日", "deliv_date_year", "deliv_date_month", "deliv_date_day"), array("CHECK_DATE"));
 
         if (count($objErr->arrErr) >= 1) {
             return $objErr->arrErr;
@@ -555,13 +543,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
             }
         }
         $sqlval['update_date'] = 'Now()';
-
-        if (strlen($sqlval['deliv_date_year']) >= 0) {
-            $sqlval['deliv_date'] = $sqlval['deliv_date_year'] . '-' . $sqlval['deliv_date_month'] . '-' . $sqlval['deliv_date_day'];
-        }
-        unset($sqlval['deliv_date_year']);
-        unset($sqlval['deliv_date_month']);
-        unset($sqlval['deliv_date_day']);
 
         unset($sqlval['total_point']);
         unset($sqlval['point']);
