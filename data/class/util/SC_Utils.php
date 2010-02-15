@@ -88,7 +88,8 @@ class SC_Utils {
                 // dataディレクトリとDATA_DIR2HTMLからhtmlディレクトリを取得。
                 $eccube_html_dir = realpath($eccube_data_dir . DATA_DIR2HTML);
                 // htmlディレクトリとDOCUMENT_ROOTの相対パスがURL_DIR
-                $url_dir = preg_replace('|^' . preg_quote($_SERVER['DOCUMENT_ROOT']) . '|', '', $eccube_html_dir);
+                $document_root = realpath($_SERVER['DOCUMENT_ROOT']);
+                $url_dir = preg_replace('|^' . preg_quote($document_root) . '|', '', $eccube_html_dir);
                 // installページへのURLを生成。
                 $location = realpath('/' . $url_dir . '/install/index.php');
 
