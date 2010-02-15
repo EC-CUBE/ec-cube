@@ -83,23 +83,15 @@ class SC_Utils {
             if( !ereg('/install/', $_SERVER['PHP_SELF']) ) {
                 // インストールページに遷移させる
 
-                $script_filename = $_SERVER['SCRIPT_FILENAME'];
-                list($real_root, $tmp) = explode('/html/', $script_filename);
-                $real_root = $real_root . '/html/';
-                $script_name = $_SERVER['SCRIPT_NAME'];
-                $url_dir = rtrim($script_name, basename($script_name));
+                // ここから2つ上はdataディレクトリ
+                $eccube_data_dir = realpath(dirname(__FILE__) . '/../../');
+                // dataディレクトリとDATA_DIR2HTMLからhtmlディレクトリを取得。
+                $eccube_html_dir = realpath($eccube_data_dir . DATA_DIR2HTML);
+                // htmlディレクトリとDOCUMENT_ROOTの相対パスがURL_DIR
+                $url_dir = preg_replace('|^' . preg_quote($_SERVER['DOCUMENT_ROOT']) . '|', '', $eccube_html_dir);
+                // installページへのURLを生成。
+                $location = realpath('/' . $url_dir . '/install/index.php');
 
-                if ($dh = opendir($real_root)) {
-                    $arrDir = array();
-                    while ($entry = readdir($dh)) {
-                        if (is_dir($real_root.$entry) && !in_array($entry, array('.', '..', '.svn', 'install'))) {
-                            $url_dir = rtrim($url_dir, $entry.'/');
-                        }
-                    }
-                    closedir($dh);
-                }
-
-                $location = $url_dir . '/install/';
                 header('Location: ' . $location);
                 exit;
             }
