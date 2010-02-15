@@ -86,7 +86,7 @@ class SC_Utils {
                 // ここから2つ上はdataディレクトリ
                 $eccube_data_dir = realpath(dirname(__FILE__) . '/../../');
                 // dataディレクトリとDATA_DIR2HTMLからhtmlディレクトリを取得。
-                $eccube_html_dir = realpath($eccube_data_dir . DATA_DIR2HTML);
+                $eccube_html_dir = realpath($eccube_data_dir . '/' . DATA_DIR2HTML);
                 // htmlディレクトリとDOCUMENT_ROOTの相対パスがURL_DIR
                 $document_root = realpath($_SERVER['DOCUMENT_ROOT']);
                 $url_dir = preg_replace('|^' . preg_quote($document_root) . '|', '', $eccube_html_dir);
