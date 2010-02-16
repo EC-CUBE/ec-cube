@@ -89,9 +89,20 @@ class SC_Utils {
                 $eccube_html_dir = realpath($eccube_data_dir . '/' . DATA_DIR2HTML);
                 // htmlディレクトリとDOCUMENT_ROOTの相対パスがURL_DIR
                 $document_root = realpath($_SERVER['DOCUMENT_ROOT']);
-                $url_dir = preg_replace('|^' . preg_quote($document_root) . '|', '', $eccube_html_dir);
+                $url_dir = str_replace($document_root, '', $eccube_html_dir);
+
                 // installページへのURLを生成。
-                $location = realpath('/' . $url_dir . '/install/index.php');
+                // Windowsの場合は, ディレクトリの区切り文字を\から/に変換する
+                $url_dir = str_replace("\\", "/", $url_dir);
+                // 先頭が'/'でない場合は'/'を付与。(php4,5のrealpathの挙動の違いによる)
+                if (substr($url_dir, 0, 1) != '/') {
+                    $url_dir = '/' . $url_dir;
+                }
+                // 最後が'/'でない場合は'/'を付与。
+                if (substr($url_dir, -1) != '/') {
+                    $url_dir .= '/';
+                }
+                $location = $url_dir . 'install/index.php';
 
                 header('Location: ' . $location);
                 exit;
