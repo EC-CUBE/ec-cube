@@ -227,21 +227,20 @@ class LC_Page_Admin_Design_Template extends LC_Page {
 	    return $objForm;
 	}
 
-	/**
-	 * 使用するテンプレートをDBへ登録する
-	 */
-	function lfRegisterTemplate($template_code) {
-	    $objQuery = new SC_Query();
-	    $sqlval['name'] = "\"" . $template_code . "\"";
-		$objQuery->update("mtb_constants", $sqlval, "id = ?", array('TEMPLATE_NAME'));
-		// キャッシュを生成
-		$masterData = new SC_DB_MasterData_Ex();
-		// 更新したデータを取得
-        $mtb_constants = $masterData->getDBMasterData("mtb_constants");
-        $masterData->clearCache("mtb_constants");
-        $masterData->createCache("mtb_constants", $mtb_constants, true,
-                                 array("id", "remarks", "rank"));
-	}
+    /**
+     * 使用するテンプレートをDBへ登録する
+     */
+    function lfRegisterTemplate($template_code) {
+        $masterData = new SC_DB_MasterData_Ex();
+
+        $data = array('TEMPLATE_NAME' => var_export($template_code, TRUE));
+
+        // DBのデータを更新
+        $masterData->updateMasterData('mtb_constants', array(), $data);
+
+        // キャッシュを生成
+        $masterData->createCache('mtb_constants', array(), true, array('id', 'remarks'));
+    }
 
 	/**
 	 * common.cssの更新
