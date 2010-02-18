@@ -324,12 +324,12 @@ function lnSetSelect(form, name1, name2, val) {
           <!--{assign var=image_path value="`$smarty.const.NO_IMAGE_DIR`"}-->
         <!--{/if}-->
 
-        <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id}-->">
+        <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id|escape:url}-->">
           <img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[cnt].name|escape}-->" /></a>
 
         <!--{assign var=price02_min value=`$arrRecommend[cnt].price02_min`}-->
         <!--{assign var=price02_max value=`$arrRecommend[cnt].price02_max`}-->
-        <h3><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id}-->"><!--{$arrRecommend[cnt].name|escape}--></a></h3>
+        <h3><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id|escape:url}-->"><!--{$arrRecommend[cnt].name|escape}--></a></h3>
 
         <p>価格<span class="mini">(税込)</span>：<span class="price">
           <!--{if $price02_min == $price02_max}-->
@@ -353,11 +353,11 @@ function lnSetSelect(form, name1, name2, val) {
         <!--{else}-->
           <!--{assign var=image_path value="`$smarty.const.NO_IMAGE_DIR`"}-->
         <!--{/if}-->
-        <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id}-->">
+        <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id|escape:url}-->">
           <img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[cnt].name|escape}-->" /></a>
         <!--{assign var=price02_min value=`$arrRecommend[cnt].price02_min`}-->
         <!--{assign var=price02_max value=`$arrRecommend[cnt].price02_max`}-->
-        <h3><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id}-->"><!--{$arrRecommend[cnt].name|escape}--></a></h3>
+        <h3><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id|escape:url}-->"><!--{$arrRecommend[cnt].name|escape}--></a></h3>
 
         <p>価格<span class="mini">(税込)</span>：<span class="price">
 

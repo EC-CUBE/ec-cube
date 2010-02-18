@@ -93,7 +93,7 @@ function lnSetSelect(name1, name2, id, val) {
     <div class="listarea">
       <div class="listphoto">
         <!--★画像★-->
-        <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProducts[cnt].product_id}-->" class="over"><!--商品写真--><img src="<!--{$smarty.const.IMAGE_SAVE_URL|sfTrimURL}-->/<!--{$arrProducts[cnt].main_list_image}-->" alt="<!--{$arrProducts[cnt].name|escape}-->" class="picture" /></a>
+        <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProducts[cnt].product_id|escape:url}-->" class="over"><!--商品写真--><img src="<!--{$smarty.const.IMAGE_SAVE_URL|sfTrimURL}-->/<!--{$arrProducts[cnt].main_list_image}-->" alt="<!--{$arrProducts[cnt].name|escape}-->" class="picture" /></a>
      </div>
      <div class="listrightblock">
        <!--アイコン-->
@@ -113,7 +113,7 @@ function lnSetSelect(name1, name2, id, val) {
        <!--アイコン-->
        <!--★商品名★-->
        <h3>
-         <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProducts[cnt].product_id}-->"><!--{$arrProducts[cnt].name|escape}--></a>
+         <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProducts[cnt].product_id|escape:url}-->"><!--{$arrProducts[cnt].name|escape}--></a>
        </h3>
        <p class="listcomment"><!--★コメント★--><!--{$arrProducts[cnt].main_list_comment|escape|nl2br}--></p>
        <p>
@@ -126,7 +126,7 @@ function lnSetSelect(name1, name2, id, val) {
          <!--{/if}-->円</span></span>
          <span class="btnbox"><!--★詳細ボタン★-->
          <!--{assign var=name value="detail`$smarty.section.cnt.iteration`"}-->
-           <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProducts[cnt].product_id}-->" onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_detail_on.gif','<!--{$name}-->');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/products/b_detail.gif','<!--{$name}-->');">
+           <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProducts[cnt].product_id|escape:url}-->" onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_detail_on.gif','<!--{$name}-->');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/products/b_detail.gif','<!--{$name}-->');">
             <img src="<!--{$TPL_DIR}-->img/products/b_detail.gif" width="115" height="25" alt="詳しくはこちら" name="<!--{$name}-->" id="<!--{$name}-->" /></a>
          </span>
        </p>

@@ -63,8 +63,8 @@
       <!--{assign var=product_id value="`$arrFavorite[cnt].product_id`"|escape}-->
       <tr>
        <td><a href="javascript:fnModeSubmit('delete_favorite','product_id','<!--{$product_id}-->');">削除</a></td>
-       <td><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$product_id}-->"><img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&width=65&height=65"></a></td>
-       <td><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$product_id}-->"><!--{$arrFavorite[cnt].name}--></a></td>
+       <td><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$product_id|escape:url}-->"><img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&width=65&height=65"></a></td>
+       <td><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$product_id|escape:url}-->"><!--{$arrFavorite[cnt].name}--></a></td>
        <td class="right sale_price">
         <span class="price">
           <!--{if $arrFavorite[cnt].price02_min == $arrFavorite[cnt].price02_max}-->

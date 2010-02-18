@@ -254,16 +254,18 @@ class LC_Page_Sitemap extends LC_Page {
         $sql = "SELECT product_id, update_date FROM dtb_products WHERE del_flg = 0 AND status = 1";
         $result = $conn->getAll($sql);
 
-        $mobile = "";
         if ($isMobile) {
-            $mobile = "mobile/";
+            $detail_p_html = MOBILE_DETAIL_P_HTML;
+        } else {
+            $detail_p_html = DETAIL_P_HTML;
         }
 
         $arrRet = array();
-        for ($i = 0; $i < count($result); $i++) {
-            $page = array("url" => SITE_URL. sprintf("%sproducts/detail.php?product_id=%d", $mobile, $result[$i]['product_id']),
-                          "update_date" => $result[$i]['update_date']);
-            $arrRet[$i] = $page;
+        foreach ($result as $row) {
+            $page["update_date"] = $row['update_date'];
+            $page["url"] = SITE_URL . substr($detail_p_html, strlen(URL_DIR)) . $row['product_id'];
+
+            $arrRet[] = $page;
         }
         return $arrRet;
     }

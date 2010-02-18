@@ -50,7 +50,7 @@
       <!--{section name=cnt loop=$arrDisp.quantity}-->
       <tr>
         <td><!--{$arrDisp.product_code[cnt]|escape}--></td>
-        <td><a href="<!--{$smarty.const.URL_DIR}-->products/detail.php?product_id=<!--{$arrDisp.product_id[cnt]}-->"><!--{$arrDisp.product_name[cnt]|escape}--></a></td>
+        <td><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrDisp.product_id[cnt]|escape:url}-->"><!--{$arrDisp.product_name[cnt]|escape}--></a></td>
         <!--{assign var=price value=`$arrDisp.price[cnt]`}-->
         <!--{assign var=quantity value=`$arrDisp.quantity[cnt]`}-->
         <td class="pricetd"><!--{$price|escape|number_format}-->円</td>
