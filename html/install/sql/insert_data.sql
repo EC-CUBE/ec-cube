@@ -1057,7 +1057,7 @@ INSERT INTO mtb_constants VALUES ('MOBILE_DETAIL_P_HTML', 'MOBILE_URL_DIR . "pro
 INSERT INTO mtb_constants VALUES ('MOBILE_URL_SHOP_COMPLETE', 'MOBILE_URL_DIR . "shopping/complete.php"', 416,'購入完了画面');
 INSERT INTO mtb_constants VALUES ('MOBILE_URL_SHOP_MODULE', 'MOBILE_URL_DIR . "shopping/load_payment_module.php"', 417,'モジュール追加用画面');
 INSERT INTO mtb_constants VALUES ('SESSION_KEEP_METHOD', '"useCookie"', 418,'セッション維持方法：useCookie|useRequest');
-INSERT INTO mtb_constants VALUES ('SESSION_LIFETIME', '"1800"', 419,'セッションの存続時間 (秒)');
+INSERT INTO mtb_constants VALUES ('SESSION_LIFETIME', '1800', 419,'セッションの存続時間 (秒)');
 INSERT INTO mtb_constants VALUES ('OSTORE_URL', '"http://store.ec-cube.net/"', 500, 'オーナーズストアURL');
 INSERT INTO mtb_constants VALUES ('OSTORE_SSLURL', '"https://store.ec-cube.net/"', 501, 'オーナーズストアURL');
 INSERT INTO mtb_constants VALUES ('OSTORE_LOG_PATH', 'DATA_PATH . "logs/ownersstore.log"', 502, 'オーナーズストアログパス');

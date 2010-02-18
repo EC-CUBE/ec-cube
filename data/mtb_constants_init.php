@@ -107,8 +107,6 @@ define('TV_IMAGE_HEIGHT', 95);
 define('TV_PRODUCTS_MAX', 10);
 /** 会員登録変更(マイページ)パスワード用 */
 define('DEFAULT_PASSWORD', "UAhgGR3L");
-/** 関連商品数 */
-define('RECOMMEND_PRODUCT_MAX', 6);
 /** 別のお届け先最大登録数 */
 define('DELIV_ADDR_MAX', 20);
 /** 閲覧履歴保存数 */
@@ -432,6 +430,8 @@ define('ENTRY_CUSTOMER_TEMP_SUBJECT', "会員仮登録が完了いたしまし�
 define('ENTRY_CUSTOMER_REGIST_SUBJECT', "本会員登録が完了いたしました。");
 /** 再入会制限時間（単位: 時間) */
 define('ENTRY_LIMIT_HOUR', 1);
+/** 関連商品表示数 */
+define('RECOMMEND_PRODUCT_MAX', 6);
 /** おすすめ商品表示数 */
 define('RECOMMEND_NUM', 8);
 /** お届け可能日以降のプルダウン表示最大日数 */
@@ -472,6 +472,8 @@ define('UPDATE_SEND_SITE_INFO', false);
 define('USE_POINT', true);
 /** 在庫無し商品の非表示(true:非表示、false:表示) */
 define('NOSTOCK_HIDDEN', false);
+/** モバイルサイトを利用するか(true:利用する、false:利用しない) (false は一部対応) */
+define('USE_MOBILE', true);
 /** デフォルトテンプレート名 */
 define('DEFAULT_TEMPLATE_NAME', "default");
 /** テンプレート名 */
@@ -483,7 +485,7 @@ define('TPL_DIR', URL_DIR . USER_DIR . USER_PACKAGE_DIR . TEMPLATE_NAME . "/");
 /** SMARTYテンプレート */
 define('TEMPLATE_DIR', SMARTY_TEMPLATES_DIR . TEMPLATE_NAME . "/");
 /** SMARTYテンプレート(管理機能) */
-define('TEMPLATE_ADMIN_DIR',  SMARTY_TEMPLATES_DIR . DEFAULT_TEMPLATE_NAME . "/admin/");
+define('TEMPLATE_ADMIN_DIR', SMARTY_TEMPLATES_DIR . DEFAULT_TEMPLATE_NAME . "/admin/");
 /** SMARTYコンパイル */
 define('COMPILE_DIR', DATA_PATH . "Smarty/templates_c/" . TEMPLATE_NAME . "/");
 /** SMARTYコンパイル(管理機能) */
@@ -518,9 +520,9 @@ define('CAMPAIGN_TEMPLATE_END', "end/");
 define('MOBILE_TEMPLATE_DIR', TEMPLATE_DIR . "mobile/");
 /** SMARTYコンパイル(mobile) */
 define('MOBILE_COMPILE_DIR', COMPILE_DIR . "mobile/");
-/** セッションの存続時間 (秒) */
+/** モバイルサイトのセッションの存続時間 (秒) */
 define('MOBILE_SESSION_LIFETIME', 1800);
-/** 空メール機能を使用するかどうか */
+/** 空メール機能を使用するかどうか(true:送信する、false:送信しない) */
 define('MOBILE_USE_KARA_MAIL', false);
 /** 空メール受け付けアドレスのユーザー名部分 */
 define('MOBILE_KARA_MAIL_ADDRESS_USER', "eccube");
@@ -550,8 +552,8 @@ define('MOBILE_DETAIL_P_HTML', MOBILE_URL_DIR . "products/detail.php?product_id=
 define('MOBILE_URL_SHOP_COMPLETE', MOBILE_URL_DIR . "shopping/complete.php");
 /** モジュール追加用画面 */
 define('MOBILE_URL_SHOP_MODULE', MOBILE_URL_DIR . "shopping/load_payment_module.php");
-/** セッション維持の方法 */
-define('SESSION_KEEP_METHOD', 'useCookie');
+/** セッション維持方法：useCookie|useRequest */
+define('SESSION_KEEP_METHOD', "useCookie");
 /** セッションの存続時間 (秒) */
 define('SESSION_LIFETIME', 1800);
 /** オーナーズストアURL */
@@ -561,53 +563,53 @@ define('OSTORE_SSLURL', "https://store.ec-cube.net/");
 /** オーナーズストアログパス */
 define('OSTORE_LOG_PATH', DATA_PATH . "logs/ownersstore.log");
 /** オーナーズストア通信ステータス */
-define('OSTORE_STATUS_ERROR', 'ERROR');
+define('OSTORE_STATUS_ERROR', "ERROR");
 /** オーナーズストア通信ステータス */
-define('OSTORE_STATUS_SUCCESS', 'SUCCESS');
+define('OSTORE_STATUS_SUCCESS', "SUCCESS");
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_UNKNOWN', '1000');
+define('OSTORE_E_UNKNOWN', "1000");
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_INVALID_PARAM', '1001');
+define('OSTORE_E_INVALID_PARAM', "1001");
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_NO_CUSTOMER', '1002');
+define('OSTORE_E_NO_CUSTOMER', "1002");
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_WRONG_URL_PASS', '1003');
+define('OSTORE_E_WRONG_URL_PASS', "1003");
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_NO_PRODUCTS', '1004');
+define('OSTORE_E_NO_PRODUCTS', "1004");
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_NO_DL_DATA', '1005');
+define('OSTORE_E_NO_DL_DATA', "1005");
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_DL_DATA_OPEN', '1006');
+define('OSTORE_E_DL_DATA_OPEN', "1006");
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_DLLOG_AUTH', '1007');
+define('OSTORE_E_DLLOG_AUTH', "1007");
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_C_ADMIN_AUTH', '2001');
+define('OSTORE_E_C_ADMIN_AUTH', "2001");
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_C_HTTP_REQ', '2002');
+define('OSTORE_E_C_HTTP_REQ', "2002");
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_C_HTTP_RESP', '2003');
+define('OSTORE_E_C_HTTP_RESP', "2003");
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_C_FAILED_JSON_PARSE', '2004');
+define('OSTORE_E_C_FAILED_JSON_PARSE', "2004");
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_C_NO_KEY', '2005');
+define('OSTORE_E_C_NO_KEY', "2005");
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_C_INVALID_ACCESS', '2006');
+define('OSTORE_E_C_INVALID_ACCESS', "2006");
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_C_INVALID_PARAM', '2007');
+define('OSTORE_E_C_INVALID_PARAM', "2007");
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_C_AUTOUP_DISABLE', '2008');
+define('OSTORE_E_C_AUTOUP_DISABLE', "2008");
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_C_PERMISSION', '2009');
+define('OSTORE_E_C_PERMISSION', "2009");
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_C_BATCH_ERR', '2010');
+define('OSTORE_E_C_BATCH_ERR', "2010");
 /** お気に入り商品登録(有効:1 無効:0) */
-define('OPTION_FAVOFITE_PRODUCT','1');
-/** 画像リネーム設定（商品画像のみ） */
+define('OPTION_FAVOFITE_PRODUCT', 1);
+/** 画像リネーム設定（商品画像のみ）(true:リネームする、false:リネームしない) */
 define('IMAGE_RENAME', true);
 /** プラグインディレクトリ */
-define("PLUGIN_DIR", "plugins/");
+define('PLUGIN_DIR', "plugins/");
 /** プラグイン保存先 */
-define("PLUGIN_PATH", USER_PATH . PLUGIN_DIR);
+define('PLUGIN_PATH', USER_PATH . PLUGIN_DIR);
 /** プラグイン URL */
-define("PLUGIN_URL", USER_URL . PLUGIN_DIR);
+define('PLUGIN_URL', USER_URL . PLUGIN_DIR);
 ?>
