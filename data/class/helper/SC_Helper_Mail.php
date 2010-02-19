@@ -173,7 +173,6 @@ class SC_Helper_Mail {
         $body = $objMailView->fetch($tplpath);
         // メール送信処理
         $objSendMail = new SC_SendMail_Ex();
-        $to = mb_encode_mimeheader($to);
         $bcc = $arrInfo['email01'];
         $from = $arrInfo['email03'];
         $error = $arrInfo['email04'];
