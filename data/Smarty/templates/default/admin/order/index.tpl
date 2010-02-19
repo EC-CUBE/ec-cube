@@ -346,7 +346,7 @@
 </table>
 <!--★★メインコンテンツ★★-->
 
-<!--{if count($arrErr) == 0 and ($smarty.post.mode == 'search' or $smarty.post.mode == 'delete') }-->
+<!--{if count($arrErr) == 0 and ($smarty.post.mode == 'search' or $smarty.post.mode == 'delete_order') }-->
 
 <!--★★検索結果一覧★★-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">

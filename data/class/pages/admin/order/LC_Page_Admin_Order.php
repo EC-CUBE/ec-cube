@@ -111,7 +111,7 @@ class LC_Page_Admin_Order extends LC_Page {
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
         if (!isset($arrRet)) $arrRet = array();
 
-        if($_POST['mode'] == 'delete') {
+        if($_POST['mode'] == 'delete_order' ) {
             if(SC_Utils_Ex::sfIsInt($_POST['order_id'])) {
                 $objQuery = new SC_Query();
                 $where = "order_id = ?";
@@ -121,7 +121,7 @@ class LC_Page_Admin_Order extends LC_Page {
         }
 
         switch($_POST['mode']) {
-        case 'delete':
+        case 'delete_order':
         case 'csv':
         case 'pdf':
         case 'delete_all':
