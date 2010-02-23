@@ -172,7 +172,7 @@ class LC_Page_Magazine_Confirm extends LC_Page {
         $objErr->doFunc(
                         array('メールアドレス', $dataName, MTEXT_LEN) ,
                         array("NO_SPTAB", "EXIST_CHECK", "EMAIL_CHECK",
-                              "SPTAB_CHECK" ,"EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK", "MOBILE_EMAIL_CHECK"));
+                              "SPTAB_CHECK" ,"EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK", "EMAIL_CHECK", "MOBILE_EMAIL_CHECK"));
 
         // 入力エラーがなければ
         if (count($objErr->arrErr) == 0) {
