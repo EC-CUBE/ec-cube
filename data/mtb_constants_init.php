@@ -612,4 +612,6 @@ define('PLUGIN_DIR', "plugins/");
 define('PLUGIN_PATH', USER_PATH . PLUGIN_DIR);
 /** プラグイン URL */
 define('PLUGIN_URL', USER_URL . PLUGIN_DIR);
+/** EメールアドレスチェックをRFC準拠にするか(true:準拠する、false:準拠しない) */
+define('RFC_COMPLIANT_EMAIL_CHECK', false);
 ?>

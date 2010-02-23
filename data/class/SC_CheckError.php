@@ -531,7 +531,16 @@ class SC_CheckError {
         $domain        = $dot_atom;
         $addr_spec     = "${local_part}[@]$domain";
 
-        $regexp = "/\A${addr_spec}\z/";
+        $dot_atom_loose   = "$atext+(?:[.]|$atext)*";
+        $local_part_loose = "(?:$dot_atom_loose|$quoted_string)";
+        $addr_spec_loose  = "${local_part_loose}[@]$domain";
+
+        if (RFC_COMPLIANT_EMAIL_CHECK) {
+            $regexp = "/\A${addr_spec}\z/";
+		} else {
+            // 携帯メールアドレス用に、..や.@を許容する。
+            $regexp = "/\A${addr_spec_loose}\z/";
+        }
 
         if(strlen($this->arrParam[$value[1]]) > 0 && !preg_match($regexp, $this->arrParam[$value[1]])) {
             $this->arrErr[$value[1]] = "※ " . $value[0] . "の形式が不正です。<br />";

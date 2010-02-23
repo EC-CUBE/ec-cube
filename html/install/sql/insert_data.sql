@@ -1038,6 +1038,7 @@ INSERT INTO mtb_constants VALUES ('CAMPAIGN_BLOC_DIR','"bloc/"',317,'キャン�
 INSERT INTO mtb_constants VALUES ('CAMPAIGN_BLOC_PATH','CAMPAIGN_TEMPLATE_PATH . CAMPAIGN_BLOC_DIR',318,'キャンペーン関連');
 INSERT INTO mtb_constants VALUES ('CAMPAIGN_TEMPLATE_ACTIVE','"active/"',319,'キャンペーン関連');
 INSERT INTO mtb_constants VALUES ('CAMPAIGN_TEMPLATE_END','"end/"',320,'キャンペーン関連');
+INSERT INTO mtb_constants VALUES ('RFC_COMPLIANT_EMAIL_CHECK', 'false', 321, 'EメールアドレスチェックをRFC準拠にするか(true:準拠する、false:準拠しない)');
 INSERT INTO mtb_constants VALUES ('MOBILE_TEMPLATE_DIR', 'TEMPLATE_DIR . "mobile/"', 400,'SMARTYテンプレート(mobile)');
 INSERT INTO mtb_constants VALUES ('MOBILE_COMPILE_DIR', 'COMPILE_DIR . "mobile/"', 401,'SMARTYコンパイル(mobile)');
 INSERT INTO mtb_constants VALUES ('MOBILE_SESSION_LIFETIME', '1800', 402,'モバイルサイトのセッションの存続時間 (秒)');
