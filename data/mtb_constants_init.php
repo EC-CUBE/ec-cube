@@ -516,6 +516,8 @@ define('CAMPAIGN_BLOC_PATH', CAMPAIGN_TEMPLATE_PATH . CAMPAIGN_BLOC_DIR);
 define('CAMPAIGN_TEMPLATE_ACTIVE', "active/");
 /** キャンペーン関連 */
 define('CAMPAIGN_TEMPLATE_END', "end/");
+/** EメールアドレスチェックをRFC準拠にするか(true:準拠する、false:準拠しない) */
+define('RFC_COMPLIANT_EMAIL_CHECK', false);
 /** SMARTYテンプレート(mobile) */
 define('MOBILE_TEMPLATE_DIR', TEMPLATE_DIR . "mobile/");
 /** SMARTYコンパイル(mobile) */
@@ -612,6 +614,4 @@ define('PLUGIN_DIR', "plugins/");
 define('PLUGIN_PATH', USER_PATH . PLUGIN_DIR);
 /** プラグイン URL */
 define('PLUGIN_URL', USER_URL . PLUGIN_DIR);
-/** EメールアドレスチェックをRFC準拠にするか(true:準拠する、false:準拠しない) */
-define('RFC_COMPLIANT_EMAIL_CHECK', false);
 ?>
