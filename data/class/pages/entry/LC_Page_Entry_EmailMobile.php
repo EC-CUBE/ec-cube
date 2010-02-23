@@ -121,7 +121,7 @@ class LC_Page_Entry_EmailMobile extends LC_Page {
 
     function lfInitParam(&$objFormParam) {
         $objFormParam->addParam('メールアドレス', 'email_mobile', MTEXT_LEN, 'a',
-                                array('NO_SPTAB', 'EXIST_CHECK', 'MAX_LENGTH_CHECK', 'CHANGE_LOWER', 'EMAIL_CHAR_CHECK', 'MOBILE_EMAIL_CHECK'));
+                                array('NO_SPTAB', 'EXIST_CHECK', 'MAX_LENGTH_CHECK', 'CHANGE_LOWER', 'EMAIL_CHAR_CHECK', 'EMAIL_CHECK', 'MOBILE_EMAIL_CHECK'));
     }
 
     function lfCheckError(&$objFormParam, &$objCustomer) {
