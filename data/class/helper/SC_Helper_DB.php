@@ -311,22 +311,15 @@ class SC_Helper_DB {
 
                 // 購入制限数を求める。
                 if ($arrData['stock_unlimited'] != '1' && $arrData['sale_unlimited'] != '1') {
-                    if($arrData['sale_limit'] < $arrData['stock']) {
-                        $limit = $arrData['sale_limit'];
-                    } else {
-                        // 購入制限数を在庫数に
-                        #$limit = $arrData['stock'];
-                        // 購入制限数をSALE_LIMIT_MAXに
-                        $limit = SALE_LIMIT_MAX;
-                    }
+                    $limit = min($arrData['sale_limit'], $arrData['stock']);
+                } elseif ($arrData['sale_unlimited'] != '1') {
+                    $limit = $arrData['sale_limit'];
                 } else {
-                    if ($arrData['sale_unlimited'] != '1') {
-                        $limit = $arrData['sale_limit'];
-                    }
+                    // 購入制限なしの場合は、SALE_LIMIT_MAXが最大購入個数
+
                     if ($arrData['stock_unlimited'] != '1') {
-                        // 購入制限数を在庫数に
-                        #$limit = $arrData['stock'];
-                        // 購入制限数をSALE_LIMIT_MAXに
+                        $limit = min(SALE_LIMIT_MAX, $arrData['stock']);
+                    } else {
                         $limit = SALE_LIMIT_MAX;
                     }
                 }
