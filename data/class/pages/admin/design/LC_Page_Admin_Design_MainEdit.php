@@ -323,6 +323,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
         }else{
             $name = $arrData['page_name'] ;
             $url = USER_URL.$arrData['url'].".php";
+            $tpl_dir = substr(TPL_DIR, strlen(URL_DIR));
             $filename = basename($arrData['url']);
         }
         
