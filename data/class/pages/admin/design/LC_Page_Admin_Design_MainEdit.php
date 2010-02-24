@@ -359,6 +359,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
             } else {
                 $php_dir .= '/';
             }
+            $tpl_dir = substr(TPL_DIR, strlen(URL_DIR));
             $filename = basename($arrData['url']); // 拡張子を付加しない
         }
         
