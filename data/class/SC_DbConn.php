@@ -62,6 +62,7 @@ class SC_DbConn {
             
             if (DB_TYPE == 'mysql') {
                 $objDbConn->query('SET NAMES utf8');
+                $objDbConn->query('SELECT @@SESSION.ANSI_QUOTES;');
             }
         
         $this->conn = $objDbConn;
