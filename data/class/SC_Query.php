@@ -121,32 +121,6 @@ class SC_Query {
         $this->conn->query($str, $arrval);
     }
 
-    function autoselect($col, $table, $arrwhere = array(), $arrcon = array()) {
-        $strw = "";
-        $find = false;
-        foreach ($arrwhere as $key => $val) {
-            if(strlen($val) > 0) {
-                if(strlen($strw) <= 0) {
-                    $strw .= $key ." LIKE ?";
-                } else if(strlen($arrcon[$key]) > 0) {
-                    $strw .= " ". $arrcon[$key]. " " . $key ." LIKE ?";
-                } else {
-                    $strw .= " AND " . $key ." LIKE ?";
-                }
-
-                $arrval[] = $val;
-            }
-        }
-
-        if(strlen($strw) > 0) {
-            $sqlse = "SELECT $col FROM $table WHERE $strw ".$this->option;
-        } else {
-            $sqlse = "SELECT $col FROM $table ".$this->option;
-        }
-        $ret = $this->conn->getAll($sqlse, $arrval);
-        return $ret;
-    }
-
     /**
      * クエリを実行し、全ての行を返す
      *
@@ -160,17 +134,18 @@ class SC_Query {
         return $ret;
     }
 
-    function getsql($col, $table, $where) {
-        if($where != "") {
-            // 引数の$whereを優先して実行する。
-            $sqlse = "SELECT $col FROM $table WHERE $where " . $this->groupby . " " . $this->order . " " . $this->option;
-        } else {
-            if($this->where != "") {
-                    $sqlse = "SELECT $col FROM $table WHERE $this->where " . $this->groupby . " " . $this->order . " " . $this->option;
-                } else {
-                    $sqlse = "SELECT $col FROM $table " . $this->groupby . " " . $this->order . " " . $this->option;
-            }
+    function getsql($col, $table, $where = '') {
+        $sqlse = "SELECT $col FROM $table";
+
+        // 引数の$whereを優先する。
+        if (strlen($where) >= 1) {
+            $sqlse .= " WHERE $where";
+        } elseif (strlen($this->where) >= 1) {
+            $where = $this->where;
         }
+
+        $sqlse .= ' ' . $this->groupby . ' ' . $this->order . ' ' . $this->option;
+
         return $sqlse;
     }
 
@@ -335,37 +310,21 @@ class SC_Query {
 
     // MAX文の実行
     function max($table, $col, $where = "", $arrval = array()) {
-        if(strlen($where) <= 0) {
-            $sqlse = "SELECT MAX($col) FROM $table";
-        } else {
-            $sqlse = "SELECT MAX($col) FROM $table WHERE $where";
-        }
-        // MAX文の実行
-        $ret = $this->conn->getOne($sqlse, $arrval);
+        $ret = $this->get($table, "MAX($col)", $where);
         return $ret;
     }
 
     // MIN文の実行
     function min($table, $col, $where = "", $arrval = array()) {
-        if(strlen($where) <= 0) {
-            $sqlse = "SELECT MIN($col) FROM $table";
-        } else {
-            $sqlse = "SELECT MIN($col) FROM $table WHERE $where";
-        }
-        // MIN文の実行
-        $ret = $this->conn->getOne($sqlse, $arrval);
+        $ret = $this->get($table, "MIN($col)", $where);
         return $ret;
     }
 
     // 特定のカラムの値を取得
     function get($table, $col, $where = "", $arrval = array()) {
-        if(strlen($where) <= 0) {
-            $sqlse = "SELECT $col FROM $table";
-        } else {
-            $sqlse = "SELECT $col FROM $table WHERE $where";
-        }
+        $sqlse = $this->getsql($col, $table, $where);
         // SQL文の実行
-        $ret = $this->conn->getOne($sqlse, $arrval);
+        $ret = $this->getone($sqlse, $arrval);
         return $ret;
     }
 
@@ -373,7 +332,6 @@ class SC_Query {
         // SQL文の実行
         $ret = $this->conn->getOne($sql, $arrval);
         return $ret;
-
     }
 
     /**
@@ -387,22 +345,14 @@ class SC_Query {
      * @return array array('カラム名' => '値', ...)の連想配列
      */
     function getRow($table, $col, $where = "", $arrVal = array(), $fetchmode = DB_FETCHMODE_ASSOC) {
-        $sqlse = "SELECT $col FROM $table";
-        
-        if (strlen($where) >= 1) {
-            $sqlse .= " WHERE $where";
-        }
+        $sqlse = $this->getsql($col, $table, $where);
         // SQL文の実行
         return $this->conn->getRow($sqlse, $arrVal ,$fetchmode);
     }
 
     // 1列取得
     function getCol($table, $col, $where = "", $arrval = array()) {
-        if (strlen($where) <= 0) {
-            $sqlse = "SELECT $col FROM $table";
-        } else {
-            $sqlse = "SELECT $col FROM $table WHERE $where";
-        }
+        $sqlse = $this->getsql($col, $table, $where);
         // SQL文の実行
         return $this->conn->getCol($sqlse, 0, $arrval);
     }
