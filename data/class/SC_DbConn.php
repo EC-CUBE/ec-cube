@@ -58,12 +58,12 @@ class SC_DbConn {
                     return;
                 }
             }
-            }
-            
-            if (DB_TYPE == 'mysql') {
-                $objDbConn->query('SET NAMES utf8');
-                $objDbConn->query("SET SESSION sql_mode = 'ANSI'");
-            }
+        }
+
+        if (DB_TYPE == 'mysql') {
+            $objDbConn->query('SET NAMES utf8');
+            $objDbConn->query("SET SESSION sql_mode = 'ANSI'");
+        }
         
         $this->conn = $objDbConn;
         $this->err_disp = $err_disp;
