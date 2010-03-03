@@ -229,6 +229,8 @@ class LC_Page_Admin_Customer extends LC_Page {
                  */
                 if (!empty($arrRet[0]['email_mobile'])) {
                     $objMailText = new SC_MobileView(false);
+                    $this->to_name01 = $arrRet[0]['name01'];
+                    $this->to_name02 = $arrRet[0]['name02'];
                 } else {
                     $objMailText = new SC_SiteView(false);
                 }
