@@ -316,11 +316,19 @@ class SC_Helper_DB {
                     $limit = $arrData['sale_limit'];
                 } else {
                     // 購入制限なしの場合は、SALE_LIMIT_MAXが最大購入個数
+                    // 但し、SALE_LIMIT_MAXは、有効な整数値でないと機能しない
 
                     if ($arrData['stock_unlimited'] != '1') {
-                        $limit = min(SALE_LIMIT_MAX, $arrData['stock']);
+                        // 在庫制限がある場合は、SALE_LIMIT_MAXと在庫数の小さい方が購入可能最大数
+                        if (SALE_LIMIT_MAX > 0) {
+                        	$limit = min(SALE_LIMIT_MAX, $arrData['stock']);
+                        } else {
+                        	$limit = $arrData['stock'];
+                        }
                     } else {
-                        $limit = SALE_LIMIT_MAX;
+                        if (SALE_LIMIT_MAX > 0) {
+                            $limit = SALE_LIMIT_MAX;
+                        }
                     }
                 }
 

@@ -966,7 +966,7 @@ INSERT INTO mtb_constants VALUES ('INT_LEN','8',206,'検査数値用桁数(INT)'
 INSERT INTO mtb_constants VALUES ('CREDIT_NO_LEN','4',207,'クレジットカードの文字数');
 INSERT INTO mtb_constants VALUES ('SEARCH_CATEGORY_LEN','18',208,'検索カテゴリ最大表示文字数(byte)');
 INSERT INTO mtb_constants VALUES ('FILE_NAME_LEN','10',209,'ファイル名表示文字数');
-INSERT INTO mtb_constants VALUES ('SALE_LIMIT_MAX','10',210,'購入制限なしの場合の最大購入個数');
+INSERT INTO mtb_constants VALUES ('SALE_LIMIT_MAX','0',210,'購入制限なしの場合の最大購入個数');
 INSERT INTO mtb_constants VALUES ('SITE_TITLE','"ＥＣ-ＣＵＢＥ  テストサイト"',211,'HTMLタイトル');
 INSERT INTO mtb_constants VALUES ('COOKIE_EXPIRE','365',212,'クッキー保持期限(日)');
 INSERT INTO mtb_constants VALUES ('PRODUCT_NOT_FOUND','1',213,'指定商品ページがない');
