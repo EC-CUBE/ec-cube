@@ -219,8 +219,8 @@ class SC_InstallView extends SC_View{
 }
 
 class SC_MobileView extends SC_SiteView {
-    function SC_MobileView() {
-        parent::SC_SiteView();
+    function SC_MobileView($setPrevURL = true) {
+        parent::SC_SiteView($setPrevURL);
         $this->_smarty->template_dir = MOBILE_TEMPLATE_DIR;
         $this->_smarty->compile_dir = MOBILE_COMPILE_DIR;
     }
