@@ -224,9 +224,9 @@ class LC_Page_Admin_Customer extends LC_Page {
                  * TODO: とりあえずの簡易的な判定なので、将来的には判定ルーチンを修正した方が良い。
                  */
                 if (!empty($arrRet[0]['email_mobile'])) {
-                    $objMailText = new SC_MobileView();
+                    $objMailText = new SC_MobileView(false);
                 } else {
-                    $objMailText = new SC_SiteView();
+                    $objMailText = new SC_SiteView(false);
 				}
                 $objMailText->assignobj($this);
                 $mailHelper = new SC_Helper_Mail_Ex();
