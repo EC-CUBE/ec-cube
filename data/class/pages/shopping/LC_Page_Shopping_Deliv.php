@@ -423,8 +423,8 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         $this->objFormParam->addParam("郵便番号1", "deliv_zip01", ZIP01_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK"));
         $this->objFormParam->addParam("郵便番号2", "deliv_zip02", ZIP02_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK"));
         $this->objFormParam->addParam("都道府県", "deliv_pref", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $this->objFormParam->addParam("住所1", "deliv_addr01", STEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("住所2", "deliv_addr02", STEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $this->objFormParam->addParam("住所1", "deliv_addr01", MTEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $this->objFormParam->addParam("住所2", "deliv_addr02", MTEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("電話番号1", "deliv_tel01", TEL_ITEM_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK" ,"NUM_CHECK"));
         $this->objFormParam->addParam("電話番号2", "deliv_tel02", TEL_ITEM_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK" ,"NUM_CHECK"));
         $this->objFormParam->addParam("電話番号3", "deliv_tel03", TEL_ITEM_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK" ,"NUM_CHECK"));
@@ -460,7 +460,6 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         $sqlval['order_temp_id'] = $uniqid;
         $sqlval['update_date'] = 'Now()';
         $sqlval['customer_id'] = $objCustomer->getValue('customer_id');
-        $sqlval['deliv_check'] = '-1';
         $sqlval['order_name01'] = $objCustomer->getValue('name01');
         $sqlval['order_name02'] = $objCustomer->getValue('name02');
         $sqlval['order_kana01'] = $objCustomer->getValue('kana01');
@@ -476,6 +475,10 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         $sqlval['order_fax01'] = $objCustomer->getValue('fax01');
         $sqlval['order_fax02'] = $objCustomer->getValue('fax02');
         $sqlval['order_fax03'] = $objCustomer->getValue('fax03');
+        $sqlval['order_birth'] = $objCustomer->getValue('birth');
+        $sqlval['order_email'] = $objCustomer->getValue('email');
+
+        $sqlval['deliv_check'] = '-1';
         $sqlval['deliv_name01'] = $objCustomer->getValue('name01');
         $sqlval['deliv_name02'] = $objCustomer->getValue('name02');
         $sqlval['deliv_kana01'] = $objCustomer->getValue('kana01');
@@ -502,7 +505,24 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         $sqlval['order_temp_id'] = $uniqid;
         $sqlval['update_date'] = 'Now()';
         $sqlval['customer_id'] = $objCustomer->getValue('customer_id');
+
+        $sqlval['order_name01'] = $objCustomer->getValue('name01');
+        $sqlval['order_name02'] = $objCustomer->getValue('name02');
+        $sqlval['order_kana01'] = $objCustomer->getValue('kana01');
+        $sqlval['order_kana02'] = $objCustomer->getValue('kana02');
+        $sqlval['order_zip01'] = $objCustomer->getValue('zip01');
+        $sqlval['order_zip02'] = $objCustomer->getValue('zip02');
+        $sqlval['order_pref'] = $objCustomer->getValue('pref');
+        $sqlval['order_addr01'] = $objCustomer->getValue('addr01');
+        $sqlval['order_addr02'] = $objCustomer->getValue('addr02');
+        $sqlval['order_tel01'] = $objCustomer->getValue('tel01');
+        $sqlval['order_tel02'] = $objCustomer->getValue('tel02');
+        $sqlval['order_tel03'] = $objCustomer->getValue('tel03');
+        $sqlval['order_fax01'] = $objCustomer->getValue('fax01');
+        $sqlval['order_fax02'] = $objCustomer->getValue('fax02');
+        $sqlval['order_fax03'] = $objCustomer->getValue('fax03');
         $sqlval['order_birth'] = $objCustomer->getValue('birth');
+        $sqlval['order_email'] = $objCustomer->getValue('email');
 
         $objQuery = new SC_Query();
         $where = "other_deliv_id = ?";
@@ -521,6 +541,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         $sqlval['deliv_tel01'] = $arrRet[0]['tel01'];
         $sqlval['deliv_tel02'] = $arrRet[0]['tel02'];
         $sqlval['deliv_tel03'] = $arrRet[0]['tel03'];
+
         $objDb = new SC_Helper_DB_Ex();
         $objDb->sfRegistTempOrder($uniqid, $sqlval);
     }

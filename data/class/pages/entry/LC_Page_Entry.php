@@ -167,8 +167,8 @@ class LC_Page_Entry extends LC_Page {
             $this->arrErr = $this->lfErrorCheck($this->arrForm);
 
             if ($this->arrErr || $_POST["mode"] == "return") {		// 入力エラーのチェック
-                foreach($this->arrForm as $key => $val) {
-                    $this->$key = $val;
+                foreach($arrRegistColumn as $key) {
+                    $this->$key['column'] = $this->arrForm[$key['column']];
                 }
 
             } else {
@@ -381,8 +381,8 @@ class LC_Page_Entry extends LC_Page {
                 $this->tpl_title = '会員登録(3/3)';
             }
 
-            foreach($this->arrForm as $key => $val) {
-                $this->$key = $val;
+            foreach($arrRegistColumn as $key) {
+                $this->$key['column'] = $this->arrForm[$key['column']];
             }
 
             if ($this->arrErr || !empty($_POST["return"])) {		// 入力エラーのチェック

@@ -337,8 +337,8 @@ class LC_Page_Shopping extends LC_Page {
         $this->objFormParam->addParam("郵便番号1", "order_zip01", ZIP01_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK"));
         $this->objFormParam->addParam("郵便番号2", "order_zip02", ZIP02_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK"));
         $this->objFormParam->addParam("都道府県", "order_pref", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $this->objFormParam->addParam("住所1", "order_addr01", STEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("住所2", "order_addr02", STEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $this->objFormParam->addParam("住所1", "order_addr01", MTEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $this->objFormParam->addParam("住所2", "order_addr02", MTEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("電話番号1", "order_tel01", TEL_ITEM_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK" ,"NUM_CHECK"));
         $this->objFormParam->addParam("電話番号2", "order_tel02", TEL_ITEM_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK" ,"NUM_CHECK"));
         $this->objFormParam->addParam("電話番号3", "order_tel03", TEL_ITEM_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK" ,"NUM_CHECK"));
@@ -360,8 +360,8 @@ class LC_Page_Shopping extends LC_Page {
         $this->objFormParam->addParam("郵便番号1", "deliv_zip01", ZIP01_LEN, "n", array("NUM_CHECK", "NUM_COUNT_CHECK"));
         $this->objFormParam->addParam("郵便番号2", "deliv_zip02", ZIP02_LEN, "n", array("NUM_CHECK", "NUM_COUNT_CHECK"));
         $this->objFormParam->addParam("都道府県", "deliv_pref", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $this->objFormParam->addParam("住所1", "deliv_addr01", STEXT_LEN, "KVa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("住所2", "deliv_addr02", STEXT_LEN, "KVa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $this->objFormParam->addParam("住所1", "deliv_addr01", MTEXT_LEN, "KVa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $this->objFormParam->addParam("住所2", "deliv_addr02", MTEXT_LEN, "KVa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("電話番号1", "deliv_tel01", TEL_ITEM_LEN, "n", array("MAX_LENGTH_CHECK" ,"NUM_CHECK"));
         $this->objFormParam->addParam("電話番号2", "deliv_tel02", TEL_ITEM_LEN, "n", array("MAX_LENGTH_CHECK" ,"NUM_CHECK"));
         $this->objFormParam->addParam("電話番号3", "deliv_tel03", TEL_ITEM_LEN, "n", array("MAX_LENGTH_CHECK" ,"NUM_CHECK"));
@@ -425,6 +425,30 @@ class LC_Page_Shopping extends LC_Page {
         $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_DATE"));
         $objErr->doFunc(array("メールアドレス", "メールアドレス（確認）", "order_email", "order_email_check"), array("EQUAL_CHECK"));
 
+        //既存メールアドレスでの登録不可（購入時強制会員登録が有効の場合のみ）
+        if (PURCHASE_CUSTOMER_REGIST == '1' && strlen($arrRet["order_email"]) > 0) {
+            $array['email'] = strtolower($arrRet['order_email']);
+            $objQuery = new SC_Query();
+            $arrEmailCheck = $objQuery->select("email, update_date, del_flg", "dtb_customer","email = ? OR email_mobile = ? ORDER BY del_flg", array($array["email"], $array["email"]));
+
+            if(!empty($arrEmailCheck)) {
+                if($arrEmailCheck[0]['del_flg'] != '1') {
+                    // 会員である場合
+                    $objErr->arrErr["order_email"] .= "※ すでに会員登録で使用されているメールアドレスです。<br />";
+                } else {
+                    // 退会した会員である場合
+                    $leave_time = SC_Utils_Ex::sfDBDatetoTime($arrEmailCheck[0]['update_date']);
+                    $now_time = time();
+                    $pass_time = $now_time - $leave_time;
+                    // 退会から何時間-経過しているか判定する。
+                    $limit_time = ENTRY_LIMIT_HOUR * 3600;
+                    if($pass_time < $limit_time) {
+                        $objErr->arrErr["order_email"] .= "※ 退会から一定期間の間は、同じメールアドレスを使用することはできません。<br />";
+                    }
+                }
+            }
+        }
+
         return $objErr->arrErr;
     }
 
@@ -432,7 +456,7 @@ class LC_Page_Shopping extends LC_Page {
     function lfCopyDeliv($uniqid, $arrData) {
         $objQuery = new SC_Query();
 
-        // 別のお届け先を指定していない場合、配送先に登録住所をコピーする。
+        // 別のお届け先を指定していない場合、お届け先に登録住所をコピーする。
         if($arrData["deliv_check"] != "1") {
             $sqlval['deliv_name01'] = $arrData['order_name01'];
             $sqlval['deliv_name02'] = $arrData['order_name02'];

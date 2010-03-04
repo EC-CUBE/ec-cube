@@ -39,8 +39,7 @@
           <!--{if !$tpl_disable_logout}-->
         <p class="btn">
           <a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnFormModeSubmit('login_form', 'logout', '', ''); return false;">
-            <img src="<!--{$TPL_DIR}-->img/header/logout.gif" width="44" height="21" alt="ログアウト" />
-          </a>
+            <img src="<!--{$TPL_DIR}-->img/header/logout.gif" width="44" height="21" alt="ログアウト" /></a>
         </p>
        </div>
           <!--{/if}-->

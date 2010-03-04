@@ -124,7 +124,7 @@
 
                                     <span class="red12"><!--{$arrErr.category_name}--></span>
                                     <input type="text" name="category_name" value="<!--{$arrForm.category_name|escape}-->" size="30" class="box30" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/>
-                                    <input type="submit" name="button" value="登録" onclick="fnModeSubmit('edit','','');"/><span class="red10"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
+                                    <input type="submit" name="button" value="登録" onclick="fnModeSubmit('edit','',''); return false;"/><span class="red10"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
                                     <table width="428" border="0" cellspacing="0" cellpadding="0" summary=" ">
                                         <tr><td height="15"></td></tr>
                                     </table>

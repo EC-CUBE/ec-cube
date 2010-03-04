@@ -110,6 +110,7 @@ class LC_Page_Admin_Order_Pdf extends LC_Page {
                     ++$i;
                 }
                 $objFpdf->createPdf();
+                exit;
             }
             break;
         default:

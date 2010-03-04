@@ -97,7 +97,7 @@
 										</tr>		
 										<!--{/if}-->
 										<tr class="fs12n">
-										<td width="100" bgcolor="#f2f1ec">配送時間<!--{$keyno}--></td>
+										<td width="100" bgcolor="#f2f1ec">お届け時間<!--{$keyno}--></td>
 										<!--{if $smarty.section.cnt.last}-->
 										<!--{assign var=colspan value="3"}-->	
 										<!--{else}-->
@@ -106,7 +106,7 @@
 										<td width="247" bgcolor="#ffffff" colspan="<!--{$colspan}-->">
 										<input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="20" class="box20" /></td>
 									<!--{else}-->
-										<td width="100" bgcolor="#f2f1ec">配送時間<!--{$keyno}--></td>
+										<td width="100" bgcolor="#f2f1ec">お届け時間<!--{$keyno}--></td>
 										<td width="248" bgcolor="#ffffff"><input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" size="20" class="box20" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" /> </td>
 										</tr>
 									<!--{/if}-->

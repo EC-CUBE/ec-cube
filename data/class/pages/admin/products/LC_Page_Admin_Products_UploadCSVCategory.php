@@ -105,10 +105,16 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
                     $enc_filepath = SC_Utils_Ex::sfEncodeFile($filepath,
                     CHAR_CODE, CSV_TEMP_DIR);
 
-                    // レコード数を得る
-                    $rec_count = $this->lfCSVRecordCount($enc_filepath);
-
                     $fp = fopen($enc_filepath, "r");
+
+                    // 無効なファイルポインタが渡された場合はエラー表示
+                    if ($fp === false) {
+                        SC_Utils_Ex::sfDispError("");
+                    }
+
+                    // レコード数を得る
+                    $rec_count = $this->lfCSVRecordCount($fp);
+
                     $line = 0;      // 行数
                     $regist = 0;    // 登録数
 
@@ -116,7 +122,6 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
                     $objQuery->begin();
 
                     echo "■　CSV登録進捗状況 <br/><br/>\n";
-
                     while (!feof($fp) && !$err) {
                         $arrCSV = fgetcsv($fp, CSV_LINE_MAX);
 
@@ -160,7 +165,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
                         }
 
                         if (!$err) {
-                            $this->lfRegistProduct($objQuery, $line);
+                            $this->lfRegistProduct($objQuery, $rec_count, $line);
                             $regist++;
                         }
                         $arrParam = $this->objFormParam->getHashArray();
@@ -187,8 +192,8 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
                 flush();
                 exit;
                 break;
-            default:
-                break;
+        default:
+            break;
         }
 
         $objView->assignobj($this);
@@ -224,18 +229,18 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
         $this->objFormParam->addParam("カテゴリ名","category_name",STEXT_LEN,"KVa",array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("親カテゴリID","parent_category_id",INT_LEN,"n",array("MAX_LENGTH_CHECK","NUM_CHECK"));
     }
-    
+
     /**
      * カテゴリ登録を行う.
      *
      * @param SC_Query $objQuery SC_Queryインスタンス
-     * @param string|integer $line 処理中の行数
+     * @param string|integer $rec_count 処理総数|integer $line 処理中の行数
      * @return void
      */
-    function lfRegistProduct($objQuery, $line = "") {
+    function lfRegistProduct($objQuery, $rec_count, $line = "") {
         $objDb = new SC_Helper_DB_Ex();
         $arrRet = $this->objFormParam->getHashArray();
-        
+
         //カテゴリID
         if ($arrRet['category_id'] == 0) {
             $category_id = $objQuery->max("dtb_category", "category_id") + 1;
@@ -245,9 +250,11 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
             $sqlval['category_id'] = $arrRet['category_id'];
             $update = true;
         }
-        
+
         // カテゴリ名
         $sqlval['category_name'] = $arrRet['category_name'];
+        //表示ランク（上から順に表示順を自動割り当て）
+        $sqlval['rank'] = ($rec_count + 1) - $line ;
 
         // 親カテゴリID、レベル
         if ($arrRet['parent_category_id'] == 0) {
@@ -258,7 +265,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
             $parent_level = $objQuery->get("dtb_category", "level", "category_id = ?", array($sqlval['parent_category_id']));
             $sqlval['level'] = $parent_level + 1;
         }
-        
+
         // その他
         $time = date("Y-m-d H:i:s");
         if ($line != "") {
@@ -267,30 +274,17 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
         }
         $sqlval['update_date'] = $time;
         $sqlval['creator_id'] = $_SESSION['member_id'];
-        
+
         // 更新
         if ($update) {
             echo "UPDATE　";
             $where = "category_id = ?";
             $objQuery->update("dtb_category", $sqlval, $where, array($sqlval['category_id']));
-        
+
         // 新規登録
         } else {
             echo "INSERT　";
             $sqlval['create_date'] = $time;
-            // ランク
-            if ($sqlval['parent_category_id'] == 0) {
-                // ROOT階層で最大のランクを取得する。
-                $where = "parent_category_id = ?";
-                $sqlval['rank'] = $objQuery->max("dtb_category", "rank", $where, array($sqlval['parent_category_id'])) + 1;
-            } else {
-                // 親のランクを自分のランクとする。
-                $where = "category_id = ?";
-                $sqlval['rank'] = $objQuery->get("dtb_category", "rank", $where, array($sqlval['parent_category_id']));
-                // 追加レコードのランク以上のレコードを一つあげる。
-                $sqlup = "UPDATE dtb_category SET rank = (rank + 1) WHERE rank >= ?";
-                $objQuery->exec($sqlup, array($sqlval['rank']));
-            }
             $objQuery->insert("dtb_category", $sqlval);
         }
     }
@@ -305,14 +299,14 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
         $objQuery = new SC_Query();
         $objErr = new SC_CheckError($arrRet);
         $objErr->arrErr = $this->objFormParam->checkError(false);
-        
+
         // 親カテゴリID設定
         if ($arrRet['parent_category_id'] == 0) {
             $parent_category_id = "0";
         } else {
             $parent_category_id = $arrRet['parent_category_id'];
         }
-        
+
         // 存在する親カテゴリIDかチェック
         if (count($objErr->arrErr) == 0) {
             if ($parent_category_id != 0){
@@ -322,7 +316,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
                 }
             }
         }
-        
+
         // 階層チェック
         if (!isset($objErr->arrErr['category_name']) && !isset($objErr->arrErr['parent_category_id'])) {
             $level = $objQuery->get("dtb_category", "level", "category_id = ?", array($parent_category_id));
@@ -337,10 +331,9 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
             $arrCat = $objQuery->select("category_id, category_name", "dtb_category", $where, array($parent_category_id, $arrRet['category_name']));
             if (empty($arrCat)) {
                 $arrCat = array(array("category_id" => "", "category_name" => ""));
-            }
             // 編集中のレコード以外に同じ名称が存在する場合
-            if ($arrCat[0]['category_id'] != $arrRet['category_id'] && $arrCat[0]['category_name'] == $_POST['category_name']) {
-                $objErr->arrErr['category_name'] = "※ 既に同じ内容の登録が存在します。<br>";
+            }elseif ($arrCat[0]['category_id'] != $arrRet['category_id'] && $arrCat[0]['category_name'] == $arrRet['category_name']) {
+                $objErr->arrErr['category_name'] = "※ 既に同じ内容の登録が存在します。\n";
             }
         }
         return $objErr->arrErr;
@@ -349,18 +342,21 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
     /**
      * CSVのカウント数を得る.
      *
-     * @param string $file_name ファイルパス
+     * @param resource $fp fopenを使用して作成したファイルポインタ
      * @return integer CSV のカウント数
      */
-    function lfCSVRecordCount($file_name) {
+    function lfCSVRecordCount($fp) {
         $count = 0;
-        $fp = fopen($file_name, "r");
         while(!feof($fp)) {
             $arrCSV = fgetcsv($fp, CSV_LINE_MAX);
             $count++;
         }
-
-        return $count-1;
+        // ファイルポインタを戻す
+        if (rewind($fp)) {
+            return $count-1;
+        } else {
+            SC_Utils_Ex::sfDispError("");
+        }
     }
 
     /**

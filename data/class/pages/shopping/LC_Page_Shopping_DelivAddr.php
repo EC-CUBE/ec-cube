@@ -25,7 +25,7 @@
 require_once(CLASS_PATH . "pages/LC_Page.php");
 
 /**
- * 配送先追加のページクラス
+ * お届け先追加のページクラス
  *
  * @package Page
  * @author LOCKON CO.,LTD.

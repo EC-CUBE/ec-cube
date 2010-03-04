@@ -431,7 +431,7 @@ class SC_Query {
             $sqlse = "SELECT $col FROM $table WHERE $where";
         }
         // SQL文の実行
-        return $this->conn->getCol($sqlse, $col, $arrval);
+        return $this->conn->getCol($sqlse, 0, $arrval);
     }
 
     /**

@@ -251,8 +251,8 @@ class LC_Page_Admin_Basis extends LC_Page {
         $objErr->doFunc(array("郵便番号", "zip01", "zip02"), array("ALL_EXIST_CHECK"));
         // 住所チェック
         $objErr->doFunc(array("都道府県", "pref"), array("EXIST_CHECK"));
-        $objErr->doFunc(array("住所1", "addr01", STEXT_LEN), array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("住所2", "addr02", STEXT_LEN), array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+        $objErr->doFunc(array("住所1", "addr01", MTEXT_LEN), array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+        $objErr->doFunc(array("住所2", "addr02", MTEXT_LEN), array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
         // メールチェック
         $objErr->doFunc(array('商品注文受付メールアドレス', "email01", STEXT_LEN) ,array("EXIST_CHECK", "EMAIL_CHECK", "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
         $objErr->doFunc(array('問い合わせ受付メールアドレス', "email02", STEXT_LEN) ,array("EXIST_CHECK", "EMAIL_CHECK", "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));

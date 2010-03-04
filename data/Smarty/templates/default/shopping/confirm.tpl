@@ -57,8 +57,7 @@ function fnCheckSubmit() {
         <tr>
           <td class="phototd">
             <a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="win01('<!--{$smarty.const.URL_DIR}-->products/detail_image.php?product_id=<!--{$arrProductsClass[cnt].product_id}-->&amp;image=main_image','detail_image','<!--{$arrProductsClass[cnt].tpl_image_width}-->','<!--{$arrProductsClass[cnt].tpl_image_height}-->'); return false;" target="_blank">
-              <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$arrProductsClass[cnt].main_list_image}-->&amp;width=65&amp;height=65" alt="<!--{$arrProductsClass[cnt].name|escape}-->" />
-            </a>
+              <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$arrProductsClass[cnt].main_list_image}-->&amp;width=65&amp;height=65" alt="<!--{$arrProductsClass[cnt].name|escape}-->" /></a>
           </td>
           <td>
             <ul>
@@ -194,10 +193,10 @@ function fnCheckSubmit() {
       </table>
       <!--お届け先ここまで-->
 
-      <table summary="お支払方法・お届け時間の指定・その他お問い合わせ" class="delivname">
+      <table summary="お支払方法・お届け日時の指定・その他お問い合わせ" class="delivname">
         <thead>
         <tr>
-          <th colspan="2">▼お支払方法・お届け時間の指定・その他お問い合わせ</th>
+          <th colspan="2">▼お支払方法・お届け日時の指定・その他お問い合わせ</th>
         </tr>
         </thead>
         <tbody>

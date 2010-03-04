@@ -128,8 +128,8 @@ class LC_Page_CampaignEntry extends LC_Page {
             $this->arrErr = $this->lfErrorCheck($this->arrForm);
 
             if ($this->arrErr || $_POST["mode"] == "return") {		// 入力エラーのチェック
-                foreach($this->arrForm as $key => $val) {
-                    $this->$key = $val;
+                foreach($arrRegistColumn as $key) {
+                    $this->$key['column'] = $arrForm[$key['column']];
                 }
 
             } else {

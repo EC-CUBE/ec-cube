@@ -179,25 +179,10 @@ class LC_Page_Admin_Products_Category extends LC_Page {
             require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_CSV_Ex.php");
 
             $objCSV = new SC_Helper_CSV_Ex();
-            // オプションの指定
-            $option = "ORDER BY rank DESC";
-            // CSV出力タイトル行の作成
-            $arrOutput = SC_Utils_Ex::sfSwapArray($objCSV->sfgetCsvOutput(5, " WHERE csv_id = 5 AND status = 1"));
 
-            if (count($arrOutput) <= 0) break;
+            // CSVを送信する。正常終了の場合、終了。
+            $objCSV->sfDownloadCategoryCsv() && exit;
 
-            $arrOutputCols = $arrOutput['col'];
-            $arrOutputTitle = $arrOutput['disp_name'];
-
-            $head = SC_Utils_Ex::sfGetCSVList($arrOutputTitle);
-
-            $where = "del_flg = 0";
-            $arrval = array();
-            $data = $objCSV->lfGetCategoryCSV($where, $option, $arrval, $arrOutputCols);
-
-            // CSVを送信する。
-            SC_Utils_Ex::sfCSVDownload($head.$data, 'category');
-            exit;
             break;
         default:
             $this->arrForm['parent_category_id'] = 0;

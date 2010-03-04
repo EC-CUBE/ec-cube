@@ -110,6 +110,10 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         $objSess = new SC_Session();
         $objSiteInfo = new SC_SiteInfo();
         $objDb = new SC_Helper_DB_Ex();
+        $objDate = new SC_Date(1901); 
+        $this->arrYearDelivDate = $objDate->getYear('', date('Y'), '');
+        $this->arrMonthDelivDate = $objDate->getMonth(true);
+        $this->arrDayDelivDate = $objDate->getDay(true);
         $arrInfo = $objSiteInfo->data;
 
         // パラメータ管理クラス
@@ -174,8 +178,10 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
                 $this->tpl_onload = "window.alert(".$text.");";
             }
             break;
-            // 再計算
+        // 再計算
         case 'cheek':
+        //支払い方法の選択
+        case 'payment':
             // POST情報で上書き
             $this->objFormParam->setParam($_POST);
             // 入力値の変換
@@ -207,10 +213,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
             $this->objFormParam->setParam($arrData);
             // 入力値の変換
             $this->objFormParam->convParam();
-            $this->arrErr = $this->lfCheckError();
-            if(count($this->arrErr) == 0) {
-                $this->arrErr = $this->lfCheek($arrInfo, $_POST['mode']);
-            }
             break;
         /* 商品追加ポップアップより商品選択後、商品情報取得*/
         case 'select_product_detail':
@@ -233,10 +235,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
             $this->objFormParam->setParam($arrData);
             // 入力値の変換
             $this->objFormParam->convParam();
-            $this->arrErr = $this->lfCheckError();
-            if(count($this->arrErr) == 0) {
-                $this->arrErr = $this->lfCheek($arrInfo, $_POST['mode']);
-            }
             break;
         /* 顧客検索ポップアップより顧客指定後、顧客情報取得*/
         case 'search_customer':
@@ -288,7 +286,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
 
         // 支払い方法の取得
         $this->arrPayment = $objDb->sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
-        // 配送時間の取得
+        // お届け時間の取得
         $arrRet = $objDb->sfGetDelivTime($this->objFormParam->getValue('payment_id'));
         $this->arrDelivTime = SC_Utils_Ex::sfArrKeyValue($arrRet, 'time_id', 'deliv_time');
 
@@ -348,13 +346,13 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         $this->objFormParam->addParam("郵便番号1", "order_zip01", ZIP01_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK"));
         $this->objFormParam->addParam("郵便番号2", "order_zip02", ZIP02_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK"));
         $this->objFormParam->addParam("都道府県", "order_pref", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $this->objFormParam->addParam("住所1", "order_addr01", STEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("住所2", "order_addr02", STEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $this->objFormParam->addParam("住所1", "order_addr01", MTEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $this->objFormParam->addParam("住所2", "order_addr02", MTEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("電話番号1", "order_tel01", TEL_ITEM_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK" ,"NUM_CHECK"));
         $this->objFormParam->addParam("電話番号2", "order_tel02", TEL_ITEM_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK" ,"NUM_CHECK"));
         $this->objFormParam->addParam("電話番号3", "order_tel03", TEL_ITEM_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK" ,"NUM_CHECK"));
 
-        // 配送先情報
+        // お届け先情報
         $this->objFormParam->addParam("お名前1", "deliv_name01", STEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("お名前2", "deliv_name02", STEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("フリガナ1", "deliv_kana01", STEXT_LEN, "KVCa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
@@ -362,8 +360,8 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         $this->objFormParam->addParam("郵便番号1", "deliv_zip01", ZIP01_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK"));
         $this->objFormParam->addParam("郵便番号2", "deliv_zip02", ZIP02_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK"));
         $this->objFormParam->addParam("都道府県", "deliv_pref", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $this->objFormParam->addParam("住所1", "deliv_addr01", STEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("住所2", "deliv_addr02", STEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $this->objFormParam->addParam("住所1", "deliv_addr01", MTEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $this->objFormParam->addParam("住所2", "deliv_addr02", MTEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("電話番号1", "deliv_tel01", TEL_ITEM_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK" ,"NUM_CHECK"));
         $this->objFormParam->addParam("電話番号2", "deliv_tel02", TEL_ITEM_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK" ,"NUM_CHECK"));
         $this->objFormParam->addParam("電話番号3", "deliv_tel03", TEL_ITEM_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK" ,"NUM_CHECK"));
@@ -380,11 +378,11 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         }
 
         $this->objFormParam->addParam("お支払い方法", "payment_id", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $this->objFormParam->addParam("配送時間ID", "deliv_time_id", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $this->objFormParam->addParam("お届け時間ID", "deliv_time_id", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
         $this->objFormParam->addParam("対応状況", "status", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $this->objFormParam->addParam("配達日", "deliv_date", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
+        $this->objFormParam->addParam("お届け日", "deliv_date", STEXT_LEN, "KVa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("お支払方法名称", "payment_method");
-        $this->objFormParam->addParam("配送時間", "deliv_time");
+        $this->objFormParam->addParam("お届け時間", "deliv_time");
 
         // 受注詳細情報
         $this->objFormParam->addParam("単価", "price", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"), '0');
@@ -411,6 +409,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         $this->objFormParam->addParam("注文番号", "order_id");
         $this->objFormParam->addParam("受注日", "create_date");
         $this->objFormParam->addParam("発送日", "commit_date");
+        $this->objFormParam->addParam("お届け日", "deliv_date"); 
     }
 
     function lfGetOrderData($order_id) {
@@ -424,7 +423,13 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
             list($point, $total_point) = $objDb->sfGetCustomerPoint($order_id, $arrRet[0]['use_point'], $arrRet[0]['add_point']);
             $this->objFormParam->setValue('total_point', $total_point);
             $this->objFormParam->setValue('point', $point);
+            $delivDate = split(" ", $arrRet[0]["deliv_date"]);
+            $delivDate = split("-", $delivDate[0]);
+            $this->objFormParam->setValue('deliv_date_year', $delivDate[0]);
+            $this->objFormParam->setValue('deliv_date_month', isset($delivDate[1]) ? $delivDate[1] : "");
+            $this->objFormParam->setValue('deliv_date_day', isset($delivDate[2]) ? $delivDate[2] : "");
             $this->arrForm = $arrRet[0];
+
             // 受注詳細データの取得
             $arrRet = $this->lfGetOrderDetail($order_id);
             $arrRet = SC_Utils_Ex::sfSwapArray($arrRet);
@@ -461,6 +466,12 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         $arrRet =  $this->objFormParam->getHashArray();
         $objErr = new SC_CheckError($arrRet);
         $objErr->arrErr = $this->objFormParam->checkError();
+
+        $objErr->doFunc(array("お届け日", "deliv_date_year", "deliv_date_month", "deliv_date_day"), array("CHECK_DATE"));
+
+        if (count($objErr->arrErr) >= 1) {
+            return $objErr->arrErr;
+        }
 
         return $objErr->arrErr;
     }
@@ -543,9 +554,18 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
                 $sqlval[$key] = $val;
             }
         }
+        $sqlval['update_date'] = 'Now()';
+
+        if (strlen($sqlval['deliv_date_year']) >= 0) {
+            $sqlval['deliv_date'] = $sqlval['deliv_date_year'] . '-' . $sqlval['deliv_date_month'] . '-' . $sqlval['deliv_date_day'];
+        }
+        unset($sqlval['deliv_date_year']);
+        unset($sqlval['deliv_date_month']);
+        unset($sqlval['deliv_date_day']);
 
         unset($sqlval['total_point']);
         unset($sqlval['point']);
+        unset($sqlval['commit_date']);
 
         $where = "order_id = ?";
 
@@ -579,11 +599,50 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         $arrUpdData = array($arrRet['payment_id'], $deliv_time_id, $arrRet['payment_id'], $order_id);
         $objQuery->query($sql, $arrUpdData);
 
-        // 受注詳細データの更新
         $arrDetail = $this->objFormParam->getSwapArray(array("product_id", "product_code", "product_name", "price", "quantity", "point_rate", "classcategory_id1", "classcategory_id2", "classcategory_name1", "classcategory_name2"));
+
+
+        // 変更しようとしている商品情報とDBに登録してある商品情報を比較することで、更新すべき数量を計算
+        $max = count($arrDetail);
+        $k = 0;
+        $arrStockData = array();
+        for($i = 0; $i < $max; $i++) {
+            if (!empty($arrDetail[$i]['product_id'])) {
+                $arrPreDetail = $objQuery->select('*', "dtb_order_detail", "order_id = ? AND product_id = ? AND classcategory_id1 = ? AND classcategory_id2 = ?", array($order_id, $arrDetail[$i]['product_id'], $arrDetail[$i]['classcategory_id1'], $arrDetail[$i]['classcategory_id2']));
+                if (!empty($arrPreDetail) && $arrPreDetail[0]['quantity'] != $arrDetail[$i]['quantity']) {
+                    // 数量が変更された商品
+                    $arrStockData[$k]['product_id'] = $arrDetail[$i]['product_id'];
+                    $arrStockData[$k]['classcategory_id1'] = $arrDetail[$i]['classcategory_id1'];
+                    $arrStockData[$k]['classcategory_id2'] = $arrDetail[$i]['classcategory_id2'];
+                    $arrStockData[$k]['quantity'] = $arrPreDetail[0]['quantity'] - $arrDetail[$i]['quantity'];
+                    ++$k;
+                } elseif (empty($arrPreDetail)) {
+                    // 新しく追加された商品 もしくは 違う商品に変更された商品
+                    $arrStockData[$k]['product_id'] = $arrDetail[$i]['product_id'];
+                    $arrStockData[$k]['classcategory_id1'] = $arrDetail[$i]['classcategory_id1'];
+                    $arrStockData[$k]['classcategory_id2'] = $arrDetail[$i]['classcategory_id2'];
+                    $arrStockData[$k]['quantity'] = -$arrDetail[$i]['quantity'];
+                    ++$k;
+                }
+                $objQuery->delete("dtb_order_detail", "order_id = ? AND product_id = ? AND classcategory_id1 = ? AND classcategory_id2 = ?", array($order_id, $arrDetail[$i]['product_id'], $arrDetail[$i]['classcategory_id1'], $arrDetail[$i]['classcategory_id2']));
+            }
+        }
+
+        // 上記の新しい商品のループでDELETEされなかった商品は、注文より削除された商品
+        $arrPreDetail = $objQuery->select('*', "dtb_order_detail", "order_id = ?", array($order_id));
+        foreach ($arrPreDetail AS $key=>$val) {
+            $arrStockData[$k]['product_id'] = $val['product_id'];
+            $arrStockData[$k]['classcategory_id1'] = $val['classcategory_id1'];
+            $arrStockData[$k]['classcategory_id2'] = $val['classcategory_id2'];
+            $arrStockData[$k]['quantity'] = $val['quantity'];
+            ++$k;
+        }
+
+        // 受注詳細データの初期化
         $objQuery->delete("dtb_order_detail", $where, array($order_id));
 
 
+        // 受注詳細データの更新
         $max = count($arrDetail);
         for($i = 0; $i < $max; $i++) {
             $sqlval = array();
@@ -601,6 +660,20 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
             $objQuery->insert("dtb_order_detail", $sqlval);
         }
 
+        // 在庫数調整
+        $status = $sqlval['status'];
+        if (ORDER_DELIV != $status && ORDER_CANCEL != $status) {
+            $stock_sql = "UPDATE dtb_products_class SET stock = stock + ? WHERE product_id = ? AND classcategory_id1 = ? AND classcategory_id2 = ?;";
+            foreach ($arrStockData AS $key=>$val) {
+                $stock_sqlval = array();
+                $stock_sqlval[] = $val['quantity'];
+                $stock_sqlval[] = $val['product_id'];
+                $stock_sqlval[] = $val['classcategory_id1'];
+                $stock_sqlval[] = $val['classcategory_id2'];
+
+                $objQuery->query($stock_sql, $stock_sqlval);
+            }
+        }
 
         $objQuery->commit();
     }
@@ -688,7 +761,26 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
             $sqlval['classcategory_id2'] = $arrDetail[$i]['classcategory_id2'];
             $sqlval['classcategory_name1'] = $arrDetail[$i]['classcategory_name1'];
             $sqlval['classcategory_name2'] = $arrDetail[$i]['classcategory_name2'];
+
             $objQuery->insert("dtb_order_detail", $sqlval);
+
+
+            // 在庫数減少処理
+            // 現在の実在庫数取得
+            $pre_stock = $objQuery->getone("SELECT stock FROM dtb_products_class WHERE product_id = ? AND classcategory_id1 = ?  AND classcategory_id2 = ?", array($arrDetail[$i]['product_id'], $arrDetail[$i]['classcategory_id1'], $arrDetail[$i]['classcategory_id2']));
+
+            $stock_sqlval = array();
+            $stock_sqlval['stock'] = intval($pre_stock - $arrDetail[$i]['quantity']);
+            if ($stock_sqlval['stock'] === 0) {
+                $stock_sqlval['stock'] = '0';
+            }
+
+            $st_params = array();
+            $st_params[] = $arrDetail[$i]['product_id'];
+            $st_params[] = $arrDetail[$i]['classcategory_id1'];
+            $st_params[] = $arrDetail[$i]['classcategory_id2'];
+
+            $objQuery->update("dtb_products_class", $stock_sqlval, 'product_id = ? AND classcategory_id1 = ? AND classcategory_id2 = ?', $st_params);
         }
         $objQuery->commit();
 

@@ -80,8 +80,10 @@ class LC_Page_Admin_Contents extends LC_Page {
             $_POST = $this->lfConvData($_POST);
 
             if ($this->arrErr = $this->lfErrorCheck()) {       // 入力エラーのチェック
-                foreach($_POST as $key => $val) {
-                    $this->$key = $val;
+                $arrParams = array("news_url", "news_title", "news_comment", "link_method");
+
+                foreach($arrParams as $key) {
+                    $this->$key = $_POST[$key];
                 }
                 $this->selected_year = $_POST["year"];
                 $this->selected_month = $_POST["month"];

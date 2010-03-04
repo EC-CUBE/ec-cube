@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<center>配送先指定</center>
+<center>お届け先指定</center>
 
 <hr>
 
@@ -41,7 +41,7 @@
 <input type="hidden" name="mode" value="other_addr">
 <input type="hidden" name="other_deliv_id" value="<!--{$arrAddr[cnt].other_deliv_id}-->">
 <!--{/if}-->
-■配送先<!--{$smarty.section.cnt.iteration}--><br>
+■お届け先<!--{$smarty.section.cnt.iteration}--><br>
 〒<!--{$arrAddr[cnt].zip01}-->-<!--{$arrAddr[cnt].zip02}--><br>
 <!--{assign var=key value=$arrAddr[cnt].pref}--><!--{$arrPref[$key]}--><!--{$arrAddr[cnt].addr01|escape}--><br>
 <!--{if $arrAddr[cnt].addr02 != ""}-->

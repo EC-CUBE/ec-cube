@@ -256,7 +256,7 @@ class SC_Helper_DB {
         $objQuery = new SC_Query();
         $col = "product_id, deliv_fee, name, product_code, main_list_image, main_image, price01, price02, point_rate, product_class_id, classcategory_id1, classcategory_id2, class_id1, class_id2, stock, stock_unlimited, sale_limit, sale_unlimited";
         $table = "vw_product_class AS prdcls";
-        $where = "product_id = ? AND classcategory_id1 = ? AND classcategory_id2 = ?";
+        $where = "product_id = ? AND classcategory_id1 = ? AND classcategory_id2 = ? AND status = 1";
         $objQuery->setorder("rank1 DESC, rank2 DESC");
         $arrRet = $objQuery->select($col, $table, $where, array($product_id, $classcategory_id1, $classcategory_id2));
         return $arrRet[0];
@@ -314,14 +314,20 @@ class SC_Helper_DB {
                     if($arrData['sale_limit'] < $arrData['stock']) {
                         $limit = $arrData['sale_limit'];
                     } else {
-                        $limit = $arrData['stock'];
+                        // 購入制限数を在庫数に
+                        #$limit = $arrData['stock'];
+                        // 購入制限数をSALE_LIMIT_MAXに
+                        $limit = SALE_LIMIT_MAX;
                     }
                 } else {
                     if ($arrData['sale_unlimited'] != '1') {
                         $limit = $arrData['sale_limit'];
                     }
                     if ($arrData['stock_unlimited'] != '1') {
-                        $limit = $arrData['stock'];
+                        // 購入制限数を在庫数に
+                        #$limit = $arrData['stock'];
+                        // 購入制限数をSALE_LIMIT_MAXに
+                        $limit = SALE_LIMIT_MAX;
                     }
                 }
 
@@ -379,8 +385,9 @@ class SC_Helper_DB {
                 // 送料の合計を計算する
                 $objPage->tpl_total_deliv_fee+= ($arrData['deliv_fee'] * $arrCart[$i]['quantity']);
                 $cnt++;
-            } else {
-                // DBに商品が見つからない場合はカート商品の削除
+            } else { // DBに商品が見つからない場合はカート商品の削除
+                $objPage->tpl_message .= "※申し訳ございませんが、ご購入の直前で売り切れた商品があります。該当商品をカートから削除いたしました。\n";
+                // カート商品の削除
                 $objCartSess->delProductKey('id', $arrCart[$i]['id']);
             }
         }
@@ -1229,7 +1236,12 @@ class SC_Helper_DB {
         $objQuery->begin();
 
         // 自身のランクを取得する
-        $rank = $objQuery->get($tableName, "rank", "$keyIdColumn = ? AND " . $where, array($keyId));
+        if($where != "") {
+            $getWhere = "$keyIdColumn = ? AND " . $where;
+        } else {
+            $getWhere = "$keyIdColumn = ?";
+        }
+        $rank = $objQuery->get($tableName, "rank", $getWhere, array($keyId));
 
         $max = $objQuery->max($tableName, "rank", $where);
         // 値の調整（逆順）
@@ -1371,10 +1383,10 @@ class SC_Helper_DB {
     }
 
     /**
-     * 配送時間を取得する.
+     * お届け時間を取得する.
      *
      * @param integer $payment_id 支払い方法ID
-     * @return array 配送時間の配列
+     * @return array お届け時間の配列
      */
     function sfGetDelivTime($payment_id = "") {
         $objQuery = new SC_Query();
