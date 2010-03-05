@@ -24,7 +24,7 @@
 $current_dir = realpath(dirname(__FILE__));
 require_once($current_dir . "/../module/DB.php");
 
-$objDbConn = "";
+$g_arr_objDbConn = array();
 
 class SC_DbConn {
 
@@ -38,34 +38,39 @@ class SC_DbConn {
 
     // コンストラクタ
     function SC_DbConn($dsn = "", $err_disp = true, $new = false){
-        global $objDbConn;
+        global $g_arr_objDbConn;
 
         // Debugモード指定
         $options['debug'] = PEAR_DB_DEBUG;
         // 持続的接続オプション
         $options['persistent'] = PEAR_DB_PERSISTENT;
 
-        // 既に接続されていないか、新規接続要望の場合は接続する。
-        if(!isset($objDbConn->connection) || $new) {
-            if($dsn != "") {
-                $objDbConn = DB::connect($dsn, $options);
-                $this->dsn = $dsn;
-            } else {
-                if(defined('DEFAULT_DSN')) {
-                    $objDbConn = DB::connect(DEFAULT_DSN, $options);
-                    $this->dsn = DEFAULT_DSN;
-                } else {
-                    return;
-                }
-            }
+        if (strlen($dsn) >= 1) {
+            $this->dsn = $dsn;
+        } elseif (defined('DEFAULT_DSN')) {
+            $this->dsn = DEFAULT_DSN;
+        } else {
+            // XXX 以前の仕様を継承しているが、意図が良く分からない。(2010/03/03 Seasoft 塚田)
+            return;
         }
 
-        if (DB_TYPE == 'mysql') {
-            $objDbConn->query('SET NAMES utf8');
-            $objDbConn->query("SET SESSION sql_mode = 'ANSI'");
+        // 既に接続されていないか、新規接続要望の場合は接続する。
+        if (!isset($g_arr_objDbConn[$this->dsn]) || !isset($g_arr_objDbConn[$this->dsn]->connection)) {
+            $new = true;
         }
-        
-        $this->conn = $objDbConn;
+
+        if ($new) {
+            $this->conn = DB::connect($this->dsn, $options);
+            $g_arr_objDbConn[$this->dsn] = $this->conn;
+
+            if (DB_TYPE == 'mysql') {
+                $g_arr_objDbConn->query('SET NAMES utf8'); // FIXME mysql_set_charset を使える環境では、その方が良さそう (2010/03/03 Seasoft 塚田)
+                $g_arr_objDbConn->query("SET SESSION sql_mode = 'ANSI'");
+            }
+        } else {
+            $this->conn = $g_arr_objDbConn[$this->dsn];
+        }
+
         $this->err_disp = $err_disp;
         $this->dbFactory = SC_DB_DBFactory_Ex::getInstance();
     }
