@@ -310,13 +310,13 @@ class SC_Query {
 
     // MAX文の実行
     function max($table, $col, $where = "", $arrval = array()) {
-        $ret = $this->get($table, "MAX($col)", $where);
+        $ret = $this->get($table, "MAX($col)", $where, $arrval);
         return $ret;
     }
 
     // MIN文の実行
     function min($table, $col, $where = "", $arrval = array()) {
-        $ret = $this->get($table, "MIN($col)", $where);
+        $ret = $this->get($table, "MIN($col)", $where, $arrval);
         return $ret;
     }
 
