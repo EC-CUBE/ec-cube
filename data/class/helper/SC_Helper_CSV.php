@@ -128,6 +128,7 @@ class SC_Helper_CSV {
         // ヘッダ行
         $outputArray[] = $arrOutput['disp_name'];
         
+        $objQuery = new SC_Query();
         // データ行
         foreach ($dataRows as $row) {
             // 規格名1
