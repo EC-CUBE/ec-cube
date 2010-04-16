@@ -940,6 +940,7 @@ CREATE TABLE dtb_csv (
     status smallint NOT NULL DEFAULT 1,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp NOT NULL DEFAULT now(),
+    convert text,
     PRIMARY KEY (no)
 );
 

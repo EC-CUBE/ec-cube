@@ -287,14 +287,15 @@ class LC_Page_Admin_Order extends LC_Page {
                             $option = "ORDER BY $order";
 
                             // CSV出力タイトル行の作成
-                            $arrCsvOutput = SC_Utils_Ex::sfSwapArray($objCSV->sfgetCsvOutput(3, " WHERE csv_id = 3 AND status = 1"));
+                            $arrCsvOutput = SC_Utils_Ex::sfSwapArray($objCSV->sfgetCsvOutput(3, 'status = 1'));
 
                             if (count($arrCsvOutput) <= 0) break;
 
                             $arrCsvOutputCols = $arrCsvOutput['col'];
+                            $arrCsvOutputConvs = $arrCsvOutput['conv'];
                             $arrCsvOutputTitle = $arrCsvOutput['disp_name'];
                             $head = SC_Utils_Ex::sfGetCSVList($arrCsvOutputTitle);
-                            $data = $objCSV->lfGetCSV("dtb_order", $where, $option, $arrval, $arrCsvOutputCols);
+                            $data = $objCSV->lfGetCSV("dtb_order", $where, $option, $arrval, $arrCsvOutputCols, $arrCsvOutputConvs);
 
                             // CSVを送信する。
                             SC_Utils_Ex::sfCSVDownload($head.$data);

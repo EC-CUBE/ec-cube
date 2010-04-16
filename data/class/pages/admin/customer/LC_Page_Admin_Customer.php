@@ -308,7 +308,7 @@ class LC_Page_Admin_Customer extends LC_Page {
                     $header = "";
 
                     // CSVカラム取得
-                    $arrCsvOutput = ($objCSV->sfgetCsvOutput(2, " WHERE csv_id = 2 AND status = 1"));
+                    $arrCsvOutput = ($objCSV->sfgetCsvOutput(2, 'status = 1'));
 
                     if (count($arrCsvOutput) <= 0) break;
 

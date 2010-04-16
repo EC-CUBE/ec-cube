@@ -119,7 +119,7 @@ class LC_Page_Admin_Contents_Campaign extends LC_Page {
             $option = "ORDER BY create_date DESC";
 
             // CSV出力タイトル行の作成
-            $arrCsvOutput = SC_Utils_Ex::sfSwapArray($objCSV->sfgetCsvOutput(4, " WHERE csv_id = 4 AND status = 1"));
+            $arrCsvOutput = SC_Utils_Ex::sfSwapArray($objCSV->sfgetCsvOutput(4, 'status = 1'));
 
             if (count($arrCsvOutput) <= 0) break;
 

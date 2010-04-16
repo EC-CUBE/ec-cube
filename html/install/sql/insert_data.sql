@@ -138,7 +138,7 @@ INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'order_fax03','FAX3',14,now(),now());
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'order_zip01','郵便番号1',15,now(),now());
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'order_zip02','郵便番号2',16,now(),now());
-INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'order_pref','都道府県',17,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'(SELECT pref_name FROM mtb_pref WHERE pref_id = dtb_order.order_pref)','都道府県',17,now(),now());
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'order_addr01','住所1',18,now(),now());
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'order_addr02','住所2',19,now(),now());
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'order_sex','性別',20,now(),now());
@@ -156,7 +156,7 @@ INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'deliv_fax03','FAX3',32,now(),now());
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'deliv_zip01','郵便番号1',33,now(),now());
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'deliv_zip02','郵便番号2',34,now(),now());
-INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'deliv_pref','都道府県',35,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'(SELECT pref_name FROM mtb_pref WHERE pref_id = dtb_order.deliv_pref)','都道府県',35,now(),now());
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'deliv_addr01','住所1',36,now(),now());
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'deliv_addr02','住所2',37,now(),now());
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (3,'subtotal','小計',38,now(),now());
@@ -192,7 +192,7 @@ INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'order_fax03','FAX3',15,now(),now());
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'order_zip01','郵便番号1',16,now(),now());
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'order_zip02','郵便番号2',17,now(),now());
-INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'order_pref','都道府県',18,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'(SELECT pref_name FROM mtb_pref WHERE pref_id = dtb_order.order_pref)','都道府県',18,now(),now());
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'order_addr01','住所1',19,now(),now());
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'order_addr02','住所2',20,now(),now());
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'order_sex','性別',21,now(),now());
@@ -210,7 +210,7 @@ INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'deliv_fax03','FAX3',33,now(),now());
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'deliv_zip01','郵便番号1',34,now(),now());
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'deliv_zip02','郵便番号2',35,now(),now());
-INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'deliv_pref','都道府県',36,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'(SELECT pref_name FROM mtb_pref WHERE pref_id = dtb_order.deliv_pref)','都道府県',36,now(),now());
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'deliv_addr01','住所1',37,now(),now());
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'deliv_addr02','住所2',38,now(),now());
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (4,'payment_total','お支払い合計',39,now(),now());
