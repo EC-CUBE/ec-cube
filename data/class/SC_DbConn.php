@@ -64,8 +64,8 @@ class SC_DbConn {
             $g_arr_objDbConn[$this->dsn] = $this->conn;
 
             if (DB_TYPE == 'mysql') {
-                $g_arr_objDbConn->query('SET NAMES utf8'); // FIXME mysql_set_charset を使える環境では、その方が良さそう (2010/03/03 Seasoft 塚田)
-                $g_arr_objDbConn->query("SET SESSION sql_mode = 'ANSI'");
+                $g_arr_objDbConn[$this->dsn]->query('SET NAMES utf8'); // FIXME mysql_set_charset を使える環境では、その方が良さそう (2010/03/03 Seasoft 塚田)
+                $g_arr_objDbConn[$this->dsn]->query("SET SESSION sql_mode = 'ANSI'");
             }
         } else {
             $this->conn = $g_arr_objDbConn[$this->dsn];
