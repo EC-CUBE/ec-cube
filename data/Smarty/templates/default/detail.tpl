@@ -86,16 +86,18 @@ function fnCheckStock(form) {
     // 通常価格
     eleDefault = document.getElementById('price01_default');
     eleDynamic = document.getElementById('price01_dynamic');
-    if (
-           classcat2
-        && typeof classcat2.price01 != 'undefined'
-        && String(classcat2.price01).length >= 1
-    ) {
-        eleDefault.style.display = 'none';
-        eleDynamic.innerHTML = classcat2.price01;
-    } else {
-        eleDefault.style.display = '';
-        eleDynamic.innerHTML = '';
+    if (eleDefault && eleDynamic) {
+        if (
+               classcat2
+            && typeof classcat2.price01 != 'undefined'
+            && String(classcat2.price01).length >= 1
+        ) {
+            eleDefault.style.display = 'none';
+            eleDynamic.innerHTML = classcat2.price01;
+        } else {
+            eleDefault.style.display = '';
+            eleDynamic.innerHTML = '';
+        }
     }
     
     // 販売価格
