@@ -147,7 +147,7 @@ class SC_FormParam {
         foreach($this->keyname as $val) {
             if($val == $key) {
                 $this->param[$cnt] = $param;
-                break;
+                // 複数一致の場合もあるので break してはいけない。
             }
             $cnt++;
         }
@@ -158,7 +158,7 @@ class SC_FormParam {
         foreach($this->keyname as $val) {
             if($val == $key) {
                 $this->param[$cnt] = strtolower($this->param[$cnt]);
-                break;
+                // 複数一致の場合もあるので break してはいけない。
             }
             $cnt++;
         }
