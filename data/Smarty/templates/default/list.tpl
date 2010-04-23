@@ -206,7 +206,7 @@ function fnCheckStock(form) {
             
             <div class="listrightblock">
                 <!--▼商品ステータス-->
-                <!--{if count($arrProduct.product_flag) > 0}-->
+                <!--{if $arrProduct.product_flag|strpos:"1" !== false}-->
                     <ul class="status_icon">
                         <!--{section name=flg loop=$arrProduct.product_flag|count_characters}-->
                             <!--{if $arrProduct.product_flag[flg] == "1"}-->
