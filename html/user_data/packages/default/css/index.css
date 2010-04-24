@@ -3,31 +3,27 @@
 
 /* FLASH
 ----------------------------------------------- */
-div#flasharea {
-    width: 400px;
-    margin: 0 auto;
+#flasharea {
+    text-align: center;
 }
 
 
 /* 新着情報
 ----------------------------------------------- */
-div#newsarea {
-    width: 400px;
-    margin: 0 auto;
-    font-size: 90%;
+#newsarea {
 }
 
-div#newsarea dl {
+#newsarea dl {
     padding: 10px 0;
     background: url("../img/common/line_400.gif") no-repeat bottom;
 }
 
-div#newsarea dl.end {
+#newsarea dl.end {
     padding: 10px 0;
     background: url("") no-repeat bottom;
 }
 
-div#newsarea dl dt {
+#newsarea dl dt {
     padding: 0 0 0 20px;
     background: url("../img/top/news_icon.gif") no-repeat;
 }
@@ -35,11 +31,10 @@ div#newsarea dl dt {
 
 /* おすすめ商品
 ----------------------------------------------- */
-div#recomendarea {
-    margin: 0 10px;
+#recomendarea {
 }
 
-div.recomendblock {
+.recomendblock {
     clear: both;
     width: 100%;
     padding: 10px 0;
@@ -47,33 +42,33 @@ div.recomendblock {
     background: url("../img/common/line_402.gif") no-repeat bottom;
 }
 
-div.recomendleft,
-div.recomendright {
+.recomendleft,
+.recomendright {
     width: 47.5%;
 }
 
-div.recomendleft {
+.recomendleft {
     float: left;
 }
 
-div.recomendright {
+.recomendright {
     float: right;
     position: relative;
 }
 
-div.recomendleft p,
-div.recomendright p {
+.recomendleft p,
+.recomendright p {
     margin: 0 0 5px 0;
 }
 
-div.recomendleft img,
-div.recomendright img {
+.recomendleft img,
+.recomendright img {
     display: block;
     float: left;
     margin: 0 5px 0 0;
 }
 
-div.recomendleft h3,
-div.recomendright h3 {
+.recomendleft h3,
+.recomendright h3 {
     font-size: 100%;
 }
