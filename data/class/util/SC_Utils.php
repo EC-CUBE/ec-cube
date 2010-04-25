@@ -2332,5 +2332,23 @@ echo $template_path;
     function sfLoadPluginInfo($filenamePluginInfo) {
         return (array)include_once $filenamePluginInfo;
     }
+
+    /**
+     * 現在の Unix タイムスタンプを float (秒単位) でマイクロ秒まで返す
+     *
+     * PHP4の上位互換用途。
+     * FIXME PHP4でテストする。(現状全くテストしていない。)
+     * @param SimpleXMLElement $pluginsXml プラグイン XML
+     * @return integer ファイルに書き込まれたバイト数を返します。
+     */
+    function sfMicrotimeFloat() {
+        $microtime = microtime(true);
+        if (is_string($microtime)) {
+            list($usec, $sec) = explode(" ", microtime());
+            return ((float)$usec + (float)$sec);
+        }
+        return $microtime;
+    }
+
 }
 ?>
