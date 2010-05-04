@@ -42,7 +42,7 @@
   
   <!--登録ボタンここから-->
   <div class="btn">
-    <button type="submit"><span>確認ページへ</span></button>
+    <button type="submit"><span>この内容で登録する</span></button>
   </div>
   <!--登録ボタンここまで-->
   
