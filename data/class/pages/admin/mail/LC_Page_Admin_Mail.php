@@ -65,11 +65,11 @@ class LC_Page_Admin_Mail extends LC_Page {
         $this->arrHtmlmail[2] = $this->arrMAILMAGATYPE[2];
         $this->arrMagazineTypeAll = $masterData->getMasterData("mtb_magazine_type");
 
-        //---- 検索用項目配列
+        // 検索用項目配列
         $this->arrHtmlmail = array( "" => "両方",  1 => "HTML", 2 => "TEXT" );
 
 
-        //---- 配列内容専用項目の配列
+        // 配列内容専用項目の配列
         $this->arrRegistColumn = array(
               array(  "column" => "template_id",    "convert" => "n" ),
               array(  "column" => "mail_method",    "convert" => "n" ),
@@ -82,13 +82,13 @@ class LC_Page_Admin_Mail extends LC_Page {
               array(  "column" => "body",           "convert" => "KV" )
               );
 
-        //---- メルマガ会員種別
+        // メルマガ会員種別
         $this->arrCustomerType = array(1 => "会員",
                                        2 => "非会員",
-                                       //3 => "CSV登録"
+                                       // 3 => "CSV登録"
                                        );
 
-        //---- 検索項目
+        // 検索項目
         $this->arrSearchColumn = array(
              array(  "column" => "name",                "convert" => "aKV"),
              array(  "column" => "pref",                "convert" => "n" ),
@@ -148,7 +148,7 @@ class LC_Page_Admin_Mail extends LC_Page {
      */
     function process() {
 
-        //---- ページ初期設定
+        // ページ初期設定
         $conn = new SC_DBConn();
         $objView = new SC_AdminView();
         $objDate = new SC_Date();
@@ -220,20 +220,20 @@ class LC_Page_Admin_Mail extends LC_Page {
         case 'delete':
         case 'search':
         case 'back':
-            //-- 入力値コンバート
+            // 入力値コンバート
             $this->list_data = $this->lfConvertParam($_POST, $this->arrSearchColumn);
 
-            //-- 入力エラーのチェック
+            // 入力エラーのチェック
             $this->arrErr = $this->lfErrorCheck($this->list_data);
 
-            //-- 検索開始
+            // 検索開始
             if (empty($this->arrErr)) {
                 $this->list_data['name'] = isset($this->list_data['name'])
                     ? SC_Utils_Ex::sfManualEscape($this->list_data['name']) : "";
                 // hidden要素作成
                 $this->arrHidden = $this->lfGetHidden($this->list_data);
 
-                //-- 検索データ取得
+                // 検索データ取得
                 $objSelect = new SC_CustomerList($this->list_data, "magazine");
                 // 生成されたWHERE文を取得する
                 list($where, $arrval) = $objSelect->getWhere();
@@ -261,7 +261,7 @@ class LC_Page_Admin_Mail extends LC_Page {
                 // 検索結果の取得
                 $col = $objSelect->getMailMagazineColumn($this->lfGetIsMobile($_POST['mail_type']));
                 $this->arrResults = $objQuery->select($col, $from, $where, $arrval);
-                //現在時刻の取得
+                // 現在時刻の取得
                 $this->arrNowDate = $this->lfGetNowDate();
             }
             break;
@@ -269,13 +269,13 @@ class LC_Page_Admin_Mail extends LC_Page {
              input:検索結果画面「htmlmail内容設定」ボタン
             */
         case 'input':
-            //-- 入力値コンバート
+            // 入力値コンバート
             $this->list_data = $this->lfConvertParam($_POST, $this->arrSearchColumn);
-            //-- 入力エラーのチェック
+            // 入力エラーのチェック
             $this->arrErr = $this->lfErrorCheck($this->list_data);
-            //-- エラーなし
+            // エラーなし
             if (empty($this->arrErr)) {
-                //-- 現在時刻の取得
+                // 現在時刻の取得
                 $this->arrNowDate = $this->lfGetNowDate();
                 $this->arrHidden = $this->lfGetHidden($this->list_data); // hidden要素作成
                 $this->tpl_mainpage = 'mail/input.tpl';
@@ -285,20 +285,20 @@ class LC_Page_Admin_Mail extends LC_Page {
              template:テンプレート選択
             */
         case 'template':
-            //-- 入力値コンバート
+            // 入力値コンバート
             $this->list_data = $this->lfConvertParam($_POST, $this->arrSearchColumn);
 
-            //-- 時刻設定の取得
+            // 時刻設定の取得
             $this->arrNowDate['year'] = isset($_POST['send_year']) ? $_POST['send_year'] : "";
             $this->arrNowDate['month'] = isset($_POST['send_month']) ? $_POST['send_month'] : "";
             $this->arrNowDate['day'] = isset($_POST['send_day']) ? $_POST['send_day'] : "";
             $this->arrNowDate['hour'] = isset($_POST['send_hour']) ? $_POST['send_hour'] : "";
             $this->arrNowDate['minutes'] = isset($_POST['send_minutes']) ? $_POST['send_minutes'] : "";
 
-            //-- 入力エラーのチェック
+            // 入力エラーのチェック
             $this->arrErr = $this->lfErrorCheck($this->list_data);
 
-            //-- 検索開始
+            // 検索開始
             if (empty($this->arrErr)) {
                 $this->list_data['name'] = isset($this->list_data['name']) ? SC_Utils_Ex::sfManualEscape($this->list_data['name']) : "";
                 $this->arrHidden = $this->lfGetHidden($this->list_data); // hidden要素作成
@@ -311,13 +311,13 @@ class LC_Page_Admin_Mail extends LC_Page {
                     }
                 }
 
-                //-- HTMLテンプレートを使用する場合は、HTMLソースを生成してBODYへ挿入
+                // HTMLテンプレートを使用する場合は、HTMLソースを生成してBODYへ挿入
                 if ( $this->list_data["mail_method"] == 3) {
                     $objTemplate = new LC_HTMLtemplate;
                     $objTemplate->list_data = lfGetHtmlTemplateData($_POST['template_id']);
                     $objSiteInfo = new SC_SiteInfo();
                     $objTemplate->arrInfo = $objSiteInfo->data;
-                    //メール担当写真の表示
+                    // メール担当写真の表示
                     $objUpFile = new SC_UploadFile(IMAGE_TEMP_URL, IMAGE_SAVE_URL);
                     $objUpFile->addFile("メール担当写真", 'charge_image', array('jpg'), IMAGE_SIZE, true, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT);
                     $objUpFile->setDBFileList($objTemplate->list_data);
@@ -336,19 +336,19 @@ class LC_Page_Admin_Mail extends LC_Page {
         case 'regist_confirm':
         case 'regist_back':
         case 'regist_complete':
-            //-- 入力値コンバート
+            // 入力値コンバート
             $this->arrCheckColumn = array_merge( $this->arrSearchColumn, $this->arrRegistColumn );
             $this->list_data = $this->lfConvertParam($_POST, $this->arrCheckColumn);
 
-            //現在時刻の取得
+            // 現在時刻の取得
             $this->arrNowDate = $this->lfGetNowDate();
 
-            //-- 入力エラーのチェック
+            // 入力エラーのチェック
             $this->arrErr = $this->lfErrorCheck($this->list_data, 1);
             $this->tpl_mainpage = 'mail/input.tpl';
             $this->arrHidden = $this->lfGetHidden($this->list_data); // hidden要素作成
 
-            //-- 検索開始
+            // 検索開始
             if (empty($this->arrErr)) {
                 $this->list_data['name'] =
                     isset($this->list_data['name'])
@@ -357,12 +357,12 @@ class LC_Page_Admin_Mail extends LC_Page {
                 if ( $_POST['mode'] == 'regist_confirm'){
                     $this->tpl_mainpage = 'mail/input_confirm.tpl';
                 } else if( $_POST['mode'] == 'regist_complete' ){
-                    $this->lfRegistData($conn, $this->list_data);
-                    if(MELMAGA_SEND == true) {
-                        if(MELMAGA_BATCH_MODE) {
-                            $this->sendRedirect($this->getLocation(URL_DIR . "admin/mail/history.php"));
+                    $sendId = $this->lfRegistData($conn, $this->list_data);
+                    if (MELMAGA_SEND) {
+                        if (MELMAGA_BATCH_MODE) {
+                            $this->sendRedirect($this->getLocation(URL_DIR . 'admin/mail/history.php'));
                         } else {
-                            $this->sendRedirect($this->getLocation(URL_DIR . "admin/mail/sendmail.php", array("mode" => "now")));
+                            $this->sendRedirect($this->getLocation(URL_DIR . 'admin/mail/sendmail.php', array('mode' => 'now', 'send_id' => $sendId)));
                         }
                         exit;
                     } else {
@@ -388,7 +388,7 @@ class LC_Page_Admin_Mail extends LC_Page {
 
         $this->arrCampaignList = $this->lfGetCampaignList($objQuery);
 
-        //---- ページ表示
+        // ページ表示
         $objView->assignobj($this);
         $objView->display(MAIN_FRAME);
 
@@ -420,7 +420,7 @@ class LC_Page_Admin_Mail extends LC_Page {
         return $arrCustomerOrderId;
     }
 
-    //現在時刻の取得（配信時間デフォルト値）
+    // 現在時刻の取得（配信時間デフォルト値）
     function lfGetNowDate(){
         $nowdate = date("Y/n/j/G/i");
         list($year, $month, $day, $hour, $minute) = split("[/]", $nowdate);
@@ -450,7 +450,11 @@ class LC_Page_Admin_Mail extends LC_Page {
         return $list_date;
     }
 
-    // 配信内容と配信リストを書き込む
+    /**
+     * 配信内容と配信リストを書き込む
+     *
+     * @return string 登録した行の dtb_send_history.send_id の値
+     */
     function lfRegistData(&$conn, $arrData){
 
         $objQuery = new SC_Query();
@@ -460,9 +464,6 @@ class LC_Page_Admin_Mail extends LC_Page {
         $dataCnt = count($search_data);
 
         $dtb_send_history = array();
-        if(DB_TYPE=='pgsql'){
-            $dtb_send_history["send_id"] = $objQuery->nextval('dtb_send_history', 'send_id');
-        }
         $dtb_send_history["mail_method"] = $arrData['mail_method'];
         $dtb_send_history["subject"] = $arrData['subject'];
         $dtb_send_history["body"] = $arrData['body'];
@@ -478,21 +479,21 @@ class LC_Page_Admin_Mail extends LC_Page {
         $dtb_send_history["update_date"] = "now()";
         $dtb_send_history["create_date"] = "now()";
         $objQuery->insert("dtb_send_history", $dtb_send_history );
-        if(DB_TYPE == "mysql"){
-            $dtb_send_history["send_id"] = $objQuery->nextval('dtb_send_history','send_id');
-        }
+
+        $sendId = $objQuery->currval('dtb_send_history', 'send_id');
+
         if ( is_array( $search_data ) ){
             foreach( $search_data as $line ){
                 $dtb_send_customer = array();
                 $dtb_send_customer["customer_id"] = $line["customer_id"];
-                $dtb_send_customer["send_id"] = $dtb_send_history["send_id"];
+                $dtb_send_customer["send_id"] = $sendId;
                 $dtb_send_customer["email"] = $line["email"];
-
                 $dtb_send_customer["name"] = $line["name01"] . " " . $line["name02"];
-
                 $conn->autoExecute("dtb_send_customer", $dtb_send_customer );
             }
         }
+
+        return $sendId;
     }
 
     // キャンペーン一覧
@@ -527,7 +528,7 @@ class LC_Page_Admin_Mail extends LC_Page {
     }
 
 
-    //---- HTMLテンプレートを使用する場合、データを取得する。
+    // HTMLテンプレートを使用する場合、データを取得する。
     function lfGetHtmlTemplateData($id) {
 
         global $conn;
@@ -558,14 +559,14 @@ class LC_Page_Admin_Mail extends LC_Page {
             if (is_numeric($list_data["sub_product_id" .$j])) {
                 $result = $conn->getAll($sql, array($list_data["sub_product_id" .$j]));
                 $list_data["sub"][$k][$l] = $result[0];
-                $list_data["sub"][$k]["data_exists"] = "OK";    //当該段にデータが１つ以上存在するフラグ
+                $list_data["sub"][$k]["data_exists"] = "OK";    // 当該段にデータが１つ以上存在するフラグ
             }
             $l ++;
         }
         return $list_data;
     }
 
-    //---   テンプレートの種類を返す
+    // テンプレートの種類を返す
     function lfGetTemplateMethod($conn, $templata_id){
 
         if ( SC_Utils_Ex::sfCheckNumLength($template_id) ){
@@ -573,7 +574,7 @@ class LC_Page_Admin_Mail extends LC_Page {
         }
     }
 
-    //---   hidden要素出力用配列の作成
+    // hidden要素出力用配列の作成
     function lfGetHidden( $array ){
         if ( is_array($array) ){
             foreach( $array as $key => $val ){
@@ -589,7 +590,7 @@ class LC_Page_Admin_Mail extends LC_Page {
         return $return;
     }
 
-    //----　取得文字列の変換
+    // 取得文字列の変換
     function lfConvertParam($array, $arrSearchColumn) {
 
         // 文字変換
@@ -611,7 +612,7 @@ class LC_Page_Admin_Mail extends LC_Page {
     }
 
 
-    //---- 入力エラーチェック
+    // 入力エラーチェック
     function lfErrorCheck($array, $flag = '') {
 
         // flag は登録時用
@@ -657,7 +658,7 @@ class LC_Page_Admin_Mail extends LC_Page {
 
         $objErr->doFunc(array("キャンペーン", "campaign_id", INT_LEN), array("NUM_CHECK"));
 
-        //購入金額(from) ＞ 購入金額(to) の場合はエラーとする
+        // 購入金額(from) ＞ 購入金額(to) の場合はエラーとする
         if ( (is_numeric($array["buy_total_from"]) && is_numeric($array["buy_total_to"]) ) &&
              ($array["buy_total_from"] > $array["buy_total_to"]) ) {
             $objErr->arrErr["buy_total_from"] .= "※ 購入金額の指定範囲が不正です。";
@@ -688,7 +689,7 @@ class LC_Page_Admin_Mail extends LC_Page {
         $return = "";
         $sql = "SELECT template_id, subject, mail_method FROM dtb_mailmaga_template WHERE del_flg = 0 ";
         if ($_POST["htmlmail"] == 2 || $_POST['mail_type'] == 2) {
-            $sql .= " AND mail_method = 2 ";    //TEXT希望者へのTESTメールテンプレートリスト
+            $sql .= " AND mail_method = 2 ";    // TEXT希望者へのTESTメールテンプレートリスト
         }
         $sql .= " ORDER BY template_id DESC";
         $result = $conn->getAll($sql);

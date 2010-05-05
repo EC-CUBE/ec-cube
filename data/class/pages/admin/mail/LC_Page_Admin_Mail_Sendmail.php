@@ -33,7 +33,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  */
 class LC_Page_Admin_Mail_Sendmail extends LC_Page {
     
-	var $objMail;
+    var $objMail;
     // }}}
     // {{{ functions
 
@@ -43,15 +43,15 @@ class LC_Page_Admin_Mail_Sendmail extends LC_Page {
      * @return void
      */
     function init() {
-    	 // SC_SendMailの拡張
-	    if(file_exists(MODULE_PATH . "mdl_speedmail/SC_SpeedMail.php")) {
-	        require_once(MODULE_PATH . "mdl_speedmail/SC_SpeedMail.php");
-	        // SpeedMail対応
-	        $this->objMail = new SC_SpeedMail();
-	    } else {
-	        $this->objMail = new SC_SendMail_Ex();
-	    }
-    	
+         // SC_SendMailの拡張
+        if (file_exists(MODULE_PATH . "mdl_speedmail/SC_SpeedMail.php")) {
+            require_once(MODULE_PATH . "mdl_speedmail/SC_SpeedMail.php");
+            // SpeedMail対応
+            $this->objMail = new SC_SpeedMail();
+        } else {
+            $this->objMail = new SC_SendMail_Ex();
+        }
+
         parent::init();
     }
 
@@ -62,123 +62,125 @@ class LC_Page_Admin_Mail_Sendmail extends LC_Page {
      */
     function process() {
         $conn = new SC_DbConn();
+        $objQuery = new SC_Query();
         $objSite = new SC_SiteInfo($conn);
 
-        if(MELMAGA_SEND != true) {
+        if (MELMAGA_SEND != true) {
             exit;
         }
 
-        //リアルタイム配信モードがオンのとき
-        if($_GET['mode'] == 'now') {
-            //----　未送信データを取得する
-            $time_data = $conn->getAll( "SELECT send_id FROM dtb_send_history  WHERE complete_count = 0 AND del_flg = 0 AND end_date IS NULL ORDER BY send_id ASC, start_date ASC" );
+        $where = 'del_flg = 0';
+        $sqlval = array();
+        // リアルタイム配信モードがオンのとき
+        if ($_GET['mode'] == 'now') {
+            // 指定データを取得する
+            $where .= ' AND send_id = ?';
+            $sqlval[] = $_GET['send_id'];
+            if ($_GET['retry'] != 'yes') {
+                $where .= ' AND complete_count = 0 AND end_date IS NULL';
+            }
         } else {
+            $where .= ' AND end_date IS NULL';
             // postgresql と mysql とでSQLをわける
             if (DB_TYPE == "pgsql") {
-                $sql = "SELECT send_id FROM dtb_send_history  ";
-                $sql.= "WHERE start_date  BETWEEN current_timestamp + '- 5 minutes' AND current_timestamp + '5 minutes' AND del_flg = 0  AND end_date IS NULL ORDER BY send_id ASC, start_date ASC";
-            }else if (DB_TYPE == "mysql") {
-                $sql = "SELECT send_id FROM dtb_send_history  ";
-                $sql.= "WHERE start_date  BETWEEN date_add(now(),INTERVAL -5 minute) AND date_add(now(),INTERVAL 5 minute) AND del_flg = 0  AND end_date IS NULL ORDER BY send_id ASC, start_date ASC";
+                $where .= "start_date BETWEEN current_timestamp + '- 5 minutes' AND current_timestamp + '5 minutes'";
+            } else if (DB_TYPE == "mysql") {
+                $where .= "start_date BETWEEN date_add(now(),INTERVAL -5 minute) AND date_add(now(),INTERVAL 5 minute)";
             }
-            //----　30分毎にCronが送信時間データ確認
-            $time_data = $conn->getAll($sql);
+            // 30分毎にCronが送信時間データ確認
         }
+        $objQuery->setorder('send_id');
+        $arrMailList = $objQuery->select('*', 'dtb_send_history', $where, $sqlval);
+        $objQuery->setorder('');
 
-        //未送信メルマガの数
-        $count = count($time_data);
-
-        //未送信メルマガがあれば送信処理を続ける。なければ中断する。
-        if( $count > 0 ){
-            print("start sending <br />\n");
-        } else {
-            print("not found <br />\n");
+        // 未送信メルマガがあれば送信処理を続ける。なければ中断する。
+        if (empty($arrMailList)) {
+            echo "not found\n";
             exit;
         }
 
-        //---- メール送信準備
-        for( $i = 0; $i < $count; $i++ ) {
+        echo "start sending\n";
+
+        // メール生成と送信
+        foreach ($arrMailList as $arrMail) {
+            $sendFlag = null;
+
             // 送信先リストの取得
-            $sql = "SELECT * FROM dtb_send_customer WHERE send_id = ? AND (send_flag = 2 OR send_flag IS NULL)";
-            $list_data[] = $conn->getAll( $sql, array( $time_data[$i]["send_id"] ) );
-            // 送信先データの取得
-            $sql = "SELECT * FROM dtb_send_history WHERE send_id = ?";
-            $mail_data[] = $conn->getAll( $sql, array( $time_data[$i]["send_id"] ) );
-        }
+            $arrDestinationList = $objQuery->select(
+                '*',
+                'dtb_send_customer',
+                'send_id = ? AND (send_flag = 2 OR send_flag IS NULL)',
+                array($arrMail["send_id"])
+            );
 
-        //---- 送信結果フラグ用SQL
-        $sql_flag ="UPDATE dtb_send_customer SET send_flag = ? WHERE send_id = ? AND customer_id = ?";
+            foreach ($arrDestinationList as $arrDestination) {
 
-        //----　メール生成と送信
-        for( $i = 0; $i < $count; $i++ ) {
-            for( $j = 0; $j < count( $list_data[$i] ); $j ++ ) {
-                $customerName = "";
-                $mailBody = "";
-                $sendFlag = "";
-
-                //-- 顧客名の変換
-                $name = trim($list_data[$i][$j]["name"]);
+                // 顧客名の変換
+                $name = trim($arrDestination["name"]);
 
                 if ($name == "") {
                     $name = "お客";
                 }
 
                 $customerName = htmlspecialchars($name);
-                $subjectBody = ereg_replace( "{name}", $customerName , $mail_data[$i][0]["subject"] );
-                $mailBody = ereg_replace( "{name}", $customerName ,  $mail_data[$i][0]["body"] );
+                $subjectBody = ereg_replace("{name}", $customerName, $arrMail["subject"]);
+                $mailBody = ereg_replace("{name}", $customerName, $arrMail["body"]);
 
                 $this->objMail->setItem(
-                                                $list_data[$i][$j]["email"]
-                                               ,$subjectBody
-                                               ,$mailBody
-                                               ,$objSite->data["email03"]                  //　送信元メールアドレス
-                                               ,$objSite->data["shop_name"]                //　送信元名
-                                               ,$objSite->data["email03"]                  //　reply_to
-                                               ,$objSite->data["email04"]                  //　return_path
-                                               ,$objSite->data["email04"]                  //　errors_to
-                                    );
+                    $arrDestination["email"],
+                    $subjectBody,
+                    $mailBody,
+                    $objSite->data["email03"],      // 送信元メールアドレス
+                    $objSite->data["shop_name"],    // 送信元名
+                    $objSite->data["email03"],      // reply_to
+                    $objSite->data["email04"],      // return_path
+                    $objSite->data["email04"]       // errors_to
+                );
 
-                //-- テキストメール配信の場合
-                if( $mail_data[$i][0]["mail_method"] == 2 ) {
+                // テキストメール配信の場合
+                if ($arrMail["mail_method"] == 2) {
                     $sendResut = $this->objMail->sendMail();
-                //--  HTMLメール配信の場合
+                // HTMLメール配信の場合
                 } else {
                     $sendResut = $this->objMail->sendHtmlMail();
                 }
 
-                //-- 送信完了なら1、失敗なら-1をメール送信結果フラグとしてDBに挿入
-                if( ! $sendResut ){
-                    $sendFlag = "-1";
+                // 送信完了なら1、失敗なら2をメール送信結果フラグとしてDBに挿入
+                if (!$sendResut) {
+                    $sendFlag = '2';
                 } else {
-                    $sendFlag = "1";
+                    $sendFlag = '1';
 
                     // 完了を 1 増やす
                     $sql = "UPDATE dtb_send_history SET complete_count = complete_count + 1 WHERE send_id = ?";
-                    $conn->query( $sql, array($mail_data[$i][0]["send_id"]));
+                    $conn->query($sql, array($arrMail["send_id"]));
                 }
-                $conn->query( $sql_flag, array( $sendFlag, $mail_data[$i][0]["send_id"], $list_data[$i][$j]["customer_id"] ) );
+
+                // 送信結果フラグ
+                $sql ="UPDATE dtb_send_customer SET send_flag = ? WHERE send_id = ? AND customer_id = ?";
+                $conn->query($sql, array($sendFlag, $arrMail["send_id"], $arrDestination["customer_id"]));
             }
 
-            //--- メール全件送信完了後の処理
+            // メール全件送信完了後の処理
             $completeSql = "UPDATE dtb_send_history SET end_date = now() WHERE send_id = ?";
-            $conn->query( $completeSql, array( $time_data[$i]["send_id"] ) );
+            $conn->query($completeSql, array($arrMail["send_id"]));
 
-            //---　送信完了　報告メール
-            $compSubject =  date("Y年m月d日H時i分" . "  下記メールの配信が完了しました。" );
+            // 送信完了　報告メール
+            $compSubject = date("Y年m月d日H時i分") . "  下記メールの配信が完了しました。";
             // 管理者宛に変更
             $this->objMail->setTo($objSite->data["email03"]);
             $this->objMail->setSubject($compSubject);
 
-            //-- テキストメール配信の場合
-            if( $mail_data[$i][0]["mail_method"] == 2 ) {
+            // テキストメール配信の場合
+            if ($arrMail["mail_method"] == 2 ) {
                 $sendResut = $this->objMail->sendMail();
-            //--  HTMLメール配信の場合
+            // HTMLメール配信の場合
             } else {
                 $sendResut = $this->objMail->sendHtmlMail();
             }
         }
-        if ($_GET['mode'] = "now") {
-            header("Location: " . URL_DIR . "admin/mail/history.php");
+        if ($_GET['mode'] == 'now') {
+            $this->sendRedirect($this->getLocation(URL_DIR . 'admin/mail/history.php'));
         }
         echo "complete\n";
     }

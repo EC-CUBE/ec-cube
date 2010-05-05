@@ -57,7 +57,7 @@ class LC_Page_Admin_Mail_History extends LC_Page {
      * @return void
      */
     function process() {
-        //---- ページ初期設定
+        // ページ初期設定
         $conn = new SC_DBConn();
         $objView = new SC_AdminView();
         $objSess = new SC_Session();
@@ -71,14 +71,13 @@ class LC_Page_Admin_Mail_History extends LC_Page {
         if (!isset($_POST['search_pageno'])) $_POST['search_pageno'] = "";
 
         // 削除時
-        if (SC_Utils_Ex::sfCheckNumLength($_GET['send_id']) && ($_GET['mode']=='delete') ){
+        if (SC_Utils_Ex::sfCheckNumLength($_GET['send_id']) && ($_GET['mode']=='delete')) {
 
             $sql = "UPDATE dtb_send_history SET del_flg = 1 WHERE send_id = ?";
             $conn->query($sql, array($_GET['send_id']) );
             $_SERVER['QUERY_STRING'] = "";
             $this->reload();
         }
-        $col = "*";
         $from = "dtb_send_history";
 
         $where = " del_flg = ?";
@@ -101,10 +100,16 @@ class LC_Page_Admin_Mail_History extends LC_Page {
         $order = "start_date DESC, send_id DESC";
         $objQuery->setorder($order);
 
+        $col = "*";
+        $col .= ",(SELECT COUNT(*) FROM dtb_send_customer WHERE dtb_send_customer.send_id = dtb_send_history.send_id) AS count_all";
+        $col .= ",(SELECT COUNT(*) FROM dtb_send_customer WHERE dtb_send_customer.send_id = dtb_send_history.send_id AND send_flag = 1) AS count_sent";
+        $col .= ",(SELECT COUNT(*) FROM dtb_send_customer WHERE dtb_send_customer.send_id = dtb_send_history.send_id AND send_flag = 2) AS count_error";
+        $col .= ",(SELECT COUNT(*) FROM dtb_send_customer WHERE dtb_send_customer.send_id = dtb_send_history.send_id AND send_flag IS NULL) AS count_unsent";
+
         // 検索結果の取得
         $this->arrDataList = $objQuery->select($col, $from, $where, $arrval);
 
-        //---- ページ表示
+        // ページ表示
         $objView->assignobj($this);
         $objView->display(MAIN_FRAME);
     }
