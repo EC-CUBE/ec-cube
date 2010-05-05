@@ -155,7 +155,7 @@ class LC_Page_Test extends PHPUnit_Framework_TestCase {
     function testGetLocationWithFullPath() {
         $objPage = new LC_Page();
         $_SERVER['DOCUMENT_ROOT'] = realpath("../html");
-        $url = $objPage->getLocation("/abouts/index.php");
+        $url = $objPage->getLocation(URL_DIR . 'abouts/index.php');
 
         $this->assertEquals(SITE_URL . "abouts/index.php", $url);
         unset($_SERVER['DOCUMENT_ROOT']);
