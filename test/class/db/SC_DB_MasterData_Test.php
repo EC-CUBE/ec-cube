@@ -88,11 +88,8 @@ class SC_DB_MasterData_Test extends PHPUnit_Framework_TestCase {
      */
     function testCreateCache() {
         $masterData = new SC_DB_MasterData_Ex();
-        $datas = $masterData->getDBMasterData("mtb_constants");
-        $commentColumn = array("id", "remarks", "rank");
         $masterData->clearCache("mtb_constants");
-        $masterData->createCache("mtb_constants", $datas, true,
-                                         array("id", "remarks", "rank"));
+        $masterData->createCache('mtb_constants', array(), true, array('id', 'remarks'));
         $this->assertEquals(true, defined("ECCUBE_VERSION"));
     }
 }
