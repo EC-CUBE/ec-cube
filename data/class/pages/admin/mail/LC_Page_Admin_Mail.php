@@ -420,18 +420,6 @@ class LC_Page_Admin_Mail extends LC_Page {
         return $arrCustomerOrderId;
     }
 
-    function lfMakeCsvData(&$conn, $send_id){
-        $arrTitle  = array(  'name01','email');
-
-        $sql = "SELECT name01,email FROM dtb_send_customer WHERE send_id = ? ORDER BY email";
-        $result = $conn->getAll($sql, array($send_id) );
-
-        if ( $result ){
-            $return = SC_Utils_Ex::getCSVData( $result, $arrTitle);
-        }
-        return $return;
-    }
-
     //現在時刻の取得（配信時間デフォルト値）
     function lfGetNowDate(){
         $nowdate = date("Y/n/j/G/i");
