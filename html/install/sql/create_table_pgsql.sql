@@ -272,10 +272,11 @@ CREATE TABLE dtb_send_history (
 
 CREATE TABLE dtb_send_customer (
     customer_id int,
-    send_id serial NOT NULL,
+    send_id int NOT NULL,
     email text,
     name text,
-    send_flag smallint
+    send_flag smallint,
+    PRIMARY KEY (send_id, customer_id)
 );
 
 CREATE TABLE dtb_products (

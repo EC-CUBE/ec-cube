@@ -275,7 +275,8 @@ CREATE TABLE dtb_send_customer (
     send_id int NOT NULL,
     email text,
     name text,
-    send_flag smallint
+    send_flag smallint,
+    PRIMARY KEY (send_id, customer_id)
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_products (
