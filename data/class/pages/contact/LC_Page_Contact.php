@@ -41,22 +41,23 @@ class LC_Page_Contact extends LC_Page {
      *
      *
      */
-     var $arrConvertColumn = array(
-                                     array(  "column" => "name01",		"convert" => "aKV" ),
-                                     array(  "column" => "name02",		"convert" => "aKV" ),
-                                     array(  "column" => "kana01",		"convert" => "CKV" ),
-                                     array(  "column" => "kana02",		"convert" => "CKV" ),
-                                     array(  "column" => "zip01",		"convert" => "n" ),
-                                     array(  "column" => "zip02",		"convert" => "n" ),
-                                     array(  "column" => "pref",		"convert" => "n" ),
-                                     array(  "column" => "addr01",		"convert" => "aKV" ),
-                                     array(  "column" => "addr02",		"convert" => "aKV" ),
-                                     array(  "column" => "email",		"convert" => "a" ),
-                                     array(  "column" => "tel01",		"convert" => "n" ),
-                                     array(  "column" => "tel02",		"convert" => "n" ),
-                                     array(  "column" => "tel03",		"convert" => "n" ),
-                                     array(  "column" => "contents",   "convert" => "aKV")
-                                  );
+    var $arrConvertColumn = array(
+        array("column" => "name01",    "convert" => "aKV"),
+        array("column" => "name02",    "convert" => "aKV"),
+        array("column" => "kana01",    "convert" => "CKV"),
+        array("column" => "kana02",    "convert" => "CKV"),
+        array("column" => "zip01",     "convert" => "n"),
+        array("column" => "zip02",     "convert" => "n"),
+        array("column" => "pref",      "convert" => "n"),
+        array("column" => "addr01",    "convert" => "aKV"),
+        array("column" => "addr02",    "convert" => "aKV"),
+        array("column" => "email",     "convert" => "a"),
+        array("column" => "email02",   "convert" => "a"),
+        array("column" => "tel01",     "convert" => "n"),
+        array("column" => "tel02",     "convert" => "n"),
+        array("column" => "tel03",     "convert" => "n"),
+        array("column" => "contents",  "convert" => "aKV"),
+    );
 
     /**
      * Page を初期化する.
@@ -167,18 +168,14 @@ class LC_Page_Contact extends LC_Page {
      */
     function lfContactConfirm() {
         // エラーチェック
-        $this->arrForm = $_POST;
-        $this->arrForm['email'] = strtolower($_POST['email']);
-        $this->arrForm = $this->lfConvertParam($this->arrForm,$this->arrConvertColumn);
+        $arrForm = $_POST;
+        $arrForm['email'] = strtolower($_POST['email']);
+        $this->arrForm = $this->lfConvertParam($arrForm, $this->arrConvertColumn);
         $this->arrErr = $this->lfErrorCheck($this->arrForm);
         if ( ! $this->arrErr ){
             // エラー無しで完了画面
             $this->tpl_mainpage = 'contact/confirm.tpl';
             $this->tpl_title = 'お問い合わせ(確認ページ)';
-        } else {
-            foreach ($this->arrForm as $key => $val){
-                $this->$key = $val;
-            }
         }
     }
 
@@ -188,9 +185,7 @@ class LC_Page_Contact extends LC_Page {
      * @return void
      */
     function lfContactReturn() {
-        foreach ($_POST as $key => $val){
-            $this->$key = $val;
-        }
+        $this->arrForm = $_POST;
     }
 
     /**
@@ -199,10 +194,10 @@ class LC_Page_Contact extends LC_Page {
      * @return void
      */
     function lfContactComplete() {
-        $this->arrForm = $_POST;
-        $this->arrForm['email']   = isset($_POST['email']) ? strtolower($_POST['email']) : '';
-        $this->arrForm['email02'] = isset($_POST['email02']) ? strtolower($_POST['email02']) : '';
-        $this->arrForm = $this->lfConvertParam($this->arrForm,$this->arrConvertColumn);
+        $arrForm = $_POST;
+        $arrForm['email']   = isset($_POST['email']) ? strtolower($_POST['email']) : '';
+        $arrForm['email02'] = isset($_POST['email02']) ? strtolower($_POST['email02']) : '';
+        $this->arrForm = $this->lfConvertParam($arrForm, $this->arrConvertColumn);
         $this->arrErr = $this->lfErrorCheck($this->arrForm);
         if(!$this->arrErr) {
             $this->lfSendMail($this);

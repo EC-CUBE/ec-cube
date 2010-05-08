@@ -80,13 +80,7 @@ class LC_Page_Admin_Contents extends LC_Page {
             $_POST = $this->lfConvData($_POST);
 
             if ($this->arrErr = $this->lfErrorCheck()) {       // 入力エラーのチェック
-                foreach($_POST as $key => $val) {
-                    $this->$key = $val;
-                }
-                $this->selected_year = $_POST["year"];
-                $this->selected_month = $_POST["month"];
-                $this->selected_day = $_POST["day"];
-
+                $this->arrForm = $_POST;
             } else {
 
                 if (isset($_POST['link_method']) == ""){
@@ -113,14 +107,12 @@ class LC_Page_Admin_Contents extends LC_Page {
         if ($_POST["mode"] == "search" && is_numeric($_POST["news_id"])) {
             $sql = "SELECT *, cast(news_date as date) as cast_news_date FROM dtb_news WHERE news_id = ? ";
             $result = $conn->getAll($sql, array($_POST["news_id"]));
-            foreach($result[0] as $key => $val ){
-                $this->$key = $val;
-            }
-            $arrData = split("-",$result[0]["cast_news_date"]);
+            $this->arrForm = $result[0];
 
-            $this->selected_year = $arrData[0];
-            $this->selected_month =$arrData[1];
-            $this->selected_day =  $arrData[2];
+            $arrData = split("-", $result[0]["cast_news_date"]);
+            $this->arrForm['year']  = $arrData[0];
+            $this->arrForm['month'] = $arrData[1];
+            $this->arrForm['day']   = $arrData[2];
 
             $this->edit_mode = "on";
         }
@@ -165,15 +157,12 @@ class LC_Page_Admin_Contents extends LC_Page {
             }
         }
 
-
         //---- 全データ取得
         $sql = "SELECT *, cast(news_date as date) as cast_news_date FROM dtb_news WHERE del_flg = '0' ORDER BY rank DESC";
         $this->list_data = $conn->getAll($sql);
         $this->line_max = count($this->list_data);
         $sql = "SELECT MAX(rank) FROM dtb_news WHERE del_flg = '0'";        // rankの最大値を取得
         $this->max_rank = $conn->getOne($sql);
-
-        $this->arrForm['news_select'] = 0;
 
         //----　ページ表示
         $objView->assignobj($this);
