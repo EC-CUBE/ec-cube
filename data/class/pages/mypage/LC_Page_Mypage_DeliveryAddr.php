@@ -164,7 +164,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page {
         $objErr->doFunc(array("電話番号1", 'tel01'), array("EXIST_CHECK","NUM_CHECK"));
         $objErr->doFunc(array("電話番号2", 'tel02'), array("EXIST_CHECK","NUM_CHECK"));
         $objErr->doFunc(array("電話番号3", 'tel03'), array("EXIST_CHECK","NUM_CHECK"));
-        $objErr->doFunc(array("電話番号", "tel01", "tel02", "tel03", TEL_LEN) ,array("TEL_CHECK"));
+        $objErr->doFunc(array("電話番号", "tel01", "tel02", "tel03") ,array("TEL_CHECK"));
         return $objErr->arrErr;
 
     }

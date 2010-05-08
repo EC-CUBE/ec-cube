@@ -556,7 +556,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
             $objErr->doFunc(array("メールアドレス", "login_email", STEXT_LEN), array("EXIST_CHECK"));
             $objErr->doFunc(array("パスワード", "login_pass", STEXT_LEN), array("EXIST_CHECK"));
         }
-        $objErr->doFunc(array("TEL", "deliv_tel01", "deliv_tel02", "deliv_tel03", TEL_ITEM_LEN), array("TEL_CHECK"));
+        $objErr->doFunc(array("TEL", "deliv_tel01", "deliv_tel02", "deliv_tel03"), array("TEL_CHECK"));
         return $objErr->arrErr;
     }
 

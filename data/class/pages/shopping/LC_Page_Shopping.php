@@ -336,11 +336,11 @@ class LC_Page_Shopping extends LC_Page {
         }
 
         // 複数項目チェック
-        $objErr->doFunc(array("TEL", "order_tel01", "order_tel02", "order_tel03", TEL_ITEM_LEN), array("TEL_CHECK"));
-        $objErr->doFunc(array("FAX", "order_fax01", "order_fax02", "order_fax03", TEL_ITEM_LEN), array("TEL_CHECK"));
+        $objErr->doFunc(array("TEL", "order_tel01", "order_tel02", "order_tel03"), array("TEL_CHECK"));
+        $objErr->doFunc(array("FAX", "order_fax01", "order_fax02", "order_fax03"), array("TEL_CHECK"));
         $objErr->doFunc(array("郵便番号", "order_zip01", "order_zip02"), array("ALL_EXIST_CHECK"));
-        $objErr->doFunc(array("TEL", "deliv_tel01", "deliv_tel02", "deliv_tel03", TEL_ITEM_LEN), array("TEL_CHECK"));
-        $objErr->doFunc(array("FAX", "deliv_fax01", "deliv_fax02", "deliv_fax03", TEL_ITEM_LEN), array("TEL_CHECK"));
+        $objErr->doFunc(array("TEL", "deliv_tel01", "deliv_tel02", "deliv_tel03"), array("TEL_CHECK"));
+        $objErr->doFunc(array("FAX", "deliv_fax01", "deliv_fax02", "deliv_fax03"), array("TEL_CHECK"));
         $objErr->doFunc(array("郵便番号", "deliv_zip01", "deliv_zip02"), array("ALL_EXIST_CHECK"));
         $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_BIRTHDAY"));
         $objErr->doFunc(array("メールアドレス", "メールアドレス（確認）", "order_email", "order_email02"), array("EQUAL_CHECK"));

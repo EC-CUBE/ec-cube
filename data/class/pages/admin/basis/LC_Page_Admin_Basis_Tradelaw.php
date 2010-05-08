@@ -180,8 +180,8 @@ class LC_Page_Admin_Basis_Tradelaw extends LC_Page {
         $objErr->arrErr = $this->objFormParam->checkError();
 
         // 電話番号チェック
-        $objErr->doFunc(array("TEL", "law_tel01", "law_tel02", "law_tel03", TEL_ITEM_LEN), array("TEL_CHECK"));
-        $objErr->doFunc(array("FAX", "law_fax01", "law_fax02", "law_fax03", TEL_ITEM_LEN), array("TEL_CHECK"));
+        $objErr->doFunc(array("TEL", "law_tel01", "law_tel02", "law_tel03"), array("TEL_CHECK"));
+        $objErr->doFunc(array("FAX", "law_fax01", "law_fax02", "law_fax03"), array("TEL_CHECK"));
         $objErr->doFunc(array("郵便番号", "law_zip01", "law_zip02"), array("ALL_EXIST_CHECK"));
 
         return $objErr->arrErr;

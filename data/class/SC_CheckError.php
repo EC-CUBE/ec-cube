@@ -270,15 +270,23 @@ class SC_CheckError {
         }
     }
 
-    /* 電話番号の判定 （数字チェックと文字数チェックを実施する。)
-        value[0] : 項目名
-        value[1] : 電番1項目目
-        value[2] : 電番2項目目
-        value[3] : 電番3項目目
-        value[4] : 文字数制限
-    */
+    /**
+     * 電話番号の判定
+     *
+     * 数字チェックと文字数チェックを実施する。
+     * @param array $value 各要素は以下の通り。<br>
+     *     [0]: 項目名<br>
+     *     [1]: 電番1項目目<br>
+     *     [2]: 電番2項目目<br>
+     *     [3]: 電番3項目目<br>
+     *     [4]: 電話番号各項目制限 (指定なしの場合、TEL_ITEM_LEN)<br>
+     *     [5]: 電話番号総数 (指定なしの場合、TEL_LEN)
+     */
     function TEL_CHECK($value) {
-        if(isset($this->arrErr[$value[1]])) {
+        $telItemLen = isset($value[4]) ? $value[4] : TEL_ITEM_LEN;
+        $telLen = isset($value[5]) ? $value[5] : TEL_LEN;
+
+        if (isset($this->arrErr[$value[1]]) || isset($this->arrErr[$value[2]]) || isset($this->arrErr[$value[3]])) {
             return;
         }
         $this->createParam($value);
@@ -297,8 +305,8 @@ class SC_CheckError {
 
         $total_count = 0;
         for($i = 1; $i <= 3; $i++) {
-            if(strlen($this->arrParam[$value[$i]]) > 0 && strlen($this->arrParam[$value[$i]]) > $value[4]) {
-                $this->arrErr[$value[$i]] .= "※ " . $value[0] . $i . "は" . $value[4] . "字以内で入力してください。<br />";
+            if(strlen($this->arrParam[$value[$i]]) > 0 && strlen($this->arrParam[$value[$i]]) > $telItemLen) {
+                $this->arrErr[$value[$i]] .= "※ " . $value[0] . $i . "は" . $telItemLen . "字以内で入力してください。<br />";
             } else if (strlen($this->arrParam[$value[$i]]) > 0 && !EregI("^[[:digit:]]+$", $this->arrParam[$value[$i]])) {
                 $this->arrErr[$value[$i]] .= "※ " . $value[0] . $i . "は数字で入力してください。<br />";
             }
@@ -306,8 +314,8 @@ class SC_CheckError {
         }
 
         // 合計値チェック
-        if ($total_count > TEL_LEN) {
-            $this->arrErr[$value[3]] .= "※ " . $value[0] . "は" . TEL_LEN . "文字以内で入力してください。<br />";
+        if ($total_count > $telLen) {
+            $this->arrErr[$value[3]] .= "※ " . $value[0] . "は" . $telLen . "文字以内で入力してください。<br />";
         }
     }
 
