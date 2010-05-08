@@ -123,7 +123,6 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
                     $objQuery->begin();
 
                     echo "■　CSV登録進捗状況 <br/><br/>\n";
-
                     while (!feof($fp) && !$err) {
                         $arrCSV = fgetcsv($fp, CSV_LINE_MAX);
 
@@ -366,8 +365,8 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
     /**
      * CSVのカウント数を得る.
      *
-     * @param string $fp fopenを使用して作成したファイルポインタ
-     * @return mixed CSV のカウント数; $file_name が無効な場合は false
+     * @param resource $fp fopenを使用して作成したファイルポインタ
+     * @return integer CSV のカウント数
      */
     function lfCSVRecordCount($fp) {
         $count = 0;
