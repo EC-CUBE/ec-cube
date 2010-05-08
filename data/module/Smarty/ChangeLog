@@ -1,3 +1,1575 @@
+2007-09-27  TAKAGI Masahiro  <matakagi@gmail.com>
+
+    * docs/ja/designers/language-custom-functions/language-function-html-checkboxes.xml:
+      sync with en.
+
+2007-09-27  Monte Ohrt  <monte@ohrt.com>
+
+    * docs/en/designers/language-custom-functions/language-function-html-checkboxes.xml:
+      remove redundant attribute
+
+2007-09-18  Messju Mohr  <messju@lammfellpuschen.de>
+
+    * docs/id/programmers/plugins/plugins-functions.xml:
+      removed errornous whitespace
+
+2007-09-18  Zaenal Mutaqin  <zaenalm@gmail.com>
+
+    * docs/id/designers/language-basic-syntax/language-escaping.xml
+      docs/id/designers/language-basic-syntax/language-math.xml
+      docs/id/designers/language-basic-syntax/language-syntax-attributes.xml
+      docs/id/designers/language-basic-syntax/language-syntax-comments.xml
+      docs/id/designers/language-basic-syntax/language-syntax-functions.xml
+      docs/id/designers/language-basic-syntax/language-syntax-quotes.xml
+      docs/id/designers/language-basic-syntax/language-syntax-variables.xml
+      docs/id/designers/language-builtin-functions/language-function-capture.xml
+      docs/id/designers/language-builtin-functions/language-function-config-load.xml
+      docs/id/designers/language-builtin-functions/language-function-foreach.xml
+      docs/id/designers/language-builtin-functions/language-function-if.xml
+      docs/id/designers/language-builtin-functions/language-function-include-php.xml
+      docs/id/designers/language-builtin-functions/language-function-include.xml
+      docs/id/designers/language-builtin-functions/language-function-insert.xml
+      docs/id/designers/language-builtin-functions/language-function-ldelim.xml
+      docs/id/designers/language-builtin-functions/language-function-literal.xml
+      docs/id/designers/language-builtin-functions/language-function-php.xml
+      docs/id/designers/language-builtin-functions/language-function-section.xml
+      docs/id/designers/language-builtin-functions/language-function-strip.xml
+      docs/id/designers/language-custom-functions/language-function-assign.xml
+      docs/id/designers/language-custom-functions/language-function-counter.xml
+      docs/id/designers/language-custom-functions/language-function-cycle.xml
+      docs/id/designers/language-custom-functions/language-function-debug.xml
+      docs/id/designers/language-custom-functions/language-function-eval.xml
+      docs/id/designers/language-custom-functions/language-function-fetch.xml
+      docs/id/designers/language-custom-functions/language-function-html-checkboxes.xml
+      docs/id/designers/language-custom-functions/language-function-html-image.xml
+      docs/id/designers/language-custom-functions/language-function-html-options.xml
+      docs/id/designers/language-custom-functions/language-function-html-radios.xml
+      docs/id/designers/language-custom-functions/language-function-html-select-date.xml
+      docs/id/designers/language-custom-functions/language-function-html-select-time.xml
+      docs/id/designers/language-custom-functions/language-function-html-table.xml
+      docs/id/designers/language-custom-functions/language-function-mailto.xml
+      docs/id/designers/language-custom-functions/language-function-math.xml
+      docs/id/designers/language-custom-functions/language-function-popup-init.xml
+      docs/id/designers/language-custom-functions/language-function-popup.xml
+      docs/id/designers/language-custom-functions/language-function-textformat.xml
+      docs/id/designers/language-modifiers/language-modifier-capitalize.xml
+      docs/id/designers/language-modifiers/language-modifier-cat.xml
+      docs/id/designers/language-modifiers/language-modifier-count-characters.xml
+      docs/id/designers/language-modifiers/language-modifier-count-paragraphs.xml
+      docs/id/designers/language-modifiers/language-modifier-count-sentences.xml
+      docs/id/designers/language-modifiers/language-modifier-count-words.xml
+      docs/id/designers/language-modifiers/language-modifier-date-format.xml
+      docs/id/designers/language-modifiers/language-modifier-default.xml
+      docs/id/designers/language-modifiers/language-modifier-escape.xml
+      docs/id/designers/language-modifiers/language-modifier-indent.xml
+      docs/id/designers/language-modifiers/language-modifier-lower.xml
+      docs/id/designers/language-modifiers/language-modifier-nl2br.xml
+      docs/id/designers/language-modifiers/language-modifier-regex-replace.xml
+      docs/id/designers/language-modifiers/language-modifier-replace.xml
+      docs/id/designers/language-modifiers/language-modifier-spacify.xml
+      docs/id/designers/language-modifiers/language-modifier-string-format.xml
+      docs/id/designers/language-modifiers/language-modifier-strip-tags.xml
+      docs/id/designers/language-modifiers/language-modifier-strip.xml
+      docs/id/designers/language-modifiers/language-modifier-truncate.xml
+      docs/id/designers/language-modifiers/language-modifier-upper.xml
+      docs/id/designers/language-modifiers/language-modifier-wordwrap.xml
+      docs/id/designers/language-variables/language-assigned-variables.xml
+      docs/id/designers/language-variables/language-config-variables.xml
+      docs/id/designers/language-variables/language-variables-smarty.xml
+      docs/id/programmers/advanced-features/advanced-features-objects.xml
+      docs/id/programmers/advanced-features/advanced-features-outputfilters.xml
+      docs/id/programmers/advanced-features/advanced-features-postfilters.xml
+      docs/id/programmers/advanced-features/advanced-features-prefilters.xml
+      docs/id/programmers/advanced-features/section-template-cache-handler-func.xml
+      docs/id/programmers/advanced-features/template-resources.xml
+      docs/id/programmers/api-functions/api-append-by-ref.xml
+      docs/id/programmers/api-functions/api-append.xml
+      docs/id/programmers/api-functions/api-assign-by-ref.xml
+      docs/id/programmers/api-functions/api-assign.xml
+      docs/id/programmers/api-functions/api-clear-all-assign.xml
+      docs/id/programmers/api-functions/api-clear-all-cache.xml
+      docs/id/programmers/api-functions/api-clear-assign.xml
+      docs/id/programmers/api-functions/api-clear-cache.xml
+      docs/id/programmers/api-functions/api-clear-compiled-tpl.xml
+      docs/id/programmers/api-functions/api-clear-config.xml
+      docs/id/programmers/api-functions/api-config-load.xml
+      docs/id/programmers/api-functions/api-display.xml
+      docs/id/programmers/api-functions/api-fetch.xml
+      docs/id/programmers/api-functions/api-get-config-vars.xml
+      docs/id/programmers/api-functions/api-get-registered-object.xml
+      docs/id/programmers/api-functions/api-get-template-vars.xml
+      docs/id/programmers/api-functions/api-is-cached.xml
+      docs/id/programmers/api-functions/api-load-filter.xml
+      docs/id/programmers/api-functions/api-register-block.xml
+      docs/id/programmers/api-functions/api-register-compiler-function.xml
+      docs/id/programmers/api-functions/api-register-function.xml
+      docs/id/programmers/api-functions/api-register-modifier.xml
+      docs/id/programmers/api-functions/api-register-object.xml
+      docs/id/programmers/api-functions/api-register-outputfilter.xml
+      docs/id/programmers/api-functions/api-register-postfilter.xml
+      docs/id/programmers/api-functions/api-register-prefilter.xml
+      docs/id/programmers/api-functions/api-register-resource.xml
+      docs/id/programmers/api-functions/api-template-exists.xml
+      docs/id/programmers/api-functions/api-trigger-error.xml
+      docs/id/programmers/api-functions/api-unregister-block.xml
+      docs/id/programmers/api-functions/api-unregister-compiler-function.xml
+      docs/id/programmers/api-functions/api-unregister-function.xml
+      docs/id/programmers/api-functions/api-unregister-modifier.xml
+      docs/id/programmers/api-functions/api-unregister-object.xml
+      docs/id/programmers/api-functions/api-unregister-outputfilter.xml
+      docs/id/programmers/api-functions/api-unregister-postfilter.xml
+      docs/id/programmers/api-functions/api-unregister-prefilter.xml
+      docs/id/programmers/api-functions/api-unregister-resource.xml
+      docs/id/programmers/api-variables/variable-autoload-filters.xml
+      docs/id/programmers/api-variables/variable-cache-dir.xml
+      docs/id/programmers/api-variables/variable-cache-handler-func.xml
+      docs/id/programmers/api-variables/variable-cache-lifetime.xml
+      docs/id/programmers/api-variables/variable-cache-modified-check.xml
+      docs/id/programmers/api-variables/variable-caching.xml
+      docs/id/programmers/api-variables/variable-compile-check.xml
+      docs/id/programmers/api-variables/variable-compile-dir.xml
+      docs/id/programmers/api-variables/variable-compile-id.xml
+      docs/id/programmers/api-variables/variable-compiler-class.xml
+      docs/id/programmers/api-variables/variable-config-booleanize.xml
+      docs/id/programmers/api-variables/variable-config-dir.xml
+      docs/id/programmers/api-variables/variable-config-fix-newlines.xml
+      docs/id/programmers/api-variables/variable-config-overwrite.xml
+      docs/id/programmers/api-variables/variable-config-read-hidden.xml
+      docs/id/programmers/api-variables/variable-debug-tpl.xml
+      docs/id/programmers/api-variables/variable-debugging-ctrl.xml
+      docs/id/programmers/api-variables/variable-debugging.xml
+      docs/id/programmers/api-variables/variable-default-modifiers.xml
+      docs/id/programmers/api-variables/variable-default-resource-type.xml
+      docs/id/programmers/api-variables/variable-default-template-handler-func.xml
+      docs/id/programmers/api-variables/variable-error-reporting.xml
+      docs/id/programmers/api-variables/variable-force-compile.xml
+      docs/id/programmers/api-variables/variable-left-delimiter.xml
+      docs/id/programmers/api-variables/variable-php-handling.xml
+      docs/id/programmers/api-variables/variable-plugins-dir.xml
+      docs/id/programmers/api-variables/variable-request-use-auto-globals.xml
+      docs/id/programmers/api-variables/variable-request-vars-order.xml
+      docs/id/programmers/api-variables/variable-right-delimiter.xml
+      docs/id/programmers/api-variables/variable-secure-dir.xml
+      docs/id/programmers/api-variables/variable-security-settings.xml
+      docs/id/programmers/api-variables/variable-security.xml
+      docs/id/programmers/api-variables/variable-template-dir.xml
+      docs/id/programmers/api-variables/variable-trusted-dir.xml
+      docs/id/programmers/api-variables/variable-use-sub-dirs.xml
+      docs/id/programmers/caching/caching-cacheable.xml
+      docs/id/programmers/caching/caching-groups.xml
+      docs/id/programmers/caching/caching-multiple-caches.xml
+      docs/id/programmers/caching/caching-setting-up.xml
+      docs/id/programmers/plugins/plugins-block-functions.xml
+      docs/id/programmers/plugins/plugins-compiler-functions.xml
+      docs/id/programmers/plugins/plugins-functions.xml
+      docs/id/programmers/plugins/plugins-howto.xml
+      docs/id/programmers/plugins/plugins-inserts.xml
+      docs/id/programmers/plugins/plugins-modifiers.xml
+      docs/id/programmers/plugins/plugins-naming-conventions.xml
+      docs/id/programmers/plugins/plugins-outputfilters.xml
+      docs/id/programmers/plugins/plugins-prefilters-postfilters.xml
+      docs/id/programmers/plugins/plugins-resources.xml
+      docs/id/programmers/plugins/plugins-writing.xml:
+      Typos correction and all translated now.
+
+2007-09-17  Messju Mohr  <messju@lammfellpuschen.de>
+
+    * docs/id/bookinfo.xml
+      docs/id/getting-started.xml
+      docs/id/language-defs.ent
+      docs/id/language-snippets.ent
+      docs/id/livedocs.ent
+      docs/id/preface.xml:
+      added indonesian docs - thanks Zaenal Mutaqin
+
+    * docs/scripts/generate_web.php:
+      raise pcre.backtrack_limit - thanks to takagi
+
+2007-09-16  Monte Ohrt  <monte@ohrt.com>
+
+    * libs/Smarty_Compiler.class.php:
+      fix typo
+
+2007-08-22  George Miroshnikov  <support@infinity.com.ua>
+
+    * docs/ru/getting-started.xml
+      docs/ru/getting-started.xml:
+      Sync with EN.
+
+2007-08-01  Monte Ohrt  <monte@ohrt.com>
+
+    * NEWS
+      libs/Smarty_Compiler.class.php:
+      add append feature to capture
+
+2007-06-24  TAKAGI Masahiro  <matakagi@osk2.3web.ne.jp>
+
+    * docs/ja/getting-started.xml:
+      sync with en.
+
+2007-06-24  Messju Mohr  <messju@lammfellpuschen.de>
+
+    * docs/Makefile.in:
+      reverted accidently modified file
+
+    * docs/Makefile.in
+      docs/de/getting-started.xml:
+      sync with en
+
+    * docs/en/getting-started.xml:
+      fixed link to ini_set(). thanks to Lee Yunyoung.
+
+2007-06-18  TAKAGI Masahiro  <matakagi@osk2.3web.ne.jp>
+
+    * docs/ja/language-snippets.ent
+      docs/ja/programmers/api-functions/api-register-outputfilter.xml
+      docs/ja/programmers/api-functions/api-register-postfilter.xml
+      docs/ja/programmers/api-functions/api-register-prefilter.xml:
+      sync with en.
+
+2007-06-18  Danilo Buerger  <danilo@blizzz.org>
+
+    * docs/en/language-snippets.ent
+      docs/en/programmers/api-functions/api-register-outputfilter.xml
+      docs/en/programmers/api-functions/api-register-postfilter.xml
+      docs/en/programmers/api-functions/api-register-prefilter.xml:
+      Updated docs according to the changes from the previous commit
+
+    * NEWS
+      libs/Smarty.class.php:
+      Added the ability to (un)register multiple filters of the same type with
+      the same method name but different class name. Before it was not possible
+      due to the fact that only the method name was used to distinguish between
+      different filters of the same type. This does however not allow (same as
+      before) to register multiple filters of the same type with the same method
+      and class name (i.e. different instances of the same class).
+
+2007-05-29  Messju Mohr  <messju@lammfellpuschen.de>
+
+    * libs/plugins/compiler.assign.php:
+      fixed typo
+
+2007-05-11  Messju Mohr  <messju@lammfellpuschen.de>
+
+    * NEWS
+      libs/Smarty_Compiler.class.php:
+      fixed calling registered objects' methods with an empty argument list.
+      thanks marcello
+
+2007-05-03  TAKAGI Masahiro  <matakagi@osk2.3web.ne.jp>
+
+    * docs/ja/designers/language-variables.xml
+      docs/ja/designers/language-builtin-functions/language-function-config-load.xml
+      docs/ja/designers/language-builtin-functions/language-function-foreach.xml
+      docs/ja/designers/language-builtin-functions/language-function-if.xml
+      docs/ja/designers/language-modifiers/language-modifier-cat.xml
+      docs/ja/designers/language-modifiers/language-modifier-wordwrap.xml
+      docs/ja/designers/language-variables/language-variables-smarty.xml:
+      sync with en.
+
+2007-05-03  Monte Ohrt  <monte@ohrt.com>
+
+    * docs/en/designers/language-variables.xml
+      docs/en/designers/language-builtin-functions/language-function-config-load.xml
+      docs/en/designers/language-builtin-functions/language-function-foreach.xml
+      docs/en/designers/language-builtin-functions/language-function-if.xml
+      docs/en/designers/language-modifiers/language-modifier-cat.xml
+      docs/en/designers/language-modifiers/language-modifier-wordwrap.xml
+      docs/en/designers/language-variables/language-variables-smarty.xml:
+      update documentation corrections from marcello in the forums. Thanks
+      marcello!
+
+2007-04-22  TAKAGI Masahiro  <matakagi@osk2.3web.ne.jp>
+
+    * docs/ja/programmers/advanced-features.xml
+      docs/ja/programmers/api-functions.xml
+      docs/ja/programmers/api-variables.xml:
+      corrected the garbled text.
+
+2007-04-21  TAKAGI Masahiro  <matakagi@osk2.3web.ne.jp>
+
+    * docs/ja/bookinfo.xml
+      docs/ja/getting-started.xml
+      docs/ja/language-defs.ent
+      docs/ja/language-snippets.ent
+      docs/ja/livedocs.ent
+      docs/ja/make_chm_index.html
+      docs/ja/preface.xml
+      docs/ja/translation.xml
+      docs/ja/appendixes/bugs.xml
+      docs/ja/appendixes/resources.xml
+      docs/ja/appendixes/tips.xml
+      docs/ja/appendixes/troubleshooting.xml
+      docs/ja/designers/chapter-debugging-console.xml
+      docs/ja/designers/config-files.xml
+      docs/ja/designers/language-basic-syntax.xml
+      docs/ja/designers/language-builtin-functions.xml
+      docs/ja/designers/language-combining-modifiers.xml
+      docs/ja/designers/language-custom-functions.xml
+      docs/ja/designers/language-modifiers.xml
+      docs/ja/designers/language-variables.xml
+      docs/ja/designers/language-basic-syntax/language-escaping.xml
+      docs/ja/designers/language-basic-syntax/language-math.xml
+      docs/ja/designers/language-basic-syntax/language-syntax-attributes.xml
+      docs/ja/designers/language-basic-syntax/language-syntax-comments.xml
+      docs/ja/designers/language-basic-syntax/language-syntax-functions.xml
+      docs/ja/designers/language-basic-syntax/language-syntax-quotes.xml
+      docs/ja/designers/language-basic-syntax/language-syntax-variables.xml
+      docs/ja/designers/language-builtin-functions/language-function-capture.xml
+      docs/ja/designers/language-builtin-functions/language-function-config-load.xml
+      docs/ja/designers/language-builtin-functions/language-function-foreach.xml
+      docs/ja/designers/language-builtin-functions/language-function-if.xml
+      docs/ja/designers/language-builtin-functions/language-function-include-php.xml
+      docs/ja/designers/language-builtin-functions/language-function-include.xml
+      docs/ja/designers/language-builtin-functions/language-function-insert.xml
+      docs/ja/designers/language-builtin-functions/language-function-ldelim.xml
+      docs/ja/designers/language-builtin-functions/language-function-literal.xml
+      docs/ja/designers/language-builtin-functions/language-function-php.xml
+      docs/ja/designers/language-builtin-functions/language-function-section.xml
+      docs/ja/designers/language-builtin-functions/language-function-strip.xml
+      docs/ja/designers/language-custom-functions/language-function-assign.xml
+      docs/ja/designers/language-custom-functions/language-function-counter.xml
+      docs/ja/designers/language-custom-functions/language-function-cycle.xml
+      docs/ja/designers/language-custom-functions/language-function-debug.xml
+      docs/ja/designers/language-custom-functions/language-function-eval.xml
+      docs/ja/designers/language-custom-functions/language-function-fetch.xml
+      docs/ja/designers/language-custom-functions/language-function-html-checkboxes.xml
+      docs/ja/designers/language-custom-functions/language-function-html-image.xml
+      docs/ja/designers/language-custom-functions/language-function-html-options.xml
+      docs/ja/designers/language-custom-functions/language-function-html-radios.xml
+      docs/ja/designers/language-custom-functions/language-function-html-select-date.xml
+      docs/ja/designers/language-custom-functions/language-function-html-select-time.xml
+      docs/ja/designers/language-custom-functions/language-function-html-table.xml
+      docs/ja/designers/language-custom-functions/language-function-mailto.xml
+      docs/ja/designers/language-custom-functions/language-function-math.xml
+      docs/ja/designers/language-custom-functions/language-function-popup-init.xml
+      docs/ja/designers/language-custom-functions/language-function-popup.xml
+      docs/ja/designers/language-custom-functions/language-function-textformat.xml
+      docs/ja/designers/language-modifiers/language-modifier-capitalize.xml
+      docs/ja/designers/language-modifiers/language-modifier-cat.xml
+      docs/ja/designers/language-modifiers/language-modifier-count-characters.xml
+      docs/ja/designers/language-modifiers/language-modifier-count-paragraphs.xml
+      docs/ja/designers/language-modifiers/language-modifier-count-sentences.xml
+      docs/ja/designers/language-modifiers/language-modifier-count-words.xml
+      docs/ja/designers/language-modifiers/language-modifier-date-format.xml
+      docs/ja/designers/language-modifiers/language-modifier-default.xml
+      docs/ja/designers/language-modifiers/language-modifier-escape.xml
+      docs/ja/designers/language-modifiers/language-modifier-indent.xml
+      docs/ja/designers/language-modifiers/language-modifier-lower.xml
+      docs/ja/designers/language-modifiers/language-modifier-nl2br.xml
+      docs/ja/designers/language-modifiers/language-modifier-regex-replace.xml
+      docs/ja/designers/language-modifiers/language-modifier-replace.xml
+      docs/ja/designers/language-modifiers/language-modifier-spacify.xml
+      docs/ja/designers/language-modifiers/language-modifier-string-format.xml
+      docs/ja/designers/language-modifiers/language-modifier-strip-tags.xml
+      docs/ja/designers/language-modifiers/language-modifier-strip.xml
+      docs/ja/designers/language-modifiers/language-modifier-truncate.xml
+      docs/ja/designers/language-modifiers/language-modifier-upper.xml
+      docs/ja/designers/language-modifiers/language-modifier-wordwrap.xml
+      docs/ja/designers/language-variables/language-assigned-variables.xml
+      docs/ja/designers/language-variables/language-config-variables.xml
+      docs/ja/designers/language-variables/language-variables-smarty.xml
+      docs/ja/programmers/advanced-features.xml
+      docs/ja/programmers/api-functions.xml
+      docs/ja/programmers/api-variables.xml
+      docs/ja/programmers/caching.xml
+      docs/ja/programmers/plugins.xml
+      docs/ja/programmers/smarty-constants.xml
+      docs/ja/programmers/advanced-features/advanced-features-objects.xml
+      docs/ja/programmers/advanced-features/advanced-features-outputfilters.xml
+      docs/ja/programmers/advanced-features/advanced-features-postfilters.xml
+      docs/ja/programmers/advanced-features/advanced-features-prefilters.xml
+      docs/ja/programmers/advanced-features/section-template-cache-handler-func.xml
+      docs/ja/programmers/advanced-features/template-resources.xml
+      docs/ja/programmers/api-functions/api-append-by-ref.xml
+      docs/ja/programmers/api-functions/api-append.xml
+      docs/ja/programmers/api-functions/api-assign-by-ref.xml
+      docs/ja/programmers/api-functions/api-assign.xml
+      docs/ja/programmers/api-functions/api-clear-all-assign.xml
+      docs/ja/programmers/api-functions/api-clear-all-cache.xml
+      docs/ja/programmers/api-functions/api-clear-assign.xml
+      docs/ja/programmers/api-functions/api-clear-cache.xml
+      docs/ja/programmers/api-functions/api-clear-compiled-tpl.xml
+      docs/ja/programmers/api-functions/api-clear-config.xml
+      docs/ja/programmers/api-functions/api-config-load.xml
+      docs/ja/programmers/api-functions/api-display.xml
+      docs/ja/programmers/api-functions/api-fetch.xml
+      docs/ja/programmers/api-functions/api-get-config-vars.xml
+      docs/ja/programmers/api-functions/api-get-registered-object.xml
+      docs/ja/programmers/api-functions/api-get-template-vars.xml
+      docs/ja/programmers/api-functions/api-is-cached.xml
+      docs/ja/programmers/api-functions/api-load-filter.xml
+      docs/ja/programmers/api-functions/api-register-block.xml
+      docs/ja/programmers/api-functions/api-register-compiler-function.xml
+      docs/ja/programmers/api-functions/api-register-function.xml
+      docs/ja/programmers/api-functions/api-register-modifier.xml
+      docs/ja/programmers/api-functions/api-register-object.xml
+      docs/ja/programmers/api-functions/api-register-outputfilter.xml
+      docs/ja/programmers/api-functions/api-register-postfilter.xml
+      docs/ja/programmers/api-functions/api-register-prefilter.xml
+      docs/ja/programmers/api-functions/api-register-resource.xml
+      docs/ja/programmers/api-functions/api-template-exists.xml
+      docs/ja/programmers/api-functions/api-trigger-error.xml
+      docs/ja/programmers/api-functions/api-unregister-block.xml
+      docs/ja/programmers/api-functions/api-unregister-compiler-function.xml
+      docs/ja/programmers/api-functions/api-unregister-function.xml
+      docs/ja/programmers/api-functions/api-unregister-modifier.xml
+      docs/ja/programmers/api-functions/api-unregister-object.xml
+      docs/ja/programmers/api-functions/api-unregister-outputfilter.xml
+      docs/ja/programmers/api-functions/api-unregister-postfilter.xml
+      docs/ja/programmers/api-functions/api-unregister-prefilter.xml
+      docs/ja/programmers/api-functions/api-unregister-resource.xml
+      docs/ja/programmers/api-variables/variable-autoload-filters.xml
+      docs/ja/programmers/api-variables/variable-cache-dir.xml
+      docs/ja/programmers/api-variables/variable-cache-handler-func.xml
+      docs/ja/programmers/api-variables/variable-cache-lifetime.xml
+      docs/ja/programmers/api-variables/variable-cache-modified-check.xml
+      docs/ja/programmers/api-variables/variable-caching.xml
+      docs/ja/programmers/api-variables/variable-compile-check.xml
+      docs/ja/programmers/api-variables/variable-compile-dir.xml
+      docs/ja/programmers/api-variables/variable-compile-id.xml
+      docs/ja/programmers/api-variables/variable-compiler-class.xml
+      docs/ja/programmers/api-variables/variable-config-booleanize.xml
+      docs/ja/programmers/api-variables/variable-config-dir.xml
+      docs/ja/programmers/api-variables/variable-config-fix-newlines.xml
+      docs/ja/programmers/api-variables/variable-config-overwrite.xml
+      docs/ja/programmers/api-variables/variable-config-read-hidden.xml
+      docs/ja/programmers/api-variables/variable-debug-tpl.xml
+      docs/ja/programmers/api-variables/variable-debugging-ctrl.xml
+      docs/ja/programmers/api-variables/variable-debugging.xml
+      docs/ja/programmers/api-variables/variable-default-modifiers.xml
+      docs/ja/programmers/api-variables/variable-default-resource-type.xml
+      docs/ja/programmers/api-variables/variable-default-template-handler-func.xml
+      docs/ja/programmers/api-variables/variable-error-reporting.xml
+      docs/ja/programmers/api-variables/variable-force-compile.xml
+      docs/ja/programmers/api-variables/variable-left-delimiter.xml
+      docs/ja/programmers/api-variables/variable-php-handling.xml
+      docs/ja/programmers/api-variables/variable-plugins-dir.xml
+      docs/ja/programmers/api-variables/variable-request-use-auto-globals.xml
+      docs/ja/programmers/api-variables/variable-request-vars-order.xml
+      docs/ja/programmers/api-variables/variable-right-delimiter.xml
+      docs/ja/programmers/api-variables/variable-secure-dir.xml
+      docs/ja/programmers/api-variables/variable-security-settings.xml
+      docs/ja/programmers/api-variables/variable-security.xml
+      docs/ja/programmers/api-variables/variable-template-dir.xml
+      docs/ja/programmers/api-variables/variable-trusted-dir.xml
+      docs/ja/programmers/api-variables/variable-use-sub-dirs.xml
+      docs/ja/programmers/caching/caching-cacheable.xml
+      docs/ja/programmers/caching/caching-groups.xml
+      docs/ja/programmers/caching/caching-multiple-caches.xml
+      docs/ja/programmers/caching/caching-setting-up.xml
+      docs/ja/programmers/plugins/plugins-block-functions.xml
+      docs/ja/programmers/plugins/plugins-compiler-functions.xml
+      docs/ja/programmers/plugins/plugins-functions.xml
+      docs/ja/programmers/plugins/plugins-howto.xml
+      docs/ja/programmers/plugins/plugins-inserts.xml
+      docs/ja/programmers/plugins/plugins-modifiers.xml
+      docs/ja/programmers/plugins/plugins-naming-conventions.xml
+      docs/ja/programmers/plugins/plugins-outputfilters.xml
+      docs/ja/programmers/plugins/plugins-prefilters-postfilters.xml
+      docs/ja/programmers/plugins/plugins-resources.xml
+      docs/ja/programmers/plugins/plugins-writing.xml:
+      added Japanese translation files.
+
+    * docs/Makefile.in
+      docs/configure.in:
+      added the configuration for Japanese translation.
+
+2007-04-11  Messju Mohr  <messju@lammfellpuschen.de>
+
+    * docs/en/programmers/smarty-constants.xml:
+      fixed typo
+
+2007-04-04  Messju Mohr  <messju@lammfellpuschen.de>
+
+    * docs/ru/getting-started.xml:
+      fixed uri for Zend Accelerator
+
+2007-04-03  Messju Mohr  <messju@lammfellpuschen.de>
+
+    * docs/de/getting-started.xml
+      docs/es/getting-started.xml
+      docs/it/getting-started.xml
+      docs/pt_BR/getting-started.xml:
+      fixed uris for php-accelerator
+
+2007-03-08  Monte Ohrt  <monte@ohrt.com>
+
+    * libs/Config_File.class.php
+      libs/Smarty.class.php
+      libs/Smarty_Compiler.class.php:
+      update version numbers
+
+2007-03-07  Monte Ohrt  <monte@ohrt.com>
+
+    * (Smarty_2_6_18)
+      NEWS:
+      update NEWS file with patch
+
+    * (Smarty_2_6_18)
+      docs/en/designers/language-builtin-functions/language-function-section.xml:
+      note the fact that section loop will accept an integer
+
+2007-03-06  Monte Ohrt  <monte@ohrt.com>
+
+    * NEWS
+      libs/plugins/function.html_select_date.php:
+      fix html_select_date separator when parts are missing (thanks to kayk for
+      the patch)
+
+2007-03-06  Messju Mohr  <messju@lammfellpuschen.de>
+
+    * libs/Config_File.class.php
+      libs/Smarty.class.php
+      libs/Smarty_Compiler.class.php:
+      bumped version number
+
+    * NEWS:
+      added release headline
+
+    * libs/internals/core.write_compiled_include.php:
+      fixed detection of non-cached block when writing compiled includes
+
+2007-03-01  Danilo Buerger  <danilo@blizzz.org>
+
+    * NEWS
+      libs/Smarty_Compiler.class.php:
+      Applied boots clean up patch and removed commented out code.
+      Updated NEWS file
+
+2007-02-27  Danilo Buerger  <danilo@blizzz.org>
+
+    * NEWS
+      docs/en/designers/language-modifiers/language-modifier-date-format.xml
+      libs/internals/core.write_file.php
+      libs/plugins/modifier.date_format.php:
+      Updated smarty_core_write_file() and smarty_modifier_date_format() to speed
+      up Windows detection.
+      Emulated more parameters for Windows in smarty_modifier_date_format() and
+      fixed some old ones.
+      Updated the docs to tell what parameters are emulated on Windows.
+      Updated NEWS file.
+
+    * NEWS:
+      Updated NEWS file to reflect changes commited in the last revision
+
+2007-02-27  Monte Ohrt  <monte@ohrt.com>
+
+    * docs/en/appendixes/troubleshooting.xml:
+      fix typo
+
+2007-02-27  Danilo Buerger  <danilo@blizzz.org>
+
+    * libs/Smarty_Compiler.class.php:
+      Modified _(push|pop)_cacheable_state() to embedd alternate syntax. See this
+      bug report: http://www.phpinsider.com/smarty-forum/viewtopic.php?t=10502
+
+2007-02-26  Peter 'Mash' Morgan  <pm@daffodil.uk.com>
+
+    * docs/en/designers/language-custom-functions/language-function-html-options.xml:
+      Fix incorrect var name
+
+2007-02-23  Monte Ohrt  <monte@ohrt.com>
+
+    * libs/Smarty_Compiler.class.php:
+      escape creating of language=php from interleaving
+
+    * libs/Smarty_Compiler.class.php:
+      add removed line back in
+
+    * libs/Smarty_Compiler.class.php:
+      fix up last patch, remove unnecessary lines
+
+    * libs/Smarty_Compiler.class.php:
+      fix situation when no compiled tags are present
+
+    * libs/Smarty_Compiler.class.php:
+      fix problem with php open tags generated from tag interleaving
+
+2007-02-06  boots  <jayboots@yahoo.com>
+
+    * docs/en/programmers/advanced-features/template-resources.xml:
+      Correct default template handler function example.
+
+2007-01-17  Messju Mohr  <messju@lammfellpuschen.de>
+
+    * NEWS
+      libs/plugins/modifier.truncate.php:
+      fixed handling of $etc in the truncate modifier when $etc is longer
+      than $length.
+      
+      thanks to Sylvinus!
+
+2007-01-10  boots  <jayboots@yahoo.com>
+
+    * NEWS
+      libs/plugins/modifier.date_format.php
+      libs/plugins/modifier.date_format.php:
+      fix handling of %I with mysql timestamps
+      
+      Thanks to Danilo Buerger
+
+    * NEWS
+      libs/internals/core.write_file.php:
+      Better recognize Windows filesystems to reduce warnings
+
+    * NEWS
+      libs/plugins/modifier.date_format.php:
+      Emulate %R in the date_format modifier on Windows
+      
+      Thanks to Danilo Buerger
+
+2006-12-10  Yannick Torres  <yannick.torres@keliglia.com>
+
+    * docs/fr/getting-started.xml:
+      fix build
+
+    * docs/fr/language-snippets.ent
+      docs/fr/designers/language-builtin-functions/language-function-include-php.xml
+      docs/fr/designers/language-modifiers/language-modifier-truncate.xml
+      docs/fr/designers/language-variables/language-variables-smarty.xml:
+      sync with EN
+
+2006-12-02  Peter 'Mash' Morgan  <pm@daffodil.uk.com>
+
+    * docs/en/designers/language-builtin-functions/language-function-include-php.xml:
+      Tidy example, speeling andd add links
+
+    * docs/en/getting-started.xml:
+      Add/correct entities
+
+    * docs/entities/global.ent:
+      Fix entities (strange)
+
+2006-12-01  Monte Ohrt  <monte@ohrt.com>
+
+    * libs/Config_File.class.php
+      libs/Smarty.class.php
+      libs/Smarty_Compiler.class.php:
+      update dev version numbers
+
+2006-12-01  boots  <jayboots@yahoo.com>
+
+    * (Smarty_2_6_16)
+      NEWS:
+      Fixed replacement bug introduced in trimwhitespaces output filter that
+      was introduced in the last release.
+      
+      Thanks to Spuerhund from the forums.
+
+    * (Smarty_2_6_16)
+      libs/plugins/outputfilter.trimwhitespace.php:
+      Fixed replacement bug introduced by last changes.
+      
+      Thanks to Spuerhund from the forums.
+
+2006-11-30  Monte Ohrt  <monte@ohrt.com>
+
+    * NEWS
+      docs/en/designers/language-modifiers/language-modifier-truncate.xml
+      libs/Config_File.class.php
+      libs/Smarty.class.php
+      libs/Smarty_Compiler.class.php:
+      update dev version numbers, fix manual typo
+
+2006-11-22  George Miroshnikov  <support@infinity.com.ua>
+
+    * docs/ru/getting-started.xml
+      docs/ru/language-snippets.ent:
+      sync with EN
+
+    * docs/en/getting-started.xml:
+      replaced hardcoded path separator with PATH_SEPARATOR constant
+
+2006-11-20  boots  <jayboots@yahoo.com>
+
+    * libs/plugins/modifier.debug_print_var.php:
+      fix depth formatting of arrays and objects in modifier debug_print_var
+
+2006-11-10  Messju Mohr  <messju@lammfellpuschen.de>
+
+    * docs/en/designers/language-variables/language-variables-smarty.xml:
+      fixed typo. thanks jonez.
+
+2006-11-08  boots  <jayboots@yahoo.com>
+
+    * NEWS
+      libs/internals/core.write_file.php:
+      change file writing semantics in smarty_core_write_file()
+      
+      This avoids unlink() unless rename() fails or a Windows system is detected
+      
+      see: http://www.phpinsider.com/smarty-forum/viewtopic.php?t=6956
+      
+      Thanks to c960657 from the forums.
+
+2006-11-07  boots  <jayboots@yahoo.com>
+
+    * NEWS
+      libs/debug.tpl:
+      update debug.tpl to xhtml 1.1 compliance, fix javascript escaping in debug
+      output and apply a Smarty based color scheme
+      
+      see: http://www.phpinsider.com/smarty-forum/viewtopic.php?t=7178
+      
+      thanks to cybot from the forums!
+
+    * NEWS
+      libs/plugins/modifier.debug_print_var.php:
+      enhance reporting precision of debug_print_var modifier
+      
+      see: http://www.phpinsider.com/smarty-forum/viewtopic.php?t=9281
+      
+      thanks to cybot from the forums
+
+2006-11-01  boots  <jayboots@yahoo.com>
+
+    * NEWS
+      libs/plugins/function.html_select_date.php:
+      make html_select_date work consistently with 0000-00-00 00:00:00 and
+      0000-00-00 inputs
+      
+      Thanks to cybot from forums
+
+2006-10-16  George Miroshnikov  <support@infinity.com.ua>
+
+    * docs/en/language-snippets.ent:
+      minor typo fix - &$class doesn't make sense.
+
+2006-10-14  Yannick Torres  <yannick.torres@keliglia.com>
+
+    * docs/fr/designers/language-basic-syntax.xml
+      docs/fr/designers/language-builtin-functions.xml
+      docs/fr/designers/language-basic-syntax/language-syntax-attributes.xml
+      docs/fr/designers/language-basic-syntax/language-syntax-comments.xml
+      docs/fr/designers/language-basic-syntax/language-syntax-quotes.xml
+      docs/fr/designers/language-builtin-functions/language-function-capture.xml
+      docs/fr/designers/language-builtin-functions/language-function-php.xml
+      docs/fr/designers/language-builtin-functions/language-function-section.xml
+      docs/fr/designers/language-custom-functions/language-function-popup-init.xml
+      docs/fr/designers/language-modifiers/language-modifier-escape.xml
+      docs/fr/programmers/api-functions/api-display.xml
+      docs/fr/programmers/plugins/plugins-inserts.xml:
+      sync with EN
+
+2006-10-14  Fernando Correa da Conceição  <fernando_conceicao@yahoo.com.br>
+
+    * docs/pt_BR/programmers/api-variables/variable-error-reporting.xml:
+      New Translation
+
+    * docs/pt_BR/designers/language-basic-syntax/language-escaping.xml
+      docs/pt_BR/designers/language-basic-syntax/language-syntax-variables.xml:
+      New Translations
+
+    * docs/pt_BR/translation.xml:
+      Used in revcheck
+
+    * docs/pt_BR/getting-started.xml
+      docs/pt_BR/language-snippets.ent
+      docs/pt_BR/make_chm_index.html
+      docs/pt_BR/preface.xml
+      docs/pt_BR/appendixes/resources.xml
+      docs/pt_BR/appendixes/troubleshooting.xml
+      docs/pt_BR/designers/language-modifiers/language-modifier-capitalize.xml
+      docs/pt_BR/designers/language-modifiers/language-modifier-cat.xml
+      docs/pt_BR/designers/language-modifiers/language-modifier-count-characters.xml
+      docs/pt_BR/designers/language-modifiers/language-modifier-count-paragraphs.xml
+      docs/pt_BR/designers/language-modifiers/language-modifier-count-sentences.xml
+      docs/pt_BR/designers/language-modifiers/language-modifier-count-words.xml
+      docs/pt_BR/designers/language-modifiers/language-modifier-date-format.xml
+      docs/pt_BR/designers/language-modifiers/language-modifier-default.xml
+      docs/pt_BR/designers/language-modifiers/language-modifier-escape.xml
+      docs/pt_BR/designers/language-modifiers/language-modifier-indent.xml
+      docs/pt_BR/designers/language-modifiers/language-modifier-lower.xml
+      docs/pt_BR/designers/language-modifiers/language-modifier-nl2br.xml
+      docs/pt_BR/designers/language-modifiers/language-modifier-regex-replace.xml
+      docs/pt_BR/designers/language-modifiers/language-modifier-replace.xml
+      docs/pt_BR/designers/language-modifiers/language-modifier-spacify.xml
+      docs/pt_BR/designers/language-modifiers/language-modifier-string-format.xml
+      docs/pt_BR/designers/language-modifiers/language-modifier-strip-tags.xml
+      docs/pt_BR/designers/language-modifiers/language-modifier-strip.xml
+      docs/pt_BR/designers/language-modifiers/language-modifier-truncate.xml
+      docs/pt_BR/designers/language-modifiers/language-modifier-upper.xml
+      docs/pt_BR/designers/language-modifiers/language-modifier-wordwrap.xml
+      docs/pt_BR/designers/language-variables/language-assigned-variables.xml
+      docs/pt_BR/designers/language-variables/language-config-variables.xml
+      docs/pt_BR/designers/language-variables/language-variables-smarty.xml
+      docs/pt_BR/programmers/advanced-features.xml
+      docs/pt_BR/programmers/api-functions.xml
+      docs/pt_BR/programmers/api-variables.xml
+      docs/pt_BR/programmers/caching.xml
+      docs/pt_BR/programmers/plugins.xml
+      docs/pt_BR/programmers/smarty-constants.xml
+      docs/pt_BR/programmers/advanced-features/advanced-features-objects.xml
+      docs/pt_BR/programmers/advanced-features/advanced-features-outputfilters.xml
+      docs/pt_BR/programmers/advanced-features/advanced-features-postfilters.xml
+      docs/pt_BR/programmers/advanced-features/advanced-features-prefilters.xml
+      docs/pt_BR/programmers/advanced-features/section-template-cache-handler-func.xml
+      docs/pt_BR/programmers/advanced-features/template-resources.xml
+      docs/pt_BR/programmers/api-functions/api-append-by-ref.xml
+      docs/pt_BR/programmers/api-functions/api-append.xml
+      docs/pt_BR/programmers/api-functions/api-assign-by-ref.xml
+      docs/pt_BR/programmers/api-functions/api-assign.xml
+      docs/pt_BR/programmers/api-functions/api-clear-all-assign.xml
+      docs/pt_BR/programmers/api-functions/api-clear-all-cache.xml
+      docs/pt_BR/programmers/api-functions/api-clear-assign.xml
+      docs/pt_BR/programmers/api-functions/api-clear-cache.xml
+      docs/pt_BR/programmers/api-functions/api-clear-compiled-tpl.xml
+      docs/pt_BR/programmers/api-functions/api-clear-config.xml
+      docs/pt_BR/programmers/api-functions/api-config-load.xml
+      docs/pt_BR/programmers/api-functions/api-display.xml
+      docs/pt_BR/programmers/api-functions/api-fetch.xml
+      docs/pt_BR/programmers/api-functions/api-get-config-vars.xml
+      docs/pt_BR/programmers/api-functions/api-get-registered-object.xml
+      docs/pt_BR/programmers/api-functions/api-get-template-vars.xml
+      docs/pt_BR/programmers/api-functions/api-is-cached.xml
+      docs/pt_BR/programmers/api-functions/api-load-filter.xml
+      docs/pt_BR/programmers/api-functions/api-register-block.xml
+      docs/pt_BR/programmers/api-functions/api-register-compiler-function.xml
+      docs/pt_BR/programmers/api-functions/api-register-function.xml
+      docs/pt_BR/programmers/api-functions/api-register-modifier.xml
+      docs/pt_BR/programmers/api-functions/api-register-object.xml
+      docs/pt_BR/programmers/api-functions/api-register-outputfilter.xml
+      docs/pt_BR/programmers/api-functions/api-register-postfilter.xml
+      docs/pt_BR/programmers/api-functions/api-register-prefilter.xml
+      docs/pt_BR/programmers/api-functions/api-register-resource.xml
+      docs/pt_BR/programmers/api-functions/api-template-exists.xml
+      docs/pt_BR/programmers/api-functions/api-trigger-error.xml
+      docs/pt_BR/programmers/api-functions/api-unregister-block.xml
+      docs/pt_BR/programmers/api-functions/api-unregister-compiler-function.xml
+      docs/pt_BR/programmers/api-functions/api-unregister-function.xml
+      docs/pt_BR/programmers/api-functions/api-unregister-modifier.xml
+      docs/pt_BR/programmers/api-functions/api-unregister-object.xml
+      docs/pt_BR/programmers/api-functions/api-unregister-outputfilter.xml
+      docs/pt_BR/programmers/api-functions/api-unregister-postfilter.xml
+      docs/pt_BR/programmers/api-functions/api-unregister-prefilter.xml
+      docs/pt_BR/programmers/api-functions/api-unregister-resource.xml
+      docs/pt_BR/programmers/api-variables/variable-autoload-filters.xml
+      docs/pt_BR/programmers/api-variables/variable-cache-dir.xml
+      docs/pt_BR/programmers/api-variables/variable-cache-handler-func.xml
+      docs/pt_BR/programmers/api-variables/variable-cache-lifetime.xml
+      docs/pt_BR/programmers/api-variables/variable-cache-modified-check.xml
+      docs/pt_BR/programmers/api-variables/variable-caching.xml
+      docs/pt_BR/programmers/api-variables/variable-compile-check.xml
+      docs/pt_BR/programmers/api-variables/variable-compile-dir.xml
+      docs/pt_BR/programmers/api-variables/variable-compile-id.xml
+      docs/pt_BR/programmers/api-variables/variable-compiler-class.xml
+      docs/pt_BR/programmers/api-variables/variable-config-booleanize.xml
+      docs/pt_BR/programmers/api-variables/variable-config-dir.xml
+      docs/pt_BR/programmers/api-variables/variable-config-fix-newlines.xml
+      docs/pt_BR/programmers/api-variables/variable-config-overwrite.xml
+      docs/pt_BR/programmers/api-variables/variable-config-read-hidden.xml
+      docs/pt_BR/programmers/api-variables/variable-debug-tpl.xml
+      docs/pt_BR/programmers/api-variables/variable-debugging-ctrl.xml
+      docs/pt_BR/programmers/api-variables/variable-debugging.xml
+      docs/pt_BR/programmers/api-variables/variable-default-modifiers.xml
+      docs/pt_BR/programmers/api-variables/variable-default-resource-type.xml
+      docs/pt_BR/programmers/api-variables/variable-default-template-handler-func.xml
+      docs/pt_BR/programmers/api-variables/variable-force-compile.xml
+      docs/pt_BR/programmers/api-variables/variable-global-assign.xml
+      docs/pt_BR/programmers/api-variables/variable-left-delimiter.xml
+      docs/pt_BR/programmers/api-variables/variable-php-handling.xml
+      docs/pt_BR/programmers/api-variables/variable-plugins-dir.xml
+      docs/pt_BR/programmers/api-variables/variable-request-use-auto-globals.xml
+      docs/pt_BR/programmers/api-variables/variable-request-vars-order.xml
+      docs/pt_BR/programmers/api-variables/variable-right-delimiter.xml
+      docs/pt_BR/programmers/api-variables/variable-secure-dir.xml
+      docs/pt_BR/programmers/api-variables/variable-security-settings.xml
+      docs/pt_BR/programmers/api-variables/variable-security.xml
+      docs/pt_BR/programmers/api-variables/variable-template-dir.xml
+      docs/pt_BR/programmers/api-variables/variable-trusted-dir.xml
+      docs/pt_BR/programmers/api-variables/variable-undefined.xml
+      docs/pt_BR/programmers/api-variables/variable-use-sub-dirs.xml
+      docs/pt_BR/programmers/caching/caching-cacheable.xml
+      docs/pt_BR/programmers/caching/caching-groups.xml
+      docs/pt_BR/programmers/caching/caching-multiple-caches.xml
+      docs/pt_BR/programmers/caching/caching-setting-up.xml
+      docs/pt_BR/programmers/plugins/plugins-block-functions.xml
+      docs/pt_BR/programmers/plugins/plugins-compiler-functions.xml
+      docs/pt_BR/programmers/plugins/plugins-functions.xml
+      docs/pt_BR/programmers/plugins/plugins-howto.xml
+      docs/pt_BR/programmers/plugins/plugins-inserts.xml
+      docs/pt_BR/programmers/plugins/plugins-modifiers.xml
+      docs/pt_BR/programmers/plugins/plugins-naming-conventions.xml
+      docs/pt_BR/programmers/plugins/plugins-outputfilters.xml
+      docs/pt_BR/programmers/plugins/plugins-prefilters-postfilters.xml
+      docs/pt_BR/programmers/plugins/plugins-resources.xml
+      docs/pt_BR/programmers/plugins/plugins-writing.xml:
+      Big update. Revision tag for all files. Some updates. Now I can update it
+
+2006-10-09  Peter 'Mash' Morgan  <pm@daffodil.uk.com>
+
+    * docs/en/getting-started.xml
+      docs/en/designers/language-basic-syntax.xml
+      docs/en/designers/language-custom-functions/language-function-popup-init.xml
+      docs/en/designers/language-modifiers/language-modifier-escape.xml
+      docs/en/programmers/api-functions/api-display.xml
+      docs/en/programmers/plugins/plugins-inserts.xml:
+      Minor changes and corrections
+
+    * docs/en/designers/language-basic-syntax.xml
+      docs/en/designers/language-builtin-functions.xml
+      docs/en/designers/language-basic-syntax/language-syntax-attributes.xml
+      docs/en/designers/language-basic-syntax/language-syntax-comments.xml
+      docs/en/designers/language-basic-syntax/language-syntax-quotes.xml
+      docs/en/designers/language-modifiers/language-modifier-escape.xml:
+      Minor formatting and error correction
+
+    * docs/en/designers/language-builtin-functions/language-function-capture.xml
+      docs/en/designers/language-builtin-functions/language-function-php.xml
+      docs/en/designers/language-builtin-functions/language-function-section.xml:
+      minor formatting and changes
+
+    * docs/en/getting-started.xml:
+      Tidied up formatting so more readable, tidied up the install to the paths
+      are more clear (ta jj)
+
+2006-10-09  Yannick Torres  <yannick.torres@keliglia.com>
+
+    * docs/fr/designers/language-builtin-functions/language-function-section.xml:
+      sync with EN
+
+2006-10-08  Yannick Torres  <yannick.torres@keliglia.com>
+
+    * docs/fr/designers/language-builtin-functions/language-function-php.xml
+      docs/fr/designers/language-modifiers/language-modifier-escape.xml
+      docs/fr/designers/language-variables/language-variables-smarty.xml
+      docs/fr/programmers/api-variables/variable-request-use-auto-globals.xml:
+      fix build
+
+    * docs/fr/designers/language-builtin-functions/language-function-strip.xml
+      docs/fr/programmers/caching.xml
+      docs/fr/programmers/smarty-constants.xml
+      docs/fr/programmers/api-variables/variable-autoload-filters.xml
+      docs/fr/programmers/api-variables/variable-cache-dir.xml
+      docs/fr/programmers/api-variables/variable-cache-handler-func.xml
+      docs/fr/programmers/api-variables/variable-cache-lifetime.xml
+      docs/fr/programmers/api-variables/variable-cache-modified-check.xml
+      docs/fr/programmers/api-variables/variable-caching.xml
+      docs/fr/programmers/api-variables/variable-compile-check.xml
+      docs/fr/programmers/api-variables/variable-compile-dir.xml
+      docs/fr/programmers/api-variables/variable-compile-id.xml
+      docs/fr/programmers/api-variables/variable-compiler-class.xml
+      docs/fr/programmers/api-variables/variable-config-booleanize.xml
+      docs/fr/programmers/api-variables/variable-config-dir.xml
+      docs/fr/programmers/api-variables/variable-config-fix-newlines.xml
+      docs/fr/programmers/api-variables/variable-config-overwrite.xml
+      docs/fr/programmers/api-variables/variable-config-read-hidden.xml
+      docs/fr/programmers/api-variables/variable-debug-tpl.xml
+      docs/fr/programmers/api-variables/variable-debugging-ctrl.xml
+      docs/fr/programmers/api-variables/variable-debugging.xml
+      docs/fr/programmers/api-variables/variable-default-modifiers.xml
+      docs/fr/programmers/api-variables/variable-default-resource-type.xml
+      docs/fr/programmers/api-variables/variable-default-template-handler-func.xml
+      docs/fr/programmers/api-variables/variable-error-reporting.xml
+      docs/fr/programmers/api-variables/variable-force-compile.xml
+      docs/fr/programmers/api-variables/variable-left-delimiter.xml
+      docs/fr/programmers/api-variables/variable-php-handling.xml
+      docs/fr/programmers/api-variables/variable-plugins-dir.xml
+      docs/fr/programmers/api-variables/variable-request-use-auto-globals.xml
+      docs/fr/programmers/api-variables/variable-request-vars-order.xml
+      docs/fr/programmers/api-variables/variable-right-delimiter.xml
+      docs/fr/programmers/api-variables/variable-secure-dir.xml
+      docs/fr/programmers/api-variables/variable-security-settings.xml
+      docs/fr/programmers/api-variables/variable-security.xml
+      docs/fr/programmers/api-variables/variable-template-dir.xml
+      docs/fr/programmers/api-variables/variable-trusted-dir.xml
+      docs/fr/programmers/api-variables/variable-use-sub-dirs.xml
+      docs/fr/programmers/caching/caching-cacheable.xml
+      docs/fr/programmers/caching/caching-groups.xml
+      docs/fr/programmers/caching/caching-multiple-caches.xml
+      docs/fr/programmers/caching/caching-setting-up.xml
+      docs/fr/programmers/plugins/plugins-block-functions.xml
+      docs/fr/programmers/plugins/plugins-compiler-functions.xml
+      docs/fr/programmers/plugins/plugins-functions.xml
+      docs/fr/programmers/plugins/plugins-inserts.xml
+      docs/fr/programmers/plugins/plugins-modifiers.xml
+      docs/fr/programmers/plugins/plugins-naming-conventions.xml
+      docs/fr/programmers/plugins/plugins-outputfilters.xml
+      docs/fr/programmers/plugins/plugins-prefilters-postfilters.xml
+      docs/fr/programmers/plugins/plugins-resources.xml
+      docs/fr/programmers/plugins/plugins-writing.xml:
+      sync with EN
+
+2006-10-07  Yannick Torres  <yannick.torres@keliglia.com>
+
+    * docs/fr/programmers/advanced-features/advanced-features-objects.xml
+      docs/fr/programmers/advanced-features/advanced-features-outputfilters.xml
+      docs/fr/programmers/advanced-features/advanced-features-postfilters.xml
+      docs/fr/programmers/advanced-features/advanced-features-prefilters.xml
+      docs/fr/programmers/advanced-features/section-template-cache-handler-func.xml
+      docs/fr/programmers/advanced-features/template-resources.xml
+      docs/fr/programmers/api-functions/api-append-by-ref.xml
+      docs/fr/programmers/api-functions/api-append.xml
+      docs/fr/programmers/api-functions/api-assign-by-ref.xml
+      docs/fr/programmers/api-functions/api-assign.xml
+      docs/fr/programmers/api-functions/api-clear-all-assign.xml
+      docs/fr/programmers/api-functions/api-clear-all-cache.xml
+      docs/fr/programmers/api-functions/api-clear-assign.xml
+      docs/fr/programmers/api-functions/api-clear-cache.xml
+      docs/fr/programmers/api-functions/api-clear-compiled-tpl.xml
+      docs/fr/programmers/api-functions/api-clear-config.xml
+      docs/fr/programmers/api-functions/api-config-load.xml
+      docs/fr/programmers/api-functions/api-display.xml
+      docs/fr/programmers/api-functions/api-fetch.xml
+      docs/fr/programmers/api-functions/api-get-config-vars.xml
+      docs/fr/programmers/api-functions/api-get-registered-object.xml
+      docs/fr/programmers/api-functions/api-get-template-vars.xml
+      docs/fr/programmers/api-functions/api-is-cached.xml
+      docs/fr/programmers/api-functions/api-load-filter.xml
+      docs/fr/programmers/api-functions/api-register-block.xml
+      docs/fr/programmers/api-functions/api-register-compiler-function.xml
+      docs/fr/programmers/api-functions/api-register-function.xml
+      docs/fr/programmers/api-functions/api-register-modifier.xml
+      docs/fr/programmers/api-functions/api-register-object.xml
+      docs/fr/programmers/api-functions/api-register-outputfilter.xml
+      docs/fr/programmers/api-functions/api-register-postfilter.xml
+      docs/fr/programmers/api-functions/api-register-prefilter.xml
+      docs/fr/programmers/api-functions/api-register-resource.xml
+      docs/fr/programmers/api-functions/api-template-exists.xml
+      docs/fr/programmers/api-functions/api-trigger-error.xml
+      docs/fr/programmers/api-functions/api-unregister-block.xml
+      docs/fr/programmers/api-functions/api-unregister-compiler-function.xml
+      docs/fr/programmers/api-functions/api-unregister-function.xml
+      docs/fr/programmers/api-functions/api-unregister-modifier.xml
+      docs/fr/programmers/api-functions/api-unregister-object.xml
+      docs/fr/programmers/api-functions/api-unregister-outputfilter.xml
+      docs/fr/programmers/api-functions/api-unregister-postfilter.xml
+      docs/fr/programmers/api-functions/api-unregister-prefilter.xml
+      docs/fr/programmers/api-functions/api-unregister-resource.xml:
+      sync with EN
+
+2006-10-03  Yannick Torres  <yannick.torres@keliglia.com>
+
+    * docs/fr/designers/language-custom-functions/language-function-html-select-time.xml
+      docs/fr/designers/language-custom-functions/language-function-html-table.xml
+      docs/fr/designers/language-custom-functions/language-function-mailto.xml
+      docs/fr/designers/language-custom-functions/language-function-math.xml
+      docs/fr/designers/language-custom-functions/language-function-popup-init.xml
+      docs/fr/designers/language-custom-functions/language-function-popup.xml
+      docs/fr/designers/language-custom-functions/language-function-textformat.xml
+      docs/fr/designers/language-modifiers/language-modifier-capitalize.xml
+      docs/fr/designers/language-modifiers/language-modifier-cat.xml
+      docs/fr/designers/language-modifiers/language-modifier-count-characters.xml
+      docs/fr/designers/language-modifiers/language-modifier-count-paragraphs.xml
+      docs/fr/designers/language-modifiers/language-modifier-count-sentences.xml
+      docs/fr/designers/language-modifiers/language-modifier-count-words.xml
+      docs/fr/designers/language-modifiers/language-modifier-date-format.xml
+      docs/fr/designers/language-modifiers/language-modifier-default.xml
+      docs/fr/designers/language-modifiers/language-modifier-escape.xml
+      docs/fr/designers/language-modifiers/language-modifier-indent.xml
+      docs/fr/designers/language-modifiers/language-modifier-lower.xml
+      docs/fr/designers/language-modifiers/language-modifier-nl2br.xml
+      docs/fr/designers/language-modifiers/language-modifier-regex-replace.xml
+      docs/fr/designers/language-modifiers/language-modifier-replace.xml
+      docs/fr/designers/language-modifiers/language-modifier-spacify.xml
+      docs/fr/designers/language-modifiers/language-modifier-string-format.xml
+      docs/fr/designers/language-modifiers/language-modifier-strip-tags.xml
+      docs/fr/designers/language-modifiers/language-modifier-strip.xml
+      docs/fr/designers/language-modifiers/language-modifier-truncate.xml
+      docs/fr/designers/language-modifiers/language-modifier-upper.xml
+      docs/fr/designers/language-modifiers/language-modifier-wordwrap.xml
+      docs/fr/designers/language-variables/language-assigned-variables.xml
+      docs/fr/designers/language-variables/language-config-variables.xml
+      docs/fr/designers/language-variables/language-variables-smarty.xml:
+      sync with EN
+
+2006-10-01  Yannick Torres  <yannick.torres@keliglia.com>
+
+    * docs/fr/designers/language-builtin-functions/language-function-include-php.xml
+      docs/fr/designers/language-builtin-functions/language-function-include.xml
+      docs/fr/designers/language-builtin-functions/language-function-insert.xml
+      docs/fr/designers/language-builtin-functions/language-function-ldelim.xml
+      docs/fr/designers/language-builtin-functions/language-function-literal.xml
+      docs/fr/designers/language-builtin-functions/language-function-php.xml
+      docs/fr/designers/language-custom-functions/language-function-assign.xml
+      docs/fr/designers/language-custom-functions/language-function-counter.xml
+      docs/fr/designers/language-custom-functions/language-function-cycle.xml
+      docs/fr/designers/language-custom-functions/language-function-debug.xml
+      docs/fr/designers/language-custom-functions/language-function-eval.xml
+      docs/fr/designers/language-custom-functions/language-function-fetch.xml
+      docs/fr/designers/language-custom-functions/language-function-html-checkboxes.xml
+      docs/fr/designers/language-custom-functions/language-function-html-image.xml
+      docs/fr/designers/language-custom-functions/language-function-html-options.xml
+      docs/fr/designers/language-custom-functions/language-function-html-radios.xml
+      docs/fr/designers/language-custom-functions/language-function-html-select-date.xml:
+      sync with EN
+
+2006-09-30  Yannick Torres  <yannick.torres@keliglia.com>
+
+    * docs/fr/getting-started.xml:
+      fix build
+
+    * docs/fr/designers/chapter-debugging-console.xml
+      docs/fr/designers/config-files.xml
+      docs/fr/designers/language-builtin-functions.xml
+      docs/fr/designers/language-modifiers.xml
+      docs/fr/designers/language-variables.xml
+      docs/fr/designers/language-basic-syntax/language-escaping.xml
+      docs/fr/designers/language-basic-syntax/language-math.xml
+      docs/fr/designers/language-basic-syntax/language-syntax-comments.xml
+      docs/fr/designers/language-basic-syntax/language-syntax-functions.xml
+      docs/fr/designers/language-basic-syntax/language-syntax-quotes.xml
+      docs/fr/designers/language-basic-syntax/language-syntax-variables.xml
+      docs/fr/designers/language-builtin-functions/language-function-capture.xml
+      docs/fr/designers/language-builtin-functions/language-function-config-load.xml
+      docs/fr/designers/language-builtin-functions/language-function-foreach.xml
+      docs/fr/designers/language-builtin-functions/language-function-if.xml:
+      sync with EN
+
+    * docs/fr/getting-started.xml
+      docs/fr/language-snippets.ent
+      docs/fr/appendixes/resources.xml
+      docs/fr/appendixes/tips.xml
+      docs/fr/appendixes/troubleshooting.xml:
+      sync with EN
+
+2006-09-27  Peter 'Mash' Morgan  <pm@daffodil.uk.com>
+
+    * docs/en/designers/language-builtin-functions/language-function-section.xml:
+      Minor tweaks and corrections
+
+    * docs/en/getting-started.xml
+      docs/en/designers/chapter-debugging-console.xml
+      docs/en/designers/language-basic-syntax/language-syntax-comments.xml
+      docs/en/designers/language-custom-functions/language-function-html-image.xml
+      docs/en/designers/language-custom-functions/language-function-html-options.xml
+      docs/en/designers/language-custom-functions/language-function-html-radios.xml
+      docs/en/designers/language-custom-functions/language-function-html-select-date.xml
+      docs/en/designers/language-custom-functions/language-function-html-select-time.xml
+      docs/en/designers/language-custom-functions/language-function-html-table.xml
+      docs/en/designers/language-custom-functions/language-function-mailto.xml
+      docs/en/designers/language-custom-functions/language-function-popup-init.xml
+      docs/en/designers/language-custom-functions/language-function-textformat.xml
+      docs/en/designers/language-variables/language-config-variables.xml
+      docs/en/designers/language-variables/language-variables-smarty.xml:
+      Add literal tags to html, general formatting
+
+    * docs/en/getting-started.xml
+      docs/en/appendixes/resources.xml
+      docs/en/appendixes/tips.xml
+      docs/en/appendixes/troubleshooting.xml
+      docs/en/designers/config-files.xml
+      docs/en/programmers/caching.xml
+      docs/en/programmers/smarty-constants.xml
+      docs/en/programmers/advanced-features/advanced-features-objects.xml
+      docs/en/programmers/advanced-features/advanced-features-outputfilters.xml
+      docs/en/programmers/advanced-features/advanced-features-postfilters.xml
+      docs/en/programmers/advanced-features/advanced-features-prefilters.xml
+      docs/en/programmers/advanced-features/section-template-cache-handler-func.xml
+      docs/en/programmers/advanced-features/template-resources.xml
+      docs/en/programmers/api-variables/variable-autoload-filters.xml
+      docs/en/programmers/api-variables/variable-cache-dir.xml
+      docs/en/programmers/api-variables/variable-cache-handler-func.xml
+      docs/en/programmers/api-variables/variable-cache-lifetime.xml
+      docs/en/programmers/api-variables/variable-cache-modified-check.xml
+      docs/en/programmers/api-variables/variable-caching.xml
+      docs/en/programmers/api-variables/variable-compile-check.xml
+      docs/en/programmers/api-variables/variable-compile-dir.xml
+      docs/en/programmers/api-variables/variable-compile-id.xml
+      docs/en/programmers/api-variables/variable-config-booleanize.xml
+      docs/en/programmers/api-variables/variable-config-dir.xml
+      docs/en/programmers/api-variables/variable-config-fix-newlines.xml
+      docs/en/programmers/api-variables/variable-config-overwrite.xml
+      docs/en/programmers/api-variables/variable-config-read-hidden.xml
+      docs/en/programmers/api-variables/variable-debug-tpl.xml
+      docs/en/programmers/api-variables/variable-debugging-ctrl.xml
+      docs/en/programmers/api-variables/variable-debugging.xml
+      docs/en/programmers/api-variables/variable-default-modifiers.xml
+      docs/en/programmers/api-variables/variable-default-resource-type.xml
+      docs/en/programmers/api-variables/variable-error-reporting.xml
+      docs/en/programmers/api-variables/variable-force-compile.xml
+      docs/en/programmers/api-variables/variable-left-delimiter.xml
+      docs/en/programmers/api-variables/variable-php-handling.xml
+      docs/en/programmers/api-variables/variable-plugins-dir.xml
+      docs/en/programmers/api-variables/variable-request-use-auto-globals.xml
+      docs/en/programmers/api-variables/variable-request-vars-order.xml
+      docs/en/programmers/api-variables/variable-right-delimiter.xml
+      docs/en/programmers/api-variables/variable-secure-dir.xml
+      docs/en/programmers/api-variables/variable-security-settings.xml
+      docs/en/programmers/api-variables/variable-security.xml
+      docs/en/programmers/api-variables/variable-template-dir.xml
+      docs/en/programmers/api-variables/variable-trusted-dir.xml
+      docs/en/programmers/api-variables/variable-use-sub-dirs.xml
+      docs/en/programmers/caching/caching-cacheable.xml
+      docs/en/programmers/caching/caching-groups.xml
+      docs/en/programmers/caching/caching-multiple-caches.xml
+      docs/en/programmers/caching/caching-setting-up.xml:
+      Tidy up of formatting
+
+    * docs/entities/global.ent:
+      Adding some more resources
+
+    * docs/en/programmers/plugins/plugins-block-functions.xml
+      docs/en/programmers/plugins/plugins-compiler-functions.xml
+      docs/en/programmers/plugins/plugins-functions.xml
+      docs/en/programmers/plugins/plugins-inserts.xml
+      docs/en/programmers/plugins/plugins-modifiers.xml
+      docs/en/programmers/plugins/plugins-naming-conventions.xml
+      docs/en/programmers/plugins/plugins-outputfilters.xml
+      docs/en/programmers/plugins/plugins-prefilters-postfilters.xml
+      docs/en/programmers/plugins/plugins-resources.xml
+      docs/en/programmers/plugins/plugins-writing.xml:
+      Tidy up some formatting
+
+2006-09-26  Peter 'Mash' Morgan  <pm@daffodil.uk.com>
+
+    * docs/en/programmers/api-functions/api-append-by-ref.xml
+      docs/en/programmers/api-functions/api-append.xml
+      docs/en/programmers/api-functions/api-assign-by-ref.xml
+      docs/en/programmers/api-functions/api-assign.xml
+      docs/en/programmers/api-functions/api-clear-all-assign.xml
+      docs/en/programmers/api-functions/api-clear-all-cache.xml
+      docs/en/programmers/api-functions/api-clear-assign.xml
+      docs/en/programmers/api-functions/api-clear-cache.xml
+      docs/en/programmers/api-functions/api-clear-compiled-tpl.xml
+      docs/en/programmers/api-functions/api-clear-config.xml
+      docs/en/programmers/api-functions/api-config-load.xml
+      docs/en/programmers/api-functions/api-display.xml
+      docs/en/programmers/api-functions/api-fetch.xml
+      docs/en/programmers/api-functions/api-get-config-vars.xml
+      docs/en/programmers/api-functions/api-get-registered-object.xml
+      docs/en/programmers/api-functions/api-get-template-vars.xml
+      docs/en/programmers/api-functions/api-is-cached.xml
+      docs/en/programmers/api-functions/api-load-filter.xml
+      docs/en/programmers/api-functions/api-register-block.xml
+      docs/en/programmers/api-functions/api-register-compiler-function.xml
+      docs/en/programmers/api-functions/api-register-function.xml
+      docs/en/programmers/api-functions/api-register-modifier.xml
+      docs/en/programmers/api-functions/api-register-object.xml
+      docs/en/programmers/api-functions/api-register-outputfilter.xml
+      docs/en/programmers/api-functions/api-register-postfilter.xml
+      docs/en/programmers/api-functions/api-register-prefilter.xml
+      docs/en/programmers/api-functions/api-register-resource.xml
+      docs/en/programmers/api-functions/api-template-exists.xml
+      docs/en/programmers/api-functions/api-trigger-error.xml
+      docs/en/programmers/api-functions/api-unregister-block.xml
+      docs/en/programmers/api-functions/api-unregister-compiler-function.xml
+      docs/en/programmers/api-functions/api-unregister-function.xml
+      docs/en/programmers/api-functions/api-unregister-modifier.xml
+      docs/en/programmers/api-functions/api-unregister-object.xml
+      docs/en/programmers/api-functions/api-unregister-outputfilter.xml
+      docs/en/programmers/api-functions/api-unregister-postfilter.xml
+      docs/en/programmers/api-functions/api-unregister-prefilter.xml
+      docs/en/programmers/api-functions/api-unregister-resource.xml:
+      Tidy up formatting and examples
+
+    * docs/en/language-snippets.ent:
+      Moved recurring para for register_*
+
+    * docs/en/designers/language-modifiers.xml:
+      Spelling on modifiers
+
+    * docs/en/designers/language-builtin-functions.xml
+      docs/en/designers/language-modifiers.xml
+      docs/en/designers/language-custom-functions/language-function-html-options.xml
+      docs/en/designers/language-modifiers/language-modifier-capitalize.xml
+      docs/en/designers/language-modifiers/language-modifier-cat.xml
+      docs/en/designers/language-modifiers/language-modifier-count-characters.xml
+      docs/en/designers/language-modifiers/language-modifier-count-paragraphs.xml
+      docs/en/designers/language-modifiers/language-modifier-count-sentences.xml
+      docs/en/designers/language-modifiers/language-modifier-count-words.xml
+      docs/en/designers/language-modifiers/language-modifier-date-format.xml
+      docs/en/designers/language-modifiers/language-modifier-default.xml
+      docs/en/designers/language-modifiers/language-modifier-escape.xml
+      docs/en/designers/language-modifiers/language-modifier-indent.xml
+      docs/en/designers/language-modifiers/language-modifier-lower.xml
+      docs/en/designers/language-modifiers/language-modifier-nl2br.xml
+      docs/en/designers/language-modifiers/language-modifier-regex-replace.xml
+      docs/en/designers/language-modifiers/language-modifier-replace.xml
+      docs/en/designers/language-modifiers/language-modifier-spacify.xml
+      docs/en/designers/language-modifiers/language-modifier-string-format.xml
+      docs/en/designers/language-modifiers/language-modifier-strip-tags.xml
+      docs/en/designers/language-modifiers/language-modifier-strip.xml
+      docs/en/designers/language-modifiers/language-modifier-truncate.xml
+      docs/en/designers/language-modifiers/language-modifier-upper.xml
+      docs/en/designers/language-modifiers/language-modifier-wordwrap.xml:
+      Tidying up some markup
+
+    * docs/en/designers/language-variables.xml:
+      typo
+
+    * docs/en/designers/language-variables.xml
+      docs/en/designers/language-variables/language-assigned-variables.xml
+      docs/en/designers/language-variables/language-config-variables.xml
+      docs/en/designers/language-variables/language-variables-smarty.xml:
+      Tidy up formatting on variables
+
+    * docs/en/designers/language-basic-syntax/language-escaping.xml
+      docs/en/designers/language-basic-syntax/language-math.xml
+      docs/en/designers/language-basic-syntax/language-syntax-comments.xml
+      docs/en/designers/language-basic-syntax/language-syntax-functions.xml
+      docs/en/designers/language-basic-syntax/language-syntax-quotes.xml
+      docs/en/designers/language-basic-syntax/language-syntax-variables.xml:
+      Formatting of the basic-syntax dir
+
+    * docs/en/designers/language-custom-functions/language-function-assign.xml
+      docs/en/designers/language-custom-functions/language-function-counter.xml
+      docs/en/designers/language-custom-functions/language-function-cycle.xml
+      docs/en/designers/language-custom-functions/language-function-debug.xml
+      docs/en/designers/language-custom-functions/language-function-eval.xml
+      docs/en/designers/language-custom-functions/language-function-fetch.xml
+      docs/en/designers/language-custom-functions/language-function-html-checkboxes.xml
+      docs/en/designers/language-custom-functions/language-function-html-image.xml
+      docs/en/designers/language-custom-functions/language-function-html-options.xml
+      docs/en/designers/language-custom-functions/language-function-html-radios.xml
+      docs/en/designers/language-custom-functions/language-function-html-select-date.xml
+      docs/en/designers/language-custom-functions/language-function-html-select-time.xml
+      docs/en/designers/language-custom-functions/language-function-html-table.xml
+      docs/en/designers/language-custom-functions/language-function-mailto.xml
+      docs/en/designers/language-custom-functions/language-function-math.xml
+      docs/en/designers/language-custom-functions/language-function-popup-init.xml
+      docs/en/designers/language-custom-functions/language-function-popup.xml
+      docs/en/designers/language-custom-functions/language-function-textformat.xml:
+      More formatting and cleaning up examples
+
+2006-09-25  Peter 'Mash' Morgan  <pm@daffodil.uk.com>
+
+    * docs/en/designers/language-builtin-functions/language-function-foreach.xml
+      docs/en/designers/language-builtin-functions/language-function-section.xml:
+      Doh! removing tabs
+
+    * docs/en/designers/language-builtin-functions/language-function-capture.xml
+      docs/en/designers/language-builtin-functions/language-function-config-load.xml
+      docs/en/designers/language-builtin-functions/language-function-foreach.xml
+      docs/en/designers/language-builtin-functions/language-function-if.xml
+      docs/en/designers/language-builtin-functions/language-function-include-php.xml
+      docs/en/designers/language-builtin-functions/language-function-include.xml
+      docs/en/designers/language-builtin-functions/language-function-insert.xml
+      docs/en/designers/language-builtin-functions/language-function-ldelim.xml
+      docs/en/designers/language-builtin-functions/language-function-literal.xml
+      docs/en/designers/language-builtin-functions/language-function-php.xml
+      docs/en/designers/language-builtin-functions/language-function-section.xml
+      docs/en/designers/language-builtin-functions/language-function-strip.xml:
+      A lot of formatting, tagging and tidy up. Some consistency at last
+
+    * docs/en/designers/language-builtin-functions/language-function-section.xml:
+      Major tidy up
+
+    * docs/en/designers/language-builtin-functions/language-function-foreach.xml:
+      Major tidy up, added index property and some examples
+
+2006-09-03  Yannick Torres  <yannick.torres@keliglia.com>
+
+    * docs/fr/designers/language-custom-functions/language-function-popup-init.xml
+      docs/fr/programmers/advanced-features/advanced-features-outputfilters.xml
+      docs/fr/programmers/advanced-features/advanced-features-postfilters.xml
+      docs/fr/programmers/advanced-features/advanced-features-prefilters.xml:
+      sync with EN
+
+2006-09-01  George Miroshnikov  <support@infinity.com.ua>
+
+    * docs/ru/programmers/api-functions/api-append-by-ref.xml
+      docs/ru/programmers/api-functions/api-append.xml
+      docs/ru/programmers/api-functions/api-assign-by-ref.xml
+      docs/ru/programmers/api-functions/api-assign.xml
+      docs/ru/programmers/api-functions/api-clear-all-assign.xml
+      docs/ru/programmers/api-functions/api-clear-all-cache.xml
+      docs/ru/programmers/api-functions/api-clear-assign.xml
+      docs/ru/programmers/api-functions/api-clear-cache.xml
+      docs/ru/programmers/api-functions/api-clear-compiled-tpl.xml
+      docs/ru/programmers/api-functions/api-clear-config.xml
+      docs/ru/programmers/api-functions/api-config-load.xml
+      docs/ru/programmers/api-functions/api-display.xml:
+      sync with EN
+
+2006-08-25  Messju Mohr  <messju@lammfellpuschen.de>
+
+    * NEWS
+      libs/Smarty_Compiler.class.php:
+      fixed wrong handling of name attribute in {insert}
+      thanks to Ivan Kravets for reporting this
+
+    * libs/Smarty_Compiler.class.php:
+      fixed typo
+
+2006-08-21  George Miroshnikov  <support@infinity.com.ua>
+
+    * docs/ru/designers/language-custom-functions/language-function-popup-init.xml
+      docs/ru/programmers/advanced-features/advanced-features-objects.xml
+      docs/ru/programmers/advanced-features/advanced-features-outputfilters.xml
+      docs/ru/programmers/advanced-features/advanced-features-postfilters.xml
+      docs/ru/programmers/advanced-features/advanced-features-prefilters.xml
+      docs/ru/programmers/advanced-features/section-template-cache-handler-func.xml
+      docs/ru/programmers/advanced-features/template-resources.xml:
+      sync with EN
+
+    * docs/en/programmers/advanced-features/advanced-features-prefilters.xml:
+      another missing dot
+
+    * docs/en/programmers/advanced-features/advanced-features-postfilters.xml:
+      missing dot
+
+    * docs/en/programmers/advanced-features/advanced-features-outputfilters.xml:
+      missing comma
+
+2006-08-19  Peter 'Mash' Morgan  <pmm@daffodil.uk.com>
+
+    * docs/en/designers/language-custom-functions/language-function-popup-init.xml:
+      avoid dupes and added remote paths
+
+2006-08-06  Yannick Torres  <yannick.torres@keliglia.com>
+
+    * docs/fr/designers/language-custom-functions/language-function-html-table.xml
+      docs/fr/designers/language-custom-functions/language-function-mailto.xml:
+      sync with EN
+
+2006-08-03  Messju Mohr  <messju@lammfellpuschen.de>
+
+    * NEWS
+      libs/Smarty_Compiler.class.php:
+      fix false replacement of "$t" inside double quotes
+      thanks to checat for reporting this
+
+2006-07-20  George Miroshnikov  <support@infinity.com.ua>
+
+    * docs/ru/designers/language-custom-functions/language-function-html-table.xml
+      docs/ru/designers/language-custom-functions/language-function-mailto.xml:
+      incrementing EN-Revision
+
+    * docs/ru/designers/language-custom-functions/language-function-assign.xml
+      docs/ru/designers/language-custom-functions/language-function-eval.xml
+      docs/ru/designers/language-custom-functions/language-function-fetch.xml
+      docs/ru/designers/language-custom-functions/language-function-html-checkboxes.xml
+      docs/ru/designers/language-custom-functions/language-function-html-image.xml
+      docs/ru/designers/language-custom-functions/language-function-html-options.xml
+      docs/ru/designers/language-custom-functions/language-function-html-radios.xml
+      docs/ru/designers/language-custom-functions/language-function-html-table.xml
+      docs/ru/designers/language-custom-functions/language-function-mailto.xml
+      docs/ru/designers/language-custom-functions/language-function-popup-init.xml
+      docs/ru/designers/language-custom-functions/language-function-popup.xml
+      docs/ru/designers/language-modifiers/language-modifier-date-format.xml
+      docs/ru/designers/language-modifiers/language-modifier-default.xml
+      docs/ru/designers/language-modifiers/language-modifier-escape.xml
+      docs/ru/designers/language-modifiers/language-modifier-indent.xml
+      docs/ru/designers/language-modifiers/language-modifier-lower.xml
+      docs/ru/designers/language-modifiers/language-modifier-nl2br.xml
+      docs/ru/designers/language-modifiers/language-modifier-strip.xml
+      docs/ru/designers/language-modifiers/language-modifier-truncate.xml
+      docs/ru/designers/language-modifiers/language-modifier-upper.xml
+      docs/ru/designers/language-modifiers/language-modifier-wordwrap.xml
+      docs/ru/designers/language-variables/language-variables-smarty.xml:
+      sync with EN
+
+    * docs/en/designers/language-custom-functions/language-function-mailto.xml:
+      typo
+
+2006-07-10  boots  <jayboots@yahoo.com>
+
+    * libs/plugins/function.html_table.php:
+      fixed email address in comments
+
+    * NEWS
+      libs/plugins/function.html_table.php:
+      html_table: fixed th/tr output, added hdir support for column
+      headings,update docs to reflect new features
+
+2006-07-08  Messju Mohr  <messju@lammfellpuschen.de>
+
+    * libs/plugins/function.html_table.php:
+      fix occasional notices on undefined variables
+
+2006-07-08  boots  <jayboots@yahoo.com>
+
+    * libs/plugins/function.html_table.php:
+      Added ability to specify column headings in {html_table}
+      
+      Added th_attrs attribute which works similary to td_attr and tr_attr but
+      for TH elements. Changes the cols attribute to allow mixed values; a
+      numeric still specifies the number of columns to render but now an array
+      of values can be used to specify TH column values. The number of columns
+      is determine from the size of the array. Further, a comma-separated
+      string of column names can be used which is internally coverted to an
+      array and used as if it was specified as a normal array.
+      
+      Thanks for lynlyn for the feature request.
+
+2006-06-23  boots  <jayboots@yahoo.com>
+
+    * libs/plugins/outputfilter.trimwhitespace.php:
+      fix comments in outputfilter.trimwhitespace
+
+    * NEWS
+      libs/plugins/outputfilter.trimwhitespace.php:
+      fixed ordering of replacements in trimwhitespace output filter
+      
+      Thanks to Getty from IRC for reporting this.
+
+2006-06-20  boots  <jayboots@yahoo.com>
+
+    * NEWS
+      libs/plugins/function.mailto.php:
+      update mailto function plugin to work around a firefox/thunderbird escaping
+      bug
+      
+      Thanks to elijahlofgren from the forums for reporting this and providing
+      the necessary patch
+
+    * NEWS
+      libs/plugins/modifier.date_format.php:
+      emulate %l in the date_format modifier on windows
+      
+      thanks to Gibberish from the forums for reporting this
+
+2006-06-14  boots  <jayboots@yahoo.com>
+
+    * NEWS
+      libs/plugins/modifier.capitalize.php:
+      Fix handling of apostrophes in the capitalize modifier.
+      
+      Thanks to asmecher from the forums for reporting this and providing a
+      partial solution.
+
+2006-05-28  Monte Ohrt  <monte@ohrt.com>
+
+    * NEWS
+      libs/Config_File.class.php
+      libs/Smarty.class.php
+      libs/Smarty_Compiler.class.php:
+      update version numbers
+
+2006-05-25  boots  <jayboots@yahoo.com>
+
+    * NEWS
+      libs/Smarty_Compiler.class.php:
+      un-hide hidden xml open tags
+
+2006-05-09  boots  <jayboots@yahoo.com>
+
+    * NEWS
+      libs/Smarty_Compiler.class.php:
+      separate handling of comment blocks from "special blocks"
+
+    * NEWS
+      libs/plugins/function.popup_init.php:
+      reverted {popup_init} as proposed change to insertion behviour was not BC
+
+2006-05-04  boots  <jayboots@yahoo.com>
+
+    * NEWS
+      libs/plugins/function.popup_init.php:
+      changed {popup_init} to only emit code once during a request
+      
+      Thanks to TGKnIght from forums
+
+2006-04-22  Messju Mohr  <messju@lammfellpuschen.de>
+
+    * NEWS
+      libs/Smarty_Compiler.class.php:
+      fix handling of block-methods of registered objects
+      thanks to El Hombre Gris
+
+2006-04-04  Monte Ohrt  <monte@ohrt.com>
+
+    * libs/plugins/function.html_select_date.php:
+      fix typo
+
+2006-03-09  Monte Ohrt  <monte@ohrt.com>
+
+    * (Smarty_2_6_13)
+      NEWS:
+      update for release
+
 2006-03-08  Monte Ohrt  <monte@ohrt.com>
 
     * libs/plugins/modifier.regex_replace.php:
@@ -3678,7 +5250,7 @@
 
     * libs/Smarty.class.php
       libs/Smarty_Compiler.class.php:
-      added CVS $Id: ChangeLog,v 1.411 2006/03/09 06:31:55 changelog Exp $
+      added CVS $Id: ChangeLog 2746 2007-09-28 01:32:05Z changelog $
 
 2003-03-31  Messju Mohr  <messju@lammfellpuschen.de>
 
