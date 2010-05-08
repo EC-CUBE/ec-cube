@@ -119,7 +119,6 @@ class LC_Page_Admin_Total extends LC_Page {
 
         $mode = $this->objFormParam->getValue('mode');
         switch($mode) {
-        case 'pdf':
         case 'csv':
         case 'search':
             // 入力値の変換
@@ -234,17 +233,6 @@ class LC_Page_Admin_Total extends LC_Page {
                     SC_Utils_Ex::sfCSVDownload($head.$data, $page."_".$type);
                     exit;
                 }
-
-                if($mode == 'pdf') {
-                    // CSV出力タイトル行の取得
-                    list($arrTitleCol, $arrDataCol, $arrColSize, $arrAlign, $title) = $this->lfGetPDFColum($page, $type, $this->keyname);
-                    $head = SC_Utils_Ex::sfGetPDFList($arrTitleCol);
-                    $data = $this->lfGetDataColPDF($this->arrResults, $arrDataCol, 40);
-                    // PDF出力用
-                    $graph_name = basename($this->tpl_image);
-                    $this->lfPDFDownload($graph_name, $head . $data, $arrColSize, $arrAlign, $sdate, $edate, $title, $page);
-                    exit;
-                }
             }
             break;
         default:
@@ -280,55 +268,6 @@ class LC_Page_Admin_Total extends LC_Page {
      */
     function destroy() {
         parent::destroy();
-    }
-
-    /* PDF出力 */
-    function lfPDFDownload($image, $table, $arrColSize, $arrAlign, $sdate, $edate, $title, $page = "") {
-
-        $objPdf = new SC_Pdf();
-        $objPdf->setTableColor("CCCCCC", "F0F0F0", "D1DEFE");
-
-        // 土台となるPDFファイルの指定
-        $objPdf->setTemplate(PDF_DIR . "total.pdf");
-
-        $disp_sdate = sfDispDBDate($sdate, false);
-        $disp_edate = sfDispDBDate($edate, false);
-
-        $arrText['title_block'] = $title;
-        $arrText['date_block'] = "$disp_sdate-$disp_edate";
-        $arrImage['graph_block'] = GRAPH_DIR . $image;
-
-        // 文末の\nを削除する
-        $table = ereg_replace("\n$", "", $table);
-        $arrRet = split("\n", $table);
-        $page_max = intval((count($arrRet) / 35) + 1);
-
-        for($page = 1; $page <= $page_max; $page++) {
-            if($page > 1) {
-                // 2ページ以降
-                $start_no = 35 * ($page - 1) + 1;
-            } else {
-                // 開始ページ
-                $start_no = 1;
-            }
-
-            $arrText['page_block'] = $page . " / " . $page_max;
-            $objPdf->setTextBlock($arrText);
-            $objPdf->setImageBlock($arrImage);
-            // ブロック値の入力
-            $objPdf->writeBlock();
-            // 最終ページのみ、商品別集計は合計がないので最終行の色を変更しない。
-            if($page == $page_max && $page != 'products') {
-                $last_color_flg = true;
-            } else {
-                $last_color_flg = false;
-            }
-            $objPdf->writeTableCenter($table, 500, $arrColSize, $arrAlign, 35, $start_no, $last_color_flg);
-            $objPdf->closePage();
-        }
-
-        // PDFの出力
-        $objPdf->output();
     }
 
     /* セッションに入力期間を記録する */
@@ -890,134 +829,6 @@ class LC_Page_Admin_Total extends LC_Page {
             $csv_data.= SC_Utils_Ex::sfGetCSVList($arrRet[$i]);
         }
         return $csv_data;
-    }
-
-    // 必要なカラムのみ抽出する(PDFデータで取得する)
-    function lfGetDataColPDF($arrData, $arrDataCol, $len) {
-        $max = count($arrData);
-        $csv_data = "";
-        for($i = 0; $i < $max; $i++) {
-            foreach($arrDataCol as $val) {
-                $arrRet[$i][$val] = SC_Utils_Ex::sfCutString($arrData[$i][$val], $len);
-            }
-            $csv_data.= SC_Utils_Ex::sfGetPDFList($arrRet[$i]);
-        }
-        return $csv_data;
-    }
-
-    function lfGetPDFColum($page, $type, $key = "") {
-
-        $arrSUBNAME['day'] = "日別";
-        $arrSUBNAME['month'] = "月別";
-        $arrSUBNAME['year'] = "年別";
-        $arrSUBNAME['hour'] = "時間別";
-        $arrSUBNAME['wday'] = "曜日別";
-        $arrSUBNAME['all'] = "全体";
-        $arrSUBNAME['member'] = "会員";
-        $arrSUBNAME['nonmember'] = "非会員";
-
-        switch($page) {
-            // 商品別集計
-        case 'products':
-            $title = "商品別集計(" . $arrSUBNAME[$type] . ")";
-            $arrColSize = array(
-                                60,
-                                120,
-                                220,
-                                80,
-                                80,
-                                80,
-                                );
-            $arrAlign = array(
-                              'right',
-                              'center',
-                              'right',
-                              'right',
-                              'right',
-                              'right',
-                              );
-            break;
-            // 職業別集計
-        case 'job':
-            $title = "職業別集計(" . $arrSUBNAME[$type] . ")";
-            $arrColSize = array(
-                                100,
-                                100,
-                                100,
-                                100,
-                                );
-            $arrAlign = array(
-                              'right',
-                              'right',
-                              'right',
-                              'right',
-                              );
-            break;
-            // 会員別集計
-        case 'member':
-            $title = "会員別集計(" . $arrSUBNAME[$type] . ")";
-            $arrColSize = array(
-                                100,
-                                100,
-                                100,
-                                100,
-                                );
-            $arrAlign = array(
-                              'right',
-                              'right',
-                              'right',
-                              'right',
-                              );
-            break;
-            // 年代別集計
-        case 'age':
-            $title = "年代別集計(" . $arrSUBNAME[$type] . ")";
-            $arrColSize = array(
-                                80,
-                                100,
-                                100,
-                                100,
-                                );
-            $arrAlign = array(
-                              'right',
-                              'right',
-                              'right',
-                              'right',
-                              );
-            break;
-            // 期間別集計
-        default:
-            $title = "期間別集計(" . $arrSUBNAME[$type] . ")";
-            $arrColSize = array(
-                                60,
-                                60,
-                                50,
-                                50,
-                                80,
-                                80,
-                                80,
-                                80,
-                                80,
-                                80,
-                                );
-            $arrAlign = array(
-                              'right',
-                              'right',
-                              'right',
-                              'right',
-                              'right',
-                              'right',
-                              'right',
-                              'right',
-                              'right',
-                              'right',
-                              );
-            break;
-        }
-
-        list($arrTitleCol, $arrDataCol) = lfGetCSVColum($page, $key);
-
-        return array($arrTitleCol, $arrDataCol, $arrColSize, $arrAlign, $title);
     }
 
     function lfGetCSVColum($page, $key = "") {

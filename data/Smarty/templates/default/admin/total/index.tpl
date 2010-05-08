@@ -105,9 +105,6 @@
 
   <div class="btn">
     <button type="button" onclick="fnModeSubmit('csv','','');"><span>検索結果をCSVダウンロード</span></button>
-    <!--{* PDF機能は次期開発で追加予定
-    <input type="button" name="subm" value="検索結果をPDFダウンロード" onclick="fnModeSubmit('pdf','','');" />
-    *}-->
   </div>
 
   <!--{* グラフ表示 *}-->
