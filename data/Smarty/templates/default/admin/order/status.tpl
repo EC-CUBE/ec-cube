@@ -52,6 +52,7 @@
     </select>
     <button type="button" onclick="fnSelectCheckSubmit();"><span>移動</span></button>
   </div>
+  <span class="attention">※ <!--{$arrORDERSTATUS[$smarty.const.ORDER_CANCEL]}-->もしくは、削除に変更時には、在庫数を手動で戻してください。</span><br />
 
   <p>
     <!--{$tpl_linemax}-->件が該当しました。
