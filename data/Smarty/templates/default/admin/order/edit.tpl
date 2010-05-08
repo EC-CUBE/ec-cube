@@ -301,7 +301,6 @@
         <input type="button" name="cheek" value="計算結果の確認" onclick="fnModeSubmit('cheek','anchor_key','order_products');" />
         <input type="button" name="add_product" value="商品の追加" onclick="win03('<!--{$smarty.const.URL_DIR}-->admin/order/product_select.php<!--{if $tpl_order_id}-->?order_id=<!--{$tpl_order_id}--><!--{/if}-->', 'search', '500', '500'); " />
     </h2>
-    <div class="attention">商品の追加、及び数量の変更に伴う在庫数の変更は手動にてお願いします。</div>
     <!--{if $arrErr.product_id || $arrErr.quantity || $arrErr.price}-->
         <span class="attention"><!--{$arrErr.product_id}--></span>
         <span class="attention"><!--{$arrErr.quantity}--></span>

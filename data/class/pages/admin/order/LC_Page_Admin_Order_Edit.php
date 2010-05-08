@@ -549,10 +549,49 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         // 受注テーブルの名称列を更新
         SC_Helper_DB_Ex::sfUpdateOrderNameCol($order_id);
         
-        // 受注詳細データの更新
         $arrDetail = $this->objFormParam->getSwapArray(array("product_id", "product_code", "product_name", "price", "quantity", "point_rate", "classcategory_id1", "classcategory_id2", "classcategory_name1", "classcategory_name2"));
+
+
+        // 変更しようとしている商品情報とDBに登録してある商品情報を比較することで、更新すべき数量を計算
+        $max = count($arrDetail);
+        $k = 0;
+        $arrStockData = array();
+        for($i = 0; $i < $max; $i++) {
+            if (!empty($arrDetail[$i]['product_id'])) {
+                $arrPreDetail = $objQuery->select('*', "dtb_order_detail", "order_id = ? AND product_id = ? AND classcategory_id1 = ? AND classcategory_id2 = ?", array($order_id, $arrDetail[$i]['product_id'], $arrDetail[$i]['classcategory_id1'], $arrDetail[$i]['classcategory_id2']));
+                if (!empty($arrPreDetail) && $arrPreDetail[0]['quantity'] != $arrDetail[$i]['quantity']) {
+                    // 数量が変更された商品
+                    $arrStockData[$k]['product_id'] = $arrDetail[$i]['product_id'];
+                    $arrStockData[$k]['classcategory_id1'] = $arrDetail[$i]['classcategory_id1'];
+                    $arrStockData[$k]['classcategory_id2'] = $arrDetail[$i]['classcategory_id2'];
+                    $arrStockData[$k]['quantity'] = $arrPreDetail[0]['quantity'] - $arrDetail[$i]['quantity'];
+                    ++$k;
+                } elseif (empty($arrPreDetail)) {
+                    // 新しく追加された商品 もしくは 違う商品に変更された商品
+                    $arrStockData[$k]['product_id'] = $arrDetail[$i]['product_id'];
+                    $arrStockData[$k]['classcategory_id1'] = $arrDetail[$i]['classcategory_id1'];
+                    $arrStockData[$k]['classcategory_id2'] = $arrDetail[$i]['classcategory_id2'];
+                    $arrStockData[$k]['quantity'] = -$arrDetail[$i]['quantity'];
+                    ++$k;
+                }
+                $objQuery->delete("dtb_order_detail", "order_id = ? AND product_id = ? AND classcategory_id1 = ? AND classcategory_id2 = ?", array($order_id, $arrDetail[$i]['product_id'], $arrDetail[$i]['classcategory_id1'], $arrDetail[$i]['classcategory_id2']));
+            }
+        }
+
+        // 上記の新しい商品のループでDELETEされなかった商品は、注文より削除された商品
+        $arrPreDetail = $objQuery->select('*', "dtb_order_detail", "order_id = ?", array($order_id));
+        foreach ($arrPreDetail AS $key=>$val) {
+            $arrStockData[$k]['product_id'] = $val['product_id'];
+            $arrStockData[$k]['classcategory_id1'] = $val['classcategory_id1'];
+            $arrStockData[$k]['classcategory_id2'] = $val['classcategory_id2'];
+            $arrStockData[$k]['quantity'] = $val['quantity'];
+            ++$k;
+        }
+
+        // 受注詳細データの初期化
         $objQuery->delete("dtb_order_detail", $where, array($order_id));
 
+        // 受注詳細データの更新
         $max = count($arrDetail);
         for ($i = 0; $i < $max; $i++) {
             $sqlval = array();
@@ -568,6 +607,21 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
             $sqlval['classcategory_name1'] = $arrDetail[$i]['classcategory_name1'];
             $sqlval['classcategory_name2'] = $arrDetail[$i]['classcategory_name2'];
             $objQuery->insert("dtb_order_detail", $sqlval);
+        }
+
+        // 在庫数調整
+        $status = $sqlval['status'];
+        if (ORDER_DELIV != $status && ORDER_CANCEL != $status) {
+            $stock_sql = "UPDATE dtb_products_class SET stock = stock + ? WHERE product_id = ? AND classcategory_id1 = ? AND classcategory_id2 = ?;";
+            foreach ($arrStockData AS $key=>$val) {
+                $stock_sqlval = array();
+                $stock_sqlval[] = $val['quantity'];
+                $stock_sqlval[] = $val['product_id'];
+                $stock_sqlval[] = $val['classcategory_id1'];
+                $stock_sqlval[] = $val['classcategory_id2'];
+
+                $objQuery->query($stock_sql, $stock_sqlval);
+            }
         }
 
         $objQuery->commit();
@@ -629,9 +683,27 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
             $sqlval['classcategory_id2'] = $arrDetail[$i]['classcategory_id2'];
             $sqlval['classcategory_name1'] = $arrDetail[$i]['classcategory_name1'];
             $sqlval['classcategory_name2'] = $arrDetail[$i]['classcategory_name2'];
+
             $objQuery->insert("dtb_order_detail", $sqlval);
+
+
+            // 在庫数減少処理
+            // 現在の実在庫数取得
+            $pre_stock = $objQuery->getone("SELECT stock FROM dtb_products_class WHERE product_id = ? AND classcategory_id1 = ?  AND classcategory_id2 = ?", array($arrDetail[$i]['product_id'], $arrDetail[$i]['classcategory_id1'], $arrDetail[$i]['classcategory_id2']));
+
+            $stock_sqlval = array();
+            $stock_sqlval['stock'] = intval($pre_stock - $arrDetail[$i]['quantity']);
+            if ($stock_sqlval['stock'] === 0) {
+                $stock_sqlval['stock'] = '0';
         }
 
+            $st_params = array();
+            $st_params[] = $arrDetail[$i]['product_id'];
+            $st_params[] = $arrDetail[$i]['classcategory_id1'];
+            $st_params[] = $arrDetail[$i]['classcategory_id2'];
+
+            $objQuery->update("dtb_products_class", $stock_sqlval, 'product_id = ? AND classcategory_id1 = ? AND classcategory_id2 = ?', $st_params);
+        }
         $objQuery->commit();
 
         return $order_id;
