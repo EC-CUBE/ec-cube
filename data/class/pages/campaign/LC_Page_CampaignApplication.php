@@ -118,7 +118,7 @@ class LC_Page_CampaignApplication extends LC_Page {
                     $orverlapping_flg = $objQuery->get("dtb_campaign", "orverlapping_flg", "campaign_id = ?", array($objCampaignSess->getCampaignId()));
 
                     if($orverlapping_flg) {
-                        if($this->lfOverlappingCheck($objCustomer->getValue('customer_id'), $objQuery)) {
+                        if($this->lfOverlappingCheck($objCustomer->getValue('customer_id'), $objCampaignSess->getCampaignId(), $objQuery)) {
                             $this->arrErr['login_email'] = "※ 複数回ご応募することは出来ません。";
                         }
                     }
@@ -251,8 +251,8 @@ class LC_Page_CampaignApplication extends LC_Page {
      * 引数1 ：顧客ID
      * 戻り値：フラグ (重複があったら true 重複がなかったら false)
      */
-    function lfOverlappingCheck($customer_id, &$objQuery) {
-        $count = $objQuery->count("dtb_campaign_order", "customer_id = ?", array($customer_id));
+    function lfOverlappingCheck($customer_id, $campaign_id, &$objQuery) {
+        $count = $objQuery->count("dtb_campaign_order", "customer_id = ? AND campaign_id = ?", array($customer_id, $campaign_id));
         if($count > 0) {
             return true;
         }
