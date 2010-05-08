@@ -112,6 +112,19 @@ class LC_Page_Admin_Contents_Inquiry extends LC_Page {
                 }
             }
 
+            for( $i = 0; $i < count( $_POST["question"] ); $i++ ) {
+                if( $_POST["question"][$i]["kind"] == 3 || $_POST["question"][$i]["kind"] == 4  ) {
+                    $temp_data = array();
+                    // 項目間（テキストボックス）があいていたら詰めていく
+                    for( $j = 0; $j < count( $_POST["question"][$i]["option"] ); $j++ ) {
+                        if( strlen( $_POST["question"][$i]["option"][$j] ) > 0 ) $temp_data[] = mb_convert_kana( trim ( $_POST["question"][$i]["option"][$j]  ), "asKVn" );
+                    }
+                    $_POST["question"][$i]["option"] = $temp_data;
+                } else {
+                    $_POST["question"][$i]["option"] = NULL;
+                }
+            }
+
             $error = $this->lfErrCheck();
 
             if ( ! $error  ){
@@ -293,18 +306,21 @@ __EOS__;
 
             if( $_POST["question"][$i]["kind"] == 3 || $_POST["question"][$i]["kind"] == 4  ) {
 
-                $temp_data = array();
                 for( $j = 0; $j < count( $_POST["question"][$i]["option"] ); $j++ ) {
-
-                    // 項目間（テキストボックス）があいていたら詰めていく
-                    if( strlen( $_POST["question"][$i]["option"][$j] ) > 0 ) $temp_data[] = mb_convert_kana( trim ( $_POST["question"][$i]["option"][$j]  ), "asKVn" );
-
+                    // 同じ回答がないかチェック
+                    if (strlen($_POST["question"][$i]["option"][$j]) > 0) {
+                        $checkArray = $_POST["question"][$i]["option"];
+                        // 自身の値をunset
+                        unset($checkArray[$j]);
+                        if (in_array($_POST["question"][$i]["option"][$j], $checkArray)) {
+                            $objErr->arrErr["question"][$i]["option"][$j] = "同じ質問に同じ回答は設定出来ません。";
+                        }
+                    }
                 }
-
-                $_POST["question"][$i]["option"] = $temp_data;
 
                 if( ( strlen( $_POST["question"][$i] ["option"][0] ) == 0 ) || ( strlen( $_POST["question"][$i] ["option"][0] ) > 0
                                                                                  && strlen( $_POST["question"][$i] ["option"][1] ) == 0 ) ) $objErr->arrErr["question"][$i]['kind'] = "下記の2つ以上の項目に記入してください。";
+
             }
         }
 
