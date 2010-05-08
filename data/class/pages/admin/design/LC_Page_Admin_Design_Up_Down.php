@@ -148,7 +148,7 @@ class LC_Page_Admin_Design_Up_Down extends LC_Page {
 	 * SC_FormParamクラスの初期化.
 	 *
 	 * @param void
-	 * @retrun object SC_FormParamのインスタンス
+	 * @return object SC_FormParamのインスタンス
 	 */
 	function lfInitUpload() {
 	    $objForm = new SC_FormParam;

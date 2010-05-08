@@ -293,7 +293,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
      *
      * FIXME エラーコード追加
      * @param array #arrCookies Cookie配列
-     * @retrun
+     * @return
      */
     function notifyDownload($mode, $arrCookies) {
         $arrPOSTParams = array(
