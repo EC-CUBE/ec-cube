@@ -230,12 +230,6 @@ class LC_Page_Products_Detail extends LC_Page {
         $arrRet = $objQuery->select("*, (SELECT count(*) FROM dtb_customer_favorite_products WHERE product_id = alldtl.product_id AND customer_id = ?) AS favorite_count", "vw_products_allclass_detail AS alldtl", "product_id = ?", array($objCustomer->getValue('customer_id'), $product_id));
         $this->arrProduct = $arrRet[0];
 
-        // 購入制限数を取得
-        if (!SC_Utils_Ex::sfIsInt($this->arrProduct['sale_limit']) || $this->arrProduct['sale_limit'] > SALE_LIMIT_MAX) {
-          $this->tpl_sale_limit = SALE_LIMIT_MAX;
-        } else {
-          $this->tpl_sale_limit = $this->arrProduct['sale_limit'];
-        }
         
         // サブタイトルを取得
         $this->tpl_subtitle = $this->arrProduct['name'];
@@ -431,13 +425,6 @@ class LC_Page_Products_Detail extends LC_Page {
         // DBから商品情報を取得する。
         $arrRet = $objQuery->select("*", "vw_products_allclass_detail AS alldtl", "product_id = ?", array($product_id));
         $this->arrProduct = $arrRet[0];
-
-        // 購入制限数を取得
-        if (!SC_Utils_Ex::sfIsInt($this->arrProduct['sale_limit']) || $this->arrProduct['sale_limit'] > SALE_LIMIT_MAX) {
-            $this->tpl_sale_limit = SALE_LIMIT_MAX;
-        } else {
-            $this->tpl_sale_limit = $this->arrProduct['sale_limit'];
-        }
 
         // サブタイトルを取得
         $this->tpl_subtitle = $this->arrProduct["name"];
