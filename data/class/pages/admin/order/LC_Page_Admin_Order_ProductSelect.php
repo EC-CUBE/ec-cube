@@ -168,8 +168,6 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page {
             // 規格セレクトボックス設定
             for($i = 0; $i < count($this->arrProducts); $i++) {
                 $this->lfMakeSelect($this->arrProducts[$i]['product_id'], $arrClassName, $arrClassCatName);
-                // 購入制限数を取得
-                $this->lfGetSaleLimit($this->arrProducts[$i]);
             }
         }
 
@@ -356,16 +354,6 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page {
             $arrRet = $objQuery->select($col, $table, $where, array($product_id));
         }
         return $arrRet;
-    }
-
-    // 購入制限数の設定
-    function lfGetSaleLimit($arrProduct) {
-        //在庫が無限または購入制限値が設定値より大きい場合
-        if (!SC_Utils_Ex::sfIsInt($arrProduct['sale_limit']) || $arrProduct['sale_limit'] > SALE_LIMIT_MAX) {
-            $this->tpl_sale_limit[$arrProduct['product_id']] = SALE_LIMIT_MAX;
-        } else {
-            $this->tpl_sale_limit[$arrProduct['product_id']] = $arrProduct['sale_limit'];
-        }
     }
 }
 ?>

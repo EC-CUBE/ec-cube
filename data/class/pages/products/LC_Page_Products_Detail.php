@@ -230,7 +230,6 @@ class LC_Page_Products_Detail extends LC_Page {
         $arrRet = $objQuery->select("*, (SELECT count(*) FROM dtb_customer_favorite_products WHERE product_id = alldtl.product_id AND customer_id = ?) AS favorite_count", "vw_products_allclass_detail AS alldtl", "product_id = ?", array($objCustomer->getValue('customer_id'), $product_id));
         $this->arrProduct = $arrRet[0];
 
-        
         // サブタイトルを取得
         $this->tpl_subtitle = $this->arrProduct['name'];
         
