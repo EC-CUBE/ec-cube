@@ -229,6 +229,10 @@ class SC_DB_MasterData {
         if (is_file($masterDataFile)) {
             unlink($masterDataFile);
         }
+        $masterDataFile = MASTER_DATA_DIR . $name . ".serial";
+        if (is_file($masterDataFile)) {
+            unlink($masterDataFile);
+        }
     }
 
     /**
