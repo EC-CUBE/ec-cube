@@ -136,7 +136,7 @@ class SC_View {
         if(ADMIN_MODE == '1') {
             $time_end = SC_Utils_Ex::sfMicrotimeFloat();
             $time = $time_end - $this->time_start;
-            echo '処理時間: ' . round($time, 3) . 秒;
+            echo '処理時間: ' . sprintf('%.3f', $time) . 秒;
         }
     }
 
