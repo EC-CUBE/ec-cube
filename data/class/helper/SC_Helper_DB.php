@@ -338,7 +338,7 @@ class SC_Helper_DB {
                         // 売り切れ商品をカートから削除する
                         $objCartSess->delProduct($arrCart['cart_no']);
                         $objPage->tpl_message .= "※「" . $arrData['name'] . "」は売り切れました。\n";
-                        break;
+                        continue;
                     }
                 } else {
                     $quantity = $arrCart['quantity'];
