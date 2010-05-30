@@ -674,8 +674,10 @@ INSERT INTO mtb_reminder VALUES ('6', '尊敬していた先生の名前は？',
 INSERT INTO mtb_reminder VALUES ('7', '好きな食べ物は？',6);
 INSERT INTO mtb_sex VALUES ('1', '男性',0);
 INSERT INTO mtb_sex VALUES ('2', '女性',1);
-INSERT INTO mtb_mail_type VALUES ('1', 'パソコン用アドレス',0);
-INSERT INTO mtb_mail_type VALUES ('2', '携帯用アドレス',1);
+INSERT INTO mtb_mail_type VALUES ('1', 'PCメールアドレス',0);
+INSERT INTO mtb_mail_type VALUES ('2', '携帯メールアドレス',1);
+INSERT INTO mtb_mail_type VALUES ('3', 'PCメールアドレス (携帯メールアドレスを登録している顧客は除外)',2);
+INSERT INTO mtb_mail_type VALUES ('4', '携帯メールアドレス (PCメールアドレスを登録している顧客は除外)',3);
 INSERT INTO mtb_page_rows VALUES ('10', '10',0);
 INSERT INTO mtb_page_rows VALUES ('20', '20',1);
 INSERT INTO mtb_page_rows VALUES ('30', '30',2);

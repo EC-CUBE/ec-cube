@@ -193,16 +193,25 @@ class SC_CustomerList extends SC_SelectSql {
 
         //　配信メールアドレス種別
         if ( $mode == 'magazine' ){
+            $sqlEmailMobileIsEmpty = "(dtb_customer.email_mobile IS NULL OR dtb_customer.email_mobile = '')";
             if (!isset($this->arrSql['mail_type'])) $this->arrSql['mail_type'] = "";
-            // PCサイトメールが指定されている場合
-            if ( strlen($this->arrSql['mail_type']) > 0 && $this->arrSql['mail_type'] == 1) {
-                // 携帯ドメインを外す。
-                foreach($arrMobileDomain as $mobile_domain) {
-                    $this->setWhere(" dtb_customer.email NOT ILIKE '%$mobile_domain' ");
-                }
-            // 携帯サイトメールが指定されている場合
-            } else if( strlen($this->arrSql['mail_type']) > 0 && $this->arrSql['mail_type'] == 2) {
-                $this->setWhere( " dtb_customer.email_mobile <> ''  ");
+            switch ($this->arrSql['mail_type']) {
+                // PCメールアドレス
+                case 1:
+                    $this->setWhere("(dtb_customer.email <> dtb_customer.email_mobile OR $sqlEmailMobileIsEmpty)");
+                    break;
+                // 携帯メールアドレス
+                case 2:
+                    $this->setWhere("NOT $sqlEmailMobileIsEmpty");
+                    break;
+                // PCメールアドレス (携帯メールアドレスを登録している顧客は除外)
+                case 3:
+                    $this->setWhere($sqlEmailMobileIsEmpty);
+                    break;
+                // 携帯メールアドレス (PCメールアドレスを登録している顧客は除外)
+                case 4:
+                    $this->setWhere('dtb_customer.email = dtb_customer.email_mobile');
+                    break;
             }
         }
 

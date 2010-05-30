@@ -138,7 +138,7 @@
         <tr>
             <th>配信メールアドレス種別</th>
             <td>
-                <!--{html_radios name="mail_type" options=$arrMailType separator="&nbsp;" selected=$list_data.mail_type}-->
+                <!--{html_radios name="mail_type" options=$arrMailType separator="<br />" selected=$list_data.mail_type}-->
             </td>
         </tr>
         
