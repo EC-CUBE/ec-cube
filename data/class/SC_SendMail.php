@@ -280,10 +280,10 @@ class SC_SendMail {
         // メール送信
         if (is_array($recip)) {
             foreach ($recip as $rcpt_to) {
-                $result[] = $this->objMail->send($rcpt_to, $header, $this->body);
+                $results[] = $this->objMail->send($rcpt_to, $header, $this->body);
             }
         } else {
-            $result[] = $this->objMail->send($recip, $header, $this->body);
+            $results[] = $this->objMail->send($recip, $header, $this->body);
         }
 
         $ret = true;
