@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2009 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -22,8 +22,9 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
-require_once("PHPUnit/TestCase.php");
+require_once("../html/require.php");
+require_once("../data/class/pages/LC_Page.php");
+require_once("PHPUnit/Framework.php");
 
 /**
  * LC_Page のテストケース.
@@ -32,30 +33,38 @@ require_once("PHPUnit/TestCase.php");
  * @author LOCKON CO.,LTD.
  * @version $Id:LC_Page_Test.php 15116 2007-07-23 11:32:53Z nanasess $
  */
-class LC_Page_Test extends PHPUnit_TestCase {
+class LC_Page_Test extends PHPUnit_Framework_TestCase {
 
     // }}}
     // {{{ functions
 
+    /*
+     * FIXME LC_Page::sendRedirect() は, リダイレクトしてしまうため,
+     *       PHPUnit3 ではテストできない...
+     */
+
     /**
      * LC_Page::sendRedirect() のテストケース(エラー).
      */
+    /*
     function testSendRedirect() {
         $objPage = new LC_Page();
         $result = $objPage->sendRedirect(SITE_URL);
 
         $this->assertEquals(true, empty($result));
     }
-
+    */
     /**
      * LC_Page::sendRedirect() のテストケース(エラー).
      */
+    /*
     function testSendRedirectIsFailed() {
         $objPage = new LC_Page();
         $result = $objPage->sendRedirect("http://www.example.org");
 
         $this->assertEquals(false, $result);
     }
+    */
 
     /**
      * LC_Page::getToken() のテストケース.
@@ -131,8 +140,8 @@ class LC_Page_Test extends PHPUnit_TestCase {
      */
     function testGetLocation() {
         $objPage = new LC_Page();
-        $_SERVER['DOCUMENT_ROOT'] = realpath("../../../html");
-        $url = $objPage->getLocation("../../../html/abouts/index.php");
+        $_SERVER['DOCUMENT_ROOT'] = realpath("../html");
+        $url = $objPage->getLocation("../html/abouts/index.php");
 
         $this->assertEquals(SITE_URL . "abouts/index.php", $url);
         unset($_SERVER['DOCUMENT_ROOT']);
@@ -146,7 +155,7 @@ class LC_Page_Test extends PHPUnit_TestCase {
     function testGetLocationWithFullPath() {
         $objPage = new LC_Page();
         $_SERVER['DOCUMENT_ROOT'] = realpath("../html");
-        $url = $objPage->getLocation("/abouts/index.php");
+        $url = $objPage->getLocation(URL_DIR . 'abouts/index.php');
 
         $this->assertEquals(SITE_URL . "abouts/index.php", $url);
         unset($_SERVER['DOCUMENT_ROOT']);
@@ -159,10 +168,10 @@ class LC_Page_Test extends PHPUnit_TestCase {
      */
     function testGetLocationWithQueryString() {
         $objPage = new LC_Page();
-        $_SERVER['DOCUMENT_ROOT'] = realpath("../../../html");
+        $_SERVER['DOCUMENT_ROOT'] = realpath("../html");
 
         $queryString = array("mode" => "update", "type" => "text");
-        $url = $objPage->getLocation("../../../html/abouts/index.php", $queryString);
+        $url = $objPage->getLocation("../html/abouts/index.php", $queryString);
 
         $this->assertEquals(SITE_URL . "abouts/index.php?mode=update&type=text", $url);
         unset($_SERVER['DOCUMENT_ROOT']);
@@ -175,10 +184,10 @@ class LC_Page_Test extends PHPUnit_TestCase {
      */
     function testGetLocationUseSSL() {
         $objPage = new LC_Page();
-        $_SERVER['DOCUMENT_ROOT'] = realpath("../../../html");
+        $_SERVER['DOCUMENT_ROOT'] = realpath("../html");
 
         $queryString = array("mode" => "update", "type" => "text");
-        $url = $objPage->getLocation("../../../html/abouts/index.php", $queryString, true);
+        $url = $objPage->getLocation("../html/abouts/index.php", $queryString, true);
 
         $this->assertEquals(SSL_URL . "abouts/index.php?mode=update&type=text", $url);
         unset($_SERVER['DOCUMENT_ROOT']);
@@ -191,10 +200,10 @@ class LC_Page_Test extends PHPUnit_TestCase {
      */
     function testGetLocationWithDocumentRoot() {
         $objPage = new LC_Page();
-        $documentRoot = realpath("../../../html");
+        $documentRoot = realpath("../html");
 
         $queryString = array("mode" => "update", "type" => "text");
-        $url = $objPage->getLocation("../../../html/abouts/index.php", array(),
+        $url = $objPage->getLocation("../html/abouts/index.php", array(),
                                      false, $documentRoot);
 
         $this->assertEquals(SITE_URL . "abouts/index.php", $url);

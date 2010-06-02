@@ -22,25 +22,24 @@
  */
 
 // {{{ requires
-require_once("../html/require.php");
-require_once("class/page/Page_AllTests.php");
-require_once("class/db/DB_AllTests.php");
-require_once("class/helper/Helper_AllTests.php");
-require_once("PHPUnit/Framework.php");
+require_once 'PHPUnit/Framework.php';
+
+require_once 'SC_DB_DBFactory_Test.php';
+require_once 'SC_DB_MasterData_Test.php';
 
 /**
- * EC-CUBE のテストスイート
+ * DB パッケージのテストケース.
  *
+ * @package DB
  * @author Kentaro Ohkouchi
  * @version $Id:LC_Page_Test.php 15116 2007-07-23 11:32:53Z nanasess $
  */
+class DB_AllTests extends PHPUnit_Framework_TestCase {
 
-class TestSuite {
     public static function suite() {
-        $suite = new PHPUnit_Framework_TestSuite('ECCUBE');
-        $suite->addTest(Page_AllTests::suite());
-        $suite->addTest(DB_AllTests::suite());
-        $suite->addTest(Helper_AllTests::suite());
+        $suite = new PHPUnit_Framework_TestSuite('SC_DB');
+        $suite->addTestSuite('SC_DB_DBFactory_Test');
+        $suite->addTestSuite('SC_DB_MasterData_Test');
         return $suite;
     }
 }
