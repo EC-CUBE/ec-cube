@@ -101,6 +101,10 @@ class SC_Initial {
      */
     function setErrorReporting() {
         error_reporting(E_ALL & ~E_NOTICE);
+        // PHP 5.3.0対応
+        if (error_reporting() > 6143) {
+            error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
+        }
     }
 
     /**
