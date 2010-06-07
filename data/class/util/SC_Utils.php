@@ -80,31 +80,12 @@ class SC_Utils {
     {
         // インストールが完了していない時
         if( !defined('ECCUBE_INSTALL') ) {
-            if( !ereg('/install/', $_SERVER['PHP_SELF']) ) {
+            $phpself = $_SERVER['PHP_SELF'];
+            if( !ereg('/install/', $phpself) ) {
                 // インストールページに遷移させる
-
-                // ここから2つ上はdataディレクトリ
-                $eccube_data_dir = realpath(dirname(__FILE__) . '/../../');
-                // dataディレクトリとDATA_DIR2HTMLからhtmlディレクトリを取得。
-                $eccube_html_dir = realpath($eccube_data_dir . '/' . DATA_DIR2HTML);
-                // htmlディレクトリとDOCUMENT_ROOTの相対パスがURL_DIR
-                $document_root = realpath($_SERVER['DOCUMENT_ROOT']);
-                $url_dir = str_replace($document_root, '', $eccube_html_dir);
-
-                // installページへのURLを生成。
-                // Windowsの場合は, ディレクトリの区切り文字を\から/に変換する
-                $url_dir = str_replace("\\", "/", $url_dir);
-                // 先頭が'/'でない場合は'/'を付与。(php4,5のrealpathの挙動の違いによる)
-                if (substr($url_dir, 0, 1) != '/') {
-                    $url_dir = '/' . $url_dir;
-                }
-                // 最後が'/'でない場合は'/'を付与。
-                if (substr($url_dir, -1) != '/') {
-                    $url_dir .= '/';
-                }
-                $location = $url_dir . 'install/index.php';
-
-                header('Location: ' . $location);
+                $path = substr($phpself, 0, strpos($phpself, basename($phpself)));
+                $install_url = SC_Utils::searchInstallerPath($path);
+                header('Location: ' . $install_url);
                 exit;
             }
         } else {
@@ -113,6 +94,38 @@ class SC_Utils {
                 SC_Utils::sfErrorHeader("&gt;&gt; /install/index.phpは、インストール完了後にファイルを削除してください。");
             }
         }
+    }
+
+    /**
+     * インストーラのパスを検索し, URL を返す.
+     *
+     * $path と同階層に install/index.php があるか検索する.
+     * 存在しない場合は上位階層を再帰的に検索する.
+     * インストーラのパスが見つかった場合は, その URL を返す.
+     * DocumentRoot まで検索しても見つからない場合は /install/index.php を返す.
+     *
+     * @param string $path 検索対象のパス
+     * @return string インストーラの URL
+     */
+    function searchInstallerPath($path) {
+        $installer = 'install/index.php';
+        if ($path == '/') {
+            return $path . $installer;
+        }
+        if (substr($path, -1, 1) != '/') {
+            $path .= $path . '/';
+        }
+        if (SC_Utils::sfIsHTTPS()) {
+            $proto = "https://";
+        } else {
+            $proto = "http://";
+        }
+        $installer_url = $proto . $_SERVER['SERVER_NAME'] . $path . $installer;
+        $resources = fopen($installer_url, 'r');
+        if ($resources === false) {
+            $installer_url = SC_Utils::searchInstallerPath($path . '../');
+        }
+        return $installer_url;
     }
 
     // 装飾付きエラーメッセージの表示
