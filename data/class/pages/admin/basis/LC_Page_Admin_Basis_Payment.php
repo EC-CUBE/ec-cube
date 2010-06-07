@@ -109,7 +109,7 @@ class LC_Page_Admin_Basis_Payment extends LC_Page {
         $where = "del_flg = 0";
     //	$where .= " AND fix = ?";
         $table = "dtb_payment";
-        $objQuery->setorder("rank DESC");
+        $objQuery->setOrder("rank DESC");
         $arrRet = $objQuery->select($col, $table, $where);
         return $arrRet;
     }

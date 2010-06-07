@@ -304,7 +304,7 @@ class SC_DB_MasterData {
         $columns = $this->getDefaultColumnName($columns);
 
         $this->objQuery = new SC_Query();
-        $this->objQuery->setorder($columns[2]);
+        $this->objQuery->setOrder($columns[2]);
         $results = $this->objQuery->select($columns[0] . ", " . $columns[1], $name);
 
         // 結果を key => value 形式に格納

@@ -692,7 +692,7 @@ class LC_Page_Admin_Total extends LC_Page {
         }
 
         $objQuery = new SC_Query();
-        $objPage->arrResults = $objQuery->getall($sql, $arrval);
+        $objPage->arrResults = $objQuery->getAll($sql, $arrval);
 
         // 円グラフの生成
         if($graph) {
@@ -710,7 +710,7 @@ class LC_Page_Admin_Total extends LC_Page {
         $sql.= " GROUP BY job ORDER BY total DESC";
 
         $objQuery = new SC_Query();
-        $objPage->arrResults = $objQuery->getall($sql, $arrval);
+        $objPage->arrResults = $objQuery->getAll($sql, $arrval);
 
         $max = count($objPage->arrResults);
         for($i = 0; $i < $max; $i++) {
@@ -739,7 +739,7 @@ class LC_Page_Admin_Total extends LC_Page {
         $sql.= "GROUP BY start_age, end_age ORDER BY start_age, end_age";
 
         $objQuery = new SC_Query();
-        $objPage->arrResults = $objQuery->getall($sql, $arrval);
+        $objPage->arrResults = $objQuery->getAll($sql, $arrval);
 
         $max = count($objPage->arrResults);
         for($i = 0; $i < $max; $i++) {
@@ -781,7 +781,7 @@ class LC_Page_Admin_Total extends LC_Page {
             // 月別
         case 'month':
             $col = $tmp_col . ",key_month";
-            $objQuery->setgroupby("key_month");
+            $objQuery->setGroupBy("key_month");
             $objQuery->setOrder("key_month");
             $objPage->keyname = "key_month";
             $objPage->tpl_tail = "月";
@@ -792,7 +792,7 @@ class LC_Page_Admin_Total extends LC_Page {
             // 年別
         case 'year':
             $col = $tmp_col . ",key_year";
-            $objQuery->setgroupby("key_year");
+            $objQuery->setGroupBy("key_year");
             $objQuery->setOrder("key_year");
             $objPage->keyname = "key_year";
             $objPage->tpl_tail = "年";
@@ -803,7 +803,7 @@ class LC_Page_Admin_Total extends LC_Page {
             // 曜日別
         case 'wday':
             $col = $tmp_col . ",key_wday, wday";
-            $objQuery->setgroupby("key_wday, wday");
+            $objQuery->setGroupBy("key_wday, wday");
             $objQuery->setOrder("wday");
             $objPage->keyname = "key_wday";
             $objPage->tpl_tail = "曜日";
@@ -814,7 +814,7 @@ class LC_Page_Admin_Total extends LC_Page {
             // 時間別
         case 'hour':
             $col = $tmp_col . ",hour";
-            $objQuery->setgroupby("hour");
+            $objQuery->setGroupBy("hour");
             $objQuery->setOrder("hour");
             $objPage->keyname = "hour";
             $objPage->tpl_tail = "時";

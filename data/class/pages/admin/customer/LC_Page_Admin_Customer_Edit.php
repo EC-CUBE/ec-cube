@@ -348,10 +348,10 @@ class LC_Page_Admin_Customer_Edit extends LC_Page {
         $startno = $objNavi->start_row;
 
         // 取得範囲の指定(開始行番号、行数のセット)
-        $this->objQuery->setlimitoffset($page_max, $startno);
+        $this->objQuery->setLimitOffset($page_max, $startno);
         // 表示順序
         $order = "order_id DESC";
-        $this->objQuery->setorder($order);
+        $this->objQuery->setOrder($order);
         //購入履歴情報の取得
         $arrPurchaseHistory = $this->objQuery->select("*", "dtb_order", "customer_id=? AND del_flg = 0 ", array($customer_id));
 

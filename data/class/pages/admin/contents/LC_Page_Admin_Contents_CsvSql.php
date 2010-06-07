@@ -138,7 +138,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page {
 
             $objQuery = new SC_Query();
 
-            $arrCsvOutputData = $objQuery->getall("SELECT " . $arrCsvData[0]['csv_sql']);
+            $arrCsvOutputData = $objQuery->getAll("SELECT " . $arrCsvData[0]['csv_sql']);
 
             if (count($arrCsvOutputData) > 0) {
 
@@ -297,9 +297,9 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page {
 
         // データを引数で渡されている場合にはセットする
         if (count($arrData) > 0) {
-            $arrRet = $objQuery->getall($sql, $arrData);
+            $arrRet = $objQuery->getAll($sql, $arrData);
         }else{
-            $arrRet = $objQuery->getall($sql);
+            $arrRet = $objQuery->getAll($sql);
         }
 
         return $arrRet;

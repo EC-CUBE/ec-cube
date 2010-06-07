@@ -528,9 +528,9 @@ __EOS__;
         }
 
         // 取得範囲の指定(開始行番号、行数のセット)
-        $objQuery->setlimitoffset($disp_num, $startno);
+        $objQuery->setLimitOffset($disp_num, $startno);
         // 表示順序
-        $objQuery->setorder($order);
+        $objQuery->setOrder($order);
 
         // 検索結果の取得
         $this->arrProducts = $objQuery->select($col, $from, $where, $arrval_order);
@@ -689,7 +689,7 @@ __EOS__;
             $col = "product_class_id, classcategory_id1, classcategory_id2, class_id1, class_id2, stock, stock_unlimited";
             $table = "vw_product_class AS prdcls";
             $where = "product_id = ?";
-            $objQuery->setorder("rank1 DESC, rank2 DESC");
+            $objQuery->setOrder("rank1 DESC, rank2 DESC");
             $arrRet = $objQuery->select($col, $table, $where, array($product_id));
         }
         return $arrRet;
@@ -724,7 +724,7 @@ __EOS__;
         $from = "dtb_payment";
         $where = "del_flg = 0";
         $order = "payment_id";
-        $objQuery->setorder($order);
+        $objQuery->setOrder($order);
         $arrRet = $objQuery->select($col, $from, $where);
         return $arrRet;
     }

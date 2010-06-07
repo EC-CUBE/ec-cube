@@ -146,9 +146,9 @@ class LC_Page_Mypage_History extends LC_Page {
         $this->tpl_linemax = $linemax;
 
         // 取得範囲の指定(開始行番号、行数のセット)
-        $objQuery->setlimitoffset(HISTORY_NUM, $pageNo);
+        $objQuery->setLimitOffset(HISTORY_NUM, $pageNo);
         // 表示順序
-        $objQuery->setorder($order);
+        $objQuery->setOrder($order);
 
         //購入履歴の取得
         $this->arrOrder = $objQuery->select($col, $from, $where, $arrval);
@@ -207,7 +207,7 @@ class LC_Page_Mypage_History extends LC_Page {
         $objQuery = new SC_Query();
         $col = "product_id, product_code, product_name, classcategory_name1, classcategory_name2, price, quantity, point_rate";
         $where = "order_id = ?";
-        $objQuery->setorder("classcategory_id1, classcategory_id2");
+        $objQuery->setOrder("classcategory_id1, classcategory_id2");
         $arrRet = $objQuery->select($col, "dtb_order_detail", $where, array($order_id));
         return $arrRet;
     }

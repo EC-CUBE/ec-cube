@@ -93,7 +93,7 @@ class SC_Helper_CSV {
         $sql .= "     rank , no";
         $sql .= " ";
 
-        $ret = $objQuery->getall($sql, $arrData);
+        $ret = $objQuery->getAll($sql, $arrData);
 
         return $ret;
     }
@@ -107,7 +107,7 @@ class SC_Helper_CSV {
         $arrOutputCols = $arrOutput['col'];
 
         $objQuery = new SC_Query();
-        $objQuery->setorder($order);
+        $objQuery->setOrder($order);
 
         $dataRows = $objQuery->select(
              SC_Utils_Ex::sfGetCommaList($arrOutputCols, true, array('category_id'))
@@ -164,7 +164,7 @@ class SC_Helper_CSV {
         $cols = SC_Utils_Ex::sfGetCommaList($this->arrREVIEW_CVSCOL);
 
         $objQuery = new SC_Query();
-        $objQuery->setoption($option);
+        $objQuery->setOption($option);
 
         $list_data = $objQuery->select($cols, $from, $where, $arrval);
 
@@ -183,7 +183,7 @@ class SC_Helper_CSV {
         $cols = SC_Utils_Ex::sfGetCommaList($this->arrTRACKBACK_CVSCOL);
 
         $objQuery = new SC_Query();
-        $objQuery->setoption($option);
+        $objQuery->setOption($option);
 
         $list_data = $objQuery->select($cols, $from, $where, $arrval);
 
@@ -205,7 +205,7 @@ class SC_Helper_CSV {
         $arrOutputCols = $arrOutput['col'];
 
         $objQuery = new SC_Query();
-        $objQuery->setorder('rank DESC');
+        $objQuery->setOrder('rank DESC');
 
         $dataRows = $objQuery->select(
              SC_Utils_Ex::sfGetCommaList($arrOutputCols)
@@ -236,7 +236,7 @@ class SC_Helper_CSV {
         $cols = SC_Utils_Ex::sfGetCommaList($arrCsvOutputCols);
 
         $objQuery = new SC_Query();
-        $objQuery->setoption($option);
+        $objQuery->setOption($option);
 
         $list_data = $objQuery->select($cols, $from, $where, $arrval);
 

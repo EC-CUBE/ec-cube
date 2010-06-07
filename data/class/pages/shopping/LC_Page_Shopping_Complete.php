@@ -93,7 +93,7 @@ class LC_Page_Shopping_Complete extends LC_Page {
             }
 
             // その他情報の取得
-            $arrResults = $objQuery->getall("SELECT memo02, memo05 FROM dtb_order WHERE order_id = ? ", array($order_id));
+            $arrResults = $objQuery->getAll("SELECT memo02, memo05 FROM dtb_order WHERE order_id = ? ", array($order_id));
 
             if (count($arrResults) > 0) {
                 if (isset($arrResults[0]["memo02"]) || isset($arrResults[0]["memo05"])) {
@@ -259,7 +259,7 @@ class LC_Page_Shopping_Complete extends LC_Page {
         // 職業
         $arrEbis['o4id'] = $arrRet[0]['order_job'];
 
-        $objQuery->setgroupby("product_id");
+        $objQuery->setGroupBy("product_id");
         $arrRet = $objQuery->select("product_id", "dtb_order_detail", "order_id = ?", array($order_id));
         $arrProducts = sfSwapArray($arrRet);
 
