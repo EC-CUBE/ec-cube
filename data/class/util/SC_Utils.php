@@ -77,13 +77,50 @@ class SC_Utils {
     function sfInitInstall() {
         // インストール済みが定義されていない。
         if (!defined('ECCUBE_INSTALL')) {
-            header("Location: ./install/" . DIR_INDEX_URL); // TODO 絶対URL にする
-            exit;
+            $phpself = $_SERVER['PHP_SELF'];
+            if( !ereg('/install/', $phpself) ) {
+                $path = substr($phpself, 0, strpos($phpself, basename($phpself)));
+                $install_url = SC_Utils::searchInstallerPath($path);
+                header('Location: ' . $install_url);
+                exit;
+            }
         }
         $path = HTML_PATH . "install/index.php";
         if(file_exists($path)) {
             SC_Utils::sfErrorHeader("&gt;&gt; /install/index.phpは、インストール完了後にファイルを削除してください。");
         }
+    }
+
+    /**
+     * インストーラのパスを検索し, URL を返す.
+     *
+     * $path と同階層に install/index.php があるか検索する.
+     * 存在しない場合は上位階層を再帰的に検索する.
+     * インストーラのパスが見つかった場合は, その URL を返す.
+     * DocumentRoot まで検索しても見つからない場合は /install/index.php を返す.
+     *
+     * @param string $path 検索対象のパス
+     * @return string インストーラの URL
+     */
+    function searchInstallerPath($path) {
+        $installer = 'install/index.php';
+        if ($path == '/') {
+            return $path . $installer;
+        }
+        if (substr($path, -1, 1) != '/') {
+            $path .= $path . '/';
+        }
+        if (SC_Utils::sfIsHTTPS()) {
+            $proto = "https://";
+        } else {
+            $proto = "http://";
+        }
+        $installer_url = $proto . $_SERVER['SERVER_NAME'] . $path . $installer;
+        $resources = fopen($installer_url, 'r');
+        if ($resources === false) {
+            $installer_url = SC_Utils::searchInstallerPath($path . '../');
+        }
+        return $installer_url;
     }
 
     // 装飾付きエラーメッセージの表示
