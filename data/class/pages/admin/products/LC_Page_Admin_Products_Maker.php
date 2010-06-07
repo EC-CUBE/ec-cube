@@ -123,7 +123,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page {
 
         // 規格の読込
         $where = "del_flg <> 1";
-        $objQuery->setorder("rank DESC");
+        $objQuery->setOrder("rank DESC");
         $this->arrMaker = $objQuery->select("maker_id, name", "dtb_maker", $where);
 
         $objView->assignobj($this);

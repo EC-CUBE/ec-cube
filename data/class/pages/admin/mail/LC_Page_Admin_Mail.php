@@ -254,9 +254,9 @@ class LC_Page_Admin_Mail extends LC_Page {
                 $startno = $objNavi->start_row;
 
                 // 取得範囲の指定(開始行番号、行数のセット)
-                $objQuery->setlimitoffset(SEARCH_PMAX, $startno);
+                $objQuery->setLimitOffset(SEARCH_PMAX, $startno);
                 // 表示順序
-                $objQuery->setorder("customer_id DESC");
+                $objQuery->setOrder("customer_id DESC");
 
                 // 検索結果の取得
                 $col = $objSelect->getMailMagazineColumn($this->lfGetIsMobile($_POST['mail_type']));
@@ -413,7 +413,7 @@ class LC_Page_Admin_Mail extends LC_Page {
             $val = SC_Utils_Ex::sfManualEscape($keyword);
             $arrVal[] = "%$val%";
             $objQuery = new SC_Query();
-            $objQuery->setgroupby("customer_id, order_id");
+            $objQuery->setGroupBy("customer_id, order_id");
             $arrRet = $objQuery->select($col, $from, $where, $arrVal);
             $arrCustomerOrderId = SC_Utils_Ex::sfArrKeyValues($arrRet, "customer_id", "order_id");
         }
@@ -500,7 +500,7 @@ class LC_Page_Admin_Mail extends LC_Page {
     function lfGetCampaignList(&$objQuery) {
         $arrCampaign = null;
         $sql = "SELECT campaign_id, campaign_name FROM dtb_campaign ORDER BY update_date DESC";
-        $arrResult = $objQuery->getall($sql);
+        $arrResult = $objQuery->getAll($sql);
 
         foreach($arrResult as $arrVal) {
             $arrCampaign[$arrVal['campaign_id']] = $arrVal['campaign_name'];

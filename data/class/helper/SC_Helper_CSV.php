@@ -95,7 +95,7 @@ __EOS__;
         $sql .= "     rank , no";
         $sql .= " ";
 
-        $ret = $objQuery->getall($sql, $arrVal);
+        $ret = $objQuery->getAll($sql, $arrVal);
 
         return $ret;
     }
@@ -129,7 +129,7 @@ __EOS__;
         $arrOutputCols = $arrOutput['col'];
 
         $objQuery = new SC_Query();
-        $objQuery->setorder($order);
+        $objQuery->setOrder($order);
 
         $dataRows = $objQuery->select(
              SC_Utils_Ex::sfGetCommaList($arrOutputCols, true, array('category_id'))
@@ -187,7 +187,7 @@ __EOS__;
         $cols = SC_Utils_Ex::sfGetCommaList($this->arrREVIEW_CVSCOL);
 
         $objQuery = new SC_Query();
-        $objQuery->setoption($option);
+        $objQuery->setOption($option);
 
         $list_data = $objQuery->select($cols, $from, $where, $arrval);
 
@@ -206,7 +206,7 @@ __EOS__;
         $cols = SC_Utils_Ex::sfGetCommaList($this->arrTRACKBACK_CVSCOL);
 
         $objQuery = new SC_Query();
-        $objQuery->setoption($option);
+        $objQuery->setOption($option);
 
         $list_data = $objQuery->select($cols, $from, $where, $arrval);
 
@@ -228,7 +228,7 @@ __EOS__;
         $arrOutputCols = $arrOutput['col'];
 
         $objQuery = new SC_Query();
-        $objQuery->setorder('rank DESC');
+        $objQuery->setOrder('rank DESC');
 
         $dataRows = $objQuery->select(
              SC_Utils_Ex::sfGetCommaList($arrOutputCols)
@@ -259,7 +259,7 @@ __EOS__;
         $cols = SC_Utils_Ex::sfGetCommaList($arrCsvOutputCols);
 
         $objQuery = new SC_Query();
-        $objQuery->setoption($option);
+        $objQuery->setOption($option);
 
         $list_data = $objQuery->select($cols, $from, $where, $arrval, DB_FETCHMODE_ORDERED);
 

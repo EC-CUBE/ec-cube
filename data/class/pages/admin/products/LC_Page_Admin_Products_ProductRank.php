@@ -156,9 +156,9 @@ __EOS__;
         $this->tpl_disppage = $objNavi->now_page;   // 表示ページ番号（「上へ下へ」表示判定用）
 
         // 取得範囲の指定(開始行番号、行数のセット)
-        $objQuery->setlimitoffset(SEARCH_PMAX, $startno);
+        $objQuery->setLimitOffset(SEARCH_PMAX, $startno);
 
-        $objQuery->setorder("product_rank DESC, product_id DESC");
+        $objQuery->setOrder("product_rank DESC, product_id DESC");
 
         $arrRet = $objQuery->select($col, $table, $where, array($category_id));
         return $arrRet;

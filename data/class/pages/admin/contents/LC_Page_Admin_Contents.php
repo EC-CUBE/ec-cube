@@ -121,7 +121,7 @@ class LC_Page_Admin_Contents extends LC_Page {
         if ( $_POST['mode'] == 'delete' && is_numeric($_POST["news_id"])) {
 
             // rankを取得
-            $pre_rank = $conn->getone(" SELECT rank FROM dtb_news WHERE del_flg = 0 AND news_id = ? ", array( $_POST['news_id']  ));
+            $pre_rank = $conn->getOne(" SELECT rank FROM dtb_news WHERE del_flg = 0 AND news_id = ? ", array( $_POST['news_id']  ));
 
             //-- 削除する新着情報以降のrankを1つ繰り上げておく
             $conn->query("BEGIN");
@@ -271,7 +271,7 @@ class LC_Page_Admin_Contents extends LC_Page {
         }
 
         //rankの最大+1を取得する
-        $rank_max = $conn->getone("SELECT MAX(rank) + 1 FROM dtb_news WHERE del_flg = '0'");
+        $rank_max = $conn->getOne("SELECT MAX(rank) + 1 FROM dtb_news WHERE del_flg = '0'");
 
         $sql = "INSERT INTO dtb_news (news_date, news_title, creator_id, news_url, link_method, news_comment, rank, create_date, update_date)
             VALUES ( ?,?,?,?,?,?,?,now(),now())";

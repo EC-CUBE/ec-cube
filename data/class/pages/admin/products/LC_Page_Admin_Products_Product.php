@@ -305,7 +305,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
      */
     function lfPreGetRecommendProducts($product_id) {
         $objQuery = new SC_Query();
-        $objQuery->setorder("rank DESC");
+        $objQuery->setOrder("rank DESC");
         $arrRet = $objQuery->select("recommend_product_id, comment", "dtb_recommend_products", "product_id = ?", array($product_id));
         $no = 1;
 

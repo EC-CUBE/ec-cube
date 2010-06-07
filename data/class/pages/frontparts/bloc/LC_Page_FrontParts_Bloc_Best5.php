@@ -115,8 +115,8 @@ class LC_Page_FrontParts_Bloc_Best5 extends LC_Page_FrontParts_Bloc {
         }
         
         $order = "rank";
-        $objQuery->setorder($order);
-        $objQuery->setlimit(RECOMMEND_NUM);
+        $objQuery->setOrder($order);
+        $objQuery->setLimit(RECOMMEND_NUM);
 
         $arrBestProducts = $objQuery->select($col, $from, $where);
 

@@ -89,9 +89,9 @@ class LC_Page_Admin_Mail_Sendmail extends LC_Page {
             }
             // 30分毎にCronが送信時間データ確認
         }
-        $objQuery->setorder('send_id');
+        $objQuery->setOrder('send_id');
         $arrMailList = $objQuery->select('*', 'dtb_send_history', $where, $sqlval);
-        $objQuery->setorder('');
+        $objQuery->setOrder('');
 
         // 未送信メルマガがあれば送信処理を続ける。なければ中断する。
         if (empty($arrMailList)) {

@@ -186,7 +186,7 @@ class LC_Page_Admin_Products_Category extends LC_Page {
                 $parent = $objQuery->get("dtb_category", "parent_category_id", "category_id = ?", array($keys[0]));
 
                 // 同一level内のrank配列を作成
-                $objQuery->setoption("ORDER BY rank DESC");
+                $objQuery->setOption("ORDER BY rank DESC");
                 if ($level == 1) {
                     // 第1階層の時
                     $arrRet = $objQuery->select("rank", "dtb_category", "level = ?", array($level));
@@ -319,7 +319,7 @@ class LC_Page_Admin_Products_Category extends LC_Page {
 
         $col = "category_id, category_name, level, rank";
         $where = "del_flg = 0 AND parent_category_id = ?";
-        $objQuery->setoption("ORDER BY rank DESC");
+        $objQuery->setOption("ORDER BY rank DESC");
         $arrRet = $objQuery->select($col, "dtb_category", $where, array($parent_category_id));
         return $arrRet;
     }

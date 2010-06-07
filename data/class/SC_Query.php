@@ -89,7 +89,7 @@ class SC_Query {
      * @return array|null
      */
     function select($col, $table, $where = "", $arrval = array(), $fetchmode = DB_FETCHMODE_ASSOC) {
-        $sqlse = $this->getsql($col, $table, $where);
+        $sqlse = $this->getSql($col, $table, $where);
         $ret = $this->conn->getAll($sqlse, $arrval, $fetchmode);
         return $ret;
     }
@@ -129,12 +129,12 @@ class SC_Query {
      * @param integer $fetchmode 使用するフェッチモード。デフォルトは DB_FETCHMODE_ASSOC。
      * @return array データを含む2次元配列。失敗した場合に 0 または DB_Error オブジェクトを返します。
      */
-    function getall($sql, $arrval = array(), $fetchmode = DB_FETCHMODE_ASSOC) {
+    function getAll($sql, $arrval = array(), $fetchmode = DB_FETCHMODE_ASSOC) {
         $ret = $this->conn->getAll($sql, $arrval, $fetchmode);
         return $ret;
     }
 
-    function getsql($col, $table, $where = '') {
+    function getSql($col, $table, $where = '') {
         $sqlse = "SELECT $col FROM $table";
 
         // 引数の$whereを優先する。
@@ -149,11 +149,11 @@ class SC_Query {
         return $sqlse;
     }
 
-    function setoption($str) {
+    function setOption($str) {
         $this->option = $str;
     }
 
-    function setlimitoffset($limit, $offset = 0, $return = false) {
+    function setLimitOffset($limit, $offset = 0, $return = false) {
         if (is_numeric($limit) && is_numeric($offset)){
 
             $option = " LIMIT " . $limit;
@@ -167,7 +167,7 @@ class SC_Query {
         }
     }
 
-    function setgroupby($str) {
+    function setGroupBy($str) {
         if (strlen($str) == 0) {
             $this->groupby = '';
         } else {
@@ -183,7 +183,7 @@ class SC_Query {
         }
     }
 
-    function orwhere($str) {
+    function orWhere($str) {
         if($this->where != "") {
             $this->where .= " OR " . $str;
         } else {
@@ -191,11 +191,11 @@ class SC_Query {
         }
     }
 
-    function setwhere($str) {
+    function setWhere($str) {
         $this->where = $str;
     }
 
-    function setorder($str) {
+    function setOrder($str) {
         if (strlen($str) == 0) {
             $this->order = '';
         } else {
@@ -204,13 +204,13 @@ class SC_Query {
     }
 
 
-    function setlimit($limit){
+    function setLimit($limit){
         if ( is_numeric($limit)){
             $this->option = " LIMIT " .$limit;
         }
     }
 
-    function setoffset($offset) {
+    function setOffset($offset) {
         if ( is_numeric($offset)){
             $this->offset = " OFFSET " .$offset;
         }
@@ -322,13 +322,13 @@ class SC_Query {
 
     // 特定のカラムの値を取得
     function get($table, $col, $where = "", $arrval = array()) {
-        $sqlse = $this->getsql($col, $table, $where);
+        $sqlse = $this->getSql($col, $table, $where);
         // SQL文の実行
-        $ret = $this->getone($sqlse, $arrval);
+        $ret = $this->getOne($sqlse, $arrval);
         return $ret;
     }
 
-    function getone($sql, $arrval = array()) {
+    function getOne($sql, $arrval = array()) {
         // SQL文の実行
         $ret = $this->conn->getOne($sql, $arrval);
         return $ret;
@@ -345,14 +345,14 @@ class SC_Query {
      * @return array array('カラム名' => '値', ...)の連想配列
      */
     function getRow($table, $col, $where = "", $arrVal = array(), $fetchmode = DB_FETCHMODE_ASSOC) {
-        $sqlse = $this->getsql($col, $table, $where);
+        $sqlse = $this->getSql($col, $table, $where);
         // SQL文の実行
         return $this->conn->getRow($sqlse, $arrVal ,$fetchmode);
     }
 
     // 1列取得
     function getCol($table, $col, $where = "", $arrval = array()) {
-        $sqlse = $this->getsql($col, $table, $where);
+        $sqlse = $this->getSql($col, $table, $where);
         // SQL文の実行
         return $this->conn->getCol($sqlse, 0, $arrval);
     }

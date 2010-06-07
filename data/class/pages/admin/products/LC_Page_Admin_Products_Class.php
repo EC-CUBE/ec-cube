@@ -124,7 +124,7 @@ class LC_Page_Admin_Products_Class extends LC_Page {
 
         // 規格の読込
         $where = "del_flg <> 1";
-        $objQuery->setorder("rank DESC");
+        $objQuery->setOrder("rank DESC");
         $this->arrClass = $objQuery->select("name, class_id", "dtb_class", $where);
         $this->arrClassCatCount = SC_Utils_Ex::sfGetClassCatCount();
 

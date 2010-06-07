@@ -141,7 +141,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page {
         $objQuery = new SC_Query();
         $col = "send_date, subject, template_id, send_id";
         $where = "order_id = ?";
-        $objQuery->setorder("send_date DESC");
+        $objQuery->setOrder("send_date DESC");
 
         if(SC_Utils_Ex::sfIsInt($_POST['order_id'])) {
             $this->arrMailHistory = $objQuery->select($col, "dtb_mail_history", $where, array($_POST['order_id']));

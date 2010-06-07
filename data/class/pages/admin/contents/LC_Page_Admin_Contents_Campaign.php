@@ -301,7 +301,7 @@ class LC_Page_Admin_Contents_Campaign extends LC_Page {
     function lfGetCampaignList(&$objQuery) {
 
         $col = "campaign_id,campaign_name,directory_name,total_count";
-        $objQuery->setorder("update_date DESC");
+        $objQuery->setOrder("update_date DESC");
         $arrRet = $objQuery->select($col, "dtb_campaign", "del_flg = 0");
 
         return $arrRet;

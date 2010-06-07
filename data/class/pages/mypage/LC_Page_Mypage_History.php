@@ -160,9 +160,9 @@ class LC_Page_Mypage_History extends LC_Page {
         $this->tpl_linemax = $linemax;
 
         // 取得範囲の指定(開始行番号、行数のセット)
-        $objQuery->setlimitoffset(HISTORY_NUM, $pageNo);
+        $objQuery->setLimitOffset(HISTORY_NUM, $pageNo);
         // 表示順序
-        $objQuery->setorder($order);
+        $objQuery->setOrder($order);
 
         //購入履歴の取得
         $this->arrOrder = $objQuery->select($col, $from, $where, $arrval);
@@ -224,7 +224,7 @@ class LC_Page_Mypage_History extends LC_Page {
         $col = "product_id, product_code, product_name, classcategory_name1, classcategory_name2, price, quantity, point_rate";
         $col .= ",CASE WHEN EXISTS(SELECT * FROM dtb_products WHERE product_id = dtb_order_detail.product_id AND del_flg = 0 AND status = 1) THEN '1' ELSE '0' END AS enable";
         $where = "order_id = ?";
-        $objQuery->setorder("classcategory_id1, classcategory_id2");
+        $objQuery->setOrder("classcategory_id1, classcategory_id2");
         $arrRet = $objQuery->select($col, "dtb_order_detail", $where, array($orderId));
         return $arrRet;
     }
@@ -239,7 +239,7 @@ class LC_Page_Mypage_History extends LC_Page {
         $objQuery = new SC_Query();
         $col = 'send_date, subject, template_id, send_id';
         $where = 'order_id = ?';
-        $objQuery->setorder('send_date DESC');
+        $objQuery->setOrder('send_date DESC');
         $this->arrMailHistory = $objQuery->select($col, 'dtb_mail_history', $where, array($orderId));
     }
 }

@@ -112,7 +112,7 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc {
         } else {
             $where = "del_flg = 0";
         }
-        $objQuery->setoption("ORDER BY rank DESC");
+        $objQuery->setOption("ORDER BY rank DESC");
         $arrRet = $objQuery->select($col, $from, $where);
 
         foreach ($arrParent_category_id as $category_id) {
@@ -148,7 +148,7 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc {
         if($count_check) {
             $where .= " AND product_count > 0";
         }
-        $objQuery->setoption("ORDER BY rank DESC");
+        $objQuery->setOption("ORDER BY rank DESC");
         $arrRet = $objQuery->select($col, $from, $where);
 
         // メインカテゴリーを抽出する。

@@ -103,9 +103,9 @@ class LC_Page_MyPage extends LC_Page {
         $startno = $objNavi->start_row;
 
         // 取得範囲の指定(開始行番号、行数のセット)
-        $objQuery->setlimitoffset(SEARCH_PMAX, $startno);
+        $objQuery->setLimitOffset(SEARCH_PMAX, $startno);
         // 表示順序
-        $objQuery->setorder($order);
+        $objQuery->setOrder($order);
 
         //購入履歴の取得
         $this->arrOrder = $objQuery->select($col, $from, $where, $arrval);

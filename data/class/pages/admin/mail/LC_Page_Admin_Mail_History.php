@@ -94,11 +94,11 @@ class LC_Page_Admin_Mail_History extends LC_Page {
         $startno = $objNavi->start_row;
 
         // 取得範囲の指定(開始行番号、行数のセット)
-        $objQuery->setlimitoffset(SEARCH_PMAX, $startno);
+        $objQuery->setLimitOffset(SEARCH_PMAX, $startno);
 
         // 表示順序
         $order = "start_date DESC, send_id DESC";
-        $objQuery->setorder($order);
+        $objQuery->setOrder($order);
 
         $col = "*";
         $col .= ",(SELECT COUNT(*) FROM dtb_send_customer WHERE dtb_send_customer.send_id = dtb_send_history.send_id) AS count_all";

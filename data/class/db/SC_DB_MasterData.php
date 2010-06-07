@@ -308,7 +308,7 @@ class SC_DB_MasterData {
 
         $this->objQuery = new SC_Query();
         if (isset($columns[2]) && strlen($columns[2]) >= 1) {
-            $this->objQuery->setorder($columns[2]);
+            $this->objQuery->setOrder($columns[2]);
         }
         $results = $this->objQuery->select($columns[0] . ", " . $columns[1], $name);
 

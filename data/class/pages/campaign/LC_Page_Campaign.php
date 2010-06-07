@@ -326,7 +326,7 @@ class LC_Page_Campaign extends LC_Page {
             $col = "product_class_id, classcategory_id1, classcategory_id2, class_id1, class_id2, stock, stock_unlimited";
             $table = "vw_product_class AS prdcls";
             $where = "product_id = ?";
-            $objQuery->setorder("rank1 DESC, rank2 DESC");
+            $objQuery->setOrder("rank1 DESC, rank2 DESC");
             $arrRet = $objQuery->select($col, $table, $where, array($product_id));
         }
         return $arrRet;
@@ -361,7 +361,7 @@ class LC_Page_Campaign extends LC_Page {
         $from = "dtb_payment";
         $where = "del_flg = 0";
         $order = "payment_id";
-        $objQuery->setorder($order);
+        $objQuery->setOrder($order);
         $arrRet = $objQuery->select($col, $from, $where);
         return $arrRet;
     }

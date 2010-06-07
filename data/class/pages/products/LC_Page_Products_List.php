@@ -465,9 +465,9 @@ __EOS__;
         }
         
         // 取得範囲の指定(開始行番号、行数のセット)
-        $objQuery->setlimitoffset($this->disp_number, $startno);
+        $objQuery->setLimitOffset($this->disp_number, $startno);
         // 表示順序
-        $objQuery->setorder($order);
+        $objQuery->setOrder($order);
         
         // 検索結果の取得
         $this->arrProducts = $objQuery->select($col, $from, $where, $arrval_order);

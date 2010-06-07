@@ -283,7 +283,7 @@ class SC_Helper_DB {
         $objQuery = new SC_Query();
         // 購入金額が条件額以下の項目を取得
         $where = "del_flg = 0";
-        $objQuery->setorder("fix, rank DESC");
+        $objQuery->setOrder("fix, rank DESC");
         $arrRet = $objQuery->select("payment_id, payment_method, rule", "dtb_payment", $where);
         return $arrRet;
     }
@@ -597,7 +597,7 @@ class SC_Helper_DB {
         } else {
             $where = "del_flg = 0";
         }
-        $objQuery->setoption("ORDER BY rank DESC");
+        $objQuery->setOption("ORDER BY rank DESC");
         $arrRet = $objQuery->select($col, $from, $where);
 
         $arrParentID = $this->sfGetParents($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $parent_category_id);
@@ -641,7 +641,7 @@ class SC_Helper_DB {
         } else {
             $where = "del_flg = 0";
         }
-        $objQuery->setoption("ORDER BY rank DESC");
+        $objQuery->setOption("ORDER BY rank DESC");
         $arrRet = $objQuery->select($col, $from, $where);
 
         $arrCategory_id = $this->sfGetCategoryId($product_id);
@@ -743,7 +743,7 @@ class SC_Helper_DB {
             $where.= " AND $addwhere";
         }
 
-        $objQuery->setoption("ORDER BY rank DESC");
+        $objQuery->setOption("ORDER BY rank DESC");
 
         if($products_check) {
             $col = "T1.category_id, category_name, level";
@@ -779,7 +779,7 @@ class SC_Helper_DB {
         // カテゴリ名リストを取得
         $col = "category_id, parent_category_id, category_name";
         $where = "del_flg = 0";
-        $objQuery->setoption("ORDER BY level");
+        $objQuery->setOption("ORDER BY level");
         $arrRet = $objQuery->select($col, "dtb_category", $where);
         $arrCatName = array();
         foreach ($arrRet as $arrTmp) {
@@ -791,7 +791,7 @@ class SC_Helper_DB {
 
         $col = "category_id, parent_category_id, category_name, level";
         $where = "del_flg = 0";
-        $objQuery->setoption("ORDER BY rank DESC");
+        $objQuery->setOption("ORDER BY rank DESC");
         $arrRet = $objQuery->select($col, "dtb_category", $where);
         $max = count($arrRet);
 
@@ -1182,8 +1182,8 @@ __EOS__;
     function sfGetIDValueList($table, $keyname, $valname) {
         $objQuery = new SC_Query();
         $col = "$keyname, $valname";
-        $objQuery->setwhere("del_flg = 0");
-        $objQuery->setorder("rank DESC");
+        $objQuery->setWhere("del_flg = 0");
+        $objQuery->setOrder("rank DESC");
         $arrList = $objQuery->select($col, $table);
         $count = count($arrList);
         for($cnt = 0; $cnt < $count; $cnt++) {
@@ -1401,7 +1401,7 @@ __EOS__;
             }
         }
 
-        $objQuery->setorder("level");
+        $objQuery->setOrder("level");
         $arrRet = $objQuery->select($col, $table, $where, $arrId);
         return $arrRet;
     }
@@ -1457,7 +1457,7 @@ __EOS__;
         }
 
         if($deliv_id != "") {
-            $objQuery->setorder("time_id");
+            $objQuery->setOrder("time_id");
             $where = "deliv_id = ?";
             $arrRet= $objQuery->select("time_id, deliv_time", "dtb_delivtime", $where, array($deliv_id));
         }
@@ -1701,7 +1701,7 @@ __EOS__;
             $where.= " AND $addwhere";
         }
 
-        $objQuery->setoption("ORDER BY rank DESC");
+        $objQuery->setOption("ORDER BY rank DESC");
 
         if($products_check) {
             $col = "T1.maker_id, name";
@@ -1906,7 +1906,7 @@ __EOS__;
                 // 顧客.ポイントをマイナスした場合、
                 if ($addCustomerPoint < 0) {
                     $sql = 'SELECT point FROM dtb_customer WHERE customer_id = ?';
-                    $point = $objQuery->getone($sql, array($arrOrderOld['customer_id']));
+                    $point = $objQuery->getOne($sql, array($arrOrderOld['customer_id']));
                     // 変更後の顧客.ポイントがマイナスの場合、
                     if ($point < 0) {
                         // ロールバック

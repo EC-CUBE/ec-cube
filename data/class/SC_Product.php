@@ -154,7 +154,7 @@ class SC_Product {
         $col = 'product_id, classcategory_id1, classcategory_id2, class_id1, class_id2, stock, stock_unlimited, price01, price02, point_rate, product_code';
         $table = 'vw_product_class AS prdcls';
         $where = 'product_id IN (' . implode(', ', array_pad(array(), count($arrProductId), '?')) . ')';
-        $objQuery->setorder("product_id, rank1 DESC, rank2 DESC");
+        $objQuery->setOrder("product_id, rank1 DESC, rank2 DESC");
         $arrRet = $objQuery->select($col, $table, $where, $arrProductId);
         
         return $arrRet;
