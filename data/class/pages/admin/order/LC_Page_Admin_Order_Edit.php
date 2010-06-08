@@ -566,6 +566,8 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
             $arrWDAY = $masterData->getMasterData("mtb_wday");
             $sqlval['deliv_date'] .= sprintf("(%s)", $arrWDAY[date("w", $ts)]);
 
+        } else {
+            $sqlval['deliv_date'] = "";
         }
         unset($sqlval['deliv_date_year']);
         unset($sqlval['deliv_date_month']);
