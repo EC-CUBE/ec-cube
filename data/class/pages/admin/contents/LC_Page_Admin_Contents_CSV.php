@@ -117,11 +117,11 @@ class LC_Page_Admin_Contents_CSV extends LC_Page {
         }
 
         // 出力項目の取得
-        $arrOutput = SC_Utils_Ex::sfSwapArray($objCSV->sfgetCsvOutput($subno_csv, 'status = 1'));
+        $arrOutput = SC_Utils_Ex::sfSwapArray($objCSV->sfgetCsvOutput($subno_id, 'status = 1'));
         $arrOutput = SC_Utils_Ex::sfarrCombine($arrOutput['no'], $arrOutput['disp_name']);
 
         // 非出力項目の取得
-        $arrChoice = SC_Utils_Ex::sfSwapArray($objCSV->sfgetCsvOutput($subno_csv, 'status = 2'));
+        $arrChoice = SC_Utils_Ex::sfSwapArray($objCSV->sfgetCsvOutput($subno_id, 'status = 2'));
 
         if (!isset($arrChoice['no'])) $arrChoice['no'] = array();
         if (!isset($arrChoice['disp_name'])) $arrChoice['disp_name'] = array();
