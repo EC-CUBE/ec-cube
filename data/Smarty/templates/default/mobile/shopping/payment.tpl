@@ -41,16 +41,6 @@
 <br>
 <!--{/section}-->
 
-<p>その他お問い合わせ事項がございましたら、こちらにご入力ください。</p>
-<div>
-<!--★その他お問い合わせ事項★-->
-<!--{assign var=key value="message"}-->
-<!--{if $arrErr[$key] != ""}-->
-<font color="red"><!--{$arrErr[$key]}--></font>
-<!--{/if}-->
-<textarea name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" cols="20" rows="3"><!--{$arrForm[$key].value|escape}--></textarea>
-<br>
-
 <!-- ▼ポイント使用 ここから -->
 <!--{if $tpl_login == 1 && $smarty.const.USE_POINT == true}-->
 <p><!--{$objCustomer->getValue('name01')|escape}--> <!--{$objCustomer->getValue('name02')|escape}-->様の、現在の所持ポイントは「<!--{$tpl_user_point|default:0}-->ポイント」です。</p>
