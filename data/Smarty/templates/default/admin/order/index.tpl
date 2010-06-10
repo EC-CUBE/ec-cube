@@ -284,7 +284,7 @@
                                 </td>
                             </tr>
                             <tr class="fs12n">
-                                <td bgcolor="#f2f1ec" width="110">購入金額</td>
+                                <td bgcolor="#f2f1ec" width="110">お支払い合計</td>
                                 <td bgcolor="#ffffff" width="499" colspan="3">
                                     <!--{assign var=key1 value="search_total1"}-->
                                     <!--{assign var=key2 value="search_total2"}-->
@@ -424,7 +424,7 @@
                             <td width="65"><span class="white">注文番号</span></td>
                             <td width="110"><span class="white">顧客名</span></td>
                             <td width="90"><span class="white">支払方法</span></td>
-                            <td width="70"><span class="white">購入金額(円)</span></td>
+                            <td width="70"><span class="white">お支払い<br />合計(円)</span></td>
                             <td width="100"><span class="white">全商品発送日</span></td>
                             <td width="75"><span class="white">対応状況</span></td>
                             <td width="45"><span class="white">帳票</span><br />
@@ -442,7 +442,7 @@
                             <td><!--{$arrResults[cnt].order_name01|escape}--> <!--{$arrResults[cnt].order_name02|escape}--></td>
                             <!--{assign var=payment_id value="`$arrResults[cnt].payment_id`"}-->
                             <td align="center"><!--{$arrPayment[$payment_id]}--></td>
-                            <td align="right"><!--{$arrResults[cnt].total|number_format}--></td>
+                            <td align="right"><!--{$arrResults[cnt].payment_total|number_format}--></td>
                             <td align="center"><!--{$arrResults[cnt].commit_date|sfDispDBDate|default:"未発送"}--></td>
                             <td align="center"><!--{$arrORDERSTATUS[$status]}--></td>
                             <td align="center"><a href="./" onClick="fnOpenPdfSettingPage('pdf.php?order_id=<!--{$arrResults[cnt].order_id}-->','pdf_input','500','650'); return false;"><span class="icon_class">帳票</span></a><input type="checkbox" name="pdf_order_id[]" value="<!--{$arrResults[cnt].order_id}-->" >
