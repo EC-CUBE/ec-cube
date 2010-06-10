@@ -345,9 +345,9 @@ ob_clean();
       return $arrRet;
     }
 
-    // 文字コードSJIS変換 -> japanese.phpで使用出来る文字コードはSJISのみ
+    // 文字コードSJIS変換 -> japanese.phpで使用出来る文字コードはSJIS-winのみ
     function sjis_conv($conv_str) {
-      return (mb_convert_encoding($conv_str, "SJIS", CHAR_CODE));
+      return (mb_convert_encoding($conv_str, "SJIS-win", CHAR_CODE));
     }
 
 
