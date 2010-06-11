@@ -72,7 +72,7 @@
 									</tr>
 									<!--{section name=data loop=$list_data}-->
 									<tr bgcolor="#ffffff" class="fs12n">
-										<td width="120" align="center"><!--{$list_data[data].disp_date|escape}--></td>
+										<td width="120" align="center"><!--{$list_data[data].disp_date|escape|date_format:'%Y/%m/%d'}--></td>
 										<td width="333"><!--{$list_data[data].subject|escape}--></td>
 										<!--{assign var=type value=$list_data[data].mail_method|escape}-->
 										<td width="70" align="center"><!--{$arrMagazineType[$type]}--></td>
