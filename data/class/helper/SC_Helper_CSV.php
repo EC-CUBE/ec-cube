@@ -110,7 +110,7 @@ class SC_Helper_CSV {
         $objQuery->setOrder($order);
 
         $dataRows = $objQuery->select(
-             SC_Utils_Ex::sfGetCommaList($arrOutputCols, true, array('category_id'))
+             SC_Utils_Ex::sfGetCommaList($arrOutputCols)
             ,'vw_product_class AS prdcls'
             ,$where
             ,$arrval
