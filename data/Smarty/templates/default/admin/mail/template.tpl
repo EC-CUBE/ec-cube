@@ -35,7 +35,7 @@
     </tr>
     <!--{section name=data loop=$list_data}-->
     <tr>
-      <td><!--{$list_data[data].disp_date|escape}--></td>
+      <td><!--{$list_data[data].disp_date|escape|date_format:'%Y/%m/%d'}--></td>
       <td class="left"><!--{$list_data[data].subject|escape}--></td>
       <!--{assign var=type value=$list_data[data].mail_method|escape}-->
       <td><!--{$arrMagazineType[$type]}--></td>
