@@ -124,10 +124,10 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
 							</tr>
 							<tr class="fs12n">
 								<td bgcolor="#ffffff" align="left">
-									<label for="header"><input type="checkbox" name="header_chk" id="header" <!--{$arrPageData.header_chk}-->>共通のヘッダーを使用する</label>
+									<label for="header_chk"><input type="checkbox" name="header_chk" id="header_chk" <!--{$arrPageData.header_chk}-->>共通のヘッダーを使用する</label>
 								</td>
 								<td bgcolor="#ffffff" align="left">
-									<label for="footer"><input type="checkbox" name="footer_chk" id="footer" <!--{$arrPageData.footer_chk}-->>共通のフッターを使用する</label>
+									<label for="footer_chk"><input type="checkbox" name="footer_chk" id="footer_chk" <!--{$arrPageData.footer_chk}-->>共通のフッターを使用する</label>
 								</td>
 							</tr>
 
