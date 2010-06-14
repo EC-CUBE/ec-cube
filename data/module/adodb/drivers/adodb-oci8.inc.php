@@ -1,7 +1,7 @@
 <?php
 /*
 
-  version v4.992 10 Nov 2009 (c) 2000-2009 John Lim. All rights reserved.
+  version v4.992 10 Nov 2009 (c) 2000-2010 John Lim. All rights reserved.
 
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
