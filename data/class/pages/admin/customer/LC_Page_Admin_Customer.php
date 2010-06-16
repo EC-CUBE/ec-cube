@@ -214,12 +214,22 @@ class LC_Page_Admin_Customer extends LC_Page {
         //if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == "delete" || $_POST['mode'] == "delete_all") {
         // 登録メール再送
         if ($_POST['mode'] == "resend_mail") {
-            $arrRet = $objQuery->select("name01, name02, secret_key, email", "dtb_customer","customer_id = ? AND del_flg <> 1 AND status = 1", array($_POST["edit_customer_id"]));
+            $arrRet = $objQuery->select("name01, name02, secret_key, email, email_mobile", "dtb_customer","customer_id = ? AND del_flg <> 1 AND status = 1", array($_POST["edit_customer_id"]));
             if( is_array($arrRet) === true && count($arrRet) > 0 ){
 
                 $CONF = $objDb->sf_getBasisData();
                 $this->CONF = $CONF;
-                $objMailText = new SC_SiteView();
+                /**
+                 * 携帯メールアドレスが登録されていれば携帯サイトから仮会員登録したものと判定する。
+                 * TODO: とりあえずの簡易的な判定なので、将来的には判定ルーチンを修正した方が良い。
+                 */
+                if (!empty($arrRet[0]['email_mobile'])) {
+                    $objMailText = new SC_MobileView(false);
+                    $this->to_name01 = $arrRet[0]['name01'];
+                    $this->to_name02 = $arrRet[0]['name02'];
+                } else {
+                    $objMailText = new SC_SiteView(false);
+				}
                 $objMailText->assignobj($this);
                 $mailHelper = new SC_Helper_Mail_Ex();
 
