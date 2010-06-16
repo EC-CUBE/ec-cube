@@ -110,9 +110,9 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         $objSess = new SC_Session();
         $objSiteInfo = new SC_SiteInfo();
         $objDb = new SC_Helper_DB_Ex();
-        $objDate = new SC_Date(1970); 
-        $this->arrYearDelivDate = $objDate->getYear('', date('Y'), ''); 
-        $this->arrMonthDelivDate = $objDate->getMonth(true); 
+        $objDate = new SC_Date(1970);
+        $this->arrYearDelivDate = $objDate->getYear('', date('Y'), '');
+        $this->arrMonthDelivDate = $objDate->getMonth(true);
         $this->arrDayDelivDate = $objDate->getDay(true);
         $arrInfo = $objSiteInfo->data;
 
@@ -380,8 +380,8 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         $this->objFormParam->addParam("お支払い方法", "payment_id", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
         $this->objFormParam->addParam("お届け時間ID", "deliv_time_id", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
         $this->objFormParam->addParam("対応状況", "status", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $this->objFormParam->addParam("お届け日(年)", "deliv_date_year", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));  
-        $this->objFormParam->addParam("お届け日(月)", "deliv_date_month", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));  
+        $this->objFormParam->addParam("お届け日(年)", "deliv_date_year", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $this->objFormParam->addParam("お届け日(月)", "deliv_date_month", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
         $this->objFormParam->addParam("お届け日(日)", "deliv_date_day", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
         $this->objFormParam->addParam("お支払方法名称", "payment_method");
         $this->objFormParam->addParam("お届け時間", "deliv_time");
@@ -511,7 +511,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
 
                 if (!isset($arrErr['quantity'])) $arrErr['quantity'] = "";
 
-                $arrErr['quantity'] .= $this->arrForm['product_name'][$i] . '/(' . $className1 . ')/(' . $className2 . ')の数量(' . $arrVal['quantity'][$i]. ')と受注時の数量(' . $this->arrForm['quantity'][$i] . ')の差分(' . ($arrVal['quantity'][$i] - $this->arrForm['quantity'][$i]) . ')は在庫数(' . $productClass['stock'] . ')を上まわっています。<br />';
+                $arrErr['quantity'] .= $this->arrForm['product_name'][$i] . '/(' . $className1 . ')/(' . $className2 . ')　の在庫が不足しています。　設定できる数量は「' . ($this->arrForm['quantity'][$i] + $productClass['stock']) . '」までです。<br />';
             }
         }
 
