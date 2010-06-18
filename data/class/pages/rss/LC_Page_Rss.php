@@ -119,7 +119,7 @@ class LC_Page_RSS extends LC_Page {
         foreach (array_keys($arrNews) as $key) {
             $row =& $arrNews[$key];
             // 日付
-            $row['news_date'] = date(DATE_RFC822, strtotime($row['news_date']));
+            $row['news_date'] = date("r", strtotime($row['news_date']));
         }
 
         return $arrNews;
