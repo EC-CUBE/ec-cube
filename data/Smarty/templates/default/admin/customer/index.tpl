@@ -331,18 +331,23 @@
 <!--★★検索結果一覧★★-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+
+<!--{* ▼検索条件の保持（2次元配列対応）*}-->
 <!--{foreach from=$smarty.post key="key" item="item"}-->
-<!--{if $key ne "mode" && $key ne "del_mode" && $key ne "edit_customer_id" && $key ne "del_customer_id" && $key ne "search_pageno" && $key ne "csv_mode" && $key ne "job" && $key ne "sex" && $key ne "status"}--><input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->"><!--{/if}-->
+    <!--{* 制御用の変数を対象外とする *}-->
+    <!--{if $key ne "mode" && $key ne "del_mode" && $key ne "edit_customer_id" && $key ne "del_customer_id" && $key ne "search_pageno" && $key ne "csv_mode"}-->
+        <!--{* 配列のときと、配列でない時で、フォームのnameを変更する *}-->
+        <!--{if is_array($item)}-->
+            <!--{foreach from=$item key="key2" item="item2"}-->
+                <input type="hidden" name="<!--{$key|escape}-->[]" value="<!--{$item2|escape}-->">
+            <!--{/foreach}-->
+        <!--{else}-->
+            <input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->">
+        <!--{/if}-->
+    <!--{/if}-->
 <!--{/foreach}-->
-<!--{foreach from=$smarty.post.job key="key" item="item"}-->
-<input type="hidden" name="job[]" value=<!--{$item}-->>
-<!--{/foreach}-->
-<!--{foreach from=$smarty.post.sex key="key" item="item"}-->
-<input type="hidden" name="sex[]" value=<!--{$item}-->>
-<!--{/foreach}-->
-<!--{foreach from=$smarty.post.status key="key" item="item"}-->
-<input type="hidden" name="status[]" value=<!--{$item}-->>
-<!--{/foreach}-->
+<!--{* ▲検索条件の保持（2次元配列対応）*}-->
+
 <input type="hidden" name="mode" value="search">
 <input type="hidden" name="del_mode" value="">
 <input type="hidden" name="edit_customer_id" value="">
