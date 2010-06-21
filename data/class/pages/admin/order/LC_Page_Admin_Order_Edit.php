@@ -496,6 +496,22 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
             $totaltax += SC_Utils_Ex::sfTax($arrVal['price'][$i], $arrInfo['tax'], $arrInfo['tax_rule']) * $arrVal['quantity'][$i];
             // 加算ポイントの計算
             $totalpoint += SC_Utils_Ex::sfPrePoint($arrVal['price'][$i], $arrVal['point_rate'][$i]) * $arrVal['quantity'][$i];
+
+            // 在庫数のチェック
+            $productClass = $objDb->sfGetProductsClass(array($arrVal['product_id'][$i],
+                                                             $arrVal['classcategory_id1'][$i],
+                                                             $arrVal['classcategory_id2'][$i]));
+            if ($productClass['stock_unlimited'] != '1'
+                && $productClass['stock'] < ($arrVal['quantity'][$i] - $this->arrForm['quantity'][$i])) {
+                $className1 = $this->arrForm['classcategory_name1'][$i];
+                $className1 = empty($className1) ? 'なし' : $className1;
+                $className2 = $this->arrForm['classcategory_name2'][$i];
+                $className2 = empty($className2) ? 'なし' : $className2;
+
+                if (!isset($arrErr['quantity'])) $arrErr['quantity'] = "";
+
+                $arrErr['quantity'] .= $this->arrForm['product_name'][$i] . '/(' . $className1 . ')/(' . $className2 . ')　の在庫が不足しています。　設定できる数量は「' . ($this->arrForm['quantity'][$i] + $productClass['stock']) . '」までです。<br />';
+            }
         }
 
         // 消費税
