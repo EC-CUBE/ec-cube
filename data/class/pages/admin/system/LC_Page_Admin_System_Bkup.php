@@ -239,7 +239,6 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
                     // データをCSV形式に整える
                     $data = "";
                     foreach($arrData as $data_key => $data_val){
-                        //$val = str_replace("\"", "\\\"", $val);
                         $data .= $this->lfGetCSVList($arrData[$data_key]);
 
                     }
@@ -342,7 +341,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
         if (count($array) > 0) {
             foreach($array as $key => $val) {
                 $val = mb_convert_encoding($val, CHAR_CODE, CHAR_CODE);
-                $val = str_replace("\"", "\\\"", $val);
+                $val = str_replace("\"", "\"\"", $val);
                 $line .= "\"".$val."\",";
             }
             $line = ereg_replace(",$", "\r\n", $line);
@@ -590,7 +589,6 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
                 $sql .= ", ?";
             }
             $sql .= " );";
-            $data = str_replace("\\\"", "\"", $data);
             $err = $objQuery->query($sql, $data);
 
             // エラーがあれば終了
