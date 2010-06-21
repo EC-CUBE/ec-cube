@@ -411,6 +411,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         $this->objFormParam->addParam("注文番号", "order_id");
         $this->objFormParam->addParam("受注日", "create_date");
         $this->objFormParam->addParam("発送日", "commit_date");
+        $this->objFormParam->addParam("備考", "message");
         $this->objFormParam->addParam("お届け日", "deliv_date");
     }
 

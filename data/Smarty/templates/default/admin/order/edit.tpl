@@ -303,7 +303,7 @@
                             </tr>
                             <tr class="fs12n">
                                 <td bgcolor="#f2f1ec" width="110">備考</td>
-                                <td bgcolor="#ffffff" width="607" colspan="3"><!--{$arrForm.message|escape|nl2br}--></td>
+                                <td bgcolor="#ffffff" width="607" colspan="3"><!--{$arrForm.message.value|escape|nl2br}--></td>
                             </tr>
                         </table>
                         <!--▲お客様情報ここまで-->
