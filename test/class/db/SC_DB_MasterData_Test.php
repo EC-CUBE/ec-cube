@@ -22,8 +22,9 @@
  */
 
 // {{{ requires
-require_once(CLASS_EX_PATH . "db_extends/SC_DB_MasterData_Ex.php");
-require_once("PHPUnit/TestCase.php");
+require_once("../html/require.php");
+require_once("../data/class_extends/db_extends/SC_DB_MasterData_Ex.php");
+require_once("PHPUnit/Framework.php");
 
 /**
  * SC_DB_MasterData のテストケース.
@@ -32,7 +33,7 @@ require_once("PHPUnit/TestCase.php");
  * @author LOCKON CO.,LTD.
  * @version $Id:SC_DB_MasterData_Test.php 15532 2007-08-31 14:39:46Z nanasess $
  */
-class SC_DB_MasterData_Test extends PHPUnit_TestCase {
+class SC_DB_MasterData_Test extends PHPUnit_Framework_TestCase {
 
     // }}}
     // {{{ functions
@@ -87,11 +88,11 @@ class SC_DB_MasterData_Test extends PHPUnit_TestCase {
      */
     function testCreateCache() {
         $masterData = new SC_DB_MasterData_Ex();
-        $datas = $masterData->getDBMasterData("mtb_constants");
-        $commentColumn = array("id", "remarks", "rank");
-        $masterData->clearCache("mtb_constants");
+        $datas = $masterData->getDBMasterData("mtb_constants"); 
+        $commentColumn = array("id", "remarks", "rank"); 
+        $masterData->clearCache("mtb_constants"); 
         $masterData->createCache("mtb_constants", $datas, true,
-                                         array("id", "remarks", "rank"));
+                                 array("id", "remarks", "rank"));
         $this->assertEquals(true, defined("ECCUBE_VERSION"));
     }
 }
