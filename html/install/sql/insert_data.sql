@@ -251,6 +251,16 @@ insert into dtb_mailtemplate (template_id, subject, header, footer, creator_id, 
 http://------.co.jp
 
 ',0,Now(), now());
+insert into dtb_mailtemplate (template_id, subject, header, footer, creator_id, update_date, create_date) values (
+2,
+'ご注文ありがとうございます。',
+'',
+'',0,Now(), now());
+INSERT INTO dtb_mailtemplate (template_id, subject, header, footer, creator_id, update_date, create_date) VALUES (
+5,
+'お問い合わせを受け付けました',
+'',
+'',0,now(), now());
 
 insert into dtb_news (news_date,rank, news_title, news_comment, creator_id, create_date, update_date)
 values(now(),1,'サイトオープンいたしました!','一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！',1, now(), now());
@@ -644,12 +654,15 @@ INSERT INTO mtb_taxrule VALUES ('1', '四捨五入',0);
 INSERT INTO mtb_taxrule VALUES ('2', '切り捨て',1);
 INSERT INTO mtb_taxrule VALUES ('3', '切り上げ',2);
 INSERT INTO mtb_mail_template VALUES ('1', '注文受付メール',0);
-INSERT INTO mtb_mail_template VALUES ('2', '注文キャンセル受付メール',1);
-INSERT INTO mtb_mail_template VALUES ('3', '取り寄せ確認メール',2);
+INSERT INTO mtb_mail_template VALUES ('2', '注文受付メール(携帯)',1);
+INSERT INTO mtb_mail_template VALUES ('3', '注文キャンセル受付メール',2);
+INSERT INTO mtb_mail_template VALUES ('4', '取り寄せ確認メール',3);
+INSERT INTO mtb_mail_template VALUES ('5', 'お問い合わせ受付メール',4);
 INSERT INTO mtb_mail_tpl_path VALUES ('1', 'mail_templates/order_mail.tpl',0);
 INSERT INTO mtb_mail_tpl_path VALUES ('2', 'mobile/mail_templates/order_mail.tpl',1);
 INSERT INTO mtb_mail_tpl_path VALUES ('3', 'mail_templates/order_mail.tpl',2);
-INSERT INTO mtb_mail_tpl_path VALUES ('4', 'mail_templates/contact_mail.tpl',3);
+INSERT INTO mtb_mail_tpl_path VALUES ('4', 'mail_templates/order_mail.tpl',3);
+INSERT INTO mtb_mail_tpl_path VALUES ('5', 'mail_templates/contact_mail.tpl',4);
 INSERT INTO mtb_job VALUES ('1', '公務員',0);
 INSERT INTO mtb_job VALUES ('2', 'コンサルタント',1);
 INSERT INTO mtb_job VALUES ('3', 'コンピュータ関連技術職',2);

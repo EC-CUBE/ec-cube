@@ -241,49 +241,17 @@ class LC_Page_Contact extends LC_Page {
     function lfSendMail($CONF, &$objPage){
 
         $objQuery = new SC_Query();
-        $objMailText = new SC_SiteView();
         $objSiteInfo = $this->objView->objSiteInfo;
         $arrInfo = $objSiteInfo->data;
         $objPage->tpl_shopname=$arrInfo['shop_name'];
         $objPage->tpl_infoemail = $arrInfo['email02'];
-        $objMailText->assignobj($objPage);
-        $toCustomerMail = $objMailText->fetch("mail_templates/contact_mail.tpl");
-        $objMail = new SC_SendMail();
 
-        if ( $objPage->arrForm['email'] ) {
-            $fromMail_name = $objPage->arrForm['name01'] ." 様";
-            $fromMail_address = $objPage->arrForm['email'];
-        } else {
-            $fromMail_name = $CONF["shop_name"];
-            $fromMail_address = $CONF["email02"];
-        }
+        $fromMail_name = $objPage->arrForm['name01'] ." 様";
+        $fromMail_address = $objPage->arrForm['email'];
+
         $helperMail = new SC_Helper_Mail_Ex();
-        $subject = $helperMail->sfMakeSubject($objQuery, $objMailText, $this, "お問い合わせがありました。");
-        $objMail->setItem(
-                              $CONF["email02"]					//　宛先
-                            , $subject							//　サブジェクト
-                            , $toCustomerMail					//　本文
-                            , $fromMail_address					//　配送元アドレス
-                            , $fromMail_name					//　配送元　名前
-                            , $fromMail_address					//　reply_to
-                            , $CONF["email04"]					//　return_path
-                            , $CONF["email04"]					//  Errors_to
-                                                            );
-        $objMail->sendMail();
-
-        $subject = $helperMail->sfMakeSubject($objQuery, $objMailText, $this, "お問い合わせを受け付けました。");
-        $objMail->setItem(
-                              ''								//　宛先
-                            , $subject							//　サブジェクト
-                            , $toCustomerMail					//　本文
-                            , $CONF["email03"]					//　配送元アドレス
-                            , $CONF["shop_name"]				//　配送元　名前
-                            , $CONF["email02"]					//　reply_to
-                            , $CONF["email04"]					//　return_path
-                            , $CONF["email04"]					//  Errors_to
-                                                            );
-        $objMail->setTo($objPage->arrForm['email'], $objPage->arrForm['name01'] ." 様");
-        $objMail->sendMail();
+        $helperMail->sfSendTemplateMail($CONF["email02"], $CONF["shop_name"], "5", $objPage, $fromMail_address, $fromMail_name, $fromMail_address); 
+        $helperMail->sfSendTemplateMail($objPage->arrForm['email'], $objPage->arrForm['name01'] ." 様", "5", $objPage, $CONF["email03"], $CONF["shop_name"], $CONF["email02"]);
     }
 }
 ?>
