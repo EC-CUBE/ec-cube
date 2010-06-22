@@ -80,27 +80,12 @@ class SC_Utils {
     {
         // インストールが完了していない時
         if( !defined('ECCUBE_INSTALL') ) {
-            if( !ereg('/install/', $_SERVER['PHP_SELF']) ) {
+            $phpself = $_SERVER['PHP_SELF'];
+            if( !ereg('/install/', $phpself) ) {
                 // インストールページに遷移させる
-
-                $script_filename = $_SERVER['SCRIPT_FILENAME'];
-                list($real_root, $tmp) = explode('/html/', $script_filename);
-                $real_root = $real_root . '/html/';
-                $script_name = $_SERVER['SCRIPT_NAME'];
-                $url_dir = rtrim($script_name, basename($script_name));
-
-                if ($dh = opendir($real_root)) {
-                    $arrDir = array();
-                    while ($entry = readdir($dh)) {
-                        if (is_dir($real_root.$entry) && !in_array($entry, array('.', '..', '.svn', 'install'))) {
-                            $url_dir = rtrim($url_dir, $entry.'/');
-                        }
-                    }
-                    closedir($dh);
-                }
-
-                $location = $url_dir . '/install/';
-                header('Location: ' . $location);
+                $path = substr($phpself, 0, strpos($phpself, basename($phpself)));
+                $install_url = SC_Utils::searchInstallerPath($path);
+                header('Location: ' . $install_url);
                 exit;
             }
         } else {
@@ -109,6 +94,72 @@ class SC_Utils {
                 SC_Utils::sfErrorHeader("&gt;&gt; /install/index.phpは、インストール完了後にファイルを削除してください。");
             }
         }
+    }
+
+    /**
+     * インストーラのパスを検索し, URL を返す.
+     *
+     * $path と同階層に install/index.php があるか検索する.
+     * 存在しない場合は上位階層を再帰的に検索する.
+     * インストーラのパスが見つかった場合は, その URL を返す.
+     * DocumentRoot まで検索しても見つからない場合は /install/index.php を返す.
+     *
+     * @param string $path 検索対象のパス
+     * @return string インストーラの URL
+     */
+    function searchInstallerPath($path) {
+        $installer = 'install/index.php';
+
+        if (SC_Utils::sfIsHTTPS()) {
+            $proto = "https://";
+        } else {
+            $proto = "http://";
+        }
+        $host = $proto . $_SERVER['SERVER_NAME'];
+        if ($path == '/') {
+            return $host . $path . $installer;
+        }
+        if (substr($path, -1, 1) != '/') {
+            $path .= $path . '/';
+        }
+        $installer_url = $host . $path . $installer;
+        $resources = fopen(SC_Utils::getRealURL($installer_url), 'r');
+        if ($resources === false) {
+            $installer_url = SC_Utils::searchInstallerPath($path . '../');
+        }
+        return $installer_url;
+    }
+
+    /**
+     * 相対パスで記述された URL から絶対パスの URL を取得する.
+     *
+     * この関数は, http(s):// から始まる URL を解析し, 相対パスで記述されていた
+     * 場合, 絶対パスに変換して返す
+     *
+     * 例)
+     * http://www.example.jp/aaa/../index.php
+     * ↓
+     * http://www.example.jp/index.php
+     *
+     * @param string $url http(s):// から始まる URL
+     * @return string $url を絶対パスに変換した URL
+     */
+    function getRealURL($url) {
+        $parse = parse_url($url);
+        $tmp = split('/', $parse['path']);
+        $results = array();
+        foreach ($tmp as $v) {
+            if ($v == '' || $v == '.') {
+                // queit.
+            } elseif ($v == '..') {
+                array_pop($results);
+            } else {
+                array_push($results, $v);
+            }
+        }
+
+        $path = join('/', $results);
+        return $parse['scheme'] . '://' . $parse['host'] . '/' . $path;
     }
 
     // 装飾付きエラーメッセージの表示
