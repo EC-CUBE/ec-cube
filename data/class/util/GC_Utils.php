@@ -159,7 +159,7 @@ class GC_Utils {
 
     /**
      * ログローテーション機能
-     *
+     * XXX この類のローテーションは通常 0 開始だが、本実装は 1 開始である。
      * @param integer $max_log 最大ファイル数
      * @param integer $max_size 最大サイズ
      * @param string  $path ファイルパス
@@ -167,56 +167,20 @@ class GC_Utils {
      */
     function gfLogRotation($max_log, $max_size, $path) {
 
-        // ディレクトリ名を取得
-        $dirname = dirname($path);
-        // ファイル名を取得
-        $basename = basename($path);
-		//umask値を777にする。スクリプトが終われば元のumask値に戻る。
-		umask(0);
-        // ファイルが最大サイズを超えていないかチェック
-        if(filesize($path) > $max_size) {
-            if ($dh = opendir($dirname)) {
-                while (($file = readdir($dh)) !== false) {
-                    // ログローテーションにて作成されたファイルを取得
-                    if(ereg("^". $basename . "\." , $file)) {
-                        $arrFile[] = $file;
-                    }
-                }
+        // ファイルが最大サイズを超えていない場合、終了
+        if (filesize($path) <= $max_size) return;
 
-                // ローテーションにて作成されたログファイルが存在しない場合は実行しない
-                if(is_array($arrFile)) {
-                    // ソートを行う
-                    natcasesort($arrFile);
-
-                    // ファイルログが最大個数なら以上なら古いファイルから削除する
-                    $count = count($arrFile);
-                    if($count >= $max_log) {
-                        $diff = $count - $max_log;
-                        for($i = 0; $diff >= $i ; $i++) {
-                            unlink($dirname . "/" . array_pop($arrFile));
-                        }
-                    }
-
-                    // ログファイルの添え字をずらす
-                    $count = count($arrFile);
-                    for($i = $count; 1 <= $i; $i--) {
-                        $move_number = $i + 1;
-                        if(file_exists("$path.$move_number")) {
-                            unlink("$path.$move_number");
-                        }
-                        copy("$dirname/" . $arrFile[$i - 1], "$path.$move_number");
-                    }
-                }
-                $ret = copy($path, "$path.1");
-
-                // 新規ログファイルを作成
-                if($ret) {
-                    unlink($path);
-                    touch($path);
-                    chmod($path, 0666);
-                }
+        // アーカイブのインクリメント(削除を兼ねる)
+        for ($i = $max_log; $i >= 2; $i--) {
+            $path_old = "$path." . ($i - 1);
+            $path_new = "$path.$i";
+            if (file_exists($path_old)) {
+                rename($path_old, $path_new);
             }
         }
+
+        // 現在ファイルのアーカイブ
+        rename($path, "$path.1");
     }
 
     /*----------------------------------------------------------------------
