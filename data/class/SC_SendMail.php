@@ -260,17 +260,41 @@ class SC_SendMail {
         }
     }
 
-    //  TXTメール送信を実行する
+    /**
+     * TXTメール送信を実行する.
+     *
+     * 設定された情報を利用して, メールを送信する.
+     * メールの宛先に Cc や Bcc が設定されていた場合は, 宛先ごとに複数回送信を行う.
+     *
+     * - getRecip() 関数の返り値が配列の場合は, 返り値のメールアドレスごとに,
+     *   PEAR::Mail::send() 関数を実行する.
+     * - getRecip() 関数の返り値が string の場合は, 返り値のメールアドレスを
+     *   RCPT TO: に設定し, PEAR::Mail::send() 関数を実行する.
+     *
+     * @return void
+     */
     function sendMail() {
         $header = $this->getTEXTHeader();
+        $recip = $this->getRecip();
+
         // メール送信
-        $result = $this->objMail->send($this->getRecip(), $header, $this->body);
-        if (PEAR::isError($result)) {
-            GC_Utils_Ex::gfPrintLog($result->getMessage());
-            GC_Utils_Ex::gfDebugLog($header);
-            return false;
+        if (is_array($recip)) {
+            foreach ($recip as $rcpt_to) {
+                $results[] = $this->objMail->send($rcpt_to, $header, $this->body);
+            }
+        } else {
+            $results[] = $this->objMail->send($recip, $header, $this->body);
         }
-        return true;
+
+        $ret = true;
+        foreach ($results as $result) {
+            if (PEAR::isError($result)) {
+                GC_Utils_Ex::gfPrintLog($result->getMessage());
+                GC_Utils_Ex::gfDebugLog($header);
+                $ret = false;
+            }
+        }
+        return $ret;
     }
 
     // HTMLメール送信を実行する
