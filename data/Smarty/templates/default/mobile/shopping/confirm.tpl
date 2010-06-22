@@ -66,11 +66,17 @@
 <br>
 
 【購入金額】<br>
-商品合計：<!--{$tpl_total_pretax|number_format}--><br>
-送料：<!--{$arrData.deliv_fee|number_format}--><br>
-<!--{if $arrData.charge > 0}-->手数料：<!--{$arrData.charge|number_format}--><br><!--{/if}-->
-合計：<!--{$arrData.payment_total|number_format}--><br>
-(内消費税：<!--{$arrData.tax|number_format}-->)<br>
+商品合計：<!--{$tpl_total_pretax|number_format}-->円<br>
+
+<!--{if $smarty.const.USE_POINT === true}-->
+ポイント値引き：<!--{assign var=discount value=`$arrData.use_point*$smarty.const.POINT_VALUE`}-->
+-<!--{$discount|number_format|default:0}-->円<br>
+<!--{/if}-->
+
+送料：<!--{$arrData.deliv_fee|number_format}-->円<br>
+<!--{if $arrData.charge > 0}-->手数料：<!--{$arrData.charge|number_format}-->円<br><!--{/if}-->
+合計：<!--{$arrData.payment_total|number_format}-->円<br>
+(内消費税：<!--{$arrData.tax|number_format}-->円)<br>
 
 <br>
 
@@ -80,6 +86,8 @@
 <input type="hidden" name="mode" value="deliv_date">
 <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
 <input type="hidden" name="payment_id" value="<!--{$arrData.payment_id}-->">
+<input type="hidden" name="use_point" value="<!--{$arrData.use_point}-->">
+<input type="hidden" name="point_check" value="<!--{$arrData.point_check}-->">
 <input type="hidden" name="deliv_date" value="<!--{$arrData.deliv_date}-->">
 <input type="hidden" name="deliv_time_id" value="<!--{$arrData.deliv_time_id}-->">
 <center><input type="submit" value="戻る"></center>
