@@ -200,7 +200,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         $arrCustomerAddr = $objQuery->select($col, "dtb_customer", $where, array($_SESSION['customer']['customer_id']));
         // 別のお届け先住所の取得
         $col = "other_deliv_id, name01, name02, pref, addr01, addr02";
-        $objQuery->setorder("other_deliv_id DESC");
+        $objQuery->setOrder("other_deliv_id DESC");
         $objOtherAddr = $objQuery->select($col, "dtb_other_deliv", $where, array($_SESSION['customer']['customer_id']));
         $this->arrAddr = $arrCustomerAddr;
         $this->tpl_addrmax = count($objOtherAddr);
@@ -388,7 +388,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         $arrCustomerAddr = $objQuery->select($col, "dtb_customer", $where, array($_SESSION['customer']['customer_id']));
         // 別のお届け先住所の取得
         $col = "other_deliv_id, name01, name02, pref, addr01, addr02, zip01, zip02";
-        $objQuery->setorder("other_deliv_id DESC");
+        $objQuery->setOrder("other_deliv_id DESC");
         $objOtherAddr = $objQuery->select($col, "dtb_other_deliv", $where, array($_SESSION['customer']['customer_id']));
         $this->arrAddr = $arrCustomerAddr;
         $cnt = 1;

@@ -112,7 +112,7 @@ class LC_Page_RSS extends LC_Page {
         $from = "dtb_news";
         $where = "del_flg = '0'";
         $order = "rank DESC";
-        $objQuery->setorder($order);
+        $objQuery->setOrder($order);
         $arrNews = $objQuery->select($col,$from,$where);
 
         // RSS用に変換

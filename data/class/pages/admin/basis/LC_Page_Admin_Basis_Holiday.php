@@ -129,7 +129,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page {
 
         // 規格の読込
         $where = "del_flg <> 1";
-        $objQuery->setorder("rank DESC");
+        $objQuery->setOrder("rank DESC");
         $this->arrHoliday = $objQuery->select("holiday_id, title, month, day", "dtb_holiday", $where);
 
         $objView->assignobj($this);

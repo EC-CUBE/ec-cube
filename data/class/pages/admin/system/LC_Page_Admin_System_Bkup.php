@@ -397,7 +397,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
     }
 
     // テーブル構成を取得する
-    Function Lfgetcolumnlist($table_name){
+    Function LfgetColumnlist($table_name){
         $objQuery = new SC_Query();
 
         if(DB_TYPE == "pgsql"){
@@ -456,7 +456,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
         $sql = "SELECT bkup_name, bkup_memo, create_date FROM dtb_bkup ";
         if ($where != "")	$sql .= $where;
 
-        $ret = $objQuery->getall($sql,$data);
+        $ret = $objQuery->getAll($sql,$data);
 
         return $ret;
     }

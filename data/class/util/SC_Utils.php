@@ -767,7 +767,7 @@ class SC_Utils {
 
             $where .= "del_flg = 0 AND campaign_id IN (SELECT campaign_id FROM dtb_campaign_detail where product_id = ? )";
             //登録(更新)日付順
-            $objQuery->setorder('update_date DESC');
+            $objQuery->setOrder('update_date DESC');
             //キャンペーンポイントの取得
             $arrRet = $objQuery->select("campaign_name, campaign_point_rate", "dtb_campaign", $where, array($product_id));
         }
@@ -813,7 +813,7 @@ class SC_Utils {
         $sql.= "where dtb_class.del_flg = 0 AND dtb_classcategory.del_flg = 0 ";
         $sql.= "group by dtb_class.class_id, dtb_class.name";
         $objQuery = new SC_Query();
-        $arrList = $objQuery->getall($sql);
+        $arrList = $objQuery->getAll($sql);
         // キーと値をセットした配列を取得
         $arrRet = SC_Utils::sfArrKeyValue($arrList, 'class_id', 'count');
 

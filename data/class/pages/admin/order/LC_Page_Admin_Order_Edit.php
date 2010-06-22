@@ -308,7 +308,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
          */
         if (file_exists(MODULE_PATH . 'mdl_sps/request.php') === TRUE) {
             $objQuery = new SC_Query();
-            $this->paymentType = $objQuery->getall("SELECT module_code, memo03 FROM dtb_payment WHERE payment_id = ? ", array($this->arrForm["payment_id"]['value']));
+            $this->paymentType = $objQuery->getAll("SELECT module_code, memo03 FROM dtb_payment WHERE payment_id = ? ", array($this->arrForm["payment_id"]['value']));
             $objDate = new SC_Date();
             $objDate->setStartYear(RELEASE_YEAR);
             $this->arrYear = $objDate->getYear();
@@ -462,7 +462,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         $objQuery = new SC_Query();
         $col = "product_id, classcategory_id1, classcategory_id2, product_code, product_name, classcategory_name1, classcategory_name2, price, quantity, point_rate";
         $where = "order_id = ?";
-        $objQuery->setorder("classcategory_id1, classcategory_id2");
+        $objQuery->setOrder("classcategory_id1, classcategory_id2");
         $arrRet = $objQuery->select($col, "dtb_order_detail", $where, array($order_id));
         return $arrRet;
     }
@@ -805,7 +805,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
 
             // 在庫数減少処理
             // 現在の実在庫数取得
-            $pre_stock = $objQuery->getone("SELECT stock FROM dtb_products_class WHERE product_id = ? AND classcategory_id1 = ?  AND classcategory_id2 = ?", array($arrDetail[$i]['product_id'], $arrDetail[$i]['classcategory_id1'], $arrDetail[$i]['classcategory_id2']));
+            $pre_stock = $objQuery->getOne("SELECT stock FROM dtb_products_class WHERE product_id = ? AND classcategory_id1 = ?  AND classcategory_id2 = ?", array($arrDetail[$i]['product_id'], $arrDetail[$i]['classcategory_id1'], $arrDetail[$i]['classcategory_id2']));
 
             $stock_sqlval = array();
             $stock_sqlval['stock'] = intval($pre_stock - $arrDetail[$i]['quantity']);
@@ -917,7 +917,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
             $this->edit_customer_id = $edit_customer_id;
 
             // 受注日に現在の時刻を取得し、表示させる
-            $create_date = $objQuery->getall('SELECT now() as create_date;');
+            $create_date = $objQuery->getAll('SELECT now() as create_date;');
             $arrCustomer['create_date'] = $create_date[0]['create_date'];
 
             // 情報上書き

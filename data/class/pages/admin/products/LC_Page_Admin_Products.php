@@ -291,10 +291,10 @@ class LC_Page_Admin_Products extends LC_Page {
                         }
 
                         // 取得範囲の指定(開始行番号、行数のセット)
-                        //                    if(DB_TYPE != "mysql") $objQuery->setlimitoffset($page_max, $startno);
-                        $objQuery->setlimitoffset($page_max, $startno);
+                        //                    if(DB_TYPE != "mysql") $objQuery->setLimitOffset($page_max, $startno);
+                        $objQuery->setLimitOffset($page_max, $startno);
                         // 表示順序
-                        $objQuery->setorder($order);
+                        $objQuery->setOrder($order);
 
                         // 検索結果の取得
                         $this->arrProducts = $objQuery->select($col, $from, $where, $arrval);

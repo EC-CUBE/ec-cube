@@ -124,7 +124,7 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page {
 
         // 規格の読込
         $where = "del_flg <> 1";
-        $objQuery->setorder("rank DESC");
+        $objQuery->setOrder("rank DESC");
         $this->arrKiyaku = $objQuery->select("kiyaku_title, kiyaku_text, kiyaku_id", "dtb_kiyaku", $where);
 
         $objView->assignobj($this);

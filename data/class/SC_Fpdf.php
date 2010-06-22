@@ -340,7 +340,7 @@ ob_clean();
       $objQuery = new SC_Query();
       $col = "product_id, classcategory_id1, classcategory_id2, product_code, product_name, classcategory_name1, classcategory_name2, price, quantity, point_rate";
       $where = "order_id = ?";
-      $objQuery->setorder("classcategory_id1, classcategory_id2");
+      $objQuery->setOrder("classcategory_id1, classcategory_id2");
       $arrRet = $objQuery->select($col, "dtb_order_detail", $where, array($order_id));
       return $arrRet;
     }

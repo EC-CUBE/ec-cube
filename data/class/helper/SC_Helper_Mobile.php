@@ -389,7 +389,7 @@ class SC_Helper_Mobile {
     function gfFinishKaraMail($token) {
         $objQuery = new SC_Query;
 
-        $arrRow = $objQuery->getrow('dtb_mobile_kara_mail', 'session_id, next_url, email',
+        $arrRow = $objQuery->getRow('dtb_mobile_kara_mail', 'session_id, next_url, email',
                                     'token = ? AND email IS NOT NULL AND receive_date >= ?',
                                     array($token, date('Y-m-d H:i:s', time() - MOBILE_SESSION_LIFETIME)));
         if (!isset($arrRow)) {
