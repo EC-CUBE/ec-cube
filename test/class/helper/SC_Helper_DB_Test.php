@@ -51,11 +51,18 @@ class SC_Helper_DB_Test extends PHPUnit_Framework_TestCase {
         $this->assertEquals(true, $objDb->sfColumnExists("mtb_zip", "zipcode"));
     }
 
+    /**
+     * sfIndexExists() のテストケース.
+     *
+     * XXX MySQL では動作しない
+     */
     function testSfIndexExists() {
         $objDb = new SC_Helper_DB_Ex();
-        $this->assertEquals(true, $objDb->sfIndexExists("dtb_products",
-                                                        "product_id",
-                                                        "dtb_products_product_id_key"));
+        if (DB_TYPE == "pgsql") {
+            $this->assertEquals(true, $objDb->sfIndexExists("dtb_products",
+                                                            "product_id",
+                                                            "dtb_products_product_id_key"));
+        }
     }
 }
 ?>
