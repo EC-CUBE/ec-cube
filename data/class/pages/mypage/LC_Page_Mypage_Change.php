@@ -444,8 +444,8 @@ class LC_Page_Mypage_Change extends LC_Page {
                 != $this->objCustomer->getValue($mailType)){
 
                 $email_cnt = $this->objQuery->count("dtb_customer",
-                                 "del_flg=0 AND " . $mailType . "= ?",
-                                  array($this->arrForm[$mailType]));
+                                 "del_flg=0 AND (email = ? OR email_mobile = ?) ",
+                                  array($this->arrForm[$mailType], $this->arrForm[$mailType]));
                 if ($email_cnt > 0){
                     $arrMailType2[$mailType] = false;
                     $this->arrErr[$mailType] .= "既に使用されているメールアドレスです。";
