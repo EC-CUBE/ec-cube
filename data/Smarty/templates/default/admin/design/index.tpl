@@ -251,7 +251,7 @@ function init () {
 								</td>
 								<td align="center" width=78 bgcolor="<!--{if $item.page_id == $page_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->">
 									<!--{if $item.edit_flg == 1}-->
-									<input type='button' value='削除' name='del' onclick="fnTargetSelf(); fnFormModeSubmit('form1','delete','','');"  />
+									<input type='button' value='削除' name='del' onclick="fnTargetSelf(); fnFormModeSubmit('form1','delete','page_id','<!--{$item.page_id}-->');"  />
 									<!--{/if}-->
 								</td>
 							</tr>
