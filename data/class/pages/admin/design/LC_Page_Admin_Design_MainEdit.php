@@ -49,7 +49,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
         $this->text_row     = 13;
         $this->tpl_subno = "main_edit";
         $this->tpl_mainno = "design";
-        $this->tpl_subtitle = 'ページ詳細設定';
+        $this->tpl_subtitle = 'ページ詳細編集';
     }
 
     /**
