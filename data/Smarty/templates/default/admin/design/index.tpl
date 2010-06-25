@@ -121,7 +121,7 @@ function init () {
 							</tr>
 							<tr>
 								<td background="<!--{$TPL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$TPL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-								<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--コンテンツタイトル-->レイアウト編集</span></td>
+								<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--コンテンツタイトル-->レイアウト設定</span></td>
 								<td background="<!--{$TPL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 							</tr>
 							<tr>
@@ -135,7 +135,7 @@ function init () {
 						<!--▼レイアウト編集　ここから-->
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" align="center"><strong>レイアウト編集</strong></td>
+								<td bgcolor="#f2f1ec" align="center"><strong>レイアウト設定</strong></td>
 								<td bgcolor="#f2f1ec" align="center"><strong>未使用ブロック</strong></td>
 							</tr>
 							<tr>
