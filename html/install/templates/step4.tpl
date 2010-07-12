@@ -28,7 +28,7 @@
 <input type="hidden" name="senddata_shop_name" value="<!--{$tpl_shop_name}-->">
 <input type="hidden" name="senddata_cube_ver" value="<!--{$tpl_cube_ver}-->">
 <input type="hidden" name="senddata_php_ver" value="<!--{$tpl_php_ver}-->">
-<input type="hidden" name="senddata_os_type" value="<!--{$smarty.const.PHP_OS}-->">
+<input type="hidden" name="senddata_os_type" value="<!--{""|php_uname|escape}--> <!--{$smarty.server.SERVER_SOFTWARE|escape}-->">
 <input type="hidden" name="senddata_db_ver" value="<!--{$tpl_db_ver}-->">
 <!--{foreach key=key item=item from=$arrHidden}-->
 <input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->">
