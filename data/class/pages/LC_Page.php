@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -80,7 +80,12 @@ class LC_Page {
      *
      * @return void
      */
-    function init() {}
+    function init() {
+        $this->tpl_authority = $_SESSION['authority'];
+        // XXX すべてのページで宣言するべき
+        $layout = new SC_Helper_PageLayout_Ex();
+        $layout->sfGetPageLayout($this, false);
+    }
 
     /**
      * Page のプロセス.
@@ -240,23 +245,39 @@ class LC_Page {
         return $netURL->getURL();
     }
 
+    /**
+     * EC-CUBE のWEBルート(/html/)を / としたパスを返す
+     *
+     * @param string $path 結果を取得するためのパス
+     * @return string EC-CUBE のWEBルート(/html/)を / としたパス
+     */
     function getRootPath($path) {
+        // Windowsの場合は, ディレクトリの区切り文字を\から/に変換する
+        $path = str_replace('\\', '/', $path);
+        $htmlPath = str_replace('\\', '/', HTML_PATH);
+        
+        // PHP 5.1 対策 ( http://xoops.ec-cube.net/modules/newbb/viewtopic.php?topic_id=4277&forum=9 )
+        if (strlen($path) == 0) {
+            $path = '.';
+        }
+        
         // $path が / で始まっている場合
-        if (substr($path, 0, 1) == "/") {
-            $realPath = realpath(HTML_PATH . substr_replace($path, "", 0, strlen(URL_DIR)));
+        if (substr($path, 0, 1) == '/') {
+            $realPath = realpath($htmlPath . substr_replace($path, '', 0, strlen(URL_DIR)));
         // 相対パスの場合
         } else {
             $realPath = realpath($path);
         }
-
+        $realPath = str_replace('\\', '/', $realPath);
+        
+        // $path が / で終わっている場合、realpath によって削られた末尾の / を復元する。
+        if (substr($path, -1, 1) == '/' && substr($realPath, -1, 1) != '/') {
+            $realPath .= '/';
+        }
+        
         // HTML_PATH を削除した文字列を取得.
-        // Windowsの場合は, ディレクトリの区切り文字を\から/に変換する
-        $realPath = str_replace("\\", "/", $realPath);
-        $htmlPath = str_replace("\\", "/", HTML_PATH);
-
-        $htmlPath = rtrim($htmlPath, "/");
-        $rootPath = str_replace($htmlPath, "", $realPath);
-        $rootPath = ltrim($rootPath, "/");
+        $rootPath = str_replace($htmlPath, '', $realPath);
+        $rootPath = ltrim($rootPath, '/');
 
         return $rootPath;
     }
@@ -276,11 +297,11 @@ class LC_Page {
     function reload($queryString = array(), $removeQueryString = false) {
 
         // 現在の URL を取得
-        $netURL = new Net_URL();
+        $netURL = new Net_URL($_SERVER['REQUEST_URI']);
 
         if ($removeQueryString) {
             $netURL->querystring = array();
-            $_SERVER['QUERY_STRING'] = '';
+            $_SERVER['QUERY_STRING'] = ''; // sendRedirect() での処理用らしい
         }
 
         // QueryString を付与
@@ -294,16 +315,43 @@ class LC_Page {
     }
 
     /**
-     * クライアントのキャッシュを許可する.
-     *
-     * session_start時のno-cacheヘッダーを抑制することで
-     * 「戻る」ボタン使用時の有効期限切れ表示を抑制する.
+     * 互換性確保用メソッド
      *
      * @access protected
      * @return void
+     * @deprecated 決済モジュール互換のため
      */
     function allowClientCache() {
-        session_cache_limiter('private-no-expire');
+        LC_Page::httpCacheControl('private');
+    }
+
+    /**
+     * クライアント・プロキシのキャッシュを制御する.
+     *
+     * @access protected
+     * @param string $mode (nocache/private)
+     * @return void
+     */
+    function httpCacheControl($mode = '') {
+        switch ($mode) {
+            case 'nocache':
+                header('Pragma: no-cache');
+                header('Expires: Thu, 19 Nov 1981 08:52:00 GMT');
+                header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
+                header('Last-Modified:');
+                break;
+                
+            case 'private':
+                $cache_expire = session_cache_expire() * 60;
+                header('Pragma: no-cache');                                                            // anti-proxy
+                header('Expires:');                                                                    // anti-mozilla
+                header("Cache-Control: private, max-age={$cache_expire}, pre-check={$cache_expire}");  // HTTP/1.1 client
+                header('Last-Modified:');
+                break;
+                
+            default:
+                break;
+        }
     }
 
     /**
@@ -330,6 +378,82 @@ class LC_Page {
      */
     function createToken() {
         return sha1(uniqid(rand(), true));
+    }
+    
+    /**
+     * HTTPステータスコードを送出する。
+     *
+     * @param integer $code HTTPステータスコード
+     * @return void
+     * @author Seasoft (新規作成)
+     * @see Moony_Action::status() (オリジナル)
+     * @link http://moony.googlecode.com/ (オリジナル)
+     * @author YAMAOKA Hiroyuki (オリジナル)
+     * @copyright 2005-2008 YAMAOKA Hiroyuki (オリジナル)
+     * @license http://opensource.org/licenses/bsd-license.php New BSD License (オリジナル)
+     * @link http://ja.wikipedia.org/wiki/HTTP%E3%82%B9%E3%83%86%E3%83%BC%E3%82%BF%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%89 (邦訳)
+     * @license http://www.gnu.org/licenses/fdl.html GFDL (邦訳)
+     */
+    function sendHttpStatus($code) {
+        $protocol = $_SERVER['SERVER_PROTOCOL'];
+        $httpVersion = (strpos($protocol, '1.1') !== false) ? '1.1' : '1.0';
+        $messages = array(
+            // Informational 1xx                        // 【情報】
+            100 => 'Continue',                          // 継続
+            101 => 'Switching Protocols',               // プロトコル切替え
+            // Success 2xx                              // 【成功】
+            200 => 'OK',                                // OK
+            201 => 'Created',                           // 作成
+            202 => 'Accepted',                          // 受理
+            203 => 'Non-Authoritative Information',     // 信頼できない情報
+            204 => 'No Content',                        // 内容なし
+            205 => 'Reset Content',                     // 内容のリセット
+            206 => 'Partial Content',                   // 部分的内容
+            // Redirection 3xx                          // 【リダイレクション】
+            300 => 'Multiple Choices',                  // 複数の選択
+            301 => 'Moved Permanently',                 // 恒久的に移動した
+            302 => 'Found',  // 1.1                     // 発見した (リクエストしたリソースは一時的に移動されているときに返される)
+            303 => 'See Other',                         // 他を参照せよ
+            304 => 'Not Modified',                      // 未更新
+            305 => 'Use Proxy',                         // プロキシを使用せよ
+            // 306 is no longer used but still reserved // 将来のために予約されている
+            307 => 'Temporary Redirect',                // 一時的リダイレクト
+            // Client Error 4xx                         // 【クライアントエラー】
+            400 => 'Bad Request',                       // リクエストが不正である
+            401 => 'Unauthorized',                      // 認証が必要である
+            402 => 'Payment Required',                  // 支払いが必要である
+            403 => 'Forbidden',                         // 禁止されている
+            404 => 'Not Found',                         // 未検出
+            405 => 'Method Not Allowed',                // 許可されていないメソッド
+            406 => 'Not Acceptable',                    // 受理できない
+            407 => 'Proxy Authentication Required',     // プロキシ認証が必要である
+            408 => 'Request Timeout',                   // リクエストタイムアウト
+            409 => 'Conflict',                          // 矛盾
+            410 => 'Gone',                              // 消滅した
+            411 => 'Length Required',                   // 長さが必要
+            412 => 'Precondition Failed',               // 前提条件で失敗した
+            413 => 'Request Entity Too Large',          // リクエストエンティティが大きすぎる
+            414 => 'Request-URI Too Long',              // リクエストURIが大きすぎる
+            415 => 'Unsupported Media Type',            // サポートしていないメディアタイプ
+            416 => 'Requested Range Not Satisfiable',   // リクエストしたレンジは範囲外にある
+            417 => 'Expectation Failed',                // 期待するヘッダに失敗
+            // Server Error 5xx                         // 【サーバエラー】
+            500 => 'Internal Server Error',             // サーバ内部エラー
+            501 => 'Not Implemented',                   // 実装されていない
+            502 => 'Bad Gateway',                       // 不正なゲートウェイ
+            503 => 'Service Unavailable',               // サービス利用不可
+            504 => 'Gateway Timeout',                   // ゲートウェイタイムアウト
+            505 => 'HTTP Version Not Supported',        // サポートしていないHTTPバージョン
+            509 => 'Bandwidth Limit Exceeded'           // 帯域幅制限超過
+        );
+        if (isset($messages[$code])) {
+            if ($httpVersion !== '1.1') {
+                // HTTP/1.0
+                $messages[302] = 'Moved Temporarily';
+            }
+            header("HTTP/{$httpVersion} {$code} {$messages[$code]}");
+            header("Status: {$code} {$messages[$code]}", true, $code);
+        }
     }
 }
 ?>

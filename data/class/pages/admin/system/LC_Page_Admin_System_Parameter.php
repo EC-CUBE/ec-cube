@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -58,6 +58,7 @@ class LC_Page_Admin_System_Parameter extends LC_Page {
         $this->tpl_subnavi = 'system/subnavi.tpl';
         $this->tpl_subno = 'parameter';
         $this->tpl_mainno = 'system';
+        $this->tpl_subtitle = 'パラメータ設定';
     }
 
     /**
@@ -133,15 +134,10 @@ class LC_Page_Admin_System_Parameter extends LC_Page {
         }
 
         // DBのデータを更新
-        $masterData->updateMasterData("mtb_constants", array(), $data);
-
-        // 更新したデータを取得
-        $mtb_constants = $masterData->getDBMasterData("mtb_constants");
+        $masterData->updateMasterData('mtb_constants', array(), $data);
 
         // キャッシュを生成
-        $masterData->clearCache("mtb_constants");
-        $masterData->createCache("mtb_constants", $mtb_constants, true,
-                                 array("id", "remarks", "rank"));
+        $masterData->createCache('mtb_constants', array(), true, array('id', 'remarks'));
     }
 
     /**

@@ -1,7 +1,7 @@
 <!--{*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -23,11 +23,11 @@
 <div id="under02column">
   <div id="under02column_customer">
     <p class="flowarea"><img src="<!--{$TPL_DIR}-->img/shopping/flow01.gif" width="700" height="36" alt="購入手続きの流れ" /></p>
-    <h2 class="title"><img src="<!--{$TPL_DIR}-->img/shopping/info_title.jpg" width="700" height="40" alt="お客様情報入力" /></h2>
+    <h2 class="title"><!--{$tpl_title|escape}--></h2>
 
     <p>下記項目にご入力ください。「<span class="attention">※</span>」印は入力必須項目です。<br />
       入力後、一番下の「確認ページへ」ボタンをクリックしてください。</p>
-    <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+    <form name="form1" id="form1" method="post" action="?">
       <input type="hidden" name="mode" value="nonmember_confirm" />
       <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->" />
       <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
@@ -61,7 +61,7 @@
             <p>〒&nbsp;<input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|escape}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->"  size="6" class="box60" />&nbsp;-&nbsp;  <input type="text"  name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|escape}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->"  size="6" class="box60" />　
               <a href="http://search.post.japanpost.jp/zipcode/" target="_blank"><span class="fs10">郵便番号検索</span></a></p>
 
-            <p class="zipimg"><a href="<!--{$smarty.const.URL_DIR}-->address/index.php" onclick="fnCallAddress('<!--{$smarty.const.URL_INPUT_ZIP}-->', 'order_zip01', 'order_zip02', 'order_pref', 'order_addr01'); return false;" target="_blank"><img src="<!--{$TPL_DIR}-->img/common/address.gif" width="86" height="20" alt="住所自動入力" /></a>
+            <p class="zipimg"><a href="<!--{$smarty.const.URL_DIR}-->address/<!--{$smarty.const.DIR_INDEX_URL}-->" onclick="fnCallAddress('<!--{$smarty.const.URL_INPUT_ZIP}-->', 'order_zip01', 'order_zip02', 'order_pref', 'order_addr01'); return false;" target="_blank"><img src="<!--{$TPL_DIR}-->img/common/address.gif" width="86" height="20" alt="住所自動入力" /></a>
                <span class="mini">&nbsp;郵便番号を入力後、クリックしてください。</span></p>
           </td>
         </tr>
@@ -82,7 +82,7 @@
               <!--{assign var=key value="order_addr02"}-->
               <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" size="40"  maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box380" /><br />
               <!--{$smarty.const.SAMPLE_ADDRESS2}--></p>
-            <p class="mini"><em>住所は2つに分けてご記入いただけます。マンション名は必ず記入してください。</em></p></td>
+            <p class="mini"><em>住所は2つに分けてご記入ください。マンション名は必ず記入してください。</em></p></td>
         </tr>
         <tr>
           <th>電話番号<span class="attention">※</span></th>
@@ -118,7 +118,7 @@
             <!--{assign var=key value="order_email"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
             <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="40" class="box380" /><br />
-            <!--{assign var=key value="order_email_check"}-->
+            <!--{assign var=key value="order_email02"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
             <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="40" class="box380" /><br />
             <p class="mini"><em>確認のため2度入力してください。</em></p>
@@ -151,17 +151,16 @@
         <tr>
           <th>生年月日</th>
           <td>
-           <span class="attention"><!--{$arrErr.year}--><!--{$arrErr.month}--><!--{$arrErr.day}--></span>
-            <select name="year" style="<!--{$arrErr.year|sfGetErrorColor}-->">
-              <!--{html_options options=$arrYear selected=$arrForm.year.value}-->
+            <!--{assign var=errBirth value="`$arrErr.year``$arrErr.month``$arrErr.day`"}-->
+            <span class="attention"><!--{$errBirth}--></span>
+            <select name="year" style="<!--{$errBirth|sfGetErrorColor}-->">
+              <!--{html_options options=$arrYear selected=$arrForm.year.value|default:''}-->
             </select>年
-            <select name="month" style="<!--{$arrErr.year|sfGetErrorColor}-->">
-              <option value="">--</option>
-              <!--{html_options options=$arrMonth selected=$arrForm.month.value}-->
+            <select name="month" style="<!--{$errBirth|sfGetErrorColor}-->">
+              <!--{html_options options=$arrMonth selected=$arrForm.month.value|default:''}-->
             </select>月
-            <select name="day" style="<!--{$arrErr.year|sfGetErrorColor}-->">
-              <option value="">--</option>
-              <!--{html_options options=$arrDay selected=$arrForm.day.value}-->
+            <select name="day" style="<!--{$errBirth|sfGetErrorColor}-->">
+              <!--{html_options options=$arrDay selected=$arrForm.day.value|default:''}-->
             </select>日
           </td>
         </tr>
@@ -201,7 +200,7 @@
             <p>〒&nbsp;<input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|escape}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->"  size="6" class="box60" />&nbsp;-&nbsp;  <input type="text"  name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|escape}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->"  size="6" class="box60" />　
               <a href="http://search.post.japanpost.jp/zipcode/" target="_blank"><span class="fs10">郵便番号検索</span></a></p>
 
-            <p class="zipimg"><a href="<!--{$smarty.const.URL_DIR}-->address/index.php" onclick="fnCallAddress('<!--{$smarty.const.URL_INPUT_ZIP}-->', 'deliv_zip01', 'deliv_zip02', 'deliv_pref', 'deliv_addr01'); return false;" target="_blank"><img src="<!--{$TPL_DIR}-->img/common/address.gif" width="86" height="20" alt="住所自動入力" /></a>
+            <p class="zipimg"><a href="<!--{$smarty.const.URL_DIR}-->address/<!--{$smarty.const.DIR_INDEX_URL}-->" onclick="fnCallAddress('<!--{$smarty.const.URL_INPUT_ZIP}-->', 'deliv_zip01', 'deliv_zip02', 'deliv_pref', 'deliv_addr01'); return false;" target="_blank"><img src="<!--{$TPL_DIR}-->img/common/address.gif" width="86" height="20" alt="住所自動入力" /></a>
               <span class="mini">&nbsp;郵便番号を入力後、クリックしてください。</span></p>
           </td>
         </tr>
@@ -222,7 +221,7 @@
               <!--{assign var=key value="deliv_addr02"}-->
               <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" size="40"  maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box380" /><br />
               <!--{$smarty.const.SAMPLE_ADDRESS2}--></p>
-            <p class="mini"><em>住所は2つに分けてご記入いただけます。マンション名は必ず記入してください。</em></p>
+            <p class="mini"><em>住所は2つに分けてご記入ください。マンション名は必ず記入してください。</em></p>
 
           </td>
         </tr>

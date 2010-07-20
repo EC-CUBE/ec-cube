@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -215,10 +215,10 @@ class LC_Page_Admin_Products_Trackback extends LC_Page {
 
 
             // 取得範囲の指定(開始行番号、行数のセット)
-            $objQuery->setlimitoffset($page_max, $startno);
+            $objQuery->setLimitOffset($page_max, $startno);
 
             // 表示順序
-            $objQuery->setorder($order);
+            $objQuery->setOrder($order);
 
             //検索結果の取得
             $this->arrTrackback = $objQuery->select($select, $from, $where, $arrval);

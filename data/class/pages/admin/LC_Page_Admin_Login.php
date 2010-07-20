@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -62,7 +62,6 @@ class LC_Page_Admin_Login extends LC_Page {
 
         if (!isset($_POST['login_id'])) $_POST['login_id'] = "";
         if (!isset($_POST['password'])) $_POST['password'] = "";
-
 
         // 入力判定
         if(strlen($_POST{'login_id'}) > 0 && strlen($_POST{'password'}) >= ID_MIN_LEN && strlen($_POST{'password'}) <= ID_MAX_LEN) {

@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,17 +21,11 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<table width="141" border="0" cellspacing="0" cellpadding="0" summary=" " id="menu_navi">
-	<!--ナビ-->
-	<tr><td class=<!--{if $tpl_subno != 'index'}-->"navi"<!--{else}-->"navi-on"<!--{/if}-->><a href="./index.php" onMouseOver="naviStyleChange('index', '#a5a5a5')" <!--{if $tpl_subno != 'index'}-->onMouseOut="naviStyleChange('index', '#636469')"<!--{/if}--> id="index"><img src="<!--{$TPL_DIR}-->img/contents/icon.jpg" width="15" height="9" alt="" border="0"><span class="navi_text">メンバー管理</span></a></td></tr>
-	<tr><td><img src="<!--{$TPL_DIR}-->img/contents/navi_line.gif" width="140" height="2" alt=""></td></tr>
-	<tr><td class=<!--{if $tpl_subno != 'bkup'}-->"navi"<!--{else}-->"navi-on"<!--{/if}-->><a href="./bkup.php" onMouseOver="naviStyleChange('bkup', '#a5a5a5')" <!--{if $tpl_subno != 'bkup'}-->onMouseOut="naviStyleChange('bkup', '#636469')"<!--{/if}--> id="bkup"><img src="<!--{$TPL_DIR}-->img/contents/icon.jpg" width="15" height="9" alt="" border="0"><span class="navi_text">バックアップ管理</span></a></td></tr>
-	<tr><td><img src="<!--{$TPL_DIR}-->img/contents/navi_line.gif" width="140" height="2" alt=""></td></tr>
-	<tr><td class=<!--{if $tpl_subno != 'parameter'}-->"navi"<!--{else}-->"navi-on"<!--{/if}-->><a href="./parameter.php" onMouseOver="naviStyleChange('parameter', '#a5a5a5')" <!--{if $tpl_subno != 'parameter'}-->onMouseOut="naviStyleChange('parameter', '#636469')"<!--{/if}--> id="parameter"><img src="<!--{$TPL_DIR}-->img/contents/icon.jpg" width="15" height="9" alt="" border="0"><span class="navi_text">パラメータ設定</span></a></td></tr>
-	<tr><td><img src="<!--{$TPL_DIR}-->img/contents/navi_line.gif" width="140" height="2" alt=""></td></tr>
-	<tr><td class=<!--{if $tpl_subno != 'masterdata'}-->"navi"<!--{else}-->"navi-on"<!--{/if}-->><a href="./masterdata.php" onMouseOver="naviStyleChange('masterdata', '#a5a5a5')" <!--{if $tpl_subno != 'masterdata'}-->onMouseOut="naviStyleChange('masterdata', '#636469')"<!--{/if}--> id="masterdata"><img src="<!--{$TPL_DIR}-->img/contents/icon.jpg" width="15" height="9" alt="" border="0"><span class="navi_text">マスタデータ管理</span></a></td></tr>
-	<tr><td><img src="<!--{$TPL_DIR}-->img/contents/navi_line.gif" width="140" height="2" alt=""></td></tr>
-    <tr><td class=<!--{if $tpl_subno != 'system'}-->"navi"<!--{else}-->"navi-on"<!--{/if}-->><a href="./system.php" onMouseOver="naviStyleChange('system', '#a5a5a5')" <!--{if $tpl_subno != 'system'}-->onMouseOut="naviStyleChange('system', '#636469')"<!--{/if}--> id="system"><img src="<!--{$TPL_DIR}-->img/contents/icon.jpg" width="15" height="9" alt="" border="0"><span class="navi_text">システム情報</span></a></td></tr>
-    <tr><td><img src="<!--{$TPL_DIR}-->img/contents/navi_line.gif" width="140" height="2" alt=""></td></tr>
-	<!--ナビ-->
-</table>
+<ul class="level1">
+<li<!--{if $tpl_subno == 'index'}--> class="on"<!--{/if}--> id="navi-system-index"><a href="<!--{$smarty.const.URL_DIR}-->admin/system/<!--{$smarty.const.DIR_INDEX_URL}-->"><span>メンバー管理</span></a></li>
+<li<!--{if $tpl_subno == 'bkup'}--> class="on"<!--{/if}--> id="navi-system-bkup"><a href="<!--{$smarty.const.URL_DIR}-->admin/system/bkup.php"><span>バックアップ管理</span></a></li>
+<li<!--{if $tpl_subno == 'parameter'}--> class="on"<!--{/if}--> id="navi-system-parameter"><a href="<!--{$smarty.const.URL_DIR}-->admin/system/parameter.php"><span>パラメータ設定</span></a></li>
+<li<!--{if $tpl_subno == 'masterdata'}--> class="on"<!--{/if}--> id="navi-system-masterdata"><a href="<!--{$smarty.const.URL_DIR}-->admin/system/masterdata.php"><span>マスタデータ管理</span></a></li>
+<li<!--{if $tpl_subno == 'system'}--> class="on"<!--{/if}--> id="navi-system-system"><a href="<!--{$smarty.const.URL_DIR}-->admin/system/system.php"><span>システム情報</span></a></li>
+<li<!--{if $tpl_mainno == 'system' && $tpl_subno == 'log'}--> class="on"<!--{/if}--> id="navi-system-log"><a href="<!--{$smarty.const.URL_DIR}-->admin/system/log.php"><span>ログ表示</span></a></li>
+</ul>

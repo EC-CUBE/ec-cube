@@ -1,9 +1,8 @@
 <?php
-/**
- *
+/*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -20,14 +19,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-
  */
-$mobile_require_php_dir = realpath(dirname( __FILE__));
-require_once($mobile_require_php_dir . "/../define.php");
 
+// rtrim は PHP バージョン依存対策
+define("HTML_PATH", rtrim(realpath(rtrim(realpath(dirname(__FILE__)), '/\\') . '/../'), '/\\') . '/');
+
+require_once HTML_PATH . 'handle_error.php';
+require_once HTML_PATH . 'define.php';
 define('MOBILE_SITE', true);
+require_once HTML_PATH . HTML2DATA_DIR . 'require_base.php';
 
-require_once($mobile_require_php_dir . "/../" . HTML2DATA_DIR . "require_base.php");
+// モバイルサイトを利用しない設定の場合、落とす。
+if (USE_MOBILE === false) {
+    // XXX PCサイトにリダイレクトする方がスマートか? 若しくはHTTPエラーとすべきか?
+    exit;
+}
 
 // モバイルサイト用の初期処理を実行する。
 if (!defined('SKIP_MOBILE_INIT')) {
@@ -37,6 +43,8 @@ if (!defined('SKIP_MOBILE_INIT')) {
 
 // Moba8対応（Moba8パラメータ引き継ぎ）
 if (function_exists("sfGetMoba8Param") == TRUE) {
-	sfGetMoba8Param($_GET['a8']);
+    sfGetMoba8Param($_GET['a8']);
 }
+
+ob_start();
 ?>

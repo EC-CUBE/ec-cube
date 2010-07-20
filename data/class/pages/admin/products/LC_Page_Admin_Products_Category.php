@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -173,6 +173,59 @@ class LC_Page_Admin_Products_Category extends LC_Page {
             }
             $objQuery->commit();
             break;
+        case 'moveByDnD':
+            // DnDしたカテゴリと移動先のセットを分解する
+            $keys = explode("-", $_POST['keySet']);
+            if ($keys[0] && $keys[1]) {
+                $objQuery = new SC_Query();
+                $objQuery->begin();
+        
+                // 移動したデータのrank、level、parent_category_idを取得
+                $rank   = $objQuery->get("dtb_category", "rank", "category_id = ?", array($keys[0]));
+                $level  = $objQuery->get("dtb_category", "level", "category_id = ?", array($keys[0]));
+                $parent = $objQuery->get("dtb_category", "parent_category_id", "category_id = ?", array($keys[0]));
+
+                // 同一level内のrank配列を作成
+                $objQuery->setOption("ORDER BY rank DESC");
+                if ($level == 1) {
+                    // 第1階層の時
+                    $arrRet = $objQuery->select("rank", "dtb_category", "level = ?", array($level));
+                } else {
+                    // 第2階層以下の時
+                    $arrRet = $objQuery->select("rank", "dtb_category", "level = ? AND parent_category_id = ?", array($level, $parent));
+                }
+                for ($i = 0; $i < sizeof($arrRet); $i++) {
+                    $rankAry[$i + 1] = $arrRet[$i]['rank'];
+                }
+
+                // 移動したデータのグループ内データ数
+                $my_count = $this->lfCountChilds($objQuery, "dtb_category", "parent_category_id", "category_id", $keys[0]);
+                if ($rankAry[$keys[1]] > $rank) {
+                    // データが今の位置より上がった時
+                    $up_count = $rankAry[$keys[1]] - $rank;
+                    $decAry   = $objQuery->select("category_id", "dtb_category", "level = ? AND rank > ? AND rank <= ?", array($level, $rank, $rankAry[$keys[1]]));
+                    foreach($decAry as $value){
+                        // 上のグループから減算
+                        $this->lfDownRankChilds($objQuery, "dtb_category", "parent_category_id", "category_id", $value["category_id"], $my_count);
+                    }
+                    // 自分のグループに加算
+                    $this->lfUpRankChilds($objQuery, "dtb_category", "parent_category_id", "category_id", $keys[0], $up_count);
+                } else if($rankAry[$keys[1]] < $rank) {
+                    // データが今の位置より下がった時
+                    $down_count = 0;
+                    $incAry     = $objQuery->select("category_id", "dtb_category", "level = ? AND rank < ? AND rank >= ?", array($level, $rank, $rankAry[$keys[1]]));
+                    foreach ($incAry as $value) {
+                        // 下のグループに加算
+                        $this->lfUpRankChilds($objQuery, "dtb_category", "parent_category_id", "category_id", $value["category_id"], $my_count);
+                        // 合計減算値
+                        $down_count += $this->lfCountChilds($objQuery, "dtb_category", "parent_category_id", "category_id", $value["category_id"]);
+                    }
+                    // 自分のグループから減算
+                    $this->lfDownRankChilds($objQuery, "dtb_category", "parent_category_id", "category_id", $keys[0], $down_count);
+                }
+                $objQuery->commit();
+            }
+            break;
         case 'tree':
             break;
         case 'csv':
@@ -266,7 +319,7 @@ class LC_Page_Admin_Products_Category extends LC_Page {
 
         $col = "category_id, category_name, level, rank";
         $where = "del_flg = 0 AND parent_category_id = ?";
-        $objQuery->setoption("ORDER BY rank DESC");
+        $objQuery->setOption("ORDER BY rank DESC");
         $arrRet = $objQuery->select($col, "dtb_category", $where, array($parent_category_id));
         return $arrRet;
     }

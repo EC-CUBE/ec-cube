@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -25,10 +25,10 @@
 <center>
 <!--{foreach from=$arrBestProducts item=arrProduct name=best_products}-->
 
-<!-- ▼オススメコメント ここから -->
-<a href="<!--{$smarty.const.MOBILE_DETAIL_P_HTML}--><!--{$arrProduct.product_id}-->">
+<!-- ▼おすすめ商品コメント ここから -->
+<a href="<!--{$smarty.const.MOBILE_DETAIL_P_HTML}--><!--{$arrProduct.product_id|escape:url}-->">
 <!--{$arrProduct.comment|escape|nl2br}--></a>
-<!-- ▲オススメコメント ここまで -->
+<!-- ▲おすすめ商品コメント ここまで -->
 
 <!--{if !$smarty.foreach.best_products.last}--><br><br><!--{/if}-->
 <!--{/foreach}-->

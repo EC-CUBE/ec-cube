@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -101,7 +101,7 @@ class SC_Customer {
         //docomo用にデータを取り出す。
 		if(SC_MobileUserAgent::getCarrier() == 'docomo'){
 			if($_SESSION['mobile']['phone_id'] == "" && strlen($_SESSION['mobile']['phone_id']) == 0)
-				$_SESSION['mobile']['phone_id'] = SC_MobileUserAgent::getId();
+			    $_SESSION['mobile']['phone_id'] = SC_MobileUserAgent::getId();
 		}
 		if (!isset($_SESSION['mobile']['phone_id']) || $_SESSION['mobile']['phone_id'] === false) {
             return false;
@@ -166,33 +166,6 @@ class SC_Customer {
         $this->customer_data['mobile_phone_id'] = $_SESSION['mobile']['phone_id'];
     }
 
-    /**
-     * email から email_mobile へ携帯のメールアドレスをコピーする。
-     *
-     * @return void
-     */
-    function updateEmailMobile() {
-
-        $objMobile = new SC_Helper_Mobile_Ex();
-        // すでに email_mobile に値が入っている場合は何もしない。
-        if ($this->customer_data['email_mobile'] != '') {
-            return;
-        }
-
-        // email が携帯のメールアドレスではない場合は何もしない。
-        if (!$objMobile->gfIsMobileMailAddress($this->customer_data['email'])) {
-            return;
-        }
-
-        // email から email_mobile へコピーする。
-        $objQuery = new SC_Query;
-        $sqlval = array('email_mobile' => $this->customer_data['email']);
-        $where = 'customer_id = ? AND del_flg = 0 AND status = 2';
-        $objQuery->update('dtb_customer', $sqlval, $where, array($this->customer_data['customer_id']));
-
-        $this->customer_data['email_mobile'] = $this->customer_data['email'];
-    }
-
     // パスワードを確認せずにログイン
     function setLogin($email) {
         // 本登録された会員のみ
@@ -225,9 +198,7 @@ class SC_Customer {
         // $_SESSION['customer']の解放
         unset($_SESSION['customer']);
         $objSiteSess = new SC_SiteSession();
-        $objCartSess = new SC_CartSession();
         $objSiteSess->unsetUniqId();
-        $objCartSess->delAllProducts();
         // ログに記録する
         GC_Utils_Ex::gfPrintLog("logout : user=".$this->customer_data['customer_id'] ."\t"."ip=". $this->getRemoteHost(), CUSTOMER_LOG_PATH );
     }

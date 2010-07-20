@@ -22,7 +22,7 @@
  */
 
 if (!defined('ECCUBE_INSTALL')
- || preg_match('|install/index.php|', $_SERVER['PHP_SELF'])) {
+ || preg_match('|/install/index.php$|', $_SERVER['PHP_SELF'])) {
 
     return;
 }

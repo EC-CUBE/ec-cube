@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -52,8 +52,7 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         $this->arrSex = $masterData->getMasterData("mtb_sex");
         $this->arrMAILMAGATYPE = $masterData->getMasterData("mtb_mail_magazine_type");
         $this->arrReminder = $masterData->getMasterData("mtb_reminder");
-
-        $this->allowClientCache();
+        $this->httpCacheControl('nocache');
     }
 
     /**
@@ -70,7 +69,6 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         $objSiteSess = new SC_SiteSession();
         $objCampaignSess = new SC_CampaignSession();
         $objCustomer = new SC_Customer();
-        $arrInfo = $objSiteInfo->data;
         $objQuery = new SC_Query();
         $objDb = new SC_Helper_DB_Ex();
 
@@ -82,14 +80,14 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         $this->tpl_uniqid = $uniqid;
 
         // カート集計処理
-        $objDb->sfTotalCart($this, $objCartSess, $arrInfo);
+        $objDb->sfTotalCart($this, $objCartSess);
         if (strlen($this->tpl_message) >= 1) {
             SC_Utils_Ex::sfDispSiteError(SOLD_OUT, '', true);
         }
         // 一時受注テーブルの読込
         $arrData = $objDb->sfGetOrderTemp($uniqid);
         // カート集計を元に最終計算
-        $arrData = $objDb->sfTotalConfirm($arrData, $this, $objCartSess, $arrInfo, $objCustomer, $objCampaignSess);
+        $arrData = $objDb->sfTotalConfirm($arrData, $this, $objCartSess, null, $objCustomer);
         // キャンペーンからの遷移で送料が無料だった場合の処理
         if($objCampaignSess->getIsCampaign()) {
             $deliv_free_flg = $objQuery->get("dtb_campaign", "deliv_free_flg", "campaign_id = ?", array($objCampaignSess->getCampaignId()));
@@ -99,10 +97,6 @@ class LC_Page_Shopping_Confirm extends LC_Page {
                 $arrData['deliv_fee'] = 0;
             }
         }
-
-
-        // カート内の商品の売り切れチェック
-        $objCartSess->chkSoldOut($objCartSess->getCartList());
 
         // 会員ログインチェック
         if($objCustomer->isLoginSuccess()) {
@@ -115,7 +109,7 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         if($objDb->sfColumnExists("dtb_payment", "memo01")){
             // MEMO03に値が入っている場合には、モジュール追加されたものとみなす
             $sql = "SELECT memo03 FROM dtb_payment WHERE payment_id = ?";
-            $arrPayment = $objQuery->getall($sql, array($arrData['payment_id']));
+            $arrPayment = $objQuery->getAll($sql, array($arrData['payment_id']));
             $payment_type = $arrPayment[0]["memo03"];
         }
         $this->payment_type = $payment_type;
@@ -163,7 +157,7 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         }
 
         $this->arrData = $arrData;
-        $this->arrInfo = $arrInfo;
+        $this->arrInfo = $objSiteInfo->data;
         $objView->assignobj($this);
         // フレームを選択(キャンペーンページから遷移なら変更)
         $objCampaignSess->pageView($objView);
@@ -189,26 +183,25 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         $objSiteInfo = $objView->objSiteInfo;
         $objSiteSess = new SC_SiteSession();
         $objCustomer = new SC_Customer();
-        $arrInfo = $objSiteInfo->data;
         $objQuery = new SC_Query();
         $objDb = new SC_Helper_DB_Ex();
 
         // 前のページで正しく登録手続きが行われた記録があるか判定
-        SC_Utils_Ex::sfIsPrePage($objSiteSess, true);
+        SC_Utils_Ex::sfIsPrePage($objSiteSess);
 
         // ユーザユニークIDの取得と購入状態の正当性をチェック
         $uniqid = SC_Utils_Ex::sfCheckNormalAccess($objSiteSess, $objCartSess);
         $this->tpl_uniqid = $uniqid;
 
         // カート集計処理
-        $objDb->sfTotalCart($this, $objCartSess, $arrInfo);
+        $objDb->sfTotalCart($this, $objCartSess);
+        if (strlen($this->tpl_message) >= 1) {
+            SC_Utils_Ex::sfDispSiteError(SOLD_OUT, '', true);
+        }
         // 一時受注テーブルの読込
         $arrData = $objDb->sfGetOrderTemp($uniqid);
         // カート集計を元に最終計算
-        $arrData = $objDb->sfTotalConfirm($arrData, $this, $objCartSess, $arrInfo, $objCustomer);
-
-        // カート内の商品の売り切れチェック
-        $objCartSess->chkSoldOut($objCartSess->getCartList());
+        $arrData = $objDb->sfTotalConfirm($arrData, $this, $objCartSess, null, $objCustomer);
 
         // 会員ログインチェック
         if($objCustomer->isLoginSuccess(true)) {
@@ -221,7 +214,7 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         if($objDb->sfColumnExists("dtb_payment", "memo01")){
             // MEMO03に値が入っている場合には、モジュール追加されたものとみなす
             $sql = "SELECT memo03 FROM dtb_payment WHERE payment_id = ?";
-            $arrPayment = $objQuery->getall($sql, array($arrData['payment_id']));
+            $arrPayment = $objQuery->getAll($sql, array($arrData['payment_id']));
             $payment_type = $arrPayment[0]["memo03"];
         }
         $this->payment_type = $payment_type;
@@ -267,7 +260,7 @@ class LC_Page_Shopping_Confirm extends LC_Page {
             break;
         }
         $this->arrData = $arrData;
-        $this->arrInfo = $arrInfo;
+        $this->arrInfo = $objSiteInfo->data;
         $objView->assignobj($this);
         $objView->display(SITE_FRAME);
     }

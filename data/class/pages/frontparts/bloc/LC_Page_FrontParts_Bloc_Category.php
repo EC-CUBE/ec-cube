@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -53,7 +53,7 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc {
      * @return void
      */
     function process() {
-        $objSubView = new SC_SiteView();
+        $objSubView = new SC_SiteView(false);
         $objDb = new SC_Helper_DB_Ex();
 
         // 選択中のカテゴリIDを判定する
@@ -112,7 +112,7 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc {
         } else {
             $where = "del_flg = 0";
         }
-        $objQuery->setoption("ORDER BY rank DESC");
+        $objQuery->setOption("ORDER BY rank DESC");
         $arrRet = $objQuery->select($col, $from, $where);
 
         foreach ($arrParent_category_id as $category_id) {
@@ -148,7 +148,7 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc {
         if($count_check) {
             $where .= " AND product_count > 0";
         }
-        $objQuery->setoption("ORDER BY rank DESC");
+        $objQuery->setOption("ORDER BY rank DESC");
         $arrRet = $objQuery->select($col, $from, $where);
 
         // メインカテゴリーを抽出する。

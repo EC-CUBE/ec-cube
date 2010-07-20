@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -101,7 +101,7 @@ class LC_Page_Regist_Complete extends LC_Page {
         $objView = new SC_MobileView();
 
         // カートが空かどうかを確認する。
-        $objCartSess = new SC_CartSession("", false);
+        $objCartSess = new SC_CartSession();
         $this->tpl_cart_empty = count($objCartSess->getCartList()) < 1;
 
         $objView->assignobj($this);

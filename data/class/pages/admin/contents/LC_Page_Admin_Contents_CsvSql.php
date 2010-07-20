@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -23,7 +23,6 @@
 
 // {{{ requires
 require_once(CLASS_PATH . "pages/LC_Page.php");
-require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_CSV_Ex.php");
 
 /**
  * CSV 出力項目設定(高度な設定)のページクラス.
@@ -60,8 +59,6 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page {
     function process() {
         $objView = new SC_AdminView();
         $objDbFactory = SC_DB_DBFactory_Ex::getInstance();
-        $objCSV = new SC_Helper_CSV_Ex();
-        $this->arrSubnavi = $objCSV->arrSubnavi;
 
         // 認証可否の判定
         $objSess = new SC_Session();
@@ -138,7 +135,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page {
 
             $objQuery = new SC_Query();
 
-            $arrCsvOutputData = $objQuery->getall("SELECT " . $arrCsvData[0]['csv_sql']);
+            $arrCsvOutputData = $objQuery->getAll("SELECT " . $arrCsvData[0]['csv_sql']);
 
             if (count($arrCsvOutputData) > 0) {
 
@@ -150,13 +147,12 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page {
                     $header .= $data;
                     $i ++;
                 }
-                $header .= "\r\n";
+                $header .= "\n";
 
                 $data = SC_Utils_Ex::getCSVData($arrCsvOutputData, $arrKey);
                 // CSV出力
                 SC_Utils_Ex::sfCSVDownload($header.$data);
                 exit;
-                break;
             }else{
                 $this->tpl_onload = "alert('出力データがありません。');";
                 $sql_id = "";
@@ -297,9 +293,9 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page {
 
         // データを引数で渡されている場合にはセットする
         if (count($arrData) > 0) {
-            $arrRet = $objQuery->getall($sql, $arrData);
+            $arrRet = $objQuery->getAll($sql, $arrData);
         }else{
-            $arrRet = $objQuery->getall($sql);
+            $arrRet = $objQuery->getAll($sql);
         }
 
         return $arrRet;

@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -101,13 +101,11 @@ class LC_Page_Admin_Order_Pdf extends LC_Page {
             $this->arrForm = $arrRet;
             // エラー入力なし
             if (count($this->arrErr) == 0) {
-                $i = 0;
                 $objFpdf = new SC_Fpdf($arrRet['download'], $arrRet['title']);
-                foreach ( $arrRet['order_id'] AS $key=>$val ) {
+                foreach ($arrRet['order_id'] AS $key => $val) {
                     $arrPdfData = $arrRet;
                     $arrPdfData['order_id'] = $val;
                     $objFpdf->setData($arrPdfData);
-                    ++$i;
                 }
                 $objFpdf->createPdf();
                 exit;
@@ -129,12 +127,12 @@ class LC_Page_Admin_Order_Pdf extends LC_Page {
 
             // 注文番号があったら、セットする
             if(SC_Utils_Ex::sfIsInt($_GET['order_id'])) {
-                  $arrForm['order_id'][0] = $_GET['order_id'];
+	              $arrForm['order_id'][0] = $_GET['order_id'];
             } elseif (is_array($_POST['pdf_order_id'])) {
-                    sort($_POST['pdf_order_id']);
-                    foreach ($_POST['pdf_order_id'] AS $key=>$val) {
-                          $arrForm['order_id'][] = $val;
-                    }
+                sort($_POST['pdf_order_id']);
+                foreach ($_POST['pdf_order_id'] AS $key=>$val) {
+	                  $arrForm['order_id'][] = $val;
+                }
             }
 
             $this->arrForm = $arrForm;

@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -50,9 +50,10 @@
 <!--{else}-->
 <a href="entry/new.php" accesskey="3"><!--{3|numeric_emoji}-->会員登録</a><br>
 <!--{/if}-->
-<a href="guide/index.php" accesskey="4"><!--{4|numeric_emoji}-->ご利用ガイド</a><br>
-<a href="<!--{$smarty.const.MOBILE_SSL_URL}-->contact/index.php?PHPSESSID=<!--{$smarty.get.PHPSESSID|urlencode}-->" accesskey="5"><!--{5|numeric_emoji}-->お問い合せ</a><br>
-<a href="mypage/index.php" accesskey="6" utn><!--{6|numeric_emoji}-->MYページ</a><br>
+<a href="guide/<!--{$smarty.const.DIR_INDEX_URL}-->" accesskey="4"><!--{4|numeric_emoji}-->ご利用ガイド</a><br>
+<a href="contact/<!--{$smarty.const.DIR_INDEX_URL}-->" accesskey="5"><!--{5|numeric_emoji}-->お問い合せ</a><br>
+<a href="mypage/<!--{$smarty.const.DIR_INDEX_URL}-->" accesskey="6" utn><!--{6|numeric_emoji}-->MYページ</a><br>
+<a href="order/<!--{$smarty.const.DIR_INDEX_URL}-->" accesskey="7"><!--{7|numeric_emoji}-->特定商取引に関する法律に基づく表記</a><br>
 <!-- ▲メニュー ここまで -->
 
 <br>

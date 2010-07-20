@@ -1,7 +1,7 @@
 <!--{*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,24 +21,24 @@
  *}-->
  <!--▼CONTENTS-->
 <div id="undercolumn">
-  <div id="undercolumn_entry">
-    <h2 class="title">
-      <img src="<!--{$TPL_DIR}-->img/entry/title.jpg" width="580" height="40" alt="会員登録" />
-    </h2>
-    <p>ご登録されますと、まずは仮会員となります。<br />
-      入力されたメールアドレスに、ご連絡が届きますので、本会員になった上でお買い物をお楽しみください。</p>
-    <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
-      <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-      <input type="hidden" name="mode" value="confirm" />
+    <div id="undercolumn_entry">
+        <h2 class="title"><!--{$tpl_title|escape}--></h2>
+        <!--{if $smarty.const.CUSTOMER_CONFIRM_MAIL}-->
+            <p>ご登録されますと、まずは仮会員となります。<br />
+                入力されたメールアドレスに、ご連絡が届きますので、本会員になった上でお買い物をお楽しみください。</p>
+        <!--{/if}-->
+        <form name="form1" id="form1" method="post" action="?">
+            <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+            <input type="hidden" name="mode" value="confirm" />
 
-      <table summary="会員登録フォーム">
-      <!--{include file="`$smarty.const.TEMPLATE_DIR`frontparts/form_personal_input.tpl" flgFields=3 emailMobile=false prefix=""}-->
-      </table>
+            <table summary="会員登録フォーム">
+            <!--{include file="`$smarty.const.TEMPLATE_DIR`frontparts/form_personal_input.tpl" flgFields=3 emailMobile=false prefix=""}-->
+            </table>
 
-      <div class="tblareabtn">
-        <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_confirm_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_confirm.gif',this)" src="<!--{$TPL_DIR}-->img/common/b_confirm.gif" class="box150" alt="確認ページへ" name="confirm" id="confirm" />
-      </div>
-    </form>
-  </div>
+            <div class="tblareabtn">
+                <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_confirm_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_confirm.gif',this)" src="<!--{$TPL_DIR}-->img/common/b_confirm.gif" class="box150" alt="確認ページへ" name="confirm" id="confirm" />
+            </div>
+        </form>
+    </div>
 </div>
 <!--▲CONTENTS-->

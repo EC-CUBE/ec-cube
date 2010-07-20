@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -47,6 +47,7 @@ class LC_Page_FrontParts_Bloc_Login extends LC_Page_FrontParts_Bloc {
         $this->setTplMainpage($bloc_file);
         $this->tpl_login = false;
         $this->tpl_disable_logout = false;
+        $this->httpCacheControl('nocache');
     }
 
     /**
@@ -79,7 +80,7 @@ class LC_Page_FrontParts_Bloc_Login extends LC_Page_FrontParts_Bloc {
         }
 
         $this->tpl_disable_logout = $this->lfCheckDisableLogout();
-        $objSubView = new SC_SiteView();
+        $objSubView = new SC_SiteView(false);
         $this->transactionid = $this->getToken();
         $objSubView->assignobj($this);
         $objSubView->display($this->tpl_mainpage);

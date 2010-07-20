@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -79,7 +79,7 @@ class LC_Page_Shopping_DelivAddr extends LC_Page {
 
         //ログイン判定
         if (!$objCustomer->isLoginSuccess(true)){
-            SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
+            SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
         }
 
         $this->arrForm = $_POST;
@@ -137,7 +137,7 @@ class LC_Page_Shopping_DelivAddr extends LC_Page {
 
                 // 郵便番号から住所の取得
                 if (@$this->arrForm['pref'] == "" && @$this->arrForm['addr01'] == "" && @$this->arrForm['addr02'] == "") {
-                    $address = $this->lfGetAddress($_REQUEST['zip01'].$_REQUEST['zip02']);
+                    $address = SC_Utils_Ex::sfGetAddress($_REQUEST['zip01'].$_REQUEST['zip02']);
                     $this->arrForm['pref'] = @$address[0]['state'];
                     $this->arrForm['addr01'] = @$address[0]['city'] . @$address[0]['town'];
                 }
@@ -176,7 +176,7 @@ class LC_Page_Shopping_DelivAddr extends LC_Page {
                 $this->sendRedirect($this->getLocation(MOBILE_URL_SHOP_PAYMENT), true);
                 exit;
             } else {
-                SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
+                SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
             }
             break;
         default:
@@ -207,7 +207,7 @@ class LC_Page_Shopping_DelivAddr extends LC_Page {
         $objErr->doFunc(array("電話番号1", 'tel01'), array("EXIST_CHECK","NUM_CHECK"));
         $objErr->doFunc(array("電話番号2", 'tel02'), array("EXIST_CHECK","NUM_CHECK"));
         $objErr->doFunc(array("電話番号3", 'tel03'), array("EXIST_CHECK","NUM_CHECK"));
-        $objErr->doFunc(array("電話番号", "tel01", "tel02", "tel03", TEL_LEN) ,array("TEL_CHECK"));
+        $objErr->doFunc(array("電話番号", "tel01", "tel02", "tel03") ,array("TEL_CHECK"));
         return $objErr->arrErr;
 
     }
@@ -237,7 +237,7 @@ class LC_Page_Shopping_DelivAddr extends LC_Page {
         $objErr->doFunc(array("電話番号1", 'tel01'), array("EXIST_CHECK","NUM_CHECK"));
         $objErr->doFunc(array("電話番号2", 'tel02'), array("EXIST_CHECK","NUM_CHECK"));
         $objErr->doFunc(array("電話番号3", 'tel03'), array("EXIST_CHECK","NUM_CHECK"));
-        $objErr->doFunc(array("電話番号", "tel01", "tel02", "tel03", TEL_LEN) ,array("TEL_CHECK"));
+        $objErr->doFunc(array("電話番号", "tel01", "tel02", "tel03") ,array("TEL_CHECK"));
         return $objErr->arrErr;
 
     }
@@ -295,35 +295,6 @@ class LC_Page_Shopping_DelivAddr extends LC_Page {
             }
         }
         return $array;
-    }
-
-    // 郵便番号から住所の取得
-    function lfGetAddress($zipcode) {
-
-        $conn = new SC_DBconn(ZIP_DSN);
-
-        // 郵便番号検索文作成
-        $zipcode = mb_convert_kana($zipcode ,"n");
-        $sqlse = "SELECT state, city, town FROM mtb_zip WHERE zipcode = ?";
-
-        $data_list = $conn->getAll($sqlse, array($zipcode));
-
-        // インデックスと値を反転させる。
-        $arrREV_PREF = array_flip($this->arrPref);
-
-        /*
-          総務省からダウンロードしたデータをそのままインポートすると
-          以下のような文字列が入っているので	対策する。
-          ・（１・１９丁目）
-          ・以下に掲載がない場合
-        */
-        $town =  $data_list[0]['town'];
-        $town = ereg_replace("（.*）$","",$town);
-        $town = ereg_replace("以下に掲載がない場合","",$town);
-        $data_list[0]['town'] = $town;
-        $data_list[0]['state'] = $arrREV_PREF[$data_list[0]['state']];
-
-        return $data_list;
     }
 
     /* 別のお届け先住所を一時受注テーブルへ */

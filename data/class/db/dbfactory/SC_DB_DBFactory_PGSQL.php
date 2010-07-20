@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -46,7 +46,6 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
      */
     function sfGetDBVersion($dsn = "") {
         $objQuery = new SC_Query($this->getDSN($dsn), true, true);
-        list($db_type) = split(":", $dsn);
         $val = $objQuery->getOne("select version()");
         $arrLine = split(" " , $val);
         return $arrLine[0] . " " . $arrLine[1];

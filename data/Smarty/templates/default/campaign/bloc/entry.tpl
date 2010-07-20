@@ -1,7 +1,7 @@
 <!--{*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -20,7 +20,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 <!--▼まだ会員登録されていないお客様-->
-<form name="member_form2" id="member_form2" method="post" action="./index.php">
+<form name="member_form2" id="member_form2" method="post" action="./<!--{$smarty.const.DIR_INDEX_URL}-->">
       <input type="hidden" name="mode" value="nonmember" />
       <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <div class="loginarea">

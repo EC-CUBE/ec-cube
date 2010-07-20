@@ -1,4 +1,4 @@
-#基本はphp_ini.incで設定するが、ini_setで反映されないものはここで設定する
+#基本は SC_Initial.php で設定するが、ini_setで反映されないものはここで設定する
 php_value mbstring.language Japanese
 php_value output_handler mb_output_handler
 php_flag mbstring.encoding_translation 1
@@ -11,3 +11,4 @@ php_value mbstring.internal_encoding UTF-8
 
 # デフォルトテンプレートの状態で 2M近くになるため
 php_value upload_max_filesize 5M
+#php_value post_max_size 8M

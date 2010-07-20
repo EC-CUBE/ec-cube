@@ -95,7 +95,7 @@ INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_m
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_mailtemplate','update_date','更新日時');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_mailmaga_template','template_id','テンプレートID');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_mailmaga_template','subject','件名');
-INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_mailmaga_template','charge_image','担当者の写真');
+INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_mailmaga_template','charge_image','メール担当写真');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_mailmaga_template','mail_method','1:テキストメール 2:HTMLメール 3:HTMLTEMPLATE');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_mailmaga_template','header','ヘッダーテキスト');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_mailmaga_template','body','本文（テキスト登録用）');
@@ -142,7 +142,6 @@ INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_p
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_products','name','商品名');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_products','deliv_fee','商品送料');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_products','sale_limit','購入制限数');
-INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_products','sale_unlimited','購入制限（1:購入制限無し)');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_products','category_id','商品カテゴリー');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_products','rank','表示ランク');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_products','status','1:表示、2:非表示、3:削除');
@@ -154,7 +153,6 @@ INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_p
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_products','comment4','コメント4');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_products','comment5','コメント5');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_products','comment6','コメント6');
-INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_products','note','備考欄(SHOP専用)');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_products','file1','アップロードファイル1');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_products','file2','アップロードファイル2');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_products','file3','アップロードファイル3');
@@ -203,8 +201,8 @@ INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_p
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_products_class','stock','在庫数');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_products_class','stock_unlimited','在庫制限（1:無制限)');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_products_class','sale_limit','販売制限');
-INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_products_class','price01','価格');
-INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_products_class','price02','商品価格');
+INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_products_class','price01','通常価格');
+INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_products_class','price02','販売価格');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_products_class','status','状態（表示:1、非表示:2）');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_products_class','creator_id','作成者ID');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_products_class','create_date','作成日時');
@@ -313,7 +311,7 @@ INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_n
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_news','create_date','作成日時');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_news','update_date','更新日時');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_news','del_flg ','0:既定、1:削除');
-INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_best_products','best_id','注文番号');
+INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_best_products','best_id','注文ID');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_best_products','category_id','カテゴリID');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_best_products','rank','順位');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_best_products','product_id','商品ID');
@@ -535,7 +533,7 @@ INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_o
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_order_detail','classcategory_name1','規格名1');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_order_detail','classcategory_name2','規格名2');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_order_detail','price','価格');
-INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_order_detail','quantity','個数');
+INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_order_detail','quantity','数量');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_order_detail','point_rate','ポイント付与率');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('mtb_pref','pref_id','都道府県ID');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('mtb_pref','pref_name','都道府県名');

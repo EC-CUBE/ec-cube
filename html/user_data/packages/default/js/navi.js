@@ -1,7 +1,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -19,39 +19,32 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-	var preLoadFlag = "false";
+var preLoadFlag = "false";
 
-	function preLoadImg(URL){
+function preLoadImg(URL){
 
-		arrImgList = new Array (
-			URL+"img/header/basis_on.jpg",URL+"img/header/product_on.jpg",URL+"img/header/customer_on.jpg",URL+"img/header/order_on.jpg",
-			URL+"img/header/sales_on.jpg",URL+"img/header/mail_on.jpg",URL+"img/header/contents_on.jpg",
-			URL+"img/header/mainpage_on.gif",URL+"img/header/sitecheck_on.gif",URL+"img/header/logout.gif",
-			URL+"img/contents/btn_search_on.jpg",URL+"img/contents/btn_regist_on.jpg",
-			URL+"img/contents/btn_csv_on.jpg",URL+"img/contents/arrow_left.jpg",URL+"img/contents/arrow_right.jpg"
-		);
-		arrPreLoad = new Array();
-		for (i in arrImgList) {
-			arrPreLoad[i] = new Image();
-			arrPreLoad[i].src = arrImgList[i];
-		}
-		preLoadFlag = "true";
-	}
+    arrImgList = new Array (
+        URL+"img/contents/btn_search_on.jpg",URL+"img/contents/btn_regist_on.jpg",
+        URL+"img/contents/btn_csv_on.jpg",URL+"img/contents/arrow_left.jpg",URL+"img/contents/arrow_right.jpg"
+    );
+    arrPreLoad = new Array();
+    for (i in arrImgList) {
+        arrPreLoad[i] = new Image();
+        arrPreLoad[i].src = arrImgList[i];
+    }
+    preLoadFlag = "true";
+}
 
-	function chgImg(fileName,imgName){
-		if (preLoadFlag == "true") {
-			document.images[imgName].src = fileName;
-		}
-	}
-	
-	function chgImgImageSubmit(fileName,imgObj){
-	imgObj.src = fileName;
-	}
-	
-	// サブナビの表示切替
-	function naviStyleChange(ids, bcColor, color){
-		document.getElementById(ids).style.backgroundColor = bcColor;
-	}	
+function chgImg(fileName,img){
+    if (preLoadFlag == "true") {
+        if (typeof(img) == "object") {
+            img.src = fileName;
+        } else {
+            document.images[img].src = fileName;
+        }
+    }
+}
 
-
-	
+function chgImgImageSubmit(fileName,imgObj){
+imgObj.src = fileName;
+}

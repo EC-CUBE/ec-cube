@@ -8,11 +8,6 @@ div#under02column {
     margin: 15px auto 0 auto;
 }
 
-div#under02column h2.title{
-    width: 700px;
-    margin: 0 0 15px 0;
-}
-
 div#under02column table {
     width: 690px;
 }
@@ -99,7 +94,7 @@ div#under02column_customer .zipimg img {
 }
 
 
-/* お届け先指定
+/* お届け先の指定
 ----------------------------------------------- */
 div#under02column_shopping table th {
     text-align: center;

@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -70,7 +70,7 @@ class LC_Page_Forgot extends LC_Page {
         if (defined("MOBILE_SITE") && MOBILE_SITE) {
             $objView = new SC_MobileView();
         } else {
-            $objView = new SC_SiteView();
+            $objView = new SC_SiteView(false);
         }
 
         $objSess = new SC_Session();
@@ -220,7 +220,7 @@ class LC_Page_Forgot extends LC_Page {
         //　パスワード変更お知らせメール送信
         $this->customer_name = $customer_name;
         $this->temp_password = $temp_password;
-        $objMailText = new SC_SiteView();
+        $objMailText = new SC_SiteView(false);
         $objMailText->assignobj($this);
 
         $toCustomerMail = $objMailText->fetch("mail_templates/forgot_mail.tpl");
@@ -250,7 +250,7 @@ class LC_Page_Forgot extends LC_Page {
         $objMobile = new SC_Helper_Mobile_Ex();
         // 空メール用のトークンを作成。
         if (MOBILE_USE_KARA_MAIL) {
-            $token = $objMobile->gfPrepareKaraMail('forgot/index.php');
+            $token = $objMobile->gfPrepareKaraMail('forgot/' . DIR_INDEX_URL);
             if ($token !== false) {
                 $objPage->tpl_kara_mail_to = MOBILE_KARA_MAIL_ADDRESS_USER . MOBILE_KARA_MAIL_ADDRESS_DELIMITER . 'forgot_' . $token . '@' . MOBILE_KARA_MAIL_ADDRESS_DOMAIN;
 	}

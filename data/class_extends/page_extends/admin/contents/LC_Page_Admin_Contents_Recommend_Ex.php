@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -25,7 +25,7 @@
 require_once(CLASS_PATH . "pages/admin/contents/LC_Page_Admin_Contents_Recommend.php");
 
 /**
- * おすすめ管理 のページクラス(拡張).
+ * おすすめ商品管理 のページクラス(拡張).
  *
  * LC_Page_Admin_Contents_Recommend をカスタマイズする場合はこのクラスを編集する.
  *

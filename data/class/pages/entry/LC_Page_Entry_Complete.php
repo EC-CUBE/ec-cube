@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -55,6 +55,7 @@ class LC_Page_Entry_Complete extends LC_Page {
         }
 
         $this->tpl_title .= '会員登録(完了ページ)';
+        $this->httpCacheControl('nocache');
     }
 
     /**

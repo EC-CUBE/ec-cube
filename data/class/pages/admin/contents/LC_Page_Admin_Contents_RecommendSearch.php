@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -25,7 +25,7 @@
 require_once(CLASS_PATH . "pages/LC_Page.php");
 
 /**
- * おすすめ管理検索 のページクラス.
+ * おすすめ商品管理 商品検索のページクラス.
  *
  * @package Page
  * @author LOCKON CO.,LTD.
@@ -72,7 +72,7 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page {
             // 入力文字の強制変換
             $this->lfConvertParam();
 
-            $where = "del_flg = 0 AND status = 1";
+            $where = 'del_flg = 0';
 
             /* 入力エラーなし */
             foreach ($this->arrForm as $key => $val) {
@@ -127,9 +127,9 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page {
             $startno = $objNavi->start_row;
 
             // 取得範囲の指定(開始行番号、行数のセット)
-            $objQuery->setlimitoffset($page_max, $startno);
+            $objQuery->setLimitOffset($page_max, $startno);
             // 表示順序
-            $objQuery->setorder($order);
+            $objQuery->setOrder($order);
 
             // 検索結果の取得
             $this->arrProducts = $objQuery->select($col, $from, $where, $arrval);

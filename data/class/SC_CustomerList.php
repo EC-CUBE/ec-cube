@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -30,10 +30,10 @@ class SC_CustomerList extends SC_SelectSql {
 
     function SC_CustomerList($array, $mode = '') {
         parent::SC_SelectSql($array);
-
+        
         $masterData = new SC_DB_MasterData_Ex();
         $arrMobileDomain = $masterData->getMasterData("mtb_mobile_domain");
-
+        
         $objDb = new SC_Helper_DB_Ex();
 
         if($mode == "") {
@@ -44,7 +44,7 @@ class SC_CustomerList extends SC_SelectSql {
         }
 
         if($mode == "customer") {
-            // 管理者ページ顧客検索の場合仮登録会員も検索
+            // 管理機能顧客検索の場合仮登録会員も検索
             //$this->setWhere( "(status = 1 OR status = 2) AND del_flg = 0 ");
             $this->setWhere( " del_flg = 0 ");
             // 登録日を示すカラム
@@ -164,7 +164,7 @@ class SC_CustomerList extends SC_SelectSql {
 
         //　E-MAIL(mobile)
         if (!isset($this->arrSql['email_mobile'])) $this->arrSql['email_mobile'] = "";
-
+        
         if (strlen($this->arrSql['email_mobile']) > 0) {
             //カンマ区切りで複数の条件指定可能に
             $this->arrSql['email_mobile'] = explode(",", $this->arrSql['email_mobile']);
@@ -193,16 +193,25 @@ class SC_CustomerList extends SC_SelectSql {
 
         //　配信メールアドレス種別
         if ( $mode == 'magazine' ){
+            $sqlEmailMobileIsEmpty = "(dtb_customer.email_mobile IS NULL OR dtb_customer.email_mobile = '')";
             if (!isset($this->arrSql['mail_type'])) $this->arrSql['mail_type'] = "";
-            // PCサイトメールが指定されている場合
-            if ( strlen($this->arrSql['mail_type']) > 0 && $this->arrSql['mail_type'] == 1) {
-                // 携帯ドメインを外す。
-                foreach($arrMobileDomain as $mobile_domain) {
-                    $this->setWhere(" dtb_customer.email NOT ILIKE '%$mobile_domain' ");
-                }
-            // 携帯サイトメールが指定されている場合
-            } else if( strlen($this->arrSql['mail_type']) > 0 && $this->arrSql['mail_type'] == 2) {
-                $this->setWhere( " dtb_customer.email_mobile <> ''  ");
+            switch ($this->arrSql['mail_type']) {
+                // PCメールアドレス
+                case 1:
+                    $this->setWhere("(dtb_customer.email <> dtb_customer.email_mobile OR $sqlEmailMobileIsEmpty)");
+                    break;
+                // 携帯メールアドレス
+                case 2:
+                    $this->setWhere("NOT $sqlEmailMobileIsEmpty");
+                    break;
+                // PCメールアドレス (携帯メールアドレスを登録している顧客は除外)
+                case 3:
+                    $this->setWhere($sqlEmailMobileIsEmpty);
+                    break;
+                // 携帯メールアドレス (PCメールアドレスを登録している顧客は除外)
+                case 4:
+                    $this->setWhere('dtb_customer.email = dtb_customer.email_mobile');
+                    break;
             }
         }
 
@@ -352,6 +361,7 @@ class SC_CustomerList extends SC_SelectSql {
                 $this->arrVal[] = $data;
             }
         }
+
         $this->setOrder( "customer_id DESC" );
     }
 

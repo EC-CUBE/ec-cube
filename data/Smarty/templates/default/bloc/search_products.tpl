@@ -1,7 +1,7 @@
 <!--{*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -19,24 +19,31 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
-<!--▼検索条件ここから-->
-<h2>
-  <img src="<!--{$TPL_DIR}-->img/side/title_search.jpg" width="166" height="35" alt="検索条件" />
-</h2>
-<div id="searcharea">
-  <!--検索フォーム-->
-    <form name="search_form" id="search_form" method="get" action="<!--{$smarty.const.URL_DIR}-->products/list.php">
+<div class="bloc_outer">
+    <h2><img src="<!--{$TPL_DIR}-->img/bloc/search_products/title_icon.gif" width="20" height="20" alt="*" class="title_icon" />
+        検索条件</h2>
+    <div id="searcharea" class="bloc_body">
+        <!--検索フォーム-->
+        <form name="search_form" id="search_form" method="get" action="<!--{$smarty.const.URL_DIR}-->products/list.php">
 
-      <p><img src="<!--{$TPL_DIR}-->img/side/search_cat.gif" width="104" height="10" alt="商品カテゴリから選ぶ" />
-        <input type="hidden" name="mode" value="search" />
-        <select name="category_id" class="box142">
-          <option label="すべての商品" value="">全ての商品</option>
-          <!--{html_options options=$arrCatList selected=$category_id}-->
-        </select>
-      </p>
-      <p><img src="<!--{$TPL_DIR}-->img/side/search_name.gif" width="66" height="10" alt="商品名を入力" /></p>
-      <p><input type="text" name="name" class="box142" maxlength="50" value="<!--{$smarty.get.name|escape}-->" /></p>
-      <p class="btn"><input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/side/button_search_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/side/button_search.gif',this)" src="<!--{$TPL_DIR}-->img/side/button_search.gif" class="box51" alt="検索" name="search" /></p>
-    </form>
+            <p><img src="<!--{$TPL_DIR}-->img/side/search_cat.gif" width="104" height="10" alt="商品カテゴリから選ぶ" />
+                <input type="hidden" name="mode" value="search" />
+                <select name="category_id" class="box142">
+                    <option label="すべての商品" value="">全ての商品</option>
+                    <!--{html_options options=$arrCatList selected=$category_id}-->
+                </select>
+            </p>
+            <!--{if $arrMakerList}-->
+            <p>メーカーから選ぶ
+                <select name="maker_id" class="box142">
+                    <option label="すべてのメーカー" value="">すべてのメーカー</option>
+                    <!--{html_options options=$arrMakerList selected=$maker_id}-->
+                </select>
+            </p>
+            <!--{/if}-->
+            <p><img src="<!--{$TPL_DIR}-->img/side/search_name.gif" width="66" height="10" alt="商品名を入力" /></p>
+            <p><input type="text" name="name" class="box142" maxlength="50" value="<!--{$smarty.get.name|escape}-->" /></p>
+            <p class="btn"><input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/side/button_search_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/side/button_search.gif',this)" src="<!--{$TPL_DIR}-->img/side/button_search.gif" class="box51" alt="検索" name="search" /></p>
+        </form>
+    </div>
 </div>
-<!--▲検索条件ここまで-->

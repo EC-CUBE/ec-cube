@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -25,7 +25,7 @@
 require_once(CLASS_PATH . "pages/LC_Page.php");
 
 /**
- * 特定商取引に関する法律 のページクラス.
+ * 特定商取引に関する法律に基づく表記 のページクラス.
  *
  * @package Page
  * @author LOCKON CO.,LTD.
@@ -45,7 +45,7 @@ class LC_Page_Order extends LC_Page {
         parent::init();
         $this->tpl_mainpage = 'order/index.tpl';
         $this->tpl_page_category = 'order';
-        $this->tpl_title = '特定商取引に関する法律';
+        $this->tpl_title = '特定商取引に関する法律に基づく表記';
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData("mtb_pref",
@@ -70,6 +70,32 @@ class LC_Page_Order extends LC_Page {
         $objView->assignobj($this);
         $objView->display(SITE_FRAME);
     }
+
+    /**
+     * モバイルページを初期化する.
+     *
+     * @return void
+     */
+    function mobileInit() {
+        $this->init();
+    }
+
+    /**
+     * Page のプロセス(モバイル).
+     *
+     *
+     * @return void
+     */
+    function mobileProcess() {
+        $objView = new SC_MobileView();
+        $objDb = new SC_Helper_DB_Ex();
+
+        $this->arrRet = $objDb->sf_getBasisData();
+
+        $objView->assignobj($this);
+        $objView->display(SITE_FRAME);
+    }
+
 
     /**
      * デストラクタ.

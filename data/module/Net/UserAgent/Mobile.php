@@ -4,42 +4,50 @@
 /**
  * PHP versions 4 and 5
  *
- * LICENSE: This source file is subject to version 3.0 of the PHP license
- * that is available through the world-wide-web at the following URI:
- * http://www.php.net/license/3_0.txt.  If you did not receive a copy of
- * the PHP License and are unable to obtain it through the web, please
- * send a note to license@php.net so we can mail you a copy immediately.
+ * Copyright (c) 2003-2009 KUBO Atsuhiro <kubo@iteman.jp>,
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category   Networking
  * @package    Net_UserAgent_Mobile
- * @author     KUBO Atsuhiro <iteman@users.sourceforge.net>
- * @copyright  2003-2008 KUBO Atsuhiro <iteman@users.sourceforge.net>
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @author     KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2003-2009 KUBO Atsuhiro <kubo@iteman.jp>
+ * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version    CVS: $Id$
  * @since      File available since Release 0.1
  */
 
 require_once dirname(__FILE__) . '/../../PEAR.php';
+require_once dirname(__FILE__) . '/Mobile/Error.php';
 
-// {{{ constants
-
-/**
- * Constants for error handling.
- */
-define('NET_USERAGENT_MOBILE_OK',               1);
-define('NET_USERAGENT_MOBILE_ERROR',           -1);
-define('NET_USERAGENT_MOBILE_ERROR_NOMATCH',   -2);
-define('NET_USERAGENT_MOBILE_ERROR_NOT_FOUND', -3);
-
-// }}}
 // {{{ GLOBALS
 
 /**
  * globals for fallback on no match
  *
- * @global boolean $GLOBALS['_NET_USERAGENT_MOBILE_FALLBACK_ON_NOMATCH']
+ * @global boolean $GLOBALS['NET_USERAGENT_MOBILE_FallbackOnNomatch']
  */
-$GLOBALS['_NET_USERAGENT_MOBILE_FALLBACK_ON_NOMATCH'] = false;
+$GLOBALS['NET_USERAGENT_MOBILE_FallbackOnNomatch'] = false;
 
 // }}}
 // {{{ Net_UserAgent_Mobile
@@ -47,13 +55,10 @@ $GLOBALS['_NET_USERAGENT_MOBILE_FALLBACK_ON_NOMATCH'] = false;
 /**
  * HTTP mobile user agent string parser
  *
- * Net_UserAgent_Mobile parses HTTP_USER_AGENT strings of (mainly Japanese)
- * mobile HTTP user agents. It'll be useful in page dispatching by user
- * agents.
+ * Net_UserAgent_Mobile parses HTTP_USER_AGENT strings of (mainly Japanese) mobile
+ * HTTP user agents. It'll be useful in page dispatching by user agents.
  * This package was ported from Perl's HTTP::MobileAgent.
  * See {@link http://search.cpan.org/search?mode=module&query=HTTP-MobileAgent}
- * The author of the HTTP::MobileAgent module is Tatsuhiko Miyagawa
- * <miyagawa@bulknews.net>
  *
  * SYNOPSIS:
  * <code>
@@ -67,9 +72,9 @@ $GLOBALS['_NET_USERAGENT_MOBILE_FALLBACK_ON_NOMATCH'] = false;
  *     // or if (strtolower(get_class($agent)) == 'http_mobileagent_docomo')
  *     // it's NTT DoCoMo i-mode
  *     // see what's available in Net_UserAgent_Mobile_DoCoMo
- * } elseif ($agent->isVodafone()) {
- *     // it's Vodafone(J-PHONE)
- *     // see what's available in Net_UserAgent_Mobile_Vodafone
+ * } elseif ($agent->isSoftBank()) {
+ *     // it's SoftBank
+ *     // see what's available in Net_UserAgent_Mobile_SoftBank
  * } elseif ($agent->isEZweb()) {
  *     // it's KDDI/EZWeb
  *     // see what's available in Net_UserAgent_Mobile_EZweb
@@ -86,10 +91,10 @@ $GLOBALS['_NET_USERAGENT_MOBILE_FALLBACK_ON_NOMATCH'] = false;
  *
  * @category   Networking
  * @package    Net_UserAgent_Mobile
- * @author     KUBO Atsuhiro <iteman@users.sourceforge.net>
- * @copyright  2003-2008 KUBO Atsuhiro <iteman@users.sourceforge.net>
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    Release: 0.31.0
+ * @author     KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2003-2009 KUBO Atsuhiro <kubo@iteman.jp>
+ * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
+ * @version    Release: 1.0.0
  * @since      Class available since Release 0.1
  */
 class Net_UserAgent_Mobile
@@ -125,13 +130,14 @@ class Net_UserAgent_Mobile
      * If no argument is supplied, $_SERVER{'HTTP_*'} is used.
      *
      * @param string $userAgent User-Agent string
-     * @return mixed a newly created Net_UserAgent_Mobile object, or a PEAR
-     *     error object on error
+     * @return Net_UserAgent_Mobile_Common a newly created or an existing
+     *     Net_UserAgent_Mobile_Common object
+     * @throws Net_UserAgent_Mobile_Error
      */
     function &factory($userAgent = null)
     {
         if (is_null($userAgent)) {
-            $userAgent = $_SERVER['HTTP_USER_AGENT'];
+            $userAgent = @$_SERVER['HTTP_USER_AGENT'];
         }
 
         // parse User-Agent string
@@ -150,7 +156,6 @@ class Net_UserAgent_Mobile
         $class = "Net_UserAgent_Mobile_$driver";
 
         if (!class_exists($class)) {
-        	
             $file = dirname(__FILE__) . "/Mobile/{$driver}.php";
             if (!include_once $file) {
                 return PEAR::raiseError(null,
@@ -162,17 +167,19 @@ class Net_UserAgent_Mobile
             }
         }
 
-        $instance = &new $class($userAgent);
-        $error = &$instance->isError();
+        PEAR::staticPushErrorHandling(PEAR_ERROR_RETURN);
+        $instance = new $class($userAgent);
+        PEAR::staticPopErrorHandling();
+        $error = &$instance->getError();
         if (Net_UserAgent_Mobile::isError($error)) {
-            if ($GLOBALS['_NET_USERAGENT_MOBILE_FALLBACK_ON_NOMATCH']
+            if ($GLOBALS['NET_USERAGENT_MOBILE_FallbackOnNomatch']
                 && $error->getCode() == NET_USERAGENT_MOBILE_ERROR_NOMATCH
                 ) {
                 $instance = &Net_UserAgent_Mobile::factory('Net_UserAgent_Mobile_Fallback_On_NoMatch');
                 return $instance;
             }
 
-            $instance = &$error;
+            return PEAR::raiseError($error);
         }
 
         return $instance;
@@ -182,13 +189,13 @@ class Net_UserAgent_Mobile
     // {{{ singleton()
 
     /**
-     * creates a new {@link Net_UserAgent_Mobile_Common} subclass instance or
-     * returns a instance from existent ones
+     * creates a new {@link Net_UserAgent_Mobile_Common} subclass instance or returns
+     * a instance from existent ones
      *
      * @param string $userAgent User-Agent string
-     * @return mixed a newly created or a existent Net_UserAgent_Mobile
-     *     object, or a PEAR error object on error
-     * @see Net_UserAgent_Mobile::factory()
+     * @return Net_UserAgent_Mobile_Common a newly created or an existing
+     *     Net_UserAgent_Mobile_Common object
+     * @throws Net_UserAgent_Mobile_Error
      */
     function &singleton($userAgent = null)
     {
@@ -199,7 +206,7 @@ class Net_UserAgent_Mobile
         }
 
         if (is_null($userAgent)) {
-            $userAgent = $_SERVER['HTTP_USER_AGENT'];
+            $userAgent = @$_SERVER['HTTP_USER_AGENT'];
         }
 
         if (!array_key_exists($userAgent, $instances)) {
@@ -213,15 +220,16 @@ class Net_UserAgent_Mobile
     // {{{ isError()
 
     /**
-     * tell whether a result code from a Net_UserAgent_Mobile method
-     * is an error
+     * tell whether a result code from a Net_UserAgent_Mobile method is an error
      *
      * @param integer $value result code
      * @return boolean whether $value is an {@link Net_UserAgent_Mobile_Error}
      */
     function isError($value)
     {
-        return is_a($value, 'Net_UserAgent_Mobile_Error');
+        return is_object($value)
+            && (strtolower(get_class($value)) == strtolower('Net_UserAgent_Mobile_Error')
+                || is_subclass_of($value, 'Net_UserAgent_Mobile_Error'));
     }
 
     // }}}
@@ -231,8 +239,7 @@ class Net_UserAgent_Mobile
      * return a textual error message for a Net_UserAgent_Mobile error code
      *
      * @param integer $value error code
-     * @return string error message, or false if the error code was not
-     *     recognized
+     * @return string error message, or null if the error code was not recognized
      */
     function errorMessage($value)
     {
@@ -259,8 +266,7 @@ class Net_UserAgent_Mobile
     // {{{ isMobile()
 
     /**
-     * Checks whether or not the user agent is mobile by a given user agent
-     * string.
+     * Checks whether or not the user agent is mobile by a given user agent string.
      *
      * @param string $userAgent
      * @return boolean
@@ -285,8 +291,7 @@ class Net_UserAgent_Mobile
     // {{{ isDoCoMo()
 
     /**
-     * Checks whether or not the user agent is DoCoMo by a given user agent
-     * string.
+     * Checks whether or not the user agent is DoCoMo by a given user agent string.
      *
      * @param string $userAgent
      * @return boolean
@@ -295,7 +300,7 @@ class Net_UserAgent_Mobile
     function isDoCoMo($userAgent = null)
     {
         if (is_null($userAgent)) {
-            $userAgent = $_SERVER['HTTP_USER_AGENT'];
+            $userAgent = @$_SERVER['HTTP_USER_AGENT'];
         }
 
         if (preg_match('!^DoCoMo!', $userAgent)) {
@@ -309,8 +314,7 @@ class Net_UserAgent_Mobile
     // {{{ isEZweb()
 
     /**
-     * Checks whether or not the user agent is EZweb by a given user agent
-     * string.
+     * Checks whether or not the user agent is EZweb by a given user agent string.
      *
      * @param string $userAgent
      * @return boolean
@@ -319,7 +323,7 @@ class Net_UserAgent_Mobile
     function isEZweb($userAgent = null)
     {
         if (is_null($userAgent)) {
-            $userAgent = $_SERVER['HTTP_USER_AGENT'];
+            $userAgent = @$_SERVER['HTTP_USER_AGENT'];
         }
 
         if (preg_match('!^KDDI-!', $userAgent)) {
@@ -335,8 +339,7 @@ class Net_UserAgent_Mobile
     // {{{ isSoftBank()
 
     /**
-     * Checks whether or not the user agent is SoftBank by a given user agent
-     * string.
+     * Checks whether or not the user agent is SoftBank by a given user agent string.
      *
      * @param string $userAgent
      * @return boolean
@@ -345,7 +348,7 @@ class Net_UserAgent_Mobile
     function isSoftBank($userAgent = null)
     {
         if (is_null($userAgent)) {
-            $userAgent = $_SERVER['HTTP_USER_AGENT'];
+            $userAgent = @$_SERVER['HTTP_USER_AGENT'];
         }
 
         if (preg_match('!^SoftBank!', $userAgent)) {
@@ -373,8 +376,7 @@ class Net_UserAgent_Mobile
     // {{{ isWillcom()
 
     /**
-     * Checks whether or not the user agent is Willcom by a given user agent
-     * string.
+     * Checks whether or not the user agent is Willcom by a given user agent string.
      *
      * @param string $userAgent
      * @return boolean
@@ -383,7 +385,7 @@ class Net_UserAgent_Mobile
     function isWillcom($userAgent = null)
     {
         if (is_null($userAgent)) {
-            $userAgent = $_SERVER['HTTP_USER_AGENT'];
+            $userAgent = @$_SERVER['HTTP_USER_AGENT'];
         }
 
         if (preg_match('!^Mozilla/3\.0\((?:DDIPOCKET|WILLCOM);!', $userAgent)) {
@@ -391,86 +393,6 @@ class Net_UserAgent_Mobile
         }
 
         return false;
-    }
-
-    /**#@-*/
-
-    /**#@+
-     * @access private
-     */
-
-    /**#@-*/
-
-    // }}}
-}
-
-// }}}
-// {{{ Net_UserAgent_Mobile_Error
-
-/**
- * Net_UserAgent_Mobile_Error implements a class for reporting user
- * agent error messages
- *
- * @category   Networking
- * @package    Net_UserAgent_Mobile
- * @author     KUBO Atsuhiro <iteman@users.sourceforge.net>
- * @copyright  2003-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    Release: 0.31.0
- * @since      Class available since Release 0.1
- */
-class Net_UserAgent_Mobile_Error extends PEAR_Error
-{
-
-    // {{{ properties
-
-    /**#@+
-     * @access public
-     */
-
-    /**#@-*/
-
-    /**#@+
-     * @access private
-     */
-
-    /**#@-*/
-
-    /**#@+
-     * @access public
-     */
-
-    // }}}
-    // {{{ constructor
-
-    /**
-     * constructor
-     *
-     * @param mixed   $code     Net_UserAgent_Mobile error code, or string
-     *     with error message.
-     * @param integer $mode     what 'error mode' to operate in
-     * @param integer $level    what error level to use for $mode and
-     *     PEAR_ERROR_TRIGGER
-     * @param mixed   $userinfo additional user/debug info
-     * @access public
-     */
-    function Net_UserAgent_Mobile_Error($code = NET_USERAGENT_MOBILE_ERROR,
-                                        $mode = PEAR_ERROR_RETURN,
-                                        $level = E_USER_NOTICE,
-                                        $userinfo = null
-                                        )
-    {
-        if (is_int($code)) {
-            $this->PEAR_Error('Net_UserAgent_Mobile Error: ' .
-                              Net_UserAgent_Mobile::errorMessage($code),
-                              $code, $mode, $level, $userinfo
-                              );
-        } else {
-            $this->PEAR_Error("Net_UserAgent_Mobile Error: $code",
-                              NET_USERAGENT_MOBILE_ERROR, $mode, $level,
-                              $userinfo
-                              );
-        }
     }
 
     /**#@-*/

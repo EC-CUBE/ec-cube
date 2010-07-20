@@ -8,9 +8,16 @@ div#mypagecolumn {
     margin: 15px auto 0 auto;
 }
 
-div#mypagecolumn h2.title{
-    width: 700px;
-    margin: 0 0 15px 0;
+div#mypagecolumn h3 {
+    margin: 0 0 10px 0;
+    border-style: solid;
+    border-width: 0 0 2px 0;
+    border-color: #bbbba4;
+    padding: 5px 0 5px 12px;
+    font-size: 140%;
+    color: #333;
+    background-color: #f1f1ec;
+    letter-spacing: 0.15em;
 }
 
 div#mypagecolumn table {
@@ -19,6 +26,7 @@ div#mypagecolumn table {
 
 div#mycontentsarea {
     width: 510px;
+    float: right;
 }
 
 div#mycontentsarea table th.resulttd {
@@ -41,27 +49,18 @@ div#mycontentsarea table caption {
     color: #000;
 }
 
-
-/* 購入履歴一覧/詳細
------------------------------------------------ */
 div#mynavarea {
     float: left;
     width: 185px;
 }
 
-div#mynavarea li {
-    display: block;
-    height: 30px;
+div#mynavarea ul.button_like {
+    width: 170px;
 }
 
-div#mycontentsarea {
-    float: right;
-}
 
-div#mycontentsarea h3 {
-    margin: 0 0 10px 0;
-}
-
+/* 購入履歴一覧/詳細
+----------------------------------------------- */
 div#mycontentsarea table th {
     text-align: center;
 }

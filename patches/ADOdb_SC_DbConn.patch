@@ -1,0 +1,250 @@
+Index: SC_DbConn.php
+===================================================================
+--- data/class/SC_DbConn.php	(revision 18367)
++++ data/class/SC_DbConn.php	(working copy)
+@@ -22,15 +22,20 @@
+  */
+ 
+ $current_dir = realpath(dirname(__FILE__));
+-require_once($current_dir . "/../module/DB.php");
++require_once($current_dir . "/../module/adodb/adodb.inc.php");
++define('ADODB_ERROR_HANDLER_TYPE', E_USER_ERROR);
++define('ADODB_ERROR_LOG_TYPE',3);
++define('ADODB_ERROR_LOG_DEST', DATA_PATH . "logs/error.log");
++require_once($current_dir . "/../module/adodb/adodb-errorhandler.inc.php");
++require_once($current_dir . "/../module/adodb/adodb-errorpear.inc.php");
+ 
+-$objDbConn = "";
+-
++/**
++ * FIXME インストーラ要修正
++ */
+ class SC_DbConn {
+ 
+     var $conn;
+     var $result;
+-    var $includePath;
+     var $dsn;
+     var $err_disp = true;
+     var $dbFactory;
+@@ -38,33 +43,39 @@
+ 
+     // コンストラクタ
+     function SC_DbConn($dsn = "", $err_disp = true, $new = false){
+-        global $objDbConn;
+ 
+-        // Debugモード指定
+-        $options['debug'] = PEAR_DB_DEBUG;
+-        // 持続的接続オプション
+-        $options['persistent'] = PEAR_DB_PERSISTENT;
+-
+-        // 既に接続されていないか、新規接続要望の場合は接続する。
+-        if(!isset($objDbConn->connection) || $new) {
+-            if($dsn != "") {
+-                $objDbConn = DB::connect($dsn, $options);
+-                $this->dsn = $dsn;
++        if (empty($dsn)) {
++            if (defined('DEFAULT_DSN')) {
++                $dsn = DEFAULT_DSN;
+             } else {
+-                if(defined('DEFAULT_DSN')) {
+-                    $objDbConn = DB::connect(DEFAULT_DSN, $options);
+-                    $this->dsn = DEFAULT_DSN;
+-                } else {
+-                    return;
+-                }
++                return;
+             }
++            // 接続オプションのために "?" をつける
++            $this->dsn = $dsn . "?";
++        }
++
++        if (!empty($this->dsn)) {
++            // 持続的接続モード指定
++            if (PEAR_DB_PERSISTENT) {
++                $this->dsn = $this->dsn . "&persist";
+             }
+-            
+-            if (DB_TYPE == 'mysql') {
+-                $objDbConn->query('SET NAMES utf8');
++            // Debug モード指定
++            if(PEAR_DB_DEBUG > 0) {
++                $this->dsn = $this->dsn . "&debug";
+             }
+-        
+-        $this->conn = $objDbConn;
++            // 常に新規接続
++            if ($new) {
++                $this->dsn = $this->dsn . "&new";
++            }
++        }
++
++        $this->conn =& ADONewConnection($this->dsn);
++        $this->conn->SetFetchMode(ADODB_FETCH_ASSOC);
++
++        if (DB_TYPE == 'mysql') {
++            $this->conn->Execute('SET NAMES utf8');
++        }
++
+         $this->err_disp = $err_disp;
+         $this->dbFactory = SC_DB_DBFactory_Ex::getInstance();
+     }
+@@ -75,13 +86,13 @@
+         if (DB_TYPE == "mysql") $n = $this->dbFactory->sfChangeMySQL($n);
+ 
+         if ( $arr ) {
+-            $result = $this->conn->query($n, $arr);
++            $result = $this->conn->Execute($n, $arr);
+         } else {
+-            $result = $this->conn->query($n);
++            $result = $this->conn->Execute($n);
+         }
+ 
+-        if ($this->conn->isError($result) && !$ignore_err){
+-            $this->send_err_mail($result, $n);
++        if ($this->conn->ErrorNo() < 0 && !$ignore_err){
++            return ADODB_Pear_Error();
+         }
+ 
+         $this->result = $result;
+@@ -99,9 +110,10 @@
+         } else {
+             $result = $this->conn->getOne($n);
+         }
+-        if ($this->conn->isError($result)){
+-            $this->send_err_mail($result ,$n);
++        if ($this->conn->ErrorNo() < 0) {
++            return ADODB_Pear_Error();
+         }
++
+         $this->result = $result;
+ 
+         return $this->result;
+@@ -122,9 +134,10 @@
+         
+         $result = $this->conn->getRow($sql, $arrVal ,$fetchmode);
+         
+-        if ($this->conn->isError($result)){
+-            $this->send_err_mail($result ,$sql);
++        if ($this->conn->ErrorNo() < 0) {
++            return ADODB_Pear_Error();
+         }
++
+         $this->result = $result;
+         return $this->result;
+     }
+@@ -135,13 +148,15 @@
+         if (DB_TYPE == "mysql") $n = $this->dbFactory->sfChangeMySQL($n);
+ 
+         if ($arr) {
+-            $result = $this->conn->getCol($n, $col, $arr);
++            $result = $this->conn->GetCol($n, $arr);
+         } else {
+-            $result = $this->conn->getCol($n, $col);
++            $result = $this->conn->GetCol($n);
+         }
+-        if ($this->conn->isError($result)) {
+-            $this->send_err_mail($result, $n);
++
++        if ($this->conn->ErrorNo() < 0) {
++            return ADODB_Pear_Error();
+         }
++
+         $this->result = $result;
+         return $this->result;
+     }
+@@ -160,16 +175,16 @@
+             }
+             return 0;
+         }
+-
+         if ( $arr ){
+-            $result = $this->conn->getAll($n, $arr, DB_FETCHMODE_ASSOC);
++            $result = $this->conn->GetAll($n, $arr);
+         } else {
+-            $result = $this->conn->getAll($n, DB_FETCHMODE_ASSOC);
++            $result = $this->conn->GetAll($n);
+         }
+ 
+-        if ($this->conn->isError($result)){
+-            $this->send_err_mail($result, $n);
++        if ($this->conn->ErrorNo() < 0) {
++            return ADODB_Pear_Error();
+         }
++
+         $this->result = $result;
+ 
+         return $this->result;
+@@ -178,19 +193,23 @@
+     function autoExecute($table_name, $fields_values, $sql_where = null){
+ 
+         if ( $sql_where ) {
+-            $result = $this->conn->autoExecute( $table_name, $fields_values, DB_AUTOQUERY_UPDATE, $sql_where);
++            $result = $this->conn->autoExecute( $table_name, $fields_values, 'UPDATE', $sql_where);
+         } else {
+-            $result = $this->conn->autoExecute( $table_name, $fields_values, DB_AUTOQUERY_INSERT);
++            $result = $this->conn->autoExecute( $table_name, $fields_values, 'INSERT');
+         }
+ 
+-        if ($this->conn->isError($result)){
+-            $this->send_err_mail($result, $n);
++        if ($this->conn->ErrorNo() < 0) {
++            return ADODB_Pear_Error();
+         }
+-        $this->result = $result;
+-        return $this->result;
++
++        return 1;
+     }
+ 
+-
++    /**
++     * XXX バックエンドが ADOdb の場合は動作しません.
++     *
++     * @deprecated 本体で未使用のため非推奨
++     */
+     function prepare($n){
+         global $sql;
+         $sql = $n;
+@@ -199,6 +218,11 @@
+         return $this->result;
+     }
+ 
++    /**
++     * XXX バックエンドが ADOdb の場合は動作しません.
++     *
++     * @deprecated 本体で未使用のため非推奨
++     */
+     function execute($n, $obj){
+         global $sql;
+         $sql = $n;
+@@ -207,6 +231,11 @@
+         return $this->result;
+     }
+ 
++    /**
++     * XXX バックエンドが ADOdb の場合は動作しません.
++     *
++     * @deprecated 本体で未使用のため非推奨
++     */
+     function reset(){
+         $this->conn->disconnect();
+     }
+@@ -221,13 +250,15 @@
+         $objPage->pearResult = $pearResult;
+         GC_Utils_Ex::gfPrintLog($objPage->sfGetErrMsg());
+         $objPage->process();
+-        
+-        exit();
++        exit;
+     }
+ 
+     /**
+      * 直前に実行されたSQL文を取得する.
+      *
++     * XXX バックエンドが ADOdb の場合は動作しません.
++     *
++     * @deprecated PEAR_DB_DEBUG = 1 で代用して下さい.
+      * @param boolean $disp trueの場合、画面出力を行う.
+      * @return string SQL文
+      */

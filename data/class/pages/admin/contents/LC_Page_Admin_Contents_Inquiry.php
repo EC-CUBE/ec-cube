@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -299,7 +299,7 @@ __EOS__;
             if ( $_POST["question"][$i]["kind"] ) {
                 if (strlen($_POST["question"][$i]["name"]) == 0) {
                     $objErr->arrErr["question"][$i]["name"] = "タイトルを入力して下さい。";
-                } else if ( strlen($_POST["question"][$i]["name"]) > STEXT_LEN ) {
+                } else if ( mb_strlen($_POST["question"][$i]["name"]) > STEXT_LEN ) {
                     $objErr->arrErr["question"][$i]["name"] = "タイトルは". STEXT_LEN  ."字以内で入力して下さい。";
                 }
             }

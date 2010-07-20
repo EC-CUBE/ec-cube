@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -38,11 +38,9 @@
 	<font color="#FF0000"><!--{$arrErr.year}--><!--{$arrErr.month}--><!--{$arrErr.day}--></font>
 	<input type="text" name="year" value="<!--{$arrForm.year|escape}-->" size="4" maxlength="4" istyle="4">年<br>
 	<select name="month">
-		<option value="">--</option>
 		<!--{html_options options=$arrMonth selected=$arrForm.month}-->
 	</select>月<br>
 	<select name="day">
-		<option value="">--</option>
 		<!--{html_options options=$arrDay selected=$arrForm.day}-->
 	</select>日<br>
 

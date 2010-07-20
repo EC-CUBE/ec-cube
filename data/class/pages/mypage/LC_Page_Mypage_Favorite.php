@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -55,7 +55,6 @@ class LC_Page_MyPage_Favorite extends LC_Page {
         $this->tpl_column_num = 1;
         $this->tpl_mainno = 'mypage';
         $this->tpl_mypageno = 'favorite';
-        $this->allowClientCache();
     }
 
     /**
@@ -77,7 +76,7 @@ class LC_Page_MyPage_Favorite extends LC_Page {
         if(!$objCustomer->isLoginSuccess()) {
             SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
         }else {
-            //マイページトップ顧客情報表示用
+            // マイページトップ顧客情報表示用
             $this->CustomerName1 = $objCustomer->getvalue('name01');
             $this->CustomerName2 = $objCustomer->getvalue('name02');
             $this->CustomerPoint = $objCustomer->getvalue('point');
@@ -89,50 +88,24 @@ class LC_Page_MyPage_Favorite extends LC_Page {
             $this->lfDeleteFavoriteProduct($customer_id, $_POST['product_id']);
         }
 
-        //ページ送り用
+        // ページ送り用
         if (isset($_POST['pageno'])) {
             $this->tpl_pageno = htmlspecialchars($_POST['pageno'], ENT_QUOTES, CHAR_CODE);
         }
 
-        $col = "*";
-        $from =" (SELECT
-                        T2.product_id AS product_id_main,
-                        T2.del_flg ,
-                        T2.status ,
-                        T2.name ,
-                        T2.main_list_image ,
-                        T1.create_date ,
-                        T1.customer_id
-                    FROM
-                       (SELECT
-                            product_id AS product_id_c ,
-                            create_date ,
-                            customer_id
-                        FROM
-                           dtb_customer_favorite_products
-                        ) AS T1 INNER JOIN dtb_products AS T2 ON T1.product_id_c = T2.product_id
-                    ) AS T3 INNER JOIN
-                        (SELECT
-                            product_id ,
-                            MIN(price02) AS price02_min ,
-                            MAX(price02) AS price02_max ,
-                            MAX(stock) AS stock_max ,
-                            MAX(stock_unlimited) AS stock_unlimited_max
-                         FROM
-                            dtb_products_class
-                         GROUP BY
-                            product_id
-                    ) AS T4 ON T3.product_id_main = T4.product_id";
-        $where = "customer_id = ? AND del_flg = 0 AND status = 1";
+        $col = "alldtl.*";
+        $from = "dtb_customer_favorite_products AS dcfp LEFT JOIN vw_products_allclass_detail AS alldtl USING(product_id)";
+        
+        $where = "dcfp.customer_id = ? AND alldtl.del_flg = 0 AND alldtl.status = 1";
         // 在庫無し商品の非表示
         if (NOSTOCK_HIDDEN === true) {
-            $where .= " AND (stock_max >= 1 OR stock_unlimited_max = 1)";
+            $where .= ' AND (alldtl.stock_max >= 1 OR alldtl.stock_unlimited_max = 1)';
         }
         $order = "create_date DESC";
 
         $arrval = array($objCustomer->getvalue('customer_id'));
 
-        //お気に入りの数を取得
+        // お気に入りの数を取得
         $linemax = $objQuery->count($from, $where, $arrval);
         $this->tpl_linemax = $linemax;
 
@@ -142,11 +115,11 @@ class LC_Page_MyPage_Favorite extends LC_Page {
         $startno = $objNavi->start_row;
 
         // 取得範囲の指定(開始行番号、行数のセット)
-        $objQuery->setlimitoffset(SEARCH_PMAX, $startno);
+        $objQuery->setLimitOffset(SEARCH_PMAX, $startno);
         // 表示順序
-        $objQuery->setorder($order);
+        $objQuery->setOrder($order);
 
-        //お気に入りの取得
+        // お気に入りの取得
         $this->arrFavorite = $objQuery->select($col, $from, $where, $arrval);
 
         // パラメータ管理クラス
@@ -156,8 +129,8 @@ class LC_Page_MyPage_Favorite extends LC_Page {
 
         // 入力情報を渡す
         $this->arrForm = $this->objFormParam->getFormParamList();
-        $objView->assignobj($this);    //$objpage内の全てのテンプレート変数をsmartyに格納
-        $objView->display(SITE_FRAME); //パスとテンプレート変数の呼び出し、実行
+        $objView->assignobj($this);				//$objpage内の全てのテンプレート変数をsmartyに格納
+        $objView->display(SITE_FRAME);				//パスとテンプレート変数の呼び出し、実行
     }
 
     /**
@@ -168,7 +141,6 @@ class LC_Page_MyPage_Favorite extends LC_Page {
     function mobileInit() {
         $this->tpl_mainpage = 'mypage/favorite.tpl';
         $this->tpl_title = 'MYページ/お気に入り一覧';
-        $this->allowClientCache();
     }
 
     /**
@@ -229,9 +201,9 @@ class LC_Page_MyPage_Favorite extends LC_Page {
                     $ret = $objQuery->count("dtb_customer", $where, array($arrForm['login_email'], $arrForm['login_email']));
 
                     if($ret > 0) {
-                        SC_Utils_Ex::sfDispSiteError(TEMP_LOGIN_ERROR, "", false, "", true);
+                        SC_Utils_Ex::sfDispSiteError(TEMP_LOGIN_ERROR);
                     } else {
-                        SC_Utils_Ex::sfDispSiteError(SITE_LOGIN_ERROR, "", false, "", true);
+                        SC_Utils_Ex::sfDispSiteError(SITE_LOGIN_ERROR);
                     }
                 }
             }
@@ -252,8 +224,8 @@ class LC_Page_MyPage_Favorite extends LC_Page {
             $this->CustomerName2 = $objCustomer->getvalue('name02');
         }
 
-        $objView->assignobj($this);       //$objpage内の全てのテンプレート変数をsmartyに格納
-        $objView->display(SITE_FRAME);    //パスとテンプレート変数の呼び出し、実行
+        $objView->assignobj($this);				//$objpage内の全てのテンプレート変数をsmartyに格納
+        $objView->display(SITE_FRAME);				//パスとテンプレート変数の呼び出し、実行
 
     }
 

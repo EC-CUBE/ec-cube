@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<classpath>
-	<classpathentry kind="src" path=""/>
-	<classpathentry kind="con" path="org.trustudio.php.launching.PHP_CONTAINER"/>
-	<classpathentry kind="output" path=""/>
-</classpath>
+<buildpath>
+	<buildpathentry kind="con" path="org.eclipse.php.core.LANGUAGE"/>
+	<buildpathentry kind="src" path="html"/>
+	<buildpathentry kind="src" path="data"/>
+	<buildpathentry kind="con" path="org.eclipse.dltk.USER_LIBRARY/phplanguage"/>
+</buildpath>

@@ -1,7 +1,7 @@
 <!--{*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -20,7 +20,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 <table width="502" border="0" cellspacing="1" cellpadding="0" summary=" ">
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+<form name="form1" id="form1" method="post" action="?">
 <input type="hidden" name="mode" value="<!--{$tpl_mode}-->">
 <input type="hidden" name="step" value="0">
 
@@ -52,7 +52,7 @@
             </td>
         </tr>
         <tr>
-            <td bgcolor="#f2f1ec" width="150"><span class="fs12n">管理者：ログインID<span class="red">※</span></span><br/><span class="fs10">半角英数字<!--{$smarty.const.ID_MIN_LEN}-->〜<!--{$smarty.const.ID_MAX_LEN}-->文字</span></td>
+            <td bgcolor="#f2f1ec" width="150"><span class="fs12n">管理者：ログインID<span class="red">※</span></span><br/><span class="fs10">半角英数字<!--{$smarty.const.ID_MIN_LEN}-->～<!--{$smarty.const.ID_MAX_LEN}-->文字</span></td>
             <td bgcolor="#ffffff" width="332">
             <!--{assign var=key value="login_id"}-->
             <span class="red"><span class="fs12n"><!--{$arrErr[$key]}--></span></span>
@@ -61,7 +61,7 @@
             </td>
         </tr>
         <tr>
-            <td bgcolor="#f2f1ec" width="150"><span class="fs12n">管理者：パスワード<span class="red">※</span></span><br/><span class="fs10">半角英数字<!--{$smarty.const.ID_MIN_LEN}-->〜<!--{$smarty.const.ID_MAX_LEN}-->文字</span></td>
+            <td bgcolor="#f2f1ec" width="150"><span class="fs12n">管理者：パスワード<span class="red">※</span></span><br/><span class="fs10">半角英数字<!--{$smarty.const.ID_MIN_LEN}-->～<!--{$smarty.const.ID_MAX_LEN}-->文字</span></td>
             <td bgcolor="#ffffff" width="332">
             <!--{assign var=key value="login_pass"}-->
             <span class="red"><span class="fs12n"><!--{$arrErr[$key]}--></span></span>
@@ -77,14 +77,6 @@
 <tr>
     <td bgcolor="#cccccc">
     <table width="500" border="0" cellspacing="1" cellpadding="8" summary=" ">
-        <tr>
-            <td bgcolor="#f2f1ec" width="150" class="fs12n">HTMLパス<span class="red">※</span></td>
-            <td bgcolor="#ffffff" width="332" class="fs12">
-            <!--{assign var=key value="install_dir"}-->
-            <span class="red"><!--{$arrErr[$key]}--></span>
-            <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="40" class="box40" />
-            </td>
-        </tr>
         <tr>
             <td bgcolor="#f2f1ec" width="150" class="fs12n">URL(通常)<span class="red">※</span></td>
             <td bgcolor="#ffffff" width="332" class="fs12">

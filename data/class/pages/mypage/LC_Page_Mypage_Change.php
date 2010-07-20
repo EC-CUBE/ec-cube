@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -49,7 +49,8 @@ class LC_Page_Mypage_Change extends LC_Page {
     function init() {
         parent::init();
         $this->tpl_mainpage = TEMPLATE_DIR . 'mypage/change.tpl';
-        $this->tpl_title = 'MYページ/会員登録内容変更(入力ページ)';
+        $this->tpl_title = 'MYページ';
+        $this->tpl_subtitle = '会員登録内容変更(入力ページ)';
         $this->tpl_navi = TEMPLATE_DIR . 'mypage/navi.tpl';
         $this->tpl_mainno = 'mypage';
         $this->tpl_mypageno = 'change';
@@ -62,8 +63,7 @@ class LC_Page_Mypage_Change extends LC_Page {
         $this->arrJob = $masterData->getMasterData("mtb_job");
         $this->arrMAILMAGATYPE = $masterData->getMasterData("mtb_mail_magazine_type");
         $this->arrSex = $masterData->getMasterData("mtb_sex");
-        $this->allowClientCache();
-
+        $this->httpCacheControl('nocache');
     }
 
     /**
@@ -81,11 +81,11 @@ class LC_Page_Mypage_Change extends LC_Page {
         $objLayout = new SC_Helper_PageLayout_Ex();
         $objLayout->sfGetPageLayout($this, false, "mypage/index.php");
 
-        //日付プルダウン設定
-        $objDate = new SC_Date(1901);
-        $this->arrYear = $objDate->getYear();
-        $this->arrMonth = $objDate->getMonth();
-        $this->arrDay = $objDate->getDay();
+        // 生年月日選択肢の取得
+        $objDate = new SC_Date(START_BIRTH_YEAR, date("Y",strtotime("now")));
+        $this->arrYear = $objDate->getYear('', 1950, '');
+        $this->arrMonth = $objDate->getMonth(true);
+        $this->arrDay = $objDate->getDay(true);
 
         // ログインチェック
         if (!$this->objCustomer->isLoginSuccess()){
@@ -139,7 +139,7 @@ class LC_Page_Mypage_Change extends LC_Page {
 
                 //確認ページへ
                 $this->tpl_mainpage = TEMPLATE_DIR . 'mypage/change_confirm.tpl';
-                $this->tpl_title = 'MYページ/会員登録内容変更(確認ページ)';
+                $this->tpl_subtitle = '会員登録内容変更(確認ページ)';
                 $passlen = strlen($this->arrForm['password']);
                 $this->passlen = $this->lfPassLen($passlen);
             } else {
@@ -230,10 +230,11 @@ class LC_Page_Mypage_Change extends LC_Page {
         $CONF = $objDb->sf_getBasisData();					// 店舗基本情報
         $objConn = new SC_DbConn();
         $objView = new SC_MobileView();
-        $this->objDate = new SC_Date(START_BIRTH_YEAR, date("Y",strtotime("now")));
-        $this->arrYear = $this->objDate->getYear();
-        $this->arrMonth = $this->objDate->getMonth();
-        $this->arrDay = $this->objDate->getDay();
+        
+        // 生年月日選択肢の取得
+        $objDate = new SC_Date();
+        $this->arrMonth = $objDate->getMonth(true);
+        $this->arrDay = $objDate->getDay(true);
 
         $this->objQuery = new SC_Query();
         $this->objCustomer = new SC_Customer();
@@ -269,9 +270,6 @@ class LC_Page_Mypage_Change extends LC_Page {
                                  array(  "column" => "mailmaga_flg", "convert" => "n" )
                                  );
 
-        //---- 登録除外用カラム配列
-        $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile02", "password02");
-
         $this->arrForm = $this->lfGetCustomerData();
         $this->arrForm['password'] = DEFAULT_PASSWORD;
 
@@ -279,11 +277,6 @@ class LC_Page_Mypage_Change extends LC_Page {
 
             //-- POSTデータの引き継ぎ
             $this->arrForm = array_merge($this->arrForm, $_POST);
-
-            if (!isset($this->arrForm['year'])) $this->arrForm['year'] = "";
-            if($this->arrForm['year'] == '----') {
-                $this->arrForm['year'] = '';
-            }
 
             //-- 入力データの変換
             $this->arrForm = $this->lfConvertParam($this->arrForm, $arrRegistColumn);
@@ -391,7 +384,7 @@ class LC_Page_Mypage_Change extends LC_Page {
                         $this->sendRedirect($this->getLocation("./change_complete.php"), true);
                         exit;
                     } else {
-                        SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
+                        SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
                     }
                 }
             }
@@ -425,9 +418,6 @@ class LC_Page_Mypage_Change extends LC_Page {
      * @return bool エラーの無い場合 true
      */
     function checkErrorTotal(&$arrRegistColumn, &$arrMailType, $isMobile = false) {
-        // emailはすべて小文字で処理
-        $this->paramToLower($arrRegistColumn);
-
         // 入力データの変換
         $this->arrForm = $this->lfConvertParam($_POST, $arrRegistColumn);
 
@@ -444,8 +434,8 @@ class LC_Page_Mypage_Change extends LC_Page {
                 != $this->objCustomer->getValue($mailType)){
 
                 $email_cnt = $this->objQuery->count("dtb_customer",
-                                 "del_flg=0 AND " . $mailType . "= ?",
-                                  array($this->arrForm[$mailType]));
+                                 "del_flg=0 AND (email = ? OR email_mobile = ?) ",
+                                  array($this->arrForm[$mailType], $this->arrForm[$mailType]));
                 if ($email_cnt > 0){
                     $arrMailType2[$mailType] = false;
                     $this->arrErr[$mailType] .= "既に使用されているメールアドレスです。";
@@ -503,11 +493,11 @@ class LC_Page_Mypage_Change extends LC_Page {
         $objErr->doFunc(array("お電話番号1", 'tel01'), array("EXIST_CHECK","SPTAB_CHECK"));
         $objErr->doFunc(array("お電話番号2", 'tel02'), array("EXIST_CHECK","SPTAB_CHECK"));
         $objErr->doFunc(array("お電話番号3", 'tel03'), array("EXIST_CHECK","SPTAB_CHECK"));
-        $objErr->doFunc(array("お電話番号", "tel01", "tel02", "tel03", TEL_LEN) ,array("TEL_CHECK"));
-        $objErr->doFunc(array("FAX番号", "fax01", "fax02", "fax03", TEL_LEN) ,array("TEL_CHECK"));
+        $objErr->doFunc(array("お電話番号", "tel01", "tel02", "tel03") ,array("TEL_CHECK"));
+        $objErr->doFunc(array("FAX番号", "fax01", "fax02", "fax03") ,array("TEL_CHECK"));
         $objErr->doFunc(array("ご性別", "sex") ,array("SELECT_CHECK", "NUM_CHECK"));
         $objErr->doFunc(array("ご職業", "job") ,array("NUM_CHECK"));
-        $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_DATE"));
+        $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_BIRTHDAY"));
         $objErr->doFunc(array("パスワード", 'password', PASSWORD_LEN1, PASSWORD_LEN2), array("EXIST_CHECK", "ALNUM_CHECK", "NUM_RANGE_CHECK"));
         $objErr->doFunc(array("パスワード(確認)", 'password02', PASSWORD_LEN1, PASSWORD_LEN2), array("EXIST_CHECK", "ALNUM_CHECK", "NUM_RANGE_CHECK"));
         $objErr->doFunc(array("パスワード", 'パスワード(確認)', 'password', 'password02'), array("EQUAL_CHECK"));
@@ -539,6 +529,11 @@ class LC_Page_Mypage_Change extends LC_Page {
             // 文字変換
             if (strlen($val) > 0) {
                 $val = mb_convert_kana($val ,$mb_convert_kana_option);
+            }
+            
+            // メールアドレスは小文字に変換
+            if ($key == 'email' || $key == 'email02' || $key == 'email_mobile' || $key == 'email_mobile02') {
+                $val = strtolower($val);
             }
         }
         return $array;
@@ -625,47 +620,6 @@ class LC_Page_Mypage_Change extends LC_Page {
     // }}}
     // {{{ mobile functions
 
-    /**
-     * TODO
-     * @deprecated 未使用?
-     */
-    function lfRegistDataMobile ($array, $arrRegistColumn,
-                                 $arrRejectRegistColumn) {
-
-        // 仮登録
-        foreach ($arrRegistColumn as $data) {
-            if (strlen($array[ $data["column"] ]) > 0 && ! in_array($data["column"], $arrRejectRegistColumn)) {
-                $arrRegist[ $data["column"] ] = $array[ $data["column"] ];
-            }
-        }
-
-        // 誕生日が入力されている場合
-        if (strlen($array["year"]) > 0 ) {
-            $arrRegist["birth"] = $array["year"] ."/". $array["month"] ."/". $array["day"] ." 00:00:00";
-        }
-
-        // パスワードの暗号化
-        $arrRegist["password"] = sha1($arrRegist["password"] . ":" . AUTH_MAGIC);
-
-        $count = 1;
-        while ($count != 0) {
-            $uniqid = SC_Utils_Ex::sfGetUniqRandomId("t");
-            $count = $objConn->getOne("SELECT COUNT(*) FROM dtb_customer WHERE secret_key = ?", array($uniqid));
-        }
-
-        $arrRegist["secret_key"] = $uniqid;		// 仮登録ID発行
-        $arrRegist["create_date"] = "now()"; 	// 作成日
-        $arrRegist["update_date"] = "now()"; 	// 更新日
-        $arrRegist["first_buy_date"] = "";	 	// 最初の購入日
-
-
-        //-- 仮登録実行
-        $this->objQuery->insert("dtb_customer", $arrRegist);
-
-        return $uniqid;
-    }
-
-
     //エラーチェック
 
     function lfErrorCheckMobile($array) {
@@ -686,11 +640,11 @@ class LC_Page_Mypage_Change extends LC_Page {
         $objErr->doFunc(array("電話番号1", 'tel01'), array("EXIST_CHECK","SPTAB_CHECK"));
         $objErr->doFunc(array("電話番号2", 'tel02'), array("EXIST_CHECK","SPTAB_CHECK"));
         $objErr->doFunc(array("電話番号3", 'tel03'), array("EXIST_CHECK","SPTAB_CHECK"));
-        $objErr->doFunc(array("電話番号", "tel01", "tel02", "tel03", TEL_LEN) ,array("TEL_CHECK"));
-        $objErr->doFunc(array("FAX番号", "fax01", "fax02", "fax03", TEL_LEN) ,array("TEL_CHECK"));
+        $objErr->doFunc(array("電話番号", "tel01", "tel02", "tel03") ,array("TEL_CHECK"));
+        $objErr->doFunc(array("FAX番号", "fax01", "fax02", "fax03") ,array("TEL_CHECK"));
         $objErr->doFunc(array("性別", "sex") ,array("SELECT_CHECK", "NUM_CHECK"));
         $objErr->doFunc(array("ご職業", "job") ,array("NUM_CHECK"));
-        $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_DATE"));
+        $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_BIRTHDAY"));
         $objErr->doFunc(array("パスワード", 'password', PASSWORD_LEN1, PASSWORD_LEN2), array("EXIST_CHECK", "ALNUM_CHECK", "NUM_RANGE_CHECK"));
         $objErr->doFunc(array("パスワード確認用の質問", "reminder") ,array("SELECT_CHECK", "NUM_CHECK"));
         $objErr->doFunc(array("パスワード確認用の質問の答え", "reminder_answer", STEXT_LEN) ,array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
@@ -751,14 +705,7 @@ class LC_Page_Mypage_Change extends LC_Page {
         $objErr->doFunc(array("郵便番号", "zip01", "zip02"), array("ALL_EXIST_CHECK"));
 
         $objErr->doFunc(array("性別", "sex") ,array("SELECT_CHECK", "NUM_CHECK"));
-        $objErr->doFunc(array("生年月日 (年)", "year", 4), array("SPTAB_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK"));
-        if (!empty($array["year"])) {
-            $objErr->doFunc(array("生年月日 (年)", "year", $this->objDate->getStartYear()), array("MIN_CHECK"));
-            $objErr->doFunc(array("生年月日 (年)", "year", $this->objDate->getEndYear()), array("MAX_CHECK"));
-        }
-        if (!isset($objErr->arrErr['year']) && !isset($objErr->arrErr['month']) && !isset($objErr->arrErr['day'])) {
-            $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_DATE"));
-        }
+        $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_BIRTHDAY"));
 
         return $objErr->arrErr;
     }
@@ -774,80 +721,9 @@ class LC_Page_Mypage_Change extends LC_Page {
         $objErr->doFunc(array("電話番号1", 'tel01'), array("EXIST_CHECK","SPTAB_CHECK" ));
         $objErr->doFunc(array("電話番号2", 'tel02'), array("EXIST_CHECK","SPTAB_CHECK" ));
         $objErr->doFunc(array("電話番号3", 'tel03'), array("EXIST_CHECK","SPTAB_CHECK" ));
-        $objErr->doFunc(array("電話番号", "tel01", "tel02", "tel03",TEL_ITEM_LEN) ,array("TEL_CHECK"));
+        $objErr->doFunc(array("電話番号", "tel01", "tel02", "tel03") ,array("TEL_CHECK"));
 
         return $objErr->arrErr;
-    }
-
-    // 郵便番号から住所の取得
-    function lfGetAddress($zipcode) {
-        global $arrPref;
-
-        $conn = new SC_DBconn(ZIP_DSN);
-
-        // 郵便番号検索文作成
-        $zipcode = mb_convert_kana($zipcode ,"n");
-        $sqlse = "SELECT state, city, town FROM mtb_zip WHERE zipcode = ?";
-
-        $data_list = $conn->getAll($sqlse, array($zipcode));
-
-        // インデックスと値を反転させる。
-        $arrREV_PREF = array_flip($arrPref);
-
-        /*
-          総務省からダウンロードしたデータをそのままインポートすると
-          以下のような文字列が入っているので	対策する。
-          ・（１・１９丁目）
-          ・以下に掲載がない場合
-        */
-        $town =  $data_list[0]['town'];
-        $town = ereg_replace("（.*）$","",$town);
-        $town = ereg_replace("以下に掲載がない場合","",$town);
-        $data_list[0]['town'] = $town;
-        $data_list[0]['state'] = $arrREV_PREF[$data_list[0]['state']];
-
-        return $data_list;
-    }
-
-    //顧客情報の取得
-    function lfGetCustomerDataMobile(){
-
-        //顧客情報取得
-        $ret = $this->objQuery->select("*","dtb_customer","customer_id=?", array($this->objCustomer->getValue('customer_id')));
-        $arrForm = $ret[0];
-        //$arrForm['email'] = $arrForm['email_mobile'];
-
-        //メルマガフラグ取得
-        // TODO たぶん未使用
-        $arrForm['mailmaga_flg'] = $this->objQuery->get("dtb_customer","mailmaga_flg","email_mobile=?", array($this->objCustomer->getValue('email_mobile')));
-
-        //誕生日の年月日取得
-        if (isset($arrForm['birth'])){
-            $birth = split(" ", $arrForm["birth"]);
-            list($year, $month, $day) = split("-",$birth[0]);
-
-            $arrForm['year'] = $year;
-            $arrForm['month'] = $month;
-            $arrForm['day'] = $day;
-
-        }
-        return $arrForm;
-    }
-
-    /**
-     * フォームパラメータの内容を小文字に変換する.
-     *
-     * @param array $arrParam パラメータ名の配列
-     * @return void
-     */
-    function paramToLower(&$arrParam) {
-        foreach ($arrParam as $key => $val) {
-            if (!isset($val)) {
-                $this->arrForm[$key] = "";
-            }elseif($key == 'email' || $key == 'email02' || $key == 'email_mobile' || $key == 'email_mobile02'){
-                $this->arrForm[$key] = strtolower($val);
-            }
-        }
     }
 }
 ?>

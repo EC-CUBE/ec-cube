@@ -1,5 +1,4 @@
 <?php
-require('fpdf.php');
 require('fpdi.php');
 
 $SJIS_widths=array(' '=>278,'!'=>299,'"'=>353,'#'=>614,'$'=>614,'%'=>721,'&'=>735,'\''=>216,
@@ -13,8 +12,7 @@ $SJIS_widths=array(' '=>278,'!'=>299,'"'=>353,'#'=>614,'$'=>614,'%'=>721,'&'=>73
     'n'=>579,'o'=>550,'p'=>578,'q'=>566,'r'=>410,'s'=>444,'t'=>340,'u'=>575,'v'=>512,'w'=>760,
     'x'=>503,'y'=>529,'z'=>453,'{'=>326,'|'=>380,'}'=>326,'~'=>387);
 
-//class PDF_Japanese extends FPDF
-class PDF_Japanese extends FPDI //å¤‰æ›´
+class PDF_Japanese extends FPDI
 {
 function AddCIDFont($family,$style,$name,$cw,$CMap,$registry)
 {
@@ -37,7 +35,7 @@ function AddSJISFont($family='SJIS')
 {
     //Add SJIS font with proportional Latin
     $name='KozMinPro-Regular-Acro';
-    //$name='Gothic'; // å¤‰æ›´
+    //$name='Gothic'; // •ÏX
     $cw=$GLOBALS['SJIS_widths'];
     $CMap='90msp-RKSJ-H';
     $registry=array('ordering'=>'Japan1','supplement'=>2);
@@ -138,7 +136,7 @@ function SJISMultiCell($w,$h,$txt,$border=0,$align='L',$fill=0,$ln=2)
     $j=0;
     $l=0;
     $nl=1;
-    $this->rise_h = 0; //é«˜ã•è¨ˆç®—ç”¨
+    $this->rise_h = 0; //‚‚³ŒvZ—p
 
     while($i<$nb)
     {
@@ -154,7 +152,7 @@ function SJISMultiCell($w,$h,$txt,$border=0,$align='L',$fill=0,$ln=2)
             $j=$i;
             $l=0;
             $nl++;
-            $this->rise_h += $h; //é«˜ã•è¨ˆç®—ç”¨
+            $this->rise_h += $h; //‚‚³ŒvZ—p
             if($border and $nl==2)
                 $b=$b2;
             continue;
@@ -195,7 +193,7 @@ function SJISMultiCell($w,$h,$txt,$border=0,$align='L',$fill=0,$ln=2)
                 $this->Cell($w,$h,substr($s,$j,$sep-$j),$b,2,$align,$fill);
                 $i=($s[$sep]==' ') ? $sep+1 : $sep;
             }
-            $this->rise_h += $h; //é«˜ã•è¨ˆç®—ç”¨
+            $this->rise_h += $h; //‚‚³ŒvZ—p
             $sep=-1;
             $j=$i;
             $l=0;
@@ -214,8 +212,8 @@ function SJISMultiCell($w,$h,$txt,$border=0,$align='L',$fill=0,$ln=2)
     if($border and is_int(strpos($border,'B')))
         $b.='B';
     $this->Cell($w,$h,substr($s,$j,$i-$j),$b,$ln,$align,$fill);
-    $this->rise_h += $h; //å¢—åŠ åˆ†ã®é«˜ã•ã‚’è¨ˆç®—
-    //æ”¹è¡Œãªã—è¨­å®šã‹ã¤ã€é«˜ã•ãŒè¦å®šã®é«˜ã•ä»¥ä¸Šã§ã‚ã‚Œã°Yè»¸ã‚’è¨­å®šã—ãªãŠã™ã€‚
+    $this->rise_h += $h; //‘‰Á•ª‚Ì‚‚³‚ğŒvZ
+    //‰üs‚È‚µİ’è‚©‚ÂA‚‚³‚ª‹K’è‚Ì‚‚³ˆÈã‚Å‚ ‚ê‚ÎY²‚ğİ’è‚µ‚È‚¨‚·B
     if($ln == 0 and $h < $this->rise_h) {
       $this->y = $this->y - $this->rise_h + $h;
     }
@@ -527,11 +525,11 @@ function FancyTable($header,$data,$w)
 
 function Footer()
 {
-    //ä¸‹ç«¯ã‹ã‚‰1.5 cm ã«ç§»å‹•
+    //‰º’[‚©‚ç1.5 cm ‚ÉˆÚ“®
     $this->SetY(-15);
-    //ãƒ•ã‚©ãƒ³ãƒˆã‚’è¨­å®šã€‚ Arial italic 8
+    //ƒtƒHƒ“ƒg‚ğİ’èB Arial italic 8
     $this->SetFont('Arial','I',8);
-    //ç¾åœ¨ã®ãƒšãƒ¼ã‚¸ç•ªå·ã¨ç·ãƒšãƒ¼ã‚¸æ•°ã‚’å‡ºåŠ›
+    //Œ»İ‚Ìƒy[ƒW”Ô†‚Æ‘ƒy[ƒW”‚ğo—Í
     #$this->Cell(0,10,''.$this->PageNo().' / {nb}',0,0,'C');
 }
 

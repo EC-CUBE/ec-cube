@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -141,7 +141,7 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page {
         $objErr->doFunc(array("タイトル", "title", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $objErr->doFunc(array("コメント", "comment", LTEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $objErr->doFunc(array("投稿者名", "reviewer_name", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("ホームページアドレス", "reviewer_url", URL_LEN), array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $objErr->doFunc(array("投稿者URL", "reviewer_url", URL_LEN), array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $objErr->doFunc(array("性別", "sex", STEXT_LEN), array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         return $objErr->arrErr;
     }

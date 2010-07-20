@@ -1,7 +1,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -48,20 +48,5 @@ function winSubmit(URL,formName,Winname,Wwidth,Wheight){
 	WIN = window.open(URL,Winname,"width="+Wwidth+",height="+Wheight+",scrollbars=yes,resizable=yes,toolbar=no,location=no,directories=no,status=no,menubar=no");
     document.forms[formName].target = Winname;
 	WIN.focus();
-}
-//-->
-
-<!--
-	function ChangeParent()
-	{
-		window.opener.location.href="../contact/index.php";
-	}
-//-->
-
-
-<!--//
-function CloseChild()
-{
-	window.close();
 }
 //-->

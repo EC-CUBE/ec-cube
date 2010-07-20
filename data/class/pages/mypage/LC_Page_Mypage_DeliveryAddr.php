@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -44,11 +44,11 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page {
     function init() {
         parent::init();
         $this->tpl_mainpage = TEMPLATE_DIR . 'mypage/delivery_addr.tpl';
-        $this->tpl_title = "新しいお届け先の追加･変更";
+        $this->tpl_title = "お届け先の追加･変更";
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref= $masterData->getMasterData("mtb_pref",
                             array("pref_id", "pref_name", "rank"));
-        $this->allowClientCache();
+        $this->httpCacheControl('nocache');
     }
 
     /**
@@ -92,18 +92,18 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page {
 
         //別のお届け先ＤＢ登録用カラム配列
         $arrRegistColumn = array(
-                                 array(  "column" => "name01",		"convert" => "aKV" ),
-                                 array(  "column" => "name02",		"convert" => "aKV" ),
-                                 array(  "column" => "kana01",		"convert" => "CKV" ),
-                                 array(  "column" => "kana02",		"convert" => "CKV" ),
-                                 array(  "column" => "zip01",		"convert" => "n" ),
-                                 array(  "column" => "zip02",		"convert" => "n" ),
-                                 array(  "column" => "pref",		"convert" => "n" ),
-                                 array(  "column" => "addr01",		"convert" => "aKV" ),
-                                 array(  "column" => "addr02",		"convert" => "aKV" ),
-                                 array(  "column" => "tel01",		"convert" => "n" ),
-                                 array(  "column" => "tel02",		"convert" => "n" ),
-                                 array(  "column" => "tel03",		"convert" => "n" ),
+                                 array("column" => "name01",    "convert" => "aKV"),
+                                 array("column" => "name02",    "convert" => "aKV"),
+                                 array("column" => "kana01",    "convert" => "CKV"),
+                                 array("column" => "kana02",    "convert" => "CKV"),
+                                 array("column" => "zip01",     "convert" => "n"),
+                                 array("column" => "zip02",     "convert" => "n"),
+                                 array("column" => "pref",      "convert" => "n"),
+                                 array("column" => "addr01",    "convert" => "aKV"),
+                                 array("column" => "addr02",    "convert" => "aKV"),
+                                 array("column" => "tel01",     "convert" => "n"),
+                                 array("column" => "tel02",     "convert" => "n"),
+                                 array("column" => "tel03",     "convert" => "n"),
                                  );
 
 
@@ -122,25 +122,14 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page {
                         if ($val != "") $this->arrForm[$key] = $val;
                     }
                 } else {
-                    //別のお届け先登録数の取得
-                    $deliv_count = $objQuery->count("dtb_other_deliv", "customer_id=?", array($objCustomer->getValue('customer_id')));
-                    if ($deliv_count < DELIV_ADDR_MAX or isset($_POST['other_deliv_id'])){
-                        if(strlen($_POST['other_deliv_id'] != 0)){
-                            $deliv_count = $objQuery->count("dtb_other_deliv","customer_id=? and other_deliv_id = ?" ,array($objCustomer->getValue('customer_id'), $_POST['other_deliv_id']));
-                            if ($deliv_count == 0) {
-                                SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
-                            }else{
-                                $this->lfRegistData($_POST,$arrRegistColumn, $objCustomer);
-                            }
-                        }else{
-                            $this->lfRegistData($_POST,$arrRegistColumn, $objCustomer);
-                        }
+                    
+                    if ($_POST['ParentPage'] == MYPAGE_DELIVADDR_URL || $_POST['ParentPage'] == URL_DELIV_TOP) {
+                        $this->tpl_onload = "fnUpdateParent('". $this->getLocation($_POST['ParentPage']) ."'); window.close();";
+                    } else {
+                        SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
                     }
-                        if( $_POST['ParentPage'] == MYPAGE_DELIVADDR_URL || $_POST['ParentPage'] == URL_DELIV_TOP ){
-                            $this->tpl_onload = "fnUpdateParent('". $this->getLocation($_POST['ParentPage']) ."'); window.close();";
-                        }else{
-                            SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
-                        }
+                    
+                    $this->lfRegistData($_POST, $arrRegistColumn, $objCustomer);
                 }
                 break;
         }
@@ -170,12 +159,12 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page {
         $objErr->doFunc(array("郵便番号2", "zip02", ZIP02_LEN ) ,array("EXIST_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK"));
         $objErr->doFunc(array("郵便番号", "zip01", "zip02"), array("ALL_EXIST_CHECK"));
         $objErr->doFunc(array("都道府県", 'pref'), array("SELECT_CHECK","NUM_CHECK"));
-        $objErr->doFunc(array("ご住所（1）", "addr01", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("ご住所（2）", "addr02", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("お電話番号1", 'tel01'), array("EXIST_CHECK","NUM_CHECK"));
-        $objErr->doFunc(array("お電話番号2", 'tel02'), array("EXIST_CHECK","NUM_CHECK"));
-        $objErr->doFunc(array("お電話番号3", 'tel03'), array("EXIST_CHECK","NUM_CHECK"));
-        $objErr->doFunc(array("お電話番号", "tel01", "tel02", "tel03", TEL_LEN) ,array("TEL_CHECK"));
+        $objErr->doFunc(array("住所（1）", "addr01", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+        $objErr->doFunc(array("住所（2）", "addr02", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+        $objErr->doFunc(array("電話番号1", 'tel01'), array("EXIST_CHECK","NUM_CHECK"));
+        $objErr->doFunc(array("電話番号2", 'tel02'), array("EXIST_CHECK","NUM_CHECK"));
+        $objErr->doFunc(array("電話番号3", 'tel03'), array("EXIST_CHECK","NUM_CHECK"));
+        $objErr->doFunc(array("電話番号", "tel01", "tel02", "tel03") ,array("TEL_CHECK"));
         return $objErr->arrErr;
 
     }
@@ -183,6 +172,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page {
     /* 登録実行 */
     function lfRegistData($array, $arrRegistColumn, &$objCustomer) {
         $objConn = new SC_DBConn();
+        $objQuery = new SC_Query();
         foreach ($arrRegistColumn as $data) {
             if (strlen($array[ $data["column"] ]) > 0) {
                 $arrRegist[ $data["column"] ] = $array[ $data["column"] ];
@@ -191,26 +181,40 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page {
 
         $arrRegist['customer_id'] = $objCustomer->getvalue('customer_id');
 
-        //-- 編集登録実行
-        $objConn->query("BEGIN");
-        if ($array['other_deliv_id'] != ""){
+        // 追加
+        if (strlen($_POST['other_deliv_id'] == 0)) {
+            // 別のお届け先登録数の取得
+            $deliv_count = $objQuery->count("dtb_other_deliv", "customer_id=?", array($objCustomer->getValue('customer_id')));
+            // 別のお届け先最大登録数に達している場合、エラー
+            if ($deliv_count >= DELIV_ADDR_MAX) {
+                SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, "", false, '別のお届け先最大登録数に達しています。');
+            }
+            
+            // 実行
+            $objConn->autoExecute("dtb_other_deliv", $arrRegist);
+            
+        // 変更
+        } else {
+            $deliv_count = $objQuery->count("dtb_other_deliv","customer_id=? and other_deliv_id = ?" ,array($objCustomer->getValue('customer_id'), $_POST['other_deliv_id']));
+            if ($deliv_count != 1) {
+                SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, "", false, '一致する別のお届け先がありません。');
+            }
+            
+            // 実行
             $objConn->autoExecute("dtb_other_deliv", $arrRegist,
                                   "other_deliv_id = "
                                   . SC_Utils_Ex::sfQuoteSmart($array["other_deliv_id"]));
-        }else{
-            $objConn->autoExecute("dtb_other_deliv", $arrRegist);
         }
-        $objConn->query("COMMIT");
     }
 
     //----　取得文字列の変換
     function lfConvertParam($array, $arrRegistColumn) {
         /*
-         *	文字列の変換
-         *	K :  「半角(ﾊﾝｶｸ)片仮名」を「全角片仮名」に変換
-         *	C :  「全角ひら仮名」を「全角かた仮名」に変換
-         *	V :  濁点付きの文字を一文字に変換。"K","H"と共に使用します
-         *	n :  「全角」数字を「半角(ﾊﾝｶｸ)」に変換
+         *  文字列の変換
+         *  K :  「半角(ﾊﾝｶｸ)片仮名」を「全角片仮名」に変換
+         *  C :  「全角ひら仮名」を「全角かた仮名」に変換
+         *  V :  濁点付きの文字を一文字に変換。"K","H"と共に使用します
+         *  n :  「全角」数字を「半角(ﾊﾝｶｸ)」に変換
          *  a :  全角英数字を半角英数字に変換する
          */
         // カラム名とコンバート情報

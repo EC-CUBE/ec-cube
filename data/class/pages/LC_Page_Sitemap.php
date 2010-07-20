@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -59,10 +59,6 @@ class LC_Page_Sitemap extends LC_Page {
     /** 動的に生成しないページの配列 */
     var $staticURL;
 
-
-    /** ページデータ */
-    var $arrPageData;
-
     /** ページリスト */
     var $arrPageList;
 
@@ -77,7 +73,13 @@ class LC_Page_Sitemap extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->staticURL = array(SITE_URL, MOBILE_SITE_URL, SITE_URL . "rss/index.php");
+        
+        $this->staticURL = array();
+        
+        $this->staticURL[] = SITE_URL . 'rss/' . DIR_INDEX_URL;
+        if (USE_MOBILE !== false) {
+            $this->staticURL[] = MOBILE_SITE_URL;
+        }
     }
 
     /**
@@ -104,44 +106,35 @@ class LC_Page_Sitemap extends LC_Page {
         print("<?xml version='1.0' encoding='UTF-8'?>\n");
         print("<urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>\n");
 
-        // 静的なページを処理
-        foreach($this->staticURL as $url) {
-            $this->createSitemap($url, '', 'daily', 1.0);
-        }
-
         // TOPページを処理
         $topPage = $this->getTopPage($this->arrPageList);
         $this->createSitemap($topPage[0]['url'],
                              $this->date2W3CDatetime($topPage[0]['update_date']),
                              'daily', 1.0);
 
+        // 静的なページを処理
+        foreach ($this->staticURL as $url) {
+            $this->createSitemap($url, '', 'daily', 1.0);
+        }
+
         // 編集可能ページを処理
         $editablePages = $this->getEditablePage($this->arrPageList);
-        foreach($editablePages as $editablePage) {
+        foreach ($editablePages as $editablePage) {
             $this->createSitemap($editablePage['url'],
                                  $this->date2W3CDatetime($editablePage['update_date']));
         }
 
         // 商品一覧ページを処理
         $products = $this->getAllProducts();
-        foreach($products as $product) {
+        foreach ($products as $product) {
             $this->createSitemap($product['url'], '', 'daily');
-        }
-        $mobileProducts = $this->getAllProducts(true);
-        foreach($mobileProducts as $mobileProduct) {
-            $this->createSitemap($mobileProduct['url'], '', 'daily');
         }
 
         // 商品詳細ページを処理
         $details = $this->getAllDetail();
-        foreach($details as $detail) {
+        foreach ($details as $detail) {
             $this->createSitemap($detail['url'],
                                  $this->date2W3CDatetime($detail['update_date']));
-        }
-        $mobileDetails = $this->getAllDetail(true);
-        foreach($mobileDetails as $mobileDetail) {
-            $this->createSitemap($mobileDetail['url'], 
-                                 $this->date2W3CDatetime($mobileDetail['update_date']));
         }
 
         print("</urlset>\n");
@@ -191,9 +184,8 @@ class LC_Page_Sitemap extends LC_Page {
      */
     function getTopPage($pageData) {
         $arrRet = array();
-        foreach($pageData as $page) {
+        foreach ($pageData as $page) {
             if ($page['page_id'] == "1") {
-                $page['url'] = SITE_URL . $page['url'];
                 $arrRet[0] = $page;
                 return $arrRet;
             }
@@ -208,11 +200,9 @@ class LC_Page_Sitemap extends LC_Page {
      */
     function getEditablePage($pageData) {
         $arrRet = array();
-        $i = 0;
-        foreach($pageData as $page) {
+        foreach ($pageData as $page) {
             if ($page['page_id'] > 4) {
-                $arrRet[$i] = $page;
-                $i++;
+                $arrRet[] = $page;
             }
         }
         return $arrRet;
@@ -221,24 +211,27 @@ class LC_Page_Sitemap extends LC_Page {
     /**
      * すべての商品一覧ページを取得する.
      *
-     * @param boolean $isMobile モバイルページを取得する場合 true
      * @return array 検索エンジンからアクセス可能な商品一覧ページの情報
      */
-    function getAllProducts($isMobile = false) {
+    function getAllProducts() {
+        
+        // XXX: 商品登録の無いカテゴリーは除外する方が良い気もする
         $conn = new SC_DBConn();
         $sql = "SELECT category_id FROM dtb_category WHERE del_flg = 0";
         $result = $conn->getAll($sql);
 
-        $mobile = "";
-        if ($isMobile) {
-            $mobile = "mobile/";
-        }
-
         $arrRet = array();
-        for ($i = 0; $i < count($result); $i++) {
+        foreach ($result as $row) {
             // :TODO: カテゴリの最終更新日を取得できるようにする
-            $page = array("url" => SITE_URL . sprintf("%sproducts/list.php?category_id=%d", $mobile, $result[$i]['category_id']));
-            $arrRet[$i] = $page;
+            
+            $page["url"] = SITE_URL . 'products/list.php?category_id=' . $row['category_id'];
+            $arrRet[] = $page;
+            
+            // モバイルサイト
+            if (USE_MOBILE !== false) {
+                $page["url"] = MOBILE_SITE_URL . 'products/list.php?category_id=' . $row['category_id'];
+                $arrRet[] = $page;
+            }
         }
         return $arrRet;
     }
@@ -246,24 +239,26 @@ class LC_Page_Sitemap extends LC_Page {
     /**
      * すべての商品詳細ページを取得する.
      *
-     * @param boolean $isMobile モバイルページを取得する場合 true
      * @return array 検索エンジンからアクセス可能な商品詳細ページの情報
      */
-    function getAllDetail($isMobile = false) {
+    function getAllDetail() {
         $conn = new SC_DBConn();
         $sql = "SELECT product_id, update_date FROM dtb_products WHERE del_flg = 0 AND status = 1";
         $result = $conn->getAll($sql);
 
-        $mobile = "";
-        if ($isMobile) {
-            $mobile = "mobile/";
-        }
-
         $arrRet = array();
-        for ($i = 0; $i < count($result); $i++) {
-            $page = array("url" => SITE_URL. sprintf("%sproducts/detail.php?product_id=%d", $mobile, $result[$i]['product_id']),
-                          "update_date" => $result[$i]['update_date']);
-            $arrRet[$i] = $page;
+        foreach ($result as $row) {
+            
+            $page["update_date"] = $row['update_date'];
+            
+            $page["url"] = SITE_URL . substr(DETAIL_P_HTML, strlen(URL_DIR)) . $row['product_id'];
+            $arrRet[] = $page;
+            
+            // モバイルサイト
+            if (USE_MOBILE !== false) {
+                $page["url"] = SITE_URL . substr(MOBILE_DETAIL_P_HTML, strlen(URL_DIR)) . $row['product_id'];
+                $arrRet[] = $page;
+            }
         }
         return $arrRet;
     }
@@ -277,26 +272,26 @@ class LC_Page_Sitemap extends LC_Page {
      * @return ブロック情報
      */
     function getPageData($where = '', $arrVal = ''){
-        $objDBConn = new SC_DbConn;		// DB操作オブジェクト
-        $sql = "";						// データ取得SQL生成用
-        $arrRet = array();				// データ取得用
+        $objDBConn = new SC_DbConn;     // DB操作オブジェクト
+        $sql = "";                      // データ取得SQL生成用
+        $arrRet = array();              // データ取得用
 
         // SQL生成(url と update_date 以外は不要？)
         $sql .= " SELECT";
-        $sql .= " page_id";				// ページID
-        $sql .= " ,page_name";			// 名称
-        $sql .= " ,url";				// URL
-        $sql .= " ,php_dir";			// php保存先ディレクトリ
-        $sql .= " ,tpl_dir";			// tpl保存先ディdレクトリ
-        $sql .= " ,filename";			// ファイル名称
-        $sql .= " ,header_chk ";		// ヘッダー使用FLG
-        $sql .= " ,footer_chk ";		// フッター使用FLG
-        $sql .= " ,author";				// authorタグ
-        $sql .= " ,description";		// descriptionタグ
-        $sql .= " ,keyword";			// keywordタグ
-        $sql .= " ,update_url";			// 更新URL
-        $sql .= " ,create_date";		// データ作成日
-        $sql .= " ,update_date";		// データ更新日
+        $sql .= " page_id";             // ページID
+        $sql .= " ,page_name";          // 名称
+        $sql .= " ,url";                // URL
+        $sql .= " ,php_dir";            // php保存先ディレクトリ
+        $sql .= " ,tpl_dir";            // tpl保存先ディdレクトリ
+        $sql .= " ,filename";           // ファイル名称
+        $sql .= " ,header_chk ";        // ヘッダー使用FLG
+        $sql .= " ,footer_chk ";        // フッター使用FLG
+        $sql .= " ,author";             // authorタグ
+        $sql .= " ,description";        // descriptionタグ
+        $sql .= " ,keyword";            // keywordタグ
+        $sql .= " ,update_url";         // 更新URL
+        $sql .= " ,create_date";        // データ作成日
+        $sql .= " ,update_date";        // データ更新日
         $sql .= " FROM ";
         $sql .= "     dtb_pagelayout";
 
@@ -305,9 +300,21 @@ class LC_Page_Sitemap extends LC_Page {
             $sql .= " WHERE " . $where;
         }
 
-        $sql .= " ORDER BY 	page_id";
+        $sql .= " ORDER BY page_id";
 
-        return $objDBConn->getAll($sql, $arrVal);
+        $pageData = $objDBConn->getAll($sql, $arrVal);
+        
+        // URL にプロトコルの記載が無い場合、SITE_URL を前置する。
+        foreach (array_keys($pageData) as $key) {
+            $page =& $pageData[$key];
+            if (!preg_match('|^https?://|i', $page['url'])) {
+                $page['url'] = SITE_URL . $page['url'];
+            }
+            $page['url'] = preg_replace('|/' . preg_quote(DIR_INDEX_FILE) . '$|', '/' . DIR_INDEX_URL, $page['url']);
+        }
+        unset($page);
+        
+        return $pageData;
     }
 
     /**

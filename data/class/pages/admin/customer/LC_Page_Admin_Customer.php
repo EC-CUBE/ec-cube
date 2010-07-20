@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -151,6 +151,7 @@ class LC_Page_Admin_Customer extends LC_Page {
                                                 "csv" => "update_date",
                                                 "header" => "更新日")
                                     );
+        $this->httpCacheControl('nocache');
     }
 
     /**
@@ -211,23 +212,32 @@ class LC_Page_Admin_Customer extends LC_Page {
                 $objQuery->conn->query($sql, array($_POST["edit_customer_id"]));
             }
         }
-        //if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == "delete" || $_POST['mode'] == "delete_all") {
         // 登録メール再送
         if ($_POST['mode'] == "resend_mail") {
-            $arrRet = $objQuery->select("name01, name02, secret_key, email", "dtb_customer","customer_id = ? AND del_flg <> 1 AND status = 1", array($_POST["edit_customer_id"]));
+            $arrRet = $objQuery->select("name01, name02, secret_key, email, email_mobile", "dtb_customer","customer_id = ? AND del_flg <> 1 AND status = 1", array($_POST["edit_customer_id"]));
             if( is_array($arrRet) === true && count($arrRet) > 0 ){
-
-                $CONF = $objDb->sf_getBasisData();
-                $this->CONF = $CONF;
-                $objMailText = new SC_SiteView();
-                $objMailText->assignobj($this);
-                $mailHelper = new SC_Helper_Mail_Ex();
 
                 $this->name01 = $arrRet[0]['name01'];
                 $this->name02 = $arrRet[0]['name02'];
                 $this->uniqid = $arrRet[0]['secret_key'];
 
-                $subject = $mailHelper->sfMakesubject($objQuery, $objMailText, $this, '会員登録のご確認');
+                $CONF = $objDb->sf_getBasisData();
+                $this->CONF = $CONF;
+                /**
+                 * 携帯メールアドレスが登録されていれば携帯サイトから仮会員登録したものと判定する。
+                 * TODO: とりあえずの簡易的な判定なので、将来的には判定ルーチンを修正した方が良い。
+                 */
+                if (!empty($arrRet[0]['email_mobile'])) {
+                    $objMailText = new SC_MobileView(false);
+                    $this->to_name01 = $arrRet[0]['name01'];
+                    $this->to_name02 = $arrRet[0]['name02'];
+                } else {
+                    $objMailText = new SC_SiteView(false);
+                }
+                $objMailText->assignobj($this);
+                $mailHelper = new SC_Helper_Mail_Ex();
+
+                $subject = $mailHelper->sfMakesubject('会員登録のご確認');
                 $toCustomerMail = $objMailText->fetch("mail_templates/customer_mail.tpl");
 
                 $objMail = new SC_SendMail();
@@ -248,6 +258,7 @@ class LC_Page_Admin_Customer extends LC_Page {
             }
 
         }
+
         if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == "delete" || $_POST['mode'] == "delete_all" || $_POST['mode'] == "resend_mail") {
 
             // 入力文字の強制変換
@@ -297,7 +308,7 @@ class LC_Page_Admin_Customer extends LC_Page {
                     $header = "";
 
                     // CSVカラム取得
-                    $arrCsvOutput = ($objCSV->sfgetCsvOutput(2, " WHERE csv_id = 2 AND status = 1"));
+                    $arrCsvOutput = ($objCSV->sfgetCsvOutput(2, 'status = 1'));
 
                     if (count($arrCsvOutput) <= 0) break;
 
@@ -459,78 +470,6 @@ class LC_Page_Admin_Customer extends LC_Page {
         $objErr->doFunc(array("購入商品名", "buy_product_name", STEXT_LEN), array("MAX_LENGTH_CHECK"));                         //購入商品名称
 
         return $objErr->arrErr;
-    }
-
-    function lfSetWhere($arrForm){
-        foreach ($arrForm as $key => $val) {
-
-            $val = sfManualEscape($val);
-
-            if($val == "") continue;
-
-            switch ($key) {
-            case 'product_id':
-                $where .= " AND product_id = ?";
-                $arrval[] = $val;
-                break;
-            case 'product_class_id':
-                $where .= " AND product_id IN (SELECT product_id FROM dtb_products_class WHERE product_class_id = ?)";
-                $arrval[] = $val;
-                break;
-            case 'name':
-                $where .= " AND name ILIKE ?";
-                $arrval[] = "%$val%";
-                break;
-            case 'category_id':
-                list($tmp_where, $tmp_arrval) = sfGetCatWhere($val);
-                if($tmp_where != "") {
-                    $where.= " AND $tmp_where";
-                    $arrval = array_merge($arrval, $tmp_arrval);
-                }
-                break;
-            case 'product_code':
-                $where .= " AND product_id IN (SELECT product_id FROM dtb_products_class WHERE product_code ILIKE ? GROUP BY product_id)";
-                $arrval[] = "%$val%";
-                break;
-            case 'startyear':
-                $date = sfGetTimestamp($_POST['startyear'], $_POST['startmonth'], $_POST['startday']);
-                $where.= " AND update_date >= ?";
-                $arrval[] = $date;
-                break;
-            case 'endyear':
-                $date = sfGetTimestamp($_POST['endyear'], $_POST['endmonth'], $_POST['endday']);
-                $where.= " AND update_date <= ?";
-                $arrval[] = $date;
-                break;
-            case 'product_flag':
-                global $arrSTATUS;
-                $product_flag = sfSearchCheckBoxes($val);
-                if($product_flag != "") {
-                    $where.= " AND product_flag LIKE ?";
-                    $arrval[] = $product_flag;
-                }
-                break;
-            case 'status':
-                $tmp_where = "";
-                foreach ($val as $element){
-                    if ($element != ""){
-                        if ($tmp_where == ""){
-                            $tmp_where.="AND (status LIKE ? ";
-                        }else{
-                            $tmp_where.="OR status LIKE ? ";
-                        }
-                        $arrval[]=$element;
-                    }
-                }
-                if ($tmp_where != ""){
-                    $tmp_where.=")";
-                    $where.= "$tmp_where";
-                }
-                break;
-            default:
-                break;
-            }
-        }
     }
 }
 ?>

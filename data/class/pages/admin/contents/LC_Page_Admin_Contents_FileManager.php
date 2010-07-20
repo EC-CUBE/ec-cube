@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -91,7 +91,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page {
             // エラーチェック
             $arrErr = $this->lfErrorCheck();
 
-            if(!is_array($arrErr)) {
+            if (empty($arrErr)) {
                 // 選択されたファイルがディレクトリなら移動
                 if(is_dir($_POST['select_file'])) {
                     ///$now_dir = $_POST['select_file'];
@@ -111,7 +111,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page {
 
             // エラーチェック
             $arrErr = $this->lfErrorCheck();
-            if(!is_array($arrErr)) {
+            if (empty($arrErr)) {
                 if(is_dir($_POST['select_file'])) {
                     // ディレクトリの場合はjavascriptエラー
                     $arrErr['select_file'] = "※ ディレクトリをダウンロードすることは出来ません。<br/>";
@@ -126,7 +126,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page {
         case 'delete':
             // エラーチェック
             $arrErr = $this->lfErrorCheck();
-            if(!is_array($arrErr)) {
+            if (empty($arrErr)) {
                 $objFileManager->sfDeleteDir($_POST['select_file']);
             }
             break;
@@ -134,7 +134,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page {
         case 'create':
             // エラーチェック
             $arrErr = $this->lfCreateErrorCheck();
-            if(!is_array($arrErr)) {
+            if (empty($arrErr)) {
                 $create_dir = ereg_replace("/$", "", $now_dir);
                 // ファイル作成
                 if(!$objFileManager->sfCreateFile($create_dir."/".$_POST['create_file'], 0755)) {

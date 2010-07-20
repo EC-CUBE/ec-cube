@@ -4,7 +4,7 @@
     padding: 0;
 }
 
-table,img,p {
+table,img,p { 
     border: 0;
 }
 
@@ -47,7 +47,10 @@ a:link {
 a:visited {
     color: #3a75af;
 }
-a:hover {
+a:link:hover {
+    color: #ff6600;
+}
+a[href]:hover { /* 「a:link:hover」の Firefox 向けハック。上と Grouping 構文で統合すると、IE で動作しなくなる。 */
     color: #ff6600;
 }
 /* フォント
@@ -56,16 +59,42 @@ h1,h2,h3,h4,h5 {
     font-size: 100%;
     line-height: 150%;
 }
-.price { color: #ff0000; font-weight: bold; }
+.price {
+}
+/* FIXME ポイントがクラス「price」を利用しているようだが、専用のクラスを用意すべき。 */
+.sale_price {
+    color: #ff0000;
+}
+.sale_price .price {
+    font-weight: bold;
+}
+.normal_price {
+}
 .attention { color: #ff0000; }
 .mini { font-size: 90%; }
 em {
     font-style: normal;
     color: #ff0000;
 }
+
+/* 見出し
+----------------------------------------------- */
+h2 {
+}
+h2.title {
+    margin: 0 0 10px 0;
+    border-style: solid;
+    border-width: 2px 1px;
+    border-color: #999 #ccc;
+    background: url("../img/title/title_icon.gif") no-repeat 7px center;
+    padding: 7px 0 7px 30px;
+    font-size: 140%;
+    color: #000;
+}
+
 /* テーブル共通指定
 ----------------------------------------------- */
-table  {
+table {
     margin: 15px auto 0 auto;
     border-top: 1px solid #ccc;
     border-left: 1px solid #ccc;
@@ -119,21 +148,20 @@ div#completetext p{
 
 /* ヘッダーロゴ
 ------------------------------------------------ */
-div#header {
+#header {
     background: url("../img/header/bg.gif");
-    width: 780px;
     height: 95px;
     margin: 0 auto;
 }
-div#header h1 a {
+#header h1 a {
     float: left;
     display: block;
     margin: 8px 0 0 0;
     width: 292px;
     height: 81px;
-    background: url("../img/header/logo.gif");
+    background: url("../img/header/logo.gif") no-repeat;
 }
-div#header em {
+#header em {
     display: none;
 }
 
@@ -152,113 +180,182 @@ div#information ul li a {
 }
 /* フレーム
 ----------------------------------------------- */
-div#container {
-    width: 764px;
+.frame_outer {
+    width: 950px;
     margin: 0 auto;
-    padding: 0 8px;
     background-color: #fff;
+}
+#container {
     text-align: left;
-}
-#container:after {/* firefox背景色表示用 */
-    content: "";
-    display: block;
     clear: both;
-    height: 1px;
-    overflow: hidden;
 }
 
-div#leftcolumn {
+#leftcolumn {
     float: left;
-    width: 166px;
+    width: 20%;
 }
 
-div#leftcolumn h2 {
-    padding: 15px 0 0 0;
-}
-
-div#rightcolumn {
-    float: left;
-    width: 166px;
-}
-
-div#rightcolumn h2 {
-    padding: 15px 0 0 0;
+#rightcolumn {
+    float: right;
+    width: 20%;
 }
 
 /* メインコンテンツ
 ----------------------------------------------- */
+.main_column {
+    padding: 10px 0 20px;
+}
+
 /* 3カラム設定 */
-div#three_maincolumn {
+#three_maincolumn {
+    width: 58%;
+    margin-left: 1%; /* 右側を同等幅の未定義空間として、段落崩れを防ぐ */
     float: left;
-    width: 432px;
-    padding: 15px 0 0 0;
 }
 
-div#three_maincolumn h2 {
-    padding: 15px 0 0 0;
-}
-
-/* 2カラム設定 */
-div#two_maincolumn {
+/* 2カラム設定 (メイン部が左) */
+#two_maincolumn_left {
+    width: 79%;
     float: left;
-    width: 598px;
-    padding: 15px 0 0 0;
 }
 
-div#two_maincolumn h2 {
-    padding: 15px 0 0 0;
+/* 2カラム設定 (メイン部が右) */
+#two_maincolumn_right {
+    width: 79%;
+    float: right;
 }
 
 /* 1カラム設定 */
-div#one_maincolumn {
-    padding: 10px 0 0 0;
+#one_maincolumn {
+}
+
+/* 上下のブロックエリア
+----------------------------------------------- */
+div#topcolumn{
+    clear:both;
+    margin:0px; 
+}
+div#bottomcolumn{
+    clear: both;
+    margin:0px;
+}
+
+/* リストをボタンのような外観に
+----------------------------------------------- */
+ul.button_like li {
+    margin: 0;
+    padding: 0;
+    background: url(../img/common/gradation_v50.gif) top repeat-x;
+}
+ul.button_like li a {
+    display: block;
+    padding: 7px 0 7px 15px;
+    text-decoration: none;
+    border: 1px solid;
+    border-color: #ccc #999 #999 #ccc;
+    background: url("../img/common/button_like_bg.gif") 5px 7px no-repeat;
+    outline: none;
+    margin: 0;
+}
+ul.button_like li a:link,
+ul.button_like li a:visited {
+    color: #000;
+}
+ul.button_like li a:hover,
+ul.button_like li a.selected:link,
+ul.button_like li a.selected:visited {
+    color: #f60;
+}
+ul.button_like li a:active {
+    border-color: #999 #ccc #ccc #999;
+}
+
+/* ブロック共通
+----------------------------------------------- */
+.bloc_body {
+    background-color: #FFF;
+}
+.side_column {
+    overflow-x: hidden; /* IE6 表示乱れ防止 */
+}
+.side_column .bloc_outer {
+    margin: 10px 5%;
+}
+.side_column .bloc_body {
+    border: solid 1px #ccc;
+}
+.side_column h2 {
+    border-style: solid;
+    border-color: #F60 #ccc #999 #ccc;
+    border-width: 3px 1px 2px;
+    background: url(../img/common/gradation_v50.gif);
+    padding: 5px 0 4px 8px;
+    font-size: 14px;
+}
+.side_column h2 img.title_icon {
+    vertical-align: -2px;
+}
+.main_column .bloc_outer {
+    margin: 10px 0;
+}
+.main_column .bloc_outer h2 {
+    border-style: solid;
+    border-color: #ccc #ccc #999;
+    border-width: 1px 1px 2px;
+    background: #f4f4d8;
+    padding: 5px 0 4px 8px;
+    font-size: 14px;
+}
+.main_column .bloc_outer h2 img.title_icon {
+    vertical-align: -2px;
 }
 
 /* カゴの中
 ----------------------------------------------- */
-div#cartarea {
-    width: 144px;
+#cartarea {
     padding: 10px;
-    border: solid 1px #ccc;
 }
 
-div#cartarea p {
+#cartarea p {
     padding: 5px 0 10px 0;
 }
 
-div#cartarea p.item {
+#cartarea p.item {
     padding: 0 0 10px 0;
     background: url("../img/side/line_146.gif") no-repeat bottom;
 }
 
-div#cartarea .btn {
+#cartarea .btn {
     padding: 0;
     text-align: center;
 }
 
+#cartarea .price {
+    color: #FF0000;
+    font-weight: bold;
+}
+
 /* カテゴリー
 ----------------------------------------------- */
-div#categoryarea {
-    width: 144px;
+#categoryarea {
     padding: 10px;
-    border: solid 1px #ccc;
     background-color: #fff1e3;
 }
 
-div#categoryarea li {
+#categoryarea li {
     padding: 0 0 0 20px;
     background: url("../img/common/arrow_blue.gif") 0 3px no-repeat;
 }
-div#categoryarea li.onmark {
+#categoryarea li.onmark {
     background: url("../img/common/arrow_red.gif") 0 3px no-repeat;
 }
-div#categoryarea li.level1 {
+#categoryarea li.level1 {
     font-weight: bold;
 }
-div#categoryarea li.level1 li {
+#categoryarea li.level1 li {
     font-weight: normal;
 }
-div#categoryarea li a {
+#categoryarea li a {
     display: block;
     padding: 3px 0;
 }
@@ -273,19 +370,21 @@ a.onlink:visited {
 a.onlink:hover {
     color: #ff0000;
 }
+
 /* ガイドリンク
 ----------------------------------------------- */
 #guidearea {
-    padding: 15px 0 0 0;
-    line-height: 0;
+    margin-top: 1em;
+    border: none;
+}
+#guidearea ul.button_like {
+    font-size: 11px;
 }
 
 /* ログイン
 ----------------------------------------------- */
 div#loginarea {
-    width: 144px;
     padding: 0 10px 10px 10px;
-    border: solid 1px #ccc;
 }
 
 div#loginarea p {
@@ -306,12 +405,11 @@ div#loginarea .btn {
     border: solid 1px #ccc;
 }
 
+
 /* 検索
 ----------------------------------------------- */
 div#searcharea {
-    width: 144px;
     padding: 0 10px 10px 10px;
-    border: solid 1px #ccc;
 }
 
 div#searcharea p {
@@ -330,9 +428,12 @@ div#searcharea .btn {
 /* カレンダー
 ----------------------------------------------- */
 #block-calendar {
+    background-color: transparent;
+    border: none;
 }
 
 #block-calendar table {
+    background: #FFF;
     border-collapse: collapse;
     margin: 0 auto 10px;
     text-align:center;
@@ -356,6 +457,7 @@ div#searcharea .btn {
 #block-calendar caption {
     color: #DD4400;
 }
+
 
 /* バナー
 ----------------------------------------------- */
@@ -412,20 +514,19 @@ input[type='image'].box51 {
 /* フッター
 ----------------------------------------------- */
 #pagetop {
-    width: 764px;
     margin: 0 auto;
-    padding: 30px 8px 15px 8px;
-    background-color: #fff;
+    padding: 15px 8px;
     text-align: right;
+    clear: both;
 }
 
 #fotter {
-    width: 764px;
     margin: 0 auto;
     padding: 15px 8px;
     border-top: 1px solid #ff6600;
     background-color: #ffa85c;
     font-size: 90%;
     color: #fff;
-    text-align: left;
+    text-align: center;
+    clear: both;
 }

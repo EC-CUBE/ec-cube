@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -53,7 +53,7 @@ class LC_Page_FrontParts_Bloc_Cart extends LC_Page_FrontParts_Bloc {
      * @return void
      */
     function process() {
-        $objSubView = new SC_SiteView();
+        $objSubView = new SC_SiteView(false);
         $objCart = new SC_CartSession();
         $objSiteInfo = new SC_SiteInfo;
 
@@ -85,9 +85,9 @@ class LC_Page_FrontParts_Bloc_Cart extends LC_Page_FrontParts_Bloc {
             // 店舗情報の取得
             $arrInfo = $objSiteInfo->data;
             // 購入金額合計
-            $ProductsTotal = $objCart->getAllProductsTotal($arrInfo);
+            $ProductsTotal = $objCart->getAllProductsTotal();
 
-            // 合計個数
+            // 合計数量
             $TotalQuantity = $objCart->getTotalQuantity();
 
             // 送料無料までの金額

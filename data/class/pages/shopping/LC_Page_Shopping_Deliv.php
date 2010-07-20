@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -25,7 +25,7 @@
 require_once(CLASS_PATH . "pages/LC_Page.php");
 
 /**
- * お届け先指定 のページクラス.
+ * お届け先の指定 のページクラス.
  *
  * @package Page
  * @author LOCKON CO.,LTD.
@@ -56,9 +56,8 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         $this->tpl_css = URL_DIR.'css/layout/shopping/index.css';
         $masterData = new SC_DB_MasterData();
         $this->arrPref = $masterData->getMasterData("mtb_pref", array("pref_id", "pref_name", "rank"));
-        $this->tpl_title = "お届け先指定";
-
-        $this->allowClientCache();
+        $this->tpl_title = "お届け先の指定";
+        $this->httpCacheControl('nocache');
     }
 
     /**
@@ -200,7 +199,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         $arrCustomerAddr = $objQuery->select($col, "dtb_customer", $where, array($_SESSION['customer']['customer_id']));
         // 別のお届け先住所の取得
         $col = "other_deliv_id, name01, name02, pref, addr01, addr02";
-        $objQuery->setorder("other_deliv_id DESC");
+        $objQuery->setOrder("other_deliv_id DESC");
         $objOtherAddr = $objQuery->select($col, "dtb_other_deliv", $where, array($_SESSION['customer']['customer_id']));
         $this->arrAddr = $arrCustomerAddr;
         $this->tpl_addrmax = count($objOtherAddr);
@@ -264,7 +263,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         // ログインチェック
         if($_POST['mode'] != 'login' && !$objCustomer->isLoginSuccess(true)) {
             // 不正アクセスとみなす
-            SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
+            SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
         }
 
         switch($_POST['mode']) {
@@ -289,9 +288,9 @@ class LC_Page_Shopping_Deliv extends LC_Page {
                     $ret = $objQuery->count("dtb_customer", $where, array($arrForm['login_email'], $arrForm['login_email']));
 
                     if($ret > 0) {
-                        SC_Utils_Ex::sfDispSiteError(TEMP_LOGIN_ERROR, "", false, "", true);
+                        SC_Utils_Ex::sfDispSiteError(TEMP_LOGIN_ERROR);
                     } else {
-                        SC_Utils_Ex::sfDispSiteError(SITE_LOGIN_ERROR, "", false, "", true);
+                        SC_Utils_Ex::sfDispSiteError(SITE_LOGIN_ERROR);
                     }
                 }
             } else {
@@ -388,7 +387,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         $arrCustomerAddr = $objQuery->select($col, "dtb_customer", $where, array($_SESSION['customer']['customer_id']));
         // 別のお届け先住所の取得
         $col = "other_deliv_id, name01, name02, pref, addr01, addr02, zip01, zip02";
-        $objQuery->setorder("other_deliv_id DESC");
+        $objQuery->setOrder("other_deliv_id DESC");
         $objOtherAddr = $objQuery->select($col, "dtb_other_deliv", $where, array($_SESSION['customer']['customer_id']));
         $this->arrAddr = $arrCustomerAddr;
         $cnt = 1;
@@ -557,7 +556,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
             $objErr->doFunc(array("メールアドレス", "login_email", STEXT_LEN), array("EXIST_CHECK"));
             $objErr->doFunc(array("パスワード", "login_pass", STEXT_LEN), array("EXIST_CHECK"));
         }
-        $objErr->doFunc(array("TEL", "deliv_tel01", "deliv_tel02", "deliv_tel03", TEL_ITEM_LEN), array("TEL_CHECK"));
+        $objErr->doFunc(array("TEL", "deliv_tel01", "deliv_tel02", "deliv_tel03"), array("TEL_CHECK"));
         return $objErr->arrErr;
     }
 

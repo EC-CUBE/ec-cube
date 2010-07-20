@@ -1,31 +1,33 @@
 create table dtb_module_update_logs(
-    log_id int auto_increment primary key NOT NULL,
-    module_id int not null,
+    log_id int auto_increment NOT NULL,
+    module_id int NOT NULL,
     buckup_path text,
     error_flg smallint DEFAULT 0,
     error text,
     ok text,
     create_date datetime NOT NULL,
-    update_date datetime NOT NULL
-) TYPE=InnoDB ;
+    update_date datetime NOT NULL,
+    PRIMARY KEY (log_id)
+) TYPE=InnoDB;
 
 CREATE TABLE dtb_ownersstore_settings (
     public_key text
-) TYPE=InnoDB ;
+) TYPE=InnoDB;
 
 CREATE TABLE dtb_kiyaku (
-    kiyaku_id int auto_increment primary key NOT NULL,
+    kiyaku_id int auto_increment NOT NULL,
     kiyaku_title text NOT NULL,
     kiyaku_text text NOT NULL,
     rank int NOT NULL DEFAULT 0,
     creator_id int NOT NULL,
-    create_date datetime NOT NULL ,
+    create_date datetime NOT NULL,
     update_date datetime NOT NULL,
-    del_flg  smallint NOT NULL DEFAULT 0
-) TYPE=InnoDB ;
+    del_flg smallint NOT NULL DEFAULT 0,
+    PRIMARY KEY (kiyaku_id)
+) TYPE=InnoDB;
 
 CREATE TABLE dtb_holiday (
-    holiday_id int auto_increment primary key NOT NULL,
+    holiday_id int auto_increment NOT NULL,
     title text NOT NULL,
     month smallint NOT NULL,
     day smallint NOT NULL,
@@ -33,8 +35,9 @@ CREATE TABLE dtb_holiday (
     creator_id int NOT NULL,
     create_date datetime NOT NULL,
     update_date datetime NOT NULL,
-    del_flg  smallint NOT NULL DEFAULT 0
-) TYPE=InnoDB ;
+    del_flg smallint NOT NULL DEFAULT 0,
+    PRIMARY KEY (holiday_id)
+) TYPE=InnoDB;
 
 CREATE TABLE mtb_zip (
     code text,
@@ -52,7 +55,7 @@ CREATE TABLE mtb_zip (
     flg4 text,
     flg5 text,
     flg6 text
-) TYPE=InnoDB ;
+) TYPE=InnoDB;
 
 CREATE TABLE dtb_bat_order_daily_age (
     order_count numeric NOT NULL DEFAULT 0,
@@ -63,10 +66,10 @@ CREATE TABLE dtb_bat_order_daily_age (
     member smallint,
     order_date datetime,
     create_date datetime NOT NULL
-) TYPE=InnoDB ;
+) TYPE=InnoDB;
 
 CREATE TABLE dtb_update (
-    module_id int NOT NULL UNIQUE,
+    module_id int NOT NULL,
     module_name text NOT NULL,
     now_version text,
     latest_version text NOT NULL,
@@ -77,10 +80,11 @@ CREATE TABLE dtb_update (
     uninstall_sql text,
     other_files text,
     del_flg smallint NOT NULL DEFAULT 0,
-    create_date datetime NOT NULL ,
+    create_date datetime NOT NULL,
     update_date datetime,
-    release_date datetime NOT NULL
-) TYPE=InnoDB ;
+    release_date datetime NOT NULL,
+    PRIMARY KEY (module_id)
+) TYPE=InnoDB;
 
 CREATE TABLE dtb_baseinfo (
     company_name text,
@@ -122,8 +126,8 @@ CREATE TABLE dtb_baseinfo (
     law_term08 text,
     law_term09 text,
     law_term10 text,
-    tax numeric DEFAULT 5,
-    tax_rule smallint DEFAULT 1,
+    tax numeric NOT NULL DEFAULT 5,
+    tax_rule smallint NOT NULL DEFAULT 1,
     email01 text,
     email02 text,
     email03 text,
@@ -132,8 +136,8 @@ CREATE TABLE dtb_baseinfo (
     free_rule numeric,
     shop_name text,
     shop_kana text,
-    point_rate numeric,
-    welcome_point numeric,
+    point_rate numeric NOT NULL DEFAULT 0,
+    welcome_point numeric NOT NULL DEFAULT 0,
     update_date datetime,
     top_tpl text,
     product_tpl text,
@@ -142,10 +146,10 @@ CREATE TABLE dtb_baseinfo (
     good_traded text,
     message text,
     regular_holiday_ids text
-) TYPE=InnoDB ;
+) TYPE=InnoDB;
 
 CREATE TABLE dtb_deliv (
-    deliv_id int auto_increment primary key NOT NULL,
+    deliv_id int auto_increment NOT NULL,
     name text,
     service_name text,
     confirm_url text,
@@ -153,25 +157,28 @@ CREATE TABLE dtb_deliv (
     status smallint NOT NULL DEFAULT 1,
     del_flg smallint NOT NULL DEFAULT 0,
     creator_id int NOT NULL,
-    create_date datetime NOT NULL ,
-    update_date datetime
-) TYPE=InnoDB ;
+    create_date datetime NOT NULL,
+    update_date datetime,
+    PRIMARY KEY (deliv_id)
+) TYPE=InnoDB;
 
 CREATE TABLE dtb_delivtime (
     deliv_id int NOT NULL,
-    time_id int auto_increment primary key NOT NULL,
-    deliv_time text NOT NULL
-) TYPE=InnoDB ;
+    time_id int NOT NULL,
+    deliv_time text NOT NULL,
+    PRIMARY KEY (deliv_id, time_id)
+) TYPE=InnoDB;
 
 CREATE TABLE dtb_delivfee (
     deliv_id int NOT NULL,
-    fee_id int auto_increment primary key NOT NULL,
+    fee_id int auto_increment NOT NULL,
     fee text NOT NULL,
-    pref smallint
-) TYPE=InnoDB ;
+    pref smallint,
+    PRIMARY KEY (fee_id)
+) TYPE=InnoDB;
 
 CREATE TABLE dtb_payment (
-    payment_id int auto_increment primary key NOT NULL,
+    payment_id int auto_increment NOT NULL,
     payment_method text,
     charge numeric,
     rule numeric,
@@ -182,14 +189,14 @@ CREATE TABLE dtb_payment (
     status smallint NOT NULL DEFAULT 1,
     del_flg smallint NOT NULL DEFAULT 0,
     creator_id int NOT NULL,
-    create_date datetime NOT NULL ,
+    create_date datetime NOT NULL,
     update_date datetime,
     payment_image text,
     upper_rule numeric,
-    charge_flg int2 DEFAULT 1,
+    charge_flg smallint DEFAULT 1,
     rule_min numeric,
     upper_rule_max numeric,
-    module_id int4,
+    module_id int,
     module_path text,
     memo01 text,
     memo02 text,
@@ -200,8 +207,9 @@ CREATE TABLE dtb_payment (
     memo07 text,
     memo08 text,
     memo09 text,
-    memo10 text
-) TYPE=InnoDB ;
+    memo10 text,
+    PRIMARY KEY (payment_id)
+) TYPE=InnoDB;
 
 CREATE TABLE dtb_mailtemplate (
     template_id int NOT NULL,
@@ -210,12 +218,12 @@ CREATE TABLE dtb_mailtemplate (
     footer text,
     creator_id int NOT NULL,
     del_flg smallint NOT NULL DEFAULT 0,
-    create_date datetime NOT NULL ,
+    create_date datetime NOT NULL,
     update_date datetime NOT NULL
-) TYPE=InnoDB ;
+) TYPE=InnoDB;
 
 CREATE TABLE dtb_mailmaga_template (
-    template_id int auto_increment primary key NOT NULL UNIQUE,
+    template_id int auto_increment NOT NULL,
     subject text,
     charge_image text,
     mail_method int,
@@ -240,12 +248,13 @@ CREATE TABLE dtb_mailmaga_template (
     sub_product_id12 int,
     del_flg smallint NOT NULL DEFAULT 0,
     creator_id int NOT NULL,
-    create_date datetime NOT NULL ,
-    update_date datetime
-) TYPE=InnoDB ;
+    create_date datetime NOT NULL,
+    update_date datetime,
+    PRIMARY KEY (template_id)
+) TYPE=InnoDB;
 
 CREATE TABLE dtb_send_history (
-    send_id int auto_increment primary key NOT NULL,
+    send_id int auto_increment NOT NULL,
     mail_method smallint,
     subject text,
     body text,
@@ -256,25 +265,27 @@ CREATE TABLE dtb_send_history (
     search_data text,
     del_flg smallint NOT NULL DEFAULT 0,
     creator_id int NOT NULL,
-    create_date datetime NOT NULL ,
-    update_date datetime NOT NULL
-) TYPE=InnoDB ;
+    create_date datetime NOT NULL,
+    update_date datetime NOT NULL,
+    PRIMARY KEY (send_id)
+) TYPE=InnoDB;
 
 CREATE TABLE dtb_send_customer (
     customer_id int,
     send_id int NOT NULL,
     email text,
     name text,
-    send_flag smallint
-) TYPE=InnoDB ;
+    send_flag smallint,
+    PRIMARY KEY (send_id, customer_id)
+) TYPE=InnoDB;
 
 CREATE TABLE dtb_products (
-    product_id int auto_increment primary key NOT NULL UNIQUE,
+    product_id int auto_increment NOT NULL,
     name text,
     deliv_fee numeric,
     sale_limit numeric,
-    sale_unlimited smallint DEFAULT 0,
     category_id int,
+    maker_id int,
     rank int,
     status smallint NOT NULL DEFAULT 2,
     product_flag text,
@@ -323,68 +334,73 @@ CREATE TABLE dtb_products (
     sub_large_image6 text,
     del_flg smallint NOT NULL DEFAULT 0,
     creator_id int NOT NULL,
-    create_date datetime NOT NULL ,
+    create_date datetime NOT NULL,
     update_date datetime,
-    deliv_date_id int
-) TYPE=InnoDB ;
+    deliv_date_id int,
+    PRIMARY KEY (product_id)
+) TYPE=InnoDB;
 
 CREATE TABLE dtb_products_class (
-    product_class_id int auto_increment primary key NOT NULL UNIQUE,
+    product_class_id int auto_increment NOT NULL,
     product_id int NOT NULL,
     classcategory_id1 int NOT NULL DEFAULT 0,
     classcategory_id2 int NOT NULL DEFAULT 0,
     product_code text,
     stock numeric,
-    stock_unlimited smallint DEFAULT 0,
+    stock_unlimited smallint NOT NULL DEFAULT 0,
     sale_limit numeric,
     price01 numeric,
     price02 numeric,
     status smallint,
     creator_id int NOT NULL,
-    create_date datetime NOT NULL ,
-    update_date datetime
-) TYPE=InnoDB ;
+    create_date datetime NOT NULL,
+    update_date datetime,
+    PRIMARY KEY (product_class_id)
+) TYPE=InnoDB;
 
 CREATE TABLE dtb_class (
-    class_id int auto_increment primary key NOT NULL,
+    class_id int auto_increment NOT NULL,
     name text,
     status smallint,
     rank int,
     creator_id int NOT NULL,
-    create_date datetime NOT NULL ,
+    create_date datetime NOT NULL,
     update_date datetime,
-    del_flg  smallint NOT NULL DEFAULT 0,
-    product_id int
-) TYPE=InnoDB ;
+    del_flg smallint NOT NULL DEFAULT 0,
+    product_id int,
+    PRIMARY KEY (class_id)
+) TYPE=InnoDB;
 
 CREATE TABLE dtb_classcategory (
-    classcategory_id int auto_increment primary key NOT NULL,
+    classcategory_id int auto_increment NOT NULL,
     name text,
     class_id int NOT NULL,
     status smallint,
     rank int,
     creator_id int NOT NULL,
-    create_date datetime NOT NULL ,
+    create_date datetime NOT NULL,
     update_date datetime,
-    del_flg  smallint NOT NULL DEFAULT 0
-) TYPE=InnoDB ;
+    del_flg smallint NOT NULL DEFAULT 0,
+    PRIMARY KEY (classcategory_id)
+) TYPE=InnoDB;
 
 CREATE TABLE dtb_category (
-    category_id int auto_increment primary key NOT NULL,
+    category_id int auto_increment NOT NULL,
     category_name text,
     parent_category_id int NOT NULL DEFAULT 0,
     level int NOT NULL,
     rank int,
     creator_id int NOT NULL,
-    create_date datetime NOT NULL ,
+    create_date datetime NOT NULL,
     update_date datetime,
-    del_flg  smallint NOT NULL DEFAULT 0
-) TYPE=InnoDB ;
+    del_flg smallint NOT NULL DEFAULT 0,
+    PRIMARY KEY (category_id)
+) TYPE=InnoDB;
 
 CREATE TABLE dtb_product_categories (
-    product_id int4 NOT NULL,
-    category_id int4 NOT NULL,
-    rank int4,
+    product_id int NOT NULL,
+    category_id int NOT NULL,
+    rank int NOT NULL,
     PRIMARY KEY(product_id, category_id)
 ) TYPE=InnoDB;
 
@@ -400,8 +416,8 @@ CREATE TABLE dtb_bat_order_daily (
     women_nonmember numeric NOT NULL DEFAULT 0,
     total numeric NOT NULL DEFAULT 0,
     total_average numeric NOT NULL DEFAULT 0,
-    order_date datetime NOT NULL ,
-    create_date datetime NOT NULL ,
+    order_date datetime NOT NULL,
+    create_date datetime NOT NULL,
     year smallint NOT NULL,
     month smallint NOT NULL,
     day smallint NOT NULL,
@@ -410,7 +426,7 @@ CREATE TABLE dtb_bat_order_daily (
     key_month text NOT NULL,
     key_year text NOT NULL,
     key_wday text NOT NULL
-) TYPE=InnoDB ;
+) TYPE=InnoDB;
 
 CREATE TABLE dtb_bat_order_daily_hour (
     total_order numeric NOT NULL DEFAULT 0,
@@ -425,9 +441,9 @@ CREATE TABLE dtb_bat_order_daily_hour (
     total numeric NOT NULL DEFAULT 0,
     total_average numeric NOT NULL DEFAULT 0,
     hour smallint NOT NULL DEFAULT 0,
-    order_date datetime ,
+    order_date datetime,
     create_date datetime NOT NULL
-) TYPE=InnoDB ;
+) TYPE=InnoDB;
 
 CREATE TABLE dtb_recommend_products (
     product_id int NOT NULL,
@@ -436,12 +452,12 @@ CREATE TABLE dtb_recommend_products (
     comment text,
     status smallint NOT NULL DEFAULT 0,
     creator_id int NOT NULL,
-    create_date datetime NOT NULL ,
+    create_date datetime NOT NULL,
     update_date datetime NOT NULL
-) TYPE=InnoDB ;
+) TYPE=InnoDB;
 
 CREATE TABLE dtb_review (
-    review_id int auto_increment primary key NOT NULL,
+    review_id int auto_increment NOT NULL,
     product_id int NOT NULL,
     reviewer_name text NOT NULL,
     reviewer_url text,
@@ -454,37 +470,38 @@ CREATE TABLE dtb_review (
     creator_id int NOT NULL,
     create_date datetime,
     update_date datetime,
-    del_flg  smallint NOT NULL DEFAULT 0
-) TYPE=InnoDB ;
-
-CREATE TABLE dtb_customer_favorite_products (
-    customer_id int NOT NULL,
-    product_id int NOT NULL,
-    create_date datetime NOT NULL,
-    update_date datetime NOT NULL
-) TYPE=InnoDB ;
+    del_flg smallint NOT NULL DEFAULT 0,
+    PRIMARY KEY (review_id)
+) TYPE=InnoDB;
 
 CREATE TABLE dtb_customer_reading (
     reading_product_id int NOT NULL,
     customer_id int NOT NULL,
     create_date datetime NOT NULL,
     update_date datetime NOT NULL
-) TYPE=InnoDB ;
+) TYPE=InnoDB;
+
+CREATE TABLE dtb_customer_favorite_products (
+    customer_id int NOT NULL,
+    product_id int NOT NULL,
+    create_date datetime NOT NULL,
+    update_date datetime NOT NULL
+) TYPE=InnoDB;
 
 CREATE TABLE dtb_category_count (
     category_id int NOT NULL,
     product_count int NOT NULL,
     create_date datetime NOT NULL
-) TYPE=InnoDB ;
+) TYPE=InnoDB;
 
 CREATE TABLE dtb_category_total_count (
     category_id int NOT NULL,
     product_count int,
     create_date datetime NOT NULL
-) TYPE=InnoDB ;
+) TYPE=InnoDB;
 
 CREATE TABLE dtb_news (
-    news_id int auto_increment primary key NOT NULL UNIQUE,
+    news_id int auto_increment NOT NULL,
     news_date datetime,
     rank int,
     news_title text NOT NULL,
@@ -493,36 +510,39 @@ CREATE TABLE dtb_news (
     news_select smallint NOT NULL DEFAULT 0,
     link_method text,
     creator_id int NOT NULL,
-    create_date datetime NOT NULL ,
+    create_date datetime NOT NULL,
     update_date datetime,
-    del_flg  smallint NOT NULL DEFAULT 0
-) TYPE=InnoDB ;
+    del_flg smallint NOT NULL DEFAULT 0,
+    PRIMARY KEY (news_id)
+) TYPE=InnoDB;
 
 CREATE TABLE dtb_best_products (
-    best_id int auto_increment primary key NOT NULL,
+    best_id int auto_increment NOT NULL,
     category_id int NOT NULL,
     rank int NOT NULL DEFAULT 0,
     product_id int NOT NULL,
     title text,
     comment text,
     creator_id int NOT NULL,
-    create_date datetime NOT NULL ,
+    create_date datetime NOT NULL,
     update_date datetime,
-    del_flg  smallint NOT NULL DEFAULT 0
-) TYPE=InnoDB ;
+    del_flg smallint NOT NULL DEFAULT 0,
+    PRIMARY KEY (best_id)
+) TYPE=InnoDB;
 
 CREATE TABLE dtb_mail_history (
-    send_id int auto_increment primary key  NOT NULL,
+    send_id int auto_increment NOT NULL,
     order_id int NOT NULL,
     send_date datetime,
     template_id int,
     creator_id int NOT NULL,
     subject text,
-    mail_body text
-) TYPE=InnoDB ;
+    mail_body text,
+    PRIMARY KEY (send_id)
+) TYPE=InnoDB;
 
 CREATE TABLE dtb_customer (
-    customer_id int auto_increment primary key  NOT NULL,
+    customer_id int auto_increment NOT NULL,
     name01 text NOT NULL,
     name02 text NOT NULL,
     kana01 text NOT NULL,
@@ -554,29 +574,31 @@ CREATE TABLE dtb_customer (
     point numeric DEFAULT 0,
     note text,
     status smallint NOT NULL DEFAULT 1,
-    create_date datetime NOT NULL ,
-    update_date datetime ,
-    del_flg  smallint NOT NULL DEFAULT 0,
+    create_date datetime NOT NULL,
+    update_date datetime,
+    del_flg smallint NOT NULL DEFAULT 0,
     cell01 text,
     cell02 text,
     cell03 text,
     mobile_phone_id text,
-    mailmaga_flg smallint
-) TYPE=InnoDB ;
+    mailmaga_flg smallint,
+    PRIMARY KEY (customer_id)
+) TYPE=InnoDB;
 
 CREATE INDEX dtb_customer_mobile_phone_id_key ON dtb_customer (mobile_phone_id(64));
 
 CREATE TABLE dtb_customer_mail_temp (
     email varchar(50) NOT NULL UNIQUE,
     mail_flag smallint,
-    temp_id varchar(50) NOT NULL UNIQUE,
+    temp_id varchar(50) NOT NULL,
     end_flag smallint,
-    update_date datetime NOT NULL ,
-    create_data datetime NOT NULL
-) TYPE=InnoDB ;
+    update_date datetime NOT NULL,
+    create_data datetime NOT NULL,
+    PRIMARY KEY (temp_id)
+) TYPE=InnoDB;
 
 CREATE TABLE dtb_order (
-    order_id int auto_increment primary key NOT NULL,
+    order_id int auto_increment NOT NULL,
     order_temp_id text,
     customer_id int NOT NULL,
     message text,
@@ -593,7 +615,7 @@ CREATE TABLE dtb_order (
     order_fax03 text,
     order_zip01 text,
     order_zip02 text,
-    order_pref text,
+    order_pref smallint,
     order_addr01 text,
     order_addr02 text,
     order_sex smallint,
@@ -611,7 +633,7 @@ CREATE TABLE dtb_order (
     deliv_fax03 text,
     deliv_zip01 text,
     deliv_zip02 text,
-    deliv_pref text,
+    deliv_pref smallint,
     deliv_addr01 text,
     deliv_addr02 text,
     subtotal numeric,
@@ -632,13 +654,13 @@ CREATE TABLE dtb_order (
     deliv_no text,
     note text,
     status smallint,
-    create_date datetime NOT NULL ,
+    create_date datetime NOT NULL,
     loan_result text,
     credit_result text,
     credit_msg text,
     update_date datetime,
     commit_date datetime,
-    del_flg  smallint NOT NULL DEFAULT 0,
+    del_flg smallint NOT NULL DEFAULT 0,
     deliv_date text,
     conveni_data text,
     cell01 text,
@@ -654,8 +676,9 @@ CREATE TABLE dtb_order (
     memo08 text,
     memo09 text,
     memo10 text,
-    campaign_id int
-) TYPE=InnoDB ;
+    campaign_id int,
+    PRIMARY KEY (order_id)
+) TYPE=InnoDB;
 
 CREATE TABLE dtb_order_temp (
     order_temp_id text NOT NULL,
@@ -674,7 +697,7 @@ CREATE TABLE dtb_order_temp (
     order_fax03 text,
     order_zip01 text,
     order_zip02 text,
-    order_pref text,
+    order_pref smallint,
     order_addr01 text,
     order_addr02 text,
     order_sex smallint,
@@ -692,7 +715,7 @@ CREATE TABLE dtb_order_temp (
     deliv_fax03 text,
     deliv_zip01 text,
     deliv_zip02 text,
-    deliv_pref text,
+    deliv_pref smallint,
     deliv_addr01 text,
     deliv_addr02 text,
     subtotal numeric,
@@ -719,15 +742,15 @@ CREATE TABLE dtb_order_temp (
     loan_result text,
     credit_result text,
     credit_msg text,
-    create_date datetime NOT NULL ,
+    create_date datetime NOT NULL,
     update_date datetime,
-    del_flg  smallint NOT NULL DEFAULT 0,
+    del_flg smallint NOT NULL DEFAULT 0,
     deliv_date text,
     conveni_data text,
     cell01 text,
     cell02 text,
     cell03 text,
-    order_id int4,
+    order_id int,
     memo01 text,
     memo02 text,
     memo03 text,
@@ -739,10 +762,10 @@ CREATE TABLE dtb_order_temp (
     memo09 text,
     memo10 text,
     session text
-) TYPE=InnoDB ;
+) TYPE=InnoDB;
 
 CREATE TABLE dtb_other_deliv (
-    other_deliv_id int auto_increment primary key NOT NULL,
+    other_deliv_id int auto_increment NOT NULL,
     customer_id int NOT NULL,
     name01 text,
     name02 text,
@@ -750,13 +773,14 @@ CREATE TABLE dtb_other_deliv (
     kana02 text,
     zip01 text,
     zip02 text,
-    pref text,
+    pref smallint,
     addr01 text,
     addr02 text,
     tel01 text,
     tel02 text,
-    tel03 text
-) TYPE=InnoDB ;
+    tel03 text,
+    PRIMARY KEY (other_deliv_id)
+) TYPE=InnoDB;
 
 CREATE TABLE dtb_order_detail (
     order_id int NOT NULL,
@@ -770,16 +794,17 @@ CREATE TABLE dtb_order_detail (
     price numeric,
     quantity numeric,
     point_rate numeric
-) TYPE=InnoDB ;
+) TYPE=InnoDB;
 
 CREATE TABLE mtb_pref (
     pref_id smallint NOT NULL,
     pref_name text,
-    rank smallint NOT NULL DEFAULT 0
-) TYPE=InnoDB ;
+    rank smallint NOT NULL DEFAULT 0,
+    PRIMARY KEY (pref_id)
+) TYPE=InnoDB;
 
 CREATE TABLE dtb_member (
-    member_id int auto_increment primary key NOT NULL,
+    member_id int auto_increment NOT NULL,
     name text,
     department text,
     login_id text NOT NULL,
@@ -790,20 +815,22 @@ CREATE TABLE dtb_member (
     del_flg smallint NOT NULL DEFAULT 0,
     creator_id int NOT NULL,
     update_date datetime,
-    create_date datetime NOT NULL ,
-    login_date datetime
-) TYPE=InnoDB ;
+    create_date datetime NOT NULL,
+    login_date datetime,
+    PRIMARY KEY (member_id)
+) TYPE=InnoDB;
 
 CREATE TABLE dtb_question (
-    question_id int auto_increment primary key NOT NULL,
+    question_id int auto_increment NOT NULL,
     question_name text,
     question text,
-    create_date datetime NOT NULL ,
-    del_flg  smallint NOT NULL DEFAULT 0
-) TYPE=InnoDB ;
+    create_date datetime NOT NULL,
+    del_flg smallint NOT NULL DEFAULT 0,
+    PRIMARY KEY (question_id)
+) TYPE=InnoDB;
 
 CREATE TABLE dtb_question_result (
-    result_id int auto_increment primary key NOT NULL,
+    result_id int auto_increment NOT NULL,
     question_id int NOT NULL,
     question_date datetime,
     question_name text,
@@ -826,44 +853,46 @@ CREATE TABLE dtb_question_result (
     question04 text,
     question05 text,
     question06 text,
-    create_date datetime NOT NULL ,
-    del_flg  smallint NOT NULL DEFAULT 0
-) TYPE=InnoDB ;
+    create_date datetime NOT NULL,
+    del_flg smallint NOT NULL DEFAULT 0,
+    PRIMARY KEY (result_id)
+) TYPE=InnoDB;
 
 CREATE TABLE dtb_bat_relate_products (
     product_id int,
     relate_product_id int,
     customer_id int,
     create_date datetime
-) TYPE=InnoDB ;
+) TYPE=InnoDB;
 
 CREATE TABLE dtb_campaign (
-    campaign_id int auto_increment primary key NOT NULL,
+    campaign_id int auto_increment NOT NULL,
     campaign_name text,
     campaign_point_rate numeric NOT NULL,
     campaign_point_type smallint,
     start_date datetime NOT NULL,
     end_date datetime NOT NULL,
     directory_name text NOT NULL,
-    limit_count int4 NOT NULL DEFAULT 0,
-    total_count int4 NOT NULL DEFAULT 0,
-    orverlapping_flg int2 NOT NULL DEFAULT 0,
-    cart_flg int2 NOT NULL DEFAULT 0,
-    deliv_free_flg int2 NOT NULL DEFAULT 0,
+    limit_count int NOT NULL DEFAULT 0,
+    total_count int NOT NULL DEFAULT 0,
+    orverlapping_flg smallint NOT NULL DEFAULT 0,
+    cart_flg smallint NOT NULL DEFAULT 0,
+    deliv_free_flg smallint NOT NULL DEFAULT 0,
     search_condition text,
     del_flg smallint NOT NULL DEFAULT 0,
     create_date datetime NOT NULL,
-    update_date datetime NOT NULL
-) TYPE=InnoDB ;
+    update_date datetime NOT NULL,
+    PRIMARY KEY (campaign_id)
+) TYPE=InnoDB;
 
 CREATE TABLE dtb_campaign_detail (
     campaign_id int NOT NULL,
     product_id int NOT NULL,
     campaign_point_rate numeric NOT NULL
-) TYPE=InnoDB ;
+) TYPE=InnoDB;
 
 CREATE TABLE dtb_pagelayout (
-    page_id int auto_increment primary key NOT NULL,
+    page_id int auto_increment NOT NULL,
     page_name text,
     url text NOT NULL,
     php_dir text,
@@ -876,50 +905,56 @@ CREATE TABLE dtb_pagelayout (
     description text,
     keyword text,
     update_url text,
-    create_date datetime NOT NULL ,
-    update_date datetime NOT NULL
-) TYPE=InnoDB ;
+    create_date datetime NOT NULL,
+    update_date datetime NOT NULL,
+    PRIMARY KEY (page_id)
+) TYPE=InnoDB;
 
 CREATE TABLE dtb_bloc (
-    bloc_id int auto_increment primary key NOT NULL,
+    bloc_id int auto_increment NOT NULL,
     bloc_name text,
     tpl_path text,
     filename varchar(50) NOT NULL UNIQUE,
-    create_date datetime NOT NULL ,
-    update_date datetime NOT NULL ,
+    create_date datetime NOT NULL,
+    update_date datetime NOT NULL,
     php_path text,
-    del_flg smallint NOT NULL DEFAULT 0
-) TYPE=InnoDB ;
+    del_flg smallint NOT NULL DEFAULT 0,
+    PRIMARY KEY (bloc_id)
+) TYPE=InnoDB;
 
 CREATE TABLE dtb_blocposition (
     page_id int NOT NULL,
     target_id int,
     bloc_id int,
     bloc_row int,
-    filename text
-) TYPE=InnoDB ;
+    filename text,
+    anywhere int DEFAULT 0 NOT NULL
+) TYPE=InnoDB;
 
 CREATE TABLE dtb_csv (
-    no int auto_increment primary key,
+    no int auto_increment,
     csv_id int NOT NULL,
     col text,
     disp_name text,
     rank int,
     status smallint NOT NULL DEFAULT 1,
-    create_date datetime NOT NULL ,
-    update_date datetime NOT NULL
-) TYPE=InnoDB ;
+    create_date datetime NOT NULL,
+    update_date datetime NOT NULL,
+    "convert" text,
+    PRIMARY KEY (no)
+) TYPE=InnoDB;
 
 CREATE TABLE dtb_csv_sql (
-    sql_id int auto_increment primary key,
+    sql_id int auto_increment,
     sql_name text NOT NULL,
     csv_sql text,
     update_date datetime NOT NULL,
-    create_date datetime NOT NULL
-) TYPE=InnoDB ;
+    create_date datetime NOT NULL,
+    PRIMARY KEY (sql_id)
+) TYPE=InnoDB;
 
 CREATE TABLE dtb_user_regist (
-    user_id int auto_increment primary key NOT NULL,
+    user_id int auto_increment NOT NULL,
     org_name text,
     post_name text,
     name01 text,
@@ -933,301 +968,323 @@ CREATE TABLE dtb_user_regist (
     status smallint NOT NULL,
     del_flg smallint DEFAULT 0,
     create_date datetime NOT NULL,
-    update_date datetime NOT NULL
-) TYPE=InnoDB ;
+    update_date datetime NOT NULL,
+    PRIMARY KEY (user_id)
+) TYPE=InnoDB;
 
 CREATE TABLE dtb_templates
 (
-    template_code        varchar(50) NOT NULL UNIQUE    ,
-    template_name        text            ,
-    create_date        datetime        NOT NULL    ,
-    update_date        datetime        NOT NULL
-) TYPE=InnoDB ;
+    template_code varchar(50) NOT NULL,
+    template_name text,
+    create_date datetime NOT NULL,
+    update_date datetime NOT NULL,
+    PRIMARY KEY (template_code)
+) TYPE=InnoDB;
 
 CREATE TABLE dtb_table_comment
 (
-    id    int auto_increment primary key,
-    table_name    text,
-    column_name    text,
-    description    text
-) TYPE=InnoDB ;
+    id int auto_increment,
+    table_name text,
+    column_name text,
+    description text,
+    PRIMARY KEY (id)
+) TYPE=InnoDB;
+
+CREATE TABLE dtb_maker (
+    maker_id int auto_increment,
+    name text NOT NULL,
+    rank int NOT NULL DEFAULT 0,
+    creator_id int NOT NULL,
+    create_date datetime NOT NULL,
+    update_date datetime NOT NULL,
+    del_flg smallint NOT NULL DEFAULT 0,
+    PRIMARY KEY (maker_id)
+) TYPE=InnoDB;
+
+CREATE TABLE dtb_maker_count (
+    maker_id int NOT NULL,
+    product_count int NOT NULL,
+    create_date datetime NOT NULL
+) TYPE=InnoDB;
+
 
 CREATE TABLE mtb_permission (
     id text,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id(32))
 ) TYPE=InnoDB;
 
 CREATE TABLE mtb_disable_logout (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 ) TYPE=InnoDB;
 
 CREATE TABLE mtb_authority (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 ) TYPE=InnoDB;
 
 CREATE TABLE mtb_work (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 ) TYPE=InnoDB;
 
 CREATE TABLE mtb_disp (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 ) TYPE=InnoDB;
 
 CREATE TABLE mtb_class (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 ) TYPE=InnoDB;
 
 CREATE TABLE mtb_srank (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 ) TYPE=InnoDB;
 
 CREATE TABLE mtb_status (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 ) TYPE=InnoDB;
 
 CREATE TABLE mtb_status_image (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 ) TYPE=InnoDB;
 
 CREATE TABLE mtb_allowed_tag (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 ) TYPE=InnoDB;
 
 CREATE TABLE mtb_page_max (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 ) TYPE=InnoDB;
 
 CREATE TABLE mtb_magazine_type (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 ) TYPE=InnoDB;
 
 CREATE TABLE mtb_mail_magazine_type (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 ) TYPE=InnoDB;
 
 CREATE TABLE mtb_recommend (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 ) TYPE=InnoDB;
 
 CREATE TABLE mtb_taxrule (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 ) TYPE=InnoDB;
 
 CREATE TABLE mtb_mail_template (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 ) TYPE=InnoDB;
 
 CREATE TABLE mtb_mail_tpl_path (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 ) TYPE=InnoDB;
 
 CREATE TABLE mtb_job (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 ) TYPE=InnoDB;
 
 CREATE TABLE mtb_reminder (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 ) TYPE=InnoDB;
 
 CREATE TABLE mtb_sex (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 ) TYPE=InnoDB;
 
 CREATE TABLE mtb_page_rows (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 ) TYPE=InnoDB;
 
 CREATE TABLE mtb_mail_type (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 ) TYPE=InnoDB;
 
 CREATE TABLE mtb_order_status (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 ) TYPE=InnoDB;
 
 CREATE TABLE mtb_product_status_color (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 ) TYPE=InnoDB;
 
 CREATE TABLE mtb_order_status_color (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 ) TYPE=InnoDB;
 
 CREATE TABLE mtb_wday (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 ) TYPE=InnoDB;
 
 CREATE TABLE mtb_delivery_date (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 ) TYPE=InnoDB;
 
 CREATE TABLE mtb_product_list_max (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 ) TYPE=InnoDB;
 
 CREATE TABLE mtb_convenience (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 ) TYPE=InnoDB;
 
 CREATE TABLE mtb_conveni_message (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 ) TYPE=InnoDB;
 
 CREATE TABLE mtb_db (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 ) TYPE=InnoDB;
 
 CREATE TABLE mtb_target (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 ) TYPE=InnoDB;
 
 CREATE TABLE mtb_review_deny_url (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 ) TYPE=InnoDB;
 
 CREATE TABLE mtb_track_back_status (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 ) TYPE=InnoDB;
 
 CREATE TABLE mtb_site_control_track_back (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 ) TYPE=InnoDB;
 
 CREATE TABLE mtb_site_control_affiliate (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 ) TYPE=InnoDB;
 
 CREATE TABLE mtb_mobile_domain (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 ) TYPE=InnoDB;
 
 CREATE TABLE mtb_ownersstore_err (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 ) TYPE=InnoDB;
 
 CREATE TABLE mtb_ownersstore_ips (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
+    rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 ) TYPE=InnoDB;
 
 CREATE TABLE mtb_constants (
     id text,
     name text,
-    rank int2 NOT NULL DEFAULT 0,
-    remarks text
+    rank smallint NOT NULL DEFAULT 0,
+    remarks text,
+    PRIMARY KEY (id(64))
 ) TYPE=InnoDB;

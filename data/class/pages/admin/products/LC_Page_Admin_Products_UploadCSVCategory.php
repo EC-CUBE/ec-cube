@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -49,6 +49,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
         $this->tpl_subnavi = 'products/subnavi.tpl';
         $this->tpl_mainno = 'products';
         $this->tpl_subno = 'upload_csv_category';
+        $this->tpl_subtitle = 'カテゴリ登録CSV';
     }
 
     /**
@@ -85,7 +86,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
                 // エラーチェック
                 $arrErr['csv_file'] = $this->objUpFile->makeTempFile('csv_file');
 
-                if($arrErr['css_file'] == "") {
+                if($arrErr['csv_file'] == "") {
                     $arrErr = $this->objUpFile->checkEXISTS();
                 }
 
@@ -152,7 +153,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
                             // 入力値の変換
                             $this->objFormParam->convParam();
                             // <br>なしでエラー取得する。
-                            $arrCSVErr = $this->lfCheckError();
+                            $arrCSVErr = $this->lfCheckError($arrCSV);
                         }
 
                         // 入力エラーチェック
@@ -165,13 +166,13 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
                         }
 
                         if (!$err) {
-                            $this->lfRegistProduct($objQuery, $rec_count, $line);
+                            $this->lfRegistProduct($objQuery, $line,$arrCSV);
                             $regist++;
                         }
                         $arrParam = $this->objFormParam->getHashArray();
 
                         if (!$err) echo $line." / ".$rec_count. "行目　（カテゴリID：".$arrParam['category_id']." / カテゴリ名：".$arrParam['category_name'].")\n<br />";
-                        flush();
+                        SC_Utils_Ex::sfFlush();
                     }
                     fclose($fp);
 
@@ -180,6 +181,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
                         echo "■" . $regist . "件のレコードを登録しました。";
                         // カテゴリ件数カウント関数の実行
                         $objDb->sfCategory_Count($objQuery);
+                        $objDb->sfMaker_Count($objQuery);
                     } else {
                         $objQuery->rollback();
                     }
@@ -189,11 +191,9 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
                     }
                 }
                 echo "<br/><a href=\"javascript:window.close()\">→閉じる</a>";
-                flush();
                 exit;
+            default:
                 break;
-        default:
-            break;
         }
 
         $objView->assignobj($this);
@@ -229,43 +229,33 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
         $this->objFormParam->addParam("カテゴリ名","category_name",STEXT_LEN,"KVa",array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("親カテゴリID","parent_category_id",INT_LEN,"n",array("MAX_LENGTH_CHECK","NUM_CHECK"));
     }
-
+    
     /**
      * カテゴリ登録を行う.
      *
      * @param SC_Query $objQuery SC_Queryインスタンス
-     * @param string|integer $rec_count 処理総数|integer $line 処理中の行数
+     * @param string|integer $line 処理中の行数
      * @return void
      */
-    function lfRegistProduct($objQuery, $rec_count, $line = "") {
+    function lfRegistProduct($objQuery, $line = "",$arrCSV) {
+        
         $objDb = new SC_Helper_DB_Ex();
-        $arrRet = $this->objFormParam->getHashArray();
-
-        //カテゴリID
-        if ($arrRet['category_id'] == 0) {
-            $category_id = $objQuery->max("dtb_category", "category_id") + 1;
-            $sqlval['category_id'] = $category_id;
-            $update = false;
-        } else {
-            $sqlval['category_id'] = $arrRet['category_id'];
-            $update = true;
-        }
-
-        // カテゴリ名
-        $sqlval['category_name'] = $arrRet['category_name'];
-        //表示ランク（上から順に表示順を自動割り当て）
-        $sqlval['rank'] = ($rec_count + 1) - $line ;
+        $sqlval['category_id'] = $arrCSV[0];
+        $sqlval['category_name'] = $arrCSV[1];
+        $sqlval['parent_category_id'] = strlen($arrCSV[2]) ? $arrCSV[2] : 0;
+        
+        //存在確認
+        $count = $objQuery->count("dtb_category","category_id = ?",array($sqlval['category_id']));
+        $update = $count != 0;
 
         // 親カテゴリID、レベル
-        if ($arrRet['parent_category_id'] == 0) {
-            $sqlval['parent_category_id'] = "0";
+        if ($sqlval['parent_category_id'] == 0) {
             $sqlval['level'] = 1;
         } else {
-            $sqlval['parent_category_id'] = $arrRet['parent_category_id'];
             $parent_level = $objQuery->get("dtb_category", "level", "category_id = ?", array($sqlval['parent_category_id']));
             $sqlval['level'] = $parent_level + 1;
         }
-
+        
         // その他
         $time = date("Y-m-d H:i:s");
         if ($line != "") {
@@ -274,17 +264,31 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
         }
         $sqlval['update_date'] = $time;
         $sqlval['creator_id'] = $_SESSION['member_id'];
-
+        
         // 更新
         if ($update) {
-            echo "UPDATE　";
+            echo "更新　";
             $where = "category_id = ?";
             $objQuery->update("dtb_category", $sqlval, $where, array($sqlval['category_id']));
-
+        
         // 新規登録
         } else {
-            echo "INSERT　";
+            echo "登録　";
             $sqlval['create_date'] = $time;
+            // ランク
+            if ($sqlval['parent_category_id'] == 0) {
+                // ROOT階層で最大のランクを取得する。
+                $where = "parent_category_id = ?";
+                $sqlval['rank'] = $objQuery->max("dtb_category", "rank", $where, array($sqlval['parent_category_id'])) + 1;
+            } else {
+                // 親のランクを自分のランクとする。
+                $where = "category_id = ?";
+                $sqlval['rank'] = $objQuery->get("dtb_category", "rank", $where, array($sqlval['parent_category_id']));
+                // 追加レコードのランク以上のレコードを一つあげる。
+                $sqlup = "UPDATE dtb_category SET rank = rank + 1 WHERE rank >= ?";
+                $objQuery->exec($sqlup, array($sqlval['rank']));
+                
+            }
             $objQuery->insert("dtb_category", $sqlval);
         }
     }
@@ -294,19 +298,24 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
      *
      * @return void
      */
-    function lfCheckError() {
-        $arrRet =  $this->objFormParam->getHashArray();
+    function lfCheckError($arrCSV) {
+//        $arrRet =  $this->objFormParam->getHashArray();
+        $arrRet['category_id'] = $arrCSV[0];
+        $arrRet['category_name'] = $arrCSV[1];
+        $arrRet['parent_category_id'] = $arrCSV[2];
+        
         $objQuery = new SC_Query();
+        
         $objErr = new SC_CheckError($arrRet);
         $objErr->arrErr = $this->objFormParam->checkError(false);
-
+        
         // 親カテゴリID設定
         if ($arrRet['parent_category_id'] == 0) {
             $parent_category_id = "0";
         } else {
             $parent_category_id = $arrRet['parent_category_id'];
         }
-
+        
         // 存在する親カテゴリIDかチェック
         if (count($objErr->arrErr) == 0) {
             if ($parent_category_id != 0){
@@ -316,7 +325,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
                 }
             }
         }
-
+        
         // 階層チェック
         if (!isset($objErr->arrErr['category_name']) && !isset($objErr->arrErr['parent_category_id'])) {
             $level = $objQuery->get("dtb_category", "level", "category_id = ?", array($parent_category_id));
@@ -331,9 +340,23 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
             $arrCat = $objQuery->select("category_id, category_name", "dtb_category", $where, array($parent_category_id, $arrRet['category_name']));
             if (empty($arrCat)) {
                 $arrCat = array(array("category_id" => "", "category_name" => ""));
+            }
             // 編集中のレコード以外に同じ名称が存在する場合
-            }elseif ($arrCat[0]['category_id'] != $arrRet['category_id'] && $arrCat[0]['category_name'] == $arrRet['category_name']) {
-                $objErr->arrErr['category_name'] = "※ 既に同じ内容の登録が存在します。\n";
+            if ($arrCat[0]['category_id'] != $arrRet['category_id'] && $arrCat[0]['category_name'] == $arrRet['category_name']) {
+                echo $arrCat[0]['category_id'];
+                echo "#######--------- line is ".__LINE__." on ".__FILE__."--------########<br/>";
+                        
+                echo $arrRet['category_id'];
+                echo "#######--------- line is ".__LINE__." on ".__FILE__."--------########<br/>";
+                        
+                echo  $arrCat[0]['category_name'] ;
+                echo "#######--------- line is ".__LINE__." on ".__FILE__."--------########<br/>";
+                        echo  $arrRet['category_name'];
+                        echo "#######--------- line is ".__LINE__." on ".__FILE__."--------########<br/>";
+                                
+                
+                $objErr->arrErr['category_name'] = "※ 既に同じ内容の登録が存在します。</br>";
+                
             }
         }
         return $objErr->arrErr;

@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -27,7 +27,7 @@
  *----------------------------------------------------------------------
  */
 class SC_CheckError {
-    var $arrErr;
+    var $arrErr = array();
     var $arrParam;
 
     // チェック対象の値が含まれる配列をセットする。
@@ -270,15 +270,23 @@ class SC_CheckError {
         }
     }
 
-    /* 電話番号の判定 （数字チェックと文字数チェックを実施する。)
-        value[0] : 項目名
-        value[1] : 電番1項目目
-        value[2] : 電番2項目目
-        value[3] : 電番3項目目
-        value[4] : 文字数制限
-    */
+    /**
+     * 電話番号の判定
+     *
+     * 数字チェックと文字数チェックを実施する。
+     * @param array $value 各要素は以下の通り。<br>
+     *     [0]: 項目名<br>
+     *     [1]: 電番1項目目<br>
+     *     [2]: 電番2項目目<br>
+     *     [3]: 電番3項目目<br>
+     *     [4]: 電話番号各項目制限 (指定なしの場合、TEL_ITEM_LEN)<br>
+     *     [5]: 電話番号総数 (指定なしの場合、TEL_LEN)
+     */
     function TEL_CHECK($value) {
-        if(isset($this->arrErr[$value[1]])) {
+        $telItemLen = isset($value[4]) ? $value[4] : TEL_ITEM_LEN;
+        $telLen = isset($value[5]) ? $value[5] : TEL_LEN;
+
+        if (isset($this->arrErr[$value[1]]) || isset($this->arrErr[$value[2]]) || isset($this->arrErr[$value[3]])) {
             return;
         }
         $this->createParam($value);
@@ -297,8 +305,8 @@ class SC_CheckError {
 
         $total_count = 0;
         for($i = 1; $i <= 3; $i++) {
-            if(strlen($this->arrParam[$value[$i]]) > 0 && strlen($this->arrParam[$value[$i]]) > $value[4]) {
-                $this->arrErr[$value[$i]] .= "※ " . $value[0] . $i . "は" . $value[4] . "字以内で入力してください。<br />";
+            if(strlen($this->arrParam[$value[$i]]) > 0 && strlen($this->arrParam[$value[$i]]) > $telItemLen) {
+                $this->arrErr[$value[$i]] .= "※ " . $value[0] . $i . "は" . $telItemLen . "字以内で入力してください。<br />";
             } else if (strlen($this->arrParam[$value[$i]]) > 0 && !EregI("^[[:digit:]]+$", $this->arrParam[$value[$i]])) {
                 $this->arrErr[$value[$i]] .= "※ " . $value[0] . $i . "は数字で入力してください。<br />";
             }
@@ -306,8 +314,8 @@ class SC_CheckError {
         }
 
         // 合計値チェック
-        if ($total_count > TEL_LEN) {
-            $this->arrErr[$value[3]] .= "※ " . $value[0] . "は" . TEL_LEN . "文字以内で入力してください。<br />";
+        if ($total_count > $telLen) {
+            $this->arrErr[$value[3]] .= "※ " . $value[0] . "は" . $telLen . "文字以内で入力してください。<br />";
         }
     }
 
@@ -500,7 +508,7 @@ class SC_CheckError {
         // $this->arrParam[$value[0]] = mb_convert_kana($this->arrParam[$value[0]], "n");
         $count = strlen($this->arrParam[$value[1]]);
         if( ( $count > 0 ) && $value[2] > $count || $value[3] < $count ) {
-            $this->arrErr[$value[1]] =  "※ $value[0]は$value[2]桁〜$value[3]桁で入力して下さい。<br />";
+            $this->arrErr[$value[1]] =  "※ $value[0]は$value[2]桁～$value[3]桁で入力して下さい。<br />";
         }
     }
 
@@ -524,7 +532,32 @@ class SC_CheckError {
             return;
         }
         $this->createParam($value);
-        if(strlen($this->arrParam[$value[1]]) > 0 && !ereg("^[^@]+@[^.^@]+\..+", $this->arrParam[$value[1]])) {
+
+        $wsp           = '[\x20\x09]';
+        $vchar         = '[\x21-\x7e]';
+        $quoted_pair   = "\\\\(?:$vchar|$wsp)";
+        $qtext         = '[\x21\x23-\x5b\x5d-\x7e]';
+        $qcontent      = "(?:$qtext|$quoted_pair)";
+        $quoted_string = "\"$qcontent*\"";
+        $atext         = '[a-zA-Z0-9!#$%&\'*+\-\/\=?^_`{|}~]';
+        $dot_atom_text = "$atext+(?:[.]$atext+)*";
+        $dot_atom      = $dot_atom_text;
+        $local_part    = "(?:$dot_atom|$quoted_string)";
+        $domain        = $dot_atom;
+        $addr_spec     = "${local_part}[@]$domain";
+
+        $dot_atom_loose   = "$atext+(?:[.]|$atext)*";
+        $local_part_loose = "(?:$dot_atom_loose|$quoted_string)";
+        $addr_spec_loose  = "${local_part_loose}[@]$domain";
+
+        if (RFC_COMPLIANT_EMAIL_CHECK) {
+            $regexp = "/\A${addr_spec}\z/";
+		} else {
+            // 携帯メールアドレス用に、..や.@を許容する。
+            $regexp = "/\A${addr_spec_loose}\z/";
+        }
+
+        if(strlen($this->arrParam[$value[1]]) > 0 && !preg_match($regexp, $this->arrParam[$value[1]])) {
             $this->arrErr[$value[1]] = "※ " . $value[0] . "の形式が不正です。<br />";
         }
     }
@@ -722,6 +755,39 @@ class SC_CheckError {
                 $this->arrErr[$value[1]] = "※ " . $value[0] . "が正しくありません。<br />";
             }
         }
+    }
+
+    //誕生日チェック
+    // value[0] = 項目名
+    // value[1] = YYYY
+    // value[2] = MM
+    // value[3] = DD
+    function CHECK_BIRTHDAY($value) {
+        if (isset($this->arrErr[$value[1]])) {
+            return;
+        }
+
+        $this->createParam($value);
+        // 年が入力されている。
+        if ($this->arrParam[$value[1]] > 0) {
+            
+            // 年の数字チェック、最小数値制限チェック
+            $this->doFunc(array($value[0].'(年)', $value[1], START_BIRTH_YEAR), array("NUM_CHECK", "MIN_CHECK"));
+            // 上のチェックでエラーある場合、中断する。
+            if (isset($this->arrErr[$value[1]])) {
+                return;
+            }
+            
+            // 年の最大数値制限チェック
+            $this->doFunc(array($value[0].'(年)', $value[1], date("Y",strtotime("now"))), array("MAX_CHECK"));
+            // 上のチェックでエラーある場合、中断する。
+            if (isset($this->arrErr[$value[1]])) {
+                return;
+            }
+        }
+        
+        // XXX createParam() が二重に呼ばれる問題を抱える
+        $this->CHECK_DATE($value);
     }
 
     /*-----------------------------------------------------------------*/
