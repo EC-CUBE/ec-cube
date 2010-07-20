@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -50,8 +50,6 @@ class LC_Page_Shopping_Complete extends LC_Page {
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrCONVENIENCE = $masterData->getMasterData("mtb_convenience");
         $this->arrCONVENIMESSAGE = $masterData->getMasterData("mtb_conveni_message");
-
-        $this->allowClientCache();
     }
 
     /**
@@ -93,7 +91,7 @@ class LC_Page_Shopping_Complete extends LC_Page {
             }
 
             // その他情報の取得
-            $arrResults = $objQuery->getall("SELECT memo02, memo05 FROM dtb_order WHERE order_id = ? ", array($order_id));
+            $arrResults = $objQuery->getAll("SELECT memo02, memo05 FROM dtb_order WHERE order_id = ? ", array($order_id));
 
             if (count($arrResults) > 0) {
                 if (isset($arrResults[0]["memo02"]) || isset($arrResults[0]["memo05"])) {
@@ -106,7 +104,7 @@ class LC_Page_Shopping_Complete extends LC_Page {
                     foreach($arrOther as $key => $val){
                         // URLの場合にはリンクつきで表示させる
                         if (preg_match('/^(https?|ftp)(:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+)$/', $val["value"])) {
-                            $arrOther[$key]["value"] = "<a href='#' onClick=\"window.open('". $val["value"] . "'); \" >" . $val["value"] ."</a>";
+                            $arrOther[$key]["value"] = "<a href='". $val["value"] . "' target=\"_blank\">" . $val["value"] ."</a>";
                         }
                     }
 
@@ -176,7 +174,7 @@ class LC_Page_Shopping_Complete extends LC_Page {
         $mailHelper = new SC_Helper_Mail_Ex();
 
         // 前のページで正しく登録手続きが行われたか判定
-        SC_Utils_Ex::sfIsPrePage($this->objSiteSess, true);
+        SC_Utils_Ex::sfIsPrePage($this->objSiteSess);
         // ユーザユニークIDの取得と購入状態の正当性をチェック
         $uniqid = SC_Utils_Ex::sfCheckNormalAccess($this->objSiteSess, $this->objCartSess);
         if ($uniqid != "") {
@@ -259,7 +257,7 @@ class LC_Page_Shopping_Complete extends LC_Page {
         // 職業
         $arrEbis['o4id'] = $arrRet[0]['order_job'];
 
-        $objQuery->setgroupby("product_id");
+        $objQuery->setGroupBy("product_id");
         $arrRet = $objQuery->select("product_id", "dtb_order_detail", "order_id = ?", array($order_id));
         $arrProducts = sfSwapArray($arrRet);
 
@@ -299,27 +297,13 @@ class LC_Page_Shopping_Complete extends LC_Page {
             // 購入集計を顧客テーブルに反映
             $this->lfSetCustomerPurchase($this->objCustomer->getValue('customer_id'), $arrData, $objQuery);
         } else {
-            //購入時強制会員登録
-            switch(PURCHASE_CUSTOMER_REGIST) {
-            //無効
-            case '0':
-                // 購入時会員登録
-                if(isset($arrData['member_check']) && $arrData['member_check'] == '1') {
-                    // 会員登録
-                    $customer_id = $this->lfRegistCustomer($arrData, $this->arrInfo);
-                    // 購入集計を顧客テーブルに反映
-                    $this->lfSetCustomerPurchase($customer_id, $arrData, $objQuery);
-                }
-                break;
-            //有効
-            case '1':
+            // 購入時強制会員登録が有効の場合
+            if (PURCHASE_CUSTOMER_REGIST == '1') {
                 // 会員登録
                 $customer_id = $this->lfRegistCustomer($arrData, $this->arrInfo);
                 // 購入集計を顧客テーブルに反映
                 $this->lfSetCustomerPurchase($customer_id, $arrData, $objQuery);
-                break;
             }
-
         }
         // 一時テーブルを受注テーブルに格納する
         if (defined("MOBILE_SITE")) {
@@ -376,7 +360,7 @@ class LC_Page_Shopping_Complete extends LC_Page {
         $sqlval['reminder_answer'] = $arrData['reminder_answer'];
 
         // 仮会員登録の場合
-        if($confirm_flg == true) {
+        if ($confirm_flg == true) {
             // 重複しない会員登録キーを発行する。
             $count = 1;
             while ($count != 0) {
@@ -396,11 +380,11 @@ class LC_Page_Shopping_Complete extends LC_Page {
         }
 
         // メルマガフラグ
-        switch($arrData["mailmaga_flg"]) {
-            case 1:
+        switch ($arrData["mailmaga_flg"]) {
+            case 1: // HTMLメール
                 $mail_flag = 4;
                 break;
-            case 2:
+            case 2: // TEXTメール
                 $mail_flag = 5;
                 break;
             default:
@@ -433,13 +417,13 @@ class LC_Page_Shopping_Complete extends LC_Page {
         $mailHelper = new SC_Helper_Mail_Ex();
 
         //仮会員メール
-        if($confirm_flg == true) {
-            $subject = $mailHelper->sfMakeSubject($objQuery,$objMailView,$objMailPage,"会員登録のご確認");
-            $body = $objMailView->fetch("mail_templates/customer_mail.tpl");
+        if ($confirm_flg == true) {
+            $subject = $mailHelper->sfMakeSubject('会員登録のご確認');
+            $body = $objMailView->fetch('mail_templates/customer_mail.tpl');
         //本会員メール
-        }else{
-            $subject = $mailHelper->sfMakeSubject($objQuery,$objMailView,$objMailPage,'会員登録のご完了');
-            $body = $objMailView->fetch("mail_templates/customer_regist_mail.tpl");
+        } else {
+            $subject = $mailHelper->sfMakeSubject('会員登録のご完了');
+            $body = $objMailView->fetch('mail_templates/customer_regist_mail.tpl');
             // ログイン状態にする
             $this->objCustomer->setLogin($arrData['order_email']);
         }
@@ -464,28 +448,37 @@ class LC_Page_Shopping_Complete extends LC_Page {
         return $customer_id;
     }
 
-    // 受注テーブルへ登録
+    /**
+     * 受注テーブルへ登録
+     *
+     * @return integer 注文番号
+     */
     function lfRegistOrder($objQuery, $arrData, $objCampaignSess = null) {
         $sqlval = $arrData;
 
         // 受注テーブルに書き込まない列を除去
-        unset($sqlval['mailmaga_flg']);		// メルマガチェック
-        unset($sqlval['deliv_check']);		// 別のお届け先チェック
-        unset($sqlval['point_check']);		// ポイント利用チェック
-        unset($sqlval['member_check']);		// 購入時会員チェック
-        unset($sqlval['password']);			// ログインパスワード
-        unset($sqlval['reminder']);			// リマインダー質問
-        unset($sqlval['reminder_answer']);	// リマインダー答え
-        unset($sqlval['mail_flag']);		// メールフラグ
-        unset($sqlval['session']);		    // セッション情報
+        unset($sqlval['mailmaga_flg']);     // メルマガチェック
+        unset($sqlval['deliv_check']);      // 別のお届け先チェック
+        unset($sqlval['point_check']);      // ポイント利用チェック
+        unset($sqlval['password']);         // ログインパスワード
+        unset($sqlval['reminder']);         // リマインダー質問
+        unset($sqlval['reminder_answer']);  // リマインダー答え
+        unset($sqlval['mail_flag']);        // メールフラグ
+        unset($sqlval['session']);          // セッション情報
+
+        // ポイントは別登録
+        $addPoint = $sqlval['add_point'];
+        $usePoint = $sqlval['use_point'];
+        $sqlval['add_point'] = 0;
+        $sqlval['use_point'] = 0;
 
         // 注文ステータス:指定が無ければ新規受付に設定
-        if($sqlval["status"] == ""){
-            $sqlval['status'] = '1';
+        if (strlen($sqlval['status']) == 0) {
+            $sqlval['status'] = ORDER_NEW;
         }
 
         // 別のお届け先を指定していない場合、お届け先に登録住所をコピーする。
-        if($arrData["deliv_check"] == "-1") {
+        if ($arrData["deliv_check"] == "-1") {
             $sqlval['deliv_name01'] = $arrData['order_name01'];
             $sqlval['deliv_name02'] = $arrData['order_name02'];
             $sqlval['deliv_kana01'] = $arrData['order_kana01'];
@@ -500,19 +493,23 @@ class LC_Page_Shopping_Complete extends LC_Page {
             $sqlval['deliv_tel03'] = $arrData['order_tel03'];
         }
 
-        $order_id = $arrData['order_id'];		// 注文番号
-        $sqlval['create_date'] = 'now()';		// 受注日
+        $order_id = $arrData['order_id'];       // 注文番号
+        $sqlval['create_date'] = 'Now()';       // 受注日
+        $sqlval['update_date'] = 'Now()';       // 更新日時
 
         // キャンペーンID
         if (!defined("MOBILE_SITE")) {
-            if($objCampaignSess->getIsCampaign()) $sqlval['campaign_id'] = $objCampaignSess->getCampaignId();
+            if ($objCampaignSess->getIsCampaign()) $sqlval['campaign_id'] = $objCampaignSess->getCampaignId();
         }
 
         // ゲットの値をインサート
         //$sqlval = lfGetInsParam($sqlval);
 
-        // INSERTの実行
+        // 受注テーブルの登録
         $objQuery->insert("dtb_order", $sqlval);
+
+        // 受注.対応状況の更新
+        SC_Helper_DB_Ex::sfUpdateOrderStatus($order_id, null, $addPoint, $usePoint);
 
         return $order_id;
     }
@@ -553,11 +550,7 @@ class LC_Page_Shopping_Complete extends LC_Page {
                 // INSERTの実行
                 $objQuery->insert("dtb_order_detail", $sqlval);
             } else {
-                if (defined("MOBILE_SITE")) {
-                    SC_Utils_Ex::sfDispSiteError(CART_NOT_FOUND, "", false, "", true);
-                } else {
-                    SC_Utils_Ex::sfDispSiteError(CART_NOT_FOUND);
-                }
+                SC_Utils_Ex::sfDispSiteError(CART_NOT_FOUND);
             }
         }
     }
@@ -576,7 +569,7 @@ class LC_Page_Shopping_Complete extends LC_Page {
         $arrOrder = $objQuery->select($cols, "dtb_order", "order_id = ?", array($order_id));
 
         $sqlval = $arrOrder[0];
-        $sqlval['create_date'] = 'now()';
+        $sqlval['create_date'] = 'Now()';
 
         // INSERTの実行
         $objQuery->insert("dtb_campaign_order", $sqlval);
@@ -648,7 +641,7 @@ class LC_Page_Shopping_Complete extends LC_Page {
 
     /* 購入情報を会員テーブルに登録する */
     function lfSetCustomerPurchase($customer_id, $arrData, &$objQuery) {
-        $col = "first_buy_date, last_buy_date, buy_times, buy_total, point";
+        $col = "first_buy_date, last_buy_date, buy_times, buy_total";
         $where = "customer_id = ?";
         $arrRet = $objQuery->select($col, "dtb_customer", $where, array($customer_id));
         $sqlval = $arrRet[0];
@@ -659,43 +652,40 @@ class LC_Page_Shopping_Complete extends LC_Page {
         $sqlval['last_buy_date'] = "Now()";
         $sqlval['buy_times']++;
         $sqlval['buy_total']+= $arrData['total'];
-        if (USE_POINT === false) {
-            $sqlval['point'] = $sqlval['point'];
-        } else {
-            //$sqlval['point'] = ($sqlval['point'] - $arrData['use_point']);
-            $sqlval['point'] = ($sqlval['point'] + $arrData['add_point'] - $arrData['use_point']);
-        }
-
-        // ポイントが不足している場合
-        if($sqlval['point'] < 0) {
-            $objQuery->rollback();
-            SC_Utils_Ex::sfDispSiteError(LACK_POINT);
-        }
 
         $objQuery->update("dtb_customer", $sqlval, $where, array($customer_id));
     }
 
     // 在庫を減らす処理
     function lfReduceStock(&$objQuery, $arrID, $quantity) {
+        $objDb = new SC_Helper_DB_Ex();
+        
+        if (!SC_Utils_Ex::sfIsInt($quantity)) {
+            $objQuery->rollback();
+            SC_Utils_Ex::sfDispException();
+        }
+        
         $where = "product_id = ? AND classcategory_id1 = ? AND classcategory_id2 = ?";
         $arrRet = $objQuery->select("stock, stock_unlimited", "dtb_products_class", $where, $arrID);
 
-        // 売り切れエラー
-        if(($arrRet[0]['stock_unlimited'] != '1' && $arrRet[0]['stock'] < $quantity) || $quantity == 0) {
+        if (($arrRet[0]['stock_unlimited'] != '1' && $arrRet[0]['stock'] < $quantity) || $quantity == 0) {
+            // 売り切れエラー
             $objQuery->rollback();
             SC_Utils_Ex::sfDispSiteError(SOLD_OUT, "", true);
-        // 無制限の場合、在庫はNULL
-        } elseif($arrRet[0]['stock_unlimited'] == '1') {
-            $sqlval['stock'] = null;
-            $objQuery->update("dtb_products_class", $sqlval, $where, $arrID);
-        // 在庫を減らす
-        } else {
-            $sqlval['stock'] = ($arrRet[0]['stock'] - $quantity);
-            if($sqlval['stock'] == "") {
-                $sqlval['stock'] = '0';
-            }
-            $objQuery->update("dtb_products_class", $sqlval, $where, $arrID);
         }
+        
+        // 在庫を減らす
+        $arrRawSql = array();
+        $arrRawSql['stock'] = 'stock - ?';
+        $arrRawSqlVal[] = $quantity;
+        $objQuery->update('dtb_products_class', array(), $where, $arrID, $arrRawSql, $arrRawSqlVal);
+        
+        // 在庫無し商品の非表示対応
+        if (NOSTOCK_HIDDEN === true) {
+            // 件数カウントバッチ実行
+            $objDb->sfCategory_Count($objQuery);
+        }
+        
     }
 
     // GETの値をインサート用に整える

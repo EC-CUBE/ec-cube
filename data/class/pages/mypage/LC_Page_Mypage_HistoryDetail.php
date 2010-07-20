@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -60,7 +60,8 @@ class LC_Page_Mypage_HistoryDetail extends LC_Page {
      */
     function mobileInit() {
         $this->tpl_mainpage = 'mypage/history_detail.tpl';
-        $this->tpl_title = "MYページ/購入履歴詳細";
+        $this->tpl_title = 'MYページ';
+        $this->tpl_subtitle = '購入履歴詳細';
     }
 
     /**
@@ -84,7 +85,7 @@ class LC_Page_Mypage_HistoryDetail extends LC_Page {
 
         //ログインしていない、またはDBに情報が無い場合
         if (!$objCustomer->isLoginSuccess(true) or $cnt == 0){
-            SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
+            SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
         } else {
             //受注詳細データの取得
             $this->arrDisp = $this->lfGetOrderData($_POST['order_id']);
@@ -140,7 +141,7 @@ class LC_Page_Mypage_HistoryDetail extends LC_Page {
         $objQuery = new SC_Query();
         $col = "product_id, product_code, product_name, classcategory_name1, classcategory_name2, price, quantity, point_rate";
         $where = "order_id = ?";
-        $objQuery->setorder("classcategory_id1, classcategory_id2");
+        $objQuery->setOrder("classcategory_id1, classcategory_id2");
         $arrRet = $objQuery->select($col, "dtb_order_detail", $where, array($order_id));
         return $arrRet;
     }

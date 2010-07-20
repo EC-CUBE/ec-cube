@@ -1,7 +1,7 @@
 <!--{*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2008 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -24,7 +24,7 @@
   <div id="zipsearchcolumn">
     <h2><img src="<!--{$TPL_DIR}-->img/common/zip_title.jpg" width="460" height="40" alt="住所検索" /></h2>
     <div id="zipsearcharea">
-      <form name="form1" id="form1" method="post" action="<!--{$smarty.const.PHP_SELF|escape}-->">
+      <form name="form1" id="form1" method="post" action="?">
         <input type="hidden" name="state" value="<!--{$tpl_state}-->" />
         <input type="hidden" name="city" value="<!--{$tpl_city}-->" />
         <input type="hidden" name="town" value="<!--{$tpl_town}-->" />

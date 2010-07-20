@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -80,15 +80,7 @@ class LC_Page_Admin_Contents extends LC_Page {
             $_POST = $this->lfConvData($_POST);
 
             if ($this->arrErr = $this->lfErrorCheck()) {       // 入力エラーのチェック
-                $arrParams = array("news_url", "news_title", "news_comment", "link_method");
-
-                foreach($arrParams as $key) {
-                    $this->$key = $_POST[$key];
-                }
-                $this->selected_year = $_POST["year"];
-                $this->selected_month = $_POST["month"];
-                $this->selected_day = $_POST["day"];
-
+                $this->arrForm = $_POST;
             } else {
 
                 if (isset($_POST['link_method']) == ""){
@@ -115,14 +107,12 @@ class LC_Page_Admin_Contents extends LC_Page {
         if ($_POST["mode"] == "search" && is_numeric($_POST["news_id"])) {
             $sql = "SELECT *, cast(news_date as date) as cast_news_date FROM dtb_news WHERE news_id = ? ";
             $result = $conn->getAll($sql, array($_POST["news_id"]));
-            foreach($result[0] as $key => $val ){
-                $this->$key = $val;
-            }
-            $arrData = split("-",$result[0]["cast_news_date"]);
+            $this->arrForm = $result[0];
 
-            $this->selected_year = $arrData[0];
-            $this->selected_month =$arrData[1];
-            $this->selected_day =  $arrData[2];
+            $arrData = split("-", $result[0]["cast_news_date"]);
+            $this->arrForm['year']  = $arrData[0];
+            $this->arrForm['month'] = $arrData[1];
+            $this->arrForm['day']   = $arrData[2];
 
             $this->edit_mode = "on";
         }
@@ -131,7 +121,7 @@ class LC_Page_Admin_Contents extends LC_Page {
         if ( $_POST['mode'] == 'delete' && is_numeric($_POST["news_id"])) {
 
             // rankを取得
-            $pre_rank = $conn->getone(" SELECT rank FROM dtb_news WHERE del_flg = 0 AND news_id = ? ", array( $_POST['news_id']  ));
+            $pre_rank = $conn->getOne(" SELECT rank FROM dtb_news WHERE del_flg = 0 AND news_id = ? ", array( $_POST['news_id']  ));
 
             //-- 削除する新着情報以降のrankを1つ繰り上げておく
             $conn->query("BEGIN");
@@ -167,15 +157,12 @@ class LC_Page_Admin_Contents extends LC_Page {
             }
         }
 
-
         //---- 全データ取得
         $sql = "SELECT *, cast(news_date as date) as cast_news_date FROM dtb_news WHERE del_flg = '0' ORDER BY rank DESC";
         $this->list_data = $conn->getAll($sql);
         $this->line_max = count($this->list_data);
         $sql = "SELECT MAX(rank) FROM dtb_news WHERE del_flg = '0'";        // rankの最大値を取得
         $this->max_rank = $conn->getOne($sql);
-
-        $this->arrForm['news_select'] = 0;
 
         //----　ページ表示
         $objView->assignobj($this);
@@ -284,7 +271,7 @@ class LC_Page_Admin_Contents extends LC_Page {
         }
 
         //rankの最大+1を取得する
-        $rank_max = $conn->getone("SELECT MAX(rank) + 1 FROM dtb_news WHERE del_flg = '0'");
+        $rank_max = $conn->getOne("SELECT MAX(rank) + 1 FROM dtb_news WHERE del_flg = '0'");
 
         $sql = "INSERT INTO dtb_news (news_date, news_title, creator_id, news_url, link_method, news_comment, rank, create_date, update_date)
             VALUES ( ?,?,?,?,?,?,?,now(),now())";

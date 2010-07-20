@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -29,30 +29,57 @@
 <hr>
 <!--ﾀｲﾄﾙここまで-->
 <!--詳細ここから-->
-<!--{assign var=key value="main_image"}-->
-<img src="<!--{$arrFile[$key].filepath}-->"><br>
+<!--{if $smarty.get.image != ''}-->
+  <!--{assign var=key value="`$smarty.get.image`"}-->
+<!--{else}-->
+  <!--{assign var=key value="main_image"}-->
+<!--{/if}-->
+<img src="<!--{$arrFile[$key].filepath}-->">
+<!--{if $subImageFlag == true}-->
+<br>画像
+  <!--{if ($smarty.get.image == "" || $smarty.get.image == "main_image")}-->
+[1]
+  <!--{else}-->
+[<a href="<!--{$smarty.server.PHP_SELF|escape}-->?product_id=<!--{$smarty.get.product_id}-->&image=main_image">1</a>]
+  <!--{/if}-->
+  
+  <!--{assign var=num value="2"}-->
+  <!--{section name=cnt loop=$smarty.const.PRODUCTSUB_MAX}-->
+  <!--{assign var=key value="sub_image`$smarty.section.cnt.iteration`"}-->
+  <!--{if $arrFile[$key].filepath != ""}-->
+    <!--{if $key == $smarty.get.image}-->
+[<!--{$num}-->]
+    <!--{else}-->
+[<a href="<!--{$smarty.server.PHP_SELF|escape}-->?product_id=<!--{$smarty.get.product_id}-->&image=<!--{$key}-->"><!--{$num}--></a>]
+    <!--{/if}-->
+    <!--{assign var=num value="`$num+1`"}-->
+  <!--{/if}-->
+  <!--{/section}-->
+<!--{/if}-->
+<br>
 <!--{* オペビルダー用 *}-->
 <!--{if "sfViewDetailOpe"|function_exists === TRUE}-->
 <!--{include file=`$smarty.const.MODULE_PATH`mdl_opebuilder/detail_ope_mb_view.tpl}-->
 <!--{/if}-->
 <!--★詳細ﾒｲﾝｺﾒﾝﾄ★-->
-[emoji:76]<!--{$arrProduct.main_comment|nl2br}--><br>
+[emoji:76]<!--{$arrProduct.main_comment|nl2br_html}--><br>
 <br>
 <!--ｱｲｺﾝ-->
-<!--★価格★-->
-<font color="#FF0000">価格(税込):
+<!--★販売価格★-->
+<font color="#FF0000"><!--{$smarty.const.SALE_PRICE_TITLE}-->(税込):
 <!--{if $arrProduct.price02_min == $arrProduct.price02_max}-->
 	<!--{$arrProduct.price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
 <!--{else}-->
-	<!--{$arrProduct.price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->･<!--{$arrProduct.price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
+	<!--{$arrProduct.price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->～<!--{$arrProduct.price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
 <!--{/if}-->
 円</font><br/>
+<!--★通常価格★-->
 <!--{if $arrProduct.price01_max > 0}-->
-<font color="#FF0000">参考市場価格:
+<font color="#FF0000"><!--{$smarty.const.NORMAL_PRICE_TITLE}-->:
 <!--{if $arrProduct.price01_min == $arrProduct.price01_max}-->
 <!--{$arrProduct.price01_min|number_format}-->
 <!--{else}-->
-<!--{$arrProduct.price01_min|number_format}-->･<!--{$arrProduct.price01_max|number_format}-->
+<!--{$arrProduct.price01_min|number_format}-->～<!--{$arrProduct.price01_max|number_format}-->
 <!--{/if}-->
 円</font><br>
 <!--{/if}-->

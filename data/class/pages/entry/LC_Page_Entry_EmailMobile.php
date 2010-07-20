@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -61,7 +61,6 @@ class LC_Page_Entry_EmailMobile extends LC_Page {
     function mobileInit() {
         $this->tpl_mainpage = 'entry/email_mobile.tpl';
         $this->tpl_title = '携帯メール登録';
-        $this->allowClientCache();
     }
 
     /**
@@ -121,7 +120,7 @@ class LC_Page_Entry_EmailMobile extends LC_Page {
 
     function lfInitParam(&$objFormParam) {
         $objFormParam->addParam('メールアドレス', 'email_mobile', MTEXT_LEN, 'a',
-                                array('NO_SPTAB', 'EXIST_CHECK', 'MAX_LENGTH_CHECK', 'CHANGE_LOWER', 'EMAIL_CHAR_CHECK', 'MOBILE_EMAIL_CHECK'));
+                                array('NO_SPTAB', 'EXIST_CHECK', 'MAX_LENGTH_CHECK', 'CHANGE_LOWER', 'EMAIL_CHAR_CHECK', 'EMAIL_CHECK', 'MOBILE_EMAIL_CHECK'));
     }
 
     function lfCheckError(&$objFormParam, &$objCustomer) {

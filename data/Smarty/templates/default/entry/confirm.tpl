@@ -1,7 +1,7 @@
 <!--{*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -22,10 +22,10 @@
 <!--▼CONTENTS-->
 <div id="undercolumn">
   <div id="undercolumn_entry">
-    <h2 class="title"><img src="<!--{$TPL_DIR}-->img/entry/title.jpg" width="580" height="40" alt="会員登録" /></h2>
+    <h2 class="title"><!--{$tpl_title|escape}--></h2>
     <p>下記の内容で送信してもよろしいでしょうか？<br />
       よろしければ、一番下の「会員登録完了へ」ボタンをクリックしてください。</p>
-    <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+    <form name="form1" id="form1" method="post" action="?">
       <input type="hidden" name="mode" value="complete">
       <!--{foreach from=$list_data key=key item=item}-->
         <input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->" />
@@ -133,7 +133,7 @@
       </table>
 
       <div class="tblareabtn">
-        <a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('return', '', ''); return false;" onmouseover="chgImg('<!--{$TPL_DIR}-->img/common/b_back_on.gif','back')" onmouseout="chgImg('<!--{$TPL_DIR}-->img/common/b_back.gif','back')"><img src="<!--{$TPL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="戻る" border="0" name="back" id="back" /></a>&nbsp;
+        <a href="?" onclick="fnModeSubmit('return', '', ''); return false;" onmouseover="chgImg('<!--{$TPL_DIR}-->img/common/b_back_on.gif','back')" onmouseout="chgImg('<!--{$TPL_DIR}-->img/common/b_back.gif','back')"><img src="<!--{$TPL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="戻る" border="0" name="back" id="back" /></a>&nbsp;
         <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/entry/b_entrycomp_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/entry/b_entrycomp.gif',this)" src="<!--{$TPL_DIR}-->img/entry/b_entrycomp.gif" class="box150" alt="送信" border="0" name="send" id="send" />
       </div>
     </form>

@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -44,7 +44,8 @@ class LC_Page_Mypage_Refusal extends LC_Page {
     function init() {
         parent::init();
         $this->tpl_mainpage = TEMPLATE_DIR . 'mypage/refusal.tpl';
-        $this->tpl_title = "MYページ/退会手続き(入力ページ)";
+        $this->tpl_title = 'MYページ';
+        $this->tpl_subtitle = '退会手続き(入力ページ)';
         $this->tpl_navi = TEMPLATE_DIR . 'mypage/navi.tpl';
         $this->tpl_mainno = 'mypage';
         $this->tpl_mypageno = 'refusal';
@@ -83,7 +84,7 @@ class LC_Page_Mypage_Refusal extends LC_Page {
         case 'confirm':
 
             $this->tpl_mainpage = TEMPLATE_DIR . 'mypage/refusal_confirm.tpl';
-            $this->tpl_title = "MYページ/退会手続き(確認ページ)";
+            $this->tpl_subtitle = '退会手続き(確認ページ)';
 
             // 確認ページを経由したことを登録
             $objSiteSess->setRegistFlag();
@@ -132,7 +133,7 @@ class LC_Page_Mypage_Refusal extends LC_Page {
 
         //ログイン判定
         if (!$objCustomer->isLoginSuccess(true)){
-            SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
+            SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
         }else {
             //マイページトップ顧客情報表示用
             $this->CustomerName1 = $objCustomer->getvalue('name01');
@@ -141,7 +142,7 @@ class LC_Page_Mypage_Refusal extends LC_Page {
         }
 
         if (isset($_POST['no'])) {
-            $this->sendRedirect($this->getLocation("./index.php"), true);
+            $this->sendRedirect($this->getLocation(DIR_INDEX_URL), true);
             exit;
         } elseif (isset($_POST['complete'])){
             //会員削除

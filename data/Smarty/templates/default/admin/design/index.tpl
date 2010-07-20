@@ -1,298 +1,295 @@
-<!--{*
-/*
- * This file is part of EC-CUBE
- *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
- *
- * http://www.lockon.co.jp/
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- */
-*}-->
-<style type="text/css">
-    div.dragged_elm {
-        position:   absolute;
-        border:     1px solid black;
-        background: rgb(195,217,255);
-        color:      #333;
-        cursor:		move;
-        PADDING-RIGHT: 	2px;
-        PADDING-LEFT: 	2px;
-        PADDING-BOTTOM: 5px;
-        PADDING-TOP: 	5px;
-        FONT-SIZE: 		10pt;
-    }
-
-    div.drop_target {
-        border:      0px solid gray;
-        position:    relative;
-        text-align:  center;
-        color:       #333;
-    }
-
-</style>
 <script type="text/javascript">
 
 function doPreview(){
-	document.form1.mode.value="preview"
-	document.form1.target = "_blank";
-	document.form1.submit();
+    document.form1.mode.value="preview"
+    document.form1.target = "_blank";
+    document.form1.submit();
 }
 function fnTargetSelf(){
-	document.form1.target = "_self";
-}
-
-// 初期処理
-function init () {
-    document.body.ondrag = function () { return false; };
-    document.body.onselectstart = function () { return false; };
-
-    // ウィンドウサイズを取得
-	scrX = GetWindowSize("width");
-	scrY = GetWindowSize("height");
-
-	// ウィンドウサイズ変更イベントに関連付け
-    window.onresize = fnMoveObject;
-
-    // divタグを取得
-    all_elms = document.getElementsByTagName ( 'div' );
-
-	// tdタグを取得
-	all_td = document.getElementsByTagName ( 'td' );
-
-	// 配列作成
-	fnCreateArr(0);
-
-	// alerttest(0);
-
-    // 並び替え
-	fnMoveObject();
-
-	<!--{$complate_msg}-->
+    document.form1.target = "_self";
 }
 
 </script>
 
+<script type="text/javascript" src="<!--{$TPL_DIR}-->js/ui.core.js"></script>
+<script type="text/javascript" src="<!--{$TPL_DIR}-->js/ui.sortable.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/layout_design.js"></script>
 
-<!--★★メインコンテンツ★★-->
-<table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" >
-<input type="hidden" name="mode" value="">
-<input type="hidden" name="page_id" value="<!--{$page_id}-->">
-<input type="hidden" name="bloc_cnt" value="<!--{$bloc_cnt}-->">
-	<tr valign="top">
-		<td background="<!--{$TPL_DIR}-->img/contents/navi_bg.gif" height="402">
-			<!--▼SUB NAVI-->
-			<!--{include file=$tpl_subnavi}-->
-			<!--▲SUB NAVI-->
-		</td>
-		<td class="mainbg" >
-		<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
-			<!--メインエリア-->
-			<tr>
-				<td align="center">
-				<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
 
-					<tr><td height="14"></td></tr>
-					<tr>
-						<td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/main_top.jpg" width="706" height="14" alt=""></td>
-					</tr>
-					<tr>
-						<td background="<!--{$TPL_DIR}-->img/contents/main_left.jpg"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
-						<td bgcolor="#cccccc">
+<form name="form1" id="form1" method="post" action="?">
+<input type="hidden" name="mode" value="" />
+<input type="hidden" name="page_id" value="<!--{$page_id}-->" />
+<input type="hidden" name="bloc_cnt" value="<!--{$bloc_cnt}-->" />
+<div id="design" class="contents-main">
+    <!--{* ▼レイアウト編集ここから *}-->
+    <h2>レイアウト編集</h2>
+    <!--{* ▼レイアウトここから *}-->
+    <div style="float: left; width: 75%;" align="center">
+        <table id="design-layout-used" class="design-layout">
+            <tr>
+                <th colspan="3">&lt;head&gt;</td>
+            </tr>
+            <tr>
+                <!-- ★☆★ HEADタグ内テーブル ☆★☆ -->
+                <td colspan="3" id="HeadNavi" class="ui-sortable">
+                    <!--{assign var="firstflg" value=false}-->
+                    <!--{foreach key=key item=item from=$tpl_arrBloc name="bloc_loop"}-->
+                        <!--{if $item.target_id == "HeadNavi"}-->
+                            <div class="sort<!--{if !$firstflg}--> first<!--{/if}-->">
+                                <input type="hidden" class="name" name="name_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.name}-->" />
+                                <input type="hidden" class="id" name="id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_id}-->" />
+                                <input type="hidden" class="target-id" name="target_id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.target_id}-->" />
+                                <input type="hidden" class="top" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->" />
+                                <!--{$item.name}-->
+                                <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{$item.anywhere_selected}--> />全ページ)</label> 
+                            </div>
+                            <!--{assign var="firstflg" value=true}-->
+                        <!--{/if}-->
+                    <!--{/foreach}-->
+                </td>
+                <!-- ★☆★ Headタグ内テーブル ☆★☆ -->
+            </tr>
+            <tr>
+                <th colspan="3">&lt;/head&gt;</td>
+            </tr>
+            <tr>
+                <!-- ★☆★ ヘッダより上部ナビテーブル ☆★☆ -->
+                <td colspan="3" id="HeaderTopNavi" class="ui-sortable">
+                    <!--{assign var="firstflg" value=false}-->
+                    <!--{foreach key=key item=item from=$tpl_arrBloc name="bloc_loop"}-->
+                        <!--{if $item.target_id == "HeaderTopNavi"}-->
+                            <div class="sort<!--{if !$firstflg}--> first<!--{/if}-->">
+                                <input type="hidden" class="name" name="name_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.name}-->" />
+                                <input type="hidden" class="id" name="id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_id}-->" />
+                                <input type="hidden" class="target-id" name="target_id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.target_id}-->" />
+                                <input type="hidden" class="top" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->" />
+                                <!--{$item.name}-->
+                                <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{$item.anywhere_selected}--> />全ページ)</label>
+                            </div>
+                            <!--{assign var="firstflg" value=true}-->
+                        <!--{/if}-->
+                    <!--{/foreach}-->
+                </td>
+                <!-- ★☆★ ヘッダより上部ナビテーブル ☆★☆ -->
+            </tr>
+            <tr>
+                <th colspan="3" id="layout-header">ヘッダー部</td>
+            </tr>
+            <tr>
+                <!-- ★☆★ 上部ナビテーブル ☆★☆ -->
+                <td colspan="3" id="TopNavi" class="ui-sortable">
+                    <!--{assign var="firstflg" value=false}-->
+                    <!--{foreach key=key item=item from=$tpl_arrBloc name="bloc_loop"}-->
+                        <!--{if $item.target_id == "TopNavi"}-->
+                            <div class="sort<!--{if !$firstflg}--> first<!--{/if}-->">
+                                <input type="hidden" class="name" name="name_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.name}-->" />
+                                <input type="hidden" class="id" name="id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_id}-->" />
+                                <input type="hidden" class="target-id" name="target_id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.target_id}-->" />
+                                <input type="hidden" class="top" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->" />
+                                <!--{$item.name}-->
+                                <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{$item.anywhere_selected}--> />全ページ)</label> 
+                            </div>
+                            <!--{assign var="firstflg" value=true}-->
+                        <!--{/if}-->
+                    <!--{/foreach}-->
+                </td>
+                <!-- ★☆★ 上部ナビテーブル ☆★☆ -->
+            </tr>
+            <tr>
+                <!--{* 左ナビテーブルここから *}-->
+                <td rowspan="3" id="LeftNavi" class="ui-sortable">
+                    <!--{assign var="firstflg" value=false}-->
+                    <!--{foreach key=key item=item from=$tpl_arrBloc name="bloc_loop"}-->
+                        <!--{if $item.target_id == "LeftNavi"}-->
+                            <div class="sort<!--{if !$firstflg}--> first<!--{/if}-->">
+                                <input type="hidden" class="name" name="name_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.name}-->" />
+                                <input type="hidden" class="id" name="id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_id}-->" />
+                                <input type="hidden" class="target-id" name="target_id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.target_id}-->" />
+                                <input type="hidden" class="top" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->" />
+                                <!--{$item.name}-->
+                                <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{$item.anywhere_selected}--> />全ページ)</label> 
+                            </div>
+                            <!--{assign var="firstflg" value=true}-->
+                        <!--{/if}-->
+                    <!--{/foreach}-->
+                </td>
+                <!--{* 左ナビテーブルここまで *}-->
+                <!--{* メイン上部テーブルここから *}-->
+                <td id="MainHead" class="ui-sortable">
+                    <!--{assign var="firstflg" value=false}-->
+                    <!--{foreach key=key item=item from=$tpl_arrBloc name="bloc_loop"}-->
+                        <!--{if $item.target_id == "MainHead"}-->
+                            <div class="sort<!--{if !$firstflg}--> first<!--{/if}-->">
+                                <input type="hidden" class="name" name="name_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.name}-->" />
+                                <input type="hidden" class="id" name="id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_id}-->" />
+                                <input type="hidden" class="target-id" name="target_id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.target_id}-->" />
+                                <input type="hidden" class="top" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->" />
+                                <!--{$item.name}-->
+                                <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{$item.anywhere_selected}--> />全ページ)</label> 
+                            </div>
+                            <!--{assign var="firstflg" value=true}-->
+                        <!--{/if}-->
+                    <!--{/foreach}-->
+                </td>
+                <!--{* メイン上部テーブルここまで *}-->
+                <!--{* 右ナビここから *}-->
+                <td rowspan="3" id="RightNavi" class="ui-sortable">
+                    <!--{assign var="firstflg" value=false}-->
+                    <!--{foreach key=key item=item from=$tpl_arrBloc name="bloc_loop"}-->
+                        <!--{if $item.target_id == "RightNavi"}-->
+                            <div class="sort<!--{if !$firstflg}--> first<!--{/if}-->">
+                                <input type="hidden" class="name" name="name_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.name}-->" />
+                                <input type="hidden" class="id" name="id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_id}-->" />
+                                <input type="hidden" class="target-id" name="target_id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.target_id}-->" />
+                                <input type="hidden" class="top" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->" />
+                                <!--{$item.name}-->
+                                <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{$item.anywhere_selected}--> />全ページ)</label> 
+                            </div>
+                            <!--{assign var="firstflg" value=true}-->
+                        <!--{/if}-->
+                    <!--{/foreach}-->
+                </td>
+                <!--{* 右ナビここまで *}-->
+            </tr>
+            <!--{* メインここから *}-->
+            <tr>
+                <th id="layout-main">メイン</td>
+            </tr>
+            <!--{* メインここまで *}-->
+            <!--{* メイン下部ここから *}-->
+            <tr>
+                <td id="MainFoot" class="ui-sortable">
+                    <!--{assign var="firstflg" value=false}-->
+                    <!--{foreach key=key item=item from=$tpl_arrBloc name="bloc_loop"}-->
+                        <!--{if $item.target_id == "MainFoot"}-->
+                            <div class="sort<!--{if !$firstflg}--> first<!--{/if}-->">
+                                <input type="hidden" class="name" name="name_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.name}-->" />
+                                <input type="hidden" class="id" name="id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_id}-->" />
+                                <input type="hidden" class="target-id" name="target_id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.target_id}-->" />
+                                <input type="hidden" class="top" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->" />
+                                <!--{$item.name}-->
+                                <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{$item.anywhere_selected}--> />全ページ)</label> 
+                            </div>
+                            <!--{assign var="firstflg" value=true}-->
+                        <!--{/if}-->
+                    <!--{/foreach}-->
+                </td>
+            </tr>
+            <tr>
+            <!--{* メイン下部ここまで *}-->
+                 <!-- ★☆★ 下部ナビテーブル ☆★☆ -->
+                <td colspan="3" id="BottomNavi" class="ui-sortable">
+                    <!--{assign var="firstflg" value=false}-->
+                    <!--{foreach key=key item=item from=$tpl_arrBloc name="bloc_loop"}-->
+                        <!--{if $item.target_id == "BottomNavi"}-->
+                            <div class="sort<!--{if !$firstflg}--> first<!--{/if}-->">
+                                <input type="hidden" class="name" name="name_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.name}-->" />
+                                <input type="hidden" class="id" name="id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_id}-->" />
+                                <input type="hidden" class="target-id" name="target_id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.target_id}-->" />
+                                <input type="hidden" class="top" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->" />
+                                <!--{$item.name}-->
+                                <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{$item.anywhere_selected}--> />全ページ)</label> 
+                            </div>
+                            <!--{assign var="firstflg" value=true}-->
+                        <!--{/if}-->
+                    <!--{/foreach}-->
+                </td>
+                <!-- ★☆★ 下部ナビテーブル ☆★☆ --> 
+            </tr>
+            <tr>
+                <th colspan="3" id="layout-footer">フッター部</td>
+            </tr>
+            <tr>
+                <!-- ★☆★ フッタより下部ナビテーブル ☆★☆ -->
+                <td colspan="3" id="FooterBottomNavi" class="ui-sortable">
+                    <!--{assign var="firstflg" value=false}-->
+                    <!--{foreach key=key item=item from=$tpl_arrBloc name="bloc_loop"}-->
+                        <!--{if $item.target_id == "FooterBottomNavi"}-->
+                            <div class="sort<!--{if !$firstflg}--> first<!--{/if}-->">
+                                <input type="hidden" class="name" name="name_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.name}-->" />
+                                <input type="hidden" class="id" name="id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_id}-->" />
+                                <input type="hidden" class="target-id" name="target_id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.target_id}-->" />
+                                <input type="hidden" class="top" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->" />
+                                <!--{$item.name}-->
+                                <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{$item.anywhere_selected}--> />全ページ)</label> 
+                            </div>
+                            <!--{assign var="firstflg" value=true}-->
+                        <!--{/if}-->
+                    <!--{/foreach}-->
+                </td>
+                <!-- ★☆★ フッタより下部ナビテーブル ☆★☆ -->
+            </tr>
+        </table>
+        <div class="btn">
+            <button type='button' name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form1','confirm','','');"><span>登録する</span></button>
+            <button type='button' name='preview' onclick="doPreview();"<!--{if $page_id == "0" or $exists_page == "0" }--> DISABLED<!--{/if}-->><span>プレビュー</span></button>
+        </div>
+    </div>
+    <!--{* ▲レイアウトここまで *}-->
 
-						<!--登録テーブルここから-->
-						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
-							<tr>
-								<td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/contents_title_top.gif" width="678" height="7" alt=""></td>
-							</tr>
-							<tr>
-								<td background="<!--{$TPL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$TPL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-								<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--コンテンツタイトル-->レイアウト編集</span></td>
-								<td background="<!--{$TPL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
-							</tr>
-							<tr>
-								<td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/contents_title_bottom.gif" width="678" height="7" alt=""></td>
-							</tr>
-							<tr>
-								<td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td>
-							</tr>
-						</table>
+    <!--{* ▼未使用ブロックここから *}-->
+    <div style="float: left; width: 25%;" align="center">
+        <table id="design-layout-unused" class="design-layout">
+            <tr>
+                <th>未使用ブロック</th>
+            </tr>
+            <tr>
+                <td id="Unused" class="ui-sortable" style="width: 145px;">
+                    <!--{assign var="firstflg" value=false}-->
+                    <!--{foreach key=key item=item from=$tpl_arrBloc name="bloc_loop"}-->
+                        <!--{if $item.target_id == "Unused"}-->
+                            <div class="sort<!--{if !$firstflg}--> first<!--{/if}-->">
+                                <input type="hidden" class="name" name="name_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.name}-->" />
+                                <input type="hidden" class="id" name="id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_id}-->" />
+                                <input type="hidden" class="target-id" name="target_id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.target_id}-->" />
+                                <input type="hidden" class="top" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->" />
+                                <!--{$item.name}-->
+                                <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{$item.anywhere_selected}-->    />全ページ)</label> 
+                            </div>
+                            <!--{assign var="firstflg" value=true}-->
+                        <!--{/if}-->
+                    <!--{/foreach}-->
+                </td>
+            </tr>
+        </table>
+        <div class="btn"><button type='button' onclick="fnTargetSelf(); fnFormModeSubmit('form1','new_bloc','','');"><span>ブロックを新規入力</span></button></div>
+    </div>
+    <!--{* ▲未使用ブロックここまで *}-->
+    <!--▲レイアウト編集　ここまで-->
 
-						<!--▼レイアウト編集　ここから-->
-						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
-							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" align="center"><strong>レイアウト編集</strong></td>
-								<td bgcolor="#f2f1ec" align="center"><strong>未使用ブロック</strong></td>
-							</tr>
-							<tr>
-								<!--▼レイアウト　ここから-->
-								<td bgcolor="#ffffff" align="center" valign = 'top'>
-									<table width="450" border=0 cellspacing="1" cellpadding="" summary=" " bgcolor="ffffff">
-										<tr class="fs12n"><td bgcolor="#ffffff" height=5px colspan=3></td></tr>
-										<tr class="fs12n" height = 50>
-											<td bgcolor="#cccccc" align="center" colspan=3> ヘッダー部 </td>
-										</tr>
-										<tr class="fs12n"><td bgcolor="#ffffff" height=5px colspan=3></td></tr>
-										<tr>
-											<!-- ★☆★ 左ナビテーブル ☆★☆ -->
-											<td bgcolor="#ffffff" align="center" valign = 'top'>
-												<table border="0" height="400" cellspacing="1" cellpadding="" summary=" " bgcolor="#cccccc">
-													<tr class="fs12n">
-														<td bgcolor="#ffffff" align="center" id="layout">
-															<div tid="LeftNavi" class="drop_target" id="t1" style="width: 145px; height: 100px;"></div>
-														</td>
-													</tr>
-												</table>
-											</td>
-											<!-- ★☆★ 左ナビテーブル ☆★☆ -->
-											<td bgcolor="#ffffff" align="center" valign = 'top'>
-												<table border="0" cellspacing="1" cellpadding="" summary=" " bgcolor="#cccccc">
-													<!-- ★☆★ メイン上部テーブル ☆★☆ -->
-													<thead>
-													<tr class="fs12n">
-														<td bgcolor="#ffffff" valign="top" name='MainHead' height="100" id="layout">
-															<div tid="MainHead" class="drop_target" id="t2" style="width: 145px; height: 100px;"></div>
-														</td>
-													</tr>
-													</thead>
-													<!-- ★☆★ メイン上部テーブル ☆★☆ -->
-													<!-- ★☆★ メイン ☆★☆ -->
-													<tr class="fs12n">
-														<td height=198 align="center" name='Main'>メイン</td>
-													</tr>
-													<!-- ★☆★ メイン ☆★☆ -->
-													<!-- ★☆★ メイン下部テーブル ☆★☆ -->
-													<tfoot>
-													<tr class="fs12n">
-														<td bgcolor="#ffffff" valign="top" name='MainFoot' height="100" id="layout">
-															<div tid="MainFoot" class="drop_target" id="t4" style="width: 145px; height: 100px;"></div>
-														</td>
-													</tr>
-													</tfoot>
-													<!-- ★☆★ メイン下部テーブル ☆★☆ -->
-												</table>
-											</td>
-											<!-- ★☆★ 右ナビテーブル ☆★☆ -->
-											<td bgcolor="#ffffff" align="center" valign = 'top'>
-												<table border="0" cellspacing="1" cellpadding="" summary=" " bgcolor="#cccccc">
-													<tr class="fs12n">
-														<td bgcolor="#ffffff" align="center">
-															<div tid="RightNavi" class="drop_target" id="t3" style="width: 145px; height: 100px;"></div>
-														</td>
-													</tr>
-												</table>
-											</td>
-											<!-- ★☆★ 右ナビテーブル ☆★☆ -->
-										</tr>
-										<tr class="fs12n"><td bgcolor="#ffffff" height=5px colspan=3></td></tr>
-										<tr class="fs12n" height=50><td bgcolor="#cccccc" align="center" colspan=3>フッター部</td></tr>
-										<tr class="fs12n"><td bgcolor="#ffffff" height=5px colspan=3></td></tr>
-									</table>
-								</td>
-								<!--▲レイアウト　ここまで-->
-
-								<!--▼未使用ブロック　ここから-->
-								<td bgcolor="#ffffff" align="center" valign = 'top'>
-									<table width="140" border="0" cellspacing="" cellpadding="" summary=" " bgcolor="#ffffff">
-										<tr class="fs12n">
-											<td bgcolor="#ffffff" align="center" >
-												<div tid="Unused" class="drop_target" id="t5" style="width: 160px; height: 500px; border: 1px solid #cccccc;"></div>
-											</td>
-										</tr>
-										<tr class="fs12n">
-											<td bgcolor="#ffffff" align="center" height="30">
-												<input type='button' value='新規ブロック作成' name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form1','new_bloc','','');"  />
-											</td>
-										</tr>
-									</table>
-								</td>
-								<!--▲未使用ブロック　ここまで-->
-							</tr>
-							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" align="center" colspan=2>
-									<input type='button' value='保存' name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form1','confirm','','');"  />
-									<input type='button' value='プレビュー' name='preview' onclick="doPreview();" <!--{if $page_id == "0" or $exists_page == "0" }-->DISABLED<!--{/if}--> />
-								</td>
-							</tr>
-						</table>
-						<!--▲レイアウト編集　ここまで-->
-
-						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
-							<tr><td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td></tr>
-						</table>
-
-						<!--▼ページ一覧　ここから-->
-						<table width="678" border="0" cellspacing="1" cellpadding="5" summary=" ">
-							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" align="center" colspan=3 ><strong>編集可能ページ</strong></td>
-							</tr>
-
-							<!--{foreach key=key item=item from=$arrEditPage}-->
-							<tr class="fs12n" height=20>
-								<td align="center" width=600 bgcolor="<!--{if $item.page_id == $page_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->">
-									<a href="<!--{$smarty.server.PHP_SELF|escape}-->?page_id=<!--{$item.page_id}-->" ><!--{$item.page_name}--></a>
-								</td>
-								<td align="center" width=78 bgcolor="<!--{if $item.page_id == $page_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->">
-									<input type='button' value='メイン編集' name='page_edit' onclick="location.href='./main_edit.php?page_id=<!--{$item.page_id}-->'"  />
-								</td>
-								<td align="center" width=78 bgcolor="<!--{if $item.page_id == $page_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->">
-									<!--{if $item.edit_flg == 1}-->
-									<input type='button' value='削除' name='del' onclick="fnTargetSelf(); fnFormModeSubmit('form1','delete','','');"  />
-									<!--{/if}-->
-								</td>
-							</tr>
-							<!--{/foreach}-->
-
-							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" align="center" colspan=3>
-									<input type='button' value='新規ページ作成' name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form1','new_page','','');"  />
-								</td>
-							</tr>
-						</table>
-						<!--▲ページ一覧　ここまで-->
-
-						</td>
-						<td background="<!--{$TPL_DIR}-->img/contents/main_right.jpg"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
-					</tr>
-					<tr>
-						<td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/main_bottom.jpg" width="706" height="14" alt=""></td>
-					</tr>
-					<tr><td height="30"></td></tr>
-
-				</table>
-				</td>
-			</tr>
-			<!--メインエリア-->
-		</table>
-		</td>
-	</tr>
-
-</table>
-<!--★★メインコンテンツ★★-->
-
-<!--{foreach key=key item=item from=$tpl_arrBloc name="bloc_loop"}-->
-<div align=center target_id="<!--{$item.target_id}-->" did="<!--{$smarty.foreach.bloc_loop.iteration}-->" class="dragged_elm" id="<!--{$item.target_id}-->"
-	 style="left:350px; top:0px; filter: alpha(opacity=100); opacity: 1; width: 120px;">
-	 <!--{$item.name}-->
+    <!--▼ページ一覧　ここから-->
+    <h2 style="clear: both;">編集可能ページ一覧</h2>
+    <table class="list center">
+        <tr>
+            <th>名称</th>
+            <th><strong>レイアウト</strong></th>
+            <th>ページ詳細</th>
+            <th>削除</th>
+        </tr>
+    <!--{foreach key=key item=item from=$arrEditPage}-->
+        <tr style="background-color:<!--{if $item.page_id == $page_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->;">
+            <td>
+                <!--{$item.page_name}-->
+            </td>
+            <td>
+                <a href="?page_id=<!--{$item.page_id}-->" ><strong>編集</strong></a>
+            </td>
+            <td>
+                <!--{if $item.filename|strlen >= 1}-->
+                    <a href="main_edit.php?page_id=<!--{$item.page_id}-->">編集</a>
+                <!--{/if}-->
+            </td>
+            <td>
+                <!--{if $item.edit_flg == 1}-->
+                    <a href="?" onclick="fnTargetSelf(); fnFormModeSubmit('form1','delete','','');">削除</a>
+                <!--{/if}-->
+            </td>
+        </tr>
+    <!--{/foreach}-->
+    </table>
+    <div class="btn addnew">
+        <button type='button' onclick="fnTargetSelf(); fnFormModeSubmit('form1','new_page','','');"><span>ページを新規入力</span></button>
+    </div>
+    <!--▲ページ一覧　ここまで-->
 </div>
-
-<input type="hidden" name="name_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.name}-->">
-<input type="hidden" name="id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_id}-->">
-<input type="hidden" name="target_id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.target_id}-->">
-<input type="hidden" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->">
-<!--{/foreach}-->
 </form>

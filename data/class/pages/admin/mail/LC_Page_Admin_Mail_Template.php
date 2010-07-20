@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -88,7 +88,6 @@ class LC_Page_Admin_Mail_Template extends LC_Page {
 
         $sql = "SELECT *, create_date as disp_date FROM dtb_mailmaga_template WHERE del_flg = 0 ORDER BY create_date DESC";
         $this->list_data = $conn->getAll($sql);
-		$this->list_data['disp_date'] = substr($this->list_data['disp_date'], 0, 19);
 
         $objView->assignobj($this);
         $objView->display(MAIN_FRAME);

@@ -2,7 +2,7 @@
 <!--{*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2008 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -30,6 +30,7 @@
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/navi.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/win_op.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/site.js"></script>
+<script type="text/javascript" src="<!--{$TPL_DIR}-->js/jquery-1.3.2.min.js"></script>
 <title><!--{$arrSiteInfo.shop_name}-->/<!--{$subtitle|escape}--></title>
 </head>
 

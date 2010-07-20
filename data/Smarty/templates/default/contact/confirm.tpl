@@ -1,7 +1,7 @@
 <!--{*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -22,12 +22,10 @@
 
 <div id="undercolumn">
   <div id="undercolumn_contact">
-    <h2 class="title">
-      <img src="<!--{$TPL_DIR}-->img/contact/title.jpg" width="580" height="40" alt="お問い合わせ" />
-    </h2>
+    <h2 class="title"><!--{$tpl_title|escape}--></h2>
     <p>下記入力内容で送信してもよろしいでしょうか？<br />
       よろしければ、一番下の「送信」ボタンをクリックしてください。</p>
-    <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+    <form name="form1" id="form1" method="post" action="?">
       <input type="hidden" name="mode" value="complete" />
       <!--{foreach key=key item=item from=$arrForm}-->
         <!--{if $key ne 'mode'}-->
@@ -74,7 +72,7 @@
         </tr>
       </table>
       <div class="tblareabtn">
-      <a href="<!--{$smarty.server.PHP_SELF|escape}-->"
+      <a href="?"
          onclick="fnModeSubmit('return', '', ''); return false;"
          onmouseover="chgImg('<!--{$TPL_DIR}-->img/common/b_back_on.gif','back02');"
          onmouseout="chgImg('<!--{$TPL_DIR}-->img/common/b_back.gif','back02');">

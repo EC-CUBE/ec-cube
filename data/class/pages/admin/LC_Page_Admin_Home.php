@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -194,10 +194,10 @@ class LC_Page_Admin_Home extends LC_Page {
         return $return;
     }
 
-    // 品切れ商品番号の取得
+    // 品切れ商品IDの取得
     function lfGetSoldOut() {
         $objQuery = new SC_Query();
-        $where = "product_id IN (SELECT product_id FROM dtb_products_class WHERE stock_unlimited IS NULL AND stock <= 0)";
+        $where = "product_id IN (SELECT product_id FROM dtb_products_class WHERE stock_unlimited = 0 AND stock <= 0)";
         $arrRet = $objQuery->select("product_id, name", "dtb_products", $where);
         return $arrRet;
     }
@@ -252,9 +252,16 @@ class LC_Page_Admin_Home extends LC_Page {
      * @return unknown
      */
     function lfGetInfo() {
+
+        // パラメータ「UPDATE_HTTP」が空文字の場合、処理しない。
+        // XXX これと別に on/off を持たせるべきか。
+        if (strlen(UPDATE_HTTP) == 0) return array();
+
         $query = '';
-        // TODO サイト情報の送信可否設定を行う
-        if (true) {
+        // サイト情報の送信可否設定
+        // XXX インストール時に問い合わせて送信可否設定を行うように設定すべきか。
+        // XXX (URLは強制送信すべきではないと思うが)バージョンは強制送信すべきか。
+        if (UPDATE_SEND_SITE_INFO === true) {
             $query = '?site_url=' . SITE_URL . '&eccube_version=' . ECCUBE_VERSION;
         }
 

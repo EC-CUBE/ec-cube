@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -65,7 +65,7 @@ class LC_Page_Entry_Kiyaku extends LC_Page {
 
         // 規約内容の取得
         $objQuery = new SC_Query();
-        $objQuery->setorder("rank DESC");
+        $objQuery->setOrder("rank DESC");
         $arrRet = $objQuery->select("kiyaku_title, kiyaku_text", "dtb_kiyaku", "del_flg <> 1");
 
         $max = count($arrRet);
@@ -112,8 +112,8 @@ class LC_Page_Entry_Kiyaku extends LC_Page {
         // 規約内容の取得
         $objQuery = new SC_Query();
         $count = $objQuery->count("dtb_kiyaku", "del_flg <> 1");
-        $objQuery->setorder("rank DESC");
-        $objQuery->setlimitoffset(1, $offset);
+        $objQuery->setOrder("rank DESC");
+        $objQuery->setLimitOffset(1, $offset);
         $arrRet = $objQuery->select("kiyaku_title, kiyaku_text", "dtb_kiyaku", "del_flg <> 1");
 
         if($count > $offset + 1){

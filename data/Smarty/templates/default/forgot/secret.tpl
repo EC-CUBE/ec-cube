@@ -1,7 +1,7 @@
 <!--{*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2008 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -26,7 +26,7 @@
     <p>ご登録時に入力した下記質問の答えを入力して「次へ」ボタンをクリックしてください。<br />
       ※下記質問の答えをお忘れになられた場合は、<a href="mailto:<!--{$arrSiteInfo.email02|escape:'hex'}-->"><!--{$arrSiteInfo.email02|escape:'hexentitiy'}--></a>までご連絡ください。</p>
     <p><span class="attention">※新しくパスワードを発行いたしますので、お忘れになったパスワードはご利用できなくなります。</span></p>
-    <form action="<!--{$smarty.server.PHP_SELF|escape}-->" method="post" name="form1">
+    <form action="?" method="post" name="form1">
       <input type="hidden" name="mode" value="secret_check" />
       <div id="completebox">
         <p><!--{$Reminder}-->：&nbsp;<!--★答え入力★--><input type="text" name="input_reminder" value="" size="40" class="box300" style="<!--{$errmsg|sfGetErrorColor}-->" /></p>

@@ -1,7 +1,7 @@
 <!--{*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -56,10 +56,10 @@
 ******************************************************************
 
 <!--{section name=cnt loop=$arrOrderDetail}-->
-商品名: <!--{$arrOrderDetail[cnt].product_name}--> <!--{$arrOrderDetail[cnt].classcategory_name1}--> <!--{$arrOrderDetail[cnt].classcategory_name2}-->
 商品コード: <!--{$arrOrderDetail[cnt].product_code}-->
-数量：<!--{$arrOrderDetail[cnt].quantity}--> 個
-金額：￥ <!--{$arrOrderDetail[cnt].price|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
+商品名: <!--{$arrOrderDetail[cnt].product_name}--> <!--{$arrOrderDetail[cnt].classcategory_name1}--> <!--{$arrOrderDetail[cnt].classcategory_name2}-->
+単価：￥ <!--{$arrOrderDetail[cnt].price|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
+数量：<!--{$arrOrderDetail[cnt].quantity}-->
 
 <!--{/section}-->
 -----------------------------------------------------------
@@ -69,7 +69,7 @@
 手数料 ￥ <!--{$arrOrder.charge|number_format|default:0}-->
 ===============================================================
 合　計 ￥ <!--{$arrOrder.payment_total|number_format|default:0}-->
-<!--{if $arrOrder.customer_id && $smarty.const.USE_POINT === true}-->
+<!--{if $arrOrder.customer_id && $smarty.const.USE_POINT !== false}-->
 ===============================================================
 <!--{* ご注文前のポイント {$tpl_user_point} pt *}-->
 ご使用ポイント <!--{$arrOrder.use_point|default:0}--> pt

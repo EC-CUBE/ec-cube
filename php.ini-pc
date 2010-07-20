@@ -1,0 +1,12 @@
+output_handler = mb_output_handler
+register_globals = Off
+;post_max_size = 8M
+magic_quotes_gpc = Off
+upload_max_filesize = 5M
+
+;session.use_cookies = 0
+;session.use_trans_sid = 1
+
+mbstring.language = Japanese
+mbstring.internal_encoding = UTF-8
+mbstring.encoding_translation = On

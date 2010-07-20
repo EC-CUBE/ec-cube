@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -28,7 +28,7 @@ $objQuery = new SC_Query();
 
 // 前のページで正しく登録手続きが行われた記録があるか判定
 SC_Utils::sfIsPrePage($objSiteSess);
-
+GC_Utils::gfPrintLog("before");
 // SPSモジュール連携用
 if (file_exists(MODULE_PATH . 'mdl_sps/inc/include.php')
  && !$objCartSess->getTotalQuantity()) {
@@ -40,6 +40,7 @@ if (file_exists(MODULE_PATH . 'mdl_sps/inc/include.php')
 
 // アクセスの正当性の判定
 $uniqid = SC_Utils::sfCheckNormalAccess($objSiteSess, $objCartSess);
+GC_Utils::gfPrintLog("after");
 
 $payment_id = $_SESSION["payment_id"];
 

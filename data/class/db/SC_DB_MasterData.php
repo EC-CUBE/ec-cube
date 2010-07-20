@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -58,11 +58,9 @@ class SC_DB_MasterData {
      * マスタデータを取得する.
      *
      * 以下の順序でマスタデータを取得する.
-     * 1. MASTER_DATA_DIR のマスタデータキャッシュを include() で読み込む
-     * 2. 1 で読み込んだ値をチェックし, 値が変数定義されていれば値を返す.
-     *    されていなければ, 次の処理を行う.
-     * 3. 値が未定義の場合は, DBからマスタデータを取得する.
-     * 4. 取得した後, マスタデータのキャッシュを生成し, 値を返す.
+     * 1. MASTER_DATA_DIR にマスタデータキャッシュが存在しない場合、
+     *    DBからマスタデータを取得して、マスタデータキャッシュを生成する。
+     * 2. マスタデータキャッシュを読み込み、変数に格納し返す。
      *
      * 返り値は, key => value 形式の配列である.
      *
@@ -75,19 +73,16 @@ class SC_DB_MasterData {
 
         $columns = $this->getDefaultColumnName($columns);
 
-        // 可変変数を定義
-        $valiable = "_" . $name . "_master";
-        // キャッシュを読み込み
-        @include(MASTER_DATA_DIR . $name . ".php");
+        $filepath = MASTER_DATA_DIR . $name . '.serial';
 
-        // キャッシュがあれば, キャッシュの値を返す.
-        if (!empty($$valiable)) {
-            return $$valiable;
+        if (!file_exists($filepath)) {
+            // キャッシュ生成
+            $this->createCache($name, $columns);
         }
-        // マスタデータを取得
-        $masterData = $this->getDbMasterData($name, $columns);
-        // キャッシュ生成
-        $this->createCache($name, $masterData);
+
+        // キャッシュを読み込み
+        $masterData = unserialize(file_get_contents($filepath));
+
         return $masterData;
     }
 
@@ -234,6 +229,10 @@ class SC_DB_MasterData {
         if (is_file($masterDataFile)) {
             unlink($masterDataFile);
         }
+        $masterDataFile = MASTER_DATA_DIR . $name . ".serial";
+        if (is_file($masterDataFile)) {
+            unlink($masterDataFile);
+        }
     }
 
     /**
@@ -252,14 +251,18 @@ class SC_DB_MasterData {
                                    [2] => 表示順 を表すカラム名を格納した配列
      * @return bool キャッシュの生成に成功した場合 true
      */
-    function createCache($name, $masterData, $isDefine = false,
+    function createCache($name, $columns = array(), $isDefine = false,
                          $commentColumn = array()) {
 
+        // マスタデータを取得
+        $masterData = $this->getDbMasterData($name, $columns);
+
         // マスタデータを文字列にする
-        $data = "<?php\n";
         // 定数を生成する場合
         if ($isDefine) {
+            $path = MASTER_DATA_DIR . $name . '.php';
 
+            $data = "<?php\n";
             // 定数コメントを生成する場合
             if (!empty($commentColumn)) {
                 $data .= $this->getMasterDataAsDefine($masterData,
@@ -267,15 +270,15 @@ class SC_DB_MasterData {
             } else {
                 $data .= $this->getMasterDataAsDefine($masterData);
             }
+            $data .=  "?>\n";
 
         // 配列を生成する場合
         } else {
-            $data .= $this->getMasterDataAsString($name, $masterData);
+            $path = MASTER_DATA_DIR . $name . '.serial';
+            $data = serialize($masterData);
         }
-        $data .=  "?>\n";
 
         // ファイルを書き出しモードで開く
-        $path = MASTER_DATA_DIR . $name . ".php";
         $handle = fopen($path, "w");
         if (!$handle) {
             return false;
@@ -304,7 +307,9 @@ class SC_DB_MasterData {
         $columns = $this->getDefaultColumnName($columns);
 
         $this->objQuery = new SC_Query();
-        $this->objQuery->setorder($columns[2]);
+        if (isset($columns[2]) && strlen($columns[2]) >= 1) {
+            $this->objQuery->setOrder($columns[2]);
+        }
         $results = $this->objQuery->select($columns[0] . ", " . $columns[1], $name);
 
         // 結果を key => value 形式に格納
@@ -336,28 +341,6 @@ class SC_DB_MasterData {
         } else {
             return $this->columns;
         }
-    }
-
-    /**
-     * マスタデータの配列を配列定義の文字列として出力する.
-     *
-     * @access private
-     * @param string $name マスタデータ名
-     * @param array $masterData マスタデータの配列
-     * @return string 配列定義の文字列
-     */
-    function getMasterDataAsString($name, $masterData) {
-        $data = "\$_" . $name . "_master = array(\n";
-        $i = count($masterData);
-        foreach ($masterData as $key => $val) {
-            $data .= "'" . $key . "' => '" . $val . "'";
-            if ($i > 1) {
-                $data .= ",\n";
-            }
-            $i--;
-        }
-        $data .= ");\n";
-        return $data;
     }
 
     /**

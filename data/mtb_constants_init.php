@@ -9,10 +9,6 @@ define('USER_DIR', "user_data/");
 define('USER_PATH', HTML_PATH . USER_DIR);
 /** ユーザインクルードファイル保存先 */
 define('USER_INC_PATH', USER_PATH . "include/");
-/** DBエラーメール送信先 */
-define('DB_ERROR_MAIL_TO', "");
-/** DBエラーメール件名 */
-define('DB_ERROR_MAIL_SUBJECT', "OS_TEST_ERROR");
 /** 郵便番号専用DB */
 define('ZIP_DSN', DEFAULT_DSN);
 /** ユーザー作成ページ等 */
@@ -91,7 +87,7 @@ define('BAT_ORDER_AGE', 70);
 define('PRODUCTS_TOTAL_MAX', 15);
 /** 1:公開 2:非公開 */
 define('DEFAULT_PRODUCT_DISP', 2);
-/** 送料無料購入個数（0の場合は、何個買っても無料にならない) */
+/** 送料無料購入数量（0の場合は、いくつ買っても無料にならない) */
 define('DELIV_FREE_AMOUNT', 0);
 /** 配送料の設定画面表示(有効:1 無効:0) */
 define('INPUT_DELIV_FEE', 1);
@@ -111,8 +107,6 @@ define('TV_IMAGE_HEIGHT', 95);
 define('TV_PRODUCTS_MAX', 10);
 /** 会員登録変更(マイページ)パスワード用 */
 define('DEFAULT_PASSWORD', "UAhgGR3L");
-/** おすすめ商品数 */
-define('RECOMMEND_PRODUCT_MAX', 6);
 /** 別のお届け先最大登録数 */
 define('DELIV_ADDR_MAX', 20);
 /** 閲覧履歴保存数 */
@@ -127,7 +121,7 @@ define('DEBUG_MODE', false);
 define('ADMIN_ID', "1");
 /** 会員登録時に仮会員確認メールを送信するか（true:仮会員、false:本会員） */
 define('CUSTOMER_CONFIRM_MAIL', false);
-/** メルマガ配信抑制(false:OFF、true:ON) */
+/** メルマガ配信(true:配信する、false:配信しない) */
 define('MELMAGA_SEND', true);
 /** メイルマガジンバッチモード(true:バッチで送信する ※要cron設定、false:リアルタイムで送信する) */
 define('MELMAGA_BATCH_MODE', false);
@@ -241,8 +235,8 @@ define('TEMPLATE_SIZE', 10000);
 define('LEVEL_MAX', 5);
 /** 最大カテゴリ登録数 */
 define('CATEGORY_MAX', 1000);
-/** 管理ページタイトル */
-define('ADMIN_TITLE', "ECサイト管理ページ");
+/** 管理機能タイトル */
+define('ADMIN_TITLE', "管理機能");
 /** 編集時強調表示色 */
 define('SELECT_RGB', "#ffffdf");
 /** 入力項目無効時の表示色 */
@@ -280,7 +274,7 @@ define('NO_IMAGE_URL', URL_DIR . "misc/blank.gif");
 /** 画像がない場合に表示 */
 define('NO_IMAGE_DIR', HTML_PATH . "misc/blank.gif");
 /** システム管理トップ */
-define('URL_SYSTEM_TOP', URL_DIR . "admin/system/index.php");
+define('URL_SYSTEM_TOP', URL_DIR . "admin/system/" . DIR_INDEX_URL);
 /** 規格登録 */
 define('URL_CLASS_REGIST', URL_DIR . "admin/products/class.php");
 /** 郵便番号入力 */
@@ -294,20 +288,20 @@ define('URL_CONTROL_TOP', URL_DIR . "admin/basis/control.php");
 /** ホーム */
 define('URL_HOME', URL_DIR . "admin/home.php");
 /** ログインページ */
-define('URL_LOGIN', URL_DIR . "admin/index.php");
+define('URL_LOGIN', URL_DIR . "admin/" . DIR_INDEX_URL);
 /** 商品検索ページ */
-define('URL_SEARCH_TOP', URL_DIR . "admin/products/index.php");
+define('URL_SEARCH_TOP', URL_DIR . "admin/products/" . DIR_INDEX_URL);
 /** 注文編集ページ */
 define('URL_ORDER_EDIT', URL_DIR . "admin/order/edit.php");
 /** 注文編集ページ */
-define('URL_SEARCH_ORDER', URL_DIR . "admin/order/index.php");
+define('URL_SEARCH_ORDER', URL_DIR . "admin/order/" . DIR_INDEX_URL);
 /** 注文編集ページ */
 define('URL_ORDER_MAIL', URL_DIR . "admin/order/mail.php");
 /** ログアウトページ */
 define('URL_LOGOUT', URL_DIR . "admin/logout.php");
 /** システム管理CSV出力ページ */
 define('URL_SYSTEM_CSV', URL_DIR . "admin/system/member_csv.php");
-/** 管理ページ用CSS保管ディレクトリ */
+/** 管理機能用CSS保管ディレクトリ */
 define('URL_ADMIN_CSS', URL_DIR . "admin/css/");
 /** キャンペーン登録ページ */
 define('URL_CAMPAIGN_TOP', URL_DIR . "admin/contents/campaign.php");
@@ -315,21 +309,11 @@ define('URL_CAMPAIGN_TOP', URL_DIR . "admin/contents/campaign.php");
 define('URL_CAMPAIGN_DESIGN', URL_DIR . "admin/contents/campaign_design.php");
 /** アクセス成功 */
 define('SUCCESS', 0);
-/** ログイン失敗 */
-define('LOGIN_ERROR', 1);
-/** アクセス失敗（タイムアウト等） */
-define('ACCESS_ERROR', 2);
-/** アクセス権限違反 */
-define('AUTH_ERROR', 3);
-/** 不正な遷移エラー */
-define('INVALID_MOVE_ERRORR', 4);
-/** 商品一覧表示数 */
-define('PRODUCTS_LIST_MAX', 15);
 /** メンバー管理ページ表示行数 */
 define('MEMBER_PMAX', 10);
 /** 検索ページ表示行数 */
 define('SEARCH_PMAX', 10);
-/** ページ番号の最大表示個数 */
+/** ページ番号の最大表示数量 */
 define('NAVI_PMAX', 4);
 /** 商品サブ情報最大数 */
 define('PRODUCTSUB_MAX', 5);
@@ -380,69 +364,23 @@ define('CREDIT_NO_LEN', 4);
 define('SEARCH_CATEGORY_LEN', 18);
 /** ファイル名表示文字数 */
 define('FILE_NAME_LEN', 10);
-/** 購入制限なしの場合の最大購入個数 */
+/** 購入制限なしの場合の最大購入数量 */
 define('SALE_LIMIT_MAX', 10);
-/** HTMLタイトル */
-define('SITE_TITLE', "ＥＣ-ＣＵＢＥ  テストサイト");
 /** クッキー保持期限(日) */
 define('COOKIE_EXPIRE', 365);
-/** 指定商品ページがない */
-define('PRODUCT_NOT_FOUND', 1);
-/** カート内が空 */
-define('CART_EMPTY', 2);
-/** ページ推移エラー */
-define('PAGE_ERROR', 3);
-/** 購入処理中のカート商品追加エラー */
-define('CART_ADD_ERROR', 4);
-/** 他にも購入手続きが行われた場合 */
-define('CANCEL_PURCHASE', 5);
-/** 指定カテゴリページがない */
-define('CATEGORY_NOT_FOUND', 6);
-/** ログインに失敗 */
-define('SITE_LOGIN_ERROR', 7);
-/** 会員専用ページへのアクセスエラー */
-define('CUSTOMER_ERROR', 8);
-/** 購入時の売り切れエラー */
-define('SOLD_OUT', 9);
-/** カート内商品の読込エラー */
-define('CART_NOT_FOUND', 10);
-/** ポイントの不足 */
-define('LACK_POINT', 11);
-/** 仮登録者がログインに失敗 */
-define('TEMP_LOGIN_ERROR', 12);
-/** URLエラー */
-define('URL_ERROR', 13);
-/** ファイル解凍エラー */
-define('EXTRACT_ERROR', 14);
-/** FTPダウンロードエラー */
-define('FTP_DOWNLOAD_ERROR', 15);
-/** FTPログインエラー */
-define('FTP_LOGIN_ERROR', 16);
-/** FTP接続エラー */
-define('FTP_CONNECT_ERROR', 17);
-/** DB作成エラー */
-define('CREATE_DB_ERROR', 18);
-/** DBインポートエラー */
-define('DB_IMPORT_ERROR', 19);
-/** 設定ファイル存在エラー */
-define('FILE_NOT_FOUND', 20);
-/** 書き込みエラー */
-define('WRITE_FILE_ERROR', 21);
-/** フリーメッセージ */
-define('FREE_ERROR_MSG', 999);
 /** カテゴリ区切り文字 */
 define('SEPA_CATNAVI', " > ");
 /** カテゴリ区切り文字 */
 define('SEPA_CATLIST', " | ");
 /** 会員情報入力 */
-define('URL_SHOP_TOP', SSL_URL . "shopping/index.php");
+define('URL_SHOP_TOP', SSL_URL . "shopping/" . DIR_INDEX_URL);
 /** 会員登録ページTOP */
-define('URL_ENTRY_TOP', SSL_URL . "entry/index.php");
+define('URL_ENTRY_TOP', SSL_URL . "entry/" . DIR_INDEX_URL);
 /** サイトトップ */
-define('URL_SITE_TOP', URL_DIR . "index.php");
+define('URL_SITE_TOP', URL_DIR . DIR_INDEX_URL);
 /** カートトップ */
-define('URL_CART_TOP', URL_DIR . "cart/index.php");
-/** お届け時間設定 */
+define('URL_CART_TOP', URL_DIR . "cart/" . DIR_INDEX_URL);
+/** お届け先設定 */
 define('URL_DELIV_TOP', URL_DIR . "shopping/deliv.php");
 /** Myページトップ */
 define('URL_MYPAGE_TOP', SSL_URL . "mypage/login.php");
@@ -462,10 +400,6 @@ define('URL_SHOP_CONVENIENCE', URL_DIR . "shopping/convenience.php");
 define('URL_SHOP_MODULE', URL_DIR . "shopping/load_payment_module.php");
 /** 商品トップ */
 define('URL_PRODUCTS_TOP', URL_DIR . "products/top.php");
-/** 商品一覧(HTML出力) */
-define('LIST_P_HTML', URL_DIR . "products/list-p");
-/** 商品一覧(HTML出力) */
-define('LIST_C_HTML', URL_DIR . "products/list.php?mode=search&category_id=");
 /** 商品詳細(HTML出力) */
 define('DETAIL_P_HTML', URL_DIR . "products/detail.php?product_id=");
 /** マイページお届け先URL */
@@ -486,7 +420,7 @@ define('ORDER_CANCEL', 3);
 define('ORDER_BACK_ORDER', 4);
 /** 発送済み */
 define('ORDER_DELIV', 5);
-/** 受注完了時のステータス番号 */
+/** 受注ステータス変更の際にポイント等を加算するステータス番号（発送済み） */
 define('ODERSTATUS_COMMIT', ORDER_DELIV);
 /** 新着情報管理画面 開始年(西暦)  */
 define('ADMIN_NEWS_STARTYEAR', 2005);
@@ -496,18 +430,14 @@ define('ENTRY_CUSTOMER_TEMP_SUBJECT', "会員仮登録が完了いたしまし�
 define('ENTRY_CUSTOMER_REGIST_SUBJECT', "本会員登録が完了いたしました。");
 /** 再入会制限時間（単位: 時間) */
 define('ENTRY_LIMIT_HOUR', 1);
-/** オススメ商品表示数 */
+/** 関連商品表示数 */
+define('RECOMMEND_PRODUCT_MAX', 6);
+/** おすすめ商品表示数 */
 define('RECOMMEND_NUM', 8);
-/** ベスト商品の最大登録数 */
-define('BEST_MAX', 5);
-/** ベスト商品の最小登録数（登録数が満たない場合は表示しない。) */
-define('BEST_MIN', 3);
-/** お届け可能な日付以降のプルダウン表示最大日数 */
+/** お届け可能日以降のプルダウン表示最大日数 */
 define('DELIV_DATE_END_MAX', 21);
 /** 購入時強制会員登録(1:有効　0:無効) */
 define('PURCHASE_CUSTOMER_REGIST', 0);
-/** この商品を買った人はこんな商品も買っています　表示件数 */
-define('RELATED_PRODUCTS_MAX', 3);
 /** 支払期限 */
 define('CV_PAYMENT_LIMIT', 14);
 /** キャンペーン登録最大数 */
@@ -523,7 +453,7 @@ define('TRACKBACK_STATUS_SPAM', 3);
 /** フロント最大表示数 */
 define('TRACKBACK_VIEW_MAX', 10);
 /** トラックバック先URL */
-define('TRACKBACK_TO_URL', SITE_URL . "tb/index.php?pid=");
+define('TRACKBACK_TO_URL', SITE_URL . "tb/" . DIR_INDEX_URL . "?pid=");
 /** サイト管理 トラックバック */
 define('SITE_CONTROL_TRACKBACK', 1);
 /** サイト管理 アフィリエイト */
@@ -536,8 +466,14 @@ define('OS_TYPE', "LINUX");
 define('SMTP_HOST', "127.0.0.1");
 /** SMTPポート */
 define('SMTP_PORT', "25");
+/** アップデート時にサイト情報を送出するか */
+define('UPDATE_SEND_SITE_INFO', false);
 /** ポイントを利用するか(true:利用する、false:利用しない) (false は一部対応) */
 define('USE_POINT', true);
+/** 在庫無し商品の非表示(true:非表示、false:表示) */
+define('NOSTOCK_HIDDEN', false);
+/** モバイルサイトを利用するか(true:利用する、false:利用しない) (false は一部対応) */
+define('USE_MOBILE', true);
 /** デフォルトテンプレート名 */
 define('DEFAULT_TEMPLATE_NAME', "default");
 /** テンプレート名 */
@@ -548,11 +484,11 @@ define('SMARTY_TEMPLATES_DIR',  DATA_PATH . "Smarty/templates/");
 define('TPL_DIR', URL_DIR . USER_DIR . USER_PACKAGE_DIR . TEMPLATE_NAME . "/");
 /** SMARTYテンプレート */
 define('TEMPLATE_DIR', SMARTY_TEMPLATES_DIR . TEMPLATE_NAME . "/");
-/** SMARTYテンプレート(管理ページ) */
-define('TEMPLATE_ADMIN_DIR',  SMARTY_TEMPLATES_DIR . DEFAULT_TEMPLATE_NAME . "/admin/");
+/** SMARTYテンプレート(管理機能) */
+define('TEMPLATE_ADMIN_DIR', SMARTY_TEMPLATES_DIR . DEFAULT_TEMPLATE_NAME . "/admin/");
 /** SMARTYコンパイル */
 define('COMPILE_DIR', DATA_PATH . "Smarty/templates_c/" . TEMPLATE_NAME . "/");
-/** SMARTYコンパイル(管理ページ) */
+/** SMARTYコンパイル(管理機能) */
 define('COMPILE_ADMIN_DIR', COMPILE_DIR . "admin/");
 /** SMARTYテンプレート(FTP許可) */
 define('TEMPLATE_FTP_DIR', USER_PATH . USER_PACKAGE_DIR . TEMPLATE_NAME . "/");
@@ -580,13 +516,15 @@ define('CAMPAIGN_BLOC_PATH', CAMPAIGN_TEMPLATE_PATH . CAMPAIGN_BLOC_DIR);
 define('CAMPAIGN_TEMPLATE_ACTIVE', "active/");
 /** キャンペーン関連 */
 define('CAMPAIGN_TEMPLATE_END', "end/");
+/** EメールアドレスチェックをRFC準拠にするか(true:準拠する、false:準拠しない) */
+define('RFC_COMPLIANT_EMAIL_CHECK', false);
 /** SMARTYテンプレート(mobile) */
 define('MOBILE_TEMPLATE_DIR', TEMPLATE_DIR . "mobile/");
 /** SMARTYコンパイル(mobile) */
 define('MOBILE_COMPILE_DIR', COMPILE_DIR . "mobile/");
-/** セッションの存続時間 (秒) */
+/** モバイルサイトのセッションの存続時間 (秒) */
 define('MOBILE_SESSION_LIFETIME', 1800);
-/** 空メール機能を使用するかどうか */
+/** 空メール機能を使用するかどうか(true:送信する、false:送信しない) */
 define('MOBILE_USE_KARA_MAIL', false);
 /** 空メール受け付けアドレスのユーザー名部分 */
 define('MOBILE_KARA_MAIL_ADDRESS_USER', "eccube");
@@ -601,11 +539,11 @@ define('MOBILE_IMAGE_DIR', HTML_PATH . "upload/mobile_image");
 /** 携帯電話向け変換画像保存ディレクトリ */
 define('MOBILE_IMAGE_URL', URL_DIR . "upload/mobile_image");
 /** モバイルURL */
-define('MOBILE_URL_SITE_TOP', MOBILE_URL_DIR . "index.php");
+define('MOBILE_URL_SITE_TOP', MOBILE_URL_DIR . DIR_INDEX_URL);
 /** カートトップ */
-define('MOBILE_URL_CART_TOP', MOBILE_URL_DIR . "cart/index.php");
+define('MOBILE_URL_CART_TOP', MOBILE_URL_DIR . "cart/" . DIR_INDEX_URL);
 /** 会員情報入力 */
-define('MOBILE_URL_SHOP_TOP', MOBILE_SSL_URL . "shopping/index.php");
+define('MOBILE_URL_SHOP_TOP', MOBILE_SSL_URL . "shopping/" . DIR_INDEX_URL);
 /** 購入確認ページ */
 define('MOBILE_URL_SHOP_CONFIRM', MOBILE_URL_DIR . "shopping/confirm.php");
 /** お支払い方法選択ページ */
@@ -616,8 +554,8 @@ define('MOBILE_DETAIL_P_HTML', MOBILE_URL_DIR . "products/detail.php?product_id=
 define('MOBILE_URL_SHOP_COMPLETE', MOBILE_URL_DIR . "shopping/complete.php");
 /** モジュール追加用画面 */
 define('MOBILE_URL_SHOP_MODULE', MOBILE_URL_DIR . "shopping/load_payment_module.php");
-/** セッション維持の方法 */
-define('SESSION_KEEP_METHOD', 'useCookie');
+/** セッション維持方法：useCookie|useRequest */
+define('SESSION_KEEP_METHOD', "useCookie");
 /** セッションの存続時間 (秒) */
 define('SESSION_LIFETIME', 1800);
 /** オーナーズストアURL */
@@ -627,49 +565,53 @@ define('OSTORE_SSLURL', "https://store.ec-cube.net/");
 /** オーナーズストアログパス */
 define('OSTORE_LOG_PATH', DATA_PATH . "logs/ownersstore.log");
 /** オーナーズストア通信ステータス */
-define('OSTORE_STATUS_ERROR', 'ERROR');
+define('OSTORE_STATUS_ERROR', "ERROR");
 /** オーナーズストア通信ステータス */
-define('OSTORE_STATUS_SUCCESS', 'SUCCESS');
+define('OSTORE_STATUS_SUCCESS', "SUCCESS");
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_UNKNOWN', '1000');
+define('OSTORE_E_UNKNOWN', "1000");
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_INVALID_PARAM', '1001');
+define('OSTORE_E_INVALID_PARAM', "1001");
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_NO_CUSTOMER', '1002');
+define('OSTORE_E_NO_CUSTOMER', "1002");
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_WRONG_URL_PASS', '1003');
+define('OSTORE_E_WRONG_URL_PASS', "1003");
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_NO_PRODUCTS', '1004');
+define('OSTORE_E_NO_PRODUCTS', "1004");
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_NO_DL_DATA', '1005');
+define('OSTORE_E_NO_DL_DATA', "1005");
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_DL_DATA_OPEN', '1006');
+define('OSTORE_E_DL_DATA_OPEN', "1006");
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_DLLOG_AUTH', '1007');
+define('OSTORE_E_DLLOG_AUTH', "1007");
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_C_ADMIN_AUTH', '2001');
+define('OSTORE_E_C_ADMIN_AUTH', "2001");
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_C_HTTP_REQ', '2002');
+define('OSTORE_E_C_HTTP_REQ', "2002");
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_C_HTTP_RESP', '2003');
+define('OSTORE_E_C_HTTP_RESP', "2003");
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_C_FAILED_JSON_PARSE', '2004');
+define('OSTORE_E_C_FAILED_JSON_PARSE', "2004");
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_C_NO_KEY', '2005');
+define('OSTORE_E_C_NO_KEY', "2005");
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_C_INVALID_ACCESS', '2006');
+define('OSTORE_E_C_INVALID_ACCESS', "2006");
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_C_INVALID_PARAM', '2007');
+define('OSTORE_E_C_INVALID_PARAM', "2007");
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_C_AUTOUP_DISABLE', '2008');
+define('OSTORE_E_C_AUTOUP_DISABLE', "2008");
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_C_PERMISSION', '2009');
+define('OSTORE_E_C_PERMISSION', "2009");
 /** オーナーズストア通信エラーコード */
-define('OSTORE_E_C_BATCH_ERR', '2010');
+define('OSTORE_E_C_BATCH_ERR', "2010");
 /** お気に入り商品登録(有効:1 無効:0) */
-define('OPTION_FAVOFITE_PRODUCT','1');
-/** お気に入り商品を表示する際に、在庫なし商品の表示・非表示(非表示:true 表示:false) */
-define('NOSTOCK_HIDDEN', false);
-/** 画像リネーム設定（商品画像のみ） */
+define('OPTION_FAVOFITE_PRODUCT', 1);
+/** 画像リネーム設定（商品画像のみ）(true:リネームする、false:リネームしない) */
 define('IMAGE_RENAME', true);
+/** プラグインディレクトリ */
+define('PLUGIN_DIR', "plugins/");
+/** プラグイン保存先 */
+define('PLUGIN_PATH', USER_PATH . PLUGIN_DIR);
+/** プラグイン URL */
+define('PLUGIN_URL', USER_URL . PLUGIN_DIR);
 ?>

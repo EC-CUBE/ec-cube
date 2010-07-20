@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -69,6 +69,9 @@ class LC_Page_Products_CategoryList extends LC_Page {
      * @return void
      */
     function mobileProcess() {
+        // カテゴリIDの正当性チェック
+        $this->lfCheckCategoryId();
+        
         $objView = new SC_MobileView();
 
         // レイアウトデザインを取得
@@ -91,6 +94,19 @@ class LC_Page_Products_CategoryList extends LC_Page {
         parent::destroy();
     }
 
+    /* カテゴリIDの正当性チェック */
+    function lfCheckCategoryId() {
+        $objDb = new SC_Helper_DB_Ex();
+        $category_id = $_POST['category_id'] ? $_POST['category_id'] : $_GET['category_id'];
+        if (!defined('MOBILE_SITE') && !isset($_REQUEST['category_id']))
+            SC_Utils_Ex::sfDispSiteError(CATEGORY_NOT_FOUND);
+        if ($category_id
+                && (!SC_Utils_Ex::sfIsInt($category_id)
+                || SC_Utils_Ex::sfIsZeroFilling($category_id)
+                || !$objDb->sfIsRecord('dtb_category', 'category_id', (array)$category_id, 'del_flg = 0')))
+            SC_Utils_Ex::sfDispSiteError(CATEGORY_NOT_FOUND);
+    }
+
     /**
      * 選択されたカテゴリーとその子カテゴリーの情報を取得し、
      * ページオブジェクトに格納する。
@@ -106,7 +122,7 @@ class LC_Page_Products_CategoryList extends LC_Page {
         $arrCategory_id = $objDb->sfGetCategoryId('', $category_id);
         $category_id = $arrCategory_id[0];
         if ($category_id == 0) {
-            SC_Utils_Ex::sfDispSiteError(CATEGORY_NOT_FOUND, "", false, "", true);
+            SC_Utils_Ex::sfDispSiteError(CATEGORY_NOT_FOUND);
         }
 
         $arrCategory = null;	// 選択されたカテゴリー
@@ -132,7 +148,7 @@ class LC_Page_Products_CategoryList extends LC_Page {
         }
 
         if (!isset($arrCategory)) {
-            SC_Utils_Ex::sfDispSiteError(CATEGORY_NOT_FOUND, "", false, "", true);
+            SC_Utils_Ex::sfDispSiteError(CATEGORY_NOT_FOUND);
         }
 
         // 子カテゴリーの商品数を合計する。

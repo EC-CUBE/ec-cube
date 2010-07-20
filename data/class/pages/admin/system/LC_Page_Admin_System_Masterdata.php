@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -47,6 +47,7 @@ class LC_Page_Admin_System_Masterdata extends LC_Page {
         $this->tpl_subnavi = 'system/subnavi.tpl';
         $this->tpl_subno = 'masterdata';
         $this->tpl_mainno = 'system';
+        $this->tpl_subtitle = 'マスタデータ管理';
     }
 
     /**

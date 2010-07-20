@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -22,20 +22,17 @@
  */
 *}-->
 <script type="text/javascript">
+<!--
 function doPreview(){
-	document.form_edit.mode.value="preview"
-	document.form_edit.target = "_blank";
-	document.form_edit.submit();
+  document.form_edit.mode.value="preview"
+  document.form_edit.target = "_blank";
+  document.form_edit.submit();
 }
 
 function fnTargetSelf(){
-	document.form_edit.target = "_self";
+  document.form_edit.target = "_self";
 }
 
-</script>
-
-<SCRIPT language="JavaScript">
-<!--
 browser_type = 0;
 if(navigator.userAgent.indexOf("MSIE") >= 0){
     browser_type = 1;
@@ -44,168 +41,89 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
     browser_type = 2;
 }
 //-->
-</SCRIPT>
+</script>
 
 
-<!--★★メインコンテンツ★★-->
-<table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
-<form name="form_edit" id="form_edit" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" >
-<input type="hidden" name="mode" value="">
-<input type="hidden" name="page_id" value="<!--{$page_id}-->">
-	<tr valign="top">
-		<td background="<!--{$TPL_DIR}-->img/contents/navi_bg.gif" height="402">
-			<!--▼SUB NAVI-->
-			<!--{include file=$tpl_subnavi}-->
-			<!--▲SUB NAVI-->
-		</td>
-		<td class="mainbg" >
-		<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
-			<!--メインエリア-->
-			<tr>
-				<td align="center">
-				<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
+<form name="form_edit" id="form_edit" method="post" action="?" >
+<input type="hidden" name="mode" value="" />
+<input type="hidden" name="page_id" value="<!--{$page_id}-->" />
 
-					<tr><td height="14"></td></tr>
-					<tr>
-						<td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/main_top.jpg" width="706" height="14" alt=""></td>
-					</tr>
-					<tr>
-						<td background="<!--{$TPL_DIR}-->img/contents/main_left.jpg"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
-						<td bgcolor="#cccccc">
-						
-						<!--登録テーブルここから-->
-						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
-							<tr>
-								<td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/contents_title_top.gif" width="678" height="7" alt=""></td>
-							</tr>
-							<tr>
-								<td background="<!--{$TPL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$TPL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-								<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--コンテンツタイトル-->ページ詳細設定</span></td>
-								<td background="<!--{$TPL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
-							</tr>
-							<tr>
-								<td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/contents_title_bottom.gif" width="678" height="7" alt=""></td>
-							</tr>
-							<tr>
-								<td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td>
-							</tr>
-						</table>
+  <!--{if $arrErr.page_id_err != ""}-->
+  <div class="message">
+    <span class="attention"><!--{$arrErr.page_id_err}--></span>
+  </div>
+  <!--{/if}-->
+  <!--{ if $arrErr.page_name != "" }-->
+  <div class="message">
+    <span class="attention"><!--{$arrErr.page_name}--></span>
+  </div>
+  <!--{/if}-->
+  <!--{if $arrPageData.edit_flg == 2}-->
+    名称：<!--{$arrPageData.page_name|escape}--><input type="hidden" name="page_name" value="<!--{$arrPageData.page_name|escape}-->" />
+  <!--{else}-->
+    名称：<input type="text" name="page_name" value="<!--{$arrPageData.page_name|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.page_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" /><span class="attention"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
+  <!--{/if}--><br />
 
-						<!--▼編集画面　ここから-->
-						<!--{if $arrErr.page_id_err != ""}-->
-						<table width="678" border="0" cellspacing="1" cellpadding="5" summary=" ">
-							<tr>
-								<td bgcolor="#ffffff" align="center" class="fs12st red"><!--{$arrErr.page_id_err}--></td>
-							</tr>
-						</table>
-						<!--{/if}-->
-						
-						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
-							<tr class="fs12n">
-								<td bgcolor="#ffffff" align="left" colspan=2>
-									<!--{ if $arrErr.page_name != "" }--><span class="red12"><!--{$arrErr.page_name}--></span><!--{/if}-->
-									<!--{if $arrPageData.edit_flg == 2}-->
-										名称：<!--{$arrPageData.page_name|escape}--><input type="hidden" name="page_name" value="<!--{$arrPageData.page_name|escape}-->" />
-									<!--{else}-->
-										名称：<input type="text" name="page_name" value="<!--{$arrPageData.page_name|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.page_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" size="60" class="box60" /><span class="red"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
-									<!--{/if}-->
-								</td>
-							</tr>
-							<tr class="fs12n">
-								<td bgcolor="#ffffff" align="left" colspan=2>
-									<!--{ if $arrErr.url != "" }--><span class="red12"><!--{$arrErr.url}--></span><!--{/if}-->
-									URL：<!--{if $arrPageData.edit_flg == 2}-->
-											<!--{$smarty.const.SITE_URL}--><!--{$arrPageData.url|escape}-->
-											<input type="hidden" name="url" value="<!--{$arrPageData.filename|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" />
-										<!--{else}-->
-											<!--{$user_URL}--><input type="text" name="url" value="<!--{$arrPageData.directory|escape}--><!--{$arrPageData.filename|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.url != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}--> ime-mode: disabled;" size="40" class="box40" />.php<span class="red"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
-										<!--{/if}-->
-								</td>
-							</tr>
-							<tr class="fs12n">
-								<td bgcolor="#ffffff" align="left">
-									<label for="header"><input type="checkbox" name="header_chk" id="header" <!--{$arrPageData.header_chk}-->>共通のヘッダーを使用する</label>
-								</td>
-								<td bgcolor="#ffffff" align="left">
-									<label for="footer"><input type="checkbox" name="footer_chk" id="footer" <!--{$arrPageData.footer_chk}-->>共通のフッターを使用する</label>
-								</td>
-							</tr>
+  <!--{ if $arrErr.url != "" }-->
+  <div class="attention">
+    <span class="attention"><!--{$arrErr.url}--></span>
+  </div>
+  <!--{/if}-->
+  URL：<!--{if $arrPageData.edit_flg == 2}-->
+      <!--{$smarty.const.SITE_URL|escape}--><!--{$arrPageData.url|escape}-->
+      <input type="hidden" name="url" value="<!--{$arrPageData.filename|escape}-->" />
+    <!--{else}-->
+      <!--{$user_URL|escape}--><input type="text" name="url" value="<!--{$arrPageData.directory|escape}--><!--{$arrPageData.filename|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.url != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}--> ime-mode: disabled;" size="40" class="box40" />.php<span class="attention"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
+    <!--{/if}--><br />
 
-							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" align="center" colspan=2>
-									<br/>
-									<div>
-									<textarea name="tpl_data" cols=90 rows=<!--{$text_row}--> align="left" wrap=off style="width: 650px; "><!--{$arrPageData.tpl_data|escape|smarty:nodefaults}--></textarea>
-									<input type="hidden" name="html_area_row" value="<!--{$text_row}-->">
-									</div>
-									<div align="right">
-										<input type="button" value="大きくする" onClick="ChangeSize(this, tpl_data, 50, 13, html_area_row)">
-									</div>
-									<br/>
-								</td>
-							</tr>
-							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" align="center" colspan=2>
-									<input type='button' value='登録' name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form_edit','confirm','','');"  />
-									<input type='button' value='プレビュー' name='preview' onclick="doPreview(); "  />
-								</td>
-							</tr>
-						</table>
-						<!--▲編集画面　ここまで-->
-						
-						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
-							<tr><td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td></tr>
-						</table>
-						
-						<!--▼一覧　ここから-->
-						<table width="678" border="0" cellspacing="1" cellpadding="5" summary=" ">
-							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" align="center" colspan=3 ><strong>編集可能画面一覧</strong></td>
-							</tr>
-							
-							<!--{foreach key=key item=item from=$arrPageList}-->
-							<tr class="fs12n" height=20>
-								<td align="center" width=600 bgcolor="<!--{if $item.page_id == $page_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->">
-									<a href="<!--{$smarty.server.PHP_SELF|escape}-->?page_id=<!--{$item.page_id}-->" ><!--{$item.page_name}--></a>
-								</td>
-								<td align="center" width=78 bgcolor="<!--{if $item.page_id == $page_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->">
-									<input type="button" value="レイアウト" name="layout<!--{$item.page_id}-->" onclick="location.href='./index.php?page_id=<!--{$item.page_id}-->';"  />
-									<input type="hidden" value="<!--{$item.page_id}-->" name="del_id<!--{$item.page_id}-->">
-								</td>
-								<td align="center" width=78 bgcolor="<!--{if $item.page_id == $page_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->">
-									<!--{if $item.edit_flg == 1}-->
-									<input type="button" value="削除" name="del<!--{$item.page_id}-->" onclick="fnTargetSelf(); fnFormModeSubmit('form_edit','delete','page_id',this.name.substr(3));"  />
-									<input type="hidden" value="<!--{$item.page_id}-->" name="del_id<!--{$item.page_id}-->">
-									<!--{/if}-->
-								</td>
-							</tr>
-							<!--{/foreach}-->
-							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" align="center" colspan=3>
-								<input type='button' value='新規ページ作成' name='subm' onclick="location.href='http://<!--{$smarty.server.HTTP_HOST}--><!--{$smarty.server.PHP_SELF|escape}-->'">
-								</td>
-							</tr>
-						</table>
-						<!--▲一覧　ここまで-->
+  <label for="header-chk"><input type="checkbox" name="header_chk" id="header-chk" <!--{$arrPageData.header_chk}--> />共通のヘッダーを使用する</label>&nbsp;
+  <label for="footer-chk"><input type="checkbox" name="footer_chk" id="footer-chk" <!--{$arrPageData.footer_chk}--> />共通のフッターを使用する</label>
+  <div>
+    <textarea name="tpl_data" rows=<!--{$text_row}--> style="width: 100%;"><!--{$arrPageData.tpl_data|escape|smarty:nodefaults}--></textarea>
+    <input type="hidden" name="html_area_row" value="<!--{$text_row}-->" />
+  </div>
+  <div class="btn">
+    <button type="button" onClick="ChangeSize(this, tpl_data, 50, 13, html_area_row)"><span>大きくする</span></button>
+  </div>
 
-						<!--登録テーブルここまで-->
-						</td>
-						<td background="<!--{$TPL_DIR}-->img/contents/main_right.jpg"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
-					</tr>
-					<tr>
-						<td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/main_bottom.jpg" width="706" height="14" alt=""></td>
-					</tr>
-					<tr><td height="30"></td></tr>
+  <div class="btn">
+    <button type='button' name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form_edit','confirm','','');"><span>登録する</span></button>
+    <button type='button' name='preview' onclick="doPreview(); "><span>プレビュー</span></button>
+  </div>
 
-				</table>
-				</td>
-			</tr>
-			<!--メインエリア-->
-		</table>
-		</td>
-	</tr>
+
+  <h2>編集可能ページ一覧</h2>
+  <table class="list center">
+    <tr>
+      <th>名称</th>
+      <th>レイアウト</th>
+      <th><strong>ページ詳細</strong></th>
+      <th>削除</th>
+    </tr>
+    <!--{foreach key=key item=item from=$arrPageList}-->
+    <tr style="<!--{if $item.page_id == $page_id}-->background-color: <!--{$smarty.const.SELECT_RGB}-->;<!--{/if}-->">
+      <td>
+        <!--{$item.page_name}-->
+      </td>
+      <td>
+        <a href="./<!--{$smarty.const.DIR_INDEX_URL}-->?page_id=<!--{$item.page_id}-->" >編集</a>
+      </td>
+      <td>
+        <!--{if $item.filename|strlen >= 1}-->
+          <a href="?page_id=<!--{$item.page_id}-->"><strong>編集</strong></a>
+        <!--{/if}-->
+      </td>
+      <td>
+        <!--{if $item.edit_flg == 1}-->
+          <a href="?" onclick="fnTargetSelf(); fnFormModeSubmit('form_edit','delete','page_id',this.name.substr(3));">削除</a>
+          <input type="hidden" value="<!--{$item.page_id}-->" name="del_id<!--{$item.page_id}-->" />
+        <!--{/if}-->
+      </td>
+    </tr>
+    <!--{/foreach}-->
+  </table>
+  <div class="btn addnew">
+    <button type='button' onclick="location.href='http://<!--{$smarty.server.HTTP_HOST}--><!--{$smarty.server.PHP_SELF|escape}-->'"><span>ページを新規入力</span></button>
+  </div>
+
 </form>
-</table>
-<!--★★メインコンテンツ★★-->		
-
-

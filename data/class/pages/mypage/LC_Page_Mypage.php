@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -49,12 +49,13 @@ class LC_Page_MyPage extends LC_Page {
     function init() {
         parent::init();
         $this->tpl_mainpage = TEMPLATE_DIR .'mypage/index.tpl';
-        $this->tpl_title = 'MYページ/購入履歴一覧';
+        $this->tpl_title = 'MYページ';
+        $this->tpl_subtitle = '購入履歴一覧';
         $this->tpl_navi = TEMPLATE_DIR . 'mypage/navi.tpl';
         $this->tpl_column_num = 1;
         $this->tpl_mainno = 'mypage';
         $this->tpl_mypageno = 'index';
-        $this->allowClientCache();
+        $this->httpCacheControl('nocache');
     }
 
     /**
@@ -102,9 +103,9 @@ class LC_Page_MyPage extends LC_Page {
         $startno = $objNavi->start_row;
 
         // 取得範囲の指定(開始行番号、行数のセット)
-        $objQuery->setlimitoffset(SEARCH_PMAX, $startno);
+        $objQuery->setLimitOffset(SEARCH_PMAX, $startno);
         // 表示順序
-        $objQuery->setorder($order);
+        $objQuery->setOrder($order);
 
         //購入履歴の取得
         $this->arrOrder = $objQuery->select($col, $from, $where, $arrval);
@@ -112,7 +113,6 @@ class LC_Page_MyPage extends LC_Page {
         // 支払い方法の取得
         $objDb = new SC_Helper_DB_Ex();
         $this->arrPayment = $objDb->sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
-
         $objView->assignobj($this);				//$objpage内の全てのテンプレート変数をsmartyに格納
         $objView->display(SITE_FRAME);				//パスとテンプレート変数の呼び出し、実行
     }
@@ -125,7 +125,7 @@ class LC_Page_MyPage extends LC_Page {
     function mobileInit() {
         $this->tpl_mainpage = 'mypage/index.tpl';
         $this->tpl_title = 'MYページ/購入履歴一覧';
-        $this->allowClientCache();
+        $this->httpCacheControl('nocache');
     }
 
     /**
@@ -187,9 +187,9 @@ class LC_Page_MyPage extends LC_Page {
                     $ret = $objQuery->count("dtb_customer", $where, array($arrForm['login_email'], $arrForm['login_email']));
 
                     if($ret > 0) {
-                        SC_Utils_Ex::sfDispSiteError(TEMP_LOGIN_ERROR, "", false, "", true);
+                        SC_Utils_Ex::sfDispSiteError(TEMP_LOGIN_ERROR);
                     } else {
-                        SC_Utils_Ex::sfDispSiteError(SITE_LOGIN_ERROR, "", false, "", true);
+                        SC_Utils_Ex::sfDispSiteError(SITE_LOGIN_ERROR);
                     }
                 }
             }

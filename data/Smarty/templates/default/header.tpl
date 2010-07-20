@@ -1,7 +1,7 @@
 <!--{*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -22,13 +22,13 @@
 <!--▼HEADER-->
 <div id="header">
   <h1>
-    <a href="<!--{$smarty.const.SITE_URL}-->">
+    <a href="<!--{$smarty.const.URL_SITE_TOP}-->">
       <em><!--{$arrSiteInfo.shop_name|escape}-->/<!--{$tpl_title|escape}--></em></a>
   </h1>
   <div id="information">
     <ul>
       <li>
-        <a href="<!--{$smarty.const.URL_DIR}-->mypage/login.php"
+        <a href="<!--{$smarty.const.SSL_URL}-->mypage/login.php"
            onmouseover="chgImg('<!--{$TPL_DIR}-->img/header/mypage_on.gif','mypage');"
            onmouseout="chgImg('<!--{$TPL_DIR}-->img/header/mypage.gif','mypage');">
           <img src="<!--{$TPL_DIR}-->img/header/mypage.gif" width="95" height="20" alt="MYページ" name="mypage" id="mypage" /></a>
@@ -40,7 +40,7 @@
           <img src="<!--{$TPL_DIR}-->img/header/member.gif" width="95" height="20" alt="会員登録" name="member" id="member" /></a>
       </li>
       <li>
-        <a href="<!--{$smarty.const.URL_DIR}-->cart/index.php"
+        <a href="<!--{$smarty.const.URL_CART_TOP}-->"
            onmouseover="chgImg('<!--{$TPL_DIR}-->img/header/cartin_on.gif','cartin');"
            onmouseout="chgImg('<!--{$TPL_DIR}-->img/header/cartin.gif','cartin');">
           <img src="<!--{$TPL_DIR}-->img/header/cartin.gif" width="95" height="20" alt="カゴの中を見る" name="cartin" id="cartin" /></a>

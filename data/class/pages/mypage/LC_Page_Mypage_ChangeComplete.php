@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -44,7 +44,8 @@ class LC_Page_Mypage_ChangeComplete extends LC_Page {
     function init() {
         parent::init();
         $this->tpl_mainpage = TEMPLATE_DIR . 'mypage/change_complete.tpl';
-        $this->tpl_title = 'MYページ/会員登録内容変更(完了ページ)';
+        $this->tpl_title = 'MYページ';
+        $this->tpl_subtitle = '会員登録内容変更(完了ページ)';
         $this->tpl_navi = TEMPLATE_DIR . 'mypage/navi.tpl';
         $this->tpl_mypageno = 'change';
         $this->tpl_column_num = 1;
@@ -102,7 +103,7 @@ class LC_Page_Mypage_ChangeComplete extends LC_Page {
 
         //ログイン判定
         if (!$objCustomer->isLoginSuccess(true)){
-            SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
+            SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
         }else {
             //マイページトップ顧客情報表示用
             $this->CustomerName1 = $objCustomer->getvalue('name01');

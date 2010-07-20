@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -73,42 +73,54 @@ class SC_Utils {
         return $control_flg;
     }
 
-    /**
-     * インストール初期処理
-     */
-    function sfInitInstall()
-    {
-        // インストールが完了していない時
-        if( !defined('ECCUBE_INSTALL') ) {
-            if( !ereg('/install/', $_SERVER['PHP_SELF']) ) {
-                // インストールページに遷移させる
-
-                $script_filename = $_SERVER['SCRIPT_FILENAME'];
-                list($real_root, $tmp) = explode('/html/', $script_filename);
-                $real_root = $real_root . '/html/';
-                $script_name = $_SERVER['SCRIPT_NAME'];
-                $url_dir = rtrim($script_name, basename($script_name));
-
-                if ($dh = opendir($real_root)) {
-                    $arrDir = array();
-                    while ($entry = readdir($dh)) {
-                        if (is_dir($real_root.$entry) && !in_array($entry, array('.', '..', '.svn', 'install'))) {
-                            $url_dir = rtrim($url_dir, $entry.'/');
-                        }
-                    }
-                    closedir($dh);
-                }
-
-                $location = $url_dir . '/install/';
-                header('Location: ' . $location);
+    // インストール初期処理
+    function sfInitInstall() {
+        // インストール済みが定義されていない。
+        if (!defined('ECCUBE_INSTALL')) {
+            $phpself = $_SERVER['PHP_SELF'];
+            if( !ereg('/install/', $phpself) ) {
+                $path = substr($phpself, 0, strpos($phpself, basename($phpself)));
+                $install_url = SC_Utils::searchInstallerPath($path);
+                header('Location: ' . $install_url);
                 exit;
             }
-        } else {
-            $path = HTML_PATH . "install/index.php";
-            if(file_exists($path)) {
-                SC_Utils::sfErrorHeader("&gt;&gt; /install/index.phpは、インストール完了後にファイルを削除してください。");
-            }
         }
+        $path = HTML_PATH . "install/index.php";
+        if(file_exists($path)) {
+            SC_Utils::sfErrorHeader("&gt;&gt; /install/index.phpは、インストール完了後にファイルを削除してください。");
+        }
+    }
+
+    /**
+     * インストーラのパスを検索し, URL を返す.
+     *
+     * $path と同階層に install/index.php があるか検索する.
+     * 存在しない場合は上位階層を再帰的に検索する.
+     * インストーラのパスが見つかった場合は, その URL を返す.
+     * DocumentRoot まで検索しても見つからない場合は /install/index.php を返す.
+     *
+     * @param string $path 検索対象のパス
+     * @return string インストーラの URL
+     */
+    function searchInstallerPath($path) {
+        $installer = 'install/index.php';
+        if ($path == '/') {
+            return $path . $installer;
+        }
+        if (substr($path, -1, 1) != '/') {
+            $path .= $path . '/';
+        }
+        if (SC_Utils::sfIsHTTPS()) {
+            $proto = "https://";
+        } else {
+            $proto = "http://";
+        }
+        $installer_url = $proto . $_SERVER['SERVER_NAME'] . $path . $installer;
+        $resources = fopen($installer_url, 'r');
+        if ($resources === false) {
+            $installer_url = SC_Utils::searchInstallerPath($path . '../');
+        }
+        return $installer_url;
     }
 
     // 装飾付きエラーメッセージの表示
@@ -137,7 +149,7 @@ class SC_Utils {
     }
 
     /* サイトエラーページの表示 */
-    function sfDispSiteError($type, $objSiteSess = "", $return_top = false, $err_msg = "", $is_mobile = false) {
+    function sfDispSiteError($type, $objSiteSess = "", $return_top = false, $err_msg = "") {
         global $objCampaignSess;
 
         require_once(CLASS_EX_PATH . "page_extends/error/LC_Page_Error_Ex.php");
@@ -152,6 +164,30 @@ class SC_Utils {
         $objPage->is_mobile = (defined('MOBILE_SITE')) ? true : false;
         $objPage->process();
         exit;
+    }
+
+    /**
+     * 例外エラーページの表示
+     *
+     * @param string $debugMsg デバッグ用のメッセージ
+     * @return void
+     */
+    function sfDispException($debugMsg = null) {
+        require_once(CLASS_EX_PATH . "page_extends/error/LC_Page_Error_SystemError_Ex.php");
+        
+        $objPage = new LC_Page_Error_SystemError_Ex();
+        register_shutdown_function(array($objPage, "destroy"));
+        $objPage->init();
+        if (!is_null($debugMsg)) {
+            $objPage->addDebugMsg($debugMsg);
+        }
+        if (function_exists("debug_backtrace")) {
+            $objPage->backtrace = debug_backtrace();
+        }
+        GC_Utils_Ex::gfPrintLog($objPage->sfGetErrMsg());
+        $objPage->process();
+        
+        exit();
     }
 
     /* 認証の可否判定 */
@@ -231,11 +267,11 @@ class SC_Utils {
     }
 
     /* 前のページで正しく登録が行われたか判定 */
-    function sfIsPrePage(&$objSiteSess, $is_mobile = false) {
+    function sfIsPrePage(&$objSiteSess) {
         $ret = $objSiteSess->isPrePage();
         if($ret != true) {
             // エラーページの表示
-            SC_Utils::sfDispSiteError(PAGE_ERROR, $objSiteSess, false, "", $is_mobile);
+            SC_Utils::sfDispSiteError(PAGE_ERROR, $objSiteSess);
         }
     }
 
@@ -283,11 +319,31 @@ class SC_Utils {
         return     $date;
     }
 
-    // INT型の数値チェック
+    /**
+     *  INT型の数値チェック
+     *  ・FIXME: マイナス値の扱いが不明確
+     *  ・XXX: INT_LENには収まるが、INT型の範囲を超えるケースに対応できないのでは?
+     *  
+     *  @param mixed $value
+     *  @return bool
+     */
+    // 
     function sfIsInt($value) {
-        if($value != "" && strlen($value) <= INT_LEN && is_numeric($value)) {
+        if (strlen($value) >= 1 && strlen($value) <= INT_LEN && is_numeric($value)) {
             return true;
         }
+        return false;
+    }
+
+    /*
+     * 桁が0で埋められているかを判定する
+     * 
+     * @param string $value 検査対象
+     * @return boolean 0で埋められている
+     */
+    function sfIsZeroFilling($value) {
+        if (strlen($value) > 1 && $value{0} === '0')
+            return true;
         return false;
     }
 
@@ -397,24 +453,13 @@ class SC_Utils {
 
     // html_checkboxesの値をマージしてSQL検索用に変更する。
     function sfSearchCheckBoxes($array) {
-        $max = 0;
-        $ret = "";
-        foreach($array as $val) {
-            $arrTmp[$val] = "1";
-            if($val > $max) {
-                $max = $val;
-            }
+        $max = max($array);
+        $ret = '';
+        for ($i = 1; $i <= $max; $i++) {
+            $ret .= in_array($i, $array) ? '1' : '_';
         }
-        for($i = 1; $i <= $max; $i++) {
-            if($arrTmp[$i] == "1") {
-                $ret.= "1";
-            } else {
-                $ret.= "_";
-            }
-        }
-
-        if($ret != "") {
-            $ret.= "%";
+        if (strlen($ret) != 0) {
+            $ret .= '%';
         }
         return $ret;
     }
@@ -447,6 +492,7 @@ class SC_Utils {
 
     // チェックボックスの値を分解
     function sfSplitCBValue($val, $keyname = "") {
+        $arr = array();
         $len = strlen($val);
         $no = 1;
         for ($cnt = 0; $cnt < $len; $cnt++) {
@@ -650,20 +696,18 @@ class SC_Utils {
         return $ret;
     }
 
-    /* 税金計算 */
-    function sfTax($price, $tax = null, $tax_rule = null) {
-        // 店舗基本情報を取得
-        static $CONF;
-        if (is_null($CONF) && (is_null($tax) || is_null($tax_rule))) {
-            $CONF = SC_Helper_DB_Ex::sf_getBasisData();
-         }
-        if (is_null($tax)) {
-            $tax = $CONF['tax'];
-        }
-        if (is_null($tax_rule)) {
-            $tax_rule = $CONF['tax_rule'];
-        }
-
+    /**
+     * 税金額を返す
+     *
+     * ・店舗基本情報に基づいた計算は SC_Helper_DB::sfTax() を使用する
+     *
+     * @param integer $price 計算対象の金額
+     * @param integer $tax 税率(%単位)
+     *     XXX integer のみか不明
+     * @param integer $tax_rule 端数処理
+     * @return integer 税金額
+     */
+    function sfTax($price, $tax, $tax_rule) {
         $real_tax = $tax / 100;
         $ret = $price * $real_tax;
         switch($tax_rule) {
@@ -687,8 +731,18 @@ class SC_Utils {
         return $ret;
     }
 
-    /* 税金付与 */
-    function sfPreTax($price, $tax = null, $tax_rule = null) {
+    /**
+     * 税金付与した金額を返す
+     * 
+     * ・店舗基本情報に基づいた計算は SC_Helper_DB::sfTax() を使用する
+     *
+     * @param integer $price 計算対象の金額
+     * @param integer $tax 税率(%単位)
+     *     XXX integer のみか不明
+     * @param integer $tax_rule 端数処理
+     * @return integer 税金付与した金額
+     */
+    function sfPreTax($price, $tax, $tax_rule) {
         return $price + SC_Utils_Ex::sfTax($price, $tax, $tax_rule);
     }
 
@@ -715,7 +769,7 @@ class SC_Utils {
 
             $where .= "del_flg = 0 AND campaign_id IN (SELECT campaign_id FROM dtb_campaign_detail where product_id = ? )";
             //登録(更新)日付順
-            $objQuery->setorder('update_date DESC');
+            $objQuery->setOrder('update_date DESC');
             //キャンペーンポイントの取得
             $arrRet = $objQuery->select("campaign_name, campaign_point_rate", "dtb_campaign", $where, array($product_id));
         }
@@ -761,50 +815,11 @@ class SC_Utils {
         $sql.= "where dtb_class.del_flg = 0 AND dtb_classcategory.del_flg = 0 ";
         $sql.= "group by dtb_class.class_id, dtb_class.name";
         $objQuery = new SC_Query();
-        $arrList = $objQuery->getall($sql);
+        $arrList = $objQuery->getAll($sql);
         // キーと値をセットした配列を取得
         $arrRet = SC_Utils::sfArrKeyValue($arrList, 'class_id', 'count');
 
         return $arrRet;
-    }
-
-    /* 規格の登録 */
-    function sfInsertProductClass($objQuery, $arrList, $product_id , $product_class_id = "") {
-        // すでに規格登録があるかどうかをチェックする。
-        $where = "product_id = ? AND classcategory_id1 <> 0 AND classcategory_id1 <> 0";
-        $count = $objQuery->count("dtb_products_class", $where,  array($product_id));
-
-        // すでに規格登録がない場合
-        if($count == 0) {
-            // 既存規格の削除
-            $where = "product_id = ?";
-            $objQuery->delete("dtb_products_class", $where, array($product_id));
-
-            // 配列の添字を定義
-            $checkArray = array("product_code", "stock", "stock_unlimited", "price01", "price02");
-            $arrList = SC_Utils_Ex::arrayDefineIndexes($arrList, $checkArray);
-
-            $sqlval['product_id'] = $product_id;
-            if(strlen($product_class_id ) > 0 ){
-                $sqlval['product_class_id'] = $product_class_id;
-            }
-            $sqlval['classcategory_id1'] = '0';
-            $sqlval['classcategory_id2'] = '0';
-            $sqlval['product_code'] = $arrList["product_code"];
-            $sqlval['stock'] = $arrList["stock"];
-            $sqlval['stock_unlimited'] = $arrList["stock_unlimited"];
-            $sqlval['price01'] = $arrList['price01'];
-            $sqlval['price02'] = $arrList['price02'];
-            $sqlval['creator_id'] = $_SESSION['member_id'];
-            $sqlval['create_date'] = "now()";
-
-            if($_SESSION['member_id'] == "") {
-                $sqlval['creator_id'] = '0';
-            }
-
-            // INSERTの実行
-            $objQuery->insert("dtb_products_class", $sqlval);
-        }
     }
 
     function sfGetProductClassId($product_id, $classcategory_id1, $classcategory_id2) {
@@ -914,11 +929,19 @@ class SC_Utils {
         return $return;
     }
 
-    /* 加算ポイントの計算式 */
-    function sfGetAddPoint($totalpoint, $use_point, $arrInfo) {
-        if( USE_POINT === false ) return ;
+    /**
+     * 加算ポイントの計算
+     *
+     * ・店舗基本情報に基づいた計算は SC_Helper_DB::sfGetAddPoint() を使用する
+     *
+     * @param integer $totalpoint
+     * @param integer $use_point
+     * @param integer $point_rate
+     * @return integer 加算ポイント
+     */
+    function sfGetAddPoint($totalpoint, $use_point, $point_rate) {
         // 購入商品の合計ポイントから利用したポイントのポイント換算価値を引く方式
-        $add_point = $totalpoint - intval($use_point * ($arrInfo['point_rate'] / 100));
+        $add_point = $totalpoint - intval($use_point * ($point_rate / 100));
 
         if($add_point < 0) {
             $add_point = '0';
@@ -933,17 +956,6 @@ class SC_Utils {
         // 同一ホスト内で一意なIDを生成
         $id = uniqid($head);
         return ($id . $random);
-    }
-
-    // カテゴリ別オススメ品の取得
-    function sfGetBestProducts( $conn, $category_id = 0){
-        // 既に登録されている内容を取得する
-        $sql = "SELECT name, main_image, main_list_image, price01_min, price01_max, price02_min, price02_max, point_rate,
-                 A.product_id, A.comment FROM dtb_best_products as A LEFT JOIN vw_products_allclass AS allcls
-                USING (product_id) WHERE A.category_id = ? AND A.del_flg = 0 AND status = 1 ORDER BY A.rank";
-        $arrItems = $conn->getAll($sql, array($category_id));
-
-        return $arrItems;
     }
 
     // 特殊制御文字の手動エスケープ
@@ -1219,7 +1231,7 @@ class SC_Utils {
             break;
         }
         $objConn->query("COMMIT");
-        $subject = sfMakeSubject('メルマガ仮登録が完了しました。');
+        $subject = 'メルマガ仮登録が完了しました';
         $objPage->tpl_url = SSL_URL."mailmagazine/regist.php?temp_id=".$arrRegistMailMagazine['temp_id'];
         switch ($mail_flag){
             case '1':
@@ -1236,7 +1248,7 @@ class SC_Utils {
             $objPage->tpl_name = "解除";
             break;
         }
-            $objPage->tpl_email = $email;
+        $objPage->tpl_email = $email;
         sfSendTplMail($email, $subject, 'mail_templates/mailmagazine_temp.tpl', $objPage);
     }
 
@@ -1275,7 +1287,7 @@ class SC_Utils {
         $basename = basename($_SERVER["REQUEST_URI"]);
 
         if($basename == "") {
-            $path = $_SERVER["REQUEST_URI"] . "index.php";
+            $path = $_SERVER["REQUEST_URI"] . DIR_INDEX_URL;
         } else {
             $path = $_SERVER["REQUEST_URI"];
         }
@@ -1463,33 +1475,35 @@ echo $template_path;
         }
 
         $fileArray=glob( $src."*" );
-        foreach( $fileArray as $key => $data_ ){
-            // CVS管理ファイルはコピーしない
-            if(ereg("/CVS/Entries", $data_)) {
-                break;
-            }
-            if(ereg("/CVS/Repository", $data_)) {
-                break;
-            }
-            if(ereg("/CVS/Root", $data_)) {
-                break;
-            }
-
-            mb_ereg("^(.*[\/])(.*)",$data_, $matches);
-            $data=$matches[2];
-            if( is_dir( $data_ ) ){
-                $mess = SC_Utils::sfCopyDir( $data_.'/', $des.$data.'/', $mess);
-            }else{
-                if(!$override && file_exists($des.$data)) {
-                    $mess.= $des.$data . "：ファイルが存在します\n";
-                } else {
-                    if(@copy( $data_, $des.$data)) {
-                        $mess.= $des.$data . "：コピー成功\n";
-                    } else {
-                        $mess.= $des.$data . "：コピー失敗\n";
-                    }
+        if (is_array($fileArray)) {
+            foreach( $fileArray as $key => $data_ ){
+                // CVS管理ファイルはコピーしない
+                if(ereg("/CVS/Entries", $data_)) {
+                    break;
                 }
-                $mod=stat($data_ );
+                if(ereg("/CVS/Repository", $data_)) {
+                    break;
+                }
+                if(ereg("/CVS/Root", $data_)) {
+                    break;
+                }
+
+                mb_ereg("^(.*[\/])(.*)",$data_, $matches);
+                $data=$matches[2];
+                if( is_dir( $data_ ) ){
+                    $mess = SC_Utils::sfCopyDir( $data_.'/', $des.$data.'/', $mess);
+                }else{
+                    if(!$override && file_exists($des.$data)) {
+                        $mess.= $des.$data . "：ファイルが存在します\n";
+                    } else {
+                        if(@copy( $data_, $des.$data)) {
+                            $mess.= $des.$data . "：コピー成功\n";
+                        } else {
+                            $mess.= $des.$data . "：コピー失敗\n";
+                        }
+                    }
+                    $mod=stat($data_ );
+                }
             }
         }
         umask($oldmask);
@@ -1554,21 +1568,27 @@ echo $template_path;
         return true;
     }
 
-    function sfFlush($output = " ", $sleep = 0){
-        // 実行時間を制限しない
-        set_time_limit(0);
+    /**
+     * ブラウザに強制的に送出する
+     *
+     * @param boolean|string $output 半角スペース256文字+改行を出力するか。または、送信する文字列を指定。
+     * @return void
+     */
+    function sfFlush($output = false, $sleep = 0){
         // 出力をバッファリングしない(==日本語自動変換もしない)
-        ob_end_clean();
+        while (@ob_end_flush());
 
-        // IEのために256バイト空文字出力
-        echo str_pad('',256);
+        if ($output === true) {
+            // IEのために半角スペース256文字+改行を出力
+            //echo str_repeat(' ', 256) . "\n";
+            echo str_pad('', 256) . "\n";
+        } else if ($output !== false) {
+            echo $output;
+        }
 
-        // 出力はブランクだけでもいいと思う
-        echo $output;
         // 出力をフラッシュする
         flush();
 
-        ob_flush();
         ob_start();
 
         // 時間のかかる処理
@@ -1657,6 +1677,23 @@ echo $template_path;
             if (!isset($array[$key])) $array[$key] = "";
         }
         return $array;
+    }
+
+    /**
+     * $arrSrc のうち、キーが $arrKey に含まれるものを返す
+     *
+     * $arrSrc に含まない要素は返されない。
+     *
+     * @param array $arrSrc
+     * @param array $arrKey
+     * @return array
+     */
+    function sfArrayIntersectKeys($arrSrc, $arrKey) {
+        $arrRet = array();
+        foreach ($arrKey as $key) {
+            if (isset($arrSrc[$key])) $arrRet[$key] = $arrSrc[$key];
+        }
+        return $arrRet;
     }
 
     /**
@@ -2007,7 +2044,7 @@ echo $template_path;
 
         for($i = 0; $i < $cnt; $i++) {
             $html.= "<tr>";
-          foreach($array[$i] as $val) {
+            foreach($array[$i] as $val) {
                 $html.="<td>$val</td>";
             }
             $html.= "</tr>";
@@ -2015,15 +2052,30 @@ echo $template_path;
         return $html;
     }
 
-    /**
-     * 出力バッファをフラッシュし, バッファリングを開始する.
+   /**
+     * 一覧-メイン画像のファイル指定がない場合、専用の画像ファイルに書き換える。
      *
-     * @return void
+     * @param string &$filename ファイル名
+     * @return string
      */
-    function flush() {
-        flush();
-        ob_end_flush();
-        ob_start();
+    function sfNoImageMainList($filename = '') {
+        if (strlen($filename) == 0 || substr($filename, -1, 1) == '/') {
+            $filename .= 'noimage_main_list.jpg';
+        }
+        return $filename;
+    }
+
+   /**
+     * 詳細-メイン画像のファイル指定がない場合、専用の画像ファイルに書き換える。
+     *
+     * @param string &$filename ファイル名
+     * @return string
+     */
+    function sfNoImageMain($filename = '') {
+        if (strlen($filename) == 0 || substr($filename, -1, 1) == '/') {
+            $filename .= 'noimage_main.png';
+        }
+        return $filename;
     }
 
     /* デバッグ用 ------------------------------------------------------------------------------------------------*/
@@ -2036,5 +2088,283 @@ echo $template_path;
         print("</pre>\n");
         print("<strong>**デバッグ中**</strong></div>\n");
     }
+
+    /**
+     * ポイント使用するかの判定
+     * 
+     * @param integer $status 対応状況
+     * @return boolean 使用するか(顧客テーブルから減算するか)
+     */
+    function sfIsUsePoint($status) {
+        switch ($status) {
+            case ORDER_CANCEL:      // キャンセル
+                return false;
+            default:
+                break;
+        }
+
+        return true;
+    }
+
+    /**
+     * ポイント加算するかの判定
+     * 
+     * @param integer $status 対応状況
+     * @return boolean 加算するか
+     */
+    function sfIsAddPoint($status) {
+        switch ($status) {
+            case ORDER_NEW:         // 新規注文
+            case ORDER_PAY_WAIT:    // 入金待ち
+            case ORDER_PRE_END:     // 入金済み
+            case ORDER_CANCEL:      // キャンセル
+            case ORDER_BACK_ORDER:  // 取り寄せ中
+                return false;
+            
+            case ORDER_DELIV:       // 発送済み
+                return true;
+            
+            default:
+                break;
+        }
+
+        return false;
+    }
+
+    /**
+     * ランダムな文字列を取得する
+     * 
+     * @param integer $length 文字数
+     * @return string ランダムな文字列
+     */
+    function sfGetRandomString($length = 1) {
+        require_once(dirname(__FILE__) . '/../../module/Text/Password.php');
+        return Text_Password::create($length);
+    }
+    
+    /**
+     * 現在の URL を取得する
+     *
+     * @return string 現在のURL
+     */
+    function sfGetUrl() {
+        $url = '';
+        
+        if (SC_Utils_Ex::sfIsHTTPS()) {
+            $url = "https://";
+        } else {
+            $url = "http://";
+        }
+        
+        $url .= $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . '?' . $_SERVER['QUERY_STRING'];
+        
+        return $url;
+    }
+    
+    /**
+     * バックトレースをテキスト形式で出力する
+     *
+     * @return string テキストで表現したバックトレース
+     */
+    function sfBacktraceToString($arrBacktrace) {
+        $string = '';
+        
+        foreach ($arrBacktrace as $backtrace) {
+            if (strlen($backtrace['class']) >= 1) {
+                $func = $backtrace['class'] . $backtrace['type'] . $backtrace['function'];
+            } else {
+                $func = $backtrace['function'];
+            }
+            
+            $string .= $backtrace['file'] . " " . $backtrace['line'] . ":" . $func . "\n";
+        }
+        
+        return $string;
+    }
+
+    /**
+     * 管理機能かを判定
+     *
+     * @return bool 管理機能か
+     */
+    function sfIsAdminFunction() {
+        return defined('ADMIN_FUNCTION') && ADMIN_FUNCTION;
+    }
+
+    /**
+     * フロント機能かを判定
+     *
+     * @return bool フロント機能か
+     */
+    function sfIsFrontFunction() {
+        return SC_Utils_Ex::sfIsPcSite() || SC_Utils_Ex::sfIsMobileSite();
+    }
+
+    /**
+     * フロント機能PCサイトかを判定
+     *
+     * @return bool フロント機能PCサイトか
+     */
+    function sfIsPcSite() {
+        return defined('FRONT_FUNCTION_PC_SITE') && FRONT_FUNCTION_PC_SITE;
+    }
+
+    /**
+     * フロント機能モバイル機能かを判定
+     *
+     * @return bool フロント機能モバイル機能か
+     */
+    function sfIsMobileSite() {
+        return defined('MOBILE_SITE') && MOBILE_SITE;
+    }
+
+    /**
+     * インストール機能かを判定
+     *
+     * @return bool インストール機能か
+     */
+    function sfIsInstallFunction() {
+        return defined('INSTALL_FUNCTION') && INSTALL_FUNCTION;
+    }
+
+    // 郵便番号から住所の取得
+    function sfGetAddress($zipcode) {
+
+        $conn = new SC_DBconn(ZIP_DSN);
+
+        $masterData = new SC_DB_MasterData_Ex();
+        $arrPref = $masterData->getMasterData("mtb_pref", array("pref_id", "pref_name", "rank"));
+        // インデックスと値を反転させる。
+        $arrREV_PREF = array_flip($arrPref);
+
+        // 郵便番号検索文作成
+        $zipcode = mb_convert_kana($zipcode ,"n");
+        $sqlse = "SELECT state, city, town FROM mtb_zip WHERE zipcode = ?";
+
+        $data_list = $conn->getAll($sqlse, array($zipcode));
+        if (empty($data_list)) return array();
+
+        /*
+         総務省からダウンロードしたデータをそのままインポートすると
+         以下のような文字列が入っているので 対策する。
+         ・（１・１９丁目）
+         ・以下に掲載がない場合
+        */
+        $town =  $data_list[0]['town'];
+        $town = ereg_replace("（.*）$","",$town);
+        $town = ereg_replace("以下に掲載がない場合","",$town);
+        $data_list[0]['town'] = $town;
+        $data_list[0]['state'] = $arrREV_PREF[$data_list[0]['state']];
+
+        return $data_list;
+    }
+
+    /**
+     * プラグインが配置されているディレクトリ(フルパス)を取得する
+     *
+     * @param string $file プラグイン情報ファイル(info.php)のパス
+     * @return SimpleXMLElement プラグイン XML
+     */
+    function sfGetPluginFullPathByRequireFilePath($file) {
+        return str_replace('\\', '/', dirname($file)) . '/';
+    }
+
+    /**
+     * プラグインのパスを取得する
+     *
+     * @param string $pluginFullPath プラグインが配置されているディレクトリ(フルパス)
+     * @return SimpleXMLElement プラグイン XML
+     */
+    function sfGetPluginPathByPluginFullPath($pluginFullPath) {
+        return basename(rtrim($pluginFullPath, '/'));
+    }
+
+    /**
+     * プラグイン情報配列の基本形を作成する
+     *
+     * @param string $file プラグイン情報ファイル(info.php)のパス
+     * @return array プラグイン情報配列
+     */
+    function sfMakePluginInfoArray($file) {
+        $fullPath = SC_Utils_Ex::sfGetPluginFullPathByRequireFilePath($file);
+
+        return
+            array(
+                // パス
+                'path' => SC_Utils_Ex::sfGetPluginPathByPluginFullPath($fullPath),
+                // プラグイン名
+                'name' => '未定義',
+                // フルパス
+                'fullpath' => $fullPath,
+                // バージョン
+                'version' => null,
+                // 著作者
+                'auther' => '未定義',
+            )
+        ;
+    }
+
+    /**
+     * プラグイン情報配列を取得する
+     *
+     * TODO include_once を利用することで例外対応をサボタージュしているのを改善する。
+     *
+     * @param string $path プラグインのディレクトリ名
+     * @return array プラグイン情報配列
+     */
+    function sfGetPluginInfoArray($path) {
+        return (array)include_once(PLUGIN_PATH . "$path/plugin_info.php");
+    }
+
+    /**
+     * プラグイン XML を読み込む
+     *
+     * TODO 空だったときを考慮
+     *
+     * @return SimpleXMLElement プラグイン XML
+     */
+    function sfGetPluginsXml() {
+        return simplexml_load_file(PLUGIN_PATH . 'plugins.xml');
+    }
+
+    /**
+     * プラグイン XML を書き込む
+     *
+     * @param SimpleXMLElement $pluginsXml プラグイン XML
+     * @return integer ファイルに書き込まれたバイト数を返します。
+     */
+    function sfPutPluginsXml($pluginsXml) {
+        if (!($pluginsXml instanceof SimpleXMLElement)) SC_Utils_Ex::sfDispException();
+
+        $xml = $pluginsXml->asXML();
+        if (strlen($xml) == 0) SC_Utils_Ex::sfDispException();
+
+        $return = file_put_contents(PLUGIN_PATH . 'plugins.xml', $pluginsXml->asXML());
+        if ($return === false) SC_Utils_Ex::sfDispException();
+
+        return $return;
+    }
+
+    function sfLoadPluginInfo($filenamePluginInfo) {
+        return (array)include_once $filenamePluginInfo;
+    }
+
+    /**
+     * 現在の Unix タイムスタンプを float (秒単位) でマイクロ秒まで返す
+     *
+     * PHP4の上位互換用途。
+     * FIXME PHP4でテストする。(現状全くテストしていない。)
+     * @param SimpleXMLElement $pluginsXml プラグイン XML
+     * @return integer ファイルに書き込まれたバイト数を返します。
+     */
+    function sfMicrotimeFloat() {
+        $microtime = microtime(true);
+        if (is_string($microtime)) {
+            list($usec, $sec) = explode(" ", microtime());
+            return ((float)$usec + (float)$sec);
+        }
+        return $microtime;
+    }
+
 }
 ?>

@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2008 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -46,6 +46,7 @@ class LC_Page_Admin_Customer_SearchCustomer extends LC_Page
     {
         parent::init();
         $this->tpl_mainpage = 'customer/search_customer.tpl';
+        $this->httpCacheControl('nocache');
     }
 
     /**
@@ -75,9 +76,8 @@ class LC_Page_Admin_Customer_SearchCustomer extends LC_Page
 
             // エラーチェック
             $this->arrErr = $this->lfCheckError();
-            if( is_array($this->arrErr) === true && 0 < count($this->arrErr) ){
-                $is_select = false;
-            }else{
+            $is_select = empty($this->arrErr);
+            if ($is_select) {
                 $where = "del_flg = 0";
 
                 // 検索
@@ -110,8 +110,6 @@ class LC_Page_Admin_Customer_SearchCustomer extends LC_Page
                         }
                     }
                 }
-
-                $is_select = true;
             }
 
 
@@ -148,9 +146,9 @@ class LC_Page_Admin_Customer_SearchCustomer extends LC_Page
                 $startno = $objNavi->start_row;
 
                 // 取得範囲の指定(開始行番号、行数のセット)
-                $objQuery->setlimitoffset($page_max, $startno);
+                $objQuery->setLimitOffset($page_max, $startno);
                 // 表示順序
-                $objQuery->setorder($order);
+                $objQuery->setOrder($order);
                 // 検索結果の取得
                 $this->arrCustomer = $objQuery->select($col, $from, $where, $sqlval);
             }

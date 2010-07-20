@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -64,12 +64,24 @@ class LC_Page_FrontParts_Bloc_SearchProducts extends LC_Page_FrontParts_Bloc {
             // 文字サイズを制限する
             foreach($arrRet as $key => $val) {
                 $str = SC_Utils_Ex::sfCutString($val, SEARCH_CATEGORY_LEN, false);
-                $arrRet[$key] = preg_replace('/　/', "&nbsp;", $str);
+                $arrRet[$key] = preg_replace('/　/', "&nbsp;&nbsp;", $str);
             }
         }
         $this->arrCatList = $arrRet;
 
-        $objSubView = new SC_SiteView();
+        // 選択中のメーカーIDを判定する
+        $this->maker_id = $objDb->sfGetMakerId($_GET['product_id'], $_GET['maker_id']);
+        // メーカー検索用選択リスト
+        $arrRet = $objDb->sfGetMakerList('', true);
+        if(is_array($arrRet)) {
+            // 文字サイズを制限する
+            foreach($arrRet as $key => $val) {
+                $arrRet[$key] = SC_Utils_Ex::sfCutString($val, SEARCH_CATEGORY_LEN);
+            }
+        }
+        $this->arrMakerList = $arrRet;
+
+        $objSubView = new SC_SiteView(false);
         $objSubView->assignobj($this);
         $objSubView->display($this->tpl_mainpage);
     }

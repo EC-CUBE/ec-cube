@@ -2,7 +2,7 @@
 <!--{*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -25,21 +25,43 @@
 <meta http-equiv="Content-Type" content="text/html; charset=<!--{$smarty.const.CHAR_CODE}-->" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
-<link rel="stylesheet" href="<!--{$smarty.const.URL_DIR}--><!--{$smarty.const.USER_DIR}-->css/common.css" type="text/css" media="all" />
-<link rel="alternate" type="application/rss+xml" title="RSS" href="<!--{$smarty.const.SITE_URL}-->rss/index.php" />
+<link rel="stylesheet" href="<!--{$TPL_DIR}-->css/import.css" type="text/css" media="all" />
+<link rel="alternate" type="application/rss+xml" title="RSS" href="<!--{$smarty.const.SITE_URL}-->rss/<!--{$smarty.const.DIR_INDEX_URL}-->" />
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/css.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/navi.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/win_op.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/site.js"></script>
-<title><!--{$arrSiteInfo.shop_name|escape}-->/<!--{$tpl_title|escape}--></title>
-<meta name="author" content="<!--{$arrPageLayout.author|escape}-->" />
-<meta name="description" content="<!--{$arrPageLayout.description|escape}-->" />
-<meta name="keywords" content="<!--{$arrPageLayout.keyword|escape}-->" />
+<script type="text/javascript" src="<!--{$TPL_DIR}-->js/jquery-1.3.2.min.js"></script>
+<title><!--{$arrSiteInfo.shop_name|escape}--><!--{if $tpl_subtitle|strlen >= 1}--> / <!--{$tpl_subtitle|escape}--><!--{elseif $tpl_title|strlen >= 1}--> / <!--{$tpl_title|escape}--><!--{/if}--></title>
+<!--{if $arrPageLayout.author|strlen >= 1}-->
+    <meta name="author" content="<!--{$arrPageLayout.author|escape}-->" />
+<!--{/if}-->
+<!--{if $arrPageLayout.description|strlen >= 1}-->
+    <meta name="description" content="<!--{$arrPageLayout.description|escape}-->" />
+<!--{/if}-->
+<!--{if $arrPageLayout.keyword|strlen >= 1}-->
+    <meta name="keywords" content="<!--{$arrPageLayout.keyword|escape}-->" />
+<!--{/if}-->
 
 <script type="text/javascript">//<![CDATA[
     <!--{$tpl_javascript}-->
 //]]>
 </script>
+<!--{* ▼Head COLUMN*}-->
+  <!--{if $arrPageLayout.HeadNavi|@count > 0}-->
+    <!--{* ▼上ナビ *}-->
+      <!--{foreach key=HeadNaviKey item=HeadNaviItem from=$arrPageLayout.HeadNavi}-->
+        <!--{* ▼<!--{$HeadNaviItem.bloc_name}--> ここから*}-->
+          <!--{if $HeadNaviItem.php_path != ""}-->
+            <!--{include_php file=$HeadNaviItem.php_path}-->
+          <!--{else}-->
+            <!--{include file=$HeadNaviItem.tpl_path}-->
+          <!--{/if}-->
+        <!--{* ▲<!--{$HeadNaviItem.bloc_name}--> ここまで*}-->
+      <!--{/foreach}-->
+    <!--{* ▲上ナビ *}-->
+  <!--{/if}-->
+<!--{* ▲Head COLUMN*}-->
 </head>
 
 <!-- ▼BODY部 スタート -->

@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -23,17 +23,14 @@
 
 $current_dir = realpath(dirname(__FILE__));
 require_once($current_dir . "/../module/DB.php");
-require_once($current_dir . "/util/SC_Utils.php");
-require_once($current_dir . "/util/GC_Utils.php");
-$objDbConn = "";
 
-class SC_DbConn{
+$g_arr_objDbConn = array();
+
+class SC_DbConn {
 
     var $conn;
     var $result;
     var $includePath;
-    var $error_mail_to;
-    var $error_mail_title;
     var $dsn;
     var $err_disp = true;
     var $dbFactory;
@@ -41,34 +38,39 @@ class SC_DbConn{
 
     // コンストラクタ
     function SC_DbConn($dsn = "", $err_disp = true, $new = false){
-        global $objDbConn;
+        global $g_arr_objDbConn;
 
         // Debugモード指定
         $options['debug'] = PEAR_DB_DEBUG;
         // 持続的接続オプション
         $options['persistent'] = PEAR_DB_PERSISTENT;
 
-        // 既に接続されていないか、新規接続要望の場合は接続する。
-        if(!isset($objDbConn->connection) || $new) {
-            if($dsn != "") {
-                $objDbConn = DB::connect($dsn, $options);
-                $this->dsn = $dsn;
-            } else {
-                if(defined('DEFAULT_DSN')) {
-                    $objDbConn = DB::connect(DEFAULT_DSN, $options);
-                    $this->dsn = DEFAULT_DSN;
-                } else {
-                    return;
-                }
-            }
+        if (strlen($dsn) >= 1) {
+            $this->dsn = $dsn;
+        } elseif (defined('DEFAULT_DSN')) {
+            $this->dsn = DEFAULT_DSN;
+        } else {
+            // XXX 以前の仕様を継承しているが、意図が良く分からない。(2010/03/03 Seasoft 塚田)
+            return;
         }
-        //MySQL文字化け対策(MySQLで文字化けする場合は以下のコメントアウトをはずして動作確認してみてください。)
-        //if (DB_TYPE == 'mysql') {
-        //    $objDbConn->query('SET NAMES utf8');
-        //}
-        $this->conn = $objDbConn;
-        $this->error_mail_to = DB_ERROR_MAIL_TO;
-        $this->error_mail_title = DB_ERROR_MAIL_SUBJECT;
+
+        // 既に接続されていないか、新規接続要望の場合は接続する。
+        if (!isset($g_arr_objDbConn[$this->dsn]) || !isset($g_arr_objDbConn[$this->dsn]->connection)) {
+            $new = true;
+        }
+
+        if ($new) {
+            $this->conn = DB::connect($this->dsn, $options);
+            $g_arr_objDbConn[$this->dsn] = $this->conn;
+
+            if (DB_TYPE == 'mysql') {
+                $g_arr_objDbConn[$this->dsn]->query('SET NAMES utf8'); // FIXME mysql_set_charset を使える環境では、その方が良さそう (2010/03/03 Seasoft 塚田)
+                $g_arr_objDbConn[$this->dsn]->query("SET SESSION sql_mode = 'ANSI'");
+            }
+        } else {
+            $this->conn = $g_arr_objDbConn[$this->dsn];
+        }
+
         $this->err_disp = $err_disp;
         $this->dbFactory = SC_DB_DBFactory_Ex::getInstance();
     }
@@ -85,7 +87,7 @@ class SC_DbConn{
         }
 
         if ($this->conn->isError($result) && !$ignore_err){
-            $this->send_err_mail ($result, $n);
+            $this->send_err_mail($result, $n);
         }
 
         $this->result = $result;
@@ -104,25 +106,30 @@ class SC_DbConn{
             $result = $this->conn->getOne($n);
         }
         if ($this->conn->isError($result)){
-            $this->send_err_mail ($result ,$n);
+            $this->send_err_mail($result ,$n);
         }
         $this->result = $result;
 
         return $this->result;
     }
-
-    function getRow($n, $arr = ""){
-
+    
+    /**
+     * クエリを実行し、最初の行を返す
+     *
+     * @param string $sql SQL クエリ
+     * @param array $arrVal プリペアドステートメントの実行時に使用される配列。配列の要素数は、クエリ内のプレースホルダの数と同じでなければなりません。 
+     * @param integer $fetchmode 使用するフェッチモード。デフォルトは DB_FETCHMODE_ASSOC。
+     * @return array データを含む1次元配列。失敗した場合に DB_Error オブジェクトを返します。
+     */
+    function getRow($sql, $arrVal = array(), $fetchmode = DB_FETCHMODE_ASSOC) {
+        
         // mysqlの場合にはビュー表を変換する
-        if (DB_TYPE == "mysql") $n = $this->dbFactory->sfChangeMySQL($n);
-
-        if ( $arr ) {
-            $result = $this->conn->getRow($n, $arr);
-        } else {
-            $result = $this->conn->getRow($n);
-        }
+        if (DB_TYPE == "mysql") $sql = $this->dbFactory->sfChangeMySQL($sql);
+        
+        $result = $this->conn->getRow($sql, $arrVal ,$fetchmode);
+        
         if ($this->conn->isError($result)){
-            $this->send_err_mail ($result ,$n);
+            $this->send_err_mail($result ,$sql);
         }
         $this->result = $result;
         return $this->result;
@@ -145,29 +152,37 @@ class SC_DbConn{
         return $this->result;
     }
 
-    // SELECT文の実行結果を全て取得
-    function getAll($n, $arr = ""){
+    /**
+     * クエリを実行し、全ての行を返す
+     *
+     * @param string $sql SQL クエリ
+     * @param array $arrVal プリペアドステートメントの実行時に使用される配列。配列の要素数は、クエリ内のプレースホルダの数と同じでなければなりません。 
+     * @param integer $fetchmode 使用するフェッチモード。デフォルトは DB_FETCHMODE_ASSOC。
+     * @return array データを含む2次元配列。失敗した場合に 0 または DB_Error オブジェクトを返します。
+     */
+    function getAll($sql, $arrVal = "", $fetchmode = DB_FETCHMODE_ASSOC) {
 
         // mysqlの場合にはビュー表を変換する
-        if (DB_TYPE == "mysql") $n = $this->dbFactory->sfChangeMySQL($n);
+        if (DB_TYPE == "mysql") $sql = $this->dbFactory->sfChangeMySQL($sql);
 
-        if(PEAR::isError($this->conn)) {
-            if(ADMIN_MODE){
+        // XXX このエラー処理はここで行なうべきなのか疑問。また、戻り値も疑問(なお、変更時はドキュメントも変更を)。
+        if (PEAR::isError($this->conn)) {
+            if (ADMIN_MODE) {
                 SC_Utils_Ex::sfErrorHeader("DBへの接続に失敗しました。:" . $this->dsn);
-            }else{
+            } else {
                 SC_Utils_Ex::sfErrorHeader("DBへの接続に失敗しました。:");
             }
             return 0;
         }
 
-        if ( $arr ){
-            $result = $this->conn->getAll($n, $arr, DB_FETCHMODE_ASSOC);
+        if ($arrVal) { // FIXME 判定が曖昧
+            $result = $this->conn->getAll($sql, $arrVal, $fetchmode);
         } else {
-            $result = $this->conn->getAll($n, DB_FETCHMODE_ASSOC);
+            $result = $this->conn->getAll($sql, $fetchmode);
         }
 
-        if ($this->conn->isError($result)){
-            $this->send_err_mail ($result, $n);
+        if ($this->conn->isError($result)) {
+            $this->send_err_mail($result, $sql);
         }
         $this->result = $result;
 
@@ -183,7 +198,7 @@ class SC_DbConn{
         }
 
         if ($this->conn->isError($result)){
-            $this->send_err_mail ($result, $n);
+            $this->send_err_mail($result, $n);
         }
         $this->result = $result;
         return $this->result;
@@ -210,54 +225,38 @@ class SC_DbConn{
         $this->conn->disconnect();
     }
 
-    function send_err_mail($result, $sql){
-        $url = '';
-        $errmsg = '';
+    function send_err_mail($pearResult, $sql){
 
-        if (SC_Utils_Ex::sfIsHTTPS()) {
-            $url = "https://";
-        } else {
-            $url = "http://";
+        $errmsg = $sql . "\n\n";
+
+        // PEAR エラーを伴う場合
+        if (!is_null($pearResult)) {
+            $errmsg .= $pearResult->message . "\n\n";
+            $errmsg .= $pearResult->userinfo . "\n\n";
+            $errmsg .= SC_Utils_Ex::sfBacktraceToString($pearResult->backtrace);
         }
-        $url .= $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-
-        $errmsg = $url."\n\n";
-        $errmsg.= "SERVER_ADDR:" . $_SERVER['SERVER_ADDR'] . "\n";
-        $errmsg.= "REMOTE_ADDR:" . $_SERVER['REMOTE_ADDR'] . "\n";
-        $errmsg.= "USER_AGENT:" . $_SERVER['HTTP_USER_AGENT'] . "\n\n";
-        $errmsg.= $sql . "\n";
-        $errmsg.= $result->message . "\n\n";
-        $errmsg.= $result->userinfo . "\n\n";
-
-        $arrRbacktrace = array_reverse($result->backtrace);
-
-        foreach($arrRbacktrace as $backtrace) {
-            if($backtrace['class'] != "") {
-                $func = $backtrace['class'] . "->" . $backtrace['function'];
-            } else {
-                $func = $backtrace['function'];
-            }
-
-            $errmsg.= $backtrace['file'] . " " . $backtrace['line'] . ":" . $func . "\n";
-        }
-
-        require_once(CLASS_EX_PATH . "page_extends/error/LC_Page_Error_SystemError_Ex.php");
-
-        $objPage = new LC_Page_Error_SystemError_Ex();
-        register_shutdown_function(array($objPage, "destroy"));
-        $objPage->init();
-        $objPage->process();
-
-        if (DEBUG_MODE == true) {
-            print('<pre>');
-            print_r(htmlspecialchars($errmsg, ENT_QUOTES, CHAR_CODE));
-            print('</pre>');
+        // (上に該当せず)バックトレースを生成できる環境(一般的には PHP 4 >= 4.3.0, PHP 5)の場合
+        else if (function_exists("debug_backtrace")) {
+            $errmsg .= SC_Utils_Ex::sfBacktraceToString(array_slice(debug_backtrace(), 2));
         }
 
         GC_Utils_Ex::gfPrintLog($errmsg);
-
+        trigger_error($errmsg, E_USER_ERROR);
         exit();
     }
-}
 
+    /**
+     * 直前に実行されたSQL文を取得する.
+     *
+     * @param boolean $disp trueの場合、画面出力を行う.
+     * @return string SQL文
+     */
+    function getLastQuery($disp = true) {
+        $sql = $this->conn->last_query;
+        if($disp) {
+            print($sql.";<br />\n");
+        }
+        return $sql;
+    }
+}
 ?>

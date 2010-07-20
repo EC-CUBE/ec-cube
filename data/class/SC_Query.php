@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -85,29 +85,24 @@ class SC_Query {
      * @param string $table テーブル名
      * @param string $where WHERE句
      * @param array $arrval プレースホルダ
+     * @param integer $fetchmode 使用するフェッチモード。デフォルトは DB_FETCHMODE_ASSOC。
      * @return array|null
      */
-    function select($col, $table, $where = "", $arrval = array()){
-        $sqlse = $this->getsql($col, $table, $where);
-        // DBに依存した SQL へ変換
-        $dbFactory = SC_DB_DBFactory_Ex::getInstance();
-        $sqlse = $dbFactory->sfChangeMySQL($sqlse);
-        $ret = $this->conn->getAll($sqlse, $arrval);
+    function select($col, $table, $where = "", $arrval = array(), $fetchmode = DB_FETCHMODE_ASSOC) {
+        $sqlse = $this->getSql($col, $table, $where);
+        $ret = $this->conn->getAll($sqlse, $arrval, $fetchmode);
         return $ret;
     }
 
     /**
      * 直前に実行されたSQL文を取得する.
+     * SC_DBconn::getLastQuery() を利用.
      *
      * @param boolean $disp trueの場合、画面出力を行う.
      * @return string SQL文
      */
     function getLastQuery($disp = true) {
-        $sql = $this->conn->conn->last_query;
-        if($disp) {
-            print($sql.";<br />\n");
-        }
-        return $sql;
+        return $this->conn->getLastQuery($disp);
     }
 
     function commit() {
@@ -126,56 +121,39 @@ class SC_Query {
         $this->conn->query($str, $arrval);
     }
 
-    function autoselect($col, $table, $arrwhere = array(), $arrcon = array()) {
-        $strw = "";
-        $find = false;
-        foreach ($arrwhere as $key => $val) {
-            if(strlen($val) > 0) {
-                if(strlen($strw) <= 0) {
-                    $strw .= $key ." LIKE ?";
-                } else if(strlen($arrcon[$key]) > 0) {
-                    $strw .= " ". $arrcon[$key]. " " . $key ." LIKE ?";
-                } else {
-                    $strw .= " AND " . $key ." LIKE ?";
-                }
-
-                $arrval[] = $val;
-            }
-        }
-
-        if(strlen($strw) > 0) {
-            $sqlse = "SELECT $col FROM $table WHERE $strw ".$this->option;
-        } else {
-            $sqlse = "SELECT $col FROM $table ".$this->option;
-        }
-        $ret = $this->conn->getAll($sqlse, $arrval);
+    /**
+     * クエリを実行し、全ての行を返す
+     *
+     * @param string $sql SQL クエリ
+     * @param array $arrVal プリペアドステートメントの実行時に使用される配列。配列の要素数は、クエリ内のプレースホルダの数と同じでなければなりません。 
+     * @param integer $fetchmode 使用するフェッチモード。デフォルトは DB_FETCHMODE_ASSOC。
+     * @return array データを含む2次元配列。失敗した場合に 0 または DB_Error オブジェクトを返します。
+     */
+    function getAll($sql, $arrval = array(), $fetchmode = DB_FETCHMODE_ASSOC) {
+        $ret = $this->conn->getAll($sql, $arrval, $fetchmode);
         return $ret;
     }
 
-    function getall($sql, $arrval = array()) {
-        $ret = $this->conn->getAll($sql, $arrval);
-        return $ret;
-    }
+    function getSql($col, $table, $where = '') {
+        $sqlse = "SELECT $col FROM $table";
 
-    function getsql($col, $table, $where) {
-        if($where != "") {
-            // 引数の$whereを優先して実行する。
-            $sqlse = "SELECT $col FROM $table WHERE $where " . $this->groupby . " " . $this->order . " " . $this->option;
-        } else {
-            if($this->where != "") {
-                    $sqlse = "SELECT $col FROM $table WHERE $this->where " . $this->groupby . " " . $this->order . " " . $this->option;
-                } else {
-                    $sqlse = "SELECT $col FROM $table " . $this->groupby . " " . $this->order . " " . $this->option;
-            }
+        // 引数の$whereを優先する。
+        if (strlen($where) >= 1) {
+            $sqlse .= " WHERE $where";
+        } elseif (strlen($this->where) >= 1) {
+            $where = $this->where;
         }
+
+        $sqlse .= ' ' . $this->groupby . ' ' . $this->order . ' ' . $this->option;
+
         return $sqlse;
     }
 
-    function setoption($str) {
+    function setOption($str) {
         $this->option = $str;
     }
 
-    function setlimitoffset($limit, $offset = 0, $return = false) {
+    function setLimitOffset($limit, $offset = 0, $return = false) {
         if (is_numeric($limit) && is_numeric($offset)){
 
             $option = " LIMIT " . $limit;
@@ -189,8 +167,12 @@ class SC_Query {
         }
     }
 
-    function setgroupby($str) {
-        $this->groupby = "GROUP BY " . $str;
+    function setGroupBy($str) {
+        if (strlen($str) == 0) {
+            $this->groupby = '';
+        } else {
+            $this->groupby = "GROUP BY " . $str;
+        }
     }
 
     function andwhere($str) {
@@ -201,7 +183,7 @@ class SC_Query {
         }
     }
 
-    function orwhere($str) {
+    function orWhere($str) {
         if($this->where != "") {
             $this->where .= " OR " . $str;
         } else {
@@ -209,22 +191,26 @@ class SC_Query {
         }
     }
 
-    function setwhere($str) {
+    function setWhere($str) {
         $this->where = $str;
     }
 
-    function setorder($str) {
-        $this->order = "ORDER BY " . $str;
+    function setOrder($str) {
+        if (strlen($str) == 0) {
+            $this->order = '';
+        } else {
+            $this->order = "ORDER BY " . $str;
+        }
     }
 
 
-    function setlimit($limit){
+    function setLimit($limit){
         if ( is_numeric($limit)){
             $this->option = " LIMIT " .$limit;
         }
     }
 
-    function setoffset($offset) {
+    function setOffset($offset) {
         if ( is_numeric($offset)){
             $this->offset = " OFFSET " .$offset;
         }
@@ -248,14 +234,9 @@ class SC_Query {
             $strcol .= $key . ',';
             if(eregi("^Now\(\)$", $val)) {
                 $strval .= 'Now(),';
-            // 先頭に~があるとプレースホルダーしない。
             } else {
                 $strval .= '?,';
-                if($val != ""){
-                    $arrval[] = $val;
-                } else {
-                    $arrval[] = NULL;
-                }
+                $arrval[] = $val;
             }
             $find = true;
         }
@@ -273,163 +254,105 @@ class SC_Query {
         return $ret;
     }
 
-    // INSERT文の生成・実行
-    // $table   :テーブル名
-    // $sqlval  :列名 => 値の格納されたハッシュ配列
-    function fast_insert($table, $sqlval) {
-        $strcol = '';
-        $strval = '';
-        $find = false;
-
-        foreach ($sqlval as $key => $val) {
-                $strcol .= $key . ',';
-                if($val != ""){
-                    $eval = pg_escape_string($val);
-                    $strval .= "'$eval',";
-                } else {
-                    $strval .= "NULL,";
-                }
-                $find = true;
-        }
-        if(!$find) {
-            return false;
-        }
-        // 文末の","を削除
-        $strcol = ereg_replace(",$","",$strcol);
-        // 文末の","を削除
-        $strval = ereg_replace(",$","",$strval);
-        $sqlin = "INSERT INTO $table(" . $strcol. ") VALUES (" . $strval . ")";
-
-        // INSERT文の実行
-        $ret = $this->conn->query($sqlin);
-
-        return $ret;
-    }
-
     /**
      * UPDATE文を実行する.
      *
      * @param string $table テーブル名
      * @param array $sqlval array('カラム名' => '値',...)の連想配列
      * @param string $where WHERE句
-     * @param array $arradd $addcol用のプレースホルダ配列
-     * @param string $addcol 追加カラム
+     * @param array $arrValIn WHERE句用のプレースホルダ配列 (従来は追加カラム用も兼ねていた)
+     * @param array $arrRawSql 追加カラム
+     * @param array $arrRawSqlVal 追加カラム用のプレースホルダ配列
      * @return
      */
-    function update($table, $sqlval, $where = "", $arradd = "", $addcol = "") {
-        $strcol = '';
-        $strval = '';
+    function update($table, $sqlval, $where = "", $arrValIn = array(), $arrRawSql = array(), $arrRawSqlVal = array()) {
+        $arrCol = array();
+        $arrVal = array();
         $find = false;
         foreach ($sqlval as $key => $val) {
-            if(eregi("^Now\(\)$", $val)) {
-                $strcol .= $key . '= Now(),';
-            // 先頭に~があるとプレースホルダーしない。
+            if (eregi("^Now\(\)$", $val)) {
+                $arrCol[] = $key . '= Now()';
             } else {
-                $strcol .= $key . '= ?,';
-                if($val != ""){
-                    $arrval[] = $val;
-                } else {
-                    $arrval[] = NULL;
-                }
+                $arrCol[] = $key . '= ?';
+                $arrVal[] = $val;
             }
             $find = true;
         }
-        if(!$find) {
+
+        if ($arrRawSql != "") {
+            foreach($arrRawSql as $key => $val) {
+                $arrCol[] = "$key = $val";
+            }
+        }
+        
+        $arrVal = array_merge($arrVal, $arrRawSqlVal);
+        
+        if (empty($arrCol)) {
             return false;
         }
 
-        if($addcol != "") {
-            foreach($addcol as $key => $val) {
-                $strcol .= "$key = $val,";
-            }
-        }
-
         // 文末の","を削除
-        $strcol = ereg_replace(",$","",$strcol);
-        // 文末の","を削除
-        $strval = ereg_replace(",$","",$strval);
+        $strcol = implode(', ', $arrCol);
 
-        if($where != "") {
-            $sqlup = "UPDATE $table SET $strcol WHERE $where";
-        } else {
-            $sqlup = "UPDATE $table SET $strcol";
-        }
-
-        if(is_array($arradd)) {
+        if (is_array($arrValIn)) { // 旧版との互換用
             // プレースホルダー用に配列を追加
-            foreach($arradd as $val) {
-                $arrval[] = $val;
-            }
+            $arrVal = array_merge($arrVal, $arrValIn);
         }
 
-        // INSERT文の実行
-        $ret = $this->conn->query($sqlup, $arrval);
-        return $ret;
+        $sqlup = "UPDATE $table SET $strcol";
+        if (strlen($where) >= 1) {
+            $sqlup .= " WHERE $where";
+        }
+
+        // UPDATE文の実行
+        return $this->conn->query($sqlup, $arrVal);
     }
 
     // MAX文の実行
     function max($table, $col, $where = "", $arrval = array()) {
-        if(strlen($where) <= 0) {
-            $sqlse = "SELECT MAX($col) FROM $table";
-        } else {
-            $sqlse = "SELECT MAX($col) FROM $table WHERE $where";
-        }
-        // MAX文の実行
-        $ret = $this->conn->getOne($sqlse, $arrval);
+        $ret = $this->get($table, "MAX($col)", $where, $arrval);
         return $ret;
     }
 
     // MIN文の実行
     function min($table, $col, $where = "", $arrval = array()) {
-        if(strlen($where) <= 0) {
-            $sqlse = "SELECT MIN($col) FROM $table";
-        } else {
-            $sqlse = "SELECT MIN($col) FROM $table WHERE $where";
-        }
-        // MIN文の実行
-        $ret = $this->conn->getOne($sqlse, $arrval);
+        $ret = $this->get($table, "MIN($col)", $where, $arrval);
         return $ret;
     }
 
     // 特定のカラムの値を取得
     function get($table, $col, $where = "", $arrval = array()) {
-        if(strlen($where) <= 0) {
-            $sqlse = "SELECT $col FROM $table";
-        } else {
-            $sqlse = "SELECT $col FROM $table WHERE $where";
-        }
+        $sqlse = $this->getSql($col, $table, $where);
         // SQL文の実行
-        $ret = $this->conn->getOne($sqlse, $arrval);
+        $ret = $this->getOne($sqlse, $arrval);
         return $ret;
     }
 
-    function getone($sql, $arrval = array()) {
+    function getOne($sql, $arrval = array()) {
         // SQL文の実行
         $ret = $this->conn->getOne($sql, $arrval);
         return $ret;
-
     }
 
-    // 一行を取得
-    function getrow($table, $col, $where = "", $arrval = array()) {
-        if(strlen($where) <= 0) {
-            $sqlse = "SELECT $col FROM $table";
-        } else {
-            $sqlse = "SELECT $col FROM $table WHERE $where";
-        }
+    /**
+     * 一行をカラム名をキーとした連想配列として取得
+     *
+     * @param string $table テーブル名
+     * @param string $col カラム名
+     * @param string $where WHERE句
+     * @param array $arrVal プレースホルダ配列
+     * @param integer $fetchmode 使用するフェッチモード。デフォルトは DB_FETCHMODE_ASSOC。
+     * @return array array('カラム名' => '値', ...)の連想配列
+     */
+    function getRow($table, $col, $where = "", $arrVal = array(), $fetchmode = DB_FETCHMODE_ASSOC) {
+        $sqlse = $this->getSql($col, $table, $where);
         // SQL文の実行
-        $ret = $this->conn->getRow($sqlse, $arrval);
-
-        return $ret;
+        return $this->conn->getRow($sqlse, $arrVal ,$fetchmode);
     }
 
     // 1列取得
     function getCol($table, $col, $where = "", $arrval = array()) {
-        if (strlen($where) <= 0) {
-            $sqlse = "SELECT $col FROM $table";
-        } else {
-            $sqlse = "SELECT $col FROM $table WHERE $where";
-        }
+        $sqlse = $this->getSql($col, $table, $where);
         // SQL文の実行
         return $this->conn->getCol($sqlse, 0, $arrval);
     }

@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -74,18 +74,15 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page {
         case 'delete':
             // ランク付きレコードの削除
             $objDb->sfDeleteRankRecord("dtb_deliv", "deliv_id", $_POST['deliv_id']);
-            // 再表示
-            SC_Utils_Ex::sfReload();
+            $this->reload(); // PRG pattern
             break;
         case 'up':
             $objDb->sfRankUp("dtb_deliv", "deliv_id", $_POST['deliv_id']);
-            // 再表示
-            SC_Utils_Ex::sfReload();
+            $this->reload(); // PRG pattern
             break;
         case 'down':
             $objDb->sfRankDown("dtb_deliv", "deliv_id", $_POST['deliv_id']);
-            // 再表示
-            SC_Utils_Ex::sfReload();
+            $this->reload(); // PRG pattern
             break;
         default:
             break;
@@ -95,7 +92,7 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page {
         $col = "deliv_id, name, service_name";
         $where = "del_flg = 0";
         $table = "dtb_deliv";
-        $objQuery->setorder("rank DESC");
+        $objQuery->setOrder("rank DESC");
         $this->arrDelivList = $objQuery->select($col, $table, $where);
 
         $objView->assignobj($this);

@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -105,7 +105,7 @@ class SC_SelectSql {
             $this->setWhere( $column ." >= '" . $date1 . "'");
         }
 
-        //　開始〜終了
+        //　開始～終了
         if( ( $from_year != "" ) && ( $from_month != "" ) && ( $from_day != "" ) &&
             ( $to_year != "" ) && ( $to_month != "" ) && ( $to_day != "" ) ) {
             $this->setWhere( $column ." >= '" . $date1 ."' AND ". $column . " < date('" . $date2 . "')" );

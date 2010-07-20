@@ -1,7 +1,7 @@
 <!--{*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -53,7 +53,7 @@
            <!--{/if}-->
            <!--{assign var=quantity value=quantity`$id`}-->
 
-           <dt>個数：</dt>
+           <dt>数量：</dt>
            <dd><input type="text" name="<!--{$quantity}-->" size="3" class="box54" value="<!--{$arrForm[$quantity]|default:1}-->" maxlength="<!--{$smarty.const.INT_LEN}-->" style="<!--{$arrErr[$quantity]|sfGetErrorColor}-->" />
              <!--{if $arrErr[$quantity] != ""}-->
              <br /><span class="attention"><!--{$arrErr[$quantity]}--></span>

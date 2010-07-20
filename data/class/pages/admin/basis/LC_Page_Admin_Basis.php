@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -173,7 +173,6 @@ class LC_Page_Admin_Basis extends LC_Page {
         $objQuery = new SC_Query();
         $arrCol = $this->lfGetCol();
         foreach($arrCol as $val) {
-            //$sqlval[$val] = $array[$val];
             //配列の場合は、パイプ区切りの文字列に変換
             if(is_array($array[$val])) {
                 $sqlval[$val] = implode("|", $array[$val]);
@@ -259,8 +258,8 @@ class LC_Page_Admin_Basis extends LC_Page {
         $objErr->doFunc(array('メール送信元メールアドレス', "email03", STEXT_LEN) ,array("EXIST_CHECK", "EMAIL_CHECK", "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
         $objErr->doFunc(array('送信エラー受付メールアドレス', "email04", STEXT_LEN) ,array("EXIST_CHECK", "EMAIL_CHECK", "EMAIL_CHAR_CHECK","MAX_LENGTH_CHECK"));
         // 電話番号チェック
-        $objErr->doFunc(array("TEL", "tel01", "tel02", "tel03", TEL_ITEM_LEN), array("TEL_CHECK"));
-        $objErr->doFunc(array("FAX", "fax01", "fax02", "fax03", TEL_ITEM_LEN), array("TEL_CHECK"));
+        $objErr->doFunc(array("TEL", "tel01", "tel02", "tel03"), array("TEL_CHECK"));
+        $objErr->doFunc(array("FAX", "fax01", "fax02", "fax03"), array("TEL_CHECK"));
         // その他
         $objErr->doFunc(array("消費税率", "tax", PERCENTAGE_LEN), array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
         $objErr->doFunc(array("送料無料条件", "free_rule", PRICE_LEN), array("NUM_CHECK", "MAX_LENGTH_CHECK"));

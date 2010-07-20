@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -20,7 +20,15 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-$admin_require_php_dir = realpath(dirname( __FILE__));
-require_once($admin_require_php_dir . "/../define.php");
-require_once($admin_require_php_dir . "/../" . HTML2DATA_DIR . "require_base.php");
+
+// rtrim は PHP バージョン依存対策
+define('HTML_PATH', rtrim(realpath(rtrim(realpath(dirname(__FILE__)), '/\\') . '/../'), '/\\') . '/');
+define('ADMIN_FUNCTION', true);
+
+require_once HTML_PATH . 'handle_error.php';
+require_once HTML_PATH . 'define.php';
+
+require_once HTML_PATH . HTML2DATA_DIR . 'require_base.php';
+
+ob_start();
 ?>

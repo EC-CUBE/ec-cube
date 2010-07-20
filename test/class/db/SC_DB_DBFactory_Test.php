@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -22,8 +22,9 @@
  */
 
 // {{{ requires
-require_once($include_dir . "/../data/class/db_extends/SC_DB_DBFactory_Ex.php"); // FIXME
-require_once("PHPUnit/TestCase.php");
+require_once("../html/require.php");
+require_once("../data/class_extends/db_extends/SC_DB_DBFactory_Ex.php");
+require_once("PHPUnit/Framework.php");
 
 /**
  * SC_DB_DBFactory TestCase
@@ -32,7 +33,7 @@ require_once("PHPUnit/TestCase.php");
  * @author LOCKON CO.,LTD.
  * @version $Id:SC_DB_DBFactory_Test.php 15532 2007-08-31 14:39:46Z nanasess $
  */
-class SC_DB_DBFactory_Test extends PHPUnit_TestCase {
+class SC_DB_DBFactory_Test extends PHPUnit_Framework_TestCase {
 
     // }}}
     // {{{ functions

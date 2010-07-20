@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -293,7 +293,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
      *
      * FIXME エラーコード追加
      * @param array #arrCookies Cookie配列
-     * @retrun
+     * @return
      */
     function notifyDownload($mode, $arrCookies) {
         $arrPOSTParams = array(

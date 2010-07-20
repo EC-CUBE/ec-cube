@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -24,9 +24,13 @@
 // {{{ requires
 require_once(CLASS_PATH . "pages/LC_Page.php");
 
+/** ターゲットID 未使用 */
+define('TARGET_ID_UNUSED', 0);
+
 /**
  * デザイン管理 のページクラス.
  *
+ * ターゲットID 0:未使用 1:レフトナビ 2:ライトナビ 3:イン画面上部 4:メイン画面下部  5:画面上部 6:画面下部 7:ヘッダより上 8:フッタより下 9:HEADタグ内
  * @package Page
  * @author LOCKON CO.,LTD.
  * @version $Id$
@@ -78,11 +82,14 @@ class LC_Page_Admin_Design extends LC_Page {
         $this->arrEditPage = $objLayout->lfgetPageData();
 
         // ブロック配置用データを取得
-        $sel   = ", pos.target_id, pos.bloc_id, pos.bloc_row ";
+        $sel   = ", pos.target_id, pos.bloc_id, pos.bloc_row ,pos.anywhere";
         $from  = ", dtb_blocposition AS pos";
         $where = " where ";
-        $where .= " lay.page_id = ? AND ";
-        $where .= "lay.page_id = pos.page_id AND exists (select bloc_id from dtb_bloc as blc where pos.bloc_id = blc.bloc_id) ORDER BY lay.page_id,pos.target_id, pos.bloc_row, pos.bloc_id ";
+        $where .= "( pos.anywhere = 1 OR (lay.page_id = ? AND ";
+        $where .= "lay.page_id = pos.page_id AND exists (select bloc_id from dtb_bloc as blc where pos.bloc_id = blc.bloc_id) )) ORDER BY lay.page_id,pos.target_id, pos.bloc_row, pos.bloc_id ";
+        //        $where .= "((lay.page_id = ? AND ";
+        //        $where .= "lay.page_id = pos.page_id AND exists (select bloc_id from dtb_bloc as blc where pos.bloc_id = blc.bloc_id) )) ORDER BY lay.page_id,pos.target_id, pos.bloc_row, pos.bloc_id ";
+
         $arrData = array($page_id);
         $arrBlocPos = $this->lfgetLayoutData($sel, $from, $where, $arrData );
 
@@ -142,7 +149,9 @@ class LC_Page_Admin_Design extends LC_Page {
                 $arrUpdBlocData[$upd_cnt]['id']         = $_POST['id_'.$upd_cnt];                           // ブロックID
                 $arrUpdBlocData[$upd_cnt]['target_id']  = $arrTargetFlip[$_POST['target_id_'.$upd_cnt]];    // ターゲットID
                 $arrUpdBlocData[$upd_cnt]['top']        = $_POST['top_'.$upd_cnt];                          // TOP座標
+                $arrUpdBlocData[$upd_cnt]['anywhere']   = $_POST['anywhere_'.$upd_cnt];                     // 全ページ適用か
                 $arrUpdBlocData[$upd_cnt]['update_url'] = $_SERVER['HTTP_REFERER'];                         // 更新URL
+
             }
 
             // データの更新を行う
@@ -156,17 +165,14 @@ class LC_Page_Admin_Design extends LC_Page {
 
             // ブロックの順序を取得し、更新を行う
             foreach($arrUpdBlocData as $key => $val){
+                if ($arrUpdBlocData[$key]['target_id'] == TARGET_ID_UNUSED) {
+                    continue;
+                }
+
                 // ブロックの順序を取得
                 $bloc_row = $this->lfGetRowID($arrUpdBlocData, $val);
                 $arrUpdBlocData[$key]['bloc_row'] = $bloc_row;
                 $arrUpdBlocData[$key]['page_id']    =  $page_id;    // ページID
-
-                /*
-                ターゲットID 1:レフトナビ 2:ライトナビ 3:イン画面上部 4:メイン画面下部 5:欄外
-                */
-                if ($arrUpdBlocData[$key]['target_id'] == 5) {
-                    $arrUpdBlocData[$key]['bloc_row'] = "0";
-                }
 
                 // insert文生成
                 $ins_sql = "";
@@ -177,15 +183,31 @@ class LC_Page_Admin_Design extends LC_Page {
                 $ins_sql .= "   ,? ";           // ブロックID
                 $ins_sql .= "   ,? ";           // ブロックの並び順序
                 $ins_sql .= "   ,(SELECT filename FROM dtb_bloc WHERE bloc_id = ?) ";           // ファイル名称
+                $ins_sql .= "   ,? ";           // 全ページフラグ
                 $ins_sql .= "   )  ";
 
                 // insertデータ生成
                 $arrInsData = array($page_id,
-                                    $arrUpdBlocData[$key]['target_id'],
-                                    $arrUpdBlocData[$key]['id'],
-                                    $arrUpdBlocData[$key]['bloc_row'],
-                                    $arrUpdBlocData[$key]['id']
-                                    );
+                    $arrUpdBlocData[$key]['target_id'],
+                    $arrUpdBlocData[$key]['id'],
+                    $arrUpdBlocData[$key]['bloc_row'],
+                    $arrUpdBlocData[$key]['id'],
+                    $arrUpdBlocData[$key]['anywhere'] ? 1 : 0
+                );
+                $count = $objDBConn->getOne("SELECT COUNT(*) FROM dtb_blocposition WHERE anywhere = 1 AND bloc_id = ?",array($arrUpdBlocData[$key]['id']));
+
+                if($arrUpdBlocData[$key]['anywhere'] == 1){
+                    $count = $objDBConn->getOne("SELECT COUNT(*) FROM dtb_blocposition WHERE anywhere = 1 AND bloc_id = ?",array($arrUpdBlocData[$key]['id']));
+                    $objDBConn->getLastQuery();
+                    if($count != 0){
+                        continue;
+                    }else{
+                    }
+                }else{
+                    if($count > 0){
+                        $objDBConn->query("DELETE FROM dtb_blocposition WHERE anywhere = 1 AND bloc_id = ?",array($arrUpdBlocData[$key]['id']));
+                    }
+                }
                 // SQL実行
                 $arrRet = $objDBConn->query($ins_sql,$arrInsData);
             }
@@ -193,21 +215,21 @@ class LC_Page_Admin_Design extends LC_Page {
             // プレビュー処理
             if ($_POST['mode'] == 'preview') {
                 if ($page_id === "") {
-                    $this->sendRedirect($this->getLocation("./index.php"));
+                    $this->sendRedirect($this->getLocation(DIR_INDEX_URL));
                     exit;
                 }
                 $this->lfSetPreData($arrPageData, $objLayout);
 
                 $_SESSION['preview'] = "ON";
 
-                $this->sendRedirect($this->getLocation(URL_DIR . "preview/index.php", array("filename" => $arrPageData[0]["filename"])));
+                $this->sendRedirect($this->getLocation(URL_DIR . "preview/" . DIR_INDEX_URL, array("filename" => $arrPageData[0]["filename"])));
                 exit;
 
             }else{
-                $this->sendRedirect($this->getLocation("./index.php",
-                                            array("page_id" => $page_id,
+                $this->sendRedirect($this->getLocation(DIR_INDEX_URL,
+                array("page_id" => $page_id,
                                                   "msg" => "on")));
-				exit;
+                exit;
 
             }
         }
@@ -215,7 +237,7 @@ class LC_Page_Admin_Design extends LC_Page {
         // データ削除処理 ベースデータでなければファイルを削除
         if ($_POST['mode'] == 'delete' and  !$objLayout->lfCheckBaseData($page_id)) {
             $objLayout->lfDelPageData($page_id);
-            $this->sendRedirect($this->getLocation("./index.php"));
+            $this->sendRedirect($this->getLocation(DIR_INDEX_URL));
             exit;
         }
 
@@ -227,15 +249,17 @@ class LC_Page_Admin_Design extends LC_Page {
             if ($val['page_id'] == $page_id) {
                 $tpl_arrBloc = $this->lfSetBlocData($arrBloc, $val, $tpl_arrBloc, $cnt);
                 $cnt++;
+            }else{
             }
         }
 
         // 未使用のブロックデータを追加
         foreach($arrBloc as $key => $val){
             if (!$this->lfChkBloc($val, $tpl_arrBloc)) {
-                $val['target_id'] = 5;  // 未使用に追加する
+                $val['target_id'] = TARGET_ID_UNUSED; // 未使用に追加する
                 $tpl_arrBloc = $this->lfSetBlocData($arrBloc, $val, $tpl_arrBloc, $cnt);
                 $cnt++;
+            }else{
             }
         }
 
@@ -372,8 +396,11 @@ class LC_Page_Admin_Design extends LC_Page {
         $tpl_arrBloc[$cnt]['target_id'] = $arrTarget[$val['target_id']];
         $tpl_arrBloc[$cnt]['bloc_id'] = $val['bloc_id'];
         $tpl_arrBloc[$cnt]['bloc_row'] =
-            isset($val['bloc_row']) ? $val['bloc_row'] : "";
-
+        isset($val['bloc_row']) ? $val['bloc_row'] : "";
+        $tpl_arrBloc[$cnt]['anywhere'] = $val['anywhere'];
+        if($val['anywhere'] == 1){
+            $tpl_arrBloc[$cnt]['anywhere_selected'] = 'checked="checked"';
+        }
         foreach($arrBloc as $bloc_key => $bloc_val){
             if ($bloc_val['bloc_id'] == $val['bloc_id']) {
                 $bloc_name = $bloc_val['bloc_name'];
@@ -446,12 +473,16 @@ class LC_Page_Admin_Design extends LC_Page {
             unlink($del_tpl);
         }
 
-        $tplfile = TEMPLATE_DIR . $filename;
-
         // filename が空の場合にはMYページと判断
         if($filename == ""){
             $tplfile = TEMPLATE_DIR . "mypage/index";
             $filename = 'mypage';
+        } else {
+            if (file_exists(TEMPLATE_FTP_DIR . $filename . ".tpl")) {
+                $tplfile = TEMPLATE_FTP_DIR . $filename;
+            } else {
+                $tplfile = TEMPLATE_DIR . $filename;
+            }
         }
 
         // プレビュー用tplファイルのコピー
@@ -464,7 +495,8 @@ class LC_Page_Admin_Design extends LC_Page {
         copy($tplfile . ".tpl", $copyTo);
 
         // 更新データの取得
-        $sql = "select page_name, header_chk, footer_chk from dtb_pagelayout where page_id = ?";
+        $sql = "select page_id,page_name, header_chk, footer_chk from dtb_pagelayout where page_id = ? OR page_id = (SELECT page_id FROM dtb_blocposition WHERE anywhere = 1)" ;
+        
         $ret = $objDBConn->getAll($sql, array($arrPageData[0]['page_id']));
 
         // dbデータのコピー
@@ -475,15 +507,20 @@ class LC_Page_Admin_Design extends LC_Page {
         $sql .= "     ,url = ?";
         $sql .= "     ,tpl_dir = ?";
         $sql .= "     ,filename = ?";
+//      $sql .= "     ,anywhere = ?";
         $sql .= " where page_id = 0";
+        var_dump($ret);
+                echo("####<br/>\n\n".__LINE__ ." in file:".__FILE__."<br/>\n\n ####");
 
         $arrUpdData = array($ret[0]['page_id']
-                            ,$ret[0]['page_id']
-                            ,$ret[0]['page_id']
-                            ,USER_DIR . "templates/" . TEMPLATE_NAME . "/"
-                            ,USER_DIR . "templates/" . TEMPLATE_NAME . "/"
-                            ,$filename
-                            );
+        ,$ret[0]['page_id']
+        ,$ret[0]['page_id']
+        ,USER_DIR . "templates/" . TEMPLATE_NAME . "/"
+        ,USER_DIR . "templates/" . TEMPLATE_NAME . "/"
+        ,$filename
+//      ,$ret[0]['anywhere']
+         
+        );
 
         $objDBConn->query($sql,$arrUpdData);
     }

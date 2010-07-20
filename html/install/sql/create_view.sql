@@ -1,50 +1,62 @@
 CREATE VIEW vw_cross_class as
-     SELECT T1.class_id AS class_id1,
-            T2.class_id AS class_id2,
-            T1.classcategory_id AS classcategory_id1,
-            T2.classcategory_id AS classcategory_id2,
-            T1.name AS name1,
-            T2.name AS name2,
-            T1.rank AS rank1,
-            T2.rank AS rank2
-       FROM dtb_classcategory AS T1,
-            dtb_classcategory AS T2;
+    SELECT
+        T1.class_id AS class_id1,
+        T2.class_id AS class_id2,
+        T1.classcategory_id AS classcategory_id1,
+        T2.classcategory_id AS classcategory_id2,
+        T1.name AS name1,
+        T2.name AS name2,
+        T1.rank AS rank1,
+        T2.rank AS rank2
+    FROM
+        dtb_classcategory AS T1,
+        dtb_classcategory AS T2
+;
 
 CREATE VIEW vw_cross_products_class AS
-     SELECT T1.class_id1,
-            T1.class_id2,
-            T1.classcategory_id1,
-            T1.classcategory_id2,
-            T2.product_id,
-            T1.name1,
-            T1.name2,
-            T2.product_code,
-            T2.stock,
-            T2.price01,
-            T2.price02,
-            T1.rank1,
-            T1.rank2
-       FROM vw_cross_class AS T1
-  LEFT JOIN dtb_products_class AS T2
-         ON T1.classcategory_id1 = T2.classcategory_id1
-        AND T1.classcategory_id2 = T2.classcategory_id2;
+    SELECT
+        T1.class_id1,
+        T1.class_id2,
+        T1.classcategory_id1,
+        T1.classcategory_id2,
+        T2.product_id,
+        T1.name1,
+        T1.name2,
+        T2.product_code,
+        T2.stock,
+        T2.price01,
+        T2.price02,
+        T1.rank1,
+        T1.rank2
+    FROM
+        vw_cross_class AS T1
+        LEFT JOIN dtb_products_class AS T2
+            ON T1.classcategory_id1 = T2.classcategory_id1
+            AND T1.classcategory_id2 = T2.classcategory_id2
+;
 
 CREATE VIEW vw_products_nonclass AS
-     SELECT *
-      FROM dtb_products AS T1 LEFT JOIN
-      (SELECT
-              product_id AS product_id_sub,
-              product_code,
-              price01,
-              price02,
-              stock,
-              stock_unlimited,
-              classcategory_id1,
-              classcategory_id2
-         FROM dtb_products_class
-        WHERE classcategory_id1 = 0
-          AND classcategory_id2 = 0) AS T2
-        ON T1.product_id = T2.product_id_sub;
+    SELECT *
+    FROM
+        dtb_products AS T1
+        LEFT JOIN
+        (
+            SELECT
+                product_id AS product_id_sub,
+                product_code,
+                price01,
+                price02,
+                stock,
+                stock_unlimited,
+                classcategory_id1,
+                classcategory_id2
+            FROM dtb_products_class
+            WHERE
+                classcategory_id1 = 0
+                AND classcategory_id2 = 0
+        ) AS T2
+        ON T1.product_id = T2.product_id_sub
+;
 
 CREATE VIEW vw_products_allclass_detail AS
     SELECT
@@ -52,11 +64,11 @@ CREATE VIEW vw_products_allclass_detail AS
         dtb_products."name",
         dtb_products.deliv_fee,
         dtb_products.sale_limit,
+        dtb_products.maker_id,
         dtb_products.rank,
         dtb_products.status,
         dtb_products.product_flag,
         dtb_products.point_rate,
-        dtb_products.sale_unlimited,
         dtb_products.comment1,
         dtb_products.comment2,
         dtb_products.comment3,
@@ -170,11 +182,11 @@ CREATE VIEW vw_product_class AS
               price02,
               stock_unlimited,
               product_code
-         FROM (dtb_products_class AS T1
+         FROM (dtb_products_class AS T1 
     LEFT JOIN dtb_classcategory AS T2
-           ON T1.classcategory_id1 = T2.classcategory_id) AS T3
+           ON T1.classcategory_id1 = T2.classcategory_id) AS T3 
   LEFT JOIN dtb_classcategory AS T4
-         ON T3.classcategory_id2 = T4.classcategory_id) AS T5
+         ON T3.classcategory_id2 = T4.classcategory_id) AS T5 
   LEFT JOIN dtb_products AS T6
          ON product_id_sub = T6.product_id;
 
@@ -185,7 +197,7 @@ CREATE VIEW vw_category_count AS
             T1.level,
             T1.rank,
             T2.product_count
-       FROM dtb_category AS T1
+       FROM dtb_category AS T1 
   LEFT JOIN dtb_category_total_count AS T2
          ON T1.category_id = T2.category_id
-
+;

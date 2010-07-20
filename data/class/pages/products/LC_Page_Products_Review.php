@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -60,6 +60,7 @@ class LC_Page_Products_Review extends LC_Page {
         $this->arrRECOMMEND = $masterData->getMasterData("mtb_recommend");
         $this->arrSex = $masterData->getMasterData("mtb_sex");
         $this->arrReviewDenyURL = $masterData->getMasterData("mtb_review_deny_url");
+        $this->httpCacheControl('nocache');
     }
 
     /**
@@ -104,7 +105,7 @@ class LC_Page_Products_Review extends LC_Page {
             }
 
             //エラーチェック
-            if($this->arrErr == ""){
+            if (empty($this->arrErr)) {
                 //重複タイトルでない
                 if($flag == 0){
                     //商品名の取得
@@ -137,7 +138,7 @@ class LC_Page_Products_Review extends LC_Page {
             //重複メッセージの判定
             $flag = $objQuery->count("dtb_review","product_id = ? AND title = ? ", array($arrForm['product_id'], $arrForm['title']));
             //エラーチェック
-            if ($arrErr == ""){
+            if (empty($this->arrErr)) {
                 //重複タイトルでない
                 if($flag == 0) {
                     //登録実行
@@ -186,7 +187,7 @@ class LC_Page_Products_Review extends LC_Page {
         $objErr = new SC_CheckError();
         $objErr->doFunc(array("商品ID", "product_id", INT_LEN), array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
         $objErr->doFunc(array("投稿者名", "reviewer_name", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("URL", "reviewer_url", MTEXT_LEN), array("NO_SPTAB", "SPTAB_CHECK", "MAX_LENGTH_CHECK", "URL_CHECK"));
+        $objErr->doFunc(array("投稿者URL", "reviewer_url", MTEXT_LEN), array("NO_SPTAB", "SPTAB_CHECK", "MAX_LENGTH_CHECK", "URL_CHECK"));
         $objErr->doFunc(array("おすすめレベル", "recommend_level"), array("SELECT_CHECK"));
         $objErr->doFunc(array("タイトル", "title", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $objErr->doFunc(array("コメント", "comment", LTEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));

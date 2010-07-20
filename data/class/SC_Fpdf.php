@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -27,14 +27,13 @@
  *----------------------------------------------------------------------
  */
 
-require(DATA_PATH . 'module/pdf/japanese.php');
-define('PDF_IMG_DIR', HTML_PATH. USER_DIR. USER_PACKAGE_DIR. TEMPLATE_NAME. '/img/pdf/');
+require(DATA_PATH . 'pdf/japanese.php');
+define('PDF_TEMPLATE_DIR', DATA_PATH . 'pdf/');
 
 class SC_Fpdf {
     function SC_Fpdf($download, $title, $tpl_pdf = "template_nouhin01.pdf") {
-        $this->arrData = $arrData;
         // デフォルトの設定
-        $this->tpl_pdf = PDF_DIR . $tpl_pdf;  // テンプレートファイル
+        $this->tpl_pdf = PDF_TEMPLATE_DIR . $tpl_pdf;  // テンプレートファイル
         $this->pdf_download = $download;      // PDFのダウンロード形式（0:表示、1:ダウンロード）
         $this->tpl_title = $title;
         $this->tpl_dispmode = "real";      // 表示モード
@@ -48,9 +47,9 @@ class SC_Fpdf {
         $this->label_cell[] = $this->sjis_conv("金額(税込)");
 
         $this->arrMessage = array(
-          'このたびはお買上げいただきありがとうございます。',
-          '下記の内容にて納品させていただきます。',
-          'ご確認いただきますよう、お願いいたします。'
+            'このたびはお買上げいただきありがとうございます。',
+            '下記の内容にて納品させていただきます。',
+            'ご確認いただきますよう、お願いいたします。'
         );
 
         $this->pdf  = new PDF_Japanese();
@@ -68,7 +67,6 @@ class SC_Fpdf {
         $pageno = $this->pdf->setSourceFile($this->tpl_pdf);
     }
 
-
     function setData($arrData) {
         $this->arrData = $arrData;
 
@@ -81,9 +79,9 @@ class SC_Fpdf {
         //表示倍率(100%)
         $this->pdf->SetDisplayMode($this->tpl_dispmode);
 
-        if(SC_Utils_Ex::sfIsInt($arrData['order_id'])) {
-          $this->disp_mode = true;
-          $order_id = $arrData['order_id'];
+        if (SC_Utils_Ex::sfIsInt($arrData['order_id'])) {
+            $this->disp_mode = true;
+            $order_id = $arrData['order_id'];
         }
 
         // テンプレート内容の位置、幅を調整 ※useTemplateに引数を与えなければ100%表示がデフォルト
@@ -112,7 +110,8 @@ class SC_Fpdf {
         $this->lfText(125, 77, $arrInfo['law_addr02'], 8);          //住所2
 
         $text = "TEL: ".$arrInfo['law_tel01']."-".$arrInfo['law_tel02']."-".$arrInfo['law_tel03'];
-        if ( strlen($arrInfo['law_fax01']) > 0 && strlen($arrInfo['law_fax02']) > 0 && strlen($arrInfo['law_fax03']) > 0 ) {
+        //FAX番号が存在する場合、表示する
+        if (strlen($arrInfo['law_fax01']) > 0) {
             $text .= "　FAX: ".$arrInfo['law_fax01']."-".$arrInfo['law_fax02']."-".$arrInfo['law_fax03'];
         }
         $this->lfText(125, 80, $text, 8);  //TEL・FAX
@@ -123,7 +122,7 @@ class SC_Fpdf {
         }
 
         //ロゴ画像
-        $logo_file = PDF_IMG_DIR . 'logo.png';
+        $logo_file = PDF_TEMPLATE_DIR . 'logo.png';
         $this->pdf->Image($logo_file, 124, 46, 40);
     }
 
@@ -137,9 +136,6 @@ class SC_Fpdf {
     }
 
     function setOrderData() {
-        // ショップ情報
-        $objInfo = new SC_SiteInfo();
-        $arrInfo = $objInfo->data;
         // DBから受注情報を読み込む
         $this->lfGetOrderData($this->arrData['order_id']);
 
@@ -175,33 +171,33 @@ class SC_Fpdf {
         $this->pdf->SetFont('SJIS', '', 8);
 
         $monetary_unit = $this->sjis_conv("円");
-        $point_unit = $this->sjis_conv("pt");
+        $point_unit = $this->sjis_conv("Pt");
 
         // 購入商品情報
         for ($i = 0; $i < count($this->arrDisp['quantity']); $i++) {
 
-          // 購入数量
-          $data[0] = $this->arrDisp['quantity'][$i];
+            // 購入数量
+            $data[0] = $this->arrDisp['quantity'][$i];
 
-          // 税込金額（単価）
-          $data[1] = SC_Utils_Ex::sfPreTax($this->arrDisp['price'][$i], $arrInfo['tax'], $arrInfo['tax_rule']);
+            // 税込金額（単価）
+            $data[1] = SC_Helper_DB_Ex::sfPreTax($this->arrDisp['price'][$i]);
 
-          // 小計（商品毎）
-          $data[2] = $data[0] * $data[1];
+            // 小計（商品毎）
+            $data[2] = $data[0] * $data[1];
 
-          $arrOrder[$i][0]  = $this->sjis_conv($this->arrDisp['product_name'][$i]." / ");
-          $arrOrder[$i][0] .= $this->sjis_conv($this->arrDisp['product_code'][$i]." / ");
-          if($this->arrDisp['classcategory_name1'][$i]) {
-            $arrOrder[$i][0] .= $this->sjis_conv(" [ ".$this->arrDisp['classcategory_name1'][$i]);
-            if($this->arrDisp['classcategory_name2'][$i] == "") {
-              $arrOrder[$i][0] .= " ]";
-            } else {
-              $arrOrder[$i][0] .= $this->sjis_conv(" * ".$this->arrDisp['classcategory_name2'][$i]." ]");
+            $arrOrder[$i][0]  = $this->sjis_conv($this->arrDisp['product_name'][$i]." / ");
+            $arrOrder[$i][0] .= $this->sjis_conv($this->arrDisp['product_code'][$i]." / ");
+            if ($this->arrDisp['classcategory_name1'][$i]) {
+                $arrOrder[$i][0] .= $this->sjis_conv(" [ ".$this->arrDisp['classcategory_name1'][$i]);
+                if ($this->arrDisp['classcategory_name2'][$i] == "") {
+                    $arrOrder[$i][0] .= " ]";
+                } else {
+                    $arrOrder[$i][0] .= $this->sjis_conv(" * ".$this->arrDisp['classcategory_name2'][$i]." ]");
+                }
             }
-          }
-          $arrOrder[$i][1]  = number_format($data[0]);
-          $arrOrder[$i][2]  = number_format($data[1]).$monetary_unit;
-          $arrOrder[$i][3]  = number_format($data[2]).$monetary_unit;
+            $arrOrder[$i][1]  = number_format($data[0]);
+            $arrOrder[$i][2]  = number_format($data[1]).$monetary_unit;
+            $arrOrder[$i][3]  = number_format($data[2]).$monetary_unit;
 
         }
 
@@ -240,31 +236,31 @@ class SC_Fpdf {
         $arrOrder[$i][2] = $this->sjis_conv("請求金額");
         $arrOrder[$i][3] = number_format($this->arrDisp['payment_total']).$monetary_unit;
 
-        $i++;
-        $arrOrder[$i][0] = "";
-        $arrOrder[$i][1] = "";
-        $arrOrder[$i][2] = "";
-        $arrOrder[$i][3] = "";
-
         // ポイント表記
         if ($this->arrData['disp_point'] && $this->arrDisp['customer_id']) {
-          $i++;
-          $arrOrder[$i][0] = "";
-          $arrOrder[$i][1] = "";
-          $arrOrder[$i][2] = $this->sjis_conv("利用ポイント");
-          $arrOrder[$i][3] = number_format($this->arrDisp['use_point']).$point_unit;
+            $i++;
+            $arrOrder[$i][0] = "";
+            $arrOrder[$i][1] = "";
+            $arrOrder[$i][2] = "";
+            $arrOrder[$i][3] = "";
 
-          $i++;
-          $arrOrder[$i][0] = "";
-          $arrOrder[$i][1] = "";
-          $arrOrder[$i][2] = $this->sjis_conv("加算ポイント");
-          $arrOrder[$i][3] = number_format($this->arrDisp['add_point']).$point_unit;
+            $i++;
+            $arrOrder[$i][0] = "";
+            $arrOrder[$i][1] = "";
+            $arrOrder[$i][2] = $this->sjis_conv("利用ポイント");
+            $arrOrder[$i][3] = number_format($this->arrDisp['use_point']).$point_unit;
 
-          $i++;
-          $arrOrder[$i][0] = "";
-          $arrOrder[$i][1] = "";
-          $arrOrder[$i][2] = $this->sjis_conv("所有ポイント");
-          $arrOrder[$i][3] = number_format($this->arrDisp['point']).$point_unit;
+            $i++;
+            $arrOrder[$i][0] = "";
+            $arrOrder[$i][1] = "";
+            $arrOrder[$i][2] = $this->sjis_conv("加算ポイント");
+            $arrOrder[$i][3] = number_format($this->arrDisp['add_point']).$point_unit;
+
+            $i++;
+            $arrOrder[$i][0] = "";
+            $arrOrder[$i][1] = "";
+            $arrOrder[$i][2] = $this->sjis_conv("所有ポイント");
+            $arrOrder[$i][3] = number_format($this->arrDisp['point']).$point_unit;
         }
 
         $this->pdf->FancyTable($this->label_cell, $arrOrder, $this->width_cell);
@@ -281,13 +277,17 @@ class SC_Fpdf {
 
     function createPdf() {
         // PDFをブラウザに送信
-ob_clean();
-        if ($this->pdf->PageNo() == 1) {
-            $filename = "nouhinsyo-No".$this->arrData['order_id'].".pdf";
-          } else {
-            $filename = "nouhinsyo.pdf";
-          }
-          $this->pdf->Output($this->sjis_conv($filename), D);
+        ob_clean();
+        if ($this->pdf_download == 1) {
+            if ($this->pdf->PageNo() == 1) {
+                $filename = "nouhinsyo-No".$this->arrData['order_id'].".pdf";
+            } else {
+                $filename = "nouhinsyo.pdf";
+            }
+            $this->pdf->Output($this->sjis_conv($filename), D);
+        } else {
+            $this->pdf->Output();
+        }
 
         // 入力してPDFファイルを閉じる
         $this->pdf->Close();
@@ -301,7 +301,6 @@ ob_clean();
         $this->pdf->Text($x, $y, $text);
     }
 
-
     // 受注データの取得
     function lfGetOrderData($order_id) {
         if(SC_Utils_Ex::sfIsInt($order_id)) {
@@ -309,13 +308,9 @@ ob_clean();
             $objQuery = new SC_Query();
             $where = "order_id = ?";
             $arrRet = $objQuery->select("*", "dtb_order", $where, array($order_id));
-            #$objFormParam->setParam($arrRet[0]);
-            list($point, $total_point) = SC_Helper_DB_Ex::sfGetCustomerPoint($order_id, $arrRet[0]['use_point'], $arrRet[0]['add_point']);
-            #$objFormParam->setValue('total_point', $total_point);
-            #$objFormParam->setValue('point', $point);
-            $arrRet[0]['total_point'] = $total_point;
-            $arrRet[0]['point'] = $point;
             $this->arrDisp = $arrRet[0];
+            list($point) = SC_Helper_DB_Ex::sfGetCustomerPoint($order_id, $arrRet[0]['use_point'], $arrRet[0]['add_point']);
+            $this->arrDisp['point'] = $point;
 
             // 受注詳細データの取得
             $arrRet = $this->lfGetOrderDetail($order_id);
@@ -337,19 +332,18 @@ ob_clean();
 
     // 受注詳細データの取得
     function lfGetOrderDetail($order_id) {
-      $objQuery = new SC_Query();
-      $col = "product_id, classcategory_id1, classcategory_id2, product_code, product_name, classcategory_name1, classcategory_name2, price, quantity, point_rate";
-      $where = "order_id = ?";
-      $objQuery->setorder("classcategory_id1, classcategory_id2");
-      $arrRet = $objQuery->select($col, "dtb_order_detail", $where, array($order_id));
-      return $arrRet;
+        $objQuery = new SC_Query();
+        $col = "product_id, classcategory_id1, classcategory_id2, product_code, product_name, classcategory_name1, classcategory_name2, price, quantity, point_rate";
+        $where = "order_id = ?";
+        $objQuery->setOrder("classcategory_id1, classcategory_id2");
+        $arrRet = $objQuery->select($col, "dtb_order_detail", $where, array($order_id));
+        return $arrRet;
     }
 
-    // 文字コードSJIS変換 -> japanese.phpで使用出来る文字コードはSJISのみ
+    // 文字コードSJIS変換 -> japanese.phpで使用出来る文字コードはSJIS-winのみ
     function sjis_conv($conv_str) {
-      return (mb_convert_encoding($conv_str, "SJIS", CHAR_CODE));
+        return (mb_convert_encoding($conv_str, "SJIS-win", CHAR_CODE));
     }
-
 
 }
 ?>

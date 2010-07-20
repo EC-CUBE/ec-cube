@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -59,7 +59,7 @@ class LC_Page_Cart extends LC_Page {
         parent::init();
         $this->tpl_mainpage = 'cart/index.tpl';
         $this->tpl_column_num = 1;
-        $this->tpl_title = "カゴの中を見る";
+        $this->tpl_title = "現在のカゴの中";
     }
 
     /**
@@ -76,9 +76,7 @@ class LC_Page_Cart extends LC_Page {
         $objCampaignSess = new SC_CampaignSession();
         $objSiteInfo = $objView->objSiteInfo;
         $objCustomer = new SC_Customer();
-        $db = new SC_Helper_DB_Ex();
-        // 基本情報の取得
-        $arrInfo = $objSiteInfo->data;
+        $objDb = new SC_Helper_DB_Ex();
 
         // 商品購入中にカート内容が変更された。
         if($objCartSess->getCancelPurchase()) {
@@ -87,21 +85,18 @@ class LC_Page_Cart extends LC_Page {
 
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
-        /*
-         * FIXME reload() を使った方が良いが無限ループしてしまう...
-         */
         switch($_POST['mode']) {
         case 'up':
             $objCartSess->upQuantity($_POST['cart_no']);
-            SC_Utils_Ex::sfReload();
+            $this->reload(); // PRG pattern
             break;
         case 'down':
             $objCartSess->downQuantity($_POST['cart_no']);
-            SC_Utils_Ex::sfReload();
+            $this->reload(); // PRG pattern
             break;
         case 'delete':
             $objCartSess->delProduct($_POST['cart_no']);
-            SC_Utils_Ex::sfReload();
+            $this->reload(); // PRG pattern
             break;
         case 'confirm':
             // カート内情報の取得
@@ -110,7 +105,7 @@ class LC_Page_Cart extends LC_Page {
             $cnt = 0;
             for ($i = 0; $i < $max; $i++) {
                 // 商品規格情報の取得
-                $this->arrData = $db->sfGetProductsClass($arrRet[$i]['id']);
+                $this->arrData = $objDb->sfGetProductsClass($arrRet[$i]['id']);
                 // DBに存在する商品
                 if($this->arrData != "") {
                     $cnt++;
@@ -143,10 +138,11 @@ class LC_Page_Cart extends LC_Page {
         }
 
         // カート集計処理
-        $db->sfTotalCart($this, $objCartSess, $arrInfo);
-        $this->arrData = $db->sfTotalConfirm($this->arrData, $this, $objCartSess, $arrInfo, $objCustomer);
+        $objDb->sfTotalCart($this, $objCartSess);
+        $this->arrData = $objDb->sfTotalConfirm($this->arrData, $this, $objCartSess, null, $objCustomer);
 
-        $this->arrInfo = $arrInfo;
+        // 基本情報の取得
+        $this->arrInfo = $objSiteInfo->data;
 
         // ログイン判定
         if($objCustomer->isLoginSuccess()) {
@@ -183,8 +179,7 @@ class LC_Page_Cart extends LC_Page {
     function mobileProcess() {
 
         // 買い物を続ける場合
-        if (!isset($_REQUEST['continue'])) $_REQUEST['continue'] = "";
-        if($_REQUEST['continue']) {
+        if ($_REQUEST['mode'] == 'continue') {
             $this->sendRedirect($this->getLocation(MOBILE_URL_SITE_TOP), true);
             exit;
         }
@@ -196,15 +191,10 @@ class LC_Page_Cart extends LC_Page {
         $objCustomer = new SC_Customer();
         $objDb = new SC_Helper_DB_Ex();
 
-        // 基本情報の取得
-        $arrInfo = $objSiteInfo->data;
-
         // 商品購入中にカート内容が変更された。
         if($objCartSess->getCancelPurchase()) {
             $this->tpl_message = "商品購入中にｶｰﾄ内容が変更されましたので､お手数ですが購入手続きをやり直して下さい｡";
         }
-
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
         switch($_POST['mode']) {
         case 'confirm':
@@ -270,10 +260,11 @@ class LC_Page_Cart extends LC_Page {
         if (empty($arrData)) {
             $arrData = array();
         }
-        $objDb->sfTotalCart($this, $objCartSess, $arrInfo);
-        $this->arrData = $objDb->sfTotalConfirm($arrData, $this, $objCartSess, $arrInfo, $objCustomer);
+        $objDb->sfTotalCart($this, $objCartSess);
+        $this->arrData = $objDb->sfTotalConfirm($arrData, $this, $objCartSess, null, $objCustomer);
 
-        $this->arrInfo = $arrInfo;
+        // 基本情報の取得
+        $this->arrInfo = $objSiteInfo->data;
 
         // ログイン判定
         if($objCustomer->isLoginSuccess(true)) {

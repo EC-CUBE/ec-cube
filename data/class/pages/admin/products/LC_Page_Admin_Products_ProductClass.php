@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -25,7 +25,7 @@
 require_once(CLASS_PATH . "pages/LC_Page.php");
 
 /**
- * 商品登録(規格)のページクラス.
+ * 商品登録(商品規格)のページクラス.
  *
  * @package Page
  * @author LOCKON CO.,LTD.
@@ -47,7 +47,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
         $this->tpl_subnavi = 'products/subnavi.tpl';
         $this->tpl_mainno = 'products';
         $this->tpl_subno = 'product';
-        $this->tpl_subtitle = '商品登録';
+        $this->tpl_subtitle = '商品登録(商品規格)';
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrSRANK = $masterData->getMasterData("mtb_srank");
@@ -83,9 +83,10 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
         switch($_POST['mode']) {
-            // 規格削除要求
+        // 規格削除要求
         case 'delete':
             $objQuery = new SC_Query();
+            $objDb = new SC_Helper_DB_Ex();
 
             $objQuery->setLimitOffset(1);
             $where = "product_id = ? AND NOT (classcategory_id1 = 0 AND classcategory_id2 = 0)";
@@ -112,11 +113,17 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
 
                 $objQuery->commit();
             }
-
+            
+	        // 在庫無し商品の非表示対応
+	        if (NOSTOCK_HIDDEN === true) {
+	            // 件数カウントバッチ実行
+	            $objDb->sfCategory_Count($objQuery);
+	        }
+            
             $this->lfProductClassPage();   // 規格登録ページ
             break;
 
-            // 編集要求
+        // 編集要求
         case 'pre_edit':
             $objQuery = new SC_Query();
             $where = "product_id = ? AND NOT(classcategory_id1 = 0 AND classcategory_id2 = 0) ";
@@ -128,7 +135,8 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
             }
             $this->lfProductClassPage();   // 規格登録ページ
             break;
-            // 規格組み合わせ表示
+            
+        // 規格組み合わせ表示
         case 'disp':
             $this->arrForm['select_class_id1'] = $_POST['select_class_id1'];
             $this->arrForm['select_class_id2'] = $_POST['select_class_id2'];
@@ -140,7 +148,8 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
             }
             $this->lfProductClassPage();   // 規格登録ページ
             break;
-            // 規格登録要求
+            
+        // 規格登録要求
         case 'edit':
             // 入力値の変換
             $this->arrForm = $this->lfConvertParam($_POST);
@@ -157,7 +166,8 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
                 $this->lfProductClassPage();   // 規格登録ページ
             }
             break;
-            // 確認ページからの戻り
+            
+        // 確認ページからの戻り
         case 'confirm_return':
             // フォームパラメータの引き継ぎ
             $this->arrForm = $_POST;
@@ -168,12 +178,14 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
             $this->arrClassCat = $this->lfGetClassCatListDisp($_POST['class_id1'], $_POST['class_id2'], false);
             $this->lfProductClassPage();   // 規格登録ページ
             break;
+            
         case 'complete':
             // 完了ページ設定
             $this->tpl_mainpage = 'products/product_class_complete.tpl';
             // 商品規格の登録
             $this->lfInsertProductClass($_POST, $_POST['product_id']);
             break;
+            
         default:
             $this->lfProductClassPage();   // 規格登録ページ
             break;
@@ -203,7 +215,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
 
         // 規格分類が登録されていない規格は表示しないようにする。
         $arrClassCatCount = SC_Utils_Ex::sfGetClassCatCount();
-        if( count($arrClass) > 0 ){
+        if (count($arrClass) > 0) {
             foreach($arrClass as $key => $val) {
                 if($arrClassCatCount[$key] > 0) {
                     $this->arrClass[$key] = $arrClass[$key];
@@ -215,7 +227,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
         $product_name = $objQuery->getOne("SELECT name FROM dtb_products WHERE product_id = ?", array($_POST['product_id']));
         $this->arrForm['product_name'] = $product_name;
     }
-
+    
     /**
      * デフォルトの表示
      *
@@ -252,14 +264,14 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
             $sql = "SELECT * ";
             $sql.= "FROM vw_cross_class AS crs_cls ";
             $sql.= "WHERE class_id1 = ? AND class_id2 = ? ORDER BY rank1 DESC, rank2 DESC;";
-            $arrRet = $objQuery->getall($sql, array($class_id1, $class_id2));
+            $arrRet = $objQuery->getAll($sql, array($class_id1, $class_id2));
         } else {
             // 規格1のみ
             $sql = "SELECT * ";
             $sql.= "FROM vw_cross_class AS crs_cls ";
             $sql.= "WHERE class_id1 = ? AND class_id2 = 0 ORDER BY rank1 DESC;";
-            $arrRet = $objQuery->getall($sql, array($class_id1));
-
+            $arrRet = $objQuery->getAll($sql, array($class_id1));
+            
         }
 
         $max = count($arrRet);
@@ -333,6 +345,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
     /* 規格の登録 */
     function lfInsertProductClass($arrList, $product_id) {
         $objQuery = new SC_Query();
+        $objDb = new SC_Helper_DB_Ex();
 
         $objQuery->begin();
 
@@ -353,7 +366,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
                 }
                 $sqlval['product_code'] = $arrList["product_code:".$cnt];
                 $sqlval['stock'] = $arrList["stock:".$cnt];
-                $sqlval['stock_unlimited'] = $arrList["stock_unlimited:".$cnt];
+                $sqlval['stock_unlimited'] = ($arrList["stock_unlimited:".$cnt]) ? '1' : '0';
                 $sqlval['price01'] = $arrList['price01:'.$cnt];
                 $sqlval['price02'] = $arrList['price02:'.$cnt];
                 $sqlval['creator_id'] = $_SESSION['member_id'];
@@ -364,7 +377,10 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
             }
             $cnt++;
         }
-
+        
+        // 件数カウントバッチ実行
+        $objDb->sfCategory_Count($objQuery);
+        
         $objQuery->commit();
     }
 
@@ -413,8 +429,8 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
         while($array["classcategory_id1:".$no] != "") {
             if($array["check:".$no] == 1) {
                 $objErr->doFunc(array("商品コード", "product_code:".$no, STEXT_LEN), array("MAX_LENGTH_CHECK"));
-                $objErr->doFunc(array(NORMAL_PRICE_TITLE, "price01:".$no, PRICE_LEN), array("ZERO_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
-                $objErr->doFunc(array(SALE_PRICE_TITLE, "price02:".$no, PRICE_LEN), array("EXIST_CHECK", "ZERO_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+                $objErr->doFunc(array(NORMAL_PRICE_TITLE, "price01:".$no, PRICE_LEN), array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+                $objErr->doFunc(array(SALE_PRICE_TITLE, "price02:".$no, PRICE_LEN), array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
 
                 if($array["stock_unlimited:".$no] != '1') {
                     $objErr->doFunc(array("在庫数", "stock:".$no, AMOUNT_LEN), array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));

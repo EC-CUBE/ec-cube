@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -95,8 +95,8 @@ class SC_Helper_DB {
      * @param string $dsn データソース名
      * @param bool $add カラムの作成も行う場合 true
      * @return bool カラムが存在する場合とカラムの生成に成功した場合 true,
-     * 			     テーブルが存在しない場合 false,
-     * 				 引数 $add == false でカラムが存在しない場合 false
+     *               テーブルが存在しない場合 false,
+     *               引数 $add == false でカラムが存在しない場合 false
      */
     function sfColumnExists($table_name, $col_name, $col_type = "", $dsn = "", $add = false) {
         $dbFactory = SC_DB_DBFactory_Ex::getInstance();
@@ -141,8 +141,8 @@ class SC_Helper_DB {
      * @param string $dsn データソース名
      * @param bool $add インデックスの生成もする場合 true
      * @return bool インデックスが存在する場合とインデックスの生成に成功した場合 true,
-     * 			     テーブルが存在しない場合 false,
-     * 				 引数 $add == false でインデックスが存在しない場合 false
+     *               テーブルが存在しない場合 false,
+     *               引数 $add == false でインデックスが存在しない場合 false
      */
     function sfIndexExists($table_name, $col_name, $index_name, $length = "", $dsn = "", $add = false) {
         $dbFactory = SC_DB_DBFactory_Ex::getInstance();
@@ -200,21 +200,30 @@ class SC_Helper_DB {
     /**
      * 店舗基本情報を取得する.
      *
+     * @param boolean $force 強制的にDB取得するか
      * @return array 店舗基本情報の配列
      */
-    function sf_getBasisData() {
-        $objQuery = new SC_Query();
-        $arrRet = $objQuery->select('*', 'dtb_baseinfo');
+    function sf_getBasisData($force = false) {
+        static $data;
 
-        if (isset($arrRet[0])) return $arrRet[0];
+        if ($force || !isset($data)) {
+            $objQuery = new SC_Query();
+            $arrRet = $objQuery->select('*', 'dtb_baseinfo');
 
-        return array();
+            if (isset($arrRet[0])) {
+                $data = $arrRet[0];
+            } else {
+                $data = array();
+            }
+        }
+
+        return $data;
     }
 
     /* 選択中のアイテムのルートカテゴリIDを取得する */
     function sfGetRootId() {
 
-        if(!$this->g_root_on)	{
+        if(!$this->g_root_on)   {
             $this->g_root_on = true;
             $objQuery = new SC_Query();
 
@@ -240,24 +249,27 @@ class SC_Helper_DB {
      * 商品規格情報を取得する.
      *
      * @param array $arrID 規格ID
+     * @param boolean $includePrivateProducts 非公開商品を含むか
      * @return array 規格情報の配列
      */
-    function sfGetProductsClass($arrID) {
+    function sfGetProductsClass($arrID, $includePrivateProducts = false) {
         list($product_id, $classcategory_id1, $classcategory_id2) = $arrID;
 
-        if($classcategory_id1 == "") {
+        if (strlen($classcategory_id1) == 0) {
             $classcategory_id1 = '0';
         }
-        if($classcategory_id2 == "") {
+        if (strlen($classcategory_id2) == 0) {
             $classcategory_id2 = '0';
         }
 
         // 商品規格取得
         $objQuery = new SC_Query();
-        $col = "product_id, deliv_fee, name, product_code, main_list_image, main_image, price01, price02, point_rate, product_class_id, classcategory_id1, classcategory_id2, class_id1, class_id2, stock, stock_unlimited, sale_limit, sale_unlimited";
-        $table = "vw_product_class AS prdcls";
-        $where = "product_id = ? AND classcategory_id1 = ? AND classcategory_id2 = ? AND status = 1";
-        $objQuery->setorder("rank1 DESC, rank2 DESC");
+        $col = 'product_id, deliv_fee, name, product_code, main_list_image, main_image, price01, price02, point_rate, product_class_id, classcategory_id1, classcategory_id2, class_id1, class_id2, stock, stock_unlimited, sale_limit';
+        $table = 'vw_product_class AS prdcls';
+        $where = 'product_id = ? AND classcategory_id1 = ? AND classcategory_id2 = ?';
+        if (!$includePrivateProducts) {
+             $where .= ' AND status = 1';
+        }
         $arrRet = $objQuery->select($col, $table, $where, array($product_id, $classcategory_id1, $classcategory_id2));
         return $arrRet[0];
     }
@@ -271,7 +283,7 @@ class SC_Helper_DB {
         $objQuery = new SC_Query();
         // 購入金額が条件額以下の項目を取得
         $where = "del_flg = 0";
-        $objQuery->setorder("fix, rank DESC");
+        $objQuery->setOrder("fix, rank DESC");
         $arrRet = $objQuery->select("payment_id, payment_method, rule", "dtb_payment", $where);
         return $arrRet;
     }
@@ -279,70 +291,68 @@ class SC_Helper_DB {
     /**
      * カート内商品の集計処理を行う.
      *
+     * 管理機能での利用は想定していないので注意。(非公開商品は除外される。)
+     *
      * @param LC_Page $objPage ページクラスのインスタンス
      * @param SC_CartSession $objCartSess カートセッションのインスタンス
-     * @param array $arrInfo 商品情報の配列
+     * @param null $dummy1 互換性確保用(決済モジュール互換のため)
      * @return LC_Page 集計処理後のページクラスインスタンス
      */
-    function sfTotalCart(&$objPage, $objCartSess, $arrInfo) {
+    function sfTotalCart(&$objPage, $objCartSess, $dummy1 = null) {
 
         // 規格名一覧
         $arrClassName = $this->sfGetIDValueList("dtb_class", "class_id", "name");
         // 規格分類名一覧
         $arrClassCatName = $this->sfGetIDValueList("dtb_classcategory", "classcategory_id", "name");
 
-        $objPage->tpl_total_pretax = 0;		// 費用合計(税込み)
-        $objPage->tpl_total_tax = 0;		// 消費税合計
-        if (USE_POINT === true) {
-            $objPage->tpl_total_point = 0;		// ポイント合計
-        }
+        $objPage->tpl_total_pretax = 0;     // 費用合計(税込み)
+        $objPage->tpl_total_tax = 0;        // 消費税合計
+        $objPage->tpl_total_point = 0;      // ポイント合計
 
         // カート内情報の取得
-        $arrCart = $objCartSess->getCartList();
-        $max = count($arrCart);
+        $arrQuantityInfo_by_product = array();
         $cnt = 0;
-
-        for ($i = 0; $i < $max; $i++) {
+        foreach ($objCartSess->getCartList() as $arrCart) {
             // 商品規格情報の取得
-            $arrData = $this->sfGetProductsClass($arrCart[$i]['id']);
-            $limit = "";
+            $arrData = $this->sfGetProductsClass($arrCart['id']);
+            $limit = null;
             // DBに存在する商品
             if (count($arrData) > 0) {
 
                 // 購入制限数を求める。
-                if ($arrData['stock_unlimited'] != '1' && $arrData['sale_unlimited'] != '1') {
-                    if($arrData['sale_limit'] < $arrData['stock']) {
-                        $limit = $arrData['sale_limit'];
-                    } else {
-                        // 購入制限数を在庫数に
-                        #$limit = $arrData['stock'];
-                        // 購入制限数をSALE_LIMIT_MAXに
-                        $limit = SALE_LIMIT_MAX;
-                    }
-                } else {
-                    if ($arrData['sale_unlimited'] != '1') {
-                        $limit = $arrData['sale_limit'];
-                    }
-                    if ($arrData['stock_unlimited'] != '1') {
-                        // 購入制限数を在庫数に
-                        #$limit = $arrData['stock'];
-                        // 購入制限数をSALE_LIMIT_MAXに
-                        $limit = SALE_LIMIT_MAX;
-                    }
+                if ($arrData['stock_unlimited'] != '1' && SC_Utils_Ex::sfIsInt($arrData['sale_limit'])) {
+                    $limit = min($arrData['sale_limit'], $arrData['stock']);
+                } elseif (SC_Utils_Ex::sfIsInt($arrData['sale_limit'])) {
+                    $limit = $arrData['sale_limit'];
+                } elseif ($arrData['stock_unlimited'] != '1') {
+                    $limit = $arrData['stock'];
                 }
 
-                if($limit != "" && $limit < $arrCart[$i]['quantity']) {
-                    // カート内商品数を制限に合わせる
-                    $objCartSess->setProductValue($arrCart[$i]['id'], 'quantity', $limit);
-                    $quantity = $limit;
-                    $objPage->tpl_message = "※「" . $arrData['name'] . "」は販売制限しております、一度にこれ以上の購入はできません。";
+                if (!is_null($limit) && $arrCart['quantity'] > $limit) {
+                    if ($limit > 0) {
+                        // カート内商品数を制限に合わせる
+                        $objCartSess->setProductValue($arrCart['id'], 'quantity', $limit);
+                        $quantity = $limit;
+                        $objPage->tpl_message .= "※「" . $arrData['name'] . "」は販売制限(または在庫が不足)しております。一度に数量{$limit}以上の購入はできません。\n";
+                    } else {
+                        // 売り切れ商品をカートから削除する
+                        $objCartSess->delProduct($arrCart['cart_no']);
+                        $objPage->tpl_message .= "※「" . $arrData['name'] . "」は売り切れました。\n";
+                        continue;
+                    }
                 } else {
-                    $quantity = $arrCart[$i]['quantity'];
+                    $quantity = $arrCart['quantity'];
                 }
+
+                // (商品規格単位でなく)商品単位での評価のための準備
+                $product_id = $arrCart['id'][0];
+                $arrQuantityInfo_by_product[$product_id]['quantity'] += $quantity;
+                $arrQuantityInfo_by_product[$product_id]['sale_limit'] = $arrData['sale_limit'];
+                $arrQuantityInfo_by_product[$product_id]['name'] = $arrData['name'];
 
                 $objPage->arrProductsClass[$cnt] = $arrData;
                 $objPage->arrProductsClass[$cnt]['quantity'] = $quantity;
-                $objPage->arrProductsClass[$cnt]['cart_no'] = $arrCart[$i]['cart_no'];
+                $objPage->arrProductsClass[$cnt]['cart_no'] = $arrCart['cart_no'];
                 $objPage->arrProductsClass[$cnt]['class_name1'] =
                     isset($arrClassName[$arrData['class_id1']])
                         ? $arrClassName[$arrData['class_id1']] : "";
@@ -357,47 +367,49 @@ class SC_Helper_DB {
                 $objPage->arrProductsClass[$cnt]['classcategory_name2'] =
                     $arrClassCatName[$arrData['classcategory_id2']];
 
-                // 画像サイズ
-                $main_image_path = IMAGE_SAVE_DIR . basename($objPage->arrProductsClass[$cnt]["main_image"]);
-                if(file_exists($main_image_path)) {
-                    list($image_width, $image_height) = getimagesize($main_image_path);
-                } else {
-                    $image_width = 0;
-                    $image_height = 0;
-                }
-
-                $objPage->arrProductsClass[$cnt]["tpl_image_width"] = $image_width + 60;
-                $objPage->arrProductsClass[$cnt]["tpl_image_height"] = $image_height + 80;
                 // 価格の登録
                 if ($arrData['price02'] != "") {
-                    $objCartSess->setProductValue($arrCart[$i]['id'], 'price', $arrData['price02']);
+                    $objCartSess->setProductValue($arrCart['id'], 'price', $arrData['price02']);
                     $objPage->arrProductsClass[$cnt]['uniq_price'] = $arrData['price02'];
                 } else {
-                    $objCartSess->setProductValue($arrCart[$i]['id'], 'price', $arrData['price01']);
+                    $objCartSess->setProductValue($arrCart['id'], 'price', $arrData['price01']);
                     $objPage->arrProductsClass[$cnt]['uniq_price'] = $arrData['price01'];
                 }
                 // ポイント付与率の登録
-                if (USE_POINT === true) {
-                    $objCartSess->setProductValue($arrCart[$i]['id'], 'point_rate', $arrData['point_rate']);
+                if (USE_POINT !== false) {
+                    $objCartSess->setProductValue($arrCart['id'], 'point_rate', $arrData['point_rate']);
                 }
                 // 商品ごとの合計金額
-                $objPage->arrProductsClass[$cnt]['total_pretax'] = $objCartSess->getProductTotal($arrInfo, $arrCart[$i]['id']);
+                $objPage->arrProductsClass[$cnt]['total_pretax'] = $objCartSess->getProductTotal($arrCart['id']);
                 // 送料の合計を計算する
-                $objPage->tpl_total_deliv_fee+= ($arrData['deliv_fee'] * $arrCart[$i]['quantity']);
+                $objPage->tpl_total_deliv_fee+= ($arrData['deliv_fee'] * $arrCart['quantity']);
                 $cnt++;
-            } else { // DBに商品が見つからない場合はカート商品の削除
-                $objPage->tpl_message .= "※申し訳ございませんが、ご購入の直前で売り切れた商品があります。該当商品をカートから削除いたしました。\n";
+            } else { // DBに商品が見つからない場合、
+                $objPage->tpl_message .= "※ 現時点で販売していない商品が含まれておりました。該当商品をカートから削除しました。\n";
                 // カート商品の削除
-                $objCartSess->delProductKey('id', $arrCart[$i]['id']);
+                $objCartSess->delProduct($arrCart['cart_no']);
+            }
+        }
+
+        foreach ($arrQuantityInfo_by_product as $product_id => $quantityInfo) {
+            if (SC_Utils_Ex::sfIsInt($quantityInfo['sale_limit']) && $quantityInfo['quantity'] > $quantityInfo['sale_limit']) {
+                $objPage->tpl_error = "※「{$quantityInfo['name']}」は数量「{$quantityInfo['sale_limit']}」以下に販売制限しております。一度にこれ以上の購入はできません。\n";
+                // 販売制限に引っかかった商品をマークする
+                foreach (array_keys($objPage->arrProductsClass) as $key) {
+                    $ProductsClass =& $objPage->arrProductsClass[$key];
+                    if ($ProductsClass['product_id'] == $product_id) {
+                        $ProductsClass['error'] = true;
+                    }
+                }
             }
         }
 
         // 全商品合計金額(税込み)
-        $objPage->tpl_total_pretax = $objCartSess->getAllProductsTotal($arrInfo);
+        $objPage->tpl_total_pretax = $objCartSess->getAllProductsTotal();
         // 全商品合計消費税
-        $objPage->tpl_total_tax = $objCartSess->getAllProductsTax($arrInfo);
+        $objPage->tpl_total_tax = $objCartSess->getAllProductsTax();
         // 全商品合計ポイント
-        if (USE_POINT === true) {
+        if (USE_POINT !== false) {
             $objPage->tpl_total_point = $objCartSess->getAllProductsPoint();
         }
 
@@ -426,6 +438,10 @@ class SC_Helper_DB {
             } else {
                 $objQuery->update("dtb_order_temp", $sqlval, $where, array($uniqid));
             }
+
+            // 受注_Tempテーブルの名称列を更新
+            // ・決済モジュールに対応するため、static メソッドとして扱う
+            SC_Helper_DB_Ex::sfUpdateOrderNameCol($uniqid, true);
         }
     }
 
@@ -503,9 +519,7 @@ class SC_Helper_DB {
         $arrRegist["update_date"] = "NOW()";
 
         //-- 編集登録実行
-        $objQuery->begin();
         $objQuery->update("dtb_customer", $arrRegist, "customer_id = ? ", array($array['customer_id']));
-        $objQuery->commit();
     }
 
     /**
@@ -520,18 +534,18 @@ class SC_Helper_DB {
         $objQuery = new SC_Query();
         $arrRet = $objQuery->select("customer_id", "dtb_order", "order_id = ?", array($order_id));
         $customer_id = $arrRet[0]['customer_id'];
-        if($customer_id != "" && $customer_id >= 1) {
-            if (USE_POINT === true) {
+        if ($customer_id != "" && $customer_id >= 1) {
+            if (USE_POINT !== false) {
                 $arrRet = $objQuery->select("point", "dtb_customer", "customer_id = ?", array($customer_id));
                 $point = $arrRet[0]['point'];
                 $total_point = $arrRet[0]['point'] - $use_point + $add_point;
             } else {
-                $total_point = "";
-                $point = "";
+                $total_point = 0;
+                $point = 0;
             }
         } else {
-            $total_point = 0;
-            $point = 0;
+            $total_point = "";
+            $point = "";
         }
         return array($point, $total_point);
     }
@@ -546,10 +560,10 @@ class SC_Helper_DB {
      */
     function sfGetCustomerPointFromCid($customer_id, $use_point, $add_point) {
         $objQuery = new SC_Query();
-        if (USE_POINT === true) {
-                $arrRet = $objQuery->select("point", "dtb_customer", "customer_id = ?", array($customer_id));
-                $point = $arrRet[0]['point'];
-                $total_point = $arrRet[0]['point'] - $use_point + $add_point;
+        if (USE_POINT !== false) {
+            $arrRet = $objQuery->select("point", "dtb_customer", "customer_id = ?", array($customer_id));
+            $point = $arrRet[0]['point'];
+            $total_point = $arrRet[0]['point'] - $use_point + $add_point;
         } else {
             $total_point = 0;
             $point = 0;
@@ -583,7 +597,7 @@ class SC_Helper_DB {
         } else {
             $where = "del_flg = 0";
         }
-        $objQuery->setoption("ORDER BY rank DESC");
+        $objQuery->setOption("ORDER BY rank DESC");
         $arrRet = $objQuery->select($col, $from, $where);
 
         $arrParentID = $this->sfGetParents($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $parent_category_id);
@@ -627,7 +641,7 @@ class SC_Helper_DB {
         } else {
             $where = "del_flg = 0";
         }
-        $objQuery->setoption("ORDER BY rank DESC");
+        $objQuery->setOption("ORDER BY rank DESC");
         $arrRet = $objQuery->select($col, $from, $where);
 
         $arrCategory_id = $this->sfGetCategoryId($product_id);
@@ -675,6 +689,22 @@ class SC_Helper_DB {
     }
 
     /**
+     * 指定したカテゴリーIDのカテゴリーを取得する.
+     *
+     * @param integer $category_id カテゴリID
+     * @return array 指定したカテゴリーIDのカテゴリー
+     */
+    function sfGetCat($category_id){
+        $objQuery = new SC_Query();
+
+        // カテゴリーを取得する
+        $arrVal = array($category_id);
+        $res = $objQuery->select('category_id AS id, category_name AS name', 'dtb_category', 'category_id = ?', $arrVal);
+
+        return $res[0];
+    }
+
+    /**
      * 指定したカテゴリーIDの大カテゴリーを取得する.
      *
      * @param integer $category_id カテゴリID
@@ -713,7 +743,7 @@ class SC_Helper_DB {
             $where.= " AND $addwhere";
         }
 
-        $objQuery->setoption("ORDER BY rank DESC");
+        $objQuery->setOption("ORDER BY rank DESC");
 
         if($products_check) {
             $col = "T1.category_id, category_name, level";
@@ -745,9 +775,23 @@ class SC_Helper_DB {
      */
     function sfGetLevelCatList($parent_zero = true) {
         $objQuery = new SC_Query();
+
+        // カテゴリ名リストを取得
+        $col = "category_id, parent_category_id, category_name";
+        $where = "del_flg = 0";
+        $objQuery->setOption("ORDER BY level");
+        $arrRet = $objQuery->select($col, "dtb_category", $where);
+        $arrCatName = array();
+        foreach ($arrRet as $arrTmp) {
+            $arrCatName[$arrTmp['category_id']] =
+                (($arrTmp['parent_category_id'] > 0)?
+                    $arrCatName[$arrTmp['parent_category_id']] : "")
+                . CATEGORY_HEAD . $arrTmp['category_name'];
+        }
+
         $col = "category_id, parent_category_id, category_name, level";
         $where = "del_flg = 0";
-        $objQuery->setoption("ORDER BY rank DESC");
+        $objQuery->setOption("ORDER BY rank DESC");
         $arrRet = $objQuery->select($col, "dtb_category", $where);
         $max = count($arrRet);
 
@@ -762,23 +806,7 @@ class SC_Helper_DB {
                 $arrValue[$cnt] = $arrRet[$cnt]['category_id'];
             }
 
-            $arrOutput[$cnt] = "";
-
-            // 子カテゴリから親カテゴリを検索
-            $parent_category_id = $arrRet[$cnt]['parent_category_id'];
-            for($cat_cnt = $arrRet[$cnt]['level']; $cat_cnt > 1; $cat_cnt--) {
-
-                foreach ($arrRet as $arrCat) {
-                    // 親が見つかったら順番に代入
-                    if ($arrCat['category_id'] == $parent_category_id) {
-
-                        $arrOutput[$cnt] = CATEGORY_HEAD
-                            . $arrCat['category_name'] . $arrOutput[$cnt];
-                        $parent_category_id = $arrCat['parent_category_id'];
-                    }
-                }
-            }
-            $arrOutput[$cnt].= CATEGORY_HEAD . $arrRet[$cnt]['category_name'];
+            $arrOutput[$cnt] = $arrCatName[$arrRet[$cnt]['category_id']];
         }
 
         return array($arrValue, $arrOutput);
@@ -803,9 +831,9 @@ class SC_Helper_DB {
             $this->g_category_on = true;
             $category_id = (int) $category_id;
             $product_id = (int) $product_id;
-            if(SC_Utils_Ex::sfIsInt($category_id) && $this->sfIsRecord("dtb_category","category_id", $category_id)) {
+            if (SC_Utils_Ex::sfIsInt($category_id) && $category_id != 0 && $this->sfIsRecord("dtb_category","category_id", $category_id)) {
                 $this->g_category_id = array($category_id);
-            } else if (SC_Utils_Ex::sfIsInt($product_id) && $this->sfIsRecord("dtb_products","product_id", $product_id, $status)) {
+            } else if (SC_Utils_Ex::sfIsInt($product_id) && $product_id != 0 && $this->sfIsRecord("dtb_products","product_id", $product_id, $status)) {
                 $objQuery = new SC_Query();
                 $where = "product_id = ?";
                 $category_id = $objQuery->getCol("dtb_product_categories", "category_id", "product_id = ?", array($product_id));
@@ -936,38 +964,62 @@ class SC_Helper_DB {
      * @return void
      */
     function sfCategory_Count($objQuery){
-        $sql = "";
 
         //テーブル内容の削除
         $objQuery->query("DELETE FROM dtb_category_count");
         $objQuery->query("DELETE FROM dtb_category_total_count");
 
+        $sql_where .= 'alldtl.del_flg = 0 AND alldtl.status = 1';
+        // 在庫無し商品の非表示
+        if (NOSTOCK_HIDDEN === true) {
+            $sql_where .= ' AND (alldtl.stock_max >= 1 OR alldtl.stock_unlimited_max = 1)';
+        }
+
         //各カテゴリ内の商品数を数えて格納
-        $sql = " INSERT INTO dtb_category_count(category_id, product_count, create_date) ";
-        $sql .= " SELECT T1.category_id, count(T2.category_id), now() ";
-        $sql .= " FROM dtb_category AS T1 LEFT JOIN dtb_product_categories AS T2";
-        $sql .= " ON T1.category_id = T2.category_id ";
-        $sql .= " LEFT JOIN dtb_products AS T3";
-        $sql .= " ON T2.product_id = T3.product_id";
-        $sql .= " WHERE T3.del_flg = 0 AND T3.status = 1 ";
-        $sql .= " GROUP BY T1.category_id, T2.category_id ";
+        $sql = <<< __EOS__
+            INSERT INTO dtb_category_count(category_id, product_count, create_date)
+            SELECT T1.category_id, count(T2.category_id), now()
+            FROM dtb_category AS T1
+                LEFT JOIN dtb_product_categories AS T2
+                    ON T1.category_id = T2.category_id
+                LEFT JOIN vw_products_allclass_detail AS alldtl
+                    ON T2.product_id = alldtl.product_id
+            WHERE $sql_where
+            GROUP BY T1.category_id, T2.category_id
+__EOS__;
+
         $objQuery->query($sql);
 
         //子カテゴリ内の商品数を集計する
-        $arrCat = $objQuery->getAll("SELECT * FROM dtb_category");
 
-        $sql = "";
-        foreach($arrCat as $key => $val){
+        // カテゴリ情報を取得
+        $arrCat = $objQuery->select('category_id', 'dtb_category');
 
-            // 子ID一覧を取得
-            $arrRet = $this->sfGetChildrenArray('dtb_category', 'parent_category_id', 'category_id', $val['category_id']);
-            $line = SC_Utils_Ex::sfGetCommaList($arrRet);
+        foreach ($arrCat as $row) {
+            $category_id = $row['category_id'];
+            $arrval = array();
 
-            $sql = " INSERT INTO dtb_category_total_count(category_id, product_count, create_date) ";
-            $sql .= " SELECT ?, SUM(product_count), now() FROM dtb_category_count ";
-            $sql .= " WHERE category_id IN (" . $line . ")";
+            $arrval[] = $category_id;
 
-            $objQuery->query($sql, array($val['category_id']));
+            list($tmp_where, $tmp_arrval) = $this->sfGetCatWhere($category_id);
+            if ($tmp_where != "") {
+                $sql_where_product_ids = "alldtl.product_id IN (SELECT product_id FROM dtb_product_categories WHERE " . $tmp_where . ")";
+                $arrval = array_merge((array)$arrval, (array)$tmp_arrval);
+            } else {
+                $sql_where_product_ids = '0<>0'; // 一致させない
+            }
+
+            $sql = <<< __EOS__
+                INSERT INTO dtb_category_total_count (category_id, product_count, create_date)
+                SELECT
+                    ?
+                    ,count(*)
+                    ,now()
+                FROM vw_products_allclass_detail AS alldtl
+                WHERE ($sql_where) AND ($sql_where_product_ids)
+__EOS__;
+
+            $objQuery->query($sql, $arrval);
         }
     }
 
@@ -1096,7 +1148,7 @@ class SC_Helper_DB {
         $tmp_where = "";
         foreach ($arrRet as $val) {
             if($tmp_where == "") {
-                $tmp_where.= " category_id IN ( ?";
+                $tmp_where.= "category_id IN ( ?";
             } else {
                 $tmp_where.= ",? ";
             }
@@ -1130,8 +1182,8 @@ class SC_Helper_DB {
     function sfGetIDValueList($table, $keyname, $valname) {
         $objQuery = new SC_Query();
         $col = "$keyname, $valname";
-        $objQuery->setwhere("del_flg = 0");
-        $objQuery->setorder("rank DESC");
+        $objQuery->setWhere("del_flg = 0");
+        $objQuery->setOrder("rank DESC");
         $arrList = $objQuery->select($col, $table);
         $count = count($arrList);
         for($cnt = 0; $cnt < $count; $cnt++) {
@@ -1244,6 +1296,7 @@ class SC_Helper_DB {
         $rank = $objQuery->get($tableName, "rank", $getWhere, array($keyId));
 
         $max = $objQuery->max($tableName, "rank", $where);
+
         // 値の調整（逆順）
         if($pos > $max) {
             $position = 1;
@@ -1267,13 +1320,16 @@ class SC_Helper_DB {
         if($where != "") {
             $sql.= " AND $where";
         }
-        if( $position > $rank ) $objQuery->exec( $sql, array($rank, $position));
-        if( $position < $rank ) $objQuery->exec( $sql, array($position, $rank));
-           // 指定した順位へrankを書き換える。
+
+        if( $position > $rank ) $objQuery->exec( $sql, array( $rank + 1, $position ));
+        if( $position < $rank ) $objQuery->exec( $sql, array( $position, $rank - 1 ));
+
+        // 指定した順位へrankを書き換える。
         $sql  = "UPDATE $tableName SET rank = ? WHERE $keyIdColumn = ? ";
         if($where != "") {
             $sql.= " AND $where";
         }
+
         $objQuery->exec( $sql, array( $position, $keyId ) );
         $objQuery->commit();
     }
@@ -1345,7 +1401,7 @@ class SC_Helper_DB {
             }
         }
 
-        $objQuery->setorder("level");
+        $objQuery->setOrder("level");
         $arrRet = $objQuery->select($col, $table, $where, $arrId);
         return $arrRet;
     }
@@ -1401,7 +1457,7 @@ class SC_Helper_DB {
         }
 
         if($deliv_id != "") {
-            $objQuery->setorder("time_id");
+            $objQuery->setOrder("time_id");
             $where = "deliv_id = ?";
             $arrRet= $objQuery->select("time_id, deliv_time", "dtb_delivtime", $where, array($deliv_id));
         }
@@ -1412,8 +1468,7 @@ class SC_Helper_DB {
     /**
      * 都道府県、支払い方法から配送料金を取得する.
      *
-     * @param integer $pref 都道府県ID
-     * @param integer $payment_id 支払い方法ID
+     * @param array $arrData 各種情報
      * @return string 指定の都道府県, 支払い方法の配送料金
      */
     function sfGetDelivFee($arrData) {
@@ -1459,19 +1514,20 @@ class SC_Helper_DB {
      * @param array $arrData 各種情報
      * @param LC_Page $objPage LC_Page インスタンス
      * @param SC_CartSession $objCartSess SC_CartSession インスタンス
-     * @param array $arrInfo 店舗情報の配列
+     * @param null $dummy1 互換性確保用(決済モジュール互換のため)
      * @param SC_Customer $objCustomer SC_Customer インスタンス
      * @return array 最終計算後の配列
      */
-    function sfTotalConfirm($arrData, &$objPage, &$objCartSess, $arrInfo, $objCustomer = "") {
+    function sfTotalConfirm($arrData, &$objPage, &$objCartSess, $dummy1 = null, $objCustomer = "") {
+        // 店舗基本情報を取得する
+        $arrInfo = SC_Helper_DB_Ex::sf_getBasisData();
+
         // 未定義変数を定義
         if (!isset($arrData['deliv_pref'])) $arrData['deliv_pref'] = "";
         if (!isset($arrData['payment_id'])) $arrData['payment_id'] = "";
         if (!isset($arrData['charge'])) $arrData['charge'] = "";
         if (!isset($arrData['use_point'])) $arrData['use_point'] = "";
-
-        // 商品の合計個数
-        $total_quantity = $objCartSess->getTotalQuantity(true);
+        if (!isset($arrData['add_point'])) $arrData['add_point'] = 0;
 
         // 税金の取得
         $arrData['tax'] = $objPage->tpl_total_tax;
@@ -1483,17 +1539,21 @@ class SC_Helper_DB {
 
         // 商品ごとの送料が有効の場合
         if (OPTION_PRODUCT_DELIV_FEE == 1) {
-            $arrData['deliv_fee']+= $objCartSess->getAllProductsDelivFee();
+            // 全商品の合計送料を加算する
+            $this->lfAddAllProductsDelivFee($arrData, $objPage, $objCartSess);
         }
 
         // 配送業者の送料が有効の場合
         if (OPTION_DELIV_FEE == 1) {
-            // 送料の合計を計算する
-            $arrData['deliv_fee'] += $this->sfGetDelivFee($arrData);
+            // 都道府県、支払い方法から配送料金を加算する
+            $this->lfAddDelivFee($arrData);
         }
 
         // 送料無料の購入数が設定されている場合
-        if(DELIV_FREE_AMOUNT > 0) {
+        if (DELIV_FREE_AMOUNT > 0) {
+            // 商品の合計数量
+            $total_quantity = $objCartSess->getTotalQuantity(true);
+
             if($total_quantity >= DELIV_FREE_AMOUNT) {
                 $arrData['deliv_fee'] = 0;
             }
@@ -1508,16 +1568,14 @@ class SC_Helper_DB {
         }
 
         // 合計の計算
-        $arrData['total'] = $objPage->tpl_total_pretax;	// 商品合計
-        $arrData['total']+= $arrData['deliv_fee'];		// 送料
-        $arrData['total']+= $arrData['charge'];			// 手数料
+        $arrData['total'] = $objPage->tpl_total_pretax; // 商品合計
+        $arrData['total']+= $arrData['deliv_fee'];      // 送料
+        $arrData['total']+= $arrData['charge'];         // 手数料
         // お支払い合計
         $arrData['payment_total'] = $arrData['total'] - ($arrData['use_point'] * POINT_VALUE);
         // 加算ポイントの計算
-        if (USE_POINT === false) {
-            $arrData['add_point'] = 0;
-        } else {
-            $arrData['add_point'] = SC_Utils::sfGetAddPoint($objPage->tpl_total_point, $arrData['use_point'], $arrInfo);
+        if (USE_POINT !== false) {
+            $arrData['add_point'] = SC_Helper_DB_Ex::sfGetAddPoint($objPage->tpl_total_point, $arrData['use_point']);
 
             if($objCustomer != "") {
                 // 誕生日月であった場合
@@ -1570,5 +1628,355 @@ class SC_Helper_DB {
         return false;
     }
 
+    /**
+     * メーカー商品数数の登録を行う.
+     *
+     * @param SC_Query $objQuery SC_Query インスタンス
+     * @return void
+     */
+    function sfMaker_Count($objQuery){
+        $sql = "";
+
+        //テーブル内容の削除
+        $objQuery->query("DELETE FROM dtb_maker_count");
+
+        //各メーカーの商品数を数えて格納
+        $sql = " INSERT INTO dtb_maker_count(maker_id, product_count, create_date) ";
+        $sql .= " SELECT T1.maker_id, count(T2.maker_id), now() ";
+        $sql .= " FROM dtb_maker AS T1 LEFT JOIN dtb_products AS T2";
+        $sql .= " ON T1.maker_id = T2.maker_id ";
+        $sql .= " WHERE T2.del_flg = 0 AND T2.status = 1 ";
+        $sql .= " GROUP BY T1.maker_id, T2.maker_id ";
+        $objQuery->query($sql);
+    }
+
+    /**
+     * 選択中の商品のメーカーを取得する.
+     *
+     * @param integer $product_id プロダクトID
+     * @param integer $maker_id メーカーID
+     * @return array 選択中の商品のメーカーIDの配列
+     *
+     */
+    function sfGetMakerId($product_id, $maker_id = 0, $closed = false) {
+        if ($closed) {
+            $status = "";
+        } else {
+            $status = "status = 1";
+        }
+
+        if (!$this->g_maker_on) {
+            $this->g_maker_on = true;
+            $maker_id = (int) $maker_id;
+            $product_id = (int) $product_id;
+            if (SC_Utils_Ex::sfIsInt($maker_id) && $maker_id != 0 && $this->sfIsRecord("dtb_maker","maker_id", $maker_id)) {
+                $this->g_maker_id = array($maker_id);
+            } else if (SC_Utils_Ex::sfIsInt($product_id) && $product_id != 0 && $this->sfIsRecord("dtb_products","product_id", $product_id, $status)) {
+                $objQuery = new SC_Query();
+                $where = "product_id = ?";
+                $maker_id = $objQuery->getCol("dtb_products", "maker_id", "product_id = ?", array($product_id));
+                $this->g_maker_id = $maker_id;
+            } else {
+                // 不正な場合は、空の配列を返す。
+                $this->g_maker_id = array();
+            }
+        }
+        return $this->g_maker_id;
+    }
+
+    /**
+     * メーカーの取得を行う.
+     *
+     * $products_check:true商品登録済みのものだけ取得する
+     *
+     * @param string $addwhere 追加する WHERE 句
+     * @param bool $products_check 商品の存在するカテゴリのみ取得する場合 true
+     * @return array カテゴリツリーの配列
+     */
+    function sfGetMakerList($addwhere = "", $products_check = false) {
+        $objQuery = new SC_Query();
+        $where = "del_flg = 0";
+
+        if($addwhere != "") {
+            $where.= " AND $addwhere";
+        }
+
+        $objQuery->setOption("ORDER BY rank DESC");
+
+        if($products_check) {
+            $col = "T1.maker_id, name";
+            $from = "dtb_maker AS T1 LEFT JOIN dtb_maker_count AS T2 ON T1.maker_id = T2.maker_id";
+            $where .= " AND product_count > 0";
+        } else {
+            $col = "maker_id, name";
+            $from = "dtb_maker";
+        }
+
+        $arrRet = $objQuery->select($col, $from, $where);
+
+        $max = count($arrRet);
+        for($cnt = 0; $cnt < $max; $cnt++) {
+            $id = $arrRet[$cnt]['maker_id'];
+            $name = $arrRet[$cnt]['name'];
+            $arrList[$id].= $name;
+        }
+        return $arrList;
+    }
+
+    /**
+     * 全商品の合計送料を加算する
+     */
+    function lfAddAllProductsDelivFee(&$arrData, &$objPage, &$objCartSess) {
+        $arrData['deliv_fee'] += $this->lfCalcAllProductsDelivFee($arrData, $objCartSess);
+    }
+
+    /**
+     * 全商品の合計送料を計算する
+     */
+    function lfCalcAllProductsDelivFee(&$arrData, &$objCartSess) {
+        $objQuery = new SC_Query();
+        $deliv_fee_total = 0;
+        $max = $objCartSess->getMax();
+        for ($i = 0; $i <= $max; $i++) {
+            // 商品送料
+            $deliv_fee = $objQuery->getOne('SELECT deliv_fee FROM dtb_products WHERE product_id = ?', array($_SESSION[$objCartSess->key][$i]['id'][0]));
+            // 数量
+            $quantity = $_SESSION[$objCartSess->key][$i]['quantity'];
+            // 累積
+            $deliv_fee_total += $deliv_fee * $quantity;
+        }
+        return $deliv_fee_total;
+    }
+
+    /**
+     * 都道府県、支払い方法から配送料金を加算する.
+     *
+     * @param array $arrData 各種情報
+     */
+    function lfAddDelivFee(&$arrData) {
+        $arrData['deliv_fee'] += $this->sfGetDelivFee($arrData);
+    }
+
+    /**
+     * 受注の名称列を更新する
+     *
+     * @param integer $order_id 更新対象の注文番号
+     * @param boolean $temp_table 更新対象は「受注_Temp」か
+     * @static
+     */
+    function sfUpdateOrderNameCol($order_id, $temp_table = false) {
+        $objQuery = new SC_Query();
+
+        if ($temp_table) {
+            $tgt_table = 'dtb_order_temp';
+            $sql_where = 'WHERE order_temp_id = ?';
+        } else {
+            $tgt_table = 'dtb_order';
+            $sql_where = 'WHERE order_id = ?';
+        }
+
+        $sql = <<< __EOS__
+            UPDATE
+                {$tgt_table}
+            SET
+                 payment_method = (SELECT payment_method FROM dtb_payment WHERE payment_id = {$tgt_table}.payment_id)
+                ,deliv_time = (SELECT deliv_time FROM dtb_delivtime WHERE time_id = {$tgt_table}.deliv_time_id AND deliv_id = {$tgt_table}.deliv_id)
+            $sql_where
+__EOS__;
+
+        $objQuery->query($sql, array($order_id));
+    }
+
+    /**
+     * 店舗基本情報に基づいて税金額を返す
+     *
+     * @param integer $price 計算対象の金額
+     * @return integer 税金額
+     */
+    function sfTax($price) {
+        // 店舗基本情報を取得
+        $CONF = SC_Helper_DB_Ex::sf_getBasisData();
+
+        return SC_Utils_Ex::sfTax($price, $CONF['tax'], $CONF['tax_rule']);
+    }
+
+    /**
+     * 店舗基本情報に基づいて税金付与した金額を返す
+     * 
+     * @param integer $price 計算対象の金額
+     * @return integer 税金付与した金額
+     */
+    function sfPreTax($price, $tax = null, $tax_rule = null) {
+        // 店舗基本情報を取得
+        $CONF = SC_Helper_DB_Ex::sf_getBasisData();
+
+        return SC_Utils_Ex::sfPreTax($price, $CONF['tax'], $CONF['tax_rule']);
+    }
+
+    /**
+     * 店舗基本情報に基づいて加算ポイントを返す
+     *
+     * @param integer $totalpoint
+     * @param integer $use_point
+     * @return integer 加算ポイント
+     */
+    function sfGetAddPoint($totalpoint, $use_point) {
+        // 店舗基本情報を取得
+        $CONF = SC_Helper_DB_Ex::sf_getBasisData();
+
+        return SC_Utils_Ex::sfGetAddPoint($totalpoint, $use_point, $CONF['point_rate']);
+    }
+
+    /**
+     * 受注.対応状況の更新
+     *
+     * ・必ず呼び出し元でトランザクションブロックを開いておくこと。
+     *
+     * @param integer $orderId 注文番号
+     * @param integer|null $newStatus 対応状況 (null=変更無し)
+     * @param integer|null $newAddPoint 加算ポイント (null=変更無し)
+     * @param integer|null $newUsePoint 使用ポイント (null=変更無し)
+     * @return void
+     */
+    function sfUpdateOrderStatus($orderId, $newStatus = null, $newAddPoint = null, $newUsePoint = null) {
+        $objQuery = new SC_Query();
+
+        $arrOrderOld = $objQuery->getRow('dtb_order', 'status, add_point, use_point, customer_id', 'order_id = ?', array($orderId));
+
+        // 対応状況が変更無しの場合、DB値を引き継ぐ
+        if (is_null($newStatus)) {
+            $newStatus = $arrOrderOld['status'];
+        }
+
+        // 使用ポイント、DB値を引き継ぐ
+        if (is_null($newUsePoint)) {
+            $newUsePoint = $arrOrderOld['use_point'];
+        }
+
+        // 加算ポイント、DB値を引き継ぐ
+        if (is_null($newAddPoint)) {
+            $newAddPoint = $arrOrderOld['add_point'];
+        }
+
+        if (USE_POINT !== false) {
+            // 顧客.ポイントの加減値
+            $addCustomerPoint = 0;
+
+            // ▼使用ポイント
+            // 変更前の対応状況が利用対象の場合、変更前の使用ポイント分を戻す
+            if (SC_Utils_Ex::sfIsUsePoint($arrOrderOld['status'])) {
+                $addCustomerPoint += $arrOrderOld['use_point'];
+            }
+
+            // 変更後の対応状況が利用対象の場合、変更後の使用ポイント分を引く
+            if (SC_Utils_Ex::sfIsUsePoint($newStatus)) {
+                $addCustomerPoint -= $newUsePoint;
+            }
+            // ▲使用ポイント
+
+            // ▼加算ポイント
+            // 変更前の対応状況が加算対象の場合、変更前の加算ポイント分を戻す
+            if (SC_Utils_Ex::sfIsAddPoint($arrOrderOld['status'])) {
+                $addCustomerPoint -= $arrOrderOld['add_point'];
+            }
+
+            // 変更後の対応状況が加算対象の場合、変更後の加算ポイント分を足す
+            if (SC_Utils_Ex::sfIsAddPoint($newStatus)) {
+                $addCustomerPoint += $newAddPoint;
+            }
+            // ▲加算ポイント
+
+            if ($addCustomerPoint != 0) {
+                // ▼顧客テーブルの更新
+                $sqlval = array();
+                $where = '';
+                $arrVal = array();
+                $arrRawSql = array();
+                $arrRawSqlVal = array();
+
+                $sqlval['update_date'] = 'Now()';
+                $arrRawSql['point'] = 'point + ?';
+                $arrRawSqlVal[] = $addCustomerPoint;
+                $where .= 'customer_id = ?';
+                $arrVal[] = $arrOrderOld['customer_id'];
+
+                $objQuery->update('dtb_customer', $sqlval, $where, $arrVal, $arrRawSql, $arrRawSqlVal);
+                // ▲顧客テーブルの更新
+
+                // 顧客.ポイントをマイナスした場合、
+                if ($addCustomerPoint < 0) {
+                    $sql = 'SELECT point FROM dtb_customer WHERE customer_id = ?';
+                    $point = $objQuery->getOne($sql, array($arrOrderOld['customer_id']));
+                    // 変更後の顧客.ポイントがマイナスの場合、
+                    if ($point < 0) {
+                        // ロールバック
+                        $objQuery->rollback();
+                        // エラー
+                        SC_Utils_Ex::sfDispSiteError(LACK_POINT);
+                    }
+                }
+            }
+        }
+
+        // ▼受注テーブルの更新
+        $sqlval = array();
+        if (USE_POINT !== false) {
+            $sqlval['add_point'] = $newAddPoint;
+            $sqlval['use_point'] = $newUsePoint;
+        }
+        // ステータスが発送済みに変更の場合、発送日を更新
+        if ($arrOrderOld['status'] != ORDER_DELIV && $newStatus == ORDER_DELIV) {
+            $sqlval['commit_date'] = 'Now()';
+        }
+        $sqlval['status'] = $newStatus;
+        $sqlval['update_date'] = 'Now()';
+
+        $objQuery->update('dtb_order', $sqlval, 'order_id = ?', array($orderId));
+        // ▲受注テーブルの更新
+    }
+
+    /**
+     * 指定ファイルが存在する場合 SQL として実行
+     *
+     * ・MySQL の場合、文字「;」を区切りとして、分割実行。
+     * XXX プラグイン用に追加。将来消すかも。
+     *
+     * @param string $sqlFilePath SQL ファイルのパス
+     * @return void
+     */
+    function sfExecSqlByFile($sqlFilePath) {
+        if (file_exists($sqlFilePath)) {
+            $objQuery = new SC_Query();
+
+            $sqls = file_get_contents($sqlFilePath);
+            if ($sqls === false) SC_Utils_Ex::sfDispException('ファイルは存在するが読み込めない');
+
+            if (DB_TYPE == 'mysql') {
+                foreach (explode(';', $sqls) as $sql) {
+                    $sql = trim($sql);
+                    if (strlen($sql) == 0) continue;
+                    $objQuery->query($sql);
+                }
+            } else {
+                $objQuery->query($sqls);
+            }
+        }
+    }
+
+    /**
+     * 商品規格を設定しているか
+     *
+     * @param integer $product_id 商品ID
+     * @return bool 商品規格が存在する場合:true, それ以外:false
+     */
+    function sfHasProductClass($product_id) {
+        if (!SC_Utils_Ex::sfIsInt($product_id)) return false;
+
+        $objQuery  = new SC_Query();
+        $where = 'product_id = ? AND (classcategory_id1 <> 0 OR classcategory_id2 <> 0)';
+        $count = $objQuery->count('dtb_products_class', $where, array($product_id));
+
+        return $count >= 1;
+    }
 }
 ?>

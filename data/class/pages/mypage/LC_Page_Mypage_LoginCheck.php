@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -89,7 +89,7 @@ class LC_Page_Mypage_LoginCheck extends LC_Page {
             }
 
             if($objCustomer->getCustomerDataFromEmailPass($arrForm['mypage_login_pass'], $arrForm['mypage_login_email'], true)) {
-                $this->sendRedirect($this->getLocation("./index.php"));
+                $this->sendRedirect($this->getLocation(DIR_INDEX_URL, array(), true));
                 exit;
             } else {
                 $arrForm['mypage_login_email'] = strtolower($arrForm['mypage_login_email']);

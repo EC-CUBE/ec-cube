@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -66,7 +66,7 @@
 				</select>月
 				<select name="day_from">
 				<option selected="selected">--</option>
-				</select>日〜
+				</select>日～
 				<select name="year_to">
 				<option selected="selected">--</option>
 				</select>年

@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -182,6 +182,7 @@ class SC_SessionFactory_UseRequest extends SC_SessionFactory {
     function initSession() {
         // セッションIDの受け渡しにクッキーを使用しない。
         ini_set('session.use_cookies', '0');
+        ini_set('session.use_trans_sid', '1');
 
         // パラメーターから有効なセッションIDを取得する。
         $sessionId = $this->getSessionId();

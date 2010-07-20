@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,117 +21,42 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<!--★★メインコンテンツ★★-->
-<table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+<form name="form1" id="form1" method="post" action="?">
 <input type="hidden" name="mode" value="edit" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
-	<tr valign="top">
-		<td background="<!--{$TPL_DIR}-->img/contents/navi_bg.gif" height="402">
-			<!--▼SUB NAVI-->
-			<!--{include file=$tpl_subnavi}-->
-			<!--▲SUB NAVI-->
-		</td>
-		<td class="mainbg">
-			<!--▼登録テーブルここから-->
-			<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
-				<!--メインエリア-->
-				<tr>
-					<td align="center">
-						<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
-							<tr><td height="14"></td></tr>
-							<tr>
-								<td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/main_top.jpg" width="706" height="14" alt=""></td>
-							</tr>
-							<tr>
-								<td background="<!--{$TPL_DIR}-->img/contents/main_left.jpg"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
-								<td bgcolor="#cccccc">
-								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
-									<tr>
-										<td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/contents_title_top.gif" width="678" height="7" alt=""></td>
-									</tr>
-									<tr>
-										<td background="<!--{$TPL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$TPL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--コンテンツタイトル-->ページ編集</span></td>
-										<td background="<!--{$TPL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
-									</tr>
-									<tr>
-										<td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/contents_title_bottom.gif" width="678" height="7" alt=""></td>
-									</tr>
-									<tr>
-										<td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td>
-									</tr>
-								</table>
+<div id="" class="contents-main">
+  <h2>ページ編集</h2>
+  <table>
+    <tr >
+      <th width="200">ページ選択<span class="attention"> *</span></td>
+      <td width="507">
+      <!--{assign var=key value="page"}-->
+      <span class="attention"><!--{$arrErr[$key]}--></span>
+      <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" onchange="fnModeSubmit('select','','');">
+      <option value="">選択してください</option>
+      <!--{html_options options=$arrPageList selected=$arrForm[$key].value}-->
+      </select>
+      </td>
+    </tr>
+  </table>
+          
+  <table>
+    <tr><td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/main_bar.jpg" height="10" alt=""></td></tr>
+  </table>
+            
+  <table>
+    <!--{assign var=key value="template"}-->
+    <tr>
+      <th colspan="2">テンプレート<span class="attention">（上限<!--{$arrForm[$key].length}-->文字）</span></td>
+    </tr>
+    <tr>
+      <td colspan="2">
+      <span class="attention"><!--{$arrErr[$key]}--></span>
+      <textarea name="<!--{$key}-->" cols="90" rows="40" class="area90" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key].value|escape}--></textarea>
+      </td>
+    </tr>
+  </table>
 
-								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
-									<tr class="fs12n" >
-										<td bgcolor="#f2f1ec" width="200">ページ選択<span class="red"> *</span></td>
-										<td bgcolor="#ffffff" width="507">
-										<!--{assign var=key value="page"}-->
-										<span class="red12"><!--{$arrErr[$key]}--></span>
-										<select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" onchange="fnModeSubmit('select','','');">
-										<option value="">選択してください</option>
-										<!--{html_options options=$arrPageList selected=$arrForm[$key].value}-->
-										</select>
-										</td>
-									</tr>
-								</table>
-					
-								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
-									<tr><td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td></tr>
-								</table>
-						
-								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
-									<!--{assign var=key value="template"}-->
-									<tr>
-										<td bgcolor="#f2f1ec" colspan="2" class="fs12n">テンプレート<span class="red">（上限<!--{$arrForm[$key].length}-->文字）</span></td>
-									</tr>
-									<tr>
-										<td bgcolor="#ffffff" colspan="2" class="fs12n">
-										<span class="red12"><!--{$arrErr[$key]}--></span>
-										<textarea name="<!--{$key}-->" cols="90" rows="40" class="area90" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key].value|escape}--></textarea>
-										</td>
-									</tr>
-								</table>
-
-								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
-									<tr>
-										<td bgcolor="#cccccc"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="1" height="5" alt=""></td>
-										<td><img src="<!--{$TPL_DIR}-->img/contents/tbl_top.gif" width="676" height="7" alt=""></td>
-										<td bgcolor="#cccccc"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="1" height="5" alt=""></td>
-									</tr>
-									<tr>
-										<td bgcolor="#cccccc"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="1" height="10" alt=""></td>
-										<td bgcolor="#e9e7de" align="center">
-										<table border="0" cellspacing="0" cellpadding="0" summary=" ">
-											<tr>
-												<td>
-													<input type="button" name="subm1" onclick="fnModeSubmit('preview','','');" value="プレビュー" />
-													<input type="image" onMouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/contents/btn_regist.jpg',this)" src="<!--{$TPL_DIR}-->img/contents/btn_regist.jpg" width="123" height="24" alt="この内容で登録する" border="0" name="subm" >
-												</td>
-											</tr>
-										</table>
-										</td>
-										<td bgcolor="#cccccc"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="1" height="10" alt=""></td>
-									</tr>
-									<tr>
-										<td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/tbl_bottom.gif" width="678" height="8" alt=""></td>
-									</tr>
-								</table>
-								</td>
-								<td background="<!--{$TPL_DIR}-->img/contents/main_right.jpg"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
-							</tr>
-							<tr>
-								<td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/main_bottom.jpg" width="706" height="14" alt=""></td>
-							</tr>
-							<tr><td height="30"></td></tr>
-						</table>
-					</td>
-				</tr>
-				<!--メインエリア-->
-			</table>
-			<!--▲登録テーブルここまで-->
-		</td>
-	</tr>
+            <input type="button" name="subm1" onclick="fnModeSubmit('preview','','');" value="プレビュー" />
+            <button type="submit"><span>この内容で登録する</span></button>
+</div>
 </form>
-</table>
-<!--★★メインコンテンツ★★-->

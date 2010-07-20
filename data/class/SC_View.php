@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -43,7 +43,7 @@ class SC_View {
         $this->_smarty->register_modifier("sfGetVal", array("SC_Utils_Ex", "sfGetVal"));
         $this->_smarty->register_modifier("sfGetErrorColor", array("SC_Utils_Ex", "sfGetErrorColor"));
         $this->_smarty->register_modifier("sfTrim", array("SC_Utils_Ex", "sfTrim"));
-        $this->_smarty->register_modifier("sfPreTax", array("SC_Utils_Ex", "sfPreTax"));
+        $this->_smarty->register_modifier("sfPreTax", array("SC_Helper_DB_Ex", "sfPreTax"));
         $this->_smarty->register_modifier("sfPrePoint", array("SC_Utils_Ex", "sfPrePoint"));
         $this->_smarty->register_modifier("sfGetChecked",array("SC_Utils_Ex", "sfGetChecked"));
         $this->_smarty->register_modifier("sfTrimURL", array("SC_Utils_Ex", "sfTrimURL"));
@@ -60,13 +60,14 @@ class SC_View {
 //        $this->_smarty->register_modifier("sfPrintEbisTag", array("SC_Utils_Ex", "sfPrintEbisTag"));
 //        $this->_smarty->register_modifier("sfPrintAffTag", array("SC_Utils_Ex", "sfPrintAffTag"));
         $this->_smarty->register_modifier("sfGetCategoryId", array("SC_Utils_Ex", "sfGetCategoryId"));
+        $this->_smarty->register_modifier("sfNoImageMainList", array("SC_Utils_Ex", "sfNoImageMainList"));
         $this->_smarty->register_function("sfIsHTTPS", array("SC_Utils_Ex", "sfIsHTTPS"));
         $this->_smarty->register_function("sfSetErrorStyle", array("SC_Utils_Ex", "sfSetErrorStyle"));
         $this->_smarty->register_function("printXMLDeclaration", array("SC_Utils_Ex", "printXMLDeclaration"));
         $this->_smarty->default_modifiers = array('script_escape');
 
         if(ADMIN_MODE == '1') {
-            $this->time_start = time();
+            $this->time_start = SC_Utils_Ex::sfMicrotimeFloat();
         }
 
         // サイト情報を取得する
@@ -133,9 +134,9 @@ class SC_View {
 
         $this->_smarty->display($template);
         if(ADMIN_MODE == '1') {
-            $time_end = time();
+            $time_end = SC_Utils_Ex::sfMicrotimeFloat();
             $time = $time_end - $this->time_start;
-            print("処理時間:" . $time . "秒");
+            echo '処理時間: ' . sprintf('%.3f', $time) . 秒;
         }
     }
 
@@ -184,7 +185,7 @@ class SC_AdminView extends SC_View{
 }
 
 class SC_SiteView extends SC_View{
-    function SC_SiteView($cart = true) {
+    function SC_SiteView($setPrevURL = true) {
         parent::SC_View();
 
         $this->_smarty->template_dir = TEMPLATE_DIR;
@@ -194,9 +195,7 @@ class SC_SiteView extends SC_View{
         // PHP5ではsessionをスタートする前にヘッダー情報を送信していると警告が出るため、先にセッションをスタートするように変更
         SC_Utils_Ex::sfDomainSessionStart();
 
-        if($cart){
-            $include_dir = realpath(dirname( __FILE__));
-            require_once($include_dir . "/SC_CartSession.php");
+        if ($setPrevURL) {
             $objCartSess = new SC_CartSession();
             $objCartSess->setPrevURL($_SERVER['REQUEST_URI']);
         }
@@ -220,8 +219,8 @@ class SC_InstallView extends SC_View{
 }
 
 class SC_MobileView extends SC_SiteView {
-    function SC_MobileView() {
-        parent::SC_SiteView();
+    function SC_MobileView($setPrevURL = true) {
+        parent::SC_SiteView($setPrevURL);
         $this->_smarty->template_dir = MOBILE_TEMPLATE_DIR;
         $this->_smarty->compile_dir = MOBILE_COMPILE_DIR;
     }

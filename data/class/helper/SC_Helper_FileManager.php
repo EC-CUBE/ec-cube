@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -339,6 +339,21 @@ class SC_Helper_FileManager {
         return $str;
     }
     
+    /**
+     * ファイル書込を行う.
+     *
+     * @param string $filename ファイルパス
+     * @param string $value 書き込み内容
+     */
+    function sfWriteFile($filename, $value) {
+        $fp = @fopen($filename, "w");
+        // ファイルに書き込む
+        if($fp) {
+            fwrite($fp, $value);
+        }
+        @fclose($fp);
+    }
+
 	/**
 	 * ユーザが作成したファイルをアーカイブしダウンロードさせる
 	 * TODO 要リファクタリング

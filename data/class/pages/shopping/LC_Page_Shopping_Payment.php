@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -23,13 +23,14 @@
 
 // {{{ requires
 require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(DATA_PATH . 'module/Services/JSON.php');
 
 /**
  * 支払い方法選択 のページクラス.
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id:LC_Page_Shopping_Payment.php 15532 2007-08-31 14:39:46Z nanasess $
+ * @version $Id:LC_Page_Shopping_Payment.php 15532 2009-10-30 20:04:46Z satou $
  */
 class LC_Page_Shopping_Payment extends LC_Page {
 
@@ -51,12 +52,10 @@ class LC_Page_Shopping_Payment extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->tpl_mainpage = 'shopping/payment.tpl';
+        $this->tpl_mainpage = "shopping/payment.tpl";
         $this->tpl_column_num = 1;
-        $this->tpl_onload = 'fnCheckInputPoint();';
+        $this->tpl_onload = "fnCheckInputPoint(); fnSetDelivTime('payment','payment_id','deliv_time_id');";
         $this->tpl_title = "お支払方法・お届け時間等の指定";
-
-        $this->allowClientCache();
     }
 
     /**
@@ -73,8 +72,6 @@ class LC_Page_Shopping_Payment extends LC_Page {
         $objCampaignSess = new SC_CampaignSession();
         $objDb = new SC_Helper_DB_Ex();
         $this->objCustomer = new SC_Customer();
-        $objSiteInfo = $objView->objSiteInfo;
-        $arrInfo = $objSiteInfo->data;
 
         // パラメータ管理クラス
         $this->objFormParam = new SC_FormParam();
@@ -101,18 +98,18 @@ class LC_Page_Shopping_Payment extends LC_Page {
         // 一時受注テーブルの読込
         $arrOrderTemp = $objDb->sfGetOrderTemp($uniqid);
         //不正遷移チェック（正常に受注情報が格納されていない場合は一旦カート画面まで戻す）
-        if (!$arrOrderTemp){
+        if (!$arrOrderTemp) {
             $this->sendRedirect($this->getLocation(URL_CART_TOP));
             exit;
         }
-        // 金額の取得 (購入途中で売り切れた場合にはこの関数内にてその商品の個数が０になる)
-        $objDb->sfTotalCart($this, $objCartSess, $arrInfo);
 
-        if (empty($arrData)) $arrData = array();
-        $this->arrData = $objDb->sfTotalConfirm($arrData, $this, $objCartSess, $arrInfo);
+        // カート内商品の集計処理を行う
+        $objDb->sfTotalCart($this, $objCartSess);
+        if (strlen($this->tpl_message) >= 1) {
+            SC_Utils_Ex::sfDispSiteError(SOLD_OUT, '', true);
+        }
 
-        // カート内の商品の売り切れチェック
-        $objCartSess->chkSoldOut($objCartSess->getCartList());
+        $this->arrData = $objDb->sfTotalConfirm(array(), $this, $objCartSess);
 
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
@@ -120,7 +117,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
         case 'confirm':
             // 入力値の変換
             $this->objFormParam->convParam();
-            $this->arrErr = $this->lfCheckError($this->arrData );
+            $this->arrErr = $this->lfCheckError($this->arrData);
             // 入力エラーなし
             if(count($this->arrErr) == 0) {
                 // DBへのデータ登録
@@ -147,7 +144,8 @@ class LC_Page_Shopping_Payment extends LC_Page {
             break;
         // 支払い方法が変更された場合
         case 'payment':
-            // ここのbreakは、意味があるので外さないで下さい。
+            // 配送時間の配列を生成
+            $this->lfSetDelivTime();
             break;
         default:
             // 受注一時テーブルからの情報を格納
@@ -155,18 +153,12 @@ class LC_Page_Shopping_Payment extends LC_Page {
             break;
         }
 
-        // 店舗情報の取得
-        $arrInfo = $objSiteInfo->data;
         // 購入金額の取得得
-        $total_pretax = $objCartSess->getAllProductsTotal($arrInfo);
+        $total_pretax = $objCartSess->getAllProductsTotal();
         // 支払い方法の取得
         $this->arrPayment = $this->lfGetPayment($total_pretax);
         // 支払い方法の画像があるなしを取得（$img_show true:ある false:なし）
         $this->img_show = $this->lfGetImgShow($this->arrPayment);
-        // お届け時間の取得
-        $arrRet = $objDb->sfGetDelivTime($this->objFormParam->getValue('payment_id'));
-        $this->arrDelivTime = SC_Utils_Ex::sfArrKeyValue($arrRet, 'time_id', 'deliv_time');
-
         // お届け日一覧の取得
         $this->arrDelivDate = $this->lfGetDelivDate();
 
@@ -197,8 +189,6 @@ class LC_Page_Shopping_Payment extends LC_Page {
         $objCartSess = new SC_CartSession();
         $this->objCustomer = new SC_Customer();
         $objDb = new SC_Helper_DB_Ex();
-        $objSiteInfo = $objView->objSiteInfo;
-        $arrInfo = $objSiteInfo->data;
 
         // パラメータ管理クラス
         $this->objFormParam = new SC_FormParam();
@@ -221,17 +211,18 @@ class LC_Page_Shopping_Payment extends LC_Page {
         // 一時受注テーブルの読込
         $arrOrderTemp = $objDb->sfGetOrderTemp($uniqid);
         //不正遷移チェック（正常に受注情報が格納されていない場合は一旦カート画面まで戻す）
-        if (!$arrOrderTemp){
+        if (!$arrOrderTemp) {
             $this->sendRedirect($this->getLocation(MOBILE_URL_CART_TOP));
             exit;
         }
-        // 金額の取得 (購入途中で売り切れた場合にはこの関数内にてその商品の個数が０になる)
-        $objDb->sfTotalCart($this, $objCartSess, $arrInfo);
-        if (empty($arrData)) $arrData = array();
-        $this->arrData = $objDb->sfTotalConfirm($arrData, $this, $objCartSess, $arrInfo);
 
-        // カート内の商品の売り切れチェック
-        $objCartSess->chkSoldOut($objCartSess->getCartList(), true);
+        // 金額の取得 (購入途中で売り切れた場合にはこの関数内にてその商品の数量が０になる)
+        $objDb->sfTotalCart($this, $objCartSess);
+        if (strlen($this->tpl_message) >= 1) {
+            SC_Utils_Ex::sfDispSiteError(SOLD_OUT, '', true);
+        }
+
+        $this->arrData = $objDb->sfTotalConfirm(array(), $this, $objCartSess);
 
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
@@ -270,7 +261,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
         case 'confirm':
             // 入力値の変換
             $this->objFormParam->convParam();
-            $this->arrErr = $this->lfCheckError($this->arrData );
+            $this->arrErr = $this->lfCheckError($this->arrData);
             // 入力エラーなし
             if(count($this->arrErr) == 0) {
                 // DBへのデータ登録
@@ -310,10 +301,8 @@ class LC_Page_Shopping_Payment extends LC_Page {
             break;
         }
 
-        // 店舗情報の取得
-        $arrInfo = $objSiteInfo->data;
         // 購入金額の取得得
-        $total_pretax = $objCartSess->getAllProductsTotal($arrInfo);
+        $total_pretax = $objCartSess->getAllProductsTotal();
         // 支払い方法の取得
         $this->arrPayment = $this->lfGetPayment($total_pretax);
         // お届け時間の取得
@@ -350,28 +339,33 @@ class LC_Page_Shopping_Payment extends LC_Page {
 
     function lfGetPayment($total_pretax) {
         $objQuery = new SC_Query();
-        $objQuery->setorder("rank DESC");
-        //削除されていない支払方法を取得
+        $objQuery->setOrder("rank DESC");
+        // 削除されていない支払方法を取得
         $arrRet = $objQuery->select("payment_id, payment_method, rule, upper_rule, note, payment_image", "dtb_payment", "del_flg = 0 AND deliv_id IN (SELECT deliv_id FROM dtb_deliv WHERE del_flg = 0) ");
-        //利用条件から支払可能方法を判定
+        // 配列初期化
+        $data = array();
+        // 選択可能な支払方法を判定
         foreach($arrRet as $data) {
-            //下限と上限が設定されている
-            if($data['rule'] > 0 && $data['upper_rule'] > 0) {
-                if($data['rule'] <= $total_pretax && $data['upper_rule'] >= $total_pretax) {
+            // 下限と上限が設定されている
+            if (strlen($data['rule']) != 0 && strlen($data['upper_rule']) != 0) {
+                if ($data['rule'] <= $total_pretax && $data['upper_rule'] >= $total_pretax) {
                     $arrPayment[] = $data;
                 }
-            //下限のみ設定されている
-            } elseif($data['rule'] > 0) {
+            }
+            // 下限のみ設定されている
+            elseif (strlen($data['rule']) != 0) {
                 if($data['rule'] <= $total_pretax) {
                     $arrPayment[] = $data;
                 }
-            //上限のみ設定されている
-            } elseif($data['upper_rule'] > 0) {
+            }
+            // 上限のみ設定されている
+            elseif (strlen($data['upper_rule']) != 0) {
                 if($data['upper_rule'] >= $total_pretax) {
                     $arrPayment[] = $data;
                 }
-            //設定なし
-            } else {
+            }
+            // いずれも設定なし
+            else {
                 $arrPayment[] = $data;
             }
         }
@@ -389,6 +383,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
             $_POST['point_check'] = "";
             $_POST['use_point'] = "0";
         }
+
         if (!isset($_POST['point_check'])) $_POST['point_check'] = "";
 
         if($_POST['point_check'] == '1') {
@@ -407,13 +402,9 @@ class LC_Page_Shopping_Payment extends LC_Page {
             }
         }
 
-        $objView = new SC_MobileView();
-        $objSiteInfo = $objView->objSiteInfo;
-        $arrInfo = $objSiteInfo->data;
         $objCartSess = new SC_CartSession();
-        $arrInfo = $objSiteInfo->data;
         // 購入金額の取得得
-        $total_pretax = $objCartSess->getAllProductsTotal($arrInfo);
+        $total_pretax = $objCartSess->getAllProductsTotal();
         // 支払い方法の取得
         $arrPayment = $this->lfGetPayment($total_pretax);
         $pay_flag = true;
@@ -423,7 +414,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
                 break;
             }
         }
-        if ($pay_flag && $arrRet['payment_id'] != "" ) {
+        if ($pay_flag && $arrRet['payment_id'] != "") {
             SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
         }
 
@@ -434,39 +425,21 @@ class LC_Page_Shopping_Payment extends LC_Page {
     function lfGetPaymentInfo($payment_id) {
         $objQuery = new SC_Query();
         $where = "payment_id = ?";
-        $arrRet = $objQuery->select("payment_method, charge", "dtb_payment", $where, array($payment_id));
-        return (array($arrRet[0]['payment_method'], $arrRet[0]['charge']));
-    }
-
-    /* お届け時間文字列の取得 */
-    function lfGetDelivTimeInfo($time_id) {
-        $objQuery = new SC_Query();
-        $where = "time_id = ?";
-        $arrRet = $objQuery->select("deliv_id, deliv_time", "dtb_delivtime", $where, array($time_id));
-        return (array($arrRet[0]['deliv_id'], $arrRet[0]['deliv_time']));
+        $arrRet = $objQuery->select("charge, deliv_id", "dtb_payment", $where, array($payment_id));
+        return (array($arrRet[0]['charge'], $arrRet[0]['deliv_id']));
     }
 
     /* DBへデータの登録 */
     function lfRegistData($uniqid) {
-        $arrRet = $this->objFormParam->getHashArray();
+        $objDb = new SC_Helper_DB_Ex();
+
         $sqlval = $this->objFormParam->getDbArray();
         // 登録データの作成
         $sqlval['order_temp_id'] = $uniqid;
         $sqlval['update_date'] = 'Now()';
 
-        if($sqlval['payment_id'] != "") {
-            list($sqlval['payment_method'], $sqlval['charge']) = $this->lfGetPaymentInfo($sqlval['payment_id']);
-        } else {
-            $sqlval['payment_id'] = '0';
-            $sqlval['payment_method'] = "";
-        }
-
-        if($sqlval['deliv_time_id'] != "") {
-            list($sqlval['deliv_id'], $sqlval['deliv_time']) = $this->lfGetDelivTimeInfo($sqlval['deliv_time_id']);
-        } else {
-            $sqlval['deliv_time_id'] = '0';
-            $sqlval['deliv_id'] = '0';
-            $sqlval['deliv_time'] = "";
+        if (strlen($sqlval['payment_id']) >= 1) {
+            list($sqlval['charge'], $sqlval['deliv_id']) = $this->lfGetPaymentInfo($sqlval['payment_id']);
         }
 
         // 使用ポイントの設定
@@ -474,7 +447,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
             $sqlval['use_point'] = 0;
         }
 
-        $objDb = new SC_Helper_DB_Ex();
+        // 受注_Tempテーブルに登録
         $objDb->sfRegistTempOrder($uniqid, $sqlval);
     }
 
@@ -566,7 +539,6 @@ class LC_Page_Shopping_Payment extends LC_Page {
 
     //一時受注テーブルからの情報を格納する
     function lfSetOrderTempData($uniqid) {
-
         $objQuery = new SC_Query();
         $col = "payment_id, use_point, deliv_time_id, message, point_check, deliv_date";
         $from = "dtb_order_temp";
@@ -587,6 +559,18 @@ class LC_Page_Shopping_Payment extends LC_Page {
             }
         }
         return $img_show;
+    }
+
+    /* 配送時間の配列を生成 */
+    function lfSetDelivTime() {
+        $objDb = new SC_Helper_DB_Ex();
+        $objJson = new Services_JSON;
+
+        // 配送時間の取得
+        $arrRet = $objDb->sfGetDelivTime($this->objFormParam->getValue('payment_id'));
+        // JSONエンコード
+        echo $objJson->encode($arrRet);
+        exit;
     }
 }
 ?>

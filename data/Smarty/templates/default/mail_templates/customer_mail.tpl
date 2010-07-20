@@ -1,7 +1,7 @@
 <!--{*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -44,7 +44,7 @@
 本会員登録を完了するには下記URLにアクセスしてください。
 ※入力されたお客様の情報はSSL暗号化通信により保護されます。
 
-<!--{$smarty.const.SSL_URL}-->regist/index.php?mode=regist&id=<!--{$uniqid}--><!--{$etc_value}-->
+<!--{$smarty.const.SSL_URL}-->regist/<!--{$smarty.const.DIR_INDEX_URL}-->?mode=regist&id=<!--{$uniqid}--><!--{$etc_value}-->
 
 上記URLにて本会員登録が完了いたしましたら改めてご登録内容ご確認
 メールをお送り致します。

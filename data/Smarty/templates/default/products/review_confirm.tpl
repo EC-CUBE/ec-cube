@@ -1,7 +1,7 @@
 <!--{*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2008 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -23,7 +23,7 @@
 
   <div id="windowarea">
     <h2><img src="<!--{$TPL_DIR}-->img/products/review_title.jpg" width="500" height="40" alt="お客様の声書き込み" /></h2>
-    <form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+    <form name="form1" method="post" action="?">
       <input type="hidden" name="mode" value="complete" />
         <!--{foreach from=$arrForm key=key item=item}-->
         <!--{if $key ne "mode"}-->
@@ -41,7 +41,7 @@
             <td><!--{$arrForm.reviewer_name|escape}--></td>
           </tr>
           <tr>
-            <th>メールアドレス</th>
+            <th>投稿者URL</th>
             <td><!--{$arrForm.reviewer_url|escape}--></td>
           </tr>
           <tr>
@@ -50,7 +50,7 @@
           </tr>
           <tr>
             <th>おすすめレベル<span class="attention">※</span></th>
-            <td><span class="attention"><!--{$arrRECOMMEND[$arrForm.recommend_level]}--></span></td>
+            <td><span class="recommend_level"><!--{$arrRECOMMEND[$arrForm.recommend_level]}--></span></td>
           </tr>
           <tr>
             <th>タイトル<span class="attention">※</span></th>

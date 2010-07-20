@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -115,7 +115,7 @@ class LC_Page_Magazine_Confirm extends LC_Page {
                 //　解除
             } elseif ($_REQUEST['mode'] == 'cancel') {
                 $uniqId = $this->lfGetSecretKey($_POST["email"], $objConn);
-                $subject = $helperMail->sfMakesubject($objQuery, $objMailText, $this,'メルマガ解除のご確認');
+                $subject = $helperMail->sfMakesubject('メルマガ解除のご確認');
             }
             $objDb = new SC_Helper_DB_Ex();
             $CONF = $objDb->sf_getBasisData();
@@ -146,7 +146,7 @@ class LC_Page_Magazine_Confirm extends LC_Page {
                                 array(session_name() => session_id())));
             exit;
         } else {
-            SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
+            SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
         }
 
         $objView = new SC_MobileView();
@@ -172,7 +172,7 @@ class LC_Page_Magazine_Confirm extends LC_Page {
         $objErr->doFunc(
                         array('メールアドレス', $dataName, MTEXT_LEN) ,
                         array("NO_SPTAB", "EXIST_CHECK", "EMAIL_CHECK",
-                              "SPTAB_CHECK" ,"EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK", "MOBILE_EMAIL_CHECK"));
+                              "SPTAB_CHECK" ,"EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK", "EMAIL_CHECK", "MOBILE_EMAIL_CHECK"));
 
         // 入力エラーがなければ
         if (count($objErr->arrErr) == 0) {
@@ -251,7 +251,7 @@ class LC_Page_Magazine_Confirm extends LC_Page {
         $mailResult = $objConn->getRow($sql, array($email));
 
         // NULLも購読とみなす
-        if (count($mailResult) == 0 or ($mailResult[1] != null and $mailResult[1] != 2 )) {
+        if (count($mailResult) == 0 or ($mailResult['mailmaga_flg'] != null and $mailResult['mailmaga_flg'] != 2 )) {
             return false;
         } else {
             return true;

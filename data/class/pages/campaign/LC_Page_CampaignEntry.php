@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -51,10 +51,12 @@ class LC_Page_CampaignEntry extends LC_Page {
                                 array("pref_id", "pref_name", "rank"));
         $this->arrJob = $masterData->getMasterData("mtb_job");
         $this->arrReminder = $masterData->getMasterData("mtb_reminder");
-        $this->objDate = new SC_Date(START_BIRTH_YEAR, date("Y",strtotime("now")));
-        $this->arrYear = $this->objDate->getYear('', 1950);	//　日付プルダウン設定
-        $this->arrMonth = $this->objDate->getMonth();
-        $this->arrDay = $this->objDate->getDay();
+        
+        // 生年月日選択肢の取得
+        $objDate = new SC_Date(START_BIRTH_YEAR, date("Y",strtotime("now")));
+        $this->arrYear = $objDate->getYear('', 1950, '');
+        $this->arrMonth = $objDate->getMonth(true);
+        $this->arrDay = $objDate->getDay(true);
     }
 
     /**
@@ -87,9 +89,9 @@ class LC_Page_CampaignEntry extends LC_Page {
                                  array(  "column" => "addr01", "convert" => "aKV" ),
                                  array(  "column" => "addr02", "convert" => "aKV" ),
                                  array(  "column" => "email", "convert" => "a" ),
-                                 array(  "column" => "email2", "convert" => "a" ),
+                                 array(  "column" => "email02", "convert" => "a" ),
                                  array(  "column" => "email_mobile", "convert" => "a" ),
-                                 array(  "column" => "email_mobile2", "convert" => "a" ),
+                                 array(  "column" => "email_mobile02", "convert" => "a" ),
                                  array(  "column" => "tel01", "convert" => "n" ),
                                  array(  "column" => "tel02", "convert" => "n" ),
                                  array(  "column" => "tel03", "convert" => "n" ),
@@ -99,6 +101,9 @@ class LC_Page_CampaignEntry extends LC_Page {
                                  array(  "column" => "sex", "convert" => "n" ),
                                  array(  "column" => "job", "convert" => "n" ),
                                  array(  "column" => "birth", "convert" => "n" ),
+                                 array(  "column" => "year",  "convert" => "n"),
+                                 array(  "column" => "month", "convert" => "n"),
+                                 array(  "column" => "day",   "convert" => "n"),
                                  array(  "column" => "reminder", "convert" => "n" ),
                                  array(  "column" => "reminder_answer", "convert" => "aKV"),
                                  array(  "column" => "password", "convert" => "a" ),
@@ -114,10 +119,6 @@ class LC_Page_CampaignEntry extends LC_Page {
             //-- POSTデータの引き継ぎ
             $this->arrForm = $_POST;
 
-            if($this->arrForm['year'] == '----') {
-                $this->arrForm['year'] = '';
-            }
-
             $this->arrForm['email'] = strtolower($this->arrForm['email']);		// emailはすべて小文字で処理
             $this->arrForm['email02'] = strtolower($this->arrForm['email02']);	// emailはすべて小文字で処理
 
@@ -129,7 +130,7 @@ class LC_Page_CampaignEntry extends LC_Page {
 
             if ($this->arrErr || $_POST["mode"] == "return") {		// 入力エラーのチェック
                 foreach($arrRegistColumn as $key) {
-                    $this->$key['column'] = $arrForm[$key['column']];
+                    $this->$key['column'] = $this->arrForm[$key['column']];
                 }
 
             } else {
@@ -170,7 +171,7 @@ class LC_Page_CampaignEntry extends LC_Page {
                     $objHelperMail = new SC_Helper_Mail_Ex();
                     $objQuery = new SC_Query();
 
-                    $subject = $objHelperMail->sfMakeSubject($objQuery, $objMailText, $this, '会員登録のご確認');
+                    $subject = $objHelperMail->sfMakeSubject('会員登録のご確認');
 
                     $toCustomerMail = $objMailText->fetch("mail_templates/customer_mail.tpl");
                     $objMail = new SC_SendMail();
@@ -198,10 +199,6 @@ class LC_Page_CampaignEntry extends LC_Page {
                     exit;
                 }
             }
-        }
-
-        if($this->year == '') {
-            $this->year = '----';
         }
 
         //---- ページ表示
@@ -356,11 +353,11 @@ class LC_Page_CampaignEntry extends LC_Page {
         $objErr->doFunc(array("お電話番号1", 'tel01'), array("EXIST_CHECK","SPTAB_CHECK" ));
         $objErr->doFunc(array("お電話番号2", 'tel02'), array("EXIST_CHECK","SPTAB_CHECK" ));
         $objErr->doFunc(array("お電話番号3", 'tel03'), array("EXIST_CHECK","SPTAB_CHECK" ));
-        $objErr->doFunc(array("お電話番号", "tel01", "tel02", "tel03",TEL_ITEM_LEN) ,array("TEL_CHECK"));
+        $objErr->doFunc(array("お電話番号", "tel01", "tel02", "tel03") ,array("TEL_CHECK"));
         $objErr->doFunc(array("FAX番号1", 'fax01'), array("SPTAB_CHECK"));
         $objErr->doFunc(array("FAX番号2", 'fax02'), array("SPTAB_CHECK"));
         $objErr->doFunc(array("FAX番号3", 'fax03'), array("SPTAB_CHECK"));
-        $objErr->doFunc(array("FAX番号", "fax01", "fax02", "fax03", TEL_ITEM_LEN) ,array("TEL_CHECK"));
+        $objErr->doFunc(array("FAX番号", "fax01", "fax02", "fax03") ,array("TEL_CHECK"));
         $objErr->doFunc(array("ご性別", "sex") ,array("SELECT_CHECK", "NUM_CHECK"));
         $objErr->doFunc(array("パスワード", 'password', PASSWORD_LEN1, PASSWORD_LEN2), array("EXIST_CHECK", "SPTAB_CHECK" ,"ALNUM_CHECK", "NUM_RANGE_CHECK"));
         $objErr->doFunc(array("パスワード(確認)", 'password02', PASSWORD_LEN1, PASSWORD_LEN2), array("EXIST_CHECK", "SPTAB_CHECK" ,"ALNUM_CHECK", "NUM_RANGE_CHECK"));
@@ -368,7 +365,7 @@ class LC_Page_CampaignEntry extends LC_Page {
         $objErr->doFunc(array("パスワードを忘れたときのヒント 質問", "reminder") ,array("SELECT_CHECK", "NUM_CHECK"));
         $objErr->doFunc(array("パスワードを忘れたときのヒント 答え", "reminder_answer", STEXT_LEN) ,array("EXIST_CHECK","SPTAB_CHECK" , "MAX_LENGTH_CHECK"));
         $objErr->doFunc(array("メールマガジン", "mailmaga_flg") ,array("SELECT_CHECK", "NUM_CHECK"));
-        $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_DATE"));
+        $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_BIRTHDAY"));
 
 
         return $objErr->arrErr;

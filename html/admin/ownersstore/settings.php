@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -22,8 +22,8 @@
  */
 
 // {{{ requires
-require_once("../require.php");
-require_once(CLASS_EX_PATH . "page_extends/admin/ownersstore/LC_Page_Admin_OwnersStore_Settings_Ex.php");
+require_once '../require.php';
+require_once CLASS_EX_PATH . 'page_extends/admin/ownersstore/LC_Page_Admin_OwnersStore_Settings_Ex.php';
 
 // }}}
 // {{{ generate page
@@ -31,5 +31,5 @@ require_once(CLASS_EX_PATH . "page_extends/admin/ownersstore/LC_Page_Admin_Owner
 $objPage = new LC_Page_Admin_OwnersStore_Settings_Ex();
 $objPage->init();
 $objPage->process();
-register_shutdown_function(array($objPage, "destroy"));
+register_shutdown_function(array($objPage, 'destroy'));
 ?>

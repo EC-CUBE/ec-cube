@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -45,7 +45,6 @@ class LC_Page_Admin_OwnersStore_Log extends LC_Page {
         parent::init();
 
         $this->tpl_mainpage = 'ownersstore/log.tpl';
-        $this->tpl_subnavi  = 'ownersstore/subnavi.tpl';
         $this->tpl_mainno   = 'ownersstore';
         $this->tpl_subno    = 'log';
         $this->tpl_subtitle = 'ログ管理';

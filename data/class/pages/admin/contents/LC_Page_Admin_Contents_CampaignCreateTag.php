@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -46,7 +46,6 @@ class LC_Page_Admin_Contents_CampaignCreateTag extends LC_Page {
         $this->tpl_mainpage = 'contents/campaign_create_tag.tpl';
         $this->tpl_mainno = 'create';
         $this->tpl_subtitle = '商品設定';
-        $this->allowClientCache();
     }
 
     /**
@@ -93,11 +92,8 @@ class LC_Page_Admin_Contents_CampaignCreateTag extends LC_Page {
                     }
                     break;
                 case 'search_product_id':
-                    if($val != "") {
-                        $where .= " AND product_id = ?";
-                        if(!SC_Utils_Ex::sfIsInt($val)) $val = 0;
-                        $arrval[] = $val;
-                    }
+                    $where .= " AND product_id IN (SELECT product_id FROM dtb_products_class WHERE product_code LIKE ? GROUP BY product_id)";
+                    $arrval[] = "$val%";
                     break;
                 default:
                     break;
@@ -127,9 +123,9 @@ class LC_Page_Admin_Contents_CampaignCreateTag extends LC_Page {
             $startno = $objNavi->start_row;
 
             // 取得範囲の指定(開始行番号、行数のセット)
-            if(DB_TYPE != "mysql") $objQuery->setlimitoffset($page_max, $startno);
+            if(DB_TYPE != "mysql") $objQuery->setLimitOffset($page_max, $startno);
             // 表示順序
-            $objQuery->setorder($order);
+            $objQuery->setOrder($order);
 
             // 検索結果の取得
             $this->arrProducts = $objQuery->select($col, $from, $where, $arrval);

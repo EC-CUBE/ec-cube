@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -25,11 +25,13 @@
 require_once(CLASS_PATH . "pages/LC_Page.php");
 
 /**
- * CSV アップロード のページクラス.
+ * 商品登録CSVのページクラス.
  *
  * @package Page
  * @author LOCKON CO.,LTD.
  * @version $Id:LC_Page_Admin_Products_UploadCSV.php 15532 2007-08-31 14:39:46Z nanasess $
+ *
+ * FIXME 同一商品IDで商品規格違いを登録できない。(更新は可能)
  */
 class LC_Page_Admin_Products_UploadCSV extends LC_Page {
 
@@ -53,6 +55,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page {
         $this->tpl_subnavi = 'products/subnavi.tpl';
         $this->tpl_mainno = 'products';
         $this->tpl_subno = 'upload_csv';
+        $this->tpl_subtitle = '商品登録CSV';
     }
 
     /**
@@ -93,11 +96,14 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page {
                 $arrErr = $this->objUpFile->checkEXISTS();
             }
 
+            $objView->assignobj($this);
+            $objView->display('admin_popup_header.tpl');
+
             // 実行時間を制限しない
             set_time_limit(0);
 
             // 出力をバッファリングしない(==日本語自動変換もしない)
-            ob_end_clean();
+            ob_end_flush();
 
             // IEのために256バイト空文字出力
             echo str_pad('',256);
@@ -184,6 +190,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page {
                     echo "■" . $regist . "件のレコードを登録しました。";
                     // 商品件数カウント関数の実行
                     $objDb->sfCategory_Count($objQuery);
+                    $objDb->sfMaker_Count($objQuery);
                 } else {
                     $objQuery->rollback();
                 }
@@ -194,6 +201,10 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page {
             }
             echo "<br/><a href=\"javascript:window.close()\">→閉じる</a>";
             flush();
+
+            $objView->assignobj($this);
+            $objView->display('admin_popup_footer.tpl');
+
             exit;
             break;
         default:
@@ -230,6 +241,13 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page {
      * @return void
      */
     function lfInitParam() {
+        
+        // 商品ステータスの上限文字数の算出
+        $masterData = new SC_DB_MasterData_Ex();
+        $arrSTATUS = $masterData->getMasterData("mtb_status");
+        $product_flag_maxlen = max(array_keys($arrSTATUS));
+        unset($arrSTATUS);
+        unset($masterData);
 
         $this->objFormParam->addParam("商品ID", "product_id", INT_LEN, "n", array("MAX_LENGTH_CHECK","NUM_CHECK"));
         $this->objFormParam->addParam("商品規格ID", "product_class_id", INT_LEN, "n", array("MAX_LENGTH_CHECK","NUM_CHECK"));
@@ -239,7 +257,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page {
 
         $this->objFormParam->addParam("商品名", "name", STEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("公開フラグ(1:公開 2:非公開)", "status", INT_LEN, "n", array("EXIST_CHECK","MAX_LENGTH_CHECK","NUM_CHECK"));
-        $this->objFormParam->addParam("商品ステータス", "product_flag", INT_LEN, "n", array("EXIST_CHECK","MAX_LENGTH_CHECK","NUM_CHECK"));
+        $this->objFormParam->addParam("商品ステータス", "product_flag", $product_flag_maxlen, "n", array("EXIST_CHECK","MAX_LENGTH_CHECK","NUM_CHECK"));
         $this->objFormParam->addParam("商品コード", "product_code", STEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam(NORMAL_PRICE_TITLE, "price01", PRICE_LEN, "n", array("MAX_LENGTH_CHECK","NUM_CHECK"));
         $this->objFormParam->addParam(SALE_PRICE_TITLE, "price02", PRICE_LEN, "n", array("EXIST_CHECK","MAX_LENGTH_CHECK","NUM_CHECK"));
@@ -250,43 +268,43 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page {
         $this->objFormParam->addParam("メーカーURL", "comment1", URL_LEN, "KVa", array("SPTAB_CHECK","URL_CHECK","MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("検索ワード", "comment3", LLTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("備考欄(SHOP専用)", "note", LLTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("一覧-メインコメント", "main_list_comment", LTEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("一覧-メイン画像", "main_list_image", LTEXT_LEN, "KVa", array("EXIST_CHECK","FILE_EXISTS","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("メインコメント", "main_comment", LTEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("メイン画像", "main_image", LTEXT_LEN, "KVa", array("EXIST_CHECK","FILE_EXISTS","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+        $this->objFormParam->addParam("一覧-メインコメント", "main_list_comment", MTEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+        $this->objFormParam->addParam("一覧-メイン画像", "main_list_image", LTEXT_LEN, "KVa", array("FILE_EXISTS","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+        $this->objFormParam->addParam("メインコメント", "main_comment", LLTEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+        $this->objFormParam->addParam("メイン画像", "main_image", LTEXT_LEN, "KVa", array("FILE_EXISTS","SPTAB_CHECK","MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("メイン拡大画像", "main_large_image", LTEXT_LEN, "KVa", array("FILE_EXISTS","SPTAB_CHECK","MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("カラー比較画像", "file1", LTEXT_LEN, "KVa", array("FILE_EXISTS","SPTAB_CHECK","MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("商品詳細ファイル", "file2", LTEXT_LEN, "KVa", array("FILE_EXISTS","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("詳細-サブタイトル(1)", "sub_title1", LTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("詳細-サブコメント(1)", "sub_comment1", LTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
+        $this->objFormParam->addParam("詳細-サブタイトル(1)", "sub_title1", STEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
+        $this->objFormParam->addParam("詳細-サブコメント(1)", "sub_comment1", LLTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("詳細-サブ画像(1)", "sub_image1", LTEXT_LEN, "KVa", array("FILE_EXISTS","SPTAB_CHECK","MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("詳細-サブ拡大画像(1)", "sub_large_image1", LTEXT_LEN, "KVa", array("FILE_EXISTS","SPTAB_CHECK","MAX_LENGTH_CHECK"));
 
-        $this->objFormParam->addParam("詳細-サブタイトル(2)", "sub_title2", LTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("詳細-サブコメント(2)", "sub_comment2", LTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
+        $this->objFormParam->addParam("詳細-サブタイトル(2)", "sub_title2", STEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
+        $this->objFormParam->addParam("詳細-サブコメント(2)", "sub_comment2", LLTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("詳細-サブ画像(2)", "sub_image2", LTEXT_LEN, "KVa", array("FILE_EXISTS","SPTAB_CHECK","MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("詳細-サブ拡大画像(2)", "sub_large_image2", LTEXT_LEN, "KVa", array("FILE_EXISTS","SPTAB_CHECK","MAX_LENGTH_CHECK"));
 
-        $this->objFormParam->addParam("詳細-サブタイトル(3)", "sub_title3", LTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("詳細-サブコメント(3)", "sub_comment3", LTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
+        $this->objFormParam->addParam("詳細-サブタイトル(3)", "sub_title3", STEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
+        $this->objFormParam->addParam("詳細-サブコメント(3)", "sub_comment3", LLTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("詳細-サブ画像(3)", "sub_image3", LTEXT_LEN, "KVa", array("FILE_EXISTS","SPTAB_CHECK","MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("詳細-サブ拡大画像(3)", "sub_large_image3", LTEXT_LEN, "KVa", array("FILE_EXISTS","SPTAB_CHECK","MAX_LENGTH_CHECK"));
 
-        $this->objFormParam->addParam("詳細-サブタイトル(4)", "sub_title4", LTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("詳細-サブコメント(4)", "sub_comment4", LTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
+        $this->objFormParam->addParam("詳細-サブタイトル(4)", "sub_title4", STEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
+        $this->objFormParam->addParam("詳細-サブコメント(4)", "sub_comment4", LLTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("詳細-サブ画像(4)", "sub_image4", LTEXT_LEN, "KVa", array("FILE_EXISTS","SPTAB_CHECK","MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("詳細-サブ拡大画像(4)", "sub_large_image4", LTEXT_LEN, "KVa", array("FILE_EXISTS","SPTAB_CHECK","MAX_LENGTH_CHECK"));
 
-        $this->objFormParam->addParam("詳細-サブタイトル(5)", "sub_title5", LTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("詳細-サブコメント(5)", "sub_comment5", LTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
+        $this->objFormParam->addParam("詳細-サブタイトル(5)", "sub_title5", STEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
+        $this->objFormParam->addParam("詳細-サブコメント(5)", "sub_comment5", LLTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("詳細-サブ画像(5)", "sub_image5", LTEXT_LEN, "KVa", array("FILE_EXISTS","SPTAB_CHECK","MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("詳細-サブ拡大画像(5)", "sub_large_image5", LTEXT_LEN, "KVa", array("FILE_EXISTS","SPTAB_CHECK","MAX_LENGTH_CHECK"));
 
         $this->objFormParam->addParam("発送日目安", "deliv_date_id", INT_LEN, "n", array("MAX_LENGTH_CHECK","NUM_CHECK"));
 
         for ($cnt = 1; $cnt <= RECOMMEND_PRODUCT_MAX; $cnt++) {
-            $this->objFormParam->addParam("おすすめ商品($cnt)", "recommend_product_id$cnt", INT_LEN, "n", array("MAX_LENGTH_CHECK","NUM_CHECK"));
-            $this->objFormParam->addParam("詳細-サブコメント($cnt)", "recommend_comment$cnt", LTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
+            $this->objFormParam->addParam("関連商品($cnt)", "recommend_product_id$cnt", INT_LEN, "n", array("MAX_LENGTH_CHECK","NUM_CHECK"));
+            $this->objFormParam->addParam("関連商品コメント($cnt)", "recommend_comment$cnt", LTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
         }
 
         $this->objFormParam->addParam("商品カテゴリ", "category_id", STEXT_LEN, "n", array("EXIST_CHECK", "SPTAB_CHECK"));
@@ -345,53 +363,45 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page {
         $sqlval['update_date'] = $time;
         $sqlval['creator_id'] = $_SESSION['member_id'];
 
-        if($sqlval['sale_limit'] == "") {
-            $sqlval['sale_unlimited'] = '1';
-        } else {
-            $sqlval['sale_unlimited'] = '0';
-        }
-
         if($sqlval['status'] == "") {
             $sqlval['status'] = 2;
         }
 
-        if($arrRet['product_id'] != "" && $arrRet['product_class_id'] != "") {
+        if($sqlval['product_id'] != "") {
 
             // UPDATEの実行
             $where = "product_id = ?";
             $objQuery->update("dtb_products", $sqlval, $where, array($sqlval['product_id']));
+            
+            $product_id = $sqlval['product_id'];
         } else {
-
             // 新規登録
-            // postgresqlとmysqlとで処理を分ける
-            if (DB_TYPE == "pgsql") {
-                $product_id = $objQuery->nextval("dtb_products","product_id");
-            }elseif (DB_TYPE == "mysql") {
-                $product_id = $objQuery->get_auto_increment("dtb_products");
-            }
-            $sqlval['product_id'] = $product_id;
-            $sqlval['create_date'] = $time;
 
+            unset($sqlval['product_id']);
+            $sqlval['create_date'] = $time;
+            
             // INSERTの実行
             $objQuery->insert("dtb_products", $sqlval);
+            
+            $product_id = $objQuery->currval("dtb_products","product_id");
         }
 
         // カテゴリ登録
         $arrCategory_id = explode("|", $arrRet["category_id"]);
-        $objDb->updateProductCategories($arrCategory_id, $sqlval['product_id']);
+        $objDb->updateProductCategories($arrCategory_id, $product_id);
 
         // 規格登録
-        $this->lfRegistProductClass($objQuery, $arrRet, $sqlval['product_id'], $arrRet['product_class_id']);
+        $this->lfRegistProductClass($objQuery, $arrRet, $product_id, $arrRet['product_class_id']);
 
-        // おすすめ商品登録
-        $objQuery->delete("dtb_recommend_products", "product_id = ?", array($sqlval['product_id']));
+        // 関連商品登録
+        $objQuery->delete("dtb_recommend_products", "product_id = ?", array($product_id));
         for($i = 1; $i <= RECOMMEND_PRODUCT_MAX; $i++) {
             $keyname = "recommend_product_id" . $i;
             $comment_key = "recommend_comment" . $i;
             if($arrRet[$keyname] != "") {
                 $arrProduct = $objQuery->select("product_id", "dtb_products", "product_id = ?", array($arrRet[$keyname]));
                 if($arrProduct[0]['product_id'] != "") {
-                    $arrval['product_id'] = $sqlval['product_id'];
+                    $arrval['product_id'] = $product_id;
                     $arrval['recommend_product_id'] = $arrProduct[0]['product_id'];
                     $arrval['comment'] = $arrRet[$comment_key];
                     $arrval['update_date'] = "Now()";

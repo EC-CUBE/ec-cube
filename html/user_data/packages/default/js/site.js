@@ -1,7 +1,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -35,31 +35,34 @@ function fnIsopener() {
 
 // 郵便番号入力呼び出し.
 function fnCallAddress(php_url, tagname1, tagname2, input1, input2) {
-	zip1 = document.form1[tagname1].value;
-	zip2 = document.form1[tagname2].value;
-	
-	if(zip1.length == 3 && zip2.length == 4) {
-		url = php_url + "?zip1=" + zip1 + "&zip2=" + zip2 + "&input1=" + input1 + "&input2=" + input2;
-		window.open(url,"nomenu","width=500,height=350,scrollbars=yes,resizable=yes,toolbar=no,location=no,directories=no,status=no");
-	} else {
-		alert("郵便番号を正しく入力して下さい。");
+    zip1 = document.form1[tagname1].value;
+    zip2 = document.form1[tagname2].value;
+
+    if(zip1.length == 3 && zip2.length == 4) {
+        $.get(
+            php_url,
+            {zip1: zip1, zip2: zip2, input1: input1, input2: input2},
+            function(data) {
+                arrdata = data.split("|");
+                if (arrdata.length > 1) {
+                    fnPutAddress(input1, input2, arrdata[0], arrdata[1], arrdata[2]);
+                } else {
+                    alert(data);
+                }
+            }
+        );
+    } else {
+        alert("郵便番号を正しく入力して下さい。");
 	}
 }
 
 // 郵便番号から検索した住所を渡す.
-function fnPutAddress(input1, input2) {
-	// 親ウィンドウの存在確認。.
-	if(fnIsopener()) {
-		if(document.form1['state'].value != "") {
-			// 項目に値を入力する.
-			state_id = document.form1['state'].value;
-			town = document.form1['city'].value + document.form1['town'].value;
-			window.opener.document.form1[input1].selectedIndex = state_id;
-			window.opener.document.form1[input2].value = town;
-		}
-	} else {
-		window.close();
-	}		
+function fnPutAddress(input1, input2, state, city, town) {
+    if(state != "") {
+        // 項目に値を入力する.
+        document.form1[input1].selectedIndex = state;
+        document.form1[input2].value = city + town;
+    }
 }
 
 function fnOpenNoMenu(URL) {
@@ -78,18 +81,18 @@ function fnSetFocus(name) {
 
 // セレクトボックスに項目を割り当てる.
 function fnSetSelect(name1, name2, val) {
-	sele1 = document.form1[name1]; 
+	sele1 = document.form1[name1];
 	sele2 = document.form1[name2];
-	
+
 	if(sele1 && sele2) {
 		index=sele1.selectedIndex;
-		
-		// セレクトボックスのクリア	
+
+		// セレクトボックスのクリア
 		count=sele2.options.length
 		for(i = count; i >= 0; i--) {
 			sele2.options[i]=null;
 		}
-		
+
 		// セレクトボックスに値を割り当てる。
 		len = lists[index].length
 		for(i = 0; i < len; i++) {
@@ -127,9 +130,10 @@ function fnModeSubmit(mode, keyname, keyid) {
 		}
 		break;
 	case 'delete_order':
-		if(!window.confirm('在庫数は手動で戻してください。\n一度削除したデータは、元に戻せません。\n削除しても宜しいですか？')){
+		if(!window.confirm('一度削除したデータは、元に戻せません。\n削除しても宜しいですか？\n\n※ 在庫数は手動で戻してください。')){
 			return;
 		}
+        mode = 'delete';
 		break;
 	case 'confirm':
 		if(!window.confirm('登録しても宜しいですか')){
@@ -167,7 +171,7 @@ function fnFormModeSubmit(form, mode, keyname, keyid) {
 		if(!window.confirm('登録しても宜しいですか')){
 			return;
 		}
-		break;		
+		break;
 	default:
 		break;
 	}
@@ -182,6 +186,10 @@ function fnSetFormSubmit(form, key, val) {
 	document.forms[form][key].value = val;
 	document.forms[form].submit();
 	return false;
+}
+
+function fnSetVal(key, val) {
+	fnSetFormVal('form1', key, val);
 }
 
 function fnSetFormVal(form, key, val) {
@@ -204,7 +212,7 @@ function fnSearchPageNavi(pageno) {
 	document.form1.submit();
 	}
 
-	function fnSubmit(){
+function fnSubmit(){
 	document.form1.submit();
 }
 
@@ -214,7 +222,7 @@ function fnCheckInputPoint() {
 		list = new Array(
 						'use_point'
 						);
-	
+
 		if(!document.form1['point_check'][0].checked) {
 			color = "#dddddd";
 			flag = true;
@@ -222,7 +230,7 @@ function fnCheckInputPoint() {
 			color = "";
 			flag = false;
 		}
-		
+
 		len = list.length
 		for(i = 0; i < len; i++) {
 			if(document.form1[list[i]]) {
@@ -253,27 +261,8 @@ function fnCheckInputDeliv() {
 						'deliv_tel02',
 						'deliv_tel03'
 						);
-	
+
 		if(!document.form1['deliv_check'].checked) {
-			fnChangeDisabled(list, '#dddddd');
-		} else {
-			fnChangeDisabled(list, '');
-		}
-	}
-}
-
-
-// 購入時会員登録入力制限。
-function fnCheckInputMember() {
-	if(document.form1['member_check']) {
-		list = new Array(
-						'password',
-						'password_confirm',
-						'reminder',
-						'reminder_answer'
-						);
-
-		if(!document.form1['member_check'].checked) {
 			fnChangeDisabled(list, '#dddddd');
 		} else {
 			fnChangeDisabled(list, '');
@@ -286,7 +275,7 @@ var g_savecolor = new Array();
 
 function fnChangeDisabled(list, color) {
 	len = list.length;
-	
+
 	for(i = 0; i < len; i++) {
 		if(document.form1[list[i]]) {
 			if(color == "") {
@@ -297,8 +286,8 @@ function fnChangeDisabled(list, color) {
 				// 無効にする。
 				document.form1[list[i]].disabled = true;
 				g_savecolor[list[i]] = document.form1[list[i]].style.backgroundColor;
-				document.form1[list[i]].style.backgroundColor = color;//"#f0f0f0";	
-			}			
+				document.form1[list[i]].style.backgroundColor = color;//"#f0f0f0";
+			}
 		}
 	}
 }
@@ -307,7 +296,7 @@ function fnChangeDisabled(list, color) {
 // ログイン時の入力チェック
 function fnCheckLogin(formname) {
 	var lstitem = new Array();
-	
+
 	if(formname == 'login_mypage'){
 	lstitem[0] = 'mypage_login_email';
 	lstitem[1] = 'mypage_login_pass';
@@ -318,7 +307,7 @@ function fnCheckLogin(formname) {
 	var max = lstitem.length;
 	var errflg = false;
 	var cnt = 0;
-	
+
 	//　必須項目のチェック
 	for(cnt = 0; cnt < max; cnt++) {
 		if(document.forms[formname][lstitem[cnt]].value == "") {
@@ -326,14 +315,14 @@ function fnCheckLogin(formname) {
 			break;
 		}
 	}
-	
-	// 必須項目が入力されていない場合	
+
+	// 必須項目が入力されていない場合
 	if(errflg == true) {
 		alert('メールアドレス/パスワードを入力して下さい。');
 		return false;
 	}
 }
-	
+
 // 時間の計測.
 function fnPassTime(){
 	end_time = new Date();
@@ -349,7 +338,7 @@ function fnUpdateParent(url) {
 		window.opener.location.href = url;
 	} else {
 		window.close();
-	}		
+	}
 }
 
 //特定のキーをSUBMITする.
@@ -371,7 +360,7 @@ function fnCharCount(form,sch,cnt) {
 
 // テキストエリアのサイズを変更する.
 function ChangeSize(button, TextArea, Max, Min, row_tmp){
-	
+
 	if(TextArea.rows <= Min){
 		TextArea.rows=Max; button.value="小さくする"; row_tmp.value=Max;
 	}else{
@@ -379,3 +368,44 @@ function ChangeSize(button, TextArea, Max, Min, row_tmp){
 	}
 }
 
+// お届け時間のリアル反映
+function fnSetDelivTime(mode, r_key, s_id) {
+    var f_key, f_val;
+    var f_cnt = document.form1.length;
+    var f_data = "mode=" + mode;
+
+    // formデータの形成
+    for (i = 0; i < f_cnt; i++) {
+        f_key = document.form1[i].name;
+        f_val = document.form1[i].value;
+        if (f_key != "mode") {
+            if (f_key == r_key) {
+                if (document.form1[i].checked === true) {
+                    f_data += "&" + f_key + "=" + f_val;
+                }
+            } else {
+                f_data += "&" + f_key + "=" + f_val;
+            }
+        }
+    }
+
+    // AJAX
+    $.ajax({
+        type: "POST",
+        url: document.form1.action,
+        data: f_data,
+        dataType: "json",
+        success: function(data) {
+            var elm_s = "select#" + s_id;
+            var elm_o = elm_s + " option";
+            $(elm_o).remove();
+            $(elm_s).append($('<option>').attr({value: ""}).text("指定なし"));
+            for (i = 0; i < data.length; i++) {
+                if (data[i].time_id > 0) {
+                    $(elm_s).append($('<option>').attr({value: data[i].time_id}).text(data[i].deliv_time));
+                    $(elm_s).width();
+                }
+            }
+        }
+    });
+}

@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -34,19 +34,18 @@
         }
 */
 class SC_PageNavi {
-    var $now_page;		// 現在のページ番号
-    var $max_page;		// 最終のページ番号
-    var $start_row;		// 開始レコード
-    var $strnavi;		// ページ送り文字列
-    var $arrPagenavi = array();	// ページ
+    var $now_page;      // 現在のページ番号
+    var $max_page;      // 最終のページ番号
+    var $start_row;     // 開始レコード
+    var $strnavi;       // ページ送り文字列
+    var $arrPagenavi = array(); // ページ
 
     // コンストラクタ
-    function SC_PageNavi($now_page, $all_row, $page_row, $func_name, $navi_max = NAVI_PMAX) {
+    function SC_PageNavi($now_page, $all_row, $page_row, $func_name, $navi_max = NAVI_PMAX, $urlParam = '') {
         $this->arrPagenavi['mode'] = 'search';
-        $ps = htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES);
 
         //現在ページ($now_page)が正しい数値でない場合
-        if (!eregi("^[[:digit:]]+$", $now_page) || $now_page < 1 || $now_page == "") {
+        if (!eregi("^[[:digit:]]+$", $now_page) || $now_page < 1 || strlen($now_page) == 0) {
             $this->now_page = 1;
         } else {
             $this->now_page = $now_page;
@@ -57,7 +56,7 @@ class SC_PageNavi {
         $this->max_page = ceil($all_row/$page_row);
 
         // 最終ページよりも現在ページが大きい場合は、最初に戻す。
-        if($this->max_page < $this->now_page) {
+        if ($this->max_page < $this->now_page) {
             $this->now_page = 1;
         }
 
@@ -68,40 +67,44 @@ class SC_PageNavi {
             $this->start_row = 0;
         }
 
-        if($all_row > 1) {
+        if ($all_row > 1) {
 
             //「前へ」「次へ」の設定
             $before = "";
             $next = "";
             if ($this->now_page > 1) {
-                $before="<a href=\"". $ps . "\" onclick=\"$func_name('" . (($this->now_page) - 1) . "'); return false;\">&lt;&lt;前へ</a> ";
-                $this->arrPagenavi['before'] = ($this->now_page) - 1;
-            }else{
+                $this->arrPagenavi['before'] = $this->now_page - 1;
+                $urlParamThis = str_replace('#page#', $this->arrPagenavi['before'], $urlParam);
+                $urlParamThis = htmlentities($urlParamThis, ENT_QUOTES);
+                $before = "<a href=\"?$urlParamThis\" onclick=\"$func_name('{$this->arrPagenavi['before']}'); return false;\">&lt;&lt;前へ</a> ";
+            } else {
                 $this->arrPagenavi['before'] = $this->now_page;
             }
 
             if ($this->now_page < $this->max_page) {
-                $next=" <a href=\"". $ps . "\" onclick=\"$func_name('" . (($this->now_page) + 1) ."'); return false;\">次へ&gt;&gt;</a>";
-                $this->arrPagenavi['next'] = ($this->now_page) + 1;
-            }else{
+                $this->arrPagenavi['next'] = $this->now_page + 1;
+                $urlParamThis = str_replace('#page#', $this->arrPagenavi['next'], $urlParam);
+                $urlParamThis = htmlentities($urlParamThis, ENT_QUOTES);
+                $next = " <a href=\"?$urlParamThis\" onclick=\"$func_name('{$this->arrPagenavi['next']}'); return false;\">次へ&gt;&gt;</a>";
+            } else {
                 $this->arrPagenavi['next'] = $this->now_page;
             }
 
             // 表示する最大ナビ数を決める。
-            if($navi_max == "" || $navi_max > $this->max_page) {
+            if ($navi_max == "" || $navi_max > $this->max_page) {
                 // 制限ナビ数の指定がない。ページ最大数が制限ナビ数より少ない。
                 $disp_max = $this->max_page;
             } else {
                 // 現在のページ＋制限ナビ数が表示される。
                 $disp_max = $this->now_page + $navi_max - 1;
                 // ページ最大数を超えている場合は、ページ最大数に合わせる。
-                if($disp_max > $this->max_page) {
+                if ($disp_max > $this->max_page) {
                     $disp_max = $this->max_page;
                 }
             }
 
             // 表示する最小ナビ数を決める。
-            if($navi_max == "" || $navi_max > $this->now_page) {
+            if ($navi_max == "" || $navi_max > $this->now_page) {
                 // 制限ナビ数の指定がない。現在ページ番号が制限ナビ数より少ない。
                 $disp_min = 1;
             } else {
@@ -113,7 +116,7 @@ class SC_PageNavi {
             $page_number = "";
             for ($i=$disp_min; $i <= $disp_max; $i++) {
 
-                if($i != $disp_max) {
+                if ($i != $disp_max) {
                     $sep = " | ";
                 } else {
                     $sep = "";
@@ -122,10 +125,12 @@ class SC_PageNavi {
                 if ($i == $this->now_page) {
                     $page_number .= "<strong>$i</strong>";
                 } else {
-                    $page_number.="<a href=\"".  $ps . "\" onclick=\"$func_name('$i'); return false;\">$i</a>";
+                    $urlParamThis = str_replace('#page#', $i, $urlParam);
+                    $urlParamThis = htmlentities($urlParamThis, ENT_QUOTES);
+                    $page_number .= "<a href=\"?$urlParamThis\" onclick=\"$func_name('$i'); return false;\">$i</a>";
                 }
 
-                $page_number.=$sep;
+                $page_number .= $sep;
 
                 $this->arrPagenavi['arrPageno'][$i] = $i;
             }
@@ -133,7 +138,7 @@ class SC_PageNavi {
             if ($before || $next) {
                 $this->strnavi = $before .$page_number .$next;
             }
-        }else{
+        } else {
             $this->arrPagenavi['arrPageno'][0] = 1;
             $this->arrPagenavi['before'] = 1;
             $this->arrPagenavi['next'] = 1;

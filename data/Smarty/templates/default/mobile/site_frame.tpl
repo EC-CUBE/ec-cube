@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -24,7 +24,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=shift_jis">
-<title><!--{$arrSiteInfo.shop_name|escape}-->/<!--{$tpl_title|escape}--></title>
+<title><!--{$arrSiteInfo.shop_name|escape}--><!--{if $tpl_subtitle|strlen >= 1}-->/<!--{$tpl_subtitle|escape}--><!--{elseif $tpl_title|strlen >= 1}-->/<!--{$tpl_title|escape}--><!--{/if}--></title>
 <meta name="author" content="<!--{$arrPageLayout.author|escape}-->">
 <meta name="description" content="<!--{$arrPageLayout.description|escape}-->">
 <meta name="keywords" content="<!--{$arrPageLayout.keyword|escape}-->">

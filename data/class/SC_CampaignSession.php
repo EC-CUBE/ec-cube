@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -72,16 +72,14 @@ class SC_CampaignSession {
 
     /* キャンペーンページならフレームを変更 */
     function pageView($objView, $site_frame = SITE_FRAME) {
-        $self_path = explode("/",$_SERVER['PHP_SELF']);
-        $campaign_dir = explode("/",CAMPAIGN_DIR);
-        
-        $is_campaign = array_search( $campaign_dir[0] , $self_path );
-        
-        if( strlen($is_campaign) > 0 ) {
-            $objView->display($site_frame);
-        } else {
-            $objView->display($site_frame);
+        // XXX キャンペーン削除で不具合があったので、応急処置をしています。(テスト不十分)
+        if ($this->getIsCampaign()) {
+            $site_frame_campaign = CAMPAIGN_TEMPLATE_PATH . $this->getCampaignDir()  . "/active/site_frame.tpl";
+            if (file_exists($site_frame_campaign)) {
+                $site_frame = $site_frame_campaign;
+            }
         }
+        $objView->display($site_frame);
     }
 }
 ?>

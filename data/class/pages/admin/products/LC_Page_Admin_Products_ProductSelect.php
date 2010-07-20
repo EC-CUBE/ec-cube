@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -57,7 +57,6 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page {
      * @return void
      */
     function process() {
-        $conn = new SC_DBConn();
         $objView = new SC_AdminView();
         $objSess = new SC_Session();
         $objDb = new SC_Helper_DB_Ex();
@@ -131,12 +130,12 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page {
             $startno = $objNavi->start_row;
 
             // 取得範囲の指定(開始行番号、行数のセット)
-            if(DB_TYPE != "mysql") $objQuery->setlimitoffset($page_max, $startno);
+            if(DB_TYPE != "mysql") $objQuery->setLimitOffset($page_max, $startno);
             // 表示順序
-            $objQuery->setorder($order);
+            $objQuery->setOrder($order);
 
             // viewも絞込みをかける(mysql用)
-            //sfViewWhere("&&noncls_where&&", $where, $arrval, $objQuery->order . " " .  $objQuery->setlimitoffset($page_max, $startno, true));
+            //sfViewWhere("&&noncls_where&&", $where, $arrval, $objQuery->order . " " .  $objQuery->setLimitOffset($page_max, $startno, true));
 
             // 検索結果の取得
             $this->arrProducts = $objQuery->select($col, $from, $where, $arrval);

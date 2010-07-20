@@ -1,7 +1,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -157,17 +157,17 @@ function fnDrow(id, tree) {
 // 階層ツリーメニュー表示・非表示処理
 function fnTreeMenu(tName, imgName, path) {
 
-	tMenu = document.all[tName].style;
+	tMenu = $("#" + tName);
 
-	if(tMenu.display == 'none') {
+	if(tMenu.css("display") == 'none') {
 		fnChgImg(IMG_MINUS, imgName);
-		tMenu.display = "block";
+		tMenu.show();
 		// 階層の開いた状態を保持
 		arrTreeStatus.push(path);
 
 	} else {
 		fnChgImg(IMG_PLUS, imgName);
-		tMenu.display = "none";
+		tMenu.hide();
 		// 閉じ状態を保持
 		fnDelTreeStatus(path);
 	}
@@ -224,24 +224,24 @@ function fnGetMyBrowser() {
 
 // imgタグの画像変更
 function fnChgImg(fileName,imgName){
-	document.getElementById(imgName).src = fileName;
+	$("#" + imgName).attr("src", fileName);
 }
 
 // ファイル選択
 function fnSelectFile(id, val) {
-	if(old_select_id != '') document.getElementById(old_select_id).style.backgroundColor = '';
-	document.getElementById(id).style.backgroundColor = val;
+	if(old_select_id != '') $("#" + old_select_id).children("td").css("background-color", "#FFFFFF");
+	$("#" + id).children("td").css("background-color", val);
 	old_select_id = id;
 }
 
 // 背景色を変える
 function fnChangeBgColor(id, val) {
 	if (old_select_id != id) {
-		document.getElementById(id).style.backgroundColor = val;
+		$("#" + id).children("td").css("background-color", val);
 	}
 }
 
 // test
 function view_test(id) {
-	document.getElementById(id).value=tree
+	$("#" + id).val(tree)
 }

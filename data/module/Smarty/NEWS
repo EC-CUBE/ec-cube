@@ -1,3 +1,114 @@
+Version 2.6.26 (June 18th, 2009)
+-------------------------------
+- revert super global access changes, and instead rely on
+  USE_SUPER_GLOBALS for security
+
+Version 2.6.25 (May 19th, 2009)
+-------------------------------
+- fix E_NOTICE when sessions are disabled (mohrt)
+
+Version 2.6.24 (May 16th, 2009)
+-------------------------------
+- fix problem introduced with super global changes (mohrt)
+
+Version 2.6.23 (May 13th, 2009)
+-------------------------------
+- strip backticks from {math} equations (mohrt)
+- make PHP super globals read-only from template (mohrt)
+- throw error when template exists but not readable (mohrt)
+
+Version 2.6.22 (Dec 17th, 2008)
+-------------------------------
+
+- back out method chaining, bug in some versions of PCRE causes errors (mohrt)
+
+Version 2.6.21 (Dec 2nd, 2008)
+------------------------------
+
+- fix  function injection security hole closed (U.Tews)
+- fix pass expiration time at cache_handler_fuc call in core.write_cache_file.php (U.Tews)
+- Update of compiler.class.php to allow method chaining for PHP4 and PHP5 (U.Tews)
+
+Version 2.6.20 (Feb 15th, 2008)
+-------------------------------
+
+- fix cache tag bug when multiple cache tags on a page (mankyd,
+  mohrt)
+- fix /e tag checking when using arrays with regex_replace
+  (mohrt)
+- fix that function results can be used with condition like "is even" in 
+  {if} tags (U.Tews)
+- fix handling of non-empty <pre>-tags and empty <textarea>- and
+  <script>-tags (Spuerhund, messju)
+
+Version 2.6.19 (Feb 11th, 2008)
+-------------------------------
+
+- fix regex_replace allowing \0 in the search string (c960657,
+  monte)
+- add append feature to {capture} (jablko, monte)
+- fix when (un)registering filters with the same method name but different class
+  name (danilo)
+- fix calling registered objects' methods with an empty argument list
+  (marcello, messju)
+ 
+Version 2.6.18 (Mar 7th, 2007)
+------------------------------
+
+- fix html_select_date separator when parts are missing (hayk,
+  monte)
+- fix broken detection of non-cached blocks introduced in 2.6.17
+  (messju)
+
+Version 2.6.17 (Mar 5th, 2007)
+------------------------------
+
+- fix php handling (monte, boots, danilo)
+- fix handling of plugin tags directly followed by an else tag (Fahr, danilo)
+- fix handling of $etc in the truncate modifier when $etc is longer
+  than $length (Sylvinus, messju)
+- fix handling of %I with mysql timestamps in the date_format modifier
+  (danilo, boots)
+- update smarty_core_write_file() and smarty_modifier_date_format() to better
+  recognize Windows (boots, danilo)
+- emulate %h, %n, %r, %R, %t in the date_format modifier on Windows 
+  (danilo, boots)
+
+Version 2.6.16 (Dec 1st, 2006)
+------------------------------
+
+- fixed replacement bug in trimwhitespace output filter that was introduced
+  in the last release (Spuerhund, boots)
+
+Version 2.6.15 (Nov 30th, 2006)
+-------------------------------
+
+- change file writing semantics in smarty_core_write_file() to unlink() only
+  when rename() fails or a Windows system is detected (c960657, boots) 
+- update debug.tpl to xhtml 1.1 compliance, fix javascript escaping in debug
+  output and apply a Smarty based color scheme (cybot, boots)
+- enhance reporting precision of debug_print_var modifier (cybot, boots) 
+- make html_select_date work consistently with 0000-00-00 00:00:00 and
+  0000-00-00 inputs (cybot, boots)
+- fix wrong handling of insert's name attribute. (messju)
+- fix false replacement of "$t" inside double quotes (checat, messju)
+- added support for column headings and caption element to html_table and
+  updated the output to use thead/tbody elements (boots)
+- fixed ordering of replacements in trimwhitespace output filter (Getty, boots)
+- update mailto function plugin to work around a firefox/thunderbird
+  escaping bug (elijahlofgren, boots)
+- emulate %l in the date_format modifier on windows (boots) 
+- fix handling of apostrophes in capitalize modifier (Alec Smecher, boots)
+
+Version 2.6.14 (May 28th, 2006)
+-------------------------------
+
+- fix compiler bug allowing php tags in secure templates
+  (boots,monte)
+- un-hide hidden xml open tags (boots)
+- fix handling of block-methods of registered objects (El Hombre Gris,
+  messju)
+
 Version 2.6.13 (March 9th, 2006)
 --------------------------------
 

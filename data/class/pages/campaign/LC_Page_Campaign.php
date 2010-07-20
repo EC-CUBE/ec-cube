@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -194,8 +194,6 @@ class LC_Page_Campaign extends LC_Page {
 
         for($i = 0; $i < count($arrProducts); $i++) {
             $this->lfMakeSelect($arrProducts[$i]['product_id'], $arrClassName, $arrClassCatName);
-            // 購入制限数を取得
-            $this->lfGetSaleLimit($arrProducts);
         }
 
         foreach($arrProducts as $key =>$val) {
@@ -328,7 +326,7 @@ class LC_Page_Campaign extends LC_Page {
             $col = "product_class_id, classcategory_id1, classcategory_id2, class_id1, class_id2, stock, stock_unlimited";
             $table = "vw_product_class AS prdcls";
             $where = "product_id = ?";
-            $objQuery->setorder("rank1 DESC, rank2 DESC");
+            $objQuery->setOrder("rank1 DESC, rank2 DESC");
             $arrRet = $objQuery->select($col, $table, $where, array($product_id));
         }
         return $arrRet;
@@ -350,19 +348,9 @@ class LC_Page_Campaign extends LC_Page {
         if ($this->tpl_classcat_find2[$id]) {
             $objErr->doFunc(array("規格2", $classcategory_id2, INT_LEN), array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
         }
-        $objErr->doFunc(array("個数", $quantity, INT_LEN), array("EXIST_CHECK", "ZERO_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objErr->doFunc(array("数量", $quantity, INT_LEN), array("EXIST_CHECK", "ZERO_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
 
         return $objErr->arrErr;
-    }
-
-    // 購入制限数の設定
-    function lfGetSaleLimit($product) {
-        //在庫が無限または購入制限値が設定値より大きい場合
-        if($product['sale_unlimited'] == 1 || $product['sale_limit'] > SALE_LIMIT_MAX) {
-            $this->tpl_sale_limit[$product['product_id']] = SALE_LIMIT_MAX;
-        } else {
-            $this->tpl_sale_limit[$product['product_id']] = $product['sale_limit'];
-        }
     }
 
     //支払方法の取得
@@ -373,7 +361,7 @@ class LC_Page_Campaign extends LC_Page {
         $from = "dtb_payment";
         $where = "del_flg = 0";
         $order = "payment_id";
-        $objQuery->setorder($order);
+        $objQuery->setOrder($order);
         $arrRet = $objQuery->select($col, $from, $where);
         return $arrRet;
     }

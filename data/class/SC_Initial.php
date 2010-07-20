@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -37,7 +37,8 @@ class SC_Initial {
     function SC_Initial() {
 
         /** EC-CUBEのバージョン */
-        define('ECCUBE_VERSION', "2.4.3");
+        // XXX SVNのリビジョンを付加できたら良いと思う。(方法が分からない。)
+        define('ECCUBE_VERSION', "2.4.2-comu");
     }
 
     // }}}
@@ -53,9 +54,12 @@ class SC_Initial {
         $this->requireInitialConfig();
         $this->defineDSN();
         $this->setErrorReporting();
+        $this->defineDirectoryIndex();
+        $this->defineErrorType();
         $this->defineConstants();
         $this->mbstringInit();
         $this->createCacheDir();
+        $this->resetSuperglobalsRequest();
     }
 
     /**
@@ -100,6 +104,10 @@ class SC_Initial {
      */
     function setErrorReporting() {
         error_reporting(E_ALL & ~E_NOTICE);
+        // PHP 5.3.0対応
+        if (error_reporting() > 6143) {
+            error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
+        }
     }
 
     /**
@@ -118,8 +126,40 @@ class SC_Initial {
         ini_set("mbstring.internal_encoding", CHAR_CODE);
         ini_set("mbstring.detect_order", "auto");
         ini_set("mbstring.substitute_character", "none");
+        
+        mb_language('ja'); // mb_internal_encoding() より前に
+        // TODO 他に mb_language() している箇所の削除を検討
+        // TODO .htaccess の mbstring.language を削除できないか検討
+        
+        mb_internal_encoding(CHAR_CODE); // mb_language() より後で
+        // TODO 上の「ini_set("mbstring.internal_encoding", CHAR_CODE);」を削除できないか検討
+        // TODO .htaccess の mbstring.internal_encoding を削除できないか検討
+        
         //ロケールを明示的に設定
         setlocale(LC_ALL, LOCALE);
+    }
+
+    /**
+     * 定数 DIR_INDEX_URL を設定する.
+     *
+     * @access protected
+     * @return void
+     */
+    function defineDirectoryIndex() {
+        
+        // DirectoryIndex の実ファイル名
+        if (!defined('DIR_INDEX_FILE')) {
+            define('DIR_INDEX_FILE', 'index.php');
+        }
+        
+        // DIR_INDEX_FILE にアクセスする時の URL のファイル名部を定義する
+        if (USE_FILENAME_DIR_INDEX === true) {
+            // ファイル名を使用する
+            define('DIR_INDEX_URL', DIR_INDEX_FILE);
+        } else {
+            // ファイル名を使用しない
+            define('DIR_INDEX_URL', '');
+        }
     }
 
     /**
@@ -176,7 +216,7 @@ class SC_Initial {
     function createCacheDir() {
         if (defined("HTML_PATH")) {
             umask(0);
-        	if (!file_exists(COMPILE_DIR)) {
+            if (!file_exists(COMPILE_DIR)) {
                 mkdir(COMPILE_DIR);
             }
 
@@ -192,6 +232,84 @@ class SC_Initial {
                 mkdir(COMPILE_FTP_DIR);
             }
         }
+    }
+
+    /**
+     * エラー種別を定数定義
+     *
+     * @access protected
+     * @return void
+     */
+    function defineErrorType() {
+        // LC_Page_Error用
+        /** 指定商品ページがない */
+        define('PRODUCT_NOT_FOUND', 1);
+        /** カート内が空 */
+        define('CART_EMPTY', 2);
+        /** ページ推移エラー */
+        define('PAGE_ERROR', 3);
+        /** 購入処理中のカート商品追加エラー */
+        define('CART_ADD_ERROR', 4);
+        /** 他にも購入手続きが行われた場合 */
+        define('CANCEL_PURCHASE', 5);
+        /** 指定カテゴリページがない */
+        define('CATEGORY_NOT_FOUND', 6);
+        /** ログインに失敗 */
+        define('SITE_LOGIN_ERROR', 7);
+        /** 会員専用ページへのアクセスエラー */
+        define('CUSTOMER_ERROR', 8);
+        /** 購入時の売り切れエラー */
+        define('SOLD_OUT', 9);
+        /** カート内商品の読込エラー */
+        define('CART_NOT_FOUND', 10);
+        /** ポイントの不足 */
+        define('LACK_POINT', 11);
+        /** 仮登録者がログインに失敗 */
+        define('TEMP_LOGIN_ERROR', 12);
+        /** URLエラー */
+        define('URL_ERROR', 13);
+        /** ファイル解凍エラー */
+        define('EXTRACT_ERROR', 14);
+        /** FTPダウンロードエラー */
+        define('FTP_DOWNLOAD_ERROR', 15);
+        /** FTPログインエラー */
+        define('FTP_LOGIN_ERROR', 16);
+        /** FTP接続エラー */
+        define('FTP_CONNECT_ERROR', 17);
+        /** DB作成エラー */
+        define('CREATE_DB_ERROR', 18);
+        /** DBインポートエラー */
+        define('DB_IMPORT_ERROR', 19);
+        /** 設定ファイル存在エラー */
+        define('FILE_NOT_FOUND', 20);
+        /** 書き込みエラー */
+        define('WRITE_FILE_ERROR', 21);
+        /** DB接続エラー */
+        define('DB_CONNECT_ERROR', 22);
+        /** フリーメッセージ */
+        define('FREE_ERROR_MSG', 999);
+
+        // LC_Page_Error_DispError用
+        /** ログイン失敗 */
+        define('LOGIN_ERROR', 1);
+        /** アクセス失敗（タイムアウト等） */
+        define('ACCESS_ERROR', 2);
+        /** アクセス権限違反 */
+        define('AUTH_ERROR', 3);
+        /** 不正な遷移エラー */
+        define('INVALID_MOVE_ERRORR', 4);
+    }
+
+    /**
+     * スーパーグローバル変数「$_REQUEST」を再セット
+     *
+     * variables_order ディレクティブによる差を吸収する。
+     *
+     * @access protected
+     * @return void
+     */
+    function resetSuperglobalsRequest() {
+        $_REQUEST = array_merge($_GET, $_POST);
     }
 }
 ?>

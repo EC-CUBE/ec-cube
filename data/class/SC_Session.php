@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -40,7 +40,7 @@ class SC_Session {
             $this->sid = session_id();
             $this->cert = $_SESSION['cert'];
             $this->login_id  = $_SESSION['login_id'];
-            $this->authority = $_SESSION['authority'];	// 管理者:0, 一般:1, 閲覧:2
+            $this->authority = $_SESSION['authority'];	// 管理者:0, 店舗オーナー:1, 閲覧:2, 販売担当:3 (XXX 現状 0, 1 を暫定実装。2, 3 は未実装。)
             $this->member_id = $_SESSION['member_id'];
             if (isset($_SESSION['uniq_id'])) {
                 $this->uniqid    = $_SESSION['uniq_id'];

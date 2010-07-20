@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2008 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -23,26 +23,24 @@
 *}-->
 <!--{include file="`$smarty.const.TEMPLATE_DIR`popup_header.tpl" subtitle="新しいお届け先の追加・変更"}-->
 
-  <div id="windowarea">
-    <h2>
-      <img src="<!--{$TPL_DIR}-->img/shopping/delivadd_title.jpg" width="500" height="40" alt="新しいお届け先の追加・変更" />
-    </h2>
-    <p class="windowtext">下記項目にご入力ください。「<span class="attention">※</span>」印は入力必須項目です。<br />
-      入力後、一番下の「確認ページへ」ボタンをクリックしてください。</p>
+<div id="windowarea">
+    <h2 class="title"><!--{$tpl_title|escape}--></h2>
+    <p>下記項目にご入力ください。「<span class="attention">※</span>」印は入力必須項目です。</p>
+    <p>入力後、一番下の「登録する」ボタンをクリックしてください。</p>
 
-    <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
-    <input type="hidden" name="mode" value="edit" />
-    <input type="hidden" name="other_deliv_id" value="<!--{$smarty.session.other_deliv_id}-->" />
-    <input type="hidden" name="ParentPage" value="<!--{$ParentPage}-->" />
+    <form name="form1" id="form1" method="post" action="?">
+        <input type="hidden" name="mode" value="edit" />
+        <input type="hidden" name="other_deliv_id" value="<!--{$smarty.session.other_deliv_id}-->" />
+        <input type="hidden" name="ParentPage" value="<!--{$ParentPage}-->" />
 
-      <table summary="お届け先登録">
-      <!--{include file="`$smarty.const.TEMPLATE_DIR`frontparts/form_personal_input.tpl" flgFields=1 emailMobile=false prefix=""}-->
-      </table>
+        <table summary="お届け先登録">
+            <!--{include file="`$smarty.const.TEMPLATE_DIR`frontparts/form_personal_input.tpl" flgFields=1 emailMobile=false prefix=""}-->
+        </table>
 
-      <div class="btn">
-        <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_entry_on.gif',this);" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_entry.gif',this);" src="<!--{$TPL_DIR}-->img/common/b_entry.gif" class="box150" alt="登録する" name="register" id="register" />
-      </div>
+        <div class="btn">
+            <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_entry_on.gif',this);" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_entry.gif',this);" src="<!--{$TPL_DIR}-->img/common/b_entry.gif" class="box150" alt="登録する" name="register" id="register" />
+        </div>
     </form>
-  </div>
+</div>
 
 <!--{include file="`$smarty.const.TEMPLATE_DIR`popup_footer.tpl"}-->

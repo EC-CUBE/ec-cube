@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -22,7 +22,7 @@
  */
 *}-->
 <div id="mypagecolumn">
-  <h2 class="title"><img src="<!--{$TPL_DIR}-->img/mypage/title.jpg" width="700" height="40" alt="MYページ" /></h2>
+  <h2 class="title"><!--{$tpl_title|escape}--></h2>
   <!--{if $tpl_navi != ""}-->
     <!--{include file=$tpl_navi}-->
   <!--{else}-->
@@ -33,7 +33,7 @@
     <form name="form1" method="post" action="?">
     <input type="hidden" name="order_id" value="" />
     <input type="hidden" name="pageno" value="<!--{$tpl_pageno}-->" />
-    <h3><img src="<!--{$TPL_DIR}-->img/mypage/subtitle06.gif" width="515" height="32" alt="お気に入り商品一覧" /></h3>
+    <h3><!--{$tpl_subtitle|escape}--></h3>
 
 <!--{if $tpl_linemax > 0}-->
 
@@ -44,7 +44,7 @@
       <!--▲ページナビ-->
     </div>
 
-    <form name="form1" id="form1" method="post" action="<!--{$smarty.const.SITE_URL}-->products/detail.php">
+    <form name="form1" id="form1" method="post" action="?">
     <input type="hidden" name="mode" value="cart" />
     <input type="hidden" name="product_id" value="" />
     <table summary="お気に入り" id="mypage-history-list" class="list">
@@ -55,16 +55,11 @@
         <th width="200" class="sale_price"><!--{$smarty.const.SALE_PRICE_TITLE}--><span class="mini">(税込)</span></th>
       </tr>
       <!--{section name=cnt loop=$arrFavorite}-->
-      <!--{if $arrFavorite[cnt].main_list_image != ""}-->
-        <!--{assign var=image_path value="`$arrFavorite[cnt].main_list_image`"}-->
-      <!--{else}-->
-        <!--{assign var=image_path value="`$smarty.const.NO_IMAGE_DIR`"}-->
-      <!--{/if}-->
-      <!--{assign var=product_id value="`$arrFavorite[cnt].product_id`"|escape}-->
+      <!--{assign var=product_id value="`$arrFavorite[cnt].product_id`"}-->
       <tr>
-       <td><a href="javascript:fnModeSubmit('delete_favorite','product_id','<!--{$product_id}-->');">削除</a></td>
-       <td><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$product_id}-->"><img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&width=65&height=65"></a></td>
-       <td><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$product_id}-->"><!--{$arrFavorite[cnt].name}--></a></td>
+       <td><a href="javascript:fnModeSubmit('delete_favorite','product_id','<!--{$product_id|escape}-->');">削除</a></td>
+       <td><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$product_id|escape:url}-->"><img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$arrFavorite[cnt].main_list_image|sfNoImageMainList|escape}-->&amp;width=65&amp;height=65"></a></td>
+       <td><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$product_id|escape:url}-->"><!--{$arrFavorite[cnt].name}--></a></td>
        <td class="right sale_price">
         <span class="price">
           <!--{if $arrFavorite[cnt].price02_min == $arrFavorite[cnt].price02_max}-->

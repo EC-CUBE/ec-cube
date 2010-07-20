@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -25,7 +25,7 @@
 require_once(CLASS_PATH . "pages/LC_Page.php");
 
 /**
- * おすすめ管理 のページクラス.
+ * おすすめ商品管理 のページクラス.
  *
  * @package Page
  * @author LOCKON CO.,LTD.
@@ -47,7 +47,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page {
         $this->tpl_mainno = 'contents';
         $this->tpl_subnavi = 'contents/subnavi.tpl';
         $this->tpl_subno = "recommend";
-        $this->tpl_subtitle = 'オススメ管理';
+        $this->tpl_subtitle = 'おすすめ商品管理';
     }
 
     /**
@@ -64,7 +64,6 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page {
                                  array(  "column" => "product_id", "convert" => "n" ),
                                  array(  "column" => "category_id", "convert" => "n" ),
                                  array(  "column" => "rank", "convert" => "n" ),
-                                 array(  "column" => "title", "convert" => "aKV" ),
                                  array(  "column" => "comment", "convert" => "aKV" ),
                                  );
 
@@ -123,8 +122,11 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page {
             $this->arrItems[$data['rank']] = $data;
         }
 
-        // 商品変更時は、選択された商品に一時的に置き換える
-        if ( $_POST['mode'] == 'set_item'){
+        // 商品変更時 or 登録エラー時は、選択された商品に一時的に置き換える
+        if (
+            $_POST['mode'] == 'set_item'
+            || $_POST['mode'] == 'regist' && !empty($this->arrErr[$this->arrForm['rank']])
+        ) {
             $sql = "SELECT product_id, name, main_list_image FROM dtb_products WHERE product_id = ? AND del_flg = 0";
             $result = $conn->getAll($sql, array($_POST['product_id']));
             if ( $result ){
@@ -184,8 +186,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page {
         $objQuery = new SC_Query;
         $objErr = new SC_CheckError();
 
-        $objErr->doFunc(array("見出しコメント", "title", STEXT_LEN), array("MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("オススメコメント", "comment", LTEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
+        $objErr->doFunc(array("コメント", "comment", LTEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
 
         return $objErr->arrErr;
     }

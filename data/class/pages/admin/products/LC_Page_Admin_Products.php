@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -55,8 +55,6 @@ class LC_Page_Admin_Products extends LC_Page {
         $this->arrDISP = $masterData->getMasterData("mtb_disp");
         $this->arrSTATUS = $masterData->getMasterData("mtb_status");
         $this->arrPRODUCTSTATUS_COLOR = $masterData->getMasterData("mtb_product_status_color");
-
-        $this->allowClientCache();
     }
 
     /**
@@ -137,8 +135,12 @@ class LC_Page_Admin_Products extends LC_Page {
             $objQuery = new SC_Query();
             $objQuery->delete("dtb_products_class", "product_id = ?", array($_POST['product_id']));
 
+            // お気に入り商品削除
+            $objQuery->delete("dtb_customer_favorite_products", "product_id = ?", array($_POST['product_id']));
+
             // 件数カウントバッチ実行
             $objDb->sfCategory_Count($objQuery);
+            $objDb->sfMaker_Count($objQuery);
         }
 
 
@@ -250,7 +252,7 @@ class LC_Page_Admin_Products extends LC_Page {
 
                         // CSVを送信する。正常終了の場合、終了。
                         $objCSV->sfDownloadProductsCsv($where, $arrval, $order) && exit;
-
+                        
                         break;
                     case 'delete_all':
                         // 検索結果をすべて削除
@@ -258,6 +260,10 @@ class LC_Page_Admin_Products extends LC_Page {
                         $sqlval['del_flg'] = 1;
                         $objQuery->update("dtb_products", $sqlval, $where, $arrval);
                         $objQuery->delete("dtb_customer_favorite_products", $where, $arrval);
+
+                        // 件数カウントバッチ実行
+                        $objDb->sfCategory_Count($objQuery);
+
                         break;
                     default:
                         // 読み込む列とテーブルの指定
@@ -291,18 +297,18 @@ class LC_Page_Admin_Products extends LC_Page {
                         }
 
                         // 取得範囲の指定(開始行番号、行数のセット)
-                        //                    if(DB_TYPE != "mysql") $objQuery->setlimitoffset($page_max, $startno);
-                        $objQuery->setlimitoffset($page_max, $startno);
+                        //                    if(DB_TYPE != "mysql") $objQuery->setLimitOffset($page_max, $startno);
+                        $objQuery->setLimitOffset($page_max, $startno);
                         // 表示順序
-                        $objQuery->setorder($order);
+                        $objQuery->setOrder($order);
 
                         // 検索結果の取得
                         $this->arrProducts = $objQuery->select($col, $from, $where, $arrval);
-
+                        
                         // 各商品ごとのカテゴリIDを取得
                         if (count($this->arrProducts) > 0) {
                             foreach ($this->arrProducts as $key => $val) {
-                                $this->arrProducts[$key]["categories"] = $objDb->sfGetCategoryId($val["product_id"]);
+                                $this->arrProducts[$key]["categories"] = $objDb->sfGetCategoryId($val["product_id"], 0, true);
                                 $objDb->g_category_on = false;
                             }
                         }
@@ -332,11 +338,11 @@ class LC_Page_Admin_Products extends LC_Page {
     function lfConvertParam() {
         global $objPage;
         /*
-         * 文字列の変換
-         * K :  「半角(ﾊﾝｶｸ)片仮名」を「全角片仮名」に変換
-         * C :  「全角ひら仮名」を「全角かた仮名」に変換
-         * V :  濁点付きの文字を一文字に変換。"K","H"と共に使用します
-         * n :  「全角」数字を「半角(ﾊﾝｶｸ)」に変換
+         *  文字列の変換
+         *  K :  「半角(ﾊﾝｶｸ)片仮名」を「全角片仮名」に変換
+         *  C :  「全角ひら仮名」を「全角かた仮名」に変換
+         *  V :  濁点付きの文字を一文字に変換。"K","H"と共に使用します
+         *  n :  「全角」数字を「半角(ﾊﾝｶｸ)」に変換
          */
         $arrConvList['search_name'] = "KVa";
         $arrConvList['search_product_code'] = "KVa";

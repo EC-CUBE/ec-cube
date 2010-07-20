@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -47,10 +47,9 @@ class SC_SessionFactory_UseCookie extends SC_SessionFactory {
      * ・同じドメイン間で共有
      **/
     function initSession() {
+        ini_set('session.cache_limiter', 'none');
         if (session_id() === "") {
-
             session_set_cookie_params(0, "/", DOMAIN_NAME);
-
             if (!ini_get("session.auto_start")) {
                 // セッション開始
                 session_start();
@@ -61,7 +60,7 @@ class SC_SessionFactory_UseCookie extends SC_SessionFactory {
     /**
      * Cookieを使用するかどうか
      *
-     * @return boolean 常にfalseを返す
+     * @return boolean 常に true を返す
      */
     function useCookie() {
         return true;

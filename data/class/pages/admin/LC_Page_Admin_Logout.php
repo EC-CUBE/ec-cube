@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -54,7 +54,7 @@ class LC_Page_Admin_Logout extends LC_Page {
         $objSess = new SC_Session();
         $objSess->logout();
 
-        $this->sendRedirect($this->getLocation(URL_DIR . "admin/index.php"));
+        $this->sendRedirect($this->getLocation(URL_DIR . "admin/" . DIR_INDEX_URL));
     }
 
     /**

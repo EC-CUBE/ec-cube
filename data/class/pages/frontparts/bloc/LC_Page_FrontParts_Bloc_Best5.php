@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -56,7 +56,7 @@ class LC_Page_FrontParts_Bloc_Best5 extends LC_Page_FrontParts_Bloc {
         if (defined("MOBILE_SITE") && MOBILE_SITE) {
             $objView = new SC_MobileView();
         } else {
-            $objView = new SC_SiteView();
+            $objView = new SC_SiteView(false);
         }
         $objSiteInfo = $objView->objSiteInfo;
 
@@ -67,8 +67,10 @@ class LC_Page_FrontParts_Bloc_Best5 extends LC_Page_FrontParts_Bloc {
         //おすすめ商品表示
         $this->arrBestProducts = $this->lfGetRanking();
 
-        $objView->assignobj($this);
-        $objView->display($this->tpl_mainpage);
+        if (!empty($this->arrBestProducts)) {
+            $objView->assignobj($this);
+            $objView->display($this->tpl_mainpage);
+        }
     }
 
     /**
@@ -105,10 +107,16 @@ class LC_Page_FrontParts_Bloc_Best5 extends LC_Page_FrontParts_Bloc {
 
         $col = "DISTINCT A.*, name, price02_min, price01_min, main_list_image ";
         $from = "dtb_best_products AS A INNER JOIN vw_products_allclass AS allcls using(product_id)";
-        $where = "status = 1";
+        $where = "allcls.del_flg = 0 AND allcls.status = 1";
+        
+        // 在庫無し商品の非表示
+        if (NOSTOCK_HIDDEN === true) {
+            $where .= ' AND (allcls.stock_max >= 1 OR allcls.stock_unlimited_max = 1)';
+        }
+        
         $order = "rank";
-        $objQuery->setorder($order);
-        $objQuery->setlimit(RECOMMEND_NUM);
+        $objQuery->setOrder($order);
+        $objQuery->setLimit(RECOMMEND_NUM);
 
         $arrBestProducts = $objQuery->select($col, $from, $where);
 

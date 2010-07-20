@@ -3,9 +3,9 @@
 CURRENT_DIR=`pwd`
 TMP_DIR=/tmp
 SVN_REPO=file:///home/svn/open
-SVN_PATH=$SVN_REPO/branches/version-2
+SVN_PATH=$SVN_REPO/branches/comu-ver2
 SVN_TAGS=$SVN_REPO/tags
-ECCUBE_VERSION=2.3.4
+ECCUBE_VERSION=2.4.1-commu
 WRK_DIR=eccube-$ECCUBE_VERSION
 
 if [ ! -d $TMP_DIR ]; then
@@ -21,7 +21,6 @@ rm -rf $WRK_DIR/.buildpath
 rm -rf $WRK_DIR/.project
 rm -rf $WRK_DIR/test
 rm -rf $WRK_DIR/templates
-rm -rf $WRK_DIR/convert.php
 rm -rf $WRK_DIR/*.sh
 rm -rf $WRK_DIR/html/test
 rm -rf $WRK_DIR/data/downloads/module/*
@@ -40,6 +39,7 @@ chmod -R 777 $WRK_DIR/data/Smarty
 chmod -R 777 $WRK_DIR/data/class
 chmod -R 777 $WRK_DIR/data/logs
 chmod -R 777 $WRK_DIR/html/cp
+chmod -R 777 $WRK_DIR/data/upload
 
 echo "complession files..."
 

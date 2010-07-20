@@ -1,7 +1,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -130,7 +130,7 @@ function fnChangeRadio(name, no, id, pageno) {
 
 // 管理者メンバーページの切替
 function fnMemberPage(pageno) {
-	location.href = "./index.php?pageno=" + pageno;
+	location.href = "?pageno=" + pageno;
 }
 
 // ページナビで使用する
@@ -278,19 +278,6 @@ function fnCheckStockNoLimit(no, icolor) {
 	}
 }
 
-// 購入制限数判定
-function fnCheckSaleLimit(icolor) {
-	list = new Array(
-		'sale_limit'
-		);
-	if(document.form1['sale_unlimited'].checked) {
-		fnChangeDisabled(list, icolor);
-		document.form1['sale_limit'].value = "";
-	} else {
-		fnChangeDisabled(list, '');
-	}
-}
-
 // 在庫数判定
 function fnCheckAllStockLimit(max, icolor) {
 	for(no = 1; no <= max; no++) {
@@ -429,5 +416,15 @@ function fnDispChange(disp_id, inner_id, disp_flg){
 	}
 }
 
-
-
+// ページ読み込み時の処理
+$(function(){
+// ヘッダナビゲーション
+    $("#navi li").hover(
+        function(){
+            $(this).addClass("sfhover");
+        },
+        function(){
+            $(this).removeClass("sfhover");
+        }
+    );
+});
