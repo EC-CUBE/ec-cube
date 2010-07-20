@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -220,8 +220,8 @@ class SC_InstallView extends SC_View{
 }
 
 class SC_MobileView extends SC_SiteView {
-    function SC_MobileView() {
-        parent::SC_SiteView();
+    function SC_MobileView($cart = true) {
+        parent::SC_SiteView($cart);
         $this->_smarty->template_dir = MOBILE_TEMPLATE_DIR;
         $this->_smarty->compile_dir = MOBILE_COMPILE_DIR;
     }

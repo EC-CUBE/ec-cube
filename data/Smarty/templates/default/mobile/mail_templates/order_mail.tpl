@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -52,3 +52,18 @@
 金額：￥ <!--{$arrOrderDetail[cnt].price|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
 
 <!--{/section}-->
+---------------
+小　計 ￥ <!--{$arrOrder.subtotal|number_format|default:0}--> (うち消費税 ￥<!--{$arrOrder.tax|number_format|default:0}-->）
+値引き ￥ <!--{$arrOrder.use_point+$arrOrder.discount|number_format|default:0}-->
+送　料 ￥ <!--{$arrOrder.deliv_fee|number_format|default:0}-->
+手数料 ￥ <!--{$arrOrder.charge|number_format|default:0}-->
+---------------
+合　計 ￥ <!--{$arrOrder.payment_total|number_format|default:0}-->
+<!--{if $arrOrder.customer_id && $smarty.const.USE_POINT === true}-->
+---------------
+<!--{* ご注文前のポイント {$tpl_user_point} pt *}-->
+ご使用ポイント <!--{$arrOrder.use_point|default:0}--> pt
+今回加算される加算ポイント <!--{$arrOrder.add_point|default:0}--> pt
+保持ポイント <!--{$arrCustomer.point|default:0}--> pt
+<!--{/if}-->
+

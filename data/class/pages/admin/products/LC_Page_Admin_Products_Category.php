@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -266,7 +266,7 @@ class LC_Page_Admin_Products_Category extends LC_Page {
 
         $col = "category_id, category_name, level, rank";
         $where = "del_flg = 0 AND parent_category_id = ?";
-        $objQuery->setoption("ORDER BY rank DESC");
+        $objQuery->setOption("ORDER BY rank DESC");
         $arrRet = $objQuery->select($col, "dtb_category", $where, array($parent_category_id));
         return $arrRet;
     }

@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -49,7 +49,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
         $this->text_row     = 13;
         $this->tpl_subno = "main_edit";
         $this->tpl_mainno = "design";
-        $this->tpl_subtitle = 'ページ詳細設定';
+        $this->tpl_subtitle = 'ページ詳細編集';
     }
 
     /**
@@ -110,7 +110,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
             $arrPageData[0]['footer_chk'] = SC_Utils_Ex::sfChangeCheckBox($arrPageData[0]['footer_chk'], true);
 
             // ディレクトリを画面表示用に編集
-            $arrPageData[0]['directory'] = str_replace( USER_DIR,'', $arrPageData[0]['php_dir']);
+            $arrPageData[0]['directory'] = str_replace(USER_DIR, '', $arrPageData[0]['php_dir']);
 
             $this->arrPageData = $arrPageData[0];
         }
@@ -132,7 +132,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
             
             $arrPreData = $this->objLayout->lfgetPageData("page_id = ?" , array($page_id));
             
-            // tplファイルの削除
+            // tplファイルの削除 (XXX: 処理の意図が不明。存在していると都合が悪いファイル?)
             $del_tpl = USER_PATH . "templates/" . $arrPreData[0]['filename'] . '.tpl';
             if (file_exists($del_tpl)){
                 unlink($del_tpl);
@@ -192,37 +192,35 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
                     // ファイル削除
                     $this->objLayout->lfDelFile($arrPageData[0]);
                     // PHPファイル作成
-                    $cre_php = USER_PATH . $_POST['url'] . ".php";
-                    $this->lfCreatePHPFile($cre_php);
+                    $this->lfCreatePHPFile($_POST['url']);
                 }
 
                 // TPLファイル作成
                 $cre_tpl = USER_TEMPLATE_PATH . "/" . TEMPLATE_NAME . "/" . basename($_POST['url']) . '.tpl';
-
                 $this->lfCreateFile($cre_tpl);
 
-                // 編集可能ページの場合にのみ処理を行う
-                if ($arrPageData[0]['edit_flg'] != 2) {
-                    // 新規作成した場合のために改にページIDを取得する
-                    $arrPageData = $this->objLayout->lfgetPageData(" url = ? " , array(USER_URL.$_POST['url'].".php"));
+                // 新規作成の場合、
+                if ($page_id == '') {
+                    // ページIDを取得する
+                    $arrPageData = $this->objLayout->lfgetPageData(" url = ? AND page_id <> 0" , array(USER_URL.$_POST['url'] . ".php"));
                     $page_id = $arrPageData[0]['page_id'];
                 }
                 $this->sendRedirect($this->getLocation("./main_edit.php",
                                         array("page_id" => $page_id,
                                               "msg"     => "on")));
 				exit;
-            }else{
+            } else {
                 // エラーがあれば入力時のデータを表示する
                 $this->arrPageData = $_POST;
                 $this->arrPageData['header_chk'] = SC_Utils_Ex::sfChangeCheckBox(SC_Utils_Ex::sfChangeCheckBox($_POST['header_chk']), true);
                 $this->arrPageData['footer_chk'] = SC_Utils_Ex::sfChangeCheckBox(SC_Utils_Ex::sfChangeCheckBox($_POST['footer_chk']), true);
-                $this->arrPageData['directory'] = $_POST['url'];
-                $this->arrPageData['filename'] = "";
+                $this->arrPageData['directory'] = '';
+                $this->arrPageData['filename'] = $_POST['url'];
             }
         }
 
         // データ削除処理 ベースデータでなければファイルを削除
-        if ($_POST['mode'] == 'delete' and 	!$this->objLayout->lfCheckBaseData($page_id)) {
+        if ($_POST['mode'] == 'delete' and !$this->objLayout->lfCheckBaseData($page_id)) {
             $this->objLayout->lfDelPageData($_POST['page_id']);
             $this->sendRedirect($this->getLocation("./main_edit.php"));
             exit;
@@ -280,7 +278,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
             $sql .= "	  ,update_date";
             $sql .= " ) VALUES ( ?,?,?,?,?,?,?,?,now(),now() )";
             $sql .= " ";
-        }else{
+        } else {
             // データが存在してる場合にはアップデートを行う
             // SQL生成
             $sql = " UPDATE dtb_pagelayout ";
@@ -317,26 +315,35 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
         // ベースデータの場合には変更しない。
         if ($this->objLayout->lfCheckBaseData($arrData['page_id'])) {
             $arrPageData = $this->objLayout->lfgetPageData( ' page_id = ? ' , array($arrData['page_id']));
+            
             $name = $arrPageData[0]['page_name'] ;
             $url = $arrPageData[0]['url'];
+            $php_dir = $arrPageData[0]['php_dir'];
             $filename = $arrPageData[0]['filename'];
-        }else{
+        } else {
             $name = $arrData['page_name'] ;
-            $url = USER_URL.$arrData['url'].".php";
-            $filename = basename($arrData['url']);
+            $url = USER_DIR . $arrData['url'] . '.php';
+            $php_dir = dirname($url);
+            if ($php_dir == '.') {
+                $php_dir = '';
+            } else {
+                $php_dir .= '/';
+            }
+            $tpl_dir = substr(TPL_DIR, strlen(URL_DIR));
+            $filename = basename($arrData['url']); // 拡張子を付加しない
         }
         
         // 更新データ配列の作成
         $arrUpdData = array(
-                            $name										// 名称
-                            ,$url										// URL
-                            ,$php_dir									// PHPディレクトリ
-                            ,$tpl_dir									// TPLディレクトリ
-                            ,$filename									// ファイル名
-                            ,SC_Utils_Ex::sfChangeCheckBox($arrData['header_chk'])	// ヘッダー使用
-                            ,SC_Utils_Ex::sfChangeCheckBox($arrData['footer_chk'])	// フッター使用
-                            ,$_SERVER['HTTP_REFERER']					// 更新URL
-                            );
+            $name                                                   // 名称
+            ,$url                                                   // URL
+            ,$php_dir                                               // PHPディレクトリ
+            ,$tpl_dir                                               // TPLディレクトリ
+            ,$filename                                              // ファイル名
+            ,SC_Utils_Ex::sfChangeCheckBox($arrData['header_chk'])  // ヘッダー使用
+            ,SC_Utils_Ex::sfChangeCheckBox($arrData['footer_chk'])  // フッター使用
+            ,$_SERVER['HTTP_REFERER']                               // 更新URL
+        );
 
         return $arrUpdData;
     }
@@ -353,23 +360,40 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
         $objErr->doFunc(array("URL", "url", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
 
         // URLチェック
-        if (substr(strrev(trim($array['url'])),0,1) == "/") {
-            $objErr->arrErr['url'] = "※ URLを正しく入力してください。<br />";
-        }
-
-        $check_url = USER_URL . $array['url'] . ".php";
-        if( strlen($array['url']) > 0 && !ereg( "^https?://+($|[a-zA-Z0-9:_~=&\?\.\/-])+$", $check_url ) ) {
-            $objErr->arrErr['url'] = "※ URLを正しく入力してください。<br />";
-        }
-
-        // 同一のURLが存在している場合にはエラー
-        if(!isset($objErr->arrErr['url']) and $array['url'] !== ''){
-        	// URLのチェック（プレビュー用のレコードは含まない）
-            $arrChk = $this->objLayout->lfgetPageData(" url = ? AND page_id <> 0" , array(USER_URL . $array['url'].".php"));
-
-            if (count($arrChk[0]) >= 1 and $arrChk[0]['page_id'] != $array['page_id']) {
-                $objErr->arrErr['url'] = '※ 同じURLのデータが存在しています。別のURLを付けてください。<br />';
+        $okUrl = true;
+        foreach (explode('/', $array['url']) as $url_part) {
+            if (!ereg( '^[a-zA-Z0-9:_~\.-]+$', $url_part)) {
+                $okUrl = false;
             }
+            if ($url_part == '.' || $url_part == '..') {
+                $okUrl = false;
+            }
+        }
+        if (!$okUrl) {
+            $objErr->arrErr['url'] = "※ URLを正しく入力してください。<br />";
+        }
+        
+        // 同一のURLが存在している場合にはエラー
+        $sqlWhere = '';
+        $params = array();
+        
+        $sqlWhere .= ' (url = ? OR url = ?)';
+        $params[] = USER_DIR . $array['url'] . '.php';
+        $params[] = USER_URL . $array['url'] . '.php'; // 従来形式
+
+        // プレビュー用のレコードは除外
+        $sqlWhere .= ' AND page_id <> 0';
+
+        // 変更の場合、自身のレコードは除外
+        if (strlen($array['page_id']) != 0) {
+            $sqlWhere .= ' AND page_id <> ?';
+            $params[] = $array['page_id'];
+        }
+
+        $arrChk = $this->objLayout->lfgetPageData($sqlWhere , $params);
+
+        if (count($arrChk) >= 1) {
+            $objErr->arrErr['url'] = '※ 同じURLのデータが存在しています。別のURを付けてください。<br />';
         }
 
         return $objErr->arrErr;
@@ -400,8 +424,10 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
      * @param string $path PHPファイルのパス
      * @return void
      */
-    function lfCreatePHPFile($path){
+    function lfCreatePHPFile($url){
 
+        $path = USER_PATH . $url . ".php";
+        
         // php保存先ディレクトリが存在していなければ作成する
         if (!is_dir(dirname($path))) {
             mkdir(dirname($path));
@@ -413,7 +439,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
         }
 
         // require.phpの場所を書き換える
-        $php_data = str_replace("###require###", HTML_PATH . "require.php", $php_data);
+        $php_data = str_replace("###require###", str_repeat('../', substr_count($url, '/')) . '../require.php', $php_data);
 
         // phpファイルの作成
         $fp = fopen($path,"w");

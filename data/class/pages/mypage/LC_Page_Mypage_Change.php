@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -444,8 +444,8 @@ class LC_Page_Mypage_Change extends LC_Page {
                 != $this->objCustomer->getValue($mailType)){
 
                 $email_cnt = $this->objQuery->count("dtb_customer",
-                                 "del_flg=0 AND " . $mailType . "= ?",
-                                  array($this->arrForm[$mailType]));
+                                 "del_flg=0 AND (email = ? OR email_mobile = ?) ",
+                                  array($this->arrForm[$mailType], $this->arrForm[$mailType]));
                 if ($email_cnt > 0){
                     $arrMailType2[$mailType] = false;
                     $this->arrErr[$mailType] .= "既に使用されているメールアドレスです。";
@@ -500,9 +500,9 @@ class LC_Page_Mypage_Change extends LC_Page {
         $objErr->doFunc(array('携帯メールアドレス', "email_mobile", MTEXT_LEN) ,array("EMAIL_CHECK", "NO_SPTAB" ,"EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK", "MOBILE_EMAIL_CHECK"));
         $objErr->doFunc(array('携帯メールアドレス(確認)', "email_mobile02", MTEXT_LEN), array("EMAIL_CHECK","NO_SPTAB" , "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK", "MOBILE_EMAIL_CHECK"));
         $objErr->doFunc(array('携帯メールアドレス', '携帯メールアドレス(確認)', "email_mobile", "email_mobile02") ,array("EQUAL_CHECK"));
-        $objErr->doFunc(array("お電話番号1", 'tel01'), array("EXIST_CHECK","SPTAB_CHECK"));
-        $objErr->doFunc(array("お電話番号2", 'tel02'), array("EXIST_CHECK","SPTAB_CHECK"));
-        $objErr->doFunc(array("お電話番号3", 'tel03'), array("EXIST_CHECK","SPTAB_CHECK"));
+        $objErr->doFunc(array("お電話番号1", 'tel01'), array("EXIST_CHECK"));
+        $objErr->doFunc(array("お電話番号2", 'tel02'), array("EXIST_CHECK"));
+        $objErr->doFunc(array("お電話番号3", 'tel03'), array("EXIST_CHECK"));
         $objErr->doFunc(array("お電話番号", "tel01", "tel02", "tel03", TEL_LEN) ,array("TEL_CHECK"));
         $objErr->doFunc(array("FAX番号", "fax01", "fax02", "fax03", TEL_LEN) ,array("TEL_CHECK"));
         $objErr->doFunc(array("ご性別", "sex") ,array("SELECT_CHECK", "NUM_CHECK"));
@@ -683,9 +683,9 @@ class LC_Page_Mypage_Change extends LC_Page {
         $objErr->doFunc(array("番地", "addr02", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
         $objErr->doFunc(array('メールアドレス', "email", MTEXT_LEN) ,array("EXIST_CHECK", "EMAIL_CHECK", "NO_SPTAB" ,"EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
         $objErr->doFunc(array('携帯メールアドレス', "email_mobile", MTEXT_LEN) ,array("EMAIL_CHECK", "NO_SPTAB" ,"EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK", "MOBILE_EMAIL_CHECK"));
-        $objErr->doFunc(array("電話番号1", 'tel01'), array("EXIST_CHECK","SPTAB_CHECK"));
-        $objErr->doFunc(array("電話番号2", 'tel02'), array("EXIST_CHECK","SPTAB_CHECK"));
-        $objErr->doFunc(array("電話番号3", 'tel03'), array("EXIST_CHECK","SPTAB_CHECK"));
+        $objErr->doFunc(array("電話番号1", 'tel01'), array("EXIST_CHECK"));
+        $objErr->doFunc(array("電話番号2", 'tel02'), array("EXIST_CHECK"));
+        $objErr->doFunc(array("電話番号3", 'tel03'), array("EXIST_CHECK"));
         $objErr->doFunc(array("電話番号", "tel01", "tel02", "tel03", TEL_LEN) ,array("TEL_CHECK"));
         $objErr->doFunc(array("FAX番号", "fax01", "fax02", "fax03", TEL_LEN) ,array("TEL_CHECK"));
         $objErr->doFunc(array("性別", "sex") ,array("SELECT_CHECK", "NUM_CHECK"));
@@ -771,9 +771,9 @@ class LC_Page_Mypage_Change extends LC_Page {
         $objErr->doFunc(array("都道府県", 'pref'), array("SELECT_CHECK","NUM_CHECK"));
         $objErr->doFunc(array("市区町村", "addr01", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
         $objErr->doFunc(array("番地", "addr02", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("電話番号1", 'tel01'), array("EXIST_CHECK","SPTAB_CHECK" ));
-        $objErr->doFunc(array("電話番号2", 'tel02'), array("EXIST_CHECK","SPTAB_CHECK" ));
-        $objErr->doFunc(array("電話番号3", 'tel03'), array("EXIST_CHECK","SPTAB_CHECK" ));
+        $objErr->doFunc(array("電話番号1", 'tel01'), array("EXIST_CHECK"));
+        $objErr->doFunc(array("電話番号2", 'tel02'), array("EXIST_CHECK"));
+        $objErr->doFunc(array("電話番号3", 'tel03'), array("EXIST_CHECK"));
         $objErr->doFunc(array("電話番号", "tel01", "tel02", "tel03",TEL_ITEM_LEN) ,array("TEL_CHECK"));
 
         return $objErr->arrErr;

@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -239,7 +239,6 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
                     // データをCSV形式に整える
                     $data = "";
                     foreach($arrData as $data_key => $data_val){
-                        //$val = str_replace("\"", "\\\"", $val);
                         $data .= $this->lfGetCSVList($arrData[$data_key]);
 
                     }
@@ -342,7 +341,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
         if (count($array) > 0) {
             foreach($array as $key => $val) {
                 $val = mb_convert_encoding($val, CHAR_CODE, CHAR_CODE);
-                $val = str_replace("\"", "\\\"", $val);
+                $val = str_replace("\"", "\"\"", $val);
                 $line .= "\"".$val."\",";
             }
             $line = ereg_replace(",$", "\r\n", $line);
@@ -398,7 +397,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
     }
 
     // テーブル構成を取得する
-    Function Lfgetcolumnlist($table_name){
+    Function LfgetColumnlist($table_name){
         $objQuery = new SC_Query();
 
         if(DB_TYPE == "pgsql"){
@@ -457,7 +456,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
         $sql = "SELECT bkup_name, bkup_memo, create_date FROM dtb_bkup ";
         if ($where != "")	$sql .= $where;
 
-        $ret = $objQuery->getall($sql,$data);
+        $ret = $objQuery->getAll($sql,$data);
 
         return $ret;
     }
@@ -590,7 +589,6 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
                 $sql .= ", ?";
             }
             $sql .= " );";
-            $data = str_replace("\\\"", "\"", $data);
             $err = $objQuery->query($sql, $data);
 
             // エラーがあれば終了

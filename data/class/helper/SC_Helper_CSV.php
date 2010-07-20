@@ -1,6 +1,6 @@
 <?php
   /*
-   * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+   * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
    *
    * http://www.lockon.co.jp/
    */
@@ -93,7 +93,7 @@ class SC_Helper_CSV {
         $sql .= "     rank , no";
         $sql .= " ";
 
-        $ret = $objQuery->getall($sql, $arrData);
+        $ret = $objQuery->getAll($sql, $arrData);
 
         return $ret;
     }
@@ -107,10 +107,10 @@ class SC_Helper_CSV {
         $arrOutputCols = $arrOutput['col'];
 
         $objQuery = new SC_Query();
-        $objQuery->setorder($order);
+        $objQuery->setOrder($order);
 
         $dataRows = $objQuery->select(
-             SC_Utils_Ex::sfGetCommaList($arrOutputCols, true, array('category_id'))
+             SC_Utils_Ex::sfGetCommaList($arrOutputCols)
             ,'vw_product_class AS prdcls'
             ,$where
             ,$arrval
@@ -164,7 +164,7 @@ class SC_Helper_CSV {
         $cols = SC_Utils_Ex::sfGetCommaList($this->arrREVIEW_CVSCOL);
 
         $objQuery = new SC_Query();
-        $objQuery->setoption($option);
+        $objQuery->setOption($option);
 
         $list_data = $objQuery->select($cols, $from, $where, $arrval);
 
@@ -183,7 +183,7 @@ class SC_Helper_CSV {
         $cols = SC_Utils_Ex::sfGetCommaList($this->arrTRACKBACK_CVSCOL);
 
         $objQuery = new SC_Query();
-        $objQuery->setoption($option);
+        $objQuery->setOption($option);
 
         $list_data = $objQuery->select($cols, $from, $where, $arrval);
 
@@ -205,7 +205,7 @@ class SC_Helper_CSV {
         $arrOutputCols = $arrOutput['col'];
 
         $objQuery = new SC_Query();
-        $objQuery->setorder('rank DESC');
+        $objQuery->setOrder('rank DESC');
 
         $dataRows = $objQuery->select(
              SC_Utils_Ex::sfGetCommaList($arrOutputCols)
@@ -236,7 +236,7 @@ class SC_Helper_CSV {
         $cols = SC_Utils_Ex::sfGetCommaList($arrCsvOutputCols);
 
         $objQuery = new SC_Query();
-        $objQuery->setoption($option);
+        $objQuery->setOption($option);
 
         $list_data = $objQuery->select($cols, $from, $where, $arrval);
 
@@ -265,8 +265,7 @@ class SC_Helper_CSV {
                 $tmp = $val;
                 break;
             }
-
-            $tmp = ereg_replace("[\",]", " ", $tmp);
+            $tmp = ereg_replace("\"", "\"\"", $tmp);
             $line .= "\"".$tmp."\",";
         }
         // 文末の","を変換
@@ -296,7 +295,7 @@ class SC_Helper_CSV {
                 break;
             }
 
-            $tmp = ereg_replace("[\",]", " ", $tmp);
+            $tmp = ereg_replace("\"", "\"\"", $tmp);
             $line .= "\"".$tmp."\",";
         }
         // 文末の","を変換
@@ -319,7 +318,7 @@ class SC_Helper_CSV {
                 break;
             }
 
-            $tmp = ereg_replace("[\",]", " ", $tmp);
+            $tmp = ereg_replace("\"", "\"\"", $tmp);
             $line .= "\"".$tmp."\",";
         }
         // 文末の","を変換

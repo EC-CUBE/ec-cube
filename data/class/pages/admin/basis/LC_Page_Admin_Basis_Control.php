@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -135,7 +135,7 @@ class LC_Page_Admin_Basis_Control extends LC_Page {
         // サイト管理情報の取得
         $sql = "SELECT * FROM dtb_site_control ";
         $sql .= "WHERE del_flg = 0";
-        $arrRet = $objQuery->getall($sql);
+        $arrRet = $objQuery->getAll($sql);
         return $arrRet;
     }
 

@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -303,7 +303,7 @@
                             </tr>
                             <tr class="fs12n">
                                 <td bgcolor="#f2f1ec" width="110">備考</td>
-                                <td bgcolor="#ffffff" width="607" colspan="3"><!--{$arrForm.message|escape|nl2br}--></td>
+                                <td bgcolor="#ffffff" width="607" colspan="3"><!--{$arrForm.message.value|escape|nl2br}--></td>
                             </tr>
                         </table>
                         <!--▲お客様情報ここまで-->
@@ -572,22 +572,22 @@
                                 </select>
                                 </td>
                             </tr>
-                            <!--{assign var=key value="deliv_date"}-->
                             <tr class="fs12n">
                                 <td bgcolor="#f2f1ec" colspan="6">▼お届け日指定</td>
                             </tr>
                             <tr class="fs12n">
                                 <td bgcolor="#ffffff" colspan="6">
-                                  <span class="attention"><!--{$arrErr.deliv_date_year}--></span> 
-                                  <select name="deliv_date_year" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"> 
-                                    <!--{html_options options=$arrYearDelivDate selected=$arrForm.deliv_date_year.value|default:""}--> 
-                                  </select>年 
-                                  <select name="deliv_date_month" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"> 
-                                    <!--{html_options options=$arrMonthDelivDate selected=$arrForm.deliv_date_month.value|default:""}--> 
-                                  </select>月 
-                                  <select name="deliv_date_day" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"> 
-                                    <!--{html_options options=$arrDayDelivDate selected=$arrForm.deliv_date_day.value|default:""}--> 
+																	<!--{assign var=key value="deliv_date_year"}-->
+                                  <select name="deliv_date_year" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
+                                    <!--{html_options options=$arrYearDelivDate selected=$arrForm.deliv_date_year.value|default:""}-->
+                                  </select>年
+                                  <select name="deliv_date_month" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
+                                    <!--{html_options options=$arrMonthDelivDate selected=$arrForm.deliv_date_month.value|default:""}-->
+                                  </select>月
+                                  <select name="deliv_date_day" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
+                                    <!--{html_options options=$arrDayDelivDate selected=$arrForm.deliv_date_day.value|default:""}-->
                                   </select>日
+																	<span class="red12"><!--{$arrErr[$key]}--></span>
                                 </td>
                             </tr>
                             <tr class="fs12n">

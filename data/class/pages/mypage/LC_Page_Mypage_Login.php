@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -63,7 +63,7 @@ class LC_Page_Mypage_Login extends LC_Page {
 
         // ログイン判定
         if($objCustomer->isLoginSuccess()) {
-            $this->sendRedirect($this->getLocation("./index.php"));
+            $this->sendRedirect($this->getLocation("./index.php", array(), true));
             exit;
         } else {
             // クッキー判定

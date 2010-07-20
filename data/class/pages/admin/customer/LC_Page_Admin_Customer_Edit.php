@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -289,9 +289,9 @@ class LC_Page_Admin_Customer_Edit extends LC_Page {
         //現会員の判定 →　現会員もしくは仮登録中は、メアド一意が前提になってるので同じメアドで登録不可
         if (strlen($array["email"]) > 0) {
             $array['email'] = strtolower($array['email']);
-            $sql = "SELECT customer_id FROM dtb_customer WHERE email ILIKE ? escape '#' AND (status = 1 OR status = 2) AND del_flg = 0 AND customer_id <> ?";
+            $sql = "SELECT customer_id FROM dtb_customer WHERE (email ILIKE ? escape '#' OR email_mobile ILIKE ? escape '#') AND (status = 1 OR status = 2) AND del_flg = 0 AND customer_id <> ?";
             $checkMail = ereg_replace( "_", "#_", $array["email"]);
-            $result = $this->objConn->getAll($sql, array($checkMail, $array["customer_id"]));
+            $result = $this->objConn->getAll($sql, array($checkMail, $checkMail, $array["customer_id"]));
             if (count($result) > 0) {
                 $objErr->arrErr["email"] .= "※ すでに登録されているメールアドレスです。";
             }
@@ -301,9 +301,9 @@ class LC_Page_Admin_Customer_Edit extends LC_Page {
         //現会員の判定 →　現会員もしくは仮登録中は、メアド一意が前提になってるので同じメアドで登録不可
         if (strlen($array["email_mobile"]) > 0) {
             $array['email_mobile'] = strtolower($array['email_mobile']);
-            $sql = "SELECT customer_id FROM dtb_customer WHERE email_mobile ILIKE ? escape '#' AND (status = 1 OR status = 2) AND del_flg = 0 AND customer_id <> ?";
+            $sql = "SELECT customer_id FROM dtb_customer WHERE (email ILIKE ? escape '#' OR email_mobile ILIKE ? escape '#') AND (status = 1 OR status = 2) AND del_flg = 0 AND customer_id <> ?";
             $checkMail = ereg_replace( "_", "#_", $array["email_mobile"]);
-            $result = $this->objConn->getAll($sql, array($checkMail, $array["customer_id"]));
+            $result = $this->objConn->getAll($sql, array($checkMail, $checkMail, $array["customer_id"]));
             if (count($result) > 0) {
                 $objErr->arrErr["email_mobile"] .= "※ すでに登録されているメールアドレス(モバイル)です。";
             }
@@ -348,10 +348,10 @@ class LC_Page_Admin_Customer_Edit extends LC_Page {
         $startno = $objNavi->start_row;
 
         // 取得範囲の指定(開始行番号、行数のセット)
-        $this->objQuery->setlimitoffset($page_max, $startno);
+        $this->objQuery->setLimitOffset($page_max, $startno);
         // 表示順序
         $order = "order_id DESC";
-        $this->objQuery->setorder($order);
+        $this->objQuery->setOrder($order);
         //購入履歴情報の取得
         $arrPurchaseHistory = $this->objQuery->select("*", "dtb_order", "customer_id=? AND del_flg = 0 ", array($customer_id));
 

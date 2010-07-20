@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -139,7 +139,7 @@ class LC_Page_Mypage_Delivery extends LC_Page {
      */
     function getOtherDeliv($customerId) {
         $objQuery = new SC_Query;
-        $objQuery->setorder('other_deliv_id DESC');
+        $objQuery->setOrder('other_deliv_id DESC');
         $arrRet = $objQuery->select('*', 'dtb_other_deliv', 'customer_id = ?', array($customerId));
         return empty($arrRet) ? array() : $arrRet;
     }

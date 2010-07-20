@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -45,9 +45,21 @@
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form_search" method="post" action="">
 <input type="hidden" name="mode" value="search">
+<!--{* ▼検索条件の保持（2次元配列対応）*}-->
 <!--{foreach from=$arrSearchData key="key" item="item"}-->
-	<!--{if $key ne "customer_id" && $key ne "mode" && $key ne "del_mode" && $key ne "edit_customer_id" && $key ne "del_customer_id" && $key ne "csv_mode" && $key ne "job" && $key ne "sex"}--><input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->"><!--{/if}-->
+    <!--{* 制御用の変数を対象外とする *}-->
+    <!--{if $key ne "mode" && $key ne "del_mode" && $key ne "edit_customer_id" && $key ne "del_customer_id" && $key ne "csv_mode"}-->
+        <!--{* 配列のときと、配列でない時で、フォームのnameを変更する *}-->
+        <!--{if is_array($item)}-->
+            <!--{foreach from=$item key="key2" item="item2"}-->
+                <input type="hidden" name="<!--{$key|escape}-->[]" value="<!--{$item2|escape}-->">
+            <!--{/foreach}-->
+        <!--{else}-->
+            <input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->">
+        <!--{/if}-->
+    <!--{/if}-->
 <!--{/foreach}-->
+<!--{* ▲検索条件の保持（2次元配列対応）*}-->
 <!--{foreach from=$arrSearchData.job key="key" item="item"}-->
 <input type="hidden" name="job[]" value=<!--{$item}-->>
 <!--{/foreach}-->
@@ -61,10 +73,21 @@
 <input type="hidden" name="edit_email" value="<!--{$tpl_edit_email}-->">
 <input type="hidden" name="customer_id" value="<!--{$list_data.customer_id|escape}-->">
 
-<!-- 検索条件の保持 -->
+<!--{* ▼検索条件の保持（2次元配列対応）*}-->
 <!--{foreach from=$arrSearchData key="key" item="item"}-->
-	<!--{if $key ne "job" && $key ne "sex"}--><input type="hidden" name="search_data[<!--{$key|escape}-->]" value="<!--{$item|escape}-->"><!--{/if}-->
+    <!--{* 制御用の変数を対象外とする *}-->
+    <!--{if $key ne "mode" && $key ne "del_mode" && $key ne "edit_customer_id" && $key ne "del_customer_id" && $key ne "csv_mode"}-->
+        <!--{* 配列のときと、配列でない時で、フォームのnameを変更する *}-->
+        <!--{if is_array($item)}-->
+            <!--{foreach from=$item key="key2" item="item2"}-->
+                <input type="hidden" name="search_data[<!--{$key|escape}-->][]" value="<!--{$item2|escape}-->">
+            <!--{/foreach}-->
+        <!--{else}-->
+            <input type="hidden" name="search_data[<!--{$key|escape}-->]" value="<!--{$item|escape}-->">
+        <!--{/if}-->
+    <!--{/if}-->
 <!--{/foreach}-->
+<!--{* ▲検索条件の保持（2次元配列対応）*}-->
 <!--{foreach from=$arrSearchData.job key="key" item="item"}-->
 <input type="hidden" name="search_data[job][]" value=<!--{$item}-->>
 <!--{/foreach}-->

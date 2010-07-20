@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -297,7 +297,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
     function lfPreGetRecommendProducts($product_id) {
         $arrRecommend = array();
         $objQuery = new SC_Query();
-        $objQuery->setorder("rank DESC");
+        $objQuery->setOrder("rank DESC");
         $arrRet = $objQuery->select("recommend_product_id, comment", "dtb_recommend_products", "product_id = ?", array($product_id));
         $max = count($arrRet);
         $no = 1;

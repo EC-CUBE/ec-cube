@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -45,24 +45,27 @@ class SC_Helper_PageLayout {
      */
     function sfGetPageLayout(&$objPage, $preview = false, $url = ""){
         $debug_message = "";
-    	$arrPageLayout = array();
+        $arrPageLayout = array();
 
         // 現在のURLの取得
         if ($preview === false) {
             if ($url == "") {
-                $url = "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
+                // 従来互換(dtb_pagelayoutのurlが絶対URLだった時)
+                $url = SITE_URL . preg_replace('|^' . preg_quote(URL_DIR) . '|', '' , $_SERVER['PHP_SELF']);
             }
+
+            $url2 = preg_replace('|^http://[^/]+' . preg_quote(URL_DIR) . '|', '', $url);
             // URLを元にページデザインを取得
-            $arrPageData = $this->lfgetPageData(" url = ? " , array($url));
-        }else{
-            $arrPageData = $this->lfgetPageData(" page_id = ? " , array("0"));
+            $arrPageData = $this->lfgetPageData("url IN (?, ?) AND page_id <> 0" , array($url2, $url)); // $url は従来互換
+        } else {
+            $arrPageData = $this->lfgetPageData("page_id = 0");
             $objPage->tpl_mainpage = USER_PATH . "templates/preview/"
                 . TEMPLATE_NAME . "/" . $arrPageData[0]['filename'] . ".tpl";
         }
         
         reset($arrPageData[0]);
-		while( list($key,$val) = each($arrPageData[0]) ){
-        	 $debug_message.= "arrPageData[$key]：" . $val . "\n";
+        while( list($key,$val) = each($arrPageData[0]) ){
+            $debug_message.= "arrPageData[$key]：" . $val . "\n";
         }
         
         $debug_message.= "TEMPLATE_NAME：".TEMPLATE_NAME . "\n";
@@ -96,12 +99,12 @@ class SC_Helper_PageLayout {
         $arrPageLayout = $arrPageData[0];
 
         // 全ナビデータを取得する
-        $arrNavi = $this->lfGetNaviData($url, $preview);
+        $arrNavi = $this->lfGetNaviData($arrPageLayout['page_id']);
 
-        $arrPageLayout['LeftNavi']  = $this->lfGetNavi($arrNavi,1);	// LEFT NAVI
-        $arrPageLayout['MainHead']  = $this->lfGetNavi($arrNavi,2);	// メイン上部
-        $arrPageLayout['RightNavi'] = $this->lfGetNavi($arrNavi,3);	// RIGHT NAVI
-        $arrPageLayout['MainFoot']  = $this->lfGetNavi($arrNavi,4);	// メイン下部
+        $arrPageLayout['LeftNavi']  = $this->lfGetNavi($arrNavi,1);    // LEFT NAVI
+        $arrPageLayout['MainHead']  = $this->lfGetNavi($arrNavi,2);    // メイン上部
+        $arrPageLayout['RightNavi'] = $this->lfGetNavi($arrNavi,3);    // RIGHT NAVI
+        $arrPageLayout['MainFoot']  = $this->lfGetNavi($arrNavi,4);    // メイン下部
 
         GC_Utils::gfDebugLog($arrPageLayout);
         
@@ -120,39 +123,35 @@ class SC_Helper_PageLayout {
      * @param array $arrVal WHERE句の条件値
      * @return array ページ情報を格納した配列
      */
-    function lfgetPageData($addwhere = '', $sqlval = ''){
-        $objQuery = new SC_Query;		// DB操作オブジェクト
-        $arrRet = array();				// データ取得用
+    function lfgetPageData($where = 'page_id <> 0', $where_vals = array()) {
+        $objQuery = new SC_Query;       // DB操作オブジェクト
+        $arrRet = array();              // データ取得用
 
-        // SQL文生成
         // 取得するカラム
-        $col  = " page_id";				// ページID
-        $col .= " ,page_name";			// 名称
-        $col .= " ,url";				// URL
-        $col .= " ,php_dir";			// php保存先ディレクトリ
-        $col .= " ,tpl_dir";			// tpl保存先ディレクトリ
-        $col .= " ,filename";			// ファイル名称
-        $col .= " ,header_chk ";		// ヘッダー使用FLG
-        $col .= " ,footer_chk ";		// フッター使用FLG
-        $col .= " ,edit_flg ";			// 編集可能FLG
-        $col .= " ,author";				// authorタグ
-        $col .= " ,description";		// descriptionタグ
-        $col .= " ,keyword";			// keywordタグ
-        $col .= " ,update_url";			// 更新URL
-        $col .= " ,create_date";		// データ作成日
-        $col .= " ,update_date";		// データ更新日
+        $col  = " page_id";             // ページID
+        $col .= " ,page_name";          // 名称
+        $col .= " ,url";                // URL
+        $col .= " ,php_dir";            // php保存先ディレクトリ
+        $col .= " ,tpl_dir";            // tpl保存先ディレクトリ
+        $col .= " ,filename";           // ファイル名称
+        $col .= " ,header_chk ";        // ヘッダー使用FLG
+        $col .= " ,footer_chk ";        // フッター使用FLG
+        $col .= " ,edit_flg ";          // 編集可能FLG
+        $col .= " ,author";             // authorタグ
+        $col .= " ,description";        // descriptionタグ
+        $col .= " ,keyword";            // keywordタグ
+        $col .= " ,update_url";         // 更新URL
+        $col .= " ,create_date";        // データ作成日
+        $col .= " ,update_date";        // データ更新日
         
         // 取得するテーブル
         $table = "dtb_pagelayout";
-        
-        // where句の指定があれば追加
-        $where = ($addwhere != '') ? $addwhere : "page_id <> 0";
         
         // 並び変え
         $objQuery->setOrder('page_id');
         
         // SQL実行
-        $arrRet = $objQuery->select($col, $table, $where, $sqlval);
+        $arrRet = $objQuery->select($col, $table, $where, $where_vals);
         
         // 結果を返す
         return $arrRet;
@@ -162,36 +161,27 @@ class SC_Helper_PageLayout {
      * ナビ情報を取得する.
      *
      * @param string $url ページのURL
-     * @param boolean $preview プレビュー表示の場合 true
      * @return array ナビ情報の配列
      */
-    function lfGetNaviData($url, $preview=false){
-        $objQuery = new SC_Query;		// DB操作オブジェクト
-        $sql = "";						// データ取得SQL生成用
-        $arrRet = array();				// データ取得用
-        $arrData = array();
+    function lfGetNaviData($page_id){
+        $objQuery = new SC_Query;   // DB操作オブジェクト
 
-        // SQL文生成
         // 取得するカラム
         $col = "target_id, bloc_name, tpl_path, php_path";
         
         // 取得するテーブル
-        $table = "dtb_blocposition AS pos, dtb_bloc AS bloc";
+        $table = "dtb_blocposition AS pos INNER JOIN dtb_bloc AS bloc ON bloc.bloc_id = pos.bloc_id";
         
         // where文生成
-        $where = "bloc.bloc_id = pos.bloc_id";
-        if ($preview == true) {
-            $where .= " AND EXISTS (SELECT page_id FROM dtb_pagelayout AS lay WHERE page_id = '0' AND pos.page_id = lay.page_id)";
-        }else{
-            $where .= " AND EXISTS (SELECT page_id FROM dtb_pagelayout AS lay WHERE url = ? AND page_id <> '0' AND pos.page_id = lay.page_id)";
-            $sqlval = array($url);
-        }
+        $where = "page_id = ?";
+        $where_vals[] = $page_id;
+
         // 並び変え
         $objQuery->setOrder('target_id, bloc_row');
         
         // SQL実行
-        $arrRet = $objQuery->select($col, $table, $where, $sqlval);
-                                            
+        $arrRet = $objQuery->select($col, $table, $where, $where_vals);
+        
         // 結果を返す
         return $arrRet;
     }
@@ -206,19 +196,19 @@ class SC_Helper_PageLayout {
     function lfGetNavi($arrNavi, $target_id) {
         $arrRet = array();
         if(is_array($arrNavi) === true) {
-        	reset($arrNavi);
+            reset($arrNavi);
             while( list($key,$val)= each($arrNavi) ){
-            	// 指定された箇所と同じデータだけを取得する
+                // 指定された箇所と同じデータだけを取得する
                 if ($target_id == $val['target_id']){
                     if ($val['php_path'] != '') {
                         $arrNavi[$key]['php_path'] = HTML_PATH . $val['php_path'];
-                    }else{
-                    	$user_block_path = USER_TEMPLATE_PATH . TEMPLATE_NAME . "/" . $val['tpl_path'];
-                    	if(is_file($user_block_path)) {
-                    	   $arrNavi[$key]['tpl_path'] = $user_block_path;
-                    	} else {
-                           $arrNavi[$key]['tpl_path'] = TEMPLATE_DIR . $val['tpl_path'];
-                    	}
+                    } else {
+                        $user_block_path = USER_TEMPLATE_PATH . TEMPLATE_NAME . "/" . $val['tpl_path'];
+                        if(is_file($user_block_path)) {
+                            $arrNavi[$key]['tpl_path'] = $user_block_path;
+                        } else {
+                            $arrNavi[$key]['tpl_path'] = TEMPLATE_DIR . $val['tpl_path'];
+                        }
                     }
                     
                     // phpから呼び出されるか、tplファイルが存在する場合
@@ -257,11 +247,10 @@ class SC_Helper_PageLayout {
      * @return integer 削除数
      */
     function lfDelPageData($page_id){
-    	// DBへデータを更新する
-        $objQuery = new SC_Query;		// DB操作オブジェクト
-        $sql = "";						// データ更新SQL生成用
-        $ret = ""; 						// データ更新結果格納用
-        $arrDelData = array();			// 更新データ生成用
+        // DBへデータを更新する
+        $objQuery = new SC_Query;   // DB操作オブジェクト
+        $ret = "";                  // 結果格納用
+        $arrDelData = array();      // 抽出データ用
 
         // page_id が空でない場合にはdeleteを実行
         if ($page_id != '') {

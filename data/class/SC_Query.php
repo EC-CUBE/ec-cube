@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -88,7 +88,7 @@ class SC_Query {
      * @return array|null
      */
     function select($col, $table, $where = "", $arrval = array()){
-        $sqlse = $this->getsql($col, $table, $where);
+        $sqlse = $this->getSql($col, $table, $where);
         // DBに依存した SQL へ変換
         $dbFactory = SC_DB_DBFactory_Ex::getInstance();
         $sqlse = $dbFactory->sfChangeMySQL($sqlse);
@@ -152,12 +152,12 @@ class SC_Query {
         return $ret;
     }
 
-    function getall($sql, $arrval = array()) {
+    function getAll($sql, $arrval = array()) {
         $ret = $this->conn->getAll($sql, $arrval);
         return $ret;
     }
 
-    function getsql($col, $table, $where) {
+    function getSql($col, $table, $where) {
         if($where != "") {
             // 引数の$whereを優先して実行する。
             $sqlse = "SELECT $col FROM $table WHERE $where " . $this->groupby . " " . $this->order . " " . $this->option;
@@ -171,11 +171,11 @@ class SC_Query {
         return $sqlse;
     }
 
-    function setoption($str) {
+    function setOption($str) {
         $this->option = $str;
     }
 
-    function setlimitoffset($limit, $offset = 0, $return = false) {
+    function setLimitOffset($limit, $offset = 0, $return = false) {
         if (is_numeric($limit) && is_numeric($offset)){
 
             $option = " LIMIT " . $limit;
@@ -189,7 +189,7 @@ class SC_Query {
         }
     }
 
-    function setgroupby($str) {
+    function setGroupBy($str) {
         $this->groupby = "GROUP BY " . $str;
     }
 
@@ -201,7 +201,7 @@ class SC_Query {
         }
     }
 
-    function orwhere($str) {
+    function orWhere($str) {
         if($this->where != "") {
             $this->where .= " OR " . $str;
         } else {
@@ -209,22 +209,22 @@ class SC_Query {
         }
     }
 
-    function setwhere($str) {
+    function setWhere($str) {
         $this->where = $str;
     }
 
-    function setorder($str) {
+    function setOrder($str) {
         $this->order = "ORDER BY " . $str;
     }
 
 
-    function setlimit($limit){
+    function setLimit($limit){
         if ( is_numeric($limit)){
             $this->option = " LIMIT " .$limit;
         }
     }
 
-    function setoffset($offset) {
+    function setOffset($offset) {
         if ( is_numeric($offset)){
             $this->offset = " OFFSET " .$offset;
         }
@@ -403,7 +403,7 @@ class SC_Query {
         return $ret;
     }
 
-    function getone($sql, $arrval = array()) {
+    function getOne($sql, $arrval = array()) {
         // SQL文の実行
         $ret = $this->conn->getOne($sql, $arrval);
         return $ret;
@@ -411,7 +411,7 @@ class SC_Query {
     }
 
     // 一行を取得
-    function getrow($table, $col, $where = "", $arrval = array()) {
+    function getRow($table, $col, $where = "", $arrval = array()) {
         if(strlen($where) <= 0) {
             $sqlse = "SELECT $col FROM $table";
         } else {

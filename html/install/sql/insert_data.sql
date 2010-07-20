@@ -184,6 +184,7 @@ insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'
 insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'status','対応状況',51,now(),now());
 insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'create_date','注文日時',52,now(),now());
 insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'update_date','更新日時',53,now(),now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(3,'deliv_date','お届け指定日',54,now(),now());
 insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'order_id','注文番号',1,now(),now());
 insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'campaign_id','キャンペーンID',2,now(),now());
 insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'customer_id','顧客ID',3,now(),now());
@@ -251,6 +252,16 @@ insert into dtb_mailtemplate (template_id, subject, header, footer, creator_id, 
 http://------.co.jp
 
 ',0,Now(), now());
+insert into dtb_mailtemplate (template_id, subject, header, footer, creator_id, update_date, create_date) values (
+2,
+'ご注文ありがとうございます。',
+'',
+'',0,Now(), now());
+INSERT INTO dtb_mailtemplate (template_id, subject, header, footer, creator_id, update_date, create_date) VALUES (
+5,
+'お問い合わせを受け付けました',
+'',
+'',0,now(), now());
 
 insert into dtb_news (news_date,rank, news_title, news_comment, creator_id, create_date, update_date)
 values(now(),1,'サイトオープンいたしました!','一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！',1, now(), now());
@@ -315,7 +326,7 @@ INSERT INTO dtb_payment (payment_method,charge,rule,deliv_id,rank,note,fix,statu
 INSERT INTO dtb_payment (payment_method,charge,rule,deliv_id,rank,note,fix,status,del_flg,creator_id,create_date,update_date,payment_image,upper_rule) VALUES ('代金引換', 0, NULL, 1, 1, NULL, 2, 1, 0, 1, now(), now(), NULL, NULL);
 
 INSERT INTO dtb_products (name,deliv_fee,sale_limit,sale_unlimited,category_id,rank,status,product_flag,point_rate,comment1,comment2,comment3,comment4,comment5,comment6,file1,file2,file3,file4,file5,file6,main_list_comment,main_list_image,main_comment,main_image,main_large_image,sub_title1,sub_comment1,sub_image1,sub_large_image1,sub_title2,sub_comment2,sub_image2,sub_large_image2,sub_title3,sub_comment3,sub_image3,sub_large_image3,sub_title4,sub_comment4,sub_image4,sub_large_image4,sub_title5,sub_comment5,sub_image5,sub_large_image5,sub_title6,sub_comment6,sub_image6,sub_large_image6,del_flg,creator_id,create_date,update_date,deliv_date_id)
-VALUES ('アイスクリーム', NULL, NULL, NULL, 5, 1, 1, '10010', 10, NULL, NULL, 'アイス,バニラ,チョコ,抹茶', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '暑い夏にどうぞ。', '08311201_44f65122ee5fe.jpg', '冷たいものはいかがですか？', '08311202_44f6515906a41.jpg', '08311203_44f651959bcb5.jpg', NULL, '<b>おいしいよ<b>', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 2, now(), now(), 2);
+VALUES ('アイスクリーム', NULL, NULL, 1, 5, 1, 1, '10010', 10, NULL, NULL, 'アイス,バニラ,チョコ,抹茶', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '暑い夏にどうぞ。', '08311201_44f65122ee5fe.jpg', '冷たいものはいかがですか？', '08311202_44f6515906a41.jpg', '08311203_44f651959bcb5.jpg', NULL, '<b>おいしいよ<b>', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 2, now(), now(), 2);
 INSERT INTO dtb_products (name,deliv_fee,sale_limit,sale_unlimited,category_id,rank,status,product_flag,point_rate,comment1,comment2,comment3,comment4,comment5,comment6,file1,file2,file3,file4,file5,file6,main_list_comment,main_list_image,main_comment,main_image,main_large_image,sub_title1,sub_comment1,sub_image1,sub_large_image1,sub_title2,sub_comment2,sub_image2,sub_large_image2,sub_title3,sub_comment3,sub_image3,sub_large_image3,sub_title4,sub_comment4,sub_image4,sub_large_image4,sub_title5,sub_comment5,sub_image5,sub_large_image5,sub_title6,sub_comment6,sub_image6,sub_large_image6,del_flg,creator_id,create_date,update_date,deliv_date_id)
 VALUES ('おなべ', NULL, 5, NULL, NULL, 1, 1, '11001', 5, NULL, NULL, '鍋,なべ,ナベ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '一人用からあります。', '08311311_44f661811fec0.jpg', 'たまには鍋でもどうでしょう。', '08311313_44f661dc649fb.jpg', '08311313_44f661e5698a6.jpg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 2, now(), now(), 3);
 
@@ -644,12 +655,15 @@ INSERT INTO mtb_taxrule VALUES ('1', '四捨五入',0);
 INSERT INTO mtb_taxrule VALUES ('2', '切り捨て',1);
 INSERT INTO mtb_taxrule VALUES ('3', '切り上げ',2);
 INSERT INTO mtb_mail_template VALUES ('1', '注文受付メール',0);
-INSERT INTO mtb_mail_template VALUES ('2', '注文キャンセル受付メール',1);
-INSERT INTO mtb_mail_template VALUES ('3', '取り寄せ確認メール',2);
+INSERT INTO mtb_mail_template VALUES ('2', '注文受付メール(携帯)',1);
+INSERT INTO mtb_mail_template VALUES ('3', '注文キャンセル受付メール',2);
+INSERT INTO mtb_mail_template VALUES ('4', '取り寄せ確認メール',3);
+INSERT INTO mtb_mail_template VALUES ('5', 'お問い合わせ受付メール',4);
 INSERT INTO mtb_mail_tpl_path VALUES ('1', 'mail_templates/order_mail.tpl',0);
 INSERT INTO mtb_mail_tpl_path VALUES ('2', 'mobile/mail_templates/order_mail.tpl',1);
 INSERT INTO mtb_mail_tpl_path VALUES ('3', 'mail_templates/order_mail.tpl',2);
-INSERT INTO mtb_mail_tpl_path VALUES ('4', 'mail_templates/contact_mail.tpl',3);
+INSERT INTO mtb_mail_tpl_path VALUES ('4', 'mail_templates/order_mail.tpl',3);
+INSERT INTO mtb_mail_tpl_path VALUES ('5', 'mail_templates/contact_mail.tpl',4);
 INSERT INTO mtb_job VALUES ('1', '公務員',0);
 INSERT INTO mtb_job VALUES ('2', 'コンサルタント',1);
 INSERT INTO mtb_job VALUES ('3', 'コンピュータ関連技術職',2);
@@ -966,7 +980,7 @@ INSERT INTO mtb_constants VALUES ('INT_LEN','8',206,'検査数値用桁数(INT)'
 INSERT INTO mtb_constants VALUES ('CREDIT_NO_LEN','4',207,'クレジットカードの文字数');
 INSERT INTO mtb_constants VALUES ('SEARCH_CATEGORY_LEN','18',208,'検索カテゴリ最大表示文字数(byte)');
 INSERT INTO mtb_constants VALUES ('FILE_NAME_LEN','10',209,'ファイル名表示文字数');
-INSERT INTO mtb_constants VALUES ('SALE_LIMIT_MAX','10',210,'購入制限なしの場合の最大購入個数');
+INSERT INTO mtb_constants VALUES ('SALE_LIMIT_MAX','0',210,'購入制限なしの場合の最大購入個数');
 INSERT INTO mtb_constants VALUES ('SITE_TITLE','"ＥＣ-ＣＵＢＥ  テストサイト"',211,'HTMLタイトル');
 INSERT INTO mtb_constants VALUES ('COOKIE_EXPIRE','365',212,'クッキー保持期限(日)');
 INSERT INTO mtb_constants VALUES ('PRODUCT_NOT_FOUND','1',213,'指定商品ページがない');

@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -38,7 +38,14 @@ function func_return(){
 <input type="hidden" name="mode" value="complete">
 <!--{foreach from=$arrForm key=key item=item}-->
 	<!--{if $key ne "mode" && $key ne "subm"}-->
-	<input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->">
+        <!--{* 配列のときと、配列でない時で、フォームのnameを変更する *}-->
+        <!--{if is_array($item)}-->
+            <!--{foreach from=$item key="key2" item="item2"}-->
+                <input type="hidden" name="<!--{$key|escape}-->[]" value="<!--{$item2|escape}-->">
+            <!--{/foreach}-->
+        <!--{else}-->
+            <input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->">
+        <!--{/if}-->
 	<!--{/if}-->
 <!--{/foreach}-->
 <!-- 検索条件の保持 -->

@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -80,7 +80,7 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
 							</tr>
 							<tr>
 								<td background="<!--{$TPL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$TPL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-								<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--コンテンツタイトル-->ページ詳細設定</span></td>
+								<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--コンテンツタイトル-->ページ詳細編集</span></td>
 								<td background="<!--{$TPL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 							</tr>
 							<tr>
@@ -115,19 +115,19 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
 								<td bgcolor="#ffffff" align="left" colspan=2>
 									<!--{ if $arrErr.url != "" }--><span class="red12"><!--{$arrErr.url}--></span><!--{/if}-->
 									URL：<!--{if $arrPageData.edit_flg == 2}-->
-											<!--{$smarty.const.SITE_URL}--><!--{$arrPageData.url|escape}-->
-											<input type="hidden" name="url" value="<!--{$arrPageData.filename|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" />
+											<!--{$smarty.const.SITE_URL|escape}--><!--{$arrPageData.url|escape}-->
+											<input type="hidden" name="url" value="<!--{$arrPageData.filename|escape}-->" />
 										<!--{else}-->
-											<!--{$user_URL}--><input type="text" name="url" value="<!--{$arrPageData.directory|escape}--><!--{$arrPageData.filename|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.url != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}--> ime-mode: disabled;" size="40" class="box40" />.php<span class="red"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
+											<!--{$user_URL|escape}--><input type="text" name="url" value="<!--{$arrPageData.directory|escape}--><!--{$arrPageData.filename|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.url != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}--> ime-mode: disabled;" size="40" class="box40" />.php<span class="red"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
 										<!--{/if}-->
 								</td>
 							</tr>
 							<tr class="fs12n">
 								<td bgcolor="#ffffff" align="left">
-									<label for="header"><input type="checkbox" name="header_chk" id="header" <!--{$arrPageData.header_chk}-->>共通のヘッダーを使用する</label>
+									<label for="header_chk"><input type="checkbox" name="header_chk" id="header_chk" <!--{$arrPageData.header_chk}-->>共通のヘッダーを使用する</label>
 								</td>
 								<td bgcolor="#ffffff" align="left">
-									<label for="footer"><input type="checkbox" name="footer_chk" id="footer" <!--{$arrPageData.footer_chk}-->>共通のフッターを使用する</label>
+									<label for="footer_chk"><input type="checkbox" name="footer_chk" id="footer_chk" <!--{$arrPageData.footer_chk}-->>共通のフッターを使用する</label>
 								</td>
 							</tr>
 

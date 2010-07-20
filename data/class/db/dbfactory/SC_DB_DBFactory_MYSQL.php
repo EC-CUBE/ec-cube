@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -242,8 +242,10 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
      * @return string 変換後の SQL 文
      */
     function sfChangeTrunc($sql){
-        $changesql = eregi_replace("( TRUNC)", " TRUNCATE", $sql);
-        return $changesql;
+        if (preg_match('/TRUNCATE/i', $sql)) {
+            return $sql;
+        }
+        return eregi_replace("( TRUNC)", " TRUNCATE", $sql);
     }
 
     /**

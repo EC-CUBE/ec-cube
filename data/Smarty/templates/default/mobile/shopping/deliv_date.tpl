@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -29,10 +29,10 @@
 <input type="hidden" name="mode" value="confirm">
 <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
 <input type="hidden" name="payment_id" value="<!--{$arrForm.payment_id.value}-->">
-<!--<input type="hidden" name="message" value="">-->
-<!--{if $tpl_login == 1}-->
-<!--<input type="hidden" name="point_check" value="2">-->
-<!--{/if}-->
+<input type="hidden" name="use_point" value="<!--{$arrForm.use_point.value}-->">
+<input type="hidden" name="point_check" value="<!--{$arrForm.point_check.value}-->">
+
+<font color="red"><!--{$arrErr.use_point}--></font>
 
 ■お届け日<br>
 <!--{assign var=key value="deliv_date"}-->

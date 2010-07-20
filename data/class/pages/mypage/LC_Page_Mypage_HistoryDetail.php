@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -140,7 +140,7 @@ class LC_Page_Mypage_HistoryDetail extends LC_Page {
         $objQuery = new SC_Query();
         $col = "product_id, product_code, product_name, classcategory_name1, classcategory_name2, price, quantity, point_rate";
         $where = "order_id = ?";
-        $objQuery->setorder("classcategory_id1, classcategory_id2");
+        $objQuery->setOrder("classcategory_id1, classcategory_id2");
         $arrRet = $objQuery->select($col, "dtb_order_detail", $where, array($order_id));
         return $arrRet;
     }

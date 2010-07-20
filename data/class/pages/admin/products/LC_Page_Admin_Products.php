@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -261,8 +261,8 @@ class LC_Page_Admin_Products extends LC_Page {
                         break;
                     default:
                         // 読み込む列とテーブルの指定
-                        $col = "product_id, name, main_list_image, status, product_code_min, product_code_max, price02_min, price02_max, stock_min, stock_max, stock_unlimited_min, stock_unlimited_max, update_date";
-                        $from = "vw_products_allclass_detail AS alldtl ";
+                        $col = "product_id, name, category_id, main_list_image, status, product_code, price01, price02, stock, stock_unlimited";
+                        $from = "vw_products_nonclass AS noncls ";
 
                         // 行数の取得
                         $linemax = $objQuery->count("dtb_products", $view_where, $arrval);
@@ -291,10 +291,10 @@ class LC_Page_Admin_Products extends LC_Page {
                         }
 
                         // 取得範囲の指定(開始行番号、行数のセット)
-                        //                    if(DB_TYPE != "mysql") $objQuery->setlimitoffset($page_max, $startno);
-                        $objQuery->setlimitoffset($page_max, $startno);
+                        //                    if(DB_TYPE != "mysql") $objQuery->setLimitOffset($page_max, $startno);
+                        $objQuery->setLimitOffset($page_max, $startno);
                         // 表示順序
-                        $objQuery->setorder($order);
+                        $objQuery->setOrder($order);
 
                         // 検索結果の取得
                         $this->arrProducts = $objQuery->select($col, $from, $where, $arrval);

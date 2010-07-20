@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -104,42 +104,42 @@ class LC_Page_Sitemap extends LC_Page {
         print("<?xml version='1.0' encoding='UTF-8'?>\n");
         print("<urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>\n");
 
-        // 静的なページを処理
-        foreach($this->staticURL as $url) {
-            $this->createSitemap($url, '', 'daily', 1.0);
-        }
-
         // TOPページを処理
         $topPage = $this->getTopPage($this->arrPageList);
         $this->createSitemap($topPage[0]['url'],
                              $this->date2W3CDatetime($topPage[0]['update_date']),
                              'daily', 1.0);
 
+        // 静的なページを処理
+        foreach ($this->staticURL as $url) {
+            $this->createSitemap($url, '', 'daily', 1.0);
+        }
+
         // 編集可能ページを処理
         $editablePages = $this->getEditablePage($this->arrPageList);
-        foreach($editablePages as $editablePage) {
+        foreach ($editablePages as $editablePage) {
             $this->createSitemap($editablePage['url'],
                                  $this->date2W3CDatetime($editablePage['update_date']));
         }
 
         // 商品一覧ページを処理
         $products = $this->getAllProducts();
-        foreach($products as $product) {
+        foreach ($products as $product) {
             $this->createSitemap($product['url'], '', 'daily');
         }
         $mobileProducts = $this->getAllProducts(true);
-        foreach($mobileProducts as $mobileProduct) {
+        foreach ($mobileProducts as $mobileProduct) {
             $this->createSitemap($mobileProduct['url'], '', 'daily');
         }
 
         // 商品詳細ページを処理
         $details = $this->getAllDetail();
-        foreach($details as $detail) {
+        foreach ($details as $detail) {
             $this->createSitemap($detail['url'],
                                  $this->date2W3CDatetime($detail['update_date']));
         }
         $mobileDetails = $this->getAllDetail(true);
-        foreach($mobileDetails as $mobileDetail) {
+        foreach ($mobileDetails as $mobileDetail) {
             $this->createSitemap($mobileDetail['url'], 
                                  $this->date2W3CDatetime($mobileDetail['update_date']));
         }
@@ -191,9 +191,8 @@ class LC_Page_Sitemap extends LC_Page {
      */
     function getTopPage($pageData) {
         $arrRet = array();
-        foreach($pageData as $page) {
+        foreach ($pageData as $page) {
             if ($page['page_id'] == "1") {
-                $page['url'] = SITE_URL . $page['url'];
                 $arrRet[0] = $page;
                 return $arrRet;
             }
@@ -208,11 +207,9 @@ class LC_Page_Sitemap extends LC_Page {
      */
     function getEditablePage($pageData) {
         $arrRet = array();
-        $i = 0;
-        foreach($pageData as $page) {
+        foreach ($pageData as $page) {
             if ($page['page_id'] > 4) {
-                $arrRet[$i] = $page;
-                $i++;
+                $arrRet[] = $page;
             }
         }
         return $arrRet;
@@ -307,7 +304,17 @@ class LC_Page_Sitemap extends LC_Page {
 
         $sql .= " ORDER BY 	page_id";
 
-        return $objDBConn->getAll($sql, $arrVal);
+        $pageData = $objDBConn->getAll($sql, $arrVal);
+        // URL にプロトコルの記載が無い場合、SITE_URL を前置する。
+        foreach (array_keys($pageData) as $key) {
+            $page =& $pageData[$key];
+            if (!preg_match('|^https?://|i', $page['url'])) {
+                $page['url'] = SITE_URL . $page['url'];
+            }
+        }
+        unset($page);
+
+        return $pageData;
     }
 
     /**

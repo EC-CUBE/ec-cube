@@ -2,7 +2,7 @@
 <!--{*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -46,8 +46,7 @@
 			<!--{/if}-->
 			<title> <!--{ $arrNews[cnt].news_title|sf_mb_convert_encoding:$encode|escape }--> </title>
 			<description><!--{$arrNews[cnt].news_comment|truncate:256|sf_mb_convert_encoding:$encode|escape}--></description>
-			<!--{* <pubDate><!--{"r"|sf_mktime:$arrNews[cnt].hour:$arrNews[cnt].minute:$arrNews[cnt].second:$arrNews[cnt].month:$arrNews[cnt].day:$arrNews[cnt].year}--></pubDate> *}-->
-			<pubDate><!--{$timestamp|escape}--></pubDate>
+			<pubDate><!--{$arrNews[cnt].news_date|escape}--></pubDate>
 		</item>
 	<!--{/section}-->
 

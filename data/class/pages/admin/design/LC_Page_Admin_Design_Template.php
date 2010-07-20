@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -321,7 +321,7 @@ class LC_Page_Admin_Design_Template extends LC_Page {
 		//すべてのキャンペーンのテンプレートファイルを確認
 	    $objQuery = new SC_Query();
 	    $sql = "SELECT directory_name,cart_flg FROM dtb_campaign WHERE del_flg = 0";
-	    $result = $objQuery->getall( $sql );
+	    $result = $objQuery->getAll( $sql );
 	    //デザインテンプレートディレクトリにファイルが存在するか確認
 	    foreach( $result as $key => $val ){
 			//index.phpが存在すればキャンペーンのテンプレートがあると判定

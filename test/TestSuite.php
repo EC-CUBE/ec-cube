@@ -1,9 +1,8 @@
-#!/usr/local/bin/php
 <?php
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -22,23 +21,29 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-ini_set("include_path", ".:/usr/local/share/pear");
 // {{{ requires
 require_once("../html/require.php");
-require_once("class/page/LC_Page_Test.php");
-require_once("class/db/SC_DB_DBFactory_Test.php");
-require_once("class/db/SC_DB_MasterData_Test.php");
-require_once("class/helper/SC_Helper_DB_Test.php");
-require_once("PHPUnit.php");
+require_once("class/page/Page_AllTests.php");
+require_once("class/db/DB_AllTests.php");
+require_once("class/helper/Helper_AllTests.php");
+require_once("class/util/Util_AllTests.php");
+require_once("PHPUnit/Framework.php");
 
-$suites = array();
-$suites[0] = new PHPUnit_TestSuite("LC_Page_Test");
-$suites[1] = new PHPUnit_TestSuite("SC_DB_DBFactory_Test");
-$suites[2] = new PHPUnit_TestSuite("SC_DB_MasterData_Test");
-$suites[3] = new PHPUnit_TestSuite("SC_Helper_DB_Test");
+/**
+ * EC-CUBE のテストスイート
+ *
+ * @author Kentaro Ohkouchi
+ * @version $Id:LC_Page_Test.php 15116 2007-07-23 11:32:53Z nanasess $
+ */
 
-foreach ($suites as $suite) {
-    $result = PHPUnit::run($suite);
-    print $result->toString();
+class TestSuite {
+    public static function suite() {
+        $suite = new PHPUnit_Framework_TestSuite('ECCUBE');
+        $suite->addTest(Page_AllTests::suite());
+        $suite->addTest(DB_AllTests::suite());
+        $suite->addTest(Helper_AllTests::suite());
+        $suite->addTest(Util_AllTests::suite());
+        return $suite;
+    }
 }
 ?>

@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -252,13 +252,13 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
             $sql = "SELECT * ";
             $sql.= "FROM vw_cross_class AS crs_cls ";
             $sql.= "WHERE class_id1 = ? AND class_id2 = ? ORDER BY rank1 DESC, rank2 DESC;";
-            $arrRet = $objQuery->getall($sql, array($class_id1, $class_id2));
+            $arrRet = $objQuery->getAll($sql, array($class_id1, $class_id2));
         } else {
             // 規格1のみ
             $sql = "SELECT * ";
             $sql.= "FROM vw_cross_class AS crs_cls ";
             $sql.= "WHERE class_id1 = ? AND class_id2 = 0 ORDER BY rank1 DESC;";
-            $arrRet = $objQuery->getall($sql, array($class_id1));
+            $arrRet = $objQuery->getAll($sql, array($class_id1));
 
         }
 

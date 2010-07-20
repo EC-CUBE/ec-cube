@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -110,7 +110,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         $objSess = new SC_Session();
         $objSiteInfo = new SC_SiteInfo();
         $objDb = new SC_Helper_DB_Ex();
-        $objDate = new SC_Date(1901); 
+        $objDate = new SC_Date(1970);
         $this->arrYearDelivDate = $objDate->getYear('', date('Y'), '');
         $this->arrMonthDelivDate = $objDate->getMonth(true);
         $this->arrDayDelivDate = $objDate->getDay(true);
@@ -308,7 +308,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
          */
         if (file_exists(MODULE_PATH . 'mdl_sps/request.php') === TRUE) {
             $objQuery = new SC_Query();
-            $this->paymentType = $objQuery->getall("SELECT module_code, memo03 FROM dtb_payment WHERE payment_id = ? ", array($this->arrForm["payment_id"]['value']));
+            $this->paymentType = $objQuery->getAll("SELECT module_code, memo03 FROM dtb_payment WHERE payment_id = ? ", array($this->arrForm["payment_id"]['value']));
             $objDate = new SC_Date();
             $objDate->setStartYear(RELEASE_YEAR);
             $this->arrYear = $objDate->getYear();
@@ -380,7 +380,9 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         $this->objFormParam->addParam("お支払い方法", "payment_id", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
         $this->objFormParam->addParam("お届け時間ID", "deliv_time_id", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
         $this->objFormParam->addParam("対応状況", "status", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $this->objFormParam->addParam("お届け日", "deliv_date", STEXT_LEN, "KVa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $this->objFormParam->addParam("お届け日(年)", "deliv_date_year", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $this->objFormParam->addParam("お届け日(月)", "deliv_date_month", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $this->objFormParam->addParam("お届け日(日)", "deliv_date_day", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
         $this->objFormParam->addParam("お支払方法名称", "payment_method");
         $this->objFormParam->addParam("お届け時間", "deliv_time");
 
@@ -409,7 +411,8 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         $this->objFormParam->addParam("注文番号", "order_id");
         $this->objFormParam->addParam("受注日", "create_date");
         $this->objFormParam->addParam("発送日", "commit_date");
-        $this->objFormParam->addParam("お届け日", "deliv_date"); 
+        $this->objFormParam->addParam("備考", "message");
+        $this->objFormParam->addParam("お届け日", "deliv_date");
     }
 
     function lfGetOrderData($order_id) {
@@ -423,11 +426,15 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
             list($point, $total_point) = $objDb->sfGetCustomerPoint($order_id, $arrRet[0]['use_point'], $arrRet[0]['add_point']);
             $this->objFormParam->setValue('total_point', $total_point);
             $this->objFormParam->setValue('point', $point);
-            $delivDate = split(" ", $arrRet[0]["deliv_date"]);
-            $delivDate = split("-", $delivDate[0]);
-            $this->objFormParam->setValue('deliv_date_year', $delivDate[0]);
-            $this->objFormParam->setValue('deliv_date_month', isset($delivDate[1]) ? $delivDate[1] : "");
-            $this->objFormParam->setValue('deliv_date_day', isset($delivDate[2]) ? $delivDate[2] : "");
+            // XXX お届け日の処理
+            if (!empty($arrRet[0]["deliv_date"])) {
+                $delivDate = mb_strcut($arrRet[0]["deliv_date"], 0, 8);
+                $delivDate = split("/", $delivDate);
+                $ts = mktime(0, 0, 0, $delivDate[1], $delivDate[2], $delivDate[0]);
+                $this->objFormParam->setValue('deliv_date_year', date("Y", $ts));
+                $this->objFormParam->setValue('deliv_date_month', date("n", $ts));
+                $this->objFormParam->setValue('deliv_date_day', date("j", $ts));
+            }
             $this->arrForm = $arrRet[0];
 
             // 受注詳細データの取得
@@ -455,7 +462,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         $objQuery = new SC_Query();
         $col = "product_id, classcategory_id1, classcategory_id2, product_code, product_name, classcategory_name1, classcategory_name2, price, quantity, point_rate";
         $where = "order_id = ?";
-        $objQuery->setorder("classcategory_id1, classcategory_id2");
+        $objQuery->setOrder("classcategory_id1, classcategory_id2");
         $arrRet = $objQuery->select($col, "dtb_order_detail", $where, array($order_id));
         return $arrRet;
     }
@@ -465,15 +472,11 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         // 入力データを渡す。
         $arrRet =  $this->objFormParam->getHashArray();
         $objErr = new SC_CheckError($arrRet);
-        $objErr->arrErr = $this->objFormParam->checkError();
-
         $objErr->doFunc(array("お届け日", "deliv_date_year", "deliv_date_month", "deliv_date_day"), array("CHECK_DATE"));
-
         if (count($objErr->arrErr) >= 1) {
             return $objErr->arrErr;
         }
-
-        return $objErr->arrErr;
+        return $this->objFormParam->checkError();
     }
 
     /* 計算処理 */
@@ -494,6 +497,22 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
             $totaltax += SC_Utils_Ex::sfTax($arrVal['price'][$i], $arrInfo['tax'], $arrInfo['tax_rule']) * $arrVal['quantity'][$i];
             // 加算ポイントの計算
             $totalpoint += SC_Utils_Ex::sfPrePoint($arrVal['price'][$i], $arrVal['point_rate'][$i]) * $arrVal['quantity'][$i];
+
+            // 在庫数のチェック
+            $productClass = $objDb->sfGetProductsClass(array($arrVal['product_id'][$i],
+                                                             $arrVal['classcategory_id1'][$i],
+                                                             $arrVal['classcategory_id2'][$i]));
+            if ($productClass['stock_unlimited'] != '1'
+                && $productClass['stock'] < ($arrVal['quantity'][$i] - $this->arrForm['quantity'][$i])) {
+                $className1 = $this->arrForm['classcategory_name1'][$i];
+                $className1 = empty($className1) ? 'なし' : $className1;
+                $className2 = $this->arrForm['classcategory_name2'][$i];
+                $className2 = empty($className2) ? 'なし' : $className2;
+
+                if (!isset($arrErr['quantity'])) $arrErr['quantity'] = "";
+
+                $arrErr['quantity'] .= $this->arrForm['product_name'][$i] . '/(' . $className1 . ')/(' . $className2 . ')　の在庫が不足しています。　設定できる数量は「' . ($this->arrForm['quantity'][$i] + $productClass['stock']) . '」までです。<br />';
+            }
         }
 
         // 消費税
@@ -556,13 +575,19 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         }
         $sqlval['update_date'] = 'Now()';
 
-        if (strlen($sqlval['deliv_date_year']) >= 0) {
-            $sqlval['deliv_date'] = $sqlval['deliv_date_year'] . '-' . $sqlval['deliv_date_month'] . '-' . $sqlval['deliv_date_day'];
+        // XXX お届け日の処理
+        if (!empty($sqlval['deliv_date_year'])) {
+            $ts = mktime(0, 0, 0, $sqlval['deliv_date_month'], $sqlval['deliv_date_day'], $sqlval['deliv_date_year']);
+            $sqlval['deliv_date'] = date("y/m/d", $ts);
+            $masterData = new SC_DB_MasterData();
+            $arrWDAY = $masterData->getMasterData("mtb_wday");
+            $sqlval['deliv_date'] .= sprintf("(%s)", $arrWDAY[date("w", $ts)]);
+        } else {
+            $sqlval['deliv_date'] = "";
         }
         unset($sqlval['deliv_date_year']);
         unset($sqlval['deliv_date_month']);
         unset($sqlval['deliv_date_day']);
-
         unset($sqlval['total_point']);
         unset($sqlval['point']);
         unset($sqlval['commit_date']);
@@ -713,6 +738,19 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
             $sqlval['customer_id'] = '0';
         }
 
+        // XXX お届け日の処理
+        if (!empty($sqlval['deliv_date_year'])) {
+            $ts = mktime(0, 0, 0, $sqlval['deliv_date_month'], $sqlval['deliv_date_day'], $sqlval['deliv_date_year']);
+            $sqlval['deliv_date'] = date("y/m/d", $ts);
+            $masterData = new SC_DB_MasterData();
+            $arrWDAY = $masterData->getMasterData("mtb_wday");
+            $sqlval['deliv_date'] .= sprintf("(%s)", $arrWDAY[date("w", $ts)]);
+
+        }
+        unset($sqlval['deliv_date_year']);
+        unset($sqlval['deliv_date_month']);
+        unset($sqlval['deliv_date_day']);
+
         unset($sqlval['total_point']);
         unset($sqlval['point']);
 
@@ -767,7 +805,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
 
             // 在庫数減少処理
             // 現在の実在庫数取得
-            $pre_stock = $objQuery->getone("SELECT stock FROM dtb_products_class WHERE product_id = ? AND classcategory_id1 = ?  AND classcategory_id2 = ?", array($arrDetail[$i]['product_id'], $arrDetail[$i]['classcategory_id1'], $arrDetail[$i]['classcategory_id2']));
+            $pre_stock = $objQuery->getOne("SELECT stock FROM dtb_products_class WHERE product_id = ? AND classcategory_id1 = ?  AND classcategory_id2 = ?", array($arrDetail[$i]['product_id'], $arrDetail[$i]['classcategory_id1'], $arrDetail[$i]['classcategory_id2']));
 
             $stock_sqlval = array();
             $stock_sqlval['stock'] = intval($pre_stock - $arrDetail[$i]['quantity']);
@@ -879,7 +917,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
             $this->edit_customer_id = $edit_customer_id;
 
             // 受注日に現在の時刻を取得し、表示させる
-            $create_date = $objQuery->getall('SELECT now() as create_date;');
+            $create_date = $objQuery->getAll('SELECT now() as create_date;');
             $arrCustomer['create_date'] = $create_date[0]['create_date'];
 
             // 情報上書き

@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -47,7 +47,7 @@ class LC_Page_Admin_Design extends LC_Page {
         $this->tpl_subnavi = 'design/subnavi.tpl';
         $this->tpl_subno = "layout";
         $this->tpl_mainno = "design";
-        $this->tpl_subtitle = 'レイアウト編集';
+        $this->tpl_subtitle = 'レイアウト設定';
     }
 
     /**

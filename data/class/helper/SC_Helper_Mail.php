@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -44,7 +44,7 @@ class SC_Helper_Mail {
     }
 
     /* DBに登録されたテンプレートメールの送信 */
-    function sfSendTemplateMail($to, $to_name, $template_id, &$objPage) {
+    function sfSendTemplateMail($to, $to_name, $template_id, &$objPage, $from_address = "", $from_name = "", $reply_to = "") {
 
         $objQuery = new SC_Query();
         // メールテンプレート情報の取得
@@ -65,9 +65,12 @@ class SC_Helper_Mail {
         // メール送信処理
         $objSendMail = new SC_SendMail_Ex();
         $from = $arrInfo['email03'];
+        if ($from_address == "") $from_address = $arrInfo['email03'];
+        if ($from_name == "") $from_name = $arrInfo['shop_name'];
+        if ($reply_to == "") $reply_to = $arrInfo['email03'];
         $error = $arrInfo['email04'];
         $tosubject = $tmp_subject;
-        $objSendMail->setItem('', $tosubject, $body, $from, $arrInfo['shop_name'], $from, $error, $error);
+        $objSendMail->setItem('', $tosubject, $body, $from_address, $from_name, $reply_to, $error, $error);
         $objSendMail->setTo($to, $to_name);
         $objSendMail->sendMail();    // メール送信
     }
@@ -172,7 +175,6 @@ class SC_Helper_Mail {
         $body = $objMailView->fetch($tplpath);
         // メール送信処理
         $objSendMail = new SC_SendMail_Ex();
-        $to = mb_encode_mimeheader($to);
         $bcc = $arrInfo['email01'];
         $from = $arrInfo['email03'];
         $error = $arrInfo['email04'];

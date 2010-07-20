@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -115,7 +115,7 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         if($objDb->sfColumnExists("dtb_payment", "memo01")){
             // MEMO03に値が入っている場合には、モジュール追加されたものとみなす
             $sql = "SELECT memo03 FROM dtb_payment WHERE payment_id = ?";
-            $arrPayment = $objQuery->getall($sql, array($arrData['payment_id']));
+            $arrPayment = $objQuery->getAll($sql, array($arrData['payment_id']));
             $payment_type = $arrPayment[0]["memo03"];
         }
         $this->payment_type = $payment_type;
@@ -221,7 +221,7 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         if($objDb->sfColumnExists("dtb_payment", "memo01")){
             // MEMO03に値が入っている場合には、モジュール追加されたものとみなす
             $sql = "SELECT memo03 FROM dtb_payment WHERE payment_id = ?";
-            $arrPayment = $objQuery->getall($sql, array($arrData['payment_id']));
+            $arrPayment = $objQuery->getAll($sql, array($arrData['payment_id']));
             $payment_type = $arrPayment[0]["memo03"];
         }
         $this->payment_type = $payment_type;

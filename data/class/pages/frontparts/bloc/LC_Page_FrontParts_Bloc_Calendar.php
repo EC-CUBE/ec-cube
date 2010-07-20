@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -144,7 +144,7 @@ class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc {
     // 休日取得
     function lfGetHoliday() {
         $objQuery = new SC_Query();
-        $objQuery->setorder("rank DESC");
+        $objQuery->setOrder("rank DESC");
 
         $where = "del_flg <> 1";
         $arrRet = $objQuery->select("month, day", "dtb_holiday", $where);

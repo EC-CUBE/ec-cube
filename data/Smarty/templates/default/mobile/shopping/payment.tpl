@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -30,10 +30,6 @@
 <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
 <input type="hidden" name="deliv_date" value="<!--{$arrForm.deliv_date.value}-->">
 <input type="hidden" name="deliv_time_id" value="<!--{$arrForm.deliv_time_id.value}-->">
-<!--<input type="hidden" name="message" value="">-->
-<!--{if $tpl_login == 1}-->
-<!--<input type="hidden" name="point_check" value="2">-->
-<!--{/if}-->
 
 <!--{assign var=key value="payment_id"}-->
 <!--{if $arrErr[$key] != ""}-->
@@ -44,6 +40,18 @@
 <!--{$arrPayment[cnt].payment_method|escape}-->
 <br>
 <!--{/section}-->
+
+<!-- ▼ポイント使用 ここから -->
+<!--{if $tpl_login == 1 && $smarty.const.USE_POINT == true}-->
+<p><!--{$objCustomer->getValue('name01')|escape}--> <!--{$objCustomer->getValue('name02')|escape}-->様の、現在の所持ポイントは「<!--{$tpl_user_point|default:0}-->ポイント」です。</p>
+<p>今回ご購入合計金額：<span class="price"><!--{$arrData.subtotal|number_format}-->円</span><span class="attention">（送料、手数料を含みません。）</p>
+<input type="radio" id="point_on" name="point_check" value="1" <!--{$arrForm.point_check.value|sfGetChecked:1}--> />ポイントを使用する<br>
+<!--{assign var=key value="use_point"}-->
+今回のお買い物で、<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|default:$tpl_user_point}-->" maxlength="<!--{$arrForm[$key].length}-->" size="6" />&nbsp;ポイントを使用する。<br>
+<span class="attention"><!--{$arrErr[$key]}--></span>
+<input type="radio" id="point_off" name="point_check" value="2" <!--{$arrForm.point_check.value|sfGetChecked:2}--> />ポイントを使用しない
+<!--{/if}-->
+<!-- ▲ポイント使用 ここまで -->
 
 <center><input type="submit" value="次へ"></center>
 <center><input type="submit" name="return" value="戻る"></center>

@@ -381,7 +381,7 @@ define('SEARCH_CATEGORY_LEN', 18);
 /** ファイル名表示文字数 */
 define('FILE_NAME_LEN', 10);
 /** 購入制限なしの場合の最大購入個数 */
-define('SALE_LIMIT_MAX', 10);
+define('SALE_LIMIT_MAX', 0);
 /** HTMLタイトル */
 define('SITE_TITLE', "ＥＣ-ＣＵＢＥ  テストサイト");
 /** クッキー保持期限(日) */

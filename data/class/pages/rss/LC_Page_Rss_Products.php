@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -90,7 +90,7 @@ class LC_Page_Rss_Products extends LC_Page {
             }
         }elseif($mode == "list"){
             //商品一覧を取得
-            $arrProduct = $objQuery->getall("SELECT product_id, name AS product_name FROM dtb_products");
+            $arrProduct = $objQuery->getAll("SELECT product_id, name AS product_name FROM dtb_products");
         }else{
             $arrProduct = $this->lfGetProductsAllclass($objQuery);
 
@@ -187,7 +187,7 @@ class LC_Page_Rss_Products extends LC_Page {
             $arrval = array($product_id);
         }
         $sql .= " ORDER BY prod.product_id, cls.classcategory_id1, cls.classcategory_id2";
-        $arrProduct = $objQuery->getall($sql, $arrval);
+        $arrProduct = $objQuery->getAll($sql, $arrval);
         return $arrProduct;
     }
 
@@ -219,7 +219,7 @@ class LC_Page_Rss_Products extends LC_Page {
             FROM  vw_products_allclass as allcls
             WHERE allcls.del_flg = 0 AND allcls.status = 1";
         $sql .= " ORDER BY allcls.product_id";
-        $arrProduct = $objQuery->getall($sql);
+        $arrProduct = $objQuery->getAll($sql);
         return $arrProduct;
     }
 }

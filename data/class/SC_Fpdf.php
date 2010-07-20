@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -340,14 +340,14 @@ ob_clean();
       $objQuery = new SC_Query();
       $col = "product_id, classcategory_id1, classcategory_id2, product_code, product_name, classcategory_name1, classcategory_name2, price, quantity, point_rate";
       $where = "order_id = ?";
-      $objQuery->setorder("classcategory_id1, classcategory_id2");
+      $objQuery->setOrder("classcategory_id1, classcategory_id2");
       $arrRet = $objQuery->select($col, "dtb_order_detail", $where, array($order_id));
       return $arrRet;
     }
 
-    // 文字コードSJIS変換 -> japanese.phpで使用出来る文字コードはSJISのみ
+    // 文字コードSJIS変換 -> japanese.phpで使用出来る文字コードはSJIS-winのみ
     function sjis_conv($conv_str) {
-      return (mb_convert_encoding($conv_str, "SJIS", CHAR_CODE));
+      return (mb_convert_encoding($conv_str, "SJIS-win", CHAR_CODE));
     }
 
 

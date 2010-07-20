@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -102,9 +102,9 @@ class LC_Page_MyPage extends LC_Page {
         $startno = $objNavi->start_row;
 
         // 取得範囲の指定(開始行番号、行数のセット)
-        $objQuery->setlimitoffset(SEARCH_PMAX, $startno);
+        $objQuery->setLimitOffset(SEARCH_PMAX, $startno);
         // 表示順序
-        $objQuery->setorder($order);
+        $objQuery->setOrder($order);
 
         //購入履歴の取得
         $this->arrOrder = $objQuery->select($col, $from, $where, $arrval);
@@ -208,6 +208,7 @@ class LC_Page_MyPage extends LC_Page {
             //マイページトップ顧客情報表示用
             $this->CustomerName1 = $objCustomer->getvalue('name01');
             $this->CustomerName2 = $objCustomer->getvalue('name02');
+            $this->CustomerPoint = $objCustomer->getvalue('point');
         }
 
         $objView->assignobj($this);				//$objpage内の全てのテンプレート変数をsmartyに格納

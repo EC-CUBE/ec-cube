@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -206,7 +206,7 @@ class SC_Batch_Daily extends SC_Batch {
         $sql = $this->lfGetOrderDailySQL($start,$end);
 
         $objQuery = new SC_Query();
-        $arrRet = $objQuery->getall($sql);
+        $arrRet = $objQuery->getAll($sql);
 
         $sqlval = $arrRet[0];
 
@@ -247,7 +247,7 @@ class SC_Batch_Daily extends SC_Batch {
             $sdate = sprintf("%s %02d:00:00", $date, $i);
             $edate = sprintf("%s %02d:59:59", $date, $i);
             $sql = $this->lfGetOrderDailySQL($sdate, $edate);
-            $arrRet = $objQuery->getall($sql);
+            $arrRet = $objQuery->getAll($sql);
             $sqlval = $arrRet[0];
             // 空文字を"0"に変換
             foreach($sqlval as $key => $val) {
@@ -340,7 +340,7 @@ class SC_Batch_Daily extends SC_Batch {
     function lfBatOrderAgeSub($sql, $start, $end, $start_age, $end_age, $member) {
         $objQuery = new SC_Query();
 
-        $arrRet = $objQuery->getall($sql, array($start, $end));
+        $arrRet = $objQuery->getAll($sql, array($start, $end));
         $sqlval = $arrRet[0];
 
         // 空文字を"0"に変換

@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -139,7 +139,7 @@ class LC_Page_Products_Detail extends LC_Page {
             } else {
                 //閲覧履歴の中で一番古いものを削除して新規追加
                 $oldsql = "SELECT MIN(update_date) FROM ".$table." WHERE customer_id = ?";
-                $old = $objQuery->getone($oldsql, array($objCustomer->getValue("customer_id")));
+                $old = $objQuery->getOne($oldsql, array($objCustomer->getValue("customer_id")));
                 $where = "customer_id = ? AND update_date = ? ";
                 $arrval = array($objCustomer->getValue("customer_id"), $old);
                 //削除
@@ -217,7 +217,7 @@ class LC_Page_Products_Detail extends LC_Page {
 
         // 商品コードの取得
         $code_sql = "SELECT product_code FROM dtb_products_class AS prdcls WHERE prdcls.product_id = ? GROUP BY product_code ORDER BY product_code";
-        $arrProductCode = $objQuery->getall($code_sql, array($tmp_id));
+        $arrProductCode = $objQuery->getAll($code_sql, array($tmp_id));
         $arrProductCode = SC_Utils_Ex::sfswaparray($arrProductCode);
         $this->arrProductCode = $arrProductCode["product_code"];
 
@@ -340,7 +340,7 @@ class LC_Page_Products_Detail extends LC_Page {
                } else {
                //閲覧履歴の中で一番古いものを削除して新規追加
                $oldsql = "SELECT MIN(update_date) FROM ".$table." WHERE customer_id = ?";
-               $old = $objQuery->getone($oldsql, array($objCustomer->getValue("customer_id")));
+               $old = $objQuery->getOne($oldsql, array($objCustomer->getValue("customer_id")));
                $where = "customer_id = ? AND update_date = ? ";
                $arrval = array($objCustomer->getValue("customer_id"), $old);
                //削除
@@ -435,7 +435,7 @@ class LC_Page_Products_Detail extends LC_Page {
 
         // 商品コードの取得
         $code_sql = "SELECT product_code FROM dtb_products_class AS prdcls WHERE prdcls.product_id = ? GROUP BY product_code ORDER BY product_code";
-        $arrProductCode = $objQuery->getall($code_sql, array($tmp_id));
+        $arrProductCode = $objQuery->getAll($code_sql, array($tmp_id));
         $arrProductCode = SC_Utils_Ex::sfswaparray($arrProductCode);
         $this->arrProductCode = $arrProductCode["product_code"];
 
@@ -690,7 +690,7 @@ class LC_Page_Products_Detail extends LC_Page {
             $col = "product_class_id, classcategory_id1, classcategory_id2, class_id1, class_id2, stock, stock_unlimited";
             $table = "vw_product_class AS prdcls";
             $where = "product_id = ?";
-            $objQuery->setorder("rank1 DESC, rank2 DESC");
+            $objQuery->setOrder("rank1 DESC, rank2 DESC");
             $arrRet = $objQuery->select($col, $table, $where, array($product_id));
         }
         return $arrRet;
@@ -700,7 +700,7 @@ class LC_Page_Products_Detail extends LC_Page {
     function lfPreGetRecommendProducts($product_id) {
         $arrRecommend = array();
         $objQuery = new SC_Query();
-        $objQuery->setorder("rank DESC");
+        $objQuery->setOrder("rank DESC");
         $arrRet = $objQuery->select("recommend_product_id, comment", "dtb_recommend_products", "product_id = ?", array($product_id));
         $max = count($arrRet);
         $no = 0;
@@ -710,7 +710,7 @@ class LC_Page_Products_Detail extends LC_Page {
                 . "        T2.product_id"
                 . "   FROM dtb_product_categories T2  "
                 . " GROUP BY product_id) AS T3 USING (product_id)";
-        $objQuery->setorder("T3.product_rank DESC");
+        $objQuery->setOrder("T3.product_rank DESC");
         for($i = 0; $i < $max; $i++) {
             $where = "del_flg = 0 AND T3.product_id = ? AND status = 1";
             $arrProductInfo = $objQuery->select("DISTINCT main_list_image, price02_min, price02_max, price01_min, price01_max, name, point_rate, T3.product_rank", $from, $where, array($arrRet[$i]['recommend_product_id']));
@@ -757,9 +757,9 @@ class LC_Page_Products_Detail extends LC_Page {
     function lfGetRelateProducts($tmp_id) {
         $objQuery = new SC_Query;
         //自動抽出
-        $objQuery->setorder("random()");
+        $objQuery->setOrder("random()");
         //表示件数の制限
-        $objQuery->setlimit(RELATED_PRODUCTS_MAX);
+        $objQuery->setLimit(RELATED_PRODUCTS_MAX);
         //検索条件
         $col = "name, main_list_image, price01_min, price02_min, price01_max, price02_max, point_rate";
         $from = "vw_products_allclass AS allcls ";
@@ -811,7 +811,7 @@ class LC_Page_Products_Detail extends LC_Page {
         $from = "dtb_payment";
         $where = "del_flg = 0";
         $order = "payment_id";
-        $objQuery->setorder($order);
+        $objQuery->setOrder($order);
         $arrRet = $objQuery->select($col, $from, $where);
         return $arrRet;
     }

@@ -1,7 +1,7 @@
 <!--{*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -28,7 +28,7 @@
   <div id="information">
     <ul>
       <li>
-        <a href="<!--{$smarty.const.URL_DIR}-->mypage/login.php"
+        <a href="<!--{$smarty.const.SSL_URL}-->mypage/login.php"
            onmouseover="chgImg('<!--{$TPL_DIR}-->img/header/mypage_on.gif','mypage');"
            onmouseout="chgImg('<!--{$TPL_DIR}-->img/header/mypage.gif','mypage');">
           <img src="<!--{$TPL_DIR}-->img/header/mypage.gif" width="95" height="20" alt="MYページ" name="mypage" id="mypage" /></a>

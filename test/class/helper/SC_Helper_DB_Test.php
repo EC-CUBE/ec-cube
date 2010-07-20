@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -22,10 +22,9 @@
  */
 
 // {{{ requires
-// {{{ requires
-require_once($include_dir . "/../data/class/helper_extends/SC_Helper_DB_Ex.php"); // FIXME
-require_once("PHPUnit/TestCase.php");
-
+require_once("../html/require.php");
+require_once("../data/class_extends/helper_extends/SC_Helper_DB_Ex.php");
+require_once("PHPUnit/Framework.php");
 
 /**
  * SC_Helper_DB のテストケース.
@@ -34,7 +33,7 @@ require_once("PHPUnit/TestCase.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class SC_Helper_DB_Test extends PHPUnit_TestCase {
+class SC_Helper_DB_Test extends PHPUnit_Framework_TestCase {
 
     /**
      * sfTableExists() のテストケース.
@@ -52,10 +51,18 @@ class SC_Helper_DB_Test extends PHPUnit_TestCase {
         $this->assertEquals(true, $objDb->sfColumnExists("mtb_zip", "zipcode"));
     }
 
+    /**
+     * sfIndexExists() のテストケース.
+     *
+     * XXX MySQL では動作しない
+     */
     function testSfIndexExists() {
         $objDb = new SC_Helper_DB_Ex();
-        $this->assertEquals(true, $objDb->sfIndexExists("dtb_products", "category_id",
-                "dtb_products_category_id_key"));
+        if (DB_TYPE == "pgsql") {
+            $this->assertEquals(true, $objDb->sfIndexExists("dtb_products",
+                                                            "product_id",
+                                                            "dtb_products_product_id_key"));
+        }
     }
 }
 ?>

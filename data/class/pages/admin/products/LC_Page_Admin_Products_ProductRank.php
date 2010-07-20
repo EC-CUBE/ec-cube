@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -134,9 +134,9 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page {
         $this->tpl_disppage = $objNavi->now_page;	// 表示ページ番号（「上へ下へ」表示判定用）
 
         // 取得範囲の指定(開始行番号、行数のセット)
-        if(DB_TYPE != "mysql") $objQuery->setlimitoffset(SEARCH_PMAX, $startno);
+        if(DB_TYPE != "mysql") $objQuery->setLimitOffset(SEARCH_PMAX, $startno);
 
-        $objQuery->setorder("rank DESC");
+        $objQuery->setOrder("rank DESC");
 
         $arrRet = $objQuery->select($col, $table, $where, array($category_id));
         return $arrRet;

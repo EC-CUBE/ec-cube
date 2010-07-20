@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -257,7 +257,7 @@ class SC_Helper_DB {
         $col = "product_id, deliv_fee, name, product_code, main_list_image, main_image, price01, price02, point_rate, product_class_id, classcategory_id1, classcategory_id2, class_id1, class_id2, stock, stock_unlimited, sale_limit, sale_unlimited";
         $table = "vw_product_class AS prdcls";
         $where = "product_id = ? AND classcategory_id1 = ? AND classcategory_id2 = ? AND status = 1";
-        $objQuery->setorder("rank1 DESC, rank2 DESC");
+        $objQuery->setOrder("rank1 DESC, rank2 DESC");
         $arrRet = $objQuery->select($col, $table, $where, array($product_id, $classcategory_id1, $classcategory_id2));
         return $arrRet[0];
     }
@@ -271,7 +271,7 @@ class SC_Helper_DB {
         $objQuery = new SC_Query();
         // 購入金額が条件額以下の項目を取得
         $where = "del_flg = 0";
-        $objQuery->setorder("fix, rank DESC");
+        $objQuery->setOrder("fix, rank DESC");
         $arrRet = $objQuery->select("payment_id, payment_method, rule", "dtb_payment", $where);
         return $arrRet;
     }
@@ -311,23 +311,24 @@ class SC_Helper_DB {
 
                 // 購入制限数を求める。
                 if ($arrData['stock_unlimited'] != '1' && $arrData['sale_unlimited'] != '1') {
-                    if($arrData['sale_limit'] < $arrData['stock']) {
-                        $limit = $arrData['sale_limit'];
-                    } else {
-                        // 購入制限数を在庫数に
-                        #$limit = $arrData['stock'];
-                        // 購入制限数をSALE_LIMIT_MAXに
-                        $limit = SALE_LIMIT_MAX;
-                    }
+                    $limit = min($arrData['sale_limit'], $arrData['stock']);
+                } elseif ($arrData['sale_unlimited'] != '1') {
+                    $limit = $arrData['sale_limit'];
                 } else {
-                    if ($arrData['sale_unlimited'] != '1') {
-                        $limit = $arrData['sale_limit'];
-                    }
+                    // 購入制限なしの場合は、SALE_LIMIT_MAXが最大購入個数
+                    // 但し、SALE_LIMIT_MAXは、有効な整数値でないと機能しない
+
                     if ($arrData['stock_unlimited'] != '1') {
-                        // 購入制限数を在庫数に
-                        #$limit = $arrData['stock'];
-                        // 購入制限数をSALE_LIMIT_MAXに
-                        $limit = SALE_LIMIT_MAX;
+                        // 在庫制限がある場合は、SALE_LIMIT_MAXと在庫数の小さい方が購入可能最大数
+                        if (SALE_LIMIT_MAX > 0) {
+                        	$limit = min(SALE_LIMIT_MAX, $arrData['stock']);
+                        } else {
+                        	$limit = $arrData['stock'];
+                        }
+                    } else {
+                        if (SALE_LIMIT_MAX > 0) {
+                            $limit = SALE_LIMIT_MAX;
+                        }
                     }
                 }
 
@@ -583,7 +584,7 @@ class SC_Helper_DB {
         } else {
             $where = "del_flg = 0";
         }
-        $objQuery->setoption("ORDER BY rank DESC");
+        $objQuery->setOption("ORDER BY rank DESC");
         $arrRet = $objQuery->select($col, $from, $where);
 
         $arrParentID = $this->sfGetParents($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $parent_category_id);
@@ -627,7 +628,7 @@ class SC_Helper_DB {
         } else {
             $where = "del_flg = 0";
         }
-        $objQuery->setoption("ORDER BY rank DESC");
+        $objQuery->setOption("ORDER BY rank DESC");
         $arrRet = $objQuery->select($col, $from, $where);
 
         $arrCategory_id = $this->sfGetCategoryId($product_id);
@@ -713,7 +714,7 @@ class SC_Helper_DB {
             $where.= " AND $addwhere";
         }
 
-        $objQuery->setoption("ORDER BY rank DESC");
+        $objQuery->setOption("ORDER BY rank DESC");
 
         if($products_check) {
             $col = "T1.category_id, category_name, level";
@@ -747,7 +748,7 @@ class SC_Helper_DB {
         $objQuery = new SC_Query();
         $col = "category_id, parent_category_id, category_name, level";
         $where = "del_flg = 0";
-        $objQuery->setoption("ORDER BY rank DESC");
+        $objQuery->setOption("ORDER BY rank DESC");
         $arrRet = $objQuery->select($col, "dtb_category", $where);
         $max = count($arrRet);
 
@@ -1130,8 +1131,8 @@ class SC_Helper_DB {
     function sfGetIDValueList($table, $keyname, $valname) {
         $objQuery = new SC_Query();
         $col = "$keyname, $valname";
-        $objQuery->setwhere("del_flg = 0");
-        $objQuery->setorder("rank DESC");
+        $objQuery->setWhere("del_flg = 0");
+        $objQuery->setOrder("rank DESC");
         $arrList = $objQuery->select($col, $table);
         $count = count($arrList);
         for($cnt = 0; $cnt < $count; $cnt++) {
@@ -1345,7 +1346,7 @@ class SC_Helper_DB {
             }
         }
 
-        $objQuery->setorder("level");
+        $objQuery->setOrder("level");
         $arrRet = $objQuery->select($col, $table, $where, $arrId);
         return $arrRet;
     }
@@ -1401,7 +1402,7 @@ class SC_Helper_DB {
         }
 
         if($deliv_id != "") {
-            $objQuery->setorder("time_id");
+            $objQuery->setOrder("time_id");
             $where = "deliv_id = ?";
             $arrRet= $objQuery->select("time_id, deliv_time", "dtb_delivtime", $where, array($deliv_id));
         }

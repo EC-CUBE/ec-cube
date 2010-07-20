@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -98,9 +98,9 @@ class LC_Page_Entry extends LC_Page {
                                      array(  "column" => "addr01", "convert" => "aKV" ),
                                      array(  "column" => "addr02", "convert" => "aKV" ),
                                      array(  "column" => "email", "convert" => "a" ),
-                                     array(  "column" => "email2", "convert" => "a" ),
+                                     array(  "column" => "email02", "convert" => "a" ),
                                      array(  "column" => "email_mobile", "convert" => "a" ),
-                                     array(  "column" => "email_mobile2", "convert" => "a" ),
+                                     array(  "column" => "email_mobile02", "convert" => "a" ),
                                      array(  "column" => "tel01", "convert" => "n" ),
                                      array(  "column" => "tel02", "convert" => "n" ),
                                      array(  "column" => "tel03", "convert" => "n" ),
@@ -110,6 +110,9 @@ class LC_Page_Entry extends LC_Page {
                                      array(  "column" => "sex", "convert" => "n" ),
                                      array(  "column" => "job", "convert" => "n" ),
                                      array(  "column" => "birth", "convert" => "n" ),
+                                     array(  "column" => "year", "convert" => "n" ),
+                                     array(  "column" => "month", "convert" => "n" ),
+                                     array(  "column" => "day", "convert" => "n" ),
                                      array(  "column" => "reminder", "convert" => "n" ),
                                      array(  "column" => "reminder_answer", "convert" => "aKV"),
                                      array(  "column" => "password", "convert" => "a" ),
@@ -314,9 +317,9 @@ class LC_Page_Entry extends LC_Page {
                                  array(  "column" => "addr01", "convert" => "aKV" ),
                                  array(  "column" => "addr02", "convert" => "aKV" ),
                                  array(  "column" => "email", "convert" => "a" ),
-                                 array(  "column" => "email2", "convert" => "a" ),
+                                 array(  "column" => "email02", "convert" => "a" ),
                                  array(  "column" => "email_mobile", "convert" => "a" ),
-                                 array(  "column" => "email_mobile2", "convert" => "a" ),
+                                 array(  "column" => "email_mobile02", "convert" => "a" ),
                                  array(  "column" => "tel01", "convert" => "n" ),
                                  array(  "column" => "tel02", "convert" => "n" ),
                                  array(  "column" => "tel03", "convert" => "n" ),
@@ -326,6 +329,9 @@ class LC_Page_Entry extends LC_Page {
                                  array(  "column" => "sex", "convert" => "n" ),
                                  array(  "column" => "job", "convert" => "n" ),
                                  array(  "column" => "birth", "convert" => "n" ),
+                                 array(  "column" => "year", "convert" => "n" ),
+                                 array(  "column" => "month", "convert" => "n" ),
+                                 array(  "column" => "day", "convert" => "n" ),
                                  array(  "column" => "reminder", "convert" => "n" ),
                                  array(  "column" => "reminder_answer", "convert" => "aKV"),
                                  array(  "column" => "password", "convert" => "a" ),
@@ -724,7 +730,7 @@ class LC_Page_Entry extends LC_Page {
         if (strlen($array["email"]) > 0) {
             $array["email"] = strtolower($array["email"]);
             $objQuery = new SC_Query();
-            $arrRet = $objQuery->select("email, update_date, del_flg", "dtb_customer","email = ? ORDER BY del_flg", array($array["email"]));
+            $arrRet = $objQuery->select("email, update_date, del_flg", "dtb_customer","email = ? OR email_mobile = ? ORDER BY del_flg", array($array["email"], $array["email"]));
 
             if(count($arrRet) > 0) {
                 if($arrRet[0]['del_flg'] != '1') {

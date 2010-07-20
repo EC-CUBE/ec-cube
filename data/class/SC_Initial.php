@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -37,7 +37,7 @@ class SC_Initial {
     function SC_Initial() {
 
         /** EC-CUBEのバージョン */
-        define('ECCUBE_VERSION', "2.4.3");
+        define('ECCUBE_VERSION', "2.4.4");
     }
 
     // }}}
@@ -100,6 +100,10 @@ class SC_Initial {
      */
     function setErrorReporting() {
         error_reporting(E_ALL & ~E_NOTICE);
+        // PHP 5.3.0対応
+        if (error_reporting() > 6143) {
+            error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
+        }
     }
 
     /**

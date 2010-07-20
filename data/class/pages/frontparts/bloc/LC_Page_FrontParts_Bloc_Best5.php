@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -107,8 +107,8 @@ class LC_Page_FrontParts_Bloc_Best5 extends LC_Page_FrontParts_Bloc {
         $from = "dtb_best_products AS A INNER JOIN vw_products_allclass AS allcls using(product_id)";
         $where = "status = 1";
         $order = "rank";
-        $objQuery->setorder($order);
-        $objQuery->setlimit(RECOMMEND_NUM);
+        $objQuery->setOrder($order);
+        $objQuery->setLimit(RECOMMEND_NUM);
 
         $arrBestProducts = $objQuery->select($col, $from, $where);
 
