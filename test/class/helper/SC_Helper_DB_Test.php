@@ -22,9 +22,8 @@
  */
 
 // {{{ requires
-require_once("../html/require.php");
-require_once("../data/class_extends/helper_extends/SC_Helper_DB_Ex.php");
-require_once("PHPUnit/Framework.php");
+require_once(realpath(dirname(__FILE__)) . "/../../require.php");
+require_once(realpath(dirname(__FILE__)) . "/../../../data/class_extends/helper_extends/SC_Helper_DB_Ex.php");
 
 /**
  * SC_Helper_DB のテストケース.

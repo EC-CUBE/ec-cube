@@ -22,9 +22,8 @@
  */
 
 // {{{ requires
-require_once 'PHPUnit/Framework.php';
-
-require_once 'LC_Page_Test.php';
+require_once(realpath(dirname(__FILE__)) . '/../../require.php');
+require_once(realpath(dirname(__FILE__)) . '/LC_Page_Test.php');
 
 /**
  * Page パッケージのテストケース.

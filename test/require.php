@@ -22,22 +22,9 @@
  */
 
 // {{{ requires
-require_once(realpath(dirname(__FILE__)) . "/../../require.php");
-require_once(realpath(dirname(__FILE__)) . "/SC_Helper_DB_Test.php");
 
-/**
- * Helper パッケージのテストケース.
- *
- * @package DB
- * @author Kentaro Ohkouchi
- * @version $Id:LC_Page_Test.php 15116 2007-07-23 11:32:53Z nanasess $
- */
-class Helper_AllTests extends PHPUnit_Framework_TestCase {
+/** PHPUnit/Framework.php のパス(必ずフルパスで指定!) */
+require_once("/opt/local/lib/php/PHPUnit/Framework.php");
 
-    public static function suite() {
-        $suite = new PHPUnit_Framework_TestSuite('SC_Helper');
-        $suite->addTestSuite('SC_Helper_DB_Test');
-        return $suite;
-    }
-}
+require_once(realpath(dirname(__FILE__)) . "/../html/require.php");
 ?>

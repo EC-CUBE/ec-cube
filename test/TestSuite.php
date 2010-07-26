@@ -22,11 +22,10 @@
  */
 
 // {{{ requires
-require_once("../html/require.php");
-require_once("class/page/Page_AllTests.php");
-require_once("class/db/DB_AllTests.php");
-require_once("class/helper/Helper_AllTests.php");
-require_once("PHPUnit/Framework.php");
+require_once(realpath(dirname(__FILE__)) . "/require.php");
+require_once(realpath(dirname(__FILE__)) . "/class/page/Page_AllTests.php");
+require_once(realpath(dirname(__FILE__)) . "/class/db/DB_AllTests.php");
+require_once(realpath(dirname(__FILE__)) . "/class/helper/Helper_AllTests.php");
 
 /**
  * EC-CUBE のテストスイート

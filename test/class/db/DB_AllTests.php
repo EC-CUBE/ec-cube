@@ -22,10 +22,10 @@
  */
 
 // {{{ requires
-require_once 'PHPUnit/Framework.php';
 
-require_once 'SC_DB_DBFactory_Test.php';
-require_once 'SC_DB_MasterData_Test.php';
+require_once(realpath(dirname(__FILE__)) . '/../../require.php');
+require_once(realpath(dirname(__FILE__)) . '/SC_DB_DBFactory_Test.php');
+require_once(realpath(dirname(__FILE__)) . '/SC_DB_MasterData_Test.php');
 
 /**
  * DB パッケージのテストケース.

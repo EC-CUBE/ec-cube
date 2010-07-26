@@ -22,9 +22,8 @@
  */
 
 // {{{ requires
-require_once("../html/require.php");
-require_once("../data/class_extends/db_extends/SC_DB_DBFactory_Ex.php");
-require_once("PHPUnit/Framework.php");
+require_once(realpath(dirname(__FILE__)) . "/../../require.php");
+require_once(realpath(dirname(__FILE__)) . "/../../../data/class_extends/db_extends/SC_DB_DBFactory_Ex.php");
 
 /**
  * SC_DB_DBFactory TestCase

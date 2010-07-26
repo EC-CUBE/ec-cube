@@ -733,7 +733,7 @@ function lfCheckDBError($objFormParam) {
         $dsn = $arrRet['db_type']."://".$arrRet['db_user'].":".$arrRet['db_password']."@".$arrRet['db_server'].":".$arrRet['db_port']."/".$arrRet['db_name'];
         // Debugモード指定
         $options['debug'] = PEAR_DB_DEBUG;
-        $objDB = DB::connect($dsn, $options);
+        $objDB = MDB2::connect($dsn, $options);
         // 接続成功
         if(!PEAR::isError($objDB)) {
             $dbFactory = SC_DB_DBFactory_Ex::getInstance();
@@ -763,7 +763,7 @@ function lfExecuteSQL($filepath, $dsn, $disp_err = true) {
         }
         // Debugモード指定
         $options['debug'] = PEAR_DB_DEBUG;
-        $objDB = DB::connect($dsn, $options);
+        $objDB = MDB2::connect($dsn, $options);
         // 接続エラー
         if(!PEAR::isError($objDB)) {
             $sql_split = split(";",$sql);

@@ -22,8 +22,8 @@
  */
 
 define('LOG4PHP_CONFIGURATION', realpath(dirname(__FILE__)) . '/conf/log4php.properties');
+require_once(realpath(dirname(__FILE__)) . "/../../require.php");
 require_once(realpath(dirname(__FILE__)) . "/../../../data/class/logger/log/GC_Log_Log4php.php");
-require_once("PHPUnit/Framework.php");
 
 /**
  * GC_Log_Log4phpのテスト

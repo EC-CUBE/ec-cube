@@ -22,9 +22,8 @@
  */
 
 // {{{ requires
-require_once("../html/require.php");
-require_once("../data/class/pages/LC_Page.php");
-require_once("PHPUnit/Framework.php");
+require_once(realpath(dirname(__FILE__)) . '/../../require.php');
+require_once(realpath(dirname(__FILE__)) . '/../../../data/class/pages/LC_Page.php');
 
 /**
  * LC_Page のテストケース.
@@ -140,8 +139,8 @@ class LC_Page_Test extends PHPUnit_Framework_TestCase {
      */
     function testGetLocation() {
         $objPage = new LC_Page();
-        $_SERVER['DOCUMENT_ROOT'] = realpath("../html");
-        $url = $objPage->getLocation("../html/abouts/index.php");
+        $_SERVER['DOCUMENT_ROOT'] = realpath(dirname(__FILE__) . "/../../../html");
+        $url = $objPage->getLocation("/abouts/index.php");
 
         $this->assertEquals(SITE_URL . "abouts/index.php", $url);
         unset($_SERVER['DOCUMENT_ROOT']);
@@ -154,7 +153,7 @@ class LC_Page_Test extends PHPUnit_Framework_TestCase {
      */
     function testGetLocationWithFullPath() {
         $objPage = new LC_Page();
-        $_SERVER['DOCUMENT_ROOT'] = realpath("../html");
+        $_SERVER['DOCUMENT_ROOT'] = realpath(dirname(__FILE__) . "/../../../html");
         $url = $objPage->getLocation(URL_DIR . 'abouts/index.php');
 
         $this->assertEquals(SITE_URL . "abouts/index.php", $url);
@@ -168,10 +167,10 @@ class LC_Page_Test extends PHPUnit_Framework_TestCase {
      */
     function testGetLocationWithQueryString() {
         $objPage = new LC_Page();
-        $_SERVER['DOCUMENT_ROOT'] = realpath("../html");
+        $_SERVER['DOCUMENT_ROOT'] = realpath(dirname(__FILE__) . "/../../../html");
 
         $queryString = array("mode" => "update", "type" => "text");
-        $url = $objPage->getLocation("../html/abouts/index.php", $queryString);
+        $url = $objPage->getLocation("/abouts/index.php", $queryString);
 
         $this->assertEquals(SITE_URL . "abouts/index.php?mode=update&type=text", $url);
         unset($_SERVER['DOCUMENT_ROOT']);
@@ -184,10 +183,10 @@ class LC_Page_Test extends PHPUnit_Framework_TestCase {
      */
     function testGetLocationUseSSL() {
         $objPage = new LC_Page();
-        $_SERVER['DOCUMENT_ROOT'] = realpath("../html");
+        $_SERVER['DOCUMENT_ROOT'] = realpath(dirname(__FILE__) . "/../../../html");
 
         $queryString = array("mode" => "update", "type" => "text");
-        $url = $objPage->getLocation("../html/abouts/index.php", $queryString, true);
+        $url = $objPage->getLocation("/abouts/index.php", $queryString, true);
 
         $this->assertEquals(SSL_URL . "abouts/index.php?mode=update&type=text", $url);
         unset($_SERVER['DOCUMENT_ROOT']);
@@ -200,10 +199,10 @@ class LC_Page_Test extends PHPUnit_Framework_TestCase {
      */
     function testGetLocationWithDocumentRoot() {
         $objPage = new LC_Page();
-        $documentRoot = realpath("../html");
+        $documentRoot = realpath(dirname(__FILE__) . "/../../../html");
 
         $queryString = array("mode" => "update", "type" => "text");
-        $url = $objPage->getLocation("../html/abouts/index.php", array(),
+        $url = $objPage->getLocation("/abouts/index.php", array(),
                                      false, $documentRoot);
 
         $this->assertEquals(SITE_URL . "abouts/index.php", $url);

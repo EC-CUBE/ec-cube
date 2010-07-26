@@ -2,6 +2,9 @@
 /** HTMLディレクトリからのDATAディレクトリの相対パス */
 define("HTML2DATA_DIR", "../data/");
 
+/** data/module 以下の PEAR ライブラリのみを使用する */
+set_include_path(realpath(dirname(__FILE__) . "/" . HTML2DATA_DIR . "module"));
+
 /**
  * DIR_INDEX_FILE にアクセスするときにファイル名を使用するか
  *

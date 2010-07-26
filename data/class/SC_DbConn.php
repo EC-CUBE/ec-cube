@@ -22,7 +22,7 @@
  */
 
 $current_dir = realpath(dirname(__FILE__));
-require_once($current_dir . "/../module/DB.php");
+require_once($current_dir . "/../module/MDB2.php");
 
 $g_arr_objDbConn = array();
 
@@ -60,9 +60,11 @@ class SC_DbConn {
         }
 
         if ($new) {
-            $this->conn = DB::connect($this->dsn, $options);
+            // TODO singleton の方が良いかも
+            $this->conn = MDB2::connect($this->dsn, $options);
             $g_arr_objDbConn[$this->dsn] = $this->conn;
 
+            // TODO MDB2::setCharset() を使った方が良い?
             if (DB_TYPE == 'mysql') {
                 $g_arr_objDbConn[$this->dsn]->query('SET NAMES utf8'); // FIXME mysql_set_charset を使える環境では、その方が良さそう (2010/03/03 Seasoft 塚田)
                 $g_arr_objDbConn[$this->dsn]->query("SET SESSION sql_mode = 'ANSI'");
@@ -71,19 +73,21 @@ class SC_DbConn {
             $this->conn = $g_arr_objDbConn[$this->dsn];
         }
 
+        $this->conn->setFetchMode(MDB2_FETCHMODE_ASSOC);
         $this->err_disp = $err_disp;
         $this->dbFactory = SC_DB_DBFactory_Ex::getInstance();
     }
 
     // クエリの実行
-    function query($n ,$arr = "", $ignore_err = false){
+    function query($n ,$arr = array(), $ignore_err = false){
         // mysqlの場合にはビュー表を変換する
         if (DB_TYPE == "mysql") $n = $this->dbFactory->sfChangeMySQL($n);
 
+        $sth = $this->conn->prepare($n);
         if ( $arr ) {
-            $result = $this->conn->query($n, $arr);
+            $result = $sth->execute($arr);
         } else {
-            $result = $this->conn->query($n);
+            $result = $sth->execute();
         }
 
         if ($this->conn->isError($result) && !$ignore_err){
@@ -95,21 +99,22 @@ class SC_DbConn {
     }
 
     // 一件のみ取得
-    function getOne($n, $arr = ""){
+    function getOne($n, $arr = array()){
 
         // mysqlの場合にはビュー表を変換する
         if (DB_TYPE == "mysql") $n = $this->dbFactory->sfChangeMySQL($n);
 
+        $sth = $this->conn->prepare($n);
         if ( $arr ) {
-            $result = $this->conn->getOne($n, $arr);
+            $affected = $sth->execute($arr);
         } else {
-            $result = $this->conn->getOne($n);
+            $affected = $sth->execute();
         }
-        if ($this->conn->isError($result)){
-            $this->send_err_mail($result ,$n);
-        }
-        $this->result = $result;
 
+        if ($this->conn->isError($affected)){
+            $this->send_err_mail($affected ,$n);
+        }
+        $this->result = $affected->fetchOne();
         return $this->result;
     }
     
@@ -121,34 +126,40 @@ class SC_DbConn {
      * @param integer $fetchmode 使用するフェッチモード。デフォルトは DB_FETCHMODE_ASSOC。
      * @return array データを含む1次元配列。失敗した場合に DB_Error オブジェクトを返します。
      */
-    function getRow($sql, $arrVal = array(), $fetchmode = DB_FETCHMODE_ASSOC) {
+    function getRow($sql, $arrVal = array(), $fetchmode = MDB2_FETCHMODE_ASSOC) {
         
         // mysqlの場合にはビュー表を変換する
         if (DB_TYPE == "mysql") $sql = $this->dbFactory->sfChangeMySQL($sql);
-        
-        $result = $this->conn->getRow($sql, $arrVal ,$fetchmode);
-        
-        if ($this->conn->isError($result)){
-            $this->send_err_mail($result ,$sql);
+
+        $sth = $this->conn->prepare($sql);
+        if ($arrVal) {
+            $affected = $sth->execute($arrVal);
+        } else {
+            $affected = $sth->execute();
         }
-        $this->result = $result;
+        if ($this->conn->isError($affected)) {
+            $this->send_err_mail($affected, $sql);
+        }
+        $this->result = $affected->fetchRow($fetchmode);
+        
         return $this->result;
     }
 
-    function getCol($n, $col, $arr = "") {
+    function getCol($n, $col, $arr = array()) {
 
         // mysqlの場合にはビュー表を変換する
         if (DB_TYPE == "mysql") $n = $this->dbFactory->sfChangeMySQL($n);
 
+        $sth = $this->conn->prepare($n);
         if ($arr) {
-            $result = $this->conn->getCol($n, $col, $arr);
+            $affected = $sth->execute($arr);
         } else {
-            $result = $this->conn->getCol($n, $col);
+            $affected = $sth->execute();
         }
-        if ($this->conn->isError($result)) {
-            $this->send_err_mail($result, $n);
+        if ($this->conn->isError($affected)) {
+            $this->send_err_mail($affected, $n);
         }
-        $this->result = $result;
+        $this->result = $affected->fetchCol($col);
         return $this->result;
     }
 
@@ -160,7 +171,7 @@ class SC_DbConn {
      * @param integer $fetchmode 使用するフェッチモード。デフォルトは DB_FETCHMODE_ASSOC。
      * @return array データを含む2次元配列。失敗した場合に 0 または DB_Error オブジェクトを返します。
      */
-    function getAll($sql, $arrVal = "", $fetchmode = DB_FETCHMODE_ASSOC) {
+    function getAll($sql, $arrVal = array(), $fetchmode = MDB2_FETCHMODE_ASSOC) {
 
         // mysqlの場合にはビュー表を変換する
         if (DB_TYPE == "mysql") $sql = $this->dbFactory->sfChangeMySQL($sql);
@@ -175,16 +186,18 @@ class SC_DbConn {
             return 0;
         }
 
+        $sth = $this->conn->prepare($sql);
+
         if ($arrVal) { // FIXME 判定が曖昧
-            $result = $this->conn->getAll($sql, $arrVal, $fetchmode);
+            $affected = $sth->execute($arrVal);
         } else {
-            $result = $this->conn->getAll($sql, $fetchmode);
+            $affected = $sth->execute();
         }
 
-        if ($this->conn->isError($result)) {
-            $this->send_err_mail($result, $sql);
+        if ($this->conn->isError($affected)) {
+            $this->send_err_mail($affected, $sql);
         }
-        $this->result = $result;
+        $this->result = $affected->fetchAll($fetchmode);
 
         return $this->result;
     }
