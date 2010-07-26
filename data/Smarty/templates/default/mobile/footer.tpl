@@ -21,4 +21,4 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<center>LOCKON CO.,LTD.</center>
+<center><font size="-2">Copyright &copy; <!--{$smarty.now|date_format:"%Y"}--> <!--{$arrSiteInfo.shop_name|escape}--> All rights reserved.</font></center>

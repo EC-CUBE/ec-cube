@@ -61,6 +61,14 @@
       </td>
     </tr>
     <tr>
+      <th>店名（英語表記）</th>
+      <td>
+        <span class="attention"><!--{$arrErr.shop_name_eng}--></span>
+        <input type="text" name="shop_name_eng" value="<!--{$arrForm.shop_name_eng|escape}-->" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.shop_name_eng != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" />
+        <span class="attention"> （上限<!--{$smarty.const.MTEXT_LEN}-->文字）</span>
+      </td>
+    </tr>
+    <tr>
       <th>郵便番号<span class="attention"> *</span></th>
       <td>
         <span class="attention"><!--{$arrErr.zip01}--></span>

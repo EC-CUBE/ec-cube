@@ -136,6 +136,7 @@ CREATE TABLE dtb_baseinfo (
     free_rule numeric,
     shop_name text,
     shop_kana text,
+    shop_name_eng text,
     point_rate numeric NOT NULL DEFAULT 0,
     welcome_point numeric NOT NULL DEFAULT 0,
     update_date datetime,

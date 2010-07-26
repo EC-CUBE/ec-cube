@@ -47,6 +47,7 @@ INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_b
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_baseinfo','free_rule','送料・手数料無料条件(円以上)');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_baseinfo','shop_name','店名');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_baseinfo','shop_kana','店名(カナ)');
+INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_baseinfo','shop_name_eng','店名(英語表記)');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_baseinfo','point_rate','ポイント付与率');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_baseinfo','welcome_point','会員登録時付与ポイント');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_baseinfo','update_date','更新日時');
