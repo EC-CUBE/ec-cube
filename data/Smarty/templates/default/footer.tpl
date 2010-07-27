@@ -21,5 +21,5 @@
  *}-->
 <!--▼FOTTER-->
 <div id="pagetop" style="clear: both;"><a href="#top"><img src="<!--{$TPL_DIR}-->img/common/pagetop.gif" width="100" height="10" alt="このページのTOPへ" /></a></div>
-<div id="fotter">Copyright&copy;2000-<!--{$smarty.now|date_format:"%Y"}--> <!--{$arrSiteInfo.shop_name_eng|escape}--> All rights reserved.</div>
+<div id="fotter">Copyright&copy;<!--{$smarty.const.RELEASE_YEAR}-->-<!--{$smarty.now|date_format:"%Y"}--> <!--{$arrSiteInfo.shop_name_eng|escape}--> All rights reserved.</div>
 <!--▲FOTTER-->
