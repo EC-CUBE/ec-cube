@@ -77,5 +77,45 @@ class SC_Utils_Test extends PHPUnit_Framework_TestCase {
 
         $this->assertEquals($expected, $actual);
     }
+
+    function testIsBlank() {
+        $val = "";
+        $this->assertTrue(SC_Utils::isBlank($val));
+
+        $valIsNotBlank = "\x00..\x1F  a \n\t";
+        $this->assertTrue(SC_Utils::isBlank($val));
+
+        $wideSpace = "　";
+        $this->assertTrue(SC_Utils::isBlank($wideSpace));
+        // greedy is false
+        $this->assertFalse(SC_Utils::isBlank($wideSpace, false));
+
+        $array = array();
+        $this->assertTrue(SC_Utils::isBlank($array));
+
+        $nestsArray = array(array(array()));
+        $this->assertTrue(SC_Utils::isBlank($nestsArray));
+        // greedy is false
+        $this->assertFalse(SC_Utils::isBlank($nestsArray, false));
+
+        $nestsArrayIsNotBlank = array(array(array("1")));
+        $this->assertFalse(SC_Utils::isBlank($nestsArrayIsNotBlank));
+        // greedy is false
+        $this->assertFalse(SC_Utils::isBlank($nestsArrayIsNotBlank, false));
+
+        $wideSpaceAndBlank = array(array("　\n　"));
+        $this->assertTrue(SC_Utils::isBlank($wideSpaceAndBlank));
+        // greedy is false
+        $this->assertFalse(SC_Utils::isBlank($wideSpaceAndBlank, false));
+
+        $wideSpaceIsNotBlank = array(array("　\na　"));
+        $this->assertFalse(SC_Utils::isBlank($wideSpaceIsNotBlank));
+        // greedy is false
+        $this->assertFalse(SC_Utils::isBlank($wideSpaceIsNotBlank, false));
+
+        $zero = 0;
+        $this->assertFalse(SC_Utils::isBlank($zero));
+        $this->assertFalse(SC_Utils::isBlank($zero, false));
+    }
 }
 ?>
