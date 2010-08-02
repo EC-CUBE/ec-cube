@@ -104,23 +104,57 @@ class SC_Utils {
      */
     function searchInstallerPath($path) {
         $installer = 'install/index.php';
-        if ($path == '/') {
-            return $path . $installer;
-        }
-        if (substr($path, -1, 1) != '/') {
-            $path .= $path . '/';
-        }
+
         if (SC_Utils::sfIsHTTPS()) {
             $proto = "https://";
         } else {
             $proto = "http://";
         }
-        $installer_url = $proto . $_SERVER['SERVER_NAME'] . $path . $installer;
-        $resources = fopen($installer_url, 'r');
+        $host = $proto . $_SERVER['SERVER_NAME'];
+        if ($path == '/') {
+            return $host . $path . $installer;
+        }
+        if (substr($path, -1, 1) != '/') {
+            $path .= $path . '/';
+        }
+        $installer_url = $host . $path . $installer;
+        $resources = fopen(SC_Utils::getRealURL($installer_url), 'r');
         if ($resources === false) {
             $installer_url = SC_Utils::searchInstallerPath($path . '../');
         }
         return $installer_url;
+    }
+
+    /**
+     * 相対パスで記述された URL から絶対パスの URL を取得する.
+     *
+     * この関数は, http(s):// から始まる URL を解析し, 相対パスで記述されていた
+     * 場合, 絶対パスに変換して返す
+     *
+     * 例)
+     * http://www.example.jp/aaa/../index.php
+     * ↓
+     * http://www.example.jp/index.php
+     *
+     * @param string $url http(s):// から始まる URL
+     * @return string $url を絶対パスに変換した URL
+     */
+    function getRealURL($url) {
+        $parse = parse_url($url);
+        $tmp = split('/', $parse['path']);
+        $results = array();
+        foreach ($tmp as $v) {
+            if ($v == '' || $v == '.') {
+                // queit.
+            } elseif ($v == '..') {
+                array_pop($results);
+            } else {
+                array_push($results, $v);
+            }
+        }
+
+        $path = join('/', $results);
+        return $parse['scheme'] . '://' . $parse['host'] . '/' . $path;
     }
 
     // 装飾付きエラーメッセージの表示

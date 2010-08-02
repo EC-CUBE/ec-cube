@@ -22,26 +22,21 @@
  */
 
 // {{{ requires
-require_once(realpath(dirname(__FILE__)) . "/require.php");
-require_once(realpath(dirname(__FILE__)) . "/class/page/Page_AllTests.php");
-require_once(realpath(dirname(__FILE__)) . "/class/db/DB_AllTests.php");
-require_once(realpath(dirname(__FILE__)) . "/class/helper/Helper_AllTests.php");
-require_once(realpath(dirname(__FILE__)) . "/class/util/Util_AllTests.php");
+// {{{ requires
+require_once(realpath(dirname(__FILE__)) . '/SC_Utils_Test.php');
 
 /**
- * EC-CUBE のテストスイート
+ * Util パッケージのテストケース.
  *
+ * @package Util
  * @author Kentaro Ohkouchi
  * @version $Id:LC_Page_Test.php 15116 2007-07-23 11:32:53Z nanasess $
  */
+class Util_AllTests extends PHPUnit_Framework_TestCase {
 
-class TestSuite {
     public static function suite() {
-        $suite = new PHPUnit_Framework_TestSuite('ECCUBE');
-        $suite->addTest(Page_AllTests::suite());
-        $suite->addTest(DB_AllTests::suite());
-        $suite->addTest(Helper_AllTests::suite());
-        $suite->addTest(Util_AllTests::suite());
+        $suite = new PHPUnit_Framework_TestSuite('Util');
+        $suite->addTestSuite('SC_Utils_Test');
         return $suite;
     }
 }
