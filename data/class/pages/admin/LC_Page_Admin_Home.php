@@ -54,7 +54,7 @@ class LC_Page_Admin_Home extends LC_Page {
      * @return void
      */
     function process() {
-        $conn = new SC_DBConn();
+        $objQuery = new SC_Query();
         $objView = new SC_AdminView();
         $objSess = new SC_Session();
 
@@ -69,28 +69,28 @@ class LC_Page_Admin_Home extends LC_Page {
         $this->php_version = "PHP " . phpversion();
 
         // 現在の会員数
-        $this->customer_cnt = $this->lfGetCustomerCnt($conn);
+        $this->customer_cnt = $this->lfGetCustomerCnt($objQuery);
 
         // 昨日の売上高
-        $this->order_yesterday_amount = $this->lfGetOrderYesterday($conn, "SUM");
+        $this->order_yesterday_amount = $this->lfGetOrderYesterday($objQuery, "SUM");
 
         // 昨日の売上件数
-        $this->order_yesterday_cnt = $this->lfGetOrderYesterday($conn, "COUNT");
+        $this->order_yesterday_cnt = $this->lfGetOrderYesterday($objQuery, "COUNT");
 
         // 今月の売上高
-        $this->order_month_amount = $this->lfGetOrderMonth($conn, "SUM");
+        $this->order_month_amount = $this->lfGetOrderMonth($objQuery, "SUM");
 
         // 今月の売上件数
-        $this->order_month_cnt = $this->lfGetOrderMonth($conn, "COUNT");
+        $this->order_month_cnt = $this->lfGetOrderMonth($objQuery, "COUNT");
 
         // 顧客の累計ポイント
         $this->customer_point = $this->lfGetTotalCustomerPoint();
 
         //昨日のレビュー書き込み数
-        $this->review_yesterday_cnt = $this->lfGetReviewYesterday($conn);
+        $this->review_yesterday_cnt = $this->lfGetReviewYesterday($objQuery);
 
         //レビュー書き込み非表示数
-        $this->review_nondisp_cnt = $this->lfGetReviewNonDisp($conn);
+        $this->review_nondisp_cnt = $this->lfGetReviewNonDisp($objQuery);
 
         // 品切れ商品
         $this->arrSoldout = $this->lfGetSoldOut();
@@ -121,15 +121,15 @@ class LC_Page_Admin_Home extends LC_Page {
     }
 
     // 会員数
-    function lfGetCustomerCnt($conn){
+    function lfGetCustomerCnt(&$objQuery){
 
         $sql = "SELECT COUNT(customer_id) FROM dtb_customer WHERE del_flg = 0 AND status = 2";
-        $return = $conn->getOne($sql);
+        $return = $objQuery->getOne($sql);
         return $return;
     }
 
     // 昨日の売上高・売上件数
-    function lfGetOrderYesterday($conn, $method){
+    function lfGetOrderYesterday(&$objQuery, $method){
         if ( $method == 'SUM' or $method == 'COUNT'){
             // postgresql と mysql とでSQLをわける
             if (DB_TYPE == "pgsql") {
@@ -139,12 +139,12 @@ class LC_Page_Admin_Home extends LC_Page {
                 $sql = "SELECT ".$method."(total) FROM dtb_order
                          WHERE del_flg = 0 AND cast(create_date as date) = DATE_ADD(current_date, interval -1 day) AND status <> " . ORDER_CANCEL;
             }
-            $return = $conn->getOne($sql);
+            $return = $objQuery->getOne($sql);
         }
         return $return;
     }
 
-    function lfGetOrderMonth($conn, $method){
+    function lfGetOrderMonth(&$objQuery, $method){
 
         $month = date("Y/m", mktime());
 
@@ -159,7 +159,7 @@ class LC_Page_Admin_Home extends LC_Page {
                      WHERE del_flg = 0 AND date_format(create_date, '%Y/%m') = ?
                      AND date_format(create_date, '%Y/%m/%d') <> date_format(now(), '%Y/%m/%d') AND status <> " . ORDER_CANCEL;
         }
-            $return = $conn->getOne($sql, array($month));
+            $return = $objQuery->getOne($sql, array($month));
         }
         return $return;
     }
@@ -173,7 +173,7 @@ class LC_Page_Admin_Home extends LC_Page {
         return $ret;
     }
 
-    function lfGetReviewYesterday($conn){
+    function lfGetReviewYesterday(&$objQuery){
         // postgresql と mysql とでSQLをわける
         if (DB_TYPE == "pgsql") {
             $sql = "SELECT COUNT(*) FROM dtb_review AS A LEFT JOIN dtb_products AS B ON A.product_id = B.product_id
@@ -184,13 +184,13 @@ class LC_Page_Admin_Home extends LC_Page {
                      WHERE A.del_flg = 0 AND B.del_flg = 0 AND cast(A.create_date as date) = DATE_ADD(current_date, interval -1 day)
                      AND cast(A.create_date as date) != current_date";
         }
-        $return = $conn->getOne($sql);
+        $return = $objQuery->getOne($sql);
         return $return;
     }
 
-    function lfGetReviewNonDisp($conn){
+    function lfGetReviewNonDisp(&$objQuery){
         $sql = "SELECT COUNT(*) FROM dtb_review AS A LEFT JOIN dtb_products AS B ON A.product_id = B.product_id WHERE A.del_flg=0 AND A.status=2 AND B.del_flg=0";
-        $return = $conn->getOne($sql);
+        $return = $objQuery->getOne($sql);
         return $return;
     }
 

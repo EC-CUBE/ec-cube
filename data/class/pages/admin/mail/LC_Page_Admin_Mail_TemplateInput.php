@@ -59,7 +59,7 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page {
      * @return void
      */
     function process() {
-        $conn = new SC_DBConn();
+        $objQuery = new SC_Query();
         $objView = new SC_AdminView();
         $objSess = new SC_Session();
 
@@ -84,7 +84,7 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page {
 
             // 編集
             $sql = "SELECT * FROM dtb_mailmaga_template WHERE template_id = ? AND del_flg = 0";
-            $result = $conn->getAll($sql, array($_GET['template_id']));
+            $result = $objQuery->getAll($sql, array($_GET['template_id']));
             $this->arrForm = $result[0];
 
 

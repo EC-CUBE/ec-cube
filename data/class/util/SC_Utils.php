@@ -1236,56 +1236,6 @@ class SC_Utils {
         return array($r, $g, $b);
     }
 
-    //メルマガ仮登録とメール配信
-    /*
-     * FIXME
-     */
-    function sfRegistTmpMailData($mail_flag, $email){
-        $objQuery = new SC_Query();
-        $objConn = new SC_DBConn();
-        $objPage = new LC_Page();
-
-        $random_id = sfGetUniqRandomId();
-        $arrRegistMailMagazine["mail_flag"] = $mail_flag;
-        $arrRegistMailMagazine["email"] = $email;
-        $arrRegistMailMagazine["temp_id"] =$random_id;
-        $arrRegistMailMagazine["end_flag"]='0';
-        $arrRegistMailMagazine["update_date"] = 'now()';
-
-        //メルマガ仮登録用フラグ
-        $flag = $objQuery->count("dtb_customer_mail_temp", "email=?", array($email));
-        $objConn->query("BEGIN");
-        switch ($flag){
-            case '0':
-            $objConn->autoExecute("dtb_customer_mail_temp",$arrRegistMailMagazine);
-            break;
-
-            case '1':
-                $objConn->autoExecute("dtb_customer_mail_temp",$arrRegistMailMagazine, "email = " .SC_Utils::sfQuoteSmart($email));
-            break;
-        }
-        $objConn->query("COMMIT");
-        $subject = 'メルマガ仮登録が完了しました';
-        $objPage->tpl_url = SSL_URL."mailmagazine/regist.php?temp_id=".$arrRegistMailMagazine['temp_id'];
-        switch ($mail_flag){
-            case '1':
-            $objPage->tpl_name = "登録";
-            $objPage->tpl_kindname = "HTML";
-            break;
-
-            case '2':
-            $objPage->tpl_name = "登録";
-            $objPage->tpl_kindname = "テキスト";
-            break;
-
-            case '3':
-            $objPage->tpl_name = "解除";
-            break;
-        }
-        $objPage->tpl_email = $email;
-        sfSendTplMail($email, $subject, 'mail_templates/mailmagazine_temp.tpl', $objPage);
-    }
-
     // 再帰的に多段配列を検索して一次元配列(Hidden引渡し用配列)に変換する。
     function sfMakeHiddenArray($arrSrc, $arrDst = array(), $parent_key = "") {
         if(is_array($arrSrc)) {
@@ -2264,7 +2214,7 @@ echo $template_path;
     // 郵便番号から住所の取得
     function sfGetAddress($zipcode) {
 
-        $conn = new SC_DBconn(ZIP_DSN);
+        $objQuery = new SC_Query(ZIP_DSN);
 
         $masterData = new SC_DB_MasterData_Ex();
         $arrPref = $masterData->getMasterData("mtb_pref", array("pref_id", "pref_name", "rank"));
@@ -2275,7 +2225,7 @@ echo $template_path;
         $zipcode = mb_convert_kana($zipcode ,"n");
         $sqlse = "SELECT state, city, town FROM mtb_zip WHERE zipcode = ?";
 
-        $data_list = $conn->getAll($sqlse, array($zipcode));
+        $data_list = $objQuery->getAll($sqlse, array($zipcode));
         if (empty($data_list)) return array();
 
         /*

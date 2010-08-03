@@ -202,14 +202,14 @@ class LC_Page_Admin_Customer extends LC_Page {
         // 顧客削除
         if ($_POST['mode'] == "delete") {
             $sql = "SELECT status,email FROM dtb_customer WHERE customer_id = ? AND del_flg = 0";
-            $result_customer = $objQuery->conn->getAll($sql, array($_POST["edit_customer_id"]));
+            $result_customer = $objQuery->getAll($sql, array($_POST["edit_customer_id"]));
 
             if ($result_customer[0]["status"] == 2) {           //本会員削除
                 $arrDel = array("del_flg" => 1, "update_date" => "NOW()");
                 $objQuery->conn->autoExecute("dtb_customer", $arrDel, "customer_id = " . SC_Utils_Ex::sfQuoteSmart($_POST["edit_customer_id"]) );
             } elseif ($result_customer[0]["status"] == 1) {     //仮会員削除
                 $sql = "DELETE FROM dtb_customer WHERE customer_id = ?";
-                $objQuery->conn->query($sql, array($_POST["edit_customer_id"]));
+                $objQuery->query($sql, array($_POST["edit_customer_id"]));
             }
         }
         // 登録メール再送
@@ -297,7 +297,7 @@ class LC_Page_Admin_Customer extends LC_Page {
                     $searchSql = $objSelect->getList();
                 }
 
-                $this->search_data = $objQuery->conn->getAll($searchSql, $objSelect->arrVal);
+                $this->search_data = $objQuery->getAll($searchSql, $objSelect->arrVal);
 
                 switch($_POST['mode']) {
                 case 'csv':
@@ -339,21 +339,21 @@ class LC_Page_Admin_Customer extends LC_Page {
                     $objQuery->update("dtb_products", $sqlval, $where, $arrval);
 
                     $sql = "SELECT status,email FROM dtb_customer WHERE customer_id = ? AND del_flg = 0";
-                    $result_customer = $objQuery->conn->getAll($sql, array($_POST["del_customer_id"]));
+                    $result_customer = $objQuery->getAll($sql, array($_POST["del_customer_id"]));
 
                     if ($result_customer[0]["status"] == 2) {           //本会員削除
                         $arrDel = array("del_flg" => 1, "update_date" => "NOW()");
                         $objQuery->conn->autoExecute("dtb_customer", $arrDel, "customer_id = " . SC_Utils_Ex::sfQuoteSmart($_POST["del_customer_id"]) );
                     } elseif ($result_customer[0]["status"] == 1) {     //仮会員削除
                         $sql = "DELETE FROM dtb_customer WHERE customer_id = ?";
-                        $objQuery->conn->query($sql, array($_POST["del_customer_id"]));
+                        $objQuery->query($sql, array($_POST["del_customer_id"]));
                     }
 
                     break;
                 default:
 
                     // 行数の取得
-                    $linemax = $objQuery->conn->getOne( $objSelect->getListCount(), $objSelect->arrVal);
+                    $linemax = $objQuery->getOne( $objSelect->getListCount(), $objSelect->arrVal);
                     $this->tpl_linemax = $linemax;              // 何件が該当しました。表示用
 
                     // ページ送りの取得

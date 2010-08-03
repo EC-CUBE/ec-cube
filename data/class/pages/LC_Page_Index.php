@@ -80,7 +80,6 @@ class LC_Page_Index extends LC_Page {
      * @return void
      */
     function mobileProcess() {
-        $conn = new SC_DBConn();
         $objCustomer = new SC_Customer();
 
         $objView = new SC_MobileView();

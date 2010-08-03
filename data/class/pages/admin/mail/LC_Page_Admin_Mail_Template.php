@@ -59,7 +59,7 @@ class LC_Page_Admin_Mail_Template extends LC_Page {
      * @return void
      */
     function process() {
-        $conn = new SC_DBConn();
+        $objQuery = new SC_Query();
         $objView = new SC_AdminView();
         $objSess = new SC_Session();
 
@@ -73,21 +73,21 @@ class LC_Page_Admin_Mail_Template extends LC_Page {
 
             // メール担当の画像があれば削除しておく
             $sql = "SELECT charge_image FROM dtb_mailmaga_template WHERE template_id = ?";
-            $result = $conn->getOne($sql, array($_GET["id"]));
+            $result = $objQuery->getOne($sql, array($_GET["id"]));
             if (strlen($result) > 0) {
                 @unlink(IMAGE_SAVE_DIR. $result);
             }
 
             // 登録削除
             $sql = "UPDATE dtb_mailmaga_template SET del_flg = 1 WHERE template_id = ?";
-            $conn->query($sql, array($_GET['id']));
+            $objQuery->query($sql, array($_GET['id']));
 
             $this->reload(null, true);
         }
 
 
         $sql = "SELECT *, create_date as disp_date FROM dtb_mailmaga_template WHERE del_flg = 0 ORDER BY create_date DESC";
-        $this->list_data = $conn->getAll($sql);
+        $this->list_data = $objQuery->getAll($sql);
 
         $objView->assignobj($this);
         $objView->display(MAIN_FRAME);

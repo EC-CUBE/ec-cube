@@ -56,7 +56,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page {
      * @return void
      */
     function process() {
-        $conn = new SC_DBConn();
+        $objQuery = new SC_Query();
         $objView = new SC_AdminView();
         $objSess = new SC_Session();
 
@@ -87,23 +87,21 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page {
             if ( ! $this->arrErr[$this->arrForm['rank']]) {
                 // 古いのを消す
                 $sql = "DELETE FROM dtb_best_products WHERE category_id = ? AND rank = ?";
-                $conn->query($sql, array($this->arrForm['category_id'] ,$this->arrForm['rank']));
+                $objQuery->query($sql, array($this->arrForm['category_id'] ,$this->arrForm['rank']));
 
                 // ＤＢ登録
                 $this->arrForm['creator_id'] = $_SESSION['member_id'];
                 $this->arrForm['update_date'] = "NOW()";
                 $this->arrForm['create_date'] = "NOW()";
 
-                $objQuery = new SC_Query();
                 $objQuery->insert("dtb_best_products", $this->arrForm );
-                //		$conn->autoExecute("dtb_best_products", $this->arrForm );
             }
 
         } elseif ( $_POST['mode'] == 'delete' ){
             // 削除時
 
             $sql = "DELETE FROM dtb_best_products WHERE category_id = ? AND rank = ?";
-            $conn->query($sql, array($_POST['category_id'] ,$_POST['rank']));
+            $objQuery->query($sql, array($_POST['category_id'] ,$_POST['rank']));
 
         }
 
@@ -117,7 +115,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page {
         // 既に登録されている内容を取得する
         $sql = "SELECT B.name, B.main_list_image, A.* FROM dtb_best_products as A INNER JOIN dtb_products as B USING (product_id)
 		 WHERE A.del_flg = 0 ORDER BY rank";
-        $arrItems = $conn->getAll($sql);
+        $arrItems = $objQuery->getAll($sql);
         foreach( $arrItems as $data ){
             $this->arrItems[$data['rank']] = $data;
         }
@@ -128,7 +126,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page {
             || $_POST['mode'] == 'regist' && !empty($this->arrErr[$this->arrForm['rank']])
         ) {
             $sql = "SELECT product_id, name, main_list_image FROM dtb_products WHERE product_id = ? AND del_flg = 0";
-            $result = $conn->getAll($sql, array($_POST['product_id']));
+            $result = $objQuery->getAll($sql, array($_POST['product_id']));
             if ( $result ){
                 $data = $result[0];
                 foreach( $data as $key=>$val){

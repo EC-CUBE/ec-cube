@@ -56,7 +56,7 @@ class LC_Page_Admin_Basis_Mail extends LC_Page {
      * @return void
      */
     function process() {
-        $conn = new SC_DBConn();
+        $objQuery = new SC_Query();
         $objView = new SC_AdminView();
         $objSess = new SC_Session();
         $masterData = new SC_DB_MasterData_Ex();
@@ -74,7 +74,7 @@ class LC_Page_Admin_Basis_Mail extends LC_Page {
 
             if ( SC_Utils_Ex::sfCheckNumLength( $_POST['template_id']) ){
                 $sql = "SELECT * FROM dtb_mailtemplate WHERE template_id = ?";
-                $result = $conn->getAll($sql, array($_POST['template_id']) );
+                $result = $objQuery->getAll($sql, array($_POST['template_id']) );
                 if ( $result ){
                     $this->arrForm = $result[0];
                 } else {
@@ -94,7 +94,7 @@ class LC_Page_Admin_Basis_Mail extends LC_Page {
 
             } else {
                 // 正常
-                $this->lfRegist($conn, $this->arrForm);
+                $this->lfRegist($objQuery, $this->arrForm);
 
                 // 完了メッセージ
                 $this->tpl_onload = "window.alert('メール設定が完了しました。テンプレートを選択して内容をご確認ください。');";
@@ -116,17 +116,17 @@ class LC_Page_Admin_Basis_Mail extends LC_Page {
         parent::destroy();
     }
 
-    function lfRegist( $conn, $data ){
+    function lfRegist(&$objQuery, $data ){
 
         $data['creator_id'] = $_SESSION['member_id'];
 
         $sql = "SELECT * FROM dtb_mailtemplate WHERE template_id = ?";
-        $result = $conn->getAll($sql, array($_POST['template_id']) );
+        $result = $objQuery->getAll($sql, array($_POST['template_id']) );
         if ( $result ){
             $sql_where = "template_id = ". addslashes($_POST['template_id']);
-            $conn->query("UPDATE dtb_mailtemplate SET template_id = ?, subject = ?,header = ?, footer = ?,creator_id = ?, update_date = now() WHERE ".$sql_where, $data);
+            $objQuery->query("UPDATE dtb_mailtemplate SET template_id = ?, subject = ?,header = ?, footer = ?,creator_id = ?, update_date = now() WHERE ".$sql_where, $data);
         }else{
-            $conn->query("INSERT INTO dtb_mailtemplate (template_id,subject,header,footer,creator_id,update_date,create_date) values ( ?,?,?,?,?,now(),now() )", $data);
+            $objQuery->query("INSERT INTO dtb_mailtemplate (template_id,subject,header,footer,creator_id,update_date,create_date) values ( ?,?,?,?,?,now(),now() )", $data);
         }
 
     }

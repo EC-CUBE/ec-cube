@@ -58,7 +58,7 @@ class LC_Page_Admin_Mail_History extends LC_Page {
      */
     function process() {
         // ページ初期設定
-        $conn = new SC_DBConn();
+        $objQuery = new SC_Query();
         $objView = new SC_AdminView();
         $objSess = new SC_Session();
         $objDate = new SC_Date();
@@ -74,7 +74,7 @@ class LC_Page_Admin_Mail_History extends LC_Page {
         if (SC_Utils_Ex::sfCheckNumLength($_GET['send_id']) && ($_GET['mode']=='delete')) {
 
             $sql = "UPDATE dtb_send_history SET del_flg = 1 WHERE send_id = ?";
-            $conn->query($sql, array($_GET['send_id']) );
+            $objQuery->query($sql, array($_GET['send_id']) );
             $_SERVER['QUERY_STRING'] = "";
             $this->reload();
         }
@@ -83,7 +83,6 @@ class LC_Page_Admin_Mail_History extends LC_Page {
         $where = " del_flg = ?";
         $arrval[] = "0";
 
-        $objQuery = new SC_Query();
         // 行数の取得
         $linemax = $objQuery->count($from, $where, $arrval);
         $this->tpl_linemax = $linemax;              // 何件が該当しました。表示用

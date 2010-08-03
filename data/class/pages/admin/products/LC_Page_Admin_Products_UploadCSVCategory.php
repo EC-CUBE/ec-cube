@@ -58,7 +58,6 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
      * @return void
      */
     function process() {
-        $conn = new SC_DBConn();
         $objView = new SC_AdminView();
         $objSess = new SC_Session();
         $objDb = new SC_Helper_DB_Ex();

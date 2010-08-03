@@ -216,9 +216,9 @@ class LC_Page_Sitemap extends LC_Page {
     function getAllProducts() {
         
         // XXX: 商品登録の無いカテゴリーは除外する方が良い気もする
-        $conn = new SC_DBConn();
+        $objQuery = new SC_Query();
         $sql = "SELECT category_id FROM dtb_category WHERE del_flg = 0";
-        $result = $conn->getAll($sql);
+        $result = $objQuery->getAll($sql);
 
         $arrRet = array();
         foreach ($result as $row) {
@@ -242,9 +242,9 @@ class LC_Page_Sitemap extends LC_Page {
      * @return array 検索エンジンからアクセス可能な商品詳細ページの情報
      */
     function getAllDetail() {
-        $conn = new SC_DBConn();
+        $objQuery = new SC_Query();
         $sql = "SELECT product_id, update_date FROM dtb_products WHERE del_flg = 0 AND status = 1";
-        $result = $conn->getAll($sql);
+        $result = $objQuery->getAll($sql);
 
         $arrRet = array();
         foreach ($result as $row) {

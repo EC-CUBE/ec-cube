@@ -247,7 +247,7 @@ class LC_Page_Shopping_DelivAddr extends LC_Page {
     /* 登録実行 */
     function lfRegistData($array, $arrRegistColumn, &$objCustomer) {
 
-        $objConn = new SC_DBConn();
+        $objQuery = new SC_Query();
         foreach ($arrRegistColumn as $data) {
             if (strlen($array[ $data["column"] ]) > 0) {
                 $arrRegist[ $data["column"] ] = $array[ $data["column"] ];
@@ -257,17 +257,17 @@ class LC_Page_Shopping_DelivAddr extends LC_Page {
         $arrRegist['customer_id'] = $objCustomer->getvalue('customer_id');
 
         //-- 編集登録実行
-        $objConn->query("BEGIN");
+        $objQuery->begin();
         if ($array['other_deliv_id'] != ""){
-            $objConn->autoExecute("dtb_other_deliv", $arrRegist, "other_deliv_id="  . SC_Utils_Ex::sfQuoteSmart($array["other_deliv_id"]));
+            $objQuery->update("dtb_other_deliv", $arrRegist, "other_deliv_id="  . SC_Utils_Ex::sfQuoteSmart($array["other_deliv_id"]));
         }else{
-            $objConn->autoExecute("dtb_other_deliv", $arrRegist);
+            $objQuery->insert("dtb_other_deliv", $arrRegist);
 
             $sqlse = "SELECT max(other_deliv_id) FROM dtb_other_deliv WHERE customer_id = ?";
-            $array['other_deliv_id'] = $objConn->getOne($sqlse, array($arrRegist['customer_id']));
+            $array['other_deliv_id'] = $objQuery->getOne($sqlse, array($arrRegist['customer_id']));
         }
 
-        $objConn->query("COMMIT");
+        $objQuery->commit();
 
         return $array['other_deliv_id'];
     }

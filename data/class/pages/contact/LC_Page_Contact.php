@@ -83,7 +83,6 @@ class LC_Page_Contact extends LC_Page {
     function process() {
         global $objCampaignSess;
 
-        $conn = new SC_DBConn();
         $this->objView = new SC_SiteView();
         $objCampaignSess = new SC_CampaignSession();
         $objDb = new SC_Helper_DB_Ex();
@@ -138,7 +137,6 @@ class LC_Page_Contact extends LC_Page {
      * @return void
      */
     function mobileProcess() {
-        $conn = new SC_DBConn();
         $objView = new SC_MobileView();
         $objDb = new SC_Helper_DB_Ex();
         $CONF = $objDb->sf_getBasisData();			// 店舗基本情報

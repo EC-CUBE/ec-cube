@@ -149,13 +149,12 @@ class LC_Page_Admin_Mail extends LC_Page {
     function process() {
 
         // ページ初期設定
-        $conn = new SC_DBConn();
         $objView = new SC_AdminView();
         $objDate = new SC_Date();
         $objQuery = new SC_Query();
         $objDb = new SC_Helper_DB_Ex();
         $this->objDate = $objDate;
-        $this->arrTemplate = $this->getTemplateList($conn);
+        $this->arrTemplate = $this->getTemplateList($objQuery);
 
         $objSess = new SC_Session();
 
@@ -168,7 +167,7 @@ class LC_Page_Admin_Mail extends LC_Page {
         if ($_GET["mode"] == "query" && SC_Utils_Ex::sfCheckNumLength($_GET["send_id"])) {
             // 送信履歴より、送信条件確認画面
             $sql = "SELECT search_data FROM dtb_send_history WHERE send_id = ?";
-            $result = $conn->getOne($sql, array($_GET["send_id"]));
+            $result = $objQuery->getOne($sql, array($_GET["send_id"]));
             $tpl_path = "mail/query.tpl";
 
             $list_data = unserialize($result);
@@ -304,7 +303,7 @@ class LC_Page_Admin_Mail extends LC_Page {
                 $this->arrHidden = $this->lfGetHidden($this->list_data); // hidden要素作成
 
                 $this->tpl_mainpage = 'mail/input.tpl';
-                $template_data = $this->getTemplateData($conn, $_POST['template_id']);
+                $template_data = $this->getTemplateData($objQuery, $_POST['template_id']);
                 if ( $template_data ){
                     foreach( $template_data as $key=>$val ){
                         $this->list_data[$key] = $val;
@@ -357,7 +356,7 @@ class LC_Page_Admin_Mail extends LC_Page {
                 if ( $_POST['mode'] == 'regist_confirm'){
                     $this->tpl_mainpage = 'mail/input_confirm.tpl';
                 } else if( $_POST['mode'] == 'regist_complete' ){
-                    $sendId = $this->lfRegistData($conn, $this->list_data);
+                    $sendId = $this->lfRegistData($objQuery, $this->list_data);
                     if (MELMAGA_SEND) {
                         if (MELMAGA_BATCH_MODE) {
                             $this->sendRedirect($this->getLocation(URL_DIR . 'admin/mail/history.php'));
@@ -455,12 +454,11 @@ class LC_Page_Admin_Mail extends LC_Page {
      *
      * @return string 登録した行の dtb_send_history.send_id の値
      */
-    function lfRegistData(&$conn, $arrData){
+    function lfRegistData(&$objQuery, $arrData){
 
-        $objQuery = new SC_Query();
         $objSelect = new SC_CustomerList($this->lfConvertParam($arrData, $this->arrSearchColumn), "magazine" );
 
-        $search_data = $conn->getAll($objSelect->getListMailMagazine($this->lfGetIsMobile($_POST['mail_type'])), $objSelect->arrVal);
+        $search_data = $objQuery->getAll($objSelect->getListMailMagazine($this->lfGetIsMobile($_POST['mail_type'])), $objSelect->arrVal);
         $dataCnt = count($search_data);
 
         $dtb_send_history = array();
@@ -489,7 +487,7 @@ class LC_Page_Admin_Mail extends LC_Page {
                 $dtb_send_customer["send_id"] = $sendId;
                 $dtb_send_customer["email"] = $line["email"];
                 $dtb_send_customer["name"] = $line["name01"] . " " . $line["name02"];
-                $conn->autoExecute("dtb_send_customer", $dtb_send_customer );
+                $objQuery->insert("dtb_send_customer", $dtb_send_customer );
             }
         }
 
@@ -531,47 +529,20 @@ class LC_Page_Admin_Mail extends LC_Page {
     // HTMLテンプレートを使用する場合、データを取得する。
     function lfGetHtmlTemplateData($id) {
 
-        global $conn;
+        $objQuery = new SC_Query();
         $sql = "SELECT * FROM dtb_mailmaga_template WHERE template_id = ?";
-        $result = $conn->getAll($sql, array($id));
+        $result = $objQuery->getAll($sql, array($id));
         $list_data = $result[0];
 
         // メイン商品の情報取得
         $sql = "SELECT name, main_image, point_rate, deliv_fee, price01_min, price01_max, price02_min, price02_max FROM vw_products_allclass AS allcls WHERE product_id = ?";
-        $main = $conn->getAll($sql, array($list_data["main_product_id"]));
-        $list_data["main"] = $main[0];
-
-        // サブ商品の情報取得
-        $sql = "SELECT product_id, name, main_list_image, price01_min, price01_max, price02_min, price02_max FROM vw_products_allclass AS allcls WHERE product_id = ?";
-        $k = 0;
-        $l = 0;
-        for ($i = 1; $i <= 12; $i ++) {
-            if ($l == 4) {
-                $l = 0;
-                $k ++;
-            }
-            $result = "";
-            $j = sprintf("%02d", $i);
-            if ($i > 0 && $i < 5 ) $k = 0;
-            if ($i > 4 && $i < 9 ) $k = 1;
-            if ($i > 8 && $i < 13 ) $k = 2;
-
-            if (is_numeric($list_data["sub_product_id" .$j])) {
-                $result = $conn->getAll($sql, array($list_data["sub_product_id" .$j]));
+        $main = $objQuery->getAll($sql, array($list_data["sub_product_id" .$j]));
                 $list_data["sub"][$k][$l] = $result[0];
                 $list_data["sub"][$k]["data_exists"] = "OK";    // 当該段にデータが１つ以上存在するフラグ
             }
             $l ++;
         }
         return $list_data;
-    }
-
-    // テンプレートの種類を返す
-    function lfGetTemplateMethod($conn, $templata_id){
-
-        if ( SC_Utils_Ex::sfCheckNumLength($template_id) ){
-            $sql = "SELECT mail_method FROM dtb_mailmaga_template WEHRE template_id = ?";
-        }
     }
 
     // hidden要素出力用配列の作成
@@ -685,14 +656,14 @@ class LC_Page_Admin_Mail extends LC_Page {
     }
 
     /* テンプレートIDとsubjectの配列を返す */
-    function getTemplateList($conn){
+    function getTemplateList(&$objQuery){
         $return = "";
         $sql = "SELECT template_id, subject, mail_method FROM dtb_mailmaga_template WHERE del_flg = 0 ";
         if ($_POST["htmlmail"] == 2 || $_POST['mail_type'] == 2) {
             $sql .= " AND mail_method = 2 ";    // TEXT希望者へのTESTメールテンプレートリスト
         }
         $sql .= " ORDER BY template_id DESC";
-        $result = $conn->getAll($sql);
+        $result = $objQuery->getAll($sql);
 
         if ( is_array($result) ){
             foreach( $result as $line ){
@@ -704,11 +675,11 @@ class LC_Page_Admin_Mail extends LC_Page {
     }
 
     /* テンプレートIDからテンプレートデータを取得 */
-    function getTemplateData($conn, $id){
+    function getTemplateData(&$objQuery, $id){
 
         if ( SC_Utils_Ex::sfCheckNumLength($id) ){
             $sql = "SELECT * FROM dtb_mailmaga_template WHERE template_id = ? ORDER BY template_id DESC";
-            $result = $conn->getAll( $sql, array($id) );
+            $result = $objQuery->getAll( $sql, array($id) );
             if ( is_array($result) ) {
                 $return = $result[0];
             }

@@ -74,7 +74,6 @@ class LC_Page_Admin_Order extends LC_Page {
      * @return void
      */
     function process() {
-        $conn = new SC_DBConn();
         $objView = new SC_AdminView();
         $objDb = new SC_Helper_DB_Ex();
         $objSess = new SC_Session();

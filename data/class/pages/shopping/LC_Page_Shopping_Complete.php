@@ -60,7 +60,6 @@ class LC_Page_Shopping_Complete extends LC_Page {
     function process() {
         global $objCampaignSess;
 
-        $conn = new SC_DBConn();
         $objView = new SC_SiteView();
         $this->objSiteSess = new SC_SiteSession();
         $this->objCartSess = new SC_CartSession();
@@ -164,7 +163,6 @@ class LC_Page_Shopping_Complete extends LC_Page {
      * @return void
      */
     function mobileProcess() {
-        $conn = new SC_DBConn();
         $objView = new SC_MobileView();
         $this->objSiteSess = new SC_SiteSession();
         $this->objCartSess = new SC_CartSession();

@@ -171,7 +171,6 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page {
 
     /* 登録実行 */
     function lfRegistData($array, $arrRegistColumn, &$objCustomer) {
-        $objConn = new SC_DBConn();
         $objQuery = new SC_Query();
         foreach ($arrRegistColumn as $data) {
             if (strlen($array[ $data["column"] ]) > 0) {
@@ -191,7 +190,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page {
             }
             
             // 実行
-            $objConn->autoExecute("dtb_other_deliv", $arrRegist);
+            $objQuery->insert("dtb_other_deliv", $arrRegist);
             
         // 変更
         } else {
@@ -201,7 +200,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page {
             }
             
             // 実行
-            $objConn->autoExecute("dtb_other_deliv", $arrRegist,
+            $objQuery->update("dtb_other_deliv", $arrRegist,
                                   "other_deliv_id = "
                                   . SC_Utils_Ex::sfQuoteSmart($array["other_deliv_id"]));
         }

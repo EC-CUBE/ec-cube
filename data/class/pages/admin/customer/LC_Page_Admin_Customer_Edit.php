@@ -69,7 +69,6 @@ class LC_Page_Admin_Customer_Edit extends LC_Page {
         SC_Utils_Ex::sfIsSuccess($objSess);
 
         $this->objQuery = new SC_Query();
-        $this->objConn = new SC_DBConn();
         $objView = new SC_AdminView();
         $objDb = new SC_Helper_DB_Ex();
         $objDate = new SC_Date(1901);
@@ -130,7 +129,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page {
 
             //--　顧客データ取得
             $sql = "SELECT * FROM dtb_customer WHERE del_flg = 0 AND customer_id = ?";
-            $result = $this->objConn->getAll($sql, array($_POST["edit_customer_id"]));
+            $result = $this->objQuery->getAll($sql, array($_POST["edit_customer_id"]));
             $this->list_data = $result[0];
 
             $birth = split(" ", $this->list_data["birth"]);
@@ -237,10 +236,10 @@ class LC_Page_Admin_Customer_Edit extends LC_Page {
         $arrRegist["update_date"] = "Now()";
 
         //-- 編集登録実行
-        $this->objConn->query("BEGIN");
+        $this->objQuery->begin();
         $this->objQuery->Insert("dtb_customer", $arrRegist, "customer_id = '" .addslashes($array["customer_id"]). "'");
 
-        $this->objConn->query("COMMIT");
+        $this->objQuery->commit();
     }
 
 
@@ -291,7 +290,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page {
             $array['email'] = strtolower($array['email']);
             $sql = "SELECT customer_id FROM dtb_customer WHERE (email ILIKE ? escape '#' OR email_mobile ILIKE ? escape '#') AND (status = 1 OR status = 2) AND del_flg = 0 AND customer_id <> ?";
             $checkMail = ereg_replace( "_", "#_", $array["email"]);
-            $result = $this->objConn->getAll($sql, array($checkMail, $checkMail, $array["customer_id"]));
+            $result = $this->objQuery->getAll($sql, array($checkMail, $checkMail, $array["customer_id"]));
             if (count($result) > 0) {
                 $objErr->arrErr["email"] .= "※ すでに登録されているメールアドレスです。<br />";
             }
@@ -303,7 +302,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page {
             $array['email_mobile'] = strtolower($array['email_mobile']);
             $sql = "SELECT customer_id FROM dtb_customer WHERE (email ILIKE ? escape '#' OR email_mobile ILIKE ? escape '#') AND (status = 1 OR status = 2) AND del_flg = 0 AND customer_id <> ?";
             $checkMail = ereg_replace( "_", "#_", $array["email_mobile"]);
-            $result = $this->objConn->getAll($sql, array($checkMail, $checkMail, $array["customer_id"]));
+            $result = $this->objQuery->getAll($sql, array($checkMail, $checkMail, $array["customer_id"]));
             if (count($result) > 0) {
                 $objErr->arrErr["email_mobile"] .= "※ すでに登録されているメールアドレス(モバイル)です。<br />";
             }

@@ -96,9 +96,9 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc {
     }
 
     function lfGetNews(){
-        $conn = new SC_DBConn();
+        $objQuery = new SC_Query();
         $sql = "SELECT *, cast(news_date as date) as news_date_disp FROM dtb_news WHERE del_flg = '0' ORDER BY rank DESC";
-        $list_data = $conn->getAll($sql);
+        $list_data = $objQuery->getAll($sql);
         return $list_data;
     }
 }

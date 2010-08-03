@@ -56,7 +56,7 @@ class LC_Page_Admin_Login extends LC_Page {
      * @return void
      */
     function process() {
-        $conn = new SC_DBConn();
+        $objQuery = new SC_Query();
         $this->objSess = new SC_Session();
         $ret = false;
 
@@ -66,7 +66,7 @@ class LC_Page_Admin_Login extends LC_Page {
         // 入力判定
         if(strlen($_POST{'login_id'}) > 0 && strlen($_POST{'password'}) >= ID_MIN_LEN && strlen($_POST{'password'}) <= ID_MAX_LEN) {
             // 認証パスワードの判定
-            $ret = $this->fnCheckPassword($conn);
+            $ret = $this->fnCheckPassword($objQuery);
         }
 
         if($ret) {
@@ -90,11 +90,11 @@ class LC_Page_Admin_Login extends LC_Page {
     }
 
     /* 認証パスワードの判定 */
-    function fnCheckPassword($conn) {
+    function fnCheckPassword(&$objQuery) {
         $sql = "SELECT member_id, password, authority, login_date, name FROM dtb_member WHERE login_id = ? AND del_flg <> 1 AND work = 1";
         $arrcol = array ($_POST['login_id']);
         // DBから暗号化パスワードを取得する。
-        $data_list = $conn->getAll($sql ,$arrcol);
+        $data_list = $objQuery->getAll($sql ,$arrcol);
         // パスワードの取得
         $password = $data_list[0]['password'];
         // ユーザ入力パスワードの判定

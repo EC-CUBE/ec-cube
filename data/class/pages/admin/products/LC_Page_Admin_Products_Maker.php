@@ -56,7 +56,6 @@ class LC_Page_Admin_Products_Maker extends LC_Page {
      * @return void
      */
     function process() {
-        $conn = new SC_DBConn();
         $objView = new SC_AdminView();
         $objSess = new SC_Session();
         $objQuery = new SC_Query();

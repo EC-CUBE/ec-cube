@@ -52,7 +52,7 @@ class LC_Page_Admin_Mail_Preview extends LC_Page {
      * @return void
      */
     function process() {
-        $conn = new SC_DBConn();
+        $objQuery = new SC_Query();
         $objView = new SC_AdminView();
         $objSess = new SC_Session();
         $objDate = new SC_Date();
@@ -73,7 +73,7 @@ class LC_Page_Admin_Mail_Preview extends LC_Page {
                   && SC_Utils_Ex::sfCheckNumLength($_REQUEST['id'])) {
 
             $sql = "SELECT * FROM dtb_mailmaga_template WHERE template_id = ?";
-            $result = $conn->getAll($sql, array($_REQUEST["id"]));
+            $result = $objQuery->getAll($sql, array($_REQUEST["id"]));
             $this->list_data = $result[0];
 
             //メール担当写真の表示
@@ -85,7 +85,7 @@ class LC_Page_Admin_Mail_Preview extends LC_Page {
 
             // メイン商品の情報取得
             $sql = "SELECT name, main_image, point_rate, deliv_fee, price01_min, price01_max, price02_min, price02_max FROM vw_products_allclass AS allcls WHERE product_id = ?";
-            $main = $conn->getAll($sql, array($this->list_data["main_product_id"]));
+            $main = $objQuery->getAll($sql, array($this->list_data["main_product_id"]));
             $this->list_data["main"] = $main[0];
 
             // サブ商品の情報取得
@@ -104,7 +104,7 @@ class LC_Page_Admin_Mail_Preview extends LC_Page {
                 if ($i > 8 && $i < 13 ) $k = 2;
 
                 if (is_numeric($this->list_data["sub_product_id" .$j])) {
-                    $result = $conn->getAll($sql, array($this->list_data["sub_product_id" .$j]));
+                    $result = $objQuery->getAll($sql, array($this->list_data["sub_product_id" .$j]));
                     $this->list_data["sub"][$k][$l] = $result[0];
                     $this->list_data["sub"][$k]["data_exists"] = "OK";	//当該段にデータが１つ以上存在するフラグ
                 }
@@ -121,7 +121,7 @@ class LC_Page_Admin_Mail_Preview extends LC_Page {
                 $sql = "SELECT body, mail_method FROM dtb_mailmaga_template WHERE template_id = ?";
                 $id = $_GET['id'];
             }
-            $result = $conn->getAll($sql, array($id));
+            $result = $objQuery->getAll($sql, array($id));
 
             if ( $result ){
                 if ( $result[0]["mail_method"] == 2 ){
