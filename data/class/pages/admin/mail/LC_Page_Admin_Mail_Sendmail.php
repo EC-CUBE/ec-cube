@@ -61,9 +61,10 @@ class LC_Page_Admin_Mail_Sendmail extends LC_Page {
      * @return void
      */
     function process() {
-        $conn = new SC_DbConn();
         $objQuery = new SC_Query();
-        $objSite = new SC_SiteInfo($conn);
+
+        $objDb = new SC_Helper_DB_Ex();
+        $objSite = $objDb->sf_getBasisData();
 
         if (MELMAGA_SEND != true) {
             exit;
@@ -153,17 +154,17 @@ class LC_Page_Admin_Mail_Sendmail extends LC_Page {
 
                     // 完了を 1 増やす
                     $sql = "UPDATE dtb_send_history SET complete_count = complete_count + 1 WHERE send_id = ?";
-                    $conn->query($sql, array($arrMail["send_id"]));
+                    $objQuery->query($sql, array($arrMail["send_id"]));
                 }
 
                 // 送信結果フラグ
                 $sql ="UPDATE dtb_send_customer SET send_flag = ? WHERE send_id = ? AND customer_id = ?";
-                $conn->query($sql, array($sendFlag, $arrMail["send_id"], $arrDestination["customer_id"]));
+                $objQuery->query($sql, array($sendFlag, $arrMail["send_id"], $arrDestination["customer_id"]));
             }
 
             // メール全件送信完了後の処理
             $completeSql = "UPDATE dtb_send_history SET end_date = now() WHERE send_id = ?";
-            $conn->query($completeSql, array($arrMail["send_id"]));
+            $objQuery->query($completeSql, array($arrMail["send_id"]));
 
             // 送信完了　報告メール
             $compSubject = date("Y年m月d日H時i分") . "  下記メールの配信が完了しました。";

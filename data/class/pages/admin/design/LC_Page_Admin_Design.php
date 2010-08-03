@@ -155,13 +155,13 @@ class LC_Page_Admin_Design extends LC_Page {
             }
 
             // データの更新を行う
-            $objDBConn = new SC_DbConn;     // DB操作オブジェクト
+            $objQuery = new SC_Query();     // DB操作オブジェクト
             $arrRet = array();              // データ取得用
 
             // delete実行
             $del_sql = "";
             $del_sql .= "DELETE FROM dtb_blocposition WHERE page_id = ? ";
-            $arrRet = $objDBConn->query($del_sql,array($page_id));
+            $arrRet = $objQuery->query($del_sql,array($page_id));
 
             // ブロックの順序を取得し、更新を行う
             foreach($arrUpdBlocData as $key => $val){
@@ -194,22 +194,21 @@ class LC_Page_Admin_Design extends LC_Page {
                     $arrUpdBlocData[$key]['id'],
                     $arrUpdBlocData[$key]['anywhere'] ? 1 : 0
                 );
-                $count = $objDBConn->getOne("SELECT COUNT(*) FROM dtb_blocposition WHERE anywhere = 1 AND bloc_id = ?",array($arrUpdBlocData[$key]['id']));
+                $count = $objQuery->getOne("SELECT COUNT(*) FROM dtb_blocposition WHERE anywhere = 1 AND bloc_id = ?",array($arrUpdBlocData[$key]['id']));
 
                 if($arrUpdBlocData[$key]['anywhere'] == 1){
-                    $count = $objDBConn->getOne("SELECT COUNT(*) FROM dtb_blocposition WHERE anywhere = 1 AND bloc_id = ?",array($arrUpdBlocData[$key]['id']));
-                    $objDBConn->getLastQuery();
+                    $count = $objQuery->getOne("SELECT COUNT(*) FROM dtb_blocposition WHERE anywhere = 1 AND bloc_id = ?",array($arrUpdBlocData[$key]['id']));
                     if($count != 0){
                         continue;
                     }else{
                     }
                 }else{
                     if($count > 0){
-                        $objDBConn->query("DELETE FROM dtb_blocposition WHERE anywhere = 1 AND bloc_id = ?",array($arrUpdBlocData[$key]['id']));
+                        $objQuery->query("DELETE FROM dtb_blocposition WHERE anywhere = 1 AND bloc_id = ?",array($arrUpdBlocData[$key]['id']));
                     }
                 }
                 // SQL実行
-                $arrRet = $objDBConn->query($ins_sql,$arrInsData);
+                $arrRet = $objQuery->query($ins_sql,$arrInsData);
             }
 
             // プレビュー処理
@@ -305,7 +304,7 @@ class LC_Page_Admin_Design extends LC_Page {
      * @return array ページレイアウト情報の配列
      */
     function lfgetLayoutData($sel = '' , $from = '', $where = '', $arrVal = ''){
-        $objDBConn = new SC_DbConn;     // DB操作オブジェクト
+        $objQuery = new SC_Query();     // DB操作オブジェクト
         $sql = "";                      // データ取得SQL生成用
         $arrRet = array();              // データ取得用
 
@@ -341,7 +340,7 @@ class LC_Page_Admin_Design extends LC_Page {
             $sql .= " ORDER BY lay.page_id ";
         }
 
-        $arrRet = $objDBConn->getAll($sql, $arrVal);
+        $arrRet = $objQuery->getAll($sql, $arrVal);
 
         return $arrRet;
     }
@@ -354,7 +353,7 @@ class LC_Page_Admin_Design extends LC_Page {
      * @return array ブロック情報の配列
      */
     function lfgetBlocData($where = '', $arrVal = ''){
-        $objDBConn = new SC_DbConn;     // DB操作オブジェクト
+        $objQuery = new SC_Query();     // DB操作オブジェクト
         $sql = "";                      // データ取得SQL生成用
         $arrRet = array();              // データ取得用
 
@@ -376,7 +375,7 @@ class LC_Page_Admin_Design extends LC_Page {
 
         $sql .= " ORDER BY  bloc_id";
 
-        $arrRet = $objDBConn->getAll($sql, $arrVal);
+        $arrRet = $objQuery->getAll($sql, $arrVal);
 
         return $arrRet;
     }
@@ -458,7 +457,7 @@ class LC_Page_Admin_Design extends LC_Page {
      * @return void
      */
     function lfSetPreData($arrPageData, &$objLayout){
-        $objDBConn = new SC_DbConn;     // DB操作オブジェクト
+        $objQuery = new SC_Query();     // DB操作オブジェクト
         $sql = "";                      // データ更新SQL生成用
         $ret = "";                      // データ更新結果格納用
         $arrUpdData = array();          // 更新データ生成用
@@ -497,7 +496,7 @@ class LC_Page_Admin_Design extends LC_Page {
         // 更新データの取得
         $sql = "select page_id,page_name, header_chk, footer_chk from dtb_pagelayout where page_id = ? OR page_id = (SELECT page_id FROM dtb_blocposition WHERE anywhere = 1)" ;
         
-        $ret = $objDBConn->getAll($sql, array($arrPageData[0]['page_id']));
+        $ret = $objQuery->getAll($sql, array($arrPageData[0]['page_id']));
 
         // dbデータのコピー
         $sql = " update dtb_pagelayout set ";
@@ -522,7 +521,7 @@ class LC_Page_Admin_Design extends LC_Page {
          
         );
 
-        $objDBConn->query($sql,$arrUpdData);
+        $objQuery->query($sql,$arrUpdData);
     }
 }
 ?>

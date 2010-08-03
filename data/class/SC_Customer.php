@@ -26,43 +26,9 @@
  */
 class SC_Customer {
 
-    var $conn;
-    var $email;
     var $customer_data;		// 会員情報
 
-    function SC_Customer( $conn = '', $email = '', $pass = '' ) {
-        // セッション開始
-        /* startSessionから移動 2005/11/04 中川 */
-        SC_Utils_Ex::sfDomainSessionStart();
-
-        // DB接続オブジェクト生成
-        $DB_class_name = "SC_DbConn";
-        if ( is_object($conn)){
-            if ( is_a($conn, $DB_class_name)){
-                // $connが$DB_class_nameのインスタンスである
-                $this->conn = $conn;
-            }
-        } else {
-            if (class_exists($DB_class_name)){
-                //$DB_class_nameのインスタンスを作成する
-                $this->conn = new SC_DbConn();
-            }
-        }
-
-        if ( is_object($this->conn) ) {
-            // 正常にDBに接続できる
-            if ( $email ){
-                // emailから顧客情報を取得する
-                // $this->setCustomerDataFromEmail( $email );
-            }
-        } else {
-            echo "DB接続オブジェクトの生成に失敗しています";
-            exit;
-        }
-
-        if ( strlen($email) > 0 && strlen($pass) > 0 ){
-            $this->getCustomerDataFromEmailPass( $email, $pass );
-        }
+    function SC_Customer() {
     }
 
     function getCustomerDataFromEmailPass( $pass, $email, $mobile = false ) {
@@ -75,7 +41,8 @@ class SC_Customer {
         }
         // 本登録された会員のみ
         $sql = "SELECT * FROM dtb_customer WHERE (email = ?" . $sql_mobile . ") AND del_flg = 0 AND status = 2";
-        $result = $this->conn->getAll($sql, $arrValues);
+        $objQuery = new SC_Query();
+        $result = $objQuery->getAll($sql, $arrValues);
         if (empty($result)) {
             return false;
         } else {
@@ -109,7 +76,8 @@ class SC_Customer {
 
         // 携帯端末IDが一致し、本登録された会員を検索する。
         $sql = 'SELECT count(*) FROM dtb_customer WHERE mobile_phone_id = ? AND del_flg = 0 AND status = 2';
-        $result = $this->conn->getOne($sql, array($_SESSION['mobile']['phone_id']));
+        $objQuery = new SC_Query();
+        $result = $objQuery->count("dtb_customer", "mobile_phone_id = ? AND del_flg = 0 AND status = 2", array($_SESSION['mobile']['phone_id']));
         return $result > 0;
     }
 
@@ -133,7 +101,8 @@ class SC_Customer {
 
         // 携帯端末IDが一致し、本登録された会員を検索する。
         $sql = 'SELECT * FROM dtb_customer WHERE mobile_phone_id = ? AND del_flg = 0 AND status = 2';
-        @list($data) = $this->conn->getAll($sql, array($_SESSION['mobile']['phone_id']));
+        $objQuery = new SC_Query();
+        @list($data) = $objQuery->getAll($sql, array($_SESSION['mobile']['phone_id']));
 
         // パスワードが合っている場合は、顧客情報をcustomer_dataに格納してtrueを返す。
         if (sha1($pass . ':' . AUTH_MAGIC) == @$data['password']) {
@@ -170,7 +139,8 @@ class SC_Customer {
     function setLogin($email) {
         // 本登録された会員のみ
         $sql = "SELECT * FROM dtb_customer WHERE (email = ? OR email_mobile = ?) AND del_flg = 0 AND status = 2";
-        $result = $this->conn->getAll($sql, array($email, $email));
+        $objQuery = new SC_Query();
+        $result = $objQuery->getAll($sql, array($email, $email));
         $data = isset($result[0]) ? $result[0] : "";
         $this->customer_data = $data;
         $this->startSession();
@@ -180,7 +150,8 @@ class SC_Customer {
     function updateSession() {
         $sql = "SELECT * FROM dtb_customer WHERE customer_id = ? AND del_flg = 0";
         $customer_id = $this->getValue('customer_id');
-        $arrRet = $this->conn->getAll($sql, array($customer_id));
+        $objQuery = new SC_Query();
+        $arrRet = $objQuery->getAll($sql, array($customer_id));
         $this->customer_data = isset($arrRet[0]) ? $arrRet[0] : "";
         $_SESSION['customer'] = $this->customer_data;
     }

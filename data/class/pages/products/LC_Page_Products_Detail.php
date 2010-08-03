@@ -749,8 +749,7 @@ class LC_Page_Products_Detail extends LC_Page {
      */
     function lfRegistFavoriteProduct($customer_id, $product_id) {
         $objQuery = new SC_Query();
-        $objConn = new SC_DbConn();
-        $count = $objConn->getOne("SELECT COUNT(*) FROM dtb_customer_favorite_products WHERE customer_id = ? AND product_id = ?", array($customer_id, $product_id));
+        $count = $objQuery->count("dtb_customer_favorite_products", "customer_id = ? AND product_id = ?", array($customer_id, $product_id));
 
         if ($count == 0) {
             $sqlval['customer_id'] = $customer_id;

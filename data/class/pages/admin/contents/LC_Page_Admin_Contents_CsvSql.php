@@ -331,10 +331,10 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page {
      */
     function lfCheckSQL($data){
         $err = "";
-        $objDbConn = new SC_DbConn();
+        $objQuery = new SC_Query();
         $sql = "SELECT " . $data['csv_sql'] . " ";
-        $ret = $objDbConn->conn->query($sql);
-        if ($objDbConn->conn->isError($ret)){
+        $ret = $objQuery->query($sql);
+        if (PEAR::isError($ret)){
             $err = $ret;
         }
 

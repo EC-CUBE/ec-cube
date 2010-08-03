@@ -258,16 +258,11 @@ class LC_Page_MyPage_Favorite extends LC_Page {
     // お気に入り商品削除
     function lfDeleteFavoriteProduct($customer_id, $product_id) {
         $objQuery = new SC_Query();
-        $objConn = new SC_DbConn();
-        $count = $objConn->getOne("SELECT COUNT(*) FROM dtb_customer_favorite_products WHERE customer_id = ? AND product_id = ?", array($customer_id, $product_id));
+        $count = $objQuery->count("dtb_customer_favorite_products", "customer_id = ? AND product_id = ?", array($customer_id, $product_id));
 
         if ($count > 0) {
-            $where = "customer_id = ? AND product_id = ?";
-            $sqlval['customer_id'] = $customer_id;
-            $sqlval['product_id'] = $product_id;
-
             $objQuery->begin();
-            $objQuery->delete('dtb_customer_favorite_products', $where, $sqlval);
+            $objQuery->delete('dtb_customer_favorite_products', "customer_id = ? AND product_id = ?", array($customer_id, $product_id));
             $objQuery->commit();
         }
     }

@@ -193,14 +193,14 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
         $this->lfCreateFile($preview_tpl, $_POST['tpl_data']);
         
         // blocposition を削除
-        $objDBConn = new SC_DbConn;		// DB操作オブジェクト
+        $objQuery = new SC_Query();		// DB操作オブジェクト
         $sql = 'delete from dtb_blocposition where page_id = 0';
-        $ret = $objDBConn->query($sql);
+        $ret = $objQuery->query($sql);
 
         if ($page_id_old != "") {
             // 登録データを取得
             $sql = "SELECT 0, target_id, bloc_id, bloc_row FROM dtb_blocposition WHERE page_id = ?";
-            $ret = $objDBConn->getAll($sql,array($page_id_old));
+            $ret = $objQuery->getAll($sql,array($page_id_old));
 
             if (count($ret) > 0) {
 
@@ -214,7 +214,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
 
                 // 取得件数文INSERT実行
                 foreach($ret as $key => $val){
-                    $ret = $objDBConn->query($sql,$val);
+                    $ret = $objQuery->query($sql,$val);
                 }
             }
         }
@@ -277,7 +277,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
      * @return integer 更新結果
      */
     function lfEntryPageData($arrData){
-        $objDBConn = new SC_DbConn;		// DB操作オブジェクト
+        $objQuery = new SC_Query();		// DB操作オブジェクト
         $sql = "";						// データ更新SQL生成用
         $ret = ""; 						// データ更新結果格納用
         $arrUpdData = array();			// 更新データ生成用
@@ -330,7 +330,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
         }
 
         // SQL実行
-        $ret = $objDBConn->query($sql,$arrUpdData);
+        $ret = $objQuery->query($sql,$arrUpdData);
 
         return $ret;
     }

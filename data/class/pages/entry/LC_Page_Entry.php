@@ -161,7 +161,6 @@ class LC_Page_Entry extends LC_Page {
     function process() {
         global $objCampaignSess;
 
-        $objConn = new SC_DbConn();
         $objView = new SC_SiteView();
         $objCustomer = new SC_Customer();
         $objCampaignSess = new SC_CampaignSession();
@@ -370,7 +369,6 @@ class LC_Page_Entry extends LC_Page {
         $objDb = new SC_Helper_DB_Ex();
         $objMobile = new SC_Helper_Mobile_Ex();
         $CONF = $objDb->sf_getBasisData();					// 店舗基本情報
-        $objConn = new SC_DbConn();
         $objView = new SC_MobileView();
         $objCustomer = new SC_Customer();
 
@@ -660,7 +658,7 @@ class LC_Page_Entry extends LC_Page {
 
     // 会員情報の登録
     function lfRegistData ($array, $arrRegistColumn, $arrRejectRegistColumn, $confirm_flg, $isMobile = false, $email_mobile = "") {
-        $objConn = new SC_DbConn();
+        $objQuery = new SC_Query();
 
         // 登録データの生成
         foreach ($arrRegistColumn as $data) {
@@ -683,7 +681,7 @@ class LC_Page_Entry extends LC_Page {
             $count = 1;
             while ($count != 0) {
                 $uniqid = SC_Utils_Ex::sfGetUniqRandomId("t");
-                $count = $objConn->getOne("SELECT COUNT(*) FROM dtb_customer WHERE secret_key = ?", array($uniqid));
+                $count = $objQuery->count("dtb_customer", "secret_key = ?", array($uniqid));
             }
             switch($array["mailmaga_flg"]) {
                 case 1:
@@ -703,7 +701,7 @@ class LC_Page_Entry extends LC_Page {
             $count = 1;
             while ($count != 0) {
                 $uniqid = SC_Utils_Ex::sfGetUniqRandomId("r");
-                $count = $objConn->getOne("SELECT COUNT(*) FROM dtb_customer WHERE secret_key = ?", array($uniqid));
+                $count = $objQuery->count("dtb_customer", "secret_key = ?", array($uniqid));
             }
             $arrRegist["status"] = "2";				// 本会員
         }
@@ -727,9 +725,8 @@ class LC_Page_Entry extends LC_Page {
         }
 
         //-- 仮登録実行
-        $objConn->query("BEGIN");
+        $objQuery->begin();
 
-        $objQuery = new SC_Query();
         $objQuery->insert("dtb_customer", $arrRegist);
 
 
@@ -759,7 +756,7 @@ class LC_Page_Entry extends LC_Page {
             $objQuery->insert("dtb_customer_mail", $arrRegistMail);
         }
     */
-        $objConn->query("COMMIT");
+        $objQuery->commit();
 
         return $uniqid;
     }

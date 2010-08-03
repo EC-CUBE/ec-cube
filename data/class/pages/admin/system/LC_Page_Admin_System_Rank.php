@@ -50,7 +50,7 @@ class LC_Page_Admin_System_Rank extends LC_Page {
      * @return void
      */
     function process() {
-        $conn = new SC_DbConn();
+        $objQuery = new SC_Query();
 
         // ログインチェック
         SC_Utils::sfIsSuccess(new SC_Session());
@@ -59,14 +59,14 @@ class LC_Page_Admin_System_Rank extends LC_Page {
         if($_GET['move'] == 'up') {
             // 正当な数値であった場合
             if(SC_Utils::sfIsInt($_GET['id'])){
-                $this->lfRunkUp($conn, $_GET['id']);
+                $this->lfRunkUp($objQuery, $_GET['id']);
             // エラー処理
             } else {
                 GC_Utils::gfPrintLog("error id=".$_GET['id']);
             }
         } else if($_GET['move'] == 'down') {
             if(SC_Utils::sfIsInt($_GET['id'])){
-                $this->lfRunkDown($conn, $_GET['id']);
+                $this->lfRunkDown($objQuery, $_GET['id']);
             // エラー処理
             } else {
                 GC_Utils::gfPrintLog("error id=".$_GET['id']);
@@ -87,42 +87,42 @@ class LC_Page_Admin_System_Rank extends LC_Page {
     }
 
     // ランキングを上げる。
-    function lfRunkUp($conn, $id) {
+    function lfRunkUp($objQuery, $id) {
         // 自身のランクを取得する。
-        $rank = $conn->getOne("SELECT rank FROM dtb_member WHERE member_id = ".$id);
+        $rank = $objQuery->getOne("SELECT rank FROM dtb_member WHERE member_id = ".$id);
         // ランクの最大値を取得する。
-        $maxno = $conn->getOne("SELECT max(rank) FROM dtb_member");
+        $maxno = $objQuery->getOne("SELECT max(rank) FROM dtb_member");
         // ランクが最大値よりも小さい場合に実行する。
         if($rank < $maxno) {
             // ランクがひとつ上のIDを取得する。
             $sqlse = "SELECT member_id FROM dtb_member WHERE rank = ?";
-            $up_id = $conn->getOne($sqlse, $rank + 1);
+            $up_id = $objQuery->getOne($sqlse, $rank + 1);
             // ランク入れ替えの実行
-            $conn->query("BEGIN");
+            $objQuery->begin();
             $sqlup = "UPDATE dtb_member SET rank = ? WHERE member_id = ?";
-            $conn->query($sqlup, array($rank + 1, $id));
-            $conn->query($sqlup, array($rank, $up_id));
-            $conn->query("COMMIT");
+            $objQuery->query($sqlup, array($rank + 1, $id));
+            $objQuery->query($sqlup, array($rank, $up_id));
+            $objQuery->commit();
         }
     }
 
     // ランキングを下げる。
-    function lfRunkDown($conn, $id) {
+    function lfRunkDown($objQuery, $id) {
         // 自身のランクを取得する。
-        $rank = $conn->getOne("SELECT rank FROM dtb_member WHERE member_id = ".$id);
+        $rank = $objQuery->getOne("SELECT rank FROM dtb_member WHERE member_id = ".$id);
         // ランクの最小値を取得する。
-        $minno = $conn->getOne("SELECT min(rank) FROM dtb_member");
+        $minno = $objQuery->getOne("SELECT min(rank) FROM dtb_member");
         // ランクが最大値よりも大きい場合に実行する。
         if($rank > $minno) {
             // ランクがひとつ下のIDを取得する。
             $sqlse = "SELECT member_id FROM dtb_member WHERE rank = ?";
-            $down_id = $conn->getOne($sqlse, $rank - 1);
+            $down_id = $objQuery->getOne($sqlse, $rank - 1);
             // ランク入れ替えの実行
-            $conn->query("BEGIN");
+            $objQuery->begin();
             $sqlup = "UPDATE dtb_member SET rank = ? WHERE member_id = ?";
-            $conn->query($sqlup, array($rank - 1, $id));
-            $conn->query($sqlup, array($rank, $down_id));
-            $conn->query("COMMIT");
+            $objQuery->query($sqlup, array($rank - 1, $id));
+            $objQuery->query($sqlup, array($rank, $down_id));
+            $objQuery->query("COMMIT");
         }
     }
 }

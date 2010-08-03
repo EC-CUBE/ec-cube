@@ -61,7 +61,7 @@ class LC_Page_Admin_Contents extends LC_Page {
     function process() {
 
         //---- ページ初期設定
-        $conn = new SC_DbConn();
+        $objQuery = new SC_Query();
         $objView = new SC_AdminView();
         $objDate = new SC_Date(ADMIN_NEWS_STARTYEAR);
         $objDb = new SC_Helper_DB_Ex();
@@ -92,11 +92,11 @@ class LC_Page_Admin_Contents extends LC_Page {
                 //-- 編集登録
                 if (strlen($_POST["news_id"]) > 0 && is_numeric($_POST["news_id"])) {
 
-                    $this->lfNewsUpdate($conn);
+                    $this->lfNewsUpdate($objQuery);
 
                     //--　新規登録
                 } else {
-                    $this->lfNewsInsert($conn);
+                    $this->lfNewsInsert($objQuery);
                 }
 
                 $this->tpl_onload = "window.alert('編集が完了しました');";
@@ -106,7 +106,7 @@ class LC_Page_Admin_Contents extends LC_Page {
         //----　編集データ取得
         if ($_POST["mode"] == "search" && is_numeric($_POST["news_id"])) {
             $sql = "SELECT *, cast(news_date as date) as cast_news_date FROM dtb_news WHERE news_id = ? ";
-            $result = $conn->getAll($sql, array($_POST["news_id"]));
+            $result = $objQuery->getAll($sql, array($_POST["news_id"]));
             $this->arrForm = $result[0];
 
             $arrData = split("-", $result[0]["cast_news_date"]);
@@ -121,16 +121,16 @@ class LC_Page_Admin_Contents extends LC_Page {
         if ( $_POST['mode'] == 'delete' && is_numeric($_POST["news_id"])) {
 
             // rankを取得
-            $pre_rank = $conn->getOne(" SELECT rank FROM dtb_news WHERE del_flg = 0 AND news_id = ? ", array( $_POST['news_id']  ));
+            $pre_rank = $objQuery->getOne(" SELECT rank FROM dtb_news WHERE del_flg = 0 AND news_id = ? ", array( $_POST['news_id']  ));
 
             //-- 削除する新着情報以降のrankを1つ繰り上げておく
-            $conn->query("BEGIN");
+            $objQuery->begin();
             $sql = "UPDATE dtb_news SET rank = rank - 1, update_date = NOW() WHERE del_flg = 0 AND rank > ?";
-            $conn->query( $sql, array( $pre_rank  ) );
+            $objQuery->query( $sql, array( $pre_rank  ) );
 
             $sql = "UPDATE dtb_news SET rank = 0, del_flg = 1, update_date = NOW() WHERE news_id = ?";
-            $conn->query( $sql, array( $_POST['news_id'] ) );
-            $conn->query("COMMIT");
+            $objQuery->query( $sql, array( $_POST['news_id'] ) );
+            $objQuery->commit();
 
             $this->reload();             //自分にリダイレクト（再読込による誤動作防止）
         }
@@ -159,10 +159,10 @@ class LC_Page_Admin_Contents extends LC_Page {
 
         //---- 全データ取得
         $sql = "SELECT *, cast(news_date as date) as cast_news_date FROM dtb_news WHERE del_flg = '0' ORDER BY rank DESC";
-        $this->list_data = $conn->getAll($sql);
+        $this->list_data = $objQuery->getAll($sql);
         $this->line_max = count($this->list_data);
         $sql = "SELECT MAX(rank) FROM dtb_news WHERE del_flg = '0'";        // rankの最大値を取得
-        $this->max_rank = $conn->getOne($sql);
+        $this->max_rank = $objQuery->getOne($sql);
 
         //----　ページ表示
         $objView->assignobj($this);
@@ -207,40 +207,40 @@ class LC_Page_Admin_Contents extends LC_Page {
     }
 
     //----　指定順位へ移動
-    function sf_setRankPosition(&$conn, $tableName, $keyIdColumn, $keyId, $position) {
+    function sf_setRankPosition(&$objQuery, $tableName, $keyIdColumn, $keyId, $position) {
 
         // 自身のランクを取得する
-        $conn->query("BEGIN");
-        $rank = $conn->getOne("SELECT rank FROM $tableName WHERE $keyIdColumn = ?", array($keyId));
+        $objQuery->begin();
+        $rank = $objQuery->getOne("SELECT rank FROM $tableName WHERE $keyIdColumn = ?", array($keyId));
 
         if( $position > $rank ) $term = "- 1";  //入れ替え先の順位が入れ換え元の順位より大きい場合
         if( $position < $rank ) $term = "+ 1";  //入れ替え先の順位が入れ換え元の順位より小さい場合
 
         //--　指定した順位の商品から移動させる商品までのrankを１つずらす
         $sql = "UPDATE $tableName SET rank = rank $term, update_date = NOW() WHERE rank BETWEEN ? AND ? AND del_flg = 0";
-        if( $position > $rank ) $conn->query( $sql, array( $rank + 1, $position ) );
-        if( $position < $rank ) $conn->query( $sql, array( $position, $rank - 1 ) );
+        if( $position > $rank ) $objQuery->query( $sql, array( $rank + 1, $position ) );
+        if( $position < $rank ) $objQuery->query( $sql, array( $position, $rank - 1 ) );
 
         //-- 指定した順位へrankを書き換える。
         $sql  = "UPDATE $tableName SET rank = ?, update_date = NOW() WHERE $keyIdColumn = ? AND del_flg = 0 ";
-        $conn->query( $sql, array( $position, $keyId ) );
-        $conn->query("COMMIT");
+        $objQuery->query( $sql, array( $position, $keyId ) );
+        $objQuery->commit();
     }
 
     //---- 入力エラーチェック（順位移動用）
-    function sf_errorCheckPosition(&$conn, $tableName, $position, $keyIdColumn, $keyId) {
+    function sf_errorCheckPosition(&$objQuery, $tableName, $position, $keyIdColumn, $keyId) {
 
         $objErr = new SC_CheckError();
         $objErr->doFunc( array("移動順位", "moveposition", 4 ), array( "ZERO_CHECK", "NUM_CHECK", "EXIST_CHECK", "MAX_LENGTH_CHECK" ) );
 
         // 自身のランクを取得する。
-        $rank = $conn->getOne("SELECT rank FROM $tableName WHERE $keyIdColumn = ?", array($keyId));
+        $rank = $objQuery->getOne("SELECT rank FROM $tableName WHERE $keyIdColumn = ?", array($keyId));
         if ($rank == $position ) $objErr->arrErr["moveposition"] .= "※ 指定した移動順位は現在の順位です。";
 
         // rankの最大値以上の入力を許容しない
         if( ! $objErr->arrErr["position"] ) {
             $sql = "SELECT MAX( rank ) FROM " .$tableName. " WHERE del_flg = 0";
-            $result = $conn->getOne($sql);
+            $result = $objQuery->getOne($sql);
             if( $position > $result ) $objErr->arrErr["moveposition"] .= "※ 入力された順位は、登録数の最大値を超えています。";
         }
 
@@ -264,27 +264,27 @@ class LC_Page_Admin_Contents extends LC_Page {
     }
 
     //INSERT文
-    function lfNewsInsert(&$conn){
+    function lfNewsInsert(&$objQuery){
 
         if ($_POST["link_method"] == "") {
             $_POST["link_method"] = 1;
         }
 
         //rankの最大+1を取得する
-        $rank_max = $conn->getOne("SELECT MAX(rank) + 1 FROM dtb_news WHERE del_flg = '0'");
+        $rank_max = $objQuery->getOne("SELECT MAX(rank) + 1 FROM dtb_news WHERE del_flg = '0'");
 
         $sql = "INSERT INTO dtb_news (news_date, news_title, creator_id, news_url, link_method, news_comment, rank, create_date, update_date)
             VALUES ( ?,?,?,?,?,?,?,now(),now())";
         $arrRegist = array($this->registDate, $_POST["news_title"], $_SESSION['member_id'],  $_POST["news_url"], $_POST["link_method"], $_POST["news_comment"], $rank_max);
 
-        $conn->query($sql, $arrRegist);
+        $objQuery->query($sql, $arrRegist);
 
         // 最初の1件目の登録はrankにNULLが入るので対策
         $sql = "UPDATE dtb_news SET rank = 1 WHERE del_flg = 0 AND rank IS NULL";
-        $conn->query($sql);
+        $objQuery->query($sql);
     }
 
-    function lfNewsUpdate(&$conn){
+    function lfNewsUpdate(&$objQuery){
 
         if ($_POST["link_method"] == "") {
             $_POST["link_method"] = 1;
@@ -293,7 +293,7 @@ class LC_Page_Admin_Contents extends LC_Page {
         $sql = "UPDATE dtb_news SET news_date = ?, news_title = ?, creator_id = ?, update_date = NOW(),  news_url = ?, link_method = ?, news_comment = ? WHERE news_id = ?";
         $arrRegist = array($this->registDate, $_POST['news_title'], $_SESSION['member_id'], $_POST['news_url'], $_POST["link_method"], $_POST['news_comment'], $_POST['news_id']);
 
-        $conn->query($sql, $arrRegist);
+        $objQuery->query($sql, $arrRegist);
     }
 }
 ?>

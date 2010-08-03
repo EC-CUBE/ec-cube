@@ -162,7 +162,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page {
         case 'delete':
         	$this->preview = "off";
         	 // DBへデータを更新する
-            $objDBConn = new SC_DbConn;     // DB操作オブジェクト
+            $objQuery = new SC_Query();     // DB操作オブジェクト
             $sql = "";                      // データ更新SQL生成用
             $ret = "";                      // データ更新結果格納用
             $arrDelData = array();          // 更新データ生成用
@@ -175,12 +175,12 @@ class LC_Page_Admin_Design_Bloc extends LC_Page {
                 // SQL生成
                 $sql = " DELETE FROM dtb_bloc WHERE bloc_id = ?";
                 // SQL実行
-                $ret = $objDBConn->query($sql,array($_POST['bloc_id']));
+                $ret = $objQuery->query($sql,array($_POST['bloc_id']));
 
                 // ページに配置されているデータも削除する
                 $sql = "DELETE FROM dtb_blocposition WHERE bloc_id = ?";
                 // SQL実行
-                $ret = $objDBConn->query($sql,array($_POST['bloc_id']));
+                $ret = $objQuery->query($sql,array($_POST['bloc_id']));
 
                 // ファイルの削除
                 $del_file = $package_path . BLOC_DIR . $arrBlocData[0]['filename']. '.tpl';
@@ -220,7 +220,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page {
      * @return array ブロック情報
      */
     function lfgetBlocData($where = '', $arrVal = ''){
-        $objDBConn = new SC_DbConn;		// DB操作オブジェクト
+        $objQuery = new SC_Query();		// DB操作オブジェクト
         $sql = "";						// データ取得SQL生成用
         $arrRet = array();				// データ取得用
 
@@ -244,7 +244,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page {
 
         $sql .= " ORDER BY 	bloc_id";
 
-        $arrRet = $objDBConn->getAll($sql, $arrVal);
+        $arrRet = $objQuery->getAll($sql, $arrVal);
 
         return $arrRet;
     }
@@ -256,7 +256,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page {
      * @return integer 更新結果
      */
     function lfEntryBlocData($arrData){
-        $objDBConn = new SC_DbConn;		// DB操作オブジェクト
+        $objQuery = new SC_Query();		// DB操作オブジェクト
         $sql = "";						// データ更新SQL生成用
         $ret = ""; 						// データ更新結果格納用
         $arrUpdData = array();			// 更新データ生成用
@@ -299,7 +299,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page {
         }
 
         // SQL実行
-        $ret = $objDBConn->query($sql,$arrUpdData);
+        $ret = $objQuery->query($sql,$arrUpdData);
 
         return $ret;
 

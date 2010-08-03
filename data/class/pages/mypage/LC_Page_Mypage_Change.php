@@ -228,7 +228,6 @@ class LC_Page_Mypage_Change extends LC_Page {
     function mobileProcess() {
         $objDb = new SC_Helper_DB_Ex();
         $CONF = $objDb->sf_getBasisData();					// 店舗基本情報
-        $objConn = new SC_DbConn();
         $objView = new SC_MobileView();
         
         // 生年月日選択肢の取得

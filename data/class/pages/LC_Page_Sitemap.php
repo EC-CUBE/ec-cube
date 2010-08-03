@@ -272,7 +272,7 @@ class LC_Page_Sitemap extends LC_Page {
      * @return ブロック情報
      */
     function getPageData($where = '', $arrVal = ''){
-        $objDBConn = new SC_DbConn;     // DB操作オブジェクト
+        $objQuery = new SC_Query();     // DB操作オブジェクト
         $sql = "";                      // データ取得SQL生成用
         $arrRet = array();              // データ取得用
 
@@ -302,7 +302,7 @@ class LC_Page_Sitemap extends LC_Page {
 
         $sql .= " ORDER BY page_id";
 
-        $pageData = $objDBConn->getAll($sql, $arrVal);
+        $pageData = $objQuery->getAll($sql, $arrVal);
         
         // URL にプロトコルの記載が無い場合、SITE_URL を前置する。
         foreach (array_keys($pageData) as $key) {
