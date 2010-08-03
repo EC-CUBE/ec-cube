@@ -63,8 +63,10 @@ class SC_Query {
             $this->conn = MDB2::singleton($dsn, $options);
         }
 
-        $this->conn->setCharset(CHAR_CODE);
-        $this->conn->setFetchMode(MDB2_FETCHMODE_ASSOC);
+        if (!$this->isError()) {
+            $this->conn->setCharset(CHAR_CODE);
+            $this->conn->setFetchMode(MDB2_FETCHMODE_ASSOC);
+        }
         $this->dbFactory = SC_DB_DBFactory_Ex::getInstance();
         $this->where = "";
     }
