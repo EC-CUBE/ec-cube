@@ -358,8 +358,7 @@ class LC_Page_Products_List extends LC_Page {
         }
         
         // 対象商品IDの抽出
-        $arrProduct_id = $objQuery->getCol('vw_products_allclass AS allcls', 'DISTINCT product_id', $where, $arrval);
-        
+        $arrProduct_id = array_unique($objQuery->getCol('vw_products_allclass AS allcls', 'product_id', $where, $arrval));
         // 行数の取得
         $linemax = count($arrProduct_id);
 

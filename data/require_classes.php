@@ -26,7 +26,6 @@ require_once(CLASS_EX_PATH . "util_extends/SC_Utils_Ex.php");
 require_once(CLASS_EX_PATH . "db_extends/SC_DB_MasterData_Ex.php");
 require_once(CLASS_EX_PATH . "db_extends/SC_DB_DBFactory_Ex.php");
 require_once(CLASS_PATH . "SC_View.php");
-require_once(CLASS_PATH . "SC_DbConn.php");
 require_once(CLASS_PATH . "SC_Session.php");
 require_once(CLASS_PATH . "SC_Query.php");
 require_once(CLASS_PATH . "SC_SelectSql.php");

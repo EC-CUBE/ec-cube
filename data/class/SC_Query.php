@@ -21,8 +21,12 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+require_once(realpath(dirname(__FILE__)) . "/../module/MDB2.php");
+
 /**
  * SQLの構築・実行を行う
+ *
+ * TODO エラーハンドリング, ロギング方法を見直す
  *
  * @author LOCKON CO.,LTD.
  * @version $Id$
@@ -43,7 +47,25 @@ class SC_Query {
      * @return SC_Query
      */
     function SC_Query($dsn = "", $err_disp = true, $new = false) {
-        $this->conn = new SC_DBconn($dsn, $err_disp, $new);
+
+        if ($dsn == "") {
+            $dsn = DEFAULT_DSN;
+        }
+
+        // Debugモード指定
+        $options['debug'] = PEAR_DB_DEBUG;
+        // 持続的接続オプション
+        $options['persistent'] = PEAR_DB_PERSISTENT;
+
+        if ($new) {
+            $this->conn = MDB2::connect($dsn, $options);
+        } else {
+            $this->conn = MDB2::singleton($dsn, $options);
+        }
+
+        $this->conn->setCharset(CHAR_CODE);
+        $this->conn->setFetchMode(MDB2_FETCHMODE_ASSOC);
+        $this->dbFactory = SC_DB_DBFactory_Ex::getInstance();
         $this->where = "";
     }
 
@@ -53,7 +75,7 @@ class SC_Query {
      * @return boolean
      */
     function isError() {
-        if(PEAR::isError($this->conn->conn)) {
+        if(PEAR::isError($this->conn)) {
             return true;
         }
         return false;
@@ -73,9 +95,8 @@ class SC_Query {
         } else {
             $sqlse = "SELECT COUNT(*) FROM $table WHERE $where";
         }
-        // カウント文の実行
-        $ret = $this->conn->getOne($sqlse, $arrval);
-        return $ret;
+        $sqlse = $this->dbFactory->sfChangeMySQL($sqlse);
+        return $this->getOne($sqlse, $arrval);
     }
 
     /**
@@ -88,37 +109,40 @@ class SC_Query {
      * @param integer $fetchmode 使用するフェッチモード。デフォルトは DB_FETCHMODE_ASSOC。
      * @return array|null
      */
-    function select($col, $table, $where = "", $arrval = array(), $fetchmode = DB_FETCHMODE_ASSOC) {
+    function select($col, $table, $where = "", $arrval = array(), $fetchmode = MDB2_FETCHMODE_ASSOC) {
         $sqlse = $this->getSql($col, $table, $where);
-        $ret = $this->conn->getAll($sqlse, $arrval, $fetchmode);
-        return $ret;
+        return $this->getAll($sqlse, $arrval, $fetchmode);
     }
 
     /**
      * 直前に実行されたSQL文を取得する.
-     * SC_DBconn::getLastQuery() を利用.
      *
      * @param boolean $disp trueの場合、画面出力を行う.
      * @return string SQL文
      */
     function getLastQuery($disp = true) {
-        return $this->conn->getLastQuery($disp);
+        $sql = $this->conn->last_query;
+        if($disp) {
+            print($sql.";<br />\n");
+        }
+        return $sql;
     }
 
     function commit() {
-        $this->conn->query("COMMIT");
+        $this->conn->commit();
     }
 
     function begin() {
-        $this->conn->query("BEGIN");
+        $this->conn->beginTransaction();
     }
 
     function rollback() {
-        $this->conn->query("ROLLBACK");
+        $this->conn->rollback();
     }
 
     function exec($str, $arrval = array()) {
-        $this->conn->query($str, $arrval);
+        // FIXME MDB2::exec() の実装であるべき
+        $this->query($str, $arrval);
     }
 
     /**
@@ -129,9 +153,18 @@ class SC_Query {
      * @param integer $fetchmode 使用するフェッチモード。デフォルトは DB_FETCHMODE_ASSOC。
      * @return array データを含む2次元配列。失敗した場合に 0 または DB_Error オブジェクトを返します。
      */
-    function getAll($sql, $arrval = array(), $fetchmode = DB_FETCHMODE_ASSOC) {
-        $ret = $this->conn->getAll($sql, $arrval, $fetchmode);
-        return $ret;
+    function getAll($sql, $arrval = array(), $fetchmode = MDB2_FETCHMODE_ASSOC) {
+
+        $sql = $this->dbFactory->sfChangeMySQL($sql);
+
+        $sth = $this->conn->prepare($sql);
+        $affected = $sth->execute($arrval);
+
+        if (PEAR::isError($affected)) {
+            trigger_error($affected->getMessage(), E_USER_ERROR);
+        }
+
+        return $affected->fetchAll($fetchmode);
     }
 
     function getSql($col, $table, $where = '') {
@@ -153,6 +186,7 @@ class SC_Query {
         $this->option = $str;
     }
 
+    // TODO MDB2::setLimit() を使用する
     function setLimitOffset($limit, $offset = 0, $return = false) {
         if (is_numeric($limit) && is_numeric($offset)){
 
@@ -249,7 +283,7 @@ class SC_Query {
         $strval = ereg_replace(",$","",$strval);
         $sqlin = "INSERT INTO $table(" . $strcol. ") VALUES (" . $strval . ")";
         // INSERT文の実行
-        $ret = $this->conn->query($sqlin, $arrval);
+        $ret = $this->query($sqlin, $arrval);
 
         return $ret;
     }
@@ -305,7 +339,7 @@ class SC_Query {
         }
 
         // UPDATE文の実行
-        return $this->conn->query($sqlup, $arrVal);
+        return $this->query($sqlup, $arrVal);
     }
 
     // MAX文の実行
@@ -329,9 +363,17 @@ class SC_Query {
     }
 
     function getOne($sql, $arrval = array()) {
-        // SQL文の実行
-        $ret = $this->conn->getOne($sql, $arrval);
-        return $ret;
+
+        $sql = $this->dbFactory->sfChangeMySQL($sql);
+
+        $sth = $this->conn->prepare($sql);
+        $affected = $sth->execute($arrval);
+
+        if (PEAR::isError($affected)) {
+            trigger_error($affected->getMessage(), E_USER_ERROR);
+        }
+
+        return $affected->fetchOne();
     }
 
     /**
@@ -344,17 +386,34 @@ class SC_Query {
      * @param integer $fetchmode 使用するフェッチモード。デフォルトは DB_FETCHMODE_ASSOC。
      * @return array array('カラム名' => '値', ...)の連想配列
      */
-    function getRow($table, $col, $where = "", $arrVal = array(), $fetchmode = DB_FETCHMODE_ASSOC) {
-        $sqlse = $this->getSql($col, $table, $where);
-        // SQL文の実行
-        return $this->conn->getRow($sqlse, $arrVal ,$fetchmode);
+    function getRow($table, $col, $where = "", $arrVal = array(), $fetchmode = MDB2_FETCHMODE_ASSOC) {
+
+        $sql = $this->getSql($col, $table, $where);
+        $sql = $this->dbFactory->sfChangeMySQL($sql);
+
+        $sth = $this->conn->prepare($sql);
+        $affected = $sth->execute($arrVal);
+
+        if (PEAR::isError($affected)) {
+            trigger_error($affected->getMessage(), E_USER_ERROR);
+        }
+
+        return $affected->fetchRow($fetchmode);
     }
 
     // 1列取得
     function getCol($table, $col, $where = "", $arrval = array()) {
-        $sqlse = $this->getSql($col, $table, $where);
-        // SQL文の実行
-        return $this->conn->getCol($sqlse, 0, $arrval);
+        $sql = $this->getSql($col, $table, $where);
+        $sql = $this->dbFactory->sfChangeMySQL($sql);
+
+        $sth = $this->conn->prepare($sql);
+        $affected = $sth->execute($arrval);
+
+        if (PEAR::isError($affected)) {
+            trigger_error($affected->getMessage(), E_USER_ERROR);
+        }
+
+        return $affected->fetchCol($col);
     }
 
     /**
@@ -371,7 +430,7 @@ class SC_Query {
         } else {
             $sqlde = "DELETE FROM $table WHERE $where";
         }
-        $ret = $this->conn->query($sqlde, $arrval);
+        $ret = $this->query($sqlde, $arrval);
         return $ret;
     }
 
@@ -384,7 +443,7 @@ class SC_Query {
         }else if (DB_TYPE == "mysql") {
             $sql = "SELECT last_insert_id();";
         }
-        $ret = $this->conn->getOne($sql);
+        $ret = $this->getOne($sql);
 
         return $ret;
     }
@@ -397,7 +456,7 @@ class SC_Query {
         }else if (DB_TYPE == "mysql") {
             $sql = "SELECT last_insert_id();";
         }
-        $ret = $this->conn->getOne($sql);
+        $ret = $this->getOne($sql);
 
         return $ret;
     }
@@ -407,17 +466,27 @@ class SC_Query {
         if (DB_TYPE == "pgsql") {
             $seqtable = $table . "_" . $colname . "_seq";
             $sql = "SELECT SETVAL('$seqtable', $data)";
-            $ret = $this->conn->getOne($sql);
+            $ret = $this->getOne($sql);
         }else if (DB_TYPE == "mysql") {
             $sql = "ALTER TABLE $table AUTO_INCREMENT=$data";
-            $ret = $this->conn->query($sql);
+            $ret = $this->query($sql);
         }
 
         return $ret;
     }
 
-    function query($n ,$arr = "", $ignore_err = false){
-        $result = $this->conn->query($n, $arr, $ignore_err);
+    // XXX 更新系には exec() を使用するべき
+    function query($n ,$arr = array(), $ignore_err = false){
+
+        $n = $this->dbFactory->sfChangeMySQL($n);
+
+        $sth = $this->conn->prepare($n);
+        $result = $sth->execute($arr);
+
+        if (PEAR::isError($result)) {
+            trigger_error($result->getMessage(), E_USER_ERROR);
+        }
+
         return $result;
     }
 
@@ -436,7 +505,7 @@ class SC_Query {
         $auto_inc_no = $arrRet[0]["Auto_increment"];
 
         // 値をカウントアップしておく
-        $this->conn->query("ALTER TABLE $table_name AUTO_INCREMENT=?" , $auto_inc_no + 1);
+        $this->query("ALTER TABLE $table_name AUTO_INCREMENT=?" , $auto_inc_no + 1);
 
         // 解除する
         $this->query('UNLOCK TABLES');
