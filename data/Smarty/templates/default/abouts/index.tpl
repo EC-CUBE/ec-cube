@@ -22,14 +22,37 @@
  */
 *}-->
 <!--▼CONTENTS-->
+<!--{assign var=_site value=$arrSiteInfo}-->
+<script type="text/javascript">//<![CDATA[
+$(function() {
+    $("#maps").css({
+        'margin-top': '15px',
+        'margin-left': 'auto',
+        'margin-right': 'auto',
+        'width': '98%',
+        'height': '300px'
+    });
+    var lat = <!--{$_site.latitude}-->
+    var lng = <!--{$_site.longitude}-->
+    if (lat && lng) {
+        var latlng = new google.maps.LatLng(lat, lng);
+        var mapOptions = {zoom: 15,
+                          center: latlng,
+                          mapTypeId: google.maps.MapTypeId.ROADMAP};
+        var map = new google.maps.Map($("#maps").get(0), mapOptions);
+        var marker = new google.maps.Marker({map: map, position: latlng});
+    } else {
+        $("#maps").remove();
+    }
+});
+//]]>
+</script>
 <div id="undercolumn">
 
   <div id="undercolumn_aboutus">
     <h2 class="title"><!--{$tpl_title|escape}--></h2>
 
     <table summary="当サイトについて">
-
-    <!--{assign var=_site value=$arrSiteInfo}-->
 
       <!--{if strlen($_site.shop_name)}-->
         <tr>
@@ -96,6 +119,7 @@
 
     </table>
 
+    <div id="maps"></div>
   </div>
 </div>
 <!--▲CONTENTS-->

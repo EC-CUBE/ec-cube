@@ -146,7 +146,9 @@ CREATE TABLE dtb_baseinfo (
     mypage_tpl text,
     good_traded text,
     message text,
-    regular_holiday_ids text
+    regular_holiday_ids text,
+    latitude text,
+    longitude text
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_deliv (

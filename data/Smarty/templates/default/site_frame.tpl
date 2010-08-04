@@ -27,6 +27,11 @@
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <link rel="stylesheet" href="<!--{$TPL_DIR}-->css/import.css" type="text/css" media="all" />
 <link rel="alternate" type="application/rss+xml" title="RSS" href="<!--{$smarty.const.SITE_URL}-->rss/<!--{$smarty.const.DIR_INDEX_URL}-->" />
+<script type="text/javascript" src="http://www.google.com/jsapi?key=xxx"></script>
+<script type="text/javascript">//<![CDATA[
+    google.load("maps", "3", {other_params:'sensor=false'});
+//]]>
+</script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/css.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/navi.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/win_op.js"></script>

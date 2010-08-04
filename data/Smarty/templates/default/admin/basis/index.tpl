@@ -21,6 +21,72 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
+<script type="text/javascript" src="<!--{$TPL_DIR}-->jquery.fancybox/jquery.mousewheel-3.0.2.pack.js"></script>
+<script type="text/javascript" src="<!--{$TPL_DIR}-->jquery.fancybox/jquery.fancybox-1.3.1.pack.js"></script>
+<link rel="stylesheet" href="<!--{$TPL_DIR}-->jquery.fancybox/jquery.fancybox-1.3.1.css" type="text/css" media="screen" />
+<script type="text/javascript">//<![CDATA[
+$(function() {
+    var geocoder = new google.maps.Geocoder();
+
+    $("#codeAddress").click(function() {
+        var result = true;
+        var address = $("#addr01").val() + $("#addr02").val();
+        if (geocoder && address) {
+            geocoder.geocode({'address': address}, function (results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    latlng = results[0].geometry.location;
+                    $("#latitude").val(latlng.lat());
+                    $("#longitude").val(latlng.lng());
+                 } else {
+                     alert('住所の場所が見つかりません');
+                 }
+            });
+        } else {
+            alert('住所の場所が見つかりません');
+        }
+    });
+
+    $("a#mapAddress").fancybox({onStart: function() {
+        var lat = $("#latitude").val();
+        var lng = $("#longitude").val();
+
+        var latlng;
+        if (lat && lng) {
+            latlng = new google.maps.LatLng(lat, lng);
+        } else {
+            var address = $("#addr01").val() + $("#addr02").val();
+            if (geocoder) {
+                geocoder.geocode({'address': address}, function(results, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        latlng = results[0].geometry.location;
+                     }
+                });
+            }
+        }
+
+        if (!latlng) {
+            // 座標が取得できない場合は北緯35度東経135度から取得
+            latlng = new google.maps.LatLng(35, 135);
+        }
+
+        var mapOptions = {zoom: 15,
+                          center: latlng,
+                          mapTypeId: google.maps.MapTypeId.ROADMAP};
+        var map = new google.maps.Map($("#maps").get(0), mapOptions);
+        var marker = new google.maps.Marker({map: map, position: latlng});
+        marker.setDraggable(true);
+
+        // TODO Maker のダブルクリックにも対応したい
+        $("#inputPoint").click(function() {
+            latlng = marker.getPosition();
+            $("#latitude").val(latlng.lat());
+            $("#longitude").val(latlng.lng());
+            $.fancybox.close();
+        });
+    }});
+});
+//]]>
+</script>
 <form name="form1" id="form1" method="post" action="?">
 <input type="hidden" name="mode" value="<!--{$tpl_mode}-->" />
 <!--{* ▼登録テーブルここから *}-->
@@ -89,12 +155,12 @@
         </p>
         <p>
           <span class="attention"><!--{$arrErr.addr01}--></span>
-          <input type="text" name="addr01" value="<!--{$arrForm.addr01|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.addr01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" /><span class="attention"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span><br />
+          <input type="text" name="addr01" value="<!--{$arrForm.addr01|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.addr01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" id="addr01" /><span class="attention"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span><br />
           <!--{$smarty.const.SAMPLE_ADDRESS1}-->
         </p>
         <p>
           <span class="attention"><!--{$arrErr.addr02}--></span>
-          <input type="text" name="addr02" value="<!--{$arrForm.addr02|escape}-->"  maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.addr02 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" /><span class="attention"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span><br />
+          <input type="text" name="addr02" value="<!--{$arrForm.addr02|escape}-->"  maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.addr02 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" id="addr02" /><span class="attention"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span><br />
           <!--{$smarty.const.SAMPLE_ADDRESS2}-->
         </p>
       </td>
@@ -213,8 +279,29 @@
     </tr>
   </table>
 
+  <h2>地図設定</h2>
+  <table id="basis-index-func">
+    <tr>
+      <th>緯度/経度情報</th>
+      <td>
+        <span class="attention"><!--{$arrErr.latitude}--></span>
+        <span class="attention"><!--{$arrErr.longitude}--></span>
+        緯度: <input type="text" name="latitude" value="<!--{$arrForm.latitude|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" style="<!--{if $arrErr.latitude != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" id="latitude" />
+        経度: <input type="text" name="longitude" value="<!--{$arrForm.longitude|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" style="<!--{if $arrErr.longitude != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" id="longitude" />
+        <input type="button" name="codeAddress" id="codeAddress" value="住所より自動取得" />
+        <a href="#maparea" id="mapAddress">地図で設定</a>
+      </td>
+    </tr>
+ </table>
+
   <div class="btn">
     <button type="submit"><span>この内容で登録する</span></button>
+  </div>
+</div>
+<div style="display: none">
+  <div id="maparea">
+    <div id="maps" style="width: 300px; height: 300px"></div>
+    <input type="button" id="inputPoint" value="この位置を入力" />
   </div>
 </div>
 <!--{* ▲登録テーブルここまで *}-->

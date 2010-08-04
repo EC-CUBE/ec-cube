@@ -163,8 +163,9 @@ class LC_Page_Admin_Basis extends LC_Page {
             "free_rule",
             "good_traded",
             "message",
-            "regular_holiday_ids"
-
+            "regular_holiday_ids",
+            "latitude",
+            "longitude"
         );
         return $arrCol;
     }
@@ -270,6 +271,8 @@ class LC_Page_Admin_Basis extends LC_Page {
         $objErr->doFunc(array("取扱商品", "good_traded", LLTEXT_LEN), array("MAX_LENGTH_CHECK"));
         $objErr->doFunc(array("メッセージ", "message", LLTEXT_LEN), array("MAX_LENGTH_CHECK"));
 
+        $objErr->doFunc(array("緯度", "latitude", STEXT_LEN), array("NUM_POINT_CHECK", "MAX_LENGTH_CHECK"));
+        $objErr->doFunc(array("経度", "longitude", STEXT_LEN), array("NUM_POINT_CHECK", "MAX_LENGTH_CHECK"));
         return $objErr->arrErr;
     }
 }
