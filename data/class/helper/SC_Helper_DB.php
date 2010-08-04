@@ -73,8 +73,11 @@ class SC_Helper_DB {
         // 正常に接続されている場合
         if(!$objQuery->isError()) {
             list($db_type) = split(":", $dsn);
-            $sql = $dbFactory->getTableExistsSql();
-            $arrRet = $objQuery->getAll($sql, array($table_name));
+            /*
+             * XXX MySQL で, 何故かブレースホルダが使えない.
+             */
+            $sql = $dbFactory->getTableExistsSql($table_name);
+            $arrRet = $objQuery->getAll($sql);
             if(count($arrRet) > 0) {
                 return true;
             }

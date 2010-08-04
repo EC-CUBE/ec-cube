@@ -160,6 +160,13 @@ class SC_Query {
         $sql = $this->dbFactory->sfChangeMySQL($sql);
 
         $sth = $this->conn->prepare($sql);
+        if (PEAR::isError($sth)) {
+            /*
+             * XXX インストーラのテーブルチェックに失敗してしまう.
+             * エラーハンドリングの方法を要検討
+             */
+            return;
+        }
         $affected = $sth->execute($arrval);
 
         if (PEAR::isError($affected)) {
@@ -486,7 +493,11 @@ class SC_Query {
         $result = $sth->execute($arr);
 
         if (PEAR::isError($result)) {
-            trigger_error($result->getMessage(), E_USER_ERROR);
+            /*
+             * XXX インストーラのテーブルチェックに失敗してしまう.
+             * エラーハンドリングの方法を要検討
+             */
+            //trigger_error($result->getMessage(), E_USER_ERROR);
         }
 
         return $result;
@@ -495,24 +506,41 @@ class SC_Query {
     /**
      * auto_incrementを取得する.
      *
+     * XXX MDB2 の sequence 関数を使用する
+     *
      * @param string $table_name テーブル名
      * @return integer
      */
     function get_auto_increment($table_name){
         // ロックする
-        $this->query("LOCK TABLES $table_name WRITE");
+        $this->conn->exec("LOCK TABLES $table_name WRITE");
 
         // 次のIncrementを取得
-        $arrRet = $this->getAll("SHOW TABLE STATUS LIKE ?", array($table_name));
+        $arrRet = $this->getAll("SHOW TABLE STATUS LIKE ". $this->quote($table_name));
         $auto_inc_no = $arrRet[0]["Auto_increment"];
 
         // 値をカウントアップしておく
-        $this->query("ALTER TABLE $table_name AUTO_INCREMENT=?" , $auto_inc_no + 1);
+        $this->conn->exec("ALTER TABLE $table_name AUTO_INCREMENT=" . $this->quote($auto_inc_no + 1));
 
         // 解除する
-        $this->query('UNLOCK TABLES');
+        $this->conn->exec('UNLOCK TABLES');
 
         return $auto_inc_no;
+    }
+
+    /**
+     * 値を適切にクォートする.
+     *
+     * TODO MDB2 に対応するための暫定的な措置.
+     *      ブレースホルダが使用できない実装があるため.
+     *      本来であれば, MDB2::prepare() を適切に使用するべき
+     *
+     * @see MDB2::quote()
+     * @param string $val クォートを行う文字列
+     * @return string クォートされた文字列
+     */
+    function quote($val) {
+        return $this->conn->quote($val);
     }
 }
 

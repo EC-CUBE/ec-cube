@@ -941,7 +941,7 @@ CREATE TABLE dtb_csv (
     status smallint NOT NULL DEFAULT 1,
     create_date datetime NOT NULL,
     update_date datetime NOT NULL,
-    "convert" text,
+    `convert` text,
     PRIMARY KEY (no)
 ) TYPE=InnoDB;
 

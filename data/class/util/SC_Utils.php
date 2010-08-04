@@ -1401,7 +1401,10 @@ echo $template_path;
         return $arrChildren;
     }
 
-    // SQLシングルクォート対応
+    /**
+     * SQLシングルクォート対応
+     * @deprecated SC_Query::quote() を使用すること
+     */
     function sfQuoteSmart($in){
 
         if (is_int($in) || is_double($in)) {

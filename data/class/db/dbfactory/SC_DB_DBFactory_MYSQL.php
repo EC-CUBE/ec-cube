@@ -84,10 +84,13 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
     /**
      * テーブルの存在チェックを行う SQL 文を返す.
      *
+     * @param string $table_name 存在チェックを行うテーブル名
      * @return string テーブルの存在チェックを行う SQL 文
      */
-    function getTableExistsSql() {
-        return "SHOW TABLE STATUS LIKE ?";
+    function getTableExistsSql($table_name) {
+        // XXX 何故かブレースホルダが使えない
+        $objQuery = new SC_Query();
+        return "SHOW TABLE STATUS LIKE " . $objQuery->quote($table_name);
     }
 
     /**

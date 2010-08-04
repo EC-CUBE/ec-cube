@@ -94,9 +94,10 @@ class SC_DB_DBFactory {
     /**
      * テーブルの存在チェックを行う SQL 文を返す.
      *
+     * @param string $table_name 存在チェックを行うテーブル名
      * @return string テーブルの存在チェックを行う SQL 文
      */
-    function getTableExistsSql() { return null; }
+    function getTableExistsSql($table_name) { return null; }
 
     /**
      * インデックスの検索結果を配列で返す.

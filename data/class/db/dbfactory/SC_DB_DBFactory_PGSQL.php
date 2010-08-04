@@ -67,13 +67,15 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
     /**
      * テーブルの存在チェックを行う SQL 文を返す.
      *
+     * @param string $table_name 存在チェックを行うテーブル名
      * @return string テーブルの存在チェックを行う SQL 文
      */
-    function getTableExistsSql() {
+    function getTableExistsSql($table_name) {
+        $objQuery = new SC_Query();
         return "  SELECT relname "
              . "    FROM pg_class "
              . "   WHERE (relkind = 'r' OR relkind = 'v') "
-             . "     AND relname = ? "
+             . "     AND relname = " . $objQuery->quote($table_name)
              . "GROUP BY relname";
     }
 

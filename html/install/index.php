@@ -866,7 +866,7 @@ function lfDropTable($table_name, $dsn) {
     if($objDb->sfTabaleExists($table_name, $dsn)) {
         // Debugモード指定
         $options['debug'] = PEAR_DB_DEBUG;
-        $objDB = DB::connect($dsn, $options);
+        $objDB = MDB2::connect($dsn, $options);
         // 接続成功
         if(!PEAR::isError($objDB)) {
             $objDB->query("DROP TABLE " . $table_name);
