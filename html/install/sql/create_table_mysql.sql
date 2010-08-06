@@ -149,7 +149,6 @@ CREATE TABLE dtb_baseinfo (
     regular_holiday_ids text,
     latitude text,
     longitude text,
-    regular_holiday_ids text,
     downloadable_days numeric DEFAULT 30,
     downloadable_days_unlimited smallint
 ) TYPE=InnoDB;
