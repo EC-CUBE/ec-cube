@@ -428,3 +428,17 @@ $(function(){
         }
     );
 });
+//制限数判定
+function fnCheckLimit(elem1, elem2, icolor) {
+    if(document.form1[elem2]) {
+        list = new Array(
+                elem1
+            );
+        if(document.form1[elem2].checked) {
+            fnChangeDisabled(list, icolor);
+            document.form1[elem1].value = "";
+        } else {
+            fnChangeDisabled(list, '');
+        }
+    }
+}

@@ -148,7 +148,9 @@ CREATE TABLE dtb_baseinfo (
     message text,
     regular_holiday_ids text,
     latitude text,
-    longitude text
+    longitude text,
+    downloadable_days numeric DEFAULT 30,
+    downloadable_days_unlimited smallint
 );
 
 CREATE TABLE dtb_deliv (
@@ -340,6 +342,9 @@ CREATE TABLE dtb_products (
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp,
     deliv_date_id int,
+    down int2 NOT NULL ,
+    down_filename text,
+    down_realfilename text,
     PRIMARY KEY (product_id)
 );
 
@@ -1289,3 +1294,11 @@ CREATE TABLE mtb_constants (
     remarks text,
     PRIMARY KEY (id)
 );
+
+CREATE TABLE mtb_down (
+    id int2,
+    name text,
+    rank int2 NOT NULL,
+    PRIMARY KEY (id)
+);
+

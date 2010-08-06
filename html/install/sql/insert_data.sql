@@ -95,6 +95,9 @@ INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'(SELECT recommend_product_id FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY rank DESC, recommend_product_id DESC limit 1 offset 5) AS recommend_product_id6','関連商品(6)',56,now(),now());
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'(SELECT comment FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY rank DESC, recommend_product_id DESC limit 1 offset 5) AS recommend_comment6','関連商品コメント(6)',57,now(),now());
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'category_id','カテゴリID',58,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'down','実商品・ダウンロード',59,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'down_filename','ダウンロードファイル名',60,now(),now());
+INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (1,'down_realfilename','ダウンロード商品用ファイルアップロード',61,now(),now());
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (2,'customer_id','顧客ID',1,now(),now());
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (2,'name01','名前1',2,now(),now());
 INSERT INTO dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) VALUES (2,'name02','名前2',3,now(),now());
@@ -306,15 +309,16 @@ INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 47);
 INSERT INTO dtb_delivtime (deliv_id, time_id, deliv_time) VALUES (1, 1, '午前');
 INSERT INTO dtb_delivtime (deliv_id, time_id, deliv_time) VALUES (1, 2, '午後');
 
+INSERT INTO dtb_payment (payment_method,charge,rule,deliv_id,rank,note,fix,status,del_flg,creator_id,create_date,update_date,payment_image,upper_rule) VALUES ('クレジット', 0, NULL, 1, 5, NULL, 2, 1, 0, 1, now(), now(), NULL, NULL);
 INSERT INTO dtb_payment (payment_method,charge,rule,deliv_id,rank,note,fix,status,del_flg,creator_id,create_date,update_date,payment_image,upper_rule) VALUES ('郵便振替', 0, NULL, 1, 4, NULL, 2, 1, 0, 1, now(), now(), NULL, NULL);
 INSERT INTO dtb_payment (payment_method,charge,rule,deliv_id,rank,note,fix,status,del_flg,creator_id,create_date,update_date,payment_image,upper_rule) VALUES ('現金書留', 0, NULL, 1, 3, NULL, 2, 1, 0, 1, now(), now(), NULL, NULL);
 INSERT INTO dtb_payment (payment_method,charge,rule,deliv_id,rank,note,fix,status,del_flg,creator_id,create_date,update_date,payment_image,upper_rule) VALUES ('銀行振込', 0, NULL, 1, 2, NULL, 2, 1, 0, 1, now(), now(), NULL, NULL);
 INSERT INTO dtb_payment (payment_method,charge,rule,deliv_id,rank,note,fix,status,del_flg,creator_id,create_date,update_date,payment_image,upper_rule) VALUES ('代金引換', 0, NULL, 1, 1, NULL, 2, 1, 0, 1, now(), now(), NULL, NULL);
 
-INSERT INTO dtb_products (name,deliv_fee,sale_limit,category_id,rank,status,product_flag,point_rate,comment1,comment2,comment3,comment4,comment5,comment6,file1,file2,file3,file4,file5,file6,main_list_comment,main_list_image,main_comment,main_image,main_large_image,sub_title1,sub_comment1,sub_image1,sub_large_image1,sub_title2,sub_comment2,sub_image2,sub_large_image2,sub_title3,sub_comment3,sub_image3,sub_large_image3,sub_title4,sub_comment4,sub_image4,sub_large_image4,sub_title5,sub_comment5,sub_image5,sub_large_image5,sub_title6,sub_comment6,sub_image6,sub_large_image6,del_flg,creator_id,create_date,update_date,deliv_date_id)
-VALUES ('アイスクリーム', NULL, NULL, 5, 1, 1, '10010', 10, NULL, NULL, 'アイス,バニラ,チョコ,抹茶', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '暑い夏にどうぞ。', '08311201_44f65122ee5fe.jpg', '冷たいものはいかがですか？', '08311202_44f6515906a41.jpg', '08311203_44f651959bcb5.jpg', NULL, '<b>おいしいよ<b>', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 2, now(), now(), 2);
-INSERT INTO dtb_products (name,deliv_fee,sale_limit,category_id,rank,status,product_flag,point_rate,comment1,comment2,comment3,comment4,comment5,comment6,file1,file2,file3,file4,file5,file6,main_list_comment,main_list_image,main_comment,main_image,main_large_image,sub_title1,sub_comment1,sub_image1,sub_large_image1,sub_title2,sub_comment2,sub_image2,sub_large_image2,sub_title3,sub_comment3,sub_image3,sub_large_image3,sub_title4,sub_comment4,sub_image4,sub_large_image4,sub_title5,sub_comment5,sub_image5,sub_large_image5,sub_title6,sub_comment6,sub_image6,sub_large_image6,del_flg,creator_id,create_date,update_date,deliv_date_id)
-VALUES ('おなべ', NULL, 5, NULL, 1, 1, '11001', 5, NULL, NULL, '鍋,なべ,ナベ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '一人用からあります。', '08311311_44f661811fec0.jpg', 'たまには鍋でもどうでしょう。', '08311313_44f661dc649fb.jpg', '08311313_44f661e5698a6.jpg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 2, now(), now(), 3);
+INSERT INTO dtb_products (name,deliv_fee,sale_limit,category_id,rank,status,product_flag,point_rate,comment1,comment2,comment3,comment4,comment5,comment6,file1,file2,file3,file4,file5,file6,main_list_comment,main_list_image,main_comment,main_image,main_large_image,sub_title1,sub_comment1,sub_image1,sub_large_image1,sub_title2,sub_comment2,sub_image2,sub_large_image2,sub_title3,sub_comment3,sub_image3,sub_large_image3,sub_title4,sub_comment4,sub_image4,sub_large_image4,sub_title5,sub_comment5,sub_image5,sub_large_image5,sub_title6,sub_comment6,sub_image6,sub_large_image6,del_flg,creator_id,create_date,update_date,deliv_date_id,down,down_filename,down_realfilename)
+VALUES ('アイスクリーム', NULL, NULL, 5, 1, 1, '10010', 10, NULL, NULL, 'アイス,バニラ,チョコ,抹茶', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '暑い夏にどうぞ。', '08311201_44f65122ee5fe.jpg', '冷たいものはいかがですか？', '08311202_44f6515906a41.jpg', '08311203_44f651959bcb5.jpg', NULL, '<b>おいしいよ<b>', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 2, now(), now(), 2, 1, NULL, NULL);
+INSERT INTO dtb_products (name,deliv_fee,sale_limit,category_id,rank,status,product_flag,point_rate,comment1,comment2,comment3,comment4,comment5,comment6,file1,file2,file3,file4,file5,file6,main_list_comment,main_list_image,main_comment,main_image,main_large_image,sub_title1,sub_comment1,sub_image1,sub_large_image1,sub_title2,sub_comment2,sub_image2,sub_large_image2,sub_title3,sub_comment3,sub_image3,sub_large_image3,sub_title4,sub_comment4,sub_image4,sub_large_image4,sub_title5,sub_comment5,sub_image5,sub_large_image5,sub_title6,sub_comment6,sub_image6,sub_large_image6,del_flg,creator_id,create_date,update_date,deliv_date_id,down,down_filename,down_realfilename)
+VALUES ('おなべ', NULL, 5, NULL, 1, 1, '11001', 5, NULL, NULL, '鍋,なべ,ナベ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '一人用からあります。', '08311311_44f661811fec0.jpg', 'たまには鍋でもどうでしょう。', '08311313_44f661dc649fb.jpg', '08311313_44f661e5698a6.jpg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 2, now(), now(), 3, 1, NULL, NULL);
 
 INSERT INTO dtb_products_class (product_id,classcategory_id1,classcategory_id2,product_code,stock,stock_unlimited,sale_limit,price01,price02,status,creator_id,create_date,update_date)
 VALUES (1, 3, 6, 'ice-01', NULL, 1, NULL, 150, 120, NULL, 2, now(), now());
@@ -1090,5 +1094,16 @@ INSERT INTO mtb_constants VALUES ('IMAGE_RENAME', 'true', 525, '画像リネー�
 INSERT INTO mtb_constants VALUES ('PLUGIN_DIR', '"plugins/"', 600, 'プラグインディレクトリ');
 INSERT INTO mtb_constants VALUES ('PLUGIN_PATH', 'USER_PATH . PLUGIN_DIR', 601, 'プラグイン保存先');
 INSERT INTO mtb_constants VALUES ('PLUGIN_URL', 'USER_URL . PLUGIN_DIR', 602, 'プラグイン URL');
+INSERT INTO mtb_constants VALUES ('DOWNLOAD_DAYS_LEN','3',700,'日数桁数');
+INSERT INTO mtb_constants VALUES ('DOWNLOAD_CNT_LEN','3',701,'ダウンロード回数桁数');
+INSERT INTO mtb_constants VALUES ('DOWN_SIZE','50000',702,'ダウンロード販売ファイル用サイズ制限(KB)');
+INSERT INTO mtb_constants VALUES ('DEFAULT_PRODUCT_DOWN','1',703,'1:実商品 2:ダウンロード');
+INSERT INTO mtb_constants VALUES ('DOWN_TEMP_DIR','DATA_PATH . "download/temp/"',704,'ダウンロードファイル一時保存');
+INSERT INTO mtb_constants VALUES ('DOWN_SAVE_DIR','DATA_PATH . "download/save/"',705,'ダウンロードファイル保存先');
+INSERT INTO mtb_constants VALUES ('DOWNFILE_NOT_FOUND','22',706,'ダウンロードファイル存在エラー');
+INSERT INTO mtb_constants VALUES ('CREDIT_PAYMENT','1',707,'ダウンロード販売機能用にクレジット決済のpayment_idを指定');
+
+INSERT INTO mtb_down VALUES ('1','実商品','0');
+INSERT INTO mtb_down VALUES ('2','ダウンロード','1');
 
 INSERT INTO dtb_module (module_id,module_code,module_name,update_date,create_date) VALUES (0,0,'patch',now(),now());

@@ -82,6 +82,9 @@
 <input type="hidden" name="payment_id" value="<!--{$arrData.payment_id}-->">
 <input type="hidden" name="deliv_date" value="<!--{$arrData.deliv_date}-->">
 <input type="hidden" name="deliv_time_id" value="<!--{$arrData.deliv_time_id}-->">
+<!--{if $cartdown != 2}-->
+<input type="hidden" name="mode" value="deliv_date">
+<!--{/if}-->
 <center><input type="submit" value="戻る"></center>
 </form>
 

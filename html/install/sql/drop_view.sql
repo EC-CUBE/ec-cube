@@ -5,3 +5,4 @@ DROP VIEW vw_products_allclass_detail;
 DROP VIEW vw_products_nonclass;
 DROP VIEW vw_cross_products_class;
 DROP VIEW vw_cross_class;
+DROP VIEW vw_download_class;

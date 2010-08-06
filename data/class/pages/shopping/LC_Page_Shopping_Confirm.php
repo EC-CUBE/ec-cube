@@ -79,6 +79,9 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         $uniqid = SC_Utils_Ex::sfCheckNormalAccess($objSiteSess, $objCartSess);
         $this->tpl_uniqid = $uniqid;
 
+        //ダウンロード商品判定
+        $this->cartdown = $objDb->chkCartDown($objCartSess);
+
         // カート集計処理
         $objDb->sfTotalCart($this, $objCartSess);
         if (strlen($this->tpl_message) >= 1) {
@@ -192,6 +195,9 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         // ユーザユニークIDの取得と購入状態の正当性をチェック
         $uniqid = SC_Utils_Ex::sfCheckNormalAccess($objSiteSess, $objCartSess);
         $this->tpl_uniqid = $uniqid;
+
+        //ダウンロード商品判定
+        $this->cartdown = $objDb->chkCartDown($objCartSess);
 
         // カート集計処理
         $objDb->sfTotalCart($this, $objCartSess);

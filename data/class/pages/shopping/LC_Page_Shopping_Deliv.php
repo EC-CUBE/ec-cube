@@ -73,6 +73,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         $objCartSess = new SC_CartSession();
         $objCampaignSess = new SC_CampaignSession();
         $objCustomer = new SC_Customer();
+        $objDb = new SC_Helper_DB_Ex();
         // クッキー管理クラス
         $objCookie = new SC_Cookie(COOKIE_EXPIRE);
         // パラメータ管理クラス
@@ -92,6 +93,9 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         // ユーザユニークIDの取得と購入状態の正当性をチェック
         $uniqid = SC_Utils_Ex::sfCheckNormalAccess($objSiteSess, $objCartSess);
         $this->tpl_uniqid = $uniqid;
+
+        //ダウンロード商品判定
+        $this->cartdown = $objDb->chkCartDown($objCartSess);
 
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
@@ -126,6 +130,16 @@ class LC_Page_Shopping_Deliv extends LC_Page {
                     } else {
                         SC_Utils_Ex::sfDispSiteError(SITE_LOGIN_ERROR);
                     }
+                }
+                //ダウンロード商品判定
+                if($this->cartdown==2){
+                    // 会員情報の住所を受注一時テーブルに書き込む
+                    $objDb->sfRegistDelivData($uniqid, $objCustomer);
+                    // 正常に登録されたことを記録しておく
+                    $objSiteSess->setRegistFlag();
+                    // ダウンロード商品有りの場合は、支払方法画面に転送
+                    $this->sendRedirect($this->getLocation("./payment.php"), array());
+                    exit;
                 }
             } else {
                 // ログインページに戻る
@@ -238,6 +252,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         $objSiteSess = new SC_SiteSession();
         $objCartSess = new SC_CartSession();
         $objCustomer = new SC_Customer();
+        $objDb = new SC_Helper_DB_Ex();
         // クッキー管理クラス
         $objCookie = new SC_Cookie(COOKIE_EXPIRE);
         // パラメータ管理クラス
@@ -257,6 +272,9 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         // ユーザユニークIDの取得と購入状態の正当性をチェック
         $uniqid = SC_Utils_Ex::sfCheckNormalAccess($objSiteSess, $objCartSess);
         $this->tpl_uniqid = $uniqid;
+
+        //ダウンロード商品判定
+        $this->cartdown = $objDb->chkCartDown($objCartSess);
 
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
@@ -292,6 +310,16 @@ class LC_Page_Shopping_Deliv extends LC_Page {
                     } else {
                         SC_Utils_Ex::sfDispSiteError(SITE_LOGIN_ERROR);
                     }
+                }
+                //ダウンロード商品判定
+                if($this->cartdown==2){
+                    // 会員情報の住所を受注一時テーブルに書き込む
+                    $objDb->sfRegistDelivData($uniqid, $objCustomer);
+                    // 正常に登録されたことを記録しておく
+                    $objSiteSess->setRegistFlag();
+                    // ダウンロード商品有りの場合は、支払方法画面に転送
+                    $this->sendRedirect($this->getLocation(MOBILE_URL_SHOP_PAYMENT), array());
+                    exit;
                 }
             } else {
                 // ログインページに戻る

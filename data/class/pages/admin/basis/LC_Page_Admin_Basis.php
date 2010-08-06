@@ -104,7 +104,7 @@ class LC_Page_Admin_Basis extends LC_Page {
                 default:
                     break;
                 }
-                $this->tpl_onload = "window.alert('SHOPマスタの登録が完了しました。');";
+                $this->tpl_onload = "fnCheckLimit('downloadable_days', 'downloadable_days_unlimited', '" . DISABLED_RGB . "'); window.alert('SHOPマスタの登録が完了しました。');";
             }
             if( empty($this->arrForm['regular_holiday_ids']) ) {
                 $this->arrSel = array();
@@ -119,6 +119,7 @@ class LC_Page_Admin_Basis extends LC_Page {
 
             $regular_holiday_ids = explode('|', $this->arrForm['regular_holiday_ids']);
             $this->arrForm['regular_holiday_ids'] = $regular_holiday_ids;
+            $this->tpl_onload = "fnCheckLimit('downloadable_days', 'downloadable_days_unlimited', '" . DISABLED_RGB . "');";
         }
 
         $objView->assignobj($this);
@@ -165,7 +166,9 @@ class LC_Page_Admin_Basis extends LC_Page {
             "message",
             "regular_holiday_ids",
             "latitude",
-            "longitude"
+            "longitude",
+            "downloadable_days",
+            "downloadable_days_unlimited"
         );
         return $arrCol;
     }
@@ -234,6 +237,8 @@ class LC_Page_Admin_Basis extends LC_Page {
         $arrConvList['business_hour'] = "KVa";
         $arrConvList['good_traded'] = "";
         $arrConvList['message'] = "";
+        $arrConvList['downloadable_days'] = "n";
+        $arrConvList['downloadable_days_unlimited'] = "n";
 
         return SC_Utils_Ex::mbConvertKanaWithArray($array, $arrConvList);
     }
@@ -270,7 +275,9 @@ class LC_Page_Admin_Basis extends LC_Page {
 
         $objErr->doFunc(array("取扱商品", "good_traded", LLTEXT_LEN), array("MAX_LENGTH_CHECK"));
         $objErr->doFunc(array("メッセージ", "message", LLTEXT_LEN), array("MAX_LENGTH_CHECK"));
-
+        if(!isset($array['downloadable_days_unlimited']) && $array['downloadable_days_unlimited'] != "1") {
+            $objErr->doFunc(array("ダウンロード可能日数", "downloadable_days", DOWNLOAD_DAYS_LEN), array("EXIST_CHECK", "ZERO_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+        }
         $objErr->doFunc(array("緯度", "latitude", STEXT_LEN), array("NUM_POINT_CHECK", "MAX_LENGTH_CHECK"));
         $objErr->doFunc(array("経度", "longitude", STEXT_LEN), array("NUM_POINT_CHECK", "MAX_LENGTH_CHECK"));
         return $objErr->arrErr;

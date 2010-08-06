@@ -164,6 +164,9 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page {
                         $arrCSVErr = $this->lfCheckError();
                     }
 
+                    //販売方法チェックを行う
+                    $this->checkSalesKind( $this->objFormParam->keyname ,$arrCSV , $arrCSVErr );
+
                     // 入力エラーチェック
                     if(count($arrCSVErr) > 0) {
                         echo "<font color=\"red\">■" . $line . "行目でエラーが発生しました。</font></br>\n";
@@ -240,7 +243,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page {
      * @return void
      */
     function lfInitParam() {
-        
+
         // 商品ステータスの上限文字数の算出
         $masterData = new SC_DB_MasterData_Ex();
         $arrSTATUS = $masterData->getMasterData("mtb_status");
@@ -305,6 +308,10 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page {
             $this->objFormParam->addParam("関連商品($cnt)", "recommend_product_id$cnt", INT_LEN, "n", array("MAX_LENGTH_CHECK","NUM_CHECK"));
             $this->objFormParam->addParam("関連商品コメント($cnt)", "recommend_comment$cnt", LTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
         }
+
+        $this->objFormParam->addParam("実商品・ダウンロード(1:実商品 2:ダウンロード)", "down", INT_LEN, "n", array("EXIST_CHECK","MAX_LENGTH_CHECK","NUM_CHECK"));
+        $this->objFormParam->addParam("ダウンロードファイル名", "down_filename", STEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
+        $this->objFormParam->addParam("ダウンロード商品用ファイル", "down_realfilename", LTEXT_LEN, "KVa", array("DOWN_FILE_EXISTS","SPTAB_CHECK","MAX_LENGTH_CHECK"));
 
         $this->objFormParam->addParam("商品カテゴリ", "category_id", STEXT_LEN, "n", array("EXIST_CHECK", "SPTAB_CHECK"));
     }
@@ -371,17 +378,17 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page {
             // UPDATEの実行
             $where = "product_id = ?";
             $objQuery->update("dtb_products", $sqlval, $where, array($sqlval['product_id']));
-            
+
             $product_id = $sqlval['product_id'];
         } else {
             // 新規登録
 
             unset($sqlval['product_id']);
             $sqlval['create_date'] = $time;
-            
+
             // INSERTの実行
             $objQuery->insert("dtb_products", $sqlval);
-            
+
             $product_id = $objQuery->currval("dtb_products","product_id");
         }
 
@@ -533,6 +540,53 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page {
          echo "<font color=\"red\">"
              . htmlspecialchars($val, ENT_QUOTES)
              . "</font></br>\n";
+    }
+
+    /**
+     * 実商品・ダウンロード判定チェック処理
+     *
+     * @param $p_keyname    csv項目番号配列
+     * @param $p_arrCSV     csv入力データ配列
+     * @param $p_arrCSVErr  エラー格納配列
+     */
+    function checkSalesKind( $p_keyname , $p_arrCSV , &$p_arrCSVErr ){
+
+        //実商品・ダウンロードカラムの値を取得する
+        $sDownFlg_Key = array_search('down', $p_keyname );
+        if( $sDownFlg_Key != '' ){
+            //実商品・ダウンロードカラムが存在する場合
+            //実商品・ダウンロードカラムの値を取得する
+            $sDownFlg = $p_arrCSV[$sDownFlg_Key];
+
+            //ダウンロードファイル名を取得する
+            $sFilename_Key = array_search('down_filename', $p_keyname );
+            $sFilename = $p_arrCSV[$sFilename_Key];
+
+            //ダウンロード商品用ファイルアップロードを取得する
+            $sRealdown_filename_Key = array_search('down_realfilename', $p_keyname );
+            $sRealdown_filename = $p_arrCSV[$sRealdown_filename_Key];
+
+            if( $sDownFlg == 1 ){
+                //実商品の場合
+                if( mb_strlen($sFilename) > 0 ){
+                    $p_arrCSVErr["down_filename"] = "※ 実商品の場合はダウンロードファイル名は入力できません。\n";
+                }
+                if( mb_strlen($sRealdown_filename) > 0 ){
+                    $p_arrCSVErr["down_realfilename"] = "※ 実商品の場合はダウンロード商品用ファイルアップロードは入力できません。\n";
+                }
+            }else if( $sDownFlg == 2 ){
+                //ダウンロード商品の場合
+                if( mb_strlen($sFilename) <= 0 ){
+                    $p_arrCSVErr["down_filename"] = "※ ダウンロード商品の場合はダウンロードファイル名は必須です。\n";
+                }
+                if( mb_strlen($sRealdown_filename) <=  0 ){
+                    $p_arrCSVErr["down_realfilename"] = "※ ダウンロード商品の場合はダウンロード商品用ファイルアップロードは必須です。\n";
+                }
+            }else{
+                //その他
+                $p_arrCSVErr["down"] = "※ 実商品・ダウンロード(1:実商品 2:ダウンロード)の設定が不正です。\n";
+            }
+        }
     }
 }
 ?>

@@ -85,12 +85,20 @@ class LC_Page_Shopping_Payment extends LC_Page {
         // ユニークIDを引き継ぐ
         $this->tpl_uniqid = $uniqid;
 
+        //ダウンロード商品判定
+        $this->cartdown = $objDb->chkCartDown($objCartSess);
+
         // 会員ログインチェック
         if($this->objCustomer->isLoginSuccess()) {
             $this->tpl_login = '1';
             $this->tpl_user_point = $this->objCustomer->getValue('point');
             //戻り先URL
-            $this->tpl_back_url = URL_DELIV_TOP;
+            if ($this->cartdown == 2) {
+                // ダウンロード商品のみの場合はカート画面へ戻る
+                $this->tpl_back_url = URL_CART_TOP;
+            } else {
+                $this->tpl_back_url = URL_DELIV_TOP;
+            }
         } else {
             $this->tpl_back_url = URL_SHOP_TOP . "?from=nonmember";
         }
@@ -202,6 +210,9 @@ class LC_Page_Shopping_Payment extends LC_Page {
         // ユニークIDを引き継ぐ
         $this->tpl_uniqid = $uniqid;
 
+        //ダウンロード商品判定
+        $this->cartdown = $objDb->chkCartDown($objCartSess);
+
         // 会員ログインチェック
         if($this->objCustomer->isLoginSuccess(true)) {
             $this->tpl_login = '1';
@@ -235,9 +246,19 @@ class LC_Page_Shopping_Payment extends LC_Page {
             default:
                 // 正常な推移であることを記録しておく
                 $objSiteSess->setRegistFlag();
-                $this->sendRedirect(MOBILE_URL_SHOP_TOP, true);
+                if ($this->cartdown == 2) {
+                    // ダウンロード商品のみの場合はカート画面へ戻る
+                    $this->sendRedirect($this->getLocation(MOBILE_URL_CART_TOP), true);
+                } else {
+                    $this->sendRedirect(MOBILE_URL_SHOP_TOP, true);
+                }
                 exit;
             }
+        }
+
+        // ダウンロード商品のみで、モードがお届け日時指定の場合はモードを変更
+        if ($this->cartdown == 2 && $_POST['mode'] == 'deliv_date') {
+            $_POST['mode'] = 'confirm';
         }
 
         switch($_POST['mode']) {
@@ -340,12 +361,26 @@ class LC_Page_Shopping_Payment extends LC_Page {
     function lfGetPayment($total_pretax) {
         $objQuery = new SC_Query();
         $objQuery->setOrder("rank DESC");
+
+        //削除されていない支払方法を取得
+        $where = "del_flg = 0 AND deliv_id IN (SELECT deliv_id FROM dtb_deliv WHERE del_flg = 0) ";
+        //ダウンロード商品の有無判定
+        if($this->cartdown != 0){
+            //ダウンロード商品を含む場合は、クレジット決済以外は選択できない。
+            $where .= "AND payment_id =  " . CREDIT_PAYMENT;
+        }
+
         // 削除されていない支払方法を取得
-        $arrRet = $objQuery->select("payment_id, payment_method, rule, upper_rule, note, payment_image", "dtb_payment", "del_flg = 0 AND deliv_id IN (SELECT deliv_id FROM dtb_deliv WHERE del_flg = 0) ");
+        $arrRet = $objQuery->select("payment_id, payment_method, rule, upper_rule, note, payment_image", "dtb_payment", $where);
+
         // 配列初期化
         $data = array();
         // 選択可能な支払方法を判定
         foreach($arrRet as $data) {
+            //ダウンロード販売に対する注意追加
+            if($this->cartdown != 0){
+                $data['payment_method'] = $data['payment_method'] . "　　（ダウンロード商品を含む場合、クレジット決済のみ選択可能です）";
+            }
             // 下限と上限が設定されている
             if (strlen($data['rule']) != 0 && strlen($data['upper_rule']) != 0) {
                 if ($data['rule'] <= $total_pretax && $data['upper_rule'] >= $total_pretax) {

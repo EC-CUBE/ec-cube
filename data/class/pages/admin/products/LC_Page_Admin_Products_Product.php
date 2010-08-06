@@ -38,6 +38,9 @@ class LC_Page_Admin_Products_Product extends LC_Page {
     /** ファイル管理クラスのインスタンス */
     var $objUpFile;
 
+    /** ダウンロード用ファイル管理クラスのインスタンス */
+    var $objDownFile;
+
     /** hidden 項目の配列 */
     var $arrHidden;
 
@@ -70,6 +73,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         $this->arrDELIVERYDATE = $masterData->getMasterData("mtb_delivery_date");
         $this->arrAllowedTag = $masterData->getMasterData("mtb_allowed_tag");
         $this->arrMaker = SC_Helper_DB_Ex::sfGetIDValueList("dtb_maker", "maker_id", "name");
+        $this->arrDown = $masterData->getMasterData("mtb_down");
         $this->tpl_nonclass = true;
     }
 
@@ -87,6 +91,13 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         // 認証可否の判定
         $objSess = new SC_Session();
         SC_Utils_Ex::sfIsSuccess($objSess);
+
+        // Downファイル管理クラス
+        $this->objDownFile = new SC_UploadFile(DOWN_TEMP_DIR, DOWN_SAVE_DIR);
+        // Downファイル情報の初期化
+        $this->lfInitDownFile();
+        // Hiddenからのデータを引き継ぐ
+        $this->objDownFile->setHiddenFileList($_POST);
 
         // ファイル管理クラス
         $this->objUpFile = new SC_UploadFile(IMAGE_TEMP_DIR, IMAGE_SAVE_DIR);
@@ -123,6 +134,8 @@ class LC_Page_Admin_Products_Product extends LC_Page {
                 $this->arrForm = $this->lfGetProduct($_POST['product_id']);
                 // DBデータから画像ファイル名の読込
                 $this->objUpFile->setDBFileList($this->arrForm);
+                // DBデータからダウンロードファイル名の読込
+                $this->objDownFile->setDBDownFile($this->arrForm);
 
                 // 商品ステータスの変換
                 $arrRet = SC_Utils_Ex::sfSplitCBValue($this->arrForm['product_flag'], "product_flag");
@@ -174,6 +187,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
                 $objDb->sfMaker_Count($objQuery);
                 // 一時ファイルを本番ディレクトリに移動する
                 $this->objUpFile->moveTempFile();
+                $this->objDownFile->moveTempDownFile();
 
                 break;
             // 画像のアップロード
@@ -191,6 +205,20 @@ class LC_Page_Admin_Products_Product extends LC_Page {
             // 画像の削除
             case 'delete_image':
                 $this->objUpFile->deleteFile($_POST['image_key']);
+                $this->lfProductPage(); // 商品登録ページ
+                break;
+            // ダウンロード商品ファイルアップロード
+            case 'upload_down':
+                // ファイル存在チェック
+                $this->arrErr = array_merge((array)$this->arrErr, (array)$this->objDownFile->checkEXISTS($_POST['down_key']));
+                // 画像保存処理
+                $this->arrErr[$_POST['down_key']] = $this->objDownFile->makeTempDownFile();
+
+                $this->lfProductPage(); // 商品登録ページ
+                break;
+            // ダウンロードファイルの削除
+            case 'delete_down':
+                $this->objDownFile->deleteFile($_POST['down_key']);
                 $this->lfProductPage(); // 商品登録ページ
                 break;
             // 確認ページからの戻り
@@ -231,6 +259,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
                 break;
             }
         }
+
         // サブ情報表示・非表示のチェックに使用する。
         $this->sub_find = $sub_find;
         $objView->assignobj($this);
@@ -352,6 +381,9 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         if($this->arrForm['status'] == "") {
             $this->arrForm['status'] = DEFAULT_PRODUCT_DISP;
         }
+        if($this->arrForm['down'] == "") {
+            $this->arrForm['down'] = DEFAULT_PRODUCT_DOWN;
+        }
 
         if(isset($this->arrForm['product_flag']) && !is_array($this->arrForm['product_flag'])) {
             // 商品ステータスの分割読込
@@ -360,9 +392,11 @@ class LC_Page_Admin_Products_Product extends LC_Page {
 
         // HIDDEN用に配列を渡す。
         $this->arrHidden = array_merge((array)$this->arrHidden, (array)$this->objUpFile->getHiddenFileList());
+        $this->arrHidden = array_merge((array)$this->arrHidden, (array)$this->objDownFile->getHiddenFileList());
         // Form用配列を渡す。
         $this->arrFile = $this->objUpFile->getFormFileList(IMAGE_TEMP_URL, IMAGE_SAVE_URL);
 
+        $this->arrForm['down_realfilename'] = $this->objDownFile->getFormDownFile();
 
         // アンカーを設定
         if (isset($_POST['image_key']) && !empty($_POST['image_key'])) {
@@ -400,7 +434,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
                             "main_list_comment", "main_comment", "point_rate",
                             "deliv_fee", "comment1", "comment2", "comment3",
                             "comment4", "comment5", "comment6", "main_list_comment",
-                            "sale_limit", "deliv_date_id", "maker_id", "note");
+                            "sale_limit", "deliv_date_id", "maker_id", "note", "down", "down_filename", "down_realfilename");
         $arrList = SC_Utils_Ex::arrayDefineIndexes($arrList, $checkArray);
 
         // INSERTする値を作成する。
@@ -422,6 +456,9 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         $sqlval['deliv_date_id'] = $arrList['deliv_date_id'];
         $sqlval['maker_id'] = $arrList['maker_id'];
         $sqlval['note'] = $arrList['note'];
+        $sqlval['down'] = $arrList['down'];
+        $sqlval['down_filename'] = $arrList['down_filename'];
+        $sqlval['down_realfilename'] = $arrList['down_realfilename'];
         $sqlval['update_date'] = "Now()";
         $sqlval['creator_id'] = $_SESSION['member_id'];
         $arrRet = $this->objUpFile->getDBFileList();
@@ -489,6 +526,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
             // 削除要求のあった既存ファイルの削除
             $arrRet = $this->lfGetProduct($arrList['product_id']);
             $this->objUpFile->deleteDBFile($arrRet);
+            $this->objDownFile->deleteDBDownFile($arrRet);
 
             // UPDATEの実行
             $where = "product_id = ?";
@@ -579,6 +617,23 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         $objErr->doFunc(array("発送日目安", "deliv_date_id", INT_LEN), array("NUM_CHECK"));
         $objErr->doFunc(array("メーカー", 'maker_id', INT_LEN), array("NUM_CHECK"));
 
+        //ダウンロード商品チェック
+        if($array['down'] == "2") {
+            $objErr->doFunc(array("ダウンロードファイル名", "down_filename", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+            if($array['down_realfilename'] == "") {
+                $objErr->arrErr['down_realfilename'] = "※ ダウンロード商品の場合はダウンロード商品用ファイルをアップロードしてください。<br />";
+            }
+        }
+        //実商品チェック
+        if($array['down'] == "1") {
+            if($array['down_filename'] != "") {
+                $objErr->arrErr['down_filename'] = "※ 実商品の場合はダウンロードファイル名を設定できません。<br />";
+            }
+            if($array['down_realfilename'] != "") {
+                $objErr->arrErr['down_realfilename'] = "※ 実商品の場合はダウンロード商品用ファイルをアップロードできません。<br />ファイルを取り消してください。<br />";
+            }
+        }
+
         if($this->tpl_nonclass) {
             $objErr->doFunc(array("商品コード", "product_code", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK","MAX_LENGTH_CHECK"));
             $objErr->doFunc(array(NORMAL_PRICE_TITLE, "price01", PRICE_LEN), array("NUM_CHECK", "MAX_LENGTH_CHECK"));
@@ -648,6 +703,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
 
         // Form用配列を渡す。
         $this->arrFile = $this->objUpFile->getFormFileList(IMAGE_TEMP_URL, IMAGE_SAVE_URL);
+        $this->arrForm['down_realfilename'] = $this->objDownFile->getFormDownFile();
     }
 
     // 縮小した画像をセットする
@@ -813,6 +869,10 @@ class LC_Page_Admin_Products_Product extends LC_Page {
 
         // INSERTの実行
         $objQuery->insert('dtb_products_class', $sqlval);
+    }
+    /* ダウンロードファイル情報の初期化 */
+    function lfInitDownFile() {
+        $this->objDownFile->addFile("ダウンロード販売用ファイル", 'down_file', array('zip', 'jpg', 'mp3', 'gif', 'png'),DOWN_SIZE, true, 0, 0);
     }
 }
 ?>

@@ -55,6 +55,8 @@ INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_b
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_baseinfo','product_tpl','商品一覧のテンプレートファイル番号');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_baseinfo','detail_tpl','商品詳細のテンプレートファイル番号');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_baseinfo','mypage_tpl','MYページのテンプレートファイル番号');
+INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_baseinfo','downloadable_days','ダウンロード可能日数');
+INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_baseinfo','downloadable_days_unlimited','ダウンロード可能日数制限（1:日数制限無し)');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_deliv','deliv_id','配送業者ID');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_deliv','name','配送業者名（ヤマト運輸）');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_deliv','service_name','名称（クロネコヤマト）');

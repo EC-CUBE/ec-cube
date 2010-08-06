@@ -63,6 +63,7 @@ function selectAll(target) {
 <!--{/foreach}-->
 <input type="hidden" name="mode" value="edit" />
 <input type="hidden" name="image_key" value="" />
+<input type="hidden" name="down_key" value="">
 <input type="hidden" name="product_id" value="<!--{$arrForm.product_id}-->" />
 <input type="hidden" name="product_class_id" value="<!--{$arrForm.product_class_id}-->" />
 <input type="hidden" name="copy_product_id" value="<!--{$arrForm.copy_product_id}-->" />
@@ -107,6 +108,34 @@ function selectAll(target) {
             </td>
           </tr>
         </table>
+      </td>
+    </tr>
+    <tr>
+      <th>実商品・ダウンロード<span class="attention"> *</span></th>
+      <td>
+        <input type="radio" name="down" value="1" <!--{if $arrForm.down == "1"}-->checked<!--{/if}-->/>実商品　
+        <input type="radio" name="down" value="2" <!--{if $arrForm.down == "2"}-->checked<!--{/if}--> />ダウンロード
+      </td>
+    </tr>
+    <tr>
+      <th>ダウンロードファイル名<span class="attention"> *</span></th>
+      <td>
+        <span class="attention"><!--{$arrErr.down_filename}--></span>
+        <input type="text" name="down_filename" value="<!--{$arrForm.down_filename|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.down_filename != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" size="60" class="box60" />
+        <span class="red"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
+      </td>
+    </tr>
+    <tr>
+      <!--{assign var=key value="down_file"}-->
+      <th>ダウンロード商品用<BR>ファイルアップロード<span class="attention"> *</span></th>
+      <td>
+        <span class="attention"><!--{$arrErr[$key]}--><!--{$arrErr.down_realfilename}--></span>
+          <!--{if $arrForm.down_realfilename != ""}-->
+            <!--{$arrForm.down_realfilename|escape}--><input type="hidden" name="down_realfilename" value="<!--{$arrForm.down_realfilename|escape}-->">
+            <a href="" onclick="selectAll('category_id'); fnModeSubmit('delete_down', 'down_key', '<!--{$key}-->'); return false;">[ファイルの取り消し]</a><br>
+          <!--{/if}-->
+          <input type="file" name="down_file" size="50" class="box50" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
+          <input type="button" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_down', 'down_key', '<!--{$key}-->')" value="アップロード">
       </td>
     </tr>
     <tr>

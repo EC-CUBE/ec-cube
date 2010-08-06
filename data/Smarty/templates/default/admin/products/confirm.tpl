@@ -45,6 +45,26 @@
       </td>
     </tr>
     <tr>
+      <th>実商品・ダウンロード</th>
+      <td>
+      <!--{$arrDown[$arrForm.down]}-->
+      </td>
+    </tr>
+    <tr>
+      <th>ダウンロードファイル名</th>
+      <td>
+      <!--{$arrForm.down_filename|escape}-->
+      </td>
+    </tr>
+    <tr>
+      <th>ダウンロード商品用<BR />ファイル</th>
+      <td>
+      <!--{if $arrForm.down_realfilename != ""}-->
+          <!--{$arrForm.down_realfilename|escape}-->
+      <!--{/if}-->
+      </td>
+    </tr>
+    <tr>
       <th>公開・非公開</th>
       <td>
       <!--{$arrDISP[$arrForm.status]}-->
@@ -227,7 +247,7 @@
     </tr>
     <!--▲商品<!--{$smarty.section.cnt.iteration}-->-->
     <!--{/section}-->
-  
+
     <!--{if $smarty.const.OPTION_RECOMMEND == 1}-->
     <!--▼関連商品-->
     <!--{section name=cnt loop=$smarty.const.RECOMMEND_PRODUCT_MAX}-->

@@ -69,7 +69,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
         $sql = $this->sfChangeTrunc($sql);
         return $sql;
     }
-    
+
     /**
      * 文字コード情報を取得する
      *
@@ -80,7 +80,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
         $arrRet = $objQuery->getAll("SHOW VARIABLES LIKE 'char%'");
         return $arrRet;
     }
-    
+
     /**
      * テーブルの存在チェックを行う SQL 文を返す.
      *
@@ -179,17 +179,17 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
      * @return string インラインビューに変換した SQL 文
      */
     function sfChangeView($sql){
-        
+
         $arrViewTmp = $this->viewToSubQuery();
-        
+
             // viewのwhereを変換
         foreach($arrViewTmp as $key => $val){
             $arrViewTmp[$key] = strtr($arrViewTmp[$key], $this->getWhereConverter());
         }
-            
+
             // viewを変換
         $changesql = strtr($sql, $arrViewTmp);
-        
+
         return $changesql;
     }
 
@@ -228,7 +228,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
         $changesql = eregi_replace("( TRUNC)", " TRUNCATE", $sql);
         return $changesql;
     }
-    
+
     /**
      * WHERE 句置換用の配列を返す.
      *
@@ -384,6 +384,9 @@ __EOS__;
                         dtb_products.create_date,
                         dtb_products.update_date,
                         dtb_products.deliv_date_id,
+                        dtb_products.down,
+                        dtb_products.down_filename,
+                        dtb_products.down_realfilename,
                         T4.product_code_min,
                         T4.product_code_max,
                         T4.price01_min,
@@ -465,6 +468,12 @@ __EOS__;
                 (SELECT T1.category_id, T1.category_name, T1.parent_category_id, T1.level, T1.rank, T2.product_count
                 FROM dtb_category AS T1 LEFT JOIN dtb_category_total_count AS T2
                 ON T1.category_id = T2.category_id)
+__EOS__;
+
+            $sql['vw_download_class'] = <<< __EOS__
+                (SELECT p.product_id AS product_id, p.down_realfilename AS down_realfilename , p.down_filename AS down_filename, od.order_id AS order_id, o.customer_id AS customer_id, o.commit_date AS commit_date, o.status AS status FROM
+                    dtb_products p, dtb_order_detail od, dtb_order o
+                WHERE p.product_id = od.product_id AND od.order_id = o.order_id)
 __EOS__;
         }
 

@@ -148,7 +148,10 @@ CREATE TABLE dtb_baseinfo (
     message text,
     regular_holiday_ids text,
     latitude text,
-    longitude text
+    longitude text,
+    regular_holiday_ids text,
+    downloadable_days numeric DEFAULT 30,
+    downloadable_days_unlimited smallint
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_deliv (
@@ -340,6 +343,9 @@ CREATE TABLE dtb_products (
     create_date datetime NOT NULL,
     update_date datetime,
     deliv_date_id int,
+    down smallint NOT NULL ,
+    down_filename text,
+    down_realfilename text,
     PRIMARY KEY (product_id)
 ) TYPE=InnoDB;
 
@@ -1290,4 +1296,11 @@ CREATE TABLE mtb_constants (
     rank smallint NOT NULL DEFAULT 0,
     remarks text,
     PRIMARY KEY (id(64))
+) TYPE=InnoDB;
+
+CREATE TABLE mtb_down (
+    id int2,
+    name text,
+    rank int2 NOT NULL,
+    PRIMARY KEY (id)
 ) TYPE=InnoDB;

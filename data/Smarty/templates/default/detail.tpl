@@ -35,7 +35,7 @@ function fnSetClassCategories(form, classcat_id2_selected) {
             for(i = count; i >= 0; i--) {
                 sele2.options[i] = null;
             }
-            
+
             // 規格2に選択肢を割り当てる
             classcats = classCategories[sele1.value];
             i = 0;
@@ -54,7 +54,7 @@ function fnCheckStock(form) {
     classcat_id1 = form.classcategory_id1.value;
     classcat_id2 = form.classcategory_id2 ? form.classcategory_id2.value : 0;
     classcat2 = classCategories[classcat_id1][classcat_id2];
-    
+
     // 商品コード
     eleDefault = document.getElementById('product_code_default');
     eleDynamic = document.getElementById('product_code_dynamic');
@@ -68,7 +68,7 @@ function fnCheckStock(form) {
         eleDefault.style.display = '';
         eleDynamic.innerHTML = '';
     }
-    
+
     // 在庫(品切れ)
     eleDefault = document.getElementById('cartbtn_default');
     eleDynamic = document.getElementById('cartbtn_dynamic');
@@ -82,7 +82,7 @@ function fnCheckStock(form) {
         eleDefault.style.display = '';
         eleDynamic.innerHTML = '';
     }
-    
+
     // 通常価格
     eleDefault = document.getElementById('price01_default');
     eleDynamic = document.getElementById('price01_dynamic');
@@ -99,7 +99,7 @@ function fnCheckStock(form) {
             eleDynamic.innerHTML = '';
         }
     }
-    
+
     // 販売価格
     eleDefault = document.getElementById('price02_default');
     eleDynamic = document.getElementById('price02_dynamic');
@@ -114,7 +114,7 @@ function fnCheckStock(form) {
         eleDefault.style.display = '';
         eleDynamic.innerHTML = '';
     }
-    
+
     // ポイント
     eleDefault = document.getElementById('point_default');
     eleDynamic = document.getElementById('point_dynamic');
@@ -139,10 +139,10 @@ $(document).ready(function() {
 
 <!--▼CONTENTS-->
 <div id="undercolumn" class="product product_detail">
-    
+
     <!--★タイトル★-->
     <h2 class="title"><!--{$tpl_subtitle|escape}--></h2>
-    
+
     <!--★詳細メインコメント★-->
     <div class="main_comment"><!--{$arrProduct.main_comment|nl2br_html}--></div>
 
@@ -150,7 +150,7 @@ $(document).ready(function() {
         <div id="detailphotoblock">
 
             <!--{assign var=key value="main_image"}-->
-            
+
             <!--★画像★-->
             <a
                 <!--{if $arrProduct.main_large_image|strlen >= 1}-->
@@ -185,6 +185,11 @@ $(document).ready(function() {
             <!--{/if}-->
             <!--▲商品ステータス-->
 
+            <!--★ダウンロード販売★-->
+            <!--{if $arrProduct.down == 2}-->
+                <div><font color="red">本商品はダウンロード販売となります。<br /> 購入後はMYページの購入履歴からダウンロード可能です。</font></div><br />
+            <!--{/if}-->
+
             <!--★商品コード★-->
             <div>商品コード：
                 <span id="product_code_default">
@@ -195,10 +200,10 @@ $(document).ready(function() {
                     <!--{/if}-->
                 </span><span id="product_code_dynamic"></span>
             </div>
-            
+
             <!--★商品名★-->
             <h2><!--{$arrProduct.name|escape}--></h2>
-            
+
             <!--★販売価格★-->
             <div class="sale_price"><!--{$smarty.const.SALE_PRICE_TITLE}--><span class="mini">(税込)</span>：
                 <span class="price">
@@ -212,7 +217,7 @@ $(document).ready(function() {
                     円
                 </span>
             </div>
-            
+
             <!--★通常価格★-->
             <!--{if $arrProduct.price01_max > 0}-->
                 <div class="normal_price">
@@ -275,7 +280,7 @@ $(document).ready(function() {
                 <input type="hidden" name="mode" value="cart" />
                 <input type="hidden" name="product_id" value="<!--{$tpl_product_id}-->" />
                 <input type="hidden" name="favorite_product_id" value="" />
-                
+
                 <!--{if $tpl_stock_find}-->
                     <dl>
                         <!--{if $tpl_classcat_find1}-->
@@ -294,7 +299,7 @@ $(document).ready(function() {
                             </dd>
                             <!--▲規格1-->
                         <!--{/if}-->
-    
+
                         <!--{if $tpl_classcat_find2}-->
                             <!--▼規格2-->
                             <dt><!--{$tpl_class_name2|escape}--></dt>
@@ -320,7 +325,7 @@ $(document).ready(function() {
                         </dd>
                     </dl>
                 <!--{/if}-->
-                
+
                 <div class="btn">
                     <!--{if $smarty.const.OPTION_FAVOFITE_PRODUCT == 1 && $tpl_login === true}-->
                         <div>
@@ -337,7 +342,7 @@ $(document).ready(function() {
                             <!--{/if}-->
                         </div>
                     <!--{/if}-->
-                    
+
                     <!--{if $tpl_stock_find}-->
                         <div id="cartbtn_default">
                             <!--★カゴに入れる★-->
@@ -372,9 +377,9 @@ $(document).ready(function() {
             <div class="subarea">
                 <h3><!--★サブタイトル★--><!--{$arrProduct[$key]|escape}--></h3>
                 <!--{assign var=ckey value="sub_comment`$smarty.section.cnt.index+1`"}-->
-                
+
                 <div class="subtext"><!--★サブテキスト★--><!--{$arrProduct[$ckey]|nl2br_html}--></div>
-                
+
                 <!--▼サブ画像-->
                 <!--{assign var=key value="sub_image`$smarty.section.cnt.index+1`"}-->
                 <!--{assign var=lkey value="sub_large_image`$smarty.section.cnt.index+1`"}-->
@@ -462,7 +467,7 @@ $(document).ready(function() {
                 <!--{if $arrRecommend[cnt].product_id}-->
                 <!-- 左列 -->
                 <div class="whoboughtleft">
-                    
+
                     <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id|escape:url}-->">
                         <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$arrRecommend[cnt].main_list_image|sfNoImageMainList|escape}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[cnt].name|escape}-->" /></a>
 
@@ -487,10 +492,10 @@ $(document).ready(function() {
                 <!--{if $arrRecommend[cnt].product_id}-->
                 <!-- 右列 -->
                 <div class="whoboughtright">
-                    
+
                     <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id|escape:url}-->">
                         <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$arrRecommend[cnt].main_list_image|sfNoImageMainList|escape}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[cnt].name|escape}-->" /></a>
-                    
+
                     <!--{assign var=price02_min value=`$arrRecommend[cnt].price02_min`}-->
                     <!--{assign var=price02_max value=`$arrRecommend[cnt].price02_max`}-->
                     <h3><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id|escape:url}-->"><!--{$arrRecommend[cnt].name|escape}--></a></h3>
@@ -515,6 +520,6 @@ $(document).ready(function() {
         </div>
     <!--{/if}-->
     <!--▲関連商品-->
-    
+
 </div>
 <!--▲CONTENTS-->

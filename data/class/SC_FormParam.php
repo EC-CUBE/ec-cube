@@ -241,6 +241,12 @@ class SC_FormParam {
                         $objErr->arrErr[$val] = "※ " . $this->disp_name[$cnt] . "のファイルが存在しません。<br>";
                     }
                     break;
+                // ダウンロード用ファイルの存在チェック
+                case 'DOWN_FILE_EXISTS':
+                    if($this->param[$cnt] != "" && !file_exists(DOWN_SAVE_DIR . $this->param[$cnt])) {
+                        $objErr->arrErr[$val] = "※ " . $this->disp_name[$cnt] . "のファイルが存在しません。<br>";
+                    }
+                    break;
                 default:
                     $objErr->arrErr[$val] = "※※　エラーチェック形式($func)には対応していません　※※ <br>";
                     break;

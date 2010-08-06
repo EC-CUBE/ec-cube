@@ -50,6 +50,7 @@
             <tr>
                 <th>商品コード</th>
                 <th>商品名</th>
+                <th>配送商品/ダウンロード</th>
                 <th>単価</th>
                 <th>数量</th>
                 <th>小計</th>
@@ -58,6 +59,19 @@
                 <tr>
                     <td><!--{$orderDetail.product_code|escape}--></td>
                     <td><a<!--{if $orderDetail.enable}--> href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$orderDetail.product_id|escape:url}-->"<!--{/if}-->><!--{$orderDetail.product_name|escape}--></a></td>
+                    <td>
+                    <!--{ if $orderDetail.down == "2"}-->
+                        <!--{ if $orderDetail.price == "0" || ( $orderDetail.status >= "5" && $orderDetail.effective == "1" )}-->
+                            <a target="_self" href="<!--{$smarty.const.URL_DIR}-->mypage/download.php?order_id=<!--{$arrDisp.order_id}-->&product_id=<!--{$orderDetail.product_id}-->">ダウンロード</a>
+                        <!--{ elseif $orderDetail.status != "5"}-->
+                            ダウンロード商品<BR />（入金確認中）
+                        <!--{ elseif $orderDetail.effective != "1"}-->
+                            ダウンロード商品<BR />（期限切れ）
+                        <!--{ /if }-->
+                    <!--{ else }-->
+                            配送商品
+                    <!--{ /if }-->
+                    </td>
                     <!--{assign var=price value=`$orderDetail.price`}-->
                     <!--{assign var=quantity value=`$orderDetail.quantity`}-->
                     <td class="pricetd"><!--{$price|escape|number_format}-->円</td>

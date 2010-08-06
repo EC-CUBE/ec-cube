@@ -76,6 +76,7 @@ class LC_Page_Shopping extends LC_Page {
         $objCampaignSess = new SC_CampaignSession();
         $objCustomer = new SC_Customer();
         $objCookie = new SC_Cookie();
+        $objDb = new SC_Helper_DB_Ex();
         $this->objFormParam = new SC_FormParam();            // フォーム用
         $this->lfInitParam();                                // パラメータ情報の初期化
         $this->objFormParam->setParam($_POST);            // POST値の取得
@@ -84,10 +85,23 @@ class LC_Page_Shopping extends LC_Page {
         $uniqid = SC_Utils_Ex::sfCheckNormalAccess($objSiteSess, $objCartSess);
         $this->tpl_uniqid = $uniqid;
 
+        //ダウンロード商品判定
+        $this->cartdown = $objDb->chkCartDown($objCartSess);
+
         // ログインチェック
         if($objCustomer->isLoginSuccess()) {
-            // すでにログインされている場合は、お届け先設定画面に転送
-            $this->sendRedirect($this->getLocation("./deliv.php"), array());
+            // すでにログインされている場合
+            if ($this->cartdown == 2) {
+                // 会員情報の住所を受注一時テーブルに書き込む
+                $objDb->sfRegistDelivData($uniqid, $objCustomer);
+                // 正常に登録されたことを記録しておく
+                $objSiteSess->setRegistFlag();
+                //カート内が全てダウンロード商品の場合は支払方法設定画面に転送
+                $this->sendRedirect($this->getLocation("./payment.php"), array());
+            } else {
+                // お届け先設定画面に転送
+                $this->sendRedirect($this->getLocation("./deliv.php"), array());
+            }
             exit;
         }
 
@@ -102,6 +116,10 @@ class LC_Page_Shopping extends LC_Page {
         switch($_POST['mode']) {
         case 'nonmember_confirm':
             $this->lfSetNonMember($this);
+            //非会員のダウンロード商品を含んだ買い物はNG
+            if($this->cartdown != 0){
+                SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, $objSiteSess, false, "ダウンロード商品を含むお買い物は、会員登録が必要です。<br/>お手数ですが、会員登録をお願いします。");
+            }
             // ※breakなし
         case 'confirm':
             // 入力値の変換
@@ -132,6 +150,10 @@ class LC_Page_Shopping extends LC_Page {
             break;
         case 'nonmember':
             $this->lfSetNonMember($this);
+            //非会員のダウンロード商品を含んだ買い物はNG
+            if($this->cartdown != 0){
+                SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, $objSiteSess, false, "ダウンロード商品を含むお買い物は、会員登録が必要です。<br/>お手数ですが、会員登録をお願いします。");
+            }
             // ※breakなし
         default:
             if(isset($_GET['from']) && $_GET['from'] == 'nonmember') {
@@ -197,6 +219,7 @@ class LC_Page_Shopping extends LC_Page {
         $objCookie = new SC_Cookie();
         $this->objFormParam = new SC_FormParam();            // フォーム用
         $helperMobile = new SC_Helper_Mobile_Ex();
+        $objDb = new SC_Helper_DB_Ex();
         $this->lfInitParam();                                // パラメータ情報の初期化
         $this->objFormParam->setParam($_POST);            // POST値の取得
 
@@ -205,10 +228,23 @@ class LC_Page_Shopping extends LC_Page {
 
         $this->tpl_uniqid = $uniqid;
 
+        //ダウンロード商品判定
+        $this->cartdown = $objDb->chkCartDown($objCartSess);
+
         // ログインチェック
         if($objCustomer->isLoginSuccess(true)) {
-            // すでにログインされている場合は、お届け先設定画面に転送
-            $this->sendRedirect($this->getLocation('./deliv.php'), true);
+            // すでにログインされている場合
+            if ($this->cartdown == 2) {
+                // 会員情報の住所を受注一時テーブルに書き込む
+                $objDb->sfRegistDelivData($uniqid, $objCustomer);
+                // 正常に登録されたことを記録しておく
+                $objSiteSess->setRegistFlag();
+                //カート内が全てダウンロード商品の場合は支払方法設定画面に転送
+                $this->sendRedirect($this->getLocation("./payment.php"), array());
+            } else {
+                // お届け先設定画面に転送
+                $this->sendRedirect($this->getLocation("./deliv.php"), array());
+            }
             exit;
         }
 

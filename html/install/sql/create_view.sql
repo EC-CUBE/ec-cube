@@ -116,6 +116,9 @@ CREATE VIEW vw_products_allclass_detail AS
         dtb_products.create_date,
         dtb_products.update_date,
         dtb_products.deliv_date_id,
+        dtb_products.down,
+        dtb_products.down_filename,
+        dtb_products.down_realfilename,
         T4.product_code_min,
         T4.product_code_max,
         T4.price01_min,
@@ -182,11 +185,11 @@ CREATE VIEW vw_product_class AS
               price02,
               stock_unlimited,
               product_code
-         FROM (dtb_products_class AS T1 
+         FROM (dtb_products_class AS T1
     LEFT JOIN dtb_classcategory AS T2
-           ON T1.classcategory_id1 = T2.classcategory_id) AS T3 
+           ON T1.classcategory_id1 = T2.classcategory_id) AS T3
   LEFT JOIN dtb_classcategory AS T4
-         ON T3.classcategory_id2 = T4.classcategory_id) AS T5 
+         ON T3.classcategory_id2 = T4.classcategory_id) AS T5
   LEFT JOIN dtb_products AS T6
          ON product_id_sub = T6.product_id;
 
@@ -197,7 +200,24 @@ CREATE VIEW vw_category_count AS
             T1.level,
             T1.rank,
             T2.product_count
-       FROM dtb_category AS T1 
+       FROM dtb_category AS T1
   LEFT JOIN dtb_category_total_count AS T2
          ON T1.category_id = T2.category_id
 ;
+
+CREATE VIEW vw_download_class as
+     SELECT
+          p.product_id AS product_id,
+          p.down_realfilename AS down_realfilename,
+          p.down_filename AS down_filename,
+          od.order_id AS order_id,
+          o.customer_id AS customer_id,
+          o.commit_date AS commit_date,
+          o.status AS status
+     FROM
+          dtb_products p,
+          dtb_order_detail od,
+          dtb_order o
+     WHERE
+          p.product_id = od.product_id AND
+          od.order_id = o.order_id;

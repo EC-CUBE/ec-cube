@@ -135,6 +135,38 @@ class SC_UploadFile {
         return $objErr->arrErr[$keyname];
     }
 
+    // アップロードされたダウンロードファイルを保存する。
+    function makeTempDownFile() {
+        $objErr = new SC_CheckError();
+        $cnt = 0;
+        $arrKeyname = array_flip($this->keyname);
+
+        if(!($_FILES['down_file']['size'] > 0)) {
+            $objErr->arrErr['down_file'] = "※ " . $this->disp_name[$arrKeyname['down_file']] . "がアップロードされていません。<br />";
+        } else {
+            foreach($this->keyname as $val) {
+               // 一致したキーのファイルに情報を保存する。
+                if ($val == 'down_file') {
+                    // 拡張子チェック
+                    $objErr->doFunc(array($this->disp_name[$cnt], 'down_file', $this->arrExt[$cnt]), array("FILE_EXT_CHECK"));
+                    // ファイルサイズチェック
+                    $objErr->doFunc(array($this->disp_name[$cnt], 'down_file', $this->size[$cnt]), array("FILE_SIZE_CHECK"));
+                    // エラーがない場合
+                   if(!isset($objErr->arrErr['down_file'])) {
+                        // 一意なファイル名を作成する。
+                        $uniqname = date("mdHi") . "_" . uniqid("").".";
+                        $this->temp_file[$cnt] = ereg_replace("^.*\.",$uniqname, $_FILES['down_file']['name']);
+                        set_time_limit(0);
+                        $result  = copy($_FILES['down_file']['tmp_name'], $this->temp_dir . $this->temp_file[$cnt]);
+                        GC_Utils_Ex::gfPrintLog($result." -> ". $this->temp_dir . $this->temp_file[$cnt]);
+                    }
+                }
+                $cnt++;
+            }
+        }
+        return $objErr->arrErr['down_file'];
+    }
+
     // 画像を削除する。
     function deleteFile($keyname) {
         $objImage = new SC_Image($this->temp_dir);
@@ -183,6 +215,24 @@ class SC_UploadFile {
                    && !ereg("^sub/", $this->save_file[$cnt])) {
 
                     $objImage->deleteImage($this->save_file[$cnt], $this->save_dir);
+                }
+            }
+            $cnt++;
+        }
+    }
+
+    // ダウンロード一時ファイルを保存ディレクトリに移す
+    function moveTempDownFile() {
+        $cnt = 0;
+        $objImage = new SC_Image($this->temp_dir);
+        foreach($this->keyname as $val) {
+        	if(isset($this->temp_file[$cnt]) && $this->temp_file[$cnt] != "") {
+                $objImage->moveTempImage($this->temp_file[$cnt], $this->save_dir);
+                // すでに保存ファイルがあった場合は削除する。
+                if(isset($this->save_file[$cnt])
+                   && $this->save_file[$cnt] != ""
+                   && !ereg("^sub/", $this->save_file[$cnt])) {
+                   	$objImage->deleteImage($this->save_file[$cnt], $this->save_dir);
                 }
             }
             $cnt++;
@@ -266,6 +316,24 @@ class SC_UploadFile {
         return $arrRet;
     }
 
+    // フォームに渡す用のダウンロードファイル情報を返す
+    function getFormDownFile() {
+        $arrRet = "";
+        $cnt = 0;
+GC_Utils::gfDebugLog($this->keyname);
+        foreach($this->keyname as $val) {
+            if(isset($this->temp_file[$cnt]) && $this->temp_file[$cnt] != "") {
+                $arrRet = $this->temp_file[$cnt];
+            } elseif (isset($this->save_file[$cnt]) && $this->save_file[$cnt] != "") {
+                $arrRet = $this->save_file[$cnt];
+            }
+            $cnt++;
+        }
+GC_Utils::gfPrintLog("1111111111111111111111");
+GC_Utils::gfDebugLog($arrRet);
+        return $arrRet;
+    }
+
     // DB保存用のファイル名配列を返す
     function getDBFileList() {
         $cnt = 0;
@@ -291,6 +359,15 @@ class SC_UploadFile {
         }
     }
 
+    // DBで保存されたダウンロードファイル名をセットする
+    function setDBDownFile($arrVal) {
+GC_Utils::gfPrintLog("setDBDownFile");
+GC_Utils::gfDebugLog($arrVal);
+    	if(isset($arrVal['down_realfilename']) && $arrVal['down_realfilename'] != "") {
+            $this->save_file[0] = $arrVal['down_realfilename'];
+        }
+    }
+
     // 画像をセットする
     function setDBImageList($arrVal) {
         $cnt = 0;
@@ -313,6 +390,17 @@ class SC_UploadFile {
                 }
             }
             $cnt++;
+        }
+    }
+
+    // DB上のダウンロードファイルの内削除要求があったファイルを削除する。
+    function deleteDBDownFile($arrVal) {
+        $objImage = new SC_Image($this->temp_dir);
+        $cnt = 0;
+        if($arrVal['down_realfilename'] != "") {
+            if($this->save_file[$cnt] == "" && !ereg("^sub/", $arrVal['down_realfilename'])) {
+                $objImage->deleteImage($arrVal['down_realfilename'], $this->save_dir);
+            }
         }
     }
 

@@ -614,4 +614,18 @@ define('PLUGIN_DIR', "plugins/");
 define('PLUGIN_PATH', USER_PATH . PLUGIN_DIR);
 /** プラグイン URL */
 define('PLUGIN_URL', USER_URL . PLUGIN_DIR);
+/** 1:実商品 2:ダウンロード */
+define('DEFAULT_PRODUCT_DOWN', 1);
+/** ダウンロード販売機能 ファイルサイズ制限(KB) */
+define('DOWN_SIZE', 50000);
+/** ダウンロード販売機能 ファイル一時保存 */
+define('DOWN_TEMP_DIR', DATA_PATH . "download/temp/");
+/** ダウンロード販売機能 ファイル保存先 */
+define('DOWN_SAVE_DIR', DATA_PATH . "download/save/");
+/** ダウンロード販売機能 ファイル存在エラー */
+define('DOWNFILE_NOT_FOUND', 22);
+/** ダウンロード販売機能 ダウンロード可能日数桁数 */
+define('DOWNLOAD_DAYS_LEN', 3);
+/** ダウンロード販売機能用にクレジット決済のpayment_idを指定 */
+define('CREDIT_PAYMENT', 1);
 ?>

@@ -277,6 +277,14 @@ $(function() {
         <input type="text" name="free_rule" value="<!--{$arrForm.free_rule|escape}-->" maxlength="<!--{$smarty.const.PRICE_LEN}-->" size="6" class="box6" style="<!--{if $arrErr.free_rule != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" /> 円以上購入時無料
       </td>
     </tr>
+    <tr>
+      <th>ダウンロード可能日数</th>
+      <td>
+        <span class="attention"><!--{$arrErr.downloadable_days}--></span>
+        <input type="text" name="downloadable_days" value="<!--{$arrForm.downloadable_days|escape}-->" maxlength="<!--{$smarty.const.DAYS_LEN}-->" size="6" class="box6" style="<!--{if $arrErr.downloadable_days != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" /> 日間有効
+        <input type="checkbox" name="downloadable_days_unlimited" value="1" <!--{if $arrForm.downloadable_days_unlimited == "1"}-->checked<!--{/if}--> onclick="fnCheckLimit('downloadable_days', 'downloadable_days_unlimited', '<!--{$smarty.const.DISABLED_RGB}-->');"/>無制限
+      </td>
+    </tr>
   </table>
 
   <h2>地図設定</h2>
