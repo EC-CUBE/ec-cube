@@ -289,7 +289,7 @@ __EOS__;
                     break;
             }
 
-            $tmp = ereg_replace("[\",]", " ", $tmp);
+            $tmp = preg_replace('/[",]/', " ", $tmp);
             $line .= "\"".$tmp."\",";
         }
         // 文末の","を変換
