@@ -319,7 +319,7 @@ __EOS__;
                 break;
             }
 
-            $tmp = preg_replace('[",]', " ", $tmp);
+            $tmp = preg_replace('/[",]/', " ", $tmp);
             $line .= "\"".$tmp."\",";
         }
         // 文末の","を変換
@@ -343,7 +343,7 @@ __EOS__;
                 break;
             }
 
-            $tmp = ereg_replace("[\",]", " ", $tmp);
+            $tmp = preg_replace('/[",]/', " ", $tmp);
             $line .= "\"".$tmp."\",";
         }
         // 文末の","を変換
@@ -359,7 +359,8 @@ __EOS__;
      * @return string 行末の ',' を CRLF に変換した文字列
      */
     function replaceLineSuffix($line) {
-        return mb_ereg_replace(",$", "\r\n", $line);
+//        return mb_ereg_replace(",$", "\r\n", $line);  
+        return preg_replace('/,$/',"\r\n",$line);
     }
 
     /**
