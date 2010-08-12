@@ -1095,13 +1095,13 @@ INSERT INTO mtb_constants VALUES ('PLUGIN_DIR', '"plugins/"', 600, 'プラグイ
 INSERT INTO mtb_constants VALUES ('PLUGIN_PATH', 'USER_PATH . PLUGIN_DIR', 601, 'プラグイン保存先');
 INSERT INTO mtb_constants VALUES ('PLUGIN_URL', 'USER_URL . PLUGIN_DIR', 602, 'プラグイン URL');
 INSERT INTO mtb_constants VALUES ('DOWNLOAD_DAYS_LEN','3',700,'日数桁数');
-INSERT INTO mtb_constants VALUES ('DOWNLOAD_CNT_LEN','3',701,'ダウンロード回数桁数');
+INSERT INTO mtb_constants VALUES ('DOWNLOAD_EXTENSION','"zip,lzh,jpg,jpeg,gif,png,mp3,pdf,csv',701,'ダウンロードファイル登録可能拡張子(カンマ区切り)"');
 INSERT INTO mtb_constants VALUES ('DOWN_SIZE','50000',702,'ダウンロード販売ファイル用サイズ制限(KB)');
 INSERT INTO mtb_constants VALUES ('DEFAULT_PRODUCT_DOWN','1',703,'1:実商品 2:ダウンロード');
 INSERT INTO mtb_constants VALUES ('DOWN_TEMP_DIR','DATA_PATH . "download/temp/"',704,'ダウンロードファイル一時保存');
 INSERT INTO mtb_constants VALUES ('DOWN_SAVE_DIR','DATA_PATH . "download/save/"',705,'ダウンロードファイル保存先');
 INSERT INTO mtb_constants VALUES ('DOWNFILE_NOT_FOUND','22',706,'ダウンロードファイル存在エラー');
-INSERT INTO mtb_constants VALUES ('CREDIT_PAYMENT','1',707,'ダウンロード販売機能用にクレジット決済のpayment_idを指定');
+INSERT INTO mtb_constants VALUES ('CREDIT_PAYMENT','"1"',707,'ダウンロード販売機能用オンライン決済payment_id(カンマ区切り)');
 
 INSERT INTO mtb_down VALUES ('1','実商品','0');
 INSERT INTO mtb_down VALUES ('2','ダウンロード','1');

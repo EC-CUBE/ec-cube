@@ -363,15 +363,27 @@ class LC_Page_Shopping_Payment extends LC_Page {
         $objQuery->setOrder("rank DESC");
 
         //削除されていない支払方法を取得
+        $arrval = null;
         $where = "del_flg = 0 AND deliv_id IN (SELECT deliv_id FROM dtb_deliv WHERE del_flg = 0) ";
+
         //ダウンロード商品の有無判定
         if($this->cartdown != 0){
-            //ダウンロード商品を含む場合は、クレジット決済以外は選択できない。
-            $where .= "AND payment_id =  " . CREDIT_PAYMENT;
+            //ダウンロード商品を含む場合は、オンライン決済以外は選択できない。
+            $arrval = explode(",", CREDIT_PAYMENT);
+            $tmp_where = "";
+            foreach ($arrval as $val) {
+                if($tmp_where == "") {
+                    $tmp_where.= "AND payment_id IN ( ?";
+                } else {
+                    $tmp_where.= ",? ";
+                }
+            }
+            $tmp_where.= " ) ";
+            $where .= $tmp_where;
         }
 
         // 削除されていない支払方法を取得
-        $arrRet = $objQuery->select("payment_id, payment_method, rule, upper_rule, note, payment_image", "dtb_payment", $where);
+        $arrRet = $objQuery->select("payment_id, payment_method, rule, upper_rule, note, payment_image", "dtb_payment", $where, $arrval);
 
         // 配列初期化
         $data = array();
@@ -379,7 +391,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
         foreach($arrRet as $data) {
             //ダウンロード販売に対する注意追加
             if($this->cartdown != 0){
-                $data['payment_method'] = $data['payment_method'] . "　　（ダウンロード商品を含む場合、クレジット決済のみ選択可能です）";
+                $data['payment_method'] = $data['payment_method'] . "　　（ダウンロード商品を含む場合、オンライン決済のみ選択可能です）";
             }
             // 下限と上限が設定されている
             if (strlen($data['rule']) != 0 && strlen($data['upper_rule']) != 0) {

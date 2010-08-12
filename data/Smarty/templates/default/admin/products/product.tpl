@@ -127,7 +127,7 @@ function selectAll(target) {
     </tr>
     <tr>
       <!--{assign var=key value="down_file"}-->
-      <th>ダウンロード商品用<BR>ファイルアップロード<span class="attention"> *</span></th>
+      <th>ダウンロード商品用ファイルアップロード<span class="attention"> *</span></th>
       <td>
         <span class="attention"><!--{$arrErr[$key]}--><!--{$arrErr.down_realfilename}--></span>
           <!--{if $arrForm.down_realfilename != ""}-->
@@ -135,7 +135,7 @@ function selectAll(target) {
             <a href="" onclick="selectAll('category_id'); fnModeSubmit('delete_down', 'down_key', '<!--{$key}-->'); return false;">[ファイルの取り消し]</a><br>
           <!--{/if}-->
           <input type="file" name="down_file" size="50" class="box50" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
-          <input type="button" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_down', 'down_key', '<!--{$key}-->')" value="アップロード">
+          <input type="button" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_down', 'down_key', '<!--{$key}-->')" value="アップロード"><BR>登録可能拡張子：<!--{$smarty.const.DOWNLOAD_EXTENSION}-->　(パラメータ DOWNLOAD_EXTENSION)
       </td>
     </tr>
     <tr>

@@ -626,6 +626,8 @@ define('DOWN_SAVE_DIR', DATA_PATH . "download/save/");
 define('DOWNFILE_NOT_FOUND', 22);
 /** ダウンロード販売機能 ダウンロード可能日数桁数 */
 define('DOWNLOAD_DAYS_LEN', 3);
-/** ダウンロード販売機能用にクレジット決済のpayment_idを指定 */
-define('CREDIT_PAYMENT', 1);
+/** ダウンロードファイル登録可能拡張子(カンマ区切り) */
+define('DOWNLOAD_EXTENSION', "zip,lzh,jpg,jpeg,gif,png,mp3,pdf,csv");
+/** ダウンロード販売機能用オンライン決済payment_id(カンマ区切り) */
+define('CREDIT_PAYMENT', "1");
 ?>

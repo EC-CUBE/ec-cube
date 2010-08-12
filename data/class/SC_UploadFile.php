@@ -320,7 +320,6 @@ class SC_UploadFile {
     function getFormDownFile() {
         $arrRet = "";
         $cnt = 0;
-GC_Utils::gfDebugLog($this->keyname);
         foreach($this->keyname as $val) {
             if(isset($this->temp_file[$cnt]) && $this->temp_file[$cnt] != "") {
                 $arrRet = $this->temp_file[$cnt];
@@ -329,8 +328,6 @@ GC_Utils::gfDebugLog($this->keyname);
             }
             $cnt++;
         }
-GC_Utils::gfPrintLog("1111111111111111111111");
-GC_Utils::gfDebugLog($arrRet);
         return $arrRet;
     }
 
@@ -361,9 +358,7 @@ GC_Utils::gfDebugLog($arrRet);
 
     // DBで保存されたダウンロードファイル名をセットする
     function setDBDownFile($arrVal) {
-GC_Utils::gfPrintLog("setDBDownFile");
-GC_Utils::gfDebugLog($arrVal);
-    	if(isset($arrVal['down_realfilename']) && $arrVal['down_realfilename'] != "") {
+        if(isset($arrVal['down_realfilename']) && $arrVal['down_realfilename'] != "") {
             $this->save_file[0] = $arrVal['down_realfilename'];
         }
     }

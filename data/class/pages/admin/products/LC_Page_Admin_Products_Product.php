@@ -872,7 +872,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
     }
     /* ダウンロードファイル情報の初期化 */
     function lfInitDownFile() {
-        $this->objDownFile->addFile("ダウンロード販売用ファイル", 'down_file', array('zip', 'jpg', 'mp3', 'gif', 'png'),DOWN_SIZE, true, 0, 0);
+        $this->objDownFile->addFile("ダウンロード販売用ファイル", 'down_file', explode(",", DOWNLOAD_EXTENSION),DOWN_SIZE, true, 0, 0);
     }
 }
 ?>
