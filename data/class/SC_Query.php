@@ -32,21 +32,23 @@ require_once(realpath(dirname(__FILE__)) . "/../module/MDB2.php");
  * @version $Id$
  */
 class SC_Query {
+
+    var $instance;
     var $option;
     var $where;
     var $conn;
     var $groupby;
     var $order;
+    var $force_run;
 
     /**
      * コンストラクタ.
      *
-     * @param $dsn
-     * @param boolean $err_disp エラー表示を行うかどうか
+     * @param string $dsn データソース名
+     * @param boolean $force_run エラーが発生しても処理を続行する場合 true
      * @param boolean $new 新規に接続を行うかどうか
-     * @return SC_Query
      */
-    function SC_Query($dsn = "", $err_disp = true, $new = false) {
+    function SC_Query($dsn = "", $force_run = true, $new = false) {
 
         if ($dsn == "") {
             $dsn = DEFAULT_DSN;
@@ -63,17 +65,36 @@ class SC_Query {
             $this->conn = MDB2::singleton($dsn, $options);
         }
 
-        if (!$this->isError()) {
+        if (!PEAR::isError($this->conn)) {
             $this->conn->setCharset(CHAR_CODE);
             $this->conn->setFetchMode(MDB2_FETCHMODE_ASSOC);
         }
+
         $this->dbFactory = SC_DB_DBFactory_Ex::getInstance();
+        $this->force_run = $force_run;
         $this->where = "";
+    }
+
+    /**
+     * シングルトンの SC_Query インスタンスを取得する.
+     *
+     * @param string $dsn データソース名
+     * @param boolean $force_run エラーが発生しても処理を続行する場合 true
+     * @param boolean $new 新規に接続を行うかどうか
+     * @return SC_Query シングルトンの SC_Query インスタンス
+     */
+    function getSingletonInstance($dsn = "", $force_run = true, $new = false) {
+        if (is_null($this->instance)) {
+            $this->instance =& new SC_Query($dsn = "", $force_run = true,
+                                            $new = false);
+        }
+        return $this->instance;
     }
 
     /**
      *  エラー判定を行う.
      *
+     * @deprecated PEAR::isError() を使用して下さい
      * @return boolean
      */
     function isError() {
@@ -108,7 +129,7 @@ class SC_Query {
      * @param string $table テーブル名
      * @param string $where WHERE句
      * @param array $arrval プレースホルダ
-     * @param integer $fetchmode 使用するフェッチモード。デフォルトは DB_FETCHMODE_ASSOC。
+     * @param integer $fetchmode 使用するフェッチモード。デフォルトは MDB2_FETCHMODE_ASSOC。
      * @return array|null
      */
     function select($col, $table, $where = "", $arrval = array(), $fetchmode = MDB2_FETCHMODE_ASSOC) {
@@ -130,21 +151,54 @@ class SC_Query {
         return $sql;
     }
 
+    /**
+     * トランザクションをコミットする.
+     *
+     * @return MDB2_OK 成功した場合は MDB2_OK;
+     *         失敗した場合は PEAR::Error オブジェクト
+     */
     function commit() {
-        $this->conn->commit();
+        return $this->conn->commit();
     }
 
+    /**
+     * トランザクションを開始する.
+     *
+     * @return MDB2_OK 成功した場合は MDB2_OK;
+     *         失敗した場合は PEAR::Error オブジェクト
+     */
     function begin() {
-        $this->conn->beginTransaction();
+        return $this->conn->beginTransaction();
     }
 
+    /**
+     * トランザクションをロールバックする.
+     *
+     * @return MDB2_OK 成功した場合は MDB2_OK;
+     *         失敗した場合は PEAR::Error オブジェクト
+     */
     function rollback() {
-        $this->conn->rollback();
+        return $this->conn->rollback();
     }
 
+    /**
+     * トランザクションが開始されているかチェックする.
+     *
+     * @return boolean トランザクションが開始されている場合 true
+     */
+    function inTransaction() {
+        return $this->conn->inTransaction();
+    }
+
+    /**
+     * 更新系の SQL を実行する.
+     *
+     * この関数は SC_Query::query() のエイリアスです.
+     *
+     * FIXME MDB2::exec() の実装であるべき
+     */
     function exec($str, $arrval = array()) {
-        // FIXME MDB2::exec() の実装であるべき
-        $this->query($str, $arrval);
+        return $this->query($str, $arrval);
     }
 
     /**
@@ -159,23 +213,27 @@ class SC_Query {
 
         $sql = $this->dbFactory->sfChangeMySQL($sql);
 
-        $sth = $this->conn->prepare($sql);
-        if (PEAR::isError($sth)) {
-            /*
-             * XXX インストーラのテーブルチェックに失敗してしまう.
-             * エラーハンドリングの方法を要検討
-             */
+        $sth =& $this->prepare($sql);
+        if (PEAR::isError($sth) && $this->force_run) {
             return;
         }
-        $affected = $sth->execute($arrval);
 
-        if (PEAR::isError($affected)) {
-            trigger_error($affected->getMessage(), E_USER_ERROR);
+        $affected =& $this->execute($sth, $arrval);
+        if (PEAR::isError($affected) && $this->force_run) {
+            return;
         }
 
         return $affected->fetchAll($fetchmode);
     }
 
+    /**
+     * 構築した SELECT 文を取得する.
+     *
+     * @param string $col SELECT 文に含めるカラム名
+     * @param string $table SELECT 文に含めるテーブル名
+     * @param string $where SELECT 文に含める WHERE 句
+     * @return string 構築済みの SELECT 文
+     */
     function getSql($col, $table, $where = '') {
         $sqlse = "SELECT $col FROM $table";
 
@@ -191,72 +249,148 @@ class SC_Query {
         return $sqlse;
     }
 
+    /**
+     * SELECT 文の末尾に付与する SQL を設定する.
+     *
+     * この関数で設定した値は SC_Query::getSql() で使用されます.
+     *
+     * @param string $str 付与する SQL 文
+     * @return SC_Query 自分自身のインスタンス
+     */
     function setOption($str) {
         $this->option = $str;
+        return $this;
     }
 
-    // TODO MDB2::setLimit() を使用する
-    function setLimitOffset($limit, $offset = 0, $return = false) {
+    /**
+     * SELECT 文に付与する LIMIT, OFFSET 句を設定する.
+     *
+     * この関数で設定した値は SC_Query::getSql() で使用されます.
+     * TODO MDB2::setLimit() を使用する
+     *
+     * @param integer $limit LIMIT 句に付与する値
+     * @param integer $offset OFFSET 句に付与する値
+     * @return SC_Query 自分自身のインスタンス
+     */
+    function setLimitOffset($limit, $offset = 0) {
         if (is_numeric($limit) && is_numeric($offset)){
 
             $option = " LIMIT " . $limit;
             $option.= " OFFSET " . $offset;
-
-            if($return){
-                return $option;
-            }else{
-                $this->option.= $option;
-            }
+            $this->option .= $option;
         }
+        return $this;
     }
 
+    /**
+     * SELECT 文に付与する GROUP BY 句を設定する.
+     *
+     * この関数で設定した値は SC_Query::getSql() で使用されます.
+     *
+     * @param string $str GROUP BY 句に付与する文字列
+     * @return SC_Query 自分自身のインスタンス
+     */
     function setGroupBy($str) {
         if (strlen($str) == 0) {
             $this->groupby = '';
         } else {
             $this->groupby = "GROUP BY " . $str;
         }
+        return $this;
     }
 
-    function andwhere($str) {
+    /**
+     * SELECT 文の WHERE 句に付与する AND 条件を設定する.
+     *
+     * この関数で設定した値は SC_Query::getSql() で使用されます.
+     *
+     * @param string $str WHERE 句に付与する AND 条件の文字列
+     * @return SC_Query 自分自身のインスタンス
+     */
+    function andWhere($str) {
         if($this->where != "") {
             $this->where .= " AND " . $str;
         } else {
             $this->where = $str;
         }
+        return $this;
     }
 
+    /**
+     * SELECT 文の WHERE 句に付与する OR 条件を設定する.
+     *
+     * この関数で設定した値は SC_Query::getSql() で使用されます.
+     *
+     * @param string $str WHERE 句に付与する OR 条件の文字列
+     * @return SC_Query 自分自身のインスタンス
+     */
     function orWhere($str) {
         if($this->where != "") {
             $this->where .= " OR " . $str;
         } else {
             $this->where = $str;
         }
+        return $this;
     }
 
+    /**
+     * SELECT 文に付与する WHERE 句を設定する.
+     *
+     * この関数で設定した値は SC_Query::getSql() で使用されます.
+     *
+     * @param string $str WHERE 句に付与する文字列
+     * @return SC_Query 自分自身のインスタンス
+     */
     function setWhere($str) {
         $this->where = $str;
+        return $this;
     }
 
+    /**
+     * SELECT 文に付与する ORDER BY 句を設定する.
+     *
+     * この関数で設定した値は SC_Query::getSql() で使用されます.
+     *
+     * @param string $str ORDER BY 句に付与する文字列
+     * @return SC_Query 自分自身のインスタンス
+     */
     function setOrder($str) {
         if (strlen($str) == 0) {
             $this->order = '';
         } else {
             $this->order = "ORDER BY " . $str;
         }
+        return $this;
     }
 
-
+    /**
+     * SELECT 文に付与する LIMIT 句を設定する.
+     *
+     * この関数で設定した値は SC_Query::getSql() で使用されます.
+     *
+     * @param integer $limit LIMIT 句に設定する値
+     * @return SC_Query 自分自身のインスタンス
+     */
     function setLimit($limit){
         if ( is_numeric($limit)){
             $this->option = " LIMIT " .$limit;
         }
+        return $this;
     }
 
+    /**
+     * SELECT 文に付与する OFFSET 句を設定する.
+     *
+     * この関数で設定した値は SC_Query::getSql() で使用されます.
+     *
+     * @param integer $offset LIMIT 句に設定する値
+     * @return SC_Query 自分自身のインスタンス
+     */
     function setOffset($offset) {
         if ( is_numeric($offset)){
             $this->offset = " OFFSET " .$offset;
         }
+        return $this;
     }
 
     /**
@@ -351,19 +485,43 @@ class SC_Query {
         return $this->query($sqlup, $arrVal);
     }
 
-    // MAX文の実行
+    /**
+     * MAX文を実行する.
+     *
+     * @param string $table テーブル名
+     * @param string $col カラム名
+     * @param string $where 付与する WHERE 句
+     * @param array $arrval ブレースホルダに挿入する値
+     * @return integer MAX文の実行結果
+     */
     function max($table, $col, $where = "", $arrval = array()) {
         $ret = $this->get($table, "MAX($col)", $where, $arrval);
         return $ret;
     }
 
-    // MIN文の実行
+    /**
+     * MIN文を実行する.
+     *
+     * @param string $table テーブル名
+     * @param string $col カラム名
+     * @param string $where 付与する WHERE 句
+     * @param array $arrval ブレースホルダに挿入する値
+     * @return integer MIN文の実行結果
+     */
     function min($table, $col, $where = "", $arrval = array()) {
         $ret = $this->get($table, "MIN($col)", $where, $arrval);
         return $ret;
     }
 
-    // 特定のカラムの値を取得
+    /**
+     * SQL を構築して, 特定のカラムの値を取得する.
+     *
+     * @param string $table テーブル名
+     * @param string $col カラム名
+     * @param string $where 付与する WHERE 句
+     * @param array $arrval ブレースホルダに挿入する値
+     * @return mixed SQL の実行結果
+     */
     function get($table, $col, $where = "", $arrval = array()) {
         $sqlse = $this->getSql($col, $table, $where);
         // SQL文の実行
@@ -371,15 +529,25 @@ class SC_Query {
         return $ret;
     }
 
+    /**
+     * SQL を指定して, 特定のカラムの値を取得する.
+     *
+     * @param string $sql 実行する SQL
+     * @param array $arrval ブレースホルダに挿入する値
+     * @return mixed SQL の実行結果
+     */
     function getOne($sql, $arrval = array()) {
 
         $sql = $this->dbFactory->sfChangeMySQL($sql);
 
-        $sth = $this->conn->prepare($sql);
-        $affected = $sth->execute($arrval);
+        $sth =& $this->prepare($sql);
+        if (PEAR::isError($sth) && $this->force_run) {
+            return;
+        }
 
-        if (PEAR::isError($affected)) {
-            trigger_error($affected->getMessage(), E_USER_ERROR);
+        $affected =& $this->execute($sth, $arrval);
+        if (PEAR::isError($affected) && $this->force_run) {
+            return;
         }
 
         return $affected->fetchOne();
@@ -392,7 +560,7 @@ class SC_Query {
      * @param string $col カラム名
      * @param string $where WHERE句
      * @param array $arrVal プレースホルダ配列
-     * @param integer $fetchmode 使用するフェッチモード。デフォルトは DB_FETCHMODE_ASSOC。
+     * @param integer $fetchmode 使用するフェッチモード。デフォルトは MDB2_FETCHMODE_ASSOC。
      * @return array array('カラム名' => '値', ...)の連想配列
      */
     function getRow($table, $col, $where = "", $arrVal = array(), $fetchmode = MDB2_FETCHMODE_ASSOC) {
@@ -400,26 +568,40 @@ class SC_Query {
         $sql = $this->getSql($col, $table, $where);
         $sql = $this->dbFactory->sfChangeMySQL($sql);
 
-        $sth = $this->conn->prepare($sql);
-        $affected = $sth->execute($arrVal);
+        $sth =& $this->prepare($sql);
+        if (PEAR::isError($sth) && $this->force_run) {
+            return;
+        }
 
-        if (PEAR::isError($affected)) {
-            trigger_error($affected->getMessage(), E_USER_ERROR);
+        $affected =& $this->execute($sth, $arrVal);
+        if (PEAR::isError($affected) && $this->force_run) {
+            return;
         }
 
         return $affected->fetchRow($fetchmode);
     }
 
-    // 1列取得
+    /**
+     * SELECT 文の実行結果を 1行のみ取得する.
+     *
+     * @param string $table テーブル名
+     * @param string $col カラム名
+     * @param string $where 付与する WHERE 句
+     * @param array $arrval ブレースホルダに挿入する値
+     * @return array SQL の実行結果の配列
+     */
     function getCol($table, $col, $where = "", $arrval = array()) {
         $sql = $this->getSql($col, $table, $where);
         $sql = $this->dbFactory->sfChangeMySQL($sql);
 
-        $sth = $this->conn->prepare($sql);
-        $affected = $sth->execute($arrval);
+        $sth =& $this->prepare($sql);
+        if (PEAR::isError($sth) && $this->force_run) {
+            return;
+        }
 
-        if (PEAR::isError($affected)) {
-            trigger_error($affected->getMessage(), E_USER_ERROR);
+        $affected =& $this->execute($sth, $arrval);
+        if (PEAR::isError($affected) && $this->force_run) {
+            return;
         }
 
         return $affected->fetchCol($col);
@@ -443,6 +625,7 @@ class SC_Query {
         return $ret;
     }
 
+    // TODO MDB2::nextID のエイリアスとする
     function nextval($table, $colname) {
         $sql = "";
         // postgresqlとmysqlとで処理を分ける
@@ -457,6 +640,7 @@ class SC_Query {
         return $ret;
     }
 
+    // TODO MDB2::currID のエイリアスとする
     function currval($table, $colname) {
         $sql = "";
         if (DB_TYPE == "pgsql") {
@@ -470,6 +654,7 @@ class SC_Query {
         return $ret;
     }
 
+    // TODO MDB2 に該当関数が無いため実装を要検討
     function setval($table, $colname, $data) {
         $sql = "";
         if (DB_TYPE == "pgsql") {
@@ -484,20 +669,27 @@ class SC_Query {
         return $ret;
     }
 
-    // XXX 更新系には exec() を使用するべき
+    /**
+     * SQL を実行する.
+     *
+     * XXX 更新系には exec() を使用するべき
+     *
+     * @param string $n 実行する SQL 文
+     * @param array $arrval ブレースホルダに挿入する値
+     * @return array SQL の実行結果の配列
+     */
     function query($n ,$arr = array(), $ignore_err = false){
 
         $n = $this->dbFactory->sfChangeMySQL($n);
 
-        $sth = $this->conn->prepare($n);
-        $result = $sth->execute($arr);
+        $sth =& $this->prepare($n);
+        if (PEAR::isError($sth) && $this->force_run) {
+            return;
+        }
 
-        if (PEAR::isError($result)) {
-            /*
-             * XXX インストーラのテーブルチェックに失敗してしまう.
-             * エラーハンドリングの方法を要検討
-             */
-            //trigger_error($result->getMessage(), E_USER_ERROR);
+        $result = $this->execute($sth, $arr);
+        if (PEAR::isError($result) && $this->force_run) {
+            return;
         }
 
         return $result;
@@ -541,6 +733,41 @@ class SC_Query {
      */
     function quote($val) {
         return $this->conn->quote($val);
+    }
+
+    /**
+     * プリペアドステートメントを構築する.
+     *
+     * @access private
+     * @param string $sql プリペアドステートメントを構築する SQL
+     * @return MDB2_Statement_Common プリペアドステートメントインスタンス
+     */
+    function prepare($sql) {
+        $sth =& $this->conn->prepare($sql);
+        if (PEAR::isError($sth)) {
+            if (!$this->force_run) {
+               trigger_error($sth->getMessage(), E_USER_ERROR);
+            }
+        }
+        return $sth;
+    }
+
+    /**
+     * プリペアドクエリを実行する.
+     *
+     * @access private
+     * @param MDB2_Statement_Common プリペアドステートメントインスタンス
+     * @param array $arrVal ブレースホルダに挿入する配列
+     * @return MDB2_Result 結果セットのインスタンス
+     */
+    function execute(&$sth, $arrVal = array()) {
+        $affected =& $sth->execute($arrVal);
+        if (PEAR::isError($affected)) {
+            if (!$this->force_run) {
+               trigger_error($affected->getMessage(), E_USER_ERROR);
+            }
+        }
+        return $affected;
     }
 }
 

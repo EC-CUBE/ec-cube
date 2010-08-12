@@ -45,7 +45,7 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
      * @return string データベースのバージョン
      */
     function sfGetDBVersion($dsn = "") {
-        $objQuery = new SC_Query($this->getDSN($dsn), true, true);
+        $objQuery =& SC_Query::getSingletonInstance();
         $val = $objQuery->getOne("select version()");
         $arrLine = split(" " , $val);
         return $arrLine[0] . " " . $arrLine[1];
@@ -71,7 +71,7 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
      * @return string テーブルの存在チェックを行う SQL 文
      */
     function getTableExistsSql($table_name) {
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
         return "  SELECT relname "
              . "    FROM pg_class "
              . "   WHERE (relkind = 'r' OR relkind = 'v') "
@@ -87,7 +87,7 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
      * @return array インデックスの検索結果の配列
      */
     function getTableIndex($index_name, $table_name = "") {
-        $objQuery = new SC_Query("", true, true);
+        $objQuery =& SC_Query::getSingletonInstance();
         return $objQuery->getAll("SELECT relname FROM pg_class WHERE relname = ?",
                                  array($index_name));
     }
@@ -102,7 +102,7 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
      * @return void
      */
     function createTableIndex($index_name, $table_name, $col_name, $length = 0) {
-        $objQuery = new SC_Query($dsn, true, true);
+        $objQuery =& SC_Query::getSingletonInstance();
         $objQuery->query("CREATE INDEX ? ON ? (?)", array($index_name, $table_name, $col_name));
     }
 
@@ -113,7 +113,7 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
      * @return array テーブルのカラム一覧の配列
      */
     function sfGetColumnList($table_name) {
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
         $sql = "  SELECT a.attname "
              . "    FROM pg_class c, pg_attribute a "
              . "   WHERE c.relname=? "
@@ -136,7 +136,7 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
      * @return array テーブル名の配列
      */
     function findTableNames($expression = "") {
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
         $sql = "   SELECT c.relname AS name, "
             .  "     CASE c.relkind "
             .  "     WHEN 'r' THEN 'table' "

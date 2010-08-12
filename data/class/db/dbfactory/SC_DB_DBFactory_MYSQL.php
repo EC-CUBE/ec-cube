@@ -37,6 +37,9 @@ require_once(CLASS_PATH . "db/SC_DB_DBFactory.php");
  */
 class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
 
+    /** SC_Query インスタンス */
+    var $objQuery;
+
     /**
      * DBのバージョンを取得する.
      *
@@ -44,7 +47,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
      * @return string データベースのバージョン
      */
     function sfGetDBVersion($dsn = "") {
-        $objQuery = new SC_Query($this->getDSN($dsn), true, true);
+        $objQuery =& SC_Query::getSingletonInstance();
         $val = $objQuery->getOne("select version()");
         return "MySQL " . $val;
     }
@@ -76,7 +79,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
      * @return array 文字コード情報
      */
     function getCharSet() {
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
         $arrRet = $objQuery->getAll("SHOW VARIABLES LIKE 'char%'");
         return $arrRet;
     }
@@ -89,7 +92,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
      */
     function getTableExistsSql($table_name) {
         // XXX 何故かブレースホルダが使えない
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
         return "SHOW TABLE STATUS LIKE " . $objQuery->quote($table_name);
     }
 
@@ -101,7 +104,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
      * @return array インデックスの検索結果の配列
      */
     function getTableIndex($index_name, $table_name = "") {
-        $objQuery = new SC_Query("", true, true);
+        $objQuery =& SC_Query::getSingletonInstance();
         return $objQuery->getAll("SHOW INDEX FROM " . $table_name . " WHERE Key_name = ?",
                                  array($index_name));
     }
@@ -116,7 +119,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
      * @return void
      */
     function createTableIndex($index_name, $table_name, $col_name, $length = 0) {
-        $objQuery = new SC_Query($dsn, true, true);
+        $objQuery =& SC_Query::getSingletonInstance();
         $objQuery->query("CREATE INDEX ? ON ? (?(?))", array($index_name, $table_name, $col_name, $length));
     }
 
@@ -127,7 +130,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
      * @return array テーブルのカラム一覧の配列
      */
     function sfGetColumnList($table_name) {
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
         $sql = "SHOW COLUMNS FROM " . $table_name;
         $arrColList = $objQuery->getAll($sql);
         $arrColList = SC_Utils_Ex::sfswaparray($arrColList);
@@ -143,7 +146,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
      * @return array テーブル名の配列
      */
     function findTableNames($expression = "") {
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
         $sql = "SHOW TABLES LIKE ?";
         $arrColList = $objQuery->getAll($sql, array("%" . $expression . "%"));
         $arrColList = SC_Utils_Ex::sfswaparray($arrColList, false);
