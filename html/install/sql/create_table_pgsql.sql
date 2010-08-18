@@ -563,8 +563,6 @@ CREATE TABLE dtb_customer (
     PRIMARY KEY (customer_id)
 );
 
-CREATE INDEX dtb_customer_mobile_phone_id_key ON dtb_customer (mobile_phone_id);
-
 CREATE TABLE dtb_order (
     order_id serial NOT NULL,
     order_temp_id text,
@@ -1170,3 +1168,77 @@ CREATE TABLE mtb_down (
     PRIMARY KEY (id)
 );
 
+CREATE TABLE dtb_mobile_ext_session_id (
+    session_id text NOT NULL,
+    param_key text,
+    param_value text,
+    url text,
+    create_date timestamp NOT NULL DEFAULT now()
+);
+
+CREATE TABLE dtb_mobile_kara_mail (
+    kara_mail_id serial PRIMARY KEY,
+    session_id text NOT NULL,
+    token text NOT NULL,
+    next_url text NOT NULL,
+    create_date timestamp NOT NULL DEFAULT now(),
+    email text,
+    receive_date timestamp
+);
+
+CREATE TABLE dtb_session (
+    sess_id text NOT NULL,
+    sess_data text,
+    create_date timestamp NOT NULL,
+    update_date timestamp NOT NULL,
+    PRIMARY KEY (sess_id)
+);
+
+CREATE TABLE dtb_module (
+    module_id int NOT NULL UNIQUE,
+    module_code text NOT NULL,
+    module_name text NOT NULL,
+    sub_data text,
+    auto_update_flg int2 NOT NULL DEFAULT 0,
+    del_flg int2 NOT NULL DEFAULT 0,
+    create_date timestamp NOT NULL DEFAULT NOW(),
+    update_date timestamp NOT NULL
+);
+
+CREATE TABLE dtb_site_control (
+    control_id serial primary key NOT NULL,
+    control_title text ,
+    control_text text ,
+    control_flg int2 NOT NULL DEFAULT 2,
+    del_flg int2 NOT NULL DEFAULT 0,
+    memo text ,
+    create_date timestamp NOT NULL DEFAULT now(),
+    update_date timestamp NOT NULL DEFAULT now()
+);
+
+CREATE TABLE dtb_trackback (
+    trackback_id serial primary key NOT NULL,
+    product_id int NOT NULL,
+    blog_name varchar(255) NOT NULL DEFAULT '',
+    title varchar(255) NOT NULL DEFAULT '',
+    excerpt text NOT NULL DEFAULT '',
+    url text NOT NULL DEFAULT '',
+    status int2 NOT NULL DEFAULT 2,
+    del_flg int2 NOT NULL DEFAULT 0,
+    create_date timestamp NOT NULL,
+    update_date timestamp NOT NULL
+);
+
+CREATE INDEX dtb_customer_mobile_phone_id_key ON dtb_customer (mobile_phone_id);
+CREATE INDEX dtb_products_class_product_id_key ON dtb_products_class(product_id);
+CREATE INDEX dtb_order_detail_product_id_key ON dtb_order_detail(product_id);
+CREATE INDEX dtb_send_customer_customer_id_key ON dtb_send_customer(customer_id);
+
+CREATE INDEX dtb_mobile_ext_session_id_param_key_key ON dtb_mobile_ext_session_id (param_key);
+CREATE INDEX dtb_mobile_ext_session_id_param_value_key ON dtb_mobile_ext_session_id (param_value);
+CREATE INDEX dtb_mobile_ext_session_id_url_key ON dtb_mobile_ext_session_id (url);
+CREATE INDEX dtb_mobile_ext_session_id_create_date_key ON dtb_mobile_ext_session_id (create_date);
+
+CREATE INDEX dtb_mobile_kara_mail_token_key ON dtb_mobile_kara_mail (token);
+CREATE INDEX dtb_mobile_kara_mail_create_date_key ON dtb_mobile_kara_mail (create_date);
+CREATE INDEX dtb_mobile_kara_mail_receive_date_key ON dtb_mobile_kara_mail (receive_date);

@@ -123,25 +123,6 @@ case 'step3':
     define("DB_TYPE", $arrRet['db_type']);
     $dsn = $arrRet['db_type']."://".$arrRet['db_user'].":".$arrRet['db_password']."@".$arrRet['db_server'].":".$arrRet['db_port']."/".$arrRet['db_name'];
 
-    /*
-        lfAddTableは、バージョンアップ等で追加テーブルが発生した場合に実行する。
-        （ＤＢ構成の下位互換のためスキップ時も強制）
-    */
-    // テーブルが存在しない場合に追加される。
-    $objPage->arrErr = lfAddTable("dtb_session", $dsn);         // セッション管理テーブル
-    $objPage->arrErr = lfAddTable("dtb_module", $dsn);          // モジュール管理テーブル
-    $objPage->arrErr = lfAddTable("dtb_mobile_kara_mail", $dsn);    // 空メール管理テーブル
-    $objPage->arrErr = lfAddTable("dtb_mobile_ext_session_id", $dsn);   // セッションID管理テーブル
-    $objPage->arrErr = lfAddTable("dtb_site_control", $dsn);    // サイト情報管理テーブル
-    $objPage->arrErr = lfAddTable("dtb_trackback", $dsn);   // トラックバック管理テーブル
-
-
-    // カラムを追加
-    lfAddColumn($dsn);
-
-    // データを追加
-    lfAddData($dsn);
-
     if(count($objPage->arrErr) == 0) {
         // スキップする場合には次画面へ遷移
         $skip = $_POST["db_skip"];
@@ -220,14 +201,6 @@ case 'drop':
         define("DB_TYPE", $arrRet['db_type']);
     }
     $dsn = $arrRet['db_type']."://".$arrRet['db_user'].":".$arrRet['db_password']."@".$arrRet['db_server'].":".$arrRet['db_port']."/".$arrRet['db_name'];
-
-    // 追加テーブルがあれば削除する。
-    lfDropTable("dtb_module", $dsn);
-    lfDropTable("dtb_session", $dsn);
-    lfDropTable("dtb_mobile_ext_session_id", $dsn);
-    lfDropTable("dtb_mobile_kara_mail", $dsn);
-    lfDropTable("dtb_site_control", $dsn);
-    lfDropTable("dtb_trackback", $dsn);
 
     if ($arrRet['db_type'] == 'pgsql'){
         // ビューの削除
@@ -836,27 +809,6 @@ function lfMakeConfigFile() {
     }
 }
 
-// テーブルの追加（既にテーブルが存在する場合は作成しない）
-function lfAddTable($table_name, $dsn) {
-    global $objPage;
-    global $objDb;
-    $arrErr = array();
-    if(!$objDb->sfTabaleExists($table_name, $dsn)) {
-        list($db_type) = split(":", $dsn);
-        $sql_path = "./sql/add/". $table_name . "_" .$db_type .".sql";
-        $arrErr = lfExecuteSQL($sql_path, $dsn);
-        if(count($arrErr) == 0) {
-            $objPage->tpl_message.="○：追加テーブル($table_name)の作成に成功しました。<br>";
-        } else {
-            $objPage->tpl_message.="×：追加テーブル($table_name)の作成に失敗しました。<br>";
-        }
-    } else {
-        $objPage->tpl_message.="○：追加テーブル($table_name)が確認されました。<br>";
-    }
-
-    return $arrErr;
-}
-
 // テーブルの削除（既にテーブルが存在する場合のみ削除する）
 function lfDropTable($table_name, $dsn) {
     global $objDb;
@@ -877,116 +829,6 @@ function lfDropTable($table_name, $dsn) {
         }
     }
     return $arrErr;
-}
-
-// カラムの追加（既にカラムが存在する場合は作成しない）
-function lfAddColumn($dsn) {
-    global $objDBParam;
-    global $objDb;
-
-    // 受注テーブル
-    $objDb->sfColumnExists("dtb_order", "memo01", "text", $dsn, true);
-    $objDb->sfColumnExists("dtb_order", "memo02", "text", $dsn, true);
-    $objDb->sfColumnExists("dtb_order", "memo03", "text", $dsn, true);
-    $objDb->sfColumnExists("dtb_order", "memo04", "text", $dsn, true);
-    $objDb->sfColumnExists("dtb_order", "memo05", "text", $dsn, true);
-    $objDb->sfColumnExists("dtb_order", "memo06", "text", $dsn, true);
-    $objDb->sfColumnExists("dtb_order", "memo07", "text", $dsn, true);
-    $objDb->sfColumnExists("dtb_order", "memo08", "text", $dsn, true);
-    $objDb->sfColumnExists("dtb_order", "memo09", "text", $dsn, true);
-    $objDb->sfColumnExists("dtb_order", "memo10", "text", $dsn, true);
-
-    // 受注一時テーブル
-    $objDb->sfColumnExists("dtb_order_temp", "order_id", "text", $dsn, true);
-    $objDb->sfColumnExists("dtb_order_temp", "memo01", "text", $dsn, true);
-    $objDb->sfColumnExists("dtb_order_temp", "memo02", "text", $dsn, true);
-    $objDb->sfColumnExists("dtb_order_temp", "memo03", "text", $dsn, true);
-    $objDb->sfColumnExists("dtb_order_temp", "memo04", "text", $dsn, true);
-    $objDb->sfColumnExists("dtb_order_temp", "memo05", "text", $dsn, true);
-    $objDb->sfColumnExists("dtb_order_temp", "memo06", "text", $dsn, true);
-    $objDb->sfColumnExists("dtb_order_temp", "memo07", "text", $dsn, true);
-    $objDb->sfColumnExists("dtb_order_temp", "memo08", "text", $dsn, true);
-    $objDb->sfColumnExists("dtb_order_temp", "memo09", "text", $dsn, true);
-    $objDb->sfColumnExists("dtb_order_temp", "memo10", "text", $dsn, true);
-
-    // 支払情報テーブル
-    $objDb->sfColumnExists("dtb_payment", "charge_flg", "int2 default 1", $dsn, true);
-    $objDb->sfColumnExists("dtb_payment", "rule_min", "numeric", $dsn, true);
-    $objDb->sfColumnExists("dtb_payment", "upper_rule_max", "numeric", $dsn, true);
-    $objDb->sfColumnExists("dtb_payment", "module_id", "int4", $dsn, true);
-    $objDb->sfColumnExists("dtb_payment", "module_path", "text", $dsn, true);
-    $objDb->sfColumnExists("dtb_payment", "memo01", "text", $dsn, true);
-    $objDb->sfColumnExists("dtb_payment", "memo02", "text", $dsn, true);
-    $objDb->sfColumnExists("dtb_payment", "memo03", "text", $dsn, true);
-    $objDb->sfColumnExists("dtb_payment", "memo04", "text", $dsn, true);
-    $objDb->sfColumnExists("dtb_payment", "memo05", "text", $dsn, true);
-    $objDb->sfColumnExists("dtb_payment", "memo06", "text", $dsn, true);
-    $objDb->sfColumnExists("dtb_payment", "memo07", "text", $dsn, true);
-    $objDb->sfColumnExists("dtb_payment", "memo08", "text", $dsn, true);
-    $objDb->sfColumnExists("dtb_payment", "memo09", "text", $dsn, true);
-    $objDb->sfColumnExists("dtb_payment", "memo10", "text", $dsn, true);
-
-    // 顧客
-    $objDb->sfColumnExists("dtb_customer", "mailmaga_flg", "int2", $dsn, true);
-
-    // インデックスの確認
-    if (!$objDb->sfColumnExists("dtb_customer", "mobile_phone_id", "text", $dsn, true)) {
-        // インデックスの追加
-        $objDb->sfIndexExists("dtb_customer", "mobile_phone_id", "dtb_customer_mobile_phone_id_key", 64, $dsn, true);
-    }
-
-// データの追加（既にデータが存在する場合は作成しない）
-function lfAddData($dsn) {
-    global $objDb;
-    // CSVテーブル
-    if($objDb->sfTabaleExists('dtb_csv', $dsn)) {
-        lfInsertCSVData(1,'category_id','カテゴリID',53,'now()','now()', $dsn);
-        lfInsertCSVData(4,'order_id','注文番号',1,'now()','now()', $dsn);
-        lfInsertCSVData(4,'customer_id','顧客ID',3,'now()','now()', $dsn);
-        lfInsertCSVData(4,'message','要望等',4,'now()','now()', $dsn);
-        lfInsertCSVData(4,'order_name01','顧客名1',5,'now()','now()', $dsn);
-        lfInsertCSVData(4,'order_name02','顧客名2',6,'now()','now()', $dsn);
-        lfInsertCSVData(4,'order_kana01','顧客名カナ1',7,'now()','now()', $dsn);
-        lfInsertCSVData(4,'order_kana02','顧客名カナ2',8,'now()','now()', $dsn);
-        lfInsertCSVData(4,'order_email','メールアドレス',9,'now()','now()', $dsn);
-        lfInsertCSVData(4,'order_tel01','電話番号1',10,'now()','now()', $dsn);
-        lfInsertCSVData(4,'order_tel02','電話番号2',11,'now()','now()', $dsn);
-        lfInsertCSVData(4,'order_tel03','電話番号3',12,'now()','now()', $dsn);
-        lfInsertCSVData(4,'order_fax01','FAX1',13,'now()','now()', $dsn);
-        lfInsertCSVData(4,'order_fax02','FAX2',14,'now()','now()', $dsn);
-        lfInsertCSVData(4,'order_fax03','FAX3',15,'now()','now()', $dsn);
-        lfInsertCSVData(4,'order_zip01','郵便番号1',16,'now()','now()', $dsn);
-        lfInsertCSVData(4,'order_zip02','郵便番号2',17,'now()','now()', $dsn);
-        lfInsertCSVData(4,'order_pref','都道府県',18,'now()','now()', $dsn);
-        lfInsertCSVData(4,'order_addr01','住所1',19,'now()','now()', $dsn);
-        lfInsertCSVData(4,'order_addr02','住所2',20,'now()','now()', $dsn);
-        lfInsertCSVData(4,'order_sex','性別',21,'now()','now()', $dsn);
-        lfInsertCSVData(4,'order_birth','生年月日',22,'now()','now()', $dsn);
-        lfInsertCSVData(4,'order_job','職種',23,'now()','now()', $dsn);
-        lfInsertCSVData(4,'deliv_name01','お届け先名前',24,'now()','now()', $dsn);
-        lfInsertCSVData(4,'deliv_name02','お届け先名前',25,'now()','now()', $dsn);
-        lfInsertCSVData(4,'deliv_kana01','お届け先カナ',26,'now()','now()', $dsn);
-        lfInsertCSVData(4,'deliv_kana02','お届け先カナ',27,'now()','now()', $dsn);
-        lfInsertCSVData(4,'deliv_tel01','電話番号1',28,'now()','now()', $dsn);
-        lfInsertCSVData(4,'deliv_tel02','電話番号2',29,'now()','now()', $dsn);
-        lfInsertCSVData(4,'deliv_tel03','電話番号3',30,'now()','now()', $dsn);
-        lfInsertCSVData(4,'deliv_fax01','FAX1',31,'now()','now()', $dsn);
-        lfInsertCSVData(4,'deliv_fax02','FAX2',32,'now()','now()', $dsn);
-        lfInsertCSVData(4,'deliv_fax03','FAX3',33,'now()','now()', $dsn);
-        lfInsertCSVData(4,'deliv_zip01','郵便番号1',34,'now()','now()', $dsn);
-        lfInsertCSVData(4,'deliv_zip02','郵便番号2',35,'now()','now()', $dsn);
-        lfInsertCSVData(4,'deliv_pref','都道府県',36,'now()','now()', $dsn);
-        lfInsertCSVData(4,'deliv_addr01','住所1',37,'now()','now()', $dsn);
-        lfInsertCSVData(4,'deliv_addr02','住所2',38,'now()','now()', $dsn);
-        lfInsertCSVData(4,'payment_total','お支払い合計',39,'now()','now()', $dsn);
-    }
-}
-
-// CSVテーブルへのデータの追加
-function lfInsertCSVData($csv_id,$col,$disp_name,$rank,$create_date,$update_date, $dsn) {
-    global $objDb;
-    $sql = "insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) values($csv_id,'$col','$disp_name',$rank,$create_date,$update_date);";
-    $objDb->sfDataExists("dtb_csv", "csv_id = ? AND col = ?", array($csv_id, $col), $dsn, $sql, true);
 }
 
 /**
