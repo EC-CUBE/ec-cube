@@ -21,7 +21,11 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-/* キャンペーン管理クラス */
+/* キャンペーン管理クラス 
+ *
+ * @deprecated キャンペーン機能は廃止のため使用しない.
+ *             このクラスに依存している実装を改修後, このクラスを削除する.
+ */
 class SC_CampaignSession {
     var $key;
     var $campaign_id = 'campaign_id';

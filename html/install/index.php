@@ -130,7 +130,6 @@ case 'step3':
     // テーブルが存在しない場合に追加される。
     $objPage->arrErr = lfAddTable("dtb_session", $dsn);         // セッション管理テーブル
     $objPage->arrErr = lfAddTable("dtb_module", $dsn);          // モジュール管理テーブル
-    $objPage->arrErr = lfAddTable("dtb_campaign_order", $dsn);  // キャンペーン受注テーブル
     $objPage->arrErr = lfAddTable("dtb_mobile_kara_mail", $dsn);    // 空メール管理テーブル
     $objPage->arrErr = lfAddTable("dtb_mobile_ext_session_id", $dsn);   // セッションID管理テーブル
     $objPage->arrErr = lfAddTable("dtb_site_control", $dsn);    // サイト情報管理テーブル
@@ -225,7 +224,6 @@ case 'drop':
     // 追加テーブルがあれば削除する。
     lfDropTable("dtb_module", $dsn);
     lfDropTable("dtb_session", $dsn);
-    lfDropTable("dtb_campaign_order", $dsn);
     lfDropTable("dtb_mobile_ext_session_id", $dsn);
     lfDropTable("dtb_mobile_kara_mail", $dsn);
     lfDropTable("dtb_site_control", $dsn);
@@ -897,7 +895,6 @@ function lfAddColumn($dsn) {
     $objDb->sfColumnExists("dtb_order", "memo08", "text", $dsn, true);
     $objDb->sfColumnExists("dtb_order", "memo09", "text", $dsn, true);
     $objDb->sfColumnExists("dtb_order", "memo10", "text", $dsn, true);
-    $objDb->sfColumnExists("dtb_order", "campaign_id", "int4", $dsn, true);
 
     // 受注一時テーブル
     $objDb->sfColumnExists("dtb_order_temp", "order_id", "text", $dsn, true);
@@ -929,14 +926,6 @@ function lfAddColumn($dsn) {
     $objDb->sfColumnExists("dtb_payment", "memo09", "text", $dsn, true);
     $objDb->sfColumnExists("dtb_payment", "memo10", "text", $dsn, true);
 
-    // キャンペーンテーブル
-    $objDb->sfColumnExists("dtb_campaign", "directory_name", "text NOT NULL", $dsn, true);
-    $objDb->sfColumnExists("dtb_campaign", "limit_count", "int4 NOT NULL DEFAULT 0", $dsn, true);
-    $objDb->sfColumnExists("dtb_campaign", "total_count", "int4 NOT NULL DEFAULT 0", $dsn, true);
-    $objDb->sfColumnExists("dtb_campaign", "orverlapping_flg", "int2 NOT NULL DEFAULT 0", $dsn, true);
-    $objDb->sfColumnExists("dtb_campaign", "cart_flg", "int2 NOT NULL DEFAULT 0", $dsn, true);
-    $objDb->sfColumnExists("dtb_campaign", "deliv_free_flg", "int2 NOT NULL DEFAULT 0", $dsn, true);
-
     // 顧客
     $objDb->sfColumnExists("dtb_customer", "mailmaga_flg", "int2", $dsn, true);
 
@@ -946,14 +935,6 @@ function lfAddColumn($dsn) {
         $objDb->sfIndexExists("dtb_customer", "mobile_phone_id", "dtb_customer_mobile_phone_id_key", 64, $dsn, true);
     }
 
-    // 顧客メール
-    if ($objDBParam->getValue('db_type') == 'mysql') {
-        $objDb->sfColumnExists("dtb_customer_mail", "secret_key", "varchar(50) unique", $dsn, true);
-    } else {
-        $objDb->sfColumnExists("dtb_customer_mail", "secret_key", "text unique", $dsn, true);
-    }
-}
-
 // データの追加（既にデータが存在する場合は作成しない）
 function lfAddData($dsn) {
     global $objDb;
@@ -961,7 +942,6 @@ function lfAddData($dsn) {
     if($objDb->sfTabaleExists('dtb_csv', $dsn)) {
         lfInsertCSVData(1,'category_id','カテゴリID',53,'now()','now()', $dsn);
         lfInsertCSVData(4,'order_id','注文番号',1,'now()','now()', $dsn);
-        lfInsertCSVData(4,'campaign_id','キャンペーンID',2,'now()','now()', $dsn);
         lfInsertCSVData(4,'customer_id','顧客ID',3,'now()','now()', $dsn);
         lfInsertCSVData(4,'message','要望等',4,'now()','now()', $dsn);
         lfInsertCSVData(4,'order_name01','顧客名1',5,'now()','now()', $dsn);

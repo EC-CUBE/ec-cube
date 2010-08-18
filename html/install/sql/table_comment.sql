@@ -32,11 +32,7 @@ INSERT INTO dtb_table_comment(table_name,description) values ('dtb_other_deliv',
 INSERT INTO dtb_table_comment(table_name,description) values ('dtb_order_detail','受注商品詳細');
 INSERT INTO dtb_table_comment(table_name,description) values ('mtb_pref','都道府県ﾏｽﾀ');
 INSERT INTO dtb_table_comment(table_name,description) values ('dtb_member','管理者');
-INSERT INTO dtb_table_comment(table_name,description) values ('dtb_question','質問');
-INSERT INTO dtb_table_comment(table_name,description) values ('dtb_question_result','質問結果');
 INSERT INTO dtb_table_comment(table_name,description) values ('dtb_bat_relate_products','こんな商品も買っています');
-INSERT INTO dtb_table_comment(table_name,description) values ('dtb_campaign','キャンペーン');
-INSERT INTO dtb_table_comment(table_name,description) values ('dtb_campaign_detail','キャンペーン詳細');
 INSERT INTO dtb_table_comment(table_name,description) values ('dtb_pagelayout','ページレイアウト');
 INSERT INTO dtb_table_comment(table_name,description) values ('dtb_bloc','ブロック');
 INSERT INTO dtb_table_comment(table_name,description) values ('dtb_blocposition','ブロック配置');

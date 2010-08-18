@@ -227,37 +227,6 @@ CREATE TABLE dtb_mailtemplate (
     update_date datetime NOT NULL
 ) TYPE=InnoDB;
 
-CREATE TABLE dtb_mailmaga_template (
-    template_id int auto_increment NOT NULL,
-    subject text,
-    charge_image text,
-    mail_method int,
-    header text,
-    body text,
-    main_title text,
-    main_comment text,
-    main_product_id int,
-    sub_title text,
-    sub_comment text,
-    sub_product_id01 int,
-    sub_product_id02 int,
-    sub_product_id03 int,
-    sub_product_id04 int,
-    sub_product_id05 int,
-    sub_product_id06 int,
-    sub_product_id07 int,
-    sub_product_id08 int,
-    sub_product_id09 int,
-    sub_product_id10 int,
-    sub_product_id11 int,
-    sub_product_id12 int,
-    del_flg smallint NOT NULL DEFAULT 0,
-    creator_id int NOT NULL,
-    create_date datetime NOT NULL,
-    update_date datetime,
-    PRIMARY KEY (template_id)
-) TYPE=InnoDB;
-
 CREATE TABLE dtb_send_history (
     send_id int auto_increment NOT NULL,
     mail_method smallint,
@@ -595,16 +564,6 @@ CREATE TABLE dtb_customer (
 
 CREATE INDEX dtb_customer_mobile_phone_id_key ON dtb_customer (mobile_phone_id(64));
 
-CREATE TABLE dtb_customer_mail_temp (
-    email varchar(50) NOT NULL UNIQUE,
-    mail_flag smallint,
-    temp_id varchar(50) NOT NULL,
-    end_flag smallint,
-    update_date datetime NOT NULL,
-    create_data datetime NOT NULL,
-    PRIMARY KEY (temp_id)
-) TYPE=InnoDB;
-
 CREATE TABLE dtb_order (
     order_id int auto_increment NOT NULL,
     order_temp_id text,
@@ -684,7 +643,6 @@ CREATE TABLE dtb_order (
     memo08 text,
     memo09 text,
     memo10 text,
-    campaign_id int,
     PRIMARY KEY (order_id)
 ) TYPE=InnoDB;
 
@@ -828,75 +786,11 @@ CREATE TABLE dtb_member (
     PRIMARY KEY (member_id)
 ) TYPE=InnoDB;
 
-CREATE TABLE dtb_question (
-    question_id int auto_increment NOT NULL,
-    question_name text,
-    question text,
-    create_date datetime NOT NULL,
-    del_flg smallint NOT NULL DEFAULT 0,
-    PRIMARY KEY (question_id)
-) TYPE=InnoDB;
-
-CREATE TABLE dtb_question_result (
-    result_id int auto_increment NOT NULL,
-    question_id int NOT NULL,
-    question_date datetime,
-    question_name text,
-    name01 text,
-    name02 text,
-    kana01 text,
-    kana02 text,
-    zip01 text,
-    zip02 text,
-    pref smallint,
-    addr01 text,
-    addr02 text,
-    tel01 text,
-    tel02 text,
-    tel03 text,
-    mail01 text,
-    question01 text,
-    question02 text,
-    question03 text,
-    question04 text,
-    question05 text,
-    question06 text,
-    create_date datetime NOT NULL,
-    del_flg smallint NOT NULL DEFAULT 0,
-    PRIMARY KEY (result_id)
-) TYPE=InnoDB;
-
 CREATE TABLE dtb_bat_relate_products (
     product_id int,
     relate_product_id int,
     customer_id int,
     create_date datetime
-) TYPE=InnoDB;
-
-CREATE TABLE dtb_campaign (
-    campaign_id int auto_increment NOT NULL,
-    campaign_name text,
-    campaign_point_rate numeric NOT NULL,
-    campaign_point_type smallint,
-    start_date datetime NOT NULL,
-    end_date datetime NOT NULL,
-    directory_name text NOT NULL,
-    limit_count int NOT NULL DEFAULT 0,
-    total_count int NOT NULL DEFAULT 0,
-    orverlapping_flg smallint NOT NULL DEFAULT 0,
-    cart_flg smallint NOT NULL DEFAULT 0,
-    deliv_free_flg smallint NOT NULL DEFAULT 0,
-    search_condition text,
-    del_flg smallint NOT NULL DEFAULT 0,
-    create_date datetime NOT NULL,
-    update_date datetime NOT NULL,
-    PRIMARY KEY (campaign_id)
-) TYPE=InnoDB;
-
-CREATE TABLE dtb_campaign_detail (
-    campaign_id int NOT NULL,
-    product_id int NOT NULL,
-    campaign_point_rate numeric NOT NULL
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_pagelayout (
@@ -959,25 +853,6 @@ CREATE TABLE dtb_csv_sql (
     update_date datetime NOT NULL,
     create_date datetime NOT NULL,
     PRIMARY KEY (sql_id)
-) TYPE=InnoDB;
-
-CREATE TABLE dtb_user_regist (
-    user_id int auto_increment NOT NULL,
-    org_name text,
-    post_name text,
-    name01 text,
-    name02 text,
-    kana01 text,
-    kana02 text,
-    email text NOT NULL,
-    url text,
-    note text,
-    secret_key varchar(50) NOT NULL UNIQUE,
-    status smallint NOT NULL,
-    del_flg smallint DEFAULT 0,
-    create_date datetime NOT NULL,
-    update_date datetime NOT NULL,
-    PRIMARY KEY (user_id)
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_templates
@@ -1052,13 +927,6 @@ CREATE TABLE mtb_disp (
 ) TYPE=InnoDB;
 
 CREATE TABLE mtb_class (
-    id smallint,
-    name text,
-    rank smallint NOT NULL DEFAULT 0,
-    PRIMARY KEY (id)
-) TYPE=InnoDB;
-
-CREATE TABLE mtb_srank (
     id smallint,
     name text,
     rank smallint NOT NULL DEFAULT 0,
