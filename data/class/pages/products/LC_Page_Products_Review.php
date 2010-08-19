@@ -238,6 +238,7 @@ class LC_Page_Products_Review extends LC_Page {
         //-- 登録実行
         $objQuery = new SC_Query();
         $objQuery->begin();
+        $arrRegist['review_id'] = $objQuery->nextVal('dtb_review_review_id');
         $objQuery->insert("dtb_review", $arrRegist);
         $objQuery->commit();
     }

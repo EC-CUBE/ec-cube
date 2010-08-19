@@ -178,6 +178,7 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page {
             $sqlval['create_date'] = "now()";
             $sqlval['update_date'] = "now()";
             // INSERTの実行
+            $sqlval['classcategory_id'] = $objQuery->nextVal('dtb_classcategory_classcategory_id');
             $ret = $objQuery->insert("dtb_classcategory", $sqlval);
         }
         $objQuery->commit();

@@ -294,9 +294,11 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
         // page_id が空 若しくは データが存在していない場合にはINSERTを行う
         if ($arrData['page_id'] === '' or !isset($arrChk[0])) {
             // SQL生成
+            $arrData['page_id'] = $objQuery->nextVal('dtb_pagelayout_page_id');
             $sql = " INSERT INTO dtb_pagelayout ";
             $sql .= " ( ";
-            $sql .= " 	  page_name";
+            $sql .= " 	  page_id";
+            $sql .= " 	  ,page_name";
             $sql .= "	  ,url";
             $sql .= "	  ,php_dir";
             $sql .= "	  ,tpl_dir";

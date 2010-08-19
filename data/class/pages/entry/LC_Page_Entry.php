@@ -727,6 +727,7 @@ class LC_Page_Entry extends LC_Page {
         //-- 仮登録実行
         $objQuery->begin();
 
+        $arrRegist['customer_id'] = $objQuery->nextVal('dtb_customer_customer_id');
         $objQuery->insert("dtb_customer", $arrRegist);
 
 

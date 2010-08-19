@@ -109,6 +109,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
                 $objQuery->begin();
                 $where = "product_id = ?";
                 $objQuery->delete("dtb_products_class", $where, array($_POST['product_id']));
+                $sqlval['product_class_id'] = $objQuery->nextVal('dtb_products_class_product_class_id');
                 $objQuery->insert("dtb_products_class", $sqlval);
 
                 $objQuery->commit();

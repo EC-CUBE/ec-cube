@@ -365,14 +365,14 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page {
             }else{
                 // データの新規作成
                 $sql_id = "";
-                $sql = "INSERT INTO dtb_csv_sql (sql_name, csv_sql, create_date, update_date) values (?, ?, now(), now()) ";
-                $arrVal= array($arrData['sql_name'], $arrData['csv_sql']);
+                $sql = "INSERT INTO dtb_csv_sql (sql_id, sql_name, csv_sql, create_date, update_date) values (?, ?, ?, now(), now()) ";
+                $arrVal= array($objQuery->nextVal('dtb_csv_sql_sql_id'), $arrData['sql_name'], $arrData['csv_sql']);
 
             }
         }else{
             // データの新規作成
-            $sql = "INSERT INTO dtb_csv_sql (sql_name, csv_sql, create_date, update_date) values (?, ?, now(), now()) ";
-            $arrVal= array($arrData['sql_name'], $arrData['csv_sql']);
+            $sql = "INSERT INTO dtb_csv_sql (sql_id, sql_name, csv_sql, create_date, update_date) values (?, ?, ?, now(), now()) ";
+            $arrVal= array($objQuery->nextVal('dtb_csv_sql_sql_id'), $arrData['sql_name'], $arrData['csv_sql']);
         }
         // SQL実行
         $arrRet = $objQuery->query($sql,$arrVal);

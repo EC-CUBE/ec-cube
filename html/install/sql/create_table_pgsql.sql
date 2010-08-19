@@ -1,5 +1,5 @@
 create table dtb_module_update_logs(
-    log_id serial NOT NULL,
+    log_id int NOT NULL,
     module_id int NOT NULL,
     buckup_path text,
     error_flg smallint DEFAULT 0,
@@ -15,7 +15,7 @@ CREATE TABLE dtb_ownersstore_settings (
 );
 
 CREATE TABLE dtb_kiyaku (
-    kiyaku_id serial NOT NULL,
+    kiyaku_id int NOT NULL,
     kiyaku_title text NOT NULL,
     kiyaku_text text NOT NULL,
     rank int NOT NULL DEFAULT 0,
@@ -27,7 +27,7 @@ CREATE TABLE dtb_kiyaku (
 );
 
 CREATE TABLE dtb_holiday (
-    holiday_id serial NOT NULL,
+    holiday_id int NOT NULL,
     title text NOT NULL,
     month smallint NOT NULL,
     day smallint NOT NULL,
@@ -154,7 +154,7 @@ CREATE TABLE dtb_baseinfo (
 );
 
 CREATE TABLE dtb_deliv (
-    deliv_id serial NOT NULL,
+    deliv_id int NOT NULL,
     name text,
     service_name text,
     confirm_url text,
@@ -176,14 +176,14 @@ CREATE TABLE dtb_delivtime (
 
 CREATE TABLE dtb_delivfee (
     deliv_id int NOT NULL,
-    fee_id serial NOT NULL,
+    fee_id int NOT NULL,
     fee text NOT NULL,
     pref smallint,
     PRIMARY KEY (fee_id)
 );
 
 CREATE TABLE dtb_payment (
-    payment_id serial NOT NULL,
+    payment_id int NOT NULL,
     payment_method text,
     charge numeric,
     rule numeric,
@@ -228,7 +228,7 @@ CREATE TABLE dtb_mailtemplate (
 );
 
 CREATE TABLE dtb_send_history (
-    send_id serial NOT NULL,
+    send_id int NOT NULL,
     mail_method smallint,
     subject text,
     body text,
@@ -254,7 +254,7 @@ CREATE TABLE dtb_send_customer (
 );
 
 CREATE TABLE dtb_products (
-    product_id serial NOT NULL,
+    product_id int NOT NULL,
     name text,
     deliv_fee numeric,
     sale_limit numeric,
@@ -318,7 +318,7 @@ CREATE TABLE dtb_products (
 );
 
 CREATE TABLE dtb_products_class (
-    product_class_id serial NOT NULL,
+    product_class_id int NOT NULL,
     product_id int NOT NULL,
     classcategory_id1 int NOT NULL DEFAULT 0,
     classcategory_id2 int NOT NULL DEFAULT 0,
@@ -336,7 +336,7 @@ CREATE TABLE dtb_products_class (
 );
 
 CREATE TABLE dtb_class (
-    class_id serial NOT NULL,
+    class_id int NOT NULL,
     name text,
     status smallint,
     rank int,
@@ -349,7 +349,7 @@ CREATE TABLE dtb_class (
 );
 
 CREATE TABLE dtb_classcategory (
-    classcategory_id serial NOT NULL,
+    classcategory_id int NOT NULL,
     name text,
     class_id int NOT NULL,
     status smallint,
@@ -362,7 +362,7 @@ CREATE TABLE dtb_classcategory (
 );
 
 CREATE TABLE dtb_category (
-    category_id serial NOT NULL,
+    category_id int NOT NULL,
     category_name text,
     parent_category_id int NOT NULL DEFAULT 0,
     level int NOT NULL,
@@ -434,7 +434,7 @@ CREATE TABLE dtb_recommend_products (
 );
 
 CREATE TABLE dtb_review (
-    review_id serial NOT NULL,
+    review_id int NOT NULL,
     product_id int NOT NULL,
     reviewer_name text NOT NULL,
     reviewer_url text,
@@ -479,7 +479,7 @@ CREATE TABLE dtb_category_total_count (
 );
 
 CREATE TABLE dtb_news (
-    news_id serial NOT NULL,
+    news_id int NOT NULL,
     news_date timestamp,
     rank int,
     news_title text NOT NULL,
@@ -495,7 +495,7 @@ CREATE TABLE dtb_news (
 );
 
 CREATE TABLE dtb_best_products (
-    best_id serial NOT NULL,
+    best_id int NOT NULL,
     category_id int NOT NULL,
     rank int NOT NULL DEFAULT 0,
     product_id int NOT NULL,
@@ -509,7 +509,7 @@ CREATE TABLE dtb_best_products (
 );
 
 CREATE TABLE dtb_mail_history (
-    send_id serial NOT NULL,
+    send_id int NOT NULL,
     order_id int NOT NULL,
     send_date timestamp,
     template_id int,
@@ -520,7 +520,7 @@ CREATE TABLE dtb_mail_history (
 );
 
 CREATE TABLE dtb_customer (
-    customer_id serial NOT NULL,
+    customer_id int NOT NULL,
     name01 text NOT NULL,
     name02 text NOT NULL,
     kana01 text NOT NULL,
@@ -564,7 +564,7 @@ CREATE TABLE dtb_customer (
 );
 
 CREATE TABLE dtb_order (
-    order_id serial NOT NULL,
+    order_id int NOT NULL,
     order_temp_id text,
     customer_id int NOT NULL,
     message text,
@@ -730,7 +730,7 @@ CREATE TABLE dtb_order_temp (
 );
 
 CREATE TABLE dtb_other_deliv (
-    other_deliv_id serial NOT NULL,
+    other_deliv_id int NOT NULL,
     customer_id int NOT NULL,
     name01 text,
     name02 text,
@@ -769,7 +769,7 @@ CREATE TABLE mtb_pref (
 );
 
 CREATE TABLE dtb_member (
-    member_id serial NOT NULL,
+    member_id int NOT NULL,
     name text,
     department text,
     login_id text NOT NULL,
@@ -793,7 +793,7 @@ CREATE TABLE dtb_bat_relate_products (
 );
 
 CREATE TABLE dtb_pagelayout (
-    page_id serial NOT NULL,
+    page_id int NOT NULL,
     page_name text,
     url text NOT NULL,
     php_dir text,
@@ -812,7 +812,7 @@ CREATE TABLE dtb_pagelayout (
 );
 
 CREATE TABLE dtb_bloc (
-    bloc_id serial NOT NULL,
+    bloc_id int NOT NULL,
     bloc_name text,
     tpl_path text,
     filename text NOT NULL UNIQUE,
@@ -833,7 +833,7 @@ CREATE TABLE dtb_blocposition (
 );
 
 CREATE TABLE dtb_csv (
-    no serial,
+    no int,
     csv_id int NOT NULL,
     col text,
     disp_name text,
@@ -846,7 +846,7 @@ CREATE TABLE dtb_csv (
 );
 
 CREATE TABLE dtb_csv_sql (
-    sql_id serial,
+    sql_id int,
     sql_name text NOT NULL,
     csv_sql text,
     update_date timestamp NOT NULL DEFAULT now(),
@@ -863,7 +863,7 @@ create table dtb_templates (
 );
 
 create table dtb_table_comment (
-    id serial,
+    id int,
     table_name text,
     column_name text,
     description text,
@@ -871,7 +871,7 @@ create table dtb_table_comment (
 );
 
 CREATE TABLE dtb_maker (
-    maker_id serial NOT NULL,
+    maker_id int NOT NULL,
     name text NOT NULL,
     rank int NOT NULL DEFAULT 0,
     creator_id int NOT NULL,
@@ -1177,7 +1177,7 @@ CREATE TABLE dtb_mobile_ext_session_id (
 );
 
 CREATE TABLE dtb_mobile_kara_mail (
-    kara_mail_id serial PRIMARY KEY,
+    kara_mail_id int PRIMARY KEY,
     session_id text NOT NULL,
     token text NOT NULL,
     next_url text NOT NULL,
@@ -1206,7 +1206,7 @@ CREATE TABLE dtb_module (
 );
 
 CREATE TABLE dtb_site_control (
-    control_id serial primary key NOT NULL,
+    control_id int primary key NOT NULL,
     control_title text ,
     control_text text ,
     control_flg int2 NOT NULL DEFAULT 2,
@@ -1217,7 +1217,7 @@ CREATE TABLE dtb_site_control (
 );
 
 CREATE TABLE dtb_trackback (
-    trackback_id serial primary key NOT NULL,
+    trackback_id int primary key NOT NULL,
     product_id int NOT NULL,
     blog_name varchar(255) NOT NULL DEFAULT '',
     title varchar(255) NOT NULL DEFAULT '',

@@ -367,6 +367,7 @@ class LC_Page_Admin_System_Input extends LC_Page {
         $sqlVal['update_date'] = 'NOW()';
 
         // INSERTの実行
+        $sqlval['member_id'] = $objQuery->nextVal('dtb_member_member_id');
         $objQuery->insert('dtb_member', $sqlVal);
     }
 

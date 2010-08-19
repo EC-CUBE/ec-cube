@@ -359,7 +359,9 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
     }
 
     function registerUpdateLog($arrLog, $objRet) {
+        $objQuery = new SC_Query;
         $arrInsert = array(
+           'id'           => $objQuery->nextVal('dtb_module_update_logs_log_id'),
             'module_id'   => $objRet->product_id,
             'buckup_path' => $arrLog['buckup_path'],
             'error_flg'   => count($arrLog['err']),
@@ -368,7 +370,6 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
             'update_date' => 'NOW()',
             'create_date' => 'NOW()'
         );
-        $objQuery = new SC_Query;
         $objQuery->insert('dtb_module_update_logs', $arrInsert);
     }
 

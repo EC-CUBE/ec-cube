@@ -288,6 +288,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page {
                 $objQuery->exec($sqlup, array($sqlval['rank']));
                 
             }
+            $sqlval['category_id'] = $objQuery->nextVal('dtb_category_category_id');
             $objQuery->insert("dtb_category", $sqlval);
         }
     }

@@ -273,9 +273,9 @@ class LC_Page_Admin_Contents extends LC_Page {
         //rankの最大+1を取得する
         $rank_max = $objQuery->getOne("SELECT MAX(rank) + 1 FROM dtb_news WHERE del_flg = '0'");
 
-        $sql = "INSERT INTO dtb_news (news_date, news_title, creator_id, news_url, link_method, news_comment, rank, create_date, update_date)
-            VALUES ( ?,?,?,?,?,?,?,now(),now())";
-        $arrRegist = array($this->registDate, $_POST["news_title"], $_SESSION['member_id'],  $_POST["news_url"], $_POST["link_method"], $_POST["news_comment"], $rank_max);
+        $sql = "INSERT INTO dtb_news (news_id, news_date, news_title, creator_id, news_url, link_method, news_comment, rank, create_date, update_date)
+            VALUES (?,?,?,?,?,?,?,?,now(),now())";
+        $arrRegist = array($objQuery->nextVal('dtb_news_news_id'), $this->registDate, $_POST["news_title"], $_SESSION['member_id'],  $_POST["news_url"], $_POST["link_method"], $_POST["news_comment"], $rank_max);
 
         $objQuery->query($sql, $arrRegist);
 

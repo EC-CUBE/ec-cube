@@ -150,6 +150,7 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page {
         $sqlval['update_date'] = "Now()";
         $sqlval['create_date'] = "Now()";
         // INSERTの実行
+        $sqlval['kiyaku_id'] = $objQuery->nextVal('dtb_kiyaku_kiyaku_id');
         $ret = $objQuery->insert("dtb_kiyaku", $sqlval);
         return $ret;
     }

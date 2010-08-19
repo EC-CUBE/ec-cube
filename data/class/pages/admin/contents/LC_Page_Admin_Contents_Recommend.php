@@ -93,7 +93,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page {
                 $this->arrForm['creator_id'] = $_SESSION['member_id'];
                 $this->arrForm['update_date'] = "NOW()";
                 $this->arrForm['create_date'] = "NOW()";
-
+                $this->arrForm['best_id'] = $objQuery->nextVal('dtb_best_products_best_id');
                 $objQuery->insert("dtb_best_products", $this->arrForm );
             }
 

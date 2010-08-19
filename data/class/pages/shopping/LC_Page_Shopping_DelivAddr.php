@@ -261,10 +261,9 @@ class LC_Page_Shopping_DelivAddr extends LC_Page {
         if ($array['other_deliv_id'] != ""){
             $objQuery->update("dtb_other_deliv", $arrRegist, "other_deliv_id="  . SC_Utils_Ex::sfQuoteSmart($array["other_deliv_id"]));
         }else{
+            $arrRegist['other_deliv_id'] = $objQuery->nextVal('dtb_other_deliv_other_deliv_id');
             $objQuery->insert("dtb_other_deliv", $arrRegist);
-
-            $sqlse = "SELECT max(other_deliv_id) FROM dtb_other_deliv WHERE customer_id = ?";
-            $array['other_deliv_id'] = $objQuery->getOne($sqlse, array($arrRegist['customer_id']));
+            $array['other_deliv_id'] = $arrRegist['other_deliv_id'];
         }
 
         $objQuery->commit();

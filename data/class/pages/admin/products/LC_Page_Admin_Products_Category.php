@@ -293,6 +293,7 @@ class LC_Page_Admin_Products_Category extends LC_Page {
         $sqlval['level'] = $level;
 
         // INSERTの実行
+        $sqlval['category_id'] = $objQuery->nextVal('dtb_category_category_id');
         $objQuery->insert("dtb_category", $sqlval);
 
         $objQuery->commit();    // トランザクションの終了

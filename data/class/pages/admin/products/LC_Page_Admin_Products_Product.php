@@ -473,20 +473,12 @@ class LC_Page_Admin_Products_Product extends LC_Page {
 
         // 新規登録(複製時を含む)
         if ($arrList['product_id'] == "") {
-            // product_id 取得（PostgreSQLの場合）
-            if(DB_TYPE=='pgsql'){
-                $product_id = $objQuery->nextval("dtb_products", "product_id");
-                $sqlval['product_id'] = $product_id;
-            }
+            $product_id = $objQuery->nextVal("dtb_products_product_id");
+            $sqlval['product_id'] = $product_id;
 
             // INSERTの実行
             $sqlval['create_date'] = "Now()";
             $objQuery->insert("dtb_products", $sqlval);
-
-            // product_id 取得（MySQLの場合）
-            if(DB_TYPE=='mysql'){
-                $product_id = $objQuery->nextval("dtb_products", "product_id");
-            }
 
             $arrList['product_id'] = $product_id;
 
@@ -515,8 +507,8 @@ class LC_Page_Admin_Products_Product extends LC_Page {
                     unset($arrColList[$arrColList_tmp["create_date"]]);
 
                     $col = SC_Utils_Ex::sfGetCommaList($arrColList);
-
-                    $objQuery->query("INSERT INTO dtb_products_class (product_id, create_date, ". $col .") SELECT ?, now(), " . $col. " FROM dtb_products_class WHERE product_id = ? ORDER BY product_class_id", array($product_id, $_POST["copy_product_id"]));
+                    $product_class_id = $objQuery->nextVal('dtb_products_class_product_class_id');
+                    $objQuery->query("INSERT INTO dtb_products_class (product_class_id, product_id, create_date, ". $col .") SELECT ?, now(), " . $col. " FROM dtb_products_class WHERE product_id = ? ORDER BY product_class_id", array($product_class_id, $product_id, $_POST["copy_product_id"]));
                 }
             }
         }
@@ -811,7 +803,8 @@ class LC_Page_Admin_Products_Product extends LC_Page {
                     $records[$key] = $arrList[$key];
                 }
             }
-            unset($records["product_class_id"]);
+
+            $records["product_class_id"] = $objQuery->nextVal('dtb_products_class_product_class_id');
             unset($records["update_date"]);
 
             $records["create_date"] = "Now()";
@@ -859,7 +852,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         $sqlval = SC_Utils_Ex::arrayDefineIndexes($sqlval, $checkArray);
 
         if (strlen($sqlval['product_class_id']) == 0) {
-            unset($sqlval['product_class_id']);
+            $sqlval['product_class_id'] = $objQuery->nextVal('dtb_products_class_product_class_id');
         }
         $sqlval['classcategory_id1'] = '0';
         $sqlval['classcategory_id2'] = '0';

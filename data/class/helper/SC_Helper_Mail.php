@@ -228,6 +228,7 @@ class SC_Helper_Mail {
         $sqlval['mail_body'] = $body;
 
         $objQuery = new SC_Query();
+        $sqlval['send_id'] = $objQuery->nextVal("dtb_mail_history_send_id");
         $objQuery->insert("dtb_mail_history", $sqlval);
     }
 

@@ -150,6 +150,7 @@ class LC_Page_Admin_Products_Class extends LC_Page {
         $sqlval['create_date'] = "now()";
         $sqlval['update_date'] = "now()";
         // INSERTの実行
+        $sqlval['class_id'] = $objQuery->nextVal('dtb_class_class_id');
         $ret = $objQuery->insert("dtb_class", $sqlval);
 
         return $ret;

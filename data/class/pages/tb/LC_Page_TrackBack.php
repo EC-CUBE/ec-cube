@@ -237,6 +237,7 @@ class LC_Page_TrackBack extends LC_Page {
         }
         // データの登録
         $table = "dtb_trackback";
+        $arrData['trackback_id'] = $objQuery->nextVal('dtb_trackback_trackback_id');
         $ret = $objQuery->insert($table, $arrData);
         return $ret;
     }

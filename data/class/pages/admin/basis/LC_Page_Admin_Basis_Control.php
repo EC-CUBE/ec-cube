@@ -164,6 +164,7 @@ class LC_Page_Admin_Basis_Control extends LC_Page {
             // INSERTの実行
             //$sqlval['creator_id'] = $_SESSION['member_id'];
             $sqlval['create_date'] = 'Now()';
+            $objQuery->nextVal("dtb_site_control_control_id");
             $objQuery->insert("dtb_site_control", $sqlval);
         // 既存編集
         } else {

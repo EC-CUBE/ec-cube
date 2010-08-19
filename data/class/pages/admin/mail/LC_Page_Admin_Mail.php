@@ -476,6 +476,7 @@ class LC_Page_Admin_Mail extends LC_Page {
         $dtb_send_history["search_data"] = serialize($arrData);
         $dtb_send_history["update_date"] = "now()";
         $dtb_send_history["create_date"] = "now()";
+        $dtb_send_history['send_id'] = $objQuery->nextVal('dtb_send_history_send_id');
         $objQuery->insert("dtb_send_history", $dtb_send_history );
 
         $sendId = $objQuery->currval('dtb_send_history', 'send_id');
@@ -527,6 +528,7 @@ class LC_Page_Admin_Mail extends LC_Page {
 
 
     // HTMLテンプレートを使用する場合、データを取得する。
+    // FIXME
     function lfGetHtmlTemplateData($id) {
 
         $objQuery = new SC_Query();

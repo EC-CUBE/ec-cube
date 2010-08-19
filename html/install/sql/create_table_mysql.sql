@@ -1,5 +1,5 @@
 create table dtb_module_update_logs(
-    log_id int auto_increment NOT NULL,
+    log_id int  NOT NULL,
     module_id int NOT NULL,
     buckup_path text,
     error_flg smallint DEFAULT 0,
@@ -15,7 +15,7 @@ CREATE TABLE dtb_ownersstore_settings (
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_kiyaku (
-    kiyaku_id int auto_increment NOT NULL,
+    kiyaku_id int  NOT NULL,
     kiyaku_title text NOT NULL,
     kiyaku_text text NOT NULL,
     rank int NOT NULL DEFAULT 0,
@@ -27,7 +27,7 @@ CREATE TABLE dtb_kiyaku (
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_holiday (
-    holiday_id int auto_increment NOT NULL,
+    holiday_id int  NOT NULL,
     title text NOT NULL,
     month smallint NOT NULL,
     day smallint NOT NULL,
@@ -154,7 +154,7 @@ CREATE TABLE dtb_baseinfo (
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_deliv (
-    deliv_id int auto_increment NOT NULL,
+    deliv_id int  NOT NULL,
     name text,
     service_name text,
     confirm_url text,
@@ -176,14 +176,14 @@ CREATE TABLE dtb_delivtime (
 
 CREATE TABLE dtb_delivfee (
     deliv_id int NOT NULL,
-    fee_id int auto_increment NOT NULL,
+    fee_id int  NOT NULL,
     fee text NOT NULL,
     pref smallint,
     PRIMARY KEY (fee_id)
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_payment (
-    payment_id int auto_increment NOT NULL,
+    payment_id int  NOT NULL,
     payment_method text,
     charge numeric,
     rule numeric,
@@ -228,7 +228,7 @@ CREATE TABLE dtb_mailtemplate (
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_send_history (
-    send_id int auto_increment NOT NULL,
+    send_id int  NOT NULL,
     mail_method smallint,
     subject text,
     body text,
@@ -254,7 +254,7 @@ CREATE TABLE dtb_send_customer (
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_products (
-    product_id int auto_increment NOT NULL,
+    product_id int  NOT NULL,
     name text,
     deliv_fee numeric,
     sale_limit numeric,
@@ -318,7 +318,7 @@ CREATE TABLE dtb_products (
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_products_class (
-    product_class_id int auto_increment NOT NULL,
+    product_class_id int  NOT NULL,
     product_id int NOT NULL,
     classcategory_id1 int NOT NULL DEFAULT 0,
     classcategory_id2 int NOT NULL DEFAULT 0,
@@ -336,7 +336,7 @@ CREATE TABLE dtb_products_class (
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_class (
-    class_id int auto_increment NOT NULL,
+    class_id int  NOT NULL,
     name text,
     status smallint,
     rank int,
@@ -349,7 +349,7 @@ CREATE TABLE dtb_class (
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_classcategory (
-    classcategory_id int auto_increment NOT NULL,
+    classcategory_id int  NOT NULL,
     name text,
     class_id int NOT NULL,
     status smallint,
@@ -362,7 +362,7 @@ CREATE TABLE dtb_classcategory (
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_category (
-    category_id int auto_increment NOT NULL,
+    category_id int  NOT NULL,
     category_name text,
     parent_category_id int NOT NULL DEFAULT 0,
     level int NOT NULL,
@@ -434,7 +434,7 @@ CREATE TABLE dtb_recommend_products (
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_review (
-    review_id int auto_increment NOT NULL,
+    review_id int  NOT NULL,
     product_id int NOT NULL,
     reviewer_name text NOT NULL,
     reviewer_url text,
@@ -478,7 +478,7 @@ CREATE TABLE dtb_category_total_count (
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_news (
-    news_id int auto_increment NOT NULL,
+    news_id int  NOT NULL,
     news_date datetime,
     rank int,
     news_title text NOT NULL,
@@ -494,7 +494,7 @@ CREATE TABLE dtb_news (
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_best_products (
-    best_id int auto_increment NOT NULL,
+    best_id int  NOT NULL,
     category_id int NOT NULL,
     rank int NOT NULL DEFAULT 0,
     product_id int NOT NULL,
@@ -508,7 +508,7 @@ CREATE TABLE dtb_best_products (
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_mail_history (
-    send_id int auto_increment NOT NULL,
+    send_id int  NOT NULL,
     order_id int NOT NULL,
     send_date datetime,
     template_id int,
@@ -519,7 +519,7 @@ CREATE TABLE dtb_mail_history (
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_customer (
-    customer_id int auto_increment NOT NULL,
+    customer_id int  NOT NULL,
     name01 text NOT NULL,
     name02 text NOT NULL,
     kana01 text NOT NULL,
@@ -563,7 +563,7 @@ CREATE TABLE dtb_customer (
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_order (
-    order_id int auto_increment NOT NULL,
+    order_id int  NOT NULL,
     order_temp_id text,
     customer_id int NOT NULL,
     message text,
@@ -729,7 +729,7 @@ CREATE TABLE dtb_order_temp (
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_other_deliv (
-    other_deliv_id int auto_increment NOT NULL,
+    other_deliv_id int  NOT NULL,
     customer_id int NOT NULL,
     name01 text,
     name02 text,
@@ -768,7 +768,7 @@ CREATE TABLE mtb_pref (
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_member (
-    member_id int auto_increment NOT NULL,
+    member_id int  NOT NULL,
     name text,
     department text,
     login_id text NOT NULL,
@@ -792,7 +792,7 @@ CREATE TABLE dtb_bat_relate_products (
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_pagelayout (
-    page_id int auto_increment NOT NULL,
+    page_id int  NOT NULL,
     page_name text,
     url text NOT NULL,
     php_dir text,
@@ -811,7 +811,7 @@ CREATE TABLE dtb_pagelayout (
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_bloc (
-    bloc_id int auto_increment NOT NULL,
+    bloc_id int  NOT NULL,
     bloc_name text,
     tpl_path text,
     filename varchar(50) NOT NULL UNIQUE,
@@ -832,7 +832,7 @@ CREATE TABLE dtb_blocposition (
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_csv (
-    no int auto_increment,
+    no int ,
     csv_id int NOT NULL,
     col text,
     disp_name text,
@@ -845,7 +845,7 @@ CREATE TABLE dtb_csv (
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_csv_sql (
-    sql_id int auto_increment,
+    sql_id int ,
     sql_name text NOT NULL,
     csv_sql text,
     update_date datetime NOT NULL,
@@ -864,7 +864,7 @@ CREATE TABLE dtb_templates
 
 CREATE TABLE dtb_table_comment
 (
-    id int auto_increment,
+    id int ,
     table_name text,
     column_name text,
     description text,
@@ -872,7 +872,7 @@ CREATE TABLE dtb_table_comment
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_maker (
-    maker_id int auto_increment,
+    maker_id int ,
     name text NOT NULL,
     rank int NOT NULL DEFAULT 0,
     creator_id int NOT NULL,
@@ -1208,7 +1208,7 @@ CREATE TABLE dtb_session (
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_site_control (
-    control_id int auto_increment NOT NULL,
+    control_id int  NOT NULL,
     control_title varchar(255) ,
     control_text text ,
     control_flg int NOT NULL DEFAULT 2,
@@ -1220,7 +1220,7 @@ CREATE TABLE dtb_site_control (
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_trackback (
-    trackback_id int auto_increment NOT NULL,
+    trackback_id int  NOT NULL,
     product_id int NOT NULL,
     blog_name varchar(255) NOT NULL DEFAULT '',
     title varchar(255) NOT NULL DEFAULT '',

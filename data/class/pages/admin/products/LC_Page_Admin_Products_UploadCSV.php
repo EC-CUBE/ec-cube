@@ -383,13 +383,12 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page {
         } else {
             // 新規登録
 
-            unset($sqlval['product_id']);
+            $sqlval['product_id'] = $objQuery->nextVal('dtb_products_product_id');
+            $product_id = $sqlval['product_id'];
             $sqlval['create_date'] = $time;
 
             // INSERTの実行
             $objQuery->insert("dtb_products", $sqlval);
-
-            $product_id = $objQuery->currval("dtb_products","product_id");
         }
 
         // カテゴリ登録
@@ -455,6 +454,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page {
             $sqlval['classcategory_id1'] = '0';
             $sqlval['classcategory_id2'] = '0';
             $sqlval['create_date'] = "now()";
+            $sqlval['product_class_id'] = $objQuery->nextVal('dtb_products_class_product_class_id');
             $objQuery->insert("dtb_products_class", $sqlval);
         } else {
             // 既存編集

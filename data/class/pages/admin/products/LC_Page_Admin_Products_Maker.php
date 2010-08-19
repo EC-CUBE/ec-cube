@@ -148,6 +148,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page {
         $sqlval['update_date'] = "Now()";
         $sqlval['create_date'] = "Now()";
         // INSERTの実行
+        $sqlval['maker_id'] = $objQuery->nextVal('dtb_maker_maker_id');
         $ret = $objQuery->insert("dtb_maker", $sqlval);
         return $ret;
     }

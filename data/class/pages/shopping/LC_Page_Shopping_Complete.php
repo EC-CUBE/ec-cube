@@ -396,11 +396,11 @@ class LC_Page_Shopping_Complete extends LC_Page {
 
         $sqlval['create_date'] = "now()";
         $sqlval['update_date'] = "now()";
-        $objQuery->insert("dtb_customer", $sqlval);
 
-        // 顧客IDの取得
-        $arrRet = $objQuery->select("customer_id", "dtb_customer", "secret_key = ?", array($sqlval['secret_key']));
-        $customer_id = $arrRet[0]['customer_id'];
+        $sqlval['customer_id'] = $objQuery->nextVal('dtb_customer_customer_id');
+        $customer_id = $sqlval['customer_id'];
+
+        $objQuery->insert("dtb_customer", $sqlval);
 
         //　登録完了メール送信
         $objMailPage = $this;
@@ -633,6 +633,7 @@ class LC_Page_Shopping_Complete extends LC_Page {
         if($diff) {
             $sqlval = $arrNew;
             $sqlval['customer_id'] = $customer_id;
+            $sqlval['other_deliv_id'] = $objQuery->nextVal('dtb_other_deliv_other_deliv_id');
             $objQuery->insert("dtb_other_deliv", $sqlval);
         }
     }

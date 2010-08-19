@@ -625,48 +625,38 @@ class SC_Query {
         return $ret;
     }
 
-    // TODO MDB2::nextID のエイリアスとする
-    function nextval($table, $colname) {
-        $sql = "";
-        // postgresqlとmysqlとで処理を分ける
-        if (DB_TYPE == "pgsql") {
-            $seqtable = $table . "_" . $colname . "_seq";
-            $sql = "SELECT NEXTVAL('$seqtable')";
-        }else if (DB_TYPE == "mysql") {
-            $sql = "SELECT last_insert_id();";
-        }
-        $ret = $this->getOne($sql);
-
-        return $ret;
+    /**
+     * 次のシーケンス値を取得する.
+     *
+     * @param string $seq_name 取得するシーケンス名
+     * @param integer 次のシーケンス値
+     */
+    function nextVal($seq_name) {
+        return $this->conn->nextID($seq_name);
     }
 
-    // TODO MDB2::currID のエイリアスとする
-    function currval($table, $colname) {
-        $sql = "";
-        if (DB_TYPE == "pgsql") {
-            $seqtable = $table . "_" . $colname . "_seq";
-            $sql = "SELECT CURRVAL('$seqtable')";
-        }else if (DB_TYPE == "mysql") {
-            $sql = "SELECT last_insert_id();";
-        }
-        $ret = $this->getOne($sql);
-
-        return $ret;
+    /**
+     * 現在のシーケンス値を取得する.
+     *
+     * @param string $seq_name 取得するシーケンス名
+     * @return integer 現在のシーケンス値
+     */
+    function currVal($seq_name) {
+        return $this->conn->currID($seq_name);
     }
 
-    // TODO MDB2 に該当関数が無いため実装を要検討
-    function setval($table, $colname, $data) {
-        $sql = "";
-        if (DB_TYPE == "pgsql") {
-            $seqtable = $table . "_" . $colname . "_seq";
-            $sql = "SELECT SETVAL('$seqtable', $data)";
-            $ret = $this->getOne($sql);
-        }else if (DB_TYPE == "mysql") {
-            $sql = "ALTER TABLE $table AUTO_INCREMENT=$data";
-            $ret = $this->query($sql);
-        }
-
-        return $ret;
+    /**
+     * シーケンス値を設定する.
+     *
+     * @param string $seq_name シーケンス名
+     * @param integer $start 設定するシーケンス値
+     * @return MDB2_OK
+     */
+    function setVal($seq_name, $start) {
+        $this->conn->loadModule('Manager');
+        // XXX エラーハンドリングを行う
+        $this->conn->dropSequence($seq_name);
+        return $this->conn->createSequence($seq_name, $start);
     }
 
     /**

@@ -190,6 +190,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page {
             }
             
             // 実行
+            $arrRegist['other_deliv_id'] = $objQuery->nextVal('dtb_other_deliv_other_deliv_id');
             $objQuery->insert("dtb_other_deliv", $arrRegist);
             
         // 変更

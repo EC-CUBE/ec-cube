@@ -214,20 +214,12 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page {
         }
         else {
             // 登録する配送業者IDの取得
-
-            if (DB_TYPE == "pgsql") {
-                $deliv_id = $objQuery->nextval('dtb_deliv', 'deliv_id');
-                $sqlval['deliv_id'] = $deliv_id;
-            }
-
+            $deliv_id = $objQuery->nextVal('dtb_deliv_deliv_id');
+            $sqlval['deliv_id'] = $deliv_id;
             $sqlval['rank'] = $objQuery->max("dtb_deliv", "rank") + 1;
             $sqlval['create_date'] = 'Now()';
             // INSERTの実行
             $objQuery->insert("dtb_deliv", $sqlval);
-
-            if (DB_TYPE == "mysql") {
-                $deliv_id = $objQuery->nextval('dtb_deliv', 'deliv_id');
-            }
 
             $sqlval = array();
             // お届け時間の設定
@@ -252,6 +244,7 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page {
                         $sqlval['fee'] = $arrRet[$keyname];
                         $sqlval['pref'] = $cnt;
                         // INSERTの実行
+                        $sqlval['fee_id'] = $objQuery->nextVal('dtb_delivfee_fee_id');
                         $objQuery->insert("dtb_delivfee", $sqlval);
                     }
                 }

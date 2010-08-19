@@ -225,6 +225,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
             if (!($val == "dtb_bkup" || $val == "mtb_zip")) {
 
                 // 自動採番型の構成を取得する
+                if (
                 $csv_autoinc .= $this->lfGetAutoIncrement($val);
 
                 // 全データを取得
@@ -379,6 +380,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
     }
 
     // 自動採番型をCSV出力形式に変換する
+    // FIXME MDB2 のシーケンス関数を使用した実装へ要改修
     function lfGetAutoIncrement($table_name){
         $arrColList = $this->lfGetColumnList($table_name);
         $ret = "";
@@ -630,7 +632,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
             $arrData = split(",", trim($val));
 
             if ($arrData[2] == 0)	$arrData[2] = 1;
-            $objQuery->setval($arrData[0], $arrData[1], $arrData[2]);
+            $objQuery->setval($arrData[0] . "_" . $arrData[1], $arrData[2]);
         }
     }
 

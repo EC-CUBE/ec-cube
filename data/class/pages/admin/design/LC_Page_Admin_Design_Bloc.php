@@ -273,14 +273,16 @@ class LC_Page_Admin_Design_Bloc extends LC_Page {
         // bloc_id が空 若しくは データが存在していない場合にはINSERTを行う
         if ($arrData['bloc_id'] === '' or !isset($arrChk[0])) {
             // SQL生成
+            $arrData['bloc_id'] = $objQuery->nextVal('dtb_bloc_bloc_id');
             $sql = " INSERT INTO dtb_bloc";
             $sql .= " ( ";
-            $sql .= "     bloc_name ";		// ブロック名称
+            $sql .= "     bloc_id ";		// ブロックID
+            $sql .= "     ,bloc_name ";		// ブロック名称
             $sql .= "     ,tpl_path ";		// テンプレート保存先
             $sql .= "     ,filename ";		// ファイル名称
             $sql .= "     ,create_date ";	// 作成日
             $sql .= "     ,update_date ";	// 更新日
-            $sql .= " ) VALUES ( ?,?,?,now(),now() )";
+            $sql .= " ) VALUES (?, ?,?,?,now(),now() )";
             $sql .= " ";
         }else{
             // データが存在してる場合にはアップデートを行う

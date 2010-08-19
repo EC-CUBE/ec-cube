@@ -182,6 +182,16 @@ case 'step3':
         }
     }
 
+    // シーケンスの作成
+    if (count($objPage->arrErr) == 0) {
+        $objPage->arrErr = lfCreateSequence(getSequences(), $dsn);
+        if(count($objPage->arrErr) == 0) {
+            $objPage->tpl_message.="○：シーケンスの作成に成功しました。<br>";
+        } else {
+            $objPage->tpl_message.="×：シーケンスの作成に失敗しました。<br>";
+        }
+    }
+
     if(count($objPage->arrErr) == 0) {
         $objPage = lfDispStep3($objPage);
         $objPage->tpl_mode = 'step4';
@@ -221,6 +231,17 @@ case 'drop':
             $objPage->tpl_message.="×：テーブルの削除に失敗しました。<br>";
         }
     }
+
+    // シーケンスの削除
+    if(count($objPage->arrErr) == 0) {
+        $objPage->arrErr = lfDropSequence(getSequences(), $dsn);
+        if(count($objPage->arrErr) == 0) {
+            $objPage->tpl_message.="○：シーケンスの削除に成功しました。<br>";
+        } else {
+            $objPage->tpl_message.="×：シーケンスの削除に失敗しました。<br>";
+        }
+    }
+
     $objPage = lfDispStep3($objPage);
     break;
 // 完了画面
@@ -762,6 +783,88 @@ function lfExecuteSQL($filepath, $dsn, $disp_err = true) {
     return $arrErr;
 }
 
+/**
+ * シーケンスを削除する.
+ *
+ * @param array $arrSequences シーケンスのテーブル名, カラム名の配列
+ * @param string $dsn データソース名
+ * @return array エラーが発生した場合はエラーメッセージの配列
+ */
+function lfDropSequence($arrSequences, $dsn) {
+    $arrErr = array();
+
+    // Debugモード指定
+    $options['debug'] = PEAR_DB_DEBUG;
+    $objDB = MDB2::connect($dsn, $options);
+    $objDB->loadModule('Manager');
+
+    // 接続エラー
+    if (!PEAR::isError($objDB)) {
+
+        $exists = $objDB->listSequences();
+        foreach ($arrSequences as $seq) {
+            $seq_name = $seq[0] . "_" . $seq[1];
+            if (in_array($seq_name, $exists)) {
+                $result = $objDB->dropSequence($seq_name);
+                if (PEAR::isError($result)) {
+                    $arrErr['all'] = ">> " . $result->message . "<br />";
+                    GC_Utils_Ex::gfPrintLog($result->userinfo, INSTALL_LOG);
+                } else {
+                    GC_Utils_Ex::gfPrintLog("OK:". $seq_name, INSTALL_LOG);
+                }
+            }
+        }
+    } else {
+        $arrErr['all'] = ">> " . $objDB->message;
+        GC_Utils_Ex::gfPrintLog($objDB->userinfo, INSTALL_LOG);
+    }
+    return $arrErr;
+}
+
+/**
+ * シーケンスを生成する.
+ *
+ * @param array $arrSequences シーケンスのテーブル名, カラム名の配列
+ * @param string $dsn データソース名
+ * @return array エラーが発生した場合はエラーメッセージの配列
+ */
+function lfCreateSequence($arrSequences, $dsn) {
+   $arrErr = array();
+
+    // Debugモード指定
+    $options['debug'] = PEAR_DB_DEBUG;
+    $objDB = MDB2::connect($dsn, $options);
+    $objDB->loadModule('Manager');
+
+    // 接続エラー
+    if (!PEAR::isError($objDB)) {
+
+        $exists = $objDB->listSequences();
+        foreach ($arrSequences as $seq) {
+            $res = $objDB->query("SELECT max(" . $seq[1] . ") FROM ". $seq[0]);
+            if (PEAR::isError($res)) {
+                $arrErr['all'] = ">> " . $res->userinfo . "<br />";
+                GC_Utils_Ex::gfPrintLog($res->userinfo, INSTALL_LOG);
+                return $arrErr;
+            }
+            $max = $res->fetchOne();
+
+            $seq_name = $seq[0] . "_" . $seq[1];
+            $result = $objDB->createSequence($seq_name, $max + 1);
+            if (PEAR::isError($result)) {
+                $arrErr['all'] = ">> " . $result->message . "<br />";
+                GC_Utils_Ex::gfPrintLog($result->userinfo, INSTALL_LOG);
+            } else {
+                GC_Utils_Ex::gfPrintLog("OK:". $seq_name, INSTALL_LOG);
+            }
+        }
+    } else {
+        $arrErr['all'] = ">> " . $objDB->message;
+        GC_Utils_Ex::gfPrintLog($objDB->userinfo, INSTALL_LOG);
+    }
+    return $arrErr;
+}
+
 // 設定ファイルの作成
 function lfMakeConfigFile() {
     global $objWebParam;
@@ -809,28 +912,6 @@ function lfMakeConfigFile() {
     }
 }
 
-// テーブルの削除（既にテーブルが存在する場合のみ削除する）
-function lfDropTable($table_name, $dsn) {
-    global $objDb;
-    $arrErr = array();
-    if($objDb->sfTabaleExists($table_name, $dsn)) {
-        // Debugモード指定
-        $options['debug'] = PEAR_DB_DEBUG;
-        $objDB = MDB2::connect($dsn, $options);
-        // 接続成功
-        if(!PEAR::isError($objDB)) {
-            $objDB->query("DROP TABLE " . $table_name);
-        } else {
-            $arrErr['all'] = ">> " . $objDB->message . "<br>";
-            // エラー文を取得する
-            ereg("\[(.*)\]", $objDB->userinfo, $arrKey);
-            $arrErr['all'].= $arrKey[0] . "<br>";
-            GC_Utils_Ex::gfPrintLog($objDB->userinfo, INSTALL_LOG);
-        }
-    }
-    return $arrErr;
-}
-
 /**
  * $dir を再帰的に辿ってパス名を配列で返す.
  *
@@ -859,4 +940,40 @@ function initdirs() {
     $alldirs = array();
 }
 
+/**
+ * シーケンスを使用するテーブル名とカラム名の配列を返す.
+ *
+ * @return array シーケンスを使用するテーブル名とカラム名の配列
+ */
+function getSequences() {
+    return array(array("dtb_best_products","best_id"),
+                 array("dtb_bloc", "bloc_id"),
+                 array("dtb_category", "category_id"),
+                 array("dtb_class", "class_id"),
+                 array("dtb_classcategory", "classcategory_id"),
+                 array("dtb_csv", "no"),
+                 array("dtb_csv_sql", "sql_id"),
+                 array("dtb_customer", "customer_id"),
+                 array("dtb_deliv", "deliv_id"),
+                 array("dtb_delivfee", "fee_id"),
+                 array("dtb_holiday", "holiday_id"),
+                 array("dtb_kiyaku", "kiyaku_id"),
+                 array("dtb_mail_history", "send_id"),
+                 array("dtb_maker", "maker_id"),
+                 array("dtb_member", "member_id"),
+                 array("dtb_mobile_kara_mail", "kara_mail_id"),
+                 array("dtb_module_update_logs", "log_id"),
+                 array("dtb_news", "news_id"),
+                 array("dtb_order", "order_id"),
+                 array("dtb_other_deliv", "other_deliv_id"),
+                 array("dtb_pagelayout", "page_id"),
+                 array("dtb_payment", "payment_id"),
+                 array("dtb_products_class", "product_class_id"),
+                 array("dtb_products", "product_id"),
+                 array("dtb_review", "review_id"),
+                 array("dtb_send_history", "send_id"),
+                 array("dtb_site_control", "control_id"),
+                 array("dtb_table_comment", "id"),
+                 array("dtb_trackback", "trackback_id"));
+}
 ?>

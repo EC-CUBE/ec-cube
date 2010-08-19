@@ -156,6 +156,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page {
         $sqlval['update_date'] = "Now()";
         $sqlval['create_date'] = "Now()";
         // INSERTの実行
+        $sqlval['holiday_id'] = $objQuery->nextVal('dtb_holiday_holiday_id');
         $ret = $objQuery->insert("dtb_holiday", $sqlval);
         return $ret;
     }

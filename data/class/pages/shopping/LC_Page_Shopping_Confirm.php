@@ -129,13 +129,7 @@ class LC_Page_Shopping_Confirm extends LC_Page {
             break;
         case 'confirm':
             // この時点で注文番号を確保しておく（クレジット、コンビニ決済で必要なため）
-            // postgresqlとmysqlとで処理を分ける
-            if (DB_TYPE == "pgsql") {
-                $order_id = $objQuery->nextval("dtb_order","order_id");
-            }elseif (DB_TYPE == "mysql") {
-                $order_id = $objQuery->get_auto_increment("dtb_order");
-            }
-            $arrData["order_id"] = $order_id;
+            $arrData["order_id"] = $objQuery->nextval("dtb_order_order_id");
 
             // セッション情報を保持
             $arrData['session'] = serialize($_SESSION);
@@ -237,13 +231,7 @@ class LC_Page_Shopping_Confirm extends LC_Page {
             break;
         case 'confirm':
             // この時点で注文番号を確保しておく（クレジット、コンビニ決済で必要なため）
-            // postgresqlとmysqlとで処理を分ける
-            if (DB_TYPE == "pgsql") {
-                $order_id = $objQuery->nextval("dtb_order","order_id");
-            }elseif (DB_TYPE == "mysql") {
-                $order_id = $objQuery->get_auto_increment("dtb_order");
-            }
-            $arrData["order_id"] = $order_id;
+            $arrData["order_id"] = $objQuery->nextVal("dtb_order_order_id");
 
             // セッション情報を保持
             $arrData['session'] = serialize($_SESSION);

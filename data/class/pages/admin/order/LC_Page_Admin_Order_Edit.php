@@ -636,9 +636,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
 
         $sqlval = $this->lfMakeSqlvalForDtbOrder();
 
-        // 受注テーブルに書き込まない列を除去
-        unset($sqlval['order_id']); 
-
         // ポイントは別登録
         $addPoint = $sqlval['add_point'];
         $usePoint = $sqlval['use_point'];
@@ -655,8 +652,10 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         $objQuery->begin();
 
         // 受注テーブルの登録
+        $order_id = $objQuery->nextVal('dtb_order_order_id');
+        $sqlval['order_id'] = $order_id;
         $objQuery->insert("dtb_order", $sqlval);
-        $order_id = $objQuery->currval('dtb_order', 'order_id'); 
+
 
         // 受注.対応状況の更新
         SC_Helper_DB_Ex::sfUpdateOrderStatus($order_id, null, $addPoint, $usePoint);
