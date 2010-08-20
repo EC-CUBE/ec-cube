@@ -82,12 +82,8 @@ class LC_Page_Admin_Mail_Sendmail extends LC_Page {
             }
         } else {
             $where .= ' AND end_date IS NULL';
-            // postgresql と mysql とでSQLをわける
-            if (DB_TYPE == "pgsql") {
-                $where .= "start_date BETWEEN current_timestamp + '- 5 minutes' AND current_timestamp + '5 minutes'";
-            } else if (DB_TYPE == "mysql") {
-                $where .= "start_date BETWEEN date_add(now(),INTERVAL -5 minute) AND date_add(now(),INTERVAL 5 minute)";
-            }
+            $dbFactory = SC_DB_DBFactory::getInstance();
+            $where .= $dbFactory->getSendHistoryWhereStartdateSql();
             // 30分毎にCronが送信時間データ確認
         }
         $objQuery->setOrder('send_id');

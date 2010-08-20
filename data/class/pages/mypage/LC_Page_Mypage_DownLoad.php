@@ -105,6 +105,7 @@ class LC_Page_Mypage_DownLoad extends LC_Page {
         $objQuery = new SC_Query();
         $col = "*";
         $table = "vw_download_class AS T1";
+        // FIXME order_id, product_id の妥当性をチェックすべき.
         if (DB_TYPE == "mysql"){
             $where = "T1.customer_id = " . (int)$_SESSION['customer']['customer_id'] . " AND T1.order_id = " . (int)$_GET['order_id'] . " AND T1.product_id = " . (int)$_GET['product_id'] .
                 " AND (SELECT IF((SELECT d1.downloadable_days_unlimited FROM dtb_baseinfo d1)=1, 1, DATE(NOW()) <= DATE(DATE_ADD(T1.commit_date, INTERVAL (SELECT downloadable_days FROM dtb_baseinfo) DAY)))) = 1;";

@@ -359,16 +359,5 @@ class SC_Batch_Daily extends SC_Batch {
 
         $objQuery->insert("dtb_bat_order_daily_age", $sqlval);
     }
-
-    // 文字列にSingleQuotationを付与する
-    function lfSingleQuot($value){
-        $ret = "";
-        if (DB_TYPE == "mysql") {
-            $ret = $value;
-        }else{
-            $ret = "'" . $value . "'";
-        }
-        return $ret;
-    }
 }
 ?>

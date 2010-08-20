@@ -1946,7 +1946,6 @@ __EOS__;
     /**
      * 指定ファイルが存在する場合 SQL として実行
      *
-     * ・MySQL の場合、文字「;」を区切りとして、分割実行。
      * XXX プラグイン用に追加。将来消すかも。
      *
      * @param string $sqlFilePath SQL ファイルのパス
@@ -1959,14 +1958,10 @@ __EOS__;
             $sqls = file_get_contents($sqlFilePath);
             if ($sqls === false) SC_Utils_Ex::sfDispException('ファイルは存在するが読み込めない');
 
-            if (DB_TYPE == 'mysql') {
-                foreach (explode(';', $sqls) as $sql) {
-                    $sql = trim($sql);
-                    if (strlen($sql) == 0) continue;
-                    $objQuery->query($sql);
-                }
-            } else {
-                $objQuery->query($sqls);
+            foreach (explode(';', $sqls) as $sql) {
+                $sql = trim($sql);
+                if (strlen($sql) == 0) continue;
+                $objQuery->query($sql);
             }
         }
     }

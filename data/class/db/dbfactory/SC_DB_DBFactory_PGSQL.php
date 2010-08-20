@@ -80,6 +80,77 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
     }
 
     /**
+     * 昨日の売上高・売上件数を算出する SQL を返す.
+     *
+     * @param string $method SUM または COUNT
+     * @return string 昨日の売上高・売上件数を算出する SQL
+     */
+    function getOrderYesterdaySql($method) {
+        return "SELECT ".$method."(total) FROM dtb_order "
+              . "WHERE del_flg = 0 "
+                . "AND to_char(create_date,'YYYY/MM/DD') = to_char(now() - interval '1 days','YYYY/MM/DD') "
+                . "AND status <> " . ORDER_CANCEL;
+    }
+
+    /**
+     * 当月の売上高・売上件数を算出する SQL を返す.
+     *
+     * @param string $method SUM または COUNT
+     * @return string 当月の売上高・売上件数を算出する SQL
+     */
+    function getOrderMonthSql($method) {
+        return "SELECT ".$method."(total) FROM dtb_order "
+              . "WHERE del_flg = 0 "
+                . "AND to_char(create_date,'YYYY/MM') = ? "
+                . "AND to_char(create_date,'YYYY/MM/DD') <> to_char(now(),'YYYY/MM/DD') "
+                . "AND status <> " . ORDER_CANCEL;
+    }
+
+    /**
+     * 昨日のレビュー書き込み件数を算出する SQL を返す.
+     *
+     * @return string 昨日のレビュー書き込み件数を算出する SQL
+     */
+    function getReviewYesterdaySql() {
+        return "SELECT COUNT(*) FROM dtb_review AS A "
+          . "LEFT JOIN dtb_products AS B "
+                 . "ON A.product_id = B.product_id "
+              . "WHERE A.del_flg=0 "
+                . "AND B.del_flg = 0 "
+                . "AND to_char(A.create_date, 'YYYY/MM/DD') = to_char(now() - interval '1 days','YYYY/MM/DD') "
+                . "AND to_char(A.create_date,'YYYY/MM/DD') != to_char(now(),'YYYY/MM/DD')";
+    }
+
+    /**
+     * メール送信履歴の start_date の検索条件の SQL を返す.
+     *
+     * @return string 検索条件の SQL
+     */
+    function getSendHistoryWhereStartdateSql() {
+        return "start_date BETWEEN current_timestamp + '- 5 minutes' AND current_timestamp + '5 minutes'";
+    }
+
+    /**
+     * 文字列連結を行う.
+     *
+     * @param array $columns 連結を行うカラム名
+     * @return string 連結後の SQL 文
+     */
+    function concatColumn($columns) {
+        $sql = "";
+        $i = 0;
+        $total = count($columns);
+        foreach ($columns as $column) {
+            $sql .= $column;
+            if ($i < $total -1) {
+                $sql .= " || ";
+            }
+            $i++;
+        }
+        return $sql;
+    }
+
+    /**
      * インデックスの検索結果を配列で返す.
      *
      * @param string $index_name インデックス名

@@ -138,35 +138,21 @@ class LC_Page_Admin_Order extends LC_Page {
                         }
                         $val = SC_Utils_Ex::sfManualEscape($val);
 
+                        $dbFactory = SC_DB_DBFactory::getInstance();
                         switch ($key) {
 
                             case 'search_product_name':
-                                if(DB_TYPE == "pgsql"){
-//                                    $val = mb_convert_encoding($val,"UTF-8",mb_detect_encoding($val));
                                     $where .= " AND (SELECT COUNT(*) FROM dtb_order_detail od WHERE od.order_id = dtb_order.order_id AND od.product_name ILIKE ?) > 0";
                                     $nonsp_val = mb_ereg_replace("[ 　]+","",$val);
                                     $arrval[] = "%$nonsp_val%";
-                                }elseif(DB_TYPE == "mysql"){
-                                    $where .= " AND (SELECT COUNT(*) FROM dtb_order_detail od WHERE od.order_id = dtb_order.order_id AND od.product_name LIKE ?) > 0";
-                                    $nonsp_val = mb_ereg_replace("[ 　]+","",$val);
-                                    $arrval[] = "%$nonsp_val%";
-                                }
                                 break;
                             case 'search_order_name':
-                                if(DB_TYPE == "pgsql"){
-                                    $where .= " AND order_name01||order_name02 ILIKE ?";
-                                }elseif(DB_TYPE == "mysql"){
-                                    $where .= " AND concat(order_name01,order_name02) ILIKE ?";
-                                }
+                                $where .= " AND " . $dbFactory->concatColumn(array("order_name01", "order_name02")) . " ILIKE ?";
                                 $nonsp_val = mb_ereg_replace("[ 　]+","",$val);
                                 $arrval[] = "%$nonsp_val%";
                                 break;
                             case 'search_order_kana':
-                                if(DB_TYPE == "pgsql"){
-                                    $where .= " AND order_kana01||order_kana02 ILIKE ?";
-                                }elseif(DB_TYPE == "mysql"){
-                                    $where .= " AND concat(order_kana01,order_kana02) ILIKE ?";
-                                }
+                                $where .= " AND " . $dbFactory->concatColumn(array("order_kana01", "order_kana02")) . " ILIKE ?";
                                 $nonsp_val = mb_ereg_replace("[ 　]+","",$val);
                                 $arrval[] = "%$nonsp_val%";
                                 break;
@@ -197,11 +183,7 @@ class LC_Page_Admin_Order extends LC_Page {
                                 }
                                 break;
                             case 'search_order_tel':
-                                if(DB_TYPE == "pgsql"){
-                                    $where .= " AND (order_tel01 || order_tel02 || order_tel03 ILIKE ?)";
-                                }elseif(DB_TYPE == "mysql"){
-                                    $where .= " AND concat(order_tel01,order_tel02,order_tel03) ILIKE ?";
-                                }
+                                $where .= " AND (" . $dbFactory->concatColumn(array("order_tel01", "order_tel02", "order_tel03")) . " ILIKE ?)";
                                 $nonmark_val = ereg_replace("[()-]+","",$val);
                                 $arrval[] = "%$nonmark_val%";
                                 break;
@@ -276,7 +258,6 @@ class LC_Page_Admin_Order extends LC_Page {
                     }
 
                     $order = "update_date DESC";
-
                     switch($_POST['mode']) {
                         case 'csv':
 

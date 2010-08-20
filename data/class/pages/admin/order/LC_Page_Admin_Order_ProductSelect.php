@@ -148,7 +148,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page {
             $startno = $objNavi->start_row;
 
             // 取得範囲の指定(開始行番号、行数のセット)
-            if(DB_TYPE != "mysql") $objQuery->setLimitOffset($page_max, $startno);
+            $objQuery->setLimitOffset($page_max, $startno);
             // 表示順序
             $objQuery->setOrder($order);
 

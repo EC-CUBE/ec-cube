@@ -97,6 +97,78 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
     }
 
     /**
+     * 昨日の売上高・売上件数を算出する SQL を返す.
+     *
+     * @param string $method SUM または COUNT
+     * @return string 昨日の売上高・売上件数を算出する SQL
+     */
+    function getOrderYesterdaySql($method) {
+        return "SELECT ".$method."(total) FROM dtb_order "
+              . "WHERE del_flg = 0 "
+                . "AND cast(create_date as date) = DATE_ADD(current_date, interval -1 day) "
+                . "AND status <> " . ORDER_CANCEL;
+    }
+
+    /**
+     * 当月の売上高・売上件数を算出する SQL を返す.
+     *
+     * @param string $method SUM または COUNT
+     * @return string 当月の売上高・売上件数を算出する SQL
+     */
+    function getOrderMonthSql($method) {
+        return "SELECT ".$method."(total) FROM dtb_order "
+              . "WHERE del_flg = 0 "
+                . "AND date_format(create_date, '%Y/%m') = ? "
+                . "AND date_format(create_date, '%Y/%m/%d') <> date_format(now(), '%Y/%m/%d') "
+                . "AND status <> " . ORDER_CANCEL;
+    }
+
+    /**
+     * 昨日のレビュー書き込み件数を算出する SQL を返す.
+     *
+     * @return string 昨日のレビュー書き込み件数を算出する SQL
+     */
+    function getReviewYesterdaySql() {
+        return "SELECT COUNT(*) FROM dtb_review AS A "
+          . "LEFT JOIN dtb_products AS B "
+                 . "ON A.product_id = B.product_id "
+              . "WHERE A.del_flg = 0 "
+                . "AND B.del_flg = 0 "
+                . "AND cast(A.create_date as date) = DATE_ADD(current_date, interval -1 day) "
+                . "AND cast(A.create_date as date) != current_date";
+    }
+
+    /**
+     * メール送信履歴の start_date の検索条件の SQL を返す.
+     *
+     * @return string 検索条件の SQL
+     */
+    function getSendHistoryWhereStartdateSql() {
+        return "start_date BETWEEN date_add(now(),INTERVAL -5 minute) AND date_add(now(),INTERVAL 5 minute)";
+    }
+
+    /**
+     * 文字列連結を行う.
+     *
+     * @param array $columns 連結を行うカラム名
+     * @return string 連結後の SQL 文
+     */
+    function concatColumn($columns) {
+        $sql = "concat(";
+        $i = 0;
+        $total = count($columns);
+        foreach ($columns as $column) {
+            $sql .= $column;
+            if ($i < $total -1) {
+                $sql .= ", ";
+            }
+            $i++;
+        }
+        $sql .= ")";
+        return $sql;
+    }
+
+    /**
      * インデックスの検索結果を配列で返す.
      *
      * @param string $index_name インデックス名
@@ -147,8 +219,8 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
      */
     function findTableNames($expression = "") {
         $objQuery =& SC_Query::getSingletonInstance();
-        $sql = "SHOW TABLES LIKE ?";
-        $arrColList = $objQuery->getAll($sql, array("%" . $expression . "%"));
+        $sql = "SHOW TABLES LIKE ". $objQuery->quote("%" . $expression . "%");
+        $arrColList = $objQuery->getAll($sql);
         $arrColList = SC_Utils_Ex::sfswaparray($arrColList, false);
         return $arrColList[0];
     }

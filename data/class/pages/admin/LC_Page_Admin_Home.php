@@ -131,14 +131,8 @@ class LC_Page_Admin_Home extends LC_Page {
     // 昨日の売上高・売上件数
     function lfGetOrderYesterday(&$objQuery, $method){
         if ( $method == 'SUM' or $method == 'COUNT'){
-            // postgresql と mysql とでSQLをわける
-            if (DB_TYPE == "pgsql") {
-                $sql = "SELECT ".$method."(total) FROM dtb_order
-                         WHERE del_flg = 0 AND to_char(create_date,'YYYY/MM/DD') = to_char(now() - interval '1 days','YYYY/MM/DD') AND status <> " . ORDER_CANCEL;
-            }else if (DB_TYPE == "mysql") {
-                $sql = "SELECT ".$method."(total) FROM dtb_order
-                         WHERE del_flg = 0 AND cast(create_date as date) = DATE_ADD(current_date, interval -1 day) AND status <> " . ORDER_CANCEL;
-            }
+            $dbFactory = SC_DB_DBFactory::getInstance();
+            $sql = $dbFactory->getOrderYesterdaySql($method);
             $return = $objQuery->getOne($sql);
         }
         return $return;
@@ -149,16 +143,8 @@ class LC_Page_Admin_Home extends LC_Page {
         $month = date("Y/m", mktime());
 
         if ( $method == 'SUM' or $method == 'COUNT'){
-        // postgresql と mysql とでSQLをわける
-        if (DB_TYPE == "pgsql") {
-            $sql = "SELECT ".$method."(total) FROM dtb_order
-                     WHERE del_flg = 0 AND to_char(create_date,'YYYY/MM') = ?
-                     AND to_char(create_date,'YYYY/MM/DD') <> to_char(now(),'YYYY/MM/DD') AND status <> " . ORDER_CANCEL;
-        }else if (DB_TYPE == "mysql") {
-            $sql = "SELECT ".$method."(total) FROM dtb_order
-                     WHERE del_flg = 0 AND date_format(create_date, '%Y/%m') = ?
-                     AND date_format(create_date, '%Y/%m/%d') <> date_format(now(), '%Y/%m/%d') AND status <> " . ORDER_CANCEL;
-        }
+            $dbFactory = SC_DB_DBFactory::getInstance();
+            $sql = $dbFactory->getOrderMonthSql($method);
             $return = $objQuery->getOne($sql, array($month));
         }
         return $return;
@@ -174,16 +160,8 @@ class LC_Page_Admin_Home extends LC_Page {
     }
 
     function lfGetReviewYesterday(&$objQuery){
-        // postgresql と mysql とでSQLをわける
-        if (DB_TYPE == "pgsql") {
-            $sql = "SELECT COUNT(*) FROM dtb_review AS A LEFT JOIN dtb_products AS B ON A.product_id = B.product_id
-                     WHERE A.del_flg=0 AND B.del_flg = 0 AND to_char(A.create_date, 'YYYY/MM/DD') = to_char(now() - interval '1 days','YYYY/MM/DD')
-                     AND to_char(A.create_date,'YYYY/MM/DD') != to_char(now(),'YYYY/MM/DD')";
-        }else if (DB_TYPE == "mysql") {
-            $sql = "SELECT COUNT(*) FROM dtb_review AS A LEFT JOIN dtb_products AS B ON A.product_id = B.product_id
-                     WHERE A.del_flg = 0 AND B.del_flg = 0 AND cast(A.create_date as date) = DATE_ADD(current_date, interval -1 day)
-                     AND cast(A.create_date as date) != current_date";
-        }
+        $dbFactory = SC_DB_DBFactory::getInstance();
+        $sql = $dbFactory->getReviewYesterdaySql();
         $return = $objQuery->getOne($sql);
         return $return;
     }

@@ -297,7 +297,6 @@ class LC_Page_Admin_Products extends LC_Page {
                         }
 
                         // 取得範囲の指定(開始行番号、行数のセット)
-                        //                    if(DB_TYPE != "mysql") $objQuery->setLimitOffset($page_max, $startno);
                         $objQuery->setLimitOffset($page_max, $startno);
                         // 表示順序
                         $objQuery->setOrder($order);

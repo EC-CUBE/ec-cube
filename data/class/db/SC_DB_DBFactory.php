@@ -100,6 +100,44 @@ class SC_DB_DBFactory {
     function getTableExistsSql($table_name) { return null; }
 
     /**
+     * 昨日の売上高・売上件数を算出する SQL を返す.
+     *
+     * @param string $method SUM または COUNT
+     * @return string 昨日の売上高・売上件数を算出する SQL
+     */
+    function getOrderYesterdaySql($method) { return null; }
+
+    /**
+     * 当月の売上高・売上件数を算出する SQL を返す.
+     *
+     * @param string $method SUM または COUNT
+     * @return string 当月の売上高・売上件数を算出する SQL
+     */
+    function getOrderMonthSql($method) { return null; }
+
+    /**
+     * 昨日のレビュー書き込み件数を算出する SQL を返す.
+     *
+     * @return string 昨日のレビュー書き込み件数を算出する SQL
+     */
+    function getReviewYesterdaySql() { return null; }
+
+    /**
+     * メール送信履歴の start_date の検索条件の SQL を返す.
+     *
+     * @return string 検索条件の SQL
+     */
+    function getSendHistoryWhereStartdateSql() { return null; }
+
+    /**
+     * 文字列連結を行う.
+     *
+     * @param array $columns 連結を行うカラム名
+     * @return string 連結後の SQL 文
+     */
+    function concatColumn($columns) { return null; }
+
+    /**
      * インデックスの検索結果を配列で返す.
      *
      * @param string $index_name インデックス名

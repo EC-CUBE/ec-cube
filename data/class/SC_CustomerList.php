@@ -30,11 +30,12 @@ class SC_CustomerList extends SC_SelectSql {
 
     function SC_CustomerList($array, $mode = '') {
         parent::SC_SelectSql($array);
-        
+
         $masterData = new SC_DB_MasterData_Ex();
         $arrMobileDomain = $masterData->getMasterData("mtb_mobile_domain");
-        
+
         $objDb = new SC_Helper_DB_Ex();
+        $dbFactory = SC_DB_DBFactory::getInstance();
 
         if($mode == "") {
             // 会員本登録会員で削除していない会員
@@ -69,12 +70,7 @@ class SC_CustomerList extends SC_SelectSql {
         // 名前
         if (!isset($this->arrSql['name'])) $this->arrSql['name'] = "";
         if ( strlen($this->arrSql['name']) > 0 ) {
-            if(DB_TYPE == "pgsql"){
-                $this->setWhere("(name01 || name02 LIKE ?)" );
-            }elseif(DB_TYPE == "mysql"){
-                $this->setWhere("concat(name01,name02) LIKE ?" );
-            }
-
+            $this->setWhere("(" . $dbFactory->concatColumn(array("name01", "name02")) . " LIKE ?)" );
             $searchName = $this->addSearchStr($this->arrSql['name']);
             $this->arrVal[] = mb_ereg_replace("[ 　]+","",$searchName);
         }
@@ -82,11 +78,7 @@ class SC_CustomerList extends SC_SelectSql {
         //　名前（カナ）
         if (!isset($this->arrSql['kana'])) $this->arrSql['kana'] = "";
         if ( strlen($this->arrSql['kana']) > 0 ) {
-            if(DB_TYPE == "pgsql"){
-                $this->setWhere("(kana01 || kana02 LIKE ?)");
-            }elseif(DB_TYPE == "mysql"){
-                $this->setWhere("concat(kana01,kana02) LIKE ?" );
-            }
+            $this->setWhere("(" . $dbFactory->concatColumn(array("kana01", "kana02")) . " LIKE ?)" );
             $searchKana = $this->addSearchStr($this->arrSql['kana']);
             $this->arrVal[] = mb_ereg_replace("[ 　]+","",$searchKana);
         }
@@ -101,11 +93,7 @@ class SC_CustomerList extends SC_SelectSql {
         //　電話番号
         if (!isset($this->arrSql['tel'])) $this->arrSql['tel'] = "";
         if ( is_numeric( $this->arrSql['tel'] ) ) {
-            if(DB_TYPE == "pgsql"){
-                $this->setWhere( "(tel01 || tel02 || tel03 LIKE ?)" );
-            }elseif(DB_TYPE == "mysql"){
-                $this->setWhere("concat(tel01,tel02,tel03) LIKE ?" );
-            }
+            $this->setWhere("(" . $dbFactory->concatColumn(array("tel01", "tel02", "tel03")) . " LIKE ?)" );
             $searchTel = $this->addSearchStr($this->arrSql['tel']);
             $this->arrVal[] = ereg_replace("-", "", $searchTel);
         }
