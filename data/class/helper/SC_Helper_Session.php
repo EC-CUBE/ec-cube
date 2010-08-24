@@ -64,7 +64,6 @@ class SC_Helper_Session {
       * @return string セッションデータの値
       */
      function sfSessRead($id) {
-         if (!$this->objDb->sfTabaleExists("dtb_session")) return '';
          $objQuery = new SC_Query();
          $arrRet = $objQuery->select("sess_data", "dtb_session", "sess_id = ?", array($id));
          if (empty($arrRet)) {
@@ -83,7 +82,6 @@ class SC_Helper_Session {
       */
      function sfSessWrite($id, $sess_data)
      {
-         if (!$this->objDb->sfTabaleExists("dtb_session")) return false;
          $objQuery = new SC_Query();
          $count = $objQuery->count("dtb_session", "sess_id = ?", array($id));
          $sqlval = array();
@@ -114,7 +112,6 @@ class SC_Helper_Session {
       * @return bool セッションを正常に破棄した場合 true
       */
      function sfSessDestroy($id) {
-         if (!$this->objDb->sfTabaleExists("dtb_session")) return false;
          $objQuery = new SC_Query();
          $objQuery->delete("dtb_session", "sess_id = ?", array($id));
          return true;
@@ -129,7 +126,6 @@ class SC_Helper_Session {
       */
      function sfSessGc($maxlifetime) {
          // MAX_LIFETIME以上更新されていないセッションを削除する。
-         if (!$this->objDb->sfTabaleExists("dtb_session")) return false;
          $objQuery = new SC_Query();
          $where = "update_date < current_timestamp + '-". MAX_LIFETIME . " secs'";
          $objQuery->delete("dtb_session", $where);

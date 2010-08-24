@@ -85,18 +85,6 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
     }
 
     /**
-     * テーブルの存在チェックを行う SQL 文を返す.
-     *
-     * @param string $table_name 存在チェックを行うテーブル名
-     * @return string テーブルの存在チェックを行う SQL 文
-     */
-    function getTableExistsSql($table_name) {
-        // XXX 何故かブレースホルダが使えない
-        $objQuery =& SC_Query::getSingletonInstance();
-        return "SHOW TABLE STATUS LIKE " . $objQuery->quote($table_name);
-    }
-
-    /**
      * 昨日の売上高・売上件数を算出する SQL を返す.
      *
      * @param string $method SUM または COUNT
@@ -169,35 +157,9 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
     }
 
     /**
-     * インデックスの検索結果を配列で返す.
-     *
-     * @param string $index_name インデックス名
-     * @param string $table_name テーブル名
-     * @return array インデックスの検索結果の配列
-     */
-    function getTableIndex($index_name, $table_name = "") {
-        $objQuery =& SC_Query::getSingletonInstance();
-        return $objQuery->getAll("SHOW INDEX FROM " . $table_name . " WHERE Key_name = ?",
-                                 array($index_name));
-    }
-
-    /**
-     * インデックスを作成する.
-     *
-     * @param string $index_name インデックス名
-     * @param string $table_name テーブル名
-     * @param string $col_name カラム名
-     * @param integer $length 作成するインデックスのバイト長
-     * @return void
-     */
-    function createTableIndex($index_name, $table_name, $col_name, $length = 0) {
-        $objQuery =& SC_Query::getSingletonInstance();
-        $objQuery->query("CREATE INDEX ? ON ? (?(?))", array($index_name, $table_name, $col_name, $length));
-    }
-
-    /**
      * テーブルのカラム一覧を取得する.
      *
+     * @deprecated SC_Query::listTableFields() を使用してください
      * @param string $table_name テーブル名
      * @return array テーブルのカラム一覧の配列
      */

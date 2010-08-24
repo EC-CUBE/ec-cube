@@ -92,14 +92,6 @@ class SC_DB_DBFactory {
     function sfChangeMySQL($sql) { return null; }
 
     /**
-     * テーブルの存在チェックを行う SQL 文を返す.
-     *
-     * @param string $table_name 存在チェックを行うテーブル名
-     * @return string テーブルの存在チェックを行う SQL 文
-     */
-    function getTableExistsSql($table_name) { return null; }
-
-    /**
      * 昨日の売上高・売上件数を算出する SQL を返す.
      *
      * @param string $method SUM または COUNT
@@ -138,28 +130,9 @@ class SC_DB_DBFactory {
     function concatColumn($columns) { return null; }
 
     /**
-     * インデックスの検索結果を配列で返す.
-     *
-     * @param string $index_name インデックス名
-     * @param string $table_name テーブル名
-     * @return array インデックスの検索結果の配列
-     */
-    function getTableIndex($index_name, $table_name = "") { return array(); }
-
-    /**
-     * インデックスを作成する.
-     *
-     * @param string $index_name インデックス名
-     * @param string $table_name テーブル名
-     * @param string $col_name カラム名
-     * @param integer $length 作成するインデックスのバイト長
-     * @return void
-     */
-    function createTableIndex($index_name, $table_name, $col_name, $length = 0) {}
-
-    /**
      * テーブルのカラム一覧を取得する.
      *
+     * @deprecated SC_Query::listTableFields() を使用してください
      * @param string $table_name テーブル名
      * @return array テーブルのカラム一覧の配列
      */
@@ -170,6 +143,7 @@ class SC_DB_DBFactory {
      *
      * 引数に部分一致するテーブル名を配列で返す.
      *
+     * @deprecated SC_Query::listTables() を使用してください
      * @param string $expression 検索文字列
      * @return array テーブル名の配列
      */

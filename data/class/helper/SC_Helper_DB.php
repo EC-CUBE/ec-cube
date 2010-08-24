@@ -59,33 +59,6 @@ class SC_Helper_DB {
     }
 
     /**
-     * テーブルの存在をチェックする.
-     *
-     * @param string $table_name チェック対象のテーブル名
-     * @param string $dsn データソース名
-     * @return テーブルが存在する場合 true
-     */
-    function sfTabaleExists($table_name, $dsn = "") {
-        $dbFactory = SC_DB_DBFactory_Ex::getInstance();
-        $dsn = $dbFactory->getDSN($dsn);
-
-        $objQuery =& SC_Query::getSingletonInstance();
-        // 正常に接続されている場合
-        if(!$objQuery->isError()) {
-            list($db_type) = split(":", $dsn);
-            /*
-             * XXX MySQL で, 何故かブレースホルダが使えない.
-             */
-            $sql = $dbFactory->getTableExistsSql($table_name);
-            $arrRet = $objQuery->getAll($sql);
-            if(count($arrRet) > 0) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
      * カラムの存在チェックと作成を行う.
      *
      * チェック対象のテーブルに, 該当のカラムが存在するかチェックする.
@@ -105,66 +78,26 @@ class SC_Helper_DB {
         $dbFactory = SC_DB_DBFactory_Ex::getInstance();
         $dsn = $dbFactory->getDSN($dsn);
 
-        // テーブルが無ければエラー
-        if(!$this->sfTabaleExists($table_name, $dsn)) return false;
+        $objQuery =& SC_Query::getSingletonInstance($dsn);
 
-        $objQuery =& SC_Query::getSingletonInstance();
+        // テーブルが無ければエラー
+        if(!in_array($table_name, $objQuery->listTables())) return false;
+
         // 正常に接続されている場合
         if(!$objQuery->isError()) {
             list($db_type) = split(":", $dsn);
 
             // カラムリストを取得
-            $arrRet = $dbFactory->sfGetColumnList($table_name);
-            if(count($arrRet) > 0) {
-                if(in_array($col_name, $arrRet)){
-                    return true;
-                }
+            $columns = $objQuery->listTableFields($table_name);
+
+            if(in_array($col_name, $columns)){
+                return true;
             }
         }
 
         // カラムを追加する
         if($add){
             $objQuery->query("ALTER TABLE $table_name ADD $col_name $col_type ");
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * インデックスの存在チェックと作成を行う.
-     *
-     * チェック対象のテーブルに, 該当のインデックスが存在するかチェックする.
-     * 引数 $add が true の場合, 該当のインデックスが存在しない場合は, インデックスの生成を行う.
-     * インデックスの生成も行う場合で, DB_TYPE が mysql の場合は, $length も必須となる.
-     *
-     * @param string $table_name テーブル名
-     * @param string $column_name カラム名
-     * @param string $index_name インデックス名
-     * @param integer|string $length インデックスを作成するデータ長
-     * @param string $dsn データソース名
-     * @param bool $add インデックスの生成もする場合 true
-     * @return bool インデックスが存在する場合とインデックスの生成に成功した場合 true,
-     *               テーブルが存在しない場合 false,
-     *               引数 $add == false でインデックスが存在しない場合 false
-     */
-    function sfIndexExists($table_name, $col_name, $index_name, $length = "", $dsn = "", $add = false) {
-        $dbFactory = SC_DB_DBFactory_Ex::getInstance();
-        $dsn = $dbFactory->getDSN($dsn);
-
-        // テーブルが無ければエラー
-        if (!$this->sfTabaleExists($table_name, $dsn)) return false;
-
-        $objQuery =& SC_Query::getSingletonInstance();
-        $arrRet = $dbFactory->getTableIndex($index_name, $table_name);
-
-        // すでにインデックスが存在する場合
-        if(count($arrRet) > 0) {
-            return true;
-        }
-
-        // インデックスを作成する
-        if($add){
-            $dbFactory->createTableIndex($index_name, $table_name, $col_name, $length());
             return true;
         }
         return false;

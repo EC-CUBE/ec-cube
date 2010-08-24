@@ -686,28 +686,45 @@ class SC_Query {
     }
 
     /**
-     * auto_incrementを取得する.
+     * シーケンスの一覧を取得する.
      *
-     * XXX MDB2 の sequence 関数を使用する
-     *
-     * @param string $table_name テーブル名
-     * @return integer
+     * @return array シーケンス名の配列
      */
-    function get_auto_increment($table_name){
-        // ロックする
-        $this->conn->exec("LOCK TABLES $table_name WRITE");
+    function listSequences() {
+        $this->conn->loadModule('Manager');
+        return $this->conn->listSequences();
+    }
 
-        // 次のIncrementを取得
-        $arrRet = $this->getAll("SHOW TABLE STATUS LIKE ". $this->quote($table_name));
-        $auto_inc_no = $arrRet[0]["Auto_increment"];
+    /**
+     * テーブル一覧を取得する.
+     *
+     * @return array テーブル名の配列
+     */
+    function listTables() {
+        $this->conn->loadModule('Manager');
+        return $this->conn->listTables();
+    }
 
-        // 値をカウントアップしておく
-        $this->conn->exec("ALTER TABLE $table_name AUTO_INCREMENT=" . $this->quote($auto_inc_no + 1));
+    /**
+     * テーブルのカラム一覧を取得する.
+     *
+     * @param string $table テーブル名
+     * @return array 指定のテーブルのカラム名の配列
+     */
+    function listTableFields($table) {
+        $this->conn->loadModule('Manager');
+        return $this->conn->listTableFields($table);
+    }
 
-        // 解除する
-        $this->conn->exec('UNLOCK TABLES');
-
-        return $auto_inc_no;
+    /**
+     * テーブルのインデックス一覧を取得する.
+     *
+     * @param string $table テーブル名
+     * @return array 指定のテーブルのインデックス一覧
+     */
+    function listTableIndexes($table) {
+        $this->conn->loadModule('Manager');
+        return $this->conn->listTableIndexes($table);
     }
 
     /**

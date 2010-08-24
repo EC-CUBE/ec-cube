@@ -622,9 +622,10 @@ function lfInitWebParam($objWebParam) {
 
     // 店名、管理者メールアドレスを取得する。(再インストール時)
     if(defined('DEFAULT_DSN')) {
-        $ret = $objDb->sfTabaleExists("dtb_baseinfo", DEFAULT_DSN);
-        if($ret) {
-            $objQuery = new SC_Query();
+        $objQuery = new SC_Query();
+        $tables = $objQuery->listTables();
+        if(in_array("dtb_baseinfo", $tables)) {
+
             $arrRet = $objQuery->select("shop_name, email01", "dtb_baseinfo");
             $shop_name = $arrRet[0]['shop_name'];
             $admin_mail = $arrRet[0]['email01'];

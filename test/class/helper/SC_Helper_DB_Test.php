@@ -35,14 +35,6 @@ require_once(realpath(dirname(__FILE__)) . "/../../../data/class_extends/helper_
 class SC_Helper_DB_Test extends PHPUnit_Framework_TestCase {
 
     /**
-     * sfTableExists() のテストケース.
-     */
-    function testSfTableExists() {
-        $objDb = new SC_Helper_DB_Ex();
-        $this->assertEquals(true, $objDb->sfTabaleExists("mtb_zip"));
-    }
-
-    /**
      * sfColumnExists() のテストケース.
      */
     function testSfColumnExists() {
