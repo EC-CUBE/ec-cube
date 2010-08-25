@@ -93,4 +93,4 @@ DROP TABLE dtb_mobile_ext_session_id;
 DROP TABLE dtb_mobile_kara_mail;
 DROP TABLE dtb_site_control;
 DROP TABLE dtb_trackback;
-
+DROP TABLE dtb_bkup;

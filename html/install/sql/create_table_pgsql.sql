@@ -841,7 +841,7 @@ CREATE TABLE dtb_csv (
     status smallint NOT NULL DEFAULT 1,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp NOT NULL DEFAULT now(),
-    convert text,
+    mb_convert_kana_option text,
     PRIMARY KEY (no)
 );
 
@@ -1227,6 +1227,13 @@ CREATE TABLE dtb_trackback (
     del_flg int2 NOT NULL DEFAULT 0,
     create_date timestamp NOT NULL,
     update_date timestamp NOT NULL
+);
+
+CREATE TABLE dtb_bkup (
+    bkup_name   varchar(50),
+    bkup_memo   text,
+    create_date timestamp,
+    PRIMARY KEY (bkup_name)
 );
 
 CREATE INDEX dtb_customer_mobile_phone_id_key ON dtb_customer (mobile_phone_id);

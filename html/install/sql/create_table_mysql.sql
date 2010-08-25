@@ -840,7 +840,7 @@ CREATE TABLE dtb_csv (
     status smallint NOT NULL DEFAULT 1,
     create_date datetime NOT NULL,
     update_date datetime NOT NULL,
-    `convert` text,
+    mb_convert_kana_option text,
     PRIMARY KEY (no)
 ) TYPE=InnoDB;
 
@@ -1231,6 +1231,13 @@ CREATE TABLE dtb_trackback (
     create_date datetime NOT NULL,
     update_date datetime NOT NULL,
     PRIMARY KEY (trackback_id)
+) TYPE=InnoDB;
+
+CREATE TABLE dtb_bkup (
+    bkup_name varchar(50),
+    bkup_memo text,
+    create_date datetime,
+    PRIMARY KEY (bkup_name)
 ) TYPE=InnoDB;
 
 CREATE INDEX dtb_customer_mobile_phone_id_key ON dtb_customer (mobile_phone_id(64));

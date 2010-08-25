@@ -275,10 +275,10 @@ case 'complete':
     $sql = "DELETE FROM dtb_member WHERE login_id = ?";
     $objQuery->query($sql, array($login_id));
 
-    $sql = "INSERT INTO dtb_member (name, login_id, password, creator_id, authority, work, del_flg, rank, create_date, update_date)
-            VALUES ('管理者',?,?,0,0,1,0,1, now(), now());";
-
-    $objQuery->query($sql, array($login_id, $login_pass));
+    $sql = "INSERT INTO dtb_member (member_id, name, login_id, password, creator_id, authority, work, del_flg, rank, create_date, update_date)
+            VALUES (?,'管理者',?,?,0,0,1,0,1, now(), now());";
+    $member_id = $objQuery->nextVal("dtb_member_member_id");
+    $objQuery->query($sql, array($member_id, $login_id, $login_pass));
 
     $GLOBAL_ERR = "";
     $objPage = lfDispComplete($objPage);

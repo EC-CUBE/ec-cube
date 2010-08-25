@@ -77,7 +77,7 @@ class SC_Helper_CSV {
                 status,
                 create_date,
                 update_date,
-                "convert"
+                mb_convert_kana_option
             FROM
                 dtb_csv
 __EOS__;
@@ -261,7 +261,7 @@ __EOS__;
         $objQuery = new SC_Query();
         $objQuery->setOption($option);
 
-        $list_data = $objQuery->select($cols, $from, $where, $arrval, DB_FETCHMODE_ORDERED);
+        $list_data = $objQuery->select($cols, $from, $where, $arrval, MDB2_FETCHMODE_ORDERED);
 
         $csv = '';
         foreach ($list_data as $row) {

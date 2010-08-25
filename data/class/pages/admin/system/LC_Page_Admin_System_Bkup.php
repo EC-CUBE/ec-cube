@@ -68,9 +68,6 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
         // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess($objSess);
 
-        // バックアップテーブルがなければ作成する
-        $this->lfCreateBkupTable();
-
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
         switch($_POST['mode']) {
@@ -206,7 +203,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
     function lfCreateBkupData($bkup_name){
         // 実行時間を制限しない
         set_time_limit(0);
-        
+
         $objQuery = new SC_Query();
         $csv_data = "";
         $csv_autoinc = "";
@@ -217,16 +214,12 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
         $bkup_dir = $bkup_dir . $bkup_name . "/";
 
         // 全テーブル取得
-        $arrTableList = $this->lfGetTableList();
+        $arrTableList = $objQuery->listTables();
 
         // 各テーブル情報を取得する
         foreach($arrTableList as $key => $val){
 
             if (!($val == "dtb_bkup" || $val == "mtb_zip")) {
-
-                // 自動採番型の構成を取得する
-                if (
-                $csv_autoinc .= $this->lfGetAutoIncrement($val);
 
                 // 全データを取得
                 if ($val == "dtb_pagelayout"){
@@ -251,14 +244,16 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
                     // CSV出力データ生成
                     $csv_data .= $val . "\r\n";
                     $csv_data .= $arrKyes . "\r\n";
-                    $csv_data .= $data;
-                    $csv_data .= "\r\n";
+                    $csv_data .= $data . "\r\n";
                 }
 
                 // タイムアウトを防ぐ
                 SC_Utils_Ex::sfFlush();
             }
         }
+
+        // 自動採番型の構成を取得する
+        $csv_autoinc = $this->lfGetAutoIncrement();
 
         $csv_file = $bkup_dir . "bkup_data.csv";
         $csv_autoinc_file = $bkup_dir . "autoinc_data.csv";
@@ -357,93 +352,24 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
         return $line;
     }
 
-    // 全テーブルリストを取得する
-    function lfGetTableList(){
+    /**
+     * シーケンス一覧をCSV出力形式に変換する.
+     *
+     * シーケンス名,シーケンス値 の形式に出力する.
+     *
+     * @return string シーケンス一覧の文字列
+     */
+    function lfGetAutoIncrement() {
         $objQuery = new SC_Query();
+        $arrSequences = $objQuery->listSequences();
+        $result = "";
 
-        if(DB_TYPE == "pgsql"){
-            $sql = "SELECT tablename FROM pg_tables WHERE tableowner = ? ORDER BY tablename ; ";
-            $arrRet = $objQuery->getAll($sql, array(DB_USER));
-            $arrRet = SC_Utils_Ex::sfSwapArray($arrRet);
-            $arrRet = $arrRet['tablename'];
-        }else if(DB_TYPE == "mysql"){
-            $sql = "SHOW TABLES;";
-            $arrRet = $objQuery->getAll($sql);
-            $arrRet = SC_Utils_Ex::sfSwapArray($arrRet);
+        foreach($arrSequences as $val){
+            $seq = $objQuery->currVal($val);
 
-            // キーを取得
-            $arrKey = array_keys($arrRet);
-
-            $arrRet = $arrRet[$arrKey[0]];
-        }
-        return $arrRet;
-    }
-
-    // 自動採番型をCSV出力形式に変換する
-    // FIXME MDB2 のシーケンス関数を使用した実装へ要改修
-    function lfGetAutoIncrement($table_name){
-        $arrColList = $this->lfGetColumnList($table_name);
-        $ret = "";
-
-        if(DB_TYPE == "pgsql"){
-            $match = 'nextval(\'';
-        }else if(DB_TYPE == "mysql"){
-            $match = "auto_incr";
-        }
-
-        foreach($arrColList['col_def'] as $key => $val){
-
-            if (substr($val,0,9) == $match) {
-                $col = $arrColList['col_name'][$key];
-                $autoVal = $this->lfGetAutoIncrementVal($table_name, $col);
-                $ret .= "$table_name,$col,$autoVal\n";
-            }
-        }
-
-        return $ret;
-    }
-
-    // テーブル構成を取得する
-    Function LfgetColumnlist($table_name){
-        $objQuery = new SC_Query();
-
-        if(DB_TYPE == "pgsql"){
-            $sql = "SELECT
-                    a.attname, t.typname, a.attnotnull, d.adsrc as defval, a.atttypmod, a.attnum as fldnum, e.description
-                FROM
-                    pg_class c,
-                    pg_type t,
-                    pg_attribute a left join pg_attrdef d on (a.attrelid=d.adrelid and a.attnum=d.adnum)
-                                   left join pg_description e on (a.attrelid=e.objoid and a.attnum=e.objsubid)
-                WHERE (c.relname=?) AND (c.oid=a.attrelid) AND (a.atttypid=t.oid) AND a.attnum > 0
-                ORDER BY fldnum";
-            $arrColList = $objQuery->getAll($sql, array($table_name));
-            $arrColList = SC_Utils_Ex::sfSwapArray($arrColList);
-
-            $arrRet['col_def'] = $arrColList['defval'];
-            $arrRet['col_name'] = $arrColList['attname'];
-        }else if(DB_TYPE == "mysql"){
-            $sql = "SHOW COLUMNS FROM $table_name";
-            $arrColList = $objQuery->getAll($sql);
-            $arrColList = SC_Utils_Ex::sfSwapArray($arrColList);
-
-            $arrRet['col_def'] = $arrColList['Extra'];
-            $arrRet['col_name'] = $arrColList['Field'];
-        }
-        return $arrRet;
-    }
-
-    // 自動採番型の値を取得する
-    function lfGetAutoIncrementVal($table_name , $colname = ""){
-        $objQuery = new SC_Query();
-        $ret = "";
-
-        if(DB_TYPE == "pgsql"){
-            $ret = $objQuery->nextval($table_name, $colname) - 1;
-        }else if(DB_TYPE == "mysql"){
-            $sql = "SHOW TABLE STATUS LIKE ?";
-            $arrData = $objQuery->getAll($sql, array($table_name));
-            $ret = $arrData[0]['Auto_increment'];
+            $ret .= $val . ",";
+            $ret .= is_null($seq) ? "0" : $seq;
+            $ret .= "\r\n";
         }
         return $ret;
     }
@@ -472,7 +398,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
     function lfRestore($bkup_name){
         // 実行時間を制限しない
         set_time_limit(0);
-        
+
         $objQuery = new SC_Query("", false);
         $csv_data = "";
         $success = true;
@@ -545,7 +471,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
     }
 
     // CSVファイルからインサート実行
-    function lfExeInsertSQL($objQuery, $csv){
+    function lfExeInsertSQL(&$objQuery, $csv){
 
         $sql = "";
         $base_sql = "";
@@ -603,7 +529,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
             $err = $objQuery->query($sql, $data);
 
             // エラーがあれば終了
-            if ($err->message != ""){
+            if (PEAR::isError($err)){
                 SC_Utils_Ex::sfErrorHeader(">> " . $objQuery->getlastquery(false));
                 return false;
             }
@@ -624,59 +550,33 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
     }
 
     // 自動採番をセット
-    function lfSetAutoInc($objQuery, $csv){
+    function lfSetAutoInc(&$objQuery, $csv){
         // csvファイルからデータの取得
         $arrCsvData = file($csv);
 
-        foreach($arrCsvData as $key => $val){
+        foreach($arrCsvData as $val){
             $arrData = split(",", trim($val));
 
-            if ($arrData[2] == 0)	$arrData[2] = 1;
-            $objQuery->setval($arrData[0] . "_" . $arrData[1], $arrData[2]);
+             $objQuery->setval($arrData[0], $arrData[1]);
         }
     }
 
     // DBを全てクリアする
-    function lfDeleteAll($objQuery){
+    function lfDeleteAll(&$objQuery){
         $ret = true;
 
-        $arrTableList = $this->lfGetTableList();
+        $arrTableList = $objQuery->listTables();
 
-        foreach($arrTableList as $key => $val){
+        foreach($arrTableList as $val){
             // バックアップテーブルは削除しない
             if ($val != "dtb_bkup") {
-                $trun_sql = "DELETE FROM $val;";
+                $trun_sql = "DELETE FROM $val";
                 $ret = $objQuery->query($trun_sql);
-
-                if (!$ret) return $ret;
+                if (PEAR::isError($ret)) return false;
             }
         }
 
-        return $ret;
-    }
-
-    // バックアップテーブルを作成する
-    function lfCreateBkupTable(){
-        $objQuery = new SC_Query();
-
-        // テーブルの存在チェック
-        $arrTableList = $this->lfGetTableList();
-
-        if(!in_array("dtb_bkup", $arrTableList)){
-            // 存在していなければ作成
-            // MySQL でプライマリキーを設定するため bkup_name は varchar(50) とした。
-            $cre_sql = "
-            create table dtb_bkup
-            (
-                bkup_name   varchar(50),
-                bkup_memo   text,
-                create_date timestamp,
-                PRIMARY KEY (bkup_name)
-            );
-        ";
-
-            $objQuery->query($cre_sql);
-        }
+        return true;
     }
 }
 ?>
