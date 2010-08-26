@@ -158,7 +158,6 @@ class LC_Page_Admin_Products extends LC_Page {
 
                 $arrval = array();
                 foreach ($this->arrForm as $key => $val) {
-                    $val = SC_Utils_Ex::sfManualEscape($val);
 
                     if($val == "") {
                         continue;
@@ -199,6 +198,7 @@ class LC_Page_Admin_Products extends LC_Page {
                             $arrval[] = "%$val%";
                             break;
                         case 'search_startyear': // 登録更新日（FROM）
+                            // FIXME POST の値をチェックする
                             $date = SC_Utils_Ex::sfGetTimestamp($_POST['search_startyear'], $_POST['search_startmonth'], $_POST['search_startday']);
                             $where.= " AND update_date >= '" . $_POST['search_startyear'] . "/" . $_POST['search_startmonth']. "/" .$_POST['search_startday'] . "'";
                             $view_where.= " AND update_date >= '" . $_POST['search_startyear'] . "/" . $_POST['search_startmonth']. "/" .$_POST['search_startday'] . "'";

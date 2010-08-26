@@ -993,31 +993,6 @@ class SC_Utils {
     }
 
     /**
-     * 特殊制御文字の手動エスケープ
-     * @deprecated ブレースホルダを使用すること
-     */
-    function sfManualEscape($data) {
-        $objQuery =& SC_Query::getSingletonInstance();
-        // 配列でない場合
-        if(!is_array($data)) {
-            $ret = $objQuery->quote($data);
-            $ret = ereg_replace("%", "\\%", $ret);
-            $ret = ereg_replace("_", "\\_", $ret);
-            return $ret;
-        }
-
-        // 配列の場合
-        foreach($data as $val) {
-            $ret = $objQuery->quote($val);
-            $ret = ereg_replace("%", "\\%", $ret);
-            $ret = ereg_replace("_", "\\_", $ret);
-            $arrRet[] = $ret;
-        }
-
-        return $arrRet;
-    }
-
-    /**
      * ドメイン間で有効なセッションのスタート
      * 共有SSL対応のための修正により、この関数は廃止します。
      * セッションはrequire.phpを読み込んだ際に開始されます。

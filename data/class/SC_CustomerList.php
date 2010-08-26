@@ -316,9 +316,9 @@ class SC_CustomerList extends SC_SelectSql {
 
         //カテゴリーを選択している場合のみ絞込検索を行う
         if (!isset($this->arrSql['category_id'])) $this->arrSql['category_id'] = "";
-        if ( strlen($this->arrSql['category_id']) != ""){
+        if ( strlen($this->arrSql['category_id']) > 0){
             //カテゴリーで絞込検索を行うSQL文生成
-            list($tmp_where, $tmp_arrval) = $objDb->sfGetCatWhere(SC_Utils_Ex::sfManualEscape($this->arrSql['category_id']));
+            list($tmp_where, $tmp_arrval) = $objDb->sfGetCatWhere($this->arrSql['category_id']);
 
             //カテゴリーで絞込みが可能の場合
             if($tmp_where != "") {

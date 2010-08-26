@@ -128,8 +128,6 @@ class LC_Page_Admin_Products_Review extends LC_Page {
             if (!$this->arrErr){
                 foreach ($_POST as $key => $val){
 
-                    $val = SC_Utils_Ex::sfManualEscape($val);
-
                     if($val == "") {
                         continue;
                     }

@@ -136,7 +136,6 @@ class LC_Page_Admin_Order extends LC_Page {
                         if($val == "") {
                             continue;
                         }
-                        $val = SC_Utils_Ex::sfManualEscape($val);
 
                         $dbFactory = SC_DB_DBFactory::getInstance();
                         switch ($key) {

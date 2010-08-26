@@ -58,8 +58,7 @@ class SC_SelectSql {
 
         // 検索用
     function addSearchStr($val) {
-        $return = SC_Utils_Ex::sfManualEscape($val);
-        $return = "%" .$return. "%";
+        $return = "%" .$val. "%";
         return $return;
     }
 

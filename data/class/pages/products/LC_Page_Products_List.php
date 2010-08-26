@@ -345,9 +345,8 @@ class LC_Page_Products_List extends LC_Page {
         foreach ($names as $val) {
             if ( strlen($val) > 0 ) {
                 $where .= " AND ( name ILIKE ? OR comment3 ILIKE ?) ";
-                $ret = SC_Utils_Ex::sfManualEscape($val);
-                $arrval[] = "%$ret%";
-                $arrval[] = "%$ret%";
+                $arrval[] = "%$val%";
+                $arrval[] = "%$val%";
             }
         }
 

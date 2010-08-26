@@ -228,7 +228,7 @@ class LC_Page_Admin_Mail extends LC_Page {
             // 検索開始
             if (empty($this->arrErr)) {
                 $this->list_data['name'] = isset($this->list_data['name'])
-                    ? SC_Utils_Ex::sfManualEscape($this->list_data['name']) : "";
+                    ? $this->list_data['name'] : "";
                 // hidden要素作成
                 $this->arrHidden = $this->lfGetHidden($this->list_data);
 
@@ -299,7 +299,7 @@ class LC_Page_Admin_Mail extends LC_Page {
 
             // 検索開始
             if (empty($this->arrErr)) {
-                $this->list_data['name'] = isset($this->list_data['name']) ? SC_Utils_Ex::sfManualEscape($this->list_data['name']) : "";
+                $this->list_data['name'] = isset($this->list_data['name']) ? $this->list_data['name'] : "";
                 $this->arrHidden = $this->lfGetHidden($this->list_data); // hidden要素作成
 
                 $this->tpl_mainpage = 'mail/input.tpl';
@@ -351,7 +351,7 @@ class LC_Page_Admin_Mail extends LC_Page {
             if (empty($this->arrErr)) {
                 $this->list_data['name'] =
                     isset($this->list_data['name'])
-                    ? SC_Utils_Ex::sfManualEscape($this->list_data['name']) : "";
+                    ? $this->list_data['name'] : "";
 
                 if ( $_POST['mode'] == 'regist_confirm'){
                     $this->tpl_mainpage = 'mail/input_confirm.tpl';
@@ -409,11 +409,9 @@ class LC_Page_Admin_Mail extends LC_Page {
             $col = "dtb_order.customer_id, dtb_order.order_id";
             $from = "dtb_order LEFT JOIN dtb_order_detail USING(order_id)";
             $where = "product_code LIKE ? AND del_flg = 0";
-            $val = SC_Utils_Ex::sfManualEscape($keyword);
-            $arrVal[] = "%$val%";
             $objQuery = new SC_Query();
             $objQuery->setGroupBy("customer_id, order_id");
-            $arrRet = $objQuery->select($col, $from, $where, $arrVal);
+            $arrRet = $objQuery->select($col, $from, $where, array($keyword));
             $arrCustomerOrderId = SC_Utils_Ex::sfArrKeyValues($arrRet, "customer_id", "order_id");
         }
         return $arrCustomerOrderId;
