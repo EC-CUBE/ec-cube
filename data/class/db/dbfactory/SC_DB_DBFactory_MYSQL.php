@@ -136,6 +136,16 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
     }
 
     /**
+     * ダウンロード販売の検索条件の SQL を返す.
+     *
+     * @param string $dtb_order_alias
+     * @return string 検索条件の SQL
+     */
+    function getDownloadableDaysWhereSql($dtb_order_alias) {
+        return "(SELECT IF((SELECT d1.downloadable_days_unlimited FROM dtb_baseinfo d1)=1, 1, DATE(NOW()) <= DATE(DATE_ADD(" . $dtb_order_alias . ".commit_date, INTERVAL (SELECT downloadable_days FROM dtb_baseinfo) DAY))))";
+    }
+
+    /**
      * 文字列連結を行う.
      *
      * @param array $columns 連結を行うカラム名

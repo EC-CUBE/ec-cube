@@ -53,6 +53,20 @@ class LC_Page_Mypage_DownLoad extends LC_Page {
      */
     function process() {
         ob_end_clean();
+
+        $customer_id = $_SESSION['customer']['customer_id'];
+        $order_id = $_GET['order_id'];
+        $product_id = $_GET['product_id'];
+
+        // ID の数値チェック
+        // TODO SC_FormParam でチェックした方が良い?
+        if (!is_numeric($customer_id)
+            || !is_numeric($order_id)
+            || !is_numeric($product_id)) {
+            SC_Utils_Ex::sfDispSiteError("");
+        }
+
+
         $objCustomer = new SC_Customer();
         //ログインしていない場合
         if (!$objCustomer->isLoginSuccess()){
@@ -60,7 +74,8 @@ class LC_Page_Mypage_DownLoad extends LC_Page {
         } else {
         //ログインしている場合
             //DBから商品情報の読込
-            $arrForm = $this->lfGetRealFileName($_GET['product_id']);
+
+            $arrForm = $this->lfGetRealFileName($customer_id, $order_id, $product_id);
 
             //ステータスが支払済み以上である事
             if ($arrForm["status"] < ORDER_DELIV){
@@ -100,21 +115,24 @@ class LC_Page_Mypage_DownLoad extends LC_Page {
         }
     }
 
-    /* 商品情報の読み込み */
-    function lfGetRealFileName($product_id) {
+    /**
+     * 商品情報の読み込みを行う.
+     *
+     * @param integer $customer_id 顧客ID
+     * @param integer $order_id 受注ID
+     * @param integer $product_id 商品ID
+     * @return array 商品情報の配列
+     */
+    function lfGetRealFileName($customer_id, $order_id, $product_id) {
         $objQuery = new SC_Query();
         $col = "*";
         $table = "vw_download_class AS T1";
-        // FIXME order_id, product_id の妥当性をチェックすべき.
-        if (DB_TYPE == "mysql"){
-            $where = "T1.customer_id = " . (int)$_SESSION['customer']['customer_id'] . " AND T1.order_id = " . (int)$_GET['order_id'] . " AND T1.product_id = " . (int)$_GET['product_id'] .
-                " AND (SELECT IF((SELECT d1.downloadable_days_unlimited FROM dtb_baseinfo d1)=1, 1, DATE(NOW()) <= DATE(DATE_ADD(T1.commit_date, INTERVAL (SELECT downloadable_days FROM dtb_baseinfo) DAY)))) = 1;";
-        }else{
-            $baseinfo = SC_Helper_DB_Ex::sf_getBasisData();
-            $where = "T1.customer_id = " . (int)$_SESSION['customer']['customer_id'] . " AND T1.order_id = " . (int)$_GET['order_id'] . " AND T1.product_id = " . (int)$_GET['product_id'] .
-                " AND (SELECT CASE WHEN (SELECT d1.downloadable_days_unlimited FROM dtb_baseinfo d1) = 1 THEN 1 WHEN DATE(NOW()) <= DATE(T1.commit_date + '". $baseinfo['downloadable_days'] ." days') THEN 1 ELSE 0 END) = 1;";
-        }
-        $arrRet = $objQuery->select($col, $table, $where);
+        $dbFactory = SC_DB_DBFactory_Ex::getInstance();
+        $where = "T1.customer_id = ? AND T1.order_id = ? AND T1.product_id = ?";
+        $where .= " AND " . $dbFactory->getDownloadableDaysWhereSql("T1");
+        $where .= " = 1";
+        $arrRet = $objQuery->select($col, $table, $where,
+                                    array($customer_id, $order_id, $product_id));
         return $arrRet[0];
     }
 

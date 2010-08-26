@@ -122,6 +122,14 @@ class SC_DB_DBFactory {
     function getSendHistoryWhereStartdateSql() { return null; }
 
     /**
+     * ダウンロード販売の検索条件の SQL を返す.
+     *
+     * @param string $dtb_order_alias
+     * @return string 検索条件の SQL
+     */
+    function getDownloadableDaysWhereSql($dtb_order_alias) { return null; }
+
+    /**
      * 文字列連結を行う.
      *
      * @param array $columns 連結を行うカラム名

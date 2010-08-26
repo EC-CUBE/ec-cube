@@ -116,6 +116,17 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
     }
 
     /**
+     * ダウンロード販売の検索条件の SQL を返す.
+     *
+     * @param string $dtb_order_alias
+     * @return string 検索条件の SQL
+     */
+    function getDownloadableDaysWhereSql($dtb_order_alias) {
+        $baseinfo = SC_Helper_DB_Ex::sf_getBasisData();
+        return "(SELECT CASE WHEN (SELECT d1.downloadable_days_unlimited FROM dtb_baseinfo d1) = 1 THEN 1 WHEN DATE(NOW()) <= DATE(" . $dtb_order_alias . ".commit_date + '". $baseinfo['downloadable_days'] ." days') THEN 1 ELSE 0 END)";
+    }
+
+    /**
      * 文字列連結を行う.
      *
      * @param array $columns 連結を行うカラム名
