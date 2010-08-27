@@ -624,8 +624,8 @@ function lfInitWebParam($objWebParam) {
     if(defined('DEFAULT_DSN')) {
         $objQuery = new SC_Query();
         $tables = $objQuery->listTables();
-        if(in_array("dtb_baseinfo", $tables)) {
 
+        if(!PEAR::isError($tables) && in_array("dtb_baseinfo", $tables)) {
             $arrRet = $objQuery->select("shop_name, email01", "dtb_baseinfo");
             $shop_name = $arrRet[0]['shop_name'];
             $admin_mail = $arrRet[0]['email01'];
