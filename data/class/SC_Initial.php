@@ -37,8 +37,7 @@ class SC_Initial {
     function SC_Initial() {
 
         /** EC-CUBEのバージョン */
-        // XXX SVNのリビジョンを付加できたら良いと思う。(方法が分からない。)
-        define('ECCUBE_VERSION', "2.4.2-comu");
+        define('ECCUBE_VERSION', "2.5.0-dev");
     }
 
     // }}}
@@ -126,15 +125,15 @@ class SC_Initial {
         ini_set("mbstring.internal_encoding", CHAR_CODE);
         ini_set("mbstring.detect_order", "auto");
         ini_set("mbstring.substitute_character", "none");
-        
+
         mb_language('ja'); // mb_internal_encoding() より前に
         // TODO 他に mb_language() している箇所の削除を検討
         // TODO .htaccess の mbstring.language を削除できないか検討
-        
+
         mb_internal_encoding(CHAR_CODE); // mb_language() より後で
         // TODO 上の「ini_set("mbstring.internal_encoding", CHAR_CODE);」を削除できないか検討
         // TODO .htaccess の mbstring.internal_encoding を削除できないか検討
-        
+
         //ロケールを明示的に設定
         setlocale(LC_ALL, LOCALE);
     }
@@ -146,12 +145,12 @@ class SC_Initial {
      * @return void
      */
     function defineDirectoryIndex() {
-        
+
         // DirectoryIndex の実ファイル名
         if (!defined('DIR_INDEX_FILE')) {
             define('DIR_INDEX_FILE', 'index.php');
         }
-        
+
         // DIR_INDEX_FILE にアクセスする時の URL のファイル名部を定義する
         if (USE_FILENAME_DIR_INDEX === true) {
             // ファイル名を使用する
