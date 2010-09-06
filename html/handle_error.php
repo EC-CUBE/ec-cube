@@ -73,7 +73,7 @@ function handle_error($errno, $errstr, $errfile, $errline) {
     switch ($errno) {
     case E_USER_ERROR:
         ob_end_clean();
-        error_log("FATAL Error($errno) $errfile:$errline $errstr");
+        error_log("FATAL Error($errno) $errfile:$errline $errstr", 3, LOG_PATH);
 
         $admin = "";
         if (defined('ADMIN_FUNCTION') && ADMIN_FUNCTION) {

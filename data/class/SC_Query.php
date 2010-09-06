@@ -48,7 +48,7 @@ class SC_Query {
      * @param boolean $force_run エラーが発生しても処理を続行する場合 true
      * @param boolean $new 新規に接続を行うかどうか
      */
-    function SC_Query($dsn = "", $force_run = true, $new = false) {
+    function SC_Query($dsn = "", $force_run = false, $new = false) {
 
         if ($dsn == "") {
             $dsn = DEFAULT_DSN;
@@ -753,7 +753,9 @@ class SC_Query {
         $sth =& $this->conn->prepare($sql);
         if (PEAR::isError($sth)) {
             if (!$this->force_run) {
-               trigger_error($sth->getMessage(), E_USER_ERROR);
+                trigger_error($this->traceError($sth, $sql), E_USER_ERROR);
+            } else {
+                error_log($this->traceError($sth, $sql), 3, LOG_PATH);
             }
         }
         return $sth;
@@ -771,10 +773,49 @@ class SC_Query {
         $affected =& $sth->execute($arrVal);
         if (PEAR::isError($affected)) {
             if (!$this->force_run) {
-               trigger_error($affected->getMessage(), E_USER_ERROR);
+                trigger_error($this->traceError($affected), E_USER_ERROR);
+            } else {
+                error_log($this->traceError($affected), 3, LOG_PATH);
             }
         }
         return $affected;
+    }
+
+    /**
+     * エラーの内容をトレースする.
+     *
+     * @access private
+     * @param PEAR::Error $error PEAR::Error インスタンス
+     * @param string $sql エラーの発生した SQL 文
+     * @return string トレースしたエラー文字列
+     */
+    function traceError($error, $sql = "") {
+        $scheme = '';
+        if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') {
+            $scheme = "http://";
+        } else {
+            $scheme = "https://";
+        }
+
+        $err = $scheme . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . "\n\n"
+            . "SERVER_ADDR: " . $_SERVER['SERVER_ADDR'] . "\n"
+            . "REMOTE_ADDR: " . $_SERVER['REMOTE_ADDR'] . "\n"
+            . "USER_AGENT: " . $_SERVER['HTTP_USER_AGENT'] . "\n\n"
+            . "SQL: " . $sql . "\n\n"
+            . $error->getMessage() . "\n\n"
+            . $error->getUserInfo() . "\n\n";
+
+        $rev = array_reverse($error->getBackTrace());
+
+        foreach($rev as $val) {
+            if($val['class'] != "") {
+                $detail = $val['class'] . "->" . $val['function'];
+            } else {
+                $detail = $val['function'];
+            }
+            $err .= $val['file'] . " " . $val['line'] . ":" . $detail . "\n";
+        }
+        return $err;
     }
 }
 
