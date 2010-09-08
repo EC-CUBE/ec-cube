@@ -477,6 +477,7 @@ class LC_Page_Admin_Mail extends LC_Page {
         $dtb_send_history['send_id'] = $objQuery->nextVal('dtb_send_history_send_id');
         $objQuery->insert("dtb_send_history", $dtb_send_history );
 
+        // FIXME 値を取得できていない模様
         $sendId = $objQuery->currval('dtb_send_history', 'send_id');
 
         if ( is_array( $search_data ) ){
@@ -526,7 +527,6 @@ class LC_Page_Admin_Mail extends LC_Page {
 
 
     // HTMLテンプレートを使用する場合、データを取得する。
-    // FIXME
     function lfGetHtmlTemplateData($id) {
 
         $objQuery = new SC_Query();
@@ -537,6 +537,25 @@ class LC_Page_Admin_Mail extends LC_Page {
         // メイン商品の情報取得
         $sql = "SELECT name, main_image, point_rate, deliv_fee, price01_min, price01_max, price02_min, price02_max FROM vw_products_allclass AS allcls WHERE product_id = ?";
         $main = $objQuery->getAll($sql, array($list_data["sub_product_id" .$j]));
+        $list_data["main"] = $main[0];
+
+        // サブ商品の情報取得
+        $sql = "SELECT product_id, name, main_list_image, price01_min, price01_max, price02_min, price02_max FROM vw_products_allclass AS allcls WHERE product_id = ?";
+        $k = 0;
+        $l = 0;
+        for ($i = 1; $i <= 12; $i ++) {
+            if ($l == 4) {
+                $l = 0;
+                $k ++;
+            }
+            $result = "";
+            $j = sprintf("%02d", $i);
+            if ($i > 0 && $i < 5 ) $k = 0;
+            if ($i > 4 && $i < 9 ) $k = 1;
+            if ($i > 8 && $i < 13 ) $k = 2;
+
+            if (is_numeric($list_data["sub_product_id" .$j])) {
+                $result = $objQuery->getAll($sql, array($list_data["sub_product_id" .$j]));
                 $list_data["sub"][$k][$l] = $result[0];
                 $list_data["sub"][$k]["data_exists"] = "OK";    // 当該段にデータが１つ以上存在するフラグ
             }
