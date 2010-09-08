@@ -477,8 +477,7 @@ class LC_Page_Admin_Mail extends LC_Page {
         $dtb_send_history['send_id'] = $objQuery->nextVal('dtb_send_history_send_id');
         $objQuery->insert("dtb_send_history", $dtb_send_history );
 
-        // FIXME 値を取得できていない模様
-        $sendId = $objQuery->currval('dtb_send_history', 'send_id');
+        $sendId = $objQuery->currval('dtb_send_history_send_id');
 
         if ( is_array( $search_data ) ){
             foreach( $search_data as $line ){
