@@ -83,10 +83,9 @@ class SC_Query {
      * @param boolean $new 新規に接続を行うかどうか
      * @return SC_Query シングルトンの SC_Query インスタンス
      */
-    function getSingletonInstance($dsn = "", $force_run = true, $new = false) {
+    function getSingletonInstance($dsn = "", $force_run = false, $new = false) {
         if (is_null($this->instance)) {
-            $this->instance =& new SC_Query($dsn = "", $force_run = true,
-                                            $new = false);
+            $this->instance =& new SC_Query($dsn, $force_run, $new);
         }
         return $this->instance;
     }
