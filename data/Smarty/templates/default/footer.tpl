@@ -19,11 +19,11 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
-<!--▼FOTTER-->
+<!--▼FOOTER-->
 <div id="pagetop" style="clear: both;"><a href="#top"><img src="<!--{$TPL_DIR}-->img/common/pagetop.gif" width="100" height="10" alt="このページのTOPへ" /></a></div>
-<div id="fotter">Copyright&copy;
+<div id="footer">Copyright&copy;
 <!--{if $smarty.const.RELEASE_YEAR !=  $smarty.now|date_format:"%Y"}-->
     <!--{$smarty.const.RELEASE_YEAR}-->-
 <!--{/if}-->
 <!--{$smarty.now|date_format:"%Y"}--> <!--{$arrSiteInfo.shop_name_eng|escape}--> All rights reserved.</div>
-<!--▲FOTTER-->
+<!--▲FOOTER-->

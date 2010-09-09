@@ -22,6 +22,6 @@
 </div>
 </div>
 <div id="pagetop"><a href="#top"><img src="<!--{$TPL_DIR}-->img/common/pagetop.gif" width="100" height="10" alt="このページのTOPへ" /></a></div>
-<div id="fotter">Copyright(C)2000-2010 EC-CUBE All rights reserved.</div>
+<div id="footer">Copyright(C)2000-2010 EC-CUBE All rights reserved.</div>
 </body>
 </html>

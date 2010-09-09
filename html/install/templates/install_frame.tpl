@@ -125,7 +125,7 @@
         <td background="../<!--{$default_dir}-->img/common/right_bg.jpg"><img src="../<!--{$default_dir}-->img/common/_.gif" width="17" height="1" alt=""></td>
     </tr>
     <tr>
-        <td colspan="3"><img src="../<!--{$default_dir}-->img/common/fotter.jpg" width="912" height="19" alt=""></td>
+        <td colspan="3"><img src="../<!--{$default_dir}-->img/common/footer.jpg" width="912" height="19" alt=""></td>
     </tr>
     <tr><td height="10"></td></tr>
 </table>

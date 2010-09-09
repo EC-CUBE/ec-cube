@@ -183,11 +183,11 @@
     </div>
     <!--{* ▲CONTENTS *}-->
 
-    <!--{* ▼FOTTER *}-->
+    <!--{* ▼FOOTER *}-->
     <!--{if $arrPageLayout.footer_chk != 2}-->
         <!--{include file=$footer_tpl}-->
     <!--{/if}-->
-    <!--{* ▲FOTTER *}-->
+    <!--{* ▲FOOTER *}-->
     <!--{* ▼FooterBottom COLUMN*}-->
     <!--{if $arrPageLayout.FooterBottomNavi|@count > 0}-->
         <div id="footerbottomcolumn">
