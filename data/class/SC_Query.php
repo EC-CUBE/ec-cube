@@ -240,7 +240,7 @@ class SC_Query {
         if (strlen($where) >= 1) {
             $sqlse .= " WHERE $where";
         } elseif (strlen($this->where) >= 1) {
-            $where = $this->where;
+            $sqlse .= " WHERE " . $this->where;
         }
 
         $sqlse .= ' ' . $this->groupby . ' ' . $this->order . ' ' . $this->option;

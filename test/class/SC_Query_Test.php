@@ -46,9 +46,9 @@ class SC_Query_Test extends PHPUnit_Framework_TestCase {
     }
 
     function tearDown() {
-        $this->objQuery->rollback();
         // MySQL では CREATE TABLE がロールバックされないので DROP TABLE を行う
         $this->dropTestTable();
+        $this->objQuery->rollback();
         $this->objQuery = null;
     }
 
@@ -82,7 +82,7 @@ class SC_Query_Test extends PHPUnit_Framework_TestCase {
      * SC_Query::getAll() のテストケース.
      */
     function testGetAll() {
-        $this->createTestTable();
+        $result = $this->createTestTable();
         $result = $this->setTestData(1, "2", "f");
 
         $this->expected =  array(array("id" => "1",
@@ -93,6 +93,26 @@ class SC_Query_Test extends PHPUnit_Framework_TestCase {
 
         $this->verify();
     }
+
+    /**
+     * SC_Query::select() のテストケース.
+     */
+    function testSelect() {
+        $this->createTestTable();
+        $result = $this->setTestData(1, "2", "f");
+
+        $this->expected =  array(array("id" => "1",
+                                       "column1" => "1",
+                                       "column2" => "2",
+                                       "column3" => "f"));
+
+        $this->actual = $this->objQuery->setWhere("id = ?")
+                                       ->setOrder("id")
+                                       ->select("*", "test_table", "", array(1));
+
+        $this->verify();
+    }
+
 
     /**
      * SC_Query::getOne() のテストケース.
@@ -252,7 +272,11 @@ class SC_Query_Test extends PHPUnit_Framework_TestCase {
     }
 
     function dropTestTable() {
-        return $this->objQuery->query("DROP TABLE test_table");
+        $tables = $this->objQuery->listTables();
+        if (in_array("test_table", $tables)) {
+            $this->objQuery->query("DROP TABLE test_table");
+        }
+        return;
     }
 
     function setTestData($column1, $column2, $column3) {
