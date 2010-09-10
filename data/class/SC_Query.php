@@ -73,6 +73,9 @@ class SC_Query {
         $this->dbFactory = SC_DB_DBFactory_Ex::getInstance();
         $this->force_run = $force_run;
         $this->where = "";
+        $this->order = "";
+        $this->groupby = "";
+        $this->option = "";
     }
 
     /**
@@ -87,6 +90,10 @@ class SC_Query {
         if (is_null($this->instance)) {
             $this->instance =& new SC_Query($dsn, $force_run, $new);
         }
+        $this->instance->where = "";
+        $this->instance->order = "";
+        $this->instance->groupby = "";
+        $this->instance->option = "";
         return $this->instance;
     }
 
