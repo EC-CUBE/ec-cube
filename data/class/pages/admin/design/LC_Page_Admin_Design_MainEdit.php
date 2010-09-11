@@ -274,67 +274,30 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
      * ブロック情報を更新する.
      *
      * @param array $arrData 更新データ
-     * @return integer 更新結果
+     * @return void
      */
     function lfEntryPageData($arrData){
-        $objQuery = new SC_Query();		// DB操作オブジェクト
-        $sql = "";						// データ更新SQL生成用
-        $ret = ""; 						// データ更新結果格納用
-        $arrUpdData = array();			// 更新データ生成用
-        $arrChk = array();				// 排他チェック用
+        $objQuery = new SC_Query();
+        $arrChk = array();          // 排他チェック用
 
         // 更新データの変換
-        $arrUpdData = $this->lfGetUpdData($arrData);
+        $sqlval = $this->lfGetUpdData($arrData);
 
         // データが存在しているかチェックを行う
         if($arrData['page_id'] !== ''){
             $arrChk = $this->objLayout->lfgetPageData("page_id = ?", array($arrData['page_id']));
         }
-        
+
         // page_id が空 若しくは データが存在していない場合にはINSERTを行う
         if ($arrData['page_id'] === '' or !isset($arrChk[0])) {
-            // SQL生成
-            $arrData['page_id'] = $objQuery->nextVal('dtb_pagelayout_page_id');
-            $sql = " INSERT INTO dtb_pagelayout ";
-            $sql .= " ( ";
-            $sql .= " 	  page_id";
-            $sql .= " 	  ,page_name";
-            $sql .= "	  ,url";
-            $sql .= "	  ,php_dir";
-            $sql .= "	  ,tpl_dir";
-            $sql .= "	  ,filename";
-            $sql .= "	  ,header_chk";
-            $sql .= "	  ,footer_chk";
-            $sql .= "	  ,update_url";
-            $sql .= "	  ,create_date";
-            $sql .= "	  ,update_date";
-            $sql .= " ) VALUES ( ?,?,?,?,?,?,?,?,now(),now() )";
-            $sql .= " ";
-        } else {
-            // データが存在してる場合にはアップデートを行う
-            // SQL生成
-            $sql = " UPDATE dtb_pagelayout ";
-            $sql .= " SET";
-            $sql .= "	  page_name = ? ";
-            $sql .= "	  ,url = ? ";
-            $sql .= "	  ,php_dir = ? ";
-            $sql .= "	  ,tpl_dir = ? ";
-            $sql .= "	  ,filename = ? ";
-            $sql .= "	  ,header_chk = ? ";
-            $sql .= "	  ,footer_chk = ? ";
-            $sql .= "	  ,update_url = ? ";
-            $sql .= "     ,update_date = now() ";
-            $sql .= " WHERE page_id = ?";
-            $sql .= " ";
-
-            // 更新データにブロックIDを追加
-            array_push($arrUpdData, $arrData['page_id']);
+            $sqlval['page_id'] = $objQuery->nextVal('dtb_pagelayout_page_id');
+            $sqlval['create_date'] = 'now()';
+            $objQuery->insert('dtb_pagelayout', $sqlval);
         }
-
-        // SQL実行
-        $ret = $objQuery->query($sql,$arrUpdData);
-
-        return $ret;
+        // データが存在してる場合にはアップデートを行う
+        else {
+            $objQuery->update('dtb_pagelayout', $sqlval, 'page_id = ?', array($arrData['page_id']));
+        }
     }
 
     /**
@@ -344,38 +307,26 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
      * @return array 更新データ
      */
     function lfGetUpdData($arrData){
-        // ベースデータの場合には変更しない。
-        if ($this->objLayout->lfCheckBaseData($arrData['page_id'])) {
-            $arrPageData = $this->objLayout->lfgetPageData( ' page_id = ? ' , array($arrData['page_id']));
-            
-            $name = $arrPageData[0]['page_name'] ;
-            $url = $arrPageData[0]['url'];
-            $php_dir = $arrPageData[0]['php_dir'];
-            $filename = $arrPageData[0]['filename'];
-        } else {
-            $name = $arrData['page_name'] ;
-            $url = USER_DIR . $arrData['url'] . '.php';
-            $php_dir = dirname($url);
-            if ($php_dir == '.') {
-                $php_dir = '';
-            } else {
-                $php_dir .= '/';
-            }
-            $tpl_dir = substr(TPL_DIR, strlen(URL_DIR));
-            $filename = basename($arrData['url']); // 拡張子を付加しない
-        }
-        
-        // 更新データ配列の作成
         $arrUpdData = array(
-            $name                                                   // 名称
-            ,$url                                                   // URL
-            ,$php_dir                                               // PHPディレクトリ
-            ,$tpl_dir                                               // TPLディレクトリ
-            ,$filename                                              // ファイル名
-            ,SC_Utils_Ex::sfChangeCheckBox($arrData['header_chk'])  // ヘッダー使用
-            ,SC_Utils_Ex::sfChangeCheckBox($arrData['footer_chk'])  // フッター使用
-            ,$_SERVER['HTTP_REFERER']                               // 更新URL
+            'header_chk'    => SC_Utils_Ex::sfChangeCheckBox($arrData['header_chk']),   // ヘッダー使用
+            'footer_chk'    => SC_Utils_Ex::sfChangeCheckBox($arrData['footer_chk']),   // フッター使用
+            'update_url'    => $_SERVER['HTTP_REFERER'],                                // 更新URL
+            'update_date'   => 'now()',
         );
+
+        // ベースデータの場合には変更しない。
+        if (!$this->objLayout->lfCheckBaseData($arrData['page_id'])) {
+            $arrUpdData['page_name']    = $arrData['page_name'] ;
+            $arrUpdData['url']          = USER_DIR . $arrData['url'] . '.php';
+            $arrUpdData['php_dir']      = dirname($arrUpdData['url']);
+            if ($arrUpdData['php_dir'] == '.') {
+                $arrUpdData['php_dir'] = '';
+            } else {
+                $arrUpdData['php_dir'] .= '/';
+            }
+            $arrUpdData['tpl_dir']      = substr(TPL_DIR, strlen(URL_DIR));
+            $arrUpdData['filename']     = basename($arrData['url']); // 拡張子を付加しない
+        }
 
         return $arrUpdData;
     }
