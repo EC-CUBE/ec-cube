@@ -159,7 +159,9 @@ class GC_Utils {
 
     /**
      * ログローテーション機能
+     *
      * XXX この類のローテーションは通常 0 開始だが、本実装は 1 開始である。
+     * この中でログ出力は行なわないこと。(無限ループの懸念あり)
      * @param integer $max_log 最大ファイル数
      * @param integer $max_size 最大サイズ
      * @param string  $path ファイルパス
@@ -169,8 +171,16 @@ class GC_Utils {
 
         // ファイルが最大サイズを超えていない場合、終了
         if (filesize($path) <= $max_size) return;
-        
-        // アーカイブのインクリメント(削除を兼ねる)
+
+        // Windows 版 PHP への対策として明示的に事前削除
+        $path_max = "$path.$max_log";
+        if (file_exists($path_max)) {
+            $res = unlink($path_max);
+            // 削除に失敗時した場合、ログローテーションは見送り
+            if (!$res) return;
+        }
+
+        // アーカイブのインクリメント
         for ($i = $max_log; $i >= 2; $i--) {
             $path_old = "$path." . ($i - 1);
             $path_new = "$path.$i";
@@ -178,7 +188,7 @@ class GC_Utils {
                 rename($path_old, $path_new);
             }
         }
-        
+
         // 現在ファイルのアーカイブ
         rename($path, "$path.1");
     }
