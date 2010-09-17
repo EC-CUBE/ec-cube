@@ -364,7 +364,7 @@ INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES 
 INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (362, 'dtb_customer', 'buy_total', '購入累計金額');
 INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (363, 'dtb_customer', 'point', 'ポイント');
 INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (364, 'dtb_customer', 'note', 'SHOPメモ');
-INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (365, 'dtb_customer', 'status', '1:仮登録 2:登録 3:停止 4:非会員');
+INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (365, 'dtb_customer', 'status', '1:仮登録 2:登録');
 INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (366, 'dtb_customer', 'create_date', '作成日時');
 INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (367, 'dtb_customer', 'update_date', '更新日時');
 INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (368, 'dtb_customer', 'del_flg ', '0:既定、1:削除');
