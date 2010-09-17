@@ -20,7 +20,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-
 // エラー捕捉用の出力バッファリング
 ob_start('_fatal_error_handler');
 
@@ -46,6 +45,8 @@ function &_fatal_error_handler(&$buffer) {
         if (defined('ADMIN_FUNCTION') && ADMIN_FUNCTION) {
             $admin = "?admin";
         }
+        error_log("FATAL Error: $matches[3]:$matches[4] $matches[2]\n", 3,
+                  realpath(dirname(__FILE__) . "/" . HTML2DATA_DIR . "logs/site.log"));
         header("Location: " . SITE_URL . "error.php" . $admin);
         exit;
     }
@@ -73,7 +74,7 @@ function handle_error($errno, $errstr, $errfile, $errline) {
     switch ($errno) {
     case E_USER_ERROR:
         ob_end_clean();
-        error_log("FATAL Error($errno) $errfile:$errline $errstr", 3, LOG_PATH);
+        error_log("FATAL Error($errno) $errfile:$errline $errstr", 3, realpath(dirname(__FILE__) . "/" . HTML2DATA_DIR . "logs/site.log"));
 
         $admin = "";
         if (defined('ADMIN_FUNCTION') && ADMIN_FUNCTION) {

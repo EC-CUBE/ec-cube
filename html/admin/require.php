@@ -25,8 +25,8 @@
 define('HTML_PATH', rtrim(realpath(rtrim(realpath(dirname(__FILE__)), '/\\') . '/../'), '/\\') . '/');
 define('ADMIN_FUNCTION', true);
 
-require_once HTML_PATH . 'handle_error.php';
 require_once HTML_PATH . 'define.php';
+require_once HTML_PATH . 'handle_error.php';
 
 require_once HTML_PATH . HTML2DATA_DIR . 'require_base.php';
 
