@@ -59,9 +59,9 @@ class LC_Page_Error_SystemError extends LC_Page_Error {
 
         if ($this->adminPage) {
             $this->tpl_mainpage = 'login_error.tpl';
-            $this->flame = LOGIN_FRAME;
+            $this->frame = LOGIN_FRAME;
         } else {
-            $this->flame = SITE_FRAME;
+            $this->frame = SITE_FRAME;
         }
     }
 
@@ -85,8 +85,8 @@ class LC_Page_Error_SystemError extends LC_Page_Error {
         $this->tpl_error = "システムエラーが発生しました。<br />大変お手数ですが、サイト管理者までご連絡ください。";
 
         $objView->assignobj($this);
-        $objView->display($this->flame);
-        
+        $objView->display($this->frame);
+
         if (DEBUG_MODE) {
             echo '<div class="debug">';
             echo '<div>▼▼▼ デバッグ情報ここから ▼▼▼</div>';
