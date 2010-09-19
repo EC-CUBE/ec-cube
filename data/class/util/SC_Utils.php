@@ -2126,7 +2126,7 @@ echo $template_path;
     function sfBacktraceToString($arrBacktrace) {
         $string = '';
         
-        foreach ($arrBacktrace as $backtrace) {
+        foreach (array_reverse($arrBacktrace) as $backtrace) {
             if (strlen($backtrace['class']) >= 1) {
                 $func = $backtrace['class'] . $backtrace['type'] . $backtrace['function'];
             } else {
