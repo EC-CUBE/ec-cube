@@ -812,16 +812,8 @@ class SC_Query {
             . $error->getMessage() . "\n\n"
             . $error->getUserInfo() . "\n\n";
 
-        $rev = array_reverse($error->getBackTrace());
+        $err .= SC_Utils_Ex::sfBacktraceToString($error->getBackTrace());
 
-        foreach($rev as $val) {
-            if($val['class'] != "") {
-                $detail = $val['class'] . "->" . $val['function'];
-            } else {
-                $detail = $val['function'];
-            }
-            $err .= $val['file'] . " " . $val['line'] . ":" . $detail . "\n";
-        }
         return $err;
     }
 }
