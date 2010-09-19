@@ -91,7 +91,7 @@ class LC_Page_Error_SystemError extends LC_Page_Error {
             echo '<div class="debug">';
             echo '<div>▼▼▼ デバッグ情報ここから ▼▼▼</div>';
             echo '<pre>';
-            print_r(htmlspecialchars($this->sfGetErrMsg(), ENT_QUOTES, CHAR_CODE));
+            echo htmlspecialchars($this->sfGetErrMsg(), ENT_QUOTES, CHAR_CODE);
             echo '</pre>';
             echo '<div>▲▲▲ デバッグ情報ここまで ▲▲▲</div>';
             echo '</div>';
@@ -116,13 +116,7 @@ class LC_Page_Error_SystemError extends LC_Page_Error {
         $errmsg = '';
         $errmsg .= $this->lfGetErrMsgHead();
         $errmsg .= "\n";
-        
-        // デバッグ用のメッセージが指定されている場合
-        if (!empty($this->arrDebugMsg)) {
-            $errmsg .= implode("\n\n", $this->arrDebugMsg) . "\n";
-            $errmsg .= "\n";
-        }
-        
+
         // PEAR エラーを伴う場合
         if (!is_null($this->pearResult)) {
             $errmsg .= $this->pearResult->message . "\n\n";
@@ -135,9 +129,30 @@ class LC_Page_Error_SystemError extends LC_Page_Error {
         }
         // (上に該当せず)バックトレースを生成できる環境(一般的には PHP 4 >= 4.3.0, PHP 5)の場合
         else if (function_exists("debug_backtrace")) {
-            $errmsg .= SC_Utils_Ex::sfBacktraceToString(array_slice(debug_backtrace(), 2));
+            $backtrace = debug_backtrace();
+
+            // バックトレースのうち handle_error 以前は通常不要と考えられるので削除
+            $cnt = 0;
+            $offset = 0;
+            foreach ($backtrace as $key => $arrLine) {
+                $cnt ++;
+                if (!isset($arrLine['file']) && $arrLine['function'] === 'handle_error') {
+                    $offset = $cnt;
+                    break;
+                }
+            }
+            if ($offset !== 0) {
+                $backtrace = array_slice($backtrace, $offset);
+            }
+
+            $errmsg .= SC_Utils_Ex::sfBacktraceToString($backtrace);
         }
-        
+
+        // デバッグ用のメッセージが指定されている場合
+        if (!empty($this->arrDebugMsg)) {
+            $errmsg .= implode("\n\n", $this->arrDebugMsg) . "\n";
+        }
+
         return $errmsg;
     }
     
