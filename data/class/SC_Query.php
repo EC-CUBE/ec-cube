@@ -778,10 +778,11 @@ class SC_Query {
     function execute(&$sth, $arrVal = array()) {
         $affected =& $sth->execute($arrVal);
         if (PEAR::isError($affected)) {
+            $sql = isset($sth->query) ? $sth->query : '';
             if (!$this->force_run) {
-                trigger_error($this->traceError($affected), E_USER_ERROR);
+                trigger_error($this->traceError($affected, $sql), E_USER_ERROR);
             } else {
-                error_log($this->traceError($affected), 3, LOG_PATH);
+                error_log($this->traceError($affected, $sql), 3, LOG_PATH);
             }
         }
         return $affected;
