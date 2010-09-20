@@ -138,6 +138,7 @@ __EOS__;
 
     /* 商品読み込み */
     function lfGetProduct($category_id) {
+        // FIXME SC_Product クラスを使用した実装
         $objQuery = new SC_Query();
         $col = "product_id, name, main_list_image, product_code_min, product_code_max, status";
         $table = "vw_products_allclass AS allcls";

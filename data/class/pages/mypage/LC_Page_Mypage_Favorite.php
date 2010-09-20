@@ -93,6 +93,7 @@ class LC_Page_MyPage_Favorite extends LC_Page {
             $this->tpl_pageno = htmlspecialchars($_POST['pageno'], ENT_QUOTES, CHAR_CODE);
         }
 
+        // FIXME SC_Product クラスを使用した実装
         $col = "alldtl.*";
         $from = "dtb_customer_favorite_products AS dcfp LEFT JOIN vw_products_allclass_detail AS alldtl USING(product_id)";
         

@@ -102,10 +102,6 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page {
 
             $order = "update_date DESC, product_id DESC";
 
-            // 読み込む列とテーブルの指定
-            $col = "product_id, name, category_id, main_list_image, status, product_code, price01, stock, stock_unlimited";
-            $from = "vw_products_nonclass AS noncls ";
-
             $objQuery = new SC_Query();
             // 行数の取得
             if (empty($arrval)) $arrval = array();
@@ -130,8 +126,9 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page {
             // 表示順序
             $objQuery->setOrder($order);
 
+            // FIXME 商品コードの表示
             // 検索結果の取得
-            $this->arrProducts = $objQuery->select($col, $from, $where, $arrval);
+            $this->arrProducts = $objQuery->select("*", SC_Product::alldtlSQL(), $where, $arrval);
         }
 
         // カテゴリ取得

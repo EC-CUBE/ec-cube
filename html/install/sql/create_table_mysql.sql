@@ -255,15 +255,10 @@ CREATE TABLE dtb_send_customer (
 
 CREATE TABLE dtb_products (
     product_id int  NOT NULL,
-    name text,
-    deliv_fee numeric,
-    sale_limit numeric,
-    category_id int,
+    name text NOT NULL,
     maker_id int,
     rank int,
     status smallint NOT NULL DEFAULT 2,
-    product_flag text,
-    point_rate numeric,
     comment1 text,
     comment2 text,
     comment3 mediumtext,
@@ -311,7 +306,7 @@ CREATE TABLE dtb_products (
     create_date datetime NOT NULL,
     update_date datetime,
     deliv_date_id int,
-    down smallint NOT NULL ,
+    down smallint NOT NULL DEFAULT 0,
     down_filename text,
     down_realfilename text,
     PRIMARY KEY (product_id)
@@ -320,18 +315,21 @@ CREATE TABLE dtb_products (
 CREATE TABLE dtb_products_class (
     product_class_id int  NOT NULL,
     product_id int NOT NULL,
-    classcategory_id1 int NOT NULL DEFAULT 0,
-    classcategory_id2 int NOT NULL DEFAULT 0,
+    class_combination_id int,
     product_code text,
     stock numeric,
     stock_unlimited smallint NOT NULL DEFAULT 0,
     sale_limit numeric,
+    sale_unlimited smallint NOT NULL DEFAULT 0,
     price01 numeric,
     price02 numeric,
+    deliv_fee numeric,
+    point_rate numeric,
     status smallint,
     creator_id int NOT NULL,
     create_date datetime NOT NULL,
     update_date datetime,
+    del_flg smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (product_class_id)
 ) TYPE=InnoDB;
 
@@ -344,7 +342,6 @@ CREATE TABLE dtb_class (
     create_date datetime NOT NULL,
     update_date datetime,
     del_flg smallint NOT NULL DEFAULT 0,
-    product_id int,
     PRIMARY KEY (class_id)
 ) TYPE=InnoDB;
 
@@ -359,6 +356,14 @@ CREATE TABLE dtb_classcategory (
     update_date datetime,
     del_flg smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (classcategory_id)
+) TYPE=InnoDB;
+
+CREATE TABLE dtb_class_combination (
+    class_combination_id int NOT NULL,
+    parent_class_combination_id int,
+    classcategory_id int NOT NULL,
+    level int,
+    PRIMARY KEY(class_combination_id)
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_category (
@@ -379,6 +384,16 @@ CREATE TABLE dtb_product_categories (
     category_id int NOT NULL,
     rank int NOT NULL,
     PRIMARY KEY(product_id, category_id)
+) TYPE=InnoDB;
+
+CREATE TABLE dtb_product_status (
+    product_status_id smallint NOT NULL,
+    product_id int NOT NULL,
+    creator_id int NOT NULL,
+    create_date datetime NOT NULL,
+    update_date datetime,
+    del_flg smallint NOT NULL DEFAULT 0,
+    PRIMARY KEY(product_status_id, product_id)
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_bat_order_daily (

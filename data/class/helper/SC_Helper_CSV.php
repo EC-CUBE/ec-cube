@@ -131,6 +131,11 @@ __EOS__;
         $objQuery = new SC_Query();
         $objQuery->setOrder($order);
 
+        /*
+         * FIXME
+         * パフォーマンスが出ないため,
+         * SC_Product::getProductsClassByProductIds() を使用した実装に変更
+         */
         $dataRows = $objQuery->select(
              SC_Utils_Ex::sfGetCommaList($arrOutputCols, true, array('category_id'))
             ,'vw_product_class AS prdcls'

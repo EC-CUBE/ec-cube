@@ -46,6 +46,7 @@ require_once(CLASS_PATH . "SC_Cookie.php");
 require_once(CLASS_PATH . "SC_MobileUserAgent.php");
 require_once(CLASS_PATH . "SC_MobileEmoji.php");
 require_once(CLASS_PATH . "SC_MobileImage.php");
+require_once(CLASS_PATH . "SC_Product.php");
 require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_PageLayout_Ex.php");
 require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_DB_Ex.php");
 require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_Mail_Ex.php");

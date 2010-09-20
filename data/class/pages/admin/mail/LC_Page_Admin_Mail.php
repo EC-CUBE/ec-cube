@@ -534,6 +534,7 @@ class LC_Page_Admin_Mail extends LC_Page {
         $list_data = $result[0];
 
         // メイン商品の情報取得
+        // FIXME SC_Product クラスを使用した実装
         $sql = "SELECT name, main_image, point_rate, deliv_fee, price01_min, price01_max, price02_min, price02_max FROM vw_products_allclass AS allcls WHERE product_id = ?";
         $main = $objQuery->getAll($sql, array($list_data["sub_product_id" .$j]));
         $list_data["main"] = $main[0];

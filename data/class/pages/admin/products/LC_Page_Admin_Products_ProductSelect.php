@@ -104,10 +104,6 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page {
 
             $order = "update_date DESC, product_id DESC ";
 
-            // 読み込む列とテーブルの指定
-            $col = "product_id, name, category_id, main_list_image, status, product_code, price01, stock, stock_unlimited";
-            $from = "vw_products_nonclass AS noncls ";
-
             $objQuery = new SC_Query();
             // 行数の取得
             if (empty($arrval)) {
@@ -134,11 +130,9 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page {
             // 表示順序
             $objQuery->setOrder($order);
 
-            // viewも絞込みをかける(mysql用)
-            //sfViewWhere("&&noncls_where&&", $where, $arrval, $objQuery->order . " " .  $objQuery->setLimitOffset($page_max, $startno, true));
-
             // 検索結果の取得
-            $this->arrProducts = $objQuery->select($col, $from, $where, $arrval);
+            // FIXME 商品コードの表示
+            $this->arrProducts = $objQuery->select("*", SC_Product::alldtlSQL(), $where, $arrval);
         }
 
         // カテゴリ取得

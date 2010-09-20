@@ -309,7 +309,6 @@ class LC_Page_Products_List extends LC_Page {
     /* 商品一覧の表示 */
     function lfDispProductsList() {
 
-        $objQuery = new SC_Query();
         $objDb = new SC_Helper_DB_Ex();
         $arrval = array();
         $arrval_order = array();
@@ -323,6 +322,7 @@ class LC_Page_Products_List extends LC_Page {
         // ▼対象商品IDの抽出
         // 商品検索条件の作成（未削除、表示）
         $where = "del_flg = 0 AND status = 1 ";
+        $where1 = "alldtl.del_flg = 0 AND alldtl.status = 1 ";
         
         // 在庫無し商品の非表示
         if (NOSTOCK_HIDDEN === true) {
@@ -331,6 +331,7 @@ class LC_Page_Products_List extends LC_Page {
         
         if (strlen($where_category) >= 1) {
             $where.= " AND $where_category";
+            $where1 .= " AND T2.$where_category";
             $arrval = array_merge($arrval, $arrval_category);
         }
 
@@ -345,6 +346,7 @@ class LC_Page_Products_List extends LC_Page {
         foreach ($names as $val) {
             if ( strlen($val) > 0 ) {
                 $where .= " AND ( name ILIKE ? OR comment3 ILIKE ?) ";
+                $where1 .= " AND ( alldtl.name ILIKE ? OR alldtl.comment3 ILIKE ?) ";
                 $arrval[] = "%$val%";
                 $arrval[] = "%$val%";
             }
@@ -353,11 +355,16 @@ class LC_Page_Products_List extends LC_Page {
         // メーカーらのWHERE文字列取得
         if ($this->arrSearchData['maker_id']) {
             $where .= " AND maker_id = ? ";
+            $where1 .= " AND alldtl.maker_id = ? ";
             $arrval[] = $this->arrSearchData['maker_id'];
         }
-        
-        // 対象商品IDの抽出
-        $arrProduct_id = array_unique($objQuery->getCol('vw_products_allclass AS allcls', 'product_id', $where, $arrval));
+
+        // 一覧表示する商品IDを取得
+        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery->setWhere($where1);
+        $objProduct = new SC_Product();
+        $arrProduct_id = $objProduct->findProductIds($objQuery, $arrval);
+
         // 行数の取得
         $linemax = count($arrProduct_id);
 
@@ -372,37 +379,6 @@ class LC_Page_Products_List extends LC_Page {
         $this->tpl_strnavi = empty($strnavi) ? "&nbsp;" : $strnavi;
         $startno = $this->objNavi->start_row;                 // 開始行
         
-        // ▼商品詳細取得
-        $col = <<< __EOS__
-             product_id
-            ,product_code_min
-            ,product_code_max
-            ,name
-            ,comment1
-            ,comment2
-            ,comment3
-            ,main_list_comment
-            ,main_image
-            ,main_list_image
-            ,price01_min
-            ,price01_max
-            ,price02_min
-            ,price02_max
-            ,stock_min
-            ,stock_max
-            ,stock_unlimited_min
-            ,stock_unlimited_max
-            ,point_rate
-            ,sale_limit
-            ,deliv_date_id
-            ,deliv_fee
-            ,status
-            ,product_flag
-            ,del_flg
-__EOS__;
-        
-        $from = "vw_products_allclass_detail AS alldtl";
-        
         // WHERE 句
         $where = '0=0';
         if (is_array($arrProduct_id) && !empty($arrProduct_id)) {
@@ -411,7 +387,7 @@ __EOS__;
             // 一致させない
             $where .= ' AND 0<>0';
         }
-        
+
         // 表示順序
         switch ($this->orderby) {
 
@@ -461,13 +437,15 @@ __EOS__;
         }
         
         // 取得範囲の指定(開始行番号、行数のセット)
-        $objQuery->setLimitOffset($this->disp_number, $startno);
-        // 表示順序
-        $objQuery->setOrder($order);
-        
+        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery->setLimitOffset($this->disp_number, $startno)
+                 ->setOrder($order)
+                 ->setWhere($where);
+
         // 検索結果の取得
-        $this->arrProducts = $objQuery->select($col, $from, $where, $arrval_order);
-        // ▲商品詳細取得
+        $objProduct = new SC_Product();
+        $this->arrProducts = $objProduct->lists($objQuery, $arrval_order);
+
         
         $arrProductId = array();
         // 規格セレクトボックス設定
@@ -475,8 +453,8 @@ __EOS__;
             $arrProductId[] = $product['product_id'];
         }
         
-        require_once CLASS_PATH . 'SC_Product.php';
-        $objProduct = new SC_Product($arrProductId);
+        // 規格を設定
+        $objProduct->setProductsClassByProductIds($arrProductId);
         
         // 規格1クラス名
         $this->tpl_class_name1 = $objProduct->className1;

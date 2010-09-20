@@ -150,8 +150,9 @@ class LC_Page_Products_Detail extends LC_Page {
         // 規格選択セレクトボックスの作成
         $this->lfMakeSelect($product_id);
 
-        require_once CLASS_PATH . 'SC_Product.php';
-        $objProduct = new SC_Product($product_id);
+        $objProduct = new SC_Product();
+        $objProduct->setProductsClassByProductIds(array($product_id));
+
         // 規格1クラス名
         $this->tpl_class_name1 = $objProduct->className1[$product_id];
 
@@ -226,9 +227,8 @@ class LC_Page_Products_Detail extends LC_Page {
         }
         $this->arrErr = $arrErr;
 
-        // DBから商品情報を取得する。
-        $arrRet = $objQuery->select("*, (SELECT count(*) FROM dtb_customer_favorite_products WHERE product_id = alldtl.product_id AND customer_id = ?) AS favorite_count", "vw_products_allclass_detail AS alldtl", "product_id = ?", array($objCustomer->getValue('customer_id'), $product_id));
-        $this->arrProduct = $arrRet[0];
+        // 商品詳細を取得
+        $this->arrProduct = $objProduct->getDetail($product_id);
 
         // サブタイトルを取得
         $this->tpl_subtitle = $this->arrProduct['name'];
@@ -420,10 +420,9 @@ class LC_Page_Products_Detail extends LC_Page {
             break;
         }
 
-        $objQuery = new SC_Query();
-        // DBから商品情報を取得する。
-        $arrRet = $objQuery->select("*", "vw_products_allclass_detail AS alldtl", "product_id = ?", array($product_id));
-        $this->arrProduct = $arrRet[0];
+        // 商品詳細を取得
+        $objProduct = new SC_Product();
+        $this->arrProduct = $objProduct->getDetail($product_id);
 
         // サブタイトルを取得
         $this->tpl_subtitle = $this->arrProduct["name"];
@@ -530,6 +529,11 @@ class LC_Page_Products_Detail extends LC_Page {
         $arrClassName = $objDb->sfGetIDValueList("dtb_class", "class_id", "name");
         // 規格分類名一覧
         $arrClassCatName = $objDb->sfGetIDValueList("dtb_classcategory", "classcategory_id", "name");
+        /*
+         * FIXME
+         * パフォーマンスが出ないため,
+         * SC_Product::getProductsClassByProductIds() を使用した実装に変更
+         */
         // 商品規格情報の取得
         $arrProductsClass = $this->lfGetProductsClass($product_id);
 
@@ -616,6 +620,7 @@ class LC_Page_Products_Detail extends LC_Page {
         $arrRet = $objQuery->select("recommend_product_id, comment", "dtb_recommend_products", "product_id = ?", array($product_id));
         $max = count($arrRet);
         $no = 0;
+        // FIXME SC_Product クラスを使用した実装
         $from = "vw_products_allclass AS T1 "
                 . " JOIN ("
                 . " SELECT max(T2.rank) AS product_rank, "
@@ -625,7 +630,7 @@ class LC_Page_Products_Detail extends LC_Page {
         $objQuery->setOrder("T3.product_rank DESC");
         for($i = 0; $i < $max; $i++) {
             $where = "del_flg = 0 AND T3.product_id = ? AND status = 1";
-            $arrProductInfo = $objQuery->select("DISTINCT main_list_image, price02_min, price02_max, price01_min, price01_max, name, point_rate, T3.product_rank", $from, $where, array($arrRet[$i]['recommend_product_id']));
+            $arrProductInfo = $objQuery->select("DISTINCT main_list_image, price02_min, price02_max, price01_min, price01_max, name, T3.product_rank", $from, $where, array($arrRet[$i]['recommend_product_id']));
 
             if(count($arrProductInfo) > 0) {
                 $arrRecommend[$no] = $arrProductInfo[0];

@@ -104,7 +104,7 @@ class LC_Page_FrontParts_Bloc_Best5 extends LC_Page_FrontParts_Bloc {
     //おすすめ商品検索
     function lfGetRanking(){
         $objQuery = new SC_Query();
-
+        // FIXME SC_Product クラスを使用した実装
         $col = "DISTINCT A.*, name, price02_min, price01_min, main_list_image ";
         $from = "dtb_best_products AS A INNER JOIN vw_products_allclass AS allcls using(product_id)";
         $where = "allcls.del_flg = 0 AND allcls.status = 1";

@@ -193,6 +193,7 @@ class LC_Page_Rss_Products extends LC_Page {
      * @return array $arrProduct 取得結果を配列で返す
      */
     function lfGetProductsAllclass($objQuery){
+        // FIXME SC_Product クラスを使用した実装
         $sql = "";
         $sql .= "SELECT
                 product_id

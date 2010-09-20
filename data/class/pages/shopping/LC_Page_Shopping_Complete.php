@@ -664,20 +664,27 @@ class LC_Page_Shopping_Complete extends LC_Page {
             SC_Utils_Ex::sfDispException();
         }
         
-        $where = "product_id = ? AND classcategory_id1 = ? AND classcategory_id2 = ?";
-        $arrRet = $objQuery->select("stock, stock_unlimited", "dtb_products_class", $where, $arrID);
+        $objProduct = new SC_Product();
+        $productsClass = $objProduct->getProductsClassFullByProductId($arrID[0]);
+    
+        foreach ($productsClass as $val) {
+            if ($val['classcategory_id1'] == $arrID[1]
+                && $val['classcategory_id2'] == $arrID[2]) {
 
-        if (($arrRet[0]['stock_unlimited'] != '1' && $arrRet[0]['stock'] < $quantity) || $quantity == 0) {
-            // 売り切れエラー
-            $objQuery->rollback();
-            SC_Utils_Ex::sfDispSiteError(SOLD_OUT, "", true);
-        }
+                if (($val['stock_unlimited'] != '1' && $val['stock'] < $quantity) || $quantity == 0) {
+                    // 売り切れエラー
+                    $objQuery->rollback();
+                    SC_Utils_Ex::sfDispSiteError(SOLD_OUT, "", true);
+                }
         
-        // 在庫を減らす
-        $arrRawSql = array();
-        $arrRawSql['stock'] = 'stock - ?';
-        $arrRawSqlVal[] = $quantity;
-        $objQuery->update('dtb_products_class', array(), $where, $arrID, $arrRawSql, $arrRawSqlVal);
+                // 在庫を減らす
+                $arrRawSql = array();
+                $arrRawSql['stock'] = 'stock - ?';
+                $arrRawSqlVal[] = $quantity;
+                $objQuery->update('dtb_products_class', array(), "product_class_id = ?", array($val['product_class_id']), $arrRawSql, $arrRawSqlVal);
+                break;
+            }
+        }
         
         // 在庫無し商品の非表示対応
         if (NOSTOCK_HIDDEN === true) {

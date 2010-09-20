@@ -243,7 +243,7 @@ class LC_Page_Admin_Products extends LC_Page {
 
                 $order = "update_date DESC, product_id DESC";
                 $objQuery = new SC_Query();
-
+                $objProduct = new SC_Product();
                 switch($_POST['mode']) {
                     case 'csv':
                         require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_CSV_Ex.php");
@@ -252,11 +252,11 @@ class LC_Page_Admin_Products extends LC_Page {
 
                         // CSVを送信する。正常終了の場合、終了。
                         $objCSV->sfDownloadProductsCsv($where, $arrval, $order) && exit;
-                        
                         break;
                     case 'delete_all':
                         // 検索結果をすべて削除
-                        $where = "product_id IN (SELECT product_id FROM vw_products_allclass_detail AS alldtl WHERE $where)";
+                        $where = "product_id IN (SELECT product_id FROM "
+                            . $objProduct->alldtlSQL() . " WHERE $where)";
                         $sqlval['del_flg'] = 1;
                         $objQuery->update("dtb_products", $sqlval, $where, $arrval);
                         $objQuery->delete("dtb_customer_favorite_products", $where, $arrval);
@@ -268,7 +268,7 @@ class LC_Page_Admin_Products extends LC_Page {
                     default:
                         // 読み込む列とテーブルの指定
                         $col = "product_id, name, main_list_image, status, product_code_min, product_code_max, price02_min, price02_max, stock_min, stock_max, stock_unlimited_min, stock_unlimited_max, update_date";
-                        $from = "vw_products_allclass_detail AS alldtl ";
+                        $from = $objProduct->alldtlSQL();
 
                         // 行数の取得
                         $linemax = $objQuery->count("dtb_products", $view_where, $arrval);

@@ -108,13 +108,16 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page {
                 }
             }
 
+            /*
+             * FIXME パフォーマンスに問題があるため SC_Product::lists() を使用する
+             */
             // 読み込む列とテーブルの指定
             $col = "DISTINCT T1.product_id, product_code_min, product_code_max,"
                 . " price01_min, price01_max, price02_min, price02_max,"
                 . " stock_min, stock_max, stock_unlimited_min,"
                 . " stock_unlimited_max, del_flg, status, name, comment1,"
                 . " comment2, comment3, main_list_comment, main_image,"
-                . " main_list_image, product_flag, deliv_date_id, sale_limit,"
+                . " main_list_image, deliv_date_id, sale_limit,"
                 . " point_rate, create_date, deliv_fee, "
                 . " T4.product_rank, T4.category_rank";
             $from = "vw_products_allclass AS T1"
@@ -151,9 +154,6 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page {
             $objQuery->setLimitOffset($page_max, $startno);
             // 表示順序
             $objQuery->setOrder($order);
-
-            // viewも絞込みをかける(mysql用)
-            //sfViewWhere("&&noncls_where&&", $where, $arrval, $objQuery->order . " " .  $objQuery->setLimitOffset($page_max, $startno, true));
 
             // 検索結果の取得
             $this->arrProducts = $objQuery->select($col, $from, $where, $arrval);
@@ -208,6 +208,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page {
         }
     }
 
+    // FIXME SC_Product クラスを使用する
     /* 規格セレクトボックスの作成 */
     function lfMakeSelect($product_id, $arrClassName, $arrClassCatName) {
 

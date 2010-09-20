@@ -184,6 +184,8 @@ class SC_Helper_DB {
     /**
      * 商品規格情報を取得する.
      *
+     * TODO SC_Product クラスへ移動
+     *
      * @param array $arrID 規格ID
      * @param boolean $includePrivateProducts 非公開商品を含むか
      * @return array 規格情報の配列
@@ -192,22 +194,30 @@ class SC_Helper_DB {
         list($product_id, $classcategory_id1, $classcategory_id2) = $arrID;
 
         if (strlen($classcategory_id1) == 0) {
-            $classcategory_id1 = '0';
+            $classcategory_id1 = null;
         }
         if (strlen($classcategory_id2) == 0) {
-            $classcategory_id2 = '0';
+            $classcategory_id2 = null;
         }
 
         // 商品規格取得
-        $objQuery =& SC_Query::getSingletonInstance();
-        $col = 'product_id, deliv_fee, name, product_code, main_list_image, main_image, price01, price02, point_rate, product_class_id, classcategory_id1, classcategory_id2, class_id1, class_id2, stock, stock_unlimited, sale_limit';
-        $table = 'vw_product_class AS prdcls';
-        $where = 'product_id = ? AND classcategory_id1 = ? AND classcategory_id2 = ?';
-        if (!$includePrivateProducts) {
-             $where .= ' AND status = 1';
+        $objProduct = new SC_Product();
+        $detail = $objProduct->getDetail($product_id);
+        $productsClass = $objProduct->getProductsClassFullByProductId($product_id);
+        foreach ($productsClass as $val) {
+
+            if ($val['classcategory_id1'] == $classcategory_id1
+                && $val['classcategory_id2'] == $classcategory_id2) {
+
+                $detail = array_merge($val, $detail);
+                if (!$includePrivateProducts) {
+                    if ($detail['status'] == 1) {
+                        return $detail;
+                    }
+                }
+                return $detail;
+            }
         }
-        $arrRet = $objQuery->select($col, $table, $where, array($product_id, $classcategory_id1, $classcategory_id2));
-        return $arrRet[0];
     }
 
     /**
@@ -911,25 +921,12 @@ class SC_Helper_DB {
             $sql_where .= ' AND (alldtl.stock_max >= 1 OR alldtl.stock_unlimited_max = 1)';
         }
 
-        //各カテゴリ内の商品数を数えて格納
-        $sql = <<< __EOS__
-            INSERT INTO dtb_category_count(category_id, product_count, create_date)
-            SELECT T1.category_id, count(T2.category_id), now()
-            FROM dtb_category AS T1
-                LEFT JOIN dtb_product_categories AS T2
-                    ON T1.category_id = T2.category_id
-                LEFT JOIN vw_products_allclass_detail AS alldtl
-                    ON T2.product_id = alldtl.product_id
-            WHERE $sql_where
-            GROUP BY T1.category_id, T2.category_id
-__EOS__;
-
-        $objQuery->query($sql);
-
         //子カテゴリ内の商品数を集計する
 
         // カテゴリ情報を取得
         $arrCat = $objQuery->select('category_id', 'dtb_category');
+
+        $objProduct = new SC_Product();
 
         foreach ($arrCat as $row) {
             $category_id = $row['category_id'];
@@ -939,20 +936,22 @@ __EOS__;
 
             list($tmp_where, $tmp_arrval) = $this->sfGetCatWhere($category_id);
             if ($tmp_where != "") {
-                $sql_where_product_ids = "alldtl.product_id IN (SELECT product_id FROM dtb_product_categories WHERE " . $tmp_where . ")";
-                $arrval = array_merge((array)$arrval, (array)$tmp_arrval);
+                $sql_where_product_ids = "product_id IN (SELECT product_id FROM dtb_product_categories WHERE " . $tmp_where . ")";
+                $arrval = array_merge((array)$arrval, (array)$tmp_arrval, (array)$tmp_arrval);
             } else {
                 $sql_where_product_ids = '0<>0'; // 一致させない
             }
+            $where = "($sql_where) AND ($sql_where_product_ids)";
 
+            $from = $objProduct->alldtlSQL($sql_where_product_ids);
             $sql = <<< __EOS__
                 INSERT INTO dtb_category_total_count (category_id, product_count, create_date)
                 SELECT
                     ?
                     ,count(*)
                     ,now()
-                FROM vw_products_allclass_detail AS alldtl
-                WHERE ($sql_where) AND ($sql_where_product_ids)
+                FROM $from
+               WHERE $where
 __EOS__;
 
             $objQuery->query($sql, $arrval);
@@ -985,7 +984,7 @@ __EOS__;
     function sfGetChildrenArray($table, $pid_name, $id_name, $id) {
         $objQuery =& SC_Query::getSingletonInstance();
         $col = $pid_name . "," . $id_name;
-         $arrData = $objQuery->select($col, $table);
+        $arrData = $objQuery->select($col, $table);
 
         $arrPID = array();
         $arrPID[] = $id;
@@ -1909,7 +1908,7 @@ __EOS__;
         if (!SC_Utils_Ex::sfIsInt($product_id)) return false;
 
         $objQuery =& SC_Query::getSingletonInstance();
-        $where = 'product_id = ? AND (classcategory_id1 <> 0 OR classcategory_id2 <> 0)';
+        $where = 'product_id = ? AND class_combination_id IS NOT NULL';
         $count = $objQuery->count('dtb_products_class', $where, array($product_id));
 
         return $count >= 1;

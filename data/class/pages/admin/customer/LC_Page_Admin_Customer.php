@@ -334,7 +334,7 @@ class LC_Page_Admin_Customer extends LC_Page {
                     break;
                 case 'delete_all':
                     // 検索結果をすべて削除
-                    $where = "product_id IN (SELECT product_id FROM vw_products_nonclass AS noncls WHERE $where)";
+                    $where = "product_id IN (SELECT product_id FROM SC_Product::alldtlSQL() WHERE $where)";
                     $sqlval['del_flg'] = 1;
                     $objQuery->update("dtb_products", $sqlval, $where, $arrval);
 

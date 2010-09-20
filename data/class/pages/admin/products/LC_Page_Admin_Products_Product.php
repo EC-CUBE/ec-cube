@@ -65,7 +65,6 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         $this->arrErr = array();
 
         $masterData = new SC_DB_MasterData_Ex();
-        $this->arrSRANK = $masterData->getMasterData("mtb_srank");
         $this->arrDISP = $masterData->getMasterData("mtb_disp");
         $this->arrCLASS = $masterData->getMasterData("mtb_class");
         $this->arrSTATUS = $masterData->getMasterData("mtb_status");
@@ -291,8 +290,8 @@ class LC_Page_Admin_Products_Product extends LC_Page {
             if (!isset($this->arrForm[$delkey])) $this->arrForm[$delkey] = null;
 
             if((isset($this->arrForm[$keyname]) && !empty($this->arrForm[$keyname])) && $this->arrForm[$delkey] != 1) {
-                $arrRet = $objQuery->select("main_list_image, product_code_min, name", "vw_products_allclass AS allcls", "product_id = ?", array($this->arrForm[$keyname]));
-                $arrRecommend[$i] = $arrRet[0];
+                $objProduct = new SC_Product();
+                $arrRecommend[$i] = $objProduct->getDetail($this->arrForm[$keyname]);
                 $arrRecommend[$i]['product_id'] = $this->arrForm[$keyname];
                 $arrRecommend[$i]['comment'] = $this->arrForm[$commentkey];
             }
@@ -351,7 +350,23 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         $objDb = new SC_Helper_DB_Ex();
 
         $col = "*";
-        $table = "vw_products_nonclass AS noncls ";
+        $table = <<< __EOF__
+                      dtb_products AS T1
+            LEFT JOIN (
+                       SELECT product_id AS product_id_sub,
+                              product_code,
+                              price01,
+                              price02,
+                              stock,
+                              stock_unlimited,
+                              sale_limit,
+                              sale_unlimited,
+                              point_rate
+                         FROM dtb_products_class
+                        WHERE class_combination_id IS NULL
+                       ) AS T2
+                     ON T1.product_id = T2.product_id_sub
+__EOF__;
         $where = "product_id = ?";
 
         $arrRet = $objQuery->select($col, $table, $where, array($product_id));
@@ -430,8 +445,8 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         $objQuery->begin();
 
         // 配列の添字を定義
-        $checkArray = array("name", "status", "product_flag",
-                            "main_list_comment", "main_comment", "point_rate",
+        $checkArray = array("name", "status",
+                            "main_list_comment", "main_comment",
                             "deliv_fee", "comment1", "comment2", "comment3",
                             "comment4", "comment5", "comment6", "main_list_comment",
                             "sale_limit", "deliv_date_id", "maker_id", "note", "down", "down_filename", "down_realfilename");
@@ -440,11 +455,8 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         // INSERTする値を作成する。
         $sqlval['name'] = $arrList['name'];
         $sqlval['status'] = $arrList['status'];
-        $sqlval['product_flag'] = $arrList['product_flag'];
         $sqlval['main_list_comment'] = $arrList['main_list_comment'];
         $sqlval['main_comment'] = $arrList['main_comment'];
-        $sqlval['point_rate'] = $arrList['point_rate'];
-        $sqlval['deliv_fee'] = $arrList['deliv_fee'];
         $sqlval['comment1'] = $arrList['comment1'];
         $sqlval['comment2'] = $arrList['comment2'];
         $sqlval['comment3'] = $arrList['comment3'];
@@ -452,7 +464,6 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         $sqlval['comment5'] = $arrList['comment5'];
         $sqlval['comment6'] = $arrList['comment6'];
         $sqlval['main_list_comment'] = $arrList['main_list_comment'];
-        $sqlval['sale_limit'] = $arrList['sale_limit'];
         $sqlval['deliv_date_id'] = $arrList['deliv_date_id'];
         $sqlval['maker_id'] = $arrList['maker_id'];
         $sqlval['note'] = $arrList['note'];
@@ -842,27 +853,28 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         // 規格登録してある商品の場合、処理しない
         if ($objDb->sfHasProductClass($product_id)) return;
 
-        // 既存規格の削除
-        $where = 'product_id = ?';
-        $objQuery->delete('dtb_products_class', $where, array($product_id));
-
         // 配列の添字を定義
-        $checkArray = array('product_class_id', 'product_id', 'product_code', 'stock', 'stock_unlimited', 'price01', 'price02');
+        $checkArray = array('product_class_id', 'product_id', 'product_code', 'stock', 'stock_unlimited', 'price01', 'price02', 'sale_limit', 'sale_unlimited', 'deliv_fee', 'point_rate', 'del_flg');
         $sqlval = SC_Utils_Ex::sfArrayIntersectKeys($arrList, $checkArray);
         $sqlval = SC_Utils_Ex::arrayDefineIndexes($sqlval, $checkArray);
 
-        if (strlen($sqlval['product_class_id']) == 0) {
-            $sqlval['product_class_id'] = $objQuery->nextVal('dtb_products_class_product_class_id');
-        }
-        $sqlval['classcategory_id1'] = '0';
-        $sqlval['classcategory_id2'] = '0';
         $sqlval['stock_unlimited'] = $sqlval['stock_unlimited'] ? '1' : '0';
         $sqlval['creator_id'] = strlen($_SESSION['member_id']) >= 1 ? $_SESSION['member_id'] : '0';
-        $sqlval['create_date'] = 'now()';
 
-        // INSERTの実行
-        $objQuery->insert('dtb_products_class', $sqlval);
+        if (strlen($sqlval['product_class_id']) == 0) {
+            $sqlval['product_class_id'] = $objQuery->nextVal('dtb_products_class_product_class_id');
+            $sqlval['create_date'] = 'now()';
+            $sqlval['update_date'] = 'now()';
+            // INSERTの実行
+            $objQuery->insert('dtb_products_class', $sqlval);
+        } else {
+            $sqlval['update_date'] = 'now()';
+            // UPDATEの実行
+            $objQuery->update('dtb_products_class', $sqlval, "product_class_id = ?", array($sqlval['product_class_id']));
+
+        }
     }
+
     /* ダウンロードファイル情報の初期化 */
     function lfInitDownFile() {
         $this->objDownFile->addFile("ダウンロード販売用ファイル", 'down_file', explode(",", DOWNLOAD_EXTENSION),DOWN_SIZE, true, 0, 0);

@@ -805,7 +805,7 @@ class SC_Utils {
             //登録(更新)日付順
             $objQuery->setOrder('update_date DESC');
             //キャンペーンポイントの取得
-            $arrRet = $objQuery->select("campaign_name, campaign_point_rate", "dtb_campaign", $where, array($product_id));
+            //$arrRet = $objQuery->select("campaign_name, campaign_point_rate", "dtb_campaign", $where, array($product_id));
         }
         //複数のキャンペーンに登録されている商品は、最新のキャンペーンからポイントを取得
         if(isset($arrRet[0]['campaign_point_rate'])
@@ -857,9 +857,11 @@ class SC_Utils {
     }
 
     function sfGetProductClassId($product_id, $classcategory_id1, $classcategory_id2) {
-        $where = "product_id = ? AND classcategory_id1 = ? AND classcategory_id2 = ?";
+        // $where = "product_id = ? AND classcategory_id1 = ? AND classcategory_id2 = ?";
+        $where = "product_id = ?";
         $objQuery = new SC_Query();
-        $ret = $objQuery->get("dtb_products_class", "product_class_id", $where, Array($product_id, $classcategory_id1, $classcategory_id2));
+        // $ret = $objQuery->get("dtb_products_class", "product_class_id", $where, Array($product_id, $classcategory_id1, $classcategory_id2));
+        $ret = $objQuery->get("dtb_products_class", "product_class_id", $where, Array($product_id));
         return $ret;
     }
 
