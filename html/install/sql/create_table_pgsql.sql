@@ -320,7 +320,6 @@ CREATE TABLE dtb_products_class (
     stock numeric,
     stock_unlimited smallint NOT NULL DEFAULT 0,
     sale_limit numeric,
-    sale_unlimited smallint NOT NULL DEFAULT 0,
     price01 numeric,
     price02 numeric,
     deliv_fee numeric,

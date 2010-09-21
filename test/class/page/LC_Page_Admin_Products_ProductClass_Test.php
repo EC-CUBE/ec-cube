@@ -125,7 +125,6 @@ class LC_Page_Admin_Products_ProductClass_Test extends PHPUnit_Framework_TestCas
                                 'product_code' => 'product_code' . $product_class_id,
                                 'stock' => null,
                                 'stock_unlimited' => 0,
-                                'sale_unlimited' => 0,
                                 'sale_limit' => null,
                                 'price01' => 10000,
                                 'price02' => null,

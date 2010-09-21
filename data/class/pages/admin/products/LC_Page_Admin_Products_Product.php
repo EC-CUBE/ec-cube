@@ -360,7 +360,6 @@ class LC_Page_Admin_Products_Product extends LC_Page {
                               stock,
                               stock_unlimited,
                               sale_limit,
-                              sale_unlimited,
                               point_rate
                          FROM dtb_products_class
                         WHERE class_combination_id IS NULL
@@ -854,7 +853,7 @@ __EOF__;
         if ($objDb->sfHasProductClass($product_id)) return;
 
         // 配列の添字を定義
-        $checkArray = array('product_class_id', 'product_id', 'product_code', 'stock', 'stock_unlimited', 'price01', 'price02', 'sale_limit', 'sale_unlimited', 'deliv_fee', 'point_rate', 'del_flg');
+        $checkArray = array('product_class_id', 'product_id', 'product_code', 'stock', 'stock_unlimited', 'price01', 'price02', 'sale_limit', 'deliv_fee', 'point_rate');
         $sqlval = SC_Utils_Ex::sfArrayIntersectKeys($arrList, $checkArray);
         $sqlval = SC_Utils_Ex::arrayDefineIndexes($sqlval, $checkArray);
 
