@@ -23,7 +23,7 @@
 // エラー捕捉用の出力バッファリング
 ob_start('_fatal_error_handler');
 
-// エラー画面を表示させるためのエラーハンドラ
+// E_USER_ERROR を捕捉した場合にエラー画面を表示させるためのエラーハンドラ
 set_error_handler('handle_error');
 
 /**
@@ -54,12 +54,11 @@ function &_fatal_error_handler(&$buffer) {
 }
 
 /**
- * エラー画面を表示させるための関数.
+ * E_USER_ERROR を捕捉した場合にエラー画面を表示させるエラーハンドラ関数.
  *
  * この関数は, set_error_handler() 関数に登録するための関数である.
- * trigger_error にて E_USER_ERROR が生成されると, ob_end_clean() 関数によって
- * 出力バッファリングが無効にされ, エラーログを出力した後, エラーページへ
- * リダイレクトする.
+ * trigger_error にて E_USER_ERROR が生成されると, エラーログを出力した後,
+ * エラー画面を表示させる.
  *
  * E_USER_ERROR 以外のエラーが生成された場合, この関数は true を返す.
  *
@@ -73,14 +72,9 @@ function &_fatal_error_handler(&$buffer) {
 function handle_error($errno, $errstr, $errfile, $errline) {
     switch ($errno) {
     case E_USER_ERROR:
-        ob_end_clean();
         error_log("FATAL Error($errno) $errfile:$errline $errstr", 3, realpath(dirname(__FILE__) . "/" . HTML2DATA_DIR . "logs/site.log"));
 
-        $admin = "";
-        if (defined('ADMIN_FUNCTION') && ADMIN_FUNCTION) {
-            $admin = "?admin";
-        }
-        header("Location: " . SITE_URL . "error.php" . $admin);
+        displaySystemError($errstr);
         exit(1);
         break;
 
@@ -89,5 +83,39 @@ function handle_error($errno, $errstr, $errfile, $errline) {
     default:
     }
     return true;
+}
+
+/**
+ * エラー画面を表示する
+ *
+ * @param string|null $errstr エラーメッセージ
+ * @return void
+ */
+function displaySystemError($errstr = null) {
+    if (SC_Utils_Ex::sfIsMobileSite()) {
+        ob_clean();
+    } else {
+        // 最下層以外の出力用バッファをクリアし、出力のバッファリングを解除する
+        // FIXME #811(出力バッファリングの利用を見直し)
+        while (ob_get_level() >= 2) {
+            ob_end_clean();
+        }
+
+        // 最下層の出力バッファをクリアする
+        ob_clean();
+    }
+
+    require_once CLASS_EX_PATH . 'page_extends/error/LC_Page_Error_SystemError_Ex.php';
+    $objPage = new LC_Page_Error_SystemError_Ex();
+    register_shutdown_function(array($objPage, 'destroy'));
+    $objPage->init();
+    if (isset($errstr)) {
+        $objPage->arrDebugMsg[]
+            = "▼▼▼ エラーメッセージ ▼▼▼\n"
+            . $errstr
+            . "▲▲▲ エラーメッセージ ▲▲▲\n"
+        ;
+    }
+    $objPage->process();
 }
 ?>
