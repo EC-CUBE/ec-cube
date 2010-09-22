@@ -61,9 +61,9 @@
                     <td><a<!--{if $orderDetail.enable}--> href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$orderDetail.product_id|escape:url}-->"<!--{/if}-->><!--{$orderDetail.product_name|escape}--></a></td>
                     <td>
                     <!--{ if $orderDetail.down == "2"}-->
-                        <!--{ if $orderDetail.price == "0" || ( $orderDetail.status >= "5" && $orderDetail.effective == "1" )}-->
-                            <a target="_self" href="<!--{$smarty.const.URL_DIR}-->mypage/download.php?order_id=<!--{$arrDisp.order_id}-->&product_id=<!--{$orderDetail.product_id}-->">ダウンロード</a>
-                        <!--{ elseif $orderDetail.status != "5"}-->
+                        <!--{ if $orderDetail.price == "0" || ( $orderDetail.status >= "4" && $orderDetail.effective == "1" )}-->
+                            <a target="_self" href="<!--{$smarty.const.URL_DIR}-->mypage/download.php?order_id=<!--{$arrDisp.order_id}-->&product_id=<!--{$orderDetail.product_id}-->&classcategory_id1=<!--{$orderDetail.classcategory_id1}-->&classcategory_id2=<!--{$orderDetail.classcategory_id2}-->">ダウンロード</a>
+                        <!--{ elseif $orderDetail.payment_date == "" || $orderDetail.status < "4"}-->
                             ダウンロード商品<BR />（入金確認中）
                         <!--{ elseif $orderDetail.effective != "1"}-->
                             ダウンロード商品<BR />（期限切れ）
@@ -80,34 +80,34 @@
                 </tr>
             <!--{/foreach}-->
             <tr>
-                <th colspan="4" class="resulttd">小計</th>
+                <th colspan="5" class="resulttd">小計</th>
                 <td class="pricetd"><!--{$arrDisp.subtotal|number_format}-->円</td>
             </tr>
             <!--{assign var=point_discount value="`$arrDisp.use_point*$smarty.const.POINT_VALUE`"}-->
             <!--{if $point_discount > 0}-->
             <tr>
-                <th colspan="4" class="resulttd">ポイント値引き</th>
+                <th colspan="5" class="resulttd">ポイント値引き</th>
                 <td class="pricetd"><!--{$point_discount|number_format}-->円</td>
             </tr>
             <!--{/if}-->
             <!--{assign var=key value="discount"}-->
             <!--{if $arrDisp[$key] != "" && $arrDisp[$key] > 0}-->
             <tr>
-                <th colspan="4" class="resulttd">値引き</th>
+                <th colspan="5" class="resulttd">値引き</th>
                 <td class="pricetd"><!--{$arrDisp[$key]|number_format}-->円</td>
             </tr>
             <!--{/if}-->
             <tr>
-                <th colspan="4" class="resulttd">送料</th>
+                <th colspan="5" class="resulttd">送料</th>
                 <td class="pricetd"><!--{assign var=key value="deliv_fee"}--><!--{$arrDisp[$key]|escape|number_format}-->円</td>
             </tr>
             <tr>
-                <th colspan="4" class="resulttd">手数料</th>
+                <th colspan="5" class="resulttd">手数料</th>
                 <!--{assign var=key value="charge"}-->
                 <td class="pricetd"><!--{$arrDisp[$key]|escape|number_format}-->円</td>
             </tr>
             <tr>
-                <th colspan="4" class="resulttd">合計</th>
+                <th colspan="5" class="resulttd">合計</th>
                 <td class="pricetd"><em><!--{$arrDisp.payment_total|number_format}-->円</em></td>
             </tr>
         </table>

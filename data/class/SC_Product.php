@@ -233,6 +233,9 @@ __EOS__;
             T1.product_code,
             T1.product_class_id,
             T1.del_flg,
+            T1.down,
+            T1.down_filename,
+            T1.down_realfilename,
             T2.class_combination_id,
             T2.parent_class_combination_id,
             T2.classcategory_id,
@@ -253,8 +256,13 @@ __EOS__;
         $arrRet = $objQuery->select($col, $table, "", $productIds);
         $levels = array();
         $parents = array();
-
+		$i = 0;
         foreach ($arrRet as $rows) {
+        	if($rows['level']==""){
+        		$rows['level']="1";
+        		$arrRet[$i]['level'] = $rows['level'];
+
+        	}
             $levels[] = $rows['level'];
             $parents[] = $rows['parent_class_combination_id'];
         }
@@ -413,9 +421,6 @@ __EOS__;
                     dtb_products.create_date,
                     dtb_products.update_date,
                     dtb_products.deliv_date_id,
-                    dtb_products.down,
-                    dtb_products.down_filename,
-                    dtb_products.down_realfilename,
                     T4.product_code_min,
                     T4.product_code_max,
                     T4.price01_min,

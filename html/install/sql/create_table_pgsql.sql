@@ -306,9 +306,6 @@ CREATE TABLE dtb_products (
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp,
     deliv_date_id int,
-    down smallint NOT NULL DEFAULT 0,
-    down_filename text,
-    down_realfilename text,
     PRIMARY KEY (product_id)
 );
 
@@ -328,6 +325,9 @@ CREATE TABLE dtb_products_class (
     creator_id int NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp,
+    down int2 NOT NULL ,
+    down_filename text,
+    down_realfilename text,
     del_flg smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (product_class_id)
 );
@@ -657,6 +657,7 @@ CREATE TABLE dtb_order (
     memo08 text,
     memo09 text,
     memo10 text,
+    payment_date timestamp,
     PRIMARY KEY (order_id)
 );
 

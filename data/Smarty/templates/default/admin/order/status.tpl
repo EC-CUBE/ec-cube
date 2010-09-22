@@ -42,7 +42,7 @@
   <!--{if $tpl_linemax > 0 }-->
   <div>
     <select name="change_status">
-      <option value="" selected="selected" style="<!--{$Errormes|sfGetErrorColor}-->" >選択してください</option> 
+      <option value="" selected="selected" style="<!--{$Errormes|sfGetErrorColor}-->" >選択してください</option>
       <!--{foreach key=key item=item from=$arrORDERSTATUS}-->
       <!--{if $key ne $SelectedStatus}-->
       <option value="<!--{$key}-->" ><!--{$item}--></option>
@@ -58,7 +58,7 @@
     <!--{$tpl_linemax}-->件が該当しました。
     <!--{$tpl_strnavi}-->
   </p>
-    
+
   <div class="btn">
     <button type="button" onclick="fnBoxChecked(true);"><span>全て選択</span></button>
     <button type="button" onclick="fnBoxChecked(false);"><span>全て解除</span></button>
@@ -71,7 +71,7 @@
       <th>顧客名</th>
       <th>支払方法</th>
       <th>購入金額（円）</th>
-      <th>発送日</th>
+      <th>入金日<br>発送日</th>
       <th>対応状況</th>
       <th>選択</th>
     </tr>
@@ -84,27 +84,28 @@
       <!--{assign var=payment_id value=`$arrStatus[cnt].payment_id`}-->
       <td><!--{$arrPayment[$payment_id]|escape}--></td>
       <td class="right"><!--{$arrStatus[cnt].total|number_format}--></td>
-      <td><!--{if $arrStatus[cnt].status eq 5}--><!--{$arrStatus[cnt].commit_date|sfDispDBDate:false}--><!--{else}-->未発送<!--{/if}--></td>
+      <td><!--{if $arrStatus[cnt].payment_date != ""}--><!--{$arrStatus[cnt].payment_date|sfDispDBDate:false}--><!--{else}-->未入金<!--{/if}--><br>
+      <!--{if $arrStatus[cnt].status eq 5}--><!--{$arrStatus[cnt].commit_date|sfDispDBDate:false}--><!--{else}-->未発送<!--{/if}--></td>
       <td><!--{$arrORDERSTATUS[$status]}--></td>
       <td><input type="checkbox" name="move[]" value="<!--{$arrStatus[cnt].order_id}-->" ></td>
     </tr>
     <!--{/section}-->
   </table>
   <input type="hidden" name="move[]" value="" />
-    
+
   <div class="btn">
     <button type="button" onclick="fnBoxChecked(true);"><span>全て選択</span></button>
     <button type="button" onclick="fnBoxChecked(false);"><span>全て解除</span></button>
   </div>
-    
+
   <p><!--{$tpl_strnavi}--></p>
-    
+
   <!--{elseif $arrStatus != "" & $tpl_linemax == 0}-->
   <div class="message">
     該当するデータはありません。
   </div>
   <!--{/if}-->
-            
+
   <!--{* 登録テーブルここまで *}-->
 </div>
 </form>
@@ -112,23 +113,23 @@
 
 <script type="text/javascript">
 <!--
-  function fnSelectCheckSubmit(){ 
+  function fnSelectCheckSubmit(){
 
-    var selectflag = 0; 
+    var selectflag = 0;
     var fm = document.form1;
-        
-    if(fm.change_status.options[document.form1.change_status.selectedIndex].value == ""){ 
-    selectflag = 1; 
-    } 
-    
-    if(selectflag == 1){ 
-      alert('セレクトボックスが選択されていません'); 
+
+    if(fm.change_status.options[document.form1.change_status.selectedIndex].value == ""){
+    selectflag = 1;
+    }
+
+    if(selectflag == 1){
+      alert('セレクトボックスが選択されていません');
       return false;
     }
     var i;
     var checkflag = 0;
     var max = fm["move[]"].length;
-    
+
     if(max) {
       for (i=0;i<max;i++){
         if(fm["move[]"][i].checked == true){
@@ -145,13 +146,13 @@
       alert('チェックボックスが選択されていません');
       return false;
     }
-    
-    if(selectflag == 0 && checkflag == 1){ 
+
+    if(selectflag == 0 && checkflag == 1){
     document.form1.mode.value = 'update';
-    document.form1.submit(); 
+    document.form1.submit();
     }
   }
-  
+
   function fnBoxChecked(check){
     var count;
     var fm = document.form1;
@@ -160,6 +161,6 @@
       fm["move[]"][count].checked = check;
     }
   }
-  
+
 //-->
 </script>

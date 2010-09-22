@@ -123,7 +123,10 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
      */
     function getDownloadableDaysWhereSql($dtb_order_alias) {
         $baseinfo = SC_Helper_DB_Ex::sf_getBasisData();
-        return "(SELECT CASE WHEN (SELECT d1.downloadable_days_unlimited FROM dtb_baseinfo d1) = 1 THEN 1 WHEN DATE(NOW()) <= DATE(" . $dtb_order_alias . ".commit_date + '". $baseinfo['downloadable_days'] ." days') THEN 1 ELSE 0 END)";
+        //downloadable_daysにNULLが入っている場合(無期限ダウンロード可能時)もあるので、NULLの場合は0日に補正
+        $downloadable_days = $baseinfo['downloadable_days'];
+        if($downloadable_days ==null || $downloadable_days == "")$downloadable_days=0;
+        return "(SELECT CASE WHEN (SELECT d1.downloadable_days_unlimited FROM dtb_baseinfo d1) = 1 AND " . $dtb_order_alias . ".payment_date IS NOT NULL THEN 1 WHEN DATE(NOW()) <= DATE(" . $dtb_order_alias . ".payment_date + '". $downloadable_days ." days') THEN 1 ELSE 0 END)";
     }
 
     /**
@@ -198,7 +201,7 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
 
     /**
      * 文字コード情報を取得する
-     * 
+     *
      * @return array 文字コード情報
      */
      function getCharSet() {

@@ -360,7 +360,10 @@ class LC_Page_Admin_Products_Product extends LC_Page {
                               stock,
                               stock_unlimited,
                               sale_limit,
-                              point_rate
+                              point_rate,
+                              down,
+                              down_filename,
+                              down_realfilename
                          FROM dtb_products_class
                         WHERE class_combination_id IS NULL
                        ) AS T2
@@ -448,7 +451,7 @@ __EOF__;
                             "main_list_comment", "main_comment",
                             "deliv_fee", "comment1", "comment2", "comment3",
                             "comment4", "comment5", "comment6", "main_list_comment",
-                            "sale_limit", "deliv_date_id", "maker_id", "note", "down", "down_filename", "down_realfilename");
+                            "sale_limit", "deliv_date_id", "maker_id", "note");
         $arrList = SC_Utils_Ex::arrayDefineIndexes($arrList, $checkArray);
 
         // INSERTする値を作成する。
@@ -466,9 +469,6 @@ __EOF__;
         $sqlval['deliv_date_id'] = $arrList['deliv_date_id'];
         $sqlval['maker_id'] = $arrList['maker_id'];
         $sqlval['note'] = $arrList['note'];
-        $sqlval['down'] = $arrList['down'];
-        $sqlval['down_filename'] = $arrList['down_filename'];
-        $sqlval['down_realfilename'] = $arrList['down_realfilename'];
         $sqlval['update_date'] = "Now()";
         $sqlval['creator_id'] = $_SESSION['member_id'];
         $arrRet = $this->objUpFile->getDBFileList();
@@ -619,23 +619,6 @@ __EOF__;
         $objErr->doFunc(array("発送日目安", "deliv_date_id", INT_LEN), array("NUM_CHECK"));
         $objErr->doFunc(array("メーカー", 'maker_id', INT_LEN), array("NUM_CHECK"));
 
-        //ダウンロード商品チェック
-        if($array['down'] == "2") {
-            $objErr->doFunc(array("ダウンロードファイル名", "down_filename", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-            if($array['down_realfilename'] == "") {
-                $objErr->arrErr['down_realfilename'] = "※ ダウンロード商品の場合はダウンロード商品用ファイルをアップロードしてください。<br />";
-            }
-        }
-        //実商品チェック
-        if($array['down'] == "1") {
-            if($array['down_filename'] != "") {
-                $objErr->arrErr['down_filename'] = "※ 実商品の場合はダウンロードファイル名を設定できません。<br />";
-            }
-            if($array['down_realfilename'] != "") {
-                $objErr->arrErr['down_realfilename'] = "※ 実商品の場合はダウンロード商品用ファイルをアップロードできません。<br />ファイルを取り消してください。<br />";
-            }
-        }
-
         if($this->tpl_nonclass) {
             $objErr->doFunc(array("商品コード", "product_code", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK","MAX_LENGTH_CHECK"));
             $objErr->doFunc(array(NORMAL_PRICE_TITLE, "price01", PRICE_LEN), array("NUM_CHECK", "MAX_LENGTH_CHECK"));
@@ -643,6 +626,23 @@ __EOF__;
 
             if(!isset($array['stock_unlimited']) && $array['stock_unlimited'] != "1") {
                 $objErr->doFunc(array("在庫数", "stock", AMOUNT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+            }
+
+            //ダウンロード商品チェック
+            if($array['down'] == "2") {
+                $objErr->doFunc(array("ダウンロードファイル名", "down_filename", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+                if($array['down_realfilename'] == "") {
+                    $objErr->arrErr['down_realfilename'] = "※ ダウンロード商品の場合はダウンロード商品用ファイルをアップロードしてください。<br />";
+                }
+            }
+            //実商品チェック
+            if($array['down'] == "1") {
+                if($array['down_filename'] != "") {
+                    $objErr->arrErr['down_filename'] = "※ 実商品の場合はダウンロードファイル名を設定できません。<br />";
+                }
+                if($array['down_realfilename'] != "") {
+                    $objErr->arrErr['down_realfilename'] = "※ 実商品の場合はダウンロード商品用ファイルをアップロードできません。<br />ファイルを取り消してください。<br />";
+                }
             }
         }
 
@@ -853,7 +853,7 @@ __EOF__;
         if ($objDb->sfHasProductClass($product_id)) return;
 
         // 配列の添字を定義
-        $checkArray = array('product_class_id', 'product_id', 'product_code', 'stock', 'stock_unlimited', 'price01', 'price02', 'sale_limit', 'deliv_fee', 'point_rate');
+        $checkArray = array('product_class_id', 'product_id', 'product_code', 'stock', 'stock_unlimited', 'price01', 'price02', 'sale_limit', 'deliv_fee', 'point_rate' ,'down', 'down_filename', 'down_realfilename');
         $sqlval = SC_Utils_Ex::sfArrayIntersectKeys($arrList, $checkArray);
         $sqlval = SC_Utils_Ex::arrayDefineIndexes($sqlval, $checkArray);
 

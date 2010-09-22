@@ -37,6 +37,10 @@
         </td>
     </tr>
     <tr>
+        <th>入金日</th>
+        <td><!--{$arrForm.payment_date.value|sfDispDBDate|default:"未入金"}--></td>
+    </tr>
+    <tr>
         <th>発送日</th>
         <td><!--{$arrForm.commit_date.value|sfDispDBDate|default:"未発送"}--></td>
     </tr>

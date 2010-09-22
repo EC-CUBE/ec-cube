@@ -26,6 +26,9 @@
 <!--{foreach key=key item=item from=$arrForm}-->
 <input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->" />
 <!--{/foreach}-->
+<!--{foreach key=key item=item from=$arrHidden}-->
+<input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->" />
+<!--{/foreach}-->
 <div id="products" class="contents-main">
 
   <!--{if $tpl_check > 0}-->
@@ -39,6 +42,9 @@
       <th>在庫数</th>
       <th><!--{$smarty.const.NORMAL_PRICE_TITLE}-->(円)</th>
       <th><!--{$smarty.const.SALE_PRICE_TITLE}-->(円)</th>
+      <th>実商品・ダウンロード</th>
+      <th>ダウンロードファイル名</th>
+      <th>ダウンロード商品用ファイルアップロード</th>
     </tr>
     <!--{section name=cnt loop=$tpl_count}-->
     <!--{assign var=key value="check:`$smarty.section.cnt.iteration`"}-->
@@ -63,6 +69,13 @@
       <td class="right"><!--{$arrForm[$key]}--></td>
       <!--{assign var=key value="price02:`$smarty.section.cnt.iteration`"}-->
       <td class="right"><!--{$arrForm[$key]}--></td>
+      <!--{assign var=key value="down:`$smarty.section.cnt.iteration`"}-->
+      <!--{assign var=inkey value="`$arrForm[$key]`"}-->
+      <td class="right"><!--{$arrDown[$inkey]}--></td>
+      <!--{assign var=key value="down_filename:`$smarty.section.cnt.iteration`"}-->
+      <td class="right"><!--{$arrForm[$key]}--></td>
+      <!--{assign var=key value="down_realfilename:`$smarty.section.cnt.iteration`"}-->
+      <td class="right"><!--{$arrForm[$key]}--></td>
     </tr>
     <!--{/if}-->
     <!--{/section}-->
@@ -70,7 +83,7 @@
   <!--{else}-->
   <div class="message">規格が選択されていません。</div>
   <!--{/if}-->
-  
+
   <div class="btn">
     <button type="button" onclick="fnModeSubmit('confirm_return','',''); return false"><span>前へ戻る</span></button>
     <!--{if $tpl_check > 0}-->

@@ -1868,6 +1868,11 @@ __EOS__;
         if ($arrOrderOld['status'] != ORDER_DELIV && $newStatus == ORDER_DELIV) {
             $sqlval['commit_date'] = 'Now()';
         }
+        // ステータスが入金済みに変更の場合、入金日を更新
+        elseif ($arrOrderOld['status'] != ORDER_PRE_END && $newStatus == ORDER_PRE_END) {
+            $sqlval['payment_date'] = 'Now()';
+        }
+
         $sqlval['status'] = $newStatus;
         $sqlval['update_date'] = 'Now()';
 
@@ -1924,11 +1929,20 @@ __EOS__;
         $down = false;
         $nodown = false;
         $ret = 0;
-        $arrID = $objCartSess->getAllProductID();
+        $arrID = $objCartSess->getAllProductClassID();
+        $table =  <<< __EOS__
+            dtb_products_class pc LEFT JOIN dtb_class_combination cc1 ON pc.class_combination_id = cc1.class_combination_id
+            LEFT JOIN dtb_class_combination cc2 ON cc1.parent_class_combination_id = cc2.class_combination_id
+__EOS__;
+        $where =  <<< __EOS__
+            pc.product_id = ? AND
+            ( cc2.classcategory_id = ? OR cc2.classcategory_id IS NULL ) AND
+            ( cc1.classcategory_id = ? OR cc1.classcategory_id IS NULL )
+__EOS__;
         if(!is_null($arrID)){
             //カート内のIDから販売方法を取得
             foreach ($arrID as $rec) {
-                $arrRet = $objQuery->select("down", "dtb_products", "product_id = " . $rec);
+                $arrRet = $objQuery->select("pc.down AS down", $table, $where, array($rec[0],$rec[1],$rec[2]));
                 if ($arrRet[0]['down'] == "2"){
                     $down = true;
                 }else{
@@ -1987,7 +2001,5 @@ __EOS__;
 
         $this->sfRegistTempOrder($uniqid, $sqlval);
     }
-
-
 }
 ?>

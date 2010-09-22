@@ -27,6 +27,7 @@
 <div id="basis" class="contents-main">
   <table class="list">
     <tr>
+      <th>ID</th>
       <th>支払方法</th>
       <th>手数料（円）</th>
       <th>利用条件</th>
@@ -37,6 +38,7 @@
     </tr>
     <!--{section name=cnt loop=$arrPaymentListFree}-->
     <tr>
+      <td><!--{$arrPaymentListFree[cnt].payment_id|escape}--></td>
       <td><!--{$arrPaymentListFree[cnt].payment_method|escape}--></td>
       <!--{if $arrPaymentListFree[cnt].charge_flg == 2}-->
         <td align="center">-</td>
@@ -44,7 +46,7 @@
         <td align="right"><!--{$arrPaymentListFree[cnt].charge|escape|number_format}--></td>
       <!--{/if}-->
       <td align="center">
-        <!--{if $arrPaymentListFree[cnt].rule > 0}--><!--{$arrPaymentListFree[cnt].rule|escape|number_format}--><!--{else}-->0<!--{/if}-->円 
+        <!--{if $arrPaymentListFree[cnt].rule > 0}--><!--{$arrPaymentListFree[cnt].rule|escape|number_format}--><!--{else}-->0<!--{/if}-->円
         <!--{if $arrPaymentListFree[cnt].upper_rule > 0}-->～<!--{$arrPaymentListFree[cnt].upper_rule|escape|number_format}-->円<!--{elseif $arrPaymentListFree[cnt].upper_rule == "0"}--><!--{else}-->～無制限<!--{/if}-->
       <td><!--{assign var=key value="`$arrPaymentListFree[cnt].deliv_id`"}--><!--{$arrDelivList[$key]|default:"未登録"}--></td>
       <td align="center"><!--{if $arrPaymentListFree[cnt].fix != 1}--><a href="?" onclick="win03('./payment_input.php?mode=pre_edit&amp;payment_id=<!--{$arrPaymentListFree[cnt].payment_id}-->','payment_input','530','400'); return false;">編集</a><!--{else}-->-<!--{/if}--></td>

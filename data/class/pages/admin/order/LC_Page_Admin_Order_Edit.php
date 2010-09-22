@@ -407,6 +407,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         $this->objFormParam->addParam("受注日", "create_date");
         $this->objFormParam->addParam("発送日", "commit_date");
         $this->objFormParam->addParam("備考", "message");
+        $this->objFormParam->addParam("入金日", "payment_date");
     }
 
     function lfGetOrderData($order_id) {
@@ -462,7 +463,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         if (count($objErr->arrErr) >= 1) {
             return $objErr->arrErr;
         }
-        
+
         return $this->lfCheek();
     }
 
@@ -544,10 +545,10 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
 
         // 受注テーブルの更新
         $objQuery->update("dtb_order", $sqlval, $where, array($order_id));
-        
+
         // 受注テーブルの名称列を更新
         SC_Helper_DB_Ex::sfUpdateOrderNameCol($order_id);
-        
+
         $arrDetail = $this->objFormParam->getSwapArray(array("product_id", "product_code", "product_name", "price", "quantity", "point_rate", "classcategory_id1", "classcategory_id2", "classcategory_name1", "classcategory_name2"));
 
 

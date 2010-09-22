@@ -208,7 +208,7 @@ class SC_Utils {
      */
     function sfDispException($debugMsg = null) {
         require_once(CLASS_EX_PATH . "page_extends/error/LC_Page_Error_SystemError_Ex.php");
-        
+
         $objPage = new LC_Page_Error_SystemError_Ex();
         register_shutdown_function(array($objPage, "destroy"));
         $objPage->init();
@@ -220,7 +220,7 @@ class SC_Utils {
         }
         GC_Utils_Ex::gfPrintLog($objPage->sfGetErrMsg());
         $objPage->process();
-        
+
         exit();
     }
 
@@ -357,11 +357,11 @@ class SC_Utils {
      *  INT型の数値チェック
      *  ・FIXME: マイナス値の扱いが不明確
      *  ・XXX: INT_LENには収まるが、INT型の範囲を超えるケースに対応できないのでは?
-     *  
+     *
      *  @param mixed $value
      *  @return bool
      */
-    // 
+    //
     function sfIsInt($value) {
         if (strlen($value) >= 1 && strlen($value) <= INT_LEN && is_numeric($value)) {
             return true;
@@ -371,7 +371,7 @@ class SC_Utils {
 
     /*
      * 桁が0で埋められているかを判定する
-     * 
+     *
      * @param string $value 検査対象
      * @return boolean 0で埋められている
      */
@@ -767,7 +767,7 @@ class SC_Utils {
 
     /**
      * 税金付与した金額を返す
-     * 
+     *
      * ・店舗基本情報に基づいた計算は SC_Helper_DB::sfTax() を使用する
      *
      * @param integer $price 計算対象の金額
@@ -796,26 +796,7 @@ class SC_Utils {
 
     /* ポイント付与 */
     function sfPrePoint($price, $point_rate, $rule = POINT_RULE, $product_id = "") {
-        if(SC_Utils::sfIsInt($product_id)) {
-            $objQuery = new SC_Query();
-            $where = "now() >= cast(start_date as date) AND ";
-            $where .= "now() < cast(end_date as date) AND ";
-
-            $where .= "del_flg = 0 AND campaign_id IN (SELECT campaign_id FROM dtb_campaign_detail where product_id = ? )";
-            //登録(更新)日付順
-            $objQuery->setOrder('update_date DESC');
-            //キャンペーンポイントの取得
-            //$arrRet = $objQuery->select("campaign_name, campaign_point_rate", "dtb_campaign", $where, array($product_id));
-        }
-        //複数のキャンペーンに登録されている商品は、最新のキャンペーンからポイントを取得
-        if(isset($arrRet[0]['campaign_point_rate'])
-           && $arrRet[0]['campaign_point_rate'] != "") {
-
-            $campaign_point_rate = $arrRet[0]['campaign_point_rate'];
-            $real_point = $campaign_point_rate / 100;
-        } else {
-            $real_point = $point_rate / 100;
-        }
+        $real_point = $point_rate / 100;
         $ret = $price * $real_point;
         switch($rule) {
         // 四捨五入
@@ -834,10 +815,6 @@ class SC_Utils {
         default:
             $ret = ceil($ret);
             break;
-        }
-        //キャンペーン商品の場合
-        if(isset($campaign_point_rate) && $campaign_point_rate != "") {
-            $ret = "(".$arrRet[0]['campaign_name']."ポイント率".$campaign_point_rate."%)".$ret;
         }
         return $ret;
     }
@@ -2050,7 +2027,7 @@ echo $template_path;
 
     /**
      * ポイント使用するかの判定
-     * 
+     *
      * @param integer $status 対応状況
      * @return boolean 使用するか(顧客テーブルから減算するか)
      */
@@ -2067,7 +2044,7 @@ echo $template_path;
 
     /**
      * ポイント加算するかの判定
-     * 
+     *
      * @param integer $status 対応状況
      * @return boolean 加算するか
      */
@@ -2079,10 +2056,10 @@ echo $template_path;
             case ORDER_CANCEL:      // キャンセル
             case ORDER_BACK_ORDER:  // 取り寄せ中
                 return false;
-            
+
             case ORDER_DELIV:       // 発送済み
                 return true;
-            
+
             default:
                 break;
         }
@@ -2092,7 +2069,7 @@ echo $template_path;
 
     /**
      * ランダムな文字列を取得する
-     * 
+     *
      * @param integer $length 文字数
      * @return string ランダムな文字列
      */
@@ -2100,7 +2077,7 @@ echo $template_path;
         require_once(dirname(__FILE__) . '/../../module/Text/Password.php');
         return Text_Password::create($length);
     }
-    
+
     /**
      * 現在の URL を取得する
      *
@@ -2108,18 +2085,18 @@ echo $template_path;
      */
     function sfGetUrl() {
         $url = '';
-        
+
         if (SC_Utils_Ex::sfIsHTTPS()) {
             $url = "https://";
         } else {
             $url = "http://";
         }
-        
+
         $url .= $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . '?' . $_SERVER['QUERY_STRING'];
-        
+
         return $url;
     }
-    
+
     /**
      * バックトレースをテキスト形式で出力する
      *
@@ -2127,17 +2104,17 @@ echo $template_path;
      */
     function sfBacktraceToString($arrBacktrace) {
         $string = '';
-        
+
         foreach (array_reverse($arrBacktrace) as $backtrace) {
             if (strlen($backtrace['class']) >= 1) {
                 $func = $backtrace['class'] . $backtrace['type'] . $backtrace['function'];
             } else {
                 $func = $backtrace['function'];
             }
-            
+
             $string .= $backtrace['file'] . " " . $backtrace['line'] . ":" . $func . "\n";
         }
-        
+
         return $string;
     }
 

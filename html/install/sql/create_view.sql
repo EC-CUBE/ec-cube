@@ -52,9 +52,6 @@ CREATE VIEW vw_products_allclass_detail AS
         dtb_products.create_date,
         dtb_products.update_date,
         dtb_products.deliv_date_id,
-        dtb_products.down,
-        dtb_products.down_filename,
-        dtb_products.down_realfilename,
         T4.product_code_min,
         T4.product_code_max,
         T4.price01_min,
@@ -103,4 +100,25 @@ CREATE VIEW vw_products_allclass AS
         LEFT JOIN
             dtb_category
             ON T2.category_id = dtb_category.category_id
+;
+CREATE VIEW vw_download_class as
+        SELECT
+            pc.product_id AS product_id,
+            pc.classcategory_id1 AS classcategory_id1,
+            pc.classcategory_id2 AS classcategory_id2,
+            pc.down_realfilename AS down_realfilename,
+            pc.down_filename AS down_filename,
+            o.order_id AS order_id,
+            o.customer_id AS customer_id,
+            o.payment_date AS payment_date,
+            o.status AS status
+        FROM
+            dtb_products_class pc,
+            dtb_order_detail od,
+            dtb_order o
+        WHERE
+            pc.product_id = od.product_id AND
+            pc.classcategory_id1 = od.classcategory_id1 AND
+            pc.classcategory_id2 = od.classcategory_id2 AND
+            od.order_id = o.order_id
 ;

@@ -35,6 +35,11 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
 
     // }}}
     // {{{ functions
+    /** ダウンロード用ファイル管理クラスのインスタンス */
+    var $objDownFile;
+
+    /** hidden 項目の配列 */
+    var $arrHidden;
 
     /**
      * Page を初期化する.
@@ -48,6 +53,17 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
         $this->tpl_mainno = 'products';
         $this->tpl_subno = 'product';
         $this->tpl_subtitle = '商品登録(商品規格)';
+        $masterData = new SC_DB_MasterData_Ex();
+        $this->arrDown = $masterData->getMasterData("mtb_down");
+    }
+
+    function lfInitDownFile() {
+    	$i = 1;
+        while (isset($_POST['classcategory_id1:' . $i])) {
+	        //ファイル系処理
+	        $this->objDownFile->addFile("ダウンロード販売用ファイル". ":" . $i, 'down_realfilename'. ":" . $i, explode(",", DOWNLOAD_EXTENSION),DOWN_SIZE, true, 0, 0);
+            $i++;
+        }
     }
 
     function process() {
@@ -55,24 +71,35 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
 
         $this->arrSearchHidden = $this->createSearchParams($_POST);
 
+        // FORMデータの引き継ぎ
+        $this->arrForm = $_POST;
+
         $this->tpl_product_id =
             isset($_POST['product_id']) ? $_POST['product_id'] : "" ;
         $this->tpl_pageno = isset($_POST['pageno']) ? $_POST['pageno'] : "";
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
+        // Downファイル管理クラス
+        $this->objDownFile = new SC_UploadFile(DOWN_TEMP_DIR, DOWN_SAVE_DIR);
+
         switch ($_POST['mode']) {
         case 'edit':
             // 入力値の変換
             $this->arrForm = $this->lfConvertParam($_POST);
-
             // エラーチェック
             $this->arrErr = $this->lfProductClassError($this->arrForm);
-            if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                $this->tpl_mainpage = 'products/product_class_confirm.tpl';
+            if ($this->arrErr == null){
+            //if (SC_Utils_Ex::isBlank($this->arrErr)) {
+            	$this->tpl_mainpage = 'products/product_class_confirm.tpl';
                 $this->lfProductConfirmPage(); // 確認ページ表示
-
             } else {
-                $this->doPreEdit(false);
+            	$this->doPreEdit(false,true);
+		        // Hiddenからのデータを引き継ぐ
+		        $this->objDownFile->setHiddenFileList($_POST);
+	            // HIDDEN用に配列を渡す。
+		        $this->arrHidden = array_merge((array)$this->arrHidden, (array)$this->objDownFile->getHiddenFileList());
+		        // Form用に配列を渡す。
+		        $this->arrForm = array_merge((array)$this->arrForm, (array)$this->objDownFile->getFormKikakuDownFile());
             }
             break;
 
@@ -82,31 +109,68 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
 
         case 'pre_edit':
             $this->doPreEdit();
+            // HIDDEN用に配列を渡す。
+	        $this->arrHidden = array_merge((array)$this->arrHidden, (array)$this->objDownFile->getHiddenFileList());
             break;
 
         case 'disp':
             $this->doDisp();
             break;
-
+        // ダウンロード商品ファイルアップロード
+        case 'upload_down':
+            $this->doPreEdit();
+	        // Hiddenからのデータを引き継ぐ
+	        $this->objDownFile->setHiddenKikakuFileList($_POST);
+            // ファイル存在チェック
+            $this->arrErr = array_merge((array)$this->arrErr, (array)$this->objDownFile->checkEXISTS($_POST['down_key']));
+            // ファイル保存処理
+            $this->arrErr[$_POST['down_key']] = $this->objDownFile->makeTempDownFile($_POST['down_key']);
+            // HIDDEN用に配列を渡す。
+	        $this->arrHidden = array_merge((array)$this->arrHidden, (array)$this->objDownFile->getHiddenFileList());
+	        // Form用に配列を渡す。
+	        $this->arrForm = array_merge((array)$this->arrForm, (array)$this->objDownFile->getFormKikakuDownFile());
+            break;
+        // ダウンロードファイルの削除
+        case 'delete_down':
+            $this->doPreEdit();
+	        // Hiddenからのデータを引き継ぐ
+	        $this->objDownFile->setHiddenKikakuFileList($_POST);
+	        // ファイル削除処理
+            $this->objDownFile->deleteKikakuFile($_POST['down_key']);
+            // HIDDEN用に配列を渡す。
+	        $this->arrHidden = array_merge((array)$this->arrHidden, (array)$this->objDownFile->getHiddenFileList());
+	        // Form用に配列を渡す。
+	        $this->arrForm = array_merge((array)$this->arrForm, (array)$this->objDownFile->getFormKikakuDownFile());
+            break;
         case 'confirm_return':
             // フォームパラメータの引き継ぎ
             $this->arrForm = $_POST;
             // 規格の選択情報は引き継がない。
             $this->arrForm['select_class_id1'] = "";
             $this->arrForm['select_class_id2'] = "";
-            $this->doPreEdit(false);
+            $this->doPreEdit(false,true);
+	        // Hiddenからのデータを引き継ぐ
+	        $this->objDownFile->setHiddenFileList($_POST);
+            // HIDDEN用に配列を渡す。
+	        $this->arrHidden = array_merge((array)$this->arrHidden, (array)$this->objDownFile->getHiddenFileList());
+	        // Form用に配列を渡す。
+	        $this->arrForm = array_merge((array)$this->arrForm, (array)$this->objDownFile->getFormKikakuDownFile());
             break;
-
         case 'complete':
             // 完了ページ設定
             $this->tpl_mainpage = 'products/product_class_complete.tpl';
+            // ファイル情報の初期化
+            $this->lfInitDownFile();
+	        // Hiddenからのデータを引き継ぐ
+	        $this->objDownFile->setHiddenFileList($_POST);
             // 商品規格の登録
             $this->registerProductClass($_POST, $_POST['product_id']);
+            // 一時ファイルを本番ディレクトリに移動する
+            $this->objDownFile->moveTempDownFile();
             break;
 
         default:
         }
-
         $this->arrClass = $this->getAllClass();
         $this->arrForm['product_name'] = $this->getProductName($_POST['product_id']);
         $this->assignView();
@@ -152,6 +216,9 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
             $pVal['stock_unlimited'] = ($arrList["stock_unlimited:".$i]) ? '1' : '0';
             $pVal['price01'] = $arrList['price01:'.$i];
             $pVal['price02'] = $arrList['price02:'.$i];
+            $pVal['down'] = $arrList['down:'.$i];
+            $pVal['down_filename'] = $arrList['down_filename:'.$i];
+            $pVal['down_realfilename'] = $arrList['down_realfilename:'.$i];
             $pVal['creator_id'] = $_SESSION['member_id'];
             $pVal['update_date'] = "now()";
 
@@ -276,6 +343,23 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
                 if($array["stock_unlimited:".$no] != '1') {
                     $objErr->doFunc(array("在庫数", "stock:".$no, AMOUNT_LEN), array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
                 }
+
+                //ダウンロード商品チェック
+                if($array["down:".$no] == "2") {
+                    $objErr->doFunc(array("ダウンロードファイル名", "down_filename:".$no, STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+                    if($array["down_realfilename:".$no] == "") {
+                        $objErr->arrErr["down_realfilename:".$no] = "※ ダウンロード商品の場合はダウンロード商品用ファイルをアップロードしてください。<br />";
+                    }
+                }
+                //実商品チェック
+                else if($array["down:".$no] == "1") {
+                    if($array["down_filename:".$no] != "") {
+                        $objErr->arrErr["down_filename:".$no] = "※ 実商品の場合はダウンロードファイル名を設定できません。<br />";
+                    }
+                    if($array["down_realfilename:".$no] != "") {
+                        $objErr->arrErr["down_realfilename:".$no] = "※ 実商品の場合はダウンロード商品用ファイルをアップロードできません。<br />ファイルを取り消してください。<br />";
+                    }
+                }
             }
             if(count($objErr->arrErr) > 0) {
                 $objErr->arrErr["error:".$no] = $objErr->arrErr["product_code:".$no];
@@ -337,7 +421,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
     /**
      * 規格編集画面を表示する.
      */
-    function doPreEdit($existsValue = true) {
+    function doPreEdit($existsValue = true,$usepostValue = false) {
         $existsProductsClass = $this->getProductsClassAndClasscategory($_POST['product_id']);
         $productsClass = $this->getProductsClass($_POST['product_id']);
         $this->arrForm["class_id1"] = $existsProductsClass[0]['class_id1'];
@@ -346,19 +430,33 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
         $this->arrForm['select_class_id2'] = $this->arrForm["class_id2"];
 
         $this->arrClassCat = $this->getAllClassCategory($this->arrForm["class_id1"], $this->arrForm["class_id2"]);
+
         $total = count($this->arrClassCat);
         for ($i = 1; $i <= $total; $i++) {
             if ($existsValue) {
                 foreach ($productsClass as $key => $val) {
-                    $this->arrForm[$key . ":" . $i] = $val;
+                	if(!$usepostValue){
+                    	$this->arrForm[$key . ":" . $i] = $val;
+                	}
                 }
             }
             foreach ($existsProductsClass[$i] as $key => $val) {
-                $this->arrForm[$key . ":" . $i] = $val;
+            	if(!$usepostValue){
+                	$this->arrForm[$key . ":" . $i] = $val;
+            	}
             }
             if (!SC_Utils_Ex::isBlank($this->arrForm['product_id:' . $i])
                 && $this->arrForm["del_flg:" . $i] == 0) {
                 $line .= "'check:" . $i . "',";
+            }
+        }
+        //直前のLoopが$existsProductsClassを1始まりで参照しているので最初の情報が抜ける？
+        for ($i = 0; $i < $total; $i++) {
+            foreach ($existsProductsClass[$i] as $key => $val) {
+                //ダウンロードファイル初期設定
+                if($key=="down"){
+                    $this->objDownFile->addFile("ダウンロード販売用ファイル". ":" . ($i+1), 'down_realfilename'. ":" . ($i+1), explode(",", DOWNLOAD_EXTENSION),DOWN_SIZE, true, 0, 0);
+                }
             }
         }
 
@@ -366,6 +464,11 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
         $this->tpl_javascript = "list = new Array($line);";
         $color = DISABLED_RGB;
         $this->tpl_onload.= "fnListCheck(list); fnCheckAllStockLimit('$total', '$color');";
+
+        // DBデータからダウンロードファイル名の読込
+        $this->objDownFile->setDBFileList($this->arrForm);
+        // PostデータからダウンロードTempファイル名の読込
+        $this->objDownFile->setPostFileList($_POST,$this->arrForm);
     }
 
     function doDelete() {

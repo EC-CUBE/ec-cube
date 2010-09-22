@@ -22,13 +22,17 @@
  */
 *}-->
 <h2>商品規格登録</h2>
-<form name="form1" id="form1" method="post" action="">
+<form name="form1" id="form1" method="post" action="" enctype="multipart/form-data">
 <!--{foreach key=key item=item from=$arrSearchHidden}-->
 <input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->" />
 <!--{/foreach}-->
 <input type="hidden" name="mode" value="edit" />
 <input type="hidden" name="product_id" value="<!--{$tpl_product_id}-->" />
 <input type="hidden" name="pageno" value="<!--{$tpl_pageno}-->" />
+<input type="hidden" name="down_key" value="">
+<!--{foreach key=key item=item from=$arrHidden}-->
+<input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->" />
+<!--{/foreach}-->
 <div id="products" class="contents-main">
 
   <table>
@@ -70,13 +74,13 @@
   </div>
 
   <!--{if count($arrClassCat) > 0}-->
-            
+
   <!--{foreach item=item name=i from=$arrClassCat}-->
     <!--{if $smarty.foreach.i.first}-->
-      <!--{assign var=cnt value=$smarty.foreach.i.total}-->  
+      <!--{assign var=cnt value=$smarty.foreach.i.total}-->
     <!--{/if}-->
   <!--{/foreach}-->
-            
+
   <div class="btn">
     <button type="button" onclick="fnAllCheck(); return false;"><span>全選択</span></button>
     <button type="button" onclick="fnAllUnCheck(); return false;"><span>全解除</span></button>
@@ -96,6 +100,9 @@
       <th>在庫数<span class="attention">*</span></th>
       <th><!--{$smarty.const.NORMAL_PRICE_TITLE}-->(円)</th>
       <th><!--{$smarty.const.SALE_PRICE_TITLE}-->(円)<span class="attention">*</span></th>
+      <th>実商品・ダウンロード<span class="attention"> *</span></th>
+      <th>ダウンロードファイル名<BR><span class="red"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span></th>
+      <th>ダウンロード商品用ファイルアップロード<BR>登録可能拡張子：<!--{$smarty.const.DOWNLOAD_EXTENSION}-->　(パラメータ DOWNLOAD_EXTENSION)</th>
     </tr>
     <!--{section name=cnt loop=$arrClassCat}-->
     <!--{assign var=key value="error:`$smarty.section.cnt.iteration`"}-->
@@ -130,13 +137,33 @@
       <td align="center"><input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key]}-->" size="6" class="box6" maxlength="<!--{$smarty.const.PRICE_LEN}-->" <!--{if $arrErr[$key] != ""}--><!--{sfSetErrorStyle}--><!--{/if}-->></td>
       <!--{assign var=key value="price02:`$smarty.section.cnt.iteration`"}-->
       <td align="center"><input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key]}-->" size="6" class="box6" maxlength="<!--{$smarty.const.PRICE_LEN}-->" <!--{if $arrErr[$key] != ""}--><!--{sfSetErrorStyle}--><!--{/if}-->></td>
+      <td>
+        <!--{assign var=key value="down:`$smarty.section.cnt.iteration`"}-->
+        <input type="radio" name="<!--{$key}-->" value="1" <!--{if $arrForm[$key] == "1"}-->checked<!--{/if}-->/>実商品　
+        <input type="radio" name="<!--{$key}-->" value="2" <!--{if $arrForm[$key] == "2"}-->checked<!--{/if}--> />ダウンロード
+      </td>
+      <td>
+        <!--{assign var=key value="down_filename:`$smarty.section.cnt.iteration`"}-->
+        <span class="attention"><!--{$arrErr[$key]}--></span>
+        <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key]|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr[$key] != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" size="60" class="box60" />
+      </td>
+      <!--{assign var=key value="down_realfilename:`$smarty.section.cnt.iteration`"}-->
+      <td>
+        <span class="attention"><!--{$arrErr[$key]}--></span>
+          <!--{if $arrForm[$key] != ""}-->
+            <!--{$arrForm[$key]|escape}--><input type="hidden" name="<!--{$key}-->" value="<!--{$arrForm[$key]|escape}-->">
+            <a href="" onclick="fnModeSubmit('delete_down', 'down_key', '<!--{$key}-->'); return false;">[ファイルの取り消し]</a><br>
+          <!--{/if}-->
+          <input type="file" name="<!--{$key}-->" size="50" class="box50" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
+          <input type="button" name="btn" onclick="fnModeSubmit('upload_down', 'down_key', '<!--{$key}-->')" value="アップロード">
+      </td>
     </tr>
     <!--{/section}-->
   </table>
 
   <div class="btn"><button type="submit"><span>確認ページへ</span></button></div>
-  
+
   <!--{/if}-->
-  
+
 </div>
 </form>

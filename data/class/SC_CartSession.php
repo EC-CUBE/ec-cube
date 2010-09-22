@@ -310,6 +310,16 @@ class SC_CartSession {
         }
         return $arrRet;
     }
+    // カート内にある商品ＩＤ＋カテゴリＩＤを全て取得する
+    function getAllProductClassID() {
+        $max = $this->getMax();
+        for($i = 0; $i <= $max; $i++) {
+            if($_SESSION[$this->key][$i]['cart_no'] != "") {
+                $arrRet[] = $_SESSION[$this->key][$i]['id'];
+            }
+        }
+        return $arrRet;
+    }
 
     function delAllProducts() {
         $max = $this->getMax();
@@ -351,20 +361,5 @@ class SC_CartSession {
             }
         }
     }
-
-    /**
-     * カートの中のキャンペーン商品のチェック
-     * @param integer $campaign_id キャンペーンID
-     * @return boolean True:キャンペーン商品有り False:キャンペーン商品無し
-     */
-    function chkCampaign($campaign_id){
-        $max = $this->getMax();
-        for($i = 0; $i <= $max; $i++) {
-            if($_SESSION[$this->key][$i]['is_campaign'] and $_SESSION[$this->key][$i]['campaign_id'] == $campaign_id) return true;
-        }
-
-        return false;
-    }
-
 }
 ?>

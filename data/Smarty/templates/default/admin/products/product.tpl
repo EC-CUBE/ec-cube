@@ -111,6 +111,20 @@ function selectAll(target) {
       </td>
     </tr>
     <tr>
+      <th>公開・非公開<span class="attention"> *</span></th>
+      <td>
+        <input type="radio" name="status" value="1" <!--{if $arrForm.status == "1"}-->checked<!--{/if}--> />公開　
+        <input type="radio" name="status" value="2" <!--{if $arrForm.status == "2"}-->checked<!--{/if}--> />非公開
+      </td>
+    </tr>
+    <tr>
+      <th>商品ステータス</th>
+      <td>
+        <!--{html_checkboxes name="product_flag" options=$arrSTATUS selected=$arrForm.product_flag}-->
+      </td>
+    </tr>
+    <!--{if $tpl_nonclass == true}-->
+    <tr>
       <th>実商品・ダウンロード<span class="attention"> *</span></th>
       <td>
         <input type="radio" name="down" value="1" <!--{if $arrForm.down == "1"}-->checked<!--{/if}-->/>実商品　
@@ -138,21 +152,6 @@ function selectAll(target) {
           <input type="button" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_down', 'down_key', '<!--{$key}-->')" value="アップロード"><BR>登録可能拡張子：<!--{$smarty.const.DOWNLOAD_EXTENSION}-->　(パラメータ DOWNLOAD_EXTENSION)
       </td>
     </tr>
-    <tr>
-      <th>公開・非公開<span class="attention"> *</span></th>
-      <td>
-        <input type="radio" name="status" value="1" <!--{if $arrForm.status == "1"}-->checked<!--{/if}--> />公開　
-        <input type="radio" name="status" value="2" <!--{if $arrForm.status == "2"}-->checked<!--{/if}--> />非公開
-      </td>
-    </tr>
-    <tr>
-      <th>商品ステータス</th>
-      <td>
-        <!--{html_checkboxes name="product_flag" options=$arrSTATUS selected=$arrForm.product_flag}-->
-      </td>
-    </tr>
-
-    <!--{if $tpl_nonclass == true}-->
     <tr>
       <th>商品コード<span class="attention"> *</span></th>
       <td>

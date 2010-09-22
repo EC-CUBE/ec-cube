@@ -45,6 +45,22 @@
       </td>
     </tr>
     <tr>
+      <th>公開・非公開</th>
+      <td>
+      <!--{$arrDISP[$arrForm.status]}-->
+      </td>
+    </tr>
+    <tr>
+      <th>商品ステータス</th>
+      <td>
+      <!--{section name=cnt loop=$arrForm.product_flag|count_characters}-->
+        <!--{if $arrForm.product_flag[cnt] == "1"}--><!--{assign var=key value="`$smarty.section.cnt.iteration`"}--><img src="<!--{$TPL_DIR}--><!--{$arrSTATUS_IMAGE[$key]}-->"><!--{/if}-->
+      <!--{/section}-->
+      </td>
+    </tr>
+
+    <!--{if $tpl_nonclass == true}-->
+    <tr>
       <th>実商品・ダウンロード</th>
       <td>
       <!--{$arrDown[$arrForm.down]}-->
@@ -64,22 +80,6 @@
       <!--{/if}-->
       </td>
     </tr>
-    <tr>
-      <th>公開・非公開</th>
-      <td>
-      <!--{$arrDISP[$arrForm.status]}-->
-      </td>
-    </tr>
-    <tr>
-      <th>商品ステータス</th>
-      <td>
-      <!--{section name=cnt loop=$arrForm.product_flag|count_characters}-->
-        <!--{if $arrForm.product_flag[cnt] == "1"}--><!--{assign var=key value="`$smarty.section.cnt.iteration`"}--><img src="<!--{$TPL_DIR}--><!--{$arrSTATUS_IMAGE[$key]}-->"><!--{/if}-->
-      <!--{/section}-->
-      </td>
-    </tr>
-
-    <!--{if $tpl_nonclass == true}-->
     <tr>
       <th>商品コード</th>
       <td>

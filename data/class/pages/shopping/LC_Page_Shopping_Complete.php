@@ -452,6 +452,7 @@ class LC_Page_Shopping_Complete extends LC_Page {
      * @return integer 注文番号
      */
     function lfRegistOrder($objQuery, $arrData, $objCampaignSess = null) {
+        $objDb = new SC_Helper_DB_Ex();
         $sqlval = $arrData;
 
         // 受注テーブルに書き込まない列を除去
@@ -464,14 +465,21 @@ class LC_Page_Shopping_Complete extends LC_Page {
         unset($sqlval['mail_flag']);        // メールフラグ
         unset($sqlval['session']);          // セッション情報
 
+        //ダウンロード商品判定
+        $this->cartdown = $objDb->chkCartDown($this->objCartSess);
+
         // ポイントは別登録
         $addPoint = $sqlval['add_point'];
         $usePoint = $sqlval['use_point'];
         $sqlval['add_point'] = 0;
         $sqlval['use_point'] = 0;
 
-        // 注文ステータス:指定が無ければ新規受付に設定
-        if (strlen($sqlval['status']) == 0) {
+        // 合計金額が0円の場合、もしくはオンライン決済の場合は、注文ステータスをORDER_PRE_END[入金済み]にする
+        if ( ( $sqlval['total'] == 0 ) or ( in_array($sqlval['payment_id'], split(",", CREDIT_PAYMENT)) == true ) ){
+            $sqlval = $this->lfchgPreEndStatus($sqlval);
+        }
+        if(strlen($sqlval['status']) == 0) {
+            // 注文ステータス:指定が無ければ新規受付に設定
             $sqlval['status'] = ORDER_NEW;
         }
 
@@ -658,12 +666,12 @@ class LC_Page_Shopping_Complete extends LC_Page {
     // 在庫を減らす処理
     function lfReduceStock(&$objQuery, $arrID, $quantity) {
         $objDb = new SC_Helper_DB_Ex();
-        
+
         if (!SC_Utils_Ex::sfIsInt($quantity)) {
             $objQuery->rollback();
             SC_Utils_Ex::sfDispException();
         }
-        
+
         $objProduct = new SC_Product();
         $productsClass = $objProduct->getProductsClassFullByProductId($arrID[0]);
     
@@ -676,7 +684,7 @@ class LC_Page_Shopping_Complete extends LC_Page {
                     $objQuery->rollback();
                     SC_Utils_Ex::sfDispSiteError(SOLD_OUT, "", true);
                 }
-        
+
                 // 在庫を減らす
                 $arrRawSql = array();
                 $arrRawSql['stock'] = 'stock - ?';
@@ -685,13 +693,13 @@ class LC_Page_Shopping_Complete extends LC_Page {
                 break;
             }
         }
-        
+
         // 在庫無し商品の非表示対応
         if (NOSTOCK_HIDDEN === true) {
             // 件数カウントバッチ実行
             $objDb->sfCategory_Count($objQuery);
         }
-        
+
     }
 
     // GETの値をインサート用に整える
@@ -703,6 +711,18 @@ class LC_Page_Shopping_Complete extends LC_Page {
         }
 
         return $sqlVal;
+    }
+
+    // ステータスを入金済みにする
+    function lfchgPreEndStatus($sqlval){
+        $sqlval['status'] = ORDER_PRE_END;
+        $sqlval['payment_date'] = 'NOW()';
+        //ダウンロード商品のみの場合はORDER_DELIV[発送済み]にして発送時間を入れる
+        if($this->cartdown == 2){
+            $sqlval['status'] = ORDER_DELIV;
+            $sqlval['commit_date'] = 'NOW()';
+        }
+        return $sqlval;
     }
 }
 ?>

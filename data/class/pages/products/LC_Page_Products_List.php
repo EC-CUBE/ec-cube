@@ -134,7 +134,7 @@ class LC_Page_Products_List extends LC_Page {
         foreach ($this->arrProducts as $arrProduct) {
             $js_fnOnLoad .= "fnSetClassCategories(document.product_form{$arrProduct['product_id']});\n";
         }
-        
+
         if ($this->inCart) {
             // 商品IDの正当性チェック
             if (!SC_Utils_Ex::sfIsInt($this->arrForm['product_id']) || !$objDb->sfIsRecord("dtb_products", "product_id", $this->arrForm['product_id'], "del_flg = 0 AND status = 1")) {
@@ -278,7 +278,7 @@ class LC_Page_Products_List extends LC_Page {
      */
     function lfGetCategoryId($category_id) {
         $objDb = new SC_Helper_DB_Ex();
-        
+
         // 指定なしの場合、0 を返す
         if (
             strlen($category_id) == 0
@@ -286,7 +286,7 @@ class LC_Page_Products_List extends LC_Page {
         ) {
             return 0;
         }
-        
+
         // 正当性チェック
         if (
             !SC_Utils_Ex::sfIsInt($category_id)
@@ -295,14 +295,14 @@ class LC_Page_Products_List extends LC_Page {
         ) {
             SC_Utils_Ex::sfDispSiteError(CATEGORY_NOT_FOUND);
     }
-        
+
         // 指定されたカテゴリIDを元に正しいカテゴリIDを取得する。
         $arrCategory_id = $objDb->sfGetCategoryId('', $category_id);
-        
+
         if (empty($arrCategory_id)) {
             SC_Utils_Ex::sfDispSiteError(CATEGORY_NOT_FOUND);
         }
-        
+
         return $arrCategory_id[0];
     }
 
@@ -313,22 +313,22 @@ class LC_Page_Products_List extends LC_Page {
         $arrval = array();
         $arrval_order = array();
         $arrval_category = array();
-        
+
         // カテゴリからのWHERE文字列取得
         if ($this->arrSearchData['category_id'] != 0) {
             list($where_category, $arrval_category) = $objDb->sfGetCatWhere($this->arrSearchData['category_id']);
         }
-        
+
         // ▼対象商品IDの抽出
         // 商品検索条件の作成（未削除、表示）
         $where = "del_flg = 0 AND status = 1 ";
         $where1 = "alldtl.del_flg = 0 AND alldtl.status = 1 ";
-        
+
         // 在庫無し商品の非表示
         if (NOSTOCK_HIDDEN === true) {
             $where .= ' AND (stock_max >= 1 OR stock_unlimited_max = 1)';
         }
-        
+
         if (strlen($where_category) >= 1) {
             $where.= " AND $where_category";
             $where1 .= " AND T2.$where_category";
@@ -378,7 +378,7 @@ class LC_Page_Products_List extends LC_Page {
         // 表示文字列
         $this->tpl_strnavi = empty($strnavi) ? "&nbsp;" : $strnavi;
         $startno = $this->objNavi->start_row;                 // 開始行
-        
+
         // WHERE 句
         $where = '0=0';
         if (is_array($arrProduct_id) && !empty($arrProduct_id)) {
@@ -435,7 +435,7 @@ class LC_Page_Products_List extends LC_Page {
 __EOS__;
                 break;
         }
-        
+
         // 取得範囲の指定(開始行番号、行数のセット)
         $objQuery =& SC_Query::getSingletonInstance();
         $objQuery->setLimitOffset($this->disp_number, $startno)
@@ -446,22 +446,21 @@ __EOS__;
         $objProduct = new SC_Product();
         $this->arrProducts = $objProduct->lists($objQuery, $arrval_order);
 
-        
         $arrProductId = array();
         // 規格セレクトボックス設定
         foreach ($this->arrProducts as $product) {
             $arrProductId[] = $product['product_id'];
         }
-        
+
         // 規格を設定
         $objProduct->setProductsClassByProductIds($arrProductId);
-        
+
         // 規格1クラス名
         $this->tpl_class_name1 = $objProduct->className1;
 
         // 規格2クラス名
         $this->tpl_class_name2 = $objProduct->className2;
-        
+
         // 規格1
         $this->arrClassCat1 = $objProduct->classCats1;
 
@@ -473,7 +472,7 @@ __EOS__;
         $this->tpl_stock_find = $objProduct->stock_find;
 
         $productsClassCategories = $objProduct->classCategories;
-        
+
         require_once DATA_PATH . 'module/Services/JSON.php';
         $objJson = new Services_JSON();
         $this->tpl_javascript .= 'productsClassCategories = ' . $objJson->encode($productsClassCategories) . '; ';
@@ -504,7 +503,7 @@ __EOS__;
      */
     function lfLoadParam() {
         $this->arrForm = $_GET;
-        
+
         $this->mode = $this->arrForm['mode'];
         $this->arrSearchData['category_id'] = $this->lfGetCategoryId($this->arrForm['category_id']);
         $this->arrSearchData['maker_id'] = $this->arrForm['maker_id'];

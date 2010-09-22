@@ -136,35 +136,34 @@ class SC_UploadFile {
     }
 
     // アップロードされたダウンロードファイルを保存する。
-    function makeTempDownFile() {
+    function makeTempDownFile($keyname='down_file') {
         $objErr = new SC_CheckError();
         $cnt = 0;
         $arrKeyname = array_flip($this->keyname);
-
-        if(!($_FILES['down_file']['size'] > 0)) {
-            $objErr->arrErr['down_file'] = "※ " . $this->disp_name[$arrKeyname['down_file']] . "がアップロードされていません。<br />";
+        if(!($_FILES[$keyname]['size'] > 0)) {
+            $objErr->arrErr[$keyname] = "※ " . $this->disp_name[$arrKeyname[$keyname]] . "がアップロードされていません。<br />";
         } else {
             foreach($this->keyname as $val) {
                // 一致したキーのファイルに情報を保存する。
-                if ($val == 'down_file') {
+                if ($val == $keyname) {
                     // 拡張子チェック
-                    $objErr->doFunc(array($this->disp_name[$cnt], 'down_file', $this->arrExt[$cnt]), array("FILE_EXT_CHECK"));
+                    $objErr->doFunc(array($this->disp_name[$cnt], $keyname, $this->arrExt[$cnt]), array("FILE_EXT_CHECK"));
                     // ファイルサイズチェック
-                    $objErr->doFunc(array($this->disp_name[$cnt], 'down_file', $this->size[$cnt]), array("FILE_SIZE_CHECK"));
+                    $objErr->doFunc(array($this->disp_name[$cnt], $keyname, $this->size[$cnt]), array("FILE_SIZE_CHECK"));
                     // エラーがない場合
-                   if(!isset($objErr->arrErr['down_file'])) {
+                   if(!isset($objErr->arrErr[$keyname])) {
                         // 一意なファイル名を作成する。
                         $uniqname = date("mdHi") . "_" . uniqid("").".";
-                        $this->temp_file[$cnt] = ereg_replace("^.*\.",$uniqname, $_FILES['down_file']['name']);
+                        $this->temp_file[$cnt] = ereg_replace("^.*\.",$uniqname, $_FILES[$keyname]['name']);
                         set_time_limit(0);
-                        $result  = copy($_FILES['down_file']['tmp_name'], $this->temp_dir . $this->temp_file[$cnt]);
+                        $result  = copy($_FILES[$keyname]['tmp_name'], $this->temp_dir . $this->temp_file[$cnt]);
                         GC_Utils_Ex::gfPrintLog($result." -> ". $this->temp_dir . $this->temp_file[$cnt]);
                     }
                 }
                 $cnt++;
             }
         }
-        return $objErr->arrErr['down_file'];
+        return $objErr->arrErr[$keyname];
     }
 
     // 画像を削除する。
@@ -179,6 +178,23 @@ class SC_UploadFile {
                 }
                 $this->temp_file[$cnt] = "";
                 $this->save_file[$cnt] = "";
+            }
+            $cnt++;
+        }
+    }
+
+    // 画像を削除する。
+    function deleteKikakuFile($keyname) {
+        $objImage = new SC_Image($this->temp_dir);
+        $cnt = 0;
+        foreach($this->keyname as $val) {
+            if ($val == $keyname) {
+                // 一時ファイルの場合削除する。
+                if($this->temp_file[$cnt] != "") {
+                    $objImage->deleteImage($this->temp_file[$cnt], $this->temp_dir);
+                }
+                $this->temp_file[$cnt] = "";
+                //$this->save_file[$cnt] = "";
             }
             $cnt++;
         }
@@ -244,7 +260,7 @@ class SC_UploadFile {
         $cnt = 0;
         $arrRet = array();
         foreach($this->keyname as $val) {
-            if(isset($this->temp_file[$cnt]) && $this->temp_file[$cnt] != "") {
+            if(isset($this->temp_file[$cnt])) {
                 $arrRet["temp_" . $val] = $this->temp_file[$cnt];
             }
             if(isset($this->save_file[$cnt]) && $this->save_file[$cnt] != "") {
@@ -261,6 +277,21 @@ class SC_UploadFile {
         foreach($this->keyname as $val) {
             $key = "temp_" . $val;
             if(isset($arrPOST[$key]) && !empty($arrPOST[$key])) {
+                $this->temp_file[$cnt] = $arrPOST[$key];
+            }
+            $key = "save_" . $val;
+            if(isset($arrPOST[$key]) && !empty($arrPOST[$key])) {
+                $this->save_file[$cnt] = $arrPOST[$key];
+            }
+            $cnt++;
+        }
+    }
+
+    function setHiddenKikakuFileList($arrPOST) {
+        $cnt = 0;
+        foreach($this->keyname as $val) {
+            $key = "temp_" . $val;
+            if(isset($arrPOST[$key])) {
                 $this->temp_file[$cnt] = $arrPOST[$key];
             }
             $key = "save_" . $val;
@@ -330,6 +361,19 @@ class SC_UploadFile {
         }
         return $arrRet;
     }
+    function getFormKikakuDownFile() {
+    	$arrRet = array();
+        $cnt = 0;
+        foreach($this->keyname as $val) {
+            if(isset($this->temp_file[$cnt])) {
+                $arrRet[$val] = $this->temp_file[$cnt];
+            } elseif (isset($this->save_file[$cnt]) && $this->save_file[$cnt] != "") {
+                $arrRet[$val] = $this->save_file[$cnt];
+            }
+            $cnt++;
+        }
+        return $arrRet;
+    }
 
     // DB保存用のファイル名配列を返す
     function getDBFileList() {
@@ -360,6 +404,17 @@ class SC_UploadFile {
     function setDBDownFile($arrVal) {
         if(isset($arrVal['down_realfilename']) && $arrVal['down_realfilename'] != "") {
             $this->save_file[0] = $arrVal['down_realfilename'];
+        }
+    }
+
+    // DBで保存されたダウンロードファイル名をセットする(setDBDownFileと統合予定)
+    function setPostFileList($arrPost,$arrVal) {
+        $cnt = 0;
+        foreach($this->keyname as $val) {
+            if(isset($arrPost['temp_down_realfilename:' . ($cnt+1)])) {
+                $this->temp_file[$cnt] = $arrPost['temp_down_realfilename:' . ($cnt+1)];
+            }
+            $cnt++;
         }
     }
 

@@ -52,20 +52,23 @@ class LC_Page_Mypage_DownLoad extends LC_Page {
      * @return void
      */
     function process() {
-        ob_end_clean();
+    	ob_end_clean();
 
         $customer_id = $_SESSION['customer']['customer_id'];
         $order_id = $_GET['order_id'];
         $product_id = $_GET['product_id'];
+        $classcategory_id1 = $_GET['classcategory_id1'];
+        $classcategory_id2 = $_GET['classcategory_id2'];
 
         // ID の数値チェック
         // TODO SC_FormParam でチェックした方が良い?
         if (!is_numeric($customer_id)
             || !is_numeric($order_id)
-            || !is_numeric($product_id)) {
+            || !is_numeric($product_id)
+            || !is_numeric($classcategory_id1)
+            || !is_numeric($classcategory_id2)) {
             SC_Utils_Ex::sfDispSiteError("");
         }
-
 
         $objCustomer = new SC_Customer();
         //ログインしていない場合
@@ -75,7 +78,7 @@ class LC_Page_Mypage_DownLoad extends LC_Page {
         //ログインしている場合
             //DBから商品情報の読込
 
-            $arrForm = $this->lfGetRealFileName($customer_id, $order_id, $product_id);
+            $arrForm = $this->lfGetRealFileName($customer_id, $order_id, $product_id, $classcategory_id1, $classcategory_id2);
 
             //ステータスが支払済み以上である事
             if ($arrForm["status"] < ORDER_DELIV){
@@ -123,16 +126,16 @@ class LC_Page_Mypage_DownLoad extends LC_Page {
      * @param integer $product_id 商品ID
      * @return array 商品情報の配列
      */
-    function lfGetRealFileName($customer_id, $order_id, $product_id) {
+    function lfGetRealFileName($customer_id, $order_id, $product_id, $classcategory_id1, $classcategory_id2) {
         $objQuery = new SC_Query();
         $col = "*";
         $table = "vw_download_class AS T1";
         $dbFactory = SC_DB_DBFactory_Ex::getInstance();
-        $where = "T1.customer_id = ? AND T1.order_id = ? AND T1.product_id = ?";
+        $where = "T1.customer_id = ? AND T1.order_id = ? AND T1.product_id = ? AND T1.classcategory_id1 = ? AND T1.classcategory_id2 = ?";
         $where .= " AND " . $dbFactory->getDownloadableDaysWhereSql("T1");
         $where .= " = 1";
         $arrRet = $objQuery->select($col, $table, $where,
-                                    array($customer_id, $order_id, $product_id));
+                                    array($customer_id, $order_id, $product_id, $classcategory_id1, $classcategory_id2));
         return $arrRet[0];
     }
 
