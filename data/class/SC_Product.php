@@ -344,6 +344,10 @@ __EOS__;
     function getProductsClassFullByProductId($productId) {
         $results = $this->getProductsClassLevelByProductId($productId);
         $productsClass = array();
+        if (SC_Utils_Ex::isBlank($results["level1"]) && SC_Utils_Ex::isBlank($results["level2"])) {
+            return $results["level"];
+        }
+
         foreach ($results["level1"] as $level1) {
             foreach ($results["level2"] as $level2) {
                 if ($level2['parent_class_combination_id'] == $level1['class_combination_id']) {
