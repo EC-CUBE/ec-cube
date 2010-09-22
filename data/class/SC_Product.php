@@ -370,7 +370,10 @@ __EOS__;
         if (!SC_Utils_Ex::isBlank($where)) {
             $whereCause = " WHERE " . $where;
         }
-
+        /*
+         * point_rate は商品規格(dtb_products_class)ごとに保持しているが,
+         * 商品(dtb_products)ごとの設定なので MAX のみを取得する.
+         */
         $sql = <<< __EOS__
             (
              SELECT dtb_products.product_id,
@@ -435,6 +438,7 @@ __EOS__;
                     T4.stock_max,
                     T4.stock_unlimited_min,
                     T4.stock_unlimited_max,
+                    T4.point_rate,
                     T4.class_count
                FROM dtb_products
                JOIN (
@@ -449,6 +453,7 @@ __EOS__;
                               MAX(stock) AS stock_max,
                               MIN(stock_unlimited) AS stock_unlimited_min,
                               MAX(stock_unlimited) AS stock_unlimited_max,
+                              MAX(point_rate) AS point_rate,
                               COUNT(*) as class_count
                          FROM dtb_products_class
                        $whereCause
