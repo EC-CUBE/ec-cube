@@ -314,13 +314,8 @@ class SC_Helper_DB {
                     $arrClassCatName[$arrData['classcategory_id2']];
 
                 // 価格の登録
-                if ($arrData['price02'] != "") {
-                    $objCartSess->setProductValue($arrCart['id'], 'price', $arrData['price02']);
-                    $objPage->arrProductsClass[$cnt]['uniq_price'] = $arrData['price02'];
-                } else {
-                    $objCartSess->setProductValue($arrCart['id'], 'price', $arrData['price01']);
-                    $objPage->arrProductsClass[$cnt]['uniq_price'] = $arrData['price01'];
-                }
+                $objCartSess->setProductValue($arrCart['id'], 'price', $arrData['price02']);
+                $objPage->arrProductsClass[$cnt]['uniq_price'] = $arrData['price02'];
                 // ポイント付与率の登録
                 if (USE_POINT !== false) {
                     $objCartSess->setProductValue($arrCart['id'], 'point_rate', $arrData['point_rate']);
