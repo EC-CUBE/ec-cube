@@ -77,7 +77,7 @@ class LC_Page_Cart extends LC_Page {
         $objSiteInfo = $objView->objSiteInfo;
         $objCustomer = new SC_Customer();
         $objDb = new SC_Helper_DB_Ex();
-
+        $objProduct = new SC_Product();
         // 商品購入中にカート内容が変更された。
         if($objCartSess->getCancelPurchase()) {
             $this->tpl_message = "商品購入中にカート内容が変更されましたので、お手数ですが購入手続きをやり直して下さい。";
@@ -105,7 +105,7 @@ class LC_Page_Cart extends LC_Page {
             $cnt = 0;
             for ($i = 0; $i < $max; $i++) {
                 // 商品規格情報の取得
-                $this->arrData = $objDb->sfGetProductsClass($arrRet[$i]['id']);
+                $this->arrData = $objProduct->getProductsClass($arrRet[$i]['id']);
                 // DBに存在する商品
                 if($this->arrData != "") {
                     $cnt++;

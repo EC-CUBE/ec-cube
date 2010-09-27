@@ -156,11 +156,11 @@ class LC_Page_Products_List extends LC_Page {
                 }
                 // 規格IDを取得
                 $objProduct = new SC_Product();
-                $product_class_id = $objProduct->getClasscategoryIdsByProductClassId($product_id,$classcategory_id1,$classcategory_id2);
+                $product_class_id = $this->arrForm['product_class_id'];
                 $objCartSess = new SC_CartSession();
-                $objCartSess->addProduct(array($product_id, $product_class_id, $classcategory_id1, $classcategory_id2), $this->arrForm['quantity']);
-                    $this->sendRedirect($this->getLocation(URL_CART_TOP));
-                    exit;
+                $objCartSess->addProduct($product_class_id, $this->arrForm['quantity']);
+                $this->sendRedirect($this->getLocation(URL_CART_TOP));
+                exit;
             }
             foreach (array_keys($this->arrProducts) as $key) {
                 $arrProduct =& $this->arrProducts[$key];
@@ -474,6 +474,7 @@ __EOS__;
         $this->tpl_classcat_find2 = $objProduct->classCat2_find;
 
         $this->tpl_stock_find = $objProduct->stock_find;
+        $this->tpl_product_class_id = $objProduct->product_class_id;
 
         $productsClassCategories = $objProduct->classCategories;
 

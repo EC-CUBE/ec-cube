@@ -535,21 +535,23 @@ class LC_Page_Shopping_Complete extends LC_Page {
         // 規格分類名一覧
         $arrClassCatName = $objDb->sfGetIDValueList("dtb_classcategory", "classcategory_id", "name");
 
+        $objProduct = new SC_Product();
         for ($i = 0; $i < $max; $i++) {
             // 商品規格情報の取得
-            $arrData = $objDb->sfGetProductsClass($arrCart[$i]['id']);
+            $arrData = $objProduct->getDetailAndProductsClass($arrCart[$i]['id']);
 
             // 存在する商品のみ表示する。
             if($arrData != "") {
                 $sqlval['order_id'] = $order_id;
-                $sqlval['product_id'] = $arrCart[$i]['id'][0];
-                $sqlval['product_class_id'] = $arrCart[$i]['id'][1];
-                $sqlval['classcategory_id1'] = $arrCart[$i]['id'][2];
-                $sqlval['classcategory_id2'] = $arrCart[$i]['id'][3];
+                $sqlval['product_id'] = $arrData['product_id'];
+                $sqlval['product_class_id'] = $arrData['product_class_id'];
+                // FIXME product_class_id のみで対応予定のため暫定対応
+                $sqlval['classcategory_id1'] = is_null($arrData['classcategory_id1']) ? 0 : $sqlval['classcategory_id1'];
+                $sqlval['classcategory_id2'] = is_null($arrData['classcategory_id2']) ? 0 : $sqlval['classcategory_id2'];
                 $sqlval['product_name'] = $arrData['name'];
                 $sqlval['product_code'] = $arrData['product_code'];
-                $sqlval['classcategory_name1'] = $arrClassCatName[$arrData['classcategory_id1']];
-                $sqlval['classcategory_name2'] = $arrClassCatName[$arrData['classcategory_id2']];
+                $sqlval['classcategory_name1'] = $arrData['name1'];
+                $sqlval['classcategory_name2'] = $arrData['name2'];
                 $sqlval['point_rate'] = $arrCart[$i]['point_rate'];
                 $sqlval['price'] = $arrCart[$i]['price'];
                 $sqlval['quantity'] = $arrCart[$i]['quantity'];
@@ -664,8 +666,12 @@ class LC_Page_Shopping_Complete extends LC_Page {
         $objQuery->update("dtb_customer", $sqlval, $where, array($customer_id));
     }
 
-    // 在庫を減らす処理
-    function lfReduceStock(&$objQuery, $arrID, $quantity) {
+    /**
+     * 在庫を減らす処理
+     *
+     * FIXME 件数カウントバッチは最後にまとめて実行すること.
+     */
+    function lfReduceStock(&$objQuery, $product_class_id, $quantity) {
         $objDb = new SC_Helper_DB_Ex();
 
         if (!SC_Utils_Ex::sfIsInt($quantity)) {
@@ -674,26 +680,20 @@ class LC_Page_Shopping_Complete extends LC_Page {
         }
 
         $objProduct = new SC_Product();
-        $productsClass = $objProduct->getProductsClassFullByProductId($arrID[0]);
+        $productsClass = $objProduct->getDetailAndProductsClass($product_class_id);
 
-        foreach ($productsClass as $val) {
-            if ($val['classcategory_id1'] == $arrID[2]
-                && $val['classcategory_id2'] == $arrID[3]) {
-
-                if (($val['stock_unlimited'] != '1' && $val['stock'] < $quantity) || $quantity == 0) {
-                    // 売り切れエラー
-                    $objQuery->rollback();
-                    SC_Utils_Ex::sfDispSiteError(SOLD_OUT, "", true);
-                }
-
-                // 在庫を減らす
-                $arrRawSql = array();
-                $arrRawSql['stock'] = 'stock - ?';
-                $arrRawSqlVal[] = $quantity;
-                $objQuery->update('dtb_products_class', array(), "product_class_id = ?", array($val['product_class_id']), $arrRawSql, $arrRawSqlVal);
-                break;
-            }
+        if (($productsClass['stock_unlimited'] != '1' && $productsClass['stock'] < $quantity)
+            || $quantity == 0) {
+            // 売り切れエラー
+            $objQuery->rollback();
+            SC_Utils_Ex::sfDispSiteError(SOLD_OUT, "", true);
         }
+
+        // 在庫を減らす
+        $arrRawSql = array();
+        $arrRawSql['stock'] = 'stock - ?';
+        $arrRawSqlVal[] = $quantity;
+        $objQuery->update('dtb_products_class', array(), "product_class_id = ?", array($val['product_class_id']), $arrRawSql, $arrRawSqlVal);
 
         // 在庫無し商品の非表示対応
         if (NOSTOCK_HIDDEN === true) {

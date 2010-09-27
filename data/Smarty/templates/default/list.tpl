@@ -72,6 +72,7 @@ function fnInCart(productForm) {
     }
     fnSetVal("quantity", productForm["quantity"].value);
     fnSetVal("product_id", productForm["product_id"].value);
+    fnSetVal("product_class_id", productForm["product_class_id"].value);
     fnSubmit();
 }
 function fnCheckStock(form) {
@@ -108,6 +109,17 @@ function fnCheckStock(form) {
         eleDefault.style.display = '';
         eleDynamic.innerHTML = '';
     }
+    // 商品規格
+    eleDynamic = document.getElementById('product_class_id' + product_id);
+    if (
+           classcat2
+        && typeof classcat2.product_class_id != 'undefined'
+        && String(classcat2.product_class_id).length >= 1
+    ) {
+        eleDynamic.value = classcat2.product_class_id;
+    } else {
+        eleDynamic.value = ''
+    }
 }
 //]]>
 </script>
@@ -130,6 +142,7 @@ function fnCheckStock(form) {
         <input type="hidden" name="product_id" value="" />
         <input type="hidden" name="classcategory_id1" value="" />
         <input type="hidden" name="classcategory_id2" value="" />
+        <input type="hidden" name="product_class_id" value="" />
         <input type="hidden" name="quantity" value="" />
         <!--{* ▲注文関連 *}-->
         <input type="hidden" name="rnd" value="<!--{$tpl_rnd|escape}-->" />
@@ -253,6 +266,7 @@ function fnCheckStock(form) {
                 <!--▼買い物かご-->
                 <form name="product_form<!--{$id|escape}-->" action="?" onsubmit="return false;">
                     <input type="hidden" name="product_id" value="<!--{$id|escape}-->" />
+                    <input type="hidden" name="product_class_id" id="product_class_id<!--{$id|escape}-->" value="<!--{$tpl_product_class_id[$id]}-->" />
                     <div class="in_cart">
                         <!--{if $tpl_stock_find[$id]}-->
                             <dl>

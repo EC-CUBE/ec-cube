@@ -255,12 +255,13 @@ class SC_Helper_DB {
         $objPage->tpl_total_tax = 0;        // 消費税合計
         $objPage->tpl_total_point = 0;      // ポイント合計
 
+        $objProduct = new SC_Product();
         // カート内情報の取得
         $arrQuantityInfo_by_product = array();
         $cnt = 0;
         foreach ($objCartSess->getCartList() as $arrCart) {
             // 商品規格情報の取得
-            $arrData = $this->sfGetProductsClass($arrCart['id']);
+            $arrData = $objProduct->getDetailAndProductsClass($arrCart['id']);
             $limit = null;
             // DBに存在する商品
             if (count($arrData) > 0) {
@@ -291,7 +292,7 @@ class SC_Helper_DB {
                 }
 
                 // (商品規格単位でなく)商品単位での評価のための準備
-                $product_id = $arrCart['id'][0];
+                $product_id = $arrData['product_id'];
                 $arrQuantityInfo_by_product[$product_id]['quantity'] += $quantity;
                 $arrQuantityInfo_by_product[$product_id]['sale_limit'] = $arrData['sale_limit'];
                 $arrQuantityInfo_by_product[$product_id]['name'] = $arrData['name'];
@@ -300,19 +301,16 @@ class SC_Helper_DB {
                 $objPage->arrProductsClass[$cnt]['quantity'] = $quantity;
                 $objPage->arrProductsClass[$cnt]['cart_no'] = $arrCart['cart_no'];
                 $objPage->arrProductsClass[$cnt]['class_name1'] =
-                    isset($arrClassName[$arrData['class_id1']])
-                        ? $arrClassName[$arrData['class_id1']] : "";
+                    isset($arrData['class_name1'])
+                        ? $arrData['class_name1'] : "";
 
                 $objPage->arrProductsClass[$cnt]['class_name2'] =
-                    isset($arrClassName[$arrData['class_id2']])
-                        ? $arrClassName[$arrData['class_id2']] : "";
+                    isset($arrData['class_name2'])
+                        ? $arrData['class_name2'] : "";
 
-                $objPage->arrProductsClass[$cnt]['classcategory_name1'] =
-                    $arrClassCatName[$arrData['classcategory_id1']];
+                $objPage->arrProductsClass[$cnt]['classcategory_name1'] = $arrData['name1'];
 
-                $objPage->arrProductsClass[$cnt]['classcategory_name2'] =
-                    $arrClassCatName[$arrData['classcategory_id2']];
-
+                $objPage->arrProductsClass[$cnt]['classcategory_name2'] = $arrData['name2'];
                 // 価格の登録
                 $objCartSess->setProductValue($arrCart['id'], 'price', $arrData['price02']);
                 $objPage->arrProductsClass[$cnt]['uniq_price'] = $arrData['price02'];

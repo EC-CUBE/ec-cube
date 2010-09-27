@@ -123,6 +123,18 @@ __EOS__;
     }
 
     /**
+     * 商品詳細情報と商品規格を取得する.
+     *
+     * @param integer $productClassId 商品規格ID
+     * @return array 商品詳細情報と商品規格の配列
+     */
+    function getDetailAndProductsClass($productClassId) {
+        $result = $this->getProductsClass($productClassId);
+        $result = array_merge($result, $this->getDetail($result['product_id']));
+        return $result;
+    }
+
+    /**
      * 商品IDに紐づく商品規格を自分自身に設定する.
      *
      * 引数の商品IDの配列に紐づく商品規格を取得し, 自分自身のフィールドに
@@ -162,6 +174,8 @@ __EOS__;
             $this->stock_find[$productId] = false;
             $classCategories = array();
             $classCategories['']['']['name'] = '選択してください';
+            $classCategories['']['']['product_class_id'] = $arrProductClass[0]['product_class_id'];
+            $this->product_class_id[$productId] = $arrProductClass[0]['product_class_id'];
             foreach ($arrProductClass as $productsClass) {
                 $productsClass1 = $productsClass['classcategory_id1'];
                 $productsClass2 = $productsClass['classcategory_id2'];
@@ -200,6 +214,8 @@ __EOS__;
 
                 // 商品コード
                 $classCategories[$productsClass1][$productsClass2]['product_code'] = $productsClass['product_code'];
+                // 商品規格ID
+                $classCategories[$productsClass1][$productsClass2]['product_class_id'] = $productsClass['product_class_id'];
             }
 
             $this->classCategories[$productId] = $classCategories;
@@ -210,18 +226,13 @@ __EOS__;
     }
 
     /**
-     * 複数の商品IDに紐づいた, 商品規格を取得する.
+     * SC_Query インスタンスに設定された検索条件を使用して商品規格を取得する.
      *
-     * @param array $productIds 商品IDの配列
+     * @param SC_Query $objQuery SC_Queryインスタンス
+     * @param array $params 検索パラメータの配列
      * @return array 商品規格の配列
      */
-    function getProductsClassByProductIds($productIds = array()) {
-        if (empty($productIds)) {
-            return array();
-        }
-        $objQuery =& SC_Query::getSingletonInstance();
-        $objQuery->setWhere('product_id IN (' . implode(', ', array_pad(array(), count($productIds), '?')) . ')');
-        $objQuery->setOrder("T2.level DESC");
+    function getProductsClassByQuery(&$objQuery, $params) {
         // 末端の規格を取得
         $col = <<< __EOS__
             T1.product_id,
@@ -253,7 +264,7 @@ __EOS__;
             LEFT JOIN dtb_class T4
                    ON T3.class_id = T4.class_id
 __EOS__;
-        $arrRet = $objQuery->select($col, $table, "", $productIds);
+        $arrRet = $objQuery->select($col, $table, "", $params);
         $levels = array();
         $parents = array();
         foreach ($arrRet as $rows) {
@@ -316,29 +327,81 @@ __EOS__;
     }
 
     /**
+     * 商品規格IDから商品規格を取得する.
+     */
+    function getProductsClass($productClassId) {
+        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery->setWhere('product_class_id = ?');
+        $objQuery->setOrder("T2.level DESC");
+        $results = $this->getProductsClassByQuery($objQuery, $productClassId);
+        $productsClass = $this->getProductsClassFull($results);
+        return $productsClass[0];
+    }
+
+    /**
+     * 複数の商品IDに紐づいた, 商品規格を取得する.
+     *
+     * @param array $productIds 商品IDの配列
+     * @return array 商品規格の配列
+     */
+    function getProductsClassByProductIds($productIds = array()) {
+        if (empty($productIds)) {
+            return array();
+        }
+        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery->setWhere('product_id IN (' . implode(', ', array_pad(array(), count($productIds), '?')) . ')');
+        $objQuery->setOrder("T2.level DESC");
+        return $this->getProductsClassByQuery($objQuery, $productIds);
+    }
+
+    /**
      * 商品IDに紐づいた, 商品規格を階層ごとに取得する.
      *
-     * @param array $productId 商品IDの配列
+     * @param array $productId 商品ID
      * @return array 階層ごとの商品規格の配列
      */
     function getProductsClassLevelByProductId($productId) {
         $results = $this->getProductsClassByProductIds(array($productId));
-        foreach ($results as $row) {
+        return $this->getProductsClassLevel($results);
+    }
+
+    /**
+     * 商品IDに紐づいた, 商品規格をすべての組み合わせごとに取得する.
+     *
+     * @param array $productId 商品ID
+     * @return array すべての組み合わせの商品規格の配列
+     */
+    function getProductsClassFullByProductId($productId) {
+        $results = $this->getProductsClassByProductIds(array($productId));
+        return $this->getProductsClassFull($results);
+    }
+
+    /**
+     * 商品規格の配列から, 商品規格を階層ごとに取得する.
+     *
+     * @access private
+     * @param array $productsClassResults 商品規格の結果の配列
+     * @return array 階層ごとの商品規格の配列
+     */
+    function getProductsClassLevel($productsClassResults) {
+        foreach ($productsClassResults as $row) {
             $productsClassLevel["level" . $row['level']][] = $row;
         }
         return $productsClassLevel;
     }
 
     /**
-     * 商品IDに紐づいた, 商品規格をすべての組み合わせごとに取得する.
+     * 商品規格の配列から, 商品規格のすべての組み合わせを取得する.
      *
-     * @param array $productId 商品IDの配列
-     * @return array すべての組み合わせの商品規格の配列
+     * @access private
+     * @param array $productsClassResults 商品規格の結果の配列
+     * @ array 階層ごとの商品規格の配列
      */
-    function getProductsClassFullByProductId($productId) {
-        $results = $this->getProductsClassLevelByProductId($productId);
+    function getProductsClassFull($productsClassResults) {
+        $results = $this->getProductsClassLevel($productsClassResults);
         $productsClass = array();
-        if (SC_Utils_Ex::isBlank($results["level1"]) && SC_Utils_Ex::isBlank($results["level2"])) {
+        if (SC_Utils_Ex::isBlank($results["level1"])
+            && SC_Utils_Ex::isBlank($results["level2"])) {
             return $results["level"];
         }
 
