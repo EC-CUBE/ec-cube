@@ -458,5 +458,35 @@ __EOS__;
 __EOS__;
         return $sql;
     }
+
+    /**
+     * 商品規格ID1、2に紐づいた,product_class_idを取得する.
+     *
+     * @param int $productId 商品ID
+     * @param int $classcategory_id1 商品規格ID1
+     * @param int $classcategory_id2 商品規格ID2
+     * @return string product_class_id
+     */
+    function getClasscategoryIdsByProductClassId($productId, $classcategory_id1, $classcategory_id2) {
+        $objQuery = new SC_Query();
+        $col = "T1.product_id AS product_id,T1.product_class_id AS product_class_id,T1.classcategory_id1 AS classcategory_id1,T1.classcategory_id2 AS classcategory_id2";
+        $table = <<< __EOS__
+            (SELECT
+                pc.product_code AS product_code,
+                pc.product_id AS product_id,
+                pc.product_class_id AS product_class_id,
+                pc.class_combination_id AS class_combination_id,
+                COALESCE(cc2.classcategory_id,0) AS classcategory_id1,
+                COALESCE(cc1.classcategory_id,0) AS classcategory_id2
+            FROM
+                dtb_products_class pc LEFT JOIN dtb_class_combination cc1 ON pc.class_combination_id = cc1.class_combination_id
+                LEFT JOIN dtb_class_combination cc2 ON cc1.parent_class_combination_id = cc2.class_combination_id) T1
+__EOS__;
+        $where = "T1.product_id = ? AND T1.classcategory_id1 = ? AND T1.classcategory_id2 = ?";
+        $arrRet = $objQuery->select($col, $table, $where,
+                                    array($productId, $classcategory_id1, $classcategory_id2));
+        return $arrRet[0]['product_class_id'];
+    }
+
 }
 ?>

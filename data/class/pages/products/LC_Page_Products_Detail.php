@@ -188,7 +188,6 @@ class LC_Page_Products_Detail extends LC_Page {
                 $arrErr = $this->lfCheckError();
                 if (count($arrErr) == 0) {
                     $objCartSess = new SC_CartSession();
-                    $product_class_id = $_POST['product_class_id'];
                     $classcategory_id1 = $_POST['classcategory_id1'];
                     $classcategory_id2 = $_POST['classcategory_id2'];
 
@@ -205,7 +204,9 @@ class LC_Page_Products_Detail extends LC_Page {
                     if(!$this->tpl_classcat_find2) {
                         $classcategory_id2 = '0';
                     }
-
+                    // 規格IDを取得
+                    $objProduct = new SC_Product();
+                    $product_class_id = $objProduct->getClasscategoryIdsByProductClassId($_POST['product_id'],$classcategory_id1,$classcategory_id2);
                     $objCartSess->addProduct(array($_POST['product_id'], $product_class_id, $classcategory_id1, $classcategory_id2), $this->objFormParam->getValue('quantity'));
 
                     if (!empty($_POST['gmo_oneclick'])) {
