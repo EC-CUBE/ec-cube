@@ -428,35 +428,27 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
         $this->arrForm["class_id2"] = $existsProductsClass[0]['class_id2'];
         $this->arrForm['select_class_id1'] = $this->arrForm["class_id1"];
         $this->arrForm['select_class_id2'] = $this->arrForm["class_id2"];
-
         $this->arrClassCat = $this->getAllClassCategory($this->arrForm["class_id1"], $this->arrForm["class_id2"]);
-
         $total = count($this->arrClassCat);
-        for ($i = 1; $i <= $total; $i++) {
+        for ($i = 0; $i < $total; $i++) {
             if ($existsValue) {
                 foreach ($productsClass as $key => $val) {
                 	if(!$usepostValue){
-                    	$this->arrForm[$key . ":" . $i] = $val;
+                    	$this->arrForm[$key . ":" . ($i+1)] = $val;
                 	}
                 }
             }
             foreach ($existsProductsClass[$i] as $key => $val) {
             	if(!$usepostValue){
-                	$this->arrForm[$key . ":" . $i] = $val;
+                	$this->arrForm[$key . ":" . ($i+1)] = $val;
             	}
-            }
-            if (!SC_Utils_Ex::isBlank($this->arrForm['product_id:' . $i])
-                && $this->arrForm["del_flg:" . $i] == 0) {
-                $line .= "'check:" . $i . "',";
-            }
-        }
-        //直前のLoopが$existsProductsClassを1始まりで参照しているので最初の情報が抜ける？
-        for ($i = 0; $i < $total; $i++) {
-            foreach ($existsProductsClass[$i] as $key => $val) {
-                //ダウンロードファイル初期設定
                 if($key=="down"){
                     $this->objDownFile->addFile("ダウンロード販売用ファイル". ":" . ($i+1), 'down_realfilename'. ":" . ($i+1), explode(",", DOWNLOAD_EXTENSION),DOWN_SIZE, true, 0, 0);
                 }
+            }
+            if (!SC_Utils_Ex::isBlank($this->arrForm['product_id:' . ($i+1)])
+                && $this->arrForm["del_flg:" . ($i+1)] == 0) {
+                $line .= "'check:" . ($i+1) . "',";
             }
         }
 
