@@ -139,7 +139,7 @@ class LC_Page_Mypage_HistoryDetail extends LC_Page {
     // 受注詳細データの取得
     function lfGetOrderDetail($order_id) {
         $objQuery = new SC_Query();
-        $col = "product_id, product_code, product_name, classcategory_name1, classcategory_name2, price, quantity, point_rate";
+        $col = "product_id, product_class_id, product_code, product_name, classcategory_name1, classcategory_name2, price, quantity, point_rate";
         $where = "order_id = ?";
         $objQuery->setOrder("product_class_id");
         $arrRet = $objQuery->select($col, "dtb_order_detail", $where, array($order_id));

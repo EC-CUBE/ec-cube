@@ -64,11 +64,12 @@ class LC_Page_Mypage_Order extends LC_Page {
 
         for($num = 0; $num < count($arrDisp); $num++) {
             $product_id = $arrDisp[$num]['product_id'];
+            $product_class_id = $arrDisp[$num]['product_class_id'];
             $cate_id1 = $arrDisp[$num]['classcategory_id1'];
             $cate_id2 = $arrDisp[$num]['classcategory_id2'];
             $quantity = $arrDisp[$num]['quantity'];
 
-            $objCartSess->addProduct(array($product_id, $cate_id1, $cate_id2), $quantity);
+            $objCartSess->addProduct(array($product_id, $product_class_id, $cate_id1, $cate_id2), $quantity);
         }
         $this->sendRedirect($this->getLocation(URL_CART_TOP));
     }
@@ -101,11 +102,12 @@ class LC_Page_Mypage_Order extends LC_Page {
 
         for($num = 0; $num < count($arrDisp); $num++) {
             $product_id = $arrDisp[$num]['product_id'];
+            $product_class_id = $arrDisp[$num]['product_class_id'];
             $cate_id1 = $arrDisp[$num]['classcategory_id1'];
             $cate_id2 = $arrDisp[$num]['classcategory_id2'];
             $quantity = $arrDisp[$num]['quantity'];
 
-            $objCartSess->addProduct(array($product_id, $cate_id1, $cate_id2), $quantity);
+            $objCartSess->addProduct(array($product_id, $product_class_id, $cate_id1, $cate_id2), $quantity);
         }
         $this->sendRedirect($this->getLocation(MOBILE_URL_CART_TOP), true);
     }
@@ -127,12 +129,12 @@ class LC_Page_Mypage_Order extends LC_Page {
         $customer_id = $objCustomer->getValue("customer_id");
         $order_count = $objQuery->count("dtb_order", "order_id = ? and customer_id = ?", array($order_id, $customer_id));
         if ($order_count != 1) return array();
-        $col = "product_id, classcategory_id1, classcategory_id2, quantity";
+        $col = "product_id, product_class_id, quantity";
         $where = "order_id = ?";
-        $objQuery->setOrder("classcategory_id1, classcategory_id2");
+        $objQuery->setOrder("product_class_id");
         $arrRet = $objQuery->select($col, "dtb_order_detail", $where, array($order_id));
         return $arrRet;
     }
-    
+
 }
 ?>
