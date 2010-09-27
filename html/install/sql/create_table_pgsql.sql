@@ -766,8 +766,7 @@ CREATE TABLE dtb_other_deliv (
 CREATE TABLE dtb_order_detail (
     order_id int NOT NULL,
     product_id int NOT NULL,
-    classcategory_id1 int NOT NULL,
-    classcategory_id2 int NOT NULL,
+    product_class_id int NOT NULL,
     product_name text NOT NULL,
     product_code text,
     classcategory_name1 text,

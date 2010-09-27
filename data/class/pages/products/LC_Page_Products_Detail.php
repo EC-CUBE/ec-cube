@@ -158,7 +158,7 @@ class LC_Page_Products_Detail extends LC_Page {
 
         // 規格2クラス名
         $this->tpl_class_name2 = $objProduct->className2[$product_id];
-        
+
         // 規格1
         $this->arrClassCat1 = $objProduct->classCats1[$product_id];
 
@@ -180,7 +180,7 @@ class LC_Page_Products_Detail extends LC_Page {
 
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
         $arrErr = array();
-        
+
         switch($_POST['mode']) {
             case 'cart':
                 // 入力値の変換
@@ -188,6 +188,7 @@ class LC_Page_Products_Detail extends LC_Page {
                 $arrErr = $this->lfCheckError();
                 if (count($arrErr) == 0) {
                     $objCartSess = new SC_CartSession();
+                    $product_class_id = $_POST['product_class_id'];
                     $classcategory_id1 = $_POST['classcategory_id1'];
                     $classcategory_id2 = $_POST['classcategory_id2'];
 
@@ -205,7 +206,7 @@ class LC_Page_Products_Detail extends LC_Page {
                         $classcategory_id2 = '0';
                     }
 
-                    $objCartSess->addProduct(array($_POST['product_id'], $classcategory_id1, $classcategory_id2), $this->objFormParam->getValue('quantity'));
+                    $objCartSess->addProduct(array($_POST['product_id'], $product_class_id, $classcategory_id1, $classcategory_id2), $this->objFormParam->getValue('quantity'));
 
                     if (!empty($_POST['gmo_oneclick'])) {
                         $objSiteSess = new SC_SiteSession;
@@ -232,14 +233,14 @@ class LC_Page_Products_Detail extends LC_Page {
 
         // サブタイトルを取得
         $this->tpl_subtitle = $this->arrProduct['name'];
-        
+
         // 関連カテゴリを取得
         $this->arrRelativeCat = $objDb->sfGetMultiCatTree($product_id);
-        
+
         // 画像ファイル指定がない場合の置換処理
         $this->arrProduct['main_image']
             = SC_Utils_Ex::sfNoImageMain($this->arrProduct['main_image']);
-        
+
         $this->lfSetFile();
         // 支払方法の取得
         $this->arrPayment = $this->lfGetPayment();
@@ -295,7 +296,7 @@ class LC_Page_Products_Detail extends LC_Page {
     function mobileProcess() {
         // プロダクトIDの正当性チェック
         $product_id = $this->lfCheckProductId();
-        
+
         $objView = new SC_MobileView();
         $objCustomer = new SC_Customer();
         $objQuery = new SC_Query();
@@ -397,6 +398,7 @@ class LC_Page_Products_Detail extends LC_Page {
             $this->arrErr = $this->lfCheckError();
             if(count($this->arrErr) == 0) {
                 $objCartSess = new SC_CartSession();
+                $product_class_id = $_POST['product_class_id'];
                 $classcategory_id1 = $_POST['classcategory_id1'];
                 $classcategory_id2 = $_POST['classcategory_id2'];
 
@@ -410,7 +412,7 @@ class LC_Page_Products_Detail extends LC_Page {
                     $classcategory_id2 = '0';
                 }
 
-                $objCartSess->addProduct(array($_POST['product_id'], $classcategory_id1, $classcategory_id2), $this->objFormParam->getValue('quantity'));
+                $objCartSess->addProduct(array($_POST['product_id'], $product_class_id, $classcategory_id1, $classcategory_id2), $this->objFormParam->getValue('quantity'));
                 $this->sendRedirect($this->getLocation(MOBILE_URL_CART_TOP), true);
                 exit;
             }
@@ -426,11 +428,11 @@ class LC_Page_Products_Detail extends LC_Page {
 
         // サブタイトルを取得
         $this->tpl_subtitle = $this->arrProduct["name"];
-        
+
         // 画像ファイル指定がない場合の置換処理
         $this->arrProduct['main_image']
             = SC_Utils_Ex::sfNoImageMain($this->arrProduct['main_image']);
-        
+
         // ファイル情報のセット
         $this->lfSetFile();
         // 支払方法の取得

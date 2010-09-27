@@ -144,24 +144,26 @@ class LC_Page_Products_List extends LC_Page {
             // 入力内容のチェック
             $arrErr = $this->lfCheckError($product_id);
             if (count($arrErr) == 0) {
+                $product_class_id = $this->arrForm['product_class_id'];
                 $classcategory_id1 = $this->arrForm['classcategory_id1'];
                 $classcategory_id2 = $this->arrForm['classcategory_id2'];
-                    // 規格1が設定されていない場合
+                // 規格1が設定されていない場合
                 if (!$this->tpl_classcat_find1[$product_id]) {
-                        $classcategory_id1 = '0';
-                    }
-                    // 規格2が設定されていない場合
+                    $classcategory_id1 = '0';
+                }
+                // 規格2が設定されていない場合
                 if (!$this->tpl_classcat_find2[$product_id]) {
-                        $classcategory_id2 = '0';
-                    }
+                    $classcategory_id2 = '0';
+                }
                 $objCartSess = new SC_CartSession();
-                $objCartSess->addProduct(array($product_id, $classcategory_id1, $classcategory_id2), $this->arrForm['quantity']);
+                $objCartSess->addProduct(array($product_id, $product_class_id, $classcategory_id1, $classcategory_id2), $this->arrForm['quantity']);
                     $this->sendRedirect($this->getLocation(URL_CART_TOP));
                     exit;
             }
             foreach (array_keys($this->arrProducts) as $key) {
                 $arrProduct =& $this->arrProducts[$key];
                 if ($arrProduct['product_id'] == $product_id) {
+                    $arrProduct['product_class_id'] = $this->arrForm['product_class_id'];
                     $arrProduct['classcategory_id1'] = $this->arrForm['classcategory_id1'];
                     $arrProduct['classcategory_id2'] = $this->arrForm['classcategory_id2'];
                     $arrProduct['quantity'] = $this->arrForm['quantity'];

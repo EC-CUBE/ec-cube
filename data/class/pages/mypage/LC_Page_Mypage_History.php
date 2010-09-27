@@ -226,11 +226,11 @@ class LC_Page_Mypage_History extends LC_Page {
         $col = "od.product_id AS product_id, od.product_code AS product_code, od.product_name AS product_name, od.classcategory_name1 AS classcategory_name1,";
         $col .= "od.classcategory_name2 AS classcategory_name2, od.price AS price, od.quantity AS quantity, od.point_rate AS point_rate";
         $col .= ",CASE WHEN EXISTS(SELECT * FROM dtb_products WHERE product_id = od.product_id AND del_flg = 0 AND status = 1) THEN '1' ELSE '0' END AS enable";
-        $col .= ",o.status AS status, pc.down AS down, o.payment_date AS payment_date, od.classcategory_id1 as classcategory_id1, od.classcategory_id2 as classcategory_id2, ";
+        $col .= ",o.status AS status, pc.down AS down, o.payment_date AS payment_date, od.product_class_id as product_class_id, ";
         $col .= $dbFactory->getDownloadableDaysWhereSql("o");
         $col .= " AS effective";
 
-        $where = "p.product_id = od.product_id AND pc.product_id = od.product_id AND pc.classcategory_id1 = od.classcategory_id1 AND pc.classcategory_id2 = od.classcategory_id2 AND od.order_id = o.order_id AND od.order_id = ?";
+        $where = "p.product_id = od.product_id AND pc.product_id = od.product_id AND pc.product_class_id = od.product_class_id AND od.order_id = o.order_id AND od.order_id = ?";
         $arrRet = $objQuery->select($col, "dtb_products p, dtb_products_class pc, dtb_order_detail od, dtb_order o", $where);
         return $arrRet;
     }

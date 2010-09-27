@@ -256,13 +256,7 @@ __EOS__;
         $arrRet = $objQuery->select($col, $table, "", $productIds);
         $levels = array();
         $parents = array();
-		$i = 0;
         foreach ($arrRet as $rows) {
-        	if($rows['level']==""){
-        		$rows['level']="1";
-        		$arrRet[$i]['level'] = $rows['level'];
-
-        	}
             $levels[] = $rows['level'];
             $parents[] = $rows['parent_class_combination_id'];
         }

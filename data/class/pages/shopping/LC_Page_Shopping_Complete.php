@@ -543,8 +543,9 @@ class LC_Page_Shopping_Complete extends LC_Page {
             if($arrData != "") {
                 $sqlval['order_id'] = $order_id;
                 $sqlval['product_id'] = $arrCart[$i]['id'][0];
-                $sqlval['classcategory_id1'] = $arrCart[$i]['id'][1];
-                $sqlval['classcategory_id2'] = $arrCart[$i]['id'][2];
+                $sqlval['product_class_id'] = $arrCart[$i]['id'][1];
+                $sqlval['classcategory_id1'] = $arrCart[$i]['id'][2];
+                $sqlval['classcategory_id2'] = $arrCart[$i]['id'][3];
                 $sqlval['product_name'] = $arrData['name'];
                 $sqlval['product_code'] = $arrData['product_code'];
                 $sqlval['classcategory_name1'] = $arrClassCatName[$arrData['classcategory_id1']];
@@ -674,10 +675,10 @@ class LC_Page_Shopping_Complete extends LC_Page {
 
         $objProduct = new SC_Product();
         $productsClass = $objProduct->getProductsClassFullByProductId($arrID[0]);
-    
+
         foreach ($productsClass as $val) {
-            if ($val['classcategory_id1'] == $arrID[1]
-                && $val['classcategory_id2'] == $arrID[2]) {
+            if ($val['classcategory_id1'] == $arrID[2]
+                && $val['classcategory_id2'] == $arrID[3]) {
 
                 if (($val['stock_unlimited'] != '1' && $val['stock'] < $quantity) || $quantity == 0) {
                     // 売り切れエラー

@@ -57,16 +57,14 @@ class LC_Page_Mypage_DownLoad extends LC_Page {
         $customer_id = $_SESSION['customer']['customer_id'];
         $order_id = $_GET['order_id'];
         $product_id = $_GET['product_id'];
-        $classcategory_id1 = $_GET['classcategory_id1'];
-        $classcategory_id2 = $_GET['classcategory_id2'];
+        $product_class_id = $_GET['product_class_id'];
 
         // ID の数値チェック
         // TODO SC_FormParam でチェックした方が良い?
         if (!is_numeric($customer_id)
             || !is_numeric($order_id)
             || !is_numeric($product_id)
-            || !is_numeric($classcategory_id1)
-            || !is_numeric($classcategory_id2)) {
+            || !is_numeric($product_class_id)) {
             SC_Utils_Ex::sfDispSiteError("");
         }
 
@@ -78,7 +76,7 @@ class LC_Page_Mypage_DownLoad extends LC_Page {
         //ログインしている場合
             //DBから商品情報の読込
 
-            $arrForm = $this->lfGetRealFileName($customer_id, $order_id, $product_id, $classcategory_id1, $classcategory_id2);
+            $arrForm = $this->lfGetRealFileName($customer_id, $order_id, $product_id, $product_class_id);
 
             //ステータスが支払済み以上である事
             if ($arrForm["status"] < ORDER_DELIV){
@@ -124,18 +122,34 @@ class LC_Page_Mypage_DownLoad extends LC_Page {
      * @param integer $customer_id 顧客ID
      * @param integer $order_id 受注ID
      * @param integer $product_id 商品ID
+     * @param integer $product_class_id 商品規格ID
      * @return array 商品情報の配列
      */
-    function lfGetRealFileName($customer_id, $order_id, $product_id, $classcategory_id1, $classcategory_id2) {
+    function lfGetRealFileName($customer_id, $order_id, $product_id, $product_class_id) {
         $objQuery = new SC_Query();
-        $col = "*";
-        $table = "vw_download_class AS T1";
+        $col = <<< __EOS__
+            pc.product_id AS product_id,
+            pc.product_class_id AS product_class_id,
+            pc.down_realfilename AS down_realfilename,
+            pc.down_filename AS down_filename,
+            o.order_id AS order_id,
+            o.customer_id AS customer_id,
+            o.payment_date AS payment_date,
+            o.status AS status
+__EOS__;
+
+        $table = <<< __EOS__
+            dtb_products_class pc,
+            dtb_order_detail od,
+            dtb_order o
+__EOS__;
+
         $dbFactory = SC_DB_DBFactory_Ex::getInstance();
-        $where = "T1.customer_id = ? AND T1.order_id = ? AND T1.product_id = ? AND T1.classcategory_id1 = ? AND T1.classcategory_id2 = ?";
-        $where .= " AND " . $dbFactory->getDownloadableDaysWhereSql("T1");
+        $where = "o.customer_id = ? AND o.order_id = ? AND pc.product_id = ? AND pc.product_class_id = ?";
+        $where .= " AND " . $dbFactory->getDownloadableDaysWhereSql();
         $where .= " = 1";
         $arrRet = $objQuery->select($col, $table, $where,
-                                    array($customer_id, $order_id, $product_id, $classcategory_id1, $classcategory_id2));
+                                    array($customer_id, $order_id, $product_id, $product_class_id));
         return $arrRet[0];
     }
 
