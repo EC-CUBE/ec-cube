@@ -35,18 +35,19 @@ class SC_CartSession {
     }
 
     // 商品購入処理中のロック
-    function saveCurrentCart($key_tmp) {
+    function saveCurrentCart($key_tmp, $key) {
         $this->key_tmp = "savecart_" . $key_tmp;
         // すでに情報がなければ現状のカート情報を記録しておく
         if(count($_SESSION[$this->key_tmp]) == 0) {
-            $_SESSION[$this->key_tmp] = $_SESSION[$this->key];
+            $_SESSION[$this->key_tmp] = $_SESSION[$key];
         }
         // 1世代古いコピー情報は、削除しておく
-        foreach($_SESSION as $key => $val) {
-            if($key != $this->key_tmp && ereg("^savecart_", $key)) {
-                unset($_SESSION[$key]);
+        foreach($_SESSION as $k => $val) {
+            if($k != $this->key_tmp && preg_match("/^savecart_/", $k)) {
+                unset($_SESSION[$key][$k]);
             }
         }
+        $this->registerKey($key);
     }
 
     // 商品購入中の変更があったかをチェックする。
@@ -360,6 +361,14 @@ class SC_CartSession {
                 }
             }
         }
+    }
+
+    function registerKey($key) {
+        $_SESSION['cartKey'] = $key;
+    }
+
+    function unsetKey() {
+        unset($_SESSION['cartKey']);
     }
 }
 ?>

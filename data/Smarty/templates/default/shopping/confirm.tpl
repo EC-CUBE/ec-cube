@@ -74,39 +74,39 @@
                 <tr>
                     <td class="phototd">
                         <a
-                            <!--{if $arrProductsClass[cnt].main_image|strlen >= 1}-->
-                                href="<!--{$smarty.const.IMAGE_SAVE_URL}--><!--{$arrProductsClass[cnt].main_image|sfNoImageMainList|escape}-->"
+                            <!--{if $arrProductsClass[cnt][$cartKey].main_image|strlen >= 1}-->
+                                href="<!--{$smarty.const.IMAGE_SAVE_URL}--><!--{$arrProductsClass[cnt][$cartKey].main_image|sfNoImageMainList|escape}-->"
                                 class="expansion"
                                 target="_blank"
                             <!--{/if}-->
                         >
-                            <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$arrProductsClass[cnt].main_list_image|sfNoImageMainList|escape}-->&amp;width=65&amp;height=65" alt="<!--{$arrProductsClass[cnt].name|escape}-->" /></a>
+                            <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$arrProductsClass[cnt][$cartKey].main_list_image|sfNoImageMainList|escape}-->&amp;width=65&amp;height=65" alt="<!--{$arrProductsClass[cnt][$cartKey].name|escape}-->" /></a>
                     </td>
                     <td>
                         <ul>
-                            <li><strong><!--{$arrProductsClass[cnt].name|escape}--></strong></li>
-                            <!--{if $arrProductsClass[cnt].classcategory_name1 != ""}-->
-                            <li><!--{$arrProductsClass[cnt].class_name1}-->：<!--{$arrProductsClass[cnt].classcategory_name1}--></li>
+                            <li><strong><!--{$arrProductsClass[cnt][$cartKey].name|escape}--></strong></li>
+                            <!--{if $arrProductsClass[cnt][$cartKey].classcategory_name1 != ""}-->
+                            <li><!--{$arrProductsClass[cnt][$cartKey].class_name1}-->：<!--{$arrProductsClass[cnt][$cartKey].classcategory_name1}--></li>
                             <!--{/if}-->
-                            <!--{if $arrProductsClass[cnt].classcategory_name2 != ""}-->
-                            <li><!--{$arrProductsClass[cnt].class_name2}-->：<!--{$arrProductsClass[cnt].classcategory_name2}--></li>
+                            <!--{if $arrProductsClass[cnt][$cartKey].classcategory_name2 != ""}-->
+                            <li><!--{$arrProductsClass[cnt][$cartKey].class_name2}-->：<!--{$arrProductsClass[cnt][$cartKey].classcategory_name2}--></li>
                             <!--{/if}-->
                         </ul>
                  </td>
                  <td class="pricetd">
-                 <!--{if $arrProductsClass[cnt].price02 != ""}-->
-                     <!--{$arrProductsClass[cnt].price02|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
+                 <!--{if $arrProductsClass[cnt][$cartKey].price02 != ""}-->
+                     <!--{$arrProductsClass[cnt][$cartKey].price02|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
                  <!--{else}-->
-                     <!--{$arrProductsClass[cnt].price01|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
+                     <!--{$arrProductsClass[cnt][$cartKey].price01|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
                  <!--{/if}-->
                  </td>
-                 <td><!--{$arrProductsClass[cnt].quantity|number_format}--></td>
-                 <td class="pricetd"><!--{$arrProductsClass[cnt].total_pretax|number_format}-->円</td>
+                 <td><!--{$arrProductsClass[cnt][$cartKey].quantity|number_format}--></td>
+                 <td class="pricetd"><!--{$arrProductsClass[cnt][$cartKey].total_pretax|number_format}-->円</td>
              </tr>
              <!--{/section}-->
                 <tr>
                     <th colspan="4" class="resulttd">小計</th>
-                    <td class="pricetd"><!--{$tpl_total_pretax|number_format}-->円</td>
+                    <td class="pricetd"><!--{$tpl_total_pretax[$cartKey]|number_format}-->円</td>
                 </tr>
                 <!--{if $smarty.const.USE_POINT !== false}-->
                     <tr>

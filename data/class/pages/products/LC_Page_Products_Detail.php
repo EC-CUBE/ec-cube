@@ -169,6 +169,7 @@ class LC_Page_Products_Detail extends LC_Page {
 
         $this->tpl_stock_find = $objProduct->stock_find[$product_id];
         $this->tpl_product_class_id = $objProduct->classCategories[$product_id]['']['']['product_class_id'];
+        $this->tpl_product_type = $objProduct->classCategories[$product_id]['']['']['product_type'];
 
         require_once DATA_PATH . 'module/Services/JSON.php';
         $objJson = new Services_JSON();
@@ -192,6 +193,7 @@ class LC_Page_Products_Detail extends LC_Page {
                     $classcategory_id1 = $_POST['classcategory_id1'];
                     $classcategory_id2 = $_POST['classcategory_id2'];
                     $product_class_id = $_POST['product_class_id'];
+                    $product_type = $_POST['product_type'];
 
                     if (!empty($_POST['gmo_oneclick'])) {
                         $objCartSess->delAllProducts();
@@ -206,9 +208,7 @@ class LC_Page_Products_Detail extends LC_Page {
                     if(!$this->tpl_classcat_find2) {
                         $classcategory_id2 = '0';
                     }
-                    // 規格IDを取得
-                    $objProduct = new SC_Product();
-                    $objCartSess->addProduct($product_class_id, $this->objFormParam->getValue('quantity'));
+                    $objCartSess->addProduct($product_class_id, $this->objFormParam->getValue('quantity'), $product_type);
 
                     if (!empty($_POST['gmo_oneclick'])) {
                         $objSiteSess = new SC_SiteSession;

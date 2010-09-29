@@ -83,7 +83,8 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         $this->cartdown = $objDb->chkCartDown($objCartSess);
 
         // カート集計処理
-        $objDb->sfTotalCart($this, $objCartSess);
+        $this->cartKey = $_SESSION['cartKey'];
+        $objDb->sfTotalCart($this, $objCartSess, $this->cartKey);
         if (strlen($this->tpl_message) >= 1) {
             SC_Utils_Ex::sfDispSiteError(SOLD_OUT, '', true);
         }

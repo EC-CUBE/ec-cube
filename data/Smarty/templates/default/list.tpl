@@ -120,6 +120,17 @@ function fnCheckStock(form) {
     } else {
         eleDynamic.value = ''
     }
+    // 商品種別
+    eleDynamic = document.getElementById('product_type' + product_id);
+    if (
+           classcat2
+        && typeof classcat2.product_type != 'undefined'
+        && String(classcat2.product_type).length >= 1
+    ) {
+        eleDynamic.value = classcat2.product_type;
+    } else {
+        eleDynamic.value = ''
+    }
 }
 //]]>
 </script>
@@ -143,6 +154,7 @@ function fnCheckStock(form) {
         <input type="hidden" name="classcategory_id1" value="" />
         <input type="hidden" name="classcategory_id2" value="" />
         <input type="hidden" name="product_class_id" value="" />
+        <input type="hidden" name="product_type" value="" />
         <input type="hidden" name="quantity" value="" />
         <!--{* ▲注文関連 *}-->
         <input type="hidden" name="rnd" value="<!--{$tpl_rnd|escape}-->" />
@@ -267,6 +279,7 @@ function fnCheckStock(form) {
                 <form name="product_form<!--{$id|escape}-->" action="?" onsubmit="return false;">
                     <input type="hidden" name="product_id" value="<!--{$id|escape}-->" />
                     <input type="hidden" name="product_class_id" id="product_class_id<!--{$id|escape}-->" value="<!--{$tpl_product_class_id[$id]}-->" />
+                    <input type="hidden" name="product_type" id="product_type<!--{$id|escape}-->" value="<!--{$tpl_product_type[$id]}-->" />
                     <div class="in_cart">
                         <!--{if $tpl_stock_find[$id]}-->
                             <dl>

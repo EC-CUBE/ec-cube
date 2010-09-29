@@ -244,16 +244,11 @@ class SC_Helper_DB {
      * @param null $dummy1 互換性確保用(決済モジュール互換のため)
      * @return LC_Page 集計処理後のページクラスインスタンス
      */
-    function sfTotalCart(&$objPage, $objCartSess, $dummy1 = null) {
+    function sfTotalCart(&$objPage, $objCartSess, $dummy1 = null, $key = "") {
 
-        // 規格名一覧
-        $arrClassName = $this->sfGetIDValueList("dtb_class", "class_id", "name");
-        // 規格分類名一覧
-        $arrClassCatName = $this->sfGetIDValueList("dtb_classcategory", "classcategory_id", "name");
-
-        $objPage->tpl_total_pretax = 0;     // 費用合計(税込み)
-        $objPage->tpl_total_tax = 0;        // 消費税合計
-        $objPage->tpl_total_point = 0;      // ポイント合計
+        $objPage->tpl_total_pretax[$key] = 0;     // 費用合計(税込み)
+        $objPage->tpl_total_tax[$key] = 0;        // 消費税合計
+        $objPage->tpl_total_point[$key] = 0;      // ポイント合計
 
         $objProduct = new SC_Product();
         // カート内情報の取得
@@ -297,31 +292,31 @@ class SC_Helper_DB {
                 $arrQuantityInfo_by_product[$product_id]['sale_limit'] = $arrData['sale_limit'];
                 $arrQuantityInfo_by_product[$product_id]['name'] = $arrData['name'];
 
-                $objPage->arrProductsClass[$cnt] = $arrData;
-                $objPage->arrProductsClass[$cnt]['quantity'] = $quantity;
-                $objPage->arrProductsClass[$cnt]['cart_no'] = $arrCart['cart_no'];
-                $objPage->arrProductsClass[$cnt]['class_name1'] =
+                $objPage->arrProductsClass[$cnt][$key] = $arrData;
+                $objPage->arrProductsClass[$cnt]['quantity'][$key] = $quantity;
+                $objPage->arrProductsClass[$cnt]['cart_no'][$key] = $arrCart['cart_no'];
+                $objPage->arrProductsClass[$cnt]['class_name1'][$key] =
                     isset($arrData['class_name1'])
                         ? $arrData['class_name1'] : "";
 
-                $objPage->arrProductsClass[$cnt]['class_name2'] =
+                $objPage->arrProductsClass[$cnt]['class_name2'][$key] =
                     isset($arrData['class_name2'])
                         ? $arrData['class_name2'] : "";
 
-                $objPage->arrProductsClass[$cnt]['classcategory_name1'] = $arrData['name1'];
+                $objPage->arrProductsClass[$cnt]['classcategory_name1'][$key] = $arrData['name1'];
 
-                $objPage->arrProductsClass[$cnt]['classcategory_name2'] = $arrData['name2'];
+                $objPage->arrProductsClass[$cnt]['classcategory_name2'][$key] = $arrData['name2'];
                 // 価格の登録
                 $objCartSess->setProductValue($arrCart['id'], 'price', $arrData['price02']);
-                $objPage->arrProductsClass[$cnt]['uniq_price'] = $arrData['price02'];
+                $objPage->arrProductsClass[$cnt]['uniq_price'][$key] = $arrData['price02'];
                 // ポイント付与率の登録
                 if (USE_POINT !== false) {
                     $objCartSess->setProductValue($arrCart['id'], 'point_rate', $arrData['point_rate']);
                 }
                 // 商品ごとの合計金額
-                $objPage->arrProductsClass[$cnt]['total_pretax'] = $objCartSess->getProductTotal($arrCart['id']);
+                $objPage->arrProductsClass[$cnt]['total_pretax'][$key] = $objCartSess->getProductTotal($arrCart['id']);
                 // 送料の合計を計算する
-                $objPage->tpl_total_deliv_fee+= ($arrData['deliv_fee'] * $arrCart['quantity']);
+                $objPage->tpl_total_deliv_fee[$key] += ($arrData['deliv_fee'] * $arrCart['quantity']);
                 $cnt++;
             } else { // DBに商品が見つからない場合、
                 $objPage->tpl_message .= "※ 現時点で販売していない商品が含まれておりました。該当商品をカートから削除しました。\n";
@@ -334,8 +329,8 @@ class SC_Helper_DB {
             if (SC_Utils_Ex::sfIsInt($quantityInfo['sale_limit']) && $quantityInfo['quantity'] > $quantityInfo['sale_limit']) {
                 $objPage->tpl_error = "※「{$quantityInfo['name']}」は数量「{$quantityInfo['sale_limit']}」以下に販売制限しております。一度にこれ以上の購入はできません。\n";
                 // 販売制限に引っかかった商品をマークする
-                foreach (array_keys($objPage->arrProductsClass) as $key) {
-                    $ProductsClass =& $objPage->arrProductsClass[$key];
+                foreach (array_keys($objPage->arrProductsClass) as $k) {
+                    $ProductsClass =& $objPage->arrProductsClass[$k];
                     if ($ProductsClass['product_id'] == $product_id) {
                         $ProductsClass['error'] = true;
                     }
@@ -344,12 +339,12 @@ class SC_Helper_DB {
         }
 
         // 全商品合計金額(税込み)
-        $objPage->tpl_total_pretax = $objCartSess->getAllProductsTotal();
+        $objPage->tpl_total_pretax[$key] = $objCartSess->getAllProductsTotal();
         // 全商品合計消費税
-        $objPage->tpl_total_tax = $objCartSess->getAllProductsTax();
+        $objPage->tpl_total_tax[$key] = $objCartSess->getAllProductsTax();
         // 全商品合計ポイント
         if (USE_POINT !== false) {
-            $objPage->tpl_total_point = $objCartSess->getAllProductsPoint();
+            $objPage->tpl_total_point[$key] = $objCartSess->getAllProductsPoint();
         }
 
         return $objPage;
@@ -1446,7 +1441,7 @@ __EOS__;
      * @param SC_Customer $objCustomer SC_Customer インスタンス
      * @return array 最終計算後の配列
      */
-    function sfTotalConfirm($arrData, &$objPage, &$objCartSess, $dummy1 = null, $objCustomer = "") {
+    function sfTotalConfirm($arrData, &$objPage, &$objCartSess, $dummy1 = null, $objCustomer = "", $key = "") {
         // 店舗基本情報を取得する
         $arrInfo = SC_Helper_DB_Ex::sf_getBasisData();
 
@@ -1458,9 +1453,9 @@ __EOS__;
         if (!isset($arrData['add_point'])) $arrData['add_point'] = 0;
 
         // 税金の取得
-        $arrData['tax'] = $objPage->tpl_total_tax;
+        $arrData['tax'] = $objPage->tpl_total_tax[$key];
         // 小計の取得
-        $arrData['subtotal'] = $objPage->tpl_total_pretax;
+        $arrData['subtotal'] = $objPage->tpl_total_pretax[$key];
 
         // 合計送料の取得
         $arrData['deliv_fee'] = 0;
@@ -1501,14 +1496,14 @@ __EOS__;
         }
 
         // 合計の計算
-        $arrData['total'] = $objPage->tpl_total_pretax; // 商品合計
+        $arrData['total'] = $objPage->tpl_total_pretax[$key]; // 商品合計
         $arrData['total']+= $arrData['deliv_fee'];      // 送料
         $arrData['total']+= $arrData['charge'];         // 手数料
         // お支払い合計
         $arrData['payment_total'] = $arrData['total'] - ($arrData['use_point'] * POINT_VALUE);
         // 加算ポイントの計算
         if (USE_POINT !== false) {
-            $arrData['add_point'] = SC_Helper_DB_Ex::sfGetAddPoint($objPage->tpl_total_point, $arrData['use_point']);
+            $arrData['add_point'] = SC_Helper_DB_Ex::sfGetAddPoint($objPage->tpl_total_point[$key], $arrData['use_point']);
 
             if($objCustomer != "") {
                 // 誕生日月であった場合

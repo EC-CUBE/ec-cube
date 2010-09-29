@@ -100,7 +100,8 @@ class LC_Page_Cart extends LC_Page {
             break;
         case 'confirm':
             // カート内情報の取得
-            $arrRet = $objCartSess->getCartList();
+            $cartKey = $_POST['cartKey']; // TODO
+            $arrRet = $objCartSess->getCartList($cartKey);
             $max = count($arrRet);
             $cnt = 0;
             for ($i = 0; $i < $max; $i++) {
@@ -127,7 +128,7 @@ class LC_Page_Cart extends LC_Page {
                     $objQuery->update("dtb_order_temp", $sqlval, $where, array($pre_uniqid));
                 }
                 // カートを購入モードに設定
-                $objCartSess->saveCurrentCart($uniqid);
+                $objCartSess->saveCurrentCart($uniqid, $cartKey);
                 // 購入ページへ
                 $this->sendRedirect(URL_SHOP_TOP);
                 exit;
@@ -137,12 +138,19 @@ class LC_Page_Cart extends LC_Page {
             break;
         }
 
-        // カート集計処理
-        $objDb->sfTotalCart($this, $objCartSess);
-        $this->arrData = $objDb->sfTotalConfirm($this->arrData, $this, $objCartSess, null, $objCustomer);
-
         // 基本情報の取得
         $this->arrInfo = $objSiteInfo->data;
+
+        $this->cartKeys = $objCartSess->getKeys();
+        foreach ($this->cartKeys as $key) {
+            // カート集計処理
+            $objDb->sfTotalCart($this, $objCartSess, $key);
+            $this->arrData = $objDb->sfTotalConfirm($this->arrData, $this, $objCartSess, null, $objCustomer, $key);
+            // 送料無料までの金額を計算
+            $this->tpl_deliv_free[$key] = $this->arrInfo['free_rule'] - $this->tpl_total_pretax[$key];
+
+
+        }
 
         // ログイン判定
         if($objCustomer->isLoginSuccess()) {
@@ -151,8 +159,6 @@ class LC_Page_Cart extends LC_Page {
             $this->tpl_name = $objCustomer->getValue('name01');
         }
 
-        // 送料無料までの金額を計算
-        $this->tpl_deliv_free = $this->arrInfo['free_rule'] - $this->tpl_total_pretax;
 
         // 前頁のURLを取得
         $this->tpl_prev_url = $objCartSess->getPrevURL();

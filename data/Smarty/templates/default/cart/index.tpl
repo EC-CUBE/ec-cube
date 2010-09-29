@@ -47,10 +47,10 @@
                 
                 <!--{* カゴの中に商品がある場合にのみ表示 *}-->
                 <!--{if count($arrProductsClass) > 0 }-->
-                    お買い上げ商品の合計金額は「<em><!--{$tpl_total_pretax|number_format}-->円</em>」です。
+                    お買い上げ商品の合計金額は「<em><!--{$tpl_total_pretax[$key]|number_format}-->円</em>」です。
                     <!--{if $arrInfo.free_rule > 0}-->
                         <!--{if $arrData.deliv_fee|number_format > 0}-->
-                            あと「<em><!--{$tpl_deliv_free|number_format}-->円</em>」で送料無料です！！
+                            あと「<em><!--{$tpl_deliv_free[$key]|number_format}-->円</em>」で送料無料です！！
                         <!--{else}-->
                             現在、「<em>送料無料</em>」です！！
                         <!--{/if}-->
@@ -68,7 +68,7 @@
     <!--{/if}-->
 
     <!--{if count($arrProductsClass) > 0}-->
-
+    <!--{foreach from=$cartKeys item=key}-->
         <form name="form1" id="form1" method="post" action="?">
             <!--{if 'sfGMOCartDisplay'|function_exists}-->
                 <!--{'sfGMOCartDisplay'|call_user_func}-->
@@ -87,45 +87,45 @@
                 </tr>
                 <!--{section name=cnt loop=$arrProductsClass}-->
                     <tr style="<!--{if $arrProductsClass[cnt].error}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->">
-                        <td><a href="?" onclick="fnModeSubmit('delete', 'cart_no', '<!--{$arrProductsClass[cnt].cart_no}-->'); return false;">削除</a>
+                        <td><a href="?" onclick="fnModeSubmit('delete', 'cart_no', '<!--{$arrProductsClass[cnt][$key].cart_no}-->'); return false;">削除</a>
                         </td>
                         <td class="phototd">
                         <a
-                            <!--{if $arrProductsClass[cnt].main_image|strlen >= 1}-->
-                                href="<!--{$smarty.const.IMAGE_SAVE_URL}--><!--{$arrProductsClass[cnt].main_image|sfNoImageMainList|escape}-->"
+                            <!--{if $arrProductsClass[cnt][$key].main_image|strlen >= 1}-->
+                                href="<!--{$smarty.const.IMAGE_SAVE_URL}--><!--{$arrProductsClass[cnt][$key].main_image|sfNoImageMainList|escape}-->"
                                 class="expansion"
                                 target="_blank"
                             <!--{/if}-->
                         >
-                            <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$arrProductsClass[cnt].main_list_image|sfNoImageMainList|escape}-->&amp;width=65&amp;height=65" alt="<!--{$arrProductsClass[cnt].name|escape}-->" /></a>
+                            <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$arrProductsClass[cnt][$key].main_list_image|sfNoImageMainList|escape}-->&amp;width=65&amp;height=65" alt="<!--{$arrProductsClass[cnt].name|escape}-->" /></a>
                         </td>
-                        <td><!--{* 商品名 *}--><strong><!--{$arrProductsClass[cnt].name|escape}--></strong><br />
-                            <!--{if $arrProductsClass[cnt].classcategory_name1 != ""}-->
-                                <!--{$arrProductsClass[cnt].class_name1}-->：<!--{$arrProductsClass[cnt].classcategory_name1}--><br />
+                        <td><!--{* 商品名 *}--><strong><!--{$arrProductsClass[cnt][$key].name|escape}--></strong><br />
+                            <!--{if $arrProductsClass[cnt][$key].classcategory_name1 != ""}-->
+                                <!--{$arrProductsClass[cnt][$key].class_name1}-->：<!--{$arrProductsClass[cnt][$key].classcategory_name1}--><br />
                             <!--{/if}-->
-                            <!--{if $arrProductsClass[cnt].classcategory_name2 != ""}-->
-                                <!--{$arrProductsClass[cnt].class_name2}-->：<!--{$arrProductsClass[cnt].classcategory_name2}-->
+                            <!--{if $arrProductsClass[cnt][$key].classcategory_name2 != ""}-->
+                                <!--{$arrProductsClass[cnt][$key].class_name2}-->：<!--{$arrProductsClass[cnt][$key].classcategory_name2}-->
                             <!--{/if}-->
                         </td>
                         <td class="pricetd">
                         <!--{if $arrProductsClass[cnt].price02 != ""}-->
-                            <!--{$arrProductsClass[cnt].price02|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
+                            <!--{$arrProductsClass[cnt][$key].price02|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
                         <!--{else}-->
-                            <!--{$arrProductsClass[cnt].price01|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
+                            <!--{$arrProductsClass[cnt][$key].price01|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
                         <!--{/if}-->
                         </td>
-                        <td id="quantity"><!--{$arrProductsClass[cnt].quantity}-->
+                        <td id="quantity"><!--{$arrProductsClass[cnt][$key].quantity}-->
                             <ul id="quantity_level">
-                                <li><a href="?" onclick="fnModeSubmit('up','cart_no','<!--{$arrProductsClass[cnt].cart_no}-->'); return false"><img src="<!--{$TPL_DIR}-->img/cart/plus.gif" width="16" height="16" alt="＋" /></a></li>
-                                <li><a href="?" onclick="fnModeSubmit('down','cart_no','<!--{$arrProductsClass[cnt].cart_no}-->'); return false"><img src="<!--{$TPL_DIR}-->img/cart/minus.gif" width="16" height="16" alt="-" /></a></li>
+                                <li><a href="?" onclick="fnModeSubmit('up','cart_no','<!--{$arrProductsClass[cnt][$key].cart_no}-->'); return false"><img src="<!--{$TPL_DIR}-->img/cart/plus.gif" width="16" height="16" alt="＋" /></a></li>
+                                <li><a href="?" onclick="fnModeSubmit('down','cart_no','<!--{$arrProductsClass[cnt][$key].cart_no}-->'); return false"><img src="<!--{$TPL_DIR}-->img/cart/minus.gif" width="16" height="16" alt="-" /></a></li>
                             </ul>
                         </td>
-                        <td class="pricetd"><!--{$arrProductsClass[cnt].total_pretax|number_format}-->円</td>
+                        <td class="pricetd"><!--{$arrProductsClass[cnt].total_pretax[$key]|number_format}-->円</td>
                      </tr>
                  <!--{/section}-->
                  <tr>
                      <th colspan="5" class="resulttd">小計</th>
-                     <td class="pricetd"><!--{$tpl_total_pretax|number_format}-->円</td>
+                     <td class="pricetd"><!--{$tpl_total_pretax[$key]|number_format}-->円</td>
                  </tr>
                  <tr>
                      <th colspan="5" class="resulttd">合計</th>
@@ -155,11 +155,13 @@
                             <img src="<!--{$TPL_DIR}-->img/cart/b_pageback.gif" width="150" height="30" alt="買い物を続ける" name="back" id="back" /></a>&nbsp;&nbsp;
                     <!--{/if}-->
                     <!--{if strlen($tpl_error) == 0}-->
+                        <input type="hidden" name="cartKey" value="<!--{$key}-->" />
                         <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/cart/b_buystep_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/cart/b_buystep.gif',this)" src="<!--{$TPL_DIR}-->img/cart/b_buystep.gif" class="box150" alt="購入手続きへ" name="confirm" />
                     <!--{/if}-->
                  </p>
             </div>
         </form>
+    <!--{/foreach}-->
     <!--{else}-->
         <p class="empty"><em>※ 現在カート内に商品はございません。</em></p>
     <!--{/if}-->

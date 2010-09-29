@@ -140,6 +140,17 @@ function fnCheckStock(form) {
     } else {
         eleDynamic.value = ''
     }
+    // 商品種別
+    eleDynamic = document.getElementById('product_type');
+    if (
+           classcat2
+        && typeof classcat2.product_type != 'undefined'
+        && String(classcat2.product_type).length >= 1
+    ) {
+        eleDynamic.value = classcat2.product_type;
+    } else {
+        eleDynamic.value = ''
+    }
 }
 $(document).ready(function() {
     $("a.expansion").fancybox({
@@ -291,6 +302,7 @@ $(document).ready(function() {
                 <input type="hidden" name="mode" value="cart" />
                 <input type="hidden" name="product_id" value="<!--{$tpl_product_id}-->" />
                 <input type="hidden" name="product_class_id" value="<!--{$tpl_product_class_id}-->" id="product_class_id" />
+                <input type="hidden" name="product_type" value="<!--{$tpl_product_type}-->" id="product_type" />
                 <input type="hidden" name="favorite_product_id" value="" />
 
                 <!--{if $tpl_stock_find}-->
