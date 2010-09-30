@@ -475,6 +475,7 @@ __EOS__;
 
         $this->tpl_stock_find = $objProduct->stock_find;
         $this->tpl_product_class_id = $objProduct->product_class_id;
+        $this->tpl_product_type = $objProduct->product_type;
 
         $productsClassCategories = $objProduct->classCategories;
 
