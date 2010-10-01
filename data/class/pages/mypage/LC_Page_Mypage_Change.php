@@ -538,13 +538,21 @@ class LC_Page_Mypage_Change extends LC_Page {
         return $array;
     }
 
-    //顧客情報の取得
+    /**
+     * 顧客情報の取得
+     *
+     * @return array 顧客情報
+     */
     function lfGetCustomerData(){
-        //顧客情報取得
+        // 顧客情報DB取得
         $ret = $this->objQuery->select("*","dtb_customer","customer_id=?", array($this->objCustomer->getValue('customer_id')));
         $arrForm = $ret[0];
 
-        //誕生日の年月日取得
+        // 確認項目に複製
+        $arrForm['email02'] = $arrForm['email'];
+        $arrForm['email_mobile02'] = $arrForm['email_mobile02'];
+
+        // 誕生日を年月日に分ける
         if (isset($arrForm['birth'])){
             $birth = split(" ", $arrForm["birth"]);
             list($year, $month, $day) = split("-",$birth[0]);
