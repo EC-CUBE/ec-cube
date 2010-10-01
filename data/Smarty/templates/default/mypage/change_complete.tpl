@@ -34,7 +34,7 @@
     </div>
 
     <div class="tblareabtn">
-      <a href="<!--{$smarty.const.URL_SITE_TOP}-->" onmouseover="chgImg('<!--{$TPL_DIR}-->img/common/b_back_on.gif','fortop');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/common/b_back.gif','fortop');"><img src="<!--{$TPL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="TOPページへ" name="fortop" id="fortop" /></a>
+      <a href="<!--{$smarty.const.URL_SITE_TOP}-->" onmouseover="chgImg('<!--{$TPL_DIR}-->img/common/b_toppage_on.gif','fortop');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/common/b_toppage.gif','fortop');"><img src="<!--{$TPL_DIR}-->img/common/b_toppage.gif" width="150" height="30" alt="トップページへ" name="fortop" id="fortop" /></a>
     </div>
   </div>
 </div>
