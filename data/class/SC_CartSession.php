@@ -23,15 +23,10 @@
 
 /* カートセッション管理クラス */
 class SC_CartSession {
-    var $key;
     var $key_tmp;	// ユニークIDを指定する。
 
     /* コンストラクタ */
-    function SC_CartSession($key = 'cart') {
-        SC_Utils::sfDomainSessionStart();
-
-        if($key == "") $key = "cart";
-        $this->key = $key;
+    function SC_CartSession() {
     }
 
     // 商品購入処理中のロック
@@ -51,23 +46,25 @@ class SC_CartSession {
     }
 
     // 商品購入中の変更があったかをチェックする。
-    function getCancelPurchase() {
-        $ret = isset($_SESSION[$this->key]['cancel_purchase'])
-            ? $_SESSION[$this->key]['cancel_purchase'] : "";
-        $_SESSION[$this->key]['cancel_purchase'] = false;
+    function getCancelPurchase($key) {
+        $this->addKey($key);
+        $ret = isset($_SESSION[$key]['cancel_purchase'])
+            ? $_SESSION[$key]['cancel_purchase'] : "";
+        $_SESSION[$key]['cancel_purchase'] = false;
         return $ret;
     }
 
     // 購入処理中に商品に変更がなかったかを判定
-    function checkChangeCart() {
+    function checkChangeCart($key) {
+        $this->addKey($key);
         $change = false;
         $max = $this->getMax();
         for($i = 1; $i <= $max; $i++) {
-            if ($_SESSION[$this->key][$i]['quantity'] != $_SESSION[$this->key_tmp][$i]['quantity']) {
+            if ($_SESSION[$key][$i]['quantity'] != $_SESSION[$this->key_tmp][$i]['quantity']) {
                 $change = true;
                 break;
             }
-            if ($_SESSION[$this->key][$i]['id'] != $_SESSION[$this->key_tmp][$i]['id']) {
+            if ($_SESSION[$key][$i]['id'] != $_SESSION[$this->key_tmp][$i]['id']) {
                 $change = true;
                 break;
             }
@@ -75,17 +72,18 @@ class SC_CartSession {
         if ($change) {
             // 一時カートのクリア
             unset($_SESSION[$this->key_tmp]);
-            $_SESSION[$this->key]['cancel_purchase'] = true;
+            $_SESSION[$key]['cancel_purchase'] = true;
         } else {
-            $_SESSION[$this->key]['cancel_purchase'] = false;
+            $_SESSION[$key]['cancel_purchase'] = false;
         }
-        return $_SESSION[$this->key]['cancel_purchase'];
+        return $_SESSION[$key]['cancel_purchase'];
     }
 
     // 次に割り当てるカートのIDを取得する
-    function getNextCartID() {
-        foreach($_SESSION[$this->key] as $key => $val){
-            $arrRet[] = $_SESSION[$this->key][$key]['cart_no'];
+    function getNextCartID($key) {
+        $this->addKey($key);
+        foreach($_SESSION[$key] as $k => $val){
+            $arrRet[] = $_SESSION[$key][$k]['cart_no'];
         }
         return (max($arrRet) + 1);
     }
@@ -97,15 +95,16 @@ class SC_CartSession {
      * @param integer $id
      * @return string 商品ごとの合計価格(税込み)
      */
-    function getProductTotal($id) {
+    function getProductTotal($id, $key) {
+        $this->addKey($key);
         $max = $this->getMax();
         for($i = 0; $i <= $max; $i++) {
-            if(isset($_SESSION[$this->key][$i]['id'])
-               && $_SESSION[$this->key][$i]['id'] == $id) {
+            if(isset($_SESSION[$key][$i]['id'])
+               && $_SESSION[$key][$i]['id'] == $id) {
 
                 // 税込み合計
-                $price = $_SESSION[$this->key][$i]['price'];
-                $quantity = $_SESSION[$this->key][$i]['quantity'];
+                $price = $_SESSION[$key][$i]['price'];
+                $quantity = $_SESSION[$key][$i]['quantity'];
                 $pre_tax = SC_Helper_DB_Ex::sfPreTax($price);
                 $total = $pre_tax * $quantity;
                 return $total;
@@ -115,26 +114,28 @@ class SC_CartSession {
     }
 
     // 値のセット
-    function setProductValue($id, $key, $val) {
-        $max = $this->getMax();
+    function setProductValue($id, $k, $val, $key) {
+        $this->addKey($key);
+        $max = $this->getMax($key);
         for($i = 0; $i <= $max; $i++) {
-            if(isset($_SESSION[$this->key][$i]['id'])
-               && $_SESSION[$this->key][$i]['id'] == $id) {
-                $_SESSION[$this->key][$i][$key] = $val;
+            if(isset($_SESSION[$key][$i]['id'])
+               && $_SESSION[$key][$i]['id'] == $id) {
+                $_SESSION[$key][$i][$k] = $val;
             }
         }
     }
 
     // カート内商品の最大要素番号を取得する。
-    function getMax() {
+    function getMax($key) {
+        $this->addKey($key);
         $cnt = 0;
         $pos = 0;
         $max = 0;
-        if (count($_SESSION[$this->key]) > 0){
-            foreach($_SESSION[$this->key] as $key => $val) {
-                if (is_numeric($key)) {
-                    if($max < $key) {
-                        $max = $key;
+        if (count($_SESSION[$key]) > 0){
+            foreach($_SESSION[$key] as $k => $val) {
+                if (is_numeric($k)) {
+                    if($max < $k) {
+                        $max = $k;
                     }
                 }
             }
@@ -143,32 +144,34 @@ class SC_CartSession {
     }
 
     // カート内商品数の合計
-    function getTotalQuantity() {
+    function getTotalQuantity($key) {
+        $this->addKey($key);
         $total = 0;
-        $max = $this->getMax();
+        $max = $this->getMax($key);
         for($i = 0; $i <= $max; $i++) {
-            $total+= $_SESSION[$this->key][$i]['quantity'];
+            $total+= $_SESSION[$key][$i]['quantity'];
         }
         return $total;
     }
 
 
     // 全商品の合計価格
-    function getAllProductsTotal() {
+    function getAllProductsTotal($key) {
+        $this->addKey($key);
         // 税込み合計
         $total = 0;
-        $max = $this->getMax();
+        $max = $this->getMax($key);
         for($i = 0; $i <= $max; $i++) {
 
-            if (!isset($_SESSION[$this->key][$i]['price'])) {
-                $_SESSION[$this->key][$i]['price'] = "";
+            if (!isset($_SESSION[$key][$i]['price'])) {
+                $_SESSION[$key][$i]['price'] = "";
             }
-            $price = $_SESSION[$this->key][$i]['price'];
+            $price = $_SESSION[$key][$i]['price'];
 
-            if (!isset($_SESSION[$this->key][$i]['quantity'])) {
-                $_SESSION[$this->key][$i]['quantity'] = "";
+            if (!isset($_SESSION[$key][$i]['quantity'])) {
+                $_SESSION[$key][$i]['quantity'] = "";
             }
-            $quantity = $_SESSION[$this->key][$i]['quantity'];
+            $quantity = $_SESSION[$key][$i]['quantity'];
 
             $pre_tax = SC_Helper_DB_Ex::sfPreTax($price);
             $total+= ($pre_tax * $quantity);
@@ -177,13 +180,14 @@ class SC_CartSession {
     }
 
     // 全商品の合計税金
-    function getAllProductsTax() {
+    function getAllProductsTax($key) {
+        $this->addKey($key);
         // 税合計
         $total = 0;
-        $max = $this->getMax();
+        $max = $this->getMax($key);
         for($i = 0; $i <= $max; $i++) {
-            $price = $_SESSION[$this->key][$i]['price'];
-            $quantity = $_SESSION[$this->key][$i]['quantity'];
+            $price = $_SESSION[$key][$i]['price'];
+            $quantity = $_SESSION[$key][$i]['quantity'];
             $tax = SC_Helper_DB_Ex::sfTax($price);
             $total+= ($tax * $quantity);
         }
@@ -191,24 +195,25 @@ class SC_CartSession {
     }
 
     // 全商品の合計ポイント
-    function getAllProductsPoint() {
+    function getAllProductsPoint($key) {
+        $this->addKey($key);
         // ポイント合計
         $total = 0;
         if (USE_POINT !== false) {
-            $max = $this->getMax();
+            $max = $this->getMax($key);
             for($i = 0; $i <= $max; $i++) {
-                $price = $_SESSION[$this->key][$i]['price'];
-                $quantity = $_SESSION[$this->key][$i]['quantity'];
+                $price = $_SESSION[$key][$i]['price'];
+                $quantity = $_SESSION[$key][$i]['quantity'];
 
-                if (!isset($_SESSION[$this->key][$i]['point_rate'])) {
-                    $_SESSION[$this->key][$i]['point_rate'] = "";
+                if (!isset($_SESSION[$key][$i]['point_rate'])) {
+                    $_SESSION[$key][$i]['point_rate'] = "";
                 }
-                $point_rate = $_SESSION[$this->key][$i]['point_rate'];
+                $point_rate = $_SESSION[$key][$i]['point_rate'];
 
-                if (!isset($_SESSION[$this->key][$i]['id'][0])) {
-                    $_SESSION[$this->key][$i]['id'][0] = "";
+                if (!isset($_SESSION[$key][$i]['id'][0])) {
+                    $_SESSION[$key][$i]['id'][0] = "";
                 }
-                $id = $_SESSION[$this->key][$i]['id'][0];
+                $id = $_SESSION[$key][$i]['id'][0];
                 $point = SC_Utils_Ex::sfPrePoint($price, $point_rate, POINT_RULE, $id);
                 $total+= ($point * $quantity);
             }
@@ -217,36 +222,30 @@ class SC_CartSession {
     }
 
     // カートへの商品追加
-    function addProduct($id, $quantity, $campaign_id = "") {
+    function addProduct($id, $quantity, $key) {
+        $this->addKey($key);
         $find = false;
-        $max = $this->getMax();
+        $max = $this->getMax($key);
         for($i = 0; $i <= $max; $i++) {
 
-            if($_SESSION[$this->key][$i]['id'] == $id) {
-                $val = $_SESSION[$this->key][$i]['quantity'] + $quantity;
+            if($_SESSION[$key][$i]['id'] == $id) {
+                $val = $_SESSION[$key][$i]['quantity'] + $quantity;
                 if(strlen($val) <= INT_LEN) {
-                    $_SESSION[$this->key][$i]['quantity']+= $quantity;
-                    if(!empty($campaign_id)){
-                        $_SESSION[$this->key][$i]['campaign_id'] = $campaign_id;
-                        $_SESSION[$this->key][$i]['is_campaign'] = true;
-                    }
+                    $_SESSION[$key][$i]['quantity']+= $quantity;
                 }
                 $find = true;
             }
         }
         if(!$find) {
-            $_SESSION[$this->key][$max+1]['id'] = $id;
-            $_SESSION[$this->key][$max+1]['quantity'] = $quantity;
-            $_SESSION[$this->key][$max+1]['cart_no'] = $this->getNextCartID();
-            if(!empty($campaign_id)){
-                $_SESSION[$this->key][$max+1]['campaign_id'] = $campaign_id;
-                $_SESSION[$this->key][$max+1]['is_campaign'] = true;
-            }
+            $_SESSION[$key][$max+1]['id'] = $id;
+            $_SESSION[$key][$max+1]['quantity'] = $quantity;
+            $_SESSION[$key][$max+1]['cart_no'] = $this->getNextCartID($key);
         }
     }
 
     // 前頁のURLを記録しておく
-    function setPrevURL($url) {
+    function setPrevURL($url, $key) {
+        $this->addKey($key);
         // 前頁として記録しないページを指定する。
         $arrExclude = array(
             "/shopping/"
@@ -261,106 +260,127 @@ class SC_CartSession {
         }
         // 除外ページでない場合は、前頁として記録する。
         if(!$exclude) {
-            $_SESSION[$this->key]['prev_url'] = $url;
+            $_SESSION[$key]['prev_url'] = $url;
         }
     }
 
     // 前頁のURLを取得する
-    function getPrevURL() {
-        return isset($_SESSION[$this->key]['prev_url'])
-            ? $_SESSION[$this->key]['prev_url'] : "";
+    function getPrevURL($key) {
+        $this->addKey($key);
+        return isset($_SESSION[$key]['prev_url'])
+            ? $_SESSION[$key]['prev_url'] : "";
     }
 
     // キーが一致した商品の削除
-    function delProductKey($keyname, $val) {
-        $max = count($_SESSION[$this->key]);
+    function delProductKey($keyname, $val, $key) {
+        $this->addKey($key);
+        $max = count($_SESSION[$key]);
         for($i = 0; $i < $max; $i++) {
-            if($_SESSION[$this->key][$i][$keyname] == $val) {
-                unset($_SESSION[$this->key][$i]);
+            if($_SESSION[$key][$i][$keyname] == $val) {
+                unset($_SESSION[$key][$i]);
             }
         }
     }
 
-    function setValue($key, $val) {
-        $_SESSION[$this->key][$key] = $val;
+    function setValue($k, $val, $key) {
+        $this->addKey($key);
+        $_SESSION[$key][$k] = $val;
     }
 
-    function getValue($key) {
-        return $_SESSION[$this->key][$key];
+    function getValue($k, $key) {
+        $this->addKey($key);
+        return $_SESSION[$key][$k];
     }
 
-    function getCartList() {
-        $max = $this->getMax();
+    function getCartList($key) {
+        $this->addKey($key);
+        $max = $this->getMax($key);
         $arrRet = array();
         for($i = 0; $i <= $max; $i++) {
-            if(isset($_SESSION[$this->key][$i]['cart_no'])
-               && $_SESSION[$this->key][$i]['cart_no'] != "") {
-                $arrRet[] = $_SESSION[$this->key][$i];
+            if(isset($_SESSION[$key][$i]['cart_no'])
+               && $_SESSION[$key][$i]['cart_no'] != "") {
+                $arrRet[] = $_SESSION[$key][$i];
             }
         }
         return $arrRet;
     }
 
     // カート内にある商品ＩＤを全て取得する
-    function getAllProductID() {
-        $max = $this->getMax();
+    function getAllProductID($key) {
+        $this->addKey($key);
+        $max = $this->getMax($key);
         for($i = 0; $i <= $max; $i++) {
-            if($_SESSION[$this->key][$i]['cart_no'] != "") {
-                $arrRet[] = $_SESSION[$this->key][$i]['id'][0];
+            if($_SESSION[$key][$i]['cart_no'] != "") {
+                $arrRet[] = $_SESSION[$key][$i]['id'][0];
             }
         }
         return $arrRet;
     }
     // カート内にある商品ＩＤ＋カテゴリＩＤを全て取得する
-    function getAllProductClassID() {
-        $max = $this->getMax();
+    function getAllProductClassID($key) {
+        $this->addKey($key);
+        $max = $this->getMax($key);
         for($i = 0; $i <= $max; $i++) {
-            if($_SESSION[$this->key][$i]['cart_no'] != "") {
-                $arrRet[] = $_SESSION[$this->key][$i]['id'];
+            if($_SESSION[$key][$i]['cart_no'] != "") {
+                $arrRet[] = $_SESSION[$key][$i]['id'];
             }
         }
         return $arrRet;
     }
 
-    function delAllProducts() {
-        $max = $this->getMax();
+    function delAllProducts($key) {
+        $this->addKey($key);
+        $max = $this->getMax($key);
         for($i = 0; $i <= $max; $i++) {
-            unset($_SESSION[$this->key][$i]);
+            unset($_SESSION[$key][$i]);
         }
     }
 
     // 商品の削除
-    function delProduct($cart_no) {
-        $max = $this->getMax();
+    function delProduct($cart_no, $key) {
+        $this->addKey($key);
+        $max = $this->getMax($key);
         for($i = 0; $i <= $max; $i++) {
-            if($_SESSION[$this->key][$i]['cart_no'] == $cart_no) {
-                unset($_SESSION[$this->key][$i]);
+            if($_SESSION[$key][$i]['cart_no'] == $cart_no) {
+                unset($_SESSION[$key][$i]);
             }
         }
     }
 
     // 数量の増加
-    function upQuantity($cart_no) {
+    function upQuantity($cart_no, $key) {
+        $this->addKey($key);
         $max = $this->getMax();
         for($i = 0; $i <= $max; $i++) {
-            if($_SESSION[$this->key][$i]['cart_no'] == $cart_no) {
-                if(strlen($_SESSION[$this->key][$i]['quantity'] + 1) <= INT_LEN) {
-                    $_SESSION[$this->key][$i]['quantity']++;
+            if($_SESSION[$key][$i]['cart_no'] == $cart_no) {
+                if(strlen($_SESSION[$key][$i]['quantity'] + 1) <= INT_LEN) {
+                    $_SESSION[$key][$i]['quantity']++;
                 }
             }
         }
     }
 
     // 数量の減少
-    function downQuantity($cart_no) {
+    function downQuantity($cart_no, $key) {
+        $this->addKey($key);
         $max = $this->getMax();
         for($i = 0; $i <= $max; $i++) {
-            if($_SESSION[$this->key][$i]['cart_no'] == $cart_no) {
-                if($_SESSION[$this->key][$i]['quantity'] > 1) {
-                    $_SESSION[$this->key][$i]['quantity']--;
+            if($_SESSION[$key][$i]['cart_no'] == $cart_no) {
+                if($_SESSION[$key][$i]['quantity'] > 1) {
+                    $_SESSION[$key][$i]['quantity']--;
                 }
             }
         }
+    }
+
+    function addKey($key) {
+        if (!in_array($this->keys, $key)) {
+            $this->keys[] = $key;
+        }
+    }
+
+    function getKeys() {
+        return $this->keys;
     }
 
     function registerKey($key) {
