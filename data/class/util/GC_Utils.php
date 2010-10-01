@@ -165,9 +165,12 @@ class GC_Utils {
      * @param integer $max_log 最大ファイル数
      * @param integer $max_size 最大サイズ
      * @param string  $path ファイルパス
-     * @return void なし
+     * @return void
      */
     function gfLogRotation($max_log, $max_size, $path) {
+
+        // ファイルが存在しない場合、終了
+        if (!file_exists($path)) return;
 
         // ファイルが最大サイズを超えていない場合、終了
         if (filesize($path) <= $max_size) return;
