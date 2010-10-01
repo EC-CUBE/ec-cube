@@ -62,6 +62,9 @@ class LC_Page_Mypage_Refusal extends LC_Page {
         $objCustomer = new SC_Customer();
         $objQuery = new SC_Query();
         $objSiteSess = new SC_SiteSession();
+        
+        // 退会判定用情報の取得
+        $this->tpl_login = $objCustomer->isLoginSuccess();
 
         //ログイン判定
         if (!$objCustomer->isLoginSuccess()){

@@ -76,6 +76,10 @@ class LC_Page_Mypage_Change extends LC_Page {
         $this->objQuery = new SC_Query();
         $this->objCustomer = new SC_Customer();
         $this->objFormParam = new SC_FormParam();
+        
+        // 退会判定用情報の取得
+        $objCustomer = new SC_Customer();
+        $this->tpl_login = $objCustomer->isLoginSuccess();
 
         // レイアウトデザインを取得
         $objLayout = new SC_Helper_PageLayout_Ex();

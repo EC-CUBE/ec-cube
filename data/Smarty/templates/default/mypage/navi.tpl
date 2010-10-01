@@ -24,17 +24,14 @@
 <div id="mynavarea">
     <!--{strip}-->
         <ul class="button_like">
+        
+          <!--{if $tpl_login}-->
+            <!--{* 会員状態 *}-->
             <li><a href="./<!--{$smarty.const.DIR_INDEX_URL}-->" class="<!--{if $tpl_mypageno == 'index'}--> selected<!--{/if}-->">
                 購入履歴一覧</a></li>
             <!--{if $smarty.const.OPTION_FAVOFITE_PRODUCT == 1}-->
-                <!--{if $tpl_login}-->
-                    <li><a href="favorite.php" class="<!--{if $tpl_mypageno == 'favorite'}--> selected<!--{/if}-->">
-                           お気に入り一覧</a></li>
-                <!--{else}-->
-                       <!--{* 退会時、TOPページへ *}-->
-                    <li><a href="/index.php" class="<!--{if $tpl_mypageno == 'favorite'}--> selected<!--{/if}-->">
-                           お気に入り一覧</a></li>
-                <!--{/if}-->
+                <li><a href="favorite.php" class="<!--{if $tpl_mypageno == 'favorite'}--> selected<!--{/if}-->">
+                    お気に入り一覧</a></li>
             <!--{/if}-->
             <li><a href="change.php" class="<!--{if $tpl_mypageno == 'change'}--> selected<!--{/if}-->">
                 会員登録内容変更</a></li>
@@ -42,6 +39,23 @@
                 お届け先追加・変更</a></li>
             <li><a href="refusal.php" class="<!--{if $tpl_mypageno == 'refusal'}--> selected<!--{/if}-->">
                 退会手続き</a></li>
+          <!--{else}-->
+
+          <!--{* 退会状態 *}-->
+            <li><a href="/index.php" class="<!--{if $tpl_mypageno == 'index'}--> selected<!--{/if}-->">
+                購入履歴一覧</a></li>
+            <!--{if $smarty.const.OPTION_FAVOFITE_PRODUCT == 1}-->
+                <li><a href="/index.php" class="<!--{if $tpl_mypageno == 'favorite'}--> selected<!--{/if}-->">
+                    お気に入り一覧</a></li>
+            <!--{/if}-->
+            <li><a href="/index.php" class="<!--{if $tpl_mypageno == 'change'}--> selected<!--{/if}-->">
+                会員登録内容変更</a></li>
+            <li><a href="/index.php" class="<!--{if $tpl_mypageno == 'delivery'}--> selected<!--{/if}-->">
+                お届け先追加・変更</a></li>
+            <li><a href="/index.php" class="<!--{if $tpl_mypageno == 'refusal'}--> selected<!--{/if}-->">
+                退会手続き</a></li>
+          <!--{/if}-->
+
         </ul>
         
         <!--▼現在のポイント-->

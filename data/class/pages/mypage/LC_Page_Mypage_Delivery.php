@@ -64,6 +64,9 @@ class LC_Page_Mypage_Delivery extends LC_Page {
     function process() {
         $objView = new SC_SiteView();
         $objCustomer = new SC_Customer();
+        
+        // 退会判定用情報の取得
+        $this->tpl_login = $objCustomer->isLoginSuccess();
 
         //ログイン判定
         if(!$objCustomer->isLoginSuccess()) {

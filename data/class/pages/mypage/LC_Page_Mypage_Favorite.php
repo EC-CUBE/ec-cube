@@ -47,7 +47,6 @@ class LC_Page_MyPage_Favorite extends LC_Page {
      * @return void
      */
     function init() {
-    
         parent::init();
         $this->tpl_mainpage = TEMPLATE_DIR .'mypage/favorite.tpl';
         $this->tpl_title = 'MYページ';
@@ -69,9 +68,9 @@ class LC_Page_MyPage_Favorite extends LC_Page {
         $objQuery = new SC_Query();
         $objCustomer = new SC_Customer();
         
-         // 退会判定用情報の取得
+        // 退会判定用情報の取得
         $this->tpl_login = $objCustomer->isLoginSuccess();
-        
+
         // レイアウトデザインを取得
         $objLayout = new SC_Helper_PageLayout_Ex();
         $objLayout->sfGetPageLayout($this, false, "mypage/index.php");
