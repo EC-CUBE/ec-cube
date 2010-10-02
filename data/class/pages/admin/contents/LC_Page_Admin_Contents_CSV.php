@@ -70,9 +70,6 @@ class LC_Page_Admin_Contents_CSV extends LC_Page {
         $objSess = new SC_Session();
         SC_Utils_Ex::sfIsSuccess($objSess);
 
-        $arrOutput = array();
-        $arrChoice = array();
-
         $get_tpl_subno_csv = isset($_GET['tpl_subno_csv'])
                                      ? $_GET['tpl_subno_csv'] : "";
 
@@ -117,8 +114,12 @@ class LC_Page_Admin_Contents_CSV extends LC_Page {
         }
 
         // 出力項目の取得
-        $arrOutput = SC_Utils_Ex::sfSwapArray($objCSV->sfgetCsvOutput($subno_id, 'status = 1'));
-        $arrOutput = SC_Utils_Ex::sfarrCombine($arrOutput['no'], $arrOutput['disp_name']);
+        $arrSelected = SC_Utils_Ex::sfSwapArray($objCSV->sfgetCsvOutput($subno_id, 'status = 1'));
+
+        if (!isset($arrSelected['no'])) $arrSelected['no'] = array();
+        if (!isset($arrSelected['disp_name'])) $arrSelected['disp_name'] = array();
+
+        $this->arrSelected = $arrSelected['no'];
 
         // 非出力項目の取得
         $arrChoice = SC_Utils_Ex::sfSwapArray($objCSV->sfgetCsvOutput($subno_id, 'status = 2'));
@@ -126,11 +127,12 @@ class LC_Page_Admin_Contents_CSV extends LC_Page {
         if (!isset($arrChoice['no'])) $arrChoice['no'] = array();
         if (!isset($arrChoice['disp_name'])) $arrChoice['disp_name'] = array();
 
-        $arrChoice = SC_Utils_Ex::sfarrCombine($arrChoice['no'], $arrChoice['disp_name']);
+        $arrOptions = array_merge(
+            SC_Utils_Ex::sfarrCombine($arrSelected['no'], $arrSelected['disp_name']),
+            SC_Utils_Ex::sfarrCombine($arrChoice['no'], $arrChoice['disp_name'])
+        );
 
-        $this->arrOutput=$arrOutput;
-        $this->arrChoice=$arrChoice;
-
+        $this->arrOptions = $arrOptions;
 
         $this->SubnaviName = $this->arrSubnaviName[$subno_id];
         $this->tpl_subno_csv = $subno_csv;
