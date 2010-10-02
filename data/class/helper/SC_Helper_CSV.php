@@ -63,7 +63,7 @@ class SC_Helper_CSV {
      * @param array $arrVal WHERE 句の要素
      * @return array CSV 項目の配列
      */
-    function sfgetCsvOutput($csv_id = "", $where = "", $arrVal = array()){
+    function sfgetCsvOutput($csv_id = "", $where = '0=0', $arrVal = array()){
         $objQuery = new SC_Query();
         $ret = array();
 
