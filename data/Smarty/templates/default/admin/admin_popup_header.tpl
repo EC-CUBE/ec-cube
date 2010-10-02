@@ -32,7 +32,7 @@
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/navi.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/win_op.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/site.js"></script>
-<script type="text/javascript" src="<!--{$TPL_DIR}-->js/jquery-1.3.2.min.js"></script>
+<script type="text/javascript" src="<!--{$TPL_DIR}-->js/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/admin.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/css.js"></script>
 <!--{if $tpl_javascript != ""}-->
