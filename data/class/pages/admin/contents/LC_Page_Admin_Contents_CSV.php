@@ -117,20 +117,16 @@ class LC_Page_Admin_Contents_CSV extends LC_Page {
         $arrSelected = SC_Utils_Ex::sfSwapArray($objCSV->sfgetCsvOutput($subno_id, 'status = 1'));
 
         if (!isset($arrSelected['no'])) $arrSelected['no'] = array();
-        if (!isset($arrSelected['disp_name'])) $arrSelected['disp_name'] = array();
 
         $this->arrSelected = $arrSelected['no'];
 
-        // 非出力項目の取得
-        $arrChoice = SC_Utils_Ex::sfSwapArray($objCSV->sfgetCsvOutput($subno_id, 'status = 2'));
+        // 全項目の取得
+        $arrOptions = SC_Utils_Ex::sfSwapArray($objCSV->sfgetCsvOutput($subno_id));
 
-        if (!isset($arrChoice['no'])) $arrChoice['no'] = array();
-        if (!isset($arrChoice['disp_name'])) $arrChoice['disp_name'] = array();
+        if (!isset($arrOptions['no'])) $arrOptions['no'] = array();
+        if (!isset($arrOptions['disp_name'])) $arrOptions['disp_name'] = array();
 
-        $arrOptions = array_merge(
-            SC_Utils_Ex::sfarrCombine($arrSelected['no'], $arrSelected['disp_name']),
-            SC_Utils_Ex::sfarrCombine($arrChoice['no'], $arrChoice['disp_name'])
-        );
+        $arrOptions = SC_Utils_Ex::sfarrCombine($arrOptions['no'], $arrOptions['disp_name']);
 
         $this->arrOptions = $arrOptions;
 
