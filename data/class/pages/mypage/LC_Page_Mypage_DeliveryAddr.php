@@ -69,11 +69,17 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page {
             $ParentPage = htmlspecialchars($_POST['ParentPage'],ENT_QUOTES);
         }
         $this->ParentPage = $ParentPage;
-
-        //ログイン判定
+        
+        // ログイン判定 及び 退会判定
         if (!$objCustomer->isLoginSuccess()){
-            SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
+            $this->tpl_onload = "fnUpdateParent('". $this->getLocation($_POST['ParentPage']) ."'); window.close();";
         }
+         
+        //退会判定に統合 
+        ////ログイン判定
+        // if (!$objCustomer->isLoginSuccess()){
+        //     SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
+        //}
 
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
         if (!isset($_GET['other_deliv_id'])) $_GET['other_deliv_id'] = "";

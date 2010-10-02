@@ -31,9 +31,12 @@
         <p>※最大<!--{$smarty.const.DELIV_ADDR_MAX|escape}-->件まで登録できます。</p>
 
         <!--{if $tpl_linemax < $smarty.const.DELIV_ADDR_MAX}-->
+          <!--{* 退会時非表示 *}-->
+          <!--{if $tpl_login}-->
             <p class="addbtn">
                 <a href="<!--{$smarty.const.URL_DIR}-->mypage/delivery_addr.php" onclick="win03('./delivery_addr.php','delivadd','600','640'); return false;" onmouseover="chgImg('<!--{$TPL_DIR}-->img/common/newadress_on.gif','newadress');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/common/newadress.gif','newadress');" target="_blank"><img src="<!--{$TPL_DIR}-->img/common/newadress.gif" width="160" height="22" alt="新しいお届け先を追加" border="0" name="newadress" /></a>
             </p>
+          <!--{/if}-->
         <!--{/if}-->
 
         <!--{if $tpl_linemax > 0}-->

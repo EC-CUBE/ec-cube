@@ -68,15 +68,19 @@ class LC_Page_Mypage_Delivery extends LC_Page {
         // 退会判定用情報の取得
         $this->tpl_login = $objCustomer->isLoginSuccess();
 
-        //ログイン判定
-        if(!$objCustomer->isLoginSuccess()) {
-            SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
-        }else {
+        // ポップアップを開けたまま退会された状態でポップアップが閉じた場合のエラー画面の抑止。
+        // コメントアウトした「ログイン判定」は他の「Mypage」内に施した退会時処理で補間。
+        
+        // XXX コメントアウトによる問題が確認された場合はコメントアウトを外し、エラー画面が出る様に戻す。
+        ////ログイン判定
+        // if(!$objCustomer->isLoginSuccess()) {
+        //     SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
+        // }else {
             //マイページトップ顧客情報表示用
             $this->CustomerName1 = $objCustomer->getvalue('name01');
             $this->CustomerName2 = $objCustomer->getvalue('name02');
             $this->CustomerPoint = $objCustomer->getvalue('point');
-        }
+        //}
 
         // レイアウトデザインを取得
         $objLayout = new SC_Helper_PageLayout_Ex();
