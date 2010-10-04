@@ -21,9 +21,12 @@
  *}-->
 <!--▼FOOTER-->
 <div id="pagetop" style="clear: both;"><a href="#top"><img src="<!--{$TPL_DIR}-->img/common/pagetop.gif" width="100" height="10" alt="このページのTOPへ" /></a></div>
-<div id="footer">Copyright&copy;
-<!--{if $smarty.const.RELEASE_YEAR !=  $smarty.now|date_format:"%Y"}-->
-    <!--{$smarty.const.RELEASE_YEAR}-->-
-<!--{/if}-->
-<!--{$smarty.now|date_format:"%Y"}--> <!--{$arrSiteInfo.shop_name_eng|escape}--> All rights reserved.</div>
+<!--{strip}-->
+    <div id="footer">Copyright &copy;&nbsp;
+        <!--{if $smarty.const.RELEASE_YEAR != $smarty.now|date_format:"%Y"}-->
+            <!--{$smarty.const.RELEASE_YEAR}-->-
+        <!--{/if}-->
+        <!--{$smarty.now|date_format:"%Y"}--> <!--{$arrSiteInfo.shop_name_eng|default:$arrSiteInfo.shop_name|escape}--> All rights reserved.
+    </div>
+<!--{/strip}-->
 <!--▲FOOTER-->

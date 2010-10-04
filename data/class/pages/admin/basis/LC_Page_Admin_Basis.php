@@ -251,7 +251,7 @@ class LC_Page_Admin_Basis extends LC_Page {
         $objErr->doFunc(array("会社名(カナ)", "company_kana", STEXT_LEN), array("KANA_CHECK","MAX_LENGTH_CHECK"));
         $objErr->doFunc(array("店名", "shop_name", STEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
         $objErr->doFunc(array("店名(カナ)", "shop_kana", STEXT_LEN), array("KANA_CHECK","MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("店名(英語表記)", "shop_name_eng", MTEXT_LEN), array("EXIST_CHECK","GRAPH_CHECK","MAX_LENGTH_CHECK"));
+        $objErr->doFunc(array("店名(英語表記)", "shop_name_eng", MTEXT_LEN), array("GRAPH_CHECK","MAX_LENGTH_CHECK"));
         // 郵便番号チェック
         $objErr->doFunc(array("郵便番号1","zip01",ZIP01_LEN ) ,array("EXIST_CHECK", "NUM_CHECK","NUM_COUNT_CHECK"));
         $objErr->doFunc(array("郵便番号2","zip02",ZIP02_LEN ) ,array("EXIST_CHECK", "NUM_CHECK","NUM_COUNT_CHECK"));
