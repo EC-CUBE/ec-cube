@@ -398,8 +398,6 @@ define('URL_SHOP_LOAN', URL_DIR . "shopping/loan.php");
 define('URL_SHOP_CONVENIENCE', URL_DIR . "shopping/convenience.php");
 /** モジュール追加用画面 */
 define('URL_SHOP_MODULE', URL_DIR . "shopping/load_payment_module.php");
-/** 商品トップ */
-define('URL_PRODUCTS_TOP', URL_DIR . "products/top.php");
 /** 商品詳細(HTML出力) */
 define('DETAIL_P_HTML', URL_DIR . "products/detail.php?product_id=");
 /** マイページお届け先URL */

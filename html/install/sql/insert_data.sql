@@ -962,7 +962,6 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('URL_SHOP_CREDIT', '
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('URL_SHOP_LOAN', 'URL_DIR . "shopping/loan.php"', 247, 'ローン決済画面');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('URL_SHOP_CONVENIENCE', 'URL_DIR . "shopping/convenience.php"', 248, 'コンビニ決済画面');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('URL_SHOP_MODULE', 'URL_DIR . "shopping/load_payment_module.php"', 249, 'モジュール追加用画面');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('URL_PRODUCTS_TOP', 'URL_DIR . "products/top.php"', 250, '商品トップ');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DETAIL_P_HTML', 'URL_DIR . "products/detail.php?product_id="', 253, '商品詳細(HTML出力)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MYPAGE_DELIVADDR_URL', 'URL_DIR . "mypage/delivery.php"', 254, 'マイページお届け先URL');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MAIL_TYPE_PC', '1', 255, 'メールアドレス種別');
