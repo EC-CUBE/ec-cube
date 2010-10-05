@@ -812,9 +812,6 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('OPTION_PRODUCT_DELI
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('OPTION_DELIV_FEE', '1', 60, '配送業者ごとの配送料を加算する(有効:1 無効:0)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('OPTION_RECOMMEND', '1', 61, 'おすすめ商品登録(有効:1 無効:0)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('OPTION_CLASS_REGIST', '1', 62, '商品規格登録(有効:1 無効:0)');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TV_IMAGE_WIDTH', '170', 63, 'TV連動商品画像横');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TV_IMAGE_HEIGHT', '95', 64, 'TV連動商品画像縦');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TV_PRODUCTS_MAX', '10', 65, 'TV連動商品最大登録数');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DEFAULT_PASSWORD', '"UAhgGR3L"', 66, '会員登録変更(マイページ)パスワード用');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DELIV_ADDR_MAX', '20', 67, '別のお届け先最大登録数');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CUSTOMER_READING_MAX', '30', 68, '閲覧履歴保存数');

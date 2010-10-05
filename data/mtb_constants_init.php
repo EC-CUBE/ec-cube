@@ -99,12 +99,6 @@ define('OPTION_DELIV_FEE', 1);
 define('OPTION_RECOMMEND', 1);
 /** 商品規格登録(有効:1 無効:0) */
 define('OPTION_CLASS_REGIST', 1);
-/** TV連動商品画像横 */
-define('TV_IMAGE_WIDTH', 170);
-/** TV連動商品画像縦 */
-define('TV_IMAGE_HEIGHT', 95);
-/** TV連動商品最大登録数 */
-define('TV_PRODUCTS_MAX', 10);
 /** 会員登録変更(マイページ)パスワード用 */
 define('DEFAULT_PASSWORD', "UAhgGR3L");
 /** 別のお届け先最大登録数 */
