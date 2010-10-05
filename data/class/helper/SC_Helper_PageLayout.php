@@ -53,9 +53,9 @@ class SC_Helper_PageLayout {
                 $url = "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
             }
             
-            $url2 = preg_replace('|^http://[^/]+' . preg_quote(URL_DIR) . '|', '', $url);
+            $url = preg_replace('|^http://[^/]+' . preg_quote(URL_DIR) . '|', '', $url);
             // URLを元にページデザインを取得
-            $arrPageData = $this->lfgetPageData("url IN (?, ?) AND page_id <> 0" , array($url2, $url)); // $url は従来互換
+            $arrPageData = $this->lfgetPageData("url = ? AND page_id <> 0" , array($url));
         } else {
             $arrPageData = $this->lfgetPageData("page_id = 0");
             $objPage->tpl_mainpage = USER_PATH . "templates/preview/"

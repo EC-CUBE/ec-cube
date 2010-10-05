@@ -368,12 +368,10 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
         }
         
         // 同一のURLが存在している場合にはエラー
-        $sqlWhere = '';
         $params = array();
         
-        $sqlWhere .= ' (url = ? OR url = ?)';
+        $sqlWhere = 'url = ?';
         $params[] = USER_DIR . $array['url'] . '.php';
-        $params[] = USER_URL . $array['url'] . '.php'; // 従来形式
         
         // プレビュー用のレコードは除外
         $sqlWhere .= ' AND page_id <> 0';
