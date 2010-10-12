@@ -475,7 +475,7 @@ class LC_Page_Shopping_Complete extends LC_Page {
         $sqlval['use_point'] = 0;
 
         // 合計金額が0円の場合、もしくはオンライン決済の場合は、注文ステータスをORDER_PRE_END[入金済み]にする
-        if ( ( $sqlval['total'] == 0 ) or ( in_array($sqlval['payment_id'], split(",", CREDIT_PAYMENT)) == true ) ){
+        if ( ( $sqlval['total'] == 0 ) or ( in_array($sqlval['payment_id'], split(",", ONLINE_PAYMENT)) == true ) ){
             $sqlval = $this->lfchgPreEndStatus($sqlval);
         }
         if(strlen($sqlval['status']) == 0) {

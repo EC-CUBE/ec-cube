@@ -369,7 +369,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
         //ダウンロード商品の有無判定
         if($this->cartdown != 0){
             //ダウンロード商品を含む場合は、オンライン決済以外は選択できない。
-            $arrval = explode(",", CREDIT_PAYMENT);
+            $arrval = explode(",", ONLINE_PAYMENT);
             $tmp_where = "";
             foreach ($arrval as $val) {
                 if($tmp_where == "") {

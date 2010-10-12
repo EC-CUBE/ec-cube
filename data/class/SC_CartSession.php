@@ -316,17 +316,6 @@ class SC_CartSession {
         }
         return $arrRet;
     }
-    // カート内にある商品ＩＤ＋カテゴリＩＤを全て取得する
-    function getAllProductClassID($key) {
-        $this->addKey($key);
-        $max = $this->getMax($key);
-        for($i = 0; $i <= $max; $i++) {
-            if($_SESSION[$key][$i]['cart_no'] != "") {
-                $arrRet[] = $_SESSION[$key][$i]['id'];
-            }
-        }
-        return $arrRet;
-    }
 
     function delAllProducts($key) {
         $this->addKey($key);

@@ -160,6 +160,9 @@
             <!--{/if}-->
             <!--{* ログイン済みの会員のみ *}-->
 
+            <!--お届け先ここから-->
+            <!--{* 販売方法判定（ダウンロード販売のみの場合はお届け先を表示しない） *}-->
+            <!--{if $cartdown != "2"}-->
             <table summary="お届け先確認" class="delivname">
                 <thead>
                     <tr>
@@ -213,6 +216,7 @@
                     <!--{/if}-->
                 </tbody>
             </table>
+            <!--{/if}-->
             <!--お届け先ここまで-->
 
             <table summary="お支払方法・お届け日時の指定・その他お問い合わせ" class="delivname">
@@ -226,6 +230,8 @@
                     <th>お支払方法</th>
                     <td><!--{$arrData.payment_method|escape}--></td>
                 </tr>
+                <!--{* 販売方法判定（ダウンロード販売のみの場合はお届け日、時間を表示しない） *}-->
+                <!--{if $cartdown != "2"}-->
                 <tr>
                     <th>お届け日</th>
                     <td><!--{$arrData.deliv_date|escape|default:"指定なし"}--></td>
@@ -234,6 +240,7 @@
                     <th>お届け時間</th>
                     <td><!--{$arrData.deliv_time|escape|default:"指定なし"}--></td>
                 </tr>
+                <!--{/if}-->
                 <tr>
                     <th>その他お問い合わせ</th>
                     <td><!--{$arrData.message|escape|nl2br}--></td>
@@ -244,7 +251,7 @@
             <!--{if 'sfTSPrintOrderBox'|function_exists}-->
                 <!--{'sfTSPrintOrderBox'|call_user_func}-->
             <!--{/if}-->
-            
+
             <div class="tblareabtn">
                 <a href="./payment.php" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_back_on.gif',back03)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_back.gif',back03)"><img src="<!--{$TPL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="戻る" border="0" name="back03" id="back03" /></a>&nbsp;
                 <!--{if $payment_type != ""}-->

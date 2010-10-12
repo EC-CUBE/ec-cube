@@ -1910,27 +1910,20 @@ __EOS__;
      * カート内の商品の販売方法判定処理
      *
      * @param $objCartSess  SC_CartSession  カートセッション
-     * @return  bool        0:ダウンロード販売無 1:ダウンロード販売無 2:全てダウンロード販売
+     * @return  bool        0:実商品のみ 1:ダウンロード販売と実商品混在 2:全てダウンロード販売
      */
     function chkCartDown($objCartSess) {
         $objQuery =& SC_Query::getSingletonInstance();
         $down = false;
         $nodown = false;
         $ret = 0;
-        $arrID = $objCartSess->getAllProductClassID();
-        $table =  <<< __EOS__
-            dtb_products_class pc LEFT JOIN dtb_class_combination cc1 ON pc.class_combination_id = cc1.class_combination_id
-            LEFT JOIN dtb_class_combination cc2 ON cc1.parent_class_combination_id = cc2.class_combination_id
-__EOS__;
-        $where =  <<< __EOS__
-            pc.product_id = ? AND
-            ( cc2.classcategory_id = ? OR cc2.classcategory_id IS NULL ) AND
-            ( cc1.classcategory_id = ? OR cc1.classcategory_id IS NULL )
-__EOS__;
+        $arrID = $objCartSess->getAllProductID();
+        $table = "dtb_products_class pc";
+        $where = "pc.product_class_id = ?";
         if(!is_null($arrID)){
             //カート内のIDから販売方法を取得
             foreach ($arrID as $rec) {
-                $arrRet = $objQuery->select("pc.down AS down", $table, $where, array($rec[0],$rec[1],$rec[2]));
+                $arrRet = $objQuery->select("pc.down AS down", $table, $where, array($rec));
                 if ($arrRet[0]['down'] == "2"){
                     $down = true;
                 }else{

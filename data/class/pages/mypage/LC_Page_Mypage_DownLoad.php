@@ -20,7 +20,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-ini_set("memory_limit","100M");
 // {{{ requires
 require_once(CLASS_PATH . "pages/LC_Page.php");
 
@@ -75,9 +74,7 @@ class LC_Page_Mypage_DownLoad extends LC_Page {
         } else {
         //ログインしている場合
             //DBから商品情報の読込
-
             $arrForm = $this->lfGetRealFileName($customer_id, $order_id, $product_id, $product_class_id);
-
             //ステータスが支払済み以上である事
             if ($arrForm["status"] < ORDER_DELIV){
                 SC_Utils_Ex::sfDispSiteError(DOWNFILE_NOT_FOUND,"",true);
@@ -91,8 +88,12 @@ class LC_Page_Mypage_DownLoad extends LC_Page {
             if (!file_exists($realpath)){
                 SC_Utils_Ex::sfDispSiteError(DOWNFILE_NOT_FOUND,"",true);
             }
-            //ファイル名をエンコードする
-            $sdown_filename = mb_convert_encoding($arrForm["down_filename"], "Shift_JIS", "auto");
+            //ファイル名をエンコードする Safariの対策はUTF-8で様子を見る
+            $encoding = "Shift_JIS";
+            if(isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'],'Safari')) {
+                $encoding = "UTF-8";
+            }
+            $sdown_filename = mb_convert_encoding($arrForm["down_filename"], $encoding, "auto");
             //タイプ指定
             header("Content-Type: Application/octet-stream");
             //ファイル名指定
@@ -110,9 +111,14 @@ class LC_Page_Mypage_DownLoad extends LC_Page {
             set_time_limit(0);
             ob_end_flush();
             flush();
-
             //ファイル読み込み
-            readfile($realpath);
+            $handle = fopen($realpath, "rb");
+            while (!feof($handle)) {
+                echo(fread($handle, DOWNLOAD_BLOCK*1024));
+                ob_flush();
+                flush();
+            }
+            fclose($handle);
         }
     }
 

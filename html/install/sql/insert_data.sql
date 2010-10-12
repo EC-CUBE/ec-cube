@@ -1073,4 +1073,5 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DEFAULT_PRODUCT_DOW
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DOWN_TEMP_DIR', 'DATA_PATH . "download/temp/"', 704, 'ダウンロードファイル一時保存');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DOWN_SAVE_DIR', 'DATA_PATH . "download/save/"', 705, 'ダウンロードファイル保存先');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DOWNFILE_NOT_FOUND', '22', 706, 'ダウンロードファイル存在エラー');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CREDIT_PAYMENT', '"1"', 707, 'ダウンロード販売機能用オンライン決済payment_id(カンマ区切り)');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ONLINE_PAYMENT', '"1"', 707, 'ダウンロード販売機能用オンライン決済payment_id(カンマ区切り)');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DOWNLOAD_BLOCK', '1024', 708, 'ダウンロード販売機能 ダウンロードファイル読み込みバイト(KB)');
