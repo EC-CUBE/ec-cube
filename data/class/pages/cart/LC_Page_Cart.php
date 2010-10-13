@@ -68,7 +68,6 @@ class LC_Page_Cart extends LC_Page {
      * @return void
      */
     function process() {
-        global $objCampaignSess;
 
         $objView = new SC_SiteView(false);
         $objCartSess = new SC_CartSession();
@@ -78,42 +77,47 @@ class LC_Page_Cart extends LC_Page {
         $objCustomer = new SC_Customer();
         $objDb = new SC_Helper_DB_Ex();
         $objProduct = new SC_Product();
-        // 商品購入中にカート内容が変更された。
-        if($objCartSess->getCancelPurchase()) {
-            $this->tpl_message = "商品購入中にカート内容が変更されましたので、お手数ですが購入手続きをやり直して下さい。";
+
+        $i = 0;
+        $this->cartKeys = $objCartSess->getKeys();
+        foreach ($this->cartKeys as $key) {
+            // 商品購入中にカート内容が変更された。
+            if($objCartSess->getCancelPurchase($key)) {
+                $this->tpl_message = "商品購入中にカート内容が変更されましたので、お手数ですが購入手続きをやり直して下さい。";
+            }
+
+            // カートの商品規格を取得
+            $cartItems = $objCartSess->getCartList($key);
+            foreach (array_keys($cartItems) as $itemKey) {
+                $cartItem =& $cartItems[$itemKey];
+                if (!SC_Utils_Ex::isBlank($cartItem)) {
+                    $this->cartItems[$key][$i] =& $cartItem;
+                    $i++;
+                }
+            }
         }
 
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
         switch($_POST['mode']) {
         case 'up':
-            $objCartSess->upQuantity($_POST['cart_no']);
+            $objCartSess->upQuantity($_POST['cart_no'], $_POST['cartKey']);
             $this->reload(); // PRG pattern
             break;
         case 'down':
-            $objCartSess->downQuantity($_POST['cart_no']);
+            $objCartSess->downQuantity($_POST['cart_no'], $_POST['cartKey']);
             $this->reload(); // PRG pattern
             break;
         case 'delete':
-            $objCartSess->delProduct($_POST['cart_no']);
+            $objCartSess->delProduct($_POST['cart_no'], $_POST['cartKey']);
             $this->reload(); // PRG pattern
             break;
         case 'confirm':
             // カート内情報の取得
-            $cartKey = $_POST['cartKey']; // TODO
-            $arrRet = $objCartSess->getCartList($cartKey);
-            $max = count($arrRet);
-            $cnt = 0;
-            for ($i = 0; $i < $max; $i++) {
-                // 商品規格情報の取得
-                $this->arrData = $objProduct->getProductsClass($arrRet[$i]['id']);
-                // DBに存在する商品
-                if($this->arrData != "") {
-                    $cnt++;
-                }
-            }
+            $cartKey = $_POST['cartKey'];
+            $cartList = $objCartSess->getCartList($cartKey);
             // カート商品が1件以上存在する場合
-            if($cnt > 0) {
+            if(count($cartList) > 0) {
                 // 正常に登録されたことを記録しておく
                 $objSiteSess->setRegistFlag();
                 $pre_uniqid = $objSiteSess->getUniqId();
@@ -140,16 +144,17 @@ class LC_Page_Cart extends LC_Page {
 
         // 基本情報の取得
         $this->arrInfo = $objSiteInfo->data;
-
-        $this->cartKeys = $objCartSess->getKeys();
         foreach ($this->cartKeys as $key) {
             // カート集計処理
-            $objDb->sfTotalCart($this, $objCartSess, $key);
-            $this->arrData = $objDb->sfTotalConfirm($this->arrData, $this, $objCartSess, null, $objCustomer, $key);
+            $this->tpl_message = $objCartSess->checkProducts($key);
+            $this->tpl_total_pretax[$key] = $objCartSess->getAllProductsTotal($key);
+            $this->tpl_total_tax[$key] = $objCartSess->getAllProductsTax($key);
+            // ポイント合計
+            $this->tpl_total_point[$key] = $objCartSess->getAllProductsPoint($key);
+
+            $this->arrData = $objDb->sfTotalConfirm($this->cartItems[$key], $this, $objCartSess, null, $objCustomer, $key);
             // 送料無料までの金額を計算
             $this->tpl_deliv_free[$key] = $this->arrInfo['free_rule'] - $this->tpl_total_pretax[$key];
-
-
         }
 
         // ログイン判定
@@ -158,7 +163,6 @@ class LC_Page_Cart extends LC_Page {
             $this->tpl_user_point = $objCustomer->getValue('point');
             $this->tpl_name = $objCustomer->getValue('name01');
         }
-
 
         // 前頁のURLを取得
         $this->tpl_prev_url = $objCartSess->getPrevURL();

@@ -57,38 +57,28 @@ class LC_Page_FrontParts_Bloc_Cart extends LC_Page_FrontParts_Bloc {
         $objCart = new SC_CartSession();
         $objSiteInfo = new SC_SiteInfo;
 
-        if (count($_SESSION[$objCart->key]) > 0){
+        $cartKeys = $objCart->getKeys();
+        foreach ($cartKeys as $cartKey) {
+
             // カート情報を取得
-            $arrCartList = $objCart->getCartList();
+            $arrCartList = $objCart->getCartList($cartKey);
 
             // カート内の商品ＩＤ一覧を取得
-            $arrAllProductID = $objCart->getAllProductID();
+            $arrAllProductID = $objCart->getAllProductID($cartKey);
             // 商品が1つ以上入っている場合には商品名称を取得
-            if (count($arrAllProductID) > 0){
-                $objQuery = new SC_Query();
-                $arrVal = array();
-                $sql = "";
-                $sql = "SELECT name FROM dtb_products WHERE product_id IN ( ?";
-                $arrVal = array($arrAllProductID[0]);
-                for($i = 1 ; $i < count($arrAllProductID) ; $i++){
-                    $sql.= " ,? ";
-                    array_push($arrVal, $arrAllProductID[$i]);
-                }
-                $sql.= " )";
+            if (count($arrCartList) > 0){
 
-                $arrProduct_name = $objQuery->getAll($sql, $arrVal);
-
-                foreach($arrProduct_name as $key => $val){
+                foreach($arrCartList['productsClass'] as $key => $val){
                     $arrCartList[$key]['product_name'] = $val['name'];
                 }
             }
             // 店舗情報の取得
             $arrInfo = $objSiteInfo->data;
             // 購入金額合計
-            $ProductsTotal = $objCart->getAllProductsTotal();
+            $ProductsTotal = $objCart->getAllProductsTotal($cartKey);
 
             // 合計数量
-            $TotalQuantity = $objCart->getTotalQuantity();
+            $TotalQuantity = $objCart->getTotalQuantity($cartKey);
 
             // 送料無料までの金額
             $arrCartList[0]['ProductsTotal'] = $ProductsTotal;

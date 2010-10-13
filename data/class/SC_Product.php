@@ -187,7 +187,7 @@ __EOS__;
                 // 在庫
                 $stock_find_class = ($productsClass['stock_unlimited'] || $productsClass['stock'] > 0);
 
-                $classCategories[$productsClass1][$productsClass2]['name'] = $productsClass['name2'] . ($stock_find_class ? '' : ' (品切れ中)');
+                $classCategories[$productsClass1][$productsClass2]['name'] = $productsClass['classcategory_name2'] . ($stock_find_class ? '' : ' (品切れ中)');
 
                 $classCategories[$productsClass1][$productsClass2]['stock_find'] = $stock_find_class;
 
@@ -196,7 +196,7 @@ __EOS__;
                 }
 
                 if (!in_array($classcat_id1, $classCats1)) {
-                    $classCats1[$productsClass1] = $productsClass['name1']
+                    $classCats1[$productsClass1] = $productsClass['classcategory_name1']
                         . ($productsClass2 == 0 && !$stock_find_class ? ' (品切れ中)' : '');
                 }
 
@@ -257,7 +257,7 @@ __EOS__;
             T2.parent_class_combination_id,
             T2.classcategory_id,
             T2.level,
-            T3.name,
+            T3.name AS classcategory_name,
             T4.name AS class_name,
             T4.class_id
 __EOS__;
@@ -289,7 +289,7 @@ __EOS__;
                 T1.classcategory_id,
                 T1.parent_class_combination_id,
                 T1.level,
-                T2.name,
+                T2.name AS classcategory_name,
                 T3.name AS class_name,
                 T3.class_id
 __EOS__;
@@ -324,7 +324,7 @@ __EOS__;
         foreach ($tmpClass as $val) {
             $val['class_id' . $val['level']] = $val['class_id'];
             $val['class_name' . $val['level']] = $val['class_name'];
-            $val['name' . $val['level']] = $val['name'];
+            $val['classcategory_name' . $val['level']] = $val['classcategory_name'];
             $val['classcategory_id' . $val['level']] = $val['classcategory_id'];
             $arrProductsClass[] = $val;
         }
@@ -420,6 +420,27 @@ __EOS__;
             $productsClass[] = $level1;
         }
         return $productsClass;
+    }
+
+    /**
+     * 商品詳細の結果から, 購入制限数を取得する.
+     *
+     * getDetailAndProductsClass() の結果から, 購入制限数を取得する.
+     *
+     * @param array $p 商品詳細の検索結果の配列
+     * @return integer 商品詳細の結果から求めた購入制限数.
+     * @see getDetailAndProductsClass()
+     */
+    function getBuyLimit($p) {
+        $limit = null;
+        if ($p['stock_unlimited'] != '1' && is_numeric($p['sale_limit'])) {
+            $limit = min($p['sale_limit'], $p['stock']);
+        } elseif (is_numeric($p['sale_limit'])) {
+            $limit = $p['sale_limit'];
+        } elseif ($p['stock_unlimited'] != '1') {
+            $limit = $p['stock'];
+        }
+        return $limit;
     }
 
     /**

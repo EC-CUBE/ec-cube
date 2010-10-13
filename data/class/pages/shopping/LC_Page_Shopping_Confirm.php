@@ -84,14 +84,32 @@ class LC_Page_Shopping_Confirm extends LC_Page {
 
         // カート集計処理
         $this->cartKey = $_SESSION['cartKey'];
-        $objDb->sfTotalCart($this, $objCartSess, $this->cartKey);
+        $cartItems = $objCartSess->getCartList($this->cartKey);
+        $i = 0;
+        foreach (array_keys($cartItems) as $itemKey) {
+            $cartItem =& $cartItems[$itemKey];
+            if (!SC_Utils_Ex::isBlank($cartItem)) {
+                $this->cartItems[$i] =& $cartItem;
+                $i++;
+            }
+        }
+        $this->tpl_message = $objCartSess->checkProducts($this->cartKey);
+        $this->tpl_total_pretax[$this->cartKey] = $objCartSess->getAllProductsTotal($this->cartKey);
+        $this->tpl_total_tax[$this->cartKey] = $objCartSess->getAllProductsTax($this->cartKey);
+        // ポイント合計
+        $this->tpl_total_point[$this->cartKey] = $objCartSess->getAllProductsPoint($this->cartKey);
+
         if (strlen($this->tpl_message) >= 1) {
             SC_Utils_Ex::sfDispSiteError(SOLD_OUT, '', true);
         }
+
+        // TODO リファクタリング
         // 一時受注テーブルの読込
-        $arrData = $objDb->sfGetOrderTemp($uniqid);
+        $tmpData = $objDb->sfGetOrderTemp($uniqid);
+
         // カート集計を元に最終計算
-        $arrData = $objDb->sfTotalConfirm($arrData, $this, $objCartSess, null, $objCustomer);
+        $arrData = $objDb->sfTotalConfirm($this->cartItems, $this, $objCartSess, null, $objCustomer, $this->cartKey);
+        $arrData = array_merge($tmpData, $arrData);
         // キャンペーンからの遷移で送料が無料だった場合の処理
         if($objCampaignSess->getIsCampaign()) {
             $deliv_free_flg = $objQuery->get("dtb_campaign", "deliv_free_flg", "campaign_id = ?", array($objCampaignSess->getCampaignId()));
@@ -136,6 +154,8 @@ class LC_Page_Shopping_Confirm extends LC_Page {
             $arrData['session'] = serialize($_SESSION);
 
             // 集計結果を受注一時テーブルに反映
+            unset($arrData[0]); // TODO
+            unset($arrData[1]);
             $objDb->sfRegistTempOrder($uniqid, $arrData);
             // 正常に登録されたことを記録しておく
             $objSiteSess->setRegistFlag();

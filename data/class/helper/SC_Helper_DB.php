@@ -243,6 +243,7 @@ class SC_Helper_DB {
      * @param SC_CartSession $objCartSess カートセッションのインスタンス
      * @param null $dummy1 互換性確保用(決済モジュール互換のため)
      * @return LC_Page 集計処理後のページクラスインスタンス
+     * @deprecated SC_CartSession クラスを使用して下さい
      */
     function sfTotalCart(&$objPage, $objCartSess, $dummy1 = null, $key = "") {
 
@@ -1912,7 +1913,7 @@ __EOS__;
      * @param $objCartSess  SC_CartSession  カートセッション
      * @return  bool        0:実商品のみ 1:ダウンロード販売と実商品混在 2:全てダウンロード販売
      */
-    function chkCartDown($objCartSess) {
+    function chkCartDown(&$objCartSess, $cartKey = 1) {
         $objQuery =& SC_Query::getSingletonInstance();
         $down = false;
         $nodown = false;

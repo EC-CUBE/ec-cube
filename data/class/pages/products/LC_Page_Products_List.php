@@ -157,8 +157,9 @@ class LC_Page_Products_List extends LC_Page {
                 // 規格IDを取得
                 $objProduct = new SC_Product();
                 $product_class_id = $this->arrForm['product_class_id'];
+                $product_type = $this->arrForm['product_type'];
                 $objCartSess = new SC_CartSession();
-                $objCartSess->addProduct($product_class_id, $this->arrForm['quantity']);
+                $objCartSess->addProduct($product_class_id, $this->arrForm['quantity'], $product_type);
                 $this->sendRedirect($this->getLocation(URL_CART_TOP));
                 exit;
             }

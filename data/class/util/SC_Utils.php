@@ -312,28 +312,33 @@ class SC_Utils {
     function sfCheckNormalAccess(&$objSiteSess, &$objCartSess) {
         // ユーザユニークIDの取得
         $uniqid = $objSiteSess->getUniqId();
-        // 購入ボタンを押した時のカート内容がコピーされていない場合のみコピーする。
-        $objCartSess->saveCurrentCart($uniqid);
-        // POSTのユニークIDとセッションのユニークIDを比較(ユニークIDがPOSTされていない場合はスルー)
-        $ret = $objSiteSess->checkUniqId();
-        if($ret != true) {
-            // エラーページの表示
-            SC_Utils_Ex::sfDispSiteError(CANCEL_PURCHASE, $objSiteSess);
-        }
 
-        // カート内が空でないか || 購入ボタンを押してから変化がないか
-        $quantity = $objCartSess->getTotalQuantity();
-        $ret = $objCartSess->checkChangeCart();
-        if($ret == true || !($quantity > 0)) {
-            // カート情報表示に強制移動する
-            // FIXME false を返して, Page クラスで遷移させるべき...
-            if (defined("MOBILE_SITE")) {
-                header("Location: ". MOBILE_URL_CART_TOP
-                       . "?" . session_name() . "=" . session_id());
-            } else {
-                header("Location: ".URL_CART_TOP);
+        $cartkeys = $objCartSess->getKeys();
+
+        foreach ($cartKeys as $cartKey) {
+            // 購入ボタンを押した時のカート内容がコピーされていない場合のみコピーする。
+            $objCartSess->saveCurrentCart($uniqid, $cartKey);
+            // POSTのユニークIDとセッションのユニークIDを比較(ユニークIDがPOSTされていない場合はスルー)
+            $ret = $objSiteSess->checkUniqId();
+            if($ret != true) {
+                // エラーページの表示
+                SC_Utils_Ex::sfDispSiteError(CANCEL_PURCHASE, $objSiteSess);
             }
-            exit;
+
+            // カート内が空でないか || 購入ボタンを押してから変化がないか
+            $quantity = $objCartSess->getTotalQuantity($cartKey);
+            $ret = $objCartSess->checkChangeCart($cartKey);
+            if($ret == true || !($quantity > 0)) {
+                // カート情報表示に強制移動する
+                // FIXME false を返して, Page クラスで遷移させるべき...
+                if (defined("MOBILE_SITE")) {
+                    header("Location: ". MOBILE_URL_CART_TOP
+                           . "?" . session_name() . "=" . session_id());
+                } else {
+                    header("Location: ".URL_CART_TOP);
+                }
+                exit;
+            }
         }
         return $uniqid;
     }

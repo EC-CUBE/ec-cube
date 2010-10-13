@@ -73,6 +73,7 @@ function fnInCart(productForm) {
     fnSetVal("quantity", productForm["quantity"].value);
     fnSetVal("product_id", productForm["product_id"].value);
     fnSetVal("product_class_id", productForm["product_class_id"].value);
+    fnSetVal("product_type", productForm["product_type"].value);
     fnSubmit();
 }
 function fnCheckStock(form) {

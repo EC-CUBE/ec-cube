@@ -69,7 +69,8 @@
         <p class="attention"><!--{$tpl_message|escape|nl2br}--></p>
     <!--{/if}-->
 
-    <!--{if count($arrProductsClass) > 0}-->
+    <!--{if count($cartItems) > 0}-->
+
     <!--{foreach from=$cartKeys item=key}-->
         <form name="form1" id="form1" method="post" action="?">
             <!--{if 'sfGMOCartDisplay'|function_exists}-->
@@ -78,6 +79,7 @@
 
             <input type="hidden" name="mode" value="confirm" />
             <input type="hidden" name="cart_no" value="" />
+            <input type="hidden" name="cartKey" value="<!--{$key}-->" />
             <table summary="商品情報">
                 <tr>
                     <th>削除</th>
@@ -87,44 +89,44 @@
                     <th>数量</th>
                     <th>小計</th>
                 </tr>
-                <!--{section name=cnt loop=$arrProductsClass}-->
-                    <tr style="<!--{if $arrProductsClass[cnt].error}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->">
-                        <td><a href="?" onclick="fnModeSubmit('delete', 'cart_no', '<!--{$arrProductsClass[cnt][$key].cart_no}-->'); return false;">削除</a>
+                <!--{foreach from=$cartItems[$key] item=item}-->
+                    <tr style="<!--{if $item.error}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->">
+                        <td><a href="?" onclick="fnModeSubmit('delete', 'cart_no', '<!--{$item.cart_no}-->'); return false;">削除</a>
                         </td>
                         <td class="phototd">
                         <a
-                            <!--{if $arrProductsClass[cnt][$key].main_image|strlen >= 1}-->
-                                href="<!--{$smarty.const.IMAGE_SAVE_URL}--><!--{$arrProductsClass[cnt][$key].main_image|sfNoImageMainList|escape}-->"
+                            <!--{if $item.productsClass.main_image|strlen >= 1}-->
+                                href="<!--{$smarty.const.IMAGE_SAVE_URL}--><!--{$item.productsClass.main_image|sfNoImageMainList|escape}-->"
                                 class="expansion"
                                 target="_blank"
                             <!--{/if}-->
                         >
-                            <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$arrProductsClass[cnt][$key].main_list_image|sfNoImageMainList|escape}-->&amp;width=65&amp;height=65" alt="<!--{$arrProductsClass[cnt].name|escape}-->" /></a>
+                            <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$item.productsClass.main_list_image|sfNoImageMainList|escape}-->&amp;width=65&amp;height=65" alt="<!--{$item.productsClass.name|escape}-->" /></a>
                         </td>
-                        <td><!--{* 商品名 *}--><strong><!--{$arrProductsClass[cnt][$key].name|escape}--></strong><br />
-                            <!--{if $arrProductsClass[cnt][$key].classcategory_name1 != ""}-->
-                                <!--{$arrProductsClass[cnt][$key].class_name1}-->：<!--{$arrProductsClass[cnt][$key].classcategory_name1}--><br />
+                        <td><!--{* 商品名 *}--><strong><!--{$item.productsClass.name|escape}--></strong><br />
+                            <!--{if $item.productsClass.classcategory_name1 != ""}-->
+                                <!--{$item.productsClass.class_name1}-->：<!--{$item.productsClass.classcategory_name1}--><br />
                             <!--{/if}-->
-                            <!--{if $arrProductsClass[cnt][$key].classcategory_name2 != ""}-->
-                                <!--{$arrProductsClass[cnt][$key].class_name2}-->：<!--{$arrProductsClass[cnt][$key].classcategory_name2}-->
+                            <!--{if $item.productsClass.classcategory_name2 != ""}-->
+                                <!--{$item.productsClass.class_name2}-->：<!--{$item.productsClass.classcategory_name2}-->
                             <!--{/if}-->
                         </td>
                         <td class="pricetd">
-                        <!--{if $arrProductsClass[cnt].price02 != ""}-->
-                            <!--{$arrProductsClass[cnt][$key].price02|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
+                        <!--{if $item.productsClass.price02 != ""}-->
+                            <!--{$item.productsClass.price02|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
                         <!--{else}-->
-                            <!--{$arrProductsClass[cnt][$key].price01|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
+                            <!--{$item.productsClass.price01|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
                         <!--{/if}-->
                         </td>
-                        <td id="quantity"><!--{$arrProductsClass[cnt][$key].quantity}-->
+                        <td id="quantity"><!--{$item.quantity}-->
                             <ul id="quantity_level">
-                                <li><a href="?" onclick="fnModeSubmit('up','cart_no','<!--{$arrProductsClass[cnt][$key].cart_no}-->'); return false"><img src="<!--{$TPL_DIR}-->img/cart/plus.gif" width="16" height="16" alt="＋" /></a></li>
-                                <li><a href="?" onclick="fnModeSubmit('down','cart_no','<!--{$arrProductsClass[cnt][$key].cart_no}-->'); return false"><img src="<!--{$TPL_DIR}-->img/cart/minus.gif" width="16" height="16" alt="-" /></a></li>
+                                <li><a href="?" onclick="fnModeSubmit('up','cart_no','<!--{$item.cart_no}-->'); return false"><img src="<!--{$TPL_DIR}-->img/cart/plus.gif" width="16" height="16" alt="＋" /></a></li>
+                                <li><a href="?" onclick="fnModeSubmit('down','cart_no','<!--{$item.cart_no}-->'); return false"><img src="<!--{$TPL_DIR}-->img/cart/minus.gif" width="16" height="16" alt="-" /></a></li>
                             </ul>
                         </td>
-                        <td class="pricetd"><!--{$arrProductsClass[cnt].total_pretax[$key]|number_format}-->円</td>
+                        <td class="pricetd"><!--{$item.total_pretax|number_format}-->円</td>
                      </tr>
-                 <!--{/section}-->
+                 <!--{/foreach}-->
                  <tr>
                      <th colspan="5" class="resulttd">小計</th>
                      <td class="pricetd"><!--{$tpl_total_pretax[$key]|number_format}-->円</td>

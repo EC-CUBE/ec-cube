@@ -524,7 +524,8 @@ class LC_Page_Shopping_Complete extends LC_Page {
     function lfRegistOrderDetail(&$objQuery, $order_id, &$objCartSess) {
         $objDb = new SC_Helper_DB_Ex();
         // カート内情報の取得
-        $arrCart = $objCartSess->getCartList();
+        $this->cartKey = $_SESSION['cartKey'];
+        $arrCart = $objCartSess->getCartList($this->cartKey);
         $max = count($arrCart);
 
         // 既に存在する詳細レコードを消しておく。
