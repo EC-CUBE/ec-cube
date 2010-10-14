@@ -918,35 +918,6 @@ class SC_Utils {
         return ($num1 * $num2);
     }
 
-    // カードの処理結果を返す
-    function sfGetAuthonlyResult($dir, $file_name, $name01, $name02, $card_no, $card_exp, $amount, $order_id, $jpo_info = "10"){
-
-        $path = $dir .$file_name;        // cgiファイルのフルパス生成
-        $now_dir = getcwd();            // requireがうまくいかないので、cgi実行ディレクトリに移動する
-        chdir($dir);
-
-        // パイプ渡しでコマンドラインからcgi起動
-        $cmd = "$path card_no=$card_no name01=$name01 name02=$name02 card_exp=$card_exp amount=$amount order_id=$order_id jpo_info=$jpo_info";
-
-        $tmpResult = popen($cmd, "r");
-
-        // 結果取得
-        while( ! FEOF ( $tmpResult ) ) {
-            $result .= FGETS($tmpResult);
-        }
-        pclose($tmpResult);                //     パイプを閉じる
-        chdir($now_dir);                //　元にいたディレクトリに帰る
-
-        // 結果を連想配列へ格納
-        $result = ereg_replace("&$", "", $result);
-        foreach (explode("&",$result) as $data) {
-            list($key, $val) = explode("=", $data, 2);
-            $return[$key] = $val;
-        }
-
-        return $return;
-    }
-
     /**
      * 加算ポイントの計算
      *
