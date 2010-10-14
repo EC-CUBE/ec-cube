@@ -41,7 +41,7 @@ if (!defined('SKIP_MOBILE_INIT')) {
     $objMobile->sfMobileInit();
 }
 
-// Moba8対応（Moba8パラメータ引き継ぎ）
+// Moba8対応 (Moba8パラメータ引き継ぎ)
 if (function_exists("sfGetMoba8Param") == TRUE) {
     sfGetMoba8Param($_GET['a8']);
 }

@@ -45,7 +45,7 @@
           <td><!--{$arrForm.name01|escape}-->　<!--{$arrForm.name02|escape}--></td>
         </tr>
         <tr>
-          <th>お名前（フリガナ）<span class="attention">※</span></th>
+          <th>お名前(フリガナ)<span class="attention">※</span></th>
           <td><!--{$arrForm.kana01|escape}-->　<!--{$arrForm.kana02|escape}--></td>
         </tr>
         <tr>

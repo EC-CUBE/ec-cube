@@ -99,15 +99,15 @@ $(function() {
       <td>
         <span class="attention"><!--{$arrErr.company_name}--></span>
         <input type="text" name="company_name" value="<!--{$arrForm.company_name|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.company_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" />
-        <span class="attention"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
+        <span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
       </td>
     </tr>
     <tr>
-      <th>会社名（カナ）</th>
+      <th>会社名(カナ)</th>
       <td>
         <span class="attention"><!--{$arrErr.company_kana}--></span>
         <input type="text" name="company_kana" value="<!--{$arrForm.company_kana|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.company_kana != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" />
-        <span class="attention"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
+        <span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
       </td>
     </tr>
     <tr>
@@ -115,23 +115,23 @@ $(function() {
       <td>
         <span class="attention"><!--{$arrErr.shop_name}--></span>
         <input type="text" name="shop_name" value="<!--{$arrForm.shop_name|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.shop_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" />
-        <span class="attention"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
+        <span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
       </td>
     </tr>
     <tr>
-      <th>店名（カナ）</th>
+      <th>店名(カナ)</th>
       <td>
         <span class="attention"><!--{$arrErr.shop_kana}--></span>
         <input type="text" name="shop_kana" value="<!--{$arrForm.shop_kana|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.shop_kana != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" />
-        <span class="attention"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
+        <span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
       </td>
     </tr>
     <tr>
-      <th>店名（英語表記）</th>
+      <th>店名(英語表記)</th>
       <td>
         <span class="attention"><!--{$arrErr.shop_name_eng}--></span>
         <input type="text" name="shop_name_eng" value="<!--{$arrForm.shop_name_eng|escape}-->" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.shop_name_eng != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" />
-        <span class="attention"> （上限<!--{$smarty.const.MTEXT_LEN}-->文字）</span>
+        <span class="attention"> (上限<!--{$smarty.const.MTEXT_LEN}-->文字)</span>
       </td>
     </tr>
     <tr>
@@ -155,12 +155,12 @@ $(function() {
         </p>
         <p>
           <span class="attention"><!--{$arrErr.addr01}--></span>
-          <input type="text" name="addr01" value="<!--{$arrForm.addr01|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.addr01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" id="addr01" /><span class="attention"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span><br />
+          <input type="text" name="addr01" value="<!--{$arrForm.addr01|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.addr01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" id="addr01" /><span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span><br />
           <!--{$smarty.const.SAMPLE_ADDRESS1}-->
         </p>
         <p>
           <span class="attention"><!--{$arrErr.addr02}--></span>
-          <input type="text" name="addr02" value="<!--{$arrForm.addr02|escape}-->"  maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.addr02 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" id="addr02" /><span class="attention"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span><br />
+          <input type="text" name="addr02" value="<!--{$arrForm.addr02|escape}-->"  maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.addr02 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" id="addr02" /><span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span><br />
           <!--{$smarty.const.SAMPLE_ADDRESS2}-->
         </p>
       </td>
@@ -188,7 +188,7 @@ $(function() {
       <td>
         <span class="attention"><!--{$arrErr.business_hour}--></span>
         <input type="text" name="business_hour" value="<!--{$arrForm.business_hour|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.business_hour != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" />
-        <span class="attention"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
+        <span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
       </td>
     </tr>
     <tr>
@@ -196,7 +196,7 @@ $(function() {
       <td>
         <span class="attention"><!--{$arrErr.email01}--></span>
         <input type="text" name="email01" value="<!--{$arrForm.email01|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.email01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" />
-        <span class="attention"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
+        <span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
       </td>
     </tr>
     <tr>
@@ -204,7 +204,7 @@ $(function() {
       <td>
         <span class="attention"><!--{$arrErr.email02}--></span>
         <input type="text" name="email02" value="<!--{$arrForm.email02|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.email02 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/>
-        <span class="attention"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
+        <span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
       </td>
     </tr>
     <tr>
@@ -212,7 +212,7 @@ $(function() {
       <td>
         <span class="attention"><!--{$arrErr.email03}--></span>
         <input type="text" name="email03" value="<!--{$arrForm.email03|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.email03 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/>
-        <span class="attention"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
+        <span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
       </td>
     </tr>
     <tr>
@@ -220,7 +220,7 @@ $(function() {
       <td>
         <span class="attention"><!--{$arrErr.email04}--></span>
         <input type="text" name="email04" value="<!--{$arrForm.email04|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.email04 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/>
-        <span class="attention"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
+        <span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
       </td>
     </tr>
     <tr>
@@ -229,7 +229,7 @@ $(function() {
         <!--{assign var=key value="good_traded"}-->
         <span class="attention"><!--{$arrErr[$key]}--></span>
         <textarea name="<!--{$key}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key]|escape}--></textarea>
-        <span class="attention"> （上限<!--{$smarty.const.LLTEXT_LEN}-->文字）</span>
+        <span class="attention"> (上限<!--{$smarty.const.LLTEXT_LEN}-->文字)</span>
       </td>
     </tr>
     <tr>
@@ -238,7 +238,7 @@ $(function() {
         <!--{assign var=key value="message"}-->
         <span class="attention"><!--{$arrErr[$key]}--></span>
         <textarea name="<!--{$key}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key]|escape}--></textarea>
-        <span class="attention"> （上限<!--{$smarty.const.LLTEXT_LEN}-->文字）</span>
+        <span class="attention"> (上限<!--{$smarty.const.LLTEXT_LEN}-->文字)</span>
       </td>
     </tr>
   </table>

@@ -33,7 +33,7 @@ function lfDispSwitch(id){
 }
 
 // セレクトボックスのリストを移動
-//（移動元セレクトボックスID, 移動先セレクトボックスID）
+// (移動元セレクトボックスID, 移動先セレクトボックスID)
 function fnMoveSelect(select, target) {
   $('#' + select).children().each(function() {
     if (this.selected) {
@@ -84,7 +84,7 @@ function selectAll(target) {
       <td>
         <span class="attention"><!--{$arrErr.name}--></span>
         <input type="text" name="name" value="<!--{$arrForm.name|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" />
-        <span class="attention"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
+        <span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
       </td>
     </tr>
     <tr>
@@ -136,7 +136,7 @@ function selectAll(target) {
       <td>
         <span class="attention"><!--{$arrErr.down_filename}--></span>
         <input type="text" name="down_filename" value="<!--{$arrForm.down_filename|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.down_filename != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" size="60" class="box60" />
-        <span class="red"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
+        <span class="red"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
       </td>
     </tr>
     <tr>
@@ -157,7 +157,7 @@ function selectAll(target) {
       <td>
         <span class="attention"><!--{$arrErr.product_code}--></span>
         <input type="text" name="product_code" value="<!--{$arrForm.product_code|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.product_code != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" />
-        <span class="attention"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
+        <span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
       </td>
     </tr>
     <tr>
@@ -165,7 +165,7 @@ function selectAll(target) {
       <td>
         <span class="attention"><!--{$arrErr.price01}--></span>
         <input type="text" name="price01" value="<!--{$arrForm.price01|escape}-->" size="6" class="box6" maxlength="<!--{$smarty.const.PRICE_LEN}-->" style="<!--{if $arrErr.price01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/>円
-        <span class="attention"> （半角数字で入力）</span>
+        <span class="attention"> (半角数字で入力)</span>
       </td>
     </tr>
     <tr>
@@ -173,7 +173,7 @@ function selectAll(target) {
       <td>
         <span class="attention"><!--{$arrErr.price02}--></span>
         <input type="text" name="price02" value="<!--{$arrForm.price02|escape}-->" size="6" class="box6" maxlength="<!--{$smarty.const.PRICE_LEN}-->" style="<!--{if $arrErr.price02 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/>円
-        <span class="attention"> （半角数字で入力）</span>
+        <span class="attention"> (半角数字で入力)</span>
       </td>
     </tr>
     <tr>
@@ -191,7 +191,7 @@ function selectAll(target) {
       <td>
         <span class="attention"><!--{$arrErr.deliv_fee}--></span>
         <input type="text" name="deliv_fee" value="<!--{$arrForm.deliv_fee|escape}-->" size="6" class="box6" maxlength="<!--{$smarty.const.PRICE_LEN}-->" style="<!--{if $arrErr.deliv_fee != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/>円
-        <span class="attention"> （半角数字で入力）</span>
+        <span class="attention"> (半角数字で入力)</span>
         <!--{if $smarty.const.OPTION_PRODUCT_DELIV_FEE != 1}--><br /><span class="attention">※現在無効です</span> (パラメータ OPTION_PRODUCT_DELIV_FEE)<!--{/if}-->
       </td>
     </tr>
@@ -200,7 +200,7 @@ function selectAll(target) {
       <td>
         <span class="attention"><!--{$arrErr.point_rate}--></span>
         <input type="text" name="point_rate" value="<!--{$arrForm.point_rate|escape|default:$arrInfo.point_rate}-->" size="6" class="box6" maxlength="<!--{$smarty.const.PERCENTAGE_LEN}-->" style="<!--{if $arrErr.point_rate != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/>％
-        <span class="attention"> （半角数字で入力）</span>
+        <span class="attention"> (半角数字で入力)</span>
       </td>
     </tr>
     <tr>
@@ -218,7 +218,7 @@ function selectAll(target) {
       <td>
         <span class="attention"><!--{$arrErr.sale_limit}--></span>
         <input type="text" name="sale_limit" value="<!--{$arrForm.sale_limit|escape}-->" size="6" class="box6" maxlength="<!--{$smarty.const.AMOUNT_LEN}-->" style="<!--{if $arrErr.sale_limit != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/>
-        <span class="attention"> （半角数字で入力）</span>
+        <span class="attention"> (半角数字で入力)</span>
       </td>
     </tr>
     <tr>
@@ -236,7 +236,7 @@ function selectAll(target) {
       <td>
         <span class="attention"><!--{$arrErr.comment1}--></span>
         <input type="text" name="comment1" value="<!--{$arrForm.comment1|escape}-->" maxlength="<!--{$smarty.const.URL_LEN}-->" size="60" class="box60" style="<!--{$arrErr.comment1|sfGetErrorColor}-->" />
-        <span class="attention"> （上限<!--{$smarty.const.URL_LEN}-->文字）</span>
+        <span class="attention"> (上限<!--{$smarty.const.URL_LEN}-->文字)</span>
       </td>
     </tr>
     <!--{*
@@ -244,7 +244,7 @@ function selectAll(target) {
       <th>成分</th>
       <td>
         <textarea name="comment2" cols="60" rows="8" class="area60" maxlength="<!--{$smarty.const.STEXT_LEN}-->"><!--{$arrForm.comment2|escape}--></textarea>
-        <span class="attention"> （上限<!--{$smarty.const.LTEXT_LEN}-->文字）</span>
+        <span class="attention"> (上限<!--{$smarty.const.LTEXT_LEN}-->文字)</span>
       </td>
     </tr>
     *}-->
@@ -253,7 +253,7 @@ function selectAll(target) {
       <td>
         <span class="attention"><!--{$arrErr.comment3}--></span>
         <textarea name="comment3" cols="60" rows="8" class="area60" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" style="<!--{$arrErr.comment3|sfGetErrorColor}-->"><!--{$arrForm.comment3|escape}--></textarea><br />
-        <span class="attention"> （上限<!--{$smarty.const.LLTEXT_LEN}-->文字）</span>
+        <span class="attention"> (上限<!--{$smarty.const.LLTEXT_LEN}-->文字)</span>
       </td>
     </tr>
     <tr>
@@ -261,7 +261,7 @@ function selectAll(target) {
       <td>
         <span class="attention"><!--{$arrErr.note}--></span>
         <textarea name="note" cols="60" rows="8" class="area60" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" style="<!--{$arrErr.note|sfGetErrorColor}-->"><!--{$arrForm.note|escape}--></textarea><br />
-        <span class="attention"> （上限<!--{$smarty.const.LLTEXT_LEN}-->文字）</span>
+        <span class="attention"> (上限<!--{$smarty.const.LLTEXT_LEN}-->文字)</span>
       </td>
     </tr>
     <tr>
@@ -269,7 +269,7 @@ function selectAll(target) {
       <td>
         <span class="attention"><!--{$arrErr.main_list_comment}--></span>
         <textarea name="main_list_comment" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" style="<!--{if $arrErr.main_list_comment != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" cols="60" rows="8" class="area60"><!--{$arrForm.main_list_comment|escape}--></textarea><br />
-        <span class="attention"> （上限<!--{$smarty.const.MTEXT_LEN}-->文字）</span>
+        <span class="attention"> (上限<!--{$smarty.const.MTEXT_LEN}-->文字)</span>
       </td>
     </tr>
     <tr>
@@ -277,7 +277,7 @@ function selectAll(target) {
       <td>
         <span class="attention"><!--{$arrErr.main_comment}--></span>
         <textarea name="main_comment" value="<!--{$arrForm.main_comment|escape}-->" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" style="<!--{if $arrErr.main_comment != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"  cols="60" rows="8" class="area60"><!--{$arrForm.main_comment|escape}--></textarea><br />
-        <span class="attention"> （上限<!--{$smarty.const.LLTEXT_LEN}-->文字）</span>
+        <span class="attention"> (上限<!--{$smarty.const.LLTEXT_LEN}-->文字)</span>
       </td>
     </tr>
     <tr>
@@ -366,26 +366,26 @@ function selectAll(target) {
     <!--{section name=cnt loop=$smarty.const.PRODUCTSUB_MAX}-->
     <!--▼商品<!--{$smarty.section.cnt.iteration}-->-->
     <tr>
-      <th>詳細-サブタイトル（<!--{$smarty.section.cnt.iteration}-->）</th>
+      <th>詳細-サブタイトル(<!--{$smarty.section.cnt.iteration}-->)</th>
       <!--{assign var=key value="sub_title`$smarty.section.cnt.iteration`"}-->
       <td>
         <span class="attention"><!--{$arrErr[$key]}--></span>
         <input type="text" name="sub_title<!--{$smarty.section.cnt.iteration}-->" value="<!--{$arrForm[$key]|escape}-->" size="60" class="box60" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"/>
-        <span class="attention"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
+        <span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
       </td>
     </tr>
     <tr>
-      <th>詳細-サブコメント（<!--{$smarty.section.cnt.iteration}-->）<span class="attention">(タグ許可)</span></th>
+      <th>詳細-サブコメント(<!--{$smarty.section.cnt.iteration}-->)<span class="attention">(タグ許可)</span></th>
       <!--{assign var=key value="sub_comment`$smarty.section.cnt.iteration`"}-->
       <td>
         <span class="attention"><!--{$arrErr[$key]}--></span>
         <textarea name="sub_comment<!--{$smarty.section.cnt.iteration}-->" cols="60" rows="8" class="area60" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{$arrForm[$key]|escape}--></textarea><br />
-        <span class="attention"> （上限<!--{$smarty.const.LLTEXT_LEN}-->文字）</span>
+        <span class="attention"> (上限<!--{$smarty.const.LLTEXT_LEN}-->文字)</span>
       </td>
     </tr>
     <tr>
       <!--{assign var=key value="sub_image`$smarty.section.cnt.iteration`"}-->
-      <th>詳細-サブ画像（<!--{$smarty.section.cnt.iteration}-->）<br />[<!--{$smarty.const.NORMAL_SUBIMAGE_WIDTH}-->×<!--{$smarty.const.NORMAL_SUBIMAGE_HEIGHT}-->]</th>
+      <th>詳細-サブ画像(<!--{$smarty.section.cnt.iteration}-->)<br />[<!--{$smarty.const.NORMAL_SUBIMAGE_WIDTH}-->×<!--{$smarty.const.NORMAL_SUBIMAGE_HEIGHT}-->]</th>
       <td>
         <a name="<!--{$key}-->"></a>
         <!--{assign var=largekey value="sub_large_image`$smarty.section.cnt.iteration`"}-->
@@ -400,7 +400,7 @@ function selectAll(target) {
     </tr>
     <tr>
       <!--{assign var=key value="sub_large_image`$smarty.section.cnt.iteration`"}-->
-      <th>詳細-サブ拡大画像（<!--{$smarty.section.cnt.iteration}-->）<br />[<!--{$smarty.const.LARGE_SUBIMAGE_WIDTH}-->×<!--{$smarty.const.LARGE_SUBIMAGE_HEIGHT}-->]</th>
+      <th>詳細-サブ拡大画像(<!--{$smarty.section.cnt.iteration}-->)<br />[<!--{$smarty.const.LARGE_SUBIMAGE_WIDTH}-->×<!--{$smarty.const.LARGE_SUBIMAGE_HEIGHT}-->]</th>
       <td>
         <span class="attention"><!--{$arrErr[$key]}--></span>
         <!--{if $arrFile[$key].filepath != ""}-->
@@ -448,7 +448,7 @@ function selectAll(target) {
         <!--{assign var=key value="recommend_comment`$smarty.section.cnt.iteration`"}-->
         <span class="attention"><!--{$arrErr[$key]}--></span>
         <textarea name="<!--{$key}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrRecommend[$recommend_no].comment|escape}--></textarea><br />
-        <span class="attention"> （上限<!--{$smarty.const.LTEXT_LEN}-->文字）</span>
+        <span class="attention"> (上限<!--{$smarty.const.LTEXT_LEN}-->文字)</span>
       </td>
     </tr>
     <!--{/section}-->

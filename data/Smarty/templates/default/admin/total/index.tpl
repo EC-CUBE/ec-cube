@@ -41,7 +41,7 @@
         </select>年
         <select name="search_startmonth_m" style="<!--{$arrErr.search_startyear_m|sfGetErrorColor}-->">
         <!--{html_options options=$arrMonth selected=$arrForm.search_startmonth_m.value}-->
-        </select>月度 （<!--{if $smarty.const.CLOSE_DAY == 31}-->末<!--{else}--><!--{$smarty.const.CLOSE_DAY}--><!--{/if}-->日締め）
+        </select>月度 (<!--{if $smarty.const.CLOSE_DAY == 31}-->末<!--{else}--><!--{$smarty.const.CLOSE_DAY}--><!--{/if}-->日締め)
         <input type="submit" name="subm" value="月度で集計する" />
       </form>
     </td>

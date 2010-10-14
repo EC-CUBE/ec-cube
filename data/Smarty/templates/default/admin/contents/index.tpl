@@ -138,7 +138,7 @@ function moving(news_id,rank, max_rank) {
       <td>
         <!--{if $arrErr.news_title}--><span class="attention"><!--{$arrErr.news_title}--></span><!--{/if}-->
         <textarea name="news_title" cols="60" rows="8" class="area60" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" <!--{if $arrErr.news_title}-->style="background-color:<!--{$smarty.const.ERR_COLOR|escape}-->"<!--{/if}-->><!--{$arrForm.news_title|escape}--></textarea><br />
-        <span class="attention"> （上限<!--{$smarty.const.MTEXT_LEN}-->文字）</span>
+        <span class="attention"> (上限<!--{$smarty.const.MTEXT_LEN}-->文字)</span>
       </td>
     </tr>
     <tr>
@@ -146,7 +146,7 @@ function moving(news_id,rank, max_rank) {
       <td>
         <span class="attention"><!--{$arrErr.news_url}--></span>
         <input type="text" name="news_url" size="60" class="box60"  value="<!--{$arrForm.news_url|escape}-->" <!--{if $arrErr.news_url}-->style="background-color:<!--{$smarty.const.ERR_COLOR|escape}-->"<!--{/if}--> maxlength="<!--{$smarty.const.URL_LEN}-->" />
-        <span class="attention"> （上限<!--{$smarty.const.URL_LEN}-->文字）</span>
+        <span class="attention"> (上限<!--{$smarty.const.URL_LEN}-->文字)</span>
       </td>
     </tr>
     <tr>
@@ -158,7 +158,7 @@ function moving(news_id,rank, max_rank) {
       <td>
         <!--{if $arrErr.news_comment}--><span class="attention"><!--{$arrErr.news_comment}--></span><!--{/if}-->
         <textarea name="news_comment" cols="60" rows="8" wrap="soft" class="area60" maxlength="<!--{$smarty.const.LTEXT_LEN}-->" style="background-color:<!--{if $arrErr.news_comment}--><!--{$smarty.const.ERR_COLOR|escape}--><!--{/if}-->"><!--{$arrForm.news_comment|escape}--></textarea><br />
-        <span class="attention"> （上限3000文字）</span>
+        <span class="attention"> (上限3000文字)</span>
       </td>
     </tr>
   </table>

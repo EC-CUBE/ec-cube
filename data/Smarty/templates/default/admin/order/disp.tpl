@@ -62,7 +62,7 @@
         <!--{if $arrForm.customer_id.value > 0}-->
             <!--{$arrForm.customer_id.value}-->
         <!--{else}-->
-            （非会員）
+            (非会員)
         <!--{/if}-->
         </td>
     </tr>
@@ -71,7 +71,7 @@
         <td><!--{$arrForm.order_name01.value|escape}--> <!--{$arrForm.order_name02.value|escape}--></td>
     </tr>
     <tr>
-        <th>顧客名（カナ）</th>
+        <th>顧客名(カナ)</th>
         <td><!--{$arrForm.order_kana01.value|escape}--> <!--{$arrForm.order_kana02.value|escape}--></td>
     </tr>
     <tr>
@@ -109,7 +109,7 @@
         </td>
     </tr>
     <tr>
-        <th>お名前（カナ）</th>
+        <th>お名前(カナ)</th>
         <td>
             <!--{assign var=key1 value="deliv_kana01"}-->
             <!--{assign var=key2 value="deliv_kana02"}-->
@@ -226,12 +226,12 @@
         <!--{$arrForm.point.value|number_format}-->
          pt</td>
         <!--{else}-->
-        <th colspan="4" class="right">現在ポイント</th><td align="center">（なし）</td>
+        <th colspan="4" class="right">現在ポイント</th><td align="center">(なし)</td>
         <!--{/if}-->
     </tr>
     <!--{*
     <tr>
-        <th colspan="4" class="right">反映後ポイント（ポイントの変更は<a href="?" onclick="return fnEdit('<!--{$arrForm.customer_id.value}-->');">顧客編集</a>から手動にてお願い致します。）</th>
+        <th colspan="4" class="right">反映後ポイント (ポイントの変更は<a href="?" onclick="return fnEdit('<!--{$arrForm.customer_id.value}-->');">顧客編集</a>から手動にてお願い致します。)</th>
         <td align="right">
             <span class="attention"><!--{$arrErr.total_point}--></span>
             <!--{$arrForm.total_point.value|number_format}-->

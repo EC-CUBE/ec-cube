@@ -87,7 +87,7 @@
       <td><!--{if $arrErr.name}--><span class="attention"><!--{$arrErr.name}--></span><br /><!--{/if}--><input type="text" name="name" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$arrForm.name|escape}-->" size="30" class="box30" <!--{if $arrErr.name}--><!--{sfSetErrorStyle}--><!--{/if}--> /></td>
     </tr>
     <tr>
-      <th>顧客名（カナ）</th>
+      <th>顧客名(カナ)</th>
       <td><!--{if $arrErr.kana}--><span class="attention"><!--{$arrErr.kana}--></span><br /><!--{/if}--><input type="text" name="kana" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$arrForm.kana|escape}-->" size="30" class="box30" <!--{if $arrErr.kana}--><!--{sfSetErrorStyle}--><!--{/if}--> /></td>
     </tr>
     <tr>
@@ -308,7 +308,7 @@
     <tr>
       <th rowspan="2">種別</th>
       <th>顧客ID</th>
-      <th rowspan="2">顧客名/（カナ）</th>
+      <th rowspan="2">顧客名/(カナ)</th>
       <th rowspan="2">性別</th>
       <th>TEL</th>
       <th rowspan="2">編集</th>

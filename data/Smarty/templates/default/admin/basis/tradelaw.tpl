@@ -32,7 +32,7 @@
       <!--{if $arrErr[$key]}-->
       <span class="attention"><!--{$arrErr[$key]}--></span>
       <!--{/if}-->
-      <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" /><span class="attention"> （上限<!--{$arrForm[$key].length}-->文字）</span></td>
+      <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" /><span class="attention"> (上限<!--{$arrForm[$key].length}-->文字)</span></td>
     </tr>
     <tr>
       <th>運営責任者<span class="attention"> *</span></th>
@@ -41,7 +41,7 @@
       <!--{if $arrErr[$key]}-->
       <span class="attention"><!--{$arrErr[$key]}--></span>
       <!--{/if}-->
-      <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" /><span class="attention"> （上限<!--{$arrForm[$key].length}-->文字）</span></td>
+      <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" /><span class="attention"> (上限<!--{$arrForm[$key].length}-->文字)</span></td>
     </tr>
     <tr>
       <th>郵便番号<span class="attention"> *</span></th>
@@ -74,14 +74,14 @@
           <!--{if $arrErr[$key]}-->
           <span class="attention"><!--{$arrErr[$key]}--></span>
           <!--{/if}-->
-          <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" size="60" class="box60" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" /><span class="attention"> （上限<!--{$arrForm[$key].length}-->文字）</span>
+          <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" size="60" class="box60" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" /><span class="attention"> (上限<!--{$arrForm[$key].length}-->文字)</span>
           <br />
           <!--{$smarty.const.SAMPLE_ADDRESS1}--><br />
           <!--{assign var=key value="law_addr02"}-->
           <!--{if $arrErr[$key]}-->
           <span class="attention"><!--{$arrErr[$key]}--></span>
           <!--{/if}-->
-          <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" size="60" class="box60" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" /><span class="attention"> （上限<!--{$arrForm[$key].length}-->文字）</span>
+          <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" size="60" class="box60" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" /><span class="attention"> (上限<!--{$arrForm[$key].length}-->文字)</span>
           <br />
           <!--{$smarty.const.SAMPLE_ADDRESS2}-->
       </td>
@@ -123,7 +123,7 @@
       <td>
       <!--{assign var=key value="law_email"}-->
       <span class="attention"><!--{$arrErr[$key]}--></span>
-      <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" /><span class="attention"> （上限<!--{$arrForm[$key].length}-->文字）</span>
+      <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" /><span class="attention"> (上限<!--{$arrForm[$key].length}-->文字)</span>
       </td>
     </tr>
     <tr>
@@ -131,7 +131,7 @@
       <td>
       <!--{assign var=key value="law_url"}-->
       <span class="attention"><!--{$arrErr[$key]}--></span>
-      <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" /><span class="attention"> （上限<!--{$arrForm[$key].length}-->文字）</span>
+      <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" /><span class="attention"> (上限<!--{$arrForm[$key].length}-->文字)</span>
       </td>
     </tr>
     <tr>
@@ -139,42 +139,42 @@
       <td>
       <!--{assign var=key value="law_term01"}-->
       <span class="attention"><!--{$arrErr[$key]}--></span>
-      <textarea name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key].value|escape}--></textarea><span class="attention"> （上限<!--{$arrForm[$key].length}-->文字）</span></td>
+      <textarea name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key].value|escape}--></textarea><span class="attention"> (上限<!--{$arrForm[$key].length}-->文字)</span></td>
     </tr>
     <tr>
       <th>注文方法<span class="attention"> *</span></th>
       <td>
       <!--{assign var=key value="law_term02"}-->
       <span class="attention"><!--{$arrErr[$key]}--></span>
-      <textarea name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key].value|escape}--></textarea><span class="attention"> （上限<!--{$arrForm[$key].length}-->文字）</span></td>
+      <textarea name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key].value|escape}--></textarea><span class="attention"> (上限<!--{$arrForm[$key].length}-->文字)</span></td>
     </tr>
     <tr>
       <th>支払方法<span class="attention"> *</span></th>
       <td>
       <!--{assign var=key value="law_term03"}-->
       <span class="attention"><!--{$arrErr[$key]}--></span>
-      <textarea name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key].value|escape}--></textarea><span class="attention"> （上限<!--{$arrForm[$key].length}-->文字）</span></td>
+      <textarea name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key].value|escape}--></textarea><span class="attention"> (上限<!--{$arrForm[$key].length}-->文字)</span></td>
     </tr>
     <tr>
       <th>支払期限<span class="attention"> *</span></th>
       <td>
       <!--{assign var=key value="law_term04"}-->
       <span class="attention"><!--{$arrErr[$key]}--></span>
-      <textarea name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key].value|escape}--></textarea><span class="attention"> （上限<!--{$arrForm[$key].length}-->文字）</span></td>
+      <textarea name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key].value|escape}--></textarea><span class="attention"> (上限<!--{$arrForm[$key].length}-->文字)</span></td>
     </tr>
     <tr>
       <th>引き渡し時期<span class="attention"> *</span></th>
       <td>
       <!--{assign var=key value="law_term05"}-->
       <span class="attention"><!--{$arrErr[$key]}--></span>
-      <textarea name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key].value|escape}--></textarea><span class="attention"> （上限<!--{$arrForm[$key].length}-->文字）</span></td>
+      <textarea name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key].value|escape}--></textarea><span class="attention"> (上限<!--{$arrForm[$key].length}-->文字)</span></td>
     </tr>
     <tr>
       <th>返品・交換について<span class="attention"> *</span></th>
       <td>
       <!--{assign var=key value="law_term06"}-->
       <span class="attention"><!--{$arrErr[$key]}--></span>
-      <textarea name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key].value|escape}--></textarea><span class="attention"> （上限<!--{$arrForm[$key].length}-->文字）</span></td>
+      <textarea name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key].value|escape}--></textarea><span class="attention"> (上限<!--{$arrForm[$key].length}-->文字)</span></td>
     </tr>
   </table>
 

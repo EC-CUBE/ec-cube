@@ -141,7 +141,7 @@
                     <td><!--{$arrDisp[$key1]|escape}-->&nbsp;<!--{$arrDisp[$key2]|escape}--></td>
                 </tr>
                 <tr>
-                    <th>お名前（フリガナ）</th>
+                    <th>お名前(フリガナ)</th>
                     <!--{assign var=key1 value="deliv_kana01"}-->
                     <!--{assign var=key2 value="deliv_kana02"}-->
                     <td><!--{$arrDisp[$key1]|escape}-->&nbsp;<!--{$arrDisp[$key2]|escape}--></td>

@@ -37,19 +37,19 @@
           <th>メタタグ:Author</th>
           <td>
           <span class="attention"><!--{$arrErr[$item.page_id].author}--></span>
-          <input type="text" name="meta[<!--{$item.page_id}-->][author]" value="<!--{$item.author|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style='<!--{if $arrErr[$item.page_id].author != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->' /><span class="attention"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span></td>
+          <input type="text" name="meta[<!--{$item.page_id}-->][author]" value="<!--{$item.author|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style='<!--{if $arrErr[$item.page_id].author != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->' /><span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span></td>
         </tr>
         <tr>
           <th>メタタグ:Description</th>
           <td>
           <span class="attention"><!--{$arrErr[$item.page_id].description}--></span>
-          <input type="text" name="meta[<!--{$item.page_id}-->][description]" value="<!--{$item.description|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style='<!--{if $arrErr[$item.page_id].description != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->' /><span class="attention"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span></td>
+          <input type="text" name="meta[<!--{$item.page_id}-->][description]" value="<!--{$item.description|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style='<!--{if $arrErr[$item.page_id].description != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->' /><span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span></td>
         </tr>
         <tr>
           <th>メタタグ:Keywords</th>
           <td>
           <span class="attention"><!--{$arrErr[$item.page_id].keyword}--></span>
-          <input type="text" name="meta[<!--{$item.page_id}-->][keyword]" value="<!--{$item.keyword|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style='<!--{if $arrErr[$item.page_id].keyword != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->' /><span class="attention"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span></td>
+          <input type="text" name="meta[<!--{$item.page_id}-->][keyword]" value="<!--{$item.keyword|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style='<!--{if $arrErr[$item.page_id].keyword != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->' /><span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span></td>
         </tr>
       </table>
     

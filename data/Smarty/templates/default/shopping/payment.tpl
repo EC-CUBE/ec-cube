@@ -99,7 +99,7 @@
                     <!--{assign var=key value="message"}-->
                     <span class="attention"><!--{$arrErr[$key]}--></span>
                     <textarea name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" cols="80" rows="8" class="area660" wrap="head"><!--{$arrForm[$key].value|escape}--></textarea>
-                    <span class="attention"> （<!--{$smarty.const.LTEXT_LEN}-->文字まで）</span>
+                    <span class="attention"> (<!--{$smarty.const.LTEXT_LEN}-->文字まで)</span>
                 </div>
             </div>
 
@@ -112,7 +112,7 @@
                             使用する場合は、「ポイントを使用する」にチェックを入れた後、使用するポイントをご記入ください。</p>
                     <div>
                         <p><!--{$objCustomer->getValue('name01')|escape}--> <!--{$objCustomer->getValue('name02')|escape}-->様の、現在の所持ポイントは「<em><!--{$tpl_user_point|default:0}-->Pt</em>」です。</p>
-                        <p>今回ご購入合計金額：<span class="price"><!--{$arrData.subtotal|number_format}-->円</span><span class="attention">（送料、手数料を含みません。）</span></p>
+                        <p>今回ご購入合計金額：<span class="price"><!--{$arrData.subtotal|number_format}-->円</span> <span class="attention">(送料、手数料を含みません。)</span></p>
                         <ul>
                             <li><input type="radio" id="point_on" name="point_check" value="1" <!--{$arrForm.point_check.value|sfGetChecked:1}--> onclick="fnCheckInputPoint();" /><label for="point_on">ポイントを使用する</label></li>
                              <!--{assign var=key value="use_point"}-->

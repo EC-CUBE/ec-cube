@@ -43,7 +43,7 @@
           </td>
         </tr>
         <tr>
-          <th>お名前（フリガナ）<span class="attention">※</span></th>
+          <th>お名前(フリガナ)<span class="attention">※</span></th>
           <td>
             <!--{assign var=key1 value="order_kana01"}-->
             <!--{assign var=key2 value="order_kana02"}-->
@@ -182,7 +182,7 @@
           </td>
         </tr>
         <tr>
-          <th>お名前（フリガナ）<span class="attention">※</span></th>
+          <th>お名前(フリガナ)<span class="attention">※</span></th>
           <td>
             <!--{assign var=key1 value="deliv_kana01"}-->
             <!--{assign var=key2 value="deliv_kana02"}-->

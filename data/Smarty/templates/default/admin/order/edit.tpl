@@ -146,7 +146,7 @@
                     <!--{$arrForm.customer_id.value}-->
                     <input type="hidden" name="customer_id" value="<!--{$arrForm.customer_id.value}-->" />
                 <!--{else}-->
-                    （非会員）
+                   (非会員)
                 <!--{/if}-->
             </td>
         </tr>
@@ -161,7 +161,7 @@
             </td>
         </tr>
         <tr>
-            <th>顧客名（カナ）</th>
+            <th>顧客名(カナ)</th>
             <td>
                 <!--{assign var=key1 value="order_kana01"}-->
                 <!--{assign var=key2 value="order_kana02"}-->
@@ -228,7 +228,7 @@
                     <!--{$arrForm.point.value|number_format}-->
                      pt
                 <!--{else}-->
-                    （非会員）
+                    (非会員)
             <!--{/if}-->
             </td>
         </tr>
@@ -251,7 +251,7 @@
             </td>
         </tr>
         <tr>
-            <th>お名前（カナ）</th>
+            <th>お名前(カナ)</th>
             <td>
                 <!--{assign var=key1 value="deliv_kana01"}-->
                 <!--{assign var=key2 value="deliv_kana02"}-->
@@ -429,7 +429,7 @@
 
     <table class="form">
         <tr>
-            <th>お支払方法<br /><span class="attention">（お支払方法の変更に伴う手数料の変更は手動にてお願いします。)</span></th>
+            <th>お支払方法<br /><span class="attention">(お支払方法の変更に伴う手数料の変更は手動にてお願いします。)</span></th>
             <td>
                 <!--{assign var=key value="payment_id"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>

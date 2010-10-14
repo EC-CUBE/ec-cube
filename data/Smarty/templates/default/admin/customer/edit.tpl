@@ -93,7 +93,7 @@
                 </td>
             </tr>
             <tr>
-                <th>フリガナ<span class="attention"> *</span></th>
+                <th>お名前(フリガナ)<span class="attention"> *</span></th>
                 <td>
                     <span class="attention"><!--{$arrErr.kana01}--><!--{$arrErr.kana02}--></span>
                     <input type="text" name="kana01" value="<!--{$list_data.kana01|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" <!--{if $arrErr.kana01 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />&nbsp;&nbsp;<input type="text" name="kana02" value="<!--{$list_data.kana02|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" <!--{if $arrErr.kana02 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />

@@ -27,7 +27,7 @@
         </td>
       </tr>
       <tr>
-        <th><span class="attention">※</span>フリガナ</th>
+        <th><span class="attention">※</span>お名前(フリガナ)</th>
         <td>
           <!--{if $arrErr.kana01 || $arrErr.kana02}-->
           <span class="attention"><!--{$arrErr.kana01}--><!--{$arrErr.kana02}--></span>

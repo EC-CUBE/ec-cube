@@ -50,7 +50,7 @@
         </td>
       </tr>
       <tr>
-        <th>お名前（フリガナ）<span class="attention">※</span></th>
+        <th>お名前(フリガナ)<span class="attention">※</span></th>
         <td>
           <span class="attention"><!--{$arrErr.kana01}--><!--{$arrErr.kana02}--></span>
           セイ&nbsp;<input type="text"

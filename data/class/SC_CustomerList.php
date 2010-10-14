@@ -75,7 +75,7 @@ class SC_CustomerList extends SC_SelectSql {
             $this->arrVal[] = mb_ereg_replace("[ 　]+","",$searchName);
         }
 
-        //　名前（カナ）
+        // 名前(カナ)
         if (!isset($this->arrSql['kana'])) $this->arrSql['kana'] = "";
         if ( strlen($this->arrSql['kana']) > 0 ) {
             $this->setWhere("(" . $dbFactory->concatColumn(array("kana01", "kana02")) . " LIKE ?)" );
@@ -83,14 +83,14 @@ class SC_CustomerList extends SC_SelectSql {
             $this->arrVal[] = mb_ereg_replace("[ 　]+","",$searchKana);
         }
 
-        //　都道府県
+        // 都道府県
         if (!isset($this->arrSql['pref'])) $this->arrSql['pref'] = "";
         if ( strlen($this->arrSql['pref']) > 0 ) {
             $this->setWhere( "pref = ?" );
             $this->arrVal[] = $this->arrSql['pref'];
         }
 
-        //　電話番号
+        // 電話番号
         if (!isset($this->arrSql['tel'])) $this->arrSql['tel'] = "";
         if ( is_numeric( $this->arrSql['tel'] ) ) {
             $this->setWhere("(" . $dbFactory->concatColumn(array("tel01", "tel02", "tel03")) . " LIKE ?)" );
@@ -98,7 +98,7 @@ class SC_CustomerList extends SC_SelectSql {
             $this->arrVal[] = ereg_replace("-", "", $searchTel);
         }
 
-        //性別
+        // 性別
         if (!isset($this->arrSql['sex'])) $this->arrSql['sex'] = "";
         if ( is_array( $this->arrSql['sex'] ) ){
             $arrSexVal = $this->setItemTerm( $this->arrSql['sex'] ,"sex" );
@@ -107,7 +107,7 @@ class SC_CustomerList extends SC_SelectSql {
             }
         }
 
-        //職業
+        // 職業
         if (!isset($this->arrSql['job'])) $this->arrSql['job'] = "";
         if ( is_array( $this->arrSql['job'] ) ){
             if ( in_array("不明", $this->arrSql['job'] ) ) {
@@ -122,7 +122,7 @@ class SC_CustomerList extends SC_SelectSql {
             }
         }
 
-        //　E-MAIL
+        // E-MAIL
         if (!isset($this->arrSql['email'])) $this->arrSql['email'] = "";
         if (strlen($this->arrSql['email']) > 0) {
             //カンマ区切りで複数の条件指定可能に
@@ -150,7 +150,7 @@ class SC_CustomerList extends SC_SelectSql {
             $this->setWhere($sql_where);
         }
 
-        //　E-MAIL(mobile)
+        // E-MAIL(mobile)
         if (!isset($this->arrSql['email_mobile'])) $this->arrSql['email_mobile'] = "";
         
         if (strlen($this->arrSql['email_mobile']) > 0) {
@@ -179,7 +179,7 @@ class SC_CustomerList extends SC_SelectSql {
             $this->setWhere($sql_where);
         }
 
-        //　配信メールアドレス種別
+        // 配信メールアドレス種別
         if ( $mode == 'magazine' ){
             $sqlEmailMobileIsEmpty = "(dtb_customer.email_mobile IS NULL OR dtb_customer.email_mobile = '')";
             if (!isset($this->arrSql['mail_type'])) $this->arrSql['mail_type'] = "";
@@ -203,7 +203,7 @@ class SC_CustomerList extends SC_SelectSql {
             }
         }
 
-        //　HTML-mail
+        // HTML-mail
         if ( $mode == 'magazine' ){
             if (!isset($this->arrSql['htmlmail'])) $this->arrSql['htmlmail'] = "";
             if ( strlen($this->arrSql['htmlmail']) > 0 ) {
@@ -298,7 +298,7 @@ class SC_CustomerList extends SC_SelectSql {
             }
         }
 
-        //購入商品コード
+        // 購入商品コード
         if (!isset($this->arrSql['buy_product_code'])) $this->arrSql['buy_product_code'] = "";
         if ( strlen($this->arrSql['buy_product_code']) > 0 ) {
             $this->setWhere( "customer_id IN (SELECT customer_id FROM dtb_order WHERE order_id IN (SELECT order_id FROM dtb_order_detail WHERE product_code LIKE ? ))");
@@ -306,7 +306,7 @@ class SC_CustomerList extends SC_SelectSql {
             $this->arrVal[] = $search_buyproduct_code;
         }
 
-        //購入商品名称
+        // 購入商品名称
         if (!isset($this->arrSql['buy_product_name'])) $this->arrSql['buy_product_name'] = "";
         if ( strlen($this->arrSql['buy_product_name']) > 0 ) {
             $this->setWhere( "customer_id IN (SELECT customer_id FROM dtb_order WHERE order_id IN (SELECT order_id FROM dtb_order_detail WHERE product_name LIKE ? ))");
@@ -314,19 +314,19 @@ class SC_CustomerList extends SC_SelectSql {
             $this->arrVal[] = $search_buyproduct_name;
         }
 
-        //カテゴリーを選択している場合のみ絞込検索を行う
+        // カテゴリーを選択している場合のみ絞込検索を行う
         if (!isset($this->arrSql['category_id'])) $this->arrSql['category_id'] = "";
         if ( strlen($this->arrSql['category_id']) > 0){
-            //カテゴリーで絞込検索を行うSQL文生成
+            // カテゴリーで絞込検索を行うSQL文生成
             list($tmp_where, $tmp_arrval) = $objDb->sfGetCatWhere($this->arrSql['category_id']);
 
-            //カテゴリーで絞込みが可能の場合
+            // カテゴリーで絞込みが可能の場合
             if($tmp_where != "") {
                 $this->setWhere( " customer_id IN (SELECT distinct customer_id FROM dtb_order WHERE order_id IN (SELECT distinct order_id FROM dtb_order_detail WHERE product_id IN (SELECT product_id FROM dtb_product_categories WHERE ".$tmp_where." ))) ");
                 $this->arrVal = array_merge((array)$this->arrVal, (array)$tmp_arrval);
             }
         }
-        //携帯電話番号
+        // 携帯電話番号
         if (!isset($this->arrSql['cell'])) $this->arrSql['cell'] = "";
         if ( is_numeric( $this->arrSql['cell'] ) ) {
             $this->setWhere( "(cell01 || cell02 || cell03 LIKE ?)" );
@@ -334,14 +334,14 @@ class SC_CustomerList extends SC_SelectSql {
             $this->arrVal[] = ereg_replace("-", "", $searchTel);
         }
 
-        //キャンペーン
+        // キャンペーン
         if (!isset($this->arrSql['campaign_id'])) $this->arrSql['campaign_id'] = "";
         if ( is_numeric( $this->arrSql['campaign_id'] ) ) {
             $this->setWhere( " customer_id IN (SELECT distinct customer_id FROM dtb_campaign_order WHERE campaign_id = ?)" );
             $this->arrVal[] = $this->arrSql['campaign_id'];
         }
 
-        //会員状態
+        // 会員状態
         if (!isset($this->arrSql['status'])) $this->arrSql['status'] = "";
         if ( is_array( $this->arrSql['status'] ) ){
             $arrStatusVal = $this->setItemTerm( $this->arrSql['status'] ,"status" );
@@ -394,13 +394,13 @@ class SC_CustomerList extends SC_SelectSql {
         return $column;
     }
 
-    //　検索総数カウント用SQL
+    // 検索総数カウント用SQL
     function getListCount() {
         $this->select = "SELECT COUNT(customer_id) FROM dtb_customer ";
         return $this->getSql(1);
     }
 
-    //　CSVダウンロード用SQL
+    // CSVダウンロード用SQL
     function getListCSV($arrColumnCSV) {
         $this->arrColumnCSV = $arrColumnCSV;
         $i = 0;

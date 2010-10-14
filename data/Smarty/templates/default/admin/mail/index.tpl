@@ -36,7 +36,7 @@
             </td>
         </tr>
         <tr>
-            <th>顧客名（カナ）</th>
+            <th>顧客名(カナ)</th>
             <td>
                 <!--{if $arrErr.kana}--><span class="attention"><!--{$arrErr.kana}--></span><br /><!--{/if}-->
                 <input type="text" name="kana" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$list_data.kana|escape}-->" size="30" class="box30" style="<!--{$arrErr.kana|sfGetErrorColor}-->" />

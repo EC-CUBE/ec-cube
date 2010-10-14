@@ -71,26 +71,26 @@ INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, upda
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (22, 1, 'main_large_image', '詳細-メイン拡大画像 ', 22, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (23, 1, 'file1', 'カラー比較画像', 23, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (24, 1, 'file2', '商品詳細ファイル    ', 24, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (25, 1, 'sub_title1', '詳細-サブタイトル（1）', 25, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (26, 1, 'sub_comment1', '詳細-サブコメント（1）', 26, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (27, 1, 'sub_image1', '詳細-サブ画像（1）', 27, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (28, 1, 'sub_large_image1', '詳細-サブ拡大画像（1）', 28, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (29, 1, 'sub_title2', '詳細-サブタイトル（2）', 29, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (30, 1, 'sub_comment2', '詳細-サブコメント（2）', 30, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (31, 1, 'sub_image2', '詳細-サブ画像（2）', 31, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (32, 1, 'sub_large_image2', '詳細-サブ拡大画像（2）', 32, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (33, 1, 'sub_title3', '詳細-サブタイトル（3）', 33, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (34, 1, 'sub_comment3', '詳細-サブコメント（3）', 34, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (35, 1, 'sub_image3', '詳細-サブ画像（3）', 35, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (36, 1, 'sub_large_image3', '詳細-サブ拡大画像（3）', 36, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (37, 1, 'sub_title4', '詳細-サブタイトル（4）', 37, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (38, 1, 'sub_comment4', '詳細-サブコメント（4）', 38, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (39, 1, 'sub_image4', '詳細-サブ画像（4）', 39, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (40, 1, 'sub_large_image4', '詳細-サブ拡大画像（4）', 40, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (41, 1, 'sub_title5', '詳細-サブタイトル（5）', 41, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (42, 1, 'sub_comment5', '詳細-サブコメント（5）', 42, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (43, 1, 'sub_image5', '詳細-サブ画像（5）', 43, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (44, 1, 'sub_large_image5', '詳細-サブ拡大画像（5）', 44, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (25, 1, 'sub_title1', '詳細-サブタイトル(1)', 25, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (26, 1, 'sub_comment1', '詳細-サブコメント(1)', 26, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (27, 1, 'sub_image1', '詳細-サブ画像(1)', 27, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (28, 1, 'sub_large_image1', '詳細-サブ拡大画像(1)', 28, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (29, 1, 'sub_title2', '詳細-サブタイトル(2)', 29, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (30, 1, 'sub_comment2', '詳細-サブコメント(2)', 30, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (31, 1, 'sub_image2', '詳細-サブ画像(2)', 31, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (32, 1, 'sub_large_image2', '詳細-サブ拡大画像(2)', 32, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (33, 1, 'sub_title3', '詳細-サブタイトル(3)', 33, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (34, 1, 'sub_comment3', '詳細-サブコメント(3)', 34, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (35, 1, 'sub_image3', '詳細-サブ画像(3)', 35, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (36, 1, 'sub_large_image3', '詳細-サブ拡大画像(3)', 36, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (37, 1, 'sub_title4', '詳細-サブタイトル(4)', 37, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (38, 1, 'sub_comment4', '詳細-サブコメント(4)', 38, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (39, 1, 'sub_image4', '詳細-サブ画像(4)', 39, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (40, 1, 'sub_large_image4', '詳細-サブ拡大画像(4)', 40, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (41, 1, 'sub_title5', '詳細-サブタイトル(5)', 41, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (42, 1, 'sub_comment5', '詳細-サブコメント(5)', 42, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (43, 1, 'sub_image5', '詳細-サブ画像(5)', 43, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (44, 1, 'sub_large_image5', '詳細-サブ拡大画像(5)', 44, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (45, 1, 'deliv_date_id', '発送日目安', 45, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (46, 1, '(SELECT recommend_product_id FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY rank DESC, recommend_product_id DESC limit 1 offset 0) AS recommend_product_id1', '関連商品(1)', 46, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (47, 1, '(SELECT comment FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY rank DESC, recommend_product_id DESC limit 1 offset 0) AS recommend_comment1', '関連商品コメント(1)', 47, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
@@ -109,10 +109,10 @@ INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, upda
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (60, 1, 'down_filename', 'ダウンロードファイル名', 60, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (61, 1, 'down_realfilename', 'ダウンロード商品用ファイルアップロード', 61, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (62, 2, 'customer_id', '顧客ID', 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (63, 2, 'name01', '名前1', 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (64, 2, 'name02', '名前2', 3, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (65, 2, 'kana01', 'フリガナ1', 4, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (66, 2, 'kana02', 'フリガナ2', 5, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (63, 2, 'name01', 'お名前(姓)', 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (64, 2, 'name02', 'お名前(名)', 3, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (65, 2, 'kana01', 'お名前(フリガナ・姓)', 4, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (66, 2, 'kana02', 'お名前(フリガナ・名)', 5, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (67, 2, 'zip01', '郵便番号1', 6, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (68, 2, 'zip02', '郵便番号2', 7, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (69, 2, 'pref', '都道府県', 8, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
@@ -138,10 +138,10 @@ INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, upda
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (89, 3, 'order_id', '注文番号', 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (90, 3, 'customer_id', '顧客ID', 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (91, 3, 'message', '要望等', 3, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (92, 3, 'order_name01', '顧客名1', 4, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (93, 3, 'order_name02', '顧客名2', 5, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (94, 3, 'order_kana01', '顧客名カナ1', 6, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (95, 3, 'order_kana02', '顧客名カナ2', 7, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (92, 3, 'order_name01', '顧客名(姓)', 4, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (93, 3, 'order_name02', '顧客名(名)', 5, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (94, 3, 'order_kana01', '顧客名(フリガナ・姓)', 6, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (95, 3, 'order_kana02', '顧客名(フリガナ・名)', 7, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (96, 3, 'order_email', 'メールアドレス', 8, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (97, 3, 'order_tel01', '電話番号1', 9, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (98, 3, 'order_tel02', '電話番号2', 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
@@ -157,10 +157,10 @@ INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, upda
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (108, 3, 'order_sex', '性別', 20, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (109, 3, 'order_birth', '生年月日', 21, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (110, 3, 'order_job', '職種', 22, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (111, 3, 'deliv_name01', 'お届け先名前', 23, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (112, 3, 'deliv_name02', 'お届け先名前', 24, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (113, 3, 'deliv_kana01', 'お届け先カナ', 25, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (114, 3, 'deliv_kana02', 'お届け先カナ', 26, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (111, 3, 'deliv_name01', 'お届け先名前(姓)', 23, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (112, 3, 'deliv_name02', 'お届け先名前(名)', 24, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (113, 3, 'deliv_kana01', 'お届け先(フリガナ・姓)', 25, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (114, 3, 'deliv_kana02', 'お届け先(フリガナ・名)', 26, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (115, 3, 'deliv_tel01', '電話番号1', 27, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (116, 3, 'deliv_tel02', '電話番号2', 28, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (117, 3, 'deliv_tel03', '電話番号3', 29, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
@@ -302,10 +302,10 @@ INSERT INTO dtb_holiday (holiday_id, title, month, day, rank, creator_id, create
 INSERT INTO dtb_holiday (holiday_id, title, month, day, rank, creator_id, create_date, update_date, del_flg) VALUES (14, '勤労感謝の日(11月23日)', 11, 23, 74, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
 INSERT INTO dtb_holiday (holiday_id, title, month, day, rank, creator_id, create_date, update_date, del_flg) VALUES (15, '天皇誕生日(12月23日)', 12, 23, 72, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
 
-INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (1, '第1条（会員）', '1. 「会員」とは、当社が定める手続に従い本規約に同意の上、入会の申し込みを行う個人をいいます。
+INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (1, '第1条 (会員)', '1. 「会員」とは、当社が定める手続に従い本規約に同意の上、入会の申し込みを行う個人をいいます。
 2. 「会員情報」とは、会員が当社に開示した会員の属性に関する情報および会員の取引に関する履歴等の情報をいいます。
 3. 本規約は、すべての会員に適用され、登録手続時および登録後にお守りいただく規約です。', 12, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (2, '第2条（登録）', '1. 会員資格
+INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (2, '第2条 (登録)', '1. 会員資格
 本規約に同意の上、所定の入会申込みをされたお客様は、所定の登録手続完了後に会員としての資格を有します。会員登録手続は、会員となるご本人が行ってください。代理による登録は一切認められません。なお、過去に会員資格が取り消された方やその他当社が相応しくないと判断した方からの会員申込はお断りする場合があります。
 
 2. 会員情報の入力
@@ -315,21 +315,21 @@ INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, 
 (1)パスワードは会員本人のみが利用できるものとし、第三者に譲渡・貸与できないものとします。
 (2)パスワードは、他人に知られることがないよう定期的に変更する等、会員本人が責任をもって管理してください。
 (3)パスワードを用いて当社に対して行われた意思表示は、会員本人の意思表示とみなし、そのために生じる支払等はすべて会員の責任となります。', 11, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (3, '第3条（変更）', '1. 会員は、氏名、住所など当社に届け出た事項に変更があった場合には、速やかに当社に連絡するものとします。
+INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (3, '第3条 (変更)', '1. 会員は、氏名、住所など当社に届け出た事項に変更があった場合には、速やかに当社に連絡するものとします。
 2. 変更登録がなされなかったことにより生じた損害について、当社は一切責任を負いません。また、変更登録がなされた場合でも、変更登録前にすでに手続がなされた取引は、変更登録前の情報に基づいて行われますのでご注意ください。', 10, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (4, '第4条（退会）', '会員が退会を希望する場合には、会員本人が退会手続きを行ってください。所定の退会手続の終了後に、退会となります。', 9, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (5, '第5条（会員資格の喪失及び賠償義務）', '1. 会員が、会員資格取得申込の際に虚偽の申告をしたとき、通信販売による代金支払債務を怠ったとき、その他当社が会員として不適当と認める事由があるときは、当社は、会員資格を取り消すことができることとします。
+INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (4, '第4条 (退会)', '会員が退会を希望する場合には、会員本人が退会手続きを行ってください。所定の退会手続の終了後に、退会となります。', 9, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (5, '第5条 (会員資格の喪失及び賠償義務)', '1. 会員が、会員資格取得申込の際に虚偽の申告をしたとき、通信販売による代金支払債務を怠ったとき、その他当社が会員として不適当と認める事由があるときは、当社は、会員資格を取り消すことができることとします。
 2. 会員が、以下の各号に定める行為をしたときは、これにより当社が被った損害を賠償する責任を負います。
 (1)会員番号、パスワードを不正に利用すること
 (2)当ホームページにアクセスして情報を改ざんしたり、当ホームページに有害なコンピュータプログラムを送信するなどして、当社の営業を妨害すること
 (3)当社が扱う商品の知的所有権を侵害する行為をすること
 (4)その他、この利用規約に反する行為をすること', 8, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (6, '第6条（会員情報の取扱い）', '1. 当社は、原則として会員情報を会員の事前の同意なく第三者に対して開示することはありません。ただし、次の各号の場合には、会員の事前の同意なく、当社は会員情報その他のお客様情報を開示できるものとします。
+INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (6, '第6条 (会員情報の取扱い)', '1. 当社は、原則として会員情報を会員の事前の同意なく第三者に対して開示することはありません。ただし、次の各号の場合には、会員の事前の同意なく、当社は会員情報その他のお客様情報を開示できるものとします。
 (1)法令に基づき開示を求められた場合
 (2)当社の権利、利益、名誉等を保護するために必要であると当社が判断した場合
 2. 会員情報につきましては、当社の「個人情報保護への取組み」に従い、当社が管理します。当社は、会員情報を、会員へのサービス提供、サービス内容の向上、サービスの利用促進、およびサービスの健全かつ円滑な運営の確保を図る目的のために、当社おいて利用することができるものとします。
-3. 当社は、会員に対して、メールマガジンその他の方法による情報提供（広告を含みます）を行うことができるものとします。会員が情報提供を希望しない場合は、当社所定の方法に従い、その旨を通知して頂ければ、情報提供を停止します。ただし、本サービス運営に必要な情報提供につきましては、会員の希望により停止をすることはできません。', 7, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (7, '第7条（禁止事項）', '本サービスの利用に際して、会員に対し次の各号の行為を行うことを禁止します。
+3. 当社は、会員に対して、メールマガジンその他の方法による情報提供(広告を含みます)を行うことができるものとします。会員が情報提供を希望しない場合は、当社所定の方法に従い、その旨を通知して頂ければ、情報提供を停止します。ただし、本サービス運営に必要な情報提供につきましては、会員の希望により停止をすることはできません。', 7, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (7, '第7条 (禁止事項)', '本サービスの利用に際して、会員に対し次の各号の行為を行うことを禁止します。
 
 1. 法令または本規約、本サービスご利用上のご注意、本サービスでのお買い物上のご注意その他の本規約等に違反すること
 2. 当社、およびその他の第三者の権利、利益、名誉等を損ねること
@@ -340,17 +340,17 @@ INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, 
 7. 当社のサーバその他のコンピュータに不正にアクセスすること
 8. パスワードを第三者に貸与・譲渡すること、または第三者と共用すること
 9. その他当社が不適切と判断すること', 6, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (8, '第8条（サービスの中断・停止等）', '1. 当社は、本サービスの稼動状態を良好に保つために、次の各号の一に該当する場合、予告なしに、本サービスの提供全てあるいは一部を停止することがあります。
+INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (8, '第8条 (サービスの中断・停止等)', '1. 当社は、本サービスの稼動状態を良好に保つために、次の各号の一に該当する場合、予告なしに、本サービスの提供全てあるいは一部を停止することがあります。
 (1)システムの定期保守および緊急保守のために必要な場合
 (2)システムに負荷が集中した場合
 (3)火災、停電、第三者による妨害行為などによりシステムの運用が困難になった場合
 (4)その他、止むを得ずシステムの停止が必要と当社が判断した場合', 5, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (9, '第9条（サービスの変更・廃止）', '当社は、その判断によりサービスの全部または一部を事前の通知なく、適宜変更・廃止できるものとします。', 4, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (10, '第10条（免責）', '1. 通信回線やコンピュータなどの障害によるシステムの中断・遅滞・中止・データの消失、データへの不正アクセスにより生じた損害、その他当社のサービスに関して会員に生じた損害について、当社は一切責任を負わないものとします。
+INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (9, '第9条 (サービスの変更・廃止)', '当社は、その判断によりサービスの全部または一部を事前の通知なく、適宜変更・廃止できるものとします。', 4, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (10, '第10条 (免責)', '1. 通信回線やコンピュータなどの障害によるシステムの中断・遅滞・中止・データの消失、データへの不正アクセスにより生じた損害、その他当社のサービスに関して会員に生じた損害について、当社は一切責任を負わないものとします。
 2. 当社は、当社のウェブページ・サーバ・ドメインなどから送られるメール・コンテンツに、コンピュータ・ウィルスなどの有害なものが含まれていないことを保証いたしません。
 3. 会員が本規約等に違反したことによって生じた損害については、当社は一切責任を負いません。', 3, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (11, '第11条（本規約の改定）', '当社は、本規約を任意に改定できるものとし、また、当社において本規約を補充する規約（以下「補充規約」といいます）を定めることができます。本規約の改定または補充は、改定後の本規約または補充規約を当社所定のサイトに掲示したときにその効力を生じるものとします。この場合、会員は、改定後の規約および補充規約に従うものと致します。', 2, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (12, '第12条（準拠法、管轄裁判所）', '本規約に関して紛争が生じた場合、当社本店所在地を管轄する地方裁判所を第一審の専属的合意管轄裁判所とします。 ', 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (11, '第11条 (本規約の改定)', '当社は、本規約を任意に改定できるものとし、また、当社において本規約を補充する規約(以下「補充規約」といいます)を定めることができます。本規約の改定または補充は、改定後の本規約または補充規約を当社所定のサイトに掲示したときにその効力を生じるものとします。この場合、会員は、改定後の規約および補充規約に従うものと致します。', 2, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (12, '第12条 (準拠法、管轄裁判所)', '本規約に関して紛争が生じた場合、当社本店所在地を管轄する地方裁判所を第一審の専属的合意管轄裁判所とします。 ', 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
 
 INSERT INTO dtb_mailtemplate (template_id, subject, header, footer, creator_id, del_flg, create_date, update_date) VALUES (1, 'ご注文ありがとうございます', 'この度はご注文いただき誠にありがとうございます。
 下記ご注文内容にお間違えがないかご確認下さい。
@@ -762,8 +762,8 @@ INSERT INTO mtb_wday (id, name, rank) VALUES (6, '土', 6);
 INSERT INTO mtb_work (id, name, rank) VALUES (0, '非稼働', 0);
 INSERT INTO mtb_work (id, name, rank) VALUES (1, '稼働', 1);
 
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SAMPLE_ADDRESS1', '"市区町村名（例：千代田区神田神保町）"', 1, 'フロント表示関連');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SAMPLE_ADDRESS2', '"番地・ビル名（例：1-3-5）"', 2, 'フロント表示関連');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SAMPLE_ADDRESS1', '"市区町村名 (例：千代田区神田神保町)"', 1, 'フロント表示関連');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SAMPLE_ADDRESS2', '"番地・ビル名 (例：1-3-5)"', 2, 'フロント表示関連');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('USER_DIR', '"user_data/"', 3, 'ユーザファイル保存先');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('USER_PATH', 'HTML_PATH . USER_DIR', 4, 'ユーザファイル保存先');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('USER_INC_PATH', 'USER_PATH . "include/"', 5, 'ユーザインクルードファイル保存先');
@@ -806,7 +806,7 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PDF_DIR', 'DATA_PAT
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('BAT_ORDER_AGE', '70', 54, '何歳まで集計の対象とするか');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PRODUCTS_TOTAL_MAX', '15', 55, '商品集計で何位まで表示するか');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DEFAULT_PRODUCT_DISP', '2', 56, '1:公開 2:非公開');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DELIV_FREE_AMOUNT', '0', 57, '送料無料購入数量（0の場合は、いくつ買っても無料にならない)');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DELIV_FREE_AMOUNT', '0', 57, '送料無料購入数量 (0の場合は、いくつ買っても無料にならない)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('INPUT_DELIV_FEE', '1', 58, '配送料の設定画面表示(有効:1 無効:0)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('OPTION_PRODUCT_DELIV_FEE', '0', 59, '商品ごとの送料設定(有効:1 無効:0)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('OPTION_DELIV_FEE', '1', 60, '配送業者ごとの配送料を加算する(有効:1 無効:0)');
@@ -819,7 +819,7 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ORDER_STATUS_MAX', 
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('REVIEW_REGIST_MAX', '5', 71, 'フロントレビュー書き込み最大数');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DEBUG_MODE', 'false', 72, 'デバッグモード(true：sfPrintRやDBのエラーメッセージを出力する、false：出力しない)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ADMIN_ID', '"1"', 73, '管理ユーザID(メンテナンス用表示されない。)');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CUSTOMER_CONFIRM_MAIL', 'false', 74, '会員登録時に仮会員確認メールを送信するか（true:仮会員、false:本会員）');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CUSTOMER_CONFIRM_MAIL', 'false', 74, '会員登録時に仮会員確認メールを送信するか (true:仮会員、false:本会員)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MELMAGA_SEND', 'true', 75, 'メルマガ配信(true:配信する、false:配信しない)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MELMAGA_BATCH_MODE', 'false', 76, 'メイルマガジンバッチモード(true:バッチで送信する ※要cron設定、false:リアルタイムで送信する)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('LOGIN_FRAME', '"login_frame.tpl"', 77, 'ログイン画面フレーム');
@@ -831,7 +831,7 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('UNLIMITED', '"++"',
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('BIRTH_YEAR', '1901', 83, '生年月日登録開始年');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('RELEASE_YEAR', '2005', 84, '本システムの稼働開始年');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CREDIT_ADD_YEAR', '10', 85, 'クレジットカードの期限＋何年');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PARENT_CAT_MAX', '12', 86, '親カテゴリのカテゴリIDの最大数（これ以下は親カテゴリとする。)');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PARENT_CAT_MAX', '12', 86, '親カテゴリのカテゴリIDの最大数 (これ以下は親カテゴリとする。)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('NUMBER_MAX', '1000000000', 87, 'GET値変更などのいたずらを防ぐため最大数制限を設ける。');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('POINT_RULE', '2', 88, 'ポイントの計算ルール(1:四捨五入、2:切り捨て、3:切り上げ)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('POINT_VALUE', '1', 89, '1ポイント当たりの値段(円)');
@@ -920,12 +920,12 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('NAVI_PMAX', '4', 18
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PRODUCTSUB_MAX', '5', 185, '商品サブ情報最大数');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DELIVTIME_MAX', '16', 186, 'お届け時間の最大表示数');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DELIVFEE_MAX', '47', 187, '配送料金の最大表示数');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('STEXT_LEN', '50', 188, '短い項目の文字数（名前など)');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('STEXT_LEN', '50', 188, '短い項目の文字数 (名前など)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SMTEXT_LEN', '100', 189, NULL);
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MTEXT_LEN', '200', 190, '長い項目の文字数（住所など）');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MLTEXT_LEN', '1000', 191, '長中文の文字数（問い合わせなど）');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MTEXT_LEN', '200', 190, '長い項目の文字数 (住所など)');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MLTEXT_LEN', '1000', 191, '長中文の文字数 (問い合わせなど)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('LTEXT_LEN', '3000', 192, '長文の文字数');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('LLTEXT_LEN', '99999', 193, '超長文の文字数（メルマガなど）');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('LLTEXT_LEN', '99999', 193, '超長文の文字数 (メルマガなど)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('URL_LEN', '300', 194, 'URLの文字長');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ID_MAX_LEN', '15', 195, '管理画面用：ID・パスワードの文字数制限');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ID_MIN_LEN', '4', 196, '管理画面用：ID・パスワードの文字数制限');
@@ -969,11 +969,11 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ORDER_PRE_END', '6'
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ORDER_CANCEL', '3', 260, 'キャンセル');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ORDER_BACK_ORDER', '4', 261, '取り寄せ中');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ORDER_DELIV', '5', 262, '発送済み');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ODERSTATUS_COMMIT', 'ORDER_DELIV', 263, '受注ステータス変更の際にポイント等を加算するステータス番号（発送済み）');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ODERSTATUS_COMMIT', 'ORDER_DELIV', 263, '受注ステータス変更の際にポイント等を加算するステータス番号 (発送済み)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ADMIN_NEWS_STARTYEAR', '2005', 264, '新着情報管理画面 開始年(西暦) ');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ENTRY_CUSTOMER_TEMP_SUBJECT', '"会員仮登録が完了いたしました。"', 265, '会員登録');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ENTRY_CUSTOMER_REGIST_SUBJECT', '"本会員登録が完了いたしました。"', 266, '会員登録');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ENTRY_LIMIT_HOUR', '1', 267, '再入会制限時間（単位: 時間)');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ENTRY_LIMIT_HOUR', '1', 267, '再入会制限時間 (単位: 時間)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('RECOMMEND_PRODUCT_MAX', '6', 268, '関連商品表示数');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('RECOMMEND_NUM', '8', 269, 'おすすめ商品表示数');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DELIV_DATE_END_MAX', '21', 272, 'お届け可能日以降のプルダウン表示最大日数');
@@ -1062,7 +1062,7 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('OSTORE_E_C_AUTOUP_D
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('OSTORE_E_C_PERMISSION', '"2009"', 521, 'オーナーズストア通信エラーコード');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('OSTORE_E_C_BATCH_ERR', '"2010"', 522, 'オーナーズストア通信エラーコード');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('OPTION_FAVOFITE_PRODUCT', '1', 523, 'お気に入り商品登録(有効:1 無効:0)');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('IMAGE_RENAME', 'true', 525, '画像リネーム設定（商品画像のみ）(true:リネームする、false:リネームしない)');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('IMAGE_RENAME', 'true', 525, '画像リネーム設定 (商品画像のみ) (true:リネームする、false:リネームしない)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_DIR', '"plugins/"', 600, 'プラグインディレクトリ');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_PATH', 'USER_PATH . PLUGIN_DIR', 601, 'プラグイン保存先');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_URL', 'USER_URL . PLUGIN_DIR', 602, 'プラグイン URL');

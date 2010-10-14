@@ -175,8 +175,8 @@ class LC_Page_Admin_Customer_SearchCustomer extends LC_Page
         $this->objFormParam->addParam("顧客ID", "search_customer_id", INT_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("顧客名(姓)", "search_name01", STEXT_LEN, "aKV", array("NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("顧客名(名)", "search_name02", STEXT_LEN, "aKV", array("NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("顧客名（カナ）", 'search_kana01', STEXT_LEN, "CKV", array("NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK", "KANA_CHECK"));
-        $this->objFormParam->addParam("顧客名（カナ/名）", 'search_kana02', STEXT_LEN, "CKV", array("NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK", "KANA_CHECK"));
+        $this->objFormParam->addParam("顧客名(カナ)", 'search_kana01', STEXT_LEN, "CKV", array("NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK", "KANA_CHECK"));
+        $this->objFormParam->addParam("顧客名(カナ/名)", 'search_kana02', STEXT_LEN, "CKV", array("NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK", "KANA_CHECK"));
     }
 
     /* 入力内容のチェック */

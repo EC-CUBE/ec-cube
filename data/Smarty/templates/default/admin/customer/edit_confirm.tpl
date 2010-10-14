@@ -66,7 +66,7 @@ function func_return(){
                 <td><!--{$arrForm.name01|escape}--><!--{$arrForm.name02|escape}-->　様</td>
             </tr>
             <tr>
-                <th>フリガナ<span class="attention"> *</span></th>
+                <th>お名前(フリガナ)<span class="attention"> *</span></th>
                 <td><!--{$arrForm.kana01|escape}--><!--{$arrForm.kana02|escape}-->　様</td>
             </tr>
             <tr>

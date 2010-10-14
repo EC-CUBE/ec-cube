@@ -453,7 +453,7 @@ class SC_CheckError {
         }
     }
 
-    /*　カタカナの判定2（タブ、スペースは許可する）　*/
+    /*　カタカナの判定2 (タブ、スペースは許可する) */
     // value[0] = 項目名 value[1] = 判定対象文字列
     function KANABLANK_CHECK( $value ) {				// 入力文字がカナ以外ならエラーを返す
         if(isset($this->arrErr[$value[1]])) {
@@ -498,7 +498,7 @@ class SC_CheckError {
         }
     }
 
-    /*　桁数の判定　（最小最大）*/
+    /*　桁数の判定 (最小最大)*/
     // value[0] = 項目名 value[1] = 判定対象文字列 value[2] = 最小桁数 value[3] = 最大桁数
     function NUM_RANGE_CHECK( $value ) {		// 入力文字の桁数判定　→　最小桁数＜入力文字列＜最大桁数
         if(isset($this->arrErr[$value[1]])) {
@@ -641,7 +641,7 @@ class SC_CheckError {
     }
 
     /*　ファイルが上げられたか確認　*/
-    // value[0] = 項目名 value[1] = 判定対象  value[2] = 指定サイズ（KB)
+    // value[0] = 項目名 value[1] = 判定対象  value[2] = 指定サイズ(KB)
     function FILE_EXIST_CHECK( $value ) {			// 受け取りがない場合エラーを返す
         if(isset($this->arrErr[$value[1]])) {
             return;
@@ -653,7 +653,7 @@ class SC_CheckError {
     }
 
     /*　ファイルサイズの判定　*/
-    // value[0] = 項目名 value[1] = 判定対象  value[2] = 指定サイズ（KB)
+    // value[0] = 項目名 value[1] = 判定対象  value[2] = 指定サイズ(KB)
     function FILE_SIZE_CHECK( $value ) {			// 受け取りがない場合エラーを返す
         if(isset($this->arrErr[$value[1]])) {
             return;
@@ -794,7 +794,7 @@ class SC_CheckError {
     /*	CHECK_SET_TERM
     /*	年月日に別れた2つの期間の妥当性をチェックし、整合性と期間を返す
     /*　引数 (開始年,開始月,開始日,終了年,終了月,終了日)
-    /*　戻値 array(１，２，３）
+    /*　戻値 array(１，２，３)
     /*  		１．開始年月日 (YYYYMMDD 000000)
     /*			２．終了年月日 (YYYYMMDD 235959)
     /*			３．エラー ( 0 = OK, 1 = NG )
@@ -837,7 +837,7 @@ class SC_CheckError {
     /*	年月日時に別れた2つの期間の妥当性をチェックし、整合性と期間を返す
     /*　引数 (開始年,開始月,開始日,開始時間,開始分,開始秒,
     /*        終了年,終了月,終了日,終了時間,終了分,終了秒)
-    /*　戻値 array(１，２，３）
+    /*　戻値 array(１，２，３)
     /*  		１．開始年月日 (YYYYMMDDHHmmss)
     /*			２．終了年月日 (YYYYMMDDHHmmss)
     /*			３．エラー ( 0 = OK, 1 = NG )
@@ -891,7 +891,7 @@ class SC_CheckError {
     /*	CHECK_SET_TERM3
     /*	年月に別れた2つの期間の妥当性をチェックし、整合性と期間を返す
     /*　引数 (開始年,開始月,終了年,終了月)
-    /*　戻値 array(１，２，３）
+    /*　戻値 array(１，２，３)
     /*  		１．開始年月日 (YYYYMMDD 000000)
     /*			２．終了年月日 (YYYYMMDD 235959)
     /*			３．エラー ( 0 = OK, 1 = NG )

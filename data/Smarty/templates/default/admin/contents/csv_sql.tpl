@@ -86,11 +86,11 @@ function fnTargetSelf(){
       <td>
         <span class="attention"><!--{$arrErr.sql_name}--></span>
         <input type="text" name="sql_name" value="<!--{$arrSqlData.sql_name|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" />
-        <span class="attention"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
+        <span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
       </td>
     </tr>
     <tr>
-      <th align="center">SQL文<br />（SELECTは記述しないでください。）<span class="attention"> *</span></td>
+      <th align="center">SQL文<br /> (SELECTは記述しないでください。)<span class="attention"> *</span></td>
       <td align="left">
         <span class="attention"><!--{$arrErr.csv_sql}--></span>
         <div>

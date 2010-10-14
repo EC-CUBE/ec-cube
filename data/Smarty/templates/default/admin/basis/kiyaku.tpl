@@ -31,7 +31,7 @@
       <td>
         <span class="attention"><!--{$arrErr.kiyaku_title}--></span>
         <input type="text" name="kiyaku_title" value="<!--{$arrForm.kiyaku_title|escape}-->" maxlength="<!--{$smarty.const.SMTEXT_LEN}-->" style="" size="60" class="box60"/>
-        <span class="attention"> （上限<!--{$smarty.const.SMTEXT_LEN}-->文字）</span>
+        <span class="attention"> (上限<!--{$smarty.const.SMTEXT_LEN}-->文字)</span>
       </td>
     </tr>
     <tr>
@@ -39,7 +39,7 @@
       <td>
       <span class="attention"><!--{$arrErr.kiyaku_text}--></span>
       <textarea name="kiyaku_text" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" cols="60" rows="8" class="area60" style="" ><!--{$arrForm.kiyaku_text|escape}--></textarea>
-      <span class="attention"> （上限<!--{$smarty.const.MLTEXT_LEN}-->文字）</span>
+      <span class="attention"> (上限<!--{$smarty.const.MLTEXT_LEN}-->文字)</span>
       </td>
     </tr>
   </table>

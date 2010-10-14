@@ -1,8 +1,8 @@
 <?php
 /** フロント表示関連 */
-define('SAMPLE_ADDRESS1', "市区町村名（例：千代田区神田神保町）");
+define('SAMPLE_ADDRESS1', "市区町村名 (例：千代田区神田神保町)");
 /** フロント表示関連 */
-define('SAMPLE_ADDRESS2', "番地・ビル名（例：1-3-5）");
+define('SAMPLE_ADDRESS2', "番地・ビル名 (例：1-3-5)");
 /** ユーザファイル保存先 */
 define('USER_DIR', "user_data/");
 /** ユーザファイル保存先 */
@@ -87,7 +87,7 @@ define('BAT_ORDER_AGE', 70);
 define('PRODUCTS_TOTAL_MAX', 15);
 /** 1:公開 2:非公開 */
 define('DEFAULT_PRODUCT_DISP', 2);
-/** 送料無料購入数量（0の場合は、いくつ買っても無料にならない) */
+/** 送料無料購入数量 (0の場合は、いくつ買っても無料にならない) */
 define('DELIV_FREE_AMOUNT', 0);
 /** 配送料の設定画面表示(有効:1 無効:0) */
 define('INPUT_DELIV_FEE', 1);
@@ -113,7 +113,7 @@ define('REVIEW_REGIST_MAX', 5);
 define('DEBUG_MODE', false);
 /** 管理ユーザID(メンテナンス用表示されない。) */
 define('ADMIN_ID', "1");
-/** 会員登録時に仮会員確認メールを送信するか（true:仮会員、false:本会員） */
+/** 会員登録時に仮会員確認メールを送信するか (true:仮会員、false:本会員) */
 define('CUSTOMER_CONFIRM_MAIL', false);
 /** メルマガ配信(true:配信する、false:配信しない) */
 define('MELMAGA_SEND', true);
@@ -137,7 +137,7 @@ define('BIRTH_YEAR', 1901);
 define('RELEASE_YEAR', 2005);
 /** クレジットカードの期限＋何年 */
 define('CREDIT_ADD_YEAR', 10);
-/** 親カテゴリのカテゴリIDの最大数（これ以下は親カテゴリとする。) */
+/** 親カテゴリのカテゴリIDの最大数 (これ以下は親カテゴリとする。) */
 define('PARENT_CAT_MAX', 12);
 /** GET値変更などのいたずらを防ぐため最大数制限を設ける。 */
 define('NUMBER_MAX', 1000000000);
@@ -315,16 +315,16 @@ define('PRODUCTSUB_MAX', 5);
 define('DELIVTIME_MAX', 16);
 /** 配送料金の最大表示数 */
 define('DELIVFEE_MAX', 47);
-/** 短い項目の文字数（名前など) */
+/** 短い項目の文字数 (名前など) */
 define('STEXT_LEN', 50);
 define('SMTEXT_LEN', 100);
-/** 長い項目の文字数（住所など） */
+/** 長い項目の文字数 (住所など) */
 define('MTEXT_LEN', 200);
-/** 長中文の文字数（問い合わせなど） */
+/** 長中文の文字数 (問い合わせなど) */
 define('MLTEXT_LEN', 1000);
 /** 長文の文字数 */
 define('LTEXT_LEN', 3000);
-/** 超長文の文字数（メルマガなど） */
+/** 超長文の文字数 (メルマガなど) */
 define('LLTEXT_LEN', 99999);
 /** URLの文字長 */
 define('URL_LEN', 300);
@@ -412,7 +412,7 @@ define('ORDER_CANCEL', 3);
 define('ORDER_BACK_ORDER', 4);
 /** 発送済み */
 define('ORDER_DELIV', 5);
-/** 受注ステータス変更の際にポイント等を加算するステータス番号（発送済み） */
+/** 受注ステータス変更の際にポイント等を加算するステータス番号 (発送済み) */
 define('ODERSTATUS_COMMIT', ORDER_DELIV);
 /** 新着情報管理画面 開始年(西暦)  */
 define('ADMIN_NEWS_STARTYEAR', 2005);
@@ -420,7 +420,7 @@ define('ADMIN_NEWS_STARTYEAR', 2005);
 define('ENTRY_CUSTOMER_TEMP_SUBJECT', "会員仮登録が完了いたしました。");
 /** 会員登録 */
 define('ENTRY_CUSTOMER_REGIST_SUBJECT', "本会員登録が完了いたしました。");
-/** 再入会制限時間（単位: 時間) */
+/** 再入会制限時間 (単位: 時間) */
 define('ENTRY_LIMIT_HOUR', 1);
 /** 関連商品表示数 */
 define('RECOMMEND_PRODUCT_MAX', 6);
@@ -598,7 +598,7 @@ define('OSTORE_E_C_PERMISSION', "2009");
 define('OSTORE_E_C_BATCH_ERR', "2010");
 /** お気に入り商品登録(有効:1 無効:0) */
 define('OPTION_FAVOFITE_PRODUCT', 1);
-/** 画像リネーム設定（商品画像のみ）(true:リネームする、false:リネームしない) */
+/** 画像リネーム設定 (商品画像のみ) (true:リネームする、false:リネームしない) */
 define('IMAGE_RENAME', true);
 /** プラグインディレクトリ */
 define('PLUGIN_DIR', "plugins/");

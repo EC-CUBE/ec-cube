@@ -61,7 +61,7 @@ function func_return(){
         </td>
       </tr>
       <tr>
-        <th><span class="attention">※</span>フリガナ</th>
+        <th><span class="attention">※</span>お名前(フリガナ)</th>
         <td>
           <!--{$arrForm.kana01|escape}-->&nbsp;<!--{$arrForm.kana02|escape}-->
           <input type="hidden" name="kana01" value="<!--{$arrForm.kana01|escape}-->" />

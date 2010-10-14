@@ -177,7 +177,7 @@
                             <td><!--{$arrData.deliv_name01|escape}--> <!--{$arrData.deliv_name02|escape}--></td>
                         </tr>
                         <tr>
-                            <th>お名前（フリガナ）</th>
+                            <th>お名前(フリガナ)</th>
                             <td><!--{$arrData.deliv_kana01|escape}--> <!--{$arrData.deliv_kana02|escape}--></td>
                         </tr>
                         <tr>
@@ -198,7 +198,7 @@
                             <td><!--{$arrData.order_name01|escape}--> <!--{$arrData.order_name02|escape}--></td>
                         </tr>
                         <tr>
-                            <th>お名前（フリガナ）</th>
+                            <th>お名前(フリガナ)</th>
                             <td><!--{$arrData.order_kana01|escape}--> <!--{$arrData.order_kana02|escape}--></td>
                         </tr>
                         <tr>

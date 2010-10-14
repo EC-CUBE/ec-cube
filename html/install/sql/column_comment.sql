@@ -1,5 +1,5 @@
 INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (1, 'dtb_baseinfo', 'company_name', '会社名');
-INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (2, 'dtb_baseinfo', 'company_kana', '会社名（カナ）');
+INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (2, 'dtb_baseinfo', 'company_kana', '会社名(カナ)');
 INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (3, 'dtb_baseinfo', 'zip01', '郵便番号1');
 INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (4, 'dtb_baseinfo', 'zip02', '郵便番号2');
 INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (5, 'dtb_baseinfo', 'pref', '都道府県');

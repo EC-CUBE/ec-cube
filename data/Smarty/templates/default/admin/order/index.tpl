@@ -128,7 +128,7 @@
             </td>
         </tr>
         <tr>
-            <th>顧客名（カナ）</th>
+            <th>顧客名(カナ)</th>
             <td>
             <!--{assign var=key value="search_order_kana"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>

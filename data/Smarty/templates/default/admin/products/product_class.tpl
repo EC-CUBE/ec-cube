@@ -101,7 +101,7 @@
       <th><!--{$smarty.const.NORMAL_PRICE_TITLE}-->(円)</th>
       <th><!--{$smarty.const.SALE_PRICE_TITLE}-->(円)<span class="attention">*</span></th>
       <th>実商品・ダウンロード<span class="attention"> *</span></th>
-      <th>ダウンロードファイル名<BR><span class="red"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span></th>
+      <th>ダウンロードファイル名<BR><span class="red"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span></th>
       <th>ダウンロード商品用ファイルアップロード<BR>登録可能拡張子：<!--{$smarty.const.DOWNLOAD_EXTENSION}-->　(パラメータ DOWNLOAD_EXTENSION)</th>
     </tr>
     <!--{section name=cnt loop=$arrClassCat}-->

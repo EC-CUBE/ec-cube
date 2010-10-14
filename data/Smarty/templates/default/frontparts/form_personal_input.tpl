@@ -34,7 +34,7 @@
   </td>
 </tr>
 <tr>
-  <th>お名前（フリガナ）<span class="attention">※</span></th>
+  <th>お名前(フリガナ)<span class="attention">※</span></th>
   <td>
     <!--{assign var=key1 value="`$prefix`kana01"}-->
     <!--{assign var=key2 value="`$prefix`kana02"}-->

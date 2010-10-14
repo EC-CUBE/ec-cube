@@ -32,7 +32,7 @@
       <td>
         <!--{if $arrErr.name}--><span class="attention"><!--{$arrErr.name}--></span><!--{/if}-->
         <input type="text" name="name" value="<!--{$arrForm.name|escape}-->" maxlength="<!--{$smarty.const.SMTEXT_LEN}-->" style="" size="60" class="box60"/>
-        <span class="attention"> （上限<!--{$smarty.const.SMTEXT_LEN}-->文字）</span>
+        <span class="attention"> (上限<!--{$smarty.const.SMTEXT_LEN}-->文字)</span>
       </td>
     </tr>
   </table>
