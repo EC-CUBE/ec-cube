@@ -179,9 +179,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page {
     function lfRegistData($array, $arrRegistColumn, &$objCustomer) {
         $objQuery = new SC_Query();
         foreach ($arrRegistColumn as $data) {
-            if (strlen($array[ $data["column"] ]) > 0) {
-                $arrRegist[ $data["column"] ] = $array[ $data["column"] ];
-            }
+            $arrRegist[ $data["column"] ] = $array[ $data["column"] ];
         }
 
         $arrRegist['customer_id'] = $objCustomer->getvalue('customer_id');
