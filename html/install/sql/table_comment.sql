@@ -41,7 +41,6 @@ INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES 
 INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (652, 'dtb_csv', NULL, 'CSV出力設定');
 INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (653, 'dtb_csv_sql', NULL, 'CSV_SQL');
 INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (654, 'dtb_update', NULL, 'アップデート');
-INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (655, 'dtb_user_regist', NULL, 'ユーザー登録');
 INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (656, 'dtb_kiyaku', NULL, '会員規約');
 INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (657, 'mtb_zip', NULL, '郵便番号マスタ');
 INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (658, 'dtb_templates', NULL, 'テンプレート');
