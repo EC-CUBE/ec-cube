@@ -154,7 +154,7 @@ class LC_Page_Shopping_Confirm extends LC_Page {
             $arrData['session'] = serialize($_SESSION);
 
             // 集計結果を受注一時テーブルに反映
-            unset($arrData[0]); // TODO
+            unset($arrData[0]); // FIXME
             unset($arrData[1]);
             $objDb->sfRegistTempOrder($uniqid, $arrData);
             // 正常に登録されたことを記録しておく

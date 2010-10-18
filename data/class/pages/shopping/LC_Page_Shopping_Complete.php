@@ -546,13 +546,10 @@ class LC_Page_Shopping_Complete extends LC_Page {
                 $sqlval['order_id'] = $order_id;
                 $sqlval['product_id'] = $arrData['product_id'];
                 $sqlval['product_class_id'] = $arrData['product_class_id'];
-                // FIXME product_class_id のみで対応予定のため暫定対応
-                $sqlval['classcategory_id1'] = is_null($arrData['classcategory_id1']) ? 0 : $sqlval['classcategory_id1'];
-                $sqlval['classcategory_id2'] = is_null($arrData['classcategory_id2']) ? 0 : $sqlval['classcategory_id2'];
                 $sqlval['product_name'] = $arrData['name'];
                 $sqlval['product_code'] = $arrData['product_code'];
-                $sqlval['classcategory_name1'] = $arrData['name1'];
-                $sqlval['classcategory_name2'] = $arrData['name2'];
+                $sqlval['classcategory_name1'] = $arrData['classcategory_name1'];
+                $sqlval['classcategory_name2'] = $arrData['classcategory_name2'];
                 $sqlval['point_rate'] = $arrCart[$i]['point_rate'];
                 $sqlval['price'] = $arrCart[$i]['price'];
                 $sqlval['quantity'] = $arrCart[$i]['quantity'];
