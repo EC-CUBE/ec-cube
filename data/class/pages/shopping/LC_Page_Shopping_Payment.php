@@ -112,12 +112,24 @@ class LC_Page_Shopping_Payment extends LC_Page {
         }
 
         // カート内商品の集計処理を行う
-        $objDb->sfTotalCart($this, $objCartSess);
+        $this->cartKey = $_SESSION['cartKey'];
+        $cartItems = $objCartSess->getCartList($this->cartKey);
+        $i = 0;
+        // TODO リファクタリング
+        foreach (array_keys($cartItems) as $itemKey) {
+            $cartItem =& $cartItems[$itemKey];
+            if (!SC_Utils_Ex::isBlank($cartItem)) {
+                $this->cartItems[$i] =& $cartItem;
+                $i++;
+            }
+        }
+        $this->tpl_message = $objCartSess->checkProducts($this->cartKey);
+
         if (strlen($this->tpl_message) >= 1) {
             SC_Utils_Ex::sfDispSiteError(SOLD_OUT, '', true);
         }
-
-        $this->arrData = $objDb->sfTotalConfirm(array(), $this, $objCartSess);
+        // FIXME 使用ポイント, 配送都道府県, 支払い方法, 手数料の扱い
+        $this->arrData = $objCartSess->calculate($this->cartKey, $objCustomer);
 
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
 

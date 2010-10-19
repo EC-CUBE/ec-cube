@@ -85,17 +85,8 @@ class LC_Page_Cart extends LC_Page {
             if($objCartSess->getCancelPurchase($key)) {
                 $this->tpl_message = "商品購入中にカート内容が変更されましたので、お手数ですが購入手続きをやり直して下さい。";
             }
-
-            // カートの商品規格を取得
-            $cartItems = $objCartSess->getCartList($key);
-            foreach (array_keys($cartItems) as $itemKey) {
-                $cartItem =& $cartItems[$itemKey];
-                if (!SC_Utils_Ex::isBlank($cartItem)) {
-                    $this->cartItems[$key][$i] =& $cartItem;
-                    $i++;
-                }
-            }
         }
+        $this->cartItems =& $objCartSess->getAllCartList();
 
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
@@ -151,8 +142,8 @@ class LC_Page_Cart extends LC_Page {
             $this->tpl_total_tax[$key] = $objCartSess->getAllProductsTax($key);
             // ポイント合計
             $this->tpl_total_point[$key] = $objCartSess->getAllProductsPoint($key);
+            $this->arrData = $objCartSess->calculate($key, $objCustomer);
 
-            $this->arrData = $objDb->sfTotalConfirm($this->cartItems[$key], $this, $objCartSess, null, $objCustomer, $key);
             // 送料無料までの金額を計算
             $this->tpl_deliv_free[$key] = $this->arrInfo['free_rule'] - $this->tpl_total_pretax[$key];
         }

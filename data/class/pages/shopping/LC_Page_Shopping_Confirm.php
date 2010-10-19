@@ -86,6 +86,7 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         $this->cartKey = $_SESSION['cartKey'];
         $cartItems = $objCartSess->getCartList($this->cartKey);
         $i = 0;
+        // TODO リファクタリング
         foreach (array_keys($cartItems) as $itemKey) {
             $cartItem =& $cartItems[$itemKey];
             if (!SC_Utils_Ex::isBlank($cartItem)) {
@@ -108,17 +109,8 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         $tmpData = $objDb->sfGetOrderTemp($uniqid);
 
         // カート集計を元に最終計算
-        $arrData = $objDb->sfTotalConfirm($this->cartItems, $this, $objCartSess, null, $objCustomer, $this->cartKey);
-        $arrData = array_merge($tmpData, $arrData);
-        // キャンペーンからの遷移で送料が無料だった場合の処理
-        if($objCampaignSess->getIsCampaign()) {
-            $deliv_free_flg = $objQuery->get("dtb_campaign", "deliv_free_flg", "campaign_id = ?", array($objCampaignSess->getCampaignId()));
-            // 送料無料が設定されていた場合
-            if($deliv_free_flg) {
-                $arrData['payment_total'] -= $arrData['deliv_fee'];
-                $arrData['deliv_fee'] = 0;
-            }
-        }
+        // FIXME 使用ポイント, 配送都道府県, 支払い方法, 手数料の扱い
+        $arrData = array_merge($tmpData, $objCartSess->calculate($this->cartKey, $objCustomer));
 
         // 会員ログインチェック
         if($objCustomer->isLoginSuccess()) {

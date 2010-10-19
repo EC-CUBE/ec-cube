@@ -243,7 +243,11 @@ class SC_Helper_DB {
      * @param SC_CartSession $objCartSess カートセッションのインスタンス
      * @param null $dummy1 互換性確保用(決済モジュール互換のため)
      * @return LC_Page 集計処理後のページクラスインスタンス
-     * @deprecated SC_CartSession クラスを使用して下さい
+     *
+     * @deprecated SC_CartSession::checkProducts(),
+     *             SC_CartSession::getAllProductsTotal(),
+     *             SC_CartSession::getAllProductsTax(),
+     *             SC_CartSession::getAllProductsPoint() を使用して下さい
      */
     function sfTotalCart(&$objPage, $objCartSess, $dummy1 = null, $key = "") {
 
@@ -1441,6 +1445,7 @@ __EOS__;
      * @param null $dummy1 互換性確保用(決済モジュール互換のため)
      * @param SC_Customer $objCustomer SC_Customer インスタンス
      * @return array 最終計算後の配列
+     * @deprecated SC_CartSession::calculate() を使用して下さい
      */
     function sfTotalConfirm($arrData, &$objPage, &$objCartSess, $dummy1 = null, $objCustomer = "", $key = "") {
         // 店舗基本情報を取得する
@@ -1470,6 +1475,7 @@ __EOS__;
         // 配送業者の送料が有効の場合
         if (OPTION_DELIV_FEE == 1) {
             // 都道府県、支払い方法から配送料金を加算する
+            // FIXME ここでしか使ってない
             $this->lfAddDelivFee($arrData);
         }
 

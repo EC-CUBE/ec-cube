@@ -317,6 +317,26 @@ class SC_CartSession {
         return $arrRet;
     }
 
+    /**
+     * すべてのカートの内容を取得する.
+     *
+     * @return array すべてのカートの内容
+     */
+    function getAllCartList() {
+        $results = array();
+        $cartKeys = $this->getKeys();
+        $i = 0;
+        foreach ($cartKeys as $key) {
+            $cartItems = $this->getCartList($key);
+            foreach (array_keys($cartItems) as $itemKey) {
+                $cartItem =& $cartItems[$itemKey];
+                $results[$key][$i] =& $cartItem;
+                $i++;
+            }
+        }
+        return $results;
+    }
+
     // カート内にある商品ＩＤを全て取得する
     function getAllProductID($productTypeId) {
         $max = $this->getMax($productTypeId);
@@ -433,6 +453,98 @@ class SC_CartSession {
             }
         }
         return $tpl_message;
+    }
+
+    /**
+     * カートの内容を計算する.
+     *
+     * カートの内容を計算し, 下記のキーを保持する連想配列を返す.
+     *
+     * - tax: 税額
+     * - subtotal: カート内商品の小計
+     * - deliv_fee: カート内商品の合計送料
+     * - total: 合計金額
+     * - payment_total: お支払い合計
+     * - add_point: 加算ポイント
+     *
+     *  TODO ダウンロード商品のみの場合の送料を検討する
+     *  TODO 使用ポイント, 配送都道府県, 支払い方法, 手数料の扱いを検討
+     *
+     * @param integer $productTypeId 商品種別ID
+     * @param SC_Customer $objCustomer ログイン中の SC_Customer インスタンス
+     * @param integer $use_point 今回使用ポイント
+     * @param integer $deliv_pref 配送先都道府県ID
+     * @param integer $payment_id 支払い方法ID
+     * @param integer $charge 手数料
+     * @return array カートの計算結果の配列
+     */
+    function calculate($productTypeId, &$objCustomer = null, $use_point = 0,
+                       $deliv_pref = "", $payment_id = "", $charge = 0) {
+        $objDb = new SC_Helper_DB_Ex();
+
+        $total_point = $this->getAllProductsPoint($productTypeId);
+        $results['tax'] = $this->getAllProductsTax($productTypeId);
+        $results['subtotal'] = $this->getAllProductsTotal($productTypeId);
+        $results['deliv_fee'] = 0;
+
+        // 商品ごとの送料を加算
+        if (OPTION_PRODUCT_DELIV_FEE == 1) {
+            $cartItems = $this->getCartList($productTypeId);
+            foreach ($cartItems as $item) {
+                $results['deliv_fee'] += $item['deliv_fee'] * $item['quantity'];
+            }
+        }
+
+        // 配送業者の送料を加算
+        if (OPTION_DELIV_FEE == 1) {
+            $results['deliv_fee'] += $objDb->sfGetDelivFee(
+                                             array('deliv_pref' => $deliv_pref,
+                                                   'payment_id' => $payment_id));
+        }
+
+        // 送料無料の購入数が設定されている場合
+        if (DELIV_FREE_AMOUNT > 0) {
+            // 商品の合計数量
+            $total_quantity = $this->getTotalQuantity($productTypeId);
+
+            if($total_quantity >= DELIV_FREE_AMOUNT) {
+                $results['deliv_fee'] = 0;
+            }
+        }
+
+        // 送料無料条件が設定されている場合
+        $arrInfo = $objDb->sf_getBasisData();
+        if($arrInfo['free_rule'] > 0) {
+            // 小計が無料条件を超えている場合
+            if($results['subtotal'] >= $arrInfo['free_rule']) {
+                $results['deliv_fee'] = 0;
+            }
+        }
+
+        // 合計を計算
+        $results['total'] = $results['subtotal'];
+        $results['total'] += $results['deliv_fee'];
+        $results['total'] += $charge;
+
+        // お支払い合計
+        $results['payment_total'] = $results['total'] - $use_point * POINT_VALUE;
+
+        // 加算ポイントの計算
+        if (USE_POINT !== false) {
+            $results['add_point'] = SC_Helper_DB_Ex::sfGetAddPoint($total_point,
+                                                                   $use_point);
+            if($objCustomer != "") {
+                // 誕生日月であった場合
+                if($objCustomer->isBirthMonth()) {
+                    $results['birth_point'] = BIRTH_MONTH_POINT;
+                    $results['add_point'] += $results['birth_point'];
+                }
+            }
+            if($results['add_point'] < 0) {
+                $results['add_point'] = 0;
+            }
+        }
+        return $results;
     }
 
     function getKeys() {

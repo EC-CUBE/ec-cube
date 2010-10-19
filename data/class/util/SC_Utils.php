@@ -309,6 +309,9 @@ class SC_Utils {
         }
     }
 
+    /**
+     * @deprecated SC_CartSession クラスを使用してください
+     */
     function sfCheckNormalAccess(&$objSiteSess, &$objCartSess) {
         // ユーザユニークIDの取得
         $uniqid = $objSiteSess->getUniqId();
