@@ -240,8 +240,6 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
 
             // ベースデータでなければファイルを削除し、PHPファイルを作成する
             if (!$this->objLayout->lfCheckBaseData($page_id)) {
-                // ファイル削除
-                $this->objLayout->lfDelFile($this->arrPageData);
                 // PHPファイル作成
                 $this->lfCreatePHPFile($_POST['url']);
             }
@@ -420,7 +418,12 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
     function lfCreatePHPFile($url){
 
         $path = USER_PATH . $url . ".php";
-        
+
+        // カスタマイズを考慮し、上書きしない。(#831)
+        if (file_exists($path)) {
+            return;
+        }
+
         // php保存先ディレクトリが存在していなければ作成する
         if (!is_dir(dirname($path))) {
             mkdir(dirname($path));
