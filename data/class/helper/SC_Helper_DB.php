@@ -1091,6 +1091,7 @@ __EOS__;
      *
      * @param integer $order_temp_id 受注一時ID
      * @return array 受注一時情報の配列
+     * @deprecated SC_Helper_Purchase::getOrderTemp() を使用して下さい
      */
     function sfGetOrderTemp($order_temp_id) {
         $objQuery =& SC_Query::getSingletonInstance();

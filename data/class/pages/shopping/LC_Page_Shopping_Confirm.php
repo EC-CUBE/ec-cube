@@ -82,27 +82,23 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         //ダウンロード商品判定
         $this->cartdown = $objDb->chkCartDown($objCartSess);
 
-        // カート集計処理
-        $this->cartKey = $_SESSION['cartKey'];
-        $cartItems = $objCartSess->getCartList($this->cartKey);
-        $i = 0;
-        // TODO リファクタリング
-        foreach (array_keys($cartItems) as $itemKey) {
-            $cartItem =& $cartItems[$itemKey];
-            if (!SC_Utils_Ex::isBlank($cartItem)) {
-                $this->cartItems[$i] =& $cartItem;
-                $i++;
-            }
-        }
-        $this->tpl_message = $objCartSess->checkProducts($this->cartKey);
-        $this->tpl_total_pretax[$this->cartKey] = $objCartSess->getAllProductsTotal($this->cartKey);
-        $this->tpl_total_tax[$this->cartKey] = $objCartSess->getAllProductsTax($this->cartKey);
-        // ポイント合計
-        $this->tpl_total_point[$this->cartKey] = $objCartSess->getAllProductsPoint($this->cartKey);
 
+        $this->cartKey = $_SESSION['cartKey'];
+
+        // カート内商品のチェック
+        $this->tpl_message = $objCartSess->checkProducts($this->cartKey);
         if (strlen($this->tpl_message) >= 1) {
             SC_Utils_Ex::sfDispSiteError(SOLD_OUT, '', true);
         }
+
+        // カートの商品を取得
+        $this->cartItems = $objCartSess->getCartList($this->cartKey);
+        // 合計金額
+        $this->tpl_total_pretax[$this->cartKey] = $objCartSess->getAllProductsTotal($this->cartKey);
+        // 税額
+        $this->tpl_total_tax[$this->cartKey] = $objCartSess->getAllProductsTax($this->cartKey);
+        // ポイント合計
+        $this->tpl_total_point[$this->cartKey] = $objCartSess->getAllProductsPoint($this->cartKey);
 
         // TODO リファクタリング
         // 一時受注テーブルの読込
@@ -158,6 +154,9 @@ class LC_Page_Shopping_Confirm extends LC_Page {
                 $_SESSION["payment_id"] = $arrData['payment_id'];
                 $this->sendRedirect($this->getLocation(URL_SHOP_MODULE));
             }else{
+                // 受注を完了し, 購入完了ページへ
+                $objPurchase = new SC_Helper_Purchase_Ex();
+                $objPurchase->completeOrder();
                 $this->sendRedirect($this->getLocation(URL_SHOP_COMPLETE));
             }
             exit;

@@ -51,4 +51,5 @@ require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_PageLayout_Ex.php");
 require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_DB_Ex.php");
 require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_Mail_Ex.php");
 require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_Mobile_Ex.php");
+require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_Purchase_Ex.php");
 ?>

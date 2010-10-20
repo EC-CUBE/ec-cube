@@ -444,6 +444,35 @@ __EOS__;
     }
 
     /**
+     * 在庫を減少させる.
+     *
+     * 指定の在庫数まで, 在庫を減少させる.
+     * 減少させた結果, 在庫数が 0 未満になった場合, 引数 $quantity が 0 の場合は,
+     * 在庫の減少を中止し, false を返す.
+     * 在庫の減少に成功した場合は true を返す.
+     *
+     * @param integer $productClassId 商品規格ID
+     * @param integer $quantity 減少させる在庫数
+     * @return boolean 在庫の減少に成功した場合 true; 失敗した場合 false
+     */
+    function reduceStock($productClassId, $quantity) {
+
+        $productsClass = $this->getDetailAndProductsClass($productClassId);
+        if (($productsClass['stock_unlimited'] != '1'
+             && $productsClass['stock'] < $quantity)
+            || $quantity == 0) {
+            return false;
+        }
+
+        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery->update('dtb_products_class', array(),
+                          "product_class_id = ?", array($productClassId),
+                          array('stock' => 'stock - ?'), array($quantity));
+        // TODO エラーハンドリング
+        return true;
+    }
+
+    /**
      * 商品詳細の SQL を取得する.
      *
      * @param string $where 商品詳細の WHERE 句

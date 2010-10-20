@@ -113,16 +113,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
 
         // カート内商品の集計処理を行う
         $this->cartKey = $_SESSION['cartKey'];
-        $cartItems = $objCartSess->getCartList($this->cartKey);
-        $i = 0;
-        // TODO リファクタリング
-        foreach (array_keys($cartItems) as $itemKey) {
-            $cartItem =& $cartItems[$itemKey];
-            if (!SC_Utils_Ex::isBlank($cartItem)) {
-                $this->cartItems[$i] =& $cartItem;
-                $i++;
-            }
-        }
+        $this->cartItems = $objCartSess->getCartList($this->cartKey);
         $this->tpl_message = $objCartSess->checkProducts($this->cartKey);
 
         if (strlen($this->tpl_message) >= 1) {
@@ -173,8 +164,8 @@ class LC_Page_Shopping_Payment extends LC_Page {
             break;
         }
 
-        // 購入金額の取得得
-        $total_pretax = $objCartSess->getAllProductsTotal();
+        // 購入金額の取得
+        $total_pretax = $objCartSess->getAllProductsTotal($this->cartKey);
         // 支払い方法の取得
         $this->arrPayment = $this->lfGetPayment($total_pretax);
         // 支払い方法の画像があるなしを取得（$img_show true:ある false:なし）

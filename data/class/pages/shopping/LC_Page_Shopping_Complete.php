@@ -61,82 +61,11 @@ class LC_Page_Shopping_Complete extends LC_Page {
         global $objCampaignSess;
 
         $objView = new SC_SiteView();
-        $this->objSiteSess = new SC_SiteSession();
-        $this->objCartSess = new SC_CartSession();
-        $this->objCampaignSess = new SC_CampaignSession();
         $objSiteInfo = $objView->objSiteInfo;
         $this->arrInfo = $objSiteInfo->data;
-        $this->objCustomer = new SC_Customer();
-        $mailHelper = new SC_Helper_Mail_Ex();
-
-        // 前のページで正しく登録手続きが行われたか判定
-        SC_Utils_Ex::sfIsPrePage($this->objSiteSess);
-        // ユーザユニークIDの取得と購入状態の正当性をチェック
-        $uniqid = SC_Utils_Ex::sfCheckNormalAccess($this->objSiteSess, $this->objCartSess);
-        if ($uniqid != "") {
-
-            // 完了処理
-            $objQuery = new SC_Query();
-            $objQuery->begin();
-            $order_id = $this->lfDoComplete($objQuery, $uniqid);
-            $objQuery->commit();
-
-            // セッションに保管されている情報を更新する
-            $this->objCustomer->updateSession();
-
-            // 完了メール送信
-            if($order_id != "") {
-                $mailHelper->sfSendOrderMail($order_id, '1');
-            }
-
-            // その他情報の取得
-            $arrResults = $objQuery->getAll("SELECT memo02, memo05 FROM dtb_order WHERE order_id = ? ", array($order_id));
-
-            if (count($arrResults) > 0) {
-                if (isset($arrResults[0]["memo02"]) || isset($arrResults[0]["memo05"])) {
-                    // 完了画面で表示する決済内容
-                    $arrOther = unserialize($arrResults[0]["memo02"]);
-                    // 完了画面から送信する決済内容
-                    $arrModuleParam = unserialize($arrResults[0]["memo05"]);
-
-                    // データを編集
-                    foreach($arrOther as $key => $val){
-                        // URLの場合にはリンクつきで表示させる
-                        if (preg_match('/^(https?|ftp)(:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+)$/', $val["value"])) {
-                            $arrOther[$key]["value"] = "<a href='". $val["value"] . "' target=\"_blank\">" . $val["value"] ."</a>";
-                        }
-                    }
-
-                    $this->arrOther = $arrOther;
-                    $this->arrModuleParam = $arrModuleParam;
-                }
-            }
-
-            // アフィリエイト用コンバージョンタグの設定
-            $this->tpl_conv_page = AFF_SHOPPING_COMPLETE;
-            $this->tpl_aff_option = "order_id=$order_id";
-            //合計価格の取得
-            $total = $objQuery->get("dtb_order", "total", "order_id = ? ", array($order_id));
-            if($total != "") {
-                $this->tpl_aff_option.= "|total=$total";
-            }
-
-            // TradeSafe連携用
-            if (function_exists('sfTSRequest')) {
-                sfTSRequest($order_id);
-            }
-        }
-
-        // キャンペーンからの遷移かチェック
-        $this->is_campaign = $this->objCampaignSess->getIsCampaign();
-        $this->campaign_dir = $this->objCampaignSess->getCampaignDir();
 
         $objView->assignobj($this);
-        // フレームを選択(キャンペーンページから遷移なら変更)
-        $this->objCampaignSess->pageView($objView);
-
-        // セッション開放
-        $this->objCampaignSess->delCampaign();
+        $objView->display(SITE_FRAME);
     }
 
     /**
