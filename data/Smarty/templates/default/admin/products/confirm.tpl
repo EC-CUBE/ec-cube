@@ -24,7 +24,13 @@
 <h2>確認</h2>
 <form name="form1" id="form1" method="post" action="?" enctype="multipart/form-data">
   <!--{foreach key=key item=item from=$arrForm}-->
-  <input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->" />
+    <!--{if $key == 'product_status'}-->
+      <!--{foreach item=statusVal from=$item}-->
+      <input type="hidden" name="<!--{$key}-->[]" value="<!--{$statusVal|escape}-->" />
+      <!--{/foreach}-->
+    <!--{else}-->
+      <input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->" />
+    <!--{/if}-->
   <!--{/foreach}-->
   <div id="products" class="contents-main">
 
@@ -53,9 +59,9 @@
     <tr>
       <th>商品ステータス</th>
       <td>
-      <!--{section name=cnt loop=$arrForm.product_flag|count_characters}-->
-        <!--{if $arrForm.product_flag[cnt] == "1"}--><!--{assign var=key value="`$smarty.section.cnt.iteration`"}--><img src="<!--{$TPL_DIR}--><!--{$arrSTATUS_IMAGE[$key]}-->"><!--{/if}-->
-      <!--{/section}-->
+      <!--{foreach from=$arrForm.product_status item=status}-->
+        <img src="<!--{$TPL_DIR}--><!--{$arrSTATUS_IMAGE[$status]}-->">
+      <!--{/foreach}-->
       </td>
     </tr>
 

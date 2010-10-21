@@ -120,7 +120,7 @@ function selectAll(target) {
     <tr>
       <th>商品ステータス</th>
       <td>
-        <!--{html_checkboxes name="product_flag" options=$arrSTATUS selected=$arrForm.product_flag}-->
+        <!--{html_checkboxes name="product_status" options=$arrSTATUS selected=$arrForm.product_status}-->
       </td>
     </tr>
     <!--{if $tpl_nonclass == true}-->

@@ -21,8 +21,12 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-/*  [名称] SC_Product
- *  [概要] 商品クラス
+/**
+ * 商品を扱うサービスクラス.
+ *
+ * @author LOCKON CO.,LTD.
+ * @author Kentaro Ohkouchi
+ * @version $Id$
  */
 class SC_Product {
 
@@ -438,6 +442,30 @@ __EOS__;
             $results[$status['product_id']][] = $status['product_status_id'];
         }
         return $results;
+    }
+
+    /**
+     * 商品ステータスを設定する.
+     *
+     * TODO 現在は DELETE/INSERT だが, UPDATE を検討する.
+     *
+     * @param integer $productId 商品ID
+     * @param array $productStatusIds ON にする商品ステータスIDの配列
+     */
+    function setProductStatus($productId, $productStatusIds) {
+
+        $val['product_id'] = $productId;
+        $val['creator_id'] = $_SESSION['member_id'];
+        $val['create_date'] = 'Now()';
+        $val['update_date'] = 'Now()';
+        $val['del_flg'] = '0';
+
+        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery->delete('dtb_product_status', 'product_id = ?', array($productId));
+        foreach ($productStatusIds as $productStatusId) {
+            $val['product_status_id'] = $productStatusId;
+            $objQuery->insert('dtb_product_status', $val);
+        }
     }
 
     /**

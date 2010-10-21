@@ -86,6 +86,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         $objSiteInfo = new SC_SiteInfo();
         $objQuery = new SC_Query();
         $objDb = new SC_Helper_DB_Ex();
+        $objProduct = new SC_Product();
 
         // 認証可否の判定
         $objSess = new SC_Session();
@@ -131,6 +132,9 @@ class LC_Page_Admin_Products_Product extends LC_Page {
 
                 // DBから商品情報の読込
                 $this->arrForm = $this->lfGetProduct($_POST['product_id']);
+                $productStatus= $objProduct->getProductStatus(array($_POST['product_id']));
+                $this->arrForm['product_status'] = $productStatus[$_POST['product_id']];
+
                 // DBデータから画像ファイル名の読込
                 $this->objUpFile->setDBFileList($this->arrForm);
                 // DBデータからダウンロードファイル名の読込
@@ -402,11 +406,6 @@ __EOF__;
             $this->arrForm['down'] = DEFAULT_PRODUCT_DOWN;
         }
 
-        if(isset($this->arrForm['product_flag']) && !is_array($this->arrForm['product_flag'])) {
-            // 商品ステータスの分割読込
-            $this->arrForm['product_flag'] = SC_Utils_Ex::sfSplitCheckBoxes($this->arrForm['product_flag']);
-        }
-
         // HIDDEN用に配列を渡す。
         $this->arrHidden = array_merge((array)$this->arrHidden, (array)$this->objUpFile->getHiddenFileList());
         $this->arrHidden = array_merge((array)$this->arrHidden, (array)$this->objDownFile->getHiddenFileList());
@@ -543,6 +542,10 @@ __EOF__;
             // 規格登録
             $this->lfInsertDummyProductClass($arrList);
         }
+
+        // ステータス設定
+        $objProduct = new SC_Product();
+        $objProduct->setProductStatus($product_id, $arrList['product_status']);
 
         // 関連商品登録
         $this->lfInsertRecommendProducts($objQuery, $arrList, $product_id);
