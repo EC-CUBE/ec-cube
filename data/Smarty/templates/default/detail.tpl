@@ -193,16 +193,14 @@ $(document).ready(function() {
 
         <div id="detailrightblock">
             <!--▼商品ステータス-->
-            <!--{if count($arrProduct.product_flag) > 0}-->
+            <!--{assign var=ps value=$productStatus[$smarty.get.product_id]}-->
+            <!--{if count($ps) > 0}-->
                 <ul class="status_icon">
-                    <!--{section name=flg loop=$arrProduct.product_flag|count_characters}-->
-                    <!--{if $arrProduct.product_flag[flg] == "1"}-->
+                    <!--{foreach from=$ps item=status}-->
                     <li>
-                        <!--{assign var=key value="`$smarty.section.flg.iteration`"}-->
-                        <img src="<!--{$TPL_DIR}--><!--{$arrSTATUS_IMAGE[$key]}-->" width="65" height="17" alt="<!--{$arrSTATUS[$key]}-->" id="icon<!--{$key}-->" />
+                        <img src="<!--{$TPL_DIR}--><!--{$arrSTATUS_IMAGE[$status]}-->" width="65" height="17" alt="<!--{$arrSTATUS[$status]}-->" id="icon<!--{$status}-->" />
                     </li>
-                    <!--{/if}-->
-                    <!--{/section}-->
+                    <!--{/foreach}-->
                 </ul>
             <!--{/if}-->
             <!--▲商品ステータス-->

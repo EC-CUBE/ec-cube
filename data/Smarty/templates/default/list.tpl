@@ -232,16 +232,13 @@ function fnCheckStock(form) {
             
             <div class="listrightblock">
                 <!--▼商品ステータス-->
-                <!--{if $arrProduct.product_flag|strpos:"1" !== false}-->
+                <!--{if count($productStatus[$id]) > 0}-->
                     <ul class="status_icon">
-                        <!--{section name=flg loop=$arrProduct.product_flag|count_characters}-->
-                            <!--{if $arrProduct.product_flag[flg] == "1"}-->
-                                <li>
-                                    <!--{assign var=key value="`$smarty.section.flg.iteration`"}-->
-                                    <img src="<!--{$TPL_DIR}--><!--{$arrSTATUS_IMAGE[$key]}-->" width="65" height="17" alt="<!--{$arrSTATUS[$key]}-->"/>
-                                </li>
-                            <!--{/if}-->
-                        <!--{/section}-->
+                        <!--{foreach from=$productStatus[$id] item=status}--> 
+                            <li>
+                                <img src="<!--{$TPL_DIR}--><!--{$arrSTATUS_IMAGE[$status]}-->" width="65" height="17" alt="<!--{$arrSTATUS[$status]}-->"/>
+                            </li>
+                        <!--{/foreach}-->
                     </ul>
                 <!--{/if}-->
                 <!--▲商品ステータス-->

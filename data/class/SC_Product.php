@@ -423,6 +423,24 @@ __EOS__;
     }
 
     /**
+     * 商品IDをキーにした, 商品ステータスIDの配列を取得する.
+     *
+     * @param array 商品ID の配列
+     * @return array 商品IDをキーにした商品ステータスIDの配列
+     */
+    function getProductStatus($productIds) {
+        $objQuery =& SC_Query::getSingletonInstance();
+        $productStatus = $objQuery->select("product_id, product_status_id",
+                                           "dtb_product_status",
+                                           'del_flg = 0 AND product_id IN (' . implode(', ', array_pad(array(), count($productIds), '?')) . ')', $productIds);
+        $results = array();
+        foreach ($productStatus as $status) {
+            $results[$status['product_id']][] = $status['product_status_id'];
+        }
+        return $results;
+    }
+
+    /**
      * 商品詳細の結果から, 購入制限数を取得する.
      *
      * getDetailAndProductsClass() の結果から, 購入制限数を取得する.

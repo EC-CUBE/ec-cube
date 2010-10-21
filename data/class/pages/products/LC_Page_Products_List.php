@@ -478,6 +478,9 @@ __EOS__;
         $this->tpl_product_class_id = $objProduct->product_class_id;
         $this->tpl_product_type = $objProduct->product_type;
 
+        // 商品ステータスを取得
+        $this->productStatus = $objProduct->getProductStatus($arrProductId);
+
         $productsClassCategories = $objProduct->classCategories;
 
         require_once DATA_PATH . 'module/Services/JSON.php';

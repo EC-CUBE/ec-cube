@@ -239,6 +239,9 @@ class LC_Page_Products_Detail extends LC_Page {
         // 関連カテゴリを取得
         $this->arrRelativeCat = $objDb->sfGetMultiCatTree($product_id);
 
+        // 商品ステータスを取得
+        $this->productStatus = $objProduct->getProductStatus($product_id);
+
         // 画像ファイル指定がない場合の置換処理
         $this->arrProduct['main_image']
             = SC_Utils_Ex::sfNoImageMain($this->arrProduct['main_image']);
