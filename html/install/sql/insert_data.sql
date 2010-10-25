@@ -320,7 +320,7 @@ INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, 
 INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (4, '第4条 (退会)', '会員が退会を希望する場合には、会員本人が退会手続きを行ってください。所定の退会手続の終了後に、退会となります。', 9, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
 INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (5, '第5条 (会員資格の喪失及び賠償義務)', '1. 会員が、会員資格取得申込の際に虚偽の申告をしたとき、通信販売による代金支払債務を怠ったとき、その他当社が会員として不適当と認める事由があるときは、当社は、会員資格を取り消すことができることとします。
 2. 会員が、以下の各号に定める行為をしたときは、これにより当社が被った損害を賠償する責任を負います。
-(1)会員番号、パスワードを不正に利用すること
+(1)会員番号、パスワードを不正に使用すること
 (2)当ホームページにアクセスして情報を改ざんしたり、当ホームページに有害なコンピュータプログラムを送信するなどして、当社の営業を妨害すること
 (3)当社が扱う商品の知的所有権を侵害する行為をすること
 (4)その他、この利用規約に反する行為をすること', 8, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);

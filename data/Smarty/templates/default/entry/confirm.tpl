@@ -107,7 +107,6 @@
         </tr>
         <tr>
           <th>希望するパスワード<span class="attention">※</span><br />
-            <span class="mini">パスワードは購入時に必要です</span>
           </th>
           <td><!--{$passlen}--></td>
         </tr>

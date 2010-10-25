@@ -179,7 +179,7 @@
 <!--{if $flgFields > 2}-->
 <tr>
   <th>希望するパスワード<span class="attention">※</span><br />
-    <span class="mini">パスワードは購入時に必要です</span></th>
+  </th>
   <td>
     <!--{if $arrErr.password || $arrErr.password02}-->
     <div class="attention"><!--{$arrErr.password}--><!--{$arrErr.password02}--></div>

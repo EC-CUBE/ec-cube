@@ -92,7 +92,7 @@
         </tr>
         <tr>
           <th>希望するパスワード<br />
-            <span class="mini">パスワードは購入時に必要です</span></th>
+          </th>
           <td><!--{$passlen}--></td>
         </tr>
         <tr>
