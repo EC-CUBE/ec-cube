@@ -468,7 +468,6 @@ class LC_Page_Shopping_Deliv extends LC_Page {
 
     /* DBへデータの登録 */
     function lfRegistNewAddrData($uniqid, $objCustomer) {
-        $arrRet = $this->objFormParam->getHashArray();
         $sqlval = $this->objFormParam->getDbArray();
         // 登録データの作成
         $sqlval['deliv_check'] = '1';
