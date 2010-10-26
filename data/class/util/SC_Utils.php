@@ -726,7 +726,7 @@ class SC_Utils {
     }
 
     function sfGetChecked($param, $value) {
-        if($param == $value) {
+        if ((string)$param === (string)$value) {
             return "checked=\"checked\"";
         }
         return "";
