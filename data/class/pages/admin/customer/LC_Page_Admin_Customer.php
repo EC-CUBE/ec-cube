@@ -67,90 +67,143 @@ class LC_Page_Admin_Customer extends LC_Page {
         $this->arrStatus[2] = "本会員";
 
         //---- CSVダウンロード用
-        $this->arrColumnCSV = array(0  => array("sql" => "customer_id",
-                                                "csv" => "customer_id",
-                                                "header" => "顧客ID"),
-                                    1  => array("sql" => "name01",
-                                                "csv" => "name01",
-                                                "header" => "名前1"),
-                                    2  => array("sql" => "name02",
-                                                "csv" => "name02",
-                                                "header" => "名前2"),
-                                    3  => array("sql" => "kana01",
-                                                "csv" => "kana01",
-                                                "header" => "お名前(フリガナ・姓)"),
-                                    4  => array("sql" => "kana02",
-                                                "csv" => "kana02",
-                                                "header" => "お名前(フリガナ・名)"),
-                                    5  => array("sql" => "zip01",
-                                                "csv" => "zip01",
-                                                "header" => "郵便番号1"),
-                                    6  => array("sql" => "zip02",
-                                                "csv" => "zip02",
-                                                "header" => "郵便番号2"),
-                                    7  => array("sql" => "pref",
-                                                "csv" => "pref",
-                                                "header" => "都道府県"),
-                                    8  => array("sql" => "addr01",
-                                                "csv" => "addr01",
-                                                "header" => "住所1"),
-                                    9  => array("sql" => "addr02",
-                                                "csv" => "addr02",
-                                                "header" => "住所2"),
-                                    10 => array("sql" => "email",
-                                                "csv" => "email",
-                                                "header" => "E-MAIL"),
-                                    11 => array("sql" => "tel01",
-                                                "csv" => "tel01",
-                                                "header" => "TEL1"),
-                                    12 => array("sql" => "tel02",
-                                                "csv" => "tel02",
-                                                "header" => "TEL2"),
-                                    13 => array("sql" => "tel03",
-                                                "csv" => "tel03",
-                                                "header" => "TEL3"),
-                                    14 => array("sql" => "fax01",
-                                                "csv" => "fax01",
-                                                "header" => "FAX1"),
-                                    15 => array("sql" => "fax02",
-                                                "csv" => "fax02",
-                                                "header" => "FAX2"),
-                                    16 => array("sql" => "fax03",
-                                                "csv" => "fax03",
-                                                "header" => "FAX3"),
-                                    17 => array("sql" => "CASE WHEN sex = 1 "
-                                                . " THEN '男性' "
-                                                . " ELSE '女性' END AS sex",
-                                                "csv" => "sex",
-                                                "header" => "性別"),
-                                    18 => array("sql" => "job",
-                                                "csv" => "job",
-                                                "header" => "職業"),
-                                    19 => array("sql" => "cast(birth as date) AS birth",
-                                                "csv" => "birth",
-                                                "header" => "誕生日"),
-                                    20 => array("sql" => "cast(first_buy_date as date) AS first_buy_date",
-                                                "csv" => "first_buy_date",
-                                                "header" => "初回購入日"),
-                                    21 => array("sql" => "cast(last_buy_date as date) AS last_buy_date",
-                                                "csv" => "last_buy_date",
-                                                "header" => "最終購入日"),
-                                    22 => array("sql" => "buy_times",
-                                                "csv" => "buy_times",
-                                                "header" => "購入回数"),
-                                    23 => array("sql" => "point",
-                                                "csv" => "point",
-                                                "header" => "ポイント残高"),
-                                    24 => array("sql" => "note",
-                                                "csv" => "note",
-                                                "header" => "備考"),
-                                    25 => array("sql" => "cast(create_date as date) AS create_date",
-                                                "csv" => "create_date",
-                                                "header" => "登録日"),
-                                    26 => array("sql" => "cast(update_date as date) AS update_date",
-                                                "csv" => "update_date",
-                                                "header" => "更新日")
-                                    );
+        $this->arrColumnCSV = array(
+            array(
+                "sql" => "customer_id",
+                "csv" => "customer_id",
+                "header" => "顧客ID"
+            ),
+            array(
+                "sql" => "name01",
+                "csv" => "name01",
+                "header" => "名前1"
+            ),
+            array(
+                "sql" => "name02",
+                "csv" => "name02",
+                "header" => "名前2"
+            ),
+            array(
+                "sql" => "kana01",
+                "csv" => "kana01",
+                "header" => "お名前(フリガナ・姓)"
+            ),
+            array(
+                "sql" => "kana02",
+                "csv" => "kana02",
+                "header" => "お名前(フリガナ・名)"
+            ),
+            array(
+                "sql" => "zip01",
+                "csv" => "zip01",
+                "header" => "郵便番号1"
+            ),
+            array(
+                "sql" => "zip02",
+                "csv" => "zip02",
+                "header" => "郵便番号2"
+            ),
+            array(
+                "sql" => "pref",
+                "csv" => "pref",
+                "header" => "都道府県"
+            ),
+            array(
+                "sql" => "addr01",
+                "csv" => "addr01",
+                "header" => "住所1"
+            ),
+            array(
+                "sql" => "addr02",
+                "csv" => "addr02",
+                "header" => "住所2"
+            ),
+            array(
+                "sql" => "email",
+                "csv" => "email",
+                "header" => "E-MAIL"
+            ),
+            array(
+                "sql" => "tel01",
+                "csv" => "tel01",
+                "header" => "TEL1"
+            ),
+            array(
+                "sql" => "tel02",
+                "csv" => "tel02",
+                "header" => "TEL2"
+            ),
+            array(
+                "sql" => "tel03",
+                "csv" => "tel03",
+                "header" => "TEL3"
+            ),
+            array(
+                "sql" => "fax01",
+                "csv" => "fax01",
+                "header" => "FAX1"
+            ),
+            array(
+                "sql" => "fax02",
+                "csv" => "fax02",
+                "header" => "FAX2"
+            ),
+            array(
+                "sql" => "fax03",
+                "csv" => "fax03",
+                "header" => "FAX3"
+            ),
+            array(
+                "sql" => "CASE WHEN sex = 1 THEN '男性' ELSE '女性' END AS sex",
+                "csv" => "sex",
+                "header" => "性別"
+            ),
+            array(
+                "sql" => "job",
+                "csv" => "job",
+                "header" => "職業"
+            ),
+            array(
+                "sql" => "cast(birth as date) AS birth",
+                "csv" => "birth",
+                "header" => "誕生日"
+            ),
+            array(
+                "sql" => "cast(first_buy_date as date) AS first_buy_date",
+                "csv" => "first_buy_date",
+                "header" => "初回購入日"
+            ),
+            array(
+                "sql" => "cast(last_buy_date as date) AS last_buy_date",
+                "csv" => "last_buy_date",
+                "header" => "最終購入日"
+            ),
+            array(
+                "sql" => "buy_times",
+                "csv" => "buy_times",
+                "header" => "購入回数"
+            ),
+            array(
+                "sql" => "point",
+                "csv" => "point",
+                "header" => "ポイント残高"
+            ),
+            array(
+                "sql" => "note",
+                "csv" => "note",
+                "header" => "備考"
+            ),
+            array(
+                "sql" => "cast(create_date as date) AS create_date",
+                "csv" => "create_date",
+                "header" => "登録日"
+            ),
+            array(
+                "sql" => "cast(update_date as date) AS update_date",
+                "csv" => "update_date",
+                "header" => "更新日"
+            ),
+        );
         $this->httpCacheControl('nocache');
     }
 
