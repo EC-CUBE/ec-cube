@@ -246,9 +246,14 @@ class SC_SendMail {
         return $arrHeader;
     }
     
-    // 送信先を返す
+    /**
+     * メーラーバックエンドに応じた送信先を返す
+     *
+     * @return array|string メーラーバックエンドに応じた送信先
+     */
     function getRecip() {
         switch ($this->backend) {
+            // PEAR::Mail_mail#send は、(他のメーラーバックエンドと異なり) 第1引数を To: として扱う。Cc: や Bcc: は、ヘッダー情報から処理する。
         case "mail":
             return $this->to;
             break;
@@ -264,50 +269,29 @@ class SC_SendMail {
      * TXTメール送信を実行する.
      *
      * 設定された情報を利用して, メールを送信する.
-     * メールの宛先に Cc や Bcc が設定されていた場合は, 宛先ごとに複数回送信を行う.
-     *
-     * - getRecip() 関数の返り値が配列の場合は, 返り値のメールアドレスごとに,
-     *   PEAR::Mail::send() 関数を実行する.
-     * - getRecip() 関数の返り値が string の場合は, 返り値のメールアドレスを
-     *   RCPT TO: に設定し, PEAR::Mail::send() 関数を実行する.
      *
      * @return void
      */
-    function sendMail() {
-        $header = $this->getTEXTHeader();
+    function sendMail($isHtml = false) {
+        $header = $isHtml ? $this->getHTMLHeader() : $this->getTEXTHeader();
         $recip = $this->getRecip();
-
         // メール送信
-        if (is_array($recip)) {
-            foreach ($recip as $rcpt_to) {
-                $results[] = $this->objMail->send($rcpt_to, $header, $this->body);
-            }
-        } else {
-            $results[] = $this->objMail->send($recip, $header, $this->body);
-        }
-
-        $ret = true;
-        foreach ($results as $result) {
+        $result = $this->objMail->send($recip, $header, $this->body);
             if (PEAR::isError($result)) {
                 GC_Utils_Ex::gfPrintLog($result->getMessage());
                 GC_Utils_Ex::gfDebugLog($header);
-                $ret = false;
+                return false;
             }
-        }
-        return $ret;
+        return true;
     }
 
-    // HTMLメール送信を実行する
+    /**
+     * HTMLメール送信を実行する.
+     *
+     * @return void
+     */
     function sendHtmlMail() {
-        $header = $this->getHTMLHeader();
-        // メール送信
-        $result = $this->objMail->send($this->getRecip(), $header, $this->body);
-        if (PEAR::isError($result)) {
-            GC_Utils_Ex::gfPrintLog($result->getMessage());
-            GC_Utils_Ex::gfDebugLog($header);
-            return false;
-        }
-        return true;
+        return($this->sendMail(true));
     }
 
     /**
