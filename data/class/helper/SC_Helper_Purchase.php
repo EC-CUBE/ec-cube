@@ -35,8 +35,25 @@ class SC_Helper_Purchase {
 
     /**
      * 受注を完了する.
+     *
+     * 下記のフローで受注を完了する.
+     *
+     * 1. トランザクションを開始する
+     * 2. カートの内容を検証する.
+     * 3. 受注一時テーブルから受注データを読み込む
+     * 4. ユーザーがログインしている場合はその他の発送先へ登録する
+     * 5. 受注データを受注テーブルへ登録する
+     * 6. トランザクションをコミットする
+     *
+     * 実行中に, 何らかのエラーが発生した場合, 処理を中止しエラーページへ遷移する
+     *
+     * 決済モジュールを使用する場合は受注ステータスを「決済処理中」に設定し,
+     * 決済完了後「新規受付」に変更すること
+     *
+     * @param integer $orderStatus 受注処理を完了する際に設定する受注ステータス
+     * @return void
      */
-    function completeOrder() {
+    function completeOrder($orderStatus = ORDER_NEW) {
         $objQuery =& SC_Query::getSingletonInstance();
         $objSiteSession = new SC_SiteSession();
         $objCartSession = new SC_CartSession();
@@ -53,11 +70,11 @@ class SC_Helper_Purchase {
             $this->registerOtherDeliv($uniqId, $customerId);
         }
 
+        $orderTemp['status'] = $orderStatus;
         $orderId = $this->registerOrder($orderTemp, $objCartSession,
                                         $_SESSION['cartKey']);
         $objQuery->commit();
         $objCustomer->updateSession();
-        $this->sendOrderMail($orderId);
     }
 
     /**
@@ -75,7 +92,15 @@ class SC_Helper_Purchase {
     /**
      * 受注情報を登録する.
      *
+     * 引数の受注情報を受注テーブル及び受注詳細テーブルに登録する.
+     * 登録後, 受注一時テーブルに削除フラグを立て, カートの内容を削除する.
+     *
      * TODO ダウンロード商品の場合の扱いを検討
+     *
+     * @param array $orderParams 登録する受注情報の配列
+     * @param SC_CartSession $objCartSession カート情報のインスタンス
+     * @param integer $cartKey 登録を行うカート情報のキー
+     * @param integer 受注ID
      */
     function registerOrder($orderParams, &$objCartSession, $cartKey) {
         $objQuery =& SC_Query::getSingletonInstance();

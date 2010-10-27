@@ -150,13 +150,15 @@ class LC_Page_Shopping_Confirm extends LC_Page {
 
             // 決済方法により画面切替
             if($payment_type != "") {
-                // TODO 決済方法のモジュールは Plugin として実装したい
                 $_SESSION["payment_id"] = $arrData['payment_id'];
+                $objPurchase = new SC_Helper_Purchase_Ex();
+                $objPurchase->completeOrder(ORDER_PENDING);
                 $this->sendRedirect($this->getLocation(URL_SHOP_MODULE));
             }else{
                 // 受注を完了し, 購入完了ページへ
                 $objPurchase = new SC_Helper_Purchase_Ex();
-                $objPurchase->completeOrder();
+                $objPurchase->completeOrder(ORDER_NEW);
+                $objPurchase->sendOrderMail($arrData["order_id"]);
                 $this->sendRedirect($this->getLocation(URL_SHOP_COMPLETE));
             }
             exit;

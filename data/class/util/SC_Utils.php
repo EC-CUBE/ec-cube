@@ -300,7 +300,11 @@ class SC_Utils {
         }
     }
 
-    /* 前のページで正しく登録が行われたか判定 */
+    /**
+     * 前のページで正しく登録が行われたか判定
+     *
+     * @deprecated SC_SiteSession::isPrePage() を使用して下さい
+     */
     function sfIsPrePage(&$objSiteSess) {
         $ret = $objSiteSess->isPrePage();
         if($ret != true) {

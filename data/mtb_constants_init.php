@@ -412,6 +412,8 @@ define('ORDER_CANCEL', 3);
 define('ORDER_BACK_ORDER', 4);
 /** 発送済み */
 define('ORDER_DELIV', 5);
+/** 決済処理中 */
+define('ORDER_PENDING', 7);
 /** 受注ステータス変更の際にポイント等を加算するステータス番号 (発送済み) */
 define('ODERSTATUS_COMMIT', ORDER_DELIV);
 /** 新着情報管理画面 開始年(西暦)  */

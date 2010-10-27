@@ -566,12 +566,14 @@ INSERT INTO mtb_mobile_domain (id, name, rank) VALUES (5, 'pdx.ne.jp', 4);
 INSERT INTO mtb_mobile_domain (id, name, rank) VALUES (6, 'disney.ne.jp', 5);
 INSERT INTO mtb_mobile_domain (id, name, rank) VALUES (7, 'willcom.com', 6);
 
-INSERT INTO mtb_order_status (id, name, rank) VALUES (1, '新規受付', 0);
-INSERT INTO mtb_order_status (id, name, rank) VALUES (2, '入金待ち', 1);
-INSERT INTO mtb_order_status (id, name, rank) VALUES (6, '入金済み', 2);
-INSERT INTO mtb_order_status (id, name, rank) VALUES (3, 'キャンセル', 3);
-INSERT INTO mtb_order_status (id, name, rank) VALUES (4, '取り寄せ中', 4);
-INSERT INTO mtb_order_status (id, name, rank) VALUES (5, '発送済み', 5);
+INSERT INTO mtb_order_status (id, name, rank) VALUES (7, '決済処理中', 0);
+INSERT INTO mtb_order_status (id, name, rank) VALUES (1, '新規受付', 1);
+INSERT INTO mtb_order_status (id, name, rank) VALUES (2, '入金待ち', 2);
+INSERT INTO mtb_order_status (id, name, rank) VALUES (6, '入金済み', 3);
+INSERT INTO mtb_order_status (id, name, rank) VALUES (3, 'キャンセル', 4);
+INSERT INTO mtb_order_status (id, name, rank) VALUES (4, '取り寄せ中', 5);
+INSERT INTO mtb_order_status (id, name, rank) VALUES (5, '発送済み', 6);
+
 
 INSERT INTO mtb_order_status_color (id, name, rank) VALUES (1, '#FFFFFF', 0);
 INSERT INTO mtb_order_status_color (id, name, rank) VALUES (2, '#FFDE9B', 1);
@@ -579,6 +581,7 @@ INSERT INTO mtb_order_status_color (id, name, rank) VALUES (3, '#C9C9C9', 2);
 INSERT INTO mtb_order_status_color (id, name, rank) VALUES (4, '#FFD9D9', 3);
 INSERT INTO mtb_order_status_color (id, name, rank) VALUES (5, '#BFDFFF', 4);
 INSERT INTO mtb_order_status_color (id, name, rank) VALUES (6, '#FFFFAB', 5);
+INSERT INTO mtb_order_status_color (id, name, rank) VALUES (7, '#FFCCCC', 6);
 
 INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('1000', '不明なエラーが発生しました。', 0);
 INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('1001', '不正なパラメータが送信されました。', 1);
@@ -963,12 +966,6 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DETAIL_P_HTML', 'UR
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MYPAGE_DELIVADDR_URL', 'URL_DIR . "mypage/delivery.php"', 254, 'マイページお届け先URL');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MAIL_TYPE_PC', '1', 255, 'メールアドレス種別');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MAIL_TYPE_MOBILE', '2', 256, 'メールアドレス種別');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ORDER_NEW', '1', 257, '新規注文');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ORDER_PAY_WAIT', '2', 258, '入金待ち');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ORDER_PRE_END', '6', 259, '入金済み');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ORDER_CANCEL', '3', 260, 'キャンセル');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ORDER_BACK_ORDER', '4', 261, '取り寄せ中');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ORDER_DELIV', '5', 262, '発送済み');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ODERSTATUS_COMMIT', 'ORDER_DELIV', 263, '受注ステータス変更の際にポイント等を加算するステータス番号 (発送済み)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ADMIN_NEWS_STARTYEAR', '2005', 264, '新着情報管理画面 開始年(西暦) ');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ENTRY_CUSTOMER_TEMP_SUBJECT', '"会員仮登録が完了いたしました。"', 265, '会員登録');
@@ -1075,3 +1072,10 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DOWN_SAVE_DIR', 'DA
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DOWNFILE_NOT_FOUND', '22', 706, 'ダウンロードファイル存在エラー');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ONLINE_PAYMENT', '"1"', 707, 'ダウンロード販売機能用オンライン決済payment_id(カンマ区切り)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DOWNLOAD_BLOCK', '1024', 708, 'ダウンロード販売機能 ダウンロードファイル読み込みバイト(KB)');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ORDER_NEW', '1', 800, '新規注文');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ORDER_PAY_WAIT', '2', 801, '入金待ち');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ORDER_PRE_END', '6', 802, '入金済み');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ORDER_CANCEL', '3', 803, 'キャンセル');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ORDER_BACK_ORDER', '4', 804, '取り寄せ中');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ORDER_DELIV', '5', 805, '発送済み');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ORDER_PENDING', '7', 806, '決済処理中');
