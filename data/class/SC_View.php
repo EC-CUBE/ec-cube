@@ -180,6 +180,7 @@ class SC_AdminView extends SC_View{
         parent::SC_View(false);
         $this->_smarty->template_dir = TEMPLATE_ADMIN_DIR;
         $this->_smarty->compile_dir = COMPILE_ADMIN_DIR;
+        $this->assign("TPL_DIR", URL_DIR . USER_DIR . USER_PACKAGE_DIR . DEFAULT_TEMPLATE_NAME . "/");
         $this->initpath();
     }
 }

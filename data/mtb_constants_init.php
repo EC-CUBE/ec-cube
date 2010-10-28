@@ -479,11 +479,11 @@ define('TPL_DIR', URL_DIR . USER_DIR . USER_PACKAGE_DIR . TEMPLATE_NAME . "/");
 /** SMARTYテンプレート */
 define('TEMPLATE_DIR', SMARTY_TEMPLATES_DIR . TEMPLATE_NAME . "/");
 /** SMARTYテンプレート(管理機能) */
-define('TEMPLATE_ADMIN_DIR', SMARTY_TEMPLATES_DIR . DEFAULT_TEMPLATE_NAME . "/admin/");
+define('TEMPLATE_ADMIN_DIR', SMARTY_TEMPLATES_DIR . "admin/");
 /** SMARTYコンパイル */
 define('COMPILE_DIR', DATA_PATH . "Smarty/templates_c/" . TEMPLATE_NAME . "/");
 /** SMARTYコンパイル(管理機能) */
-define('COMPILE_ADMIN_DIR', COMPILE_DIR . "admin/");
+define('COMPILE_ADMIN_DIR', DATA_PATH . "Smarty/templates_c/admin/");
 /** SMARTYテンプレート(FTP許可) */
 define('TEMPLATE_FTP_DIR', USER_PATH . USER_PACKAGE_DIR . TEMPLATE_NAME . "/");
 /** SMARTYコンパイル(FTP許可) */

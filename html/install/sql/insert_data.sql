@@ -998,9 +998,9 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TEMPLATE_NAME', '"d
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SMARTY_TEMPLATES_DIR', ' DATA_PATH . "Smarty/templates/"', 302, 'SMARTYテンプレート');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TPL_DIR', 'URL_DIR . USER_DIR . USER_PACKAGE_DIR . TEMPLATE_NAME . "/"', 303, 'SMARTYテンプレート');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TEMPLATE_DIR', 'SMARTY_TEMPLATES_DIR . TEMPLATE_NAME . "/"', 304, 'SMARTYテンプレート');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TEMPLATE_ADMIN_DIR', 'SMARTY_TEMPLATES_DIR . DEFAULT_TEMPLATE_NAME . "/admin/"', 305, 'SMARTYテンプレート(管理機能)');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TEMPLATE_ADMIN_DIR', 'SMARTY_TEMPLATES_DIR . "admin/"', 305, 'SMARTYテンプレート(管理機能)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('COMPILE_DIR', 'DATA_PATH . "Smarty/templates_c/" . TEMPLATE_NAME . "/"', 306, 'SMARTYコンパイル');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('COMPILE_ADMIN_DIR', 'COMPILE_DIR . "admin/"', 307, 'SMARTYコンパイル(管理機能)');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('COMPILE_ADMIN_DIR', 'DATA_PATH . "Smarty/templates_c/admin/"', 307, 'SMARTYコンパイル(管理機能)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TEMPLATE_FTP_DIR', 'USER_PATH . USER_PACKAGE_DIR . TEMPLATE_NAME . "/"', 308, 'SMARTYテンプレート(FTP許可)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('COMPILE_FTP_DIR', 'COMPILE_DIR . USER_DIR', 309, 'SMARTYコンパイル(FTP許可)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('BLOC_DIR', '"bloc/"', 310, 'ブロックファイル保存先');
