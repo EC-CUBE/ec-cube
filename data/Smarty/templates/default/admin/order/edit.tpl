@@ -56,11 +56,9 @@
 <input type="hidden" name="edit_customer_id" value="" />
 <input type="hidden" name="anchor_key" value="" />
 <input type="hidden" id="add_product_id" name="add_product_id" value="" />
-<input type="hidden" id="add_classcategory_id1" name="add_classcategory_id1" value="" />
-<input type="hidden" id="add_classcategory_id2" name="add_classcategory_id2" value="" />
+<input type="hidden" id="add_product_class_id" name="add_product_class_id" value="" />
 <input type="hidden" id="edit_product_id" name="edit_product_id" value="" />
-<input type="hidden" id="edit_classcategory_id1" name="edit_classcategory_id1" value="" />
-<input type="hidden" id="edit_classcategory_id2" name="edit_classcategory_id2" value="" />
+<input type="hidden" id="edit_product_class_id" name="edit_product_class_id" value="" />
 <input type="hidden" id="no" name="no" value="" />
 <input type="hidden" id="delete_no" name="delete_no" value="" />
 
@@ -340,9 +338,8 @@
                     <input type="button" name="delete" value="削除" onclick="fnSetFormVal('form1', 'delete_no', <!--{$key}-->); fnModeSubmit('delete_product','anchor_key','order_products');" />
                 <!--{/if}-->
             <input type="hidden" name="product_id[<!--{$key}-->]" value="<!--{$arrForm.product_id.value[$key]}-->" id="product_id_<!--{$key}-->" />
+            <input type="hidden" name="product_class_id[<!--{$key}-->]" value="<!--{$arrForm.product_class_id.value[$key]}-->" id="product_class_id_<!--{$key}-->" />
             <input type="hidden" name="point_rate[<!--{$key}-->]" value="<!--{$arrForm.point_rate.value[$key]}-->" id="point_rate_<!--{$key}-->" />
-            <input type="hidden" name="classcategory_id1[<!--{$key}-->]" value="<!--{$arrForm.classcategory_id1.value[$key]}-->" id="classcategory_id1_<!--{$key}-->" />
-            <input type="hidden" name="classcategory_id2[<!--{$key}-->]" value="<!--{$arrForm.classcategory_id2.value[$key]}-->" id="classcategory_id2_<!--{$key}-->" />
             </td>
             <td align="center"><input type="text" name="price[<!--{$key}-->]" value="<!--{$arrForm.price.value[$key]|escape}-->" size="6" class="box6" maxlength="<!--{$arrForm.price.length}-->" id="price_<!--{$key}-->"/> 円</td>
             <td align="center"><input type="text" name="quantity[<!--{$key}-->]" value="<!--{$arrForm.quantity.value[$key]|escape}-->" size="3" class="box3" maxlength="<!--{$arrForm.quantity.length}-->"/></td>

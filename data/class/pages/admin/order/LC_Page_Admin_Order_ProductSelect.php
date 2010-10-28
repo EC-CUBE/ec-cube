@@ -1,3 +1,4 @@
+
 <?php
 /*
  * This file is part of EC-CUBE
@@ -80,6 +81,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page {
             $this->lfConvertParam();
 
             $where = "del_flg = 0";
+            $arrval = array();
 
             /* 入力エラーなし */
             foreach ($this->arrForm as $key => $val) {
@@ -111,31 +113,12 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page {
             /*
              * FIXME パフォーマンスに問題があるため SC_Product::lists() を使用する
              */
-            // 読み込む列とテーブルの指定
-            $col = "DISTINCT T1.product_id, product_code_min, product_code_max,"
-                . " price01_min, price01_max, price02_min, price02_max,"
-                . " stock_min, stock_max, stock_unlimited_min,"
-                . " stock_unlimited_max, del_flg, status, name, comment1,"
-                . " comment2, comment3, main_list_comment, main_image,"
-                . " main_list_image, deliv_date_id, sale_limit,"
-                . " point_rate, create_date, deliv_fee, "
-                . " T4.product_rank, T4.category_rank";
-            $from = "vw_products_allclass AS T1"
-                . " JOIN ("
-                . " SELECT max(T3.rank) AS category_rank,"
-                . "        max(T2.rank) AS product_rank,"
-                . "        T2.product_id"
-                . "   FROM dtb_product_categories T2"
-                . "   JOIN dtb_category T3 USING (category_id)"
-                . " GROUP BY product_id) AS T4 USING (product_id)";
-            $order = "T4.category_rank DESC, T4.product_rank DESC";
+            $objProduct = new SC_Product();
+            $productIds = $objProduct->findProductIds($objQuery, $arrval);
 
             // 行数の取得
-            if (empty($arrval)) {
-                $arrval = array();
-            }
-            $linemax = $objQuery->count("dtb_products", $where, $arrval);
-            $this->tpl_linemax = $linemax;              // 何件が該当しました。表示用
+            $linemax = count($productIds);
+            $this->tpl_linemax = $linemax;
 
             // ページ送りの処理
             if(isset($_POST['search_page_max'])
@@ -156,18 +139,28 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page {
             $objQuery->setOrder($order);
 
             // 検索結果の取得
-            $this->arrProducts = $objQuery->select($col, $from, $where, $arrval);
+            $this->arrProducts = $objProduct->lists($objQuery, $arrval);
+            $objProduct->setProductsClassByProductIds($productIds);
+            // 規格1クラス名
+            $this->tpl_class_name1 = $objProduct->className1;
 
-            // 規格名一覧
-            $arrClassName = $objDb->sfGetIDValueList("dtb_class", "class_id", "name");
+            // 規格2クラス名
+            $this->tpl_class_name2 = $objProduct->className2;
 
-            // 規格分類名一覧
-            $arrClassCatName = $objDb->sfGetIDValueList("dtb_classcategory", "classcategory_id", "name");
+            // 規格1
+            $this->arrClassCat1 = $objProduct->classCats1;
 
-            // 規格セレクトボックス設定
-            for($i = 0; $i < count($this->arrProducts); $i++) {
-                $this->lfMakeSelect($this->arrProducts[$i]['product_id'], $arrClassName, $arrClassCatName);
-            }
+            // 規格1が設定されている
+            $this->tpl_classcat_find1 = $objProduct->classCat1_find;
+            // 規格2が設定されている
+            $this->tpl_classcat_find2 = $objProduct->classCat2_find;
+
+            $this->tpl_stock_find = $objProduct->stock_find;
+            $this->tpl_product_class_id = $objProduct->product_class_id;
+            $this->tpl_product_type = $objProduct->product_type;
+
+            // FIXME 規格のプルダウンを要修正
+            $this->tpl_javascript = "";
         }
 
         // カテゴリ取得
