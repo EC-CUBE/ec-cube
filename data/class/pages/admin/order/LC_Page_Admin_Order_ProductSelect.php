@@ -24,6 +24,7 @@
 
 // {{{ requires
 require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(DATA_PATH . 'module/Services/JSON.php');
 
 /**
  * 商品選択 のページクラス.
@@ -110,9 +111,6 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page {
                 }
             }
 
-            /*
-             * FIXME パフォーマンスに問題があるため SC_Product::lists() を使用する
-             */
             $objProduct = new SC_Product();
             $productIds = $objProduct->findProductIds($objQuery, $arrval);
 
@@ -141,6 +139,16 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page {
             // 検索結果の取得
             $this->arrProducts = $objProduct->lists($objQuery, $arrval);
             $objProduct->setProductsClassByProductIds($productIds);
+            $objJson = new Services_JSON();
+            $this->tpl_javascript .= 'productsClassCategories = ' . $objJson->encode($objProduct->classCategories) . '; ';
+
+            foreach ($this->arrProducts as $arrProduct) {
+                $js_fnOnLoad .= "fnSetClassCategories(document.product_form{$arrProduct['product_id']});\n";
+            }
+
+            $this->tpl_javascript .= 'function fnOnLoad(){' . $js_fnOnLoad . '}';
+            $this->tpl_onload .= 'fnOnLoad(); ';
+
             // 規格1クラス名
             $this->tpl_class_name1 = $objProduct->className1;
 
@@ -154,13 +162,8 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page {
             $this->tpl_classcat_find1 = $objProduct->classCat1_find;
             // 規格2が設定されている
             $this->tpl_classcat_find2 = $objProduct->classCat2_find;
-
-            $this->tpl_stock_find = $objProduct->stock_find;
             $this->tpl_product_class_id = $objProduct->product_class_id;
-            $this->tpl_product_type = $objProduct->product_type;
-
-            // FIXME 規格のプルダウンを要修正
-            $this->tpl_javascript = "";
+            $this->tpl_stock_find = $objProduct->stock_find;
         }
 
         // カテゴリ取得
@@ -199,154 +202,6 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page {
                 $this->arrForm[$key] = mb_convert_kana($this->arrForm[$key] ,$val);
             }
         }
-    }
-
-    // FIXME SC_Product クラスを使用する
-    /* 規格セレクトボックスの作成 */
-    function lfMakeSelect($product_id, $arrClassName, $arrClassCatName) {
-
-        $classcat_find1 = false;
-        $classcat_find2 = false;
-        // 在庫ありの商品の有無
-        $stock_find = false;
-
-        // 商品規格情報の取得
-        $arrProductsClass = $this->lfGetProductsClass($product_id);
-
-        // 規格1クラス名の取得
-        $this->tpl_class_name1[$product_id] =
-            isset($arrClassName[$arrProductsClass[0]['class_id1']])
-            ? $arrClassName[$arrProductsClass[0]['class_id1']]
-            : "";
-
-        // 規格2クラス名の取得
-        $this->tpl_class_name2[$product_id] =
-            isset($arrClassName[$arrProductsClass[0]['class_id2']])
-            ? $arrClassName[$arrProductsClass[0]['class_id2']]
-            : "";
-
-        // すべての組み合わせ数
-        $count = count($arrProductsClass);
-
-        $classcat_id1 = "";
-
-        $arrSele = array();
-        $arrList = array();
-
-        $list_id = 0;
-        $arrList[0] = "\tlist". $product_id. "_0 = new Array('選択してください'";
-        $arrVal[0] = "\tval". $product_id. "_0 = new Array(''";
-
-        for ($i = 0; $i < $count; $i++) {
-            // 在庫のチェック
-            if($arrProductsClass[$i]['stock'] <= 0 && $arrProductsClass[$i]['stock_unlimited'] != '1') {
-                continue;
-            }
-
-            $stock_find = true;
-
-            // 規格1のセレクトボックス用
-            if($classcat_id1 != $arrProductsClass[$i]['classcategory_id1']){
-                $arrList[$list_id].=");\n";
-                $arrVal[$list_id].=");\n";
-                $classcat_id1 = $arrProductsClass[$i]['classcategory_id1'];
-                $arrSele[$classcat_id1] = $arrClassCatName[$classcat_id1];
-                $list_id++;
-
-                $arrList[$list_id] = "";
-                $arrVal[$list_id] = "";
-            }
-
-            // 規格2のセレクトボックス用
-            $classcat_id2 = $arrProductsClass[$i]['classcategory_id2'];
-
-            // セレクトボックス表示値
-            if($arrList[$list_id] == "") {
-                $arrList[$list_id] = "\tlist". $product_id. "_". $list_id. " = new Array('選択してください', '". $arrClassCatName[$classcat_id2]. "'";
-            } else {
-                $arrList[$list_id].= ", '".$arrClassCatName[$classcat_id2]."'";
-            }
-
-            // セレクトボックスPOST値
-            if($arrVal[$list_id] == "") {
-                $arrVal[$list_id] = "\tval". $product_id. "_". $list_id. " = new Array('', '". $classcat_id2. "'";
-            } else {
-                $arrVal[$list_id].= ", '".$classcat_id2."'";
-            }
-        }
-
-        $arrList[$list_id].=");\n";
-        $arrVal[$list_id].=");\n";
-
-        // 規格1
-        $this->arrClassCat1[$product_id] = $arrSele;
-
-        $lists = "\tlists".$product_id. " = new Array(";
-        $no = 0;
-        foreach($arrList as $val) {
-            $this->tpl_javascript.= $val;
-            if ($no != 0) {
-                $lists.= ",list". $product_id. "_". $no;
-            } else {
-                $lists.= "list". $product_id. "_". $no;
-            }
-            $no++;
-        }
-        $this->tpl_javascript.= $lists.");\n";
-
-        $vals = "\tvals".$product_id. " = new Array(";
-        $no = 0;
-        foreach($arrVal as $val) {
-            $this->tpl_javascript.= $val;
-            if ($no != 0) {
-                $vals.= ",val". $product_id. "_". $no;
-            } else {
-                $vals.= "val". $product_id. "_". $no;
-            }
-            $no++;
-        }
-        $this->tpl_javascript.= $vals.");\n";
-
-        // 選択されている規格2ID
-        $classcategory_id = "classcategory_id". $product_id;
-
-        $classcategory_id_2 = $classcategory_id . "_2";
-        if (!isset($classcategory_id_2)) $classcategory_id_2 = "";
-        if (!isset($_POST[$classcategory_id_2])) $_POST[$classcategory_id_2] = "";
-
-        $this->tpl_onload .= "lnSetSelect('" . $classcategory_id ."_1', "
-            . "'" . $classcategory_id_2 . "',"
-            . "'" . $product_id . "',"
-            . "'" . $_POST[$classcategory_id_2] ."'); ";
-
-        // 規格1が設定されている
-        if($arrProductsClass[0]['classcategory_id1'] != '0') {
-            $classcat_find1 = true;
-        }
-
-        // 規格2が設定されている
-        if($arrProductsClass[0]['classcategory_id2'] != '0') {
-            $classcat_find2 = true;
-        }
-
-        $this->tpl_classcat_find1[$product_id] = $classcat_find1;
-        $this->tpl_classcat_find2[$product_id] = $classcat_find2;
-        $this->tpl_stock_find[$product_id] = $stock_find;
-    }
-
-    /* 商品規格情報の取得 */
-    function lfGetProductsClass($product_id) {
-        $arrRet = array();
-        if(SC_Utils_Ex::sfIsInt($product_id)) {
-            // 商品規格取得
-            $objQuery = new SC_Query();
-            $col = "product_class_id, classcategory_id1, classcategory_id2, class_id1, class_id2, stock, stock_unlimited";
-            $table = "vw_product_class AS prdcls";
-            $where = "product_id = ?";
-            $objQuery->setOrder("rank1 DESC, rank2 DESC");
-            $arrRet = $objQuery->select($col, $table, $where, array($product_id));
-        }
-        return $arrRet;
     }
 }
 ?>

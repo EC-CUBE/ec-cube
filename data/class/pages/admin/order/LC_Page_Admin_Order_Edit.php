@@ -213,10 +213,10 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         case 'select_product_detail':
             // POST情報で上書き
             $this->objFormParam->setParam($_POST);
-            if (!empty($_POST['add_product_id'])) {
-                $this->lfInsertProduct($_POST['add_product_id'], $_POST['add_classcategory_id1'], $_POST['add_classcategory_id2']);
-            } elseif (!empty($_POST['edit_product_id'])) {
-                $this->lfUpdateProduct($_POST['edit_product_id'], $_POST['edit_classcategory_id1'], $_POST['edit_classcategory_id2'], $_POST['no']);
+            if (!empty($_POST['add_product_class_id'])) {
+                $this->lfInsertProduct($_POST['add_product_class_id']);
+            } elseif (!empty($_POST['edit_product_class_id'])) {
+                $this->lfUpdateProduct($_POST['edit_product_class_id'], $_POST['no']);
             }
             $arrData = $_POST;
             foreach ($this->arrForm AS $key=>$val) {
@@ -694,8 +694,9 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         return $order_id;
     }
 
-    function lfInsertProduct($product_id, $classcategory_id1, $classcategory_id2) {
-        $arrProduct = $this->lfGetProductsClass($product_id, $classcategory_id1, $classcategory_id2);
+    function lfInsertProduct($product_class_id) {
+        $objProduct = new SC_Product();
+        $arrProduct = $this->lfGetProductsClass($objProduct->getDetailAndProductsClass($product_class_id));
         $this->arrForm = $this->objFormParam->getFormParamList();
         $existes = false;
         $existes_key = NULL;
@@ -703,7 +704,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         if (!empty($this->arrForm['product_class_id']['value'])) {
             foreach ($this->arrForm['product_class_id']['value'] AS $key=>$val) {
                 // 既に同じ商品がある場合
-                if ($val == $product_id && $this->arrForm['product_id']['classcategory_id1'][$key] == $classcategory_id1 && $this->arrForm['product_id']['classcategory_id2'][$key] == $classcategory_id2) {
+                if ($val == $product_class_id) {
                     $existes = true;
                     $existes_key = $key;
                 }
@@ -719,8 +720,9 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
         }
     }
 
-    function lfUpdateProduct($product_id, $classcategory_id1, $classcategory_id2, $no) {
-        $arrProduct = $this->lfGetProductsClass($product_id, $classcategory_id1, $classcategory_id2);
+    function lfUpdateProduct($product_class_id, $no) {
+        $objProduct = new SC_Product();
+        $arrProduct = $this->lfGetProductsClass($objProduct->getDetailAndProductsClass($product_class_id));
         $this->arrForm = $this->objFormParam->getFormParamList();
         $this->lfSetProductData($arrProduct, $no);
     }
@@ -731,30 +733,27 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
                 unset($this->arrForm[$key]['value']);
             }
             if ($no === null) {
-                $this->arrForm[$key]['value'][] = $arrProduct[$key];
+                $this->arrForm[$key]['value'][] = $val;
             } else {
-                $this->arrForm[$key]['value'][$no] = $arrProduct[$key];
+                $this->arrForm[$key]['value'][$no] = $val;
             }
         }
     }
 
-    function lfGetProductsClass($product_class_id) {
-        $objDb = new SC_Helper_DB_Ex();
-        $arrClassCatName = $objDb->sfGetIDValueList("dtb_classcategory", "classcategory_id", "name");
-        $arrRet = $objDb->sfGetProductsClass(array($product_class_id), true);
-
-        $arrProduct['price'] = $arrRet['price02'];
+    function lfGetProductsClass($productsClass) {
+        $arrProduct['price'] = $productsClass['price02'];
         $arrProduct['quantity'] = 1;
-        $arrProduct['product_id'] = $arrRet['product_id'];
-        $arrProduct['product_class_id'] = $arrRet['product_class_id'];
-        $arrProduct['point_rate'] = $arrRet['point_rate'];
-        $arrProduct['product_code'] = $arrRet['product_code'];
-        $arrProduct['product_name'] = $arrRet['name'];
-        $arrProduct['classcategory_name1'] = $arrClassCatName[$arrRet['classcategory_id1']];
-        $arrProduct['classcategory_name2'] = $arrClassCatName[$arrRet['classcategory_id2']];
+        $arrProduct['product_id'] = $productsClass['product_id'];
+        $arrProduct['product_class_id'] = $productsClass['product_class_id'];
+        $arrProduct['point_rate'] = $productsClass['point_rate'];
+        $arrProduct['product_code'] = $productsClass['product_code'];
+        $arrProduct['product_name'] = $productsClass['name'];
+        $arrProduct['classcategory_name1'] = $productsClass['classcategory_name1'];
+        $arrProduct['classcategory_name2'] = $productsClass['classcategory_name2'];
 
         return $arrProduct;
     }
+
 
     /**
      * 検索結果から顧客IDを指定された場合、顧客情報をフォームに代入する

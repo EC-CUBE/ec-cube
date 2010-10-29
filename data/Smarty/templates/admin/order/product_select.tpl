@@ -27,7 +27,7 @@
 <!--
 self.moveTo(20,20);self.focus();
 
-function func_submit(product_id, class_name1, class_name2) {
+function func_submit(product_id, class_name1, class_name2, product_class_id) {
   var err_text = '';
   var fm = window.opener.document.form1;
   var fm1 = window.opener.document;
@@ -39,13 +39,11 @@ function func_submit(product_id, class_name1, class_name2) {
 
   <!--{if $tpl_no != ''}-->
   var opner_product_id = 'edit_product_id';
-  var opner_classcategory_id1 = 'edit_classcategory_id1';
-  var opner_classcategory_id2 = 'edit_classcategory_id2';
+  var opner_product_class_id = 'edit_product_class_id';
   fm1.getElementById("no").value = <!--{$tpl_no}-->;
   <!--{else}-->
   var opner_product_id = 'add_product_id';
-  var opner_classcategory_id1 = 'add_classcategory_id1';
-  var opner_classcategory_id2 = 'add_classcategory_id2';
+  var opner_product_class_id = 'add_product_class_id';
   <!--{/if}-->
 
   if (document.getElementById(class1).type == 'select-one' && class1_id == '') {
@@ -60,12 +58,7 @@ function func_submit(product_id, class_name1, class_name2) {
   }
 
   fm1.getElementById(opner_product_id).value = product_id;
-  if (class1_id != '') {
-    fm1.getElementById(opner_classcategory_id1).value = class1_id;
-  }
-  if (class2_id != '') {
-    fm1.getElementById(opner_classcategory_id2).value = class2_id;
-  }
+  fm1.getElementById(opner_product_class_id).value = product_class_id;
 
   fm.mode.value = 'select_product_detail';
   fm.anchor_key.value = 'order_products';
@@ -77,39 +70,54 @@ function func_submit(product_id, class_name1, class_name2) {
 //-->
 </script>
 
+
 <script type="text/javascript">//<![CDATA[
-// セレクトボックスに項目を割り当てる。
-function lnSetSelect(name1, name2, id, val) {
-        sele1 = document.form1[name1];
-        sele2 = document.form1[name2];
-        lists = eval('lists' + id);
-        vals = eval('vals' + id);
+// 規格2に選択肢を割り当てる。
+function fnSetClassCategories(form, classcat_id2_selected) {
+    sele1 = form.classcategory_id1;
+    sele2 = form.classcategory_id2;
+    product_id = form.product_id.value;
 
-        if(sele1 && sele2) {
-                index = sele1.selectedIndex;
+    if (sele1) {
+        if (sele2) {
+            // 規格2の選択肢をクリア
+            count = sele2.options.length;
+            for(i = count; i >= 0; i--) {
+                sele2.options[i] = null;
+            }
 
-                // セレクトボックスのクリア
-                count = sele2.options.length;
-                for(i = count; i >= 0; i--) {
-                        sele2.options[i] = null;
+            // 規格2に選択肢を割り当てる
+            classcats = productsClassCategories[product_id][sele1.value];
+            i = 0;
+            for (var classcat_id2_key in classcats) {
+                sele2.options[i] = new Option(classcats[classcat_id2_key].name, classcat_id2_key);
+                if (classcat_id2_key == classcat_id2_selected) {
+                    sele2.options[i].selected = true;
                 }
-
-                // セレクトボックスに値を割り当てる
-                len = lists[index].length;
-                for(i = 0; i < len; i++) {
-                        sele2.options[i] = new Option(lists[index][i], vals[index][i]);
-                        if(val != "" && vals[index][i] == val) {
-                                sele2.options[i].selected = true;
-                        }
-                }
+                i++;
+            }
         }
+        fnCheckStock(form);
+    }
 }
-//]]>
-</script>
 
-
-<script type="text/javascript">//<![CDATA[
-    <!--{$tpl_javascript}-->
+function fnCheckStock(form) {
+    product_id = form.product_id.value;
+    classcat_id1 = form.classcategory_id1.value;
+    classcat_id2 = form.classcategory_id2 ? form.classcategory_id2.value : 0;
+    classcat2 = productsClassCategories[product_id][classcat_id1][classcat_id2];
+    // 商品規格
+    eleDynamic = document.getElementById('product_class_id' + product_id);
+    if (
+           classcat2
+        && typeof classcat2.product_class_id != 'undefined'
+        && String(classcat2.product_class_id).length >= 1
+    ) {
+        eleDynamic.value = classcat2.product_class_id;
+    } else {
+        eleDynamic.value = ''
+    }
+}
 //]]>
 </script>
 
@@ -141,7 +149,7 @@ function lnSetSelect(name1, name2, id, val) {
 <div class="btn">
   <button type="submit"><span>検索を開始</span></button>
 </div>
-
+</form>
 <!--▼検索結果表示-->
 <!--{if $tpl_linemax}-->
 <p>
@@ -159,6 +167,7 @@ function lnSetSelect(name1, name2, id, val) {
   </tr>
   <!--{section name=cnt loop=$arrProducts}-->
   <!--{assign var=id value=$arrProducts[cnt].product_id}-->
+  <form name="product_form<!--{$id|escape}-->" action="?" onsubmit="return false;">
   <!--▼商品<!--{$smarty.section.cnt.iteration}-->-->
   <tr>
     <td class="center">
@@ -182,8 +191,7 @@ function lnSetSelect(name1, name2, id, val) {
       <!--{if $tpl_classcat_find1[$id]}-->
       <dt><!--{$tpl_class_name1[$id]|escape}-->：</dt>
       <dd>
-        <select name="<!--{$class1}-->" id="<!--{$class1}-->" style="<!--{$arrErr[$class1]|sfGetErrorColor}-->"  <!--{if $tpl_classcat_find2[$id]}--> onchange="lnSetSelect('<!--{$class1}-->', '<!--{$class2}-->', '<!--{$id}-->','');"<!--{/if}-->>
-          <option value="">選択してください</option>
+        <select name="classcategory_id1" id="<!--{$class1}-->" style="<!--{$arrErr[$class1]|sfGetErrorColor}-->"  onchange="fnSetClassCategories(this.form);">
           <!--{html_options options=$arrClassCat1[$id] selected=$arrForm[$class1]}-->
         </select>
         <!--{if $arrErr[$class1] != ""}-->
@@ -196,9 +204,7 @@ function lnSetSelect(name1, name2, id, val) {
       <!--{if $tpl_classcat_find2[$id]}-->
       <dt><!--{$tpl_class_name2[$id]|escape}-->：</dt>
       <dd>
-        <select name="<!--{$class2}-->" id="<!--{$class2}-->" style="<!--{$arrErr[$class2]|sfGetErrorColor}-->">
-          <option value="">選択してください</option>
-        </select>
+        <select name="classcategory_id2" id="<!--{$class2}-->" style="<!--{$arrErr[$class2]|sfGetErrorColor}-->" onchange="fnCheckStock(this.form);"></select>
         <!--{if $arrErr[$class2] != ""}-->
         <br /><span class="attention">※ <!--{$tpl_class_name2[$id]}-->を入力して下さい。</span>
         <!--{/if}-->
@@ -206,10 +212,14 @@ function lnSetSelect(name1, name2, id, val) {
       <!--{else}-->
       <input type="hidden" name="<!--{$class2}-->" id="<!--{$class2}-->" value="" />
       <!--{/if}-->
+      <input type="hidden" name="product_id" value="<!--{$id|escape}-->" />
+      <input type="hidden" name="product_class_id<!--{$id|escape}-->" id="product_class_id<!--{$id|escape}-->" value="<!--{$tpl_product_class_id[$id]}-->" />
+      <input type="hidden" name="product_type" id="product_type<!--{$id|escape}-->" value="<!--{$tpl_product_type[$id]}-->" />
     </td>
-    <td class="center"><a href="" onclick="return func_submit('<!--{$arrProducts[cnt].product_id}-->', '<!--{$tpl_class_name1[$id]}-->', '<!--{$tpl_class_name2[$id]}-->')">決定</a></td>
+    <td class="center"><a href="javascript:;" onclick="return func_submit('<!--{$arrProducts[cnt].product_id}-->', '<!--{$tpl_class_name1[$id]}-->', '<!--{$tpl_class_name2[$id]}-->', '<!--{$tpl_product_class_id[$id]}-->')">決定</a></td>
   </tr>
   <!--▲商品<!--{$smarty.section.cnt.iteration}-->-->
+</form>
   <!--{sectionelse}-->
   <tr>
     <td colspan="4">商品が登録されていません</td>
@@ -219,6 +229,5 @@ function lnSetSelect(name1, name2, id, val) {
 <!--{/if}-->
 <!--▲検索結果表示-->
 
-</form>
 
 <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`admin_popup_footer.tpl"}-->
