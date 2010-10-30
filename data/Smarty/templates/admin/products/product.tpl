@@ -319,33 +319,6 @@ function selectAll(target) {
         <input type="button" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="アップロード" />
       </td>
     </tr>
-    <!--{*　カラー比較画像、商品詳細ファイルは非対応
-    <tr>
-      <th>カラー比較画像<br />[500×500]</th>
-      <td>
-        <!--{assign var=key value="file1"}-->
-        <span class="attention"><!--{$arrErr[$key]}--></span>
-        <!--{if $arrFile[$key].filepath != ""}-->
-        <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" />　<a href="" onclick="selectAll('category_id'); fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br />
-        <!--{/if}-->
-        <input type="file" name="<!--{$key}-->" size="50" class="box50" />
-        <input type="button" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="アップロード" />
-      </td>
-    </tr>
-    <tr>
-      <th>商品詳細ファイル</th>
-      <td>
-        <!--{assign var=key value="file2"}-->
-        <span class="attention"><!--{$arrErr[$key]}--></span>
-        <!--{if $arrFile[$key].filepath != ""}-->
-        <input type="button" name="pdf" value="ファイル確認" onclick="selectAll('category_id'); fnOpenNoMenu('<!--{$arrFile[$key].filepath}-->')"/>
-        <a href="" onclick="selectAll('category_id'); fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[ファイルの取り消し]</a><br />
-        <!--{/if}-->
-        <input type="file" name="<!--{$key}-->" size="50" class="box50" />
-        <input type="button" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="アップロード" />
-      </td>
-    </tr>
-    *}-->
   </table>
 
   <!--{* オペビルダー用 *}-->

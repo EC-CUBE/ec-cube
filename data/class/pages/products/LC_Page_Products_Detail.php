@@ -496,8 +496,6 @@ class LC_Page_Products_Detail extends LC_Page {
         for ($cnt = 1; $cnt <= PRODUCTSUB_MAX; $cnt++) {
             $this->objUpFile->addFile("詳細-サブ画像$cnt", "sub_image$cnt", array('jpg'), IMAGE_SIZE, false, NORMAL_SUBIMAGE_HEIGHT, NORMAL_SUBIMAGE_HEIGHT);
         }
-        $this->objUpFile->addFile("商品比較画像", 'file1', array('jpg'), IMAGE_SIZE, false, NORMAL_IMAGE_HEIGHT, NORMAL_IMAGE_HEIGHT);
-        $this->objUpFile->addFile("商品詳細ファイル", 'file2', array('pdf'), PDF_SIZE, false, 0, 0, false);
     }
 
     /* 規格選択セレクトボックスの作成 */

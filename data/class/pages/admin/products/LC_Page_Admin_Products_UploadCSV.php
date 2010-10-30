@@ -275,8 +275,6 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page {
         $this->objFormParam->addParam("メインコメント", "main_comment", LLTEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("メイン画像", "main_image", LTEXT_LEN, "KVa", array("FILE_EXISTS","SPTAB_CHECK","MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("メイン拡大画像", "main_large_image", LTEXT_LEN, "KVa", array("FILE_EXISTS","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("カラー比較画像", "file1", LTEXT_LEN, "KVa", array("FILE_EXISTS","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("商品詳細ファイル", "file2", LTEXT_LEN, "KVa", array("FILE_EXISTS","SPTAB_CHECK","MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("詳細-サブタイトル(1)", "sub_title1", STEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("詳細-サブコメント(1)", "sub_comment1", LLTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("詳細-サブ画像(1)", "sub_image1", LTEXT_LEN, "KVa", array("FILE_EXISTS","SPTAB_CHECK","MAX_LENGTH_CHECK"));
