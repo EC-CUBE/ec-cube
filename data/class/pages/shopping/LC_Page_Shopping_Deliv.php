@@ -117,33 +117,30 @@ class LC_Page_Shopping_Deliv extends LC_Page {
                 $objCookie->setCookie('login_email', '');
             }
 
-            if(count($this->arrErr) == 0) {
-                // ログイン判定
-                if(!$objCustomer->getCustomerDataFromEmailPass($arrForm['login_pass'], $arrForm['login_email'])) {
-                    // 仮登録の判定
-                    $objQuery = new SC_Query;
-                    $where = "email = ? AND status = 1 AND del_flg = 0";
-                    $ret = $objQuery->count("dtb_customer", $where, array($arrForm['login_email']));
+            if(count($this->arrErr) > 0) {
+                SC_Utils_Ex::sfDispSiteError(TEMP_LOGIN_ERROR);
+            }
+            // ログイン判定
+            if(!$objCustomer->getCustomerDataFromEmailPass($arrForm['login_pass'], $arrForm['login_email'])) {
+                // 仮登録の判定
+                $objQuery = new SC_Query;
+                $where = "email = ? AND status = 1 AND del_flg = 0";
+                $ret = $objQuery->count("dtb_customer", $where, array($arrForm['login_email']));
 
-                    if($ret > 0) {
-                        SC_Utils_Ex::sfDispSiteError(TEMP_LOGIN_ERROR);
-                    } else {
-                        SC_Utils_Ex::sfDispSiteError(SITE_LOGIN_ERROR);
-                    }
+                if($ret > 0) {
+                    SC_Utils_Ex::sfDispSiteError(TEMP_LOGIN_ERROR);
+                } else {
+                    SC_Utils_Ex::sfDispSiteError(SITE_LOGIN_ERROR);
                 }
-                //ダウンロード商品判定
-                if($this->cartdown==2){
-                    // 会員情報の住所を受注一時テーブルに書き込む
-                    $objDb->sfRegistDelivData($uniqid, $objCustomer);
-                    // 正常に登録されたことを記録しておく
-                    $objSiteSess->setRegistFlag();
-                    // ダウンロード商品有りの場合は、支払方法画面に転送
-                    $this->sendRedirect($this->getLocation("./payment.php"), array());
-                    exit;
-                }
-            } else {
-                // ログインページに戻る
-                $this->sendRedirect(URL_SHOP_TOP);
+            }
+            //ダウンロード商品判定
+            if($this->cartdown==2){
+                // 会員情報の住所を受注一時テーブルに書き込む
+                $objDb->sfRegistDelivData($uniqid, $objCustomer);
+                // 正常に登録されたことを記録しておく
+                $objSiteSess->setRegistFlag();
+                // ダウンロード商品有りの場合は、支払方法画面に転送
+                $this->sendRedirect($this->getLocation("./payment.php"), array());
                 exit;
             }
             break;
