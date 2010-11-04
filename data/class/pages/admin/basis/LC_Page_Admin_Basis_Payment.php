@@ -67,21 +67,21 @@ class LC_Page_Admin_Basis_Payment extends LC_Page {
 
         switch($_POST['mode']) {
             case 'delete':
-            // ランク付きレコードの削除
-            $objDb->sfDeleteRankRecord("dtb_payment", "payment_id", $_POST['payment_id']);
-            // 再表示
-            $this->reload();
-            break;
-        case 'up':
-            $objDb->sfRankUp("dtb_payment", "payment_id", $_POST['payment_id']);
-            // 再表示
-            $this->reload();
-            break;
-        case 'down':
-            $objDb->sfRankDown("dtb_payment", "payment_id", $_POST['payment_id']);
-            // 再表示
-            $this->reload();
-            break;
+                // ランク付きレコードの削除
+                $objDb->sfDeleteRankRecord("dtb_payment", "payment_id", $_POST['payment_id']);
+                // 再表示
+                $this->reload();
+                break;
+            case 'up':
+                $objDb->sfRankUp("dtb_payment", "payment_id", $_POST['payment_id']);
+                // 再表示
+                $this->reload();
+                break;
+            case 'down':
+                $objDb->sfRankDown("dtb_payment", "payment_id", $_POST['payment_id']);
+                // 再表示
+                $this->reload();
+                break;
         }
 
         $this->arrDelivList = $objDb->sfGetIDValueList("dtb_deliv", "deliv_id", "service_name");
