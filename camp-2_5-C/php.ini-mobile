@@ -1,0 +1,12 @@
+output_handler = NULL
+variables_order = "EGPS"
+register_globals = Off
+;post_max_size = 8M
+magic_quotes_gpc = Off
+upload_max_filesize = 5M
+
+session.auto_start = 0
+
+mbstring.language = Japanese
+mbstring.internal_encoding = UTF-8
+mbstring.encoding_translation = 0ff

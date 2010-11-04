@@ -1,0 +1,534 @@
+@charset "utf-8";
+
+* { margin: 0; padding: 0; }
+
+/* 上記による Fierfox 2 崩れ対応 */
+option {
+    margin-right: 0.5em;
+}
+
+html {height: 100%;}
+body {
+    font-size: 80%;
+    font-family:"ＭＳ Ｐゴシック","Hiragino Maru Gothic Pro","ヒラギノ丸ゴ Pro W4",Osaka,sans-serif;
+    background: #FFFFFF;
+    min-width: 800px;
+    height: 100%;
+    line-height: 150%;
+}
+body#popup {
+    min-width: 0px;
+    padding: 10px;
+    height: auto;
+}
+input,select,option,textarea {
+    font-size: 1em;
+}
+img {
+    border: 0;
+}
+h1 {
+    background: url(../img/admin/contents/subtitle_back.gif) 0 0 repeat-y #818287;
+    border-top: 1px solid #666666;
+    height: 30px;
+    line-height: 30px;
+    color: #FFFFFF;
+    font-size: 1.2em;
+    text-indent: 20px;
+}
+h2 {
+    font-size: 1.2em;
+    border-bottom: 3px solid #CCCCCC;
+    margin: 0 0 10px 0;
+    padding: 3px 0;
+    color: #DD7010;
+}
+h3, h4 {font-size: 1em;}
+em {color: #FF0000;font-style: normal;}
+
+table {
+    font-size: 1em;
+    border-collapse: collapse;
+    width: 100%;
+    margin: 0 0 20px;
+}
+th, td {padding: 5px;border:1px solid #CCCCCC;}
+th {background: #f2f1ec;font-weight:normal;text-align:left;}
+
+table.list th { text-align: center; }
+table.list th.left { text-align: left; }
+table.list th.right { text-align: right; }
+table.form th { width: 25%; }
+table.form td { width: 75%; }
+table.form thead th { text-align: center; width: auto; }
+
+#contents ul {margin: 0 0 0 2em;}
+
+/*LINK*/
+a:link { color: #006699; text-decoration: none; }
+a:visited { color: #006699; text-decoration: none; }
+a:hover { color: #f9a406; text-decoration: underline; }
+
+.left { text-align: left; }
+.center { text-align: center; }
+.right { text-align: right; }
+
+.attention { color: #FF0000; }
+
+
+/* ヘッダー
+----------------------------------------------- */
+#header {
+    position: relative;
+    z-index: 9999;
+    width: 100%;
+    height: 50px;
+    margin: 0;
+    padding: 0;
+    background: url(../img/admin/header/header_back.jpg) 0 0 repeat-x;
+}
+#logo {position: absolute; top: 0; left: 0;}
+#header p {
+    color: #FFFFFF;
+    position: absolute;
+    top: 25px;
+    right: 10px;
+    text-align: right;
+}
+#header p span {font-weight:bold;}
+#sites {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    list-style: none;
+}
+#sites li {float:right;}
+#header p a, #sites a {color: #99CC33;padding: 0 8px;border-left: 1px solid #FFFFFF;}
+#siteswitch {
+    position: absolute;
+    left: 240px;
+    height: 50px;
+    line-height: 50px;
+}
+#siteswitch label { color: #FFFFFF; }
+
+
+/* ヘッダーナビ
+----------------------------------------------- */
+#navi, #navi li {
+    height: 30px;
+    background: url(../img/admin/header/navi_back.jpg) 0 0 repeat-x;
+    z-index:90;
+}
+#navi li, #navi li a, #navi li a span {
+    line-height: 30px;
+    display: block;
+    float: left;
+    white-space: nowrap;
+}
+#navi li {
+    position: relative;
+    border-right: 1px solid #999999;
+    border-left: 1px solid #FFFFFF;
+}
+#navi li a {
+    color: #333355;
+    font-weight: bold;
+    text-decoration: none;
+}
+#navi li a span {padding: 0 8px;}
+#navi li a:hover {background: url(../img/admin/header/navi_on.jpg) left 0 repeat-x;}
+#navi li a:hover span {background: url(../img/admin/header/navi_on_right.jpg) right 0 no-repeat;}
+#navi li.on a {background: url(../img/admin/header/navi_on.jpg) left 0 no-repeat;}
+#navi li.on a span {background: url(../img/admin/header/navi_on_right.jpg) right 0 no-repeat;}
+#navi li.sfhover a {background: url(../img/admin/header/navi_on.jpg) left 0 repeat-x;}
+#navi li.sfhover a span {background: url(../img/admin/header/navi_on_right.jpg) right 0 no-repeat;}
+
+#navi li ul {
+    position: absolute;
+    top: 30px;
+    left: -999em;
+    height: auto;
+    width: 14.4em;
+    font-weight: normal;
+    clear: both;
+    z-index: 100;
+}
+#navi li li, #navi li li a, #navi li li a span {
+    width: 14.4em;
+    height: 2em;
+    line-height: 2em;
+    display: block;
+    background: #DDEEEE;
+    padding: 0;
+}
+#navi li li {border: solid #AAAAAA;border-width: 0 1px 1px;}
+#navi li li a span {text-indent: 8px;}
+#navi li li a:hover { background: #AACCCC; }
+#navi li li a:hover span { background: #AACCCC;}
+#navi li.on li a, #navi li.on li a span, #navi li li.on a, #navi li li.on a span { background: transparent; }
+#navi li.sfhover li a, #navi li.sfhover li a span, #navi li li.sfhover a, #navi li li.sfhover a span { background: transparent; }
+#navi li.sfhover li a:hover, #navi li li.sfhover a:hover { background: #AACCCC; }
+
+#navi li ul ul {
+    margin: -1.75em 0 0 12em;
+}
+#navi li:hover ul ul, #navi li:hover ul ul ul, #navi li.sfhover ul ul, #navi li.sfhover ul ul ul {
+    left: -999em;
+}
+#navi li:hover ul, #navi li li:hover ul, #navi li li li:hover ul,
+#navi li.sfhover ul, #navi li li.sfhover ul, #navi li li li.sfhover ul {
+    left: auto;
+}
+
+
+/*subnavi*/
+.subnavi a{
+    background-color: #818287;
+    width:140px;
+    padding: 6px 5px 4px 5px;
+    color:#ffffff;
+    text-decoration:none;
+    display:block;
+}
+.subnavi a:visited {
+    color:#ffffff;
+    text-decoration:none;
+}
+.subnavi a:hover {
+    background-color: #b7b7b7;
+    color:#000000;
+    text-decoration:none;
+}
+.subnavi_text {
+    font-size: 71%;
+    padding: 0 0 0 8px;
+}
+.subnavi-on a{
+    background-color: #b7b7b7;
+    width:140px;
+    padding: 6px 5px 4px 5px;
+    color:#000000;
+    text-decoration:none;
+    display:block;
+}
+.subnavi-on a:visited {
+    color:#000000;
+    text-decoration:none;
+}
+.subnavi-on a:hover {
+    background-color: #b7b7b7;
+    color:#000000;
+    text-decoration:none;
+}
+.number-on a:visited {
+    color:#ffffff;
+    text-decoration:none;
+}
+.number a:visited {
+    color:#ffffff;
+    text-decoration:none;
+}
+
+#agreement{
+    height: 120px;
+    width: 480px;
+    overflow: auto;
+    margin: 0px;
+    background-color : #FFFFFF;
+    border-style: solid;
+    border-color: #C0C0C0;
+    border-width: 1px
+}
+/* ページャ */
+#contents .pager ul {list-style-type: none;margin: 10px 0;}
+.pager li {display: inline;}
+.pager li a {border: 1px solid #CCCCCC;padding: 3px 5px;}
+.pager li.on a {background: #f2f1ec;border: 1px solid #333333;}
+.pager li a:hover, .pager li.on a:hover {background: #FFF5EE;}
+
+
+/* コンテンツ
+----------------------------------------------- */
+* html div#container{
+    height:100%;
+}
+body > #container {
+    height: auto;
+}
+#container {
+    position: relative;
+    min-height: 100%;
+}
+
+#contents {padding: 20px 20px 8em;}
+
+#footer {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    height: 7em;
+    text-align: right;
+    background: #EEEEEE;
+    border-top: 1px solid #CCCCCC;
+}
+
+/* ログイン
+----------------------------------------------- */
+#login-main {
+    height: 250px;
+    width: 556px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -125px 0 0 -278px;
+    padding: 36px 0 0 0;
+    background: url(../img/admin/contents/admin_login_top.jpg) center top no-repeat;
+    color: #FFFFFF;
+}
+#login-main form {
+    width: 556px;
+    height: 172px;
+    background: url(../img/admin/contents/admin_login_back.jpg) center top repeat-x;
+}
+#login-main h1 {
+    background: url(../img/admin/contents/admin_login_logo.jpg) 0 0 no-repeat;
+    border: none;
+    text-indent: -9999em;
+    width: 230px;
+    height: 172px;
+    float:left;
+}
+#login-main #login-form {
+    width: 310px;
+    height: 172px;
+    float: right;
+    background: url(../img/admin/contents/admin_login_right.jpg) right 0 no-repeat;
+}
+#login-main label {display:block;}
+#login-main input {margin-bottom: 10px;}
+#login-main #login-address {
+    clear:both;
+    width: 556px;
+    height: 42px;
+    line-height: 42px;
+    text-align: center;
+    background: url(../img/admin/contents/admin_login_bottom.jpg) center bottom no-repeat;
+}
+
+#login-error {
+    width: 500px;
+    height: 200px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -125px 0 0 -278px;
+    padding: 25px 28px;
+    border: 3px solid #666666;
+    text-align:center;
+}
+
+
+/* メインページ
+----------------------------------------------- */
+#home-main {margin-right: 300px;}
+#home-main table {width: 100%;}
+* html #home-main table {width: 99%;}
+
+#home .shop-info {margin: 0 0 20px;}
+#home .shop-info td {text-align:right;width: 60%;}
+
+#home-info {width: 280px;float: right;border-left: 1px solid #CCCCCC;}
+
+.home-info-item {width: 260px;margin: 0 0 15px 20px;font-size: 0.8em;line-height: 1.4em;}
+.home-info-item .body {margin: 5px 0 0 0;}
+.home-info-item .date {background: #DDDDDD;padding: 5px 10px 0px;}
+.home-info-item .title {background: #DDDDDD;padding: 0px 10px 5px;}
+
+
+/* 商品管理
+----------------------------------------------- */
+#products-category-left, #products-rank-left {float:left;width:20em;}
+#products-category-right, #products-rank-right {margin-left: 22em;}
+#products-class-list .action {width: 100px;}
+
+
+/* 受注管理
+----------------------------------------------- */
+/* ステータス管理 */
+#order-status-list th.id {width: 40px;}
+
+
+/* デザイン管理
+----------------------------------------------- */
+/* レイアウト設定 */
+
+.design-layout {
+    table-layout: fixed;
+}
+.design-layout th,
+.design-layout td {
+    vertical-align: top;
+    text-align: center;
+}
+#design-layout-used {
+    width: 525px;
+}
+#design-layout-unused {
+    width: 175px;
+}
+.design-layout #LeftNavi,
+.design-layout #MainHead,
+.design-layout #RightNavi {
+    width: 33.33%;
+}
+.design-layout #TopNavi,
+.design-layout #HeadNavi,
+.design-layout #HeaderTopNavi,
+.design-layout #LeftNavi,
+.design-layout #MainHead,
+.design-layout #MainFoot,
+.design-layout #RightNavi,
+.design-layout #BottomNavi,
+.design-layout #FooterBottomNavi,
+.design-layout #Unused {
+    padding-bottom: 20px;
+    height: 10px; /* IE6応急処置 */
+}
+.design-layout div.sort {
+    border:     1px solid black;
+    background: rgb(195,217,255);
+    color:      #333;
+    padding:    5px 2px;
+    margin:     5px 0;
+    font-size:  10pt;
+    text-align: center;
+}
+.design-layout .anywherecheck {
+    white-space: nowrap;
+}
+.placeholder {
+    border: 1px dashed #AAA;
+    height: 20px;
+}
+
+
+/* フォーム
+----------------------------------------------- */
+div.btn {
+    margin: 0 0 20px 0;
+}
+/*FORM*/
+.box3 { width: 33px; }	/*W3*/
+.box6 { width: 54px; }	/*W6*/
+.box10 { width: 82px; }	/*W10*/
+.box20 { width: 152px; }	/*W20*/
+.box25 { width: 187px; }	/*W25*/
+.box30 { width: 222px; }	/*W30*/
+.box33 { width: 243px; }	/*W33*/
+.box35 { width: 257px; }	/*W35*/
+.box40 { width: 292px; }	/*W40*/
+.box45 { width: 341px; }	/*W45*/
+.box50 { width: 362px; }	/*W50*/
+.box52 { width: 376px; }	/*W52*/
+.box54 { width: 390px; }	/*W54*/
+.box60 { width: 432px; }	/*W60*/
+.box65 { width: 467px; }	/*W65*/
+.box68 { width: 488px; }	/*W68*/
+.box76 { width: 544px; }	/*W76*/
+
+.area40 { width: 302px; height: 134px; }	/*W40×H8*/
+.area45 { width: 337px; height: 290px; }	/*W40×H20*/
+.area46 { width: 337px; height: 134px; }	/*W40×H8*/
+.area50 { width: 372px; height: 82px; }	/*W50?H4*/
+.area55 { width: 407px; height: 82px; }	/*W50?H4*/
+.area59 { width: 432px; height: 134px; }	/*W59×H8*/
+.area60 { width: 433px; height: 134px; }	/*W60?H8*/
+.area61 { width: 433px; height: 82px; }	/*W60?H4*/
+.area65 { width: 444px; height: 290px; }	/*W65×H20*/
+.area70 { width: 512px; height: 186px; }	/*W70?H12*/
+.area75 { width: 547px; height: 186px; }	/*W75?H12*/
+.area80 { width: 572px; height: 134px; }	/*W80×H8*/
+.area90 { width: 650px; height: 420px; }
+.area96 { width: 694px; height: 420px; }	/*W80×H30*/
+.area96_2 { width: 694px; height: 160px; }	/*W80×H10*/
+.area99 { width: 715px; height: 523px; }	/*W99?H40*/
+
+/*COLOR*/
+.red { color: #ff0000; }
+
+/*
+** Markup free clearing
+** Details: http://www.positioniseverything.net/easyclearing.html
+*/
+.clear-block:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+.clear-block {
+  display: inline-block;
+}
+
+/* Hides from IE-mac \*/
+* html .clear-block {
+    height: 1%;
+}
+.clear-block {
+    display: block;
+}
+/* End hide from IE-mac */
+
+/* 権限 */
+x-dummy
+,.authority_1 #navi-basis-masterdata
+,.authority_1 #navi-contents-file
+,.authority_1 #navi-design-bloc
+,.authority_1 #navi-design-template
+,.authority_1 #navi-design-add
+,.authority_1 #navi-system
+,.authority_1 #navi-ownersstore
+{
+    /* display: none; --- IE で不具合 */
+    height: 0;
+    width: 0;
+    overflow: hidden;
+    border: none;
+    visibility: hidden;
+}
+
+/* DnD並び替え系の設定 */
+tr.movingHandle td {
+    background-color: #EEE;
+}
+.dragHandle { /* ハンドルの設定 */
+    text-align: center;
+	font-weight: bold;
+	cursor: n-resize;
+}
+.activeHandle { /* アクティブハンドルの設定 */
+    color: #F9A406;
+}
+
+table.layout,
+table.layout th,
+table.layout td {
+    border: none;
+    margin: 0;
+    padding: 0;
+    width: auto;
+    vertical-align: top;
+}
+
+/* ログ表示用 */
+.log td {
+    padding-top: 0;
+    padding-bottom: 0;
+    vertical-align: top;
+}
+.log .date {
+    white-space: nowrap;
+}
