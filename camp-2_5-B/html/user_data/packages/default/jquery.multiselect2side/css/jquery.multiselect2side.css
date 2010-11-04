@@ -1,0 +1,56 @@
+.ms2side__div {
+	clear: left;
+	width: 100%;
+	padding: 1px;
+	float: left;
+	background : url('') repeat-x; // HACK FOR CHROME
+}
+
+.ms2side__select {
+	float: left;
+}
+
+.ms2side__header {
+	color: blue;
+	background-color: #EEEEFF;
+}
+
+.ms2side__options, .ms2side__updown {
+	float: left;
+	font-size: 10pt;
+	margin: 0;
+	padding: 0 8px;
+	width: 40px;
+	color: black;
+	text-align: center;
+	overflow: hidden;
+}
+
+.ms2side__updown {
+	font-size: 9pt;
+}
+
+.ms2side__options p, .ms2side__updown p {
+	margin: 2px 0;
+	padding: 0;
+	cursor: hand;
+	border: 1px solid black;
+}
+
+.ms2side__options p.ms2side_hover, .ms2side__updown p.ms2side_hover {
+	background-color: #F0F0FF;
+	border-color: #0000FF;
+	cursor: hand;
+}
+
+.ms2side__options p.ms2side__hide, .ms2side__updown p.ms2side__hide {
+	cursor: default;
+	color: grey;
+	border: 1px solid grey;
+	background-color: #F0F0F0;
+}
+
+.ms2side__div select {
+	width: 220px;
+	float: left;
+}
