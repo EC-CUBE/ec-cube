@@ -1,0 +1,98 @@
+<!--{*
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
+*}-->
+<table id="ownersstore-products-list" class="list center">
+    <tr>
+        <th>ロゴ</th>
+        <th>商品名</th>
+        <th>導入バージョン</th>
+        <th>インストール</th>
+        <th>設定</th>
+        <th>購入ステータス</th>
+    </tr>
+<!--{foreach from=$arrProducts item=product name=products_list_loop}-->
+    <tr>
+        <td>
+            <a href="<!--{$smarty.const.OSTORE_URL}-->products/detail.php?product_id=<!--{$product.product_id|escape}-->" target="_blank">
+                <img src="<!--{$smarty.const.OSTORE_SSLURL}-->resize.php?image=<!--{$product.main_list_image|escape}-->&width=50&height=50" /></a>
+        </td>
+        <td>
+            <p>
+                <a href="<!--{$smarty.const.OSTORE_URL}-->products/detail.php?product_id=<!--{$product.product_id|escape}-->" target="_blank">
+                    <!--{$product.name}--></a>
+            </p>
+            <p>Version.<!--{$product.version|default:"--"}-->　<!--{$product.last_update_date|sfDispDBDate:false|escape}--></p>
+        </td>
+        <td>
+          <div id="ownersstore_version<!--{$product.product_id|escape}-->">
+            <!--{$product.installed_version|default:"--"|escape}-->
+          </div>
+        </td>
+        
+        <!--{* ダウンロード対象商品なら各種ボタンを表示する *}-->
+        <!--{if $product.download_flg}-->
+        
+        <td>
+            <div id="ownersstore_download<!--{$product.product_id|escape}-->">
+            <!--{* 新バージョンが公開している場合 はアップデートボタン表示 *}-->
+            <!--{if $product.version_up_flg}-->
+                <span class="icon_confirm">
+                <a href="#" onclick="OwnersStore.download(<!--{$product.product_id|escape}-->);return false;">アップデート</a>
+                </span>
+            <!--{* それ以外ならダウンロードボタン表示 *}-->
+            <!--{else}-->
+                <span class="icon_confirm">
+                <a href="#" onclick="OwnersStore.download(<!--{$product.product_id|escape}-->);return false;">ダウンロード</a>
+                </span>
+            <!--{/if}-->
+            </div>
+        </td>
+            
+        <td>
+            <!--{* インストール済みなら設定ボタン表示 *}-->
+            <!--{if $product.installed_flg}-->
+                <span class="icon_confirm">
+                <a href="#" onclick="win02('../load_module_config.php?module_id=<!--{$product.product_id}-->', 'load', 600, 400);return false;">
+                   設定</a>
+                </span>
+            <!--{else}-->
+                <div id='ownersstore_settings<!--{$product.product_id|escape}-->' style="display:none">
+                <span class="icon_confirm">
+                <a href="#" onclick="win02('../load_module_config.php?module_id=<!--{$product.product_id}-->', 'load', 600, 400);return false;">
+                   設定</a>
+                </span>
+                </div>
+                <div id='ownersstore_settings_default<!--{$product.product_id|escape}-->' style="display:bloc">--</div>
+            <!--{/if}-->
+        </td>
+
+        <!--{else}-->
+        
+        <td>--</td>
+        <td>--</td>
+        <!--{/if}-->
+        
+        <td><!--{$product.status|escape|nl2br}--></td>
+    </tr>
+<!--{/foreach}-->
+</table>
