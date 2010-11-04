@@ -125,10 +125,10 @@ function selectAll(target) {
     </tr>
     <!--{if $tpl_nonclass == true}-->
     <tr>
-      <th>実商品・ダウンロード<span class="attention"> *</span></th>
+      <th>商品種別<span class="attention"> *</span></th>
       <td>
-        <input type="radio" name="down" value="1" <!--{if $arrForm.down == "1"}-->checked<!--{/if}-->/>実商品　
-        <input type="radio" name="down" value="2" <!--{if $arrForm.down == "2"}-->checked<!--{/if}--> />ダウンロード
+        <input type="radio" name="product_type_id" value="<!--{$smarty.const.PRODUCT_TYPE_NORMAL}-->" <!--{if $arrForm.product_type_id == $smarty.const.PRODUCT_TYPE_NORMAL}-->checked<!--{/if}-->/>通常商品　
+        <input type="radio" name="product_type_id" value="<!--{$smarty.const.PRODUCT_TYPE_DOWNLOAD}-->" <!--{if $arrForm.product_type_id == $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->checked<!--{/if}--> />ダウンロード商品
       </td>
     </tr>
     <tr>

@@ -42,7 +42,7 @@
       <th>在庫数</th>
       <th><!--{$smarty.const.NORMAL_PRICE_TITLE}-->(円)</th>
       <th><!--{$smarty.const.SALE_PRICE_TITLE}-->(円)</th>
-      <th>実商品・ダウンロード</th>
+      <th>商品種別</th>
       <th>ダウンロードファイル名</th>
       <th>ダウンロード商品用ファイルアップロード</th>
     </tr>
@@ -69,7 +69,7 @@
       <td class="right"><!--{$arrForm[$key]}--></td>
       <!--{assign var=key value="price02:`$smarty.section.cnt.iteration`"}-->
       <td class="right"><!--{$arrForm[$key]}--></td>
-      <!--{assign var=key value="down:`$smarty.section.cnt.iteration`"}-->
+      <!--{assign var=key value="product_type_id:`$smarty.section.cnt.iteration`"}-->
       <!--{assign var=inkey value="`$arrForm[$key]`"}-->
       <td class="right"><!--{$arrDown[$inkey]}--></td>
       <!--{assign var=key value="down_filename:`$smarty.section.cnt.iteration`"}-->

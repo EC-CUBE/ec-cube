@@ -626,4 +626,8 @@ define('DOWNLOAD_BLOCK', 1024);
 define('DOWNLOAD_EXTENSION', "zip,lzh,jpg,jpeg,gif,png,mp3,pdf,csv");
 /** ダウンロード販売機能用オンライン決済payment_id(カンマ区切り) */
 define('ONLINE_PAYMENT', "1");
+/** 通常商品 */
+define('PRODUCT_TYPE_NORMAL', 1);
+/** ダウンロード商品 */
+define('PRODUCT_TYPE_DOWNLOAD', 2);
 ?>

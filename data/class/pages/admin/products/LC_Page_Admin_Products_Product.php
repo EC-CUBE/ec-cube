@@ -71,8 +71,8 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         $this->arrSTATUS_IMAGE = $masterData->getMasterData("mtb_status_image");
         $this->arrDELIVERYDATE = $masterData->getMasterData("mtb_delivery_date");
         $this->arrAllowedTag = $masterData->getMasterData("mtb_allowed_tag");
+        $this->arrProductType = $masterData->getMasterData("mtb_product_type");
         $this->arrMaker = SC_Helper_DB_Ex::sfGetIDValueList("dtb_maker", "maker_id", "name");
-        $this->arrDown = $masterData->getMasterData("mtb_down");
         $this->tpl_nonclass = true;
     }
 
@@ -365,7 +365,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
                               stock_unlimited,
                               sale_limit,
                               point_rate,
-                              down,
+                              product_type_id,
                               down_filename,
                               down_realfilename
                          FROM dtb_products_class
@@ -402,8 +402,8 @@ __EOF__;
         if($this->arrForm['status'] == "") {
             $this->arrForm['status'] = DEFAULT_PRODUCT_DISP;
         }
-        if($this->arrForm['down'] == "") {
-            $this->arrForm['down'] = DEFAULT_PRODUCT_DOWN;
+        if($this->arrForm['product_type_id'] == "") {
+            $this->arrForm['product_type_id'] = DEFAULT_PRODUCT_DOWN;
         }
 
         // HIDDEN用に配列を渡す。
@@ -630,19 +630,19 @@ __EOF__;
             }
 
             //ダウンロード商品チェック
-            if($array['down'] == "2") {
+            if($array['product_type_id'] == PRODUCT_TYPE_DOWNLOAD) {
                 $objErr->doFunc(array("ダウンロードファイル名", "down_filename", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
                 if($array['down_realfilename'] == "") {
                     $objErr->arrErr['down_realfilename'] = "※ ダウンロード商品の場合はダウンロード商品用ファイルをアップロードしてください。<br />";
                 }
             }
             //実商品チェック
-            if($array['down'] == "1") {
+            if($array['product_type_id'] == PRODUCT_TYPE_NORMAL) {
                 if($array['down_filename'] != "") {
-                    $objErr->arrErr['down_filename'] = "※ 実商品の場合はダウンロードファイル名を設定できません。<br />";
+                    $objErr->arrErr['down_filename'] = "※ 通常商品の場合はダウンロードファイル名を設定できません。<br />";
                 }
                 if($array['down_realfilename'] != "") {
-                    $objErr->arrErr['down_realfilename'] = "※ 実商品の場合はダウンロード商品用ファイルをアップロードできません。<br />ファイルを取り消してください。<br />";
+                    $objErr->arrErr['down_realfilename'] = "※ 通常商品の場合はダウンロード商品用ファイルをアップロードできません。<br />ファイルを取り消してください。<br />";
                 }
             }
         }
@@ -854,7 +854,7 @@ __EOF__;
         if ($objDb->sfHasProductClass($product_id)) return;
 
         // 配列の添字を定義
-        $checkArray = array('product_class_id', 'product_id', 'product_code', 'stock', 'stock_unlimited', 'price01', 'price02', 'sale_limit', 'deliv_fee', 'point_rate' ,'down', 'down_filename', 'down_realfilename');
+        $checkArray = array('product_class_id', 'product_id', 'product_code', 'stock', 'stock_unlimited', 'price01', 'price02', 'sale_limit', 'deliv_fee', 'point_rate' ,'product_type_id', 'down_filename', 'down_realfilename');
         $sqlval = SC_Utils_Ex::sfArrayIntersectKeys($arrList, $checkArray);
         $sqlval = SC_Utils_Ex::arrayDefineIndexes($sqlval, $checkArray);
 

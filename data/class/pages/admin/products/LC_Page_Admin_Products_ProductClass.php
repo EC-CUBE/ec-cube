@@ -53,8 +53,6 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
         $this->tpl_mainno = 'products';
         $this->tpl_subno = 'product';
         $this->tpl_subtitle = '商品登録(商品規格)';
-        $masterData = new SC_DB_MasterData_Ex();
-        $this->arrDown = $masterData->getMasterData("mtb_down");
     }
 
     function lfInitDownFile() {
@@ -216,7 +214,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
             $pVal['stock_unlimited'] = ($arrList["stock_unlimited:".$i]) ? '1' : '0';
             $pVal['price01'] = $arrList['price01:'.$i];
             $pVal['price02'] = $arrList['price02:'.$i];
-            $pVal['down'] = $arrList['down:'.$i];
+            $pVal['product_type_id'] = $arrList['product_type_id:'.$i];
             $pVal['down_filename'] = $arrList['down_filename:'.$i];
             $pVal['down_realfilename'] = $arrList['down_realfilename:'.$i];
             $pVal['creator_id'] = $_SESSION['member_id'];
@@ -345,14 +343,14 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
                 }
 
                 //ダウンロード商品チェック
-                if($array["down:".$no] == "2") {
+                if($array["product_type_id:".$no] == PRODUCT_TYPE_DOWNLOAD) {
                     $objErr->doFunc(array("ダウンロードファイル名", "down_filename:".$no, STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
                     if($array["down_realfilename:".$no] == "") {
                         $objErr->arrErr["down_realfilename:".$no] = "※ ダウンロード商品の場合はダウンロード商品用ファイルをアップロードしてください。<br />";
                     }
                 }
                 //実商品チェック
-                else if($array["down:".$no] == "1") {
+                else if($array["product_type_id:".$no] == PRODUCT_TYPE_DOWNLOAD) {
                     if($array["down_filename:".$no] != "") {
                         $objErr->arrErr["down_filename:".$no] = "※ 実商品の場合はダウンロードファイル名を設定できません。<br />";
                     }

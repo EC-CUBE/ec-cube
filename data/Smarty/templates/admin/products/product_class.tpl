@@ -100,7 +100,7 @@
       <th>在庫数<span class="attention">*</span></th>
       <th><!--{$smarty.const.NORMAL_PRICE_TITLE}-->(円)</th>
       <th><!--{$smarty.const.SALE_PRICE_TITLE}-->(円)<span class="attention">*</span></th>
-      <th>実商品・ダウンロード<span class="attention"> *</span></th>
+      <th>商品種別<span class="attention"> *</span></th>
       <th>ダウンロードファイル名<BR><span class="red"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span></th>
       <th>ダウンロード商品用ファイルアップロード<BR>登録可能拡張子：<!--{$smarty.const.DOWNLOAD_EXTENSION}-->　(パラメータ DOWNLOAD_EXTENSION)</th>
     </tr>
@@ -138,9 +138,9 @@
       <!--{assign var=key value="price02:`$smarty.section.cnt.iteration`"}-->
       <td align="center"><input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key]}-->" size="6" class="box6" maxlength="<!--{$smarty.const.PRICE_LEN}-->" <!--{if $arrErr[$key] != ""}--><!--{sfSetErrorStyle}--><!--{/if}-->></td>
       <td>
-        <!--{assign var=key value="down:`$smarty.section.cnt.iteration`"}-->
-        <input type="radio" name="<!--{$key}-->" value="1" <!--{if $arrForm[$key] == "1"}-->checked<!--{/if}-->/>実商品　
-        <input type="radio" name="<!--{$key}-->" value="2" <!--{if $arrForm[$key] == "2"}-->checked<!--{/if}--> />ダウンロード
+        <!--{assign var=key value="product_type_id:`$smarty.section.cnt.iteration`"}-->
+        <input type="radio" name="<!--{$key}-->" value="<!--{$smarty.const.PRODUCT_TYPE_NORMAL}-->" <!--{if $arrForm[$key] == "1"}-->checked<!--{/if}-->/>通常商品　
+        <input type="radio" name="<!--{$key}-->" value="<!--{$smarty.const.PRODUCT_TYPE_NORMAL}-->" <!--{if $arrForm[$key] == "2"}-->checked<!--{/if}--> />ダウンロード商品
       </td>
       <td>
         <!--{assign var=key value="down_filename:`$smarty.section.cnt.iteration`"}-->

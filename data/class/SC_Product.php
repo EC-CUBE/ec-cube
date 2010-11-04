@@ -179,11 +179,11 @@ __EOS__;
             $classCategories = array();
             $classCategories['']['']['name'] = '選択してください';
             $classCategories['']['']['product_class_id'] = $arrProductClass[0]['product_class_id'];
-            // 商品種別 TODO 暫定的に down を使用する
-            $classCategories['']['']['product_type'] = $arrProductClass[0]['down'];
+            // 商品種別
+            $classCategories['']['']['product_type'] = $arrProductClass[0]['product_type_id'];
             $this->product_class_id[$productId] = $arrProductClass[0]['product_class_id'];
-            // 商品種別 TODO 暫定的に down を使用する
-            $this->product_type[$productId] = $arrProductClass[0]['down'];
+            // 商品種別
+            $this->product_type[$productId] = $arrProductClass[0]['product_type_id'];
             foreach ($arrProductClass as $productsClass) {
                 $productsClass1 = $productsClass['classcategory_id1'];
                 $productsClass2 = $productsClass['classcategory_id2'];
@@ -224,8 +224,8 @@ __EOS__;
                 $classCategories[$productsClass1][$productsClass2]['product_code'] = $productsClass['product_code'];
                 // 商品規格ID
                 $classCategories[$productsClass1][$productsClass2]['product_class_id'] = $productsClass['product_class_id'];
-                // 商品種別 TODO 暫定的に down を使用する
-                $classCategories[$productsClass1][$productsClass2]['product_type'] = $productsClass['down'];
+                // 商品種別
+                $classCategories[$productsClass1][$productsClass2]['product_type'] = $productsClass['product_type_id'];
             }
 
             $this->classCategories[$productId] = $classCategories;
@@ -254,7 +254,7 @@ __EOS__;
             T1.product_code,
             T1.product_class_id,
             T1.del_flg,
-            T1.down,
+            T1.product_type_id,
             T1.down_filename,
             T1.down_realfilename,
             T2.class_combination_id,

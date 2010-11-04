@@ -67,9 +67,9 @@
 
     <!--{if $tpl_nonclass == true}-->
     <tr>
-      <th>実商品・ダウンロード</th>
+      <th>商品種別</th>
       <td>
-      <!--{$arrDown[$arrForm.down]}-->
+      <!--{$arrProductType[$arrForm.product_type_id]}-->
       </td>
     </tr>
     <tr>

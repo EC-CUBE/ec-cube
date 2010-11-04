@@ -307,6 +307,7 @@ CREATE TABLE dtb_products_class (
     product_class_id int NOT NULL,
     product_id int NOT NULL,
     class_combination_id int,
+    product_type_id int NOT NULL,
     product_code text,
     stock numeric,
     stock_unlimited smallint NOT NULL DEFAULT 0,
@@ -319,7 +320,6 @@ CREATE TABLE dtb_products_class (
     creator_id int NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp,
-    down int2 NOT NULL ,
     down_filename text,
     down_realfilename text,
     del_flg smallint NOT NULL DEFAULT 0,
@@ -1170,12 +1170,14 @@ CREATE TABLE mtb_constants (
     PRIMARY KEY (id)
 );
 
-CREATE TABLE mtb_down (
+CREATE TABLE mtb_product_type (
     id int2,
     name text,
     rank int2 NOT NULL,
     PRIMARY KEY (id)
 );
+
+
 
 CREATE TABLE dtb_mobile_ext_session_id (
     session_id text NOT NULL,
