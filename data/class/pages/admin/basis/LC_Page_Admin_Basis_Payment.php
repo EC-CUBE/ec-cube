@@ -85,7 +85,7 @@ class LC_Page_Admin_Basis_Payment extends LC_Page {
         }
 
         $this->arrDelivList = $objDb->sfGetIDValueList("dtb_deliv", "deliv_id", "service_name");
-        $this->arrPaymentListFree = $this->lfGetPaymentList(2);
+        $this->arrPaymentListFree = $this->lfGetPaymentList();
 
         $objView->assignobj($this);
         $objView->display(MAIN_FRAME);
@@ -101,12 +101,11 @@ class LC_Page_Admin_Basis_Payment extends LC_Page {
     }
 
     // 配送業者一覧の取得
-    function lfGetPaymentList($fix = 1) {
+    function lfGetPaymentList() {
         $objQuery = new SC_Query();
         // 配送業者一覧の取得
         $col = "payment_id, payment_method, charge, rule, upper_rule, note, deliv_id, fix, charge_flg";
         $where = "del_flg = 0";
-    //	$where .= " AND fix = ?";
         $table = "dtb_payment";
         $objQuery->setOrder("rank DESC");
         $arrRet = $objQuery->select($col, $table, $where);
