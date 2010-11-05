@@ -34,12 +34,12 @@
     google.load("maps", "3", {other_params:'sensor=false'});
 //]]>
 </script>
-<script type="text/javascript" src="<!--{$TPL_DIR}-->js/navi.js"></script>
-<script type="text/javascript" src="<!--{$TPL_DIR}-->js/win_op.js"></script>
-<script type="text/javascript" src="<!--{$TPL_DIR}-->js/site.js"></script>
-<script type="text/javascript" src="<!--{$TPL_DIR}-->js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="<!--{$TPL_DIR_DEFAULT}-->js/navi.js"></script>
+<script type="text/javascript" src="<!--{$TPL_DIR_DEFAULT}-->js/win_op.js"></script>
+<script type="text/javascript" src="<!--{$TPL_DIR_DEFAULT}-->js/site.js"></script>
+<script type="text/javascript" src="<!--{$TPL_DIR_DEFAULT}-->js/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/admin.js"></script>
-<script type="text/javascript" src="<!--{$TPL_DIR}-->js/css.js"></script>
+<script type="text/javascript" src="<!--{$TPL_DIR_DEFAULT}-->js/css.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/file_manager.js"></script>
 <title><!--{$smarty.const.ADMIN_TITLE}--></title>
 <script type="text/javascript">
@@ -65,7 +65,7 @@
 
 <!--{* ▼HEADER *}-->
 <div id="header">
-  <div id="logo"><a href="<!--{$smarty.const.URL_DIR}-->admin/home.php"><img src="<!--{$TPL_DIR}-->img/admin/header/logo.jpg" width="230" height="50" alt="EC CUBE" /></a></div>
+  <div id="logo"><a href="<!--{$smarty.const.URL_DIR}-->admin/home.php"><img src="<!--{$TPL_DIR}-->img/header/logo.jpg" width="230" height="50" alt="EC CUBE" /></a></div>
   <ul id="sites">
     <li><a href="<!--{$smarty.const.URL_HOME}-->"><span>MAIN PAGE</span></a></li>
     <li><a href="<!--{$smarty.const.SITE_URL}--><!--{$smarty.const.DIR_INDEX_URL}-->" target="_blank"><span>SITE CHECK</span></a></li>

@@ -19,32 +19,19 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-var preLoadFlag = "false";
 
-function preLoadImg(URL){
-
-    arrImgList = new Array (
-        URL+"img/contents/btn_search_on.jpg",URL+"img/contents/btn_regist_on.jpg",
-        URL+"img/contents/btn_csv_on.jpg",URL+"img/contents/arrow_left.jpg",URL+"img/contents/arrow_right.jpg"
-    );
-    arrPreLoad = new Array();
-    for (i in arrImgList) {
-        arrPreLoad[i] = new Image();
-        arrPreLoad[i].src = arrImgList[i];
-    }
-    preLoadFlag = "true";
+// FIXME ä÷êîçÌèú(óòópâ”èäÇ‡)
+function preLoadImg() {
 }
 
 function chgImg(fileName,img){
-    if (preLoadFlag == "true") {
-        if (typeof(img) == "object") {
-            img.src = fileName;
-        } else {
-            document.images[img].src = fileName;
-        }
+    if (typeof(img) == "object") {
+        img.src = fileName;
+    } else {
+        document.images[img].src = fileName;
     }
 }
 
 function chgImgImageSubmit(fileName,imgObj){
-imgObj.src = fileName;
+    imgObj.src = fileName;
 }
