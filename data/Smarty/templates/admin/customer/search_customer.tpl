@@ -49,7 +49,7 @@ function func_submit(customer_id){
 <title>管理機能</title>
 </head>
 
-<body bgcolor="#ffffff" text="#494E5F" link="#006699" vlink="#006699" alink="#006699" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="preLoadImg('<!--{$TPL_DIR}-->')">
+<body bgcolor="#ffffff" text="#494E5F" link="#006699" vlink="#006699" alink="#006699" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <!--{$GLOBAL_ERR}-->
 <noscript>
 <link rel="stylesheet" href="<!--{$smarty.const.URL_DIR}-->admin/css/common.css" type="text/css" >

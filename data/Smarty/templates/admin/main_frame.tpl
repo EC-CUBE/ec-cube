@@ -50,7 +50,7 @@
 
 </head>
 
-<body onload="preLoadImg('<!--{$TPL_DIR}-->'); <!--{$tpl_onload}-->" class="<!--{if strlen($tpl_authority) >= 1}-->authority_<!--{$tpl_authority}--><!--{/if}-->">
+<body onload="<!--{$tpl_onload}-->" class="<!--{if strlen($tpl_authority) >= 1}-->authority_<!--{$tpl_authority}--><!--{/if}-->">
 <!--{$GLOBAL_ERR}-->
 <noscript>
   <p>JavaScript を有効にしてご利用下さい.</p>

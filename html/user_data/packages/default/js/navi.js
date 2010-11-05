@@ -20,10 +20,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// FIXME ŠÖ”íœ(—˜—p‰ÓŠ‚à)
-function preLoadImg() {
-}
-
 function chgImg(fileName,img){
     if (typeof(img) == "object") {
         img.src = fileName;
