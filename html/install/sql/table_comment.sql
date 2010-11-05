@@ -27,7 +27,6 @@ INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES 
 INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (638, 'dtb_mail_history', NULL, '受注ﾒｰﾙ送信履歴');
 INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (639, 'dtb_customer', NULL, '顧客');
 INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (640, 'dtb_customer_mail', NULL, '顧客ﾒｰﾙ');
-INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (641, 'dtb_customer_mail_temp', NULL, 'ﾒﾙﾏｶﾞ_Temp');
 INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (642, 'dtb_order', NULL, '受注');
 INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (643, 'dtb_order_temp', NULL, '受注_Temp');
 INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (644, 'dtb_other_deliv', NULL, '別のお届け先');
