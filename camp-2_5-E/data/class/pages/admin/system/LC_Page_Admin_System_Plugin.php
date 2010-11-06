@@ -127,7 +127,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page {
             }
         }
 //        var_dump($arrPlugins);
-
+          return $arrPlugins;
     }
 
     /**
