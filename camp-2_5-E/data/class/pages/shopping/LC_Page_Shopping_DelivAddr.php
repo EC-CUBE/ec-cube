@@ -139,7 +139,7 @@ class LC_Page_Shopping_DelivAddr extends LC_Page {
                 $_POST["mode"] = "set1";
                 break;
             default:
-                $this->sendRedirect($this->getLocation("./deliv.php"), true);
+                $this->objDisplay->redirect($this->getLocation("./deliv.php"));
                 exit;
             }
         }
@@ -193,7 +193,7 @@ class LC_Page_Shopping_DelivAddr extends LC_Page {
                 // 正常に登録されたことを記録しておく
                 $objSiteSess->setRegistFlag();
                 // お支払い方法選択ページへ移動
-                $this->sendRedirect($this->getLocation(MOBILE_URL_SHOP_PAYMENT), true);
+                $this->objDisplay->redirect($this->getLocation(MOBILE_URL_SHOP_PAYMENT));
                 exit;
             } else {
                 SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);

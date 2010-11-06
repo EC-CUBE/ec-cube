@@ -114,7 +114,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
         $arrOrderTemp = $objDb->sfGetOrderTemp($uniqid);
         //不正遷移チェック（正常に受注情報が格納されていない場合は一旦カート画面まで戻す）
         if (!$arrOrderTemp) {
-            $this->sendRedirect($this->getLocation(URL_CART_TOP));
+            $this->objDisplay->redirect($this->getLocation(URL_CART_TOP));
             exit;
         }
 
@@ -143,7 +143,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
                 // 正常に登録されたことを記録しておく
                 $objSiteSess->setRegistFlag();
                 // 確認ページへ移動
-                $this->sendRedirect($this->getLocation(URL_SHOP_CONFIRM, array(), true));
+                $this->objDisplay->redirect($this->getLocation(URL_SHOP_CONFIRM, array(), true));
                 exit;
             }else{
                 // ユーザユニークIDの取得
@@ -157,7 +157,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
             // 非会員の場合
             // 正常な推移であることを記録しておく
             $objSiteSess->setRegistFlag();
-            $this->sendRedirect(URL_SHOP_TOP);
+            $this->objDisplay->redirect(URL_SHOP_TOP);
             exit;
             break;
         // 支払い方法が変更された場合
@@ -239,7 +239,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
         $arrOrderTemp = $objDb->sfGetOrderTemp($uniqid);
         //不正遷移チェック（正常に受注情報が格納されていない場合は一旦カート画面まで戻す）
         if (!$arrOrderTemp) {
-            $this->sendRedirect($this->getLocation(MOBILE_URL_CART_TOP));
+            $this->objDisplay->redirect($this->getLocation(MOBILE_URL_CART_TOP));
             exit;
         }
 
@@ -264,9 +264,9 @@ class LC_Page_Shopping_Payment extends LC_Page {
                 $objSiteSess->setRegistFlag();
                 if ($this->cartdown == 2) {
                     // ダウンロード商品のみの場合はカート画面へ戻る
-                    $this->sendRedirect($this->getLocation(MOBILE_URL_CART_TOP), true);
+                    $this->objDisplay->redirect($this->getLocation(MOBILE_URL_CART_TOP));
                 } else {
-                    $this->sendRedirect(MOBILE_URL_SHOP_TOP, true);
+                    $this->objDisplay->redirect(MOBILE_URL_SHOP_TOP);
                 }
                 exit;
             }
@@ -306,7 +306,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
                 // 正常に登録されたことを記録しておく
                 $objSiteSess->setRegistFlag();
                 // 確認ページへ移動
-                $this->sendRedirect($this->getLocation(MOBILE_URL_SHOP_CONFIRM), true);
+                $this->objDisplay->redirect($this->getLocation(MOBILE_URL_SHOP_CONFIRM));
                 exit;
             }else{
                 // ユーザユニークIDの取得
@@ -325,7 +325,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
             // 非会員の場合
             // 正常な推移であることを記録しておく
             $objSiteSess->setRegistFlag();
-            $this->sendRedirect(MOBILE_URL_SHOP_TOP, true);
+            $this->objDisplay->redirect(MOBILE_URL_SHOP_TOP);
             exit;
             break;
             // 支払い方法が変更された場合

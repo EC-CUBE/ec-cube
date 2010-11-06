@@ -104,10 +104,10 @@ class LC_Page_Shopping extends LC_Page {
                 // 正常に登録されたことを記録しておく
                 $objSiteSess->setRegistFlag();
                 //カート内が全てダウンロード商品の場合は支払方法設定画面に転送
-                $this->sendRedirect($this->getLocation("./payment.php"), array());
+                $this->objDisplay->redirect($this->getLocation("./payment.php"), array());
             } else {
                 // お届け先設定画面に転送
-                $this->sendRedirect($this->getLocation("./deliv.php"), array());
+                $this->objDisplay->redirect($this->getLocation("./deliv.php"), array());
             }
             exit;
         }
@@ -144,7 +144,7 @@ class LC_Page_Shopping extends LC_Page {
                 // 正常に登録されたことを記録しておく
                 $objSiteSess->setRegistFlag();
                 // お支払い方法選択ページへ移動
-                $this->sendRedirect($this->getLocation(URL_SHOP_PAYMENT));
+                $this->objDisplay->redirect($this->getLocation(URL_SHOP_PAYMENT));
                 exit;
             }
 
@@ -152,7 +152,7 @@ class LC_Page_Shopping extends LC_Page {
         // 前のページに戻る
         case 'return':
             // 確認ページへ移動
-            $this->sendRedirect($this->getLocation(URL_CART_TOP));
+            $this->objDisplay->redirect($this->getLocation(URL_CART_TOP));
             exit;
             break;
         case 'nonmember':
@@ -255,10 +255,10 @@ class LC_Page_Shopping extends LC_Page {
                 // 正常に登録されたことを記録しておく
                 $objSiteSess->setRegistFlag();
                 //カート内が全てダウンロード商品の場合は支払方法設定画面に転送
-                $this->sendRedirect($this->getLocation("./payment.php"), array());
+                $this->objDisplay->redirect($this->getLocation("./payment.php"), array());
             } else {
                 // お届け先設定画面に転送
-                $this->sendRedirect($this->getLocation("./deliv.php"), array());
+                $this->objDisplay->redirect($this->getLocation("./deliv.php"), array());
             }
             exit;
         }
