@@ -75,7 +75,7 @@ class LC_Page_Entry_Complete extends LC_Page {
      */
     function action() {
         // transaction check
-        if (!$this->isValidToken()) {
+        if (!SC_Helper_Session_Ex::isValidToken()) {
             SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", true);
         }
 

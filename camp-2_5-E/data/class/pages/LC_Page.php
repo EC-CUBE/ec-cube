@@ -92,7 +92,7 @@ class LC_Page {
         $this->template = SITE_FRAME;
 
         // ディスプレイクラス生成
-        $this->objDisp = new SC_Display();
+        $this->objDisplay = new SC_Display();
 
         // プラグインクラス生成
         #$this->objPlagin = new SC_Helper_Plugin_Ex();
@@ -119,8 +119,8 @@ class LC_Page {
      * @return void
      */
     function sendResponse() {
-        $this->objDisp->hoge($this);
-        $this->objDisp->response->response();
+        $this->objDisplay->hoge($this);
+        $this->objDisplay->response->response();
     }
 
     /**
@@ -159,6 +159,8 @@ class LC_Page {
      * @see Net_URL
      */
     function sendRedirect($url, $isMobile = false) {
+echo "SC_Response.php::sendRedirect()に移行してね。";
+exit;
 
         if (preg_match("/(" . preg_quote(SITE_URL, '/')
                           . "|" . preg_quote(SSL_URL, '/') . ")/", $url)) {
@@ -203,6 +205,8 @@ class LC_Page {
      * @return string トランザクショントークンの文字列
      */
     function getToken() {
+echo "SC_Helper_Session.php::getToken()に移行してね。";
+exit;
         if (empty($_SESSION[TRANSACTION_ID_NAME])) {
             $_SESSION[TRANSACTION_ID_NAME] = $this->createToken();
         }
@@ -220,6 +224,8 @@ class LC_Page {
      * @return boolean トランザクショントークンが有効な場合 true
      */
     function isValidToken() {
+echo "SC_Helper_Session.php::isValidToken()に移行してね。";
+exit;
 
         $checkToken = "";
 

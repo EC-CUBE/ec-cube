@@ -113,7 +113,7 @@ class LC_Page_Shopping extends LC_Page {
         }
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            if (!$this->isValidToken()) {
+            if (!SC_Helper_Session_Ex::isValidToken()) {
                 SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", true);
             }
         }
@@ -197,7 +197,7 @@ class LC_Page_Shopping extends LC_Page {
         // 入力値の取得
         $this->arrForm = $this->objFormParam->getFormParamList();
 
-        $this->transactionid = $this->getToken();
+        $this->transactionid = SC_Helper_Session_Ex::getToken();
     }
 
     /**

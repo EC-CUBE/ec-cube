@@ -131,5 +131,65 @@ class SC_Helper_Session {
          $objQuery->delete("dtb_session", $where);
          return true;
     }
+
+    /**
+     * トランザクショントークンを生成し, 取得する.
+     *
+     * 悪意のある不正な画面遷移を防止するため, 予測困難な文字列を生成して返す.
+     * 同時に, この文字列をセッションに保存する.
+     *
+     * この関数を使用するためには, 生成した文字列を次画面へ渡すパラメータとして
+     * 出力する必要がある.
+     *
+     * 例)
+     * <input type="hidden" name="transactionid" value="この関数の返り値" />
+     *
+     * 遷移先のページで, LC_Page::isValidToken() の返り値をチェックすることにより,
+     * 画面遷移の妥当性が確認できる.
+     *
+     * @access protected
+     * @return string トランザクショントークンの文字列
+     */
+    function getToken() {
+        if (empty($_SESSION[TRANSACTION_ID_NAME])) {
+            $_SESSION[TRANSACTION_ID_NAME] = $this->createToken();
+        }
+        return $_SESSION[TRANSACTION_ID_NAME];
+    }
+
+    /**
+     * トランザクショントークンの妥当性をチェックする.
+     *
+     * 前画面で生成されたトランザクショントークンの妥当性をチェックする.
+     * この関数を使用するためには, 前画面のページクラスで LC_Page::getToken()
+     * を呼んでおく必要がある.
+     *
+     * @access protected
+     * @return boolean トランザクショントークンが有効な場合 true
+     */
+    function isValidToken() {
+
+        $checkToken = "";
+
+        // $_POST の値を優先する
+        if (isset($_POST[TRANSACTION_ID_NAME])) {
+
+            $checkToken = $_POST[TRANSACTION_ID_NAME];
+        } elseif (isset($_GET[TRANSACTION_ID_NAME])) {
+
+            $checkToken = $_GET[TRANSACTION_ID_NAME];
+        }
+
+        $ret = false;
+        // token の妥当性チェック
+        if ($checkToken === $_SESSION[TRANSACTION_ID_NAME]) {
+
+            $ret = true;
+        }
+
+        unset($_SESSION[TRANSACTION_ID_NAME]);
+        return $ret;
+    }
+
 }
 ?>

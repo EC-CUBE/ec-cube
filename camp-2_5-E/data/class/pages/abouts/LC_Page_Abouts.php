@@ -54,6 +54,7 @@ class LC_Page_Abouts extends LC_Page {
      * @return void
      */
     function process() {
+        parent::process();
         $this->action();
         $this->sendResponse();
     }

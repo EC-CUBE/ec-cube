@@ -54,9 +54,19 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objCustomer = new SC_Customer();
         // 不正なURLがPOSTされた場合はエラー表示
-        if (!$this->isValidToken()) {
+        if (!SC_Helper_Session_Ex::isValidToken()) {
             GC_Utils_Ex::gfPrintLog('invalid access :login_check.php $POST["url"]=' . $_POST['url']);
             SC_Utils_Ex::sfDispSiteError(PAGE_ERROR);
         }

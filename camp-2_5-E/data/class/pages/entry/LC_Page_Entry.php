@@ -224,7 +224,7 @@ class LC_Page_Entry extends LC_Page {
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-            if (!$this->isValidToken()) {
+            if (!SC_Helper_Session_Ex::isValidToken()) {
                 SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", true);
             }
 
@@ -341,7 +341,7 @@ class LC_Page_Entry extends LC_Page {
             }
         }
 
-        $this->transactionid = $this->getToken();
+        $this->transactionid = SC_Helper_Session_Ex::getToken();
     }
 
     /**

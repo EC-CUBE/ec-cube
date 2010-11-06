@@ -110,7 +110,24 @@ class SC_Response{
     }
 
     function sendRedirect(String $location){
-      
+        if (preg_match("/(" . preg_quote(SITE_URL, '/')
+                          . "|" . preg_quote(SSL_URL, '/') . ")/", $location)) {
+
+            $netURL = new Net_URL($location);
+            if (!empty($_SERVER['QUERY_STRING'])) {
+                $netURL->addRawQueryString($_SERVER['QUERY_STRING']);
+            }
+
+            $session = SC_SessionFactory::getInstance();
+            if (SC_MobileUserAgent::isMobile() || $session->useCookie() == false) {
+                $netURL->addQueryString(session_name(), session_id());
+            }
+
+            $netURL->addQueryString(TRANSACTION_ID_NAME, SC_Helper_Session_Ex::getToken());
+            header("Location: " . $netURL->getURL());
+            exit;
+        }
+        return false;
     }
 
     function setHeader(Array $headers){

@@ -68,6 +68,7 @@ class LC_Page_Cart extends LC_Page {
      * @return void
      */
     function process() {
+        parent::process();
         $this->action();
         $this->sendResponse();
     }
@@ -133,7 +134,8 @@ class LC_Page_Cart extends LC_Page {
                 // カートを購入モードに設定
                 $objCartSess->saveCurrentCart($uniqid, $cartKey);
                 // 購入ページへ
-                $this->sendRedirect(URL_SHOP_TOP);
+                $this->objDisplay->redirect(URL_SHOP_TOP);
+                #$this->sendRedirect(URL_SHOP_TOP);
                 exit;
             }
             break;
@@ -182,6 +184,7 @@ class LC_Page_Cart extends LC_Page {
      * @return void
      */
     function mobileProcess() {
+        parent::mobileProcess();
         $this->mobileAction();
         $this->sendResponse();
     }

@@ -58,6 +58,7 @@ class LC_Page_Order extends LC_Page {
      * @return void
      */
     function process() {
+        parent::process();
         $this->action();
         $this->sendResponse();
     }
@@ -93,6 +94,7 @@ class LC_Page_Order extends LC_Page {
      * @return void
      */
     function mobileProcess() {
+        parent::mobileProcess();
         $this->mobileAction();
         $this->sendResponse();
     }

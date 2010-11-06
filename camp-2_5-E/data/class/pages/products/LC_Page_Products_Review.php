@@ -82,7 +82,7 @@ class LC_Page_Products_Review extends LC_Page {
         $objQuery = new SC_Query();
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            if (!$this->isValidToken()) {
+            if (!SC_Helper_Session_Ex::isValidToken()) {
                 SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", true);
             }
         }
@@ -176,7 +176,7 @@ class LC_Page_Products_Review extends LC_Page {
 
         }
 
-        $this->transactionid = $this->getToken();
+        $this->transactionid = SC_Helper_Session_Ex::getToken();
         //$objView->assignobj($this);
         //$objView->display($this->tpl_mainpage);
     }
