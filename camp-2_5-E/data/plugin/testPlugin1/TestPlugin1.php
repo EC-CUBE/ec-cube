@@ -18,15 +18,15 @@ class TestPlugin1 extends SC_Plugin_Ex {
 
 
     function getVersion(){
-        return "0.0.1"
+        return "0.0.1";
     }
 
     function getName(){
-
+      return "TestPlugin1";
     }
 
     function process(){
-
+              
     }
 
     function mobileprocess(){
@@ -34,11 +34,11 @@ class TestPlugin1 extends SC_Plugin_Ex {
     }
 
     public function install(){
-
+      
     }
 
     public function uninstall(){
-
+      
     }
 
     /**
