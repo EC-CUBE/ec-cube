@@ -25,7 +25,9 @@ class SC_Plugin
         
     }
     
-    function enable();
+    function enable($classname){
+        
+    }
     
     function getVersion();
     
