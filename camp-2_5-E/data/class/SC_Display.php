@@ -38,8 +38,7 @@ class SC_Display{
     function setDevice(int $device = 4){
         switch ($device){
             case 1:
-              
-
+                $this->response->encoding;
                 break;
             case 2:
 
