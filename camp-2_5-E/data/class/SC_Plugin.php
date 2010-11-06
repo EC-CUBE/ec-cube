@@ -23,6 +23,7 @@ class SC_Plugin
     
     function init(){
         
+        
     }
     
     function enable($classname){
