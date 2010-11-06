@@ -102,10 +102,11 @@ class SC_Display{
      */
     function detectDevice(){
         $nu = new Net_UserAgent_Mobile();
+        $su = new SC_SmartphoneUserAgent();
         $retDevice = 0;
         if($nu->isMobile()){
             $retDevice = 1;
-        }elseif ($nu->isSmartphone()){
+        }elseif ($su->isSmartphone()){
             $retDevice = 2;
         }else{
             $retDevice = 4;
