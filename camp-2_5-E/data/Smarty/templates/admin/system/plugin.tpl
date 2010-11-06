@@ -32,7 +32,9 @@
         <!--{/if}-->
       </td>
       <td>
+      <!--{if $plugins[data].create_date == null }-->
         <input type="button" name="preference" value="preference" onclick="" />
+        <!--{/if}-->
       </td>
       
     </tr>
