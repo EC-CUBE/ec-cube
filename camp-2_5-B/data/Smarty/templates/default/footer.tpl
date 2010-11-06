@@ -1,7 +1,8 @@
 <!--{*
+/*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -18,15 +19,50 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *}-->
-<!--▼FOOTER-->
-<div id="pagetop" style="clear: both;"><a href="#top"><img src="<!--{$TPL_DIR}-->img/common/pagetop.gif" width="100" height="10" alt="このページのTOPへ" /></a></div>
-<!--{strip}-->
-    <div id="footer">Copyright &copy;&nbsp;
-        <!--{if $smarty.const.RELEASE_YEAR != $smarty.now|date_format:"%Y"}-->
-            <!--{$smarty.const.RELEASE_YEAR}-->-
-        <!--{/if}-->
-        <!--{$smarty.now|date_format:"%Y"}--> <!--{$arrSiteInfo.shop_name_eng|default:$arrSiteInfo.shop_name|escape}--> All rights reserved.
-    </div>
-<!--{/strip}-->
-<!--▲FOOTER-->
+ */
+*}-->
+
+<!--▼ BEGIN PAGETOP-->
+<div id="pagetop">
+<a href="#top">↑このページのトップへ</a>
+</div>
+<!--▲ END PAGETOP-->
+
+<!--▼ BEGIN FOOTER-->
+<div id="footer">
+<div id="footer-info">
+<ul id="footer-menu">
+<li>
+<a href="<!--{$smarty.const.SPHONE_SSL_URL|sfTrimURL}-->/cart/index.php">かごを見る</a>
+</li>
+<li>
+<a href="<!--{$smarty.const.SPHONE_SSL_URL|sfTrimURL}-->/mypage/login.php">マイページ</a>
+</li>
+<li>
+<a href="<!--{$smarty.const.SPHONE_SSL_URL|sfTrimURL}-->/entry/kiyaku.php">会員登録</a>
+</li>
+
+<!--{php}-->
+$tmp = $this->get_template_vars('tpl_mainpage');
+if(preg_match("/top\.tpl$/", $tmp))
+$this->assign('isTop', 1);
+<!--{/php}-->
+<!--{if $isTop ne 1}-->
+<li>
+<a href="<!--{$smarty.const.SPHONE_SITE_URL|sfTrimURL}-->">TOPページへ</a>
+</li>
+<!--{/if}-->
+
+</ul>
+<ul id="footer-navi">
+<li><a href="<!--{$smarty.const.SPHONE_SITE_URL}-->contact/index.php">お問合せ</a></li>
+<li><a href="<!--{$smarty.const.SPHONE_SITE_URL}-->privacy.html">プライバシーポリシー</a></li>
+<li class="end"><a href="<!--{$smarty.const.SPHONE_SITE_URL}-->abouts/index.php">店舗情報</a></li>
+<li class="end"><a href="<!--{$smarty.const.SPHONE_SITE_URL}-->order/index.php">特定商取引法に基づく表記</a></li>
+</ul>
+
+<div id="copyright">(C) <!--{$arrSiteInfo.shop_name|escape}-->.</div>
+
+</div>
+</div>
+<!--▲ END FOOTER-->

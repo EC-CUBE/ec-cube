@@ -20,23 +20,37 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
+ 
+ <!--{* UserAgentがスマートフォンか *}-->
+<!--{if $smarty.const.CONTROL_SMARTPHONE}-->
+<!--{if "/iPhone|iPod|Android/"|preg_match:$smarty.server.HTTP_USER_AGENT}-->
+<!--{assign var=isSmartphone value=1}-->
+<!--{if "/smartphone/"|preg_match:$smarty.server.PHP_SELF}-->
+<!--{elseif "/user_data/"|preg_match:$smarty.server.PHP_SELF}-->
+<!--{assign var=isSmartphone value=0}-->
+<!--{/if}-->
+<!--{else}-->
+<!--{assign var=isSmartphone value=0}-->
+<!--{/if}-->
+<!--{/if}-->
+ 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<!--{$smarty.const.CHAR_CODE}-->" />
+
+<meta name="viewport" content="width=320,maximum-scale=1.0,user-scalable=no">
+<meta name="format-detection" content="telephone=no">
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
-<link rel="stylesheet" href="<!--{$TPL_DIR}-->css/import.css" type="text/css" media="all" />
-<link rel="alternate" type="application/rss+xml" title="RSS" href="<!--{$smarty.const.SITE_URL}-->rss/<!--{$smarty.const.DIR_INDEX_URL}-->" />
-<script type="text/javascript" src="http://www.google.com/jsapi?key=xxx"></script>
-<script type="text/javascript">//<![CDATA[
-    google.load("maps", "3", {other_params:'sensor=false'});
-//]]>
-</script>
-<script type="text/javascript" src="<!--{$TPL_DIR}-->js/css.js"></script>
+<!--{* 共通CSS *}-->
+<link rel="stylesheet" media="only screen" href="<!--{$smarty.const.SPHONE_URL_DIR}-->user_data/packages/default/css/import.css" type="text/css" /> 
+
+<script type="text/javascript" src="<!--{$smarty.const.SPHONE_URL_DIR}-->user_data/packages/default/js/barbutton.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.SPHONE_URL_DIR}-->user_data/packages/default/js/category.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.SPHONE_URL_DIR}-->user_data/packages/default/js/news.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/navi.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/win_op.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/site.js"></script>
-<script type="text/javascript" src="<!--{$TPL_DIR}-->js/jquery-1.4.2.min.js"></script>
 <title><!--{$arrSiteInfo.shop_name|escape}--><!--{if $tpl_subtitle|strlen >= 1}--> / <!--{$tpl_subtitle|escape}--><!--{elseif $tpl_title|strlen >= 1}--> / <!--{$tpl_title|escape}--><!--{/if}--></title>
 <!--{if $arrPageLayout.author|strlen >= 1}-->
     <meta name="author" content="<!--{$arrPageLayout.author|escape}-->" />
@@ -47,26 +61,9 @@
 <!--{if $arrPageLayout.keyword|strlen >= 1}-->
     <meta name="keywords" content="<!--{$arrPageLayout.keyword|escape}-->" />
 <!--{/if}-->
+<!--{* iPhone用アイコン画像 *}-->
+<link rel="apple-touch-icon" href="<!--{$smarty.const.SPHONE_URL_DIR}-->apple-touch-icon.png" />
 
-<script type="text/javascript">//<![CDATA[
-    <!--{$tpl_javascript}-->
-//]]>
-</script>
-<!--{* ▼Head COLUMN*}-->
-  <!--{if $arrPageLayout.HeadNavi|@count > 0}-->
-    <!--{* ▼上ナビ *}-->
-      <!--{foreach key=HeadNaviKey item=HeadNaviItem from=$arrPageLayout.HeadNavi}-->
-        <!--{* ▼<!--{$HeadNaviItem.bloc_name}--> ここから*}-->
-          <!--{if $HeadNaviItem.php_path != ""}-->
-            <!--{include_php file=$HeadNaviItem.php_path}-->
-          <!--{else}-->
-            <!--{include file=$HeadNaviItem.tpl_path}-->
-          <!--{/if}-->
-        <!--{* ▲<!--{$HeadNaviItem.bloc_name}--> ここまで*}-->
-      <!--{/foreach}-->
-    <!--{* ▲上ナビ *}-->
-  <!--{/if}-->
-<!--{* ▲Head COLUMN*}-->
 </head>
 
 <!-- ▼BODY部 スタート -->

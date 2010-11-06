@@ -1,0 +1,481 @@
+@charset "utf-8";
+
+/* テーブル(リスト)
+----------------------------------------------- */
+ul {
+background: #fff;
+border: 1px solid #B4B4B4;
+font: bold 17px 'Helvetica-Bold';
+padding: 0;   
+margin: 10px 0;
+text-align: left;
+-webkit-border-radius: 8px;
+}
+ul li {
+color: #999999;
+border-top: 1px solid #B4B4B4;
+list-style-type: none;
+padding: 7px 10px 7px 10px;
+}
+li:first-child {
+border-top: 0;
+-webkit-border-top-left-radius: 8px;
+-webkit-border-top-right-radius: 8px;
+}
+li:last-child {
+-webkit-border-bottom-left-radius: 8px;
+-webkit-border-bottom-right-radius: 8px;
+}
+
+/* テーブル（リスト）上のリンク
+----------------------------------------------- */
+ul li a, li.img a + a {
+color: #000;
+text-decoration: none;
+text-overflow: ellipsis;
+white-space: nowrap;
+overflow: hidden;
+display: block;
+padding: 12px 10px 12px 10px;
+margin: -10px;
+}
+ul li.img a + a {
+margin: -10px 10px -20px -5px;
+font-size: 17px;
+font-weight: bold;
+}
+ul li.img a + a + a {
+font-size: 14px;
+font-weight: normal;
+margin-left: -10px;
+margin-bottom: -10px;
+margin-top: 0;
+}
+ul li.img a + small + a {
+margin-left: -5px;
+}
+ul li.img a + small + a + a {
+margin-left: -10px;
+margin-top: -20px;
+margin-bottom: -10px;
+font-size: 14px;
+font-weight: normal;
+}
+ul li.img a + small + a + a + a {
+margin-left: 0px !important;
+margin-bottom: 0;
+}
+ul li a + a {
+color: #000;
+font: 14px 'Helvetica';
+text-overflow: ellipsis;
+white-space: nowrap;
+overflow: hidden;
+display: block;
+margin: 0;
+padding: 0;
+}
+ul li a + a + a, ul li.img a + a + a + a, ul li.img a + small + a + a + a {
+color: #666;
+font: 13px 'Helvetica';
+margin: 0;
+text-overflow: ellipsis;
+white-space: nowrap;
+overflow: hidden;
+display: block;
+padding: 0;
+}
+
+/* resize without labels
+----------------------------------------------- */
+/*
+ul li.arrow a {
+width: 95%;
+}
+*/
+
+/* images
+----------------------------------------------- */
+/*
+ul li.img {
+padding-left: 115px;
+}
+ul li.img a.img {
+display: inline-block;
+width: 100px;
+height: 75px;
+margin: -10px 0 -20px -115px;
+float: left;
+}
+*/
+
+/* table角丸(共通)
+----------------------------------------------- */
+table {
+width: 100%;
+max-width: 280px;
+margin: 10px 0;
+text-align: center;
+vertical-align: middle;
+border-collapse: collapse;
+border-spacing: 0;
+-webkit-border-radius: 8px;
+-webkit-box-shadow: 0 0 4px #000000;
+}
+table tr {
+border-bottom: solid 1px #cccccc;
+-webkit-border-radius: 8px;
+}
+table > tr:last-child,
+table > tbody > tr:last-child {
+border-bottom: none;
+}
+table th, 
+table td {
+margin: 0;
+max-width: 200px;
+height: 2em;
+background-color: #ffffff;
+border: none;
+-webkit-border-radius: 0;
+}
+table th {
+background-color: #f0f0f0;
+}
+table td {
+background-color: #ffffff;
+}
+table tr:first-of-type th:first-child,
+table tr:first-of-type td:first-child {
+-webkit-border-top-left-radius: inherit;
+}
+table tr:first-of-type th:last-child,
+table tr:first-of-type td:last-child {
+-webkit-border-top-right-radius: inherit;
+}
+table tr:last-of-type th:first-child,
+table tr:last-of-type td:first-child {
+-webkit-border-bottom-left-radius: inherit;
+}
+table tr:last-of-type th:last-child,
+table tr:last-of-type td:last-child {
+-webkit-border-bottom-right-radius: inherit;
+}
+table > thead tr:last-of-type th:first-child,
+table > thead tr:last-of-type td:first-child,
+table > thead tr:last-of-type th:last-child,
+table > thead tr:last-of-type td:last-child {
+-webkit-border-bottom-left-radius: 0;
+-webkit-border-bottom-right-radius: 0;
+}
+table > thead + tbody > tr:first-of-type th:first-child,
+table > thead + tbody > tr:first-of-type td:first-child,
+table > thead + tbody > tr:first-of-type th:last-child,
+table > thead + tbody > tr:first-of-type td:last-child {
+-webkit-border-top-left-radius: 0;
+-webkit-border-top-right-radius: 0;
+}
+
+/* テーブル（div）共通？
+----------------------------------------------- */
+#block {
+width: 100%;
+background-color: #ffffff;
+-webkit-border-radius: 8px;
+-webkit-box-shadow: 0px 0px 4px #000000;
+margin: 10px 0;
+}
+.box-wrap {
+display:inline-block;
+width: 100%;
+border-top: 1px solid #cccccc;
+}
+.box-wrap:first-child {
+border-top: none;
+-webkit-border-top-left-radius: 8px;
+-webkit-border-top-right-radius: 8px;
+}
+.box-wrap:last-child {
+-webkit-border-bottom-left-radius: 8px;
+-webkit-border-bottom-right-radius: 8px;
+}
+.box-photo {
+float:left;
+display:block;
+margin-left: 10px;
+margin-right: 10px;
+position: relative;
+}
+.box-data {
+display:block;
+margin: 0px 8px;
+text-align: left;
+}
+.box-data h3 {
+margin: 0px;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+-webkit-text-overflow: ellipsis;
+}
+.box-data h3 a {
+font-size: 18px;
+text-decoration: none;
+}
+.description, .box-comment {
+font: bold 14px Osaka;
+line-height: 1.5em;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+-webkit-text-overflow: ellipsis;
+}
+.price, .box-price {
+color: #993333;
+font: bold 14px Osaka;
+line-height: 1.5em;
+}
+
+/* テーブル（div）(new-item, recommend, item-box)
+----------------------------------------------- */
+#block-newitem,
+#block-recommend,
+.item-line-list,
+.item-line-list-end {
+width: 100%;
+background-color: #ffffff;
+-webkit-border-radius: 8px;
+-webkit-box-shadow: 0px 0px 4px #000000;
+margin: 10px 0;
+}
+.newitem-box-wrap,
+.recommend-box,
+.item-box-wrap {
+display:inline-block;
+width: 100%;
+border-bottom: 1px solid #cccccc;
+padding: 0.1em 0;
+}
+.newitem-box-wrap:first-child,
+.recommend-box:first-child,
+.item-box-wrap:first-child {
+-webkit-border-top-left-radius: 8px;
+-webkit-border-top-right-radius: 8px;
+}
+/*.newitem-box-wrap:last-child, .recommend-box:last-child, .item-box-wrap:last-child {*/
+.newitem-box-wrap:last-child,
+.recommend-box:last-child,
+.item-box-wrap-end {
+border-bottom: none;
+-webkit-border-bottom-left-radius: 8px;
+-webkit-border-bottom-right-radius: 8px;
+}
+.newitem-box-photo,
+.recommend-photo,
+.item-box-photo {
+float:left;
+display:block;
+margin-left: 10px;
+margin-right: 10px;
+position: relative;
+}
+.newitem-box-photo img,
+.recommend-photo img,
+.item-box-photo img {
+width: 80px;
+}
+.newitem-box-data,
+.item-box-data {
+display:block;
+margin: 0px 8px;
+text-align: left;
+}
+.newitem-box-data h3,
+.recommend-box h3,
+.item-box-data h3 {
+font-weight: bold;
+font-size: 15px;
+font-family: helvetica;
+margin: 0.4em 0 0;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+-webkit-text-overflow: ellipsis;
+}
+.newitem-box-data h3 a,
+.recommend-box h3 a,
+.item-box-data h3 a {
+font-size: 18px;
+text-decoration: none;
+}
+.description,
+.newitem-box-comment,
+.recommend-comment {
+font-weight: normal;
+font-size: 14px;
+font-family: Osaka;
+line-height: 1.5em;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+-webkit-text-overflow: ellipsis;
+margin: 0;
+}
+.price,
+.newitem-box-price,
+.recommend-price,
+.item-box-price {
+color: #993333;
+font-weight: bold;
+font-size: 17px;
+font-family: Osaka;
+line-height: 1.5em;
+margin-bottom: 0.3em;
+}
+
+/* アイテムリスト(div)の処理
+----------------------------------------------- */
+.item-line-list {
+margin: 2px 0;
+-webkit-border-bottom-left-radius: 0;
+-webkit-border-bottom-right-radius: 0;
+z-index: 30;
+}
+.item-line-list div:last-child {
+-webkit-border-radius: 0;
+}
+.item-line-list + .item-line-list {
+margin-top: 0;
+-webkit-border-top-left-radius: 0;
+-webkit-border-top-right-radius: 0;
+}
+.item-line-list + .item-line-list-end {
+margin-top: 2px;
+-webkit-border-top-left-radius: 0;
+-webkit-border-top-right-radius: 0;
+z-index: 30;
+}
+.item-line-list + .item-line-list-end div:first-child{
+-webkit-border-radius: 0;
+}
+.item-line-list-end div:last-child{
+border: none;
+}
+.newitem-line-list .newitem-box-wrap-end {
+border-bottom: 1px solid #cccccc;
+}
+
+/* 商品検索結果
+----------------------------------------------- */
+.tb-search-result-top,
+.tb-search-result-bottom {
+border: none;
+-webkit-box-shadow: none;
+clear: both;
+width: 100%;
+border-spacing: 0 0;
+border-collapse: collapse;
+}
+.tb-search-result-top tr,
+.tb-search-result-bottom tr {
+width: 100%;
+}
+.tb-search-result-top td,
+.tb-search-result-bottom td {
+text-align: left;
+background-color: transparent;
+}
+
+.search-result-navi strong,
+.search-result-navi a {
+display: block;
+float: left;
+margin: 5px 0px;
+margin-left: 1px;
+padding: 0.3em 0;
+color: #ffffff;
+width: 32.8%;
+text-shadow: 0px -1px 1px rgba(0,0,0,0.5);
+background-color: #666666;
+background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(255,255,255,0.25)), to(rgba(0,0,0,0.2)), color-stop(0.5, rgba(255,255,255,0.05)), color-stop(0.51, rgba(0,0,0,0.05)));
+text-align:center;
+vertical-align: middle;
+text-decoration: none;
+border-left: solid 1px #666666;
+}
+.search-result-navi > strong, .search-result-navi > a:first-child {
+border-left: none;
+margin-left: 0px;
+-webkit-border-top-left-radius: 4px;
+-webkit-border-bottom-left-radius: 4px;
+}
+.search-result-navi > a + strong,
+.search-result-navi > strong + a {
+border-left: solid 1px #666666;
+margin-left: 1px;
+-webkit-border-top-left-radius: 0;
+-webkit-border-bottom-left-radius: 0;
+}
+.search-result-navi > a + a + strong,
+.search-result-navi > a + strong + a,
+.search-result-navi >  strong + a + a {
+-webkit-border-top-right-radius: 4px;
+-webkit-border-bottom-right-radius: 4px;
+}
+
+
+/* テーブル・カゴ
+----------------------------------------------- */
+table[summary="商品情報"] tr:nth-child(even) td{
+background-color: #ffffff;
+}
+table[summary="商品情報"] tr:nth-child(odd) td{
+background-color: #f0f0f0;
+text-align: left;
+}
+
+table[summary="商品情報"] td{
+
+text-align: center;
+vertical-align: middle;
+max-width: 200px;
+}
+table[summary="商品情報"] tr:nth-child(even) td:first-child{
+width: 38%;
+font-size: 13px;
+}
+table[summary="商品情報"] tr:nth-child(even) td:last-child{
+width: 38%;
+overflow: visible;
+}
+table[summary="商品情報"] ul,
+table[summary="商品情報"] ul li,
+table[summary="商品情報"] ul li a {
+display: inline;
+margin: 0;
+padding: 0;
+border: none;
+}
+table[summary="商品情報"] ul li a{
+display: inline-block;
+margin: 7px;
+}
+table[summary="商品情報"] tr:nth-last-of-type(1) td,
+table[summary="商品情報"] tr:nth-last-of-type(2) td,
+table[summary="商品情報"] tr:nth-last-of-type(3) td {
+background-color: #ffffff;
+text-align: center;
+}
+
+/* テーブル・商品詳細
+----------------------------------------------- */
+#detailrightblock table th {
+font-size: 15px;
+font-weight: normal;
+}
+
+/* お問い合わせ
+----------------------------------------------- */
+#undercolumn_contact table td {
+text-align: left;
+}
