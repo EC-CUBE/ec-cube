@@ -35,7 +35,7 @@ class SC_Display{
      * デバイス毎の出力方法を自動で変更する、ファサード
      * Enter description here ...
      */
-    function setDevice(){
+    function setDevice(int ){
       
     }
 
@@ -50,8 +50,9 @@ class SC_Display{
     function detectDevice(){
         $nu = Net_UserAgent_Mobile::factory();
         if($this->autoSet){
-            
+            $this->setDevice($nu);
         }
+        return 
     }
 
     function assign(LC_Page $page){
