@@ -47,6 +47,10 @@
           <input type="button" name="install" value="install" />
         <!--{else}-->
           <!--{if $plugins[data].enable == 1}-->
+          <input type="button" name="disable" value="disable" />
+          <!--{else}-->
+          
+          <!--{endif}-->
         <!--{endif}-->
       </td>
       <td></td>
