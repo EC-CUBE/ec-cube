@@ -13,7 +13,6 @@ class SC_Helper_Plugin{
         $table = "dtb_plugin";
         $where = "enable = 1 AND del_flg = 0";
         $arrRet = $objQuery->select($col, $table, $where);
-        $arrEnablePlugins = array();
         $class_name = get_class($lcpage);
 
         // 実行されたぺーじ
@@ -21,13 +20,14 @@ class SC_Helper_Plugin{
         foreach ($arrRet as $plugins){
             // プラグインを稼働させるクラス名のリストを取得する
             // プラグインのディレクトリ内の設定ファイルを参照する
-            $plugin_name = $plugins['class_name'];
-            require_once DATA_PATH."plugin/{$plugin_name}/{$plugin_name}.php";
+            $plugin_name = $plugins['name'];
+            $plugin_class_name = $plugins['class_name'];
+            require_once DATA_PATH."plugin/{$plugin_name}/{$plugin_class_name}.php";
 
-            $code_str = "\$is_enable = {$plugin_name}::is_enable(\$class_name);";
+            $code_str = "\$is_enable = {$plugin_class_name}::is_enable(\$class_name);";
             eval($code_str);
             if ($is_enable) {
-                $arrPluginList[] = $plugin_name;
+                $arrPluginList[] = $plugin_class_name;
             }
         }
         return $arrPluginList;
