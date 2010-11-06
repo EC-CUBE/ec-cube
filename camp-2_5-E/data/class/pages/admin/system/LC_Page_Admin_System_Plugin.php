@@ -86,7 +86,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin {
                       'path' => realpath(DATA_DIR.'/plugin/'.$objForm->getValue('plugin_name').'/'),
                     'enable' => '1',
                     'del_flg' => '0',
-
+                  'class_name' => 
 
                     );
                     $objQuery->insert("dtb_plugin", $data);
