@@ -28,9 +28,13 @@ class SC_Response{
     }
 
     function response(){
-        
+
     }
-    function setContentLength;
+
+    function setContentLength(int $length){
+
+    }
+
 
     function setContentType(String $contentType){
 
@@ -43,30 +47,30 @@ class SC_Response{
     function setResposeBody(String $body){
 
     }
- 
+
     function addDateHdeader(String $name, $date){
-        
+
     }
     function addHeader(String $name, $value){
-      $this->header[$name] = $value;    
+        $this->header[$name] = $value;
     }
-    
+
     function containsHeader(String $name){
         return isset($this->header[$name]);
     }
-    
+
     function sendError(int $errorcode){
-        
+
     }
-    
+
     function sendRedirect(String $location){
-        
+
     }
-      
+
     function setHeader(Array $headers){
         $this->header = $headers;
     }
-    
+
     function setStatus(int $sc = 202){
         $this->statuscode = $sc;
     }
