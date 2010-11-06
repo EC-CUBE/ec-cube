@@ -3,7 +3,10 @@
  */
 (function($)
 {
-	jQuery.fn.popupwindow
+	jQuery.fn.popupwindow = function(o){
+		
+	}
+	
 	
 	jQuery.fn.update = function(o) {
 		
