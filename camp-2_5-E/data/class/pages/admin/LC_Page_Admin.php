@@ -42,7 +42,14 @@ class LC_Page_Admin extends LC_Page {
      * @return void
      */
     function init() {
-        parent::init();
+        $this->template = MAIN_FRAME;
+
+        // ディスプレイクラス生成
+        $this->objDisplay = new SC_Display();
+
+        // プラグインクラス生成
+        #$this->objPlagin = new SC_Helper_Plugin_Ex();
+        #$this->objPlagin->preProcess($this);
     }
 
     /**
@@ -51,8 +58,6 @@ class LC_Page_Admin extends LC_Page {
      * @return void
      */
     function process() {
-        $this->action();
-        $this->sendResponse();
     }
 
     /**

@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page_Admin.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * XXX のページクラス.
@@ -80,7 +80,7 @@ class LC_Page_Admin_System_Delete extends LC_Page_Admin {
         // リダイレクト
         $url = $this->getLocation(URL_SYSTEM_TOP)
              . '?pageno=' . $this->objForm->getValue('pageno');
-        $this->sendRedirect($url);
+        $this->objDisplay->redirect($url);
     }
 
     /**

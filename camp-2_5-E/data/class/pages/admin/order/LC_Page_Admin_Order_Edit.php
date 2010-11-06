@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page_Admin.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /* GMO決済モジュール連携用 */
 if (file_exists(MODULE_PATH . 'mdl_gmopg/inc/include.php') === TRUE) {

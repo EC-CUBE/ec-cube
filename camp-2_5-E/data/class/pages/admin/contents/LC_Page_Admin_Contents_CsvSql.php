@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page_Admin.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * CSV 出力項目設定(高度な設定)のページクラス.
@@ -118,14 +118,14 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin {
 
             // 新規作成
         case "new_page":
-            $this->sendRedirect($this->getLocation("./csv_sql.php"));
+            $this->objDisplay->redirect($this->getLocation("./csv_sql.php"));
             exit;
             break;
 
             // データ削除
         case "delete":
             $this->lfDelData($sql_id);
-            $this->sendRedirect($this->getLocation("./csv_sql.php"));
+            $this->objDisplay->redirect($this->getLocation("./csv_sql.php"));
             exit;
             break;
 

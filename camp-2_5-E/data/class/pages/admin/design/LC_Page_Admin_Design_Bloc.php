@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page_Admin.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * ブロック編集 のページクラス.
@@ -150,7 +150,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin {
                 $arrBlocData = $this->lfgetBlocData(" filename = ? " , array($_POST['filename']));
 
                 $bloc_id = $arrBlocData[0]['bloc_id'];
-                $this->sendRedirect($this->getLocation("./bloc.php",
+                $this->objDisplay->redirect($this->getLocation("./bloc.php",
                                             array("bloc_id" => $bloc_id,
                                                   "msg" => "on")));
                 exit;
@@ -188,7 +188,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin {
                     unlink($del_file);
                 }
             }
-            $this->sendRedirect($this->getLocation("./bloc.php"));
+            $this->objDisplay->redirect($this->getLocation("./bloc.php"));
             exit;
         	break;
         default:

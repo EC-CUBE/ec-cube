@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page_Admin.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * メルマガ管理 のページクラス.
@@ -359,9 +359,9 @@ class LC_Page_Admin_Mail extends LC_Page_Admin {
                     $sendId = $this->lfRegistData($objQuery, $this->list_data);
                     if (MELMAGA_SEND) {
                         if (MELMAGA_BATCH_MODE) {
-                            $this->sendRedirect($this->getLocation(URL_DIR . 'admin/mail/history.php'));
+                            $this->objDisplay->redirect($this->getLocation(URL_DIR . 'admin/mail/history.php'));
                         } else {
-                            $this->sendRedirect($this->getLocation(URL_DIR . 'admin/mail/sendmail.php', array('mode' => 'now', 'send_id' => $sendId)));
+                            $this->objDisplay->redirect($this->getLocation(URL_DIR . 'admin/mail/sendmail.php', array('mode' => 'now', 'send_id' => $sendId)));
                         }
                         exit;
                     } else {

@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page_Admin.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_FileManager_Ex.php");
 
 /**
@@ -157,7 +157,7 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin {
         if ($_POST['css_name'] !== '') {
             $objFileManager->sfDeleteDir($css_path);
         }
-        $this->sendRedirect($this->getLocation("./css.php"));
+        $this->objDisplay->redirect($this->getLocation("./css.php"));
     }
 
     /**

@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page_Admin.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * システム管理 のページクラス.
@@ -74,7 +74,7 @@ class LC_Page_Admin_System_Rank extends LC_Page_Admin {
         }
         
         // ページの表示
-        $this->sendRedirect($this->getLocation(URL_SYSTEM_TOP));
+        $this->objDisplay->redirect($this->getLocation(URL_SYSTEM_TOP));
     }
 
     /**

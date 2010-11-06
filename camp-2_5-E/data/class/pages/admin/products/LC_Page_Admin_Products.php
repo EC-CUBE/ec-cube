@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page_Admin_Admin.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * 商品管理 のページクラス.
@@ -63,7 +63,16 @@ class LC_Page_Admin_Products extends LC_Page_Admin {
      * @return void
      */
     function process() {
-        $objView = new SC_AdminView();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objDb = new SC_Helper_DB_Ex();
         $objDate = new SC_Date();
 
@@ -318,10 +327,6 @@ class LC_Page_Admin_Products extends LC_Page_Admin {
         // カテゴリの読込
         list($this->arrCatKey, $this->arrCatVal) = $objDb->sfGetLevelCatList(false);
         $this->arrCatList = $this->lfGetIDName($this->arrCatKey, $this->arrCatVal);
-
-        // 画面の表示
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

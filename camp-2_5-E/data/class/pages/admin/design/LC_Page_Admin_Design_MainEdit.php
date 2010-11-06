@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page_Admin.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * メイン編集 のページクラス.
@@ -219,7 +219,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
             }
         }
         $_SESSION['preview'] = "ON";
-        $this->sendRedirect($this->getLocation(URL_DIR . "preview/" . DIR_INDEX_URL, array("filename" => $arrPageData[0]["filename"])));
+        $this->objDisplay->redirect($this->getLocation(URL_DIR . "preview/" . DIR_INDEX_URL, array("filename" => $arrPageData[0]["filename"])));
 
     }
 
@@ -254,7 +254,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
                 $arrPageData = $this->objLayout->lfgetPageData(" url = ? AND page_id <> 0" , array(USER_DIR . $_POST['url'] . '.php'));
                 $page_id = $arrPageData[0]['page_id'];
             }
-            $this->sendRedirect($this->getLocation("./main_edit.php",
+            $this->objDisplay->redirect($this->getLocation("./main_edit.php",
                                     array("page_id" => $page_id,
                                           "msg"     => "on")));
             exit;
@@ -337,7 +337,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
      */
     function lfDeletePageData($page_id){
         $this->objLayout->lfDelPageData($_POST['page_id']);
-        $this->sendRedirect($this->getLocation("./main_edit.php"));
+        $this->objDisplay->redirect($this->getLocation("./main_edit.php"));
     }
 
     /**

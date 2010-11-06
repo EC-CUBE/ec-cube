@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page_Admin.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * 受注メール管理 のページクラス.
@@ -99,7 +99,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin {
                 // 注文受付メール
                 $objMail->sfSendOrderMail($_POST['order_id'], $_POST['template_id'], $_POST['subject'], $_POST['header'], $_POST['footer']);
             }
-            $this->sendRedirect($this->getLocation(URL_SEARCH_ORDER));
+            $this->objDisplay->redirect($this->getLocation(URL_SEARCH_ORDER));
             exit;
             break;
         case 'confirm':

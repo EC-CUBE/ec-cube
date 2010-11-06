@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page_Admin.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * 規格分類 のページクラス.
@@ -79,7 +79,7 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin {
 
         if(!$get_check) {
             // 規格登録ページに飛ばす。
-            $this->sendRedirect($this->getLocation(URL_CLASS_REGIST));
+            $this->objDisplay->redirect($this->getLocation(URL_CLASS_REGIST));
             exit;
         }
 
