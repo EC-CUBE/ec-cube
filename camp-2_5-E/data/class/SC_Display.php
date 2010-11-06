@@ -55,6 +55,8 @@ class SC_Display{
     function redirect($location){
         $this->response->sendRedirect($location);
     }
+    
+    
 
     /**
      * デバイス毎の出力方法を自動で変更する、ファサード
