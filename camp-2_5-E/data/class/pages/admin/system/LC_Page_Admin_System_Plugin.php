@@ -71,22 +71,24 @@ class LC_Page_Admin_System_Plugin extends LC_Page {
         SC_Utils_Ex::sfIsSuccess(new SC_Session);
         $objView = new SC_AdminView();
         $this->initForm();
-        $arrPlugins = array();
+
         switch($this->objForm->getValue('mode')) {
             // PHP INFOを表示
             case 'install':
-                
+
                 break;
             case 'uninstall':
-                
+
                 break;
             case 'enable':
-                
+
                 break;
             case 'disable':
-                
+
                 break;
             default:
+                $plugins = SC_Helper_Plugin::getAllPlugin();
+                var_dump($plugins);
                 break;
         }
 
@@ -96,22 +98,22 @@ class LC_Page_Admin_System_Plugin extends LC_Page {
         $objView->display(MAIN_FRAME);
     }
 
-    
+
     function searchPlugins(){
-      $plugin_dir = DATA_PATH."/plugin/";
-      if($dh = opendir($plugin_dir)){
-          while(($file = readdir($dh) !== false)){
-             if(is_dir($plugin_dir."/".$file)){
-                               
-             }
-          }
-      }
+        $plugin_dir = DATA_PATH."/plugin/";
+        if($dh = opendir($plugin_dir)){
+            while(($file = readdir($dh) !== false)){
+                if(is_dir($plugin_dir."/".$file)){
+                     
+                }
+            }
+        }
          
-        
-        
+
+
     }
-    
-    
+
+
     /**
      * デストラクタ.
      *
