@@ -110,7 +110,8 @@ class LC_Page_Admin_System_Plugin extends LC_Page {
 ) TYPE=InnoDB;
   */  
     
-    function getPluginOnFilesystem(){
+    function getPluginOnFilesystem($existsPlugins){
+        
         $dir = DATA_PATH."plugin/";
         $arrPlugins = array();
         if($dh =  opendir($dir)){
