@@ -23,17 +23,45 @@
 <link rel="stylesheet" href="<!--{$TPL_DIR}-->jquery.jCal/jCal.css" type="text/css" media="screen" />
 <!--{* TODO 休日表示などの処理は未実装 *}-->
 <script type="text/javascript">//<![CDATA[
+var holidays = <!--{$arrHoliday}-->; // TODO
+var regularHolidays = <!--{$arrRegularHoliday}-->; // TODO
 $(function() {
     $('#blockCalendar').jCal({
         day: new Date(),
         monthSelect: true,
         dow: ['日', '月', '火', '水', '木', '金', '土'],
         ml: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-        callback: changeCalSize(22)
+        callback: jCalCallback()
     });
+    var today = new Date();
+    var dToday = $('div[id*=d_' + (today.getMonth() + 1) + '_' + today.getDate() + '_' + today.getFullYear() + ']');
+    dToday.addClass('tday');
+
+    $('.jCalMo .day').each(function() {
+        var aDays = $(this).attr('id').split('_');
+        var hDate = new Date(aDays[3], aDays[1] - 1, aDays[2]);
+        var rDay = hDate.getDay();
+        for (var r in regularHolidays) {
+            if (rDay == regularHolidays[r]) {
+                addClassByCal(hDate.getFullYear(), hDate.getMonth() + 1,
+                              hDate.getDate(), 'hday');
+            }
+        }
+    });
+
+    for (var m in holidays) {
+        for (var d in holidays[m]) {
+            addClassByCal(today.getFullYear(), m, holidays[m][d], 'hday')
+        }
+    }
+
+    function addClassByCal(year, month, date, className) {
+        $('div[id*=d_' + month + '_' + date + '_' + year + ']')
+            .addClass(className);
+    }
 });
-function changeCalSize (daySize) {
-    var daySize = (parseInt(daySize) || 30);
+function jCalCallback (day, days) {
+    var daySize = 22;
     var monthSize = ( daySize + 2 ) * 7;
     var titleSize = monthSize - 35;
     var titleMsgSize = titleSize - 10;

@@ -145,3 +145,9 @@
 	position:absolute;
 	overflow:hidden;
 }
+.jCalMo .tday {
+    background-color: #ff6600;
+}
+.jCalMo .hday {
+    background-color: #ff3300;
+}

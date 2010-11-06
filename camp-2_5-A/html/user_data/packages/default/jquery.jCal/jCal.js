@@ -126,7 +126,7 @@
 					'<div class="jCalMask" style="clip:rect(0px '+mD.w+'px '+mD.h+'px 0px); width:'+ ( mD.w + ( mD.w / e.data.showMonths ) ) +'px; height:'+mD.h+'px;">' + 
 						'<div class="jCalMove"></div>' +
 					'</div>');
-				$('.jCalMove', e.data._target).css('margin-left', ( ( mD.w / e.data.showMonths ) * -1 ) + 'px').css('opacity', 0.5).animate({ marginLeft:'0px' }, 'fast',
+				$('.jCalMove', e.data._target).css('margin-left', ( ( mD.w / e.data.showMonths ) * -1 ) + 'px').css('opacity', 0.5).animate({ marginLeft:'0px' }, 1,
 					function () {
 						$(this).children('.jCalMo:not(:last)').appendTo( $(e.data._target) );
 						$('.jCalSpace, .jCalMask', e.data._target).empty().remove();
@@ -158,7 +158,7 @@
 					'<div class="jCalMask" style="clip:rect(0px '+mD.w+'px '+mD.h+'px 0px); width:'+ ( mD.w + ( mD.w / e.data.showMonths ) ) +'px; height:'+mD.h+'px;">' + 
 						'<div class="jCalMove"></div>' +
 					'</div>');
-				$('.jCalMove', e.data._target).css('opacity', 0.5).animate({ marginLeft:( ( mD.w / e.data.showMonths ) * -1 ) + 'px' }, 'fast',
+				$('.jCalMove', e.data._target).css('opacity', 0.5).animate({ marginLeft:( ( mD.w / e.data.showMonths ) * -1 ) + 'px' }, 1,
 					function () {
 						$(this).children('.jCalMo:not(:first)').appendTo( $(e.data._target) );
 						$('.jCalSpace, .jCalMask', e.data._target).empty().remove();

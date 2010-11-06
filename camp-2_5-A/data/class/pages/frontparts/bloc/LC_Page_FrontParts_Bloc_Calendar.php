@@ -26,6 +26,7 @@ $current_dir = realpath(dirname(__FILE__));
 define('CALENDAR_ROOT', DATA_PATH.'module/Calendar'.DIRECTORY_SEPARATOR);
 require_once($current_dir . "/../../../../module/Calendar/Month/Weekdays.php");
 require_once(CLASS_PATH . "pages/frontparts/bloc/LC_Page_FrontParts_Bloc.php");
+require_once(DATA_PATH . 'module/Services/JSON.php');
 
 /**
  * Calendar のページクラス.
@@ -61,15 +62,13 @@ class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc {
         } else {
             $objView = new SC_SiteView(false);
         }
+        $objJson = new Services_JSON();
 
-        // 休日取得取得
-        $this->arrHoliday = $this->lfGetHoliday();
+        // 休日取得
+        $this->arrHoliday = $objJson->encode($this->lfGetHoliday());
 
-        // 定休日取得取得
-        $this->arrRegularHoliday = $this->lfGetRegularHoliday();
-
-        // カレンダーデータ取得
-        $this->arrCalendar = $this->lfGetCalendar(2);
+        // 定休日取得
+        $this->arrRegularHoliday = $objJson->encode($this->lfGetRegularHoliday());
 
         $objView->assignobj($this);
         $objView->display($this->tpl_mainpage);
