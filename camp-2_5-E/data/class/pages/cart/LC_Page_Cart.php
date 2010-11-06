@@ -68,11 +68,19 @@ class LC_Page_Cart extends LC_Page {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
 
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objView = new SC_SiteView(false);
         $objCartSess = new SC_CartSession();
         $objSiteSess = new SC_SiteSession();
-        $objCampaignSess = new SC_CampaignSession();
         $objSiteInfo = $objView->objSiteInfo;
         $objCustomer = new SC_Customer();
         $objDb = new SC_Helper_DB_Ex();
@@ -157,10 +165,6 @@ class LC_Page_Cart extends LC_Page {
 
         // 前頁のURLを取得
         $this->tpl_prev_url = $objCartSess->getPrevURL();
-
-        $objView->assignobj($this);
-        // フレームを選択(キャンペーンページから遷移なら変更)
-        $objCampaignSess->pageView($objView);
     }
 
     /**
@@ -178,7 +182,16 @@ class LC_Page_Cart extends LC_Page {
      * @return void
      */
     function mobileProcess() {
+        $this->mobileAction();
+        $this->sendResponse();
+    }
 
+    /**
+     * Page のアクション(モバイル).
+     *
+     * @return void
+     */
+    function mobileAction() {
         // 買い物を続ける場合
         if ($_REQUEST['mode'] == 'continue') {
             $this->sendRedirect($this->getLocation(MOBILE_URL_SITE_TOP), true);
@@ -280,9 +293,6 @@ class LC_Page_Cart extends LC_Page {
 
         // 前頁のURLを取得
         $this->tpl_prev_url = $objCartSess->getPrevURL();
-
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
     }
 
     /**
