@@ -104,7 +104,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin {
                 
                 break;
             case 'disable':
-              $name = $objForm->getValue('plugin_name');
+              $name = $this->objForm->getValue('plugin_name');
                 require_once(DATA_PATH.'/'.$name.'/'.$name.'.php');
                 $plugin = new $name();
                 $plugin->disable();
