@@ -49,10 +49,7 @@ class SC_Display{
             $device = $this->detectDevice();
             $this->setDevice($device);
         }
-        $this->response->setResposeBody($this->view->fetch());
-        
-        
-
+        $this->response->setResposeBody($this->view->fetch(SITE_FRAME));
     }
 
     /**
