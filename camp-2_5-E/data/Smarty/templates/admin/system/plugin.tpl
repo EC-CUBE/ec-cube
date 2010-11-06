@@ -26,13 +26,13 @@
           <!--{if $plugins[data].enable == 1}-->
           <input type="button" name="disable" value="disable" onclick="fnModeSubmit('disable')" />
           <!--{else}-->
-          <input type="button" name="enable" value="enable" onclick="" /> 
+          <input type="button" name="enable" value="enable" onclick="fnModeSubmit('enable');" /> 
           <!--{/if}-->
-          <input type="button" name="uninstall" value="uninstall" onclick="" />
+          <input type="button" name="uninstall" value="uninstall" onclick="fnModeSubmit('uninstall');" />
         <!--{/if}-->
       </td>
       <td>
-        <input type="button" name="preference" value="preference" />
+        <input type="button" name="preference" value="preference" onclick="" />
       </td>
       
     </tr>
