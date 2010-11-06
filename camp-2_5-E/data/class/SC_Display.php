@@ -16,7 +16,11 @@ class SC_Display{
     */
     function hoge(LC_Page $page){
         $this->assign($page);
-
+    }
+    
+    
+    function setDevice(){
+        
     }
 
     /**
@@ -27,11 +31,8 @@ class SC_Display{
      * ※PHP4の為にconstは使っていません。 1がガラケーで、2がスマホで4がPCです。
      * @return
      */
-    function detectAgent(){
+    function detectDevice(){
         $nu = Net_UserAgent_Mobile::factory();
-        
-
-
     }
 
     function assign(LC_Page $page){
