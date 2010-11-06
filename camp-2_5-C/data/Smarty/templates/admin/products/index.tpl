@@ -193,14 +193,11 @@ function lfnDispChange(){
       <th rowspan="2">価格(円)</th>
       <th>商品名</th>
       <th rowspan="2">在庫</th>
-      <th rowspan="2">種別</th>
-      <th rowspan="2">編集</th>
-      <th rowspan="2">確認</th>
+      <th rowspan="2">公開</th>
       <!--{if $smarty.const.OPTION_CLASS_REGIST == 1}-->
       <th rowspan="2">規格</th>
       <!--{/if}-->
-      <th rowspan="2">削除</th>
-      <th rowspan="2">複製</th>
+      <th rowspan="2">操作</th>
     </tr>
     <tr>
       <th><a href="#" onClick="lfnDispChange(); return false;">カテゴリ ⇔ URL</a></th>
@@ -239,13 +236,22 @@ function lfnDispChange(){
       <!--{* 表示 *}-->
       <!--{assign var=key value=$arrProducts[cnt].status}-->
       <td rowspan="2"><!--{$arrDISP[$key]}--></td>
-      <td rowspan="2"><span class="icon_edit"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnChangeAction('./product.php'); fnModeSubmit('pre_edit', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >編集</a></span></td>
-      <td rowspan="2"><span class="icon_confirm"><a href="<!--{$smarty.const.SITE_URL|sfTrimURL}-->/products/detail.php?product_id=<!--{$arrProducts[cnt].product_id}-->&amp;admin=on" target="_blank">確認</a></span></td>
+      <!--{* 規格 *}-->
       <!--{if $smarty.const.OPTION_CLASS_REGIST == 1}-->
       <td rowspan="2"><span class="icon_class"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnChangeAction('./product_class.php'); fnModeSubmit('pre_edit', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >規格</a></span></td>
       <!--{/if}-->
-      <td rowspan="2"><span class="icon_delete"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnSetFormValue('category_id', '<!--{$arrProducts[cnt].category_id}-->'); fnModeSubmit('delete', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;">削除</a></span></td>
-      <td rowspan="2"><span class="icon_copy"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnChangeAction('./product.php'); fnModeSubmit('copy', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >複製</a></span></td>
+      <!--{* 操作 *}-->
+      <td  rowspan="2" class="center">
+         <a href="<!--{$smarty.const.SITE_URL|sfTrimURL}-->/products/detail.php?product_id=<!--{$arrProducts[cnt].product_id}-->&amp;admin=on" target="_blank" title="編集">
+             <img src="<!--{$TPL_DIR}-->img/contents/icon_edit.jpg" alt="" />
+         </a>&nbsp;
+         <a href="<!--{$smarty.const.URL_DIR}-->"  title="削除" onclick="fnSetFormValue('category_id', '<!--{$arrProducts[cnt].category_id}-->'); fnModeSubmit('delete', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >
+             <img src="<!--{$TPL_DIR}-->img/contents/icon_delete.jpg" alt="" />
+         </a>&nbsp;
+         <a href="<!--{$smarty.const.URL_DIR}-->"  title="複製" onclick="fnChangeAction('./product.php'); fnModeSubmit('copy', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >
+             <img src="<!--{$TPL_DIR}-->img/contents/icon_copy.jpg" alt="" />
+         </a>
+      </td>
     </tr>
     <tr style="background:<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->;">
       <td>
