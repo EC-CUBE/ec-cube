@@ -94,9 +94,6 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin {
                 $plugin = new $name();
                 $plugin->install();
                 break;
-                
-                
-                break;
             case 'disable':
 
                 break;
