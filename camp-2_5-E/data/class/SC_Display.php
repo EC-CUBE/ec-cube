@@ -39,6 +39,7 @@ class SC_Display{
         switch ($device){
             case 1:
                 $this->response->encoding;
+                
                 break;
             case 2:
 
