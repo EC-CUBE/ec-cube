@@ -24,12 +24,11 @@
 // {{{ requires
 require_once '../require.php';
 require_once CLASS_EX_PATH . 'page_extends/admin/products/LC_Page_Admin_Products_Preview_Ex.php';
-
+var_dump("HERE");
+exit;
 // }}}
 // {{{ generate page
 
-var_dump("HERE");
-exit;
 $objPage = new LC_Page_Admin_Products_Preview_Ex();
 register_shutdown_function(array($objPage, 'destroy'));
 $objPage->init();
