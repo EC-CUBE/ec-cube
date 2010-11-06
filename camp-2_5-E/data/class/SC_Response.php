@@ -74,7 +74,7 @@ class SC_Response{
 
     function response(){
         $this->sendHeader();
-        
+        $this->
     }
 
     function sendHeader(){
