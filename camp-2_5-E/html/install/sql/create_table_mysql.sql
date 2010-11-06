@@ -1256,10 +1256,10 @@ CREATE TABLE "dtb_plugin" (
   del_flg INT NOT NULL DEFAULT 0,
   class_name TEXT NOT NULL DEFAULT NULL,
   create_date DATETIME NOT NULL,
-  update_date DATETIME NOT NULL
+  update_date DATETIME NOT NULL,
+  PRIMARY KEY (id);
   
 ) TYPE=InnoDB;
-WITH (OIDS=FALSE);
 ALTER TABLE "dtb_plugin" ADD CONSTRAINT "dtb_plugin_pkey" PRIMARY KEY ("id");
 
 
