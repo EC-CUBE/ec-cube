@@ -53,6 +53,12 @@ class SC_Plugin
     public function uninstall(){
 
     }
+    
+    public function disablePlugin(){
+        
+    }
+    public function 
+    
 
     /**
      * 
