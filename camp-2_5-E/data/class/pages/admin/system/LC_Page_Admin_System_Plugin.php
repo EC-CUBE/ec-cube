@@ -68,7 +68,6 @@ class LC_Page_Admin_System_Plugin extends LC_Page {
      * @return void
      */
     function process() {
-
         SC_Utils_Ex::sfIsSuccess(new SC_Session);
         $objView = new SC_AdminView();
         $this->initForm();
