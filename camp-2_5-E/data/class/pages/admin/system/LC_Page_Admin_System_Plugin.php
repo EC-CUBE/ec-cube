@@ -99,19 +99,6 @@ class LC_Page_Admin_System_Plugin extends LC_Page {
     }
 
 
-    function searchPlugins(){
-        $plugin_dir = DATA_PATH."/plugin/";
-        if($dh = opendir($plugin_dir)){
-            while(($file = readdir($dh) !== false)){
-                if(is_dir($plugin_dir."/".$file)){
-                     
-                }
-            }
-        }
-         
-
-
-    }
 
 
     /**
