@@ -22,9 +22,10 @@
  */
 *}-->
 <style>
-div.btn{
+div.btn-foot{
     background:#000;
     text-align: center;
+    position:fixed;
 }
 </style>
 <script type="text/javascript">
@@ -437,7 +438,7 @@ function selectAll(target) {
   </table>
   </div>
 
-  <div class="btn">
+  <div class="btn-foot">
     <!--{if count($arrSearchHidden) > 0}-->
     <!--▼検索結果へ戻る-->
     <button type="button" onClick="fnChangeAction('<!--{$smarty.const.URL_SEARCH_TOP}-->'); fnModeSubmit('search','',''); return false;"><span>検索画面に戻る</span></button>
