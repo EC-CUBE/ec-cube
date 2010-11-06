@@ -28,10 +28,10 @@ require_once CLASS_EX_PATH . 'page_extends/admin/products/LC_Page_Admin_Products
 // }}}
 // {{{ generate page
 
-$objPage = new LC_Page_Admin_Products_Preview_Ex();
-register_shutdown_function(array($objPage, 'destroy'));
 var_dump("HERE");
 exit;
+$objPage = new LC_Page_Admin_Products_Preview_Ex();
+register_shutdown_function(array($objPage, 'destroy'));
 $objPage->init();
 $objPage->process();
 ?>
