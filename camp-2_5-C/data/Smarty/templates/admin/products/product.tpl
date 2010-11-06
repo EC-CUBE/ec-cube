@@ -447,7 +447,11 @@ function selectAll(target) {
     <button type="button" onClick="fnChangeAction('<!--{$smarty.const.URL_SEARCH_TOP}-->'); fnModeSubmit('search','',''); return false;"><span>検索画面に戻る</span></button>
     <!--▲検索結果へ戻る-->
     <!--{/if}-->
-    <button type="button" onClick=" fnModeSubmit('preview','',''); selectAll('category_id');">プレビュー</button><button type="submit" onClick="selectAll('category_id')><span>登録する</span>
+<<<<<<< .mine
+    <button type="button" onClick=" fnModeSubmit('preview','',''); selectAll('category_id');">プレビュー</button><button type="submit" onClick="selectAll('category_id'); fnModeSubmit('confirm','',''); return false;"><span>登録する</span></button>
+=======
+    <button type="button" onClick=" fnModeSubmit('preview','',''); selectAll('category_id');">プレビュー</button><button type="button" onClick="fnModeSubmit('confirm','',''); return false; selectAll('category_id');"><span>登録する</span></button>
+>>>>>>> .r19603
   </div>
 </div>
 </form>
