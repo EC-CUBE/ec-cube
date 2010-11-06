@@ -14,7 +14,7 @@ class SC_Plugin
         $this->__construct();
     }
     
-    public function __construct(){
+    function __construct(){
         if(!defined(PLUGIN_PATH)){
             define("PLUGIN_PATH",HTML_PATH."/user_data/plugins/");
         }
@@ -55,9 +55,13 @@ class SC_Plugin
     }
     
     public function disablePlugin(){
+          
+    }
+    
+    public function enablePlugin(){
+        
         
     }
-    public function 
     
 
     /**
