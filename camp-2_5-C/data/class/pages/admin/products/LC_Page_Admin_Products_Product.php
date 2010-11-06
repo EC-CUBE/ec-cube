@@ -160,7 +160,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
                     }
                 }
                 break;
-            // 商品登録・編集
+            // 商品登録・編集 
             case 'edit':
                 if($_POST['product_id'] == "" and SC_Utils_Ex::sfIsInt($_POST['copy_product_id'])){
                     $this->tpl_nonclass = !$objDb->sfHasProductClass($_POST['copy_product_id']);
