@@ -246,6 +246,9 @@ class LC_Page_Admin_Products_Preview extends LC_Page {
         // 画像ファイル指定がない場合の置換処理
         $this->arrProduct['main_image']
             = SC_Utils_Ex::sfNoImageMain($this->arrProduct['main_image']);
+        
+        var_dump('HERE');
+        exit;
 
         $this->lfSetFile();
         // 支払方法の取得
@@ -264,8 +267,6 @@ class LC_Page_Admin_Products_Preview extends LC_Page {
             $this->arrTrackback = $this->lfGetTrackbackData($product_id);
         }
         $this->trackback_url = TRACKBACK_TO_URL . $product_id;
-        var_dump('HERE');
-        exit;
         //関連商品情報表示
         $this->arrRecommend = $this->lfPreGetRecommendProducts($product_id);
 
