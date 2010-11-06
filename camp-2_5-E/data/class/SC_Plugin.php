@@ -23,8 +23,15 @@ abstract class SC_Plugin
     
     public abstract function init();
     
+    public abstract function enable();
+    
+    public abstract function getVersion();
+    
+    public abstract function getName();
+    
+    
     public function install(){
-
+      
     }
 
     public function uninstall(){
