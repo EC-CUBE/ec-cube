@@ -20,6 +20,8 @@ class SC_Plugin
         }
         $this->init();
         
+        
+        
     }
     
     function init(){
