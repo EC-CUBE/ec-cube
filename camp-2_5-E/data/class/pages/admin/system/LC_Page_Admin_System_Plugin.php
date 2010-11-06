@@ -82,7 +82,6 @@ class LC_Page_Admin_System_Plugin extends LC_Page {
                 break;
             case 'uninstall':
                 
-                
                 break;
             case 'enable':
                 
