@@ -21,6 +21,9 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
+<script type="text/javascript" src="Tween.js"></script>
+<script type="text/javascript" src="ColorTween.js"></script>
+
 <script type="text/javascript">
 // URLの表示非表示切り替え
 function lfnDispChange(){
@@ -235,7 +238,7 @@ function lfnDispChange(){
           <!--{if $arrProducts[cnt].stock_unlimited_min}-->
             無制限
           <!--{else}-->
-            <input type="text" name="stock_edit_<!--{$arrProducts[cnt].product_id}-->" size="8" value="<!--{$arrProducts[cnt].stock_min}-->" onchange="this.style.backgroundColor='blue';jQuery.post('./index.php', {'mode':'stock_edit','stock_edit_id':'<!--{$arrProducts[cnt].product_id}-->','stock_edit_value':this.value}, function(result){if(result!='ok'){alert('エラー：変更できませんでした');};});this.style.backgroundColor='transparent';">
+            <input type="text" name="stock_edit_<!--{$arrProducts[cnt].product_id}-->" size="8" value="<!--{$arrProducts[cnt].stock_min}-->" onchange="jQuery.post('./index.php', {'mode':'stock_edit','stock_edit_id':'<!--{$arrProducts[cnt].product_id}-->','stock_edit_value':this.value}, function(result){if(result!='ok'){alert('エラー：変更できませんでした');};});bgColorTween=new ColorTween(this.style,'color',Tween.regularEaseOut,'blue','transparent',3);bgColorTween.start();">
           <!--{/if}-->
         <!--{/if}-->
       </td>
