@@ -85,8 +85,6 @@ class SC_Initial {
             define ("DEFAULT_DSN",
                     DB_TYPE . "://" . DB_USER . ":" . DB_PASSWORD . "@"
                     . DB_SERVER . ":" .DB_PORT . "/" . DB_NAME);
-        } else {
-            define("DEFAULT_DSN", "pgsql://nobody:password@localhost:5432/eccubedb");
         }
     }
 
