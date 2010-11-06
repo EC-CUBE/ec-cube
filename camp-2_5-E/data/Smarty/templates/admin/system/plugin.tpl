@@ -32,7 +32,7 @@
         <!--{/if}-->
       </td>
       <td>
-      <!--{if $plugins[data].create_date != null || $plugins[data].enable = 1}-->
+      <!--{if $plugins[data].create_date != null && $plugins[data].enable = 1}-->
         <input type="button" name="preference" value="preference" onclick="" />
         <!--{/if}-->
       </td>
