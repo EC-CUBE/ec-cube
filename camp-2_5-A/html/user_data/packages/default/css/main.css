@@ -29,15 +29,78 @@ select {
 .picture {
     border: 1px solid #ccc;
 }
-/* フロート回り込み解除
+
+
+/* ヘッダー
 ----------------------------------------------- */
-br.clear {
-    clear: both;
-    display: none;
-    font-size: 0px;
-    line-height: 0%;
-    height: 0px
+div#header {
+	width: 950px;
+	height: 120px;
+	margin: 0 auto;
+	background: #fff;
 }
+
+div#header h1{
+	padding: 5px;
+	font-size: 90%;
+	font-weight: normal;
+	border-bottom: solid 1px #ccc;
+}
+
+div#headerContents{
+	margin-top: 15px;
+	width: 950px;
+}
+
+div#siteTitleArea {
+	float: left;
+	width: 300px;
+}
+
+div#infoArea {
+	float: right;
+	width: 650px;
+}
+
+div#mainLogo {
+	margin-left: 10px;
+}
+
+div#menuList {
+	float: right;
+	padding-right: 10px;
+}
+
+div#menuList ul li{
+	display: inline;
+}
+
+/* コンポーネントエリア */
+div#headerInternal {
+	min-height: 50px;
+	/*IE6*/
+	height: auto !important;
+	height: 50px;
+}
+
+
+/* フロート解除
+----------------------------------------------- */
+.clearfix:after{
+	display:block;
+	clear:both;
+	height:0px;
+	line-height:0px;
+	visibility:hidden;
+	content:".";
+}
+
+.clearfix{
+	zoom:100%;/* IE6・7対策 */
+}
+
+
+
 /* リンク指定
 ----------------------------------------------- */
 a:link {
@@ -60,6 +123,7 @@ h1,h2,h3,h4,h5 {
     line-height: 150%;
 }
 .price {
+    color: #ff0000;
 }
 /* FIXME ポイントがクラス「price」を利用しているようだが、専用のクラスを用意すべき。 */
 .sale_price {

@@ -6,6 +6,8 @@ INSERT INTO dtb_bloc (bloc_id, bloc_name, tpl_path, filename, create_date, updat
 INSERT INTO dtb_bloc (bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, del_flg) VALUES (6, 'ログイン', 'bloc/login.tpl', 'login', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/login.php', 1);
 INSERT INTO dtb_bloc (bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, del_flg) VALUES (7, 'おすすめ商品', 'bloc/best5.tpl', 'best5', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/best5.php', 1);
 INSERT INTO dtb_bloc (bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, del_flg) VALUES (8, 'カレンダー', 'bloc/calendar.tpl', 'calendar', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/calendar.php', 1);
+INSERT INTO dtb_bloc (bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, del_flg) VALUES (9, '商品検索(ヘッダ内)', 'bloc/search_compornent.tpl', 'search_compornent', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, 1);
+INSERT INTO dtb_bloc (bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, del_flg) VALUES (10, 'かごの中(ヘッダ内)', 'bloc/cart_compornent.tpl', 'cart_compornent', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/cart_compornent.php', 1);
 
 INSERT INTO dtb_blocposition (page_id, target_id, bloc_id, bloc_row, filename, anywhere) VALUES (1, 1, 1, 2, 'category', 0);
 INSERT INTO dtb_blocposition (page_id, target_id, bloc_id, bloc_row, filename, anywhere) VALUES (1, 1, 2, 3, 'guide', 0);

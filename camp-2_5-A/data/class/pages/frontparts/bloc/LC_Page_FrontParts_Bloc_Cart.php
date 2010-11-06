@@ -33,6 +33,8 @@ require_once(CLASS_PATH . "pages/frontparts/bloc/LC_Page_FrontParts_Bloc.php");
  */
 class LC_Page_FrontParts_Bloc_Cart extends LC_Page_FrontParts_Bloc {
 
+    var $bloc_file = 'cart.tpl';
+
     // }}}
     // {{{ functions
 
@@ -43,8 +45,7 @@ class LC_Page_FrontParts_Bloc_Cart extends LC_Page_FrontParts_Bloc {
      */
     function init() {
         parent::init();
-        $bloc_file = 'cart.tpl';
-        $this->setTplMainpage($bloc_file);
+        $this->setTplMainpage($this->bloc_file);
     }
 
     /**

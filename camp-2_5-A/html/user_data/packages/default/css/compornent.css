@@ -1,0 +1,69 @@
+@charset "utf-8";
+
+
+/* ヘッダー用検索ブロック
+----------------------------------------------- */
+div#header .searchCompornent {
+	padding-right: 10px;
+	width: 200px;
+	float: right;
+	te
+}
+
+div#header .searchCompornent .box{
+	width: 120px;
+	height: 22px;
+	padding: 3px 0 0 20px;
+	float:left;
+	border: 1px #ccc;
+	background: url("../img/header/ico_search.gif") no-repeat 2px;
+}
+
+div#header .searchCompornent p.btn{
+	width: 51px;
+	float:right;
+}
+
+div#header .searcharea p.btn {
+	text-align: center;
+}
+
+div#header .searcharea .box142 {
+	width: 142px;
+	border: solid 1px #ccc;
+}
+
+
+/* ヘッダー用カートブロック
+----------------------------------------------- */
+div#header .cartCompornent {
+	padding-right: 10px;
+	width: 650px;
+	float: right;
+	font-size: 90%;
+}
+
+div#header .cartCompornent .cartContents{
+	float: right;
+	width: 300px;
+}
+
+div#header .cartCompornent .cartContents .item{
+	padding-left: 20px;
+	background: url("../img/header/ico_compornent_cart.gif") no-repeat left 2px;
+	font-weight: bold;
+}
+
+div#header .cartCompornent .cartContents .price{
+	font-weight: bold;
+}
+
+
+
+/* ヘッダー用ログインブロック
+----------------------------------------------- */
+
+
+
+/* グローバルナビゲーション
+----------------------------------------------- */

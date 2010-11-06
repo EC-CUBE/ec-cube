@@ -21,15 +21,18 @@
  *}-->
 <!--▼HEADER-->
 <div id="header">
-  <h1>
-    <a href="<!--{$smarty.const.URL_SITE_TOP}-->">
-      <em><!--{$arrSiteInfo.shop_name|escape}-->/<!--{$tpl_title|escape}--></em></a>
-  </h1>
-  <!--{* ▼HeaderInternal COLUMN*}-->
-  <!--{if $arrPageLayout.HeaderInternalNavi|@count > 0}-->
-      <div id="headerinternalcolumn">
-          <!--{* ▼上ナビ *}-->
-          <!--{foreach key=HeaderInternalNaviKey item=HeaderInternalNaviItem from=$arrPageLayout.HeaderInternalNavi}-->
+  <h1>EC-CUBEが最適なインターネットショップをお送りします。</h1>
+  <div id="headerContents" class="clearfix">
+    <div id="siteTitleArea">
+      <div id="mainLogo"><a href="<!--{$smarty.const.URL_SITE_TOP}-->"><img src="<!--{$TPL_DIR}-->img/header/logo.gif" alt="EC-CUBE"/></a></div>
+    </div>
+    <div id="infoArea">
+      <div id="headerInternal">
+        <!--{* ▼HeaderInternal COLUMN*}-->
+        <!--{if $arrPageLayout.HeaderInternalNavi|@count > 0}-->
+          <div id="headerinternalcolumn">
+            <!--{* ▼上ナビ *}-->
+            <!--{foreach key=HeaderInternalNaviKey item=HeaderInternalNaviItem from=$arrPageLayout.HeaderInternalNavi}-->
             <!-- ▼<!--{$HeaderInternalNaviItem.bloc_name}--> -->
             <!--{if $HeaderInternalNaviItem.php_path != ""}-->
               <!--{include_php file=$HeaderInternalNaviItem.php_path}-->
@@ -37,32 +40,35 @@
               <!--{include file=$HeaderInternalNaviItem.tpl_path}-->
             <!--{/if}-->
             <!-- ▲<!--{$HeaderInternalNaviItem.bloc_name}--> -->
-          <!--{/foreach}-->
-          <!--{* ▲上ナビ *}-->
+            <!--{/foreach}-->
+            <!--{* ▲上ナビ *}-->
+          </div>
+        <!--{/if}-->
+        <!--{* ▲HeaderInternal COLUMN*}-->
       </div>
-  <!--{/if}-->
-  <!--{* ▲HeaderInternal COLUMN*}-->
-  <div id="information">
-    <ul>
-      <li>
-        <a href="<!--{$smarty.const.SSL_URL}-->mypage/login.php"
-           onmouseover="chgImg('<!--{$TPL_DIR}-->img/header/mypage_on.gif','mypage');"
-           onmouseout="chgImg('<!--{$TPL_DIR}-->img/header/mypage.gif','mypage');">
-          <img src="<!--{$TPL_DIR}-->img/header/mypage.gif" width="95" height="20" alt="MYページ" name="mypage" id="mypage" /></a>
-      </li>
-      <li>
-        <a href="<!--{$smarty.const.URL_DIR}-->entry/kiyaku.php"
-           onmouseover="chgImg('<!--{$TPL_DIR}-->img/header/member_on.gif','member');"
-           onmouseout="chgImg('<!--{$TPL_DIR}-->img/header/member.gif','member');">
-          <img src="<!--{$TPL_DIR}-->img/header/member.gif" width="95" height="20" alt="会員登録" name="member" id="member" /></a>
-      </li>
-      <li>
-        <a href="<!--{$smarty.const.URL_CART_TOP}-->"
-           onmouseover="chgImg('<!--{$TPL_DIR}-->img/header/cartin_on.gif','cartin');"
-           onmouseout="chgImg('<!--{$TPL_DIR}-->img/header/cartin.gif','cartin');">
-          <img src="<!--{$TPL_DIR}-->img/header/cartin.gif" width="95" height="20" alt="カゴの中を見る" name="cartin" id="cartin" /></a>
-      </li>
-    </ul>
+      <div id="menuList">
+        <ul>
+          <li>
+          <a href="<!--{$smarty.const.SSL_URL}-->mypage/login.php"
+             onmouseover="chgImg('<!--{$TPL_DIR}-->img/header/mypage_on.gif','mypage');"
+             onmouseout="chgImg('<!--{$TPL_DIR}-->img/header/mypage.gif','mypage');">
+            <img src="<!--{$TPL_DIR}-->img/header/mypage.gif" width="95" height="20" alt="MYページ" name="mypage" id="mypage" /></a>
+          </li>
+          <li>
+          <a href="<!--{$smarty.const.URL_DIR}-->entry/kiyaku.php"
+             onmouseover="chgImg('<!--{$TPL_DIR}-->img/header/member_on.gif','member');"
+             onmouseout="chgImg('<!--{$TPL_DIR}-->img/header/member.gif','member');">
+            <img src="<!--{$TPL_DIR}-->img/header/member.gif" width="95" height="20" alt="会員登録" name="member" id="member" /></a>
+          </li>
+          <li>
+          <a href="<!--{$smarty.const.URL_CART_TOP}-->"
+             onmouseover="chgImg('<!--{$TPL_DIR}-->img/header/cartin_on.gif','cartin');"
+             onmouseout="chgImg('<!--{$TPL_DIR}-->img/header/cartin.gif','cartin');">
+            <img src="<!--{$TPL_DIR}-->img/header/cartin.gif" width="95" height="20" alt="カゴの中を見る" name="cartin" id="cartin" /></a>
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
 </div>
 <!--▲HEADER-->
