@@ -14,7 +14,7 @@ class SC_Display{
     var $view;
 
         
-    var $detected = false;
+    var $deviceSeted = false;
     
     // TODO php4を捨てたときに ここのコメントアウトを外してね。
     /*
