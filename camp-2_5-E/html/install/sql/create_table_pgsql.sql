@@ -1260,3 +1260,16 @@ CREATE INDEX dtb_mobile_ext_session_id_create_date_key ON dtb_mobile_ext_session
 CREATE INDEX dtb_mobile_kara_mail_token_key ON dtb_mobile_kara_mail (token);
 CREATE INDEX dtb_mobile_kara_mail_create_date_key ON dtb_mobile_kara_mail (create_date);
 CREATE INDEX dtb_mobile_kara_mail_receive_date_key ON dtb_mobile_kara_mail (receive_date);
+
+DROP TABLE IF EXISTS "dtb_plugin";
+CREATE TABLE "dtb_plugin" (
+	"id" int4 NOT NULL DEFAULT NULL,
+	"name" text NOT NULL DEFAULT NULL,
+	"enable" int2 NOT NULL DEFAULT 0,
+	"del_flg" int2 NOT NULL DEFAULT 0,
+	"class_name" text NOT NULL DEFAULT NULL,
+	"create_date" timestamp(6) NOT NULL DEFAULT now(),
+	"update_date" timestamp(6) NOT NULL DEFAULT now()
+)
+WITH (OIDS=FALSE);
+ALTER TABLE "dtb_plugin" ADD CONSTRAINT "dtb_plugin_pkey" PRIMARY KEY ("id");
