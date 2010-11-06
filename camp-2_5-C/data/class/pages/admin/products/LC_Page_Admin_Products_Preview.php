@@ -79,6 +79,8 @@ class LC_Page_Admin_Products_Preview extends LC_Page {
     function process() {
         // プロダクトIDの正当性チェック
         // $product_id = $this->lfCheckProductId();
+        var_dump('HERE');
+        exit;
 
         $objView = new SC_SiteView(strlen($_POST['mode']) == 0);
         $objCustomer = new SC_Customer();
