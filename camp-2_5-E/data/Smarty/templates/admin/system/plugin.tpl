@@ -33,12 +33,9 @@
   <table class="list">
     <tr>
       <th>名前</th>
-      <th></th>
-      <th>稼動</th>
-      <th>非稼動</th>
-      <th>編集</th>
-      <th>削除</th>
-      <th>移動</th>
+      <th>パス</th>
+      <th>有効/無効</th>
+      <th>設定</th>
     </tr>
     <!--{section name=data loop=$list_data}--><!--▼メンバー<!--{$smarty.section.data.iteration}-->-->
     <tr>
