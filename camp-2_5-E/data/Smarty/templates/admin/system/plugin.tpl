@@ -40,8 +40,8 @@
     <!--{section name=data loop=$plugins}-->
     <!--▼メンバー<!--{$smarty.section.data.iteration}-->-->
     <tr>
-      <td><!--{$plugins[data].name|escape}--></td>
-      <td><!--{$plugins[data].department|escape}--></td>
+      <td><!--{$plugins[data].plugin_name|escape}--></td>
+      <td><!--{$plugins[data].plugin_name|escape}--></td>
       <td align="center"><!--{if $plugins[data].work eq 1}--><input type="radio" name="radio<!--{$smarty.section.data.iteration}-->" value="稼動" onclick="fnChangeRadio(this.name, 1, <!--{$plugins[data].member_id}-->, <!--{$tpl_disppage}-->);" checked /><!--{else}--><input type="radio" name="radio<!--{$smarty.section.data.iteration}-->" value="稼動" onclick="fnChangeRadio(this.name, 1, <!--{$plugins[data].member_id}-->, <!--{$tpl_disppage}-->);"/><!--{/if}--></td>
       <td align="center"><!--{if $plugins[data].work eq 0}--><input type="radio" name="radio<!--{$smarty.section.data.iteration}-->" value="非稼動"  onclick="fnChangeRadio(this.name, 0, <!--{$plugins[data].member_id}-->, <!--{$tpl_disppage}-->);" checked /><!--{else}--><input type="radio" name="radio<!--{$smarty.section.data.iteration}-->" value="非稼動" onclick="fnChangeRadio(this.name, 0, <!--{$plugins[data].member_id}-->, <!--{$tpl_disppage}-->);" <!--{if $workmax <= 1 }-->disabled<!--{/if}-->  /><!--{/if}--></td>
       <td align="center"><a href="#" onClick="win01('./input.php?id=<!--{$plugins[data].member_id}-->&amp;pageno=<!--{$tpl_disppage}-->','member_edit','500','420'); return false;">編集</a></td>
