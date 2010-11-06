@@ -64,12 +64,18 @@ class LC_Page_Shopping_Payment extends LC_Page {
      * @return void
      */
     function process() {
-        global $objCampaignSess;
+        $this->action();
+        $this->sendResponse();
+    }
 
-        $objView = new SC_SiteView();
+    /**
+     * Page のプロセス.
+     *
+     * @return void
+     */
+    function action() {
         $objSiteSess = new SC_SiteSession();
         $objCartSess = new SC_CartSession();
-        $objCampaignSess = new SC_CampaignSession();
         $objDb = new SC_Helper_DB_Ex();
         $this->objCustomer = new SC_Customer();
 
@@ -174,10 +180,6 @@ class LC_Page_Shopping_Payment extends LC_Page {
         $this->arrDelivDate = $this->lfGetDelivDate();
 
         $this->arrForm = $this->objFormParam->getFormParamList();
-
-        $objView->assignobj($this);
-        // フレームを選択(キャンペーンページから遷移なら変更)
-        $objCampaignSess->pageView($objView);
     }
 
     /**
@@ -195,7 +197,16 @@ class LC_Page_Shopping_Payment extends LC_Page {
      * @return void
      */
     function mobileProcess() {
-        $objView = new SC_MobileView();
+        $this->mobileAction();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のプロセス(モバイル).
+     *
+     * @return void
+     */
+    function mobileProcess() {
         $objSiteSess = new SC_SiteSession();
         $objCartSess = new SC_CartSession();
         $this->objCustomer = new SC_Customer();
@@ -337,9 +348,6 @@ class LC_Page_Shopping_Payment extends LC_Page {
         $this->arrDelivDate = $this->lfGetDelivDate();
 
         $this->arrForm = $this->objFormParam->getFormParamList();
-
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
     }
 
     /**

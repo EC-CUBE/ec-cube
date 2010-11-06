@@ -66,12 +66,19 @@ class LC_Page_Shopping_Deliv extends LC_Page {
      * @return void
      */
     function process() {
-        global $objCampaignSess;
+        $this->action();
+        $this->sendResponse();
+    }
 
+    /**
+     * Page のプロセス.
+     *
+     * @return void
+     */
+    function action() {
         $objView = new SC_SiteView();
         $objSiteSess = new SC_SiteSession();
         $objCartSess = new SC_CartSession();
-        $objCampaignSess = new SC_CampaignSession();
         $objCustomer = new SC_Customer();
         $objDb = new SC_Helper_DB_Ex();
         // クッキー管理クラス
@@ -224,10 +231,6 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         if (!isset($arrErr)) $arrErr = array();
         $this->arrForm = $this->objFormParam->getFormParamList();
         $this->arrErr = $arrErr;
-
-        $objView->assignobj($this);
-        // フレームを選択(キャンペーンページから遷移なら変更)
-        $objCampaignSess->pageView($objView);
     }
 
     /**
@@ -245,6 +248,16 @@ class LC_Page_Shopping_Deliv extends LC_Page {
      * @return void
      */
     function mobileProcess() {
+        $this->mobileAction();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のプロセス(モバイル).
+     *
+     * @return void
+     */
+    function mobileAction() {
         $objView = new SC_MobileView();
         $objSiteSess = new SC_SiteSession();
         $objCartSess = new SC_CartSession();
@@ -425,8 +438,6 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         if (!isset($arrErr)) $arrErr = array();
         $this->arrForm = $this->objFormParam->getFormParamList();
         $this->arrErr = $arrErr;
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
     }
 
     /**

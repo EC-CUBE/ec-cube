@@ -61,13 +61,20 @@ class LC_Page_Shopping_Confirm extends LC_Page {
      * @return void
      */
     function process() {
-        global $objCampaignSess;
+        $this->action();
+        $this->sendResponse();
+    }
 
+    /**
+     * Page のプロセス.
+     *
+     * @return void
+     */
+    function process() {
         $objView = new SC_SiteView();
         $objCartSess = new SC_CartSession();
         $objSiteInfo = $objView->objSiteInfo;
         $objSiteSess = new SC_SiteSession();
-        $objCampaignSess = new SC_CampaignSession();
         $objCustomer = new SC_Customer();
         $objQuery = new SC_Query();
         $objDb = new SC_Helper_DB_Ex();
@@ -166,12 +173,6 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         default:
             break;
         }
-
-        $this->arrData = $arrData;
-        $this->arrInfo = $objSiteInfo->data;
-        $objView->assignobj($this);
-        // フレームを選択(キャンペーンページから遷移なら変更)
-        $objCampaignSess->pageView($objView);
     }
 
     /**
@@ -189,6 +190,16 @@ class LC_Page_Shopping_Confirm extends LC_Page {
      * @return void
      */
     function mobileProcess() {
+        $this->mobileAction();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション(モバイル).
+     *
+     * @return void
+     */
+    function mobileAction() {
         $objView = new SC_MobileView();
         $objCartSess = new SC_CartSession();
         $objSiteInfo = $objView->objSiteInfo;
@@ -269,8 +280,6 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         }
         $this->arrData = $arrData;
         $this->arrInfo = $objSiteInfo->data;
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
     }
 
     /**

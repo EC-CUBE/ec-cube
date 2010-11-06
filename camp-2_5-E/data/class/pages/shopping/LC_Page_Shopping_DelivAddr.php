@@ -51,6 +51,16 @@ class LC_Page_Shopping_DelivAddr extends LC_Page {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
     }
 
     /**
@@ -71,6 +81,16 @@ class LC_Page_Shopping_DelivAddr extends LC_Page {
      * @return void
      */
     function mobileProcess() {
+        $this->mobileAction();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション(モバイル).
+     *
+     * @return void
+     */
+    function mobileAction() {
         $objView = new SC_MobileView(false);
         $objQuery = new SC_Query();
         $objCustomer = new SC_Customer();
@@ -185,9 +205,6 @@ class LC_Page_Shopping_DelivAddr extends LC_Page {
                 SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, "", false, "最大登録件数を超えています。");
             }
         }
-
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
     }
 
     /* エラーチェック */
