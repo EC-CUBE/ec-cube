@@ -249,13 +249,13 @@ function lfnDispChange(){
       <!--{* 操作 *}-->
       <td  rowspan="2" class="center">
          <a href="<!--{$smarty.const.SITE_URL|sfTrimURL}-->/products/detail.php?product_id=<!--{$arrProducts[cnt].product_id}-->&amp;admin=on" target="_blank" title="編集">
-             <img src="<!--{$TPL_DIR}-->img/contents/icon_edit.jpg" alt="" />
+             <img src="<!--{$TPL_DIR}-->img/contents/icon_edit.gif" alt="" />
          </a>&nbsp;
          <a href="<!--{$smarty.const.URL_DIR}-->"  title="削除" onclick="fnSetFormValue('category_id', '<!--{$arrProducts[cnt].category_id}-->'); fnModeSubmit('delete', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >
-             <img src="<!--{$TPL_DIR}-->img/contents/icon_delete.jpg" alt="" />
+             <img src="<!--{$TPL_DIR}-->img/contents/icon_delete.gif" alt="" />
          </a>&nbsp;
          <a href="<!--{$smarty.const.URL_DIR}-->"  title="複製" onclick="fnChangeAction('./product.php'); fnModeSubmit('copy', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >
-             <img src="<!--{$TPL_DIR}-->img/contents/icon_copy.jpg" alt="" />
+             <img src="<!--{$TPL_DIR}-->img/contents/icon_copy.gif" alt="" />
          </a>
       </td>
     </tr>
