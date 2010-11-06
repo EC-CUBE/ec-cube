@@ -730,7 +730,30 @@ class SC_Query {
         $this->conn->loadModule('Manager');
         return $this->conn->listTableIndexes($table);
     }
+    
+    /**
+     * テーブルにインデックスを付与する
+     *
+     * @param string $table テーブル名
+     * @param string $name インデックス名
+     * @param array $definition フィールド名など　通常のフィールド指定時は、$definition=array('fields' => array('フィールド名' => array()));
+     */
+    function createIndex($table, $name, $definition) {
+        $this->conn->loadModule('Manager');
+        return $this->conn->createIndex($table, $name, $definition);
+    }
 
+    /**
+     * テーブルにインデックスを破棄する
+     *
+     * @param string $table テーブル名
+     * @param string $name インデックス名
+     */
+    function dropIndex($table, $name) {
+        $this->conn->loadModule('Manager');
+        return $this->conn->dropIndex($table, $name);
+    }
+    
     /**
      * 値を適切にクォートする.
      *
