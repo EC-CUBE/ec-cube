@@ -46,11 +46,11 @@ class SC_Plugin
 
     }
 
-    public function install(){
+    function install(){
 
     }
 
-    public function uninstall(){
+    function uninstall(){
 
     }
 
