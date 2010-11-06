@@ -45,7 +45,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page {
         parent::init();
         $this->tpl_mainpage = 'system/plugin.tpl';
         $this->tpl_subnavi  = 'system/subnavi.tpl';
-        $this->tpl_subno    = 'system';
+        $this->tpl_subno    = 'plugin';
         $this->tpl_mainno   = 'system';
         $this->tpl_subtitle = 'プラグイン管理';
     }
