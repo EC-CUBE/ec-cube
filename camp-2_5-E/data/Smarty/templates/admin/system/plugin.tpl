@@ -1,6 +1,6 @@
 <form name="form1" id="form1" method="post" action="?">
 <input type="hidden" name="mode" value="" />
-<input type="hidden" name="keyname" value="" /_
+<input type="hidden" name="keyname" value="" />
 <div id="system" class="contents-main">
   <div class="paging">
     <!--▼ページ送り-->
@@ -23,6 +23,7 @@
       <td><!--{$plugins[data].plugin_name|escape}--></td>
       <td>
         <!--{if $plugins[data].create_date == null }-->
+        <input type="hidden" name="keyname" value="" />
           <input type="button" name="install" value="install" onclick="fnModeSubmit('install');" />
         <!--{else}-->
           <!--{if $plugins[data].enable == 1}-->
