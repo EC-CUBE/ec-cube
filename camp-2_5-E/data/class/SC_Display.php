@@ -80,7 +80,7 @@ class SC_Display{
             case 4:
                 $this->view = new SC_SiteView();
                 break;
-            default:
+            case 8:
                 $this->view = new SC_AdminView();
         }
         $this->deviceSeted = true;
