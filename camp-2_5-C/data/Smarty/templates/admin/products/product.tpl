@@ -21,6 +21,11 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
+<style>
+div.btn{
+    background:#000;
+}
+</style>
 <script type="text/javascript">
 // URLの表示非表示切り替え
 function lfDispSwitch(id){
@@ -437,7 +442,7 @@ function selectAll(target) {
     <button type="button" onClick="fnChangeAction('<!--{$smarty.const.URL_SEARCH_TOP}-->'); fnModeSubmit('search','',''); return false;"><span>検索画面に戻る</span></button>
     <!--▲検索結果へ戻る-->
     <!--{/if}-->
-    <button type="submit" onClick="selectAll('category_id')"><span>確認ページへ</span></button><button type="button" onClick="fnChangeAction('<!--{$smarty.const.URL_DIR}-->admin/products/product_preview.php'); return false;">プレビュー</button>
+    <button type="button" onClick="fnChangeAction('<!--{$smarty.const.URL_DIR}-->admin/products/product_preview.php'); fnModeSubmit('','',''); return false;">プレビュー</button><button type="submit" onClick="selectAll('category_id')"><span>確認ページへ</span></button>
   </div>
 </div>
 </form>
