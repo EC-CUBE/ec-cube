@@ -33,7 +33,7 @@
   <table class="list">
     <tr>
       <th>名前</th>
-      <th>所属</th>
+      <th></th>
       <th>稼動</th>
       <th>非稼動</th>
       <th>編集</th>
