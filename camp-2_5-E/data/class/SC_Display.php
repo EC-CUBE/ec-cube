@@ -61,7 +61,7 @@ class SC_Display{
     }
     
     function addHeader(String $name,String $value){
-        
+        $this->response->addHeader($name, $value);
     }
 
     /**
