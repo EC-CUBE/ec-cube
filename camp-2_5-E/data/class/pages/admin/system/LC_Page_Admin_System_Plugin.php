@@ -75,8 +75,9 @@ class LC_Page_Admin_System_Plugin extends LC_Page {
         switch($this->objForm->getValue('mode')) {
             // PHP INFOを表示
             case 'install':
-                phpinfo();
-                exit;
+                
+                
+                
                 break;
 
             default:
