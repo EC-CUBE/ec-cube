@@ -36,6 +36,7 @@ function lfCheckEditResult(result){
 function lfBgColorTween(obj){
     bgColorTween = new ColorTween(obj.style, 'backgroundColor', Tween.regularEaseOut, '0000ff', 'ffffff', 0.6);
     bgColorTween.start();
+}
 </script>
 
 <script type="text/javascript">
