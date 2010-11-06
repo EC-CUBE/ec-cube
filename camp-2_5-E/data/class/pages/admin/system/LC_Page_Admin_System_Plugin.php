@@ -99,7 +99,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page {
     }
 
     function getPluginOnFilesystem(){
-        
+        require_once DATA_PATH."plugin/"
         
         
     }
