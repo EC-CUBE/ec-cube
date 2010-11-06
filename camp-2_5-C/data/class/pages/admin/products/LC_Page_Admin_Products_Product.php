@@ -174,10 +174,20 @@ class LC_Page_Admin_Products_Product extends LC_Page {
                 $this->arrErr = array_merge((array)$this->arrErr, (array)$this->objUpFile->checkEXISTS());
                 // エラーなしの場合
                 if(count($this->arrErr) == 0) {
-                    $this->lfProductConfirmPage(); // 確認ページ
-                } else {
-                    $this->lfProductPage();     // 商品登録ページ
-                }
+                    //$this->lfProductConfirmPage(); // 確認ページ
+                    $this->tpl_mainpage = 'products/complete.tpl';
+
+                    $this->arrForm['product_id'] = $this->lfRegistProduct($_POST);      // データ登録
+
+                    // 件数カウントバッチ実行
+                    $objDb->sfCategory_Count($objQuery);
+                    $objDb->sfMaker_Count($objQuery);
+                    // 一時ファイルを本番ディレクトリに移動する
+                    $this->objUpFile->moveTempFile();
+                    $this->objDownFile->moveTempDownFile();
+                    } else {
+                        $this->lfProductPage();     // 商品登録ページ
+                    }
                 break;
             // 確認ページから完了ページへ
             case 'complete':
