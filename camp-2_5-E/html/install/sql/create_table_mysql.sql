@@ -1249,7 +1249,7 @@ CREATE TABLE dtb_bkup (
 ) TYPE=InnoDB;
 
 
-CREATE TABLE "dtb_plugin" (
+CREATE TABLE dtb_plugin (
   plugin_id INT NOT NULL,
   name text NOT NULL DEFAULT "",
   enable INT NOT NULL DEFAULT 0,
