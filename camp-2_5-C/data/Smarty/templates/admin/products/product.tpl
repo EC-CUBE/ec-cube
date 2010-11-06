@@ -24,6 +24,7 @@
 <style>
 div.btn{
     background:#000;
+    text-align: center;
 }
 </style>
 <script type="text/javascript">
