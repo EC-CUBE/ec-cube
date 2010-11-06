@@ -105,7 +105,7 @@ class LC_Page_Admin_System_Editdb extends LC_Page {
         // データベースからインデックス設定一覧を取得する
         $objQuery = new SC_Query();
         $objQuery->setOrder("table_name, column_name");
-        $arrIndexList = $objQuery->select("table_name as table, column_name as column, recommend_flg, recommend_comment", "dtb_index_list");
+        $arrIndexList = $objQuery->select("table_name, column_name, recommend_flg, recommend_comment", "dtb_index_list");
 
         $table = "";
         foreach($arrIndexList as $key => $arrIndex) {
