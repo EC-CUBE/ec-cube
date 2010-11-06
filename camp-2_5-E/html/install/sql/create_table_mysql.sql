@@ -1254,10 +1254,10 @@ CREATE TABLE dtb_plugin (
   plugin_name VARCHAR(255) NOT NULL DEFAULT "",
   enable INT NOT NULL DEFAULT 0,
   del_flg INT NOT NULL DEFAULT 0,
-  class_name TEXT NOT NULL DEFAULT NULL,
+  class_name VARCHAR(255) NOT NULL DEFAULT NULL,
   create_date DATETIME NOT NULL,
   update_date DATETIME NOT NULL,
-  PRIMARY KEY (plugin_id);
+  PRIMARY KEY (plugin_id)
 ) TYPE=InnoDB;
 
 
