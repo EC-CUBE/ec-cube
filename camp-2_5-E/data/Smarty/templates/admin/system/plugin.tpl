@@ -42,7 +42,11 @@
     <tr>
       <td><!--{$plugins[data].plugin_name|escape}--></td>
       <td><!--{$plugins[data].plugin_name|escape}--></td>
-      <td></td>
+      <td>
+        <!--{if $plugins[data] == null }-->
+        
+        <!--{endif}-->
+      </td>
       <td></td>
       
       <td align="center"><!--{if $plugins[data].work eq 1}--><input type="radio" name="radio<!--{$smarty.section.data.iteration}-->" value="稼動" onclick="fnChangeRadio(this.name, 1, <!--{$plugins[data].member_id}-->, <!--{$tpl_disppage}-->);" checked /><!--{else}--><input type="radio" name="radio<!--{$smarty.section.data.iteration}-->" value="稼動" onclick="fnChangeRadio(this.name, 1, <!--{$plugins[data].member_id}-->, <!--{$tpl_disppage}-->);"/><!--{/if}--></td>
