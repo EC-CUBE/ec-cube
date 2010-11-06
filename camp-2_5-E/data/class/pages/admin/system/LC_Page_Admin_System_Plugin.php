@@ -91,7 +91,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page {
                 $this->plugins = array_merge($plugins,
                 $this->getPluginOnFilesystem($plugins));
                 
-                var_dump($plugins);
+                var_dump($this->plugins);
                 break;
         }
 
