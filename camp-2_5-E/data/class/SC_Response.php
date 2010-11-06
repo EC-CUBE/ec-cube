@@ -32,12 +32,12 @@ class SC_Response{
     }
 
     function setContentLength(int $length){
-
+    
     }
 
 
     function setContentType(String $contentType){
-
+      
     }
 
     function setResponseCode(int $code){
@@ -60,7 +60,7 @@ class SC_Response{
     }
 
     function sendError(int $errorcode){
-
+        
     }
 
     function sendRedirect(String $location){
