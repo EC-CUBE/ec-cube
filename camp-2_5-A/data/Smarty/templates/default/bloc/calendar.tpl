@@ -19,31 +19,35 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
-<div id="block-calendar" class="bloc_outer">
-    <!--{section name=num loop=$arrCalendar}-->
-        <!--{assign var=arrCal value=`$arrCalendar[num]`}-->
-        <!--{section name=cnt loop=$arrCal}-->
-            <!--{if $smarty.section.cnt.first}-->
-                <table>
-                    <caption><!--{$arrCal[cnt].year}-->年<!--{$arrCal[cnt].month}-->月の定休日</caption>
-                    <thead><tr><th>日</th><th>月</th><th>火</th><th>水</th><th>木</th><th>金</th><th>土</th></tr></thead>
-            <!--{/if}-->
-            <!--{if $arrCal[cnt].first}-->
-                <tr>
-                <!--{/if}-->
-                <!--{if !$arrCal[cnt].in_month}-->
-                    <td></td>
-                <!--{elseif $arrCal[cnt].holiday}-->
-                    <td class="off"><!--{$arrCal[cnt].day}--></td>
-                <!--{else}-->
-                    <td><!--{$arrCal[cnt].day}--></td>
-                <!--{/if}-->
-                <!--{if $arrCal[cnt].last}-->
-                    </tr>
-            <!--{/if}-->
-        <!--{/section}-->
-        <!--{if $smarty.section.cnt.last}-->
-            </table>
-        <!--{/if}-->
-    <!--{/section}-->
+<script type="text/javascript" src="<!--{$TPL_DIR}-->jquery.jCal/jCal.js"></script>
+<link rel="stylesheet" href="<!--{$TPL_DIR}-->jquery.jCal/jCal.css" type="text/css" media="screen" />
+<!--{* TODO 休日表示などの処理は未実装 *}-->
+<script type="text/javascript">//<![CDATA[
+$(function() {
+    $('#blockCalendar').jCal({
+        day: new Date(),
+        monthSelect: true,
+        dow: ['日', '月', '火', '水', '木', '金', '土'],
+        ml: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+        callback: changeCalSize(22)
+    });
+});
+function changeCalSize (daySize) {
+    var daySize = (parseInt(daySize) || 30);
+    var monthSize = ( daySize + 2 ) * 7;
+    var titleSize = monthSize - 35;
+    var titleMsgSize = titleSize - 10;
+    $('head:first').append(
+      '<style>' +
+        '.jCalMo .day,.jCalMo .invday,.jCalMo .pday,.jCalMo .aday,.jCalMo .selectedDay,.jCalMo .dow { width:' + daySize + 'px !important; height:' + daySize + 'px !important; }' +
+        '.jCalMo .dow { height:auto !important }' +
+        '.jCalMo, .jCalMo .jCal { width:' + monthSize + 'px !important; }' +
+        '.jCalMo .month { width:' + titleSize + 'px !important; }' +
+        '.jCalMo .month span.monthYear { width:' + titleMsgSize * 0.6  + 'px !important; }' +
+        '.jCalMo .month span.monthName { width:' + titleMsgSize * 0.4  + 'px !important; }' +
+      '</style>');
+}
+//]]>
+</script>
+<div id="blockCalendar" class="bloc_outer">
 </div>

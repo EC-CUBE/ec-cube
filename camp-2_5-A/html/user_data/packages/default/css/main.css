@@ -276,7 +276,7 @@ ul.button_like li a:active {
     background-color: #FFF;
 }
 .side_column {
-    overflow-x: hidden; /* IE6 表示乱れ防止 */
+    /* overflow-x: hidden; */ /* IE6 表示乱れ防止 */
 }
 .side_column .bloc_outer {
     margin: 10px 5%;
