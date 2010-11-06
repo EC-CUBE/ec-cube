@@ -52,8 +52,7 @@ class TestPlugin1 extends SC_Plugin_Ex {
         }
         $create = <<< SQL
 CREATE TABLE dtb_plugin_test_table1 
-
-
+test_id INT NOT NULL
 SQL;
         
         $objQuery->query("");
