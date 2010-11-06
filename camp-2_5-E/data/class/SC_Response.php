@@ -27,7 +27,7 @@ class SC_Response{
     }
 
     function response(){
-
+      
     }
 
     function setContentType(String $contentType){
