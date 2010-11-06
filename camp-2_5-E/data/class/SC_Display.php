@@ -76,7 +76,8 @@ class SC_Display{
     'webmate'         // Other iPhone browser
         );
 
-        if(preg_match('/'.user.'/', $subject))
+        $pattern = 
+        if(preg_match('/'.iuser.'/', $subject))
         var pattern = new RegExp(useragents.join('|'), 'i');
         return pattern.test(navigator.userAgent);
     }
