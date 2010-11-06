@@ -77,7 +77,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page {
             // PHP INFOを表示
             case 'install':
                 
-                
+                foreach ($arrPlugins as $plugin)
                 break;
             case 'uninstall':
                 
