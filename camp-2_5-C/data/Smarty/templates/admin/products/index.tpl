@@ -235,8 +235,8 @@ function lfnDispChange(){
           <!--{if $arrProducts[cnt].stock_unlimited_min}-->
             無制限
           <!--{else}-->
-            <input type="text" name="stock_edit_<!--{$arrProducts[cnt].product_id}-->" size="8" value="<!--{$arrProducts[cnt].stock_min}-->" onchange="this.style.background-color='blue';jQuery.post('./index.php', {'mode':'stock_edit','stock_edit_id':'<!--{$arrProducts[cnt].product_id}-->','stock_edit_value':this.value}, function(result){if(result!='ok'){alert('エラー：変更できませんでした');};});this.style.background-color='transparent';">
-          <!--{/if}-->background-color:
+            <input type="text" name="stock_edit_<!--{$arrProducts[cnt].product_id}-->" size="8" value="<!--{$arrProducts[cnt].stock_min}-->" onchange="this.style.backgroundColor='blue';jQuery.post('./index.php', {'mode':'stock_edit','stock_edit_id':'<!--{$arrProducts[cnt].product_id}-->','stock_edit_value':this.value}, function(result){if(result!='ok'){alert('エラー：変更できませんでした');};});this.style.backgroundColor='transparent';">
+          <!--{/if}-->
         <!--{/if}-->
       </td>
       <!--{* 表示 *}-->
