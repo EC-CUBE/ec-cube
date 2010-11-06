@@ -43,10 +43,10 @@
       <td><!--{$plugins[data].plugin_name|escape}--></td>
       <td><!--{$plugins[data].plugin_name|escape}--></td>
       <td>
-        <!--{if $plugins[data] == null }-->
+        <!--{if $plugins[data].create_date == null }-->
           <input type="button" name="install" value="install" />
         <!--{else}-->
-          <!--{if $plugins[data]}-->
+          <!--{if $plugins[data].}-->
         <!--{endif}-->
       </td>
       <td></td>
