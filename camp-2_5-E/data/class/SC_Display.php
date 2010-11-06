@@ -85,8 +85,11 @@ class SC_Display{
         return $retDevice;
     }
 
-    function assign(LC_Page $page){
+    
+    function assign($val1,$val2){
+        $this->view->assign($val1, $val2);
     }
+    function 
 
 
 }
