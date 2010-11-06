@@ -116,7 +116,7 @@ class LC_Page_Mypage_Refusal extends LC_Page {
 
             $objCustomer->EndSession();
             //完了ページへ
-            $this->sendRedirect($this->getLocation("./refusal_complete.php"));
+            $this->objDisplay->redirect($this->getLocation("./refusal_complete.php"));
             exit;
         }
 
@@ -169,7 +169,7 @@ class LC_Page_Mypage_Refusal extends LC_Page {
         }
 
         if (isset($_POST['no'])) {
-            $this->sendRedirect($this->getLocation(DIR_INDEX_URL), true);
+            $this->objDisplay->redirect($this->getLocation(DIR_INDEX_URL));
             exit;
         } elseif (isset($_POST['complete'])){
             //会員削除
@@ -178,7 +178,7 @@ class LC_Page_Mypage_Refusal extends LC_Page {
             $where = "email = ?";
             $objCustomer->EndSession();
             //完了ページへ
-            $this->sendRedirect($this->getLocation("./refusal_complete.php"), true);
+            $this->objDisplay->redirect($this->getLocation("./refusal_complete.php"));
             exit;
         }
 

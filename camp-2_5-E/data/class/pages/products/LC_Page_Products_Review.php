@@ -153,7 +153,7 @@ class LC_Page_Products_Review extends LC_Page {
                     //登録実行
                     $this->lfRegistRecommendData($arrForm, $arrRegistColumn);
                     //レビュー書き込み完了ページへ
-                    $this->sendRedirect($this->getLocation("./review_complete.php", array(), true));
+                    $this->objDisplay->redirect($this->getLocation("./review_complete.php", array(), true));
                     exit;
                 }
             } else {

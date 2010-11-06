@@ -335,7 +335,7 @@ class LC_Page_Entry extends LC_Page {
 
                     // 完了ページに移動させる。
                     $customer_id = $objQuery->get("dtb_customer", "customer_id", "secret_key = ?", array($this->uniqid));
-                    $this->sendRedirect($this->getLocation("./complete.php", array("ci" => $customer_id)));
+                    $this->objDisplay->redirect($this->getLocation("./complete.php", array("ci" => $customer_id)));
                     exit;
                 }
             }
@@ -591,7 +591,7 @@ class LC_Page_Entry extends LC_Page {
                         $param = array("mode" => "regist",
                                        "id" => $this->uniqid,
                                        session_name() => session_id());
-                        $this->sendRedirect($this->getLocation(MOBILE_URL_DIR . "regist/" . DIR_INDEX_URL, $param));
+                        $this->objDisplay->redirect($this->getLocation(MOBILE_URL_DIR . "regist/" . DIR_INDEX_URL, $param));
                         exit;
                     }
 
@@ -639,7 +639,7 @@ class LC_Page_Entry extends LC_Page {
                     $objMail->sendMail();
 
                     // 完了ページに移動させる。
-                    $this->sendRedirect($this->getLocation("./complete.php"), true);
+                    $this->objDisplay->redirect($this->getLocation("./complete.php"));
                     exit;
                 }
             }

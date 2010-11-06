@@ -85,7 +85,7 @@ class LC_Page_Regist extends LC_Page {
                 $objCustomer->setLogin($arrRet[0]['email']);
                 $etc_val['ci'] = $arrRet[0]['customer_id'];
                 $_SERVER['QUERY_STRING'] = NULL;
-                $this->sendRedirect($this->getLocation("./complete.php", $etc_val));
+                $this->objDisplay->redirect($this->getLocation("./complete.php", $etc_val));
                 exit;
             }
 
@@ -137,7 +137,7 @@ class LC_Page_Regist extends LC_Page {
                 $objQuery = new SC_Query();
                 $email = $objQuery->get("dtb_customer", "email", "secret_key = ?", array($registSecretKey));
                 $objCustomer->setLogin($email);
-                $this->sendRedirect($this->getLocation("./complete.php"), true);
+                $this->objDisplay->redirect($this->getLocation("./complete.php"));
                 exit;
             }
 

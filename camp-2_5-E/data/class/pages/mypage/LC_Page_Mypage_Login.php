@@ -75,7 +75,7 @@ class LC_Page_Mypage_Login extends LC_Page {
 
         // ログイン判定
         if($objCustomer->isLoginSuccess()) {
-            $this->sendRedirect($this->getLocation(DIR_INDEX_URL, array(), true));
+            $this->objDisplay->redirect($this->getLocation(DIR_INDEX_URL, array(), true));
             exit;
         } else {
             // クッキー判定(メールアドレスをクッキーに保存しているか）

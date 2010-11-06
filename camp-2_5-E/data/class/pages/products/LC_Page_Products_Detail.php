@@ -226,12 +226,12 @@ class LC_Page_Products_Detail extends LC_Page {
                         $objSiteSess->setRegistFlag();
                         $objCartSess->saveCurrentCart($objSiteSess->getUniqId());
 
-                        $this->sendRedirect($this->getLocation(
+                        $this->objDisplay->redirect($this->getLocation(
                             URL_DIR . 'user_data/gmopg_oneclick_confirm.php', array(), true));
                         exit;
                     }
 
-                    $this->sendRedirect($this->getLocation(URL_CART_TOP));
+                    $this->objDisplay->redirect($this->getLocation(URL_CART_TOP));
                     exit;
                 }
                 break;
@@ -439,7 +439,7 @@ class LC_Page_Products_Detail extends LC_Page {
                 }
 
                 $objCartSess->addProduct(array($_POST['product_id'], $product_class_id, $classcategory_id1, $classcategory_id2), $this->objFormParam->getValue('quantity'));
-                $this->sendRedirect($this->getLocation(MOBILE_URL_CART_TOP), true);
+                $this->objDisplay->redirect($this->getLocation(MOBILE_URL_CART_TOP));
                 exit;
             }
             break;
