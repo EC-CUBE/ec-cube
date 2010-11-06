@@ -72,6 +72,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page {
         SC_Utils_Ex::sfIsSuccess(new SC_Session);
         $objView = new SC_AdminView();
         $this->initForm();
+        $arrPlugins = array();
         switch($this->objForm->getValue('mode')) {
             // PHP INFOを表示
             case 'install':
