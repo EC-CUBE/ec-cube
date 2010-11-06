@@ -49,5 +49,8 @@ class SC_Response{
       $this->header[$name] = $value;    
     }
     
+    function containsHeader(String $name){
+        return isset($this->header[$name]);
+    }
 
 }
