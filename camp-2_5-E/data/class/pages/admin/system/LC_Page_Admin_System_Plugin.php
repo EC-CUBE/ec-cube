@@ -97,7 +97,19 @@ class LC_Page_Admin_System_Plugin extends LC_Page {
         $objView->assignobj($this);
         $objView->display(MAIN_FRAME);
     }
-
+/*
+    CREATE TABLE dtb_plugin (
+  plugin_id INT NOT NULL,
+  plugin_name VARCHAR(255) NOT NULL DEFAULT "",
+  enable INT NOT NULL DEFAULT 0,
+  del_flg INT NOT NULL DEFAULT 0,
+  class_name VARCHAR(255) NOT NULL DEFAULT NULL,
+  create_date DATETIME NOT NULL,
+  update_date DATETIME NOT NULL,
+  PRIMARY KEY (plugin_id)
+) TYPE=InnoDB;
+  */  
+    
     function getPluginOnFilesystem(){
         $dir = DATA_PATH."plugin/";
         if($dh =  opendir($dir)){
