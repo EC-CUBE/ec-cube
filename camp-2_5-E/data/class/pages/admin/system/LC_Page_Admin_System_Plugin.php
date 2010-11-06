@@ -74,10 +74,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page {
         $this->initForm();
         switch($this->objForm->getValue('mode')) {
         
-            
-            
-            
-        
+                
         // PHP INFOを表示
         case 'info':
             phpinfo();
