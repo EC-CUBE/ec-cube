@@ -1252,9 +1252,9 @@ CREATE TABLE dtb_bkup (
 CREATE TABLE "dtb_plugin" (
   id INT NOT NULL,
   name text NOT NULL DEFAULT "",
-  enable int2 NOT NULL DEFAULT 0,
-  del_flg int2 NOT NULL DEFAULT 0,
-  class_name text NOT NULL DEFAULT NULL,
+  enable INT NOT NULL DEFAULT 0,
+  del_flg INT NOT NULL DEFAULT 0,
+  class_name TEXT NOT NULL DEFAULT NULL,
   create_date DATETIME NOT NULL,
   update_date DATETIME NOT NULL
 )
