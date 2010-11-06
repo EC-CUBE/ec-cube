@@ -70,7 +70,7 @@ class LC_Page_Admin_Products_Preview extends LC_Page {
         $this->arrDELIVERYDATE = $masterData->getMasterData("mtb_delivery_date");
         $this->arrRECOMMEND = $masterData->getMasterData("mtb_recommend");
         
-        $this->tpl_mainpage = "products/detail.tpl";
+        $this->tpl_mainpage = "detail.tpl";
     }
 
     /**
