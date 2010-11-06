@@ -33,7 +33,7 @@ class TestPlugin1 extends SC_Plugin {
 
     }
 
-    public function install(){
+    function install(){
         $objQuery = new SC_Query();
         $arrPlugins = $objQuery->get("dtb_plugin", "plugin_id", "plugin_name = ?",array($name));
         $data = array(
