@@ -46,7 +46,7 @@
         <!--{if $plugins[data] == null }-->
           <input type="button" name="install" value="install" />
         <!--{else}-->
-          
+          <!--{if $plugins[data]}-->
         <!--{endif}-->
       </td>
       <td></td>
