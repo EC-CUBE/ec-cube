@@ -107,6 +107,13 @@ class LC_Page {
     function process() {}
 
     /**
+     * Page のプロセス.(モバイル）
+     *
+     * @return void
+     */
+    function mobileProcess() {}
+
+    /**
      * Page のアクション.
      *
      * @return void
