@@ -5,6 +5,7 @@ class SC_Display{
     
     var $device;
 
+    var $autoSet;
     
     // TODO php4を捨てたときに ここのコメントアウトを外してね。
     /*
@@ -13,9 +14,10 @@ class SC_Display{
      * const('PC',4);
      */
     
-    function SC_Display($autoGenerateHttpHeaders = false){
+    function SC_Display($autoGenerateHttpHeaders = true){
         require_once(CLASS_EX_PATH."/SC_Response_Ex.php");
         $this->response = new SC_Response_Ex();
+        $this->autoSet = $autoGenerateHttpHeaders;
     }
 
 
@@ -47,7 +49,7 @@ class SC_Display{
      */
     function detectDevice(){
         $nu = Net_UserAgent_Mobile::factory();
-
+        if(this.)
         
     }
 
