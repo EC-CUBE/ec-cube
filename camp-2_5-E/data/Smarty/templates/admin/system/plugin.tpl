@@ -21,6 +21,7 @@
       <td><!--{$plugins[data].plugin_name|escape}--></td>
       <td>
         <!--{if $plugins[data].create_date == null }-->
+          <form action=""
           <input type="button" name="install" value="install" onclick="" />
         <!--{else}-->
           <!--{if $plugins[data].enable == 1}-->
