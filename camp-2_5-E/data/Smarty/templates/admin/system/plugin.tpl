@@ -37,7 +37,7 @@
       <th>有効/無効</th>
       <th>設定</th>
     </tr>
-    <!--{section name=data loop=$list_data}-->
+    <!--{section name=data loop=$plugins}-->
     <!--▼メンバー<!--{$smarty.section.data.iteration}-->-->
     <tr>
       <!--{assign var="auth" value=$list_data[data].authority}--><td><!--{$arrAUTHORITY[$auth]|escape}--></td>
