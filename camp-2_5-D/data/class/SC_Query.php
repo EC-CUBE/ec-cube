@@ -774,7 +774,20 @@ class SC_Query {
      * @return MDB2_Result 結果セットのインスタンス
      */
     function execute(&$sth, $arrVal = array()) {
+        $timeStart = SC_Utils_Ex::sfMicrotimeFloat();
         $affected =& $sth->execute($arrVal);
+
+        // 一定以上時間かかったSQLの場合、ログ出力する。
+        if(defined('SQL_QUERY_LOG_MODE') && SQL_QUERY_LOG_MODE == true) {
+            $timeEnd = SC_Utils_Ex::sfMicrotimeFloat();;
+            $timeExecTime = $timeEnd - $timeStart;
+            if(defined('SQL_QUERY_LOG_MIN_EXEC_TIME') && $timeExecTime >= (float)SQL_QUERY_LOG_MIN_EXEC_TIME) {
+                //$logMsg = sprintf("SQL_LOG [%.2fsec]\n%s", $timeExecTime, $this->getLastQuery(false));
+                $logMsg = sprintf("SQL_LOG [%.2fsec]\n%s", $timeExecTime, $sth->query);
+                GC_Utils_Ex::gfPrintLog($logMsg);
+            }
+        }
+
         if (PEAR::isError($affected)) {
             $sql = isset($sth->query) ? $sth->query : '';
             if (!$this->force_run) {
