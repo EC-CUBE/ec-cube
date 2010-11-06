@@ -83,7 +83,7 @@ CREATE TABLE "dtb_plugin" (
 WITH (OIDS=FALSE);
 ALTER TABLE "dtb_plugin" ADD CONSTRAINT "dtb_plugin_pkey" PRIMARY KEY ("id");    
 SQL;
-//        $query->query($sql);
+        $query->query($sql);
         
         exit;
         SC_Utils_Ex::sfIsSuccess(new SC_Session);
