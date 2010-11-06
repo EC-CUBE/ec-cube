@@ -36,9 +36,9 @@ class SC_Response{
 
     }
 
-    function setResponseCode()
+    function setResponseCode(int $code)
     {
-
+        
     }
 
     function setResposeBody(String $body)
