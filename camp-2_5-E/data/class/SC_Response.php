@@ -80,8 +80,9 @@ class SC_Response{
         // HTTPのヘッダ
         header('HTTP/1.1 '.$this->statuscode.' '.$this->statusTexts[$this->statuscode]);
         foreach ($this->header as $name => $head){
-          header(''$head);
+          header($name.': '.$head);
         }
+        
     }
 
 
