@@ -1257,9 +1257,8 @@ CREATE TABLE "dtb_plugin" (
   class_name TEXT NOT NULL DEFAULT NULL,
   create_date DATETIME NOT NULL,
   update_date DATETIME NOT NULL,
-  PRIMARY KEY (id);
+  PRIMARY KEY (plugin_id);
 ) TYPE=InnoDB;
-ALTER TABLE "dtb_plugin" ADD CONSTRAINT "dtb_plugin_pkey" PRIMARY KEY ("pluginid");
 
 
 CREATE INDEX dtb_customer_mobile_phone_id_key ON dtb_customer (mobile_phone_id(64));
