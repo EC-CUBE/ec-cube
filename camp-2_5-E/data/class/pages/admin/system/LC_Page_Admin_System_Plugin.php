@@ -84,15 +84,8 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin {
                 $plugin = new $name();
                 if(count($arrPlugins) == 0){
                     //新規インストール
-                    
-                    $data = array(
-                      'plugin_name' => $objForm->getValue('plugin_name'),
-                      'path' => realpath(DATA_DIR.'/plugin/'.$objForm->getValue('plugin_name').'/'),
-                    'enable' => '1',
-                    'del_flg' => '0',
-                  'class_name' => $objForm->getValue('plugin_name'),
+                    $plugin->install();
 
-                    );
                     $objQuery->insert("dtb_plugin", $data);
                 }else{
                     //再インストール
