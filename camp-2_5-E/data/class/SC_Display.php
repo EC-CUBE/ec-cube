@@ -12,7 +12,6 @@ class SC_Display{
      * @var SC_View
      */
     var $view;
-
         
     var $deviceSeted = false;
     
@@ -50,7 +49,7 @@ class SC_Display{
             $this->setDevice($device);
         }
         $this->assignobj($page);
-        $this->response->setResposeBody($this->view->fetch($page->getTemplate()));
+        $this->response->setResposeBody($this->view->getResponse($page->getTemplate()));
     }
     
     function redirect($location){

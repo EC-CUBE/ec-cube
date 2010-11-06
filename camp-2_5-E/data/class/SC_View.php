@@ -117,8 +117,33 @@ class SC_View {
     }
 
     // テンプレートの処理結果を取得
-    function fetch($template) {
+    function fetch($template, $no_error=false) {
         return $this->_smarty->fetch($template);
+    }
+
+    /**
+     * SC_Display用にレスポンスを返す
+     * @global string $GLOBAL_ERR
+     * @param array $template
+     * @param boolean $no_error
+     * @return string
+     */
+    function getResponse($template, $no_error = false) {
+        if(!$no_error) {
+            global $GLOBAL_ERR;
+            if(!defined('OUTPUT_ERR')) {
+                // GLOBAL_ERR を割り当て
+                $this->assign("GLOBAL_ERR", $GLOBAL_ERR);
+                define('OUTPUT_ERR','ON');
+            }
+        }
+        $res =  $this->_smarty->fetch($template);
+        if(ADMIN_MODE == '1' || true) {
+            $time_end = SC_Utils_Ex::sfMicrotimeFloat();
+            $time = $time_end - $this->time_start;
+            $res .= '処理時間: ' . sprintf('%.3f', $time) . '秒';
+        }
+        return $res;
     }
 
     // テンプレートの処理結果を表示
@@ -171,8 +196,6 @@ class SC_View {
     function debug($var = true){
         $this->_smarty->debugging = $var;
     }
-
-
 }
 
 class SC_AdminView extends SC_View{
