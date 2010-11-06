@@ -28,7 +28,6 @@ abstract class SC_Plugin
     }
 
     protected function getInstallSQL(){
-
     }
 
     protected function getUninstallSQL(){
