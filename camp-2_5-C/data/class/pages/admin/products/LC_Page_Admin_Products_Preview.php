@@ -111,7 +111,7 @@ class LC_Page_Admin_Products_Preview extends LC_Page {
         // パラメータ情報の初期化
         $this->lfInitParam();
         // POST値の取得
-        $this->objFormParam->setParam($_POST);
+        $this->objFormParam->setParam($_SESSION['preview']);
 
         // ファイル管理クラス
         $this->objUpFile = new SC_UploadFile(IMAGE_TEMP_DIR, IMAGE_SAVE_DIR);
