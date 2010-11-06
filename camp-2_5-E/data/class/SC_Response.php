@@ -33,7 +33,7 @@ class SC_Response{
 
     function sendHeader(){
         foreach ($this->header as $head){
-
+          
         }
     }
 
