@@ -83,6 +83,29 @@ div#headerInternal {
 	height: 50px;
 }
 
+/* グローバルナビ
+----------------------------------------------- */
+div#glovalNavi {
+	width: 895px;
+	height: 120px;
+	padding: 0px 20px;
+	background: url("../img/header/navi_bg.jpg") repeat-x;
+}
+
+div#glovalNavi ul li{
+	height: 45px;
+	float: left;
+	padding-right: 20px;
+	margin-right: 20px;
+	font-size: 110%;
+	font-weight: bold;
+	background: url("../img/header/navi_bg_line.jpg") no-repeat right;
+}
+
+div#glovalNavi ul li p{
+	padding-top: 10px;
+}
+
 
 /* フロート解除
 ----------------------------------------------- */
