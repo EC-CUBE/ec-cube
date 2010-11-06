@@ -30,6 +30,7 @@ class SC_Response{
     function response(){
         
     }
+    function setContentLength;
 
     function setContentType(String $contentType){
 
