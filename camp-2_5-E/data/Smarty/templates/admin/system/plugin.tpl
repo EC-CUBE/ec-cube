@@ -23,6 +23,7 @@
       <td><!--{$plugins[data].plugin_name|escape}--></td>
       <td>
         <!--{if $plugins[data].create_date == null }-->
+        <input type="hidden" name="plugin_name" value="" />
            <input type="button" name="install" value="install" onclick="fnModeSubmit('install','product_name','<!--{$plugins[data].plugin_name}-->');" />
         <!--{else}-->
           <!--{if $plugins[data].enable == 1}-->
