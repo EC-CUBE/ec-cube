@@ -44,6 +44,8 @@
       <td><!--{$plugins[data].plugin_name|escape}--></td>
       <td>
         <!--{if $plugins[data] == null }-->
+          
+        <!--{else}-->
         
         <!--{endif}-->
       </td>
