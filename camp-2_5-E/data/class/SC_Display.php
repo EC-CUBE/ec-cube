@@ -57,7 +57,7 @@ class SC_Display{
         }else{
             $retDevice = 4;
         }
-        
+
         if($this->autoSet){
             $this->setDevice($retDevice);
         }
@@ -86,11 +86,10 @@ class SC_Display{
 
     }
 
-}
 
-function assign(LC_Page $page){
+    function assign(LC_Page $page){
 
-}
+    }
 
 
 }
