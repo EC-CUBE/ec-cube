@@ -24,7 +24,7 @@
       <td>
         <!--{if $plugins[data].create_date == null }-->
         <input type="hidden" name="plugin_name" value="" />
-           <input type="button" name="install" value="install" onclick="fnModeSubmit('install','plugin_name','<!--{$plugins[data].plugin_name}-->');" />
+           <input type="button" name="install" value="install" onclick="fnModeSubmit('install','<!--{$plugins[data].plugin_name}-->','plugin_name');" />
         <!--{else}-->
           <!--{if $plugins[data].enable == 1}-->
           <input type="button" name="disable" value="disable" onclick="fnModeSubmit('disable')" />
