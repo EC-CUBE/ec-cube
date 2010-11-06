@@ -1253,17 +1253,3 @@ CREATE TABLE dtb_index_list(
     recommend_flg int2 NOT NULL DEFAULT 0,
     recommend_comment text
 );
-
-CREATE INDEX dtb_customer_mobile_phone_id_key ON dtb_customer (mobile_phone_id);
-CREATE INDEX dtb_products_class_product_id_key ON dtb_products_class(product_id);
-CREATE INDEX dtb_order_detail_product_id_key ON dtb_order_detail(product_id);
-CREATE INDEX dtb_send_customer_customer_id_key ON dtb_send_customer(customer_id);
-
-CREATE INDEX dtb_mobile_ext_session_id_param_key_key ON dtb_mobile_ext_session_id (param_key);
-CREATE INDEX dtb_mobile_ext_session_id_param_value_key ON dtb_mobile_ext_session_id (param_value);
-CREATE INDEX dtb_mobile_ext_session_id_url_key ON dtb_mobile_ext_session_id (url);
-CREATE INDEX dtb_mobile_ext_session_id_create_date_key ON dtb_mobile_ext_session_id (create_date);
-
-CREATE INDEX dtb_mobile_kara_mail_token_key ON dtb_mobile_kara_mail (token);
-CREATE INDEX dtb_mobile_kara_mail_create_date_key ON dtb_mobile_kara_mail (create_date);
-CREATE INDEX dtb_mobile_kara_mail_receive_date_key ON dtb_mobile_kara_mail (receive_date);

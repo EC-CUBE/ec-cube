@@ -135,6 +135,7 @@ case 'step3':
 
     // テーブルの作成
     $objPage->arrErr = lfExecuteSQL("./sql/create_table_".$arrRet['db_type'].".sql", $dsn);
+
     if(count($objPage->arrErr) == 0) {
         $objPage->tpl_message.="○：テーブルの作成に成功しました。<br>";
     } else {
@@ -159,6 +160,16 @@ case 'step3':
             $objPage->tpl_message.="○：初期データの作成に成功しました。<br>";
         } else {
             $objPage->tpl_message.="×：初期データの作成に失敗しました。<br>";
+        }
+    }
+
+    // インデックスの作成
+    if(count($objPage->arrErr) == 0){
+        $objPage->arrErr = lfCreateIndex();
+        if(count($objPage->arrErr) == 0) {
+            $objPage->tpl_message.="○：初期インデックスの作成に成功しました。<br>";
+        } else {
+            $objPage->tpl_message.="×：初期インデックスの作成に失敗しました。<br>";
         }
     }
 
@@ -784,6 +795,19 @@ function lfExecuteSQL($filepath, $dsn, $disp_err = true) {
     return $arrErr;
 }
 
+// SQL文の実行
+function lfCreateIndex(){
+    $objQuery = new SC_Query();
+
+    $arrRet = $objQuery->select("*", "dtb_index_list");
+    for ($i=0; $i<count($arrRet); $i++){
+        if ($arrRet[$i]["recommend_flg"] == 1){
+            $index_name = $arrRet[$i]["table_name"]."_".$arrRet[$i]["column_name"]."_key";
+            $objQuery->createIndex($arrRet[$i]["table_name"], $index_name, array('fields' => array($arrRet[$i]["column_name"] => array())));
+        }
+    }
+}
+
 /**
  * シーケンスを削除する.
  *
@@ -870,7 +894,7 @@ function lfCreateSequence($arrSequences, $dsn) {
 function lfMakeConfigFile() {
     global $objWebParam;
     global $objDBParam;
-    
+
     $normal_url = $objWebParam->getValue('normal_url');
     // 語尾に'/'をつける
     if (!ereg("/$", $normal_url)) {
