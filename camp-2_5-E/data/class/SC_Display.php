@@ -19,7 +19,6 @@ class SC_Display{
     * const('SMARTPHONE',2);
     * const('PC',4);
     */
-
     function SC_Display($setPrevURL=true,$autoGenerateHttpHeaders = true){
         require_once(CLASS_EX_PATH."/SC_Response_Ex.php");
         $this->response = new SC_Response_Ex();
@@ -28,10 +27,11 @@ class SC_Display{
             $this->setPrevURL();
         }
     }
+    
     function setPrevURL(){
-            $objCartSess = new SC_CartSession();
-            $objCartSess->setPrevURL($_SERVER['REQUEST_URI']);
-        
+        $objCartSess = new SC_CartSession();
+        $objCartSess->setPrevURL($_SERVER['REQUEST_URI']);
+
     }
 
 
@@ -56,7 +56,7 @@ class SC_Display{
                 $this->view = new SC_MobileView();
                 break;
             case 2:
-//                $this->view = new
+                //                $this->view = new
                 break;
             case 4:
                 $this->view = new SC_SiteView();
@@ -92,11 +92,11 @@ class SC_Display{
     function assign($val1,$val2){
         $this->view->assign($val1, $val2);
     }
-    
+
     function assignobj($obj){
         $this->view->assignobj($obj);
     }
-    
+
     function assignarray($array){
         $this->view->assignarray($array);
     }
