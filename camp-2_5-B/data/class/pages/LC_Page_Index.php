@@ -63,15 +63,12 @@ class LC_Page_Index extends LC_Page {
      */
     function process() {
 
-        $objView = new SC_SiteView();
+        $this->objView = new SC_SiteView();
 
         // レイアウトデザインを取得
         $layout = new SC_Helper_PageLayout_Ex();
         $layout->sfGetPageLayout($this, false, "index.php");
         $this->tpl_title = '';
-
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
     }
 
     /**

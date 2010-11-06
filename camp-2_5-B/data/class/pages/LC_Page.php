@@ -72,6 +72,9 @@ class LC_Page {
     /** トランザクションID */
     var $transactionid;
 
+    /**  */
+    var $site_frame;
+
     // }}}
     // {{{ functions
 
@@ -85,6 +88,7 @@ class LC_Page {
         // XXX すべてのページで宣言するべき
         $layout = new SC_Helper_PageLayout_Ex();
         $layout->sfGetPageLayout($this, false);
+        $this->tpl = SITE_FRAME;
     }
 
     /**
@@ -93,6 +97,35 @@ class LC_Page {
      * @return void
      */
     function process() {}
+
+    /**
+     *  Page の表示プロセス
+     *
+     * @return void
+     */
+    function display() {
+echo "\$this->tpl = $this->tpl<br />\n";
+echo "LC_Page::disp<br />\n";
+
+        // SC_Helper_Pagin_Ex::process();
+        $this->objView->assignobj($this);
+
+        // campaign
+        #if (is_object($this->objCampaignSess)) {
+            #$this->tpl = $this->objCampaignSess->getPageFrame();
+        #}
+
+        if (!empty($this->redirect_url)) {
+echo "redirect<br />\n";
+            $this->sendRedirect($this->redirect_url);
+        } elseif(!empty($this->download)) {
+echo "download<br />\n";
+        } else {
+echo "default<br />\n";
+            $this->objView->display($this->tpl);
+        }
+
+    }
 
     /**
      * デストラクタ.

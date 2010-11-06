@@ -69,11 +69,11 @@ class LC_Page_Cart extends LC_Page {
      */
     function process() {
 
-        $objView = new SC_SiteView(false);
+        $this->objView = new SC_SiteView(false);
         $objCartSess = new SC_CartSession();
         $objSiteSess = new SC_SiteSession();
-        $objCampaignSess = new SC_CampaignSession();
-        $objSiteInfo = $objView->objSiteInfo;
+        $this->objCampaignSess = new SC_CampaignSession();
+        $objSiteInfo = $this->objView->objSiteInfo;
         $objCustomer = new SC_Customer();
         $objDb = new SC_Helper_DB_Ex();
         $objProduct = new SC_Product();
@@ -125,8 +125,10 @@ class LC_Page_Cart extends LC_Page {
                 // カートを購入モードに設定
                 $objCartSess->saveCurrentCart($uniqid, $cartKey);
                 // 購入ページへ
-                $this->sendRedirect(URL_SHOP_TOP);
-                exit;
+                // $this->sendRedirect(URL_SHOP_TOP);
+                // exit;
+                $this->redirect_url = URL_SHOP_TOP;
+                return;
             }
             break;
         default:
@@ -158,9 +160,9 @@ class LC_Page_Cart extends LC_Page {
         // 前頁のURLを取得
         $this->tpl_prev_url = $objCartSess->getPrevURL();
 
-        $objView->assignobj($this);
+        #$this->objView->assignobj($this);
         // フレームを選択(キャンペーンページから遷移なら変更)
-        $objCampaignSess->pageView($objView);
+        #$this->objCampaignSess->pageView($this->objView);
     }
 
     /**
