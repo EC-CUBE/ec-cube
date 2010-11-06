@@ -85,17 +85,8 @@ class SC_Response{
     }
 
 
-    function setContentLength(int $length){
-      
-    }
-
-
     function setContentType(String $contentType){
         $this->header['Content-Type'] = $contentType;
-    }
-
-    function setResponseCode(int $code){
-
     }
 
     function setResposeBody(String $body){
