@@ -440,7 +440,6 @@ function selectAll(target) {
   </table>
   </div>
 
-<!--{*
   <div class="btn-foot">
     <!--{if count($arrSearchHidden) > 0}-->
     <!--▼検索結果へ戻る-->
@@ -449,6 +448,5 @@ function selectAll(target) {
     <!--{/if}-->
     <button type="button" onClick="fnChangeAction('<!--{$smarty.const.URL_DIR}-->admin/products/product_preview.php'); fnModeSubmit('','',''); return false;">プレビュー</button><button type="submit" onClick="selectAll('category_id')"><span>確認ページへ</span></button>
   </div>
-*}-->
 </div>
 </form>
