@@ -61,6 +61,7 @@ class SC_Display{
             case 1:
                 $this->response->setContentType("text/html");
                 $this->view = new SC_MobileView();
+                
                                 
                 break;
             case 2:
