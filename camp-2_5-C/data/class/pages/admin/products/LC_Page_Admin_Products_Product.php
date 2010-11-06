@@ -235,7 +235,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
             case 'preview':
             	$objCartSess = new SC_CartSession();
             	$objCartSess->addPreview($this->arrForm);
-            	print_r($_SESSION);
+            	print_r($this->previewSession);
                 echo "window.open('/html/admin/products/product_preview.php','test','100','100');";
                 $this->lfProductPage();
             
