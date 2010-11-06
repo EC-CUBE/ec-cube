@@ -95,7 +95,10 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin {
                 $plugin->install();
                 break;
             case 'disable':
-              
+              $name = $objForm->getValue('plugin_name');
+                require_once(DATA_PATH.'/'.$name.'/'.$name.'.php');
+                $plugin = new $name();
+                $plugin->disable();
                 break;
             default:
                 $plugins = SC_Helper_Plugin_Ex::getAllPlugin();
