@@ -16,10 +16,8 @@ abstract class SC_Plugin
 
     public function __construct(){
         if(!defined(PLUGIN_PATH)){
-            define("PLUGIN_PATH",HTML_PATH."/user_data/");
+            define("PLUGIN_PATH",HTML_PATH."/user_data/plugins/");
         }
-        
-        
         
         $this->init();
     }
