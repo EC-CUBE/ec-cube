@@ -41,6 +41,9 @@ class SC_Response{
     function setResposeBody(String $body){
 
     }
-  
+ 
+    function addDateHdeader(String $name, $date){
+        
+    }
 
 }
