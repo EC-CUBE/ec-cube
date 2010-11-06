@@ -49,8 +49,9 @@ class SC_Display{
      */
     function detectDevice(){
         $nu = Net_UserAgent_Mobile::factory();
-        if(this.)
-        
+        if($this->autoSet){
+            
+        }
     }
 
     function assign(LC_Page $page){
