@@ -152,8 +152,6 @@ class LC_Page_Admin_Products_Preview extends LC_Page {
 
         $objProduct = new SC_Product();
         $objProduct->setProductsClassByProductIds(array($product_id));
-        
-        ////
 
         // 規格1クラス名
         $this->tpl_class_name1 = $objProduct->className1[$product_id];
@@ -169,8 +167,7 @@ class LC_Page_Admin_Products_Preview extends LC_Page {
         // 規格2が設定されている
         $this->tpl_classcat_find2 = $objProduct->classCat2_find[$product_id];
         
-        var_dump('HERE');
-        exit;
+        ////
 
         $this->tpl_stock_find = $objProduct->stock_find[$product_id];
         $this->tpl_product_class_id = $objProduct->classCategories[$product_id]['']['']['product_class_id'];
@@ -181,6 +178,9 @@ class LC_Page_Admin_Products_Preview extends LC_Page {
         $this->tpl_javascript .= 'classCategories = ' . $objJson->encode($objProduct->classCategories[$product_id]) . ';';
         $this->tpl_javascript .= 'function lnOnLoad(){' . $this->js_lnOnload . '}';
         $this->tpl_onload .= 'lnOnLoad();';
+        
+        var_dump('HERE');
+        exit;
 
         // 商品IDをFORM内に保持する。
         $this->tpl_product_id = $product_id;
