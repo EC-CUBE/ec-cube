@@ -60,7 +60,9 @@ class SC_Display{
         return;
     }
     
-    function 
+    function addHeader(String $name,String $value){
+        
+    }
 
     /**
      * デバイス毎の出力方法を自動で変更する、ファサード
