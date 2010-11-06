@@ -56,7 +56,7 @@ class TestPlugin1 extends SC_Plugin_Ex {
 
     public function uninstall($plugin_id){
         $objQuery = new SC_Query();
-
+        $objQuery->update('dtb_plugin', array('del_flg'=>1), $arrValIn, $arrRawSql, $arrRawSqlVal)
     }
 
     /**
