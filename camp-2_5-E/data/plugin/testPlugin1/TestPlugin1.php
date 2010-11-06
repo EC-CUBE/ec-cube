@@ -35,7 +35,6 @@ class TestPlugin1 extends SC_Plugin_Ex {
 
     public function install(){
         $objQuery = new SC_Query();
-
         $arrPlugins = $objQuery->get("dtb_plugin", "plugin_id", "plugin_name = ?",array($name));
         if(count($arrPlugins) == 0){
             $data = array(
@@ -48,6 +47,7 @@ class TestPlugin1 extends SC_Plugin_Ex {
 
             );
         }
+        
         $objQuery->insert("dtb_plugin", $data);
 
 

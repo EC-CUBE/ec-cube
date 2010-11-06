@@ -81,13 +81,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin {
                 $name = $objForm->getValue('plugin_name');
                 require_once(DATA_PATH.'/'.$name.'/'.$name.'.php');
                 $plugin = new $name();
-                if(count($arrPlugins) == 0){
-                    //新規インストール
-                    $plugin->install();
-                }else{
-                    //再インストール
-
-                }
+                $plugin->install();
                 break;
             case 'uninstall':
 
