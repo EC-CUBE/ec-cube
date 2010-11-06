@@ -27,20 +27,18 @@ class SC_Response{
     }
 
     function response(){
-      
+
     }
 
     function setContentType(String $contentType){
 
     }
 
-    function setResponseCode(int $code)
-    {
+    function setResponseCode(int $code){
 
     }
 
-    function setResposeBody(String $body)
-    {
+    function setResposeBody(String $body){
 
     }
 
