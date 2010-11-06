@@ -48,10 +48,11 @@ class TestPlugin1 extends SC_Plugin_Ex {
 
         if(count($arrPlugins) == 0){
             
-        }
 
         $objQuery->insert("dtb_plugin", $data);
-
+        }else{
+            
+        }
 
     }
 
