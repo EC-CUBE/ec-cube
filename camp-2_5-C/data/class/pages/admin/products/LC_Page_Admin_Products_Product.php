@@ -237,8 +237,8 @@ class LC_Page_Admin_Products_Product extends LC_Page {
             	$objCartSess->addPreview($this->arrForm);
             	$_SESSION[preview] = $this->arrForm;
             	print_r($_SESSION);
-                $this->tpl_javascript = "window.open('/html/admin/products/product_preview.php','test','100','100');";
-                print_r($this->tpl_javascript);
+                $this->tpl_onload = "window.open('URL_DIR . admin/products/product_preview.php','test','100','100');";
+                print_r($this->onload);
                 $this->lfProductPage();
             
             	break;
