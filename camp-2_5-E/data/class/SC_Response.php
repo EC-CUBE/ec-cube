@@ -37,7 +37,7 @@ class SC_Response{
 
 
     function setContentType(String $contentType){
-      $this->header['']
+      $this->header['Content-Type'] = "text/plain";
     }
 
     function setResponseCode(int $code){
