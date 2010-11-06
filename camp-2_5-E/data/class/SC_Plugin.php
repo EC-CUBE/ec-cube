@@ -56,7 +56,8 @@ class SC_Plugin
 
     function disablePlugin(){
       $objQuery = new SC_Query();
-      $name = preg_replace("//", $replacement, $subject)__FILE__
+      $name = preg_replace("/.php/", "", __FILE__);
+      
       
     }
 
