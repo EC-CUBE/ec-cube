@@ -366,12 +366,6 @@ INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES 
 INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (370, 'dtb_customer', 'cell02', '携帯電話番号2');
 INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (371, 'dtb_customer', 'cell03', '携帯電話番号3');
 INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (372, 'dtb_customer', 'mobile_phone_id', '携帯端末ID');
-INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (373, 'dtb_customer_mail_temp', 'email', 'メールアドレス');
-INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (374, 'dtb_customer_mail_temp', 'mail_flag', '1:HTML 2:TEXT 3:希望しない(停止)');
-INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (375, 'dtb_customer_mail_temp', 'temp_id', '一時ＩＤ');
-INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (376, 'dtb_customer_mail_temp', 'end_flag', '0:未処理 1:処理済');
-INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (377, 'dtb_customer_mail_temp', 'update_date', '更新日');
-INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (378, 'dtb_customer_mail_temp', 'create_data', '作成日');
 INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (379, 'dtb_order', 'order_id', '注文番号');
 INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (380, 'dtb_order', 'order_temp_id', '注文一時ID');
 INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (381, 'dtb_order', 'customer_id', '顧客ID(非会員の場合は、0)');

@@ -40,7 +40,7 @@
 //]]>
 </script>
 </head>
-<body onload="preLoadImg('<!--{$TPL_DIR}-->'); <!--{$tpl_onload}-->">
+<body onload="<!--{$tpl_onload}-->">
 <noscript>
   <p>JavaScript を有効にしてご利用下さい.</p>
 </noscript>

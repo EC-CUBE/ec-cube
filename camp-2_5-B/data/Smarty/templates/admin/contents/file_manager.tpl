@@ -34,7 +34,7 @@
 </div>
 <div id="contents-filemanager-nowdir">
   <div id="now_dir">
-    <img src="<!--{$TPL_DIR}-->img/admin/contents/folder_open.gif" alt="フォルダ">
+    <img src="<!--{$TPL_DIR}-->img/contents/folder_open.gif" alt="フォルダ">
     &nbsp;<!--{$tpl_now_file}-->
   </div>
   <div id="file_view">
@@ -47,7 +47,7 @@
       <!--{if !$tpl_is_top_dir}-->
       <tr id="parent_dir" onclick="fnSetFormVal('form1', 'select_file', '<!--{$tpl_parent_dir|escape}-->');fnSelectFile('parent_dir', '#808080');" onDblClick="setTreeStatus('tree_status');fnDbClick(arrTree, '<!--{$tpl_parent_dir|escape}-->', true, '<!--{$tpl_now_dir|escape}-->', true)" style="" onMouseOver="fnChangeBgColor('parent_dir', '#808080');" onMouseOut="fnChangeBgColor('parent_dir', '');">
         <td>
-          <img src="<!--{$TPL_DIR}-->img/admin/contents/folder_parent.gif" alt="フォルダ">&nbsp;..
+          <img src="<!--{$TPL_DIR}-->img/contents/folder_parent.gif" alt="フォルダ">&nbsp;..
         </td>
         <td class="right">&nbsp;</td>
         <td>&nbsp;</td>
@@ -58,9 +58,9 @@
       <tr id="<!--{$id}-->" onclick="fnSetFormVal('form1', 'select_file', '<!--{$arrFileList[cnt].file_path|escape}-->');fnSelectFile('<!--{$id}-->', '#808080');" onDblClick="setTreeStatus('tree_status');fnDbClick(arrTree, '<!--{$arrFileList[cnt].file_path|escape}-->', <!--{if $arrFileList[cnt].is_dir|escape}-->true<!--{else}-->false<!--{/if}-->, '<!--{$tpl_now_dir|escape}-->', false)" style="" onMouseOver="fnChangeBgColor('<!--{$id}-->', '#808080');" onMouseOut="fnChangeBgColor('<!--{$id}-->', '');">
         <td>
           <!--{if $arrFileList[cnt].is_dir}-->
-          <img src="<!--{$TPL_DIR}-->img/admin/contents/folder_close.gif" alt="フォルダ">
+          <img src="<!--{$TPL_DIR}-->img/contents/folder_close.gif" alt="フォルダ">
           <!--{else}-->
-          <img src="<!--{$TPL_DIR}-->img/admin/contents/file.gif">
+          <img src="<!--{$TPL_DIR}-->img/contents/file.gif">
           <!--{/if}-->
           <!--{$arrFileList[cnt].file_name|escape}-->
         </td>

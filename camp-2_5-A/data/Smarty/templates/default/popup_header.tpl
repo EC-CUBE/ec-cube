@@ -34,7 +34,7 @@
 <title><!--{$arrSiteInfo.shop_name}-->/<!--{$subtitle|escape}--></title>
 </head>
 
-<body onload="preLoadImg('<!--{$TPL_DIR}-->'); <!--{$tpl_onload}--> <!--{$tpl_start}-->">
+<body onload="<!--{$tpl_onload}--> <!--{$tpl_start}-->">
 <noscript>
   <p><em>JavaScriptを有効にしてご利用下さい.</em></p>
 </noscript>

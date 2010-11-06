@@ -437,9 +437,6 @@ class LC_Page_Shopping_Complete extends LC_Page {
             if ($objCampaignSess->getIsCampaign()) $sqlval['campaign_id'] = $objCampaignSess->getCampaignId();
         }
 
-        // ゲットの値をインサート
-        //$sqlval = lfGetInsParam($sqlval);
-
         // 受注テーブルの登録
         $objQuery->insert("dtb_order", $sqlval);
 
@@ -628,17 +625,6 @@ class LC_Page_Shopping_Complete extends LC_Page {
             $objDb->sfCategory_Count($objQuery);
         }
 
-    }
-
-    // GETの値をインサート用に整える
-    function lfGetInsParam($sqlVal){
-        $objDb = new SC_Helper_DB_Ex();
-        foreach($_GET as $key => $val){
-            // カラムの存在チェック
-            if($objDb->sfColumnExists("dtb_order", $key)) $sqlVal[$key] = $val;
-        }
-
-        return $sqlVal;
     }
 
     // ステータスを入金済みにする

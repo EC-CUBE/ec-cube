@@ -28,7 +28,7 @@ img {
     border: 0;
 }
 h1 {
-    background: url(../img/admin/contents/subtitle_back.gif) 0 0 repeat-y #818287;
+    background: url(../img/contents/subtitle_back.gif) 0 0 repeat-y #818287;
     border-top: 1px solid #666666;
     height: 30px;
     line-height: 30px;
@@ -85,7 +85,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
     height: 50px;
     margin: 0;
     padding: 0;
-    background: url(../img/admin/header/header_back.jpg) 0 0 repeat-x;
+    background: url(../img/header/header_back.jpg) 0 0 repeat-x;
 }
 #logo {position: absolute; top: 0; left: 0;}
 #header p {
@@ -117,7 +117,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 ----------------------------------------------- */
 #navi, #navi li {
     height: 30px;
-    background: url(../img/admin/header/navi_back.jpg) 0 0 repeat-x;
+    background: url(../img/header/navi_back.jpg) 0 0 repeat-x;
     z-index:90;
 }
 #navi li, #navi li a, #navi li a span {
@@ -137,12 +137,12 @@ a:hover { color: #f9a406; text-decoration: underline; }
     text-decoration: none;
 }
 #navi li a span {padding: 0 8px;}
-#navi li a:hover {background: url(../img/admin/header/navi_on.jpg) left 0 repeat-x;}
-#navi li a:hover span {background: url(../img/admin/header/navi_on_right.jpg) right 0 no-repeat;}
-#navi li.on a {background: url(../img/admin/header/navi_on.jpg) left 0 no-repeat;}
-#navi li.on a span {background: url(../img/admin/header/navi_on_right.jpg) right 0 no-repeat;}
-#navi li.sfhover a {background: url(../img/admin/header/navi_on.jpg) left 0 repeat-x;}
-#navi li.sfhover a span {background: url(../img/admin/header/navi_on_right.jpg) right 0 no-repeat;}
+#navi li a:hover {background: url(../img/header/navi_on.jpg) left 0 repeat-x;}
+#navi li a:hover span {background: url(../img/header/navi_on_right.jpg) right 0 no-repeat;}
+#navi li.on a {background: url(../img/header/navi_on.jpg) left 0 no-repeat;}
+#navi li.on a span {background: url(../img/header/navi_on_right.jpg) right 0 no-repeat;}
+#navi li.sfhover a {background: url(../img/header/navi_on.jpg) left 0 repeat-x;}
+#navi li.sfhover a span {background: url(../img/header/navi_on_right.jpg) right 0 no-repeat;}
 
 #navi li ul {
     position: absolute;
@@ -283,16 +283,16 @@ body > #container {
     top: 50%;
     margin: -125px 0 0 -278px;
     padding: 36px 0 0 0;
-    background: url(../img/admin/contents/admin_login_top.jpg) center top no-repeat;
+    background: url(../img/contents/admin_login_top.jpg) center top no-repeat;
     color: #FFFFFF;
 }
 #login-main form {
     width: 556px;
     height: 172px;
-    background: url(../img/admin/contents/admin_login_back.jpg) center top repeat-x;
+    background: url(../img/contents/admin_login_back.jpg) center top repeat-x;
 }
 #login-main h1 {
-    background: url(../img/admin/contents/admin_login_logo.jpg) 0 0 no-repeat;
+    background: url(../img/contents/admin_login_logo.jpg) 0 0 no-repeat;
     border: none;
     text-indent: -9999em;
     width: 230px;
@@ -303,7 +303,7 @@ body > #container {
     width: 310px;
     height: 172px;
     float: right;
-    background: url(../img/admin/contents/admin_login_right.jpg) right 0 no-repeat;
+    background: url(../img/contents/admin_login_right.jpg) right 0 no-repeat;
 }
 #login-main label {display:block;}
 #login-main input {margin-bottom: 10px;}
@@ -313,7 +313,7 @@ body > #container {
     height: 42px;
     line-height: 42px;
     text-align: center;
-    background: url(../img/admin/contents/admin_login_bottom.jpg) center bottom no-repeat;
+    background: url(../img/contents/admin_login_bottom.jpg) center bottom no-repeat;
 }
 
 #login-error {

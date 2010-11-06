@@ -77,7 +77,7 @@ class LC_Page_Error_SystemError extends LC_Page_Error {
         if (SC_MobileUserAgent::isMobile() && $this->adminPage == false) {
             $objView = new SC_InstallView(MOBILE_TEMPLATE_DIR, MOBILE_COMPILE_DIR);
         } elseif($this->adminPage) {
-            $objView = new SC_InstallView(TEMPLATE_ADMIN_DIR, COMPILE_ADMIN_DIR);
+            $objView = new SC_AdminView();
         } else {
             $objView = new SC_InstallView(TEMPLATE_DIR, COMPILE_DIR);
         }

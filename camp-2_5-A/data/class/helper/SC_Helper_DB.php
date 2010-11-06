@@ -1106,14 +1106,16 @@ __EOS__;
      * @param string $table テーブル名
      * @param string $keyname プライマリーキーのカラム名
      * @param string $valname データ内容のカラム名
+     * @param string $where WHERE句
+     * @param array $arrval プレースホルダ
      * @return array SELECT ボックス用リストの配列
      */
-    function sfGetIDValueList($table, $keyname, $valname) {
+    function sfGetIDValueList($table, $keyname, $valname, $where = '', $arrVal = array()) {
         $objQuery =& SC_Query::getSingletonInstance();
         $col = "$keyname, $valname";
         $objQuery->setWhere("del_flg = 0");
         $objQuery->setOrder("rank DESC");
-        $arrList = $objQuery->select($col, $table);
+        $arrList = $objQuery->select($col, $table, $where, $arrVal);
         $count = count($arrList);
         for($cnt = 0; $cnt < $count; $cnt++) {
             $key = $arrList[$cnt][$keyname];

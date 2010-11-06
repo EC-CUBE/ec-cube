@@ -66,7 +66,6 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page {
     function process() {
         $objView = new SC_AdminView();
         $objSess = new SC_Session();
-        $objQuery = new SC_Query();
 
         // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess($objSess);
