@@ -29,7 +29,9 @@ class SC_Display{
      * @return 
      */
     function detectAgent(){
-              
+      
+        
+        
     }   
     
     function assign(LC_Page $page){
