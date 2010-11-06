@@ -95,8 +95,8 @@ class LC_Page {
         $this->objDisplay = new SC_Display();
 
         // プラグインクラス生成
-        #$this->objPlagin = new SC_Helper_Plugin_Ex();
-        #$this->objPlagin->preProcess($this);
+        $this->objPlugin = new SC_Helper_Plugin_Ex();
+        $this->objPlugin->preProcess($this);
     }
 
     /**
@@ -119,6 +119,9 @@ class LC_Page {
      * @return void
      */
     function sendResponse() {
+        // post-prosess処理(暫定的)
+        $this->objPlugin->process($this);
+
         $this->objDisplay->hoge($this);
         $this->objDisplay->response->response();
     }
