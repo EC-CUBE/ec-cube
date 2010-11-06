@@ -83,7 +83,6 @@ class SC_Response{
         foreach ($this->header as $name => $head){
             header($name.': '.$head);
         }
-
     }
 
 
