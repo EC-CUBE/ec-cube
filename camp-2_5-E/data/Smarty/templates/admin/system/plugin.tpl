@@ -54,7 +54,7 @@
         <!--{/if}-->
       </td>
       <td>
-        <input type="button" name="edit" value="edit" />
+        <input type="button" name="preference" value="preference" />
       </td>
       
       <td align="center"><!--{if $plugins[data].work eq 1}--><input type="radio" name="radio<!--{$smarty.section.data.iteration}-->" value="稼動" onclick="fnChangeRadio(this.name, 1, <!--{$plugins[data].member_id}-->, <!--{$tpl_disppage}-->);" checked /><!--{else}--><input type="radio" name="radio<!--{$smarty.section.data.iteration}-->" value="稼動" onclick="fnChangeRadio(this.name, 1, <!--{$plugins[data].member_id}-->, <!--{$tpl_disppage}-->);"/><!--{/if}--></td>
