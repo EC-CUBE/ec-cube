@@ -79,14 +79,11 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin {
             case 'install':
                 $objQuery = new SC_Query();
                 $name = $objForm->getValue('plugin_name');
-                $arrPlugins = $objQuery->get("dtb_plugin", "plugin_id", "plugin_name = ?",array($name));
                 require_once(DATA_PATH.'/'.$name.'/'.$name.'.php');
                 $plugin = new $name();
                 if(count($arrPlugins) == 0){
                     //新規インストール
                     $plugin->install();
-
-                    $objQuery->insert("dtb_plugin", $data);
                 }else{
                     //再インストール
 
