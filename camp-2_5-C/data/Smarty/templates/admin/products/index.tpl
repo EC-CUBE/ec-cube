@@ -21,8 +21,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<script type="text/javascript" src="/html/user_data/packages/admin/Tween.js"></script>
-<script type="text/javascript" src="/html/user_data/packages/admin/ColorTween.js"></script>
+<script type="text/javascript" src="/html/user_data/packages/admin/js/Tween.js"></script>
+<script type="text/javascript" src="/html/user_data/packages/admin/js/ColorTween.js"></script>
 
 <script type="text/javascript">
 // URLの表示非表示切り替え
