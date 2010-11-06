@@ -98,8 +98,6 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         $this->lfInitDownFile();
         // Hiddenからのデータを引き継ぐ
         $this->objDownFile->setHiddenFileList($_POST);
-        var_dump("HERE");
-        exit;
 
         // ファイル管理クラス
         $this->objUpFile = new SC_UploadFile(IMAGE_TEMP_DIR, IMAGE_SAVE_DIR);

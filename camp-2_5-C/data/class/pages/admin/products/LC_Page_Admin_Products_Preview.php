@@ -115,6 +115,9 @@ class LC_Page_Products_Detail extends LC_Page {
         $this->objUpFile = new SC_UploadFile(IMAGE_TEMP_DIR, IMAGE_SAVE_DIR);
         // ファイル情報の初期化
         $this->lfInitFile();
+        
+        var_dump("HERE");
+        exit;
 
         // ログイン判定
         if ($objCustomer->isLoginSuccess() === true) {
