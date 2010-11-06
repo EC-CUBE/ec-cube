@@ -38,7 +38,8 @@ class SC_SmartphoneUserAgent {
         if (Net_UserAgent_Mobile::isError($objAgent)) {
             return false;
         } else {
-            return SC_SmartphoneUserAgent::isSmartPhone();
+            // SPでかつPC表示OFF
+            return $objAgent->isSmartphone() && !SC_SmartphoneUserAgent::getSmartphonePcFlag();
         }
     }
 
@@ -57,21 +58,22 @@ class SC_SmartphoneUserAgent {
      * @return string
      */
     function getSmartphonePcFlag() {
-        return SC_Session::GetSession('pc_disp');
+        $_SESSION['pc_disp'] = empty($_SESSION['pc_disp']) ? false : $_SESSION['pc_disp'];
+        return $_SESSION['pc_disp'];
     }
 
     /**
      * PC表示ON
      */
     function setPcDsiplayOn() {
-        SC_Session::SetSession('pc_disp', true);
+        $_SESSION['pc_disp'] = true;
     }
 
     /**
      * PC表示OFF
      */
     function setPcDsiplayOff() {
-        SC_Session::SetSession('pc_disp', false);
+        $_SESSION['pc_disp'] = false;
     }
 
     /**
@@ -82,8 +84,7 @@ class SC_SmartphoneUserAgent {
     function sfAutoRedirectSmartphoneSite() {
         // SPでない場合は、処理しない
         if (SC_SmartphoneUserAgent::isNonSmartphone()) return;
-        // SPで、PC表示がtrueの場合は、処理しない
-        if (SC_SmartphoneUserAgent::isSmartphone() && SC_SmartphoneUserAgent::getSphonePcFlag()) return;
+
 
         $url = SC_Utils_Ex::sfIsHTTPS()
             ? SPHONE_SSL_URL
