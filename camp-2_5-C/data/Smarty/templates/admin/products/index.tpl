@@ -228,9 +228,15 @@ function lfnDispChange(){
       <!--{* 在庫 *}-->
       <!--{* XXX 複数規格でかつ、全ての在庫数量が等しい場合は先頭に「各」と入れたれたら良いと思う。 *}-->
       <td rowspan="2">
-        <!--{if $arrProducts[cnt].stock_unlimited_min}-->無制限<!--{else}--><!--{$arrProducts[cnt].stock_min|number_format}--><!--{/if}-->
         <!--{if $arrProducts[cnt].stock_unlimited_min != $arrProducts[cnt].stock_unlimited_max || $arrProducts[cnt].stock_min != $arrProducts[cnt].stock_max}-->
+          <!--{if $arrProducts[cnt].stock_unlimited_min}-->無制限<!--{else}--><!--{$arrProducts[cnt].stock_min|number_format}--><!--{/if}-->
           <br />～ <!--{if $arrProducts[cnt].stock_unlimited_max}-->無制限<!--{else}--><!--{$arrProducts[cnt].stock_max|number_format}--><!--{/if}-->
+        <!--{else}-->
+          <!--{if $arrProducts[cnt].stock_unlimited_min}-->
+            無制限
+          <!--{else}-->
+            <input type="text" name="stock_edit_<!--{$arrProducts[cnt].product_id}-->" size="8" value="<!--{$arrProducts[cnt].stock_min}-->" onchange="jQuery.post('./index.php', {'mode':'stock_edit','stock_edit_id':'<!--{$arrProducts[cnt].product_id}-->','stock_edit_value':this.value}, function(result){if(result!='ok'){alert('エラー：変更できませんでした');};});"">
+          <!--{/if}-->
         <!--{/if}-->
       </td>
       <!--{* 表示 *}-->
