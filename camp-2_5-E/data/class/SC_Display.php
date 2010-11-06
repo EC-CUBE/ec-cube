@@ -46,8 +46,12 @@ class SC_Display{
     function hoge(LC_Page $page){
         $this->assign($page);
         if(!$this->deviceSeted){
-            $this->detectDevice();
+            $device = $this->detectDevice();
+            $this->setDevice($device);
         }
+        
+        
+        
 
     }
 
