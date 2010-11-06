@@ -124,8 +124,6 @@ class LC_Page_Admin_System_Plugin extends LC_Page {
             }
         }
         var_dump($arrPlugins);
-echo "\n\n<br/>#######--------- line is ".__LINE__." on ".__FILE__."--------########<br/>\n\n";
-       
 
     }
 
