@@ -152,8 +152,8 @@ class LC_Page_Admin_Products_Preview extends LC_Page {
 
         $objProduct = new SC_Product();
         $objProduct->setProductsClassByProductIds(array($product_id));
-        var_dump('HERE');
-        exit;
+        
+        ////
 
         // 規格1クラス名
         $this->tpl_class_name1 = $objProduct->className1[$product_id];
@@ -168,6 +168,9 @@ class LC_Page_Admin_Products_Preview extends LC_Page {
         $this->tpl_classcat_find1 = $objProduct->classCat1_find[$product_id];
         // 規格2が設定されている
         $this->tpl_classcat_find2 = $objProduct->classCat2_find[$product_id];
+        
+        var_dump('HERE');
+        exit;
 
         $this->tpl_stock_find = $objProduct->stock_find[$product_id];
         $this->tpl_product_class_id = $objProduct->classCategories[$product_id]['']['']['product_class_id'];
