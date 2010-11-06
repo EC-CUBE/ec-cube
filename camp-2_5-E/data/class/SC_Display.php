@@ -53,7 +53,7 @@ class SC_Display{
     }
     
     function redirect($location){
-        
+        $this->response->sendRedirect($location);
     }
 
     /**
