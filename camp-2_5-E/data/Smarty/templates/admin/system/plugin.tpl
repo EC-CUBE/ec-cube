@@ -49,7 +49,7 @@
           <!--{if $plugins[data].enable == 1}-->
           <input type="button" name="disable" value="disable" />
           <!--{else}-->
-          
+          <input type="button" name="enable" value="enable" /> 
           <!--{endif}-->
         <!--{endif}-->
       </td>
