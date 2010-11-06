@@ -43,7 +43,9 @@ class TestPlugin1 extends SC_Plugin_Ex {
                     'version' => $
 
         );
-
+        $objQuery = new SC_Query();
+        $objQuery->insert("dtb_plugin", $data);
+        
     }
 
     public function uninstall(){
