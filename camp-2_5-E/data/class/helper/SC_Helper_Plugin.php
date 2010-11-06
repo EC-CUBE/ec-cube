@@ -6,7 +6,7 @@ class SC_Helper_Plugin{
      * enableかどうかを判別する
      * インスタンス化
      */
-    public static function load(LC_Page $lcpage){
+    public static function load(LC_Page &$lcpage){
         //データベースからクラス名を読み込む
         $objQuery = new SC_Query();
         $col = "*";
@@ -33,7 +33,7 @@ class SC_Helper_Plugin{
         return $arrPluginList;
     }
 
-    public static function preProcess(LC_Page $lcpage){
+    public static function preProcess(LC_Page &$lcpage){
         //プラグインの名前を判別してページ内で有効なプラグインがあれば実行する
         $arrPluginList = SC_Helper_Plugin::load($lcpage);
        if(count($arrPluginList) > 0){
@@ -48,7 +48,7 @@ class SC_Helper_Plugin{
     /* 読み込んだプラグインの実行用メソッド
      *
      */
-    public static function process(LC_Page $lcpage){
+    public static function process(LC_Page &$lcpage){
         //プラグインの名前を判別してページ内で有効なプラグインがあれば実行する
         $arrPluginList = SC_Helper_Plugin::load($lcpage);
         if(count($arrPluginList) > 0){
