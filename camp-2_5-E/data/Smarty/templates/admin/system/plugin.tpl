@@ -53,7 +53,9 @@
           <!--{/if}-->
         <!--{/if}-->
       </td>
-      <td></td>
+      <td>
+        <input type="button" name="edit" value="edit" />
+      </td>
       
       <td align="center"><!--{if $plugins[data].work eq 1}--><input type="radio" name="radio<!--{$smarty.section.data.iteration}-->" value="稼動" onclick="fnChangeRadio(this.name, 1, <!--{$plugins[data].member_id}-->, <!--{$tpl_disppage}-->);" checked /><!--{else}--><input type="radio" name="radio<!--{$smarty.section.data.iteration}-->" value="稼動" onclick="fnChangeRadio(this.name, 1, <!--{$plugins[data].member_id}-->, <!--{$tpl_disppage}-->);"/><!--{/if}--></td>
       <td align="center"><!--{if $plugins[data].work eq 0}--><input type="radio" name="radio<!--{$smarty.section.data.iteration}-->" value="非稼動"  onclick="fnChangeRadio(this.name, 0, <!--{$plugins[data].member_id}-->, <!--{$tpl_disppage}-->);" checked /><!--{else}--><input type="radio" name="radio<!--{$smarty.section.data.iteration}-->" value="非稼動" onclick="fnChangeRadio(this.name, 0, <!--{$plugins[data].member_id}-->, <!--{$tpl_disppage}-->);" <!--{if $workmax <= 1 }-->disabled<!--{/if}-->  /><!--{/if}--></td>
