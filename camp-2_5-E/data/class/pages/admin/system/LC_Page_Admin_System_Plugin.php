@@ -42,24 +42,6 @@ class LC_Page_Admin_System_Plugin extends LC_Page {
      * @return void
      */
     function init() {
-                $query = new SC_Query();
-        $sql = <<< SQL
-    DROP TABLE IF EXISTS "dtb_plugin";
-CREATE TABLE "dtb_plugin" (
-  "id" int4 NOT NULL DEFAULT NULL,
-  "name" text NOT NULL DEFAULT NULL,
-  "enable" int2 NOT NULL DEFAULT 0,
-  "del_flg" int2 NOT NULL DEFAULT 0,
-  "class_name" text NOT NULL DEFAULT NULL,
-  "create_date" timestamp(6) NOT NULL DEFAULT now(),
-  "update_date" timestamp(6) NOT NULL DEFAULT now()
-)
-WITH (OIDS=FALSE);
-ALTER TABLE "dtb_plugin" ADD CONSTRAINT "dtb_plugin_pkey" PRIMARY KEY ("id");    
-SQL;
-
-        $query->query($sql);
-        exit;
         parent::init();
         $this->tpl_mainpage = 'system/plugin.tpl';
         $this->tpl_subnavi  = 'system/subnavi.tpl';
