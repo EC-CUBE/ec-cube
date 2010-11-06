@@ -73,16 +73,14 @@ class LC_Page_Admin_System_Plugin extends LC_Page {
         $objView = new SC_AdminView();
         $this->initForm();
         switch($this->objForm->getValue('mode')) {
-        
-                
-        // PHP INFOを表示
-        case 'info':
-            phpinfo();
-            exit;
-            break;
+            // PHP INFOを表示
+            case 'info':
+                phpinfo();
+                exit;
+                break;
 
-        default:
-            break;
+            default:
+                break;
         }
 
         $this->arrSystemInfo = $this->getSystemInfo();
@@ -109,12 +107,12 @@ class LC_Page_Admin_System_Plugin extends LC_Page {
         $objDB = SC_DB_DBFactory_Ex::getInstance();
 
         $arrSystemInfo = array(
-            array('title' => 'EC-CUBE',  'value' => ECCUBE_VERSION),
-            array('title' => 'OS',       'value' => php_uname()),
-            array('title' => 'DBサーバ',  'value' => $objDB->sfGetDBVersion()),
-            array('title' => 'WEBサーバ', 'value' => $_SERVER['SERVER_SOFTWARE']),
-            array('title' => 'PHP',      'value' => phpversion()),
-            array('title' => 'GD',       'value' => extension_loaded('GD') ? 'Loaded' : '--'),
+        array('title' => 'EC-CUBE',  'value' => ECCUBE_VERSION),
+        array('title' => 'OS',       'value' => php_uname()),
+        array('title' => 'DBサーバ',  'value' => $objDB->sfGetDBVersion()),
+        array('title' => 'WEBサーバ', 'value' => $_SERVER['SERVER_SOFTWARE']),
+        array('title' => 'PHP',      'value' => phpversion()),
+        array('title' => 'GD',       'value' => extension_loaded('GD') ? 'Loaded' : '--'),
         );
 
         return $arrSystemInfo;
