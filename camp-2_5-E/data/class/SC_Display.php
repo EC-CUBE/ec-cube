@@ -78,7 +78,7 @@ class SC_Display{
 
         $pattern = implode("|", $useragents);
         
-        if(preg_match('/['.$pattern.']/', $subject))
+        if(preg_match('/['.$pattern.']/', $_SERVER['HTTP_USER_AGENT']))
         var pattern = new RegExp(useragents.join('|'), 'i');
         return pattern.test(navigator.userAgent);
     }
