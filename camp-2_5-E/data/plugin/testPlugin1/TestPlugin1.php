@@ -44,6 +44,8 @@ class TestPlugin1 extends SC_Plugin_Ex {
           'class_name' => $objForm->getValue('plugin_name'),
           'version' => $this->getVersion()
         );
+        
+        
 
         if(count($arrPlugins) == 0){
             $objQuery->insert("dtb_plugin", $data);
@@ -56,7 +58,7 @@ class TestPlugin1 extends SC_Plugin_Ex {
 
     public function uninstall($plugin_id){
         $objQuery = new SC_Query();
-        $updaterow = $objQuery->update('dtb_plugin', array('del_flg'=>1), 'plugin_id = ?', $plugin_id);
+        return $objQuery->update('dtb_plugin', array('del_flg'=>1), 'plugin_id = ?', $plugin_id);
     }
 
     /**
@@ -64,7 +66,7 @@ class TestPlugin1 extends SC_Plugin_Ex {
      * @return String インストール用のSQL
      */
     protected function getInstallSQL(){
-
+      
     }
 
 
