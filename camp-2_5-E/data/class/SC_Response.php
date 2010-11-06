@@ -68,7 +68,6 @@ class SC_Response{
     var $encoding;
 
     function SC_Response(){
-        $this->http = new HTTP_Response();
     }
 
     function response(){
