@@ -62,7 +62,18 @@ class LC_Page_Mypage_Delivery extends LC_Page {
      * @return void
      */
     function process() {
-        $objView = new SC_SiteView();
+        parent::process();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のAction.
+     *
+     * @return void
+     */
+    function action() {
+        //$objView = new SC_SiteView();
         $objCustomer = new SC_Customer();
         
         // 退会判定用情報の取得
@@ -113,8 +124,8 @@ class LC_Page_Mypage_Delivery extends LC_Page {
         //お届け先登録数
         $this->tpl_linemax = count($this->arrOtherDeliv);;
 
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
+        //$objView->assignobj($this);
+        //$objView->display(SITE_FRAME);
     }
 
     /**

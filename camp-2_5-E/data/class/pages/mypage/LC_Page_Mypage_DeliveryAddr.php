@@ -57,7 +57,18 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page {
      * @return void
      */
     function process() {
-        $objView = new SC_SiteView(false);
+        parent::process();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のAction.
+     *
+     * @return void
+     */
+    function action() {
+        //$objView = new SC_SiteView(false);
         $objQuery = new SC_Query();
         $objCustomer = new SC_Customer();
         $ParentPage = MYPAGE_DELIVADDR_URL;
@@ -139,9 +150,9 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page {
                 }
                 break;
         }
-
-        $objView->assignobj($this);
-        $objView->display($this->tpl_mainpage);
+        $this->setTemplate($this->tpl_mainpage);
+        //$objView->assignobj($this);
+        //$objView->display($this->tpl_mainpage);
     }
 
     /**

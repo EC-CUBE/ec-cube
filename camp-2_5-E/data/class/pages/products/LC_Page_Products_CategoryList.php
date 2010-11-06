@@ -79,6 +79,7 @@ class LC_Page_Products_CategoryList extends LC_Page {
      * @return void
      */
     function mobileProcess(){
+        parent::mobileProcess();
         $this->action();
         $this->sendResponse();
     }

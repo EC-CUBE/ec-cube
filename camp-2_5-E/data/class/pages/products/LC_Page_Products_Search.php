@@ -81,6 +81,7 @@ class LC_Page_Products_Search extends LC_Page {
      * @return void
      */
     function mobileProcess() {
+        parent::mobileProcess();
         $this->mobileAction();
         $this->sendResponse();
     }

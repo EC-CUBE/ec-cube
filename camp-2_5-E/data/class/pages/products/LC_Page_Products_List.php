@@ -83,12 +83,9 @@ class LC_Page_Products_List extends LC_Page {
      * @return void
      */
     function process() {
-        $this->lfLoadParam();
-
+        parent::process();
         $this->action();
-
         $this->sendResponse();
-       
     }
 
     /**
@@ -96,6 +93,7 @@ class LC_Page_Products_List extends LC_Page {
      * @return void
      */
     function action() {
+        $this->lfLoadParam();
         //$objView = new SC_SiteView(!$this->inCart);
         $objQuery = new SC_Query();
         $objDb = new SC_Helper_DB_Ex();
@@ -208,10 +206,8 @@ class LC_Page_Products_List extends LC_Page {
      * @return void
      */
     function mobileProcess() {
-        $this->lfLoadParam();
-
+        parent::mobileProcess();
         $this->mobieAction();
-
         $this->sendResponse();
     }
 
@@ -223,6 +219,7 @@ class LC_Page_Products_List extends LC_Page {
      * @return void
      */
     function mobieAction(){
+        $this->lfLoadParam();
         //$objView = new SC_MobileView();
         $objQuery = new SC_Query();
         $objDb = new SC_Helper_DB_Ex();

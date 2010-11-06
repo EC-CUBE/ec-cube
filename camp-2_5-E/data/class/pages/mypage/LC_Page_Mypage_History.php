@@ -62,7 +62,18 @@ class LC_Page_Mypage_History extends LC_Page {
      * @return void
      */
     function process() {
-        $objView = new SC_SiteView();
+        parent::process();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のAction.
+     *
+     * @return void
+     */
+    function action() {
+        //$objView = new SC_SiteView();
         $objQuery = new SC_Query();
         $objCustomer = new SC_Customer();
         $objDb = new SC_Helper_DB_Ex();
@@ -108,8 +119,8 @@ class LC_Page_Mypage_History extends LC_Page {
         // 受注メール送信履歴の取得
         $this->tpl_arrMailHistory = $this->lfGetMailHistory($orderId);
 
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
+        //$objView->assignobj($this);
+        //$objView->display(SITE_FRAME);
     }
 
     /**
@@ -127,6 +138,7 @@ class LC_Page_Mypage_History extends LC_Page {
      * @return void
      */
     function mobileInit() {
+        $this->init();
         $this->tpl_mainpage = MOBILE_TEMPLATE_DIR . 'mypage/history.tpl';
         $this->tpl_title = 'MYページ/購入履歴一覧';
         $this->httpCacheControl('nocache');
@@ -138,9 +150,20 @@ class LC_Page_Mypage_History extends LC_Page {
      * @return void
      */
     function mobileProcess() {
+        parent::mobileProcess();
+        $this->mobileAction();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のAction(モバイル).
+     *
+     * @return void
+     */
+    function mobileAction() {
         define ("HISTORY_NUM", 5);
 
-        $objView = new SC_MobileView();
+        //$objView = new SC_MobileView();
         $objQuery = new SC_Query();
         $objCustomer = new SC_Customer();
         $pageNo = isset($_GET['pageno']) ? (int) $_GET['pageno'] : 0; // TODO
@@ -191,8 +214,8 @@ class LC_Page_Mypage_History extends LC_Page {
         }
 
         $this->tpl_strnavi = $previous . $bar . $next;
-        $objView->assignobj($this);				//$objpage内の全てのテンプレート変数をsmartyに格納
-        $objView->display(SITE_FRAME);				//パスとテンプレート変数の呼び出し、実行
+        //$objView->assignobj($this);				//$objpage内の全てのテンプレート変数をsmartyに格納
+        //$objView->display(SITE_FRAME);				//パスとテンプレート変数の呼び出し、実行
     }
 
     /**

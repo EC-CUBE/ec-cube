@@ -79,6 +79,7 @@ class LC_Page_Products_Detail extends LC_Page {
     function process() {
         parent::process();
         $this->action();
+        $this->sendResponse();
     }
 
     /**
@@ -306,18 +307,19 @@ class LC_Page_Products_Detail extends LC_Page {
      * @return void
      */
     function mobileProcess() {
+        parent::mobileProcess();
         $this->mobileAction();
         $this->sendResponse();
     }
 
     /**
-     * Page のプロセス(モバイル).
+     * Page のAction(モバイル).
      *
      * FIXME 要リファクタリング
      *
      * @return void
      */
-    function mobileProcess() {
+    function mobileAction() {
         // プロダクトIDの正当性チェック
         $product_id = $this->lfCheckProductId();
 

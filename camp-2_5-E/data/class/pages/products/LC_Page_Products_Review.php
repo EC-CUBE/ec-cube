@@ -67,6 +67,7 @@ class LC_Page_Products_Review extends LC_Page {
      * Page のプロセス.
      */
     function process() {
+        parent::process();
         $this->action();
         $this->sendResponse();
     }

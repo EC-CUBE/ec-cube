@@ -53,7 +53,18 @@ class LC_Page_Mypage_MailView extends LC_Page {
      * @return void
      */
     function process() {
-        $objView = new SC_SiteView();
+        parent::process();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のAction.
+     *
+     * @return void
+     */
+    function action() {
+        //$objView = new SC_SiteView();
         $objSess = new SC_Session();
         $objCustomer = new SC_Customer();
 
@@ -76,8 +87,8 @@ class LC_Page_Mypage_MailView extends LC_Page {
             $this->tpl_body = $arrRet[0]['mail_body'];
         }
 
-        $objView->assignobj($this);
-        $objView->display($this->tpl_mainpage);
+        //$objView->assignobj($this);
+        //$objView->display($this->tpl_mainpage);
     }
 
     /**

@@ -54,6 +54,17 @@ class LC_Page_Mypage_LoginCheck extends LC_Page {
      * @return void
      */
     function process() {
+        parent::process();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のAction.
+     *
+     * @return void
+     */
+    function action() {
         $objCustomer = new SC_Customer();
         // クッキー管理クラス
         $objCookie = new SC_Cookie(COOKIE_EXPIRE);

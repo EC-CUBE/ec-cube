@@ -58,7 +58,18 @@ class LC_Page_Mypage_RefusalComplete extends LC_Page {
      * @return void
      */
     function process() {
-        $objView = new SC_SiteView();
+         parent::process();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のAction.
+     *
+     * @return void
+     */
+    function action() {
+        //$objView = new SC_SiteView();
 
         $objCustomer = new SC_Customer();
         //マイページトップ顧客情報表示用
@@ -70,8 +81,8 @@ class LC_Page_Mypage_RefusalComplete extends LC_Page {
         $objLayout = new SC_Helper_PageLayout_Ex();
         $objLayout->sfGetPageLayout($this, false, "mypage/index.php");
 
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
+        //$objView->assignobj($this);
+        //$objView->display(SITE_FRAME);
     }
 
     /**
@@ -91,7 +102,18 @@ class LC_Page_Mypage_RefusalComplete extends LC_Page {
      * @return void
      */
     function mobileProcess() {
-        $objView = new SC_MobileView();
+         parent::mobileProcess();
+        $this->mobileAction();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のAction(モバイル).
+     *
+     * @return void
+     */
+    function mobileAction() {
+        //$objView = new SC_MobileView();
 
         $objCustomer = new SC_Customer();
         //マイページトップ顧客情報表示用
@@ -99,8 +121,8 @@ class LC_Page_Mypage_RefusalComplete extends LC_Page {
         $this->CustomerName2 = $objCustomer->getvalue('name02');
         $this->CustomerPoint = $objCustomer->getvalue('point');
 
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
+        //$objView->assignobj($this);
+        //$objView->display(SITE_FRAME);
     }
 
     /**

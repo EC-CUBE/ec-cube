@@ -51,6 +51,17 @@ class LC_Page_Mypage_Order extends LC_Page {
      * @return void
      */
     function process() {
+        parent::process();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のAction.
+     *
+     * @return void
+     */
+    function action() {
         $objCustomer = new SC_Customer();
         $objCartSess = new SC_CartSession();
 
@@ -89,6 +100,18 @@ class LC_Page_Mypage_Order extends LC_Page {
      * @return void
      */
     function mobileProcess() {
+        parent::mobileProcess();
+        $this->mobileAction();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のAction(モバイル).
+     *
+     * @return void
+     */
+    function mobileAction() {
+
         $objCustomer = new SC_Customer();
         $objCartSess = new SC_CartSession();
 
