@@ -394,6 +394,8 @@ class SC_Utils {
     }
 
     function sfCSVDownload($data, $prefix = ""){
+echo "sfGetCSVData()に移行してね。";
+exit;
 
         if($prefix == "") {
             $dir_name = SC_Utils::sfUpDirName();
@@ -414,6 +416,22 @@ class SC_Utils {
 
         /* データを出力 */
         echo $data;
+    }
+
+    function sfGetCSVData($data, $prefix = ""){
+        if($prefix == "") {
+            $dir_name = SC_Utils::sfUpDirName();
+            $file_name = $dir_name . date("ymdHis") .".csv";
+        } else {
+            $file_name = $prefix . date("ymdHis") .".csv";
+        }
+
+        if (mb_internal_encoding() == CHAR_CODE){
+            $data = mb_convert_encoding($data,'SJIS-Win',CHAR_CODE);
+        }
+
+        /* データを出力 */
+        return array($file_name, $data);
     }
 
     /* 1階層上のディレクトリ名を取得する */

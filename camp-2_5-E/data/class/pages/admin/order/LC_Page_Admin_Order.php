@@ -277,7 +277,8 @@ class LC_Page_Admin_Order extends LC_Page_Admin {
                             $data = $objCSV->lfGetCSV("dtb_order", $where, $option, $arrval, $arrCsvOutputCols, $arrCsvOutputConvs);
 
                             // CSVを送信する。
-                            SC_Utils_Ex::sfCSVDownload($head.$data);
+                            list($fime_name, $data) = SC_Utils_Ex::sfGetCSVData($head.$data);
+                            $this->sendResponseCSV($fime_name, $data);
                             exit;
                             break;
                         case 'delete_all':

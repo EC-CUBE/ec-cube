@@ -124,6 +124,23 @@ class LC_Page {
     }
 
     /**
+     * Page のレスポンス送信(ダウンロード).
+     *
+     * @return void
+     */
+    function sendResponseCSV($file_name, $data) {
+        $this->objDisplay->hoge($this);
+        $this->objDisplay->addHeader("Content-disposition", "attachment; filename=${file_name}");
+        $this->objDisplay->addHeader("Content-type", "application/octet-stream; name=${file_name}");
+        $this->objDisplay->addHeader("Cache-Control", "");
+        $this->objDisplay->addHeader("Pragma", "");
+
+        $this->objDisplay->response->body = $data;
+        $this->objDisplay->response->response();
+        exit;
+    }
+
+    /**
      * デストラクタ.
      *
      * @return void
