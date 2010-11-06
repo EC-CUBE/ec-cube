@@ -40,11 +40,12 @@ class TestPlugin1 extends SC_Plugin_Ex {
                     'enable' => '1',
                     'del_flg' => '0',
                   'class_name' => $objForm->getValue('plugin_name'),
-                    'version' => $
+                    'version' => 
 
         );
         $objQuery = new SC_Query();
         $objQuery->insert("dtb_plugin", $data);
+        
         
     }
 
