@@ -89,7 +89,10 @@ class SC_Display{
     function assign($val1,$val2){
         $this->view->assign($val1, $val2);
     }
-    function 
+    
+    function assign(){
+        
+    }
 
 
 }
