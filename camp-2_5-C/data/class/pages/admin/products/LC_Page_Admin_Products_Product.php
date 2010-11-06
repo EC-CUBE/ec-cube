@@ -234,7 +234,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
                 break;
             case 'preview':
             	print_r($_POST);
-                echo "document.onload(alert('aaa'));";
+                echo "window.open(/html/admin/products/product_preview.php)";
                 $this->lfProductPage();
             
             	break;
