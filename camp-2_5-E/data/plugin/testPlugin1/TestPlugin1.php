@@ -51,7 +51,7 @@ class TestPlugin1 extends SC_Plugin_Ex {
             $objQuery->update('dtb_plugin',$data,'plugin_id = ?',array($arrPlugins[0]['plugin_id']));
         }
         
-        $objQuery->query("CREATE TABLE", $arr)
+        $objQuery->query("CREATE TABLE ");
 
     }
 
