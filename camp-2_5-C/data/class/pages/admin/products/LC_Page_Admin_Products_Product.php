@@ -235,7 +235,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
             case 'preview':
             	print_r($_POST);
             
-                echo "onload(alert('aaa'));";
+                echo "document.onload(alert('aaa'));";
             
             	break;
             default:
