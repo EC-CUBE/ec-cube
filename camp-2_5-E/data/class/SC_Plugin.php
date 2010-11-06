@@ -55,11 +55,11 @@ class SC_Plugin
     }
 
     function disablePlugin(){
-
+      
     }
 
     function enablePlugin(){
-  
+    
     }
 
 
