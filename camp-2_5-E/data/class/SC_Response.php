@@ -28,8 +28,9 @@ class SC_Response{
     }
 
     function response(){
-
+    
     }
+    
 
     function setContentLength(int $length){
     
@@ -37,7 +38,7 @@ class SC_Response{
 
 
     function setContentType(String $contentType){
-      $this->header['Content-Type'] = "text/plain";
+      $this->header['Content-Type'] = $contentType;
     }
 
     function setResponseCode(int $code){
