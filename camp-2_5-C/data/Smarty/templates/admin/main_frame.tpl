@@ -139,6 +139,9 @@
 <!--{* ▲CONTENTS *}-->
 
 <!--{* ▼FOOTER *}-->
+<!--{$smarty.server.PHP_SELF}-->
+
+
 <div id="footer">
   <div id="topagetop">
     <a href="#top">GO TO PAGE TOP</a>
