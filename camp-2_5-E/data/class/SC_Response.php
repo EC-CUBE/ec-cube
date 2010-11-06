@@ -86,7 +86,7 @@ class SC_Response{
 
 
     function setContentLength(int $length){
-
+      
     }
 
 
