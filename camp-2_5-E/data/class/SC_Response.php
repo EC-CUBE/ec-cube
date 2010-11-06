@@ -1,8 +1,8 @@
 <?php
 class SC_Response{
-    
+
     /**
-     * 
+     *
      * @var HTTP_Response
      */
     var $http;
@@ -15,37 +15,37 @@ class SC_Response{
     var $header;
     var $body;
     var $header = array();
-    
+
     /**
-     * 
+     *
      * Enter description here ...
      */
     var $encoding;
-    
+
     function SC_Response(){
         $this->http = new HTTP_Response();
     }
-    
+
     function response(){
 
-        
+
     }
-    
+
     function setContentType(String $contentType)
     {
-          
+
     }
-    
+
     function setResponseCode()
     {
-        
+
     }
-    
+
     function setResposeBody(String $body)
     {
-        
+
     }
-    
-    
-      
+
+
+
 }
