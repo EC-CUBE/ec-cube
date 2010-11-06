@@ -44,9 +44,9 @@
       <td><!--{$plugins[data].plugin_name|escape}--></td>
       <td>
         <!--{if $plugins[data] == null }-->
-          <input type="button"
+          <input type="button" name="install" value="install" />
         <!--{else}-->
-        
+          
         <!--{endif}-->
       </td>
       <td></td>
