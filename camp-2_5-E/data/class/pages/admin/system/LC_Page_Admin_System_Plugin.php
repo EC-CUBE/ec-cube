@@ -76,15 +76,14 @@ class LC_Page_Admin_System_Plugin extends LC_Page {
             // PHP INFOを表示
             case 'install':
 
-
-
                 break;
             case 'uninstall':
-                break;
                 
+                
+                break;
             case 'enable':
-                break;
                 
+                break;
             case 'disable':
                 break;
                 
