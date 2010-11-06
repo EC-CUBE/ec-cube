@@ -176,8 +176,6 @@ class LC_Page_Admin_Products_Preview extends LC_Page {
         $this->tpl_javascript .= 'classCategories = ' . $objJson->encode($objProduct->classCategories[$product_id]) . ';';
         $this->tpl_javascript .= 'function lnOnLoad(){' . $this->js_lnOnload . '}';
         $this->tpl_onload .= 'lnOnLoad();';
-        
-        ////
 
         // 商品IDをFORM内に保持する。
         $this->tpl_product_id = $product_id;
@@ -234,8 +232,7 @@ class LC_Page_Admin_Products_Preview extends LC_Page {
 
         // 商品詳細を取得
         $this->arrProduct = $objProduct->getDetail($product_id);
-        var_dump('HERE');
-        exit;
+        ////
 
         // サブタイトルを取得
         $this->tpl_subtitle = $this->arrProduct['name'];
@@ -269,6 +266,9 @@ class LC_Page_Admin_Products_Preview extends LC_Page {
         $this->trackback_url = TRACKBACK_TO_URL . $product_id;
         //関連商品情報表示
         $this->arrRecommend = $this->lfPreGetRecommendProducts($product_id);
+        
+        var_dump('HERE');
+        exit;
 
         $this->lfConvertParam();
 
