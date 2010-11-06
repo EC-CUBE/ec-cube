@@ -61,6 +61,9 @@ class LC_Page_Admin_System_Plugin extends LC_Page {
         $objForm->setParam($_GET);
         $this->objForm = $objForm;
     }
+    
+    
+    
 
     /**
      * Page のプロセス.
