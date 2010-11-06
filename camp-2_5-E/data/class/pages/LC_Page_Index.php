@@ -53,7 +53,7 @@ class LC_Page_Index extends LC_Page {
      * @return void
      */
     function mobileInit() {
-        $this->tpl_mainpage = 'top.tpl';
+        $this->init();
     }
 
     /**
@@ -62,8 +62,9 @@ class LC_Page_Index extends LC_Page {
      * @return void
      */
     function process() {
+        parent::process();
         $this->action();
-        $this->sendRes();
+        $this->sendResponse();
     }
 
     /**
@@ -79,12 +80,13 @@ class LC_Page_Index extends LC_Page {
     }
 
     /**
-     * Page のアクション.
+     * Page のプロセス(モバイル).
      *
      * @return void
      */
-    function sendRes() {
-        $this->objDisp->hoge($this);
+    function mobileProcess() {
+        $this->mobileAction();
+        $this->sendResponse();
     }
 
     /**
@@ -92,13 +94,13 @@ class LC_Page_Index extends LC_Page {
      *
      * @return void
      */
-    function mobileProcess() {
+    function mobileAction() {
         $objCustomer = new SC_Customer();
 
-        $objView = new SC_MobileView();
-        $objView->assign("isLogin", $objCustomer->isLoginSuccess(true));
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
+        #$objView = new SC_MobileView();
+        #$objView->assign("isLogin", $objCustomer->isLoginSuccess(true));
+        #$objView->assignobj($this);
+        #$objView->display(SITE_FRAME);
     }
 
     /**

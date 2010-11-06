@@ -98,6 +98,15 @@ class LC_Page {
     function process() {}
 
     /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function sendResponse() {
+        $this->objDisp->hoge($this);
+    }
+
+    /**
      * デストラクタ.
      *
      * @return void
