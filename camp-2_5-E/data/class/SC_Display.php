@@ -57,6 +57,10 @@ class SC_Display{
         $this->response->sendRedirect($location);
     }
     
+    function reload($queryString = array(), $removeQueryString = false){
+        $this->response->reload($queryString, $removeQueryString);
+    }
+    
     function noAction(){    
         return;
     }

@@ -92,7 +92,7 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin {
                     $this->lfUpdateClass($this->arrForm); // 既存編集
                 }
                 // 再表示
-                $this->reload();
+                $this->objDisplay->reload();
             } else {
                 // POSTデータを引き継ぐ
                 $this->tpl_class_id = $_POST['class_id'];
@@ -104,7 +104,7 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin {
             $objQuery = new SC_Query();
             $objQuery->delete("dtb_classcategory", "class_id = ?", $_POST['class_id']);
             // 再表示
-            $this->reload();
+            $this->objDisplay->reload();
             break;
             // 編集前処理
         case 'pre_edit':
@@ -119,12 +119,12 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin {
         case 'down':
             $objDb->sfRankDown("dtb_class", "class_id", $_POST['class_id']);
             // 再表示
-            $this->reload();
+            $this->objDisplay->reload();
             break;
         case 'up':
             $objDb->sfRankUp("dtb_class", "class_id", $_POST['class_id']);
             // 再表示
-            $this->reload();
+            $this->objDisplay->reload();
             break;
         default:
             break;

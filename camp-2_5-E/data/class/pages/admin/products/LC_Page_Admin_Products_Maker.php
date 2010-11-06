@@ -93,7 +93,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin {
                     $this->lfUpdateClass($this->arrForm);	// 既存編集
                 }
                 // 再表示
-                $this->reload();
+                $this->objDisplay->reload();
             } else {
                 // POSTデータを引き継ぐ
                 $this->tpl_maker_id = $_POST['maker_id'];
@@ -103,7 +103,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin {
         case 'delete':
             $objDb->sfDeleteRankRecord("dtb_maker", "maker_id", $_POST['maker_id'], "", true);
             // 再表示
-            $this->reload();
+            $this->objDisplay->reload();
             break;
         // 編集前処理
         case 'pre_edit':
@@ -118,12 +118,12 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin {
         case 'down':
             $objDb->sfRankDown("dtb_maker", "maker_id", $_POST['maker_id']);
             // 再表示
-            $this->reload();
+            $this->objDisplay->reload();
             break;
         case 'up':
             $objDb->sfRankUp("dtb_maker", "maker_id", $_POST['maker_id']);
             // 再表示
-            $this->reload();
+            $this->objDisplay->reload();
             break;
         default:
             break;

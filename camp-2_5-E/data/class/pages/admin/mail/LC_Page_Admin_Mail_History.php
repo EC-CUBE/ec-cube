@@ -85,7 +85,7 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin {
             $sql = "UPDATE dtb_send_history SET del_flg = 1 WHERE send_id = ?";
             $objQuery->query($sql, array($_GET['send_id']) );
             $_SERVER['QUERY_STRING'] = "";
-            $this->reload();
+            $this->objDisplay->reload();
         }
         $from = "dtb_send_history";
 

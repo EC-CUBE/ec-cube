@@ -366,6 +366,8 @@ exit;
      * @see Net_URL
      */
     function reload($queryString = array(), $removeQueryString = false) {
+echo "SC_Display.php::reload()に移行してね。";
+exit;
 
         // 現在の URL を取得
         $netURL = new Net_URL($_SERVER['REQUEST_URI']);

@@ -117,7 +117,7 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin {
                     $this->lfUpdateClass();	// DBへの書き込み
                 }
                 // 再表示
-                $this->reload($_GET['class_id']);
+                $this->objDisplay->reload($_GET['class_id']);
                 //sfReload("class_id=" . $_GET['class_id']);
             } else {
                 // POSTデータを引き継ぐ

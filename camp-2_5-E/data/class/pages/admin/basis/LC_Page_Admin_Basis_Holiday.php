@@ -97,7 +97,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin {
                     $this->lfUpdateClass($this->arrForm);	// 既存編集
                 }
                 // 再表示
-                $this->reload();
+                $this->objDisplay->reload();
             } else {
                 // POSTデータを引き継ぐ
                 $this->tpl_holiday_id = $_POST['holiday_id'];
@@ -107,7 +107,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin {
         case 'delete':
             $objDb->sfDeleteRankRecord("dtb_holiday", "holiday_id", $_POST['holiday_id'], "", true);
             // 再表示
-            $this->reload();
+            $this->objDisplay->reload();
             break;
         // 編集前処理
         case 'pre_edit':
@@ -124,12 +124,12 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin {
         case 'down':
             $objDb->sfRankDown("dtb_holiday", "holiday_id", $_POST['holiday_id']);
             // 再表示
-            $this->reload();
+            $this->objDisplay->reload();
             break;
         case 'up':
             $objDb->sfRankUp("dtb_holiday", "holiday_id", $_POST['holiday_id']);
             // 再表示
-            $this->reload();
+            $this->objDisplay->reload();
             break;
         default:
             break;

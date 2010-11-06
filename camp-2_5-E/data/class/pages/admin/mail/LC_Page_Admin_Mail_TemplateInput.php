@@ -107,7 +107,7 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin {
                 // エラーが無いときは登録・編集
                 $this->lfRegistData( $this->arrForm, $_POST['template_id']);
                 // 自分を再読込して、完了画面へ遷移
-                $this->reload(array("mode" => "complete"));
+                $this->objDisplay->reload(array("mode" => "complete"));
             }
 
         } elseif ( $_GET['mode'] == 'complete' ) {

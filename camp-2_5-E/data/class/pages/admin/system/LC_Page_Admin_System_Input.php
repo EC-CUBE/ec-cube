@@ -152,7 +152,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin {
         }
 
         $this->insertMemberData($this->objForm->getHashArray());
-        $this->reload(array('mode' => 'parent_reload'));
+        $this->objDisplay->reload(array('mode' => 'parent_reload'));
     }
 
     /**

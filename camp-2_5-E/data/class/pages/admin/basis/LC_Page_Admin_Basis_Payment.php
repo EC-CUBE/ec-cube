@@ -79,17 +79,17 @@ class LC_Page_Admin_Basis_Payment extends LC_Page_Admin {
                 // ランク付きレコードの削除
                 $objDb->sfDeleteRankRecord("dtb_payment", "payment_id", $_POST['payment_id']);
                 // 再表示
-                $this->reload();
+                $this->objDisplay->reload();
                 break;
             case 'up':
                 $objDb->sfRankUp("dtb_payment", "payment_id", $_POST['payment_id']);
                 // 再表示
-                $this->reload();
+                $this->objDisplay->reload();
                 break;
             case 'down':
                 $objDb->sfRankDown("dtb_payment", "payment_id", $_POST['payment_id']);
                 // 再表示
-                $this->reload();
+                $this->objDisplay->reload();
                 break;
         }
 

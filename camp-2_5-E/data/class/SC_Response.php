@@ -132,6 +132,25 @@ class SC_Response{
         return false;
     }
 
+    function reload(Array $queryString = array(), $removeQueryString = false) {
+        // 現在の URL を取得
+        $netURL = new Net_URL($_SERVER['REQUEST_URI']);
+
+        if ($removeQueryString) {
+            $netURL->querystring = array();
+            $_SERVER['QUERY_STRING'] = ''; // sendRedirect() での処理用らしい
+        }
+
+        // QueryString を付与
+        if (!empty($queryString)) {
+            foreach ($queryString as $key => $val) {
+                $netURL->addQueryString($key, $val);
+            }
+        }
+
+        $this->sendRedirect($netURL->getURL());
+    }
+
     function setHeader(Array $headers){
         $this->header = $headers;
     }

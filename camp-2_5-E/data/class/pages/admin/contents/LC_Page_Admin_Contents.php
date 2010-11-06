@@ -141,7 +141,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin {
             $objQuery->query( $sql, array( $_POST['news_id'] ) );
             $objQuery->commit();
 
-            $this->reload();             //自分にリダイレクト（再読込による誤動作防止）
+            $this->objDisplay->reload();             //自分にリダイレクト（再読込による誤動作防止）
         }
 
         //----　表示順位移動
@@ -153,7 +153,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin {
                 $objDb->sfRankDown("dtb_news", "news_id", $_POST["news_id"]);
             }
             //sf_rebuildIndex($conn);
-            $this->reload();
+            $this->objDisplay->reload();
         }
 
         //----　指定表示順位移動
@@ -162,7 +162,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin {
             $input_pos = mb_convert_kana($_POST[$key], "n");
             if(SC_Utils_Ex::sfIsInt($input_pos)) {
                 $objDb->sfMoveRank("dtb_news", "news_id", $_POST['news_id'], $input_pos);
-                $this->reload();
+                $this->objDisplay->reload();
             }
         }
 

@@ -91,7 +91,7 @@ class LC_Page_Admin_Mail_Template extends LC_Page_Admin {
             $sql = "UPDATE dtb_mailmaga_template SET del_flg = 1 WHERE template_id = ?";
             $objQuery->query($sql, array($_GET['id']));
 
-            $this->reload(null, true);
+            $this->objDisplay->reload(null, true);
         }
 
 
