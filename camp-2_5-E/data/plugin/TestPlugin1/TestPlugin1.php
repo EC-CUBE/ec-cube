@@ -35,7 +35,7 @@ class TestPlugin1 extends SC_Plugin {
 
     function install(){
         $objQuery = new SC_Query();
-        $arrPlugins
+        $arrPlugins = 
         $arrPlugins = $objQuery->get("dtb_plugin", "plugin_id", "plugin_name = ?",array($this->getName()));
         $data = array(
           'plugin_name' => $objForm->getValue('plugin_name'),
