@@ -139,10 +139,16 @@
 <!--{* ▲CONTENTS *}-->
 
 <!--{* ▼FOOTER *}-->
-<!--{$smarty.server.PHP_SELF}-->
-<!--{assign var=foot value="`$smarty.const.URL_DIR`"}-->
-<!--{$foot}-->
-
+<!--{if $smarty.server.PHP_SELF==$foot}-->
+  <div class="btn-foot">
+    <!--{if count($arrSearchHidden) > 0}-->
+    <!--▼検索結果へ戻る-->
+    <button type="button" onClick="fnChangeAction('<!--{$smarty.const.URL_SEARCH_TOP}-->'); fnModeSubmit('search','',''); return false;"><span>検索画面に戻る</span></button>
+    <!--▲検索結果へ戻る-->
+    <!--{/if}-->
+    <button type="button" onClick="fnChangeAction('<!--{$smarty.const.URL_DIR}-->admin/products/product_preview.php'); fnModeSubmit('','',''); return false;">プレビュー</button><button type="submit" onClick="selectAll('category_id')"><span>確認ページへ</span></button>
+  </div>
+<!--{/if}-->
 <div id="footer">
   <div id="topagetop">
     <a href="#top">GO TO PAGE TOP</a>
