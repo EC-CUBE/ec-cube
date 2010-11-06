@@ -87,6 +87,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page {
 
                 break;
             default:
+                exit;
                 $plugins = SC_Helper_Plugin_Ex::getAllPlugin();
                 var_dump($plugins);
                 break;
