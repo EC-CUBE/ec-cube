@@ -152,6 +152,39 @@ class LC_Page_Admin_Products extends LC_Page {
             exit;
         }
 
+        // 商品一覧での公開/非公開変更
+        if($_POST['mode'] === "status_edit") {
+            $objQuery = new SC_Query();
+
+            //トランザクション開始
+            $objQuery->begin();
+            //エラーフラグ初期化
+            $err_flag = false;
+
+            // データ更新
+            $data["status"] = $_POST['status_edit_value'];
+            $where = "product_id=" . $_POST['status_edit_id'];
+            $objQuery->update("dtb_products", $data, $where);
+            if($objQuery->isError())
+            {
+                $err_flag = true;
+            }
+
+            //トランザクション終了
+            if($err_flag)
+            {
+                $objQuery->rollback();
+                echo("error");
+            }
+            else
+            {
+                $objQuery->commit();
+                echo("ok");
+            }
+            //戻る
+            exit;
+        }
+
         //キャンペーンの編集時
         if(isset($_POST['campaign_id']) && SC_Utils_Ex::sfIsInt($_POST['campaign_id'])
                 && $_POST['mode'] == "camp_search") {
