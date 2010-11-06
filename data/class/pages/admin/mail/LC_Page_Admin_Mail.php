@@ -201,8 +201,7 @@ class LC_Page_Admin_Mail extends LC_Page {
             $list_data['category_name'] = $arrCatList[$list_data['category_id']];
 
             $this->list_data = $list_data;
-            $this->arrCampaignList = $this->lfGetCampaignList($objQuery);
-            
+
             $objView->assignobj($this);
             $objView->display($tpl_path);
             exit;
@@ -385,8 +384,6 @@ class LC_Page_Admin_Mail extends LC_Page {
 
         $this->arrCatList = $objDb->sfGetCategoryList();
 
-        $this->arrCampaignList = $this->lfGetCampaignList($objQuery);
-
         // ページ表示
         $objView->assignobj($this);
         $objView->display(MAIN_FRAME);
@@ -491,19 +488,6 @@ class LC_Page_Admin_Mail extends LC_Page {
         }
 
         return $sendId;
-    }
-
-    // キャンペーン一覧
-    function lfGetCampaignList(&$objQuery) {
-        $arrCampaign = null;
-        $sql = "SELECT campaign_id, campaign_name FROM dtb_campaign ORDER BY update_date DESC";
-        $arrResult = $objQuery->getAll($sql);
-
-        foreach($arrResult as $arrVal) {
-            $arrCampaign[$arrVal['campaign_id']] = $arrVal['campaign_name'];
-        }
-
-        return $arrCampaign;
     }
 
     function lfGetIsMobile($mail_type) {

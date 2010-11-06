@@ -60,27 +60,12 @@ class LC_Page_Regist_Complete extends LC_Page {
         $objQuery = new SC_Query();
         $objCampaignSess = new SC_CampaignSession();
 
-        // キャンペーンからの登録の場合の処理
-        if($_GET["cp"] != "") {
-            $arrCampaign= $objQuery->select("directory_name", "dtb_campaign", "campaign_id = ?", array($_GET["cp"]));
-            // キャンペーンディレクトリ名を保持
-            $dir_name = $arrCampaign[0]['directory_name'];
-        } else {
-            $dir_name = "";
-        }
-
         // レイアウトデザインを取得
         $helper = new SC_Helper_PageLayout_Ex();
         $helper->sfGetPageLayout($this, false, DEF_LAYOUT);
 
         $objView->assignobj($this);
-        // フレームを選択(キャンペーンページから遷移なら変更)
-        if($this->dir_name != "") {
-            $objView->display(CAMPAIGN_TEMPLATE_PATH . $dir_name  . "/active/site_frame.tpl");
-            $objCampaignSess->delCampaign();
-        } else {
-            $objView->display(SITE_FRAME);
-        }
+        $objView->display(SITE_FRAME);
     }
 
     /**

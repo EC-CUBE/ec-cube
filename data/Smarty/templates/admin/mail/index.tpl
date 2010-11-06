@@ -259,15 +259,6 @@
                 </select>
             </td>
         </tr>
-        <tr>
-            <th>キャンペーン</th>
-            <td>
-                <select name="campaign_id" style="<!--{if $arrErr.campaign_id != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->">
-                    <option value="">選択してください</option>
-                    <!--{html_options options=$arrCampaignList selected=$list_data.campaign_id}-->
-                </select>
-            </td>
-        </tr>
     </table>
     <!--{* 検索条件設定テーブルここまで *}-->
 

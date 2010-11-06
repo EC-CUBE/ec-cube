@@ -86,17 +86,6 @@ class LC_Page_Admin_Products extends LC_Page {
 
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
-        //キャンペーンの編集時
-        if(isset($_POST['campaign_id']) && SC_Utils_Ex::sfIsInt($_POST['campaign_id'])
-                && $_POST['mode'] == "camp_search") {
-            $objQuery = new SC_Query();
-            $search_data = $objQuery->get("dtb_campaign", "search_condition", "campaign_id = ? ", array($_POST['campaign_id']));
-            $arrSearch = unserialize($search_data);
-            foreach ($arrSearch as $key => $val) {
-                $_POST[$key] = $val;
-            }
-        }
-
         // POST値の引き継ぎ
         $this->arrForm = $_POST;
 

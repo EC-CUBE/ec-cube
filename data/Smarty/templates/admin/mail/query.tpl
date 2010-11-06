@@ -131,10 +131,6 @@ self.moveTo(20,20);self.focus();
       <th>カテゴリ</th>
       <td><!--{$list_data.category_name|escape|default:"(未指定)"}--></td>
     </tr>
-    <tr>
-      <th>キャンペーン</th>
-      <td><!--{$arrCampaignList[$list_data.campaign_id]|escape|default:"(未指定)"}--></td>
-    </tr>
   </table>
 
   <div class="btn">

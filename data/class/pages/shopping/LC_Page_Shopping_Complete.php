@@ -242,12 +242,6 @@ class LC_Page_Shopping_Complete extends LC_Page {
         $this->lfRegistOrderDetail($objQuery, $order_id, $this->objCartSess);
         // 受注一時テーブルの情報を削除する。
         $this->lfDeleteTempOrder($objQuery, $uniqid);
-        // キャンペーンからの遷移の場合登録する。
-        if (!defined("MOBILE_SITE")) {
-            if($this->objCampaignSess->getIsCampaign() and $this->objCartSess->chkCampaign($this->objCampaignSess->getCampaignId())) {
-                $this->lfRegistCampaignOrder($objQuery, $objCampaignSess, $order_id);
-            }
-        }
 
         // セッションカート内の商品を削除する。
         $this->objCartSess->delAllProducts();
@@ -487,34 +481,6 @@ class LC_Page_Shopping_Complete extends LC_Page {
             }
         }
     }
-
-    // キャンペーン受注テーブルへ登録
-    function lfRegistCampaignOrder(&$objQuery, &$objCampaignSess, $order_id) {
-
-        // 受注データを取得
-        $cols = "order_id, campaign_id, customer_id, message, order_name01, order_name02,".
-                "order_kana01, order_kana02, order_email, order_tel01, order_tel02, order_tel03,".
-                "order_fax01, order_fax02, order_fax03, order_zip01, order_zip02, order_pref, order_addr01,".
-                "order_addr02, order_sex, order_birth, order_job, deliv_name01, deliv_name02, deliv_kana01,".
-                "deliv_kana02, deliv_tel01, deliv_tel02, deliv_tel03, deliv_fax01, deliv_fax02, deliv_fax03,".
-                "deliv_zip01, deliv_zip02, deliv_pref, deliv_addr01, deliv_addr02, payment_total";
-
-        $arrOrder = $objQuery->select($cols, "dtb_order", "order_id = ?", array($order_id));
-
-        $sqlval = $arrOrder[0];
-        $sqlval['create_date'] = 'Now()';
-
-        // INSERTの実行
-        $objQuery->insert("dtb_campaign_order", $sqlval);
-
-        // 申し込み数の更新
-        $total_count = $objQuery->get("dtb_campaign", "total_count", "campaign_id = ?", array($sqlval['campaign_id']));
-        $arrCampaign['total_count'] = $total_count += 1;
-        $objQuery->update("dtb_campaign", $arrCampaign, "campaign_id = ?", array($sqlval['campaign_id']));
-
-    }
-
-
 
     /* 受注一時テーブルの削除 */
     function lfDeleteTempOrder(&$objQuery, $uniqid) {

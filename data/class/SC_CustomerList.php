@@ -334,13 +334,6 @@ class SC_CustomerList extends SC_SelectSql {
             $this->arrVal[] = ereg_replace("-", "", $searchTel);
         }
 
-        // キャンペーン
-        if (!isset($this->arrSql['campaign_id'])) $this->arrSql['campaign_id'] = "";
-        if ( is_numeric( $this->arrSql['campaign_id'] ) ) {
-            $this->setWhere( " customer_id IN (SELECT distinct customer_id FROM dtb_campaign_order WHERE campaign_id = ?)" );
-            $this->arrVal[] = $this->arrSql['campaign_id'];
-        }
-
         // 会員状態
         if (!isset($this->arrSql['status'])) $this->arrSql['status'] = "";
         if ( is_array( $this->arrSql['status'] ) ){

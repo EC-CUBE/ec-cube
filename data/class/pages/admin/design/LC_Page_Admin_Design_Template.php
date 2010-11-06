@@ -116,10 +116,7 @@ class LC_Page_Admin_Design_Template extends LC_Page {
 
 		    // common.cssの内容を更新
 		    $this->lfChangeCommonCss($template_code);
-			
-		    // テンプレートのコピー
-			$this->lfCopyTemplate($template_code);
-		    
+
 		    // ブロック位置を更新
 		    $this->lfChangeBloc($template_code);
 
@@ -311,28 +308,7 @@ class LC_Page_Admin_Design_Template extends LC_Page {
 
 	    return $arrRet;
 	}
-	
-	/**
-	 * テンプレート変更時に既に存在するキャンペーンのテンプレートがない場合はテンプレートを生成する
-	 *
-	 */
-	function lfCopyTemplate($template_code){
-		//すべてのキャンペーンのテンプレートファイルを確認
-	    $objQuery = new SC_Query();
-	    $sql = "SELECT directory_name,cart_flg FROM dtb_campaign WHERE del_flg = 0";
-	    $result = $objQuery->getAll( $sql );
-	    //デザインテンプレートディレクトリにファイルが存在するか確認
-	    foreach( $result as $key => $val ){
-			//index.phpが存在すればキャンペーンのテンプレートがあると判定
-			//全部チェックした方がいいか？
-	    	$campaign_template_file_path = SMARTY_TEMPLATES_DIR.$template_code ."/". CAMPAIGN_TEMPLATE_DIR . $val['directory_name'] . "/" .CAMPAIGN_TEMPLATE_ACTIVE .  "site_frame.tpl";
-	    	if(!file_exists($campaign_template_file_path)){
-	    		//ファイルがなければコピーして作成
-			    $this->lfCreateTemplate(SMARTY_TEMPLATES_DIR.$template_code ."/" . CAMPAIGN_TEMPLATE_DIR , $val['directory_name'],$val['cart_flg'] );
-	    	}
-	    }
-	}
-	
+
    /*
      * 関数名：lfCreateTemplate()
      * 引数1 ：ディレクトリパス
