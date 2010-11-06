@@ -36,7 +36,9 @@ class SC_Display{
      * Enter description here ...
      */
     function setDevice(int $device = 4){
-
+      switch ($device){
+          
+      }
     }
 
     /**
