@@ -54,9 +54,8 @@ class TestPlugin1 extends SC_Plugin_Ex {
         
     }
 
-    public function uninstall(){
+    public function uninstall($plugin_id){
         $objQuery = new SC_Query();
-        
 
     }
 
