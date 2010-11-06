@@ -87,8 +87,34 @@ class LC_Page_Admin_Products extends LC_Page {
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
         if($_POST['mode'] === "price02_edit") {
-            var_dump($_POST['price02_edit_id\n']);
-            var_dump($_POST['price02_edit_value\n']);
+            $objQuery = new SC_Query();
+
+            //トランザクション開始
+            $objQuery->begin();
+            //エラーフラグ初期化
+            $err_flag = false;
+
+            // データ更新
+            $data["price02"] = $_POST['price02_edit_value'];
+            $where = "product_id=" . $_POST['price02_edit_id']
+            $objQuery->update("dtb_products_class", $data, $where);
+            if($objQuery->isError())
+            {
+                $err_flag = true;
+            }
+
+            //トランザクション終了
+            if($err_flag)
+            {
+                $objQuery->rollback();
+                var_dump("error");
+            }
+            else
+            {
+                $objQuery->commit();
+                var_dump("ok");
+            }
+            //戻る
             exit;
         }
 
