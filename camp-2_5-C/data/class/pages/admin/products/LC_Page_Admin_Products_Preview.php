@@ -24,14 +24,35 @@
 // {{{ requires
 require_once(CLASS_PATH . "pages/LC_Page.php");
 
+if (file_exists(MODULE_PATH . "mdl_gmopg/inc/function.php")) {
+    require_once(MODULE_PATH . "mdl_gmopg/inc/function.php");
+}
 /**
- * 商品管理 のページクラス.
+ * 商品詳細 のページクラス.
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id:LC_Page_Admin_Products.php 15532 2007-08-31 14:39:46Z nanasess $
+ * @version $Id:LC_Page_Products_Detail.php 15532 2007-08-31 14:39:46Z nanasess $
  */
-class LC_Page_Admin_Products_Preview extends LC_Page {
+class LC_Page_Products_Detail extends LC_Page {
+
+    /** ステータス */
+    var $arrSTATUS;
+
+    /** ステータス画像 */
+    var $arrSTATUS_IMAGE;
+
+    /** 発送予定日 */
+    var $arrDELIVERYDATE;
+
+    /** おすすめレベル */
+    var $arrRECOMMEND;
+
+    /** フォームパラメータ */
+    var $objFormParam;
+
+    /** アップロードファイル */
+    var $objUpFile;
 
     // }}}
     // {{{ functions
@@ -43,23 +64,11 @@ class LC_Page_Admin_Products_Preview extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->tpl_mainpage = 'products/product.tpl';
-        $this->tpl_subnavi = 'products/subnavi.tpl';
-        $this->tpl_mainno = 'products';
-        $this->tpl_subno = 'product';
-        $this->tpl_subtitle = '商品登録';
-        $this->arrErr = array();
-
         $masterData = new SC_DB_MasterData_Ex();
-        $this->arrDISP = $masterData->getMasterData("mtb_disp");
-        $this->arrCLASS = $masterData->getMasterData("mtb_class");
         $this->arrSTATUS = $masterData->getMasterData("mtb_status");
         $this->arrSTATUS_IMAGE = $masterData->getMasterData("mtb_status_image");
         $this->arrDELIVERYDATE = $masterData->getMasterData("mtb_delivery_date");
-        $this->arrAllowedTag = $masterData->getMasterData("mtb_allowed_tag");
-        $this->arrProductType = $masterData->getMasterData("mtb_product_type");
-        $this->arrMaker = SC_Helper_DB_Ex::sfGetIDValueList("dtb_maker", "maker_id", "name");
-        $this->tpl_nonclass = true;
+        $this->arrRECOMMEND = $masterData->getMasterData("mtb_recommend");
     }
 
     /**
@@ -68,191 +77,199 @@ class LC_Page_Admin_Products_Preview extends LC_Page {
      * @return void
      */
     function process() {
-        $objView = new SC_AdminView();
-        $objSiteInfo = new SC_SiteInfo();
+        // プロダクトIDの正当性チェック
+        $product_id = $this->lfCheckProductId();
+
+        $objView = new SC_SiteView(strlen($_POST['mode']) == 0);
+        $objCustomer = new SC_Customer();
         $objQuery = new SC_Query();
         $objDb = new SC_Helper_DB_Ex();
-        $objProduct = new SC_Product();
 
-        // 認証可否の判定
-        $objSess = new SC_Session();
-        SC_Utils_Ex::sfIsSuccess($objSess);
+        // レイアウトデザインを取得
+        $helper = new SC_Helper_PageLayout_Ex();
+        $helper->sfGetPageLayout($this, false, "products/detail.php");
 
-        // Downファイル管理クラス
-        $this->objDownFile = new SC_UploadFile(DOWN_TEMP_DIR, DOWN_SAVE_DIR);
-        // Downファイル情報の初期化
-        $this->lfInitDownFile();
-        // Hiddenからのデータを引き継ぐ
-        $this->objDownFile->setHiddenFileList($_POST);
+        // ログイン中のユーザが商品をお気に入りにいれる処理
+        if ($objCustomer->isLoginSuccess() === true && strlen($_POST['mode']) > 0 && $_POST['mode'] == "add_favorite" && strlen($_POST['favorite_product_id']) > 0 ) {
+            // 値の正当性チェック
+            if(!SC_Utils_Ex::sfIsInt($_POST['favorite_product_id']) || !$objDb->sfIsRecord("dtb_products", "product_id", $_POST['favorite_product_id'], "del_flg = 0 AND status = 1")) {
+                SC_Utils_Ex::sfDispSiteError(PRODUCT_NOT_FOUND);
+                exit;
+            } else {
+                $this->arrErr = $this->lfCheckError();
+                if(count($this->arrErr) == 0) {
+                    $customer_id = $objCustomer->getValue('customer_id');
+                    $this->lfRegistFavoriteProduct($customer_id, $_POST['favorite_product_id']);
+                }
+            }
+        }
+
+        // パラメータ管理クラス
+        $this->objFormParam = new SC_FormParam();
+        // パラメータ情報の初期化
+        $this->lfInitParam();
+        // POST値の取得
+        $this->objFormParam->setParam($_POST);
 
         // ファイル管理クラス
         $this->objUpFile = new SC_UploadFile(IMAGE_TEMP_DIR, IMAGE_SAVE_DIR);
-
         // ファイル情報の初期化
         $this->lfInitFile();
-        // Hiddenからのデータを引き継ぐ
-        $this->objUpFile->setHiddenFileList($_POST);
 
-        // 規格の有り無し判定
-        $this->tpl_nonclass = !$objDb->sfHasProductClass($_POST['product_id']);
+        // ログイン判定
+        if ($objCustomer->isLoginSuccess() === true) {
+            //お気に入りボタン表示
+            $this->tpl_login = true;
 
-        // 検索パラメータの引き継ぎ
-        foreach ($_POST as $key => $val) {
-            if (ereg("^search_", $key)) {
-                $this->arrSearchHidden[$key] = $val;
+        /* 閲覧ログ機能は現在未使用
+
+            $table = "dtb_customer_reading";
+            $where = "customer_id = ? ";
+            $arrval[] = $objCustomer->getValue('customer_id');
+            //顧客の閲覧商品数
+            $rpcnt = $objQuery->count($table, $where, $arrval);
+
+            //閲覧数が設定数以下
+            if ($rpcnt < CUSTOMER_READING_MAX){
+                //閲覧履歴に新規追加
+                lfRegistReadingData($product_id, $objCustomer->getValue('customer_id'));
+            } else {
+                //閲覧履歴の中で一番古いものを削除して新規追加
+                $oldsql = "SELECT MIN(update_date) FROM ".$table." WHERE customer_id = ?";
+                $old = $objQuery->getOne($oldsql, array($objCustomer->getValue("customer_id")));
+                $where = "customer_id = ? AND update_date = ? ";
+                $arrval = array($objCustomer->getValue("customer_id"), $old);
+                //削除
+                $objQuery->delete($table, $where, $arrval);
+                //追加
+                lfRegistReadingData($product_id, $objCustomer->getValue('customer_id'));
             }
+        */
         }
 
-        // FORMデータの引き継ぎ
-        $this->arrForm = $_POST;
+        // 規格選択セレクトボックスの作成
+        $this->lfMakeSelect($product_id);
+
+        $objProduct = new SC_Product();
+        $objProduct->setProductsClassByProductIds(array($product_id));
+
+        // 規格1クラス名
+        $this->tpl_class_name1 = $objProduct->className1[$product_id];
+
+        // 規格2クラス名
+        $this->tpl_class_name2 = $objProduct->className2[$product_id];
+
+        // 規格1
+        $this->arrClassCat1 = $objProduct->classCats1[$product_id];
+
+        // 規格1が設定されている
+        $this->tpl_classcat_find1 = $objProduct->classCat1_find[$product_id];
+        // 規格2が設定されている
+        $this->tpl_classcat_find2 = $objProduct->classCat2_find[$product_id];
+
+        $this->tpl_stock_find = $objProduct->stock_find[$product_id];
+        $this->tpl_product_class_id = $objProduct->classCategories[$product_id]['']['']['product_class_id'];
+        $this->tpl_product_type = $objProduct->classCategories[$product_id]['']['']['product_type'];
+
+        require_once DATA_PATH . 'module/Services/JSON.php';
+        $objJson = new Services_JSON();
+        $this->tpl_javascript .= 'classCategories = ' . $objJson->encode($objProduct->classCategories[$product_id]) . ';';
+        $this->tpl_javascript .= 'function lnOnLoad(){' . $this->js_lnOnload . '}';
+        $this->tpl_onload .= 'lnOnLoad();';
+
+        // 商品IDをFORM内に保持する。
+        $this->tpl_product_id = $product_id;
 
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
+        $arrErr = array();
 
         switch($_POST['mode']) {
-            // 検索画面からの編集
-            case 'pre_edit':
-            case 'copy' :
-                if (!SC_Utils_Ex::sfIsInt($_POST['product_id'])) {
-                    SC_Utils_Ex::sfDispException();
-                }
-
-                // DBから商品情報の読込
-                $this->arrForm = $this->lfGetProduct($_POST['product_id']);
-                $productStatus= $objProduct->getProductStatus(array($_POST['product_id']));
-                $this->arrForm['product_status'] = $productStatus[$_POST['product_id']];
-
-                // DBデータから画像ファイル名の読込
-                $this->objUpFile->setDBFileList($this->arrForm);
-                // DBデータからダウンロードファイル名の読込
-                $this->objDownFile->setDBDownFile($this->arrForm);
-
-                // 商品ステータスの変換
-                $arrRet = SC_Utils_Ex::sfSplitCBValue($this->arrForm['product_flag'], "product_flag");
-                $this->arrForm = array_merge($this->arrForm, $arrRet);
-                // DBから関連商品の読み込み
-                $this->lfPreGetRecommendProducts($_POST['product_id']);
-
-                $this->lfProductPage();     // 商品登録ページ
-
-                if($_POST['mode'] == "copy"){
-                    $this->arrForm["copy_product_id"] = $this->arrForm["product_id"];
-                    $this->arrForm["product_id"] = "";
-                    // 画像ファイルのコピー
-                    $arrKey = $this->objUpFile->keyname;
-                    $arrSaveFile = $this->objUpFile->save_file;
-
-                    foreach($arrSaveFile as $key => $val){
-                        $this->lfMakeScaleImage($arrKey[$key], $arrKey[$key], true);
-                    }
-                }
-                break;
-            // 商品登録・編集
-            case 'edit':
-                if($_POST['product_id'] == "" and SC_Utils_Ex::sfIsInt($_POST['copy_product_id'])){
-                    $this->tpl_nonclass = !$objDb->sfHasProductClass($_POST['copy_product_id']);
-                }
-
+            case 'cart':
                 // 入力値の変換
-                $this->arrForm = $this->lfConvertParam($this->arrForm);
-                // エラーチェック
-                $this->arrErr = $this->lfErrorCheck($this->arrForm);
-                // ファイル存在チェック
-                $this->arrErr = array_merge((array)$this->arrErr, (array)$this->objUpFile->checkEXISTS());
-                // エラーなしの場合
-                if(count($this->arrErr) == 0) {
-                    $this->lfProductConfirmPage(); // 確認ページ
-                } else {
-                    $this->lfProductPage();     // 商品登録ページ
+                $this->objFormParam->convParam();
+                $arrErr = $this->lfCheckError();
+                if (count($arrErr) == 0) {
+                    $objCartSess = new SC_CartSession();
+                    $classcategory_id1 = $_POST['classcategory_id1'];
+                    $classcategory_id2 = $_POST['classcategory_id2'];
+                    $product_class_id = $_POST['product_class_id'];
+                    $product_type = $_POST['product_type'];
+
+                    if (!empty($_POST['gmo_oneclick'])) {
+                        $objCartSess->delAllProducts();
+                    }
+
+                    // 規格1が設定されていない場合
+                    if(!$this->tpl_classcat_find1) {
+                        $classcategory_id1 = '0';
+                    }
+
+                    // 規格2が設定されていない場合
+                    if(!$this->tpl_classcat_find2) {
+                        $classcategory_id2 = '0';
+                    }
+                    $objCartSess->addProduct($product_class_id, $this->objFormParam->getValue('quantity'), $product_type);
+
+                    if (!empty($_POST['gmo_oneclick'])) {
+                        $objSiteSess = new SC_SiteSession;
+                        $objSiteSess->setRegistFlag();
+                        $objCartSess->saveCurrentCart($objSiteSess->getUniqId());
+
+                        $this->sendRedirect($this->getLocation(
+                            URL_DIR . 'user_data/gmopg_oneclick_confirm.php', array(), true));
+                        exit;
+                    }
+
+                    $this->sendRedirect($this->getLocation(URL_CART_TOP));
+                    exit;
                 }
                 break;
-            // 確認ページから完了ページへ
-            case 'complete':
-                $this->tpl_mainpage = 'products/complete.tpl';
 
-                $this->arrForm['product_id'] = $this->lfRegistProduct($_POST);      // データ登録
-
-                // 件数カウントバッチ実行
-                $objDb->sfCategory_Count($objQuery);
-                $objDb->sfMaker_Count($objQuery);
-                // 一時ファイルを本番ディレクトリに移動する
-                $this->objUpFile->moveTempFile();
-                $this->objDownFile->moveTempDownFile();
-
-                break;
-            // 画像のアップロード
-            case 'upload_image':
-                // ファイル存在チェック
-                $this->arrErr = array_merge((array)$this->arrErr, (array)$this->objUpFile->checkEXISTS($_POST['image_key']));
-                // 画像保存処理
-                $this->arrErr[$_POST['image_key']] = $this->objUpFile->makeTempFile($_POST['image_key'],IMAGE_RENAME);
-
-                // 中、小画像生成
-                $this->lfSetScaleImage();
-
-                $this->lfProductPage(); // 商品登録ページ
-                break;
-            // 画像の削除
-            case 'delete_image':
-                $this->objUpFile->deleteFile($_POST['image_key']);
-                $this->lfProductPage(); // 商品登録ページ
-                break;
-            // ダウンロード商品ファイルアップロード
-            case 'upload_down':
-                // ファイル存在チェック
-                $this->arrErr = array_merge((array)$this->arrErr, (array)$this->objDownFile->checkEXISTS($_POST['down_key']));
-                // 画像保存処理
-                $this->arrErr[$_POST['down_key']] = $this->objDownFile->makeTempDownFile();
-
-                $this->lfProductPage(); // 商品登録ページ
-                break;
-            // ダウンロードファイルの削除
-            case 'delete_down':
-                $this->objDownFile->deleteFile($_POST['down_key']);
-                $this->lfProductPage(); // 商品登録ページ
-                break;
-            // 確認ページからの戻り
-            case 'confirm_return':
-                $this->lfProductPage();     // 商品登録ページ
-                break;
-            // 関連商品選択
-            case 'recommend_select' :
-                $this->lfProductPage();     // 商品登録ページ
-                break;
             default:
-                $this->lfProductPage();     // 商品登録ページ
                 break;
         }
+        $this->arrErr = $arrErr;
 
-        // 関連商品の読み込み
-        $this->arrRecommend = $this->lfGetRecommendProducts();
+        // 商品詳細を取得
+        $this->arrProduct = $objProduct->getDetail($product_id);
 
-        // 基本情報を渡す
-        $this->arrInfo = $objSiteInfo->data;
+        // サブタイトルを取得
+        $this->tpl_subtitle = $this->arrProduct['name'];
 
-        // サブ情報の入力があるかどうかチェックする
-        $sub_find = false;
-        for ($cnt = 1; $cnt <= PRODUCTSUB_MAX; $cnt++) {
-            if( (isset($this->arrForm['sub_title'.$cnt])
-            && !empty($this->arrForm['sub_title'.$cnt])) ||
-            (isset($this->arrForm['sub_comment'.$cnt])
-            && !empty($this->arrForm['sub_comment'.$cnt])) ||
-            (isset($this->arrForm['sub_image'.$cnt])
-            && !empty($this->arrForm['sub_image'.$cnt])) ||
-            (isset($this->arrForm['sub_large_image'.$cnt])
-            && !empty($this->arrForm['sub_large_image'.$cnt])) ||
-            (isset($this->arrForm['sub_image'.$cnt])
-            && is_array($this->arrFile['sub_image'.$cnt])) ||
-            (isset($this->arrForm['sub_large_image'.$cnt])
-            && is_array($this->arrFile['sub_large_image'.$cnt]))) {
-                $sub_find = true;
-                break;
-            }
+        // 関連カテゴリを取得
+        $this->arrRelativeCat = $objDb->sfGetMultiCatTree($product_id);
+
+        // 商品ステータスを取得
+        $this->productStatus = $objProduct->getProductStatus($product_id);
+
+        // 画像ファイル指定がない場合の置換処理
+        $this->arrProduct['main_image']
+            = SC_Utils_Ex::sfNoImageMain($this->arrProduct['main_image']);
+
+        $this->lfSetFile();
+        // 支払方法の取得
+        $this->arrPayment = $this->lfGetPayment();
+        // 入力情報を渡す
+        $this->arrForm = $this->objFormParam->getFormParamList();
+        //レビュー情報の取得
+        $this->arrReview = $this->lfGetReviewData($product_id);
+        // トラックバック情報の取得
+
+        // トラックバック機能の稼働状況チェック
+        if (SC_Utils_Ex::sfGetSiteControlFlg(SITE_CONTROL_TRACKBACK) != 1) {
+            $this->arrTrackbackView = "OFF";
+        } else {
+            $this->arrTrackbackView = "ON";
+            $this->arrTrackback = $this->lfGetTrackbackData($product_id);
         }
+        $this->trackback_url = TRACKBACK_TO_URL . $product_id;
+        //関連商品情報表示
+        $this->arrRecommend = $this->lfPreGetRecommendProducts($product_id);
 
-        // サブ情報表示・非表示のチェックに使用する。
-        $this->sub_find = $sub_find;
+        $this->lfConvertParam();
+
         $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
+        $objView->display(SITE_FRAME);
     }
 
     /**
@@ -265,605 +282,496 @@ class LC_Page_Admin_Products_Preview extends LC_Page {
     }
 
     /**
-     * 関連商品の名称などを商品マスタから読み込み、一つの配列にまとめて返す
+     * モバイルページを初期化する.
      *
-     * @return array 関連商品の情報を格納した2次元配列
+     * @return void
      */
-    function lfGetRecommendProducts() {
+    function mobileInit() {
+        $this->init();
+        $this->tpl_mainpage = "products/detail.tpl";
+    }
+
+    /**
+     * Page のプロセス(モバイル).
+     *
+     * FIXME 要リファクタリング
+     *
+     * @return void
+     */
+    function mobileProcess() {
+        // プロダクトIDの正当性チェック
+        $product_id = $this->lfCheckProductId();
+
+        $objView = new SC_MobileView();
+        $objCustomer = new SC_Customer();
         $objQuery = new SC_Query();
+        $objDb = new SC_Helper_DB_Ex();
+
+        // パラメータ管理クラス
+        $this->objFormParam = new SC_FormParam();
+        // パラメータ情報の初期化
+        $this->lfInitParam();
+        // POST値の取得
+        $this->objFormParam->setParam($_POST);
+
+        // ファイル管理クラス
+        $this->objUpFile = new SC_UploadFile(IMAGE_TEMP_DIR, IMAGE_SAVE_DIR);
+        // ファイル情報の初期化
+        $this->lfInitFile();
+
+        // ログイン判定
+        if($objCustomer->isLoginSuccess(true)) {
+            //お気に入りボタン表示
+            $this->tpl_login = true;
+
+            /* 閲覧ログ機能は現在未使用
+
+               $table = "dtb_customer_reading";
+               $where = "customer_id = ? ";
+               $arrval[] = $objCustomer->getValue('customer_id');
+               //顧客の閲覧商品数
+               $rpcnt = $objQuery->count($table, $where, $arrval);
+
+               //閲覧数が設定数以下
+               if ($rpcnt < CUSTOMER_READING_MAX){
+               //閲覧履歴に新規追加
+               lfRegistReadingData($product_id, $objCustomer->getValue('customer_id'));
+               } else {
+               //閲覧履歴の中で一番古いものを削除して新規追加
+               $oldsql = "SELECT MIN(update_date) FROM ".$table." WHERE customer_id = ?";
+               $old = $objQuery->getOne($oldsql, array($objCustomer->getValue("customer_id")));
+               $where = "customer_id = ? AND update_date = ? ";
+               $arrval = array($objCustomer->getValue("customer_id"), $old);
+               //削除
+               $objQuery->delete($table, $where, $arrval);
+               //追加
+               lfRegistReadingData($product_id, $objCustomer->getValue('customer_id'));
+               }
+            */
+        }
+
+
+        // 規格選択セレクトボックスの作成
+        $this->lfMakeSelectMobile($this, $product_id);
+
+        // 商品IDをFORM内に保持する。
+        $this->tpl_product_id = $product_id;
+
+        switch($_POST['mode']) {
+        case 'select':
+            // 規格1が設定されている場合
+            if($this->tpl_classcat_find1) {
+                // templateの変更
+                $this->tpl_mainpage = "products/select_find1.tpl";
+                break;
+            }
+
+        case 'select2':
+            $this->arrErr = $this->lfCheckError();
+
+            // 規格1が設定されている場合
+            if($this->tpl_classcat_find1 and $this->arrErr['classcategory_id1']) {
+                // templateの変更
+                $this->tpl_mainpage = "products/select_find1.tpl";
+                break;
+            }
+
+            // 規格2が設定されている場合
+            if($this->tpl_classcat_find2) {
+                $this->arrErr = array();
+
+                $this->tpl_mainpage = "products/select_find2.tpl";
+                break;
+            }
+
+        case 'selectItem':
+            $this->arrErr = $this->lfCheckError();
+
+            // 規格1が設定されている場合
+            if($this->tpl_classcat_find2 and $this->arrErr['classcategory_id2']) {
+                // templateの変更
+                $this->tpl_mainpage = "products/select_find2.tpl";
+                break;
+            }
+            // 商品数の選択を行う
+            $this->tpl_mainpage = "products/select_item.tpl";
+            break;
+
+        case 'cart':
+            // 入力値の変換
+            $this->objFormParam->convParam();
+            $this->arrErr = $this->lfCheckError();
+            if(count($this->arrErr) == 0) {
+                $objCartSess = new SC_CartSession();
+                $product_class_id = $_POST['product_class_id'];
+                $classcategory_id1 = $_POST['classcategory_id1'];
+                $classcategory_id2 = $_POST['classcategory_id2'];
+
+                // 規格1が設定されていない場合
+                if(!$this->tpl_classcat_find1) {
+                    $classcategory_id1 = '0';
+                }
+
+                // 規格2が設定されていない場合
+                if(!$this->tpl_classcat_find2) {
+                    $classcategory_id2 = '0';
+                }
+
+                $objCartSess->addProduct(array($_POST['product_id'], $product_class_id, $classcategory_id1, $classcategory_id2), $this->objFormParam->getValue('quantity'));
+                $this->sendRedirect($this->getLocation(MOBILE_URL_CART_TOP), true);
+                exit;
+            }
+            break;
+
+        default:
+            break;
+        }
+
+        // 商品詳細を取得
+        $objProduct = new SC_Product();
+        $this->arrProduct = $objProduct->getDetail($product_id);
+
+        // サブタイトルを取得
+        $this->tpl_subtitle = $this->arrProduct["name"];
+
+        // 画像ファイル指定がない場合の置換処理
+        $this->arrProduct['main_image']
+            = SC_Utils_Ex::sfNoImageMain($this->arrProduct['main_image']);
+
+        // ファイル情報のセット
+        $this->lfSetFile();
+        // 支払方法の取得
+        $this->arrPayment = $this->lfGetPayment();
+        // 入力情報を渡す
+        $this->arrForm = $this->objFormParam->getFormParamList();
+        //レビュー情報の取得
+        $this->arrReview = $this->lfGetReviewData($product_id);
+        // タイトルに商品名を入れる
+        $this->tpl_title = "商品詳細 ". $this->arrProduct["name"];
+        //関連商品情報表示
+        $this->arrRecommend = $this->lfPreGetRecommendProducts($product_id);
+
+        $objView->assignobj($this);
+        $objView->display(SITE_FRAME);
+    }
+
+    /* プロダクトIDの正当性チェック */
+    function lfCheckProductId() {
+        // 管理機能からの確認の場合は、非公開の商品も表示する。
+        if (isset($_GET['admin']) && $_GET['admin'] == 'on') {
+            SC_Utils_Ex::sfIsSuccess(new SC_Session());
+            $status = true;
+            $where = 'del_flg = 0';
+        } else {
+            $status = false;
+            $where = 'del_flg = 0 AND status = 1';
+        }
+
+        if (defined('MOBILE_SITE')) {
+            if (!isset($_POST['mode'])) $_POST['mode'] = "";
+            if (!empty($_POST['mode'])) {
+                $product_id = $_POST['product_id'];
+            } else {
+                $product_id = $_GET['product_id'];
+            }
+        } else {
+            if(isset($_POST['mode']) && $_POST['mode'] != '') {
+                $product_id = $_POST['product_id'];
+            } else {
+                $product_id = $_GET['product_id'];
+            }
+        }
+
+        $objDb = new SC_Helper_DB_Ex();
+        if(!SC_Utils_Ex::sfIsInt($product_id)
+            || SC_Utils_Ex::sfIsZeroFilling($product_id)
+            || !$objDb->sfIsRecord('dtb_products', 'product_id', (array)$product_id, $where))
+            SC_Utils_Ex::sfDispSiteError(PRODUCT_NOT_FOUND);
+        return $product_id;
+    }
+
+    /* ファイル情報の初期化 */
+    function lfInitFile() {
+        $this->objUpFile->addFile("詳細-メイン画像", 'main_image', array('jpg'), IMAGE_SIZE, true, NORMAL_IMAGE_WIDTH, NORMAL_IMAGE_HEIGHT);
+        for ($cnt = 1; $cnt <= PRODUCTSUB_MAX; $cnt++) {
+            $this->objUpFile->addFile("詳細-サブ画像$cnt", "sub_image$cnt", array('jpg'), IMAGE_SIZE, false, NORMAL_SUBIMAGE_HEIGHT, NORMAL_SUBIMAGE_HEIGHT);
+        }
+    }
+
+    /* 規格選択セレクトボックスの作成 */
+    function lfMakeSelect() {
+
+        // 選択されている規格
+        $classcategory_id1
+            = isset($_POST['classcategory_id1']) && is_numeric($_POST['classcategory_id1'])
+            ? $_POST['classcategory_id1']
+            : '';
+
+        $classcategory_id2
+            = isset($_POST['classcategory_id2']) && is_numeric($_POST['classcategory_id2'])
+            ? $_POST['classcategory_id2']
+            : '';
+
+        require_once DATA_PATH . 'module/Services/JSON.php';
+        $this->js_lnOnload .= 'fnSetClassCategories('
+            . 'document.form1, '
+            . Services_JSON::encode($classcategory_id2)
+            . '); ';
+    }
+
+    /* 規格選択セレクトボックスの作成
+     * FIXME 要リファクタリング
+     */
+    function lfMakeSelectMobile(&$objPage, $product_id) {
+
+        $objDb = new SC_Helper_DB_Ex();
+        $classcat_find1 = false;
+        $classcat_find2 = false;
+        // 在庫ありの商品の有無
+        $stock_find = false;
+
+        // 規格名一覧
+        $arrClassName = $objDb->sfGetIDValueList("dtb_class", "class_id", "name");
+        // 規格分類名一覧
+        $arrClassCatName = $objDb->sfGetIDValueList("dtb_classcategory", "classcategory_id", "name");
+        /*
+         * FIXME
+         * パフォーマンスが出ないため,
+         * SC_Product::getProductsClassByProductIds() を使用した実装に変更
+         */
+        // 商品規格情報の取得
+        $arrProductsClass = $this->lfGetProductsClass($product_id);
+
+        // 規格1クラス名の取得
+        $objPage->tpl_class_name1 = $arrClassName[$arrProductsClass[0]['class_id1']];
+        // 規格2クラス名の取得
+        $objPage->tpl_class_name2 = $arrClassName[$arrProductsClass[0]['class_id2']];
+
+        // すべての組み合わせ数
+        $count = count($arrProductsClass);
+
+        $classcat_id1 = "";
+
+        $arrSele1 = array();
+        $arrSele2 = array();
+
+        for ($i = 0; $i < $count; $i++) {
+            // 在庫のチェック
+            if($arrProductsClass[$i]['stock'] <= 0 && $arrProductsClass[$i]['stock_unlimited'] != '1') {
+                continue;
+            }
+
+            $stock_find = true;
+
+            // 規格1のセレクトボックス用
+            if($classcat_id1 != $arrProductsClass[$i]['classcategory_id1']){
+                $classcat_id1 = $arrProductsClass[$i]['classcategory_id1'];
+                $arrSele1[$classcat_id1] = $arrClassCatName[$classcat_id1];
+            }
+
+            // 規格2のセレクトボックス用
+            if($arrProductsClass[$i]['classcategory_id1'] == $_POST['classcategory_id1'] and $classcat_id2 != $arrProductsClass[$i]['classcategory_id2']) {
+                $classcat_id2 = $arrProductsClass[$i]['classcategory_id2'];
+                $arrSele2[$classcat_id2] = $arrClassCatName[$classcat_id2];
+            }
+        }
+
+        // 規格1
+        $objPage->arrClassCat1 = $arrSele1;
+        $objPage->arrClassCat2 = $arrSele2;
+
+        // 規格1が設定されている
+        if($arrProductsClass[0]['classcategory_id1'] != '0') {
+            $classcat_find1 = true;
+        }
+
+        // 規格2が設定されている
+        if($arrProductsClass[0]['classcategory_id2'] != '0') {
+            $classcat_find2 = true;
+        }
+
+        $objPage->tpl_classcat_find1 = $classcat_find1;
+        $objPage->tpl_classcat_find2 = $classcat_find2;
+        $objPage->tpl_stock_find = $stock_find;
+    }
+
+    /* パラメータ情報の初期化 */
+    function lfInitParam() {
+        $this->objFormParam->addParam("規格1", "classcategory_id1", INT_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $this->objFormParam->addParam("規格2", "classcategory_id2", INT_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $this->objFormParam->addParam("数量", "quantity", INT_LEN, "n", array("EXIST_CHECK", "ZERO_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+    }
+
+    /* 商品規格情報の取得 */
+    function lfGetProductsClass($product_id) {
+        $arrRet = array();
+        if(SC_Utils_Ex::sfIsInt($product_id)) {
+            // 商品規格取得
+            $objQuery = new SC_Query();
+            $col = "product_class_id, classcategory_id1, classcategory_id2, class_id1, class_id2, stock, stock_unlimited";
+            $table = "vw_product_class AS prdcls";
+            $where = "product_id = ?";
+            $objQuery->setOrder("rank1 DESC, rank2 DESC");
+            $arrRet = $objQuery->select($col, $table, $where, array($product_id));
+        }
+        return $arrRet;
+    }
+
+    /* 登録済み関連商品の読み込み */
+    function lfPreGetRecommendProducts($product_id) {
         $arrRecommend = array();
-        for($i = 1; $i <= RECOMMEND_PRODUCT_MAX; $i++) {
-            $keyname = "recommend_id" . $i;
-            $delkey = "recommend_delete" . $i;
-            $commentkey = "recommend_comment" . $i;
+        $objQuery = new SC_Query();
+        $objQuery->setOrder("rank DESC");
+        $arrRet = $objQuery->select("recommend_product_id, comment", "dtb_recommend_products", "product_id = ?", array($product_id));
+        $max = count($arrRet);
+        $no = 0;
+        // FIXME SC_Product クラスを使用した実装
+        $from = "vw_products_allclass AS T1 "
+                . " JOIN ("
+                . " SELECT max(T2.rank) AS product_rank, "
+                . "        T2.product_id"
+                . "   FROM dtb_product_categories T2  "
+                . " GROUP BY product_id) AS T3 USING (product_id)";
+        $objQuery->setOrder("T3.product_rank DESC");
+        for($i = 0; $i < $max; $i++) {
+            $where = "del_flg = 0 AND T3.product_id = ? AND status = 1";
+            $arrProductInfo = $objQuery->select("DISTINCT main_list_image, price02_min, price02_max, price01_min, price01_max, name, T3.product_rank", $from, $where, array($arrRet[$i]['recommend_product_id']));
 
-            if (!isset($this->arrForm[$delkey])) $this->arrForm[$delkey] = null;
-
-            if((isset($this->arrForm[$keyname]) && !empty($this->arrForm[$keyname])) && $this->arrForm[$delkey] != 1) {
-                $objProduct = new SC_Product();
-                $arrRecommend[$i] = $objProduct->getDetail($this->arrForm[$keyname]);
-                $arrRecommend[$i]['product_id'] = $this->arrForm[$keyname];
-                $arrRecommend[$i]['comment'] = $this->arrForm[$commentkey];
+            if(count($arrProductInfo) > 0) {
+                $arrRecommend[$no] = $arrProductInfo[0];
+                $arrRecommend[$no]['product_id'] = $arrRet[$i]['recommend_product_id'];
+                $arrRecommend[$no]['comment'] = $arrRet[$i]['comment'];
+                $no++;
             }
         }
         return $arrRecommend;
     }
 
-    /* 関連商品の登録 */
-    function lfInsertRecommendProducts($objQuery, $arrList, $product_id) {
-        // 一旦関連商品をすべて削除する
-        $objQuery->delete("dtb_recommend_products", "product_id = ?", array($product_id));
-        $sqlval['product_id'] = $product_id;
-        $rank = RECOMMEND_PRODUCT_MAX;
-        for($i = 1; $i <= RECOMMEND_PRODUCT_MAX; $i++) {
-            $keyname = "recommend_id" . $i;
-            $commentkey = "recommend_comment" . $i;
-            $deletekey = "recommend_delete" . $i;
-
-            if (!isset($arrList[$deletekey])) $arrList[$deletekey] = null;
-
-            if($arrList[$keyname] != "" && $arrList[$deletekey] != '1') {
-                $sqlval['recommend_product_id'] = $arrList[$keyname];
-                $sqlval['comment'] = $arrList[$commentkey];
-                $sqlval['rank'] = $rank;
-                $sqlval['creator_id'] = $_SESSION['member_id'];
-                $sqlval['create_date'] = "now()";
-                $sqlval['update_date'] = "now()";
-                $objQuery->insert("dtb_recommend_products", $sqlval);
-                $rank--;
+    /* 入力内容のチェック */
+    function lfCheckError() {
+        if ($_POST['mode'] == "add_favorite") {
+            $objCustomer = new SC_Customer();
+            $objErr = new SC_CheckError();
+            $customer_id = $objCustomer->getValue('customer_id');
+            if (SC_Helper_DB_Ex::sfDataExists('dtb_customer_favorite_products', 'customer_id = ? AND product_id = ?', array($customer_id, $favorite_product_id))) {
+                $objErr->arrErr['add_favorite'.$favorite_product_id] = "※ この商品は既にお気に入りに追加されています。<br />";
             }
-        }
-    }
-
-    /**
-     * 指定商品の関連商品をDBから読み込む
-     *
-     * @param string $product_id 商品ID
-     * @return void
-     */
-    function lfPreGetRecommendProducts($product_id) {
-        $objQuery = new SC_Query();
-        $objQuery->setOrder("rank DESC");
-        $arrRet = $objQuery->select("recommend_product_id, comment", "dtb_recommend_products", "product_id = ?", array($product_id));
-        $no = 1;
-
-        foreach ($arrRet as $ret) {
-            $this->arrForm['recommend_id' . $no] = $ret['recommend_product_id'];
-            $this->arrForm['recommend_comment' . $no] = $ret['comment'];
-            $no++;
-        }
-    }
-
-    /* 商品情報の読み込み */
-    function lfGetProduct($product_id) {
-        $objQuery = new SC_Query();
-        $objDb = new SC_Helper_DB_Ex();
-
-        $col = "*";
-        $table = <<< __EOF__
-                      dtb_products AS T1
-            LEFT JOIN (
-                       SELECT product_id AS product_id_sub,
-                              product_code,
-                              price01,
-                              price02,
-                              stock,
-                              stock_unlimited,
-                              sale_limit,
-                              point_rate,
-                              product_type_id,
-                              down_filename,
-                              down_realfilename
-                         FROM dtb_products_class
-                        WHERE class_combination_id IS NULL
-                       ) AS T2
-                     ON T1.product_id = T2.product_id_sub
-__EOF__;
-        $where = "product_id = ?";
-
-        $arrRet = $objQuery->select($col, $table, $where, array($product_id));
-
-        // カテゴリID を取得
-        $arrRet[0]['category_id'] = $objQuery->getCol("dtb_product_categories",
-                                                      "category_id",
-                                                      "product_id = ?",
-        array($product_id));
-        //編集時に規格IDが変わってしまうのを防ぐために規格が登録されていなければ規格IDを取得する
-        if (!$objDb->sfHasProductClass($_POST['product_id'])) {
-            $arrRet[0]['product_class_id'] = SC_Utils::sfGetProductClassId($product_id,"0","0");
-        }
-        return $arrRet[0];
-    }
-
-    /* 商品登録ページ表示用 */
-    function lfProductPage() {
-        $objDb = new SC_Helper_DB_Ex();
-
-        // カテゴリの読込
-        list($this->arrCatVal, $this->arrCatOut) = $objDb->sfGetLevelCatList(false);
-
-        if (isset($this->arrForm['category_id']) && !is_array($this->arrForm['category_id'])) {
-            $this->arrForm['category_id'] = unserialize($this->arrForm['category_id']);
-        }
-        if($this->arrForm['status'] == "") {
-            $this->arrForm['status'] = DEFAULT_PRODUCT_DISP;
-        }
-        if($this->arrForm['product_type_id'] == "") {
-            $this->arrForm['product_type_id'] = DEFAULT_PRODUCT_DOWN;
-        }
-
-        // HIDDEN用に配列を渡す。
-        $this->arrHidden = array_merge((array)$this->arrHidden, (array)$this->objUpFile->getHiddenFileList());
-        $this->arrHidden = array_merge((array)$this->arrHidden, (array)$this->objDownFile->getHiddenFileList());
-        // Form用配列を渡す。
-        $this->arrFile = $this->objUpFile->getFormFileList(IMAGE_TEMP_URL, IMAGE_SAVE_URL);
-
-        $this->arrForm['down_realfilename'] = $this->objDownFile->getFormDownFile();
-
-        // アンカーを設定
-        if (isset($_POST['image_key']) && !empty($_POST['image_key'])) {
-            $anchor_hash = "location.hash='#" . $_POST['image_key'] . "'";
-        } elseif (isset($_POST['anchor_key']) && !empty($_POST['anchor_key'])) {
-            $anchor_hash = "location.hash='#" . $_POST['anchor_key'] . "'";
         } else {
-            $anchor_hash = "";
-        }
+            // 入力データを渡す。
+            $arrRet =  $this->objFormParam->getHashArray();
+            $objErr = new SC_CheckError($arrRet);
+            $objErr->arrErr = $this->objFormParam->checkError();
 
-        $this->tpl_onload = "fnCheckStockLimit('" . DISABLED_RGB . "'); fnMoveSelect('category_id_unselect', 'category_id');" . $anchor_hash;
-    }
-
-    /* ファイル情報の初期化 */
-    function lfInitFile() {
-        $this->objUpFile->addFile("一覧-メイン画像", 'main_list_image', array('jpg', 'gif', 'png'),IMAGE_SIZE, false, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT);
-        $this->objUpFile->addFile("詳細-メイン画像", 'main_image', array('jpg', 'gif', 'png'), IMAGE_SIZE, false, NORMAL_IMAGE_WIDTH, NORMAL_IMAGE_HEIGHT);
-        $this->objUpFile->addFile("詳細-メイン拡大画像", 'main_large_image', array('jpg', 'gif', 'png'), IMAGE_SIZE, false, LARGE_IMAGE_WIDTH, LARGE_IMAGE_HEIGHT);
-        for ($cnt = 1; $cnt <= PRODUCTSUB_MAX; $cnt++) {
-            $this->objUpFile->addFile("詳細-サブ画像$cnt", "sub_image$cnt", array('jpg', 'gif', 'png'), IMAGE_SIZE, false, NORMAL_SUBIMAGE_WIDTH, NORMAL_SUBIMAGE_HEIGHT);
-            $this->objUpFile->addFile("詳細-サブ拡大画像$cnt", "sub_large_image$cnt", array('jpg', 'gif', 'png'), IMAGE_SIZE, false, LARGE_SUBIMAGE_WIDTH, LARGE_SUBIMAGE_HEIGHT);
-        }
-    }
-
-    /* 商品の登録 */
-    function lfRegistProduct($arrList) {
-        $objQuery = new SC_Query();
-        $objDb = new SC_Helper_DB_Ex();
-        $objQuery->begin();
-
-        // 配列の添字を定義
-        $checkArray = array("name", "status",
-                            "main_list_comment", "main_comment",
-                            "deliv_fee", "comment1", "comment2", "comment3",
-                            "comment4", "comment5", "comment6", "main_list_comment",
-                            "sale_limit", "deliv_date_id", "maker_id", "note");
-        $arrList = SC_Utils_Ex::arrayDefineIndexes($arrList, $checkArray);
-
-        // INSERTする値を作成する。
-        $sqlval['name'] = $arrList['name'];
-        $sqlval['status'] = $arrList['status'];
-        $sqlval['main_list_comment'] = $arrList['main_list_comment'];
-        $sqlval['main_comment'] = $arrList['main_comment'];
-        $sqlval['comment1'] = $arrList['comment1'];
-        $sqlval['comment2'] = $arrList['comment2'];
-        $sqlval['comment3'] = $arrList['comment3'];
-        $sqlval['comment4'] = $arrList['comment4'];
-        $sqlval['comment5'] = $arrList['comment5'];
-        $sqlval['comment6'] = $arrList['comment6'];
-        $sqlval['main_list_comment'] = $arrList['main_list_comment'];
-        $sqlval['deliv_date_id'] = $arrList['deliv_date_id'];
-        $sqlval['maker_id'] = $arrList['maker_id'];
-        $sqlval['note'] = $arrList['note'];
-        $sqlval['update_date'] = "Now()";
-        $sqlval['creator_id'] = $_SESSION['member_id'];
-        $arrRet = $this->objUpFile->getDBFileList();
-        $sqlval = array_merge($sqlval, $arrRet);
-
-        $arrList['category_id'] = unserialize($arrList['category_id']);
-
-        for ($cnt = 1; $cnt <= PRODUCTSUB_MAX; $cnt++) {
-            $sqlval['sub_title'.$cnt] = $arrList['sub_title'.$cnt];
-            $sqlval['sub_comment'.$cnt] = $arrList['sub_comment'.$cnt];
-        }
-
-        // 新規登録(複製時を含む)
-        if ($arrList['product_id'] == "") {
-            $product_id = $objQuery->nextVal("dtb_products_product_id");
-            $sqlval['product_id'] = $product_id;
-
-            // INSERTの実行
-            $sqlval['create_date'] = "Now()";
-            $objQuery->insert("dtb_products", $sqlval);
-
-            $arrList['product_id'] = $product_id;
-
-            // カテゴリを更新
-            $objDb->updateProductCategories($arrList['category_id'], $product_id);
-
-            // 複製商品の場合には規格も複製する
-            if($_POST["copy_product_id"] != "" and SC_Utils_Ex::sfIsInt($_POST["copy_product_id"])){
-
-                if($this->tpl_nonclass)
-                {
-                    //規格なしの場合、複製は価格等の入力が発生しているため、その内容で追加登録を行う
-                    $this->lfCopyProductClass($arrList, $objQuery);
-                }
-                else
-                {
-                    //規格がある場合の複製は複製元の内容で追加登録を行う
-                    // dtb_products_class のカラムを取得
-                    $dbFactory = SC_DB_DBFactory_Ex::getInstance();
-                    $arrColList = $dbFactory->sfGetColumnList("dtb_products_class", $objQuery);
-                    $arrColList_tmp = array_flip($arrColList);
-
-                    // 複製しない列
-                    unset($arrColList[$arrColList_tmp["product_class_id"]]);     //規格ID
-                    unset($arrColList[$arrColList_tmp["product_id"]]);           //商品ID
-                    unset($arrColList[$arrColList_tmp["create_date"]]);
-
-                    $col = SC_Utils_Ex::sfGetCommaList($arrColList);
-                    $product_class_id = $objQuery->nextVal('dtb_products_class_product_class_id');
-                    $objQuery->query("INSERT INTO dtb_products_class (product_class_id, product_id, create_date, ". $col .") SELECT ?, now(), " . $col. " FROM dtb_products_class WHERE product_id = ? ORDER BY product_class_id", array($product_class_id, $product_id, $_POST["copy_product_id"]));
-                }
+            // 複数項目チェック
+            if ($this->tpl_classcat_find1) {
+                $objErr->doFunc(array("規格1", "classcategory_id1"), array("EXIST_CHECK"));
             }
-        }
-        // 更新
-        else {
-            $product_id = $arrList['product_id'];
-            // 削除要求のあった既存ファイルの削除
-            $arrRet = $this->lfGetProduct($arrList['product_id']);
-            $this->objUpFile->deleteDBFile($arrRet);
-            $this->objDownFile->deleteDBDownFile($arrRet);
-
-            // UPDATEの実行
-            $where = "product_id = ?";
-            $objQuery->update("dtb_products", $sqlval, $where, array($product_id));
-
-            // カテゴリを更新
-            $objDb->updateProductCategories($arrList['category_id'], $product_id);
-        }
-
-        //商品登録の時は規格を生成する。複製の場合は規格も複製されるのでこの処理は不要。
-        if( $_POST["copy_product_id"] == "" ){
-            // 規格登録
-            $this->lfInsertDummyProductClass($arrList);
-        }
-
-        // ステータス設定
-        $objProduct = new SC_Product();
-        $objProduct->setProductStatus($product_id, $arrList['product_status']);
-
-        // 関連商品登録
-        $this->lfInsertRecommendProducts($objQuery, $arrList, $product_id);
-
-        $objQuery->commit();
-        return $product_id;
-    }
-
-
-    /* 取得文字列の変換 */
-    function lfConvertParam($array) {
-        /*
-         *  文字列の変換
-         *  K :  「半角(ﾊﾝｶｸ)片仮名」を「全角片仮名」に変換
-         *  C :  「全角ひら仮名」を「全角かた仮名」に変換
-         *  V :  濁点付きの文字を一文字に変換。"K","H"と共に使用します
-         *  n :  「全角」数字を「半角(ﾊﾝｶｸ)」に変換
-         */
-
-        // スポット商品
-        $arrConvList['name'] = "KVa";
-        $arrConvList['main_list_comment'] = "KVa";
-        $arrConvList['main_comment'] = "KVa";
-        $arrConvList['price01'] = "n";
-        $arrConvList['price02'] = "n";
-        $arrConvList['stock'] = "n";
-        $arrConvList['sale_limit'] = "n";
-        $arrConvList['point_rate'] = "n";
-        $arrConvList['product_code'] = "KVna";
-        $arrConvList['comment1'] = "a";
-        $arrConvList['deliv_fee'] = "n";
-
-        // 詳細-サブ
-        for ($cnt = 1; $cnt <= PRODUCTSUB_MAX; $cnt++) {
-            $arrConvList["sub_title$cnt"] = "KVa";
-        }
-        for ($cnt = 1; $cnt <= PRODUCTSUB_MAX; $cnt++) {
-            $arrConvList["sub_comment$cnt"] = "KVa";
-        }
-
-        // 関連商品
-        for ($cnt = 1; $cnt <= RECOMMEND_PRODUCT_MAX; $cnt++) {
-            $arrConvList["recommend_comment$cnt"] = "KVa";
-        }
-
-        // 文字変換
-        foreach ($arrConvList as $key => $val) {
-            // POSTされてきた値のみ変換する。
-            if(isset($array[$key])) {
-                $array[$key] = mb_convert_kana($array[$key] ,$val);
+            if ($this->tpl_classcat_find2) {
+                $objErr->doFunc(array("規格2", "classcategory_id2"), array("EXIST_CHECK"));
             }
         }
 
-        if (!isset($array['product_flag'])) $array['product_flag'] = "";
-        $max = max(array_keys($this->arrSTATUS));
-        $array['product_flag'] = SC_Utils_Ex::sfMergeCheckBoxes($array['product_flag'], $max);
-
-        return $array;
-    }
-
-    // 入力エラーチェック
-    function lfErrorCheck($array) {
-
-        $objErr = new SC_CheckError($array);
-        $objErr->doFunc(array("商品名", "name", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("一覧-メインコメント", "main_list_comment", MTEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("詳細-メインコメント", "main_comment", LLTEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("詳細-メインコメント", "main_comment", $this->arrAllowedTag), array("HTML_TAG_CHECK"));
-        $objErr->doFunc(array("ポイント付与率", "point_rate", PERCENTAGE_LEN), array("EXIST_CHECK", "NUM_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("商品送料", "deliv_fee", PRICE_LEN), array("NUM_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("備考欄(SHOP専用)", "note", LLTEXT_LEN), array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("検索ワード", "comment3", LLTEXT_LEN), array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("メーカーURL", "comment1", URL_LEN), array("SPTAB_CHECK", "URL_CHECK", "MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("発送日目安", "deliv_date_id", INT_LEN), array("NUM_CHECK"));
-        $objErr->doFunc(array("メーカー", 'maker_id', INT_LEN), array("NUM_CHECK"));
-
-        if($this->tpl_nonclass) {
-            $objErr->doFunc(array("商品コード", "product_code", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK","MAX_LENGTH_CHECK"));
-            $objErr->doFunc(array(NORMAL_PRICE_TITLE, "price01", PRICE_LEN), array("NUM_CHECK", "MAX_LENGTH_CHECK"));
-            $objErr->doFunc(array(SALE_PRICE_TITLE, "price02", PRICE_LEN), array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
-
-            if(!isset($array['stock_unlimited']) && $array['stock_unlimited'] != "1") {
-                $objErr->doFunc(array("在庫数", "stock", AMOUNT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
-            }
-
-            //ダウンロード商品チェック
-            if($array['product_type_id'] == PRODUCT_TYPE_DOWNLOAD) {
-                $objErr->doFunc(array("ダウンロードファイル名", "down_filename", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-                if($array['down_realfilename'] == "") {
-                    $objErr->arrErr['down_realfilename'] = "※ ダウンロード商品の場合はダウンロード商品用ファイルをアップロードしてください。<br />";
-                }
-            }
-            //実商品チェック
-            if($array['product_type_id'] == PRODUCT_TYPE_NORMAL) {
-                if($array['down_filename'] != "") {
-                    $objErr->arrErr['down_filename'] = "※ 通常商品の場合はダウンロードファイル名を設定できません。<br />";
-                }
-                if($array['down_realfilename'] != "") {
-                    $objErr->arrErr['down_realfilename'] = "※ 通常商品の場合はダウンロード商品用ファイルをアップロードできません。<br />ファイルを取り消してください。<br />";
-                }
-            }
-        }
-
-        $objErr->doFunc(array("購入制限", "sale_limit", AMOUNT_LEN), array("SPTAB_CHECK", "ZERO_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
-
-        for ($cnt = 1; $cnt <= PRODUCTSUB_MAX; $cnt++) {
-            $objErr->doFunc(array("詳細-サブタイトル$cnt", "sub_title$cnt", STEXT_LEN), array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-            $objErr->doFunc(array("詳細-サブコメント$cnt", "sub_comment$cnt", LLTEXT_LEN), array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-            $objErr->doFunc(array("詳細-サブコメント$cnt", "sub_comment$cnt", $this->arrAllowedTag),  array("HTML_TAG_CHECK"));
-        }
-
-        for ($cnt = 1; $cnt <= RECOMMEND_PRODUCT_MAX; $cnt++) {
-
-            if (!isset($_POST["recommend_delete$cnt"]))  $_POST["recommend_delete$cnt"] = "";
-
-            if(isset($_POST["recommend_id$cnt"])
-            && $_POST["recommend_id$cnt"] != ""
-            && $_POST["recommend_delete$cnt"] != 1) {
-                $objErr->doFunc(array("関連商品コメント$cnt", "recommend_comment$cnt", LTEXT_LEN), array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-            }
-        }
-
-        // カテゴリID のチェック
-        if (empty($array['category_id'])) {
-            $objErr->arrErr['category_id'] = "※ 商品カテゴリが選択されていません。<br />";
-        } else {
-            $arrCategory_id = array();
-            for ($i = 0; $i < count($array['category_id']); $i++) {
-                $arrCategory_id['category_id' . $i] = $array['category_id'][$i];
-            }
-            $objCheckCategory = new SC_CheckError($arrCategory_id);
-            for ($i = 0; $i < count($array['category_id']); $i++) {
-                $objCheckCategory->doFunc(array("商品カテゴリ", "category_id" . $i, STEXT_LEN), array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-            }
-            if (!empty($objCheckCategory->arrErr)) {
-                $objErr->arrErr = array_merge($objErr->arrErr,
-                $objCheckCategory->arrErr);
-            }
-        }
         return $objErr->arrErr;
     }
 
-    /* 確認ページ表示用 */
-    function lfProductConfirmPage() {
-        $this->tpl_mainpage = 'products/confirm.tpl';
-        $this->arrForm['mode'] = 'complete';
-
-        $objDb = new SC_Helper_DB_Ex();
-
-        // カテゴリ表示
-        $this->arrCategory_id = $this->arrForm['category_id'];
-        $this->arrCatList = array();
-        list($arrCatVal, $arrCatOut) = $objDb->sfGetLevelCatList(false);
-        for ($i = 0; $i < count($arrCatVal); $i++) {
-            $this->arrCatList[$arrCatVal[$i]] = $arrCatOut[$i];
-        }
-
-        // hidden に渡す値は serialize する
-        $this->arrForm['category_id'] = serialize($this->arrForm['category_id']);
-
-        // Form用配列を渡す。
-        $this->arrFile = $this->objUpFile->getFormFileList(IMAGE_TEMP_URL, IMAGE_SAVE_URL);
-        $this->arrForm['down_realfilename'] = $this->objDownFile->getFormDownFile();
+    //閲覧履歴新規登録
+    function lfRegistReadingData($product_id, $customer_id){
+        $objQuery = new SC_Query;
+        $sqlval['customer_id'] = $customer_id;
+        $sqlval['reading_product_id'] = $product_id;
+        $sqlval['create_date'] = 'NOW()';
+        $sqlval['update_date'] = 'NOW()';
+        $objQuery->insert("dtb_customer_reading", $sqlval);
     }
 
-    // 縮小した画像をセットする
-    function lfSetScaleImage(){
-
-        $subno = str_replace("sub_large_image", "", $_POST['image_key']);
-        switch ($_POST['image_key']){
-            case "main_large_image":
-                // 詳細メイン画像
-                $this->lfMakeScaleImage($_POST['image_key'], "main_image");
-            case "main_image":
-                // 一覧メイン画像
-                $this->lfMakeScaleImage($_POST['image_key'], "main_list_image");
-                break;
-            case "sub_large_image" . $subno:
-                // サブメイン画像
-                $this->lfMakeScaleImage($_POST['image_key'], "sub_image" . $subno);
-                break;
-            default:
-                break;
-        }
+    //商品ごとのレビュー情報を取得する
+    function lfGetReviewData($id) {
+        $objQuery = new SC_Query;
+        //商品ごとのレビュー情報を取得する
+        $col = "create_date, reviewer_url, reviewer_name, recommend_level, title, comment";
+        $from = "dtb_review";
+        $where = "del_flg = 0 AND status = 1 AND product_id = ? ORDER BY create_date DESC LIMIT " . REVIEW_REGIST_MAX;
+        $arrval[] = $id;
+        $arrReview = $objQuery->select($col, $from, $where, $arrval);
+        return $arrReview;
     }
 
-    // 縮小画像生成
-    function lfMakeScaleImage($from_key, $to_key, $forced = false){
-        $arrImageKey = array_flip($this->objUpFile->keyname);
-
-        if($this->objUpFile->temp_file[$arrImageKey[$from_key]]){
-            $from_path = $this->objUpFile->temp_dir . $this->objUpFile->temp_file[$arrImageKey[$from_key]];
-        }elseif($this->objUpFile->save_file[$arrImageKey[$from_key]]){
-            $from_path = $this->objUpFile->save_dir . $this->objUpFile->save_file[$arrImageKey[$from_key]];
-        }else{
-            return "";
-        }
-
-        if(file_exists($from_path)){
-            // 生成先の画像サイズを取得
-            $to_w = $this->objUpFile->width[$arrImageKey[$to_key]];
-            $to_h = $this->objUpFile->height[$arrImageKey[$to_key]];
-
-            if($forced) $this->objUpFile->save_file[$arrImageKey[$to_key]] = "";
-
-            if(empty($this->objUpFile->temp_file[$arrImageKey[$to_key]]) &&
-            empty($this->objUpFile->save_file[$arrImageKey[$to_key]])) {
-
-                // リネームする際は、自動生成される画像名に一意となるように、Suffixを付ける
-                $dst_file = $this->objUpFile->lfGetTmpImageName(IMAGE_RENAME, "", $this->objUpFile->temp_file[$arrImageKey[$from_key]]) . $this->lfGetAddSuffix($to_key);
-                $path = $this->objUpFile->makeThumb($from_path, $to_w, $to_h, $dst_file);
-                $this->objUpFile->temp_file[$arrImageKey[$to_key]] = basename($path);
-            }
-        }else{
-            return "";
-        }
-    }
-
-    /**
-     * リネームする際は、自動生成される画像名に一意となるように、Suffixを付ける
-     */
-    function lfGetAddSuffix($to_key){
-        if( IMAGE_RENAME === true ){ return ; }
-
-        // 自動生成される画像名
-        $dist_name = "";
-        switch($to_key){
-            case "main_list_image":
-                $dist_name = '_s';
-                break;
-            case "main_image":
-                $dist_name = '_m';
-                break;
-            default:
-                $arrRet = explode('sub_image', $to_key);
-                $dist_name = '_sub' .$arrRet[1];
-                break;
-        }
-        return $dist_name;
-    }
-
-    /**
-     * dtb_products_classの複製
-     * 複製後、価格や商品コードを更新する
+    /*
+     * 商品ごとのトラックバック情報を取得する
      *
-     * @param array $arrList
-     * @param array $objQuery
-     * @return bool
+     * @param $product_id
+     * @return $arrTrackback
      */
-    function lfCopyProductClass($arrList,$objQuery)
-    {
-        // 複製元のdtb_products_classを取得（規格なしのため、1件のみの取得）
-        $col = "*";
-        $table = "dtb_products_class";
-        $where = "product_id = ?";
-        $arrProductClass = $objQuery->select($col, $table, $where, array($arrList["copy_product_id"]));
+    function lfGetTrackbackData($product_id) {
 
-        //トランザクション開始
-        $objQuery->begin();
-        $err_flag = false;
-        //非編集項目は複製、編集項目は上書きして登録
-        foreach($arrProductClass as $records)
-        {
-            foreach($records as $key => $value)
-            {
-                if(isset($arrList[$key]))
-                {
-                    $records[$key] = $arrList[$key];
-                }
-            }
+        $arrTrackback = array();
 
-            $records["product_class_id"] = $objQuery->nextVal('dtb_products_class_product_class_id');
-            unset($records["update_date"]);
+        $objQuery = new SC_Query;
+        //商品ごとのトラックバック情報を取得する
+        $col = "blog_name, url, title, excerpt, title, create_date";
+        $from = "dtb_trackback";
+        $where = "del_flg = 0 AND status = 1 AND product_id = ? ORDER BY create_date DESC LIMIT " . TRACKBACK_VIEW_MAX;
+        $arrval[] = $product_id;
+        $arrTrackback = $objQuery->select($col, $from, $where, $arrval);
+        return $arrTrackback;
+    }
 
-            $records["create_date"] = "Now()";
-            $objQuery->insert($table, $records);
-            //エラー発生時は中断
-            if($objQuery->isError())
-            {
-                $err_flag = true;
-                continue;
+    //支払方法の取得
+    //payment_id	1:クレジット　2:ショッピングローン
+    function lfGetPayment() {
+        $objQuery = new SC_Query;
+        $col = "payment_id, rule, payment_method";
+        $from = "dtb_payment";
+        $where = "del_flg = 0";
+        $order = "payment_id";
+        $objQuery->setOrder($order);
+        $arrRet = $objQuery->select($col, $from, $where);
+        return $arrRet;
+    }
+
+    function lfConvertParam() {
+        if (!isset($this->arrForm['quantity']['value'])) $this->arrForm['quantity']['value'] = "";
+        $value = $this->arrForm['quantity']['value'];
+        $this->arrForm['quantity']['value'] = htmlspecialchars($value, ENT_QUOTES, CHAR_CODE);
+    }
+
+    /*
+     * ファイルの情報をセットする
+     *
+     */
+    function lfSetFile() {
+        // DBからのデータを引き継ぐ
+        $this->objUpFile->setDBFileList($this->arrProduct);
+        // ファイル表示用配列を渡す
+        $this->arrFile = $this->objUpFile->getFormFileList(IMAGE_TEMP_URL, IMAGE_SAVE_URL, true);
+
+        // サブ画像の有無を判定
+        $this->subImageFlag = false;
+        for ($i = 1; $i <= PRODUCTSUB_MAX; $i++) {
+            if ($this->arrFile["sub_image" . $i]["filepath"] != "") {
+                $this->subImageFlag = true;
             }
         }
-        //トランザクション終了
-        if($err_flag)
-        {
-            $objQuery->rollback();
-        }
-        else
-        {
+    }
+
+    /*
+     * お気に入り商品登録
+     */
+    function lfRegistFavoriteProduct($customer_id, $product_id) {
+        $objQuery = new SC_Query();
+        $count = $objQuery->count("dtb_customer_favorite_products", "customer_id = ? AND product_id = ?", array($customer_id, $product_id));
+
+        if ($count == 0) {
+            $sqlval['customer_id'] = $customer_id;
+            $sqlval['product_id'] = $product_id;
+            $sqlval['update_date'] = "now()";
+            $sqlval['create_date'] = "now()";
+
+            $objQuery->begin();
+            $objQuery->insert('dtb_customer_favorite_products', $sqlval);
             $objQuery->commit();
         }
-        return !$err_flag;
     }
 
-    /**
-     * 規格を設定していない商品を商品規格テーブルに登録
-     *
-     * @param array $arrList
-     * @return void
-     */
-    function lfInsertDummyProductClass($arrList) {
-        $objQuery  = new SC_Query();
-        $objDb = new SC_Helper_DB_Ex();
-
-        $product_id = $arrList['product_id'];
-        // 規格登録してある商品の場合、処理しない
-        if ($objDb->sfHasProductClass($product_id)) return;
-
-        // 配列の添字を定義
-        $checkArray = array('product_class_id', 'product_id', 'product_code', 'stock', 'stock_unlimited', 'price01', 'price02', 'sale_limit', 'deliv_fee', 'point_rate' ,'product_type_id', 'down_filename', 'down_realfilename');
-        $sqlval = SC_Utils_Ex::sfArrayIntersectKeys($arrList, $checkArray);
-        $sqlval = SC_Utils_Ex::arrayDefineIndexes($sqlval, $checkArray);
-
-        $sqlval['stock_unlimited'] = $sqlval['stock_unlimited'] ? '1' : '0';
-        $sqlval['creator_id'] = strlen($_SESSION['member_id']) >= 1 ? $_SESSION['member_id'] : '0';
-
-        if (strlen($sqlval['product_class_id']) == 0) {
-            $sqlval['product_class_id'] = $objQuery->nextVal('dtb_products_class_product_class_id');
-            $sqlval['create_date'] = 'now()';
-            $sqlval['update_date'] = 'now()';
-            // INSERTの実行
-            $objQuery->insert('dtb_products_class', $sqlval);
-        } else {
-            $sqlval['update_date'] = 'now()';
-            // UPDATEの実行
-            $objQuery->update('dtb_products_class', $sqlval, "product_class_id = ?", array($sqlval['product_class_id']));
-
-        }
-    }
-
-    /* ダウンロードファイル情報の初期化 */
-    function lfInitDownFile() {
-        $this->objDownFile->addFile("ダウンロード販売用ファイル", 'down_file', explode(",", DOWNLOAD_EXTENSION),DOWN_SIZE, true, 0, 0);
-    }
 }
 ?>
