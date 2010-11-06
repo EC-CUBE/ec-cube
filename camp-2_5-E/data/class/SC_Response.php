@@ -16,7 +16,6 @@ class SC_Response{
     var $body;
     var $header = array();
     
-    
     /**
      * 
      * Enter description here ...
