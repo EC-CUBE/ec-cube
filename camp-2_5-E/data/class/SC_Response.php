@@ -12,7 +12,6 @@ class SC_Response{
      * @var unknown_type
      */
     var $contentType;
-    var $header;
     var $body;
     var $statuscode;
     var $header = array();
