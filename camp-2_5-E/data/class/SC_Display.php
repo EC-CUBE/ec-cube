@@ -69,7 +69,7 @@ class SC_Display{
      * デバイス毎の出力方法を自動で変更する、ファサード
      * Enter description here ...
      */
-    function setDevice($device=4,$view = null){
+    function setDevice($device=4){
         
         switch ($device){
             case 1:
