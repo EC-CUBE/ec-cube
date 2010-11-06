@@ -32,7 +32,6 @@
   <!--▼メンバー一覧ここから-->
   <table class="list">
     <tr>
-      <th>権限</th>
       <th>名前</th>
       <th>所属</th>
       <th>稼動</th>
