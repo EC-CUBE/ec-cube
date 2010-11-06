@@ -37,7 +37,15 @@ class SC_Display{
      */
     function setDevice(int $device = 4){
       switch ($device){
-          
+          case 1:
+              
+              break;
+          case 2:
+              
+              break;
+          case 4:
+              
+              break;
       }
     }
 
