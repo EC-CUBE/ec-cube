@@ -55,14 +55,15 @@ class SC_Plugin
     }
 
     function disablePlugin(){
-      $objQuery = new SC_Query();
-      $name = preg_replace("/.php/", "", __FILE__);
-      $objQuery->update("dtb_plugin", array('enable'=>'0'), "plugin_name = ?", array($name));
-      
+        $objQuery = new SC_Query();
+        $name = preg_replace("/.php/", "", __FILE__);
+        $objQuery->update("dtb_plugin", array('enable'=>'0'), "plugin_name = ?", array($name));
     }
 
     function enablePlugin(){
-    
+        $objQuery = new SC_Query();
+        $name = preg_replace("/.php/", "", __FILE__);
+        $objQuery->update("dtb_plugin", array('enable'=>'0'), "plugin_name = ?", array($name));
     }
 
 
