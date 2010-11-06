@@ -27,6 +27,7 @@ class SC_Response{
     }
     
     function response(){
+        
                           
     }
     
