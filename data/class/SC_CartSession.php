@@ -476,10 +476,11 @@ class SC_CartSession {
      * @param integer $deliv_pref 配送先都道府県ID
      * @param integer $payment_id 支払い方法ID
      * @param integer $charge 手数料
+     * @param integer $discount 値引
      * @return array カートの計算結果の配列
      */
     function calculate($productTypeId, &$objCustomer = null, $use_point = 0,
-                       $deliv_pref = "", $payment_id = "", $charge = 0) {
+                       $deliv_pref = "", $payment_id = "", $charge = 0, $discount = 0) {
         $objDb = new SC_Helper_DB_Ex();
 
         $total_point = $this->getAllProductsPoint($productTypeId);
@@ -525,6 +526,7 @@ class SC_CartSession {
         $results['total'] = $results['subtotal'];
         $results['total'] += $results['deliv_fee'];
         $results['total'] += $charge;
+        $results['total'] -= $discount;
 
         // お支払い合計
         $results['payment_total'] = $results['total'] - $use_point * POINT_VALUE;
