@@ -1251,7 +1251,7 @@ CREATE TABLE dtb_bkup (
 
 CREATE TABLE dtb_plugin (
   plugin_id INT NOT NULL,
-  plugin_name VARCHAR(200) NOT NULL DEFAULT "",
+  plugin_name VARCHAR(255) NOT NULL DEFAULT "",
   enable INT NOT NULL DEFAULT 0,
   del_flg INT NOT NULL DEFAULT 0,
   class_name TEXT NOT NULL DEFAULT NULL,
