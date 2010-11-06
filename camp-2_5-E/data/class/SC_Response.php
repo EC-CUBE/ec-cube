@@ -52,5 +52,13 @@ class SC_Response{
     function containsHeader(String $name){
         return isset($this->header[$name]);
     }
+    
+    function sendError(int $errorcode){
+        
+    }
+    function sendRedirect(String $location){
+        
+    }
+    
 
 }
