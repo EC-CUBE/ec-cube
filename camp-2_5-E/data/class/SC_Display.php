@@ -13,6 +13,9 @@ class SC_Display{
      */
     var $view;
 
+        
+    var $detected = false;
+    
     // TODO php4を捨てたときに ここのコメントアウトを外してね。
     /*
     * const('MOBILE',1);
