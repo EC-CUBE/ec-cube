@@ -29,7 +29,6 @@ class SC_Display{
      */
     function detectAgent(){
         $nu = new Net_UserAgent_Mobile();
-        
         $_SERVER['User-Agent']
 
 
