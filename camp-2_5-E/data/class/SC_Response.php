@@ -79,8 +79,8 @@ class SC_Response{
     function sendHeader(){
         // HTTPのヘッダ
         header('HTTP/1.1 '.$this->statuscode.' '.$this->statusTexts[$this->statuscode]);
-        foreach ($this->header as $head){
-          header($head);
+        foreach ($this->header as $name => $head){
+          header(''$head);
         }
     }
 
