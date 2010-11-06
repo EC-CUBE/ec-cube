@@ -46,7 +46,7 @@ class SC_Display{
     */
     function hoge(LC_Page $page){
         $this->assign($page);
-        if(!$this->deviceSeted){
+        if(!$this->deviceSeted || !is_null($this->view)){
             $device = $this->detectDevice();
             $this->setDevice($device);
         }
@@ -89,6 +89,7 @@ class SC_Display{
     }
     
     function setView(SC_View $view){
+        
         $this->view = $view;
     }
 
