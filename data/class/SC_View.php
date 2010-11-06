@@ -194,9 +194,6 @@ class SC_SiteView extends SC_View{
         $this->_smarty->compile_dir = COMPILE_DIR;
         $this->initpath();
 
-        // PHP5ではsessionをスタートする前にヘッダー情報を送信していると警告が出るため、先にセッションをスタートするように変更
-        SC_Utils_Ex::sfDomainSessionStart();
-
         if ($setPrevURL) {
             $objCartSess = new SC_CartSession();
             $objCartSess->setPrevURL($_SERVER['REQUEST_URI']);

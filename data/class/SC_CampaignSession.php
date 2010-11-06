@@ -34,7 +34,6 @@ class SC_CampaignSession {
 
     /* コンストラクタ */
     function SC_CampaignSession($key = "campaign") {
-        SC_Utils_Ex::sfDomainSessionStart();
         $this->key = $key;
     }
 

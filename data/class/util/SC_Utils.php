@@ -954,31 +954,6 @@ class SC_Utils {
         return ($id . $random);
     }
 
-    /**
-     * ドメイン間で有効なセッションのスタート
-     * 共有SSL対応のための修正により、この関数は廃止します。
-     * セッションはrequire.phpを読み込んだ際に開始されます。
-     */
-    function sfDomainSessionStart() {
-        /**
-         * 2.1.1ベータからはSC_SessionFactory_UseCookie::initSession()で処理するため、
-         * ここでは何も処理しない
-         */
-        if (defined('SESSION_KEEP_METHOD')) {
-            return;
-        }
-
-        if (session_id() === "") {
-
-            session_set_cookie_params(0, "/", DOMAIN_NAME);
-
-            if (!ini_get("session.auto_start")) {
-                // セッション開始
-                session_start();
-            }
-        }
-    }
-
     /* 文字列に強制的に改行を入れる */
     function sfPutBR($str, $size) {
         $i = 0;

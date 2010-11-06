@@ -158,7 +158,6 @@ class SC_Customer {
 
     // ログイン情報をセッションに登録し、ログに書き込む
     function startSession() {
-        SC_Utils_Ex::sfDomainSessionStart();
         $_SESSION['customer'] = $this->customer_data;
         // セッション情報の保存
         GC_Utils_Ex::gfPrintLog("access : user=".$this->customer_data['customer_id'] ."\t"."ip=". $this->getRemoteHost(), CUSTOMER_LOG_PATH );

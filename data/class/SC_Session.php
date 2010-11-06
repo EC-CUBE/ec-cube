@@ -32,9 +32,6 @@ class SC_Session {
 
     /* コンストラクタ */
     function SC_Session() {
-        // セッション開始
-        SC_Utils_Ex::sfDomainSessionStart();
-
         // セッション情報の保存
         if(isset($_SESSION['cert'])) {
             $this->sid = session_id();

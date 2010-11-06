@@ -87,7 +87,6 @@ class LC_Page_Contact extends LC_Page {
         $objCampaignSess = new SC_CampaignSession();
         $objDb = new SC_Helper_DB_Ex();
         $CONF = $objDb->sf_getBasisData();			// 店舗基本情報
-        SC_Utils_Ex::sfDomainSessionStart();
 
         $objCustomer = new SC_Customer();
 

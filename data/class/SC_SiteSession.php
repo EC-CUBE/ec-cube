@@ -25,7 +25,6 @@
 class SC_SiteSession {
     /* コンストラクタ */
     function SC_SiteSession() {
-        SC_Utils_Ex::sfDomainSessionStart();
         // 前ページでの登録成功判定を引き継ぐ
         $_SESSION['site']['pre_regist_success'] =
                 isset($_SESSION['site']['regist_success'])
