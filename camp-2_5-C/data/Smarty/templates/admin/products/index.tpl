@@ -257,7 +257,7 @@ function lfnDispChange(){
       <!--{* 操作 *}-->
       <td  rowspan="2" class="center">
          <a href="<!--{$smarty.const.URL_DIR}-->" title="編集" onclick="fnChangeAction('./product.php'); fnModeSubmit('pre_edit', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >
-             <img src="<!--{$TPL_DIR}-->img/contents/icon_edit.gif" alt="" /> 
+             <img src="<!--{$TPL_DIR}-->img/contents/icon_edit.gif" alt="" />
          </a>&nbsp;
          <a href="<!--{$smarty.const.URL_DIR}-->"  title="削除" onclick="fnSetFormValue('category_id', '<!--{$arrProducts[cnt].category_id}-->'); fnModeSubmit('delete', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >
              <img src="<!--{$TPL_DIR}-->img/contents/icon_delete.gif" alt="" />
@@ -279,7 +279,9 @@ function lfnDispChange(){
 
         <!--{* URL *}-->
         <div id="disp_url<!--{$smarty.section.cnt.iteration}-->" style="display:none">
-        <!--{$smarty.const.SITE_URL|sfTrimURL}-->/products/detail.php?product_id=<!--{$arrProducts[cnt].product_id}-->
+        <a href="<!--{$smarty.const.SITE_URL|sfTrimURL}-->/products/detail.php?product_id=<!--{$arrProducts[cnt].product_id}-->" target="_blank">
+            <!--{$smarty.const.SITE_URL|sfTrimURL}-->/products/detail.php?product_id=<!--{$arrProducts[cnt].product_id}-->
+        </a>
         </div>
       </td>
     </tr>
