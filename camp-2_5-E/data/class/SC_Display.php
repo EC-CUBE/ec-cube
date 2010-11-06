@@ -64,7 +64,7 @@ class SC_Display{
         $retDevice = 0;
         if($nu->isMobile()){
             $retDevice = 1;
-        }elseif ($this->isSmartphone()){
+        }elseif ($nu->isSmartphone()){
             $retDevice = 2;
         }else{
             $retDevice = 4;
@@ -75,29 +75,6 @@ class SC_Display{
         }
         return $retDevice;
     }
-
-    function isSmartphone(){
-        $useragents = array(
-            'iPhone',         // Apple iPhone
-    'iPod',           // Apple iPod touch
-    'Android',        // 1.5+ Android
-    'dream',          // Pre 1.5 Android
-    'CUPCAKE',        // 1.5+ Android
-    'blackberry9500', // Storm
-    'blackberry9530', // Storm
-    'blackberry9520', // Storm v2
-    'blackberry9550', // Storm v2
-    'blackberry9800', // Torch
-    'webOS',          // Palm Pre Experimental
-    'incognito',      // Other iPhone browser
-    'webmate'         // Other iPhone browser
-        );
-
-        $pattern = implode("|", $useragents);
-        return preg_match('/['.$pattern.']/', $_SERVER['HTTP_USER_AGENT']);
-
-    }
-
 
     function assign(LC_Page $page){
 
