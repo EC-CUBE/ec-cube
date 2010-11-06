@@ -26,6 +26,7 @@ div.btn-foot{
     background:#000;
     text-align: center;
     position:fixed;
+    bottom: 0;
 }
 </style>
 <script type="text/javascript">
