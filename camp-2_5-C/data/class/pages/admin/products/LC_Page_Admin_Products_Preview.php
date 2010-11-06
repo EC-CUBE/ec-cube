@@ -233,7 +233,8 @@ class LC_Page_Admin_Products_Preview extends LC_Page {
         $this->arrErr = $arrErr;
 
         // 商品詳細を取得
-        $this->arrProduct = $objProduct->getDetail($product_id);
+        //$this->arrProduct = $objProduct->getDetail($product_id);
+        $this->arrProduct = $_SESSION[preview];
 print_r($_SESSION);
         // サブタイトルを取得
         $this->tpl_subtitle = $this->arrProduct['name'];
