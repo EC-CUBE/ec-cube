@@ -2,7 +2,7 @@
 
 class SC_Plugin
 {
-    
+
     /**
      *
      * plugin_path
@@ -13,67 +13,66 @@ class SC_Plugin
     function SC_Plugin(){
         $this->__construct();
     }
-    
+
     function __construct(){
         if(!defined(PLUGIN_PATH)){
             define("PLUGIN_PATH",HTML_PATH."/user_data/plugins/");
         }
         $this->init();
     }
-    
+
     function init(){
-        
-        
+
+
     }
-    
+
     function enable($classname){
-        
+
     }
-    
+
     function getVersion(){
-        
+
     }
-    
+
     function getName(){
-        
+
     }
-    
+
     function process(){
-        
+
     }
-    
+
     function mobileprocess(){
-        
+
     }
-    
+
     public function install(){
-      
+
     }
 
     public function uninstall(){
 
     }
-    
-    public function disablePlugin(){
-          
+
+    function disablePlugin(){
+
     }
-    
-    public function enablePlugin(){
-        
-        
+
+    function enablePlugin(){
+  
     }
-    
+
 
     /**
-     * 
+     *
      * @return String インストール用のSQL
      */
-    protected function getInstallSQL(){
-        
+    function getInstallSQL(){
+
     }
 
-    
-    protected function getUninstallSQL(){
+
+    function getUninstallSQL(){
 
     }
 
