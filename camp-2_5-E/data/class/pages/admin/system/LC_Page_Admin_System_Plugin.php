@@ -88,8 +88,9 @@ class LC_Page_Admin_System_Plugin extends LC_Page {
                 break;
             default:
                 $plugins = SC_Helper_Plugin_Ex::getAllPlugin();
-                $plugins = array_merge($plugins,
+                $this->plugins = array_merge($plugins,
                 $this->getPluginOnFilesystem($plugins));
+                
                 var_dump($plugins);
                 break;
         }
