@@ -428,7 +428,7 @@ class Net_UserAgent_Mobile
         );
 
         $pattern = implode("|", $useragents);
-        return preg_match('/['.$pattern.']/', $userAgent);
+        return preg_match('/'.$pattern.'/', $userAgent);
     }
 
     /**#@-*/
