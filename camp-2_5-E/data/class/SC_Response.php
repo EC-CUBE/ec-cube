@@ -37,7 +37,7 @@ class SC_Response{
 
 
     function setContentType(String $contentType){
-      
+      $this->header['']
     }
 
     function setResponseCode(int $code){
