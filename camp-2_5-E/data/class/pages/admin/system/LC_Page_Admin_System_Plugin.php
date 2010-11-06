@@ -58,7 +58,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin {
     function initForm() {
         $objForm = new SC_FormParam();
         $objForm->addParam('mode', 'mode', INT_LEN, '', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
-        $objForm->addParam('mode', 'mode', INT_LEN, '', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
+        $objForm->addParam('plugin_name', 'plugin_name', INT_LEN, '', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
         
         $objForm->setParam($_POST);
         $this->objForm = $objForm;
@@ -83,6 +83,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin {
                     //新規インストール
                     $data = array(
                       'plugin_name' => $objForm->getValue('plugin_name')
+                    
                     );
                     $objQuery->insert("dtb_plugin", $data);
                 }else{
