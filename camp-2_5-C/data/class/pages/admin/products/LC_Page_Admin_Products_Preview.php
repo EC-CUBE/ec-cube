@@ -301,7 +301,7 @@ class LC_Page_Products_Detail extends LC_Page {
     function mobileProcess() {
         // プロダクトIDの正当性チェック
         $product_id = $this->lfCheckProductId();
-        
+
         $objView = new SC_MobileView();
         $objCustomer = new SC_Customer();
         $objQuery = new SC_Query();
