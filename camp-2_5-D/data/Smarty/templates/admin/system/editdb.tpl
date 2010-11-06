@@ -23,3 +23,31 @@
 *}-->
 
 <h2>インデックス管理</h2>
+
+<form name="index_form"  method="post" action="?"> 
+  <input type="hidden" name="mode" value="confirm" />
+      <table class="list">
+      
+      <tr>
+    <th>テーブル名</th>
+    <th>カラム名</th>
+    <th>インデックス</th>
+    </tr>
+
+      
+ <!--{section name=cnt loop=$arrForm}-->
+  
+    <tr>
+    <td><!--{$arrForm[cnt].table_name}--></td>
+    <td><!--{$arrForm[cnt].column_name}--></td>
+    <td><input type="checkbox" name="indexflag_new[]" value="<!--{$smarty.section.cnt.index}-->" <!--{if $arrForm[cnt].indexflag == "1"}-->checked<!--{/if}--> /></td>
+    </tr>
+<input type="hidden" name="table_name[]" value="<!--{$arrForm[cnt].table_name}-->" />
+<input type="hidden" name="column_name[]" value="<!--{$arrForm[cnt].column_name}-->" />
+<input type="hidden" name="indexflag[]" value="<!--{$arrForm[cnt].indexflag}-->" />
+
+<!--{/section}-->
+</table>
+
+<input type="submit" value="変更する">
+</form>

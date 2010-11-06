@@ -58,7 +58,12 @@ class LC_Page_Admin_System_Editdb extends LC_Page {
     function initForm() {
         $objForm = new SC_FormParam();
         $objForm->addParam('mode', 'mode', INT_LEN, '', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
-        $objForm->setParam($_GET);
+        $objForm->addParam('table_name', 'テーブル名');
+        $objForm->addParam('column_name', 'カラム名');
+        $objForm->addParam('indexflag', 'インデックス');
+	$objForm->addParam('indexflag_new', 'インデックス（変更後）');
+	
+	$objForm->setParam($_POST);
         $this->objForm = $objForm;
     }
 
@@ -71,16 +76,54 @@ class LC_Page_Admin_System_Editdb extends LC_Page {
 
         SC_Utils_Ex::sfIsSuccess(new SC_Session);
         $objView = new SC_AdminView();
+	$objSiteInfo = new SC_SiteInfo();
+        $objQuery = new SC_Query();
+        $objDb = new SC_Helper_DB_Ex();
+        $objProduct = new SC_Product();
 
+	//インデックスの値を取得
+	$this->arrForm = $this->lfGetIndexList();
+	
+	//フォームの値を取得
         $this->initForm();
+	
         switch($this->objForm->getValue('mode')) {
+	//確認画面へ
+	case 'confirm' :
+	    //POSTの値と配列の値を比較
+	    // TODO: $_POSTを使わないように修正する。
+            $arrIndexFlag  = $_POST['indexflag'];
+            $arrIndexFlagNewIndex  = $_POST['indexflag_new'];
 
+            $arrIndexFlagNew = array();
+            for($i = 0; $i < count($arrIndexFlag); $i++) {
+                if(array_search($i, $arrIndexFlagNewIndex) !== false) {
+                    $arrIndexFlagNew[] = true;
+                } else {
+                    $arrIndexFlagNew[] = false;
+		}
+	    }
+
+            $objQuery = new SC_Query();
+	    foreach($arrIndexFlag as $key => $val){
+		if($val != $arrIndexFlagNew[$key]) {
+                    //値が異なっていた場合、インデックスのアップデートをかける
+                    $index_name = $_POST["table_name"][$key] . "_" . $_POST["column_name"][$key] . "_key";
+                    if($arrIndexFlagNew[$key] == false) {
+                        $objQuery->dropIndex($_POST["table_name"][$key], $index_name);
+                    } else {
+                        $objQuery->createIndex($_POST["table_name"][$key], $index_name, array('fields' => array($_POST["column_name"][$key] => array())));
+                    }
+
+                    // フォームに引継ぐ
+                    $this->arrForm[$key]["indexflag"] = true;
+		}
+	    }
+	    
+	    $this->tpl_onload = "window.alert('インデックスの変更が完了しました。');";
         default:
-            break;
+        break;
         }
-
-        // インデックス一覧を取得する
-        $arrIndexList = $this->lfGetIndexList();
 
         $objView->assignobj($this);
         $objView->display(MAIN_FRAME);
@@ -94,7 +137,7 @@ class LC_Page_Admin_System_Editdb extends LC_Page {
     function destroy() {
         parent::destroy();
     }
-
+    
     /**
      * インデックス設定を行う一覧を返す関数
      *
@@ -105,7 +148,7 @@ class LC_Page_Admin_System_Editdb extends LC_Page {
         // データベースからインデックス設定一覧を取得する
         $objQuery = new SC_Query();
         $objQuery->setOrder("table_name, column_name");
-        $arrIndexList = $objQuery->select("table_name, column_name, recommend_flg, recommend_comment", "dtb_index_list");
+        $arrIndexList = $objQuery->select("table_name , column_name , recommend_flg, recommend_comment", "dtb_index_list");
 
         $table = "";
         foreach($arrIndexList as $key => $arrIndex) {
@@ -125,5 +168,5 @@ class LC_Page_Admin_System_Editdb extends LC_Page {
     
         return $arrIndexList;
     }
-
+    
 }
