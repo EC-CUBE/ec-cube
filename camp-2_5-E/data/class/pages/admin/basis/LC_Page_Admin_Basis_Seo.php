@@ -64,7 +64,16 @@ class LC_Page_Admin_Basis_Seo extends LC_Page_Admin {
      * @return void
      */
     function process() {
-        $objView = new SC_AdminView();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objSess = new SC_Session();
         $objQuery = new SC_Query();
 
@@ -118,9 +127,6 @@ class LC_Page_Admin_Basis_Seo extends LC_Page_Admin {
         }
 
         $this->disp_flg = $arrDisp_flg;
-
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

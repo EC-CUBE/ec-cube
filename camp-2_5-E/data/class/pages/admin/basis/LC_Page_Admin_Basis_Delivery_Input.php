@@ -64,7 +64,16 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page_Admin {
      * @return void
      */
     function process() {
-        $objView = new SC_AdminView();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objSess = new SC_Session();
 
         // 認証可否の判定
@@ -98,8 +107,6 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page_Admin {
         }
 
         $this->arrForm = $this->objFormParam->getFormParamList();
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

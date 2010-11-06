@@ -61,7 +61,16 @@ class LC_Page_Admin_Basis_Payment_Input extends LC_Page_Admin {
      * @return void
      */
     function process() {
-        $objView = new SC_AdminView();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objSess = new SC_Session();
         $objDb = new SC_Helper_DB_Ex();
 
@@ -140,9 +149,6 @@ class LC_Page_Admin_Basis_Payment_Input extends LC_Page_Admin {
         $this->arrFile = $this->objUpFile->getFormFileList(IMAGE_TEMP_URL, IMAGE_SAVE_URL);
         // HIDDEN用に配列を渡す。
         $this->arrHidden = array_merge((array)$this->arrHidden, (array)$this->objUpFile->getHiddenFileList());
-
-        $objView->assignobj($this);
-        $objView->display($this->tpl_mainpage);
     }
 
     /**

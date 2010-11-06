@@ -56,7 +56,16 @@ class LC_Page_Admin_Basis_Payment extends LC_Page_Admin {
      * @return void
      */
     function process() {
-        $objView = new SC_AdminView();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objSess = new SC_Session();
         $objDb = new SC_Helper_DB_Ex();
 
@@ -86,9 +95,6 @@ class LC_Page_Admin_Basis_Payment extends LC_Page_Admin {
 
         $this->arrDelivList = $objDb->sfGetIDValueList("dtb_deliv", "deliv_id", "service_name");
         $this->arrPaymentListFree = $this->lfGetPaymentList();
-
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

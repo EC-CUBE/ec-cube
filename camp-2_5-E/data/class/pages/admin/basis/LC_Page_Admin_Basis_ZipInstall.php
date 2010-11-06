@@ -79,6 +79,16 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objQuery = new SC_Query();
 
         SC_Utils_Ex::sfIsSuccess(new SC_Session);
@@ -125,11 +135,6 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin {
 
         $this->tpl_line = $this->countZipCsv();
         $this->tpl_count_mtb_zip = $this->countMtbZip();
-
-        $objView = new SC_AdminView();
-
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

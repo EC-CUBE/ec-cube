@@ -61,7 +61,16 @@ class LC_Page_Admin_Basis_Point extends LC_Page_Admin {
      * @return void
      */
     function process() {
-        $objView = new SC_AdminView();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objSess = new SC_Session();
         $objQuery = new SC_Query();
 
@@ -112,8 +121,6 @@ class LC_Page_Admin_Basis_Point extends LC_Page_Admin {
         }
 
         $this->arrForm = $this->objFormParam->getFormParamList();
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

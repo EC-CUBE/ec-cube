@@ -59,7 +59,16 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin {
      * @return void
      */
     function process() {
-        $objView = new SC_AdminView();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objSess = new SC_Session();
         $objQuery = new SC_Query();
         $objDb = new SC_Helper_DB_Ex();
@@ -93,9 +102,6 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin {
         $table = "dtb_deliv";
         $objQuery->setOrder("rank DESC");
         $this->arrDelivList = $objQuery->select($col, $table, $where);
-
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

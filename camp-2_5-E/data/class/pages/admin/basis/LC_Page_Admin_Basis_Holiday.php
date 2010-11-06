@@ -56,7 +56,16 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin {
      * @return void
      */
     function process() {
-        $objView = new SC_AdminView();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objSess = new SC_Session();
         $objQuery = new SC_Query();
         $objDb = new SC_Helper_DB_Ex();
@@ -130,9 +139,6 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin {
         $where = "del_flg <> 1";
         $objQuery->setOrder("rank DESC");
         $this->arrHoliday = $objQuery->select("holiday_id, title, month, day", "dtb_holiday", $where);
-
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**
