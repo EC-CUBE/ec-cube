@@ -106,7 +106,7 @@ class SC_Response{
         return isset($this->header[$name]);
     }
 
-    function sendError(int $errorcode){
+    function sendError( $errorcode){
         header('HTTP/1.1 '.$errorcode.' '.$this->statusTexts[$errorcode]);
     }
 
