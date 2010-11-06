@@ -97,7 +97,7 @@ class SC_Response{
      *
      * }
      */
-    
+
     function addHeader(String $name, $value){
         $this->header[$name] = $value;
     }
@@ -107,7 +107,7 @@ class SC_Response{
     }
 
     function sendError(int $errorcode){
-      header('HTTP/1.1 ')  
+        header('HTTP/1.1 '.$errorcode.' '.$this->statusTexts[$errorcode]);
     }
 
     function sendRedirect(String $location){
