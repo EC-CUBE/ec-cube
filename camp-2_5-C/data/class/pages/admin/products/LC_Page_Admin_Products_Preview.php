@@ -77,6 +77,8 @@ class LC_Page_Products_Products_Preview extends LC_Page {
      * @return void
      */
     function process() {
+        var_dump("HERE");
+        exit;
         // プロダクトIDの正当性チェック
         $product_id = $this->lfCheckProductId();
 
