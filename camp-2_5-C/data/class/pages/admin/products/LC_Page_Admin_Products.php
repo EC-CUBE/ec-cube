@@ -86,6 +86,12 @@ class LC_Page_Admin_Products extends LC_Page {
 
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
+        if($_POST['mode'] === "price02_edit") {
+            var_dump($_POST['price02_edit_id\n']);
+            var_dump($_POST['price02_edit_value\n']);
+            exit;
+        }
+
         //キャンペーンの編集時
         if(isset($_POST['campaign_id']) && SC_Utils_Ex::sfIsInt($_POST['campaign_id'])
                 && $_POST['mode'] == "camp_search") {
