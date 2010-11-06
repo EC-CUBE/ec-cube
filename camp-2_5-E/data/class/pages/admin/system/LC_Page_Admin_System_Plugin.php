@@ -91,7 +91,6 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin {
                     'enable' => '1',
                     'del_flg' => '0',
                   'class_name' => $objForm->getValue('plugin_name'),
-                    'version' => 
 
                     );
                     $objQuery->insert("dtb_plugin", $data);
