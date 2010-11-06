@@ -51,6 +51,7 @@
           <!--{else}-->
           <input type="button" name="enable" value="enable" /> 
           <!--{/if}-->
+          <input type="button" name="uninstall" value="uninstall">
         <!--{/if}-->
       </td>
       <td>
