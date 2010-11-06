@@ -52,10 +52,10 @@ class SC_Display{
                 $this->view = new SC_MobileView();
                 break;
             case 2:
-
+//                $this->view = new
                 break;
             case 4:
-
+                $this->view = new SC_View();
                 break;
         }
     }
