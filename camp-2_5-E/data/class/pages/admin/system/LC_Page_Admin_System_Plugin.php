@@ -59,7 +59,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin {
         $objForm = new SC_FormParam();
         $objForm->addParam('mode', 'mode', INT_LEN, '', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
         $objForm->addParam('plugin_name', 'plugin_name', INT_LEN, '', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
-        
+
         $objForm->setParam($_POST);
         $this->objForm = $objForm;
     }
@@ -85,14 +85,14 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin {
                       'plugin_name' => $objForm->getValue('plugin_name'),
                       'path' => realpath(DATA_DIR.'/plugin/'.$objForm->getValue('plugin_name')."/",
                     'enable' => '1',
-                    
-                      
-                    
+                    'del'
+
+
                     );
                     $objQuery->insert("dtb_plugin", $data);
                 }else{
                     //再インストール
-                    
+
                 }
                 break;
             case 'uninstall':
@@ -108,7 +108,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin {
                 $plugins = SC_Helper_Plugin_Ex::getAllPlugin();
                 $this->plugins = array_merge($plugins,
                 $this->getPluginOnFilesystem($plugins));
-                
+
                 var_dump($this->plugins);
                 break;
         }
@@ -118,7 +118,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin {
         $objView->assignobj($this);
         $objView->display(MAIN_FRAME);
     }
-    
+
     /*
      CREATE TABLE dtb_plugin (
      plugin_id INT NOT NULL,
@@ -140,12 +140,12 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin {
             while(($file = readdir($dh)) !== false){
                 if(!preg_match('/^\\./', $file) && $file !='..' && filetype($dir.$file) == 'dir'){
                     $arrPlugins[] = array('plugin_name'=>$file,'class_name'=>$file);
-                    
+
                 }
             }
         }
-//        var_dump($arrPlugins);
-          return $arrPlugins; 
+        //        var_dump($arrPlugins);
+        return $arrPlugins;
     }
 
     /**
