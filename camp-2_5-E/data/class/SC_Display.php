@@ -6,6 +6,8 @@ class SC_Display{
     var $device;
 
     var $autoSet;
+    
+    var $view;
 
     // TODO php4を捨てたときに ここのコメントアウトを外してね。
     /*
@@ -76,7 +78,7 @@ class SC_Display{
     }
 
     function assign(LC_Page $page){
-
+      
     }
 
 
