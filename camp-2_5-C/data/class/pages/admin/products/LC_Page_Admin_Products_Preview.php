@@ -103,8 +103,6 @@ class LC_Page_Admin_Products_Preview extends LC_Page {
                 }
             }
         }
-        var_dump('HERE');
-        exit;
 
         // パラメータ管理クラス
         $this->objFormParam = new SC_FormParam();
@@ -151,6 +149,8 @@ class LC_Page_Admin_Products_Preview extends LC_Page {
 
         // 規格選択セレクトボックスの作成
         $this->lfMakeSelect($product_id);
+        var_dump('HERE');
+        exit;
 
         $objProduct = new SC_Product();
         $objProduct->setProductsClassByProductIds(array($product_id));
