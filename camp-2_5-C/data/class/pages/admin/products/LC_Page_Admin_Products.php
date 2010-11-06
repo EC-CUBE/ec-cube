@@ -107,12 +107,12 @@ class LC_Page_Admin_Products extends LC_Page {
             if($err_flag)
             {
                 $objQuery->rollback();
-                var_dump("error");
+                echo("error");
             }
             else
             {
                 $objQuery->commit();
-                var_dump("ok");
+                echo("ok");
             }
             //戻る
             exit;
