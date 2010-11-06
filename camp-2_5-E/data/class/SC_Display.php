@@ -7,6 +7,9 @@ class SC_Display{
 
     var $autoSet;
     
+    /**
+     * 
+     */
     var $view;
 
     // TODO php4を捨てたときに ここのコメントアウトを外してね。
