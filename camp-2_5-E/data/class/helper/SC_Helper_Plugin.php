@@ -18,16 +18,31 @@ class SC_Helper_Plugin{
 
         // 実行されたぺーじ
         // 現在のページで使用するプラグインが存在するかどうかを検証する
-        foreach ($arrRet as $key => $value){
+        foreach ($arrRet as $plugins){
             // プラグインを稼働させるクラス名のリストを取得する
             // プラグインのディレクトリ内の設定ファイルを参照する
-            require_once DATA_PATH.'plugin/'.$value['class_name'].'/config.php';
-            if( in_array($class_name,$arrPluginPageList) == true ){
-                require_once DATA_PATH.'plugin/'.$value['class_name'].'/'.$value['class_name'].'.php';
-                $arrPluginList[] = $value['class_name'];
+            $plugin_name = $plugins['class_name'];
+            require_once DATA_PATH."plugin/{$plugin_name}/{$plugin_name}.php";
+
+            $code_str = "\$is_enable = {$plugin_name}::is_enable(\$class_name);";
+            eval($code_str);
+            if ($is_enable) {
+                $arrPluginList[] = $plugin_name;
             }
         }
         return $arrPluginList;
+    }
+
+    public static function preProcess(LC_Page $lcpage){
+        //プラグインの名前を判別してページ内で有効なプラグインがあれば実行する
+        $arrPluginList = SC_Helper_Plugin::load($lcpage);
+       if(count($arrPluginList) > 0){
+            foreach ($arrPluginList as $key => $value){
+                $instance = new $value;
+                $instance->preProcess($lcpage);
+            }
+        }
+        return $lcpage;
     }
 
     /* 読み込んだプラグインの実行用メソッド
