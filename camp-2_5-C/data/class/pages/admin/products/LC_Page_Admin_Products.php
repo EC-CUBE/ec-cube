@@ -366,7 +366,7 @@ class LC_Page_Admin_Products extends LC_Page {
                         break;
                     default:
                         // 読み込む列とテーブルの指定
-                        $col = "product_id, name, main_list_image, status, product_code_min, product_code_max, price02_min, price02_max, stock_min, stock_max, stock_unlimited_min, stock_unlimited_max, update_date";
+                        $col = "product_id, name, main_list_image, status, product_code_min, product_code_max, price02_min, price02_max, stock_min, stock_max, stock_unlimited_min, stock_unlimited_max, update_date, class_count";
                         $from = $objProduct->alldtlSQL();
 
                         // 行数の取得

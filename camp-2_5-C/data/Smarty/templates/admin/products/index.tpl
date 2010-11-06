@@ -236,7 +236,7 @@ function lfnDispChange(){
       </td>
       <!--{* 価格 *}-->
       <td rowspan="2" class="right">
-        <!--{if $arrProducts[cnt].price02_min != $arrProducts[cnt].price02_max}-->
+        <!--{if $arrProducts[cnt].class_count != 1}-->
           <!--{$arrProducts[cnt].price02_min|number_format}--><br />～ <!--{$arrProducts[cnt].price02_max|number_format}-->
         <!--{else}-->
           <input type="text" name="price02_edit_<!--{$arrProducts[cnt].product_id}-->" size="8" value="<!--{$arrProducts[cnt].price02_min}-->" onchange="jQuery.post('./index.php', {'mode':'price02_edit','price02_edit_id':'<!--{$arrProducts[cnt].product_id}-->','price02_edit_value':this.value}, lfCheckEditResult);lfBgColorTween(this);">
