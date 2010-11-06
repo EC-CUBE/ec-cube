@@ -111,7 +111,7 @@ class SC_Response{
     }
 
     function sendRedirect(String $location){
-
+      
     }
 
     function setHeader(Array $headers){
