@@ -106,6 +106,10 @@ class SC_Response{
         return isset($this->header[$name]);
     }
 
+    function sendError(int $errorcode){
+      header('HTTP/1.1 ')  
+    }
+
     function sendRedirect(String $location){
 
     }
