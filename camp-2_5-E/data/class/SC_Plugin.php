@@ -15,7 +15,9 @@ abstract class SC_Plugin
     private $path;
 
     public function __construct(){
-        
+        if(!defined(PLUGIN_PATH)){
+            
+        }
         
         
         
