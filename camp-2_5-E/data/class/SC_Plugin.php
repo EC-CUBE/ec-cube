@@ -35,6 +35,10 @@ abstract class SC_Plugin
 
     }
 
+    /**
+     * 
+     * @return String SQL
+     */
     protected function getInstallSQL(){
         
     }
