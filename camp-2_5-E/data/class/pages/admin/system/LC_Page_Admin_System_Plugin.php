@@ -76,9 +76,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin {
             // PHP INFOを表示
             case 'install':
                 $objQuery = new SC_Query();
-                
-                
-                
+$objQuery->select("plugin_id", $table, $arrval)                
                 break;
             case 'uninstall':
 
