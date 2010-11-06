@@ -78,7 +78,8 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin {
             // PHP INFOを表示
             case 'install':
                 $objQuery = new SC_Query();
-                $arrPlugins = $objQuery->get("dtb_plugin", "plugin_id", "plugin_name = ?",array($objForm->getValue('plugin_name')));
+                $name = $objForm->getValue('plugin_name');
+                $arrPlugins = $objQuery->get("dtb_plugin", "plugin_id", "plugin_name = ?",array($name));
                 if(count($arrPlugins) == 0){
                     //新規インストール
                     
