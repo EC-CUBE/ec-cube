@@ -114,7 +114,7 @@ class LC_Page {
     function mobileProcess() {}
 
     /**
-     * Page のアクション.
+     * Page のレスポンス送信.
      *
      * @return void
      */

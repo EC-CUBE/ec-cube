@@ -22,16 +22,18 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin_Index.php");
 
 /**
- * 管理者ログイン のページクラス.
+ * 管理者ログイン のページクラス(拡張).
+ *
+ * LC_Page_Admin をカスタマイズする場合はこのクラスを編集する.
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id$
+ * @version $Id: LC_Page_Admin_Ex.php 18701 2010-06-14 08:30:18Z nanasess $
  */
-class LC_Page_Admin extends LC_Page {
+class LC_Page_Admin_Index_Ex extends LC_Page_Admin_Index {
 
     // }}}
     // {{{ functions
@@ -51,20 +53,8 @@ class LC_Page_Admin extends LC_Page {
      * @return void
      */
     function process() {
-        $this->action();
-        $this->sendResponse();
+        parent::process();
     }
-
-    /**
-     * Page のレスポンス送信.
-     *
-     * @return void
-     */
-    function sendResponse() {
-        $this->objDisplay->hoge($this, true);
-        $this->objDisplay->response->response();
-    }
-
 
     /**
      * デストラクタ.

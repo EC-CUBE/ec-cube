@@ -44,9 +44,9 @@ class SC_Display{
     *
     * @param $page LC_Page
     */
-    function hoge(LC_Page $page){
+    function hoge(LC_Page $page, $is_admin = false){
         if(!$this->deviceSeted || !is_null($this->view)){
-            $device = $this->detectDevice();
+            $device = ($is_admin) ? 8 : $this->detectDevice();
             $this->setDevice($device);
         }
         $this->assignobj($page);

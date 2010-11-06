@@ -25,15 +25,13 @@
 require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
- * 管理者ログイン のページクラス(拡張).
- *
- * LC_Page_Admin をカスタマイズする場合はこのクラスを編集する.
+ * 管理者ログイン のページクラス.
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id$
+ * @version $Id: LC_Page_Admin.php 18701 2010-06-14 08:30:18Z nanasess $
  */
-class LC_Page_Admin_Ex extends LC_Page_Admin {
+class LC_Page_Admin_Index extends LC_Page_Admin {
 
     // }}}
     // {{{ functions
@@ -45,6 +43,7 @@ class LC_Page_Admin_Ex extends LC_Page_Admin {
      */
     function init() {
         parent::init();
+        $this->tpl_mainpage = 'login.tpl';
     }
 
     /**
@@ -54,6 +53,17 @@ class LC_Page_Admin_Ex extends LC_Page_Admin {
      */
     function process() {
         parent::process();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
+        $this->setTemplate(LOGIN_FRAME);
     }
 
     /**
