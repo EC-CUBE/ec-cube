@@ -19,9 +19,6 @@ class SC_Plugin
             define("PLUGIN_PATH",HTML_PATH."/user_data/plugins/");
         }
         $this->init();
-        
-        
-        
     }
     
     function init(){
