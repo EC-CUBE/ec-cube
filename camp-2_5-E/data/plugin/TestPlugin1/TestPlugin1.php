@@ -57,7 +57,7 @@ class TestPlugin1 extends SC_Plugin {
 
     }
 
-    public function uninstall($plugin_id){
+    function uninstall($plugin_id){
         $objQuery = new SC_Query();
         $sql = $this->getUninstallSQL();
         if($sql != null){
@@ -71,12 +71,12 @@ class TestPlugin1 extends SC_Plugin {
      *
      * @return String インストール用のSQL
      */
-    protected function getInstallSQL(){
+    function getInstallSQL(){
 
     }
 
 
-    protected function getUninstallSQL(){
+    function getUninstallSQL(){
 
     }
 
