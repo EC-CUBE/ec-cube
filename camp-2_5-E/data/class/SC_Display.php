@@ -28,8 +28,6 @@ class SC_Display{
             $objCartSess = new SC_CartSession();
             $objCartSess->setPrevURL($_SERVER['REQUEST_URI']);
         }
-
-
     }
 
 
