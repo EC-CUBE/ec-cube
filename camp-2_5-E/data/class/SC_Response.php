@@ -93,20 +93,17 @@ class SC_Response{
         $this->body = $body;
     }
 
-    /*    function addDateHdeader(String $name, $date){
+    /* function addDateHdeader(String $name, $date){
      *
-     *   }
+     * }
      */
+    
     function addHeader(String $name, $value){
         $this->header[$name] = $value;
     }
 
     function containsHeader(String $name){
         return isset($this->header[$name]);
-    }
-
-    function sendError(int $errorcode){
-
     }
 
     function sendRedirect(String $location){
