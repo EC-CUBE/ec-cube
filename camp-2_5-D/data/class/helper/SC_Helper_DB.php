@@ -858,11 +858,9 @@ class SC_Helper_DB {
      * @return void
      */
     function removeProductByCategories($category_id, $product_id) {
-        $sqlval = array("category_id" => $category_id,
-                        "product_id" => $product_id);
         $objQuery =& SC_Query::getSingletonInstance();
         $objQuery->delete("dtb_product_categories",
-                          "category_id = ? AND product_id = ?", $sqlval);
+                          "category_id = ? AND product_id = ?", array($category_id, $product_id));
     }
 
     /**
