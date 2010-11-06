@@ -57,15 +57,6 @@
         <input type="button" name="preference" value="preference" />
       </td>
       
-      <td align="center"><!--{if $plugins[data].work eq 1}--><input type="radio" name="radio<!--{$smarty.section.data.iteration}-->" value="稼動" onclick="fnChangeRadio(this.name, 1, <!--{$plugins[data].member_id}-->, <!--{$tpl_disppage}-->);" checked /><!--{else}--><input type="radio" name="radio<!--{$smarty.section.data.iteration}-->" value="稼動" onclick="fnChangeRadio(this.name, 1, <!--{$plugins[data].member_id}-->, <!--{$tpl_disppage}-->);"/><!--{/if}--></td>
-      <td align="center"><!--{if $plugins[data].work eq 0}--><input type="radio" name="radio<!--{$smarty.section.data.iteration}-->" value="非稼動"  onclick="fnChangeRadio(this.name, 0, <!--{$plugins[data].member_id}-->, <!--{$tpl_disppage}-->);" checked /><!--{else}--><input type="radio" name="radio<!--{$smarty.section.data.iteration}-->" value="非稼動" onclick="fnChangeRadio(this.name, 0, <!--{$plugins[data].member_id}-->, <!--{$tpl_disppage}-->);" <!--{if $workmax <= 1 }-->disabled<!--{/if}-->  /><!--{/if}--></td>
-      <td align="center"><a href="#" onClick="win01('./input.php?id=<!--{$plugins[data].member_id}-->&amp;pageno=<!--{$tpl_disppage}-->','member_edit','500','420'); return false;">編集</a></td>
-      <td align="center"><!--{if $workmax > 1 }--><a href="#" onClick="fnDeleteMember(<!--{$plugins[data].member_id}-->,<!--{$tpl_disppage}-->); return false;">削除</a><!--{else}-->-<!--{/if}--></td>
-      <td align="center">
-      <!--{$tpl_nomove}-->
-      <!--{if !($smarty.section.data.first && $tpl_disppage eq 1) }--><a href="./rank.php?id=<!--{$plugins[data].member_id}-->&move=up&pageno=<!--{$tpl_disppage}-->">上へ</a><!--{/if}-->
-      <!--{if !($smarty.section.data.last && $tpl_disppage eq $tpl_pagemax) }--><a href="./rank.php?id=<!--{$plugins[data].member_id}-->&move=down&pageno=<!--{$tpl_disppage}-->">下へ</a><!--{/if}-->
-      </td>
     </tr>
     <!--▲メンバー<!--{$smarty.section.data.iteration}-->-->
     <!--{/section}-->
