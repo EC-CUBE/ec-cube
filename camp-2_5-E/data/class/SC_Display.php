@@ -80,10 +80,10 @@ class SC_Display{
                 //                $this->view = new
                 break;
             case 4:
-                $this->view = new SC_SiteView();
+                $this->setView(new SC_SiteView());
                 break;
             case 8:
-                $this->view = new SC_AdminView();
+                $this->setView(new SC_AdminView());
         }
         $this->deviceSeted = true;
     }
