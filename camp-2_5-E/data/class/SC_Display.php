@@ -24,7 +24,6 @@ class SC_Display{
         require_once(CLASS_EX_PATH."/SC_Response_Ex.php");
         $this->response = new SC_Response_Ex();
         $this->autoSet = $autoGenerateHttpHeaders;
-
         if ($setPrevURL) {
             $objCartSess = new SC_CartSession();
             $objCartSess->setPrevURL($_SERVER['REQUEST_URI']);
