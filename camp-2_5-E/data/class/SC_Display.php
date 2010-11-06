@@ -51,6 +51,10 @@ class SC_Display{
         }
         $this->response->setResposeBody($this->view->fetch($page->getTemplate()));
     }
+    
+    function redirect($location){
+        
+    }
 
     /**
      * デバイス毎の出力方法を自動で変更する、ファサード
