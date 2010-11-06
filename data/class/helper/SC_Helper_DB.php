@@ -1654,7 +1654,7 @@ __EOS__;
         for($cnt = 0; $cnt < $max; $cnt++) {
             $id = $arrRet[$cnt]['maker_id'];
             $name = $arrRet[$cnt]['name'];
-            $arrList[$id].= $name;
+            $arrList[$id] = $name;
         }
         return $arrList;
     }
