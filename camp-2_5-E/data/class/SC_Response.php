@@ -79,7 +79,7 @@ class SC_Response{
 
     function sendHeader(){
         // HTTPのヘッダ
-        header('HTTP/1.1 '.$this->statuscode.' '.$this->statusTexts[$this->statuscode]);
+//        header('HTTP/1.1 '.$this->statuscode.' '.$this->statusTexts[$this->statuscode]);
         foreach ($this->header as $name => $head){
             header($name.': '.$head);
         }
