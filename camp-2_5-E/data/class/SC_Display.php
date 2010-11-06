@@ -83,6 +83,10 @@ class SC_Display{
         }
         $this->deviceSeted = true;
     }
+    
+    function setView(SC_View $view){
+        $this->view = $view;
+    }
 
     /**
      * 機種を判別する。
