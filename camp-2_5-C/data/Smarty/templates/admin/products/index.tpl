@@ -241,7 +241,12 @@ function lfnDispChange(){
       </td>
       <!--{* 表示 *}-->
       <!--{assign var=key value=$arrProducts[cnt].status}-->
-      <td rowspan="2"><!--{$arrDISP[$key]}--></td>
+      <td rowspan="2">
+        <select name="status">
+          <option value="1"<!--{if $arrDISP[$key]=='公開'}--> selected<!--{/if}-->>公開</option>
+          <option value="2"<!--{if $arrDISP[$key]=='非公開'}--> selected<!--{/if}-->>非公開</option>
+        </select>
+      </td>
       <!--{* 規格 *}-->
       <!--{if $smarty.const.OPTION_CLASS_REGIST == 1}-->
       <td rowspan="2"><span class="icon_class"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnChangeAction('./product_class.php'); fnModeSubmit('pre_edit', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >規格</a></span></td>
