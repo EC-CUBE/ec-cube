@@ -50,8 +50,8 @@
           <input type="button" name="disable" value="disable" />
           <!--{else}-->
           <input type="button" name="enable" value="enable" /> 
-          <!--{endif}-->
-        <!--{endif}-->
+          <!--{/if}-->
+        <!--{/if}-->
       </td>
       <td></td>
       
