@@ -98,6 +98,11 @@ class LC_Page_Admin_System_Plugin extends LC_Page {
         $objView->display(MAIN_FRAME);
     }
 
+    function getPluginOnFilesystem(){
+        
+        
+        
+    }
 
     /**
      * デストラクタ.
