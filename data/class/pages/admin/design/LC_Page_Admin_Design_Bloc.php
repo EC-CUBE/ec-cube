@@ -270,41 +270,18 @@ class LC_Page_Admin_Design_Bloc extends LC_Page {
             $arrChk = $this->lfgetBlocData("bloc_id = ?", array($arrData['bloc_id']));
         }
 
+
+        }
         // bloc_id が空 若しくは データが存在していない場合にはINSERTを行う
         if ($arrData['bloc_id'] === '' or !isset($arrChk[0])) {
             // SQL生成
-            $arrData['bloc_id'] = $objQuery->nextVal('dtb_bloc_bloc_id');
-            $sql = " INSERT INTO dtb_bloc";
-            $sql .= " ( ";
-            $sql .= "     bloc_id ";		// ブロックID
-            $sql .= "     ,bloc_name ";		// ブロック名称
-            $sql .= "     ,tpl_path ";		// テンプレート保存先
-            $sql .= "     ,filename ";		// ファイル名称
-            $sql .= "     ,create_date ";	// 作成日
-            $sql .= "     ,update_date ";	// 更新日
-            $sql .= " ) VALUES (?, ?,?,?,now(),now() )";
-            $sql .= " ";
-        }else{
-            // データが存在してる場合にはアップデートを行う
-            // SQL生成
-            $sql = " UPDATE dtb_bloc";
-            $sql .= " SET";
-            $sql .= "     bloc_name = ? ";	// ブロック名称
-            $sql .= "     ,tpl_path = ? ";	// テンプレート保存先
-            $sql .= "     ,filename = ? ";	// テンプレートファイル名
-            $sql .= "     ,update_date = now()";
-            $sql .= " WHERE bloc_id = ?";
-            $sql .= " ";
-
-            // 更新データにブロックIDを追加
-            array_push($arrUpdData, $arrData['bloc_id']);
+            $arrUpdData['bloc_id'] = $objQuery->nextVal('dtb_bloc_bloc_id');
+            $arrUpdData['create_date'] = "now()";
+            $ret = $objQuery->insert('dtb_bloc', $arrUpdData);
+        } else {
+            $ret = $objQuery->update('dtb_bloc', $arrUpdData, 'bloc_id = ?', array($arrData['bloc_id']));
         }
-
-        // SQL実行
-        $ret = $objQuery->query($sql,$arrUpdData);
-
         return $ret;
-
     }
 
     /**
