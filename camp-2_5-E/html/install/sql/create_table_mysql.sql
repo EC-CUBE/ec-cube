@@ -1248,6 +1248,20 @@ CREATE TABLE dtb_bkup (
     PRIMARY KEY (bkup_name)
 ) TYPE=InnoDB;
 
+
+CREATE TABLE "dtb_plugin" (
+  "id" int4 NOT NULL DEFAULT NULL,
+  "name" text NOT NULL DEFAULT NULL,
+  "enable" int2 NOT NULL DEFAULT 0,
+  "del_flg" int2 NOT NULL DEFAULT 0,
+  "class_name" text NOT NULL DEFAULT NULL,
+  "create_date" timestamp(6) NOT NULL DEFAULT now(),
+  "update_date" timestamp(6) NOT NULL DEFAULT now()
+)
+WITH (OIDS=FALSE);
+ALTER TABLE "dtb_plugin" ADD CONSTRAINT "dtb_plugin_pkey" PRIMARY KEY ("id");
+
+
 CREATE INDEX dtb_customer_mobile_phone_id_key ON dtb_customer (mobile_phone_id(64));
 CREATE INDEX dtb_products_class_product_id_key ON dtb_products_class(product_id);
 CREATE INDEX dtb_order_detail_product_id_key ON dtb_order_detail(product_id);
