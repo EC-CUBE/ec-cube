@@ -64,11 +64,7 @@ class LC_Page_Products_ReviewComplete extends LC_Page {
      * @return void
      */
     function action() {
-
-        //$objView = new SC_SiteView();
-
-        //$objView->assignobj($this);
-        //$objView->display($this->tpl_mainpage);
+        $this->setTemplate($this->tpl_mainpage);
     }
 
     /**

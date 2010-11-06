@@ -91,11 +91,7 @@ class LC_Page_Products_Search extends LC_Page {
      *
      * @return void
      */
-    function mobileProcess() {
-        //$objView = new SC_MobileView();
-
-        //$objView->assignobj($this);
-        //$objView->display(SITE_FRAME);
+    function mobileAction() {
     }
 
     /**

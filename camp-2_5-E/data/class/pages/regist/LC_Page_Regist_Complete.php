@@ -54,9 +54,20 @@ class LC_Page_Regist_Complete extends LC_Page {
      * @return void
      */
     function process() {
+        parent::process();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のAction.
+     *
+     * @return void
+     */
+    function action() {
         global $objCampaignSess;
 
-        $objView = new SC_SiteView();
+        //$objView = new SC_SiteView();
         $objQuery = new SC_Query();
         $objCampaignSess = new SC_CampaignSession();
 
@@ -73,14 +84,17 @@ class LC_Page_Regist_Complete extends LC_Page {
         $helper = new SC_Helper_PageLayout_Ex();
         $helper->sfGetPageLayout($this, false, DEF_LAYOUT);
 
-        $objView->assignobj($this);
+        //$objView->assignobj($this);
         // フレームを選択(キャンペーンページから遷移なら変更)
+        /*
         if($this->dir_name != "") {
             $objView->display(CAMPAIGN_TEMPLATE_PATH . $dir_name  . "/active/site_frame.tpl");
             $objCampaignSess->delCampaign();
         } else {
             $objView->display(SITE_FRAME);
         }
+         *
+         */
     }
 
     /**
@@ -98,14 +112,26 @@ class LC_Page_Regist_Complete extends LC_Page {
      * @return void
      */
     function mobileProcess() {
-        $objView = new SC_MobileView();
+        parent::mobileProcess();
+        $this->mobileAction();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のAction(モバイル).
+     *
+     * @return void
+     */
+    function mobileAction() {
+
+        //$objView = new SC_MobileView();
 
         // カートが空かどうかを確認する。
         $objCartSess = new SC_CartSession();
         $this->tpl_cart_empty = count($objCartSess->getCartList()) < 1;
 
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
+        //$objView->assignobj($this);
+        //$objView->display(SITE_FRAME);
     }
 
     /**

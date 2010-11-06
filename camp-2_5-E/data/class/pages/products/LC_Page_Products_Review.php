@@ -177,8 +177,7 @@ class LC_Page_Products_Review extends LC_Page {
         }
 
         $this->transactionid = SC_Helper_Session_Ex::getToken();
-        //$objView->assignobj($this);
-        //$objView->display($this->tpl_mainpage);
+        $this->setTemplate($this->tpl_mainpage);
     }
 
     /**
