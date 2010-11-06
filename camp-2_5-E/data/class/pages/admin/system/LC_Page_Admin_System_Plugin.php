@@ -91,13 +91,13 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin {
                 $plugin->install();
                 break;
             case 'uninstall':
-                $name = $objForm->getValue('plugin_name');
+                $name = $this->objForm->getValue('plugin_name');
                 require_once(DATA_PATH.'/'.$name.'/'.$name.'.php');
                 $plugin = new $name();
                 $plugin->uninstall();
                 break;
             case 'enable':
-                $name = $objForm->getValue('plugin_name');
+                $name = $this->objForm->getValue('plugin_name');
                 require_once(DATA_PATH.'/'.$name.'/'.$name.'.php');
                 $plugin = new $name();
                 $plugin->enable();
