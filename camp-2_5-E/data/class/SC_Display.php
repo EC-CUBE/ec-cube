@@ -69,7 +69,8 @@ class SC_Display{
      * デバイス毎の出力方法を自動で変更する、ファサード
      * Enter description here ...
      */
-    function setDevice($device=4){
+    function setDevice($device=4,$view = null){
+        
         switch ($device){
             case 1:
                 $this->response->setContentType("text/html");
