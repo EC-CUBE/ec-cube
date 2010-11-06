@@ -276,6 +276,7 @@ function selectAll(target) {
       <th>詳細-メインコメント<span class="attention">(タグ許可)*</span></th>
       <td>
         <span class="attention"><!--{$arrErr.main_comment}--></span>
+        <input type="button" name="btn" onclick="document.form1['main_comment'].value=document.form1['main_list_comment'].value;" value="一覧メインコメントをコピー" /><br />
         <textarea name="main_comment" value="<!--{$arrForm.main_comment|escape}-->" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" style="<!--{if $arrErr.main_comment != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"  cols="60" rows="8" class="area60"><!--{$arrForm.main_comment|escape}--></textarea><br />
         <span class="attention"> (上限<!--{$smarty.const.LLTEXT_LEN}-->文字)</span>
       </td>
