@@ -77,10 +77,10 @@ class LC_Page_Admin_Products_Preview extends LC_Page {
      * @return void
      */
     function process() {
-        var_dump('HERE');
-        exit;
         // プロダクトIDの正当性チェック
         $product_id = $this->lfCheckProductId();
+        var_dump('HERE');
+        exit;
 
         $objView = new SC_SiteView(strlen($_POST['mode']) == 0);
         $objCustomer = new SC_Customer();
