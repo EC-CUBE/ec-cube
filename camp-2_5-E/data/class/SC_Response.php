@@ -28,17 +28,23 @@ class SC_Response{
     }
 
     function response(){
-    
+
     }
-    
+
+    function sendHeader(){
+        foreach ($this->header as $head){
+
+        }
+    }
+
 
     function setContentLength(int $length){
-    
+
     }
 
 
     function setContentType(String $contentType){
-      $this->header['Content-Type'] = $contentType;
+        $this->header['Content-Type'] = $contentType;
     }
 
     function setResponseCode(int $code){
@@ -50,7 +56,7 @@ class SC_Response{
     }
 
     function addDateHdeader(String $name, $date){
-      
+
     }
     function addHeader(String $name, $value){
         $this->header[$name] = $value;
@@ -61,7 +67,7 @@ class SC_Response{
     }
 
     function sendError(int $errorcode){
-        
+
     }
 
     function sendRedirect(String $location){
