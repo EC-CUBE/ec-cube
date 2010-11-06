@@ -79,7 +79,8 @@ class LC_Page_Admin_System_Plugin extends LC_Page {
                 
                 
                 break;
-
+            case '':
+                break;
             default:
                 break;
         }
