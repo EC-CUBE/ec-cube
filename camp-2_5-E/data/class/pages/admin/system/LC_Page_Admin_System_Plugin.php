@@ -79,7 +79,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page {
                 
                 
                 break;
-            case '':
+            case 'uninstall':
                 break;
             default:
                 break;
