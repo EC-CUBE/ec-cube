@@ -69,5 +69,9 @@ class SC_Helper_Plugin{
         return $arrRet;
     }
 
+    
+    public static function getFilesystemPlugins(){
+        
+    }
 }
 
