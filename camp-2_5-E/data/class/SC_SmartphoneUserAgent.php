@@ -30,17 +30,14 @@ class SC_SmartphoneUserAgent {
 
     /**
      * スマートフォンかどうかを判別する。
+     * $_SESSION['pc_disp'] = true の場合はPC表示。
      *
      * @return boolean
      */
     function isSmartphone() {
-        $objAgent =& Net_UserAgent_Mobile::singleton();
-        if (Net_UserAgent_Mobile::isError($objAgent)) {
-            return false;
-        } else {
-            // SPでかつPC表示OFF
-            return $objAgent->isSmartphone() && !SC_SmartphoneUserAgent::getSmartphonePcFlag();
-        }
+        $nu = new Net_UserAgent_Mobile();
+        // SPでかつPC表示OFFの場合
+        return $nu->isSmartphone() && !SC_SmartphoneUserAgent::getSmartphonePcFlag();
     }
 
     /**
