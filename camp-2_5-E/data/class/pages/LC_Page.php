@@ -72,6 +72,9 @@ class LC_Page {
     /** トランザクションID */
     var $transactionid;
 
+    /** テンプレート名 */
+    var $template;
+
     // }}}
     // {{{ functions
 
@@ -85,6 +88,8 @@ class LC_Page {
         // XXX すべてのページで宣言するべき
         $layout = new SC_Helper_PageLayout_Ex();
         $layout->sfGetPageLayout($this, false);
+
+        $this->template = SITE_FRAME;
 
         // ディスプレイクラス生成
         $this->objDisp = new SC_Display();
@@ -116,6 +121,22 @@ class LC_Page {
      * @return void
      */
     function destroy() {}
+
+    /**
+     * テンプレート取得
+     *
+     */
+    function getTemplate() {
+        return $this->template;
+    }
+
+    /**
+     * テンプレート設定(ポップアップなどの場合)
+     *
+     */
+    function setTemplate($template) {
+        $this->template = $template;
+    }
 
     /**
      * 指定の URL へリダイレクトする.
