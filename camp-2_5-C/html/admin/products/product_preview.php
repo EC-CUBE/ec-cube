@@ -23,7 +23,7 @@
 
 // {{{ requires
 require_once '../require.php';
-require_once CLASS_EX_PATH . 'page_extends/admin/products/LC_Page_Admin_Products_Product_Preview_Ex.php';
+require_once CLASS_EX_PATH . 'page_extends/admin/products/LC_Page_Admin_Products_Preview_Ex.php';
 
 // }}}
 // {{{ generate page
