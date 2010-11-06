@@ -37,7 +37,7 @@ class TestPlugin1 extends SC_Plugin {
         $objQuery = new SC_Query();
         $arrPlugins = $objQuery->select("plugin_id", "dtb_plugin", "plugin_name = ?",array($this->getName()));
         $data = array(
-          'plugin_name' => $objForm->getValue('plugin_name'),
+          'plugin_name' => $this->getName(),
           'path' => realpath(DATA_DIR.'/plugin/'.$objForm->getValue('plugin_name').'/'),
           'enable' => '1',
           'del_flg' => '0',
