@@ -558,5 +558,10 @@ class SC_CartSession {
     function unsetKey() {
         unset($_SESSION['cartKey']);
     }
+    
+    function addPreview($form) {
+        $this->previewSession[preview] = $form;
+    }
+    
 }
 ?>
