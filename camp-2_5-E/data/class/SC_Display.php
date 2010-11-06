@@ -29,7 +29,7 @@ class SC_Display{
      * @return 
      */
     function detectAgent(){
-      
+      $_SERVER['User-Agent']
         
         
     }   
