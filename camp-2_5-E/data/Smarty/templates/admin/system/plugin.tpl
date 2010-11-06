@@ -62,8 +62,5 @@
     <!--▲ページ送り-->
   </div>
 
-  <div class="btn addnew">
-    <button type="button" onclick="win01('./input.php','input','500','420');"><span>メンバーを新規入力</span></button>
-  </div>
 </div>
 </form>
