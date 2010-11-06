@@ -56,9 +56,13 @@ class SC_Response{
     function sendError(int $errorcode){
         
     }
+    
     function sendRedirect(String $location){
         
     }
-    
+      
+    function setHeader(Array $headers){
+        $this->header = $headers;
+    }
 
 }
