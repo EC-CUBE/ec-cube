@@ -50,10 +50,14 @@ class TestPlugin1 extends SC_Plugin_Ex {
         }else{
             $objQuery->update('dtb_plugin',$data,'plugin_id = ?',array($arrPlugins[0]['plugin_id']));
         }
+        
+        
 
     }
 
     public function uninstall(){
+        $objQuery = new SC_Query();
+        
 
     }
 
