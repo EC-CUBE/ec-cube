@@ -1250,7 +1250,7 @@ CREATE TABLE dtb_bkup (
 
 
 CREATE TABLE "dtb_plugin" (
-  id int4 NOT NULL DEFAULT NULL,
+  id INT NOT NULL,
   name text NOT NULL DEFAULT NULL,
   enable int2 NOT NULL DEFAULT 0,
   del_flg int2 NOT NULL DEFAULT 0,
