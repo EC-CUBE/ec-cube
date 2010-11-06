@@ -1,0 +1,53 @@
+== インデックスを管理画面で設定する�
+A. カラム一覧取得関数作成（インデックスが貼られているかの情報とセットで返す）
+
+/**
+ * インデックス設定を行う一覧を返す関数
+ */
+function getColumnList()
+{
+  // インデックス名規則： [TABLE名]_[カラム名]_key
+  // 例）dtb_products_class の product_id の場合は、「dtb_products_class_product_id_key」
+  //
+  // ※プライマリーキーは変更させない。
+
+
+  ＊SC_Query に listIndexes のメソッド追加
+  ＊インデックス候補一覧を取得
+  ＊インデックス候補一覧に、現在のインデックス設定状況を付与する
+  ＊配列を返す
+
+
+  // 返す配列の構造
+  $list = array(
+    array("table" => "dtb_products_class", "column" => "product_id", "indexflag" => true),
+    array("table" => "dtb_products_class", "column" => "category_id1", "indexflag" => true),
+    array("table" => "dtb_order", "column" => "email", "indexflag" => true),
+    array("table" => "dtb_order", "column" => "tel01", "indexflag" => false),
+  );
+
+  return $list;
+}
+
+
+B. 取得したカラム一覧をチェックボックス付きで管理画面に表示する。
+　　チェックボックスの設定を受けとる。
+　　変更のあった、各カラムに対して、インデックス設定を行う。
+
+   ＊ Aの関数を読んで、インデックス候補一覧（現在のインデックス設定状況付き）を取得する。
+   ＊ インデックス候補一覧から画面を表示する。（既に貼られている場合は、チェックボックスONで表示）
+   ＊ インデックス設定一覧をPOSTで取得する。
+   ＊ 設定変更のあったインデックス候補に対して、Cの関数を呼ぶ。
+   ＊ 処理完了を表示
+
+C. カラムに対してインデックス設定を行う関数作成
+/**
+ * 
+ */
+function setColumnIndex($tableName, $columnName, $onOffFlag)
+{
+  ＊SC_Query に create, dropのメソッド追加
+  ＊$onOffFlagに応じて、上記メソッドを呼ぶ
+}
+
+
