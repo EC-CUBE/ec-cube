@@ -1,4 +1,5 @@
-<form name="form1" id="form1" method="post" action="">
+<form name="form1" id="form1" method="post" action="?">
+
 <div id="system" class="contents-main">
   <div class="paging">
     <!--▼ページ送り-->
@@ -20,7 +21,7 @@
       <td><!--{$plugins[data].plugin_name|escape}--></td>
       <td><!--{$plugins[data].plugin_name|escape}--></td>
       <td>
-        <!--{if $plugins[data].create_date == null }-->
+        <!--{if $plugins[data].create_date == null }-->aaaaaaaaaaaaaaaaaaaaa
           <input type="button" name="install" value="install" onclick="fnModeSubmit('install');" />
         <!--{else}-->
           <!--{if $plugins[data].enable == 1}-->

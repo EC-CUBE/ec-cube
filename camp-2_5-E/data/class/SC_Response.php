@@ -1,4 +1,5 @@
 <?php
+// TODO GPLのあれ
 class SC_Response{
 
     /**
