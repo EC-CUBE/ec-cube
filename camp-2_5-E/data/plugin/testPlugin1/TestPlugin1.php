@@ -37,13 +37,12 @@ class TestPlugin1 extends SC_Plugin_Ex {
         $objQuery = new SC_Query();
         $arrPlugins = $objQuery->get("dtb_plugin", "plugin_id", "plugin_name = ?",array($name));
         $data = array(
-                      'plugin_name' => $objForm->getValue('plugin_name'),
-                      'path' => realpath(DATA_DIR.'/plugin/'.$objForm->getValue('plugin_name').'/'),
-                    'enable' => '1',
-                    'del_flg' => '0',
-                  'class_name' => $objForm->getValue('plugin_name'),
-                    'version' => $this->getVersion()
-
+          'plugin_name' => $objForm->getValue('plugin_name'),
+          'path' => realpath(DATA_DIR.'/plugin/'.$objForm->getValue('plugin_name').'/'),
+          'enable' => '1',
+          'del_flg' => '0',
+          'class_name' => $objForm->getValue('plugin_name'),
+          'version' => $this->getVersion()
         );
 
         if(count($arrPlugins) == 0){
