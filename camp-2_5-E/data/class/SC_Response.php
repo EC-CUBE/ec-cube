@@ -45,5 +45,9 @@ class SC_Response{
     function addDateHdeader(String $name, $date){
         
     }
+    function addHeader(String $name,String $value){
+      $this->header[$name] = $value;    
+    }
+    
 
 }
