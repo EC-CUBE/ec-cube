@@ -61,8 +61,8 @@ class LC_Page_Admin_System_Plugin extends LC_Page {
         $objForm->setParam($_GET);
         $this->objForm = $objForm;
     }
-    
-    
+
+
     /**
      * Page のプロセス.
      *
@@ -99,9 +99,9 @@ class LC_Page_Admin_System_Plugin extends LC_Page {
     }
 
     function getPluginOnFilesystem(){
-        DATA_PATH."plugin/";
+        $dh =  opendir(DATA_PATH."plugin/");
         
-        
+
     }
 
     /**
