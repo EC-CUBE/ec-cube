@@ -1084,3 +1084,13 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SQL_QUERY_LOG_MIN_E
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PAGE_DISPLAY_TIME_LOG_MODE', '1', 904, 'ページ表示時間のログを取得するフラグ(1:表示, 0:非表示)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PAGE_DISPLAY_TIME_LOG_MIN_EXEC_TIME', '2', 905, 'ページ表示時間のログを取得する時間設定(設定値以上かかった場合に取得)');
 
+INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_customer', 'email_mobile', 0, '会員数増加時のログイン処理速度を向上させたいときに試してみてください');
+INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_products', 'name', 1, '商品名検索速度を向上させたいときに試してみてください');
+INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_order_temp', 'order_temp_id', 0, '注文数が多いときに試してみてください。');
+INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_order', 'status', 1, '注文数が多いときに試してみてください。');
+INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_order', 'order_email', 1, '注文数が多いときに試してみてください。');
+INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_order', 'order_name01', 1, '注文数が多いときに試してみてください。');
+INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_order', 'order_name02', 0, '注文数が多いときに試してみてください。');
+INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_order', 'order_tel01', 0, '注文数が多いときに試してみてください。');
+INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_order', 'order_tel02', 0, '注文数が多いときに試してみてください。');
+INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_order', 'order_tel03', 0, '注文数が多いときに試してみてください。');

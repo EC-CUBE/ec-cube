@@ -1247,6 +1247,13 @@ CREATE TABLE dtb_bkup (
     PRIMARY KEY (bkup_name)
 );
 
+CREATE TABLE dtb_index_list(
+    table_name text NOT NULL DEFAULT '',
+    column_name text NOT NULL DEFAULT '',
+    recommend_flg int2 NOT NULL DEFAULT 0,
+    recommend_comment text
+);
+
 CREATE INDEX dtb_customer_mobile_phone_id_key ON dtb_customer (mobile_phone_id);
 CREATE INDEX dtb_products_class_product_id_key ON dtb_products_class(product_id);
 CREATE INDEX dtb_order_detail_product_id_key ON dtb_order_detail(product_id);
