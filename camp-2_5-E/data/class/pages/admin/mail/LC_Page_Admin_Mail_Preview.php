@@ -52,8 +52,17 @@ class LC_Page_Admin_Mail_Preview extends LC_Page_Admin {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objQuery = new SC_Query();
-        $objView = new SC_AdminView();
         $objSess = new SC_Session();
         $objDate = new SC_Date();
 
@@ -133,9 +142,6 @@ class LC_Page_Admin_Mail_Preview extends LC_Page_Admin {
                 $this->body = $result[0]["body"];
             }
         }
-
-        $objView->assignobj($this);
-        $objView->display($this->tpl_mainpage);
     }
 
     /**

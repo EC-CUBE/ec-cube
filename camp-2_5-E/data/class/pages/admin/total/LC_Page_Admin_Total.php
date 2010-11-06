@@ -88,7 +88,16 @@ class LC_Page_Admin_Total extends LC_Page_Admin {
      * @return void
      */
     function process() {
-        $objView = new SC_AdminView();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objSess = new SC_Session();
 
         // 認証可否の判定
@@ -257,8 +266,6 @@ class LC_Page_Admin_Total extends LC_Page_Admin {
         $this->arrForm = $this->objFormParam->getFormParamList();
 
         $this->tpl_subtitle = $this->arrTitle[$this->objFormParam->getValue('page')];
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

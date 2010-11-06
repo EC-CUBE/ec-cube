@@ -56,6 +56,16 @@ class LC_Page_Admin_OwnersStore_Log extends LC_Page_Admin {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
 
         // ログインチェック
         SC_Utils::sfIsSuccess(new SC_Session());
@@ -77,11 +87,6 @@ class LC_Page_Admin_OwnersStore_Log extends LC_Page_Admin {
             break;
         }
         $this->arrInstallLogs = $this->getLogs();
-
-        // ページ出力
-        $objView = new SC_AdminView();
-        $objView->assignObj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

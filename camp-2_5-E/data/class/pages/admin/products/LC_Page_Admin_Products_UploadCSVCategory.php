@@ -58,7 +58,16 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin {
      * @return void
      */
     function process() {
-        $objView = new SC_AdminView();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objSess = new SC_Session();
         $objDb = new SC_Helper_DB_Ex();
 
@@ -194,9 +203,6 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin {
             default:
                 break;
         }
-
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

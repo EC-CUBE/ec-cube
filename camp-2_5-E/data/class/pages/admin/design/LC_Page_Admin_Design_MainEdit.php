@@ -58,6 +58,16 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objView = new SC_AdminView();
         $this->objLayout = new SC_Helper_PageLayout_Ex();
 
@@ -107,10 +117,6 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
             $this->lfDeletePageData($page_id);
             exit;
         }
-
-        // 画面の表示
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

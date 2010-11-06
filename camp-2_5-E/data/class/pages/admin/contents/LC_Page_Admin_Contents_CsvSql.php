@@ -57,7 +57,16 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin {
      * @return void
      */
     function process() {
-        $objView = new SC_AdminView();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objDbFactory = SC_DB_DBFactory_Ex::getInstance();
 
         // 認証可否の判定
@@ -108,12 +117,9 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin {
 
             $this->sqlerr = isset($errMsg) ? $errMsg : "" ;
 
-            $this->objView = $objView;
-
             // 画面の表示
-            $objView->assignobj($this);
-            $objView->display('contents/csv_sql_view.tpl');
-            exit;
+            $this->setTemplate('contents/csv_sql_view.tpl');
+            return;
             break;
 
             // 新規作成
@@ -215,10 +221,6 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin {
             $arrSqlData[0]['csv_sql'] = isset($_POST['csv_sql']) ? $_POST['csv_sql'] : "";
         }
         $this->arrSqlData = $arrSqlData[0];	// 選択されているSQLデータ
-
-        // 画面の表示
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

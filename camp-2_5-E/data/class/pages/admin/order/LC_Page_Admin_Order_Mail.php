@@ -60,8 +60,16 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
 
-        $objView = new SC_AdminView();
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objSess = new SC_Session();
         SC_Utils_Ex::sfIsSuccess($objSess);
 
@@ -119,11 +127,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin {
                 $this->tpl_body = mb_convert_encoding( $objSendMail->body, CHAR_CODE, "auto" );
                 $this->tpl_to = $objSendMail->tpl_to;
                 $this->tpl_mainpage = 'order/mail_confirm.tpl';
-
-                $objView->assignobj($this);
-                $objView->display(MAIN_FRAME);
-
-                exit;
+                return;
             }
             break;
         case 'change':
@@ -148,8 +152,6 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin {
         }
 
         $this->arrForm = $objFormParam->getFormParamList();
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

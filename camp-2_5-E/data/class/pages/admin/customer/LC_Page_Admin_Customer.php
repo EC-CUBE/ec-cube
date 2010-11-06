@@ -213,6 +213,16 @@ class LC_Page_Admin_Customer extends LC_Page_Admin {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         //---- ページ初期設定
         $objQuery = new SC_Query();
         $objView = new SC_AdminView();
@@ -420,10 +430,6 @@ class LC_Page_Admin_Customer extends LC_Page_Admin {
         }
 
         $this->arrCatList = $objDb->sfGetCategoryList();
-
-        //---- ページ表示
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

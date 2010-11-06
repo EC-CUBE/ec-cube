@@ -67,7 +67,16 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin {
      * @return void
      */
     function process() {
-        $objView = new SC_AdminView();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $masterData = new SC_DB_MasterData_Ex();
 
         // 認証可否の判定
@@ -105,8 +114,6 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin {
                                      $masterData->getDBMasterData("mtb_constants",
                                              array("id", "remarks", "rank")));
 
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

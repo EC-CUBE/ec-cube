@@ -56,7 +56,16 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin {
      * @return void
      */
     function process() {
-        $objView = new SC_AdminView();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objSess = new SC_Session();
         $objDb = new SC_Helper_DB_Ex();
 
@@ -133,11 +142,6 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin {
 
         // カテゴリ取得
         $this->arrCatList = $objDb->sfGetCategoryList();
-
-        //----　ページ表示
-        $objView->assignobj($this);
-        $objView->display($this->tpl_mainpage);
-
     }
 
     /**

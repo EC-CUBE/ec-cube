@@ -56,8 +56,17 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objQuery = new SC_Query();
-        $objView = new SC_AdminView();
         $objSess = new SC_Session();
 
         $arrRegistColumn = array(
@@ -145,10 +154,6 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin {
         // カテゴリ取得
         $objDb = new SC_Helper_DB_Ex();
         $this->arrCatList = $objDb->sfGetCategoryList("level = 1");
-
-        //----　ページ表示
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

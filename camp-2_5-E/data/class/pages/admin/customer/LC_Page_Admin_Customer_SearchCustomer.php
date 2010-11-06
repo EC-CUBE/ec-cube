@@ -53,13 +53,21 @@ class LC_Page_Admin_Customer_SearchCustomer extends LC_Page_Admin {
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         // 認証可否の判定
         $objSess = new SC_Session();
         SC_Utils_Ex::sfIsSuccess($objSess);
 
-        $objView = new SC_AdminView();
         // POSTのモードがsearchなら顧客検索開始
         if($_POST['mode'] == 'search'){
             $this->objFormParam = new SC_FormParam();
@@ -153,10 +161,7 @@ class LC_Page_Admin_Customer_SearchCustomer extends LC_Page_Admin {
             }
 
         }
-        // 画面の表示
         $this->arrForm = $arrForm;
-        $objView->assignobj($this);
-        $objView->display($this->tpl_mainpage);
     }
 
     /**

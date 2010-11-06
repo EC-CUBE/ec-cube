@@ -60,7 +60,16 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin {
      * @return void
      */
     function process() {
-        $objView = new SC_AdminView();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objSess = new SC_Session();
         $this->objQuery = new SC_Query();
         // 認証可否の判定
@@ -117,9 +126,6 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin {
                 $this->arrReview = $this->lfGetReviewData($_POST['review_id']);
                 break;
         }
-
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

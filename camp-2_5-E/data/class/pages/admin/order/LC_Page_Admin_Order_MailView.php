@@ -53,7 +53,16 @@ class LC_Page_Admin_Order_MailView extends LC_Page_Admin {
      * @return void
      */
     function process() {
-        $objView = new SC_AdminView();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objSess = new SC_Session();
 
         // 認証可否の判定
@@ -67,9 +76,7 @@ class LC_Page_Admin_Order_MailView extends LC_Page_Admin {
             $this->tpl_subject = $arrRet[0]['subject'];
             $this->tpl_body = $arrRet[0]['mail_body'];
         }
-
-        $objView->assignobj($this);
-        $objView->display($this->tpl_mainpage);
+        $this->setTemplate($this->tpl_mainpage);
     }
 
     /**

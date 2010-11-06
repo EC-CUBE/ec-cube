@@ -68,9 +68,17 @@ class LC_Page_Admin_System_System extends LC_Page_Admin {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
 
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         SC_Utils_Ex::sfIsSuccess(new SC_Session);
-        $objView = new SC_AdminView();
 
         $this->initForm();
         switch($this->objForm->getValue('mode')) {
@@ -86,9 +94,6 @@ class LC_Page_Admin_System_System extends LC_Page_Admin {
         }
 
         $this->arrSystemInfo = $this->getSystemInfo();
-
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

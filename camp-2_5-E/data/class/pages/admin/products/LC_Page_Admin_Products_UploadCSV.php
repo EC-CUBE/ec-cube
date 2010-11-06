@@ -64,9 +64,19 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin {
      * @return void
      */
     function process() {
-        $objView = new SC_AdminView();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objSess = new SC_Session();
         $objDb = new SC_Helper_DB_Ex();
+        $objView = new SC_SiteView();
 
         // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess($objSess);
@@ -204,17 +214,13 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin {
             echo "<br/><a href=\"javascript:window.close()\">→閉じる</a>";
             flush();
 
-            $objView->assignobj($this);
-            $objView->display('admin_popup_footer.tpl');
+            $this->setTemplate('admin_popup_footer.tpl');
 
-            exit;
+            return;
             break;
         default:
             break;
         }
-
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

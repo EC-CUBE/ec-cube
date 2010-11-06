@@ -82,7 +82,16 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin {
      * @return void
      */
     function process() {
-        $objView = new SC_AdminView();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objSiteInfo = new SC_SiteInfo();
         $objQuery = new SC_Query();
         $objDb = new SC_Helper_DB_Ex();
@@ -265,8 +274,6 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin {
 
         // サブ情報表示・非表示のチェックに使用する。
         $this->sub_find = $sub_find;
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

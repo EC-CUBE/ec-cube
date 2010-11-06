@@ -58,8 +58,16 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin {
      * @return void
      */
     function process() {
-        $objView = new SC_AdminView();
+        $this->action();
+        $this->sendResponse();
+    }
 
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         // 認証可否の判定
         $objSess = new SC_Session();
         SC_Utils_Ex::sfIsSuccess($objSess);
@@ -114,10 +122,6 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin {
 
         // ファイルリストを取得
         $this->arrCSSList = $this->lfGetCSSList($css_dir);
-
-        // 画面の表示
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

@@ -60,7 +60,16 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin {
      * @return void
      */
     function process() {
-        $objView = new SC_AdminView();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objSess = new SC_Session();
         $objDb = new SC_Helper_DB_Ex();
 
@@ -116,10 +125,8 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin {
         $this->SelectedStatus = $status;
         //検索結果の表示
         $this->lfStatusDisp($status, $_POST['search_pageno']);
-
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
+
     /**
      * デストラクタ.
      *

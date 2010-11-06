@@ -57,9 +57,18 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         // ページ初期設定
         $objQuery = new SC_Query();
-        $objView = new SC_AdminView();
         $objSess = new SC_Session();
         $objDate = new SC_Date();
 
@@ -107,10 +116,6 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin {
 
         // 検索結果の取得
         $this->arrDataList = $objQuery->select($col, $from, $where, $arrval);
-
-        // ページ表示
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

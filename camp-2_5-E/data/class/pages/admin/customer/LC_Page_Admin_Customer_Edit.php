@@ -63,13 +63,21 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
 
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         // 認証可否の判定
         $objSess = new SC_Session();
         SC_Utils_Ex::sfIsSuccess($objSess);
 
         $this->objQuery = new SC_Query();
-        $objView = new SC_AdminView();
         $objDb = new SC_Helper_DB_Ex();
         $objDate = new SC_Date(1901);
         $this->arrYear = $objDate->getYear();    //　日付プルダウン設定
@@ -196,10 +204,6 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin {
                 }
             }
         }
-
-        //----　ページ表示
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

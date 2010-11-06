@@ -59,8 +59,17 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objQuery = new SC_Query();
-        $objView = new SC_AdminView();
         $objSess = new SC_Session();
 
         // 認証可否の判定
@@ -106,8 +115,6 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin {
             // 完了画面表示
             $this->tpl_mainpage = 'mail/template_complete.tpl';
         }
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

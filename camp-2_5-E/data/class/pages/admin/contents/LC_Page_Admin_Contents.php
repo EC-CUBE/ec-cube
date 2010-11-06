@@ -59,10 +59,19 @@ class LC_Page_Admin_Contents extends LC_Page_Admin {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
 
         //---- ページ初期設定
         $objQuery = new SC_Query();
-        $objView = new SC_AdminView();
         $objDate = new SC_Date(ADMIN_NEWS_STARTYEAR);
         $objDb = new SC_Helper_DB_Ex();
 
@@ -163,11 +172,6 @@ class LC_Page_Admin_Contents extends LC_Page_Admin {
         $this->line_max = count($this->list_data);
         $sql = "SELECT MAX(rank) FROM dtb_news WHERE del_flg = '0'";        // rankの最大値を取得
         $this->max_rank = $objQuery->getOne($sql);
-
-        //----　ページ表示
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
-
     }
 
 

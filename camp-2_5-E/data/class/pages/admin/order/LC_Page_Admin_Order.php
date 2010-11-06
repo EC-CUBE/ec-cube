@@ -74,7 +74,16 @@ class LC_Page_Admin_Order extends LC_Page_Admin {
      * @return void
      */
     function process() {
-        $objView = new SC_AdminView();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objDb = new SC_Helper_DB_Ex();
         $objSess = new SC_Session();
         // パラメータ管理クラス
@@ -342,9 +351,6 @@ class LC_Page_Admin_Order extends LC_Page_Admin {
         // 支払い方法の取得
         $arrRet = $objDb->sfGetPayment();
         $this->arrPayment = SC_Utils_Ex::sfArrKeyValue($arrRet, 'payment_id', 'payment_method');
-
-        $objView->assignobj($this);
-                $objView->display(MAIN_FRAME);
     }
 
     /**

@@ -56,7 +56,16 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin {
      * @return void
      */
     function process() {
-        $objView = new SC_AdminView();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objQuery = new SC_Query();
         $objDb = new SC_Helper_DB_Ex();
 
@@ -147,10 +156,6 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin {
         $where = "del_flg <> 1 AND class_id = ?";
         $objQuery->setOrder("rank DESC");
         $this->arrClassCat = $objQuery->select("name, classcategory_id", "dtb_classcategory", $where, array($_GET['class_id']));
-
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
-
     }
 
     /**

@@ -58,6 +58,16 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         //---- 認証可否の判定
         $objSess = new SC_Session();
         SC_Utils_Ex::sfIsSuccess($objSess);
@@ -202,10 +212,6 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin {
                 $this->tpl_javascript .= "false);\n";
             }
         }
-
-        // 画面の表示
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

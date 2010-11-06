@@ -60,8 +60,16 @@ class LC_Page_Admin_Design extends LC_Page_Admin {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
 
-        $objView = new SC_AdminView();
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objSess = new SC_Session();
         $objLayout = new SC_Helper_PageLayout_Ex();
 
@@ -280,12 +288,8 @@ class LC_Page_Admin_Design extends LC_Page_Admin {
             }
         }
         $this->errCnt = $errCnt;
-
-        // 画面の表示
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
-
     }
+
     /**
      * デストラクタ.
      *

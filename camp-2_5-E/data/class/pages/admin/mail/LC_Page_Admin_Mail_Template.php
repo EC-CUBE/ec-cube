@@ -59,8 +59,17 @@ class LC_Page_Admin_Mail_Template extends LC_Page_Admin {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objQuery = new SC_Query();
-        $objView = new SC_AdminView();
         $objSess = new SC_Session();
 
         // 認証可否の判定
@@ -88,9 +97,6 @@ class LC_Page_Admin_Mail_Template extends LC_Page_Admin {
 
         $sql = "SELECT *, create_date as disp_date FROM dtb_mailmaga_template WHERE del_flg = 0 ORDER BY create_date DESC";
         $this->list_data = $objQuery->getAll($sql);
-
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

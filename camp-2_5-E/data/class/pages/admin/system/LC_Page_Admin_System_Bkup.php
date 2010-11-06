@@ -60,7 +60,16 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin {
      * @return void
      */
     function process() {
-        $objView = new SC_AdminView();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objQuery = new SC_Query();
 
         // セッションクラス
@@ -146,9 +155,6 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin {
         $this->arrErr = isset($arrErr) ? $arrErr : array();
         $this->arrForm = isset($arrForm) ? $arrForm : array();
         $this->arrBkupList = $arrBkupList;
-
-        $objView->assignobj($this);		//変数をテンプレートにアサインする
-        $objView->display(MAIN_FRAME);		//テンプレートの出力
     }
 
     /**

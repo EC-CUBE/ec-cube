@@ -57,13 +57,18 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
 
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         // ログインチェック
         SC_Utils::sfIsSuccess(new SC_Session());
-
-        $objView = new SC_AdminView();
-        $objView->assignObj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

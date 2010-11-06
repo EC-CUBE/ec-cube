@@ -58,7 +58,16 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin {
      * @return void
      */
     function process() {
-        $objView = new SC_AdminView();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $this->objLayout = new SC_Helper_PageLayout_Ex();
         $package_path = USER_TEMPLATE_PATH . "/" . TEMPLATE_NAME . "/";
         
@@ -197,10 +206,6 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin {
         	}
         	break;
         }        
-
-        // 画面の表示
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

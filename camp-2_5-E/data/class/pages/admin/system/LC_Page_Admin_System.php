@@ -64,7 +64,16 @@ class LC_Page_Admin_System extends LC_Page_Admin {
      * @return void
      */
     function process() {
-        $objView  = new SC_AdminView();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objSess  = new SC_Session();
 
         // 認証可否の判定
@@ -86,9 +95,6 @@ class LC_Page_Admin_System extends LC_Page_Admin {
 
         // 取得範囲を指定(開始行番号、行数のセット)して管理者データを取得
         $this->list_data = $this->getMemberData($objNavi->start_row);
-
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

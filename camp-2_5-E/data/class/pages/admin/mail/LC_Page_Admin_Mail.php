@@ -147,9 +147,17 @@ class LC_Page_Admin_Mail extends LC_Page_Admin {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
 
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         // ページ初期設定
-        $objView = new SC_AdminView();
         $objDate = new SC_Date();
         $objQuery = new SC_Query();
         $objDb = new SC_Helper_DB_Ex();
@@ -202,10 +210,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin {
 
             $this->list_data = $list_data;
             $this->arrCampaignList = $this->lfGetCampaignList($objQuery);
-            
-            $objView->assignobj($this);
-            $objView->display($tpl_path);
-            exit;
+            return;
         }
 
         if($_POST['mode'] == 'delete') {
@@ -386,11 +391,6 @@ class LC_Page_Admin_Mail extends LC_Page_Admin {
         $this->arrCatList = $objDb->sfGetCategoryList();
 
         $this->arrCampaignList = $this->lfGetCampaignList($objQuery);
-
-        // ページ表示
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
-
     }
 
     /**

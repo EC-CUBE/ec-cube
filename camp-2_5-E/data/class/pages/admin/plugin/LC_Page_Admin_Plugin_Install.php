@@ -56,7 +56,16 @@ class LC_Page_Admin_Plugin_Install extends LC_Page_Admin {
      * @return void
      */
     function process() {
-        $objView  = new SC_AdminView();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objSess = new SC_Session();
 
         // 認証可否の判定
@@ -78,9 +87,6 @@ class LC_Page_Admin_Plugin_Install extends LC_Page_Admin {
         } else {
             SC_Utils_Ex::sfDispException();
         }
-
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

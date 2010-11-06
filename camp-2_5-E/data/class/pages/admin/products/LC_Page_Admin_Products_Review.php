@@ -63,7 +63,16 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin {
      * @return void
      */
     function process() {
-        $objView = new SC_AdminView();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objSess = new SC_Session();
         $objDate = new SC_Date();
         $objQuery = new SC_Query();
@@ -259,9 +268,6 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin {
                 exit;
             }
         }
-
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

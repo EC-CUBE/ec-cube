@@ -57,8 +57,17 @@ class LC_Page_Admin_System_Log extends LC_Page_Admin {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         SC_Utils_Ex::sfIsSuccess(new SC_Session);
-        $objView = new SC_AdminView();
         
         $this->lfInitParam();
         
@@ -67,9 +76,6 @@ class LC_Page_Admin_System_Log extends LC_Page_Admin {
         }
         
         $this->tpl_ec_log = $this->getEccubeLog();
-        
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

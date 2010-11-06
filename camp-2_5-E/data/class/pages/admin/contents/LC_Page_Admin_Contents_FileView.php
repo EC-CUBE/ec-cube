@@ -52,6 +52,16 @@ class LC_Page_Admin_Contents_FileView extends LC_Page_Admin {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         // FIXME パスのチェック関数が必要
         if (preg_match('|\./|', $_GET['file'])) {
             SC_Utils_Ex::sfDispError('');

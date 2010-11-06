@@ -64,7 +64,22 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin {
         }
     }
 
+    /**
+     * Page のプロセス.
+     *
+     * @return void
+     */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $this->authorization();
 
         $this->arrSearchHidden = $this->createSearchParams($_POST);
@@ -171,7 +186,6 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin {
         }
         $this->arrClass = $this->getAllClass();
         $this->arrForm['product_name'] = $this->getProductName($_POST['product_id']);
-        $this->assignView();
     }
 
     /**
@@ -598,15 +612,6 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin {
      */
     function authorization() {
         SC_Utils_Ex::sfIsSuccess(new SC_Session());
-    }
-
-    /**
-     * @access private
-     */
-    function assignView() {
-        $objView = new SC_AdminView();
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 }
 ?>

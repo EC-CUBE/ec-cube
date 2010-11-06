@@ -58,7 +58,16 @@ class LC_Page_Admin_Contents_CSV extends LC_Page_Admin {
      * @return void
      */
     function process() {
-        $objView = new SC_AdminView();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objSess = new SC_Session();
         $objCSV = new SC_Helper_CSV_Ex();
 
@@ -132,10 +141,6 @@ class LC_Page_Admin_Contents_CSV extends LC_Page_Admin {
 
         $this->SubnaviName = $this->arrSubnaviName[$subno_id];
         $this->tpl_subno_csv = $subno_csv;
-
-        // 画面の表示
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
    /**

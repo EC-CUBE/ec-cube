@@ -106,7 +106,16 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin {
      * @return void
      */
     function process() {
-        $objView = new SC_AdminView();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objSess = new SC_Session();
         $objDb = new SC_Helper_DB_Ex();
         $objDate = new SC_Date(1901);
@@ -313,12 +322,11 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin {
             $this->arrDay = $objDate->getDay();
         }
 
-        $objView->assignobj($this);
         // 表示モード判定
         if(!$this->disp_mode) {
-            $objView->display(MAIN_FRAME);
+            $this->setTeaplate(MAIN_FRAME);
         } else {
-            $objView->display('order/disp.tpl');
+            $this->setTeaplate('order/disp.tpl');
         }
     }
 
