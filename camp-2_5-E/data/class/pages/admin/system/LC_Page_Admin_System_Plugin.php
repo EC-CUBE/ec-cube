@@ -77,13 +77,14 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin {
         switch($this->objForm->getValue('mode')) {
             // PHP INFOを表示
             case 'install':
-                $objQuery = new SC_Query();
                 $name = $objForm->getValue('plugin_name');
                 require_once(DATA_PATH.'/'.$name.'/'.$name.'.php');
                 $plugin = new $name();
                 $plugin->install();
                 break;
             case 'uninstall':
+                
+                
 
                 break;
             case 'enable':
