@@ -37,12 +37,13 @@ abstract class SC_Plugin
 
     /**
      * 
-     * @return String SQL
+     * @return String インストール用のSQL
      */
     protected function getInstallSQL(){
         
     }
 
+    
     protected function getUninstallSQL(){
 
     }
