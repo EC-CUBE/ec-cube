@@ -85,6 +85,9 @@ class LC_Page {
         // XXX すべてのページで宣言するべき
         $layout = new SC_Helper_PageLayout_Ex();
         $layout->sfGetPageLayout($this, false);
+
+        // ディスプレイクラス生成
+        $this->objDisp = new SC_Display();
     }
 
     /**
