@@ -2,7 +2,7 @@
 
 abstract class SC_Plugin
 {
-
+    
     /**
      *
      * plugin_path
