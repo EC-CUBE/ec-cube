@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/LC_Page_Admin.php");
 
 /**
  * 支払方法設定 のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Basis_Payment_Input extends LC_Page {
+class LC_Page_Admin_Basis_Payment_Input extends LC_Page_Admin {
 
     // {{{ properties
 

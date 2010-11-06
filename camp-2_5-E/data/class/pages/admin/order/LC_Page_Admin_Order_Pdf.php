@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/LC_Page_Admin.php");
 require_once(CLASS_PATH . "SC_Fpdf.php");
 
 /**
@@ -32,7 +32,7 @@ require_once(CLASS_PATH . "SC_Fpdf.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Order_Pdf extends LC_Page {
+class LC_Page_Admin_Order_Pdf extends LC_Page_Admin {
 
     // }}}
     // {{{ functions

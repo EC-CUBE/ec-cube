@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/LC_Page_Admin.php");
 
 /* GMO決済モジュール連携用 */
 if (file_exists(MODULE_PATH . 'mdl_gmopg/inc/include.php') === TRUE) {
@@ -52,7 +52,7 @@ if (file_exists(MODULE_PATH . 'mdl_sps/request.php') === TRUE) {
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Order_Edit extends LC_Page {
+class LC_Page_Admin_Order_Edit extends LC_Page_Admin {
 
     // {{{ properties
 

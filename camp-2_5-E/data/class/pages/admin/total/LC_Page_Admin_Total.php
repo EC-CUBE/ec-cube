@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/LC_Page_Admin.php");
 require_once(CLASS_EX_PATH . "batch_extends/SC_Batch_Daily_Ex.php");
 require_once(CLASS_PATH . "graph/SC_GraphPie.php");
 require_once(CLASS_PATH . "graph/SC_GraphLine.php");
@@ -35,7 +35,7 @@ require_once(CLASS_PATH . "graph/SC_GraphBar.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Total extends LC_Page {
+class LC_Page_Admin_Total extends LC_Page_Admin {
 
     // }}}
     // {{{ functions

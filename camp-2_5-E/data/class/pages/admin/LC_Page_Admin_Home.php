@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once CLASS_PATH . "pages/LC_Page.php";
+require_once CLASS_PATH . "pages/LC_Page_Admin.php";
 require_once DATA_PATH . 'module/Services/JSON.php';
 require_once DATA_PATH . 'module/Request.php';
 
@@ -33,7 +33,7 @@ require_once DATA_PATH . 'module/Request.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Home extends LC_Page {
+class LC_Page_Admin_Home extends LC_Page_Admin {
 
     // }}}
     // {{{ functions

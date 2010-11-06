@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/LC_Page_Admin.php");
 require_once(DATA_PATH. "module/Tar.php");
 /**
  * バックアップ のページクラス.
@@ -31,7 +31,7 @@ require_once(DATA_PATH. "module/Tar.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_System_Bkup extends LC_Page {
+class LC_Page_Admin_System_Bkup extends LC_Page_Admin {
 
     // }}}
     // {{{ functions

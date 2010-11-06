@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/LC_Page_Admin.php");
 
 /**
  * プラグインのアンインストールのページクラス
@@ -33,7 +33,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author Seasoft 塚田将久
  * @version $Id:$
  */
-class LC_Page_Admin_Plugin_Uninstall extends LC_Page {
+class LC_Page_Admin_Plugin_Uninstall extends LC_Page_Admin {
 
     /**
      * Page を初期化する.

@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/LC_Page_Admin.php");
 
 /** ターゲットID 未使用 */
 define('TARGET_ID_UNUSED', 0);
@@ -35,7 +35,7 @@ define('TARGET_ID_UNUSED', 0);
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Design extends LC_Page {
+class LC_Page_Admin_Design extends LC_Page_Admin {
 
     // }}}
     // {{{ functions

@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/LC_Page_Admin.php");
 
 /**
  * EC-CUBEアプリケーション管理:アプリケーション設定 のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_OwnersStore_Settings extends LC_Page {
+class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin {
 
     /** SC_FormParamのインスタンス */
     var $objForm;

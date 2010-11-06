@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/LC_Page_Admin.php");
 
 /**
  * 受注管理メール確認 のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Order_MailView extends LC_Page {
+class LC_Page_Admin_Order_MailView extends LC_Page_Admin {
 
     // }}}
     // {{{ functions

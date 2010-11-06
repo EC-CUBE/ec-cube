@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/LC_Page_Admin.php");
 require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_CSV_Ex.php");
 
 /**
@@ -31,7 +31,7 @@ require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_CSV_Ex.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Products_Trackback extends LC_Page {
+class LC_Page_Admin_Products_Trackback extends LC_Page_Admin {
 
     // }}}
     // {{{ functions

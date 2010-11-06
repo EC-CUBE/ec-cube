@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/LC_Page_Admin.php");
 
 /**
  * 規格分類 のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id:LC_Page_Admin_Products_ClassCategory.php 15532 2007-08-31 14:39:46Z nanasess $
  */
-class LC_Page_Admin_Products_ClassCategory extends LC_Page {
+class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin {
 
     // }}}
     // {{{ functions

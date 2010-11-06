@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/LC_Page_Admin.php");
 
 /**
  * CSV 出力項目設定(高度な設定)のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Contents_CsvSql extends LC_Page {
+class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin {
 
     // }}}
     // {{{ functions

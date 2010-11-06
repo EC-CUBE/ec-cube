@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/LC_Page_Admin.php");
 
 /* ペイジェント決済モジュール連携用 */
 if (file_exists(MODULE_PATH . 'mdl_paygent/include.php') === TRUE) {
@@ -36,7 +36,7 @@ if (file_exists(MODULE_PATH . 'mdl_paygent/include.php') === TRUE) {
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Order extends LC_Page {
+class LC_Page_Admin_Order extends LC_Page_Admin {
 
     // }}}
     // {{{ functions

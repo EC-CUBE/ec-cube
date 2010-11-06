@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/LC_Page_Admin.php");
 
 /**
  * システム管理 のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id: LC_Page_Admin_System_Rank.php 16582 2007-11-28 15:02:29Z satou $
  */
-class LC_Page_Admin_System_Rank extends LC_Page {
+class LC_Page_Admin_System_Rank extends LC_Page_Admin {
     // }}}
     // {{{ functions
 

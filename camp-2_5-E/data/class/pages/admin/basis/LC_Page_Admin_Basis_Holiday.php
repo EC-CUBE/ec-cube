@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/LC_Page_Admin.php");
 
 /**
  * 定休日管理のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id: LC_Page_Admin_Basis_Holiday.php 16741 2007-11-08 00:43:24Z adachi $
  */
-class LC_Page_Admin_Basis_Holiday extends LC_Page {
+class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin {
 
     // }}}
     // {{{ functions

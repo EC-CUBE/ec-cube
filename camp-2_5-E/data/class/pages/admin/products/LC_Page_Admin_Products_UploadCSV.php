@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/LC_Page_Admin.php");
 
 /**
  * 商品登録CSVのページクラス.
@@ -33,7 +33,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  *
  * FIXME 同一商品IDで商品規格違いを登録できない。(更新は可能)
  */
-class LC_Page_Admin_Products_UploadCSV extends LC_Page {
+class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin {
 
     // }}}
     // {{{ functions
