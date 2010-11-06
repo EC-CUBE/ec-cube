@@ -5,8 +5,10 @@
 {
 	jQuery.fn.update = function(conf) {
 		conf = $.extend({
-			
+			method: 'post',
 		},conf);
+		
+		
 		
 	}
 	
