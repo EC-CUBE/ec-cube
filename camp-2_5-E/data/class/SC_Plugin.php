@@ -19,7 +19,7 @@ abstract class SC_Plugin
     
     public abstract function init();
     
-    public static abstract function enable();
+    public abstract function enable();
     
     public abstract function getVersion();
     
