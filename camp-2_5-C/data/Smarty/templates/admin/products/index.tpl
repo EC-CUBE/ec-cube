@@ -239,7 +239,7 @@ function lfnDispChange(){
         <!--{if $arrProducts[cnt].price02_min != $arrProducts[cnt].price02_max}-->
           <!--{$arrProducts[cnt].price02_min|number_format}--><br />～ <!--{$arrProducts[cnt].price02_max|number_format}-->
         <!--{else}-->
-          <input type="text" name="price02_edit_<!--{$arrProducts[cnt].product_id}-->" size="8" value="<!--{$arrProducts[cnt].price02_min}-->" onchange="jQuery.post('./index.php', {'mode':'price02_edit','price02_edit_id':'<!--{$arrProducts[cnt].product_id}-->','price02_edit_value':this.value}, function(result){if(result!='ok'){alert('エラー：変更できませんでした');};});">
+          <input type="text" name="price02_edit_<!--{$arrProducts[cnt].product_id}-->" size="8" value="<!--{$arrProducts[cnt].price02_min}-->" onchange="jQuery.post('./index.php', {'mode':'price02_edit','price02_edit_id':'<!--{$arrProducts[cnt].product_id}-->','price02_edit_value':this.value}, lfCheckEditResult);lfBgColorTween(this);">
         <!--{/if}-->
       </td>
       <td><!--{$arrProducts[cnt].name|escape}--></td>
@@ -260,7 +260,7 @@ function lfnDispChange(){
       <!--{* 表示 *}-->
       <!--{assign var=key value=$arrProducts[cnt].status}-->
       <td rowspan="2">
-        <select name="status" onchange="jQuery.post('./index.php', {'mode':'status_edit','status_edit_id':'<!--{$arrProducts[cnt].product_id}-->','status_edit_value':this.value}, function(result){if(result!='ok'){alert('エラー：変更できませんでした');};});">
+        <select name="status" onchange="jQuery.post('./index.php', {'mode':'status_edit','status_edit_id':'<!--{$arrProducts[cnt].product_id}-->','status_edit_value':this.value}, lfCheckEditResult);lfBgColorTween(this);">
           <option value="1"<!--{if $arrDISP[$key]=='公開'}--> selected<!--{/if}-->>公開</option>
           <option value="2"<!--{if $arrDISP[$key]=='非公開'}--> selected<!--{/if}-->>非公開</option>
         </select>
