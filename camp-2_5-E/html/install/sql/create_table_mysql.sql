@@ -1258,7 +1258,6 @@ CREATE TABLE "dtb_plugin" (
   create_date DATETIME NOT NULL,
   update_date DATETIME NOT NULL,
   PRIMARY KEY (id);
-  
 ) TYPE=InnoDB;
 ALTER TABLE "dtb_plugin" ADD CONSTRAINT "dtb_plugin_pkey" PRIMARY KEY ("id");
 
