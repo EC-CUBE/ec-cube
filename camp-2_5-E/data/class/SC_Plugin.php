@@ -55,6 +55,9 @@ class SC_Plugin
     }
 
     function disablePlugin(){
+      $objQuery = new SC_Query();
+      $name = $this->getName();
+      
       
     }
 
