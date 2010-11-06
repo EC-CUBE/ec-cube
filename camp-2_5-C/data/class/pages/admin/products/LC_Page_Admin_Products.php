@@ -96,7 +96,7 @@ class LC_Page_Admin_Products extends LC_Page {
 
             // データ更新
             $data["price02"] = $_POST['price02_edit_value'];
-            $where = "product_id=" . $_POST['price02_edit_id']
+            $where = "product_id=" . $_POST['price02_edit_id'];
             $objQuery->update("dtb_products_class", $data, $where);
             if($objQuery->isError())
             {
