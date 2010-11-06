@@ -75,6 +75,8 @@ class SC_Display{
     'incognito',      // Other iPhone browser
     'webmate'         // Other iPhone browser
         ];
+        
+        
         var pattern = new RegExp(useragents.join('|'), 'i');
         return pattern.test(navigator.userAgent);
     }
