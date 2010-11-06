@@ -58,7 +58,6 @@ class SC_Plugin
       $objQuery = new SC_Query();
       $name = preg_replace("/.php/", "", __FILE__);
       
-      
     }
 
     function enablePlugin(){
