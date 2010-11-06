@@ -22,10 +22,6 @@ abstract class SC_Plugin
     }
     
     public abstract function init();
-
-    
-    
-    
     
     public function install(){
 
