@@ -99,9 +99,12 @@ class LC_Page_Admin_System_Plugin extends LC_Page {
     }
 
     function getPluginOnFilesystem(){
-        if($dh =  opendir(DATA_PATH."plugin/")){
+        $dir = DATA_PATH."plugin/";
+        if($dh =  opendir($dir)){
             while(($file = readdir($dh)) !== false){
-                if($file !='.' && $file !='..' && filetype($dir.$file))
+                if($file !='.' && $file !='..' && filetype($dir.$file)){
+                    
+                }
             }
         }
         
