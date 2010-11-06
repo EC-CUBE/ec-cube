@@ -51,6 +51,16 @@ class LC_Page_Entry_New extends LC_Page {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
     }
 
     /**
@@ -68,9 +78,16 @@ class LC_Page_Entry_New extends LC_Page {
      * @return void
      */
     function mobileProcess() {
-        $objView = new SC_MobileView();
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
+        $this->mobileAction();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション(モバイル).
+     *
+     * @return void
+     */
+    function mobileAction() {
     }
 
     /**

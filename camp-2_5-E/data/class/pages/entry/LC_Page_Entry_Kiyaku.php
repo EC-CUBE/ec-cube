@@ -53,11 +53,17 @@ class LC_Page_Entry_Kiyaku extends LC_Page {
      * @return void
      */
     function process() {
-        global $objCampaignSess;
+        $this->action();
+        $this->sendResponse();
+    }
 
-        $objView = new SC_SiteView();
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objCustomer = new SC_Customer();
-        $objCampaignSess = new SC_CampaignSession();
 
         // レイアウトデザインを取得
         $layout = new SC_Helper_PageLayout_Ex();
@@ -74,14 +80,6 @@ class LC_Page_Entry_Kiyaku extends LC_Page {
             $this->tpl_kiyaku_text.=$arrRet[$i]['kiyaku_title'] . "\n\n";
             $this->tpl_kiyaku_text.=$arrRet[$i]['kiyaku_text'] . "\n\n";
         }
-
-        // キャンペーンからの遷移がチェック
-        $this->is_campaign = $objCampaignSess->getIsCampaign();
-        $this->campaign_dir = $objCampaignSess->getCampaignDir();
-
-        $objView->assignobj($this);
-        // フレームを選択(キャンペーンページから遷移なら変更)
-        $objCampaignSess->pageView($objView);
     }
 
     /**
@@ -99,7 +97,16 @@ class LC_Page_Entry_Kiyaku extends LC_Page {
      * @return void
      */
     function mobileProcess() {
-        $objView = new SC_MobileView();
+        $this->mobilAection();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション(モバイル).
+     *
+     * @return void
+     */
+    function mobileAction() {
         $objCustomer = new SC_Customer();
 
         $offset = isset($_REQUEST['offset']) ? $_REQUEST['offset'] : 0;
@@ -128,10 +135,6 @@ class LC_Page_Entry_Kiyaku extends LC_Page {
             $this->tpl_kiyaku_text.=$arrRet[$i]['kiyaku_title'] . "\n\n";
             $this->tpl_kiyaku_text.=$arrRet[$i]['kiyaku_text'] . "\n\n";
         }
-
-        $objView->assign("offset", $next);
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
     }
 
     /**
