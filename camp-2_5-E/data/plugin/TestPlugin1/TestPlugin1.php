@@ -1,7 +1,6 @@
 <?php
 
-
-class TestPlugin1 extends SC_Plugin_Ex {
+class TestPlugin1 extends SC_Plugin {
 
 
 
