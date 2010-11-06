@@ -45,6 +45,7 @@ class SC_Display{
     */
     function hoge(LC_Page $page){
         $this->assign($page);
+        
 
     }
 
@@ -65,6 +66,7 @@ class SC_Display{
                 $this->view = new SC_SiteView();
                 break;
         }
+        $this->deviceSeted = true;
     }
 
     /**
