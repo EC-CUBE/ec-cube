@@ -52,7 +52,8 @@ class SC_Display{
         $retDevice = 0;
         if($nu->isMobile()){
             $retDevice = 1;
-        }elseif ()
+        }elseif ($this->isSmartphone()){
+        }else{
         if($this->autoSet){
             $this->setDevice($nu);
         }
@@ -77,10 +78,8 @@ class SC_Display{
         );
 
         $pattern = implode("|", $useragents);
-        
-        if(preg_match('/['.$pattern.']/', $_SERVER['HTTP_USER_AGENT']))
-        var pattern = new RegExp(useragents.join('|'), 'i');
-        return pattern.test(navigator.userAgent);
+        return preg_match('/['.$pattern.']/', $_SERVER['HTTP_USER_AGENT']);
+
     }
 
 }
