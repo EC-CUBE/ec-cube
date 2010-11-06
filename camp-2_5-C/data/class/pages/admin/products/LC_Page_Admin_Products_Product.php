@@ -234,6 +234,9 @@ class LC_Page_Admin_Products_Product extends LC_Page {
                 break;
             case 'preview':
             	print_r($_POST);
+            
+                echo "onload(alert('aaa'));";
+            
             	break;
             default:
                 $this->lfProductPage();     // 商品登録ページ
