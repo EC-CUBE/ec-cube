@@ -79,6 +79,9 @@ class LC_Page_Admin_System_Editdb extends LC_Page {
             break;
         }
 
+        // インデックス一覧を取得する
+        $arrIndexList = $this->lfGetIndexList();
+
         $objView->assignobj($this);
         $objView->display(MAIN_FRAME);
     }
@@ -91,4 +94,36 @@ class LC_Page_Admin_System_Editdb extends LC_Page {
     function destroy() {
         parent::destroy();
     }
+
+    /**
+     * インデックス設定を行う一覧を返す関数
+     *
+     * @return void
+     */
+    function lfGetIndexList()
+    {
+        // データベースからインデックス設定一覧を取得する
+        $objQuery = new SC_Query();
+        $objQuery->setOrder("table_name, column_name");
+        $arrIndexList = $objQuery->select("table_name as table, column_name as column, recommend_flg, recommend_comment", "dtb_index_list");
+
+        $table = "";
+        foreach($arrIndexList as $key => $arrIndex) {
+            // テーブルに対するインデックス一覧を取得
+            if($table !== $arrIndex["table"]) {
+                $table = $arrIndex["table"];
+                $arrIndexes = $objQuery->listTableIndexes($table);
+            }
+ 
+            // インデックスが設定されているかを取得
+            if(array_search($table . "_" . $arrIndex["column"] . "_key", $arrIndexes) === false) {
+                $arrIndexList[$key]["indexflag"] = false;
+            } else {
+                $arrIndexList[$key]["indexflag"] = true;
+            }
+        }
+    
+        return $arrIndexList;
+    }
+
 }
