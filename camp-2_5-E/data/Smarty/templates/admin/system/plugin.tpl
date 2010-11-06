@@ -21,10 +21,10 @@
       <td><!--{$plugins[data].plugin_name|escape}--></td>
       <td>
         <!--{if $plugins[data].create_date == null }-->
-          <input type="button" name="install" value="install" onclick="" />
+          <input type="button" name="install" value="install" onclick="fnModeSubmit('install');" />
         <!--{else}-->
           <!--{if $plugins[data].enable == 1}-->
-          <input type="button" name="disable" value="disable" onclick="" />
+          <input type="button" name="disable" value="disable" onclick="fnModeSubmit('disable')" />
           <!--{else}-->
           <input type="button" name="enable" value="enable" onclick="" /> 
           <!--{/if}-->
