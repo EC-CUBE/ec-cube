@@ -6,9 +6,10 @@ class SC_Display{
     var $device;
 
     var $autoSet;
-    
+
     /**
-     * 
+     *
+     * @var SC_View
      */
     var $view;
 
