@@ -59,6 +59,8 @@ class SC_Display{
     function noAction(){    
         return;
     }
+    
+    function 
 
     /**
      * デバイス毎の出力方法を自動で変更する、ファサード
