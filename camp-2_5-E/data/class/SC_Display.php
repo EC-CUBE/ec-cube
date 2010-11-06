@@ -2,6 +2,8 @@
 class SC_Display{
 
     var $response;
+    
+    var $device;
 
     function SC_Display(){
         require_once(CLASS_EX_PATH."/SC_Response_Ex.php");
@@ -33,6 +35,8 @@ class SC_Display{
      */
     function detectDevice(){
         $nu = Net_UserAgent_Mobile::factory();
+
+        
     }
 
     function assign(LC_Page $page){
