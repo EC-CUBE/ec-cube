@@ -69,6 +69,8 @@ class LC_Page_Admin_Products_Preview extends LC_Page {
         $this->arrSTATUS_IMAGE = $masterData->getMasterData("mtb_status_image");
         $this->arrDELIVERYDATE = $masterData->getMasterData("mtb_delivery_date");
         $this->arrRECOMMEND = $masterData->getMasterData("mtb_recommend");
+        
+        $this->tpl_mainpage = "products/detail.tpl";
     }
 
     /**
