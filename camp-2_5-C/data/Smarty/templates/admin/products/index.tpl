@@ -254,7 +254,7 @@ function lfnDispChange(){
       <!--{* 操作 *}-->
       <td  rowspan="2" class="center">
          <a href="<!--{$smarty.const.URL_DIR}-->" title="編集" onclick="fnChangeAction('./product.php'); fnModeSubmit('pre_edit', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >
-             <img src="<!--{$TPL_DIR}-->img/contents/icon_edit.gif" alt="" />
+             <img src="<!--{$TPL_DIR}-->img/contents/icon_edit.gif" alt="" /> 
          </a>&nbsp;
          <a href="<!--{$smarty.const.URL_DIR}-->"  title="削除" onclick="fnSetFormValue('category_id', '<!--{$arrProducts[cnt].category_id}-->'); fnModeSubmit('delete', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >
              <img src="<!--{$TPL_DIR}-->img/contents/icon_delete.gif" alt="" />
