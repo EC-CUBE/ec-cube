@@ -117,10 +117,6 @@ class LC_Page_Admin_System_Plugin extends LC_Page {
             while(($file = readdir($dh)) !== false){
                 if($file !='.' && $file !='..' && filetype($dir.$file) == 'dir'){
                     $class = 
-                    $arrplugins[] = array(
-                      'plugin_id' = null,
-                      'plugin_name' = 
-                    );
                 }
             }
         }
