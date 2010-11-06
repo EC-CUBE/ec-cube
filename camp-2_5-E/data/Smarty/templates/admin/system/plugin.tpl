@@ -1,5 +1,5 @@
 <form name="form1" id="form1" method="post" action="?">
-<input type="hidden" name="mode">
+<input type="hidden" name="mode" value="" _>
 <div id="system" class="contents-main">
   <div class="paging">
     <!--▼ページ送り-->
