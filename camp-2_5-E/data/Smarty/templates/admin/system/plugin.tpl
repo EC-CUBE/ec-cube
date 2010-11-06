@@ -46,7 +46,7 @@
         <!--{if $plugins[data].create_date == null }-->
           <input type="button" name="install" value="install" />
         <!--{else}-->
-          <!--{if $plugins[data].}-->
+          <!--{if $plugins[data].enable == 1}-->
         <!--{endif}-->
       </td>
       <td></td>
