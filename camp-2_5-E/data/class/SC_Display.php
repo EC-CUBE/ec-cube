@@ -49,7 +49,10 @@ class SC_Display{
      * @return
      */
     function detectDevice(){
-        $nu = Net_UserAgent_Mobile::factory();
+        $nu = new Net_UserAgent_Mobile();
+        if($nu->isMobile()){
+            
+        }
         if($this->autoSet){
             $this->setDevice($nu);
         }
