@@ -53,6 +53,10 @@ class LC_Page_Admin_Products_Preview extends LC_Page {
     function process() {
         echo "aaa";
 
+        // レイアウトデザインを取得
+        $helper = new SC_Helper_PageLayout_Ex();
+        $helper->sfGetPageLayout($this, false, "products/detail.php");
+        
         // 画面の表示
         $objView->assignobj($this);
         $objView->display(MAIN_FRAME);
