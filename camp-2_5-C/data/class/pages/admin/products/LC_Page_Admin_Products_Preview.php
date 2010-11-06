@@ -34,7 +34,7 @@ if (file_exists(MODULE_PATH . "mdl_gmopg/inc/function.php")) {
  * @author LOCKON CO.,LTD.
  * @version $Id:LC_Page_Products_Detail.php 15532 2007-08-31 14:39:46Z nanasess $
  */
-class LC_Page_Products_Products_Preview extends LC_Page {
+class LC_Page_Admin_Products_Preview extends LC_Page {
 
     /** ステータス */
     var $arrSTATUS;
