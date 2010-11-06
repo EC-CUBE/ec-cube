@@ -60,7 +60,7 @@ class SC_Display{
     }
 
     function isSmartphone(){
-        var useragents = [
+        $useragents = array[
     'iPhone',         // Apple iPhone
     'iPod',           // Apple iPod touch
     'Android',        // 1.5+ Android
@@ -76,7 +76,7 @@ class SC_Display{
     'webmate'         // Other iPhone browser
         ];
         
-        if(preg_match('/'..'/', $subject))
+        if(preg_match('/'.user.'/', $subject))
         var pattern = new RegExp(useragents.join('|'), 'i');
         return pattern.test(navigator.userAgent);
     }
