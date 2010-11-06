@@ -140,7 +140,7 @@
 
 <!--{* ▼FOOTER *}-->
 <!--{$smarty.server.PHP_SELF}-->
-
+<!--{assign var=index value="`$smarty.const.URL_DIR`index.php"}-->
 
 <div id="footer">
   <div id="topagetop">
