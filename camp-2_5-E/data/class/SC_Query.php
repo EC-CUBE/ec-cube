@@ -140,7 +140,6 @@ class SC_Query {
      */
     function select($col, $table, $where = "", $arrval = array(), $fetchmode = MDB2_FETCHMODE_ASSOC) {
         $sqlse = $this->getSql($col, $table, $where);
-        echo $sqlse;
         return $this->getAll($sqlse, $arrval, $fetchmode);
     }
 
