@@ -41,7 +41,6 @@ class SC_Response{
     function setResposeBody(String $body){
 
     }
-
-
+  
 
 }
