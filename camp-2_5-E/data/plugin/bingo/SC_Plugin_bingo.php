@@ -28,8 +28,15 @@ require_once(CLASS_EX_PATH . "SC_Plugin_Ex.php");
 class SC_Plugin_bingo extends SC_Plugin_Ex {
     var $plugin_name = null;
 
+    // $X回に1回が当たり
+    var $X = 1;
+
     function SC_Plugin_bingo() {
         $this->plugin_name = 'bingo';
+
+        // $X回に1回が当たり
+        // ここの値を変更して下さい。
+        $this->X = 1;
     }
 
     function is_enable($class_name) {
@@ -80,9 +87,7 @@ class SC_Plugin_bingo extends SC_Plugin_Ex {
         // is_bingoを初期化
         $_SESSION['plugin_bingo'] = array('is_bingo'=>false);
 
-        // $max回に1回が当たり
-        $max = 1;
-        $rand = mt_rand(1, $max);
+        $rand = mt_rand(1, $this->X);
 
         // 当たり!
         if ($rand === 1) {
