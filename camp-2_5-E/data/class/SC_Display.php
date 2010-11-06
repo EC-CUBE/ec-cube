@@ -53,11 +53,15 @@ class SC_Display{
         if($nu->isMobile()){
             $retDevice = 1;
         }elseif ($this->isSmartphone()){
+            $retDevice = 2;
         }else{
-        if($this->autoSet){
-            $this->setDevice($nu);
+            $retDevice = 4;
         }
-        return
+        
+        if($this->autoSet){
+            $this->setDevice($retDevice);
+        }
+        return $retDevice;
     }
 
     function isSmartphone(){
