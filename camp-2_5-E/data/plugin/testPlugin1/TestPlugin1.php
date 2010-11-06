@@ -50,10 +50,10 @@ class TestPlugin1 extends SC_Plugin_Ex {
         }else{
             $objQuery->update('dtb_plugin',$data,'plugin_id = ?',array($arrPlugins[0]['plugin_id']));
         }
+        
         $create = <<< SQL
 CREATE TABLE dtb_plugin_test_table1 
 test_id INT NOT NULL,
-
 
 SQL;
         
