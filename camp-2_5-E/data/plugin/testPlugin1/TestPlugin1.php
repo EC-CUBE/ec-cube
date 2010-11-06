@@ -18,7 +18,7 @@ class TestPlugin1 extends SC_Plugin_Ex {
 
 
     function getVersion(){
-      
+        return "0.0.1"
     }
 
     function getName(){
