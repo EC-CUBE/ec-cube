@@ -29,13 +29,21 @@ class SC_Plugin
         
     }
     
-    function getVersion();
+    function getVersion(){
+        
+    }
     
-    function getName();
+    function getName(){
+        
+    }
     
-    function process();
+    function process(){
+        
+    }
     
-    function mobileprocess();
+    function mobileprocess(){
+        
+    }
     
     public function install(){
       
