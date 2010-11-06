@@ -29,7 +29,6 @@ abstract class SC_Plugin
     
     public abstract function getName();
     
-    
     public function install(){
       
     }
