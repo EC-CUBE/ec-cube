@@ -13,7 +13,7 @@ class SC_Display{
      * const('PC',4);
      */
     
-    function SC_Display(){
+    function SC_Display($autoGenerateHttpHeaders = false){
         require_once(CLASS_EX_PATH."/SC_Response_Ex.php");
         $this->response = new SC_Response_Ex();
     }
@@ -29,8 +29,12 @@ class SC_Display{
         
     }
     
+    /**
+     * デバイス毎の出力方法を自動で変更する、ファサード
+     * Enter description here ...
+     */
     function setDevice(){
-        
+      
     }
 
     /**
