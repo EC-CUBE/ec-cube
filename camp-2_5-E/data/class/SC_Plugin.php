@@ -27,6 +27,8 @@ abstract class SC_Plugin
     
     public abstract function process();
     
+    public abstract function mobileprocess();
+    
     public function install(){
       
     }
