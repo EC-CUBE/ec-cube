@@ -32,6 +32,7 @@ class SC_Response{
     }
 
     function sendHeader(){
+        header('HTTP/1.1 '.$this->statuscode.' OK')
         foreach ($this->header as $head){
           
         }
