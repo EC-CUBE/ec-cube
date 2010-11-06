@@ -58,7 +58,6 @@ class SC_Plugin
       $objQuery = new SC_Query();
       $name = $this->getName();
       
-      
     }
 
     function enablePlugin(){
