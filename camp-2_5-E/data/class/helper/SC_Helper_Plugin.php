@@ -51,6 +51,8 @@ class SC_Helper_Plugin{
     }
 
 
+    
+    
     /* プラグイン
      *
      */

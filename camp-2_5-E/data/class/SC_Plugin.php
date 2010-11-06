@@ -1,6 +1,6 @@
 <?php
 
-abstract class SC_Plugin
+class SC_Plugin
 {
     
     /**
@@ -8,8 +8,12 @@ abstract class SC_Plugin
      * plugin_path
      * @var String
      */
-    private $path;
+    var $path;
 
+    function SC_Plugin(){
+        $this->__construct();
+    }
+    
     public function __construct(){
         if(!defined(PLUGIN_PATH)){
             define("PLUGIN_PATH",HTML_PATH."/user_data/plugins/");
@@ -17,17 +21,19 @@ abstract class SC_Plugin
         $this->init();
     }
     
-    public abstract function init();
+    function init(){
+        
+    }
     
-    public abstract function enable();
+    function enable();
     
-    public abstract function getVersion();
+    function getVersion();
     
-    public abstract function getName();
+    function getName();
     
-    public abstract function process();
+    function process();
     
-    public abstract function mobileprocess();
+    function mobileprocess();
     
     public function install(){
       
