@@ -21,6 +21,7 @@ class SC_Display{
     * const('MOBILE',1);
     * const('SMARTPHONE',2);
     * const('PC',4);
+    * const('ADMIN',8);
     */
     function SC_Display($setPrevURL=true,$autoGenerateHttpHeaders = true){
         require_once(CLASS_EX_PATH."/SC_Response_Ex.php");
