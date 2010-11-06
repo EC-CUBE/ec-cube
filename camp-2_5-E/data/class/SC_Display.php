@@ -78,7 +78,7 @@ class SC_Display{
     }
 
     function assign(LC_Page $page){
-      
+        
     }
 
 
