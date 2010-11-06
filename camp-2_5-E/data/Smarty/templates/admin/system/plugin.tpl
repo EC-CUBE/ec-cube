@@ -21,7 +21,7 @@
       <td><!--{$plugins[data].plugin_name|escape}--></td>
       <td><!--{$plugins[data].plugin_name|escape}--></td>
       <td>
-        <!--{if $plugins[data].create_date == null }-->aaaaaaaaaaaaaaaaaaaaa
+        <!--{if $plugins[data].create_date == null }-->
           <input type="button" name="install" value="install" onclick="fnModeSubmit('install');" />
         <!--{else}-->
           <!--{if $plugins[data].enable == 1}-->
@@ -33,7 +33,7 @@
         <!--{/if}-->
       </td>
       <td>
-      <!--{if $plugins[data].create_date != null && $plugins[data].enable = 1}-->
+      <!--{if $plugins[data].create_date != null && $plugins[data].enable == 1}-->
         <input type="button" name="preference" value="preference" onclick="" />
         <!--{/if}-->
       </td>
