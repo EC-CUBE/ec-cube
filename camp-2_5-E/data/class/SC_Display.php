@@ -25,9 +25,13 @@ class SC_Display{
         $this->response = new SC_Response_Ex();
         $this->autoSet = $autoGenerateHttpHeaders;
         if ($setPrevURL) {
+            $this->setPrevURL();
+        }
+    }
+    function setPrevURL(){
             $objCartSess = new SC_CartSession();
             $objCartSess->setPrevURL($_SERVER['REQUEST_URI']);
-        }
+        
     }
 
 
