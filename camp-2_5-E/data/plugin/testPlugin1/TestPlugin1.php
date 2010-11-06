@@ -36,8 +36,7 @@ class TestPlugin1 extends SC_Plugin_Ex {
     public function install(){
         $objQuery = new SC_Query();
         $arrPlugins = $objQuery->get("dtb_plugin", "plugin_id", "plugin_name = ?",array($name));
-        if(count($arrPlugins) == 0){
-            $data = array(
+        $data = array(
                       'plugin_name' => $objForm->getValue('plugin_name'),
                       'path' => realpath(DATA_DIR.'/plugin/'.$objForm->getValue('plugin_name').'/'),
                     'enable' => '1',
@@ -45,9 +44,12 @@ class TestPlugin1 extends SC_Plugin_Ex {
                   'class_name' => $objForm->getValue('plugin_name'),
                     'version' => $this->getVersion()
 
-            );
+        );
+
+        if(count($arrPlugins) == 0){
+            
         }
-        
+
         $objQuery->insert("dtb_plugin", $data);
 
 
