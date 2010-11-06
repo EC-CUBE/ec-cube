@@ -561,7 +561,6 @@ class SC_CartSession {
     
     function addPreview($form) {
         $this->previewSession[preview] = $form;
-        print_r($this->previewSession);
     }
     
 }
