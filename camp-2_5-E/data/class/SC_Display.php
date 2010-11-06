@@ -90,8 +90,8 @@ class SC_Display{
         $this->view->assign($val1, $val2);
     }
     
-    function assign(){
-        
+    function assignarray($array){
+        $this->view->assignarray($array);
     }
 
 
