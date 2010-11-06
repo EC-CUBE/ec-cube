@@ -57,8 +57,7 @@ class SC_Plugin
     function disablePlugin(){
       $objQuery = new SC_Query();
       $name = preg_replace("/.php/", "", __FILE__);
-      $objQuery->getCol("dtb_plugin", "plugin_id", "plugin_name = ?",array($name));
-      
+      $id = $objQuery->getCol("dtb_plugin", "plugin_id", "plugin_name = ?",array($name));
       
     }
 
