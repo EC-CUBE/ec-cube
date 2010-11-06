@@ -49,7 +49,7 @@ class SC_Display{
         switch ($device){
             case 1:
                 $this->response->setContentType("text/html");
-
+                $this->view = new SC_MobileView();
                 break;
             case 2:
 
