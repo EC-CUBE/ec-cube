@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page_Admin.php");
+require_once(CLASS_PATH . "pages/LC_Page.php");
 
 /**
  * 管理者ログイン のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_PATH . "pages/LC_Page_Admin.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin extends LC_Page_Admin {
+class LC_Page_Admin extends LC_Page {
 
     // }}}
     // {{{ functions
