@@ -244,7 +244,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
                 break;
             case 'preview':
             	$_SESSION[preview] = $this->arrForm;
-                $this->tpl_javascript = "window.open('"."URL_DIRadmin/products/product_preview.php"."','test','100','100')";
+                $this->tpl_javascript = "window.open('".URL_DIR."admin/products/product_preview.php"."','test','100','100')";
 print_r($this->tpl_javascript);
                 $this->lfProductPage();
             
