@@ -20,10 +20,17 @@ class SC_Display{
     * const('PC',4);
     */
 
-    function SC_Display($autoGenerateHttpHeaders = true){
+    function SC_Display($setPrevURL=true,$autoGenerateHttpHeaders = true){
         require_once(CLASS_EX_PATH."/SC_Response_Ex.php");
         $this->response = new SC_Response_Ex();
         $this->autoSet = $autoGenerateHttpHeaders;
+
+        if ($setPrevURL) {
+            $objCartSess = new SC_CartSession();
+            $objCartSess->setPrevURL($_SERVER['REQUEST_URI']);
+        }
+
+
     }
 
 
@@ -45,13 +52,13 @@ class SC_Display{
         switch ($device){
             case 1:
                 $this->response->setContentType("text/html");
-                
+
                 break;
             case 2:
 
                 break;
             case 4:
-                
+
                 break;
         }
     }
@@ -82,7 +89,7 @@ class SC_Display{
     }
 
     function assign(LC_Page $page){
-      $this->view->assign($val1, $val2)
+        $this->view->assign($val1, $val2)
     }
 
 
