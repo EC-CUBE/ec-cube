@@ -38,7 +38,7 @@ class SC_Display{
     function setDevice(int $device = 4){
         switch ($device){
             case 1:
-                $this->response->encoding;
+                $this->response->setContentType("text/html");
                 
                 break;
             case 2:
