@@ -905,6 +905,10 @@ function lfMakeConfigFile() {
     "    define ('MOBILE_SITE_URL', SITE_URL . 'mobile/');\n" .
     "    define ('MOBILE_SSL_URL', SSL_URL . 'mobile/');\n" .
     "    define ('MOBILE_URL_DIR', URL_DIR . 'mobile/');\n" .
+    "    define ('SPHONE_HTML_PATH', HTML_PATH . 'sphone/');\n" .
+    "    define ('SPHONE_SITE_URL', SITE_URL . 'sphone/');\n" .
+    "    define ('SPHONE_SSL_URL', SSL_URL . 'sphone/');\n" .
+    "    define ('SPHONE_URL_DIR', URL_DIR . 'sphone/');\n" .
     "?>";
 
     if($fp = fopen($filepath,"w")) {
