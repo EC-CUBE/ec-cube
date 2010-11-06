@@ -1,7 +1,5 @@
 <?php
 
-
-
 abstract class SC_Plugin
 {
 
