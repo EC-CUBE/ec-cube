@@ -96,7 +96,7 @@ class LC_Page {
 
         // プラグインクラス生成
         #$this->objPlagin = new SC_Helper_Plagin_Ex();
-        #$this->objPlagin->preProcess();
+        #$this->objPlagin->preProcess($this);
     }
 
     /**
