@@ -3,8 +3,10 @@
  */
 (function($)
 {
-	jQuery.fn.update = function(o) {
-		o = $.extend({},o);
+	jQuery.fn.update = function(conf) {
+		conf = $.extend({
+			
+		},conf);
 		
 	}
 	
