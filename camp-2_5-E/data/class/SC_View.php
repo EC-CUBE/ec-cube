@@ -227,4 +227,12 @@ class SC_MobileView extends SC_SiteView {
         $this->_smarty->compile_dir = MOBILE_COMPILE_DIR;
     }
 }
+
+class SC_SmartphoneView extends SC_SiteView {
+    function SC_SmartphoneView($setPrevURL = true) {
+        parent::SC_SiteView($setPrevURL);
+        $this->_smarty->template_dir = SMARTPHONE_TEMPLATE_DIR;
+        $this->_smarty->compile_dir = SMARTPHONE_COMPILE_DIR;
+    }
+}
 ?>
