@@ -5,6 +5,8 @@
 abstract class SC_Plugin
 {
 
+    
+    
     /**
      *
      * plugin_path
@@ -13,6 +15,10 @@ abstract class SC_Plugin
     private $path;
 
     public function __construct(){
+        
+        
+        
+        
         $this->init();
     }
     
