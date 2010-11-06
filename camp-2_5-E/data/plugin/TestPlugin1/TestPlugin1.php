@@ -41,7 +41,7 @@ class TestPlugin1 extends SC_Plugin {
           'path' => realpath(DATA_DIR.'/plugin/'.$this->getName().'/'),
           'enable' => '1',
           'del_flg' => '0',
-          'class_name' => $objForm->getValue('plugin_name'),
+          'class_name' => $this->getName(),
           'version' => $this->getVersion()
         );
         if($this->getInstallSQL() != null){
