@@ -1257,7 +1257,7 @@ CREATE TABLE "dtb_plugin" (
   class_name TEXT NOT NULL DEFAULT NULL,
   create_date DATETIME NOT NULL,
   update_date DATETIME NOT NULL
-)
+) TYPE=MyISAM
 WITH (OIDS=FALSE);
 ALTER TABLE "dtb_plugin" ADD CONSTRAINT "dtb_plugin_pkey" PRIMARY KEY ("id");
 
