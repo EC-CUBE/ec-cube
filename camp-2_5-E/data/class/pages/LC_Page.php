@@ -88,6 +88,10 @@ class LC_Page {
 
         // ディスプレイクラス生成
         $this->objDisp = new SC_Display();
+
+        // プラグインクラス生成
+        #$this->objPlagin = new SC_Helper_Plagin_Ex();
+        #$this->objPlagin->preProcess();
     }
 
     /**
