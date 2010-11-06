@@ -120,7 +120,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page {
         $arrPlugins = array();
         if($dh =  opendir($dir)){
             while(($file = readdir($dh)) !== false){
-                if(!preg_match('/^\./', $file) && $file !='..' && filetype($dir.$file) == 'dir'){
+                if(!preg_match('/^\\./', $file) && $file !='..' && filetype($dir.$file) == 'dir'){
                     $arrPlugins[] = $file;
                     
                 }
