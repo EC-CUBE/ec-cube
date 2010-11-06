@@ -236,10 +236,14 @@ function lfnDispChange(){
       </td>
       <!--{* 価格 *}-->
       <td rowspan="2" class="right">
-        <!--{if $arrProducts[cnt].class_count != 1}-->
+        <!--{if $arrProducts[cnt].price02_min != $arrProducts[cnt].price02_max}-->
           <!--{$arrProducts[cnt].price02_min|number_format}--><br />～ <!--{$arrProducts[cnt].price02_max|number_format}-->
         <!--{else}-->
-          <input type="text" name="price02_edit_<!--{$arrProducts[cnt].product_id}-->" size="8" value="<!--{$arrProducts[cnt].price02_min}-->" onchange="jQuery.post('./index.php', {'mode':'price02_edit','price02_edit_id':'<!--{$arrProducts[cnt].product_id}-->','price02_edit_value':this.value}, lfCheckEditResult);lfBgColorTween(this);">
+          <!--{if $arrProducts[cnt].class_count != 1}-->
+            <!--{$arrProducts[cnt].price02_min|number_format}-->
+          <!--{else}-->
+            <input type="text" name="price02_edit_<!--{$arrProducts[cnt].product_id}-->" size="8" value="<!--{$arrProducts[cnt].price02_min}-->" onchange="jQuery.post('./index.php', {'mode':'price02_edit','price02_edit_id':'<!--{$arrProducts[cnt].product_id}-->','price02_edit_value':this.value}, lfCheckEditResult);lfBgColorTween(this);">
+          <!--{/if}-->
         <!--{/if}-->
       </td>
       <td><!--{$arrProducts[cnt].name|escape}--></td>
@@ -253,7 +257,11 @@ function lfnDispChange(){
           <!--{if $arrProducts[cnt].stock_unlimited_min}-->
             無制限
           <!--{else}-->
-            <input type="text" name="stock_edit_<!--{$arrProducts[cnt].product_id}-->" size="8" value="<!--{$arrProducts[cnt].stock_min}-->" onchange="jQuery.post('./index.php', {'mode':'stock_edit','stock_edit_id':'<!--{$arrProducts[cnt].product_id}-->','stock_edit_value':this.value}, lfCheckEditResult);lfBgColorTween(this);">
+            <!--{if $arrProducts[cnt].class_count != 1}-->
+              <!--{$arrProducts[cnt].stock_min|number_format}-->
+            <!--{else}-->
+              <input type="text" name="stock_edit_<!--{$arrProducts[cnt].product_id}-->" size="8" value="<!--{$arrProducts[cnt].stock_min}-->" onchange="jQuery.post('./index.php', {'mode':'stock_edit','stock_edit_id':'<!--{$arrProducts[cnt].product_id}-->','stock_edit_value':this.value}, lfCheckEditResult);lfBgColorTween(this);">
+            <!--{/if}-->
           <!--{/if}-->
         <!--{/if}-->
       </td>
