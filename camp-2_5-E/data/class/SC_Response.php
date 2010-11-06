@@ -14,6 +14,7 @@ class SC_Response{
     var $contentType;
     var $header;
     var $body;
+    var $statuscode;
     var $header = array();
 
     /**
@@ -63,6 +64,10 @@ class SC_Response{
       
     function setHeader(Array $headers){
         $this->header = $headers;
+    }
+    
+    function setStatus(int $sc = 202){
+        $this->statuscode = $sc;
     }
 
 }
