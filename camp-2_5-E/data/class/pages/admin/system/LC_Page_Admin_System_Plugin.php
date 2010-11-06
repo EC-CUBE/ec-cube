@@ -68,6 +68,9 @@ class LC_Page_Admin_System_Plugin extends LC_Page {
      * @return void
      */
     function process() {
+        $query = new SC_Query();
+        $query->query("");
+        exit;
         SC_Utils_Ex::sfIsSuccess(new SC_Session);
         $objView = new SC_AdminView();
         $this->initForm();
