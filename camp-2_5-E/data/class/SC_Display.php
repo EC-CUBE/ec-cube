@@ -45,11 +45,11 @@ class SC_Display{
     * @param $page LC_Page
     */
     function hoge(LC_Page $page){
-        $this->assign($page);
         if(!$this->deviceSeted || !is_null($this->view)){
             $device = $this->detectDevice();
             $this->setDevice($device);
         }
+        $this->assignobj($page);
         $this->response->setResposeBody($this->view->fetch($page->getTemplate()));
     }
     

@@ -113,6 +113,7 @@ class LC_Page {
      */
     function sendResponse() {
         $this->objDisp->hoge($this);
+        $this->objDisp->response->response();
     }
 
     /**
