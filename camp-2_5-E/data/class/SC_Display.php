@@ -5,6 +5,14 @@ class SC_Display{
     
     var $device;
 
+    
+    // TODO php4を捨てたときに ここのコメントアウトを外してね。
+    /*
+     * const('MOBILE',1);
+     * const('SMARTPHONE',2);
+     * const('PC',4);
+     */
+    
     function SC_Display(){
         require_once(CLASS_EX_PATH."/SC_Response_Ex.php");
         $this->response = new SC_Response_Ex();
@@ -18,8 +26,8 @@ class SC_Display{
     */
     function hoge(LC_Page $page){
         $this->assign($page);
+        
     }
-    
     
     function setDevice(){
         
@@ -28,7 +36,7 @@ class SC_Display{
     /**
      * 機種を判別する。
      * SC_Display::MOBILE = ガラケー = 1
-     * SC_Display::SMARTPOHNE = スマホ = 2
+     * SC_Display::SMARTPHONE = スマホ = 2
      * SC_Display::PC = PC = 4
      * ※PHP4の為にconstは使っていません。 1がガラケーで、2がスマホで4がPCです。
      * @return
