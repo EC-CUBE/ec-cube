@@ -30,7 +30,6 @@ abstract class SC_Plugin
     public abstract function getName();
     
     public abstract function process();
-
     
     public function install(){
       
