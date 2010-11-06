@@ -47,32 +47,6 @@ class SC_Product {
     var $classCats1;
     /** 検索用並び替え条件配列 */
     var $arrOrderData;
-
-    /**
-     * SC_Queryインスタンスに設定された検索条件をもとに商品IDの配列を取得する.
-     *
-     * 検索条件は, SC_Query::getWhere() 関数で設定しておく必要があります.
-     *
-     * @param SC_Query $objQuery SC_Query インスタンス
-     * @param array $arrVal 検索パラメータの配列
-     * @return array 商品IDの配列
-     */
-    function findProductIds(&$objQuery, $arrVal = array()) {
-        $table = <<< __EOS__
-                 dtb_products AS alldtl
-            JOIN dtb_product_categories AS T2
-              ON alldtl.product_id = T2.product_id
-            JOIN dtb_category
-              ON T2.category_id = dtb_category.category_id
-__EOS__;
-        // SC_Query::getCol() ではパフォーマンスが出ない
-        $results = $objQuery->select('alldtl.product_id', $table, "", $arrVal,
-                                     MDB2_FETCHMODE_ORDERED);
-        foreach ($results as $val) {
-            $resultValues[] = $val[0];
-        }
-        return array_unique($resultValues);
-    }
     
     /**
      * 商品検索結果の並び順を指定する。
@@ -153,7 +127,6 @@ __EOS__;
         $sql_base = $objQuery->getSql('alldtl.product_id',$table);
         return $objQuery->getOne( "SELECT count(*) FROM ( $sql_base ) as t" , $arrVal);
     }
-    
 
     /**
      * SC_Queryインスタンスに設定された検索条件をもとに商品一覧の配列を取得する.
