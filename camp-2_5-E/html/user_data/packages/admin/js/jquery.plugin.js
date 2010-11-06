@@ -6,8 +6,6 @@
 	jQuery.fn.update = function(o) {
 		
 		
-		
-		
 	}
 	
 	jQuery.fn.multiselect2side = function (o) {
