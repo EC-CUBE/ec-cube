@@ -232,18 +232,18 @@ class LC_Page_Admin_Products_Preview extends LC_Page {
 
         // 商品詳細を取得
         $this->arrProduct = $objProduct->getDetail($product_id);
-        ////
 
         // サブタイトルを取得
         $this->tpl_subtitle = $this->arrProduct['name'];
 
         // 関連カテゴリを取得
         $this->arrRelativeCat = $objDb->sfGetMultiCatTree($product_id);
-        var_dump('HERE');
-        exit;
+        ////
 
         // 商品ステータスを取得
         $this->productStatus = $objProduct->getProductStatus($product_id);
+        var_dump('HERE');
+        exit;
 
         // 画像ファイル指定がない場合の置換処理
         $this->arrProduct['main_image']
