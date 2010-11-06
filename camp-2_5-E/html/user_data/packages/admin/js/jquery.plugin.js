@@ -4,7 +4,7 @@
 (function($)
 {
 	jQuery.fn.update = function(o) {
-		o = $.extend({},-)o
+		o = $.extend({},o);
 		
 	}
 	
