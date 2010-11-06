@@ -64,12 +64,13 @@ class LC_Page_Shopping_Payment extends LC_Page {
      * @return void
      */
     function process() {
+        parent::process();
         $this->action();
         $this->sendResponse();
     }
 
     /**
-     * Page のプロセス.
+     * Page のアクション.
      *
      * @return void
      */
@@ -197,6 +198,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
      * @return void
      */
     function mobileProcess() {
+        parent::mobileProcess();
         $this->mobileAction();
         $this->sendResponse();
     }
@@ -206,7 +208,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
      *
      * @return void
      */
-    function mobileProcess() {
+    function mobileAction() {
         $objSiteSess = new SC_SiteSession();
         $objCartSess = new SC_CartSession();
         $this->objCustomer = new SC_Customer();

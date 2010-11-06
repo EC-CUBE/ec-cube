@@ -61,16 +61,17 @@ class LC_Page_Shopping_Confirm extends LC_Page {
      * @return void
      */
     function process() {
+        parent::process();
         $this->action();
         $this->sendResponse();
     }
 
     /**
-     * Page のプロセス.
+     * Page のアクション.
      *
      * @return void
      */
-    function process() {
+    function action() {
         $objView = new SC_SiteView();
         $objCartSess = new SC_CartSession();
         $objSiteInfo = $objView->objSiteInfo;
@@ -190,6 +191,7 @@ class LC_Page_Shopping_Confirm extends LC_Page {
      * @return void
      */
     function mobileProcess() {
+        parent::mobileProcess();
         $this->mobileAction();
         $this->sendResponse();
     }

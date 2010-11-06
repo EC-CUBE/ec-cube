@@ -58,6 +58,7 @@ class LC_Page_Shopping_Complete extends LC_Page {
      * @return void
      */
     function process() {
+        parent::process();
         $this->action();
         $this->sendResponse();
     }
@@ -97,6 +98,7 @@ class LC_Page_Shopping_Complete extends LC_Page {
      * @return void
      */
     function mobileProcess() {
+        parent::mobileProcess();
         $this->mobileAction();
         $this->sendResponse();
     }
