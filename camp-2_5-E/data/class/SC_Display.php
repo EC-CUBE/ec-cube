@@ -55,7 +55,7 @@ class SC_Display{
 //                $this->view = new
                 break;
             case 4:
-                $this->view = new SC_View();
+                $this->view = new SC_SiteView();
                 break;
         }
     }
@@ -86,7 +86,6 @@ class SC_Display{
     }
 
     function assign(LC_Page $page){
-        $this->view->assign($val1, $val2)
     }
 
 
