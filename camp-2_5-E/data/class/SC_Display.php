@@ -45,11 +45,15 @@ class SC_Display{
     * @param $page LC_Page
     */
     function hoge(LC_Page $page, $is_admin = false){
+       
         if(!$this->deviceSeted || !is_null($this->view)){
             $device = ($is_admin) ? 8 : $this->detectDevice();
-            $this->setDevice($device);
+            if (!$this->deviceSeted) {
+                $this->setDevice($device);
+            }
         }
         $this->assignobj($page);
+        
         $this->response->setResposeBody($this->view->fetch($page->getTemplate()));
     }
     
@@ -85,6 +89,7 @@ class SC_Display{
             case 8:
                 $this->setView(new SC_AdminView());
         }
+        
         $this->deviceSeted = true;
     }
     
