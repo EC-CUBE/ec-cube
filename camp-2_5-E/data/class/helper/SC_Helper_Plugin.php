@@ -30,7 +30,7 @@ class SC_Helper_Plugin{
         return $arrPluginList;
     }
 
-     /* 読み込んだプラグインの実行用メソッド
+    /* 読み込んだプラグインの実行用メソッド
      *
      */
     public static function process(LC_Page $lcpage){
@@ -38,12 +38,12 @@ class SC_Helper_Plugin{
         $arrPluginList = SC_Helper_Plugin::load($lcpage);
         if(count($arrPluginList) > 0){
             foreach ($arrPluginList as $key => $value){
-            $instance = new $value;
-            $instance->process($lcpage);
+                $instance = new $value;
+                $instance->process($lcpage);
             }
         }
         return $lcpage;
-  }
+    }
 
     /**
      * 稼働中のプラグインを取得する。
@@ -69,9 +69,16 @@ class SC_Helper_Plugin{
         return $arrRet;
     }
 
-    
+
     public static function getFilesystemPlugins(){
-        
+        $plugin_dir = DATA_PATH."/plugin/";
+        if($dh = opendir($plugin_dir)){
+            while(($file = readdir($dh) !== false)){
+                if(is_dir($plugin_dir."/".$file)){
+                     
+                }
+            }
+        }
     }
 }
 
