@@ -46,17 +46,29 @@ class LC_Page_Products_ReviewComplete extends LC_Page {
         $this->tpl_mainpage = 'products/review_complete.tpl';
     }
 
+
     /**
      * Page のプロセス.
      *
      * @return void
      */
     function process() {
+        parent::process();
+        $this->action();
+        $this->sendResponse();
+    }
+    
+    /**
+     * Page のAction.
+     *
+     * @return void
+     */
+    function action() {
 
-        $objView = new SC_SiteView();
+        //$objView = new SC_SiteView();
 
-        $objView->assignobj($this);
-        $objView->display($this->tpl_mainpage);
+        //$objView->assignobj($this);
+        //$objView->display($this->tpl_mainpage);
     }
 
     /**

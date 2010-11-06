@@ -85,7 +85,18 @@ class LC_Page_Products_List extends LC_Page {
     function process() {
         $this->lfLoadParam();
 
-        $objView = new SC_SiteView(!$this->inCart);
+        $this->action();
+
+        $this->sendResponse();
+       
+    }
+
+    /**
+     *  ページのアクション（旧process)
+     * @return void
+     */
+    function action() {
+        //$objView = new SC_SiteView(!$this->inCart);
         $objQuery = new SC_Query();
         $objDb = new SC_Helper_DB_Ex();
 
@@ -175,13 +186,11 @@ class LC_Page_Products_List extends LC_Page {
                 }
             }
         }
+
         $this->tpl_javascript .= 'function fnOnLoad(){' . $js_fnOnLoad . '}';
         $this->tpl_onload .= 'fnOnLoad(); ';
 
         $this->tpl_rnd = SC_Utils_Ex::sfGetRandomString(3);
-
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
     }
 
     /**
@@ -196,14 +205,25 @@ class LC_Page_Products_List extends LC_Page {
     /**
      * Page のプロセス(モバイル).
      *
-     * FIXME スパゲッティ...
-     *
      * @return void
      */
     function mobileProcess() {
         $this->lfLoadParam();
 
-        $objView = new SC_MobileView();
+        $this->mobieAction();
+
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のAction(モバイル).
+     *
+     * FIXME スパゲッティ...
+     *
+     * @return void
+     */
+    function mobieAction(){
+        //$objView = new SC_MobileView();
         $objQuery = new SC_Query();
         $objDb = new SC_Helper_DB_Ex();
 
@@ -262,9 +282,6 @@ class LC_Page_Products_List extends LC_Page {
         $this->tpl_search_mode = $tpl_search_mode;
 
         $this->tpl_mainpage = MOBILE_TEMPLATE_DIR . "products/list.tpl";
-
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
     }
 
     /**

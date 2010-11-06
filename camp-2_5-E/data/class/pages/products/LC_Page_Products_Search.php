@@ -51,6 +51,17 @@ class LC_Page_Products_Search extends LC_Page {
      * @return void
      */
     function process() {
+        parent::process();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のプロセス.
+     *
+     * @return void
+     */
+    function action() {
     }
 
     /**
@@ -59,8 +70,19 @@ class LC_Page_Products_Search extends LC_Page {
      * @return void
      */
     function mobileInit() {
+        $this->init();
         $this->tpl_mainpage = 'products/search.tpl';
         $this->tpl_title = '商品検索';
+    }
+
+    /**
+     * Page のAction(モバイル).
+     *
+     * @return void
+     */
+    function mobileProcess() {
+        $this->mobileAction();
+        $this->sendResponse();
     }
 
     /**
@@ -69,10 +91,10 @@ class LC_Page_Products_Search extends LC_Page {
      * @return void
      */
     function mobileProcess() {
-        $objView = new SC_MobileView();
+        //$objView = new SC_MobileView();
 
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
+        //$objView->assignobj($this);
+        //$objView->display(SITE_FRAME);
     }
 
     /**

@@ -65,11 +65,19 @@ class LC_Page_Products_Review extends LC_Page {
 
     /**
      * Page のプロセス.
+     */
+    function process() {
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のAction.
      *
      * @return void
      */
-    function process() {
-        $objView = new SC_SiteView();
+    function action() {
+        //$objView = new SC_SiteView();
         $objQuery = new SC_Query();
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -168,8 +176,8 @@ class LC_Page_Products_Review extends LC_Page {
         }
 
         $this->transactionid = $this->getToken();
-        $objView->assignobj($this);
-        $objView->display($this->tpl_mainpage);
+        //$objView->assignobj($this);
+        //$objView->display($this->tpl_mainpage);
     }
 
     /**

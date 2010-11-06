@@ -77,6 +77,16 @@ class LC_Page_Products_Detail extends LC_Page {
      * @return void
      */
     function process() {
+        parent::process();
+        $this->action();
+    }
+
+    /**
+     * Page のAction.
+     *
+     * @return void
+     */
+    function action() {
         // プロダクトIDの正当性チェック
         $product_id = $this->lfCheckProductId();
 
@@ -268,8 +278,8 @@ class LC_Page_Products_Detail extends LC_Page {
 
         $this->lfConvertParam();
 
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
+        //$objView->assignobj($this);
+        //$objView->display(SITE_FRAME);
     }
 
     /**
@@ -293,6 +303,15 @@ class LC_Page_Products_Detail extends LC_Page {
 
     /**
      * Page のプロセス(モバイル).
+     * @return void
+     */
+    function mobileProcess() {
+        $this->mobileAction();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のプロセス(モバイル).
      *
      * FIXME 要リファクタリング
      *
@@ -302,7 +321,7 @@ class LC_Page_Products_Detail extends LC_Page {
         // プロダクトIDの正当性チェック
         $product_id = $this->lfCheckProductId();
 
-        $objView = new SC_MobileView();
+        //$objView = new SC_MobileView();
         $objCustomer = new SC_Customer();
         $objQuery = new SC_Query();
         $objDb = new SC_Helper_DB_Ex();
@@ -451,8 +470,8 @@ class LC_Page_Products_Detail extends LC_Page {
         //関連商品情報表示
         $this->arrRecommend = $this->lfPreGetRecommendProducts($product_id);
 
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
+        //$objView->assignobj($this);
+        //$objView->display(SITE_FRAME);
     }
 
     /* プロダクトIDの正当性チェック */
