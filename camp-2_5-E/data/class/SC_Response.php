@@ -118,7 +118,7 @@ class SC_Response{
         $this->header = $headers;
     }
 
-    function setStatus(int $sc = 202){
+    function setStatus( $sc = 202){
         $this->statuscode = $sc;
     }
 
