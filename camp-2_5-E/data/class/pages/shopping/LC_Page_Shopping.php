@@ -70,7 +70,7 @@ class LC_Page_Shopping extends LC_Page {
     function process() {
         parent::process();
         $this->action();
-        $this->endResponse();
+        $this->sendResponse();
     }
 
     /**
