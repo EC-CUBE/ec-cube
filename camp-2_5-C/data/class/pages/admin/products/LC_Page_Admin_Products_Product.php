@@ -232,6 +232,9 @@ class LC_Page_Admin_Products_Product extends LC_Page {
             case 'recommend_select' :
                 $this->lfProductPage();     // 商品登録ページ
                 break;
+            case 'preview':
+            	print_r($_POST);
+            	break;
             default:
                 $this->lfProductPage();     // 商品登録ページ
                 break;
