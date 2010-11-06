@@ -260,7 +260,9 @@ class LC_Page_Admin_Products extends LC_Page_Admin {
                         $objCSV = new SC_Helper_CSV_Ex();
 
                         // CSVを送信する。正常終了の場合、終了。
-                        $objCSV->sfDownloadProductsCsv($where, $arrval, $order) && exit;
+                        list($fime_name, $data) = $objCSV->sfDownloadProductsCsv($where, $arrval, $order);
+                        $this->sendResponseCSV($fime_name, $data);
+                        exit;
                         break;
                     case 'delete_all':
                         // 検索結果をすべて削除

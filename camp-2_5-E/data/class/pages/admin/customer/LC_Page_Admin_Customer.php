@@ -392,7 +392,10 @@ class LC_Page_Admin_Customer extends LC_Page_Admin {
                     //-　CSV出力
                     $data = SC_Utils_Ex::getCSVData($this->search_data, $arrColumn);
 
-                    SC_Utils_Ex::sfCSVDownload($header.$data);
+
+                    // CSVを送信する。
+                    list($fime_name, $data) = SC_Utils_Ex::sfGetCSVData($head.$data);
+                    $this->sendResponseCSV($fime_name, $data);
                     exit;
                     break;
                 case 'delete_all':
