@@ -243,10 +243,8 @@ class LC_Page_Admin_Products_Product extends LC_Page {
                 $this->lfProductPage();     // 商品登録ページ
                 break;
             case 'preview':
-            	$objCartSess = new SC_CartSession();
-            	$objCartSess->addPreview($this->arrForm);
             	$_SESSION[preview] = $this->arrForm;
-                $this->tpl_onload = "window.open('URL_DIR . admin/products/product_preview.php','test','100','100');";
+                $this->tpl_onload = window.open('URL_DIR . admin/products/product_preview.php','test','100','100');
                 print_r($this);
                 $this->lfProductPage();
             
