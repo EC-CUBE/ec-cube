@@ -22,6 +22,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 <!--{assign var=default_dir value="`$smarty.const.USER_DIR``$smarty.const.USER_PACKAGE_DIR``$smarty.const.DEFAULT_TEMPLATE_NAME`/"}-->
+<!--{assign var=admin_dir value="`$smarty.const.USER_DIR``$smarty.const.USER_PACKAGE_DIR`admin/"}-->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<!--{$smarty.const.CHAR_CODE}-->">
 <meta http-equiv="content-script-type" content="text/javascript">
@@ -46,7 +47,7 @@
         <td>
         <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" " background="../<!--{$default_dir}-->img/header/header_bg2.jpg">
             <tr valign="top">
-                <td><img src="../<!--{$default_dir}-->img/admin/header/logo.jpg" width="230" height="50" alt="EC CUBE" border="0"></td>
+                <td><img src="../<!--{$admin_dir}-->img/header/logo.jpg" width="230" height="50" alt="EC CUBE" border="0"></td>
                 <td width="648" align="right"></td>
             </tr>
         </table>
