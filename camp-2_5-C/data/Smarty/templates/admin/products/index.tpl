@@ -238,7 +238,7 @@ function lfnDispChange(){
           <!--{if $arrProducts[cnt].stock_unlimited_min}-->
             無制限
           <!--{else}-->
-            <input type="text" name="stock_edit_<!--{$arrProducts[cnt].product_id}-->" size="8" value="<!--{$arrProducts[cnt].stock_min}-->" onchange="jQuery.post('./index.php', {'mode':'stock_edit','stock_edit_id':'<!--{$arrProducts[cnt].product_id}-->','stock_edit_value':this.value}, function(result){if(result!='ok'){alert('エラー：変更できませんでした');};});bgColorTween=new ColorTween(this.style,'color',Tween.regularEaseOut,'blue','transparent',3);bgColorTween.start();">
+            <input type="text" name="stock_edit_<!--{$arrProducts[cnt].product_id}-->" size="8" value="<!--{$arrProducts[cnt].stock_min}-->" onchange="jQuery.post('./index.php', {'mode':'stock_edit','stock_edit_id':'<!--{$arrProducts[cnt].product_id}-->','stock_edit_value':this.value}, function(result){if(result!='ok'){alert('エラー：変更できませんでした');};});bgColorTween=new ColorTween(this.style,'backgroundColor',Tween.regularEaseOut,'0000ff','ffffff',1);bgColorTween.start();">
           <!--{/if}-->
         <!--{/if}-->
       </td>
