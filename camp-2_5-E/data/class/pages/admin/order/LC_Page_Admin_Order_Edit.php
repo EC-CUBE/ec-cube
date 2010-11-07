@@ -324,9 +324,9 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin {
 
         // 表示モード判定
         if(!$this->disp_mode) {
-            $this->setTeaplate(MAIN_FRAME);
+            $this->setTemplate(MAIN_FRAME);
         } else {
-            $this->setTeaplate('order/disp.tpl');
+            $this->setTemplate('order/disp.tpl');
         }
     }
 
