@@ -86,7 +86,9 @@ class LC_Page_Admin_Products_Preview extends LC_Page {
         var_dump($this->arrProduct);
         
         // マッピング
+        $product_id = $this->arrProduct["product_id"];
         $this->arrFile["main_image"]["filepath"] = IMAGE_SAVE_URL . $this->arrProduct["save_main_image"];
+        $this->arrProduct = $objProduct->getDetail($product_id);
 
         $objView = new SC_SiteView(strlen($_POST['mode']) == 0);
         $objCustomer = new SC_Customer();
@@ -240,7 +242,6 @@ class LC_Page_Admin_Products_Preview extends LC_Page {
 
         // 商品詳細を取得
         //$this->arrProduct = $objProduct->getDetail($product_id);
-        $this->arrProduct = $_SESSION[preview];
 
         // サブタイトルを取得
         $this->tpl_subtitle = $this->arrProduct['name'];
