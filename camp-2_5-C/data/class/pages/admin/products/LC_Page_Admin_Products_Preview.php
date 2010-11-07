@@ -89,6 +89,9 @@ class LC_Page_Admin_Products_Preview extends LC_Page {
         $product_id = $this->arrProduct["product_id"];
         $this->arrFile["main_image"]["filepath"] = IMAGE_SAVE_URL . $this->arrProduct["save_main_image"];
         $objProduct = new SC_Product();
+        ////////////////////////////////////
+        // 本来はフォームの入力データから取ってくるべき
+        ////////////////////////////////////
         $this->arrProduct = $objProduct->getDetail($product_id);
 
         ////////////////////////////////////
