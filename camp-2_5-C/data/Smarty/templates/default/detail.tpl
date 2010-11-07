@@ -183,7 +183,7 @@ $(document).ready(function() {
                     target="_blank"
                 <!--{/if}-->
             >
-                テスト<img src="<!--{$arrFile[$key].filepath|escape}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" alt="<!--{$arrProduct.name|escape}-->" class="picture" /><br />
+                <img src="<!--{$arrFile[$key].filepath|escape}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" alt="<!--{$arrProduct.name|escape}-->" class="picture" /><br />
                 <!--★拡大する★-->
                 <!--{if $arrProduct.main_large_image|strlen >= 1}-->
                     <img src="<!--{$TPL_DIR}-->img/products/b_expansion.gif" width="85" height="13" alt="画像を拡大する" name="expansion01" id="expansion01" />
