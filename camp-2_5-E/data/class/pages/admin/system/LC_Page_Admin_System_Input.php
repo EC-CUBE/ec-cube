@@ -44,6 +44,8 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin {
     function init() {
         parent::init();
 
+        $this->tpl_mainpage = 'system/input.tpl';
+
         // ページ送り用ナンバーの取得
         $this->tpl_pageno = isset($_REQUEST['pageno']) ? $_REQUEST['pageno'] : 1;
 
