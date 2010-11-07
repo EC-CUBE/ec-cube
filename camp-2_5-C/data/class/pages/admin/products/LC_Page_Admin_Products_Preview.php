@@ -257,7 +257,7 @@ class LC_Page_Admin_Products_Preview extends LC_Page {
         $this->arrProduct['main_image']
             = SC_Utils_Ex::sfNoImageMain($this->arrProduct['main_image']);
 
-        $this->lfSetFile();
+        // $this->lfSetFile();
         // 支払方法の取得
         $this->arrPayment = $this->lfGetPayment();
         // 入力情報を渡す
