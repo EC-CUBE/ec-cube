@@ -447,7 +447,7 @@ function selectAll(target) {
     <button type="button" onClick="fnChangeAction('<!--{$smarty.const.URL_SEARCH_TOP}-->'); fnModeSubmit('search','',''); return false;"><span>検索画面に戻る</span></button>
     <!--▲検索結果へ戻る-->
     <!--{/if}-->
-    <button type="button" onClick=" fnModeSubmit('preview','',''); selectAll('category_id');">プレビュー</button><button type="button" onClick="fnModeSubmit('confirm','',''); selectAll('category_id');"><span>登録する</span></button>
+    <button type="button" onClick=" fnModeSubmit('preview','',''); selectAll('category_id');">プレビュー</button><button type="submit" onClick="fnModeSubmit('confirm','',''); selectAll('category_id');"><span>登録する</span></button>
   </div>
 </div>
 </form>
