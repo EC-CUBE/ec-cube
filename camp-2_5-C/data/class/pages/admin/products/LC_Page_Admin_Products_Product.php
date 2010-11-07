@@ -243,7 +243,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
                 $this->lfProductPage();     // 商品登録ページ
                 break;
             case 'preview':
-            	$_SESSION[preview] = $this->arrForm;
+                $_SESSION[preview] = $this->arrForm;
                 $this->tpl_javascript = "window.open('".URL_DIR."admin/products/product_preview.php"."','test')";
                 //$this->tpl_javascript = "window.open('".URL_DIR."products/detail.php"."','test')";
                 $this->lfProductPage();
