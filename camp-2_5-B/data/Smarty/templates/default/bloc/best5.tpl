@@ -28,43 +28,46 @@
         <div class="recomendleft">
 
             <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrBestProducts[cnt].product_id|escape:url}-->">
-                <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$arrBestProducts[cnt].main_list_image|sfNoImageMainList|escape}-->&amp;width=48&amp;height=48" alt="<!--{$arrBestProducts[cnt].name|escape}-->" /></a>
+                <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$arrBestProducts[cnt].main_list_image|sfNoImageMainList|escape}-->&amp;width=80&amp;height=80" alt="<!--{$arrBestProducts[cnt].name|escape}-->" /></a>
+            
+            <div class="recomendrightblock">
+                <h3>
+                    <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrBestProducts[cnt].product_id|escape:url}-->"><!--{$arrBestProducts[cnt].name|escape}--></a>
+                </h3>
 
-            <h3>
-                <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrBestProducts[cnt].product_id|escape:url}-->"><!--{$arrBestProducts[cnt].name|escape}--></a>
-            </h3>
+                <!--{assign var=price01 value=`$arrBestProducts[cnt].price01_min`}-->
+                <!--{assign var=price02 value=`$arrBestProducts[cnt].price02_min`}-->
 
-            <!--{assign var=price01 value=`$arrBestProducts[cnt].price01_min`}-->
-            <!--{assign var=price02 value=`$arrBestProducts[cnt].price02_min`}-->
+                <p class="sale_price"><span class="mini">(税込)</span>：
+                    <span class="price"><!--{$price02|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}--> 円</span>
+                </p>
 
-            <p class="sale_price"><!--{$smarty.const.SALE_PRICE_TITLE}--><span class="mini">(税込)</span>：
-                <span class="price"><!--{$price02|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}--> 円</span>
-            </p>
-
-            <p class="mini comment"><!--{$arrBestProducts[cnt].comment|escape|nl2br}--></p>
+                <p class="mini comment"><!--{$arrBestProducts[cnt].comment|escape|nl2br}--></p>
+            </div>
         </div>
-
+        
+        <!--{assign var=cnt2 value=`$smarty.section.cnt.iteration*$smarty.section.cnt.step-1`}-->
+        <!--{if $arrBestProducts[$cnt2]|count > 0}-->
         <div class="recomendright">
-            <!--{assign var=cnt2 value=`$smarty.section.cnt.iteration*$smarty.section.cnt.step-1`}-->
-            <!--{if $arrBestProducts[$cnt2]|count > 0}-->
-
             <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrBestProducts[$cnt2].product_id|escape:url}-->">
-                <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$arrBestProducts[$cnt2].main_list_image|sfNoImageMainList|escape}-->&amp;width=48&amp;height=48" alt="<!--{$arrBestProducts[$cnt2].name|escape}-->" /></a>
+                <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$arrBestProducts[$cnt2].main_list_image|sfNoImageMainList|escape}-->&amp;width=80&amp;height=80" alt="<!--{$arrBestProducts[$cnt2].name|escape}-->" /></a>
 
-            <h3>
-            <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrBestProducts[$cnt2].product_id|escape:url}-->"><!--{$arrBestProducts[$cnt2].name|escape}--></a>
-            </h3>
+            <div class="recomendrightblock">
+                <h3>
+                <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrBestProducts[$cnt2].product_id|escape:url}-->"><!--{$arrBestProducts[$cnt2].name|escape}--></a>
+                </h3>
 
-            <!--{assign var=price01 value=`$arrBestProducts[$cnt2].price01_min`}-->
-            <!--{assign var=price02 value=`$arrBestProducts[$cnt2].price02_min`}-->
+                <!--{assign var=price01 value=`$arrBestProducts[$cnt2].price01_min`}-->
+                <!--{assign var=price02 value=`$arrBestProducts[$cnt2].price02_min`}-->
 
-            <p class="sale_price"><!--{$smarty.const.SALE_PRICE_TITLE}--><span class="mini">(税込)</span>：
-                <span class="price"><!--{$price02|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}--> 円</span>
-            </p>
+                <p class="sale_price"><span class="mini">(税込)</span>：
+                    <span class="price"><!--{$price02|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}--> 円</span>
+                </p>
 
-            <p class="mini comment"><!--{$arrBestProducts[$cnt2].comment|escape|nl2br}--></p>
-            <!--{/if}-->
+                <p class="mini comment"><!--{$arrBestProducts[$cnt2].comment|escape|nl2br}--></p>
+            </div>
         </div>
+        <!--{/if}-->
     </div>
     <!--{/section}-->
 </div>

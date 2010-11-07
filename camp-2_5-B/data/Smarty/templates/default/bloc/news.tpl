@@ -19,29 +19,49 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
-<div id="newsarea" class="bloc_outer">
-    <h2><img src="<!--{$TPL_DIR}-->img/bloc/news/title_icon.gif" width="27" height="20" alt="*" class="title_icon" />
-        新着情報</h2>
-    <div class="bloc_body">
-        <p>☆★☆ 新着情報は<a href="<!--{$smarty.const.URL_DIR}-->rss/<!--{$smarty.const.DIR_INDEX_URL}-->" target="_blank">RSS</a>で配信しています。★☆★</p>
+<!--{assign var=mypage value="`$smarty.const.URL_DIR`mypage/index.php"}-->
+<!--{if $smarty.server.PHP_SELF != $mypage}-->
 
-        <!--{section name=data loop=$arrNews}-->
-            <!--{assign var="date_array" value="-"|explode:$arrNews[data].news_date_disp}-->
-            <dl>
-                <dt><!--{$date_array[0]}-->年<!--{$date_array[1]}-->月<!--{$date_array[2]}-->日</dt>
-                <dd>
-                    <a
-                        <!--{if $arrNews[data].news_url}-->
-                            href="<!--{$arrNews[data].news_url}-->"
-                            <!--{if $arrNews[data].link_method eq "2"}-->
-                                target="_blank"
-                            <!--{/if}-->
-                        <!--{/if}-->
-                    >
-                        <!--{$arrNews[data].news_title|escape|nl2br}--></a><br />
-                    <!--{$arrNews[data].news_comment|escape|nl2br}-->
-                 </dd>
-            </dl>
-        <!--{/section}-->
-    </div>
+<!--{if $arrNews}-->
+<div id="block-news" class="block-center">
+<div class="create-box">
+
+<!--{section name=data loop=$arrNews max=3}-->
+<div class="anews">
+<span><!--{$arrNews[data].news_date_disp|date_format:"%m.%d"}--></span>&nbsp;
+<!--{if $arrNews[data].news_url}--><a href="<!--{$arrNews[data].news_url|escape}-->"><!--{/if}-->
+<!--{$arrNews[data].news_title|escape}-->
+<!--{if $arrNews[data].news_url}--></a><!--{/if}-->
 </div>
+<!--{/section}-->
+
+</div>
+</div>
+
+<script type="text/javascript" language="JavaScript">
+//<![CDATA[
+initNews(); //カテゴリーリストの初期化
+//]]>
+</script>
+<!--{/if}-->
+
+
+<!--{elseif $smarty.server.PHP_SELF == $mypage}-->
+
+<!--{if $arrMemberNews}-->
+<h3>お知らせ</h3>
+<div id="block-news-mypage">
+
+<!--{section name=data loop=$arrMemberNews max=3}-->
+<div class=" ">
+<span><!--{$arrMemberNews[data].news_date_disp|date_format:"%m.%d"}--></span>&nbsp;
+<!--{if $arrMemberNews[data].news_url}--><a href="<!--{$arrMemberNews[data].news_url|escape}-->"><!--{/if}-->
+<!--{$arrMemberNews[data].news_title|escape}-->
+<!--{if $arrMemberNews[data].news_url}--></a><!--{/if}-->
+</div>
+<!--{/section}-->
+
+</div>
+<!--{/if}-->
+
+<!--{/if}-->

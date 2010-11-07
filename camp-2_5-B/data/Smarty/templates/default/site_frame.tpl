@@ -20,20 +20,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
- 
- <!--{* UserAgentがスマートフォンか *}-->
-<!--{if $smarty.const.CONTROL_SMARTPHONE}-->
-<!--{if "/iPhone|iPod|Android/"|preg_match:$smarty.server.HTTP_USER_AGENT}-->
-<!--{assign var=isSmartphone value=1}-->
-<!--{if "/smartphone/"|preg_match:$smarty.server.PHP_SELF}-->
-<!--{elseif "/user_data/"|preg_match:$smarty.server.PHP_SELF}-->
-<!--{assign var=isSmartphone value=0}-->
-<!--{/if}-->
-<!--{else}-->
-<!--{assign var=isSmartphone value=0}-->
-<!--{/if}-->
-<!--{/if}-->
- 
+
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<!--{$smarty.const.CHAR_CODE}-->" />
@@ -43,11 +30,11 @@
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <!--{* 共通CSS *}-->
-<link rel="stylesheet" media="only screen" href="<!--{$smarty.const.SPHONE_URL_DIR}-->user_data/packages/default/css/import.css" type="text/css" /> 
+<link rel="stylesheet" media="only screen" href="<!--{$smarty.const.URL_DIR}-->sphone/user_data/packages/default/css/import.css" type="text/css" /> 
 
-<script type="text/javascript" src="<!--{$smarty.const.SPHONE_URL_DIR}-->user_data/packages/default/js/barbutton.js"></script>
-<script type="text/javascript" src="<!--{$smarty.const.SPHONE_URL_DIR}-->user_data/packages/default/js/category.js"></script>
-<script type="text/javascript" src="<!--{$smarty.const.SPHONE_URL_DIR}-->user_data/packages/default/js/news.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->sphone/user_data/packages/default/js/barbutton.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->sphone/user_data/packages/default/js/category.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->sphone/user_data/packages/default/js/news.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/navi.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/win_op.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/site.js"></script>
@@ -62,7 +49,7 @@
     <meta name="keywords" content="<!--{$arrPageLayout.keyword|escape}-->" />
 <!--{/if}-->
 <!--{* iPhone用アイコン画像 *}-->
-<link rel="apple-touch-icon" href="<!--{$smarty.const.SPHONE_URL_DIR}-->apple-touch-icon.png" />
+<link rel="apple-touch-icon" href="<!--{$smarty.const.URL_DIR}-->sphone/apple-touch-icon.png" />
 
 </head>
 

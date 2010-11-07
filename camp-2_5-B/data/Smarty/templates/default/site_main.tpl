@@ -29,7 +29,7 @@
 <a name="top" id="top"></a>
 
 <!--▼MAIN-->
-<!--{include file=$include_tpl}-->
+<!--{include file=$tpl_mainpage}-->
 <!--▲MAIN-->
 
 <!--{* ▼FOOTER *}-->
@@ -40,10 +40,11 @@
 
 </body>
 
-<!--{if $smarty.template != 'top.tpl'}-->
+<!--{if "/\/top.tpl$/"|preg_match:$tpl_mainpage}-->
+<!--{else}-->
 <script type="text/javascript" language="JavaScript">
 //<![CDATA[
-setTopButton(); //TOPに戻るボタンの初期化
+setTopButton("<!--{$smarty.const.SSL_URL}-->");
 //]]>
 <!--{/if}-->
 </script>

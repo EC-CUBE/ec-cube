@@ -1,5 +1,7 @@
-function setTopButton() {
-    var pageURL = "/";
+function setTopButton(topURL) {
+    if(!topURL){
+        topURL = "/";
+    }
     var buttonText = "TOPへ";
     var buttonId = "btn-top";
 
@@ -7,8 +9,8 @@ function setTopButton() {
     var btn = document.createElement('div');
     var a = document.createElement('a');
     btn.id = buttonId;
-    btn.onclick = function(){location=pageURL;};
-    a.href = pageURL;
+    btn.onclick = function(){location=topURL;};
+    a.href = topURL;
     a.innerText = buttonText;
     
     /* 背景色の設定 ---------------------*/

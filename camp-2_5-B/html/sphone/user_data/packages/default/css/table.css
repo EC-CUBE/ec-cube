@@ -86,29 +86,6 @@ display: block;
 padding: 0;
 }
 
-/* resize without labels
------------------------------------------------ */
-/*
-ul li.arrow a {
-width: 95%;
-}
-*/
-
-/* images
------------------------------------------------ */
-/*
-ul li.img {
-padding-left: 115px;
-}
-ul li.img a.img {
-display: inline-block;
-width: 100px;
-height: 75px;
-margin: -10px 0 -20px -115px;
-float: left;
-}
-*/
-
 /* table角丸(共通)
 ----------------------------------------------- */
 table {
@@ -236,63 +213,68 @@ font: bold 14px Osaka;
 line-height: 1.5em;
 }
 
-/* テーブル（div）(new-item, recommend, item-box)
+/* テーブル（div）(recomend、関連商品)
 ----------------------------------------------- */
-#block-newitem,
-#block-recommend,
-.item-line-list,
-.item-line-list-end {
-width: 100%;
-background-color: #ffffff;
--webkit-border-radius: 8px;
--webkit-box-shadow: 0px 0px 4px #000000;
-margin: 10px 0;
+.recomendblock,
+.whoboughtblock{
+margin-top: 0;
+margin-bottom: 0;
 }
-.newitem-box-wrap,
-.recommend-box,
-.item-box-wrap {
-display:inline-block;
+.recomendblock > div ,
+.whoboughtblock > div {
+margin-top: 0;
+margin-bottom: 0;
+-webkit-border-radius: 0;
+}
+.recomendblock > div,
+.whoboughtblock > div {
 width: 100%;
+display:inline-block;
+background-color: #ffffff;
 border-bottom: 1px solid #cccccc;
 padding: 0.1em 0;
 }
-.newitem-box-wrap:first-child,
-.recommend-box:first-child,
-.item-box-wrap:first-child {
+.recomendblock > div > a,
+.recomendblock > div > div ,
+.whoboughtblock > div > a,
+.whoboughtblock > div > div{
+float: left;
+}
+.recomendblock:first-of-type > div:first-of-type ,
+.whoboughtblock:first-of-type > div:first-of-type {
 -webkit-border-top-left-radius: 8px;
 -webkit-border-top-right-radius: 8px;
 }
-/*.newitem-box-wrap:last-child, .recommend-box:last-child, .item-box-wrap:last-child {*/
-.newitem-box-wrap:last-child,
-.recommend-box:last-child,
-.item-box-wrap-end {
+.recomendblock:last-of-type > div:last-of-type ,
+.whoboughtblock:last-of-type > div:last-of-type {
 border-bottom: none;
 -webkit-border-bottom-left-radius: 8px;
 -webkit-border-bottom-right-radius: 8px;
 }
-.newitem-box-photo,
-.recommend-photo,
-.item-box-photo {
+.recomendrightblock, 
+.whoboughtrightblock{
+width: 63%;
+}
+.recomendrightblock > h3,
+.recomendrightblock > p,
+.whoboughtrightblock > h3,
+.whoboughtrightblock > p{
+    margin-top: 0;
+    margin-bottom: 0;
+}
+.recomendblock img,
+.whoboughtblock img,
+.listphoto {
 float:left;
 display:block;
-margin-left: 10px;
-margin-right: 10px;
+margin: 3px 10px;
 position: relative;
 }
-.newitem-box-photo img,
 .recommend-photo img,
-.item-box-photo img {
+.listphoto img {
 width: 80px;
 }
-.newitem-box-data,
-.item-box-data {
-display:block;
-margin: 0px 8px;
-text-align: left;
-}
-.newitem-box-data h3,
-.recommend-box h3,
-.item-box-data h3 {
+.recommend-box h3 {
 font-weight: bold;
 font-size: 15px;
 font-family: helvetica;
@@ -302,14 +284,11 @@ overflow: hidden;
 text-overflow: ellipsis;
 -webkit-text-overflow: ellipsis;
 }
-.newitem-box-data h3 a,
-.recommend-box h3 a,
-.item-box-data h3 a {
+.recommend-box h3 a {
 font-size: 18px;
 text-decoration: none;
 }
 .description,
-.newitem-box-comment,
 .recommend-comment {
 font-weight: normal;
 font-size: 14px;
@@ -322,9 +301,7 @@ text-overflow: ellipsis;
 margin: 0;
 }
 .price,
-.newitem-box-price,
-.recommend-price,
-.item-box-price {
+.recommend-price {
 color: #993333;
 font-weight: bold;
 font-size: 17px;
@@ -335,40 +312,58 @@ margin-bottom: 0.3em;
 
 /* アイテムリスト(div)の処理
 ----------------------------------------------- */
-.item-line-list {
-margin: 2px 0;
--webkit-border-bottom-left-radius: 0;
--webkit-border-bottom-right-radius: 0;
-z-index: 30;
-}
-.item-line-list div:last-child {
--webkit-border-radius: 0;
-}
-.item-line-list + .item-line-list {
+.listarea {
+width: 100%;
+background-color: #ffffff;
+border-bottom: solid 1px #CCC;
+margin: 0;
 margin-top: 0;
--webkit-border-top-left-radius: 0;
--webkit-border-top-right-radius: 0;
-}
-.item-line-list + .item-line-list-end {
-margin-top: 2px;
--webkit-border-top-left-radius: 0;
--webkit-border-top-right-radius: 0;
-z-index: 30;
-}
-.item-line-list + .item-line-list-end div:first-child{
+margin-bottom: 0;
 -webkit-border-radius: 0;
+-webkit-box-shadow: none;
 }
-.item-line-list-end div:last-child{
+#page_navi_top + .listarea{
+margin-bottom: 0;
+-webkit-border-top-left-radius: 8px;
+-webkit-border-top-right-radius: 8px;
+}
+.listarea:last-of-type{
 border: none;
+-webkit-border-bottom-left-radius: 8px;
+-webkit-border-bottom-right-radius: 8px;
 }
+.listrightblock > ul {
+    border: none;
+    background-color: transparent;
+}
+.listrightblock > h3,
+.listrightblock > p,
+.listrightblock > ul {
+    margin-top: 0;
+    margin-bottom: 0.1em;
+}
+.listrightblock > h3:first-child,
+.listrightblock > p:first-child,
+.listrightblock > ul:first-child,
+margin-top: 0;
+}
+.listrightblock > ul > li {
+margin: 0;
+padding: 0 3px 0 0;
+}
+.listrightblock > h3:last-child,
+.listrightblock > p:last-child {
+margin-bottom: 0;
+}
+
 .newitem-line-list .newitem-box-wrap-end {
 border-bottom: 1px solid #cccccc;
 }
 
 /* 商品検索結果
 ----------------------------------------------- */
-.tb-search-result-top,
-.tb-search-result-bottom {
+#page_navi_top,
+#page_navi_bottom {
 border: none;
 -webkit-box-shadow: none;
 clear: both;
@@ -376,25 +371,24 @@ width: 100%;
 border-spacing: 0 0;
 border-collapse: collapse;
 }
-.tb-search-result-top tr,
-.tb-search-result-bottom tr {
+#page_navi_top tr,
+#page_navi_bottom tr {
 width: 100%;
 }
-.tb-search-result-top td,
-.tb-search-result-bottom td {
+#page_navi_top td,
+#page_navi_bottom td {
 text-align: left;
 background-color: transparent;
 }
 
-.search-result-navi strong,
-.search-result-navi a {
+.change a,
+.change strong {
 display: block;
 float: left;
 margin: 5px 0px;
-margin-left: 1px;
 padding: 0.3em 0;
 color: #ffffff;
-width: 32.8%;
+width: 49.6%;
 text-shadow: 0px -1px 1px rgba(0,0,0,0.5);
 background-color: #666666;
 background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(255,255,255,0.25)), to(rgba(0,0,0,0.2)), color-stop(0.5, rgba(255,255,255,0.05)), color-stop(0.51, rgba(0,0,0,0.05)));
@@ -403,26 +397,21 @@ vertical-align: middle;
 text-decoration: none;
 border-left: solid 1px #666666;
 }
-.search-result-navi > strong, .search-result-navi > a:first-child {
+.change > a:first-child,
+.change > strong:first-child {
 border-left: none;
-margin-left: 0px;
 -webkit-border-top-left-radius: 4px;
 -webkit-border-bottom-left-radius: 4px;
 }
-.search-result-navi > a + strong,
-.search-result-navi > strong + a {
-border-left: solid 1px #666666;
+.change > a:last-child,
+.change > strong:last-child{
 margin-left: 1px;
--webkit-border-top-left-radius: 0;
--webkit-border-bottom-left-radius: 0;
-}
-.search-result-navi > a + a + strong,
-.search-result-navi > a + strong + a,
-.search-result-navi >  strong + a + a {
 -webkit-border-top-right-radius: 4px;
 -webkit-border-bottom-right-radius: 4px;
 }
-
+.change select {
+margin-right: 0;
+}
 
 /* テーブル・カゴ
 ----------------------------------------------- */

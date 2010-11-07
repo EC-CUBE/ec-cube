@@ -6,7 +6,7 @@ vertical-align: middle;
 
 /* 商品写真
 ----------------------------------------------- */
-#imagearea2 {
+#detailphotoblock {
 margin-top: -1em;
 margin-left: -3.4%;
 width: 106.8%;
@@ -15,19 +15,8 @@ background-color: #ffffff;
 text-align:center;
 border-bottom: 1px solid #ffffff;
 }
-#imagearea {
-width: 320px;
-margin: 0 auto;
-/*padding: 15px 0px;*/
-}
-#main_imagearea {
-width: 100%;
-}
-.main_image {
-border: #999999 1px solid;
-width: 200px;
--webkit-transition-property: opacity, margin;
--webkit-transition: 2s ease-out;
+#detailphotoblock img:first-of-type {
+    margin: 10px auto;
 }
 
 /*商品情報（ブロック）*/

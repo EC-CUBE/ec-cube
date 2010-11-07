@@ -4,9 +4,6 @@
 ----------------------------------------------- */
 body {
 background: rgb(197,204,211) url(../img/common/stripes.png);
-/*
-background: rgb(197,204,211) url(../img/common/bg.png) repeat-y;
-*/
 background-position: 50% 0% fixed;
 font-family: helvetica, Osaka;
 font-size: large;
@@ -64,11 +61,9 @@ height: 0px
 ----------------------------------------------- */
 #block-login:after,
 .block-center:after,
-.item-line-list:after,
-.item-line-list-end:after,
-.newitem-line-list:after,
-.newitem-box-wrap-end:after,
-.newitem-line-list-end:after{
+.listarea:after,
+.recomendblock > div 
+.whoboughtblock > div {
 content: "";
 display: block;
 height: 0;
@@ -117,6 +112,7 @@ text-shadow: 0px 1px 1px #ffffff;
 /* ナビゲーションバー・ページタイトル
 ----------------------------------------------- */
 #navigation_bar,
+h2.title,
 .title-undercolumn,
 .title-under02column,
 #title-list,
