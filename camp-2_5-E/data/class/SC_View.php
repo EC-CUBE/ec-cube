@@ -138,7 +138,7 @@ class SC_View {
             }
         }
         $res =  $this->_smarty->fetch($template);
-        if(ADMIN_MODE == '1' || true) {
+        if(ADMIN_MODE == '1') {
             $time_end = SC_Utils_Ex::sfMicrotimeFloat();
             $time = $time_end - $this->time_start;
             $res .= '処理時間: ' . sprintf('%.3f', $time) . '秒';
