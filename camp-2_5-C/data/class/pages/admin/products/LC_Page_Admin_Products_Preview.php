@@ -91,6 +91,11 @@ class LC_Page_Admin_Products_Preview extends LC_Page {
         $objProduct = new SC_Product();
         $this->arrProduct = $objProduct->getDetail($product_id);
 
+        ////////////////////////////////////
+        // 以下未検証（全く不要なものも多数）
+        ////////////////////////////////////
+
+
         $objView = new SC_SiteView(strlen($_POST['mode']) == 0);
         $objCustomer = new SC_Customer();
         $objQuery = new SC_Query();
