@@ -83,6 +83,7 @@ class LC_Page_Admin_Products_Preview extends LC_Page {
         // $product_id = $this->lfCheckProductId();
         
         $this->arrForm = $_SESSION["preview"];
+        var_dump($this->arrForm);
 
         $objView = new SC_SiteView(strlen($_POST['mode']) == 0);
         $objCustomer = new SC_Customer();
