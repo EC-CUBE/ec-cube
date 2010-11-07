@@ -82,8 +82,8 @@ class LC_Page_Admin_Products_Preview extends LC_Page {
         // プロダクトIDの正当性チェック
         // $product_id = $this->lfCheckProductId();
         
-        $this->arrForm = $_SESSION["preview"];
-        var_dump($this->arrForm);
+        $this->arrProduct = $_SESSION["preview"];
+        var_dump($this->arrProduct);
 
         $objView = new SC_SiteView(strlen($_POST['mode']) == 0);
         $objCustomer = new SC_Customer();
@@ -258,7 +258,7 @@ class LC_Page_Admin_Products_Preview extends LC_Page {
         // 支払方法の取得
         $this->arrPayment = $this->lfGetPayment();
         // 入力情報を渡す
-        // $this->arrForm = $this->objFormParam->getFormParamList();
+        $this->arrForm = $this->objFormParam->getFormParamList();
         //レビュー情報の取得
         $this->arrReview = $this->lfGetReviewData($product_id);
         // トラックバック情報の取得
