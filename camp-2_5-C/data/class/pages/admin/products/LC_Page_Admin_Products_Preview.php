@@ -86,7 +86,7 @@ class LC_Page_Admin_Products_Preview extends LC_Page {
         var_dump($this->arrProduct);
         
         // マッピング
-        $arrFile["main_image"]["filepath"] = IMAGE_SAVE_DIR . $this->arrProduct["save_main_image"];
+        $this->arrFile["main_image"]["filepath"] = IMAGE_SAVE_DIR . $this->arrProduct["save_main_image"];
 
         $objView = new SC_SiteView(strlen($_POST['mode']) == 0);
         $objCustomer = new SC_Customer();
