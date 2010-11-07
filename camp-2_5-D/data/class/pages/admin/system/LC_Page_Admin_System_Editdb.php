@@ -83,7 +83,7 @@ class LC_Page_Admin_System_Editdb extends LC_Page {
 
 	//インデックスの値を取得
 	$this->arrForm = $this->lfGetIndexList();
-	
+
 	//フォームの値を取得
         $this->initForm();
 	
@@ -153,13 +153,13 @@ class LC_Page_Admin_System_Editdb extends LC_Page {
         $table = "";
         foreach($arrIndexList as $key => $arrIndex) {
             // テーブルに対するインデックス一覧を取得
-            if($table !== $arrIndex["table"]) {
-                $table = $arrIndex["table"];
+            if($table !== $arrIndex["table_name"]) {
+                $table = $arrIndex["table_name"];
                 $arrIndexes = $objQuery->listTableIndexes($table);
             }
  
             // インデックスが設定されているかを取得
-            if(array_search($table . "_" . $arrIndex["column"] . "_key", $arrIndexes) === false) {
+            if(array_search($table . "_" . $arrIndex["column_name"] . "_key", $arrIndexes) === false) {
                 $arrIndexList[$key]["indexflag"] = false;
             } else {
                 $arrIndexList[$key]["indexflag"] = true;
