@@ -141,7 +141,7 @@ class SC_UploadFile {
         $cnt = 0;
         $arrKeyname = array_flip($this->keyname);
         if(!($_FILES[$keyname]['size'] > 0)) {
-            $objErr->arrErr[$keyname] = "※ " . $this->disp_name[$arrKeyname[$keyname]] . "がアップロードされていません。<br />";
+            $objErr->arrErr[$keyname] = "※ " . $this->disp_name[$arrKeyname[$keyname]] . "がアップロードされていません。(ファイルがアップロードできない場合は、.htaccessファイルのphp_value upload_max_filesizeを調整してください)<br />";
         } else {
             foreach($this->keyname as $val) {
                // 一致したキーのファイルに情報を保存する。
