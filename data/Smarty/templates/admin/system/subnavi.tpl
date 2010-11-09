@@ -29,4 +29,5 @@
 <li<!--{if $tpl_subno == 'system'}--> class="on"<!--{/if}--> id="navi-system-system"><a href="<!--{$smarty.const.URL_DIR}-->admin/system/system.php"><span>システム情報</span></a></li>
 <li<!--{if $tpl_subno == 'plugin'}--> class="on"<!--{/if}--> id="navi-system-plugin"><a href="<!--{$smarty.const.URL_DIR}-->admin/system/plugin.php"><span>プラグイン管理</span></a></li>
 <li<!--{if $tpl_mainno == 'system' && $tpl_subno == 'log'}--> class="on"<!--{/if}--> id="navi-system-log"><a href="<!--{$smarty.const.URL_DIR}-->admin/system/log.php"><span>ログ表示</span></a></li>
+<li<!--{if $tpl_mainno == 'system' && $tpl_subno == 'editdb'}--> class="on"<!--{/if}--> id="navi-system-editdb"><a href="<!--{$smarty.const.URL_DIR}-->admin/system/editdb.php"><span>高度なデータベース管理</span></a></li>
 </ul>

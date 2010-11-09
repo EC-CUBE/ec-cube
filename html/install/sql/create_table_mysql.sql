@@ -1248,7 +1248,6 @@ CREATE TABLE dtb_bkup (
     PRIMARY KEY (bkup_name)
 ) TYPE=InnoDB;
 
-
 CREATE TABLE dtb_plugin (
   plugin_id INT NOT NULL,
   plugin_name VARCHAR(255) NOT NULL DEFAULT "",
@@ -1259,7 +1258,6 @@ CREATE TABLE dtb_plugin (
   update_date DATETIME NOT NULL,
   PRIMARY KEY (plugin_id)
 ) TYPE=InnoDB;
-
 
 CREATE INDEX dtb_customer_mobile_phone_id_key ON dtb_customer (mobile_phone_id(64));
 CREATE INDEX dtb_products_class_product_id_key ON dtb_products_class(product_id);
@@ -1272,3 +1270,9 @@ CREATE INDEX dtb_mobile_ext_session_id_create_date_key ON dtb_mobile_ext_session
 CREATE INDEX dtb_mobile_kara_mail_token_key ON dtb_mobile_kara_mail (token(64));
 CREATE INDEX dtb_mobile_kara_mail_create_date_key ON dtb_mobile_kara_mail (create_date);
 CREATE INDEX dtb_mobile_kara_mail_receive_date_key ON dtb_mobile_kara_mail (receive_date);
+CREATE TABLE dtb_index_list(
+    table_name text NOT NULL DEFAULT '',
+    column_name text NOT NULL DEFAULT '',
+    recommend_flg int2 NOT NULL DEFAULT 0,
+    recommend_comment text
+) TYPE=InnoDB;

@@ -152,7 +152,8 @@ class SC_Helper_Session {
      */
     function getToken() {
         if (empty($_SESSION[TRANSACTION_ID_NAME])) {
-            $_SESSION[TRANSACTION_ID_NAME] = $this->createToken();
+            // FIXME
+            //$_SESSION[TRANSACTION_ID_NAME] = $this->createToken();
         }
         return $_SESSION[TRANSACTION_ID_NAME];
     }

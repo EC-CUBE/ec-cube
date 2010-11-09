@@ -64,12 +64,10 @@ class SC_Query {
         } else {
             $this->conn = MDB2::singleton($dsn, $options);
         }
-
         if (!PEAR::isError($this->conn)) {
             $this->conn->setCharset(CHAR_CODE);
             $this->conn->setFetchMode(MDB2_FETCHMODE_ASSOC);
         }
-
         $this->dbFactory = SC_DB_DBFactory_Ex::getInstance();
         $this->force_run = $force_run;
         $this->where = "";
@@ -732,7 +730,30 @@ class SC_Query {
         $this->conn->loadModule('Manager');
         return $this->conn->listTableIndexes($table);
     }
+    
+    /**
+     * テーブルにインデックスを付与する
+     *
+     * @param string $table テーブル名
+     * @param string $name インデックス名
+     * @param array $definition フィールド名など　通常のフィールド指定時は、$definition=array('fields' => array('フィールド名' => array()));
+     */
+    function createIndex($table, $name, $definition) {
+        $this->conn->loadModule('Manager');
+        return $this->conn->createIndex($table, $name, $definition);
+    }
 
+    /**
+     * テーブルにインデックスを破棄する
+     *
+     * @param string $table テーブル名
+     * @param string $name インデックス名
+     */
+    function dropIndex($table, $name) {
+        $this->conn->loadModule('Manager');
+        return $this->conn->dropIndex($table, $name);
+    }
+    
     /**
      * 値を適切にクォートする.
      *
@@ -776,7 +797,20 @@ class SC_Query {
      * @return MDB2_Result 結果セットのインスタンス
      */
     function execute(&$sth, $arrVal = array()) {
+        $timeStart = SC_Utils_Ex::sfMicrotimeFloat();
         $affected =& $sth->execute($arrVal);
+
+        // 一定以上時間かかったSQLの場合、ログ出力する。
+        if(defined('SQL_QUERY_LOG_MODE') && SQL_QUERY_LOG_MODE == true) {
+            $timeEnd = SC_Utils_Ex::sfMicrotimeFloat();;
+            $timeExecTime = $timeEnd - $timeStart;
+            if(defined('SQL_QUERY_LOG_MIN_EXEC_TIME') && $timeExecTime >= (float)SQL_QUERY_LOG_MIN_EXEC_TIME) {
+                //$logMsg = sprintf("SQL_LOG [%.2fsec]\n%s", $timeExecTime, $this->getLastQuery(false));
+                $logMsg = sprintf("SQL_LOG [%.2fsec]\n%s", $timeExecTime, $sth->query);
+                GC_Utils_Ex::gfPrintLog($logMsg);
+            }
+        }
+
         if (PEAR::isError($affected)) {
             $sql = isset($sth->query) ? $sth->query : '';
             if (!$this->force_run) {

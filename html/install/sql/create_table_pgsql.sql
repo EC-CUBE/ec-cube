@@ -1270,3 +1270,10 @@ CREATE TABLE "dtb_plugin" (
 	"create_date" timestamp(6) NOT NULL DEFAULT now(),
 	"update_date" timestamp(6) NOT NULL DEFAULT now()
 );
+
+CREATE TABLE dtb_index_list(
+    table_name text NOT NULL DEFAULT '',
+    column_name text NOT NULL DEFAULT '',
+    recommend_flg int2 NOT NULL DEFAULT 0,
+    recommend_comment text
+);

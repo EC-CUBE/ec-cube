@@ -70,7 +70,6 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin {
     function action() {
         $objSess = new SC_Session();
         $objDb = new SC_Helper_DB_Ex();
-        $objQuery = new SC_Query();
 
         // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess($objSess);
@@ -90,7 +89,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin {
             // 入力文字の強制変換
             $this->lfConvertParam();
 
-            $where = "del_flg = 0";
+            $where = "alldtl.del_flg = 0";
             $arrval = array();
 
             /* 入力エラーなし */
@@ -107,12 +106,12 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin {
                 case 'search_category_id':
                     list($tmp_where, $tmp_arrval) = $objDb->sfGetCatWhere($val);
                     if($tmp_where != "") {
-                        $where.= " AND product_id IN (SELECT product_id FROM dtb_product_categories WHERE " . $tmp_where . ")";
+                        $where.= " AND alldtl.product_id IN (SELECT product_id FROM dtb_product_categories WHERE " . $tmp_where . ")";
                         $arrval = array_merge((array)$arrval, (array)$tmp_arrval);
                     }
                     break;
                 case 'search_product_code':
-                    $where .= " AND product_id IN (SELECT product_id FROM dtb_products_class WHERE product_code LIKE ? GROUP BY product_id)";
+                    $where .= " AND alldtl.product_id IN (SELECT product_id FROM dtb_products_class WHERE product_code LIKE ? GROUP BY product_id)";
                     $arrval[] = "$val%";
                     break;
                 default:
@@ -120,12 +119,12 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin {
                 }
             }
 
+            // 検索結果対象となる商品の数を取得
+            $objQuery =& SC_Query::getSingletonInstance();
+            $objQuery->setWhere($where);
             $objProduct = new SC_Product();
-            $productIds = $objProduct->findProductIds($objQuery, $arrval);
-
-            // 行数の取得
-            $linemax = count($productIds);
-            $this->tpl_linemax = $linemax;
+            $linemax = $objProduct->findProductCount($objQuery, $arrval);
+            $this->tpl_linemax = $linemax;   // 何件が該当しました。表示用
 
             // ページ送りの処理
             if(isset($_POST['search_page_max'])
@@ -140,14 +139,40 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin {
             $this->tpl_strnavi = $objNavi->strnavi;     // 表示文字列
             $startno = $objNavi->start_row;
 
+            $objProduct = new SC_Product();
+            $objQuery =& SC_Query::getSingletonInstance();
+            $objQuery->setWhere($where);
+
             // 取得範囲の指定(開始行番号、行数のセット)
             $objQuery->setLimitOffset($page_max, $startno);
             // 表示順序
             $objQuery->setOrder($order);
 
             // 検索結果の取得
-            $this->arrProducts = $objProduct->lists($objQuery, $arrval);
-            $objProduct->setProductsClassByProductIds($productIds);
+            $arrProduct_id = $objProduct->findProductIdsOrder($objQuery, $arrval);
+
+            $where = "";
+            if (is_array($arrProduct_id) && !empty($arrProduct_id)) {
+                $where = 'product_id IN (' . implode(',', $arrProduct_id) . ')';
+            } else {
+                // 一致させない
+                $where = '0<>0';
+            }
+            $objQuery =& SC_Query::getSingletonInstance();
+            $objQuery->setWhere($where);
+            $arrProducts = $objProduct->lists($objQuery, $arrProduct_id);
+
+            //取得している並び順で並び替え
+            $arrProducts2 = array();
+            foreach($arrProducts as $item) {
+                $arrProducts2[ $item['product_id'] ] = $item;
+            }
+            $this->arrProducts = array();
+            foreach($arrProduct_id as $product_id) {
+                $this->arrProducts[] = $arrProducts2[$product_id];
+            }
+
+            $objProduct->setProductsClassByProductIds($arrProduct_id);
             $objJson = new Services_JSON();
             $this->tpl_javascript .= 'productsClassCategories = ' . $objJson->encode($objProduct->classCategories) . '; ';
 

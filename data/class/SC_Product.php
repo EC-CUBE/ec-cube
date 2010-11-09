@@ -45,9 +45,25 @@ class SC_Product {
     /** 規格2が設定されている */
     var $classCat2_find;
     var $classCats1;
+    /** 検索用並び替え条件配列 */
+    var $arrOrderData;
+    
+    /**
+     * 商品検索結果の並び順を指定する。
+     *
+     * ただし指定できるテーブルはproduct_idを持っているテーブルであることが必要.
+     *
+     * @param string $col 並び替えの基準とするフィールド
+     * @param string $table 並び替えの基準とするフィールドがあるテーブル
+     * @param string $order 並び替えの順序 ASC / DESC
+     * @return void
+     */
+    function setProductsOrder($col, $table = 'dtb_products', $order = 'ASC') {
+        $this->arrOrderData = array('col' => $col, 'table' => $table, 'order' => $order);
+    }
 
     /**
-     * SC_Queryインスタンスに設定された検索条件をもとに商品IDの配列を取得する.
+     * SC_Queryインスタンスに設定された検索条件を元に並び替え済みの検索結果商品IDの配列を取得する。
      *
      * 検索条件は, SC_Query::getWhere() 関数で設定しておく必要があります.
      *
@@ -55,7 +71,51 @@ class SC_Product {
      * @param array $arrVal 検索パラメータの配列
      * @return array 商品IDの配列
      */
-    function findProductIds(&$objQuery, $arrVal = array()) {
+    function findProductIdsOrder(&$objQuery, $arrVal = array(), $where) {
+        $table = <<< __EOS__
+                 dtb_products AS alldtl
+            JOIN dtb_products_class AS T1
+              ON alldtl.product_id = T1.product_id
+            JOIN dtb_product_categories AS T2
+              ON alldtl.product_id = T2.product_id
+            JOIN dtb_category
+              ON T2.category_id = dtb_category.category_id
+__EOS__;
+        $objQuery->setGroupBy('alldtl.product_id');
+        if(is_array($this->arrOrderData) and $objQuery->order == ""){
+            $o_col = $this->arrOrderData['col'];
+            $o_table = $this->arrOrderData['table'];
+            $o_order = $this->arrOrderData['order'];
+            $order = <<< __EOS__
+                    (
+                        SELECT $o_col
+                        FROM
+                            $o_table as T2
+                        WHERE T2.product_id = alldtl.product_id
+                        ORDER BY T2.$o_col $o_order
+                        LIMIT 1
+                    ) $o_order, product_id
+__EOS__;
+            $objQuery->setOrder($order);
+        }
+        $results = $objQuery->select('alldtl.product_id', $table, "", $arrVal,
+                                     MDB2_FETCHMODE_ORDERED);
+        foreach ($results as $val) {
+            $resultValues[] = $val[0];
+        }
+        return $resultValues;
+    }
+
+    /**
+     * SC_Queryインスタンスに設定された検索条件をもとに対象商品数を取得する.
+     *
+     * 検索条件は, SC_Query::getWhere() 関数で設定しておく必要があります.
+     *
+     * @param SC_Query $objQuery SC_Query インスタンス
+     * @param array $arrVal 検索パラメータの配列
+     * @return array 対象商品ID数
+     */
+    function findProductCount(&$objQuery, $arrVal = array()) {
         $table = <<< __EOS__
                  dtb_products AS alldtl
             JOIN dtb_product_categories AS T2
@@ -63,13 +123,9 @@ class SC_Product {
             JOIN dtb_category
               ON T2.category_id = dtb_category.category_id
 __EOS__;
-        // SC_Query::getCol() ではパフォーマンスが出ない
-        $results = $objQuery->select('alldtl.product_id', $table, "", $arrVal,
-                                     MDB2_FETCHMODE_ORDERED);
-        foreach ($results as $val) {
-            $resultValues[] = $val[0];
-        }
-        return array_unique($resultValues);
+        $objQuery->setGroupBy('alldtl.product_id');
+        $sql_base = $objQuery->getSql('alldtl.product_id',$table);
+        return $objQuery->getOne( "SELECT count(*) FROM ( $sql_base ) as t" , $arrVal);
     }
 
     /**
@@ -108,8 +164,9 @@ __EOS__;
             ,del_flg
             ,update_date
 __EOS__;
-        return $objQuery->select($col, $this->alldtlSQL($objQuery->where),
+        $res = $objQuery->select($col, $this->alldtlSQL($objQuery->where),
                                  "", $arrVal);
+        return $res;
     }
 
     /**

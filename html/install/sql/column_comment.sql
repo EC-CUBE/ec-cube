@@ -597,3 +597,4 @@ INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES 
 INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (611, 'dtb_mobile_kara_mail', 'create_date', '作成日時');
 INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (612, 'dtb_mobile_kara_mail', 'email', 'メールアドレス');
 INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (613, 'dtb_mobile_kara_mail', 'receive_date', '受信日時');
+INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (660, 'dtb_index_list', 'recommend_flg', '1:初期付与 2:付与推奨');
