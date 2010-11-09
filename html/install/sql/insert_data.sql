@@ -743,6 +743,7 @@ INSERT INTO mtb_target (id, name, rank) VALUES (6, 'BottomNavi', 6);
 INSERT INTO mtb_target (id, name, rank) VALUES (7, 'HeadNavi', 7);
 INSERT INTO mtb_target (id, name, rank) VALUES (8, 'HeaderTopNavi', 8);
 INSERT INTO mtb_target (id, name, rank) VALUES (9, 'FooterBottomNavi', 9);
+INSERT INTO mtb_target (id, name, rank) VALUES (10, 'HeaderInternalNavi', 10);
 
 INSERT INTO mtb_taxrule (id, name, rank) VALUES (1, '四捨五入', 0);
 INSERT INTO mtb_taxrule (id, name, rank) VALUES (2, '切り捨て', 1);

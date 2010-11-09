@@ -25,6 +25,23 @@
     <a href="<!--{$smarty.const.URL_SITE_TOP}-->">
       <em><!--{$arrSiteInfo.shop_name|escape}-->/<!--{$tpl_title|escape}--></em></a>
   </h1>
+  <!--{* ▼HeaderInternal COLUMN*}-->
+  <!--{if $arrPageLayout.HeaderInternalNavi|@count > 0}-->
+      <div id="headerinternalcolumn">
+          <!--{* ▼上ナビ *}-->
+          <!--{foreach key=HeaderInternalNaviKey item=HeaderInternalNaviItem from=$arrPageLayout.HeaderInternalNavi}-->
+            <!-- ▼<!--{$HeaderInternalNaviItem.bloc_name}--> -->
+            <!--{if $HeaderInternalNaviItem.php_path != ""}-->
+              <!--{include_php file=$HeaderInternalNaviItem.php_path}-->
+            <!--{else}-->
+              <!--{include file=$HeaderInternalNaviItem.tpl_path}-->
+            <!--{/if}-->
+            <!-- ▲<!--{$HeaderInternalNaviItem.bloc_name}--> -->
+          <!--{/foreach}-->
+          <!--{* ▲上ナビ *}-->
+      </div>
+  <!--{/if}-->
+  <!--{* ▲HeaderInternal COLUMN*}-->
   <div id="information">
     <ul>
       <li>

@@ -391,6 +391,7 @@ body > #container {
 .design-layout #RightNavi,
 .design-layout #BottomNavi,
 .design-layout #FooterBottomNavi,
+.design-layout #HeaderInternalNavi,
 .design-layout #Unused {
     padding-bottom: 20px;
     height: 10px; /* IE6応急処置 */
@@ -411,7 +412,9 @@ body > #container {
     border: 1px dashed #AAA;
     height: 20px;
 }
-
+#layout-header {
+    vertical-align: middle;
+}
 
 /* フォーム
 ----------------------------------------------- */

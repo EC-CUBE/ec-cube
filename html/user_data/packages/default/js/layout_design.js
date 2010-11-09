@@ -38,7 +38,7 @@
     };
     
     $(document).ready(function(){
-        var els = ['#MainHead', '#MainFoot', '#LeftNavi', '#RightNavi', '#TopNavi', '#BottomNavi', '#HeadNavi', '#HeaderTopNavi', '#FooterBottomNavi', '#Unused'];
+        var els = ['#MainHead', '#MainFoot', '#LeftNavi', '#RightNavi', '#TopNavi', '#BottomNavi', '#HeadNavi', '#HeaderTopNavi', '#FooterBottomNavi', '#HeaderInternalNavi', '#Unused'];
         var $els = $(els.toString());
         
         $els.each(function(){
