@@ -72,7 +72,18 @@ class LC_Page_Mypage_Change extends LC_Page {
      * @return void
      */
     function process() {
-        $objView = new SC_SiteView();
+        parent::process();
+        $this->action();
+        $this->sendResponse();
+    }
+    
+    /**
+     * Page のAction.
+     *
+     * @return void
+     */
+    function action() {
+        //$objView = new SC_SiteView();
         $this->objQuery = new SC_Query();
         $this->objCustomer = new SC_Customer();
         $this->objFormParam = new SC_FormParam();
@@ -179,7 +190,7 @@ class LC_Page_Mypage_Change extends LC_Page {
                 }
 
                 //完了ページへ
-                $this->sendRedirect($this->getLocation("./change_complete.php"));
+                $this->objDisplay->redirect($this->getLocation("./change_complete.php"));
                 exit;
             } else {
                 SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
@@ -200,8 +211,8 @@ class LC_Page_Mypage_Change extends LC_Page {
             $this->birth_check = true;
         }
 
-        $objView->assignobj($this);             //$objpage内の全てのテンプレート変数をsmartyに格納
-        $objView->display(SITE_FRAME);              //パスとテンプレート変数の呼び出し、実行
+        //$objView->assignobj($this);             //$objpage内の全てのテンプレート変数をsmartyに格納
+        //$objView->display(SITE_FRAME);              //パスとテンプレート変数の呼び出し、実行
 
 
     }
@@ -212,6 +223,7 @@ class LC_Page_Mypage_Change extends LC_Page {
      * @return void
      */
     function mobileInit() {
+        $this->init();
         $this->tpl_mainpage = 'mypage/change.tpl';		// メインテンプレート
         $this->tpl_title .= '登録変更(1/3)';			// ページタイトル
 
@@ -230,9 +242,20 @@ class LC_Page_Mypage_Change extends LC_Page {
      * @return void
      */
     function mobileProcess() {
+        parent::mobileProcess();
+        $this->mobileAction();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のAction(モバイル).
+     *
+     * @return void
+     */
+    function mobileAction() {
         $objDb = new SC_Helper_DB_Ex();
         $CONF = $objDb->sf_getBasisData();					// 店舗基本情報
-        $objView = new SC_MobileView();
+        //$objView = new SC_MobileView();
         
         // 生年月日選択肢の取得
         $objDate = new SC_Date();
@@ -384,7 +407,7 @@ class LC_Page_Mypage_Change extends LC_Page {
                         //セッション情報を最新の状態に更新する
                         $this->objCustomer->updateSession();
                         //完了ページへ
-                        $this->sendRedirect($this->getLocation("./change_complete.php"), true);
+                        $this->objDisplay->redirect($this->getLocation("./change_complete.php"));
                         exit;
                     } else {
                         SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
@@ -399,8 +422,8 @@ class LC_Page_Mypage_Change extends LC_Page {
         }
 
         //---- ページ表示
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
+        //$objView->assignobj($this);
+        //$objView->display(SITE_FRAME);
     }
 
     /**

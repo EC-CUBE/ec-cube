@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * メーカー管理 のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id: LC_Page_Admin_Products_Maker.php 16741 2007-11-08 00:43:24Z adachi $
  */
-class LC_Page_Admin_Products_Maker extends LC_Page {
+class LC_Page_Admin_Products_Maker extends LC_Page_Admin {
 
     // }}}
     // {{{ functions
@@ -56,7 +56,16 @@ class LC_Page_Admin_Products_Maker extends LC_Page {
      * @return void
      */
     function process() {
-        $objView = new SC_AdminView();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objSess = new SC_Session();
         $objQuery = new SC_Query();
         $objDb = new SC_Helper_DB_Ex();
@@ -84,7 +93,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page {
                     $this->lfUpdateClass($this->arrForm);	// 既存編集
                 }
                 // 再表示
-                $this->reload();
+                $this->objDisplay->reload();
             } else {
                 // POSTデータを引き継ぐ
                 $this->tpl_maker_id = $_POST['maker_id'];
@@ -94,7 +103,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page {
         case 'delete':
             $objDb->sfDeleteRankRecord("dtb_maker", "maker_id", $_POST['maker_id'], "", true);
             // 再表示
-            $this->reload();
+            $this->objDisplay->reload();
             break;
         // 編集前処理
         case 'pre_edit':
@@ -109,12 +118,12 @@ class LC_Page_Admin_Products_Maker extends LC_Page {
         case 'down':
             $objDb->sfRankDown("dtb_maker", "maker_id", $_POST['maker_id']);
             // 再表示
-            $this->reload();
+            $this->objDisplay->reload();
             break;
         case 'up':
             $objDb->sfRankUp("dtb_maker", "maker_id", $_POST['maker_id']);
             // 再表示
-            $this->reload();
+            $this->objDisplay->reload();
             break;
         default:
             break;
@@ -124,9 +133,6 @@ class LC_Page_Admin_Products_Maker extends LC_Page {
         $where = "del_flg <> 1";
         $objQuery->setOrder("rank DESC");
         $this->arrMaker = $objQuery->select("maker_id, name", "dtb_maker", $where);
-
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

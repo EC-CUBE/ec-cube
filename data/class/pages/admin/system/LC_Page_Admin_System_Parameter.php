@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * パラメータ設定 のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_System_Parameter extends LC_Page {
+class LC_Page_Admin_System_Parameter extends LC_Page_Admin {
 
     // {{{ properties
 
@@ -67,7 +67,16 @@ class LC_Page_Admin_System_Parameter extends LC_Page {
      * @return void
      */
     function process() {
-        $objView = new SC_AdminView();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $masterData = new SC_DB_MasterData_Ex();
 
         // 認証可否の判定
@@ -105,8 +114,6 @@ class LC_Page_Admin_System_Parameter extends LC_Page {
                                      $masterData->getDBMasterData("mtb_constants",
                                              array("id", "remarks", "rank")));
 
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

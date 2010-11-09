@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * 商品登録 のページクラス
@@ -31,7 +31,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Products_Product extends LC_Page {
+class LC_Page_Admin_Products_Product extends LC_Page_Admin {
 
     // {{{ properties
 
@@ -82,7 +82,16 @@ class LC_Page_Admin_Products_Product extends LC_Page {
      * @return void
      */
     function process() {
-        $objView = new SC_AdminView();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objSiteInfo = new SC_SiteInfo();
         $objQuery = new SC_Query();
         $objDb = new SC_Helper_DB_Ex();
@@ -265,8 +274,6 @@ class LC_Page_Admin_Products_Product extends LC_Page {
 
         // サブ情報表示・非表示のチェックに使用する。
         $this->sub_find = $sub_find;
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * 受注メール管理 のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Order_Mail extends LC_Page {
+class LC_Page_Admin_Order_Mail extends LC_Page_Admin {
 
     // }}}
     // {{{ functions
@@ -60,8 +60,16 @@ class LC_Page_Admin_Order_Mail extends LC_Page {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
 
-        $objView = new SC_AdminView();
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objSess = new SC_Session();
         SC_Utils_Ex::sfIsSuccess($objSess);
 
@@ -99,7 +107,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page {
                 // 注文受付メール
                 $objMail->sfSendOrderMail($_POST['order_id'], $_POST['template_id'], $_POST['subject'], $_POST['header'], $_POST['footer']);
             }
-            $this->sendRedirect($this->getLocation(URL_SEARCH_ORDER));
+            $this->objDisplay->redirect($this->getLocation(URL_SEARCH_ORDER));
             exit;
             break;
         case 'confirm':
@@ -119,11 +127,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page {
                 $this->tpl_body = mb_convert_encoding( $objSendMail->body, CHAR_CODE, "auto" );
                 $this->tpl_to = $objSendMail->tpl_to;
                 $this->tpl_mainpage = 'order/mail_confirm.tpl';
-
-                $objView->assignobj($this);
-                $objView->display(MAIN_FRAME);
-
-                exit;
+                return;
             }
             break;
         case 'change':
@@ -148,8 +152,6 @@ class LC_Page_Admin_Order_Mail extends LC_Page {
         }
 
         $this->arrForm = $objFormParam->getFormParamList();
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

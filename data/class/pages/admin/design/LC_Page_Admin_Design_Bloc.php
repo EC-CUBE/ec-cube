@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * ブロック編集 のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Design_Bloc extends LC_Page {
+class LC_Page_Admin_Design_Bloc extends LC_Page_Admin {
 
     // }}}
     // {{{ functions
@@ -58,7 +58,16 @@ class LC_Page_Admin_Design_Bloc extends LC_Page {
      * @return void
      */
     function process() {
-        $objView = new SC_AdminView();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $this->objLayout = new SC_Helper_PageLayout_Ex();
         $package_path = USER_TEMPLATE_PATH . "/" . TEMPLATE_NAME . "/";
         
@@ -150,7 +159,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page {
                 $arrBlocData = $this->lfgetBlocData(" filename = ? " , array($_POST['filename']));
 
                 $bloc_id = $arrBlocData[0]['bloc_id'];
-                $this->sendRedirect($this->getLocation("./bloc.php",
+                $this->objDisplay->redirect($this->getLocation("./bloc.php",
                                             array("bloc_id" => $bloc_id,
                                                   "msg" => "on")));
                 exit;
@@ -188,7 +197,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page {
                     unlink($del_file);
                 }
             }
-            $this->sendRedirect($this->getLocation("./bloc.php"));
+            $this->objDisplay->redirect($this->getLocation("./bloc.php"));
             exit;
         	break;
         default:
@@ -197,10 +206,6 @@ class LC_Page_Admin_Design_Bloc extends LC_Page {
         	}
         	break;
         }        
-
-        // 画面の表示
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

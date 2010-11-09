@@ -81,10 +81,16 @@ class LC_Page_Contact extends LC_Page {
      * @return void
      */
     function process() {
-        global $objCampaignSess;
+        $this->action();
+        $this->sendResponse();
+    }
 
-        $this->objView = new SC_SiteView();
-        $objCampaignSess = new SC_CampaignSession();
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objDb = new SC_Helper_DB_Ex();
         $CONF = $objDb->sf_getBasisData();			// 店舗基本情報
 
@@ -114,11 +120,6 @@ class LC_Page_Contact extends LC_Page {
             default:
               break;
         }
-
-        //----　ページ表示
-        $this->objView->assignobj($this);
-        // フレームを選択(キャンペーンページから遷移なら変更)
-        $objCampaignSess->pageView($this->objView);
     }
 
     /**
@@ -136,14 +137,18 @@ class LC_Page_Contact extends LC_Page {
      * @return void
      */
     function mobileProcess() {
-        $objView = new SC_MobileView();
-        $objDb = new SC_Helper_DB_Ex();
-        $CONF = $objDb->sf_getBasisData();			// 店舗基本情報
+        $this->mobileAction();
+        $this->sendResponse();
+    }
 
-        //----　ページ表示
-        $objView->assignobj($this);
-        $objView->assignarray($CONF);
-        $objView->display(SITE_FRAME);
+    /**
+     * Page のアクション(モバイル).
+     *
+     * @return void
+     */
+    function mobileAction() {
+        $objDb = new SC_Helper_DB_Ex();
+        $this->CONF = $objDb->sf_getBasisData();			// 店舗基本情報
     }
 
     /**
@@ -199,7 +204,7 @@ class LC_Page_Contact extends LC_Page {
         if(!$this->arrErr) {
             $this->lfSendMail($this);
             // 完了ページへ移動する
-            $this->sendRedirect($this->getLocation("./complete.php", array(), true));
+            $this->objDisplay->redirect($this->getLocation("./complete.php", array(), true));
             exit;
         } else {
             SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);

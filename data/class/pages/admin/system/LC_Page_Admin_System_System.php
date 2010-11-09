@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * システム情報 のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_System_System extends LC_Page {
+class LC_Page_Admin_System_System extends LC_Page_Admin {
 
     // }}}
     // {{{ functions
@@ -68,9 +68,17 @@ class LC_Page_Admin_System_System extends LC_Page {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
 
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         SC_Utils_Ex::sfIsSuccess(new SC_Session);
-        $objView = new SC_AdminView();
 
         $this->initForm();
         switch($this->objForm->getValue('mode')) {
@@ -86,9 +94,6 @@ class LC_Page_Admin_System_System extends LC_Page {
         }
 
         $this->arrSystemInfo = $this->getSystemInfo();
-
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

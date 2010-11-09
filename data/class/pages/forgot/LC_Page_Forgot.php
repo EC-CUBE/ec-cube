@@ -64,15 +64,17 @@ class LC_Page_Forgot extends LC_Page {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objQuery = new SC_Query();
-        $objView = null;
-
-        if (defined("MOBILE_SITE") && MOBILE_SITE) {
-            $objView = new SC_MobileView();
-        } else {
-            $objView = new SC_SiteView(false);
-        }
-
         $objSess = new SC_Session();
 
         // 店舗基本情報を取得
@@ -174,10 +176,6 @@ class LC_Page_Forgot extends LC_Page {
         if (defined("MOBILE_SITE") && MOBILE_SITE) {
             $this->createMobileToken();
         }
-
-        //----　ページ表示
-        $objView->assignobj($this);
-        $objView->display($this->tpl_mainpage);
     }
 
     /**

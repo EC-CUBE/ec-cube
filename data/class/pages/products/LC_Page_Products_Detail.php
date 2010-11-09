@@ -77,6 +77,17 @@ class LC_Page_Products_Detail extends LC_Page {
      * @return void
      */
     function process() {
+        parent::process();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のAction.
+     *
+     * @return void
+     */
+    function action() {
         // プロダクトIDの正当性チェック
         $product_id = $this->lfCheckProductId();
 
@@ -215,12 +226,12 @@ class LC_Page_Products_Detail extends LC_Page {
                         $objSiteSess->setRegistFlag();
                         $objCartSess->saveCurrentCart($objSiteSess->getUniqId());
 
-                        $this->sendRedirect($this->getLocation(
+                        $this->objDisplay->redirect($this->getLocation(
                             URL_DIR . 'user_data/gmopg_oneclick_confirm.php', array(), true));
                         exit;
                     }
 
-                    $this->sendRedirect($this->getLocation(URL_CART_TOP));
+                    $this->objDisplay->redirect($this->getLocation(URL_CART_TOP));
                     exit;
                 }
                 break;
@@ -268,8 +279,8 @@ class LC_Page_Products_Detail extends LC_Page {
 
         $this->lfConvertParam();
 
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
+        //$objView->assignobj($this);
+        //$objView->display(SITE_FRAME);
     }
 
     /**
@@ -293,16 +304,26 @@ class LC_Page_Products_Detail extends LC_Page {
 
     /**
      * Page のプロセス(モバイル).
+     * @return void
+     */
+    function mobileProcess() {
+        parent::mobileProcess();
+        $this->mobileAction();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のAction(モバイル).
      *
      * FIXME 要リファクタリング
      *
      * @return void
      */
-    function mobileProcess() {
+    function mobileAction() {
         // プロダクトIDの正当性チェック
         $product_id = $this->lfCheckProductId();
 
-        $objView = new SC_MobileView();
+        //$objView = new SC_MobileView();
         $objCustomer = new SC_Customer();
         $objQuery = new SC_Query();
         $objDb = new SC_Helper_DB_Ex();
@@ -418,7 +439,7 @@ class LC_Page_Products_Detail extends LC_Page {
                 }
 
                 $objCartSess->addProduct(array($_POST['product_id'], $product_class_id, $classcategory_id1, $classcategory_id2), $this->objFormParam->getValue('quantity'));
-                $this->sendRedirect($this->getLocation(MOBILE_URL_CART_TOP), true);
+                $this->objDisplay->redirect($this->getLocation(MOBILE_URL_CART_TOP));
                 exit;
             }
             break;
@@ -451,8 +472,8 @@ class LC_Page_Products_Detail extends LC_Page {
         //関連商品情報表示
         $this->arrRecommend = $this->lfPreGetRecommendProducts($product_id);
 
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
+        //$objView->assignobj($this);
+        //$objView->display(SITE_FRAME);
     }
 
     /* プロダクトIDの正当性チェック */

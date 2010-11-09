@@ -56,7 +56,18 @@ class LC_Page_Regist extends LC_Page {
      * @return void
      */
     function process() {
-        $objView = new SC_SiteView();
+        parent::process();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のAction.
+     *
+     * @return void
+     */
+    function action() {
+        //$objView = new SC_SiteView();
         $objSiteInfo = $objView->objSiteInfo;
         $objCustomer = new SC_Customer();
         $objDb = new SC_Helper_DB_Ex();
@@ -85,7 +96,7 @@ class LC_Page_Regist extends LC_Page {
                 $objCustomer->setLogin($arrRet[0]['email']);
                 $etc_val['ci'] = $arrRet[0]['customer_id'];
                 $_SERVER['QUERY_STRING'] = NULL;
-                $this->sendRedirect($this->getLocation("./complete.php", $etc_val));
+                $this->objDisplay->redirect($this->getLocation("./complete.php", $etc_val));
                 exit;
             }
 
@@ -95,8 +106,8 @@ class LC_Page_Regist extends LC_Page {
         }
 
         //----　ページ表示
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
+        //$objView->assignobj($this);
+        //$objView->display(SITE_FRAME);
     }
 
 
@@ -114,7 +125,18 @@ class LC_Page_Regist extends LC_Page {
      * @return void
      */
     function mobileProcess() {
-        $objView = new SC_MobileView();
+        parent::mobileProcess();
+        $this->mobileAction();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のAction(モバイル).
+     *
+     * @return void
+     */
+    function mobileAction() {
+        //$objView = new SC_MobileView();
         $objSiteInfo = $objView->objSiteInfo;
         $objCustomer = new SC_Customer();
         $objDb = new SC_Helper_DB_Ex();
@@ -137,7 +159,7 @@ class LC_Page_Regist extends LC_Page {
                 $objQuery = new SC_Query();
                 $email = $objQuery->get("dtb_customer", "email", "secret_key = ?", array($registSecretKey));
                 $objCustomer->setLogin($email);
-                $this->sendRedirect($this->getLocation("./complete.php"), true);
+                $this->objDisplay->redirect($this->getLocation("./complete.php"));
                 exit;
             }
 
@@ -149,8 +171,8 @@ class LC_Page_Regist extends LC_Page {
         }
 
         //----　ページ表示
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
+        //$objView->assignobj($this);
+        //$objView->display(SITE_FRAME);
     }
 
     /**

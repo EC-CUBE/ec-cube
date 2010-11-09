@@ -58,14 +58,20 @@ class LC_Page_Shopping_Complete extends LC_Page {
      * @return void
      */
     function process() {
-        global $objCampaignSess;
+        parent::process();
+        $this->action();
+        $this->sendResponse();
+    }
 
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objView = new SC_SiteView();
         $objSiteInfo = $objView->objSiteInfo;
         $this->arrInfo = $objSiteInfo->data;
-
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
     }
 
     /**
@@ -92,6 +98,16 @@ class LC_Page_Shopping_Complete extends LC_Page {
      * @return void
      */
     function mobileProcess() {
+        parent::mobileProcess();
+        $this->mobileAction();
+        $this->sendResponse();
+    }
+    /**
+     * Page のプロセス(モバイル).
+     *
+     * @return void
+     */
+    function mobileAction() {
         $objView = new SC_MobileView();
         $this->objSiteSess = new SC_SiteSession();
         $this->objCartSess = new SC_CartSession();
@@ -151,9 +167,6 @@ class LC_Page_Shopping_Complete extends LC_Page {
                 sfTSRequest($order_id);
             }
         }
-
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
     }
 
 
@@ -233,11 +246,7 @@ class LC_Page_Shopping_Complete extends LC_Page {
             }
         }
         // 一時テーブルを受注テーブルに格納する
-        if (defined("MOBILE_SITE")) {
-            $order_id = $this->lfRegistOrder($objQuery, $arrData);
-        } else {
-            $order_id = $this->lfRegistOrder($objQuery, $arrData, $this->objCampaignSess);
-        }
+        $order_id = $this->lfRegistOrder($objQuery, $arrData);
         // カート商品を受注詳細テーブルに格納する
         $this->lfRegistOrderDetail($objQuery, $order_id, $this->objCartSess);
         // 受注一時テーブルの情報を削除する。
@@ -374,7 +383,7 @@ class LC_Page_Shopping_Complete extends LC_Page {
      *
      * @return integer 注文番号
      */
-    function lfRegistOrder($objQuery, $arrData, $objCampaignSess = null) {
+    function lfRegistOrder($objQuery, $arrData) {
         $objDb = new SC_Helper_DB_Ex();
         $sqlval = $arrData;
 
@@ -425,11 +434,6 @@ class LC_Page_Shopping_Complete extends LC_Page {
         $order_id = $arrData['order_id'];       // 注文番号
         $sqlval['create_date'] = 'Now()';       // 受注日
         $sqlval['update_date'] = 'Now()';       // 更新日時
-
-        // キャンペーンID
-        if (!defined("MOBILE_SITE")) {
-            if ($objCampaignSess->getIsCampaign()) $sqlval['campaign_id'] = $objCampaignSess->getCampaignId();
-        }
 
         // 受注テーブルの登録
         $objQuery->insert("dtb_order", $sqlval);

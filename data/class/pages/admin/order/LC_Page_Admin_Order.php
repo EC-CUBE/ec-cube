@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /* ペイジェント決済モジュール連携用 */
 if (file_exists(MODULE_PATH . 'mdl_paygent/include.php') === TRUE) {
@@ -36,7 +36,7 @@ if (file_exists(MODULE_PATH . 'mdl_paygent/include.php') === TRUE) {
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Order extends LC_Page {
+class LC_Page_Admin_Order extends LC_Page_Admin {
 
     // }}}
     // {{{ functions
@@ -74,7 +74,16 @@ class LC_Page_Admin_Order extends LC_Page {
      * @return void
      */
     function process() {
-        $objView = new SC_AdminView();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objDb = new SC_Helper_DB_Ex();
         $objSess = new SC_Session();
         // パラメータ管理クラス
@@ -277,7 +286,8 @@ class LC_Page_Admin_Order extends LC_Page {
                             $data = $objCSV->lfGetCSV("dtb_order", $where, $option, $arrval, $arrCsvOutputCols, $arrCsvOutputConvs);
 
                             // CSVを送信する。
-                            SC_Utils_Ex::sfCSVDownload($head.$data);
+                            list($fime_name, $data) = SC_Utils_Ex::sfGetCSVData($head.$data);
+                            $this->sendResponseCSV($fime_name, $data);
                             exit;
                             break;
                         case 'delete_all':
@@ -341,9 +351,6 @@ class LC_Page_Admin_Order extends LC_Page {
         // 支払い方法の取得
         $arrRet = $objDb->sfGetPayment();
         $this->arrPayment = SC_Utils_Ex::sfArrKeyValue($arrRet, 'payment_id', 'payment_method');
-
-        $objView->assignobj($this);
-                $objView->display(MAIN_FRAME);
     }
 
     /**

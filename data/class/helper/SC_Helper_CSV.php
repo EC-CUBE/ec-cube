@@ -179,10 +179,11 @@ __EOS__;
         }
         
         // CSVを送信する。
-        $this->lfDownloadCsv($outputArray);
+        #$this->lfDownloadCsv($outputArray);
+        return $this->lfGetCsv2($outputArray);
         
         // 成功終了
-        return true;
+        #return true;
     }
 
     // CSV出力データを作成する。(レビュー)
@@ -493,6 +494,27 @@ __EOS__;
             $lineString = mb_convert_encoding($lineString, 'SJIS-Win');
             echo $lineString . "\r\n";
         }
+    }
+
+    /**
+     * CSVデータを取得する。
+     */
+    function lfGetCsv2($arrayData, $prefix = "") {
+
+        if($prefix == "") {
+            $dir_name = SC_Utils::sfUpDirName();
+            $file_name = $dir_name . date("ymdHis") .".csv";
+        } else {
+            $file_name = $prefix . date("ymdHis") .".csv";
+        }
+
+        /* データを出力 */
+        foreach ($arrayData as $lineArray) {
+            $lineString = $this->sfArrayToCsv($lineArray);
+            $lineString = mb_convert_encoding($lineString, 'SJIS-Win');
+            $lineString .= "\r\n";
+        }
+        return array($file_name, $lineString);
     }
 }
 ?>

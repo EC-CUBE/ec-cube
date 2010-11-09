@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * 規格分類 のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id:LC_Page_Admin_Products_ClassCategory.php 15532 2007-08-31 14:39:46Z nanasess $
  */
-class LC_Page_Admin_Products_ClassCategory extends LC_Page {
+class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin {
 
     // }}}
     // {{{ functions
@@ -56,7 +56,16 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page {
      * @return void
      */
     function process() {
-        $objView = new SC_AdminView();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objQuery = new SC_Query();
         $objDb = new SC_Helper_DB_Ex();
 
@@ -79,7 +88,7 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page {
 
         if(!$get_check) {
             // 規格登録ページに飛ばす。
-            $this->sendRedirect($this->getLocation(URL_CLASS_REGIST));
+            $this->objDisplay->redirect($this->getLocation(URL_CLASS_REGIST));
             exit;
         }
 
@@ -108,7 +117,7 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page {
                     $this->lfUpdateClass();	// DBへの書き込み
                 }
                 // 再表示
-                $this->reload($_GET['class_id']);
+                $this->objDisplay->reload($_GET['class_id']);
                 //sfReload("class_id=" . $_GET['class_id']);
             } else {
                 // POSTデータを引き継ぐ
@@ -147,10 +156,6 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page {
         $where = "del_flg <> 1 AND class_id = ?";
         $objQuery->setOrder("rank DESC");
         $this->arrClassCat = $objQuery->select("name, classcategory_id", "dtb_classcategory", $where, array($_GET['class_id']));
-
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
-
     }
 
     /**

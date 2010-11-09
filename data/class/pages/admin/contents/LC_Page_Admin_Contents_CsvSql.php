@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * CSV 出力項目設定(高度な設定)のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Contents_CsvSql extends LC_Page {
+class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin {
 
     // }}}
     // {{{ functions
@@ -57,7 +57,16 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page {
      * @return void
      */
     function process() {
-        $objView = new SC_AdminView();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objDbFactory = SC_DB_DBFactory_Ex::getInstance();
 
         // 認証可否の判定
@@ -108,24 +117,21 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page {
 
             $this->sqlerr = isset($errMsg) ? $errMsg : "" ;
 
-            $this->objView = $objView;
-
             // 画面の表示
-            $objView->assignobj($this);
-            $objView->display('contents/csv_sql_view.tpl');
-            exit;
+            $this->setTemplate('contents/csv_sql_view.tpl');
+            return;
             break;
 
             // 新規作成
         case "new_page":
-            $this->sendRedirect($this->getLocation("./csv_sql.php"));
+            $this->objDisplay->redirect($this->getLocation("./csv_sql.php"));
             exit;
             break;
 
             // データ削除
         case "delete":
             $this->lfDelData($sql_id);
-            $this->sendRedirect($this->getLocation("./csv_sql.php"));
+            $this->objDisplay->redirect($this->getLocation("./csv_sql.php"));
             exit;
             break;
 
@@ -215,10 +221,6 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page {
             $arrSqlData[0]['csv_sql'] = isset($_POST['csv_sql']) ? $_POST['csv_sql'] : "";
         }
         $this->arrSqlData = $arrSqlData[0];	// 選択されているSQLデータ
-
-        // 画面の表示
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

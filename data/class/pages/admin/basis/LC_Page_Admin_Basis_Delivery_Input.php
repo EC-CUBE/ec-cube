@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * 配送業者設定 のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Basis_Delivery_Input extends LC_Page {
+class LC_Page_Admin_Basis_Delivery_Input extends LC_Page_Admin {
 
     // {{{ properties
 
@@ -64,7 +64,16 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page {
      * @return void
      */
     function process() {
-        $objView = new SC_AdminView();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objSess = new SC_Session();
 
         // 認証可否の判定
@@ -98,8 +107,6 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page {
         }
 
         $this->arrForm = $this->objFormParam->getFormParamList();
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

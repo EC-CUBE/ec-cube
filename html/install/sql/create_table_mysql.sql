@@ -1248,6 +1248,19 @@ CREATE TABLE dtb_bkup (
     PRIMARY KEY (bkup_name)
 ) TYPE=InnoDB;
 
+
+CREATE TABLE dtb_plugin (
+  plugin_id INT NOT NULL,
+  plugin_name VARCHAR(255) NOT NULL DEFAULT "",
+  enable INT NOT NULL DEFAULT 0,
+  del_flg INT NOT NULL DEFAULT 0,
+  class_name VARCHAR(255) NOT NULL DEFAULT NULL,
+  create_date DATETIME NOT NULL,
+  update_date DATETIME NOT NULL,
+  PRIMARY KEY (plugin_id)
+) TYPE=InnoDB;
+
+
 CREATE INDEX dtb_customer_mobile_phone_id_key ON dtb_customer (mobile_phone_id(64));
 CREATE INDEX dtb_products_class_product_id_key ON dtb_products_class(product_id);
 CREATE INDEX dtb_order_detail_product_id_key ON dtb_order_detail(product_id);

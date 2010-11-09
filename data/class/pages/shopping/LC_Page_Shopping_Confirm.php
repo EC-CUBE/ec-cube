@@ -61,13 +61,21 @@ class LC_Page_Shopping_Confirm extends LC_Page {
      * @return void
      */
     function process() {
-        global $objCampaignSess;
+        parent::process();
+        $this->action();
+        $this->sendResponse();
+    }
 
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objView = new SC_SiteView();
         $objCartSess = new SC_CartSession();
         $objSiteInfo = $objView->objSiteInfo;
         $objSiteSess = new SC_SiteSession();
-        $objCampaignSess = new SC_CampaignSession();
         $objCustomer = new SC_Customer();
         $objQuery = new SC_Query();
         $objDb = new SC_Helper_DB_Ex();
@@ -131,7 +139,7 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         case 'return':
             // 正常な推移であることを記録しておく
             $objSiteSess->setRegistFlag();
-            $this->sendRedirect($this->getLocation(URL_SHOP_PAYMENT));
+            $this->objDisplay->redirect($this->getLocation(URL_SHOP_PAYMENT));
             exit;
             break;
         case 'confirm':
@@ -153,25 +161,19 @@ class LC_Page_Shopping_Confirm extends LC_Page {
                 $_SESSION["payment_id"] = $arrData['payment_id'];
                 $objPurchase = new SC_Helper_Purchase_Ex();
                 $objPurchase->completeOrder(ORDER_PENDING);
-                $this->sendRedirect($this->getLocation(URL_SHOP_MODULE));
+                $this->objDisplay->redirect($this->getLocation(URL_SHOP_MODULE));
             }else{
                 // 受注を完了し, 購入完了ページへ
                 $objPurchase = new SC_Helper_Purchase_Ex();
                 $objPurchase->completeOrder(ORDER_NEW);
                 $objPurchase->sendOrderMail($arrData["order_id"]);
-                $this->sendRedirect($this->getLocation(URL_SHOP_COMPLETE));
+                $this->objDisplay->redirect($this->getLocation(URL_SHOP_COMPLETE));
             }
             exit;
             break;
         default:
             break;
         }
-
-        $this->arrData = $arrData;
-        $this->arrInfo = $objSiteInfo->data;
-        $objView->assignobj($this);
-        // フレームを選択(キャンペーンページから遷移なら変更)
-        $objCampaignSess->pageView($objView);
     }
 
     /**
@@ -189,6 +191,17 @@ class LC_Page_Shopping_Confirm extends LC_Page {
      * @return void
      */
     function mobileProcess() {
+        parent::mobileProcess();
+        $this->mobileAction();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション(モバイル).
+     *
+     * @return void
+     */
+    function mobileAction() {
         $objView = new SC_MobileView();
         $objCartSess = new SC_CartSession();
         $objSiteInfo = $objView->objSiteInfo;
@@ -240,7 +253,7 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         case 'return':
             // 正常な推移であることを記録しておく
             $objSiteSess->setRegistFlag();
-            $this->sendRedirect($this->getLocation(MOBILE_URL_SHOP_PAYMENT), true);
+            $this->objDisplay->redirect($this->getLocation(MOBILE_URL_SHOP_PAYMENT));
             exit;
             break;
         case 'confirm':
@@ -258,9 +271,9 @@ class LC_Page_Shopping_Confirm extends LC_Page {
             // 決済方法により画面切替
             if($payment_type != "") {
                 $_SESSION["payment_id"] = $arrData['payment_id'];
-                $this->sendRedirect($this->getLocation(MOBILE_URL_SHOP_MODULE), true);
+                $this->objDisplay->redirect($this->getLocation(MOBILE_URL_SHOP_MODULE));
             }else{
-                $this->sendRedirect($this->getLocation(MOBILE_URL_SHOP_COMPLETE), true);
+                $this->objDisplay->redirect($this->getLocation(MOBILE_URL_SHOP_COMPLETE));
             }
             exit;
             break;
@@ -269,8 +282,6 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         }
         $this->arrData = $arrData;
         $this->arrInfo = $objSiteInfo->data;
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
     }
 
     /**

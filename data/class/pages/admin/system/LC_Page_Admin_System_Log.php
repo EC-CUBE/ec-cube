@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * ログ のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author Seasoft 塚田将久
  * @version $Id: LC_Page_Admin_System_System.php 17576 2008-08-28 06:08:09Z Seasoft $
  */
-class LC_Page_Admin_System_Log extends LC_Page {
+class LC_Page_Admin_System_Log extends LC_Page_Admin {
 
     // }}}
     // {{{ functions
@@ -57,8 +57,17 @@ class LC_Page_Admin_System_Log extends LC_Page {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         SC_Utils_Ex::sfIsSuccess(new SC_Session);
-        $objView = new SC_AdminView();
         
         $this->lfInitParam();
         
@@ -67,9 +76,6 @@ class LC_Page_Admin_System_Log extends LC_Page {
         }
         
         $this->tpl_ec_log = $this->getEccubeLog();
-        
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

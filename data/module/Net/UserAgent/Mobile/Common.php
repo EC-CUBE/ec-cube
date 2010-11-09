@@ -446,6 +446,21 @@ class Net_UserAgent_Mobile_Common
     }
 
     // }}}
+    // {{{ isSmartphone()
+
+    /**
+     * Returns whether the agent is Smartphone or not.
+     *
+     * @return boolean
+     * @since Method available since Release 0.31.0
+     */
+    function isSmartphone()
+    {
+        return false;
+    }
+
+
+    // }}}
     // {{{ getModel()
 
     /**

@@ -58,7 +58,17 @@ class LC_Page_Order extends LC_Page {
      * @return void
      */
     function process() {
-        $objView = new SC_SiteView();
+        parent::process();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objQuery = new SC_Query();
         $layout = new SC_Helper_PageLayout_Ex();
         $objDb = new SC_Helper_DB_Ex();
@@ -66,9 +76,6 @@ class LC_Page_Order extends LC_Page {
         // レイアウトデザインを取得
         $layout->sfGetPageLayout($this, false, DEF_LAYOUT);
         $this->arrRet = $objDb->sf_getBasisData();
-
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
     }
 
     /**
@@ -87,13 +94,20 @@ class LC_Page_Order extends LC_Page {
      * @return void
      */
     function mobileProcess() {
-        $objView = new SC_MobileView();
+        parent::mobileProcess();
+        $this->mobileAction();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション(モバイル).
+     *
+     *
+     * @return void
+     */
+    function mobileAction() {
         $objDb = new SC_Helper_DB_Ex();
-
         $this->arrRet = $objDb->sf_getBasisData();
-
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
     }
 
 

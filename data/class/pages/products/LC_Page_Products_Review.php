@@ -65,15 +65,24 @@ class LC_Page_Products_Review extends LC_Page {
 
     /**
      * Page のプロセス.
+     */
+    function process() {
+        parent::process();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のAction.
      *
      * @return void
      */
-    function process() {
-        $objView = new SC_SiteView();
+    function action() {
+        //$objView = new SC_SiteView();
         $objQuery = new SC_Query();
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            if (!$this->isValidToken()) {
+            if (!SC_Helper_Session_Ex::isValidToken()) {
                 SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", true);
             }
         }
@@ -144,7 +153,7 @@ class LC_Page_Products_Review extends LC_Page {
                     //登録実行
                     $this->lfRegistRecommendData($arrForm, $arrRegistColumn);
                     //レビュー書き込み完了ページへ
-                    $this->sendRedirect($this->getLocation("./review_complete.php", array(), true));
+                    $this->objDisplay->redirect($this->getLocation("./review_complete.php", array(), true));
                     exit;
                 }
             } else {
@@ -167,9 +176,8 @@ class LC_Page_Products_Review extends LC_Page {
 
         }
 
-        $this->transactionid = $this->getToken();
-        $objView->assignobj($this);
-        $objView->display($this->tpl_mainpage);
+        $this->transactionid = SC_Helper_Session_Ex::getToken();
+        $this->setTemplate($this->tpl_mainpage);
     }
 
     /**

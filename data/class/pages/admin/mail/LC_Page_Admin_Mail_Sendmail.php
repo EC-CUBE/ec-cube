@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * メール配信履歴 のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Mail_Sendmail extends LC_Page {
+class LC_Page_Admin_Mail_Sendmail extends LC_Page_Admin {
     
     var $objMail;
     // }}}
@@ -177,7 +177,7 @@ class LC_Page_Admin_Mail_Sendmail extends LC_Page {
             }
         }
         if ($_GET['mode'] == 'now') {
-            $this->sendRedirect($this->getLocation(URL_DIR . 'admin/mail/history.php'));
+            $this->objDisplay->redirect($this->getLocation(URL_DIR . 'admin/mail/history.php'));
         }
         echo "complete\n";
     }

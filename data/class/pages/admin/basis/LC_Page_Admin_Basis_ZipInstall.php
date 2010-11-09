@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /** CSV ファイルの最大行数 */
 define("ZIP_CSV_LINE_MAX", 8192);
@@ -43,7 +43,7 @@ define("ZIP_CSV_UTF8_FILE_PATH", DATA_PATH . "downloads/KEN_ALL_utf-8.CSV");
  * @author LOCKON CO.,LTD.
  * @version $Id:LC_Page_Admin_Basis_ZipInstall.php 16741 2007-11-08 00:43:24Z adachi $
  */
-class LC_Page_Admin_Basis_ZipInstall extends LC_Page {
+class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin {
 
     /** CSVの行数 */
     var $tpl_line = 0;
@@ -79,6 +79,16 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objQuery = new SC_Query();
 
         SC_Utils_Ex::sfIsSuccess(new SC_Session);
@@ -125,11 +135,6 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page {
 
         $this->tpl_line = $this->countZipCsv();
         $this->tpl_count_mtb_zip = $this->countMtbZip();
-
-        $objView = new SC_AdminView();
-
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

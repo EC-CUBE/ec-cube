@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 require_once(CLASS_PATH . "SC_Fpdf.php");
 
 /**
@@ -32,7 +32,7 @@ require_once(CLASS_PATH . "SC_Fpdf.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Order_Pdf extends LC_Page {
+class LC_Page_Admin_Order_Pdf extends LC_Page_Admin {
 
     // }}}
     // {{{ functions
@@ -66,7 +66,16 @@ class LC_Page_Admin_Order_Pdf extends LC_Page {
      * @return void
      */
     function process() {
-        $objView = new SC_AdminView();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objDb = new SC_Helper_DB_Ex();
         $objSess = new SC_Session();
 
@@ -137,9 +146,6 @@ class LC_Page_Admin_Order_Pdf extends LC_Page {
             $this->arrForm = $arrForm;
             break;
         }
-
-        $objView->assignobj($this);
-        $objView->display($this->tpl_mainpage);
     }
 
     /**

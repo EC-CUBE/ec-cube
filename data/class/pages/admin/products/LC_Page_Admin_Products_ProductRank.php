@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * 商品並べ替え のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Products_ProductRank extends LC_Page {
+class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin {
 
     // }}}
     // {{{ functions
@@ -56,8 +56,17 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objQuery = new SC_Query();
-        $objView = new SC_AdminView();
         $objSess = new SC_Session();
         $objDb = new SC_Helper_DB_Ex();
 
@@ -122,9 +131,6 @@ __EOS__;
         $this->arrTree = $objDb->sfGetCatTree($this->arrForm['parent_category_id']);
         $this->arrProductsList =
             $this->lfGetProduct($this->arrForm['parent_category_id']);
-
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

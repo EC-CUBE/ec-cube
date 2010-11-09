@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * メール配信履歴 のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Mail_History extends LC_Page {
+class LC_Page_Admin_Mail_History extends LC_Page_Admin {
 
     // }}}
     // {{{ functions
@@ -57,9 +57,18 @@ class LC_Page_Admin_Mail_History extends LC_Page {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         // ページ初期設定
         $objQuery = new SC_Query();
-        $objView = new SC_AdminView();
         $objSess = new SC_Session();
         $objDate = new SC_Date();
 
@@ -76,7 +85,7 @@ class LC_Page_Admin_Mail_History extends LC_Page {
             $sql = "UPDATE dtb_send_history SET del_flg = 1 WHERE send_id = ?";
             $objQuery->query($sql, array($_GET['send_id']) );
             $_SERVER['QUERY_STRING'] = "";
-            $this->reload();
+            $this->objDisplay->reload();
         }
         $from = "dtb_send_history";
 
@@ -107,10 +116,6 @@ class LC_Page_Admin_Mail_History extends LC_Page {
 
         // 検索結果の取得
         $this->arrDataList = $objQuery->select($col, $from, $where, $arrval);
-
-        // ページ表示
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

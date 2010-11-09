@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * XXX のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_System_Delete extends LC_Page {
+class LC_Page_Admin_System_Delete extends LC_Page_Admin {
 
     // }}}
     // {{{ functions
@@ -51,7 +51,16 @@ class LC_Page_Admin_System_Delete extends LC_Page {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
 
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         // 認証可否の判定
         $objSess = new SC_Session();
         SC_Utils_Ex::sfIsSuccess($objSess);
@@ -80,7 +89,7 @@ class LC_Page_Admin_System_Delete extends LC_Page {
         // リダイレクト
         $url = $this->getLocation(URL_SYSTEM_TOP)
              . '?pageno=' . $this->objForm->getValue('pageno');
-        $this->sendRedirect($url);
+        $this->objDisplay->redirect($url);
     }
 
     /**

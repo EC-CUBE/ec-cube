@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * 顧客管理 のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Customer extends LC_Page {
+class LC_Page_Admin_Customer extends LC_Page_Admin {
 
     // }}}
     // {{{ functions
@@ -213,6 +213,16 @@ class LC_Page_Admin_Customer extends LC_Page {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         //---- ページ初期設定
         $objQuery = new SC_Query();
         $objView = new SC_AdminView();
@@ -382,7 +392,10 @@ class LC_Page_Admin_Customer extends LC_Page {
                     //-　CSV出力
                     $data = SC_Utils_Ex::getCSVData($this->search_data, $arrColumn);
 
-                    SC_Utils_Ex::sfCSVDownload($header.$data);
+
+                    // CSVを送信する。
+                    list($fime_name, $data) = SC_Utils_Ex::sfGetCSVData($head.$data);
+                    $this->sendResponseCSV($fime_name, $data);
                     exit;
                     break;
                 case 'delete_all':
@@ -420,10 +433,6 @@ class LC_Page_Admin_Customer extends LC_Page {
         }
 
         $this->arrCatList = $objDb->sfGetCategoryList();
-
-        //---- ページ表示
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

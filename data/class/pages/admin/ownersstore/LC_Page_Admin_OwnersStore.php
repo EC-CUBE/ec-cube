@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * EC-CUBEアプリケーション管理 のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_OwnersStore extends LC_Page {
+class LC_Page_Admin_OwnersStore extends LC_Page_Admin {
 
     var $tpl_subno = 'index';
     // }}}
@@ -57,13 +57,18 @@ class LC_Page_Admin_OwnersStore extends LC_Page {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
 
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         // ログインチェック
         SC_Utils::sfIsSuccess(new SC_Session());
-
-        $objView = new SC_AdminView();
-        $objView->assignObj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

@@ -142,7 +142,7 @@ class LC_Page_Magazine_Confirm extends LC_Page {
             $objMail->sendMail();
 
             // 完了ページに移動させる。
-            $this->sendRedirect($this->getLocation("./complete.php",
+            $this->objDisplay->redirect($this->getLocation("./complete.php",
                                 array(session_name() => session_id())));
             exit;
         } else {

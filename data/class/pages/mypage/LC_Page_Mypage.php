@@ -64,8 +64,19 @@ class LC_Page_MyPage extends LC_Page {
      * @return void
      */
     function process() {
+        parent::process();
+        $this->action();
+        $this->sendResponse();
+    }
+    
+    /**
+     * Page のAction.
+     *
+     * @return void
+     */
+    function action() {
 
-        $objView = new SC_SiteView();
+        //$objView = new SC_SiteView();
         $objQuery = new SC_Query();
         $objCustomer = new SC_Customer();
         
@@ -116,8 +127,8 @@ class LC_Page_MyPage extends LC_Page {
         // 支払い方法の取得
         $objDb = new SC_Helper_DB_Ex();
         $this->arrPayment = $objDb->sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
-        $objView->assignobj($this);				//$objpage内の全てのテンプレート変数をsmartyに格納
-        $objView->display(SITE_FRAME);				//パスとテンプレート変数の呼び出し、実行
+        //$objView->assignobj($this);				//$objpage内の全てのテンプレート変数をsmartyに格納
+        //$objView->display(SITE_FRAME);				//パスとテンプレート変数の呼び出し、実行
     }
 
     /**
@@ -126,6 +137,7 @@ class LC_Page_MyPage extends LC_Page {
      * @return void
      */
     function mobileInit() {
+        $this->init();
         $this->tpl_mainpage = 'mypage/index.tpl';
         $this->tpl_title = 'MYページ/購入履歴一覧';
         $this->httpCacheControl('nocache');
@@ -137,7 +149,18 @@ class LC_Page_MyPage extends LC_Page {
      * @return void
      */
     function mobileProcess() {
-        $objView = new SC_MobileView();
+        parent::mobileProcess();
+        $this->mobileAction();
+        $this->sendResponse();
+    }
+    
+    /**
+     * Page のAction(モバイル).
+     *
+     * @return void
+     */
+    function mobileAction() {
+        //$objView = new SC_MobileView();
         $objQuery = new SC_Query();
         $objCustomer = new SC_Customer();
         // クッキー管理クラス
@@ -180,7 +203,7 @@ class LC_Page_MyPage extends LC_Page {
                     $objMobile = new SC_Helper_Mobile_Ex();
                     if (!$objMobile->gfIsMobileMailAddress($objCustomer->getValue('email'))) {
                         if (!$objCustomer->hasValue('email_mobile')) {
-                            $this->sendRedirect($this->getLocation("../entry/email_mobile.php"), true);
+                            $this->objDisplay->redirect($this->getLocation("../entry/email_mobile.php"));
                             exit;
                         }
                     }

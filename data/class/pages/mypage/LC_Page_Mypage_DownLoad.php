@@ -51,6 +51,17 @@ class LC_Page_Mypage_DownLoad extends LC_Page {
      * @return void
      */
     function process() {
+        parent::process();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のAction.
+     *
+     * @return void
+     */
+    function action() {
     	ob_end_clean();
 
         $customer_id = $_SESSION['customer']['customer_id'];
@@ -68,58 +79,66 @@ class LC_Page_Mypage_DownLoad extends LC_Page {
         }
 
         $objCustomer = new SC_Customer();
-        //ログインしていない場合
+        //ログインしていない場合エラー
         if (!$objCustomer->isLoginSuccess()){
             SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
-        } else {
-        //ログインしている場合
-            //DBから商品情報の読込
-            $arrForm = $this->lfGetRealFileName($customer_id, $order_id, $product_id, $product_class_id);
-            //ステータスが支払済み以上である事
-            if ($arrForm["status"] < ORDER_DELIV){
-                SC_Utils_Ex::sfDispSiteError(DOWNFILE_NOT_FOUND,"",true);
-            }
-            //ファイル情報が無い場合はNG
-            if ($arrForm["down_realfilename"] == "" ){
-                SC_Utils_Ex::sfDispSiteError(DOWNFILE_NOT_FOUND,"",true);
-            }
-            //ファイルそのものが無い場合もとりあえずNG
-            $realpath = DOWN_SAVE_DIR . $arrForm["down_realfilename"];
-            if (!file_exists($realpath)){
-                SC_Utils_Ex::sfDispSiteError(DOWNFILE_NOT_FOUND,"",true);
-            }
-            //ファイル名をエンコードする Safariの対策はUTF-8で様子を見る
-            $encoding = "Shift_JIS";
-            if(isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'],'Safari')) {
-                $encoding = "UTF-8";
-            }
-            $sdown_filename = mb_convert_encoding($arrForm["down_filename"], $encoding, "auto");
-            //タイプ指定
-            header("Content-Type: Application/octet-stream");
-            //ファイル名指定
-            header("Content-Disposition: attachment; filename=" . $sdown_filename);
-            header("Content-Transfer-Encoding: binary");
-            //キャッシュ無効化
-            header("Expires: Mon, 26 Nov 1962 00:00:00 GMT");
-            header("Last-Modified: " . gmdate("D,d M Y H:i:s") . " GMT");
-            //IE6+SSL環境下は、キャッシュ無しでダウンロードできない
-            header("Cache-Control: private");
-            header("Pragma: private");
-            //ファイルサイズ指定
-            $zv_filesize = filesize($realpath);
-            header("Content-Length: " . $zv_filesize);
-            set_time_limit(0);
-            ob_end_flush();
-            flush();
-            //ファイル読み込み
-            $handle = fopen($realpath, "rb");
-            while (!feof($handle)) {
-                echo(fread($handle, DOWNLOAD_BLOCK*1024));
-                ob_flush();
-                flush();
-            }
-            fclose($handle);
         }
+    }
+
+    /**
+     * Page のResponse.
+     * @return void
+     */
+    function  sendResponse() {
+        $this->objDisp->noAction();
+        //DBから商品情報の読込
+        $arrForm = $this->lfGetRealFileName($customer_id, $order_id, $product_id, $product_class_id);
+        //ステータスが支払済み以上である事
+        if ($arrForm["status"] < ORDER_DELIV){
+            SC_Utils_Ex::sfDispSiteError(DOWNFILE_NOT_FOUND,"",true);
+        }
+        //ファイル情報が無い場合はNG
+        if ($arrForm["down_realfilename"] == "" ){
+            SC_Utils_Ex::sfDispSiteError(DOWNFILE_NOT_FOUND,"",true);
+        }
+        //ファイルそのものが無い場合もとりあえずNG
+        $realpath = DOWN_SAVE_DIR . $arrForm["down_realfilename"];
+        if (!file_exists($realpath)){
+            SC_Utils_Ex::sfDispSiteError(DOWNFILE_NOT_FOUND,"",true);
+        }
+        //ファイル名をエンコードする Safariの対策はUTF-8で様子を見る
+        $encoding = "Shift_JIS";
+        if(isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'],'Safari')) {
+            $encoding = "UTF-8";
+        }
+        $sdown_filename = mb_convert_encoding($arrForm["down_filename"], $encoding, "auto");
+
+        //TODO SC_Display利用に変更
+        //タイプ指定
+        header("Content-Type: Application/octet-stream");
+        //ファイル名指定
+        header("Content-Disposition: attachment; filename=" . $sdown_filename);
+        header("Content-Transfer-Encoding: binary");
+        //キャッシュ無効化
+        header("Expires: Mon, 26 Nov 1962 00:00:00 GMT");
+        header("Last-Modified: " . gmdate("D,d M Y H:i:s") . " GMT");
+        //IE6+SSL環境下は、キャッシュ無しでダウンロードできない
+        header("Cache-Control: private");
+        header("Pragma: private");
+        //ファイルサイズ指定
+        $zv_filesize = filesize($realpath);
+        header("Content-Length: " . $zv_filesize);
+        set_time_limit(0);
+        ob_end_flush();
+        flush();
+        //ファイル読み込み
+        $handle = fopen($realpath, "rb");
+        while (!feof($handle)) {
+            echo(fread($handle, DOWNLOAD_BLOCK*1024));
+            ob_flush();
+            flush();
+        }
+        fclose($handle);
     }
 
     /**

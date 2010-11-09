@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * システム管理 のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_System_Input extends LC_Page {
+class LC_Page_Admin_System_Input extends LC_Page_Admin {
 
     // }}}
     // {{{ functions
@@ -43,6 +43,8 @@ class LC_Page_Admin_System_Input extends LC_Page {
      */
     function init() {
         parent::init();
+
+        $this->tpl_mainpage = 'system/input.tpl';
 
         // ページ送り用ナンバーの取得
         $this->tpl_pageno = isset($_REQUEST['pageno']) ? $_REQUEST['pageno'] : 1;
@@ -60,12 +62,21 @@ class LC_Page_Admin_System_Input extends LC_Page {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
 
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         // ログインチェック
         SC_Utils::sfIsSuccess(new SC_Session());
 
         // トランザクショントークンの取得
-        $this->transactionid = $this->getToken();
+        $this->transactionid = SC_Helper_Session_Ex::getToken();
 
         switch($this->getMode()) {
         case 'new':
@@ -84,10 +95,6 @@ class LC_Page_Admin_System_Input extends LC_Page {
             $this->execDefaultMode();
             break;
         }
-
-        $objView = new SC_AdminView();
-        $objView->assignobj($this);
-        $objView->display('system/input.tpl');
     }
 
     /**
@@ -123,7 +130,7 @@ class LC_Page_Admin_System_Input extends LC_Page {
      * @return void
      */
     function execNewMode() {
-        if ($this->isValidToken() !== true) {
+        if (SC_Helper_Session_Ex::isValidToken() !== true) {
             SC_Utils::sfDispError('');
         }
 
@@ -142,12 +149,12 @@ class LC_Page_Admin_System_Input extends LC_Page {
             // エラー情報をセットする
             $this->arrErr = $arrErr;
             // トランザクショントークンの取得
-            $this->transactionid = $this->getToken();
+            $this->transactionid = SC_Helper_Session_Ex::getToken();
             return;
         }
 
         $this->insertMemberData($this->objForm->getHashArray());
-        $this->reload(array('mode' => 'parent_reload'));
+        $this->objDisplay->reload(array('mode' => 'parent_reload'));
     }
 
     /**
@@ -213,7 +220,7 @@ class LC_Page_Admin_System_Input extends LC_Page {
      * @return void
      */
     function execEditMode() {
-        if ($this->isValidToken() !== true) {
+        if (SC_Helper_Session_Ex::isValidToken() !== true) {
             SC_Utils::sfDispError('');
         }
 
@@ -232,7 +239,7 @@ class LC_Page_Admin_System_Input extends LC_Page {
             // エラー情報をセットする
             $this->arrErr = $arrErr;
             // トランザクショントークンの取得
-            $this->transactionid = $this->getToken();
+            $this->transactionid = SC_Helper_Session_Ex::getToken();
             return;
         }
 

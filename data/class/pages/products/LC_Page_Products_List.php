@@ -83,9 +83,18 @@ class LC_Page_Products_List extends LC_Page {
      * @return void
      */
     function process() {
-        $this->lfLoadParam();
+        parent::process();
+        $this->action();
+        $this->sendResponse();
+    }
 
-        $objView = new SC_SiteView(!$this->inCart);
+    /**
+     *  ページのアクション（旧process)
+     * @return void
+     */
+    function action() {
+        $this->lfLoadParam();
+        //$objView = new SC_SiteView(!$this->inCart);
         $objQuery = new SC_Query();
         $objDb = new SC_Helper_DB_Ex();
 
@@ -160,7 +169,7 @@ class LC_Page_Products_List extends LC_Page {
                 $product_type = $this->arrForm['product_type'];
                 $objCartSess = new SC_CartSession();
                 $objCartSess->addProduct($product_class_id, $this->arrForm['quantity'], $product_type);
-                $this->sendRedirect($this->getLocation(URL_CART_TOP));
+                $this->objDisplay->redirect($this->getLocation(URL_CART_TOP));
                 exit;
             }
             foreach (array_keys($this->arrProducts) as $key) {
@@ -175,13 +184,11 @@ class LC_Page_Products_List extends LC_Page {
                 }
             }
         }
+
         $this->tpl_javascript .= 'function fnOnLoad(){' . $js_fnOnLoad . '}';
         $this->tpl_onload .= 'fnOnLoad(); ';
 
         $this->tpl_rnd = SC_Utils_Ex::sfGetRandomString(3);
-
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
     }
 
     /**
@@ -196,14 +203,24 @@ class LC_Page_Products_List extends LC_Page {
     /**
      * Page のプロセス(モバイル).
      *
+     * @return void
+     */
+    function mobileProcess() {
+        parent::mobileProcess();
+        $this->mobieAction();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のAction(モバイル).
+     *
      * FIXME スパゲッティ...
      *
      * @return void
      */
-    function mobileProcess() {
+    function mobieAction(){
         $this->lfLoadParam();
-
-        $objView = new SC_MobileView();
+        //$objView = new SC_MobileView();
         $objQuery = new SC_Query();
         $objDb = new SC_Helper_DB_Ex();
 
@@ -262,9 +279,6 @@ class LC_Page_Products_List extends LC_Page {
         $this->tpl_search_mode = $tpl_search_mode;
 
         $this->tpl_mainpage = MOBILE_TEMPLATE_DIR . "products/list.tpl";
-
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
     }
 
     /**

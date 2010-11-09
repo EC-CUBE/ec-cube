@@ -72,6 +72,9 @@ class LC_Page {
     /** トランザクションID */
     var $transactionid;
 
+    /** テンプレート名 */
+    var $template;
+
     // }}}
     // {{{ functions
 
@@ -85,6 +88,15 @@ class LC_Page {
         // XXX すべてのページで宣言するべき
         $layout = new SC_Helper_PageLayout_Ex();
         $layout->sfGetPageLayout($this, false);
+
+        $this->template = SITE_FRAME;
+
+        // ディスプレイクラス生成
+        $this->objDisplay = new SC_Display();
+
+        // プラグインクラス生成
+        // $this->objPlugin = new SC_Helper_Plugin_Ex();
+        // $this->objPlugin->preProcess($this);
     }
 
     /**
@@ -95,11 +107,64 @@ class LC_Page {
     function process() {}
 
     /**
+     * Page のプロセス.(モバイル）
+     *
+     * @return void
+     */
+    function mobileProcess() {}
+
+    /**
+     * Page のレスポンス送信.
+     *
+     * @return void
+     */
+    function sendResponse() {
+        // post-prosess処理(暫定的)
+        //$this->objPlugin->process($this);
+
+        $this->objDisplay->hoge($this);
+        $this->objDisplay->response->response();
+    }
+
+    /**
+     * Page のレスポンス送信(ダウンロード).
+     *
+     * @return void
+     */
+    function sendResponseCSV($file_name, $data) {
+        $this->objDisplay->hoge($this);
+        $this->objDisplay->addHeader("Content-disposition", "attachment; filename=${file_name}");
+        $this->objDisplay->addHeader("Content-type", "application/octet-stream; name=${file_name}");
+        $this->objDisplay->addHeader("Cache-Control", "");
+        $this->objDisplay->addHeader("Pragma", "");
+
+        $this->objDisplay->response->body = $data;
+        $this->objDisplay->response->response();
+        exit;
+    }
+
+    /**
      * デストラクタ.
      *
      * @return void
      */
     function destroy() {}
+
+    /**
+     * テンプレート取得
+     *
+     */
+    function getTemplate() {
+        return $this->template;
+    }
+
+    /**
+     * テンプレート設定(ポップアップなどの場合)
+     *
+     */
+    function setTemplate($template) {
+        $this->template = $template;
+    }
 
     /**
      * 指定の URL へリダイレクトする.
@@ -114,6 +179,8 @@ class LC_Page {
      * @see Net_URL
      */
     function sendRedirect($url, $isMobile = false) {
+echo "SC_Response.php::sendRedirect()に移行してね。";
+exit;
 
         if (preg_match("/(" . preg_quote(SITE_URL, '/')
                           . "|" . preg_quote(SSL_URL, '/') . ")/", $url)) {
@@ -158,6 +225,8 @@ class LC_Page {
      * @return string トランザクショントークンの文字列
      */
     function getToken() {
+echo "SC_Helper_Session.php::getToken()に移行してね。";
+exit;
         if (empty($_SESSION[TRANSACTION_ID_NAME])) {
             $_SESSION[TRANSACTION_ID_NAME] = $this->createToken();
         }
@@ -175,6 +244,8 @@ class LC_Page {
      * @return boolean トランザクショントークンが有効な場合 true
      */
     function isValidToken() {
+echo "SC_Helper_Session.php::isValidToken()に移行してね。";
+exit;
 
         $checkToken = "";
 
@@ -295,6 +366,8 @@ class LC_Page {
      * @see Net_URL
      */
     function reload($queryString = array(), $removeQueryString = false) {
+echo "SC_Display.php::reload()に移行してね。";
+exit;
 
         // 現在の URL を取得
         $netURL = new Net_URL($_SERVER['REQUEST_URI']);

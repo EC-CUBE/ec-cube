@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * Admin_Customer_SearchCustomer のページクラス.
@@ -31,8 +31,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Customer_SearchCustomer extends LC_Page
-{
+class LC_Page_Admin_Customer_SearchCustomer extends LC_Page_Admin {
 
     // }}}
     // {{{ functions
@@ -54,13 +53,21 @@ class LC_Page_Admin_Customer_SearchCustomer extends LC_Page
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         // 認証可否の判定
         $objSess = new SC_Session();
         SC_Utils_Ex::sfIsSuccess($objSess);
 
-        $objView = new SC_AdminView();
         // POSTのモードがsearchなら顧客検索開始
         if($_POST['mode'] == 'search'){
             $this->objFormParam = new SC_FormParam();
@@ -154,10 +161,7 @@ class LC_Page_Admin_Customer_SearchCustomer extends LC_Page
             }
 
         }
-        // 画面の表示
         $this->arrForm = $arrForm;
-        $objView->assignobj($this);
-        $objView->display($this->tpl_mainpage);
     }
 
     /**

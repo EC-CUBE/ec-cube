@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * システム管理 のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id: LC_Page_Admin_System_Rank.php 16582 2007-11-28 15:02:29Z satou $
  */
-class LC_Page_Admin_System_Rank extends LC_Page {
+class LC_Page_Admin_System_Rank extends LC_Page_Admin {
     // }}}
     // {{{ functions
 
@@ -50,6 +50,16 @@ class LC_Page_Admin_System_Rank extends LC_Page {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objQuery = new SC_Query();
 
         // ログインチェック
@@ -74,7 +84,7 @@ class LC_Page_Admin_System_Rank extends LC_Page {
         }
         
         // ページの表示
-        $this->sendRedirect($this->getLocation(URL_SYSTEM_TOP));
+        $this->objDisplay->redirect($this->getLocation(URL_SYSTEM_TOP));
     }
 
     /**

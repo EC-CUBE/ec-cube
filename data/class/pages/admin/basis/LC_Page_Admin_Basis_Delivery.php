@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * 配送業者設定 のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Basis_Delivery extends LC_Page {
+class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin {
 
     // }}}
     // {{{ functions
@@ -59,7 +59,16 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page {
      * @return void
      */
     function process() {
-        $objView = new SC_AdminView();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objSess = new SC_Session();
         $objQuery = new SC_Query();
         $objDb = new SC_Helper_DB_Ex();
@@ -73,15 +82,15 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page {
         case 'delete':
             // ランク付きレコードの削除
             $objDb->sfDeleteRankRecord("dtb_deliv", "deliv_id", $_POST['deliv_id']);
-            $this->reload(); // PRG pattern
+            $this->objDisplay->reload(); // PRG pattern
             break;
         case 'up':
             $objDb->sfRankUp("dtb_deliv", "deliv_id", $_POST['deliv_id']);
-            $this->reload(); // PRG pattern
+            $this->objDisplay->reload(); // PRG pattern
             break;
         case 'down':
             $objDb->sfRankDown("dtb_deliv", "deliv_id", $_POST['deliv_id']);
-            $this->reload(); // PRG pattern
+            $this->objDisplay->reload(); // PRG pattern
             break;
         default:
             break;
@@ -93,9 +102,6 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page {
         $table = "dtb_deliv";
         $objQuery->setOrder("rank DESC");
         $this->arrDelivList = $objQuery->select($col, $table, $where);
-
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

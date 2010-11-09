@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * メルマガ管理 のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Mail extends LC_Page {
+class LC_Page_Admin_Mail extends LC_Page_Admin {
 
     // }}}
     // {{{ functions
@@ -147,9 +147,17 @@ class LC_Page_Admin_Mail extends LC_Page {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
 
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         // ページ初期設定
-        $objView = new SC_AdminView();
         $objDate = new SC_Date();
         $objQuery = new SC_Query();
         $objDb = new SC_Helper_DB_Ex();
@@ -201,10 +209,7 @@ class LC_Page_Admin_Mail extends LC_Page {
             $list_data['category_name'] = $arrCatList[$list_data['category_id']];
 
             $this->list_data = $list_data;
-
-            $objView->assignobj($this);
-            $objView->display($tpl_path);
-            exit;
+            return;
         }
 
         if($_POST['mode'] == 'delete') {
@@ -358,9 +363,9 @@ class LC_Page_Admin_Mail extends LC_Page {
                     $sendId = $this->lfRegistData($objQuery, $this->list_data);
                     if (MELMAGA_SEND) {
                         if (MELMAGA_BATCH_MODE) {
-                            $this->sendRedirect($this->getLocation(URL_DIR . 'admin/mail/history.php'));
+                            $this->objDisplay->redirect($this->getLocation(URL_DIR . 'admin/mail/history.php'));
                         } else {
-                            $this->sendRedirect($this->getLocation(URL_DIR . 'admin/mail/sendmail.php', array('mode' => 'now', 'send_id' => $sendId)));
+                            $this->objDisplay->redirect($this->getLocation(URL_DIR . 'admin/mail/sendmail.php', array('mode' => 'now', 'send_id' => $sendId)));
                         }
                         exit;
                     } else {
@@ -384,10 +389,7 @@ class LC_Page_Admin_Mail extends LC_Page {
 
         $this->arrCatList = $objDb->sfGetCategoryList();
 
-        // ページ表示
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
-
+        $this->arrCampaignList = $this->lfGetCampaignList($objQuery);
     }
 
     /**

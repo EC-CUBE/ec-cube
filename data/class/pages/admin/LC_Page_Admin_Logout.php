@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * ログアウト のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Logout extends LC_Page {
+class LC_Page_Admin_Logout extends LC_Page_Admin {
 
     // }}}
     // {{{ functions
@@ -54,7 +54,7 @@ class LC_Page_Admin_Logout extends LC_Page {
         $objSess = new SC_Session();
         $objSess->logout();
 
-        $this->sendRedirect($this->getLocation(URL_DIR . "admin/" . DIR_INDEX_URL));
+        $this->objDisplay->redirect($this->getLocation(URL_DIR . "admin/" . DIR_INDEX_URL));
     }
 
     /**

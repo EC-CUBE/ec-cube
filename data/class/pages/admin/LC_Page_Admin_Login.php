@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * 管理者ログイン のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Login extends LC_Page {
+class LC_Page_Admin_Login extends LC_Page_Admin {
 
     // {{{ properties
 
@@ -56,6 +56,16 @@ class LC_Page_Admin_Login extends LC_Page {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objQuery = new SC_Query();
         $this->objSess = new SC_Session();
         $ret = false;
@@ -71,7 +81,7 @@ class LC_Page_Admin_Login extends LC_Page {
 
         if($ret) {
             // 成功
-            $this->sendRedirect($this->getLocation(URL_HOME));
+            $this->objDisplay->redirect($this->getLocation(URL_HOME));
             exit;
         } else {
             // エラーページの表示

@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * 支払方法設定 のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Basis_Payment extends LC_Page {
+class LC_Page_Admin_Basis_Payment extends LC_Page_Admin {
 
     // }}}
     // {{{ functions
@@ -56,7 +56,16 @@ class LC_Page_Admin_Basis_Payment extends LC_Page {
      * @return void
      */
     function process() {
-        $objView = new SC_AdminView();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objSess = new SC_Session();
         $objDb = new SC_Helper_DB_Ex();
 
@@ -70,25 +79,22 @@ class LC_Page_Admin_Basis_Payment extends LC_Page {
                 // ランク付きレコードの削除
                 $objDb->sfDeleteRankRecord("dtb_payment", "payment_id", $_POST['payment_id']);
                 // 再表示
-                $this->reload();
+                $this->objDisplay->reload();
                 break;
             case 'up':
                 $objDb->sfRankUp("dtb_payment", "payment_id", $_POST['payment_id']);
                 // 再表示
-                $this->reload();
+                $this->objDisplay->reload();
                 break;
             case 'down':
                 $objDb->sfRankDown("dtb_payment", "payment_id", $_POST['payment_id']);
                 // 再表示
-                $this->reload();
+                $this->objDisplay->reload();
                 break;
         }
 
         $this->arrDelivList = $objDb->sfGetIDValueList("dtb_deliv", "deliv_id", "service_name");
         $this->arrPaymentListFree = $this->lfGetPaymentList();
-
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

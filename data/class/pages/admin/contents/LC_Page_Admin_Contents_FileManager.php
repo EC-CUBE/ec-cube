@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_FileManager_Ex.php");
 
 /**
@@ -32,7 +32,7 @@ require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_FileManager_Ex.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Contents_FileManager extends LC_Page {
+class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin {
 
     // }}}
     // {{{ functions
@@ -58,6 +58,16 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         //---- 認証可否の判定
         $objSess = new SC_Session();
         SC_Utils_Ex::sfIsSuccess($objSess);
@@ -202,10 +212,6 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page {
                 $this->tpl_javascript .= "false);\n";
             }
         }
-
-        // 画面の表示
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

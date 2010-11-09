@@ -51,6 +51,17 @@ class LC_Page_Mypage_Order extends LC_Page {
      * @return void
      */
     function process() {
+        parent::process();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のAction.
+     *
+     * @return void
+     */
+    function action() {
         $objCustomer = new SC_Customer();
         $objCartSess = new SC_CartSession();
 
@@ -71,7 +82,7 @@ class LC_Page_Mypage_Order extends LC_Page {
 
             $objCartSess->addProduct(array($product_id, $product_class_id, $cate_id1, $cate_id2), $quantity);
         }
-        $this->sendRedirect($this->getLocation(URL_CART_TOP));
+        $this->objDisplay->redirect($this->getLocation(URL_CART_TOP));
     }
 
     /**
@@ -89,6 +100,18 @@ class LC_Page_Mypage_Order extends LC_Page {
      * @return void
      */
     function mobileProcess() {
+        parent::mobileProcess();
+        $this->mobileAction();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のAction(モバイル).
+     *
+     * @return void
+     */
+    function mobileAction() {
+
         $objCustomer = new SC_Customer();
         $objCartSess = new SC_CartSession();
 
@@ -109,7 +132,7 @@ class LC_Page_Mypage_Order extends LC_Page {
 
             $objCartSess->addProduct(array($product_id, $product_class_id, $cate_id1, $cate_id2), $quantity);
         }
-        $this->sendRedirect($this->getLocation(MOBILE_URL_CART_TOP), true);
+        $this->objDisplay->redirect($this->getLocation(MOBILE_URL_CART_TOP));
     }
 
     /**

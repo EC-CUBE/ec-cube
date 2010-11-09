@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * アプリケーション管理:インストールログ のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_OwnersStore_Log extends LC_Page {
+class LC_Page_Admin_OwnersStore_Log extends LC_Page_Admin {
 
     // }}}
     // {{{ functions
@@ -56,6 +56,16 @@ class LC_Page_Admin_OwnersStore_Log extends LC_Page {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
 
         // ログインチェック
         SC_Utils::sfIsSuccess(new SC_Session());
@@ -77,11 +87,6 @@ class LC_Page_Admin_OwnersStore_Log extends LC_Page {
             break;
         }
         $this->arrInstallLogs = $this->getLogs();
-
-        // ページ出力
-        $objView = new SC_AdminView();
-        $objView->assignObj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

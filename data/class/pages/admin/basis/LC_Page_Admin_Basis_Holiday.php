@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * 定休日管理のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id: LC_Page_Admin_Basis_Holiday.php 16741 2007-11-08 00:43:24Z adachi $
  */
-class LC_Page_Admin_Basis_Holiday extends LC_Page {
+class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin {
 
     // }}}
     // {{{ functions
@@ -56,7 +56,16 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page {
      * @return void
      */
     function process() {
-        $objView = new SC_AdminView();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objSess = new SC_Session();
         $objQuery = new SC_Query();
         $objDb = new SC_Helper_DB_Ex();
@@ -88,7 +97,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page {
                     $this->lfUpdateClass($this->arrForm);	// 既存編集
                 }
                 // 再表示
-                $this->reload();
+                $this->objDisplay->reload();
             } else {
                 // POSTデータを引き継ぐ
                 $this->tpl_holiday_id = $_POST['holiday_id'];
@@ -98,7 +107,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page {
         case 'delete':
             $objDb->sfDeleteRankRecord("dtb_holiday", "holiday_id", $_POST['holiday_id'], "", true);
             // 再表示
-            $this->reload();
+            $this->objDisplay->reload();
             break;
         // 編集前処理
         case 'pre_edit':
@@ -115,12 +124,12 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page {
         case 'down':
             $objDb->sfRankDown("dtb_holiday", "holiday_id", $_POST['holiday_id']);
             // 再表示
-            $this->reload();
+            $this->objDisplay->reload();
             break;
         case 'up':
             $objDb->sfRankUp("dtb_holiday", "holiday_id", $_POST['holiday_id']);
             // 再表示
-            $this->reload();
+            $this->objDisplay->reload();
             break;
         default:
             break;
@@ -130,9 +139,6 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page {
         $where = "del_flg <> 1";
         $objQuery->setOrder("rank DESC");
         $this->arrHoliday = $objQuery->select("holiday_id, title, month, day", "dtb_holiday", $where);
-
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

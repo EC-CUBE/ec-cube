@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * プラグイン管理のページクラス
@@ -30,7 +30,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author Seasoft 塚田将久
  * @version $Id:$
  */
-class LC_Page_Admin_Plugin extends LC_Page {
+class LC_Page_Admin_Plugin extends LC_Page_Admin {
 
     /**
      * Page を初期化する.
@@ -53,16 +53,22 @@ class LC_Page_Admin_Plugin extends LC_Page {
      * @return void
      */
     function process() {
-        $objView  = new SC_AdminView();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objSess = new SC_Session();
 
         // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess($objSess);
 
         $this->loadPluginsList();
-
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

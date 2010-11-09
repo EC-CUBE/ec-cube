@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /* GMO決済モジュール連携用 */
 if (file_exists(MODULE_PATH . 'mdl_gmopg/inc/include.php') === TRUE) {
@@ -52,7 +52,7 @@ if (file_exists(MODULE_PATH . 'mdl_sps/request.php') === TRUE) {
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Order_Edit extends LC_Page {
+class LC_Page_Admin_Order_Edit extends LC_Page_Admin {
 
     // {{{ properties
 
@@ -106,7 +106,16 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
      * @return void
      */
     function process() {
-        $objView = new SC_AdminView();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objSess = new SC_Session();
         $objDb = new SC_Helper_DB_Ex();
         $objDate = new SC_Date(1901);
@@ -313,12 +322,11 @@ class LC_Page_Admin_Order_Edit extends LC_Page {
             $this->arrDay = $objDate->getDay();
         }
 
-        $objView->assignobj($this);
         // 表示モード判定
         if(!$this->disp_mode) {
-            $objView->display(MAIN_FRAME);
+            $this->setTemplate(MAIN_FRAME);
         } else {
-            $objView->display('order/disp.tpl');
+            $this->setTemplate('order/disp.tpl');
         }
     }
 

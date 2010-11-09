@@ -42,8 +42,14 @@ class LC_Page_Admin extends LC_Page {
      * @return void
      */
     function init() {
-        parent::init();
-        $this->tpl_mainpage = 'login.tpl';
+        $this->template = MAIN_FRAME;
+
+        // ディスプレイクラス生成
+        $this->objDisplay = new SC_Display();
+
+        // プラグインクラス生成
+        #$this->objPlagin = new SC_Helper_Plugin_Ex();
+        #$this->objPlagin->preProcess($this);
     }
 
     /**
@@ -52,10 +58,18 @@ class LC_Page_Admin extends LC_Page {
      * @return void
      */
     function process() {
-        $objView = new SC_AdminView();
-        $objView->assignobj($this);
-        $objView->display(LOGIN_FRAME);
     }
+
+    /**
+     * Page のレスポンス送信.
+     *
+     * @return void
+     */
+    function sendResponse() {
+        $this->objDisplay->hoge($this, true);
+        $this->objDisplay->response->response();
+    }
+
 
     /**
      * デストラクタ.

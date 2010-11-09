@@ -22,47 +22,20 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
+require_once(CLASS_PATH . "SC_Plugin.php");
 
 /**
- * 管理者ログイン のページクラス(拡張).
+ * プラグインクラス(拡張).
  *
- * LC_Page_Admin をカスタマイズする場合はこのクラスを編集する.
+ * SC_Plugin をカスタマイズする場合はこのクラスを使用する.
  *
- * @package Page
+ * @package
  * @author LOCKON CO.,LTD.
- * @version $Id$
+ * @version $Id: $
  */
-class LC_Page_Admin_Ex extends LC_Page_Admin {
-
-    // }}}
-    // {{{ functions
-
-    /**
-     * Page を初期化する.
-     *
-     * @return void
-     */
-    function init() {
-        parent::init();
-    }
-
-    /**
-     * Page のプロセス.
-     *
-     * @return void
-     */
-    function process() {
-        parent::process();
-    }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy() {
-        parent::destroy();
+class SC_Plugin_Ex extends SC_Plugin {
+    function SC_Plugin_Ex() {
+        parent::SC_Plugin();
     }
 }
 ?>

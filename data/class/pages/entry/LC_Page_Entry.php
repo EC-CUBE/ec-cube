@@ -76,6 +76,16 @@ class LC_Page_Entry extends LC_Page {
 
     /**
      * Page のプロセス.
+     * 
+     * @return void
+     */
+    function process() {
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のプロセス.
      *
      * <b>概要</b>
      *
@@ -155,15 +165,11 @@ class LC_Page_Entry extends LC_Page {
      * - $_POST["reminder_answer"]
      * - $_POST["mode"]('return', 'confirm', 'complate')
      *
-     * @global $objCampaignSess
      * @return void
      */
-    function process() {
-        global $objCampaignSess;
-
+    function action() {
         $objView = new SC_SiteView();
         $objCustomer = new SC_Customer();
-        $objCampaignSess = new SC_CampaignSession();
         $objDb = new SC_Helper_DB_Ex();
         $CONF = $objDb->sf_getBasisData();
 
@@ -218,7 +224,7 @@ class LC_Page_Entry extends LC_Page {
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-            if (!$this->isValidToken()) {
+            if (!SC_Helper_Session_Ex::isValidToken()) {
                 SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", true);
             }
 
@@ -282,11 +288,6 @@ class LC_Page_Entry extends LC_Page {
 
                 //-- 会員登録と完了画面
                 if ($_POST["mode"] == "complete") {
-                    // キャンペーンからの遷移の時用の値
-                    if($objCampaignSess->getIsCampaign()) {
-                        $this->etc_value = "&cp=".$objCampaignSess->getCampaignId();
-                    }
-
                     // 会員情報の登録
                     $this->CONF = $CONF;
                     $this->uniqid = $this->lfRegistData ($this->arrForm, $arrRegistColumn, $arrRejectRegistColumn, CUSTOMER_CONFIRM_MAIL);
@@ -334,18 +335,13 @@ class LC_Page_Entry extends LC_Page {
 
                     // 完了ページに移動させる。
                     $customer_id = $objQuery->get("dtb_customer", "customer_id", "secret_key = ?", array($this->uniqid));
-                    $this->sendRedirect($this->getLocation("./complete.php", array("ci" => $customer_id)));
+                    $this->objDisplay->redirect($this->getLocation("./complete.php", array("ci" => $customer_id)));
                     exit;
                 }
             }
         }
 
-        $this->transactionid = $this->getToken();
-
-        //---- ページ表示
-        $objView->assignobj($this);
-        // フレームを選択(キャンペーンページから遷移なら変更)
-        $objCampaignSess->pageView($objView);
+        $this->transactionid = SC_Helper_Session_Ex::getToken();
     }
 
     /**
@@ -365,6 +361,16 @@ class LC_Page_Entry extends LC_Page {
      * @return void
      */
     function mobileProcess() {
+        $this->mobileAction();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション(モバイル).
+     *
+     * @return void
+     */
+    function mobileAction() {
         //---- ページ初期設定
         $objDb = new SC_Helper_DB_Ex();
         $objMobile = new SC_Helper_Mobile_Ex();
@@ -585,7 +591,7 @@ class LC_Page_Entry extends LC_Page {
                         $param = array("mode" => "regist",
                                        "id" => $this->uniqid,
                                        session_name() => session_id());
-                        $this->sendRedirect($this->getLocation(MOBILE_URL_DIR . "regist/" . DIR_INDEX_URL, $param));
+                        $this->objDisplay->redirect($this->getLocation(MOBILE_URL_DIR . "regist/" . DIR_INDEX_URL, $param));
                         exit;
                     }
 
@@ -633,15 +639,11 @@ class LC_Page_Entry extends LC_Page {
                     $objMail->sendMail();
 
                     // 完了ページに移動させる。
-                    $this->sendRedirect($this->getLocation("./complete.php"), true);
+                    $this->objDisplay->redirect($this->getLocation("./complete.php"));
                     exit;
                 }
             }
         }
-
-        //---- ページ表示
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
     }
 
     /**

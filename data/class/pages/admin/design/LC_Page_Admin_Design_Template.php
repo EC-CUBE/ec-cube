@@ -22,7 +22,7 @@
  */
 
   // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 require_once(DATA_PATH . "module/Tar.php");
 require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_FileManager_Ex.php");
 
@@ -33,7 +33,7 @@ require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_FileManager_Ex.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Design_Template extends LC_Page {
+class LC_Page_Admin_Design_Template extends LC_Page_Admin {
 
     // }}}
     // {{{ functions
@@ -78,104 +78,114 @@ class LC_Page_Admin_Design_Template extends LC_Page {
      * @return void
      */
     function process() {
-    	// 認証可否の判定
-		$objSession = new SC_Session();
-		SC_Utils::sfIsSuccess($objSession);
+        $this->action();
+        $this->sendResponse();
+    }
 
-		// uniqidをテンプレートへ埋め込み
-		$this->uniqid = $objSession->getUniqId();
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
+        // 認証可否の判定
+		    $objSession = new SC_Session();
+		    SC_Utils::sfIsSuccess($objSession);
 
-		$objView = new SC_AdminView();
+		    // uniqidをテンプレートへ埋め込み
+		    $this->uniqid = $objSession->getUniqId();
 
-		switch($this->lfGetMode()) {
+		    $objView = new SC_AdminView();
 
-		// 登録ボタン押下時
-		case 'register':
-		    // 画面遷移の正当性チェック
-		    if (!SC_Utils::sfIsValidTransition($objSession)) {
-		        sfDispError('');
-		    }
-		    // パラメータ検証
-		    $objForm = $this->lfInitRegister();
-		    if ($objForm->checkError()) {
-		        SC_Utils_Ex::sfDispError('');
-		    }
+		    switch($this->lfGetMode()) {
 
-		    $template_code = $objForm->getValue('template_code');
-            $this->tpl_select = $template_code;
+		    // 登録ボタン押下時
+		    case 'register':
+		        // 画面遷移の正当性チェック
+		        if (!SC_Utils::sfIsValidTransition($objSession)) {
+		            sfDispError('');
+		        }
+		        // パラメータ検証
+		        $objForm = $this->lfInitRegister();
+		        if ($objForm->checkError()) {
+		            SC_Utils_Ex::sfDispError('');
+		        }
 
-		    if($template_code == "") {
-		    	$template_code = "default";
-		    }
+		        $template_code = $objForm->getValue('template_code');
+                $this->tpl_select = $template_code;
 
-		    // DBへ使用するテンプレートを登録
-		    $this->lfRegisterTemplate($template_code);
+		        if($template_code == "") {
+		        	$template_code = "default";
+		        }
 
-		    // XXX コンパイルファイルのクリア処理を行う
-		    $objView->_smarty->clear_compiled_tpl();
+		        // DBへ使用するテンプレートを登録
+		        $this->lfRegisterTemplate($template_code);
 
-		    // common.cssの内容を更新
-		    $this->lfChangeCommonCss($template_code);
+		        // XXX コンパイルファイルのクリア処理を行う
+		        $objView->_smarty->clear_compiled_tpl();
 
-		    // ブロック位置を更新
-		    $this->lfChangeBloc($template_code);
+		        // common.cssの内容を更新
+		        $this->lfChangeCommonCss($template_code);
+		    	
+		        // テンプレートのコピー
+		    	$this->lfCopyTemplate($template_code);
+		        
+		        // ブロック位置を更新
+		        $this->lfChangeBloc($template_code);
 
-		    // 完了メッセージ
-		    $this->tpl_onload="alert('登録が完了しました。');";
-		    break;
+		        // 完了メッセージ
+		        $this->tpl_onload="alert('登録が完了しました。');";
+		        break;
 
-		// 削除ボタン押下時
-		case 'delete':
-		    // 画面遷移の正当性チェック
-		    if (!SC_Utils::sfIsValidTransition($objSession)) {
-		        SC_Utils::sfDispError('');
-		    }
-		    // パラメータ検証
-		    $objForm = $this->lfInitDelete();
-		    if ($objForm->checkError()) {
-		        SC_Utils::sfDispError('');
-		    }
-			
-		    //現在使用中のテンプレートとデフォルトのテンプレートは削除できないようにする
-		    $template_code = $objForm->getValue('template_code_temp');
-		    if ($template_code == TEMPLATE_NAME || $template_code == DEFAULT_TEMPLATE_NAME) {
-		    	$this->tpl_onload = "alert('選択中のテンプレートは削除出来ません');";
+		    // 削除ボタン押下時
+		    case 'delete':
+		        // 画面遷移の正当性チェック
+		        if (!SC_Utils::sfIsValidTransition($objSession)) {
+		            SC_Utils::sfDispError('');
+		        }
+		        // パラメータ検証
+		        $objForm = $this->lfInitDelete();
+		        if ($objForm->checkError()) {
+		            SC_Utils::sfDispError('');
+		        }
+		    	
+		        //現在使用中のテンプレートとデフォルトのテンプレートは削除できないようにする
+		        $template_code = $objForm->getValue('template_code_temp');
+		        if ($template_code == TEMPLATE_NAME || $template_code == DEFAULT_TEMPLATE_NAME) {
+		        	$this->tpl_onload = "alert('選択中のテンプレートは削除出来ません');";
+		            break;
+		        }
+		        $this->lfDeleteTemplate($template_code);
+		        break;
+
+		    // downloadボタン押下時
+		    case 'download':
+		        // 画面遷移の正当性チェック
+		        if (!SC_Utils::sfIsValidTransition($objSession)) {
+		            SC_Utils::sfDispError('');
+		        }
+		    	// パラメータ検証
+		        $objForm = $this->lfInitDownload();
+		        $template_code = $objForm->getValue('template_code_temp');
+		        // ユーザデータの下のファイルも保存する。
+		        $from_dir = USER_TEMPLATE_PATH . $template_code . "/";
+		        $to_dir = SMARTY_TEMPLATES_DIR . $template_code . "/_packages/";
+		        SC_Utils::sfMakeDir($to_dir);
+		    	SC_Utils::sfCopyDir($from_dir, $to_dir);
+		        SC_Helper_FileManager::downloadArchiveFiles(SMARTY_TEMPLATES_DIR . $template_code);
+		        break;
+
+		    // プレビューボタン押下時
+		    case 'preview':
+		        break;
+
+		    default:
 		        break;
 		    }
-		    $this->lfDeleteTemplate($template_code);
-		    break;
 
-		// downloadボタン押下時
-		case 'download':
-		    // 画面遷移の正当性チェック
-		    if (!SC_Utils::sfIsValidTransition($objSession)) {
-		        SC_Utils::sfDispError('');
-		    }
-			// パラメータ検証
-		    $objForm = $this->lfInitDownload();
-		    $template_code = $objForm->getValue('template_code_temp');
-		    // ユーザデータの下のファイルも保存する。
-		    $from_dir = USER_TEMPLATE_PATH . $template_code . "/";
-		    $to_dir = SMARTY_TEMPLATES_DIR . $template_code . "/_packages/";
-		    SC_Utils::sfMakeDir($to_dir);
-			SC_Utils::sfCopyDir($from_dir, $to_dir);
-		    SC_Helper_FileManager::downloadArchiveFiles(SMARTY_TEMPLATES_DIR . $template_code);
-		    break;
-
-		// プレビューボタン押下時
-		case 'preview':
-		    break;
-
-		default:
-		    break;
-		}
-
-		// defaultパラメータのセット
-		$this->templates = $this->lfGetAllTemplates();
-		$this->now_template = TEMPLATE_NAME;
-		// 画面の表示
-		$objView->assignobj($this);
-		$objView->display(MAIN_FRAME);
+		    // defaultパラメータのセット
+		    $this->templates = $this->lfGetAllTemplates();
+		    $this->now_template = TEMPLATE_NAME;
     }
 
     /**

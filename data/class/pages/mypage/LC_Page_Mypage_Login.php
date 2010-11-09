@@ -55,7 +55,18 @@ class LC_Page_Mypage_Login extends LC_Page {
      * @return void
      */
     function process() {
-        $objView = new SC_SiteView();
+        parent::process();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のAction.
+     *
+     * @return void
+     */
+    function action() {
+        //$objView = new SC_SiteView();
         $objQuery = new SC_Query();
         $objCustomer = new SC_Customer();
 
@@ -64,10 +75,10 @@ class LC_Page_Mypage_Login extends LC_Page {
 
         // ログイン判定
         if($objCustomer->isLoginSuccess()) {
-            $this->sendRedirect($this->getLocation(DIR_INDEX_URL, array(), true));
+            $this->objDisplay->redirect($this->getLocation(DIR_INDEX_URL, array(), true));
             exit;
         } else {
-            // クッキー判定
+            // クッキー判定(メールアドレスをクッキーに保存しているか）
             $this->tpl_login_email = $objCookie->getCookie('login_email');
             if($this->tpl_login_email != "") {
                 $this->tpl_login_memory = "1";
@@ -81,9 +92,9 @@ class LC_Page_Mypage_Login extends LC_Page {
         }
 
         //$objpage内の全てのテンプレート変数をsmartyに格納
-        $objView->assignobj($this);
+        //$objView->assignobj($this);
         //パスとテンプレート変数の呼び出し、実行
-        $objView->display(SITE_FRAME);
+        //$objView->display(SITE_FRAME);
     }
 
     /**

@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * メイン編集 のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Design_MainEdit extends LC_Page {
+class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
 
     // }}}
     // {{{ functions
@@ -58,6 +58,16 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objView = new SC_AdminView();
         $this->objLayout = new SC_Helper_PageLayout_Ex();
 
@@ -107,10 +117,6 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
             $this->lfDeletePageData($page_id);
             exit;
         }
-
-        // 画面の表示
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**
@@ -219,7 +225,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
             }
         }
         $_SESSION['preview'] = "ON";
-        $this->sendRedirect($this->getLocation(URL_DIR . "preview/" . DIR_INDEX_URL, array("filename" => $arrPageData[0]["filename"])));
+        $this->objDisplay->redirect($this->getLocation(URL_DIR . "preview/" . DIR_INDEX_URL, array("filename" => $arrPageData[0]["filename"])));
 
     }
 
@@ -254,7 +260,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
                 $arrPageData = $this->objLayout->lfgetPageData(" url = ? AND page_id <> 0" , array(USER_DIR . $_POST['url'] . '.php'));
                 $page_id = $arrPageData[0]['page_id'];
             }
-            $this->sendRedirect($this->getLocation("./main_edit.php",
+            $this->objDisplay->redirect($this->getLocation("./main_edit.php",
                                     array("page_id" => $page_id,
                                           "msg"     => "on")));
             exit;
@@ -337,7 +343,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
      */
     function lfDeletePageData($page_id){
         $this->objLayout->lfDelPageData($_POST['page_id']);
-        $this->sendRedirect($this->getLocation("./main_edit.php"));
+        $this->objDisplay->redirect($this->getLocation("./main_edit.php"));
     }
 
     /**

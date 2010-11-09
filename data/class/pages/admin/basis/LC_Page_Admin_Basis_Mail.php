@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * メール設定 のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Basis_Mail extends LC_Page {
+class LC_Page_Admin_Basis_Mail extends LC_Page_Admin {
 
     // }}}
     // {{{ functions
@@ -56,8 +56,17 @@ class LC_Page_Admin_Basis_Mail extends LC_Page {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objQuery = new SC_Query();
-        $objView = new SC_AdminView();
         $objSess = new SC_Session();
         $masterData = new SC_DB_MasterData_Ex();
 
@@ -102,9 +111,6 @@ class LC_Page_Admin_Basis_Mail extends LC_Page {
             }
 
         }
-
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

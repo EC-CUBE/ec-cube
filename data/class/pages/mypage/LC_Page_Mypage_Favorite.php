@@ -63,8 +63,19 @@ class LC_Page_MyPage_Favorite extends LC_Page {
      * @return void
      */
     function process() {
+        parent::process();
+        $this->action();
+        $this->sendResponse();
+    }
 
-        $objView = new SC_SiteView();
+    /**
+     * Page のAction.
+     *
+     * @return void
+     */
+    function action() {
+
+        //$objView = new SC_SiteView();
         $objQuery = new SC_Query();
         $objCustomer = new SC_Customer();
         
@@ -133,8 +144,8 @@ class LC_Page_MyPage_Favorite extends LC_Page {
 
         // 入力情報を渡す
         $this->arrForm = $this->objFormParam->getFormParamList();
-        $objView->assignobj($this);				//$objpage内の全てのテンプレート変数をsmartyに格納
-        $objView->display(SITE_FRAME);				//パスとテンプレート変数の呼び出し、実行
+        //$objView->assignobj($this);				//$objpage内の全てのテンプレート変数をsmartyに格納
+        //$objView->display(SITE_FRAME);				//パスとテンプレート変数の呼び出し、実行
     }
 
     /**
@@ -143,6 +154,7 @@ class LC_Page_MyPage_Favorite extends LC_Page {
      * @return void
      */
     function mobileInit() {
+        $this->init();
         $this->tpl_mainpage = 'mypage/favorite.tpl';
         $this->tpl_title = 'MYページ/お気に入り一覧';
     }
@@ -153,7 +165,18 @@ class LC_Page_MyPage_Favorite extends LC_Page {
      * @return void
      */
     function mobileProcess() {
-        $objView = new SC_MobileView();
+        parent::mobileProcess();
+        $this->mobileAction();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のAction(モバイル).
+     *
+     * @return void
+     */
+    function mobileAction() {
+        //$objView = new SC_MobileView();
         $objQuery = new SC_Query();
         $objCustomer = new SC_Customer();
         // クッキー管理クラス
@@ -196,7 +219,7 @@ class LC_Page_MyPage_Favorite extends LC_Page {
                     $objMobile = new SC_Helper_Mobile_Ex();
                     if (!$objMobile->gfIsMobileMailAddress($objCustomer->getValue('email'))) {
                         if (!$objCustomer->hasValue('email_mobile')) {
-                            $this->sendRedirect($this->getLocation("../entry/email_mobile.php"), true);
+                            $this->objDisplay->redirect($this->getLocation("../entry/email_mobile.php"));
                         }
                     }
                 } else {
@@ -213,6 +236,7 @@ class LC_Page_MyPage_Favorite extends LC_Page {
             }
         }
 
+        // TODO objViewを分けるので、$thisに置き換える TPLの修正が必須かな？
         /*
          * ログインチェック
          * 携帯メールの登録を必須にする場合は isLoginSuccess(false) にする
@@ -228,8 +252,8 @@ class LC_Page_MyPage_Favorite extends LC_Page {
             $this->CustomerName2 = $objCustomer->getvalue('name02');
         }
 
-        $objView->assignobj($this);				//$objpage内の全てのテンプレート変数をsmartyに格納
-        $objView->display(SITE_FRAME);				//パスとテンプレート変数の呼び出し、実行
+        //$objView->assignobj($this);				//$objpage内の全てのテンプレート変数をsmartyに格納
+        //$objView->display(SITE_FRAME);				//パスとテンプレート変数の呼び出し、実行
 
     }
 

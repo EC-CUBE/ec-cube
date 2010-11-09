@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * メールテンプレート設定 のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Mail_Template extends LC_Page {
+class LC_Page_Admin_Mail_Template extends LC_Page_Admin {
 
     // }}}
     // {{{ functions
@@ -59,8 +59,17 @@ class LC_Page_Admin_Mail_Template extends LC_Page {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objQuery = new SC_Query();
-        $objView = new SC_AdminView();
         $objSess = new SC_Session();
 
         // 認証可否の判定
@@ -82,15 +91,12 @@ class LC_Page_Admin_Mail_Template extends LC_Page {
             $sql = "UPDATE dtb_mailmaga_template SET del_flg = 1 WHERE template_id = ?";
             $objQuery->query($sql, array($_GET['id']));
 
-            $this->reload(null, true);
+            $this->objDisplay->reload(null, true);
         }
 
 
         $sql = "SELECT *, create_date as disp_date FROM dtb_mailmaga_template WHERE del_flg = 0 ORDER BY create_date DESC";
         $this->list_data = $objQuery->getAll($sql);
-
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

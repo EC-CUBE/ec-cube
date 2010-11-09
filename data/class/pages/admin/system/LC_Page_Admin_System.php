@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * システム管理 のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_System extends LC_Page {
+class LC_Page_Admin_System extends LC_Page_Admin {
 
     // }}}
     // {{{ functions
@@ -64,7 +64,16 @@ class LC_Page_Admin_System extends LC_Page {
      * @return void
      */
     function process() {
-        $objView  = new SC_AdminView();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objSess  = new SC_Session();
 
         // 認証可否の判定
@@ -86,9 +95,6 @@ class LC_Page_Admin_System extends LC_Page {
 
         // 取得範囲を指定(開始行番号、行数のセット)して管理者データを取得
         $this->list_data = $this->getMemberData($objNavi->start_row);
-
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

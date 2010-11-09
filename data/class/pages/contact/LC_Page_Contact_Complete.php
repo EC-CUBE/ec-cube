@@ -54,22 +54,19 @@ class LC_Page_Contact_Complete extends LC_Page {
      * @return void
      */
     function process() {
-        global $objCampaignSess;
+        $this->action();
+        $this->sendResponse();
+    }
 
-        $objView = new SC_SiteView();
-        $objCampaignSess = new SC_CampaignSession();
-
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         // レイアウトデザインを取得
         $layout = new SC_Helper_PageLayout_Ex();
         $layout->sfGetPageLayout($this, false, DEF_LAYOUT);
-
-        // キャンペーンからの遷移かチェック
-        $this->is_campaign = $objCampaignSess->getIsCampaign();
-        $this->campaign_dir = $objCampaignSess->getCampaignDir();
-
-        $objView->assignobj($this);
-        // フレームを選択(キャンペーンページから遷移なら変更)
-        $objCampaignSess->pageView($objView);
     }
 
     /**

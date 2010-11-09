@@ -117,8 +117,33 @@ class SC_View {
     }
 
     // テンプレートの処理結果を取得
-    function fetch($template) {
+    function fetch($template, $no_error=false) {
         return $this->_smarty->fetch($template);
+    }
+
+    /**
+     * SC_Display用にレスポンスを返す
+     * @global string $GLOBAL_ERR
+     * @param array $template
+     * @param boolean $no_error
+     * @return string
+     */
+    function getResponse($template, $no_error = false) {
+        if(!$no_error) {
+            global $GLOBAL_ERR;
+            if(!defined('OUTPUT_ERR')) {
+                // GLOBAL_ERR を割り当て
+                $this->assign("GLOBAL_ERR", $GLOBAL_ERR);
+                define('OUTPUT_ERR','ON');
+            }
+        }
+        $res =  $this->_smarty->fetch($template);
+        if(ADMIN_MODE == '1') {
+            $time_end = SC_Utils_Ex::sfMicrotimeFloat();
+            $time = $time_end - $this->time_start;
+            $res .= '処理時間: ' . sprintf('%.3f', $time) . '秒';
+        }
+        return $res;
     }
 
     // テンプレートの処理結果を表示
@@ -136,14 +161,14 @@ class SC_View {
         if(ADMIN_MODE == '1') {
             $time_end = SC_Utils_Ex::sfMicrotimeFloat();
             $time = $time_end - $this->time_start;
-            echo '処理時間: ' . sprintf('%.3f', $time) . 秒;
+            echo '処理時間: ' . sprintf('%.3f', $time) . '秒';
         }
     }
 
       // オブジェクト内の変数をすべて割り当てる。
       function assignobj($obj) {
         $data = get_object_vars($obj);
-
+        
         foreach ($data as $key => $value){
             $this->_smarty->assign($key, $value);
         }
@@ -171,8 +196,6 @@ class SC_View {
     function debug($var = true){
         $this->_smarty->debugging = $var;
     }
-
-
 }
 
 class SC_AdminView extends SC_View{
@@ -222,6 +245,14 @@ class SC_MobileView extends SC_SiteView {
         parent::SC_SiteView($setPrevURL);
         $this->_smarty->template_dir = MOBILE_TEMPLATE_DIR;
         $this->_smarty->compile_dir = MOBILE_COMPILE_DIR;
+    }
+}
+
+class SC_SmartphoneView extends SC_SiteView {
+    function SC_SmartphoneView($setPrevURL = true) {
+        parent::SC_SiteView($setPrevURL);
+        $this->_smarty->template_dir = SMARTPHONE_TEMPLATE_DIR;
+        $this->_smarty->compile_dir = SMARTPHONE_COMPILE_DIR;
     }
 }
 ?>

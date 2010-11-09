@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * コンテンツ管理 のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Contents extends LC_Page {
+class LC_Page_Admin_Contents extends LC_Page_Admin {
 
     // }}}
     // {{{ functions
@@ -59,10 +59,19 @@ class LC_Page_Admin_Contents extends LC_Page {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
 
         //---- ページ初期設定
         $objQuery = new SC_Query();
-        $objView = new SC_AdminView();
         $objDate = new SC_Date(ADMIN_NEWS_STARTYEAR);
         $objDb = new SC_Helper_DB_Ex();
 
@@ -132,7 +141,7 @@ class LC_Page_Admin_Contents extends LC_Page {
             $objQuery->query( $sql, array( $_POST['news_id'] ) );
             $objQuery->commit();
 
-            $this->reload();             //自分にリダイレクト（再読込による誤動作防止）
+            $this->objDisplay->reload();             //自分にリダイレクト（再読込による誤動作防止）
         }
 
         //----　表示順位移動
@@ -144,7 +153,7 @@ class LC_Page_Admin_Contents extends LC_Page {
                 $objDb->sfRankDown("dtb_news", "news_id", $_POST["news_id"]);
             }
             //sf_rebuildIndex($conn);
-            $this->reload();
+            $this->objDisplay->reload();
         }
 
         //----　指定表示順位移動
@@ -153,7 +162,7 @@ class LC_Page_Admin_Contents extends LC_Page {
             $input_pos = mb_convert_kana($_POST[$key], "n");
             if(SC_Utils_Ex::sfIsInt($input_pos)) {
                 $objDb->sfMoveRank("dtb_news", "news_id", $_POST['news_id'], $input_pos);
-                $this->reload();
+                $this->objDisplay->reload();
             }
         }
 
@@ -163,11 +172,6 @@ class LC_Page_Admin_Contents extends LC_Page {
         $this->line_max = count($this->list_data);
         $sql = "SELECT MAX(rank) FROM dtb_news WHERE del_flg = '0'";        // rankの最大値を取得
         $this->max_rank = $objQuery->getOne($sql);
-
-        //----　ページ表示
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
-
     }
 
 

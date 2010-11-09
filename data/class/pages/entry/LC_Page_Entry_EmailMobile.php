@@ -51,6 +51,16 @@ class LC_Page_Entry_EmailMobile extends LC_Page {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
     }
 
     /**
@@ -69,7 +79,16 @@ class LC_Page_Entry_EmailMobile extends LC_Page {
      * @return void
      */
     function mobileProcess() {
-        $objView = new SC_MobileView;
+        $this->mobileAction();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション(モバイル).
+     *
+     * @return void
+     */
+    function mobileAction() {
         $objCustomer = new SC_Customer;
         $objFormParam = new SC_FormParam;
 
@@ -103,9 +122,6 @@ class LC_Page_Entry_EmailMobile extends LC_Page {
 
         $this->tpl_name = $objCustomer->getValue('name01');
         $this->arrForm = $objFormParam->getFormParamList();
-
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
     }
 
     /**

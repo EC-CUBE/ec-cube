@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /** ターゲットID 未使用 */
 define('TARGET_ID_UNUSED', 0);
@@ -35,7 +35,7 @@ define('TARGET_ID_UNUSED', 0);
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Design extends LC_Page {
+class LC_Page_Admin_Design extends LC_Page_Admin {
 
     // }}}
     // {{{ functions
@@ -60,8 +60,16 @@ class LC_Page_Admin_Design extends LC_Page {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
 
-        $objView = new SC_AdminView();
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objSess = new SC_Session();
         $objLayout = new SC_Helper_PageLayout_Ex();
 
@@ -114,13 +122,13 @@ class LC_Page_Admin_Design extends LC_Page {
 
         // 新規ブロック作成
         if ($_POST['mode'] == 'new_bloc') {
-            $this->sendRedirect($this->getLocation("./bloc.php"));
+            $this->objDisplay->redirect($this->getLocation("./bloc.php"));
             exit;
         }
 
         // 新規ページ作成
         if ($_POST['mode'] == 'new_page') {
-            $this->sendRedirect($this->getLocation("./main_edit.php"));
+            $this->objDisplay->redirect($this->getLocation("./main_edit.php"));
             exit;
         }
 
@@ -214,18 +222,18 @@ class LC_Page_Admin_Design extends LC_Page {
             // プレビュー処理
             if ($_POST['mode'] == 'preview') {
                 if ($page_id === "") {
-                    $this->sendRedirect($this->getLocation(DIR_INDEX_URL));
+                    $this->objDisplay->redirect($this->getLocation(DIR_INDEX_URL));
                     exit;
                 }
                 $this->lfSetPreData($arrPageData, $objLayout);
 
                 $_SESSION['preview'] = "ON";
 
-                $this->sendRedirect($this->getLocation(URL_DIR . "preview/" . DIR_INDEX_URL, array("filename" => $arrPageData[0]["filename"])));
+                $this->objDisplay->redirect($this->getLocation(URL_DIR . "preview/" . DIR_INDEX_URL, array("filename" => $arrPageData[0]["filename"])));
                 exit;
 
             }else{
-                $this->sendRedirect($this->getLocation(DIR_INDEX_URL,
+                $this->objDisplay->redirect($this->getLocation(DIR_INDEX_URL,
                 array("page_id" => $page_id,
                                                   "msg" => "on")));
                 exit;
@@ -236,7 +244,7 @@ class LC_Page_Admin_Design extends LC_Page {
         // データ削除処理 ベースデータでなければファイルを削除
         if ($_POST['mode'] == 'delete' and  !$objLayout->lfCheckBaseData($page_id)) {
             $objLayout->lfDelPageData($page_id);
-            $this->sendRedirect($this->getLocation(DIR_INDEX_URL));
+            $this->objDisplay->redirect($this->getLocation(DIR_INDEX_URL));
             exit;
         }
 
@@ -280,12 +288,8 @@ class LC_Page_Admin_Design extends LC_Page {
             }
         }
         $this->errCnt = $errCnt;
-
-        // 画面の表示
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
-
     }
+
     /**
      * デストラクタ.
      *

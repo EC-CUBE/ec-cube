@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * 商品管理 のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id:LC_Page_Admin_Products.php 15532 2007-08-31 14:39:46Z nanasess $
  */
-class LC_Page_Admin_Products extends LC_Page {
+class LC_Page_Admin_Products extends LC_Page_Admin {
 
     // }}}
     // {{{ functions
@@ -63,7 +63,16 @@ class LC_Page_Admin_Products extends LC_Page {
      * @return void
      */
     function process() {
-        $objView = new SC_AdminView();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objDb = new SC_Helper_DB_Ex();
         $objDate = new SC_Date();
 
@@ -240,7 +249,9 @@ class LC_Page_Admin_Products extends LC_Page {
                         $objCSV = new SC_Helper_CSV_Ex();
 
                         // CSVを送信する。正常終了の場合、終了。
-                        $objCSV->sfDownloadProductsCsv($where, $arrval, $order) && exit;
+                        list($fime_name, $data) = $objCSV->sfDownloadProductsCsv($where, $arrval, $order);
+                        $this->sendResponseCSV($fime_name, $data);
+                        exit;
                         break;
                     case 'delete_all':
                         // 検索結果をすべて削除
@@ -307,10 +318,6 @@ class LC_Page_Admin_Products extends LC_Page {
         // カテゴリの読込
         list($this->arrCatKey, $this->arrCatVal) = $objDb->sfGetLevelCatList(false);
         $this->arrCatList = $this->lfGetIDName($this->arrCatKey, $this->arrCatVal);
-
-        // 画面の表示
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

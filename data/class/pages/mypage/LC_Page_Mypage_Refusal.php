@@ -58,7 +58,18 @@ class LC_Page_Mypage_Refusal extends LC_Page {
      * @return void
      */
     function process() {
-        $objView = new SC_SiteView();
+        parent::process();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のAction.
+     *
+     * @return void
+     */
+    function action() {
+        //$objView = new SC_SiteView();
         $objCustomer = new SC_Customer();
         $objQuery = new SC_Query();
         $objSiteSess = new SC_SiteSession();
@@ -105,12 +116,12 @@ class LC_Page_Mypage_Refusal extends LC_Page {
 
             $objCustomer->EndSession();
             //完了ページへ
-            $this->sendRedirect($this->getLocation("./refusal_complete.php"));
+            $this->objDisplay->redirect($this->getLocation("./refusal_complete.php"));
             exit;
         }
 
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
+        //$objView->assignobj($this);
+        //$objView->display(SITE_FRAME);
     }
 
     /**
@@ -119,6 +130,7 @@ class LC_Page_Mypage_Refusal extends LC_Page {
      * @return void
      */
     function mobileInit() {
+        $this->init();
         $this->tpl_mainpage = 'mypage/refusal.tpl';
         $this->tpl_title = "MYページ/退会手続き(入力ページ)";
 
@@ -130,7 +142,19 @@ class LC_Page_Mypage_Refusal extends LC_Page {
      * @return void
      */
     function mobileProcess() {
-        $objView = new SC_MobileView();
+        parent::mobileProcess();
+        $this->mobileAction();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のAction(モバイル).
+     *
+     * @return void
+     */
+    function mobileAction() {
+
+        //$objView = new SC_MobileView();
         $objCustomer = new SC_Customer();
         $objQuery = new SC_Query();
 
@@ -145,7 +169,7 @@ class LC_Page_Mypage_Refusal extends LC_Page {
         }
 
         if (isset($_POST['no'])) {
-            $this->sendRedirect($this->getLocation(DIR_INDEX_URL), true);
+            $this->objDisplay->redirect($this->getLocation(DIR_INDEX_URL));
             exit;
         } elseif (isset($_POST['complete'])){
             //会員削除
@@ -154,12 +178,12 @@ class LC_Page_Mypage_Refusal extends LC_Page {
             $where = "email = ?";
             $objCustomer->EndSession();
             //完了ページへ
-            $this->sendRedirect($this->getLocation("./refusal_complete.php"), true);
+            $this->objDisplay->redirect($this->getLocation("./refusal_complete.php"));
             exit;
         }
 
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
+        //$objView->assignobj($this);
+        //$objView->display(SITE_FRAME);
     }
 
     /**

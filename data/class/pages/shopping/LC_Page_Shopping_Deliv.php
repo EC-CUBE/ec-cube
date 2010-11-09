@@ -66,12 +66,19 @@ class LC_Page_Shopping_Deliv extends LC_Page {
      * @return void
      */
     function process() {
-        global $objCampaignSess;
+        $this->action();
+        $this->sendResponse();
+    }
 
+    /**
+     * Page のプロセス.
+     *
+     * @return void
+     */
+    function action() {
         $objView = new SC_SiteView();
         $objSiteSess = new SC_SiteSession();
         $objCartSess = new SC_CartSession();
-        $objCampaignSess = new SC_CampaignSession();
         $objCustomer = new SC_Customer();
         $objDb = new SC_Helper_DB_Ex();
         // クッキー管理クラス
@@ -140,7 +147,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
                 // 正常に登録されたことを記録しておく
                 $objSiteSess->setRegistFlag();
                 // ダウンロード商品有りの場合は、支払方法画面に転送
-                $this->sendRedirect($this->getLocation("./payment.php"), array());
+                $this->objDisplay->redirect($this->getLocation("./payment.php"), array());
                 exit;
             }
             break;
@@ -162,7 +169,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
                 // 正常に登録されたことを記録しておく
                 $objSiteSess->setRegistFlag();
                 // お支払い方法選択ページへ移動
-                $this->sendRedirect($this->getLocation(URL_SHOP_PAYMENT, array(), true));
+                $this->objDisplay->redirect($this->getLocation(URL_SHOP_PAYMENT, array(), true));
                 exit;
             // 別のお届け先がチェックされている場合
             } elseif($_POST['deliv_check'] >= 1) {
@@ -178,7 +185,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
                     // 正常に登録されたことを記録しておく
                     $objSiteSess->setRegistFlag();
                     // お支払い方法選択ページへ移動
-                    $this->sendRedirect($this->getLocation(URL_SHOP_PAYMENT, array(), true));
+                    $this->objDisplay->redirect($this->getLocation(URL_SHOP_PAYMENT, array(), true));
                     exit;
                 }
             }else{
@@ -189,7 +196,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         // 前のページに戻る
         case 'return':
             // 確認ページへ移動
-            $this->sendRedirect($this->getLocation(URL_CART_TOP, array(), true));
+            $this->objDisplay->redirect($this->getLocation(URL_CART_TOP, array(), true));
             exit;
             break;
         default:
@@ -224,10 +231,6 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         if (!isset($arrErr)) $arrErr = array();
         $this->arrForm = $this->objFormParam->getFormParamList();
         $this->arrErr = $arrErr;
-
-        $objView->assignobj($this);
-        // フレームを選択(キャンペーンページから遷移なら変更)
-        $objCampaignSess->pageView($objView);
     }
 
     /**
@@ -245,6 +248,16 @@ class LC_Page_Shopping_Deliv extends LC_Page {
      * @return void
      */
     function mobileProcess() {
+        $this->mobileAction();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のプロセス(モバイル).
+     *
+     * @return void
+     */
+    function mobileAction() {
         $objView = new SC_MobileView();
         $objSiteSess = new SC_SiteSession();
         $objCartSess = new SC_CartSession();
@@ -315,12 +328,12 @@ class LC_Page_Shopping_Deliv extends LC_Page {
                     // 正常に登録されたことを記録しておく
                     $objSiteSess->setRegistFlag();
                     // ダウンロード商品有りの場合は、支払方法画面に転送
-                    $this->sendRedirect($this->getLocation(MOBILE_URL_SHOP_PAYMENT), array());
+                    $this->objDisplay->redirect($this->getLocation(MOBILE_URL_SHOP_PAYMENT), array());
                     exit;
                 }
             } else {
                 // ログインページに戻る
-                $this->sendRedirect($this->getLocation(MOBILE_URL_SHOP_TOP), true);
+                $this->objDisplay->redirect($this->getLocation(MOBILE_URL_SHOP_TOP));
                 exit;
             }
 
@@ -334,7 +347,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
             $objMobile = new SC_Helper_Mobile_Ex();
             if (!$objMobile->gfIsMobileMailAddress($objCustomer->getValue('email'))) {
                 if (!$objCustomer->hasValue('email_mobile')) {
-                    $this->sendRedirect($this->getLocation("../entry/email_mobile.php"), true);
+                    $this->objDisplay->redirect($this->getLocation("../entry/email_mobile.php"));
                     exit;
                 }
             }
@@ -357,7 +370,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
                 // 正常に登録されたことを記録しておく
                 $objSiteSess->setRegistFlag();
                 // お支払い方法選択ページへ移動
-                $this->sendRedirect($this->getLocation(MOBILE_URL_SHOP_PAYMENT), true);
+                $this->objDisplay->redirect($this->getLocation(MOBILE_URL_SHOP_PAYMENT));
                 exit;
             }else{
                 // エラーを返す
@@ -380,7 +393,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
                     // 正常に登録されたことを記録しておく
                     $objSiteSess->setRegistFlag();
                     // お支払い方法選択ページへ移動
-                    $this->sendRedirect($this->getLocation(MOBILE_URL_SHOP_PAYMENT), true);
+                    $this->objDisplay->redirect($this->getLocation(MOBILE_URL_SHOP_PAYMENT));
                     exit;
                 }
             }else{
@@ -392,7 +405,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
             // 前のページに戻る
         case 'return':
             // 確認ページへ移動
-            $this->sendRedirect($this->getLocation(MOBILE_URL_CART_TOP), true);
+            $this->objDisplay->redirect($this->getLocation(MOBILE_URL_CART_TOP));
             exit;
             break;
         default:
@@ -425,8 +438,6 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         if (!isset($arrErr)) $arrErr = array();
         $this->arrForm = $this->objFormParam->getFormParamList();
         $this->arrErr = $arrErr;
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
     }
 
     /**

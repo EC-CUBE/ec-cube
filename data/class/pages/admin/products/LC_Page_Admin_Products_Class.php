@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * 規格管理 のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Products_Class extends LC_Page {
+class LC_Page_Admin_Products_Class extends LC_Page_Admin {
 
     // }}}
     // {{{ functions
@@ -56,7 +56,16 @@ class LC_Page_Admin_Products_Class extends LC_Page {
      * @return void
      */
     function process() {
-        $objView = new SC_AdminView();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objSess = new SC_Session();
         $objQuery = new SC_Query();
         $objDb = new SC_Helper_DB_Ex();
@@ -83,7 +92,7 @@ class LC_Page_Admin_Products_Class extends LC_Page {
                     $this->lfUpdateClass($this->arrForm); // 既存編集
                 }
                 // 再表示
-                $this->reload();
+                $this->objDisplay->reload();
             } else {
                 // POSTデータを引き継ぐ
                 $this->tpl_class_id = $_POST['class_id'];
@@ -95,7 +104,7 @@ class LC_Page_Admin_Products_Class extends LC_Page {
             $objQuery = new SC_Query();
             $objQuery->delete("dtb_classcategory", "class_id = ?", $_POST['class_id']);
             // 再表示
-            $this->reload();
+            $this->objDisplay->reload();
             break;
             // 編集前処理
         case 'pre_edit':
@@ -110,12 +119,12 @@ class LC_Page_Admin_Products_Class extends LC_Page {
         case 'down':
             $objDb->sfRankDown("dtb_class", "class_id", $_POST['class_id']);
             // 再表示
-            $this->reload();
+            $this->objDisplay->reload();
             break;
         case 'up':
             $objDb->sfRankUp("dtb_class", "class_id", $_POST['class_id']);
             // 再表示
-            $this->reload();
+            $this->objDisplay->reload();
             break;
         default:
             break;
@@ -126,9 +135,6 @@ class LC_Page_Admin_Products_Class extends LC_Page {
         $objQuery->setOrder("rank DESC");
         $this->arrClass = $objQuery->select("name, class_id", "dtb_class", $where);
         $this->arrClassCatCount = SC_Utils_Ex::sfGetClassCatCount();
-
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

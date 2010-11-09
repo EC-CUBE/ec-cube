@@ -54,6 +54,17 @@ class LC_Page_Mypage_LoginCheck extends LC_Page {
      * @return void
      */
     function process() {
+        parent::process();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のAction.
+     *
+     * @return void
+     */
+    function action() {
         $objCustomer = new SC_Customer();
         // クッキー管理クラス
         $objCookie = new SC_Cookie(COOKIE_EXPIRE);
@@ -89,7 +100,7 @@ class LC_Page_Mypage_LoginCheck extends LC_Page {
             }
 
             if($objCustomer->getCustomerDataFromEmailPass($arrForm['mypage_login_pass'], $arrForm['mypage_login_email'], true)) {
-                $this->sendRedirect($this->getLocation(DIR_INDEX_URL, array(), true));
+                $this->objDisplay->redirect($this->getLocation(DIR_INDEX_URL, array(), true));
                 exit;
             } else {
                 $arrForm['mypage_login_email'] = strtolower($arrForm['mypage_login_email']);

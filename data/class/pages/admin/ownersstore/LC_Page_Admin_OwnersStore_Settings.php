@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * EC-CUBEアプリケーション管理:アプリケーション設定 のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_OwnersStore_Settings extends LC_Page {
+class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin {
 
     /** SC_FormParamのインスタンス */
     var $objForm;
@@ -66,12 +66,21 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
 
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         // ログインチェック
         SC_Utils::sfIsSuccess(new SC_Session());
 
         // トランザクションIDの取得
-        $this->transactionid = $this->getToken();
+        $this->transactionid = SC_Helper_Session_Ex::getToken();
 
         // $_POST['mode']によってアクション振り分け
         switch($this->getMode()) {
@@ -83,11 +92,6 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page {
         default:
             $this->execDefaultMode();
         }
-
-        // ページ出力
-        $objView = new SC_AdminView();
-        $objView->assignObj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**
@@ -123,7 +127,7 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page {
      * @return void
      */
     function execRegisterMode() {
-        if ($this->isValidToken() !== true) {
+        if (SC_Helper_Session_Ex::isValidToken() !== true) {
             SC_Utils_Ex::sfDispError('');
         }
         // パラメータオブジェクトの初期化
@@ -135,7 +139,7 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page {
         if (!empty($arrErr)) {
             $this->arrErr  = $arrErr;
             $this->arrForm = $this->objForm->getHashArray();
-            $this->transactionid = $this->getToken();
+            $this->transactionid = SC_Helper_Session_Ex::getToken();
             return;
         }
 
@@ -146,7 +150,7 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page {
         $this->arrForm = $arrForm;
 
         $this->tpl_onload = "alert('登録しました。')";
-        $this->transactionid = $this->getToken();
+        $this->transactionid = SC_Helper_Session_Ex::getToken();
     }
 
     /**

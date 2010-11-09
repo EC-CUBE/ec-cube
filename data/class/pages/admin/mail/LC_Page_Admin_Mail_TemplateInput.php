@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * テンプレート設定 のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Mail_TemplateInput extends LC_Page {
+class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin {
 
     // }}}
     // {{{ functions
@@ -59,8 +59,17 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objQuery = new SC_Query();
-        $objView = new SC_AdminView();
         $objSess = new SC_Session();
 
         // 認証可否の判定
@@ -98,7 +107,7 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page {
                 // エラーが無いときは登録・編集
                 $this->lfRegistData( $this->arrForm, $_POST['template_id']);
                 // 自分を再読込して、完了画面へ遷移
-                $this->reload(array("mode" => "complete"));
+                $this->objDisplay->reload(array("mode" => "complete"));
             }
 
         } elseif ( $_GET['mode'] == 'complete' ) {
@@ -106,8 +115,6 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page {
             // 完了画面表示
             $this->tpl_mainpage = 'mail/template_complete.tpl';
         }
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

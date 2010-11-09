@@ -54,9 +54,19 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objCustomer = new SC_Customer();
         // 不正なURLがPOSTされた場合はエラー表示
-        if (!$this->isValidToken()) {
+        if (!SC_Helper_Session_Ex::isValidToken()) {
             GC_Utils_Ex::gfPrintLog('invalid access :login_check.php $POST["url"]=' . $_POST['url']);
             SC_Utils_Ex::sfDispSiteError(PAGE_ERROR);
         }
@@ -95,7 +105,7 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page {
 
             if(count($arrErr) == 0) {
                 if($objCustomer->getCustomerDataFromEmailPass($arrForm['login_pass'], $arrForm['login_email'], true)) {
-                    $this->sendRedirect($this->getLocation(URL_DIR, array(), false));
+                    $this->objDisplay->redirect($this->getLocation(URL_DIR, array(), false));
                     exit;
                 } else {
                     $arrForm['login_email'] = strtolower($arrForm['login_email']);
@@ -111,7 +121,7 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page {
                 }
             } else {
                 // 入力エラーの場合、元のアドレスに戻す。
-                $this->sendRedirect($this->getLocation($_POST['url'], array(), false));
+                $this->objDisplay->redirect($this->getLocation($_POST['url'], array(), false));
                 exit;
             }
             break;
@@ -121,9 +131,9 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page {
             $mypage_url_search = strpos('.'.$_POST['url'], "mypage");
             //マイページログイン中はログイン画面へ移行
             if ($mypage_url_search == 2){
-                $this->sendRedirect($this->getLocation(URL_DIR . "mypage/login.php", array(), false));
+                $this->objDisplay->redirect($this->getLocation(URL_DIR . "mypage/login.php", array(), false));
             }else{
-                $this->sendRedirect($this->getLocation(URL_DIR, array(), false));
+                $this->objDisplay->redirect($this->getLocation(URL_DIR, array(), false));
             }
             exit;
             break;

@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * レビュー編集 のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Products_ReviewEdit extends LC_Page {
+class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin {
 
     // }}}
     // {{{ functions
@@ -60,7 +60,16 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page {
      * @return void
      */
     function process() {
-        $objView = new SC_AdminView();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objSess = new SC_Session();
         $this->objQuery = new SC_Query();
         // 認証可否の判定
@@ -117,9 +126,6 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page {
                 $this->arrReview = $this->lfGetReviewData($_POST['review_id']);
                 break;
         }
-
-        $objView->assignobj($this);
-        $objView->display(MAIN_FRAME);
     }
 
     /**

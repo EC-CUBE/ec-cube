@@ -68,12 +68,19 @@ class LC_Page_Shopping extends LC_Page {
      * @return void
      */
     function process() {
-        global $objCampaignSess;
+        parent::process();
+        $this->action();
+        $this->sendResponse();
+    }
 
-        $objView = new SC_SiteView();
+    /**
+     * Page のプロセス.
+     *
+     * @return void
+     */
+    function action() {
         $objSiteSess = new SC_SiteSession();
         $objCartSess = new SC_CartSession();
-        $objCampaignSess = new SC_CampaignSession();
         $objCustomer = new SC_Customer();
         $objCookie = new SC_Cookie();
         $objDb = new SC_Helper_DB_Ex();
@@ -97,16 +104,16 @@ class LC_Page_Shopping extends LC_Page {
                 // 正常に登録されたことを記録しておく
                 $objSiteSess->setRegistFlag();
                 //カート内が全てダウンロード商品の場合は支払方法設定画面に転送
-                $this->sendRedirect($this->getLocation("./payment.php"), array());
+                $this->objDisplay->redirect($this->getLocation("./payment.php"), array());
             } else {
                 // お届け先設定画面に転送
-                $this->sendRedirect($this->getLocation("./deliv.php"), array());
+                $this->objDisplay->redirect($this->getLocation("./deliv.php"), array());
             }
             exit;
         }
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            if (!$this->isValidToken()) {
+            if (!SC_Helper_Session_Ex::isValidToken()) {
                 SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", true);
             }
         }
@@ -137,7 +144,7 @@ class LC_Page_Shopping extends LC_Page {
                 // 正常に登録されたことを記録しておく
                 $objSiteSess->setRegistFlag();
                 // お支払い方法選択ページへ移動
-                $this->sendRedirect($this->getLocation(URL_SHOP_PAYMENT));
+                $this->objDisplay->redirect($this->getLocation(URL_SHOP_PAYMENT));
                 exit;
             }
 
@@ -145,7 +152,7 @@ class LC_Page_Shopping extends LC_Page {
         // 前のページに戻る
         case 'return':
             // 確認ページへ移動
-            $this->sendRedirect($this->getLocation(URL_CART_TOP));
+            $this->objDisplay->redirect($this->getLocation(URL_CART_TOP));
             exit;
             break;
         case 'nonmember':
@@ -190,10 +197,7 @@ class LC_Page_Shopping extends LC_Page {
         // 入力値の取得
         $this->arrForm = $this->objFormParam->getFormParamList();
 
-        $this->transactionid = $this->getToken();
-        $objView->assignobj($this);
-        // フレームを選択(キャンペーンページから遷移なら変更)
-        $objCampaignSess->pageView($objView);
+        $this->transactionid = SC_Helper_Session_Ex::getToken();
     }
 
     /**
@@ -207,11 +211,22 @@ class LC_Page_Shopping extends LC_Page {
     }
 
     /**
-     * Page のプロセス(モバイル).
+     * Page のアクション(モバイル).
      *
      * @return void
      */
     function mobileProcess() {
+        parent::mobileProcess();
+        $this->mobileAction();
+        $this->endResponse();
+    }
+
+    /**
+     * Page のプロセス(モバイル).
+     *
+     * @return void
+     */
+    function mobileAction() {
         $objView = new SC_MobileView();
         $objSiteSess = new SC_SiteSession();
         $objCartSess = new SC_CartSession();
@@ -240,10 +255,10 @@ class LC_Page_Shopping extends LC_Page {
                 // 正常に登録されたことを記録しておく
                 $objSiteSess->setRegistFlag();
                 //カート内が全てダウンロード商品の場合は支払方法設定画面に転送
-                $this->sendRedirect($this->getLocation("./payment.php"), array());
+                $this->objDisplay->redirect($this->getLocation("./payment.php"), array());
             } else {
                 // お届け先設定画面に転送
-                $this->sendRedirect($this->getLocation("./deliv.php"), array());
+                $this->objDisplay->redirect($this->getLocation("./deliv.php"), array());
             }
             exit;
         }
@@ -256,9 +271,6 @@ class LC_Page_Shopping extends LC_Page {
         if($this->tpl_login_email != "") {
             $this->tpl_login_memory = "1";
         }
-
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
     }
 
     /**

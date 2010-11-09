@@ -64,27 +64,24 @@ class LC_Page_Entry_Complete extends LC_Page {
      * @return void
      */
     function process() {
-        global $objCampaignSess;
+        $this->action();
+        $this->sendResponse();
+    }
 
-        $objView = new SC_SiteView();
-        $objCampaignSess = new SC_CampaignSession();
-
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         // transaction check
-        if (!$this->isValidToken()) {
+        if (!SC_Helper_Session_Ex::isValidToken()) {
             SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", true);
         }
 
         // レイアウトデザインを取得
         $layout = new SC_Helper_PageLayout_Ex();
         $layout->sfGetPageLayout($this, false, DEF_LAYOUT);
-
-        // キャンペーンからの遷移がチェック
-        $this->is_campaign = $objCampaignSess->getIsCampaign();
-        $this->campaign_dir = $objCampaignSess->getCampaignDir();
-
-        $objView->assignobj($this);
-        // フレームを選択(キャンペーンページから遷移なら変更)
-        $objCampaignSess->pageView($objView);
     }
 
     /**
@@ -102,15 +99,19 @@ class LC_Page_Entry_Complete extends LC_Page {
      * @return void
      */
     function mobileProcess() {
-        $objView = new SC_MobileView();
+        $this->mobileAction();
+        $this->sendResponse();
+    }
 
+    /**
+     * Page のアクション(モバイル).
+     *
+     * @return void
+     */
+    function mobileAction() {
         // レイアウトデザインを取得
         $objLayout = new SC_Helper_PageLayout_Ex();
         $objLayout->sfGetPageLayout($this, false, DEF_LAYOUT);
-
-        //----　ページ表示
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
     }
 
     /**

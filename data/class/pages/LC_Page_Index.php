@@ -53,7 +53,7 @@ class LC_Page_Index extends LC_Page {
      * @return void
      */
     function mobileInit() {
-        $this->tpl_mainpage = 'top.tpl';
+        $this->init();
     }
 
     /**
@@ -62,16 +62,21 @@ class LC_Page_Index extends LC_Page {
      * @return void
      */
     function process() {
+        parent::process();
+        $this->action();
+        $this->sendResponse();
+    }
 
-        $objView = new SC_SiteView();
-
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         // レイアウトデザインを取得
         $layout = new SC_Helper_PageLayout_Ex();
         $layout->sfGetPageLayout($this, false, "index.php");
         $this->tpl_title = '';
-
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
     }
 
     /**
@@ -80,12 +85,22 @@ class LC_Page_Index extends LC_Page {
      * @return void
      */
     function mobileProcess() {
+        $this->mobileAction();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のプロセス(モバイル).
+     *
+     * @return void
+     */
+    function mobileAction() {
         $objCustomer = new SC_Customer();
 
-        $objView = new SC_MobileView();
-        $objView->assign("isLogin", $objCustomer->isLoginSuccess(true));
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
+        #$objView = new SC_MobileView();
+        #$objView->assign("isLogin", $objCustomer->isLoginSuccess(true));
+        #$objView->assignobj($this);
+        #$objView->display(SITE_FRAME);
     }
 
     /**

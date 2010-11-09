@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 require_once(DATA_PATH. "module/Tar.php");
 /**
  * バックアップ のページクラス.
@@ -31,7 +31,7 @@ require_once(DATA_PATH. "module/Tar.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_System_Bkup extends LC_Page {
+class LC_Page_Admin_System_Bkup extends LC_Page_Admin {
 
     // }}}
     // {{{ functions
@@ -60,7 +60,16 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
      * @return void
      */
     function process() {
-        $objView = new SC_AdminView();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objQuery = new SC_Query();
 
         // セッションクラス
@@ -146,9 +155,6 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
         $this->arrErr = isset($arrErr) ? $arrErr : array();
         $this->arrForm = isset($arrForm) ? $arrForm : array();
         $this->arrBkupList = $arrBkupList;
-
-        $objView->assignobj($this);		//変数をテンプレートにアサインする
-        $objView->display(MAIN_FRAME);		//テンプレートの出力
     }
 
     /**

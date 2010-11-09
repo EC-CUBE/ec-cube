@@ -54,15 +54,20 @@ class LC_Page_Abouts extends LC_Page {
      * @return void
      */
     function process() {
+        parent::process();
+        $this->action();
+        $this->sendResponse();
+    }
 
-        $objView = new SC_SiteView();
-
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         // レイアウトデザインを取得
         $layout = new SC_Helper_PageLayout_Ex();
         $layout->sfGetPageLayout($this, false, DEF_LAYOUT);
-
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
     }
 
     /**

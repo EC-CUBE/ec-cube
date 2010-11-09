@@ -51,7 +51,16 @@ class LC_Page_Products_CategoryList extends LC_Page {
      * @return void
      */
     function process() {
+        parent::process();
+        $this->action();
+        $this->sendResponse();
     }
+
+    /**
+     * Page のAction
+     * @return void
+     */
+    function action() {}
 
     /**
      * モバイルページを初期化する.
@@ -59,20 +68,32 @@ class LC_Page_Products_CategoryList extends LC_Page {
      * @return void
      */
     function mobileInit() {
+        $this->init();
         $this->tpl_mainpage = MOBILE_TEMPLATE_DIR . 'products/category_list.tpl';
         $this->tpl_title = 'カテゴリ一覧ページ';
     }
 
     /**
-     * Page のプロセス(モバイル).
+     * Page のプロセス（モバイル）.
      *
      * @return void
      */
-    function mobileProcess() {
+    function mobileProcess(){
+        parent::mobileProcess();
+        $this->mobileAction();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のAction(モバイル).
+     *
+     * @return void
+     */
+    function mobileAction() {
         // カテゴリIDの正当性チェック
         $this->lfCheckCategoryId();
         
-        $objView = new SC_MobileView();
+        //$objView = new SC_MobileView();
 
         // レイアウトデザインを取得
         $objLayout = new SC_Helper_PageLayout_Ex();
@@ -81,8 +102,8 @@ class LC_Page_Products_CategoryList extends LC_Page {
         // カテゴリー情報を取得する。
         $this->lfGetCategories(@$_GET['category_id'], true, $this);
 
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
+        //$objView->assignobj($this);
+        //$objView->display(SITE_FRAME);
     }
 
     /**

@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 require_once(DATA_PATH. "module/Tar.php");
 require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_FileManager_Ex.php");
 
@@ -33,7 +33,7 @@ require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_FileManager_Ex.php");
  * @author LOCKON CO.,LTD.
  * @version $Id: LC_Page_Admin_Design_Up_Down.php 16582 2007-10-29 03:06:29Z nanasess $
  */
-class LC_Page_Admin_Design_Up_Down extends LC_Page {
+class LC_Page_Admin_Design_Up_Down extends LC_Page_Admin {
 
     // }}}
     // {{{ functions
@@ -61,56 +61,61 @@ class LC_Page_Admin_Design_Up_Down extends LC_Page {
      * @return void
      */
     function process() {
-    	// ログインチェック
-		$objSession = new SC_Session();
-		SC_Utils::sfIsSuccess($objSession);
-		$this->now_template = $this->lfGetNowTemplate();
-		
-		// uniqidをテンプレートへ埋め込み
-		$this->uniqid = $objSession->getUniqId();
-		
-		switch($this->lfGetMode()) {
-		
-		// ダウンロードボタン押下時の処理
-		case 'download':
-		    break;
-		// アップロードボタン押下時の処理
-		case 'upload':
-		    // 画面遷移の正当性チェック
-		    if (!SC_Utils::sfIsValidTransition($objSession)) {
-		        SC_Utils::sfDispError('');
-		    }
-		    // フォームパラメータ初期化
-		    $objForm = $this->lfInitUpload();
-		    // エラーチェック
-		    if ($arrErr = $this->lfValidateUpload($objForm)) {
-		        $this->arrErr  = $arrErr;
-		        $this->arrForm = $objForm->getFormParamList();
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
+        // ログインチェック
+		    $objSession = new SC_Session();
+		    SC_Utils::sfIsSuccess($objSession);
+		    $this->now_template = $this->lfGetNowTemplate();
+		    
+		    // uniqidをテンプレートへ埋め込み
+		    $this->uniqid = $objSession->getUniqId();
+		    
+		    switch($this->lfGetMode()) {
+		    
+		    // ダウンロードボタン押下時の処理
+		    case 'download':
+		        break;
+		    // アップロードボタン押下時の処理
+		    case 'upload':
+		        // 画面遷移の正当性チェック
+		        if (!SC_Utils::sfIsValidTransition($objSession)) {
+		            SC_Utils::sfDispError('');
+		        }
+		        // フォームパラメータ初期化
+		        $objForm = $this->lfInitUpload();
+		        // エラーチェック
+		        if ($arrErr = $this->lfValidateUpload($objForm)) {
+		            $this->arrErr  = $arrErr;
+		            $this->arrForm = $objForm->getFormParamList();
+		            break;
+		        }
+		        // アップロードファイル初期化
+		        $objUpFile = $this->lfInitUploadFile($objForm);
+		        // 一時ファイルへ保存
+		        $errMsg = $objUpFile->makeTempFile('template_file', false);
+		        // 書き込みエラーチェック
+		        if(isset($errMsg)) {
+		            $this->arrErr['template_file'] = $errMsg;
+		            $this->arrForm = $objForm->getFormParamList();
+		            break;
+		        }
+		        $this->lfAddTemplates($objForm, $objUpFile);
+		        $this->tpl_onload = "alert('テンプレートファイルをアップロードしました。');";
+		        break;
+		    
+		    // 初回表示
+		    default:
 		        break;
 		    }
-		    // アップロードファイル初期化
-		    $objUpFile = $this->lfInitUploadFile($objForm);
-		    // 一時ファイルへ保存
-		    $errMsg = $objUpFile->makeTempFile('template_file', false);
-		    // 書き込みエラーチェック
-		    if(isset($errMsg)) {
-		        $this->arrErr['template_file'] = $errMsg;
-		        $this->arrForm = $objForm->getFormParamList();
-		        break;
-		    }
-		    $this->lfAddTemplates($objForm, $objUpFile);
-		    $this->tpl_onload = "alert('テンプレートファイルをアップロードしました。');";
-		    break;
-		
-		// 初回表示
-		default:
-		    break;
-		}
-		
-		// 画面の表示
-		$objView = new SC_AdminView();
-		$objView->assignobj($this);
-		$objView->display(MAIN_FRAME);
     }
 
     /**
