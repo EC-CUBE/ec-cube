@@ -31,10 +31,6 @@ define('DEF_LAYOUT', "products/list.php");
 define('MODULE_DIR', "downloads/module/");
 /** ダウンロードモジュール保存ディレクトリ */
 define('MODULE_PATH', DATA_PATH . MODULE_DIR);
-/** HotFix保存ディレクトリ */
-define('UPDATE_DIR', "downloads/update/");
-/** HotFix保存ディレクトリ */
-define('UPDATE_PATH', DATA_PATH . UPDATE_DIR);
 /** DBセッションの有効期限(秒) */
 define('MAX_LIFETIME', 7200);
 /** マスタデータキャッシュディレクトリ */
@@ -67,8 +63,6 @@ define('LOAD_BATCH_PASS', 3600);
 define('CLOSE_DAY', 31);
 /** 一般サイトエラー */
 define('FAVORITE_ERROR', 13);
-/** ライブラリのパス */
-define('LIB_DIR', DATA_PATH . "lib/");
 /** フォントのパス */
 define('TTF_DIR', DATA_PATH . "fonts/");
 /** グラフ格納ディレクトリ */
@@ -103,8 +97,6 @@ define('OPTION_CLASS_REGIST', 1);
 define('DEFAULT_PASSWORD', "UAhgGR3L");
 /** 別のお届け先最大登録数 */
 define('DELIV_ADDR_MAX', 20);
-/** 閲覧履歴保存数 */
-define('CUSTOMER_READING_MAX', 30);
 /** 管理画面ステータス一覧表示件数 */
 define('ORDER_STATUS_MAX', 50);
 /** フロントレビュー書き込み最大数 */
@@ -129,8 +121,6 @@ define('SITE_FRAME', "site_frame.tpl");
 define('CERT_STRING', "7WDhcBTF");
 /** ダミーパスワード */
 define('DUMMY_PASS', "########");
-/** 在庫数、販売制限無限を示す。 */
-define('UNLIMITED', "++");
 /** 生年月日登録開始年 */
 define('BIRTH_YEAR', 1901);
 /** 本システムの稼働開始年 */
@@ -297,10 +287,6 @@ define('URL_LOGOUT', URL_DIR . "admin/logout.php");
 define('URL_SYSTEM_CSV', URL_DIR . "admin/system/member_csv.php");
 /** 管理機能用CSS保管ディレクトリ */
 define('URL_ADMIN_CSS', URL_DIR . "admin/css/");
-/** キャンペーン登録ページ */
-define('URL_CAMPAIGN_TOP', URL_DIR . "admin/contents/campaign.php");
-/** キャンペーンデザイン設定ページ */
-define('URL_CAMPAIGN_DESIGN', URL_DIR . "admin/contents/campaign_design.php");
 /** アクセス成功 */
 define('SUCCESS', 0);
 /** メンバー管理ページ表示行数 */
@@ -327,7 +313,7 @@ define('LTEXT_LEN', 3000);
 /** 超長文の文字数 (メルマガなど) */
 define('LLTEXT_LEN', 99999);
 /** URLの文字長 */
-define('URL_LEN', 300);
+define('URL_LEN', 1024);
 /** 管理画面用：ID・パスワードの文字数制限 */
 define('ID_MAX_LEN', 15);
 /** 管理画面用：ID・パスワードの文字数制限 */
@@ -351,7 +337,7 @@ define('PASSWORD_LEN1', 4);
 /** フロント画面用：パスワードの最大文字数 */
 define('PASSWORD_LEN2', 10);
 /** 検査数値用桁数(INT) */
-define('INT_LEN', 8);
+define('INT_LEN', 9);
 /** クレジットカードの文字数 */
 define('CREDIT_NO_LEN', 4);
 /** 検索カテゴリ最大表示文字数(byte) */
@@ -434,8 +420,6 @@ define('DELIV_DATE_END_MAX', 21);
 define('PURCHASE_CUSTOMER_REGIST', 0);
 /** 支払期限 */
 define('CV_PAYMENT_LIMIT', 14);
-/** キャンペーン登録最大数 */
-define('CAMPAIGN_REGIST_MAX', 20);
 /** 商品レビューでURL書き込みを許可するか否か */
 define('REVIEW_ALLOW_URL', 0);
 /** トラックバック 表示 */
@@ -454,8 +438,6 @@ define('SITE_CONTROL_TRACKBACK', 1);
 define('SITE_CONTROL_AFFILIATE', 2);
 /** Pear::Mail バックエンド:mail|smtp|sendmail */
 define('MAIL_BACKEND', "smtp");
-/** OS種別:WIN|LINUX */
-define('OS_TYPE', "LINUX");
 /** SMTPサーバー */
 define('SMTP_HOST', "127.0.0.1");
 /** SMTPポート */
@@ -492,24 +474,6 @@ define('COMPILE_FTP_DIR', COMPILE_DIR . USER_DIR);
 define('BLOC_DIR', "bloc/");
 /** ブロックファイル保存先 */
 define('BLOC_PATH', TEMPLATE_DIR . BLOC_DIR);
-/** キャンペーンファイル保存先 */
-define('CAMPAIGN_DIR', "cp/");
-/** キャンペーン関連 */
-define('CAMPAIGN_URL', URL_DIR . CAMPAIGN_DIR);
-/** キャンペーン関連 */
-define('CAMPAIGN_PATH', HTML_PATH . CAMPAIGN_DIR);
-/** キャンペーン関連 */
-define('CAMPAIGN_TEMPLATE_DIR', "campaign/");
-/** キャンペーン関連 */
-define('CAMPAIGN_TEMPLATE_PATH', TEMPLATE_DIR . CAMPAIGN_TEMPLATE_DIR);
-/** キャンペーン関連 */
-define('CAMPAIGN_BLOC_DIR', "bloc/");
-/** キャンペーン関連 */
-define('CAMPAIGN_BLOC_PATH', CAMPAIGN_TEMPLATE_PATH . CAMPAIGN_BLOC_DIR);
-/** キャンペーン関連 */
-define('CAMPAIGN_TEMPLATE_ACTIVE', "active/");
-/** キャンペーン関連 */
-define('CAMPAIGN_TEMPLATE_END', "end/");
 /** EメールアドレスチェックをRFC準拠にするか(true:準拠する、false:準拠しない) */
 define('RFC_COMPLIANT_EMAIL_CHECK', false);
 /** SMARTYテンプレート(mobile) */

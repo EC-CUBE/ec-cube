@@ -780,8 +780,6 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('USER_DEF_PHP', 'HTM
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DEF_LAYOUT', '"products/list.php"', 21, 'その他画面のデフォルトページレイアウト');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MODULE_DIR', '"downloads/module/"', 22, 'ダウンロードモジュール保存ディレクトリ');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MODULE_PATH', 'DATA_PATH . MODULE_DIR', 23, 'ダウンロードモジュール保存ディレクトリ');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('UPDATE_DIR', '"downloads/update/"', 24, 'HotFix保存ディレクトリ');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('UPDATE_PATH', 'DATA_PATH . UPDATE_DIR', 25, 'HotFix保存ディレクトリ');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MAX_LIFETIME', '7200', 26, 'DBセッションの有効期限(秒)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MASTER_DATA_DIR', 'DATA_PATH . "cache/"', 27, 'マスタデータキャッシュディレクトリ');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('UPDATE_HTTP', '"http://sv01.ec-cube.net/info/index.php"', 28, 'アップデート管理用ファイル格納場所');
@@ -798,7 +796,6 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PEAR_DB_PERSISTENT'
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('LOAD_BATCH_PASS', '3600', 44, 'バッチを実行する最短の間隔(秒)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CLOSE_DAY', '31', 45, '締め日の指定(末日の場合は、31を指定してください。)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('FAVORITE_ERROR', '13', 46, '一般サイトエラー');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('LIB_DIR', 'DATA_PATH . "lib/"', 47, 'ライブラリのパス');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TTF_DIR', 'DATA_PATH . "fonts/"', 48, 'フォントのパス');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('GRAPH_DIR', 'HTML_PATH . "upload/graph_image/"', 49, 'グラフ格納ディレクトリ');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('GRAPH_URL', 'URL_DIR . "upload/graph_image/"', 50, 'グラフURL');
@@ -816,7 +813,6 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('OPTION_RECOMMEND', 
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('OPTION_CLASS_REGIST', '1', 62, '商品規格登録(有効:1 無効:0)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DEFAULT_PASSWORD', '"UAhgGR3L"', 66, '会員登録変更(マイページ)パスワード用');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DELIV_ADDR_MAX', '20', 67, '別のお届け先最大登録数');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CUSTOMER_READING_MAX', '30', 68, '閲覧履歴保存数');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ORDER_STATUS_MAX', '50', 70, '管理画面ステータス一覧表示件数');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('REVIEW_REGIST_MAX', '5', 71, 'フロントレビュー書き込み最大数');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DEBUG_MODE', 'false', 72, 'デバッグモード(true：sfPrintRやDBのエラーメッセージを出力する、false：出力しない)');
@@ -829,7 +825,6 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MAIN_FRAME', '"main
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SITE_FRAME', '"site_frame.tpl"', 79, '一般サイト画面フレーム');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CERT_STRING', '"7WDhcBTF"', 80, '認証文字列');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DUMMY_PASS', '"########"', 81, 'ダミーパスワード');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('UNLIMITED', '"++"', 82, '在庫数、販売制限無限を示す。');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('BIRTH_YEAR', '1901', 83, '生年月日登録開始年');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('RELEASE_YEAR', '2005', 84, '本システムの稼働開始年');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CREDIT_ADD_YEAR', '10', 85, 'クレジットカードの期限＋何年');
@@ -913,8 +908,6 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('URL_ORDER_MAIL', 'U
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('URL_LOGOUT', 'URL_DIR . "admin/logout.php"', 171, 'ログアウトページ');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('URL_SYSTEM_CSV', 'URL_DIR . "admin/system/member_csv.php"', 172, 'システム管理CSV出力ページ');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('URL_ADMIN_CSS', 'URL_DIR . "admin/css/"', 173, '管理機能用CSS保管ディレクトリ');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('URL_CAMPAIGN_TOP', 'URL_DIR . "admin/contents/campaign.php"', 174, 'キャンペーン登録ページ');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('URL_CAMPAIGN_DESIGN', 'URL_DIR . "admin/contents/campaign_design.php"', 175, 'キャンペーンデザイン設定ページ');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SUCCESS', '0', 176, 'アクセス成功');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MEMBER_PMAX', '10', 182, 'メンバー管理ページ表示行数');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SEARCH_PMAX', '10', 183, '検索ページ表示行数');
@@ -928,7 +921,7 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MTEXT_LEN', '200', 
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MLTEXT_LEN', '1000', 191, '長中文の文字数 (問い合わせなど)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('LTEXT_LEN', '3000', 192, '長文の文字数');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('LLTEXT_LEN', '99999', 193, '超長文の文字数 (メルマガなど)');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('URL_LEN', '300', 194, 'URLの文字長');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('URL_LEN', '1024', 194, 'URLの文字長');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ID_MAX_LEN', '15', 195, '管理画面用：ID・パスワードの文字数制限');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ID_MIN_LEN', '4', 196, '管理画面用：ID・パスワードの文字数制限');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PRICE_LEN', '8', 197, '金額桁数');
@@ -940,7 +933,7 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TEL_ITEM_LEN', '6',
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TEL_LEN', '12', 203, '電話番号総数');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PASSWORD_LEN1', '4', 204, 'フロント画面用：パスワードの最小文字数');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PASSWORD_LEN2', '10', 205, 'フロント画面用：パスワードの最大文字数');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('INT_LEN', '8', 206, '検査数値用桁数(INT)');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('INT_LEN', '9', 206, '検査数値用桁数(INT)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CREDIT_NO_LEN', '4', 207, 'クレジットカードの文字数');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SEARCH_CATEGORY_LEN', '18', 208, '検索カテゴリ最大表示文字数(byte)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('FILE_NAME_LEN', '10', 209, 'ファイル名表示文字数');
@@ -975,7 +968,6 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('RECOMMEND_NUM', '8'
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DELIV_DATE_END_MAX', '21', 272, 'お届け可能日以降のプルダウン表示最大日数');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PURCHASE_CUSTOMER_REGIST', '0', 273, '購入時強制会員登録(1:有効　0:無効)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CV_PAYMENT_LIMIT', '14', 275, '支払期限');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CAMPAIGN_REGIST_MAX', '20', 276, 'キャンペーン登録最大数');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('REVIEW_ALLOW_URL', '0', 277, '商品レビューでURL書き込みを許可するか否か');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TRACKBACK_STATUS_VIEW', '1', 278, 'トラックバック 表示');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TRACKBACK_STATUS_NOT_VIEW', '2', 279, 'トラックバック 非表示');
@@ -985,7 +977,6 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TRACKBACK_TO_URL', 
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SITE_CONTROL_TRACKBACK', '1', 283, 'サイト管理 トラックバック');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SITE_CONTROL_AFFILIATE', '2', 284, 'サイト管理 アフィリエイト');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MAIL_BACKEND', '"smtp"', 285, 'Pear::Mail バックエンド:mail|smtp|sendmail');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('OS_TYPE', '"LINUX"', 286, 'OS種別:WIN|LINUX');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SMTP_HOST', '"127.0.0.1"', 287, 'SMTPサーバー');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SMTP_PORT', '"25"', 288, 'SMTPポート');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('UPDATE_SEND_SITE_INFO', 'false', 289, 'アップデート時にサイト情報を送出するか');
@@ -1004,15 +995,6 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TEMPLATE_FTP_DIR', 
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('COMPILE_FTP_DIR', 'COMPILE_DIR . USER_DIR', 309, 'SMARTYコンパイル(FTP許可)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('BLOC_DIR', '"bloc/"', 310, 'ブロックファイル保存先');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('BLOC_PATH', 'TEMPLATE_DIR . BLOC_DIR', 311, 'ブロックファイル保存先');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CAMPAIGN_DIR', '"cp/"', 312, 'キャンペーンファイル保存先');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CAMPAIGN_URL', 'URL_DIR . CAMPAIGN_DIR', 313, 'キャンペーン関連');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CAMPAIGN_PATH', 'HTML_PATH . CAMPAIGN_DIR', 314, 'キャンペーン関連');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CAMPAIGN_TEMPLATE_DIR', '"campaign/"', 315, 'キャンペーン関連');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CAMPAIGN_TEMPLATE_PATH', 'TEMPLATE_DIR . CAMPAIGN_TEMPLATE_DIR', 316, 'キャンペーン関連');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CAMPAIGN_BLOC_DIR', '"bloc/"', 317, 'キャンペーン関連');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CAMPAIGN_BLOC_PATH', 'CAMPAIGN_TEMPLATE_PATH . CAMPAIGN_BLOC_DIR', 318, 'キャンペーン関連');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CAMPAIGN_TEMPLATE_ACTIVE', '"active/"', 319, 'キャンペーン関連');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CAMPAIGN_TEMPLATE_END', '"end/"', 320, 'キャンペーン関連');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('RFC_COMPLIANT_EMAIL_CHECK', 'false', 321, 'EメールアドレスチェックをRFC準拠にするか(true:準拠する、false:準拠しない)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MOBILE_TEMPLATE_DIR', 'TEMPLATE_DIR . "mobile/"', 400, 'SMARTYテンプレート(mobile)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MOBILE_COMPILE_DIR', 'COMPILE_DIR . "mobile/"', 401, 'SMARTYコンパイル(mobile)');

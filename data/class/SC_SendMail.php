@@ -151,10 +151,6 @@ class SC_SendMail {
                 $_name = $name;
                 $_name = ereg_replace("<","＜", $_name);
                 $_name = ereg_replace(">","＞", $_name);
-                if(OS_TYPE != 'WIN') {
-                    // windowsでは文字化けするので使用しない。
-                    // $_name = mb_convert_encoding($_name,"JIS",CHAR_CODE);
-                }
                 $_name = mb_encode_mimeheader($_name, "JIS", 'B', "\n");
                 $name_address = "\"". $_name . "\"<" . $mail_address . ">";
             } else {

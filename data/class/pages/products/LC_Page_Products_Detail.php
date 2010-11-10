@@ -131,31 +131,6 @@ class LC_Page_Products_Detail extends LC_Page {
         if ($objCustomer->isLoginSuccess() === true) {
             //お気に入りボタン表示
             $this->tpl_login = true;
-
-        /* 閲覧ログ機能は現在未使用
-
-            $table = "dtb_customer_reading";
-            $where = "customer_id = ? ";
-            $arrval[] = $objCustomer->getValue('customer_id');
-            //顧客の閲覧商品数
-            $rpcnt = $objQuery->count($table, $where, $arrval);
-
-            //閲覧数が設定数以下
-            if ($rpcnt < CUSTOMER_READING_MAX){
-                //閲覧履歴に新規追加
-                lfRegistReadingData($product_id, $objCustomer->getValue('customer_id'));
-            } else {
-                //閲覧履歴の中で一番古いものを削除して新規追加
-                $oldsql = "SELECT MIN(update_date) FROM ".$table." WHERE customer_id = ?";
-                $old = $objQuery->getOne($oldsql, array($objCustomer->getValue("customer_id")));
-                $where = "customer_id = ? AND update_date = ? ";
-                $arrval = array($objCustomer->getValue("customer_id"), $old);
-                //削除
-                $objQuery->delete($table, $where, $arrval);
-                //追加
-                lfRegistReadingData($product_id, $objCustomer->getValue('customer_id'));
-            }
-        */
         }
 
         // 規格選択セレクトボックスの作成
