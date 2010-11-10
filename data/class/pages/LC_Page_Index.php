@@ -96,11 +96,6 @@ class LC_Page_Index extends LC_Page {
      */
     function mobileAction() {
         $objCustomer = new SC_Customer();
-
-        #$objView = new SC_MobileView();
-        #$objView->assign("isLogin", $objCustomer->isLoginSuccess(true));
-        #$objView->assignobj($this);
-        #$objView->display(SITE_FRAME);
     }
 
     /**

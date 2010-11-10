@@ -454,6 +454,10 @@ define('USE_MOBILE', true);
 define('DEFAULT_TEMPLATE_NAME', "default");
 /** テンプレート名 */
 define('TEMPLATE_NAME', "default");
+/** モバイルテンプレート名 */
+define('MOBILE_TEMPLATE_NAME', "mobile");
+/** スマートフォンテンプレート名 */
+define('SMARTPHONE_TEMPLATE_NAME', "sphone");
 /** SMARTYテンプレート */
 define('SMARTY_TEMPLATES_DIR',  DATA_PATH . "Smarty/templates/");
 /** SMARTYテンプレート */
@@ -477,13 +481,13 @@ define('BLOC_PATH', TEMPLATE_DIR . BLOC_DIR);
 /** EメールアドレスチェックをRFC準拠にするか(true:準拠する、false:準拠しない) */
 define('RFC_COMPLIANT_EMAIL_CHECK', false);
 /** SMARTYテンプレート(mobile) */
-define('MOBILE_TEMPLATE_DIR', TEMPLATE_DIR . "mobile/");
+define('MOBILE_TEMPLATE_DIR', SMARTY_TEMPLATES_DIR . MOBILE_TEMPLATE_NAME . "/");
 /** SMARTYコンパイル(mobile) */
-define('MOBILE_COMPILE_DIR', COMPILE_DIR . "mobile/");
+define('MOBILE_COMPILE_DIR', DATA_PATH . "Smarty/templates_c/" . MOBILE_TEMPLATE_NAME . "/");
 /** SMARTYテンプレート(smart phone) */
-define('SMARTPHONE_TEMPLATE_DIR', TEMPLATE_DIR . "smartphone/");
-/** SMARTYコンパイル(smart phonemobile) */
-define('SMARTPHONE_COMPILE_DIR', COMPILE_DIR . "smartphone/");
+define('SMARTPHONE_TEMPLATE_DIR', SMARTY_TEMPLATES_DIR . SMARTPHONE_TEMPLATE_NAME . "/");
+/** SMARTYコンパイル(smart phone) */
+define('SMARTPHONE_COMPILE_DIR', DATA_PATH . "Smarty/templates_c/" . SMARTPHONE_TEMPLATE_NAME . "/");
 /** モバイルサイトのセッションの存続時間 (秒) */
 define('MOBILE_SESSION_LIFETIME', 1800);
 /** 空メール機能を使用するかどうか(true:送信する、false:送信しない) */
