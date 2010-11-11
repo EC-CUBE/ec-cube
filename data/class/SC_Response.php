@@ -8,7 +8,7 @@ class SC_Response{
      */
     var $http;
     /**
-     * コンテンツタイプ
+     * コンテンツタイプ
      * Enter description here ...
      * @var unknown_type
      */
@@ -78,7 +78,7 @@ class SC_Response{
     }
 
     function sendHeader(){
-        // HTTPのヘッダ
+        // HTTPのヘッダ
         //        header('HTTP/1.1 '.$this->statuscode.' '.$this->statusTexts[$this->statuscode]);
         foreach ($this->header as $name => $head){
             header($name.': '.$head);
@@ -125,7 +125,8 @@ class SC_Response{
                 $netURL->addQueryString(session_name(), session_id());
             }
 
-            $netURL->addQueryString(TRANSACTION_ID_NAME, SC_Helper_Session_Ex::getToken());
+            $helperSession = new SC_Helper_Session_Ex();
+            $netURL->addQueryString(TRANSACTION_ID_NAME, $helperSession->getToken());
             header("Location: " . $netURL->getURL());
             exit;
         }
@@ -138,7 +139,7 @@ class SC_Response{
 
         if ($removeQueryString) {
             $netURL->querystring = array();
-            $_SERVER['QUERY_STRING'] = ''; // sendRedirect() での処理用らしい
+            $_SERVER['QUERY_STRING'] = ''; // sendRedirect() での処理用らしい
         }
 
         // QueryString を付与
