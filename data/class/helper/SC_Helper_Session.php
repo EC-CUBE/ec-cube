@@ -152,10 +152,19 @@ class SC_Helper_Session {
      */
     function getToken() {
         if (empty($_SESSION[TRANSACTION_ID_NAME])) {
-            // FIXME
-            //$_SESSION[TRANSACTION_ID_NAME] = $this->createToken();
+            $_SESSION[TRANSACTION_ID_NAME] = $this->createToken();
         }
         return $_SESSION[TRANSACTION_ID_NAME];
+    }
+
+    /**
+     * トランザクショントークン用の予測困難な文字列を生成して返す.
+     *
+     * @access private
+     * @return string トランザクショントークン用の文字列
+     */
+    function createToken() {
+        return sha1(uniqid(rand(), true));
     }
 
     /**
@@ -191,6 +200,5 @@ class SC_Helper_Session {
         unset($_SESSION[TRANSACTION_ID_NAME]);
         return $ret;
     }
-
 }
 ?>

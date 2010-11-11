@@ -464,6 +464,8 @@ exit;
      * @return string トランザクショントークン用の文字列
      */
     function createToken() {
+echo "SC_Helper_Session::createToken()に移行してね。";
+exit;
         return sha1(uniqid(rand(), true));
     }
     
