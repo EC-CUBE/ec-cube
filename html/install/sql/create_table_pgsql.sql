@@ -316,7 +316,6 @@ CREATE TABLE dtb_products_class (
     price02 numeric,
     deliv_fee numeric,
     point_rate numeric,
-    status smallint,
     creator_id int NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp,
@@ -329,7 +328,6 @@ CREATE TABLE dtb_products_class (
 CREATE TABLE dtb_class (
     class_id int NOT NULL,
     name text,
-    status smallint,
     rank int,
     creator_id int NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
@@ -342,7 +340,6 @@ CREATE TABLE dtb_classcategory (
     classcategory_id int NOT NULL,
     name text,
     class_id int NOT NULL,
-    status smallint,
     rank int,
     creator_id int NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
@@ -460,13 +457,6 @@ CREATE TABLE dtb_review (
     PRIMARY KEY (review_id)
 );
 
-CREATE TABLE dtb_customer_reading (
-    reading_product_id int NOT NULL,
-    customer_id int NOT NULL,
-    create_date timestamp NOT NULL,
-    update_date timestamp NOT NULL DEFAULT NOW()
-);
-
 CREATE TABLE dtb_customer_favorite_products (
     customer_id int NOT NULL,
     product_id int NOT NULL,
@@ -564,9 +554,6 @@ CREATE TABLE dtb_customer (
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp DEFAULT now(),
     del_flg smallint NOT NULL DEFAULT 0,
-    cell01 text,
-    cell02 text,
-    cell03 text,
     mobile_phone_id text,
     mailmaga_flg smallint,
     PRIMARY KEY (customer_id)
