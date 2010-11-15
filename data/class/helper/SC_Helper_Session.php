@@ -152,7 +152,7 @@ class SC_Helper_Session {
      */
     function getToken() {
         if (empty($_SESSION[TRANSACTION_ID_NAME])) {
-            $_SESSION[TRANSACTION_ID_NAME] = $this->createToken();
+            $_SESSION[TRANSACTION_ID_NAME] = SC_Helper_Session_Ex::createToken();
         }
         return $_SESSION[TRANSACTION_ID_NAME];
     }

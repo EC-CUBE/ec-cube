@@ -125,8 +125,7 @@ class SC_Response{
                 $netURL->addQueryString(session_name(), session_id());
             }
 
-            $helperSession = new SC_Helper_Session_Ex();
-            $netURL->addQueryString(TRANSACTION_ID_NAME, $helperSession->getToken());
+            $netURL->addQueryString(TRANSACTION_ID_NAME, SC_Helper_Session_Ex::getToken());
             header("Location: " . $netURL->getURL());
             exit;
         }
