@@ -98,3 +98,5 @@ DROP TABLE dtb_trackback;
 DROP TABLE dtb_bkup;
 DROP TABLE dtb_plugin;
 DROP TABLE dtb_index_list;
+DROP TABLE dtb_payment_options;
+DROP TABLE dtb_product_type_options;

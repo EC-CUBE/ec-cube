@@ -230,7 +230,7 @@ INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, upda
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (184, 5, 'level', '階層', NULL, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (185, 5, 'rank', '表示ランク', NULL, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
-INSERT INTO dtb_deliv (deliv_id, name, service_name, confirm_url, rank, status, del_flg, creator_id, create_date, update_date) VALUES (1, 'サンプル業者', 'サンプル業者', NULL, 1, 1, 0, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_deliv (deliv_id, product_type_id, name, service_name, confirm_url, rank, status, del_flg, creator_id, create_date, update_date) VALUES (1, 1, 'サンプル業者', 'サンプル業者', NULL, 1, 1, 0, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 1, '1000', 1);
 INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 2, '1000', 2);
@@ -379,11 +379,64 @@ INSERT INTO dtb_pagelayout (page_id, page_name, url, php_dir, tpl_dir, filename,
 INSERT INTO dtb_pagelayout (page_id, page_name, url, php_dir, tpl_dir, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date) VALUES (4, 'MYページ', 'mypage/index.php', ' ', NULL, NULL, 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_pagelayout (page_id, page_name, url, php_dir, tpl_dir, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date) VALUES (0, 'プレビューデータ', 'preview', NULL, NULL, NULL, 1, 1, 1, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
-INSERT INTO dtb_payment (payment_id, payment_method, charge, rule, deliv_id, rank, note, fix, status, del_flg, creator_id, create_date, update_date, payment_image, upper_rule, charge_flg, rule_min, upper_rule_max, module_id, module_path, memo01, memo02, memo03, memo04, memo05, memo06, memo07, memo08, memo09, memo10) VALUES (1, 'クレジット', 0, NULL, 1, 5, NULL, 2, 1, 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO dtb_payment (payment_id, payment_method, charge, rule, deliv_id, rank, note, fix, status, del_flg, creator_id, create_date, update_date, payment_image, upper_rule, charge_flg, rule_min, upper_rule_max, module_id, module_path, memo01, memo02, memo03, memo04, memo05, memo06, memo07, memo08, memo09, memo10) VALUES (2, '郵便振替', 0, NULL, 1, 4, NULL, 2, 1, 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO dtb_payment (payment_id, payment_method, charge, rule, deliv_id, rank, note, fix, status, del_flg, creator_id, create_date, update_date, payment_image, upper_rule, charge_flg, rule_min, upper_rule_max, module_id, module_path, memo01, memo02, memo03, memo04, memo05, memo06, memo07, memo08, memo09, memo10) VALUES (3, '現金書留', 0, NULL, 1, 3, NULL, 2, 1, 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO dtb_payment (payment_id, payment_method, charge, rule, deliv_id, rank, note, fix, status, del_flg, creator_id, create_date, update_date, payment_image, upper_rule, charge_flg, rule_min, upper_rule_max, module_id, module_path, memo01, memo02, memo03, memo04, memo05, memo06, memo07, memo08, memo09, memo10) VALUES (4, '銀行振込', 0, NULL, 1, 2, NULL, 2, 1, 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO dtb_payment (payment_id, payment_method, charge, rule, deliv_id, rank, note, fix, status, del_flg, creator_id, create_date, update_date, payment_image, upper_rule, charge_flg, rule_min, upper_rule_max, module_id, module_path, memo01, memo02, memo03, memo04, memo05, memo06, memo07, memo08, memo09, memo10) VALUES (5, '代金引換', 0, NULL, 1, 1, NULL, 2, 1, 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO dtb_payment (payment_id, payment_method, charge, rule, rank, note, fix, status, del_flg, creator_id, create_date, update_date, payment_image, upper_rule, charge_flg, rule_min, upper_rule_max, module_id, module_path, memo01, memo02, memo03, memo04, memo05, memo06, memo07, memo08, memo09, memo10) VALUES (1, 'クレジット', 0, NULL, 5, NULL, 2, 1, 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO dtb_payment (payment_id, payment_method, charge, rule, rank, note, fix, status, del_flg, creator_id, create_date, update_date, payment_image, upper_rule, charge_flg, rule_min, upper_rule_max, module_id, module_path, memo01, memo02, memo03, memo04, memo05, memo06, memo07, memo08, memo09, memo10) VALUES (2, '郵便振替', 0, NULL, 4, NULL, 2, 1, 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO dtb_payment (payment_id, payment_method, charge, rule, rank, note, fix, status, del_flg, creator_id, create_date, update_date, payment_image, upper_rule, charge_flg, rule_min, upper_rule_max, module_id, module_path, memo01, memo02, memo03, memo04, memo05, memo06, memo07, memo08, memo09, memo10) VALUES (3, '現金書留', 0, NULL, 3, NULL, 2, 1, 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO dtb_payment (payment_id, payment_method, charge, rule, rank, note, fix, status, del_flg, creator_id, create_date, update_date, payment_image, upper_rule, charge_flg, rule_min, upper_rule_max, module_id, module_path, memo01, memo02, memo03, memo04, memo05, memo06, memo07, memo08, memo09, memo10) VALUES (4, '銀行振込', 0, NULL, 2, NULL, 2, 1, 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO dtb_payment (payment_id, payment_method, charge, rule, rank, note, fix, status, del_flg, creator_id, create_date, update_date, payment_image, upper_rule, charge_flg, rule_min, upper_rule_max, module_id, module_path, memo01, memo02, memo03, memo04, memo05, memo06, memo07, memo08, memo09, memo10) VALUES (5, '代金引換', 0, NULL, 1, NULL, 2, 1, 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (1, 1, 1);
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (1, 2, 2);
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (1, 3, 3);
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (1, 4, 4);
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (1, 5, 5);
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (2, 1, 1);
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (2, 2, 2);
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (2, 3, 3);
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (2, 4, 4);
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (2, 5, 5);
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (3, 1, 1);
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (3, 2, 2);
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (3, 3, 3);
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (3, 4, 4);
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (3, 5, 5);
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (4, 1, 1);
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (4, 2, 2);
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (4, 3, 3);
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (4, 4, 4);
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (4, 5, 5);
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (5, 1, 1);
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (5, 2, 2);
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (5, 3, 3);
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (5, 4, 4);
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (5, 5, 5);
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (6, 1, 1);
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (6, 2, 2);
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (6, 3, 3);
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (6, 4, 4);
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (6, 5, 5);
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (7, 1, 1);
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (7, 2, 2);
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (7, 3, 3);
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (7, 4, 4);
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (7, 5, 5);
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (8, 1, 1);
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (8, 2, 2);
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (8, 3, 3);
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (8, 4, 4);
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (8, 5, 5);
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (9, 1, 1);
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (9, 2, 2);
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (9, 3, 3);
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (9, 4, 4);
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (9, 5, 5);
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (10, 1, 1);
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (10, 2, 2);
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (10, 3, 3);
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (10, 4, 4);
+INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (10, 5, 5);
+
+INSERT INTO dtb_product_type_options (product_type_id, deliv_id, rank) VALUES (1, 1, 1);
 
 INSERT INTO dtb_product_categories (product_id, category_id, rank) VALUES (1, 5, 1);
 INSERT INTO dtb_product_categories (product_id, category_id, rank) VALUES (2, 4, 1);

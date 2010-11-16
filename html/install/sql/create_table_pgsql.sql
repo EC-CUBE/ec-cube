@@ -155,6 +155,7 @@ CREATE TABLE dtb_baseinfo (
 
 CREATE TABLE dtb_deliv (
     deliv_id int NOT NULL,
+    product_type_id int,
     name text,
     service_name text,
     confirm_url text,
@@ -179,7 +180,7 @@ CREATE TABLE dtb_delivfee (
     fee_id int NOT NULL,
     fee text NOT NULL,
     pref smallint,
-    PRIMARY KEY (fee_id)
+    PRIMARY KEY (deliv_id, fee_id)
 );
 
 CREATE TABLE dtb_payment (
@@ -187,7 +188,6 @@ CREATE TABLE dtb_payment (
     payment_method text,
     charge numeric,
     rule numeric,
-    deliv_id int DEFAULT 0,
     rank int,
     note text,
     fix smallint,
@@ -214,6 +214,20 @@ CREATE TABLE dtb_payment (
     memo09 text,
     memo10 text,
     PRIMARY KEY (payment_id)
+);
+
+CREATE TABLE dtb_payment_options (
+    product_class_id int NOT NULL,
+    payment_id int NOT NULL,
+    rank int,
+    PRIMARY KEY(product_class_id, payment_id)
+);
+
+CREATE TABLE dtb_product_type_options (
+    product_type_id int NOT NULL,
+    deliv_id int NOT NULL,
+    rank int,
+    PRIMARY KEY(product_type_id, deliv_id)
 );
 
 CREATE TABLE dtb_mailtemplate (
