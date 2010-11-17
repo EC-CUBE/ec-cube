@@ -425,9 +425,9 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin {
             $where = "order_id = ?";
             $arrRet = $objQuery->select("*", "dtb_order", $where, array($order_id));
             $this->objFormParam->setParam($arrRet[0]);
-            list($point, $total_point) = $objDb->sfGetCustomerPoint($order_id, $arrRet[0]['use_point'], $arrRet[0]['add_point']);
-            $this->objFormParam->setValue('total_point', $total_point);
-            $this->objFormParam->setValue('point', $point);
+	    	list($db_point, $rollback_point) = $objDb->sfGetRollbackPoint($order_id, $arrRet[0]['use_point'], $arrRet[0]['add_point']);
+            $this->objFormParam->setValue('total_point', $db_point);
+            $this->objFormParam->setValue('point', $rollback_point);
             $this->arrForm = $arrRet[0];
 
             // 受注詳細データの取得
@@ -504,12 +504,10 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin {
 
         // 加算ポイント
         $arrVal['add_point'] = SC_Helper_DB_Ex::sfGetAddPoint($totalpoint, $arrVal['use_point']);
-
-        if (strlen($_POST['customer_id']) > 0){
-            list($arrVal['point'], $arrVal['total_point']) = $objDb->sfGetCustomerPointFromCid($_POST['customer_id'], $arrVal['use_point'], $arrVal['add_point']);
-        }else{
-            list($arrVal['point'], $arrVal['total_point']) = $objDb->sfGetCustomerPoint($_POST['order_id'], $arrVal['use_point'], $arrVal['add_point']);
-        }
+        
+        // 最終保持ポイント
+        $arrVal['total_point'] = $this->objFormParam->getValue('point') - $arrVal['use_point'] + $arrVal['add_point'];
+        
         if ($arrVal['total'] < 0) {
             $arrErr['total'] = '合計額がマイナス表示にならないように調整して下さい。<br />';
         }
