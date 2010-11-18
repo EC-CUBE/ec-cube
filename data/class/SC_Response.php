@@ -86,32 +86,32 @@ class SC_Response{
     }
 
 
-    function setContentType(String $contentType){
+    function setContentType($contentType){
         $this->header['Content-Type'] = $contentType;
     }
 
-    function setResposeBody(String $body){
+    function setResposeBody($body){
         $this->body = $body;
     }
 
-    /* function addDateHdeader(String $name, $date){
+    /* function addDateHdeader($name, $date){
      *
      * }
      */
 
-    function addHeader(String $name, $value){
+    function addHeader($name, $value){
         $this->header[$name] = $value;
     }
 
-    function containsHeader(String $name){
+    function containsHeader($name){
         return isset($this->header[$name]);
     }
 
-    function sendError( $errorcode){
+    function sendError($errorcode){
         header('HTTP/1.1 '.$errorcode.' '.$this->statusTexts[$errorcode]);
     }
 
-    function sendRedirect(String $location){
+    function sendRedirect($location){
         if (preg_match("/(" . preg_quote(SITE_URL, '/')
                           . "|" . preg_quote(SSL_URL, '/') . ")/", $location)) {
 
@@ -132,7 +132,7 @@ class SC_Response{
         return false;
     }
 
-    function reload(Array $queryString = array(), $removeQueryString = false) {
+    function reload($queryString = array(), $removeQueryString = false) {
         // 現在の URL を取得
         $netURL = new Net_URL($_SERVER['REQUEST_URI']);
 
@@ -151,11 +151,11 @@ class SC_Response{
         $this->sendRedirect($netURL->getURL());
     }
 
-    function setHeader(Array $headers){
+    function setHeader($headers){
         $this->header = $headers;
     }
 
-    function setStatus( $sc = 202){
+    function setStatus($sc = 202){
         $this->statuscode = $sc;
     }
 

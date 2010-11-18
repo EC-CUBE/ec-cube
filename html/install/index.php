@@ -797,16 +797,16 @@ function lfDropSequence($arrSequences, $dsn) {
     // Debugモード指定
     $options['debug'] = PEAR_DB_DEBUG;
     $objDB = MDB2::connect($dsn, $options);
-    $objDB->loadModule('Manager');
+    $objManager =& $objDB->loadModule('Manager');
 
     // 接続エラー
     if (!PEAR::isError($objDB)) {
 
-        $exists = $objDB->listSequences();
+        $exists = $objManager->listSequences();
         foreach ($arrSequences as $seq) {
             $seq_name = $seq[0] . "_" . $seq[1];
             if (in_array($seq_name, $exists)) {
-                $result = $objDB->dropSequence($seq_name);
+                $result = $objManager->dropSequence($seq_name);
                 if (PEAR::isError($result)) {
                     $arrErr['all'] = ">> " . $result->message . "<br />";
                     GC_Utils_Ex::gfPrintLog($result->userinfo, INSTALL_LOG);
@@ -835,12 +835,12 @@ function lfCreateSequence($arrSequences, $dsn) {
     // Debugモード指定
     $options['debug'] = PEAR_DB_DEBUG;
     $objDB = MDB2::connect($dsn, $options);
-    $objDB->loadModule('Manager');
+    $objManager =& $objDB->loadModule('Manager');
 
     // 接続エラー
     if (!PEAR::isError($objDB)) {
 
-        $exists = $objDB->listSequences();
+        $exists = $objManager->listSequences();
         foreach ($arrSequences as $seq) {
             $res = $objDB->query("SELECT max(" . $seq[1] . ") FROM ". $seq[0]);
             if (PEAR::isError($res)) {
@@ -851,7 +851,7 @@ function lfCreateSequence($arrSequences, $dsn) {
             $max = $res->fetchOne();
 
             $seq_name = $seq[0] . "_" . $seq[1];
-            $result = $objDB->createSequence($seq_name, $max + 1);
+            $result = $objManager->createSequence($seq_name, $max + 1);
             if (PEAR::isError($result)) {
                 $arrErr['all'] = ">> " . $result->message . "<br />";
                 GC_Utils_Ex::gfPrintLog($result->userinfo, INSTALL_LOG);

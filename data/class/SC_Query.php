@@ -657,10 +657,10 @@ class SC_Query {
      * @return MDB2_OK
      */
     function setVal($seq_name, $start) {
-        $this->conn->loadModule('Manager');
+        $objManager =& $this->conn->loadModule('Manager');
         // XXX エラーハンドリングを行う
-        $this->conn->dropSequence($seq_name);
-        return $this->conn->createSequence($seq_name, $start);
+        $objManager->dropSequence($seq_name);
+        return $objManager->createSequence($seq_name, $start);
     }
 
     /**
@@ -695,8 +695,8 @@ class SC_Query {
      * @return array シーケンス名の配列
      */
     function listSequences() {
-        $this->conn->loadModule('Manager');
-        return $this->conn->listSequences();
+        $objManager =& $this->conn->loadModule('Manager');
+        return $objManager->listSequences();
     }
 
     /**
@@ -705,8 +705,8 @@ class SC_Query {
      * @return array テーブル名の配列
      */
     function listTables() {
-        $this->conn->loadModule('Manager');
-        return $this->conn->listTables();
+        $objManager =& $this->conn->loadModule('Manager');
+        return $objManager->listTables();
     }
 
     /**
@@ -716,8 +716,8 @@ class SC_Query {
      * @return array 指定のテーブルのカラム名の配列
      */
     function listTableFields($table) {
-        $this->conn->loadModule('Manager');
-        return $this->conn->listTableFields($table);
+        $objManager =& $this->conn->loadModule('Manager');
+        return $objManager->listTableFields($table);
     }
 
     /**
@@ -727,8 +727,8 @@ class SC_Query {
      * @return array 指定のテーブルのインデックス一覧
      */
     function listTableIndexes($table) {
-        $this->conn->loadModule('Manager');
-        return $this->conn->listTableIndexes($table);
+        $objManager =& $this->conn->loadModule('Manager');
+        return $objManager->listTableIndexes($table);
     }
     
     /**
@@ -739,8 +739,8 @@ class SC_Query {
      * @param array $definition フィールド名など　通常のフィールド指定時は、$definition=array('fields' => array('フィールド名' => array()));
      */
     function createIndex($table, $name, $definition) {
-        $this->conn->loadModule('Manager');
-        return $this->conn->createIndex($table, $name, $definition);
+        $objManager =& $this->conn->loadModule('Manager');
+        return $objManager->createIndex($table, $name, $definition);
     }
 
     /**
@@ -750,8 +750,8 @@ class SC_Query {
      * @param string $name インデックス名
      */
     function dropIndex($table, $name) {
-        $this->conn->loadModule('Manager');
-        return $this->conn->dropIndex($table, $name);
+        $objManager =& $this->conn->loadModule('Manager');
+        return $objManager->dropIndex($table, $name);
     }
     
     /**

@@ -438,8 +438,8 @@ __EOS__;
                 break;
         }
         // 取得範囲の指定(開始行番号、行数のセット)
-        $objQuery->setLimitOffset($this->disp_number, $startno)
-                 ->setWhere($where);
+        $objQuery->setLimitOffset($this->disp_number, $startno);
+        $objQuery->setWhere($where);
 
          // 表示すべきIDとそのIDの並び順を一気に取得
         $arrProduct_id = $objProduct->findProductIdsOrder($objQuery, array_merge($arrval, $arrval_order));

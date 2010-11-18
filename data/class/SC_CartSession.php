@@ -479,7 +479,7 @@ class SC_CartSession {
      * @param integer $discount 値引
      * @return array カートの計算結果の配列
      */
-    function calculate($productTypeId, &$objCustomer = null, $use_point = 0,
+    function calculate($productTypeId, &$objCustomer, $use_point = 0,
                        $deliv_pref = "", $payment_id = "", $charge = 0, $discount = 0) {
         $objDb = new SC_Helper_DB_Ex();
 

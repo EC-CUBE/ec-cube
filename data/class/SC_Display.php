@@ -44,7 +44,7 @@ class SC_Display{
     *
     * @param $page LC_Page
     */
-    function hoge(LC_Page $page, $is_admin = false){
+    function hoge($page, $is_admin = false){
         if(!$this->deviceSeted || !is_null($this->view)){
             $device = ($is_admin) ? 8 : $this->detectDevice();
             $this->setDevice($device);
@@ -65,7 +65,7 @@ class SC_Display{
         return;
     }
     
-    function addHeader(String $name,String $value){
+    function addHeader($name, $value){
         $this->response->addHeader($name, $value);
     }
 
@@ -92,7 +92,7 @@ class SC_Display{
         $this->deviceSeted = true;
     }
     
-    function setView(SC_View $view){
+    function setView($view){
         
         $this->view = $view;
     }

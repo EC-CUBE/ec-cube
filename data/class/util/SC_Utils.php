@@ -2246,14 +2246,15 @@ echo $template_path;
      * @return integer ファイルに書き込まれたバイト数を返します。
      */
     function sfPutPluginsXml($pluginsXml) {
-        if (!($pluginsXml instanceof SimpleXMLElement)) SC_Utils_Ex::sfDispException();
+        if (version_compare(PHP_VERSION, '5.0.0', '>')) {
+           return;
+        }
 
         $xml = $pluginsXml->asXML();
         if (strlen($xml) == 0) SC_Utils_Ex::sfDispException();
 
         $return = file_put_contents(PLUGIN_PATH . 'plugins.xml', $pluginsXml->asXML());
         if ($return === false) SC_Utils_Ex::sfDispException();
-
         return $return;
     }
 
