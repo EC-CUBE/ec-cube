@@ -79,7 +79,7 @@ class LC_Page_Forgot extends LC_Page {
 
         // 店舗基本情報を取得
         $objDb = new SC_Helper_DB_Ex();
-        $CONF = $objDb->sf_getBasisData();
+        $CONF = $objDb->sfGetBasisData();
 
         $masterData = new SC_DB_MasterData_Ex();
         $arrReminder = $masterData->getMasterData("mtb_reminder");

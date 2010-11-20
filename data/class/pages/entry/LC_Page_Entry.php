@@ -171,7 +171,7 @@ class LC_Page_Entry extends LC_Page {
         $objView = new SC_SiteView();
         $objCustomer = new SC_Customer();
         $objDb = new SC_Helper_DB_Ex();
-        $CONF = $objDb->sf_getBasisData();
+        $CONF = $objDb->sfGetBasisData();
 
         $ssl_url  = rtrim(SSL_URL,"/");
         $ssl_url .= $_SERVER['PHP_SELF'];
@@ -374,7 +374,7 @@ class LC_Page_Entry extends LC_Page {
         //---- ページ初期設定
         $objDb = new SC_Helper_DB_Ex();
         $objMobile = new SC_Helper_Mobile_Ex();
-        $CONF = $objDb->sf_getBasisData();					// 店舗基本情報
+        $CONF = $objDb->sfGetBasisData();					// 店舗基本情報
         $objView = new SC_MobileView();
         $objCustomer = new SC_Customer();
 

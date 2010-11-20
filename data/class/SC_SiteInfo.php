@@ -25,9 +25,9 @@
  * サイト情報を取得する.
  *
  * FIXME このクラスを使用している場合は,
- * SC_Helper_DB::sf_getBasisData() に置き変えて下さい
+ * SC_Helper_DB::sfGetBasisData() に置き変えて下さい
  *
- * @deprecated SC_Helper_DB::sf_getBasisData() を使用して下さい.
+ * @deprecated SC_Helper_DB::sfGetBasisData() を使用して下さい.
  */
 class SC_SiteInfo {
 
@@ -35,10 +35,10 @@ class SC_SiteInfo {
     var $data;
 
     /**
-     * @deprecated SC_Helper_DB::sf_getBasisData() を使用して下さい.
+     * @deprecated SC_Helper_DB::sfGetBasisData() を使用して下さい.
      *
      * FIXME この関数を使用している場合は,
-     * SC_Helper_DB::sf_getBasisData() に置き変えて下さい
+     * SC_Helper_DB::sfGetBasisData() に置き変えて下さい
      *
      */
     function SC_SiteInfo($conn = ''){
@@ -64,7 +64,7 @@ class SC_SiteInfo {
             }
         */
         $objDb = new SC_Helper_DB_Ex();
-        $this->data = $objDb->sf_getBasisData();
+        $this->data = $objDb->sfGetBasisData();
     }
 }
 ?>

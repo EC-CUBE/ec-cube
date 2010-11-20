@@ -122,7 +122,7 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
      * @return string 検索条件の SQL
      */
     function getDownloadableDaysWhereSql() {
-        $baseinfo = SC_Helper_DB_Ex::sf_getBasisData();
+        $baseinfo = SC_Helper_DB_Ex::sfGetBasisData();
         //downloadable_daysにNULLが入っている場合(無期限ダウンロード可能時)もあるので、NULLの場合は0日に補正
         $downloadable_days = $baseinfo['downloadable_days'];
         if($downloadable_days ==null || $downloadable_days == "")$downloadable_days=0;

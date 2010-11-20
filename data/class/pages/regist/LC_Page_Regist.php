@@ -71,7 +71,7 @@ class LC_Page_Regist extends LC_Page {
         $objSiteInfo = $objView->objSiteInfo;
         $objCustomer = new SC_Customer();
         $objDb = new SC_Helper_DB_Ex();
-        $this->CONF = $objDb->sf_getBasisData();
+        $this->CONF = $objDb->sfGetBasisData();
 
         // キャンペーンからの登録の場合の処理
 
@@ -140,7 +140,7 @@ class LC_Page_Regist extends LC_Page {
         $objSiteInfo = $objView->objSiteInfo;
         $objCustomer = new SC_Customer();
         $objDb = new SC_Helper_DB_Ex();
-        $this->CONF = $objDb->sf_getBasisData();
+        $this->CONF = $objDb->sfGetBasisData();
 
         //--　本登録完了のためにメールから接続した場合
         if ($_GET["mode"] == "regist") {

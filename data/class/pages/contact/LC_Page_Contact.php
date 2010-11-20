@@ -92,7 +92,7 @@ class LC_Page_Contact extends LC_Page {
      */
     function action() {
         $objDb = new SC_Helper_DB_Ex();
-        $CONF = $objDb->sf_getBasisData();			// 店舗基本情報
+        $CONF = $objDb->sfGetBasisData();			// 店舗基本情報
 
         $objCustomer = new SC_Customer();
 
@@ -148,7 +148,7 @@ class LC_Page_Contact extends LC_Page {
      */
     function mobileAction() {
         $objDb = new SC_Helper_DB_Ex();
-        $this->CONF = $objDb->sf_getBasisData();			// 店舗基本情報
+        $this->CONF = $objDb->sfGetBasisData();			// 店舗基本情報
     }
 
     /**
@@ -268,7 +268,7 @@ class LC_Page_Contact extends LC_Page {
 
     function lfSendMail(&$objPage){
         $objDb = new SC_Helper_DB_Ex();
-        $CONF = $objDb->sf_getBasisData();			// 店舗基本情報
+        $CONF = $objDb->sfGetBasisData();			// 店舗基本情報
         $objQuery = new SC_Query();
         $objSiteInfo = $this->objView->objSiteInfo;
         $arrInfo = $objSiteInfo->data;

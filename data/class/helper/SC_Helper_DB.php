@@ -139,7 +139,7 @@ class SC_Helper_DB {
      * @param boolean $force 強制的にDB取得するか
      * @return array 店舗基本情報の配列
      */
-    function sf_getBasisData($force = false) {
+    function sfGetBasisData($force = false) {
         static $data;
 
         if ($force || !isset($data)) {
@@ -1565,7 +1565,7 @@ __EOS__;
      */
     function sfTotalConfirm($arrData, &$objPage, &$objCartSess, $dummy1 = null, $objCustomer = "", $key = "") {
         // 店舗基本情報を取得する
-        $arrInfo = SC_Helper_DB_Ex::sf_getBasisData();
+        $arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
 
         // 未定義変数を定義
         if (!isset($arrData['deliv_pref'])) $arrData['deliv_pref'] = "";
@@ -1846,7 +1846,7 @@ __EOS__;
      */
     function sfTax($price) {
         // 店舗基本情報を取得
-        $CONF = SC_Helper_DB_Ex::sf_getBasisData();
+        $CONF = SC_Helper_DB_Ex::sfGetBasisData();
 
         return SC_Utils_Ex::sfTax($price, $CONF['tax'], $CONF['tax_rule']);
     }
@@ -1859,7 +1859,7 @@ __EOS__;
      */
     function sfPreTax($price, $tax = null, $tax_rule = null) {
         // 店舗基本情報を取得
-        $CONF = SC_Helper_DB_Ex::sf_getBasisData();
+        $CONF = SC_Helper_DB_Ex::sfGetBasisData();
 
         return SC_Utils_Ex::sfPreTax($price, $CONF['tax'], $CONF['tax_rule']);
     }
@@ -1873,7 +1873,7 @@ __EOS__;
      */
     function sfGetAddPoint($totalpoint, $use_point) {
         // 店舗基本情報を取得
-        $CONF = SC_Helper_DB_Ex::sf_getBasisData();
+        $CONF = SC_Helper_DB_Ex::sfGetBasisData();
 
         return SC_Utils_Ex::sfGetAddPoint($totalpoint, $use_point, $CONF['point_rate']);
     }

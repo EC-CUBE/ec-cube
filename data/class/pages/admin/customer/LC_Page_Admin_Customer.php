@@ -284,7 +284,7 @@ class LC_Page_Admin_Customer extends LC_Page_Admin {
                 $this->name02 = $arrRet[0]['name02'];
                 $this->uniqid = $arrRet[0]['secret_key'];
 
-                $CONF = $objDb->sf_getBasisData();
+                $CONF = $objDb->sfGetBasisData();
                 $this->CONF = $CONF;
                 /**
                  * 携帯メールアドレスが登録されていれば携帯サイトから仮会員登録したものと判定する。

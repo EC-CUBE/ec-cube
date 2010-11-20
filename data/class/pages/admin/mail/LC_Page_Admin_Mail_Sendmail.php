@@ -64,7 +64,7 @@ class LC_Page_Admin_Mail_Sendmail extends LC_Page_Admin {
         $objQuery = new SC_Query();
 
         $objDb = new SC_Helper_DB_Ex();
-        $objSite = $objDb->sf_getBasisData();
+        $objSite = $objDb->sfGetBasisData();
 
         if (MELMAGA_SEND != true) {
             exit;

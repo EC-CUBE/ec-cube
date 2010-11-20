@@ -85,7 +85,7 @@ class LC_Page_Guide_Order extends LC_Page {
         // レイアウトデザインを取得
         $objLayout = new SC_Helper_PageLayout_Ex();
         $objLayout->sfGetPageLayout($this, false, DEF_LAYOUT);
-        $this->arrRet = $objDb->sf_getBasisData();
+        $this->arrRet = $objDb->sfGetBasisData();
 
         $objView = new SC_MobileView();
         $objView->assignobj($this);

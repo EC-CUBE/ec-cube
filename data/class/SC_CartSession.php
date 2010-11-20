@@ -514,7 +514,7 @@ class SC_CartSession {
         }
 
         // 送料無料条件が設定されている場合
-        $arrInfo = $objDb->sf_getBasisData();
+        $arrInfo = $objDb->sfGetBasisData();
         if($arrInfo['free_rule'] > 0) {
             // 小計が無料条件を超えている場合
             if($results['subtotal'] >= $arrInfo['free_rule']) {

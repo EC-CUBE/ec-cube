@@ -75,7 +75,7 @@ class LC_Page_Order extends LC_Page {
 
         // レイアウトデザインを取得
         $layout->sfGetPageLayout($this, false, DEF_LAYOUT);
-        $this->arrRet = $objDb->sf_getBasisData();
+        $this->arrRet = $objDb->sfGetBasisData();
     }
 
     /**
@@ -107,7 +107,7 @@ class LC_Page_Order extends LC_Page {
      */
     function mobileAction() {
         $objDb = new SC_Helper_DB_Ex();
-        $this->arrRet = $objDb->sf_getBasisData();
+        $this->arrRet = $objDb->sfGetBasisData();
     }
 
 

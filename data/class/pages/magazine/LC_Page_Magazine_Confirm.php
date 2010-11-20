@@ -118,7 +118,7 @@ class LC_Page_Magazine_Confirm extends LC_Page {
                 $subject = $helperMail->sfMakesubject('メルマガ解除のご確認');
             }
             $objDb = new SC_Helper_DB_Ex();
-            $CONF = $objDb->sf_getBasisData();
+            $CONF = $objDb->sfGetBasisData();
             $this->CONF = $CONF;
             $this->tpl_url = SC_Utils_Ex::gfAddSessionId(MOBILE_SSL_URL . "magazine/" . $_REQUEST['mode'] . ".php?id=" . $uniqId);
 
