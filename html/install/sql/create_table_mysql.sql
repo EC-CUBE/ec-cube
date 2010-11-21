@@ -223,13 +223,6 @@ CREATE TABLE dtb_payment_options (
     PRIMARY KEY(product_class_id, payment_id)
 ) TYPE=InnoDB;
 
-CREATE TABLE dtb_product_type_options (
-    product_type_id int NOT NULL,
-    deliv_id int NOT NULL,
-    rank int,
-    PRIMARY KEY(product_type_id, deliv_id)
-) TYPE=InnoDB;
-
 CREATE TABLE dtb_mailtemplate (
     template_id int NOT NULL,
     subject text,
@@ -1250,14 +1243,14 @@ CREATE TABLE dtb_bkup (
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_plugin (
-  plugin_id INT NOT NULL,
-  plugin_name VARCHAR(255) NOT NULL DEFAULT '',
-  enable INT NOT NULL DEFAULT 0,
-  del_flg INT NOT NULL DEFAULT 0,
-  class_name VARCHAR(255) NOT NULL DEFAULT '',
-  create_date DATETIME NOT NULL,
-  update_date DATETIME NOT NULL,
-  PRIMARY KEY (plugin_id)
+    plugin_id int NOT NULL,
+    plugin_name varchar(255) NOT NULL DEFAULT '',
+    enable int2 NOT NULL DEFAULT 0,
+    del_flg int2 NOT NULL DEFAULT 0,
+    class_name varchar(255) NOT NULL DEFAULT '',
+    create_date datetime NOT NULL,
+    update_date datetime NOT NULL,
+    PRIMARY KEY (plugin_id)
 ) TYPE=InnoDB;
 
 CREATE INDEX dtb_customer_mobile_phone_id_key ON dtb_customer (mobile_phone_id(64));
@@ -1271,9 +1264,11 @@ CREATE INDEX dtb_mobile_ext_session_id_create_date_key ON dtb_mobile_ext_session
 CREATE INDEX dtb_mobile_kara_mail_token_key ON dtb_mobile_kara_mail (token(64));
 CREATE INDEX dtb_mobile_kara_mail_create_date_key ON dtb_mobile_kara_mail (create_date);
 CREATE INDEX dtb_mobile_kara_mail_receive_date_key ON dtb_mobile_kara_mail (receive_date);
-CREATE TABLE dtb_index_list(
-    table_name text NOT NULL DEFAULT '',
-    column_name text NOT NULL DEFAULT '',
+
+CREATE TABLE dtb_index_list (
+    table_name varchar(30) NOT NULL DEFAULT '',
+    column_name varchar(30) NOT NULL DEFAULT '',
     recommend_flg int2 NOT NULL DEFAULT 0,
-    recommend_comment text
+    recommend_comment text,
+    PRIMARY KEY (table_name, column_name)
 ) TYPE=InnoDB;

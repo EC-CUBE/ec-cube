@@ -223,13 +223,6 @@ CREATE TABLE dtb_payment_options (
     PRIMARY KEY(product_class_id, payment_id)
 );
 
-CREATE TABLE dtb_product_type_options (
-    product_type_id int NOT NULL,
-    deliv_id int NOT NULL,
-    rank int,
-    PRIMARY KEY(product_type_id, deliv_id)
-);
-
 CREATE TABLE dtb_mailtemplate (
     template_id int NOT NULL,
     subject text,
@@ -1262,19 +1255,21 @@ CREATE INDEX dtb_mobile_kara_mail_token_key ON dtb_mobile_kara_mail (token);
 CREATE INDEX dtb_mobile_kara_mail_create_date_key ON dtb_mobile_kara_mail (create_date);
 CREATE INDEX dtb_mobile_kara_mail_receive_date_key ON dtb_mobile_kara_mail (receive_date);
 
-CREATE TABLE "dtb_plugin" (
-	"plugin_id" int4 primary key NOT NULL,
-	"plugin_name" varchar(255) DEFAULT NULL,
-	"enable" int2 NOT NULL DEFAULT 0,
-	"del_flg" int2 NOT NULL DEFAULT 0,
-	"class_name" varchar(255) DEFAULT NULL,
-	"create_date" timestamp(6) NOT NULL DEFAULT now(),
-	"update_date" timestamp(6) NOT NULL DEFAULT now()
+CREATE TABLE dtb_plugin (
+    plugin_id int NOT NULL,
+    plugin_name varchar(255) DEFAULT NULL,
+    enable int2 NOT NULL DEFAULT 0,
+    del_flg int2 NOT NULL DEFAULT 0,
+    class_name varchar(255) DEFAULT NULL,
+    create_date timestamp NOT NULL DEFAULT now(),
+    update_date timestamp NOT NULL DEFAULT now(),
+    PRIMARY KEY (plugin_id)
 );
 
-CREATE TABLE dtb_index_list(
-    table_name text NOT NULL DEFAULT '',
-    column_name text NOT NULL DEFAULT '',
+CREATE TABLE dtb_index_list (
+    table_name varchar(30) NOT NULL DEFAULT '',
+    column_name varchar(30) NOT NULL DEFAULT '',
     recommend_flg int2 NOT NULL DEFAULT 0,
-    recommend_comment text
+    recommend_comment text,
+    PRIMARY KEY (table_name, column_name)
 );

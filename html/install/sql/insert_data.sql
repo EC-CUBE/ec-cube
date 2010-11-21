@@ -436,8 +436,6 @@ INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (10,
 INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (10, 4, 4);
 INSERT INTO dtb_payment_options (product_class_id, payment_id, rank) VALUES (10, 5, 5);
 
-INSERT INTO dtb_product_type_options (product_type_id, deliv_id, rank) VALUES (1, 1, 1);
-
 INSERT INTO dtb_product_categories (product_id, category_id, rank) VALUES (1, 5, 1);
 INSERT INTO dtb_product_categories (product_id, category_id, rank) VALUES (2, 4, 1);
 
