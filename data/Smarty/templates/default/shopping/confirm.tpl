@@ -95,18 +95,18 @@
                  </td>
                  <td class="pricetd">
                  <!--{if $item.productsClass.price02 != ""}-->
-                     <!--{$item.productsClass.price02|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
+                     <!--{$item.productsClass.price02|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
                  <!--{else}-->
-                     <!--{$item.productsClass.price01|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
+                     <!--{$item.productsClass.price01|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
                  <!--{/if}-->
                  </td>
                  <td><!--{$item.quantity|number_format}--></td>
-                 <td class="pricetd"><!--{$item.total_pretax|number_format}-->円</td>
+                 <td class="pricetd"><!--{$item.total_inctax|number_format}-->円</td>
              </tr>
              <!--{/foreach}-->
                 <tr>
                     <th colspan="4" class="resulttd">小計</th>
-                    <td class="pricetd"><!--{$tpl_total_pretax[$cartKey]|number_format}-->円</td>
+                    <td class="pricetd"><!--{$tpl_total_inctax[$cartKey]|number_format}-->円</td>
                 </tr>
                 <!--{if $smarty.const.USE_POINT !== false}-->
                     <tr>

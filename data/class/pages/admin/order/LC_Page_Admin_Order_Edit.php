@@ -486,7 +486,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin {
         $totaltax = 0;
         for($i = 0; $i < $max; $i++) {
             // 小計の計算
-            $subtotal += SC_Helper_DB_Ex::sfPreTax($arrVal['price'][$i]) * $arrVal['quantity'][$i];
+            $subtotal += SC_Helper_DB_Ex::sfCalcIncTax($arrVal['price'][$i]) * $arrVal['quantity'][$i];
             // 小計の計算
             $totaltax += SC_Helper_DB_Ex::sfTax($arrVal['price'][$i]) * $arrVal['quantity'][$i];
             // 加算ポイントの計算

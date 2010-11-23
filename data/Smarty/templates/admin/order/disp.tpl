@@ -166,7 +166,7 @@
         <td class="center"><!--{$arrForm.quantity.value[$key]|escape}--></td>
         <!--{assign var=price value=`$arrForm.price.value[$key]`}-->
         <!--{assign var=quantity value=`$arrForm.quantity.value[$key]`}-->
-        <td class="right"><!--{if $price != 0}--><!--{$price|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|sfMultiply:$quantity|number_format}-->円<!--{else}-->無料<!--{/if}--></td>
+        <td class="right"><!--{if $price != 0}--><!--{$price|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|sfMultiply:$quantity|number_format}-->円<!--{else}-->無料<!--{/if}--></td>
     </tr>
     <!--{/section}-->
     <tr>

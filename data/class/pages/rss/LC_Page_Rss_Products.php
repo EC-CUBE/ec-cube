@@ -72,7 +72,7 @@ class LC_Page_Rss_Products extends LC_Page {
             // 値のセットし直し
             foreach($arrProduct as $key => $val){
                 //販売価格を税込みに編集
-                $arrProduct[$key]["price02"] = SC_Helper_DB_Ex::sfPreTax($arrProduct[$key]["price02"]);
+                $arrProduct[$key]["price02"] = SC_Helper_DB_Ex::sfCalcIncTax($arrProduct[$key]["price02"]);
 
                 // 画像ファイルのURLセット
                 (file_exists(IMAGE_SAVE_DIR . $arrProduct[$key]["main_list_image"])) ? $dir = IMAGE_SAVE_URL_RSS : $dir = IMAGE_TEMP_URL_RSS;
@@ -97,8 +97,8 @@ class LC_Page_Rss_Products extends LC_Page {
             // 値のセットし直し
             foreach($arrProduct as $key => $val){
                 //販売価格を税込みに編集
-                $arrProduct[$key]["price02_max"] = SC_Helper_DB_Ex::sfPreTax($arrProduct[$key]["price02_max"]);
-                $arrProduct[$key]["price02_min"] = SC_Helper_DB_Ex::sfPreTax($arrProduct[$key]["price02_min"]);
+                $arrProduct[$key]["price02_max"] = SC_Helper_DB_Ex::sfCalcIncTax($arrProduct[$key]["price02_max"]);
+                $arrProduct[$key]["price02_min"] = SC_Helper_DB_Ex::sfCalcIncTax($arrProduct[$key]["price02_min"]);
 
                 // 画像ファイルのURLセット
                 (file_exists(IMAGE_SAVE_DIR . $arrProduct[$key]["main_list_image"])) ? $dir = IMAGE_SAVE_URL_RSS : $dir = IMAGE_TEMP_URL_RSS;

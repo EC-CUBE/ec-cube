@@ -147,14 +147,14 @@ class LC_Page_Cart extends LC_Page {
         foreach ($this->cartKeys as $key) {
             // カート集計処理
             $this->tpl_message = $objCartSess->checkProducts($key);
-            $this->tpl_total_pretax[$key] = $objCartSess->getAllProductsTotal($key);
+            $this->tpl_total_inctax[$key] = $objCartSess->getAllProductsTotal($key);
             $this->tpl_total_tax[$key] = $objCartSess->getAllProductsTax($key);
             // ポイント合計
             $this->tpl_total_point[$key] = $objCartSess->getAllProductsPoint($key);
             $this->arrData = $objCartSess->calculate($key, $objCustomer);
 
             // 送料無料までの金額を計算
-            $this->tpl_deliv_free[$key] = $this->arrInfo['free_rule'] - $this->tpl_total_pretax[$key];
+            $this->tpl_deliv_free[$key] = $this->arrInfo['free_rule'] - $this->tpl_total_inctax[$key];
         }
 
         // ログイン判定
@@ -290,7 +290,7 @@ class LC_Page_Cart extends LC_Page {
         }
 
         // 送料無料までの金額を計算
-        $tpl_deliv_free = $this->arrInfo['free_rule'] - $this->tpl_total_pretax;
+        $tpl_deliv_free = $this->arrInfo['free_rule'] - $this->tpl_total_inctax;
         $this->tpl_deliv_free = $tpl_deliv_free;
 
         // 前頁のURLを取得

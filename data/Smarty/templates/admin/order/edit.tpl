@@ -345,8 +345,8 @@
             <td align="center"><input type="text" name="quantity[<!--{$key}-->]" value="<!--{$arrForm.quantity.value[$key]|escape}-->" size="3" class="box3" maxlength="<!--{$arrForm.quantity.length}-->"/></td>
             <!--{assign var=price value=`$arrForm.price.value[$key]`}-->
             <!--{assign var=quantity value=`$arrForm.quantity.value[$key]`}-->
-            <td><!--{$price|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}--> 円</td>
-            <td><!--{$price|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|sfMultiply:$quantity|number_format}-->円</td>
+            <td><!--{$price|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}--> 円</td>
+            <td><!--{$price|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|sfMultiply:$quantity|number_format}-->円</td>
         </tr>
         <!--{/section}-->
         <tr>

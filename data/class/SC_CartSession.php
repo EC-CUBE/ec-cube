@@ -111,8 +111,8 @@ class SC_CartSession {
                 // 税込み合計
                 $price = $this->cartSession[$productTypeId][$i]['price'];
                 $quantity = $this->cartSession[$productTypeId][$i]['quantity'];
-                $pre_tax = SC_Helper_DB_Ex::sfPreTax($price);
-                $total = $pre_tax * $quantity;
+                $incTax = SC_Helper_DB_Ex::sfCalcIncTax($price);
+                $total = $incTax * $quantity;
                 return $total;
             }
         }
@@ -174,8 +174,8 @@ class SC_CartSession {
             }
             $quantity = $this->cartSession[$productTypeId][$i]['quantity'];
 
-            $pre_tax = SC_Helper_DB_Ex::sfPreTax($price);
-            $total+= ($pre_tax * $quantity);
+            $incTax = SC_Helper_DB_Ex::sfCalcIncTax($price);
+            $total+= ($incTax * $quantity);
         }
         return $total;
     }
@@ -306,10 +306,10 @@ class SC_CartSession {
 
 
                 $quantity = $this->cartSession[$productTypeId][$i]['quantity'];
-                $pre_tax = SC_Helper_DB_Ex::sfPreTax($price);
-                $total = $pre_tax * $quantity;
+                $incTax = SC_Helper_DB_Ex::sfCalcIncTax($price);
+                $total = $incTax * $quantity;
 
-                $this->cartSession[$productTypeId][$i]['total_pretax'] = $total;
+                $this->cartSession[$productTypeId][$i]['total_inctax'] = $total;
 
                 $arrRet[] =& $this->cartSession[$productTypeId][$i];
             }

@@ -102,7 +102,7 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         // カートの商品を取得
         $this->cartItems = $objCartSess->getCartList($this->cartKey);
         // 合計金額
-        $this->tpl_total_pretax[$this->cartKey] = $objCartSess->getAllProductsTotal($this->cartKey);
+        $this->tpl_total_inctax[$this->cartKey] = $objCartSess->getAllProductsTotal($this->cartKey);
         // 税額
         $this->tpl_total_tax[$this->cartKey] = $objCartSess->getAllProductsTax($this->cartKey);
         // ポイント合計

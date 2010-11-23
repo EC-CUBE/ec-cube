@@ -43,7 +43,7 @@ class SC_View {
         $this->_smarty->register_modifier("sfGetVal", array("SC_Utils_Ex", "sfGetVal"));
         $this->_smarty->register_modifier("sfGetErrorColor", array("SC_Utils_Ex", "sfGetErrorColor"));
         $this->_smarty->register_modifier("sfTrim", array("SC_Utils_Ex", "sfTrim"));
-        $this->_smarty->register_modifier("sfPreTax", array("SC_Helper_DB_Ex", "sfPreTax"));
+        $this->_smarty->register_modifier("sfCalcIncTax", array("SC_Helper_DB_Ex", "sfCalcIncTax"));
         $this->_smarty->register_modifier("sfPrePoint", array("SC_Utils_Ex", "sfPrePoint"));
         $this->_smarty->register_modifier("sfGetChecked",array("SC_Utils_Ex", "sfGetChecked"));
         $this->_smarty->register_modifier("sfTrimURL", array("SC_Utils_Ex", "sfTrimURL"));

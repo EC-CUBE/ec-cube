@@ -76,7 +76,7 @@
                     <!--{assign var=quantity value=`$orderDetail.quantity`}-->
                     <td class="pricetd"><!--{$price|escape|number_format}-->円</td>
                     <td><!--{$quantity|escape}--></td>
-                    <td class="pricetd"><!--{$price|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|sfMultiply:$quantity|number_format}-->円</td>
+                    <td class="pricetd"><!--{$price|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|sfMultiply:$quantity|number_format}-->円</td>
                 </tr>
             <!--{/foreach}-->
             <tr>

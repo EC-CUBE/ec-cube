@@ -264,12 +264,12 @@ __EOS__;
                 // 価格
                 $classCategories[$productsClass1][$productsClass2]['price01']
                     = strlen($productsClass['price01'])
-                    ? number_format(SC_Helper_DB_Ex::sfPreTax($productsClass['price01']))
+                    ? number_format(SC_Helper_DB_Ex::sfCalcIncTax($productsClass['price01']))
                     : '';
 
                 $classCategories[$productsClass1][$productsClass2]['price02']
                     = strlen($productsClass['price02'])
-                    ? number_format(SC_Helper_DB_Ex::sfPreTax($productsClass['price02']))
+                    ? number_format(SC_Helper_DB_Ex::sfCalcIncTax($productsClass['price02']))
                     : '';
 
                 // ポイント

@@ -180,7 +180,7 @@ class SC_Fpdf {
             $data[0] = $this->arrDisp['quantity'][$i];
 
             // 税込金額（単価）
-            $data[1] = SC_Helper_DB_Ex::sfPreTax($this->arrDisp['price'][$i]);
+            $data[1] = SC_Helper_DB_Ex::sfCalcIncTax($this->arrDisp['price'][$i]);
 
             // 小計（商品毎）
             $data[2] = $data[0] * $data[1];

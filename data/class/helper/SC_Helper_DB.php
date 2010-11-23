@@ -251,7 +251,7 @@ class SC_Helper_DB {
      */
     function sfTotalCart(&$objPage, $objCartSess, $dummy1 = null, $key = "") {
 
-        $objPage->tpl_total_pretax[$key] = 0;     // 費用合計(税込み)
+        $objPage->tpl_total_inctax[$key] = 0;     // 費用合計(税込み)
         $objPage->tpl_total_tax[$key] = 0;        // 消費税合計
         $objPage->tpl_total_point[$key] = 0;      // ポイント合計
 
@@ -319,7 +319,7 @@ class SC_Helper_DB {
                     $objCartSess->setProductValue($arrCart['id'], 'point_rate', $arrData['point_rate']);
                 }
                 // 商品ごとの合計金額
-                $objPage->arrProductsClass[$cnt]['total_pretax'][$key] = $objCartSess->getProductTotal($arrCart['id']);
+                $objPage->arrProductsClass[$cnt]['total_inctax'][$key] = $objCartSess->getProductTotal($arrCart['id']);
                 // 送料の合計を計算する
                 $objPage->tpl_total_deliv_fee[$key] += ($arrData['deliv_fee'] * $arrCart['quantity']);
                 $cnt++;
@@ -344,7 +344,7 @@ class SC_Helper_DB {
         }
 
         // 全商品合計金額(税込み)
-        $objPage->tpl_total_pretax[$key] = $objCartSess->getAllProductsTotal();
+        $objPage->tpl_total_inctax[$key] = $objCartSess->getAllProductsTotal();
         // 全商品合計消費税
         $objPage->tpl_total_tax[$key] = $objCartSess->getAllProductsTax();
         // 全商品合計ポイント
@@ -1577,7 +1577,7 @@ __EOS__;
         // 税金の取得
         $arrData['tax'] = $objPage->tpl_total_tax[$key];
         // 小計の取得
-        $arrData['subtotal'] = $objPage->tpl_total_pretax[$key];
+        $arrData['subtotal'] = $objPage->tpl_total_inctax[$key];
 
         // 合計送料の取得
         $arrData['deliv_fee'] = 0;
@@ -1619,7 +1619,7 @@ __EOS__;
         }
 
         // 合計の計算
-        $arrData['total'] = $objPage->tpl_total_pretax[$key]; // 商品合計
+        $arrData['total'] = $objPage->tpl_total_inctax[$key]; // 商品合計
         $arrData['total']+= $arrData['deliv_fee'];      // 送料
         $arrData['total']+= $arrData['charge'];         // 手数料
         // お支払い合計
@@ -1857,11 +1857,11 @@ __EOS__;
      * @param integer $price 計算対象の金額
      * @return integer 税金付与した金額
      */
-    function sfPreTax($price, $tax = null, $tax_rule = null) {
+    function sfCalcIncTax($price, $tax = null, $tax_rule = null) {
         // 店舗基本情報を取得
         $CONF = SC_Helper_DB_Ex::sfGetBasisData();
 
-        return SC_Utils_Ex::sfPreTax($price, $CONF['tax'], $CONF['tax_rule']);
+        return SC_Utils_Ex::sfCalcIncTax($price, $CONF['tax'], $CONF['tax_rule']);
     }
 
     /**

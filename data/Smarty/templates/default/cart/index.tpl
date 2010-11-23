@@ -48,7 +48,7 @@
                 <!--{* カゴの中に商品がある場合にのみ表示 *}-->
                 <!--{if count($arrProductsClass) > 0 }-->
                     <!--{* FIXME $key は未定義 *}-->
-                    お買い上げ商品の合計金額は「<em><!--{$tpl_total_pretax[$key]|number_format}-->円</em>」です。
+                    お買い上げ商品の合計金額は「<em><!--{$tpl_total_inctax[$key]|number_format}-->円</em>」です。
                     <!--{if $arrInfo.free_rule > 0}-->
                         <!--{if $arrData.deliv_fee > 0}-->
                             <!--{* FIXME $key は未定義 *}-->
@@ -113,9 +113,9 @@
                         </td>
                         <td class="pricetd">
                         <!--{if $item.productsClass.price02 != ""}-->
-                            <!--{$item.productsClass.price02|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
+                            <!--{$item.productsClass.price02|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
                         <!--{else}-->
-                            <!--{$item.productsClass.price01|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
+                            <!--{$item.productsClass.price01|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
                         <!--{/if}-->
                         </td>
                         <td id="quantity"><!--{$item.quantity}-->
@@ -124,12 +124,12 @@
                                 <li><a href="?" onclick="fnModeSubmit('down','cart_no','<!--{$item.cart_no}-->'); return false"><img src="<!--{$TPL_DIR}-->img/cart/minus.gif" width="16" height="16" alt="-" /></a></li>
                             </ul>
                         </td>
-                        <td class="pricetd"><!--{$item.total_pretax|number_format}-->円</td>
+                        <td class="pricetd"><!--{$item.total_inctax|number_format}-->円</td>
                      </tr>
                  <!--{/foreach}-->
                  <tr>
                      <th colspan="5" class="resulttd">小計</th>
-                     <td class="pricetd"><!--{$tpl_total_pretax[$key]|number_format}-->円</td>
+                     <td class="pricetd"><!--{$tpl_total_inctax[$key]|number_format}-->円</td>
                  </tr>
                  <tr>
                      <th colspan="5" class="resulttd">合計</th>

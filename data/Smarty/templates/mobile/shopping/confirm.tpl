@@ -66,7 +66,7 @@
 <br>
 
 【購入金額】<br>
-商品合計：<!--{$tpl_total_pretax|number_format}--><br>
+商品合計：<!--{$tpl_total_inctax|number_format}--><br>
 送料：<!--{$arrData.deliv_fee|number_format}--><br>
 <!--{if $arrData.charge > 0}-->手数料：<!--{$arrData.charge|number_format}--><br><!--{/if}-->
 合計：<!--{$arrData.payment_total|number_format}--><br>

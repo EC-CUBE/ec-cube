@@ -806,7 +806,7 @@ exit;
      * @param integer $tax_rule 端数処理
      * @return integer 税金付与した金額
      */
-    function sfPreTax($price, $tax, $tax_rule) {
+    function sfCalcIncTax($price, $tax, $tax_rule) {
         return $price + SC_Utils_Ex::sfTax($price, $tax, $tax_rule);
     }
 

@@ -172,9 +172,9 @@ class LC_Page_Shopping_Payment extends LC_Page {
         }
 
         // 購入金額の取得
-        $total_pretax = $objCartSess->getAllProductsTotal($this->cartKey);
+        $total_inctax = $objCartSess->getAllProductsTotal($this->cartKey);
         // 支払い方法の取得
-        $this->arrPayment = $this->lfGetPayment($total_pretax);
+        $this->arrPayment = $this->lfGetPayment($total_inctax);
         // 支払い方法の画像があるなしを取得（$img_show true:ある false:なし）
         $this->img_show = $this->lfGetImgShow($this->arrPayment);
         // お届け日一覧の取得
@@ -339,9 +339,9 @@ class LC_Page_Shopping_Payment extends LC_Page {
         }
 
         // 購入金額の取得得
-        $total_pretax = $objCartSess->getAllProductsTotal();
+        $total_inctax = $objCartSess->getAllProductsTotal();
         // 支払い方法の取得
-        $this->arrPayment = $this->lfGetPayment($total_pretax);
+        $this->arrPayment = $this->lfGetPayment($total_inctax);
         // お届け時間の取得
         $arrRet = $objDb->sfGetDelivTime($this->objFormParam->getValue('payment_id'));
         $this->arrDelivTime = SC_Utils_Ex::sfArrKeyValue($arrRet, 'time_id', 'deliv_time');
@@ -371,7 +371,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
         $this->objFormParam->addParam("お届け日", "deliv_date", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
     }
 
-    function lfGetPayment($total_pretax) {
+    function lfGetPayment($total_inctax) {
         $objQuery = new SC_Query();
         $objQuery->setOrder("rank DESC");
 
@@ -408,19 +408,19 @@ class LC_Page_Shopping_Payment extends LC_Page {
             }
             // 下限と上限が設定されている
             if (strlen($data['rule']) != 0 && strlen($data['upper_rule']) != 0) {
-                if ($data['rule'] <= $total_pretax && $data['upper_rule'] >= $total_pretax) {
+                if ($data['rule'] <= $total_inctax && $data['upper_rule'] >= $total_inctax) {
                     $arrPayment[] = $data;
                 }
             }
             // 下限のみ設定されている
             elseif (strlen($data['rule']) != 0) {
-                if($data['rule'] <= $total_pretax) {
+                if($data['rule'] <= $total_inctax) {
                     $arrPayment[] = $data;
                 }
             }
             // 上限のみ設定されている
             elseif (strlen($data['upper_rule']) != 0) {
-                if($data['upper_rule'] >= $total_pretax) {
+                if($data['upper_rule'] >= $total_inctax) {
                     $arrPayment[] = $data;
                 }
             }
@@ -464,9 +464,9 @@ class LC_Page_Shopping_Payment extends LC_Page {
 
         $objCartSess = new SC_CartSession();
         // 購入金額の取得得
-        $total_pretax = $objCartSess->getAllProductsTotal();
+        $total_inctax = $objCartSess->getAllProductsTotal();
         // 支払い方法の取得
-        $arrPayment = $this->lfGetPayment($total_pretax);
+        $arrPayment = $this->lfGetPayment($total_inctax);
         $pay_flag = true;
         foreach ($arrPayment as $key => $payment) {
             if ($payment['payment_id'] == $arrRet['payment_id']) {
