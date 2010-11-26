@@ -168,7 +168,7 @@
           <th colspan="2">
           <!--{assign var=key value="deliv_check"}-->
           <input type="checkbox" name="<!--{$key}-->" value="1" onclick="fnCheckInputDeliv();" <!--{$arrForm[$key].value|sfGetChecked:1}--> id="deliv_label" />
-          <label for="deliv_label"><em>お届け先を指定</em>　※上記に入力されたご住所と同一の場合は省略可能です。</label>
+          <label for="deliv_label"><em>お届け先を指定</em>　※上記に入力された住所と同一の場合は省略可能です。</label>
           </th>
         </tr>
         <tr>

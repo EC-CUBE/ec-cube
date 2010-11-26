@@ -49,7 +49,7 @@
         </td>
       </tr>
       <tr>
-        <th><span class="attention">※</span>ご住所</th>
+        <th><span class="attention">※</span>住所</th>
         <td>
           <!--{if $arrErr.pref || $arrErr.addr01 || $arrErr.addr02}-->
           <span class="attention"><!--{$arrErr.pref}--><!--{$arrErr.addr01}--><!--{$arrErr.addr02}--></span>
@@ -59,9 +59,9 @@
             <!--{html_options options=$arrPref selected=$arrForm.pref}-->
           </select><br />
           <input type="text" name="addr01" value="<!--{$arrForm.addr01|escape}-->" size="35" class="box35" <!--{if $arrErr.addr01}--><!--{sfSetErrorStyle}--><!--{/if}--> /><br />
-          ご住所1（市区町村名）<br />
+          住所1（市区町村名）<br />
           <input type="text" name="addr02" value="<!--{$arrForm.addr02|escape}-->" size="35" class="box35" <!--{if $arrErr.addr02}--><!--{sfSetErrorStyle}--><!--{/if}--> /><br />
-          ご住所2（番地、建物、マンション名）<br />
+          住所2（番地、建物、マンション名）<br />
           <span class="attention">住所は必ず2つに分けて入力してください。マンション名は必ず入力してください。</span>
         </td>
       </tr>

@@ -42,7 +42,7 @@
 ■お名前　：<!--{$arrForm.name01}--> <!--{$arrForm.name02}--> (<!--{$arrForm.kana01}--> <!--{$arrForm.kana02}-->) 様
 ■郵便番号：<!--{if $arrForm.zip01 && $arrForm.zip02}-->〒<!--{$arrForm.zip01}-->-<!--{$arrForm.zip02}--><!--{/if}-->
 
-■ご住所　：<!--{$arrPref[$arrForm.pref]}--><!--{$arrForm.addr01}--><!--{$arrForm.addr02}-->
+■住所　　：<!--{$arrPref[$arrForm.pref]}--><!--{$arrForm.addr01}--><!--{$arrForm.addr02}-->
 ■電話番号：<!--{$arrForm.tel01}-->-<!--{$arrForm.tel02}-->-<!--{$arrForm.tel03}-->
 ■お問い合わせの内容
 <!--{$arrForm.contents}-->

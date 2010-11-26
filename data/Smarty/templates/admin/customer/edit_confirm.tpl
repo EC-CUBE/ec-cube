@@ -74,7 +74,7 @@ function func_return(){
                 <td>〒 <!--{$arrForm.zip01|escape}--> - <!--{$arrForm.zip02|escape}--></td>
             </tr>
             <tr>
-                <th>ご住所<span class="attention"> *</span></td>
+                <th>住所<span class="attention"> *</span></td>
                 <td><!--{$arrPref[$arrForm.pref]|escape}--><!--{$arrForm.addr01|escape}--><!--{$arrForm.addr02|escape}--></td>
             </tr>
             <tr>

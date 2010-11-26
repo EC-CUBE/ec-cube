@@ -108,7 +108,7 @@
                 </td>
             </tr>
             <tr>
-                <th>ご住所<span class="attention"> *</span></th>
+                <th>住所<span class="attention"> *</span></th>
                 <td>
                     <span class="attention"><!--{$arrErr.pref}--><!--{$arrErr.addr01}--><!--{$arrErr.addr02}--></span>
                     <select name="pref" <!--{if $arrErr.pref != ""}--><!--{sfSetErrorStyle}--><!--{/if}-->>

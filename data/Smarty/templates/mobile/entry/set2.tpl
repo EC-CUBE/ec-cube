@@ -36,11 +36,11 @@
 		<!--{html_options options=$arrPref selected=$pref}-->
 	</select><br>
 
-	【市区町村】<font color="#FF0000">*</font><br>
+	【住所1】<font color="#FF0000">*</font><br>
 	<font color="#FF0000"><!--{$arrErr.addr01}--></font>
 	<input type="text" name="addr01" value="<!--{$addr01|escape}-->" istyle="1"><br>
 
-	【番地】<font color="#FF0000">*</font><br>
+	【住所2】<font color="#FF0000">*</font><br>
 	<font color="#FF0000"><!--{$arrErr.addr02}--></font>
 	<input type="text" name="addr02" value="<!--{$addr02|escape}-->" istyle="1"><br>
 

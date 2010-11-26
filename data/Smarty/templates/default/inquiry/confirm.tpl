@@ -77,7 +77,7 @@ function func_return(){
         </td>
       </tr>
       <tr>
-        <th><span class="attention">※</span>ご住所</th>
+        <th><span class="attention">※</span>住所</th>
         <td>
           <input type="hidden" name="pref" value="<!--{$arrForm.pref|escape}-->" />
           <input type="hidden" name="addr01" value="<!--{$arrForm.addr01|escape}-->" />

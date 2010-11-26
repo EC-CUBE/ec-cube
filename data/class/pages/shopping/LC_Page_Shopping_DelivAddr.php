@@ -219,8 +219,8 @@ class LC_Page_Shopping_DelivAddr extends LC_Page {
         $objErr->doFunc(array("郵便番号2", "zip02", ZIP02_LEN ) ,array("EXIST_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK"));
         $objErr->doFunc(array("郵便番号", "zip01", "zip02"), array("ALL_EXIST_CHECK"));
         $objErr->doFunc(array("都道府県", 'pref'), array("SELECT_CHECK","NUM_CHECK"));
-        $objErr->doFunc(array("市区町村", "addr01", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("番地", "addr02", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+        $objErr->doFunc(array('住所1', "addr01", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+        $objErr->doFunc(array('住所2', "addr02", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
         $objErr->doFunc(array("電話番号1", 'tel01'), array("EXIST_CHECK","NUM_CHECK"));
         $objErr->doFunc(array("電話番号2", 'tel02'), array("EXIST_CHECK","NUM_CHECK"));
         $objErr->doFunc(array("電話番号3", 'tel03'), array("EXIST_CHECK","NUM_CHECK"));
@@ -249,8 +249,8 @@ class LC_Page_Shopping_DelivAddr extends LC_Page {
         $objErr = new SC_CheckError();
 
         $objErr->doFunc(array("都道府県", 'pref'), array("SELECT_CHECK","NUM_CHECK"));
-        $objErr->doFunc(array("市区町村", "addr01", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("番地", "addr02", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+        $objErr->doFunc(array('住所1', "addr01", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+        $objErr->doFunc(array('住所2', "addr02", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
         $objErr->doFunc(array("電話番号1", 'tel01'), array("EXIST_CHECK","NUM_CHECK"));
         $objErr->doFunc(array("電話番号2", 'tel02'), array("EXIST_CHECK","NUM_CHECK"));
         $objErr->doFunc(array("電話番号3", 'tel03'), array("EXIST_CHECK","NUM_CHECK"));
