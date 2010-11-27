@@ -257,7 +257,7 @@ class SC_SmartphoneView extends SC_SiteView {
         $this->_smarty->template_dir = SMARTPHONE_TEMPLATE_DIR;
         $this->_smarty->compile_dir = SMARTPHONE_COMPILE_DIR;
         // テンプレート変数を割り当て
-        $this->assign("TPL_DIR", URL_DIR . USER_DIR . USER_PACKAGE_DIR . SMARTPHOME_TEMPLATE_NAME . "/");
+        $this->assign("TPL_DIR", URL_DIR . USER_DIR . USER_PACKAGE_DIR . SMARTPHONE_TEMPLATE_NAME . "/");
     }
 }
 ?>

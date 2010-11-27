@@ -81,7 +81,7 @@ class SC_Display{
                 $this->setView(new SC_MobileView());
                 break;
             case 2:
-                //                $this->view = new
+                $this->setView(new SC_SmartphoneView());
                 break;
             case 4:
                 $this->setView(new SC_SiteView());
