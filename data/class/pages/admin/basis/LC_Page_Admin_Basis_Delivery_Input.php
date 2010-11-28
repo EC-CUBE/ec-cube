@@ -54,6 +54,7 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page_Admin {
         $this->tpl_mainno = 'basis';
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData("mtb_pref", array("pref_id", "pref_name", "rank"));
+        $this->arrProductType = $masterData->getMasterData("mtb_product_type");
         $this->tpl_subtitle = '配送業者設定';
         $this->mode = isset($_POST['mode']) ? $_POST['mode'] : '';
     }
@@ -131,6 +132,7 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page_Admin {
                 $this->objFormParam->addParam("配送業者名", "name", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
                 $this->objFormParam->addParam("名称", "service_name", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
                 $this->objFormParam->addParam("伝票No.確認URL", "confirm_url", STEXT_LEN, "n", array("URL_CHECK", "MAX_LENGTH_CHECK"), "http://");
+                $this->objFormParam->addParam("取扱商品種別", "product_type_id", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
 
                 for($cnt = 1; $cnt <= DELIVTIME_MAX; $cnt++) {
                     $this->objFormParam->addParam("お届け時間$cnt", "deliv_time$cnt", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
@@ -152,7 +154,6 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page_Admin {
         }
     }
 
-    
     /**
      * 配送情報を登録する
      *
@@ -167,6 +168,7 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page_Admin {
         $sqlval['name'] = $arrRet['name'];
         $sqlval['service_name'] = $arrRet['service_name'];
         $sqlval['confirm_url'] = $arrRet['confirm_url'];
+        $sqlval['product_type_id'] = $arrRet['product_type_id'];
         $sqlval['creator_id'] = $_SESSION['member_id'];
         $sqlval['update_date'] = 'Now()';
 
@@ -213,7 +215,7 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page_Admin {
                     $keyname = "fee".$cnt;
                     if(strcmp($arrRet[$keyname], "") != 0) {
                         $sqlval = array('fee' => $arrRet[$keyname]);
-                        $objQuery->update("dtb_delivfee", $sqlval, "deliv_id = ? AND pref = ?", array($deliv_id, $cnt));
+                        $objQuery->update("dtb_delivfee", $sqlval, "deliv_id = ? AND fee_id = ?", array($deliv_id, $cnt));
                     }
                 }
             }
@@ -250,7 +252,7 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page_Admin {
                         $sqlval['fee'] = $arrRet[$keyname];
                         $sqlval['pref'] = $cnt;
                         // INSERTの実行
-                        $sqlval['fee_id'] = $objQuery->nextVal('dtb_delivfee_fee_id');
+                        $sqlval['fee_id'] = $cnt;
                         $objQuery->insert("dtb_delivfee", $sqlval);
                     }
                 }
@@ -259,7 +261,6 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page_Admin {
         $objQuery->commit();
         return $deliv_id;
     }
-    
 
     /* 配送業者情報の取得 */
     function lfGetDelivData($deliv_id) {
@@ -269,7 +270,7 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page_Admin {
         $this->lfInitParam('edit');
 
         // 配送業者一覧の取得
-        $col = "deliv_id, name, service_name, confirm_url";
+        $col = "deliv_id, name, service_name, confirm_url, product_type_id";
         $where = "deliv_id = ?";
         $table = "dtb_deliv";
         $arrRet = $objQuery->select($col, $table, $where, array($deliv_id));

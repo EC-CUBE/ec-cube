@@ -178,7 +178,7 @@ CREATE TABLE dtb_delivtime (
 CREATE TABLE dtb_delivfee (
     deliv_id int NOT NULL,
     fee_id int NOT NULL,
-    fee text NOT NULL,
+    fee numeric NOT NULL,
     pref smallint,
     PRIMARY KEY (deliv_id, fee_id)
 );

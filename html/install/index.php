@@ -956,7 +956,6 @@ function getSequences() {
                  array("dtb_csv_sql", "sql_id"),
                  array("dtb_customer", "customer_id"),
                  array("dtb_deliv", "deliv_id"),
-                 array("dtb_delivfee", "fee_id"),
                  array("dtb_holiday", "holiday_id"),
                  array("dtb_kiyaku", "kiyaku_id"),
                  array("dtb_mail_history", "send_id"),

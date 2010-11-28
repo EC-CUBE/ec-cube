@@ -78,7 +78,16 @@
     <!--{/section}-->
 
   </table>
-  
+
+  <h2>取扱商品種別</h2>
+  <!--{assign var=key value="product_type_id"}-->
+  <table>
+    <tr>
+      <th>商品種別</th>
+      <td><span class="attention"><!--{$arrErr[$key]}--></span><!--{html_radios name=$key options=$arrProductType selected=$arrForm[$key].value}--></td>
+    </tr>
+  </table>
+
   <!--{if $smarty.const.INPUT_DELIV_FEE}-->
   <h2>配送料登録</h2>
   <p>※全国一律送料 <input type="text" name="fee_all" class="box10" /> 円に設定する　<button type="button" onclick="fnSetDelivFee(<!--{$smarty.const.DELIVFEE_MAX}-->);"><span>反映</span></button></p>
