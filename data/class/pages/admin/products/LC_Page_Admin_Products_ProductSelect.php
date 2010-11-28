@@ -49,6 +49,8 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page_Admin {
         $this->tpl_subno = "";
         $this->tpl_subtitle = '商品選択';
 
+        $masterData = new SC_DB_MasterData_Ex();
+        $this->arrPRODUCTSTATUS_COLOR = $masterData->getMasterData("mtb_product_status_color");
     }
 
     /**
