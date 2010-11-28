@@ -23,7 +23,6 @@
 
 // {{{ requires
 require_once '../../require.php';
-require_once DATA_PATH . 'module/Services/JSON.php';
 
 /**
  * モジュール一覧を出力するテストスクリプト

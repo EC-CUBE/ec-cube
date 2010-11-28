@@ -157,7 +157,6 @@ class LC_Page_Products_Detail extends LC_Page {
         $this->tpl_product_class_id = $objProduct->classCategories[$product_id]['']['']['product_class_id'];
         $this->tpl_product_type = $objProduct->classCategories[$product_id]['']['']['product_type'];
 
-        require_once DATA_PATH . 'module/Services/JSON.php';
         $objJson = new Services_JSON();
         $this->tpl_javascript .= 'classCategories = ' . $objJson->encode($objProduct->classCategories[$product_id]) . ';';
         $this->tpl_javascript .= 'function lnOnLoad(){' . $this->js_lnOnload . '}';
@@ -482,7 +481,6 @@ class LC_Page_Products_Detail extends LC_Page {
             ? $_POST['classcategory_id2']
             : '';
 
-        require_once DATA_PATH . 'module/Services/JSON.php';
         $this->js_lnOnload .= 'fnSetClassCategories('
             . 'document.form1, '
             . Services_JSON::encode($classcategory_id2)

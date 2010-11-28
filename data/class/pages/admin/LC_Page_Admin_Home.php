@@ -23,7 +23,6 @@
 
 // {{{ requires
 require_once CLASS_PATH . "pages/admin/LC_Page_Admin.php";
-require_once DATA_PATH . 'module/Services/JSON.php';
 require_once DATA_PATH . 'module/Request.php';
 
 /**

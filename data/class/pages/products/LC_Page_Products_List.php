@@ -492,7 +492,6 @@ __EOS__;
 
         $productsClassCategories = $objProduct->classCategories;
 
-        require_once DATA_PATH . 'module/Services/JSON.php';
         $objJson = new Services_JSON();
         $this->tpl_javascript .= 'productsClassCategories = ' . $objJson->encode($productsClassCategories) . '; ';
     }
