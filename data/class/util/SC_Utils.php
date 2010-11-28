@@ -1231,16 +1231,6 @@ echo $template_path;
         return  mb_convert_encoding($str, $encode);
     }
 
-    // PHPのmktime関数をSmartyでも使えるようにする
-    function sf_mktime($format, $hour=0, $minute=0, $second=0, $month=1, $day=1, $year=1999) {
-        return  date($format,mktime($hour, $minute, $second, $month, $day, $year));
-    }
-
-    // PHPのdate関数をSmartyでも使えるようにする
-    function sf_date($format, $timestamp = '') {
-        return  date( $format, $timestamp);
-    }
-
     // チェックボックスの型を変換する
     function sfChangeCheckBox($data , $tpl = false){
         if ($tpl) {
