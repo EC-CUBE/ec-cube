@@ -175,6 +175,7 @@ class SC_Helper_Mobile {
     function lfMobileInitSession() {
         // セッションIDの受け渡しにクッキーを使用しない。
         ini_set('session.use_cookies', '0');
+        ini_set('session.use_only_cookies', '0');
 
         // パラメーターから有効なセッションIDを取得する。
         $sessionId = $this->lfMobileGetSessionId();
