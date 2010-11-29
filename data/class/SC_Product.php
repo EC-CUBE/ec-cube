@@ -589,7 +589,6 @@ __EOS__;
                                         'product_class_id IN (' . implode(', ', array_pad(array(), $size, '?')) . ')',
                                         array_merge($productClassIds, array($size)),
                                         MDB2_FETCHMODE_ORDERED);
-        var_dump($productClassIds);
         return $paymentIds;
     }
 
