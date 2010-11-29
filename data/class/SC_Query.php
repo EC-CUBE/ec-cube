@@ -54,10 +54,21 @@ class SC_Query {
             $dsn = DEFAULT_DSN;
         }
 
-        // Debugモード指定
-        $options['debug'] = PEAR_DB_DEBUG;
+        // Debugモード指定 
+        // 常時ONにするとメモリが解放されない。
+        // 連続クエリ実行時に問題が生じる。
+        if(DEBUG_MODE) {
+            $options['debug'] = PEAR_DB_DEBUG;
+        } else {
+            $options['debug'] = 0;
+        }
+
         // 持続的接続オプション
         $options['persistent'] = PEAR_DB_PERSISTENT;
+
+        // バッファリング trueにするとメモリが解放されない。
+        // 連続クエリ実行時に問題が生じる。
+        $options['result_buffering'] = false;
 
         if ($new) {
             $this->conn = MDB2::connect($dsn, $options);
@@ -410,11 +421,12 @@ class SC_Query {
         $find = false;
 
         if(count($sqlval) <= 0 ) return false;
-
         foreach ($sqlval as $key => $val) {
             $strcol .= $key . ',';
-            if(eregi("^Now\(\)$", $val)) {
+            if(strcasecmp("Now()", $val) === 0) {
                 $strval .= 'Now(),';
+            } else if(strpos($val, '~') === 0) {
+                $strval .= preg_replace("/^~/", "", $val);
             } else {
                 $strval .= '?,';
                 $arrval[] = $val;
@@ -425,12 +437,11 @@ class SC_Query {
             return false;
         }
         // 文末の","を削除
-        $strcol = ereg_replace(",$","",$strcol);
-        // 文末の","を削除
-        $strval = ereg_replace(",$","",$strval);
+        $strcol = preg_replace("/,$/", "", $strcol);
+        $strval = preg_replace("/,$/", "", $strval);
         $sqlin = "INSERT INTO $table(" . $strcol. ") VALUES (" . $strval . ")";
         // INSERT文の実行
-        $ret = $this->query($sqlin, $arrval);
+        $ret = $this->query($sqlin, $arrval, false, null, MDB2_PREPARE_MANIP);
 
         return $ret;
     }
@@ -450,9 +461,12 @@ class SC_Query {
         $arrCol = array();
         $arrVal = array();
         $find = false;
+
         foreach ($sqlval as $key => $val) {
-            if (eregi("^Now\(\)$", $val)) {
+            if (strcasecmp("Now()", $val) === 0) {
                 $arrCol[] = $key . '= Now()';
+            } else if(strpos('~', $val) === 0) {
+                $arrCol[] = $key . '= ' . $val;
             } else {
                 $arrCol[] = $key . '= ?';
                 $arrVal[] = $val;
@@ -486,7 +500,7 @@ class SC_Query {
         }
 
         // UPDATE文の実行
-        return $this->query($sqlup, $arrVal);
+        return $this->query($sqlup, $arrVal, false, null, MDB2_PREPARE_MANIP);
     }
 
     /**
@@ -625,7 +639,7 @@ class SC_Query {
         } else {
             $sqlde = "DELETE FROM $table WHERE $where";
         }
-        $ret = $this->query($sqlde, $arrval);
+        $ret = $this->query($sqlde, $arrval, false, null, MDB2_PREPARE_MANIP);
         return $ret;
     }
 
@@ -666,17 +680,20 @@ class SC_Query {
     /**
      * SQL を実行する.
      *
-     * XXX 更新系には exec() を使用するべき
+     * FIXME $ignore_errが無視されるようになっているが互換性として問題が無いか確認が必要
      *
      * @param string $n 実行する SQL 文
-     * @param array $arrval ブレースホルダに挿入する値
+     * @param array $arr ブレースホルダに挿入する値
+     * @param boolean $ignore_err MDB2切替で無効化されている (エラーが発生しても処理を続行する場合 true)
+     * @param mixed $types プレースホルダの型指定 デフォルトnull = string
+     * @param mixed $result_types 返値の型指定またはDML実行(MDB2_PREPARE_MANIP)
      * @return array SQL の実行結果の配列
      */
-    function query($n ,$arr = array(), $ignore_err = false){
+    function query($n ,$arr = array(), $ignore_err = false, $types = null, $result_types = MDB2_PREPARE_RESULT ){
 
         $n = $this->dbFactory->sfChangeMySQL($n);
 
-        $sth =& $this->prepare($n);
+        $sth =& $this->prepare($n, $types, $result_types);
         if (PEAR::isError($sth) && $this->force_run) {
             return;
         }
@@ -685,7 +702,10 @@ class SC_Query {
         if (PEAR::isError($result) && $this->force_run) {
             return;
         }
-
+        
+        //PREPAREの解放
+        $sth->free();
+        
         return $result;
     }
 
@@ -774,10 +794,12 @@ class SC_Query {
      *
      * @access private
      * @param string $sql プリペアドステートメントを構築する SQL
+     * @param mixed $types プレースホルダの型指定 デフォルト null
+     * @param mixed $result_types 返値の型指定またはDML実行(MDB2_PREPARE_MANIP)、nullは指定無し
      * @return MDB2_Statement_Common プリペアドステートメントインスタンス
      */
-    function prepare($sql) {
-        $sth =& $this->conn->prepare($sql);
+    function prepare($sql, $types = null, $result_types = MDB2_PREPARE_RESULT) {
+        $sth =& $this->conn->prepare($sql, $types, $result_types);
         if (PEAR::isError($sth)) {
             if (!$this->force_run) {
                 trigger_error($this->traceError($sth, $sql), E_USER_ERROR);
