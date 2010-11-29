@@ -922,22 +922,22 @@ class SC_Helper_DB {
      * 
      *
      * @param SC_Query $objQuery SC_Query インスタンス
+     * @param boolean $is_force_all_count 全カテゴリの集計を強制する場合 true
      * @return void
      */
-    function sfCategory_Count($objQuery = NULL){
+    function sfCategory_Count($objQuery = NULL, $is_force_all_count = false){
         $objProduct = new SC_Product();
         
         if($objQuery == NULL) {
-                $objQuery =& SC_Query::getSingletonInstance();
+            $objQuery =& SC_Query::getSingletonInstance();
         }
-        $is_out_tarns = false;
-        //トランザクションの開始確認。開始していない場合は
+        
+        $is_out_trans = false;
         if(!$objQuery->inTransaction()){
-            //TODO: トランザクション制御を足す？ (重い！）
-            //$objQuery->begin();
-            $is_out_trans = false;
+            $objQuery->begin();
+            $is_out_trans = true;
         }
-
+        
         //共通のfrom/where文の構築
         $sql_where = 'alldtl.del_flg = 0 AND alldtl.status = 1';
         // 在庫無し商品の非表示
@@ -950,19 +950,18 @@ class SC_Helper_DB {
         
         //dtb_category_countの構成
         // 各カテゴリに所属する商品の数を集計。集計対象には子カテゴリを含まない。
-        // 2.5で消える予定だったが復活させます。
+        // 2.5で消える予定だったが復活させます。DELETE処理は無くしました。
         
         //まずテーブル内容の元を取得
-        $arrCategoryCountOld = $objQuery->select('category_id,product_count','dtb_category_count');
+        if(!$is_force_all_count) {
+            $arrCategoryCountOld = $objQuery->select('category_id,product_count','dtb_category_count');
+        }else{
+            $arrCategoryCountOld = array();
+        }
 
-        //テーブル内容の削除
-        $objQuery->query("DELETE FROM dtb_category_count");
-
-        //各カテゴリ内の商品数を数えて格納
-        // これは単純集計なので比較的軽い
+        //各カテゴリ内の商品数を数えて取得
         $sql = <<< __EOS__
-            INSERT INTO dtb_category_count(category_id, product_count, create_date)
-            SELECT T1.category_id, count(T2.category_id), now()
+            SELECT T1.category_id, count(T2.category_id) as product_count
             FROM dtb_category AS T1
                 LEFT JOIN dtb_product_categories AS T2
                     ON T1.category_id = T2.category_id
@@ -971,44 +970,40 @@ class SC_Helper_DB {
             WHERE $sql_where
             GROUP BY T1.category_id, T2.category_id
 __EOS__;
-        $objQuery->query($sql);
-                
-        //dtb_category_total_countの構成
+
+        $arrCategoryCountNew = $objQuery->getAll($sql);
         // 各カテゴリに所属する商品の数を集計。集計対象には子カテゴリを「含む」。        
         //差分を取得して、更新対象カテゴリだけを確認する。
-        
-        //各カテゴリ毎のデータ値において以前との差を見る
-        $arrCategoryCountNew = $objQuery->select('category_id, product_count','dtb_category_count');
-        
+
+        //各カテゴリ毎のデータ値において以前との差を見る        
         //古いデータの構造入れ替え
         $arrOld = array();
         foreach($arrCategoryCountOld as $item){
-            $arrOld[$item['category_id']] = $item;
+            $arrOld[$item['category_id']] = $item['product_count'];
         }
         //新しいデータの構造入れ替え
         $arrNew = array();
         foreach($arrCategoryCountNew as $item){
-            $arrNew[$item['category_id']] = $item;
+            $arrNew[$item['category_id']] = $item['product_count'];
         }
+
         $arrDiffCategory_id = array();
         //新しいカテゴリ一覧から見て商品数が異なるデータが無いか確認
-        foreach($arrCategoryCountNew as $item){
-            $category_id = $item['category_id'];
-            if($arrOld[$category_id]['product_count'] != $item['product_count']){
-                $arrDiffCategory_id[] = $category_id;
+        foreach($arrNew as $cid => $count){
+            if($arrOld[$cid] != $count){
+                $arrDiffCategory_id[] = $cid;
             }
         }
         //削除カテゴリを想定して、古いカテゴリ一覧から見て商品数が異なるデータが無いか確認。
-        foreach($arrCategoryCountOld as $item){
-            $category_id = $item['category_id'];
-            if($arrNew[$category_id]['product_count'] != $item['product_count']){
-                $arrDiffCategory_id[] = $category_id;
+        foreach($arrOld as $cid => $count){
+            if($arrNew[$cid] != $count){
+                $arrDiffCategory_id[] = $cid;
             }
         }
         
         //対象IDが無ければ終了
         if(count($arrDiffCategory_id) == 0){
-            if($is_out_tarns){
+            if($is_out_trans) {
                 $objQuery->commit();
             }
             return;
@@ -1016,6 +1011,23 @@ __EOS__;
 
         //差分対象カテゴリIDの重複を除去
         $arrDiffCategory_id = array_unique($arrDiffCategory_id);
+        
+        //dtb_category_countの更新 差分のあったカテゴリだけ更新する。
+        foreach($arrDiffCategory_id as $cid) {
+            $sqlval = array();
+            $sqlval['create_date'] = 'Now()';
+            $sqlval['product_count'] = (string)$arrNew[$cid];
+            if($sqlval['product_count'] =="") {
+                $sqlval['product_count'] = (string)'0';
+            }
+            if(isset($arrOld[$cid])) {
+                $objQuery->update('dtb_category_count', $sqlval, 'category_id = ?', array($cid));
+            }else{
+                $sqlval['category_id'] = $cid;
+                $objQuery->insert('dtb_category_count', $sqlval);
+            }
+        }
+        
         //差分があったIDとその親カテゴリIDのリストを取得する
         $arrTgtCategory_id = array();
         foreach ($arrDiffCategory_id as $parent_category_id) {
@@ -1029,11 +1041,9 @@ __EOS__;
         //重複を取り除く
         $arrTgtCategory_id = array_unique($arrTgtCategory_id);
 
-        //dtb_cateogry_total_count 集計処理開始
-        //旧データの削除
-        $objQuery->query("DELETE FROM dtb_category_total_count WHERE category_id in (" . implode(',',$arrTgtCategory_id) . ")");
-
-        //カテゴリ毎に処理
+        //dtb_category_total_count 集計処理開始
+        //更新対象カテゴリIDだけ集計しなおす。
+        $arrUpdateData = array();
         foreach ($arrTgtCategory_id as $category_id) {
             $arrval = array();
             $arrval[] = $category_id;
@@ -1047,19 +1057,25 @@ __EOS__;
             $where = "($sql_where) AND ($sql_where_product_ids)";
 
             $from = $objProduct->alldtlSQL($sql_where_product_ids);
-            $sql = <<< __EOS__
-                INSERT INTO dtb_category_total_count (category_id, product_count, create_date)
-                SELECT
-                    ?
-                    ,count(*)
-                    ,now()
-                FROM $from
-               WHERE $where
-__EOS__;
-            $objQuery->query($sql, $arrval);
+            $sql = "SELECT count(*) FROM $from WHERE $where ";
+            $arrUpdateData[ $category_id ] = $objQuery->getOne($sql, $arrval);
         }
-        //トランザクションの終了処理。
-        if($is_out_tarns){
+        // 更新対象だけを更新。
+        foreach($arrUpdateData as $cid => $count) {
+            $sqlval = array();
+            $sqlval['create_date'] = 'Now()';
+            $sqlval['product_count'] = $count;
+            if($sqlval['product_count'] =="") {
+                $sqlval['product_count'] = (string)'0';
+            }
+            $ret = $objQuery->update('dtb_category_total_count', $sqlval, 'category_id = ?', array($cid));
+            if(!$ret) {
+                $sqlval['category_id'] = $cid;
+                $ret = $objQuery->insert('dtb_category_total_count', $sqlval);
+            }
+        }
+        // トランザクション音終了処理
+        if($is_out_trans) {
             $objQuery->commit();
         }
     }
