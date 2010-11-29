@@ -348,6 +348,22 @@ class SC_CartSession {
         return $arrRet;
     }
 
+    /**
+     * カート内にある商品規格IDを全て取得する.
+     *
+     * @param integer $productTypeId 商品種別ID
+     * @return array 商品規格ID の配列
+     */
+    function getAllProductClassID($productTypeId) {
+        $max = $this->getMax($productTypeId);
+        for($i = 0; $i <= $max; $i++) {
+            if($this->cartSession[$productTypeId][$i]['cart_no'] != "") {
+                $arrRet[] = $this->cartSession[$productTypeId][$i]['id'];
+            }
+        }
+        return $arrRet;
+    }
+
     function delAllProducts($productTypeId) {
         $max = $this->getMax($productTypeId);
         for($i = 0; $i <= $max; $i++) {
@@ -498,9 +514,7 @@ class SC_CartSession {
 
         // 配送業者の送料を加算
         if (OPTION_DELIV_FEE == 1) {
-            $results['deliv_fee'] += $objDb->sfGetDelivFee(
-                                             array('deliv_pref' => $deliv_pref,
-                                                   'payment_id' => $payment_id));
+            $results['deliv_fee'] += $objDb->sfGetDelivFee($deliv_pref, $productTypeId);
         }
 
         // 送料無料の購入数が設定されている場合

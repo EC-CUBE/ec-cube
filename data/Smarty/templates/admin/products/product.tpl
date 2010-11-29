@@ -196,6 +196,12 @@ function selectAll(target) {
       </td>
     </tr>
     <tr>
+      <th>支払方法</th>
+       <td>
+         <!--{html_checkboxes name="payment_ids" options=$arrPayments selected=$arrForm.payment_ids}-->
+       </td>
+    </tr>
+    <tr>
       <th>ポイント付与率<span class="attention"> *</span></th>
       <td>
         <span class="attention"><!--{$arrErr.point_rate}--></span>

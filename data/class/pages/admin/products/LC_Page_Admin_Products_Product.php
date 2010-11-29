@@ -73,6 +73,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin {
         $this->arrAllowedTag = $masterData->getMasterData("mtb_allowed_tag");
         $this->arrProductType = $masterData->getMasterData("mtb_product_type");
         $this->arrMaker = SC_Helper_DB_Ex::sfGetIDValueList("dtb_maker", "maker_id", "name");
+        $this->arrPayments = SC_Helper_DB_Ex::sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
         $this->tpl_nonclass = true;
     }
 

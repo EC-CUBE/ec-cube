@@ -128,6 +128,13 @@ class LC_Page_Shopping_Payment extends LC_Page {
         // FIXME 使用ポイント, 配送都道府県, 支払い方法, 手数料の扱い
         $this->arrData = $objCartSess->calculate($this->cartKey, $objCustomer);
 
+        // 購入金額の取得
+        $total_inctax = $objCartSess->getAllProductsTotal($this->cartKey);
+
+        // 支払い方法の取得
+        $this->arrPayment = $this->lfGetPayment($total_inctax, $this->cartKey,
+                                                $objCartSess->getAllProductClassID($this->cartKey));
+
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
         switch($_POST['mode']) {
@@ -170,10 +177,6 @@ class LC_Page_Shopping_Payment extends LC_Page {
             break;
         }
 
-        // 購入金額の取得
-        $total_inctax = $objCartSess->getAllProductsTotal($this->cartKey);
-        // 支払い方法の取得
-        $this->arrPayment = $this->lfGetPayment($total_inctax);
         // 支払い方法の画像があるなしを取得（$img_show true:ある false:なし）
         $this->img_show = $this->lfGetImgShow($this->arrPayment);
         // お届け日一覧の取得
@@ -370,41 +373,22 @@ class LC_Page_Shopping_Payment extends LC_Page {
         $this->objFormParam->addParam("お届け日", "deliv_date", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
     }
 
-    function lfGetPayment($total_inctax) {
+    function lfGetPayment($total_inctax, $productTypeId, $productClassIds) {
+
+        // 有効な支払方法を取得
+        $objProduct = new SC_Product();
+        $paymentIds = $objProduct->getEnablePaymentIds($productClassIds);
+        $where = 'del_flg = 0 AND payment_id IN (' . implode(', ', array_pad(array(), count($paymentIds), '?')) . ')';
+
         $objQuery = new SC_Query();
         $objQuery->setOrder("rank DESC");
-
-        //削除されていない支払方法を取得
-        $arrval = null;
-        $where = "del_flg = 0 AND deliv_id IN (SELECT deliv_id FROM dtb_deliv WHERE del_flg = 0) ";
-
-        //ダウンロード商品の有無判定
-        if($this->cartdown != 0){
-            //ダウンロード商品を含む場合は、オンライン決済以外は選択できない。
-            $arrval = explode(",", ONLINE_PAYMENT);
-            $tmp_where = "";
-            foreach ($arrval as $val) {
-                if($tmp_where == "") {
-                    $tmp_where.= "AND payment_id IN ( ?";
-                } else {
-                    $tmp_where.= ",? ";
-                }
-            }
-            $tmp_where.= " ) ";
-            $where .= $tmp_where;
-        }
-
         // 削除されていない支払方法を取得
-        $arrRet = $objQuery->select("payment_id, payment_method, rule, upper_rule, note, payment_image", "dtb_payment", $where, $arrval);
+        $arrRet = $objQuery->select("payment_id, payment_method, rule, upper_rule, note, payment_image", "dtb_payment", $where, $paymentIds);
 
         // 配列初期化
         $data = array();
         // 選択可能な支払方法を判定
         foreach($arrRet as $data) {
-            //ダウンロード販売に対する注意追加
-            if($this->cartdown != 0){
-                $data['payment_method'] = $data['payment_method'] . "　　（ダウンロード商品を含む場合、オンライン決済のみ選択可能です）";
-            }
             // 下限と上限が設定されている
             if (strlen($data['rule']) != 0 && strlen($data['upper_rule']) != 0) {
                 if ($data['rule'] <= $total_inctax && $data['upper_rule'] >= $total_inctax) {
@@ -465,7 +449,8 @@ class LC_Page_Shopping_Payment extends LC_Page {
         // 購入金額の取得得
         $total_inctax = $objCartSess->getAllProductsTotal();
         // 支払い方法の取得
-        $arrPayment = $this->lfGetPayment($total_inctax);
+        $arrPayment = $this->lfGetPayment($total_inctax, $this->cartKey,
+                                          $objCartSess->getAllProductClassID($this->cartKey));
         $pay_flag = true;
         foreach ($arrPayment as $key => $payment) {
             if ($payment['payment_id'] == $arrRet['payment_id']) {
@@ -484,7 +469,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
     function lfGetPaymentInfo($payment_id) {
         $objQuery = new SC_Query();
         $where = "payment_id = ?";
-        $arrRet = $objQuery->select("charge, deliv_id", "dtb_payment", $where, array($payment_id));
+        $arrRet = $objQuery->select("charge", "dtb_payment", $where, array($payment_id));
         return (array($arrRet[0]['charge'], $arrRet[0]['deliv_id']));
     }
 
@@ -626,7 +611,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
         $objJson = new Services_JSON;
 
         // 配送時間の取得
-        $arrRet = $objDb->sfGetDelivTime($this->objFormParam->getValue('payment_id'));
+        $arrRet = $objDb->sfGetDelivTime($this->cartKey);
         // JSONエンコード
         echo $objJson->encode($arrRet);
         exit;

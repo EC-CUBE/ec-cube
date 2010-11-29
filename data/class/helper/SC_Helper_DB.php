@@ -1483,20 +1483,20 @@ __EOS__;
     }
 
     /**
-     * お届け時間を取得する.
+     * 商品種別からお届け時間を取得する.
      *
-     * @param integer $payment_id 支払い方法ID
+     * @param integer $productTypeId 商品種別ID
      * @return array お届け時間の配列
      */
-    function sfGetDelivTime($payment_id = "") {
+    function sfGetDelivTime($productTypeId) {
         $objQuery =& SC_Query::getSingletonInstance();
 
         $deliv_id = "";
         $arrRet = array();
 
         if($payment_id != "") {
-            $where = "del_flg = 0 AND payment_id = ?";
-            $arrRet = $objQuery->select("deliv_id", "dtb_payment", $where, array($payment_id));
+            $where = "del_flg = 0 AND product_type_id = ?";
+            $arrRet = $objQuery->select("deliv_id", "dtb_payment", $where, array($productTypeId));
             $deliv_id = $arrRet[0]['deliv_id'];
         }
 
@@ -1515,39 +1515,20 @@ __EOS__;
      * @param array $arrData 各種情報
      * @return string 指定の都道府県, 支払い方法の配送料金
      */
-    function sfGetDelivFee($arrData) {
-        $pref = $arrData['deliv_pref'];
-        $payment_id = isset($arrData['payment_id']) ? $arrData['payment_id'] : "";
-
+    function sfGetDelivFee($pref_id, $product_type_id) {
         $objQuery =& SC_Query::getSingletonInstance();
-
-        $deliv_id = "";
-
-        // 支払い方法が指定されている場合は、対応した配送業者を取得する
-        if($payment_id != "") {
-            $where = "del_flg = 0 AND payment_id = ?";
-            $arrRet = $objQuery->select("deliv_id", "dtb_payment", $where, array($payment_id));
-            $deliv_id = $arrRet[0]['deliv_id'];
-        // 支払い方法が指定されていない場合は、先頭の配送業者を取得する
-        } else {
-            $where = "del_flg = 0";
-            $objQuery->setOrder("rank DESC");
-            $objQuery->setLimitOffset(1);
-            $arrRet = $objQuery->select("deliv_id", "dtb_deliv", $where);
-            $deliv_id = $arrRet[0]['deliv_id'];
-        }
 
         // 配送業者から配送料を取得
         if($deliv_id != "") {
 
             // 都道府県が指定されていない場合は、東京都の番号を指定しておく
-            if($pref == "") {
-                $pref = 13;
+            if($pref_id == "") {
+                $pref_id = 13;
             }
 
             $objQuery =& SC_Query::getSingletonInstance();
-            $where = "deliv_id = ? AND pref = ?";
-            $arrRet= $objQuery->select("fee", "dtb_delivfee", $where, array($deliv_id, $pref));
+            $where = "product_type_id = ? AND pref = ?";
+            $arrRet= $objQuery->select("fee", "dtb_delivfee", $where, array($product_type_id, $pref_id));
         }
         return $arrRet[0]['fee'];
     }

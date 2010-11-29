@@ -47,7 +47,7 @@ class SC_Product {
     var $classCats1;
     /** 検索用並び替え条件配列 */
     var $arrOrderData;
-    
+
     /**
      * 商品検索結果の並び順を指定する。
      *
@@ -573,6 +573,24 @@ __EOS__;
                           array('stock' => 'stock - ?'), array($quantity));
         // TODO エラーハンドリング
         return true;
+    }
+
+    /**
+     * 引数の商品規格IDで有効な支払方法IDの配列を取得する.
+     *
+     * @param array $productClassIds 商品規格IDの配列
+     * @return array 支払方法IDの配列
+     */
+    function getEnablePaymentIds($productClassIds) {
+        $size = count($productClassIds);
+        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery->groupby = 'GROUP BY payment_id HAVING COUNT(payment_id) = ?';
+        $paymentIds = $objQuery->getCol('dtb_payment_options', 'payment_id',
+                                        'product_class_id IN (' . implode(', ', array_pad(array(), $size, '?')) . ')',
+                                        array_merge($productClassIds, array($size)),
+                                        MDB2_FETCHMODE_ORDERED);
+        var_dump($productClassIds);
+        return $paymentIds;
     }
 
     /**
