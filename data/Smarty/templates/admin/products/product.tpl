@@ -184,6 +184,13 @@ function selectAll(target) {
         <input type="checkbox" name="stock_unlimited" value="1" <!--{if $arrForm.stock_unlimited == "1"}-->checked<!--{/if}--> onclick="fnCheckStockLimit('<!--{$smarty.const.DISABLED_RGB}-->');"/>無制限
       </td>
     </tr>
+    <tr>
+      <th>支払方法<span class="attention"> *</span></th>
+       <td>
+         <span class="attention"><!--{$arrErr.payment_ids}--></span>
+         <!--{html_checkboxes name="payment_ids" options=$arrPayments selected=$arrForm.payment_ids}-->
+       </td>
+    </tr>
     <!--{/if}-->
 
     <tr>
@@ -194,12 +201,6 @@ function selectAll(target) {
         <span class="attention"> (半角数字で入力)</span>
         <!--{if $smarty.const.OPTION_PRODUCT_DELIV_FEE != 1}--><br /><span class="attention">※現在無効です</span> (パラメータ OPTION_PRODUCT_DELIV_FEE)<!--{/if}-->
       </td>
-    </tr>
-    <tr>
-      <th>支払方法</th>
-       <td>
-         <!--{html_checkboxes name="payment_ids" options=$arrPayments selected=$arrForm.payment_ids}-->
-       </td>
     </tr>
     <tr>
       <th>ポイント付与率<span class="attention"> *</span></th>
@@ -245,15 +246,6 @@ function selectAll(target) {
         <span class="attention"> (上限<!--{$smarty.const.URL_LEN}-->文字)</span>
       </td>
     </tr>
-    <!--{*
-    <tr>
-      <th>成分</th>
-      <td>
-        <textarea name="comment2" cols="60" rows="8" class="area60" maxlength="<!--{$smarty.const.STEXT_LEN}-->"><!--{$arrForm.comment2|escape}--></textarea>
-        <span class="attention"> (上限<!--{$smarty.const.LTEXT_LEN}-->文字)</span>
-      </td>
-    </tr>
-    *}-->
     <tr>
       <th>検索ワード<br />※複数の場合は、カンマ( , )区切りで入力して下さい</th>
       <td>

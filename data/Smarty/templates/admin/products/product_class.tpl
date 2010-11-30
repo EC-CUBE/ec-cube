@@ -101,6 +101,7 @@
       <th><!--{$smarty.const.NORMAL_PRICE_TITLE}-->(円)</th>
       <th><!--{$smarty.const.SALE_PRICE_TITLE}-->(円)<span class="attention">*</span></th>
       <th>商品種別<span class="attention"> *</span></th>
+      <th>支払方法<span class="attention"> *</span></th>
       <th>ダウンロードファイル名<BR><span class="red"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span></th>
       <th>ダウンロード商品用ファイルアップロード<BR>登録可能拡張子：<!--{$smarty.const.DOWNLOAD_EXTENSION}-->　(パラメータ DOWNLOAD_EXTENSION)</th>
     </tr>
@@ -140,12 +141,17 @@
       <td>
         <!--{assign var=key value="product_type_id:`$smarty.section.cnt.iteration`"}-->
         <input type="radio" name="<!--{$key}-->" value="<!--{$smarty.const.PRODUCT_TYPE_NORMAL}-->" <!--{if $arrForm[$key] == "1"}-->checked<!--{/if}-->/>通常商品　
-        <input type="radio" name="<!--{$key}-->" value="<!--{$smarty.const.PRODUCT_TYPE_NORMAL}-->" <!--{if $arrForm[$key] == "2"}-->checked<!--{/if}--> />ダウンロード商品
+        <input type="radio" name="<!--{$key}-->" value="<!--{$smarty.const.PRODUCT_TYPE_DOWNLOAD}-->" <!--{if $arrForm[$key] == "2"}-->checked<!--{/if}--> />ダウンロード商品
+      </td>
+      <td>
+        <!--{assign var=key value="payment_ids:`$smarty.section.cnt.iteration`"}-->
+        <span class="attention"><!--{$arrErr[$key]}--></span>
+        <!--{html_checkboxes name=$key options=$arrPayments selected=$arrForm[$key]}-->
       </td>
       <td>
         <!--{assign var=key value="down_filename:`$smarty.section.cnt.iteration`"}-->
         <span class="attention"><!--{$arrErr[$key]}--></span>
-        <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key]|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr[$key] != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" size="60" class="box60" />
+        <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key]|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr[$key] != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" size="30" class="box30" />
       </td>
       <!--{assign var=key value="down_realfilename:`$smarty.section.cnt.iteration`"}-->
       <td>

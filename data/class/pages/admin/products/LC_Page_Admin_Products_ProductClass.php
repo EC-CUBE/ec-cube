@@ -53,6 +53,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin {
         $this->tpl_mainno = 'products';
         $this->tpl_subno = 'product';
         $this->tpl_subtitle = '商品登録(商品規格)';
+        $this->arrPayments = SC_Helper_DB_Ex::sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
     }
 
     function lfInitDownFile() {
@@ -289,6 +290,10 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin {
                 $pVal['product_class_id'] = $objQuery->nextVal('dtb_products_class_product_class_id');
                 $objQuery->insert("dtb_products_class", $pVal);
             }
+
+            // 支払方法登録
+            $objProduct = new SC_Product();
+            $objProduct->setPaymentOptions($pVal['product_class_id'], $arrList['payment_ids:'.$i]);
             $i++;
         }
 
@@ -354,6 +359,11 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin {
 
                 if($array["stock_unlimited:".$no] != '1') {
                     $objErr->doFunc(array("在庫数", "stock:".$no, AMOUNT_LEN), array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+                }
+
+                // 支払方法チェック
+                if (empty($array['payment_ids:' . $no])) {
+                    $objErr->arrErr['payment_ids:' . $no] = "※ 支払方法は、いずれかを選択してください。<br />";
                 }
 
                 //ダウンロード商品チェック
@@ -441,21 +451,31 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin {
         $this->arrForm['select_class_id1'] = $this->arrForm["class_id1"];
         $this->arrForm['select_class_id2'] = $this->arrForm["class_id2"];
         $this->arrClassCat = $this->getAllClassCategory($this->arrForm["class_id1"], $this->arrForm["class_id2"]);
+        $objProduct = new SC_Product();
         $total = count($this->arrClassCat);
+        // XXX $i = 1 にすれば ($i+1) は $i で良い？
         for ($i = 0; $i < $total; $i++) {
             if ($existsValue) {
                 foreach ($productsClass as $key => $val) {
-                	if(!$usepostValue){
-                    	$this->arrForm[$key . ":" . ($i+1)] = $val;
-                	}
+                    if(!$usepostValue){
+                        $this->arrForm[$key . ":" . ($i+1)] = $val;
+                    }
                 }
             }
             foreach ($existsProductsClass[$i] as $key => $val) {
-            	if(!$usepostValue){
-                	$this->arrForm[$key . ":" . ($i+1)] = $val;
-            	}
-                if($key=="down"){
+                if(!$usepostValue){
+                    $this->arrForm[$key . ":" . ($i+1)] = $val;
+                }
+
+                switch ($key) {
+                case 'down':
                     $this->objDownFile->addFile("ダウンロード販売用ファイル". ":" . ($i+1), 'down_realfilename'. ":" . ($i+1), explode(",", DOWNLOAD_EXTENSION),DOWN_SIZE, true, 0, 0);
+                    break;
+
+                    case 'product_class_id':
+                        $this->arrForm["payment_ids:" . ($i+1)] = $objProduct->getEnablePaymentIds(array($val));
+                        break;
+                default:
                 }
             }
             if (!SC_Utils_Ex::isBlank($this->arrForm['product_id:' . ($i+1)])

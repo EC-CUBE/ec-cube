@@ -593,6 +593,29 @@ __EOS__;
     }
 
     /**
+     * 商品規格に支払方法を設定する.
+     *
+     * TODO 現在は DELETE/INSERT だが, UPDATE を検討する.
+     *
+     * @param integer $productClassId 商品規格ID
+     * @param array 設定する支払方法IDの配列
+     * @return void
+     */
+    function setPaymentOptions($productClassId, $paymentIds) {
+        $val['product_class_id'] = $productClassId;
+
+        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery->delete('dtb_payment_options', 'product_class_id = ?', array($productClassId));
+        $rank = 1;
+        foreach ($paymentIds as $paymentId) {
+            $val['payment_id'] = $paymentId;
+            $val['rank'] = $rank;
+            $objQuery->insert('dtb_payment_options', $val);
+            $rank++;
+        }
+    }
+
+    /**
      * 商品詳細の SQL を取得する.
      *
      * @param string $where 商品詳細の WHERE 句
