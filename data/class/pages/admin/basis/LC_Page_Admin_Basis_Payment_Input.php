@@ -142,7 +142,6 @@ class LC_Page_Admin_Basis_Payment_Input extends LC_Page_Admin {
             $this->tpl_payment_id = $_POST['payment_id'];
         }
 
-        $this->arrDelivList = $objDb->sfGetIDValueList("dtb_deliv", "deliv_id", "service_name");
         $this->arrForm = $this->objFormParam->getFormParamList();
 
         // FORM表示用配列を渡す。
@@ -172,7 +171,6 @@ class LC_Page_Admin_Basis_Payment_Input extends LC_Page_Admin {
         $this->objFormParam->addParam("手数料", "charge", PRICE_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("利用条件(～円以上)", "rule", PRICE_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("利用条件(～円以下)", "upper_rule", PRICE_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("配送サービス", "deliv_id", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("固定", "fix");
     }
 

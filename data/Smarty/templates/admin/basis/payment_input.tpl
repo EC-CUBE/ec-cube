@@ -77,17 +77,6 @@ self.moveTo(20,20);self.focus();
         </td>
       </tr>
       <tr>
-        <th>配送サービス<span class="attention"> *</span></th>
-        <td>
-          <!--{assign var=key value="deliv_id"}-->
-          <span class="attention"><!--{$arrErr[$key]}--></span>
-          <select name="deliv_id" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
-          <option value="" />指定しない</option>
-          <!--{html_options options=$arrDelivList selected=$arrForm[$key].value}-->
-          </select>
-        </td>
-      </tr>
-      <tr>
         <th>ロゴ画像</th>
         <td>
           <!--{assign var=key value="payment_image"}-->

@@ -106,11 +106,12 @@ class LC_Page_Admin_Basis_Payment extends LC_Page_Admin {
         parent::destroy();
     }
 
-    // 配送業者一覧の取得
+    /**
+     * 支払方法一覧の取得.
+     */
     function lfGetPaymentList() {
         $objQuery = new SC_Query();
-        // 配送業者一覧の取得
-        $col = "payment_id, payment_method, charge, rule, upper_rule, note, deliv_id, fix, charge_flg";
+        $col = "payment_id, payment_method, charge, rule, upper_rule, note, fix, charge_flg";
         $where = "del_flg = 0";
         $table = "dtb_payment";
         $objQuery->setOrder("rank DESC");
