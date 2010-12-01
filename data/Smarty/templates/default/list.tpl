@@ -236,7 +236,7 @@ function fnCheckStock(form) {
                     <ul class="status_icon">
                         <!--{foreach from=$productStatus[$id] item=status}--> 
                             <li>
-                                <img src="<!--{$TPL_DIR}--><!--{$arrSTATUS_IMAGE[$status]}-->" width="65" height="17" alt="<!--{$arrSTATUS[$status]}-->"/>
+                                <img src="<!--{$TPL_DIR}--><!--{$arrSTATUS_IMAGE[$status]}-->" width="60" height="17" alt="<!--{$arrSTATUS[$status]}-->"/>
                             </li>
                         <!--{/foreach}-->
                     </ul>

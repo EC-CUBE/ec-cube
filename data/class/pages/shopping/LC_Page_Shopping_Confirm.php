@@ -174,6 +174,7 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         default:
             break;
         }
+        $this->arrData = $arrData;
     }
 
     /**

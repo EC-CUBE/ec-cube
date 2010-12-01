@@ -198,7 +198,7 @@ $(document).ready(function() {
                 <ul class="status_icon">
                     <!--{foreach from=$ps item=status}-->
                     <li>
-                        <img src="<!--{$TPL_DIR}--><!--{$arrSTATUS_IMAGE[$status]}-->" width="65" height="17" alt="<!--{$arrSTATUS[$status]}-->" id="icon<!--{$status}-->" />
+                        <img src="<!--{$TPL_DIR}--><!--{$arrSTATUS_IMAGE[$status]}-->" width="60" height="17" alt="<!--{$arrSTATUS[$status]}-->" id="icon<!--{$status}-->" />
                     </li>
                     <!--{/foreach}-->
                 </ul>
