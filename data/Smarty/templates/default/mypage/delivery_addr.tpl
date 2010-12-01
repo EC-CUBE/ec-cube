@@ -38,7 +38,7 @@
         </table>
 
         <div class="btn">
-            <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_entry_on.gif',this);" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_entry.gif',this);" src="<!--{$TPL_DIR}-->img/common/b_entry.gif" class="box150" alt="登録する" name="register" id="register" />
+            <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_add_address_complete_on.gif',this);" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_add_address_complete.gif',this);" src="<!--{$TPL_DIR}-->img/button/btn_add_address_complete.gif" class="box150" alt="登録する" name="register" id="register" />
         </div>
     </form>
 </div>

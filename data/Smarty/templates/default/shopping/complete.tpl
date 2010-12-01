@@ -23,7 +23,7 @@
 <div id="under02column">
   <div id="under02column_shopping">
     <p class="flowarea">
-      <img src="<!--{$TPL_DIR}-->img/shopping/flow04.gif" width="700" height="36" alt="購入手続きの流れ" />
+      <img src="<!--{$TPL_DIR}-->img/picture/img_flow_04.gif" width="700" height="36" alt="購入手続きの流れ" />
     </p>
     <h2 class="title"><!--{$tpl_title|escape}--></h2>
 
@@ -56,9 +56,9 @@
 
     <div class="tblareabtn">
       <!--{if $is_campaign}-->
-        <a href="<!--{$smarty.const.CAMPAIGN_URL}--><!--{$campaign_dir}-->/<!--{$smarty.const.DIR_INDEX_URL}-->" onmouseover="chgImg('<!--{$TPL_DIR}-->img/common/b_toppage_on.gif','b_toppage');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/common/b_toppage.gif','b_toppage');"><img src="<!--{$TPL_DIR}-->img/common/b_toppage.gif" width="150" height="30" alt="トップページへ" border="0" name="b_toppage" /></a>
+        <a href="<!--{$smarty.const.CAMPAIGN_URL}--><!--{$campaign_dir}-->/<!--{$smarty.const.DIR_INDEX_URL}-->" onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_toppage_on.gif','b_toppage');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_toppage.gif','b_toppage');"><img src="<!--{$TPL_DIR}-->img/button/btn_toppage.gif" width="150" height="30" alt="トップページへ" border="0" name="b_toppage" /></a>
       <!--{else}-->
-        <a href="<!--{$smarty.const.URL_SITE_TOP}-->" onmouseover="chgImg('<!--{$TPL_DIR}-->img/common/b_toppage_on.gif','b_toppage');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/common/b_toppage.gif','b_toppage');"><img src="<!--{$TPL_DIR}-->img/common/b_toppage.gif" width="150" height="30" alt="トップページへ" border="0" name="b_toppage" /></a>
+        <a href="<!--{$smarty.const.URL_SITE_TOP}-->" onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_toppage_on.gif','b_toppage');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_toppage.gif','b_toppage');"><img src="<!--{$TPL_DIR}-->img/button/btn_toppage.gif" width="150" height="30" alt="トップページへ" border="0" name="b_toppage" /></a>
       <!--{/if}-->
     </div>
   </div>

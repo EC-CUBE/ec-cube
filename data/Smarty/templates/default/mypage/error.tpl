@@ -28,7 +28,7 @@
 </div>
 
 <div class="button">
-<a href="javascript:window.close()" onmouseOver="chgImg('<!--{$TPL_DIR}-->img/button/close_on.jpg','close');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/close.jpg','close');"><img src="<!--{$TPL_DIR}-->img/button/close.jpg" width="129" height="32" alt="閉じる" name="close" id="close" /></a>
+<a href="javascript:window.close()" onmouseOver="chgImg('<!--{$TPL_DIR}-->img/button/btn_close_on.gif','close');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_close.gif','close');"><img src="<!--{$TPL_DIR}-->img/button/btn_close.gif" width="129" height="32" alt="閉じる" name="close" id="close" /></a>
 </div>
 
 <!--{include file="`$smarty.const.TEMPLATE_DIR`popup_footer.tpl"}-->

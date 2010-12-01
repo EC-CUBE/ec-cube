@@ -20,7 +20,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 <div id="newsarea" class="bloc_outer">
-    <h2><img src="<!--{$TPL_DIR}-->img/bloc/news/title_icon.gif" width="27" height="20" alt="*" class="title_icon" />
+    <h2><img src="<!--{$TPL_DIR}-->img/icon/ico_block_news.gif" width="27" height="20" alt="*" class="title_icon" />
         新着情報</h2>
     <div class="bloc_body">
         <p>☆★☆ 新着情報は<a href="<!--{$smarty.const.URL_DIR}-->rss/<!--{$smarty.const.DIR_INDEX_URL}-->" target="_blank">RSS</a>で配信しています。★☆★</p>

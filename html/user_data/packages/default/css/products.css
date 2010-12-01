@@ -55,7 +55,7 @@ p.conditionarea {
 ----------------------------------------------- */
 .product h2.title {
     border-color: #f00 #ccc;
-    background: url("../img/products/title_icon.gif") no-repeat left center;
+    background: url("../img/background/bg_arrow_title_02.gif") no-repeat left center;
     background-color: #ffebca;
 }
 
@@ -65,7 +65,7 @@ div.listarea {
     clear: both;
     padding: 20px 0 30px 0;
     overflow: auto;
-    background: url("../img/common/line_580.gif") no-repeat bottom;
+    background: url("../img/background/line_580.gif") no-repeat bottom;
 }
 
 div.listphoto {
@@ -195,7 +195,7 @@ div#detailrightblock dt {
     font-weight: bold;
     margin: 15px 0 0 0;
     padding: 0 0 0 15px;
-    background: url("../img/common/arrow_gray.gif") no-repeat left center;
+    background: url("../img/background/bg_arrow_03.gif") no-repeat left center;
 }
 
 div#detailrightblock dd {
@@ -213,7 +213,7 @@ div#detailrightblock .btn {
     padding: 15px 0 0 0;
     text-align: center;
     vertical-align: top;
-    background: url("../img/common/line_280.gif") no-repeat;
+    background: url("../img/background/line_280.gif") no-repeat;
 }
 
 /* 商品共通 */
@@ -261,7 +261,9 @@ div#customervoicearea {
 }
 
 div#customervoicearea h2 {
-    padding: 0 0 10px 0;
+    margin: 0 0 10px 0;
+    background-color: #FFEBCA;
+    border-bottom: 2px solid #FFCB77;
 }
 
 div#customervoicearea .voicedate{
@@ -277,7 +279,7 @@ div#customervoicearea .voicetitle{
 
 div#customervoicearea li {
     padding: 0 0 10px 0;
-    background: url("../img/common/line_580.gif") no-repeat bottom;
+    background: url("../img/background/line_580.gif") no-repeat bottom;
 }
 
 .recommend_level {
@@ -313,6 +315,11 @@ div#whoboughtarea {
     padding: 35px 0 0 0;
 }
 
+div#whoboughtarea h2 {
+    background-color: #FFEBCA;
+    border-bottom: 2px solid #FFCB77
+}
+
 div.whoboughtblock {
     clear: both;
     padding: 10px 0;
@@ -324,7 +331,7 @@ div.whoboughtleft {
     width: 280px;
     padding: 10px 0;
     position: relative;
-    background: url("../img/common/line_578.gif") no-repeat bottom;
+    background: url("../img/background/line_578.gif") no-repeat bottom;
 }
 
 div.whoboughtleft img {
@@ -342,7 +349,7 @@ div.whoboughtright {
     width: 280px;
     padding: 10px 0;
     position: relative;
-    background: url("../img/common/line_578.gif") no-repeat bottom;
+    background: url("../img/background/line_578.gif") no-repeat bottom;
 }
 
 div.whoboughtright img {

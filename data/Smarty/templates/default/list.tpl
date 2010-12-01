@@ -268,8 +268,8 @@ function fnCheckStock(form) {
                     <!--★詳細ボタン★-->
                     <span class="btnbox">
                         <!--{assign var=name value="detail`$id`"}-->
-                        <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProduct.product_id|escape:url}-->" onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_detail_on.gif','<!--{$name}-->');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/products/b_detail.gif','<!--{$name}-->');">
-                            <img src="<!--{$TPL_DIR}-->img/products/b_detail.gif" width="115" height="25" alt="詳しくはこちら" name="<!--{$name}-->" id="<!--{$name}-->" /></a>
+                        <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProduct.product_id|escape:url}-->" onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_detail_on.gif','<!--{$name}-->');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_detail.gif','<!--{$name}-->');">
+                            <img src="<!--{$TPL_DIR}-->img/button/btn_detail.gif" width="115" height="25" alt="詳しくはこちら" name="<!--{$name}-->" id="<!--{$name}-->" /></a>
                     </span>
                 </p>
 
@@ -327,11 +327,11 @@ function fnCheckStock(form) {
                                     <input
                                         type="image"
                                         id="cart<!--{$id}-->"
-                                        src="<!--{$TPL_DIR}-->img/products/b_cartin.gif"
+                                        src="<!--{$TPL_DIR}-->img/button/btn_cartin.gif"
                                         alt="カゴに入れる"
                                         onclick="fnInCart(this.form); return false;"
-                                        onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_cartin_on.gif', this);"
-                                        onmouseout="chgImg('<!--{$TPL_DIR}-->img/products/b_cartin.gif', this);"
+                                        onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_cartin_on.gif', this);"
+                                        onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_cartin.gif', this);"
                                     />
                                 </div>
                                 <div class="attention" id="cartbtn_dynamic_<!--{$id}-->"></div>

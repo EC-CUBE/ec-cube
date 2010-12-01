@@ -120,8 +120,8 @@
                         </td>
                         <td id="quantity"><!--{$item.quantity}-->
                             <ul id="quantity_level">
-                                <li><a href="?" onclick="fnModeSubmit('up','cart_no','<!--{$item.cart_no}-->'); return false"><img src="<!--{$TPL_DIR}-->img/cart/plus.gif" width="16" height="16" alt="＋" /></a></li>
-                                <li><a href="?" onclick="fnModeSubmit('down','cart_no','<!--{$item.cart_no}-->'); return false"><img src="<!--{$TPL_DIR}-->img/cart/minus.gif" width="16" height="16" alt="-" /></a></li>
+                                <li><a href="?" onclick="fnModeSubmit('up','cart_no','<!--{$item.cart_no}-->'); return false"><img src="<!--{$TPL_DIR}-->img/button/btn_plus.gif" width="16" height="16" alt="＋" /></a></li>
+                                <li><a href="?" onclick="fnModeSubmit('down','cart_no','<!--{$item.cart_no}-->'); return false"><img src="<!--{$TPL_DIR}-->img/button/btn_minus.gif" width="16" height="16" alt="-" /></a></li>
                             </ul>
                         </td>
                         <td class="pricetd"><!--{$item.total_inctax|number_format}-->円</td>
@@ -155,12 +155,12 @@
 
                 <p>
                     <!--{if $tpl_prev_url != ""}-->
-                        <a href="<!--{$tpl_prev_url}-->" onmouseover="chgImg('<!--{$TPL_DIR}-->img/cart/b_pageback_on.gif','back');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/cart/b_pageback.gif','back');">
-                            <img src="<!--{$TPL_DIR}-->img/cart/b_pageback.gif" width="150" height="30" alt="買い物を続ける" name="back" id="back" /></a>&nbsp;&nbsp;
+                        <a href="<!--{$tpl_prev_url}-->" onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_back_on.gif','back');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_back.gif','back');">
+                            <img src="<!--{$TPL_DIR}-->img/button/btn_back.gif" width="150" height="30" alt="買い物を続ける" name="back" id="back" /></a>&nbsp;&nbsp;
                     <!--{/if}-->
                     <!--{if strlen($tpl_error) == 0}-->
                         <input type="hidden" name="cartKey" value="<!--{$key}-->" />
-                        <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/cart/b_buystep_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/cart/b_buystep.gif',this)" src="<!--{$TPL_DIR}-->img/cart/b_buystep.gif" class="box150" alt="購入手続きへ" name="confirm" />
+                        <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_buystep_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_buystep.gif',this)" src="<!--{$TPL_DIR}-->img/button/btn_buystep.gif" width="130" height="30" alt="購入手続きへ" name="confirm" />
                     <!--{/if}-->
                  </p>
             </div>

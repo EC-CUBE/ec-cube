@@ -23,7 +23,7 @@
 <div id="under02column">
     <div id="under02column_shopping">
         <p class="flowarea">
-            <img src="<!--{$TPL_DIR}-->img/shopping/flow02.gif" width="700" height="36" alt="購入手続きの流れ" />
+            <img src="<!--{$TPL_DIR}-->img/picture/img_flow02.gif" width="700" height="36" alt="購入手続きの流れ" />
         </p>
         <h2 class="title"><!--{$tpl_title|escape}--></h2>
 
@@ -31,7 +31,7 @@
             <input type="hidden" name="mode" value="confirm" />
             <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->" />
             <div class="payarea">
-                <h3><img src="<!--{$TPL_DIR}-->img/shopping/subtitle01.gif" width="670" height="33" alt="お支払方法の指定" /></h3>
+                <h3>お支払方法の指定</h3>
                 <p>お支払方法をご選択ください。</p>
 
                 <!--{assign var=key value="payment_id"}-->
@@ -64,7 +64,7 @@
 
             <!--{if $cartdown != 2}-->
             <div class="payarea02">
-                <h3><img src="<!--{$TPL_DIR}-->img/shopping/subtitle02.gif" width="670" height="33" alt="お届け時間の指定" /></h3>
+                <h3>お届け時間の指定</h3>
                 <p>ご希望の方は、お届け時間を選択してください。</p>
                 <div>
                     <!--★お届け日★-->
@@ -92,7 +92,7 @@
             <!--{/if}-->
 
             <div class="payarea02">
-                <h3><img src="<!--{$TPL_DIR}-->img/shopping/subtitle03.gif" width="670" height="33" alt="その他お問い合わせ" /></h3>
+                <h3>その他お問い合わせ</h3>
                 <p>その他お問い合わせ事項がございましたら、こちらにご入力ください。</p>
                 <div>
                     <!--★その他お問い合わせ事項★-->
@@ -106,7 +106,7 @@
             <!-- ▼ポイント使用 ここから -->
             <!--{if $tpl_login == 1 && $smarty.const.USE_POINT !== false}-->
                 <div class="pointarea">
-                    <h3><img src="<!--{$TPL_DIR}-->img/shopping/subtitle_point.jpg" width="670" height="32" alt="ポイント使用の指定" /></h3>
+                    <h3>ポイント使用の指定</h3>
 
                         <p><span class="attention">1ポイントを1円</span>として使用する事ができます。<br />
                             使用する場合は、「ポイントを使用する」にチェックを入れた後、使用するポイントをご記入ください。</p>
@@ -126,9 +126,9 @@
             <!-- ▲ポイント使用 ここまで -->
 
             <div class="tblareabtn">
-                <a href="<!--{$tpl_back_url|escape}-->" onmouseover="chgImg('<!--{$TPL_DIR}-->img/common/b_back_on.gif','back03')" onmouseout="chgImg('<!--{$TPL_DIR}-->img/common/b_back.gif','back03')">
-                    <img src="<!--{$TPL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="戻る" border="0" name="back03" id="back03" /></a>&nbsp;
-                <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_next_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_next.gif',this)" src="<!--{$TPL_DIR}-->img/common/b_next.gif" class="box150" alt="次へ" name="next" id="next" />
+                <a href="<!--{$tpl_back_url|escape}-->" onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_back_on.gif','back03')" onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_back.gif','back03')">
+                    <img src="<!--{$TPL_DIR}-->img/button/btn_back.gif" width="150" height="30" alt="戻る" border="0" name="back03" id="back03" /></a>&nbsp;
+                <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_next_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_next.gif',this)" src="<!--{$TPL_DIR}-->img/button/btn_next.gif" class="box150" alt="次へ" name="next" id="next" />
             </div>
         </form>
     </div>

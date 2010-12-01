@@ -22,7 +22,7 @@
 <!--{include file="`$smarty.const.TEMPLATE_DIR`popup_header.tpl" subtitle="お客様の声書き込み（確認ページ）"}-->
 
   <div id="windowarea">
-    <h2><img src="<!--{$TPL_DIR}-->img/products/review_title.jpg" width="500" height="40" alt="お客様の声書き込み" /></h2>
+    <h2 class="title">お客様の声書き込み</h2>
     <form name="form1" method="post" action="?">
       <input type="hidden" name="mode" value="complete" />
         <!--{foreach from=$arrForm key=key item=item}-->
@@ -62,8 +62,8 @@
           </tr>
         </table>
         <div class="btn">
-          <input type="image" onclick=" mode.value='return';" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_back_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_back.gif',this)" src="<!--{$TPL_DIR}-->img/common/b_back.gif" class="box150" alt="戻る"  name="back" id="back" />
-          <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_send_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_send.gif',this)" src="<!--{$TPL_DIR}-->img/common/b_send.gif" class="box150" alt="送信"  name="send" id="send" />
+          <input type="image" onclick=" mode.value='return';" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_back_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_back.gif',this)" src="<!--{$TPL_DIR}-->img/button/btn_back.gif" class="box150" alt="戻る"  name="back" id="back" />
+          <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_send_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_send.gif',this)" src="<!--{$TPL_DIR}-->img/button/btn_send.gif" class="box150" alt="送信"  name="send" id="send" />
         </div>
       </form>
     </div>

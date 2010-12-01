@@ -36,7 +36,7 @@
             </table>
 
             <div class="tblareabtn">
-                <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_confirm_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_confirm.gif',this)" src="<!--{$TPL_DIR}-->img/common/b_confirm.gif" class="box150" alt="確認ページへ" name="confirm" id="confirm" />
+                <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_confirm_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_confirm.gif',this)" src="<!--{$TPL_DIR}-->img/button/btn_confirm.gif" class="box150" alt="確認ページへ" name="confirm" id="confirm" />
             </div>
         </form>
     </div>

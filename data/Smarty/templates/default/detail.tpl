@@ -178,15 +178,15 @@ $(document).ready(function() {
                 <!--{if $arrProduct.main_large_image|strlen >= 1}-->
                     href="<!--{$smarty.const.IMAGE_SAVE_URL}--><!--{$arrProduct.main_large_image|escape}-->"
                     class="expansion"
-                    onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_expansion_on.gif','expansion01');"
-                    onmouseout="chgImg('<!--{$TPL_DIR}-->img/products/b_expansion.gif','expansion01');"
+                    onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_expansion_on.gif','expansion01');"
+                    onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_expansion.gif','expansion01');"
                     target="_blank"
                 <!--{/if}-->
             >
                 <img src="<!--{$arrFile[$key].filepath|escape}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" alt="<!--{$arrProduct.name|escape}-->" class="picture" /><br />
                 <!--★拡大する★-->
                 <!--{if $arrProduct.main_large_image|strlen >= 1}-->
-                    <img src="<!--{$TPL_DIR}-->img/products/b_expansion.gif" width="85" height="13" alt="画像を拡大する" name="expansion01" id="expansion01" />
+                    <img src="<!--{$TPL_DIR}-->img/button/btn_expansion.gif" width="85" height="13" alt="画像を拡大する" name="expansion01" id="expansion01" />
                 <!--{/if}-->
             </a>
         </div>
@@ -356,11 +356,11 @@ $(document).ready(function() {
                             <!--{if !$arrProduct.favorite_count}-->
                                 <a
                                     href="javascript:fnModeSubmit('add_favorite','favorite_product_id','<!--{$arrProduct.product_id|escape}-->');"
-                                    onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/add_favolite_product_on.gif','add_favolite_product');"
-                                    onmouseout="chgImg('<!--{$TPL_DIR}-->img/products/add_favolite_product.gif','add_favolite_product');"
-                                ><img src="<!--{$TPL_DIR}-->img/products/add_favolite_product.gif" width="115" height="20" alt="お気に入りに追加" name="add_favolite_product" id="add_favolite_product" /></a>
+                                    onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_add_favorite_on.gif','add_favolite_product');"
+                                    onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_add_favorite.gif','add_favolite_product');"
+                                ><img src="<!--{$TPL_DIR}-->img/button/btn_add_favorite.gif" width="115" height="20" alt="お気に入りに追加" name="add_favolite_product" id="add_favolite_product" /></a>
                             <!--{else}-->
-                                <img src="<!--{$TPL_DIR}-->img/products/add_favolite_product_on.gif" width="115" height="20" alt="お気に入り登録済" name="add_favolite_product" id="add_favolite_product" />
+                                <img src="<!--{$TPL_DIR}-->img/button/btn_add_favorite_on.gif" width="115" height="20" alt="お気に入り登録済" name="add_favolite_product" id="add_favolite_product" />
                             <!--{/if}-->
                         </div>
                     <!--{/if}-->
@@ -369,8 +369,8 @@ $(document).ready(function() {
                         <div id="cartbtn_default">
                             <!--★カゴに入れる★-->
                             <div>
-                                <a href="javascript:void(document.form1.submit())" onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_cartin_on.gif','cart');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/products/b_cartin.gif','cart');">
-                                    <img src="<!--{$TPL_DIR}-->img/products/b_cartin.gif" width="115" height="25" alt="カゴに入れる" name="cart" id="cart" /></a>
+                                <a href="javascript:void(document.form1.submit())" onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_cartin_on.gif','cart');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_cartin.gif','cart');">
+                                    <img src="<!--{$TPL_DIR}-->img/button/btn_cartin.gif" width="115" height="25" alt="カゴに入れる" name="cart" id="cart" /></a>
                             </div>
                             <!--{if 'sfGMODetailDisplay'|function_exists}--><!--{* GMOワンクリック *}-->
                                 <!--{'sfGMODetailDisplay'|call_user_func}-->
@@ -411,14 +411,14 @@ $(document).ready(function() {
                             <!--{if $arrProduct[$lkey]|strlen >= 1}-->
                                 href="<!--{$smarty.const.IMAGE_SAVE_URL}--><!--{$arrProduct[$lkey]|escape}-->"
                                 class="expansion"
-                                onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_expansion_on.gif', 'expansion_<!--{$lkey|escape}-->');"
-                                onmouseout="chgImg('<!--{$TPL_DIR}-->img/products/b_expansion.gif', 'expansion_<!--{$lkey|escape}-->');"
+                                onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_expansion_on.gif', 'expansion_<!--{$lkey|escape}-->');"
+                                onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_expansion.gif', 'expansion_<!--{$lkey|escape}-->');"
                                 target="_blank"
                             <!--{/if}-->
                         >
                             <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrProduct.name|escape}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" /><br />
                             <!--{if $arrProduct[$lkey]|strlen >= 1}-->
-                                <img src="<!--{$TPL_DIR}-->img/products/b_expansion.gif" width="85" height="13" alt="画像を拡大する" id="expansion_<!--{$lkey|escape}-->" />
+                                <img src="<!--{$TPL_DIR}-->img/button/btn_expansion.gif" width="85" height="13" alt="画像を拡大する" id="expansion_<!--{$lkey|escape}-->" />
                             <!--{/if}-->
                         </a>
                     </div>
@@ -432,15 +432,15 @@ $(document).ready(function() {
 
     <!--この商品に対するお客様の声-->
     <div id="customervoicearea">
-        <h2><img src="<!--{$TPL_DIR}-->img/products/title_voice.jpg" width="580" height="30" alt="この商品に対するお客様の声" /></h2>
+        <h2><img src="<!--{$TPL_DIR}-->img/title/tit_product_voice.jpg" width="550" height="30" alt="この商品に対するお客様の声" /></h2>
 
         <!--{if count($arrReview) < $smarty.const.REVIEW_REGIST_MAX}-->
             <!--★新規コメントを書き込む★-->
             <a href="./review.php"
                  onclick="win02('./review.php?product_id=<!--{$arrProduct.product_id}-->','review','580','580'); return false;"
-                 onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_comment_on.gif','review');"
-                 onmouseout="chgImg('<!--{$TPL_DIR}-->img/products/b_comment.gif','review');" target="_blank">
-                <img src="<!--{$TPL_DIR}-->img/products/b_comment.gif" width="150" height="22" alt="新規コメントを書き込む" name="review" id="review" /></a>
+                 onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_comment_on.gif','review');"
+                 onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_comment.gif','review');" target="_blank">
+                <img src="<!--{$TPL_DIR}-->img/button/btn_comment.gif" width="150" height="22" alt="新規コメントを書き込む" name="review" id="review" /></a>
         <!--{/if}-->
 
         <!--{if count($arrReview) > 0}-->
@@ -461,7 +461,7 @@ $(document).ready(function() {
     <!--{if $arrTrackbackView == "ON"}-->
         <!--▼トラックバック-->
         <div id="trackbackarea">
-            <h2><img src="<!--{$TPL_DIR}-->img/products/title_tb.jpg" width="580" height="30" alt="この商品に対するトラックバック" /></h2>
+            <h2>この商品に対するトラックバック</h2>
             <h3>この商品のトラックバック先URL</h3>
             <input type="text" name="trackback" value="<!--{$trackback_url}-->" size="100" class="box500" />
 
@@ -481,7 +481,7 @@ $(document).ready(function() {
     <!--▼関連商品-->
     <!--{if $arrRecommend}-->
         <div id="whoboughtarea">
-            <h2><img src="<!--{$TPL_DIR}-->img/products/title_recommend.jpg" width="580" height="30" alt="その他のオススメ商品(関連商品)" /></h2>
+            <h2><img src="<!--{$TPL_DIR}-->img/title/tit_product_recommend.jpg" width="550" height="30" alt="その他のオススメ商品(関連商品)" /></h2>
             <div class="whoboughtblock">
 
             <!--{section name=cnt loop=$arrRecommend}-->

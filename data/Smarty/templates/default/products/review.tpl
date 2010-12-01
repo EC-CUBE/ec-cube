@@ -24,7 +24,7 @@
 <!--{include file="`$smarty.const.TEMPLATE_DIR`popup_header.tpl" subtitle="お客様の声書き込み（入力ページ）"}-->
 
   <div id="windowarea">
-    <h2><img src="<!--{$TPL_DIR}-->img/products/review_title.jpg" width="500" height="40" alt="お客様の声書き込み" /></h2>
+    <h2 class="title">お客様の声書き込み</h2>
     <p class="windowtext">以下の商品について、お客様のご意見、ご感想をどしどしお寄せください。<br />
       「<span class="attention">※</span>」印は入力必須項目です。<br />
        ご入力後、一番下の「確認ページへ」ボタンをクリックしてください。</p>
@@ -78,7 +78,7 @@
           </tr>
         </table>
         <div class="btn">
-          <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_confirm_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_confirm.gif',this)" src="<!--{$TPL_DIR}-->img/common/b_confirm.gif" class="box150" alt="確認ページへ" name="conf" id="conf" />
+          <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_confirm_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_confirm.gif',this)" src="<!--{$TPL_DIR}-->img/button/btn_confirm.gif" class="box150" alt="確認ページへ" name="conf" id="conf" />
         </div>
       </form>
     </div>

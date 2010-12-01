@@ -22,7 +22,7 @@
 <!--{include file="`$smarty.const.TEMPLATE_DIR`popup_header.tpl" subtitle="パスワードを忘れた方(入力ページ)"}-->
 
   <div id="windowarea">
-    <h2><img src="<!--{$TPL_DIR}-->img/forget/title.jpg" width="500" height="40" alt="パスワードを忘れた方" /></h2>
+    <h2>パスワードを忘れた方</h2>
     <p>ご登録時のメールアドレスを入力して「次へ」ボタンをクリックしてください。<br />
       <span class="attention">※新しくパスワードを発行いたしますので、お忘れになったパスワードはご利用できなくなります。</span></p>
     <form action="?" method="post" name="form1">
@@ -32,7 +32,7 @@
         <span class="attention"><!--{$errmsg}--></span>
       </div>
       <div class="btn">
-        <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_next_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_next.gif',this)" src="<!--{$TPL_DIR}-->img/common/b_next.gif" alt="次へ" class="box150" name="next" id="next" />
+        <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_next_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_next.gif',this)" src="<!--{$TPL_DIR}-->img/button/btn_next.gif" alt="次へ" class="box150" name="next" id="next" />
       </div>
     </form>
   </div>

@@ -20,7 +20,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 <div class="bloc_outer">
-    <h2><img src="<!--{$TPL_DIR}-->img/bloc/cart/title_icon.gif" width="20" height="20" alt="*" class="title_icon" />
+    <h2><img src="<!--{$TPL_DIR}-->img/icon/ico_block_cart.gif" width="20" height="20" alt="*" class="title_icon" />
         現在のカゴの中</h2>
     <div id="cartarea" class="bloc_body">
         <p class="item">商品数：<!--{$arrCartList.0.TotalQuantity|number_format|default:0}-->点</p>
@@ -35,8 +35,8 @@
             <!--{/if}-->
         </p>
         <p class="btn">
-            <a href="<!--{$smarty.const.URL_CART_TOP}-->" onmouseover="chgImg('<!--{$TPL_DIR}-->img/side/button_cartin_on.gif','button_cartin');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/side/button_cartin.gif','button_cartin');">
-                <img src="<!--{$TPL_DIR}-->img/side/button_cartin.gif" width="87" height="22" alt="カゴの中を見る" border="0" name="button_cartin" id="button_cartin" /></a>
+            <a href="<!--{$smarty.const.URL_CART_TOP}-->" onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_block_cartin_on.gif','button_cartin');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_block_cartin.gif','button_cartin');">
+                <img src="<!--{$TPL_DIR}-->img/button/btn_block_cartin.gif" width="87" height="22" alt="カゴの中を見る" border="0" name="button_cartin" id="button_cartin" /></a>
         </p>
     </div>
 </div>

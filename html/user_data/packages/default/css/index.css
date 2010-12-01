@@ -15,7 +15,7 @@
 
 #newsarea dl {
     padding: 10px 0;
-    background: url("../img/common/line_400.gif") no-repeat bottom;
+    background: url("../img/background/line_400.gif") no-repeat bottom;
 }
 
 #newsarea dl.end {
@@ -25,7 +25,7 @@
 
 #newsarea dl dt {
     padding: 0 0 0 20px;
-    background: url("../img/top/news_icon.gif") no-repeat;
+    background: url("../img/icon/ico_news.gif") no-repeat;
 }
 
 
@@ -39,7 +39,7 @@
     width: 100%;
     padding: 10px 0;
     overflow: auto;
-    background: url("../img/common/line_402.gif") no-repeat bottom;
+    background: url("../img/background/line_402.gif") no-repeat bottom;
 }
 
 .recomendleft,

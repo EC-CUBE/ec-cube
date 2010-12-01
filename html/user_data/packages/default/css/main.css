@@ -86,7 +86,7 @@ h2.title {
     border-style: solid;
     border-width: 2px 1px;
     border-color: #999 #ccc;
-    background: url("../img/title/title_icon.gif") no-repeat 7px center;
+    background: url("../img/background/bg_arrow_title_01.gif") no-repeat 7px center;
     padding: 7px 0 7px 30px;
     font-size: 140%;
     color: #000;
@@ -149,7 +149,7 @@ div#completetext p{
 /* ヘッダーロゴ
 ------------------------------------------------ */
 #header {
-    background: url("../img/header/bg.gif");
+    background: url("../img/common/bg_header_info.gif");
     height: 95px;
     margin: 0 auto;
 }
@@ -159,7 +159,7 @@ div#completetext p{
     margin: 8px 0 0 0;
     width: 292px;
     height: 81px;
-    background: url("../img/header/logo.gif") no-repeat;
+    background: url("../img/common/btn_header_logo.gif") no-repeat;
 }
 #header em {
     display: none;
@@ -245,7 +245,7 @@ div#bottomcolumn{
 ul.button_like li {
     margin: 0;
     padding: 0;
-    background: url(../img/common/gradation_v50.gif) top repeat-x;
+    background: url("../img/background/bg_gradation_h50.gif") top repeat-x;
 }
 ul.button_like li a {
     display: block;
@@ -253,7 +253,7 @@ ul.button_like li a {
     text-decoration: none;
     border: 1px solid;
     border-color: #ccc #999 #999 #ccc;
-    background: url("../img/common/button_like_bg.gif") 5px 7px no-repeat;
+    background: url("../img/background/bg_btn.gif") 5px 7px no-repeat;
     outline: none;
     margin: 0;
 }
@@ -288,7 +288,7 @@ ul.button_like li a:active {
     border-style: solid;
     border-color: #F60 #ccc #999 #ccc;
     border-width: 3px 1px 2px;
-    background: url(../img/common/gradation_v50.gif);
+    background: url('../img/background/bg_gradation_h50.gif');
     padding: 5px 0 4px 8px;
     font-size: 14px;
 }
@@ -322,7 +322,7 @@ ul.button_like li a:active {
 
 #cartarea p.item {
     padding: 0 0 10px 0;
-    background: url("../img/side/line_146.gif") no-repeat bottom;
+    background: url("../img/background/line_146.gif") no-repeat bottom;
 }
 
 #cartarea .btn {
@@ -344,10 +344,10 @@ ul.button_like li a:active {
 
 #categoryarea li {
     padding: 0 0 0 20px;
-    background: url("../img/common/arrow_blue.gif") 0 3px no-repeat;
+    background: url("../img/background/bg_arrow_01.gif") 0 3px no-repeat;
 }
 #categoryarea li.onmark {
-    background: url("../img/common/arrow_red.gif") 0 3px no-repeat;
+    background: url("../img/background/bg_arrow_02.gif") 0 3px no-repeat;
 }
 #categoryarea li.level1 {
     font-weight: bold;

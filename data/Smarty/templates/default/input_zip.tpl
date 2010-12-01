@@ -22,7 +22,7 @@
 <!--{include file="`$smarty.const.TEMPLATE_DIR`popup_header.tpl" subtitle="住所検索" disable_wincol=1}-->
 
   <div id="zipsearchcolumn">
-    <h2><img src="<!--{$TPL_DIR}-->img/common/zip_title.jpg" width="460" height="40" alt="住所検索" /></h2>
+    <h2>住所検索</h2>
     <div id="zipsearcharea">
       <form name="form1" id="form1" method="post" action="?">
         <input type="hidden" name="state" value="<!--{$tpl_state}-->" />
@@ -33,7 +33,7 @@
         </div>
       </form>
     </div>
-    <div class="btn"><a href="javascript:window.close()" onmouseover="chgImg('<!--{$TPL_DIR}-->img/common/b_close_on.gif','b_close');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/common/b_close.gif','b_close');"><img src="<!--{$TPL_DIR}-->img/common/b_close.gif" width="140" height="30" alt="閉じる" border="0" name="b_close" /></a></div>
+    <div class="btn"><a href="javascript:window.close()" onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_close_on.gif','b_close');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_close.gif','b_close');"><img src="<!--{$TPL_DIR}-->img/button/btn_close.gif" width="140" height="30" alt="閉じる" border="0" name="b_close" /></a></div>
   </div>
 
 <!--{include file="`$smarty.const.TEMPLATE_DIR`popup_footer.tpl"}-->
