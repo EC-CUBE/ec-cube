@@ -58,8 +58,8 @@
     <tr><td height="20"></td></tr>
     <tr>
         <td align="center">
-        <a href="#" onmouseover="chgImg('../<!--{$default_dir}-->/img/install/back_on.jpg','back')" onmouseout="chgImg('../<!--{$default_dir}-->/img/install/back.jpg','back')" onclick="document.form1['mode'].value='return_step3';document.form1.submit();return false;" /><img  width="105" src="../<!--{$default_dir}-->/img/install/back.jpg"  height="24" alt="前へ戻る" border="0" name="back"></a>
-        <input type="image" onMouseover="chgImgImageSubmit('../<!--{$default_dir}-->/img/install/next_on.jpg',this)" onMouseout="chgImgImageSubmit('../<!--{$default_dir}-->/img/install/next.jpg',this)" src="../<!--{$default_dir}-->/img/install/next.jpg" width="105" height="24" alt="次へ進む" border="0" name="next">
+        <a href="#" onmouseover="chgImg('img/back_on.jpg','back')" onmouseout="chgImg('img/back.jpg','back')" onclick="document.form1['mode'].value='return_step3';document.form1.submit();return false;" /><img  width="105" src="img/back.jpg"  height="24" alt="前へ戻る" border="0" name="back"></a>
+        <input type="image" onMouseover="chgImgImageSubmit('img/next_on.jpg',this)" onMouseout="chgImgImageSubmit('img/next.jpg',this)" src="img/next.jpg" width="105" height="24" alt="次へ進む" border="0" name="next">
         </td>
     </tr>
     <tr><td height="30"></td></tr>

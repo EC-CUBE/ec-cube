@@ -43,16 +43,16 @@
 <!--▼HEADER-->
 <table width="912" border="0" cellspacing="0" cellpadding="0" summary=" ">
     <tr valign="top">
-        <td><img src="../<!--{$default_dir}-->img/header/header_left.jpg" width="17" height="50" alt=""></td>
+        <td><img src="img/header_left.jpg" width="17" height="50" alt=""></td>
         <td>
-        <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" " background="../<!--{$default_dir}-->img/header/header_bg2.jpg">
+        <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" " background="img/header_bg2.jpg">
             <tr valign="top">
                 <td><img src="../<!--{$admin_dir}-->img/header/logo.jpg" width="230" height="50" alt="EC CUBE" border="0"></td>
                 <td width="648" align="right"></td>
             </tr>
         </table>
         </td>
-        <td><img src="../<!--{$default_dir}-->img/header/header_right.jpg" width="17" height="50" alt=""></td>
+        <td><img src="img/header_right.jpg" width="17" height="50" alt=""></td>
     </tr>
 </table>
 <!--▲HEADER-->
@@ -60,7 +60,7 @@
 <!--▼CONTENTS-->
 <table width="912" border="0" cellspacing="0" cellpadding="0" summary=" ">
     <tr valign="top">
-        <td background="../<!--{$default_dir}-->img/common/left_bg.jpg"><img src="../<!--{$default_dir}-->img/common/left.jpg" width="17" height="443" alt=""></td>
+        <td background="img/left_bg.jpg"><img src="img/left.jpg" width="17" height="443" alt=""></td>
         <td>
         <!--★★メインコンテンツ★★-->
         <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -69,10 +69,10 @@
                 <table width="562" border="0" cellspacing="0" cellpadding="0" summary=" ">
                     <tr><td height="40"></td></tr>
                     <tr>
-                        <td colspan="3"><img src="../<!--{$default_dir}-->img/contents/error_top.jpg" width="562" height="14" alt=""></td>
+                        <td colspan="3"><img src="img/error_top.jpg" width="562" height="14" alt=""></td>
                     </tr>
                     <tr>
-                        <td background="../<!--{$default_dir}-->img/contents/main_left.jpg"><img src="../<!--{$default_dir}-->img/common/_.gif" width="14" height="1" alt=""></td>
+                        <td background="img/main_left.jpg"><img src="img/_.gif" width="14" height="1" alt=""></td>
                         <td bgcolor="#cccccc">
                         <!--検索条件設定テーブルここから-->
                         <table width="534" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -84,10 +84,10 @@
                         </table>
                         <!--検索条件設定テーブルここまで-->
                         </td>
-                        <td background="../<!--{$default_dir}-->img/contents/main_right.jpg"><img src="../<!--{$default_dir}-->img/common/_.gif" width="14" height="1" alt=""></td>
+                        <td background="img/main_right.jpg"><img src="img/_.gif" width="14" height="1" alt=""></td>
                     </tr>
                     <tr>
-                        <td colspan="3"><img src="../<!--{$default_dir}-->img/contents/error_bottom.jpg" width="562" height="14" alt=""></td>
+                        <td colspan="3"><img src="img/error_bottom.jpg" width="562" height="14" alt=""></td>
                     </tr>
                     <tr><td height="40"></td></tr>
                 </table>
@@ -96,7 +96,7 @@
         </table>
         <!--★★メインコンテンツ★★-->
         </td>
-        <td background="../<!--{$default_dir}-->img/common/right_bg.jpg"><div align="justify"><img src="../<!--{$default_dir}-->img/common/right.jpg" width="17" height="443" alt=""></div></td>
+        <td background="img/right_bg.jpg"><div align="justify"><img src="img/right.jpg" width="17" height="443" alt=""></div></td>
     </tr>
 </table>
 <!--▲CONTENTS-->
@@ -104,14 +104,14 @@
 <!--▼FOOTER-->
 <table width="912" border="0" cellspacing="0" cellpadding="0" summary=" ">
     <tr valign="top">
-        <td background="../<!--{$default_dir}-->img/common/left_bg.jpg"><img src="../<!--{$default_dir}-->img/common/_.gif" width="17" height="1" alt=""></td>
+        <td background="img/left_bg.jpg"><img src="img/_.gif" width="17" height="1" alt=""></td>
         <td bgcolor="#636469">
         <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
             <tr>
                 <td align="center" bgcolor="#f0f0f0">
                 <table width="840" border="0" cellspacing="0" cellpadding="0" summary=" ">
                     <tr>
-                        <td height="45" align="right"><a href="#top"><img src="../<!--{$default_dir}-->img/admin/common/pagetop.gif" width="105" height="17" alt="GO TO PAGE TOP" border="0"></a></td>
+                        <td height="45" align="right"><a href="#top"><img src="img/pagetop.gif" width="105" height="17" alt="GO TO PAGE TOP" border="0"></a></td>
                     </tr>
                 </table>
                 </td>
@@ -123,10 +123,10 @@
             </tr>
         </table>
         </td>
-        <td background="../<!--{$default_dir}-->img/common/right_bg.jpg"><img src="../<!--{$default_dir}-->img/common/_.gif" width="17" height="1" alt=""></td>
+        <td background="img/right_bg.jpg"><img src="img/_.gif" width="17" height="1" alt=""></td>
     </tr>
     <tr>
-        <td colspan="3"><img src="../<!--{$default_dir}-->img/common/footer.jpg" width="912" height="19" alt=""></td>
+        <td colspan="3"><img src="img/footer.jpg" width="912" height="19" alt=""></td>
     </tr>
     <tr><td height="10"></td></tr>
 </table>
