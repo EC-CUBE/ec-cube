@@ -102,15 +102,15 @@ class LC_Page_Cart extends LC_Page {
         switch($_POST['mode']) {
         case 'up':
             $objCartSess->upQuantity($_POST['cart_no'], $_POST['cartKey']);
-            $this->reload(); // PRG pattern
+            $this->objDisplay->reload(); // PRG pattern
             break;
         case 'down':
             $objCartSess->downQuantity($_POST['cart_no'], $_POST['cartKey']);
-            $this->reload(); // PRG pattern
+            $this->objDisplay->reload(); // PRG pattern
             break;
         case 'delete':
             $objCartSess->delProduct($_POST['cart_no'], $_POST['cartKey']);
-            $this->reload(); // PRG pattern
+            $this->objDisplay->reload(); // PRG pattern
             break;
         case 'confirm':
             // カート内情報の取得
