@@ -53,11 +53,7 @@ class LC_Page_FrontParts_Bloc_Best5 extends LC_Page_FrontParts_Bloc {
      * @return void
      */
     function process() {
-        if (defined("MOBILE_SITE") && MOBILE_SITE) {
-            $objView = new SC_MobileView();
-        } else {
-            $objView = new SC_SiteView(false);
-        }
+        $objView = new SC_SiteView(false);
         $objSiteInfo = $objView->objSiteInfo;
 
         // 基本情報を渡す
