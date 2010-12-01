@@ -46,6 +46,8 @@ class LC_Page_Abouts extends LC_Page {
         $this->tpl_mainpage = 'abouts/index.tpl';
         $this->tpl_page_category = 'abouts';
         $this->tpl_title = '当サイトについて';
+        $masterData = new SC_DB_MasterData_Ex();
+        $this->arrPref = $masterData->getMasterData("mtb_pref", array("pref_id", "pref_name", "rank"));
     }
 
     /**
@@ -68,6 +70,11 @@ class LC_Page_Abouts extends LC_Page {
         // レイアウトデザインを取得
         $layout = new SC_Helper_PageLayout_Ex();
         $layout->sfGetPageLayout($this, false, DEF_LAYOUT);
+
+        $this->objSiteInfo = new SC_SiteInfo();
+        $this->objSiteInfo->data['pref'] =
+            isset($this->arrPref[$this->objSiteInfo->data['pref']])
+            ? $this->arrPref[$this->objSiteInfo->data['pref']] : "";
     }
 
     /**

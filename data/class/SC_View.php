@@ -68,6 +68,7 @@ class SC_View {
         }
 
         // サイト情報を取得する
+        // XXX 要動作確認. 不要の可能性有り
         if($siteinfo) {
             if(!defined('LOAD_SITEINFO')) {
                 $this->objSiteInfo = new SC_SiteInfo();
