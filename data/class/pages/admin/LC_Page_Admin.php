@@ -48,8 +48,8 @@ class LC_Page_Admin extends LC_Page {
         $this->objDisplay = new SC_Display();
 
         // プラグインクラス生成
-        #$this->objPlagin = new SC_Helper_Plugin_Ex();
-        #$this->objPlagin->preProcess($this);
+        // $this->objPlagin = new SC_Helper_Plugin_Ex();
+        // $this->objPlagin->preProcess($this);
     }
 
     /**
@@ -66,10 +66,9 @@ class LC_Page_Admin extends LC_Page {
      * @return void
      */
     function sendResponse() {
-        $this->objDisplay->hoge($this, true);
-        $this->objDisplay->response->response();
+        $this->objDisplay->prepare($this, true);
+        $this->objDisplay->response->write();
     }
-
 
     /**
      * デストラクタ.

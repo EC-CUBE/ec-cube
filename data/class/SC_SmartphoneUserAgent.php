@@ -23,8 +23,9 @@
 require_once(dirname(__FILE__) . '/../module/Net/UserAgent/Mobile.php');
 
 /**
- * スマートフォンの情報を扱うクラス
+ * スマートフォンの情報を扱うクラス.
  *
+ * @auther Yu Nobira
  */
 class SC_SmartphoneUserAgent {
 
@@ -88,6 +89,7 @@ class SC_SmartphoneUserAgent {
             : SPHONE_SITE_URL
         ;
 
+        // XXX サニタイズ必要？
         $url .= (preg_match('|^' . URL_DIR . '(.*)$|', $_SERVER['REQUEST_URI'], $matches))
             ? $matches[1]
             : ''

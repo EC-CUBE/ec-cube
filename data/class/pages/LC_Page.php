@@ -125,8 +125,8 @@ class LC_Page {
         // post-prosess処理(暫定的)
         //$this->objPlugin->process($this);
 
-        $this->objDisplay->hoge($this);
-        $this->objDisplay->response->response();
+        $this->objDisplay->prepare($this);
+        $this->objDisplay->response->write();
     }
 
     /**
@@ -135,14 +135,14 @@ class LC_Page {
      * @return void
      */
     function sendResponseCSV($file_name, $data) {
-        $this->objDisplay->hoge($this);
+        $this->objDisplay->prepare($this);
         $this->objDisplay->addHeader("Content-disposition", "attachment; filename=${file_name}");
         $this->objDisplay->addHeader("Content-type", "application/octet-stream; name=${file_name}");
         $this->objDisplay->addHeader("Cache-Control", "");
         $this->objDisplay->addHeader("Pragma", "");
 
         $this->objDisplay->response->body = $data;
-        $this->objDisplay->response->response();
+        $this->objDisplay->response->write();
         exit;
     }
 

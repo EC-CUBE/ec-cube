@@ -1,5 +1,32 @@
 <?php
-// TODO GPLのあれ
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
+
+/**
+ * Http コンテンツ出力を制御するクラス.
+ *
+ * @author Ryuichi Tokugami
+ * @version $Id$
+ */
 class SC_Display{
 
     var $response;
@@ -8,43 +35,41 @@ class SC_Display{
 
     var $autoSet;
 
-    /**
-     *
-     * @var SC_View
-     */
+    /** SC_View インスタンス */
     var $view;
-        
+
     var $deviceSeted = false;
-    
-    // TODO php4を捨てたときに ここのコメントアウトを外してね。
+
     /*
-    * const('MOBILE',1);
-    * const('SMARTPHONE',2);
-    * const('PC',4);
-    * const('ADMIN',8);
-    */
-    function SC_Display($setPrevURL=true,$autoGenerateHttpHeaders = true){
-        require_once(CLASS_EX_PATH."/SC_Response_Ex.php");
+     * TODO php4を捨てたときに ここのコメントアウトを外してね。
+     * const('MOBILE',1);
+     * const('SMARTPHONE',2);
+     * const('PC',4);
+     * const('ADMIN',8);
+     */
+
+    function SC_Display($hasPrevURL = true, $autoGenerateHttpHeaders = true) {
+        require_once(CLASS_EX_PATH . "SC_Response_Ex.php");
         $this->response = new SC_Response_Ex();
         $this->autoSet = $autoGenerateHttpHeaders;
-        if ($setPrevURL) {
+        if ($hasPrevURL) {
             $this->setPrevURL();
         }
     }
-    
+
     function setPrevURL(){
+        // TODO SC_SiteSession で実装した方が良さげ
         $objCartSess = new SC_CartSession();
         $objCartSess->setPrevURL($_SERVER['REQUEST_URI']);
-
     }
 
-
-    // TODO このメソッドは、レスポンスを返すためのメソッドです。名前を絶対に変えましょう。
     /**
-    *
-    * @param $page LC_Page
-    */
-    function hoge($page, $is_admin = false){
+     * LC_Page のパラメータを, テンプレートに設定し, 出力の準備を行う.
+     *
+     * @param LC_Page $page LC_Page インスタンス
+     * @param $is_admin boolean 管理画面を扱う場合 true
+     */
+    function prepare($page, $is_admin = false){
         if(!$this->deviceSeted || !is_null($this->view)){
             $device = ($is_admin) ? 8 : $this->detectDevice();
             $this->setDevice($device);
@@ -52,19 +77,32 @@ class SC_Display{
         $this->assignobj($page);
         $this->response->setResposeBody($this->view->getResponse($page->getTemplate()));
     }
-    
+
+    /**
+     * リダイレクトを行う.
+     *
+     * SC_Response::sendRedirect() のラッパーです.
+     */
     function redirect($location){
         $this->response->sendRedirect($location);
     }
-    
+
+    /**
+     * リロードを行う.
+     *
+     * SC_Response::reload() のラッパーです.
+     */
     function reload($queryString = array(), $removeQueryString = false){
         $this->response->reload($queryString, $removeQueryString);
     }
-    
-    function noAction(){    
+
+    function noAction(){
         return;
     }
-    
+
+    /**
+     * ヘッダを追加する.
+     */
     function addHeader($name, $value){
         $this->response->addHeader($name, $value);
     }
@@ -74,7 +112,7 @@ class SC_Display{
      * Enter description here ...
      */
     function setDevice($device=4){
-        
+
         switch ($device){
             case 1:
                 $this->response->setContentType("text/html");
@@ -91,9 +129,11 @@ class SC_Display{
         }
         $this->deviceSeted = true;
     }
-    
+
+    /**
+     * SC_View インスタンスを設定する.
+     */
     function setView($view){
-        
         $this->view = $view;
     }
 
@@ -134,6 +174,4 @@ class SC_Display{
     function assignarray($array){
         $this->view->assignarray($array);
     }
-
-
 }
