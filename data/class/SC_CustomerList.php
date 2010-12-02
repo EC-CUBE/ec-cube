@@ -32,7 +32,6 @@ class SC_CustomerList extends SC_SelectSql {
         parent::SC_SelectSql($array);
 
         $masterData = new SC_DB_MasterData_Ex();
-        $arrMobileDomain = $masterData->getMasterData("mtb_mobile_domain");
 
         $objDb = new SC_Helper_DB_Ex();
         $dbFactory = SC_DB_DBFactory::getInstance();
