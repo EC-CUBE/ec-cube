@@ -47,9 +47,11 @@ class LC_Page_Admin_Contents extends LC_Page_Admin {
         $this->tpl_subnavi = 'contents/subnavi.tpl';
         $this->tpl_subno = "index";
         $this->tpl_mainno = 'contents';
-        $this->selected_year = date("Y");
-        $this->selected_month = date("n");
-        $this->selected_day = date("j");
+        $this->arrForm = array(
+            'year' => date('Y'),
+            'month' => date('n'),
+            'day' => date('j'),
+        );
         $this->tpl_subtitle = '新着情報管理';
     }
 
