@@ -562,6 +562,11 @@ INSERT INTO mtb_disp (id, name, rank) VALUES (2, '非公開', 1);
 INSERT INTO mtb_product_type (id, name, rank) VALUES (1, '通常商品', 0);
 INSERT INTO mtb_product_type (id, name, rank) VALUES (2, 'ダウンロード商品', 1);
 
+INSERT INTO mtb_device_type (id, name, rank) VALUES (1, 'モバイル', 0);
+INSERT INTO mtb_device_type (id, name, rank) VALUES (2, 'スマートフォン', 1);
+INSERT INTO mtb_device_type (id, name, rank) VALUES (10, 'PC', 2);
+INSERT INTO mtb_device_type (id, name, rank) VALUES (99, '管理画面', 3);
+
 INSERT INTO mtb_job (id, name, rank) VALUES (1, '公務員', 0);
 INSERT INTO mtb_job (id, name, rank) VALUES (2, 'コンサルタント', 1);
 INSERT INTO mtb_job (id, name, rank) VALUES (3, 'コンピュータ関連技術職', 2);
@@ -1115,10 +1120,14 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ORDER_DELIV', '5', 
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ORDER_PENDING', '7', 806, '決済処理中');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PRODUCT_TYPE_NORMAL', '1', 900, '通常商品');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PRODUCT_TYPE_DOWNLOAD', '2', 901, 'ダウンロード商品');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SQL_QUERY_LOG_MODE', '1', 902, 'SQLログを取得するフラグ(1:表示, 0:非表示)');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SQL_QUERY_LOG_MIN_EXEC_TIME', '2', 903, 'SQLログを取得する時間設定(設定値以上かかった場合に取得)');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PAGE_DISPLAY_TIME_LOG_MODE', '1', 904, 'ページ表示時間のログを取得するフラグ(1:表示, 0:非表示)');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PAGE_DISPLAY_TIME_LOG_MIN_EXEC_TIME', '2', 905, 'ページ表示時間のログを取得する時間設定(設定値以上かかった場合に取得)');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SQL_QUERY_LOG_MODE', '1', 1000, 'SQLログを取得するフラグ(1:表示, 0:非表示)');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SQL_QUERY_LOG_MIN_EXEC_TIME', '2', 1001, 'SQLログを取得する時間設定(設定値以上かかった場合に取得)');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PAGE_DISPLAY_TIME_LOG_MODE', '1', 1002, 'ページ表示時間のログを取得するフラグ(1:表示, 0:非表示)');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PAGE_DISPLAY_TIME_LOG_MIN_EXEC_TIME', '2', 1003, 'ページ表示時間のログを取得する時間設定(設定値以上かかった場合に取得)');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DEVICE_TYPE_MOBILE', '1', 1100, '端末種別: モバイル');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DEVICE_TYPE_SMARTPHONE', '2', 1101, '端末種別: スマートフォン');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DEVICE_TYPE_PC', '10', 1102, '端末種別: PC');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DEVICE_TYPE_ADMIN', '99', 1103, '端末種別: 管理画面');
 
 INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_customer', 'email_mobile', 0, '会員数増加時のログイン処理速度を向上させたいときに試してみてください');
 INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_products', 'name', 2, '商品名検索速度を向上させたいときに試してみてください');

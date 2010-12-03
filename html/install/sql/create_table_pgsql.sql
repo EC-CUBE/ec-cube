@@ -624,17 +624,12 @@ CREATE TABLE dtb_order (
     note text,
     status smallint,
     create_date timestamp NOT NULL DEFAULT now(),
-    loan_result text,
-    credit_result text,
-    credit_msg text,
     update_date timestamp,
     commit_date timestamp,
+    payment_date timestamp,
+    device_type_id int,
     del_flg smallint NOT NULL DEFAULT 0,
     deliv_date text,
-    conveni_data text,
-    cell01 text,
-    cell02 text,
-    cell03 text,
     memo01 text,
     memo02 text,
     memo03 text,
@@ -645,7 +640,6 @@ CREATE TABLE dtb_order (
     memo08 text,
     memo09 text,
     memo10 text,
-    payment_date timestamp,
     PRIMARY KEY (order_id)
 );
 
@@ -708,17 +702,11 @@ CREATE TABLE dtb_order_temp (
     status smallint,
     deliv_check smallint,
     point_check smallint,
-    loan_result text,
-    credit_result text,
-    credit_msg text,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp,
+    device_type_id int,
     del_flg smallint NOT NULL DEFAULT 0,
     deliv_date text,
-    conveni_data text,
-    cell01 text,
-    cell02 text,
-    cell03 text,
     order_id int,
     memo01 text,
     memo02 text,
@@ -1171,7 +1159,12 @@ CREATE TABLE mtb_product_type (
     PRIMARY KEY (id)
 );
 
-
+CREATE TABLE mtb_device_type (
+    id int2,
+    name text,
+    rank int2 NOT NULL,
+    PRIMARY KEY (id)
+);
 
 CREATE TABLE dtb_mobile_ext_session_id (
     session_id text NOT NULL,

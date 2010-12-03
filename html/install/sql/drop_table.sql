@@ -89,6 +89,7 @@ DROP TABLE dtb_maker_count;
 DROP TABLE dtb_holiday;
 DROP TABLE dtb_customer_favorite_products;
 DROP TABLE mtb_product_type;
+DROP TABLE mtb_device_type;
 DROP TABLE dtb_module;
 DROP TABLE dtb_session;
 DROP TABLE dtb_mobile_ext_session_id;

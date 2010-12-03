@@ -44,8 +44,8 @@ class SC_Display{
      * TODO php4を捨てたときに ここのコメントアウトを外してね。
      * const('MOBILE',1);
      * const('SMARTPHONE',2);
-     * const('PC',4);
-     * const('ADMIN',8);
+     * const('PC',10);
+     * const('ADMIN',99);
      */
 
     function SC_Display($hasPrevURL = true, $autoGenerateHttpHeaders = true) {
@@ -71,7 +71,7 @@ class SC_Display{
      */
     function prepare($page, $is_admin = false){
         if(!$this->deviceSeted || !is_null($this->view)){
-            $device = ($is_admin) ? 8 : $this->detectDevice();
+            $device = ($is_admin) ? DEVICE_TYPE_ADMIN : $this->detectDevice();
             $this->setDevice($device);
         }
         $this->assignobj($page);
@@ -111,20 +111,20 @@ class SC_Display{
      * デバイス毎の出力方法を自動で変更する、ファサード
      * Enter description here ...
      */
-    function setDevice($device=4){
+    function setDevice($device = DEVICE_TYPE_PC){
 
         switch ($device){
-            case 1:
+            case DEVICE_TYPE_MOBILE:
                 $this->response->setContentType("text/html");
                 $this->setView(new SC_MobileView());
                 break;
-            case 2:
+            case DEVICE_TYPE_SMARTPHONE:
                 $this->setView(new SC_SmartphoneView());
                 break;
-            case 4:
+            case DEVICE_TYPE_PC:
                 $this->setView(new SC_SiteView());
                 break;
-            case 8:
+            case DEVICE_TYPE_ADMIN:
                 $this->setView(new SC_AdminView());
         }
         $this->deviceSeted = true;
@@ -141,7 +141,7 @@ class SC_Display{
      * 機種を判別する。
      * SC_Display::MOBILE = ガラケー = 1
      * SC_Display::SMARTPHONE = スマホ = 2
-     * SC_Display::PC = PC = 4
+     * SC_Display::PC = PC = 10
      * ※PHP4の為にconstは使っていません。 1がガラケーで、2がスマホで4がPCです。
      * @return
      */
@@ -150,11 +150,11 @@ class SC_Display{
         $su = new SC_SmartphoneUserAgent();
         $retDevice = 0;
         if($nu->isMobile()){
-            $retDevice = 1;
+            $retDevice = DEVICE_TYPE_MOBILE;
         }elseif ($su->isSmartphone()){
-            $retDevice = 2;
+            $retDevice = DEVICE_TYPE_SMARTPHONE;
         }else{
-            $retDevice = 4;
+            $retDevice = DEVICE_TYPE_PC;
         }
 
         if($this->autoSet){

@@ -622,17 +622,12 @@ CREATE TABLE dtb_order (
     note text,
     status smallint,
     create_date datetime NOT NULL,
-    loan_result text,
-    credit_result text,
-    credit_msg text,
     update_date datetime,
     commit_date datetime,
+    payment_date datetime,
+    device_type_id int,
     del_flg smallint NOT NULL DEFAULT 0,
     deliv_date text,
-    conveni_data text,
-    cell01 text,
-    cell02 text,
-    cell03 text,
     memo01 text,
     memo02 text,
     memo03 text,
@@ -643,7 +638,6 @@ CREATE TABLE dtb_order (
     memo08 text,
     memo09 text,
     memo10 text,
-    payment_date timestamp,
     PRIMARY KEY (order_id)
 ) TYPE=InnoDB;
 
@@ -706,17 +700,11 @@ CREATE TABLE dtb_order_temp (
     status smallint,
     deliv_check smallint,
     point_check smallint,
-    loan_result text,
-    credit_result text,
-    credit_msg text,
     create_date datetime NOT NULL,
     update_date datetime,
+    device_type_id int,
     del_flg smallint NOT NULL DEFAULT 0,
     deliv_date text,
-    conveni_data text,
-    cell01 text,
-    cell02 text,
-    cell03 text,
     order_id int,
     memo01 text,
     memo02 text,
@@ -1166,6 +1154,13 @@ CREATE TABLE mtb_constants (
 ) TYPE=InnoDB;
 
 CREATE TABLE mtb_product_type (
+    id int2,
+    name text,
+    rank int2 NOT NULL,
+    PRIMARY KEY (id)
+) TYPE=InnoDB;
+
+CREATE TABLE mtb_device_type (
     id int2,
     name text,
     rank int2 NOT NULL,

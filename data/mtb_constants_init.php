@@ -602,4 +602,12 @@ define('ONLINE_PAYMENT', "1");
 define('PRODUCT_TYPE_NORMAL', 1);
 /** ダウンロード商品 */
 define('PRODUCT_TYPE_DOWNLOAD', 2);
+/** 端末種別: モバイル */
+define('DEVICE_TYPE_MOBILE', 1);
+/** 端末種別: スマートフォン */
+define('DEVICE_TYPE_SMARTPHONE', 2);
+/** 端末種別: PC */
+define('DEVICE_TYPE_PC', 10);
+/** 端末種別: 管理画面 */
+define('DEVICE_TYPE_ADMIN', 99);
 ?>
