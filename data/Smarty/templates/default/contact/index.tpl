@@ -42,11 +42,11 @@
                          name="name01"
                          value="<!--{$arrForm.name01|default:$arrData.name01|escape}-->"
                          maxlength="<!--{$smarty.const.STEXT_LEN}-->"
-                         style="<!--{$arrErr.name01|sfGetErrorColor}-->" />　
+                         style="<!--{$arrErr.name01|sfGetErrorColor}-->; ime-mode: active;" />　
           名&nbsp;<input type="text" class="box120" name="name02"
                          value="<!--{$arrForm.name02|default:$arrData.name02|escape}-->"
                          maxlength="<!--{$smarty.const.STEXT_LEN}-->"
-                         style="<!--{$arrErr.name02|sfGetErrorColor}-->" />
+                         style="<!--{$arrErr.name02|sfGetErrorColor}-->; ime-mode: active;" />
         </td>
       </tr>
       <tr>
@@ -58,13 +58,13 @@
                            name="kana01"
                            value="<!--{$arrForm.kana01|default:$arrData.kana01|escape}-->"
                            maxlength="<!--{$smarty.const.STEXT_LEN}-->"
-                           style="<!--{$arrErr.kana01|sfGetErrorColor}-->" />　
+                           style="<!--{$arrErr.kana01|sfGetErrorColor}-->; ime-mode: active;" />　
           メイ&nbsp;<input type="text"
                            class="box120"
                            name="kana02"
                            value="<!--{$arrForm.kana02|default:$arrData.kana02|escape}-->"
                            maxlength="<!--{$smarty.const.STEXT_LEN}-->"
-                           style="<!--{$arrErr.kana02|sfGetErrorColor}-->" />
+                           style="<!--{$arrErr.kana02|sfGetErrorColor}-->; ime-mode: active;" />
         </td>
       </tr>
       <tr>
@@ -78,13 +78,13 @@
                    class="box60"
                    value="<!--{$arrForm.zip01|default:$arrData.zip01|escape}-->"
                    maxlength="<!--{$smarty.const.ZIP01_LEN}-->"
-                   style="<!--{$arrErr.zip01|sfGetErrorColor}-->" />&nbsp;-&nbsp;
+                   style="<!--{$arrErr.zip01|sfGetErrorColor}-->; ime-mode: disabled;" />&nbsp;-&nbsp;
             <input type="text"
                    name="zip02"
                    class="box60"
                    value="<!--{$arrForm.zip02|default:$arrData.zip02|escape}-->"
                    maxlength="<!--{$smarty.const.ZIP02_LEN}-->"
-                   style="<!--{$arrErr.zip02|sfGetErrorColor}-->" />　
+                   style="<!--{$arrErr.zip02|sfGetErrorColor}-->; ime-mode: disabled;" />　
             <a href="http://search.post.japanpost.jp/zipcode/" target="_blank"><span class="fs12">郵便番号検索</span></a>
           </p>
           <p class="zipimg">
@@ -109,7 +109,7 @@
                    class="box380"
                    name="addr01"
                    value="<!--{$arrForm.addr01|default:$arrData.addr01|escape}-->"
-                   style="<!--{$arrErr.addr01|sfGetErrorColor}-->" /><br />
+                   style="<!--{$arrErr.addr01|sfGetErrorColor}-->; ime-mode: active;" /><br />
             <!--{$smarty.const.SAMPLE_ADDRESS1}-->
           </p>
           
@@ -118,7 +118,7 @@
                    class="box380"
                    name="addr02"
                    value="<!--{$arrForm.addr02|default:$arrData.addr02|escape}-->"
-                   style="<!--{$arrErr.addr02|sfGetErrorColor}-->" /><br />
+                   style="<!--{$arrErr.addr02|sfGetErrorColor}-->; ime-mode: active;" /><br />
             <!--{$smarty.const.SAMPLE_ADDRESS2}-->
           </p>
           
@@ -134,19 +134,19 @@
                  name="tel01"
                  value="<!--{$arrForm.tel01|default:$arrData.tel01|escape}-->"
                  maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->"
-                 style="<!--{$arrErr.tel01|sfGetErrorColor}-->" />&nbsp;-&nbsp;
+                 style="<!--{$arrErr.tel01|sfGetErrorColor}-->; ime-mode: disabled;" />&nbsp;-&nbsp;
           <input type="text" 
                  class="box60"
                  name="tel02"
                  value="<!--{$arrForm.tel02|default:$arrData.tel02|escape}-->"
                  maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->"
-                 style="<!--{$arrErr.tel02|sfGetErrorColor}-->" />&nbsp;-&nbsp;
+                 style="<!--{$arrErr.tel02|sfGetErrorColor}-->; ime-mode: disabled;" />&nbsp;-&nbsp;
           <input type="text" 
                  class="box60"
                  name="tel03"
                  value="<!--{$arrForm.tel03|default:$arrData.tel03|escape}-->"
                  maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->"
-                 style="<!--{$arrErr.tel03|sfGetErrorColor}-->" />
+                 style="<!--{$arrErr.tel03|sfGetErrorColor}-->; ime-mode: disabled;" />
         </td>
       </tr>
       <tr>
@@ -158,7 +158,7 @@
                  name="email"
                  value="<!--{$arrForm.email|default:$arrData.email|escape}-->"
                  maxlength="<!--{$smarty.const.MTEXT_LEN}-->"
-                 style="<!--{$arrErr.email|sfGetErrorColor}-->" /><br />
+                 style="<!--{$arrErr.email|sfGetErrorColor}-->; ime-mode: disabled;" /><br />
           <!--{* ログインしていれば入力済みにする *}-->
           <!--{if $smarty.server.REQUEST_METHOD != 'POST' && $smarty.session.customer}-->
           <!--{assign var=email02 value=$arrData.email}-->
@@ -168,7 +168,7 @@
                  name="email02"
                  value="<!--{$arrForm.email02|escape}-->"
                  maxlength="<!--{$smarty.const.MTEXT_LEN}-->"
-                 style="<!--{$arrErr.email02|sfGetErrorColor}-->" /><br />
+                 style="<!--{$arrErr.email02|sfGetErrorColor}-->; ime-mode: disabled;" /><br />
           <p class="mini"><em>確認のため2度入力してください。</em></p>
         </td>
       </tr>        
@@ -181,7 +181,7 @@
                     class="area380"
                     cols="60"
                     rows="20"
-                    style="<!--{$arrErr.contents|sfGetErrorColor}-->"><!--{$arrForm.contents|escape}--></textarea>
+                    style="<!--{$arrErr.contents|sfGetErrorColor}-->; ime-mode: active;"><!--{$arrForm.contents|escape}--></textarea>
         </td>
       </tr>
     </table>
