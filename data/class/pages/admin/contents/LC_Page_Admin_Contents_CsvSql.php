@@ -149,7 +149,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin {
                 $i = 0;
                 $header = "";
                 foreach($arrKey as $data) {
-                    if ($i != 0) $header .= ", ";
+                    if ($i != 0) $header .= ",";
                     $header .= $data;
                     $i ++;
                 }
