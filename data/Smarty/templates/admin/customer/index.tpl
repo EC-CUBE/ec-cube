@@ -72,7 +72,7 @@
 
 
 <div id="customer" class="contents-main">
-<form name="form_search" id="form_search" method="post" action="?">
+<form name="search_form" id="search_form" method="post" action="?">
 <input type="hidden" name="mode" value="search" />
   <h2>検索条件設定</h2>
 

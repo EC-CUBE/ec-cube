@@ -25,8 +25,8 @@
 <!--
 
     function fnReturn() {
-        document.form_search.action = './<!--{$smarty.const.DIR_INDEX_URL}-->';
-        document.form_search.submit();
+        document.search_form.action = './<!--{$smarty.const.DIR_INDEX_URL}-->';
+        document.search_form.submit();
         return false;
     }
 
@@ -41,7 +41,7 @@
 //-->
 </script>
 
-<form name="form_search" method="post" action="">
+<form name="search_form" method="post" action="">
     <input type="hidden" name="mode" value="search" />
     <!--{foreach from=$arrSearchData key="key" item="item"}-->
         <!--{if $key ne "customer_id" && $key ne "mode" && $key ne "del_mode" && $key ne "edit_customer_id" && $key ne "del_customer_id" && $key ne "csv_mode" && $key ne "job" && $key ne "sex"}--><input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->"><!--{/if}-->
