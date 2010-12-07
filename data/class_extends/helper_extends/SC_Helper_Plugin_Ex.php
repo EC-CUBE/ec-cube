@@ -34,15 +34,5 @@ require_once(CLASS_PATH . "helper/SC_Helper_Plugin.php");
  * @version $Id: $
  */
 class SC_Helper_Plugin_Ex extends SC_Helper_Plugin {
-
-    // }}}
-    // {{{ constructors
-
-    /**
-     * デフォルトコンストラクタ.
-     */
-    function SC_Helper_Plugin_Ex() {
-        parent::SC_Helper_Plugin();
-    }
 }
 ?>

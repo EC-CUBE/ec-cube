@@ -784,6 +784,7 @@ CREATE TABLE dtb_bat_relate_products (
 );
 
 CREATE TABLE dtb_pagelayout (
+    device_type_id int NOT NULL,
     page_id int NOT NULL,
     page_name text,
     url text NOT NULL,
@@ -799,10 +800,11 @@ CREATE TABLE dtb_pagelayout (
     update_url text,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp NOT NULL DEFAULT now(),
-    PRIMARY KEY (page_id)
+    PRIMARY KEY (device_type_id, page_id)
 );
 
 CREATE TABLE dtb_bloc (
+    device_type_id int NOT NULL,
     bloc_id int NOT NULL,
     bloc_name text,
     tpl_path text,
@@ -811,16 +813,18 @@ CREATE TABLE dtb_bloc (
     update_date timestamp NOT NULL DEFAULT now(),
     php_path text,
     del_flg smallint NOT NULL DEFAULT 0,
-    PRIMARY KEY (bloc_id)
+    PRIMARY KEY (device_type_id, bloc_id)
 );
 
 CREATE TABLE dtb_blocposition (
+    device_type_id int NOT NULL,
     page_id int NOT NULL,
     target_id int,
     bloc_id int,
     bloc_row int,
     filename text,
-    anywhere smallint DEFAULT 0 NOT NULL
+    anywhere smallint DEFAULT 0 NOT NULL,
+    PRIMARY KEY (device_type_id, page_id, target_id, bloc_id)
 );
 
 CREATE TABLE dtb_csv (

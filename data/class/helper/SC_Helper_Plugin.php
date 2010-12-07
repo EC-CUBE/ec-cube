@@ -6,7 +6,7 @@ class SC_Helper_Plugin{
      * enableかどうかを判別する
      * インスタンス化
      */
-    public static function load(LC_Page &$lcpage){
+    function load(LC_Page &$lcpage){
         //データベースからクラス名を読み込む
         $objQuery = new SC_Query();
         $col = "*";
@@ -33,7 +33,7 @@ class SC_Helper_Plugin{
         return $arrPluginList;
     }
 
-    public static function preProcess(LC_Page &$lcpage){
+    function preProcess(LC_Page &$lcpage){
         //プラグインの名前を判別してページ内で有効なプラグインがあれば実行する
         $arrPluginList = SC_Helper_Plugin::load($lcpage);
        if(count($arrPluginList) > 0){
@@ -48,7 +48,7 @@ class SC_Helper_Plugin{
     /* 読み込んだプラグインの実行用メソッド
      *
      */
-    public static function process(LC_Page &$lcpage){
+    function process(LC_Page &$lcpage){
         //プラグインの名前を判別してページ内で有効なプラグインがあれば実行する
         $arrPluginList = SC_Helper_Plugin::load($lcpage);
         if(count($arrPluginList) > 0){
@@ -63,7 +63,7 @@ class SC_Helper_Plugin{
     /**
      * 稼働中のプラグインを取得する。
      */
-    public static function getEnablePlugin(){
+    function getEnablePlugin(){
         $objQuery = new SC_Query();
         $col = '*';
         $table = 'dtb_plugin';
@@ -75,7 +75,7 @@ class SC_Helper_Plugin{
     /**
      * インストールされているプラグインを取得する。
      */
-    public static function getAllPlugin(){
+    function getAllPlugin(){
         $objQuery = new SC_Query();
         $col = '*';
         $table = 'dtb_plugin';
@@ -84,16 +84,13 @@ class SC_Helper_Plugin{
         return $arrRet;
     }
 
-
-    public static function getFilesystemPlugins(){
+    function getFilesystemPlugins(){
         $plugin_dir = DATA_PATH."/plugin/";
         if($dh = opendir($plugin_dir)){
             while(($file = readdir($dh) !== false)){
                 if(is_dir($plugin_dir."/".$file)){
-                     
                 }
             }
         }
     }
 }
-

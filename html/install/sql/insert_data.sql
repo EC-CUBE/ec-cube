@@ -1,25 +1,25 @@
-INSERT INTO dtb_bloc (bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, del_flg) VALUES (1, 'カテゴリ', 'bloc/category.tpl', 'category', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/category.php', 1);
-INSERT INTO dtb_bloc (bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, del_flg) VALUES (2, '利用ガイド', 'bloc/guide.tpl', 'guide', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, 1);
-INSERT INTO dtb_bloc (bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, del_flg) VALUES (3, 'かごの中', 'bloc/cart.tpl', 'cart', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/cart.php', 1);
-INSERT INTO dtb_bloc (bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, del_flg) VALUES (4, '商品検索', 'bloc/search_products.tpl', 'search_products', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/search_products.php', 1);
-INSERT INTO dtb_bloc (bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, del_flg) VALUES (5, '新着情報', 'bloc/news.tpl', 'news', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/news.php', 1);
-INSERT INTO dtb_bloc (bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, del_flg) VALUES (6, 'ログイン', 'bloc/login.tpl', 'login', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/login.php', 1);
-INSERT INTO dtb_bloc (bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, del_flg) VALUES (7, 'おすすめ商品', 'bloc/best5.tpl', 'best5', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/best5.php', 1);
-INSERT INTO dtb_bloc (bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, del_flg) VALUES (8, 'カレンダー', 'bloc/calendar.tpl', 'calendar', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/calendar.php', 1);
+INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, del_flg) VALUES (10, 1, 'カテゴリ', 'bloc/category.tpl', 'category', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/category.php', 1);
+INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, del_flg) VALUES (10, 2, '利用ガイド', 'bloc/guide.tpl', 'guide', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, 1);
+INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, del_flg) VALUES (10, 3, 'かごの中', 'bloc/cart.tpl', 'cart', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/cart.php', 1);
+INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, del_flg) VALUES (10, 4, '商品検索', 'bloc/search_products.tpl', 'search_products', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/search_products.php', 1);
+INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, del_flg) VALUES (10, 5, '新着情報', 'bloc/news.tpl', 'news', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/news.php', 1);
+INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, del_flg) VALUES (10, 6, 'ログイン', 'bloc/login.tpl', 'login', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/login.php', 1);
+INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, del_flg) VALUES (10, 7, 'おすすめ商品', 'bloc/best5.tpl', 'best5', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/best5.php', 1);
+INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, del_flg) VALUES (10, 8, 'カレンダー', 'bloc/calendar.tpl', 'calendar', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/calendar.php', 1);
 
-INSERT INTO dtb_blocposition (page_id, target_id, bloc_id, bloc_row, filename, anywhere) VALUES (1, 1, 1, 2, 'category', 0);
-INSERT INTO dtb_blocposition (page_id, target_id, bloc_id, bloc_row, filename, anywhere) VALUES (1, 1, 2, 3, 'guide', 0);
-INSERT INTO dtb_blocposition (page_id, target_id, bloc_id, bloc_row, filename, anywhere) VALUES (1, 1, 3, 1, 'cart', 0);
-INSERT INTO dtb_blocposition (page_id, target_id, bloc_id, bloc_row, filename, anywhere) VALUES (1, 3, 4, 2, 'search_products', 0);
-INSERT INTO dtb_blocposition (page_id, target_id, bloc_id, bloc_row, filename, anywhere) VALUES (1, 4, 5, 1, 'news', 0);
-INSERT INTO dtb_blocposition (page_id, target_id, bloc_id, bloc_row, filename, anywhere) VALUES (1, 3, 6, 1, 'login', 0);
-INSERT INTO dtb_blocposition (page_id, target_id, bloc_id, bloc_row, filename, anywhere) VALUES (1, 4, 7, 2, 'best5', 0);
-INSERT INTO dtb_blocposition (page_id, target_id, bloc_id, bloc_row, filename, anywhere) VALUES (2, 1, 1, 2, 'category', 0);
-INSERT INTO dtb_blocposition (page_id, target_id, bloc_id, bloc_row, filename, anywhere) VALUES (2, 1, 2, 3, 'guide', 0);
-INSERT INTO dtb_blocposition (page_id, target_id, bloc_id, bloc_row, filename, anywhere) VALUES (2, 1, 3, 1, 'cart', 0);
-INSERT INTO dtb_blocposition (page_id, target_id, bloc_id, bloc_row, filename, anywhere) VALUES (3, 1, 1, 2, 'category', 0);
-INSERT INTO dtb_blocposition (page_id, target_id, bloc_id, bloc_row, filename, anywhere) VALUES (3, 1, 2, 3, 'guide', 0);
-INSERT INTO dtb_blocposition (page_id, target_id, bloc_id, bloc_row, filename, anywhere) VALUES (3, 1, 3, 1, 'cart', 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, filename, anywhere) VALUES (10, 1, 1, 1, 2, 'category', 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, filename, anywhere) VALUES (10, 1, 1, 2, 3, 'guide', 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, filename, anywhere) VALUES (10, 1, 1, 3, 1, 'cart', 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, filename, anywhere) VALUES (10, 1, 3, 4, 2, 'search_products', 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, filename, anywhere) VALUES (10, 1, 4, 5, 1, 'news', 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, filename, anywhere) VALUES (10, 1, 3, 6, 1, 'login', 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, filename, anywhere) VALUES (10, 1, 4, 7, 2, 'best5', 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, filename, anywhere) VALUES (10, 2, 1, 1, 2, 'category', 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, filename, anywhere) VALUES (10, 2, 1, 2, 3, 'guide', 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, filename, anywhere) VALUES (10, 2, 1, 3, 1, 'cart', 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, filename, anywhere) VALUES (10, 3, 1, 1, 2, 'category', 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, filename, anywhere) VALUES (10, 3, 1, 2, 3, 'guide', 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, filename, anywhere) VALUES (10, 3, 1, 3, 1, 'cart', 0);
 
 INSERT INTO dtb_category (category_id, category_name, parent_category_id, level, rank, creator_id, create_date, update_date, del_flg) VALUES (1, '食品', 0, 1, 4, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
 INSERT INTO dtb_category (category_id, category_name, parent_category_id, level, rank, creator_id, create_date, update_date, del_flg) VALUES (2, '雑貨', 0, 1, 5, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
@@ -373,11 +373,11 @@ INSERT INTO dtb_module (module_id, module_code, module_name, sub_data, auto_upda
 
 INSERT INTO dtb_news (news_id, news_date, rank, news_title, news_comment, news_url, news_select, link_method, creator_id, create_date, update_date, del_flg) VALUES (1, '2010-08-19 00:00:00', 1, 'サイトオープンいたしました!', '一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！', NULL, 0, NULL, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
 
-INSERT INTO dtb_pagelayout (page_id, page_name, url, php_dir, tpl_dir, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date) VALUES (1, 'TOPページ', 'index.php', ' ', 'user_data/templates/', 'top', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_pagelayout (page_id, page_name, url, php_dir, tpl_dir, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date) VALUES (2, '商品一覧ページ', 'products/list.php', ' ', 'user_data/templates/', 'list', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_pagelayout (page_id, page_name, url, php_dir, tpl_dir, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date) VALUES (3, '商品詳細ページ', 'products/detail.php', ' ', 'user_data/templates/', 'detail', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_pagelayout (page_id, page_name, url, php_dir, tpl_dir, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date) VALUES (4, 'MYページ', 'mypage/index.php', ' ', NULL, NULL, 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_pagelayout (page_id, page_name, url, php_dir, tpl_dir, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date) VALUES (0, 'プレビューデータ', 'preview', NULL, NULL, NULL, 1, 1, 1, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, php_dir, tpl_dir, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date) VALUES (10, 1, 'TOPページ', 'index.php', ' ', 'user_data/templates/', 'top', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, php_dir, tpl_dir, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date) VALUES (10, 2, '商品一覧ページ', 'products/list.php', ' ', 'user_data/templates/', 'list', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, php_dir, tpl_dir, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date) VALUES (10, 3, '商品詳細ページ', 'products/detail.php', ' ', 'user_data/templates/', 'detail', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, php_dir, tpl_dir, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date) VALUES (10, 4, 'MYページ', 'mypage/index.php', ' ', NULL, NULL, 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, php_dir, tpl_dir, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date) VALUES (10, 0, 'プレビューデータ', 'preview', NULL, NULL, NULL, 1, 1, 1, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 INSERT INTO dtb_payment (payment_id, payment_method, charge, rule, rank, note, fix, status, del_flg, creator_id, create_date, update_date, payment_image, upper_rule, charge_flg, rule_min, upper_rule_max, module_id, module_path, memo01, memo02, memo03, memo04, memo05, memo06, memo07, memo08, memo09, memo10) VALUES (1, 'クレジット', 0, NULL, 5, NULL, 2, 1, 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO dtb_payment (payment_id, payment_method, charge, rule, rank, note, fix, status, del_flg, creator_id, create_date, update_date, payment_image, upper_rule, charge_flg, rule_min, upper_rule_max, module_id, module_path, memo01, memo02, memo03, memo04, memo05, memo06, memo07, memo08, memo09, memo10) VALUES (2, '郵便振替', 0, NULL, 4, NULL, 2, 1, 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);

@@ -93,12 +93,12 @@ class LC_Page_Admin_Design extends LC_Page_Admin {
         $sel   = ", pos.target_id, pos.bloc_id, pos.bloc_row ,pos.anywhere";
         $from  = ", dtb_blocposition AS pos";
         $where = " where ";
-        $where .= "( pos.anywhere = 1 OR (lay.page_id = ? AND ";
+        $where .= "( pos.anywhere = 1 OR (lay.device_type_id = ? AND lay.page_id = ? AND ";
         $where .= "lay.page_id = pos.page_id AND exists (select bloc_id from dtb_bloc as blc where pos.bloc_id = blc.bloc_id) )) ORDER BY lay.page_id,pos.target_id, pos.bloc_row, pos.bloc_id ";
         //        $where .= "((lay.page_id = ? AND ";
         //        $where .= "lay.page_id = pos.page_id AND exists (select bloc_id from dtb_bloc as blc where pos.bloc_id = blc.bloc_id) )) ORDER BY lay.page_id,pos.target_id, pos.bloc_row, pos.bloc_id ";
 
-        $arrData = array($page_id);
+        $arrData = array($_GET['device_type_id'], $page_id);
         $arrBlocPos = $this->lfgetLayoutData($sel, $from, $where, $arrData );
 
         // データの存在チェックを行う
