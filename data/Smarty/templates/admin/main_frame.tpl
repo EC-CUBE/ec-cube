@@ -34,12 +34,12 @@
     google.load("maps", "3", {other_params:'sensor=false'});
 //]]>
 </script>
-<script type="text/javascript" src="<!--{$TPL_DIR_DEFAULT}-->js/navi.js"></script>
-<script type="text/javascript" src="<!--{$TPL_DIR_DEFAULT}-->js/win_op.js"></script>
-<script type="text/javascript" src="<!--{$TPL_DIR_DEFAULT}-->js/site.js"></script>
-<script type="text/javascript" src="<!--{$TPL_DIR_DEFAULT}-->js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/navi.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/win_op.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/site.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/admin.js"></script>
-<script type="text/javascript" src="<!--{$TPL_DIR_DEFAULT}-->js/css.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/css.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/file_manager.js"></script>
 <title><!--{$smarty.const.ADMIN_TITLE}--></title>
 <script type="text/javascript">

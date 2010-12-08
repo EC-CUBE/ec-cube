@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<script type="text/javascript" src="<!--{$TPL_DIR_DEFAULT}-->js/jquery.tablednd.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/jquery.tablednd.js"></script>
 <form name="form1" id="form1" method="post" action="?" enctype="multipart/form-data">
 <input type="hidden" name="mode" value="edit" />
 <input type="hidden" name="parent_category_id" value="<!--{$arrForm.parent_category_id}-->">

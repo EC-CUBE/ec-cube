@@ -19,9 +19,9 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
-<script type="text/javascript" src="<!--{$TPL_DIR}-->jquery.fancybox/jquery.mousewheel-3.0.2.pack.js"></script>
-<script type="text/javascript" src="<!--{$TPL_DIR}-->jquery.fancybox/jquery.fancybox-1.3.1.pack.js"></script>
-<link rel="stylesheet" href="<!--{$TPL_DIR}-->jquery.fancybox/jquery.fancybox-1.3.1.css" type="text/css" media="screen" />
+<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/jquery.fancybox/jquery.mousewheel-3.0.2.pack.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/jquery.fancybox/jquery.fancybox-1.3.1.pack.js"></script>
+<link rel="stylesheet" href="<!--{$smarty.const.URL_DIR}-->js/jquery.fancybox/jquery.fancybox-1.3.1.css" type="text/css" media="screen" />
 <script type="text/javascript">//<![CDATA[
     $(document).ready(function() {
         $("a.expansion").fancybox({
