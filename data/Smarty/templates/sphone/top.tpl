@@ -24,7 +24,7 @@
 <!--{* ▼ロゴ ここから *}-->
 <div id="header">
 <h1>
-    <a href="<!--{$smarty.const.SPHONE_SSL_URL}-->">
+    <a href="<!--{$smarty.const.SMARTPHONE_SSL_URL}-->">
       <em><!--{$arrSiteInfo.shop_name|escape}-->/<!--{$tpl_title|escape}--></em></a>
   </h1>
 </div>

@@ -44,7 +44,7 @@
 <!--{else}-->
 <script type="text/javascript" language="JavaScript">
 //<![CDATA[
-//setTopButton("<!--{$smarty.const.SPHONE_SSL_URL}-->");
+setTopButton("<!--{$smarty.const.SMARTPHONE_SSL_URL}-->");
 //]]>
 <!--{/if}-->
 </script>

@@ -28,7 +28,7 @@
         <div class="recomendleft">
 
             <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrBestProducts[cnt].product_id|escape:url}-->">
-                <img src="<!--{$smarty.const.SPHONE_URL_DIR}-->resize_image.php?image=<!--{$arrBestProducts[cnt].main_list_image|sfNoImageMainList|escape}-->&amp;width=80&amp;height=80" alt="<!--{$arrBestProducts[cnt].name|escape}-->" /></a>
+                <img src="<!--{$smarty.const.SMARTPHONE_URL_DIR}-->resize_image.php?image=<!--{$arrBestProducts[cnt].main_list_image|sfNoImageMainList|escape}-->&amp;width=80&amp;height=80" alt="<!--{$arrBestProducts[cnt].name|escape}-->" /></a>
             
             <div class="recomendrightblock">
                 <h3>
@@ -50,7 +50,7 @@
         <!--{if $arrBestProducts[$cnt2]|count > 0}-->
         <div class="recomendright">
             <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrBestProducts[$cnt2].product_id|escape:url}-->">
-                <img src="<!--{$smarty.const.SPHONE_URL_DIR}-->resize_image.php?image=<!--{$arrBestProducts[$cnt2].main_list_image|sfNoImageMainList|escape}-->&amp;width=80&amp;height=80" alt="<!--{$arrBestProducts[$cnt2].name|escape}-->" /></a>
+                <img src="<!--{$smarty.const.SMARTPHONE_URL_DIR}-->resize_image.php?image=<!--{$arrBestProducts[$cnt2].main_list_image|sfNoImageMainList|escape}-->&amp;width=80&amp;height=80" alt="<!--{$arrBestProducts[$cnt2].name|escape}-->" /></a>
 
             <div class="recomendrightblock">
                 <h3>
