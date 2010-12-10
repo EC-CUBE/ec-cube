@@ -78,10 +78,6 @@ class LC_Page_Entry_Complete extends LC_Page {
         if (!SC_Helper_Session_Ex::isValidToken()) {
             SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", true);
         }
-
-        // レイアウトデザインを取得
-        $layout = new SC_Helper_PageLayout_Ex();
-        $layout->sfGetPageLayout($this, false, DEF_LAYOUT);
     }
 
     /**
@@ -109,9 +105,7 @@ class LC_Page_Entry_Complete extends LC_Page {
      * @return void
      */
     function mobileAction() {
-        // レイアウトデザインを取得
-        $objLayout = new SC_Helper_PageLayout_Ex();
-        $objLayout->sfGetPageLayout($this, false, DEF_LAYOUT);
+        // do nothing...
     }
 
     /**

@@ -69,10 +69,6 @@ class LC_Page_Regist_Complete extends LC_Page {
 
         $objQuery = new SC_Query();
         $objCampaignSess = new SC_CampaignSession();
-
-        // レイアウトデザインを取得
-        $helper = new SC_Helper_PageLayout_Ex();
-        $helper->sfGetPageLayout($this, false, DEF_LAYOUT);
     }
 
     /**

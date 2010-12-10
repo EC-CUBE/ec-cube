@@ -92,10 +92,6 @@ class LC_Page_Mypage_Change extends LC_Page {
         $objCustomer = new SC_Customer();
         $this->tpl_login = $objCustomer->isLoginSuccess();
 
-        // レイアウトデザインを取得
-        $objLayout = new SC_Helper_PageLayout_Ex();
-        $objLayout->sfGetPageLayout($this, false, "mypage/index.php");
-
         // 生年月日選択肢の取得
         $objDate = new SC_Date(START_BIRTH_YEAR, date("Y",strtotime("now")));
         $this->arrYear = $objDate->getYear('', 1950, '');

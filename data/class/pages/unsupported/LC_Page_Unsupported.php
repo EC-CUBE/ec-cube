@@ -54,10 +54,6 @@ class LC_Page_Unsupported extends LC_Page {
     function process() {
         $objView = new SC_MobileView();
 
-        // レイアウトデザインを取得
-        //$objHelper = new SC_Helper_PageLayout_Ex();
-        //$objHelper->sfGetPageLayout($this, false, DEF_LAYOUT);
-
         $objView->assignobj($this);
         $objView->display($this->tpl_mainpage);
     }

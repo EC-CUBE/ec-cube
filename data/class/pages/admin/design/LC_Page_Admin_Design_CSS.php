@@ -65,6 +65,8 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin {
     /**
      * Page のアクション.
      *
+     * FIXME css ファイルの取得方法を要修正
+     *
      * @return void
      */
     function action() {

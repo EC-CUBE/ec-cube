@@ -85,8 +85,8 @@ class SC_SmartphoneUserAgent {
 
 
         $url = SC_Utils_Ex::sfIsHTTPS()
-            ? SPHONE_SSL_URL
-            : SPHONE_SITE_URL
+            ? SMARTPHONE_SSL_URL
+            : SMARTPHONE_SITE_URL
         ;
 
         // XXX サニタイズ必要？

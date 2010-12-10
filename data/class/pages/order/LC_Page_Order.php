@@ -72,10 +72,6 @@ class LC_Page_Order extends LC_Page {
         $objQuery = new SC_Query();
         $layout = new SC_Helper_PageLayout_Ex();
         $objDb = new SC_Helper_DB_Ex();
-
-        // レイアウトデザインを取得
-        $layout->sfGetPageLayout($this, false, DEF_LAYOUT);
-        $this->arrRet = $objDb->sfGetBasisData();
     }
 
     /**

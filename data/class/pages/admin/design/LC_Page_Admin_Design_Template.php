@@ -85,6 +85,8 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin {
     /**
      * Page のアクション.
      *
+     * FIXME ロジックを見直し
+     *
      * @return void
      */
     function action() {

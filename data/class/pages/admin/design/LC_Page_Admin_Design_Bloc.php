@@ -65,32 +65,41 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin {
     /**
      * Page のアクション.
      *
+     * FIXME テンプレートパスの取得方法を要修正
+     *
      * @return void
      */
     function action() {
         $this->objLayout = new SC_Helper_PageLayout_Ex();
         $package_path = USER_TEMPLATE_PATH . "/" . TEMPLATE_NAME . "/";
-        
+
         // 認証可否の判定
         $objSess = new SC_Session();
         SC_Utils_Ex::sfIsSuccess($objSess);
 
-        // ブロック一覧を取得
-        $this->arrBlocList = $this->lfgetBlocData();
-
-        // ブロックIDを取得
-        if (isset($_POST['bloc_id'])) {
-            $bloc_id = $_POST['bloc_id'];
-        }else if (isset($_GET['bloc_id'])) {
-            $bloc_id = $_GET['bloc_id'];
-        }else{
-            $bloc_id = '';
+        // ページIDを取得
+        if (isset($_REQUEST['bloc_id']) && is_numeric($_REQUEST['bloc_id'])) {
+            $bloc_id = $_REQUEST['bloc_id'];
+        } else {
+            $bloc_id = 1;
         }
         $this->bloc_id = $bloc_id;
 
+        // 端末種別IDを取得
+        if (isset($_REQUEST['device_type_id'])
+            && is_numeric($_REQUEST['device_type_id'])) {
+            $device_type_id = $_REQUEST['device_type_id'];
+        } else {
+            $device_type_id = DEVICE_TYPE_PC;
+        }
+
+        // ブロック一覧を取得
+        $this->arrBlocList = $this->lfgetBlocData("device_type_id = ?", array($device_type_id));
+
         // bloc_id が指定されている場合にはブロックデータの取得
         if ($bloc_id != '') {
-            $arrBlocData = $this->lfgetBlocData(" bloc_id = ? " , array($bloc_id));
+            $arrBlocData = $this->lfGetBlocData("bloc_id = ? AND device_type_id = ?",
+                                                array($bloc_id, $device_type_id));
 
             // ユーザー作成ブロックが存在する場合
             if (is_file($package_path . $arrBlocData[0]['tpl_path'])) {
@@ -100,7 +109,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin {
             } else {
                 $arrBlocData[0]['tpl_path'] = TEMPLATE_DIR . $arrBlocData[0]['tpl_path'];
             }
-            
+
             // テンプレートファイルの読み込み
             $arrBlocData[0]['tpl_data'] = file_get_contents($arrBlocData[0]['tpl_path']);
             $this->arrBlocData = $arrBlocData[0];
@@ -113,13 +122,13 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin {
         }
 
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
-                
+
         switch($_POST['mode']) {
         case 'preview':
             // プレビューファイル作成
             $prev_path = USER_INC_PATH . 'preview/bloc_preview.tpl';
-            // ディレクトリの作成            
-            SC_Utils::sfMakeDir($prev_path);            
+            // ディレクトリの作成
+            SC_Utils::sfMakeDir($prev_path);
             $fp = fopen($prev_path,"w");
             fwrite($fp, $_POST['bloc_html']); // FIXME いきなり POST はちょっと...
             fclose($fp);
@@ -131,9 +140,9 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin {
             $this->arrBlocData['bloc_name'] = $_POST['bloc_name'];
             $this->arrBlocData['filename'] = $_POST['filename'];
             $this->text_row = $_POST['html_area_row'];
-        	break;
+            break;
         case 'confirm':
-        	$this->preview = "off";
+            $this->preview = "off";
             // エラーチェック
             $this->arrErr = $this->lfErrorCheck($_POST);
 
@@ -147,30 +156,32 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin {
                 if (file_exists($old_bloc_path)) {
                     unlink($old_bloc_path);
                 }
-				
+
                 // ファイル作成
                 $new_bloc_path = $package_path . BLOC_DIR . $_POST['filename'] . ".tpl";
-               	// ディレクトリの作成            
-            	SC_Utils::sfMakeDir($new_bloc_path);
+                // ディレクトリの作成
+                SC_Utils::sfMakeDir($new_bloc_path);
                 $fp = fopen($new_bloc_path,"w");
                 fwrite($fp, $_POST['bloc_html']); // FIXME いきなり POST はちょっと...
                 fclose($fp);
 
-                $arrBlocData = $this->lfgetBlocData(" filename = ? " , array($_POST['filename']));
+                $arrBlocData = $this->lfGetBlocData("filename = ? AND device_type_id = ?",
+                                                    array($_POST['filename'], $device_type_id));
 
                 $bloc_id = $arrBlocData[0]['bloc_id'];
                 $this->objDisplay->redirect($this->getLocation("./bloc.php",
                                             array("bloc_id" => $bloc_id,
+                                                  "device_type_id" => $device_type_id,
                                                   "msg" => "on")));
                 exit;
             }else{
                 // エラーがあれば入力時のデータを表示する
                 $this->arrBlocData = $_POST;
             }
-        	break;
+            break;
         case 'delete':
-        	$this->preview = "off";
-        	 // DBへデータを更新する
+            $this->preview = "off";
+             // DBへデータを更新する
             $objQuery = new SC_Query();     // DB操作オブジェクト
             $sql = "";                      // データ更新SQL生成用
             $ret = "";                      // データ更新結果格納用
@@ -182,14 +193,14 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin {
             // bloc_id が空でない場合にはdeleteを実行
             if ($_POST['bloc_id'] !== '') {
                 // SQL生成
-                $sql = " DELETE FROM dtb_bloc WHERE bloc_id = ?";
+                $sql = " DELETE FROM dtb_bloc WHERE bloc_id = ? AND device_type_id = ?";
                 // SQL実行
-                $ret = $objQuery->query($sql,array($_POST['bloc_id']));
+                $ret = $objQuery->query($sql,array($_POST['bloc_id'], $device_type_id));
 
                 // ページに配置されているデータも削除する
-                $sql = "DELETE FROM dtb_blocposition WHERE bloc_id = ?";
+                $sql = "DELETE FROM dtb_blocposition WHERE bloc_id = ? AND device_type_id = ?";
                 // SQL実行
-                $ret = $objQuery->query($sql,array($_POST['bloc_id']));
+                $ret = $objQuery->query($sql,array($_POST['bloc_id'], $device_type_id));
 
                 // ファイルの削除
                 $del_file = $package_path . BLOC_DIR . $arrBlocData[0]['filename']. '.tpl';
@@ -197,15 +208,16 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin {
                     unlink($del_file);
                 }
             }
-            $this->objDisplay->redirect($this->getLocation("./bloc.php"));
+            $this->objDisplay->redirect($this->getLocation("./bloc.php",
+                                                           array("device_type_id" => $device_type_id)));
             exit;
-        	break;
+            break;
         default:
-        	if(isset($_POST['mode'])) {
-        	   GC_Utils::gfPrintLog("MODEエラー：".$_POST['mode']);
-        	}
-        	break;
-        }        
+            if(isset($_POST['mode'])) {
+               GC_Utils::gfPrintLog("MODEエラー：".$_POST['mode']);
+            }
+            break;
+        }
     }
 
     /**
@@ -224,34 +236,10 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin {
      * @param array $arrVal Where句の絞込条件値
      * @return array ブロック情報
      */
-    function lfgetBlocData($where = '', $arrVal = ''){
-        $objQuery = new SC_Query();		// DB操作オブジェクト
-        $sql = "";						// データ取得SQL生成用
-        $arrRet = array();				// データ取得用
-
-        // SQL生成
-        $sql = " SELECT ";
-        $sql .= "	bloc_id";
-        $sql .= "	,bloc_name";
-        $sql .= "	,tpl_path";
-        $sql .= "	,filename";
-        $sql .= " 	,create_date";
-        $sql .= " 	,update_date";
-        $sql .= " 	,php_path";
-        $sql .= " 	,del_flg";
-        $sql .= " FROM ";
-        $sql .= " 	dtb_bloc";
-
-        // where句の指定があれば追加
-        if ($where != '') {
-            $sql .= " WHERE " . $where;
-        }
-
-        $sql .= " ORDER BY 	bloc_id";
-
-        $arrRet = $objQuery->getAll($sql, $arrVal);
-
-        return $arrRet;
+    function lfgetBlocData($where = '', $arrVal = array()){
+        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery->setOrder("bloc_id");
+        return $objQuery->select("*", "dtb_bloc", $where, $arrVal);
     }
 
     /**
@@ -261,30 +249,31 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin {
      * @return integer 更新結果
      */
     function lfEntryBlocData($arrData){
-        $objQuery = new SC_Query();		// DB操作オブジェクト
-        $sql = "";						// データ更新SQL生成用
-        $ret = ""; 						// データ更新結果格納用
-        $arrUpdData = array();			// 更新データ生成用
-        $arrChk = array();				// 排他チェック用
+        $objQuery = new SC_Query();     // DB操作オブジェクト
+        $sql = "";                      // データ更新SQL生成用
+        $ret = "";                      // データ更新結果格納用
+        $arrUpdData = array();          // 更新データ生成用
+        $arrChk = array();              // 排他チェック用
 
         // 更新データ生成
         $arrUpdData = array($arrData['bloc_name'], BLOC_DIR . $arrData['filename'] . '.tpl', $arrData['filename']);
 
         // データが存在しているかチェックを行う
         if($arrData['bloc_id'] !== ''){
-            $arrChk = $this->lfgetBlocData("bloc_id = ?", array($arrData['bloc_id']));
+            $arrChk = $this->lfgetBlocData("bloc_id = ? AND device_type_id = ?",
+                                           array($arrData['bloc_id'], $arrData['device_type_id']));
         }
 
-
-        }
         // bloc_id が空 若しくは データが存在していない場合にはINSERTを行う
         if ($arrData['bloc_id'] === '' or !isset($arrChk[0])) {
             // SQL生成
+            // FIXME device_type_id ごとの連番にする
             $arrUpdData['bloc_id'] = $objQuery->nextVal('dtb_bloc_bloc_id');
             $arrUpdData['create_date'] = "now()";
             $ret = $objQuery->insert('dtb_bloc', $arrUpdData);
         } else {
-            $ret = $objQuery->update('dtb_bloc', $arrUpdData, 'bloc_id = ?', array($arrData['bloc_id']));
+            $ret = $objQuery->update('dtb_bloc', $arrUpdData, 'bloc_id = ? AND device_type_id = ?',
+                                     array($arrData['bloc_id'], $arrData['device_type_id']));
         }
         return $ret;
     }

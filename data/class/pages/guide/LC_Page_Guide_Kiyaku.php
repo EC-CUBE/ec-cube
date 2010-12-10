@@ -69,10 +69,6 @@ class LC_Page_Guide_Kiyaku extends LC_Page {
      * @return void
      */
     function mobileProcess() {
-        // レイアウトデザインを取得
-        $objLayout = new SC_Helper_PageLayout_Ex();
-        $objLayout->sfGetPageLayout($this, false, DEF_LAYOUT);
-
         // 利用規約を取得する。
         $this->lfGetKiyaku(intval(@$_GET['page']), $this);
 

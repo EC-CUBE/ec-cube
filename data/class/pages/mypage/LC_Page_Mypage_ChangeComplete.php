@@ -71,10 +71,6 @@ class LC_Page_Mypage_ChangeComplete extends LC_Page {
         //$objView = new SC_SiteView();
         $objCustomer = new SC_Customer();
 
-        // レイアウトデザインを取得
-        $objLayout = new SC_Helper_PageLayout_Ex();
-        $objLayout->sfGetPageLayout($this, false, "mypage/index.php");
-
         //ログイン判定
         if (!$objCustomer->isLoginSuccess()){
             SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);

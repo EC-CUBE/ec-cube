@@ -72,8 +72,8 @@ class LC_Page {
     /** トランザクションID */
     var $transactionid;
 
-    /** テンプレート名 */
-    var $template;
+    /** メインテンプレート名 */
+    var $template = SITE_FRAME;
 
     // }}}
     // {{{ functions
@@ -88,18 +88,17 @@ class LC_Page {
         $this->timeStart = SC_Utils_Ex::sfMicrotimeFloat();
 
         $this->tpl_authority = $_SESSION['authority'];
-        // XXX すべてのページで宣言するべき
-        $layout = new SC_Helper_PageLayout_Ex();
-        $layout->sfGetPageLayout($this, false);
-
-        $this->template = SITE_FRAME;
 
         // ディスプレイクラス生成
         $this->objDisplay = new SC_Display();
 
+        $layout = new SC_Helper_PageLayout_Ex();
+        $layout->sfGetPageLayout($this, false, $_SERVER['PHP_SELF'],
+                                 $this->objDisplay->detectDevice());
+
         // プラグインクラス生成
-        // $this->objPlugin = new SC_Helper_Plugin_Ex();
-        // $this->objPlugin->preProcess($this);
+        $this->objPlugin = new SC_Helper_Plugin_Ex();
+        $this->objPlugin->preProcess($this);
     }
 
     /**
@@ -122,8 +121,9 @@ class LC_Page {
      * @return void
      */
     function sendResponse() {
+
         // post-prosess処理(暫定的)
-        //$this->objPlugin->process($this);
+        $this->objPlugin->process($this);
 
         $this->objDisplay->prepare($this);
         $this->objDisplay->response->write();

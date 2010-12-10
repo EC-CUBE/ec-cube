@@ -73,9 +73,6 @@ class LC_Page_Index extends LC_Page {
      * @return void
      */
     function action() {
-        // レイアウトデザインを取得
-        $layout = new SC_Helper_PageLayout_Ex();
-        $layout->sfGetPageLayout($this, false, "index.php");
         $this->tpl_title = '';
     }
 

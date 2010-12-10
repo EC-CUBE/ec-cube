@@ -77,10 +77,6 @@ class LC_Page_Mypage_RefusalComplete extends LC_Page {
         $this->CustomerName2 = $objCustomer->getvalue('name02');
         $this->CustomerPoint = $objCustomer->getvalue('point');
 
-        // レイアウトデザインを取得
-        $objLayout = new SC_Helper_PageLayout_Ex();
-        $objLayout->sfGetPageLayout($this, false, "mypage/index.php");
-
         //$objView->assignobj($this);
         //$objView->display(SITE_FRAME);
     }

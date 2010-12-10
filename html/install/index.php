@@ -381,7 +381,6 @@ function lfDispStep0($objPage) {
     $arrWriteFile = array(
         DATA_PATH . "install.php",
         HTML_PATH . "user_data",
-        HTML_PATH . "cp",
         HTML_PATH . "upload",
         DATA_PATH . "cache/",
         DATA_PATH . "class/",
@@ -901,10 +900,6 @@ function lfMakeConfigFile() {
     "    define ('DB_SERVER', '" . $objDBParam->getValue('db_server') . "');\n" .
     "    define ('DB_NAME', '" . $objDBParam->getValue('db_name') . "');\n" .
     "    define ('DB_PORT', '" . $objDBParam->getValue('db_port') .  "');\n" .
-    "    define ('MOBILE_HTML_PATH', HTML_PATH . 'mobile/');\n" .
-    "    define ('MOBILE_SITE_URL', SITE_URL . 'mobile/');\n" .
-    "    define ('MOBILE_SSL_URL', SSL_URL . 'mobile/');\n" .
-    "    define ('MOBILE_URL_DIR', URL_DIR . 'mobile/');\n" .
     "?>";
 
     if($fp = fopen($filepath,"w")) {

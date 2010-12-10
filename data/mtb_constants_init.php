@@ -610,4 +610,26 @@ define('DEVICE_TYPE_SMARTPHONE', 2);
 define('DEVICE_TYPE_PC', 10);
 /** 端末種別: 管理画面 */
 define('DEVICE_TYPE_ADMIN', 99);
+/** 配置ID 未使用 */
+define('TARGET_ID_UNUSED', 0);
+/** 配置ID: LeftNavi */
+define('TARGET_ID_LEFT', 1);
+/** 配置ID: MainHead */
+define('TARGET_ID_MAIN_HEAD', 2);
+/** 配置ID: RightNavi */
+define('TARGET_ID_RIGHT', 3);
+/** 配置ID: MainFoot */
+define('TARGET_ID_MAIN_FOOT', 4);
+/** 配置ID: TopNavi */
+define('TARGET_ID_TOP', 5);
+/** 配置ID: BottomNavi */
+define('TARGET_ID_BOTTOM', 6);
+/** 配置ID: HeadNavi */
+define('TARGET_ID_HEAD', 7);
+/** 配置ID: HeadTopNavi */
+define('TARGET_ID_HEAD_TOP', 8);
+/** 配置ID: FooterBottomNavi */
+define('TARGET_ID_FOOTER_BOTTOM', 9);
+/** 配置ID: HeaderInternalNavi */
+define('TARGET_ID_HEADER_INTERNAL', 10);
 ?>

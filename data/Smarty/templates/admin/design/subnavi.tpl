@@ -46,13 +46,13 @@
   </li>
   <li><a><span>スマートフォン</span></a>
     <ul class="level2">
-      <li<!--{if $tpl_subno == 'layout'}--> class="on"<!--{/if}--> id="navi-design-layout"><a href="<!--{$smarty.const.URL_DIR}-->admin/design/<!--{$smarty.const.DIR_INDEX_URL}-->?device_type_id=<!--{$smarty.const.DEVICE_TYPE_MOBILE}-->"><span>レイアウト設定</span></a></li>
-      <li<!--{if $tpl_subno == 'main_edit'}--> class="on"<!--{/if}--> id="navi-design-main"><a href="<!--{$smarty.const.URL_DIR}-->admin/design/main_edit.php?device_type_id=<!--{$smarty.const.DEVICE_TYPE_MOBILE}-->"><span>ページ詳細設定</span></a></li>
-      <li<!--{if $tpl_subno == 'bloc'}--> class="on"<!--{/if}--> id="navi-design-bloc"><a href="<!--{$smarty.const.URL_DIR}-->admin/design/bloc.php?device_type_id=<!--{$smarty.const.DEVICE_TYPE_MOBILE}-->"><span>ブロック編集</span></a></li>
-      <li<!--{if $tpl_subno == 'header'}--> class="on"<!--{/if}--> id="navi-design-header"><a href="<!--{$smarty.const.URL_DIR}-->admin/design/header.php?device_type_id=<!--{$smarty.const.DEVICE_TYPE_MOBILE}-->"><span>ﾍｯﾀﾞｰ/ﾌｯﾀｰ設定</span></a></li>
-      <li<!--{if $tpl_subno == 'css'}--> class="on"<!--{/if}--> id="navi-design-css"><a href="<!--{$smarty.const.URL_DIR}-->admin/design/css.php?device_type_id=<!--{$smarty.const.DEVICE_TYPE_MOBILE}-->"><span>CSS編集</span></a></li>
-      <li<!--{if $tpl_subno == 'template'}--> class="on"<!--{/if}--> id="navi-design-template"><a href="<!--{$smarty.const.URL_DIR}-->admin/design/template.php?device_type_id=<!--{$smarty.const.DEVICE_TYPE_MOBILE}-->"><span>テンプレート設定</span></a></li>
-      <li<!--{if $tpl_subno == 'up_down'}--> class="on"<!--{/if}--> id="navi-design-add"><a href="<!--{$smarty.const.URL_DIR}-->admin/design/up_down.php?device_type_id=<!--{$smarty.const.DEVICE_TYPE_MOBILE}-->"><span>テンプレート追加</span></a></li>
+      <li<!--{if $tpl_subno == 'layout'}--> class="on"<!--{/if}--> id="navi-design-layout"><a href="<!--{$smarty.const.URL_DIR}-->admin/design/<!--{$smarty.const.DIR_INDEX_URL}-->?device_type_id=<!--{$smarty.const.DEVICE_TYPE_SMARTPHONE}-->"><span>レイアウト設定</span></a></li>
+      <li<!--{if $tpl_subno == 'main_edit'}--> class="on"<!--{/if}--> id="navi-design-main"><a href="<!--{$smarty.const.URL_DIR}-->admin/design/main_edit.php?device_type_id=<!--{$smarty.const.DEVICE_TYPE_SMARTPHONE}-->"><span>ページ詳細設定</span></a></li>
+      <li<!--{if $tpl_subno == 'bloc'}--> class="on"<!--{/if}--> id="navi-design-bloc"><a href="<!--{$smarty.const.URL_DIR}-->admin/design/bloc.php?device_type_id=<!--{$smarty.const.DEVICE_TYPE_SMARTPHONE}-->"><span>ブロック編集</span></a></li>
+      <li<!--{if $tpl_subno == 'header'}--> class="on"<!--{/if}--> id="navi-design-header"><a href="<!--{$smarty.const.URL_DIR}-->admin/design/header.php?device_type_id=<!--{$smarty.const.DEVICE_TYPE_SMARTPHONE}-->"><span>ﾍｯﾀﾞｰ/ﾌｯﾀｰ設定</span></a></li>
+      <li<!--{if $tpl_subno == 'css'}--> class="on"<!--{/if}--> id="navi-design-css"><a href="<!--{$smarty.const.URL_DIR}-->admin/design/css.php?device_type_id=<!--{$smarty.const.DEVICE_TYPE_SMARTPHONE}-->"><span>CSS編集</span></a></li>
+      <li<!--{if $tpl_subno == 'template'}--> class="on"<!--{/if}--> id="navi-design-template"><a href="<!--{$smarty.const.URL_DIR}-->admin/design/template.php?device_type_id=<!--{$smarty.const.DEVICE_TYPE_SMARTPHONE}-->"><span>テンプレート設定</span></a></li>
+      <li<!--{if $tpl_subno == 'up_down'}--> class="on"<!--{/if}--> id="navi-design-add"><a href="<!--{$smarty.const.URL_DIR}-->admin/design/up_down.php?device_type_id=<!--{$smarty.const.DEVICE_TYPE_SMARTPHONE}-->"><span>テンプレート追加</span></a></li>
     </ul>
   </li>
 </ul>

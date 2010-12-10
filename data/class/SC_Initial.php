@@ -62,7 +62,7 @@ class SC_Initial {
     }
 
     /**
-     * 初期設定ファイルを読み込む.
+     * 初期設定ファイルを読み込み, パスの設定を行う.
      *
      * @access protected
      * @return void
@@ -70,6 +70,20 @@ class SC_Initial {
     function requireInitialConfig() {
 
         require_once(realpath(dirname( __FILE__)) ."/../install.php");
+
+        define('MOBILE_DIR', 'mobile/');
+        define('MOBILE_HTML_PATH', HTML_PATH . MOBILE_DIR);
+        define('MOBILE_SITE_URL', SITE_URL . MOBILE_DIR);
+        define('MOBILE_SSL_URL', SSL_URL . MOBILE_DIR);
+        define('MOBILE_URL_DIR', URL_DIR . MOBILE_DIR);
+
+        define('SMARTPHONE_DIR', 'sphone/');
+        define('SMARTPHONE_HTML_PATH', HTML_PATH . SMARTPHONE_DIR);
+        define('SMARTPHONE_SITE_URL', SITE_URL . SMARTPHONE_DIR);
+        define('SMARTPHONE_SSL_URL', SSL_URL . SMARTPHONE_DIR);
+        define('SMARTPHONE_URL_DIR', URL_DIR . SMARTPHONE_DIR);
+
+        define('ADMIN_DIR', 'admin/'); // TODO
     }
 
     /**
@@ -219,6 +233,10 @@ class SC_Initial {
 
             if (!file_exists(MOBILE_COMPILE_DIR)) {
                 mkdir(MOBILE_COMPILE_DIR);
+            }
+
+            if (!file_exists(SMARTPHONE_COMPILE_DIR)) {
+                mkdir(SMARTPHONE_COMPILE_DIR);
             }
 
             if (!file_exists(COMPILE_ADMIN_DIR)) {

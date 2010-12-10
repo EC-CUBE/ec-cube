@@ -65,10 +65,6 @@ class LC_Page_Entry_Kiyaku extends LC_Page {
     function action() {
         $objCustomer = new SC_Customer();
 
-        // レイアウトデザインを取得
-        $layout = new SC_Helper_PageLayout_Ex();
-        $layout->sfGetPageLayout($this, false, DEF_LAYOUT);
-
         // 規約内容の取得
         $objQuery = new SC_Query();
         $objQuery->setOrder("rank DESC");
@@ -111,10 +107,6 @@ class LC_Page_Entry_Kiyaku extends LC_Page {
 
         $offset = isset($_REQUEST['offset']) ? $_REQUEST['offset'] : 0;
         $next = $offset;
-
-        // レイアウトデザインを取得
-        $objLayout = new SC_Helper_PageLayout_Ex();
-        $objLayout->sfGetPageLayout($this, false, DEF_LAYOUT);
 
         // 規約内容の取得
         $objQuery = new SC_Query();

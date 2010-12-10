@@ -806,12 +806,13 @@ CREATE TABLE dtb_bloc (
     bloc_id int  NOT NULL,
     bloc_name text,
     tpl_path text,
-    filename varchar(50) NOT NULL UNIQUE,
+    filename varchar(50) NOT NULL,
     create_date datetime NOT NULL,
     update_date datetime NOT NULL,
     php_path text,
     del_flg smallint NOT NULL DEFAULT 0,
-    PRIMARY KEY (device_type_id, bloc_id)
+    PRIMARY KEY (device_type_id, bloc_id),
+    UNIQUE (device_type_id, filename)
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_blocposition (
@@ -820,7 +821,6 @@ CREATE TABLE dtb_blocposition (
     target_id int NOT NULL,
     bloc_id int NOT NULL,
     bloc_row int,
-    filename text,
     anywhere int DEFAULT 0 NOT NULL,
     PRIMARY KEY (device_type_id, page_id, target_id, bloc_id)
 ) TYPE=InnoDB;

@@ -96,10 +96,6 @@ class LC_Page_Products_Detail extends LC_Page {
         $objQuery = new SC_Query();
         $objDb = new SC_Helper_DB_Ex();
 
-        // レイアウトデザインを取得
-        $helper = new SC_Helper_PageLayout_Ex();
-        $helper->sfGetPageLayout($this, false, "products/detail.php");
-
         // ログイン中のユーザが商品をお気に入りにいれる処理
         if ($objCustomer->isLoginSuccess() === true && strlen($_POST['mode']) > 0 && $_POST['mode'] == "add_favorite" && strlen($_POST['favorite_product_id']) > 0 ) {
             // 値の正当性チェック

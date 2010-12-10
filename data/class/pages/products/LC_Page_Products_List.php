@@ -136,10 +136,6 @@ class LC_Page_Products_List extends LC_Page {
             $this->arrSearch['name'] = $this->arrSearchData['name'];
         }
 
-        // レイアウトデザインを取得
-        $layout = new SC_Helper_PageLayout_Ex();
-        $layout->sfGetPageLayout($this, false, "products/list.php");
-
         foreach ($this->arrProducts as $arrProduct) {
             $js_fnOnLoad .= "fnSetClassCategories(document.product_form{$arrProduct['product_id']});\n";
         }

@@ -79,10 +79,6 @@ class LC_Page_Guide_Usage extends LC_Page {
             break;
         }
 
-        // レイアウトデザインを取得
-        $objLayout = new SC_Helper_PageLayout_Ex();
-        $objLayout->sfGetPageLayout($this, false, DEF_LAYOUT);
-
         $objView = new SC_MobileView();
         $objView->assignobj($this);
         $objView->display(SITE_FRAME);

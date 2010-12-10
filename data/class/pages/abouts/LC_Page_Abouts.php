@@ -67,10 +67,6 @@ class LC_Page_Abouts extends LC_Page {
      * @return void
      */
     function action() {
-        // レイアウトデザインを取得
-        $layout = new SC_Helper_PageLayout_Ex();
-        $layout->sfGetPageLayout($this, false, DEF_LAYOUT);
-
         $this->objSiteInfo = new SC_SiteInfo();
         $this->objSiteInfo->data['pref'] =
             isset($this->arrPref[$this->objSiteInfo->data['pref']])

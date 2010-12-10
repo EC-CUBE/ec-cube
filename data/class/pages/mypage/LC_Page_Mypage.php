@@ -83,10 +83,6 @@ class LC_Page_MyPage extends LC_Page {
         // 退会判定用情報の取得
         $this->tpl_login = $objCustomer->isLoginSuccess();
 
-        // レイアウトデザインを取得
-        $objLayout = new SC_Helper_PageLayout_Ex();
-        $objLayout->sfGetPageLayout($this, false, "mypage/index.php");
-
         // ログインチェック
         if(!$objCustomer->isLoginSuccess()) {
             SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);

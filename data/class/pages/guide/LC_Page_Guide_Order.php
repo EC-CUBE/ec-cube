@@ -81,10 +81,6 @@ class LC_Page_Guide_Order extends LC_Page {
                 $this->tpl_mainpage = 'guide/order' . $_GET['page'] . '.tpl';
                 break;
         }
-
-        // レイアウトデザインを取得
-        $objLayout = new SC_Helper_PageLayout_Ex();
-        $objLayout->sfGetPageLayout($this, false, DEF_LAYOUT);
         $this->arrRet = $objDb->sfGetBasisData();
 
         $objView = new SC_MobileView();

@@ -95,10 +95,6 @@ class LC_Page_Products_CategoryList extends LC_Page {
         
         //$objView = new SC_MobileView();
 
-        // レイアウトデザインを取得
-        $objLayout = new SC_Helper_PageLayout_Ex();
-        $objLayout->sfGetPageLayout($this, false, DEF_LAYOUT);
-
         // カテゴリー情報を取得する。
         $this->lfGetCategories(@$_GET['category_id'], true, $this);
 

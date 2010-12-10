@@ -87,11 +87,6 @@ class LC_Page_Mypage_Refusal extends LC_Page {
             $this->CustomerPoint = $objCustomer->getvalue('point');
         }
 
-
-        // レイアウトデザインを取得
-        $objLayout = new SC_Helper_PageLayout_Ex();
-        $objLayout->sfGetPageLayout($this, false, "mypage/index.php");
-
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
         switch ($_POST['mode']){

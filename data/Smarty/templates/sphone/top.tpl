@@ -35,7 +35,7 @@
 
 <!--{* 検索 *}-->
 <div id="searchbar">
-<form method="get" action="<!--{$smarty.const.SPHONE_SITE_URL}-->products/list.php">
+<form method="get" action="<!--{$smarty.const.SMARTPHONE_SITE_URL}-->products/list.php">
 <input type="text" name="name" maxlength="50" value="<!--{$smarty.get.name|escape}-->" placeholder="商品検索" ><input type="submit" name="search" value="検索">
 </form>
 <!--{* searchmenu *}--></div>
@@ -43,13 +43,13 @@
 <!--{* topbox *}--></div>
 
 <!--{* 新着情報 *}-->
-<!--{include_php file=`$smarty.const.SPHONE_HTML_PATH`/frontparts/bloc/news.php}-->
+<!--{include_php file=`$smarty.const.SMARTPHONE_HTML_PATH`/frontparts/bloc/news.php}-->
 
 <!--{* ログイン *}-->
-<!--{include_php file=`$smarty.const.SPHONE_HTML_PATH`/frontparts/bloc/login.php}-->
+<!--{include_php file=`$smarty.const.SMARTPHONE_HTML_PATH`/frontparts/bloc/login.php}-->
 
 <!--{* おすすめ商品 *}-->
-<!--{include_php file=`$smarty.const.SPHONE_HTML_PATH`/frontparts/bloc/best5.php}-->
+<!--{include_php file=`$smarty.const.SMARTPHONE_HTML_PATH`/frontparts/bloc/best5.php}-->
 
 <!-- ▼メニュー ここから -->
-<!--{include_php file=`$smarty.const.SPHONE_HTML_PATH`/frontparts/bloc/category.php}-->
+<!--{include_php file=`$smarty.const.SMARTPHONE_HTML_PATH`/frontparts/bloc/category.php}-->

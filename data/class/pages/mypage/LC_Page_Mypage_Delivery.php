@@ -93,10 +93,6 @@ class LC_Page_Mypage_Delivery extends LC_Page {
             $this->CustomerPoint = $objCustomer->getvalue('point');
         //}
 
-        // レイアウトデザインを取得
-        $objLayout = new SC_Helper_PageLayout_Ex();
-        $objLayout->sfGetPageLayout($this, false, "mypage/index.php");
-
         $mode = isset($_POST['mode']) ? $_POST['mode'] : '';
         $customerId = $objCustomer->getValue('customer_id');
 

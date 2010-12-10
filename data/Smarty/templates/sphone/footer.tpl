@@ -31,13 +31,13 @@
 <div id="footer-info">
 <ul id="footer-menu">
 <li>
-<a href="<!--{$smarty.const.SPHONE_SSL_URL|sfTrimURL}-->/cart/index.php">かごを見る</a>
+<a href="<!--{$smarty.const.SMARTPHONE_SSL_URL|sfTrimURL}-->/cart/index.php">かごを見る</a>
 </li>
 <li>
-<a href="<!--{$smarty.const.SPHONE_SSL_URL|sfTrimURL}-->/mypage/login.php">マイページ</a>
+<a href="<!--{$smarty.const.SMARTPHONE_SSL_URL|sfTrimURL}-->/mypage/login.php">マイページ</a>
 </li>
 <li>
-<a href="<!--{$smarty.const.SPHONE_SSL_URL|sfTrimURL}-->/entry/kiyaku.php">会員登録</a>
+<a href="<!--{$smarty.const.SMARTPHONE_SSL_URL|sfTrimURL}-->/entry/kiyaku.php">会員登録</a>
 </li>
 
 <!--{php}-->
@@ -47,16 +47,16 @@ $this->assign('isTop', 1);
 <!--{/php}-->
 <!--{if $isTop ne 1}-->
 <li>
-<a href="<!--{$smarty.const.SPHONE_SITE_URL|sfTrimURL}-->">TOPページへ</a>
+<a href="<!--{$smarty.const.SMARTPHONE_SITE_URL|sfTrimURL}-->">TOPページへ</a>
 </li>
 <!--{/if}-->
 
 </ul>
 <ul id="footer-navi">
-<li><a href="<!--{$smarty.const.SPHONE_SITE_URL}-->contact/index.php">お問合せ</a></li>
-<li><a href="<!--{$smarty.const.SPHONE_SITE_URL}-->guide/privacy.php">プライバシーポリシー</a></li>
-<li class="end"><a href="<!--{$smarty.const.SPHONE_SITE_URL}-->abouts/index.php">店舗情報</a></li>
-<li class="end"><a href="<!--{$smarty.const.SPHONE_SITE_URL}-->order/index.php">特定商取引法に基づく表記</a></li>
+<li><a href="<!--{$smarty.const.SMARTPHONE_SITE_URL}-->contact/index.php">お問合せ</a></li>
+<li><a href="<!--{$smarty.const.SMARTPHONE_SITE_URL}-->guide/privacy.php">プライバシーポリシー</a></li>
+<li class="end"><a href="<!--{$smarty.const.SMARTPHONE_SITE_URL}-->abouts/index.php">店舗情報</a></li>
+<li class="end"><a href="<!--{$smarty.const.SMARTPHONE_SITE_URL}-->order/index.php">特定商取引法に基づく表記</a></li>
 </ul>
 
 <div id="copyright">(C) <!--{$arrSiteInfo.shop_name|escape}-->.</div>

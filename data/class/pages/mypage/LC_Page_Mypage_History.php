@@ -78,10 +78,6 @@ class LC_Page_Mypage_History extends LC_Page {
         $objCustomer = new SC_Customer();
         $objDb = new SC_Helper_DB_Ex();
 
-        // レイアウトデザインを取得
-        $objLayout = new SC_Helper_PageLayout_Ex();
-        $objLayout->sfGetPageLayout($this, false, "mypage/index.php");
-
         // FIXME 他の画面と同様のバリデーションを行なう
         if (!SC_Utils_Ex::sfIsInt($_GET['order_id'])) {
             SC_Utils_Ex::sfDispException();

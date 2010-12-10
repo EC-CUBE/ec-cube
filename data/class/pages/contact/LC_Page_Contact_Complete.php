@@ -64,9 +64,7 @@ class LC_Page_Contact_Complete extends LC_Page {
      * @return void
      */
     function action() {
-        // レイアウトデザインを取得
-        $layout = new SC_Helper_PageLayout_Ex();
-        $layout->sfGetPageLayout($this, false, DEF_LAYOUT);
+        // do nothing...
     }
 
     /**

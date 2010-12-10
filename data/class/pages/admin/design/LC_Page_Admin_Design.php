@@ -24,9 +24,6 @@
 // {{{ requires
 require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
 
-/** ターゲットID 未使用 */
-define('TARGET_ID_UNUSED', 0);
-
 /**
  * デザイン管理 のページクラス.
  *
@@ -52,6 +49,8 @@ class LC_Page_Admin_Design extends LC_Page_Admin {
         $this->tpl_subno = "layout";
         $this->tpl_mainno = "design";
         $this->tpl_subtitle = 'レイアウト編集';
+        $masterData = new SC_DB_MasterData_Ex();
+        $this->arrTarget = $masterData->getMasterData("mtb_target");
     }
 
     /**
@@ -67,48 +66,46 @@ class LC_Page_Admin_Design extends LC_Page_Admin {
     /**
      * Page のアクション.
      *
+     * TODO パラメータの数値チェック
+     *
      * @return void
      */
     function action() {
-        $objSess = new SC_Session();
         $objLayout = new SC_Helper_PageLayout_Ex();
+        $objQuery =& SC_Query::getSingletonInstance();
 
         // 認証可否の判定
         $objSess = new SC_Session();
         SC_Utils_Ex::sfIsSuccess($objSess);
 
         // ページIDを取得
-        if (isset($_GET['page_id'])) {
-            $page_id = $_GET['page_id'];
-        }else if (isset($_POST['page_id'])){
-            $page_id = $_POST['page_id'];
-        }else{
+        if (isset($_REQUEST['page_id']) && is_numeric($_REQUEST['page_id'])) {
+            $page_id = $_REQUEST['page_id'];
+        } else {
             $page_id = 1;
+        }
+        // 端末種別IDを取得
+        if (isset($_REQUEST['device_type_id'])
+            && is_numeric($_REQUEST['device_type_id'])) {
+            $device_type_id = $_REQUEST['device_type_id'];
+        } else {
+            $device_type_id = DEVICE_TYPE_PC;
         }
 
         // 編集可能ページを取得
-        $this->arrEditPage = $objLayout->lfgetPageData();
+        $this->arrEditPage = $objLayout->lfGetPageData("page_id <> 0 AND device_type_id = ?", array($device_type_id));
 
-        // ブロック配置用データを取得
-        $sel   = ", pos.target_id, pos.bloc_id, pos.bloc_row ,pos.anywhere";
-        $from  = ", dtb_blocposition AS pos";
-        $where = " where ";
-        $where .= "( pos.anywhere = 1 OR (lay.device_type_id = ? AND lay.page_id = ? AND ";
-        $where .= "lay.page_id = pos.page_id AND exists (select bloc_id from dtb_bloc as blc where pos.bloc_id = blc.bloc_id) )) ORDER BY lay.page_id,pos.target_id, pos.bloc_row, pos.bloc_id ";
-        //        $where .= "((lay.page_id = ? AND ";
-        //        $where .= "lay.page_id = pos.page_id AND exists (select bloc_id from dtb_bloc as blc where pos.bloc_id = blc.bloc_id) )) ORDER BY lay.page_id,pos.target_id, pos.bloc_row, pos.bloc_id ";
-
-        $arrData = array($_GET['device_type_id'], $page_id);
-        $arrBlocPos = $this->lfgetLayoutData($sel, $from, $where, $arrData );
+        // レイアウト情報を取得
+        $arrBlocPos = $objLayout->lfGetNaviData($page_id, $device_type_id);
 
         // データの存在チェックを行う
-        $arrPageData = $objLayout->lfgetPageData("page_id = ?", array($page_id));
+        $arrPageData = $objLayout->lfGetPageData("page_id = ? AND device_type_id = ?", array($page_id, $device_type_id));
+
         if (count($arrPageData) <= 0) {
-            $exists_page = 0;
+            $this->exists_page = 0;
         }else{
-            $exists_page = 1;
+            $this->exists_page = 1;
         }
-        $this->exists_page = $exists_page;
 
         // メッセージ表示
         if (isset($_GET['msg']) && $_GET['msg'] == "on") {
@@ -116,107 +113,94 @@ class LC_Page_Admin_Design extends LC_Page_Admin {
         }
 
         // ブロックを取得
-        $arrBloc = $this->lfgetBlocData();
+        $arrBloc = $objQuery->select("*", "dtb_bloc", "device_type_id = ?", array($device_type_id));
 
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
+        switch ($_POST['mode']) {
         // 新規ブロック作成
-        if ($_POST['mode'] == 'new_bloc') {
+        case 'new_bloc':
             $this->objDisplay->redirect($this->getLocation("./bloc.php"));
             exit;
-        }
+            break;
 
         // 新規ページ作成
-        if ($_POST['mode'] == 'new_page') {
+        case 'new_page':
             $this->objDisplay->redirect($this->getLocation("./main_edit.php"));
             exit;
-        }
+            break;
 
-        // データ登録処理
-        if ($_POST['mode'] == 'confirm' or $_POST['mode'] == 'preview') {
+        case 'confirm':
+        case 'preview':
             $page_id = $_POST['page_id'];
             if ($_POST['mode'] == 'preview') {
                 $page_id = '0';
             }
-            $masterData = new SC_DB_MasterData_Ex();
-            $arrTarget = $masterData->getMasterData("mtb_target");
 
             // 更新用にデータを整える
             $arrUpdBlocData = array();
-            $arrTargetFlip = array_flip($arrTarget);
 
-            $upd_cnt = 1;
-            $arrUpdData[$upd_cnt]['page_id'] = $page_id;
+            // delete実行
+            $arrRet = $objQuery->delete("dtb_blocposition",
+                                        "page_id = ? AND device_type_id = ?",
+                                        array($page_id, $device_type_id));
+
+            $arrTargetFlip = array_flip($this->arrTarget);
 
             // POSTのデータを使いやすいように修正
-            for($upd_cnt = 1; $upd_cnt <= $_POST['bloc_cnt']; $upd_cnt++){
+            for ($upd_cnt = 1; $upd_cnt <= $_POST['bloc_cnt']; $upd_cnt++) {
                 if (!isset($_POST['id_'.$upd_cnt])) {
                     break;
                 }
-                $arrUpdBlocData[$upd_cnt]['name']       = $_POST['name_'.$upd_cnt];                         // ブロック名称
-                $arrUpdBlocData[$upd_cnt]['id']         = $_POST['id_'.$upd_cnt];                           // ブロックID
-                $arrUpdBlocData[$upd_cnt]['target_id']  = $arrTargetFlip[$_POST['target_id_'.$upd_cnt]];    // ターゲットID
-                $arrUpdBlocData[$upd_cnt]['top']        = $_POST['top_'.$upd_cnt];                          // TOP座標
-                $arrUpdBlocData[$upd_cnt]['anywhere']   = $_POST['anywhere_'.$upd_cnt];                     // 全ページ適用か
-                $arrUpdBlocData[$upd_cnt]['update_url'] = $_SERVER['HTTP_REFERER'];                         // 更新URL
 
+                // ブロック名称
+                $arrUpdBlocData[$upd_cnt]['name']       = $_POST['name_'.$upd_cnt];
+                // ブロックID
+                $arrUpdBlocData[$upd_cnt]['id']         = $_POST['id_'.$upd_cnt];
+                // ターゲットID
+                $arrUpdBlocData[$upd_cnt]['target_id']  = $arrTargetFlip[$_POST['target_id_'.$upd_cnt]];
+                // TOP座標
+                $arrUpdBlocData[$upd_cnt]['top']        = $_POST['top_'.$upd_cnt];
+                // 全ページ適用か
+                $arrUpdBlocData[$upd_cnt]['anywhere']   = $_POST['anywhere_'.$upd_cnt];
+                // 更新URL
+                $arrUpdBlocData[$upd_cnt]['update_url'] = $_SERVER['HTTP_REFERER'];
             }
 
-            // データの更新を行う
-            $objQuery = new SC_Query();     // DB操作オブジェクト
-            $arrRet = array();              // データ取得用
-
-            // delete実行
-            $del_sql = "";
-            $del_sql .= "DELETE FROM dtb_blocposition WHERE page_id = ? ";
-            $arrRet = $objQuery->query($del_sql,array($page_id));
 
             // ブロックの順序を取得し、更新を行う
-            foreach($arrUpdBlocData as $key => $val){
+            foreach ($arrUpdBlocData as $key => $val) {
                 if ($arrUpdBlocData[$key]['target_id'] == TARGET_ID_UNUSED) {
                     continue;
                 }
 
                 // ブロックの順序を取得
-                $bloc_row = $this->lfGetRowID($arrUpdBlocData, $val);
-                $arrUpdBlocData[$key]['bloc_row'] = $bloc_row;
-                $arrUpdBlocData[$key]['page_id']    =  $page_id;    // ページID
-
-                // insert文生成
-                $ins_sql = "";
-                $ins_sql .= "INSERT INTO dtb_blocposition ";
-                $ins_sql .= " values ( ";
-                $ins_sql .= "   ?  ";           // ページID
-                $ins_sql .= "   ,? ";           // ターゲットID
-                $ins_sql .= "   ,? ";           // ブロックID
-                $ins_sql .= "   ,? ";           // ブロックの並び順序
-                $ins_sql .= "   ,(SELECT filename FROM dtb_bloc WHERE bloc_id = ?) ";           // ファイル名称
-                $ins_sql .= "   ,? ";           // 全ページフラグ
-                $ins_sql .= "   )  ";
+                $arrUpdBlocData[$key]['bloc_row'] = $this->lfGetRowID($arrUpdBlocData, $val);
 
                 // insertデータ生成
-                $arrInsData = array($page_id,
-                    $arrUpdBlocData[$key]['target_id'],
-                    $arrUpdBlocData[$key]['id'],
-                    $arrUpdBlocData[$key]['bloc_row'],
-                    $arrUpdBlocData[$key]['id'],
-                    $arrUpdBlocData[$key]['anywhere'] ? 1 : 0
-                );
-                $count = $objQuery->getOne("SELECT COUNT(*) FROM dtb_blocposition WHERE anywhere = 1 AND bloc_id = ?",array($arrUpdBlocData[$key]['id']));
+                $arrInsData = array('device_type_id' => $device_type_id,
+                                    'page_id' => $page_id,
+                                    'target_id' => $arrUpdBlocData[$key]['target_id'],
+                                    'bloc_id' => $arrUpdBlocData[$key]['id'],
+                                    'bloc_row' => $arrUpdBlocData[$key]['bloc_row'],
+                                    'anywhere' => $arrUpdBlocData[$key]['anywhere'] ? 1 : 0);
+                $count = $objQuery->getOne("SELECT COUNT(*) FROM dtb_blocposition WHERE anywhere = 1 AND bloc_id = ? AND device_type_id = ?",
+                                           array($arrUpdBlocData[$key]['id'], $device_type_id));
 
-                if($arrUpdBlocData[$key]['anywhere'] == 1){
-                    $count = $objQuery->getOne("SELECT COUNT(*) FROM dtb_blocposition WHERE anywhere = 1 AND bloc_id = ?",array($arrUpdBlocData[$key]['id']));
-                    if($count != 0){
+                if ($arrUpdBlocData[$key]['anywhere'] == 1) {
+                    $count = $objQuery->getOne("SELECT COUNT(*) FROM dtb_blocposition WHERE anywhere = 1 AND bloc_id = ? AND device_type_id = ?",
+                                               array($arrUpdBlocData[$key]['id'], $device_type_id));
+                    if ($count != 0) {
                         continue;
-                    }else{
                     }
-                }else{
-                    if($count > 0){
-                        $objQuery->query("DELETE FROM dtb_blocposition WHERE anywhere = 1 AND bloc_id = ?",array($arrUpdBlocData[$key]['id']));
+                } else {
+                    if ($count > 0) {
+                        $objQuery->query("DELETE FROM dtb_blocposition WHERE anywhere = 1 AND bloc_id = ? AND device_type_id = ?",
+                                         array($arrUpdBlocData[$key]['id'], $device_type_id));
                     }
                 }
                 // SQL実行
-                $arrRet = $objQuery->query($ins_sql,$arrInsData);
+                $arrRet = $objQuery->insert("dtb_blocposition", $arrInsData);
             }
 
             // プレビュー処理
@@ -232,20 +216,25 @@ class LC_Page_Admin_Design extends LC_Page_Admin {
                 $this->objDisplay->redirect($this->getLocation(URL_DIR . "preview/" . DIR_INDEX_URL, array("filename" => $arrPageData[0]["filename"])));
                 exit;
 
-            }else{
+            } else {
                 $this->objDisplay->redirect($this->getLocation(DIR_INDEX_URL,
-                array("page_id" => $page_id,
-                                                  "msg" => "on")));
+                                                               array("device_type_id" => $device_type_id, "page_id" => $page_id, "msg" => "on")));
                 exit;
 
             }
-        }
+        break;
 
-        // データ削除処理 ベースデータでなければファイルを削除
-        if ($_POST['mode'] == 'delete' and  !$objLayout->lfCheckBaseData($page_id)) {
-            $objLayout->lfDelPageData($page_id);
-            $this->objDisplay->redirect($this->getLocation(DIR_INDEX_URL));
-            exit;
+        // データ削除処理
+        case 'delete':
+            //ベースデータでなければファイルを削除
+            if (!$objLayout->lfCheckBaseData($page_id, $device_type_id)) {
+                $objLayout->lfDelPageData($page_id, $device_type_id);
+                $this->objDisplay->redirect($this->getLocation(DIR_INDEX_URL));
+                exit;
+            }
+        break;
+
+        default:
         }
 
         // ブロック情報を画面配置用に編集
@@ -256,17 +245,14 @@ class LC_Page_Admin_Design extends LC_Page_Admin {
             if ($val['page_id'] == $page_id) {
                 $tpl_arrBloc = $this->lfSetBlocData($arrBloc, $val, $tpl_arrBloc, $cnt);
                 $cnt++;
-            }else{
             }
         }
-
         // 未使用のブロックデータを追加
         foreach($arrBloc as $key => $val){
             if (!$this->lfChkBloc($val, $tpl_arrBloc)) {
                 $val['target_id'] = TARGET_ID_UNUSED; // 未使用に追加する
                 $tpl_arrBloc = $this->lfSetBlocData($arrBloc, $val, $tpl_arrBloc, $cnt);
                 $cnt++;
-            }else{
             }
         }
 
@@ -275,7 +261,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin {
         $this->page_id = $page_id;
 
         // ページ名称を取得
-        $arrPageData = $objLayout->lfgetPageData(' page_id = ?', array($page_id));
+        $arrPageData = $objLayout->lfGetPageData('page_id = ? AND device_type_id = ?', array($page_id, $device_type_id));
         $this->arrPageData = $arrPageData[0];
 
         global $GLOBAL_ERR;
@@ -300,103 +286,17 @@ class LC_Page_Admin_Design extends LC_Page_Admin {
     }
 
     /**
-     * 編集可能なページ情報を取得する.
-     *
-     * @param string $sel Select句文
-     * @param string $where Where句文
-     * @param array $arrVa Where句の絞込条件値
-     * @return array ページレイアウト情報の配列
-     */
-    function lfgetLayoutData($sel = '' , $from = '', $where = '', $arrVal = ''){
-        $objQuery = new SC_Query();     // DB操作オブジェクト
-        $sql = "";                      // データ取得SQL生成用
-        $arrRet = array();              // データ取得用
-
-        // SQL生成
-
-        $sql = "";
-        $sql .= " select ";
-        $sql .= "     lay.page_id ";
-        $sql .= "     ,lay.page_name ";
-        $sql .= "     ,lay.url ";
-        $sql .= "     ,lay.author ";
-        $sql .= "     ,lay.description ";
-        $sql .= "     ,lay.keyword ";
-        $sql .= "     ,lay.update_url ";
-        $sql .= "     ,lay.create_date ";
-        $sql .= "     ,lay.update_date ";
-
-        // Select句の指定があれば追加
-        if ($sel != '') {
-            $sql .= $sel;
-        }
-
-        $sql .= " from dtb_pagelayout AS lay ";
-        // From句の指定があれば追加
-        if ($from != '') {
-            $sql .= $from;
-        }
-
-        // where句の指定があれば追加
-        if ($where != '') {
-            $sql .= $where;
-        }else{
-            $sql .= " ORDER BY lay.page_id ";
-        }
-
-        $arrRet = $objQuery->getAll($sql, $arrVal);
-
-        return $arrRet;
-    }
-
-    /**
-     * ブロック情報を取得する.
-     *
-     * @param string $where Where句文
-     * @param array $arrVal Where句の絞込条件値
-     * @return array ブロック情報の配列
-     */
-    function lfgetBlocData($where = '', $arrVal = ''){
-        $objQuery = new SC_Query();     // DB操作オブジェクト
-        $sql = "";                      // データ取得SQL生成用
-        $arrRet = array();              // データ取得用
-
-        // SQL生成
-        $sql = "";
-        $sql .= " SELECT ";
-        $sql .= "   bloc_id";
-        $sql .= "   ,bloc_name";
-        $sql .= "   ,tpl_path";
-        $sql .= "   ,filename";
-        $sql .= "   ,update_date";
-        $sql .= " FROM ";
-        $sql .= "   dtb_bloc";
-
-        // where句の指定があれば追加
-        if ($where != '') {
-            $sql .= " WHERE " . $where;
-        }
-
-        $sql .= " ORDER BY  bloc_id";
-
-        $arrRet = $objQuery->getAll($sql, $arrVal);
-
-        return $arrRet;
-    }
-
-    /**
      * ブロック情報の配列を生成する.
      *
      * @param array $arrBloc Bloc情報
      * @param array $tpl_arrBloc データをセットする配列
+     * @param array $val DBから取得したブロック情報
      * @param integer $cnt 配列番号
      * @return array データをセットした配列
      */
     function lfSetBlocData($arrBloc, $val, $tpl_arrBloc, $cnt) {
-        $masterData = new SC_DB_MasterData_Ex();
-        $arrTarget = $masterData->getMasterData("mtb_target");
 
-        $tpl_arrBloc[$cnt]['target_id'] = $arrTarget[$val['target_id']];
+        $tpl_arrBloc[$cnt]['target_id'] = $this->arrTarget[$val['target_id']];
         $tpl_arrBloc[$cnt]['bloc_id'] = $val['bloc_id'];
         $tpl_arrBloc[$cnt]['bloc_row'] =
         isset($val['bloc_row']) ? $val['bloc_row'] : "";
@@ -457,6 +357,8 @@ class LC_Page_Admin_Design extends LC_Page_Admin {
     /**
      * プレビューするデータを DB に保存する.
      *
+     * FIXME
+     *
      * @param array $arrPageData ページ情報の配列
      * @return void
      */
@@ -499,7 +401,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin {
 
         // 更新データの取得
         $sql = "select page_id,page_name, header_chk, footer_chk from dtb_pagelayout where page_id = ? OR page_id = (SELECT page_id FROM dtb_blocposition WHERE anywhere = 1)" ;
-        
+
         $ret = $objQuery->getAll($sql, array($arrPageData[0]['page_id']));
 
         // dbデータのコピー
@@ -522,7 +424,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin {
         ,USER_DIR . "templates/" . TEMPLATE_NAME . "/"
         ,$filename
 //      ,$ret[0]['anywhere']
-         
+
         );
 
         $objQuery->query($sql,$arrUpdData);

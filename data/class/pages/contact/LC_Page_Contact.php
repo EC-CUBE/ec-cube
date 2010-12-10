@@ -98,10 +98,6 @@ class LC_Page_Contact extends LC_Page {
 
         $this->arrData = isset($_SESSION['customer']) ? $_SESSION['customer'] : "";
 
-        // レイアウトデザインを取得
-        $layout = new SC_Helper_PageLayout_Ex();
-        $layout->sfGetPageLayout($this, false, DEF_LAYOUT);
-
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
         switch ($_POST['mode']) {

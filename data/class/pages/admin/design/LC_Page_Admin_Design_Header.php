@@ -65,6 +65,8 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin {
     /**
      * Page のアクション.
      *
+     * FIXME テンプレートの取得方法を要修正
+     *
      * @return void
      */
     function action() {

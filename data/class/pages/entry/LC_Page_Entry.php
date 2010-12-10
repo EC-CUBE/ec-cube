@@ -181,10 +181,6 @@ class LC_Page_Entry extends LC_Page {
             SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", true);
         }
 
-        // レイアウトデザインを取得
-        $objLayout = new SC_Helper_PageLayout_Ex();
-        $objLayout->sfGetPageLayout($this, false, DEF_LAYOUT);
-
         //---- 登録用カラム配列
         $arrRegistColumn = array(
                                      array(  "column" => "name01", "convert" => "aKV" ),
@@ -391,10 +387,6 @@ class LC_Page_Entry extends LC_Page {
                 $this->tpl_from_address = $CONF['email03'];
             }
         }
-
-        // レイアウトデザインを取得
-        $objLayout = new SC_Helper_PageLayout_Ex();
-        $objLayout->sfGetPageLayout($this, false, DEF_LAYOUT);
 
         //---- 登録用カラム配列
         $arrRegistColumn = array(
