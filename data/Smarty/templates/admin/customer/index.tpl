@@ -81,20 +81,6 @@
     <tr>
       <th>顧客ID</th>
       <td><!--{if $arrErr.customer_id}--><span class="attention"><!--{$arrErr.customer_id}--></span><br /><!--{/if}--><input type="text" name="customer_id" maxlength="<!--{$smarty.const.INT_LEN}-->" value="<!--{$arrForm.customer_id|escape}-->" size="30" class="box30" <!--{if $arrErr.customer_id}--><!--{sfSetErrorStyle}--><!--{/if}--> /></td>
-    </tr>
-    <tr>
-      <th>顧客名</th>
-      <td><!--{if $arrErr.name}--><span class="attention"><!--{$arrErr.name}--></span><br /><!--{/if}--><input type="text" name="name" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$arrForm.name|escape}-->" size="30" class="box30" <!--{if $arrErr.name}--><!--{sfSetErrorStyle}--><!--{/if}--> /></td>
-    </tr>
-    <tr>
-      <th>顧客名(カナ)</th>
-      <td><!--{if $arrErr.kana}--><span class="attention"><!--{$arrErr.kana}--></span><br /><!--{/if}--><input type="text" name="kana" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$arrForm.kana|escape}-->" size="30" class="box30" <!--{if $arrErr.kana}--><!--{sfSetErrorStyle}--><!--{/if}--> /></td>
-    </tr>
-    <tr>
-      <th>会員状態</th>
-      <td><!--{html_checkboxes name="status" options=$arrStatus separator="&nbsp;" selected=$arrForm.status}--></td>
-    </tr>
-    <tr>
       <th>都道府県</th>
       <td>
         <!--{if $arrErr.pref}--><span class="attention"><!--{$arrErr.pref}--></span><br /><!--{/if}-->
@@ -105,10 +91,14 @@
       </td>
     </tr>
     <tr>
-      <th>性別</th>
-      <td><!--{html_checkboxes name="sex" options=$arrSex separator="&nbsp;" selected=$arrForm.sex}--></td>
+      <th>顧客名</th>
+      <td><!--{if $arrErr.name}--><span class="attention"><!--{$arrErr.name}--></span><br /><!--{/if}--><input type="text" name="name" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$arrForm.name|escape}-->" size="30" class="box30" <!--{if $arrErr.name}--><!--{sfSetErrorStyle}--><!--{/if}--> /></td>
+      <th>顧客名(カナ)</th>
+      <td><!--{if $arrErr.kana}--><span class="attention"><!--{$arrErr.kana}--></span><br /><!--{/if}--><input type="text" name="kana" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$arrForm.kana|escape}-->" size="30" class="box30" <!--{if $arrErr.kana}--><!--{sfSetErrorStyle}--><!--{/if}--> /></td>
     </tr>
     <tr>
+      <th>性別</th>
+      <td><!--{html_checkboxes name="sex" options=$arrSex separator="&nbsp;" selected=$arrForm.sex}--></td>
       <th>誕生月</th>
       <td><!--{if $arrErr.birth_month}--><span class="attention"><!--{$arrErr.birth_month}--></span><br /><!--{/if}-->
         <select name="birth_month" style="<!--{$arrErr.birth_month|sfGetErrorColor}-->" >
@@ -118,8 +108,12 @@
       </td>
     </tr>
     <tr>
+      <th>会員状態</th>
+      <td colspan="3"><!--{html_checkboxes name="status" options=$arrStatus separator="&nbsp;" selected=$arrForm.status}--></td>
+    </tr>
+    <tr>
       <th>誕生日</th>
-      <td>
+      <td colspan="3">
         <!--{if $arrErr.b_start_year || $arrErr.b_end_year}--><span class="attention"><!--{$arrErr.b_start_year}--><!--{$arrErr.b_end_year}--></span><br /><!--{/if}-->
         <select name="b_start_year" <!--{if $arrErr.b_start_year || $arrErr.b_end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
           <option value="" selected="selected">----</option>
@@ -149,31 +143,29 @@
     </tr>
     <tr>
       <th>メールアドレス</th>
-      <td><!--{if $arrErr.email}--><span class="attention"><!--{$arrErr.email}--></span><!--{/if}--><input type="text" name="email" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$arrForm.email|escape}-->" size="60" class="box60" <!--{if $arrErr.email}--><!--{sfSetErrorStyle}--><!--{/if}-->/></td>
+      <td colspan="3"><!--{if $arrErr.email}--><span class="attention"><!--{$arrErr.email}--></span><!--{/if}--><input type="text" name="email" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$arrForm.email|escape}-->" size="60" class="box60" <!--{if $arrErr.email}--><!--{sfSetErrorStyle}--><!--{/if}-->/></td>
     </tr>
     <tr>
       <th>携帯メールアドレス</th>
-      <td><!--{if $arrErr.email_mobile}--><span class="attention"><!--{$arrErr.email_mobile}--></span><!--{/if}--><input type="text" name="email_mobile" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$arrForm.email_mobile|escape}-->" size="60" class="box60" <!--{if $arrErr.email_mobile}--><!--{sfSetErrorStyle}--><!--{/if}-->/></td>
+      <td colspan="3"><!--{if $arrErr.email_mobile}--><span class="attention"><!--{$arrErr.email_mobile}--></span><!--{/if}--><input type="text" name="email_mobile" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$arrForm.email_mobile|escape}-->" size="60" class="box60" <!--{if $arrErr.email_mobile}--><!--{sfSetErrorStyle}--><!--{/if}-->/></td>
     </tr>
     <tr>
       <th>電話番号</th>
-      <td><!--{if $arrErr.tel}--><span class="attention"><!--{$arrErr.tel}--></span><br /><!--{/if}--><input type="text" name="tel" maxlength="<!--{$smarty.const.TEL_LEN}-->" value="<!--{$arrForm.tel|escape}-->" size="60" class="box60" /></td>
+      <td colspan="3"><!--{if $arrErr.tel}--><span class="attention"><!--{$arrErr.tel}--></span><br /><!--{/if}--><input type="text" name="tel" maxlength="<!--{$smarty.const.TEL_LEN}-->" value="<!--{$arrForm.tel|escape}-->" size="60" class="box60" /></td>
     </tr>
     <tr>
       <th>職業</th>
-      <td><!--{html_checkboxes name="job" options=$arrJob separator="&nbsp;" selected=$arrForm.job}--></td>
+      <td colspan="3"><!--{html_checkboxes name="job" options=$arrJob separator="&nbsp;" selected=$arrForm.job}--></td>
     </tr>
     <tr>
       <th>購入金額</th>
       <td><!--{if $arrErr.buy_total_from || $arrErr.buy_total_to}--><span class="attention"><!--{$arrErr.buy_total_from}--><!--{$arrErr.buy_total_to}--></span><br /><!--{/if}--><input type="text" name="buy_total_from" maxlength="<!--{$smarty.const.INT_LEN}-->" value="<!--{$arrForm.buy_total_from|escape}-->" size="6" class="box6" <!--{if $arrErr.buy_total_from || $arrErr.buy_total_to}--><!--{sfSetErrorStyle}--><!--{/if}--> /> 円 ～ <input type="text" name="buy_total_to" maxlength="<!--{$smarty.const.INT_LEN}-->" value="<!--{$arrForm.buy_total_to|escape}-->" size="6" class="box6" <!--{if $arrErr.buy_total_from || $arrErr.buy_total_to}--><!--{sfSetErrorStyle}--><!--{/if}--> /> 円</td>
-    </tr>
-    <tr>
       <th>購入回数</th>
       <td><!--{if $arrErr.buy_times_from || $arrErr.buy_times_to}--><span class="attention"><!--{$arrErr.buy_times_from}--><!--{$arrErr.buy_times_to}--></span><br /><!--{/if}--><input type="text" name="buy_times_from" maxlength="<!--{$smarty.const.INT_LEN}-->" value="<!--{$arrForm.buy_times_from|escape}-->" size="6" class="box6" <!--{if $arrErr.buy_times_from || $arrErr.buy_times_to}--><!--{sfSetErrorStyle}--><!--{/if}--> /> 回 ～ <input type="text" name="buy_times_to" maxlength="<!--{$smarty.const.INT_LEN}-->" value="<!--{$arrForm.buy_times_to|escape}-->" size="6" class="box6" <!--{if $arrErr.buy_times_from || $arrErr.buy_times_to}--><!--{sfSetErrorStyle}--><!--{/if}--> /> 回</td>
     </tr>
     <tr>
       <th>登録・更新日</th>
-      <td>
+      <td colspan="3">
         <!--{if $arrErr.start_year || $arrErr.end_year}--><span class="attention"><!--{$arrErr.start_year}--><!--{$arrErr.end_year}--></span><br /><!--{/if}-->
         <select name="start_year" <!--{if $arrErr.start_year || $arrErr.end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
           <option value="" selected="selected">----</option>
@@ -203,7 +195,7 @@
     </tr>
     <tr>
       <th>最終購入日</th>
-      <td>
+      <td colspan="3">
         <!--{if $arrErr.buy_start_year || $arrErr.buy_end_year}--><span class="attention"><!--{$arrErr.buy_start_year}--><!--{$arrErr.buy_end_year}--></span><br /><!--{/if}-->
         <select name="buy_start_year" style="<!--{$arrErr.buy_start_year|sfGetErrorColor}-->">
           <option value="" selected="selected">----</option>
@@ -239,8 +231,6 @@
         <input type="text" name="buy_product_name" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$arrForm.buy_product_name|escape}-->" size="30" class="box30" style="<!--{$arrErr.buy_product_name|sfGetErrorColor}-->"/>
         </span>
       </td>
-    </tr>
-    <tr>
       <th>購入商品コード</th>
       <td>
         <!--{if $arrErr.buy_product_code}--><span class="attention"><!--{$arrErr.buy_product_code}--></span><!--{/if}-->
@@ -249,7 +239,7 @@
     </tr>
     <tr>
       <th>カテゴリ</th>
-      <td>
+      <td colspan="3">
         <select name="category_id" style="<!--{if $arrErr.category_id != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->">
           <option value="">選択してください</option>
           <!--{html_options options=$arrCatList selected=$arrForm.category_id}-->
@@ -290,15 +280,15 @@
 <input type="hidden" name="csv_mode" value="" />
 
   <h2>検索結果一覧</h2>
-　<p>
+  <div class="btn">
     <span class="attention"><!--検索結果数--><!--{$tpl_linemax}-->件</span>&nbsp;が該当しました。
     <!--検索結果-->
     <!--{if $smarty.const.ADMIN_MODE == '1'}-->
     <button type="button" onclick="fnModeSubmit('delete_all','','');">検索結果をすべて削除</button>
     <!--{/if}-->
-    <button type="button" onclick="fnModeSubmit('csv','','');">CSV DOWNLOAD</button>
-    <a href="../contents/csv.php?tpl_subno_csv=customer"> &gt;&gt; CSV出力項目設定</a>
-  </p>
+    <button type="button" onclick="fnModeSubmit('csv','','');">CSV ダウンロード</button>
+    <button type="button" onclick="location.href='../contents/csv.php?tpl_subno_csv=customer'">CSV 出力項目設定</button>
+  </div>
   <!--{include file=$tpl_pager}-->
 
   <!--{if count($search_data) > 0}-->

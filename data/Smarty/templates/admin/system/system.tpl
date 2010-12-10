@@ -22,7 +22,6 @@
  */
 *}-->
 
-<h2>システム情報</h2>
 <table border="0" cellspacing="1" cellpadding="8" summary=" ">
     <!--{foreach from=$arrSystemInfo item=info}-->
     <tr>

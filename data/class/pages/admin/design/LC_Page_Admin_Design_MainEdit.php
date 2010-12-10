@@ -103,7 +103,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
 
         // page_id が指定されている場合にはテンプレートデータの取得
         if (is_numeric($page_id) and $page_id != '') {
-            $this->lfGetPageData($page_id, $objView);
+            $this->lfGetPageData($page_id, $device_type_id, $objView);
         }
 
         if (!isset($_POST['mode'])) $_POST['mode'] = "";

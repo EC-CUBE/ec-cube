@@ -38,8 +38,7 @@ function confirmSubmit(mode, msg) {
 <input type="hidden" name="mode" value="" />
 <input type="hidden" name="uniqid" value="<!--{$uniqid}-->" />
 <div id="disign" class="contents-main">
-  <h2>アップロード</h2>
-  <p>
+  <p class="remark">
     テンプレートパッケージのアップロードを行います。<br />
     アップロードしたパッケージは、「テンプレート設定」で選択できるようになります。
   </p>

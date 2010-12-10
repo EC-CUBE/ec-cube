@@ -104,7 +104,7 @@
   <h2><!--{include file=$tpl_graphsubtitle}--></h2>
 
   <div class="btn">
-    <button type="button" onclick="fnModeSubmit('csv','','');"><span>検索結果をCSVダウンロード</span></button>
+    <button type="button" onclick="fnModeSubmit('csv','','');"><span>CSVダウンロード</span></button>
   </div>
 
   <!--{* グラフ表示 *}-->

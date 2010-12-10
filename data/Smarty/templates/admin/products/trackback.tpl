@@ -30,16 +30,12 @@
     <tr>
       <th>ブログ名</th>
       <td><input type="text" name="search_blog_name" value="<!--{$arrForm.search_blog_name|escape}-->" size="30" class="box30" /></td>
-    </tr>
-    <tr>
       <th>ブログ記事タイトル</th>
       <td><input type="text" name="search_blog_title" value="<!--{$arrForm.search_blog_title|escape}-->" size="30" class="box30" /></td>
     </tr>
     <tr>
       <th>URL</th>
       <td><input type="text" name="search_blog_url" value="<!--{$arrForm.search_blog_url|escape}-->" size="30" class="box30" /></td>
-    </tr>
-    <tr>
       <th>状態</th>
       <td>
       <select name="search_status" style="<!--{$arrErr.search_status|sfGetErrorColor}-->">
@@ -51,14 +47,12 @@
     <tr>
       <th>商品名</th>
       <td><input type="text" name="search_name" value="<!--{$arrForm.search_name|escape}-->" size="30" class="box30" /></td>
-    </tr>
-    <tr>
       <th>商品コード</th>
       <td><input type="text" name="search_product_code" value="<!--{$arrForm.search_product_code|escape}-->" size="30" class="box30" /></td>
     </tr>
     <tr>
       <th>投稿日</th>
-      <td>
+      <td colspan="3">
       <!--{if $arrErr.search_startyear || $arrErr.search_endyear}-->
       <span class="attention"><!--{$arrErr.search_startyear}--></span>
       <span class="attention"><!--{$arrErr.search_endyear}--></span>    
@@ -91,7 +85,7 @@
     </tr>
   </table>
 
-  <div>
+  <div class="btn">
     検索結果表示件数
     <!--{assign var=key value="search_page_max"}-->
     <!--{if $arrErr[$key]}-->
@@ -120,14 +114,12 @@
   <!--{/foreach}-->
 
   <h2>検索結果一覧</h2>
-  <p>
+  <div class="btn">
     <span class="attention"><!--検索結果数--><!--{$tpl_linemax}-->件</span>&nbsp;が該当しました。
     <!--{if $smarty.const.ADMIN_MODE == '1'}-->
     <button type="button" onclick="fnModeSubmit('delete_all','','');"><span>検索結果をすべて削除</span></button>
     <!--{/if}-->
-  </p>
-  <div class="btn">
-    <button type="button" onclick="fnModeSubmit('csv','','');" ><span>CSV DOWNLOAD</span></button>
+    <button type="button" onclick="fnModeSubmit('csv','','');" ><span>CSV ダウンロード</span></button>
   </div>
   <!--{include file=$tpl_pager}-->
   

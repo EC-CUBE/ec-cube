@@ -81,7 +81,7 @@
     <!--{/section}-->
   </table>
   <div class="btn">
-    <button type="button" onclick="location.href='./class.php'"><span>前のページに戻る</span></button>
+    <button type="button" onclick="location.href='./class.php'"><span>規格一覧に戻る</span></button>
   </div>
 </div>
 </form>  

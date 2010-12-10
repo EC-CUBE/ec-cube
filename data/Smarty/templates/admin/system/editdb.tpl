@@ -22,8 +22,6 @@
  */
 *}-->
 
-<h2>インデックス管理</h2>
-
 <form name="index_form"  method="post" action="?"> 
   <input type="hidden" name="mode" value="confirm" />
       <table class="list">
@@ -38,7 +36,7 @@
  <!--{section name=cnt loop=$arrForm}-->
   
     <tr>
-    <td><input type="checkbox" name="indexflag_new[]" value="<!--{$smarty.section.cnt.index}-->" <!--{if $arrForm[cnt].indexflag == "1"}-->checked<!--{/if}--> /></td>
+    <td class="center"><input type="checkbox" name="indexflag_new[]" value="<!--{$smarty.section.cnt.index}-->" <!--{if $arrForm[cnt].indexflag == "1"}-->checked<!--{/if}--> /></td>
     <td><!--{$arrForm[cnt].table_name}--></td>
     <td><!--{$arrForm[cnt].column_name}--></td>
     <td><!--{$arrForm[cnt].recommend_comment}--></td>

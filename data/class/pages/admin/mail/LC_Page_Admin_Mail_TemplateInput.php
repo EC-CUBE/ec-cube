@@ -46,6 +46,7 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin {
         $this->tpl_mainpage = 'mail/template_input.tpl';
         $this->tpl_mainno = 'mail';
         $this->tpl_subnavi = 'mail/subnavi.tpl';
+        $this->tpl_subtitle = 'テンプレート設定';
         $this->tpl_subno = "template";
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrMagazineType = $masterData->getMasterData("mtb_magazine_type");

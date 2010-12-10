@@ -49,7 +49,7 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin {
         $this->footer_row = 13;
         $this->tpl_subno = "header";
         $this->tpl_mainno = "design";
-        $this->tpl_subtitle = 'ヘッダー･フッター編集';
+        $this->tpl_subtitle = 'ヘッダー/フッター設定';
     }
 
     /**

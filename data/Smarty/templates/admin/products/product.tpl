@@ -72,7 +72,7 @@ function selectAll(target) {
 <input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->" />
 <!--{/foreach}-->
 <div id="products" class="contents-main">
-  <h2><!--コンテンツタイトル-->商品登録</h2>
+  <h2>基本情報</h2>
 
   <table class="form">
     <tr>
@@ -333,6 +333,7 @@ function selectAll(target) {
   <!--{else}-->
   <div id="sub_detail" style="display:none">
   <!--{/if}-->
+  <h2>サブ情報</h2>
   <table class="form">
     <!--{section name=cnt loop=$smarty.const.PRODUCTSUB_MAX}-->
     <!--▼商品<!--{$smarty.section.cnt.iteration}-->-->
@@ -395,6 +396,7 @@ function selectAll(target) {
   <!--{else}-->
   <div id="recommend_select" style="display:none">
   <!--{/if}-->
+	<h2>関連商品</h2>
   <table class="form">
     <!--{if $smarty.const.OPTION_RECOMMEND == 1}-->
     <!--▼関連商品-->

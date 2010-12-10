@@ -24,8 +24,8 @@
 <form name="form_bloc" id="form_bloc" method="post" action="?" >
 <input type="hidden" name="mode" value="" />
 <input type="hidden" name="bloc_id" value="<!--{$bloc_id}-->" />
-  <!--{* ▼ブロック編集ここから *}-->
-  <h2>ブロック編集</h2>
+  <!--{* ▼ブロック設定ここから *}-->
+  <h2>ブロック設定</h2>
 
   <!--{if $arrBlocData.tpl_path != '' and $preview == on}-->
   <h3>プレビュー：</h3>
@@ -34,46 +34,60 @@
   </div>
   <!--{/if}-->
 
-  <div>
-    <!--{ if $arrErr.bloc_name != "" }--> <div align="center"> <span class="attention"><!--{$arrErr.bloc_name}--></span></div> <!--{/if}-->
-    ブロック名：<input type="text" name="bloc_name" value="<!--{$arrBlocData.bloc_name|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.bloc_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" /><span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span><br />
+  <table>
+    <tr>
+      <th>ブロック名</th>
+      <td>
+        <input type="text" name="bloc_name" value="<!--{$arrBlocData.bloc_name|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.bloc_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" /><span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
+        <!--{ if $arrErr.bloc_name != "" }--> <div align="center"> <span class="attention"><!--{$arrErr.bloc_name}--></span></div> <!--{/if}-->
+      </td>
+    </tr>
+    <tr>
+      <th>ファイル名</th>
+      <td><input type="text" name="filename" value="<!--{$arrBlocData.filename|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.filename != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" />.tpl<span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
     <!--{ if $arrErr.filename != "" }--> <div align="center"> <span class="attention"><!--{$arrErr.filename}--></span></div> <!--{/if}-->
-    ファイル名：<input type="text" name="filename" value="<!--{$arrBlocData.filename|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.filename != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" />.tpl<span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
-  </div>
-  <div>
-    <textarea name="bloc_html" rows="<!--{$text_row}-->" style="width: 100%;"><!--{$arrBlocData.tpl_data|smarty:nodefaults}--></textarea>
-    <input type="hidden" name="html_area_row" value="<!--{$text_row}-->" />
-  </div>
-  <div class="btn">
-    <button type="button" onClick="ChangeSize(this, bloc_html, 50, 13, html_area_row)"><span><!--{if $text_row > 13}-->小さくする<!--{else}-->大きくする<!--{/if}--></span></button>
-  </div>
+     </td>
+   </tr>
+   <tr>
+     <td colspan="2">
+       <textarea name="bloc_html" rows="<!--{$text_row}-->" style="width: 100%;"><!--{$arrBlocData.tpl_data|smarty:nodefaults}--></textarea>
+			 <input type="hidden" name="html_area_row" value="<!--{$text_row}-->" />
+			 <div>
+				 <button type="button" onClick="ChangeSize(this, bloc_html, 50, 13, html_area_row)"><span><!--{if $text_row > 13}-->縮小<!--{else}-->拡大<!--{/if}--></span></button>
+			 </div>
+		 </td>
+	 </tr>
+ </table>
   <div class="btn">
     <button type='button' name='subm' onclick="fnFormModeSubmit('form_bloc','confirm','','');"><span>登録する</span></button>
     <button type='button' name='preview' onclick="fnFormModeSubmit('form_bloc','preview','','');"><span>プレビュー</span></button>
   </div>
-  <!--{* ▲ブロック編集ここまで *}-->
+  <!--{* ▲ブロック設定ここまで *}-->
 
   <!--{* ▼ブロック一覧ここから *}-->
   <h2>編集可能ブロック</h2>
+  <div class="btn addnew">
+    <button type='button' name='subm' onclick="location.href='http://<!--{$smarty.server.HTTP_HOST}--><!--{$smarty.server.PHP_SELF|escape}-->'"><span>ブロックを新規入力</span></button>
+  </div>
   <table class="list center">
+    <tr>
+      <th>名称</th><th>編集</th><th>削除</th>
+    </tr>
     <!--{foreach key=key item=item from=$arrBlocList}-->
     <tr style="background-color:<!--{if $item.bloc_id == $bloc_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->;">
+      <td><!--{$item.bloc_name}--></td>
       <td>
-        <a href="<!--{$smarty.server.PHP_SELF|escape}-->?bloc_id=<!--{$item.bloc_id}-->" ><!--{$item.bloc_name}--></a>
+        <a href="<!--{$smarty.server.PHP_SELF|escape}-->?bloc_id=<!--{$item.bloc_id}-->" >編集</a>
       </td>
       <td>
         <!--{if $item.del_flg == 0}-->
-        <input type="button" value="削除" name="del<!--{$item.bloc_id}-->" onclick="fnFormModeSubmit('form_bloc','delete','bloc_id',this.name.substr(3));" />
+        <a href="javascript:;" onclick="fnFormModeSubmit('form_bloc','delete','bloc_id',this.name.substr(3));">削除</a>
         <input type="hidden" value="<!--{$item.bloc_id}-->" name="del_id<!--{$item.bloc_id}-->" />
         <!--{/if}-->
       </td>
     </tr>
     <!--{/foreach}-->
   </table>
-
-  <div class="btn addnew">
-    <button type='button' name='subm' onclick="location.href='http://<!--{$smarty.server.HTTP_HOST}--><!--{$smarty.server.PHP_SELF|escape}-->'"><span>ブロックを新規入力</span></button>
-  </div>
   <!--{* ▲ブロック一覧ここまで *}-->
 
 </form>  

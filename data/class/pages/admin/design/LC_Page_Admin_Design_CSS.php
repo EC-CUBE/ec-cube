@@ -49,7 +49,7 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin {
         $this->area_row = 30;
         $this->tpl_subno = "css";
         $this->tpl_mainno = "design";
-        $this->tpl_subtitle = 'CSS編集';
+        $this->tpl_subtitle = 'CSS設定';
     }
 
     /**

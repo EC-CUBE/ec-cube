@@ -25,7 +25,6 @@
 <input type="hidden" name="mode" value="edit" />
 <input type="hidden" name="deliv_id" value="" />
 <div id="basis" class="contents-main">
-  <h2>配送業者登録</h2>
 
   <table class="list">
     <tr>

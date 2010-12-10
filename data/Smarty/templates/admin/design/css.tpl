@@ -26,9 +26,8 @@
 <input type="hidden" name="area_row" value="<!--{$area_row}-->" />
 <input type="hidden" name="old_css_name" value="<!--{$old_css_name}-->" />
 <div id="design" class="contents-main">
-  <h2>CSS編集</h2>
 
-  <!--▼CSS編集　ここから-->
+  <!--▼CSS設定ここから-->
   <table class="form">
     <tr>
       <th>CSSファイル名</th>
@@ -41,8 +40,8 @@
       <th>CSS内容</th>
       <td>
         <textarea name="css" cols=90 rows=<!--{$area_row}--> align="left" wrap=off style="width: 650px;"><!--{$css_data}--></textarea>
-        <div class="btn right">
-          <button type="button" onClick="ChangeSize(this, css, 50, 30, area_row)"><span>大きくする</span></button>
+        <div class="btn">
+          <button type="button" onClick="ChangeSize(this, css, 50, 30, area_row)"><span><!--{if $header_row > 13}-->縮小<!--{else}-->拡大<!--{/if}--></span></button>
         </div>
       </td>
     </tr>
@@ -50,23 +49,28 @@
   <div class="btn">
     <button type="submit" onclick="fnFormModeSubmit('form_css','confirm','','');"><span>この内容で登録する</span></button>
   </div>
-  <!--▲CSS編集　ここまで-->
+  <!--▲CSS設定　ここまで-->
 
   <!--▼CSSファイル一覧　ここから-->
   <h2>編集可能CSSファイル</h2>
+  <div class="btn addnew">
+    <button type="button" onclick="location.href='http://<!--{$smarty.server.HTTP_HOST}--><!--{$smarty.server.PHP_SELF|escape}-->'"><span>CSSを新規入力</span></button>
+  </div>
   <table class="list center" id="design-css-list">
     <tr>
       <th class="name">ファイル名</th>
-      <th class="action">&nbsp;</th>
+      <th class="menu">編集</th>
+      <th class="action">削除</th>
     </tr>
     <!--{if count($arrCSSList) > 0}-->
     <!--{foreach key=key item=item from=$arrCSSList}-->
     <tr>
+			<td><!--{$item.file_name}--></td>
       <td style="background:<!--{if $item.css_name == $css_name}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->;">
-        <a href="<!--{$smarty.server.PHP_SELF}-->?css_name=<!--{$item.css_name}-->"><!--{$item.file_name}--></a>
+        <a href="<!--{$smarty.server.PHP_SELF}-->?css_name=<!--{$item.css_name}-->">編集</a>
       </td>
       <td style="background:<!--{if $item.css_name == $css_name}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->;">
-        <button type="button" name="del_<!--{$item.css_name}-->" onclick="fnFormModeSubmit('form_css','delete','css_name','<!--{$item.css_name}-->');"><span>削除</span></button>
+        <a href="javascript:;" onclick="fnFormModeSubmit('form_css','delete','css_name','<!--{$item.css_name}-->');">削除</a>
       </td>
     </tr>
     <!--{/foreach}-->
@@ -76,9 +80,6 @@
     </tr>
     <!--{/if}-->
   </table>
-  <div class="btn addnew">
-    <button type="button" onclick="location.href='http://<!--{$smarty.server.HTTP_HOST}--><!--{$smarty.server.PHP_SELF|escape}-->'"><span>CSSを新規入力</span></button>
-  </div>
   <!--▲CSSファイル一覧　ここまで-->
 
 </div>

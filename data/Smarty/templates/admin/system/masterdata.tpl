@@ -24,7 +24,7 @@
 <div id="basis" class="contents-main">
   <form name="form1" id="form1" method="post" action="?">
   <input type="hidden" name="mode" value="show" />
-  <div id="basis-masterdata-select">
+  <div id="basis-masterdata-select" class="btn">
     <select name="master_data_name" id="master_data_name">
     <!--{html_options output=$arrMasterDataName values=$arrMasterDataName selected=$masterDataName}-->
     </select>
@@ -37,13 +37,12 @@
   <form name="form2" id="form2" method="post" action="?">
   <input type="hidden" name="mode" value="edit" />
   <input type="hidden" name="master_data_name" value="<!--{$masterDataName}-->" />
-  <h2>マスタデータ編集</h2>
-  <ul class="attention">
-    <li>マスタデータの値を設定できます。</li>
-    <li>重複したIDを登録することはできません。</li>
-    <li>空のIDを登録すると、値は削除されます。</li>
-    <li>設定値によってはサイトが機能しなくなる場合もありますので、十分ご注意下さい。</li>
-  </ul>
+  <p class="remark attention">
+    マスタデータの値を設定できます。<br />
+    重複したIDを登録することはできません。<br />
+    空のIDを登録すると、値は削除されます。<br />
+    設定値によってはサイトが機能しなくなる場合もありますので、十分ご注意下さい。
+  </p>
   <!--{if $errorMessage != ""}-->
   <div class="message">
     <span class="attention"><!--{$errorMessage}--></span>

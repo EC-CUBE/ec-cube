@@ -47,7 +47,7 @@ class LC_Page_Admin_System_Log extends LC_Page_Admin {
         $this->tpl_subnavi  = 'system/subnavi.tpl';
         $this->tpl_subno    = 'log';
         $this->tpl_mainno   = 'system';
-        $this->tpl_subtitle = 'ログ表示';
+        $this->tpl_subtitle = 'EC-CUBE ログ表示';
         $this->line_max     = 50;
     }
 

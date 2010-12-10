@@ -107,8 +107,6 @@
                 ～ 
                 <input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|escape}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" size="6" class="box6" />
             </td>
-        </tr>
-        <tr>
             <th>対応状況</th>
             <td>
                 <!--{assign var=key value="search_order_status"}-->
@@ -126,8 +124,6 @@
             <span class="attention"><!--{$arrErr[$key]}--></span>
             <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="30" class="box30" />
             </td>
-        </tr>
-        <tr>
             <th>顧客名(カナ)</th>
             <td>
             <!--{assign var=key value="search_order_kana"}-->
@@ -142,8 +138,6 @@
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="30" class="box30" />
             </td>
-        </tr>
-        <tr>
             <th>TEL</th>
             <td>
                 <!--{assign var=key value="search_order_tel"}-->
@@ -153,7 +147,7 @@
         </tr>
         <tr>
             <th>生年月日</th>
-            <td>
+            <td colspan="3">
                 <span class="attention"><!--{$arrErr.search_sbirthyear}--></span>
                 <span class="attention"><!--{$arrErr.search_ebirthyear}--></span>
                 <select name="search_sbirthyear" style="<!--{$arrErr.search_sbirthyear|sfGetErrorColor}-->">
@@ -184,7 +178,7 @@
         </tr>
         <tr>
             <th>性別</th>
-            <td>
+            <td colspan="3">
             <!--{assign var=key value="search_order_sex"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
             <!--{html_checkboxes name="$key" options=$arrSex selected=$arrForm[$key].value}-->
@@ -192,7 +186,7 @@
         </tr>
         <tr>
             <th>支払方法</th>
-            <td>
+            <td colspan="3">
             <!--{assign var=key value="search_payment_id"}-->
             <span class="attention"><!--{$arrErr[$key]|escape}--></span>
             <!--{html_checkboxes name="$key" options=$arrPayment|escape selected=$arrForm[$key].value}-->
@@ -200,7 +194,7 @@
         </tr>
         <tr>
             <th>受注日</th>
-            <td>
+            <td colspan="3">
                 <!--{if $arrErr.search_sorderyear}--><span class="attention"><!--{$arrErr.search_sorderyear}--></span><!--{/if}-->
                 <!--{if $arrErr.search_eorderyear}--><span class="attention"><!--{$arrErr.search_eorderyear}--></span><!--{/if}-->
                 <select name="search_sorderyear" style="<!--{$arrErr.search_sorderyear|sfGetErrorColor}-->">
@@ -231,7 +225,7 @@
         </tr>
         <tr>
             <th>更新日</th>
-            <td>
+            <td colspan="3">
                 <!--{if $arrErr.search_supdateyear}--><span class="attention"><!--{$arrErr.search_supdateyear}--></span><!--{/if}-->
                 <!--{if $arrErr.search_eupdateyear}--><span class="attention"><!--{$arrErr.search_eupdateyear}--></span><!--{/if}-->
                 <select name="search_supdateyear" style="<!--{$arrErr.search_supdateyear|sfGetErrorColor}-->">
@@ -272,8 +266,6 @@
                 <input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|escape}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" size="6" class="box6" />
                 円
             </td>
-        </tr>
-        <tr>
             <th>購入商品</th>
             <td>
                 <!--{assign var=key value="search_product_name"}-->
@@ -283,7 +275,7 @@
         </tr>
     </table>
 
-    <div>
+    <div class="btn">
         検索結果表示件数
         <!--{assign var=key value="search_page_max"}-->
         <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -305,15 +297,15 @@
 <input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->" />
 <!--{/foreach}-->
     <h2>検索結果一覧</h2>
-　<p>
+		　<div class="btn">
         <span class="attention"><!--検索結果数--><!--{$tpl_linemax}-->件</span>&nbsp;が該当しました。
         <!--{if $smarty.const.ADMIN_MODE == '1'}-->
         <button type="button" onclick="fnModeSubmit('delete_all','','');"><span>検索結果をすべて削除</span></button>
         <!--{/if}-->
-        <button type="button" onclick="fnModeSubmit('csv','','');">CSV DOWNLOAD</button>
-        <a href="../contents/csv.php?tpl_subno_csv=order">&gt;&gt; CSV出力項目設定</a>
+        <button type="button" onclick="fnModeSubmit('csv','','');">CSV ダウンロード</button>
+        <button type="button" onclick="location.href='../contents/csv.php?tpl_subno_csv=order'">CSV 出力項目設定</button>
         <button type="button" onclick="fnSelectCheckSubmit('pdf.php');"><span>PDF一括出力</span></button>
-    </p>
+    </div>
     <!--{include file=$tpl_pager}-->
 
     <!--{if count($arrResults) > 0}-->
@@ -335,8 +327,8 @@
             <th>対応状況</th>
             <th>
                 帳票<br />
-                <button type="button" onclick="fnBoxChecked(true);">全て選択</button>
-                <button type="button" onclick="fnBoxChecked(false);">全て解除</button>
+                <a href="javascript:;" onclick="fnBoxChecked(true);">全て選択</a>
+                <a href="javascript:;" onclick="fnBoxChecked(false);">全て解除</a>
             </th>
             <th>編集</th>
             <th>メール</th>

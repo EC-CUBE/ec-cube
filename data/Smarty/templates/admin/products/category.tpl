@@ -28,11 +28,9 @@
 <input type="hidden" name="category_id" value="<!--{$arrForm.category_id}-->">
 <input type="hidden" name="keySet" value="">
 <div id="products" class="contents-main">
-  <h2>カテゴリー設定(最大<!--{$smarty.const.LEVEL_MAX}-->階層まで)</h2>
-
   <div class="btn">
-    <button type="button" onclick="fnModeSubmit('csv','','');">CSV DOWNLOAD</button>
-    <a href="../contents/csv.php?tpl_subno_csv=category">&gt;&gt; CSV出力項目設定</a>
+    <button type="button" onclick="fnModeSubmit('csv','','');">CSV ダウンロード</button>
+    <button type="button" onclick="location.href='../contents/csv.php?tpl_subno_csv=category'">CSV 出力項目設定</a>
   </div>
 
   <!--{* ▼画面左 *}-->

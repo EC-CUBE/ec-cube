@@ -44,7 +44,7 @@
             <td><!--{$arrDataList[cnt].start_date|sfDispDBDate|escape}--></td>
             <td><!--{$arrDataList[cnt].end_date|sfDispDBDate|escape}--></td>
             <td class="left"><!--{$arrDataList[cnt].subject|escape}--></td>
-            <td><a href="./preview.php?send_id=<!--{$arrDataList[cnt].send_id|escape}-->" target="_blank">確認</a></td>
+            <td><a href="javascript:;" onclick="win03('./preview.php?send_id=<!--{$arrDataList[cnt].send_id|escape}-->', 'confirm', '720', '600')">確認</a></td>
             <td><a href="#" onclick="win03('./<!--{$smarty.const.DIR_INDEX_URL}-->?mode=query&amp;send_id=<!--{$arrDataList[cnt].send_id|escape}-->','query','720','420'); return false;">確認</a></td>
             <td><!--{$arrDataList[cnt].count_all|escape}--></td>
             <td><!--{$arrDataList[cnt].count_sent|escape}--></td>

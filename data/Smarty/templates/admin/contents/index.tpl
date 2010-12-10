@@ -112,7 +112,6 @@ function moving(news_id,rank, max_rank) {
 <input type="hidden" name="mode" value="" />
 <input type="hidden" name="news_id" value="<!--{$arrForm.news_id|escape}-->" />
 <input type="hidden" name="term" value="" />
-  <h2>新規登録</h2>
   <!--{* ▼登録テーブルここから *}-->
   <table>
     <tr>
@@ -167,7 +166,7 @@ function moving(news_id,rank, max_rank) {
   <div class="btn"><button type="submit" onclick="return func_regist();"><span>この内容で登録する</span></button></div>
 </form>
 
-  <h2>登録済み新着情報</h2>
+  <h2>新着情報一覧</h2>
   <!--{if $arrErr.moveposition}-->
   <p><span class="attention"><!--{$arrErr.moveposition}--></span></p>
   <!--{/if}-->

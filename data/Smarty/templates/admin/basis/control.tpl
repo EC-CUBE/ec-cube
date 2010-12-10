@@ -40,8 +40,8 @@
         </select>
         </form>
       </td>
-      <td align="center">
-        <div class="btn"><button type="submit" onclick="document.form<!--{$smarty.section.cnt.index}-->.submit();"><span>編集</span></button></div>
+      <td class="menu">
+        <a href="javascript;" onclick="document.form<!--{$smarty.section.cnt.index}-->.submit();">編集</a>
       </td>
     </tr>
     <!--{/section}-->

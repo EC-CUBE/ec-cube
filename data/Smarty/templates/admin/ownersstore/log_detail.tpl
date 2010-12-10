@@ -26,8 +26,6 @@
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <div id="ownersstore" class="contents-main">
 
-  <h2>詳細</h2>
-  
   <table class="form">
     <tr>
       <th>モジュール名</th>
@@ -56,6 +54,8 @@
       </td>
     </tr>
   </table>
-
+	<div class="btn">
+		<button type="button" onclick="location.href='./log.php'">一覧へ戻る</button>
+	</div>
 </div>
 </form>

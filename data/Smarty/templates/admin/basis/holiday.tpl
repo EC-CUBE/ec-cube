@@ -25,7 +25,6 @@
 <input type="hidden" name="mode" value="edit" />
 <input type="hidden" name="holiday_id" value="<!--{$tpl_holiday_id}-->" />
 <div id="basis" class="contents-main">
-  <h2>定休日登録</h2>
 
   <table class="form">
     <tr>

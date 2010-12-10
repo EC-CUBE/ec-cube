@@ -36,7 +36,7 @@
     </tr>
   <!--{foreach from=$arrInstallLogs item=log name=log_loop}-->
     <tr>
-      <td><!--{$log.module_name|escape}--></td>
+      <td class="left"><!--{$log.module_name|escape}--></td>
       <td><!--{if $log.error_flg}-->失敗<!--{else}-->成功<!--{/if}--></td>
       <td class="left"><!--{$log.update_date|sfDispDBDate|escape}--></td>
       <td>

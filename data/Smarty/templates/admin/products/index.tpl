@@ -75,10 +75,19 @@ function lfnDispChange(){
         <!--{/if}-->
         <input type="text" name="search_product_id" value="<!--{$arrForm.search_product_id|escape}-->" size="30" class="box30" style="<!--{$arrErr.search_product_id|sfGetErrorColor}-->"/>
       </td>
+			<th>規格名称</th>
+			<td>
+        <!--{if $arrErr.search_product_class_name}-->
+        <span class="attention"><!--{$arrErr.search_product_class_name}--></span>
+        <!--{/if}-->
+        <input type="text" name="search_product_class_name" value="<!--{$arrForm.search_product_class_name|escape}-->" size="30" class="box30"style="<!--{$arrErr.search_product_class_name|sfGetErrorColor}-->" />
+      </td>
     </tr>
     <tr>
       <th>商品コード</th>
       <td><input type="text" name="search_product_code" value="<!--{$arrForm.search_product_code|escape}-->" size="30" class="box30" /></td>
+      <th>商品名</th>
+      <td><input type="text" name="search_name" value="<!--{$arrForm.search_name|escape}-->" size="30" class="box30" /></td>
     </tr>
     <tr>
       <th>カテゴリ</th>
@@ -88,27 +97,12 @@ function lfnDispChange(){
         <!--{html_options options=$arrCatList selected=$arrForm.search_category_id}-->
         </select>
       </td>
-    </tr>
-    <tr>
-      <th>規格名称</th>
-      <td>
-        <!--{if $arrErr.search_product_class_name}-->
-        <span class="attention"><!--{$arrErr.search_product_class_name}--></span>
-        <!--{/if}-->
-        <input type="text" name="search_product_class_name" value="<!--{$arrForm.search_product_class_name|escape}-->" size="30" class="box30"style="<!--{$arrErr.search_product_class_name|sfGetErrorColor}-->" />
-      </td>
-    </tr>
-    <tr>
-      <th>商品名</th>
-      <td><input type="text" name="search_name" value="<!--{$arrForm.search_name|escape}-->" size="30" class="box30" /></td>
-    </tr>
-    <tr>
       <th>種別</th>
       <td><!--{html_checkboxes name="search_status" options=$arrDISP selected=$arrForm.search_status}--></td>
     </tr>
     <tr>
       <th>登録・更新日</th>
-      <td>
+      <td colspan="3">
         <!--{if $arrErr.search_startyear || $arrErr.search_endyear}-->
         <span class="attention"><!--{$arrErr.search_startyear}--></span>
         <span class="attention"><!--{$arrErr.search_endyear}--></span>
@@ -141,7 +135,7 @@ function lfnDispChange(){
     </tr>
     <tr>
       <th>ステータス</th>
-      <td>
+      <td colspan="3">
       <!--{html_checkboxes name="search_product_flag" options=$arrSTATUS selected=$arrForm.search_product_flag}-->
       </td>
     </tr>
@@ -172,15 +166,15 @@ function lfnDispChange(){
   <input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->" />
   <!--{/foreach}-->  
   <h2>検索結果一覧</h2>
-  <p>
+  <div class="btn">
     <span class="attention"><!--検索結果数--><!--{$tpl_linemax}-->件</span>&nbsp;が該当しました。
     <!--検索結果-->
     <!--{if $smarty.const.ADMIN_MODE == '1'}-->
     <button type="button" onclick="fnModeSubmit('delete_all','','');">検索結果をすべて削除</button>
     <!--{/if}-->
-    <button type="button" onclick="fnModeSubmit('csv','','');">CSV DOWNLOAD</button>
-    <a href="../contents/csv.php?tpl_subno_csv=product"> &gt;&gt; CSV出力項目設定</a>
-  </p>
+    <button type="button" onclick="fnModeSubmit('csv','','');">CSV ダウンロード</button>
+    <button type="button" onclick="location.href='../contents/csv.php?tpl_subno_csv=product'">CSV 出力項目設定</button>
+  </div>
   <!--{include file=$tpl_pager}-->
 
   <!--{if count($arrProducts) > 0}-->
@@ -210,8 +204,8 @@ function lfnDispChange(){
     <!--▼商品<!--{$smarty.section.cnt.iteration}-->-->
     <!--{assign var=status value="`$arrProducts[cnt].status`"}-->
     <tr style="background:<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->;">
-      <td rowspan="2"><!--{$arrProducts[cnt].product_id}--></td>
-      <td rowspan="2">
+      <td class="id" rowspan="2"><!--{$arrProducts[cnt].product_id}--></td>
+      <td class="thumbnail" rowspan="2">
       <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$arrProducts[cnt].main_list_image|sfNoImageMainList|escape}-->&amp;width=65&amp;height=65">
       </td>
       <td rowspan="2"><!--{$arrProducts[cnt].product_code_min|escape}-->
@@ -229,7 +223,7 @@ function lfnDispChange(){
       <td><!--{$arrProducts[cnt].name|escape}--></td>
       <!--{* 在庫 *}-->
       <!--{* XXX 複数規格でかつ、全ての在庫数量が等しい場合は先頭に「各」と入れたれたら良いと思う。 *}-->
-      <td rowspan="2">
+      <td class="menu" rowspan="2">
         <!--{if $arrProducts[cnt].stock_unlimited_min}-->無制限<!--{else}--><!--{$arrProducts[cnt].stock_min|number_format}--><!--{/if}-->
         <!--{if $arrProducts[cnt].stock_unlimited_min != $arrProducts[cnt].stock_unlimited_max || $arrProducts[cnt].stock_min != $arrProducts[cnt].stock_max}-->
           <br />～ <!--{if $arrProducts[cnt].stock_unlimited_max}-->無制限<!--{else}--><!--{$arrProducts[cnt].stock_max|number_format}--><!--{/if}-->
@@ -237,14 +231,14 @@ function lfnDispChange(){
       </td>
       <!--{* 表示 *}-->
       <!--{assign var=key value=$arrProducts[cnt].status}-->
-      <td rowspan="2"><!--{$arrDISP[$key]}--></td>
-      <td rowspan="2"><span class="icon_edit"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnChangeAction('./product.php'); fnModeSubmit('pre_edit', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >編集</a></span></td>
-      <td rowspan="2"><span class="icon_confirm"><a href="<!--{$smarty.const.SITE_URL|sfTrimURL}-->/products/detail.php?product_id=<!--{$arrProducts[cnt].product_id}-->&amp;admin=on" target="_blank">確認</a></span></td>
+      <td class="menu" rowspan="2"><!--{$arrDISP[$key]}--></td>
+      <td class="menu" rowspan="2"><span class="icon_edit"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnChangeAction('./product.php'); fnModeSubmit('pre_edit', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >編集</a></span></td>
+      <td class="menu" rowspan="2"><span class="icon_confirm"><a href="<!--{$smarty.const.SITE_URL|sfTrimURL}-->/products/detail.php?product_id=<!--{$arrProducts[cnt].product_id}-->&amp;admin=on" target="_blank">確認</a></span></td>
       <!--{if $smarty.const.OPTION_CLASS_REGIST == 1}-->
-      <td rowspan="2"><span class="icon_class"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnChangeAction('./product_class.php'); fnModeSubmit('pre_edit', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >規格</a></span></td>
+      <td class="menu" rowspan="2"><span class="icon_class"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnChangeAction('./product_class.php'); fnModeSubmit('pre_edit', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >規格</a></span></td>
       <!--{/if}-->
-      <td rowspan="2"><span class="icon_delete"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnSetFormValue('category_id', '<!--{$arrProducts[cnt].category_id}-->'); fnModeSubmit('delete', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;">削除</a></span></td>
-      <td rowspan="2"><span class="icon_copy"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnChangeAction('./product.php'); fnModeSubmit('copy', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >複製</a></span></td>
+      <td class="menu" rowspan="2"><span class="icon_delete"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnSetFormValue('category_id', '<!--{$arrProducts[cnt].category_id}-->'); fnModeSubmit('delete', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;">削除</a></span></td>
+      <td class="menu" rowspan="2"><span class="icon_copy"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnChangeAction('./product.php'); fnModeSubmit('copy', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >複製</a></span></td>
     </tr>
     <tr style="background:<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->;">
       <td>

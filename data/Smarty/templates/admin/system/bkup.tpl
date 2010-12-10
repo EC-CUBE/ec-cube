@@ -25,11 +25,10 @@
 <input type="hidden" name="mode" value="edit" />
 <input type="hidden" name="list_name" value="" />
 <div id="system" class="contents-main">
-    <h2>バックアップ作成</h2>
-    <ul>
-        <li>データベースのバックアップを行います。</li>
-        <li>テンプレートファイル等はバックアップされません。</li>
-    </ul>                                        
+    <p class="remark">
+        データベースのバックアップを行います。<br />
+        テンプレートファイル等はバックアップされません。
+		</p>
     <table class="form">
         <tr>
             <th>バックアップ名<span class="attention"> *</span></th>
@@ -71,10 +70,10 @@
             <td ><!--{$arrBkupList[cnt].bkup_name}--></td>
             <td ><!--{$arrBkupList[cnt].bkup_memo}--></td>
             <td align="center"><!--{$arrBkupList[cnt].create_date|sfCutString:19:true:false}--></td>
-            <td align="center"><a href="#" onclick="document.body.style.cursor = 'wait'; fnModeSubmit('restore','list_name','<!--{$arrBkupList[cnt].bkup_name}-->');">restore</a></td>
-            <td align="center"><a href="#" onclick="fnModeSubmit('download','list_name','<!--{$arrBkupList[cnt].bkup_name}-->');">download</a></td>
+            <td align="center"><a href="#" onclick="document.body.style.cursor = 'wait'; fnModeSubmit('restore','list_name','<!--{$arrBkupList[cnt].bkup_name}-->');">リストア</a></td>
+            <td align="center"><a href="#" onclick="fnModeSubmit('download','list_name','<!--{$arrBkupList[cnt].bkup_name}-->');">ダウンロード</a></td>
             <td align="center">
-                <a href="#" onclick="fnModeSubmit('delete','list_name','<!--{$arrBkupList[cnt].bkup_name}-->');">delete</a>
+                <a href="#" onclick="fnModeSubmit('delete','list_name','<!--{$arrBkupList[cnt].bkup_name}-->');">削除</a>
             </td>
         </tr>
         <!--{/section}-->

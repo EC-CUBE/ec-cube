@@ -58,9 +58,66 @@ th {background: #f2f1ec;font-weight:normal;text-align:left;}
 table.list th { text-align: center; }
 table.list th.left { text-align: left; }
 table.list th.right { text-align: right; }
+table.list td.id,
+table.list td.thumbnail {
+    text-align: center;
+}
+table.list td.menu {
+    text-align: center;
+    vertical-align: middle;
+}
 table.form th { width: 25%; }
 table.form td { width: 75%; }
 table.form thead th { text-align: center; width: auto; }
+
+input[type='submit'],
+input[type='button'],
+input[type='reset'],
+input[type='file'],
+button {
+    color: #000;
+    text-decoration: none;
+    background-attachment: scroll;
+    background-clip: border-box;
+    background-color: #eee;
+    background-image: url('../img/button/white-grad.png');
+    background-origin: padding-box;
+    line-height: 15px;
+    padding: 5px 10px;
+    white-space: nowrap;
+    border: solid 1px #999;
+    cursor: pointer;
+    font-size: 11px;
+
+    /* CSS3 radius */
+    border-bottom-left-radius: 5px 5px;
+    border-bottom-right-radius: 5px 5px;
+    border-top-left-radius: 5px 5px;
+    border-top-right-radius: 5px 5px;
+
+    /* Safari, Chrome radius */
+    -webkit-box-sizing: content-box;
+    -webkit-border-radius: 5px;
+
+    /* Firefox radius */
+    -moz-border-radius: 5px;
+}
+
+input[type='submit']:hover,
+input[type='button']:hover,
+input[type='reset']:hover,
+input[type='file']:hover,
+button:hover {
+    border: solid 1px #666;
+}
+
+input[type='submit']:active,
+input[type='button']:active,
+input[type='reset']:active,
+input[type='file']:active,
+button:active {
+    background-image: url('../img/button/white-grad-active.png');
+}
 
 #contents ul {margin: 0 0 0 2em;}
 
@@ -358,6 +415,11 @@ body > #container {
 /* ステータス管理 */
 #order-status-list th.id {width: 40px;}
 
+/* 期間別集計
+----------------------------------------------- */
+#graph-image {
+    margin: 0 0 20px 0;
+}
 
 /* デザイン管理
 ----------------------------------------------- */
@@ -418,9 +480,11 @@ body > #container {
 
 /* フォーム
 ----------------------------------------------- */
-div.btn {
+div.btn,
+p.remark {
     margin: 0 0 20px 0;
 }
+
 /*FORM*/
 .box3 { width: 33px; }	/*W3*/
 .box6 { width: 54px; }	/*W6*/

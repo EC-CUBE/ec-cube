@@ -81,7 +81,7 @@ function checkFlagAndSubmit(){
       <textarea name="header" cols="75" rows="12" class="area75" onChange="setFlag();" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{$arrForm[$key]|escape}--></textarea><br />
       <span class="attention"> (上限<!--{$smarty.const.LTEXT_LEN}-->文字)
       </span>
-      <div align="right">
+      <div>
         <button type="button" onclick="fnCharCount('form1','header','cnt_header');"><span>文字数カウント</span></button>
         <br />今までに入力したのは
         <input type="text" name="cnt_header" size="4" class="box4" readonly = true style="text-align:right" />
@@ -101,7 +101,7 @@ function checkFlagAndSubmit(){
       <!--{/if}-->
       <textarea name="footer" cols="75" rows="12" class="area75" onChange="setFlag();" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{$arrForm[$key]|escape}--></textarea><br />
       <span class="attention"> (上限<!--{$smarty.const.LTEXT_LEN}-->文字)</span>
-      <div align="right">
+      <div>
         <button type="button" onclick="fnCharCount('form1','footer','cnt_footer');"><span>文字数カウント</span></button>
         <br />今までに入力したのは
         <input type="text" name="cnt_footer" size="4" class="box4" readonly = true style="text-align:right" />

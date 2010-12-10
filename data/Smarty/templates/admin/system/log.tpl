@@ -22,7 +22,6 @@
  */
 *}-->
 
-<h2>EC-CUBE ログ</h2>
 <p>直近の<!--{$line_max}-->行</p>
 <table class="list log">
     <tr>

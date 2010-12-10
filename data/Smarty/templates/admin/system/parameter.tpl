@@ -24,11 +24,11 @@
 <form name="form1" id="form1" method="post" action="?">
 <input type="hidden" name="mode" value="update" />
 <div id="basis" class="contents-main">
-  <ul class="red fs12st">
-    <li>パラメータの値がPHP定数として設定されます。</li>
-    <li>文字列は「&quot;」で囲んで下さい。</li>
-    <li>設定値によってはサイトが機能しなくなる場合もありますので、十分ご注意下さい。</li>
-  </ul>
+  <p class="remark red fs12st">
+    パラメータの値がPHP定数として設定されます。<br />
+    文字列は「&quot;」で囲んで下さい。<br />
+    設定値によってはサイトが機能しなくなる場合もありますので、十分ご注意下さい。
+  </p>
 
   <table class="form">
     <tr>

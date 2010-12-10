@@ -28,6 +28,7 @@
 <input type="hidden" name="order_id" value="" />
 <div id="order" class="contents-main">
   <h2>抽出条件</h2>
+    <div class="btn">
     <!--{foreach key=key item=item from=$arrORDERSTATUS}-->
       <a
         style="padding-right: 1em;"
@@ -37,7 +38,8 @@
         <!--{/if}-->
       ><!--{$item}--></a>
     <!--{/foreach}-->
-  <h2>編集</h2>
+    </div>
+  <h2>ステータス変更</h2>
   <!--{* 登録テーブルここから *}-->
   <!--{if $tpl_linemax > 0 }-->
   <div>
@@ -66,18 +68,20 @@
 
   <table class="list center">
     <tr>
+      <th>選択</th>
+      <th>対応状況</th>
       <th>注文番号</th>
       <th>受注日</th>
       <th>顧客名</th>
       <th>支払方法</th>
       <th>購入金額（円）</th>
       <th>入金日<br>発送日</th>
-      <th>対応状況</th>
-      <th>選択</th>
     </tr>
     <!--{section name=cnt loop=$arrStatus}-->
     <!--{assign var=status value="`$arrStatus[cnt].status`"}-->
     <tr style="background:<!--{$arrORDERSTATUS_COLOR[$status]}-->;">
+      <td><input type="checkbox" name="move[]" value="<!--{$arrStatus[cnt].order_id}-->" ></td>
+      <td><!--{$arrORDERSTATUS[$status]}--></td>
       <td><a href ="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnOpenWindow('./edit.php?order_id=<!--{$arrStatus[cnt].order_id}-->','order_disp','800','900'); return false;" ><!--{$arrStatus[cnt].order_id}--></td>
       <td><!--{$arrStatus[cnt].create_date|sfDispDBDate:false}--></td>
       <td><!--{$arrStatus[cnt].order_name01|escape}--><!--{$arrStatus[cnt].order_name02|escape}--></td>
@@ -86,8 +90,6 @@
       <td class="right"><!--{$arrStatus[cnt].total|number_format}--></td>
       <td><!--{if $arrStatus[cnt].payment_date != ""}--><!--{$arrStatus[cnt].payment_date|sfDispDBDate:false}--><!--{else}-->未入金<!--{/if}--><br>
       <!--{if $arrStatus[cnt].status eq 5}--><!--{$arrStatus[cnt].commit_date|sfDispDBDate:false}--><!--{else}-->未発送<!--{/if}--></td>
-      <td><!--{$arrORDERSTATUS[$status]}--></td>
-      <td><input type="checkbox" name="move[]" value="<!--{$arrStatus[cnt].order_id}-->" ></td>
     </tr>
     <!--{/section}-->
   </table>

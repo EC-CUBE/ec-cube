@@ -39,8 +39,7 @@ function submitRegister() {
 <input type="hidden" name="template_code_temp" value="" />
 <input type="hidden" name="uniqid" value="<!--{$uniqid}-->" />
 <div id="design" class="contents-main">
-  <h2>テンプレート設定</h2>
-  <p>
+  <p style="margin-bottom: 20px">
     テンプレートを選択し、「この内容で登録する」ボタンを押すと、<br />
     選択したテンプレートへデザインを変更することが出来ます。
   </p>

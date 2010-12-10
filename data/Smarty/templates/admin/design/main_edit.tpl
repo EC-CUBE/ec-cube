@@ -53,28 +53,39 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
     <span class="attention"><!--{$arrErr.page_id_err}--></span>
   </div>
   <!--{/if}-->
-  <!--{ if $arrErr.page_name != "" }-->
-  <div class="message">
-    <span class="attention"><!--{$arrErr.page_name}--></span>
-  </div>
-  <!--{/if}-->
+  <table>
+    <tr>
+      <th>名称</th>
+      <td>
   <!--{if $arrPageData.edit_flg == 2}-->
-    名称：<!--{$arrPageData.page_name|escape}--><input type="hidden" name="page_name" value="<!--{$arrPageData.page_name|escape}-->" />
+      <!--{$arrPageData.page_name|escape}--><input type="hidden" name="page_name" value="<!--{$arrPageData.page_name|escape}-->" />
   <!--{else}-->
-    名称：<input type="text" name="page_name" value="<!--{$arrPageData.page_name|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.page_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" /><span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
-  <!--{/if}--><br />
-
-  <!--{ if $arrErr.url != "" }-->
-  <div class="attention">
-    <span class="attention"><!--{$arrErr.url}--></span>
-  </div>
+        <input type="text" name="page_name" value="<!--{$arrPageData.page_name|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.page_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" /><span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
   <!--{/if}-->
-  URL：<!--{if $arrPageData.edit_flg == 2}-->
+  <!--{ if $arrErr.page_name != "" }-->
+        <div class="message">
+          <span class="attention"><!--{$arrErr.page_name}--></span>
+        </div>
+  <!--{/if}-->
+     </td>
+   <tr>
+     <th>URL</th>
+     <td>
+   <!--{if $arrPageData.edit_flg == 2}-->
       <!--{$smarty.const.SITE_URL|escape}--><!--{$arrPageData.url|escape}-->
       <input type="hidden" name="url" value="<!--{$arrPageData.filename|escape}-->" />
     <!--{else}-->
       <!--{$user_URL|escape}--><input type="text" name="url" value="<!--{$arrPageData.directory|escape}--><!--{$arrPageData.filename|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.url != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}--> ime-mode: disabled;" size="40" class="box40" />.php<span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
-    <!--{/if}--><br />
+    <!--{/if}-->
+    <!--{ if $arrErr.url != "" }-->
+      <div class="attention">
+        <span class="attention"><!--{$arrErr.url}--></span>
+      </div>
+    <!--{/if}-->
+     </td>
+   </tr>
+   <tr>
+     <td colspan="2">
 
   <label for="header-chk"><input type="checkbox" name="header_chk" id="header-chk" <!--{$arrPageData.header_chk}--> />共通のヘッダーを使用する</label>&nbsp;
   <label for="footer-chk"><input type="checkbox" name="footer_chk" id="footer-chk" <!--{$arrPageData.footer_chk}--> />共通のフッターを使用する</label>
@@ -82,9 +93,13 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
     <textarea name="tpl_data" rows=<!--{$text_row}--> style="width: 100%;"><!--{$arrPageData.tpl_data|escape|smarty:nodefaults}--></textarea>
     <input type="hidden" name="html_area_row" value="<!--{$text_row}-->" />
   </div>
+      </td>
+    </tr>
+  </table>
   <div class="btn">
-    <button type="button" onClick="ChangeSize(this, tpl_data, 50, 13, html_area_row)"><span>大きくする</span></button>
+    <button type="button" onClick="ChangeSize(this, tpl_data, 50, 13, html_area_row)"><span><!--{if $text_row > 13}-->縮小<!--{else}-->拡大<!--{/if}--></span></button>
   </div>
+  </table>
 
   <div class="btn">
     <button type='button' name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form_edit','confirm','','');"><span>登録する</span></button>
@@ -110,7 +125,7 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
       </td>
       <td>
         <!--{if $item.filename|strlen >= 1}-->
-          <a href="?page_id=<!--{$item.page_id}-->&amp;device_type_id=<!--{$item.device_type_id}-->"><strong>編集</strong></a>
+          <a href="?page_id=<!--{$item.page_id}-->&amp;device_type_id=<!--{$item.device_type_id}-->">編集</a>
         <!--{/if}-->
       </td>
       <td>

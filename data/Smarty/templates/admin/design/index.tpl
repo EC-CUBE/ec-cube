@@ -21,8 +21,6 @@ function fnTargetSelf(){
 <input type="hidden" name="page_id" value="<!--{$page_id}-->" />
 <input type="hidden" name="bloc_cnt" value="<!--{$bloc_cnt}-->" />
 <div id="design" class="contents-main">
-    <!--{* ▼レイアウト編集ここから *}-->
-    <h2>レイアウト編集</h2>
     <!--{* ▼レイアウトここから *}-->
     <div style="float: left; width: 75%;" align="center">
         <table id="design-layout-used" class="design-layout">
@@ -277,6 +275,9 @@ function fnTargetSelf(){
 
     <!--▼ページ一覧　ここから-->
     <h2 style="clear: both;">編集可能ページ一覧</h2>
+    <div class="btn addnew">
+        <button type='button' onclick="fnTargetSelf(); fnFormModeSubmit('form1','new_page','','');"><span>ページを新規入力</span></button>
+    </div>
     <table class="list center">
         <tr>
             <th>名称</th>
@@ -290,7 +291,7 @@ function fnTargetSelf(){
                 <!--{$item.page_name}-->
             </td>
             <td>
-                <a href="?page_id=<!--{$item.page_id}-->&amp;device_type_id=<!--{$item.device_type_id}-->" ><strong>編集</strong></a>
+                <a href="?page_id=<!--{$item.page_id}-->&amp;device_type_id=<!--{$item.device_type_id}-->" >編集</a>
             </td>
             <td>
                 <!--{if $item.filename|strlen >= 1}-->
@@ -305,9 +306,6 @@ function fnTargetSelf(){
         </tr>
     <!--{/foreach}-->
     </table>
-    <div class="btn addnew">
-        <button type='button' onclick="fnTargetSelf(); fnFormModeSubmit('form1','new_page','','');"><span>ページを新規入力</span></button>
-    </div>
     <!--▲ページ一覧　ここまで-->
 </div>
 </form>

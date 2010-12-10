@@ -23,7 +23,6 @@
 *}-->
 <form name="form1" id="form1" method="post" action="?">
 <div id="mail" class="contents-main">
-  <h2>テンプレート</h2>
   <table class="list center">
     <tr>
       <th>作成日</th>

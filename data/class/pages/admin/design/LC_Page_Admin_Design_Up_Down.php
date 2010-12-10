@@ -49,7 +49,7 @@ class LC_Page_Admin_Design_Up_Down extends LC_Page_Admin {
 	    $this->tpl_subnavi  = 'design/subnavi.tpl';
 	    $this->tpl_subno    = 'up_down';
 	    $this->tpl_mainno   = "design";
-	    $this->tpl_subtitle = 'アップロード/ダウンロード';
+	    $this->tpl_subtitle = 'テンプレート追加';
 	    $this->arrErr  = array();
 	    $this->arrForm = array();
 	    ini_set("max_execution_time", 300);

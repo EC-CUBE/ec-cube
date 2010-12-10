@@ -26,7 +26,6 @@
 <input type="hidden" name="<!--{$key}-->" value="<!--{$val|escape}-->" />
 <!--{/foreach}-->
 <div id="mail" class="contents-main">
-  <h2>配信設定：配信内容設定</h2>
   <table class="form">
     <!--{if $smarty.const.MELMAGA_BATCH_MODE}-->
     <tr>

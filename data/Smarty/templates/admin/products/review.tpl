@@ -31,16 +31,12 @@
     <tr>
       <th>投稿者名</th>
       <td><input type="text" name="search_reviewer_name" value="<!--{$arrForm.search_reviewer_name|escape}-->" size="30" class="box30" /></td>
-    </tr>
-    <tr>
       <th>投稿者URL</th>
       <td><input type="text" name="search_reviewer_url" value="<!--{$arrForm.search_reviewer_url}-->" size="30" class="box30" /></td>
     </tr>
     <tr>
       <th>商品名</th>
       <td><input type="text" name="search_name" value="<!--{$arrForm.search_name|escape}-->" size="30" class="box30" /></td>
-    </tr>
-    <tr>
       <th>商品コード</th>
       <td><input type="text" name="search_product_code" value="<!--{$arrForm.search_product_code|escape}-->" size="30" class="box30" /></td>
     </tr>
@@ -48,8 +44,6 @@
       <th>性別</th>
       <!--{assign var=key value=search_sex}-->
       <td><!--{html_checkboxes name="$key" options=$arrSex selected=$arrForm[$key]}--></td>
-    </tr>
-    <tr>
       <th>おすすめレベル</th>
       <td>
       <!--{assign var=key value=search_recommend_level}-->
@@ -60,7 +54,7 @@
     </tr>
     <tr>
       <th>投稿日</th>
-      <td>
+      <td colspan="3">
       <!--{if $arrErr.search_startyear || $arrErr.search_endyear}-->
       <span class="attention"><!--{$arrErr.search_startyear}--></span>
       <span class="attention"><!--{$arrErr.search_endyear}--></span>
@@ -120,13 +114,13 @@
   <!--{/if}-->
   <!--{/foreach}-->
   <h2>検索結果一覧</h2>
-  <p>
+  <div class="btn">
     <span class="attention"><!--検索結果数--><!--{$tpl_linemax}-->件</span>&nbsp;が該当しました。
     <!--{if $smarty.const.ADMIN_MODE == '1'}-->
     <button type="button" onclick="fnModeSubmit('delete_all','','');"><span>検索結果をすべて削除</span></button>
     <!--{/if}-->
-    <button type="button" onclick="fnModeSubmit('csv','','');"><span>CSV DOWNLOAD</span></button>
-  </p>
+    <button type="button" onclick="fnModeSubmit('csv','','');"><span>CSV ダウンロード</span></button>
+  </div>
   <!--{include file=$tpl_pager}-->
   
   <!--{ if $arrReview > 0 & $tpl_linemax > 0 }-->
@@ -149,9 +143,9 @@
       <td><!--{$arrReview[cnt].name|escape}--></td>
       <!--{assign var=key value="`$arrReview[cnt].recommend_level`"}-->
       <td><!--{$arrRECOMMEND[$key]}--></td>
-      <td><!--{if $arrReview[cnt].status eq 1}-->表示<!--{elseif $arrReview[cnt].status eq 2}-->非表示<!--{/if}--></td>
-      <td><button type="button" onclick="fnChangeAction('./review_edit.php'); fnModeSubmit('','review_id','<!--{$arrReview[cnt].review_id}-->');"><span>編集</span></button></td>
-      <td><button type="button" onclick="fnModeSubmit('delete','review_id','<!--{$arrReview[cnt].review_id}-->'); return false;"><span>削除</span></button></td>
+      <td class="menu"><!--{if $arrReview[cnt].status eq 1}-->表示<!--{elseif $arrReview[cnt].status eq 2}-->非表示<!--{/if}--></td>
+      <td class="menu"><a href="javascript:;" onclick="fnChangeAction('./review_edit.php'); fnModeSubmit('','review_id','<!--{$arrReview[cnt].review_id}-->');">編集</a></td>
+      <td class="menu"><a href="javascript:;" onclick="fnModeSubmit('delete','review_id','<!--{$arrReview[cnt].review_id}-->'); return false;">削除</a></td>
     </tr>
     <!--{/section}-->
   </table>

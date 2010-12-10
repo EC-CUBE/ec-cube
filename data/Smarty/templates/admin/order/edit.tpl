@@ -92,7 +92,7 @@
         <!--{if $tpl_mode != 'add'}-->
         <tr>
             <th>帳票出力</th>
-            <td><a href="./" onClick="win02('pdf.php?order_id=<!--{$arrForm.order_id.value}-->','pdf','1000','800'); return false;">帳票を出力するにはこちらをクリックして下さい。</a></td>
+            <td><button type="button" onclick="win02('pdf.php?order_id=<!--{$arrForm.order_id.value}-->','pdf','1000','800'); return false;">帳票出力</button></td>
         </tr>
         <!--{/if}-->
         <tr>
@@ -345,8 +345,8 @@
             <td align="center"><input type="text" name="quantity[<!--{$key}-->]" value="<!--{$arrForm.quantity.value[$key]|escape}-->" size="3" class="box3" maxlength="<!--{$arrForm.quantity.length}-->"/></td>
             <!--{assign var=price value=`$arrForm.price.value[$key]`}-->
             <!--{assign var=quantity value=`$arrForm.quantity.value[$key]`}-->
-            <td><!--{$price|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}--> 円</td>
-            <td><!--{$price|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|sfMultiply:$quantity|number_format}-->円</td>
+            <td class="right"><!--{$price|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}--> 円</td>
+            <td class="right"><!--{$price|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|sfMultiply:$quantity|number_format}-->円</td>
         </tr>
         <!--{/section}-->
         <tr>

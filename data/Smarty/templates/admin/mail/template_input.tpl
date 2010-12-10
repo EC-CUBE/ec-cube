@@ -55,7 +55,6 @@ function lfnCheckSubmit(){
 <input type="hidden" name="mode" value="<!--{$mode}-->" />
 <input type="hidden" name="template_id" value="<!--{$arrForm.template_id}-->" />
 <div id="mail" class="contents-main">
-  <h2>配信内容設定：<!--{$title}--></h2>
   <table class="form">
     <tr>
       <th>メール形式<span class="attention"> *</span></th>
@@ -76,13 +75,15 @@ function lfnCheckSubmit(){
       <td>
         <textarea name="body" cols="90" rows="40" class="area90" <!--{if $arrErr.body}--><!--{sfSetErrorStyle}--><!--{/if}-->><!--{$arrForm.body|escape}--></textarea>
         <!--{if $arrErr.body}--><br /><span class="attention"><!--{$arrErr.body}--></span><!--{/if}-->
+				<div>
+					<button type="button" onclick="fnCharCount('form1','body','cnt_footer');" name="next" id="next"><span>文字数カウント</span></button>
+					<span>今までに入力したのは<input type="text" name="cnt_footer" size="4" class="box4" readonly = true style="text-align:right" />文字です。</span>
+				</div>
       </td>
     </tr>
   </table>
   <div class="btn">
     <button type="submit"><span>この内容で登録する</span></button>
-    <button type="button" onclick="fnCharCount('form1','body','cnt_footer');" name="next" id="next"><span>文字数カウント</span></button>
-    <span>今までに入力したのは<input type="text" name="cnt_footer" size="4" class="box4" readonly = true style="text-align:right" />文字です。</span>
   </div>
 </table>
 

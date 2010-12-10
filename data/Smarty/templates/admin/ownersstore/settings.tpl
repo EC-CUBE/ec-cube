@@ -27,7 +27,7 @@
 <div id="ownersstore" class="contents-main">
 
   <!--入力項目ここから-->
-  <p><span class="attention">※認証キーは<a href="<!--{$smarty.const.OSTORE_URL}-->" target="_blank">EC-CUBEオーナーズストア</a>で取得できます。</span></p>
+  <p class="remark"><span class="attention">※認証キーは<a href="<!--{$smarty.const.OSTORE_URL}-->" target="_blank">EC-CUBEオーナーズストア</a>で取得できます。</span></p>
   <table class="form">
     <tr>
       <th>認証キーの設定</th>
