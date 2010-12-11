@@ -27,7 +27,8 @@
  *----------------------------------------------------------------------
  */
 
-require(DATA_PATH . 'pdf/japanese.php');
+require(DATA_PATH . 'module/fpdf/fpdf.php');
+require(DATA_PATH . 'module/fpdf/japanese.php');
 define('PDF_TEMPLATE_DIR', DATA_PATH . 'pdf/');
 
 class SC_Fpdf {
