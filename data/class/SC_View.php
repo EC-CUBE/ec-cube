@@ -245,7 +245,7 @@ class SC_MobileView extends SC_SiteView {
         $this->_smarty->template_dir = MOBILE_TEMPLATE_DIR;
         $this->_smarty->compile_dir = MOBILE_COMPILE_DIR;
         // テンプレート変数を割り当て
-        $this->assign("TPL_DIR", URL_DIR . USER_DIR . USER_PACKAGE_DIR . MOBILE_TEMPLATE_NAME . "/");
+        $this->assign("TPL_DIR", URL_DIR . MOBILE_DIR . USER_DIR . USER_PACKAGE_DIR . MOBILE_TEMPLATE_NAME . "/");
     }
 }
 
@@ -255,7 +255,7 @@ class SC_SmartphoneView extends SC_SiteView {
         $this->_smarty->template_dir = SMARTPHONE_TEMPLATE_DIR;
         $this->_smarty->compile_dir = SMARTPHONE_COMPILE_DIR;
         // テンプレート変数を割り当て
-        $this->assign("TPL_DIR", URL_DIR . USER_DIR . USER_PACKAGE_DIR . SMARTPHONE_TEMPLATE_NAME . "/");
+        $this->assign("TPL_DIR", URL_DIR . SMARTPHONE_DIR . USER_DIR . USER_PACKAGE_DIR . SMARTPHONE_TEMPLATE_NAME . "/");
     }
 }
 ?>
