@@ -49,7 +49,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin {
         $this->text_row = 13;
         $this->tpl_subno = "bloc";
         $this->tpl_mainno = "design";
-        $this->tpl_subtitle = 'ブロック編集';
+        $this->tpl_subtitle = 'ブロック設定';
     }
 
     /**

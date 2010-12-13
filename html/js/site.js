@@ -362,9 +362,9 @@ function fnCharCount(form,sch,cnt) {
 function ChangeSize(button, TextArea, Max, Min, row_tmp){
 
 	if(TextArea.rows <= Min){
-		TextArea.rows=Max; button.value="小さくする"; row_tmp.value=Max;
+		TextArea.rows=Max; button.value="縮小"; row_tmp.value=Max; button.innerHTML="縮小";
 	}else{
-		TextArea.rows =Min; button.value="大きくする"; row_tmp.value=Min;
+		TextArea.rows =Min; button.value="拡大"; row_tmp.value=Min; button.innerHTML="拡大";
 	}
 }
 

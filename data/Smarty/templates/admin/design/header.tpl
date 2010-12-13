@@ -86,15 +86,6 @@ XXX: ヘッダーとフッターでwrapの設定が違うのは疑問。それ�
   <!--{* ▲フッター編集ここまで *}-->
 
 <script type="text/javascript">
-  /* テキストエリアの大きさを変更する */
-  function ChangeSize(button, TextArea, Max, Min, row_tmp){
-    if(TextArea.rows <= Min){
-      TextArea.rows=Max; button.value="小さくする"; row_tmp.value=Max;
-    }else{
-      TextArea.rows =Min; button.value="大きくする"; row_tmp.value=Min;
-    }
-  }
-  
   /* ブラウザの種類をセットする */
   function lfnSetBrowser(form, item){
     browser_type = 0;

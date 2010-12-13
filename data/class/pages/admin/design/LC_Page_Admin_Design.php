@@ -48,7 +48,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin {
         $this->tpl_subnavi = 'design/subnavi.tpl';
         $this->tpl_subno = "layout";
         $this->tpl_mainno = "design";
-        $this->tpl_subtitle = 'レイアウト編集';
+        $this->tpl_subtitle = 'レイアウト設定';
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrTarget = $masterData->getMasterData("mtb_target");
     }

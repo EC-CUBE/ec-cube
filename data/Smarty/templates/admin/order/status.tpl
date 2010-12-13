@@ -21,6 +21,18 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
+<script type="text/javascript">//<![CDATA[
+    $(function() {
+        $('#move_check').change(function() {
+            if ($(this).attr('checked')) {
+                $('input[name=move[]]').attr('checked', true);
+            } else {
+                $('input[name=move[]]').attr('checked', false);
+            }
+        });
+    });
+//]]>
+</script>
 <form name="form1" id="form1" method="POST" action="?" >
 <input type="hidden" name="mode" value="" />
 <input type="hidden" name="status" value="<!--{if $arrForm.status == ""}-->1<!--{else}--><!--{$arrForm.status}--><!--{/if}-->" />
@@ -30,19 +42,20 @@
   <h2>抽出条件</h2>
     <div class="btn">
     <!--{foreach key=key item=item from=$arrORDERSTATUS}-->
-      <a
+      <button
+        type="button"
         style="padding-right: 1em;"
         <!--{if $key != $SelectedStatus}-->
           href="#"
           onclick="document.form1.search_pageno.value='1'; fnModeSubmit('search','status','<!--{$key}-->' );"
         <!--{/if}-->
-      ><!--{$item}--></a>
+      ><!--{$item}--></button>
     <!--{/foreach}-->
     </div>
   <h2>ステータス変更</h2>
   <!--{* 登録テーブルここから *}-->
   <!--{if $tpl_linemax > 0 }-->
-  <div>
+  <div class="btn">
     <select name="change_status">
       <option value="" selected="selected" style="<!--{$Errormes|sfGetErrorColor}-->" >選択してください</option>
       <!--{foreach key=key item=item from=$arrORDERSTATUS}-->
@@ -56,26 +69,22 @@
   </div>
   <span class="attention">※ <!--{$arrORDERSTATUS[$smarty.const.ORDER_CANCEL]}-->もしくは、削除に変更時には、在庫数を手動で戻してください。</span><br />
 
-  <p>
+  <p class="remark">
     <!--{$tpl_linemax}-->件が該当しました。
     <!--{$tpl_strnavi}-->
   </p>
 
-  <div class="btn">
-    <button type="button" onclick="fnBoxChecked(true);"><span>全て選択</span></button>
-    <button type="button" onclick="fnBoxChecked(false);"><span>全て解除</span></button>
-  </div>
-
   <table class="list center">
     <tr>
-      <th>選択</th>
+      <th><label for="move_check">選択</label> <input type="checkbox" name="move_check" id="move_check" /></th>
       <th>対応状況</th>
       <th>注文番号</th>
       <th>受注日</th>
       <th>顧客名</th>
       <th>支払方法</th>
       <th>購入金額（円）</th>
-      <th>入金日<br>発送日</th>
+      <th>入金日</th>
+      <th>発送日</th>
     </tr>
     <!--{section name=cnt loop=$arrStatus}-->
     <!--{assign var=status value="`$arrStatus[cnt].status`"}-->
@@ -88,17 +97,12 @@
       <!--{assign var=payment_id value=`$arrStatus[cnt].payment_id`}-->
       <td><!--{$arrPayment[$payment_id]|escape}--></td>
       <td class="right"><!--{$arrStatus[cnt].total|number_format}--></td>
-      <td><!--{if $arrStatus[cnt].payment_date != ""}--><!--{$arrStatus[cnt].payment_date|sfDispDBDate:false}--><!--{else}-->未入金<!--{/if}--><br>
-      <!--{if $arrStatus[cnt].status eq 5}--><!--{$arrStatus[cnt].commit_date|sfDispDBDate:false}--><!--{else}-->未発送<!--{/if}--></td>
+      <td><!--{if $arrStatus[cnt].payment_date != ""}--><!--{$arrStatus[cnt].payment_date|sfDispDBDate:false}--><!--{else}-->未入金<!--{/if}--></td>
+      <td><!--{if $arrStatus[cnt].status eq 5}--><!--{$arrStatus[cnt].commit_date|sfDispDBDate:false}--><!--{else}-->未発送<!--{/if}--></td>
     </tr>
     <!--{/section}-->
   </table>
   <input type="hidden" name="move[]" value="" />
-
-  <div class="btn">
-    <button type="button" onclick="fnBoxChecked(true);"><span>全て選択</span></button>
-    <button type="button" onclick="fnBoxChecked(false);"><span>全て解除</span></button>
-  </div>
 
   <p><!--{$tpl_strnavi}--></p>
 
@@ -152,15 +156,6 @@
     if(selectflag == 0 && checkflag == 1){
     document.form1.mode.value = 'update';
     document.form1.submit();
-    }
-  }
-
-  function fnBoxChecked(check){
-    var count;
-    var fm = document.form1;
-    var max = fm["move[]"].length;
-    for(count=0; count<max; count++){
-      fm["move[]"][count].checked = check;
     }
   }
 

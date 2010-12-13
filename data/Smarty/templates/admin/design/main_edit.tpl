@@ -92,13 +92,10 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
   <div>
     <textarea name="tpl_data" rows=<!--{$text_row}--> style="width: 100%;"><!--{$arrPageData.tpl_data|escape|smarty:nodefaults}--></textarea>
     <input type="hidden" name="html_area_row" value="<!--{$text_row}-->" />
+    <button type="button" onClick="ChangeSize(this, tpl_data, 50, 13, html_area_row)"><span><!--{if $text_row > 13}-->縮小<!--{else}-->拡大<!--{/if}--></span></button>
   </div>
       </td>
     </tr>
-  </table>
-  <div class="btn">
-    <button type="button" onClick="ChangeSize(this, tpl_data, 50, 13, html_area_row)"><span><!--{if $text_row > 13}-->縮小<!--{else}-->拡大<!--{/if}--></span></button>
-  </div>
   </table>
 
   <div class="btn">

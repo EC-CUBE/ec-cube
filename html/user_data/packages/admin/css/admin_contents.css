@@ -66,8 +66,6 @@ table.list td.menu {
     text-align: center;
     vertical-align: middle;
 }
-table.form th { width: 25%; }
-table.form td { width: 75%; }
 table.form thead th { text-align: center; width: auto; }
 
 input[type='submit'],

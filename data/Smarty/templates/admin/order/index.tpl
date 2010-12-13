@@ -76,18 +76,15 @@
         fm.action = tmpAction;
     }
     
-    function fnBoxChecked(check){
-        var fm = document.form1;
-        var max = fm["pdf_order_id[]"].length;
-        if (max) {
-            for (var i=0; i<max; i++) {
-                fm["pdf_order_id[]"][i].checked = check;
+    $(function() {
+        $('#pdf_check').change(function() {
+            if ($(this).attr('checked')) {
+                $('input[name=pdf_order_id[]]').attr('checked', true);
+            } else {
+                $('input[name=pdf_order_id[]]').attr('checked', false);
             }
-        } else {
-            fm["pdf_order_id[]"].checked = check;
-        }
-    }
-    
+        });
+    });
 //-->
 </script>
 <div id="order" class="contents-main">
@@ -325,11 +322,7 @@
             <th>購入金額(円)</th>
             <th>全商品発送日</th>
             <th>対応状況</th>
-            <th>
-                帳票<br />
-                <a href="javascript:;" onclick="fnBoxChecked(true);">全て選択</a>
-                <a href="javascript:;" onclick="fnBoxChecked(false);">全て解除</a>
-            </th>
+            <th><label for="pdf_check">帳票</label> <input type="checkbox" name="pdf_check" id="pdf_check" /></th>
             <th>編集</th>
             <th>メール</th>
             <th>削除</th>

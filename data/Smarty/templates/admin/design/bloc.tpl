@@ -25,7 +25,6 @@
 <input type="hidden" name="mode" value="" />
 <input type="hidden" name="bloc_id" value="<!--{$bloc_id}-->" />
   <!--{* ▼ブロック設定ここから *}-->
-  <h2>ブロック設定</h2>
 
   <!--{if $arrBlocData.tpl_path != '' and $preview == on}-->
   <h3>プレビュー：</h3>
@@ -51,12 +50,12 @@
    <tr>
      <td colspan="2">
        <textarea name="bloc_html" rows="<!--{$text_row}-->" style="width: 100%;"><!--{$arrBlocData.tpl_data|smarty:nodefaults}--></textarea>
-			 <input type="hidden" name="html_area_row" value="<!--{$text_row}-->" />
-			 <div>
-				 <button type="button" onClick="ChangeSize(this, bloc_html, 50, 13, html_area_row)"><span><!--{if $text_row > 13}-->縮小<!--{else}-->拡大<!--{/if}--></span></button>
-			 </div>
-		 </td>
-	 </tr>
+       <input type="hidden" name="html_area_row" value="<!--{$text_row}-->" />
+       <div>
+         <button type="button" onClick="ChangeSize(this, bloc_html, 50, 13, html_area_row)">拡大</button>
+       </div>
+     </td>
+   </tr>
  </table>
   <div class="btn">
     <button type='button' name='subm' onclick="fnFormModeSubmit('form_bloc','confirm','','');"><span>登録する</span></button>

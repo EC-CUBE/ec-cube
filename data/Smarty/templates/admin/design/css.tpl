@@ -40,8 +40,9 @@
       <th>CSS内容</th>
       <td>
         <textarea name="css" cols=90 rows=<!--{$area_row}--> align="left" wrap=off style="width: 650px;"><!--{$css_data}--></textarea>
+        <input type="hidden" name="area_row" value="<!--{$area_row}-->" />
         <div class="btn">
-          <button type="button" onClick="ChangeSize(this, css, 50, 30, area_row)"><span><!--{if $header_row > 13}-->縮小<!--{else}-->拡大<!--{/if}--></span></button>
+          <button type="button" onClick="ChangeSize(this, css, 50, 30, area_row)">拡大</button>
         </div>
       </td>
     </tr>
@@ -84,13 +85,3 @@
 
 </div>
 </form>
-
-<script type="text/javascript">
-  function ChangeSize(button, TextArea, Max, Min, row_tmp){
-    if(TextArea.rows <= Min){
-      TextArea.rows=Max; button.value="小さくする"; row_tmp.value=Max;
-    }else{
-      TextArea.rows =Min; button.value="大きくする"; row_tmp.value=Min;
-    }
-  }
-</script>
