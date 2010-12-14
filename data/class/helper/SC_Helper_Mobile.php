@@ -455,7 +455,7 @@ class SC_Helper_Mobile {
         }
 
         foreach ($arrMobileMailDomains as $domain) {
-            $domain = str_replace('.', '\\.', $domain);
+            $domain = preg_quote($domain, '/');
             if (preg_match("/@([^@]+\\.)?$domain\$/", $address)) {
                 return true;
             }
