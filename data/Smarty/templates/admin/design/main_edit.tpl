@@ -47,6 +47,7 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
 <form name="form_edit" id="form_edit" method="post" action="?" >
 <input type="hidden" name="mode" value="" />
 <input type="hidden" name="page_id" value="<!--{$page_id}-->" />
+<input type="hidden" name="device_type_id" value="<!--{$device_type_id|escape}-->" />
 
   <!--{if $arrErr.page_id_err != ""}-->
   <div class="message">

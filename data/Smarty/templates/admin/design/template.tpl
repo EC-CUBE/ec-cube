@@ -38,6 +38,7 @@ function submitRegister() {
 <input type="hidden" name="mode" value="" />
 <input type="hidden" name="template_code_temp" value="" />
 <input type="hidden" name="uniqid" value="<!--{$uniqid}-->" />
+<input type="hidden" name="device_type_id" value="<!--{$device_type_id|escape}-->" />
 <div id="design" class="contents-main">
   <p style="margin-bottom: 20px">
     テンプレートを選択し、「この内容で登録する」ボタンを押すと、<br />

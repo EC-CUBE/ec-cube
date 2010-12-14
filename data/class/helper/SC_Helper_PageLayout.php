@@ -63,21 +63,18 @@ class SC_Helper_PageLayout {
 
         $arrPageLayout = $arrPageData[0];
 
-        // tpl_mainpageの設定なし、又はトップページの場合
-        if (!isset($objPage->tpl_mainpage) || $url == "index.php") {
-            // ユーザテンプレートのパスを取得
-            $user_tpl =  $this->getTemplatePath($device_type_id, true)
-                . $arrPageLayout['filename'] . ".tpl";
+        // ユーザテンプレートのパスを取得
+        $user_tpl =  $this->getTemplatePath($device_type_id, true)
+            . $arrPageLayout['filename'] . ".tpl";
 
-            // ユーザテンプレートの存在チェック
-            if (is_file($user_tpl)) {
-                $objPage->tpl_mainpage = $user_tpl;
-            }
-            // 存在しない場合は指定テンプレートを使用
-            else {
-                $objPage->tpl_mainpage = $this->getTemplatePath($device_type_id)
-                    . $arrPageLayout['filename'] . ".tpl";
-            }
+        // ユーザテンプレートの存在チェック
+        if (is_file($user_tpl)) {
+            $objPage->tpl_mainpage = $user_tpl;
+        }
+        // 存在しない場合は指定テンプレートを使用
+        else {
+            $objPage->tpl_mainpage = $this->getTemplatePath($device_type_id)
+                . $arrPageLayout['filename'] . ".tpl";
         }
 
         // ページタイトルを設定
@@ -267,23 +264,72 @@ __EOF__;
         switch ($device_type_id) {
         case DEVICE_TYPE_MOBILE:
             $dir = MOBILE_TEMPLATE_DIR;
+            $userPath = HTML_PATH . MOBILE_DIR . USER_DIR;
             $templateName = MOBILE_TEMPLATE_NAME;
             break;
 
         case DEVICE_TYPE_SMARTPHONE:
             $dir = SMARTPHONE_TEMPLATE_DIR;
+            $userPath = HTML_PATH . SMARTPHONE_DIR . USER_DIR;
             $templateName = SMARTPHONE_TEMPLATE_NAME;
             break;
 
         case DEVICE_TYPE_PC:
         default:
             $dir = TEMPLATE_DIR;
+            $userPath = USER_PATH;
             $templateName = TEMPLATE_NAME;
         }
         if ($isUser) {
-            $dir = USER_TEMPLATE_DIR . $templateName . "/";
+            $dir = $userPath . USER_PACKAGE_DIR . $templateName . "/";
         }
         return $dir;
+    }
+
+    /**
+     * user_data の絶対パスを返す.
+     *
+     * @param integer $device_type_id 端末種別ID
+     * @return string 端末に応じた user_data の絶対パス
+     */
+    function getUserPath($device_type_id = DEVICE_TYPE_PC) {
+        switch ($device_type_id) {
+        case DEVICE_TYPE_MOBILE:
+            return HTML_PATH . MOBILE_DIR . USER_DIR;
+            break;
+
+        case DEVICE_TYPE_SMARTPHONE:
+            return HTML_PATH . SMARTPHONE_DIR . USER_DIR;
+            break;
+
+        case DEVICE_TYPE_PC:
+        default:
+        }
+        return USER_PATH;
+    }
+
+    /**
+     * DocumentRoot から user_data のパスを取得する.
+     *
+     * @param integer $device_type_id 端末種別ID
+     * @return string 端末に応じた DocumentRoot から user_data までのパス
+     */
+    function getUserDir($device_type_id = DEVICE_TYPE_PC) {
+        switch ($device_type_id) {
+        case DEVICE_TYPE_MOBILE:
+            $userDir = URL_DIR . MOBILE_DIR . USER_DIR;
+            $templateName = MOBILE_TEMPLATE_NAME;
+            break;
+
+        case DEVICE_TYPE_SMARTPHONE:
+            $userDir = URL_DIR . SMARTPHONE_DIR . USER_DIR;
+            break;
+
+        case DEVICE_TYPE_PC:
+        default:
+            $userDir = URL_DIR . USER_DIR;
+        }
+        return $userDir;
     }
 }
 ?>

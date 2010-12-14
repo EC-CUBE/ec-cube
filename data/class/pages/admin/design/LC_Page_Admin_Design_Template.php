@@ -188,6 +188,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin {
 		    // defaultパラメータのセット
 		    $this->templates = $this->lfGetAllTemplates();
 		    $this->now_template = TEMPLATE_NAME;
+            $this->device_type_id = $device_type_id;
     }
 
     /**

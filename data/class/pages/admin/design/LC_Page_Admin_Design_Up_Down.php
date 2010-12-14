@@ -118,6 +118,7 @@ class LC_Page_Admin_Design_Up_Down extends LC_Page_Admin {
 		    default:
 		        break;
 		    }
+            $this->device_type_id = $device_type_id;
     }
 
     /**

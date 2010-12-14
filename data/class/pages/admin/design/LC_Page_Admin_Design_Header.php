@@ -132,6 +132,7 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin {
         // テキストエリアに表示
         $this->header_data = $header_data;
         $this->footer_data = $footer_data;
+        $this->device_type_id = $device_type_id;
 
         if (isset($_POST['header_row']) && $_POST['header_row'] != ''){
             $this->header_row = $_POST['header_row'];

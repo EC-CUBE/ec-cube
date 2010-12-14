@@ -24,6 +24,8 @@
 <form name="form_bloc" id="form_bloc" method="post" action="?" >
 <input type="hidden" name="mode" value="" />
 <input type="hidden" name="bloc_id" value="<!--{$bloc_id}-->" />
+<input type="hidden" name="device_type_id" value="<!--{$device_type_id|escape}-->" />
+
   <!--{* ▼ブロック設定ここから *}-->
 
   <!--{if $arrBlocData.tpl_path != '' and $preview == on}-->

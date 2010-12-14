@@ -259,6 +259,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin {
         $this->tpl_arrBloc = $tpl_arrBloc;
         $this->bloc_cnt = count($tpl_arrBloc);
         $this->page_id = $page_id;
+        $this->device_type_id = $device_type_id;
 
         // ページ名称を取得
         $arrPageData = $objLayout->lfGetPageData('page_id = ? AND device_type_id = ?', array($page_id, $device_type_id));

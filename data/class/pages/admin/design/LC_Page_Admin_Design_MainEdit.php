@@ -93,7 +93,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
         }
 
         // ページ一覧を取得
-        $this->arrPageList = $this->objLayout->lfgetPageData("page_id <> 0 AND device_type_id = ?",
+        $this->arrPageList = $this->objLayout->lfGetPageData("page_id <> 0 AND device_type_id = ?",
                                                              array($device_type_id));
 
         // メッセージ表示
@@ -103,28 +103,29 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
 
         // page_id が指定されている場合にはテンプレートデータの取得
         if (is_numeric($page_id) and $page_id != '') {
-            $this->lfGetPageData($page_id, $device_type_id, $objView);
+            $this->arrPageData = $this->lfGetPageData($page_id, $device_type_id, $objView);
         }
 
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
         switch ($_POST['mode']) {
             case 'preview':
-                $this->lfPreviewPageData($page_id);
+                $this->lfPreviewPageData($page_id, $device_type_id);
                 exit;
                 break;
 
         case 'delete':
-            if (!$this->objLayout->lfCheckBaseData($page_id)) {
-                $this->lfDeletePageData($page_id);
+            if (!$this->objLayout->lfCheckBaseData($page_id, $device_type_id)) {
+                $this->lfDeletePageData($page_id, $device_type_id);
                 exit;
             }
             break;
 
         case 'confirm':
-            $this->lfConfirmPageData($page_id);
+            $this->lfConfirmPageData($page_id, $device_type_id);
         default:
         }
+        $this->device_type_id = $device_type_id;
     }
 
     /**
@@ -147,6 +148,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
     function lfGetPageData($page_id, $device_type_id, $objView){
         $arrPageData = $this->objLayout->lfGetPageData("page_id = ? AND device_type_id = ?",
                                                        array($page_id, $device_type_id));
+        
 
         if (strlen($arrPageData[0]['filename']) == 0) {
             $this->arrErr['page_id_err'] = "※ 指定されたページは編集できません。";
@@ -158,12 +160,15 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
 
         // FIXME
         // テンプレートファイルが存在していれば読み込む
-        $tpl_file =  USER_TEMPLATE_PATH . "/" . TEMPLATE_NAME . "/" . $arrPageData[0]['filename'] . ".tpl";
+        $templatePath = $this->objLayout->getTemplatePath($device_type_id, true);
+        $tpl_file =  $templatePath . $arrPageData[0]['filename'] . ".tpl";
+        $this->p($tpl_file);
         if (file_exists($tpl_file)){
             $arrPageData[0]['tpl_data'] = file_get_contents($tpl_file);
         // 存在してなければ, 指定されたテンプレートのファイルを読み込む
         } else {
-            $arrPageData[0]['tpl_data'] = file_get_contents(TEMPLATE_DIR . $arrPageData[0]['filename'] . ".tpl");
+            $templatePath = $this->objLayout->getTemplatePath($device_type_id);
+            $arrPageData[0]['tpl_data'] = file_get_contents($templatePath . $arrPageData[0]['filename'] . ".tpl");
         }
 
         // チェックボックスの値変更
@@ -173,11 +178,13 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
         // ディレクトリを画面表示用に編集
         $arrPageData[0]['directory'] = str_replace(USER_DIR, '', $arrPageData[0]['php_dir']);
 
-        $this->arrPageData = $arrPageData[0];
+        return $arrPageData[0];
     }
 
     /**
      * プレビュー画面を表示する.
+     *
+     * FIXME
      *
      * @param integer $page_id ページID
      * @param integer $device_type_id 端末種別ID
@@ -256,25 +263,27 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
         // エラーがなければ更新処理を行う
         if (count($this->arrErr) == 0) {
             // DBへデータを更新する
-            $this->lfEntryPageData($_POST);
+            $page_id = $this->lfEntryPageData($_POST, $device_type_id);
 
             // ベースデータでなければファイルを削除し、PHPファイルを作成する
             if (!$this->objLayout->lfCheckBaseData($page_id, $device_type_id)) {
                 // PHPファイル作成
-                $this->lfCreatePHPFile($_POST['url']);
+                $this->lfCreatePHPFile($_POST['url'], $device_type_id);
             }
 
             // FIXME
             // TPLファイル作成
-            $cre_tpl = USER_TEMPLATE_PATH . "/" . TEMPLATE_NAME . "/" . basename($_POST['url']) . '.tpl';
+            $cre_tpl = $this->objLayout->getTemplatePath($device_type_id, true) . basename($_POST['url']) . '.tpl';
             $this->lfCreateFile($cre_tpl, $_POST['tpl_data']);
 
+            /*
             // 新規作成の場合、
             if ($page_id == '') {
                 // ページIDを取得する
                 $arrPageData = $this->objLayout->lfGetPageData("url = ? AND page_id <> 0" , array(USER_DIR . $_POST['url'] . '.php'));
                 $page_id = $arrPageData[0]['page_id'];
             }
+            */
             $this->objDisplay->redirect($this->getLocation("./main_edit.php",
                                     array("page_id" => $page_id,
                                           "device_type_id" => $device_type_id,
@@ -301,11 +310,11 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
         $arrChk = array();          // 排他チェック用
 
         // 更新データの変換
-        $sqlval = $this->lfGetUpdData($arrData);
+        $sqlval = $this->lfGetUpdData($arrData, $device_type_id);
 
         // データが存在しているかチェックを行う
         if($arrData['page_id'] !== ''){
-            $arrChk = $this->objLayout->lfgetPageData("page_id = ? AND device_type_id = ?",
+            $arrChk = $this->objLayout->lfGetPageData("page_id = ? AND device_type_id = ?",
                                                       array($arrData['page_id'], $device_type_id));
         }
 
@@ -316,12 +325,15 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
             $sqlval['device_type_id'] = $device_type_id;
             $sqlval['create_date'] = 'now()';
             $objQuery->insert('dtb_pagelayout', $sqlval);
+            $page_id = $sqlval['page_id'];
         }
         // データが存在してる場合にはアップデートを行う
         else {
             $objQuery->update('dtb_pagelayout', $sqlval, 'page_id = ? AND device_type_id = ?',
                               array($arrData['page_id'], $device_type_id));
+            $page_id = $arrData['page_id'];
         }
+        return $page_id;
     }
 
     /**
@@ -330,7 +342,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
      * @param array $arrData 更新データ
      * @return array 更新データ
      */
-    function lfGetUpdData($arrData){
+    function lfGetUpdData($arrData, $device_type_id) {
         $arrUpdData = array(
             'header_chk'    => SC_Utils_Ex::sfChangeCheckBox($arrData['header_chk']),   // ヘッダー使用
             'footer_chk'    => SC_Utils_Ex::sfChangeCheckBox($arrData['footer_chk']),   // フッター使用
@@ -339,16 +351,16 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
         );
 
         // ベースデータの場合には変更しない。
-        if (!$this->objLayout->lfCheckBaseData($arrData['page_id'])) {
+        if (!$this->objLayout->lfCheckBaseData($arrData['page_id'], $device_type_id)) {
             $arrUpdData['page_name']    = $arrData['page_name'] ;
-            $arrUpdData['url']          = USER_DIR . $arrData['url'] . '.php';
+            $arrUpdData['url']          = $this->objLayout->getUserDir($device_type_id) . $arrData['url'] . '.php';
             $arrUpdData['php_dir']      = dirname($arrUpdData['url']);
             if ($arrUpdData['php_dir'] == '.') {
                 $arrUpdData['php_dir'] = '';
             } else {
                 $arrUpdData['php_dir'] .= '/';
             }
-            $arrUpdData['tpl_dir']      = substr(TPL_DIR, strlen(URL_DIR));
+            $arrUpdData['tpl_dir']      = substr($this->objLayout->getTemplatePath($devie_type_id, true), strlen(URL_DIR));
             $arrUpdData['filename']     = basename($arrData['url']); // 拡張子を付加しない
         }
 
@@ -442,9 +454,9 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
      * @param string $path PHPファイルのパス
      * @return void
      */
-    function lfCreatePHPFile($url){
+    function lfCreatePHPFile($url, $device_type_id){
 
-        $path = USER_PATH . $url . ".php";
+        $path = $this->objLayout->getUserPath($device_type_id) . $url . ".php";
 
         // カスタマイズを考慮し、上書きしない。(#831)
         if (file_exists($path)) {

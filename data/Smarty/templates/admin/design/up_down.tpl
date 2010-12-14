@@ -37,6 +37,7 @@ function confirmSubmit(mode, msg) {
 <form name="form1" method="post" action="?" enctype="multipart/form-data">
 <input type="hidden" name="mode" value="" />
 <input type="hidden" name="uniqid" value="<!--{$uniqid}-->" />
+<input type="hidden" name="device_type_id" value="<!--{$device_type_id|escape}-->" />
 <div id="disign" class="contents-main">
   <p class="remark">
     テンプレートパッケージのアップロードを行います。<br />

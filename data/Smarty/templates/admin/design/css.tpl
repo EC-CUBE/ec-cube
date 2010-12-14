@@ -25,6 +25,7 @@
 <input type="hidden" name="mode" value="" />
 <input type="hidden" name="area_row" value="<!--{$area_row}-->" />
 <input type="hidden" name="old_css_name" value="<!--{$old_css_name}-->" />
+<input type="hidden" name="device_type_id" value="<!--{$device_type_id|escape}-->" />
 <div id="design" class="contents-main">
 
   <!--▼CSS設定ここから-->
