@@ -71,19 +71,21 @@ class SC_Initial {
 
         require_once(realpath(dirname( __FILE__)) ."/../install.php");
 
-        define('MOBILE_DIR', 'mobile/');
-        define('MOBILE_HTML_PATH', HTML_PATH . MOBILE_DIR);
-        define('MOBILE_SITE_URL', SITE_URL . MOBILE_DIR);
-        define('MOBILE_SSL_URL', SSL_URL . MOBILE_DIR);
-        define('MOBILE_URL_DIR', URL_DIR . MOBILE_DIR);
+        if (defined('ECCUBE_INSTALL')) {
+            define('MOBILE_DIR', 'mobile/');
+            define('MOBILE_HTML_PATH', HTML_PATH . MOBILE_DIR);
+            define('MOBILE_SITE_URL', SITE_URL . MOBILE_DIR);
+            define('MOBILE_SSL_URL', SSL_URL . MOBILE_DIR);
+            define('MOBILE_URL_DIR', URL_DIR . MOBILE_DIR);
 
-        define('SMARTPHONE_DIR', 'sphone/');
-        define('SMARTPHONE_HTML_PATH', HTML_PATH . SMARTPHONE_DIR);
-        define('SMARTPHONE_SITE_URL', SITE_URL . SMARTPHONE_DIR);
-        define('SMARTPHONE_SSL_URL', SSL_URL . SMARTPHONE_DIR);
-        define('SMARTPHONE_URL_DIR', URL_DIR . SMARTPHONE_DIR);
+            define('SMARTPHONE_DIR', 'sphone/');
+            define('SMARTPHONE_HTML_PATH', HTML_PATH . SMARTPHONE_DIR);
+            define('SMARTPHONE_SITE_URL', SITE_URL . SMARTPHONE_DIR);
+            define('SMARTPHONE_SSL_URL', SSL_URL . SMARTPHONE_DIR);
+            define('SMARTPHONE_URL_DIR', URL_DIR . SMARTPHONE_DIR);
 
-        define('ADMIN_DIR', 'admin/'); // TODO
+            define('ADMIN_DIR', 'admin/'); // TODO
+        }
     }
 
     /**
