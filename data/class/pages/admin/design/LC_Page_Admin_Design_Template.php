@@ -38,22 +38,6 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin {
     // }}}
     // {{{ functions
 
-    /** テンプレートデータ種別 */
-    var $arrSubnavi = array(
-                     'title' => array(
-                                1 => 'top',
-                                2 => 'product',
-                                3 => 'detail',
-                                4 => 'mypage'
-                                             ),
-                     'name' =>array(
-                                1 => 'TOPページ',
-                                2 => '商品一覧ページ',
-                                3 => '商品詳細ページ',
-                                4 => 'MYページ'
-                              )
-                     );
-
     /**
      * Page を初期化する.
      *
@@ -61,15 +45,15 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin {
      */
     function init() {
         parent::init();
-	    $this->tpl_mainpage = 'design/template.tpl';
-	    $this->tpl_subnavi  = 'design/subnavi.tpl';
-	    $this->tpl_subno    = 'template';
-	    $this->tpl_mainno   = "design";
-	    $this->tpl_subtitle = 'テンプレート設定';
-	    $this->arrErr  = array();
-	    $this->arrForm = array();
-	    $this->tpl_select = TEMPLATE_NAME;
-	   	ini_set("max_execution_time", 300);
+        $this->tpl_mainpage = 'design/template.tpl';
+        $this->tpl_subnavi  = 'design/subnavi.tpl';
+        $this->tpl_subno    = 'template';
+        $this->tpl_mainno   = "design";
+        $this->tpl_subtitle = 'テンプレート設定';
+        $this->arrErr  = array();
+        $this->arrForm = array();
+        $this->tpl_select = TEMPLATE_NAME;
+        ini_set("max_execution_time", 300);
     }
 
     /**
@@ -91,103 +75,103 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin {
      */
     function action() {
         // 認証可否の判定
-		    $objSession = new SC_Session();
-		    SC_Utils::sfIsSuccess($objSession);
+            $objSession = new SC_Session();
+            SC_Utils::sfIsSuccess($objSession);
 
-		    // uniqidをテンプレートへ埋め込み
-		    $this->uniqid = $objSession->getUniqId();
+            // uniqidをテンプレートへ埋め込み
+            $this->uniqid = $objSession->getUniqId();
 
-		    $objView = new SC_AdminView();
+            $objView = new SC_AdminView();
 
-		    switch($this->lfGetMode()) {
+            switch($this->lfGetMode()) {
 
-		    // 登録ボタン押下時
-		    case 'register':
-		        // 画面遷移の正当性チェック
-		        if (!SC_Utils::sfIsValidTransition($objSession)) {
-		            sfDispError('');
-		        }
-		        // パラメータ検証
-		        $objForm = $this->lfInitRegister();
-		        if ($objForm->checkError()) {
-		            SC_Utils_Ex::sfDispError('');
-		        }
+            // 登録ボタン押下時
+            case 'register':
+                // 画面遷移の正当性チェック
+                if (!SC_Utils::sfIsValidTransition($objSession)) {
+                    sfDispError('');
+                }
+                // パラメータ検証
+                $objForm = $this->lfInitRegister();
+                if ($objForm->checkError()) {
+                    SC_Utils_Ex::sfDispError('');
+                }
 
-		        $template_code = $objForm->getValue('template_code');
+                $template_code = $objForm->getValue('template_code');
                 $this->tpl_select = $template_code;
 
-		        if($template_code == "") {
-		        	$template_code = "default";
-		        }
+                if($template_code == "") {
+                    $template_code = "default";
+                }
 
-		        // DBへ使用するテンプレートを登録
-		        $this->lfRegisterTemplate($template_code);
+                // DBへ使用するテンプレートを登録
+                $this->lfRegisterTemplate($template_code);
 
-		        // XXX コンパイルファイルのクリア処理を行う
-		        $objView->_smarty->clear_compiled_tpl();
+                // XXX コンパイルファイルのクリア処理を行う
+                $objView->_smarty->clear_compiled_tpl();
 
-		        // common.cssの内容を更新
-		        $this->lfChangeCommonCss($template_code);
-		    	
-		        // テンプレートのコピー
-		    	$this->lfCopyTemplate($template_code);
-		        
-		        // ブロック位置を更新
-		        $this->lfChangeBloc($template_code);
+                // common.cssの内容を更新
+                $this->lfChangeCommonCss($template_code);
+                
+                // テンプレートのコピー
+                $this->lfCopyTemplate($template_code);
+                
+                // ブロック位置を更新
+                $this->lfChangeBloc($template_code);
 
-		        // 完了メッセージ
-		        $this->tpl_onload="alert('登録が完了しました。');";
-		        break;
+                // 完了メッセージ
+                $this->tpl_onload="alert('登録が完了しました。');";
+                break;
 
-		    // 削除ボタン押下時
-		    case 'delete':
-		        // 画面遷移の正当性チェック
-		        if (!SC_Utils::sfIsValidTransition($objSession)) {
-		            SC_Utils::sfDispError('');
-		        }
-		        // パラメータ検証
-		        $objForm = $this->lfInitDelete();
-		        if ($objForm->checkError()) {
-		            SC_Utils::sfDispError('');
-		        }
-		    	
-		        //現在使用中のテンプレートとデフォルトのテンプレートは削除できないようにする
-		        $template_code = $objForm->getValue('template_code_temp');
-		        if ($template_code == TEMPLATE_NAME || $template_code == DEFAULT_TEMPLATE_NAME) {
-		        	$this->tpl_onload = "alert('選択中のテンプレートは削除出来ません');";
-		            break;
-		        }
-		        $this->lfDeleteTemplate($template_code);
-		        break;
+            // 削除ボタン押下時
+            case 'delete':
+                // 画面遷移の正当性チェック
+                if (!SC_Utils::sfIsValidTransition($objSession)) {
+                    SC_Utils::sfDispError('');
+                }
+                // パラメータ検証
+                $objForm = $this->lfInitDelete();
+                if ($objForm->checkError()) {
+                    SC_Utils::sfDispError('');
+                }
+                
+                //現在使用中のテンプレートとデフォルトのテンプレートは削除できないようにする
+                $template_code = $objForm->getValue('template_code_temp');
+                if ($template_code == TEMPLATE_NAME || $template_code == DEFAULT_TEMPLATE_NAME) {
+                    $this->tpl_onload = "alert('選択中のテンプレートは削除出来ません');";
+                    break;
+                }
+                $this->lfDeleteTemplate($template_code);
+                break;
 
-		    // downloadボタン押下時
-		    case 'download':
-		        // 画面遷移の正当性チェック
-		        if (!SC_Utils::sfIsValidTransition($objSession)) {
-		            SC_Utils::sfDispError('');
-		        }
-		    	// パラメータ検証
-		        $objForm = $this->lfInitDownload();
-		        $template_code = $objForm->getValue('template_code_temp');
-		        // ユーザデータの下のファイルも保存する。
-		        $from_dir = USER_TEMPLATE_PATH . $template_code . "/";
-		        $to_dir = SMARTY_TEMPLATES_DIR . $template_code . "/_packages/";
-		        SC_Utils::sfMakeDir($to_dir);
-		    	SC_Utils::sfCopyDir($from_dir, $to_dir);
-		        SC_Helper_FileManager::downloadArchiveFiles(SMARTY_TEMPLATES_DIR . $template_code);
-		        break;
+            // downloadボタン押下時
+            case 'download':
+                // 画面遷移の正当性チェック
+                if (!SC_Utils::sfIsValidTransition($objSession)) {
+                    SC_Utils::sfDispError('');
+                }
+                // パラメータ検証
+                $objForm = $this->lfInitDownload();
+                $template_code = $objForm->getValue('template_code_temp');
+                // ユーザデータの下のファイルも保存する。
+                $from_dir = USER_TEMPLATE_PATH . $template_code . "/";
+                $to_dir = SMARTY_TEMPLATES_DIR . $template_code . "/_packages/";
+                SC_Utils::sfMakeDir($to_dir);
+                SC_Utils::sfCopyDir($from_dir, $to_dir);
+                SC_Helper_FileManager::downloadArchiveFiles(SMARTY_TEMPLATES_DIR . $template_code);
+                break;
 
-		    // プレビューボタン押下時
-		    case 'preview':
-		        break;
+            // プレビューボタン押下時
+            case 'preview':
+                break;
 
-		    default:
-		        break;
-		    }
+            default:
+                break;
+            }
 
-		    // defaultパラメータのセット
-		    $this->templates = $this->lfGetAllTemplates();
-		    $this->now_template = TEMPLATE_NAME;
+            // defaultパラメータのセット
+            $this->templates = $this->lfGetAllTemplates();
+            $this->now_template = TEMPLATE_NAME;
             $this->device_type_id = $device_type_id;
     }
 
@@ -200,42 +184,42 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin {
         parent::destroy();
     }
 
-	function lfGetMode(){
-	    if (isset($_POST['mode'])) return $_POST['mode'];
-	}
+    function lfGetMode(){
+        if (isset($_POST['mode'])) return $_POST['mode'];
+    }
 
-	function lfInitRegister() {
-	    $objForm = new SC_FormParam();
-	    $objForm->addParam(
-	        'template_code', 'template_code', STEXT_LEN, '',
-	        array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK", "ALNUM_CHECK")
-	    );
-	    $objForm->setParam($_POST);
+    function lfInitRegister() {
+        $objForm = new SC_FormParam();
+        $objForm->addParam(
+            'template_code', 'template_code', STEXT_LEN, '',
+            array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK", "ALNUM_CHECK")
+        );
+        $objForm->setParam($_POST);
 
-	    return $objForm;
-	}
+        return $objForm;
+    }
 
-	function lfInitDelete() {
-	    $objForm = new SC_FormParam();
-	    $objForm->addParam(
-	        'template_code_temp', 'template_code_temp', STEXT_LEN, '',
-	        array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK", "ALNUM_CHECK")
-	    );
-	    $objForm->setParam($_POST);
+    function lfInitDelete() {
+        $objForm = new SC_FormParam();
+        $objForm->addParam(
+            'template_code_temp', 'template_code_temp', STEXT_LEN, '',
+            array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK", "ALNUM_CHECK")
+        );
+        $objForm->setParam($_POST);
 
-	    return $objForm;
-	}
+        return $objForm;
+    }
 
-	function lfInitDownload() {
-	    $objForm = new SC_FormParam();
-	    $objForm->addParam(
-	        'template_code_temp', 'template_code_temp', STEXT_LEN, '',
-	        array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK", "ALNUM_CHECK")
-	    );
-	    $objForm->setParam($_POST);
+    function lfInitDownload() {
+        $objForm = new SC_FormParam();
+        $objForm->addParam(
+            'template_code_temp', 'template_code_temp', STEXT_LEN, '',
+            array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK", "ALNUM_CHECK")
+        );
+        $objForm->setParam($_POST);
 
-	    return $objForm;
-	}
+        return $objForm;
+    }
 
     /**
      * 使用するテンプレートをDBへ登録する
@@ -252,9 +236,9 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin {
         $masterData->createCache('mtb_constants', array(), true, array('id', 'remarks'));
     }
 
-	/**
-	 * common.cssの更新
-	 */
+    /**
+     * common.cssの更新
+     */
     function lfChangeCommonCss($template_code) {
         $css_path = USER_PATH . "css/common.css";
         
@@ -271,56 +255,56 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin {
         fwrite($fp, $css);
         fclose($fp);
     }
-	
-	/**
-	 * ブロック位置の更新
-	 */
-	function lfChangeBloc($template_code) {
-	    $objQuery = new SC_Query();
-	    $filepath = USER_TEMPLATE_PATH. $template_code. "/sql/update_bloc.sql";
-	    
-	    // ブロック位置更新SQLファイル有
-	    if(file_exists($filepath)) {
-	        if($fp = fopen($filepath, "r")) {
-	            $sql = fread($fp, filesize($filepath));
-	            fclose($fp);
-	        }
-	        // 改行、タブを1スペースに変換
-	        $sql = preg_replace("/[\r\n\t]/", " " ,$sql);
-	        $sql_split = split(";", $sql);
-	        foreach($sql_split as $key => $val){
-	            if (trim($val) != "") {
-	                $objQuery->query($val);
-	            }
-	        }
-	    }
-	}
+    
+    /**
+     * ブロック位置の更新
+     */
+    function lfChangeBloc($template_code) {
+        $objQuery = new SC_Query();
+        $filepath = USER_TEMPLATE_PATH. $template_code. "/sql/update_bloc.sql";
+        
+        // ブロック位置更新SQLファイル有
+        if(file_exists($filepath)) {
+            if($fp = fopen($filepath, "r")) {
+                $sql = fread($fp, filesize($filepath));
+                fclose($fp);
+            }
+            // 改行、タブを1スペースに変換
+            $sql = preg_replace("/[\r\n\t]/", " " ,$sql);
+            $sql_split = split(";", $sql);
+            foreach($sql_split as $key => $val){
+                if (trim($val) != "") {
+                    $objQuery->query($val);
+                }
+            }
+        }
+    }
 
-	/**
-	 * テンプレートパッケージの削除
-	 */
-	function lfDeleteTemplate($template_code) {
-	    // DB更新
-	    $objQuery = new SC_Query();
-	    $objQuery->delete('dtb_templates', 'template_code = ?', array($template_code));
-	    // テンプレート削除
-	    $templates_dir = SMARTY_TEMPLATES_DIR. $template_code. "/";
-	    SC_Utils_Ex::sfDelFile($templates_dir);
-	    // コンパイル削除
-	    $templates_c_dir = DATA_PATH. "Smarty/templates_c/". $template_code. "/";
-	    SC_Utils_Ex::sfDelFile($templates_c_dir);
-	    // ユーザーデータ削除
-	    $user_dir = USER_TEMPLATE_PATH. $template_code. "/";
-	    SC_Utils_Ex::sfDelFile($user_dir);
-	}
+    /**
+     * テンプレートパッケージの削除
+     */
+    function lfDeleteTemplate($template_code) {
+        // DB更新
+        $objQuery = new SC_Query();
+        $objQuery->delete('dtb_templates', 'template_code = ?', array($template_code));
+        // テンプレート削除
+        $templates_dir = SMARTY_TEMPLATES_DIR. $template_code. "/";
+        SC_Utils_Ex::sfDelFile($templates_dir);
+        // コンパイル削除
+        $templates_c_dir = DATA_PATH. "Smarty/templates_c/". $template_code. "/";
+        SC_Utils_Ex::sfDelFile($templates_c_dir);
+        // ユーザーデータ削除
+        $user_dir = USER_TEMPLATE_PATH. $template_code. "/";
+        SC_Utils_Ex::sfDelFile($user_dir);
+    }
 
-	function lfGetAllTemplates() {
-	    $objQuery = new SC_Query();
-	    $arrRet = $objQuery->select('*', 'dtb_templates');
-	    if (empty($arrRet)) return array();
+    function lfGetAllTemplates() {
+        $objQuery = new SC_Query();
+        $arrRet = $objQuery->select('*', 'dtb_templates');
+        if (empty($arrRet)) return array();
 
-	    return $arrRet;
-	}
+        return $arrRet;
+    }
 
    /*
      * 関数名：lfCreateTemplate()
@@ -330,9 +314,9 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin {
      * 戻り値：無し
      */
     function lfCreateTemplate($dir, $file , $cart_flg) {
-		umask(0);
+        umask(0);
         $objFileManager = new SC_Helper_FileManager_Ex();
-		
+        
         // 作成ファイルディレクトリ
         $create_dir = $dir . $file;
         $create_active_dir = $create_dir . "/" . CAMPAIGN_TEMPLATE_ACTIVE;

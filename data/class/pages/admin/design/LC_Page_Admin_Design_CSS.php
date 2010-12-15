@@ -75,6 +75,7 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin {
         SC_Utils_Ex::sfIsSuccess($objSess);
 
         $objFileManager = new SC_Helper_FileManager_Ex();
+        $this->objLayout = new SC_Helper_PageLayout_Ex();
 
         // CSSファイル名を取得
         if (isset($_POST['css_name'])) {
@@ -95,7 +96,15 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin {
         }
         $this->old_css_name = $old_css_name;
 
-        $css_dir =  USER_TEMPLATE_PATH . TEMPLATE_NAME . "/css/";
+        // 端末種別IDを取得
+        if (isset($_REQUEST['device_type_id'])
+            && is_numeric($_REQUEST['device_type_id'])) {
+            $device_type_id = $_REQUEST['device_type_id'];
+        } else {
+            $device_type_id = DEVICE_TYPE_PC;
+        }
+
+        $css_dir = $this->objLayout->getTemplatePath($device_type_id, true) . "css/";
         $css_path = $css_dir . $css_name . '.css';
 
         // CSSファイルの読み込み
@@ -111,15 +120,15 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin {
             // データ更新処理
             case 'confirm':
                 $this->lfExecuteConfirm($css_dir, $css_name, $old_css_name, $css_path);
-        	    break;
+                break;
             case 'delete':
                 $this->lfExecuteDelete($css_path);
-            	break;
+                break;
             default:
-            	if(isset($_POST['mode'])) {
-            	   GC_Utils::gfPrintLog("MODEエラー：".$_POST['mode']);
-            	}
-            	break;
+                if(isset($_POST['mode'])) {
+                   GC_Utils::gfPrintLog("MODEエラー：".$_POST['mode']);
+                }
+                break;
         }
 
         // ファイルリストを取得

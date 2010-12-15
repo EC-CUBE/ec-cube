@@ -311,10 +311,14 @@ __EOF__;
     /**
      * DocumentRoot から user_data のパスを取得する.
      *
+     * 引数 $hasPackage を true にした場合は, user_data/packages/template_name
+     * を取得する.
+     *
      * @param integer $device_type_id 端末種別ID
+     * @param boolean $hasPackage パッケージのパスも含める場合 true
      * @return string 端末に応じた DocumentRoot から user_data までのパス
      */
-    function getUserDir($device_type_id = DEVICE_TYPE_PC) {
+    function getUserDir($device_type_id = DEVICE_TYPE_PC, $hasPackage = false) {
         switch ($device_type_id) {
         case DEVICE_TYPE_MOBILE:
             $userDir = URL_DIR . MOBILE_DIR . USER_DIR;
@@ -323,11 +327,16 @@ __EOF__;
 
         case DEVICE_TYPE_SMARTPHONE:
             $userDir = URL_DIR . SMARTPHONE_DIR . USER_DIR;
+            $templateName = SMARTPHONE_TEMPLATE_NAME;
             break;
 
         case DEVICE_TYPE_PC:
         default:
             $userDir = URL_DIR . USER_DIR;
+            $templateName = TEMPLATE_NAME;
+        }
+        if ($hasPackage) {
+            return $userDir . USER_PACKAGE_DIR . $templateName . "/";
         }
         return $userDir;
     }

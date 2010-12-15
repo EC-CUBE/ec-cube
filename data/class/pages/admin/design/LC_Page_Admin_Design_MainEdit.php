@@ -162,7 +162,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
         // テンプレートファイルが存在していれば読み込む
         $templatePath = $this->objLayout->getTemplatePath($device_type_id, true);
         $tpl_file =  $templatePath . $arrPageData[0]['filename'] . ".tpl";
-        $this->p($tpl_file);
+
         if (file_exists($tpl_file)){
             $arrPageData[0]['tpl_data'] = file_get_contents($tpl_file);
         // 存在してなければ, 指定されたテンプレートのファイルを読み込む

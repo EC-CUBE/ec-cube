@@ -172,6 +172,34 @@ class SC_View {
         $this->assignarray($array);
     }
 
+    /**
+     * テンプレートパスをアサインする.
+     *
+     * @param integer $device_type_id 端末種別ID
+     */
+    function assignTemplatePath($device_type_id) {
+
+        // テンプレート変数を割り当て
+        $this->assign("TPL_DIR", SC_Helper_PageLayout_Ex::getUserDir($device_type_id, true));
+
+        // ヘッダとフッタを割り当て
+        $templatePath = SC_Helper_PageLayout_Ex::getTemplatePath($device_type_id, true);
+        $header_tpl = $templatePath . "header.tpl";
+        $footer_tpl = $templatePath . "footer.tpl";
+
+        // ユーザー作成のテンプレートが無ければ, 指定テンプレートを割り当て
+        $templatePath = SC_Helper_PageLayout_Ex::getTemplatePath($device_type_id);
+        if (!$this->_smarty->template_exists($header_tpl)) {
+            $header_tpl = $templatePath . "header.tpl";
+        }
+        if (!$this->_smarty->template_exists($footer_tpl)) {
+            $footer_tpl = $templatePath . "footer.tpl";
+        }
+
+        $this->assign("header_tpl", $header_tpl);
+        $this->assign("footer_tpl", $footer_tpl);
+    }
+
     // デバッグ
     function debug($var = true){
         $this->_smarty->debugging = $var;
@@ -184,7 +212,7 @@ class SC_AdminView extends SC_View{
         $this->_smarty->template_dir = TEMPLATE_ADMIN_DIR;
         $this->_smarty->compile_dir = COMPILE_ADMIN_DIR;
         $this->assign('TPL_DIR_DEFAULT', URL_DIR . USER_DIR . USER_PACKAGE_DIR . DEFAULT_TEMPLATE_NAME . '/');
-        $this->assign('TPL_DIR', URL_DIR . USER_DIR . USER_PACKAGE_DIR . 'admin/');
+        $this->assign('TPL_DIR', URL_DIR . USER_DIR . USER_PACKAGE_DIR . ADMIN_DIR);
         $this->initpath();
     }
 }
@@ -196,24 +224,7 @@ class SC_SiteView extends SC_View{
         $this->_smarty->template_dir = TEMPLATE_DIR;
         $this->_smarty->compile_dir = COMPILE_DIR;
 
-        // テンプレート変数を割り当て
-        $this->assign("TPL_DIR", URL_DIR . USER_DIR . USER_PACKAGE_DIR . TEMPLATE_NAME . "/");
-
-        // ヘッダとフッタを割り当て
-        $header_tpl = USER_PATH . USER_PACKAGE_DIR . TEMPLATE_NAME . "/" . "header.tpl";
-        $footer_tpl = USER_PATH . USER_PACKAGE_DIR . TEMPLATE_NAME . "/" . "footer.tpl";
-
-        // ユーザー作成のテンプレートが無ければ, 指定テンプレートを割り当て
-        if (!$this->_smarty->template_exists($header_tpl)) {
-            $header_tpl = TEMPLATE_DIR . "header.tpl";
-        }
-        if (!$this->_smarty->template_exists($footer_tpl)) {
-            $footer_tpl = TEMPLATE_DIR . "footer.tpl";
-        }
-
-        $this->assign("header_tpl", $header_tpl);
-        $this->assign("footer_tpl", $footer_tpl);
-
+        $this->assignTemplatePath(DEVICE_TYPE_PC);
         $this->initpath();
 
         if ($setPrevURL) {
@@ -244,8 +255,7 @@ class SC_MobileView extends SC_SiteView {
         parent::SC_SiteView($setPrevURL);
         $this->_smarty->template_dir = MOBILE_TEMPLATE_DIR;
         $this->_smarty->compile_dir = MOBILE_COMPILE_DIR;
-        // テンプレート変数を割り当て
-        $this->assign("TPL_DIR", URL_DIR . MOBILE_DIR . USER_DIR . USER_PACKAGE_DIR . MOBILE_TEMPLATE_NAME . "/");
+        $this->assignTemplatePath(DEVICE_TYPE_MOBILE);
     }
 }
 
@@ -254,8 +264,7 @@ class SC_SmartphoneView extends SC_SiteView {
         parent::SC_SiteView($setPrevURL);
         $this->_smarty->template_dir = SMARTPHONE_TEMPLATE_DIR;
         $this->_smarty->compile_dir = SMARTPHONE_COMPILE_DIR;
-        // テンプレート変数を割り当て
-        $this->assign("TPL_DIR", URL_DIR . SMARTPHONE_DIR . USER_DIR . USER_PACKAGE_DIR . SMARTPHONE_TEMPLATE_NAME . "/");
+        $this->assignTemplatePath(DEVICE_TYPE_SMARTPHONE);
     }
 }
 ?>

@@ -78,7 +78,7 @@
     <tr style="background-color:<!--{if $item.bloc_id == $bloc_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->;">
       <td><!--{$item.bloc_name}--></td>
       <td>
-        <a href="<!--{$smarty.server.PHP_SELF|escape}-->?bloc_id=<!--{$item.bloc_id}-->" >編集</a>
+        <a href="<!--{$smarty.server.PHP_SELF|escape}-->?bloc_id=<!--{$item.bloc_id}-->&amp;device_type_id=<!--{$device_type_id}-->" >編集</a>
       </td>
       <td>
         <!--{if $item.del_flg == 0}-->

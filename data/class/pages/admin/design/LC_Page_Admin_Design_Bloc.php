@@ -70,8 +70,6 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin {
      * @return void
      */
     function action() {
-        $this->objLayout = new SC_Helper_PageLayout_Ex();
-        $package_path = USER_TEMPLATE_PATH . "/" . TEMPLATE_NAME . "/";
 
         // 認証可否の判定
         $objSess = new SC_Session();
@@ -93,6 +91,9 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin {
             $device_type_id = DEVICE_TYPE_PC;
         }
 
+        $this->objLayout = new SC_Helper_PageLayout_Ex();
+        $package_path = $this->objLayout->getTemplatePath($device_type_id, true);
+
         // ブロック一覧を取得
         $this->arrBlocList = $this->lfgetBlocData("device_type_id = ?", array($device_type_id));
 
@@ -107,7 +108,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin {
 
             // 存在しない場合は指定テンプレートのブロックを取得
             } else {
-                $arrBlocData[0]['tpl_path'] = TEMPLATE_DIR . $arrBlocData[0]['tpl_path'];
+                $arrBlocData[0]['tpl_path'] = $this->objLayout->getTemplatePath($device_type_id) . $arrBlocData[0]['tpl_path'];
             }
 
             // テンプレートファイルの読み込み
@@ -149,7 +150,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin {
             // エラーがなければ更新処理を行う
             if (count($this->arrErr) == 0) {
                 // DBへデータを更新する
-                $this->lfEntryBlocData($_POST);
+                $this->lfEntryBlocData($_POST, $device_type_id);
 
                 // 旧ファイルの削除
                 $old_bloc_path = $package_path . $arrBlocData[0]['tpl_path'];
@@ -247,9 +248,10 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin {
      * ブロック情報を更新する.
      *
      * @param array $arrData 更新データ
+     * @param integer $device_type_id 端末種別ID
      * @return integer 更新結果
      */
-    function lfEntryBlocData($arrData){
+    function lfEntryBlocData($arrData, $device_type_id){
         $objQuery = new SC_Query();     // DB操作オブジェクト
         $sql = "";                      // データ更新SQL生成用
         $ret = "";                      // データ更新結果格納用
@@ -257,12 +259,14 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin {
         $arrChk = array();              // 排他チェック用
 
         // 更新データ生成
-        $arrUpdData = array($arrData['bloc_name'], BLOC_DIR . $arrData['filename'] . '.tpl', $arrData['filename']);
+        $arrUpdData = array("bloc_name" => $arrData['bloc_name'],
+                            "tpl_path" => BLOC_DIR . $arrData['filename'] . '.tpl',
+                            "filename" => $arrData['filename']);
 
         // データが存在しているかチェックを行う
         if($arrData['bloc_id'] !== ''){
             $arrChk = $this->lfgetBlocData("bloc_id = ? AND device_type_id = ?",
-                                           array($arrData['bloc_id'], $arrData['device_type_id']));
+                                           array($arrData['bloc_id'], $device_type_id));
         }
 
         // bloc_id が空 若しくは データが存在していない場合にはINSERTを行う
@@ -270,11 +274,12 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin {
             // SQL生成
             // FIXME device_type_id ごとの連番にする
             $arrUpdData['bloc_id'] = $objQuery->nextVal('dtb_bloc_bloc_id');
+            $arrUpdData['device_type_id'] = $device_type_id;
             $arrUpdData['create_date'] = "now()";
             $ret = $objQuery->insert('dtb_bloc', $arrUpdData);
         } else {
             $ret = $objQuery->update('dtb_bloc', $arrUpdData, 'bloc_id = ? AND device_type_id = ?',
-                                     array($arrData['bloc_id'], $arrData['device_type_id']));
+                                     array($arrData['bloc_id'], $device_type_id));
         }
         return $ret;
     }

@@ -74,6 +74,16 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin {
         $objSess = new SC_Session();
         SC_Utils_Ex::sfIsSuccess($objSess);
 
+        $this->objLayout = new SC_Helper_PageLayout_Ex();
+
+        // 端末種別IDを取得
+        if (isset($_REQUEST['device_type_id'])
+            && is_numeric($_REQUEST['device_type_id'])) {
+            $device_type_id = $_REQUEST['device_type_id'];
+        } else {
+            $device_type_id = DEVICE_TYPE_PC;
+        }
+
         $division = isset($_POST['division']) ? $_POST['division'] : "";
         $pre_DIR = USER_INC_PATH . 'preview/';
 
@@ -86,7 +96,7 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin {
 
             // 登録時はプレビュー用テンプレートをコピーする
             if ($_POST['mode'] == 'confirm'){
-                copy($pre_DIR.$division.".tpl", USER_PATH . USER_PACKAGE_DIR . TEMPLATE_NAME . "/" . $division . ".tpl");
+                copy($pre_DIR.$division.".tpl", $this->objLayout->getTemplatePath($device_type_id, true) . $division . ".tpl");
                 // 完了メッセージ（プレビュー時は表示しない）
                 $this->tpl_onload="alert('登録が完了しました。');";
 
@@ -111,13 +121,13 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin {
 
             // ユーザーパスにテンプレートが存在しなければ,
             // 指定テンプレートから読み込む
-            $header_tpl = USER_PATH . USER_PACKAGE_DIR . TEMPLATE_NAME . "/" . "header.tpl";
+            $header_tpl = $this->objLayout->getTemplatePath($device_type_id, true) . "header.tpl";
             if (!is_file($header_tpl)) {
-                $header_tpl = TEMPLATE_DIR . "header.tpl";
+                $header_tpl = $this->objLayout->getTemplatePath($device_type_id) . "header.tpl";
             }
-            $footer_tpl = USER_PATH . USER_PACKAGE_DIR . TEMPLATE_NAME . "/" . "footer.tpl";
+            $footer_tpl = $this->objLayout->getTemplatePath($device_type_id, true) . "footer.tpl";
             if (!is_file($footer_tpl)) {
-                $footer_tpl = TEMPLATE_DIR . "footer.tpl";
+                $footer_tpl = $this->objLayout->getTemplatePath($device_type_id) . "footer.tpl";
             }
 
             copy($header_tpl, $pre_DIR . "header.tpl");
