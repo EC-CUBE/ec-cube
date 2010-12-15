@@ -43,8 +43,7 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc {
      */
     function init() {
         parent::init();
-        $bloc_file = 'news.tpl';
-        $this->setTplMainpage($bloc_file);
+        $this->setTplMainpage('news.tpl');
     }
 
     /**
@@ -53,13 +52,17 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc {
      * @return void
      */
     function process() {
-        $objSubView = new SC_SiteView(false);
+        $this->action();
+        $this->sendResponse();
+    }
 
-        //新着情報取得
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $this->arrNews = $this->lfGetNews();
-
-        $objSubView->assignobj($this);
-        $objSubView->display($this->tpl_mainpage);
     }
 
 

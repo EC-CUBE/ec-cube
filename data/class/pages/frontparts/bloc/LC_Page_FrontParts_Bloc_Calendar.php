@@ -46,8 +46,7 @@ class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc {
      */
     function init() {
         parent::init();
-        $bloc_file = 'calendar.tpl';
-        $this->setTplMainpage($bloc_file);
+        $this->setTplMainpage('calendar.tpl');
     }
 
     /**
@@ -56,19 +55,22 @@ class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc {
      * @return void
      */
     function process() {
-        $objView = new SC_SiteView(false);
+        $this->action();
+        $this->sendResponse();
+    }
 
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         // 休日取得取得
         $this->arrHoliday = $this->lfGetHoliday();
-
         // 定休日取得取得
         $this->arrRegularHoliday = $this->lfGetRegularHoliday();
-
         // カレンダーデータ取得
         $this->arrCalendar = $this->lfGetCalendar(2);
-
-        $objView->assignobj($this);
-        $objView->display($this->tpl_mainpage);
     }
 
     /**

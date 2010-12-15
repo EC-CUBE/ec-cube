@@ -32,6 +32,22 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @version $Id$
  */
 class LC_Page_FrontParts_Bloc extends LC_Page {
+
+    // TODO
+    function init() {
+        // 開始時刻を設定する。
+        $this->timeStart = SC_Utils_Ex::sfMicrotimeFloat();
+
+        $this->tpl_authority = $_SESSION['authority'];
+
+        // ディスプレイクラス生成
+        $this->objDisplay = new SC_Display();
+
+        // プラグインクラス生成
+        $this->objPlugin = new SC_Helper_Plugin_Ex();
+        $this->objPlugin->preProcess($this);
+    }
+
     /**
      * ブロックファイルに応じて tpl_mainpage を設定する
      *
@@ -43,13 +59,15 @@ class LC_Page_FrontParts_Bloc extends LC_Page {
         if (substr($bloc_file, 0, 1) == '/') {
             $this->tpl_mainpage = $bloc_file;
         } else {
-            $user_bloc_path = USER_TEMPLATE_PATH . TEMPLATE_NAME . "/" . BLOC_DIR . $bloc_file;
+            $user_bloc_path = SC_Helper_PageLayout_Ex::getTemplatePath($this->objDisplay->detectDevice(), true) . BLOC_DIR . $bloc_file;
             if (is_file($user_bloc_path)) {
                 $this->tpl_mainpage = $user_bloc_path;
             } else {
-                $this->tpl_mainpage = BLOC_PATH . $bloc_file;
+                $this->tpl_mainpage = SC_Helper_PageLayout_Ex::getTemplatePath($this->objDisplay->detectDevice()) . BLOC_DIR . $bloc_file;
             }
         }
+
+        $this->setTemplate($this->tpl_mainpage);
         $debug_message = "block：" . $this->tpl_mainpage . "\n";
         GC_Utils::gfDebugLog($debug_message);
     }

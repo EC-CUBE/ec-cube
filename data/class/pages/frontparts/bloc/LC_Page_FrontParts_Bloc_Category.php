@@ -43,8 +43,7 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc {
      */
     function init() {
         parent::init();
-        $bloc_file = 'category.tpl';
-        $this->setTplMainpage($bloc_file);
+        $this->setTplMainpage('category.tpl');
     }
 
     /**
@@ -53,7 +52,16 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc {
      * @return void
      */
     function process() {
-        $objSubView = new SC_SiteView(false);
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objDb = new SC_Helper_DB_Ex();
 
         // 選択中のカテゴリIDを判定する
@@ -62,9 +70,6 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc {
         // 選択中のカテゴリID
         $this->tpl_category_id = empty($arrCategory_id) ? array(0) : $arrCategory_id;;
         $this->lfGetCatTree($this->tpl_category_id, true, $this);
-
-        $objSubView->assignobj($this);
-        $objSubView->display($this->tpl_mainpage);
     }
 
     /**

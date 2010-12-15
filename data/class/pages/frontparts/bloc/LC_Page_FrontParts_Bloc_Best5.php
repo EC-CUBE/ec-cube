@@ -43,8 +43,7 @@ class LC_Page_FrontParts_Bloc_Best5 extends LC_Page_FrontParts_Bloc {
      */
     function init() {
         parent::init();
-        $bloc_file = 'best5.tpl';
-        $this->setTplMainpage($bloc_file);
+        $this->setTplMainpage('best5.tpl');
     }
 
     /**
@@ -53,8 +52,16 @@ class LC_Page_FrontParts_Bloc_Best5 extends LC_Page_FrontParts_Bloc {
      * @return void
      */
     function process() {
-        $objView = new SC_SiteView(false);
-        $objSiteInfo = $objView->objSiteInfo;
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
 
         // 基本情報を渡す
         $objSiteInfo = new SC_SiteInfo();
@@ -62,11 +69,6 @@ class LC_Page_FrontParts_Bloc_Best5 extends LC_Page_FrontParts_Bloc {
 
         //おすすめ商品表示
         $this->arrBestProducts = $this->lfGetRanking();
-
-        if (!empty($this->arrBestProducts)) {
-            $objView->assignobj($this);
-            $objView->display($this->tpl_mainpage);
-        }
     }
 
     /**

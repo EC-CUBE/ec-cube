@@ -43,8 +43,7 @@ class LC_Page_FrontParts_Bloc_Cart extends LC_Page_FrontParts_Bloc {
      */
     function init() {
         parent::init();
-        $bloc_file = 'cart.tpl';
-        $this->setTplMainpage($bloc_file);
+        $this->setTplMainpage('cart.tpl');
     }
 
     /**
@@ -53,7 +52,16 @@ class LC_Page_FrontParts_Bloc_Cart extends LC_Page_FrontParts_Bloc {
      * @return void
      */
     function process() {
-        $objSubView = new SC_SiteView(false);
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objCart = new SC_CartSession();
         $objSiteInfo = new SC_SiteInfo;
 
@@ -89,9 +97,6 @@ class LC_Page_FrontParts_Bloc_Cart extends LC_Page_FrontParts_Bloc {
 
             $this->arrCartList = $arrCartList;
         }
-
-        $objSubView->assignobj($this);
-        $objSubView->display($this->tpl_mainpage);
     }
 
     /**

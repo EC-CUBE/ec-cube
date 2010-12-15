@@ -43,8 +43,7 @@ class LC_Page_FrontParts_Bloc_Login extends LC_Page_FrontParts_Bloc {
      */
     function init() {
         parent::init();
-        $bloc_file = 'login.tpl';
-        $this->setTplMainpage($bloc_file);
+        $this->setTplMainpage('login.tpl');
         $this->tpl_login = false;
         $this->tpl_disable_logout = false;
         $this->httpCacheControl('nocache');
@@ -56,6 +55,16 @@ class LC_Page_FrontParts_Bloc_Login extends LC_Page_FrontParts_Bloc {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $objCustomer = new SC_Customer();
         // クッキー管理クラス
         $objCookie = new SC_Cookie(COOKIE_EXPIRE);
@@ -80,10 +89,7 @@ class LC_Page_FrontParts_Bloc_Login extends LC_Page_FrontParts_Bloc {
         }
 
         $this->tpl_disable_logout = $this->lfCheckDisableLogout();
-        $objSubView = new SC_SiteView(false);
         $this->transactionid = SC_Helper_Session_Ex::getToken();
-        $objSubView->assignobj($this);
-        $objSubView->display($this->tpl_mainpage);
     }
 
     /**

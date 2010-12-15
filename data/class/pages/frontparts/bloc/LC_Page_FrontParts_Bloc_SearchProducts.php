@@ -43,8 +43,7 @@ class LC_Page_FrontParts_Bloc_SearchProducts extends LC_Page_FrontParts_Bloc {
      */
     function init() {
         parent::init();
-        $bloc_file = 'search_products.tpl';
-        $this->setTplMainpage($bloc_file);
+        $this->setTplMainpage('search_products.tpl');
     }
 
     /**
@@ -53,6 +52,16 @@ class LC_Page_FrontParts_Bloc_SearchProducts extends LC_Page_FrontParts_Bloc {
      * @return void
      */
     function process() {
+        $this->action();
+        $this->sendResponse();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
         $arrSearch = array();	// 検索項目表示用
         $objDb = new SC_Helper_DB_Ex();
         // 選択中のカテゴリIDを判定する
@@ -80,10 +89,6 @@ class LC_Page_FrontParts_Bloc_SearchProducts extends LC_Page_FrontParts_Bloc {
             }
         }
         $this->arrMakerList = $arrRet;
-
-        $objSubView = new SC_SiteView(false);
-        $objSubView->assignobj($this);
-        $objSubView->display($this->tpl_mainpage);
     }
 
     /**
