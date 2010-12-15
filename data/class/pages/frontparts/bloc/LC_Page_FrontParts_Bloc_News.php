@@ -72,8 +72,7 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc {
      * @return void
      */
     function mobileInit() {
-        $this->tpl_mainpage = MOBILE_TEMPLATE_DIR . "frontparts/"
-            . BLOC_DIR . 'news.tpl';
+        $this->init();
     }
 
     /**

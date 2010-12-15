@@ -77,8 +77,7 @@ class LC_Page_FrontParts_Bloc_Best5 extends LC_Page_FrontParts_Bloc {
      * @return void
      */
     function mobileInit() {
-         $this->tpl_mainpage = MOBILE_TEMPLATE_DIR . "frontparts/"
-            . BLOC_DIR . 'best5.tpl';
+        $this->init();
     }
 
     /**
