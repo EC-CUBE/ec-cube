@@ -110,7 +110,7 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin {
         case 'pre_edit':
             // 編集項目をDBより取得する。
             $where = "class_id = ?";
-            $class_name = $objQuery->get("dtb_class", "name", $where, array($_POST['class_id']));
+            $class_name = $objQuery->get("name", "dtb_class", $where, array($_POST['class_id']));
             // 入力項目にカテゴリ名を入力する。
             $this->arrForm['name'] = $class_name;
             // POSTデータを引き継ぐ

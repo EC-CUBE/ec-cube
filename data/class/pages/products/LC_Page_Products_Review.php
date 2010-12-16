@@ -118,13 +118,13 @@ class LC_Page_Products_Review extends LC_Page {
                 //重複タイトルでない
                 if($flag == 0){
                     //商品名の取得
-                    $arrForm['name'] = $objQuery->get("dtb_products", "name", "product_id = ? ", array($arrForm['product_id']));
+                    $arrForm['name'] = $objQuery->get("name", "dtb_products", "product_id = ? ", array($arrForm['product_id']));
                     $this->arrForm = $arrForm;
                     $this->tpl_mainpage = 'products/review_confirm.tpl';
                 }
             } else {
                 //商品名の取得
-                $arrForm['name'] = $objQuery->get("dtb_products", "name", "product_id = ? ", array($arrForm['product_id']));
+                $arrForm['name'] = $objQuery->get("name", "dtb_products", "product_id = ? ", array($arrForm['product_id']));
                 $this->arrForm = $arrForm;
             }
             break;
@@ -135,7 +135,7 @@ class LC_Page_Products_Review extends LC_Page {
             }
 
             //商品名の取得
-            $this->arrForm['name'] = $objQuery->get("dtb_products", "name", "product_id = ? ", array($this->arrForm['product_id']));
+            $this->arrForm['name'] = $objQuery->get("name", "dtb_products", "product_id = ? ", array($this->arrForm['product_id']));
             if(empty($this->arrForm['name'])) {
                 SC_Utils_Ex::sfDispSiteError(PAGE_ERROR);
             }

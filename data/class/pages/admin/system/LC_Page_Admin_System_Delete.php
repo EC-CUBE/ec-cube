@@ -114,7 +114,7 @@ class LC_Page_Admin_System_Delete extends LC_Page_Admin {
     function renumberRank(&$objQuery, $id) {
         $where = "member_id = ?";
         // ランクの取得
-        $rank = $objQuery->get("dtb_member", "rank", $where, array($id));
+        $rank = $objQuery->get("rank", "dtb_member", $where, array($id));
 
         // 削除したレコードより上のランキングを下げてRANKの空きを埋める。
         $sqlup =<<<END

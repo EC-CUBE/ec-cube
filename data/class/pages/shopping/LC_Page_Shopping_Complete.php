@@ -137,7 +137,7 @@ class LC_Page_Shopping_Complete extends LC_Page {
             }
 
             //その他情報の取得
-            $other_data = $objQuery->get("dtb_order", "memo02", "order_id = ? ", array($order_id));
+            $other_data = $objQuery->get("memo02", "dtb_order", "order_id = ? ", array($order_id));
             if($other_data != "") {
                 $arrOther = unserialize($other_data);
 
@@ -157,7 +157,7 @@ class LC_Page_Shopping_Complete extends LC_Page {
             $this->tpl_conv_page = AFF_SHOPPING_COMPLETE;
             $this->tpl_aff_option = "order_id=$order_id";
             //合計価格の取得
-            $total = $objQuery->get("dtb_order", "total", "order_id = ? ", array($order_id));
+            $total = $objQuery->get("total", "dtb_order", "order_id = ? ", array($order_id));
             if($total != "") {
                 $this->tpl_aff_option.= "|total=$total";
             }

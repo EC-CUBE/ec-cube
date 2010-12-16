@@ -330,7 +330,7 @@ class LC_Page_Entry extends LC_Page {
                     $objMail->sendMail();
 
                     // 完了ページに移動させる。
-                    $customer_id = $objQuery->get("dtb_customer", "customer_id", "secret_key = ?", array($this->uniqid));
+                    $customer_id = $objQuery->get("customer_id", "dtb_customer", "secret_key = ?", array($this->uniqid));
                     $this->objDisplay->redirect($this->getLocation("./complete.php", array("ci" => $customer_id)));
                     exit;
                 }

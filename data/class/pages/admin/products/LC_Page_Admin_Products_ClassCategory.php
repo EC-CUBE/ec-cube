@@ -78,7 +78,7 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin {
         // 規格IDのチェック
         if(SC_Utils_Ex::sfIsInt($_GET['class_id'])) {
             // 規格名の取得
-            $this->tpl_class_name = $objQuery->get("dtb_class", "name", "class_id = ?", array($_GET['class_id']));
+            $this->tpl_class_name = $objQuery->get("name", "dtb_class", "class_id = ?", array($_GET['class_id']));
             if($this->tpl_class_name != "") {
                 // 規格IDの引き継ぎ
                 $this->arrHidden['class_id'] = $_GET['class_id'];
@@ -134,7 +134,7 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin {
         case 'pre_edit':
             // 編集項目をDBより取得する。
             $where = "classcategory_id = ?";
-            $name = $objQuery->get("dtb_classcategory", "name", $where, array($_POST['classcategory_id']));
+            $name = $objQuery->get("name", "dtb_classcategory", $where, array($_POST['classcategory_id']));
             // 入力項目にカテゴリ名を入力する。
             $this->arrForm['name'] = $name;
             // POSTデータを引き継ぐ
@@ -173,7 +173,7 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin {
         $objQuery->begin();
         // 親規格IDの存在チェック
         $where = "del_flg <> 1 AND class_id = ?";
-        $ret = 	$objQuery->get("dtb_class", "class_id", $where, array($_POST['class_id']));
+        $ret = 	$objQuery->get("class_id", "dtb_class", $where, array($_POST['class_id']));
         if($ret != "") {
             // INSERTする値を作成する。
             $sqlval['name'] = $_POST['name'];

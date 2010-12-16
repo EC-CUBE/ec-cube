@@ -509,7 +509,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
         if(count($arrID['product_id']) > 0) {
             $id = implode(",", $arrID['product_id']);
             //商品から発送目安の取得
-            $deliv_date = $objQuery->get("dtb_products", "MAX(deliv_date_id)", "product_id IN (".$id.")");
+            $deliv_date = $objQuery->get("MAX(deliv_date_id)", "dtb_products", "product_id IN (".$id.")");
             //発送目安
             switch($deliv_date) {
             //即日発送

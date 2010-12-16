@@ -118,7 +118,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin {
             // 編集項目のカテゴリ名をDBより取得する。
             $objQuery = new SC_Query();
             $where = "category_id = ?";
-            $cat_name = $objQuery->get("dtb_category", "category_name", $where, array($_POST['category_id']));
+            $cat_name = $objQuery->get("category_name", "dtb_category", $where, array($_POST['category_id']));
             // 入力項目にカテゴリ名を入力する。
             $this->arrForm['category_name'] = $cat_name;
             // POSTデータを引き継ぐ
@@ -189,9 +189,9 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin {
                 $objQuery->begin();
         
                 // 移動したデータのrank、level、parent_category_idを取得
-                $rank   = $objQuery->get("dtb_category", "rank", "category_id = ?", array($keys[0]));
-                $level  = $objQuery->get("dtb_category", "level", "category_id = ?", array($keys[0]));
-                $parent = $objQuery->get("dtb_category", "parent_category_id", "category_id = ?", array($keys[0]));
+                $rank   = $objQuery->get("rank", "dtb_category", "category_id = ?", array($keys[0]));
+                $level  = $objQuery->get("level", "dtb_category", "category_id = ?", array($keys[0]));
+                $parent = $objQuery->get("parent_category_id", "dtb_category", "category_id = ?", array($keys[0]));
 
                 // 同一level内のrank配列を作成
                 $objQuery->setOption("ORDER BY rank DESC");
@@ -279,7 +279,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin {
         } else {
             // 親のランクを自分のランクとする。
             $where = "category_id = ?";
-            $rank = $objQuery->get("dtb_category", "rank", $where, array($parent_category_id));
+            $rank = $objQuery->get("rank", "dtb_category", $where, array($parent_category_id));
             // 追加レコードのランク以上のレコードを一つあげる。
             $sqlup = "UPDATE dtb_category SET rank = (rank + 1) WHERE rank >= ?";
             $objQuery->exec($sqlup, array($rank));
@@ -287,7 +287,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin {
 
         $where = "category_id = ?";
         // 自分のレベルを取得する(親のレベル + 1)
-        $level = $objQuery->get("dtb_category", "level", $where, array($parent_category_id)) + 1;
+        $level = $objQuery->get("level", "dtb_category", $where, array($parent_category_id)) + 1;
 
         // 入力データを渡す。
         $sqlval = $this->objFormParam->getHashArray();
@@ -344,7 +344,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin {
         // 階層チェック
         if(!isset($objErr->arrErr['category_name'])) {
             $objQuery = new SC_Query();
-            $level = $objQuery->get("dtb_category", "level", "category_id = ?", array($_POST['parent_category_id']));
+            $level = $objQuery->get("level", "dtb_category", "category_id = ?", array($_POST['parent_category_id']));
 
             if($level >= LEVEL_MAX) {
                 $objErr->arrErr['category_name'] = "※ ".LEVEL_MAX."階層以上の登録はできません。<br>";
@@ -381,7 +381,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin {
         // 親IDを取得する。
         $col = "$pid_name";
         $where = "$id_name = ?";
-        $pid = $objQuery->get($table, $col, $where, $id);
+        $pid = $objQuery->get($col, $table, $where, $id);
         // すべての子を取得する。
         $col = "$id_name";
         $where = "del_flg = 0 AND $pid_name = ? ORDER BY rank DESC";
@@ -402,7 +402,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin {
         // 親IDを取得する。
         $col = "$pid_name";
         $where = "$id_name = ?";
-        $pid = $objQuery->get($table, $col, $where, $id);
+        $pid = $objQuery->get($col, $table, $where, $id);
         // すべての子を取得する。
         $col = "$id_name";
         $where = "del_flg = 0 AND $pid_name = ? ORDER BY rank DESC";

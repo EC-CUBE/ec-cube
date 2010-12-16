@@ -540,7 +540,7 @@ class SC_Query {
      * @param array $arrval ブレースホルダに挿入する値
      * @return mixed SQL の実行結果
      */
-    function get($table, $col, $where = "", $arrval = array()) {
+    function get($col, $table, $where = "", $arrval = array()) {
         $sqlse = $this->getSql($col, $table, $where);
         // SQL文の実行
         $ret = $this->getOne($sqlse, $arrval);

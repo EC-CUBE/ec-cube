@@ -1271,7 +1271,7 @@ __EOS__;
             $where.= " AND $andwhere";
         }
         // 対象項目のランクを取得
-        $rank = $objQuery->get($table, "rank", $where, array($id));
+        $rank = $objQuery->get("rank", $table, $where, array($id));
         // ランクの最大値を取得
         $maxrank = $objQuery->max($table, "rank", $andwhere);
         // ランクが最大値よりも小さい場合に実行する。
@@ -1282,7 +1282,7 @@ __EOS__;
                 $where.= " AND $andwhere";
             }
             $uprank = $rank + 1;
-            $up_id = $objQuery->get($table, $colname, $where, array($uprank));
+            $up_id = $objQuery->get($colname, $table, $where, array($uprank));
             // ランク入れ替えの実行
             $sqlup = "UPDATE $table SET rank = ? WHERE $colname = ?";
             if($andwhere != "") {
@@ -1311,7 +1311,7 @@ __EOS__;
             $where.= " AND $andwhere";
         }
         // 対象項目のランクを取得
-        $rank = $objQuery->get($table, "rank", $where, array($id));
+        $rank = $objQuery->get("rank", $table, $where, array($id));
 
         // ランクが1(最小値)よりも大きい場合に実行する。
         if($rank > 1) {
@@ -1321,7 +1321,7 @@ __EOS__;
                 $where.= " AND $andwhere";
             }
             $downrank = $rank - 1;
-            $down_id = $objQuery->get($table, $colname, $where, array($downrank));
+            $down_id = $objQuery->get($colname, $table, $where, array($downrank));
             // ランク入れ替えの実行
             $sqlup = "UPDATE $table SET rank = ? WHERE $colname = ?";
             if($andwhere != "") {
@@ -1353,7 +1353,7 @@ __EOS__;
         } else {
             $getWhere = "$keyIdColumn = ?";
         }
-        $rank = $objQuery->get($tableName, "rank", $getWhere, array($keyId));
+        $rank = $objQuery->get("rank", $tableName, $getWhere, array($keyId));
 
         $max = $objQuery->max($tableName, "rank", $where);
 
@@ -1416,7 +1416,7 @@ __EOS__;
         if($andwhere != "") {
             $where.= " AND $andwhere";
         }
-        $rank = $objQuery->get($table, "rank", $where, array($id));
+        $rank = $objQuery->get("rank", $table, $where, array($id));
 
         if(!$delete) {
             // ランクを最下位にする、DELフラグON
@@ -1485,7 +1485,7 @@ __EOS__;
         // 旧カテゴリでのランク削除処理
         // 移動レコードのランクを取得する。
         $where = "$id_name = ?";
-        $rank = $objQuery->get($table, "rank", $where, array($id));
+        $rank = $objQuery->get("rank", $table, $where, array($id));
         // 削除レコードのランクより上のレコードを一つ下にずらす。
         $where = "rank > ? AND $cat_name = ?";
         $sqlup = "UPDATE $table SET rank = (rank - 1) WHERE $where";
@@ -1668,7 +1668,7 @@ __EOS__;
                 }
             }
         }
-        $ret = $objQuery->get($table, $col, $where, $arrval);
+        $ret = $objQuery->get($col, $table, $where, $arrval);
 
         if($ret != "") {
             return true;

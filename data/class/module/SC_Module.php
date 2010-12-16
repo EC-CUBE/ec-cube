@@ -100,7 +100,7 @@ class SC_Module {
      */
     function _getName() {
         $objQuery = new SC_Query;
-        return $objQuery->get('dtb_module', 'module_name', 'module_code = ?', $this->getCode());
+        return $objQuery->get('module_name', 'dtb_module', 'module_code = ?', $this->getCode());
     }
 
     /**
@@ -154,7 +154,7 @@ class SC_Module {
         $moduleCode = $this->getCode();
         $objQuery = new SC_Query;
         $ret = $objQuery->get(
-            'dtb_module', 'sub_data', 'module_code = ?', array($moduleCode)
+            'sub_data', 'dtb_module', 'module_code = ?', array($moduleCode)
         );
 
         if (isset($ret)) {

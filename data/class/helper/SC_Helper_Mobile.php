@@ -94,7 +94,7 @@ class SC_Helper_Mobile {
         $objQuery = new SC_Query;
 
         foreach ($_REQUEST as $key => $value) {
-            $session_id = $objQuery->get('dtb_mobile_ext_session_id', 'session_id',
+            $session_id = $objQuery->get('session_id', 'dtb_mobile_ext_session_id',
                                          'param_key = ? AND param_value = ? AND url = ? AND create_date >= ?',
                                          array($key, $value, $url, $time));
             if (isset($session_id)) {
@@ -366,7 +366,7 @@ class SC_Helper_Mobile {
                           '(email IS NULL AND create_date < ?) OR (email IS NOT NULL AND receive_date < ?)',
                           array($time, $time));
 
-        $kara_mail_id = $objQuery->get('dtb_mobile_kara_mail', 'kara_mail_id', 'token = ?', array($token));
+        $kara_mail_id = $objQuery->get('kara_mail_id', 'dtb_mobile_kara_mail', 'token = ?', array($token));
         if (!isset($kara_mail_id)) {
             return false;
         }

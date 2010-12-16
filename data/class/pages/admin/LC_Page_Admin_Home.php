@@ -160,7 +160,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin {
         $col = "SUM(point)";
         $where = "del_flg = 0";
         $from = "dtb_customer";
-        $ret = $objQuery->get($from, $col, $where);
+        $ret = $objQuery->get($col, $from, $where);
         return $ret;
     }
 

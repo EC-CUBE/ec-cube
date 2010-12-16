@@ -157,7 +157,7 @@ class LC_Page_Regist extends LC_Page {
 
                 // ログイン済みの状態にする。
                 $objQuery = new SC_Query();
-                $email = $objQuery->get("dtb_customer", "email", "secret_key = ?", array($registSecretKey));
+                $email = $objQuery->get("email", "dtb_customer", "secret_key = ?", array($registSecretKey));
                 $objCustomer->setLogin($email);
                 $this->objDisplay->redirect($this->getLocation("./complete.php"));
                 exit;
@@ -212,7 +212,7 @@ class LC_Page_Regist extends LC_Page {
         $where1 = "secret_key = ? AND status = 2";
         $customer = $objQuery->select("*", "dtb_customer", $where1, array($secret));
         // 初回購入情報の読み込み
-        $order_temp_id = $objQuery->get("dtb_order_temp", "order_temp_id");
+        $order_temp_id = $objQuery->get("order_temp_id", "dtb_order_temp");
         // 購入情報の更新
         if ($order_temp_id != null) {
             $arrCustomer['customer_id'] = $customer[0]['customer_id'];

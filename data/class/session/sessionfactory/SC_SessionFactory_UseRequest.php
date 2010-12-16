@@ -88,7 +88,7 @@ class SC_SessionFactory_UseRequest extends SC_SessionFactory {
         $objQuery = new SC_Query;
 
         foreach ($_REQUEST as $key => $value) {
-            $session_id = $objQuery->get('dtb_mobile_ext_session_id', 'session_id',
+            $session_id = $objQuery->get('session_id', 'dtb_mobile_ext_session_id',
                                          'param_key = ? AND param_value = ? AND url = ? AND create_date >= ?',
                                          array($key, $value, $url, $time));
             if (isset($session_id)) {

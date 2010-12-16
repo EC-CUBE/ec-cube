@@ -257,7 +257,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin {
         if ($sqlval['parent_category_id'] == 0) {
             $sqlval['level'] = 1;
         } else {
-            $parent_level = $objQuery->get("dtb_category", "level", "category_id = ?", array($sqlval['parent_category_id']));
+            $parent_level = $objQuery->get("level", "dtb_category", "category_id = ?", array($sqlval['parent_category_id']));
             $sqlval['level'] = $parent_level + 1;
         }
         
@@ -288,7 +288,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin {
             } else {
                 // 親のランクを自分のランクとする。
                 $where = "category_id = ?";
-                $sqlval['rank'] = $objQuery->get("dtb_category", "rank", $where, array($sqlval['parent_category_id']));
+                $sqlval['rank'] = $objQuery->get("rank", "dtb_category", $where, array($sqlval['parent_category_id']));
                 // 追加レコードのランク以上のレコードを一つあげる。
                 $sqlup = "UPDATE dtb_category SET rank = rank + 1 WHERE rank >= ?";
                 $objQuery->exec($sqlup, array($sqlval['rank']));
@@ -334,7 +334,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin {
         
         // 階層チェック
         if (!isset($objErr->arrErr['category_name']) && !isset($objErr->arrErr['parent_category_id'])) {
-            $level = $objQuery->get("dtb_category", "level", "category_id = ?", array($parent_category_id));
+            $level = $objQuery->get("level", "dtb_category", "category_id = ?", array($parent_category_id));
             if ($level >= LEVEL_MAX) {
                 $objErr->arrErr['category_name'] = "※ ".LEVEL_MAX."階層以上の登録はできません。<br>";
             }

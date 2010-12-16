@@ -864,11 +864,9 @@ exit;
     }
 
     function sfGetProductClassId($product_id, $classcategory_id1, $classcategory_id2) {
-        // $where = "product_id = ? AND classcategory_id1 = ? AND classcategory_id2 = ?";
         $where = "product_id = ?";
         $objQuery = new SC_Query();
-        // $ret = $objQuery->get("dtb_products_class", "product_class_id", $where, Array($product_id, $classcategory_id1, $classcategory_id2));
-        $ret = $objQuery->get("dtb_products_class", "product_class_id", $where, Array($product_id));
+        $ret = $objQuery->get("product_class_id", "dtb_products_class", $where, Array($product_id));
         return $ret;
     }
 
