@@ -314,7 +314,7 @@ CREATE TABLE dtb_products_class (
     product_class_id int  NOT NULL,
     product_id int NOT NULL,
     class_combination_id int,
-    product_type_id smallint NOT NULL DEFAULT 0,
+    product_type_id int NOT NULL DEFAULT 0,
     product_code text,
     stock numeric,
     stock_unlimited smallint NOT NULL DEFAULT 0,
@@ -821,12 +821,12 @@ CREATE TABLE dtb_blocposition (
     target_id int NOT NULL,
     bloc_id int NOT NULL,
     bloc_row int,
-    anywhere int DEFAULT 0 NOT NULL,
+    anywhere smallint DEFAULT 0 NOT NULL,
     PRIMARY KEY (device_type_id, page_id, target_id, bloc_id)
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_csv (
-    no int ,
+    no int,
     csv_id int NOT NULL,
     col text,
     disp_name text,
@@ -839,7 +839,7 @@ CREATE TABLE dtb_csv (
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_csv_sql (
-    sql_id int ,
+    sql_id int,
     sql_name text NOT NULL,
     csv_sql text,
     update_date datetime NOT NULL,
@@ -847,8 +847,7 @@ CREATE TABLE dtb_csv_sql (
     PRIMARY KEY (sql_id)
 ) TYPE=InnoDB;
 
-CREATE TABLE dtb_templates
-(
+CREATE TABLE dtb_templates (
     template_code varchar(50) NOT NULL,
     template_name text,
     create_date datetime NOT NULL,
@@ -856,9 +855,8 @@ CREATE TABLE dtb_templates
     PRIMARY KEY (template_code)
 ) TYPE=InnoDB;
 
-CREATE TABLE dtb_table_comment
-(
-    id int ,
+CREATE TABLE dtb_table_comment (
+    id int,
     table_name text,
     column_name text,
     description text,
@@ -866,7 +864,7 @@ CREATE TABLE dtb_table_comment
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_maker (
-    maker_id int ,
+    maker_id int NOT NULL,
     name text NOT NULL,
     rank int NOT NULL DEFAULT 0,
     creator_id int NOT NULL,
@@ -1158,16 +1156,16 @@ CREATE TABLE mtb_constants (
 ) TYPE=InnoDB;
 
 CREATE TABLE mtb_product_type (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL,
+    rank smallint NOT NULL,
     PRIMARY KEY (id)
 ) TYPE=InnoDB;
 
 CREATE TABLE mtb_device_type (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL,
+    rank smallint NOT NULL,
     PRIMARY KEY (id)
 ) TYPE=InnoDB;
 
@@ -1196,7 +1194,7 @@ CREATE TABLE dtb_module (
     sub_data text,
     auto_update_flg smallint NOT NULL DEFAULT 0,
     del_flg smallint NOT NULL DEFAULT 0,
-    create_date datetime NOT NULL ,
+    create_date datetime NOT NULL,
     update_date datetime NOT NULL
 ) TYPE=InnoDB;
 
@@ -1209,26 +1207,26 @@ CREATE TABLE dtb_session (
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_site_control (
-    control_id int  NOT NULL,
-    control_title varchar(255) ,
-    control_text text ,
-    control_flg int NOT NULL DEFAULT 2,
-    del_flg int NOT NULL DEFAULT 0,
-    memo text ,
+    control_id int NOT NULL,
+    control_title varchar(255),
+    control_text text,
+    control_flg smallint NOT NULL DEFAULT 2,
+    del_flg smallint NOT NULL DEFAULT 0,
+    memo text,
     create_date datetime NOT NULL,
     update_date datetime NOT NULL,
-    PRIMARY KEY  (control_id)
+    PRIMARY KEY (control_id)
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_trackback (
     trackback_id int  NOT NULL,
     product_id int NOT NULL,
-    blog_name varchar(255) NOT NULL DEFAULT '',
-    title varchar(255) NOT NULL DEFAULT '',
-    excerpt text NOT NULL ,
-    url text NOT NULL ,
-    status int NOT NULL DEFAULT 2,
-    del_flg int NOT NULL DEFAULT 0,
+    blog_name varchar(255) NOT NULL,
+    title varchar(255) NOT NULL,
+    excerpt text NOT NULL,
+    url text NOT NULL,
+    status smallint NOT NULL DEFAULT 2,
+    del_flg smallint NOT NULL DEFAULT 0,
     create_date datetime NOT NULL,
     update_date datetime NOT NULL,
     PRIMARY KEY (trackback_id)
@@ -1243,10 +1241,10 @@ CREATE TABLE dtb_bkup (
 
 CREATE TABLE dtb_plugin (
     plugin_id int NOT NULL,
-    plugin_name varchar(255) NOT NULL DEFAULT '',
-    enable int2 NOT NULL DEFAULT 0,
-    del_flg int2 NOT NULL DEFAULT 0,
-    class_name varchar(255) NOT NULL DEFAULT '',
+    plugin_name varchar(255) NOT NULL,
+    enable smallint NOT NULL DEFAULT 0,
+    del_flg smallint NOT NULL DEFAULT 0,
+    class_name varchar(255) NOT NULL,
     create_date datetime NOT NULL,
     update_date datetime NOT NULL,
     PRIMARY KEY (plugin_id)
@@ -1267,7 +1265,7 @@ CREATE INDEX dtb_mobile_kara_mail_receive_date_key ON dtb_mobile_kara_mail (rece
 CREATE TABLE dtb_index_list (
     table_name varchar(30) NOT NULL DEFAULT '',
     column_name varchar(30) NOT NULL DEFAULT '',
-    recommend_flg int2 NOT NULL DEFAULT 0,
+    recommend_flg smallint NOT NULL DEFAULT 0,
     recommend_comment text,
     PRIMARY KEY (table_name, column_name)
 ) TYPE=InnoDB;

@@ -849,7 +849,7 @@ CREATE TABLE dtb_csv_sql (
     PRIMARY KEY (sql_id)
 );
 
-create table dtb_templates (
+CREATE TABLE dtb_templates (
     template_code text NOT NULL,
     template_name text,
     create_date timestamp NOT NULL DEFAULT now(),
@@ -857,7 +857,7 @@ create table dtb_templates (
     PRIMARY KEY (template_code)
 );
 
-create table dtb_table_comment (
+CREATE TABLE dtb_table_comment (
     id int,
     table_name text,
     column_name text,
@@ -1157,16 +1157,16 @@ CREATE TABLE mtb_constants (
 );
 
 CREATE TABLE mtb_product_type (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL,
+    rank smallint NOT NULL,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE mtb_device_type (
-    id int2,
+    id smallint,
     name text,
-    rank int2 NOT NULL,
+    rank smallint NOT NULL,
     PRIMARY KEY (id)
 );
 
@@ -1188,6 +1188,17 @@ CREATE TABLE dtb_mobile_kara_mail (
     receive_date timestamp
 );
 
+CREATE TABLE dtb_module (
+    module_id int NOT NULL UNIQUE,
+    module_code text NOT NULL,
+    module_name text NOT NULL,
+    sub_data text,
+    auto_update_flg smallint NOT NULL DEFAULT 0,
+    del_flg smallint NOT NULL DEFAULT 0,
+    create_date timestamp NOT NULL DEFAULT NOW(),
+    update_date timestamp NOT NULL
+);
+
 CREATE TABLE dtb_session (
     sess_id text NOT NULL,
     sess_data text,
@@ -1196,46 +1207,48 @@ CREATE TABLE dtb_session (
     PRIMARY KEY (sess_id)
 );
 
-CREATE TABLE dtb_module (
-    module_id int NOT NULL UNIQUE,
-    module_code text NOT NULL,
-    module_name text NOT NULL,
-    sub_data text,
-    auto_update_flg int2 NOT NULL DEFAULT 0,
-    del_flg int2 NOT NULL DEFAULT 0,
-    create_date timestamp NOT NULL DEFAULT NOW(),
-    update_date timestamp NOT NULL
-);
-
 CREATE TABLE dtb_site_control (
-    control_id int primary key NOT NULL,
-    control_title text ,
-    control_text text ,
-    control_flg int2 NOT NULL DEFAULT 2,
-    del_flg int2 NOT NULL DEFAULT 0,
-    memo text ,
+    control_id int NOT NULL,
+    control_title text,
+    control_text text,
+    control_flg smallint NOT NULL DEFAULT 2,
+    del_flg smallint NOT NULL DEFAULT 0,
+    memo text,
     create_date timestamp NOT NULL DEFAULT now(),
-    update_date timestamp NOT NULL DEFAULT now()
+    update_date timestamp NOT NULL DEFAULT now(),
+    PRIMARY KEY (control_id)
 );
 
 CREATE TABLE dtb_trackback (
-    trackback_id int primary key NOT NULL,
+    trackback_id int NOT NULL,
     product_id int NOT NULL,
-    blog_name varchar(255) NOT NULL DEFAULT '',
-    title varchar(255) NOT NULL DEFAULT '',
-    excerpt text NOT NULL DEFAULT '',
-    url text NOT NULL DEFAULT '',
-    status int2 NOT NULL DEFAULT 2,
-    del_flg int2 NOT NULL DEFAULT 0,
+    blog_name text NOT NULL,
+    title text NOT NULL,
+    excerpt text NOT NULL,
+    url text NOT NULL,
+    status smallint NOT NULL DEFAULT 2,
+    del_flg smallint NOT NULL DEFAULT 0,
     create_date timestamp NOT NULL,
-    update_date timestamp NOT NULL
+    update_date timestamp NOT NULL,
+    PRIMARY KEY (trackback_id)
 );
 
 CREATE TABLE dtb_bkup (
-    bkup_name   varchar(50),
+    bkup_name   text,
     bkup_memo   text,
     create_date timestamp,
     PRIMARY KEY (bkup_name)
+);
+
+CREATE TABLE dtb_plugin (
+    plugin_id int NOT NULL,
+    plugin_name text NOT NULL,
+    enable smallint NOT NULL DEFAULT 0,
+    del_flg smallint NOT NULL DEFAULT 0,
+    class_name text NOT NULL,
+    create_date timestamp NOT NULL DEFAULT now(),
+    update_date timestamp NOT NULL DEFAULT now(),
+    PRIMARY KEY (plugin_id)
 );
 
 CREATE INDEX dtb_customer_mobile_phone_id_key ON dtb_customer (mobile_phone_id);
@@ -1252,21 +1265,10 @@ CREATE INDEX dtb_mobile_kara_mail_token_key ON dtb_mobile_kara_mail (token);
 CREATE INDEX dtb_mobile_kara_mail_create_date_key ON dtb_mobile_kara_mail (create_date);
 CREATE INDEX dtb_mobile_kara_mail_receive_date_key ON dtb_mobile_kara_mail (receive_date);
 
-CREATE TABLE dtb_plugin (
-    plugin_id int NOT NULL,
-    plugin_name varchar(255) DEFAULT NULL,
-    enable int2 NOT NULL DEFAULT 0,
-    del_flg int2 NOT NULL DEFAULT 0,
-    class_name varchar(255) DEFAULT NULL,
-    create_date timestamp NOT NULL DEFAULT now(),
-    update_date timestamp NOT NULL DEFAULT now(),
-    PRIMARY KEY (plugin_id)
-);
-
 CREATE TABLE dtb_index_list (
-    table_name varchar(30) NOT NULL DEFAULT '',
-    column_name varchar(30) NOT NULL DEFAULT '',
-    recommend_flg int2 NOT NULL DEFAULT 0,
+    table_name text NOT NULL DEFAULT '',
+    column_name text NOT NULL DEFAULT '',
+    recommend_flg smallint NOT NULL DEFAULT 0,
     recommend_comment text,
     PRIMARY KEY (table_name, column_name)
 );
