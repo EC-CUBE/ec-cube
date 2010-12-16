@@ -29,10 +29,10 @@
 
 require(DATA_PATH . 'module/fpdf/fpdf.php');
 require(DATA_PATH . 'module/fpdf/japanese.php');
-define('PDF_TEMPLATE_DIR', DATA_PATH . 'pdf/');
+define('PDF_TEMPLATE_DIR', TEMPLATE_ADMIN_DIR . 'pdf/');
 
 class SC_Fpdf {
-    function SC_Fpdf($download, $title, $tpl_pdf = "template_nouhin01.pdf") {
+    function SC_Fpdf($download, $title, $tpl_pdf = 'nouhinsyo1.pdf') {
         // デフォルトの設定
         $this->tpl_pdf = PDF_TEMPLATE_DIR . $tpl_pdf;  // テンプレートファイル
         $this->pdf_download = $download;      // PDFのダウンロード形式（0:表示、1:ダウンロード）
