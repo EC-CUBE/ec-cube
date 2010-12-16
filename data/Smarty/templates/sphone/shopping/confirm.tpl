@@ -94,11 +94,7 @@
                         </ul>
                  </td>
                  <td class="pricetd">
-                 <!--{if $item.productsClass.price02 != ""}-->
                      <!--{$item.productsClass.price02|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
-                 <!--{else}-->
-                     <!--{$item.productsClass.price01|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
-                 <!--{/if}-->
                  </td>
                  <td><!--{$item.quantity|number_format}--></td>
                  <td class="pricetd"><!--{$item.total_inctax|number_format}-->円</td>
