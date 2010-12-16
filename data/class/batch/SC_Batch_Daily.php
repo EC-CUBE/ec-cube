@@ -95,7 +95,7 @@ class SC_Batch_Daily extends SC_Batch {
         $objQuery->delete("dtb_order_detail", $where);
 
         // 最後に更新された日付を取得
-        $ret = $objQuery->max("dtb_bat_order_daily", "create_date");
+        $ret = $objQuery->max("create_date", "dtb_bat_order_daily");
         list($batch_last) = split("\.", $ret);
         $pass = $now_time - strtotime($batch_last);
 

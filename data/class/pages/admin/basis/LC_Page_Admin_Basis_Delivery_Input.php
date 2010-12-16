@@ -224,7 +224,7 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page_Admin {
             // 登録する配送業者IDの取得
             $deliv_id = $objQuery->nextVal('dtb_deliv_deliv_id');
             $sqlval['deliv_id'] = $deliv_id;
-            $sqlval['rank'] = $objQuery->max("dtb_deliv", "rank") + 1;
+            $sqlval['rank'] = $objQuery->max("rank", "dtb_deliv") + 1;
             $sqlval['create_date'] = 'Now()';
             // INSERTの実行
             $objQuery->insert("dtb_deliv", $sqlval);

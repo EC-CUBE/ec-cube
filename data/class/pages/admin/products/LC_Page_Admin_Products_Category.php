@@ -275,7 +275,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin {
         if($parent_category_id == 0) {
             // ROOT階層で最大のランクを取得する。
             $where = "parent_category_id = ?";
-            $rank = $objQuery->max("dtb_category", "rank", $where, array($parent_category_id)) + 1;
+            $rank = $objQuery->max("rank", "dtb_category", $where, array($parent_category_id)) + 1;
         } else {
             // 親のランクを自分のランクとする。
             $where = "category_id = ?";

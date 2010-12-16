@@ -199,7 +199,7 @@ class LC_Page_Admin_Basis_Payment_Input extends LC_Page_Admin {
         if($payment_id == "") {
             // INSERTの実行
             $sqlval['creator_id'] = $_SESSION['member_id'];
-            $sqlval['rank'] = $objQuery->max("dtb_payment", "rank") + 1;
+            $sqlval['rank'] = $objQuery->max("rank", "dtb_payment") + 1;
             $sqlval['create_date'] = 'Now()';
             $sqlval['payment_id'] = $objQuery->nextVal('dtb_payment_payment_id');
             $objQuery->insert("dtb_payment", $sqlval);

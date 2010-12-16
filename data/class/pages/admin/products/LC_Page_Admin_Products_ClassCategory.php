@@ -179,7 +179,7 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin {
             $sqlval['name'] = $_POST['name'];
             $sqlval['class_id'] = $_POST['class_id'];
             $sqlval['creator_id'] = $_SESSION['member_id'];
-            $sqlval['rank'] = $objQuery->max("dtb_classcategory", "rank", $where, array($_POST['class_id'])) + 1;
+            $sqlval['rank'] = $objQuery->max("rank", "dtb_classcategory", $where, array($_POST['class_id'])) + 1;
             $sqlval['create_date'] = "now()";
             $sqlval['update_date'] = "now()";
             // INSERTの実行

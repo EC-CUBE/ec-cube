@@ -366,7 +366,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin {
         $sqlVal['login_id']    = $arrMemberData['login_id'];
         $sqlVal['password']    = sha1($arrMemberData['password'] . ':' . AUTH_MAGIC);
         $sqlVal['authority']   = $arrMemberData['authority'];
-        $sqlVal['rank']        = $objQuery->max('dtb_member', 'rank') + 1;
+        $sqlVal['rank']        = $objQuery->max('rank', 'dtb_member') + 1;
         $sqlVal['work']        = '1'; // 稼働に設定
         $sqlVal['del_flg']     = '0'; // 削除フラグをOFFに設定
         $sqlVal['creator_id']  = $_SESSION['member_id'];

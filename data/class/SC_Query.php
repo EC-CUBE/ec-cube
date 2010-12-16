@@ -512,7 +512,7 @@ class SC_Query {
      * @param array $arrval ブレースホルダに挿入する値
      * @return integer MAX文の実行結果
      */
-    function max($table, $col, $where = "", $arrval = array()) {
+    function max($col, $table, $where = "", $arrval = array()) {
         $ret = $this->get($table, "MAX($col)", $where, $arrval);
         return $ret;
     }
@@ -526,7 +526,7 @@ class SC_Query {
      * @param array $arrval ブレースホルダに挿入する値
      * @return integer MIN文の実行結果
      */
-    function min($table, $col, $where = "", $arrval = array()) {
+    function min($col, $table, $where = "", $arrval = array()) {
         $ret = $this->get($table, "MIN($col)", $where, $arrval);
         return $ret;
     }

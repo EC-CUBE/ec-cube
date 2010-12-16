@@ -149,7 +149,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin {
         $objQuery = new SC_Query();
         // INSERTする値を作成する。
         $sqlval['name'] = $arrData['name'];
-        $sqlval['rank'] = $objQuery->max("dtb_maker", "rank") + 1;
+        $sqlval['rank'] = $objQuery->max("rank", "dtb_maker") + 1;
         $sqlval['creator_id'] = $_SESSION['member_id'];
         $sqlval['update_date'] = "Now()";
         $sqlval['create_date'] = "Now()";

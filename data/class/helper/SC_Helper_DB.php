@@ -1273,7 +1273,7 @@ __EOS__;
         // 対象項目のランクを取得
         $rank = $objQuery->get("rank", $table, $where, array($id));
         // ランクの最大値を取得
-        $maxrank = $objQuery->max($table, "rank", $andwhere);
+        $maxrank = $objQuery->max("rank", $table, $andwhere);
         // ランクが最大値よりも小さい場合に実行する。
         if($rank < $maxrank) {
             // ランクが一つ上のIDを取得する。
@@ -1355,7 +1355,7 @@ __EOS__;
         }
         $rank = $objQuery->get("rank", $tableName, $getWhere, array($keyId));
 
-        $max = $objQuery->max($tableName, "rank", $where);
+        $max = $objQuery->max("rank", $tableName, $where);
 
         // 値の調整（逆順）
         if($pos > $max) {
@@ -1492,7 +1492,7 @@ __EOS__;
         $objQuery->exec($sqlup, array($rank, $old_catid));
         // 新カテゴリでの登録処理
         // 新カテゴリの最大ランクを取得する。
-        $max_rank = $objQuery->max($table, "rank", "$cat_name = ?", array($new_catid)) + 1;
+        $max_rank = $objQuery->max("rank", $table, "$cat_name = ?", array($new_catid)) + 1;
         $where = "$id_name = ?";
         $sqlup = "UPDATE $table SET rank = ? WHERE $where";
         $objQuery->exec($sqlup, array($max_rank, $id));

@@ -152,7 +152,7 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin {
         $sqlval['kiyaku_title'] = $arrData['kiyaku_title'];
         $sqlval['kiyaku_text'] = $arrData['kiyaku_text'];
         $sqlval['creator_id'] = $_SESSION['member_id'];
-        $sqlval['rank'] = $objQuery->max("dtb_kiyaku", "rank") + 1;
+        $sqlval['rank'] = $objQuery->max("rank", "dtb_kiyaku") + 1;
         $sqlval['update_date'] = "Now()";
         $sqlval['create_date'] = "Now()";
         // INSERTの実行

@@ -180,9 +180,9 @@ class SC_DB_MasterData {
         }
 		
         // 指定のデータを追加
-       	$sqlVal[$columns[0]] = $key;            
+       	$sqlVal[$columns[0]] = $key;
         $sqlVal[$columns[1]] = $value;
-        $sqlVal[$columns[2]] = $this->objQuery->max($name, $columns[2]) + 1;        
+        $sqlVal[$columns[2]] = $this->objQuery->max($columns[2], $name) + 1;
         $sqlVal[$columns[3]] = $comment;
         $this->objQuery->insert($name, $sqlVal);
         

@@ -284,7 +284,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin {
             if ($sqlval['parent_category_id'] == 0) {
                 // ROOT階層で最大のランクを取得する。
                 $where = "parent_category_id = ?";
-                $sqlval['rank'] = $objQuery->max("dtb_category", "rank", $where, array($sqlval['parent_category_id'])) + 1;
+                $sqlval['rank'] = $objQuery->max("rank", "dtb_category", $where, array($sqlval['parent_category_id'])) + 1;
             } else {
                 // 親のランクを自分のランクとする。
                 $where = "category_id = ?";
