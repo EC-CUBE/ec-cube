@@ -860,7 +860,7 @@ __EOF__;
      * @return void
      */
     function lfInsertDummyProductClass($arrList) {
-        $objQuery  = new SC_Query();
+        $objQuery = new SC_Query();
         $objDb = new SC_Helper_DB_Ex();
 
         $product_id = $arrList['product_id'];

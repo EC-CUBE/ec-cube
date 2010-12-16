@@ -146,11 +146,11 @@ class LC_Page_Admin_Login extends LC_Page_Admin {
 
     /* ログイン日時の更新 */
     function fnSetLoginDate() {
-        $oquery = new SC_Query();
+        $objQuery = new SC_Query();
         $sqlval['login_date'] = date("Y-m-d H:i:s");
         $member_id = $this->objSess->GetSession('member_id');
         $where = "member_id = " . $member_id;
-        $ret = $oquery->update("dtb_member", $sqlval, $where);
+        $ret = $objQuery->update("dtb_member", $sqlval, $where);
     }
 }
 ?>

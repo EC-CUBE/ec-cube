@@ -129,7 +129,7 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin {
 
     function lfRegistData( $arrVal, $id = null ){
 
-        $query = new SC_Query();
+        $objQuery = new SC_Query();
 
         $sqlval['subject'] = $arrVal['subject'];
         $sqlval['mail_method'] = $arrVal['mail_method'];
@@ -138,10 +138,10 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin {
         $sqlval['update_date'] = "now()";
 
         if ( $id ){
-            $query->update("dtb_mailmaga_template", $sqlval, "template_id=".$id );
+            $objQuery->update("dtb_mailmaga_template", $sqlval, "template_id=".$id );
         } else {
             $sqlval['create_date'] = "now()";
-            $query->insert("dtb_mailmaga_template", $sqlval);
+            $objQuery->insert("dtb_mailmaga_template", $sqlval);
         }
     }
 

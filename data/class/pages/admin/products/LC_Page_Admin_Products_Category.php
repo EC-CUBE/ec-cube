@@ -116,9 +116,9 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin {
             break;
         case 'pre_edit':
             // 編集項目のカテゴリ名をDBより取得する。
-            $oquery = new SC_Query();
+            $objQuery = new SC_Query();
             $where = "category_id = ?";
-            $cat_name = $oquery->get("dtb_category", "category_name", $where, array($_POST['category_id']));
+            $cat_name = $objQuery->get("dtb_category", "category_name", $where, array($_POST['category_id']));
             // 入力項目にカテゴリ名を入力する。
             $this->arrForm['category_name'] = $cat_name;
             // POSTデータを引き継ぐ
