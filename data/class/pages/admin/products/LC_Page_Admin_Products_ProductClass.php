@@ -247,9 +247,12 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin {
                 $isUpdate = true;
                 // 更新の場合は規格組み合わせを検索し, 削除しておく
                 $class_combination_id = $exists[$arrList["product_class_id:".$i]]['class_combination_id'];
-                $existsCombi = $objQuery->getRow("dtb_class_combination",
-                                                 "*", "class_combination_id = ?",
-                                                 array($class_combination_id));
+                $existsCombi = $objQuery->getRow(
+                    "*",
+                    "dtb_class_combination",
+                    "class_combination_id = ?",
+                    array($class_combination_id)
+                );
 
                 $objQuery->delete("dtb_class_combination",
                                   "class_combination_id IN (?, ?)",
@@ -613,7 +616,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin {
      */
     function getProductsClass($product_id) {
         $objQuery =& SC_Query::getSingletonInstance();
-        return $objQuery->getRow("dtb_products_class", "*", "product_id = ?", array($product_id));
+        return $objQuery->getRow("*", "dtb_products_class", "product_id = ?", array($product_id));
     }
 
     /**

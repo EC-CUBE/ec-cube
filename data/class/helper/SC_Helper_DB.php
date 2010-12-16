@@ -1889,7 +1889,7 @@ __EOS__;
     function sfUpdateOrderStatus($orderId, $newStatus = null, $newAddPoint = null, $newUsePoint = null) {
         $objQuery =& SC_Query::getSingletonInstance();
 
-        $arrOrderOld = $objQuery->getRow('dtb_order', 'status, add_point, use_point, customer_id', 'order_id = ?', array($orderId));
+        $arrOrderOld = $objQuery->getRow('status, add_point, use_point, customer_id', 'dtb_order', 'order_id = ?', array($orderId));
 
         // 対応状況が変更無しの場合、DB値を引き継ぐ
         if (is_null($newStatus)) {

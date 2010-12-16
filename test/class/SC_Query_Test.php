@@ -139,7 +139,7 @@ class SC_Query_Test extends PHPUnit_Framework_TestCase {
         $this->setTestData(3, "3", "f");
 
         $this->expected = array("column1" => 1, "column2" => 1);
-        $this->actual = $this->objQuery->getRow("test_table", "column1, column2", "id = ?", array(1));
+        $this->actual = $this->objQuery->getRow("column1, column2", "test_table", "id = ?", array(1));
         $this->verify();
     }
 

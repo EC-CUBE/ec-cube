@@ -581,7 +581,7 @@ class SC_Query {
      * @param integer $fetchmode 使用するフェッチモード。デフォルトは MDB2_FETCHMODE_ASSOC。
      * @return array array('カラム名' => '値', ...)の連想配列
      */
-    function getRow($table, $col, $where = "", $arrVal = array(), $fetchmode = MDB2_FETCHMODE_ASSOC) {
+    function getRow($col, $table, $where = "", $arrVal = array(), $fetchmode = MDB2_FETCHMODE_ASSOC) {
 
         $sql = $this->getSql($col, $table, $where);
         $sql = $this->dbFactory->sfChangeMySQL($sql);

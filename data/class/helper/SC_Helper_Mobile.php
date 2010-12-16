@@ -391,8 +391,8 @@ class SC_Helper_Mobile {
         $objQuery = new SC_Query;
 
         $arrRow = $objQuery->getRow(
-             'dtb_mobile_kara_mail'
-            ,'session_id, next_url, email'
+             'session_id, next_url, email'
+            ,'dtb_mobile_kara_mail'
             ,'token = ? AND email IS NOT NULL AND receive_date >= ?'
             ,array($token, date('Y-m-d H:i:s', time() - MOBILE_SESSION_LIFETIME))
             ,DB_FETCHMODE_ORDERED

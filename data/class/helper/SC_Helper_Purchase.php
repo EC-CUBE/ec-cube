@@ -85,7 +85,7 @@ class SC_Helper_Purchase {
      */
     function getOrderTemp($uniqId) {
         $objQuery =& SC_Query::getSingletonInstance();
-        return $objQuery->getRow("dtb_order_temp", "*", "order_temp_id = ?",
+        return $objQuery->getRow("*", "dtb_order_temp", "order_temp_id = ?",
                                  array($uniqId));
     }
 
