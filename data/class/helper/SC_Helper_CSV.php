@@ -169,10 +169,12 @@ __EOS__;
 
             // カテゴリID
             if (in_array('category_id', $arrOutputCols)) {
-                $row['category_id'] = $objQuery->getCol("dtb_product_categories",
-                                  "category_id",
-                                  "product_id = ?",
-                                  array($row['product_id']));
+                $row['category_id'] = $objQuery->getCol(
+                    "category_id",
+                    "dtb_product_categories",
+                    "product_id = ?",
+                    array($row['product_id'])
+                );
             }
 
             $outputArray[] = $row;

@@ -57,7 +57,7 @@ $_arrModule = array(
 );
 
 $_objQuery = new SC_Query;
-$_arrModuleCode = $_objQuery->getCol('dtb_module', 'module_code');
+$_arrModuleCode = $_objQuery->getCol('module_code', 'dtb_module');
 
 if (is_array($_arrModuleCode)) {
     foreach ($_arrModuleCode as $_moduleCode) {

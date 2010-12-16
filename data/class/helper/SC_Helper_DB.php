@@ -798,7 +798,7 @@ class SC_Helper_DB {
             } else if (SC_Utils_Ex::sfIsInt($product_id) && $product_id != 0 && $this->sfIsRecord("dtb_products","product_id", $product_id, $status)) {
                 $objQuery =& SC_Query::getSingletonInstance();
                 $where = "product_id = ?";
-                $category_id = $objQuery->getCol("dtb_product_categories", "category_id", "product_id = ?", array($product_id));
+                $category_id = $objQuery->getCol("category_id", "dtb_product_categories", "product_id = ?", array($product_id));
                 $this->g_category_id = $category_id;
             } else {
                 // 不正な場合は、空の配列を返す。
@@ -1722,7 +1722,7 @@ __EOS__;
             } else if (SC_Utils_Ex::sfIsInt($product_id) && $product_id != 0 && $this->sfIsRecord("dtb_products","product_id", $product_id, $status)) {
                 $objQuery =& SC_Query::getSingletonInstance();
                 $where = "product_id = ?";
-                $maker_id = $objQuery->getCol("dtb_products", "maker_id", "product_id = ?", array($product_id));
+                $maker_id = $objQuery->getCol("maker_id", "dtb_products", "product_id = ?", array($product_id));
                 $this->g_maker_id = $maker_id;
             } else {
                 // 不正な場合は、空の配列を返す。

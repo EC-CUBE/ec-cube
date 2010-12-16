@@ -585,7 +585,7 @@ __EOS__;
         $size = count($productClassIds);
         $objQuery =& SC_Query::getSingletonInstance();
         $objQuery->groupby = 'GROUP BY payment_id HAVING COUNT(payment_id) = ?';
-        $paymentIds = $objQuery->getCol('dtb_payment_options', 'payment_id',
+        $paymentIds = $objQuery->getCol('payment_id', 'dtb_payment_options',
                                         'product_class_id IN (' . implode(', ', array_pad(array(), $size, '?')) . ')',
                                         array_merge($productClassIds, array($size)),
                                         MDB2_FETCHMODE_ORDERED);

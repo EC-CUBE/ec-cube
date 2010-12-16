@@ -387,10 +387,12 @@ __EOF__;
         $arrRet = $objQuery->select($col, $table, $where, array($product_id));
 
         // カテゴリID を取得
-        $arrRet[0]['category_id'] = $objQuery->getCol("dtb_product_categories",
-                                                      "category_id",
-                                                      "product_id = ?",
-        array($product_id));
+        $arrRet[0]['category_id'] = $objQuery->getCol(
+            "category_id",
+            "dtb_product_categories",
+            "product_id = ?",
+            array($product_id)
+        );
         //編集時に規格IDが変わってしまうのを防ぐために規格が登録されていなければ規格IDを取得する
         if (!$objDb->sfHasProductClass($_POST['product_id'])) {
             $arrRet[0]['product_class_id'] = SC_Utils::sfGetProductClassId($product_id,"0","0");

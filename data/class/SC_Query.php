@@ -608,7 +608,7 @@ class SC_Query {
      * @param array $arrval ブレースホルダに挿入する値
      * @return array SQL の実行結果の配列
      */
-    function getCol($table, $col, $where = "", $arrval = array()) {
+    function getCol($col, $table, $where = "", $arrval = array()) {
         $sql = $this->getSql($col, $table, $where);
         $sql = $this->dbFactory->sfChangeMySQL($sql);
 
