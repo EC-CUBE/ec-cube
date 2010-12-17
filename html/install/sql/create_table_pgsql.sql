@@ -264,7 +264,6 @@ CREATE TABLE dtb_products (
     product_id int NOT NULL,
     name text NOT NULL,
     maker_id int,
-    rank int,
     status smallint NOT NULL DEFAULT 2,
     comment1 text,
     comment2 text,

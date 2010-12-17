@@ -635,7 +635,6 @@ __EOS__;
              SELECT dtb_products.product_id,
                     dtb_products.name,
                     dtb_products.maker_id,
-                    dtb_products.rank,
                     dtb_products.status,
                     dtb_products.comment1,
                     dtb_products.comment2,
