@@ -120,13 +120,13 @@ class LC_Page_Admin_Design extends LC_Page_Admin {
         switch ($_POST['mode']) {
         // 新規ブロック作成
         case 'new_bloc':
-            $this->objDisplay->redirect($this->getLocation("./bloc.php"));
+            $this->objDisplay->redirect($this->getLocation("./bloc.php", array("device_type_id" => $device_type_id)));
             exit;
             break;
 
         // 新規ページ作成
         case 'new_page':
-            $this->objDisplay->redirect($this->getLocation("./main_edit.php"));
+            $this->objDisplay->redirect($this->getLocation("./main_edit.php", array("device_type_id" => $device_type_id)));
             exit;
             break;
 

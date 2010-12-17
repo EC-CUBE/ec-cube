@@ -78,8 +78,6 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
         // ページIDを取得
         if (isset($_REQUEST['page_id']) && is_numeric($_REQUEST['page_id'])) {
             $page_id = $_REQUEST['page_id'];
-        } else {
-            $page_id = 1;
         }
 
         $this->page_id = $page_id;
@@ -102,17 +100,17 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
         }
 
         // page_id が指定されている場合にはテンプレートデータの取得
-        if (is_numeric($page_id) and $page_id != '') {
+        if (is_numeric($page_id) && $page_id != '') {
             $this->arrPageData = $this->lfGetPageData($page_id, $device_type_id, $objView);
         }
 
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
         switch ($_POST['mode']) {
-            case 'preview':
-                $this->lfPreviewPageData($page_id, $device_type_id);
-                exit;
-                break;
+        case 'preview':
+            $this->lfPreviewPageData($page_id, $device_type_id);
+            exit;
+            break;
 
         case 'delete':
             if (!$this->objLayout->lfCheckBaseData($page_id, $device_type_id)) {
@@ -258,7 +256,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
      */
     function lfConfirmPageData($page_id, $device_type_id) {
         // エラーチェック
-        $this->arrErr = $this->lfErrorCheck($_POST);
+        $this->arrErr = $this->lfErrorCheck($_POST, $device_type_id);
 
         // エラーがなければ更新処理を行う
         if (count($this->arrErr) == 0) {
@@ -271,19 +269,10 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
                 $this->lfCreatePHPFile($_POST['url'], $device_type_id);
             }
 
-            // FIXME
             // TPLファイル作成
             $cre_tpl = $this->objLayout->getTemplatePath($device_type_id, true) . basename($_POST['url']) . '.tpl';
             $this->lfCreateFile($cre_tpl, $_POST['tpl_data']);
 
-            /*
-            // 新規作成の場合、
-            if ($page_id == '') {
-                // ページIDを取得する
-                $arrPageData = $this->objLayout->lfGetPageData("url = ? AND page_id <> 0" , array(USER_DIR . $_POST['url'] . '.php'));
-                $page_id = $arrPageData[0]['page_id'];
-            }
-            */
             $this->objDisplay->redirect($this->getLocation("./main_edit.php",
                                     array("page_id" => $page_id,
                                           "device_type_id" => $device_type_id,
@@ -319,7 +308,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
         }
 
         // page_id が空 若しくは データが存在していない場合にはINSERTを行う
-        if ($arrData['page_id'] === '' or !isset($arrChk[0])) {
+        if ($arrData['page_id'] === '' || !isset($arrChk[0])) {
             // FIXME device_type_id ごとの連番にする
             $sqlval['page_id'] = $objQuery->nextVal('dtb_pagelayout_page_id');
             $sqlval['device_type_id'] = $device_type_id;
@@ -353,7 +342,8 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
         // ベースデータの場合には変更しない。
         if (!$this->objLayout->lfCheckBaseData($arrData['page_id'], $device_type_id)) {
             $arrUpdData['page_name']    = $arrData['page_name'] ;
-            $arrUpdData['url']          = $this->objLayout->getUserDir($device_type_id) . $arrData['url'] . '.php';
+            $arrUpdData['url']          = preg_replace('|^' . preg_quote(URL_DIR) . '|', '',
+                                                       $this->objLayout->getUserDir($device_type_id) . $arrData['url'] . '.php');
             $arrUpdData['php_dir']      = dirname($arrUpdData['url']);
             if ($arrUpdData['php_dir'] == '.') {
                 $arrUpdData['php_dir'] = '';
@@ -383,9 +373,10 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
      * 入力項目のエラーチェックを行う.
      *
      * @param array $arrData 入力データ
+     * @param integer $device_type_id 端末種別ID
      * @return array エラー情報
      */
-    function lfErrorCheck($array) {
+    function lfErrorCheck($array, $device_type_id) {
         $objErr = new SC_CheckError($array);
         $objErr->doFunc(array("名称", "page_name", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $objErr->doFunc(array("URL", "url", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
@@ -408,7 +399,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
         $params = array();
         
         $sqlWhere = 'url = ?';
-        $params[] = USER_DIR . $array['url'] . '.php';
+        $params[] = $this->objLayout->getUserDir($device_type_id) . $array['url'] . '.php';
         
         // プレビュー用のレコードは除外
         $sqlWhere .= ' AND page_id <> 0';

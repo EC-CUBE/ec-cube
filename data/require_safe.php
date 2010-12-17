@@ -39,8 +39,4 @@ require_once(DATA_PATH . "app_initial.php");
 
 // 各種クラス読み込み
 require_once(DATA_PATH . "require_classes.php");
-
-// FIXME 互換性保持のため空の関数を残しておく
-function sfPrintEbisTag() {}
-function sfPrintAffTag() {}
 ?>

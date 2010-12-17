@@ -31,9 +31,6 @@ require_once(DATA_PATH . "app_initial.php");
 // 各種クラス読み込み
 require_once(DATA_PATH . "require_classes.php");
 
-// モジュールの読み込み
-require_once(DATA_PATH . "include/module.inc");
-
 // インストール中で無い場合、
 if (!SC_Utils_Ex::sfIsInstallFunction()) {
     // インストールチェック
