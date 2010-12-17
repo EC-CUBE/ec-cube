@@ -66,7 +66,7 @@
 
 <!--{* ▼HEADER *}-->
 <div id="header">
-  <div id="logo"><a href="<!--{$smarty.const.URL_DIR}-->admin/home.php"><img src="<!--{$TPL_DIR}-->img/header/logo.jpg" width="230" height="50" alt="EC CUBE" /></a></div>
+  <div id="logo"><a href="<!--{$smarty.const.URL_DIR}--><!--{$smarty.const.ADMIN_DIR}-->home.php"><img src="<!--{$TPL_DIR}-->img/header/logo.jpg" width="230" height="50" alt="EC CUBE" /></a></div>
   <ul id="sites">
     <li><a href="<!--{$smarty.const.URL_HOME}-->"><span>MAIN PAGE</span></a></li>
     <li><a href="<!--{$smarty.const.SITE_URL}--><!--{$smarty.const.DIR_INDEX_URL}-->" target="_blank"><span>SITE CHECK</span></a></li>

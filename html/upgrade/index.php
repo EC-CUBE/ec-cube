@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 // {{{ requires
 require_once '../require.php';
-require_once '../admin/require.php';
+require_once '../' . ADMIN_DIR . 'require.php';
 
 // }}}
 // {{{ generate page

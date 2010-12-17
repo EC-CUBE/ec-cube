@@ -24,11 +24,11 @@
 <ul class="level1">
     <li id="navi-order-index"
         class="<!--{if $tpl_mainno == 'order' && $tpl_subno == 'index'}-->on<!--{/if}-->"
-    ><a href="<!--{$smarty.const.URL_DIR}-->admin/order/<!--{$smarty.const.DIR_INDEX_URL}-->"><span>受注管理</span></a></li>
+    ><a href="<!--{$smarty.const.URL_DIR}--><!--{$smarty.const.ADMIN_DIR}-->order/<!--{$smarty.const.DIR_INDEX_URL}-->"><span>受注管理</span></a></li>
     <li id="navi-order-add"
         class="<!--{if $tpl_mainno == 'order' && $tpl_subno == 'add'}-->on<!--{/if}-->"
-    ><a href="<!--{$smarty.const.URL_DIR}-->admin/order/edit.php?mode=add"><span>新規受注入力</span></a></li>
+    ><a href="<!--{$smarty.const.URL_DIR}--><!--{$smarty.const.ADMIN_DIR}-->order/edit.php?mode=add"><span>新規受注入力</span></a></li>
     <li id="navi-order-status"
         class="<!--{if $tpl_mainno == 'order' && $tpl_subno == 'status'}-->on<!--{/if}-->"
-    ><a href="<!--{$smarty.const.URL_DIR}-->admin/order/status.php"><span>ステータス管理</span></a></li>
+    ><a href="<!--{$smarty.const.URL_DIR}--><!--{$smarty.const.ADMIN_DIR}-->order/status.php"><span>ステータス管理</span></a></li>
 </ul>

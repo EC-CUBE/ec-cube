@@ -24,7 +24,7 @@
 <script type="text/javascript">
 <!--
     function fnEdit(customer_id) {
-        document.form1.action = '<!--{$smarty.const.URL_DIR}-->admin/customer/edit.php';
+        document.form1.action = '<!--{$smarty.const.URL_DIR}--><!--{$smarty.const.ADMIN_DIR}-->customer/edit.php';
         document.form1.mode.value = "edit"
         document.form1['edit_customer_id'].value = customer_id;
         document.form1.submit();
@@ -133,7 +133,7 @@
     <!--{/foreach}-->
     <h2>お客様情報
         <!--{if $tpl_mode == 'add'}-->
-            <input type="button" name="address_input" value="顧客検索" onclick="fnOpenWindow('<!--{$smarty.const.SITE_URL}-->admin/customer/search_customer.php','search','500','650'); return false;" />
+            <input type="button" name="address_input" value="顧客検索" onclick="fnOpenWindow('<!--{$smarty.const.SITE_URL}--><!--{$smarty.const.ADMIN_DIR}-->customer/search_customer.php','search','500','650'); return false;" />
         <!--{/if}-->
     </h2>
     <table class="form">
@@ -304,7 +304,7 @@
     <h2 id="order_products">
         <a name="order_products">受注商品情報</a>
         <input type="button" name="cheek" value="計算結果の確認" onclick="fnModeSubmit('cheek','anchor_key','order_products');" />
-        <input type="button" name="add_product" value="商品の追加" onclick="win03('<!--{$smarty.const.URL_DIR}-->admin/order/product_select.php<!--{if $tpl_order_id}-->?order_id=<!--{$tpl_order_id}--><!--{/if}-->', 'search', '500', '500'); " />
+        <input type="button" name="add_product" value="商品の追加" onclick="win03('<!--{$smarty.const.URL_DIR}--><!--{$smarty.const.ADMIN_DIR}-->order/product_select.php<!--{if $tpl_order_id}-->?order_id=<!--{$tpl_order_id}--><!--{/if}-->', 'search', '500', '500'); " />
     </h2>
     <!--{if $arrErr.product_id || $arrErr.quantity || $arrErr.price}-->
         <span class="attention"><!--{$arrErr.product_id}--></span>
@@ -333,7 +333,7 @@
                 <input type="hidden" name="classcategory_name1[<!--{$key}-->]" value="<!--{$arrForm.classcategory_name1.value[$key]}-->" id="classcategory_name1_<!--{$key}-->" />
                 <input type="hidden" name="classcategory_name2[<!--{$key}-->]" value="<!--{$arrForm.classcategory_name2.value[$key]}-->" id="classcategory_name2_<!--{$key}-->" />
                 <br />
-                <input type="button" name="change" value="変更" onclick="win03('<!--{$smarty.const.URL_DIR}-->admin/order/product_select.php?no=<!--{$key}--><!--{if $tpl_order_id}-->&order_id=<!--{$tpl_order_id}--><!--{/if}-->', 'search', '500', '500'); " />
+                <input type="button" name="change" value="変更" onclick="win03('<!--{$smarty.const.URL_DIR}--><!--{$smarty.const.ADMIN_DIR}-->order/product_select.php?no=<!--{$key}--><!--{if $tpl_order_id}-->&order_id=<!--{$tpl_order_id}--><!--{/if}-->', 'search', '500', '500'); " />
                 <!--{if $product_count > 1}-->
                     <input type="button" name="delete" value="削除" onclick="fnSetFormVal('form1', 'delete_no', <!--{$key}-->); fnModeSubmit('delete_product','anchor_key','order_products');" />
                 <!--{/if}-->

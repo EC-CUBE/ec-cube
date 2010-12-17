@@ -22,8 +22,8 @@
  */
 *}-->
 <ul class="level1">
-    <li<!--{if $tpl_subno == 'index'}--> class="on"<!--{/if}--> id="navi-plugin-index"><a href="<!--{$smarty.const.URL_DIR}-->admin/plugin/<!--{$smarty.const.DIR_INDEX_URL}-->"><span>プラグイン管理</span></a></li>
+    <li<!--{if $tpl_subno == 'index'}--> class="on"<!--{/if}--> id="navi-plugin-index"><a href="<!--{$smarty.const.URL_DIR}--><!--{$smarty.const.ADMIN_DIR}-->plugin/<!--{$smarty.const.DIR_INDEX_URL}-->"><span>プラグイン管理</span></a></li>
     <!--{foreach from=$smarty.env.pluginsXml->plugin item="plugin"}-->
-        <li<!--{if $tpl_subno == $plugin->path}--> class="on"<!--{/if}--> id="navi-plugin-<!--{$plugin->path|escape}-->"><a href="<!--{$smarty.const.PLUGIN_URL}--><!--{$plugin->path|escape}-->/admin/<!--{$smarty.const.DIR_INDEX_URL}-->"><span><!--{$plugin->name|escape}--></span></a></li>
+        <li<!--{if $tpl_subno == $plugin->path}--> class="on"<!--{/if}--> id="navi-plugin-<!--{$plugin->path|escape}-->"><a href="<!--{$smarty.const.PLUGIN_URL}--><!--{$plugin->path|escape}-->/<!--{$smarty.const.ADMIN_DIR}--><!--{$smarty.const.DIR_INDEX_URL}-->"><span><!--{$plugin->name|escape}--></span></a></li>
     <!--{/foreach}-->
 </ul>

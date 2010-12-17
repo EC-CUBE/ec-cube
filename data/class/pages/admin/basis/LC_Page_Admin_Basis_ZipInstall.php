@@ -183,7 +183,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin {
         // 一部のIEは256バイト以上受け取ってから表示を開始する。
         SC_Utils_Ex::sfFlush(true);
 
-        echo "<img src='" . $img_path . "admin/basis/zip_install_progress.gif'><br />";
+        echo "<img src='" . $img_path . ADMIN_DIR . "basis/zip_install_progress.gif'><br />";
         echo "<img src='" . $img_path . "install/space_w.gif'>";
         SC_Utils_Ex::sfFlush();
 

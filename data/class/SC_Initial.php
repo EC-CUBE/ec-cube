@@ -84,7 +84,7 @@ class SC_Initial {
             define('SMARTPHONE_SSL_URL', SSL_URL . SMARTPHONE_DIR);
             define('SMARTPHONE_URL_DIR', URL_DIR . SMARTPHONE_DIR);
 
-            define('ADMIN_DIR', 'admin/'); // TODO
+            define('ADMIN_DIR', 'admin/');
         }
     }
 

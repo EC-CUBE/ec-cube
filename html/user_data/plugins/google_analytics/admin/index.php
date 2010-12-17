@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 // {{{ requires
-require_once '../../../../admin/require.php';
+require_once '../../../../' . ADMIN_DIR . 'require.php';
 $arrPluginInfo = SC_Utils_Ex::sfLoadPluginInfo('../plugin_info.php');
 require_once $arrPluginInfo['fullpath'] . 'classes/pages/LC_Page_Admin_GoogleAnalytics.php';
 

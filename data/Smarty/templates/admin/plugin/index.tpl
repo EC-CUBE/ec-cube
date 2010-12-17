@@ -40,7 +40,7 @@
                 <td><!--{$plugin.path|escape}--></td>
                 <td><!--{$plugin.info.version|escape}--></td>
                 <td><!--{$plugin.info.auther|escape}--></td>
-                <td><a href="<!--{$smarty.const.URL_DIR}-->admin/plugin/uninstall.php?path=<!--{$plugin.path|escape}-->">アンインストール</a></td>
+                <td><a href="<!--{$smarty.const.URL_DIR}--><!--{$smarty.const.ADMIN_DIR}-->plugin/uninstall.php?path=<!--{$plugin.path|escape}-->">アンインストール</a></td>
             </tr>
             <!--{if $smarty.foreach.installedPlugin.last}-->
                 </table>
@@ -66,7 +66,7 @@
                 <td><!--{$plugin.path|escape}--></td>
                 <td><!--{$plugin.info.version|escape}--></td>
                 <td><!--{$plugin.info.auther|escape}--></td>
-                <td><a href="<!--{$smarty.const.URL_DIR}-->admin/plugin/install.php?path=<!--{$plugin.path|escape}-->">インストール</a></td>
+                <td><a href="<!--{$smarty.const.URL_DIR}--><!--{$smarty.const.ADMIN_DIR}-->plugin/install.php?path=<!--{$plugin.path|escape}-->">インストール</a></td>
             </tr>
             <!--{if $smarty.foreach.installablePlugin.last}-->
                 </table>

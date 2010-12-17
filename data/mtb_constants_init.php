@@ -258,35 +258,35 @@ define('NO_IMAGE_URL', URL_DIR . "misc/blank.gif");
 /** 画像がない場合に表示 */
 define('NO_IMAGE_DIR', HTML_PATH . "misc/blank.gif");
 /** システム管理トップ */
-define('URL_SYSTEM_TOP', URL_DIR . "admin/system/" . DIR_INDEX_URL);
+define('URL_SYSTEM_TOP', URL_DIR . ADMIN_DIR . "system/" . DIR_INDEX_URL);
 /** 規格登録 */
-define('URL_CLASS_REGIST', URL_DIR . "admin/products/class.php");
+define('URL_CLASS_REGIST', URL_DIR . ADMIN_DIR . "products/class.php");
 /** 郵便番号入力 */
 define('URL_INPUT_ZIP', URL_DIR . "input_zip.php");
 /** 配送業者登録 */
-define('URL_DELIVERY_TOP', URL_DIR . "admin/basis/delivery.php");
+define('URL_DELIVERY_TOP', URL_DIR . ADMIN_DIR . "basis/delivery.php");
 /** 支払い方法登録 */
-define('URL_PAYMENT_TOP', URL_DIR . "admin/basis/payment.php");
+define('URL_PAYMENT_TOP', URL_DIR . ADMIN_DIR . "basis/payment.php");
 /** サイト管理情報登録 */
-define('URL_CONTROL_TOP', URL_DIR . "admin/basis/control.php");
+define('URL_CONTROL_TOP', URL_DIR . ADMIN_DIR . "basis/control.php");
 /** ホーム */
-define('URL_HOME', URL_DIR . "admin/home.php");
+define('URL_HOME', URL_DIR . ADMIN_DIR . "home.php");
 /** ログインページ */
-define('URL_LOGIN', URL_DIR . "admin/" . DIR_INDEX_URL);
+define('URL_LOGIN', URL_DIR . ADMIN_DIR . "" . DIR_INDEX_URL);
 /** 商品検索ページ */
-define('URL_SEARCH_TOP', URL_DIR . "admin/products/" . DIR_INDEX_URL);
+define('URL_SEARCH_TOP', URL_DIR . ADMIN_DIR . "products/" . DIR_INDEX_URL);
 /** 注文編集ページ */
-define('URL_ORDER_EDIT', URL_DIR . "admin/order/edit.php");
+define('URL_ORDER_EDIT', URL_DIR . ADMIN_DIR . "order/edit.php");
 /** 注文編集ページ */
-define('URL_SEARCH_ORDER', URL_DIR . "admin/order/" . DIR_INDEX_URL);
+define('URL_SEARCH_ORDER', URL_DIR . ADMIN_DIR . "order/" . DIR_INDEX_URL);
 /** 注文編集ページ */
-define('URL_ORDER_MAIL', URL_DIR . "admin/order/mail.php");
+define('URL_ORDER_MAIL', URL_DIR . ADMIN_DIR . "order/mail.php");
 /** ログアウトページ */
-define('URL_LOGOUT', URL_DIR . "admin/logout.php");
+define('URL_LOGOUT', URL_DIR . ADMIN_DIR . "logout.php");
 /** システム管理CSV出力ページ */
-define('URL_SYSTEM_CSV', URL_DIR . "admin/system/member_csv.php");
+define('URL_SYSTEM_CSV', URL_DIR . ADMIN_DIR . "system/member_csv.php");
 /** 管理機能用CSS保管ディレクトリ */
-define('URL_ADMIN_CSS', URL_DIR . "admin/css/");
+define('URL_ADMIN_CSS', URL_DIR . ADMIN_DIR . "css/");
 /** アクセス成功 */
 define('SUCCESS', 0);
 /** メンバー管理ページ表示行数 */

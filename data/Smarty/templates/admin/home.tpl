@@ -57,7 +57,7 @@
                 </tr>
                 <tr>
                     <th>詳細</td>
-                    <td><a href="<!--{$smarty.const.URL_DIR}-->admin/system/system.php">システム設定＞システム情報</a></td>
+                    <td><a href="<!--{$smarty.const.URL_DIR}--><!--{$smarty.const.ADMIN_DIR}-->system/system.php">システム設定＞システム情報</a></td>
                 </tr>
             </table>
             <!--{* システム情報ここまで *}-->
