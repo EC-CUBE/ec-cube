@@ -1271,7 +1271,6 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MOBILE_USE_KARA_MAI
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MOBILE_KARA_MAIL_ADDRESS_USER', '"eccube"', 404, '空メール受け付けアドレスのユーザー名部分');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MOBILE_KARA_MAIL_ADDRESS_DELIMITER', '"+"', 405, '空メール受け付けアドレスのユーザー名とコマンドの間の区切り文字 qmail の場合は -');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MOBILE_KARA_MAIL_ADDRESS_DOMAIN', '""', 406, '空メール受け付けアドレスのドメイン部分');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MOBILE_ADDITIONAL_MAIL_DOMAINS', '""', 407, '携帯のメールアドレスではないが、携帯だとみなすドメインのリスト 任意の数の「,」「 」で区切る。');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MOBILE_IMAGE_DIR', 'HTML_PATH . "upload/mobile_image"', 408, '携帯電話向け変換画像保存ディレクトリ');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MOBILE_IMAGE_URL', 'URL_DIR . "upload/mobile_image"', 409, '携帯電話向け変換画像保存ディレクトリ');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MOBILE_URL_SITE_TOP', 'MOBILE_URL_DIR . DIR_INDEX_URL', 410, 'モバイルURL');

@@ -498,8 +498,6 @@ define('MOBILE_KARA_MAIL_ADDRESS_USER', "eccube");
 define('MOBILE_KARA_MAIL_ADDRESS_DELIMITER', "+");
 /** 空メール受け付けアドレスのドメイン部分 */
 define('MOBILE_KARA_MAIL_ADDRESS_DOMAIN', "");
-/** 携帯のメールアドレスではないが、携帯だとみなすドメインのリスト 任意の数の「,」「 」で区切る。 */
-define('MOBILE_ADDITIONAL_MAIL_DOMAINS', "");
 /** 携帯電話向け変換画像保存ディレクトリ */
 define('MOBILE_IMAGE_DIR', HTML_PATH . "upload/mobile_image");
 /** 携帯電話向け変換画像保存ディレクトリ */

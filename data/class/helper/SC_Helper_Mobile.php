@@ -450,10 +450,6 @@ class SC_Helper_Mobile {
         $masterData = new SC_DB_MasterData_Ex();
         $arrMobileMailDomains = $masterData->getMasterData("mtb_mobile_domain");
 
-        if (defined('MOBILE_ADDITIONAL_MAIL_DOMAINS')) {
-            $arrMobileMailDomains = array_merge($arrMobileMailDomains, split('[ ,]+', MOBILE_ADDITIONAL_MAIL_DOMAINS));
-        }
-
         foreach ($arrMobileMailDomains as $domain) {
             $domain = preg_quote($domain, '/');
             if (preg_match("/@([^@]+\\.)?$domain\$/", $address)) {
