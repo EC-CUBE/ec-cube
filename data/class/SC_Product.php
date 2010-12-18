@@ -715,6 +715,60 @@ __EOS__;
     }
 
     /**
+     * 商品規格詳細の SQL を取得する.
+     *
+     * MEMO: 2.4系 vw_product_classに相当(?)するイメージ
+     *
+     * @param string $where 商品詳細の WHERE 句
+     * @return string 商品規格詳細の SQL
+     */
+    function prdclsSQL($where = "") {
+        $whereCause = "";
+        if (!SC_Utils_Ex::isBlank($where)) {
+            $whereCause = " WHERE " . $where;
+        }
+        $sql = <<< __EOS__
+        (
+             SELECT dtb_products.*,
+                    dtb_products_class.product_class_id,
+                    dtb_products_class.class_combination_id,
+                    dtb_products_class.product_type_id,
+                    dtb_products_class.product_code,
+                    dtb_products_class.stock,
+                    dtb_products_class.stock_unlimited,
+                    dtb_products_class.sale_limit,
+                    dtb_products_class.price01,
+                    dtb_products_class.price02,
+                    dtb_products_class.deliv_fee,
+                    dtb_products_class.point_rate,
+                    dtb_products_class.down_filename,
+                    dtb_products_class.down_realfilename,
+                    dtb_class_combination.parent_class_combination_id,
+                    dtb_class_combination.classcategory_id,
+                    dtb_class_combination.level as classlevel,
+                    Tpcm.classcategory_id as parent_classcategory_id,
+                    Tpcm.level as parent_classlevel,
+                    Tcc1.class_id as class_id,
+                    Tcc1.name as classcategory_name,
+                    Tcc2.class_id as parent_class_id,
+                    Tcc2.name as parent_classcategory_name
+             FROM dtb_products
+                 LEFT JOIN dtb_products_class
+                     ON dtb_products.product_id = dtb_products_class.product_id
+                 LEFT JOIN dtb_class_combination
+                     ON dtb_products_class.class_combination_id = dtb_class_combination.class_combination_id
+                 LEFT JOIN dtb_class_combination as Tpcm
+                     ON dtb_class_combination.parent_class_combination_id = Tpcm.class_combination_id
+                 LEFT JOIN dtb_classcategory as Tcc1
+                     ON dtb_class_combination.classcategory_id = Tcc1.classcategory_id
+                 LEFT JOIN dtb_classcategory as Tcc2
+                     ON Tpcm.classcategory_id = Tcc2.classcategory_id
+        ) as prdcls
+__EOS__;
+        return $sql;
+    }
+    
+    /**
      * 商品規格ID1、2に紐づいた,product_class_idを取得する.
      *
      * @param int $productId 商品ID

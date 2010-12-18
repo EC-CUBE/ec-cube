@@ -215,6 +215,39 @@ class SC_Query {
     function exec($str, $arrval = array()) {
         return $this->query($str, $arrval);
     }
+    
+    /**
+     * クエリを実行し、結果行毎にコールバック関数を適用する
+     *
+     * @param callback $function コールバック先
+     * @param string $sql SQL クエリ
+     * @param array $arrVal プリペアドステートメントの実行時に使用される配列。配列の要素数は、クエリ内のプレースホルダの数と同じでなければなりません。 
+     * @param integer $fetchmode 使用するフェッチモード。デフォルトは DB_FETCHMODE_ASSOC。
+     * @return boolean 結果
+     */
+    function doCallbackAll($cbFunc, $sql, $arrval = array(), $fetchmode = MDB2_FETCHMODE_ASSOC) {
+
+        $sql = $this->dbFactory->sfChangeMySQL($sql);
+
+        $sth =& $this->prepare($sql);
+        if (PEAR::isError($sth) && $this->force_run) {
+            return;
+        }
+
+        $affected =& $this->execute($sth, $arrval);
+        if (PEAR::isError($affected) && $this->force_run) {
+            return;
+        }
+        
+        while($data = $affected->fetchRow($fetchmode)) {
+            $result = call_user_func($cbFunc, &$data);
+            if($result === false) {
+                break;
+            }
+        }
+        $sth->free();
+        return $result;
+    }
 
     /**
      * クエリを実行し、全ての行を返す

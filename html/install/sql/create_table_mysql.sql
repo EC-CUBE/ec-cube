@@ -830,6 +830,7 @@ CREATE TABLE dtb_csv (
     col text,
     disp_name text,
     rank int,
+	rw_flg smallint DEFAULT 1,
     status smallint NOT NULL DEFAULT 1,
     create_date datetime NOT NULL,
     update_date datetime NOT NULL,

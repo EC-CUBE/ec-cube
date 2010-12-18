@@ -119,9 +119,18 @@ __EOS__;
         $head = SC_Utils_Ex::sfGetCSVList($arrCsvOutputTitle);
         $data = $objCSV->lfGetCSV("dtb_order", $where, $option, $arrval, $arrCsvOutputCols, $arrCsvOutputConvs);
     }
+    
+    //  CSV作成 コールバック関数
+    function cbOutputProductCSV($data) {
+        $line = $this->sfArrayToCSV($data);
+        $line = mb_convert_encoding($line, 'SJIS-Win');
+        $line .= "\r\n";
+        fwrite($this->fpOutput, $line);
+        return true;
+    }
 
     // CSVを送信する。(商品)
-    function sfDownloadProductsCsv($where, $arrval, $order) {
+    function sfDownloadProductsCsv($where, $arrval, $order, $is_download = false) {
 
         // CSV出力タイトル行の作成
         $arrOutput = SC_Utils_Ex::sfSwapArray($this->sfgetCsvOutput(1, 'status = 1'));
@@ -130,62 +139,38 @@ __EOS__;
 
         $objQuery = new SC_Query();
         $objQuery->setOrder($order);
-
-        /*
-         * FIXME
-         * パフォーマンスが出ないため,
-         * SC_Product::getProductsClassByProductIds() を使用した実装に変更
-         */
-        $dataRows = $objQuery->select(
-             SC_Utils_Ex::sfGetCommaList($arrOutputCols, true, array('category_id'))
-            ,'vw_product_class AS prdcls'
-            ,$where
-            ,$arrval
-        );
         
-        // 規格分類名一覧
-        if (in_array('classcategory_id1', $arrOutputCols) || in_array('classcategory_id2', $arrOutputCols)) {
-            $objDb = new SC_Helper_DB_Ex();
-            $arrClassCatName = $objDb->sfGetIDValueList("dtb_classcategory", "classcategory_id", "name");
-        }
-
-        $outputArray = array();
+        $objProduct = new SC_Product();
+        $cols = SC_Utils_Ex::sfGetCommaList($arrOutputCols, true);
+        $sql = $objQuery->getSql($cols, $objProduct->prdclsSQL(),$where);
+        $header = $this->sfArrayToCSV($arrOutput['disp_name']);
+        $header = mb_convert_encoding($header, 'SJIS-Win');
+        $header .= "\r\n";
         
-        // ヘッダ行
-        $outputArray[] = $arrOutput['disp_name'];
-        
-        $objQuery = new SC_Query();
-        // データ行
-        foreach ($dataRows as $row) {
-            // 規格名1
-            if (in_array('classcategory_id1', $arrOutputCols)) {
-                $row['classcategory_id1'] = $arrClassCatName[$row['classcategory_id1']];
-            }
+        //テンポラリファイル作成
+        // TODO: パフォーマンス向上には、ストリームを使うようにすると良い
+        //  環境要件がバージョン5.1以上になったら使うように変えても良いかと
+        //  fopen('php://temp/maxmemory:'. (5*1024*1024), 'r+');
+        $tmp_filename = tempnam(CSV_TEMP_DIR, 'product_csv');
+        $this->fpOutput = fopen($tmp_filename, "w+");
 
-            // 規格名2
-            if (in_array('classcategory_id2', $arrOutputCols)) {
-                $row['classcategory_id2'] = $arrClassCatName[$row['classcategory_id2']];
-            }
+        fwrite($this->fpOutput, $header);
 
-            // カテゴリID
-            if (in_array('category_id', $arrOutputCols)) {
-                $row['category_id'] = $objQuery->getCol(
-                    "category_id",
-                    "dtb_product_categories",
-                    "product_id = ?",
-                    array($row['product_id'])
-                );
-            }
+        $objQuery->doCallbackAll(array(&$this, 'cbOutputProductCSV'), $sql, $arrval);
 
-            $outputArray[] = $row;
+        fclose($this->fpOutput);
+
+        if($is_download) {
+            // CSVを送信する。
+            $this->lfDownloadCSVFile($tmp_filename,"product_");
+            $res = true;
+        }else{
+            $res = SC_Utils_Ex::sfReadFile($tmp_filename);
         }
         
-        // CSVを送信する。
-        #$this->lfDownloadCsv($outputArray);
-        return $this->lfGetCsv2($outputArray);
-        
-        // 成功終了
-        #return true;
+        //テンポラリファイル削除
+        unlink($tmp_filename);
+        return $res;
     }
 
     // CSV出力データを作成する。(レビュー)
@@ -496,6 +481,23 @@ __EOS__;
             $lineString = mb_convert_encoding($lineString, 'SJIS-Win');
             echo $lineString . "\r\n";
         }
+    }
+    
+    /**
+     * CSVファイルを送信する。
+     */
+    function lfDownloadCSVFile($filepath, $prefix = "") {
+        $file_name = $prefix . date("YmdHis") . ".csv";
+        
+        /* HTTPヘッダの出力 */
+        Header("Content-disposition: attachment; filename=${file_name}");
+        Header("Content-type: application/octet-stream; name=${file_name}");
+        Header("Cache-Control: ");
+        Header("Pragma: ");
+        
+        /* データを出力 */
+        // file_get_contentsはメモリマッピングも自動的に使ってくれるので高速＆省メモリ
+        echo file_get_contents($filepath);
     }
 
     /**
