@@ -80,8 +80,10 @@ class SC_CheckError {
             return;
         }
         $this->createParam($value);
-        if( strlen($this->arrParam[$value[1]]) == 0 ){
+        if(!is_array($this->arrParam[$value[1]]) and strlen($this->arrParam[$value[1]]) == 0 ){
             $this->arrErr[$value[1]] = "※ " . $value[0] . "が入力されていません。<br />";
+        }else if(is_array($this->arrParam[$value[1]]) and count($this->arrParam[$value[1]]) == 0) {
+            $this->arrErr[$value[1]] = "※ " . $value[0] . "が選択されていません。<br />";
         }
     }
 
