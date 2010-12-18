@@ -22,13 +22,11 @@ chmod 666 $WRK_DIR/data/install.php
 chmod -R 777 $WRK_DIR/html/install/temp
 chmod -R 777 $WRK_DIR/html/user_data
 chmod -R 777 $WRK_DIR/html/upload
-chmod -R 777 $WRK_DIR/html/cp
 chmod -R 777 $WRK_DIR/data/cache
 chmod -R 777 $WRK_DIR/data/downloads
 chmod -R 777 $WRK_DIR/data/Smarty
 chmod -R 777 $WRK_DIR/data/class
 chmod -R 777 $WRK_DIR/data/logs
-chmod -R 777 $WRK_DIR/html/cp
 chmod -R 777 $WRK_DIR/data/upload
 
 echo "finished."
