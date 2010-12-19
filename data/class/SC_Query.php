@@ -240,7 +240,7 @@ class SC_Query {
         }
         
         while($data = $affected->fetchRow($fetchmode)) {
-            $result = call_user_func($cbFunc, &$data);
+            $result = call_user_func($cbFunc, $data);
             if($result === false) {
                 break;
             }

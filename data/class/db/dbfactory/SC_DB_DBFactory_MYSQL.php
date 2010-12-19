@@ -70,6 +70,8 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
         $sql = $this->sfChangeRANDOM($sql);
         // TRUNCをTRUNCATEに変換する
         $sql = $this->sfChangeTrunc($sql);
+        // ARRAY_TO_STRINGをGROUP_CONCATに変換する
+        $sql = $this->sfChangeArrayToString($sql);
         return $sql;
     }
 
@@ -275,7 +277,26 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
         $changesql = eregi_replace("( TRUNC)", " TRUNCATE", $sql);
         return $changesql;
     }
-
+    
+    /**
+     * ARRAY_TO_STRING(ARRAY(A),B) を GROUP_CONCAT() に変換する.
+     *
+     * @access private
+     * @param string $sql SQL文
+     * @return string 変換後の SQL 文
+     */
+    function sfChangeArrayToString($sql){
+        if(stripos($sql, 'ARRAY_TO_STRING') !== FALSE) {
+            preg_match_all('/ARRAY_TO_STRING.*?\(.*?ARRAY\(.*?SELECT (.+?) FROM (.+?) WHERE (.+?)\).*?\,.*?\'(.+?)\'.*?\)/is', $sql, $match, PREG_SET_ORDER);
+            
+            foreach($match as $item) {
+                $replace = 'GROUP_CONCAT(' . $item[1] . ' SEPARATOR \'' . $item[4] . '\') FROM ' . $item[2] . ' WHERE ' . $item[3];
+                $sql = str_replace($item[0], $replace, $sql);
+            }
+        }
+        return $sql;
+    }
+    
     /**
      * WHERE 句置換用の配列を返す.
      *

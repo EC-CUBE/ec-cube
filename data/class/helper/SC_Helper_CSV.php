@@ -131,6 +131,8 @@ __EOS__;
 
     // CSVを送信する。(商品)
     function sfDownloadProductsCsv($where, $arrval, $order, $is_download = false) {
+        // 実行時間を制限しない
+        @set_time_limit(0);
 
         // CSV出力タイトル行の作成
         $arrOutput = SC_Utils_Ex::sfSwapArray($this->sfgetCsvOutput(1, 'status = 1'));

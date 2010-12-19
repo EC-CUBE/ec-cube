@@ -763,6 +763,7 @@ __EOS__;
                      ON dtb_class_combination.classcategory_id = Tcc1.classcategory_id
                  LEFT JOIN dtb_classcategory as Tcc2
                      ON Tpcm.classcategory_id = Tcc2.classcategory_id
+             $whereCause
         ) as prdcls
 __EOS__;
         return $sql;
