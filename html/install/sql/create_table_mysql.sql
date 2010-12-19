@@ -835,6 +835,8 @@ CREATE TABLE dtb_csv (
     create_date datetime NOT NULL,
     update_date datetime NOT NULL,
     mb_convert_kana_option text,
+    size_const_type text,
+    error_check_types text,
     PRIMARY KEY (no)
 ) TYPE=InnoDB;
 

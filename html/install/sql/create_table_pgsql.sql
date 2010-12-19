@@ -837,6 +837,8 @@ CREATE TABLE dtb_csv (
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp NOT NULL DEFAULT now(),
     mb_convert_kana_option text,
+    size_const_type text,
+    error_check_types text,
     PRIMARY KEY (no)
 );
 
