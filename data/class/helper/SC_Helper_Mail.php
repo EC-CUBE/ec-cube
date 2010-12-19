@@ -78,10 +78,10 @@ class SC_Helper_Mail {
     /* 受注完了メール送信 */
     function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $footer = "", $send = true) {
 
-        $objPage = new LC_Page();
+        $arrTplVar = new stdClass();
         $objSiteInfo = new SC_SiteInfo();
         $arrInfo = $objSiteInfo->data;
-        $objPage->arrInfo = $arrInfo;
+        $arrTplVar->arrInfo = $arrInfo;
 
         $objQuery = new SC_Query();
 
@@ -89,12 +89,12 @@ class SC_Helper_Mail {
             // メールテンプレート情報の取得
             $where = "template_id = ?";
             $arrRet = $objQuery->select("subject, header, footer", "dtb_mailtemplate", $where, array($template_id));
-            $objPage->tpl_header = $arrRet[0]['header'];
-            $objPage->tpl_footer = $arrRet[0]['footer'];
+            $arrTplVar->tpl_header = $arrRet[0]['header'];
+            $arrTplVar->tpl_footer = $arrRet[0]['footer'];
             $tmp_subject = $arrRet[0]['subject'];
         } else {
-            $objPage->tpl_header = $header;
-            $objPage->tpl_footer = $footer;
+            $arrTplVar->tpl_header = $header;
+            $arrTplVar->tpl_footer = $footer;
             $tmp_subject = $subject;
         }
 
@@ -104,15 +104,15 @@ class SC_Helper_Mail {
         $arrOrder = $arrRet[0];
         $arrOrderDetail = $objQuery->select("*", "dtb_order_detail", $where, array($order_id));
 
-        $objPage->Message_tmp = $arrOrder['message'];
+        $arrTplVar->Message_tmp = $arrOrder['message'];
 
         // 顧客情報の取得
         $customer_id = $arrOrder['customer_id'];
         $arrRet = $objQuery->select("point", "dtb_customer", "customer_id = ?", array($customer_id));
         $arrCustomer = isset($arrRet[0]) ? $arrRet[0] : "";
 
-        $objPage->arrCustomer = $arrCustomer;
-        $objPage->arrOrder = $arrOrder;
+        $arrTplVar->arrCustomer = $arrCustomer;
+        $arrTplVar->arrOrder = $arrOrder;
 
         //その他決済情報
         if($arrOrder['memo02'] != "") {
@@ -124,20 +124,20 @@ class SC_Helper_Mail {
                 }
             }
 
-            $objPage->arrOther = $arrOther;
+            $arrTplVar->arrOther = $arrOther;
         }
 
         // 都道府県変換
-        $objPage->arrOrder['deliv_pref'] = $this->arrPref[$objPage->arrOrder['deliv_pref']];
+        $arrTplVar->arrOrder['deliv_pref'] = $this->arrPref[$arrTplVar->arrOrder['deliv_pref']];
 
-        $objPage->arrOrderDetail = $arrOrderDetail;
+        $arrTplVar->arrOrderDetail = $arrOrderDetail;
 
         $objCustomer = new SC_Customer();
-        $objPage->tpl_user_point = $objCustomer->getValue('point');
+        $arrTplVar->tpl_user_point = $objCustomer->getValue('point');
 
         $objMailView = new SC_SiteView();
         // メール本文の取得
-        $objMailView->assignobj($objPage);
+        $objMailView->assignobj($arrTplVar);
         $body = $objMailView->fetch($this->arrMAILTPLPATH[$template_id]);
 
         // メール送信処理
