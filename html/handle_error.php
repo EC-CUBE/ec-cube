@@ -32,7 +32,8 @@ set_error_handler('handle_error');
  * PHP4 では, try/catch が使用できず, かつ set_error_handler で Fatal Error は
  * 捕捉できないため, ob_start にこの関数を定義し, Fatal Error が発生した場合
  * に出力される HTML 出力を捕捉する.
- * この関数が実行され, エラーが捕捉されると, エラーページへリダイレクトする.
+ * この関数が実行され, エラーが捕捉されると, DEBUG_MODE が無効な場合,
+ * エラーページへリダイレクトする.
  *
  * @param string $buffer 出力バッファリングの内容
  * @return string|void エラーが捕捉された場合は, エラーページへリダイレクトする;
@@ -40,15 +41,16 @@ set_error_handler('handle_error');
  */
 function &_fatal_error_handler(&$buffer) {
     if (preg_match('/<b>(Fatal) error<\/b>: +(.+) in <b>(.+)<\/b> on line <b>(\d+)<\/b><br \/>/i', $buffer, $matches)) {
-
-        $admin = "";
-        if (defined('ADMIN_FUNCTION') && ADMIN_FUNCTION) {
-            $admin = "?admin";
-        }
         error_log("FATAL Error: $matches[3]:$matches[4] $matches[2]\n", 3,
                   realpath(dirname(__FILE__) . "/" . HTML2DATA_DIR . "logs/site.log"));
-        header("Location: " . SITE_URL . "error.php" . $admin);
-        exit;
+        if (DEBUG_MODE !== true) {
+            $url = SITE_URL . "error.php";
+            if (defined('ADMIN_FUNCTION') && ADMIN_FUNCTION) {
+                $url .= "?admin";
+            }
+            header("Location: $url");
+            exit;
+        }
     }
     return $buffer;
 }
