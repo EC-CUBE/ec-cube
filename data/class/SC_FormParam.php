@@ -104,9 +104,15 @@ class SC_FormParam {
             }
 
             if($find) {
-                $this->html_disp_name[$cnt] = $this->disp_name[$cnt] . "<span class='red'>(※ 必須)</span>";
+                $this->html_disp_name[$cnt] = $this->disp_name[$cnt] . '<span class="red">(※ 必須)</span>';
             } else {
                 $this->html_disp_name[$cnt] = $this->disp_name[$cnt];
+            }
+            if($this->default[$cnt] != "") {
+                $this->html_disp_name[$cnt] .= ' [省略時初期値: ' . $this->default[$cnt] . ']';
+            }
+            if($this->input_db[$cnt] == false) {
+                $this->html_disp_name[$cnt] .= ' [登録・更新不可] ';
             }
             $cnt++;
         }

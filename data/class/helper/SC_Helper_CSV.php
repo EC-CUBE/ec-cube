@@ -61,43 +61,27 @@ class SC_Helper_CSV {
      * @param integer $csv_id CSV ID
      * @param string $where SQL の WHERE 句
      * @param array $arrVal WHERE 句の要素
+     * @param array $order SQL の ORDER BY 句
      * @return array CSV 項目の配列
      */
-    function sfgetCsvOutput($csv_id = "", $where = '0=0', $arrVal = array()){
-        $objQuery = new SC_Query();
-        $ret = array();
-
-        $sql = <<< __EOS__
-            SELECT
-                no,
-                csv_id,
-                col,
-                disp_name,
-                rank,
-                status,
-                create_date,
-                update_date,
-                mb_convert_kana_option
-            FROM
-                dtb_csv
-__EOS__;
-
-        if (strlen($csv_id) >= 1) {
-            $where = "($where) AND csv_id = ?";
+    function sfgetCsvOutput($csv_id = "", $where = '', $arrVal = array(), $order = 'rank, no'){
+        $objQuery =& SC_Query::getSingletonInstance();
+        
+        $cols = 'no, csv_id, col, disp_name, rank, status, rw_flg, mb_convert_kana_option, size_const_type, error_check_types';
+        $table = 'dtb_csv';
+        
+        if(SC_Utils_Ex::sfIsInt($csv_id)){
+            if($where == "") {
+                $where = "csv_id = ?";
+            }else{
+                $where = "$where AND csv_id = ?";
+            }
             $arrVal[] = $csv_id;
         }
-
-        if (strlen($where) >= 1) {
-            $sql .= " WHERE $where";
-        }
-
-        $sql .= " ORDER BY ";
-        $sql .= "     rank , no";
-        $sql .= " ";
-
-        $ret = $objQuery->getAll($sql, $arrVal);
-
-        return $ret;
+        $objQuery->setOrder($order);
+        
+        $arrRet = $objQuery->select($cols, $table, $where, $arrVal);
+        return $arrRet;
     }
 
     // CSVを送信する。(共通。現状は受注のみ利用。)
@@ -120,6 +104,65 @@ __EOS__;
         $data = $objCSV->lfGetCSV("dtb_order", $where, $option, $arrval, $arrCsvOutputCols, $arrCsvOutputConvs);
     }
     
+    /**
+     * CSVが出力設定でインポート可能かのチェック
+     *
+     * @param array sfgetCsvOutputで取得した内容（またはそれと同等の配列)
+     * @return boolean true:インポート可能、false:インポート不可
+     */
+    function sfIsImportCSVFrame(&$arrCSVFrame) {
+        $result = true;
+        foreach($arrCSVFrame as $key => $val) {
+            if($val['status'] != "1"
+                    and $val['rw_flg'] == "1"
+                    and $val['error_check_types'] != ""
+                    and stripos($val['error_check_types'], "EXIST_CHECK") !== FALSE) {
+                //必須フィールド
+                $result = false;
+            }
+        }
+        return $result;
+    }
+    
+    /**
+     * CSVが出力設定で更新可能かのチェック
+     *
+     * @param array sfgetCsvOutputで取得した内容（またはそれと同等の配列)
+     * @return boolean true:更新可能、false:新規追加のみ不可
+     */
+    function sfIsUpdateCSVFrame(&$arrCSVFrame) {
+        $result = true;
+        foreach($arrCSVFrame as $key => $val) {
+            if($val['status'] != "1"
+                    and $val['rw_flg'] == "3") {
+                //キーフィールド
+                $result = false;
+            }
+        }
+        return $result;
+    }
+    
+    /**
+     * CSVファイルのカウント数を得る.
+     *
+     * @param resource $fp fopenを使用して作成したファイルポインタ
+     * @return integer CSV のカウント数
+     */
+    function sfGetCSVRecordCount($fp) {
+
+        $count = 0;
+        while(!feof($fp)) {
+            $arrCSV = fgetcsv($fp, CSV_LINE_MAX);
+            $count++;
+        }
+        // ファイルポインタを戻す
+        if (rewind($fp)) {
+            return $count-1;
+        } else {
+            return FALSE;
+        }
+    }
+
     //  CSV作成 コールバック関数
     function cbOutputProductCSV($data) {
         $line = $this->sfArrayToCSV($data);
@@ -139,12 +182,14 @@ __EOS__;
         if (count($arrOutput) <= 0) return false; // 失敗終了
         $arrOutputCols = $arrOutput['col'];
 
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
         $objQuery->setOrder($order);
         
         $objProduct = new SC_Product();
         $cols = SC_Utils_Ex::sfGetCommaList($arrOutputCols, true);
-        $sql = $objQuery->getSql($cols, $objProduct->prdclsSQL(),$where);
+        // このWhereを足さないと無効な規格も出力される。現行仕様と合わせる為追加。
+        $inner_where = 'dtb_products_class.del_flg = 0';
+        $sql = $objQuery->getSql($cols, $objProduct->prdclsSQL($inner_where),$where);
         $header = $this->sfArrayToCSV($arrOutput['disp_name']);
         $header = mb_convert_encoding($header, 'SJIS-Win');
         $header .= "\r\n";
@@ -181,7 +226,7 @@ __EOS__;
         $from = "dtb_review AS A INNER JOIN dtb_products AS B on A.product_id = B.product_id ";
         $cols = SC_Utils_Ex::sfGetCommaList($this->arrREVIEW_CVSCOL);
 
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
         $objQuery->setOption($option);
 
         $list_data = $objQuery->select($cols, $from, $where, $arrval);
@@ -200,7 +245,7 @@ __EOS__;
         $from = "dtb_trackback AS A INNER JOIN dtb_products AS B on A.product_id = B.product_id ";
         $cols = SC_Utils_Ex::sfGetCommaList($this->arrTRACKBACK_CVSCOL);
 
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
         $objQuery->setOption($option);
 
         $list_data = $objQuery->select($cols, $from, $where, $arrval);
@@ -222,7 +267,7 @@ __EOS__;
         if (count($arrOutput) <= 0) return false; // 失敗終了
         $arrOutputCols = $arrOutput['col'];
 
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
         $objQuery->setOrder('rank DESC');
 
         $dataRows = $objQuery->select(
@@ -253,7 +298,7 @@ __EOS__;
 
         $cols = SC_Utils_Ex::sfGetCommaList($arrCsvOutputCols);
 
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
         $objQuery->setOption($option);
 
         $list_data = $objQuery->select($cols, $from, $where, $arrval, MDB2_FETCHMODE_ORDERED);
