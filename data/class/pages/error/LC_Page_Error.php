@@ -157,16 +157,7 @@ class LC_Page_Error extends LC_Page {
         }
 
         $objView->assignobj($this);
-
-        // FIXME
-        global $objCampaignSess;
-
-        if(is_object($objCampaignSess)) {
-            // フレームを選択(キャンペーンページから遷移なら変更)
-            $objCampaignSess->pageView($objView);
-        } else {
-            $objView->display(SITE_FRAME);
-        }
+        $objView->display(SITE_FRAME);
     }
 
     /**
