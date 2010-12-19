@@ -40,7 +40,7 @@
        </p>
        <p class="mini">
          <input type="checkbox" name="login_memory" value="1" <!--{$tpl_login_memory|sfGetChecked:1}--> id="login_memory" />
-         <label for="login_memory">会員メールアドレスをコンピューターに記憶させる</label>
+         <label for="login_memory">メールアドレスをコンピューターに記憶させる</label>
        </p>
        <p class="passwd">
          <!--{assign var=key value="login_pass"}--><span class="attention"><!--{$arrErr[$key]}--></span>
