@@ -213,24 +213,12 @@ function fnListCheck(list) {
 	}
 }
 
-function fnAllCheck() {
-	cnt = 1;
-	name = "check:" + cnt;
-	while (document.form1[name]) {
-		document.form1[name].checked = true;
-		cnt++;
-		name = "check:" + cnt;
-	}
-}
-
-function fnAllUnCheck() {
-	cnt = 1;
-	name = "check:" + cnt;
-	while (document.form1[name]) {
-		document.form1[name].checked = false;
-		cnt++;
-		name = "check:" + cnt;
-	}
+function fnAllCheck(input, selector) {
+    if ($(input).attr('checked')) {
+        $(selector).attr('checked', true);
+    } else {
+        $(selector).attr('checked', false);
+    }
 }
 
 //指定されたidの削除を行うページを実行する。

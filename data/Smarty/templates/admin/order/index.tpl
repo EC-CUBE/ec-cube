@@ -75,16 +75,6 @@
         fm.mode.value = tmpMode;
         fm.action = tmpAction;
     }
-    
-    $(function() {
-        $('#pdf_check').change(function() {
-            if ($(this).attr('checked')) {
-                $('input[name=pdf_order_id[]]').attr('checked', true);
-            } else {
-                $('input[name=pdf_order_id[]]').attr('checked', false);
-            }
-        });
-    });
 //-->
 </script>
 <div id="order" class="contents-main">
@@ -322,7 +312,7 @@
             <th>購入金額(円)</th>
             <th>全商品発送日</th>
             <th>対応状況</th>
-            <th><label for="pdf_check">帳票</label> <input type="checkbox" name="pdf_check" id="pdf_check" /></th>
+            <th><label for="pdf_check">帳票</label> <input type="checkbox" name="pdf_check" id="pdf_check" onclick="fnAllCheck(this, 'input[name=pdf_order_id[]]')" /></th>
             <th>編集</th>
             <th>メール</th>
             <th>削除</th>

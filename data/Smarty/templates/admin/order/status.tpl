@@ -21,18 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<script type="text/javascript">//<![CDATA[
-    $(function() {
-        $('#move_check').change(function() {
-            if ($(this).attr('checked')) {
-                $('input[name=move[]]').attr('checked', true);
-            } else {
-                $('input[name=move[]]').attr('checked', false);
-            }
-        });
-    });
-//]]>
-</script>
 <form name="form1" id="form1" method="POST" action="?" >
 <input type="hidden" name="mode" value="" />
 <input type="hidden" name="status" value="<!--{if $arrForm.status == ""}-->1<!--{else}--><!--{$arrForm.status}--><!--{/if}-->" />
@@ -76,7 +64,7 @@
 
   <table class="list center">
     <tr>
-      <th><label for="move_check">選択</label> <input type="checkbox" name="move_check" id="move_check" /></th>
+      <th><label for="move_check">選択</label> <input type="checkbox" name="move_check" id="move_check" onclick="fnAllCheck(this, 'input[name=move[]]')" /></th>
       <th>対応状況</th>
       <th>注文番号</th>
       <th>受注日</th>

@@ -67,7 +67,7 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin {
      */
     function action() {
         $objSess = new SC_Session();
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
         $objDb = new SC_Helper_DB_Ex();
 
         // 認証可否の判定
@@ -101,7 +101,6 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin {
             // 削除
         case 'delete':
             $objDb->sfDeleteRankRecord("dtb_class", "class_id", $_POST['class_id'], "", true);
-            $objQuery = new SC_Query();
             $objQuery->delete("dtb_classcategory", "class_id = ?", $_POST['class_id']);
             // 再表示
             $this->objDisplay->reload();
@@ -148,7 +147,7 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin {
 
     /* DBへの挿入 */
     function lfInsertClass($arrData) {
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
         // INSERTする値を作成する。
         $sqlval['name'] = $arrData['name'];
         $sqlval['creator_id'] = $_SESSION['member_id'];
@@ -164,7 +163,7 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin {
 
     /* DBへの更新 */
     function lfUpdateClass($arrData) {
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
         // UPDATEする値を作成する。
         $sqlval['name'] = $arrData['name'];
         $sqlval['update_date'] = "Now()";
@@ -194,7 +193,7 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin {
         $objErr->doFunc(array("規格名", "name", STEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
 
         if(!isset($objErr->arrErr['name'])) {
-            $objQuery = new SC_Query();
+            $objQuery =& SC_Query::getSingletonInstance();
             $arrRet = $objQuery->select("class_id, name", "dtb_class", "del_flg = 0 AND name = ?", array($_POST['name']));
             // 編集中のレコード以外に同じ名称が存在する場合
             if ($arrRet[0]['class_id'] != $_POST['class_id'] && $arrRet[0]['name'] == $_POST['name']) {

@@ -546,7 +546,7 @@ class SC_Query {
      * @return integer MAX文の実行結果
      */
     function max($col, $table, $where = "", $arrval = array()) {
-        $ret = $this->get($table, "MAX($col)", $where, $arrval);
+        $ret = $this->get("MAX($col)", $table, $where, $arrval);
         return $ret;
     }
 
@@ -560,7 +560,7 @@ class SC_Query {
      * @return integer MIN文の実行結果
      */
     function min($col, $table, $where = "", $arrval = array()) {
-        $ret = $this->get($table, "MIN($col)", $where, $arrval);
+        $ret = $this->get("MIN($col)", $table, $where, $arrval);
         return $ret;
     }
 

@@ -513,7 +513,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin {
         // 在庫無し商品の非表示対応
         if (NOSTOCK_HIDDEN === true) {
             // 件数カウントバッチ実行
-            //$objDb->sfCategory_Count($objQuery);
+            $objDb->sfCategory_Count($objQuery);
         }
     }
 
@@ -534,8 +534,8 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin {
 
         if(SC_Utils_Ex::isBlank($class_id2)) {
             $table = "dtb_classcategory T1 ";
-            $objQuery->setWhere("T1.class_id = ?")
-                     ->setOrder("T1.rank DESC");
+            $objQuery->setWhere("T1.class_id = ?");
+            $objQuery->setOrder("T1.rank DESC");
             $val = array($class_id1);
         } else {
             $col .= ","
@@ -544,8 +544,8 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin {
                 . "T2.name AS name2,"
                 . "T2.rank AS rank2";
             $table = "dtb_classcategory AS T1, dtb_classcategory AS T2";
-            $objQuery->setWhere("T1.class_id = ? AND T2.class_id = ?")
-                     ->setOrder("T1.rank DESC, T2.rank DESC");
+            $objQuery->setWhere("T1.class_id = ? AND T2.class_id = ?");
+            $objQuery->setOrder("T1.rank DESC, T2.rank DESC");
             $val = array($class_id1, $class_id2);
         }
         return $objQuery->select($col, $table, "", $val);
@@ -616,7 +616,11 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin {
      */
     function getProductsClass($product_id) {
         $objQuery =& SC_Query::getSingletonInstance();
-        return $objQuery->getRow("*", "dtb_products_class", "product_id = ?", array($product_id));
+        $col = <<< __EOS__
+            product_id, product_code, price01, price02, stock,
+            stock_unlimited, point_rate
+__EOS__;
+        return $objQuery->getRow($col, "dtb_products_class", "product_id = ?", array($product_id));
     }
 
     /**

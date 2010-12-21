@@ -82,8 +82,6 @@
   <!--{/foreach}-->
 
   <div class="btn">
-    <button type="button" onclick="fnAllCheck(); return false;"><span>全選択</span></button>
-    <button type="button" onclick="fnAllUnCheck(); return false;"><span>全解除</span></button>
     <button type="button" onclick="fnCopyValue('<!--{$cnt}-->', '<!--{$smarty.const.DISABLED_RGB}-->'); return false;"><span>一行目のデータをコピーする</span></button>
   </div>
 
@@ -93,15 +91,15 @@
   <input type="hidden" name="class_id2" value="<!--{$class_id2}-->" />
   <table class="list">
     <tr>
-      <th>登録</th>
+      <th><label for="allCheck">登録</label> <input type="checkbox" onclick="fnAllCheck(this, 'input[name^=check]')" id="allCheck" /></th>
       <th>規格1(<!--{$arrClass[$class_id1]|default:"未選択"}-->)</th>
       <th>規格2(<!--{$arrClass[$class_id2]|default:"未選択"}-->)</th>
       <th>商品コード</th>
       <th>在庫数<span class="attention">*</span></th>
       <th><!--{$smarty.const.NORMAL_PRICE_TITLE}-->(円)</th>
       <th><!--{$smarty.const.SALE_PRICE_TITLE}-->(円)<span class="attention">*</span></th>
-      <th>商品種別<span class="attention"> *</span></th>
-      <th>支払方法<span class="attention"> *</span></th>
+      <th>商品種別<span class="attention">*</span></th>
+      <th><label for="allPaymentIds">支払方法</label><span class="attention">*</span> <input type="checkbox" name="allPaymentIds" onclick="fnAllCheck(this, 'input[name^=payment_ids]')" /></th>
       <th>ダウンロードファイル名<BR><span class="red"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span></th>
       <th>ダウンロード商品用ファイルアップロード<BR>登録可能拡張子：<!--{$smarty.const.DOWNLOAD_EXTENSION}-->　(パラメータ DOWNLOAD_EXTENSION)</th>
     </tr>
