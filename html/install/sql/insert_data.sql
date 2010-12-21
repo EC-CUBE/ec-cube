@@ -1162,8 +1162,8 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('IMAGE_SAVE_URL', 'U
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('IMAGE_TEMP_URL_RSS', 'SITE_URL . "upload/temp_image/"', 154, 'RSS用画像一時保存URL');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('IMAGE_SAVE_URL_RSS', 'SITE_URL . "upload/save_image/"', 155, 'RSS用画像保存先URL');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CSV_TEMP_DIR', 'DATA_PATH . "upload/csv/"', 156, 'エンコードCSVの一時保存先');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('NO_IMAGE_URL', 'URL_DIR . "misc/blank.gif"', 157, '画像がない場合に表示');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('NO_IMAGE_DIR', 'HTML_PATH . "misc/blank.gif"', 158, '画像がない場合に表示');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('NO_IMAGE_URL', 'TPL_DIR . "img/picture/img_blank.gif"', 157, '画像がない場合に表示');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('NO_IMAGE_DIR', 'USER_TEMPLATE_PATH . "img/picture/img_blank.gif"', 158, '画像がない場合に表示');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('URL_SYSTEM_TOP', 'URL_DIR . ADMIN_DIR . "system/" . DIR_INDEX_URL', 159, 'システム管理トップ');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('URL_CLASS_REGIST', 'URL_DIR . ADMIN_DIR . "products/class.php"', 160, '規格登録');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('URL_INPUT_ZIP', 'URL_DIR . "input_zip.php"', 161, '郵便番号入力');

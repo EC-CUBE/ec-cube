@@ -254,9 +254,9 @@ define('IMAGE_SAVE_URL_RSS', SITE_URL . "upload/save_image/");
 /** エンコードCSVの一時保存先 */
 define('CSV_TEMP_DIR', DATA_PATH . "upload/csv/");
 /** 画像がない場合に表示 */
-define('NO_IMAGE_URL', URL_DIR . "misc/blank.gif");
+define('NO_IMAGE_URL', TPL_DIR . "img/picture/img_blank.gif");
 /** 画像がない場合に表示 */
-define('NO_IMAGE_DIR', HTML_PATH . "misc/blank.gif");
+define('NO_IMAGE_DIR', USER_PACKAGE_DIR . "img/picture/img_blank.gif");
 /** システム管理トップ */
 define('URL_SYSTEM_TOP', URL_DIR . ADMIN_DIR . "system/" . DIR_INDEX_URL);
 /** 規格登録 */
