@@ -30,7 +30,7 @@
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <!--{* 共通CSS *}-->
-<link rel="stylesheet" media="only screen" href="<!--{$TPL_DIR}-->css/import.css" type="text/css" /> 
+<link rel="stylesheet" media="only screen" href="<!--{$TPL_DIR}-->css/import.css" type="text/css" />
 
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/navi.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/win_op.js"></script>
@@ -52,6 +52,11 @@
 <!--{/if}-->
 <!--{* iPhone用アイコン画像 *}-->
 <link rel="apple-touch-icon" href="<!--{$smarty.const.SMARTPHONE_URL_DIR}-->sphone/apple-touch-icon.png" />
+
+<script type="text/javascript">//<![CDATA[
+    <!--{$tpl_javascript}-->
+//]]>
+</script>
 
 </head>
 
