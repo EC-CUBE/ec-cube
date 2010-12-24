@@ -105,6 +105,7 @@ class LC_Page_Mypage_History extends LC_Page {
         $this->arrDelivTime = SC_Utils_Ex::sfArrKeyValue($arrRet, 'time_id', 'deliv_time');
 
         //マイページトップ顧客情報表示用
+        $this->tpl_login = true;
         $this->CustomerName1 = $objCustomer->getvalue('name01');
         $this->CustomerName2 = $objCustomer->getvalue('name02');
         $this->CustomerPoint = $objCustomer->getvalue('point');

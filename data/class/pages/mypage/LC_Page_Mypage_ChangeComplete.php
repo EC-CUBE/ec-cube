@@ -76,6 +76,7 @@ class LC_Page_Mypage_ChangeComplete extends LC_Page {
             SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
         } else {
             //マイページトップ顧客情報表示用
+            $this->tpl_login = true;
             $this->CustomerName1 = $objCustomer->getvalue('name01');
             $this->CustomerName2 = $objCustomer->getvalue('name02');
             $this->CustomerPoint = $objCustomer->getvalue('point');
