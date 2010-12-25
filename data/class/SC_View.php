@@ -181,18 +181,9 @@ class SC_View {
         $this->assign("TPL_DIR", SC_Helper_PageLayout_Ex::getUserDir($device_type_id, true));
 
         // ヘッダとフッタを割り当て
-        $templatePath = SC_Helper_PageLayout_Ex::getTemplatePath($device_type_id, true);
+        $templatePath = SC_Helper_PageLayout_Ex::getTemplatePath($device_type_id);
         $header_tpl = $templatePath . "header.tpl";
         $footer_tpl = $templatePath . "footer.tpl";
-
-        // ユーザー作成のテンプレートが無ければ, 指定テンプレートを割り当て
-        $templatePath = SC_Helper_PageLayout_Ex::getTemplatePath($device_type_id);
-        if (!$this->_smarty->template_exists($header_tpl)) {
-            $header_tpl = $templatePath . "header.tpl";
-        }
-        if (!$this->_smarty->template_exists($footer_tpl)) {
-            $footer_tpl = $templatePath . "footer.tpl";
-        }
 
         $this->assign("header_tpl", $header_tpl);
         $this->assign("footer_tpl", $footer_tpl);

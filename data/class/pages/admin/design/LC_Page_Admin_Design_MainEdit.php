@@ -156,18 +156,9 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
             exit;
         }
 
-        // FIXME
-        // テンプレートファイルが存在していれば読み込む
-        $templatePath = $this->objLayout->getTemplatePath($device_type_id, true);
-        $tpl_file =  $templatePath . $arrPageData[0]['filename'] . ".tpl";
-
-        if (file_exists($tpl_file)){
-            $arrPageData[0]['tpl_data'] = file_get_contents($tpl_file);
-        // 存在してなければ, 指定されたテンプレートのファイルを読み込む
-        } else {
-            $templatePath = $this->objLayout->getTemplatePath($device_type_id);
-            $arrPageData[0]['tpl_data'] = file_get_contents($templatePath . $arrPageData[0]['filename'] . ".tpl");
-        }
+        // テンプレートを読み込む
+        $templatePath = $this->objLayout->getTemplatePath($device_type_id);
+        $arrPageData[0]['tpl_data'] = file_get_contents($templatePath . $arrPageData[0]['filename'] . ".tpl");
 
         // チェックボックスの値変更
         $arrPageData[0]['header_chk'] = SC_Utils_Ex::sfChangeCheckBox($arrPageData[0]['header_chk'], true);
@@ -182,69 +173,49 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
     /**
      * プレビュー画面を表示する.
      *
-     * FIXME
-     *
-     * @param integer $page_id ページID
+     * @param integer $page_id_old 元のページID
      * @param integer $device_type_id 端末種別ID
      * @return void
      */
-    function lfPreviewPageData($page_id, $device_type_id) {
+    function lfPreviewPageData($page_id_old, $device_type_id) {
 
-        $page_id_old = $page_id;
         // プレビューの場合ページIDを0にセットする。
-        $page_id = "0";
-        $url = basename($_POST['url']);
-        
+        $page_id = '0';
+        $url = 'preview';
+
         $tmpPost = $_POST;
         $tmpPost['page_id'] = $page_id;
         $tmpPost['url'] = $url;
         $tmpPost['tpl_dir'] = USER_PATH . "templates/preview/";
-        
+
         $arrPreData = $this->objLayout->lfGetPageData("page_id = ? AND device_type_id = ?",
                                                       array($page_id, $device_type_id));
-        
-        // tplファイルの削除 (XXX: 処理の意図が不明。存在していると都合が悪いファイル?)
-        $del_tpl = USER_PATH . "templates/" . $arrPreData[0]['filename'] . '.tpl';
-        if (file_exists($del_tpl)){
-            unlink($del_tpl);
-        }
 
         // DBへデータを更新する
-        $this->lfEntryPageData($tmpPost);
+        $this->lfEntryPageData($tmpPost, $device_type_id);
 
         // TPLファイル作成
-        $preview_tpl = USER_PATH . "templates/preview/" . TEMPLATE_NAME . "/" . $url . '.tpl';
-        $this->lfCreateFile($preview_tpl, $_POST['tpl_data']);
+        $cre_tpl = $this->objLayout->getTemplatePath($device_type_id) . $url . '.tpl';
+        $this->lfCreateFile($cre_tpl, $_POST['tpl_data']);
         
         // blocposition を削除
         $objQuery = new SC_Query();		// DB操作オブジェクト
-        $sql = 'delete from dtb_blocposition where page_id = 0';
-        $ret = $objQuery->query($sql);
+        $ret = $objQuery->delete('dtb_blocposition', 'page_id = 0 AND device_type_id = ?', array($device_type_id));
 
         if ($page_id_old != "") {
             // 登録データを取得
-            $sql = "SELECT 0, target_id, bloc_id, bloc_row FROM dtb_blocposition WHERE page_id = ?";
-            $ret = $objQuery->getAll($sql,array($page_id_old));
+            $sql = 'SELECT target_id, bloc_id, bloc_row FROM dtb_blocposition WHERE page_id = ? AND device_type_id = ?';
+            $ret = $objQuery->getAll($sql, array($page_id_old, $device_type_id));
 
-            if (count($ret) > 0) {
-
-                // blocposition を複製
-                $sql = " insert into dtb_blocposition (";
-                $sql .= "     page_id,";
-                $sql .= "     target_id,";
-                $sql .= "     bloc_id,";
-                $sql .= "     bloc_row";
-                $sql .= "     )values(?, ?, ?, ?)";
-
-                // 取得件数文INSERT実行
-                foreach($ret as $key => $val){
-                    $ret = $objQuery->query($sql,$val);
-                }
+            // blocposition を複製
+            foreach($ret as $row){
+                $row['page_id'] = $page_id;
+                $row['device_type_id'] = $device_type_id;
+                $objQuery->insert('dtb_blocposition', $row);
             }
         }
         $_SESSION['preview'] = "ON";
         $this->objDisplay->redirect($this->getLocation(URL_DIR . "preview/" . DIR_INDEX_URL, array("filename" => $arrPageData[0]["filename"])));
-
     }
 
     /**
@@ -270,7 +241,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
             }
 
             // TPLファイル作成
-            $cre_tpl = $this->objLayout->getTemplatePath($device_type_id, true) . basename($_POST['url']) . '.tpl';
+            $cre_tpl = $this->objLayout->getTemplatePath($device_type_id) . basename($_POST['url']) . '.tpl';
             $this->lfCreateFile($cre_tpl, $_POST['tpl_data']);
 
             $this->objDisplay->redirect($this->getLocation("./main_edit.php",
@@ -350,7 +321,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
             } else {
                 $arrUpdData['php_dir'] .= '/';
             }
-            $arrUpdData['tpl_dir']      = substr($this->objLayout->getTemplatePath($devie_type_id, true), strlen(URL_DIR));
+            $arrUpdData['tpl_dir']      = substr($this->objLayout->getTemplatePath($devie_type_id), strlen(URL_DIR));
             $arrUpdData['filename']     = basename($arrData['url']); // 拡張子を付加しない
         }
 
@@ -435,7 +406,13 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
 
         // ファイル作成
         $fp = fopen($path,"w");
-        fwrite($fp, $data); // FIXME いきなり POST はちょっと...
+        if ($fp === false) {
+            SC_Utils_Ex::sfDispException();
+        }
+        $ret = fwrite($fp, $data);
+        if ($ret === false) {
+            SC_Utils_Ex::sfDispException();
+        }
         fclose($fp);
     }
 

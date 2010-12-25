@@ -57,25 +57,13 @@ class SC_Helper_PageLayout {
         } else {
             // TODO
             $arrPageData = $this->lfGetPageData("device_type_id = ? AND page_id = 0", array($device_type_id));
-            $objPage->tpl_mainpage = $this->getTemplatePath($device_type_id, true) 
+            $objPage->tpl_mainpage = $this->getTemplatePath($device_type_id) 
                 . "preview/" . $arrPageData[0]['filename'] . ".tpl";
         }
 
         $arrPageLayout = $arrPageData[0];
 
-        // ユーザテンプレートのパスを取得
-        $user_tpl =  $this->getTemplatePath($device_type_id, true)
-            . $arrPageLayout['filename'] . ".tpl";
-
-        // ユーザテンプレートの存在チェック
-        if (is_file($user_tpl)) {
-            $objPage->tpl_mainpage = $user_tpl;
-        }
-        // 存在しない場合は指定テンプレートを使用
-        else {
-            $objPage->tpl_mainpage = $this->getTemplatePath($device_type_id)
-                . $arrPageLayout['filename'] . ".tpl";
-        }
+        $objPage->tpl_mainpage = $this->getTemplatePath($device_type_id) . $arrPageLayout['filename'] . ".tpl";
 
         // ページタイトルを設定
         if (!isset($objPage->tpl_title)) {
@@ -150,12 +138,7 @@ __EOF__;
                     if ($val['php_path'] != '') {
                         $arrNavi[$key]['php_path'] = HTML_PATH . $val['php_path'];
                     } else {
-                        $user_block_path = $this->getTemplatePath($device_type_id, true) .  "/" . $val['tpl_path'];
-                        if (is_file($user_block_path)) {
-                            $arrNavi[$key]['tpl_path'] = $user_block_path;
-                        } else {
-                            $arrNavi[$key]['tpl_path'] = $this->getTemplatePath($device_type_id) . $val['tpl_path'];
-                        }
+                        $arrNavi[$key]['tpl_path'] = $this->getTemplatePath($device_type_id) . $val['tpl_path'];
                     }
                     // phpから呼び出されるか、tplファイルが存在する場合
                     if ($val['php_path'] != '' || is_file($arrNavi[$key]['tpl_path'])) {

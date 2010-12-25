@@ -96,7 +96,7 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin {
 
             // 登録時はプレビュー用テンプレートをコピーする
             if ($_POST['mode'] == 'confirm'){
-                copy($pre_DIR.$division.".tpl", $this->objLayout->getTemplatePath($device_type_id, true) . $division . ".tpl");
+                copy($pre_DIR.$division.".tpl", $this->objLayout->getTemplatePath($device_type_id) . $division . ".tpl");
                 // 完了メッセージ（プレビュー時は表示しない）
                 $this->tpl_onload="alert('登録が完了しました。');";
 
@@ -121,14 +121,8 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin {
 
             // ユーザーパスにテンプレートが存在しなければ,
             // 指定テンプレートから読み込む
-            $header_tpl = $this->objLayout->getTemplatePath($device_type_id, true) . "header.tpl";
-            if (!is_file($header_tpl)) {
-                $header_tpl = $this->objLayout->getTemplatePath($device_type_id) . "header.tpl";
-            }
-            $footer_tpl = $this->objLayout->getTemplatePath($device_type_id, true) . "footer.tpl";
-            if (!is_file($footer_tpl)) {
-                $footer_tpl = $this->objLayout->getTemplatePath($device_type_id) . "footer.tpl";
-            }
+            $header_tpl = $this->objLayout->getTemplatePath($device_type_id) . "header.tpl";
+            $footer_tpl = $this->objLayout->getTemplatePath($device_type_id) . "footer.tpl";
 
             copy($header_tpl, $pre_DIR . "header.tpl");
             copy($footer_tpl, $pre_DIR . "footer.tpl");

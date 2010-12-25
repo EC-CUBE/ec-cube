@@ -59,12 +59,7 @@ class LC_Page_FrontParts_Bloc extends LC_Page {
         if (substr($bloc_file, 0, 1) == '/') {
             $this->tpl_mainpage = $bloc_file;
         } else {
-            $user_bloc_path = SC_Helper_PageLayout_Ex::getTemplatePath($this->objDisplay->detectDevice(), true) . BLOC_DIR . $bloc_file;
-            if (is_file($user_bloc_path)) {
-                $this->tpl_mainpage = $user_bloc_path;
-            } else {
-                $this->tpl_mainpage = SC_Helper_PageLayout_Ex::getTemplatePath($this->objDisplay->detectDevice()) . BLOC_DIR . $bloc_file;
-            }
+            $this->tpl_mainpage = SC_Helper_PageLayout_Ex::getTemplatePath($this->objDisplay->detectDevice()) . BLOC_DIR . $bloc_file;
         }
 
         $this->setTemplate($this->tpl_mainpage);

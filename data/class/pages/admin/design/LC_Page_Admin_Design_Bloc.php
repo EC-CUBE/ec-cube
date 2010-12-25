@@ -92,7 +92,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin {
         }
 
         $this->objLayout = new SC_Helper_PageLayout_Ex();
-        $package_path = $this->objLayout->getTemplatePath($device_type_id, true);
+        $package_path = $this->objLayout->getTemplatePath($device_type_id);
 
         // ブロック一覧を取得
         $this->arrBlocList = $this->lfgetBlocData("device_type_id = ?", array($device_type_id));
@@ -102,14 +102,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin {
             $arrBlocData = $this->lfGetBlocData("bloc_id = ? AND device_type_id = ?",
                                                 array($bloc_id, $device_type_id));
 
-            // ユーザー作成ブロックが存在する場合
-            if (is_file($package_path . $arrBlocData[0]['tpl_path'])) {
-                $arrBlocData[0]['tpl_path'] = $package_path . $arrBlocData[0]['tpl_path'];
-
-            // 存在しない場合は指定テンプレートのブロックを取得
-            } else {
-                $arrBlocData[0]['tpl_path'] = $this->objLayout->getTemplatePath($device_type_id) . $arrBlocData[0]['tpl_path'];
-            }
+            $arrBlocData[0]['tpl_path'] = $this->objLayout->getTemplatePath($device_type_id) . $arrBlocData[0]['tpl_path'];
 
             // テンプレートファイルの読み込み
             $arrBlocData[0]['tpl_data'] = file_get_contents($arrBlocData[0]['tpl_path']);
