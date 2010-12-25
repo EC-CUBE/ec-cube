@@ -66,10 +66,6 @@ class SC_Helper_Purchase {
                                                    $objCartSession);
         $orderTemp = $this->getOrderTemp($uniqId);
 
-        if ($objCustomer->isLoginSuccess(true)) {
-            $this->registerOtherDeliv($uniqId, $customerId);
-        }
-
         $orderTemp['status'] = $orderStatus;
         $orderId = $this->registerOrder($orderTemp, $objCartSession,
                                         $_SESSION['cartKey']);
@@ -177,65 +173,6 @@ class SC_Helper_Purchase {
         $objCartSession->delAllProducts($cartKey);
         SC_SiteSession::unsetUniqId();
         return $orderParams['order_id'];
-    }
-
-    /**
-     * 会員登録住所と配送先住所を比較し, 差異があった場合は新規登録を行う.
-     *
-     * 別のお届け先に同一の配送先住所が存在する場合は登録しない.
-     *
-     * @param string $uniqId 配送先住所を特定するための一時テーブルのユニークID
-     * @param integer $customerId 顧客ID
-     * @return boolean 差異があり新規登録を行った場合 true; それ以外は false
-     */
-    function registerOtherDeliv($uniqId, $customerId) {
-        $keys = array('name01', 'name02', 'kana01', 'kana02', 'tel01', 'tel02',
-                      'tel03', 'zip01', 'zip02', 'pref', 'addr01', 'addr02');
-        $delivCols = "";
-        $cols = "";
-        $i = 0;
-        foreach ($keys as $key) {
-            $delivCols .= "deliv_" . $key;
-            $cols .= $key;
-            if ($i < count($keys) - 1) {
-                $delivCols .= ", ";
-                $cols .= ", ";
-            }
-            $i++;
-        }
-
-        $objQuery =& SC_Query::getSingletonInstance();
-        $orderTemp = $objQuery->select($delivCols, "dtb_order_temp",
-                                       "order_temp_id = ?", array($uniqId),
-                                       MDB2_FETCHMODE_ORDERED);
-
-        $customerAddrs = $objQuery->select($cols, "dtb_customer",
-                                           "customer_id = ?", array($customerId),
-                                           MDB2_FETCHMODE_ORDERED);
-
-        $hasAddr = false;
-        if ($orderTemp[0] != $customerAddrs[0]) {
-            $otherAddrs = $objQuery->select($cols, "dtb_other_deliv",
-                                           "customer_id = ?", array($customerId),
-                                            MDB2_FETCHMODE_ORDERED);
-            foreach ($otherAddrs as $otherAddr) {
-                if ($orderTemp[0] == $otherAddr) {
-                    $hasAddr = true;
-                }
-            }
-        }
-        if ($hasAddr) {
-            $i = 0;
-            foreach ($keys as $key) {
-                $addrs[$key] = $orderTemp[0][$i];
-                $i++;
-            }
-            $addrs['customer_id'] = $customerId;
-            $addrs['order_deliv_id'] = $objQuery->nextVal('dtb_other_deliv_other_deliv_id');
-            $objQuery->insert("dtb_other_deliv", $addrs);
-            return true;
-        }
-        return false;
     }
 
     /**
