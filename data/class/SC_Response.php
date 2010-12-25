@@ -135,8 +135,14 @@ class SC_Response{
                           . "|" . preg_quote(SSL_URL, '/') . ")/", $location)) {
 
             $netURL = new Net_URL($location);
+            $arrQueryString = $netURL->querystring;
+
             if (!empty($_SERVER['QUERY_STRING'])) {
                 $netURL->addRawQueryString($_SERVER['QUERY_STRING']);
+            }
+
+            foreach ($arrQueryString as $key => $val) {
+                $netURL->addQueryString($key, $val);
             }
 
             $session = SC_SessionFactory::getInstance();
