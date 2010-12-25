@@ -809,7 +809,7 @@ CREATE TABLE dtb_bloc (
     create_date datetime NOT NULL,
     update_date datetime NOT NULL,
     php_path text,
-    del_flg smallint NOT NULL DEFAULT 0,
+    deletable_flg smallint NOT NULL DEFAULT 1,
     PRIMARY KEY (device_type_id, bloc_id),
     UNIQUE (device_type_id, filename)
 ) TYPE=InnoDB;
