@@ -36,7 +36,7 @@
 ◎お届け先
 　お名前　：<!--{$arrOrder.deliv_name01}--> <!--{$arrOrder.deliv_name02}-->　様
 　郵便番号：〒<!--{$arrOrder.deliv_zip01}-->-<!--{$arrOrder.deliv_zip02}-->
-　住所　　：<!--{$arrOrder.deliv_pref}--><!--{$arrOrder.deliv_addr01}--><!--{$arrOrder.deliv_addr02}-->
+　住所　　：<!--{$arrOrder.deliv_pref_name}--><!--{$arrOrder.deliv_addr01}--><!--{$arrOrder.deliv_addr02}-->
 　電話番号：<!--{$arrOrder.deliv_tel01}-->-<!--{$arrOrder.deliv_tel02}-->-<!--{$arrOrder.deliv_tel03}-->
 
 <!--{if $arrOther.title.value }-->

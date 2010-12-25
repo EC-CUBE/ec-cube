@@ -128,7 +128,8 @@ class SC_Helper_Mail {
         }
 
         // 都道府県変換
-        $arrTplVar->arrOrder['deliv_pref'] = $this->arrPref[$arrTplVar->arrOrder['deliv_pref']];
+        $arrTplVar->arrOrder['deliv_pref_name'] = $this->arrPref[$arrTplVar->arrOrder['deliv_pref']];
+        $arrTplVar->arrOrder['order_pref_name'] = $this->arrPref[$arrTplVar->arrOrder['order_pref']];
 
         $arrTplVar->arrOrderDetail = $arrOrderDetail;
 
