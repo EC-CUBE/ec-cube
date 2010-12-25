@@ -15,8 +15,8 @@ class SC_Plugin
     }
 
     function __construct(){
-        if(!defined(PLUGIN_PATH)){
-            define("PLUGIN_PATH",HTML_PATH."/user_data/plugins/");
+        if (!defined(PLUGIN_PATH)) {
+            define('PLUGIN_PATH', USER_PATH . 'plugins/');
         }
         $this->init();
     }
@@ -56,13 +56,13 @@ class SC_Plugin
 
     function disablePlugin(){
         $objQuery = new SC_Query();
-        $name = preg_replace("/.php/", "", __FILE__);
+        $name = preg_replace("/.php/", "", __FILE__); // XXX 正規表現エスケープ漏れでは?
         $objQuery->update("dtb_plugin", array('enable'=>'0'), "plugin_name = ?", array($name));
     }
 
     function enablePlugin(){
         $objQuery = new SC_Query();
-        $name = preg_replace("/.php/", "", __FILE__);
+        $name = preg_replace("/.php/", "", __FILE__); // XXX 正規表現エスケープ漏れでは?
         $objQuery->update("dtb_plugin", array('enable'=>'0'), "plugin_name = ?", array($name));
     }
 

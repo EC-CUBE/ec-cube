@@ -33,7 +33,7 @@ XXX: ヘッダーとフッターでwrapの設定が違うのは疑問。それ�
   <!--{ if $header_prev == "on"}-->
   <dic id="design-header-preview">
     <!--{if $browser_type == 1 }-->
-      <div style="zoom:0.8"><!--{include file="`$smarty.const.HTML_PATH`user_data/include/preview/header.tpl"}--></div>
+      <div style="zoom:0.8"><!--{include file="`$smarty.const.USER_PATH`include/preview/header.tpl"}--></div>
     <!--{ else }-->
       <span class="attention"><strong>プレビューはIEでのみ表示されます。</strong></span>
     <!--{ /if }-->
@@ -64,7 +64,7 @@ XXX: ヘッダーとフッターでwrapの設定が違うのは疑問。それ�
   <!--{ if $footer_prev == "on"}-->
   <div id="design-footer-preview">
     <!--{if $browser_type == 1 }-->
-      <div style="zoom:0.8"><!--{include file="`$smarty.const.HTML_PATH`/user_data/include/preview/footer.tpl"}--></div>
+      <div style="zoom:0.8"><!--{include file="`$smarty.const.USER_PATH`/include/preview/footer.tpl"}--></div>
     <!--{ else }-->
       <span class="attention"><strong>プレビューはIEでのみ表示されます。</strong></span>
     <!--{ /if }-->

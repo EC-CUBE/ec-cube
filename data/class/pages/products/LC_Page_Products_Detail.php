@@ -197,7 +197,7 @@ class LC_Page_Products_Detail extends LC_Page {
                         $objCartSess->saveCurrentCart($objSiteSess->getUniqId());
 
                         $this->objDisplay->redirect($this->getLocation(
-                            URL_DIR . 'user_data/gmopg_oneclick_confirm.php', array(), true));
+                            URL_DIR . USER_DIR . 'gmopg_oneclick_confirm.php', array(), true));
                         exit;
                     }
 
