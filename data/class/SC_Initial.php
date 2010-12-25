@@ -58,6 +58,7 @@ class SC_Initial {
         $this->defineConstants();
         $this->mbstringInit();
         $this->createCacheDir();
+        $this->stripslashesDeepGpc();
         $this->resetSuperglobalsRequest();
     }
 
@@ -315,6 +316,34 @@ class SC_Initial {
         define('AUTH_ERROR', 3);
         /** 不正な遷移エラー */
         define('INVALID_MOVE_ERRORR', 4);
+    }
+
+    /**
+     * クォートされた文字列のクォート部分を再帰的に取り除く
+     *
+     * {@link http://jp2.php.net/manual/ja/function.get-magic-quotes-gpc.php PHP Manual} の記事を参考に実装。
+     * $_REQUEST は後続の処理で再構成されるため、本処理では外している。
+     * @return void
+     */
+    function stripslashesDeepGpc() {
+        // Strip magic quotes from request data.
+        if (get_magic_quotes_gpc()) {
+            // Create lamba style unescaping function (for portability)
+            $quotes_sybase = strtolower(ini_get('magic_quotes_sybase'));
+            $unescape_function = (empty($quotes_sybase) || $quotes_sybase === 'off') ? 'stripslashes($value)' : 'str_replace("\'\'","\'",$value)';
+            $stripslashes_deep = create_function('&$value, $fn', '
+                if (is_string($value)) {
+                    $value = ' . $unescape_function . ';
+                } else if (is_array($value)) {
+                    foreach ($value as &$v) $fn($v, $fn);
+                }
+            ');
+
+            // Unescape data
+            $stripslashes_deep($_POST, $stripslashes_deep);
+            $stripslashes_deep($_GET, $stripslashes_deep);
+            $stripslashes_deep($_COOKIE, $stripslashes_deep);
+        }
     }
 
     /**
