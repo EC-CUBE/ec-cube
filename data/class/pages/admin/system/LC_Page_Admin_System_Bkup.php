@@ -289,37 +289,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin {
             }
         }
 
-        // 各種ファイルコピー
         if ($success) {
-            /**
-            // 商品画像ファイルをコピー
-            // ディレクトリが存在していなければ作成する
-            $image_dir = $bkup_dir . "save_image/";
-            if (!is_dir(dirname($image_dir))) $success = mkdir(dirname($image_dir));
-            $copy_mess = "";
-            $copy_mess = SC_Utils_Ex::sfCopyDir("../../upload/save_image/",$image_dir, $copy_mess);
-
-            // テンプレートファイルをコピー
-            // ディレクトリが存在していなければ作成する
-            $templates_dir = $bkup_dir . "templates/";
-            if (!is_dir(dirname($templates_dir))) $success = mkdir(dirname($templates_dir));
-            $copy_mess = "";
-            $copy_mess = SC_Utils_Ex::sfCopyDir("../../user_data/templates/",$templates_dir, $copy_mess);
-
-            // インクルードファイルをコピー
-            // ディレクトリが存在していなければ作成する
-            $inc_dir = $bkup_dir . "include/";
-            if (!is_dir(dirname($inc_dir))) $success = mkdir(dirname($inc_dir));
-            $copy_mess = "";
-            $copy_mess = SC_Utils_Ex::sfCopyDir("../../user_data/include/",$inc_dir, $copy_mess);
-
-            // CSSファイルをコピー
-            // ディレクトリが存在していなければ作成する
-            $css_dir = $bkup_dir . "css/";
-            if (!is_dir(dirname($css_dir))) $success = mkdir(dirname($css_dir));
-            $copy_mess = "";
-            $copy_mess = SC_Utils_Ex::sfCopyDir("../../user_data/css/",$css_dir, $copy_mess);
-            **/
             //圧縮フラグTRUEはgzip圧縮をおこなう
             $tar = new Archive_Tar($this->bkup_dir . $bkup_name . $this->bkup_ext, TRUE);
 
@@ -434,33 +404,6 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin {
 
             // 自動採番の値をセット
             if ($success) $this->lfSetAutoInc($objQuery, $bkup_dir . "autoinc_data.csv");
-
-            // 各種ファイルのコピー
-            /**
-            if ($success) {
-                // 画像のコピー
-                $image_dir = $bkup_dir . "save_image/";
-                $copy_mess = "";
-                $copy_mess = SC_Utils_Ex::sfCopyDir($image_dir, "../../upload/save_image/", $copy_mess, true);
-
-                // テンプレートのコピー
-                $tmp_dir = $bkup_dir . "templates/";
-                $copy_mess = "";
-                $copy_mess = SC_Utils_Ex::sfCopyDir($tmp_dir, "../../user_data/templates/", $copy_mess, true);
-
-                // インクルードファイルのコピー
-                $inc_dir = $bkup_dir . "include/";
-                $copy_mess = "";
-                $copy_mess = SC_Utils_Ex::sfCopyDir($inc_dir, "../../user_data/include/", $copy_mess, true);
-
-                // CSSのコピー
-                $css_dir = $bkup_dir . "css/";
-                $copy_mess = "";
-                $copy_mess = SC_Utils_Ex::sfCopyDir($css_dir, "../../user_data/css/", $copy_mess, true);
-
-                // バックアップデータの削除
-                SC_Utils_Ex::sfDelFile($bkup_dir);
-            }**/
 
             // リストア成功ならコミット失敗ならロールバック
             if ($success) {
