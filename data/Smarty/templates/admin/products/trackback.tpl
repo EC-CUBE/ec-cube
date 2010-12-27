@@ -94,7 +94,7 @@
     <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
     <!--{html_options options=$arrPageMax selected=$arrForm.search_page_max}-->
     </select> 件
-    <a class="btn_normal" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', '');"><span>この条件で検索する</span></a>
+    <a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', '');"><span>この条件で検索する</span></a>
   </div>
   <!--検索条件設定テーブルここまで-->
 </form>  
@@ -117,9 +117,9 @@
   <div class="btn">
     <span class="attention"><!--検索結果数--><!--{$tpl_linemax}-->件</span>&nbsp;が該当しました。
     <!--{if $smarty.const.ADMIN_MODE == '1'}-->
-    <a class="btn_normal" href="javascript:;" onclick="fnModeSubmit('delete_all','','');"><span>検索結果をすべて削除</span></a>
+    <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete_all','','');"><span>検索結果をすべて削除</span></a>
     <!--{/if}-->
-    <a class="btn_normal" href="javascript:;" onclick="fnModeSubmit('csv','','');" ><span>CSV ダウンロード</span></a>
+    <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('csv','','');" ><span>CSV ダウンロード</span></a>
   </div>
   <!--{include file=$tpl_pager}-->
   
@@ -143,8 +143,8 @@
       <td><a href="<!--{$arrTrackback[cnt].url|escape}-->"><!--{$arrTrackback[cnt].blog_name|escape}--></a></td>
       <td><!--{$arrTrackback[cnt].title|escape}--></td>
       <td><!--{if $arrTrackback[cnt].status eq 1}-->表示<!--{elseif $arrTrackback[cnt].status eq 2}-->非表示<!--{elseif $arrTrackback[cnt].status eq 3}-->スパム<!--{/if}--></td>
-      <td><a class="btn_normal" href="javascript:;" onclick="fnChangeAction('./trackback_edit.php'); fnModeSubmit('','trackback_id','<!--{$arrTrackback[cnt].trackback_id}-->');"><span>編集</span></a></td>
-      <td><a class="btn_normal" href="javascript:;" onclick="fnModeSubmit('delete','trackback_id','<!--{$arrTrackback[cnt].trackback_id}-->'); return false;"><span>削除</span></a></td>
+      <td><a class="btn-normal" href="javascript:;" onclick="fnChangeAction('./trackback_edit.php'); fnModeSubmit('','trackback_id','<!--{$arrTrackback[cnt].trackback_id}-->');"><span>編集</span></a></td>
+      <td><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete','trackback_id','<!--{$arrTrackback[cnt].trackback_id}-->'); return false;"><span>削除</span></a></td>
     </tr>
     <!--{/section}-->
   </table>

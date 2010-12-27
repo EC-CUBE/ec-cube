@@ -123,7 +123,7 @@ function lfPopwinSubmit(formName) {
   </table>
 
   <div class="btn">
-    <a class="btn_normal" href="javascript:;" onclick="return lfPopwinSubmit('form1');"><span>この内容で作成する</span></a>
+    <a class="btn-normal" href="javascript:;" onclick="return lfPopwinSubmit('form1');"><span>この内容で作成する</span></a>
   </div>
 
 </form>

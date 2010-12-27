@@ -47,6 +47,6 @@
     </tr>
   </table>
 
-  <div class="btn"><a class="btn_normal" href="javascript:;" onclick="fnFormModeSubmit('point_form', '<!--{$tpl_mode}-->', '', '');"><span>この内容で登録する</span></a></div>
+  <div class="btn"><a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('point_form', '<!--{$tpl_mode}-->', '', '');"><span>この内容で登録する</span></a></div>
 </div>
 </form>

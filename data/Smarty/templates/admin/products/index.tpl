@@ -149,7 +149,7 @@ function lfnDispChange(){
     <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
     <!--{html_options options=$arrPageMax selected=$arrForm.search_page_max}-->
     </select> 件
-    <a class="btn_normal" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', '');"><span>この条件で検索する</span></a>
+    <a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', '');"><span>この条件で検索する</span></a>
   </div>
   <!--検索条件設定テーブルここまで-->
 </form>  
@@ -170,10 +170,10 @@ function lfnDispChange(){
     <span class="attention"><!--検索結果数--><!--{$tpl_linemax}-->件</span>&nbsp;が該当しました。
     <!--検索結果-->
     <!--{if $smarty.const.ADMIN_MODE == '1'}-->
-    <a class="btn_normal" href="javascript:;" onclick="fnModeSubmit('delete_all','','');">検索結果をすべて削除</a>
+    <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete_all','','');">検索結果をすべて削除</a>
     <!--{/if}-->
-    <a class="btn_normal" href="javascript:;" onclick="fnModeSubmit('csv','','');">CSV ダウンロード</a>
-    <a class="btn_normal" href="../contents/csv.php?tpl_subno_csv=product">CSV 出力項目設定</a>
+    <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('csv','','');">CSV ダウンロード</a>
+    <a class="btn-normal" href="../contents/csv.php?tpl_subno_csv=product">CSV 出力項目設定</a>
   </div>
   <!--{include file=$tpl_pager}-->
 

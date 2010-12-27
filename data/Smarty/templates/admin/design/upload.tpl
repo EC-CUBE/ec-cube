@@ -52,7 +52,7 @@
     </tr>
   </table>
 
-  <div class="btn"><a class="btn_normal" href="javascript:;" onclick="fnFormModeSubmit('form1', 'upload', '', '');"><span>アップロード</span></a></div>
+  <div class="btn"><a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('form1', 'upload', '', '');"><span>アップロード</span></a></div>
 
 </div>
 </form>

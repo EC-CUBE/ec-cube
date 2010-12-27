@@ -96,8 +96,8 @@
         <!--▲編集テーブルここまで-->
 
         <div class="btn">
-            <a class="btn_normal" href="javascript:;" onclick="document.form1.action='./review.php'; fnModeSubmit('search','','');" ><span>検索画面に戻る</span></a>
-            <a class="btn_normal" href="javascript:;" onclick="fnModeSubmit('complete','','');"><span>この内容で登録する</span></a>
+            <a class="btn-normal" href="javascript:;" onclick="document.form1.action='./review.php'; fnModeSubmit('search','','');" ><span>検索画面に戻る</span></a>
+            <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('complete','','');"><span>この内容で登録する</span></a>
         </div>
     </div>
 </form>

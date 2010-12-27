@@ -130,8 +130,8 @@ function func_return(){
             </tr>
         </table>
         <div class="btn">
-            <a class="btn_normal" href="javascript:;" onclick="func_return(); return false;"><span>編集画面に戻る</span></a>
-            <a class="btn_normal" href="javascript:;" onclick="fnFormModeSubmit('form1', 'complete', '', '');"><span>この内容で登録する</span></a>
+            <a class="btn-normal" href="javascript:;" onclick="func_return(); return false;"><span>編集画面に戻る</span></a>
+            <a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('form1', 'complete', '', '');"><span>この内容で登録する</span></a>
         </div>
     </div>
 </form>

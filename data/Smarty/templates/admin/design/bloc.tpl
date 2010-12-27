@@ -54,7 +54,7 @@
              <textarea name="bloc_html" rows="<!--{$text_row}-->" style="width: 100%;"><!--{$arrBlocData.tpl_data|smarty:nodefaults}--></textarea>
              <input type="hidden" name="html_area_row" value="<!--{$text_row}-->" />
              <div>
-                 <a class="btn_normal" href="javascript:;" onclick="ChangeSize(this, bloc_html, 50, 13, html_area_row)">拡大</a>
+                 <a class="btn-normal" href="javascript:;" onclick="ChangeSize(this, bloc_html, 50, 13, html_area_row)">拡大</a>
              </div>
          </td>
      </tr>

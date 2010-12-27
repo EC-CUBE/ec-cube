@@ -68,8 +68,8 @@ table.list td.menu {
 }
 table.form thead th { text-align: center; width: auto; }
 
-a.btn_normal,
-a.btn_normal:link {
+a.btn-normal,
+a.btn-normal:link {
     color: #000;
     text-decoration: none;
     background-attachment: scroll;
@@ -98,11 +98,11 @@ a.btn_normal:link {
     -moz-border-radius: 5px;
 }
 
-a.btn_normal:hover {
+a.btn-normal:hover {
     border: solid 1px #666;
 }
 
-a.btn_normal:active {
+a.btn-normal:active {
     background-image: url('../img/button/white-grad-active.png');
 }
 

@@ -140,7 +140,7 @@ $(function() {
         <span class="attention"><!--{$arrErr.zip01}--></span>
         <span class="attention"><!--{$arrErr.zip02}--></span>
         〒 <input type="text" name="zip01" value="<!--{$arrForm.zip01|escape}-->" maxlength="3" size="6" class="box6" style="<!--{if $arrErr.zip01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" /> - <input type="text" name="zip02" value="<!--{$arrForm.zip02|escape}-->" maxlength="4"  size="6" class="box6" style="<!--{if $arrErr.zip02 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" />
-        <a class="btn_normal" href="javascript:;" name="address_input" onclick="fnCallAddress('<!--{$smarty.const.URL_INPUT_ZIP}-->', 'zip01', 'zip02', 'pref', 'addr01');">住所入力</a>
+        <a class="btn-normal" href="javascript:;" name="address_input" onclick="fnCallAddress('<!--{$smarty.const.URL_INPUT_ZIP}-->', 'zip01', 'zip02', 'pref', 'addr01');">住所入力</a>
       </td>
     </tr>
     <tr>
@@ -296,20 +296,20 @@ $(function() {
         <span class="attention"><!--{$arrErr.longitude}--></span>
         緯度: <input type="text" name="latitude" value="<!--{$arrForm.latitude|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" style="<!--{if $arrErr.latitude != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" id="latitude" />
         経度: <input type="text" name="longitude" value="<!--{$arrForm.longitude|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" style="<!--{if $arrErr.longitude != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" id="longitude" />
-        <a class="btn_normal" href="javascript:;" name="codeAddress" id="codeAddress" onclick="">住所より自動取得</a>
+        <a class="btn-normal" href="javascript:;" name="codeAddress" id="codeAddress" onclick="">住所より自動取得</a>
         <a href="#maparea" id="mapAddress">地図で設定</a>
       </td>
     </tr>
  </table>
 
   <div class="btn">
-    <a class="btn_normal" href="javascript:;" onclick="fnFormModeSubmit('form1', '<!--{$tpl_mode}-->', '', '');"><span>この内容で登録する</span></a>
+    <a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('form1', '<!--{$tpl_mode}-->', '', '');"><span>この内容で登録する</span></a>
   </div>
 </div>
 <div style="display: none">
   <div id="maparea">
     <div id="maps" style="width: 300px; height: 300px"></div>
-    <a class="btn_normal" href="javascript:;" id="inputPoint">この位置を入力</a>
+    <a class="btn-normal" href="javascript:;" id="inputPoint">この位置を入力</a>
   </div>
 </div>
 <!--{* ▲登録テーブルここまで *}-->

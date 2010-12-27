@@ -34,8 +34,8 @@
     <a href="./<!--{$smarty.const.DIR_INDEX_URL}-->">→続けて設定する</a>
   </div>
   <div class="btn">
-    <a class="btn_normal" href="javascript:;" name="subm02" onclick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_back', '' )"><span>テンプレート設定画面へ戻る</span></a>
-  　<a class="btn_normal" href="javascript:;" name="subm03" onclick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_complete', '' )" <!--{$list_data.template_id|sfGetEnabled}-->><span>配信を予約する</span></a>
+    <a class="btn-normal" href="javascript:;" name="subm02" onclick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_back', '' )"><span>テンプレート設定画面へ戻る</span></a>
+  　<a class="btn-normal" href="javascript:;" name="subm03" onclick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_complete', '' )" <!--{$list_data.template_id|sfGetEnabled}-->><span>配信を予約する</span></a>
   </div>
 </div>
 </form>

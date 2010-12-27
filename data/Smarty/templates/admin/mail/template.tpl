@@ -46,6 +46,6 @@
   </table>
 
   <div class="btn addnew">
-    <a class="btn_normal" href="./template_input.php"><span>テンプレートを新規入力</span></a>
+    <a class="btn-normal" href="./template_input.php"><span>テンプレートを新規入力</span></a>
   </div>
 </div>

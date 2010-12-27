@@ -82,7 +82,7 @@ function checkFlagAndSubmit(){
       <span class="attention"> (上限<!--{$smarty.const.LTEXT_LEN}-->文字)
       </span>
       <div>
-        <a class="btn_normal" href="javascript:;" onclick="fnCharCount('form1','header','cnt_header');"><span>文字数カウント</span></a>
+        <a class="btn-normal" href="javascript:;" onclick="fnCharCount('form1','header','cnt_header');"><span>文字数カウント</span></a>
         <br />今までに入力したのは
         <input type="text" name="cnt_header" size="4" class="box4" readonly = true style="text-align:right" />
         文字です。
@@ -102,7 +102,7 @@ function checkFlagAndSubmit(){
       <textarea name="footer" cols="75" rows="12" class="area75" onChange="setFlag();" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{$arrForm[$key]|escape}--></textarea><br />
       <span class="attention"> (上限<!--{$smarty.const.LTEXT_LEN}-->文字)</span>
       <div>
-        <a class="btn_normal" href="javascript:;" onclick="fnCharCount('form1','footer','cnt_footer');"><span>文字数カウント</span></a>
+        <a class="btn-normal" href="javascript:;" onclick="fnCharCount('form1','footer','cnt_footer');"><span>文字数カウント</span></a>
         <br />今までに入力したのは
         <input type="text" name="cnt_footer" size="4" class="box4" readonly = true style="text-align:right" />
         文字です。
@@ -111,7 +111,7 @@ function checkFlagAndSubmit(){
     </tr>
   </table>
 
-  <div class="btn"><a class="btn_normal" href="javascript:;" onclick="fnFormModeSubmit('form1', 'regist', '', '');"
+  <div class="btn"><a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('form1', 'regist', '', '');"
 ><span>この内容で登録する</span></a></div>
 </div>
 </form>

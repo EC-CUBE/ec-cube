@@ -84,8 +84,8 @@
   <!--{/if}-->
 
   <div class="btn">
-    <a class="btn_normal" href="javascript:;" onclick="return fnInsertValAndSubmit( document.form1, 'mode', 'back', '' )"><span>検索画面に戻る</span></a>
-    <a class="btn_normal" href="javascript:;" onclick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_confirm', '' )" ><span>確認ページへ</span></a>
+    <a class="btn-normal" href="javascript:;" onclick="return fnInsertValAndSubmit( document.form1, 'mode', 'back', '' )"><span>検索画面に戻る</span></a>
+    <a class="btn-normal" href="javascript:;" onclick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_confirm', '' )" ><span>確認ページへ</span></a>
   </div>
 </div>
 <input type="hidden" name="mode" value="template" />

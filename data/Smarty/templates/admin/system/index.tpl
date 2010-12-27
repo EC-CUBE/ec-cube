@@ -67,7 +67,7 @@
   </div>
 
   <div class="btn addnew">
-    <a class="btn_normal" href="javascript:;" onclick="win01('./input.php','input','500','420');"><span>メンバーを新規入力</span></a>
+    <a class="btn-normal" href="javascript:;" onclick="win01('./input.php','input','500','420');"><span>メンバーを新規入力</span></a>
   </div>
 </div>
 </form>

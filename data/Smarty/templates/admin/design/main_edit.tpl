@@ -93,7 +93,7 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
   <div>
     <textarea name="tpl_data" rows=<!--{$text_row}--> style="width: 100%;"><!--{$arrPageData.tpl_data|escape|smarty:nodefaults}--></textarea>
     <input type="hidden" name="html_area_row" value="<!--{$text_row}-->" />
-    <a class="btn_normal" href="javascript:;" onclick="ChangeSize(this, tpl_data, 50, 13, html_area_row)"><span><!--{if $text_row > 13}-->縮小<!--{else}-->拡大<!--{/if}--></span></a>
+    <a class="btn-normal" href="javascript:;" onclick="ChangeSize(this, tpl_data, 50, 13, html_area_row)"><span><!--{if $text_row > 13}-->縮小<!--{else}-->拡大<!--{/if}--></span></a>
   </div>
       </td>
     </tr>
@@ -136,7 +136,7 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
     <!--{/foreach}-->
   </table>
   <div class="btn addnew">
-    <a class="btn_normal" href="<!--{$smarty.server.PHP_SELF|escape}-->"><span>ページを新規入力</span></a>
+    <a class="btn-normal" href="<!--{$smarty.server.PHP_SELF|escape}-->"><span>ページを新規入力</span></a>
   </div>
 
 </form>

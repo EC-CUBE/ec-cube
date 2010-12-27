@@ -99,9 +99,9 @@
   <!--{/if}-->
 
   <div class="btn">
-    <a class="btn_normal" href="javascript:;" onclick="fnModeSubmit('confirm_return','',''); return false"><span>前へ戻る</span></a>
+    <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('confirm_return','',''); return false"><span>前へ戻る</span></a>
     <!--{if $tpl_check > 0}-->
-    <a class="btn_normal" href="javascript:;" onclick="document.form1.submit();"><span>この内容で登録する</span></a>
+    <a class="btn-normal" href="javascript:;" onclick="document.form1.submit();"><span>この内容で登録する</span></a>
     <!--{/if}-->
   </div>
 </div>

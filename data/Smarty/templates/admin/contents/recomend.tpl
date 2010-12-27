@@ -102,7 +102,7 @@ function lfnCheckSetItem( rank ){
         <span class="attention"><!--{$arrErr[$smarty.section.cnt.iteration].comment}--></span>
         <textarea name="comment" cols="45" rows="4" style="width: 337px; height: 82px; <!--{$arrErr[$smarty.section.cnt.iteration].comment|sfGetErrorColor}-->" <!--{$arrItems[$smarty.section.cnt.iteration].product_id|sfGetEnabled}-->><!--{$arrItems[$smarty.section.cnt.iteration].comment}--></textarea>
         <!--{if $arrItems[$smarty.section.cnt.iteration].product_id}-->
-        <br /><a class="btn_normal" href="javascript:;" onclick="return lfnCheckSubmit(document.form<!--{$smarty.section.cnt.iteration}-->);"><span>登録する</span></a>
+        <br /><a class="btn-normal" href="javascript:;" onclick="return lfnCheckSubmit(document.form<!--{$smarty.section.cnt.iteration}-->);"><span>登録する</span></a>
         <!--{/if}-->
         </form>
       </td>

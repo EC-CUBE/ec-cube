@@ -33,7 +33,7 @@
     <label for="password">PASSWORD</label>
     <input type="password" name="password" size="20" class="box25" />
     <div class="btn">
-      <a class="btn_normal" href="javascript:;" onclick="document.form1.submit();"><span>LOGIN</span></a>
+      <a class="btn-normal" href="javascript:;" onclick="document.form1.submit();"><span>LOGIN</span></a>
     </div>
   </div>
   <div id="login-address">Copyright &copy; 2000-2010 LOCKON CO.,LTD. All Rights Reserved.</div>

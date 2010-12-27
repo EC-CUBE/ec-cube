@@ -85,12 +85,12 @@ self.moveTo(20,20);self.focus();
           <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->">　<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br />
           <!--{/if}-->
           <input type="file" name="<!--{$key}-->" size="25" class="box25" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
-          <a class="btn_normal" href="javascript:;" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')">アップロード</a>
+          <a class="btn-normal" href="javascript:;" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')">アップロード</a>
         </td>
       </tr>
     </table>
   
-  <div class="btn"><a class="btn_normal" href="javascript:;" onclick="fnFormModeSubmit('form1', 'edit', '', '');"><span>この内容で登録する</span></a></div>
+  <div class="btn"><a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('form1', 'edit', '', '');"><span>この内容で登録する</span></a></div>
   
 </div>
 </form>

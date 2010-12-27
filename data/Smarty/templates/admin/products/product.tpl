@@ -98,8 +98,8 @@ function selectAll(target) {
               </select>
             </td>
             <td style="padding: 15px;">
-              <a class="btn_normal" href="javascript:;" name="on_select" onclick="fnMoveSelect('category_id_unselect','category_id')">&nbsp;&nbsp;&lt;-&nbsp;登録&nbsp;&nbsp;</a><br /><br />
-              <a class="btn_normal" href="javascript:;" name="un_select" onclick="fnMoveSelect('category_id','category_id_unselect')">&nbsp;&nbsp;削除&nbsp;-&gt;&nbsp;&nbsp</a>
+              <a class="btn-normal" href="javascript:;" name="on_select" onclick="fnMoveSelect('category_id_unselect','category_id')">&nbsp;&nbsp;&lt;-&nbsp;登録&nbsp;&nbsp;</a><br /><br />
+              <a class="btn-normal" href="javascript:;" name="un_select" onclick="fnMoveSelect('category_id','category_id_unselect')">&nbsp;&nbsp;削除&nbsp;-&gt;&nbsp;&nbsp</a>
             </td>
             <td>
               <select name="category_id_unselect[]" id="category_id_unselect" onchange="" size="10" style="height: 120px; min-width: 200px;" multiple>
@@ -149,7 +149,7 @@ function selectAll(target) {
             <a href="" onclick="selectAll('category_id'); fnModeSubmit('delete_down', 'down_key', '<!--{$key}-->'); return false;">[ファイルの取り消し]</a><br>
           <!--{/if}-->
           <input type="file" name="down_file" size="50" class="box50" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
-          <a class="btn_normal" href="javascript:;" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_down', 'down_key', '<!--{$key}-->')">アップロード</a><br />登録可能拡張子：<!--{$smarty.const.DOWNLOAD_EXTENSION}-->　(パラメータ DOWNLOAD_EXTENSION)
+          <a class="btn-normal" href="javascript:;" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_down', 'down_key', '<!--{$key}-->')">アップロード</a><br />登録可能拡張子：<!--{$smarty.const.DOWNLOAD_EXTENSION}-->　(パラメータ DOWNLOAD_EXTENSION)
       </td>
     </tr>
     <tr>
@@ -290,7 +290,7 @@ function selectAll(target) {
         <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" />　<a href="" onclick="selectAll('category_id'); fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br />
         <!--{/if}-->
         <input type="file" name="main_list_image" size="50" class="box50" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
-        <a class="btn_normal" href="javascript:;" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')">アップロード</a>
+        <a class="btn-normal" href="javascript:;" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')">アップロード</a>
       </td>
     </tr>
     <tr>
@@ -302,7 +302,7 @@ function selectAll(target) {
         <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" />　<a href="" onclick="selectAll('category_id'); fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br />
         <!--{/if}-->
         <input type="file" name="main_image" size="50" class="box50" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
-        <a class="btn_normal" href="javascript:;" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')">アップロード</a>
+        <a class="btn-normal" href="javascript:;" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')">アップロード</a>
       </td>
     </tr>
     <tr>
@@ -314,7 +314,7 @@ function selectAll(target) {
         <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" />　<a href="" onclick="selectAll('category_id'); fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br />
         <!--{/if}-->
         <input type="file" name="<!--{$key}-->" size="50" class="box50" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
-        <a class="btn_normal" href="javascript:;" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')">アップロード</a>
+        <a class="btn-normal" href="javascript:;" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')">アップロード</a>
       </td>
     </tr>
   </table>
@@ -325,7 +325,7 @@ function selectAll(target) {
   <!--{/if}-->
 
   <div class="btn">
-    <a class="btn_normal" href="javascript:;" onclick="selectAll('category_id'); lfDispSwitch('sub_detail');"><span>サブ情報表示/非表示</span></a>
+    <a class="btn-normal" href="javascript:;" onclick="selectAll('category_id'); lfDispSwitch('sub_detail');"><span>サブ情報表示/非表示</span></a>
   </div>
 
   <!--{if $sub_find == true}-->
@@ -367,7 +367,7 @@ function selectAll(target) {
         <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" />　<a href="" onclick="selectAll('category_id'); fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br />
         <!--{/if}-->
         <input type="file" name="<!--{$key}-->" size="50" class="box50" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"/>
-        <a class="btn_normal" href="javascript:;" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')">アップロード</a>
+        <a class="btn-normal" href="javascript:;" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')">アップロード</a>
       </td>
     </tr>
     <tr>
@@ -379,7 +379,7 @@ function selectAll(target) {
         <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" />　<a href="" onclick="selectAll('category_id'); fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br />
         <!--{/if}-->
         <input type="file" name="<!--{$key}-->" size="50" class="box50" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"/>
-        <a class="btn_normal" href="javascript:;" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')">アップロード</a>
+        <a class="btn-normal" href="javascript:;" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')">アップロード</a>
       </td>
     </tr>
     <!--▲商品<!--{$smarty.section.cnt.iteration}-->-->
@@ -388,7 +388,7 @@ function selectAll(target) {
   </div>
 
   <div class="btn">
-    <a class="btn_normal" href="javascript:;" onclick="selectAll('category_id'); lfDispSwitch('recommend_select');"><span>関連商品表示/非表示</span></a>
+    <a class="btn-normal" href="javascript:;" onclick="selectAll('category_id'); lfDispSwitch('recommend_select');"><span>関連商品表示/非表示</span></a>
   </div>
 
   <!--{if count($arrRecommend) > 0}-->
@@ -413,7 +413,7 @@ function selectAll(target) {
       <td>
         <a name="<!--{$anckey}-->"></a>
         <input type="hidden" name="<!--{$key}-->" value="<!--{$arrRecommend[$recommend_no].product_id|escape}-->" />
-        <a class="btn_normal" href="javascript:;" name="change" onclick="selectAll('category_id'); win03('./product_select.php?no=<!--{$smarty.section.cnt.iteration}-->', 'search', '500', '500'); ">変更</a>
+        <a class="btn-normal" href="javascript:;" name="change" onclick="selectAll('category_id'); win03('./product_select.php?no=<!--{$smarty.section.cnt.iteration}-->', 'search', '500', '500'); ">変更</a>
         <!--{assign var=key value="recommend_delete`$smarty.section.cnt.iteration`"}-->
         <input type="checkbox" name="<!--{$key}-->" value="1" />削除<br />
         商品コード:<!--{$arrRecommend[$recommend_no].product_code_min}--><br />
@@ -433,10 +433,10 @@ function selectAll(target) {
   <div class="btn">
     <!--{if count($arrSearchHidden) > 0}-->
     <!--▼検索結果へ戻る-->
-    <a class="btn_normal" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.URL_SEARCH_TOP}-->'); fnModeSubmit('search','',''); return false;"><span>検索画面に戻る</span></a>
+    <a class="btn-normal" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.URL_SEARCH_TOP}-->'); fnModeSubmit('search','',''); return false;"><span>検索画面に戻る</span></a>
     <!--▲検索結果へ戻る-->
     <!--{/if}-->
-    <a class="btn_normal" onclick="selectAll('category_id'); document.form1.submit();"><span>確認ページへ</span></a>
+    <a class="btn-normal" onclick="selectAll('category_id'); document.form1.submit();"><span>確認ページへ</span></a>
   </div>
 </div>
 </form>

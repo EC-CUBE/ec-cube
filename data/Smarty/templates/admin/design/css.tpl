@@ -43,20 +43,20 @@
         <textarea name="css" cols=90 rows=<!--{$area_row}--> align="left" wrap=off style="width: 650px;"><!--{$css_data}--></textarea>
         <input type="hidden" name="area_row" value="<!--{$area_row}-->" />
         <div class="btn">
-          <a class="btn_normal" href="javascript:;" onclick="ChangeSize(this, css, 50, 30, area_row)">拡大</a>
+          <a class="btn-normal" href="javascript:;" onclick="ChangeSize(this, css, 50, 30, area_row)">拡大</a>
         </div>
       </td>
     </tr>
   </table>
   <div class="btn">
-    <a class="btn_normal" href="javascript:;" onclick="fnFormModeSubmit('form_css','confirm','','');"><span>この内容で登録する</span></a>
+    <a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('form_css','confirm','','');"><span>この内容で登録する</span></a>
   </div>
   <!--▲CSS設定　ここまで-->
 
   <!--▼CSSファイル一覧　ここから-->
   <h2>編集可能CSSファイル</h2>
   <div class="btn addnew">
-    <a class="btn_normal" href="<!--{$smarty.server.PHP_SELF|escape}-->"><span>CSSを新規入力</span></a>
+    <a class="btn-normal" href="<!--{$smarty.server.PHP_SELF|escape}-->"><span>CSSを新規入力</span></a>
   </div>
   <table class="list center" id="design-css-list">
     <tr>

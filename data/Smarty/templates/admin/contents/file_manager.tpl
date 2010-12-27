@@ -71,9 +71,9 @@
     </table>
   </div>
   <div class="btn">
-    <a class="btn_normal" href="javascript:;" onclick="setTreeStatus('tree_status');fnModeSubmit('view','',''); return false;"><span>表示</span></a>
-    <a class="btn_normal" href="javascript:;" onclick="setTreeStatus('tree_status');fnModeSubmit('download','',''); return false;"><span>ダウンロード</span></a>
-    <a class="btn_normal" href="javascript:;" onclick="setTreeStatus('tree_status');fnModeSubmit('delete','',''); return false;"><span>削除</span></a>
+    <a class="btn-normal" href="javascript:;" onclick="setTreeStatus('tree_status');fnModeSubmit('view','',''); return false;"><span>表示</span></a>
+    <a class="btn-normal" href="javascript:;" onclick="setTreeStatus('tree_status');fnModeSubmit('download','',''); return false;"><span>ダウンロード</span></a>
+    <a class="btn-normal" href="javascript:;" onclick="setTreeStatus('tree_status');fnModeSubmit('delete','',''); return false;"><span>削除</span></a>
   </div>
 </div>
 <div id="contents-filemanager-action">
@@ -83,14 +83,14 @@
       <th>ファイルのアップロード</th>
       <td>
         <!--{if $arrErr.upload_file}--><span class="attention"><!--{$arrErr.upload_file}--></span><!--{/if}-->
-        <input type="file" name="upload_file" size="64" <!--{if $arrErr.upload_file}-->style="background-color:<!--{$smarty.const.ERR_COLOR|escape}-->"<!--{/if}-->><a class="btn_normal" href="javascript:;" onclick="setTreeStatus('tree_status');fnModeSubmit('upload','',''); return false;">アップロード</a>
+        <input type="file" name="upload_file" size="64" <!--{if $arrErr.upload_file}-->style="background-color:<!--{$smarty.const.ERR_COLOR|escape}-->"<!--{/if}-->><a class="btn-normal" href="javascript:;" onclick="setTreeStatus('tree_status');fnModeSubmit('upload','',''); return false;">アップロード</a>
       </td>
     </tr>
     <tr>
       <th>フォルダ作成</th>
       <td>
         <!--{if $arrErr.create_file}--><span class="attention"><!--{$arrErr.create_file}--></span><!--{/if}-->
-        <input type="text" name="create_file" value="" style="width:336px;<!--{if $arrErr.create_file}--> background-color:<!--{$smarty.const.ERR_COLOR|escape}--><!--{/if}-->"><a class="btn_normal" href="javascript:;" onclick="setTreeStatus('tree_status');fnModeSubmit('create','',''); return false;">作成</a>
+        <input type="text" name="create_file" value="" style="width:336px;<!--{if $arrErr.create_file}--> background-color:<!--{$smarty.const.ERR_COLOR|escape}--><!--{/if}-->"><a class="btn-normal" href="javascript:;" onclick="setTreeStatus('tree_status');fnModeSubmit('create','',''); return false;">作成</a>
       </td>
     </tr>
   </table>

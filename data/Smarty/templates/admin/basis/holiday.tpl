@@ -58,7 +58,7 @@
   </table>
 
   <div class="btn">
-    <a class="btn_normal" href="javascript:;" onclick="fnFormModeSubmit('form1', 'edit', '', '');"><span>この内容で登録する</span></a>
+    <a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('form1', 'edit', '', '');"><span>この内容で登録する</span></a>
   </div>
 
   <table class="list">

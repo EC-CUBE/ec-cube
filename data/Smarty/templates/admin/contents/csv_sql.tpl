@@ -101,8 +101,8 @@ function fnTargetSelf(){
   </table>
 
   <div class="btn">
-    <a class="btn_normal" href="javascript:;" name="subm" onclick="mode.value='confirm'; fnTargetSelf();"><span>この内容で登録する</span></a>
-    <a class="btn_normal" href="javascript:;" name="subm" onclick="doPreview(); return false;"><span>構文エラーを確認する</span></a>
+    <a class="btn-normal" href="javascript:;" name="subm" onclick="mode.value='confirm'; fnTargetSelf();"><span>この内容で登録する</span></a>
+    <a class="btn-normal" href="javascript:;" name="subm" onclick="doPreview(); return false;"><span>構文エラーを確認する</span></a>
   </div>
 
 

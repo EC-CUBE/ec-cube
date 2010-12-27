@@ -60,7 +60,7 @@ function func_submit( id ){
     </tr>
 </table>
 <div class="btn">
-    <a class="btn_normal" href="javascript:;" onclick="fnFormModeSubmit('form1', 'search', '', '');" name="subm">検索を開始</a>
+    <a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('form1', 'search', '', '');" name="subm">検索を開始</a>
 </div>
 
 <!--▼検索結果表示-->
