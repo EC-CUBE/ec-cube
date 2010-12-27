@@ -2133,7 +2133,7 @@ echo $template_path;
         $objQuery = new SC_Query(ZIP_DSN);
 
         $masterData = new SC_DB_MasterData_Ex();
-        $arrPref = $masterData->getMasterData("mtb_pref", array("pref_id", "pref_name", "rank"));
+        $arrPref = $masterData->getMasterData('mtb_pref');
         // インデックスと値を反転させる。
         $arrREV_PREF = array_flip($arrPref);
 

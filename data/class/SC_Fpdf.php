@@ -39,7 +39,7 @@ class SC_Fpdf {
         $this->tpl_title = $title;
         $this->tpl_dispmode = "real";      // 表示モード
         $masterData = new SC_DB_MasterData_Ex();
-        $this->arrPref = $masterData->getMasterData("mtb_pref", array("pref_id", "pref_name", "rank"));
+        $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->width_cell = array(110.3,12,21.7,24.5);
 
         $this->label_cell[] = $this->sjis_conv("商品名 / 商品コード / [ 規格 ]");

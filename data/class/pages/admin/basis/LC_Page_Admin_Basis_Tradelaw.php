@@ -53,7 +53,7 @@ class LC_Page_Admin_Basis_Tradelaw extends LC_Page_Admin {
         $this->tpl_subno = 'tradelaw';
         $this->tpl_mainno = 'basis';
         $masterData = new SC_DB_MasterData_Ex();
-        $this->arrPref = $masterData->getMasterData("mtb_pref", array("pref_id", "pref_name", "rank"));
+        $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrTAXRULE = $masterData->getMasterData("mtb_taxrule");
         $this->tpl_subtitle = '特定商取引法';
     }

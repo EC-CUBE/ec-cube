@@ -53,7 +53,7 @@ class LC_Page_Mypage_History extends LC_Page {
         $this->httpCacheControl('nocache');
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrMAILTEMPLATE = $masterData->getMasterData("mtb_mail_template");
-        $this->arrPref = $masterData->getMasterData("mtb_pref", array("pref_id", "pref_name", "rank"));
+        $this->arrPref = $masterData->getMasterData('mtb_pref');
    }
 
     /**

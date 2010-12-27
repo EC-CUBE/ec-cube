@@ -55,7 +55,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         $this->tpl_column_num = 1;
         $this->tpl_css = URL_DIR.'css/layout/shopping/index.css';
         $masterData = new SC_DB_MasterData();
-        $this->arrPref = $masterData->getMasterData("mtb_pref", array("pref_id", "pref_name", "rank"));
+        $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->tpl_title = "お届け先の指定";
         $this->httpCacheControl('nocache');
     }

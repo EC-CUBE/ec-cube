@@ -81,8 +81,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin {
         }
 
         $masterData = new SC_DB_MasterData_Ex();
-        $this->arrPref = $masterData->getMasterData("mtb_pref",
-                                 array("pref_id", "pref_name", "rank"));
+        $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrORDERSTATUS = $masterData->getMasterData("mtb_order_status");
 
         /* ペイジェント決済モジュール連携用 */

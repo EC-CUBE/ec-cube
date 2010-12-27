@@ -50,8 +50,7 @@ class LC_Page_Mypage_Delivery extends LC_Page {
         $this->tpl_mainno = 'mypage';
         $this->tpl_mypageno = 'delivery';
         $masterData = new SC_DB_MasterData_Ex();
-        $this->arrPref= $masterData->getMasterData("mtb_pref",
-                            array("pref_id", "pref_name", "rank"));
+        $this->arrPref= $masterData->getMasterData('mtb_pref');
         $this->tpl_column_num = 1;
         $this->httpCacheControl('nocache');
     }

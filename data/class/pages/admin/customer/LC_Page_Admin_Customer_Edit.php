@@ -51,7 +51,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin {
         $this->tpl_subtitle = '顧客マスタ';
 
         $masterData = new SC_DB_MasterData_Ex();
-        $this->arrPref = $masterData->getMasterData("mtb_pref", array("pref_id", "pref_name", "rank"));
+        $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrJob = $masterData->getMasterData("mtb_job");
         $this->arrSex = $masterData->getMasterData("mtb_sex");
         $this->arrReminder = $masterData->getMasterData("mtb_reminder");

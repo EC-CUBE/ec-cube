@@ -751,13 +751,6 @@ CREATE TABLE dtb_order_detail (
     point_rate numeric
 );
 
-CREATE TABLE mtb_pref (
-    pref_id smallint NOT NULL,
-    pref_name text,
-    rank smallint NOT NULL DEFAULT 0,
-    PRIMARY KEY (pref_id)
-);
-
 CREATE TABLE dtb_member (
     member_id int NOT NULL,
     name text,
@@ -882,6 +875,13 @@ CREATE TABLE dtb_maker_count (
     maker_id int NOT NULL,
     product_count int NOT NULL,
     create_date timestamp NOT NULL DEFAULT Now()
+);
+
+CREATE TABLE mtb_pref (
+    id text,
+    name text,
+    rank smallint NOT NULL DEFAULT 0,
+    PRIMARY KEY (id)
 );
 
 CREATE TABLE mtb_permission (

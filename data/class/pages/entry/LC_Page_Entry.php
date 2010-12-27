@@ -60,8 +60,7 @@ class LC_Page_Entry extends LC_Page {
         $this->tpl_title .= '会員登録(入力ページ)';
         $this->year = "";
         $masterData = new SC_DB_MasterData_Ex();
-        $this->arrPref = $masterData->getMasterData("mtb_pref",
-                                array("pref_id", "pref_name", "rank"));
+        $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrJob = $masterData->getMasterData("mtb_job");
         $this->arrReminder = $masterData->getMasterData("mtb_reminder");
         

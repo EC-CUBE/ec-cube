@@ -72,7 +72,7 @@ class LC_Page_Contact extends LC_Page {
         $this->httpCacheControl('nocache');
 
         $masterData = new SC_DB_MasterData_Ex();
-        $this->arrPref = $masterData->getMasterData("mtb_pref", array("pref_id", "pref_name", "rank"));
+        $this->arrPref = $masterData->getMasterData('mtb_pref');
     }
 
     /**

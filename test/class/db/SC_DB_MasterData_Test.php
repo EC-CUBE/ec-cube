@@ -41,7 +41,7 @@ class SC_DB_MasterData_Test extends PHPUnit_Framework_TestCase {
      * SC_DB_MasterData::getMasterData() のテストケース
      */
     function testGetMasterData() {
-        $columns = array("pref_id", "pref_name", "rank");
+        $columns = array("id", "name", "rank");
         $masterData = new SC_DB_MasterData_Ex();
         $actual = $masterData->getMasterData("mtb_pref", $columns);
 
@@ -62,7 +62,7 @@ class SC_DB_MasterData_Test extends PHPUnit_Framework_TestCase {
      */
     function testUpdateMasterData() {
 
-        $columns = array("pref_id", "pref_name", "rank");
+        $columns = array("id", "name", "rank");
         $masterData = new SC_DB_MasterData_Ex();
 
         // Transaction を有効にするため接続しておく

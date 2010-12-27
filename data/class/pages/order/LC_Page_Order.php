@@ -48,8 +48,7 @@ class LC_Page_Order extends LC_Page {
         $this->tpl_title = '特定商取引に関する法律に基づく表記';
 
         $masterData = new SC_DB_MasterData_Ex();
-        $this->arrPref = $masterData->getMasterData("mtb_pref",
-                                 array("pref_id", "pref_name", "rank"));
+        $this->arrPref = $masterData->getMasterData('mtb_pref');
     }
 
     /**

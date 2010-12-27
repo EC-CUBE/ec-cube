@@ -53,7 +53,7 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page_Admin {
         $this->tpl_subno = 'delivery';
         $this->tpl_mainno = 'basis';
         $masterData = new SC_DB_MasterData_Ex();
-        $this->arrPref = $masterData->getMasterData("mtb_pref", array("pref_id", "pref_name", "rank"));
+        $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrProductType = $masterData->getMasterData("mtb_product_type");
         $this->tpl_subtitle = '配送業者設定';
         $this->mode = isset($_POST['mode']) ? $_POST['mode'] : '';

@@ -749,13 +749,6 @@ CREATE TABLE dtb_order_detail (
     point_rate numeric
 ) TYPE=InnoDB;
 
-CREATE TABLE mtb_pref (
-    pref_id smallint NOT NULL,
-    pref_name text,
-    rank smallint NOT NULL DEFAULT 0,
-    PRIMARY KEY (pref_id)
-) TYPE=InnoDB;
-
 CREATE TABLE dtb_member (
     member_id int  NOT NULL,
     name text,
@@ -882,6 +875,12 @@ CREATE TABLE dtb_maker_count (
     create_date datetime NOT NULL
 ) TYPE=InnoDB;
 
+CREATE TABLE mtb_pref (
+    id smallint NOT NULL,
+    name text,
+    rank smallint NOT NULL DEFAULT 0,
+    PRIMARY KEY (pref_id)
+) TYPE=InnoDB;
 
 CREATE TABLE mtb_permission (
     id text,

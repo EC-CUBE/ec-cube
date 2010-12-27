@@ -48,7 +48,7 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         $this->tpl_css = URL_DIR.'css/layout/shopping/confirm.css';
         $this->tpl_title = "ご入力内容のご確認";
         $masterData = new SC_DB_MasterData();
-        $this->arrPref = $masterData->getMasterData("mtb_pref", array("pref_id", "pref_name", "rank"));
+        $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrSex = $masterData->getMasterData("mtb_sex");
         $this->arrMAILMAGATYPE = $masterData->getMasterData("mtb_mail_magazine_type");
         $this->arrReminder = $masterData->getMasterData("mtb_reminder");

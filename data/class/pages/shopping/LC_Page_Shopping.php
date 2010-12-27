@@ -55,7 +55,7 @@ class LC_Page_Shopping extends LC_Page {
         $this->tpl_column_num = 1;
         $this->tpl_title = 'ログイン';
         $masterData = new SC_DB_MasterData();
-        $this->arrPref = $masterData->getMasterData("mtb_pref", array("pref_id", "pref_name", "rank"));
+        $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrSex = $masterData->getMasterData("mtb_sex");
         $this->arrJob = $masterData->getMasterData("mtb_job");
         $this->tpl_onload = 'fnCheckInputDeliv();';

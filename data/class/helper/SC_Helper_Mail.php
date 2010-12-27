@@ -39,8 +39,7 @@ class SC_Helper_Mail {
     function SC_Helper_Mail() {
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrMAILTPLPATH =  $masterData->getMasterData("mtb_mail_tpl_path");
-        $this->arrPref = $masterData->getMasterData("mtb_pref",
-                                 array("pref_id", "pref_name", "rank"));
+        $this->arrPref = $masterData->getMasterData('mtb_pref');
     }
 
     /* DBに登録されたテンプレートメールの送信 */

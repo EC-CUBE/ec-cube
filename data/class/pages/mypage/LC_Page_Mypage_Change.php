@@ -58,8 +58,7 @@ class LC_Page_Mypage_Change extends LC_Page {
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrReminder = $masterData->getMasterData("mtb_reminder");
-        $this->arrPref = $masterData->getMasterData("mtb_pref",
-                                 array("pref_id", "pref_name", "rank"));
+        $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrJob = $masterData->getMasterData("mtb_job");
         $this->arrMAILMAGATYPE = $masterData->getMasterData("mtb_mail_magazine_type");
         $this->arrSex = $masterData->getMasterData("mtb_sex");
@@ -225,8 +224,7 @@ class LC_Page_Mypage_Change extends LC_Page {
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrReminder = $masterData->getMasterData("mtb_reminder");
-        $this->arrPref = $masterData->getMasterData("mtb_pref",
-                                 array("pref_id", "pref_name", "rank"));
+        $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrJob = $masterData->getMasterData("mtb_job");
         $this->arrMAILMAGATYPE = $masterData->getMasterData("mtb_mail_magazine_type");
         $this->arrSex = $masterData->getMasterData("mtb_sex");

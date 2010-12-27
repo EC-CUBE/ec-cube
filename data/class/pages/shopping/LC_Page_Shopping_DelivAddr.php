@@ -72,7 +72,7 @@ class LC_Page_Shopping_DelivAddr extends LC_Page {
         $this->tpl_mainpage = 'shopping/deliv_addr.tpl';
         $this->tpl_title = "新しいお届け先の追加";
         $masterData = new SC_DB_MasterData_Ex();
-        $this->arrPref = $masterData->getMasterData("mtb_pref", array("pref_id", "pref_name", "rank"));
+        $this->arrPref = $masterData->getMasterData('mtb_pref');
     }
 
     /**
