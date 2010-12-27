@@ -110,7 +110,7 @@ class SC_Utils {
         } else {
             $proto = "http://";
         }
-        $host = $proto . $_SERVER['SERVER_NAME'];
+        $host = $proto . $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'];
         if ($path == '/') {
             return $host . $path . $installer;
         }
@@ -154,7 +154,7 @@ class SC_Utils {
         }
 
         $path = join('/', $results);
-        return $parse['scheme'] . '://' . $parse['host'] . '/' . $path;
+        return $parse['scheme'] . '://' . $parse['host'] . ':' . $parse['port'] .'/' . $path;
     }
 
     // 装飾付きエラーメッセージの表示
