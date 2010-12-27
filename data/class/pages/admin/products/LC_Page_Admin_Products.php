@@ -121,16 +121,11 @@ class LC_Page_Admin_Products extends LC_Page_Admin {
 
         // 商品削除
         if ($_POST['mode'] == "delete") {
-
-            if($_POST['category_id'] != "") {
-                // ランク付きレコードの削除
-                $where = "category_id = " . SC_Utils_Ex::sfQuoteSmart($_POST['category_id']);
-                $objDb->sfDeleteRankRecord("dtb_products", "product_id", $_POST['product_id'], $where);
-            } else {
-                $objDb->sfDeleteRankRecord("dtb_products", "product_id", $_POST['product_id']);
-            }
-            // 子テーブル(商品規格)の削除
             $objQuery = new SC_Query();
+            $objQuery->delete("dtb_products",
+                          "product_id = ?", array($_POST['product_id']));
+
+            // 子テーブル(商品規格)の削除
             $objQuery->delete("dtb_products_class", "product_id = ?", array($_POST['product_id']));
 
             // お気に入り商品削除
