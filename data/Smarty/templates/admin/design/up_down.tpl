@@ -72,7 +72,7 @@ function confirmSubmit(mode, msg) {
     </tr>
   </table>
   <div class="btn">
-    <button type="submit" onClick="fnModeSubmit('upload', '', '');return false;"><span>アップロード</span></button>
+    <a class="btn_normal" href="javascript:;" onclick="fnModeSubmit('upload', '', '');return false;"><span>アップロード</span></a>
   </div>
 </div>
 </form>

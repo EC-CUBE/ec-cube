@@ -53,7 +53,7 @@
         </tr>
       </table>
     
-      <div class="btn"><button type="submit" onclick="document.form1.page_id.value = <!--{$item.page_id}-->;"><span>この内容で登録する</span></button></div>
+      <div class="btn"><a class="btn_normal" href="javascript:;" onclick="document.form1.page_id.value = <!--{$item.page_id}-->; fnFormModeSubmit('form1', 'confirm', '', '');"><span>この内容で登録する</span></a></div>
     
     </div>
     <!-- <!--{$item.page_name}--> ここまで -->

@@ -93,15 +93,15 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
   <div>
     <textarea name="tpl_data" rows=<!--{$text_row}--> style="width: 100%;"><!--{$arrPageData.tpl_data|escape|smarty:nodefaults}--></textarea>
     <input type="hidden" name="html_area_row" value="<!--{$text_row}-->" />
-    <button type="button" onClick="ChangeSize(this, tpl_data, 50, 13, html_area_row)"><span><!--{if $text_row > 13}-->縮小<!--{else}-->拡大<!--{/if}--></span></button>
+    <a class="btn_normal" href="javascript:;" onclick="ChangeSize(this, tpl_data, 50, 13, html_area_row)"><span><!--{if $text_row > 13}-->縮小<!--{else}-->拡大<!--{/if}--></span></a>
   </div>
       </td>
     </tr>
   </table>
 
   <div class="btn">
-    <button type='button' name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form_edit','confirm','','');"><span>登録する</span></button>
-    <button type='button' name='preview' onclick="doPreview(); "><span>プレビュー</span></button>
+    <a class='button' href="javascript:;" name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form_edit','confirm','','');"><span>登録する</span></a>
+    <a class='button' href="javascript:;" name='preview' onclick="doPreview(); "><span>プレビュー</span></a>
   </div>
 
 
@@ -136,7 +136,7 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
     <!--{/foreach}-->
   </table>
   <div class="btn addnew">
-    <button type='button' onclick="location.href='http://<!--{$smarty.server.HTTP_HOST}--><!--{$smarty.server.PHP_SELF|escape}-->'"><span>ページを新規入力</span></button>
+    <a class="btn_normal" href="<!--{$smarty.server.PHP_SELF|escape}-->"><span>ページを新規入力</span></a>
   </div>
 
 </form>

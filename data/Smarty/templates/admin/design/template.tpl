@@ -64,7 +64,7 @@ function submitRegister() {
     <!--{/foreach}-->
   </table>
   <div class="btn">
-    <button type="submit" onclick="submitRegister();return false;"><span>この内容で登録する</span></button>
+    <a class="btn_normal" href="javascript:;" onclick="submitRegister();return false;"><span>この内容で登録する</span></a>
   </div>
 </div>
 </form>

@@ -27,7 +27,7 @@
     <!--{$tpl_error}-->
   </div>
   <div class="btn">
-    <button type="submit" onclick="location.href='<!--{$smarty.const.URL_LOGIN}-->';"><span>ログインページにページに戻る</span></button>
+    <a class="btn_normal" href="<!--{$smarty.const.URL_LOGIN}-->"><span>ログインページにページに戻る</span></button>
   </div>
 </div>
 <!--{* ▲CONTENTS *}-->

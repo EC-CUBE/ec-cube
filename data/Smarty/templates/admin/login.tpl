@@ -24,6 +24,8 @@
 <!--{* ▼CONTENTS *}-->
 <div id="login-main">
 <form name="form1" id="form1" method="post" action="login.php">
+  <!--{* Enter キーで submit するためのダミーボタン *}-->
+  <input type="submit" value="LOGIN" style="position: absolute; top: -1000" />
   <h1>EC-CUBE 管理画面</h1>
   <div id="login-form">
     <label for="login_id">ID</label>
@@ -31,7 +33,7 @@
     <label for="password">PASSWORD</label>
     <input type="password" name="password" size="20" class="box25" />
     <div class="btn">
-      <button type="submit"><span>LOGIN</span></button>
+      <a class="btn_normal" href="javascript:;" onclick="document.form1.submit();"><span>LOGIN</span></a>
     </div>
   </div>
   <div id="login-address">Copyright &copy; 2000-2010 LOCKON CO.,LTD. All Rights Reserved.</div>

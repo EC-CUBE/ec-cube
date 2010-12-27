@@ -84,7 +84,7 @@ self.moveTo(20,20);self.focus();
   </tr>
 </table>
 
-<div class="btn"><button type="submit"><span>この内容で登録する</span></button></div>
+<div class="btn"><a class="btn_normal" href="javascript:;" onclick="fnFormModeSubmit('form1', '<!--{$tpl_mode|escape}-->', '', '');"><span>この内容で登録する</span></a></div>
 </form>
 
 <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`admin_popup_footer.tpl"}-->

@@ -92,7 +92,7 @@ function func_submit(customer_id){
 </table>
 
 <br />
-<input type="submit" name="subm" value="検索を開始" />
+<a class="btn_normal" href="javascript:;" onclick="fnFormModeSubmit('form1', 'search', '', '');" name="subm">検索を開始</a>
 <br />
 <br />
 <!--{if $smarty.post.mode == 'search' }-->

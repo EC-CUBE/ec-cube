@@ -65,8 +65,8 @@ function fnTargetSelf(){
       </td>
       <td>
         <div class="btn">
-          <button type='button' name='csv' onclick="fnTargetSelf(); fnFormModeSubmit('form1','csv_output','csv_output_id',<!--{$item.sql_id}-->);"><span>CSV出力</span></button>
-          <button type='button' name='del' onclick="fnTargetSelf(); fnFormModeSubmit('form1','delete','sql_id',<!--{$item.sql_id}-->);"><span>削除</span></button>
+          <a class='button' href="javascript:;" name='csv' onclick="fnTargetSelf(); fnFormModeSubmit('form1','csv_output','csv_output_id',<!--{$item.sql_id}-->);"><span>CSV出力</span></a>
+          <a class='button' href="javascript:;" name='del' onclick="fnTargetSelf(); fnFormModeSubmit('form1','delete','sql_id',<!--{$item.sql_id}-->);"><span>削除</span></a>
         </div>
       </td>
     </tr>
@@ -75,7 +75,7 @@ function fnTargetSelf(){
   <!--{/if}-->
 
   <div class="btn addnew">
-    <button type='button' name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form1','new_page','','');"><span>SQLを新規入力</span></button>
+    <a class='button' href="javascript:;" name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form1','new_page','','');"><span>SQLを新規入力</span></a>
   </div>
 
 
@@ -101,8 +101,8 @@ function fnTargetSelf(){
   </table>
 
   <div class="btn">
-    <button type="submit" name="subm" onClick="mode.value='confirm'; fnTargetSelf();"><span>この内容で登録する</span></button>
-    <button type="submit" name="subm" onClick="doPreview(); return false;"><span>構文エラーを確認する</span></button>
+    <a class="btn_normal" href="javascript:;" name="subm" onclick="mode.value='confirm'; fnTargetSelf();"><span>この内容で登録する</span></a>
+    <a class="btn_normal" href="javascript:;" name="subm" onclick="doPreview(); return false;"><span>構文エラーを確認する</span></a>
   </div>
 
 

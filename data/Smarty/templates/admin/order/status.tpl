@@ -30,14 +30,14 @@
   <h2>抽出条件</h2>
     <div class="btn">
     <!--{foreach key=key item=item from=$arrORDERSTATUS}-->
-      <button
-        type="button"
+      <a
+        class="button"
         style="padding-right: 1em;"
         <!--{if $key != $SelectedStatus}-->
-          href="#"
+          href="javascript:;"
           onclick="document.form1.search_pageno.value='1'; fnModeSubmit('search','status','<!--{$key}-->' );"
         <!--{/if}-->
-      ><!--{$item}--></button>
+      ><!--{$item}--></a>
     <!--{/foreach}-->
     </div>
   <h2>ステータス変更</h2>
@@ -53,7 +53,7 @@
       <!--{/foreach}-->
       <option value="delete">削除</option>
     </select>
-    <button type="button" onclick="fnSelectCheckSubmit();"><span>移動</span></button>
+    <a class="btn_normal" href="javascript:;" onclick="fnSelectCheckSubmit();"><span>移動</span></a>
   </div>
   <span class="attention">※ <!--{$arrORDERSTATUS[$smarty.const.ORDER_CANCEL]}-->もしくは、削除に変更時には、在庫数を手動で戻してください。</span><br />
 

@@ -48,5 +48,5 @@
 <!--{/section}-->
 </table>
 
-<input type="submit" value="変更する">
+<a class="btn_normal" href="javascript:;" onclick="fnFormModeSubmit('index_form', 'confirm', '', '');">変更する</a>
 </form>

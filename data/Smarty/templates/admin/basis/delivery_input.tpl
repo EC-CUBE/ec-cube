@@ -90,7 +90,7 @@
 
   <!--{if $smarty.const.INPUT_DELIV_FEE}-->
   <h2>配送料登録</h2>
-  <p>※全国一律送料 <input type="text" name="fee_all" class="box10" /> 円に設定する　<button type="button" onclick="fnSetDelivFee(<!--{$smarty.const.DELIVFEE_MAX}-->);"><span>反映</span></button></p>
+  <div class="btn">※全国一律送料 <input type="text" name="fee_all" class="box10" /> 円に設定する　<a class="btn_normal" href="javascript:;" onclick="fnSetDelivFee(<!--{$smarty.const.DELIVFEE_MAX}-->);"><span>反映</span></a></div>
   <table>
     <!--{section name=cnt loop=$smarty.const.DELIVFEE_MAX}-->
     <!--{assign var=type value="`$smarty.section.cnt.index%2`"}-->
@@ -123,8 +123,8 @@
   <!--{/if}-->
 
   <div class="btn">
-    <button type="button" onclick="location.href='./delivery.php';"><span>前のページに戻る</span></button>
-    <button type="submit"><span>この内容で登録する</span></button>
+    <a class="btn_normal" href="javascript:;" onclick="location.href='./delivery.php';"><span>前のページに戻る</span></a>
+    <a class="btn_normal" href="javascript:;" onclick="fnFormModeSubmit('form1', 'edit', '', '');"><span>この内容で登録する</span></a>
   </div>
 </div>
 </form>

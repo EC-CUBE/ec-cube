@@ -43,15 +43,15 @@
         </div>
 
         <div class="item">
-            <button type="button" onclick="fnModeSubmit('auto', '', '');">自動登録</button><br />
+            <a class="btn_normal" href="javascript:;" onclick="fnModeSubmit('auto', '', '');">自動登録</a><br />
             全ての郵便番号を削除してから、登録しなおします。タイムアウトした場合、元の状態に戻ります。
         </div>
         <div class="item">
-            <button type="button" onclick="fnModeSubmit('delete', '', '');">手動削除</button><br />
+            <a class="btn_normal" href="javascript:;" onclick="fnModeSubmit('delete', '', '');">手動削除</a><br />
             全ての郵便番号を削除します。再登録するまで、住所自動入力は機能しなくなります。
         </div>
         <div class="item">
-            <button type="button" onclick="fnModeSubmit('manual', '', '');">手動登録</button>
+            <a class="btn_normal" href="javascript:;" onclick="fnModeSubmit('manual', '', '');">手動登録</a>
             開始行: <input type="text" name="startRowNum" value="<!--{$arrForm.startRowNum|default:$tpl_count_mtb_zip+1|escape}-->" size="8"><span class="attention"><!--{$arrErr.startRowNum}--></span><br />
             指定した行数から郵便番号を登録します。タイムアウトした場合、直前まで登録されます。
         </div>

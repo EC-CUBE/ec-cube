@@ -58,7 +58,7 @@ function func_submit( id ){
       <td><input type="text" name="search_name" value="<!--{$arrForm.search_name}-->" size="35" class="box35" /></td>
     </tr>
   </table>
-  <div class="btn"><button type="submit"><span>検索を開始</span></button>
+  <div class="btn"><a class="btn_normal" href="javascript:;" onclick="fnFormModeSubmit('form1', 'search', '', '');"><span>検索を開始</span></a>
 
   <!--{* ▼検索結果表示 *}-->
   <!--{if $tpl_linemax}-->

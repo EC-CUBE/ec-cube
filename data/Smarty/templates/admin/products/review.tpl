@@ -96,7 +96,7 @@
     <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
     <!--{html_options options=$arrPageMax selected=$arrForm.search_page_max}-->
     </select> 件
-    <button type="submit"><span>この条件で検索する</span></button>
+    <a class="btn_normal" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', '');"><span>この条件で検索する</span></a>
   </div>
 </form>  
 
@@ -117,9 +117,9 @@
   <div class="btn">
     <span class="attention"><!--検索結果数--><!--{$tpl_linemax}-->件</span>&nbsp;が該当しました。
     <!--{if $smarty.const.ADMIN_MODE == '1'}-->
-    <button type="button" onclick="fnModeSubmit('delete_all','','');"><span>検索結果をすべて削除</span></button>
+    <a class="btn_normal" href="javascript:;" onclick="fnModeSubmit('delete_all','','');"><span>検索結果をすべて削除</span></a>
     <!--{/if}-->
-    <button type="button" onclick="fnModeSubmit('csv','','');"><span>CSV ダウンロード</span></button>
+    <a class="btn_normal" href="javascript:;" onclick="fnModeSubmit('csv','','');"><span>CSV ダウンロード</span></a>
   </div>
   <!--{include file=$tpl_pager}-->
   

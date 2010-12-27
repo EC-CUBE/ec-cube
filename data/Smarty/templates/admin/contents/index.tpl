@@ -163,7 +163,7 @@ function moving(news_id,rank, max_rank) {
   </table>
   <!--{* ▲登録テーブルここまで *}-->
 
-  <div class="btn"><button type="submit" onclick="return func_regist();"><span>この内容で登録する</span></button></div>
+  <div class="btn"><a class="btn_normal" href="javascript:;" onclick="return func_regist();"><span>この内容で登録する</span></a></div>
 </form>
 
   <h2>新着情報一覧</h2>

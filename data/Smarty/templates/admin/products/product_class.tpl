@@ -66,10 +66,10 @@
     </tr>
   </table>
   <div class="btn">
-    <button type="button" onclick="fnChangeAction('<!--{$smarty.const.URL_SEARCH_TOP}-->'); fnModeSubmit('search','',''); return false;" ><span>検索結果へ戻る</span></button>
-    <button type="button" onclick="fnModeSubmit('disp','','')"><span>表示する</span></button>
+    <a class="btn_normal" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.URL_SEARCH_TOP}-->'); fnModeSubmit('search','',''); return false;" ><span>検索結果へ戻る</span></a>
+    <a class="btn_normal" href="javascript:;" onclick="fnModeSubmit('disp','','')"><span>表示する</span></a>
     <!--{if count($arrClassCat) > 0}-->
-    <button type="button" onclick="fnModeSubmit('delete','','');"><span>削除する</span></button>
+    <a class="btn_normal" href="javascript:;" onclick="fnModeSubmit('delete','','');"><span>削除する</span></a>
     <!--{/if}-->
   </div>
 
@@ -82,7 +82,7 @@
   <!--{/foreach}-->
 
   <div class="btn">
-    <button type="button" onclick="fnCopyValue('<!--{$cnt}-->', '<!--{$smarty.const.DISABLED_RGB}-->'); return false;"><span>一行目のデータをコピーする</span></button>
+    <a class="btn_normal" href="javascript:;" onclick="fnCopyValue('<!--{$cnt}-->', '<!--{$smarty.const.DISABLED_RGB}-->'); return false;"><span>一行目のデータをコピーする</span></button>
   </div>
 
   <!--{assign var=class_id1 value=$arrForm.class_id1}-->
@@ -159,13 +159,13 @@
             <a href="" onclick="fnModeSubmit('delete_down', 'down_key', '<!--{$key}-->'); return false;">[ファイルの取り消し]</a><br>
           <!--{/if}-->
           <input type="file" name="<!--{$key}-->" size="50" class="box50" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
-          <input type="button" name="btn" onclick="fnModeSubmit('upload_down', 'down_key', '<!--{$key}-->')" value="アップロード">
+          <a class="btn_normal" href="javascript:;" name="btn" onclick="fnModeSubmit('upload_down', 'down_key', '<!--{$key}-->')">アップロード</a>
       </td>
     </tr>
     <!--{/section}-->
   </table>
 
-  <div class="btn"><button type="submit"><span>確認ページへ</span></button></div>
+  <div class="btn"><a class="btn_normal" href="javascript:;" onclick="fnFormModeSubmit('form1', 'edit', '', '');"><span>確認ページへ</span></a></div>
 
   <!--{/if}-->
 

@@ -29,8 +29,8 @@
 <input type="hidden" name="keySet" value="">
 <div id="products" class="contents-main">
   <div class="btn">
-    <button type="button" onclick="fnModeSubmit('csv','','');">CSV ダウンロード</button>
-    <button type="button" onclick="location.href='../contents/csv.php?tpl_subno_csv=category'">CSV 出力項目設定</a>
+    <a class="btn_normal" href="javascript:;" onclick="fnModeSubmit('csv','','');">CSV ダウンロード</a>
+    <a class="btn_normal" href='../contents/csv.php?tpl_subno_csv=category'>CSV 出力項目設定</a>
   </div>
 
   <!--{* ▼画面左 *}-->
@@ -85,7 +85,7 @@
     <span class="attention"><!--{$arrErr.category_name}--></span>
     <!--{/if}-->
     <input type="text" name="category_name" value="<!--{$arrForm.category_name|escape}-->" size="30" class="box30" maxlength="<!--{$smarty.const.STEXT_LEN}-->" />
-    <button type="submit" onclick="fnModeSubmit('edit','','');"><span>登録</span></button><span class="attention">（上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
+    <a class="btn_normal" href="javascript:;" onclick="fnModeSubmit('edit','','');"><span>登録</span></a><span class="attention">（上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
     
     <!--{if count($arrList) > 0}-->
 <script type="text/javascript">

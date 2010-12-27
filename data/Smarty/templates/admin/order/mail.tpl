@@ -86,8 +86,8 @@
     </tr>
   </table>
   <div class="btn">
-    <button type="button" onclick="fnChangeAction('<!--{$smarty.const.URL_SEARCH_ORDER}-->'); fnModeSubmit('search','',''); return false;"><span>検索結果へ戻る</span></button>
-    <button type="submit"><span>送信内容を確認</span></button>
+    <a class="btn_normal" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.URL_SEARCH_ORDER}-->'); fnModeSubmit('search','',''); return false;"><span>検索結果へ戻る</span></a>
+    <a class="btn_normal" href="javascript:;" onclick="fnFormModeSubmit('form1', 'confirm', '', '');"><span>送信内容を確認</span></a>
   </div>
 </div>
 </form>

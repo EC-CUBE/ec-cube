@@ -54,21 +54,21 @@
              <textarea name="bloc_html" rows="<!--{$text_row}-->" style="width: 100%;"><!--{$arrBlocData.tpl_data|smarty:nodefaults}--></textarea>
              <input type="hidden" name="html_area_row" value="<!--{$text_row}-->" />
              <div>
-                 <button type="button" onClick="ChangeSize(this, bloc_html, 50, 13, html_area_row)">拡大</button>
+                 <a class="btn_normal" href="javascript:;" onclick="ChangeSize(this, bloc_html, 50, 13, html_area_row)">拡大</a>
              </div>
          </td>
      </tr>
  </table>
     <div class="btn">
-        <button type='button' name='subm' onclick="fnFormModeSubmit('form_bloc','confirm','','');"><span>登録する</span></button>
-        <button type='button' name='preview' onclick="fnFormModeSubmit('form_bloc','preview','','');"><span>プレビュー</span></button>
+        <a class='button' href="javascript:;" name='subm' onclick="fnFormModeSubmit('form_bloc','confirm','','');"><span>登録する</span></a>
+        <a class='button' href="javascript:;" name='preview' onclick="fnFormModeSubmit('form_bloc','preview','','');"><span>プレビュー</span></a>
     </div>
     <!--{* ▲ブロック設定 *}-->
 
     <!--{* ▼ブロック一覧 *}-->
     <h2>編集可能ブロック</h2>
     <div class="btn addnew">
-        <button type='button' name='subm' onclick="location.href='http://<!--{$smarty.server.HTTP_HOST}--><!--{$smarty.server.PHP_SELF|escape}-->'"><span>ブロックを新規入力</span></button>
+        <a class='button' href="<!--{$smarty.server.PHP_SELF|escape}-->"><span>ブロックを新規入力</span></a>
     </div>
     <table class="list center">
         <tr>

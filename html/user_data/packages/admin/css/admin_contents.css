@@ -68,11 +68,8 @@ table.list td.menu {
 }
 table.form thead th { text-align: center; width: auto; }
 
-input[type='submit'],
-input[type='button'],
-input[type='reset'],
-input[type='file'],
-button {
+a.btn_normal,
+a.btn_normal:link {
     color: #000;
     text-decoration: none;
     background-attachment: scroll;
@@ -80,12 +77,12 @@ button {
     background-color: #eee;
     background-image: url('../img/button/white-grad.png');
     background-origin: padding-box;
-    line-height: 15px;
-    padding: 5px 10px;
+    padding: 5px;
     white-space: nowrap;
     border: solid 1px #999;
     cursor: pointer;
-    font-size: 11px;
+    font-size: 12px;
+    font-weight: normal;
 
     /* CSS3 radius */
     border-bottom-left-radius: 5px 5px;
@@ -101,19 +98,11 @@ button {
     -moz-border-radius: 5px;
 }
 
-input[type='submit']:hover,
-input[type='button']:hover,
-input[type='reset']:hover,
-input[type='file']:hover,
-button:hover {
+a.btn_normal:hover {
     border: solid 1px #666;
 }
 
-input[type='submit']:active,
-input[type='button']:active,
-input[type='reset']:active,
-input[type='file']:active,
-button:active {
+a.btn_normal:active {
     background-image: url('../img/button/white-grad-active.png');
 }
 

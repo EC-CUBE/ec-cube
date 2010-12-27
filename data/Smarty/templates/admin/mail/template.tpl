@@ -46,9 +46,6 @@
   </table>
 
   <div class="btn addnew">
-    <button type="button" onclick="location.href='./template_input.php'"><span>テンプレートを新規入力</span></button>
-    <!-- ＨＴＭＬ作成ウィザードは保留 (次期開発)
-    <button type="button" onclick="location.href='./htmlmail.php'"><span>HTMLテンプレート作成ウィザード</span></button>
-    -->
+    <a class="btn_normal" href="./template_input.php"><span>テンプレートを新規入力</span></a>
   </div>
 </div>

@@ -45,8 +45,8 @@
   </table>
 
   <div class="btn">
-    <button type="button" onclick="fnModeSubmit('return', '', '');"><span>前のページへ戻る</span></button>
-    <button type="submit" onclick="return confirm('この内容でメールを送信しても宜しいですか');"><span>メール送信</span></button>
+    <a class="btn_normal" href="javascript:;" onclick="fnModeSubmit('return', '', '');"><span>前のページへ戻る</span></a>
+    <a class="btn_normal" href="javascript:;" onclick="return confirm('この内容でメールを送信しても宜しいですか');"><span>メール送信</span></a>
   </div>
 </div>
 </form>

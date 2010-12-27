@@ -24,14 +24,14 @@
       <td>
         <!--{if $plugins[data].create_date == null }-->
         <input type="hidden" name="plugin_name" value="<!--{$plugins[data].plugin_name}-->" />
-           <input type="button" name="install" value="install" onclick="fnModeSubmit('install','','');" />
+           <a class="btn_normal" href="javascript:;" name="install" onclick="fnModeSubmit('install','','');">install</a>
         <!--{else}-->
           <!--{if $plugins[data].enable == 1}-->
-          <input type="button" name="disable" value="disable" onclick="fnModeSubmit('disable')" />
+           <a class="btn_normal" href="javascript:;" name="disable" onclick="fnModeSubmit('disable','','');">disable</a>
           <!--{else}-->
-          <input type="button" name="enable" value="enable" onclick="fnModeSubmit('enable');" /> 
+           <a class="btn_normal" href="javascript:;" name="enable" onclick="fnModeSubmit('enable','','');">enable</a>
           <!--{/if}-->
-          <input type="button" name="uninstall" value="uninstall" onclick="fnModeSubmit('uninstall');" />
+           <a class="btn_normal" href="javascript:;" name="uninstall" onclick="fnModeSubmit('uninstall','','');">uninstall</a>
         <!--{/if}-->
       </td>
       

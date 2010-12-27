@@ -42,7 +42,7 @@
         <select name="search_startmonth_m" style="<!--{$arrErr.search_startyear_m|sfGetErrorColor}-->">
         <!--{html_options options=$arrMonth selected=$arrForm.search_startmonth_m.value}-->
         </select>月度 (<!--{if $smarty.const.CLOSE_DAY == 31}-->末<!--{else}--><!--{$smarty.const.CLOSE_DAY}--><!--{/if}-->日締め)
-        <input type="submit" name="subm" value="月度で集計する" />
+        <a class="btn_normal" href="javascript:;" onclick="fnFormModeSubmit('search_form1', 'search', '', '');" name="subm">月度で集計する</a>
       </form>
     </td>
   </tr>
@@ -82,7 +82,7 @@
         <option value="">--</option>
         <!--{html_options options=$arrDay selected=$arrForm.search_endday.value}-->
         </select>日
-      　<input type="submit" name="subm" value="期間で集計する" />
+        <a class="btn_normal" href="javascript:;" onclick="fnFormModeSubmit('search_form2', 'search', '', '');" name="subm">期間で集計する</a>
       </form>
     </td>
   </tr>
@@ -104,7 +104,7 @@
   <h2><!--{include file=$tpl_graphsubtitle}--></h2>
 
   <div class="btn">
-    <button type="button" onclick="fnModeSubmit('csv','','');"><span>CSVダウンロード</span></button>
+    <a class="btn_normal" href="javascript:;" onclick="fnModeSubmit('csv','','');"><span>CSVダウンロード</span></a>
   </div>
 
   <!--{* グラフ表示 *}-->

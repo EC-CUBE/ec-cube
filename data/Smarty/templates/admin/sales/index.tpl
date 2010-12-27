@@ -96,7 +96,7 @@
 		<!--▲検索テーブルここまで-->
 		
 		<br />
-		<input type="button" name="subm" value="この内容で検索する" />
+		<a class="btn_normal" href="javascript:;" onclick="document.form1.submit();" name="subm">この内容で検索する</a>
 		</form>
 		
 		<!--▼検索結果表示エリアここから-->

@@ -134,7 +134,7 @@ self.moveTo(20,20);self.focus();
   </table>
 
   <div class="btn">
-    <button type="button" onclick="window.close();"><span>ウインドウを閉じる</span></button>
+    <a class="btn_normal" href="javascript:;" onclick="window.close();"><span>ウインドウを閉じる</span></a>
   </div>
 </div>
 </form>

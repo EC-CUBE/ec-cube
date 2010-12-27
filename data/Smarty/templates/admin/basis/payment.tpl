@@ -61,7 +61,7 @@
     <!--{/section}-->
   </table>
   <div class="btn addnew">
-    <button type="button" name="subm2" onclick="win03('./payment_input.php','payment_input','550','400');"><span>支払方法を新規入力</span></button>
+    <a class="btn_normal" href="javascript:;" name="subm2" onclick="win03('./payment_input.php','payment_input','550','400');"><span>支払方法を新規入力</span></a>
   </div>
 </div>
 </form>

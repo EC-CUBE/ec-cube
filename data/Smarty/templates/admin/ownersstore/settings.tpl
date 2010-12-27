@@ -42,7 +42,7 @@
   
   <!--登録ボタンここから-->
   <div class="btn">
-    <button type="submit"><span>この内容で登録する</span></button>
+    <a class="btn_normal" href="javascript:;" onclick="fnFormModeSubmit('form1', 'register', '', '');"><span>この内容で登録する</span></a>
   </div>
   <!--登録ボタンここまで-->
   

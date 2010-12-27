@@ -286,8 +286,8 @@
   </table>
 
   <div class="btn">
-    <button type="button" onclick="fnModeSubmit('confirm_return','',''); return false;"><span>前のページに戻る</span></button>
-    <button type="submit"><span>この内容で登録する</span></button>
+    <a class="btn_normal" href="javascript:;" onclick="fnModeSubmit('confirm_return','',''); return false;"><span>前のページに戻る</span></a>
+    <a class="btn_normal" href="javascript:;" onclick="document.form1.submit();"><span>この内容で登録する</span></a>
   </div>
 </div>
 </form>

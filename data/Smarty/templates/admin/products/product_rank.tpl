@@ -77,7 +77,7 @@
     <!--{* ▲ページナビ *}-->
     
     <!--{if $smarty.const.ADMIN_MODE == '1'}-->
-        <p class="right"><button type="button" onclick="fnModeSubmit('renumber', '', '');">内部順位再割り当て</button></p>
+        <p class="right"><a class="btn_normal" href="javascript:;" onclick="fnModeSubmit('renumber', '', '');">内部順位再割り当て</a></p>
     <!--{/if}-->
     
     <table class="list">

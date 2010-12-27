@@ -269,7 +269,7 @@
         <select name="<!--{$arrForm[$key].keyname}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
         <!--{html_options options=$arrPageMax selected=$arrForm[$key].value}-->
         </select> 件
-        <button type="submit"><span>この条件で検索する</span></button>
+        <a class="btn_normal" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', '');"><span>この条件で検索する</span></a>
     </div>
     <!--検索条件設定テーブルここまで-->
 </form>
@@ -287,11 +287,11 @@
 		　<div class="btn">
         <span class="attention"><!--検索結果数--><!--{$tpl_linemax}-->件</span>&nbsp;が該当しました。
         <!--{if $smarty.const.ADMIN_MODE == '1'}-->
-        <button type="button" onclick="fnModeSubmit('delete_all','','');"><span>検索結果をすべて削除</span></button>
+        <a class="btn_normal" href="javascript:;" onclick="fnModeSubmit('delete_all','','');"><span>検索結果をすべて削除</span></a>
         <!--{/if}-->
-        <button type="button" onclick="fnModeSubmit('csv','','');">CSV ダウンロード</button>
-        <button type="button" onclick="location.href='../contents/csv.php?tpl_subno_csv=order'">CSV 出力項目設定</button>
-        <button type="button" onclick="fnSelectCheckSubmit('pdf.php');"><span>PDF一括出力</span></button>
+        <a class="btn_normal" href="javascript:;" onclick="fnModeSubmit('csv','','');">CSV ダウンロード</a>
+        <a class="btn_normal" href="../contents/csv.php?tpl_subno_csv=order">CSV 出力項目設定</a>
+        <a class="btn_normal" href="javascript:;" onclick="fnSelectCheckSubmit('pdf.php');"><span>PDF一括出力</span></a>
     </div>
     <!--{include file=$tpl_pager}-->
 

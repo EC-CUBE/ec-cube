@@ -147,7 +147,7 @@ function fnCheckStock(form) {
     </tr>
 </table>
 <div class="btn">
-    <button type="submit"><span>検索を開始</span></button>
+    <a class="btn_normal" href="javascript:;" onclick="fnFormModeSubmit('form1', 'search', '', '');"><span>検索を開始</span></button>
 </div>
 </form>
 <!--▼検索結果表示-->
