@@ -1,7 +1,6 @@
 <?php
-// {{{ requires
-require_once("###require###");
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once '###require###';
+require_once CLASS_PATH . 'pages/LC_Page.php';
 
 /**
  * ユーザーカスタマイズ用のページクラス
@@ -11,9 +10,6 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @package Page
  */
 class LC_Page_User extends LC_Page {
-
-    // }}}
-    // {{{ functions
 
     /**
      * Page を初期化する.
@@ -53,13 +49,7 @@ class LC_Page_User extends LC_Page {
 }
 
 
-// }}}
-// {{{ generate page
-
 $objPage = new LC_Page_User();
-register_shutdown_function(array($objPage, "destroy"));
+register_shutdown_function(array($objPage, 'destroy'));
 $objPage->init();
 $objPage->process();
-
-
-?>
