@@ -24,7 +24,7 @@ define('USER_TEMPLATE_PATH', USER_PATH . USER_PACKAGE_DIR);
 /** テンプレートファイル一時保存先 */
 define('TEMPLATE_TEMP_DIR', HTML_PATH . "upload/temp_template/");
 /** ユーザー作成画面のデフォルトPHPファイル */
-define('USER_DEF_PHP', HTML_PATH . "__default.php");
+define('USER_DEF_PHP', USER_PATH . "__default.php");
 /** その他画面のデフォルトページレイアウト */
 define('DEF_LAYOUT', "products/list.php");
 /** ダウンロードモジュール保存ディレクトリ */

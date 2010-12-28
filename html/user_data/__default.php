@@ -1,5 +1,5 @@
 <?php
-require_once '###require###';
+exit; // Don't rewrite. This line is rewritten by EC-CUBE.
 require_once CLASS_PATH . 'pages/LC_Page.php';
 
 /**
@@ -18,7 +18,6 @@ class LC_Page_User extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->tpl_column_num = 3;
     }
 
     /**
@@ -28,10 +27,6 @@ class LC_Page_User extends LC_Page {
      */
     function process() {
         $objView = new SC_SiteView();
-        $objLayout = new SC_Helper_PageLayout_Ex();
-
-        // レイアウトデザインを取得
-        $objLayout->sfGetPageLayout($this);
 
         // 画面の表示
         $objView->assignobj($this);

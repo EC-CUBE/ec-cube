@@ -63,7 +63,7 @@ class SC_Helper_PageLayout {
 
         $arrPageLayout = $arrPageData[0];
 
-        $objPage->tpl_mainpage = $this->getTemplatePath($device_type_id) . $arrPageLayout['filename'] . ".tpl";
+        $objPage->tpl_mainpage = $this->getTemplatePath($device_type_id) . $arrPageLayout['tpl_dir'] . $arrPageLayout['filename'] . ".tpl";
 
         // ページタイトルを設定
         if (!isset($objPage->tpl_title)) {

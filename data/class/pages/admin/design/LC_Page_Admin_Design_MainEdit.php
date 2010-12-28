@@ -241,7 +241,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
             }
 
             // TPLファイル作成
-            $cre_tpl = $this->objLayout->getTemplatePath($device_type_id) . $arrData['filename'] . '.tpl';
+            $cre_tpl = $this->objLayout->getTemplatePath($device_type_id) . $arrData['tpl_dir'] . $arrData['filename'] . '.tpl';
             $this->lfCreateFile($cre_tpl, $_POST['tpl_data']);
 
             $this->objDisplay->redirect($this->getLocation("./main_edit.php",
@@ -319,8 +319,8 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
             } else {
                 $arrUpdData['php_dir'] .= '/';
             }
-            $arrUpdData['tpl_dir']      = substr($this->objLayout->getTemplatePath($devie_type_id), strlen(URL_DIR));
-            $arrUpdData['filename']     = dirname($arrUpdData['url']) . basename($arrUpdData['url']); // 拡張子を付加しない
+            $arrUpdData['tpl_dir']      = $arrUpdData['php_dir'];
+            $arrUpdData['filename']     = basename($arrData['url']); // 拡張子を付加しない
         }
 
         return $arrUpdData;
@@ -440,7 +440,9 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
         }
 
         // require.phpの場所を書き換える
-        $php_data = str_replace("###require###", str_repeat('../', substr_count($url, '/')) . '../require.php', $php_data);
+        $defaultStrings = "exit; // Don't rewrite. This line is rewritten by EC-CUBE.";
+        $replaceStrings = "require_once '" . str_repeat('../', substr_count($url, '/')) . "../require.php';";
+        $php_data = str_replace($defaultStrings, $replaceStrings, $php_data);
 
         // phpファイルの作成
         $fp = fopen($path,"w");
