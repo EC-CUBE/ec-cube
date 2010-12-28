@@ -158,7 +158,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
 
         // テンプレートを読み込む
         $templatePath = $this->objLayout->getTemplatePath($device_type_id);
-        $arrPageData[0]['tpl_data'] = file_get_contents($templatePath . $arrPageData[0]['filename'] . ".tpl");
+        $arrPageData[0]['tpl_data'] = file_get_contents($templatePath . $arrPageData[0]['tpl_dir'] . $arrPageData[0]['filename'] . ".tpl");
 
         // チェックボックスの値変更
         $arrPageData[0]['header_chk'] = SC_Utils_Ex::sfChangeCheckBox($arrPageData[0]['header_chk'], true);
@@ -399,7 +399,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
 
         // ディレクトリが存在していなければ作成する
         if (!is_dir(dirname($path))) {
-            mkdir(dirname($path));
+            mkdir(dirname($path), 0, true); // FIXME (PHP4)
         }
 
         // ファイル作成
@@ -431,7 +431,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
 
         // php保存先ディレクトリが存在していなければ作成する
         if (!is_dir(dirname($path))) {
-            mkdir(dirname($path));
+            mkdir(dirname($path), 0, true); // FIXME (PHP4)
         }
 
         // ベースとなるPHPファイルの読み込み
