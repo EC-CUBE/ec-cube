@@ -272,13 +272,20 @@ case 'complete':
     $login_id = $objWebParam->getValue('login_id');
     $login_pass = sha1($objWebParam->getValue('login_pass') . ":" . AUTH_MAGIC);
 
-    $sql = "DELETE FROM dtb_member WHERE login_id = ?";
-    $objQuery->query($sql, array($login_id));
+    $objQuery->delete("dtb_member", "login_id = ?", array($login_id));
 
-    $sql = "INSERT INTO dtb_member (member_id, name, login_id, password, creator_id, authority, work, del_flg, rank, create_date, update_date)
-            VALUES (?,'管理者',?,?,0,0,1,0,1, now(), now());";
     $member_id = $objQuery->nextVal("dtb_member_member_id");
-    $objQuery->query($sql, array($member_id, $login_id, $login_pass));
+    $objQuery->insert("dtb_member", array("member_id" => $member_id,
+                                          "name" => "管理者",
+                                          "login_id" => $login_id,
+                                          "password" => $login_pass,
+                                          "creator_id" => 0,
+                                          "authority" => 0,
+                                          "work" => 1,
+                                          "del_flg" => 0,
+                                          "rank" => 1,
+                                          "create_date" => "now()",
+                                          "update_date" => "now()"));
 
     $GLOBAL_ERR = "";
     $objPage = lfDispComplete($objPage);
