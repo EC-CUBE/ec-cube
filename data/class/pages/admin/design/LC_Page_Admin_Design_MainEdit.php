@@ -199,7 +199,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
         $this->lfCreateFile($cre_tpl, $_POST['tpl_data']);
         
         // blocposition を削除
-        $objQuery = new SC_Query();		// DB操作オブジェクト
+        $objQuery = new SC_Query(); // DB操作オブジェクト
         $ret = $objQuery->delete('dtb_blocposition', 'page_id = 0 AND device_type_id = ?', array($device_type_id));
 
         if ($page_id_old != "") {
@@ -232,20 +232,20 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
         // エラーがなければ更新処理を行う
         if (count($this->arrErr) == 0) {
             // DBへデータを更新する
-            $page_id = $this->lfEntryPageData($_POST, $device_type_id);
+            $arrData = $this->lfEntryPageData($_POST, $device_type_id);
 
             // ベースデータでなければファイルを削除し、PHPファイルを作成する
-            if (!$this->objLayout->lfCheckBaseData($page_id, $device_type_id)) {
+            if (!$this->objLayout->lfCheckBaseData($arrData['page_id'], $device_type_id)) {
                 // PHPファイル作成
                 $this->lfCreatePHPFile($_POST['url'], $device_type_id);
             }
 
             // TPLファイル作成
-            $cre_tpl = $this->objLayout->getTemplatePath($device_type_id) . basename($_POST['url']) . '.tpl';
+            $cre_tpl = $this->objLayout->getTemplatePath($device_type_id) . $arrData['filename'] . '.tpl';
             $this->lfCreateFile($cre_tpl, $_POST['tpl_data']);
 
             $this->objDisplay->redirect($this->getLocation("./main_edit.php",
-                                    array("page_id" => $page_id,
+                                    array("page_id" => $arrData['page_id'],
                                           "device_type_id" => $device_type_id,
                                           "msg"     => "on")));
             exit;
@@ -262,8 +262,8 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
     /**
      * ブロック情報を更新する.
      *
-     * @param array $arrData 更新データ
-     * @return void
+     * @param array $arrData 基となる更新データ
+     * @return array 実際に使用した更新データ
      */
     function lfEntryPageData($arrData, $device_type_id){
         $objQuery = new SC_Query();
@@ -285,15 +285,13 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
             $sqlval['device_type_id'] = $device_type_id;
             $sqlval['create_date'] = 'now()';
             $objQuery->insert('dtb_pagelayout', $sqlval);
-            $page_id = $sqlval['page_id'];
         }
         // データが存在してる場合にはアップデートを行う
         else {
             $objQuery->update('dtb_pagelayout', $sqlval, 'page_id = ? AND device_type_id = ?',
                               array($arrData['page_id'], $device_type_id));
-            $page_id = $arrData['page_id'];
         }
-        return $page_id;
+        return $sqlval;
     }
 
     /**
@@ -322,7 +320,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
                 $arrUpdData['php_dir'] .= '/';
             }
             $arrUpdData['tpl_dir']      = substr($this->objLayout->getTemplatePath($devie_type_id), strlen(URL_DIR));
-            $arrUpdData['filename']     = basename($arrData['url']); // 拡張子を付加しない
+            $arrUpdData['filename']     = dirname($arrUpdData['url']) . basename($arrUpdData['url']); // 拡張子を付加しない
         }
 
         return $arrUpdData;
