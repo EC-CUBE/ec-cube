@@ -879,7 +879,7 @@ CREATE TABLE mtb_pref (
     id smallint NOT NULL,
     name text,
     rank smallint NOT NULL DEFAULT 0,
-    PRIMARY KEY (pref_id)
+    PRIMARY KEY (id)
 ) TYPE=InnoDB;
 
 CREATE TABLE mtb_permission (
