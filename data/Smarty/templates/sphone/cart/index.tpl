@@ -82,17 +82,14 @@
             <input type="hidden" name="cartKey" value="<!--{$key}-->" />
             <table summary="商品情報">
                 <tr>
-                    <th>削除</th>
                     <th>商品写真</th>
                     <th>商品名</th>
-                    <th>単価</th>
+                    <th>価格</th>
                     <th>数量</th>
                     <th>小計</th>
                 </tr>
                 <!--{foreach from=$cartItems[$key] item=item}-->
                     <tr style="<!--{if $item.error}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->">
-                        <td><a href="?" onclick="fnModeSubmit('delete', 'cart_no', '<!--{$item.cart_no}-->'); return false;">削除</a>
-                        </td>
                         <td class="phototd">
                         <a
                             <!--{if $item.productsClass.main_image|strlen >= 1}-->
@@ -101,7 +98,8 @@
                                 target="_blank"
                             <!--{/if}-->
                         >
-                            <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$item.productsClass.main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" alt="<!--{$item.productsClass.name|h}-->" /></a>
+                            <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$item.productsClass.main_list_image|sfNoImageMainList|h}-->&amp;width=40&amp;height=40" alt="<!--{$item.productsClass.name|h}-->" /></a><br />
+<a href="?" onclick="fnModeSubmit('delete', 'cart_no', '<!--{$item.cart_no}-->'); return false;">削除</a>
                         </td>
                         <td><!--{* 商品名 *}--><strong><!--{$item.productsClass.name|h}--></strong><br />
                             <!--{if $item.productsClass.classcategory_name1 != ""}-->
@@ -111,42 +109,42 @@
                                 <!--{$item.productsClass.class_name2}-->：<!--{$item.productsClass.classcategory_name2}-->
                             <!--{/if}-->
                         </td>
-                        <td class="pricetd">
+                        <td>
                             <!--{$item.productsClass.price02|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
                         </td>
-                        <td id="quantity"><!--{$item.quantity}-->
-                            <ul id="quantity_level">
+                        <td><!--{$item.quantity}-->
+                        <br />
+<ul id="quantity_level">
                                 <li><a href="?" onclick="fnModeSubmit('up','cart_no','<!--{$item.cart_no}-->'); return false"><img src="<!--{$TPL_DIR}-->img/button/btn_plus.gif" width="16" height="16" alt="＋" /></a></li>
                                 <li><a href="?" onclick="fnModeSubmit('down','cart_no','<!--{$item.cart_no}-->'); return false"><img src="<!--{$TPL_DIR}-->img/button/btn_minus.gif" width="16" height="16" alt="-" /></a></li>
-                            </ul>
-                        </td>
-                        <td class="pricetd"><!--{$item.total_inctax|number_format}-->円</td>
-                     </tr>
+                            </ul></td>
+                        <td><!--{$item.total_inctax|number_format}-->円</td>
+              </tr>
                  <!--{/foreach}-->
                  <tr>
-                     <th colspan="5" class="resulttd">小計</th>
-                     <td class="pricetd"><!--{$tpl_total_inctax[$key]|number_format}-->円</td>
+                     <th colspan="3" class="resulttd">小計</th>
+                     <td colspan="2" class="pricetd"><!--{$tpl_total_inctax[$key]|number_format}-->円</td>
                  </tr>
                  <tr>
-                     <th colspan="5" class="resulttd">合計</th>
-                     <td class="pricetd"><em><!--{$arrData.total-$arrData.deliv_fee|number_format}-->円</em></td>
+                     <th colspan="3" class="resulttd">合計</th>
+                     <td colspan="2" class="pricetd"><em><!--{$arrData.total-$arrData.deliv_fee|number_format}-->円</em></td>
                  </tr>
                  <!--{if $smarty.const.USE_POINT !== false}-->
                      <!--{if $arrData.birth_point > 0}-->
                          <tr>
-                             <th colspan="5" class="resulttd">お誕生月ポイント</th>
-                             <td class="pricetd"><!--{$arrData.birth_point|number_format}-->pt</td>
+                             <th colspan="3" class="resulttd">お誕生月ポイント</th>
+                             <td colspan="2" class="pricetd"><!--{$arrData.birth_point|number_format}-->pt</td>
                          </tr>
                      <!--{/if}-->
                      <tr>
-                         <th colspan="5" class="resulttd">今回加算ポイント</th>
-                         <td class="pricetd"><!--{$arrData.add_point|number_format}-->pt</td>
+                         <th colspan="3" class="resulttd">今回加算ポイント</th>
+                         <td colspan="2" class="pricetd"><!--{$arrData.add_point|number_format}-->pt</td>
                     </tr>
                 <!--{/if}-->
             </table>
             <div class="tblareabtn">
                 <!--{if strlen($tpl_error) == 0}-->
-                    <p>上記内容でよろしければ「購入手続きへ」ボタンをクリックしてください。</p>
+              <p>上記内容でよろしければ「購入手続きへ」ボタンをクリックしてください。</p>
                 <!--{/if}-->
 
                 <p>
@@ -158,8 +156,8 @@
                         <input type="hidden" name="cartKey" value="<!--{$key}-->" />
                         <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_buystep_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_buystep.gif',this)" src="<!--{$TPL_DIR}-->img/button/btn_buystep.gif" width="130" height="30" alt="購入手続きへ" name="confirm" />
                     <!--{/if}-->
-                 </p>
-            </div>
+              </p>
+          </div>
         </form>
     <!--{/foreach}-->
     <!--{else}-->

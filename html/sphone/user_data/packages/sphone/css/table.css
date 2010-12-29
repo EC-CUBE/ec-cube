@@ -415,6 +415,11 @@ margin-right: 0;
 
 /* テーブル・カゴ
 ----------------------------------------------- */
+
+table[summary="商品情報"]{
+	font-size:60%;
+}
+
 table[summary="商品情報"] tr:nth-child(even) td{
 background-color: #ffffff;
 }
@@ -429,12 +434,8 @@ text-align: center;
 vertical-align: middle;
 max-width: 200px;
 }
-table[summary="商品情報"] tr:nth-child(even) td:first-child{
-width: 38%;
-font-size: 13px;
-}
 table[summary="商品情報"] tr:nth-child(even) td:last-child{
-width: 38%;
+width: 15%;
 overflow: visible;
 }
 table[summary="商品情報"] ul,
@@ -447,7 +448,8 @@ border: none;
 }
 table[summary="商品情報"] ul li a{
 display: inline-block;
-margin: 7px;
+margin: 1px;
+padding:0;
 }
 table[summary="商品情報"] tr:nth-last-of-type(1) td,
 table[summary="商品情報"] tr:nth-last-of-type(2) td,
