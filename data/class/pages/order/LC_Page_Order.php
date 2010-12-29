@@ -75,39 +75,6 @@ class LC_Page_Order extends LC_Page {
     }
 
     /**
-     * モバイルページを初期化する.
-     *
-     * @return void
-     */
-    function mobileInit() {
-        $this->init();
-    }
-
-    /**
-     * Page のプロセス(モバイル).
-     *
-     *
-     * @return void
-     */
-    function mobileProcess() {
-        parent::mobileProcess();
-        $this->mobileAction();
-        $this->sendResponse();
-    }
-
-    /**
-     * Page のアクション(モバイル).
-     *
-     *
-     * @return void
-     */
-    function mobileAction() {
-        $objDb = new SC_Helper_DB_Ex();
-        $this->arrRet = $objDb->sfGetBasisData();
-    }
-
-
-    /**
      * デストラクタ.
      *
      * @return void

@@ -119,35 +119,6 @@ class LC_Page_Contact extends LC_Page {
     }
 
     /**
-     * モバイルページを初期化する.
-     *
-     * @return void
-     */
-    function mobileInit() {
-        $this->init();
-    }
-
-    /**
-     * Page のプロセス(モバイル).
-     *
-     * @return void
-     */
-    function mobileProcess() {
-        $this->mobileAction();
-        $this->sendResponse();
-    }
-
-    /**
-     * Page のアクション(モバイル).
-     *
-     * @return void
-     */
-    function mobileAction() {
-        $objDb = new SC_Helper_DB_Ex();
-        $this->CONF = $objDb->sfGetBasisData();			// 店舗基本情報
-    }
-
-    /**
      * デストラクタ.
      *
      * @return void

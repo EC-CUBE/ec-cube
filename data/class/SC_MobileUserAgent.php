@@ -147,27 +147,5 @@ class SC_MobileUserAgent {
         }
     }
 
-    /**
-     * 携帯端末の場合、モバイルサイトへリダイレクトする
-     *
-     * @return void
-     */
-    function sfAutoRedirectMobileSite() {
-        // 携帯端末ではない場合、処理しない
-        if (SC_MobileUserAgent::isNonMobile()) return;
-
-        $url = SC_Utils_Ex::sfIsHTTPS()
-            ? MOBILE_SSL_URL
-            : MOBILE_SITE_URL
-        ;
-
-        $url .= (preg_match('|^' . URL_DIR . '(.*)$|', $_SERVER['REQUEST_URI'], $matches))
-            ? $matches[1]
-            : ''
-        ;
-
-        header("Location: ". SC_Utils_Ex::sfRmDupSlash($url));
-        exit;
-    }
 }
 ?>
