@@ -122,8 +122,10 @@ class LC_Page {
      */
     function sendResponse() {
 
-        // post-prosess処理(暫定的)
-        $this->objPlugin->process($this);
+        if (isset($this->objPlugin)) { // FIXME モバイルエラー応急対応
+            // post-prosess処理(暫定的)
+            $this->objPlugin->process($this);
+        }
 
         $this->objDisplay->prepare($this);
         $this->objDisplay->response->write();

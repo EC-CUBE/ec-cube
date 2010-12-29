@@ -221,18 +221,16 @@ class LC_Page_MyPage extends LC_Page {
          */
         if(!$objCustomer->isLoginSuccess(true)) {
             $this->tpl_mainpage = 'mypage/login.tpl';
-            $objView->assignArray($objFormParam->getHashArray());
+            foreach ($objFormParam->getHashArray() as $key => $val) {
+                $this->$key = $val;
+            }
             if (empty($arrErr)) $arrErr = array();
-            $objView->assignArray(array("arrErr" => $arrErr));
+            $this->arrErr = $arrErr;
         }else {
             //マイページトップ顧客情報表示用
             $this->CustomerName1 = $objCustomer->getvalue('name01');
             $this->CustomerName2 = $objCustomer->getvalue('name02');
         }
-
-        $objView->assignobj($this);				//$objpage内の全てのテンプレート変数をsmartyに格納
-        $objView->display(SITE_FRAME);				//パスとテンプレート変数の呼び出し、実行
-
     }
 
     /**
