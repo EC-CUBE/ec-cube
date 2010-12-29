@@ -54,7 +54,6 @@ class LC_Page_Mypage_Change extends LC_Page {
         $this->tpl_navi = TEMPLATE_DIR . 'mypage/navi.tpl';
         $this->tpl_mainno = 'mypage';
         $this->tpl_mypageno = 'change';
-        $this->tpl_column_num = 1;
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrReminder = $masterData->getMasterData("mtb_reminder");

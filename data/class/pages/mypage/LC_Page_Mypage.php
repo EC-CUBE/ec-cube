@@ -52,7 +52,6 @@ class LC_Page_MyPage extends LC_Page {
         $this->tpl_title = 'MYページ';
         $this->tpl_subtitle = '購入履歴一覧';
         $this->tpl_navi = TEMPLATE_DIR . 'mypage/navi.tpl';
-        $this->tpl_column_num = 1;
         $this->tpl_mainno = 'mypage';
         $this->tpl_mypageno = 'index';
         $this->httpCacheControl('nocache');

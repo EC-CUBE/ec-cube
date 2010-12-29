@@ -60,7 +60,6 @@ class LC_Page_Error extends LC_Page {
      */
     function init() {
         $this->tpl_mainpage = 'error.tpl';
-        $this->tpl_column_num = 1;
         $this->tpl_title = 'エラー';
     }
 

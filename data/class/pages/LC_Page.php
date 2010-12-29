@@ -43,7 +43,7 @@ class LC_Page {
     var $tpl_mainpage;
 
     /** テンプレートのカラム数 */
-    var $tpl_column_num = 2;
+    var $tpl_column_num;
 
     /** メインナンバー */
     var $tpl_mainno;
