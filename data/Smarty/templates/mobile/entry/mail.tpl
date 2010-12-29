@@ -27,12 +27,12 @@
 
 次のリンクをクリックして空メールを送信してください。
 すぐにご案内のメールが送信されますので、メール内のリンクをクリックして会員情報の入力に進んでください。<br>
-<font color="#ff0000">※ドメイン指定受信機能を利用されている方は、メールを送信する前に必ず「<!--{$tpl_from_address|escape}-->」からのメールが受信できるように設定しておいてください。</font><br>
+<font color="#ff0000">※ドメイン指定受信機能を利用されている方は、メールを送信する前に必ず「<!--{$tpl_from_address|h}-->」からのメールが受信できるように設定しておいてください。</font><br>
 <br>
 
 <br>
 
-<center><a href="mailto:<!--{$tpl_kara_mail_to|escape:'url'}-->">メール送信</a></center>
+<center><a href="mailto:<!--{$tpl_kara_mail_to|u}-->">メール送信</a></center>
 
 <br>
 <hr>

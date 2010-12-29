@@ -33,7 +33,7 @@
         <!--{if $arrErr.name}-->
         <span class="attention"><!--{$arrErr.name}--></span>
         <!--{/if}-->
-        <input type="text" name="name" value="<!--{$arrForm.name|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="" size="30" class="box30" />
+        <input type="text" name="name" value="<!--{$arrForm.name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="" size="30" class="box30" />
         <span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
       </td>
     </tr>
@@ -53,7 +53,7 @@
     <!--{section name=cnt loop=$arrClass}-->
     <tr style="background:<!--{if $tpl_class_id != $arrClass[cnt].class_id}-->#ffffff<!--{else}--><!--{$smarty.const.SELECT_RGB}--><!--{/if}-->;">
       <!--{assign var=class_id value=$arrClass[cnt].class_id}-->
-      <td><!--{* 規格名 *}--><!--{$arrClass[cnt].name|escape}--> (<!--{$arrClassCatCount[$class_id]|default:0}-->)</td>
+      <td><!--{* 規格名 *}--><!--{$arrClass[cnt].name|h}--> (<!--{$arrClassCatCount[$class_id]|default:0}-->)</td>
       <td align="center"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnClassCatPage(<!--{$arrClass[cnt].class_id}-->); return false;">分類登録</a></td>
       <td align="center">
       <!--{if $tpl_class_id != $arrClass[cnt].class_id}-->

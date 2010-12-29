@@ -25,7 +25,7 @@
 <input type="hidden" name="mode" value="edit" />
 <input type="hidden" name="classcategory_id" value="<!--{$tpl_classcategory_id}-->" />
 <!--{foreach key=key item=item from=$arrHidden}-->
-<input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->" />
+<input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
 <!--{/foreach}-->
 <div id="products" class="contents-main">
 
@@ -40,7 +40,7 @@
         <!--{if $arrErr.name}-->
         <span class="attention"><!--{$arrErr.name}--></span>
         <!--{/if}-->
-        <input type="text" name="name" value="<!--{$arrForm.name|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="" size="30" class="box30" />
+        <input type="text" name="name" value="<!--{$arrForm.name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="" size="30" class="box30" />
         <span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
       </td>
     </tr>
@@ -58,7 +58,7 @@
     </tr>
     <!--{section name=cnt loop=$arrClassCat}-->
     <tr style="background:<!--{if $tpl_classcategory_id != $arrClassCat[cnt].classcategory_id}-->#ffffff<!--{else}--><!--{$smarty.const.SELECT_RGB}--><!--{/if}-->;">
-      <td><!--{* 規格名 *}--><!--{$arrClassCat[cnt].name|escape}--></td>
+      <td><!--{* 規格名 *}--><!--{$arrClassCat[cnt].name|h}--></td>
       <td align="center" >
       <!--{if $tpl_classcategory_id != $arrClassCat[cnt].classcategory_id}-->
       <a href="?" onclick="fnModeSubmit('pre_edit','classcategory_id', <!--{$arrClassCat[cnt].classcategory_id}-->); return false;">編集</a>

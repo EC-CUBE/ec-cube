@@ -41,25 +41,25 @@
         </tr>
         <!--{section name=cnt loop=$arrDataList}-->
         <tr>
-            <td><!--{$arrDataList[cnt].start_date|sfDispDBDate|escape}--></td>
-            <td><!--{$arrDataList[cnt].end_date|sfDispDBDate|escape}--></td>
-            <td class="left"><!--{$arrDataList[cnt].subject|escape}--></td>
-            <td><a href="javascript:;" onclick="win03('./preview.php?send_id=<!--{$arrDataList[cnt].send_id|escape}-->', 'confirm', '720', '600')">確認</a></td>
-            <td><a href="#" onclick="win03('./<!--{$smarty.const.DIR_INDEX_URL}-->?mode=query&amp;send_id=<!--{$arrDataList[cnt].send_id|escape}-->','query','720','420'); return false;">確認</a></td>
-            <td><!--{$arrDataList[cnt].count_all|escape}--></td>
-            <td><!--{$arrDataList[cnt].count_sent|escape}--></td>
+            <td><!--{$arrDataList[cnt].start_date|sfDispDBDate|h}--></td>
+            <td><!--{$arrDataList[cnt].end_date|sfDispDBDate|h}--></td>
+            <td class="left"><!--{$arrDataList[cnt].subject|h}--></td>
+            <td><a href="javascript:;" onclick="win03('./preview.php?send_id=<!--{$arrDataList[cnt].send_id|h}-->', 'confirm', '720', '600')">確認</a></td>
+            <td><a href="#" onclick="win03('./<!--{$smarty.const.DIR_INDEX_URL}-->?mode=query&amp;send_id=<!--{$arrDataList[cnt].send_id|h}-->','query','720','420'); return false;">確認</a></td>
+            <td><!--{$arrDataList[cnt].count_all|h}--></td>
+            <td><!--{$arrDataList[cnt].count_sent|h}--></td>
             <td style="<!--{if $arrDataList[cnt].count_error >= 1}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->">
-                <!--{$arrDataList[cnt].count_error|escape}-->
+                <!--{$arrDataList[cnt].count_error|h}-->
             </td>
             <td style="<!--{if $arrDataList[cnt].count_unsent >= 1}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->">
-                <!--{$arrDataList[cnt].count_unsent|escape}-->
+                <!--{$arrDataList[cnt].count_unsent|h}-->
             </td>
             <td>
                 <!--{if $arrDataList[cnt].count_error >= 1 || $arrDataList[cnt].count_unsent >= 1}-->
-                    <a href="sendmail.php?mode=now&amp;send_id=<!--{$arrDataList[cnt].send_id|escape}-->&amp;retry=yes" onclick="return window.confirm('未配信と配信失敗となった宛先に再送信を試みますか?');">実行</a>
+                    <a href="sendmail.php?mode=now&amp;send_id=<!--{$arrDataList[cnt].send_id|h}-->&amp;retry=yes" onclick="return window.confirm('未配信と配信失敗となった宛先に再送信を試みますか?');">実行</a>
                 <!--{/if}-->
             </td>
-            <td><a href="?mode=delete&send_id=<!--{$arrDataList[cnt].send_id|escape}-->" onclick="return window.confirm('配信履歴を削除しても宜しいでしょうか');">削除</a></td>
+            <td><a href="?mode=delete&send_id=<!--{$arrDataList[cnt].send_id|h}-->" onclick="return window.confirm('配信履歴を削除しても宜しいでしょうか');">削除</a></td>
         </tr>
         <!--{/section}-->
     </table>

@@ -27,12 +27,12 @@
     <div class="recomendblock">
         <div class="recomendleft">
 
-            <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrBestProducts[cnt].product_id|escape:url}-->">
-                <img src="<!--{$smarty.const.SMARTPHONE_URL_DIR}-->resize_image.php?image=<!--{$arrBestProducts[cnt].main_list_image|sfNoImageMainList|escape}-->&amp;width=80&amp;height=80" alt="<!--{$arrBestProducts[cnt].name|escape}-->" /></a>
+            <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrBestProducts[cnt].product_id|u}-->">
+                <img src="<!--{$smarty.const.SMARTPHONE_URL_DIR}-->resize_image.php?image=<!--{$arrBestProducts[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=80&amp;height=80" alt="<!--{$arrBestProducts[cnt].name|h}-->" /></a>
             
             <div class="recomendrightblock">
                 <h3>
-                    <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrBestProducts[cnt].product_id|escape:url}-->"><!--{$arrBestProducts[cnt].name|escape}--></a>
+                    <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrBestProducts[cnt].product_id|u}-->"><!--{$arrBestProducts[cnt].name|h}--></a>
                 </h3>
 
                 <!--{assign var=price01 value=`$arrBestProducts[cnt].price01_min`}-->
@@ -42,19 +42,19 @@
                     <span class="price"><!--{$price02|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}--> 円</span>
                 </p>
 
-                <p class="mini comment"><!--{$arrBestProducts[cnt].comment|escape|nl2br}--></p>
+                <p class="mini comment"><!--{$arrBestProducts[cnt].comment|h|nl2br}--></p>
             </div>
         </div>
         
         <!--{assign var=cnt2 value=`$smarty.section.cnt.iteration*$smarty.section.cnt.step-1`}-->
         <!--{if $arrBestProducts[$cnt2]|count > 0}-->
         <div class="recomendright">
-            <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrBestProducts[$cnt2].product_id|escape:url}-->">
-                <img src="<!--{$smarty.const.SMARTPHONE_URL_DIR}-->resize_image.php?image=<!--{$arrBestProducts[$cnt2].main_list_image|sfNoImageMainList|escape}-->&amp;width=80&amp;height=80" alt="<!--{$arrBestProducts[$cnt2].name|escape}-->" /></a>
+            <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrBestProducts[$cnt2].product_id|u}-->">
+                <img src="<!--{$smarty.const.SMARTPHONE_URL_DIR}-->resize_image.php?image=<!--{$arrBestProducts[$cnt2].main_list_image|sfNoImageMainList|h}-->&amp;width=80&amp;height=80" alt="<!--{$arrBestProducts[$cnt2].name|h}-->" /></a>
 
             <div class="recomendrightblock">
                 <h3>
-                <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrBestProducts[$cnt2].product_id|escape:url}-->"><!--{$arrBestProducts[$cnt2].name|escape}--></a>
+                <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrBestProducts[$cnt2].product_id|u}-->"><!--{$arrBestProducts[$cnt2].name|h}--></a>
                 </h3>
 
                 <!--{assign var=price01 value=`$arrBestProducts[$cnt2].price01_min`}-->
@@ -64,7 +64,7 @@
                     <span class="price"><!--{$price02|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}--> 円</span>
                 </p>
 
-                <p class="mini comment"><!--{$arrBestProducts[$cnt2].comment|escape|nl2br}--></p>
+                <p class="mini comment"><!--{$arrBestProducts[$cnt2].comment|h|nl2br}--></p>
             </div>
         </div>
         <!--{/if}-->

@@ -23,21 +23,21 @@
 *}-->
 <div align="center">お届け先登録確認</div>
 <hr>
-<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|h}-->">
 	<input type="hidden" name="mode" value="complete">
 
 	【個人情報】<br>
-	<!--{$list_data.name01|escape}-->　<!--{$list_data.name02|escape}--><br>
-	<!--{$list_data.kana01|escape}-->　<!--{$list_data.kana02|escape}--><br>
-	〒<!--{$list_data.zip01|escape}--> - <!--{$list_data.zip02|escape}--><br>
-	<!--{$arrPref[$list_data.pref]|escape}--><!--{$list_data.addr01|escape}--><!--{$list_data.addr02|escape}--><br>
-	<!--{$list_data.tel01|escape}-->-<!--{$list_data.tel02|escape}-->-<!--{$list_data.tel03|escape}--><br>
+	<!--{$list_data.name01|h}-->　<!--{$list_data.name02|h}--><br>
+	<!--{$list_data.kana01|h}-->　<!--{$list_data.kana02|h}--><br>
+	〒<!--{$list_data.zip01|h}--> - <!--{$list_data.zip02|h}--><br>
+	<!--{$arrPref[$list_data.pref]|h}--><!--{$list_data.addr01|h}--><!--{$list_data.addr02|h}--><br>
+	<!--{$list_data.tel01|h}-->-<!--{$list_data.tel02|h}-->-<!--{$list_data.tel03|h}--><br>
 
 	<div align="center"><input type="submit" name="submit" value="次へ"></div>
 	<div align="center"><input type="submit" name="return" value="戻る"></div>
 
 	<!--{foreach from=$list_data key=key item=item}-->
-		<input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->">
+		<input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->">
 	<!--{/foreach}-->
 </form>
 

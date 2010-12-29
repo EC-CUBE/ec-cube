@@ -23,10 +23,10 @@
 *}-->
 <!--▼CONTENTS-->
 <div id="mypagecolumn">
-  <h2 class="title"><!--{$tpl_title|escape}--></h2>
+  <h2 class="title"><!--{$tpl_title|h}--></h2>
   <!--{include file=$tpl_navi}-->
   <div id="mycontentsarea">
-    <h3><!--{$tpl_subtitle|escape}--></h3>
+    <h3><!--{$tpl_subtitle|h}--></h3>
     <form name="form1" method="post" action="?">
       <input type="hidden" name="mode" value="confirm" />
       <div id="completetext">

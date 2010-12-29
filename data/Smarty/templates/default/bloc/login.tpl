@@ -26,11 +26,11 @@
         <form name="login_form" id="login_form" method="post" action="<!--{$smarty.const.SSL_URL}-->frontparts/login_check.php" onsubmit="return fnCheckLogin('login_form')">
             <input type="hidden" name="mode" value="login" />
             <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-            <input type="hidden" name="url" value="<!--{$smarty.server.PHP_SELF|escape}-->" />
+            <input type="hidden" name="url" value="<!--{$smarty.server.PHP_SELF|h}-->" />
             <div id="login">
                 <!--{if $tpl_login}-->
                 <p>ようこそ<br />
-                    <!--{$tpl_name1|escape}--> <!--{$tpl_name2|escape}--> 様<br />
+                    <!--{$tpl_name1|h}--> <!--{$tpl_name2|h}--> 様<br />
                     <!--{if $smarty.const.USE_POINT !== false}-->
                         所持ポイント：<span class="price"> <!--{$tpl_user_point|number_format|default:0}--> pt</span>
                     <!--{/if}-->
@@ -43,7 +43,7 @@
              </div>
                     <!--{/if}-->
                 <!--{else}-->
-                <p><img src="<!--{$TPL_DIR}-->img/icon/ico_mail.gif" width="40" height="21" alt="メールアドレス" /><input type="text" name="login_email" class="box96" value="<!--{$tpl_login_email|escape}-->" style="ime-mode: disabled;"/></p>
+                <p><img src="<!--{$TPL_DIR}-->img/icon/ico_mail.gif" width="40" height="21" alt="メールアドレス" /><input type="text" name="login_email" class="box96" value="<!--{$tpl_login_email|h}-->" style="ime-mode: disabled;"/></p>
                 <p><img src="<!--{$TPL_DIR}-->img/icon/ico_password.gif" width="40" height="22" alt="パスワード" /><input type="password" name="login_pass" class="box96" /></p>
             </div>
                 <p class="mini">

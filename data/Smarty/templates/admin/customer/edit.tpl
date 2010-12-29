@@ -44,7 +44,7 @@
 <form name="search_form" method="post" action="">
     <input type="hidden" name="mode" value="search" />
     <!--{foreach from=$arrSearchData key="key" item="item"}-->
-        <!--{if $key ne "customer_id" && $key ne "mode" && $key ne "del_mode" && $key ne "edit_customer_id" && $key ne "del_customer_id" && $key ne "csv_mode" && $key ne "job" && $key ne "sex"}--><input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->"><!--{/if}-->
+        <!--{if $key ne "customer_id" && $key ne "mode" && $key ne "del_mode" && $key ne "edit_customer_id" && $key ne "del_customer_id" && $key ne "csv_mode" && $key ne "job" && $key ne "sex"}--><input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->"><!--{/if}-->
     <!--{/foreach}-->
     <!--{foreach from=$arrSearchData.job key="key" item="item"}-->
         <input type="hidden" name="job[]" value="<!--{$item}-->" />
@@ -57,11 +57,11 @@
 <form name="form1" id="form1" method="post" action="?">
     <input type="hidden" name="mode" value="confirm" />
     <input type="hidden" name="edit_email" value="<!--{$tpl_edit_email}-->" />
-    <input type="hidden" name="customer_id" value="<!--{$list_data.customer_id|escape}-->" />
+    <input type="hidden" name="customer_id" value="<!--{$list_data.customer_id|h}-->" />
 
     <!-- 検索条件の保持 -->
     <!--{foreach from=$arrSearchData key="key" item="item"}-->
-        <!--{if $key ne "job" && $key ne "sex"}--><input type="hidden" name="search_data[<!--{$key|escape}-->]" value="<!--{$item|escape}-->"><!--{/if}-->
+        <!--{if $key ne "job" && $key ne "sex"}--><input type="hidden" name="search_data[<!--{$key|h}-->]" value="<!--{$item|h}-->"><!--{/if}-->
     <!--{/foreach}-->
     <!--{foreach from=$arrSearchData.job key="key" item="item"}-->
         <input type="hidden" name="search_data[job][]" value="<!--{$item}-->" />
@@ -75,7 +75,7 @@
         <table class="form">
             <tr>
                 <th>顧客ID<span class="attention"> *</span></th>
-                <td><!--{$list_data.customer_id|escape}--></td>
+                <td><!--{$list_data.customer_id|h}--></td>
             </tr>
             <tr>
                 <th>会員状態<span class="attention"> *</span></th>
@@ -89,21 +89,21 @@
                 <th>お名前<span class="attention"> *</span></th>
                 <td>
                     <span class="attention"><!--{$arrErr.name01}--><!--{$arrErr.name02}--></span>
-                    <input type="text" name="name01" value="<!--{$list_data.name01|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" <!--{if $arrErr.name01 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />&nbsp;&nbsp;<input type="text" name="name02" value="<!--{$list_data.name02|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" <!--{if $arrErr.name02 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+                    <input type="text" name="name01" value="<!--{$list_data.name01|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" <!--{if $arrErr.name01 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />&nbsp;&nbsp;<input type="text" name="name02" value="<!--{$list_data.name02|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" <!--{if $arrErr.name02 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
                 </td>
             </tr>
             <tr>
                 <th>お名前(フリガナ)<span class="attention"> *</span></th>
                 <td>
                     <span class="attention"><!--{$arrErr.kana01}--><!--{$arrErr.kana02}--></span>
-                    <input type="text" name="kana01" value="<!--{$list_data.kana01|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" <!--{if $arrErr.kana01 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />&nbsp;&nbsp;<input type="text" name="kana02" value="<!--{$list_data.kana02|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" <!--{if $arrErr.kana02 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+                    <input type="text" name="kana01" value="<!--{$list_data.kana01|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" <!--{if $arrErr.kana01 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />&nbsp;&nbsp;<input type="text" name="kana02" value="<!--{$list_data.kana02|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" <!--{if $arrErr.kana02 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
                 </td>
             </tr>
             <tr>
                 <th>郵便番号<span class="attention"> *</span></th>
                 <td>
                     <span class="attention"><!--{$arrErr.zip01}--><!--{$arrErr.zip02}--></span>
-                    〒 <input type="text" name="zip01" value="<!--{$list_data.zip01|escape}-->" maxlength="<!--{$smarty.const.ZIP01_LEN}-->" size="6" class="box6" maxlength="3" <!--{if $arrErr.zip01 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /> - <input type="text" name="zip02" value="<!--{$list_data.zip02|escape}-->" maxlength="<!--{$smarty.const.ZIP02_LEN}-->" size="6" class="box6" maxlength="4" <!--{if $arrErr.zip02 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+                    〒 <input type="text" name="zip01" value="<!--{$list_data.zip01|h}-->" maxlength="<!--{$smarty.const.ZIP01_LEN}-->" size="6" class="box6" maxlength="3" <!--{if $arrErr.zip01 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /> - <input type="text" name="zip02" value="<!--{$list_data.zip02|h}-->" maxlength="<!--{$smarty.const.ZIP02_LEN}-->" size="6" class="box6" maxlength="4" <!--{if $arrErr.zip02 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
                     <a class="btn-normal" href="javascript:;" name="address_input" onclick="fnCallAddress('<!--{$smarty.const.URL_INPUT_ZIP}-->', 'zip01', 'zip02', 'pref', 'addr01');">住所入力</a>
                 </td>
             </tr>
@@ -115,9 +115,9 @@
                         <option value="" selected="selected">都道府県を選択</option>
                         <!--{html_options options=$arrPref selected=$list_data.pref}-->
                     </select>
-                    <input type="text" name="addr01" value="<!--{$list_data.addr01|escape}-->" size="60" class="box60" <!--{if $arrErr.addr01 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /><br />
+                    <input type="text" name="addr01" value="<!--{$list_data.addr01|h}-->" size="60" class="box60" <!--{if $arrErr.addr01 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /><br />
                     <!--{$smarty.const.SAMPLE_ADDRESS1}--><br />
-                    <input type="text" name="addr02" value="<!--{$list_data.addr02|escape}-->" size="60" class="box60" <!--{if $arrErr.addr02 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /><br />
+                    <input type="text" name="addr02" value="<!--{$list_data.addr02|h}-->" size="60" class="box60" <!--{if $arrErr.addr02 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /><br />
                     <!--{$smarty.const.SAMPLE_ADDRESS2}-->
                 </td>
             </tr>
@@ -125,28 +125,28 @@
                 <th>メールアドレス<span class="attention"> *</span></th>
                 <td>
                     <span class="attention"><!--{$arrErr.email}--></span>
-                    <input type="text" name="email" value="<!--{$list_data.email|escape}-->" size="60" class="box60" <!--{if $arrErr.email != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+                    <input type="text" name="email" value="<!--{$list_data.email|h}-->" size="60" class="box60" <!--{if $arrErr.email != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
                 </td>
             </tr>
             <tr>
                 <th>携帯メールアドレス</th>
                 <td>
                     <span class="attention"><!--{$arrErr.email_mobile}--></span>
-                    <input type="text" name="email_mobile" value="<!--{$list_data.email_mobile|escape}-->" size="60" class="box60" <!--{if $arrErr.email_mobile != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+                    <input type="text" name="email_mobile" value="<!--{$list_data.email_mobile|h}-->" size="60" class="box60" <!--{if $arrErr.email_mobile != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
                 </td>
             </tr>
             <tr>
                 <th>電話番号<span class="attention"> *</span></th>
                 <td>
                     <span class="attention"><!--{$arrErr.tel01}--><!--{$arrErr.tel02}--><!--{$arrErr.tel03}--></span>
-                    <input type="text" name="tel01" value="<!--{$list_data.tel01|escape}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" size="6" class="box6" <!--{if $arrErr.tel01 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /> - <input type="text" name="tel02" value="<!--{$list_data.tel02|escape}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" size="6" class="box6" <!--{if $arrErr.tel01 != "" || $arrErr.tel02 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /> - <input type="text" name="tel03" value="<!--{$list_data.tel03|escape}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" size="6" class="box6" <!--{if $arrErr.tel01 != "" || $arrErr.tel03 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+                    <input type="text" name="tel01" value="<!--{$list_data.tel01|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" size="6" class="box6" <!--{if $arrErr.tel01 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /> - <input type="text" name="tel02" value="<!--{$list_data.tel02|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" size="6" class="box6" <!--{if $arrErr.tel01 != "" || $arrErr.tel02 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /> - <input type="text" name="tel03" value="<!--{$list_data.tel03|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" size="6" class="box6" <!--{if $arrErr.tel01 != "" || $arrErr.tel03 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
                 </td>
             </tr>
             <tr>
                 <th>FAX</th>
                 <td>
                     <span class="attention"><!--{$arrErr.fax01}--><!--{$arrErr.fax02}--><!--{$arrErr.fax03}--></span>
-                    <input type="text" name="fax01" value="<!--{$list_data.fax01|escape}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" size="6" class="box6" <!--{if $arrErr.fax01 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /> - <input type="text" name="fax02" value="<!--{$list_data.fax02|escape}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" size="6" class="box6" <!--{if $arrErr.fax01 != "" || $arrErr.tel02 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /> - <input type="text" name="fax03" value="<!--{$list_data.fax03|escape}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" size="6" class="box6" <!--{if $arrErr.fax01 != "" || $arrErr.fax03 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+                    <input type="text" name="fax01" value="<!--{$list_data.fax01|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" size="6" class="box6" <!--{if $arrErr.fax01 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /> - <input type="text" name="fax02" value="<!--{$list_data.fax02|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" size="6" class="box6" <!--{if $arrErr.fax01 != "" || $arrErr.tel02 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /> - <input type="text" name="fax03" value="<!--{$list_data.fax03|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" size="6" class="box6" <!--{if $arrErr.fax01 != "" || $arrErr.fax03 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
                 </td>
             </tr>
             <tr>
@@ -190,7 +190,7 @@
                 <th>パスワード<span class="attention"> *</span></th>
                 <td>
                     <span class="attention"><!--{$arrErr.password}--></span>
-                    <input type="password" name="password" value="<!--{$list_data.password|escape}-->" size="30" class="box30" <!--{if $arrErr.password != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />　半角英数小文字<!--{$smarty.const.PASSWORD_LEN1}-->～<!--{$smarty.const.PASSWORD_LEN2}-->文字（記号不可）
+                    <input type="password" name="password" value="<!--{$list_data.password|h}-->" size="30" class="box30" <!--{if $arrErr.password != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />　半角英数小文字<!--{$smarty.const.PASSWORD_LEN1}-->～<!--{$smarty.const.PASSWORD_LEN2}-->文字（記号不可）
                 </td>
             </tr>
             <tr>
@@ -203,7 +203,7 @@
                         <!--{html_options options=$arrReminder selected=$list_data.reminder}-->
                     </select><br />
                     答え： 
-                    <input type="text" name="reminder_answer" value="<!--{$list_data.reminder_answer|escape}-->" size="30" class="box30" <!--{if $arrErr.reminder_answer != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+                    <input type="text" name="reminder_answer" value="<!--{$list_data.reminder_answer|h}-->" size="30" class="box30" <!--{if $arrErr.reminder_answer != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
                 </td>
             </tr>
             <tr>
@@ -219,14 +219,14 @@
                 <th>SHOP用メモ</th>
                 <td>
                     <span class="attention"><!--{$arrErr.note}--></span>
-                    <textarea name="note" maxlength="<!--{$smarty.const.LTEXT_LEN}-->" <!--{if $arrErr.note != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> cols="60" rows="8" class="area60"><!--{$list_data.note|escape}--></textarea>
+                    <textarea name="note" maxlength="<!--{$smarty.const.LTEXT_LEN}-->" <!--{if $arrErr.note != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> cols="60" rows="8" class="area60"><!--{$list_data.note|h}--></textarea>
                 </td>
             </tr>
             <tr>
                 <th>所持ポイント</th>
                 <td>
                     <span class="attention"><!--{$arrErr.point}--></span>
-                    <input type="text" name="point" value="<!--{$list_data.point|escape}-->" maxlength="<!--{$smarty.const.TEL_LEN}-->" <!--{if $arrErr.point != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> size="6" class="box6" <!--{if $arrErr.point != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /> pt
+                    <input type="text" name="point" value="<!--{$list_data.point|h}-->" maxlength="<!--{$smarty.const.TEL_LEN}-->" <!--{if $arrErr.point != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> size="6" class="box6" <!--{if $arrErr.point != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /> pt
                 </td>
             </tr>
         </table>
@@ -262,7 +262,7 @@
                     <td class="center"><!--{$arrPurchaseHistory[cnt].payment_total|number_format}-->円</td>
                     <td class="center"><!--{if $arrPurchaseHistory[cnt].status eq 5}--><!--{$arrPurchaseHistory[cnt].commit_date|sfDispDBDate}--><!--{else}-->未発送<!--{ /if }--></td>
                     <!--{assign var=payment_id value="`$arrPurchaseHistory[cnt].payment_id`"}-->
-                    <td class="center"><!--{$arrPayment[$payment_id]|escape}--></td>
+                    <td class="center"><!--{$arrPayment[$payment_id]|h}--></td>
                 </tr>
                 <!--{/section}-->
             </table>

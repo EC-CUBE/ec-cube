@@ -30,7 +30,7 @@
 <form method="get" action="<!--{$smarty.const.MOBILE_URL_DIR}-->products/list.php">
 <center>
 <input type="hidden" name="mode" value="search">
-<input type="text" name="name" size="18" maxlength="50" value="<!--{$smarty.get.name|escape}-->"><br>
+<input type="text" name="name" size="18" maxlength="50" value="<!--{$smarty.get.name|h}-->"><br>
 <input type="submit" name="search" value="検索">
 </center>
 </form>

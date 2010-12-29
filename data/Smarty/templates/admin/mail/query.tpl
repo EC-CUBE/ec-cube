@@ -39,11 +39,11 @@ self.moveTo(20,20);self.focus();
   <table class="form">
     <tr>
       <th>顧客名</th>
-      <td><!--{$list_data.name|escape|default:"(未指定)"}--></td>
+      <td><!--{$list_data.name|default:"(未指定)"|h}--></td>
     </tr>
     <tr>
       <th>顧客名(カナ)</th>
-      <td width="249"><!--{$list_data.kana|escape|default:"(未指定)"}--></td>
+      <td width="249"><!--{$list_data.kana|default:"(未指定)"|h}--></td>
     </tr>
     <tr>
       <th>都道府県</th>
@@ -51,7 +51,7 @@ self.moveTo(20,20);self.focus();
     </tr>
     <tr>
       <th>TEL</th>
-      <td width="249"><!--{$list_data.tel|escape|default:"(未指定)"}--></td>
+      <td width="249"><!--{$list_data.tel|default:"(未指定)"|h}--></td>
     </tr>
     <tr>
       <th>性別</th>
@@ -59,45 +59,45 @@ self.moveTo(20,20);self.focus();
     </tr>
     <tr>
       <th>誕生月</th>
-      <td width="249"><!--{if $list_data.birth_month}--><!--{$list_data.birth_month|escape}-->月<!--{else}-->(未指定)<!--{/if}--></td>        
+      <td width="249"><!--{if $list_data.birth_month}--><!--{$list_data.birth_month|h}-->月<!--{else}-->(未指定)<!--{/if}--></td>        
     </tr>
     <tr>
       <th>配信形式</th>
-      <td><!--{$list_data.htmlmail_disp|escape|default:"(未指定)"}--></td>
+      <td><!--{$list_data.htmlmail_disp|default:"(未指定)"|h}--></td>
     </tr>
     <tr>
       <th>購入回数</th>
       <td>
-        <!--{if $list_data.buy_times_from == null}-->(未指定)<!--{else}--><!--{$list_data.buy_times_from|escape}-->回<!--{/if}--> ～ 
-        <!--{if $list_data.buy_times_to == null}-->(未指定)<!--{else}--><!--{$list_data.buy_times_to|escape}-->回<!--{/if}-->
+        <!--{if $list_data.buy_times_from == null}-->(未指定)<!--{else}--><!--{$list_data.buy_times_from|h}-->回<!--{/if}--> ～ 
+        <!--{if $list_data.buy_times_to == null}-->(未指定)<!--{else}--><!--{$list_data.buy_times_to|h}-->回<!--{/if}-->
       </td>
     </tr>
     <!--{*非会員は選択できない
     <tr>
       <th>種別</th>
       <td>
-      <!--{$list_data.customer|escape|default:"すべて"}-->
+      <!--{$list_data.customer|default:"すべて"|h}-->
       </td>
     </tr>
     *}-->
     <tr>
       <th>購入商品コード</th>
-      <td><!--{$list_data.buy_product_code|escape|default:"(未指定)"}--></td>
+      <td><!--{$list_data.buy_product_code|default:"(未指定)"|h}--></td>
     </tr>
     <tr>
       <th>購入金額</th>
       <td>
-        <!--{if $list_data.buy_total_from == null}-->(未指定)<!--{else}--><!--{$list_data.buy_total_from|escape}-->円<!--{/if}--> ～ 
-        <!--{if $list_data.buy_total_to == null}-->(未指定)<!--{else}--><!--{$list_data.buy_total_to|escape}-->円<!--{/if}-->
+        <!--{if $list_data.buy_total_from == null}-->(未指定)<!--{else}--><!--{$list_data.buy_total_from|h}-->円<!--{/if}--> ～ 
+        <!--{if $list_data.buy_total_to == null}-->(未指定)<!--{else}--><!--{$list_data.buy_total_to|h}-->円<!--{/if}-->
       </td>
     </tr>
     <tr>
       <th>メールアドレス</th>
-      <td><!--{$list_data.email|escape|default:"(未指定)"}--></td>
+      <td><!--{$list_data.email|default:"(未指定)"|h}--></td>
     </tr>
     <tr>
       <th>職業</th>
-      <td><!--{$list_data.job_disp|escape|default:"(未指定)"}--></td>
+      <td><!--{$list_data.job_disp|default:"(未指定)"|h}--></td>
     </tr>
     <tr>
       <th>生年月日</th>
@@ -125,11 +125,11 @@ self.moveTo(20,20);self.focus();
     </tr>
     <tr>
       <th>購入商品名</th>
-      <td><!--{$list_data.buy_product_name|escape|default:"(未指定)"}--></td>
+      <td><!--{$list_data.buy_product_name|default:"(未指定)"|h}--></td>
     </tr>
     <tr>
       <th>カテゴリ</th>
-      <td><!--{$list_data.category_name|escape|default:"(未指定)"}--></td>
+      <td><!--{$list_data.category_name|default:"(未指定)"|h}--></td>
     </tr>
   </table>
 

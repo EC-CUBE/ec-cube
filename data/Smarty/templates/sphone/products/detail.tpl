@@ -163,7 +163,7 @@ $(document).ready(function() {
 <div id="undercolumn" class="product product_detail">
 
     <!--★タイトル★-->
-    <h2 class="title"><!--{$tpl_subtitle|escape}--></h2>
+    <h2 class="title"><!--{$tpl_subtitle|h}--></h2>
 
     <div id="detailarea">
         <div id="detailphotoblock">
@@ -173,14 +173,14 @@ $(document).ready(function() {
             <!--★画像★-->
             <a
                 <!--{if $arrProduct.main_large_image|strlen >= 1}-->
-                    href="<!--{$smarty.const.IMAGE_SAVE_URL}--><!--{$arrProduct.main_large_image|escape}-->"
+                    href="<!--{$smarty.const.IMAGE_SAVE_URL}--><!--{$arrProduct.main_large_image|h}-->"
                     class="expansion"
                     onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_expansion_on.gif','expansion01');"
                     onmouseout="chgImg('<!--{$TPL_DIR}-->img/products/b_expansion.gif','expansion01');"
                     target="_blank"
                 <!--{/if}-->
             >
-                <img src="<!--{$arrFile[$key].filepath|escape}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" alt="<!--{$arrProduct.name|escape}-->" class="picture" /><br />
+                <img src="<!--{$arrFile[$key].filepath|h}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" alt="<!--{$arrProduct.name|h}-->" class="picture" /><br />
                 <!--★拡大する★-->
                 <!--{if $arrProduct.main_large_image|strlen >= 1}-->
                     <img src="<!--{$TPL_DIR}-->img/products/b_expansion.gif" width="85" height="13" alt="画像を拡大する" name="expansion01" id="expansion01" />
@@ -211,7 +211,7 @@ $(document).ready(function() {
                 <tr>
                     <th colspan="2">
                         <!--★商品名★-->
-                        <h2><!--{$arrProduct.name|escape}--></h2>
+                        <h2><!--{$arrProduct.name|h}--></h2>
                     </th>
                 </tr>
                 <tr>
@@ -287,8 +287,8 @@ $(document).ready(function() {
                         <span class="comment1">メーカーURL：
                     </th>
                     <td>
-                            <a href="<!--{$arrProduct.comment1|escape}-->">
-                                <!--{$arrProduct.comment1|escape}--></a>
+                            <a href="<!--{$arrProduct.comment1|h}-->">
+                                <!--{$arrProduct.comment1|h}--></a>
                     </td>
                 </tr>
                 <!--{/if}-->
@@ -330,7 +330,7 @@ $(document).ready(function() {
                     <dl>
                         <!--{if $tpl_classcat_find1}-->
                             <!--▼規格1-->
-                            <dt><!--{$tpl_class_name1|escape}--></dt>
+                            <dt><!--{$tpl_class_name1|h}--></dt>
                             <dd>
                                 <select name="classcategory_id1"
                                     style="<!--{$arrErr.classcategory_id1|sfGetErrorColor}-->"
@@ -347,7 +347,7 @@ $(document).ready(function() {
 
                         <!--{if $tpl_classcat_find2}-->
                             <!--▼規格2-->
-                            <dt><!--{$tpl_class_name2|escape}--></dt>
+                            <dt><!--{$tpl_class_name2|h}--></dt>
                             <dd>
                                 <select name="classcategory_id2"
                                     style="<!--{$arrErr.classcategory_id2|sfGetErrorColor}-->"
@@ -378,7 +378,7 @@ $(document).ready(function() {
                             <!--{if $arrErr[$add_favorite]}--><div class="attention"><!--{$arrErr[$add_favorite]}--></div><!--{/if}-->
                             <!--{if !$arrProduct.favorite_count}-->
                                 <a
-                                    href="javascript:fnModeSubmit('add_favorite','favorite_product_id','<!--{$arrProduct.product_id|escape}-->');"
+                                    href="javascript:fnModeSubmit('add_favorite','favorite_product_id','<!--{$arrProduct.product_id|h}-->');"
                                     onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/add_favolite_product_on.gif','add_favolite_product');"
                                     onmouseout="chgImg('<!--{$TPL_DIR}-->img/products/add_favolite_product.gif','add_favolite_product');"
                                 ><img src="<!--{$TPL_DIR}-->img/products/add_favolite_product.gif" width="115" height="20" alt="お気に入りに追加" name="add_favolite_product" id="add_favolite_product" /></a>
@@ -421,7 +421,7 @@ $(document).ready(function() {
         <!--{assign var=key value="sub_title`$smarty.section.cnt.index+1`"}-->
         <!--{if $arrProduct[$key] != ""}-->
             <div class="subarea">
-                <h3><!--★サブタイトル★--><!--{$arrProduct[$key]|escape}--></h3>
+                <h3><!--★サブタイトル★--><!--{$arrProduct[$key]|h}--></h3>
                 <!--{assign var=ckey value="sub_comment`$smarty.section.cnt.index+1`"}-->
 
                 <div class="subtext"><!--★サブテキスト★--><!--{$arrProduct[$ckey]|nl2br_html}--></div>
@@ -433,16 +433,16 @@ $(document).ready(function() {
                     <div class="subphotoimg">
                         <a
                             <!--{if $arrProduct[$lkey]|strlen >= 1}-->
-                                href="<!--{$smarty.const.IMAGE_SAVE_URL}--><!--{$arrProduct[$lkey]|escape}-->"
+                                href="<!--{$smarty.const.IMAGE_SAVE_URL}--><!--{$arrProduct[$lkey]|h}-->"
                                 class="expansion"
-                                onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_expansion_on.gif', 'expansion_<!--{$lkey|escape}-->');"
-                                onmouseout="chgImg('<!--{$TPL_DIR}-->img/products/b_expansion.gif', 'expansion_<!--{$lkey|escape}-->');"
+                                onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_expansion_on.gif', 'expansion_<!--{$lkey|h}-->');"
+                                onmouseout="chgImg('<!--{$TPL_DIR}-->img/products/b_expansion.gif', 'expansion_<!--{$lkey|h}-->');"
                                 target="_blank"
                             <!--{/if}-->
                         >
-                            <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrProduct.name|escape}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" /><br />
+                            <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrProduct.name|h}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" /><br />
                             <!--{if $arrProduct[$lkey]|strlen >= 1}-->
-                                <img src="<!--{$TPL_DIR}-->img/products/b_expansion.gif" width="85" height="13" alt="画像を拡大する" id="expansion_<!--{$lkey|escape}-->" />
+                                <img src="<!--{$TPL_DIR}-->img/products/b_expansion.gif" width="85" height="13" alt="画像を拡大する" id="expansion_<!--{$lkey|h}-->" />
                             <!--{/if}-->
                         </a>
                     </div>
@@ -465,13 +465,13 @@ $(document).ready(function() {
                 <!-- 左列 -->
                 <div class="whoboughtleft">
 
-                    <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id|escape:url}-->">
-                        <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$arrRecommend[cnt].main_list_image|sfNoImageMainList|escape}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[cnt].name|escape}-->" /></a>
+                    <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id|u}-->">
+                        <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$arrRecommend[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[cnt].name|h}-->" /></a>
 
                     <div class="whoboughtrightblock">
                         <!--{assign var=price02_min value=`$arrRecommend[cnt].price02_min`}-->
                         <!--{assign var=price02_max value=`$arrRecommend[cnt].price02_max`}-->
-                        <h3><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id|escape:url}-->"><!--{$arrRecommend[cnt].name|escape}--></a></h3>
+                        <h3><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id|u}-->"><!--{$arrRecommend[cnt].name|h}--></a></h3>
 
                         <p class="sale_price"><!--{$smarty.const.SALE_PRICE_TITLE}--><span class="mini">(税込)</span>：<span class="price">
                             <!--{if $price02_min == $price02_max}-->
@@ -479,7 +479,7 @@ $(document).ready(function() {
                             <!--{else}-->
                                 <!--{$price02_min|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->～<!--{$price02_max|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
                             <!--{/if}-->円</span></p>
-                        <p class="mini"><!--{$arrRecommend[cnt].comment|escape|nl2br}--></p>
+                        <p class="mini"><!--{$arrRecommend[cnt].comment|h|nl2br}--></p>
                     </div>
                 </div>
                 <!-- 左列 -->
@@ -492,13 +492,13 @@ $(document).ready(function() {
                 <!-- 右列 -->
                 <div class="whoboughtright">
 
-                    <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id|escape:url}-->">
-                        <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$arrRecommend[cnt].main_list_image|sfNoImageMainList|escape}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[cnt].name|escape}-->" /></a>
+                    <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id|u}-->">
+                        <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$arrRecommend[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[cnt].name|h}-->" /></a>
 
                     <div class="whoboughtrightblock">
                         <!--{assign var=price02_min value=`$arrRecommend[cnt].price02_min`}-->
                         <!--{assign var=price02_max value=`$arrRecommend[cnt].price02_max`}-->
-                        <h3><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id|escape:url}-->"><!--{$arrRecommend[cnt].name|escape}--></a></h3>
+                        <h3><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id|u}-->"><!--{$arrRecommend[cnt].name|h}--></a></h3>
 
                         <p class="sale_price"><!--{$smarty.const.SALE_PRICE_TITLE}--><span class="mini">(税込)</span>：<span class="price">
 
@@ -507,7 +507,7 @@ $(document).ready(function() {
                             <!--{else}-->
                                 <!--{$price02_min|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->～<!--{$price02_max|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
                             <!--{/if}-->円</span></p>
-                        <p class="mini"><!--{$arrRecommend[cnt].comment|escape|nl2br}--></p>
+                        <p class="mini"><!--{$arrRecommend[cnt].comment|h|nl2br}--></p>
                     </div>
                 </div>
                 <!-- 右列 -->

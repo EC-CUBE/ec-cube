@@ -23,9 +23,9 @@
 *}-->
 <form name="form1" id="form1" method="post" action="?">
     <input type="hidden" name="mode" value="complete" />
-    <input type="hidden" name="review_id" value="<!--{$arrReview.review_id|escape}-->" />
+    <input type="hidden" name="review_id" value="<!--{$arrReview.review_id|h}-->" />
     <!--{foreach key=key item=item from=$arrSearchHidden}-->
-        <input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->" />
+        <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
     <!--{/foreach}-->
 
     <div id="products" class="contents-main">
@@ -34,7 +34,7 @@
         <table>
             <tr>
                 <th>商品名</th>
-                <td><!--{$arrReview.name|escape}--></td>
+                <td><!--{$arrReview.name|h}--></td>
             </tr>
             <tr>
                 <th>レビュー表示</th>
@@ -51,14 +51,14 @@
                 <th>投稿者名 <span class="attention">*</span></th>
                 <td>
                     <!--{if $arrErr.reviewer_name}--><span class="attention"><!--{$arrErr.reviewer_name}--></span><!--{/if}-->
-                    <input type="text" class="box60" name="reviewer_name" value="<!--{$arrReview.reviewer_name|escape}-->" style="<!--{$arrErr.reviewer_name|sfGetErrorColor}-->" size=30>
+                    <input type="text" class="box60" name="reviewer_name" value="<!--{$arrReview.reviewer_name|h}-->" style="<!--{$arrErr.reviewer_name|sfGetErrorColor}-->" size=30>
                 </td>
             </tr>
             <tr>
                 <th>投稿者URL</th>
                 <td>
                     <!--{if $arrErr.reviewer_url}--><span class="attention"><!--{$arrErr.reviewer_url}--></span><!--{/if}-->
-                    <input type="text" class="box60" name="reviewer_url" maxlength="<!--{$smarty.const.URL_LEN}-->" value="<!--{$arrReview.reviewer_url|escape}-->" style="<!--{$arrErr.reviewer_url|sfGetErrorColor}-->" size=30>
+                    <input type="text" class="box60" name="reviewer_url" maxlength="<!--{$smarty.const.URL_LEN}-->" value="<!--{$arrReview.reviewer_url|h}-->" style="<!--{$arrErr.reviewer_url|sfGetErrorColor}-->" size=30>
                 </td>
             </tr>
             <tr>
@@ -82,14 +82,14 @@
                 <th>タイトル <span class="attention">*</span></th>
                 <td>
                     <!--{if $arrErr.title}--><span class="attention"><!--{$arrErr.title}--></span><!--{/if}-->
-                    <input type="text" class="box60" name="title" value="<!--{$arrReview.title|escape}-->" style="<!--{$arrErr.title|sfGetErrorColor}-->" size=30><span class="attention">
+                    <input type="text" class="box60" name="title" value="<!--{$arrReview.title|h}-->" style="<!--{$arrErr.title|sfGetErrorColor}-->" size=30><span class="attention">
                 </td>
             </tr>
             <tr>
                 <th>コメント <span class="attention">*</span></th>
                 <td>
                     <!--{if $arrErr.comment}--><span class="attention"><!--{$arrErr.comment}--></span><!--{/if}-->
-                    <textarea name="comment" rows="20" cols="60" class="area60" wrap="soft" style="<!--{$arrErr.comment|sfGetErrorColor}-->" ><!--{$arrReview.comment|escape}--></textarea>
+                    <textarea name="comment" rows="20" cols="60" class="area60" wrap="soft" style="<!--{$arrErr.comment|sfGetErrorColor}-->" ><!--{$arrReview.comment|h}--></textarea>
                 </td>
             </tr>
         </table>

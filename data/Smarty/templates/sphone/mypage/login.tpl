@@ -24,7 +24,7 @@
 <!--▼CONTENTS-->
 <div id="under02column">
   <div id="under02column_login">
-    <h2 class="title"><!--{$tpl_title|escape}--></h2>
+    <h2 class="title"><!--{$tpl_title|h}--></h2>
     <form name="login_mypage" id="login_mypage" method="post" action="./login_check.php" onsubmit="return fnCheckLogin('login_mypage')">
     <input type="hidden" name="mode" value="login" />
    <div class="loginarea">
@@ -35,7 +35,7 @@
        <span class="attention"><!--{$arrErr[$key]}--></span>
        <p>メールアドレス:&nbsp;
          <input type="text" name="<!--{$key}-->"
-                value="<!--{$tpl_login_email|escape}-->"
+                value="<!--{$tpl_login_email|h}-->"
                 maxlength="<!--{$arrForm[$key].length}-->"
                 style="<!--{$arrErr[$key]|sfGetErrorColor}-->; ime-mode: disabled;"
                 size="40" class="box300" />

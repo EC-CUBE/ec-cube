@@ -25,11 +25,11 @@
 <input type="hidden" name="mode" value="complete" />
 <!--{foreach key=key item=item from=$arrTrackback}-->
 <!--{if $key ne "mode"}-->
-<input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->" />
+<input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
 <!--{/if}-->
 <!--{/foreach}-->
 <!--{foreach key=key item=item from=$arrSearchHidden}-->
-<input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->" />
+<input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
 <!--{/foreach}-->
 
 <div id="products" class="contents-main">
@@ -39,23 +39,23 @@
 <table>
   <tr>
     <th>商品名</th>
-    <td><!--{$arrTrackback.name|escape}--></td>
+    <td><!--{$arrTrackback.name|h}--></td>
   </tr>
   <tr>
     <th>ブログ名</th>
-    <td><!--{$arrTrackback.blog_name|escape}--></td>
+    <td><!--{$arrTrackback.blog_name|h}--></td>
   </tr>
   <tr>
     <th>ブログ記事タイトル</th>
-    <td><!--{$arrTrackback.title|escape}--></td>
+    <td><!--{$arrTrackback.title|h}--></td>
   </tr>
   <tr>
     <th>ブログ記事内容</th>
-    <td><!--{$arrTrackback.excerpt|escape}--></td>
+    <td><!--{$arrTrackback.excerpt|h}--></td>
   </tr>
   <tr>
     <th>ブログURL</th>
-    <td><!--{$arrTrackback.url|escape}--></td>
+    <td><!--{$arrTrackback.url|h}--></td>
   </tr>
   <tr>
     <th>投稿日</th>

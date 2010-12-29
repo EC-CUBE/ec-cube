@@ -20,7 +20,7 @@ function fnTargetSelf(){
 <input type="hidden" name="mode" value="" />
 <input type="hidden" name="page_id" value="<!--{$page_id}-->" />
 <input type="hidden" name="bloc_cnt" value="<!--{$bloc_cnt}-->" />
-<input type="hidden" name="device_type_id" value="<!--{$device_type_id|escape}-->" />
+<input type="hidden" name="device_type_id" value="<!--{$device_type_id|h}-->" />
 
 <div id="design" class="contents-main">
     <!--{* ▼レイアウトここから *}-->

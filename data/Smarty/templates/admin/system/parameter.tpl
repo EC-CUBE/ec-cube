@@ -38,13 +38,13 @@
 <!--{section name=cnt loop=$arrKeys}-->
     <tr>
       <th>
-      <!--{$arrKeys[cnt]|escape}-->
+      <!--{$arrKeys[cnt]|h}-->
       </th>
       <td>
-        <div style="font-size: 80%; color: #666666"><!--{$arrComments[cnt]|escape}--></div>
+        <div style="font-size: 80%; color: #666666"><!--{$arrComments[cnt]|h}--></div>
         <div>
           <!--{assign var=key value=$arrKeys[cnt]}-->
-          <input type="text" name="<!--{$arrKeys[cnt]|escape}-->" value="<!--{$arrValues[cnt]|escape}-->" style="width: 370px; <!--{if $arrErr.$key != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" />
+          <input type="text" name="<!--{$arrKeys[cnt]|h}-->" value="<!--{$arrValues[cnt]|h}-->" style="width: 370px; <!--{if $arrErr.$key != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" />
           <!--{if $arrErr.$key}-->
           <span class="attention"><!--{$arrErr.$key}--></span>
           <!--{/if}-->

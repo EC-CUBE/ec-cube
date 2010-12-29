@@ -33,7 +33,7 @@
 電話番号：<br>
 <!--{$tel01}-->-<!--{$tel02}-->-<!--{$tel03}--><br>
 【E-mail】<br>
-<a href="mailto:<!--{$email02|escape:'url'}-->"><!--{$email02|escape}--></a><br>
+<a href="mailto:<!--{$email02|u}-->"><!--{$email02|h}--></a><br>
 ※お急ぎの場合には、お電話にてお問い合せ下さい。<br>
 
 <br>

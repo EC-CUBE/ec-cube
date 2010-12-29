@@ -22,20 +22,20 @@
  */
 *}-->
 <!-- ▼タイトル ここから -->
-<center><!--{$tpl_subtitle|escape}--></center>
+<center><!--{$tpl_subtitle|h}--></center>
 <!-- ▲タイトル ここまで -->
 
 <hr>
 
 <!--{if isset($tpl_previous_page|smarty:nodefaults) || isset($tpl_next_page|smarty:nodefaults)}-->
 <!--{if isset($tpl_previous_page|smarty:nodefaults)}-->
-<a href="<!--{$tpl_previous_page|escape}-->">前へ</a>
+<a href="<!--{$tpl_previous_page|h}-->">前へ</a>
 <!--{/if}-->
 <!--{if isset($tpl_previous_page|smarty:nodefaults) && isset($tpl_next_page|smarty:nodefaults)}-->
 ｜
 <!--{/if}-->
 <!--{if isset($tpl_next_page|smarty:nodefaults)}-->
-<a href="<!--{$tpl_next_page|escape}-->">次へ</a>
+<a href="<!--{$tpl_next_page|h}-->">次へ</a>
 <!--{/if}-->
 <br><br>
 <!--{/if}-->
@@ -43,7 +43,7 @@
 <!--{foreach from=$arrProducts key=i item=arrProduct}-->
 <!-- ▼商品 ここから -->
 <!--{if $i+1<9}--><!--{$i+1|numeric_emoji}--><!--{else}-->[<!--{$i+1}-->]<!--{/if}-->
-<!-- 商品名 --><!--{$arrProduct.name|escape}--><br>
+<!-- 商品名 --><!--{$arrProduct.name|h}--><br>
 
 <!--{$smarty.const.SALE_PRICE_TITLE}-->：
 <!--{if $arrProduct.price02_min == $arrProduct.price02_max}-->
@@ -55,9 +55,9 @@
 
 <div align="right">
 <!--{if $i+1<9}-->
-<a href="<!--{$smarty.const.MOBILE_DETAIL_P_HTML}--><!--{$arrProduct.product_id|escape:url}-->" accesskey="<!--{$i+1}-->">商品詳細へ→</a>
+<a href="<!--{$smarty.const.MOBILE_DETAIL_P_HTML}--><!--{$arrProduct.product_id|u}-->" accesskey="<!--{$i+1}-->">商品詳細へ→</a>
 <!--{else}-->
-<a href="<!--{$smarty.const.MOBILE_DETAIL_P_HTML}--><!--{$arrProduct.product_id|escape:url}-->">商品詳細へ→</a>
+<a href="<!--{$smarty.const.MOBILE_DETAIL_P_HTML}--><!--{$arrProduct.product_id|u}-->">商品詳細へ→</a>
 <!--{/if}-->
 </div>
 
@@ -73,13 +73,13 @@
 
 <!--{if isset($tpl_previous_page|smarty:nodefaults) || isset($tpl_next_page|smarty:nodefaults)}-->
 <!--{if isset($tpl_previous_page|smarty:nodefaults)}-->
-<a href="<!--{$tpl_previous_page|escape}-->">前へ</a>
+<a href="<!--{$tpl_previous_page|h}-->">前へ</a>
 <!--{/if}-->
 <!--{if isset($tpl_previous_page|smarty:nodefaults) && isset($tpl_next_page|smarty:nodefaults)}-->
 ｜
 <!--{/if}-->
 <!--{if isset($tpl_next_page|smarty:nodefaults)}-->
-<a href="<!--{$tpl_next_page|escape}-->">次へ</a>
+<a href="<!--{$tpl_next_page|h}-->">次へ</a>
 <!--{/if}-->
 <br>
 <!--{/if}-->

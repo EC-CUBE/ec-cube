@@ -25,7 +25,7 @@
 <input type="hidden" name="mode" value="complete" />
 <!--{foreach from=$arrForm key=key item=item}-->
 <!--{if $key ne "mode" && $key ne "subm"}-->
-<input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->" />
+<input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->" />
 <!--{/if}-->
 <!--{/foreach}-->
 <div id="customer" class="contents-main">

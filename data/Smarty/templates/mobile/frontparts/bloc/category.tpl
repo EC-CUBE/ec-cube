@@ -29,6 +29,6 @@
 <!--{else}-->
 <!--{assign var=path value="`$smarty.const.MOBILE_URL_DIR`products/list.php"}-->
 <!--{/if}-->
-　<font color="<!--{cycle values="#000000,#880000,#8888ff,#88ff88,#ff0000"}-->">■</font><a href="<!--{$path}-->?category_id=<!--{$arrCat[cnt].category_id}-->"><!--{$disp_name|sfCutString:20|escape}--></a><br>
+　<font color="<!--{cycle values="#000000,#880000,#8888ff,#88ff88,#ff0000"}-->">■</font><a href="<!--{$path}-->?category_id=<!--{$arrCat[cnt].category_id}-->"><!--{$disp_name|sfCutString:20|h}--></a><br>
 <!--{/section}-->
 <!--▲商品カテゴリーここまで-->

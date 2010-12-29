@@ -28,13 +28,13 @@
 	<!--{$tpl_message}--><br>
 <!--{/if}-->
 <!--{if count($arrProductsClass) > 0}-->
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->"  utn>
+<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|h}-->"  utn>
 	<input type="hidden" name="mode" value="confirm">
 	<input type="hidden" name="cart_no" value="">
 	<!--ご注文内容ここから-->
 	<hr>
 	<!--{section name=cnt loop=$arrProductsClass}-->
-		<!--{* 商品名 *}--><!--{$arrProductsClass[cnt].name|escape}--><br>
+		<!--{* 商品名 *}--><!--{$arrProductsClass[cnt].name|h}--><br>
 		<!--{* 販売価格 *}-->
 		\<!--{$arrProductsClass[cnt].price02|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
 		× <!--{$arrProductsClass[cnt].quantity}--><br>
@@ -48,12 +48,12 @@
 		<br>
 		<!--{* 数量 *}-->
 		数量:<!--{$arrProductsClass[cnt].quantity}-->
-		<a href="<!--{$smarty.server.PHP_SELF|escape}-->?mode=up&amp;cart_no=<!--{$arrProductsClass[cnt].cart_no}-->">+</a>
-		<a href="<!--{$smarty.server.PHP_SELF|escape}-->?mode=down&amp;cart_no=<!--{$arrProductsClass[cnt].cart_no}-->">-</a>
-		<a href="<!--{$smarty.server.PHP_SELF|escape}-->?mode=delete&amp;cart_no=<!--{$arrProductsClass[cnt].cart_no}-->">削除</a><br>
+		<a href="<!--{$smarty.server.PHP_SELF|h}-->?mode=up&amp;cart_no=<!--{$arrProductsClass[cnt].cart_no}-->">+</a>
+		<a href="<!--{$smarty.server.PHP_SELF|h}-->?mode=down&amp;cart_no=<!--{$arrProductsClass[cnt].cart_no}-->">-</a>
+		<a href="<!--{$smarty.server.PHP_SELF|h}-->?mode=delete&amp;cart_no=<!--{$arrProductsClass[cnt].cart_no}-->">削除</a><br>
 		<!--{* 合計 *}-->
 		小計:<!--{$arrProductsClass[cnt].total_inctax|number_format}-->円<br>
-		<div align="right"><a href="<!--{$smarty.const.MOBILE_DETAIL_P_HTML}--><!--{$arrProductsClass[cnt].product_id|escape:url}-->">商品詳細へ→</a></div>
+		<div align="right"><a href="<!--{$smarty.const.MOBILE_DETAIL_P_HTML}--><!--{$arrProductsClass[cnt].product_id|u}-->">商品詳細へ→</a></div>
 		<HR>
 	<!--{/section}-->
 	商品合計:<!--{$tpl_total_inctax|number_format}-->円<br>
@@ -65,7 +65,7 @@
 	<br>
 	<center><input type="submit" value="注文する"></center>
 </form>
-<form method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+<form method="post" action="<!--{$smarty.server.PHP_SELF|h}-->">
 	<input type="hidden" name="mode" value="continue">
 	<center><input type="submit" value="お買物を続ける"></center>
 </form>

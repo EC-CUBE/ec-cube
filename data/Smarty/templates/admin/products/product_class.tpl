@@ -24,21 +24,21 @@
 <h2>商品規格登録</h2>
 <form name="form1" id="form1" method="post" action="" enctype="multipart/form-data">
 <!--{foreach key=key item=item from=$arrSearchHidden}-->
-<input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->" />
+<input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
 <!--{/foreach}-->
 <input type="hidden" name="mode" value="edit" />
 <input type="hidden" name="product_id" value="<!--{$tpl_product_id}-->" />
 <input type="hidden" name="pageno" value="<!--{$tpl_pageno}-->" />
 <input type="hidden" name="down_key" value="">
 <!--{foreach key=key item=item from=$arrHidden}-->
-<input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->" />
+<input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
 <!--{/foreach}-->
 <div id="products" class="contents-main">
 
   <table>
     <tr>
       <th>商品名</th>
-      <td><!--{$arrForm.product_name|escape}--></td>
+      <td><!--{$arrForm.product_name|h}--></td>
     </tr>
     <tr>
       <th>規格1<span class="attention">*</span></th>
@@ -149,13 +149,13 @@
       <td>
         <!--{assign var=key value="down_filename:`$smarty.section.cnt.iteration`"}-->
         <span class="attention"><!--{$arrErr[$key]}--></span>
-        <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key]|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr[$key] != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" size="30" class="box30" />
+        <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key]|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr[$key] != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" size="30" class="box30" />
       </td>
       <!--{assign var=key value="down_realfilename:`$smarty.section.cnt.iteration`"}-->
       <td>
         <span class="attention"><!--{$arrErr[$key]}--></span>
           <!--{if $arrForm[$key] != ""}-->
-            <!--{$arrForm[$key]|escape}--><input type="hidden" name="<!--{$key}-->" value="<!--{$arrForm[$key]|escape}-->">
+            <!--{$arrForm[$key]|h}--><input type="hidden" name="<!--{$key}-->" value="<!--{$arrForm[$key]|h}-->">
             <a href="" onclick="fnModeSubmit('delete_down', 'down_key', '<!--{$key}-->'); return false;">[ファイルの取り消し]</a><br>
           <!--{/if}-->
           <input type="file" name="<!--{$key}-->" size="50" class="box50" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />

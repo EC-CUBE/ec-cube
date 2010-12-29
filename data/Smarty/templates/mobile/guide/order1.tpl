@@ -27,20 +27,20 @@
 
 <!-- ▼本文 ここから -->
 [emoji:39]<font color="#800000">販売業者</font><br>
-<!--{$arrRet.law_company|escape}--><br>
+<!--{$arrRet.law_company|h}--><br>
 [emoji:63]<font color="#800000">運営責任者</font><br>
-<!--{$arrRet.law_manager|escape}--><br>
+<!--{$arrRet.law_manager|h}--><br>
 [emoji:38]<font color="#800000">住所</font><br>
-〒<!--{$arrRet.law_zip01|escape}-->-<!--{$arrRet.law_zip02|escape}--><br>
-<!--{$arrPref[$arrRet.law_pref]|escape}--><!--{$arrRet.law_addr01|escape}--><!--{$arrRet.law_addr02|escape}--><br>
+〒<!--{$arrRet.law_zip01|h}-->-<!--{$arrRet.law_zip02|h}--><br>
+<!--{$arrPref[$arrRet.law_pref]|h}--><!--{$arrRet.law_addr01|h}--><!--{$arrRet.law_addr02|h}--><br>
 [emoji:74]<font color="#800000">電話番号</font><br>
-<!--{$arrRet.law_tel01|escape}-->-<!--{$arrRet.law_tel02|escape}-->-<!--{$arrRet.law_tel03|escape}--><br>
+<!--{$arrRet.law_tel01|h}-->-<!--{$arrRet.law_tel02|h}-->-<!--{$arrRet.law_tel03|h}--><br>
 [emoji:76]<font color="#800000">FAX番号</font><br>
-<!--{$arrRet.law_fax01|escape}-->-<!--{$arrRet.law_fax02|escape}-->-<!--{$arrRet.law_fax03|escape}--><br>
+<!--{$arrRet.law_fax01|h}-->-<!--{$arrRet.law_fax02|h}-->-<!--{$arrRet.law_fax03|h}--><br>
 [emoji:120]<font color="#800000">メールアドレス</font><br>
 <a href="mailto:<!--{$arrRet.law_email|escape:'hex'}-->"><!--{$arrRet.law_email|escape:'hexentity'}--></a><br>
 [emoji:e11]<font color="#800000">URL</font><br>
-<a href="<!--{$arrRet.law_url|escape}-->"><!--{$arrRet.law_url|escape}--></a><br>
+<a href="<!--{$arrRet.law_url|h}-->"><!--{$arrRet.law_url|h}--></a><br>
 <!-- ▲本文 ここまで -->
 
 <br>

@@ -57,10 +57,10 @@
         <!--{else}-->
           <img src="<!--{$smarty.const.URL_DIR}-->misc/closef.gif">
         <!--{/if}-->
-        <!--{$disp_name|sfCutString:20|escape}--></a><br />
+        <!--{$disp_name|sfCutString:20|h}--></a><br />
       <!--{else}-->
         <img src="<!--{$smarty.const.URL_DIR}-->misc/closef.gif">
-        <!--{$disp_name|sfCutString:20|escape}--></a><br />
+        <!--{$disp_name|sfCutString:20|h}--></a><br />
       <!--{/if}-->
 
       <!--{if $arrTree[cnt].display == true}-->
@@ -84,7 +84,7 @@
     <!--{if $arrErr.category_name}-->
     <span class="attention"><!--{$arrErr.category_name}--></span>
     <!--{/if}-->
-    <input type="text" name="category_name" value="<!--{$arrForm.category_name|escape}-->" size="30" class="box30" maxlength="<!--{$smarty.const.STEXT_LEN}-->" />
+    <input type="text" name="category_name" value="<!--{$arrForm.category_name|h}-->" size="30" class="box30" maxlength="<!--{$smarty.const.STEXT_LEN}-->" />
     <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('edit','','');"><span>登録</span></a><span class="attention">（上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
     
     <!--{if count($arrList) > 0}-->
@@ -131,9 +131,9 @@ $(document).ready(function() {
 		<td class="center"><!--{$arrList[cnt].category_id}--></td>
         <td>
         <!--{if $arrList[cnt].level != $smarty.const.LEVEL_MAX}-->
-          <a href="?" onclick="fnModeSubmit('tree', 'parent_category_id', <!--{$arrList[cnt].category_id}-->); return false"><!--{$arrList[cnt].category_name|escape}--></a>
+          <a href="?" onclick="fnModeSubmit('tree', 'parent_category_id', <!--{$arrList[cnt].category_id}-->); return false"><!--{$arrList[cnt].category_name|h}--></a>
         <!--{else}-->
-          <!--{$arrList[cnt].category_name|escape}-->
+          <!--{$arrList[cnt].category_name|h}-->
         <!--{/if}-->
         </td>
         <td align="center">

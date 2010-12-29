@@ -26,15 +26,15 @@
 <!--{foreach key=key item=item from=$arrForm}-->
   <!--{if '/payment_ids:/'|preg_match:$key}-->
     <!--{foreach item=paymentsVal from=$item}-->
-      <input type="hidden" name="<!--{$key}-->[]" value="<!--{$paymentsVal|escape}-->" />
+      <input type="hidden" name="<!--{$key}-->[]" value="<!--{$paymentsVal|h}-->" />
     <!--{/foreach}-->
   <!--{else}-->
-    <input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->" />
+    <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
   <!--{/if}-->
 <!--{/foreach}-->
 
 <!--{foreach key=key item=item from=$arrHidden}-->
-<input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->" />
+<input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
 <!--{/foreach}-->
 <div id="products" class="contents-main">
 
@@ -83,7 +83,7 @@
       <!--{assign var=key value="payment_ids:`$smarty.section.cnt.iteration`"}-->
       <td>
       <!--{foreach from=$arrForm[$key] item=payment_id}-->
-        <!--{$arrPayments[$payment_id]|escape}-->&nbsp;
+        <!--{$arrPayments[$payment_id]|h}-->&nbsp;
       <!--{/foreach}-->
       </td>
       <!--{assign var=key value="down_filename:`$smarty.section.cnt.iteration`"}-->

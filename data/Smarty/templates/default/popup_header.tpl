@@ -31,10 +31,17 @@
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/win_op.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/site.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/jquery-1.4.2.min.js"></script>
-<title><!--{$arrSiteInfo.shop_name}-->/<!--{$subtitle|escape}--></title>
+<title><!--{$arrSiteInfo.shop_name}-->/<!--{$subtitle|h}--></title>
+<script type="text/javascript">//<![CDATA[
+    <!--{$tpl_javascript}-->
+    $(function(){
+        <!--{$tpl_onload}-->
+    });
+//]]>
+</script>
 </head>
 
-<body onload="<!--{$tpl_onload}--> <!--{$tpl_start}-->">
+<body>
 <noscript>
   <p><em>JavaScriptを有効にしてご利用下さい.</em></p>
 </noscript>

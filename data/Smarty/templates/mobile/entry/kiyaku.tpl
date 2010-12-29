@@ -23,7 +23,7 @@
 *}-->
 <div align="center">ご利用規約</div>
 <hr>
-<!--{$tpl_kiyaku_text|escape|nl2br}--><br>
+<!--{$tpl_kiyaku_text|h|nl2br}--><br>
 
 <BR>
 <!--{if $offset != -1}-->

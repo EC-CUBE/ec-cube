@@ -25,7 +25,7 @@
 
 <hr>
 
-<!--{$tpl_name|escape}-->様<br>
+<!--{$tpl_name|h}-->様<br>
 いつもご利用いただきありがとうございます。ご使用の携帯電話のメールアドレスをご登録下さい。<br>
 
 <br>
@@ -34,12 +34,12 @@
 <!--{if @$tpl_kara_mail_to != ''}-->
 <font color="#ff0000"><!--{$arrErr[$key]|default:''}--></font>
 次のリンクをクリックして空メールを送信してください。<br>
-<center><a href="mailto:<!--{$tpl_kara_mail_to|escape:'url'}-->">メール送信</a></center>
+<center><a href="mailto:<!--{$tpl_kara_mail_to|u}-->">メール送信</a></center>
 <!--{else}-->
-<form method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+<form method="post" action="<!--{$smarty.server.PHP_SELF|h}-->">
 ▼メールアドレス<br>
 <font color="#ff0000"><!--{$arrErr[$key]|default:''}--></font>
-<input type="text" name="email_mobile" value="<!--{$arrForm[$key].value|escape}-->" size="40" maxlength="<!--{$arrForm[$key].length}-->" istyle="3"><br>
+<input type="text" name="email_mobile" value="<!--{$arrForm[$key].value|h}-->" size="40" maxlength="<!--{$arrForm[$key].length}-->" istyle="3"><br>
 <center><input type="submit" value="送信"></center>
 <center><a href="../mypage/<!--{$smarty.const.DIR_INDEX_URL}-->" accesskey="0">今は登録しない</a></center>
 </form>

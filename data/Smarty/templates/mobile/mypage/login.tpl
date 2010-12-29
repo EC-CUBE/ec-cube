@@ -31,7 +31,7 @@
 	▼メールアドレス<br>
 	<!--{assign var=key value="login_email"}-->
 	<font color="#FF0000"><!--{$arrErr[$key]}--></font>
-	<input type="text" name="<!--{$key}-->" value="<!--{$login_email|escape}-->" 
+	<input type="text" name="<!--{$key}-->" value="<!--{$login_email|h}-->" 
 		size="40" istyle="3"><br>
 <!--{else}-->
 	<input type="hidden" name="login_email" value="dummy">

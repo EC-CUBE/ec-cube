@@ -26,8 +26,8 @@
 <hr>
 
 <!-- ▼本文 ここから -->
-<font color="#ff0000"><!--{$tpl_kiyaku_title|escape}--></font><br>
-<!--{$tpl_kiyaku_text|escape}--><br>
+<font color="#ff0000"><!--{$tpl_kiyaku_title|h}--></font><br>
+<!--{$tpl_kiyaku_text|h}--><br>
 <!-- ▲本文 ここまで -->
 
 <!--{if !$tpl_kiyaku_is_first || !$tpl_kiyaku_is_last}-->

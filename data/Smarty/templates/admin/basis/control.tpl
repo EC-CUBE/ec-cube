@@ -30,7 +30,7 @@
     </tr>
     <!--{section name=cnt loop=$arrControlList}-->
     <tr>
-      <td><strong><!--{$arrControlList[cnt].control_title|escape}--></strong><br /><!--{$arrControlList[cnt].control_text|escape}--></td>
+      <td><strong><!--{$arrControlList[cnt].control_title|h}--></strong><br /><!--{$arrControlList[cnt].control_text|h}--></td>
       <td align="center">
         <form name="form<!--{$smarty.section.cnt.index}-->" id="form<!--{$smarty.section.cnt.index}-->" method="post" action="?">
         <input type="hidden" name="mode" value="edit" />

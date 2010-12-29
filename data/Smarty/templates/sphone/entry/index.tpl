@@ -22,7 +22,7 @@
  <!--▼CONTENTS-->
 <div id="undercolumn">
     <div id="undercolumn_entry">
-        <h2 class="title"><!--{$tpl_title|escape}--></h2>
+        <h2 class="title"><!--{$tpl_title|h}--></h2>
         <!--{if $smarty.const.CUSTOMER_CONFIRM_MAIL}-->
             <p>ご登録されますと、まずは仮会員となります。<br />
                 入力されたメールアドレスに、ご連絡が届きますので、本会員になった上でお買い物をお楽しみください。</p>

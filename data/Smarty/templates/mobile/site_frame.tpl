@@ -24,10 +24,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=shift_jis">
-<title><!--{$arrSiteInfo.shop_name|escape}--><!--{if $tpl_subtitle|strlen >= 1}-->/<!--{$tpl_subtitle|escape}--><!--{elseif $tpl_title|strlen >= 1}-->/<!--{$tpl_title|escape}--><!--{/if}--></title>
-<meta name="author" content="<!--{$arrPageLayout.author|escape}-->">
-<meta name="description" content="<!--{$arrPageLayout.description|escape}-->">
-<meta name="keywords" content="<!--{$arrPageLayout.keyword|escape}-->">
+<title><!--{$arrSiteInfo.shop_name|h}--><!--{if $tpl_subtitle|strlen >= 1}-->/<!--{$tpl_subtitle|h}--><!--{elseif $tpl_title|strlen >= 1}-->/<!--{$tpl_title|h}--><!--{/if}--></title>
+<meta name="author" content="<!--{$arrPageLayout.author|h}-->">
+<meta name="description" content="<!--{$arrPageLayout.description|h}-->">
+<meta name="keywords" content="<!--{$arrPageLayout.keyword|h}-->">
 </head>
 <!-- ▼ ＢＯＤＹ部 スタート -->
 <!--{include file='./site_main.tpl'}-->

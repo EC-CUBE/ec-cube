@@ -23,13 +23,13 @@
 *}-->
 <!--▼CONTENTS-->
 <div id="mypagecolumn">
-  <h2 class="title"><!--{$tpl_title|escape}--></h2>
+  <h2 class="title"><!--{$tpl_title|h}--></h2>
   <!--{include file=$tpl_navi}-->
   <form name="form1" method="post" action="?">
   <input type="hidden" name="mode" value="complete" />
   <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->" />
   <div id="mycontentsarea">
-    <h3><!--{$tpl_subtitle|escape}--></h3>
+    <h3><!--{$tpl_subtitle|h}--></h3>
     <div id="completetext">
       <p>退会手続きを実行してもよろしいでしょうか？</p>
       <div class="tblareabtn">

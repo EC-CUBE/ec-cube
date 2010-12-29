@@ -37,19 +37,22 @@
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/win_op.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/site.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/jquery-1.4.2.min.js"></script>
-<title><!--{$arrSiteInfo.shop_name|escape}--><!--{if $tpl_subtitle|strlen >= 1}--> / <!--{$tpl_subtitle|escape}--><!--{elseif $tpl_title|strlen >= 1}--> / <!--{$tpl_title|escape}--><!--{/if}--></title>
+<title><!--{$arrSiteInfo.shop_name|h}--><!--{if $tpl_subtitle|strlen >= 1}--> / <!--{$tpl_subtitle|h}--><!--{elseif $tpl_title|strlen >= 1}--> / <!--{$tpl_title|h}--><!--{/if}--></title>
 <!--{if $arrPageLayout.author|strlen >= 1}-->
-    <meta name="author" content="<!--{$arrPageLayout.author|escape}-->" />
+    <meta name="author" content="<!--{$arrPageLayout.author|h}-->" />
 <!--{/if}-->
 <!--{if $arrPageLayout.description|strlen >= 1}-->
-    <meta name="description" content="<!--{$arrPageLayout.description|escape}-->" />
+    <meta name="description" content="<!--{$arrPageLayout.description|h}-->" />
 <!--{/if}-->
 <!--{if $arrPageLayout.keyword|strlen >= 1}-->
-    <meta name="keywords" content="<!--{$arrPageLayout.keyword|escape}-->" />
+    <meta name="keywords" content="<!--{$arrPageLayout.keyword|h}-->" />
 <!--{/if}-->
 
 <script type="text/javascript">//<![CDATA[
     <!--{$tpl_javascript}-->
+    $(function(){
+        <!--{$tpl_onload}-->
+    });
 //]]>
 </script>
 <!--{* ▼Head COLUMN*}-->

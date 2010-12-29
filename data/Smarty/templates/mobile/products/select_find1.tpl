@@ -27,7 +27,7 @@
 <!--{if $arrErr.classcategory_id1 != ""}-->
 	<font color="#FF0000">※<!--{$tpl_class_name1}-->を入力して下さい｡</font><br>
 <!--{/if}-->
-<form method="post" action="<!--{$smarty.server.REQUEST_URI|escape}-->">
+<form method="post" action="<!--{$smarty.server.REQUEST_URI|h}-->">
 	<select name="classcategory_id1">
 		<option value="">選択してください</option>
 		<!--{html_options options=$arrClassCat1 selected=$arrForm.classcategory_id1.value}-->

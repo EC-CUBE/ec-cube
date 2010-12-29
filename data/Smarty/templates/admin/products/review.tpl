@@ -30,15 +30,15 @@
   <table>
     <tr>
       <th>投稿者名</th>
-      <td><input type="text" name="search_reviewer_name" value="<!--{$arrForm.search_reviewer_name|escape}-->" size="30" class="box30" /></td>
+      <td><input type="text" name="search_reviewer_name" value="<!--{$arrForm.search_reviewer_name|h}-->" size="30" class="box30" /></td>
       <th>投稿者URL</th>
       <td><input type="text" name="search_reviewer_url" value="<!--{$arrForm.search_reviewer_url}-->" size="30" class="box30" /></td>
     </tr>
     <tr>
       <th>商品名</th>
-      <td><input type="text" name="search_name" value="<!--{$arrForm.search_name|escape}-->" size="30" class="box30" /></td>
+      <td><input type="text" name="search_name" value="<!--{$arrForm.search_name|h}-->" size="30" class="box30" /></td>
       <th>商品コード</th>
-      <td><input type="text" name="search_product_code" value="<!--{$arrForm.search_product_code|escape}-->" size="30" class="box30" /></td>
+      <td><input type="text" name="search_product_code" value="<!--{$arrForm.search_product_code|h}-->" size="30" class="box30" /></td>
     </tr>
     <tr>
       <th>性別</th>
@@ -139,8 +139,8 @@
     <!--{section name=cnt loop=$arrReview}-->
     <tr>
       <td><!--{$arrReview[cnt].create_date|sfDispDBDate}--></td>
-      <td><!--{$arrReview[cnt].reviewer_name|escape}--></td>
-      <td><!--{$arrReview[cnt].name|escape}--></td>
+      <td><!--{$arrReview[cnt].reviewer_name|h}--></td>
+      <td><!--{$arrReview[cnt].name|h}--></td>
       <!--{assign var=key value="`$arrReview[cnt].recommend_level`"}-->
       <td><!--{$arrRECOMMEND[$key]}--></td>
       <td class="menu"><!--{if $arrReview[cnt].status eq 1}-->表示<!--{elseif $arrReview[cnt].status eq 2}-->非表示<!--{/if}--></td>

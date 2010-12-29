@@ -26,10 +26,10 @@
     <!--{foreach from=$arrSystemInfo item=info}-->
     <tr>
         <th>
-        <!--{$info.title|escape}-->
+        <!--{$info.title|h}-->
         </td>
         <td>
-        <!--{$info.value|escape|nl2br}-->
+        <!--{$info.value|h|nl2br}-->
         </td>
     </tr>
     <!--{/foreach}-->

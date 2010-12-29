@@ -29,13 +29,13 @@
   <table class="form">
     <tr>
       <th>ブログ名</th>
-      <td><input type="text" name="search_blog_name" value="<!--{$arrForm.search_blog_name|escape}-->" size="30" class="box30" /></td>
+      <td><input type="text" name="search_blog_name" value="<!--{$arrForm.search_blog_name|h}-->" size="30" class="box30" /></td>
       <th>ブログ記事タイトル</th>
-      <td><input type="text" name="search_blog_title" value="<!--{$arrForm.search_blog_title|escape}-->" size="30" class="box30" /></td>
+      <td><input type="text" name="search_blog_title" value="<!--{$arrForm.search_blog_title|h}-->" size="30" class="box30" /></td>
     </tr>
     <tr>
       <th>URL</th>
-      <td><input type="text" name="search_blog_url" value="<!--{$arrForm.search_blog_url|escape}-->" size="30" class="box30" /></td>
+      <td><input type="text" name="search_blog_url" value="<!--{$arrForm.search_blog_url|h}-->" size="30" class="box30" /></td>
       <th>状態</th>
       <td>
       <select name="search_status" style="<!--{$arrErr.search_status|sfGetErrorColor}-->">
@@ -46,9 +46,9 @@
     </tr>
     <tr>
       <th>商品名</th>
-      <td><input type="text" name="search_name" value="<!--{$arrForm.search_name|escape}-->" size="30" class="box30" /></td>
+      <td><input type="text" name="search_name" value="<!--{$arrForm.search_name|h}-->" size="30" class="box30" /></td>
       <th>商品コード</th>
-      <td><input type="text" name="search_product_code" value="<!--{$arrForm.search_product_code|escape}-->" size="30" class="box30" /></td>
+      <td><input type="text" name="search_product_code" value="<!--{$arrForm.search_product_code|h}-->" size="30" class="box30" /></td>
     </tr>
     <tr>
       <th>投稿日</th>
@@ -139,9 +139,9 @@
     <!--{section name=cnt loop=$arrTrackback}-->
     <tr>
       <td><!--{$arrTrackback[cnt].create_date|sfDispDBDate}--></td>
-      <td><!--{$arrTrackback[cnt].name|escape}--></td>
-      <td><a href="<!--{$arrTrackback[cnt].url|escape}-->"><!--{$arrTrackback[cnt].blog_name|escape}--></a></td>
-      <td><!--{$arrTrackback[cnt].title|escape}--></td>
+      <td><!--{$arrTrackback[cnt].name|h}--></td>
+      <td><a href="<!--{$arrTrackback[cnt].url|h}-->"><!--{$arrTrackback[cnt].blog_name|h}--></a></td>
+      <td><!--{$arrTrackback[cnt].title|h}--></td>
       <td><!--{if $arrTrackback[cnt].status eq 1}-->表示<!--{elseif $arrTrackback[cnt].status eq 2}-->非表示<!--{elseif $arrTrackback[cnt].status eq 3}-->スパム<!--{/if}--></td>
       <td><a class="btn-normal" href="javascript:;" onclick="fnChangeAction('./trackback_edit.php'); fnModeSubmit('','trackback_id','<!--{$arrTrackback[cnt].trackback_id}-->');"><span>編集</span></a></td>
       <td><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete','trackback_id','<!--{$arrTrackback[cnt].trackback_id}-->'); return false;"><span>削除</span></a></td>

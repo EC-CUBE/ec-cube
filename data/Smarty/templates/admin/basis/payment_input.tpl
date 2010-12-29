@@ -35,7 +35,7 @@ self.moveTo(20,20);self.focus();
 <input type="hidden" name="image_key" value="" />
 <input type="hidden" name="fix" value="<!--{$arrForm.fix.value}-->" />
 <!--{foreach key=key item=item from=$arrHidden}-->
-<input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->" />
+<input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
 <!--{/foreach}-->
 <input type="hidden" name="charge_flg" value="<!--{$charge_flg}-->" />
   <h2>支払方法登録・編集</h2>
@@ -46,7 +46,7 @@ self.moveTo(20,20);self.focus();
         <td>
           <!--{assign var=key value="payment_method"}-->
           <span class="attention"><!--{$arrErr[$key]}--></span>
-          <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" size="30" class="box30" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
+          <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" size="30" class="box30" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
         </td>
       </tr>
       <tr>
@@ -57,7 +57,7 @@ self.moveTo(20,20);self.focus();
           <!--{else}-->
           <!--{assign var=key value="charge"}-->
           <span class="attention"><!--{$arrErr[$key]}--></span>
-          <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" size="10" class="box10" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
+          <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" size="10" class="box10" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
            円
           <!--{/if}-->
         </td>
@@ -69,10 +69,10 @@ self.moveTo(20,20);self.focus();
           <!--{assign var=key_to value="upper_rule"}-->
           <span class="attention"><!--{$arrErr[$key_from]}--></span>
           <span class="attention"><!--{$arrErr[$key_to]}--></span>
-          <input type="text" name="<!--{$arrForm[$key_from].keyname}-->" value="<!--{$arrForm[$key_from].value|escape}-->" size="10" class="box10" maxlength="<!--{$arrForm[$key_from].length}-->" style="<!--{$arrErr[$key_from]|sfGetErrorColor}-->" />
+          <input type="text" name="<!--{$arrForm[$key_from].keyname}-->" value="<!--{$arrForm[$key_from].value|h}-->" size="10" class="box10" maxlength="<!--{$arrForm[$key_from].length}-->" style="<!--{$arrErr[$key_from]|sfGetErrorColor}-->" />
            円
            ～ 
-          <input type="text" name="<!--{$arrForm[$key_to].keyname}-->" value="<!--{$arrForm[$key_to].value|escape}-->" size="10" class="box10" maxlength="<!--{$arrForm[$key_to].length}-->" style="<!--{$arrErr[$key_to]|sfGetErrorColor}-->" />
+          <input type="text" name="<!--{$arrForm[$key_to].keyname}-->" value="<!--{$arrForm[$key_to].value|h}-->" size="10" class="box10" maxlength="<!--{$arrForm[$key_to].length}-->" style="<!--{$arrErr[$key_to]|sfGetErrorColor}-->" />
            円
         </td>
       </tr>
@@ -82,7 +82,7 @@ self.moveTo(20,20);self.focus();
           <!--{assign var=key value="payment_image"}-->
           <span class="attention"><!--{$arrErr[$key]}--></span>
           <!--{if $arrFile[$key].filepath != ""}-->
-          <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->">　<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br />
+          <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->">　<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br />
           <!--{/if}-->
           <input type="file" name="<!--{$key}-->" size="25" class="box25" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
           <a class="btn-normal" href="javascript:;" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')">アップロード</a>

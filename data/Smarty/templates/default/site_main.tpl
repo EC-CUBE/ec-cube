@@ -19,7 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
-<body onload="<!--{$tpl_onload}-->">
+<body>
 <!--{* A8タグ表示用 *}-->
 <!--{if "sfPrintA8Tag"|function_exists === TRUE}-->
     <!--{include file=`$smarty.const.MODULE_PATH`mdl_a8/print_a8_tag.tpl}-->

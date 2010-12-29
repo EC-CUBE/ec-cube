@@ -40,7 +40,7 @@ function func_submit( id ){
 </script>
 
 <!--▼検索フォーム-->
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.REQUEST_URI|escape}-->">
+<form name="form1" id="form1" method="post" action="<!--{$smarty.server.REQUEST_URI|h}-->">
 <input name="mode" type="hidden" value="search" />
 <input name="search_pageno" type="hidden" value="" />
   <table class="form">
@@ -76,10 +76,10 @@ function func_submit( id ){
     <!--▼商品<!--{$smarty.section.cnt.iteration}-->-->
     <tr>
       <td class="center">
-        <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$arrProducts[cnt].main_list_image|sfNoImageMainList|escape}-->&width=65&height=65" alt="" />
+        <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$arrProducts[cnt].main_list_image|sfNoImageMainList|h}-->&width=65&height=65" alt="" />
       </td>
-      <td><!--{$arrProducts[cnt].product_code|escape|default:"-"}--></td>
-      <td><!--{$arrProducts[cnt].name|escape}--></td>
+      <td><!--{$arrProducts[cnt].product_code|default:"-"|h}--></td>
+      <td><!--{$arrProducts[cnt].name|h}--></td>
       <td class="center"><a href="" onClick="return func_submit(<!--{$arrProducts[cnt].product_id}-->)">決定</a></td>
     </tr>
     <!--▲商品<!--{$smarty.section.cnt.iteration}-->-->

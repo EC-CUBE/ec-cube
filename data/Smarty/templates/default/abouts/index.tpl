@@ -50,42 +50,42 @@ $(function() {
 <div id="undercolumn">
 
   <div id="undercolumn_aboutus">
-    <h2 class="title"><!--{$tpl_title|escape}--></h2>
+    <h2 class="title"><!--{$tpl_title|h}--></h2>
 
     <table summary="当サイトについて">
 
       <!--{if strlen($objSiteInfo->data.shop_name)}-->
         <tr>
           <th>店名</th>
-          <td><!--{$objSiteInfo->data.shop_name|escape}--></td>
+          <td><!--{$objSiteInfo->data.shop_name|h}--></td>
         </tr>
       <!--{/if}-->
 
       <!--{if strlen($objSiteInfo->data.company_name)}-->
       <tr>
         <th>会社名</th>
-        <td><!--{$objSiteInfo->data.company_name|escape}--></td>
+        <td><!--{$objSiteInfo->data.company_name|h}--></td>
       </tr>
       <!--{/if}-->
 
       <!--{if strlen($objSiteInfo->data.zip01)}-->
       <tr>
         <th>住所</th>
-        <td>〒<!--{$objSiteInfo->data.zip01|escape}-->-<!--{$objSiteInfo->data.zip02|escape}--><br /><!--{$objSiteInfo->data.pref|escape}--><!--{$objSiteInfo->data.addr01|escape}--><!--{$objSiteInfo->data.addr02|escape}--></td>
+        <td>〒<!--{$objSiteInfo->data.zip01|h}-->-<!--{$objSiteInfo->data.zip02|h}--><br /><!--{$objSiteInfo->data.pref|h}--><!--{$objSiteInfo->data.addr01|h}--><!--{$objSiteInfo->data.addr02|h}--></td>
       </tr>
       <!--{/if}-->
 
       <!--{if strlen($objSiteInfo->data.tel01)}-->
       <tr>
         <th>電話番号</th>
-        <td><!--{$objSiteInfo->data.tel01|escape}-->-<!--{$objSiteInfo->data.tel02|escape}-->-<!--{$objSiteInfo->data.tel03|escape}--></td>
+        <td><!--{$objSiteInfo->data.tel01|h}-->-<!--{$objSiteInfo->data.tel02|h}-->-<!--{$objSiteInfo->data.tel03|h}--></td>
       </tr>
       <!--{/if}-->
 
       <!--{if strlen($objSiteInfo->data.fax01)}-->
       <tr>
         <th>FAX番号</th>
-        <td><!--{$objSiteInfo->data.fax01|escape}-->-<!--{$objSiteInfo->data.fax02|escape}-->-<!--{$objSiteInfo->data.fax03|escape}--></td>
+        <td><!--{$objSiteInfo->data.fax01|h}-->-<!--{$objSiteInfo->data.fax02|h}-->-<!--{$objSiteInfo->data.fax03|h}--></td>
       </tr>
       <!--{/if}-->
 
@@ -99,21 +99,21 @@ $(function() {
       <!--{if strlen($objSiteInfo->data.business_hour)}-->
       <tr>
         <th>営業時間</th>
-        <td><!--{$objSiteInfo->data.business_hour|escape}--></td>
+        <td><!--{$objSiteInfo->data.business_hour|h}--></td>
       </tr>
       <!--{/if}-->
 
       <!--{if strlen($objSiteInfo->data.good_traded)}-->
       <tr>
         <th>取扱商品</th>
-        <td><!--{$objSiteInfo->data.good_traded|escape|nl2br}--></td>
+        <td><!--{$objSiteInfo->data.good_traded|h|nl2br}--></td>
       </tr>
       <!--{/if}-->
 
       <!--{if strlen($objSiteInfo->data.message)}-->
       <tr>
         <th>メッセージ</th>
-        <td><!--{$objSiteInfo->data.message|escape|nl2br}--></td>
+        <td><!--{$objSiteInfo->data.message|h|nl2br}--></td>
       </tr>
       <!--{/if}-->
 

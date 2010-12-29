@@ -40,21 +40,24 @@
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/category.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/news.js"></script>
 
-<title><!--{$arrSiteInfo.shop_name|escape}--><!--{if $tpl_subtitle|strlen >= 1}--> / <!--{$tpl_subtitle|escape}--><!--{elseif $tpl_title|strlen >= 1}--> / <!--{$tpl_title|escape}--><!--{/if}--></title>
+<title><!--{$arrSiteInfo.shop_name|h}--><!--{if $tpl_subtitle|strlen >= 1}--> / <!--{$tpl_subtitle|h}--><!--{elseif $tpl_title|strlen >= 1}--> / <!--{$tpl_title|h}--><!--{/if}--></title>
 <!--{if $arrPageLayout.author|strlen >= 1}-->
-    <meta name="author" content="<!--{$arrPageLayout.author|escape}-->" />
+    <meta name="author" content="<!--{$arrPageLayout.author|h}-->" />
 <!--{/if}-->
 <!--{if $arrPageLayout.description|strlen >= 1}-->
-    <meta name="description" content="<!--{$arrPageLayout.description|escape}-->" />
+    <meta name="description" content="<!--{$arrPageLayout.description|h}-->" />
 <!--{/if}-->
 <!--{if $arrPageLayout.keyword|strlen >= 1}-->
-    <meta name="keywords" content="<!--{$arrPageLayout.keyword|escape}-->" />
+    <meta name="keywords" content="<!--{$arrPageLayout.keyword|h}-->" />
 <!--{/if}-->
 <!--{* iPhone用アイコン画像 *}-->
 <link rel="apple-touch-icon" href="<!--{$smarty.const.SMARTPHONE_URL_DIR}-->sphone/apple-touch-icon.png" />
 
 <script type="text/javascript">//<![CDATA[
     <!--{$tpl_javascript}-->
+    $(function(){
+        <!--{$tpl_onload}-->
+    });
 //]]>
 </script>
 

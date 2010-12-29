@@ -38,8 +38,8 @@
                             <!--{/if}-->
                         <!--{/if}-->
                     >
-                        <!--{$arrNews[data].news_title|escape|nl2br}--></a><br />
-                    <!--{$arrNews[data].news_comment|escape|nl2br}-->
+                        <!--{$arrNews[data].news_title|h|nl2br}--></a><br />
+                    <!--{$arrNews[data].news_comment|h|nl2br}-->
                  </dd>
             </dl>
         <!--{/section}-->

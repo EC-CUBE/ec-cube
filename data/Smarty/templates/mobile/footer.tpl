@@ -25,4 +25,4 @@
 <!--{if $smarty.const.RELEASE_YEAR !=  $smarty.now|date_format:"%Y"}-->
     <!--{$smarty.const.RELEASE_YEAR}-->-
 <!--{/if}-->
-<!--{$smarty.now|date_format:"%Y"}--> <!--{$arrSiteInfo.shop_name_eng|escape}--> All rights reserved.</font></center>
+<!--{$smarty.now|date_format:"%Y"}--> <!--{$arrSiteInfo.shop_name_eng|h}--> All rights reserved.</font></center>

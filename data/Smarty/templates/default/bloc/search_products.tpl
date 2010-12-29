@@ -42,7 +42,7 @@
             </p>
             <!--{/if}-->
             <p class="mini">商品名を入力
-              <input type="text" name="name" class="box142" maxlength="50" value="<!--{$smarty.get.name|escape}-->" /></p>
+              <input type="text" name="name" class="box142" maxlength="50" value="<!--{$smarty.get.name|h}-->" /></p>
             <p class="btn"><input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_block_search_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_block_search.gif',this)" src="<!--{$TPL_DIR}-->img/button/btn_block_search.gif" class="box51" alt="検索" name="search" /></p>
         </form>
     </div>

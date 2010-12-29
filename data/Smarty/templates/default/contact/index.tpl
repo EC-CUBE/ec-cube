@@ -22,7 +22,7 @@
 <!--▼CONTENTS-->
 <div id="undercolumn">
   <div id="undercolumn_contact">
-    <h2 class="title"><!--{$tpl_title|escape}--></h2>
+    <h2 class="title"><!--{$tpl_title|h}--></h2>
     
     <p>お問い合わせはメールにて承っています。<br />
     内容によっては回答をさしあげるのにお時間をいただくこともございます。また、土日、祝祭日、年末年始、夏期休暇期間は翌営業日以降の対応となりますのでご了承ください。</p>
@@ -40,11 +40,11 @@
           姓&nbsp;<input type="text"
                          class="box120"
                          name="name01"
-                         value="<!--{$arrForm.name01|default:$arrData.name01|escape}-->"
+                         value="<!--{$arrForm.name01|default:$arrData.name01|h}-->"
                          maxlength="<!--{$smarty.const.STEXT_LEN}-->"
                          style="<!--{$arrErr.name01|sfGetErrorColor}-->; ime-mode: active;" />　
           名&nbsp;<input type="text" class="box120" name="name02"
-                         value="<!--{$arrForm.name02|default:$arrData.name02|escape}-->"
+                         value="<!--{$arrForm.name02|default:$arrData.name02|h}-->"
                          maxlength="<!--{$smarty.const.STEXT_LEN}-->"
                          style="<!--{$arrErr.name02|sfGetErrorColor}-->; ime-mode: active;" />
         </td>
@@ -56,13 +56,13 @@
           セイ&nbsp;<input type="text"
                            class="box120"
                            name="kana01"
-                           value="<!--{$arrForm.kana01|default:$arrData.kana01|escape}-->"
+                           value="<!--{$arrForm.kana01|default:$arrData.kana01|h}-->"
                            maxlength="<!--{$smarty.const.STEXT_LEN}-->"
                            style="<!--{$arrErr.kana01|sfGetErrorColor}-->; ime-mode: active;" />　
           メイ&nbsp;<input type="text"
                            class="box120"
                            name="kana02"
-                           value="<!--{$arrForm.kana02|default:$arrData.kana02|escape}-->"
+                           value="<!--{$arrForm.kana02|default:$arrData.kana02|h}-->"
                            maxlength="<!--{$smarty.const.STEXT_LEN}-->"
                            style="<!--{$arrErr.kana02|sfGetErrorColor}-->; ime-mode: active;" />
         </td>
@@ -76,13 +76,13 @@
             <input type="text"
                    name="zip01"
                    class="box60"
-                   value="<!--{$arrForm.zip01|default:$arrData.zip01|escape}-->"
+                   value="<!--{$arrForm.zip01|default:$arrData.zip01|h}-->"
                    maxlength="<!--{$smarty.const.ZIP01_LEN}-->"
                    style="<!--{$arrErr.zip01|sfGetErrorColor}-->; ime-mode: disabled;" />&nbsp;-&nbsp;
             <input type="text"
                    name="zip02"
                    class="box60"
-                   value="<!--{$arrForm.zip02|default:$arrData.zip02|escape}-->"
+                   value="<!--{$arrForm.zip02|default:$arrData.zip02|h}-->"
                    maxlength="<!--{$smarty.const.ZIP02_LEN}-->"
                    style="<!--{$arrErr.zip02|sfGetErrorColor}-->; ime-mode: disabled;" />　
             <a href="http://search.post.japanpost.jp/zipcode/" target="_blank"><span class="fs12">郵便番号検索</span></a>
@@ -101,14 +101,14 @@
           
           <select name="pref" style="<!--{$arrErr.pref|sfGetErrorColor}-->">
           <option value="">都道府県を選択</option>
-          <!--{html_options options=$arrPref selected=$arrForm.pref|default:$arrData.pref|escape}-->
+          <!--{html_options options=$arrPref selected=$arrForm.pref|default:$arrData.pref|h}-->
           </select>
           
           <p class="mini">
             <input type="text"
                    class="box380"
                    name="addr01"
-                   value="<!--{$arrForm.addr01|default:$arrData.addr01|escape}-->"
+                   value="<!--{$arrForm.addr01|default:$arrData.addr01|h}-->"
                    style="<!--{$arrErr.addr01|sfGetErrorColor}-->; ime-mode: active;" /><br />
             <!--{$smarty.const.SAMPLE_ADDRESS1}-->
           </p>
@@ -117,7 +117,7 @@
             <input type="text"
                    class="box380"
                    name="addr02"
-                   value="<!--{$arrForm.addr02|default:$arrData.addr02|escape}-->"
+                   value="<!--{$arrForm.addr02|default:$arrData.addr02|h}-->"
                    style="<!--{$arrErr.addr02|sfGetErrorColor}-->; ime-mode: active;" /><br />
             <!--{$smarty.const.SAMPLE_ADDRESS2}-->
           </p>
@@ -132,19 +132,19 @@
           <input type="text" 
                  class="box60"
                  name="tel01"
-                 value="<!--{$arrForm.tel01|default:$arrData.tel01|escape}-->"
+                 value="<!--{$arrForm.tel01|default:$arrData.tel01|h}-->"
                  maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->"
                  style="<!--{$arrErr.tel01|sfGetErrorColor}-->; ime-mode: disabled;" />&nbsp;-&nbsp;
           <input type="text" 
                  class="box60"
                  name="tel02"
-                 value="<!--{$arrForm.tel02|default:$arrData.tel02|escape}-->"
+                 value="<!--{$arrForm.tel02|default:$arrData.tel02|h}-->"
                  maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->"
                  style="<!--{$arrErr.tel02|sfGetErrorColor}-->; ime-mode: disabled;" />&nbsp;-&nbsp;
           <input type="text" 
                  class="box60"
                  name="tel03"
-                 value="<!--{$arrForm.tel03|default:$arrData.tel03|escape}-->"
+                 value="<!--{$arrForm.tel03|default:$arrData.tel03|h}-->"
                  maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->"
                  style="<!--{$arrErr.tel03|sfGetErrorColor}-->; ime-mode: disabled;" />
         </td>
@@ -156,7 +156,7 @@
           <input type="text"
                  class="box380"
                  name="email"
-                 value="<!--{$arrForm.email|default:$arrData.email|escape}-->"
+                 value="<!--{$arrForm.email|default:$arrData.email|h}-->"
                  maxlength="<!--{$smarty.const.MTEXT_LEN}-->"
                  style="<!--{$arrErr.email|sfGetErrorColor}-->; ime-mode: disabled;" /><br />
           <!--{* ログインしていれば入力済みにする *}-->
@@ -166,7 +166,7 @@
           <input type="text"
                  class="box380"
                  name="email02"
-                 value="<!--{$arrForm.email02|escape}-->"
+                 value="<!--{$arrForm.email02|h}-->"
                  maxlength="<!--{$smarty.const.MTEXT_LEN}-->"
                  style="<!--{$arrErr.email02|sfGetErrorColor}-->; ime-mode: disabled;" /><br />
           <p class="mini"><em>確認のため2度入力してください。</em></p>
@@ -181,7 +181,7 @@
                     class="area380"
                     cols="60"
                     rows="20"
-                    style="<!--{$arrErr.contents|sfGetErrorColor}-->; ime-mode: active;"><!--{$arrForm.contents|escape}--></textarea>
+                    style="<!--{$arrErr.contents|sfGetErrorColor}-->; ime-mode: active;"><!--{$arrForm.contents|h}--></textarea>
         </td>
       </tr>
     </table>

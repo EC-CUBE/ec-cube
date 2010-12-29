@@ -80,10 +80,10 @@ function lfnCheckSetItem( rank ){
       <th><!--{$smarty.section.cnt.iteration}--></th>
       <td>
         <!--{if $arrItems[$smarty.section.cnt.iteration].product_id}-->
-          <img src="<!--{$smarty.const.IMAGE_SAVE_URL}--><!--{$arrItems[$smarty.section.cnt.iteration].main_list_image|sfNoImageMainList|escape}-->" alt="<!--{$arrItems[$smarty.section.cnt.iteration].name|escape}-->" />
+          <img src="<!--{$smarty.const.IMAGE_SAVE_URL}--><!--{$arrItems[$smarty.section.cnt.iteration].main_list_image|sfNoImageMainList|h}-->" alt="<!--{$arrItems[$smarty.section.cnt.iteration].name|h}-->" />
         <!--{/if}-->
       </td>
-      <td><!--{$arrItems[$smarty.section.cnt.iteration].name|escape}--></td>
+      <td><!--{$arrItems[$smarty.section.cnt.iteration].name|h}--></td>
       <td>
         <!--{if $arrItems[$smarty.section.cnt.iteration].product_id}-->
         <a href="#" onClick="return fnInsertValAndSubmit( document.form<!--{$smarty.section.cnt.iteration}-->, 'mode', 'delete', '削除します。宜しいですか' )">削除</a>
@@ -96,9 +96,9 @@ function lfnCheckSetItem( rank ){
       <td>
         <form name="form<!--{$smarty.section.cnt.iteration}-->" id="form<!--{$smarty.section.cnt.iteration}-->" method="post" action="?">
         <input type="hidden" name="mode" value="regist" />
-        <input type="hidden" name="product_id" value="<!--{$arrItems[$smarty.section.cnt.iteration].product_id|escape}-->" />
-        <input type="hidden" name="category_id" value="<!--{$category_id|escape}-->" />
-        <input type="hidden" name="rank" value="<!--{$arrItems[$smarty.section.cnt.iteration].rank|escape}-->" />
+        <input type="hidden" name="product_id" value="<!--{$arrItems[$smarty.section.cnt.iteration].product_id|h}-->" />
+        <input type="hidden" name="category_id" value="<!--{$category_id|h}-->" />
+        <input type="hidden" name="rank" value="<!--{$arrItems[$smarty.section.cnt.iteration].rank|h}-->" />
         <span class="attention"><!--{$arrErr[$smarty.section.cnt.iteration].comment}--></span>
         <textarea name="comment" cols="45" rows="4" style="width: 337px; height: 82px; <!--{$arrErr[$smarty.section.cnt.iteration].comment|sfGetErrorColor}-->" <!--{$arrItems[$smarty.section.cnt.iteration].product_id|sfGetEnabled}-->><!--{$arrItems[$smarty.section.cnt.iteration].comment}--></textarea>
         <!--{if $arrItems[$smarty.section.cnt.iteration].product_id}-->

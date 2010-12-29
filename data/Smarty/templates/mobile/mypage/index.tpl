@@ -24,7 +24,7 @@
 <div align="center">MYページTOP</div>
 <hr>
 
-<!--{$CustomerName1|escape}--> <!--{$CustomerName2|escape}-->様<br>
+<!--{$CustomerName1|h}--> <!--{$CustomerName2|h}-->様<br>
 いつもご利用いただきありがとうございます。<br>
 <br>
 <a href="history.php" accesskey="1"><!--{1|numeric_emoji}-->購入履歴</a><br>

@@ -23,7 +23,7 @@
 *}-->
 <form name="form1" id="form1" method="post" action="?">
 <!--{foreach key=key item=val from=$arrHidden}-->  
-<input type="hidden" name="<!--{$key}-->" value="<!--{$val|escape}-->" />
+<input type="hidden" name="<!--{$key}-->" value="<!--{$val|h}-->" />
 <!--{/foreach}-->
 <input type="hidden" name="mode" value="template" />
 <div id="mail" class="contents-main">
@@ -41,8 +41,8 @@
 </form>
 
 <form name="form2" id="form2" method="post" action="./preview.php" target="_blank">
-<input type="hidden" name="subject" value="<!--{$list_data.subject|escape}-->" />
-<input type="hidden" name="body" value="<!--{$list_data.body|escape}-->" />
+<input type="hidden" name="subject" value="<!--{$list_data.subject|h}-->" />
+<input type="hidden" name="body" value="<!--{$list_data.body|h}-->" />
 <div id="mail2" class="contents-main">
   <h2>HTMLメール作成</h2>
   <div class="message">

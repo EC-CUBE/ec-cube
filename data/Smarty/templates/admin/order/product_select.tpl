@@ -122,7 +122,7 @@ function fnCheckStock(form) {
 </script>
 
 <!--▼検索フォーム-->
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.REQUEST_URI|escape}-->">
+<form name="form1" id="form1" method="post" action="<!--{$smarty.server.REQUEST_URI|h}-->">
 <input name="mode" type="hidden" value="search" />
 <input name="anchor_key" type="hidden" value="" />
 <input name="search_pageno" type="hidden" value="" />
@@ -167,30 +167,30 @@ function fnCheckStock(form) {
         </tr>
         <!--{section name=cnt loop=$arrProducts}-->
             <!--{assign var=id value=$arrProducts[cnt].product_id}-->
-            <form name="product_form<!--{$id|escape}-->" action="?" onsubmit="return false;">
+            <form name="product_form<!--{$id|h}-->" action="?" onsubmit="return false;">
                 <!--▼商品<!--{$smarty.section.cnt.iteration}-->-->
                 <!--{assign var=status value="`$arrProducts[cnt].status`"}-->
                 <tr style="background:<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->;">
                     <td class="center">
-                        <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$arrProducts[cnt].main_list_image|sfNoImageMainList|escape}-->&width=65&height=65" alt="<!--{$arrRecommend[$recommend_no].name|escape}-->" />
+                        <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$arrProducts[cnt].main_list_image|sfNoImageMainList|h}-->&width=65&height=65" alt="<!--{$arrRecommend[$recommend_no].name|h}-->" />
                     </td>    
                     <td>
                         <!--{assign var=codemin value=`$arrProducts[cnt].product_code_min`}-->
                         <!--{assign var=codemax value=`$arrProducts[cnt].product_code_max`}-->
                         <!--{* 商品コード *}-->
                         <!--{if $codemin != $codemax}-->
-                            <!--{$codemin|escape}-->～<!--{$codemax|escape}-->
+                            <!--{$codemin|h}-->～<!--{$codemax|h}-->
                         <!--{else}-->
-                            <!--{$codemin|escape}-->
+                            <!--{$codemin|h}-->
                         <!--{/if}-->
                     </td>
                     <td>
-                        <!--{$arrProducts[cnt].name|escape}-->
+                        <!--{$arrProducts[cnt].name|h}-->
 
                         <!--{assign var=class1 value=classcategory_id`$id`_1}-->
                         <!--{assign var=class2 value=classcategory_id`$id`_2}-->
                         <!--{if $tpl_classcat_find1[$id]}-->
-                        <dt><!--{$tpl_class_name1[$id]|escape}-->：</dt>
+                        <dt><!--{$tpl_class_name1[$id]|h}-->：</dt>
                         <dd>
                             <select name="classcategory_id1" id="<!--{$class1}-->" style="<!--{$arrErr[$class1]|sfGetErrorColor}-->"    onchange="fnSetClassCategories(this.form);">
                                 <!--{html_options options=$arrClassCat1[$id] selected=$arrForm[$class1]}-->
@@ -203,7 +203,7 @@ function fnCheckStock(form) {
                         <input type="hidden" name="<!--{$class1}-->" id="<!--{$class1}-->" value="" />
                         <!--{/if}-->
                         <!--{if $tpl_classcat_find2[$id]}-->
-                        <dt><!--{$tpl_class_name2[$id]|escape}-->：</dt>
+                        <dt><!--{$tpl_class_name2[$id]|h}-->：</dt>
                         <dd>
                             <select name="classcategory_id2" id="<!--{$class2}-->" style="<!--{$arrErr[$class2]|sfGetErrorColor}-->" onchange="fnCheckStock(this.form);"></select>
                             <!--{if $arrErr[$class2] != ""}-->
@@ -213,9 +213,9 @@ function fnCheckStock(form) {
                         <!--{else}-->
                         <input type="hidden" name="<!--{$class2}-->" id="<!--{$class2}-->" value="" />
                         <!--{/if}-->
-                        <input type="hidden" name="product_id" value="<!--{$id|escape}-->" />
-                        <input type="hidden" name="product_class_id<!--{$id|escape}-->" id="product_class_id<!--{$id|escape}-->" value="<!--{$tpl_product_class_id[$id]}-->" />
-                        <input type="hidden" name="product_type" id="product_type<!--{$id|escape}-->" value="<!--{$tpl_product_type[$id]}-->" />
+                        <input type="hidden" name="product_id" value="<!--{$id|h}-->" />
+                        <input type="hidden" name="product_class_id<!--{$id|h}-->" id="product_class_id<!--{$id|h}-->" value="<!--{$tpl_product_class_id[$id]}-->" />
+                        <input type="hidden" name="product_type" id="product_type<!--{$id|h}-->" value="<!--{$tpl_product_type[$id]}-->" />
                     </td>
                     <td class="center"><a href="javascript:;" onclick="return func_submit('<!--{$arrProducts[cnt].product_id}-->', '<!--{$tpl_class_name1[$id]}-->', '<!--{$tpl_class_name2[$id]}-->', '<!--{$tpl_product_class_id[$id]}-->')">決定</a></td>
                 </tr>

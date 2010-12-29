@@ -23,19 +23,19 @@
 *}-->
 <!--▼CONTENTS-->
 <div id="mypagecolumn">
-    <h2 class="title"><!--{$tpl_title|escape}--></h2>
+    <h2 class="title"><!--{$tpl_title|h}--></h2>
     <!--{include file=$tpl_navi}-->
     <div id="mycontentsarea">
-        <h3><!--{$tpl_subtitle|escape}--></h3>
+        <h3><!--{$tpl_subtitle|h}--></h3>
         <p class="myconditionarea">
         <strong>購入日時：&nbsp;</strong><!--{$arrDisp.create_date|sfDispDBDate}--><br />
         <strong>注文番号：&nbsp;</strong><!--{$arrDisp.order_id}--><br />
-        <strong>お支払い方法：&nbsp;</strong><!--{$arrPayment[$arrDisp.payment_id]|escape}-->
+        <strong>お支払い方法：&nbsp;</strong><!--{$arrPayment[$arrDisp.payment_id]|h}-->
         <!--{if $arrDisp.deliv_time_id != ""}--><br />
-        <strong>お届け時間：&nbsp;</strong><!--{$arrDelivTime[$arrDisp.deliv_time_id]|escape}-->
+        <strong>お届け時間：&nbsp;</strong><!--{$arrDelivTime[$arrDisp.deliv_time_id]|h}-->
         <!--{/if}-->
         <!--{if $arrDisp.deliv_date != ""}--><br />
-        <strong>お届け日：&nbsp;</strong><!--{$arrDisp.deliv_date|escape}-->
+        <strong>お届け日：&nbsp;</strong><!--{$arrDisp.deliv_date|h}-->
         <!--{/if}-->
         </p>
 
@@ -57,8 +57,8 @@
             </tr>
             <!--{foreach from=$tpl_arrOrderDetail item=orderDetail}-->
                 <tr>
-                    <td><!--{$orderDetail.product_code|escape}--></td>
-                    <td><a<!--{if $orderDetail.enable}--> href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$orderDetail.product_id|escape:url}-->"<!--{/if}-->><!--{$orderDetail.product_name|escape}--></a></td>
+                    <td><!--{$orderDetail.product_code|h}--></td>
+                    <td><a<!--{if $orderDetail.enable}--> href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$orderDetail.product_id|u}-->"<!--{/if}-->><!--{$orderDetail.product_name|h}--></a></td>
                     <td>
                     <!--{ if $orderDetail.product_type_id == PRODUCT_TYPE_DOWNLOAD}-->
                         <!--{ if $orderDetail.price == "0" || ( $orderDetail.status >= "4" && $orderDetail.effective == "1" )}-->
@@ -74,8 +74,8 @@
                     </td>
                     <!--{assign var=price value=`$orderDetail.price`}-->
                     <!--{assign var=quantity value=`$orderDetail.quantity`}-->
-                    <td class="pricetd"><!--{$price|escape|number_format}-->円</td>
-                    <td><!--{$quantity|escape}--></td>
+                    <td class="pricetd"><!--{$price|number_format|h}-->円</td>
+                    <td><!--{$quantity|h}--></td>
                     <td class="pricetd"><!--{$price|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|sfMultiply:$quantity|number_format}-->円</td>
                 </tr>
             <!--{/foreach}-->
@@ -99,12 +99,12 @@
             <!--{/if}-->
             <tr>
                 <th colspan="5" class="resulttd">送料</th>
-                <td class="pricetd"><!--{assign var=key value="deliv_fee"}--><!--{$arrDisp[$key]|escape|number_format}-->円</td>
+                <td class="pricetd"><!--{assign var=key value="deliv_fee"}--><!--{$arrDisp[$key]|number_format|h}-->円</td>
             </tr>
             <tr>
                 <th colspan="5" class="resulttd">手数料</th>
                 <!--{assign var=key value="charge"}-->
-                <td class="pricetd"><!--{$arrDisp[$key]|escape|number_format}-->円</td>
+                <td class="pricetd"><!--{$arrDisp[$key]|number_format|h}-->円</td>
             </tr>
             <tr>
                 <th colspan="5" class="resulttd">合計</th>
@@ -138,13 +138,13 @@
                     <th>お名前</th>
                     <!--{assign var=key1 value="deliv_name01"}-->
                     <!--{assign var=key2 value="deliv_name02"}-->
-                    <td><!--{$arrDisp[$key1]|escape}-->&nbsp;<!--{$arrDisp[$key2]|escape}--></td>
+                    <td><!--{$arrDisp[$key1]|h}-->&nbsp;<!--{$arrDisp[$key2]|h}--></td>
                 </tr>
                 <tr>
                     <th>お名前(フリガナ)</th>
                     <!--{assign var=key1 value="deliv_kana01"}-->
                     <!--{assign var=key2 value="deliv_kana02"}-->
-                    <td><!--{$arrDisp[$key1]|escape}-->&nbsp;<!--{$arrDisp[$key2]|escape}--></td>
+                    <td><!--{$arrDisp[$key1]|h}-->&nbsp;<!--{$arrDisp[$key2]|h}--></td>
                 </tr>
                 <tr>
                     <th>郵便番号</th>
@@ -156,7 +156,7 @@
                     <th>住所</th>
                     <!--{assign var=pref value=`$arrDisp.deliv_pref`}-->
                     <!--{assign var=key value="deliv_addr01"}-->
-                    <td><!--{$arrPref[$pref]}--><!--{$arrDisp[$key]|escape}--><!--{assign var=key value="deliv_addr02"}--><!--{$arrDisp[$key]|escape}--></td>
+                    <td><!--{$arrPref[$pref]}--><!--{$arrDisp[$key]|h}--><!--{assign var=key value="deliv_addr02"}--><!--{$arrDisp[$key]|h}--></td>
                 </tr>
                 <tr>
                     <th>電話番号</th>
@@ -179,10 +179,10 @@
             </tr>
             <!--{section name=cnt loop=$arrMailHistory}-->
             <tr class="center">
-                <td><!--{$arrMailHistory[cnt].send_date|sfDispDBDate|escape}--></td>
+                <td><!--{$arrMailHistory[cnt].send_date|sfDispDBDate|h}--></td>
                 <!--{assign var=key value="`$arrMailHistory[cnt].template_id`"}-->
-                <td><!--{$arrMAILTEMPLATE[$key]|escape}--></td>
-                <td><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="win02('./mail_view.php?send_id=<!--{$arrMailHistory[cnt].send_id}-->','mail_view','650','800'); return false;"><!--{$arrMailHistory[cnt].subject|escape}--></a></td>
+                <td><!--{$arrMAILTEMPLATE[$key]|h}--></td>
+                <td><a href="<!--{$smarty.server.PHP_SELF|h}-->" onclick="win02('./mail_view.php?send_id=<!--{$arrMailHistory[cnt].send_id}-->','mail_view','650','800'); return false;"><!--{$arrMailHistory[cnt].subject|h}--></a></td>
             </tr>
             <!--{/section}-->
         </table>

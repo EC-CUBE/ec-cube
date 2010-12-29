@@ -139,16 +139,16 @@ function fnCheckStock(form) {
 <!--▼CONTENTS-->
 <div id="undercolumn" class="product product_list">
     <form name="form1" id="form1" method="get" action="?">
-        <input type="hidden" name="mode" value="<!--{$mode|escape}-->" />
+        <input type="hidden" name="mode" value="<!--{$mode|h}-->" />
         <!--{* ▼検索条件 *}-->
-        <input type="hidden" name="category_id" value="<!--{$arrSearchData.category_id|escape}-->" />
-        <input type="hidden" name="maker_id" value="<!--{$arrSearchData.maker_id|escape}-->" />
-        <input type="hidden" name="name" value="<!--{$arrSearchData.name|escape}-->" />
+        <input type="hidden" name="category_id" value="<!--{$arrSearchData.category_id|h}-->" />
+        <input type="hidden" name="maker_id" value="<!--{$arrSearchData.maker_id|h}-->" />
+        <input type="hidden" name="name" value="<!--{$arrSearchData.name|h}-->" />
         <!--{* ▲検索条件 *}-->
         <!--{* ▼ページナビ関連 *}-->
-        <input type="hidden" name="orderby" value="<!--{$orderby|escape}-->" />
-        <input type="hidden" name="disp_number" value="<!--{$disp_number|escape}-->" />
-        <input type="hidden" name="pageno" value="<!--{$tpl_pageno|escape}-->" />
+        <input type="hidden" name="orderby" value="<!--{$orderby|h}-->" />
+        <input type="hidden" name="disp_number" value="<!--{$disp_number|h}-->" />
+        <input type="hidden" name="pageno" value="<!--{$tpl_pageno|h}-->" />
         <!--{* ▲ページナビ関連 *}-->
         <!--{* ▼注文関連 *}-->
         <input type="hidden" name="product_id" value="" />
@@ -158,18 +158,18 @@ function fnCheckStock(form) {
         <input type="hidden" name="product_type" value="" />
         <input type="hidden" name="quantity" value="" />
         <!--{* ▲注文関連 *}-->
-        <input type="hidden" name="rnd" value="<!--{$tpl_rnd|escape}-->" />
+        <input type="hidden" name="rnd" value="<!--{$tpl_rnd|h}-->" />
     </form>
     
     <!--★タイトル★-->
-    <h2 class="title"><!--{$tpl_subtitle|escape}--></h2>
+    <h2 class="title"><!--{$tpl_subtitle|h}--></h2>
     
     <!--▼検索条件-->
     <!--{if $tpl_subtitle == "検索結果"}-->
         <ul class="pagecondarea">
-            <li><strong>商品カテゴリ：</strong><!--{$arrSearch.category|escape}--></li>
-        <!--{if $arrSearch.maker|strlen >= 1}--><li><strong>メーカー：</strong><!--{$arrSearch.maker|escape}--></li><!--{/if}-->
-            <li><strong>商品名：</strong><!--{$arrSearch.name|escape}--></li>
+            <li><strong>商品カテゴリ：</strong><!--{$arrSearch.category|h}--></li>
+        <!--{if $arrSearch.maker|strlen >= 1}--><li><strong>メーカー：</strong><!--{$arrSearch.maker|h}--></li><!--{/if}-->
+            <li><strong>商品名：</strong><!--{$arrSearch.name|h}--></li>
         </ul>
     <!--{/if}-->
     <!--▲検索条件-->
@@ -224,10 +224,10 @@ function fnCheckStock(form) {
         <!--{assign var=arrErr value=$arrProduct.arrErr}-->
         <!--▼商品-->
         <div class="listarea">
-        <a name="product<!--{$id|escape}-->" />
+        <a name="product<!--{$id|h}-->" />
             <div class="listphoto">
                 <!--★画像★-->
-                <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProduct.product_id|escape:url}-->" class="over"><!--商品写真--><img src="<!--{$smarty.const.IMAGE_SAVE_URL|sfTrimURL}-->/<!--{$arrProduct.main_list_image|sfNoImageMainList|escape}-->" alt="<!--{$arrProduct.name|escape}-->" class="picture" /></a>
+                <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProduct.product_id|u}-->" class="over"><!--商品写真--><img src="<!--{$smarty.const.IMAGE_SAVE_URL|sfTrimURL}-->/<!--{$arrProduct.main_list_image|sfNoImageMainList|h}-->" alt="<!--{$arrProduct.name|h}-->" class="picture" /></a>
             </div>
             
             <div class="listrightblock">
@@ -245,11 +245,11 @@ function fnCheckStock(form) {
                 
                 <!--★商品名★-->
                 <h3>
-                    <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProduct.product_id|escape:url}-->" name="product<!--{$arrProduct.product_id}-->"><!--{$arrProduct.name|escape}--></a>
+                    <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProduct.product_id|u}-->" name="product<!--{$arrProduct.product_id}-->"><!--{$arrProduct.name|h}--></a>
                 </h3>
                 
                 <!--★コメント★-->
-                <p class="listcomment"><!--{$arrProduct.main_list_comment|escape|nl2br}--></p>
+                <p class="listcomment"><!--{$arrProduct.main_list_comment|h|nl2br}--></p>
                 
                 <p>
                     <span class="pricebox sale_price">

@@ -36,9 +36,9 @@
     </tr>
   <!--{foreach from=$arrInstallLogs item=log name=log_loop}-->
     <tr>
-      <td class="left"><!--{$log.module_name|escape}--></td>
+      <td class="left"><!--{$log.module_name|h}--></td>
       <td><!--{if $log.error_flg}-->失敗<!--{else}-->成功<!--{/if}--></td>
-      <td class="left"><!--{$log.update_date|sfDispDBDate|escape}--></td>
+      <td class="left"><!--{$log.update_date|sfDispDBDate|h}--></td>
       <td>
           <a href="<!--{$smarty.const.URL_DIR}--><!--{$smarty.const.ADMIN_DIR}-->ownersstore/log.php?mode=detail&amp;log_id=<!--{$log.log_id}-->">
           詳細</a>

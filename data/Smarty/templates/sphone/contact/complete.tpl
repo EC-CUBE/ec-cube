@@ -22,12 +22,12 @@
 <!--▼CONTENTS-->
 <div id="undercolumn">
   <div id="undercolumn_contact">
-    <h2 class="title"><!--{$tpl_title|escape}--></h2>
+    <h2 class="title"><!--{$tpl_title|h}--></h2>
     <div id="completetext">
       お問い合わせ内容の送信が完了いたしました。<br />
       万一、ご回答メールが届かない場合は、トラブルの可能性もありますので大変お手数ではございますがもう一度お問い合わせいただくか、お電話にてお問い合わせください。<br />
       今後ともご愛顧賜りますようよろしくお願い申し上げます。
-    <p><!--{$arrSiteInfo.company_name|escape}--><br />
+    <p><!--{$arrSiteInfo.company_name|h}--><br />
       TEL：<!--{$arrSiteInfo.tel01}-->-<!--{$arrSiteInfo.tel02}-->-<!--{$arrSiteInfo.tel03}-->
        <!--{if $arrSiteInfo.business_hour != ""}-->
       (受付時間/<!--{$arrSiteInfo.business_hour}-->)

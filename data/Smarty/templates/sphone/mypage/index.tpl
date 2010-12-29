@@ -23,7 +23,7 @@
 *}-->
 <!--▼CONTENTS-->
 <div id="mypagecolumn">
-  <h2 class="title"><!--{$tpl_title|escape}--></h2>
+  <h2 class="title"><!--{$tpl_title|h}--></h2>
   <!--{if $tpl_navi != ""}-->
     <!--{include file=$tpl_navi}-->
   <!--{else}-->
@@ -33,7 +33,7 @@
     <form name="form1" method="post" action="?">
     <input type="hidden" name="order_id" value="" />
     <input type="hidden" name="pageno" value="<!--{$tpl_pageno}-->" />
-    <h3><!--{$tpl_subtitle|escape}--></h3>
+    <h3><!--{$tpl_subtitle|h}--></h3>
 
 <!--{if $tpl_linemax > 0}-->
 
@@ -57,7 +57,7 @@
        <td><!--{$arrOrder[cnt].create_date|sfDispDBDate}--></td>
        <td><!--{$arrOrder[cnt].order_id}--></td>
        <!--{assign var=payment_id value="`$arrOrder[cnt].payment_id`"}-->
-       <td><!--{$arrPayment[$payment_id]|escape}--></td>
+       <td><!--{$arrPayment[$payment_id]|h}--></td>
        <td class="pricetd"><!--{$arrOrder[cnt].payment_total|number_format}-->円</td>
        <td class="centertd"><a href="<!--{$smarty.const.URL_DIR}-->mypage/history.php?order_id=<!--{$arrOrder[cnt].order_id}-->">詳細</a></td>
      </tr>

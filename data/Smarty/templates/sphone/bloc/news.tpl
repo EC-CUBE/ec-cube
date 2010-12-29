@@ -29,8 +29,8 @@
 <!--{section name=data loop=$arrNews max=3}-->
 <div class="anews">
 <span><!--{$arrNews[data].news_date_disp|date_format:"%m.%d"}--></span>&nbsp;
-<!--{if $arrNews[data].news_url}--><a href="<!--{$arrNews[data].news_url|escape}-->"><!--{/if}-->
-<!--{$arrNews[data].news_title|escape}-->
+<!--{if $arrNews[data].news_url}--><a href="<!--{$arrNews[data].news_url|h}-->"><!--{/if}-->
+<!--{$arrNews[data].news_title|h}-->
 <!--{if $arrNews[data].news_url}--></a><!--{/if}-->
 </div>
 <!--{/section}-->
@@ -55,8 +55,8 @@ initNews(); //カテゴリーリストの初期化
 <!--{section name=data loop=$arrMemberNews max=3}-->
 <div class=" ">
 <span><!--{$arrMemberNews[data].news_date_disp|date_format:"%m.%d"}--></span>&nbsp;
-<!--{if $arrMemberNews[data].news_url}--><a href="<!--{$arrMemberNews[data].news_url|escape}-->"><!--{/if}-->
-<!--{$arrMemberNews[data].news_title|escape}-->
+<!--{if $arrMemberNews[data].news_url}--><a href="<!--{$arrMemberNews[data].news_url|h}-->"><!--{/if}-->
+<!--{$arrMemberNews[data].news_title|h}-->
 <!--{if $arrMemberNews[data].news_url}--></a><!--{/if}-->
 </div>
 <!--{/section}-->

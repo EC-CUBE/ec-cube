@@ -23,30 +23,30 @@
 *}-->
 <!--▼CONTENTS-->
 <div id="mypagecolumn">
-  <h2 class="title"><!--{$tpl_title|escape}--></h2>
+  <h2 class="title"><!--{$tpl_title|h}--></h2>
     <!--{include file=$tpl_navi}-->
     <div id="mycontentsarea">
-    <h3><!--{$tpl_subtitle|escape}--></h3>
+    <h3><!--{$tpl_subtitle|h}--></h3>
     <p>下記の内容で送信してもよろしいでしょうか？<br />
       よろしければ、一番下の「会員登録完了へ」ボタンをクリックしてください。</p>
 
 
     <form name="form1" id="form1" method="post" action="?">
       <input type="hidden" name="mode" value="complete" />
-      <input type="hidden" name="customer_id" value="<!--{$arrForm.customer_id|escape}-->" />
+      <input type="hidden" name="customer_id" value="<!--{$arrForm.customer_id|h}-->" />
       <!--{foreach from=$arrForm key=key item=item}-->
         <!--{if $key ne "mode" && $key ne "subm"}-->
-        <input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->" />
+        <input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->" />
         <!--{/if}-->
       <!--{/foreach}-->
       <table summary=" " class="delivname">
         <tr>
           <th>お名前<span class="attention">※</span></th>
-          <td><!--{$arrForm.name01|escape}-->　<!--{$arrForm.name02|escape}--></td>
+          <td><!--{$arrForm.name01|h}-->　<!--{$arrForm.name02|h}--></td>
         </tr>
         <tr>
           <th>お名前(フリガナ)<span class="attention">※</span></th>
-          <td><!--{$arrForm.kana01|escape}-->　<!--{$arrForm.kana02|escape}--></td>
+          <td><!--{$arrForm.kana01|h}-->　<!--{$arrForm.kana02|h}--></td>
         </tr>
         <tr>
           <th>郵便番号<span class="attention">※</span></th>
@@ -54,11 +54,11 @@
         </tr>
         <tr>
           <th>住所<span class="attention">※</span></th>
-          <td><!--{$arrPref[$arrForm.pref]}--><!--{$arrForm.addr01|escape}--><!--{$arrForm.addr02|escape}--></td>
+          <td><!--{$arrPref[$arrForm.pref]}--><!--{$arrForm.addr01|h}--><!--{$arrForm.addr02|h}--></td>
         </tr>
         <tr>
           <th>電話番号<span class="attention">※</span></th>
-          <td><!--{$arrForm.tel01|escape}-->-<!--{$arrForm.tel02}-->-<!--{$arrForm.tel03}--></td>
+          <td><!--{$arrForm.tel01|h}-->-<!--{$arrForm.tel02}-->-<!--{$arrForm.tel03}--></td>
         </tr>
         <tr>
           <th>FAX</th>
@@ -84,11 +84,11 @@
         </tr>
         <tr>
           <th>職業</th>
-          <td><!--{$arrJob[$arrForm.job]|escape|default:"未登録"}--></td>
+          <td><!--{$arrJob[$arrForm.job]|default:"未登録"|h}--></td>
         </tr>
         <tr>
           <th>生年月日</th>
-          <td><!--{if strlen($arrForm.year) > 0 && strlen($arrForm.month) > 0 && strlen($arrForm.day) > 0}--><!--{$arrForm.year|escape}-->年<!--{$arrForm.month|escape}-->月<!--{$arrForm.day|escape}-->日<!--{else}-->未登録<!--{/if}--></td>
+          <td><!--{if strlen($arrForm.year) > 0 && strlen($arrForm.month) > 0 && strlen($arrForm.day) > 0}--><!--{$arrForm.year|h}-->年<!--{$arrForm.month|h}-->月<!--{$arrForm.day|h}-->日<!--{else}-->未登録<!--{/if}--></td>
         </tr>
         <tr>
           <th>希望するパスワード<br />
@@ -97,8 +97,8 @@
         </tr>
         <tr>
           <th>パスワードを忘れた時のヒント<span class="attention">※</span></th>
-          <td>質問：&nbsp;<!--{$arrReminder[$arrForm.reminder]|escape}--><br />
-              答え：&nbsp;<!--{$arrForm.reminder_answer|escape}--></td>
+          <td>質問：&nbsp;<!--{$arrReminder[$arrForm.reminder]|h}--><br />
+              答え：&nbsp;<!--{$arrForm.reminder_answer|h}--></td>
         </tr>
         <tr>
           <th>メールマガジン送付について<span class="attention">※</span></th>

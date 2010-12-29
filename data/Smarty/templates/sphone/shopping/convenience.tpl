@@ -65,7 +65,7 @@
 					<!--{foreach key=key item=item from=$arrCONVENIENCE}-->
 					<tr>
 						<td id="select_c"><input type="radio" name="convenience" value="<!--{$key}-->" style="<!--{$arrErr.convenience|sfGetErrorColor}-->"></td>
-						<td class="fs12n" id="payment_c"><!--{$item|escape}--></td>
+						<td class="fs12n" id="payment_c"><!--{$item|h}--></td>
 					</tr>
 					<!--{/foreach}-->
 				</table>

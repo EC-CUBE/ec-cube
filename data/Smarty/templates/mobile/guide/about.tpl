@@ -28,40 +28,40 @@
 <!-- ▼本文 ここから -->
 <!--{if $arrSiteInfo.shop_name != ""}-->
 [emoji:38]<font color="#800000">店名</font><br>
-<!--{$arrSiteInfo.shop_name|escape}--><br>
+<!--{$arrSiteInfo.shop_name|h}--><br>
 <!--{/if}-->
 <!--{if $arrSiteInfo.company_name != ""}-->
 [emoji:39]<font color="#800000">会社名</font><br>
-<!--{$arrSiteInfo.company_name|escape}--><br>
+<!--{$arrSiteInfo.company_name|h}--><br>
 <!--{/if}-->
 <!--{if $arrSiteInfo.zip01 != ""}-->
 [emoji:121]<font color="#800000">住所</font><br>
-〒<!--{$arrSiteInfo.zip01|escape}-->-<!--{$arrSiteInfo.zip02|escape}--><br>
-<!--{$arrSiteInfo.pref|escape}--><!--{$arrSiteInfo.addr01|escape}--><!--{$arrSiteInfo.addr02|escape}--><br>
+〒<!--{$arrSiteInfo.zip01|h}-->-<!--{$arrSiteInfo.zip02|h}--><br>
+<!--{$arrSiteInfo.pref|h}--><!--{$arrSiteInfo.addr01|h}--><!--{$arrSiteInfo.addr02|h}--><br>
 <!--{/if}-->
 <!--{if $arrSiteInfo.tel01 != ""}-->
 [emoji:74]<font color="#800000">電話番号</font><br>
-<!--{$arrSiteInfo.tel01|escape}-->-<!--{$arrSiteInfo.tel02|escape}-->-<!--{$arrSiteInfo.tel03|escape}--><br>
+<!--{$arrSiteInfo.tel01|h}-->-<!--{$arrSiteInfo.tel02|h}-->-<!--{$arrSiteInfo.tel03|h}--><br>
 <!--{/if}-->
 <!--{if $arrSiteInfo.fax01 != ""}-->
 [emoji:76]<font color="#800000">FAX番号</font><br>
-<!--{$arrSiteInfo.fax01|escape}-->-<!--{$arrSiteInfo.fax02|escape}-->-<!--{$arrSiteInfo.fax03|escape}--><br>
+<!--{$arrSiteInfo.fax01|h}-->-<!--{$arrSiteInfo.fax02|h}-->-<!--{$arrSiteInfo.fax03|h}--><br>
 <!--{/if}-->
 <!--{if $arrSiteInfo.business_hour != ""}-->
 [emoji:176]<font color="#800000">営業時間</font><br>
-<!--{$arrSiteInfo.business_hour|escape}--><br>
+<!--{$arrSiteInfo.business_hour|h}--><br>
 <!--{/if}-->
 <!--{if $arrSiteInfo.email02 != ""}-->
 [emoji:110]<font color="#800000">メールアドレス</font><br>
-<a href="mailto:<!--{$arrSiteInfo.email02|escape}-->"><!--{$arrSiteInfo.email02|escape}--></a><br>
+<a href="mailto:<!--{$arrSiteInfo.email02|h}-->"><!--{$arrSiteInfo.email02|h}--></a><br>
 <!--{/if}-->
 <!--{if $arrSiteInfo.good_traded != ""}-->
 [emoji:72]<font color="#800000">取扱商品</font><br>
-<!--{$arrSiteInfo.good_traded|escape|nl2br}--><br>
+<!--{$arrSiteInfo.good_traded|h|nl2br}--><br>
 <!--{/if}-->
 <!--{if $arrSiteInfo.message != ""}-->
 [emoji:70]<font color="#800000">メッセージ</font><br>
-<!--{$arrSiteInfo.message|escape|nl2br}--><br>
+<!--{$arrSiteInfo.message|h|nl2br}--><br>
 <!--{/if}-->
 <!-- ▲本文 ここまで -->
 

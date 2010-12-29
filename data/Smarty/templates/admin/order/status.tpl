@@ -79,11 +79,11 @@
     <tr style="background:<!--{$arrORDERSTATUS_COLOR[$status]}-->;">
       <td><input type="checkbox" name="move[]" value="<!--{$arrStatus[cnt].order_id}-->" ></td>
       <td><!--{$arrORDERSTATUS[$status]}--></td>
-      <td><a href ="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnOpenWindow('./edit.php?order_id=<!--{$arrStatus[cnt].order_id}-->','order_disp','800','900'); return false;" ><!--{$arrStatus[cnt].order_id}--></td>
+      <td><a href ="<!--{$smarty.server.PHP_SELF|h}-->" onclick="fnOpenWindow('./edit.php?order_id=<!--{$arrStatus[cnt].order_id}-->','order_disp','800','900'); return false;" ><!--{$arrStatus[cnt].order_id}--></td>
       <td><!--{$arrStatus[cnt].create_date|sfDispDBDate:false}--></td>
-      <td><!--{$arrStatus[cnt].order_name01|escape}--><!--{$arrStatus[cnt].order_name02|escape}--></td>
+      <td><!--{$arrStatus[cnt].order_name01|h}--><!--{$arrStatus[cnt].order_name02|h}--></td>
       <!--{assign var=payment_id value=`$arrStatus[cnt].payment_id`}-->
-      <td><!--{$arrPayment[$payment_id]|escape}--></td>
+      <td><!--{$arrPayment[$payment_id]|h}--></td>
       <td class="right"><!--{$arrStatus[cnt].total|number_format}--></td>
       <td><!--{if $arrStatus[cnt].payment_date != ""}--><!--{$arrStatus[cnt].payment_date|sfDispDBDate:false}--><!--{else}-->未入金<!--{/if}--></td>
       <td><!--{if $arrStatus[cnt].status eq 5}--><!--{$arrStatus[cnt].commit_date|sfDispDBDate:false}--><!--{else}-->未発送<!--{/if}--></td>

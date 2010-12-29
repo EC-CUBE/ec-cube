@@ -30,11 +30,11 @@ self.moveTo(20,20);self.focus();
 </script>
 
 <form name="form1" id="form1" method="post" action="" onsubmit="return fnRegistMember();">
-<input type="hidden" name="mode" value="<!--{$tpl_mode|escape}-->">
-<input type="hidden" name="member_id" value="<!--{$tpl_member_id|escape}-->">
-<input type="hidden" name="pageno" value="<!--{$tpl_pageno|escape}-->">
-<input type="hidden" name="old_login_id" value="<!--{$tpl_old_login_id|escape}-->">
-<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid|escape}-->">
+<input type="hidden" name="mode" value="<!--{$tpl_mode|h}-->">
+<input type="hidden" name="member_id" value="<!--{$tpl_member_id|h}-->">
+<input type="hidden" name="pageno" value="<!--{$tpl_pageno|h}-->">
+<input type="hidden" name="old_login_id" value="<!--{$tpl_old_login_id|h}-->">
+<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid|h}-->">
 <h2>メンバー登録/編集</h2>
 
 <table>
@@ -84,7 +84,7 @@ self.moveTo(20,20);self.focus();
   </tr>
 </table>
 
-<div class="btn"><a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('form1', '<!--{$tpl_mode|escape}-->', '', '');"><span>この内容で登録する</span></a></div>
+<div class="btn"><a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('form1', '<!--{$tpl_mode|h}-->', '', '');"><span>この内容で登録する</span></a></div>
 </form>
 
 <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`admin_popup_footer.tpl"}-->

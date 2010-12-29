@@ -31,7 +31,7 @@
                 <th>メーカー名<span class="attention"> *</span></th>
                 <td>
                     <!--{if $arrErr.name}--><span class="attention"><!--{$arrErr.name}--></span><!--{/if}-->
-                    <input type="text" name="name" value="<!--{$arrForm.name|escape}-->" maxlength="<!--{$smarty.const.SMTEXT_LEN}-->" style="" size="60" class="box60"/>
+                    <input type="text" name="name" value="<!--{$arrForm.name|h}-->" maxlength="<!--{$smarty.const.SMTEXT_LEN}-->" style="" size="60" class="box60"/>
                     <span class="attention"> (上限<!--{$smarty.const.SMTEXT_LEN}-->文字)</span>
                 </td>
             </tr>
@@ -49,7 +49,7 @@
             <!--{section name=cnt loop=$arrMaker}-->
             <tr style="background:<!--{if $tpl_class_id != $arrMaker[cnt].maker_id}-->#ffffff<!--{else}--><!--{$smarty.const.SELECT_RGB}--><!--{/if}-->;">
                 <!--{assign var=maker_id value=$arrMaker[cnt].maker_id}-->
-                <td><!--{$arrMaker[cnt].name|escape}--></td>
+                <td><!--{$arrMaker[cnt].name|h}--></td>
                 <td class="center">
                     <!--{if $tpl_maker_id != $arrMaker[cnt].maker_id}-->
                     <a href="?" onclick="fnModeSubmit('pre_edit', 'maker_id', <!--{$arrMaker[cnt].maker_id}-->); return false;">編集</a>

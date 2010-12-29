@@ -36,8 +36,8 @@
     </tr>
     <!--{section name=cnt loop=$arrDelivList}-->
       <tr>
-        <td><!--{$arrDelivList[cnt].name|escape}--></td>
-        <td><!--{$arrDelivList[cnt].service_name|escape}--></td>
+        <td><!--{$arrDelivList[cnt].name|h}--></td>
+        <td><!--{$arrDelivList[cnt].service_name|h}--></td>
         <td align="center"><a href="?" onclick="fnChangeAction('./delivery_input.php'); fnModeSubmit('pre_edit', 'deliv_id', <!--{$arrDelivList[cnt].deliv_id}-->); return false;">編集</a></td>
         <td align="center"><a href="?" onclick="fnModeSubmit('delete', 'deliv_id', <!--{$arrDelivList[cnt].deliv_id}-->); return false;">削除</a></td>
         <td align="center">

@@ -37,16 +37,16 @@
     </tr>
     <!--{section name=cnt loop=$arrPaymentListFree}-->
     <tr>
-      <td><!--{$arrPaymentListFree[cnt].payment_id|escape}--></td>
-      <td><!--{$arrPaymentListFree[cnt].payment_method|escape}--></td>
+      <td><!--{$arrPaymentListFree[cnt].payment_id|h}--></td>
+      <td><!--{$arrPaymentListFree[cnt].payment_method|h}--></td>
       <!--{if $arrPaymentListFree[cnt].charge_flg == 2}-->
         <td align="center">-</td>
       <!--{else}-->
-        <td align="right"><!--{$arrPaymentListFree[cnt].charge|escape|number_format}--></td>
+        <td align="right"><!--{$arrPaymentListFree[cnt].charge|number_format|h}--></td>
       <!--{/if}-->
       <td align="center">
-        <!--{if $arrPaymentListFree[cnt].rule > 0}--><!--{$arrPaymentListFree[cnt].rule|escape|number_format}--><!--{else}-->0<!--{/if}-->円
-        <!--{if $arrPaymentListFree[cnt].upper_rule > 0}-->～<!--{$arrPaymentListFree[cnt].upper_rule|escape|number_format}-->円<!--{elseif $arrPaymentListFree[cnt].upper_rule == "0"}--><!--{else}-->～無制限<!--{/if}--></td>
+        <!--{if $arrPaymentListFree[cnt].rule > 0}--><!--{$arrPaymentListFree[cnt].rule|number_format|h}--><!--{else}-->0<!--{/if}-->円
+        <!--{if $arrPaymentListFree[cnt].upper_rule > 0}-->～<!--{$arrPaymentListFree[cnt].upper_rule|number_format|h}-->円<!--{elseif $arrPaymentListFree[cnt].upper_rule == "0"}--><!--{else}-->～無制限<!--{/if}--></td>
       <td align="center"><!--{if $arrPaymentListFree[cnt].fix != 1}--><a href="?" onclick="win03('./payment_input.php?mode=pre_edit&amp;payment_id=<!--{$arrPaymentListFree[cnt].payment_id}-->','payment_input','530','400'); return false;">編集</a><!--{else}-->-<!--{/if}--></td>
       <td align="center"><!--{if $arrPaymentListFree[cnt].fix != 1}--><a href="?" onclick="fnModeSubmit('delete', 'payment_id', <!--{$arrPaymentListFree[cnt].payment_id}-->); return false;">削除</a><!--{else}-->-<!--{/if}--></td>
       <td align="center">

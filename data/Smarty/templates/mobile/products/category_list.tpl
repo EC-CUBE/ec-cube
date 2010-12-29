@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<center><!--{$arrCategory.category_name|escape}--></center>
+<center><!--{$arrCategory.category_name|h}--></center>
 
 <hr>
 
@@ -32,9 +32,9 @@
 <!--{assign var=path value="`$smarty.const.MOBILE_URL_DIR`products/list.php"}-->
 <!--{/if}-->
 <!--{if $i+1<9}-->
-<a href="<!--{$path}-->?category_id=<!--{$arrChild.category_id}-->" accesskey="<!--{$i+1}-->"><!--{$i+1|numeric_emoji}--><!--{$arrChild.category_name|escape}-->(<!--{$arrChild.product_count}-->)</a><br>
+<a href="<!--{$path}-->?category_id=<!--{$arrChild.category_id}-->" accesskey="<!--{$i+1}-->"><!--{$i+1|numeric_emoji}--><!--{$arrChild.category_name|h}-->(<!--{$arrChild.product_count}-->)</a><br>
 <!--{else}-->
-[<!--{$i+1}-->]<a href="<!--{$path}-->?category_id=<!--{$arrChild.category_id}-->"><!--{$arrChild.category_name|escape}-->(<!--{$arrChild.product_count}-->)</a><br>
+[<!--{$i+1}-->]<a href="<!--{$path}-->?category_id=<!--{$arrChild.category_id}-->"><!--{$arrChild.category_name|h}-->(<!--{$arrChild.product_count}-->)</a><br>
 <!--{/if}-->
 <!--{/foreach}-->
 

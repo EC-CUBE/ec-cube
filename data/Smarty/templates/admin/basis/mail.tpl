@@ -68,7 +68,7 @@ function checkFlagAndSubmit(){
       <!--{if $arrErr[$key]}-->
       <span class="attention"><!--{$arrErr[$key]}--></span>
       <!--{/if}-->
-      <input type="text" name="subject" value="<!--{$arrForm[$key]|escape}-->" onChange="setFlag();" size="30" class="box30" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
+      <input type="text" name="subject" value="<!--{$arrForm[$key]|h}-->" onChange="setFlag();" size="30" class="box30" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
       </td>
     </tr>
     <tr>
@@ -78,7 +78,7 @@ function checkFlagAndSubmit(){
       <!--{if $arrErr[$key]}-->
       <span class="attention"><!--{$arrErr[$key]}--></span>
       <!--{/if}-->
-      <textarea name="header" cols="75" rows="12" class="area75" onChange="setFlag();" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{$arrForm[$key]|escape}--></textarea><br />
+      <textarea name="header" cols="75" rows="12" class="area75" onChange="setFlag();" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{$arrForm[$key]|h}--></textarea><br />
       <span class="attention"> (上限<!--{$smarty.const.LTEXT_LEN}-->文字)
       </span>
       <div>
@@ -99,7 +99,7 @@ function checkFlagAndSubmit(){
       <!--{if $arrErr[$key]}-->
       <span class="attention"><!--{$arrErr[$key]}--></span>
       <!--{/if}-->
-      <textarea name="footer" cols="75" rows="12" class="area75" onChange="setFlag();" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{$arrForm[$key]|escape}--></textarea><br />
+      <textarea name="footer" cols="75" rows="12" class="area75" onChange="setFlag();" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{$arrForm[$key]|h}--></textarea><br />
       <span class="attention"> (上限<!--{$smarty.const.LTEXT_LEN}-->文字)</span>
       <div>
         <a class="btn-normal" href="javascript:;" onclick="fnCharCount('form1','footer','cnt_footer');"><span>文字数カウント</span></a>

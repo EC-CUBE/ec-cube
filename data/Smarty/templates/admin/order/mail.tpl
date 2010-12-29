@@ -25,7 +25,7 @@
 <input type="hidden" name="mode" value="confirm" />
 <input type="hidden" name="order_id" value="<!--{$tpl_order_id}-->" />
 <!--{foreach key=key item=item from=$arrSearchHidden}-->
-<input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->" />
+<input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
 <!--{/foreach}-->
 <div id="order" class="contents-main">
   <h2>メール配信</h2>
@@ -37,10 +37,10 @@
     </tr>
     <!--{section name=cnt loop=$arrMailHistory}-->
     <tr class="center">
-      <td><!--{$arrMailHistory[cnt].send_date|sfDispDBDate|escape}--></td>
+      <td><!--{$arrMailHistory[cnt].send_date|sfDispDBDate|h}--></td>
       <!--{assign var=key value="`$arrMailHistory[cnt].template_id`"}-->
-      <td><!--{$arrMAILTEMPLATE[$key]|escape}--></td>
-      <td><a href="?" onclick="win02('./mail_view.php?send_id=<!--{$arrMailHistory[cnt].send_id}-->','mail_view','650','800'); return false;"><!--{$arrMailHistory[cnt].subject|escape}--></a></td>
+      <td><!--{$arrMAILTEMPLATE[$key]|h}--></td>
+      <td><a href="?" onclick="win02('./mail_view.php?send_id=<!--{$arrMailHistory[cnt].send_id}-->','mail_view','650','800'); return false;"><!--{$arrMailHistory[cnt].subject|h}--></a></td>
     </tr>
     <!--{/section}-->
   </table>
@@ -53,7 +53,7 @@
         <span class="attention"><!--{$arrErr[$key]}--></span>
         <select name="template_id" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" onchange="fnModeSubmit('change', '', '');">
         <option value="" selected="selected">選択してください</option>
-        <!--{html_options options=$arrMAILTEMPLATE selected=$arrForm[$key].value|escape}-->
+        <!--{html_options options=$arrMAILTEMPLATE selected=$arrForm[$key].value|h}-->
         </select>
       </td>
     </tr>
@@ -62,7 +62,7 @@
       <td>
         <!--{assign var=key value="subject"}-->
         <span class="attention"><!--{$arrErr[$key]}--></span>
-        <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="30" class="box30" />
+        <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="30" class="box30" />
       </td>
     </tr>
     <tr>
@@ -70,7 +70,7 @@
       <td>
         <!--{assign var=key value="header"}-->
         <span class="attention"><!--{$arrErr[$key]}--></span>
-        <textarea  name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" cols="75" rows="12" class="area75"><!--{$arrForm[$key].value|escape}--></textarea>
+        <textarea  name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" cols="75" rows="12" class="area75"><!--{$arrForm[$key].value|h}--></textarea>
       </td>
     </tr>
     <tr>
@@ -81,7 +81,7 @@
       <td>
         <!--{assign var=key value="footer"}-->
         <span class="attention"><!--{$arrErr[$key]}--></span>
-        <textarea  name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" cols="75" rows="12" class="area75"><!--{$arrForm[$key].value|escape}--></textarea>
+        <textarea  name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" cols="75" rows="12" class="area75"><!--{$arrForm[$key].value|h}--></textarea>
       </td>
     </tr>
   </table>

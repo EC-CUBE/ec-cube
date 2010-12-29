@@ -19,8 +19,8 @@
     <!--{section name=data loop=$plugins}-->
     <!--▼メンバー<!--{$smarty.section.data.iteration}-->-->
     <tr>
-      <td><!--{$plugins[data].plugin_name|escape}--></td>
-      <td><!--{$plugins[data].plugin_name|escape}--></td>
+      <td><!--{$plugins[data].plugin_name|h}--></td>
+      <td><!--{$plugins[data].plugin_name|h}--></td>
       <td>
         <!--{if $plugins[data].create_date == null }-->
         <input type="hidden" name="plugin_name" value="<!--{$plugins[data].plugin_name}-->" />

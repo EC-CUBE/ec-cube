@@ -28,7 +28,7 @@
     <form action="?" method="post" name="form1">
       <input type="hidden" name="mode" value="mail_check" />
       <div id="completebox">
-        <p>メールアドレス：&nbsp;<!--★メールアドレス入力★--><input type="text" name="email" value="<!--{$tpl_login_email|escape}-->" size="40" class="box300" style="<!--{$errmsg|sfGetErrorColor}-->; ime-mode: disabled;" /></p>
+        <p>メールアドレス：&nbsp;<!--★メールアドレス入力★--><input type="text" name="email" value="<!--{$tpl_login_email|h}-->" size="40" class="box300" style="<!--{$errmsg|sfGetErrorColor}-->; ime-mode: disabled;" /></p>
         <span class="attention"><!--{$errmsg}--></span>
       </div>
       <div class="btn">

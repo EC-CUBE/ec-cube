@@ -25,8 +25,8 @@
 <center>
 ―――――――――<br>
 <!--{marquee}-->
-<!--{if $arrNews[0].news_url}--><a href="<!--{$arrNews[0].news_url|escape}-->"><!--{/if}-->
-<!--{$arrNews[0].news_title|escape}-->
+<!--{if $arrNews[0].news_url}--><a href="<!--{$arrNews[0].news_url|h}-->"><!--{/if}-->
+<!--{$arrNews[0].news_title|h}-->
 <!--{if $arrNews[0].news_url}--></a><!--{/if}-->
 <!--{/marquee}-->
 ―――――――――<br>

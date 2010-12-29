@@ -31,7 +31,7 @@
 
 <!--▼CONTENTS-->
 <!--{section name=cnt loop=$arrAddr}-->
-<form method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+<form method="post" action="<!--{$smarty.server.PHP_SELF|h}-->">
 <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
 <input type="hidden" name="deli" value="<!--{$smarty.section.cnt.iteration}-->">
 <!--{if $smarty.section.cnt.first}-->
@@ -43,9 +43,9 @@
 <!--{/if}-->
 ■お届け先<!--{$smarty.section.cnt.iteration}--><br>
 〒<!--{$arrAddr[cnt].zip01}-->-<!--{$arrAddr[cnt].zip02}--><br>
-<!--{assign var=key value=$arrAddr[cnt].pref}--><!--{$arrPref[$key]}--><!--{$arrAddr[cnt].addr01|escape}--><br>
+<!--{assign var=key value=$arrAddr[cnt].pref}--><!--{$arrPref[$key]}--><!--{$arrAddr[cnt].addr01|h}--><br>
 <!--{if $arrAddr[cnt].addr02 != ""}-->
-<!--{$arrAddr[cnt].addr02|escape}--><br>
+<!--{$arrAddr[cnt].addr02|h}--><br>
 <!--{/if}-->
 <center><input type="submit" value="ここに送る"></center>
 </form>

@@ -31,9 +31,9 @@
     </tr>
     <!--{foreach from=$tpl_ec_log item=line}-->
         <tr>
-            <td class="date"><!--{$line.date|escape}--></td>
-            <td class="path"><!--{$line.path|escape}--></td>
-            <td class="body"><!--{$line.body|escape|nl2br}--></td>
+            <td class="date"><!--{$line.date|h}--></td>
+            <td class="path"><!--{$line.path|h}--></td>
+            <td class="body"><!--{$line.body|h|nl2br}--></td>
         </tr>
     <!--{/foreach}-->
 </table>

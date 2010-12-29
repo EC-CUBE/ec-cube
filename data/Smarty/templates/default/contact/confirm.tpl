@@ -22,42 +22,42 @@
 
 <div id="undercolumn">
   <div id="undercolumn_contact">
-    <h2 class="title"><!--{$tpl_title|escape}--></h2>
+    <h2 class="title"><!--{$tpl_title|h}--></h2>
     <p>下記入力内容で送信してもよろしいでしょうか？<br />
       よろしければ、一番下の「送信」ボタンをクリックしてください。</p>
     <form name="form1" id="form1" method="post" action="?">
       <input type="hidden" name="mode" value="complete" />
       <!--{foreach key=key item=item from=$arrForm}-->
         <!--{if $key ne 'mode'}-->
-      <input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->" />
+      <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
         <!--{/if}-->
       <!--{/foreach}-->
       <table summary="お問い合わせ内容確認">
         <tr>
           <th>お名前<span class="attention">※</span></th>
-          <td><!--{$arrForm.name01|escape}-->　<!--{$arrForm.name02|escape}--></td>
+          <td><!--{$arrForm.name01|h}-->　<!--{$arrForm.name02|h}--></td>
         </tr>
         <tr>
           <th>お名前(フリガナ)<span class="attention">※</span></th>
-          <td><!--{$arrForm.kana01|escape}-->　<!--{$arrForm.kana02|escape}--></td>
+          <td><!--{$arrForm.kana01|h}-->　<!--{$arrForm.kana02|h}--></td>
         </tr>
         <tr>
           <th>郵便番号</th>
           <td>
              <!--{if strlen($arrForm.zip01) > 0 && strlen($arrForm.zip02) > 0}-->
-               〒<!--{$arrForm.zip01|escape}-->-<!--{$arrForm.zip02|escape}-->
+               〒<!--{$arrForm.zip01|h}-->-<!--{$arrForm.zip02|h}-->
              <!--{/if}-->
           </td>
         </tr>
         <tr>
           <th>住所</th>
-          <td><!--{$arrPref[$arrForm.pref]}--><!--{$arrForm.addr01|escape}--><!--{$arrForm.addr02|escape}--></td>
+          <td><!--{$arrPref[$arrForm.pref]}--><!--{$arrForm.addr01|h}--><!--{$arrForm.addr02|h}--></td>
         </tr>
         <tr>
           <th>電話番号</th>
           <td>
             <!--{if strlen($arrForm.tel01) > 0 && strlen($arrForm.tel02) > 0 && strlen($arrForm.tel03) > 0}-->
-              <!--{$arrForm.tel01|escape}-->-<!--{$arrForm.tel02|escape}-->-<!--{$arrForm.tel03|escape}-->
+              <!--{$arrForm.tel01|h}-->-<!--{$arrForm.tel02|h}-->-<!--{$arrForm.tel03|h}-->
             <!--{/if}-->
           </td>
         </tr>
@@ -68,7 +68,7 @@
         <tr>
           <th>お問い合わせ内容<span class="attention">※</span><br />
              <span class="mini">（全角1000字以下）</span></th>
-          <td><!--{$arrForm.contents|escape|nl2br}--></td>
+          <td><!--{$arrForm.contents|h|nl2br}--></td>
         </tr>
       </table>
       <div class="tblareabtn">

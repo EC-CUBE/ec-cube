@@ -25,10 +25,10 @@
 <input type="hidden" name="mode" value="send" />
 <input type="hidden" name="order_id" value="<!--{$tpl_order_id}-->" />
 <!--{foreach key=key item=item from=$arrHidden}-->
-<input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->" />
+<input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
 <!--{/foreach}-->
 <!--{foreach key=key item=item from=$arrSearchHidden}-->
-<input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->" />
+<input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
 <!--{/foreach}-->
 <div id="order" class="contents-main">
   <h2>メール配信</h2>
@@ -36,11 +36,11 @@
   <table class="form">
     <tr>
       <th>件名</th>
-      <td><!--{$tpl_subject|escape}--></td>
+      <td><!--{$tpl_subject|h}--></td>
     </tr>
     <tr>
       <th>本文</th>
-      <td><!--{$tpl_body|escape|nl2br}--></td>
+      <td><!--{$tpl_body|h|nl2br}--></td>
     </tr>
   </table>
 

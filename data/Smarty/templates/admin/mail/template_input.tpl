@@ -66,14 +66,14 @@ function lfnCheckSubmit(){
     <tr>
       <th>Subject<span class="attention"> *</span></th>
       <td>
-        <input type="text" name="subject" size="65" class="box65" <!--{if $arrErr.subject}--><!--{sfSetErrorStyle}--><!--{/if}--> value="<!--{$arrForm.subject|escape}-->" />
+        <input type="text" name="subject" size="65" class="box65" <!--{if $arrErr.subject}--><!--{sfSetErrorStyle}--><!--{/if}--> value="<!--{$arrForm.subject|h}-->" />
         <!--{if $arrErr.subject}--><br /><span class="attention"><!--{$arrErr.subject}--></span><!--{/if}-->
       </td>
     </tr>
     <tr>
       <th>本文<span class="attention"> *</span><br />（名前差し込み時は {name} といれてください）</th>
       <td>
-        <textarea name="body" cols="90" rows="40" class="area90" <!--{if $arrErr.body}--><!--{sfSetErrorStyle}--><!--{/if}-->><!--{$arrForm.body|escape}--></textarea>
+        <textarea name="body" cols="90" rows="40" class="area90" <!--{if $arrErr.body}--><!--{sfSetErrorStyle}--><!--{/if}-->><!--{$arrForm.body|h}--></textarea>
         <!--{if $arrErr.body}--><br /><span class="attention"><!--{$arrErr.body}--></span><!--{/if}-->
 				<div>
 					<a class="btn-normal" href="javascript:;" onclick="fnCharCount('form1','body','cnt_footer');" name="next" id="next"><span>文字数カウント</span></a>

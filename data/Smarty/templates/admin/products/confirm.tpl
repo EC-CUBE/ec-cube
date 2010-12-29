@@ -25,10 +25,10 @@
   <!--{foreach key=key item=item from=$arrForm}-->
     <!--{if $key == 'product_status' || $key == 'payment_ids'}-->
       <!--{foreach item=statusVal from=$item}-->
-      <input type="hidden" name="<!--{$key}-->[]" value="<!--{$statusVal|escape}-->" />
+      <input type="hidden" name="<!--{$key}-->[]" value="<!--{$statusVal|h}-->" />
       <!--{/foreach}-->
     <!--{else}-->
-      <input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->" />
+      <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
     <!--{/if}-->
   <!--{/foreach}-->
   <div id="products" class="contents-main">
@@ -37,7 +37,7 @@
     <tr>
       <th>商品名</th>
       <td>
-      <!--{$arrForm.name|escape}-->
+      <!--{$arrForm.name|h}-->
       </td>
     </tr>
     <tr>
@@ -74,33 +74,33 @@
     <tr>
       <th>ダウンロードファイル名</th>
       <td>
-      <!--{$arrForm.down_filename|escape}-->
+      <!--{$arrForm.down_filename|h}-->
       </td>
     </tr>
     <tr>
       <th>ダウンロード商品用<BR />ファイル</th>
       <td>
       <!--{if $arrForm.down_realfilename != ""}-->
-          <!--{$arrForm.down_realfilename|escape}-->
+          <!--{$arrForm.down_realfilename|h}-->
       <!--{/if}-->
       </td>
     </tr>
     <tr>
       <th>商品コード</th>
       <td>
-      <!--{$arrForm.product_code|escape}-->
+      <!--{$arrForm.product_code|h}-->
       </td>
     </tr>
     <tr>
       <th><!--{$smarty.const.NORMAL_PRICE_TITLE}--></th>
       <td>
-      <!--{$arrForm.price01|escape}-->
+      <!--{$arrForm.price01|h}-->
       円</td>
     </tr>
     <tr>
       <th><!--{$smarty.const.SALE_PRICE_TITLE}--></th>
       <td>
-      <!--{$arrForm.price02|escape}-->
+      <!--{$arrForm.price02|h}-->
       円</td>
     </tr>
     <tr>
@@ -109,7 +109,7 @@
       <!--{if $arrForm.stock_unlimited == 1}-->
         無制限
       <!--{else}-->
-        <!--{$arrForm.stock|escape}-->
+        <!--{$arrForm.stock|h}-->
       <!--{/if}-->
       </td>
     </tr>
@@ -117,7 +117,7 @@
       <th>支払方法</th>
       <td>
       <!--{foreach from=$arrForm.payment_ids item=payment_id}-->
-        <!--{$arrPayments[$payment_id]|escape}-->&nbsp;
+        <!--{$arrPayments[$payment_id]|h}-->&nbsp;
       <!--{/foreach}-->
       </td>
     </tr>
@@ -126,63 +126,63 @@
     <tr>
       <th>商品送料</th>
       <td>
-        <!--{$arrForm.deliv_fee|escape}-->
+        <!--{$arrForm.deliv_fee|h}-->
         円</td>
     </tr>
     <tr>
       <th>ポイント付与率</th>
       <td>
-      <!--{$arrForm.point_rate|escape}-->
+      <!--{$arrForm.point_rate|h}-->
       ％</td>
     </tr>
     <tr>
       <th>発送日目安</th>
       <td>
-      <!--{$arrDELIVERYDATE[$arrForm.deliv_date_id]|escape}-->
+      <!--{$arrDELIVERYDATE[$arrForm.deliv_date_id]|h}-->
       </td>
     </tr>
     <tr>
       <th>購入制限</th>
       <td>
-        <!--{$arrForm.sale_limit|default:'無制限'|escape}-->
+        <!--{$arrForm.sale_limit|default:'無制限'|h}-->
       </td>
     </tr>
     <tr>
       <th>メーカー</th>
       <td>
-        <!--{$arrMaker[$arrForm.maker_id]|escape}-->
+        <!--{$arrMaker[$arrForm.maker_id]|h}-->
       </td>
     </tr>
     <tr>
       <th>メーカーURL</th>
       <td>
-      <!--{$arrForm.comment1|escape|sfPutBR:$smarty.const.LINE_LIMIT_SIZE}-->
+      <!--{$arrForm.comment1|h|sfPutBR:$smarty.const.LINE_LIMIT_SIZE}-->
       </td>
     </tr>
     <!--{*
     <tr>
       <th>成分</th>
       <td>
-      <!--{$arrForm.comment2|escape}-->
+      <!--{$arrForm.comment2|h}-->
       </td>
     </tr>
     *}-->
     <tr>
       <th>検索ワード</th>
       <td>
-      <!--{$arrForm.comment3|escape}-->
+      <!--{$arrForm.comment3|h}-->
       </td>
     </tr>
     <tr>
       <th>備考欄(SHOP専用)</th>
       <td>
-        <!--{$arrForm.note|escape|nl2br}-->
+        <!--{$arrForm.note|h|nl2br}-->
       </td>
     </tr>
     <tr>
       <th>一覧-メインコメント</th>
       <td>
-      <!--{$arrForm.main_list_comment|escape|nl2br}-->
+      <!--{$arrForm.main_list_comment|h|nl2br}-->
       </td>
     </tr>
     <tr>
@@ -196,7 +196,7 @@
       <td>
       <!--{assign var=key value="main_list_image"}-->
       <!--{if $arrFile[$key].filepath != ""}-->
-      <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" /><br />
+      <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->" /><br />
       <!--{/if}-->
       </td>
     </tr>
@@ -205,7 +205,7 @@
       <td>
       <!--{assign var=key value="main_image"}-->
       <!--{if $arrFile[$key].filepath != ""}-->
-      <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" /><br />
+      <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->" /><br />
       <!--{/if}-->
       </td>
     </tr>
@@ -214,7 +214,7 @@
       <td>
       <!--{assign var=key value="main_large_image"}-->
       <!--{if $arrFile[$key].filepath != ""}-->
-      <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" /><br />
+      <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->" /><br />
       <!--{/if}-->
       </td>
     </tr>
@@ -230,7 +230,7 @@
       <th>詳細-サブタイトル（<!--{$smarty.section.cnt.iteration}-->）</th>
       <td>
       <!--{assign var=key value="sub_title`$smarty.section.cnt.iteration`"}-->
-      <!--{$arrForm[$key]|escape}-->
+      <!--{$arrForm[$key]|h}-->
       </td>
     </tr>
     <tr>
@@ -245,7 +245,7 @@
       <td>
       <!--{assign var=key value="sub_image`$smarty.section.cnt.iteration`"}-->
       <!--{if $arrFile[$key].filepath != ""}-->
-      <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" /><br />
+      <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->" /><br />
       <!--{/if}-->
       </td>
     </tr>
@@ -254,7 +254,7 @@
       <td>
       <!--{assign var=key value="sub_large_image`$smarty.section.cnt.iteration`"}-->
       <!--{if $arrFile[$key].filepath != ""}-->
-      <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" /><br />
+      <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->" /><br />
       <!--{/if}-->
       </td>
     </tr>
@@ -268,15 +268,15 @@
     <tr>
       <th>関連商品(<!--{$smarty.section.cnt.iteration}-->)<br />
       <!--{if $arrRecommend[$recommend_no].product_id|strlen >= 1}-->
-        <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$arrRecommend[$recommend_no].main_list_image|sfNoImageMainList|escape}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[$recommend_no].name|escape}-->">
+        <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$arrRecommend[$recommend_no].main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[$recommend_no].name|h}-->">
       <!--{/if}-->
       </th>
       <td>
       <!--{if $arrRecommend[$recommend_no].product_id|strlen >= 1}-->
         商品コード:<!--{$arrRecommend[$recommend_no].product_code_min}--><br />
-        商品名:<!--{$arrRecommend[$recommend_no].name|escape}--><br />
+        商品名:<!--{$arrRecommend[$recommend_no].name|h}--><br />
         コメント:<br />
-        <!--{$arrRecommend[$recommend_no].comment|escape|nl2br}-->
+        <!--{$arrRecommend[$recommend_no].comment|h|nl2br}-->
       <!--{/if}-->
       </td>
     </tr>

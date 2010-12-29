@@ -45,7 +45,7 @@
 <div id="under02column">
     <div id="under02column_shopping">
         <p class="flowarea"><img src="<!--{$TPL_DIR}-->img/picture/img_flow_03.gif" width="700" height="36" alt="購入手続きの流れ" /></p>
-        <h2 class="title"><!--{$tpl_title|escape}--></h2>
+        <h2 class="title"><!--{$tpl_title|h}--></h2>
 
         <p>下記ご注文内容で送信してもよろしいでしょうか？<br />
             よろしければ、「<!--{if $payment_type != ""}-->次へ<!--{else}-->ご注文完了ページへ<!--{/if}-->」ボタンをクリックしてください。</p>
@@ -75,16 +75,16 @@
                     <td class="phototd">
                         <a
                             <!--{if $item.productsClass.main_image|strlen >= 1}-->
-                                href="<!--{$smarty.const.IMAGE_SAVE_URL}--><!--{$item.productsClass.main_image|sfNoImageMainList|escape}-->"
+                                href="<!--{$smarty.const.IMAGE_SAVE_URL}--><!--{$item.productsClass.main_image|sfNoImageMainList|h}-->"
                                 class="expansion"
                                 target="_blank"
                             <!--{/if}-->
                         >
-                            <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$item.productsClass.main_list_image|sfNoImageMainList|escape}-->&amp;width=65&amp;height=65" alt="<!--{$item.productsClass.name|escape}-->" /></a>
+                            <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$item.productsClass.main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" alt="<!--{$item.productsClass.name|h}-->" /></a>
                     </td>
                     <td>
                         <ul>
-                            <li><strong><!--{$item.productsClass.name|escape}--></strong></li>
+                            <li><strong><!--{$item.productsClass.name|h}--></strong></li>
                             <!--{if $item.productsClass.classcategory_name1 != ""}-->
                             <li><!--{$item.productsClass.class_name1}-->：<!--{$item.productsClass.classcategory_name1}--></li>
                             <!--{/if}-->
@@ -170,19 +170,19 @@
                     <!--{if $arrData.deliv_check >= 1}-->
                         <tr>
                             <th>お名前</th>
-                            <td><!--{$arrData.deliv_name01|escape}--> <!--{$arrData.deliv_name02|escape}--></td>
+                            <td><!--{$arrData.deliv_name01|h}--> <!--{$arrData.deliv_name02|h}--></td>
                         </tr>
                         <tr>
                             <th>お名前(フリガナ)</th>
-                            <td><!--{$arrData.deliv_kana01|escape}--> <!--{$arrData.deliv_kana02|escape}--></td>
+                            <td><!--{$arrData.deliv_kana01|h}--> <!--{$arrData.deliv_kana02|h}--></td>
                         </tr>
                         <tr>
                             <th>郵便番号</th>
-                            <td>〒<!--{$arrData.deliv_zip01|escape}-->-<!--{$arrData.deliv_zip02|escape}--></td>
+                            <td>〒<!--{$arrData.deliv_zip01|h}-->-<!--{$arrData.deliv_zip02|h}--></td>
                         </tr>
                         <tr>
                             <th>住所</th>
-                            <td><!--{$arrPref[$arrData.deliv_pref]}--><!--{$arrData.deliv_addr01|escape}--><!--{$arrData.deliv_addr02|escape}--></td>
+                            <td><!--{$arrPref[$arrData.deliv_pref]}--><!--{$arrData.deliv_addr01|h}--><!--{$arrData.deliv_addr02|h}--></td>
                         </tr>
                         <tr>
                             <th>電話番号</th>
@@ -191,19 +191,19 @@
                     <!--{else}-->
                         <tr>
                             <th>お名前</th>
-                            <td><!--{$arrData.order_name01|escape}--> <!--{$arrData.order_name02|escape}--></td>
+                            <td><!--{$arrData.order_name01|h}--> <!--{$arrData.order_name02|h}--></td>
                         </tr>
                         <tr>
                             <th>お名前(フリガナ)</th>
-                            <td><!--{$arrData.order_kana01|escape}--> <!--{$arrData.order_kana02|escape}--></td>
+                            <td><!--{$arrData.order_kana01|h}--> <!--{$arrData.order_kana02|h}--></td>
                         </tr>
                         <tr>
                             <th>郵便番号</th>
-                            <td>〒<!--{$arrData.order_zip01|escape}-->-<!--{$arrData.order_zip02|escape}--></td>
+                            <td>〒<!--{$arrData.order_zip01|h}-->-<!--{$arrData.order_zip02|h}--></td>
                         </tr>
                         <tr>
                             <th>住所</th>
-                            <td><!--{$arrPref[$arrData.order_pref]}--><!--{$arrData.order_addr01|escape}--><!--{$arrData.order_addr02|escape}--></td>
+                            <td><!--{$arrPref[$arrData.order_pref]}--><!--{$arrData.order_addr01|h}--><!--{$arrData.order_addr02|h}--></td>
                         </tr>
                         <tr>
                             <th>電話番号</th>
@@ -224,22 +224,22 @@
                 <tbody>
                 <tr>
                     <th>お支払方法</th>
-                    <td><!--{$arrData.payment_method|escape}--></td>
+                    <td><!--{$arrData.payment_method|h}--></td>
                 </tr>
                 <!--{* 販売方法判定（ダウンロード販売のみの場合はお届け日、時間を表示しない） *}-->
                 <!--{if $cartdown != "2"}-->
                 <tr>
                     <th>お届け日</th>
-                    <td><!--{$arrData.deliv_date|escape|default:"指定なし"}--></td>
+                    <td><!--{$arrData.deliv_date|default:"指定なし"|h}--></td>
                 </tr>
                 <tr>
                     <th>お届け時間</th>
-                    <td><!--{$arrData.deliv_time|escape|default:"指定なし"}--></td>
+                    <td><!--{$arrData.deliv_time|default:"指定なし"|h}--></td>
                 </tr>
                 <!--{/if}-->
                 <tr>
                     <th>その他お問い合わせ</th>
-                    <td><!--{$arrData.message|escape|nl2br}--></td>
+                    <td><!--{$arrData.message|h|nl2br}--></td>
                 </tr>
                 </tbody>
             </table>

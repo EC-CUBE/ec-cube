@@ -28,22 +28,22 @@
     <p class="windowtext">以下の商品について、お客様のご意見、ご感想をどしどしお寄せください。<br />
       「<span class="attention">※</span>」印は入力必須項目です。<br />
        ご入力後、一番下の「確認ページへ」ボタンをクリックしてください。</p>
-        <form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+        <form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|h}-->">
         <input type="hidden" name="mode" value="confirm" />
         <input type="hidden" name="product_id" value="<!--{$arrForm.product_id}-->" />
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <table summary="お客様の声書き込み">
           <tr>
             <th>商品名</th>
-            <td><!--{$arrForm.name|escape}--></td>
+            <td><!--{$arrForm.name|h}--></td>
           </tr>
           <tr>
             <th>投稿者名<span class="attention">※</span></th>
-            <td><span class="attention"><!--{$arrErr.reviewer_name}--></span><input type="text" name="reviewer_name" value="<!--{$arrForm.reviewer_name|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.reviewer_name|sfGetErrorColor}-->" size="40" class="box350" /></td>
+            <td><span class="attention"><!--{$arrErr.reviewer_name}--></span><input type="text" name="reviewer_name" value="<!--{$arrForm.reviewer_name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.reviewer_name|sfGetErrorColor}-->" size="40" class="box350" /></td>
           </tr>
           <tr>
             <th>投稿者URL</th>
-            <td><span class="attention"><!--{$arrErr.reviewer_url}--></span><input type="text" name="reviewer_url" value="<!--{$arrForm.reviewer_url|escape}-->" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" style="<!--{$arrErr.reviewer_url|sfGetErrorColor}-->" size="40" class="box350" /></td>
+            <td><span class="attention"><!--{$arrErr.reviewer_url}--></span><input type="text" name="reviewer_url" value="<!--{$arrForm.reviewer_url|h}-->" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" style="<!--{$arrErr.reviewer_url|sfGetErrorColor}-->" size="40" class="box350" /></td>
           </tr>
           <tr>
             <th>性別</th>
@@ -66,14 +66,14 @@
             <th>タイトル<span class="attention">※</span></th>
             <td>
               <span class="attention"><!--{$arrErr.title}--></span>
-              <input type="text" name="title" value="<!--{$arrForm.title|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.title|sfGetErrorColor}-->" size="40" class="box350" />
+              <input type="text" name="title" value="<!--{$arrForm.title|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.title|sfGetErrorColor}-->" size="40" class="box350" />
             </td>
           </tr>
           <tr>
             <th>コメント<span class="attention">※</span></th>
             <td>
               <span class="attention"><!--{$arrErr.comment}--></span>
-              <textarea name="comment" cols="50" rows="10" style="<!--{$arrErr.comment|sfGetErrorColor}-->" class="area350"><!--{$arrForm.comment|escape}--></textarea>
+              <textarea name="comment" cols="50" rows="10" style="<!--{$arrErr.comment|sfGetErrorColor}-->" class="area350"><!--{$arrForm.comment|h}--></textarea>
             </td>
           </tr>
         </table>

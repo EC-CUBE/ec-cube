@@ -32,12 +32,12 @@
             <th>顧客名</th>
             <td>
                 <!--{if $arrErr.name}--><span class="attention"><!--{$arrErr.name}--></span><br /><!--{/if}-->
-                <input type="text" name="name" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$list_data.name|escape}-->" size="30" class="box30" style="<!--{$arrErr.name|sfGetErrorColor}-->" />
+                <input type="text" name="name" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$list_data.name|h}-->" size="30" class="box30" style="<!--{$arrErr.name|sfGetErrorColor}-->" />
             </td>
             <th>顧客名(カナ)</th>
             <td>
                 <!--{if $arrErr.kana}--><span class="attention"><!--{$arrErr.kana}--></span><br /><!--{/if}-->
-                <input type="text" name="kana" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$list_data.kana|escape}-->" size="30" class="box30" style="<!--{$arrErr.kana|sfGetErrorColor}-->" />
+                <input type="text" name="kana" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$list_data.kana|h}-->" size="30" class="box30" style="<!--{$arrErr.kana|sfGetErrorColor}-->" />
             </td>
         </tr>
         <tr>
@@ -52,7 +52,7 @@
             <th>TEL</th>
             <td>
                 <!--{if $arrErr.tel}--><span class="attention"><!--{$arrErr.tel}--></span><br /><!--{/if}-->
-                <input type="text" name="tel" maxlength="<!--{$smarty.const.TEL_LEN}-->" value="<!--{$list_data.tel|escape}-->" size="30" class="box30" style="<!--{$arrErr.tel|sfGetErrorColor}-->" />
+                <input type="text" name="tel" maxlength="<!--{$smarty.const.TEL_LEN}-->" value="<!--{$list_data.tel|h}-->" size="30" class="box30" style="<!--{$arrErr.tel|sfGetErrorColor}-->" />
             </td>
         </tr>
         <tr>
@@ -65,7 +65,7 @@
                 <!--{if $arrErr.birth_month}--><span class="attention"><!--{$arrErr.birth_month}--></span><br /><!--{/if}-->
                 <select name="birth_month" style="<!--{$arrErr.birth_month|sfGetErrorColor}-->" >
                     <option value="" selected="selected">--</option>
-                    <!--{html_options options=$objDate->getMonth() selected=$list_data.birth_month|escape}-->
+                    <!--{html_options options=$objDate->getMonth() selected=$list_data.birth_month|h}-->
                 </select>月
             </td>
         </tr>
@@ -85,16 +85,16 @@
             <th>購入回数</th>
             <td>
                 <!--{if $arrErr.buy_times_from || $arrErr.buy_times_to}--><span class="attention"><!--{$arrErr.buy_times_from}--><!--{$arrErr.buy_times_to}--></span><br /><!--{/if}-->
-                <input type="text" name="buy_times_from" maxlength="<!--{$smarty.const.INT_LEN}-->" value="<!--{$list_data.buy_times_from|escape}-->" size="6" class="box6" style="<!--{$arrErr.buy_times_from|sfGetErrorColor}-->" /> 回 ～
-                <input type="text" name="buy_times_to" maxlength="<!--{$smarty.const.INT_LEN}-->" value="<!--{$list_data.buy_times_to|escape}-->" size="6" class="box6" style="<!--{$arrErr.buy_times_to|sfGetErrorColor}-->" /> 回
+                <input type="text" name="buy_times_from" maxlength="<!--{$smarty.const.INT_LEN}-->" value="<!--{$list_data.buy_times_from|h}-->" size="6" class="box6" style="<!--{$arrErr.buy_times_from|sfGetErrorColor}-->" /> 回 ～
+                <input type="text" name="buy_times_to" maxlength="<!--{$smarty.const.INT_LEN}-->" value="<!--{$list_data.buy_times_to|h}-->" size="6" class="box6" style="<!--{$arrErr.buy_times_to|sfGetErrorColor}-->" /> 回
             </td>
             <th>購入金額</th>
             <td>
                 <!--{if $arrErr.buy_total_from || $arrErr.buy_total_to}-->
                     <span class="attention"><!--{$arrErr.buy_total_from}--><!--{$arrErr.buy_total_to}--></span><br />
                 <!--{/if}-->
-                <input type="text" name="buy_total_from" maxlength="<!--{$smarty.const.INT_LEN}-->" value="<!--{$list_data.buy_total_from|escape}-->" size="6" class="box6" <!--{if $arrErr.buy_total_from || $arrErr.buy_total_to}--><!--{sfSetErrorStyle}--><!--{/if}--> /> 円 ～
-                <input type="text" name="buy_total_to" maxlength="<!--{$smarty.const.INT_LEN}-->" value="<!--{$list_data.buy_total_to|escape}-->" size="6" class="box6" <!--{if $arrErr.buy_total_from || $arrErr.buy_total_to}--><!--{sfSetErrorStyle}--><!--{/if}--> /> 円
+                <input type="text" name="buy_total_from" maxlength="<!--{$smarty.const.INT_LEN}-->" value="<!--{$list_data.buy_total_from|h}-->" size="6" class="box6" <!--{if $arrErr.buy_total_from || $arrErr.buy_total_to}--><!--{sfSetErrorStyle}--><!--{/if}--> /> 円 ～
+                <input type="text" name="buy_total_to" maxlength="<!--{$smarty.const.INT_LEN}-->" value="<!--{$list_data.buy_total_to|h}-->" size="6" class="box6" <!--{if $arrErr.buy_total_from || $arrErr.buy_total_to}--><!--{sfSetErrorStyle}--><!--{/if}--> /> 円
             </td>
         </tr>
         <tr>
@@ -102,7 +102,7 @@
             <td colspan="3">
                 <!--{if $arrErr.email}--><span class="attention"><!--{$arrErr.email}--></span><!--{/if}-->
                 <span style="<!--{$arrErr.email|sfGetErrorColor}-->">
-                <input type="text" name="email" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$list_data.email|escape}-->" size="60" class="box60" style="<!--{$arrErr.email|sfGetErrorColor}-->"/>
+                <input type="text" name="email" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$list_data.email|h}-->" size="60" class="box60" style="<!--{$arrErr.email|sfGetErrorColor}-->"/>
                 </span>
             </td>
         </tr>
@@ -112,7 +112,7 @@
             <td colspan="3">
                 <!--{if $arrErr.email_mobile}--><span class="attention"><!--{$arrErr.email_mobile}--></span><!--{/if}-->
                 <span style="<!--{$arrErr.email_mobile|sfGetErrorColor}-->">
-                <input type="text" name="email_mobile" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$list_data.email_mobile|escape}-->" size="60" class="box60" style="<!--{$arrErr.email_mobile|sfGetErrorColor}-->"/>
+                <input type="text" name="email_mobile" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$list_data.email_mobile|h}-->" size="60" class="box60" style="<!--{$arrErr.email_mobile|sfGetErrorColor}-->"/>
                 </span>
             </td>
         </tr>
@@ -228,7 +228,7 @@
             <td>
                 <!--{if $arrErr.buy_product_name}--><span class="attention"><!--{$arrErr.buy_product_name}--></span><!--{/if}-->
                 <span style="<!--{$arrErr.buy_product_name|sfGetErrorColor}-->">
-                <input type="text" name="buy_product_name" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$list_data.buy_product_name|escape}-->" size="30" class="box30" style="<!--{$arrErr.buy_product_name|sfGetErrorColor}-->" />
+                <input type="text" name="buy_product_name" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$list_data.buy_product_name|h}-->" size="30" class="box30" style="<!--{$arrErr.buy_product_name|sfGetErrorColor}-->" />
                 </span>
             </td>
             <th>カテゴリ</th>
@@ -255,7 +255,7 @@
 <input type="hidden" name="search_pageno" value="<!--{$tpl_pageno}-->" />
 <input type="hidden" name="result_email" value="" />
 <!--{foreach key=key item=val from=$arrHidden}-->
-<input type="hidden" name="<!--{$key}-->" value="<!--{$val|escape}-->" />
+<input type="hidden" name="<!--{$key}-->" value="<!--{$val|h}-->" />
 <!--{/foreach}-->
 
     <h2>検索結果一覧</h2>
@@ -298,15 +298,15 @@
                 <!--{/foreach}-->
             </td>
 
-            <td><!--{$arrResults[i].name01|escape}--> <!--{$arrResults[i].name02|escape}--></td>
-            <td><!--{$arrResults[i].email|escape}--></td>
+            <td><!--{$arrResults[i].name01|h}--> <!--{$arrResults[i].name02|h}--></td>
+            <td><!--{$arrResults[i].email|h}--></td>
             <!--{assign var="key" value="`$arrResults[i].mailmaga_flg`"}-->
             <td class="center"><!--{$arrMAILMAGATYPE[$key]}--></td>
             <td><!--{$arrResults[i].create_date|sfDispDBDate}--></td>
             <!--{if $arrResults[i].customer_id != ""}-->
             <td class="center">-</td>
             <!--{else}-->
-            <td class="center"><a href="?" onclick="fnFormModeSubmit('form1','delete','result_email','<!--{$arrResults[i].email|escape}-->'); return false;">削除</a></td>
+            <td class="center"><a href="?" onclick="fnFormModeSubmit('form1','delete','result_email','<!--{$arrResults[i].email|h}-->'); return false;">削除</a></td>
             <!--{/if}-->
         </tr>
         <!--{/section}-->

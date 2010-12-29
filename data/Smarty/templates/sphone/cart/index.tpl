@@ -32,13 +32,13 @@
 <!--▼CONTENTS-->
 <div id="under02column">
     <div id="under02column_cart">
-        <h2 class="title"><!--{$tpl_title|escape}--></h2>
+        <h2 class="title"><!--{$tpl_title|h}--></h2>
         <!--{if $smarty.const.USE_POINT !== false || count($arrProductsClass) > 0}-->
             <p class="totalmoneyarea">
                 <!--★ポイント案内★-->
                 <!--{if $smarty.const.USE_POINT !== false}-->
                     <!--{if $tpl_login}-->
-                        <!--{$tpl_name|escape}--> 様の、現在の所持ポイントは「<em><!--{$tpl_user_point|number_format|default:0}--> pt</em>」です。<br />
+                        <!--{$tpl_name|h}--> 様の、現在の所持ポイントは「<em><!--{$tpl_user_point|number_format|default:0}--> pt</em>」です。<br />
                     <!--{else}-->
                         ポイント制度をご利用になられる場合は、会員登録後ログインしていだだきますようお願い致します。<br />
                     <!--{/if}-->
@@ -62,11 +62,11 @@
         <!--{/if}-->
 
     <!--{if strlen($tpl_error) != 0}-->
-        <p class="attention"><!--{$tpl_error|escape}--></p>
+        <p class="attention"><!--{$tpl_error|h}--></p>
     <!--{/if}-->
 
     <!--{if strlen($tpl_message) != 0}-->
-        <p class="attention"><!--{$tpl_message|escape|nl2br}--></p>
+        <p class="attention"><!--{$tpl_message|h|nl2br}--></p>
     <!--{/if}-->
 
     <!--{if count($cartItems) > 0}-->
@@ -96,14 +96,14 @@
                         <td class="phototd">
                         <a
                             <!--{if $item.productsClass.main_image|strlen >= 1}-->
-                                href="<!--{$smarty.const.IMAGE_SAVE_URL}--><!--{$item.productsClass.main_image|sfNoImageMainList|escape}-->"
+                                href="<!--{$smarty.const.IMAGE_SAVE_URL}--><!--{$item.productsClass.main_image|sfNoImageMainList|h}-->"
                                 class="expansion"
                                 target="_blank"
                             <!--{/if}-->
                         >
-                            <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$item.productsClass.main_list_image|sfNoImageMainList|escape}-->&amp;width=65&amp;height=65" alt="<!--{$item.productsClass.name|escape}-->" /></a>
+                            <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$item.productsClass.main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" alt="<!--{$item.productsClass.name|h}-->" /></a>
                         </td>
-                        <td><!--{* 商品名 *}--><strong><!--{$item.productsClass.name|escape}--></strong><br />
+                        <td><!--{* 商品名 *}--><strong><!--{$item.productsClass.name|h}--></strong><br />
                             <!--{if $item.productsClass.classcategory_name1 != ""}-->
                                 <!--{$item.productsClass.class_name1}-->：<!--{$item.productsClass.classcategory_name1}--><br />
                             <!--{/if}-->

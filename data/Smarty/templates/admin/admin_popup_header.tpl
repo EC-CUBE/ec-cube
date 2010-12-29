@@ -35,17 +35,18 @@
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/admin.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/css.js"></script>
-<!--{if $tpl_javascript != ""}-->
 <script type="text/javascript">//<![CDATA[
     <!--{$tpl_javascript}-->
+    $(function(){
+        <!--{$tpl_onload}-->
+    });
 //]]>
 </script>
-<!--{/if}-->
 <!--{include file='css/contents.tpl'}-->
 <title><!--{$smarty.const.ADMIN_TITLE}--> <!--{$tpl_subtitle}--></title>
 </head>
 
-<body id="popup"<!--{if $tpl_onload || $tpl_start}--> onLoad="<!--{$tpl_onload}--> <!--{$tpl_start}-->"<!--{/if}-->>
+<body id="popup">
 <noscript>
   <p>JavaScript を有効にしてご利用下さい.</p>
 </noscript>

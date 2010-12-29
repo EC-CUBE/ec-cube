@@ -28,7 +28,7 @@
     <div id="home-info">
         <!--{foreach item=info from=$arrInfo}-->
         <dl class="home-info-item">
-            <dt class="date"><!--{$info.disp_date|sfDispDBDate:false|escape}--></dt>
+            <dt class="date"><!--{$info.disp_date|sfDispDBDate:false|h}--></dt>
             <dt class="title"><!--{$info.title}--></dt>
             <dd class="body"><!--{$info.body}--></dd>
         </dl>
@@ -101,7 +101,7 @@
                     <th>品切れ商品</td>
                     <td>
                     <!--{section name=i loop=$arrSoldout}-->
-                    <!--{$arrSoldout[i].product_id}-->:<!--{$arrSoldout[i].name|escape}--><br />
+                    <!--{$arrSoldout[i].product_id}-->:<!--{$arrSoldout[i].name|h}--><br />
                     <!--{/section}-->
                     </td>
                 </tr>
@@ -121,9 +121,9 @@
                 <!--{section name=i loop=$arrNewOrder}-->
                 <tr>
                     <td><!--{$arrNewOrder[i].create_date}--></td>
-                    <td><!--{$arrNewOrder[i].name01|escape}--> <!--{$arrNewOrder[i].name02|escape}--></td>
-                    <td><!--{$arrNewOrder[i].product_name|escape}--></td>
-                    <td><!--{$arrNewOrder[i].payment_method|escape}--></td>
+                    <td><!--{$arrNewOrder[i].name01|h}--> <!--{$arrNewOrder[i].name02|h}--></td>
+                    <td><!--{$arrNewOrder[i].product_name|h}--></td>
+                    <td><!--{$arrNewOrder[i].payment_method|h}--></td>
                     <td class="right"><!--{$arrNewOrder[i].total|number_format}-->円</td>
                 </tr>
                 <!--{/section}-->

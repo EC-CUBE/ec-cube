@@ -47,7 +47,7 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
 <form name="form_edit" id="form_edit" method="post" action="?" >
 <input type="hidden" name="mode" value="" />
 <input type="hidden" name="page_id" value="<!--{$page_id}-->" />
-<input type="hidden" name="device_type_id" value="<!--{$device_type_id|escape}-->" />
+<input type="hidden" name="device_type_id" value="<!--{$device_type_id|h}-->" />
 
   <!--{if $arrErr.page_id_err != ""}-->
   <div class="message">
@@ -59,9 +59,9 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
       <th>名称</th>
       <td>
   <!--{if $arrPageData.edit_flg == 2}-->
-      <!--{$arrPageData.page_name|escape}--><input type="hidden" name="page_name" value="<!--{$arrPageData.page_name|escape}-->" />
+      <!--{$arrPageData.page_name|h}--><input type="hidden" name="page_name" value="<!--{$arrPageData.page_name|h}-->" />
   <!--{else}-->
-        <input type="text" name="page_name" value="<!--{$arrPageData.page_name|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.page_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" /><span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
+        <input type="text" name="page_name" value="<!--{$arrPageData.page_name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.page_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" /><span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
   <!--{/if}-->
   <!--{ if $arrErr.page_name != "" }-->
         <div class="message">
@@ -73,10 +73,10 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
      <th>URL</th>
      <td>
    <!--{if $arrPageData.edit_flg == 2}-->
-      <!--{$smarty.const.SITE_URL|escape}--><!--{$arrPageData.url|escape}-->
-      <input type="hidden" name="url" value="<!--{$arrPageData.filename|escape}-->" />
+      <!--{$smarty.const.SITE_URL|h}--><!--{$arrPageData.url|h}-->
+      <input type="hidden" name="url" value="<!--{$arrPageData.filename|h}-->" />
     <!--{else}-->
-      <!--{$user_URL|escape}--><input type="text" name="url" value="<!--{$arrPageData.directory|escape}--><!--{$arrPageData.filename|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.url != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}--> ime-mode: disabled;" size="40" class="box40" />.php<span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
+      <!--{$user_URL|h}--><input type="text" name="url" value="<!--{$arrPageData.directory|h}--><!--{$arrPageData.filename|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.url != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}--> ime-mode: disabled;" size="40" class="box40" />.php<span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
     <!--{/if}-->
     <!--{ if $arrErr.url != "" }-->
       <div class="attention">
@@ -91,7 +91,7 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
   <label for="header-chk"><input type="checkbox" name="header_chk" id="header-chk" <!--{$arrPageData.header_chk}--> />共通のヘッダーを使用する</label>&nbsp;
   <label for="footer-chk"><input type="checkbox" name="footer_chk" id="footer-chk" <!--{$arrPageData.footer_chk}--> />共通のフッターを使用する</label>
   <div>
-    <textarea name="tpl_data" rows=<!--{$text_row}--> style="width: 100%;"><!--{$arrPageData.tpl_data|escape|smarty:nodefaults}--></textarea>
+    <textarea name="tpl_data" rows=<!--{$text_row}--> style="width: 100%;"><!--{$arrPageData.tpl_data|h|smarty:nodefaults}--></textarea>
     <input type="hidden" name="html_area_row" value="<!--{$text_row}-->" />
     <a class="btn-normal" href="javascript:;" onclick="ChangeSize(this, tpl_data, 50, 13, html_area_row)"><span><!--{if $text_row > 13}-->縮小<!--{else}-->拡大<!--{/if}--></span></a>
   </div>
@@ -136,7 +136,7 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
     <!--{/foreach}-->
   </table>
   <div class="btn addnew">
-    <a class="btn-normal" href="<!--{$smarty.server.PHP_SELF|escape}-->"><span>ページを新規入力</span></a>
+    <a class="btn-normal" href="<!--{$smarty.server.PHP_SELF|h}-->"><span>ページを新規入力</span></a>
   </div>
 
 </form>

@@ -26,8 +26,8 @@
 <!--{foreach from=$arrBestProducts item=arrProduct name=best_products}-->
 
 <!-- ▼おすすめ商品コメント ここから -->
-<a href="<!--{$smarty.const.MOBILE_DETAIL_P_HTML}--><!--{$arrProduct.product_id|escape:url}-->">
-<!--{$arrProduct.comment|escape|nl2br}--></a>
+<a href="<!--{$smarty.const.MOBILE_DETAIL_P_HTML}--><!--{$arrProduct.product_id|u}-->">
+<!--{$arrProduct.comment|h|nl2br}--></a>
 <!-- ▲おすすめ商品コメント ここまで -->
 
 <!--{if !$smarty.foreach.best_products.last}--><br><br><!--{/if}-->

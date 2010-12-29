@@ -24,7 +24,7 @@
 <form name="form1" id="form1" method="post" action="">
     <div class="contents-main">
         <h2>結果</h2>
-        <div><!--{$tpl_result|escape|nl2br}--></div>
+        <div><!--{$tpl_result|h|nl2br}--></div>
         <div><a href="<!--{$smarty.const.URL_DIR}--><!--{$smarty.const.ADMIN_DIR}-->plugin/<!--{$smarty.const.DIR_INDEX_URL}-->">→ プラグイン管理へ</a><div>
     </div>
 </form>

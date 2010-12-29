@@ -98,7 +98,7 @@ $(function() {
       <th>会社名</th>
       <td>
         <span class="attention"><!--{$arrErr.company_name}--></span>
-        <input type="text" name="company_name" value="<!--{$arrForm.company_name|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.company_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" />
+        <input type="text" name="company_name" value="<!--{$arrForm.company_name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.company_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" />
         <span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
       </td>
     </tr>
@@ -106,7 +106,7 @@ $(function() {
       <th>会社名(カナ)</th>
       <td>
         <span class="attention"><!--{$arrErr.company_kana}--></span>
-        <input type="text" name="company_kana" value="<!--{$arrForm.company_kana|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.company_kana != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" />
+        <input type="text" name="company_kana" value="<!--{$arrForm.company_kana|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.company_kana != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" />
         <span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
       </td>
     </tr>
@@ -114,7 +114,7 @@ $(function() {
       <th>店名<span class="attention"> *</span></th>
       <td>
         <span class="attention"><!--{$arrErr.shop_name}--></span>
-        <input type="text" name="shop_name" value="<!--{$arrForm.shop_name|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.shop_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" />
+        <input type="text" name="shop_name" value="<!--{$arrForm.shop_name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.shop_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" />
         <span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
       </td>
     </tr>
@@ -122,7 +122,7 @@ $(function() {
       <th>店名(カナ)</th>
       <td>
         <span class="attention"><!--{$arrErr.shop_kana}--></span>
-        <input type="text" name="shop_kana" value="<!--{$arrForm.shop_kana|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.shop_kana != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" />
+        <input type="text" name="shop_kana" value="<!--{$arrForm.shop_kana|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.shop_kana != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" />
         <span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
       </td>
     </tr>
@@ -130,7 +130,7 @@ $(function() {
       <th>店名(英語表記)</th>
       <td>
         <span class="attention"><!--{$arrErr.shop_name_eng}--></span>
-        <input type="text" name="shop_name_eng" value="<!--{$arrForm.shop_name_eng|escape}-->" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.shop_name_eng != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" />
+        <input type="text" name="shop_name_eng" value="<!--{$arrForm.shop_name_eng|h}-->" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.shop_name_eng != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" />
         <span class="attention"> (上限<!--{$smarty.const.MTEXT_LEN}-->文字)</span>
       </td>
     </tr>
@@ -139,7 +139,7 @@ $(function() {
       <td>
         <span class="attention"><!--{$arrErr.zip01}--></span>
         <span class="attention"><!--{$arrErr.zip02}--></span>
-        〒 <input type="text" name="zip01" value="<!--{$arrForm.zip01|escape}-->" maxlength="3" size="6" class="box6" style="<!--{if $arrErr.zip01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" /> - <input type="text" name="zip02" value="<!--{$arrForm.zip02|escape}-->" maxlength="4"  size="6" class="box6" style="<!--{if $arrErr.zip02 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" />
+        〒 <input type="text" name="zip01" value="<!--{$arrForm.zip01|h}-->" maxlength="3" size="6" class="box6" style="<!--{if $arrErr.zip01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" /> - <input type="text" name="zip02" value="<!--{$arrForm.zip02|h}-->" maxlength="4"  size="6" class="box6" style="<!--{if $arrErr.zip02 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" />
         <a class="btn-normal" href="javascript:;" name="address_input" onclick="fnCallAddress('<!--{$smarty.const.URL_INPUT_ZIP}-->', 'zip01', 'zip02', 'pref', 'addr01');">住所入力</a>
       </td>
     </tr>
@@ -155,12 +155,12 @@ $(function() {
         </p>
         <p>
           <span class="attention"><!--{$arrErr.addr01}--></span>
-          <input type="text" name="addr01" value="<!--{$arrForm.addr01|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.addr01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" id="addr01" /><span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span><br />
+          <input type="text" name="addr01" value="<!--{$arrForm.addr01|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.addr01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" id="addr01" /><span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span><br />
           <!--{$smarty.const.SAMPLE_ADDRESS1}-->
         </p>
         <p>
           <span class="attention"><!--{$arrErr.addr02}--></span>
-          <input type="text" name="addr02" value="<!--{$arrForm.addr02|escape}-->"  maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.addr02 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" id="addr02" /><span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span><br />
+          <input type="text" name="addr02" value="<!--{$arrForm.addr02|h}-->"  maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.addr02 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" id="addr02" /><span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span><br />
           <!--{$smarty.const.SAMPLE_ADDRESS2}-->
         </p>
       </td>
@@ -187,7 +187,7 @@ $(function() {
       <th>店舗営業時間</th>
       <td>
         <span class="attention"><!--{$arrErr.business_hour}--></span>
-        <input type="text" name="business_hour" value="<!--{$arrForm.business_hour|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.business_hour != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" />
+        <input type="text" name="business_hour" value="<!--{$arrForm.business_hour|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.business_hour != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" />
         <span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
       </td>
     </tr>
@@ -195,7 +195,7 @@ $(function() {
       <th>商品注文受付<br />メールアドレス<span class="attention"> *</span></th>
       <td>
         <span class="attention"><!--{$arrErr.email01}--></span>
-        <input type="text" name="email01" value="<!--{$arrForm.email01|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.email01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" />
+        <input type="text" name="email01" value="<!--{$arrForm.email01|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.email01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" />
         <span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
       </td>
     </tr>
@@ -203,7 +203,7 @@ $(function() {
       <th>問い合わせ受付<br />メールアドレス<span class="attention"> *</span></th>
       <td>
         <span class="attention"><!--{$arrErr.email02}--></span>
-        <input type="text" name="email02" value="<!--{$arrForm.email02|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.email02 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/>
+        <input type="text" name="email02" value="<!--{$arrForm.email02|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.email02 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/>
         <span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
       </td>
     </tr>
@@ -211,7 +211,7 @@ $(function() {
       <th>メール送信元<br />メールアドレス<span class="attention"> *</span></th>
       <td>
         <span class="attention"><!--{$arrErr.email03}--></span>
-        <input type="text" name="email03" value="<!--{$arrForm.email03|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.email03 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/>
+        <input type="text" name="email03" value="<!--{$arrForm.email03|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.email03 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/>
         <span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
       </td>
     </tr>
@@ -219,7 +219,7 @@ $(function() {
       <th>送信エラー受付<br />メールアドレス<span class="attention"> *</span></th>
       <td>
         <span class="attention"><!--{$arrErr.email04}--></span>
-        <input type="text" name="email04" value="<!--{$arrForm.email04|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.email04 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/>
+        <input type="text" name="email04" value="<!--{$arrForm.email04|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.email04 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/>
         <span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
       </td>
     </tr>
@@ -228,7 +228,7 @@ $(function() {
       <td>
         <!--{assign var=key value="good_traded"}-->
         <span class="attention"><!--{$arrErr[$key]}--></span>
-        <textarea name="<!--{$key}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key]|escape}--></textarea>
+        <textarea name="<!--{$key}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key]|h}--></textarea>
         <span class="attention"> (上限<!--{$smarty.const.LLTEXT_LEN}-->文字)</span>
       </td>
     </tr>
@@ -237,7 +237,7 @@ $(function() {
       <td>
         <!--{assign var=key value="message"}-->
         <span class="attention"><!--{$arrErr[$key]}--></span>
-        <textarea name="<!--{$key}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key]|escape}--></textarea>
+        <textarea name="<!--{$key}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key]|h}--></textarea>
         <span class="attention"> (上限<!--{$smarty.const.LLTEXT_LEN}-->文字)</span>
       </td>
     </tr>
@@ -260,7 +260,7 @@ $(function() {
       <th>消費税率<span class="attention"> *</span></th>
       <td>
         <span class="attention"><!--{$arrErr.tax}--></span>
-        <input type="text" name="tax" value="<!--{$arrForm.tax|escape}-->" maxlength="<!--{$smarty.const.PERCENTAGE_LEN}-->" size="6" class="box6" style="<!--{if $arrErr.tax != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" /> ％
+        <input type="text" name="tax" value="<!--{$arrForm.tax|h}-->" maxlength="<!--{$smarty.const.PERCENTAGE_LEN}-->" size="6" class="box6" style="<!--{if $arrErr.tax != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" /> ％
       </td>
     </tr>
     <tr>
@@ -274,14 +274,14 @@ $(function() {
       <th>送料無料条件</th>
       <td>
         <span class="attention"><!--{$arrErr.free_rule}--></span>
-        <input type="text" name="free_rule" value="<!--{$arrForm.free_rule|escape}-->" maxlength="<!--{$smarty.const.PRICE_LEN}-->" size="6" class="box6" style="<!--{if $arrErr.free_rule != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" /> 円以上購入時無料
+        <input type="text" name="free_rule" value="<!--{$arrForm.free_rule|h}-->" maxlength="<!--{$smarty.const.PRICE_LEN}-->" size="6" class="box6" style="<!--{if $arrErr.free_rule != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" /> 円以上購入時無料
       </td>
     </tr>
     <tr>
       <th>ダウンロード可能日数</th>
       <td>
         <span class="attention"><!--{$arrErr.downloadable_days}--></span>
-        <input type="text" name="downloadable_days" value="<!--{$arrForm.downloadable_days|escape}-->" maxlength="<!--{$smarty.const.DAYS_LEN}-->" size="6" class="box6" style="<!--{if $arrErr.downloadable_days != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" /> 日間有効
+        <input type="text" name="downloadable_days" value="<!--{$arrForm.downloadable_days|h}-->" maxlength="<!--{$smarty.const.DAYS_LEN}-->" size="6" class="box6" style="<!--{if $arrErr.downloadable_days != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" /> 日間有効
         <input type="checkbox" name="downloadable_days_unlimited" value="1" <!--{if $arrForm.downloadable_days_unlimited == "1"}-->checked<!--{/if}--> onclick="fnCheckLimit('downloadable_days', 'downloadable_days_unlimited', '<!--{$smarty.const.DISABLED_RGB}-->');"/>無制限
       </td>
     </tr>
@@ -294,8 +294,8 @@ $(function() {
       <td>
         <span class="attention"><!--{$arrErr.latitude}--></span>
         <span class="attention"><!--{$arrErr.longitude}--></span>
-        緯度: <input type="text" name="latitude" value="<!--{$arrForm.latitude|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" style="<!--{if $arrErr.latitude != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" id="latitude" />
-        経度: <input type="text" name="longitude" value="<!--{$arrForm.longitude|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" style="<!--{if $arrErr.longitude != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" id="longitude" />
+        緯度: <input type="text" name="latitude" value="<!--{$arrForm.latitude|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" style="<!--{if $arrErr.latitude != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" id="latitude" />
+        経度: <input type="text" name="longitude" value="<!--{$arrForm.longitude|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" style="<!--{if $arrErr.longitude != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" id="longitude" />
         <a class="btn-normal" href="javascript:;" name="codeAddress" id="codeAddress" onclick="">住所より自動取得</a>
         <a href="#maparea" id="mapAddress">地図で設定</a>
       </td>

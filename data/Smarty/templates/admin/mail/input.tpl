@@ -23,7 +23,7 @@
 *}-->
 <form name="form1" id="form1" method="post" action="?">
 <!--{foreach key=key item=val from=$arrHidden}-->
-<input type="hidden" name="<!--{$key}-->" value="<!--{$val|escape}-->" />
+<input type="hidden" name="<!--{$key}-->" value="<!--{$val|h}-->" />
 <!--{/foreach}-->
 <div id="mail" class="contents-main">
   <table class="form">
@@ -70,14 +70,14 @@
       <th>Subject<span class="attention"> *</span></th>
       <td>
         <!--{if $arrErr.subject}--><span class="attention"><!--{$arrErr.subject}--></span><!--{/if}-->
-        <input type="text" name="subject" size="65" class="box65" <!--{if $arrErr.subject}--><!--{sfSetErrorStyle}--><!--{/if}--> value="<!--{$list_data.subject|escape}-->" />
+        <input type="text" name="subject" size="65" class="box65" <!--{if $arrErr.subject}--><!--{sfSetErrorStyle}--><!--{/if}--> value="<!--{$list_data.subject|h}-->" />
       </td>
     </tr>
     <tr>
       <th>本文<span class="attention"> *</span><br />（名前差し込み時は {name} といれてください）</th>
       <td>
         <!--{if $arrErr.body}--><span class="attention"><!--{$arrErr.body}--></span><!--{/if}-->
-        <textarea name="body" cols="90" rows="40" class="area90" <!--{if $arrErr.body}--><!--{sfSetErrorStyle}--><!--{/if}-->><!--{$list_data.body|escape}--></textarea>
+        <textarea name="body" cols="90" rows="40" class="area90" <!--{if $arrErr.body}--><!--{sfSetErrorStyle}--><!--{/if}-->><!--{$list_data.body|h}--></textarea>
       </td>
     </tr>
   </table>

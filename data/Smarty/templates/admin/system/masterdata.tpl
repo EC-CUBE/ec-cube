@@ -52,8 +52,8 @@
   <table class="form">
     <!--{foreach from=$arrMasterData item=val key=key}-->
     <tr>
-      <th>ID：<input type="text" name="id[]" value="<!--{$key|escape}-->" size="6" /></th>
-      <td>値：<input type="text" name="name[]" value="<!--{$val|escape}-->" style="" size="60" class="box60" /></td>
+      <th>ID：<input type="text" name="id[]" value="<!--{$key|h}-->" size="6" /></th>
+      <td>値：<input type="text" name="name[]" value="<!--{$val|h}-->" style="" size="60" class="box60" /></td>
     </tr>
     <!--{/foreach}-->
   </table>

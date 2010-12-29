@@ -22,7 +22,7 @@
  */
 *}-->
 <div id="mypagecolumn">
-  <h2 class="title"><!--{$tpl_title|escape}--></h2>
+  <h2 class="title"><!--{$tpl_title|h}--></h2>
   <!--{if $tpl_navi != ""}-->
     <!--{include file=$tpl_navi}-->
   <!--{else}-->
@@ -33,7 +33,7 @@
     <form name="form1" method="post" action="?">
     <input type="hidden" name="order_id" value="" />
     <input type="hidden" name="pageno" value="<!--{$tpl_pageno}-->" />
-    <h3><!--{$tpl_subtitle|escape}--></h3>
+    <h3><!--{$tpl_subtitle|h}--></h3>
 
 <!--{if $tpl_linemax > 0}-->
 
@@ -57,9 +57,9 @@
       <!--{section name=cnt loop=$arrFavorite}-->
       <!--{assign var=product_id value="`$arrFavorite[cnt].product_id`"}-->
       <tr>
-       <td><a href="javascript:fnModeSubmit('delete_favorite','product_id','<!--{$product_id|escape}-->');">削除</a></td>
-       <td><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$product_id|escape:url}-->"><img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$arrFavorite[cnt].main_list_image|sfNoImageMainList|escape}-->&amp;width=65&amp;height=65"></a></td>
-       <td><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$product_id|escape:url}-->"><!--{$arrFavorite[cnt].name}--></a></td>
+       <td><a href="javascript:fnModeSubmit('delete_favorite','product_id','<!--{$product_id|h}-->');">削除</a></td>
+       <td><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$product_id|u}-->"><img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$arrFavorite[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65"></a></td>
+       <td><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$product_id|u}-->"><!--{$arrFavorite[cnt].name}--></a></td>
        <td class="right sale_price">
         <span class="price">
           <!--{if $arrFavorite[cnt].price02_min == $arrFavorite[cnt].price02_max}-->

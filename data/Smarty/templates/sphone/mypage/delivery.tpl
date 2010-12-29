@@ -23,12 +23,12 @@
 *}-->
 <!--▼CONTENTS-->
 <div id="mypagecolumn">
-    <h2 class="title"><!--{$tpl_title|escape}--></h2>
+    <h2 class="title"><!--{$tpl_title|h}--></h2>
 <!--{include file=$tpl_navi}-->
     <div id="mycontentsarea">
-        <h3><!--{$tpl_subtitle|escape}--></h3>
+        <h3><!--{$tpl_subtitle|h}--></h3>
         <p>登録住所以外への住所へ送付される場合等にご利用いただくことができます。</p>
-        <p>※最大<!--{$smarty.const.DELIV_ADDR_MAX|escape}-->件まで登録できます。</p>
+        <p>※最大<!--{$smarty.const.DELIV_ADDR_MAX|h}-->件まで登録できます。</p>
 
         <!--{if $tpl_linemax < $smarty.const.DELIV_ADDR_MAX}-->
           <!--{* 退会時非表示 *}-->
@@ -56,8 +56,8 @@
                         <td><label for="add<!--{$smarty.section.cnt.iteration}-->">お届け先住所</label></td>
                         <td>
                             〒<!--{$arrOtherDeliv[cnt].zip01}-->-<!--{$arrOtherDeliv[cnt].zip02}--><br />
-                            <!--{$arrPref[$OtherPref]|escape}--><!--{$arrOtherDeliv[cnt].addr01|escape}--><!--{$arrOtherDeliv[cnt].addr02|escape}--><br />
-                            <!--{$arrOtherDeliv[cnt].name01|escape}-->&nbsp;<!--{$arrOtherDeliv[cnt].name02|escape}-->
+                            <!--{$arrPref[$OtherPref]|h}--><!--{$arrOtherDeliv[cnt].addr01|h}--><!--{$arrOtherDeliv[cnt].addr02|h}--><br />
+                            <!--{$arrOtherDeliv[cnt].name01|h}-->&nbsp;<!--{$arrOtherDeliv[cnt].name02|h}-->
                         </td>
                         <td class="centertd">
                             <a href="./delivery_addr.php" onclick="win02('./delivery_addr.php?other_deliv_id=<!--{$arrOtherDeliv[cnt].other_deliv_id}-->','deliv_disp','600','640'); return false;">変更</a>

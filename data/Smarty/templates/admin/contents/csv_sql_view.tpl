@@ -26,13 +26,13 @@
 <table class="form">
   <tr>
     <th>SQL文</th>
-    <td><!--{$sql|escape|nl2br}--></td>
+    <td><!--{$sql|h|nl2br}--></td>
   </tr>
   <tr>
     <th>エラー内容</th>
     <td>
       <!--{if $sqlerr != "" }-->
-        <!--{$sqlerr|escape|nl2br}-->
+        <!--{$sqlerr|h|nl2br}-->
       <!--{else}-->
         エラーはありません
       <!--{/if}-->

@@ -59,7 +59,7 @@ function func_submit(customer_id){
 <div align="center">
 　
 <!--▼検索フォーム-->
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.REQUEST_URI|escape}-->">
+<form name="form1" id="form1" method="post" action="<!--{$smarty.server.REQUEST_URI|h}-->">
 <input name="mode" type="hidden" value="search">
 <input name="search_pageno" type="hidden" value="">
 <input name="customer_id" type="hidden" value="">
@@ -68,7 +68,7 @@ function func_submit(customer_id){
         <td bgcolor="#f0f0f0" width="100">顧客ID</td>
         <td bgcolor="#ffffff" width="287" colspan="2">
             <!--{if $arrErr.search_customer_id}--><span class="red12"><!--{$arrErr.search_customer_id}--></span><!--{/if}-->
-            <input type="text" name="search_customer_id" value="<!--{$arrForm.search_customer_id|escape}-->" size="40" class="box40" style="<!--{$arrErr.search_customer_id|sfGetErrorColor}-->"/>
+            <input type="text" name="search_customer_id" value="<!--{$arrForm.search_customer_id|h}-->" size="40" class="box40" style="<!--{$arrErr.search_customer_id|sfGetErrorColor}-->"/>
         </td>
     </tr>
     <tr class="fs12n">
@@ -76,8 +76,8 @@ function func_submit(customer_id){
         <td bgcolor="#ffffff">
             <!--{if $arrErr.search_name01}--><span class="red12"><!--{$arrErr.search_name01}--></span><!--{/if}-->
             <!--{if $arrErr.search_name02}--><span class="red12"><!--{$arrErr.search_name02}--></span><!--{/if}-->
-            姓&nbsp;&nbsp;<input type="text" name="search_name01" value="<!--{$arrForm.search_name01|escape}-->" size="15" class="box15" style="<!--{$arrErr.search_name01|sfGetErrorColor}-->"/>
-            &nbsp;名&nbsp;&nbsp;<input type="text" name="search_name02" value="<!--{$arrForm.search_name02|escape}-->" size="15" class="box15" style="<!--{$arrErr.search_name02|sfGetErrorColor}-->"/>
+            姓&nbsp;&nbsp;<input type="text" name="search_name01" value="<!--{$arrForm.search_name01|h}-->" size="15" class="box15" style="<!--{$arrErr.search_name01|sfGetErrorColor}-->"/>
+            &nbsp;名&nbsp;&nbsp;<input type="text" name="search_name02" value="<!--{$arrForm.search_name02|h}-->" size="15" class="box15" style="<!--{$arrErr.search_name02|sfGetErrorColor}-->"/>
         </td>
     </tr>
     <tr class="fs12n">
@@ -85,8 +85,8 @@ function func_submit(customer_id){
         <td bgcolor="#ffffff">
             <!--{if $arrErr.search_kana01}--><span class="red12"><!--{$arrErr.search_kana01}--></span><!--{/if}-->
             <!--{if $arrErr.search_kana02}--><span class="red12"><!--{$arrErr.search_kana02}--></span><!--{/if}-->
-            セイ<input type="text" name="search_kana01" value="<!--{$arrForm.search_kana01|escape}-->" size="15" class="box15" style="<!--{$arrErr.search_kana01|sfGetErrorColor}-->"/>
-                                                メイ&nbsp;<input type="text" name="search_kana02" value="<!--{$arrForm.search_kana02|escape}-->" size="15" class="box15" style="<!--{$arrErr.search_kana02|sfGetErrorColor}-->"/>
+            セイ<input type="text" name="search_kana01" value="<!--{$arrForm.search_kana01|h}-->" size="15" class="box15" style="<!--{$arrErr.search_kana01|sfGetErrorColor}-->"/>
+                                                メイ&nbsp;<input type="text" name="search_kana02" value="<!--{$arrForm.search_kana02|h}-->" size="15" class="box15" style="<!--{$arrErr.search_kana02|sfGetErrorColor}-->"/>
         </td>
     </tr>
 </table>
@@ -125,10 +125,10 @@ function func_submit(customer_id){
         <!--▼顧客<!--{$smarty.section.cnt.iteration}-->-->
         <tr bgcolor="#FFFFFF" class="fs12n">
             <td width="90" align="center">
-            <!--{$arrCustomer[cnt].customer_id|escape}-->
+            <!--{$arrCustomer[cnt].customer_id|h}-->
             </td>
-            <td><!--{$arrCustomer[cnt].name01|escape}--><!--{$arrCustomer[cnt].name02|escape}-->(<!--{$arrCustomer[cnt].kana01|escape}--><!--{$arrCustomer[cnt].kana02|escape}-->)</td>
-            <td><!--{$arrCustomer[cnt].tel01|escape}-->-<!--{$arrCustomer[cnt].tel02|escape}-->-<!--{$arrCustomer[cnt].tel03|escape}--></td>
+            <td><!--{$arrCustomer[cnt].name01|h}--><!--{$arrCustomer[cnt].name02|h}-->(<!--{$arrCustomer[cnt].kana01|h}--><!--{$arrCustomer[cnt].kana02|h}-->)</td>
+            <td><!--{$arrCustomer[cnt].tel01|h}-->-<!--{$arrCustomer[cnt].tel02|h}-->-<!--{$arrCustomer[cnt].tel03|h}--></td>
             <td align="center"><a href="" onClick="return func_submit(<!--{$arrCustomer[cnt].customer_id}-->)">決定</a></td>
         </tr>
         <!--▲商品<!--{$smarty.section.cnt.iteration}-->-->

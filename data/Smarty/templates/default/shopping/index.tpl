@@ -22,7 +22,7 @@
 <!--▼CONTENTS-->
 <div id="under02column">
   <div id="under02column_login">
-    <h2 class="title"><!--{$tpl_title|escape}--></h2>
+    <h2 class="title"><!--{$tpl_title|h}--></h2>
     <form name="member_form" id="member_form" method="post" action="./deliv.php" onsubmit="return fnCheckLogin('member_form')">
    <div class="loginarea">
      <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
@@ -33,7 +33,7 @@
        <!--{assign var=key value="login_email"}--><span class="attention"><!--{$arrErr[$key]}--></span>
        <p>メールアドレス:&nbsp;
          <input type="text" name="<!--{$key}-->"
-                value="<!--{$tpl_login_email|escape}-->"
+                value="<!--{$tpl_login_email|h}-->"
                 maxlength="<!--{$arrForm[$key].length}-->"
                 style="<!--{$arrErr[$key]|sfGetErrorColor}-->; ime-mode: disabled;"
                 size="40" class="box300" />

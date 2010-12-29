@@ -23,7 +23,7 @@
 *}-->
 <div align="center">登録内容変更 2/3</div>
 <hr>
-<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|h}-->">
 	<input type="hidden" name="mode" value="set2">
 
 	<font color="#FF0000">*は必須項目です。</font><br>
@@ -36,7 +36,7 @@
 
 	【生年月日】<br>
 	<font color="#FF0000"><!--{$arrErr.year}--><!--{$arrErr.month}--><!--{$arrErr.day}--></font>
-	<input type="text" name="year" value="<!--{$arrForm.year|escape}-->" size="4" maxlength="4" istyle="4">年<br>
+	<input type="text" name="year" value="<!--{$arrForm.year|h}-->" size="4" maxlength="4" istyle="4">年<br>
 	<select name="month">
 		<!--{html_options options=$arrMonth selected=$arrForm.month}-->
 	</select>月<br>
@@ -50,15 +50,15 @@
 	<font color="#FF0000"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></font>
 	<!--{assign var="size1" value="`$smarty.const.ZIP01_LEN+2`"}-->
 	<!--{assign var="size2" value="`$smarty.const.ZIP02_LEN+2`"}-->
-	<input size="<!--{$size1}-->" type="text" name="zip01" value="<!--{if $arrForm.zip01 == ""}--><!--{$arrForm.zip01|escape}--><!--{else}--><!--{$arrForm.zip01|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.ZIP01_LEN}-->" istyle="4">
+	<input size="<!--{$size1}-->" type="text" name="zip01" value="<!--{if $arrForm.zip01 == ""}--><!--{$arrForm.zip01|h}--><!--{else}--><!--{$arrForm.zip01|h}--><!--{/if}-->" maxlength="<!--{$smarty.const.ZIP01_LEN}-->" istyle="4">
 	&nbsp;-&nbsp;
-	<input size="<!--{$size2}-->" type="text" name="zip02" value="<!--{if $arrForm.zip02 == ""}--><!--{$arrForm.zip02|escape}--><!--{else}--><!--{$arrForm.zip02|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.ZIP02_LEN}-->" istyle="4"><br>
+	<input size="<!--{$size2}-->" type="text" name="zip02" value="<!--{if $arrForm.zip02 == ""}--><!--{$arrForm.zip02|h}--><!--{else}--><!--{$arrForm.zip02|h}--><!--{/if}-->" maxlength="<!--{$smarty.const.ZIP02_LEN}-->" istyle="4"><br>
 
 	<input type="submit" name="confirm" value="次へ"><br>
 	<input type="submit" name="return" value="戻る">
 
 	<!--{foreach from=$list_data key=key item=item}-->
-		<input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->">
+		<input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->">
 	<!--{/foreach}-->
 </form>
 

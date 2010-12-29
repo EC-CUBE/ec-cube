@@ -23,7 +23,7 @@
 *}-->
 <div align="center">登録内容変更 3/3</div>
 <hr>
-<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|h}-->">
 	<input type="hidden" name="mode" value="confirm">
 
 	<font color="#FF0000">*は必須項目です。</font><br>
@@ -38,20 +38,20 @@
 
 	【住所1】<font color="#FF0000">*</font><br>
 	<font color="#FF0000"><!--{$arrErr.addr01}--></font>
-	<input type="text" name="addr01" value="<!--{$arrForm.addr01|escape}-->" istyle="1"><br>
+	<input type="text" name="addr01" value="<!--{$arrForm.addr01|h}-->" istyle="1"><br>
 
 	【住所2】<font color="#FF0000">*</font><br>
 	<font color="#FF0000"><!--{$arrErr.addr02}--></font>
-	<input type="text" name="addr02" value="<!--{$arrForm.addr02|escape}-->" istyle="1"><br>
+	<input type="text" name="addr02" value="<!--{$arrForm.addr02|h}-->" istyle="1"><br>
 
 	【電話番号】<font color="#FF0000">*</font><br>
 	<font color="#FF0000"><!--{$arrErr.tel01}--><!--{$arrErr.tel02}--><!--{$arrErr.tel03}--></font>
 	<!--{assign var="size" value="`$smarty.const.TEL_ITEM_LEN+2`"}-->
-	<input type="text" size="<!--{$size}-->" name="tel01" value="<!--{$arrForm.tel01|escape}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" istyle="4">
+	<input type="text" size="<!--{$size}-->" name="tel01" value="<!--{$arrForm.tel01|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" istyle="4">
 	&nbsp;-&nbsp;
-	<input type="text" size="<!--{$size}-->" name="tel02" value="<!--{$arrForm.tel02|escape}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" istyle="4">
+	<input type="text" size="<!--{$size}-->" name="tel02" value="<!--{$arrForm.tel02|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" istyle="4">
 	&nbsp;-&nbsp;
-	<input type="text" size="<!--{$size}-->" name="tel03" value="<!--{$arrForm.tel03|escape}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" istyle="4"><br>
+	<input type="text" size="<!--{$size}-->" name="tel03" value="<!--{$arrForm.tel03|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" istyle="4"><br>
 
 	【メールマガジン】<br>
 	お得な情報を希望されますか？<br>
@@ -59,16 +59,16 @@
 	（希望されない場合はチェックをはずしてください）<br>
 	<br>
 
-	<input type="hidden" name="fax01" value="<!--{$arrForm.fax01|escape}-->">
-	<input type="hidden" name="fax02" value="<!--{$arrForm.fax02|escape}-->">
-	<input type="hidden" name="fax03" value="<!--{$arrForm.fax03|escape}-->">
-	<input type="hidden" name="job" value="<!--{$arrForm.job|escape}-->">
+	<input type="hidden" name="fax01" value="<!--{$arrForm.fax01|h}-->">
+	<input type="hidden" name="fax02" value="<!--{$arrForm.fax02|h}-->">
+	<input type="hidden" name="fax03" value="<!--{$arrForm.fax03|h}-->">
+	<input type="hidden" name="job" value="<!--{$arrForm.job|h}-->">
 
 	<input type="submit" name="confirm" value="次へ"><br>
 	<input type="submit" name="return" value="戻る">
 
 	<!--{foreach from=$list_data key=key item=item}-->
-		<input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->">
+		<input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->">
 	<!--{/foreach}-->
 </form>
 

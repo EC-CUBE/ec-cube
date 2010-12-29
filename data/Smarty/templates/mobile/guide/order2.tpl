@@ -27,11 +27,11 @@
 
 <!-- ▼本文 ここから -->
 [emoji:e44]<font color="#800000">商品以外の必要代金</font><br>
-<!--{$arrRet.law_term01|escape|nl2br}--><br>
+<!--{$arrRet.law_term01|h|nl2br}--><br>
 [emoji:115]<font color="#800000">注文方法</font><br>
-<!--{$arrRet.law_term02|escape|nl2br}--><br>
+<!--{$arrRet.law_term02|h|nl2br}--><br>
 [emoji:e10]<font color="#800000">支払方法</font><br>
-<!--{$arrRet.law_term03|escape|nl2br}--><br>
+<!--{$arrRet.law_term03|h|nl2br}--><br>
 <!-- ▲本文 ここまで -->
 
 <br>

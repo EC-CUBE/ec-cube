@@ -25,7 +25,7 @@
 
 <hr>
 
-<form method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+<form method="post" action="<!--{$smarty.server.PHP_SELF|h}-->">
 <input type="hidden" name="mode" value="confirm">
 <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
 
@@ -36,25 +36,25 @@
 【お届け先】<br>
 <!--{* 別のお届け先が選択されている場合 *}-->
 <!--{if $arrData.deliv_check >= 1}-->
-<!--{$arrData.deliv_name01|escape}--> <!--{$arrData.deliv_name02|escape}--><br>
-〒<!--{$arrData.deliv_zip01|escape}-->-<!--{$arrData.deliv_zip02|escape}--><br>
-<!--{$arrPref[$arrData.deliv_pref]}--><!--{$arrData.deliv_addr01|escape}--><!--{$arrData.deliv_addr02|escape}--><br>
+<!--{$arrData.deliv_name01|h}--> <!--{$arrData.deliv_name02|h}--><br>
+〒<!--{$arrData.deliv_zip01|h}-->-<!--{$arrData.deliv_zip02|h}--><br>
+<!--{$arrPref[$arrData.deliv_pref]}--><!--{$arrData.deliv_addr01|h}--><!--{$arrData.deliv_addr02|h}--><br>
 <!--{else}-->
-<!--{$arrData.order_name01|escape}--> <!--{$arrData.order_name02|escape}--><br>
-〒<!--{$arrData.order_zip01|escape}-->-<!--{$arrData.order_zip02|escape}--><br>
-<!--{$arrPref[$arrData.order_pref]}--><!--{$arrData.order_addr01|escape}--><!--{$arrData.order_addr02|escape}--><br>
+<!--{$arrData.order_name01|h}--> <!--{$arrData.order_name02|h}--><br>
+〒<!--{$arrData.order_zip01|h}-->-<!--{$arrData.order_zip02|h}--><br>
+<!--{$arrPref[$arrData.order_pref]}--><!--{$arrData.order_addr01|h}--><!--{$arrData.order_addr02|h}--><br>
 <!--{/if}-->
 
 <br>
 
 【お届け日時指定】<br>
-日：<!--{$arrData.deliv_date|escape|default:"指定なし"}--><br>
-時間：<!--{$arrData.deliv_time|escape|default:"指定なし"}--><br>
+日：<!--{$arrData.deliv_date|default:"指定なし"|h}--><br>
+時間：<!--{$arrData.deliv_time|default:"指定なし"|h}--><br>
 
 <br>
 
 【お支払い方法】<br>
-<!--{$arrData.payment_method|escape}--><br>
+<!--{$arrData.payment_method|h}--><br>
 
 <br>
 

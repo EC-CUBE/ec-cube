@@ -43,15 +43,17 @@
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/css.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/file_manager.js"></script>
 <title><!--{$smarty.const.ADMIN_TITLE}--></title>
-<script type="text/javascript">
-<!--
-<!--{$tpl_javascript}-->
-//-->
+<script type="text/javascript">//<![CDATA[
+    <!--{$tpl_javascript}-->
+    $(function(){
+        <!--{$tpl_onload}-->
+    });
+//]]>
 </script>
 
 </head>
 
-<body onload="<!--{$tpl_onload}-->" class="<!--{if strlen($tpl_authority) >= 1}-->authority_<!--{$tpl_authority}--><!--{/if}-->">
+<body class="<!--{if strlen($tpl_authority) >= 1}-->authority_<!--{$tpl_authority}--><!--{/if}-->">
 <!--{$GLOBAL_ERR}-->
 <noscript>
   <p>JavaScript を有効にしてご利用下さい.</p>
@@ -72,7 +74,7 @@
     <li><a href="<!--{$smarty.const.SITE_URL}--><!--{$smarty.const.DIR_INDEX_URL}-->" target="_blank"><span>SITE CHECK</span></a></li>
   </ul>
   <p>
-    WELCOME!&nbsp;<span><!--{* ログイン名 *}--><!--{$smarty.session.login_name|escape}--></span>&nbsp;様&nbsp;
+    WELCOME!&nbsp;<span><!--{* ログイン名 *}--><!--{$smarty.session.login_name|h}--></span>&nbsp;様&nbsp;
     <a href="<!--{$smarty.const.URL_LOGOUT}-->">LOGOUT</a>
   </p>
 </div>

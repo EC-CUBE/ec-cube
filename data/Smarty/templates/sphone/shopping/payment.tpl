@@ -25,7 +25,7 @@
         <p class="flowarea">
             <img src="<!--{$TPL_DIR}-->img/picture/img_flow_02.gif" width="700" height="36" alt="購入手続きの流れ" />
         </p>
-        <h2 class="title"><!--{$tpl_title|escape}--></h2>
+        <h2 class="title"><!--{$tpl_title|h}--></h2>
 
         <form name="form1" id="form1" method="post" action="?">
             <input type="hidden" name="mode" value="confirm" />
@@ -48,7 +48,7 @@
                         <td class="centertd"><input type="radio" id="pay_<!--{$smarty.section.cnt.iteration}-->" name="<!--{$key}-->" onclick="fnSetDelivTime('payment','<!--{$key}-->','deliv_time_id');" value="<!--{$arrPayment[cnt].payment_id}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" <!--{$arrPayment[cnt].payment_id|sfGetChecked:$arrForm[$key].value}--> />
                         </td>
                         <td>
-                            <label for="pay_<!--{$smarty.section.cnt.iteration}-->"><!--{$arrPayment[cnt].payment_method|escape}--><!--{if $arrPayment[cnt].note != ""}--><!--{/if}--></label>
+                            <label for="pay_<!--{$smarty.section.cnt.iteration}-->"><!--{$arrPayment[cnt].payment_method|h}--><!--{if $arrPayment[cnt].note != ""}--><!--{/if}--></label>
                         </td>
                         <!--{if $img_show}-->
                             <td>
@@ -98,7 +98,7 @@
                     <!--★その他お問い合わせ事項★-->
                     <!--{assign var=key value="message"}-->
                     <span class="attention"><!--{$arrErr[$key]}--></span>
-                    <textarea name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" cols="80" rows="8" class="area660" wrap="head"><!--{$arrForm[$key].value|escape}--></textarea>
+                    <textarea name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" cols="80" rows="8" class="area660" wrap="head"><!--{$arrForm[$key].value|h}--></textarea>
                     <span class="attention"> (<!--{$smarty.const.LTEXT_LEN}-->文字まで)</span>
                 </div>
             </div>
@@ -111,7 +111,7 @@
                         <p><span class="attention">1ポイントを1円</span>として使用する事ができます。<br />
                             使用する場合は、「ポイントを使用する」にチェックを入れた後、使用するポイントをご記入ください。</p>
                     <div>
-                        <p><!--{$objCustomer->getValue('name01')|escape}--> <!--{$objCustomer->getValue('name02')|escape}-->様の、現在の所持ポイントは「<em><!--{$tpl_user_point|default:0}-->Pt</em>」です。</p>
+                        <p><!--{$objCustomer->getValue('name01')|h}--> <!--{$objCustomer->getValue('name02')|h}-->様の、現在の所持ポイントは「<em><!--{$tpl_user_point|default:0}-->Pt</em>」です。</p>
                         <p>今回ご購入合計金額：<span class="price"><!--{$arrData.subtotal|number_format}-->円</span> <span class="attention">(送料、手数料を含みません。)</span></p>
                         <ul>
                             <li><input type="radio" id="point_on" name="point_check" value="1" <!--{$arrForm.point_check.value|sfGetChecked:1}--> onclick="fnCheckInputPoint();" /><label for="point_on">ポイントを使用する</label></li>
@@ -126,7 +126,7 @@
             <!-- ▲ポイント使用 ここまで -->
 
             <div class="tblareabtn">
-                <a href="<!--{$tpl_back_url|escape}-->" onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_back_on.gif','back03')" onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_back.gif','back03')">
+                <a href="<!--{$tpl_back_url|h}-->" onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_back_on.gif','back03')" onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_back.gif','back03')">
                     <img src="<!--{$TPL_DIR}-->img/button/btn_back.gif" width="150" height="30" alt="戻る" border="0" name="back03" id="back03" /></a>&nbsp;
                 <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_next_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_next.gif',this)" src="<!--{$TPL_DIR}-->img/button/btn_next.gif" class="box150" alt="次へ" name="next" id="next" />
             </div>

@@ -36,11 +36,11 @@
                     </tr>
             <!--{/if}-->
             <tr>
-                <td><!--{$plugin.info.name|escape}--></td>
-                <td><!--{$plugin.path|escape}--></td>
-                <td><!--{$plugin.info.version|escape}--></td>
-                <td><!--{$plugin.info.auther|escape}--></td>
-                <td><a href="<!--{$smarty.const.URL_DIR}--><!--{$smarty.const.ADMIN_DIR}-->plugin/uninstall.php?path=<!--{$plugin.path|escape}-->">アンインストール</a></td>
+                <td><!--{$plugin.info.name|h}--></td>
+                <td><!--{$plugin.path|h}--></td>
+                <td><!--{$plugin.info.version|h}--></td>
+                <td><!--{$plugin.info.auther|h}--></td>
+                <td><a href="<!--{$smarty.const.URL_DIR}--><!--{$smarty.const.ADMIN_DIR}-->plugin/uninstall.php?path=<!--{$plugin.path|h}-->">アンインストール</a></td>
             </tr>
             <!--{if $smarty.foreach.installedPlugin.last}-->
                 </table>
@@ -62,11 +62,11 @@
                     </tr>
             <!--{/if}-->
             <tr>
-                <td><!--{$plugin.info.name|escape}--></td>
-                <td><!--{$plugin.path|escape}--></td>
-                <td><!--{$plugin.info.version|escape}--></td>
-                <td><!--{$plugin.info.auther|escape}--></td>
-                <td><a href="<!--{$smarty.const.URL_DIR}--><!--{$smarty.const.ADMIN_DIR}-->plugin/install.php?path=<!--{$plugin.path|escape}-->">インストール</a></td>
+                <td><!--{$plugin.info.name|h}--></td>
+                <td><!--{$plugin.path|h}--></td>
+                <td><!--{$plugin.info.version|h}--></td>
+                <td><!--{$plugin.info.auther|h}--></td>
+                <td><a href="<!--{$smarty.const.URL_DIR}--><!--{$smarty.const.ADMIN_DIR}-->plugin/install.php?path=<!--{$plugin.path|h}-->">インストール</a></td>
             </tr>
             <!--{if $smarty.foreach.installablePlugin.last}-->
                 </table>

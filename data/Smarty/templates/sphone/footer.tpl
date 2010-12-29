@@ -59,7 +59,7 @@ $this->assign('isTop', 1);
 <li class="end"><a href="<!--{$smarty.const.SMARTPHONE_SITE_URL}-->order/index.php">特定商取引法に基づく表記</a></li>
 </ul>
 
-<div id="copyright">(C) <!--{$arrSiteInfo.shop_name|escape}-->.</div>
+<div id="copyright">(C) <!--{$arrSiteInfo.shop_name|h}-->.</div>
 
 </div>
 </div>

@@ -60,7 +60,7 @@ function lfnDispChange(){
   <input type="hidden" name="mode" value="search" />
   <!--{foreach key=key item=item from=$arrHidden}-->
   <!--{if $key == 'campaign_id' || $key == 'search_mode'}-->
-  <input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->" />
+  <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
   <!--{/if}-->
   <!--{/foreach}-->
   <h2>検索条件設定</h2>
@@ -73,21 +73,21 @@ function lfnDispChange(){
         <!--{if $arrErr.search_product_id}-->
         <span class="attention"><!--{$arrErr.search_product_id}--></span>
         <!--{/if}-->
-        <input type="text" name="search_product_id" value="<!--{$arrForm.search_product_id|escape}-->" size="30" class="box30" style="<!--{$arrErr.search_product_id|sfGetErrorColor}-->"/>
+        <input type="text" name="search_product_id" value="<!--{$arrForm.search_product_id|h}-->" size="30" class="box30" style="<!--{$arrErr.search_product_id|sfGetErrorColor}-->"/>
       </td>
 			<th>規格名称</th>
 			<td>
         <!--{if $arrErr.search_product_class_name}-->
         <span class="attention"><!--{$arrErr.search_product_class_name}--></span>
         <!--{/if}-->
-        <input type="text" name="search_product_class_name" value="<!--{$arrForm.search_product_class_name|escape}-->" size="30" class="box30"style="<!--{$arrErr.search_product_class_name|sfGetErrorColor}-->" />
+        <input type="text" name="search_product_class_name" value="<!--{$arrForm.search_product_class_name|h}-->" size="30" class="box30"style="<!--{$arrErr.search_product_class_name|sfGetErrorColor}-->" />
       </td>
     </tr>
     <tr>
       <th>商品コード</th>
-      <td><input type="text" name="search_product_code" value="<!--{$arrForm.search_product_code|escape}-->" size="30" class="box30" /></td>
+      <td><input type="text" name="search_product_code" value="<!--{$arrForm.search_product_code|h}-->" size="30" class="box30" /></td>
       <th>商品名</th>
-      <td><input type="text" name="search_name" value="<!--{$arrForm.search_name|escape}-->" size="30" class="box30" /></td>
+      <td><input type="text" name="search_name" value="<!--{$arrForm.search_name|h}-->" size="30" class="box30" /></td>
     </tr>
     <tr>
       <th>カテゴリ</th>
@@ -163,7 +163,7 @@ function lfnDispChange(){
   <input type="hidden" name="product_id" value="" />
   <input type="hidden" name="category_id" value="" />
   <!--{foreach key=key item=item from=$arrHidden}-->
-  <input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->" />
+  <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
   <!--{/foreach}-->  
   <h2>検索結果一覧</h2>
   <div class="btn">
@@ -206,11 +206,11 @@ function lfnDispChange(){
     <tr style="background:<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->;">
       <td class="id" rowspan="2"><!--{$arrProducts[cnt].product_id}--></td>
       <td class="thumbnail" rowspan="2">
-      <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$arrProducts[cnt].main_list_image|sfNoImageMainList|escape}-->&amp;width=65&amp;height=65">
+      <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$arrProducts[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65">
       </td>
-      <td rowspan="2"><!--{$arrProducts[cnt].product_code_min|escape}-->
+      <td rowspan="2"><!--{$arrProducts[cnt].product_code_min|h}-->
         <!--{if $arrProducts[cnt].product_code_min != $arrProducts[cnt].product_code_max}-->
-          <br />～ <!--{$arrProducts[cnt].product_code_max|escape}-->
+          <br />～ <!--{$arrProducts[cnt].product_code_max|h}-->
         <!--{/if}-->
       </td>
       <!--{* 価格 *}-->
@@ -220,7 +220,7 @@ function lfnDispChange(){
           <br />～ <!--{$arrProducts[cnt].price02_max|number_format}-->
         <!--{/if}-->
       </td>
-      <td><!--{$arrProducts[cnt].name|escape}--></td>
+      <td><!--{$arrProducts[cnt].name|h}--></td>
       <!--{* 在庫 *}-->
       <!--{* XXX 複数規格でかつ、全ての在庫数量が等しい場合は先頭に「各」と入れたれたら良いと思う。 *}-->
       <td class="menu" rowspan="2">

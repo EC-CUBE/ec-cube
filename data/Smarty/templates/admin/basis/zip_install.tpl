@@ -29,8 +29,8 @@
     </style>
     <form name="form1" id="form1" method="get" action="?" onsubmit="return false;">
         <input type="hidden" name="mode" value="">
-        <p>郵便番号CSVには <!--{$tpl_line|escape}--> 行のデータがあります。</p>
-        <p>郵便番号DBには <!--{$tpl_count_mtb_zip|escape}--> 行のデータがあります。</p>
+        <p>郵便番号CSVには <!--{$tpl_line|h}--> 行のデータがあります。</p>
+        <p>郵便番号DBには <!--{$tpl_count_mtb_zip|h}--> 行のデータがあります。</p>
         <!--{if $tpl_count_mtb_zip == 0}-->
             <p class="attention">登録を行なってください。</p>
         <!--{elseif $tpl_line <> $tpl_count_mtb_zip}-->
@@ -52,10 +52,10 @@
         </div>
         <div class="item">
             <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('manual', '', '');">手動登録</a>
-            開始行: <input type="text" name="startRowNum" value="<!--{$arrForm.startRowNum|default:$tpl_count_mtb_zip+1|escape}-->" size="8"><span class="attention"><!--{$arrErr.startRowNum}--></span><br />
+            開始行: <input type="text" name="startRowNum" value="<!--{$arrForm.startRowNum|default:$tpl_count_mtb_zip+1|h}-->" size="8"><span class="attention"><!--{$arrErr.startRowNum}--></span><br />
             指定した行数から郵便番号を登録します。タイムアウトした場合、直前まで登録されます。
         </div>
     </form>
 <!--{else}-->
-    <iframe src="?mode=<!--{$tpl_mode|escape}-->&amp;exec=yes&amp;startRowNum=<!--{$arrForm.startRowNum|escape}-->" name="progress" height="200" width="750" frameborder="0"></iframe>
+    <iframe src="?mode=<!--{$tpl_mode|h}-->&amp;exec=yes&amp;startRowNum=<!--{$arrForm.startRowNum|h}-->" name="progress" height="200" width="750" frameborder="0"></iframe>
 <!--{/if}-->

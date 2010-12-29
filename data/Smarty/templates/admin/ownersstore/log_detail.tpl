@@ -29,7 +29,7 @@
   <table class="form">
     <tr>
       <th>モジュール名</th>
-      <td><!--{$arrLogDetail.module_name|escape}--></td>
+      <td><!--{$arrLogDetail.module_name|h}--></td>
     </tr>
     <tr>
       <th>ステータス</th>
@@ -37,20 +37,20 @@
     </tr>
     <tr>
       <th>日時</th>
-      <td><!--{$arrLogDetail.update_date|sfDispDBDate|escape}--></td>
+      <td><!--{$arrLogDetail.update_date|sfDispDBDate|h}--></td>
     </tr>
     <tr>
       <th>バックアップパス</th>
       <td><!--{$arrLogDetail.buckup_path|wordwrap:100:"
-":true|escape|nl2br}--></td>
+":true|h|nl2br}--></td>
     </tr>
     <tr>
       <th>詳細</th>
       <td>
       <!--{$arrLogDetail.error|wordwrap:100:"
-":true|escape|nl2br}-->
+":true|h|nl2br}-->
       <!--{$arrLogDetail.ok|wordwrap:100:"
-":true|escape|nl2br}-->
+":true|h|nl2br}-->
       </td>
     </tr>
   </table>

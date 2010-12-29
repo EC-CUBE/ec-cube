@@ -23,7 +23,7 @@
 <div id="header">
   <h1>
     <a href="<!--{$smarty.const.URL_SITE_TOP}-->">
-      <em><!--{$arrSiteInfo.shop_name|escape}-->/<!--{$tpl_title|escape}--></em></a>
+      <em><!--{$arrSiteInfo.shop_name|h}-->/<!--{$tpl_title|h}--></em></a>
   </h1>
   <!--{* ▼HeaderInternal COLUMN*}-->
   <!--{if $arrPageLayout.HeaderInternalNavi|@count > 0}-->

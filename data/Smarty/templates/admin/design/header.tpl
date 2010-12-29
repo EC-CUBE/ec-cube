@@ -46,7 +46,7 @@ XXX: ヘッダーとフッターでwrapの設定が違うのは疑問。それ�
   <input type="hidden" name="division" value="header" />
   <input type="hidden" name="header_row" value="<!--{$header_row}-->" />
   <input type="hidden" name="browser_type" value="" />
-  <input type="hidden" name="device_type_id" value="<!--{$device_type_id|escape}-->" />
+  <input type="hidden" name="device_type_id" value="<!--{$device_type_id|h}-->" />
 
     <textarea name="header" rows="<!--{$header_row}-->" wrap="off" style="width: 100%;"><!--{$header_data|smarty:nodefaults}--></textarea>
     <div class="btn">
@@ -76,7 +76,7 @@ XXX: ヘッダーとフッターでwrapの設定が違うのは疑問。それ�
   <input type="hidden" name="division" value="footer" />
   <input type="hidden" name="footer_row" value=<!--{$footer_row}--> />
   <input type="hidden" name="browser_type" value="" />
-  <input type="hidden" name="device_type_id" value="<!--{$device_type_id|escape}-->" />
+  <input type="hidden" name="device_type_id" value="<!--{$device_type_id|h}-->" />
 
     <textarea name="footer" rows="<!--{$footer_row}-->" style="width: 100%;"><!--{$footer_data|smarty:nodefaults}--></textarea>
     <div class="btn">

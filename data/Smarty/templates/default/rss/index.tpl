@@ -22,12 +22,12 @@
  *}-->
 <rss version="2.0">
     <channel>
-        <title><!--{$site_title|sf_mb_convert_encoding:$encode|escape}--></title>
+        <title><!--{$site_title|sf_mb_convert_encoding:$encode|h}--></title>
         <link><!--{$smarty.const.SITE_URL}--></link>
-        <description><!--{$description|sf_mb_convert_encoding:$encode|escape}--></description>
+        <description><!--{$description|sf_mb_convert_encoding:$encode|h}--></description>
         <language>ja</language>
-        <managingEditor><!--{$email|escape}--></managingEditor>
-        <webMaster><!--{$email|escape}--></webMaster>
+        <managingEditor><!--{$email|h}--></managingEditor>
+        <webMaster><!--{$email|h}--></webMaster>
         <generator>web shoppings v1.0</generator>
         <copyright>(c) COPYRIGHT</copyright>
         <category>WEB SHOPPING</category>
@@ -38,11 +38,11 @@
                 <!--{if $arrNews[cnt].news_url == '' }-->
                     <link><!--{$smarty.const.SITE_URL}--></link>
                 <!--{else}-->
-                    <link><!--{$arrNews[cnt].news_url|escape}--></link>
+                    <link><!--{$arrNews[cnt].news_url|h}--></link>
                 <!--{/if}-->
                 <title><!--{ $arrNews[cnt].news_title|sf_mb_convert_encoding:$encode|escape }--></title>
-                <description><!--{$arrNews[cnt].news_comment|truncate:256|sf_mb_convert_encoding:$encode|escape}--></description>
-                <pubDate><!--{$arrNews[cnt].news_date|escape}--></pubDate>
+                <description><!--{$arrNews[cnt].news_comment|truncate:256|sf_mb_convert_encoding:$encode|h}--></description>
+                <pubDate><!--{$arrNews[cnt].news_date|h}--></pubDate>
             </item>
         <!--{/section}-->
 

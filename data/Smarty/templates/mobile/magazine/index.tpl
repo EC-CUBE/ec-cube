@@ -23,19 +23,19 @@
 *}-->
 <div align="center">メルマガ登録</div>
 <hr>
-ご登録いただいたお客様へは<!--{if $arrSiteInfo.shop_name != ""}--><!--{$arrSiteInfo.shop_name|escape}-->より<!--{/if}-->商品やキャンペーン情報をメールでお届けいたします。<br>
-※<!--{if $arrSiteInfo.shop_name != ""}--><!--{$arrSiteInfo.shop_name|escape}-->では<!--{/if}-->ご利用規約に従い利用者のアドレスを保護しています。<br>
+ご登録いただいたお客様へは<!--{if $arrSiteInfo.shop_name != ""}--><!--{$arrSiteInfo.shop_name|h}-->より<!--{/if}-->商品やキャンペーン情報をメールでお届けいたします。<br>
+※<!--{if $arrSiteInfo.shop_name != ""}--><!--{$arrSiteInfo.shop_name|h}-->では<!--{/if}-->ご利用規約に従い利用者のアドレスを保護しています。<br>
 <br>
 <form action="confirm.php" method="post">
 	■登録<br>
 	<font color="#FF0000"><!--{$arrErr.regist}--></font>
-	<input type="text" name="regist" value="<!--{$arrForm.regist|escape}-->" istyle="3"><br>
+	<input type="text" name="regist" value="<!--{$arrForm.regist|h}-->" istyle="3"><br>
 	<div align="center"><input type="submit" name="btnRegist" value="次へ"></div>
 	<br>
 
 	■解除<br>
 	<font color="#FF0000"><!--{$arrErr.cancel}--></font>
-	<input type="text" name="cancel" value="<!--{$arrForm.cancel|escape}-->" istyle="3"><br>
+	<input type="text" name="cancel" value="<!--{$arrForm.cancel|h}-->" istyle="3"><br>
 	<div align="center"><input type="submit" name="btnCancel" value="次へ"></div>
 	<br>
 </form>

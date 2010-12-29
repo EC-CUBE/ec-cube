@@ -31,7 +31,7 @@
       <th>タイトル<span class="attention"> *</span></th>
       <td>
         <!--{if $arrErr.title}--><span class="attention"><!--{$arrErr.title}--></span><!--{/if}-->
-        <input type="text" name="title" value="<!--{$arrForm.title|escape}-->" maxlength="<!--{$smarty.const.SMTEXT_LEN}-->" style="" size="60" class="box60"/>
+        <input type="text" name="title" value="<!--{$arrForm.title|h}-->" maxlength="<!--{$smarty.const.SMTEXT_LEN}-->" style="" size="60" class="box60"/>
         <span class="attention"> (上限<!--{$smarty.const.SMTEXT_LEN}-->文字)</span>
       </td>
     </tr>
@@ -72,8 +72,8 @@
     <!--{section name=cnt loop=$arrHoliday}-->
     <tr style="background:<!--{if $tpl_class_id != $arrHoliday[cnt].holiday_id}-->#ffffff<!--{else}--><!--{$smarty.const.SELECT_RGB}--><!--{/if}-->;">
       <!--{assign var=holiday_id value=$arrHoliday[cnt].holiday_id}-->
-      <td><!--{$arrHoliday[cnt].title|escape}--></td>
-      <td><!--{$arrHoliday[cnt].month|escape}-->月<!--{$arrHoliday[cnt].day|escape}-->日</td>
+      <td><!--{$arrHoliday[cnt].title|h}--></td>
+      <td><!--{$arrHoliday[cnt].month|h}-->月<!--{$arrHoliday[cnt].day|h}-->日</td>
       <td class="center">
         <!--{if $tpl_holiday_id != $arrHoliday[cnt].holiday_id}-->
         <a href="?" onclick="fnModeSubmit('pre_edit', 'holiday_id', <!--{$arrHoliday[cnt].holiday_id}-->); return false;">編集</a>

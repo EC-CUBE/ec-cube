@@ -25,7 +25,7 @@
 
 <hr>
 
-<form method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+<form method="post" action="<!--{$smarty.server.PHP_SELF|h}-->">
 <input type="hidden" name="mode" value="deliv_date">
 <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
 <input type="hidden" name="deliv_date" value="<!--{$arrForm.deliv_date.value}-->">
@@ -41,7 +41,7 @@
 <!--{/if}-->
 <!--{section name=cnt loop=$arrPayment}-->
 <input type="radio" name="<!--{$key}-->" value="<!--{$arrPayment[cnt].payment_id}-->" <!--{$arrPayment[cnt].payment_id|sfGetChecked:$arrForm[$key].value}-->>
-<!--{$arrPayment[cnt].payment_method|escape}-->
+<!--{$arrPayment[cnt].payment_method|h}-->
 <br>
 <!--{/section}-->
 

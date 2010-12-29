@@ -68,15 +68,15 @@
     </tr>
     <tr>
         <th>顧客名</th>
-        <td><!--{$arrForm.order_name01.value|escape}--> <!--{$arrForm.order_name02.value|escape}--></td>
+        <td><!--{$arrForm.order_name01.value|h}--> <!--{$arrForm.order_name02.value|h}--></td>
     </tr>
     <tr>
         <th>顧客名(カナ)</th>
-        <td><!--{$arrForm.order_kana01.value|escape}--> <!--{$arrForm.order_kana02.value|escape}--></td>
+        <td><!--{$arrForm.order_kana01.value|h}--> <!--{$arrForm.order_kana02.value|h}--></td>
     </tr>
     <tr>
         <th>メールアドレス</th>
-        <td><a href="mailto:<!--{$arrForm.order_email.value|escape}-->"><!--{$arrForm.order_email.value|escape}--></a></td>
+        <td><a href="mailto:<!--{$arrForm.order_email.value|h}-->"><!--{$arrForm.order_email.value|h}--></a></td>
     </tr>
     <tr>
         <th>TEL</th>
@@ -92,7 +92,7 @@
     </tr>
     <tr>
         <th>備考</th>
-        <td><!--{$arrForm.message.value|escape|nl2br}--></td>
+        <td><!--{$arrForm.message.value|h|nl2br}--></td>
     </tr>
 </table>
 
@@ -104,8 +104,8 @@
         <td>
             <!--{assign var=key1 value="deliv_name01"}-->
             <!--{assign var=key2 value="deliv_name02"}-->
-            <!--{$arrForm[$key1].value|escape}-->
-            <!--{$arrForm[$key2].value|escape}-->
+            <!--{$arrForm[$key1].value|h}-->
+            <!--{$arrForm[$key2].value|h}-->
         </td>
     </tr>
     <tr>
@@ -113,8 +113,8 @@
         <td>
             <!--{assign var=key1 value="deliv_kana01"}-->
             <!--{assign var=key2 value="deliv_kana02"}-->
-            <!--{$arrForm[$key1].value|escape}-->
-            <!--{$arrForm[$key2].value|escape}-->
+            <!--{$arrForm[$key1].value|h}-->
+            <!--{$arrForm[$key2].value|h}-->
         </td>
     </tr>
     <tr>
@@ -122,7 +122,7 @@
         <td>
             <!--{assign var=key1 value="deliv_zip01"}-->
             <!--{assign var=key2 value="deliv_zip02"}-->
-            〒<!--{$arrForm[$key1].value|escape}-->-<!--{$arrForm[$key2].value|escape}-->
+            〒<!--{$arrForm[$key1].value|h}-->-<!--{$arrForm[$key2].value|h}-->
         </td>
     </tr>
     <tr>
@@ -131,7 +131,7 @@
             <!--{assign var=key1 value="deliv_tel01"}-->
             <!--{assign var=key2 value="deliv_tel02"}-->
             <!--{assign var=key3 value="deliv_tel03"}-->
-            <!--{$arrForm[$key1].value|escape}-->-<!--{$arrForm[$key2].value|escape}-->-<!--{$arrForm[$key3].value|escape}-->
+            <!--{$arrForm[$key1].value|h}-->-<!--{$arrForm[$key2].value|h}-->-<!--{$arrForm[$key3].value|h}-->
         </td>
     </tr>
     <tr>
@@ -140,9 +140,9 @@
             <!--{assign var=pref value=`$arrForm.deliv_pref.value`}-->
             <!--{$arrPref[$pref]}-->
             <!--{assign var=key value="deliv_addr01"}-->
-            <!--{$arrForm[$key].value|escape}-->
+            <!--{$arrForm[$key].value|h}-->
             <!--{assign var=key value="deliv_addr02"}-->
-            <!--{$arrForm[$key].value|escape}-->
+            <!--{$arrForm[$key].value|h}-->
         </td>
     </tr>
 </table>
@@ -160,10 +160,10 @@
     <!--{section name=cnt loop=$arrForm.quantity.value}-->
     <!--{assign var=key value="`$smarty.section.cnt.index`"}-->
     <tr>
-        <td><!--{$arrForm.product_code.value[$key]|escape}--></td>
-        <td><!--{$arrForm.product_name.value[$key]|escape}-->/<!--{$arrForm.classcategory_name1.value[$key]|escape|default:"(なし)"}-->/<!--{$arrForm.classcategory_name2.value[$key]|escape|default:"(なし)"}--></td>
+        <td><!--{$arrForm.product_code.value[$key]|h}--></td>
+        <td><!--{$arrForm.product_name.value[$key]|h}-->/<!--{$arrForm.classcategory_name1.value[$key]|default:"(なし)"|h}-->/<!--{$arrForm.classcategory_name2.value[$key]|default:"(なし)"|h}--></td>
         <td class="right"><!--{if $arrForm.price.value[$key] != 0}--><!--{$arrForm.price.value[$key]|number_format}-->円<!--{else}-->無料<!--{/if}--></td>
-        <td class="center"><!--{$arrForm.quantity.value[$key]|escape}--></td>
+        <td class="center"><!--{$arrForm.quantity.value[$key]|h}--></td>
         <!--{assign var=price value=`$arrForm.price.value[$key]`}-->
         <!--{assign var=quantity value=`$arrForm.quantity.value[$key]`}-->
         <td class="right"><!--{if $price != 0}--><!--{$price|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|sfMultiply:$quantity|number_format}-->円<!--{else}-->無料<!--{/if}--></td>
@@ -186,12 +186,12 @@
     <!--{/if}-->
     <tr>
         <th colspan="4" class="right">送料</th>
-        <td align="right"><!--{assign var=key value="deliv_fee"}--><!--{$arrForm[$key].value|escape|number_format}--> 円</td>
+        <td align="right"><!--{assign var=key value="deliv_fee"}--><!--{$arrForm[$key].value|number_format|h}--> 円</td>
     </tr>
     <tr>
         <th colspan="4" class="right">手数料</th>
         <td align="right"><!--{assign var=key value="charge"}-->
-    <span class="attention"><!--{$arrErr[$key]}--></span><!--{$arrForm[$key].value|escape|number_format}--> 円</td>
+    <span class="attention"><!--{$arrErr[$key]}--></span><!--{$arrForm[$key].value|number_format|h}--> 円</td>
     </tr>
     <tr>
         <th colspan="4" class="right">合計</th>
@@ -246,7 +246,7 @@
         <th>お支払方法</th>
         <td>
             <!--{assign var=payment_id value="`$arrForm.payment_id.value`"}-->
-            <!--{$arrPayment[$payment_id]|escape}-->
+            <!--{$arrPayment[$payment_id]|h}-->
         </td>
     </tr>
     <!--{if $arrForm.payment_info.value|@count > 0}-->
@@ -278,7 +278,7 @@
         <th>メモ</th>
         <td>
             <!--{assign var=key value="note"}-->
-            <!--{$arrForm[$key].value|escape|nl2br}-->
+            <!--{$arrForm[$key].value|h|nl2br}-->
         </td>
     </tr>
 </table>

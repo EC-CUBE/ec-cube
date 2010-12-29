@@ -25,7 +25,7 @@
 <!--▼MAIN CONTENTS-->
 <!--ﾀｲﾄﾙここから-->
 <!--★商品名★-->
-<div align="center"><!--{$arrProduct.name|escape}--></div>
+<div align="center"><!--{$arrProduct.name|h}--></div>
 <hr>
 <!--ﾀｲﾄﾙここまで-->
 <!--詳細ここから-->
@@ -40,7 +40,7 @@
   <!--{if ($smarty.get.image == "" || $smarty.get.image == "main_image")}-->
 [1]
   <!--{else}-->
-[<a href="<!--{$smarty.server.PHP_SELF|escape}-->?product_id=<!--{$smarty.get.product_id}-->&image=main_image">1</a>]
+[<a href="<!--{$smarty.server.PHP_SELF|h}-->?product_id=<!--{$smarty.get.product_id}-->&image=main_image">1</a>]
   <!--{/if}-->
   
   <!--{assign var=num value="2"}-->
@@ -50,7 +50,7 @@
     <!--{if $key == $smarty.get.image}-->
 [<!--{$num}-->]
     <!--{else}-->
-[<a href="<!--{$smarty.server.PHP_SELF|escape}-->?product_id=<!--{$smarty.get.product_id}-->&image=<!--{$key}-->"><!--{$num}--></a>]
+[<a href="<!--{$smarty.server.PHP_SELF|h}-->?product_id=<!--{$smarty.get.product_id}-->&image=<!--{$key}-->"><!--{$num}--></a>]
     <!--{/if}-->
     <!--{assign var=num value="`$num+1`"}-->
   <!--{/if}-->
@@ -83,7 +83,7 @@
 <!--{/if}-->
 円</font><br>
 <!--{/if}-->
-<form name="form1" method="post" action="<!--{$smarty.server.REQUEST_URI|escape}-->">
+<form name="form1" method="post" action="<!--{$smarty.server.REQUEST_URI|h}-->">
 	<input type="hidden" name="mode" value="select">
 	<input type="hidden" name="product_id" value="<!--{$tpl_product_id}-->">
 <!--{if $tpl_stock_find}-->

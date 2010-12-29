@@ -52,7 +52,7 @@
       <!--{else}-->
         <img src="<!--{$smarty.const.URL_DIR}-->misc/closef.gif">
       <!--{/if}-->
-      <!--{$disp_name|sfCutString:20|escape}-->(<!--{$arrTree[cnt].product_count|default:0}-->)</a>
+      <!--{$disp_name|sfCutString:20|h}-->(<!--{$arrTree[cnt].product_count|default:0}-->)</a>
     <br />          
       <!--{if $arrTree[cnt].display == true}-->
         <div id="f<!--{$arrTree[cnt].category_id}-->">
@@ -99,10 +99,10 @@
           <td><!--{from_to from=$arrProductsList[cnt].product_code_min to=$arrProductsList[cnt].product_code_max separator="～<br />"}--></td>
           <td align="center">
             <!--{* 商品画像 *}-->
-            <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$arrProductsList[cnt].main_list_image|sfNoImageMainList|escape}-->&amp;width=65&amp;height=65" alt="<!--{$arrProducts[cnt].name|escape}-->">
+            <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$arrProductsList[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" alt="<!--{$arrProducts[cnt].name|h}-->">
           </td>
           <td align="center">
-            <!--{$arrProductsList[cnt].name|escape}-->
+            <!--{$arrProductsList[cnt].name|h}-->
           </td>
           
           <td align="center">

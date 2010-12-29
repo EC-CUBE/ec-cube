@@ -21,17 +21,17 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<div align="center"><!--{$arrForm.kind|escape}-->確認</div>
+<div align="center"><!--{$arrForm.kind|h}-->確認</div>
 <hr>
-<!--{$arrForm.kind|escape}-->を行います。<br>
+<!--{$arrForm.kind|h}-->を行います。<br>
 以下の内容でよろしいでしょうか。<br>
 
 <br>
 <form action="confirm.php" method="post">
 	<input type="hidden" name="mode" value="<!--{$arrForm.type}-->">
-	<input type="hidden" name="email" value="<!--{$arrForm.mail|escape}-->">
+	<input type="hidden" name="email" value="<!--{$arrForm.mail|h}-->">
 	■メールアドレス<br>
-	<!--{$arrForm.mail|escape}--><br>
+	<!--{$arrForm.mail|h}--><br>
 	<br>
 	<div align="center"><input type="submit" name="submit" value="決定"></div>
 </form>

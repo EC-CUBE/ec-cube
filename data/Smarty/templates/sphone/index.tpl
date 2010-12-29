@@ -25,7 +25,7 @@
 <div id="header">
 <h1>
     <a href="<!--{$smarty.const.SMARTPHONE_SSL_URL}-->">
-      <em><!--{$arrSiteInfo.shop_name|escape}-->/<!--{$tpl_title|escape}--></em></a>
+      <em><!--{$arrSiteInfo.shop_name|h}-->/<!--{$tpl_title|h}--></em></a>
   </h1>
 </div>
 <!--{* ▲ロゴ ここまで *}-->
@@ -36,7 +36,7 @@
 <!--{* 検索 *}-->
 <div id="searchbar">
 <form method="get" action="<!--{$smarty.const.SMARTPHONE_SITE_URL}-->products/list.php">
-<input type="text" name="name" maxlength="50" value="<!--{$smarty.get.name|escape}-->" placeholder="商品検索" ><input type="submit" name="search" value="検索">
+<input type="text" name="name" maxlength="50" value="<!--{$smarty.get.name|h}-->" placeholder="商品検索" ><input type="submit" name="search" value="検索">
 </form>
 <!--{* searchmenu *}--></div>
 <!--{* headmenu *}--></div>

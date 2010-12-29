@@ -27,11 +27,11 @@
 
 <!-- ▼本文 ここから -->
 [emoji:114]<font color="#800000">支払期限</font><br>
-<!--{$arrRet.law_term04|escape|nl2br}--><br>
+<!--{$arrRet.law_term04|h|nl2br}--><br>
 [emoji:72]<font color="#800000">引渡し時期</font><br>
-<!--{$arrRet.law_term05|escape|nl2br}--><br>
+<!--{$arrRet.law_term05|h|nl2br}--><br>
 [emoji:167]<font color="#800000">返品・交換について</font><br>
-<!--{$arrRet.law_term06|escape|nl2br}--><br>
+<!--{$arrRet.law_term06|h|nl2br}--><br>
 <!-- ▲本文 ここまで -->
 
 <br>

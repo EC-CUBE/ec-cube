@@ -38,7 +38,7 @@ function submitRegister() {
 <input type="hidden" name="mode" value="" />
 <input type="hidden" name="template_code_temp" value="" />
 <input type="hidden" name="uniqid" value="<!--{$uniqid}-->" />
-<input type="hidden" name="device_type_id" value="<!--{$device_type_id|escape}-->" />
+<input type="hidden" name="device_type_id" value="<!--{$device_type_id|h}-->" />
 <div id="design" class="contents-main">
   <p style="margin-bottom: 20px">
     テンプレートを選択し、「この内容で登録する」ボタンを押すと、<br />
@@ -55,9 +55,9 @@ function submitRegister() {
     <!--{foreach from=$templates item=tpl}-->
     <!--{assign var=tplcode value=$tpl.template_code}-->
     <tr class="center">
-      <td><input type="radio" name="template_code" value="<!--{$tplcode|escape}-->" <!--{if $tplcode == $tpl_select}-->checked<!--{/if}--> /></td>
-      <td class="left"><!--{$tpl.template_name|escape}--></td>
-      <td class="left">data/Smarty/templates/<!--{$tplcode|escape}-->/</td>
+      <td><input type="radio" name="template_code" value="<!--{$tplcode|h}-->" <!--{if $tplcode == $tpl_select}-->checked<!--{/if}--> /></td>
+      <td class="left"><!--{$tpl.template_name|h}--></td>
+      <td class="left">data/Smarty/templates/<!--{$tplcode|h}-->/</td>
       <td><span class="icon_confirm"><a href="#" onClick="fnModeSubmit('download','template_code_temp','<!--{$tplcode}-->');return false;">ダウンロード</a></span></td>
       <td><span class="icon_delete"><a href="#" onClick="fnModeSubmit('delete','template_code_temp','<!--{$tplcode}-->');return false;">削除</a></span></td>
     </tr>

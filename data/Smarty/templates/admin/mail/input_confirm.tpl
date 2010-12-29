@@ -23,7 +23,7 @@
 *}-->
 <form name="form1" id="form1" method="post" action="?">
 <!--{foreach key=key item=val from=$arrHidden}-->
-<input type="hidden" name="<!--{$key}-->" value="<!--{$val|escape}-->" />
+<input type="hidden" name="<!--{$key}-->" value="<!--{$val|h}-->" />
 <!--{/foreach}-->
 <div id="mail" class="contents-main">
   <table class="form">
@@ -40,7 +40,7 @@
     <!--{if $list_data.template_id}-->
     <tr>
       <th>Subject<span class="attention"> *</span></th>
-      <td><!--{$list_data.subject|escape}--></td>
+      <td><!--{$list_data.subject|h}--></td>
     </tr>
     <!--{if $list_data.mail_method ne 2}-->
     <tr>
@@ -50,7 +50,7 @@
     <!--{if $smarty.post.template_mode ne "html_template"}-->
     <tr>
       <th>本文<span class="attention"> *</span><br />（名前差し込み時は {name} といれてください）</th>
-      <td><!--{$list_data.body|escape|nl2br}--></td>
+      <td><!--{$list_data.body|h|nl2br}--></td>
     </tr>
     <!--{/if}-->
     <!--{/if}-->
@@ -69,6 +69,6 @@
 <input type="hidden" name="mode" value="template">
 </form>
 <form name="form2" id="form2" method="post" action="./preview.php" target="_blank">
-  <input type="hidden" name="subject" value="<!--{$list_data.subject|escape}-->" />
-  <input type="hidden" name="body" value="<!--{$list_data.body|escape}-->" />
+  <input type="hidden" name="subject" value="<!--{$list_data.subject|h}-->" />
+  <input type="hidden" name="body" value="<!--{$list_data.body|h}-->" />
 </form>

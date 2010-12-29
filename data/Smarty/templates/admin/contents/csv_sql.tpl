@@ -61,7 +61,7 @@ function fnTargetSelf(){
     <!--{ foreach key=key item=item from=$arrSqlList }-->
     <tr style="background-color:<!--{if $item.sql_id == $sql_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->;">
       <td>
-        <a href="<!--{$smarty.server.PHP_SELF|escape}-->?sql_id=<!--{$item.sql_id}-->" ><!--{$item.sql_name}--></a>
+        <a href="<!--{$smarty.server.PHP_SELF|h}-->?sql_id=<!--{$item.sql_id}-->" ><!--{$item.sql_name}--></a>
       </td>
       <td>
         <div class="btn">
@@ -85,7 +85,7 @@ function fnTargetSelf(){
       <th>名称<span class="attention"> *</span></th>
       <td>
         <span class="attention"><!--{$arrErr.sql_name}--></span>
-        <input type="text" name="sql_name" value="<!--{$arrSqlData.sql_name|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" />
+        <input type="text" name="sql_name" value="<!--{$arrSqlData.sql_name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" />
         <span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
       </td>
     </tr>

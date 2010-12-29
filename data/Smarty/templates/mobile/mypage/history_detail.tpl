@@ -29,32 +29,32 @@
 <br>
 【お届け先】<br>
 	<!--{assign var=key1 value="deliv_name01"}--><!--{assign var=key2 value="deliv_name02"}-->
-	<!--{$arrDisp[$key1]|escape}-->&nbsp;<!--{$arrDisp[$key2]|escape}--><br>
+	<!--{$arrDisp[$key1]|h}-->&nbsp;<!--{$arrDisp[$key2]|h}--><br>
 	<!--{assign var=key1 value="deliv_zip01"}--><!--{assign var=key2 value="deliv_zip02"}-->
 	〒<!--{$arrDisp[$key1]}-->-<!--{$arrDisp[$key2]}--><br>
 	<!--{assign var=pref value=`$arrDisp.deliv_pref`}--><!--{$arrPref[$pref]}-->
-	<!--{assign var=key value="deliv_addr01"}--><!--{$arrDisp[$key]|escape}-->
-	<!--{assign var=key value="deliv_addr02"}--><!--{$arrDisp[$key]|escape}--><br>
+	<!--{assign var=key value="deliv_addr01"}--><!--{$arrDisp[$key]|h}-->
+	<!--{assign var=key value="deliv_addr02"}--><!--{$arrDisp[$key]|h}--><br>
 <br>
 【お届け日時指定】<br>
 <!--{if $arrDisp.deliv_date eq "" and $arrDelivTime[$arrDisp.deliv_time_id] eq ""}-->
 	指定なし<br>
 <!--{else}-->
-	<!--{$arrDisp.deliv_date|escape}--> <!--{$arrDelivTime[$arrDisp.deliv_time_id]|escape}--><br>
+	<!--{$arrDisp.deliv_date|h}--> <!--{$arrDelivTime[$arrDisp.deliv_time_id]|h}--><br>
 <!--{/if}-->
 <br>
 【お支払い方法】<br>
-<!--{$arrPayment[$arrDisp.payment_id]|escape}--><br>
+<!--{$arrPayment[$arrDisp.payment_id]|h}--><br>
 <br>
 【ご注文内容】<br>
 <!--{section name=cnt loop=$arrDisp.quantity}-->
-<!--{$arrDisp.product_name[cnt]|escape}--><br>
-<a href="<!--{$smarty.const.MOBILE_DETAIL_P_HTML}--><!--{$arrDisp.product_id[cnt]|escape:url}-->">商品詳細→</a><br>
+<!--{$arrDisp.product_name[cnt]|h}--><br>
+<a href="<!--{$smarty.const.MOBILE_DETAIL_P_HTML}--><!--{$arrDisp.product_id[cnt]|u}-->">商品詳細→</a><br>
 <!--{/section}-->
 <br>
 【購入金額】<br>
 商品合計:<!--{$arrDisp.subtotal|number_format}-->円<br>
-送料:<!--{assign var=key value="deliv_fee"}--><!--{$arrDisp[$key]|escape|number_format}-->円<br>
+送料:<!--{assign var=key value="deliv_fee"}--><!--{$arrDisp[$key]|number_format|h}-->円<br>
 合計:<!--{$arrDisp.payment_total|number_format}-->円<br>
 <br>
 

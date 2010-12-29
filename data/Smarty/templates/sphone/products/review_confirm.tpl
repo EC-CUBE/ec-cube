@@ -27,22 +27,22 @@
       <input type="hidden" name="mode" value="complete" />
         <!--{foreach from=$arrForm key=key item=item}-->
         <!--{if $key ne "mode"}-->
-        <input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->" /><!--{/if}-->
+        <input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->" /><!--{/if}-->
         <!--{/foreach}-->
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 
         <table summary="お客様の声書き込み">
           <tr>
             <th>商品名</th>
-            <td><!--{$arrForm.name|escape}--></td>
+            <td><!--{$arrForm.name|h}--></td>
           </tr>
           <tr>
             <th>投稿者名<span class="attention">※</span></th>
-            <td><!--{$arrForm.reviewer_name|escape}--></td>
+            <td><!--{$arrForm.reviewer_name|h}--></td>
           </tr>
           <tr>
             <th>投稿者URL</th>
-            <td><!--{$arrForm.reviewer_url|escape}--></td>
+            <td><!--{$arrForm.reviewer_url|h}--></td>
           </tr>
           <tr>
             <th>性別</th>
@@ -54,11 +54,11 @@
           </tr>
           <tr>
             <th>タイトル<span class="attention">※</span></th>
-            <td><!--{$arrForm.title|escape}--></td>
+            <td><!--{$arrForm.title|h}--></td>
           </tr>
           <tr>
             <th>コメント<span class="attention">※</span></th>
-            <td><!--{$arrForm.comment|escape|nl2br}--></td>
+            <td><!--{$arrForm.comment|h|nl2br}--></td>
           </tr>
         </table>
         <div class="btn">

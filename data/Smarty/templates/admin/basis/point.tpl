@@ -32,7 +32,7 @@
       <!--{if $arrErr[$key]}-->
       <span class="attention"><!--{$arrErr[$key]}--></span>
       <!--{/if}-->
-      <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="6" class="box6" />
+      <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="6" class="box6" />
       ％　小数点以下切り捨て</td>
     </tr>
     <tr>
@@ -42,7 +42,7 @@
       <!--{if $arrErr[$key]}-->
       <span class="attention"><!--{$arrErr[$key]}--></span>
       <!--{/if}-->
-      <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="6" class="box6" />
+      <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="6" class="box6" />
        pt</td>
     </tr>
   </table>

@@ -24,7 +24,7 @@
 <form name="form_bloc" id="form_bloc" method="post" action="?" >
 <input type="hidden" name="mode" value="" />
 <input type="hidden" name="bloc_id" value="<!--{$bloc_id}-->" />
-<input type="hidden" name="device_type_id" value="<!--{$device_type_id|escape}-->" />
+<input type="hidden" name="device_type_id" value="<!--{$device_type_id|h}-->" />
 
     <!--{* ▼ブロック設定 *}-->
 
@@ -39,13 +39,13 @@
         <tr>
             <th>ブロック名</th>
             <td>
-                <input type="text" name="bloc_name" value="<!--{$arrBlocData.bloc_name|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.bloc_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" /><span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
+                <input type="text" name="bloc_name" value="<!--{$arrBlocData.bloc_name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.bloc_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" /><span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
                 <!--{ if $arrErr.bloc_name != "" }--> <div align="center"> <span class="attention"><!--{$arrErr.bloc_name}--></span></div> <!--{/if}-->
             </td>
         </tr>
         <tr>
             <th>ファイル名</th>
-            <td><input type="text" name="filename" value="<!--{$arrBlocData.filename|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.filename != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" />.tpl<span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
+            <td><input type="text" name="filename" value="<!--{$arrBlocData.filename|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.filename != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" />.tpl<span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
         <!--{ if $arrErr.filename != "" }--> <div align="center"> <span class="attention"><!--{$arrErr.filename}--></span></div> <!--{/if}-->
          </td>
      </tr>
@@ -68,7 +68,7 @@
     <!--{* ▼ブロック一覧 *}-->
     <h2>編集可能ブロック</h2>
     <div class="btn addnew">
-        <a class='button' href="<!--{$smarty.server.PHP_SELF|escape}-->"><span>ブロックを新規入力</span></a>
+        <a class='button' href="<!--{$smarty.server.PHP_SELF|h}-->"><span>ブロックを新規入力</span></a>
     </div>
     <table class="list center">
         <tr>
@@ -78,7 +78,7 @@
         <tr style="background-color:<!--{if $item.bloc_id == $bloc_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->;">
             <td><!--{$item.bloc_name}--></td>
             <td>
-                <a href="<!--{$smarty.server.PHP_SELF|escape}-->?bloc_id=<!--{$item.bloc_id}-->&amp;device_type_id=<!--{$device_type_id}-->" >編集</a>
+                <a href="<!--{$smarty.server.PHP_SELF|h}-->?bloc_id=<!--{$item.bloc_id}-->&amp;device_type_id=<!--{$device_type_id}-->" >編集</a>
             </td>
             <td>
                 <!--{if $item.deletable_flg == 1}-->

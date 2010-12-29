@@ -33,7 +33,7 @@
 
 <!--{if @$tpl_kara_mail_to != ''}-->
 ■ご登録時のメールアドレスからメールを送れる方は、次のリンクをクリックして空メールを送信してください。<br>
-<center><a href="mailto:<!--{$tpl_kara_mail_to|escape:'url'}-->">メール送信</a></center>
+<center><a href="mailto:<!--{$tpl_kara_mail_to|u}-->">メール送信</a></center>
 
 <br>
 
@@ -42,10 +42,10 @@
 ご登録時のメールアドレスを入力して「次へ」ボタンをクリックしてください。<br>
 <!--{/if}-->
 
-<form action="<!--{$smarty.server.PHP_SELF|escape}-->" method="post">
+<form action="<!--{$smarty.server.PHP_SELF|h}-->" method="post">
 <input type="hidden" name="mode" value="mail_check">
 
-メールアドレス：<input type="text" name="email" value="<!--{$tpl_login_email|escape}-->" size="50" istyle="3"><br>
+メールアドレス：<input type="text" name="email" value="<!--{$tpl_login_email|h}-->" size="50" istyle="3"><br>
 
 <center><input type="submit" value="次へ" name="next"></center>
 </form>
