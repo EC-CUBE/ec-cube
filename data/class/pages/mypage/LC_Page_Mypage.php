@@ -48,7 +48,6 @@ class LC_Page_MyPage extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->tpl_mainpage = TEMPLATE_DIR .'mypage/index.tpl';
         $this->tpl_title = 'MYページ';
         $this->tpl_subtitle = '購入履歴一覧';
         $this->tpl_navi = TEMPLATE_DIR . 'mypage/navi.tpl';

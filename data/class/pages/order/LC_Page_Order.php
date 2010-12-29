@@ -43,7 +43,6 @@ class LC_Page_Order extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->tpl_mainpage = 'order/index.tpl';
         $this->tpl_page_category = 'order';
         $this->tpl_title = '特定商取引に関する法律に基づく表記';
 

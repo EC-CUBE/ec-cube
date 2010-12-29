@@ -54,7 +54,6 @@ class LC_Page_Products_Review extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->tpl_mainpage = 'products/review.tpl';
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrRECOMMEND = $masterData->getMasterData("mtb_recommend");
@@ -177,7 +176,7 @@ class LC_Page_Products_Review extends LC_Page {
         }
 
         $this->transactionid = SC_Helper_Session_Ex::getToken();
-        $this->setTemplate($this->tpl_mainpage);
+        $this->setTemplate('products/review.tpl');
     }
 
     /**

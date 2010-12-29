@@ -43,7 +43,6 @@ class LC_Page_Mypage_MailView extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->tpl_mainpage = 'mypage/mail_view.tpl';
         $this->httpCacheControl('nocache');
     }
 

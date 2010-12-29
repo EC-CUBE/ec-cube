@@ -43,7 +43,6 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->tpl_mainpage = TEMPLATE_DIR . 'mypage/delivery_addr.tpl';
         $this->tpl_title = "お届け先の追加･変更";
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref= $masterData->getMasterData('mtb_pref');

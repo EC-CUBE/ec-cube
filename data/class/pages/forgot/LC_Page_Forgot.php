@@ -54,7 +54,6 @@ class LC_Page_Forgot extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->tpl_mainpage = 'forgot/index.tpl';
         $this->tpl_mainno = '';
     }
 

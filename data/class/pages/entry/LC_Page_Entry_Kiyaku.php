@@ -43,7 +43,6 @@ class LC_Page_Entry_Kiyaku extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->tpl_mainpage = 'entry/kiyaku.tpl';
         $this->tpl_title = "ご利用規約";
     }
 

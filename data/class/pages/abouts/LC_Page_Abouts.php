@@ -43,7 +43,6 @@ class LC_Page_Abouts extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->tpl_mainpage = 'abouts/index.tpl';
         $this->tpl_page_category = 'abouts';
         $this->tpl_title = '当サイトについて';
         $masterData = new SC_DB_MasterData_Ex();

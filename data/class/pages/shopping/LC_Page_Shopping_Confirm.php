@@ -43,8 +43,6 @@ class LC_Page_Shopping_Confirm extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->tpl_mainpage = 'shopping/confirm.tpl';
-        $this->tpl_css = URL_DIR.'css/layout/shopping/confirm.css';
         $this->tpl_title = "ご入力内容のご確認";
         $masterData = new SC_DB_MasterData();
         $this->arrPref = $masterData->getMasterData('mtb_pref');

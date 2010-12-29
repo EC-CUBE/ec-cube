@@ -51,7 +51,6 @@ class LC_Page_Shopping extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->tpl_mainpage = 'shopping/index.tpl';
         $this->tpl_title = 'ログイン';
         $masterData = new SC_DB_MasterData();
         $this->arrPref = $masterData->getMasterData('mtb_pref');

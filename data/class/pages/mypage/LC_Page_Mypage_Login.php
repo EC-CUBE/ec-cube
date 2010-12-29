@@ -43,7 +43,6 @@ class LC_Page_Mypage_Login extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->tpl_mainpage = TEMPLATE_DIR . 'mypage/login.tpl';
         $this->tpl_title = 'MYページ(ログイン)';
         $this->httpCacheControl('nocache');
     }

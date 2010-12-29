@@ -43,7 +43,6 @@ class LC_Page_Shopping_Complete extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->tpl_mainpage = 'shopping/complete.tpl';
         $this->tpl_title = "ご注文完了";
 
         $masterData = new SC_DB_MasterData_Ex();

@@ -40,7 +40,6 @@ class LC_Page_Entry extends LC_Page {
      * Page を初期化する.
      *
      * 以下のプロパティの初期化を行う.
-     * - tpl_mainpage
      * - tpl_title
      * - year
      * - arrPref (mtb_pref からマスタデータを取得する)
@@ -56,7 +55,6 @@ class LC_Page_Entry extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->tpl_mainpage = 'entry/index.tpl';
         $this->tpl_title .= '会員登録(入力ページ)';
         $this->year = "";
         $masterData = new SC_DB_MasterData_Ex();
@@ -275,7 +273,6 @@ class LC_Page_Entry extends LC_Page {
                     $passlen = strlen($this->arrForm['password']);
                     $this->passlen = SC_Utils_Ex::lfPassLen($passlen);
 
-                    $this->tpl_css = '/css/layout/entry/confirm.css';
                     $this->tpl_mainpage = 'entry/confirm.tpl';
                     $this->tpl_title = '会員登録(確認ページ)';
 
@@ -287,7 +284,6 @@ class LC_Page_Entry extends LC_Page {
                     $this->CONF = $CONF;
                     $this->uniqid = $this->lfRegistData ($this->arrForm, $arrRegistColumn, $arrRejectRegistColumn, CUSTOMER_CONFIRM_MAIL);
 
-                    $this->tpl_css = '/css/layout/entry/complete.css';
                     $this->tpl_mainpage = 'entry/complete.tpl';
                     $this->tpl_title = '会員登録(完了ページ)';
 
@@ -346,7 +342,6 @@ class LC_Page_Entry extends LC_Page {
      */
     function mobileInit() {
         $this->init();
-        $this->tpl_mainpage = 'entry/index.tpl';		// メインテンプレート
         $this->tpl_title .= '会員登録(1/3)';			// ページタイトル
     }
 

@@ -43,7 +43,6 @@ class LC_Page_Contact_Complete extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->tpl_mainpage = 'contact/complete.tpl';
         $this->tpl_title = 'お問い合わせ(完了ページ)';
         $this->tpl_mainno = 'contact';
     }

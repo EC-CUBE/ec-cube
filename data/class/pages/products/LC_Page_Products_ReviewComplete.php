@@ -43,7 +43,6 @@ class LC_Page_Products_ReviewComplete extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->tpl_mainpage = 'products/review_complete.tpl';
     }
 
 
@@ -64,7 +63,7 @@ class LC_Page_Products_ReviewComplete extends LC_Page {
      * @return void
      */
     function action() {
-        $this->setTemplate($this->tpl_mainpage);
+        $this->setTemplate('products/review_complete.tpl');
     }
 
     /**

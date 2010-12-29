@@ -43,7 +43,6 @@ class LC_Page_Mypage_History extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->tpl_mainpage = TEMPLATE_DIR . 'mypage/history.tpl';
         $this->tpl_title = 'MYページ';
         $this->tpl_subtitle = '購入履歴詳細';
         $this->tpl_navi = TEMPLATE_DIR . 'mypage/navi.tpl';

@@ -43,7 +43,6 @@ class LC_Page_Regist_Complete extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->tpl_mainpage = 'regist/complete.tpl';
         $this->tpl_title = '会員登録(完了ページ)';
         $this->tpl_conv_page = AFF_ENTRY_COMPLETE;
     }
