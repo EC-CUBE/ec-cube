@@ -43,7 +43,6 @@ class LC_Page_Preview extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->tpl_column_num = 3;
     }
 
     /**

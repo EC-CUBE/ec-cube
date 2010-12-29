@@ -45,7 +45,6 @@ class LC_Page_Shopping_Complete extends LC_Page {
         parent::init();
         $this->tpl_mainpage = 'shopping/complete.tpl';
         $this->tpl_title = "ご注文完了";
-        $this->tpl_column_num = 1;
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrCONVENIENCE = $masterData->getMasterData("mtb_convenience");
