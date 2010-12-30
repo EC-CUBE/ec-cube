@@ -19,9 +19,8 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
-<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/jquery.fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
-<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/jquery.fancybox/jquery.fancybox-1.3.4.pack.js"></script>
-<link rel="stylesheet" href="<!--{$smarty.const.URL_DIR}-->js/jquery.fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
+<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/jquery.facebox/facebox.js"></script>
+<link rel="stylesheet" type="text/css" href="<!--{$smarty.const.URL_DIR}-->js/jquery.facebox/facebox.css" media="screen" />
 <script type="text/javascript">//<![CDATA[
 // 規格2に選択肢を割り当てる。
 function fnSetClassCategories(form, classcat_id2_selected) {
@@ -153,7 +152,9 @@ function fnCheckStock(form) {
     }
 }
 $(document).ready(function() {
-    $("a.expansion").fancybox({
+    $('a.expansion').facebox({
+        loadingImage : '<!--{$smarty.const.URL_DIR}-->js/jquery.facebox/loading.gif',
+        closeImage   : '<!--{$smarty.const.URL_DIR}-->js/jquery.facebox/closelabel.png'
     });
 });
 //]]>
