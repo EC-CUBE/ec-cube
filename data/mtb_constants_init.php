@@ -475,7 +475,7 @@ define('TEMPLATE_FTP_DIR', USER_PATH . USER_PACKAGE_DIR . TEMPLATE_NAME . "/");
 /** SMARTYコンパイル(FTP許可) */
 define('COMPILE_FTP_DIR', COMPILE_DIR . USER_DIR);
 /** ブロックファイル保存先 */
-define('BLOC_DIR', "bloc/");
+define('BLOC_DIR', "frontparts/bloc/");
 /** ブロックファイル保存先 */
 define('BLOC_PATH', TEMPLATE_DIR . BLOC_DIR);
 /** EメールアドレスチェックをRFC準拠にするか(true:準拠する、false:準拠しない) */

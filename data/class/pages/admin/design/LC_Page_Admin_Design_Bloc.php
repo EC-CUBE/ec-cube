@@ -79,7 +79,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin {
         if (isset($_REQUEST['bloc_id']) && is_numeric($_REQUEST['bloc_id'])) {
             $bloc_id = $_REQUEST['bloc_id'];
         } else {
-            $bloc_id = 1;
+            $bloc_id = null;
         }
         $this->bloc_id = $bloc_id;
 
@@ -92,7 +92,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin {
         }
 
         $this->objLayout = new SC_Helper_PageLayout_Ex();
-        $package_path = $this->objLayout->getTemplatePath($device_type_id);
+        $package_path = $this->objLayout->getTemplatePath($device_type_id) . BLOC_DIR;
 
         // ブロック一覧を取得
         $this->arrBlocList = $this->lfgetBlocData("device_type_id = ?", array($device_type_id));
@@ -102,10 +102,10 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin {
             $arrBlocData = $this->lfGetBlocData("bloc_id = ? AND device_type_id = ?",
                                                 array($bloc_id, $device_type_id));
 
-            $arrBlocData[0]['tpl_path'] = $this->objLayout->getTemplatePath($device_type_id) . $arrBlocData[0]['tpl_path'];
+            $tplPath = $package_path . $arrBlocData[0]['filename'] . '.tpl';
 
             // テンプレートファイルの読み込み
-            $arrBlocData[0]['tpl_data'] = file_get_contents($arrBlocData[0]['tpl_path']);
+            $arrBlocData[0]['tpl_data'] = file_get_contents($tplPath);
             $this->arrBlocData = $arrBlocData[0];
         }
 
@@ -123,9 +123,10 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin {
             $prev_path = USER_INC_PATH . 'preview/bloc_preview.tpl';
             // ディレクトリの作成
             SC_Utils::sfMakeDir($prev_path);
-            $fp = fopen($prev_path,"w");
-            fwrite($fp, $_POST['bloc_html']); // FIXME いきなり POST はちょっと...
-            fclose($fp);
+            $res = file_put_contents($new_bloc_path, $_POST['bloc_html']);
+            if ($res === false) {
+                SC_Utils_Ex::sfDispException();
+            }
 
             // プレビューデータ表示
             $this->preview = "on";
@@ -146,18 +147,18 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin {
                 $this->lfEntryBlocData($_POST, $device_type_id);
 
                 // 旧ファイルの削除
-                $old_bloc_path = $package_path . $arrBlocData[0]['tpl_path'];
-                if (file_exists($old_bloc_path)) {
-                    unlink($old_bloc_path);
+                if (file_exists($tplPath)) {
+                    unlink($tplPath);
                 }
 
                 // ファイル作成
-                $new_bloc_path = $package_path . BLOC_DIR . $_POST['filename'] . ".tpl";
+                $new_bloc_path = $package_path . $_POST['filename'] . ".tpl";
                 // ディレクトリの作成
                 SC_Utils::sfMakeDir($new_bloc_path);
-                $fp = fopen($new_bloc_path,"w");
-                fwrite($fp, $_POST['bloc_html']); // FIXME いきなり POST はちょっと...
-                fclose($fp);
+                $res = file_put_contents($new_bloc_path, $_POST['bloc_html']);
+                if ($res === false) {
+                    SC_Utils_Ex::sfDispException();
+                }
 
                 $arrBlocData = $this->lfGetBlocData("filename = ? AND device_type_id = ?",
                                                     array($_POST['filename'], $device_type_id));
@@ -197,9 +198,8 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin {
                 $ret = $objQuery->query($sql,array($_POST['bloc_id'], $device_type_id));
 
                 // ファイルの削除
-                $del_file = $package_path . BLOC_DIR . $arrBlocData[0]['filename']. '.tpl';
-                if(file_exists($del_file)){
-                    unlink($del_file);
+                if (file_exists($tplPath)) {
+                    unlink($tplPath);
                 }
             }
             $this->objDisplay->redirect($this->getLocation("./bloc.php",
@@ -253,7 +253,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin {
 
         // 更新データ生成
         $arrUpdData = array("bloc_name" => $arrData['bloc_name'],
-                            "tpl_path" => BLOC_DIR . $arrData['filename'] . '.tpl',
+                            "tpl_path" => $arrData['filename'] . '.tpl',
                             "filename" => $arrData['filename']);
 
         // データが存在しているかチェックを行う

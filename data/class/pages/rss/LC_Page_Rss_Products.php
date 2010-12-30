@@ -43,7 +43,7 @@ class LC_Page_Rss_Products extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->tpl_mainpage = "rss/product.tpl";
+        $this->tpl_mainpage = "rss/products.tpl";
         $this->encode = "UTF-8";
         $this->title = "商品一覧情報";
     }

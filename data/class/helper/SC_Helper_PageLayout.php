@@ -138,7 +138,7 @@ __EOF__;
                     if ($val['php_path'] != '') {
                         $arrNavi[$key]['php_path'] = HTML_PATH . $val['php_path'];
                     } else {
-                        $arrNavi[$key]['tpl_path'] = $this->getTemplatePath($device_type_id) . $val['tpl_path'];
+                        $arrNavi[$key]['tpl_path'] = $this->getTemplatePath($device_type_id) . BLOC_DIR . $val['tpl_path'];
                     }
                     // phpから呼び出されるか、tplファイルが存在する場合
                     if ($val['php_path'] != '' || is_file($arrNavi[$key]['tpl_path'])) {
