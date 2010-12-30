@@ -153,20 +153,6 @@ define('HTML_TEMPLATE_SUB_MAX', 12);
 define('LINE_LIMIT_SIZE', 60);
 /** 誕生日月ポイント */
 define('BIRTH_MONTH_POINT', 0);
-/** ルートカテゴリID */
-define('ROOT_CATEGORY_1', 2);
-/** ルートカテゴリID */
-define('ROOT_CATEGORY_2', 3);
-/** ルートカテゴリID */
-define('ROOT_CATEGORY_3', 4);
-/** ルートカテゴリID */
-define('ROOT_CATEGORY_4', 5);
-/** ルートカテゴリID */
-define('ROOT_CATEGORY_5', 6);
-/** ルートカテゴリID */
-define('ROOT_CATEGORY_6', 7);
-/** ルートカテゴリID */
-define('ROOT_CATEGORY_7', 8);
 /** クレジットカード */
 define('PAYMENT_CREDIT_ID', 1);
 /** コンビニ決済 */

@@ -1112,13 +1112,6 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('FORGOT_MAIL', '0', 
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('HTML_TEMPLATE_SUB_MAX', '12', 96, '登録できるサブ商品の数');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('LINE_LIMIT_SIZE', '60', 97, '文字数が多すぎるときに強制改行するサイズ(半角)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('BIRTH_MONTH_POINT', '0', 98, '誕生日月ポイント');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ROOT_CATEGORY_1', '2', 101, 'ルートカテゴリID');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ROOT_CATEGORY_2', '3', 102, 'ルートカテゴリID');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ROOT_CATEGORY_3', '4', 103, 'ルートカテゴリID');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ROOT_CATEGORY_4', '5', 104, 'ルートカテゴリID');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ROOT_CATEGORY_5', '6', 105, 'ルートカテゴリID');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ROOT_CATEGORY_6', '7', 106, 'ルートカテゴリID');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ROOT_CATEGORY_7', '8', 107, 'ルートカテゴリID');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PAYMENT_CREDIT_ID', '1', 108, 'クレジットカード');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PAYMENT_CONVENIENCE_ID', '2', 109, 'コンビニ決済');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('LARGE_IMAGE_WIDTH', '500', 110, '拡大画像横');
