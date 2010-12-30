@@ -55,7 +55,6 @@ class LC_Page_FrontParts_Bloc extends LC_Page {
      * @return void
      */
     function setTplMainpage($bloc_file) {
-        $debug_message = "";
         if (substr($bloc_file, 0, 1) == '/') {
             $this->tpl_mainpage = $bloc_file;
         } else {
