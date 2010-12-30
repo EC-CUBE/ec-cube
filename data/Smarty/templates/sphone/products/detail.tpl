@@ -214,6 +214,20 @@ $(document).ready(function() {
                         <h2><!--{$arrProduct.name|h}--></h2>
                     </th>
                 </tr>
+                 <tr>
+                    <th>
+                        <div class="product_code">商品コード：</div>
+                    </th>
+                     <td>
+                     <span id="product_code_default">
+                    <!--{if $arrProduct.product_code_min == $arrProduct.product_code_max}-->
+                        <!--{$arrProduct.product_code_min|h}-->
+                    <!--{else}-->
+                        <!--{$arrProduct.product_code_min|h}-->～<!--{$arrProduct.product_code_max|h}-->
+                    <!--{/if}-->
+                </span><span id="product_code_dynamic"></span>
+                     </td>
+                </tr>
                 <tr>
                     <th>
                         <!--★販売価格★-->
