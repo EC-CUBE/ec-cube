@@ -39,12 +39,10 @@
         <!--{/if}-->
         </p>
 
-        <!--{* (開発者向けレビュー)
         <form action="order.php" method="post">
             <input type="hidden" name="order_id" value="<!--{$arrDisp.order_id}-->">
             <input type="submit" name="submit" value="再注文">
         </form>
-        *}-->
 
         <table summary="購入商品詳細">
             <tr>
