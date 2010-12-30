@@ -22,6 +22,7 @@
  */
 
 require_once(DATA_PATH . "module/Services/JSON.php");
+require_once DATA_PATH . 'module/Compat/Compat.php';
 require_once(CLASS_EX_PATH . "util_extends/GC_Utils_Ex.php");
 require_once(CLASS_EX_PATH . "util_extends/SC_Utils_Ex.php");
 require_once(CLASS_EX_PATH . "db_extends/SC_DB_MasterData_Ex.php");
