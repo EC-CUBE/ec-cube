@@ -29,20 +29,8 @@ require_once HTML_PATH . 'handle_error.php';
 define('FRONT_FUNCTION_PC_SITE', true);
 require_once HTML_PATH . HTML2DATA_DIR . 'require_base.php';
 
-if (preg_match('|^' . URL_DIR . '(.*)$|', $_SERVER['REQUEST_URI'], $matches)) {
-        $path = $matches[1];
-    } else {
-        $path = '';
-}
-
-if(!preg_match("/resize_image.php/i", $path)) {
-// 携帯端末の場合、モバイルサイトへリダイレクトする
-SC_MobileUserAgent::sfAutoRedirectMobileSite();
-
 // スマートフォンの場合、リダイレクト
 SC_SmartphoneUserAgent::sfAutoRedirectSmartphoneSite();
-exit;
-}
 
 // 絵文字変換 (除去) フィルターを組み込む。
 ob_start(array('SC_MobileEmoji', 'handler'));
