@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_FILE_PATH . "pages/abouts/LC_Page_Abouts.php");
+require_once(CLASS_REALDIR . "pages/abouts/LC_Page_Abouts.php");
 
 /**
  * サイト概要のページクラス(拡張).

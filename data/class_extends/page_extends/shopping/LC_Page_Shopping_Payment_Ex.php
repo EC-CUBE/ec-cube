@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_FILE_PATH . "pages/shopping/LC_Page_Shopping_Payment.php");
+require_once(CLASS_REALDIR . "pages/shopping/LC_Page_Shopping_Payment.php");
 
 /**
  * 支払い方法選択 のページクラス(拡張).

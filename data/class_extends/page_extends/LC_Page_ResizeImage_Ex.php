@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_FILE_PATH . "pages/LC_Page_ResizeImage.php");
+require_once(CLASS_REALDIR . "pages/LC_Page_ResizeImage.php");
 
 /**
  * リサイズイメージ のページクラス(拡張).

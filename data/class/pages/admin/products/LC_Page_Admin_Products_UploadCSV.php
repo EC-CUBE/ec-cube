@@ -22,8 +22,8 @@
  */
 
 // {{{ requires
-require_once(CLASS_FILE_PATH . "pages/admin/LC_Page_Admin.php");
-require_once(CLASS_EX_FILE_PATH . "helper_extends/SC_Helper_CSV_Ex.php");
+require_once(CLASS_REALDIR . "pages/admin/LC_Page_Admin.php");
+require_once(CLASS_EX_REALDIR . "helper_extends/SC_Helper_CSV_Ex.php");
 
 /**
  * 商品登録CSVのページクラス.
@@ -105,7 +105,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin {
         SC_Utils_Ex::sfIsSuccess($objSess);
 
         // ファイル管理クラス
-        $this->objUpFile = new SC_UploadFile(IMAGE_TEMP_FILE_PATH, IMAGE_SAVE_FILE_PATH);
+        $this->objUpFile = new SC_UploadFile(IMAGE_TEMP_REALDIR, IMAGE_SAVE_REALDIR);
         // サイト基本情報 (ポイントレート初期値用)
         $this->arrInfo = $this->objDb->sfGetBasisData();
         // CSV管理ヘルパー
@@ -167,7 +167,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin {
                 $filepath = $this->objUpFile->getTempFilePath('csv_file');
                 // エンコード
                 $enc_filepath = SC_Utils_Ex::sfEncodeFile($filepath,
-                                                          CHAR_CODE, CSV_TEMP_FILE_PATH);
+                                                          CHAR_CODE, CSV_TEMP_REALDIR);
                 $fp = fopen($enc_filepath, "r");
 
                 // 無効なファイルポインタが渡された場合はエラー表示

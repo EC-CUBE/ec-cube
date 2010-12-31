@@ -837,7 +837,7 @@ class SC_Query {
             if (!$this->force_run) {
                 trigger_error($this->traceError($sth, $sql), E_USER_ERROR);
             } else {
-                error_log($this->traceError($sth, $sql), 3, LOG_FILE);
+                error_log($this->traceError($sth, $sql), 3, LOG_REALFILE);
             }
         }
         return $sth;
@@ -871,7 +871,7 @@ class SC_Query {
             if (!$this->force_run) {
                 trigger_error($this->traceError($affected, $sql), E_USER_ERROR);
             } else {
-                error_log($this->traceError($affected, $sql), 3, LOG_FILE);
+                error_log($this->traceError($affected, $sql), 3, LOG_REALFILE);
             }
         }
         return $affected;

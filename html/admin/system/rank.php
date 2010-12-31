@@ -22,7 +22,7 @@
  */
 // {{{ requires
 require_once '../require.php';
-require_once CLASS_EX_FILE_PATH . 'page_extends/admin/system/LC_Page_Admin_System_Rank_Ex.php';
+require_once CLASS_EX_REALDIR . 'page_extends/admin/system/LC_Page_Admin_System_Rank_Ex.php';
 
 // }}}
 // {{{ generate page

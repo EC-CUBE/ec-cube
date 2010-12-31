@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_FILE_PATH . "pages/admin/system/LC_Page_Admin_System_Bkup.php");
+require_once(CLASS_REALDIR . "pages/admin/system/LC_Page_Admin_System_Bkup.php");
 
 /**
  * バックアップ のページクラス(拡張).

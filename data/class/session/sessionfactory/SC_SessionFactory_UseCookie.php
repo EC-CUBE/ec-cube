@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once CLASS_FILE_PATH . 'session/SC_SessionFactory.php';
+require_once CLASS_REALDIR . 'session/SC_SessionFactory.php';
 
 /**
  * セッション維持の方法にCookieを使用するクラス.

@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_FILE_PATH . "pages/LC_Page.php");
+require_once(CLASS_REALDIR . "pages/LC_Page.php");
 
 /**
  * 支払い方法選択 のページクラス.

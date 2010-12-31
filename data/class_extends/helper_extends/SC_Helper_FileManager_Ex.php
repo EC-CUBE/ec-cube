@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_FILE_PATH . "helper/SC_Helper_FileManager.php");
+require_once(CLASS_REALDIR . "helper/SC_Helper_FileManager.php");
 
 /**
  * ファイル管理のヘルパークラス(拡張).

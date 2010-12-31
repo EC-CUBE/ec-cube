@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_FILE_PATH . "pages/LC_Page.php");
+require_once(CLASS_REALDIR . "pages/LC_Page.php");
 
 /**
  * 特定商取引に関する法律に基づく表記 のページクラス.

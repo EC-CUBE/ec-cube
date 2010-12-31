@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_FILE_PATH . "pages/admin/system/LC_Page_Admin_System_Masterdata.php");
+require_once(CLASS_REALDIR . "pages/admin/system/LC_Page_Admin_System_Masterdata.php");
 
 /**
  * マスタデータ管理 のページクラス(拡張).

@@ -74,13 +74,13 @@ class SC_Initial {
 
         if (defined('ECCUBE_INSTALL')) {
             define('MOBILE_DIR', 'mobile/');
-            define('MOBILE_HTML_FILE_PATH', HTML_FILE_PATH . MOBILE_DIR);
+            define('MOBILE_HTML_REALDIR', HTML_REALDIR . MOBILE_DIR);
             define('MOBILE_HTTP_URL', HTTP_URL . MOBILE_DIR);
             define('MOBILE_HTTPS_URL', HTTPS_URL . MOBILE_DIR);
             define('MOBILE_URL_PATH', URL_PATH . MOBILE_DIR);
 
             define('SMARTPHONE_DIR', 'sphone/');
-            define('SMARTPHONE_HTML_FILE_PATH', HTML_FILE_PATH . SMARTPHONE_DIR);
+            define('SMARTPHONE_HTML_REALDIR', HTML_REALDIR . SMARTPHONE_DIR);
             define('SMARTPHONE_HTTP_URL', HTTP_URL . SMARTPHONE_DIR);
             define('SMARTPHONE_HTTPS_URL', HTTPS_URL . SMARTPHONE_DIR);
             define('SMARTPHONE_URL_PATH', URL_PATH . SMARTPHONE_DIR);
@@ -189,19 +189,19 @@ class SC_Initial {
 
         $errorMessage = "<div style='color: #F00; font-weight: bold; "
             . "background-color: #FEB; text-align: center'>"
-            . CACHE_FILE_PATH
+            . CACHE_REALDIR
             . " にユーザ書込み権限(777等)を付与して下さい。</div>";
 
         // 定数を設定
-        if (is_file(CACHE_FILE_PATH . "mtb_constants.php")) {
-            require_once(CACHE_FILE_PATH . "mtb_constants.php");
+        if (is_file(CACHE_REALDIR . "mtb_constants.php")) {
+            require_once(CACHE_REALDIR . "mtb_constants.php");
 
             // キャッシュが無ければ, 初期データからコピー
-        } elseif (is_file(CACHE_FILE_PATH . "../mtb_constants_init.php")) {
+        } elseif (is_file(CACHE_REALDIR . "../mtb_constants_init.php")) {
 
-            $mtb_constants = file_get_contents(CACHE_FILE_PATH . "../mtb_constants_init.php");
-            if (is_writable(CACHE_FILE_PATH)) {
-                $handle = fopen(CACHE_FILE_PATH . "mtb_constants.php", "w");
+            $mtb_constants = file_get_contents(CACHE_REALDIR . "../mtb_constants_init.php");
+            if (is_writable(CACHE_REALDIR)) {
+                $handle = fopen(CACHE_REALDIR . "mtb_constants.php", "w");
                 if (!$handle) {
                     die($errorMessage);
                 }
@@ -210,12 +210,12 @@ class SC_Initial {
                 }
                 fclose($handle);
 
-                require_once(CACHE_FILE_PATH . "mtb_constants.php");
+                require_once(CACHE_REALDIR . "mtb_constants.php");
             } else {
                 die($errorMessage);
             }
         } else {
-            die(CACHE_FILE_PATH . "../mtb_constants_init.php が存在しません");
+            die(CACHE_REALDIR . "../mtb_constants_init.php が存在しません");
         }
     }
 
@@ -228,22 +228,22 @@ class SC_Initial {
      * @return void
      */
     function createCacheDir() {
-        if (defined("HTML_FILE_PATH")) {
+        if (defined("HTML_REALDIR")) {
             umask(0);
             if (!file_exists(COMPILE_DIR)) {
                 mkdir(COMPILE_DIR);
             }
 
-            if (!file_exists(MOBILE_COMPILE_FILE_PATH)) {
-                mkdir(MOBILE_COMPILE_FILE_PATH);
+            if (!file_exists(MOBILE_COMPILE_REALDIR)) {
+                mkdir(MOBILE_COMPILE_REALDIR);
             }
 
-            if (!file_exists(SMARTPHONE_COMPILE_FILE_PATH)) {
-                mkdir(SMARTPHONE_COMPILE_FILE_PATH);
+            if (!file_exists(SMARTPHONE_COMPILE_REALDIR)) {
+                mkdir(SMARTPHONE_COMPILE_REALDIR);
             }
 
-            if (!file_exists(COMPILE_ADMIN_FILE_PATH)) {
-                mkdir(COMPILE_ADMIN_FILE_PATH);
+            if (!file_exists(COMPILE_ADMIN_REALDIR)) {
+                mkdir(COMPILE_ADMIN_REALDIR);
             }
         }
     }

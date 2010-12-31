@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_FILE_PATH . "pages/admin/total/LC_Page_Admin_Total.php");
+require_once(CLASS_REALDIR . "pages/admin/total/LC_Page_Admin_Total.php");
 
 /**
  * 売上集計 のページクラス(拡張).

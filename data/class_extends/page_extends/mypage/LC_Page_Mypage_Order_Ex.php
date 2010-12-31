@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_FILE_PATH . "pages/mypage/LC_Page_Mypage_Order.php");
+require_once(CLASS_REALDIR . "pages/mypage/LC_Page_Mypage_Order.php");
 
 /**
  * 受注履歴からカート遷移 のページクラス(拡張).

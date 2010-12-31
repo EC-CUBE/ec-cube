@@ -6,9 +6,9 @@ define('SAMPLE_ADDRESS2', "番地・ビル名 (例：1-3-5)");
 /** ユーザファイル保存先 */
 define('USER_DIR', "user_data/");
 /** ユーザファイル保存先 */
-define('USER_FILE_PATH', HTML_FILE_PATH . USER_DIR);
+define('USER_REALDIR', HTML_REALDIR . USER_DIR);
 /** ユーザインクルードファイル保存先 */
-define('USER_INC_PATH', USER_FILE_PATH . "include/");
+define('USER_INC_PATH', USER_REALDIR . "include/");
 /** 郵便番号専用DB */
 define('ZIP_DSN', DEFAULT_DSN);
 /** ユーザー作成ページ等 */
@@ -20,21 +20,21 @@ define('USER_TEMPLATE_DIR', "templates/");
 /** テンプレートファイル保存先 */
 define('USER_PACKAGE_DIR', "packages/");
 /** テンプレートファイル保存先 */
-define('USER_TEMPLATE_PATH', USER_FILE_PATH . USER_PACKAGE_DIR);
+define('USER_TEMPLATE_PATH', USER_REALDIR . USER_PACKAGE_DIR);
 /** テンプレートファイル一時保存先 */
-define('TEMPLATE_TEMP_FILE_PATH', HTML_FILE_PATH . "upload/temp_template/");
+define('TEMPLATE_TEMP_REALDIR', HTML_REALDIR . "upload/temp_template/");
 /** ユーザー作成画面のデフォルトPHPファイル */
-define('USER_DEF_PHP', USER_FILE_PATH . "__default.php");
+define('USER_DEF_PHP', USER_REALDIR . "__default.php");
 /** その他画面のデフォルトページレイアウト */
 define('DEF_LAYOUT', "products/list.php");
 /** ダウンロードモジュール保存ディレクトリ */
 define('MODULE_DIR', "downloads/module/");
 /** ダウンロードモジュール保存ディレクトリ */
-define('MODULE_FILE_PATH', DATA_FILE_PATH . MODULE_DIR);
+define('MODULE_REALDIR', DATA_REALDIR . MODULE_DIR);
 /** DBセッションの有効期限(秒) */
 define('MAX_LIFETIME', 7200);
 /** マスタデータキャッシュディレクトリ */
-define('MASTER_DATA_FILE_PATH', DATA_FILE_PATH . "cache/");
+define('MASTER_DATA_REALDIR', DATA_REALDIR . "cache/");
 /** アップデート管理用ファイル格納場所 */
 define('UPDATE_HTTP', "http://sv01.ec-cube.net/info/index.php");
 /** アップデート管理用CSV1行辺りの最大文字数 */
@@ -64,7 +64,7 @@ define('CLOSE_DAY', 31);
 /** 一般サイトエラー */
 define('FAVORITE_ERROR', 13);
 /** グラフ格納ディレクトリ */
-define('GRAPH_FILE_PATH', HTML_FILE_PATH . "upload/graph_image/");
+define('GRAPH_REALDIR', HTML_REALDIR . "upload/graph_image/");
 /** グラフURL */
 define('GRAPH_URL', URL_PATH . "upload/graph_image/");
 /** 円グラフ最大表示数 */
@@ -218,13 +218,13 @@ define('NORMAL_PRICE_TITLE', "通常価格");
 /** 価格名称 */
 define('SALE_PRICE_TITLE', "販売価格");
 /** ログファイル */
-define('LOG_FILE', DATA_FILE_PATH . "logs/site.log");
+define('LOG_REALFILE', DATA_REALDIR . "logs/site.log");
 /** 会員ログイン ログファイル */
-define('CUSTOMER_LOG_FILE', DATA_FILE_PATH . "logs/customer.log");
+define('CUSTOMER_LOG_REALFILE', DATA_REALDIR . "logs/customer.log");
 /** 画像一時保存 */
-define('IMAGE_TEMP_FILE_PATH', HTML_FILE_PATH . "upload/temp_image/");
+define('IMAGE_TEMP_REALDIR', HTML_REALDIR . "upload/temp_image/");
 /** 画像保存先 */
-define('IMAGE_SAVE_FILE_PATH', HTML_FILE_PATH . "upload/save_image/");
+define('IMAGE_SAVE_REALDIR', HTML_REALDIR . "upload/save_image/");
 /** 画像一時保存URL */
 define('IMAGE_TEMP_URL', URL_PATH . "upload/temp_image/");
 /** 画像保存先URL */
@@ -234,7 +234,7 @@ define('IMAGE_TEMP_URL_RSS', HTTP_URL . "upload/temp_image/");
 /** RSS用画像保存先URL */
 define('IMAGE_SAVE_URL_RSS', HTTP_URL . "upload/save_image/");
 /** エンコードCSVの一時保存先 */
-define('CSV_TEMP_FILE_PATH', DATA_FILE_PATH . "upload/csv/");
+define('CSV_TEMP_REALDIR', DATA_REALDIR . "upload/csv/");
 /** 画像がない場合に表示 */
 define('NO_IMAGE_URL', TPL_DIR . "img/picture/img_blank.gif");
 /** 画像がない場合に表示 */
@@ -441,17 +441,17 @@ define('MOBILE_TEMPLATE_NAME', "mobile");
 /** スマートフォンテンプレート名 */
 define('SMARTPHONE_TEMPLATE_NAME', "sphone");
 /** SMARTYテンプレート */
-define('SMARTY_TEMPLATES_FILE_PATH',  DATA_FILE_PATH . "Smarty/templates/");
+define('SMARTY_TEMPLATES_REALDIR',  DATA_REALDIR . "Smarty/templates/");
 /** SMARTYテンプレート */
 define('TPL_DIR', URL_PATH . USER_DIR . USER_PACKAGE_DIR . TEMPLATE_NAME . "/");
 /** SMARTYテンプレート */
-define('TEMPLATE_DIR', SMARTY_TEMPLATES_FILE_PATH . TEMPLATE_NAME . "/");
+define('TEMPLATE_DIR', SMARTY_TEMPLATES_REALDIR . TEMPLATE_NAME . "/");
 /** SMARTYテンプレート(管理機能) */
-define('TEMPLATE_ADMIN_FILE_PATH', SMARTY_TEMPLATES_FILE_PATH . "admin/");
+define('TEMPLATE_ADMIN_REALDIR', SMARTY_TEMPLATES_REALDIR . "admin/");
 /** SMARTYコンパイル */
-define('COMPILE_DIR', DATA_FILE_PATH . "Smarty/templates_c/" . TEMPLATE_NAME . "/");
+define('COMPILE_DIR', DATA_REALDIR . "Smarty/templates_c/" . TEMPLATE_NAME . "/");
 /** SMARTYコンパイル(管理機能) */
-define('COMPILE_ADMIN_FILE_PATH', DATA_FILE_PATH . "Smarty/templates_c/admin/");
+define('COMPILE_ADMIN_REALDIR', DATA_REALDIR . "Smarty/templates_c/admin/");
 /** ブロックファイル保存先 */
 define('BLOC_DIR', "frontparts/bloc/");
 /** ブロックファイル保存先 */
@@ -459,13 +459,13 @@ define('BLOC_PATH', TEMPLATE_DIR . BLOC_DIR);
 /** EメールアドレスチェックをRFC準拠にするか(true:準拠する、false:準拠しない) */
 define('RFC_COMPLIANT_EMAIL_CHECK', false);
 /** SMARTYテンプレート(mobile) */
-define('MOBILE_TEMPLATE_DIR', SMARTY_TEMPLATES_FILE_PATH . MOBILE_TEMPLATE_NAME . "/");
+define('MOBILE_TEMPLATE_DIR', SMARTY_TEMPLATES_REALDIR . MOBILE_TEMPLATE_NAME . "/");
 /** SMARTYコンパイル(mobile) */
-define('MOBILE_COMPILE_FILE_PATH', DATA_FILE_PATH . "Smarty/templates_c/" . MOBILE_TEMPLATE_NAME . "/");
+define('MOBILE_COMPILE_REALDIR', DATA_REALDIR . "Smarty/templates_c/" . MOBILE_TEMPLATE_NAME . "/");
 /** SMARTYテンプレート(smart phone) */
-define('SMARTPHONE_TEMPLATE_DIR', SMARTY_TEMPLATES_FILE_PATH . SMARTPHONE_TEMPLATE_NAME . "/");
+define('SMARTPHONE_TEMPLATE_DIR', SMARTY_TEMPLATES_REALDIR . SMARTPHONE_TEMPLATE_NAME . "/");
 /** SMARTYコンパイル(smart phone) */
-define('SMARTPHONE_COMPILE_FILE_PATH', DATA_FILE_PATH . "Smarty/templates_c/" . SMARTPHONE_TEMPLATE_NAME . "/");
+define('SMARTPHONE_COMPILE_REALDIR', DATA_REALDIR . "Smarty/templates_c/" . SMARTPHONE_TEMPLATE_NAME . "/");
 /** モバイルサイトのセッションの存続時間 (秒) */
 define('MOBILE_SESSION_LIFETIME', 1800);
 /** 空メール機能を使用するかどうか(true:送信する、false:送信しない) */
@@ -477,7 +477,7 @@ define('MOBILE_KARA_MAIL_ADDRESS_DELIMITER', "+");
 /** 空メール受け付けアドレスのドメイン部分 */
 define('MOBILE_KARA_MAIL_ADDRESS_DOMAIN', "");
 /** 携帯電話向け変換画像保存ディレクトリ */
-define('MOBILE_IMAGE_DIR', HTML_FILE_PATH . "upload/mobile_image/");
+define('MOBILE_IMAGE_DIR', HTML_REALDIR . "upload/mobile_image/");
 /** 携帯電話向け変換画像保存ディレクトリ */
 define('MOBILE_IMAGE_URL', URL_PATH . "upload/mobile_image/");
 /** モバイルURL */
@@ -505,7 +505,7 @@ define('OSTORE_URL', "http://store.ec-cube.net/");
 /** オーナーズストアURL */
 define('OSTORE_SSLURL', "https://store.ec-cube.net/");
 /** オーナーズストアログパス */
-define('OSTORE_LOG_FILE', DATA_FILE_PATH . "logs/ownersstore.log");
+define('OSTORE_LOG_REALFILE', DATA_REALDIR . "logs/ownersstore.log");
 /** オーナーズストア通信ステータス */
 define('OSTORE_STATUS_ERROR', "ERROR");
 /** オーナーズストア通信ステータス */
@@ -553,7 +553,7 @@ define('IMAGE_RENAME', true);
 /** プラグインディレクトリ */
 define('PLUGIN_DIR', "plugins/");
 /** プラグイン保存先 */
-define('PLUGIN_PATH', USER_FILE_PATH . PLUGIN_DIR);
+define('PLUGIN_PATH', USER_REALDIR . PLUGIN_DIR);
 /** プラグイン URL */
 define('PLUGIN_URL', USER_URL . PLUGIN_DIR);
 /** 1:実商品 2:ダウンロード */
@@ -561,9 +561,9 @@ define('DEFAULT_PRODUCT_DOWN', 1);
 /** ダウンロード販売機能 ファイルサイズ制限(KB) */
 define('DOWN_SIZE', 50000);
 /** ダウンロード販売機能 ファイル一時保存 */
-define('DOWN_TEMP_FILE_PATH', DATA_FILE_PATH . "download/temp/");
+define('DOWN_TEMP_REALDIR', DATA_REALDIR . "download/temp/");
 /** ダウンロード販売機能 ファイル保存先 */
-define('DOWN_SAVE_FILE_PATH', DATA_FILE_PATH . "download/save/");
+define('DOWN_SAVE_REALDIR', DATA_REALDIR . "download/save/");
 /** ダウンロード販売機能 ファイル存在エラー */
 define('DOWNFILE_NOT_FOUND', 22);
 /** ダウンロード販売機能 ダウンロード可能日数桁数 */

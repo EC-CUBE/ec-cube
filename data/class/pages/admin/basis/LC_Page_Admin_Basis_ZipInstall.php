@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_FILE_PATH . "pages/admin/LC_Page_Admin.php");
+require_once(CLASS_REALDIR . "pages/admin/LC_Page_Admin.php");
 
 /** CSV ファイルの最大行数 */
 define("ZIP_CSV_LINE_MAX", 8192);
@@ -31,10 +31,10 @@ define("ZIP_CSV_LINE_MAX", 8192);
 define("IMAGE_MAX", 680);
 
 /** 郵便番号CSV ファイルのパス */
-define("ZIP_CSV_FILE_PATH", DATA_FILE_PATH . "downloads/KEN_ALL.CSV");
+define("ZIP_CSV_REALFILE", DATA_REALDIR . "downloads/KEN_ALL.CSV");
 
 /** UTF-8 変換済みの郵便番号CSV ファイルのパス */
-define("ZIP_CSV_UTF8_FILE_PATH", DATA_FILE_PATH . "downloads/KEN_ALL_utf-8.CSV");
+define("ZIP_CSV_UTF8_REALFILE", DATA_REALDIR . "downloads/KEN_ALL_utf-8.CSV");
 
 /**
  * 郵便番号DB登録 のページクラス.
@@ -271,24 +271,24 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin {
     function openZipCsv() {
         // http://www.post.japanpost.jp/zipcode/dl/kogaki/lzh/ken_all.lzh
         $this->convertZipCsv();
-        $fp = fopen(ZIP_CSV_UTF8_FILE_PATH, "r");
+        $fp = fopen(ZIP_CSV_UTF8_REALFILE, "r");
         if (!$fp) {
-            SC_Utils_Ex::sfDispException(ZIP_CSV_UTF8_FILE_PATH . ' の読み込みに失敗しました。');
+            SC_Utils_Ex::sfDispException(ZIP_CSV_UTF8_REALFILE . ' の読み込みに失敗しました。');
         }
         return $fp;
     }
 
     function convertZipCsv() {
-        if (file_exists(ZIP_CSV_UTF8_FILE_PATH)) return;
+        if (file_exists(ZIP_CSV_UTF8_REALFILE)) return;
 
-        $fpr = fopen(ZIP_CSV_FILE_PATH, "r");
+        $fpr = fopen(ZIP_CSV_REALFILE, "r");
         if (!$fpr) {
-            SC_Utils_Ex::sfDispException(ZIP_CSV_FILE_PATH . ' の読み込みに失敗しました。');
+            SC_Utils_Ex::sfDispException(ZIP_CSV_REALFILE . ' の読み込みに失敗しました。');
         }
 
-        $fpw = fopen(ZIP_CSV_UTF8_FILE_PATH, "w");
+        $fpw = fopen(ZIP_CSV_UTF8_REALFILE, "w");
         if (!$fpw) {
-            SC_Utils_Ex::sfDispException(ZIP_CSV_UTF8_FILE_PATH . ' を開けません。');
+            SC_Utils_Ex::sfDispException(ZIP_CSV_UTF8_REALFILE . ' を開けません。');
         }
 
         while (!feof($fpr)) {

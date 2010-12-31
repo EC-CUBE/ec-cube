@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_FILE_PATH . "pages/admin/design/LC_Page_Admin_Design_MainEdit.php");
+require_once(CLASS_REALDIR . "pages/admin/design/LC_Page_Admin_Design_MainEdit.php");
 
 /**
  * メイン編集 のページクラス(拡張).

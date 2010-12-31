@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_FILE_PATH . "helper/SC_Helper_PageLayout.php");
+require_once(CLASS_REALDIR . "helper/SC_Helper_PageLayout.php");
 
 /**
  * Webページのレイアウト情報を制御するヘルパークラス(拡張).

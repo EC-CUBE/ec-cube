@@ -22,9 +22,9 @@
  */
 
 // {{{ requires
-require_once(CLASS_FILE_PATH . "db/SC_DB_DBFactory.php");
-require_once(CLASS_EX_FILE_PATH . "db_extends/dbfactory/SC_DB_DBFactory_MYSQL_Ex.php");
-require_once(CLASS_EX_FILE_PATH . "db_extends/dbfactory/SC_DB_DBFactory_PGSQL_Ex.php");
+require_once(CLASS_REALDIR . "db/SC_DB_DBFactory.php");
+require_once(CLASS_EX_REALDIR . "db_extends/dbfactory/SC_DB_DBFactory_MYSQL_Ex.php");
+require_once(CLASS_EX_REALDIR . "db_extends/dbfactory/SC_DB_DBFactory_PGSQL_Ex.php");
 
 /**
  * DBに依存した処理を抽象化するファクトリークラス(拡張).

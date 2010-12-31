@@ -28,15 +28,15 @@
  */
 
 // rtrim は PHP バージョン依存対策
-define("HTML_FILE_PATH", rtrim(realpath(rtrim(realpath(dirname(__FILE__)), '/\\') . '/'), '/\\') . '/');
+define("HTML_REALDIR", rtrim(realpath(rtrim(realpath(dirname(__FILE__)), '/\\') . '/'), '/\\') . '/');
 
-if (!defined("DATA_FILE_PATH")) {
-    define("DATA_FILE_PATH", HTML_FILE_PATH . HTML2DATA_DIR);
+if (!defined("DATA_REALDIR")) {
+    define("DATA_REALDIR", HTML_REALDIR . HTML2DATA_DIR);
 }
 
 // アプリケーションの初期化処理
-require_once(DATA_FILE_PATH . "app_initial.php");
+require_once(DATA_REALDIR . "app_initial.php");
 
 // 各種クラス読み込み
-require_once(DATA_FILE_PATH . "require_classes.php");
+require_once(DATA_REALDIR . "require_classes.php");
 ?>

@@ -22,15 +22,15 @@
  */
 // ▼require.php 相当
 // rtrim は PHP バージョン依存対策
-define('HTML_FILE_PATH', rtrim(realpath(rtrim(realpath(dirname(__FILE__)), '/\\') . '/../'), '/\\') . '/');
+define('HTML_REALDIR', rtrim(realpath(rtrim(realpath(dirname(__FILE__)), '/\\') . '/../'), '/\\') . '/');
 
-require_once HTML_FILE_PATH . 'define.php';
+require_once HTML_REALDIR . 'define.php';
 define('INSTALL_FUNCTION', true);
-require_once HTML_FILE_PATH . HTML2DATA_DIR . 'require_base.php';
+require_once HTML_REALDIR . HTML2DATA_DIR . 'require_base.php';
 // ▲require.php 相当
 
 $INSTALL_DIR = realpath(dirname( __FILE__));
-require_once(DATA_FILE_PATH . "module/Request.php");
+require_once(DATA_REALDIR . "module/Request.php");
 
 define("INSTALL_LOG", "./temp/install.log");
 ini_set("max_execution_time", 300);
@@ -388,15 +388,15 @@ function lfDispStep0($objPage) {
 
     // プログラムで書込みされるファイル・ディレクトリ
     $arrWriteFile = array(
-        DATA_FILE_PATH . "install.php",
-        USER_FILE_PATH,
-        HTML_FILE_PATH . "upload",
-        DATA_FILE_PATH . "cache/",
-        DATA_FILE_PATH . "class/",
-        DATA_FILE_PATH . "Smarty/",
-        DATA_FILE_PATH . "logs/",
-        DATA_FILE_PATH . "downloads/",
-        DATA_FILE_PATH . "upload/",
+        DATA_REALDIR . "install.php",
+        USER_REALDIR,
+        HTML_REALDIR . "upload",
+        DATA_REALDIR . "cache/",
+        DATA_REALDIR . "class/",
+        DATA_REALDIR . "Smarty/",
+        DATA_REALDIR . "logs/",
+        DATA_REALDIR . "downloads/",
+        DATA_REALDIR . "upload/",
     );
 
     $mess = "";
@@ -456,35 +456,35 @@ function lfDispStep0($objPage) {
     else {
         $objPage->tpl_mode = 'step0';
         umask(0);
-        $path = HTML_FILE_PATH . "upload/temp_template";
+        $path = HTML_REALDIR . "upload/temp_template";
         if(!file_exists($path)) {
             mkdir($path);
         }
-        $path = HTML_FILE_PATH . "upload/save_image";
+        $path = HTML_REALDIR . "upload/save_image";
         if(!file_exists($path)) {
             mkdir($path);
         }
-        $path = HTML_FILE_PATH . "upload/temp_image";
+        $path = HTML_REALDIR . "upload/temp_image";
         if(!file_exists($path)) {
             mkdir($path);
         }
-        $path = HTML_FILE_PATH . "upload/graph_image";
+        $path = HTML_REALDIR . "upload/graph_image";
         if(!file_exists($path)) {
             mkdir($path);
         }
-        $path = HTML_FILE_PATH . "upload/mobile_image";
+        $path = HTML_REALDIR . "upload/mobile_image";
         if(!file_exists($path)) {
             mkdir($path);
         }
-        $path = DATA_FILE_PATH . "downloads/module";
+        $path = DATA_REALDIR . "downloads/module";
         if(!file_exists($path)) {
             mkdir($path);
         }
-        $path = DATA_FILE_PATH . "downloads/update";
+        $path = DATA_REALDIR . "downloads/update";
         if(!file_exists($path)) {
             mkdir($path);
         }
-        $path = DATA_FILE_PATH . "upload/csv";
+        $path = DATA_REALDIR . "upload/csv";
         if(!file_exists($path)) {
             mkdir($path);
         }
@@ -511,8 +511,8 @@ function lfDispStep0_1($objPage) {
     $objPage->tpl_mainpage = 'step0_1.tpl';
     $objPage->tpl_mode = 'step0_1';
     // ファイルコピー
-    $objPage->copy_mess = SC_Utils_Ex::sfCopyDir("./user_data/", USER_FILE_PATH, $objPage->copy_mess);
-    $objPage->copy_mess = SC_Utils_Ex::sfCopyDir("./save_image/", HTML_FILE_PATH . "upload/save_image/", $objPage->copy_mess);
+    $objPage->copy_mess = SC_Utils_Ex::sfCopyDir("./user_data/", USER_REALDIR, $objPage->copy_mess);
+    $objPage->copy_mess = SC_Utils_Ex::sfCopyDir("./save_image/", HTML_REALDIR . "upload/save_image/", $objPage->copy_mess);
     return $objPage;
 }
 
@@ -899,7 +899,7 @@ function lfMakeConfigFile() {
     // ディレクトリの取得
     $url_dir = ereg_replace("^https?://[a-zA-Z0-9_:~=&\?\.\-]+", "", $normal_url);
 
-    $filepath = DATA_FILE_PATH . "install.php";
+    $filepath = DATA_REALDIR . "install.php";
 
     $config_data =
     "<?php\n".

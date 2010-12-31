@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_FILE_PATH . "pages/admin/products/LC_Page_Admin_Products_Trackback.php");
+require_once(CLASS_REALDIR . "pages/admin/products/LC_Page_Admin_Products_Trackback.php");
 
 /**
  * トラックバック管理 のページクラス(拡張).

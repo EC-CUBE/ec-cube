@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_FILE_PATH . "batch/SC_Batch.php");
+require_once(CLASS_REALDIR . "batch/SC_Batch.php");
 
 /**
  * アップデート機能 のバッチクラス.
@@ -55,7 +55,7 @@ class SC_Batch_Update extends SC_Batch {
         $msg = '';
         $oldMask = umask(0);
         $bkupDistInfoArray = array(); //バックアップファイル用のdistinfoファイル内容
-        $bkupPath = DATA_FILE_PATH . 'downloads/backup/update_' . time() . '/';
+        $bkupPath = DATA_REALDIR . 'downloads/backup/update_' . time() . '/';
         $bkupPathFile = $bkupPath . 'files/';
         $this->mkdir_p($bkupPathFile . 'dummy');
 
@@ -218,13 +218,13 @@ class SC_Batch_Update extends SC_Batch {
     function mkdir_p($path){
         $path = dirname($path);
         
-        // HTML_FILE_PATH/DATA_FILE_PATHの判別
-        if (preg_match("@\Q".HTML_FILE_PATH."\E@", $path) > 0) {
-            $dir = str_replace("\\", "/", HTML_FILE_PATH);
-            $path = preg_replace("@\Q".HTML_FILE_PATH."\E@", "", $path);
-        } elseif (preg_match("@\Q".DATA_FILE_PATH."\E@", $path) > 0) {
-            $dir = str_replace("\\", "/", DATA_FILE_PATH);
-            $path = preg_replace("@\Q".DATA_FILE_PATH."\E@", "", $path);
+        // HTML_REALDIR/DATA_REALDIRの判別
+        if (preg_match("@\Q".HTML_REALDIR."\E@", $path) > 0) {
+            $dir = str_replace("\\", "/", HTML_REALDIR);
+            $path = preg_replace("@\Q".HTML_REALDIR."\E@", "", $path);
+        } elseif (preg_match("@\Q".DATA_REALDIR."\E@", $path) > 0) {
+            $dir = str_replace("\\", "/", DATA_REALDIR);
+            $path = preg_replace("@\Q".DATA_REALDIR."\E@", "", $path);
         } else {
             $dir = "";
         }
@@ -251,7 +251,7 @@ class SC_Batch_Update extends SC_Batch {
     }
 
     function printLog($msg) {
-        GC_Utils::gfPrintLog($msg, DATA_FILE_PATH . 'logs/ownersstore_batch_update.log');
+        GC_Utils::gfPrintLog($msg, DATA_REALDIR . 'logs/ownersstore_batch_update.log');
     }
 }
 ?>

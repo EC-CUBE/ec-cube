@@ -44,7 +44,7 @@ if(!empty($module_id) && is_numeric($module_id)) {
     $arrRet = $objQuery->select("module_code", "dtb_module", "module_id = ?", array($module_id));
 
     if (isset($arrRet[0]['module_code'])) {
-        $config_path = MODULE_FILE_PATH . $arrRet[0]['module_code'] . '/config.php';
+        $config_path = MODULE_REALDIR . $arrRet[0]['module_code'] . '/config.php';
 
         if (file_exists($config_path)) {
             require_once $config_path;

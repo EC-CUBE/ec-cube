@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_FILE_PATH . "pages/entry/LC_Page_Entry_EmailMobile.php");
+require_once(CLASS_REALDIR . "pages/entry/LC_Page_Entry_EmailMobile.php");
 
 /**
  * 空メール会員登録(モバイル) のページクラス(拡張).

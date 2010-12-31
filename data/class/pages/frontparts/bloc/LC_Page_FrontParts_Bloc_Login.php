@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_FILE_PATH . "pages/frontparts/bloc/LC_Page_FrontParts_Bloc.php");
+require_once(CLASS_REALDIR . "pages/frontparts/bloc/LC_Page_FrontParts_Bloc.php");
 
 /**
  * ログイン のページクラス.

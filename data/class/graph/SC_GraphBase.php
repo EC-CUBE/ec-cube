@@ -22,7 +22,7 @@
  */
 
 /** TTFフォントファイル */
-define("FONT_PATH", DATA_FILE_PATH . "fonts/wlmaru20044.ttf");
+define("FONT_PATH", DATA_REALDIR . "fonts/wlmaru20044.ttf");
 
 /** フォントサイズ */
 define("FONT_SIZE", 8);

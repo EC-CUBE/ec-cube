@@ -16,7 +16,7 @@ class SC_Plugin
 
     function __construct(){
         if (!defined(PLUGIN_PATH)) {
-            define('PLUGIN_PATH', USER_FILE_PATH . 'plugins/');
+            define('PLUGIN_PATH', USER_REALDIR . 'plugins/');
         }
         $this->init();
     }

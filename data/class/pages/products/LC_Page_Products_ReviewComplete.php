@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_FILE_PATH . "pages/LC_Page.php");
+require_once(CLASS_REALDIR . "pages/LC_Page.php");
 
 /**
  * お客様の声投稿完了 のページクラス.

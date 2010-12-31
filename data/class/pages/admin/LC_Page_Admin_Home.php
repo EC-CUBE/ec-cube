@@ -23,8 +23,8 @@
  */
 
 // {{{ requires
-require_once CLASS_FILE_PATH . "pages/admin/LC_Page_Admin.php";
-require_once DATA_FILE_PATH . 'module/Request.php';
+require_once CLASS_REALDIR . "pages/admin/LC_Page_Admin.php";
+require_once DATA_REALDIR . 'module/Request.php';
 
 /**
  * 管理画面ホーム のページクラス.

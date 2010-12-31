@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_FILE_PATH . "pages/LC_Page.php");
+require_once(CLASS_REALDIR . "pages/LC_Page.php");
 
 /**
  * トラックバック のページクラス.
@@ -121,7 +121,7 @@ class LC_Page_TrackBack extends LC_Page {
             $arrData["excerpt"] = trim(mb_convert_encoding($_GET["excerpt"], $afterEncode, $beforeEncode));
         }
 
-        $log_path = DATA_FILE_PATH . "logs/tb_result.log";
+        $log_path = DATA_REALDIR . "logs/tb_result.log";
         GC_Utils_Ex::gfPrintLog("request data start -----", $log_path);
         foreach($arrData as $key => $val) {
             GC_Utils_Ex::gfPrintLog( "\t" . $key . " => " . $val, $log_path);
@@ -218,7 +218,7 @@ class LC_Page_TrackBack extends LC_Page {
     function lfEntryTrackBack($arrData, &$objQuery) {
 
         // ログ
-        $log_path = DATA_FILE_PATH . "logs/tb_result.log";
+        $log_path = DATA_REALDIR . "logs/tb_result.log";
 
         // スパムフィルター
         if ($this->lfSpamFilter($arrData)) {

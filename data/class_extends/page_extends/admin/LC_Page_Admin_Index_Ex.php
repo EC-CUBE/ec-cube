@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_FILE_PATH . "pages/admin/LC_Page_Admin_Index.php");
+require_once(CLASS_REALDIR . "pages/admin/LC_Page_Admin_Index.php");
 
 /**
  * 管理者ログイン のページクラス(拡張).

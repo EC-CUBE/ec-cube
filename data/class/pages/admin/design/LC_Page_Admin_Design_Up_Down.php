@@ -22,9 +22,9 @@
  */
 
 // {{{ requires
-require_once(CLASS_FILE_PATH . "pages/admin/LC_Page_Admin.php");
-require_once(DATA_FILE_PATH. "module/Tar.php");
-require_once(CLASS_EX_FILE_PATH . "helper_extends/SC_Helper_FileManager_Ex.php");
+require_once(CLASS_REALDIR . "pages/admin/LC_Page_Admin.php");
+require_once(DATA_REALDIR. "module/Tar.php");
+require_once(CLASS_EX_REALDIR . "helper_extends/SC_Helper_FileManager_Ex.php");
 
 /**
  * テンプレートアップロード のページクラス.
@@ -146,8 +146,8 @@ class LC_Page_Admin_Design_Up_Down extends LC_Page_Admin {
 	 * @return object SC_UploadFileのインスタンス
 	 */
 	function lfInitUploadFile($objForm) {
-	    $pkg_dir = SMARTY_TEMPLATES_FILE_PATH . $objForm->getValue('template_code');
-	    $objUpFile = new SC_UploadFile(TEMPLATE_TEMP_FILE_PATH, $pkg_dir);
+	    $pkg_dir = SMARTY_TEMPLATES_REALDIR . $objForm->getValue('template_code');
+	    $objUpFile = new SC_UploadFile(TEMPLATE_TEMP_REALDIR, $pkg_dir);
 	    $objUpFile->addFile("テンプレートファイル", 'template_file', array(), TEMPLATE_SIZE, true, 0, 0, false);
 	
 	    return $objUpFile;
@@ -232,8 +232,8 @@ class LC_Page_Admin_Design_Up_Down extends LC_Page_Admin {
 	 */
 	function lfAddTemplates($objForm, $objUpFile) {
 	    $template_code = $objForm->getValue('template_code');
-	    $template_dir = SMARTY_TEMPLATES_FILE_PATH . $template_code;
-	    $compile_dir  = DATA_FILE_PATH . "Smarty/templates_c/" . $template_code;
+	    $template_dir = SMARTY_TEMPLATES_REALDIR . $template_code;
+	    $compile_dir  = DATA_REALDIR . "Smarty/templates_c/" . $template_code;
 	    // フォルダ作成
 	    if(!file_exists($template_dir)) {
 	    	mkdir($template_dir);
@@ -248,8 +248,8 @@ class LC_Page_Admin_Design_Up_Down extends LC_Page_Admin {
 	    // 解凍
 	    SC_Helper_FileManager::unpackFile($template_dir . "/" . $_FILES['template_file']['name']);
 	    // ユーザデータの下のファイルをコピーする
-        $from_dir = SMARTY_TEMPLATES_FILE_PATH . $template_code . "/_packages/";	    
-	    $to_dir = USER_FILE_PATH . "packages/" . $template_code . "/";
+        $from_dir = SMARTY_TEMPLATES_REALDIR . $template_code . "/_packages/";	    
+	    $to_dir = USER_REALDIR . "packages/" . $template_code . "/";
 	    SC_Utils::sfMakeDir($to_dir);
         SC_Utils::sfCopyDir($from_dir, $to_dir);
 	    
@@ -285,7 +285,7 @@ class LC_Page_Admin_Design_Up_Down extends LC_Page_Admin {
 	    );
 	
 	    foreach ($arrDirs as $dir) {
-	        $from = USER_FILE_PATH .  $dir;
+	        $from = USER_REALDIR .  $dir;
 	        SC_Utils::sfCopyDir($from, $to, '', true);
 	    }
 	}

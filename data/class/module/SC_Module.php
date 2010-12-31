@@ -22,8 +22,8 @@
  */
 
 // {{{ requires
-require_once CLASS_FILE_PATH . 'SC_Query.php';
-require_once CLASS_EX_FILE_PATH . 'db_extends/SC_DB_MasterData_Ex.php';
+require_once CLASS_REALDIR . 'SC_Query.php';
+require_once CLASS_EX_REALDIR . 'db_extends/SC_DB_MasterData_Ex.php';
 
 /**
  * モジュールデータ管理クラス.
@@ -120,7 +120,7 @@ class SC_Module {
      * @return string
      */
     function getBasePath() {
-        return MODULE_FILE_PATH . $this->getCode() . '/';
+        return MODULE_REALDIR . $this->getCode() . '/';
     }
 
     /**
@@ -250,7 +250,7 @@ class SC_Module {
      * @param string $suffix
      */
     function log($msg, $data = null, $suffix = '') {
-        $path = DATA_FILE_PATH . 'logs/' . $this->getCode() . "$suffix.log";
+        $path = DATA_REALDIR . 'logs/' . $this->getCode() . "$suffix.log";
         GC_Utils::gfPrintLog($msg, $path);
 
         if (!is_null($data)) {

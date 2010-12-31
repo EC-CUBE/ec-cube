@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_FILE_PATH . "pages/admin/customer/LC_Page_Admin_Customer.php");
+require_once(CLASS_REALDIR . "pages/admin/customer/LC_Page_Admin_Customer.php");
 
 /**
  * 顧客管理 のページクラス(拡張).

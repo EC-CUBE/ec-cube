@@ -44,7 +44,7 @@ $objPage->process($mode);
 
 function lfPageFactory($mode) {
     $prefix = 'LC_Page_Upgrade_';
-    $file   = CLASS_FILE_PATH . "pages/upgrade/${prefix}";
+    $file   = CLASS_REALDIR . "pages/upgrade/${prefix}";
     $class  = $prefix;
 
     switch ($mode) {

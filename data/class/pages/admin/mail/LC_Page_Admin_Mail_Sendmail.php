@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_FILE_PATH . "pages/admin/LC_Page_Admin.php");
+require_once(CLASS_REALDIR . "pages/admin/LC_Page_Admin.php");
 
 /**
  * メール配信履歴 のページクラス.
@@ -44,8 +44,8 @@ class LC_Page_Admin_Mail_Sendmail extends LC_Page_Admin {
      */
     function init() {
          // SC_SendMailの拡張
-        if (file_exists(MODULE_FILE_PATH . "mdl_speedmail/SC_SpeedMail.php")) {
-            require_once(MODULE_FILE_PATH . "mdl_speedmail/SC_SpeedMail.php");
+        if (file_exists(MODULE_REALDIR . "mdl_speedmail/SC_SpeedMail.php")) {
+            require_once(MODULE_REALDIR . "mdl_speedmail/SC_SpeedMail.php");
             // SpeedMail対応
             $this->objMail = new SC_SpeedMail();
         } else {

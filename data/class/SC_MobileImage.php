@@ -23,8 +23,8 @@
  * 端末の画面解像度にあわせて画像を変換する
  */
 
-define("MOBILE_IMAGE_INC_PATH", realpath(dirname( __FILE__)) . "/../include");
-require_once(MOBILE_IMAGE_INC_PATH . "/image_converter.inc");
+define("MOBILE_IMAGE_INC_REALDIR", realpath(dirname( __FILE__)) . "/../include/");
+require_once(MOBILE_IMAGE_INC_REALDIR . "image_converter.inc");
 
 /**
  * 画像変換クラス
@@ -51,7 +51,7 @@ class SC_MobileImage {
             $result = preg_match_all($pattern, $buffer, $images);
 
             // 端末の情報を取得する
-            $fp = fopen(MOBILE_IMAGE_INC_PATH . "/mobile_image_map_$carrier.csv", "r");
+            $fp = fopen(MOBILE_IMAGE_INC_REALDIR . "mobile_image_map_$carrier.csv", "r");
             while (($data = fgetcsv($fp, 1000, ",")) !== FALSE) {
                 if ($data[1] == $model || $data[1] == '*') {
                     $cacheSize     = $data[2];
@@ -91,7 +91,7 @@ class SC_MobileImage {
             // HTML中のIMGタグを変換後のファイルパスに置換する
             foreach ($images[1] as $key => $path) {
                 $realpath = html_entity_decode($path, ENT_QUOTES);
-                $realpath = preg_replace('|^' . URL_PATH . '|', HTML_FILE_PATH, $realpath);
+                $realpath = preg_replace('|^' . URL_PATH . '|', HTML_REALDIR, $realpath);
                 $converted = $imageConverter->execute($realpath);
                 if (isset($converted['outputImageName'])) {
                     $buffer = str_replace($path, MOBILE_IMAGE_URL . '/' . $converted['outputImageName'], $buffer);

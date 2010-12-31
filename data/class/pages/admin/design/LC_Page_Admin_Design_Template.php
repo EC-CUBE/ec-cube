@@ -22,9 +22,9 @@
  */
 
   // {{{ requires
-require_once(CLASS_FILE_PATH . "pages/admin/LC_Page_Admin.php");
-require_once(DATA_FILE_PATH . "module/Tar.php");
-require_once(CLASS_EX_FILE_PATH . "helper_extends/SC_Helper_FileManager_Ex.php");
+require_once(CLASS_REALDIR . "pages/admin/LC_Page_Admin.php");
+require_once(DATA_REALDIR . "module/Tar.php");
+require_once(CLASS_EX_REALDIR . "helper_extends/SC_Helper_FileManager_Ex.php");
 
 /**
  * テンプレート設定 のページクラス.
@@ -155,10 +155,10 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin {
                 $template_code = $objForm->getValue('template_code_temp');
                 // ユーザデータの下のファイルも保存する。
                 $from_dir = USER_TEMPLATE_PATH . $template_code . "/";
-                $to_dir = SMARTY_TEMPLATES_FILE_PATH . $template_code . "/_packages/";
+                $to_dir = SMARTY_TEMPLATES_REALDIR . $template_code . "/_packages/";
                 SC_Utils::sfMakeDir($to_dir);
                 SC_Utils::sfCopyDir($from_dir, $to_dir);
-                SC_Helper_FileManager::downloadArchiveFiles(SMARTY_TEMPLATES_FILE_PATH . $template_code);
+                SC_Helper_FileManager::downloadArchiveFiles(SMARTY_TEMPLATES_REALDIR . $template_code);
                 break;
 
             // プレビューボタン押下時
@@ -240,7 +240,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin {
      * common.cssの更新
      */
     function lfChangeCommonCss($template_code) {
-        $css_path = USER_FILE_PATH . "css/common.css";
+        $css_path = USER_REALDIR . "css/common.css";
         
         // ファイル内容取得
         $css_data = file_get_contents($css_path);
@@ -288,10 +288,10 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin {
         $objQuery = new SC_Query();
         $objQuery->delete('dtb_templates', 'template_code = ?', array($template_code));
         // テンプレート削除
-        $templates_dir = SMARTY_TEMPLATES_FILE_PATH. $template_code. "/";
+        $templates_dir = SMARTY_TEMPLATES_REALDIR. $template_code. "/";
         SC_Utils_Ex::sfDelFile($templates_dir);
         // コンパイル削除
-        $templates_c_dir = DATA_FILE_PATH. "Smarty/templates_c/". $template_code. "/";
+        $templates_c_dir = DATA_REALDIR. "Smarty/templates_c/". $template_code. "/";
         SC_Utils_Ex::sfDelFile($templates_c_dir);
         // ユーザーデータ削除
         $user_dir = USER_TEMPLATE_PATH. $template_code. "/";
@@ -332,10 +332,10 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin {
 
         // キャンペーン実行PHPをコピー
         $ret = $objFileManager->sfCreateFile(CAMPAIGN_PATH . $file);
-        copy(HTML_FILE_PATH . CAMPAIGN_TEMPLATE_DIR . "index.php", CAMPAIGN_PATH . $file . "/index.php");
-        copy(HTML_FILE_PATH . CAMPAIGN_TEMPLATE_DIR . "application.php", CAMPAIGN_PATH . $file . "/application.php");
-        copy(HTML_FILE_PATH . CAMPAIGN_TEMPLATE_DIR . "complete.php", CAMPAIGN_PATH . $file . "/complete.php");
-        copy(HTML_FILE_PATH . CAMPAIGN_TEMPLATE_DIR . "entry.php", CAMPAIGN_PATH . $file . "/entry.php");
+        copy(HTML_REALDIR . CAMPAIGN_TEMPLATE_DIR . "index.php", CAMPAIGN_PATH . $file . "/index.php");
+        copy(HTML_REALDIR . CAMPAIGN_TEMPLATE_DIR . "application.php", CAMPAIGN_PATH . $file . "/application.php");
+        copy(HTML_REALDIR . CAMPAIGN_TEMPLATE_DIR . "complete.php", CAMPAIGN_PATH . $file . "/complete.php");
+        copy(HTML_REALDIR . CAMPAIGN_TEMPLATE_DIR . "entry.php", CAMPAIGN_PATH . $file . "/entry.php");
 
         // デフォルトテンプレート作成(キャンペーン中)
         $header = $this->lfGetFileContents($default_active_dir."header.tpl");

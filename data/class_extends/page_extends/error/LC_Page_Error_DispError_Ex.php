@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_FILE_PATH . "pages/error/LC_Page_Error_DispError.php");
+require_once(CLASS_REALDIR . "pages/error/LC_Page_Error_DispError.php");
 
 /**
  * エラーのページクラス(拡張).

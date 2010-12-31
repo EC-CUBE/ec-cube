@@ -23,7 +23,7 @@
 
 $SC_VIEW_PHP_DIR = realpath(dirname(__FILE__));
 require_once($SC_VIEW_PHP_DIR . "/../module/Smarty/libs/Smarty.class.php");
-//require_once(CLASS_EX_FILE_PATH . "util_extends/SC_Utils_Ex.php");
+//require_once(CLASS_EX_REALDIR . "util_extends/SC_Utils_Ex.php");
 
 class SC_View {
 
@@ -198,8 +198,8 @@ class SC_View {
 class SC_AdminView extends SC_View{
     function SC_AdminView() {
         parent::SC_View(false);
-        $this->_smarty->template_dir = TEMPLATE_ADMIN_FILE_PATH;
-        $this->_smarty->compile_dir = COMPILE_ADMIN_FILE_PATH;
+        $this->_smarty->template_dir = TEMPLATE_ADMIN_REALDIR;
+        $this->_smarty->compile_dir = COMPILE_ADMIN_REALDIR;
         $this->assign('TPL_DIR_DEFAULT', URL_PATH . USER_DIR . USER_PACKAGE_DIR . DEFAULT_TEMPLATE_NAME . '/');
         $this->assign('TPL_DIR', URL_PATH . USER_DIR . USER_PACKAGE_DIR . ADMIN_DIR);
         $this->initpath();
@@ -243,7 +243,7 @@ class SC_MobileView extends SC_SiteView {
     function SC_MobileView($setPrevURL = true) {
         parent::SC_SiteView($setPrevURL);
         $this->_smarty->template_dir = MOBILE_TEMPLATE_DIR;
-        $this->_smarty->compile_dir = MOBILE_COMPILE_FILE_PATH;
+        $this->_smarty->compile_dir = MOBILE_COMPILE_REALDIR;
         $this->assignTemplatePath(DEVICE_TYPE_MOBILE);
     }
 }
@@ -252,7 +252,7 @@ class SC_SmartphoneView extends SC_SiteView {
     function SC_SmartphoneView($setPrevURL = true) {
         parent::SC_SiteView($setPrevURL);
         $this->_smarty->template_dir = SMARTPHONE_TEMPLATE_DIR;
-        $this->_smarty->compile_dir = SMARTPHONE_COMPILE_FILE_PATH;
+        $this->_smarty->compile_dir = SMARTPHONE_COMPILE_REALDIR;
         $this->assignTemplatePath(DEVICE_TYPE_SMARTPHONE);
     }
 }

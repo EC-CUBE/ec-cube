@@ -22,10 +22,10 @@
  */
 
 // {{{ requires
-require_once(CLASS_FILE_PATH . "pages/LC_Page.php");
+require_once(CLASS_REALDIR . "pages/LC_Page.php");
 
-if (file_exists(MODULE_FILE_PATH . "mdl_gmopg/inc/function.php")) {
-    require_once(MODULE_FILE_PATH . "mdl_gmopg/inc/function.php");
+if (file_exists(MODULE_REALDIR . "mdl_gmopg/inc/function.php")) {
+    require_once(MODULE_REALDIR . "mdl_gmopg/inc/function.php");
 }
 /**
  * 商品詳細 のページクラス.
@@ -119,7 +119,7 @@ class LC_Page_Products_Detail extends LC_Page {
         $this->objFormParam->setParam($_POST);
 
         // ファイル管理クラス
-        $this->objUpFile = new SC_UploadFile(IMAGE_TEMP_FILE_PATH, IMAGE_SAVE_FILE_PATH);
+        $this->objUpFile = new SC_UploadFile(IMAGE_TEMP_REALDIR, IMAGE_SAVE_REALDIR);
         // ファイル情報の初期化
         $this->lfInitFile();
 
@@ -306,7 +306,7 @@ class LC_Page_Products_Detail extends LC_Page {
         $this->objFormParam->setParam($_POST);
 
         // ファイル管理クラス
-        $this->objUpFile = new SC_UploadFile(IMAGE_TEMP_FILE_PATH, IMAGE_SAVE_FILE_PATH);
+        $this->objUpFile = new SC_UploadFile(IMAGE_TEMP_REALDIR, IMAGE_SAVE_REALDIR);
         // ファイル情報の初期化
         $this->lfInitFile();
 

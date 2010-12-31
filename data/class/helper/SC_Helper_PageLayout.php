@@ -136,7 +136,7 @@ __EOF__;
                 // 指定された箇所と同じデータだけを取得する
                 if ($target_id == $val['target_id'] ) {
                     if ($val['php_path'] != '') {
-                        $arrNavi[$key]['php_path'] = HTML_FILE_PATH . $val['php_path'];
+                        $arrNavi[$key]['php_path'] = HTML_REALDIR . $val['php_path'];
                     } else {
                         $arrNavi[$key]['tpl_path'] = $this->getTemplatePath($device_type_id) . BLOC_DIR . $val['tpl_path'];
                     }
@@ -201,8 +201,8 @@ __EOF__;
      */
     function lfDelFile($arrData) {
         // ファイルディレクトリ取得
-        $del_php = HTML_FILE_PATH . $arrData['php_dir'] . $arrData['filename'] . ".php";
-        $del_tpl = HTML_FILE_PATH . $arrData['tpl_dir'] . $arrData['filename'] . ".tpl";
+        $del_php = HTML_REALDIR . $arrData['php_dir'] . $arrData['filename'] . ".php";
+        $del_tpl = HTML_REALDIR . $arrData['tpl_dir'] . $arrData['filename'] . ".tpl";
 
         // phpファイルの削除
         if (file_exists($del_php)) {
@@ -247,20 +247,20 @@ __EOF__;
         switch ($device_type_id) {
         case DEVICE_TYPE_MOBILE:
             $dir = MOBILE_TEMPLATE_DIR;
-            $userPath = HTML_FILE_PATH . MOBILE_DIR . USER_DIR;
+            $userPath = HTML_REALDIR . MOBILE_DIR . USER_DIR;
             $templateName = MOBILE_TEMPLATE_NAME;
             break;
 
         case DEVICE_TYPE_SMARTPHONE:
             $dir = SMARTPHONE_TEMPLATE_DIR;
-            $userPath = HTML_FILE_PATH . SMARTPHONE_DIR . USER_DIR;
+            $userPath = HTML_REALDIR . SMARTPHONE_DIR . USER_DIR;
             $templateName = SMARTPHONE_TEMPLATE_NAME;
             break;
 
         case DEVICE_TYPE_PC:
         default:
             $dir = TEMPLATE_DIR;
-            $userPath = USER_FILE_PATH;
+            $userPath = USER_REALDIR;
             $templateName = TEMPLATE_NAME;
         }
         if ($isUser) {
@@ -278,17 +278,17 @@ __EOF__;
     function getUserPath($device_type_id = DEVICE_TYPE_PC) {
         switch ($device_type_id) {
         case DEVICE_TYPE_MOBILE:
-            return HTML_FILE_PATH . MOBILE_DIR . USER_DIR;
+            return HTML_REALDIR . MOBILE_DIR . USER_DIR;
             break;
 
         case DEVICE_TYPE_SMARTPHONE:
-            return HTML_FILE_PATH . SMARTPHONE_DIR . USER_DIR;
+            return HTML_REALDIR . SMARTPHONE_DIR . USER_DIR;
             break;
 
         case DEVICE_TYPE_PC:
         default:
         }
-        return USER_FILE_PATH;
+        return USER_REALDIR;
     }
 
     /**

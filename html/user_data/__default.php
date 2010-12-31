@@ -1,6 +1,6 @@
 <?php
 exit; // Don't rewrite. This line is rewritten by EC-CUBE.
-require_once CLASS_FILE_PATH . 'pages/LC_Page.php';
+require_once CLASS_REALDIR . 'pages/LC_Page.php';
 
 /**
  * ユーザーカスタマイズ用のページクラス

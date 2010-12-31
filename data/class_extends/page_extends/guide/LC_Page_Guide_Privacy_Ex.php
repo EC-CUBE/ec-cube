@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_FILE_PATH . "pages/guide/LC_Page_Guide_Privacy.php");
+require_once(CLASS_REALDIR . "pages/guide/LC_Page_Guide_Privacy.php");
 
 /**
  * プライバシーポリシーついて のページクラス(拡張).

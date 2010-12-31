@@ -85,7 +85,7 @@ class SC_Utils {
                 exit;
             }
         }
-        $path = HTML_FILE_PATH . "install/index.php";
+        $path = HTML_REALDIR . "install/index.php";
         if(file_exists($path)) {
             SC_Utils::sfErrorHeader("&gt;&gt; /install/index.phpは、インストール完了後にファイルを削除してください。");
         }
@@ -172,7 +172,7 @@ class SC_Utils {
     /* エラーページの表示 */
     function sfDispError($type) {
 
-        require_once(CLASS_EX_FILE_PATH . "page_extends/error/LC_Page_Error_DispError_Ex.php");
+        require_once(CLASS_EX_REALDIR . "page_extends/error/LC_Page_Error_DispError_Ex.php");
 
         $objPage = new LC_Page_Error_DispError_Ex();
         register_shutdown_function(array($objPage, "destroy"));
@@ -186,7 +186,7 @@ class SC_Utils {
     function sfDispSiteError($type, $objSiteSess = "", $return_top = false, $err_msg = "") {
         global $objCampaignSess;
 
-        require_once(CLASS_EX_FILE_PATH . "page_extends/error/LC_Page_Error_Ex.php");
+        require_once(CLASS_EX_REALDIR . "page_extends/error/LC_Page_Error_Ex.php");
 
         $objPage = new LC_Page_Error_Ex();
         register_shutdown_function(array($objPage, "destroy"));
@@ -207,7 +207,7 @@ class SC_Utils {
      * @return void
      */
     function sfDispException($debugMsg = null) {
-        require_once(CLASS_EX_FILE_PATH . "page_extends/error/LC_Page_Error_SystemError_Ex.php");
+        require_once(CLASS_EX_REALDIR . "page_extends/error/LC_Page_Error_SystemError_Ex.php");
 
         $objPage = new LC_Page_Error_SystemError_Ex();
         register_shutdown_function(array($objPage, "destroy"));
@@ -1476,7 +1476,7 @@ exit;
 
     // 指定したURLに対してPOSTでデータを送信する
     function sfSendPostData($url, $arrData, $arrOkCode = array()){
-        require_once(DATA_FILE_PATH . "module/Request.php");
+        require_once(DATA_REALDIR . "module/Request.php");
 
         // 送信インスタンス生成
         $req = new HTTP_Request($url);

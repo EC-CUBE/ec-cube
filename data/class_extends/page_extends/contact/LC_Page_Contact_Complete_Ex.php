@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_FILE_PATH . "pages/contact/LC_Page_Contact_Complete.php");
+require_once(CLASS_REALDIR . "pages/contact/LC_Page_Contact_Complete.php");
 
 /**
  * お問い合わせ(完了ページ) のページクラス(拡張).

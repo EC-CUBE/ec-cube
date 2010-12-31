@@ -22,11 +22,11 @@
  */
 
 // {{{ requires
-require_once(CLASS_FILE_PATH . "pages/admin/LC_Page_Admin.php");
+require_once(CLASS_REALDIR . "pages/admin/LC_Page_Admin.php");
 
 /* ペイジェント決済モジュール連携用 */
-if (file_exists(MODULE_FILE_PATH . 'mdl_paygent/include.php') === TRUE) {
-    require_once(MODULE_FILE_PATH . 'mdl_paygent/include.php');
+if (file_exists(MODULE_REALDIR . 'mdl_paygent/include.php') === TRUE) {
+    require_once(MODULE_REALDIR . 'mdl_paygent/include.php');
 }
 
 /**
@@ -269,7 +269,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin {
                     switch($_POST['mode']) {
                         case 'csv':
 
-                            require_once(CLASS_EX_FILE_PATH . "helper_extends/SC_Helper_CSV_Ex.php");
+                            require_once(CLASS_EX_REALDIR . "helper_extends/SC_Helper_CSV_Ex.php");
                             $objCSV = new SC_Helper_CSV_Ex();
                             // オプションの指定
                             $option = "ORDER BY $order";

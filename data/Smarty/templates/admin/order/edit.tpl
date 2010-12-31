@@ -69,25 +69,25 @@
 
 <div id="order" class="contents-main">
     <!--{* ペイジェントモジュール連携用 *}-->
-    <!--{assign var=path value=`$smarty.const.MODULE_FILE_PATH`mdl_paygent/paygent_order.tpl}-->
+    <!--{assign var=path value=`$smarty.const.MODULE_REALDIR`mdl_paygent/paygent_order.tpl}-->
     <!--{if file_exists($path)}-->
         <!--{include file=$path}-->
     <!--{/if}-->
 
                         <!--{* GMOPG連携用 *}-->
-                        <!--{assign var=path value=`$smarty.const.MODULE_FILE_PATH`mdl_gmopg/templates/order_edit.tpl}-->
+                        <!--{assign var=path value=`$smarty.const.MODULE_REALDIR`mdl_gmopg/templates/order_edit.tpl}-->
                         <!--{if file_exists($path)}-->
                             <!--{include file=$path}-->
                         <!--{/if}-->
 
                         <!--{* SPS連携用 *}-->
-                        <!--{assign var=sps_path value=`$smarty.const.MODULE_FILE_PATH`mdl_sps/templates/sps_request.tpl}-->
+                        <!--{assign var=sps_path value=`$smarty.const.MODULE_REALDIR`mdl_sps/templates/sps_request.tpl}-->
                         <!--{if file_exists($sps_path) && $paymentType[0].module_code == $smarty.const.MDL_SPS_CODE}-->
                             <!--{include file=$sps_path}-->
                         <!--{/if}-->
 
                         <!--{* ペイジェントモジュール連携用 *}-->
-                        <!--{assign var=path value=`$smarty.const.MODULE_FILE_PATH`mdl_paygent/paygent_order.tpl}-->
+                        <!--{assign var=path value=`$smarty.const.MODULE_REALDIR`mdl_paygent/paygent_order.tpl}-->
                         <!--{if file_exists($path)}-->
                             <!--{include file=$path}-->
                         <!--{/if}-->

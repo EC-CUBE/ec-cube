@@ -22,7 +22,7 @@
  */
 // {{{ requires
 require_once("../require.php");
-require_once(CLASS_EX_FILE_PATH . "page_extends/contact/LC_Page_Contact_Ex.php");
+require_once(CLASS_EX_REALDIR . "page_extends/contact/LC_Page_Contact_Ex.php");
 
 // }}}
 // {{{ generate page

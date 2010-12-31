@@ -83,48 +83,48 @@
 <ul id="navi">
     <li id="navi-basis" class="<!--{if $tpl_mainno eq "basis"}-->on<!--{/if}-->">
         <a><span>基本情報管理</span></a>
-        <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`basis/subnavi.tpl"}-->
+        <!--{include file="`$smarty.const.TEMPLATE_ADMIN_REALDIR`basis/subnavi.tpl"}-->
     </li>
     <li id="navi-products" class="<!--{if $tpl_mainno eq "products"}-->on<!--{/if}-->">
         <a><span>商品管理</span></a>
-        <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`products/subnavi.tpl"}-->
+        <!--{include file="`$smarty.const.TEMPLATE_ADMIN_REALDIR`products/subnavi.tpl"}-->
     </li>
     <li id="navi-customer" class="<!--{if $tpl_mainno eq "customer"}-->on<!--{/if}-->">
         <a><span>顧客管理</span></a>
-        <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`customer/subnavi.tpl"}-->
+        <!--{include file="`$smarty.const.TEMPLATE_ADMIN_REALDIR`customer/subnavi.tpl"}-->
     </li>
     <li id="navi-order" class="<!--{if $tpl_mainno eq "order"}-->on<!--{/if}-->">
         <a><span>受注管理</span></a>
-        <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`order/subnavi.tpl"}-->
+        <!--{include file="`$smarty.const.TEMPLATE_ADMIN_REALDIR`order/subnavi.tpl"}-->
     </li>
     <li id="navi-total" class="<!--{if $tpl_mainno eq "total"}-->on<!--{/if}-->">
         <a><span>売上集計</span></a>
-        <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`total/subnavi.tpl"}-->
+        <!--{include file="`$smarty.const.TEMPLATE_ADMIN_REALDIR`total/subnavi.tpl"}-->
     </li>
     <li id="navi-mail" class="<!--{if $tpl_mainno eq "mail"}-->on<!--{/if}-->">
         <a><span>メルマガ管理</span></a>
-        <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`mail/subnavi.tpl"}-->
+        <!--{include file="`$smarty.const.TEMPLATE_ADMIN_REALDIR`mail/subnavi.tpl"}-->
     </li>
     <li id="navi-contents" class="<!--{if $tpl_mainno eq "contents"}-->on<!--{/if}-->">
         <a><span>コンテンツ管理</span></a>
-        <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`contents/subnavi.tpl"}-->
+        <!--{include file="`$smarty.const.TEMPLATE_ADMIN_REALDIR`contents/subnavi.tpl"}-->
     </li>
     <li id="navi-design" class="<!--{if $tpl_mainno eq "design"}-->on<!--{/if}-->">
         <a><span>デザイン管理</span></a>
-        <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`design/subnavi.tpl"}-->
+        <!--{include file="`$smarty.const.TEMPLATE_ADMIN_REALDIR`design/subnavi.tpl"}-->
     </li>
     <li id="navi-system" class="<!--{if $tpl_mainno eq "system"}-->on<!--{/if}-->">
         <a><span>システム設定</span></a>
-        <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`system/subnavi.tpl"}-->
+        <!--{include file="`$smarty.const.TEMPLATE_ADMIN_REALDIR`system/subnavi.tpl"}-->
     </li>
     <li id="navi-ownersstore" class="<!--{if $tpl_mainno eq "ownersstore"}-->on<!--{/if}-->">
         <a><span>OWNERS STORE</span></a>
-        <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`ownersstore/subnavi.tpl"}-->
+        <!--{include file="`$smarty.const.TEMPLATE_ADMIN_REALDIR`ownersstore/subnavi.tpl"}-->
     </li>
     <!--{if "DEBUG_LOAD_PLUGIN"|defined && $smarty.const.DEBUG_LOAD_PLUGIN}-->
         <li id="navi-plugin" class="<!--{if $tpl_mainno eq "plugin"}-->on<!--{/if}-->">
             <a><span>プラグイン</span></a>
-            <!--{include file="`$smarty.const.TEMPLATE_ADMIN_DIR`plugin/subnavi.tpl"}-->
+            <!--{include file="`$smarty.const.TEMPLATE_ADMIN_REALDIR`plugin/subnavi.tpl"}-->
         </li>
     <!--{/if}-->
 </ul>

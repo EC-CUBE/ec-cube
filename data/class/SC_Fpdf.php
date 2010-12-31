@@ -27,9 +27,9 @@
  *----------------------------------------------------------------------
  */
 
-require(DATA_FILE_PATH . 'module/fpdf/fpdf.php');
-require(DATA_FILE_PATH . 'module/fpdf/japanese.php');
-define('PDF_TEMPLATE_DIR', TEMPLATE_ADMIN_DIR . 'pdf/');
+require(DATA_REALDIR . 'module/fpdf/fpdf.php');
+require(DATA_REALDIR . 'module/fpdf/japanese.php');
+define('PDF_TEMPLATE_DIR', TEMPLATE_ADMIN_REALDIR . 'pdf/');
 
 class SC_Fpdf {
     function SC_Fpdf($download, $title, $tpl_pdf = 'nouhinsyo1.pdf') {

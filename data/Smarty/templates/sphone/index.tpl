@@ -43,13 +43,13 @@
 <!--{* topbox *}--></div>
 
 <!--{* 新着情報 *}-->
-<!--{include_php file=`$smarty.const.SMARTPHONE_HTML_FILE_PATH`/frontparts/bloc/news.php}-->
+<!--{include_php file=`$smarty.const.SMARTPHONE_HTML_REALDIR`/frontparts/bloc/news.php}-->
 
 <!--{* ログイン *}-->
-<!--{include_php file=`$smarty.const.SMARTPHONE_HTML_FILE_PATH`/frontparts/bloc/login.php}-->
+<!--{include_php file=`$smarty.const.SMARTPHONE_HTML_REALDIR`/frontparts/bloc/login.php}-->
 
 <!--{* おすすめ商品 *}-->
-<!--{include_php file=`$smarty.const.SMARTPHONE_HTML_FILE_PATH`/frontparts/bloc/best5.php}-->
+<!--{include_php file=`$smarty.const.SMARTPHONE_HTML_REALDIR`/frontparts/bloc/best5.php}-->
 
 <!-- ▼メニュー ここから -->
-<!--{include_php file=`$smarty.const.SMARTPHONE_HTML_FILE_PATH`/frontparts/bloc/category.php}-->
+<!--{include_php file=`$smarty.const.SMARTPHONE_HTML_REALDIR`/frontparts/bloc/category.php}-->

@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_FILE_PATH . "pages/admin/basis/LC_Page_Admin_Basis_Seo.php");
+require_once(CLASS_REALDIR . "pages/admin/basis/LC_Page_Admin_Basis_Seo.php");
 
 /**
  * SEO管理 のページクラス(拡張).

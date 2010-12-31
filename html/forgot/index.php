@@ -23,7 +23,7 @@
 
 // {{{ requires
 require_once("../require.php");
-require_once(CLASS_EX_FILE_PATH . "page_extends/forgot/LC_Page_Forgot_Ex.php");
+require_once(CLASS_EX_REALDIR . "page_extends/forgot/LC_Page_Forgot_Ex.php");
 
 // }}}
 // {{{ generate page

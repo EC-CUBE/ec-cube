@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_FILE_PATH . "pages/mypage/LC_Page_Mypage_Favorite.php");
+require_once(CLASS_REALDIR . "pages/mypage/LC_Page_Mypage_Favorite.php");
 
 /**
  * 購入履歴 のページクラス(拡張).

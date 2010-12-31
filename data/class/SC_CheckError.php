@@ -631,7 +631,7 @@ class SC_CheckError {
         if($value[2] != "") {
             $dir = $value[2];
         } else {
-            $dir = IMAGE_SAVE_FILE_PATH;
+            $dir = IMAGE_SAVE_REALDIR;
         }
 
         $path = $dir . "/" . $this->arrParam[$value[1]];

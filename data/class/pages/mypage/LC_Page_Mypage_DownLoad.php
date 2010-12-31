@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 // {{{ requires
-require_once(CLASS_FILE_PATH . "pages/LC_Page.php");
+require_once(CLASS_REALDIR . "pages/LC_Page.php");
 
 /**
  * ダウンロード商品ダウンロード のページクラス.
@@ -102,7 +102,7 @@ class LC_Page_Mypage_DownLoad extends LC_Page {
             SC_Utils_Ex::sfDispSiteError(DOWNFILE_NOT_FOUND,"",true);
         }
         //ファイルそのものが無い場合もとりあえずNG
-        $realpath = DOWN_SAVE_FILE_PATH . $arrForm["down_realfilename"];
+        $realpath = DOWN_SAVE_REALDIR . $arrForm["down_realfilename"];
         if (!file_exists($realpath)){
             SC_Utils_Ex::sfDispSiteError(DOWNFILE_NOT_FOUND,"",true);
         }

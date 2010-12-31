@@ -22,8 +22,8 @@
  */
 
 // {{{ requires
-require_once CLASS_FILE_PATH . 'pages/upgrade/LC_Page_Upgrade_Base.php';
-require_once DATA_FILE_PATH . 'module/Tar.php';
+require_once CLASS_REALDIR . 'pages/upgrade/LC_Page_Upgrade_Base.php';
+require_once DATA_REALDIR . 'module/Tar.php';
 
 /**
  * オーナーズストアからダウンロードデータを取得する.
@@ -163,7 +163,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
         if ($objRet->status === OSTORE_STATUS_SUCCESS) {
             $objLog->log('* save file start');
             $time = time();
-            $dir  = DATA_FILE_PATH . 'downloads/tmp/';
+            $dir  = DATA_REALDIR . 'downloads/tmp/';
             $filename = $time . '.tar.gz';
 
             $data = base64_decode($objRet->data->dl_file);
@@ -194,7 +194,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
             $tar->extract($exract_dir);
 
             $objLog->log("* copy batch start");
-            @include_once CLASS_FILE_PATH . 'batch/SC_Batch_Update.php';
+            @include_once CLASS_REALDIR . 'batch/SC_Batch_Update.php';
             $objBatch = new SC_Batch_Update();
             $arrCopyLog = $objBatch->execute($exract_dir);
 
@@ -381,7 +381,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
      * LC_Update_Updater::execute()で処理を実行する.
      */
     function fileExecute($productCode) {
-        $file = DATA_FILE_PATH . 'downloads/update/' . $productCode . '_update.php';
+        $file = DATA_REALDIR . 'downloads/update/' . $productCode . '_update.php';
         if (file_exists($file)) {
             @include_once $file;
             if (class_exists('LC_Update_Updater')) {

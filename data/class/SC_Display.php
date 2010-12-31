@@ -49,7 +49,7 @@ class SC_Display{
      */
 
     function SC_Display($hasPrevURL = true, $autoGenerateHttpHeaders = true) {
-        require_once(CLASS_EX_FILE_PATH . "SC_Response_Ex.php");
+        require_once(CLASS_EX_REALDIR . "SC_Response_Ex.php");
         $this->response = new SC_Response_Ex();
         $this->autoSet = $autoGenerateHttpHeaders;
         if ($hasPrevURL) {

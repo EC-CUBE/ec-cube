@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_FILE_PATH . "pages/preview/LC_Page_Preview.php");
+require_once(CLASS_REALDIR . "pages/preview/LC_Page_Preview.php");
 
 /**
  * プレビュー のページクラス(拡張).

@@ -21,15 +21,15 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-if (!defined("DATA_FILE_PATH")) {
-    define("DATA_FILE_PATH", HTML_FILE_PATH . HTML2DATA_DIR);
+if (!defined("DATA_REALDIR")) {
+    define("DATA_REALDIR", HTML_REALDIR . HTML2DATA_DIR);
 }
 
 // アプリケーション初期化処理
-require_once(DATA_FILE_PATH . "app_initial.php");
+require_once(DATA_REALDIR . "app_initial.php");
 
 // 各種クラス読み込み
-require_once(DATA_FILE_PATH . "require_classes.php");
+require_once(DATA_REALDIR . "require_classes.php");
 
 // インストール中で無い場合、
 if (!SC_Utils_Ex::sfIsInstallFunction()) {
@@ -37,15 +37,15 @@ if (!SC_Utils_Ex::sfIsInstallFunction()) {
     SC_Utils_Ex::sfInitInstall();
 
     // セッションハンドラ開始
-    require_once CLASS_EX_FILE_PATH . 'helper_extends/SC_Helper_Session_Ex.php';
+    require_once CLASS_EX_REALDIR . 'helper_extends/SC_Helper_Session_Ex.php';
     $objSession = new SC_Helper_Session_Ex();
 
     // セッション初期化・開始
-    require_once CLASS_FILE_PATH . 'session/SC_SessionFactory.php';
+    require_once CLASS_REALDIR . 'session/SC_SessionFactory.php';
     $sessionFactory = SC_SessionFactory::getInstance();
     $sessionFactory->initSession();
 
     // プラグインを読み込む
-    //require_once(DATA_FILE_PATH . 'require_plugin.php');
+    //require_once(DATA_REALDIR . 'require_plugin.php');
 }
 ?>

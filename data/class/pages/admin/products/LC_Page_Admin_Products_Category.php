@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_FILE_PATH . "pages/admin/LC_Page_Admin.php");
+require_once(CLASS_REALDIR . "pages/admin/LC_Page_Admin.php");
 
 /**
  * カテゴリ管理 のページクラス.
@@ -237,7 +237,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin {
         case 'tree':
             break;
         case 'csv':
-            require_once(CLASS_EX_FILE_PATH . "helper_extends/SC_Helper_CSV_Ex.php");
+            require_once(CLASS_EX_REALDIR . "helper_extends/SC_Helper_CSV_Ex.php");
 
             $objCSV = new SC_Helper_CSV_Ex();
 

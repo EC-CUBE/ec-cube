@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_FILE_PATH . "util/GC_Utils.php");
+require_once(CLASS_REALDIR . "util/GC_Utils.php");
 
 /**
  * 各種ユーティリティクラス(拡張).

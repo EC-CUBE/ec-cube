@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_FILE_PATH . "pages/mypage/LC_Page_Mypage_Login.php");
+require_once(CLASS_REALDIR . "pages/mypage/LC_Page_Mypage_Login.php");
 
 /**
  * Myページログイン のページクラス(拡張).

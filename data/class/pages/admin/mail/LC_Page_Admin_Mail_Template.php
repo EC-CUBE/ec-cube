@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_FILE_PATH . "pages/admin/LC_Page_Admin.php");
+require_once(CLASS_REALDIR . "pages/admin/LC_Page_Admin.php");
 
 /**
  * メールテンプレート設定 のページクラス.
@@ -84,7 +84,7 @@ class LC_Page_Admin_Mail_Template extends LC_Page_Admin {
             $sql = "SELECT charge_image FROM dtb_mailmaga_template WHERE template_id = ?";
             $result = $objQuery->getOne($sql, array($_GET["id"]));
             if (strlen($result) > 0) {
-                @unlink(IMAGE_SAVE_FILE_PATH. $result);
+                @unlink(IMAGE_SAVE_REALDIR. $result);
             }
 
             // 登録削除

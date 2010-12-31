@@ -22,8 +22,8 @@
  */
 
 // {{{ requires
-require_once(CLASS_FILE_PATH . "pages/admin/LC_Page_Admin.php");
-require_once(CLASS_FILE_PATH . "SC_Fpdf.php");
+require_once(CLASS_REALDIR . "pages/admin/LC_Page_Admin.php");
+require_once(CLASS_REALDIR . "SC_Fpdf.php");
 
 /**
  * 帳票出力 のページクラス.

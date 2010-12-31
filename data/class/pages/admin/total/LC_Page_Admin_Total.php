@@ -22,11 +22,11 @@
  */
 
 // {{{ requires
-require_once(CLASS_FILE_PATH . "pages/admin/LC_Page_Admin.php");
-require_once(CLASS_EX_FILE_PATH . "batch_extends/SC_Batch_Daily_Ex.php");
-require_once(CLASS_FILE_PATH . "graph/SC_GraphPie.php");
-require_once(CLASS_FILE_PATH . "graph/SC_GraphLine.php");
-require_once(CLASS_FILE_PATH . "graph/SC_GraphBar.php");
+require_once(CLASS_REALDIR . "pages/admin/LC_Page_Admin.php");
+require_once(CLASS_EX_REALDIR . "batch_extends/SC_Batch_Daily_Ex.php");
+require_once(CLASS_REALDIR . "graph/SC_GraphPie.php");
+require_once(CLASS_REALDIR . "graph/SC_GraphLine.php");
+require_once(CLASS_REALDIR . "graph/SC_GraphBar.php");
 
 /**
  * 売上集計 のページクラス.
@@ -383,7 +383,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin {
             // 一時ファイル名の取得
             $pngname = $this->lfGetGraphPng($type);
 
-            $path = GRAPH_FILE_PATH . $pngname;
+            $path = GRAPH_REALDIR . $pngname;
 
             // ラベル表示インターバルを求める
             $interval = intval(count($arrList) / 20);
@@ -440,7 +440,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin {
 
             // 一時ファイル名の取得
             $pngname = $this->lfGetGraphPng($type);
-            $path = GRAPH_FILE_PATH . $pngname;
+            $path = GRAPH_REALDIR . $pngname;
 
             $objGraphPie = new SC_GraphPie();
 
@@ -488,7 +488,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin {
 
             // 一時ファイル名の取得
             $pngname = $this->lfGetGraphPng($type);
-            $path = GRAPH_FILE_PATH . $pngname;
+            $path = GRAPH_REALDIR . $pngname;
 
             $objGraphBar = new SC_GraphBar();
 

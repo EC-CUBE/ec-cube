@@ -22,7 +22,7 @@
 <body>
 <!--{* A8タグ表示用 *}-->
 <!--{if "sfPrintA8Tag"|function_exists === TRUE}-->
-    <!--{include file=`$smarty.const.MODULE_FILE_PATH`mdl_a8/print_a8_tag.tpl}-->
+    <!--{include file=`$smarty.const.MODULE_REALDIR`mdl_a8/print_a8_tag.tpl}-->
 <!--{/if}-->
 
 <!--{$GLOBAL_ERR}-->

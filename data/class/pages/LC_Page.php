@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(DATA_FILE_PATH . 'module/Net/URL.php');
+require_once(DATA_REALDIR . 'module/Net/URL.php');
 
 /**
  * Web Page を制御する基底クラス
@@ -341,7 +341,7 @@ exit;
     function getRootPath($path) {
         // Windowsの場合は, ディレクトリの区切り文字を\から/に変換する
         $path = str_replace('\\', '/', $path);
-        $htmlPath = str_replace('\\', '/', HTML_FILE_PATH);
+        $htmlPath = str_replace('\\', '/', HTML_REALDIR);
         
         // PHP 5.1 対策 ( http://xoops.ec-cube.net/modules/newbb/viewtopic.php?topic_id=4277&forum=9 )
         if (strlen($path) == 0) {
@@ -362,7 +362,7 @@ exit;
             $realPath .= '/';
         }
         
-        // HTML_FILE_PATH を削除した文字列を取得.
+        // HTML_REALDIR を削除した文字列を取得.
         $rootPath = str_replace($htmlPath, '', $realPath);
         $rootPath = ltrim($rootPath, '/');
 

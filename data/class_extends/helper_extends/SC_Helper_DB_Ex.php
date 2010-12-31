@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_FILE_PATH . "helper/SC_Helper_DB.php");
+require_once(CLASS_REALDIR . "helper/SC_Helper_DB.php");
 
 /**
  * DB関連のヘルパークラス(拡張).
