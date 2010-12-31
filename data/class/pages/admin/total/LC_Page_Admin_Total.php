@@ -52,7 +52,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin {
         $this->tpl_mainpage = 'total/index.tpl';
         $this->tpl_subnavi = 'total/subnavi.tpl';
         $this->tpl_graphsubtitle = 'total/subtitle.tpl';
-        $this->tpl_titleimage = URL_DIR.'img/title/title_sale.jpg';
+        $this->tpl_titleimage = URL_PATH.'img/title/title_sale.jpg';
         $this->tpl_mainno = 'total';
 
         $masterData = new SC_DB_MasterData_Ex();

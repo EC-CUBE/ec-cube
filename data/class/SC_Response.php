@@ -131,8 +131,8 @@ class SC_Response{
     }
 
     function sendRedirect($location) {
-        if (preg_match("/(" . preg_quote(SITE_URL, '/')
-                          . "|" . preg_quote(SSL_URL, '/') . ")/", $location)) {
+        if (preg_match("/(" . preg_quote(HTTP_URL, '/')
+                          . "|" . preg_quote(HTTPS_URL, '/') . ")/", $location)) {
 
             $netURL = new Net_URL($location);
             $arrQueryString = $netURL->querystring;

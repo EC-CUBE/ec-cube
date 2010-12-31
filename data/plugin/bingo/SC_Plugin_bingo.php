@@ -74,9 +74,9 @@ class SC_Plugin_bingo extends SC_Plugin_Ex {
                 $is_bingo = $_SESSION['plugin_bingo']['is_bingo'];
                 if ($is_bingo) {
                     if (SC_Utils_Ex::sfIsMobileSite()) {
-                        $objPage->tpl_mainpage = DATA_PATH . 'plugin/' . $this->plugin_name . '/templates/mobile/shopping/complete.tpl';
+                        $objPage->tpl_mainpage = DATA_FILE_PATH . 'plugin/' . $this->plugin_name . '/templates/mobile/shopping/complete.tpl';
                     } else {
-                        $objPage->tpl_mainpage = DATA_PATH . 'plugin/' . $this->plugin_name . '/templates/shopping/complete.tpl';
+                        $objPage->tpl_mainpage = DATA_FILE_PATH . 'plugin/' . $this->plugin_name . '/templates/shopping/complete.tpl';
                     }
                 }
                 break;

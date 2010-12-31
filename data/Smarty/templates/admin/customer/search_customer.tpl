@@ -28,8 +28,8 @@
 <meta http-equiv="content-script-type" content="text/javascript">
 <meta http-equiv="content-style-type" content="text/css">
 <link rel="stylesheet" href="<!--{$TPL_DIR}-->css/admin_contents.css" type="text/css" media="all" />
-<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/css.js"></script>
-<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/navi.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.URL_PATH}-->js/css.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.URL_PATH}-->js/navi.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/admin.js"></script>
 <script type="text/javascript">
 <!--
@@ -52,7 +52,7 @@ function func_submit(customer_id){
 <body bgcolor="#ffffff" text="#494E5F" link="#006699" vlink="#006699" alink="#006699" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <!--{$GLOBAL_ERR}-->
 <noscript>
-<link rel="stylesheet" href="<!--{$smarty.const.URL_DIR}--><!--{$smarty.const.ADMIN_DIR}-->css/common.css" type="text/css" >
+<link rel="stylesheet" href="<!--{$smarty.const.URL_PATH}--><!--{$smarty.const.ADMIN_DIR}-->css/common.css" type="text/css" >
 </noscript>
 
 <!--▼CONTENTS-->

@@ -206,7 +206,7 @@ function lfnDispChange(){
     <tr style="background:<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->;">
       <td class="id" rowspan="2"><!--{$arrProducts[cnt].product_id}--></td>
       <td class="thumbnail" rowspan="2">
-      <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$arrProducts[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65">
+      <img src="<!--{$smarty.const.URL_PATH}-->resize_image.php?image=<!--{$arrProducts[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65">
       </td>
       <td rowspan="2"><!--{$arrProducts[cnt].product_code_min|h}-->
         <!--{if $arrProducts[cnt].product_code_min != $arrProducts[cnt].product_code_max}-->
@@ -232,13 +232,13 @@ function lfnDispChange(){
       <!--{* 表示 *}-->
       <!--{assign var=key value=$arrProducts[cnt].status}-->
       <td class="menu" rowspan="2"><!--{$arrDISP[$key]}--></td>
-      <td class="menu" rowspan="2"><span class="icon_edit"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnChangeAction('./product.php'); fnModeSubmit('pre_edit', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >編集</a></span></td>
-      <td class="menu" rowspan="2"><span class="icon_confirm"><a href="<!--{$smarty.const.SITE_URL|sfTrimURL}-->/products/detail.php?product_id=<!--{$arrProducts[cnt].product_id}-->&amp;admin=on" target="_blank">確認</a></span></td>
+      <td class="menu" rowspan="2"><span class="icon_edit"><a href="<!--{$smarty.const.URL_PATH}-->" onclick="fnChangeAction('./product.php'); fnModeSubmit('pre_edit', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >編集</a></span></td>
+      <td class="menu" rowspan="2"><span class="icon_confirm"><a href="<!--{$smarty.const.HTTP_URL|sfTrimURL}-->/products/detail.php?product_id=<!--{$arrProducts[cnt].product_id}-->&amp;admin=on" target="_blank">確認</a></span></td>
       <!--{if $smarty.const.OPTION_CLASS_REGIST == 1}-->
-      <td class="menu" rowspan="2"><span class="icon_class"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnChangeAction('./product_class.php'); fnModeSubmit('pre_edit', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >規格</a></span></td>
+      <td class="menu" rowspan="2"><span class="icon_class"><a href="<!--{$smarty.const.URL_PATH}-->" onclick="fnChangeAction('./product_class.php'); fnModeSubmit('pre_edit', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >規格</a></span></td>
       <!--{/if}-->
-      <td class="menu" rowspan="2"><span class="icon_delete"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnSetFormValue('category_id', '<!--{$arrProducts[cnt].category_id}-->'); fnModeSubmit('delete', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;">削除</a></span></td>
-      <td class="menu" rowspan="2"><span class="icon_copy"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnChangeAction('./product.php'); fnModeSubmit('copy', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >複製</a></span></td>
+      <td class="menu" rowspan="2"><span class="icon_delete"><a href="<!--{$smarty.const.URL_PATH}-->" onclick="fnSetFormValue('category_id', '<!--{$arrProducts[cnt].category_id}-->'); fnModeSubmit('delete', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;">削除</a></span></td>
+      <td class="menu" rowspan="2"><span class="icon_copy"><a href="<!--{$smarty.const.URL_PATH}-->" onclick="fnChangeAction('./product.php'); fnModeSubmit('copy', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >複製</a></span></td>
     </tr>
     <tr style="background:<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->;">
       <td>
@@ -252,7 +252,7 @@ function lfnDispChange(){
 
         <!--{* URL *}-->
         <div id="disp_url<!--{$smarty.section.cnt.iteration}-->" style="display:none">
-        <!--{$smarty.const.SITE_URL|sfTrimURL}-->/products/detail.php?product_id=<!--{$arrProducts[cnt].product_id}-->
+        <!--{$smarty.const.HTTP_URL|sfTrimURL}-->/products/detail.php?product_id=<!--{$arrProducts[cnt].product_id}-->
         </div>
       </td>
     </tr>

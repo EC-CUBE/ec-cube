@@ -31,10 +31,10 @@ define("ZIP_CSV_LINE_MAX", 8192);
 define("IMAGE_MAX", 680);
 
 /** 郵便番号CSV ファイルのパス */
-define("ZIP_CSV_FILE_PATH", DATA_PATH . "downloads/KEN_ALL.CSV");
+define("ZIP_CSV_FILE_PATH", DATA_FILE_PATH . "downloads/KEN_ALL.CSV");
 
 /** UTF-8 変換済みの郵便番号CSV ファイルのパス */
-define("ZIP_CSV_UTF8_FILE_PATH", DATA_PATH . "downloads/KEN_ALL_utf-8.CSV");
+define("ZIP_CSV_UTF8_FILE_PATH", DATA_FILE_PATH . "downloads/KEN_ALL_utf-8.CSV");
 
 /**
  * 郵便番号DB登録 のページクラス.

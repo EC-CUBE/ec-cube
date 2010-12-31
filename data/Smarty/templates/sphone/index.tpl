@@ -24,7 +24,7 @@
 <!--{* ▼ロゴ ここから *}-->
 <div id="header">
 <h1>
-    <a href="<!--{$smarty.const.SMARTPHONE_SSL_URL}-->">
+    <a href="<!--{$smarty.const.SMARTPHONE_HTTPS_URL}-->">
       <em><!--{$arrSiteInfo.shop_name|h}-->/<!--{$tpl_title|h}--></em></a>
   </h1>
 </div>
@@ -35,7 +35,7 @@
 
 <!--{* 検索 *}-->
 <div id="searchbar">
-<form method="get" action="<!--{$smarty.const.SMARTPHONE_SITE_URL}-->products/list.php">
+<form method="get" action="<!--{$smarty.const.SMARTPHONE_HTTP_URL}-->products/list.php">
 <input type="text" name="name" maxlength="50" value="<!--{$smarty.get.name|h}-->" placeholder="商品検索" ><input type="submit" name="search" value="検索">
 </form>
 <!--{* searchmenu *}--></div>
@@ -43,13 +43,13 @@
 <!--{* topbox *}--></div>
 
 <!--{* 新着情報 *}-->
-<!--{include_php file=`$smarty.const.SMARTPHONE_HTML_PATH`/frontparts/bloc/news.php}-->
+<!--{include_php file=`$smarty.const.SMARTPHONE_HTML_FILE_PATH`/frontparts/bloc/news.php}-->
 
 <!--{* ログイン *}-->
-<!--{include_php file=`$smarty.const.SMARTPHONE_HTML_PATH`/frontparts/bloc/login.php}-->
+<!--{include_php file=`$smarty.const.SMARTPHONE_HTML_FILE_PATH`/frontparts/bloc/login.php}-->
 
 <!--{* おすすめ商品 *}-->
-<!--{include_php file=`$smarty.const.SMARTPHONE_HTML_PATH`/frontparts/bloc/best5.php}-->
+<!--{include_php file=`$smarty.const.SMARTPHONE_HTML_FILE_PATH`/frontparts/bloc/best5.php}-->
 
 <!-- ▼メニュー ここから -->
-<!--{include_php file=`$smarty.const.SMARTPHONE_HTML_PATH`/frontparts/bloc/category.php}-->
+<!--{include_php file=`$smarty.const.SMARTPHONE_HTML_FILE_PATH`/frontparts/bloc/category.php}-->

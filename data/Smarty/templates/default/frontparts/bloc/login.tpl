@@ -23,7 +23,7 @@
     <h2><img src="<!--{$TPL_DIR}-->img/icon/ico_block_login.gif" width="20" height="20" alt="*" class="title_icon" />
         ログイン</h2>
     <div id="loginarea" class="bloc_body">
-        <form name="login_form" id="login_form" method="post" action="<!--{$smarty.const.SSL_URL}-->frontparts/login_check.php" onsubmit="return fnCheckLogin('login_form')">
+        <form name="login_form" id="login_form" method="post" action="<!--{$smarty.const.HTTPS_URL}-->frontparts/login_check.php" onsubmit="return fnCheckLogin('login_form')">
             <input type="hidden" name="mode" value="login" />
             <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
             <input type="hidden" name="url" value="<!--{$smarty.server.PHP_SELF|h}-->" />
@@ -47,7 +47,7 @@
                 <p><img src="<!--{$TPL_DIR}-->img/icon/ico_password.gif" width="40" height="22" alt="パスワード" /><input type="password" name="login_pass" class="box96" /></p>
             </div>
                 <p class="mini">
-                    <a href="<!--{$smarty.const.SSL_URL|sfTrimURL}-->/forgot/<!--{$smarty.const.DIR_INDEX_URL}-->" onclick="win01('<!--{$smarty.const.SSL_URL|sfTrimURL}-->/forgot/<!--{$smarty.const.DIR_INDEX_URL}-->','forget','600','400'); return false;" target="_blank">パスワードを忘れた方はこちら</a>
+                    <a href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/forgot/<!--{$smarty.const.DIR_INDEX_URL}-->" onclick="win01('<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/forgot/<!--{$smarty.const.DIR_INDEX_URL}-->','forget','600','400'); return false;" target="_blank">パスワードを忘れた方はこちら</a>
                 </p>
                 <p class="mini">
                     <input type="checkbox" name="login_memory" id="login_memory" value="1" <!--{$tpl_login_memory|sfGetChecked:1}--> />

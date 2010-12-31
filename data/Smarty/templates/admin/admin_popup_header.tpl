@@ -29,12 +29,12 @@
 <meta http-equiv="content-script-type" content="text/javascript" />
 <meta http-equiv="content-style-type" content="text/css" />
 <link rel="stylesheet" href="<!--{$TPL_DIR}-->css/admin_contents.css" type="text/css" media="all" />
-<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/navi.js"></script>
-<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/win_op.js"></script>
-<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/site.js"></script>
-<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.URL_PATH}-->js/navi.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.URL_PATH}-->js/win_op.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.URL_PATH}-->js/site.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.URL_PATH}-->js/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/admin.js"></script>
-<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/css.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.URL_PATH}-->js/css.js"></script>
 <script type="text/javascript">//<![CDATA[
     <!--{$tpl_javascript}-->
     $(function(){

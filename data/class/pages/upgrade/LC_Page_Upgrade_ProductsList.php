@@ -80,7 +80,7 @@ class LC_Page_Upgrade_ProductsList extends LC_Page_Upgrade_Base {
         // リクエストを開始
         $objLog->log('* http request start');
         $arrPostData = array(
-            'eccube_url' => SITE_URL,
+            'eccube_url' => HTTP_URL,
             'public_key' => sha1($public_key . $sha1_key),
             'sha1_key'   => $sha1_key
         );
@@ -134,7 +134,7 @@ class LC_Page_Upgrade_ProductsList extends LC_Page_Upgrade_Base {
             if (!$objView->_smarty->template_exists($template)) {
                 $objLog->log('* template not exist, use default template');
                 // デフォルトテンプレートを使用
-                $template = DATA_PATH . 'Smarty/templates/default/admin/' . $template;
+                $template = DATA_FILE_PATH . 'Smarty/templates/default/admin/' . $template;
             }
 
             $html = $objView->fetch('ownersstore/products_list.tpl');

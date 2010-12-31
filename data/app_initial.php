@@ -23,17 +23,17 @@
 
 if (!defined("CLASS_PATH")) {
     /** クラスパス */
-    define("CLASS_PATH", DATA_PATH . "class/");
+    define("CLASS_PATH", DATA_FILE_PATH . "class/");
 }
 
 if (!defined("CLASS_EX_PATH")) {
     /** クラスパス */
-    define("CLASS_EX_PATH", DATA_PATH . "class_extends/");
+    define("CLASS_EX_PATH", DATA_FILE_PATH . "class_extends/");
 }
 
 if (!defined("CACHE_PATH")) {
     /** キャッシュ生成ディレクトリ */
-    define("CACHE_PATH", DATA_PATH . "cache/");
+    define("CACHE_PATH", DATA_FILE_PATH . "cache/");
 }
 
 require_once(CLASS_EX_PATH . "SC_Initial_Ex.php");

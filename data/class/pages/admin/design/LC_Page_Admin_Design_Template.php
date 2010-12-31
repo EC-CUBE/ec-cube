@@ -23,7 +23,7 @@
 
   // {{{ requires
 require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
-require_once(DATA_PATH . "module/Tar.php");
+require_once(DATA_FILE_PATH . "module/Tar.php");
 require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_FileManager_Ex.php");
 
 /**
@@ -291,7 +291,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin {
         $templates_dir = SMARTY_TEMPLATES_DIR. $template_code. "/";
         SC_Utils_Ex::sfDelFile($templates_dir);
         // コンパイル削除
-        $templates_c_dir = DATA_PATH. "Smarty/templates_c/". $template_code. "/";
+        $templates_c_dir = DATA_FILE_PATH. "Smarty/templates_c/". $template_code. "/";
         SC_Utils_Ex::sfDelFile($templates_c_dir);
         // ユーザーデータ削除
         $user_dir = USER_TEMPLATE_PATH. $template_code. "/";
@@ -332,10 +332,10 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin {
 
         // キャンペーン実行PHPをコピー
         $ret = $objFileManager->sfCreateFile(CAMPAIGN_PATH . $file);
-        copy(HTML_PATH . CAMPAIGN_TEMPLATE_DIR . "index.php", CAMPAIGN_PATH . $file . "/index.php");
-        copy(HTML_PATH . CAMPAIGN_TEMPLATE_DIR . "application.php", CAMPAIGN_PATH . $file . "/application.php");
-        copy(HTML_PATH . CAMPAIGN_TEMPLATE_DIR . "complete.php", CAMPAIGN_PATH . $file . "/complete.php");
-        copy(HTML_PATH . CAMPAIGN_TEMPLATE_DIR . "entry.php", CAMPAIGN_PATH . $file . "/entry.php");
+        copy(HTML_FILE_PATH . CAMPAIGN_TEMPLATE_DIR . "index.php", CAMPAIGN_PATH . $file . "/index.php");
+        copy(HTML_FILE_PATH . CAMPAIGN_TEMPLATE_DIR . "application.php", CAMPAIGN_PATH . $file . "/application.php");
+        copy(HTML_FILE_PATH . CAMPAIGN_TEMPLATE_DIR . "complete.php", CAMPAIGN_PATH . $file . "/complete.php");
+        copy(HTML_FILE_PATH . CAMPAIGN_TEMPLATE_DIR . "entry.php", CAMPAIGN_PATH . $file . "/entry.php");
 
         // デフォルトテンプレート作成(キャンペーン中)
         $header = $this->lfGetFileContents($default_active_dir."header.tpl");

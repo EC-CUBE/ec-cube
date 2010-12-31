@@ -407,7 +407,7 @@ function selectAll(target) {
       <!--{assign var=anckey value="recommend_no`$smarty.section.cnt.iteration`"}-->
       <th>関連商品(<!--{$smarty.section.cnt.iteration}-->)<br />
         <!--{if $arrRecommend[$recommend_no].product_id}-->
-          <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$arrRecommend[$recommend_no].main_list_image|sfNoImageMainList|h}-->&width=65&height=65" alt="<!--{$arrRecommend[$recommend_no].name|h}-->" />
+          <img src="<!--{$smarty.const.URL_PATH}-->resize_image.php?image=<!--{$arrRecommend[$recommend_no].main_list_image|sfNoImageMainList|h}-->&width=65&height=65" alt="<!--{$arrRecommend[$recommend_no].name|h}-->" />
         <!--{/if}-->
       </th>
       <td>

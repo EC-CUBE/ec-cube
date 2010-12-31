@@ -363,9 +363,9 @@ class LC_Page_Admin_Mail extends LC_Page_Admin {
                     $sendId = $this->lfRegistData($objQuery, $this->list_data);
                     if (MELMAGA_SEND) {
                         if (MELMAGA_BATCH_MODE) {
-                            $this->objDisplay->redirect($this->getLocation(URL_DIR . ADMIN_DIR . 'mail/history.php'));
+                            $this->objDisplay->redirect($this->getLocation(URL_PATH . ADMIN_DIR . 'mail/history.php'));
                         } else {
-                            $this->objDisplay->redirect($this->getLocation(URL_DIR . ADMIN_DIR . 'mail/sendmail.php', array('mode' => 'now', 'send_id' => $sendId)));
+                            $this->objDisplay->redirect($this->getLocation(URL_PATH . ADMIN_DIR . 'mail/sendmail.php', array('mode' => 'now', 'send_id' => $sendId)));
                         }
                         exit;
                     } else {

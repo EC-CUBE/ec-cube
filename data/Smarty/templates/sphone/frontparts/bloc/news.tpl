@@ -19,7 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
-<!--{assign var=mypage value="`$smarty.const.SMARTPHONE_URL_DIR`mypage/index.php"}-->
+<!--{assign var=mypage value="`$smarty.const.SMARTPHONE_URL_PATH`mypage/index.php"}-->
 <!--{if $smarty.server.PHP_SELF != $mypage}-->
 
 <!--{if $arrNews}-->

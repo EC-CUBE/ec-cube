@@ -40,7 +40,7 @@
                 <td><!--{$plugin.path|h}--></td>
                 <td><!--{$plugin.info.version|h}--></td>
                 <td><!--{$plugin.info.auther|h}--></td>
-                <td><a href="<!--{$smarty.const.URL_DIR}--><!--{$smarty.const.ADMIN_DIR}-->plugin/uninstall.php?path=<!--{$plugin.path|h}-->">アンインストール</a></td>
+                <td><a href="<!--{$smarty.const.URL_PATH}--><!--{$smarty.const.ADMIN_DIR}-->plugin/uninstall.php?path=<!--{$plugin.path|h}-->">アンインストール</a></td>
             </tr>
             <!--{if $smarty.foreach.installedPlugin.last}-->
                 </table>
@@ -66,7 +66,7 @@
                 <td><!--{$plugin.path|h}--></td>
                 <td><!--{$plugin.info.version|h}--></td>
                 <td><!--{$plugin.info.auther|h}--></td>
-                <td><a href="<!--{$smarty.const.URL_DIR}--><!--{$smarty.const.ADMIN_DIR}-->plugin/install.php?path=<!--{$plugin.path|h}-->">インストール</a></td>
+                <td><a href="<!--{$smarty.const.URL_PATH}--><!--{$smarty.const.ADMIN_DIR}-->plugin/install.php?path=<!--{$plugin.path|h}-->">インストール</a></td>
             </tr>
             <!--{if $smarty.foreach.installablePlugin.last}-->
                 </table>

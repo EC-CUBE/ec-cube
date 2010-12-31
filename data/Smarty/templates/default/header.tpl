@@ -45,13 +45,13 @@
   <div id="information">
     <ul>
       <li>
-        <a href="<!--{$smarty.const.SSL_URL}-->mypage/login.php"
+        <a href="<!--{$smarty.const.HTTPS_URL}-->mypage/login.php"
            onmouseover="chgImg('<!--{$TPL_DIR}-->img/common/btn_header_mypage_on.gif','mypage');"
            onmouseout="chgImg('<!--{$TPL_DIR}-->img/common/btn_header_mypage.gif','mypage');">
           <img src="<!--{$TPL_DIR}-->img/common/btn_header_mypage.gif" width="95" height="20" alt="MYページ" name="mypage" id="mypage" /></a>
       </li>
       <li>
-        <a href="<!--{$smarty.const.URL_DIR}-->entry/kiyaku.php"
+        <a href="<!--{$smarty.const.URL_PATH}-->entry/kiyaku.php"
            onmouseover="chgImg('<!--{$TPL_DIR}-->img/common/btn_header_entry_on.gif','entry');"
            onmouseout="chgImg('<!--{$TPL_DIR}-->img/common/btn_header_entry.gif','entry');">
           <img src="<!--{$TPL_DIR}-->img/common/btn_header_entry.gif" width="95" height="20" alt="会員登録" name="entry" id="entry" /></a>

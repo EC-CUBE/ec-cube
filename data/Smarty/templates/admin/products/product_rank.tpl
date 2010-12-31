@@ -48,9 +48,9 @@
       <!--{assign var=disp_name value="`$arrTree[cnt].category_id`.`$arrTree[cnt].category_name`"}-->
       <a href="?" onclick="fnModeSubmit('tree', 'parent_category_id', <!--{$arrTree[cnt].category_id}-->); return false">
       <!--{if $arrForm.parent_category_id == $arrTree[cnt].category_id}-->
-        <img src="<!--{$smarty.const.URL_DIR}-->misc/openf.gif">
+        <img src="<!--{$smarty.const.URL_PATH}-->misc/openf.gif">
       <!--{else}-->
-        <img src="<!--{$smarty.const.URL_DIR}-->misc/closef.gif">
+        <img src="<!--{$smarty.const.URL_PATH}-->misc/closef.gif">
       <!--{/if}-->
       <!--{$disp_name|sfCutString:20|h}-->(<!--{$arrTree[cnt].product_count|default:0}-->)</a>
     <br />          
@@ -99,7 +99,7 @@
           <td><!--{from_to from=$arrProductsList[cnt].product_code_min to=$arrProductsList[cnt].product_code_max separator="～<br />"}--></td>
           <td align="center">
             <!--{* 商品画像 *}-->
-            <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$arrProductsList[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" alt="<!--{$arrProducts[cnt].name|h}-->">
+            <img src="<!--{$smarty.const.URL_PATH}-->resize_image.php?image=<!--{$arrProductsList[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" alt="<!--{$arrProducts[cnt].name|h}-->">
           </td>
           <td align="center">
             <!--{$arrProductsList[cnt].name|h}-->

@@ -40,7 +40,7 @@
 	<!--{assign var=key value="login_pass"}--><font color="#FF0000"><!--{$arrErr[$key]}--></font>
 	<input type="password" name="<!--{$key}-->" size="40" istyle="3"><br>
 	<center><input type="submit" value="送信" name="log"></center><br>
-	<a href="<!--{$smarty.const.MOBILE_URL_DIR}-->forgot/<!--{$smarty.const.DIR_INDEX_URL}-->">パスワードをお忘れの方はこちら</a><br>
+	<a href="<!--{$smarty.const.MOBILE_URL_PATH}-->forgot/<!--{$smarty.const.DIR_INDEX_URL}-->">パスワードをお忘れの方はこちら</a><br>
 </form>
 <!--▲CONTENTS-->
 

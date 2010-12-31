@@ -28,14 +28,14 @@
 <br>
 
 <!-- ▼新着情報 ここから -->
-<!--{include_php file=`$smarty.const.MOBILE_HTML_PATH`frontparts/bloc/news.php}-->
+<!--{include_php file=`$smarty.const.MOBILE_HTML_FILE_PATH`frontparts/bloc/news.php}-->
 <!-- ▲新着情報 ここまで -->
 
 <br>
 
 <!-- ▼ピックアップ商品 ここから -->
 <hr>
-<!--{include_php file=`$smarty.const.MOBILE_HTML_PATH`frontparts/bloc/best5.php}-->
+<!--{include_php file=`$smarty.const.MOBILE_HTML_FILE_PATH`frontparts/bloc/best5.php}-->
 <hr>
 <!-- ▲ピックアップ商品 ここまで -->
 
@@ -43,7 +43,7 @@
 
 <!-- ▼メニュー ここから -->
 <!--{1|numeric_emoji}-->商品カテゴリ<br>
-<!--{include_php file=`$smarty.const.MOBILE_HTML_PATH`frontparts/bloc/category.php}-->
+<!--{include_php file=`$smarty.const.MOBILE_HTML_FILE_PATH`frontparts/bloc/category.php}-->
 <a href="products/search.php" accesskey="2"><!--{2|numeric_emoji}-->商品検索</a><br>
 <!--{if $isLogin eq true}-->
 <a href="mypage/refusal.php" accesskey="3"><!--{3|numeric_emoji}-->会員退会</a><br>

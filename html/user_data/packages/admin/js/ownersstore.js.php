@@ -19,14 +19,14 @@ ob_start();
 
 (function() {
 // オーナーズストア通信スクリプトのパス
-var upgrade_url = '[%URL_DIR%]upgrade/<?php echo DIR_INDEX_URL; ?>';
+var upgrade_url = '[%URL_PATH%]upgrade/<?php echo DIR_INDEX_URL; ?>';
 
 // ロード中メッセージ(配信サーバと通信中です…)
 var loading_message = '\u30B5\u30FC\u30D0\u3068\u901A\u4FE1\u4E2D\u3067\u3059';
 
 // ロード中画像の先読み
 var loading_img = new Image();
-loading_img.src = '[%URL_DIR%]user_data/packages/default/img/ajax/loading.gif';
+loading_img.src = '[%URL_PATH%]user_data/packages/default/img/ajax/loading.gif';
 
 var OwnersStore = function() {}
 OwnersStore.prototype = {
@@ -176,5 +176,5 @@ window.OwnersStore = new OwnersStore();
 })();
 <?php
 header('Content-Type: application/x-javascript');
-echo str_replace('[%URL_DIR%]', URL_DIR, ob_get_clean());
+echo str_replace('[%URL_PATH%]', URL_PATH, ob_get_clean());
 ?>

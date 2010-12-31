@@ -44,7 +44,7 @@ function &_fatal_error_handler(&$buffer) {
         error_log("FATAL Error: $matches[3]:$matches[4] $matches[2]\n", 3,
                   realpath(dirname(__FILE__) . "/" . HTML2DATA_DIR . "logs/site.log"));
         if (DEBUG_MODE !== true) {
-            $url = SITE_URL . "error.php";
+            $url = HTTP_URL . "error.php";
             if (defined('ADMIN_FUNCTION') && ADMIN_FUNCTION) {
                 $url .= "?admin";
             }

@@ -26,17 +26,17 @@
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <link rel="stylesheet" href="<!--{$TPL_DIR}-->css/import.css" type="text/css" media="all" />
-<link rel="alternate" type="application/rss+xml" title="RSS" href="<!--{$smarty.const.SITE_URL}-->rss/<!--{$smarty.const.DIR_INDEX_URL}-->" />
+<link rel="alternate" type="application/rss+xml" title="RSS" href="<!--{$smarty.const.HTTP_URL}-->rss/<!--{$smarty.const.DIR_INDEX_URL}-->" />
 <script type="text/javascript" src="http://www.google.com/jsapi?key=xxx"></script>
 <script type="text/javascript">//<![CDATA[
     google.load("maps", "3", {other_params:'sensor=false'});
 //]]>
 </script>
-<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/css.js"></script>
-<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/navi.js"></script>
-<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/win_op.js"></script>
-<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/site.js"></script>
-<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.URL_PATH}-->js/css.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.URL_PATH}-->js/navi.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.URL_PATH}-->js/win_op.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.URL_PATH}-->js/site.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.URL_PATH}-->js/jquery-1.4.2.min.js"></script>
 <title><!--{$arrSiteInfo.shop_name|h}--><!--{if $tpl_subtitle|strlen >= 1}--> / <!--{$tpl_subtitle|h}--><!--{elseif $tpl_title|strlen >= 1}--> / <!--{$tpl_title|h}--><!--{/if}--></title>
 <!--{if $arrPageLayout.author|strlen >= 1}-->
     <meta name="author" content="<!--{$arrPageLayout.author|h}-->" />

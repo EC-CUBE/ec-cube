@@ -80,7 +80,7 @@ class LC_Page_Redirect extends LC_Page {
         if (isset($next_url) && $next_url !== false) {
             $this->sendRedirect($next_url);
         } else {
-            $this->sendRedirect(MOBILE_SITE_URL, true);
+            $this->sendRedirect(MOBILE_HTTP_URL, true);
         }
     }
 

@@ -55,7 +55,7 @@ class SC_Batch_Update extends SC_Batch {
         $msg = '';
         $oldMask = umask(0);
         $bkupDistInfoArray = array(); //バックアップファイル用のdistinfoファイル内容
-        $bkupPath = DATA_PATH . 'downloads/backup/update_' . time() . '/';
+        $bkupPath = DATA_FILE_PATH . 'downloads/backup/update_' . time() . '/';
         $bkupPathFile = $bkupPath . 'files/';
         $this->mkdir_p($bkupPathFile . 'dummy');
 
@@ -218,13 +218,13 @@ class SC_Batch_Update extends SC_Batch {
     function mkdir_p($path){
         $path = dirname($path);
         
-        // HTML_PATH/DATA_PATHの判別
-        if (preg_match("@\Q".HTML_PATH."\E@", $path) > 0) {
-            $dir = str_replace("\\", "/", HTML_PATH);
-            $path = preg_replace("@\Q".HTML_PATH."\E@", "", $path);
-        } elseif (preg_match("@\Q".DATA_PATH."\E@", $path) > 0) {
-            $dir = str_replace("\\", "/", DATA_PATH);
-            $path = preg_replace("@\Q".DATA_PATH."\E@", "", $path);
+        // HTML_FILE_PATH/DATA_FILE_PATHの判別
+        if (preg_match("@\Q".HTML_FILE_PATH."\E@", $path) > 0) {
+            $dir = str_replace("\\", "/", HTML_FILE_PATH);
+            $path = preg_replace("@\Q".HTML_FILE_PATH."\E@", "", $path);
+        } elseif (preg_match("@\Q".DATA_FILE_PATH."\E@", $path) > 0) {
+            $dir = str_replace("\\", "/", DATA_FILE_PATH);
+            $path = preg_replace("@\Q".DATA_FILE_PATH."\E@", "", $path);
         } else {
             $dir = "";
         }
@@ -251,7 +251,7 @@ class SC_Batch_Update extends SC_Batch {
     }
 
     function printLog($msg) {
-        GC_Utils::gfPrintLog($msg, DATA_PATH . 'logs/ownersstore_batch_update.log');
+        GC_Utils::gfPrintLog($msg, DATA_FILE_PATH . 'logs/ownersstore_batch_update.log');
     }
 }
 ?>

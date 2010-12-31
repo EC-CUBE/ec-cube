@@ -48,7 +48,7 @@ class LC_Page_Test extends PHPUnit_Framework_TestCase {
     /*
     function testSendRedirect() {
         $objPage = new LC_Page();
-        $result = $objPage->sendRedirect(SITE_URL);
+        $result = $objPage->sendRedirect(HTTP_URL);
 
         $this->assertEquals(true, empty($result));
     }
@@ -142,7 +142,7 @@ class LC_Page_Test extends PHPUnit_Framework_TestCase {
         $_SERVER['DOCUMENT_ROOT'] = realpath(dirname(__FILE__) . "/../../../html");
         $url = $objPage->getLocation("/abouts/index.php");
 
-        $this->assertEquals(SITE_URL . "abouts/index.php", $url);
+        $this->assertEquals(HTTP_URL . "abouts/index.php", $url);
         unset($_SERVER['DOCUMENT_ROOT']);
     }
 
@@ -154,9 +154,9 @@ class LC_Page_Test extends PHPUnit_Framework_TestCase {
     function testGetLocationWithFullPath() {
         $objPage = new LC_Page();
         $_SERVER['DOCUMENT_ROOT'] = realpath(dirname(__FILE__) . "/../../../html");
-        $url = $objPage->getLocation(URL_DIR . 'abouts/index.php');
+        $url = $objPage->getLocation(URL_PATH . 'abouts/index.php');
 
-        $this->assertEquals(SITE_URL . "abouts/index.php", $url);
+        $this->assertEquals(HTTP_URL . "abouts/index.php", $url);
         unset($_SERVER['DOCUMENT_ROOT']);
     }
 
@@ -172,14 +172,14 @@ class LC_Page_Test extends PHPUnit_Framework_TestCase {
         $queryString = array("mode" => "update", "type" => "text");
         $url = $objPage->getLocation("/abouts/index.php", $queryString);
 
-        $this->assertEquals(SITE_URL . "abouts/index.php?mode=update&type=text", $url);
+        $this->assertEquals(HTTP_URL . "abouts/index.php?mode=update&type=text", $url);
         unset($_SERVER['DOCUMENT_ROOT']);
     }
 
     /**
      * LC_Page::getLocation() のテストケース.
      *
-     * SSL_URL 使用
+     * HTTPS_URL 使用
      */
     function testGetLocationUseSSL() {
         $objPage = new LC_Page();
@@ -188,7 +188,7 @@ class LC_Page_Test extends PHPUnit_Framework_TestCase {
         $queryString = array("mode" => "update", "type" => "text");
         $url = $objPage->getLocation("/abouts/index.php", $queryString, true);
 
-        $this->assertEquals(SSL_URL . "abouts/index.php?mode=update&type=text", $url);
+        $this->assertEquals(HTTPS_URL . "abouts/index.php?mode=update&type=text", $url);
         unset($_SERVER['DOCUMENT_ROOT']);
     }
 
@@ -205,7 +205,7 @@ class LC_Page_Test extends PHPUnit_Framework_TestCase {
         $url = $objPage->getLocation("/abouts/index.php", array(),
                                      false, $documentRoot);
 
-        $this->assertEquals(SITE_URL . "abouts/index.php", $url);
+        $this->assertEquals(HTTP_URL . "abouts/index.php", $url);
     }
 }
 ?>

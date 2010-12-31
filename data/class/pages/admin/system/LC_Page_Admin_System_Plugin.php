@@ -87,26 +87,26 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin {
             // PHP INFOを表示
             case 'install':
                 $name = $this->objForm->getValue('plugin_name');
-                require_once(DATA_PATH.'/plugin/'.$name.'/'.$name.'.php');
+                require_once(DATA_FILE_PATH.'/plugin/'.$name.'/'.$name.'.php');
                 $plugin = new $name();
                 $plugin->install();
                 break;
             case 'uninstall':
                 $name = $this->objForm->getValue('plugin_name');
-                require_once(DATA_PATH.'/plugin/'.$name.'/'.$name.'.php');
+                require_once(DATA_FILE_PATH.'/plugin/'.$name.'/'.$name.'.php');
                 $plugin = new $name();
                 $plugin->uninstall();
                 break;
             case 'enable':
                 $name = $this->objForm->getValue('plugin_name');
-                require_once(DATA_PATH.'/plugin/'.$name.'/'.$name.'.php');
+                require_once(DATA_FILE_PATH.'/plugin/'.$name.'/'.$name.'.php');
                 $plugin = new $name();
                 $plugin->enable();
                 
                 break;
             case 'disable':
               $name = $this->objForm->getValue('plugin_name');
-                require_once(DATA_PATH.'/'.$name.'/'.$name.'.php');
+                require_once(DATA_FILE_PATH.'/'.$name.'/'.$name.'.php');
                 $plugin = new $name();
                 $plugin->disable();
                 break;
@@ -135,7 +135,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin {
 
     function getPluginOnFilesystem($existsPlugins){
 
-        $dir = DATA_PATH."plugin/";
+        $dir = DATA_FILE_PATH."plugin/";
         $arrPlugins = array();
         if($dh =  opendir($dir)){
             while(($file = readdir($dh)) !== false){

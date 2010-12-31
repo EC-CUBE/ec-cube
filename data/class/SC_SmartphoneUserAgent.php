@@ -85,12 +85,12 @@ class SC_SmartphoneUserAgent {
 
 
         $url = SC_Utils_Ex::sfIsHTTPS()
-            ? SMARTPHONE_SSL_URL
-            : SMARTPHONE_SITE_URL
+            ? SMARTPHONE_HTTPS_URL
+            : SMARTPHONE_HTTP_URL
         ;
 
         // XXX サニタイズ必要？
-        $url .= (preg_match('|^' . URL_DIR . '(.*)$|', $_SERVER['REQUEST_URI'], $matches))
+        $url .= (preg_match('|^' . URL_PATH . '(.*)$|', $_SERVER['REQUEST_URI'], $matches))
             ? $matches[1]
             : ''
         ;

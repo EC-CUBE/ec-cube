@@ -23,10 +23,10 @@
 <div id="block-login" class="block-side">
   <div class="create-box">
     <!--{if $tpl_login}-->
-      <a href="<!--{$smarty.const.SMARTPHONE_SSL_URL|sfTrimURL}-->/mypage/login.php" class="spbtn">マイページ</a>
+      <a href="<!--{$smarty.const.SMARTPHONE_HTTPS_URL|sfTrimURL}-->/mypage/login.php" class="spbtn">マイページ</a>
     <!--{else}-->
-      <a href="<!--{$smarty.const.SMARTPHONE_SSL_URL|sfTrimURL}-->/entry/kiyaku.php" class="spbtn">会員登録</a>
-      <a href="<!--{$smarty.const.SMARTPHONE_SSL_URL|sfTrimURL}-->/mypage/login.php" class="spbtn">ログイン</a>
+      <a href="<!--{$smarty.const.SMARTPHONE_HTTPS_URL|sfTrimURL}-->/entry/kiyaku.php" class="spbtn">会員登録</a>
+      <a href="<!--{$smarty.const.SMARTPHONE_HTTPS_URL|sfTrimURL}-->/mypage/login.php" class="spbtn">ログイン</a>
     <!--{/if}-->
     <!--ログインフォーム-->
   </div>

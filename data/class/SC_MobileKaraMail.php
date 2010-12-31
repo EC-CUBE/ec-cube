@@ -56,7 +56,7 @@ class SC_MobileKaraMail {
             return;
         }
 
-        require_once DATA_PATH . '/module/Mail/mimeDecode.php';
+        require_once DATA_FILE_PATH . '/module/Mail/mimeDecode.php';
 
         $fp = fopen('php://stdin', 'r');
 

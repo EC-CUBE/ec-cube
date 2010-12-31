@@ -85,7 +85,7 @@ class SC_Utils {
                 exit;
             }
         }
-        $path = HTML_PATH . "install/index.php";
+        $path = HTML_FILE_PATH . "install/index.php";
         if(file_exists($path)) {
             SC_Utils::sfErrorHeader("&gt;&gt; /install/index.phpは、インストール完了後にファイルを削除してください。");
         }
@@ -241,7 +241,7 @@ class SC_Utils {
             // TODO 警告表示させる？
             // sfErrorHeader('>> referrerが無効になっています。');
         } else {
-            $domain  = SC_Utils::sfIsHTTPS() ? SSL_URL : SITE_URL;
+            $domain  = SC_Utils::sfIsHTTPS() ? HTTPS_URL : HTTP_URL;
             $pattern = sprintf('|^%s.*|', $domain);
             $referer = $_SERVER['HTTP_REFERER'];
 
@@ -452,9 +452,9 @@ exit;
      */
     function sfReload($get = "") {
         if ($_SERVER["SERVER_PORT"] == "443" ){
-            $url = ereg_replace(URL_DIR . "$", "", SSL_URL);
+            $url = ereg_replace(URL_PATH . "$", "", HTTPS_URL);
         } else {
-            $url = ereg_replace(URL_DIR . "$", "", SITE_URL);
+            $url = ereg_replace(URL_PATH . "$", "", HTTP_URL);
         }
 
         if($get != "") {
@@ -1515,7 +1515,7 @@ echo $template_path;
 
     // 指定したURLに対してPOSTでデータを送信する
     function sfSendPostData($url, $arrData, $arrOkCode = array()){
-        require_once(DATA_PATH . "module/Request.php");
+        require_once(DATA_FILE_PATH . "module/Request.php");
 
         // 送信インスタンス生成
         $req = new HTTP_Request($url);

@@ -250,7 +250,7 @@ class SC_Module {
      * @param string $suffix
      */
     function log($msg, $data = null, $suffix = '') {
-        $path = DATA_PATH . 'logs/' . $this->getCode() . "$suffix.log";
+        $path = DATA_FILE_PATH . 'logs/' . $this->getCode() . "$suffix.log";
         GC_Utils::gfPrintLog($msg, $path);
 
         if (!is_null($data)) {

@@ -21,15 +21,15 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-if (!defined("DATA_PATH")) {
-    define("DATA_PATH", HTML_PATH . HTML2DATA_DIR);
+if (!defined("DATA_FILE_PATH")) {
+    define("DATA_FILE_PATH", HTML_FILE_PATH . HTML2DATA_DIR);
 }
 
 // アプリケーション初期化処理
-require_once(DATA_PATH . "app_initial.php");
+require_once(DATA_FILE_PATH . "app_initial.php");
 
 // 各種クラス読み込み
-require_once(DATA_PATH . "require_classes.php");
+require_once(DATA_FILE_PATH . "require_classes.php");
 
 // インストール中で無い場合、
 if (!SC_Utils_Ex::sfIsInstallFunction()) {
@@ -46,6 +46,6 @@ if (!SC_Utils_Ex::sfIsInstallFunction()) {
     $sessionFactory->initSession();
 
     // プラグインを読み込む
-    //require_once(DATA_PATH . 'require_plugin.php');
+    //require_once(DATA_FILE_PATH . 'require_plugin.php');
 }
 ?>

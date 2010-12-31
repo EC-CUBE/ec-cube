@@ -42,7 +42,7 @@ class SC_Helper_Mobile {
      */
     function lfMobileCheckCompatibility() {
         if (!SC_MobileUserAgent::isSupported()) {
-            header('Location: ' . URL_DIR . 'mobile/unsupported/' . DIR_INDEX_URL);
+            header('Location: ' . URL_PATH . 'mobile/unsupported/' . DIR_INDEX_URL);
             exit;
         }
     }
@@ -85,7 +85,7 @@ class SC_Helper_Mobile {
      *                     取得できなかった場合は null を返す。
      */
     function lfMobileGetExtSessionId() {
-        if (!preg_match('|^' . URL_DIR . '(.*)$|', $_SERVER['SCRIPT_NAME'], $matches)) {
+        if (!preg_match('|^' . URL_PATH . '(.*)$|', $_SERVER['SCRIPT_NAME'], $matches)) {
             return null;
         }
 
@@ -405,7 +405,7 @@ class SC_Helper_Mobile {
         $objQuery->delete('dtb_mobile_kara_mail', 'token = ?', array($token));
 
         list($session_id, $next_url, $email) = $arrRow;
-        $objURL = new Net_URL(MOBILE_SITE_URL . $next_url);
+        $objURL = new Net_URL(MOBILE_HTTP_URL . $next_url);
         $objURL->addQueryString(session_name(), $session_id);
         $url = $objURL->getURL();
 

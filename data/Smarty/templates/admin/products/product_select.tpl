@@ -83,7 +83,7 @@ function func_submit( id ){
             <!--{assign var=status value="`$arrProducts[cnt].status`"}-->
             <tr style="background:<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->;">
                 <td align="center">
-                    <img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$arrProducts[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[$recommend_no].name|h}-->" />
+                    <img src="<!--{$smarty.const.URL_PATH}-->resize_image.php?image=<!--{$arrProducts[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[$recommend_no].name|h}-->" />
                 </td>
                 <td><!--{$arrProducts[cnt].product_code|default:"-"|h}--></td>
                 <td><!--{$arrProducts[cnt].name|h}--></td>

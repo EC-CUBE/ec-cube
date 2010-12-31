@@ -74,16 +74,16 @@ class SC_Initial {
 
         if (defined('ECCUBE_INSTALL')) {
             define('MOBILE_DIR', 'mobile/');
-            define('MOBILE_HTML_PATH', HTML_PATH . MOBILE_DIR);
-            define('MOBILE_SITE_URL', SITE_URL . MOBILE_DIR);
-            define('MOBILE_SSL_URL', SSL_URL . MOBILE_DIR);
-            define('MOBILE_URL_DIR', URL_DIR . MOBILE_DIR);
+            define('MOBILE_HTML_FILE_PATH', HTML_FILE_PATH . MOBILE_DIR);
+            define('MOBILE_HTTP_URL', HTTP_URL . MOBILE_DIR);
+            define('MOBILE_HTTPS_URL', HTTPS_URL . MOBILE_DIR);
+            define('MOBILE_URL_PATH', URL_PATH . MOBILE_DIR);
 
             define('SMARTPHONE_DIR', 'sphone/');
-            define('SMARTPHONE_HTML_PATH', HTML_PATH . SMARTPHONE_DIR);
-            define('SMARTPHONE_SITE_URL', SITE_URL . SMARTPHONE_DIR);
-            define('SMARTPHONE_SSL_URL', SSL_URL . SMARTPHONE_DIR);
-            define('SMARTPHONE_URL_DIR', URL_DIR . SMARTPHONE_DIR);
+            define('SMARTPHONE_HTML_FILE_PATH', HTML_FILE_PATH . SMARTPHONE_DIR);
+            define('SMARTPHONE_HTTP_URL', HTTP_URL . SMARTPHONE_DIR);
+            define('SMARTPHONE_HTTPS_URL', HTTPS_URL . SMARTPHONE_DIR);
+            define('SMARTPHONE_URL_PATH', URL_PATH . SMARTPHONE_DIR);
 
             define('ADMIN_DIR', 'admin/');
         }
@@ -228,7 +228,7 @@ class SC_Initial {
      * @return void
      */
     function createCacheDir() {
-        if (defined("HTML_PATH")) {
+        if (defined("HTML_FILE_PATH")) {
             umask(0);
             if (!file_exists(COMPILE_DIR)) {
                 mkdir(COMPILE_DIR);

@@ -23,7 +23,7 @@
 
 // {{{ requires
 require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
-require_once(DATA_PATH. "module/Tar.php");
+require_once(DATA_FILE_PATH. "module/Tar.php");
 require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_FileManager_Ex.php");
 
 /**
@@ -233,7 +233,7 @@ class LC_Page_Admin_Design_Up_Down extends LC_Page_Admin {
 	function lfAddTemplates($objForm, $objUpFile) {
 	    $template_code = $objForm->getValue('template_code');
 	    $template_dir = SMARTY_TEMPLATES_DIR . $template_code;
-	    $compile_dir  = DATA_PATH . "Smarty/templates_c/" . $template_code;
+	    $compile_dir  = DATA_FILE_PATH . "Smarty/templates_c/" . $template_code;
 	    // フォルダ作成
 	    if(!file_exists($template_dir)) {
 	    	mkdir($template_dir);

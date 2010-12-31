@@ -213,7 +213,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin {
 
                 $_SESSION['preview'] = "ON";
 
-                $this->objDisplay->redirect($this->getLocation(URL_DIR . "preview/" . DIR_INDEX_URL, array("filename" => $arrPageData[0]["filename"])));
+                $this->objDisplay->redirect($this->getLocation(URL_PATH . "preview/" . DIR_INDEX_URL, array("filename" => $arrPageData[0]["filename"])));
                 exit;
 
             } else {

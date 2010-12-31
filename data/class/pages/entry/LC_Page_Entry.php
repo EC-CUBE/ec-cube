@@ -170,7 +170,7 @@ class LC_Page_Entry extends LC_Page {
         $objDb = new SC_Helper_DB_Ex();
         $CONF = $objDb->sfGetBasisData();
 
-        $ssl_url  = rtrim(SSL_URL,"/");
+        $ssl_url  = rtrim(HTTPS_URL,"/");
         $ssl_url .= $_SERVER['PHP_SELF'];
 
         // 規約ページからの遷移でなければエラー画面へ遷移する
@@ -577,7 +577,7 @@ class LC_Page_Entry extends LC_Page {
                         $param = array("mode" => "regist",
                                        "id" => $this->uniqid,
                                        session_name() => session_id());
-                        $this->objDisplay->redirect($this->getLocation(MOBILE_URL_DIR . "regist/" . DIR_INDEX_URL, $param));
+                        $this->objDisplay->redirect($this->getLocation(MOBILE_URL_PATH . "regist/" . DIR_INDEX_URL, $param));
                         exit;
                     }
 

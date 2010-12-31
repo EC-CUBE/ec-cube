@@ -24,7 +24,7 @@
 
 // {{{ requires
 require_once CLASS_PATH . "pages/admin/LC_Page_Admin.php";
-require_once DATA_PATH . 'module/Request.php';
+require_once DATA_FILE_PATH . 'module/Request.php';
 
 /**
  * 管理画面ホーム のページクラス.
@@ -246,7 +246,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin {
         // XXX インストール時に問い合わせて送信可否設定を行うように設定すべきか。
         // XXX (URLは強制送信すべきではないと思うが)バージョンは強制送信すべきか。
         if (UPDATE_SEND_SITE_INFO === true) {
-            $query = '?site_url=' . SITE_URL . '&eccube_version=' . ECCUBE_VERSION;
+            $query = '?site_url=' . HTTP_URL . '&eccube_version=' . ECCUBE_VERSION;
         }
 
         $url = UPDATE_HTTP . $query;

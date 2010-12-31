@@ -76,9 +76,9 @@ class LC_Page_Sitemap extends LC_Page {
         
         $this->staticURL = array();
         
-        $this->staticURL[] = SITE_URL . 'rss/' . DIR_INDEX_URL;
+        $this->staticURL[] = HTTP_URL . 'rss/' . DIR_INDEX_URL;
         if (USE_MOBILE !== false) {
-            $this->staticURL[] = MOBILE_SITE_URL;
+            $this->staticURL[] = MOBILE_HTTP_URL;
         }
     }
 
@@ -224,12 +224,12 @@ class LC_Page_Sitemap extends LC_Page {
         foreach ($result as $row) {
             // :TODO: カテゴリの最終更新日を取得できるようにする
             
-            $page["url"] = SITE_URL . 'products/list.php?category_id=' . $row['category_id'];
+            $page["url"] = HTTP_URL . 'products/list.php?category_id=' . $row['category_id'];
             $arrRet[] = $page;
             
             // モバイルサイト
             if (USE_MOBILE !== false) {
-                $page["url"] = MOBILE_SITE_URL . 'products/list.php?category_id=' . $row['category_id'];
+                $page["url"] = MOBILE_HTTP_URL . 'products/list.php?category_id=' . $row['category_id'];
                 $arrRet[] = $page;
             }
         }
@@ -251,12 +251,12 @@ class LC_Page_Sitemap extends LC_Page {
             
             $page["update_date"] = $row['update_date'];
             
-            $page["url"] = SITE_URL . substr(DETAIL_P_HTML, strlen(URL_DIR)) . $row['product_id'];
+            $page["url"] = HTTP_URL . substr(DETAIL_P_HTML, strlen(URL_PATH)) . $row['product_id'];
             $arrRet[] = $page;
             
             // モバイルサイト
             if (USE_MOBILE !== false) {
-                $page["url"] = SITE_URL . substr(MOBILE_DETAIL_P_HTML, strlen(URL_DIR)) . $row['product_id'];
+                $page["url"] = HTTP_URL . substr(MOBILE_DETAIL_P_HTML, strlen(URL_PATH)) . $row['product_id'];
                 $arrRet[] = $page;
             }
         }
@@ -304,11 +304,11 @@ class LC_Page_Sitemap extends LC_Page {
 
         $pageData = $objQuery->getAll($sql, $arrVal);
         
-        // URL にプロトコルの記載が無い場合、SITE_URL を前置する。
+        // URL にプロトコルの記載が無い場合、HTTP_URL を前置する。
         foreach (array_keys($pageData) as $key) {
             $page =& $pageData[$key];
             if (!preg_match('|^https?://|i', $page['url'])) {
-                $page['url'] = SITE_URL . $page['url'];
+                $page['url'] = HTTP_URL . $page['url'];
             }
             $page['url'] = preg_replace('|/' . preg_quote(DIR_INDEX_FILE) . '$|', '/' . DIR_INDEX_URL, $page['url']);
         }

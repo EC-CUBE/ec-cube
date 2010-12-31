@@ -25,12 +25,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=<!--{$smarty.const.CHAR_CODE}-->" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
-<link rel="stylesheet" href="<!--{$smarty.const.URL_DIR}--><!--{$smarty.const.USER_DIR}-->css/common.css" type="text/css" media="all" />
-<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/css.js"></script>
-<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/navi.js"></script>
-<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/win_op.js"></script>
-<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/site.js"></script>
-<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/jquery-1.4.2.min.js"></script>
+<link rel="stylesheet" href="<!--{$smarty.const.URL_PATH}--><!--{$smarty.const.USER_DIR}-->css/common.css" type="text/css" media="all" />
+<script type="text/javascript" src="<!--{$smarty.const.URL_PATH}-->js/css.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.URL_PATH}-->js/navi.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.URL_PATH}-->js/win_op.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.URL_PATH}-->js/site.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.URL_PATH}-->js/jquery-1.4.2.min.js"></script>
 <title><!--{$arrSiteInfo.shop_name}-->/<!--{$subtitle|h}--></title>
 <script type="text/javascript">//<![CDATA[
     <!--{$tpl_javascript}-->

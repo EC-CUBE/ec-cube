@@ -24,15 +24,15 @@
         <!--{strip}-->
         <ul class="button_like">
         <li>
-            <a href="<!--{$smarty.const.URL_DIR}-->abouts/<!--{$smarty.const.DIR_INDEX_URL}-->"
+            <a href="<!--{$smarty.const.URL_PATH}-->abouts/<!--{$smarty.const.DIR_INDEX_URL}-->"
                 class="<!--{if $tpl_page_category == "abouts"}--> selected<!--{/if}-->"
             >当サイトについて</a></li>
         <li>
-            <a href="<!--{$smarty.const.SSL_URL}-->contact/<!--{$smarty.const.DIR_INDEX_URL}-->"
+            <a href="<!--{$smarty.const.HTTPS_URL}-->contact/<!--{$smarty.const.DIR_INDEX_URL}-->"
                 class="<!--{if $tpl_page_category == "contact"}--> selected<!--{/if}-->"
             >お問い合わせ</a></li>
         <li>
-            <a href="<!--{$smarty.const.URL_DIR}-->order/<!--{$smarty.const.DIR_INDEX_URL}-->"
+            <a href="<!--{$smarty.const.URL_PATH}-->order/<!--{$smarty.const.DIR_INDEX_URL}-->"
                 class="<!--{if $tpl_page_category == "order"}--> selected<!--{/if}-->"
             >特定商取引に関する法律</a></li>
         </ul>

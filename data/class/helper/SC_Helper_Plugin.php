@@ -49,7 +49,7 @@ class SC_Helper_Plugin{
             // プラグインのディレクトリ内の設定ファイルを参照する
             $plugin_name = $plugins['name'];
             $plugin_class_name = $plugins['class_name'];
-            require_once DATA_PATH."plugin/{$plugin_name}/{$plugin_class_name}.php";
+            require_once DATA_FILE_PATH."plugin/{$plugin_name}/{$plugin_class_name}.php";
 
             $code_str = "\$is_enable = {$plugin_class_name}::is_enable(\$class_name);";
             eval($code_str);
@@ -112,7 +112,7 @@ class SC_Helper_Plugin{
     }
 
     function getFilesystemPlugins(){
-        $plugin_dir = DATA_PATH."/plugin/";
+        $plugin_dir = DATA_FILE_PATH."/plugin/";
         if($dh = opendir($plugin_dir)){
             while(($file = readdir($dh) !== false)){
                 if(is_dir($plugin_dir."/".$file)){

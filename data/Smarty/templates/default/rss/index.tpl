@@ -23,7 +23,7 @@
 <rss version="2.0">
     <channel>
         <title><!--{$site_title|sf_mb_convert_encoding:$encode|h}--></title>
-        <link><!--{$smarty.const.SITE_URL}--></link>
+        <link><!--{$smarty.const.HTTP_URL}--></link>
         <description><!--{$description|sf_mb_convert_encoding:$encode|h}--></description>
         <language>ja</language>
         <managingEditor><!--{$email|h}--></managingEditor>
@@ -36,7 +36,7 @@
         <!--{section name=cnt loop=$arrNews}-->
             <item>
                 <!--{if $arrNews[cnt].news_url == '' }-->
-                    <link><!--{$smarty.const.SITE_URL}--></link>
+                    <link><!--{$smarty.const.HTTP_URL}--></link>
                 <!--{else}-->
                     <link><!--{$arrNews[cnt].news_url|h}--></link>
                 <!--{/if}-->

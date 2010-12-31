@@ -23,7 +23,7 @@
 
 // {{{ requires
 require_once CLASS_PATH . 'pages/upgrade/LC_Page_Upgrade_Base.php';
-require_once DATA_PATH . 'module/Tar.php';
+require_once DATA_FILE_PATH . 'module/Tar.php';
 
 /**
  * オーナーズストアからダウンロードデータを取得する.
@@ -111,7 +111,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
         switch($mode) {
         case 'patch_download':
             $arrPostData = array(
-                'eccube_url' => SITE_URL,
+                'eccube_url' => HTTP_URL,
                 'public_key' => sha1($public_key . $sha1_key),
                 'sha1_key'   => $sha1_key,
                 'patch_code' => 'latest'
@@ -119,7 +119,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
             break;
         default:
             $arrPostData = array(
-                'eccube_url' => SITE_URL,
+                'eccube_url' => HTTP_URL,
                 'public_key' => sha1($public_key . $sha1_key),
                 'sha1_key'   => $sha1_key,
                 'product_id' => $this->objForm->getValue('product_id')
@@ -163,7 +163,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
         if ($objRet->status === OSTORE_STATUS_SUCCESS) {
             $objLog->log('* save file start');
             $time = time();
-            $dir  = DATA_PATH . 'downloads/tmp/';
+            $dir  = DATA_FILE_PATH . 'downloads/tmp/';
             $filename = $time . '.tar.gz';
 
             $data = base64_decode($objRet->data->dl_file);
@@ -297,7 +297,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
      */
     function notifyDownload($mode, $arrCookies) {
         $arrPOSTParams = array(
-            'eccube_url' => SITE_URL
+            'eccube_url' => HTTP_URL
         );
         $objReq = $this->request($mode . '_commit', $arrPOSTParams, $arrCookies);
         return $objReq;
@@ -381,7 +381,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
      * LC_Update_Updater::execute()で処理を実行する.
      */
     function fileExecute($productCode) {
-        $file = DATA_PATH . 'downloads/update/' . $productCode . '_update.php';
+        $file = DATA_FILE_PATH . 'downloads/update/' . $productCode . '_update.php';
         if (file_exists($file)) {
             @include_once $file;
             if (class_exists('LC_Update_Updater')) {

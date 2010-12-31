@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/jquery.tablednd.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.URL_PATH}-->js/jquery.tablednd.js"></script>
 <form name="form1" id="form1" method="post" action="?" enctype="multipart/form-data">
 <input type="hidden" name="mode" value="edit" />
 <input type="hidden" name="parent_category_id" value="<!--{$arrForm.parent_category_id}-->">
@@ -53,13 +53,13 @@
       <!--{if $arrTree[cnt].level != $smarty.const.LEVEL_MAX}-->
         <a href="?" onclick="fnModeSubmit('tree', 'parent_category_id', <!--{$arrTree[cnt].category_id}-->); return false;">
         <!--{if $arrForm.parent_category_id == $arrTree[cnt].category_id}-->
-          <img src="<!--{$smarty.const.URL_DIR}-->misc/openf.gif">
+          <img src="<!--{$smarty.const.URL_PATH}-->misc/openf.gif">
         <!--{else}-->
-          <img src="<!--{$smarty.const.URL_DIR}-->misc/closef.gif">
+          <img src="<!--{$smarty.const.URL_PATH}-->misc/closef.gif">
         <!--{/if}-->
         <!--{$disp_name|sfCutString:20|h}--></a><br />
       <!--{else}-->
-        <img src="<!--{$smarty.const.URL_DIR}-->misc/closef.gif">
+        <img src="<!--{$smarty.const.URL_PATH}-->misc/closef.gif">
         <!--{$disp_name|sfCutString:20|h}--></a><br />
       <!--{/if}-->
 

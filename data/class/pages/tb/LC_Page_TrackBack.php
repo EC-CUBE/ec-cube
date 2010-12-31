@@ -121,7 +121,7 @@ class LC_Page_TrackBack extends LC_Page {
             $arrData["excerpt"] = trim(mb_convert_encoding($_GET["excerpt"], $afterEncode, $beforeEncode));
         }
 
-        $log_path = DATA_PATH . "logs/tb_result.log";
+        $log_path = DATA_FILE_PATH . "logs/tb_result.log";
         GC_Utils_Ex::gfPrintLog("request data start -----", $log_path);
         foreach($arrData as $key => $val) {
             GC_Utils_Ex::gfPrintLog( "\t" . $key . " => " . $val, $log_path);
@@ -218,7 +218,7 @@ class LC_Page_TrackBack extends LC_Page {
     function lfEntryTrackBack($arrData, &$objQuery) {
 
         // ログ
-        $log_path = DATA_PATH . "logs/tb_result.log";
+        $log_path = DATA_FILE_PATH . "logs/tb_result.log";
 
         // スパムフィルター
         if ($this->lfSpamFilter($arrData)) {
@@ -308,7 +308,7 @@ class LC_Page_TrackBack extends LC_Page {
             print("<channel>");
             print("<title>" . $retProduct[0]["name"] . "</title>");
             print("<link>");
-            print(SITE_URL . substr(DETAIL_P_HTML, strlen(URL_DIR)) . $product_id);
+            print(HTTP_URL . substr(DETAIL_P_HTML, strlen(URL_PATH)) . $product_id);
             print("</link>");
             print("<description>");
             print($retProduct[0]["main_comment"]);

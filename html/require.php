@@ -22,12 +22,12 @@
  */
 
 // rtrim は PHP バージョン依存対策
-define("HTML_PATH", rtrim(realpath(rtrim(realpath(dirname(__FILE__)), '/\\') . '/'), '/\\') . '/');
+define("HTML_FILE_PATH", rtrim(realpath(rtrim(realpath(dirname(__FILE__)), '/\\') . '/'), '/\\') . '/');
 
-require_once HTML_PATH . 'define.php';
-require_once HTML_PATH . 'handle_error.php';
+require_once HTML_FILE_PATH . 'define.php';
+require_once HTML_FILE_PATH . 'handle_error.php';
 define('FRONT_FUNCTION_PC_SITE', true);
-require_once HTML_PATH . HTML2DATA_DIR . 'require_base.php';
+require_once HTML_FILE_PATH . HTML2DATA_DIR . 'require_base.php';
 
 // スマートフォンの場合、リダイレクト
 SC_SmartphoneUserAgent::sfAutoRedirectSmartphoneSite();

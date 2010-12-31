@@ -23,7 +23,7 @@
 
 // {{{ requires
 require_once(CLASS_PATH . "pages/LC_Page.php");
-require_once(DATA_PATH . "module/gdthumb.php");
+require_once(DATA_FILE_PATH . "module/gdthumb.php");
 
 /**
  * リサイズイメージ のページクラス.

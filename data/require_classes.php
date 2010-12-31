@@ -21,8 +21,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-require_once(DATA_PATH . "module/Services/JSON.php");
-require_once DATA_PATH . 'module/Compat/Compat.php';
+require_once(DATA_FILE_PATH . "module/Services/JSON.php");
+require_once DATA_FILE_PATH . 'module/Compat/Compat.php';
 require_once(CLASS_EX_PATH . "util_extends/GC_Utils_Ex.php");
 require_once(CLASS_EX_PATH . "util_extends/SC_Utils_Ex.php");
 require_once(CLASS_EX_PATH . "db_extends/SC_DB_MasterData_Ex.php");

@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(DATA_PATH . 'module/Net/URL.php');
+require_once(DATA_FILE_PATH . 'module/Net/URL.php');
 
 /**
  * Web Page を制御する基底クラス
@@ -185,12 +185,12 @@ class LC_Page {
     /**
      * 指定の URL へリダイレクトする.
      *
-     * リダイレクト先 URL に SITE_URL 及び SSL_URL を含むかチェックし,
+     * リダイレクト先 URL に HTTP_URL 及び HTTPS_URL を含むかチェックし,
      * LC_Page::getToken() の値を URLパラメータで自動的に付与する.
      *
      * @param string $url リダイレクト先 URL
      * @param boolean $isMobile モバイル用にセッションIDを付与する場合 true
-     * @return void|boolean $url に SITE_URL 及び, SSL_URL を含まない場合 false,
+     * @return void|boolean $url に HTTP_URL 及び, HTTPS_URL を含まない場合 false,
      *                       正常に遷移可能な場合は, $url の ロケーションヘッダを出力する.
      * @see Net_URL
      */
@@ -198,8 +198,8 @@ class LC_Page {
 echo "SC_Response.php::sendRedirect()に移行してね。";
 exit;
 
-        if (preg_match("/(" . preg_quote(SITE_URL, '/')
-                          . "|" . preg_quote(SSL_URL, '/') . ")/", $url)) {
+        if (preg_match("/(" . preg_quote(HTTP_URL, '/')
+                          . "|" . preg_quote(HTTPS_URL, '/') . ")/", $url)) {
 
             $netURL = new Net_URL($url);
             if (!empty($_SERVER['QUERY_STRING'])) {
@@ -291,7 +291,7 @@ exit;
      * 以下の順序で 引数 $path から URL を取得する.
      * 1. realpath($path) で $path の 絶対パスを取得
      * 2. $_SERVER['DOCUMENT_ROOT'] と一致する文字列を削除
-     * 3. $useSSL の値に応じて, SITE_URL 又は, SSL_URL を付与する.
+     * 3. $useSSL の値に応じて, HTTP_URL 又は, HTTPS_URL を付与する.
      *
      * 返り値に, QUERY_STRING を含めたい場合は, key => value 形式
      * の配列を $param へ渡す.
@@ -299,8 +299,8 @@ exit;
      * @access protected
      * @param string $path 結果を取得するためのパス
      * @param array $param URL に付与するパラメータの配列
-     * @param mixed $useSSL 結果に SSL_URL を使用する場合 true,
-     *                         SITE_URL を使用する場合 false,
+     * @param mixed $useSSL 結果に HTTPS_URL を使用する場合 true,
+     *                         HTTP_URL を使用する場合 false,
      *                         デフォルト "escape" 現在のスキーマを使用
      * @return string $path の存在する http(s):// から始まる絶対パス
      * @see Net_URL
@@ -310,14 +310,14 @@ exit;
 
         // スキーマを定義
         if ($useSSL === true) {
-            $url = SSL_URL . $rootPath;
+            $url = HTTPS_URL . $rootPath;
         } elseif ($useSSL === false){
-            $url = SITE_URL . $rootPath;
+            $url = HTTP_URL . $rootPath;
         } elseif ($useSSL == "escape") {
             if (SC_Utils_Ex::sfIsHTTPS()) {
-                $url = SSL_URL . $rootPath;
+                $url = HTTPS_URL . $rootPath;
             } else {
-                $url = SITE_URL . $rootPath;
+                $url = HTTP_URL . $rootPath;
             }
         } else {
             die("[BUG] Illegal Parametor of \$useSSL ");
@@ -341,7 +341,7 @@ exit;
     function getRootPath($path) {
         // Windowsの場合は, ディレクトリの区切り文字を\から/に変換する
         $path = str_replace('\\', '/', $path);
-        $htmlPath = str_replace('\\', '/', HTML_PATH);
+        $htmlPath = str_replace('\\', '/', HTML_FILE_PATH);
         
         // PHP 5.1 対策 ( http://xoops.ec-cube.net/modules/newbb/viewtopic.php?topic_id=4277&forum=9 )
         if (strlen($path) == 0) {
@@ -350,7 +350,7 @@ exit;
         
         // $path が / で始まっている場合
         if (substr($path, 0, 1) == '/') {
-            $realPath = realpath($htmlPath . substr_replace($path, '', 0, strlen(URL_DIR)));
+            $realPath = realpath($htmlPath . substr_replace($path, '', 0, strlen(URL_PATH)));
         // 相対パスの場合
         } else {
             $realPath = realpath($path);
@@ -362,7 +362,7 @@ exit;
             $realPath .= '/';
         }
         
-        // HTML_PATH を削除した文字列を取得.
+        // HTML_FILE_PATH を削除した文字列を取得.
         $rootPath = str_replace($htmlPath, '', $realPath);
         $rootPath = ltrim($rootPath, '/');
 
