@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "helper/SC_Helper_Mobile.php");
+require_once(CLASS_FILE_PATH . "helper/SC_Helper_Mobile.php");
 
 /**
  * モバイルのヘルパークラス(拡張).

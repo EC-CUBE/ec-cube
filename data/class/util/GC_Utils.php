@@ -117,12 +117,12 @@ class GC_Utils {
             print_r($obj);
             $buffer = ob_get_contents();
             ob_end_clean();
-            $fp = fopen(LOG_PATH, "a+");
+            $fp = fopen(LOG_FILE, "a+");
             fwrite( $fp, $buffer."\n" );
             fclose( $fp );
             GC_Utils::gfPrintLog("*** end Debug ***");
             // ログテーション
-            GC_Utils::gfLogRotation(MAX_LOG_QUANTITY, MAX_LOG_SIZE, LOG_PATH);
+            GC_Utils::gfLogRotation(MAX_LOG_QUANTITY, MAX_LOG_SIZE, LOG_FILE);
 		}
     }
 
@@ -139,7 +139,7 @@ class GC_Utils {
         $today = date("Y/m/d H:i:s");
         // 出力パスの作成
         if ($path == "") {
-            $path = LOG_PATH;
+            $path = LOG_FILE;
         }
 
         // エスケープされている文字をもとに戻す

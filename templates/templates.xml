@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_FILE_PATH . "pages/LC_Page.php");
 
 /**
  * XXX のページクラス.
@@ -87,7 +87,7 @@ class LC_Page_XXX extends LC_Page {
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/XXX/LC_Page_XXX.php");
+require_once(CLASS_FILE_PATH . "pages/XXX/LC_Page_XXX.php");
 
 /**
  * XXX のページクラス(拡張).
@@ -156,7 +156,7 @@ class LC_Page_XXX_Ex extends LC_Page_XXX {
  
  // {{{ requires
 require_once("./require.php");
-require_once(CLASS_PATH . "page_extends/LC_Page_XXX_Ex.php");
+require_once(CLASS_FILE_PATH . "page_extends/LC_Page_XXX_Ex.php");
 
 // }}}
 // {{{ generate page

@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/products/LC_Page_Products_Search.php");
+require_once(CLASS_FILE_PATH . "pages/products/LC_Page_Products_Search.php");
 
 /**
  * 商品検索 のページクラス(拡張).

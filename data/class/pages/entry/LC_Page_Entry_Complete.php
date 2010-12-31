@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_FILE_PATH . "pages/LC_Page.php");
 
 /**
  * 会員登録(完了) のページクラス.

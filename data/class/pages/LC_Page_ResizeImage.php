@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_FILE_PATH . "pages/LC_Page.php");
 require_once(DATA_FILE_PATH . "module/gdthumb.php");
 
 /**
@@ -63,8 +63,8 @@ class LC_Page_ResizeImage extends LC_Page {
             if (!$this->lfCheckFileName()) {
                 GC_Utils_Ex::gfPrintLog('invalid access :resize_image.php $_GET["image"]=' . $_GET['image']);
             }
-            else if (file_exists(IMAGE_SAVE_DIR . $_GET['image'])) {
-                $file = IMAGE_SAVE_DIR . $_GET['image'];
+            else if (file_exists(IMAGE_SAVE_FILE_PATH . $_GET['image'])) {
+                $file = IMAGE_SAVE_FILE_PATH . $_GET['image'];
             }
         }
 

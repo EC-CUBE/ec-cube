@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "SC_Plugin.php");
+require_once(CLASS_FILE_PATH . "SC_Plugin.php");
 
 /**
  * プラグインクラス(拡張).

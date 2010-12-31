@@ -260,7 +260,7 @@ __EOF__;
         case DEVICE_TYPE_PC:
         default:
             $dir = TEMPLATE_DIR;
-            $userPath = USER_PATH;
+            $userPath = USER_FILE_PATH;
             $templateName = TEMPLATE_NAME;
         }
         if ($isUser) {
@@ -288,7 +288,7 @@ __EOF__;
         case DEVICE_TYPE_PC:
         default:
         }
-        return USER_PATH;
+        return USER_FILE_PATH;
     }
 
     /**

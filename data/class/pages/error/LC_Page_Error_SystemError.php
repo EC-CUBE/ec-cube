@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/error/LC_Page_Error.php");
+require_once(CLASS_FILE_PATH . "pages/error/LC_Page_Error.php");
 
 /**
  * システムエラー表示のページクラス
@@ -71,11 +71,11 @@ class LC_Page_Error_SystemError extends LC_Page_Error {
      * @return void
      */
     function process() {
-        require_once CLASS_PATH . 'SC_MobileUserAgent.php';
+        require_once CLASS_FILE_PATH . 'SC_MobileUserAgent.php';
 
         $objView = null;
         if (SC_MobileUserAgent::isMobile() && $this->adminPage == false) {
-            $objView = new SC_InstallView(MOBILE_TEMPLATE_DIR, MOBILE_COMPILE_DIR);
+            $objView = new SC_InstallView(MOBILE_TEMPLATE_DIR, MOBILE_COMPILE_FILE_PATH);
         } elseif($this->adminPage) {
             $objView = new SC_AdminView();
         } else {

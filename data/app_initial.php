@@ -21,22 +21,22 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-if (!defined("CLASS_PATH")) {
+if (!defined("CLASS_FILE_PATH")) {
     /** クラスパス */
-    define("CLASS_PATH", DATA_FILE_PATH . "class/");
+    define("CLASS_FILE_PATH", DATA_FILE_PATH . "class/");
 }
 
-if (!defined("CLASS_EX_PATH")) {
+if (!defined("CLASS_EX_FILE_PATH")) {
     /** クラスパス */
-    define("CLASS_EX_PATH", DATA_FILE_PATH . "class_extends/");
+    define("CLASS_EX_FILE_PATH", DATA_FILE_PATH . "class_extends/");
 }
 
-if (!defined("CACHE_PATH")) {
+if (!defined("CACHE_FILE_PATH")) {
     /** キャッシュ生成ディレクトリ */
-    define("CACHE_PATH", DATA_FILE_PATH . "cache/");
+    define("CACHE_FILE_PATH", DATA_FILE_PATH . "cache/");
 }
 
-require_once(CLASS_EX_PATH . "SC_Initial_Ex.php");
+require_once(CLASS_EX_FILE_PATH . "SC_Initial_Ex.php");
 // アプリケーション初期化処理
 $objInit = new SC_Initial_Ex();
 $objInit->init();

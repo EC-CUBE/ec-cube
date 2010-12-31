@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "helper/SC_Helper_Plugin.php");
+require_once(CLASS_FILE_PATH . "helper/SC_Helper_Plugin.php");
 
 /**
  * プラグイン関連のヘルパークラス(拡張).

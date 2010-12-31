@@ -300,7 +300,7 @@
     <!--{* 検索結果表示テーブル *}-->
     <table class="list">
         <!--{* ペイジェントモジュール連携用 *}-->
-        <!--{assign var=path value=`$smarty.const.MODULE_PATH`mdl_paygent/paygent_order_index.tpl}-->
+        <!--{assign var=path value=`$smarty.const.MODULE_FILE_PATH`mdl_paygent/paygent_order_index.tpl}-->
         <!--{if file_exists($path)}-->
             <!--{include file=$path}-->
         <!--{else}-->

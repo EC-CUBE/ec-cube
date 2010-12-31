@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
+require_once(CLASS_FILE_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * 定休日管理のページクラス.

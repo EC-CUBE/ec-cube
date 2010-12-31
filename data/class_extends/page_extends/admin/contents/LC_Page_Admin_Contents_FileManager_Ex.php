@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/admin/contents/LC_Page_Admin_Contents_FileManager.php");
+require_once(CLASS_FILE_PATH . "pages/admin/contents/LC_Page_Admin_Contents_FileManager.php");
 
 /**
  * ファイル管理 のページクラス(拡張).

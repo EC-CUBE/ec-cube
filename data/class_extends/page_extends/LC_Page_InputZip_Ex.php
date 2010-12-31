@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page_InputZip.php");
+require_once(CLASS_FILE_PATH . "pages/LC_Page_InputZip.php");
 
 /**
  * 郵便番号検索 のページクラス(拡張).

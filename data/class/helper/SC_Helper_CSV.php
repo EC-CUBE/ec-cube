@@ -197,7 +197,7 @@ class SC_Helper_CSV {
         // TODO: パフォーマンス向上には、ストリームを使うようにすると良い
         //  環境要件がバージョン5.1以上になったら使うように変えても良いかと
         //  fopen('php://temp/maxmemory:'. (5*1024*1024), 'r+');
-        $tmp_filename = tempnam(CSV_TEMP_DIR, 'product_csv');
+        $tmp_filename = tempnam(CSV_TEMP_FILE_PATH, 'product_csv');
         $this->fpOutput = fopen($tmp_filename, "w+");
 
         fwrite($this->fpOutput, $header);

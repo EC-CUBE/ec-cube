@@ -35,7 +35,7 @@
  * 上記カラムのデータ型は特に指定しないが, 1 と 2 は常に string 型となる.
  *
  * マスタデータがキャッシュされると, key => value 形式の配列として使用できる.
- * マスタデータのキャッシュは, MASTER_DATA_DIR/マスタデータ名.php というファイルが生成される.
+ * マスタデータのキャッシュは, MASTER_DATA_FILE_PATH/マスタデータ名.php というファイルが生成される.
  *
  * @package DB
  * @author LOCKON CO.,LTD.
@@ -58,7 +58,7 @@ class SC_DB_MasterData {
      * マスタデータを取得する.
      *
      * 以下の順序でマスタデータを取得する.
-     * 1. MASTER_DATA_DIR にマスタデータキャッシュが存在しない場合、
+     * 1. MASTER_DATA_FILE_PATH にマスタデータキャッシュが存在しない場合、
      *    DBからマスタデータを取得して、マスタデータキャッシュを生成する。
      * 2. マスタデータキャッシュを読み込み、変数に格納し返す。
      *
@@ -73,7 +73,7 @@ class SC_DB_MasterData {
 
         $columns = $this->getDefaultColumnName($columns);
 
-        $filepath = MASTER_DATA_DIR . $name . '.serial';
+        $filepath = MASTER_DATA_FILE_PATH . $name . '.serial';
 
         if (!file_exists($filepath)) {
             // キャッシュ生成
@@ -225,11 +225,11 @@ class SC_DB_MasterData {
      * @return bool 消去した場合 true
      */
     function clearCache($name) {
-        $masterDataFile = MASTER_DATA_DIR . $name . ".php";
+        $masterDataFile = MASTER_DATA_FILE_PATH . $name . ".php";
         if (is_file($masterDataFile)) {
             unlink($masterDataFile);
         }
-        $masterDataFile = MASTER_DATA_DIR . $name . ".serial";
+        $masterDataFile = MASTER_DATA_FILE_PATH . $name . ".serial";
         if (is_file($masterDataFile)) {
             unlink($masterDataFile);
         }
@@ -260,7 +260,7 @@ class SC_DB_MasterData {
         // マスタデータを文字列にする
         // 定数を生成する場合
         if ($isDefine) {
-            $path = MASTER_DATA_DIR . $name . '.php';
+            $path = MASTER_DATA_FILE_PATH . $name . '.php';
 
             $data = "<?php\n";
             // 定数コメントを生成する場合
@@ -274,7 +274,7 @@ class SC_DB_MasterData {
 
         // 配列を生成する場合
         } else {
-            $path = MASTER_DATA_DIR . $name . '.serial';
+            $path = MASTER_DATA_FILE_PATH . $name . '.serial';
             $data = serialize($masterData);
         }
 

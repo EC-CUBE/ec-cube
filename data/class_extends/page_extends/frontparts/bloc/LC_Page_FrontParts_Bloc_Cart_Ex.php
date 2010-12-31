@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/frontparts/bloc/LC_Page_FrontParts_Bloc_Cart.php");
+require_once(CLASS_FILE_PATH . "pages/frontparts/bloc/LC_Page_FrontParts_Bloc_Cart.php");
 
 /**
  * カート のページクラス(拡張).

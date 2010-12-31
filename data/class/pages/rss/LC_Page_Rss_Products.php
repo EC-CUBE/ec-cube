@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_FILE_PATH . "pages/LC_Page.php");
 
 /**
  * RSS(商品) のページクラス.
@@ -75,11 +75,11 @@ class LC_Page_Rss_Products extends LC_Page {
                 $arrProduct[$key]["price02"] = SC_Helper_DB_Ex::sfCalcIncTax($arrProduct[$key]["price02"]);
 
                 // 画像ファイルのURLセット
-                (file_exists(IMAGE_SAVE_DIR . $arrProduct[$key]["main_list_image"])) ? $dir = IMAGE_SAVE_URL_RSS : $dir = IMAGE_TEMP_URL_RSS;
+                (file_exists(IMAGE_SAVE_FILE_PATH . $arrProduct[$key]["main_list_image"])) ? $dir = IMAGE_SAVE_URL_RSS : $dir = IMAGE_TEMP_URL_RSS;
                 $arrProduct[$key]["main_list_image"] = $dir . $arrProduct[$key]["main_list_image"];
-                (file_exists(IMAGE_SAVE_DIR . $arrProduct[$key]["main_image"])) ? $dir = IMAGE_SAVE_URL_RSS : $dir = IMAGE_TEMP_URL_RSS;
+                (file_exists(IMAGE_SAVE_FILE_PATH . $arrProduct[$key]["main_image"])) ? $dir = IMAGE_SAVE_URL_RSS : $dir = IMAGE_TEMP_URL_RSS;
                 $arrProduct[$key]["main_image"] = $dir . $arrProduct[$key]["main_image"];
-                (file_exists(IMAGE_SAVE_DIR . $arrProduct[$key]["main_large_image"])) ? $dir = IMAGE_SAVE_URL_RSS : $dir = IMAGE_TEMP_URL_RSS;
+                (file_exists(IMAGE_SAVE_FILE_PATH . $arrProduct[$key]["main_large_image"])) ? $dir = IMAGE_SAVE_URL_RSS : $dir = IMAGE_TEMP_URL_RSS;
                 $arrProduct[$key]["main_large_image"] = $dir . $arrProduct[$key]["main_large_image"];
 
                 // ポイント計算
@@ -101,11 +101,11 @@ class LC_Page_Rss_Products extends LC_Page {
                 $arrProduct[$key]["price02_min"] = SC_Helper_DB_Ex::sfCalcIncTax($arrProduct[$key]["price02_min"]);
 
                 // 画像ファイルのURLセット
-                (file_exists(IMAGE_SAVE_DIR . $arrProduct[$key]["main_list_image"])) ? $dir = IMAGE_SAVE_URL_RSS : $dir = IMAGE_TEMP_URL_RSS;
+                (file_exists(IMAGE_SAVE_FILE_PATH . $arrProduct[$key]["main_list_image"])) ? $dir = IMAGE_SAVE_URL_RSS : $dir = IMAGE_TEMP_URL_RSS;
                 $arrProduct[$key]["main_list_image"] = $dir . $arrProduct[$key]["main_list_image"];
-                (file_exists(IMAGE_SAVE_DIR . $arrProduct[$key]["main_image"])) ? $dir = IMAGE_SAVE_URL_RSS : $dir = IMAGE_TEMP_URL_RSS;
+                (file_exists(IMAGE_SAVE_FILE_PATH . $arrProduct[$key]["main_image"])) ? $dir = IMAGE_SAVE_URL_RSS : $dir = IMAGE_TEMP_URL_RSS;
                 $arrProduct[$key]["main_image"] = $dir . $arrProduct[$key]["main_image"];
-                (file_exists(IMAGE_SAVE_DIR . $arrProduct[$key]["main_large_image"])) ? $dir = IMAGE_SAVE_URL_RSS : $dir = IMAGE_TEMP_URL_RSS;
+                (file_exists(IMAGE_SAVE_FILE_PATH . $arrProduct[$key]["main_large_image"])) ? $dir = IMAGE_SAVE_URL_RSS : $dir = IMAGE_TEMP_URL_RSS;
                 $arrProduct[$key]["main_large_image"] = $dir . $arrProduct[$key]["main_large_image"];
 
                 // ポイント計算

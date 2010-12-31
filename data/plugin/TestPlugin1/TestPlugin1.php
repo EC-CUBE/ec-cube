@@ -1,5 +1,5 @@
 <?php
-require_once CLASS_PATH."/SC_Plugin.php";
+require_once CLASS_FILE_PATH."/SC_Plugin.php";
 
 class TestPlugin1 extends SC_Plugin {
 

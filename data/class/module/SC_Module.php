@@ -22,8 +22,8 @@
  */
 
 // {{{ requires
-require_once CLASS_PATH . 'SC_Query.php';
-require_once CLASS_EX_PATH . 'db_extends/SC_DB_MasterData_Ex.php';
+require_once CLASS_FILE_PATH . 'SC_Query.php';
+require_once CLASS_EX_FILE_PATH . 'db_extends/SC_DB_MasterData_Ex.php';
 
 /**
  * モジュールデータ管理クラス.
@@ -120,7 +120,7 @@ class SC_Module {
      * @return string
      */
     function getBasePath() {
-        return MODULE_PATH . $this->getCode() . '/';
+        return MODULE_FILE_PATH . $this->getCode() . '/';
     }
 
     /**

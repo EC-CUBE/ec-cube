@@ -189,19 +189,19 @@ class SC_Initial {
 
         $errorMessage = "<div style='color: #F00; font-weight: bold; "
             . "background-color: #FEB; text-align: center'>"
-            . CACHE_PATH
+            . CACHE_FILE_PATH
             . " にユーザ書込み権限(777等)を付与して下さい。</div>";
 
         // 定数を設定
-        if (is_file(CACHE_PATH . "mtb_constants.php")) {
-            require_once(CACHE_PATH . "mtb_constants.php");
+        if (is_file(CACHE_FILE_PATH . "mtb_constants.php")) {
+            require_once(CACHE_FILE_PATH . "mtb_constants.php");
 
             // キャッシュが無ければ, 初期データからコピー
-        } elseif (is_file(CACHE_PATH . "../mtb_constants_init.php")) {
+        } elseif (is_file(CACHE_FILE_PATH . "../mtb_constants_init.php")) {
 
-            $mtb_constants = file_get_contents(CACHE_PATH . "../mtb_constants_init.php");
-            if (is_writable(CACHE_PATH)) {
-                $handle = fopen(CACHE_PATH . "mtb_constants.php", "w");
+            $mtb_constants = file_get_contents(CACHE_FILE_PATH . "../mtb_constants_init.php");
+            if (is_writable(CACHE_FILE_PATH)) {
+                $handle = fopen(CACHE_FILE_PATH . "mtb_constants.php", "w");
                 if (!$handle) {
                     die($errorMessage);
                 }
@@ -210,12 +210,12 @@ class SC_Initial {
                 }
                 fclose($handle);
 
-                require_once(CACHE_PATH . "mtb_constants.php");
+                require_once(CACHE_FILE_PATH . "mtb_constants.php");
             } else {
                 die($errorMessage);
             }
         } else {
-            die(CACHE_PATH . "../mtb_constants_init.php が存在しません");
+            die(CACHE_FILE_PATH . "../mtb_constants_init.php が存在しません");
         }
     }
 
@@ -234,20 +234,16 @@ class SC_Initial {
                 mkdir(COMPILE_DIR);
             }
 
-            if (!file_exists(MOBILE_COMPILE_DIR)) {
-                mkdir(MOBILE_COMPILE_DIR);
+            if (!file_exists(MOBILE_COMPILE_FILE_PATH)) {
+                mkdir(MOBILE_COMPILE_FILE_PATH);
             }
 
-            if (!file_exists(SMARTPHONE_COMPILE_DIR)) {
-                mkdir(SMARTPHONE_COMPILE_DIR);
+            if (!file_exists(SMARTPHONE_COMPILE_FILE_PATH)) {
+                mkdir(SMARTPHONE_COMPILE_FILE_PATH);
             }
 
-            if (!file_exists(COMPILE_ADMIN_DIR)) {
-                mkdir(COMPILE_ADMIN_DIR);
-            }
-
-            if (!file_exists(COMPILE_FTP_DIR)) {
-                mkdir(COMPILE_FTP_DIR);
+            if (!file_exists(COMPILE_ADMIN_FILE_PATH)) {
+                mkdir(COMPILE_ADMIN_FILE_PATH);
             }
         }
     }

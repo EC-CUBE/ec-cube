@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/admin/design/LC_Page_Admin_Design_CSS.php");
+require_once(CLASS_FILE_PATH . "pages/admin/design/LC_Page_Admin_Design_CSS.php");
 
 /**
  * CSS 設定 のページクラス(拡張).

@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 // {{{ requires
-require_once CLASS_PATH . 'module/SC_Module.php';
+require_once CLASS_FILE_PATH . 'module/SC_Module.php';
 
 /**
  * 決済モジュール用のモジュールデータ管理クラス.

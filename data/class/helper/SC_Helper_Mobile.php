@@ -22,8 +22,8 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . '../module/Net/URL.php');
-require_once(CLASS_PATH . 'SC_Query.php');
+require_once(CLASS_FILE_PATH . '../module/Net/URL.php');
+require_once(CLASS_FILE_PATH . 'SC_Query.php');
 
 /**
  * モバイルのヘルパークラス.

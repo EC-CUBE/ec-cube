@@ -160,7 +160,7 @@ class SC_Customer {
     function startSession() {
         $_SESSION['customer'] = $this->customer_data;
         // セッション情報の保存
-        GC_Utils_Ex::gfPrintLog("access : user=".$this->customer_data['customer_id'] ."\t"."ip=". $this->getRemoteHost(), CUSTOMER_LOG_PATH );
+        GC_Utils_Ex::gfPrintLog("access : user=".$this->customer_data['customer_id'] ."\t"."ip=". $this->getRemoteHost(), CUSTOMER_LOG_FILE );
     }
 
     // ログアウト　$_SESSION['customer']を解放し、ログに書き込む
@@ -170,7 +170,7 @@ class SC_Customer {
         $objSiteSess = new SC_SiteSession();
         $objSiteSess->unsetUniqId();
         // ログに記録する
-        GC_Utils_Ex::gfPrintLog("logout : user=".$this->customer_data['customer_id'] ."\t"."ip=". $this->getRemoteHost(), CUSTOMER_LOG_PATH );
+        GC_Utils_Ex::gfPrintLog("logout : user=".$this->customer_data['customer_id'] ."\t"."ip=". $this->getRemoteHost(), CUSTOMER_LOG_FILE );
     }
 
     // ログインに成功しているか判定する。

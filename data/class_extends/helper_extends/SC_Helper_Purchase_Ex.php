@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "helper/SC_Helper_Purchase.php");
+require_once(CLASS_FILE_PATH . "helper/SC_Helper_Purchase.php");
 
 /**
  * 商品購入関連のヘルパークラス(拡張).

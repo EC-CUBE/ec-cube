@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/admin/ownersstore/LC_Page_Admin_OwnersStore_Settings.php");
+require_once(CLASS_FILE_PATH . "pages/admin/ownersstore/LC_Page_Admin_OwnersStore_Settings.php");
 
 /**
  * オーナーズストア管理:認証キー設定 のページクラス(拡張).

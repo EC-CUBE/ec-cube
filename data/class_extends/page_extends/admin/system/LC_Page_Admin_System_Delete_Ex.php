@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/admin/system/LC_Page_Admin_System_Delete.php");
+require_once(CLASS_FILE_PATH . "pages/admin/system/LC_Page_Admin_System_Delete.php");
 
 /**
  * LC_Page_Admin_System_Delete のページクラス(拡張).

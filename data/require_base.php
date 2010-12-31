@@ -37,11 +37,11 @@ if (!SC_Utils_Ex::sfIsInstallFunction()) {
     SC_Utils_Ex::sfInitInstall();
 
     // セッションハンドラ開始
-    require_once CLASS_EX_PATH . 'helper_extends/SC_Helper_Session_Ex.php';
+    require_once CLASS_EX_FILE_PATH . 'helper_extends/SC_Helper_Session_Ex.php';
     $objSession = new SC_Helper_Session_Ex();
 
     // セッション初期化・開始
-    require_once CLASS_PATH . 'session/SC_SessionFactory.php';
+    require_once CLASS_FILE_PATH . 'session/SC_SessionFactory.php';
     $sessionFactory = SC_SessionFactory::getInstance();
     $sessionFactory->initSession();
 

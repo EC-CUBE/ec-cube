@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once CLASS_PATH . 'pages/upgrade/LC_Page_Upgrade_Base.php';
+require_once CLASS_FILE_PATH . 'pages/upgrade/LC_Page_Upgrade_Base.php';
 require_once DATA_FILE_PATH . 'module/Tar.php';
 
 /**
@@ -194,7 +194,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
             $tar->extract($exract_dir);
 
             $objLog->log("* copy batch start");
-            @include_once CLASS_PATH . 'batch/SC_Batch_Update.php';
+            @include_once CLASS_FILE_PATH . 'batch/SC_Batch_Update.php';
             $objBatch = new SC_Batch_Update();
             $arrCopyLog = $objBatch->execute($exract_dir);
 

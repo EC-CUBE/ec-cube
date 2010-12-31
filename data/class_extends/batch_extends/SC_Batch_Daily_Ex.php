@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "batch/SC_Batch_Daily.php");
+require_once(CLASS_FILE_PATH . "batch/SC_Batch_Daily.php");
 
 /**
  * 日次バッチクラス(拡張).

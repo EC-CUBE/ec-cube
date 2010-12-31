@@ -1,8 +1,8 @@
 <?php
 // {{{ requires
-require_once CLASS_PATH . 'pages/LC_Page.php';
-require_once CLASS_PATH . 'pages/upgrade/helper/LC_Upgrade_Helper_Log.php';
-require_once CLASS_PATH . 'pages/upgrade/helper/LC_Upgrade_Helper_Json.php';
+require_once CLASS_FILE_PATH . 'pages/LC_Page.php';
+require_once CLASS_FILE_PATH . 'pages/upgrade/helper/LC_Upgrade_Helper_Log.php';
+require_once CLASS_FILE_PATH . 'pages/upgrade/helper/LC_Upgrade_Helper_Json.php';
 require_once DATA_FILE_PATH . 'module/Request.php';
 
 /**

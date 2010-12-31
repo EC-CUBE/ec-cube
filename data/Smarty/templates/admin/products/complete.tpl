@@ -32,5 +32,5 @@
 </form>
 <!--{* オペビルダー用 *}-->
 <!--{if "sfViewAdminOpe"|function_exists === TRUE}-->
-<!--{include file=`$smarty.const.MODULE_PATH`mdl_opebuilder/admin_ope_view.tpl}-->
+<!--{include file=`$smarty.const.MODULE_FILE_PATH`mdl_opebuilder/admin_ope_view.tpl}-->
 <!--{/if}-->

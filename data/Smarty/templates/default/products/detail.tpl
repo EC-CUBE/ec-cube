@@ -389,7 +389,7 @@ $(document).ready(function() {
     </div>
     <!--{* オペビルダー用 *}-->
     <!--{if "sfViewDetailOpe"|function_exists === TRUE}-->
-        <!--{include file=`$smarty.const.MODULE_PATH`mdl_opebuilder/detail_ope_view.tpl}-->
+        <!--{include file=`$smarty.const.MODULE_FILE_PATH`mdl_opebuilder/detail_ope_view.tpl}-->
     <!--{/if}-->
     <!--詳細ここまで-->
 

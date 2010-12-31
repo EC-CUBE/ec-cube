@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/rss/LC_Page_Rss.php");
+require_once(CLASS_FILE_PATH . "pages/rss/LC_Page_Rss.php");
 
 /**
  * RSS のページクラス(拡張).

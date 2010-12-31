@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "util/SC_Utils.php");
+require_once(CLASS_FILE_PATH . "util/SC_Utils.php");
 
 /**
  * 各種ユーティリティクラス(拡張).

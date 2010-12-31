@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/admin/basis/LC_Page_Admin_Basis_Point.php");
+require_once(CLASS_FILE_PATH . "pages/admin/basis/LC_Page_Admin_Basis_Point.php");
 
 /**
  * ポイント設定 のページクラス(拡張).

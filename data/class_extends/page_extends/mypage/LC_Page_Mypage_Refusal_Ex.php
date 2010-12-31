@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/mypage/LC_Page_Mypage_Refusal.php");
+require_once(CLASS_FILE_PATH . "pages/mypage/LC_Page_Mypage_Refusal.php");
 
 /**
  * 退会手続き のページクラス(拡張).

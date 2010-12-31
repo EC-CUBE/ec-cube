@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/admin/mail/LC_Page_Admin_Mail_History.php");
+require_once(CLASS_FILE_PATH . "pages/admin/mail/LC_Page_Admin_Mail_History.php");
 
 /**
  * メール配信履歴 のページクラス(拡張).

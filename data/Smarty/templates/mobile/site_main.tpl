@@ -24,7 +24,7 @@
 <body bgcolor="#ffffff" text="#555555" link="#3a75af" vlink="#3a75af" alink="#3a75af">
 <!--{* Moba8リクエスト用 *}-->
 <!--{if "sfRequestMoba8"|function_exists === TRUE}-->
-<!--{include file=`$smarty.const.MODULE_PATH`mdl_moba8/request_moba8.tpl}-->
+<!--{include file=`$smarty.const.MODULE_FILE_PATH`mdl_moba8/request_moba8.tpl}-->
 <!--{/if}-->
 
 <!--▼MAIN-->

@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
+require_once(CLASS_FILE_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * 商品登録(商品規格)のページクラス.
@@ -94,7 +94,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin {
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
         // Downファイル管理クラス
-        $this->objDownFile = new SC_UploadFile(DOWN_TEMP_DIR, DOWN_SAVE_DIR);
+        $this->objDownFile = new SC_UploadFile(DOWN_TEMP_FILE_PATH, DOWN_SAVE_FILE_PATH);
 
         switch ($_POST['mode']) {
         case 'edit':

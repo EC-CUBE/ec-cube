@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/forgot/LC_Page_Forgot.php");
+require_once(CLASS_FILE_PATH . "pages/forgot/LC_Page_Forgot.php");
 
 /**
  * パスワード発行 のページクラス(拡張).

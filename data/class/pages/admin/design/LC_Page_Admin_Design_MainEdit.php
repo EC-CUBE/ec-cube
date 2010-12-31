@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
+require_once(CLASS_FILE_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * メイン編集 のページクラス.
@@ -186,7 +186,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
         $tmpPost = $_POST;
         $tmpPost['page_id'] = $page_id;
         $tmpPost['url'] = $url;
-        $tmpPost['tpl_dir'] = USER_PATH . "templates/preview/";
+        $tmpPost['tpl_dir'] = USER_FILE_PATH . "templates/preview/";
 
         $arrPreData = $this->objLayout->lfGetPageData("page_id = ? AND device_type_id = ?",
                                                       array($page_id, $device_type_id));

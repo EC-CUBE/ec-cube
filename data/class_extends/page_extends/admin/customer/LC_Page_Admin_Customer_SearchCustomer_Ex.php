@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/admin/customer/LC_Page_Admin_Customer_SearchCustomer.php");
+require_once(CLASS_FILE_PATH . "pages/admin/customer/LC_Page_Admin_Customer_SearchCustomer.php");
 
 /**
  * ページクラス(拡張).

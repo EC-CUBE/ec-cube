@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/admin/contents/LC_Page_Admin_Contents_RecommendSearch.php");
+require_once(CLASS_FILE_PATH . "pages/admin/contents/LC_Page_Admin_Contents_RecommendSearch.php");
 
 /**
  * おすすめ商品管理検索 のページクラス(拡張).

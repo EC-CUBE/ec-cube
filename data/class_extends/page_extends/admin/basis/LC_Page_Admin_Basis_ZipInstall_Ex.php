@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/admin/basis/LC_Page_Admin_Basis_ZipInstall.php");
+require_once(CLASS_FILE_PATH . "pages/admin/basis/LC_Page_Admin_Basis_ZipInstall.php");
 
 /**
  * 郵便番号DB登録 のページクラス(拡張).

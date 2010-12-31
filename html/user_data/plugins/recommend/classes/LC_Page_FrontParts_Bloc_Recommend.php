@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-require_once CLASS_PATH . 'pages/frontparts/bloc/LC_Page_FrontParts_Bloc.php';
+require_once CLASS_FILE_PATH . 'pages/frontparts/bloc/LC_Page_FrontParts_Bloc.php';
 
 /**
  * こんな商品も買っていますプラグインを制御するクラス

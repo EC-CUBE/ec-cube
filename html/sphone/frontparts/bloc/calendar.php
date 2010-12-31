@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_EX_PATH . "page_extends/frontparts/bloc/LC_Page_FrontParts_Bloc_Calendar_Ex.php");
+require_once(CLASS_EX_FILE_PATH . "page_extends/frontparts/bloc/LC_Page_FrontParts_Bloc_Calendar_Ex.php");
 
 // }}}
 // {{{ generate page

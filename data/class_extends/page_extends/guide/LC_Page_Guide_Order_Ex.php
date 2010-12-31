@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/guide/LC_Page_Guide_Order.php");
+require_once(CLASS_FILE_PATH . "pages/guide/LC_Page_Guide_Order.php");
 
 /**
  * ご利用方法ついて のページクラス(拡張).

@@ -107,7 +107,7 @@ function displaySystemError($errstr = null) {
         ob_clean();
     }
 
-    require_once CLASS_EX_PATH . 'page_extends/error/LC_Page_Error_SystemError_Ex.php';
+    require_once CLASS_EX_FILE_PATH . 'page_extends/error/LC_Page_Error_SystemError_Ex.php';
     $objPage = new LC_Page_Error_SystemError_Ex();
     register_shutdown_function(array($objPage, 'destroy'));
     $objPage->init();

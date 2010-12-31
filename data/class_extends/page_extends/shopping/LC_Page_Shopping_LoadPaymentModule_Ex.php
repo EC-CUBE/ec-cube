@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/shopping/LC_Page_Shopping_LoadPaymentModule.php");
+require_once(CLASS_FILE_PATH . "pages/shopping/LC_Page_Shopping_LoadPaymentModule.php");
 
 /**
  * 決済モジュールの呼び出しを行うクラス(拡張).

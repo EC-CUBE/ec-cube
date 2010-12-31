@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/admin/ownersstore/LC_Page_Admin_OwnersStore.php");
+require_once(CLASS_FILE_PATH . "pages/admin/ownersstore/LC_Page_Admin_OwnersStore.php");
 
 /**
  * オーナーズストア管理：購入商品一覧 のページクラス(拡張).

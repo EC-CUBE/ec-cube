@@ -22,9 +22,9 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
-if (file_exists(MODULE_PATH . "mdl_gmopg/inc/function.php")) {
-    require_once(MODULE_PATH . "mdl_gmopg/inc/function.php");
+require_once(CLASS_FILE_PATH . "pages/LC_Page.php");
+if (file_exists(MODULE_FILE_PATH . "mdl_gmopg/inc/function.php")) {
+    require_once(MODULE_FILE_PATH . "mdl_gmopg/inc/function.php");
 }
 
 /**

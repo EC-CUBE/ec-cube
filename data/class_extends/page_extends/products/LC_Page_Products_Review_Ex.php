@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/products/LC_Page_Products_Review.php");
+require_once(CLASS_FILE_PATH . "pages/products/LC_Page_Products_Review.php");
 
 /**
  * お客様の声投稿 のページクラス(拡張).

@@ -172,7 +172,7 @@ class SC_Utils {
     /* エラーページの表示 */
     function sfDispError($type) {
 
-        require_once(CLASS_EX_PATH . "page_extends/error/LC_Page_Error_DispError_Ex.php");
+        require_once(CLASS_EX_FILE_PATH . "page_extends/error/LC_Page_Error_DispError_Ex.php");
 
         $objPage = new LC_Page_Error_DispError_Ex();
         register_shutdown_function(array($objPage, "destroy"));
@@ -186,7 +186,7 @@ class SC_Utils {
     function sfDispSiteError($type, $objSiteSess = "", $return_top = false, $err_msg = "") {
         global $objCampaignSess;
 
-        require_once(CLASS_EX_PATH . "page_extends/error/LC_Page_Error_Ex.php");
+        require_once(CLASS_EX_FILE_PATH . "page_extends/error/LC_Page_Error_Ex.php");
 
         $objPage = new LC_Page_Error_Ex();
         register_shutdown_function(array($objPage, "destroy"));
@@ -207,7 +207,7 @@ class SC_Utils {
      * @return void
      */
     function sfDispException($debugMsg = null) {
-        require_once(CLASS_EX_PATH . "page_extends/error/LC_Page_Error_SystemError_Ex.php");
+        require_once(CLASS_EX_FILE_PATH . "page_extends/error/LC_Page_Error_SystemError_Ex.php");
 
         $objPage = new LC_Page_Error_SystemError_Ex();
         register_shutdown_function(array($objPage, "destroy"));
@@ -1183,45 +1183,6 @@ exit;
         $date = ereg_replace("\..*$","",$db_date);
         $time = strtotime($date);
         return $time;
-    }
-
-    /**
-     * テンプレートを切り替えて出力する
-     *
-     * @deprecated 2008/04/02以降使用不可
-     */
-    function sfCustomDisplay(&$objPage, $is_mobile = false) {
-        $basename = basename($_SERVER["REQUEST_URI"]);
-
-        if($basename == "") {
-            $path = $_SERVER["REQUEST_URI"] . DIR_INDEX_URL;
-        } else {
-            $path = $_SERVER["REQUEST_URI"];
-        }
-
-        if(isset($_GET['tpl']) && $_GET['tpl'] != "") {
-            $tpl_name = $_GET['tpl'];
-        } else {
-            $tpl_name = ereg_replace("^/", "", $path);
-            $tpl_name = ereg_replace("/", "_", $tpl_name);
-            $tpl_name = ereg_replace("(\.php$|\.html$)", ".tpl", $tpl_name);
-        }
-
-        $template_path = TEMPLATE_FTP_DIR . $tpl_name;
-echo $template_path;
-        if($is_mobile === true) {
-            $objView = new SC_MobileView();
-            $objView->assignobj($objPage);
-            $objView->display(SITE_FRAME);
-        } else if(file_exists($template_path)) {
-            $objView = new SC_UserView(TEMPLATE_FTP_DIR, COMPILE_FTP_DIR);
-            $objView->assignobj($objPage);
-            $objView->display($tpl_name);
-        } else {
-            $objView = new SC_SiteView();
-            $objView->assignobj($objPage);
-            $objView->display(SITE_FRAME);
-        }
     }
 
     // PHPのmb_convert_encoding関数をSmartyでも使えるようにする

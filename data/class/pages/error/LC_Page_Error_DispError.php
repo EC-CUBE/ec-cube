@@ -23,7 +23,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/error/LC_Page_Error.php");
+require_once(CLASS_FILE_PATH . "pages/error/LC_Page_Error.php");
 
 /**
  * エラー表示のページクラス

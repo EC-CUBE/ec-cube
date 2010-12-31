@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 // {{{ requires
-require_once(CLASS_PATH . "pages/admin/basis/LC_Page_Admin_Basis_Tradelaw.php");
+require_once(CLASS_FILE_PATH . "pages/admin/basis/LC_Page_Admin_Basis_Tradelaw.php");
 
 /**
  * 特定商取引法 のページクラス(拡張).

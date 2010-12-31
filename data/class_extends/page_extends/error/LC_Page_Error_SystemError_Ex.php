@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/error/LC_Page_Error_SystemError.php");
+require_once(CLASS_FILE_PATH . "pages/error/LC_Page_Error_SystemError.php");
 
 /**
  * エラー画面 のページクラス(拡張).

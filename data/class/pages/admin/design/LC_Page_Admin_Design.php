@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
+require_once(CLASS_FILE_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * デザイン管理 のページクラス.
@@ -373,7 +373,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin {
         $arrPreData = $objLayout->lfgetPageData(" page_id = ? " , array("0"));
 
         // XXX tplファイルの削除
-        $del_tpl = USER_PATH . "templates/" . $filename . '.tpl';
+        $del_tpl = USER_FILE_PATH . "templates/" . $filename . '.tpl';
 
         if (file_exists($del_tpl)){
             unlink($del_tpl);
@@ -384,15 +384,11 @@ class LC_Page_Admin_Design extends LC_Page_Admin {
             $tplfile = TEMPLATE_DIR . "mypage/index";
             $filename = 'mypage';
         } else {
-            if (file_exists(TEMPLATE_FTP_DIR . $filename . ".tpl")) {
-                $tplfile = TEMPLATE_FTP_DIR . $filename;
-            } else {
-                $tplfile = TEMPLATE_DIR . $filename;
-            }
+            $tplfile = TEMPLATE_DIR . $filename;
         }
 
         // プレビュー用tplファイルのコピー
-        $copyTo = USER_PATH . "templates/preview/" . TEMPLATE_NAME . "/" . $filename . ".tpl";
+        $copyTo = USER_FILE_PATH . "templates/preview/" . TEMPLATE_NAME . "/" . $filename . ".tpl";
 
         if (!is_dir(dirname($copyTo))) {
             mkdir(dirname($copyTo));

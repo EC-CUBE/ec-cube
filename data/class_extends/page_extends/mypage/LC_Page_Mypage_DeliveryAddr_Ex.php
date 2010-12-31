@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/mypage/LC_Page_Mypage_DeliveryAddr.php");
+require_once(CLASS_FILE_PATH . "pages/mypage/LC_Page_Mypage_DeliveryAddr.php");
 
 /**
  * お届け先追加 のページクラス(拡張).

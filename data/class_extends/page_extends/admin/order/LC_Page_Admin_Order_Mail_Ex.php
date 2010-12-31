@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/admin/order/LC_Page_Admin_Order_Mail.php");
+require_once(CLASS_FILE_PATH . "pages/admin/order/LC_Page_Admin_Order_Mail.php");
 
 /**
  * 受注メール管理 のページクラス(拡張).

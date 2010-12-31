@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/admin/products/LC_Page_Admin_Products_Product.php");
+require_once(CLASS_FILE_PATH . "pages/admin/products/LC_Page_Admin_Products_Product.php");
 
 /**
  * 商品登録 のページクラス(拡張).

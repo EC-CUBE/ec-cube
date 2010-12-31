@@ -43,7 +43,7 @@ class SC_FormParam {
 
     // コンストラクタ
     function SC_FormParam() {
-        $this->check_dir = IMAGE_SAVE_DIR;
+        $this->check_dir = IMAGE_SAVE_FILE_PATH;
         $this->initParam();
     }
 
@@ -249,7 +249,7 @@ class SC_FormParam {
                     break;
                 // ダウンロード用ファイルの存在チェック
                 case 'DOWN_FILE_EXISTS':
-                    if($this->param[$cnt] != "" && !file_exists(DOWN_SAVE_DIR . $this->param[$cnt])) {
+                    if($this->param[$cnt] != "" && !file_exists(DOWN_SAVE_FILE_PATH . $this->param[$cnt])) {
                         $objErr->arrErr[$val] = "※ " . $this->disp_name[$cnt] . "のファイルが存在しません。<br>";
                     }
                     break;

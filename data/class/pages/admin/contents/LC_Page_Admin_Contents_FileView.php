@@ -22,8 +22,8 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
-require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_FileManager_Ex.php");
+require_once(CLASS_FILE_PATH . "pages/admin/LC_Page_Admin.php");
+require_once(CLASS_EX_FILE_PATH . "helper_extends/SC_Helper_FileManager_Ex.php");
 
 /**
  * ファイル表示 のページクラス.
@@ -88,7 +88,7 @@ class LC_Page_Admin_Contents_FileView extends LC_Page_Admin {
             $objFileManager = new SC_Helper_FileManager_Ex();
             // ファイルを読み込んで表示
             header("Content-type: text/plain\n\n");
-            print($objFileManager->sfReadFile(USER_PATH . $_GET['file']));
+            print($objFileManager->sfReadFile(USER_FILE_PATH . $_GET['file']));
         } else {
             $this->objDisplay->redirect(USER_URL . $_GET['file']);
             exit;

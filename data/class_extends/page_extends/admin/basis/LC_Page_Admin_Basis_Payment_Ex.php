@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/admin/basis/LC_Page_Admin_Basis_Payment.php");
+require_once(CLASS_FILE_PATH . "pages/admin/basis/LC_Page_Admin_Basis_Payment.php");
 
 /**
  * 支払方法設定 のページクラス(拡張).

@@ -22,8 +22,8 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
-require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_FileManager_Ex.php");
+require_once(CLASS_FILE_PATH . "pages/admin/LC_Page_Admin.php");
+require_once(CLASS_EX_FILE_PATH . "helper_extends/SC_Helper_FileManager_Ex.php");
 
 /**
  * ファイル管理 のページクラス.
@@ -73,7 +73,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin {
         SC_Utils_Ex::sfIsSuccess($objSess);
 
         // ルートディレクトリ
-        $top_dir = USER_PATH;
+        $top_dir = USER_FILE_PATH;
 
         $objView = new SC_AdminView();
         $objQuery = new SC_Query();
@@ -111,7 +111,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin {
                 } else {
                     // javascriptで別窓表示(テンプレート側に渡す)
                     // FIXME XSS対策すること
-                    $file_url = ereg_replace(USER_PATH, "", $_POST['select_file']);
+                    $file_url = ereg_replace(USER_FILE_PATH, "", $_POST['select_file']);
                     $this->tpl_onload = "win02('./file_view.php?file=". $file_url ."', 'user_data', '600', '400');";
                 }
             }
@@ -256,20 +256,20 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin {
     /*
      * 関数名：lfCheckSelectDir()
      * 引数１：ディレクトリ
-     * 説明：選択ディレクトリがUSER_PATH以下かチェック
+     * 説明：選択ディレクトリがUSER_FILE_PATH以下かチェック
      */
     function lfCheckSelectDir($dir) {
-        $top_dir = USER_PATH;
-        // USER_PATH以下の場合
+        $top_dir = USER_FILE_PATH;
+        // USER_FILE_PATH以下の場合
             if (preg_match("@^\Q". $top_dir. "\E@", $dir) > 0) {
-            // 相対パスがある場合、USER_PATHを返す.
+            // 相対パスがある場合、USER_FILE_PATHを返す.
             if (preg_match("@\Q..\E@", $dir) > 0) {
                 return $top_dir;
             // 相対パスがない場合、そのままディレクトリパスを返す.
             } else {
                 return $dir;
             }
-        // USER_PATH以下でない場合、USER_PATHを返す.
+        // USER_FILE_PATH以下でない場合、USER_FILE_PATHを返す.
         } else {
             return $top_dir;
         }

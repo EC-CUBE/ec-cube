@@ -22,26 +22,26 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
+require_once(CLASS_FILE_PATH . "pages/admin/LC_Page_Admin.php");
 
 /* GMO決済モジュール連携用 */
-if (file_exists(MODULE_PATH . 'mdl_gmopg/inc/include.php') === TRUE) {
-    require_once(MODULE_PATH . 'mdl_gmopg/inc/include.php');
+if (file_exists(MODULE_FILE_PATH . 'mdl_gmopg/inc/include.php') === TRUE) {
+    require_once(MODULE_FILE_PATH . 'mdl_gmopg/inc/include.php');
 }
 
 /* ペイジェント決済モジュール連携用 */
-if (file_exists(MODULE_PATH . 'mdl_paygent/include.php') === TRUE) {
-  require_once(MODULE_PATH . 'mdl_paygent/include.php');
+if (file_exists(MODULE_FILE_PATH . 'mdl_paygent/include.php') === TRUE) {
+  require_once(MODULE_FILE_PATH . 'mdl_paygent/include.php');
 }
 
 /* F-REGI決済モジュール連携用 */
-if (file_exists(MODULE_PATH. 'mdl_fregi/LC_Page_Mdl_Fregi_Config.php') === TRUE) {
-    require_once(MODULE_PATH. 'mdl_fregi/LC_Page_Mdl_Fregi_Config.php');
+if (file_exists(MODULE_FILE_PATH. 'mdl_fregi/LC_Page_Mdl_Fregi_Config.php') === TRUE) {
+    require_once(MODULE_FILE_PATH. 'mdl_fregi/LC_Page_Mdl_Fregi_Config.php');
 }
 
 /* SPS決済モジュール連携用 */
-if (file_exists(MODULE_PATH . 'mdl_sps/request.php') === TRUE) {
-    require_once(MODULE_PATH . 'mdl_sps/request.php');
+if (file_exists(MODULE_FILE_PATH . 'mdl_sps/request.php') === TRUE) {
+    require_once(MODULE_FILE_PATH . 'mdl_sps/request.php');
 }
 
 
@@ -90,7 +90,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin {
         }
 
         /* F-REGI決済モジュール連携用 */
-        if (file_exists(MODULE_PATH. 'mdl_fregi/LC_Page_Mdl_Fregi_Config.php') === TRUE) {
+        if (file_exists(MODULE_FILE_PATH. 'mdl_fregi/LC_Page_Mdl_Fregi_Config.php') === TRUE) {
             global $arrFregiPayment;
             $this->arrFregiPayment = $arrFregiPayment;
             global $arrFregiDispKind;
@@ -279,7 +279,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin {
 
         /* GMOPG連携用 */
         case 'gmopg_order_edit':
-            require_once(MODULE_PATH . 'mdl_gmopg/class/LC_Mdl_GMOPG_OrderEdit.php');
+            require_once(MODULE_FILE_PATH . 'mdl_gmopg/class/LC_Mdl_GMOPG_OrderEdit.php');
             $objGMOOrderEdit = new LC_MDL_GMOPG_OrderEdit;
             $this->gmopg_order_edit_result = $objGMOOrderEdit->proccess();
             $this->lfGetOrderData($order_id);
@@ -311,7 +311,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin {
         /**
          * SPS決済 クレジット判定用処理
          */
-        if (file_exists(MODULE_PATH . 'mdl_sps/request.php') === TRUE) {
+        if (file_exists(MODULE_FILE_PATH . 'mdl_sps/request.php') === TRUE) {
             $objQuery = new SC_Query();
             $this->paymentType = $objQuery->getAll("SELECT module_code, memo03 FROM dtb_payment WHERE payment_id = ? ", array($this->arrForm["payment_id"]['value']));
             $objDate = new SC_Date();

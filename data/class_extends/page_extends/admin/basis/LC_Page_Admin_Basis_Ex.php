@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/admin/basis/LC_Page_Admin_Basis.php");
+require_once(CLASS_FILE_PATH . "pages/admin/basis/LC_Page_Admin_Basis.php");
 
 /**
  * 店舗基本情報 のページクラス(拡張).

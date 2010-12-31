@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/admin/design/LC_Page_Admin_Design_Bloc.php");
+require_once(CLASS_FILE_PATH . "pages/admin/design/LC_Page_Admin_Design_Bloc.php");
 
 /**
  * ブロック編集 のページクラス(拡張).

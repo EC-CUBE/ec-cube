@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "SC_Initial.php");
+require_once(CLASS_FILE_PATH . "SC_Initial.php");
 
 /**
  * アプリケーションの初期設定クラス(拡張).

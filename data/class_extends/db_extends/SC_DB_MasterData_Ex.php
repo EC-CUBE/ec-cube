@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "db/SC_DB_MasterData.php");
+require_once(CLASS_FILE_PATH . "db/SC_DB_MasterData.php");
 
 /**
  * マスタデータを扱うクラス(拡張).

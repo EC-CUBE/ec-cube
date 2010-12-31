@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/XXX/LC_Page_XXX.php");
+require_once(CLASS_FILE_PATH . "pages/XXX/LC_Page_XXX.php");
 
 /**
  * XXX のページクラス(拡張).

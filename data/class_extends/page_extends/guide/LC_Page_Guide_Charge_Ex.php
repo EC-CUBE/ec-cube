@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/guide/LC_Page_Guide_Charge.php");
+require_once(CLASS_FILE_PATH . "pages/guide/LC_Page_Guide_Charge.php");
 
 /**
  * 通信料について のページクラス(拡張).

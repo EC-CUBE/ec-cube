@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/admin/order/LC_Page_Admin_Order_Status.php");
+require_once(CLASS_FILE_PATH . "pages/admin/order/LC_Page_Admin_Order_Status.php");
 
 /**
  * ステータス管理 のページクラス(拡張).

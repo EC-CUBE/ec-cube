@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page_Redirect.php");
+require_once(CLASS_FILE_PATH . "pages/LC_Page_Redirect.php");
 
 /**
  * リダイレクト のページクラス(拡張).

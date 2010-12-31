@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page_Index.php");
+require_once(CLASS_FILE_PATH . "pages/LC_Page_Index.php");
 
 /**
  * Index のページクラス(拡張).

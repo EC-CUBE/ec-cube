@@ -23,7 +23,7 @@
 
 // {{{ requires
 require_once("../require.php");
-require_once(CLASS_EX_PATH . "page_extends/unsupported/LC_Page_Unsupported_Ex.php");
+require_once(CLASS_EX_FILE_PATH . "page_extends/unsupported/LC_Page_Unsupported_Ex.php");
 
 // }}}
 // {{{ generate page

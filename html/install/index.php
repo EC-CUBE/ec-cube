@@ -389,7 +389,7 @@ function lfDispStep0($objPage) {
     // プログラムで書込みされるファイル・ディレクトリ
     $arrWriteFile = array(
         DATA_FILE_PATH . "install.php",
-        USER_PATH,
+        USER_FILE_PATH,
         HTML_FILE_PATH . "upload",
         DATA_FILE_PATH . "cache/",
         DATA_FILE_PATH . "class/",
@@ -511,7 +511,7 @@ function lfDispStep0_1($objPage) {
     $objPage->tpl_mainpage = 'step0_1.tpl';
     $objPage->tpl_mode = 'step0_1';
     // ファイルコピー
-    $objPage->copy_mess = SC_Utils_Ex::sfCopyDir("./user_data/", USER_PATH, $objPage->copy_mess);
+    $objPage->copy_mess = SC_Utils_Ex::sfCopyDir("./user_data/", USER_FILE_PATH, $objPage->copy_mess);
     $objPage->copy_mess = SC_Utils_Ex::sfCopyDir("./save_image/", HTML_FILE_PATH . "upload/save_image/", $objPage->copy_mess);
     return $objPage;
 }

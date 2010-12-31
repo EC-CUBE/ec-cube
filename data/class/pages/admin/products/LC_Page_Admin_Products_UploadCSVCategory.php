@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
+require_once(CLASS_FILE_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * カテゴリ登録CSVのページクラス
@@ -75,7 +75,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin {
         SC_Utils_Ex::sfIsSuccess($objSess);
 
         // ファイル管理クラス
-        $this->objUpFile = new SC_UploadFile(IMAGE_TEMP_DIR, IMAGE_SAVE_DIR);
+        $this->objUpFile = new SC_UploadFile(IMAGE_TEMP_FILE_PATH, IMAGE_SAVE_FILE_PATH);
         // ファイル情報の初期化
         $this->lfInitFile();
         // パラメータ管理クラス
@@ -112,7 +112,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin {
                     $filepath = $this->objUpFile->getTempFilePath('csv_file');
                     // エンコード
                     $enc_filepath = SC_Utils_Ex::sfEncodeFile($filepath,
-                    CHAR_CODE, CSV_TEMP_DIR);
+                    CHAR_CODE, CSV_TEMP_FILE_PATH);
 
                     $fp = fopen($enc_filepath, "r");
 

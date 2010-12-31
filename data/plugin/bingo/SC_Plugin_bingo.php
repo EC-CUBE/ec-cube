@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_EX_PATH . "SC_Plugin_Ex.php");
+require_once(CLASS_EX_FILE_PATH . "SC_Plugin_Ex.php");
 // }}}
 
 class SC_Plugin_bingo extends SC_Plugin_Ex {

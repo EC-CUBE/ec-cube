@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
+require_once(CLASS_FILE_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * 商品登録 のページクラス
@@ -103,14 +103,14 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin {
         SC_Utils_Ex::sfIsSuccess($objSess);
 
         // Downファイル管理クラス
-        $this->objDownFile = new SC_UploadFile(DOWN_TEMP_DIR, DOWN_SAVE_DIR);
+        $this->objDownFile = new SC_UploadFile(DOWN_TEMP_FILE_PATH, DOWN_SAVE_FILE_PATH);
         // Downファイル情報の初期化
         $this->lfInitDownFile();
         // Hiddenからのデータを引き継ぐ
         $this->objDownFile->setHiddenFileList($_POST);
 
         // ファイル管理クラス
-        $this->objUpFile = new SC_UploadFile(IMAGE_TEMP_DIR, IMAGE_SAVE_DIR);
+        $this->objUpFile = new SC_UploadFile(IMAGE_TEMP_FILE_PATH, IMAGE_SAVE_FILE_PATH);
 
         // ファイル情報の初期化
         $this->lfInitFile();

@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/unsupported/LC_Page_Unsupported.php");
+require_once(CLASS_FILE_PATH . "pages/unsupported/LC_Page_Unsupported.php");
 
 /**
  * サポート外端末用 のページクラス(拡張).

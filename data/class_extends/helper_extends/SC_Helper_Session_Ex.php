@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "helper/SC_Helper_Session.php");
+require_once(CLASS_FILE_PATH . "helper/SC_Helper_Session.php");
 
 /**
  * セッション関連のヘルパークラス(拡張).

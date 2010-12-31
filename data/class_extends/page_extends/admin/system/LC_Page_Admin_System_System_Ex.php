@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/admin/system/LC_Page_Admin_System_System.php");
+require_once(CLASS_FILE_PATH . "pages/admin/system/LC_Page_Admin_System_System.php");
 
 /**
  * システム情報 のページクラス(拡張).

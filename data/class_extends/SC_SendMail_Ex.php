@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "SC_SendMail.php");
+require_once(CLASS_FILE_PATH . "SC_SendMail.php");
 
 /**
  * メール送信クラス(拡張).

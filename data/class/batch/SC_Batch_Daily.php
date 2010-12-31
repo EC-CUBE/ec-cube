@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "batch/SC_Batch.php");
+require_once(CLASS_FILE_PATH . "batch/SC_Batch.php");
 
 /**
  * 日次バッチクラス.
@@ -86,7 +86,7 @@ class SC_Batch_Daily extends SC_Batch {
         $now_time = time();
 
         // グラフ画像の削除
-        $path = GRAPH_DIR . "*.png";
+        $path = GRAPH_FILE_PATH . "*.png";
         system ("rm -rf $path");
 
         // 削除された受注データの受注詳細情報の削除

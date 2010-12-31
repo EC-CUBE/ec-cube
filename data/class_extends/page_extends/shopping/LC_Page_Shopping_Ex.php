@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/shopping/LC_Page_Shopping.php");
+require_once(CLASS_FILE_PATH . "pages/shopping/LC_Page_Shopping.php");
 
 /**
  * ショッピングログイン のページクラス(拡張).

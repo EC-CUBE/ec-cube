@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/admin/customer/LC_Page_Admin_Customer_Edit.php");
+require_once(CLASS_FILE_PATH . "pages/admin/customer/LC_Page_Admin_Customer_Edit.php");
 
 /**
  * 顧客情報修正 のページクラス(拡張).

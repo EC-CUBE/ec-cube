@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/entry/LC_Page_Entry_Kiyaku.php");
+require_once(CLASS_FILE_PATH . "pages/entry/LC_Page_Entry_Kiyaku.php");
 
 /**
  * ご利用規約 のページクラス(拡張).

@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/admin/LC_Page_Admin.php");
+require_once(CLASS_FILE_PATH . "pages/admin/LC_Page_Admin.php");
 
 /**
  * ログ のページクラス.
@@ -108,7 +108,7 @@ class LC_Page_Admin_System_Log extends LC_Page_Admin {
         $index = 0;
         $arrLogs = array();
         for ($gen = 0 ; $gen <= MAX_LOG_QUANTITY; $gen++) {
-            $path = LOG_PATH;
+            $path = LOG_FILE;
             if ($gen != 0) {
                 $path .= ".$gen";
             }

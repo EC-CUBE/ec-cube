@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/shopping/LC_Page_Shopping_Deliv.php");
+require_once(CLASS_FILE_PATH . "pages/shopping/LC_Page_Shopping_Deliv.php");
 
 /**
  * お届け先の指定 のページクラス(拡張).
