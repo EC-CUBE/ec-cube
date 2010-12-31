@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_FILE_PATH . "pages/admin/LC_Page_Admin.php");
+require_once(CLASS_REALDIR . "pages/admin/LC_Page_Admin.php");
 
 /**
  * メイン編集 のページクラス.
@@ -146,7 +146,6 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
     function lfGetPageData($page_id, $device_type_id, $objView){
         $arrPageData = $this->objLayout->lfGetPageData("page_id = ? AND device_type_id = ?",
                                                        array($page_id, $device_type_id));
-        
 
         if (strlen($arrPageData[0]['filename']) == 0) {
             $this->arrErr['page_id_err'] = "※ 指定されたページは編集できません。";
@@ -186,7 +185,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
         $tmpPost = $_POST;
         $tmpPost['page_id'] = $page_id;
         $tmpPost['url'] = $url;
-        $tmpPost['tpl_dir'] = USER_FILE_PATH . "templates/preview/";
+        $tmpPost['tpl_dir'] = USER_REALDIR . "templates/preview/";
 
         $arrPreData = $this->objLayout->lfGetPageData("page_id = ? AND device_type_id = ?",
                                                       array($page_id, $device_type_id));
@@ -232,7 +231,11 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
         // エラーがなければ更新処理を行う
         if (count($this->arrErr) == 0) {
             // DBへデータを更新する
-            $arrData = $this->lfEntryPageData($_POST, $device_type_id);
+            $arrTmp = $this->lfEntryPageData($_POST, $device_type_id);
+            $page_id = $arrTmp['page_id'];
+
+            $arrTmp = $this->objLayout->lfGetPageData('page_id = ? AND device_type_id = ?', array($page_id, $device_type_id));
+            $arrData = $arrTmp[0];
 
             // ベースデータでなければファイルを削除し、PHPファイルを作成する
             if (!$this->objLayout->lfCheckBaseData($arrData['page_id'], $device_type_id)) {
@@ -290,6 +293,8 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
         else {
             $objQuery->update('dtb_pagelayout', $sqlval, 'page_id = ? AND device_type_id = ?',
                               array($arrData['page_id'], $device_type_id));
+            // 戻り値用
+            $sqlval['page_id'] = $arrData['page_id'];
         }
         return $sqlval;
     }
