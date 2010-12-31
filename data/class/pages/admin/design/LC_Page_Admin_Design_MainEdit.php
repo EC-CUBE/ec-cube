@@ -404,7 +404,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
 
         // ディレクトリが存在していなければ作成する
         if (!is_dir(dirname($path))) {
-            mkdir(dirname($path), 0, true); // FIXME (PHP4)
+            mkdir(dirname($path), 0777, true); // FIXME (PHP4)
         }
 
         // ファイル作成
@@ -436,7 +436,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
 
         // php保存先ディレクトリが存在していなければ作成する
         if (!is_dir(dirname($path))) {
-            mkdir(dirname($path), 0, true); // FIXME (PHP4)
+            mkdir(dirname($path), 0777, true); // FIXME (PHP4)
         }
 
         // ベースとなるPHPファイルの読み込み
