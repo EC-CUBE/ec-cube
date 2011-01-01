@@ -440,8 +440,8 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
         }
 
         // ベースとなるPHPファイルの読み込み
-        if (file_exists(USER_DEF_PHP)){
-            $php_data = file_get_contents(USER_DEF_PHP);
+        if (file_exists(USER_DEF_PHP_REALFILE)){
+            $php_data = file_get_contents(USER_DEF_PHP_REALFILE);
         }
 
         // require.phpの場所を書き換える

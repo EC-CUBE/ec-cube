@@ -34,7 +34,7 @@
   <input type="hidden" name="mode" value="confirm" />
   <input type="hidden" name="customer_id" value="<!--{$arrForm.customer_id|h}-->" />
     <table summary="会員登録内容変更 " class="delivname">
-      <!--{include file="`$smarty.const.TEMPLATE_DIR`frontparts/form_personal_input.tpl" flgFields=3 emailMobile=true prefix=""}-->
+      <!--{include file="`$smarty.const.TEMPLATE_REALDIR`frontparts/form_personal_input.tpl" flgFields=3 emailMobile=true prefix=""}-->
     </table>
     <!--{if 'sfGMOMypageDisplay'|function_exists}-->
       <!--{'sfGMOMypageDisplay'|call_user_func}-->

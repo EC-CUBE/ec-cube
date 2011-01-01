@@ -381,10 +381,10 @@ class LC_Page_Admin_Design extends LC_Page_Admin {
 
         // filename が空の場合にはMYページと判断
         if($filename == ""){
-            $tplfile = TEMPLATE_DIR . "mypage/index";
+            $tplfile = TEMPLATE_REALDIR . "mypage/index";
             $filename = 'mypage';
         } else {
-            $tplfile = TEMPLATE_DIR . $filename;
+            $tplfile = TEMPLATE_REALDIR . $filename;
         }
 
         // プレビュー用tplファイルのコピー

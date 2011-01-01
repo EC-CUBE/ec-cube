@@ -43,7 +43,7 @@ class LC_Page_Unsupported extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->tpl_mainpage = TEMPLATE_DIR . 'mobile/unsupported/index.tpl';
+        $this->tpl_mainpage = TEMPLATE_REALDIR . 'mobile/unsupported/index.tpl';
     }
 
     /**

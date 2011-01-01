@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<!--{include file="`$smarty.const.TEMPLATE_DIR`popup_header.tpl" subtitle="新しいお届け先の追加・変更"}-->
+<!--{include file="`$smarty.const.TEMPLATE_REALDIR`popup_header.tpl" subtitle="新しいお届け先の追加・変更"}-->
 
 <div id="windowarea">
     <h2 class="title"><!--{$tpl_title|h}--></h2>
@@ -34,7 +34,7 @@
         <input type="hidden" name="ParentPage" value="<!--{$ParentPage}-->" />
 
         <table summary="お届け先登録">
-            <!--{include file="`$smarty.const.TEMPLATE_DIR`frontparts/form_personal_input.tpl" flgFields=1 emailMobile=false prefix=""}-->
+            <!--{include file="`$smarty.const.TEMPLATE_REALDIR`frontparts/form_personal_input.tpl" flgFields=1 emailMobile=false prefix=""}-->
         </table>
 
         <div class="btn">
@@ -43,4 +43,4 @@
     </form>
 </div>
 
-<!--{include file="`$smarty.const.TEMPLATE_DIR`popup_footer.tpl"}-->
+<!--{include file="`$smarty.const.TEMPLATE_REALDIR`popup_footer.tpl"}-->

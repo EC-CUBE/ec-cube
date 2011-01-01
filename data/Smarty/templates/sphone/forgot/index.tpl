@@ -19,7 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
-<!--{include file="`$smarty.const.TEMPLATE_DIR`popup_header.tpl" subtitle="パスワードを忘れた方(入力ページ)"}-->
+<!--{include file="`$smarty.const.TEMPLATE_REALDIR`popup_header.tpl" subtitle="パスワードを忘れた方(入力ページ)"}-->
 
   <div id="windowarea">
     <h2>パスワードを忘れた方</h2>
@@ -37,4 +37,4 @@
     </form>
   </div>
 
-<!--{include file="`$smarty.const.TEMPLATE_DIR`popup_footer.tpl"}-->
+<!--{include file="`$smarty.const.TEMPLATE_REALDIR`popup_footer.tpl"}-->

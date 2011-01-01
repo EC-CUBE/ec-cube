@@ -82,7 +82,7 @@ class SC_MobileImage {
 
             // 画像変換の情報をセットする
             $imageConverter = New ImageConverter();
-            $imageConverter->setOutputDir(MOBILE_IMAGE_DIR);
+            $imageConverter->setOutputDir(MOBILE_IMAGE_REALDIR);
             $imageConverter->setImageType($imageType);
             $imageConverter->setImageWidth($imageWidth);
             $imageConverter->setImageHeight($imageHeight);

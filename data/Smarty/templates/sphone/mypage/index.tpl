@@ -27,7 +27,7 @@
   <!--{if $tpl_navi != ""}-->
     <!--{include file=$tpl_navi}-->
   <!--{else}-->
-    <!--{include file=`$smarty.const.TEMPLATE_DIR`mypage/navi.tpl}-->
+    <!--{include file=`$smarty.const.TEMPLATE_REALDIR`mypage/navi.tpl}-->
   <!--{/if}-->
   <div id="mycontentsarea">
     <form name="form1" method="post" action="?">

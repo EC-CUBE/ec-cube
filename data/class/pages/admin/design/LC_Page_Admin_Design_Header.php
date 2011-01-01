@@ -85,7 +85,7 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin {
         }
 
         $division = isset($_POST['division']) ? $_POST['division'] : "";
-        $pre_DIR = USER_INC_PATH . 'preview/';
+        $pre_DIR = USER_INC_REALDIR . 'preview/';
 
         // データ更新処理
         if ($division != ''){

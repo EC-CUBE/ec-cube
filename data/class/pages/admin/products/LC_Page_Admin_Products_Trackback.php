@@ -47,7 +47,7 @@ class LC_Page_Admin_Products_Trackback extends LC_Page_Admin {
         $this->tpl_subnavi = 'products/subnavi.tpl';
         $this->tpl_mainno = 'products';
         $this->tpl_subno = 'trackback';
-        $this->tpl_pager = TEMPLATE_DIR . 'admin/pager.tpl';
+        $this->tpl_pager = TEMPLATE_REALDIR . 'admin/pager.tpl';
         $this->tpl_subtitle = 'トラックバック管理';
 
         $masterData = new SC_DB_MasterData_Ex();

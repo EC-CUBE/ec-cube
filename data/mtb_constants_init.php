@@ -8,7 +8,7 @@ define('USER_DIR', "user_data/");
 /** ユーザファイル保存先 */
 define('USER_REALDIR', HTML_REALDIR . USER_DIR);
 /** ユーザインクルードファイル保存先 */
-define('USER_INC_PATH', USER_REALDIR . "include/");
+define('USER_INC_REALDIR', USER_REALDIR . "include/");
 /** 郵便番号専用DB */
 define('ZIP_DSN', DEFAULT_DSN);
 /** ユーザー作成ページ等 */
@@ -20,11 +20,11 @@ define('USER_TEMPLATE_DIR', "templates/");
 /** テンプレートファイル保存先 */
 define('USER_PACKAGE_DIR', "packages/");
 /** テンプレートファイル保存先 */
-define('USER_TEMPLATE_PATH', USER_REALDIR . USER_PACKAGE_DIR);
+define('USER_TEMPLATE_REALDIR', USER_REALDIR . USER_PACKAGE_DIR);
 /** テンプレートファイル一時保存先 */
 define('TEMPLATE_TEMP_REALDIR', HTML_REALDIR . "upload/temp_template/");
 /** ユーザー作成画面のデフォルトPHPファイル */
-define('USER_DEF_PHP', USER_REALDIR . "__default.php");
+define('USER_DEF_PHP_REALFILE', USER_REALDIR . "__default.php");
 /** その他画面のデフォルトページレイアウト */
 define('DEF_LAYOUT', "products/list.php");
 /** ダウンロードモジュール保存ディレクトリ */
@@ -238,7 +238,7 @@ define('CSV_TEMP_REALDIR', DATA_REALDIR . "upload/csv/");
 /** 画像がない場合に表示 */
 define('NO_IMAGE_URL', TPL_DIR . "img/picture/img_blank.gif");
 /** 画像がない場合に表示 */
-define('NO_IMAGE_DIR', USER_PACKAGE_DIR . "img/picture/img_blank.gif");
+define('NO_IMAGE_DIR', USER_TEMPLATE_REALDIR . "img/picture/img_blank.gif");
 /** システム管理トップ */
 define('URL_SYSTEM_TOP', URL_PATH . ADMIN_DIR . "system/" . DIR_INDEX_URL);
 /** 規格登録 */
@@ -368,23 +368,9 @@ define('MYPAGE_DELIVADDR_URL', URL_PATH . "mypage/delivery.php");
 define('MAIL_TYPE_PC', 1);
 /** メールアドレス種別 */
 define('MAIL_TYPE_MOBILE', 2);
-/** 新規注文 */
-define('ORDER_NEW', 1);
-/** 入金待ち */
-define('ORDER_PAY_WAIT', 2);
-/** 入金済み */
-define('ORDER_PRE_END', 6);
-/** キャンセル */
-define('ORDER_CANCEL', 3);
-/** 取り寄せ中 */
-define('ORDER_BACK_ORDER', 4);
-/** 発送済み */
-define('ORDER_DELIV', 5);
-/** 決済処理中 */
-define('ORDER_PENDING', 7);
 /** 受注ステータス変更の際にポイント等を加算するステータス番号 (発送済み) */
 define('ODERSTATUS_COMMIT', ORDER_DELIV);
-/** 新着情報管理画面 開始年(西暦)  */
+/** 新着情報管理画面 開始年(西暦) */
 define('ADMIN_NEWS_STARTYEAR', 2005);
 /** 会員登録 */
 define('ENTRY_CUSTOMER_TEMP_SUBJECT', "会員仮登録が完了いたしました。");
@@ -442,10 +428,8 @@ define('MOBILE_TEMPLATE_NAME', "mobile");
 define('SMARTPHONE_TEMPLATE_NAME', "sphone");
 /** SMARTYテンプレート */
 define('SMARTY_TEMPLATES_REALDIR',  DATA_REALDIR . "Smarty/templates/");
-/** SMARTYテンプレート */
-define('TPL_DIR', URL_PATH . USER_DIR . USER_PACKAGE_DIR . TEMPLATE_NAME . "/");
-/** SMARTYテンプレート */
-define('TEMPLATE_DIR', SMARTY_TEMPLATES_REALDIR . TEMPLATE_NAME . "/");
+/** SMARTYテンプレート(PC) */
+define('TEMPLATE_REALDIR', SMARTY_TEMPLATES_REALDIR . TEMPLATE_NAME . "/");
 /** SMARTYテンプレート(管理機能) */
 define('TEMPLATE_ADMIN_REALDIR', SMARTY_TEMPLATES_REALDIR . "admin/");
 /** SMARTYコンパイル */
@@ -454,18 +438,18 @@ define('COMPILE_DIR', DATA_REALDIR . "Smarty/templates_c/" . TEMPLATE_NAME . "/"
 define('COMPILE_ADMIN_REALDIR', DATA_REALDIR . "Smarty/templates_c/admin/");
 /** ブロックファイル保存先 */
 define('BLOC_DIR', "frontparts/bloc/");
-/** ブロックファイル保存先 */
-define('BLOC_PATH', TEMPLATE_DIR . BLOC_DIR);
-/** EメールアドレスチェックをRFC準拠にするか(true:準拠する、false:準拠しない) */
-define('RFC_COMPLIANT_EMAIL_CHECK', false);
 /** SMARTYテンプレート(mobile) */
-define('MOBILE_TEMPLATE_DIR', SMARTY_TEMPLATES_REALDIR . MOBILE_TEMPLATE_NAME . "/");
+define('MOBILE_TEMPLATE_REALDIR', SMARTY_TEMPLATES_REALDIR . MOBILE_TEMPLATE_NAME . "/");
 /** SMARTYコンパイル(mobile) */
 define('MOBILE_COMPILE_REALDIR', DATA_REALDIR . "Smarty/templates_c/" . MOBILE_TEMPLATE_NAME . "/");
 /** SMARTYテンプレート(smart phone) */
-define('SMARTPHONE_TEMPLATE_DIR', SMARTY_TEMPLATES_REALDIR . SMARTPHONE_TEMPLATE_NAME . "/");
-/** SMARTYコンパイル(smart phone) */
+define('SMARTPHONE_TEMPLATE_REALDIR', SMARTY_TEMPLATES_REALDIR . SMARTPHONE_TEMPLATE_NAME . "/");
+/** SMARTYコンパイル(smartphone) */
 define('SMARTPHONE_COMPILE_REALDIR', DATA_REALDIR . "Smarty/templates_c/" . SMARTPHONE_TEMPLATE_NAME . "/");
+/** ブロックファイル保存先 */
+define('BLOC_PATH', TEMPLATE_REALDIR . BLOC_DIR);
+/** EメールアドレスチェックをRFC準拠にするか(true:準拠する、false:準拠しない) */
+define('RFC_COMPLIANT_EMAIL_CHECK', false);
 /** モバイルサイトのセッションの存続時間 (秒) */
 define('MOBILE_SESSION_LIFETIME', 1800);
 /** 空メール機能を使用するかどうか(true:送信する、false:送信しない) */
@@ -477,7 +461,7 @@ define('MOBILE_KARA_MAIL_ADDRESS_DELIMITER', "+");
 /** 空メール受け付けアドレスのドメイン部分 */
 define('MOBILE_KARA_MAIL_ADDRESS_DOMAIN', "");
 /** 携帯電話向け変換画像保存ディレクトリ */
-define('MOBILE_IMAGE_DIR', HTML_REALDIR . "upload/mobile_image/");
+define('MOBILE_IMAGE_REALDIR', HTML_REALDIR . "upload/mobile_image/");
 /** 携帯電話向け変換画像保存ディレクトリ */
 define('MOBILE_IMAGE_URL', URL_PATH . "upload/mobile_image/");
 /** モバイルURL */
@@ -551,33 +535,55 @@ define('OPTION_FAVOFITE_PRODUCT', 1);
 /** 画像リネーム設定 (商品画像のみ) (true:リネームする、false:リネームしない) */
 define('IMAGE_RENAME', true);
 /** プラグインディレクトリ */
-define('PLUGIN_DIR', "plugins/");
+define('PLUGIN_REALDIR', "plugins/");
 /** プラグイン保存先 */
-define('PLUGIN_PATH', USER_REALDIR . PLUGIN_DIR);
+define('PLUGIN_PATH', USER_REALDIR . PLUGIN_REALDIR);
 /** プラグイン URL */
-define('PLUGIN_URL', USER_URL . PLUGIN_DIR);
+define('PLUGIN_URL', USER_URL . PLUGIN_REALDIR);
+/** 日数桁数 */
+define('DOWNLOAD_DAYS_LEN', 3);
+/** ダウンロードファイル登録可能拡張子(カンマ区切り)" */
+define('DOWNLOAD_EXTENSION', "zip,lzh,jpg,jpeg,gif,png,mp3,pdf,csv");
+/** ダウンロード販売ファイル用サイズ制限(KB) */
+define('DOWN_SIZE', 50000);
 /** 1:実商品 2:ダウンロード */
 define('DEFAULT_PRODUCT_DOWN', 1);
-/** ダウンロード販売機能 ファイルサイズ制限(KB) */
-define('DOWN_SIZE', 50000);
-/** ダウンロード販売機能 ファイル一時保存 */
+/** ダウンロードファイル一時保存 */
 define('DOWN_TEMP_REALDIR', DATA_REALDIR . "download/temp/");
-/** ダウンロード販売機能 ファイル保存先 */
+/** ダウンロードファイル保存先 */
 define('DOWN_SAVE_REALDIR', DATA_REALDIR . "download/save/");
-/** ダウンロード販売機能 ファイル存在エラー */
+/** ダウンロードファイル存在エラー */
 define('DOWNFILE_NOT_FOUND', 22);
-/** ダウンロード販売機能 ダウンロード可能日数桁数 */
-define('DOWNLOAD_DAYS_LEN', 3);
-/** ダウンロード販売機能 ダウンロードファイル読み込みバイト(KB) */
-define('DOWNLOAD_BLOCK', 1024);
-/** ダウンロードファイル登録可能拡張子(カンマ区切り) */
-define('DOWNLOAD_EXTENSION', "zip,lzh,jpg,jpeg,gif,png,mp3,pdf,csv");
 /** ダウンロード販売機能用オンライン決済payment_id(カンマ区切り) */
 define('ONLINE_PAYMENT', "1");
+/** ダウンロード販売機能 ダウンロードファイル読み込みバイト(KB) */
+define('DOWNLOAD_BLOCK', 1024);
+/** 新規注文 */
+define('ORDER_NEW', 1);
+/** 入金待ち */
+define('ORDER_PAY_WAIT', 2);
+/** 入金済み */
+define('ORDER_PRE_END', 6);
+/** キャンセル */
+define('ORDER_CANCEL', 3);
+/** 取り寄せ中 */
+define('ORDER_BACK_ORDER', 4);
+/** 発送済み */
+define('ORDER_DELIV', 5);
+/** 決済処理中 */
+define('ORDER_PENDING', 7);
 /** 通常商品 */
 define('PRODUCT_TYPE_NORMAL', 1);
 /** ダウンロード商品 */
 define('PRODUCT_TYPE_DOWNLOAD', 2);
+/** SQLログを取得するフラグ(1:表示, 0:非表示) */
+define('SQL_QUERY_LOG_MODE', 1);
+/** SQLログを取得する時間設定(設定値以上かかった場合に取得) */
+define('SQL_QUERY_LOG_MIN_EXEC_TIME', 2);
+/** ページ表示時間のログを取得するフラグ(1:表示, 0:非表示) */
+define('PAGE_DISPLAY_TIME_LOG_MODE', 1);
+/** ページ表示時間のログを取得する時間設定(設定値以上かかった場合に取得) */
+define('PAGE_DISPLAY_TIME_LOG_MIN_EXEC_TIME', 2);
 /** 端末種別: モバイル */
 define('DEVICE_TYPE_MOBILE', 1);
 /** 端末種別: スマートフォン */
@@ -586,7 +592,7 @@ define('DEVICE_TYPE_SMARTPHONE', 2);
 define('DEVICE_TYPE_PC', 10);
 /** 端末種別: 管理画面 */
 define('DEVICE_TYPE_ADMIN', 99);
-/** 配置ID 未使用 */
+/** 配置ID: 未使用 */
 define('TARGET_ID_UNUSED', 0);
 /** 配置ID: LeftNavi */
 define('TARGET_ID_LEFT', 1);

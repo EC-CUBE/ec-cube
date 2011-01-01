@@ -154,7 +154,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin {
                 $objForm = $this->lfInitDownload();
                 $template_code = $objForm->getValue('template_code_temp');
                 // ユーザデータの下のファイルも保存する。
-                $from_dir = USER_TEMPLATE_PATH . $template_code . "/";
+                $from_dir = USER_TEMPLATE_REALDIR . $template_code . "/";
                 $to_dir = SMARTY_TEMPLATES_REALDIR . $template_code . "/_packages/";
                 SC_Utils::sfMakeDir($to_dir);
                 SC_Utils::sfCopyDir($from_dir, $to_dir);
@@ -261,7 +261,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin {
      */
     function lfChangeBloc($template_code) {
         $objQuery = new SC_Query();
-        $filepath = USER_TEMPLATE_PATH. $template_code. "/sql/update_bloc.sql";
+        $filepath = USER_TEMPLATE_REALDIR. $template_code. "/sql/update_bloc.sql";
         
         // ブロック位置更新SQLファイル有
         if(file_exists($filepath)) {
@@ -294,7 +294,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin {
         $templates_c_dir = DATA_REALDIR. "Smarty/templates_c/". $template_code. "/";
         SC_Utils_Ex::sfDelFile($templates_c_dir);
         // ユーザーデータ削除
-        $user_dir = USER_TEMPLATE_PATH. $template_code. "/";
+        $user_dir = USER_TEMPLATE_REALDIR. $template_code. "/";
         SC_Utils_Ex::sfDelFile($user_dir);
     }
 
@@ -322,7 +322,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin {
         $create_active_dir = $create_dir . "/" . CAMPAIGN_TEMPLATE_ACTIVE;
         $create_end_dir = $create_dir . "/" . CAMPAIGN_TEMPLATE_END;
         // デフォルトファイルディレクトリ
-        $default_dir = TEMPLATE_DIR . CAMPAIGN_TEMPLATE_DIR;
+        $default_dir = TEMPLATE_REALDIR . CAMPAIGN_TEMPLATE_REALDIR;
         $default_active_dir = $default_dir . "/" . CAMPAIGN_TEMPLATE_ACTIVE;
         $default_end_dir = $default_dir . "/" . CAMPAIGN_TEMPLATE_END;
 
@@ -332,10 +332,10 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin {
 
         // キャンペーン実行PHPをコピー
         $ret = $objFileManager->sfCreateFile(CAMPAIGN_PATH . $file);
-        copy(HTML_REALDIR . CAMPAIGN_TEMPLATE_DIR . "index.php", CAMPAIGN_PATH . $file . "/index.php");
-        copy(HTML_REALDIR . CAMPAIGN_TEMPLATE_DIR . "application.php", CAMPAIGN_PATH . $file . "/application.php");
-        copy(HTML_REALDIR . CAMPAIGN_TEMPLATE_DIR . "complete.php", CAMPAIGN_PATH . $file . "/complete.php");
-        copy(HTML_REALDIR . CAMPAIGN_TEMPLATE_DIR . "entry.php", CAMPAIGN_PATH . $file . "/entry.php");
+        copy(HTML_REALDIR . CAMPAIGN_TEMPLATE_REALDIR . "index.php", CAMPAIGN_PATH . $file . "/index.php");
+        copy(HTML_REALDIR . CAMPAIGN_TEMPLATE_REALDIR . "application.php", CAMPAIGN_PATH . $file . "/application.php");
+        copy(HTML_REALDIR . CAMPAIGN_TEMPLATE_REALDIR . "complete.php", CAMPAIGN_PATH . $file . "/complete.php");
+        copy(HTML_REALDIR . CAMPAIGN_TEMPLATE_REALDIR . "entry.php", CAMPAIGN_PATH . $file . "/entry.php");
 
         // デフォルトテンプレート作成(キャンペーン中)
         $header = $this->lfGetFileContents($default_active_dir."header.tpl");

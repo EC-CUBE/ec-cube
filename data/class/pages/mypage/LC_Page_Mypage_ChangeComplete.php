@@ -45,7 +45,7 @@ class LC_Page_Mypage_ChangeComplete extends LC_Page {
         parent::init();
         $this->tpl_title = 'MYページ';
         $this->tpl_subtitle = '会員登録内容変更(完了ページ)';
-        $this->tpl_navi = TEMPLATE_DIR . 'mypage/navi.tpl';
+        $this->tpl_navi = TEMPLATE_REALDIR . 'mypage/navi.tpl';
         $this->tpl_mypageno = 'change';
     }
 

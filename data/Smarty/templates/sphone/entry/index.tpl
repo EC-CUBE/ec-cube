@@ -32,7 +32,7 @@
             <input type="hidden" name="mode" value="confirm" />
 
             <table summary="会員登録フォーム">
-            <!--{include file="`$smarty.const.TEMPLATE_DIR`frontparts/form_personal_input.tpl" flgFields=3 emailMobile=false prefix=""}-->
+            <!--{include file="`$smarty.const.TEMPLATE_REALDIR`frontparts/form_personal_input.tpl" flgFields=3 emailMobile=false prefix=""}-->
             </table>
 
             <div class="tblareabtn">

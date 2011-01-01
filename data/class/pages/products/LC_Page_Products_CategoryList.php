@@ -69,7 +69,7 @@ class LC_Page_Products_CategoryList extends LC_Page {
      */
     function mobileInit() {
         $this->init();
-        $this->tpl_mainpage = MOBILE_TEMPLATE_DIR . 'products/category_list.tpl';
+        $this->tpl_mainpage = MOBILE_TEMPLATE_REALDIR . 'products/category_list.tpl';
         $this->tpl_title = 'カテゴリ一覧ページ';
     }
 

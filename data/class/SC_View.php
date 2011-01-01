@@ -210,7 +210,7 @@ class SC_SiteView extends SC_View{
     function SC_SiteView($setPrevURL = true) {
         parent::SC_View();
 
-        $this->_smarty->template_dir = TEMPLATE_DIR;
+        $this->_smarty->template_dir = TEMPLATE_REALDIR;
         $this->_smarty->compile_dir = COMPILE_DIR;
 
         $this->assignTemplatePath(DEVICE_TYPE_PC);
@@ -242,7 +242,7 @@ class SC_InstallView extends SC_View{
 class SC_MobileView extends SC_SiteView {
     function SC_MobileView($setPrevURL = true) {
         parent::SC_SiteView($setPrevURL);
-        $this->_smarty->template_dir = MOBILE_TEMPLATE_DIR;
+        $this->_smarty->template_dir = MOBILE_TEMPLATE_REALDIR;
         $this->_smarty->compile_dir = MOBILE_COMPILE_REALDIR;
         $this->assignTemplatePath(DEVICE_TYPE_MOBILE);
     }
@@ -251,7 +251,7 @@ class SC_MobileView extends SC_SiteView {
 class SC_SmartphoneView extends SC_SiteView {
     function SC_SmartphoneView($setPrevURL = true) {
         parent::SC_SiteView($setPrevURL);
-        $this->_smarty->template_dir = SMARTPHONE_TEMPLATE_DIR;
+        $this->_smarty->template_dir = SMARTPHONE_TEMPLATE_REALDIR;
         $this->_smarty->compile_dir = SMARTPHONE_COMPILE_REALDIR;
         $this->assignTemplatePath(DEVICE_TYPE_SMARTPHONE);
     }

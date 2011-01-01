@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<!--{include file="`$smarty.const.TEMPLATE_DIR`popup_header.tpl" subtitle="エラー"}-->
+<!--{include file="`$smarty.const.TEMPLATE_REALDIR`popup_header.tpl" subtitle="エラー"}-->
 
 <div id="compbox">
 <span class="red"><!--{$tpl_error}--></span><br />
@@ -31,4 +31,4 @@
 <a href="javascript:window.close()" onmouseOver="chgImg('<!--{$TPL_DIR}-->img/button/btn_close_on.gif','close');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_close.gif','close');"><img src="<!--{$TPL_DIR}-->img/button/btn_close.gif" width="129" height="32" alt="閉じる" name="close" id="close" /></a>
 </div>
 
-<!--{include file="`$smarty.const.TEMPLATE_DIR`popup_footer.tpl"}-->
+<!--{include file="`$smarty.const.TEMPLATE_REALDIR`popup_footer.tpl"}-->

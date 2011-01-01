@@ -75,11 +75,11 @@ class LC_Page_Error_SystemError extends LC_Page_Error {
 
         $objView = null;
         if (SC_MobileUserAgent::isMobile() && $this->adminPage == false) {
-            $objView = new SC_InstallView(MOBILE_TEMPLATE_DIR, MOBILE_COMPILE_REALDIR);
+            $objView = new SC_InstallView(MOBILE_TEMPLATE_REALDIR, MOBILE_COMPILE_REALDIR);
         } elseif($this->adminPage) {
             $objView = new SC_AdminView();
         } else {
-            $objView = new SC_InstallView(TEMPLATE_DIR, COMPILE_DIR);
+            $objView = new SC_InstallView(TEMPLATE_REALDIR, COMPILE_DIR);
         }
 
         $this->tpl_error = "システムエラーが発生しました。<br />大変お手数ですが、サイト管理者までご連絡ください。";

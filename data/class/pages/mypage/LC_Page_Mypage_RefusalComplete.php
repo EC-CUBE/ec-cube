@@ -45,7 +45,7 @@ class LC_Page_Mypage_RefusalComplete extends LC_Page {
         parent::init();
         $this->tpl_title = 'MYページ';
         $this->tpl_subtitle = '退会手続き(完了ページ)';
-        $this->tpl_navi = TEMPLATE_DIR . 'mypage/navi.tpl';
+        $this->tpl_navi = TEMPLATE_REALDIR . 'mypage/navi.tpl';
         $this->tpl_mypageno = 'refusal';
         $this->point_disp = false;
     }

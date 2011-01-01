@@ -246,20 +246,20 @@ __EOF__;
         $templateName = "";
         switch ($device_type_id) {
         case DEVICE_TYPE_MOBILE:
-            $dir = MOBILE_TEMPLATE_DIR;
+            $dir = MOBILE_TEMPLATE_REALDIR;
             $userPath = HTML_REALDIR . MOBILE_DIR . USER_DIR;
             $templateName = MOBILE_TEMPLATE_NAME;
             break;
 
         case DEVICE_TYPE_SMARTPHONE:
-            $dir = SMARTPHONE_TEMPLATE_DIR;
+            $dir = SMARTPHONE_TEMPLATE_REALDIR;
             $userPath = HTML_REALDIR . SMARTPHONE_DIR . USER_DIR;
             $templateName = SMARTPHONE_TEMPLATE_NAME;
             break;
 
         case DEVICE_TYPE_PC:
         default:
-            $dir = TEMPLATE_DIR;
+            $dir = TEMPLATE_REALDIR;
             $userPath = USER_REALDIR;
             $templateName = TEMPLATE_NAME;
         }

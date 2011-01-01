@@ -205,7 +205,7 @@ class LC_Page_Shopping extends LC_Page {
      */
     function mobileInit() {
         $this->init();
-        $this->tpl_mainpage = MOBILE_TEMPLATE_DIR . 'shopping/index.tpl';
+        $this->tpl_mainpage = MOBILE_TEMPLATE_REALDIR . 'shopping/index.tpl';
     }
 
     /**

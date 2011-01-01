@@ -120,7 +120,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin {
         switch($_POST['mode']) {
         case 'preview':
             // プレビューファイル作成
-            $prev_path = USER_INC_PATH . 'preview/bloc_preview.tpl';
+            $prev_path = USER_INC_REALDIR . 'preview/bloc_preview.tpl';
             // ディレクトリの作成
             SC_Utils::sfMakeDir($prev_path);
             $res = file_put_contents($new_bloc_path, $_POST['bloc_html']);

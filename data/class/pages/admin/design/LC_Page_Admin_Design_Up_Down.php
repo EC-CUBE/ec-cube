@@ -182,7 +182,7 @@ class LC_Page_Admin_Design_Up_Down extends LC_Page_Admin {
 	    $arrForm = $objForm->getHashArray();
 	
 	    // 同名のフォルダが存在する場合はエラー
-	    if(file_exists(USER_TEMPLATE_PATH . $arrForm['template_code'])) {
+	    if(file_exists(USER_TEMPLATE_REALDIR . $arrForm['template_code'])) {
 	        $arrErr['template_code'] = "※ 同名のファイルがすでに存在します。<br/>";
 	    }
 	

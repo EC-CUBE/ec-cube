@@ -19,7 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
-<!--{include file="`$smarty.const.TEMPLATE_DIR`popup_header.tpl" subtitle="住所検索" disable_wincol=1}-->
+<!--{include file="`$smarty.const.TEMPLATE_REALDIR`popup_header.tpl" subtitle="住所検索" disable_wincol=1}-->
 
   <div id="zipsearchcolumn">
     <h2>住所検索</h2>
@@ -36,4 +36,4 @@
     <div class="btn"><a href="javascript:window.close()" onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_close_on.gif','b_close');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_close.gif','b_close');"><img src="<!--{$TPL_DIR}-->img/button/btn_close.gif" width="140" height="30" alt="閉じる" border="0" name="b_close" /></a></div>
   </div>
 
-<!--{include file="`$smarty.const.TEMPLATE_DIR`popup_footer.tpl"}-->
+<!--{include file="`$smarty.const.TEMPLATE_REALDIR`popup_footer.tpl"}-->

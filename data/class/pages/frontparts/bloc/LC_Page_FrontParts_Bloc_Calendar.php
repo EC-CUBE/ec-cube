@@ -79,7 +79,7 @@ class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc {
      * @return void
      */
     function mobileInit() {
-         $this->tpl_mainpage = MOBILE_TEMPLATE_DIR . "frontparts/"
+         $this->tpl_mainpage = MOBILE_TEMPLATE_REALDIR . "frontparts/"
             . BLOC_DIR . 'best5.tpl';
     }
 

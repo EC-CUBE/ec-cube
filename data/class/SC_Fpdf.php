@@ -29,12 +29,12 @@
 
 require(DATA_REALDIR . 'module/fpdf/fpdf.php');
 require(DATA_REALDIR . 'module/fpdf/japanese.php');
-define('PDF_TEMPLATE_DIR', TEMPLATE_ADMIN_REALDIR . 'pdf/');
+define('PDF_TEMPLATE_REALDIR', TEMPLATE_ADMIN_REALDIR . 'pdf/');
 
 class SC_Fpdf {
     function SC_Fpdf($download, $title, $tpl_pdf = 'nouhinsyo1.pdf') {
         // デフォルトの設定
-        $this->tpl_pdf = PDF_TEMPLATE_DIR . $tpl_pdf;  // テンプレートファイル
+        $this->tpl_pdf = PDF_TEMPLATE_REALDIR . $tpl_pdf;  // テンプレートファイル
         $this->pdf_download = $download;      // PDFのダウンロード形式（0:表示、1:ダウンロード）
         $this->tpl_title = $title;
         $this->tpl_dispmode = "real";      // 表示モード
@@ -123,7 +123,7 @@ class SC_Fpdf {
         }
 
         //ロゴ画像
-        $logo_file = PDF_TEMPLATE_DIR . 'logo.png';
+        $logo_file = PDF_TEMPLATE_REALDIR . 'logo.png';
         $this->pdf->Image($logo_file, 124, 46, 40);
     }
 

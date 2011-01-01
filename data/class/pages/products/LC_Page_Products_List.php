@@ -274,7 +274,7 @@ class LC_Page_Products_List extends LC_Page {
 
         $this->tpl_search_mode = $tpl_search_mode;
 
-        $this->tpl_mainpage = MOBILE_TEMPLATE_DIR . "products/list.tpl";
+        $this->tpl_mainpage = MOBILE_TEMPLATE_REALDIR . "products/list.tpl";
     }
 
     /**
