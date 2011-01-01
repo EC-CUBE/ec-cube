@@ -832,8 +832,7 @@ __EOF__;
             }
 
             $records["product_class_id"] = $objQuery->nextVal('dtb_products_class_product_class_id');
-            unset($records["update_date"]);
-
+            $records["update_date"] = 'now()';
             $records["create_date"] = "Now()";
             $objQuery->insert($table, $records);
             //エラー発生時は中断

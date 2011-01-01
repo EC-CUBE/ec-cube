@@ -5,8 +5,8 @@ create table dtb_module_update_logs(
     error_flg smallint DEFAULT 0,
     error text,
     ok text,
-    create_date datetime NOT NULL,
-    update_date datetime NOT NULL,
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_date timestamp NOT NULL,
     PRIMARY KEY (log_id)
 ) TYPE=InnoDB;
 
@@ -20,8 +20,8 @@ CREATE TABLE dtb_kiyaku (
     kiyaku_text text NOT NULL,
     rank int NOT NULL DEFAULT 0,
     creator_id int NOT NULL,
-    create_date datetime NOT NULL,
-    update_date datetime NOT NULL,
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_date timestamp NOT NULL,
     del_flg smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (kiyaku_id)
 ) TYPE=InnoDB;
@@ -33,8 +33,8 @@ CREATE TABLE dtb_holiday (
     day smallint NOT NULL,
     rank int NOT NULL DEFAULT 0,
     creator_id int NOT NULL,
-    create_date datetime NOT NULL,
-    update_date datetime NOT NULL,
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_date timestamp NOT NULL,
     del_flg smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (holiday_id)
 ) TYPE=InnoDB;
@@ -65,7 +65,7 @@ CREATE TABLE dtb_bat_order_daily_age (
     end_age smallint,
     member smallint,
     order_date datetime,
-    create_date datetime NOT NULL
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_update (
@@ -80,8 +80,8 @@ CREATE TABLE dtb_update (
     uninstall_sql text,
     other_files text,
     del_flg smallint NOT NULL DEFAULT 0,
-    create_date datetime NOT NULL,
-    update_date datetime,
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_date timestamp NOT NULL,
     release_date datetime NOT NULL,
     PRIMARY KEY (module_id)
 ) TYPE=InnoDB;
@@ -139,7 +139,7 @@ CREATE TABLE dtb_baseinfo (
     shop_name_eng text,
     point_rate numeric NOT NULL DEFAULT 0,
     welcome_point numeric NOT NULL DEFAULT 0,
-    update_date datetime,
+    update_date timestamp NOT NULL,
     top_tpl text,
     product_tpl text,
     detail_tpl text,
@@ -163,8 +163,8 @@ CREATE TABLE dtb_deliv (
     status smallint NOT NULL DEFAULT 1,
     del_flg smallint NOT NULL DEFAULT 0,
     creator_id int NOT NULL,
-    create_date datetime NOT NULL,
-    update_date datetime,
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_date timestamp NOT NULL,
     PRIMARY KEY (deliv_id)
 ) TYPE=InnoDB;
 
@@ -194,8 +194,8 @@ CREATE TABLE dtb_payment (
     status smallint NOT NULL DEFAULT 1,
     del_flg smallint NOT NULL DEFAULT 0,
     creator_id int NOT NULL,
-    create_date datetime NOT NULL,
-    update_date datetime,
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_date timestamp NOT NULL,
     payment_image text,
     upper_rule numeric,
     charge_flg smallint DEFAULT 1,
@@ -230,8 +230,8 @@ CREATE TABLE dtb_mailtemplate (
     footer text,
     creator_id int NOT NULL,
     del_flg smallint NOT NULL DEFAULT 0,
-    create_date datetime NOT NULL,
-    update_date datetime NOT NULL
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_date timestamp NOT NULL
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_send_history (
@@ -246,8 +246,8 @@ CREATE TABLE dtb_send_history (
     search_data text,
     del_flg smallint NOT NULL DEFAULT 0,
     creator_id int NOT NULL,
-    create_date datetime NOT NULL,
-    update_date datetime NOT NULL,
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_date timestamp NOT NULL,
     PRIMARY KEY (send_id)
 ) TYPE=InnoDB;
 
@@ -303,8 +303,8 @@ CREATE TABLE dtb_products (
     sub_large_image6 text,
     del_flg smallint NOT NULL DEFAULT 0,
     creator_id int NOT NULL,
-    create_date datetime NOT NULL,
-    update_date datetime,
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_date timestamp NOT NULL,
     deliv_date_id int,
     PRIMARY KEY (product_id)
 ) TYPE=InnoDB;
@@ -323,8 +323,8 @@ CREATE TABLE dtb_products_class (
     deliv_fee numeric,
     point_rate numeric,
     creator_id int NOT NULL,
-    create_date datetime NOT NULL,
-    update_date datetime,
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_date timestamp NOT NULL,
     down_filename text,
     down_realfilename text,
     del_flg smallint NOT NULL DEFAULT 0,
@@ -336,8 +336,8 @@ CREATE TABLE dtb_class (
     name text,
     rank int,
     creator_id int NOT NULL,
-    create_date datetime NOT NULL,
-    update_date datetime,
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_date timestamp NOT NULL,
     del_flg smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (class_id)
 ) TYPE=InnoDB;
@@ -348,8 +348,8 @@ CREATE TABLE dtb_classcategory (
     class_id int NOT NULL,
     rank int,
     creator_id int NOT NULL,
-    create_date datetime NOT NULL,
-    update_date datetime,
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_date timestamp NOT NULL,
     del_flg smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (classcategory_id)
 ) TYPE=InnoDB;
@@ -369,8 +369,8 @@ CREATE TABLE dtb_category (
     level int NOT NULL,
     rank int,
     creator_id int NOT NULL,
-    create_date datetime NOT NULL,
-    update_date datetime,
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_date timestamp NOT NULL,
     del_flg smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (category_id)
 ) TYPE=InnoDB;
@@ -386,8 +386,8 @@ CREATE TABLE dtb_product_status (
     product_status_id smallint NOT NULL,
     product_id int NOT NULL,
     creator_id int NOT NULL,
-    create_date datetime NOT NULL,
-    update_date datetime,
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_date timestamp NOT NULL,
     del_flg smallint NOT NULL DEFAULT 0,
     PRIMARY KEY(product_status_id, product_id)
 ) TYPE=InnoDB;
@@ -405,7 +405,7 @@ CREATE TABLE dtb_bat_order_daily (
     total numeric NOT NULL DEFAULT 0,
     total_average numeric NOT NULL DEFAULT 0,
     order_date datetime NOT NULL,
-    create_date datetime NOT NULL,
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     year smallint NOT NULL,
     month smallint NOT NULL,
     day smallint NOT NULL,
@@ -430,7 +430,7 @@ CREATE TABLE dtb_bat_order_daily_hour (
     total_average numeric NOT NULL DEFAULT 0,
     hour smallint NOT NULL DEFAULT 0,
     order_date datetime,
-    create_date datetime NOT NULL
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_recommend_products (
@@ -440,8 +440,8 @@ CREATE TABLE dtb_recommend_products (
     comment text,
     status smallint NOT NULL DEFAULT 0,
     creator_id int NOT NULL,
-    create_date datetime NOT NULL,
-    update_date datetime NOT NULL
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_date timestamp NOT NULL
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_review (
@@ -456,8 +456,8 @@ CREATE TABLE dtb_review (
     comment text NOT NULL,
     status smallint DEFAULT 2,
     creator_id int NOT NULL,
-    create_date datetime,
-    update_date datetime,
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_date timestamp NOT NULL,
     del_flg smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (review_id)
 ) TYPE=InnoDB;
@@ -465,20 +465,20 @@ CREATE TABLE dtb_review (
 CREATE TABLE dtb_customer_favorite_products (
     customer_id int NOT NULL,
     product_id int NOT NULL,
-    create_date datetime NOT NULL,
-    update_date datetime NOT NULL
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_date timestamp NOT NULL
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_category_count (
     category_id int NOT NULL,
     product_count int NOT NULL,
-    create_date datetime NOT NULL
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_category_total_count (
     category_id int NOT NULL,
     product_count int,
-    create_date datetime NOT NULL
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_news (
@@ -491,8 +491,8 @@ CREATE TABLE dtb_news (
     news_select smallint NOT NULL DEFAULT 0,
     link_method text,
     creator_id int NOT NULL,
-    create_date datetime NOT NULL,
-    update_date datetime,
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_date timestamp NOT NULL,
     del_flg smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (news_id)
 ) TYPE=InnoDB;
@@ -505,8 +505,8 @@ CREATE TABLE dtb_best_products (
     title text,
     comment text,
     creator_id int NOT NULL,
-    create_date datetime NOT NULL,
-    update_date datetime,
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_date timestamp NOT NULL,
     del_flg smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (best_id)
 ) TYPE=InnoDB;
@@ -555,8 +555,8 @@ CREATE TABLE dtb_customer (
     point numeric DEFAULT 0,
     note text,
     status smallint NOT NULL DEFAULT 1,
-    create_date datetime NOT NULL,
-    update_date datetime,
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_date timestamp NOT NULL,
     del_flg smallint NOT NULL DEFAULT 0,
     mobile_phone_id text,
     mailmaga_flg smallint,
@@ -620,8 +620,8 @@ CREATE TABLE dtb_order (
     deliv_no text,
     note text,
     status smallint,
-    create_date datetime NOT NULL,
-    update_date datetime,
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_date timestamp NOT NULL,
     commit_date datetime,
     payment_date datetime,
     device_type_id int,
@@ -699,8 +699,8 @@ CREATE TABLE dtb_order_temp (
     status smallint,
     deliv_check smallint,
     point_check smallint,
-    create_date datetime NOT NULL,
-    update_date datetime,
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_date timestamp NOT NULL,
     device_type_id int,
     del_flg smallint NOT NULL DEFAULT 0,
     deliv_date text,
@@ -760,8 +760,8 @@ CREATE TABLE dtb_member (
     work smallint NOT NULL DEFAULT 1,
     del_flg smallint NOT NULL DEFAULT 0,
     creator_id int NOT NULL,
-    update_date datetime,
-    create_date datetime NOT NULL,
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_date timestamp NOT NULL,
     login_date datetime,
     PRIMARY KEY (member_id)
 ) TYPE=InnoDB;
@@ -770,7 +770,7 @@ CREATE TABLE dtb_bat_relate_products (
     product_id int,
     relate_product_id int,
     customer_id int,
-    create_date datetime
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_pagelayout (
@@ -788,8 +788,8 @@ CREATE TABLE dtb_pagelayout (
     description text,
     keyword text,
     update_url text,
-    create_date datetime NOT NULL,
-    update_date datetime NOT NULL,
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_date timestamp NOT NULL,
     PRIMARY KEY (device_type_id, page_id)
 ) TYPE=InnoDB;
 
@@ -799,8 +799,8 @@ CREATE TABLE dtb_bloc (
     bloc_name text,
     tpl_path text,
     filename varchar(50) NOT NULL,
-    create_date datetime NOT NULL,
-    update_date datetime NOT NULL,
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_date timestamp NOT NULL,
     php_path text,
     deletable_flg smallint NOT NULL DEFAULT 1,
     PRIMARY KEY (device_type_id, bloc_id),
@@ -825,8 +825,8 @@ CREATE TABLE dtb_csv (
     rank int,
 	rw_flg smallint DEFAULT 1,
     status smallint NOT NULL DEFAULT 1,
-    create_date datetime NOT NULL,
-    update_date datetime NOT NULL,
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_date timestamp NOT NULL,
     mb_convert_kana_option text,
     size_const_type text,
     error_check_types text,
@@ -837,16 +837,16 @@ CREATE TABLE dtb_csv_sql (
     sql_id int,
     sql_name text NOT NULL,
     csv_sql text,
-    update_date datetime NOT NULL,
-    create_date datetime NOT NULL,
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_date timestamp NOT NULL,
     PRIMARY KEY (sql_id)
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_templates (
     template_code varchar(50) NOT NULL,
     template_name text,
-    create_date datetime NOT NULL,
-    update_date datetime NOT NULL,
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_date timestamp NOT NULL,
     PRIMARY KEY (template_code)
 ) TYPE=InnoDB;
 
@@ -863,8 +863,8 @@ CREATE TABLE dtb_maker (
     name text NOT NULL,
     rank int NOT NULL DEFAULT 0,
     creator_id int NOT NULL,
-    create_date datetime NOT NULL,
-    update_date datetime NOT NULL,
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_date timestamp NOT NULL,
     del_flg smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (maker_id)
 ) TYPE=InnoDB;
@@ -872,7 +872,7 @@ CREATE TABLE dtb_maker (
 CREATE TABLE dtb_maker_count (
     maker_id int NOT NULL,
     product_count int NOT NULL,
-    create_date datetime NOT NULL
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) TYPE=InnoDB;
 
 CREATE TABLE mtb_pref (
@@ -1195,15 +1195,15 @@ CREATE TABLE dtb_module (
     sub_data text,
     auto_update_flg smallint NOT NULL DEFAULT 0,
     del_flg smallint NOT NULL DEFAULT 0,
-    create_date datetime NOT NULL,
-    update_date datetime NOT NULL
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_date timestamp NOT NULL
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_session (
     sess_id varchar(50) NOT NULL,
     sess_data text,
-    create_date datetime NOT NULL,
-    update_date datetime NOT NULL,
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_date timestamp NOT NULL,
     PRIMARY KEY (sess_id)
 ) TYPE=InnoDB;
 
@@ -1214,8 +1214,8 @@ CREATE TABLE dtb_site_control (
     control_flg smallint NOT NULL DEFAULT 2,
     del_flg smallint NOT NULL DEFAULT 0,
     memo text,
-    create_date datetime NOT NULL,
-    update_date datetime NOT NULL,
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_date timestamp NOT NULL,
     PRIMARY KEY (control_id)
 ) TYPE=InnoDB;
 
@@ -1228,15 +1228,15 @@ CREATE TABLE dtb_trackback (
     url text NOT NULL,
     status smallint NOT NULL DEFAULT 2,
     del_flg smallint NOT NULL DEFAULT 0,
-    create_date datetime NOT NULL,
-    update_date datetime NOT NULL,
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_date timestamp NOT NULL,
     PRIMARY KEY (trackback_id)
 ) TYPE=InnoDB;
 
 CREATE TABLE dtb_bkup (
     bkup_name varchar(50),
     bkup_memo text,
-    create_date datetime,
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (bkup_name)
 ) TYPE=InnoDB;
 
@@ -1246,8 +1246,8 @@ CREATE TABLE dtb_plugin (
     enable smallint NOT NULL DEFAULT 0,
     del_flg smallint NOT NULL DEFAULT 0,
     class_name varchar(255) NOT NULL,
-    create_date datetime NOT NULL,
-    update_date datetime NOT NULL,
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_date timestamp NOT NULL,
     PRIMARY KEY (plugin_id)
 ) TYPE=InnoDB;
 

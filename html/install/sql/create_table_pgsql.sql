@@ -6,7 +6,7 @@ create table dtb_module_update_logs(
     error text,
     ok text,
     create_date timestamp NOT NULL DEFAULT now(),
-    update_date timestamp NOT NULL DEFAULT now(),
+    update_date timestamp NOT NULL,
     PRIMARY KEY (log_id)
 );
 
@@ -81,7 +81,7 @@ CREATE TABLE dtb_update (
     other_files text,
     del_flg smallint NOT NULL DEFAULT 0,
     create_date timestamp NOT NULL DEFAULT now(),
-    update_date timestamp,
+    update_date timestamp NOT NULL,
     release_date timestamp NOT NULL,
     PRIMARY KEY (module_id)
 );
@@ -139,7 +139,7 @@ CREATE TABLE dtb_baseinfo (
     shop_name_eng text,
     point_rate numeric NOT NULL DEFAULT 0,
     welcome_point numeric NOT NULL DEFAULT 0,
-    update_date timestamp,
+    update_date timestamp NOT NULL,
     top_tpl text,
     product_tpl text,
     detail_tpl text,
@@ -164,7 +164,7 @@ CREATE TABLE dtb_deliv (
     del_flg smallint NOT NULL DEFAULT 0,
     creator_id int NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
-    update_date timestamp,
+    update_date timestamp NOT NULL,
     PRIMARY KEY (deliv_id)
 );
 
@@ -195,7 +195,7 @@ CREATE TABLE dtb_payment (
     del_flg smallint NOT NULL DEFAULT 0,
     creator_id int NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
-    update_date timestamp,
+    update_date timestamp NOT NULL,
     payment_image text,
     upper_rule numeric,
     charge_flg smallint DEFAULT 1,
@@ -247,7 +247,7 @@ CREATE TABLE dtb_send_history (
     del_flg smallint NOT NULL DEFAULT 0,
     creator_id int NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
-    update_date timestamp NOT NULL DEFAULT now(),
+    update_date timestamp NOT NULL,
     PRIMARY KEY (send_id)
 );
 
@@ -304,7 +304,7 @@ CREATE TABLE dtb_products (
     del_flg smallint NOT NULL DEFAULT 0,
     creator_id int NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
-    update_date timestamp,
+    update_date timestamp NOT NULL,
     deliv_date_id int,
     PRIMARY KEY (product_id)
 );
@@ -324,7 +324,7 @@ CREATE TABLE dtb_products_class (
     point_rate numeric,
     creator_id int NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
-    update_date timestamp,
+    update_date timestamp NOT NULL,
     down_filename text,
     down_realfilename text,
     del_flg smallint NOT NULL DEFAULT 0,
@@ -337,7 +337,7 @@ CREATE TABLE dtb_class (
     rank int,
     creator_id int NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
-    update_date timestamp,
+    update_date timestamp NOT NULL,
     del_flg smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (class_id)
 );
@@ -349,7 +349,7 @@ CREATE TABLE dtb_classcategory (
     rank int,
     creator_id int NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
-    update_date timestamp,
+    update_date timestamp NOT NULL,
     del_flg smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (classcategory_id)
 );
@@ -370,7 +370,7 @@ CREATE TABLE dtb_category (
     rank int,
     creator_id int NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
-    update_date timestamp,
+    update_date timestamp NOT NULL,
     del_flg smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (category_id)
 );
@@ -387,7 +387,7 @@ CREATE TABLE dtb_product_status (
     product_id int NOT NULL,
     creator_id int NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
-    update_date timestamp,
+    update_date timestamp NOT NULL,
     del_flg smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (product_status_id, product_id)
 );
@@ -442,7 +442,7 @@ CREATE TABLE dtb_recommend_products (
     status smallint NOT NULL DEFAULT 0,
     creator_id int NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
-    update_date timestamp NOT NULL DEFAULT now()
+    update_date timestamp NOT NULL
 );
 
 CREATE TABLE dtb_review (
@@ -458,7 +458,7 @@ CREATE TABLE dtb_review (
     status smallint DEFAULT 2,
     creator_id int NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
-    update_date timestamp,
+    update_date timestamp NOT NULL,
     del_flg smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (review_id)
 );
@@ -467,20 +467,20 @@ CREATE TABLE dtb_customer_favorite_products (
     customer_id int NOT NULL,
     product_id int NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
-    update_date timestamp NOT NULL DEFAULT now(),
+    update_date timestamp NOT NULL,
     PRIMARY KEY (customer_id, product_id)
 );
 
 CREATE TABLE dtb_category_count (
     category_id int NOT NULL,
     product_count int NOT NULL,
-    create_date timestamp NOT NULL DEFAULT Now()
+    create_date timestamp NOT NULL DEFAULT now()
 );
 
 CREATE TABLE dtb_category_total_count (
     category_id int NOT NULL,
     product_count int,
-    create_date timestamp NOT NULL DEFAULT Now()
+    create_date timestamp NOT NULL DEFAULT now()
 );
 
 CREATE TABLE dtb_news (
@@ -494,7 +494,7 @@ CREATE TABLE dtb_news (
     link_method text,
     creator_id int NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
-    update_date timestamp,
+    update_date timestamp NOT NULL,
     del_flg smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (news_id)
 );
@@ -508,7 +508,7 @@ CREATE TABLE dtb_best_products (
     comment text,
     creator_id int NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
-    update_date timestamp,
+    update_date timestamp NOT NULL,
     del_flg smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (best_id)
 );
@@ -558,7 +558,7 @@ CREATE TABLE dtb_customer (
     note text,
     status smallint NOT NULL DEFAULT 1,
     create_date timestamp NOT NULL DEFAULT now(),
-    update_date timestamp DEFAULT now(),
+    update_date timestamp NOT NULL,
     del_flg smallint NOT NULL DEFAULT 0,
     mobile_phone_id text,
     mailmaga_flg smallint,
@@ -623,7 +623,7 @@ CREATE TABLE dtb_order (
     note text,
     status smallint,
     create_date timestamp NOT NULL DEFAULT now(),
-    update_date timestamp,
+    update_date timestamp NOT NULL,
     commit_date timestamp,
     payment_date timestamp,
     device_type_id int,
@@ -702,7 +702,7 @@ CREATE TABLE dtb_order_temp (
     deliv_check smallint,
     point_check smallint,
     create_date timestamp NOT NULL DEFAULT now(),
-    update_date timestamp,
+    update_date timestamp NOT NULL,
     device_type_id int,
     del_flg smallint NOT NULL DEFAULT 0,
     deliv_date text,
@@ -762,8 +762,8 @@ CREATE TABLE dtb_member (
     work smallint NOT NULL DEFAULT 1,
     del_flg smallint NOT NULL DEFAULT 0,
     creator_id int NOT NULL,
-    update_date timestamp,
     create_date timestamp NOT NULL DEFAULT now(),
+    update_date timestamp NOT NULL,
     login_date timestamp,
     PRIMARY KEY (member_id)
 );
@@ -772,7 +772,7 @@ CREATE TABLE dtb_bat_relate_products (
     product_id int,
     relate_product_id int,
     customer_id int,
-    create_date timestamp DEFAULT now()
+    create_date timestamp NOT NULL DEFAULT now()
 );
 
 CREATE TABLE dtb_pagelayout (
@@ -791,7 +791,7 @@ CREATE TABLE dtb_pagelayout (
     keyword text,
     update_url text,
     create_date timestamp NOT NULL DEFAULT now(),
-    update_date timestamp NOT NULL DEFAULT now(),
+    update_date timestamp NOT NULL,
     PRIMARY KEY (device_type_id, page_id)
 );
 
@@ -802,7 +802,7 @@ CREATE TABLE dtb_bloc (
     tpl_path text,
     filename text NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
-    update_date timestamp NOT NULL DEFAULT now(),
+    update_date timestamp NOT NULL,
     php_path text,
     deletable_flg smallint NOT NULL DEFAULT 1,
     PRIMARY KEY (device_type_id, bloc_id),
@@ -828,7 +828,7 @@ CREATE TABLE dtb_csv (
 	rw_flg smallint DEFAULT 1,
     status smallint NOT NULL DEFAULT 1,
     create_date timestamp NOT NULL DEFAULT now(),
-    update_date timestamp NOT NULL DEFAULT now(),
+    update_date timestamp NOT NULL,
     mb_convert_kana_option text,
     size_const_type text,
     error_check_types text,
@@ -839,8 +839,8 @@ CREATE TABLE dtb_csv_sql (
     sql_id int,
     sql_name text NOT NULL,
     csv_sql text,
-    update_date timestamp NOT NULL DEFAULT now(),
     create_date timestamp NOT NULL DEFAULT now(),
+    update_date timestamp NOT NULL,
     PRIMARY KEY (sql_id)
 );
 
@@ -848,7 +848,7 @@ CREATE TABLE dtb_templates (
     template_code text NOT NULL,
     template_name text,
     create_date timestamp NOT NULL DEFAULT now(),
-    update_date timestamp NOT NULL DEFAULT now(),
+    update_date timestamp NOT NULL,
     PRIMARY KEY (template_code)
 );
 
@@ -874,7 +874,7 @@ CREATE TABLE dtb_maker (
 CREATE TABLE dtb_maker_count (
     maker_id int NOT NULL,
     product_count int NOT NULL,
-    create_date timestamp NOT NULL DEFAULT Now()
+    create_date timestamp NOT NULL DEFAULT now()
 );
 
 CREATE TABLE mtb_pref (
@@ -1197,14 +1197,14 @@ CREATE TABLE dtb_module (
     sub_data text,
     auto_update_flg smallint NOT NULL DEFAULT 0,
     del_flg smallint NOT NULL DEFAULT 0,
-    create_date timestamp NOT NULL DEFAULT NOW(),
+    create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp NOT NULL
 );
 
 CREATE TABLE dtb_session (
     sess_id text NOT NULL,
     sess_data text,
-    create_date timestamp NOT NULL,
+    create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp NOT NULL,
     PRIMARY KEY (sess_id)
 );
@@ -1217,7 +1217,7 @@ CREATE TABLE dtb_site_control (
     del_flg smallint NOT NULL DEFAULT 0,
     memo text,
     create_date timestamp NOT NULL DEFAULT now(),
-    update_date timestamp NOT NULL DEFAULT now(),
+    update_date timestamp NOT NULL,
     PRIMARY KEY (control_id)
 );
 
@@ -1230,7 +1230,7 @@ CREATE TABLE dtb_trackback (
     url text NOT NULL,
     status smallint NOT NULL DEFAULT 2,
     del_flg smallint NOT NULL DEFAULT 0,
-    create_date timestamp NOT NULL,
+    create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp NOT NULL,
     PRIMARY KEY (trackback_id)
 );
@@ -1238,7 +1238,7 @@ CREATE TABLE dtb_trackback (
 CREATE TABLE dtb_bkup (
     bkup_name   text,
     bkup_memo   text,
-    create_date timestamp,
+    create_date timestamp NOT NULL DEFAULT now(),
     PRIMARY KEY (bkup_name)
 );
 
@@ -1249,7 +1249,7 @@ CREATE TABLE dtb_plugin (
     del_flg smallint NOT NULL DEFAULT 0,
     class_name text NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
-    update_date timestamp NOT NULL DEFAULT now(),
+    update_date timestamp NOT NULL,
     PRIMARY KEY (plugin_id)
 );
 

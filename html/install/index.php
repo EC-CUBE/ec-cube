@@ -260,6 +260,7 @@ case 'complete':
     $sqlval['product_tpl'] = "default1";
     $sqlval['detail_tpl'] = "default1";
     $sqlval['mypage_tpl'] = "default1";
+    $sqlval['update_date'] = 'now()';
     $objQuery = new SC_Query($dsn);
     $cnt = $objQuery->count("dtb_baseinfo");
     if($cnt > 0) {
