@@ -51,38 +51,17 @@ class LC_Page_Guide_Usage extends LC_Page {
      * @return void
      */
     function process() {
+        parent::process();
+        $this->action();
+        $this->sendResponse();
     }
-
+    
     /**
-     * モバイルページを初期化する.
+     * Page のアクション.
      *
      * @return void
      */
-    function mobileInit() {
-        $this->tpl_mainpage = 'guide/usage.tpl';	// メインテンプレート
-        $this->tpl_title = 'ご利用方法';
-    }
-
-    /**
-     * Page のプロセス(モバイル).
-     *
-     * @return void
-     */
-    function mobileProcess() {
-
-        switch (@$_GET['page']) {
-        case '1':
-        case '2':
-        case '3':
-        case '4':
-            $this->tpl_mainpage = 'guide/usage' . $_GET['page'] . '.tpl';
-            break;
-        }
-
-        $objView = new SC_MobileView();
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
-    }
+    function action() {}
 
     /**
      * デストラクタ.

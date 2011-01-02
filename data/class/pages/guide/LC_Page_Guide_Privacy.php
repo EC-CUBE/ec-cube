@@ -51,28 +51,17 @@ class LC_Page_Guide_Privacy extends LC_Page {
      * @return void
      */
     function process() {
+        parent::process();
+        $this->action();
+        $this->sendResponse();
     }
-
+    
     /**
-     * モバイルページを初期化する.
+     * Page のアクション.
      *
      * @return void
      */
-    function mobileInit() {
-        $this->tpl_mainpage = 'guide/privacy.tpl';	// メインテンプレート
-        $this->tpl_title = 'プライバシーポリシー';
-    }
-
-    /**
-     * Page のプロセス(モバイル).
-     *
-     * @return void
-     */
-    function mobileProcess() {
-        $objView = new SC_MobileView();
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
-    }
+    function action() {}
 
     /**
      * デストラクタ.

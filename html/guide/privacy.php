@@ -22,18 +22,18 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  
  *
- * モバイルサイト/ご利用ガイド
+ * モバイルサイト/プライバシーポリシー
  */
 
 // {{{ requires
 require_once("../require.php");
-require_once(CLASS_EX_REALDIR . "page_extends/guide/LC_Page_Guide_Ex.php");
+require_once(CLASS_EX_REALDIR . "page_extends/guide/LC_Page_Guide_Privacy_Ex.php");
 
 // }}}
 // {{{ generate page
 
-$objPage = new LC_Page_Guide_Ex();
+$objPage = new LC_Page_Guide_Privacy_Ex();
 register_shutdown_function(array($objPage, "destroy"));
-$objPage->mobileInit();
-$objPage->mobileProcess();
+$objPage->init();
+$objPage->process();
 ?>

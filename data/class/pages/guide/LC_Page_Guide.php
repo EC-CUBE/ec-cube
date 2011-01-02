@@ -51,29 +51,18 @@ class LC_Page_Guide extends LC_Page {
      * @return void
      */
     function process() {
+        parent::process();
+        $this->action();
+        $this->sendResponse();
     }
-
+    
     /**
-     * モバイルページを初期化する.
+     * Page のアクション.
      *
      * @return void
      */
-    function mobileInit() {
-        $this->tpl_mainpage = 'guide/index.tpl';	// メインテンプレート
-        $this->tpl_title = 'ご利用ガイド';
-    }
-
-    /**
-     * Page のプロセス(モバイル).
-     *
-     * @return void
-     */
-    function mobileProcess() {
-        $objView = new SC_MobileView();
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
-    }
-
+    function action() {}
+    
     /**
      * デストラクタ.
      *

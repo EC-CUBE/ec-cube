@@ -1,5 +1,6 @@
-<!--{*
-/*
+<?php
+/**
+ *
  * This file is part of EC-CUBE
  *
  * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
@@ -19,24 +20,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ 
+ *
+ * モバイルサイト/ご利用規約
  */
-*}-->
-<center>ご注文後</center>
 
-<hr>
+// {{{ requires
+require_once("../require.php");
+require_once(CLASS_EX_REALDIR . "page_extends/guide/LC_Page_Guide_Kiyaku_Ex.php");
 
-<!-- ▼本文 ここから -->
-「ご注文後」の本文<br>
-<!-- ▲本文 ここまで -->
+// }}}
+// {{{ generate page
 
-<br>
-<hr>
-
-<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>
-<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
-
-<br>
-
-<!-- ▼フッター ここから -->
-<!--{include file='footer.tpl'}-->
-<!-- ▲フッター ここまで -->
+$objPage = new LC_Page_Guide_Kiyaku_Ex();
+register_shutdown_function(array($objPage, "destroy"));
+$objPage->init();
+$objPage->process();
+?>

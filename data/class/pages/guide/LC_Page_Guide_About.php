@@ -51,29 +51,21 @@ class LC_Page_Guide_About extends LC_Page {
      * @return void
      */
     function process() {
+        parent::process();
+        $this->action();
+        $this->sendResponse();
     }
 
     /**
-     * モバイルページを初期化する.
+     * Page のアクション.
      *
      * @return void
      */
-    function mobileInit() {
-        $this->tpl_mainpage = 'guide/about.tpl';	// メインテンプレート
-        $this->tpl_title = '運営会社紹介';
+    function action() {
+        $objDb = new SC_Helper_DB_Ex();
+        $this->arrSiteInfo = $objDb->sfGetBasisData();
     }
-
-    /**
-     * Page のプロセス(モバイル).
-     *
-     * @return void
-     */
-    function mobileProcess() {
-        $objView = new SC_MobileView();
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
-    }
-
+    
     /**
      * デストラクタ.
      *

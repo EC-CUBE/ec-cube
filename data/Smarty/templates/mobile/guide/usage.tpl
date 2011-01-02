@@ -25,12 +25,25 @@
 
 <hr>
 
-<!-- ▼メニュー ここから -->
-<a href="usage.php?page=1" accesskey="1"><!--{1|numeric_emoji}-->商品の探し方</a><br>
-<a href="usage.php?page=2" accesskey="2"><!--{2|numeric_emoji}-->ご注文方法</a><br>
-<a href="usage.php?page=3" accesskey="3"><!--{3|numeric_emoji}-->ご注文後</a><br>
-<a href="usage.php?page=4" accesskey="4"><!--{4|numeric_emoji}-->商品到着後</a><br>
-<!-- ▲メニュー ここまで -->
+<!-- ▼ -->
+<!--{1|numeric_emoji}-->商品の探し方<br>
+「商品の探し方」の本文<br><br>
+<!-- ▲ -->
+
+<!-- ▼ -->
+<!--{2|numeric_emoji}-->ご注文方法<br>
+「ご注文方法」の本文<br><br>
+<!-- ▲ -->
+
+<!-- ▼ -->
+<!--{3|numeric_emoji}-->ご注文後<br>
+「ご注文後」の本文<br><br>
+<!-- ▲ -->
+
+<!-- ▼ -->
+<!--{4|numeric_emoji}-->商品到着後<br>
+「商品到着後」の本文<br><br>
+<!-- ▲ -->
 
 <br>
 <hr>

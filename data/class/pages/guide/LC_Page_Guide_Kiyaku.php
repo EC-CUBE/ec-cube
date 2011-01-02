@@ -51,30 +51,18 @@ class LC_Page_Guide_Kiyaku extends LC_Page {
      * @return void
      */
     function process() {
+        parent::process();
+        $this->action();
+        $this->sendResponse();
     }
-
+    
     /**
-     * モバイルページを初期化する.
+     * Page のアクション.
      *
      * @return void
      */
-    function mobileInit() {
-        $this->tpl_mainpage = 'guide/kiyaku.tpl';	// メインテンプレート
-        $this->tpl_title = 'ご利用規約';
-    }
-
-    /**
-     * Page のプロセス(モバイル).
-     *
-     * @return void
-     */
-    function mobileProcess() {
-        // 利用規約を取得する。
-        $this->lfGetKiyaku(intval(@$_GET['page']), $this);
-
-        $objView = new SC_MobileView();
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
+    function action() {
+    	$this->lfGetKiyaku(intval($_GET['page']), $this);
     }
 
     /**
@@ -111,8 +99,8 @@ class LC_Page_Guide_Kiyaku extends LC_Page {
             $index = $last;
         }
 
-        $objPage->tpl_kiyaku_title = @$arrRet[$index]['kiyaku_title'];
-        $objPage->tpl_kiyaku_text = @$arrRet[$index]['kiyaku_text'];
+        $objPage->tpl_kiyaku_title = $arrRet[$index]['kiyaku_title'];
+        $objPage->tpl_kiyaku_text = $arrRet[$index]['kiyaku_text'];
         $objPage->tpl_kiyaku_index = $index;
         $objPage->tpl_kiyaku_last_index = $last;
         $objPage->tpl_kiyaku_is_first = $index <= 0;
