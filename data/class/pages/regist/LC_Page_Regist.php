@@ -67,17 +67,10 @@ class LC_Page_Regist extends LC_Page {
      * @return void
      */
     function action() {
-        //$objView = new SC_SiteView();
         $objSiteInfo = $objView->objSiteInfo;
         $objCustomer = new SC_Customer();
         $objDb = new SC_Helper_DB_Ex();
         $this->CONF = $objDb->sfGetBasisData();
-
-        // キャンペーンからの登録の場合の処理
-
-        if(!empty($_GET["cp"])) {
-            $etc_val['cp'] = $_GET['cp'];
-        }
 
         //--　本登録完了のためにメールから接続した場合
         if ($_GET["mode"] == "regist") {
@@ -104,75 +97,6 @@ class LC_Page_Regist extends LC_Page {
         } else {
             SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, "", true, "無効なアクセスです。");
         }
-
-        //----　ページ表示
-        //$objView->assignobj($this);
-        //$objView->display(SITE_FRAME);
-    }
-
-
-    /**
-     * モバイルページを初期化する.
-     *
-     * @return void
-     */
-    function mobileInit() {
-    }
-
-    /**
-     * Page のプロセス(モバイル).
-     *
-     * @return void
-     */
-    function mobileProcess() {
-        parent::mobileProcess();
-        $this->mobileAction();
-        $this->sendResponse();
-    }
-
-    /**
-     * Page のAction(モバイル).
-     *
-     * @return void
-     */
-    function mobileAction() {
-        //$objView = new SC_MobileView();
-        $objSiteInfo = $objView->objSiteInfo;
-        $objCustomer = new SC_Customer();
-        $objDb = new SC_Helper_DB_Ex();
-        $this->CONF = $objDb->sfGetBasisData();
-
-        //--　本登録完了のためにメールから接続した場合
-        if ($_GET["mode"] == "regist") {
-
-            //-- 入力チェック
-            $this->arrErr = $this->lfErrorCheck($_GET);
-            if ($this->arrErr) {
-                $this->tpl_mainpage = 'regist/error.tpl';
-                $this->tpl_title = 'エラー';
-
-            } else {
-                $registSecretKey = $this->lfRegistData($_GET);			//本会員登録（フラグ変更）
-                $this->lfSendRegistMail($registSecretKey);				//本会員登録完了メール送信
-
-                // ログイン済みの状態にする。
-                $objQuery = new SC_Query();
-                $email = $objQuery->get("email", "dtb_customer", "secret_key = ?", array($registSecretKey));
-                $objCustomer->setLogin($email);
-                $this->objDisplay->redirect($this->getLocation("./complete.php"));
-                exit;
-            }
-
-            //--　それ以外のアクセスは無効とする
-        } else {
-            $this->arrErr["id"] = "無効なアクセスです。";
-            $this->tpl_mainpage = 'regist/error.tpl';
-            $this->tpl_title = 'エラー';
-        }
-
-        //----　ページ表示
-        //$objView->assignobj($this);
-        //$objView->display(SITE_FRAME);
     }
 
     /**
@@ -205,23 +129,6 @@ class LC_Page_Regist extends LC_Page {
         $arrRet = $objQuery->select("point", "dtb_customer", $where, array($array["id"]));
 
         $objQuery->update("dtb_customer", $arrRegist, $where, array($array["id"]));
-
-        /* 購入時の自動会員登録は行わないためDEL
-        // 購入時登録の場合、その回の購入を会員購入とみなす。
-        // 会員情報の読み込み
-        $where1 = "secret_key = ? AND status = 2";
-        $customer = $objQuery->select("*", "dtb_customer", $where1, array($secret));
-        // 初回購入情報の読み込み
-        $order_temp_id = $objQuery->get("order_temp_id", "dtb_order_temp");
-        // 購入情報の更新
-        if ($order_temp_id != null) {
-            $arrCustomer['customer_id'] = $customer[0]['customer_id'];
-            $where3 = "order_temp_id = ?";
-            $objQuery->update("dtb_order_temp", $arrCustomer, $where3, array($order_temp_id));
-            $objQuery->update("dtb_order", $arrCustomer, $where3, array($order_temp_id));
-        }
-        */
-
         $sql = "SELECT mailmaga_flg FROM dtb_customer WHERE email = ?";
         $result = $objQuery->getOne($sql, array($email));
 

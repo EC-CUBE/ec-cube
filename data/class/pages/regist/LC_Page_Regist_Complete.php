@@ -65,46 +65,7 @@ class LC_Page_Regist_Complete extends LC_Page {
      */
     function action() {
         global $objCampaignSess;
-
         $objQuery = new SC_Query();
-        $objCampaignSess = new SC_CampaignSession();
-    }
-
-    /**
-     * モバイルページを初期化する.
-     *
-     * @return void
-     */
-    function mobileInit() {
-        $this->init();
-    }
-
-    /**
-     * Page のプロセス(モバイル).
-     *
-     * @return void
-     */
-    function mobileProcess() {
-        parent::mobileProcess();
-        $this->mobileAction();
-        $this->sendResponse();
-    }
-
-    /**
-     * Page のAction(モバイル).
-     *
-     * @return void
-     */
-    function mobileAction() {
-
-        //$objView = new SC_MobileView();
-
-        // カートが空かどうかを確認する。
-        $objCartSess = new SC_CartSession();
-        $this->tpl_cart_empty = count($objCartSess->getCartList()) < 1;
-
-        //$objView->assignobj($this);
-        //$objView->display(SITE_FRAME);
     }
 
     /**

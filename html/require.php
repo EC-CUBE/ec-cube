@@ -26,16 +26,16 @@ define("HTML_REALDIR", rtrim(realpath(rtrim(realpath(dirname(__FILE__)), '/\\') 
 
 require_once HTML_REALDIR . 'define.php';
 require_once HTML_REALDIR . 'handle_error.php';
-define('FRONT_FUNCTION_PC_SITE', true);
 require_once HTML_REALDIR . HTML2DATA_DIR . 'require_base.php';
 
 if ( Net_UserAgent_Mobile::isMobile() === true ){
+	define('MOBILE_SITE', true);
     $objMobile = new SC_Helper_Mobile_Ex();
     $objMobile->sfMobileInit();
     ob_start();
     
 } else {
-	
+	define('FRONT_FUNCTION_PC_SITE', true);	
 	// スマートフォンの場合、リダイレクト
 	SC_SmartphoneUserAgent::sfAutoRedirectSmartphoneSite();
 	
