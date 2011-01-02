@@ -43,7 +43,7 @@ class LC_Page_Unsupported extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->tpl_mainpage = TEMPLATE_REALDIR . 'mobile/unsupported/index.tpl';
+        $this->tpl_title = '未対応デバイス';
     }
 
     /**
@@ -52,12 +52,13 @@ class LC_Page_Unsupported extends LC_Page {
      * @return void
      */
     function process() {
-        $objView = new SC_MobileView();
-
-        $objView->assignobj($this);
-        $objView->display($this->tpl_mainpage);
+        parent::process();
+        $this->action();
+        $this->sendResponse();
     }
 
+    function action() {}
+    
     /**
      * デストラクタ.
      *

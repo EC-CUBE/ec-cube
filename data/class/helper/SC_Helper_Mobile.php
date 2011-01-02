@@ -36,13 +36,13 @@ class SC_Helper_Mobile {
 
     /**
      * EC-CUBE がサポートする携帯端末かどうかをチェックする。
-     * 非対応端末の場合は /mobile/unsupported/ へリダイレクトする。
+     * 非対応端末の場合は /unsupported/ へリダイレクトする。
      *
      * @return void
      */
     function lfMobileCheckCompatibility() {
         if (!SC_MobileUserAgent::isSupported()) {
-            header('Location: ' . URL_PATH . 'mobile/unsupported/' . DIR_INDEX_URL);
+            header('Location: ' . URL_PATH . 'unsupported/' . DIR_INDEX_URL);
             exit;
         }
     }
