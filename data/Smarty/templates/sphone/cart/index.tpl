@@ -46,18 +46,10 @@
                 <!--{/if}-->
                 
                 <!--{* カゴの中に商品がある場合にのみ表示 *}-->
-                <!--{if count($arrProductsClass) > 0 }-->
-                    <!--{* FIXME $key は未定義 *}-->
-                    お買い上げ商品の合計金額は「<em><!--{$tpl_total_inctax[$key]|number_format}-->円</em>」です。
-                    <!--{if $arrInfo.free_rule > 0}-->
-                        <!--{if $arrData.deliv_fee > 0}-->
-                            <!--{* FIXME $key は未定義 *}-->
-                            あと「<em><!--{$tpl_deliv_free[$key]|number_format}-->円</em>」で送料無料です！！
-                        <!--{else}-->
-                            現在、「<em>送料無料</em>」です！！
-                        <!--{/if}-->
-                    <!--{/if}-->
+                <!--{if count($cartKeys) > 1}-->
+                    <em><!--{foreach from=$cartKeys item=key name=cartKey}--><!--{$arrProductType[$key]}--><!--{if !$smarty.foreach.cartKey.last}-->、<!--{/if}--><!--{/foreach}-->は同時購入できません。お手数ですが、個別に購入手続きをお願い致します。</em>
                 <!--{/if}-->
+               
             </p>
         <!--{/if}-->
 
@@ -80,6 +72,30 @@
             <input type="hidden" name="mode" value="confirm" />
             <input type="hidden" name="cart_no" value="" />
             <input type="hidden" name="cartKey" value="<!--{$key}-->" />
+            <!--{if count($cartKeys) > 1 }-->
+            <h3><!--{$arrProductType[$key]}--></h3>
+                <p>
+                    <!--{$arrProductType[$key]}-->の合計金額は「<em><!--{$tpl_total_inctax[$key]|number_format}-->円</em>」です。
+                    <!--{if $arrInfo.free_rule > 0}-->
+                        <!--{if $arrData[$key].deliv_fee > 0}-->
+                            あと「<em><!--{$tpl_deliv_free[$key]|number_format}-->円</em>」で送料無料です！！
+                        <!--{else}-->
+                            現在、「<em>送料無料</em>」です！！
+                        <!--{/if}-->
+                    <!--{/if}-->
+                </p>
+            <!--{else}-->
+                <p>
+                    お買い上げ商品の合計金額は「<em><!--{$tpl_total_inctax[$key]|number_format}-->円</em>」です。
+                    <!--{if $arrInfo.free_rule > 0}-->
+                        <!--{if $arrData[$key].deliv_fee > 0}-->
+                            あと「<em><!--{$tpl_deliv_free[$key]|number_format}-->円</em>」で送料無料です！！
+                        <!--{else}-->
+                            現在、「<em>送料無料</em>」です！！
+                        <!--{/if}-->
+                    <!--{/if}-->
+                </p>
+            <!--{/if}-->
             <table summary="商品情報">
                 <tr>
                     <th>商品写真</th>
@@ -127,7 +143,7 @@
                  </tr>
                  <tr>
                      <th colspan="3" class="resulttd">合計</th>
-                     <td colspan="2" class="pricetd"><em><!--{$arrData.total-$arrData.deliv_fee|number_format}-->円</em></td>
+                     <td colspan="2" class="pricetd"><em><!--{$arrData[$key].total-$arrData[$key].deliv_fee|number_format}-->円</em></td>
                  </tr>
                  <!--{if $smarty.const.USE_POINT !== false}-->
                      <!--{if $arrData.birth_point > 0}-->
