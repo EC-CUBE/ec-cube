@@ -46,17 +46,8 @@
                 <!--{/if}-->
                 
                 <!--{* カゴの中に商品がある場合にのみ表示 *}-->
-                <!--{if count($arrProductsClass) > 0 }-->
-                    <!--{* FIXME $key は未定義 *}-->
-                    お買い上げ商品の合計金額は「<em><!--{$tpl_total_inctax[$key]|number_format}-->円</em>」です。
-                    <!--{if $arrInfo.free_rule > 0}-->
-                        <!--{if $arrData.deliv_fee > 0}-->
-                            <!--{* FIXME $key は未定義 *}-->
-                            あと「<em><!--{$tpl_deliv_free[$key]|number_format}-->円</em>」で送料無料です！！
-                        <!--{else}-->
-                            現在、「<em>送料無料</em>」です！！
-                        <!--{/if}-->
-                    <!--{/if}-->
+                <!--{if count($cartKeys) > 1}-->
+                    <em><!--{foreach from=$cartKeys item=key name=cartKey}--><!--{$arrProductType[$key]}--><!--{if !$smarty.foreach.cartKey.last}-->、<!--{/if}--><!--{/foreach}-->は同時購入できません。お手数ですが、個別に購入手続きをお願い致します。</em>
                 <!--{/if}-->
             </p>
         <!--{/if}-->
@@ -72,14 +63,36 @@
     <!--{if count($cartItems) > 0}-->
 
     <!--{foreach from=$cartKeys item=key}-->
-        <form name="form1" id="form1" method="post" action="?">
-            <!--{if 'sfGMOCartDisplay'|function_exists}-->
-                <!--{'sfGMOCartDisplay'|call_user_func}-->
-            <!--{/if}-->
+        <form name="form<!--{$key}-->" id="form<!--{$key}-->" method="post" action="?">
 
             <input type="hidden" name="mode" value="confirm" />
             <input type="hidden" name="cart_no" value="" />
             <input type="hidden" name="cartKey" value="<!--{$key}-->" />
+            <!--{if count($cartKeys) > 1 }-->
+            <h3><!--{$arrProductType[$key]}--></h3>
+                <p>
+                    <!--{$arrProductType[$key]}-->の合計金額は「<em><!--{$tpl_total_inctax[$key]|number_format}-->円</em>」です。
+                    <!--{if $arrInfo.free_rule > 0}-->
+                        <!--{if $arrData[$key].deliv_fee > 0}-->
+                            あと「<em><!--{$tpl_deliv_free[$key]|number_format}-->円</em>」で送料無料です！！
+                        <!--{else}-->
+                            現在、「<em>送料無料</em>」です！！
+                        <!--{/if}-->
+                    <!--{/if}-->
+                </p>
+            <!--{else}-->
+                <p>
+                    お買い上げ商品の合計金額は「<em><!--{$tpl_total_inctax[$key]|number_format}-->円</em>」です。
+                    <!--{if $arrInfo.free_rule > 0}-->
+                        <!--{if $arrData[$key].deliv_fee > 0}-->
+                            あと「<em><!--{$tpl_deliv_free[$key]|number_format}-->円</em>」で送料無料です！！
+                        <!--{else}-->
+                            現在、「<em>送料無料</em>」です！！
+                        <!--{/if}-->
+                    <!--{/if}-->
+                </p>
+            <!--{/if}-->
+
             <table summary="商品情報">
                 <tr>
                     <th>削除</th>
@@ -91,7 +104,7 @@
                 </tr>
                 <!--{foreach from=$cartItems[$key] item=item}-->
                     <tr style="<!--{if $item.error}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->">
-                        <td><a href="?" onclick="fnModeSubmit('delete', 'cart_no', '<!--{$item.cart_no}-->'); return false;">削除</a>
+                        <td><a href="?" onclick="fnFormModeSubmit('form<!--{$key}-->', 'delete', 'cart_no', '<!--{$item.cart_no}-->'); return false;">削除</a>
                         </td>
                         <td class="phototd">
                         <a
@@ -116,8 +129,8 @@
                         </td>
                         <td id="quantity"><!--{$item.quantity}-->
                             <ul id="quantity_level">
-                                <li><a href="?" onclick="fnModeSubmit('up','cart_no','<!--{$item.cart_no}-->'); return false"><img src="<!--{$TPL_DIR}-->img/button/btn_plus.gif" width="16" height="16" alt="＋" /></a></li>
-                                <li><a href="?" onclick="fnModeSubmit('down','cart_no','<!--{$item.cart_no}-->'); return false"><img src="<!--{$TPL_DIR}-->img/button/btn_minus.gif" width="16" height="16" alt="-" /></a></li>
+                                <li><a href="?" onclick="fnFormModeSubmit('form<!--{$key}-->','up','cart_no','<!--{$item.cart_no}-->'); return false"><img src="<!--{$TPL_DIR}-->img/button/btn_plus.gif" width="16" height="16" alt="＋" /></a></li>
+                                <li><a href="?" onclick="fnFormModeSubmit('form<!--{$key}-->','down','cart_no','<!--{$item.cart_no}-->'); return false"><img src="<!--{$TPL_DIR}-->img/button/btn_minus.gif" width="16" height="16" alt="-" /></a></li>
                             </ul>
                         </td>
                         <td class="pricetd"><!--{$item.total_inctax|number_format}-->円</td>
@@ -129,18 +142,18 @@
                  </tr>
                  <tr>
                      <th colspan="5" class="resulttd">合計</th>
-                     <td class="pricetd"><em><!--{$arrData.total-$arrData.deliv_fee|number_format}-->円</em></td>
+                     <td class="pricetd"><em><!--{$arrData[$key].total-$arrData[$key].deliv_fee|number_format}-->円</em></td>
                  </tr>
                  <!--{if $smarty.const.USE_POINT !== false}-->
-                     <!--{if $arrData.birth_point > 0}-->
+                     <!--{if $arrData[$key].birth_point > 0}-->
                          <tr>
                              <th colspan="5" class="resulttd">お誕生月ポイント</th>
-                             <td class="pricetd"><!--{$arrData.birth_point|number_format}-->pt</td>
+                             <td class="pricetd"><!--{$arrData[$key].birth_point|number_format}-->pt</td>
                          </tr>
                      <!--{/if}-->
                      <tr>
                          <th colspan="5" class="resulttd">今回加算ポイント</th>
-                         <td class="pricetd"><!--{$arrData.add_point|number_format}-->pt</td>
+                         <td class="pricetd"><!--{$arrData[$key].add_point|number_format}-->pt</td>
                     </tr>
                 <!--{/if}-->
             </table>
@@ -152,7 +165,7 @@
                 <p>
                     <!--{if $tpl_prev_url != ""}-->
                         <a href="<!--{$tpl_prev_url}-->" onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_back_on.gif','back');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_back.gif','back');">
-                            <img src="<!--{$TPL_DIR}-->img/button/btn_back.gif" width="150" height="30" alt="買い物を続ける" name="back" id="back" /></a>&nbsp;&nbsp;
+                            <img src="<!--{$TPL_DIR}-->img/button/btn_back.gif" width="150" height="30" alt="買い物を続ける" name="back" /></a>&nbsp;&nbsp;
                     <!--{/if}-->
                     <!--{if strlen($tpl_error) == 0}-->
                         <input type="hidden" name="cartKey" value="<!--{$key}-->" />

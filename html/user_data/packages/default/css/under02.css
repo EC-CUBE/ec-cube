@@ -26,6 +26,17 @@ div#under02column_cart .totalmoneyarea {
     text-align: center;
 }
 
+div#under02column_cart h3 {
+    margin: 10px 5px;
+    font-size: 120%;
+    border-bottom: 1px solid #999;
+    text-align: left;
+}
+
+div#under02column_cart p {
+    margin: 10px 5px;
+}
+
 div#under02column_cart th {
     text-align: center;
 }

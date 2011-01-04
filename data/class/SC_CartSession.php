@@ -564,6 +564,14 @@ class SC_CartSession {
     }
 
     function getKeys() {
+        $keys = array_keys($this->cartSession);
+        // 数量が 0 の商品種別は削除する
+        foreach ($keys as $key) {
+            $quantity = $this->getTotalQuantity($key);
+            if ($quantity < 1) {
+                unset($this->cartSession[$key]);
+            }
+        }
         return array_keys($this->cartSession);
     }
 

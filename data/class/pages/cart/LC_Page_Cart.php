@@ -58,6 +58,9 @@ class LC_Page_Cart extends LC_Page {
     function init() {
         parent::init();
         $this->tpl_title = "現在のカゴの中";
+        $masterData = new SC_DB_MasterData_Ex();
+        $this->arrProductType = $masterData->getMasterData("mtb_product_type");
+
     }
 
     /**
@@ -149,8 +152,8 @@ class LC_Page_Cart extends LC_Page {
             $this->tpl_total_tax[$key] = $objCartSess->getAllProductsTax($key);
             // ポイント合計
             $this->tpl_total_point[$key] = $objCartSess->getAllProductsPoint($key);
-            $this->arrData = $objCartSess->calculate($key, $objCustomer);
 
+            $this->arrData[$key] = $objCartSess->calculate($key, $objCustomer);
             // 送料無料までの金額を計算
             $this->tpl_deliv_free[$key] = $this->arrInfo['free_rule'] - $this->tpl_total_inctax[$key];
         }
