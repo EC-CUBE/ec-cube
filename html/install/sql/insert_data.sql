@@ -1143,7 +1143,7 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('FILE_SIZE', '10000'
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TEMPLATE_SIZE', '10000', 131, 'アップできるテンプレートファイル制限(KB)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('LEVEL_MAX', '5', 132, 'カテゴリの最大階層');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CATEGORY_MAX', '1000', 133, '最大カテゴリ登録数');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ADMIN_TITLE', '"管理機能"', 134, '管理機能タイトル');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ADMIN_TITLE', '"EC-CUBE 管理者画面"', 134, '管理機能タイトル');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SELECT_RGB', '"#ffffdf"', 135, '編集時強調表示色');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DISABLED_RGB', '"#C9C9C9"', 136, '入力項目無効時の表示色');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ERR_COLOR', '"#ffe8e8"', 137, 'エラー時表示色');

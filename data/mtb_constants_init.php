@@ -202,7 +202,7 @@ define('LEVEL_MAX', 5);
 /** 最大カテゴリ登録数 */
 define('CATEGORY_MAX', 1000);
 /** 管理機能タイトル */
-define('ADMIN_TITLE', "管理機能");
+define('ADMIN_TITLE', "EC-CUBE 管理者画面");
 /** 編集時強調表示色 */
 define('SELECT_RGB', "#ffffdf");
 /** 入力項目無効時の表示色 */
