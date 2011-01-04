@@ -84,7 +84,7 @@ class LC_Page_Error extends LC_Page {
         switch ($this->type) {
             case PRODUCT_NOT_FOUND:
                 $this->tpl_error="ご指定のページはございません。";
-                $this->sendHttpStatus(404);
+                SC_Response_Ex::sendHttpStatus(404);
                 break;
             case PAGE_ERROR:
                 $this->tpl_error="不正なページ移動です。";
@@ -100,7 +100,7 @@ class LC_Page_Error extends LC_Page {
                 break;
             case CATEGORY_NOT_FOUND:
                 $this->tpl_error="ご指定のカテゴリは存在しません。";
-                $this->sendHttpStatus(404);
+                SC_Response_Ex::sendHttpStatus(404);
                 break;
             case SITE_LOGIN_ERROR:
                 $this->tpl_error="メールアドレスもしくはパスワードが正しくありません。";
