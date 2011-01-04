@@ -22,9 +22,7 @@
 <!--▼CONTENTS-->
 <div id="under02column">
   <div id="under02column_customer">
-    <p class="flowarea"><img src="<!--{$TPL_DIR}-->img/picture/img_flow_01.gif" width="700" height="36" alt="購入手続きの流れ" /></p>
     <h2 class="title"><!--{$tpl_title|h}--></h2>
-
     <p>下記項目にご入力ください。「<span class="attention">※</span>」印は入力必須項目です。<br />
       入力後、一番下の「確認ページへ」ボタンをクリックしてください。</p>
     <form name="form1" id="form1" method="post" action="?">

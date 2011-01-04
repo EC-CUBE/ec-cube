@@ -22,9 +22,7 @@
 <!--▼CONTENTS-->
 <div id="under02column">
   <div id="under02column_shopping">
-    <p class="flowarea">
-      <img src="<!--{$TPL_DIR}-->img/picture/img_flow_04.gif" width="700" height="36" alt="購入手続きの流れ" />
-    </p>
+    
     <h2 class="title"><!--{$tpl_title|h}--></h2>
 
     <!-- ▼その他決済情報を表示する場合は表示 -->

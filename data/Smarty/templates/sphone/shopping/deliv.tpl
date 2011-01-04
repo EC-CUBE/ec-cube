@@ -22,9 +22,6 @@
 <!--▼CONTENTS-->
 <div id="under02column">
     <div id="under02column_shopping">
-        <p class="flowarea">
-            <img src="<!--{$TPL_DIR}-->img/picture/img_flow_01.gif" width="700" height="36" alt="購入手続きの流れ" />
-        </p>
         <h2 class="title"><!--{$tpl_title|h}--></h2>
 
         <p>下記一覧よりお届け先住所を選択して、「選択したお届け先に送る」ボタンをクリックしてください。</p>

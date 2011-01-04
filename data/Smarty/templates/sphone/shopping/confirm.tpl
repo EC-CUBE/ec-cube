@@ -44,8 +44,7 @@
 <!--▼CONTENTS-->
 <div id="under02column">
     <div id="under02column_shopping">
-        <p class="flowarea"><img src="<!--{$TPL_DIR}-->img/picture/img_flow_03.gif" width="700" height="36" alt="購入手続きの流れ" /></p>
-        <h2 class="title"><!--{$tpl_title|h}--></h2>
+         <h2 class="title"><!--{$tpl_title|h}--></h2>
 
         <p>下記ご注文内容で送信してもよろしいでしょうか？<br />
             よろしければ、「<!--{if $payment_type != ""}-->次へ<!--{else}-->ご注文完了ページへ<!--{/if}-->」ボタンをクリックしてください。</p>
