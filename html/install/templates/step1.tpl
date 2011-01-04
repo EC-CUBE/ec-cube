@@ -57,7 +57,7 @@
             <!--{assign var=key value="login_id"}-->
             <span class="red"><span class="fs12n"><!--{$arrErr[$key]}--></span></span>
             <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="40" class="box40" />
-            <br><span class="fs10">※管理者画面にログインするためのIDです。</span>
+            <br><span class="fs10">※管理機能にログインするためのIDです。</span>
             </td>
         </tr>
         <tr>
@@ -66,7 +66,7 @@
             <!--{assign var=key value="login_pass"}-->
             <span class="red"><span class="fs12n"><!--{$arrErr[$key]}--></span></span>
             <input type="password" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->;" size="40" class="box40" />
-            <br><span class="fs10">※管理者画面にログインするためのパスワードです。</span>
+            <br><span class="fs10">※管理機能にログインするためのパスワードです。</span>
             </td>
         </tr>
     </table>
