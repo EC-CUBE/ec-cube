@@ -33,8 +33,6 @@ class SC_Display{
 
     var $device;
 
-    var $autoSet;
-
     /** SC_View インスタンス */
     var $view;
 
@@ -48,9 +46,8 @@ class SC_Display{
      * const('ADMIN',99);
      */
 
-    function SC_Display($hasPrevURL = true, $autoGenerateHttpHeaders = true) {
+    function SC_Display($hasPrevURL = true) {
         $this->response = new SC_Response_Ex();
-        $this->autoSet = $autoGenerateHttpHeaders;
         if ($hasPrevURL) {
             $this->setPrevURL();
         }
@@ -138,28 +135,25 @@ class SC_Display{
 
     /**
      * 機種を判別する。
+     *
      * SC_Display::MOBILE = ガラケー = 1
      * SC_Display::SMARTPHONE = スマホ = 2
      * SC_Display::PC = PC = 10
-     * ※PHP4の為にconstは使っていません。 1がガラケーで、2がスマホで4がPCです。
-     * @return
+     *
+     * @static
+     * @return integer 端末種別ID
      */
     function detectDevice(){
         $nu = new Net_UserAgent_Mobile();
         $su = new SC_SmartphoneUserAgent();
         $retDevice = 0;
-        if($nu->isMobile()){
-            $retDevice = DEVICE_TYPE_MOBILE;
-        }elseif ($su->isSmartphone()){
-            $retDevice = DEVICE_TYPE_SMARTPHONE;
-        }else{
-            $retDevice = DEVICE_TYPE_PC;
+        if ($nu->isMobile()) {
+            return DEVICE_TYPE_MOBILE;
+        } elseif ($su->isSmartphone()) {
+            return DEVICE_TYPE_SMARTPHONE;
+        } else {
+            return DEVICE_TYPE_PC;
         }
-
-        if($this->autoSet){
-            $this->setDevice($retDevice);
-        }
-        return $retDevice;
     }
 
     function assign($val1,$val2){
