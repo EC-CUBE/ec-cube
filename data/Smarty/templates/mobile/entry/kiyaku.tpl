@@ -22,12 +22,17 @@
  */
 *}-->
 <div align="center">ご利用規約</div>
+<!--{if $offset eq 1}-->
+<hr>
+ご注文に際して必要な内容（ご自宅住所等）をご登録していただきます。<br>
+ご利用の規約をよくお読みの上、ご登録下さい。<br>
+<!--{/if}-->
 <hr>
 <!--{$tpl_kiyaku_text|h|nl2br}--><br>
 
 <BR>
-<!--{if $offset != -1}-->
-	<a href="kiyaku.php?offset=<!--{$offset}-->">次へ→</a><br><br>
+<!--{if $max >= $offset+1}-->
+	<a href="kiyaku.php?offset=<!--{$offset+1}-->">次へ→</a><br><br>
 <!--{/if}-->
 
 <a href="./<!--{$smarty.const.DIR_INDEX_URL}-->" accesskey="1"><!--{1|numeric_emoji}-->同意して登録へ</a><br>

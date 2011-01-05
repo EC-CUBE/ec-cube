@@ -29,13 +29,8 @@
        <textarea name="textfield" class="area470"  cols="80" rows="30"
                  readonly="readonly"><!--{$tpl_kiyaku_text}--></textarea>
        <div class="tblareabtn">
-       <!--{if $is_campaign}-->
-         <a href="javascript:history.back();" onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_entry_cannot_on.gif','b_noagree');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_entry_cannot.gif','b_noagree');">
-           <img src="<!--{$TPL_DIR}-->img/button/btn_entry_cannot.gif" width="180" height="30" alt="同意しない" border="0" name="b_noagree" /></a>&nbsp;
-       <!--{else}-->
          <a href="<!--{$smarty.const.URL_SITE_TOP}-->" onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_entry_cannot_on.gif','b_noagree');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_entry_cannot.gif','b_noagree');">
            <img src="<!--{$TPL_DIR}-->img/button/btn_entry_cannot.gif" width="180" height="30" alt="同意しない" border="0" name="b_noagree" /></a>&nbsp;
-       <!--{/if}-->
          <a href="<!--{$smarty.const.URL_ENTRY_TOP}-->" onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_entry_agree_on.gif','b_agree');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_entry_agree.gif','b_agree');">
            <img src="<!--{$TPL_DIR}-->img/button/btn_entry_agree.gif" width="180" height="30" alt="規約に同意して会員登録" border="0" name="b_agree" /></a>
        </div>

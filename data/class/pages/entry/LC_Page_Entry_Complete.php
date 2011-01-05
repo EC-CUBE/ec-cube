@@ -81,34 +81,6 @@ class LC_Page_Entry_Complete extends LC_Page {
     }
 
     /**
-     * モバイルページを初期化する.
-     *
-     * @return void
-     */
-    function mobileInit() {
-        $this->init();
-    }
-
-    /**
-     * Page のプロセス(モバイル).
-     *
-     * @return void
-     */
-    function mobileProcess() {
-        $this->mobileAction();
-        $this->sendResponse();
-    }
-
-    /**
-     * Page のアクション(モバイル).
-     *
-     * @return void
-     */
-    function mobileAction() {
-        // do nothing...
-    }
-
-    /**
      * デストラクタ.
      *
      * @return void

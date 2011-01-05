@@ -73,7 +73,7 @@ class SC_SessionFactory {
         // クッキーを使用する
         case 'useCookie':
             // モバイルの場合はSC_SessionFactory_UseRequestを使用する
-            if (defined('MOBILE_SITE')) {
+            if (Net_UserAgent_Mobile::isMobile()===true) {
                 $session = new SC_SessionFactory_UseRequest;
                 $session->setState('mobile');
                 break;

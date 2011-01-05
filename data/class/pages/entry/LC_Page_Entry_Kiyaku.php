@@ -62,67 +62,22 @@ class LC_Page_Entry_Kiyaku extends LC_Page {
      * @return void
      */
     function action() {
-        $objCustomer = new SC_Customer();
 
         // 規約内容の取得
         $objQuery = new SC_Query();
         $objQuery->setOrder("rank DESC");
         $arrRet = $objQuery->select("kiyaku_title, kiyaku_text", "dtb_kiyaku", "del_flg <> 1");
-
-        $max = count($arrRet);
-        $this->tpl_kiyaku_text = "";
-        for ($i = 0; $i < $max; $i++) {
-            $this->tpl_kiyaku_text.=$arrRet[$i]['kiyaku_title'] . "\n\n";
-            $this->tpl_kiyaku_text.=$arrRet[$i]['kiyaku_text'] . "\n\n";
-        }
-    }
-
-    /**
-     * モバイルページを初期化する.
-     *
-     * @return void
-     */
-    function mobileInit() {
-        $this->init();
-    }
-
-    /**
-     * Page のプロセス(モバイル).
-     *
-     * @return void
-     */
-    function mobileProcess() {
-        $this->mobilAection();
-        $this->sendResponse();
-    }
-
-    /**
-     * Page のアクション(モバイル).
-     *
-     * @return void
-     */
-    function mobileAction() {
-        $objCustomer = new SC_Customer();
-
-        $offset = isset($_REQUEST['offset']) ? $_REQUEST['offset'] : 0;
-        $next = $offset;
-
-        // 規約内容の取得
-        $objQuery = new SC_Query();
-        $count = $objQuery->count("dtb_kiyaku", "del_flg <> 1");
-        $objQuery->setOrder("rank DESC");
-        $objQuery->setLimitOffset(1, $offset);
-        $arrRet = $objQuery->select("kiyaku_title, kiyaku_text", "dtb_kiyaku", "del_flg <> 1");
-
-        if($count > $offset + 1){
-            $next++;
-        } else {
-            $next = -1;
+        $this->max = count($arrRet);
+        
+        // mobile時はGETでページ指定
+        if ( Net_UserAgent_Mobile::isMobile() === true ){
+        	$this->offset = is_numeric($_GET['offset'])===true ? $offset = intval($_GET['offset']) : 1;
         }
 
-        $max = count($arrRet);
+        // 規約文の作成
         $this->tpl_kiyaku_text = "";
-        for ($i = 0; $i < $max; $i++) {
+        for ($i = 0; $i < $this->max; $i++) {
+        	if ($this->offset !== null && ($this->offset - 1) <> $i) continue;
             $this->tpl_kiyaku_text.=$arrRet[$i]['kiyaku_title'] . "\n\n";
             $this->tpl_kiyaku_text.=$arrRet[$i]['kiyaku_text'] . "\n\n";
         }

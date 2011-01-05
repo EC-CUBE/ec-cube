@@ -25,6 +25,7 @@
 <hr>
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|h}-->" utn>
 	<input type="hidden" name="mode" value="complete">
+    <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 	<!--{foreach from=$list_data key=key item=item}-->
 		<input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->">
 	<!--{/foreach}-->
@@ -54,10 +55,6 @@
 
 	<input type="submit" name="submit" value="登録"><br>
 	<input type="submit" name="return" value="戻る">
-
-	<!--{foreach from=$list_data key=key item=item}-->
-		<input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->">
-	<!--{/foreach}-->
 </form>
 
 <br>
