@@ -54,6 +54,7 @@ class LC_Page_Forgot extends LC_Page {
      */
     function init() {
         parent::init();
+        $this->tpl_mainpage = 'forgot/index.tpl';
         $this->tpl_mainno = '';
     }
 
@@ -175,6 +176,7 @@ class LC_Page_Forgot extends LC_Page {
         if (defined("MOBILE_SITE") && MOBILE_SITE) {
             $this->createMobileToken();
         }
+        $this->setTemplate($this->tpl_mainpage);
     }
 
     /**
