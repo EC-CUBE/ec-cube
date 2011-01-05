@@ -24,13 +24,13 @@
 <script type="text/javascript">
 <!--
 function doPreview(){
-  document.form_edit.mode.value="preview"
-  document.form_edit.target = "_blank";
-  document.form_edit.submit();
+    document.form_edit.mode.value="preview"
+    document.form_edit.target = "_blank";
+    document.form_edit.submit();
 }
 
 function fnTargetSelf(){
-  document.form_edit.target = "_self";
+    document.form_edit.target = "_self";
 }
 
 browser_type = 0;
@@ -49,94 +49,94 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
 <input type="hidden" name="page_id" value="<!--{$page_id}-->" />
 <input type="hidden" name="device_type_id" value="<!--{$device_type_id|h}-->" />
 
-  <!--{if $arrErr.page_id_err != ""}-->
-  <div class="message">
-    <span class="attention"><!--{$arrErr.page_id_err}--></span>
-  </div>
-  <!--{/if}-->
-  <table>
-    <tr>
-      <th>名称</th>
-      <td>
-  <!--{if $arrPageData.edit_flg == 2}-->
-      <!--{$arrPageData.page_name|h}--><input type="hidden" name="page_name" value="<!--{$arrPageData.page_name|h}-->" />
-  <!--{else}-->
-        <input type="text" name="page_name" value="<!--{$arrPageData.page_name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.page_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" /><span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
-  <!--{/if}-->
-  <!--{ if $arrErr.page_name != "" }-->
+    <!--{if $arrErr.page_id_err != ""}-->
         <div class="message">
-          <span class="attention"><!--{$arrErr.page_name}--></span>
+            <span class="attention"><!--{$arrErr.page_id_err}--></span>
         </div>
-  <!--{/if}-->
-     </td>
-   <tr>
-     <th>URL</th>
-     <td>
-   <!--{if $arrPageData.edit_flg == 2}-->
-      <!--{$smarty.const.HTTP_URL|h}--><!--{$arrPageData.url|h}-->
-      <input type="hidden" name="url" value="<!--{$arrPageData.filename|h}-->" />
-    <!--{else}-->
-      <!--{$user_URL|h}--><input type="text" name="url" value="<!--{$arrPageData.directory|h}--><!--{$arrPageData.filename|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.url != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}--> ime-mode: disabled;" size="40" class="box40" />.php<span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
     <!--{/if}-->
-    <!--{ if $arrErr.url != "" }-->
-      <div class="attention">
-        <span class="attention"><!--{$arrErr.url}--></span>
-      </div>
-    <!--{/if}-->
-     </td>
-   </tr>
-   <tr>
-     <td colspan="2">
+    <table>
+        <tr>
+            <th>名称</th>
+            <td>
+                <!--{if $arrPageData.edit_flg == 2}-->
+                    <!--{$arrPageData.page_name|h}--><input type="hidden" name="page_name" value="<!--{$arrPageData.page_name|h}-->" />
+                <!--{else}-->
+                    <input type="text" name="page_name" value="<!--{$arrPageData.page_name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.page_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" /><span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
+                <!--{/if}-->
+                <!--{ if $arrErr.page_name != "" }-->
+                    <div class="message">
+                        <span class="attention"><!--{$arrErr.page_name}--></span>
+                    </div>
+                <!--{/if}-->
+             </td>
+        </tr>
+        <tr>
+        <th>URL</th>
+            <td>
+                <!--{if $arrPageData.edit_flg == 2}-->
+                    <!--{$smarty.const.HTTP_URL|h}--><!--{$arrPageData.url|h}-->
+                    <input type="hidden" name="url" value="<!--{$arrPageData.filename|h}-->" />
+                <!--{else}-->
+                    <!--{$user_URL|h}--><input type="text" name="url" value="<!--{$arrPageData.directory|h}--><!--{$arrPageData.filename|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.url != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}--> ime-mode: disabled;" size="40" class="box40" />.php<span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
+                <!--{/if}-->
+                <!--{ if $arrErr.url != "" }-->
+                    <div class="attention">
+                        <span class="attention"><!--{$arrErr.url}--></span>
+                    </div>
+                <!--{/if}-->
+             </td>
+        </tr>
+        <tr>
+            <td colspan="2">
 
-  <label for="header-chk"><input type="checkbox" name="header_chk" id="header-chk" <!--{$arrPageData.header_chk}--> />共通のヘッダーを使用する</label>&nbsp;
-  <label for="footer-chk"><input type="checkbox" name="footer_chk" id="footer-chk" <!--{$arrPageData.footer_chk}--> />共通のフッターを使用する</label>
-  <div>
-    <textarea name="tpl_data" rows=<!--{$text_row}--> style="width: 100%;"><!--{$arrPageData.tpl_data|h|smarty:nodefaults}--></textarea>
-    <input type="hidden" name="html_area_row" value="<!--{$text_row}-->" />
-    <a class="btn-normal" href="javascript:;" onclick="ChangeSize(this, tpl_data, 50, 13, html_area_row)"><span><!--{if $text_row > 13}-->縮小<!--{else}-->拡大<!--{/if}--></span></a>
-  </div>
-      </td>
-    </tr>
-  </table>
+                <label for="header-chk"><input type="checkbox" name="header_chk" id="header-chk" <!--{$arrPageData.header_chk}--> />共通のヘッダーを使用する</label>&nbsp;
+                <label for="footer-chk"><input type="checkbox" name="footer_chk" id="footer-chk" <!--{$arrPageData.footer_chk}--> />共通のフッターを使用する</label>
+                <div>
+                    <textarea name="tpl_data" rows=<!--{$text_row}--> style="width: 100%;"><!--{$arrPageData.tpl_data|h|smarty:nodefaults}--></textarea>
+                    <input type="hidden" name="html_area_row" value="<!--{$text_row}-->" />
+                    <a class="btn-normal" href="javascript:;" onclick="ChangeSize(this, tpl_data, 50, 13, html_area_row)"><span><!--{if $text_row > 13}-->縮小<!--{else}-->拡大<!--{/if}--></span></a>
+                </div>
+            </td>
+        </tr>
+    </table>
 
-  <div class="btn">
-    <a class='button' href="javascript:;" name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form_edit','confirm','','');"><span>登録する</span></a>
-    <a class='button' href="javascript:;" name='preview' onclick="doPreview(); "><span>プレビュー</span></a>
-  </div>
+    <div class="btn">
+        <a class='button' href="javascript:;" name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form_edit','confirm','','');"><span>登録する</span></a>
+        <a class='button' href="javascript:;" name='preview' onclick="doPreview(); "><span>プレビュー</span></a>
+    </div>
 
 
-  <h2>編集可能ページ一覧</h2>
-  <table class="list center">
-    <tr>
-      <th>名称</th>
-      <th>レイアウト</th>
-      <th><strong>ページ詳細</strong></th>
-      <th>削除</th>
-    </tr>
-    <!--{foreach key=key item=item from=$arrPageList}-->
-    <tr style="<!--{if $item.page_id == $page_id}-->background-color: <!--{$smarty.const.SELECT_RGB}-->;<!--{/if}-->">
-      <td>
-        <!--{$item.page_name}-->
-      </td>
-      <td>
-        <a href="./<!--{$smarty.const.DIR_INDEX_URL}-->?page_id=<!--{$item.page_id}-->&amp;device_type_id=<!--{$item.device_type_id}-->" >編集</a>
-      </td>
-      <td>
-        <!--{if $item.filename|strlen >= 1}-->
-          <a href="?page_id=<!--{$item.page_id}-->&amp;device_type_id=<!--{$item.device_type_id}-->">編集</a>
-        <!--{/if}-->
-      </td>
-      <td>
-        <!--{if $item.edit_flg == 1}-->
-          <a href="?" onclick="fnTargetSelf(); fnFormModeSubmit('form_edit','delete','page_id',this.name.substr(3));">削除</a>
-          <input type="hidden" value="<!--{$item.page_id}-->" name="del_id<!--{$item.page_id}-->" />
-        <!--{/if}-->
-      </td>
-    </tr>
-    <!--{/foreach}-->
-  </table>
-  <div class="btn addnew">
-    <a class="btn-normal" href="<!--{$smarty.server.PHP_SELF|h}-->"><span>ページを新規入力</span></a>
-  </div>
+    <h2>編集可能ページ一覧</h2>
+    <table class="list center">
+        <tr>
+            <th>名称</th>
+            <th>レイアウト</th>
+            <th><strong>ページ詳細</strong></th>
+            <th>削除</th>
+        </tr>
+        <!--{foreach key=key item=item from=$arrPageList}-->
+            <tr style="<!--{if $item.page_id == $page_id}-->background-color: <!--{$smarty.const.SELECT_RGB}-->;<!--{/if}-->">
+                <td>
+                    <!--{$item.page_name}-->
+                </td>
+                <td>
+                    <a href="./<!--{$smarty.const.DIR_INDEX_URL}-->?page_id=<!--{$item.page_id}-->&amp;device_type_id=<!--{$item.device_type_id}-->" >編集</a>
+                </td>
+                <td>
+                    <!--{if $item.filename|strlen >= 1}-->
+                        <a href="?page_id=<!--{$item.page_id}-->&amp;device_type_id=<!--{$item.device_type_id}-->">編集</a>
+                    <!--{/if}-->
+                </td>
+                <td>
+                    <!--{if $item.edit_flg == 1}-->
+                        <a href="javascript:;" onclick="fnTargetSelf(); fnFormModeSubmit('form_edit','delete','page_id','<!--{$item.page_id|escape:'javascript'|h}-->');">削除</a>
+                    <!--{/if}-->
+                </td>
+            </tr>
+        <!--{/foreach}-->
+    </table>
+    <div class="btn addnew">
+        <a class="btn-normal" href="<!--{$smarty.server.PHP_SELF|h}-->"><span>ページを新規入力</span></a>
+    </div>
 
 </form>
