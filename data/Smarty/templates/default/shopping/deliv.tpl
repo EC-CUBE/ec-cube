@@ -91,7 +91,7 @@
         </table>
 
             <div class="tblareabtn">
-                <a href="<!--{$smarty.const.URL_CART_TOP}-->" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_back_on.gif',back03)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_back.gif',back03)">
+                <a href="<!--{$smarty.const.CART_URL_PATH}-->" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_back_on.gif',back03)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_back.gif',back03)">
                     <img src="<!--{$TPL_DIR}-->img/button/btn_back.gif" width="150" height="30" alt="戻る" border="0" name="back03" id="back03" /></a>
                 <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_address_select_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_address_select.gif',this)" src="<!--{$TPL_DIR}-->img/button/btn_address_select.gif" alt="選択したお届け先に送る" class="box190" name="send_button" id="send_button" />
             </div>

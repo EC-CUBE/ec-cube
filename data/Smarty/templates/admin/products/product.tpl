@@ -433,7 +433,7 @@ function selectAll(target) {
   <div class="btn">
     <!--{if count($arrSearchHidden) > 0}-->
     <!--▼検索結果へ戻る-->
-    <a class="btn-normal" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.URL_SEARCH_TOP}-->'); fnModeSubmit('search','',''); return false;"><span>検索画面に戻る</span></a>
+    <a class="btn-normal" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_PRODUCTS_URL_PATH}-->'); fnModeSubmit('search','',''); return false;"><span>検索画面に戻る</span></a>
     <!--▲検索結果へ戻る-->
     <!--{/if}-->
     <a class="btn-normal" onclick="selectAll('category_id'); document.form1.submit();"><span>確認ページへ</span></a>

@@ -25,7 +25,7 @@
 <!--▼MAIN ONTENTS-->
 <!--★エラーメッセージ--><!--{$tpl_error}--><br>
 <!--{if $return_top}-->
-<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a>
+<a href="<!--{$smarty.const.MOBILE_TOP_URL_PATH}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a>
 <!--{/if}-->
 <!--▲MAIN ONTENTS-->
 <!--▲CONTENTS-->

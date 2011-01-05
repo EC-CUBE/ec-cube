@@ -136,7 +136,7 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         case 'return':
             // 正常な推移であることを記録しておく
             $objSiteSess->setRegistFlag();
-            $this->objDisplay->redirect($this->getLocation(URL_SHOP_PAYMENT));
+            $this->objDisplay->redirect($this->getLocation(SHOPPING_PAYMENT_URL_PATH));
             exit;
             break;
         case 'confirm':
@@ -158,13 +158,13 @@ class LC_Page_Shopping_Confirm extends LC_Page {
                 $_SESSION["payment_id"] = $arrData['payment_id'];
                 $objPurchase = new SC_Helper_Purchase_Ex();
                 $objPurchase->completeOrder(ORDER_PENDING);
-                $this->objDisplay->redirect($this->getLocation(URL_SHOP_MODULE));
+                $this->objDisplay->redirect($this->getLocation(SHOPPING_MODULE_URL_PATH));
             }else{
                 // 受注を完了し, 購入完了ページへ
                 $objPurchase = new SC_Helper_Purchase_Ex();
                 $objPurchase->completeOrder(ORDER_NEW);
                 $objPurchase->sendOrderMail($arrData["order_id"]);
-                $this->objDisplay->redirect($this->getLocation(URL_SHOP_COMPLETE));
+                $this->objDisplay->redirect($this->getLocation(SHOPPING_COMPLETE_URL_PATH));
             }
             exit;
             break;
@@ -251,7 +251,7 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         case 'return':
             // 正常な推移であることを記録しておく
             $objSiteSess->setRegistFlag();
-            $this->objDisplay->redirect($this->getLocation(MOBILE_URL_SHOP_PAYMENT));
+            $this->objDisplay->redirect($this->getLocation(MOBILE_SHOPPING_PAYMENT_URL_PATH));
             exit;
             break;
         case 'confirm':
@@ -269,9 +269,9 @@ class LC_Page_Shopping_Confirm extends LC_Page {
             // 決済方法により画面切替
             if($payment_type != "") {
                 $_SESSION["payment_id"] = $arrData['payment_id'];
-                $this->objDisplay->redirect($this->getLocation(MOBILE_URL_SHOP_MODULE));
+                $this->objDisplay->redirect($this->getLocation(MOBILE_SHOPPING_MODULE_URL_PATH));
             }else{
-                $this->objDisplay->redirect($this->getLocation(MOBILE_URL_SHOP_COMPLETE));
+                $this->objDisplay->redirect($this->getLocation(MOBILE_SHOPPING_COMPLETE_URL_PATH));
             }
             exit;
             break;

@@ -69,7 +69,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page {
         //$objView = new SC_SiteView(false);
         $objQuery = new SC_Query();
         $objCustomer = new SC_Customer();
-        $ParentPage = MYPAGE_DELIVADDR_URL;
+        $ParentPage = MYPAGE_DELIVADDR_URL_PATH;
 
         // GETでページを指定されている場合には指定ページに戻す
         if (isset($_GET['page'])) {
@@ -138,7 +138,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page {
                     }
                 } else {
                     
-                    if ($_POST['ParentPage'] == MYPAGE_DELIVADDR_URL || $_POST['ParentPage'] == URL_DELIV_TOP) {
+                    if ($_POST['ParentPage'] == MYPAGE_DELIVADDR_URL_PATH || $_POST['ParentPage'] == DELIV_URL_PATH) {
                         $this->tpl_onload = "fnUpdateParent('". $this->getLocation($_POST['ParentPage']) ."'); window.close();";
                     } else {
                         SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);

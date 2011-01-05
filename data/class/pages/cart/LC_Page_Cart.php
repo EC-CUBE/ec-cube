@@ -135,7 +135,7 @@ class LC_Page_Cart extends LC_Page {
                 // カートを購入モードに設定
                 $objCartSess->saveCurrentCart($uniqid, $cartKey);
                 // 購入ページへ
-                $this->objDisplay->redirect(URL_SHOP_TOP);
+                $this->objDisplay->redirect(SHOPPING_URL);
                 exit;
             }
             break;
@@ -197,7 +197,7 @@ class LC_Page_Cart extends LC_Page {
     function mobileAction() {
         // 買い物を続ける場合
         if ($_REQUEST['mode'] == 'continue') {
-            $this->objDisplay->redirect($this->getLocation(MOBILE_URL_SITE_TOP));
+            $this->objDisplay->redirect($this->getLocation(MOBILE_TOP_URL_PATH));
             exit;
         }
 
@@ -245,7 +245,7 @@ class LC_Page_Cart extends LC_Page {
                 // カートを購入モードに設定
                 $objCartSess->saveCurrentCart($uniqid);
                 // 購入ページへ
-                $this->objDisplay->redirect(MOBILE_URL_SHOP_TOP);
+                $this->objDisplay->redirect(MOBILE_SHOPPING_URL);
                 exit;
             }
             break;

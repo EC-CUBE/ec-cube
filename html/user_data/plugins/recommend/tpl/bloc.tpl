@@ -12,12 +12,12 @@
         <!--{if $arrProduct.product_id}-->
             <div class="whoboughtleft"><!--{* XXX whoboughtleft は本来左列用なので、動作に不具合があるかもしれない。 *}-->
                 
-                <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProduct.product_id}-->">
+                <a href="<!--{$smarty.const.P_DETAIL_URL_PATH}--><!--{$arrProduct.product_id}-->">
                     <img src="<!--{$smarty.const.URL_PATH}-->resize_image.php?image=<!--{$arrProduct.main_list_image|sfNoImageMainList|escape}-->&amp;width=65&amp;height=65" alt="<!--{$arrProduct.name|escape}-->" /></a>
 
                 <!--{assign var=price02_min value=`$arrProduct.price02_min`}-->
                 <!--{assign var=price02_max value=`$arrProduct.price02_max`}-->
-                <h3><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProduct.product_id}-->"><!--{$arrProduct.name|escape}--></a></h3>
+                <h3><a href="<!--{$smarty.const.P_DETAIL_URL_PATH}--><!--{$arrProduct.product_id}-->"><!--{$arrProduct.name|escape}--></a></h3>
 
                 <p class="sale_price"><!--{$smarty.const.SALE_PRICE_TITLE}--><span class="mini">(税込)</span>：<span class="price">
                     <!--{if $price02_min == $price02_max}-->

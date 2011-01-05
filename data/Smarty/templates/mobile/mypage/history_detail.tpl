@@ -49,7 +49,7 @@
 【ご注文内容】<br>
 <!--{section name=cnt loop=$arrDisp.quantity}-->
 <!--{$arrDisp.product_name[cnt]|h}--><br>
-<a href="<!--{$smarty.const.MOBILE_DETAIL_P_HTML}--><!--{$arrDisp.product_id[cnt]|u}-->">商品詳細→</a><br>
+<a href="<!--{$smarty.const.MOBILE_P_DETAIL_URL_PATH}--><!--{$arrDisp.product_id[cnt]|u}-->">商品詳細→</a><br>
 <!--{/section}-->
 <br>
 【購入金額】<br>
@@ -67,8 +67,8 @@
 
 <hr>
 
-<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>
-<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
+<a href="<!--{$smarty.const.MOBILE_CART_URL_PATH}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>
+<a href="<!--{$smarty.const.MOBILE_TOP_URL_PATH}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
 
 <br>
 

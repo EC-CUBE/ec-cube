@@ -104,7 +104,7 @@ class LC_Page_Admin_Basis_Payment_Input extends LC_Page_Admin {
                 // 一時ファイルを本番ディレクトリに移動する
                 $this->objUpFile->moveTempFile();
                 // 親ウィンドウを更新するようにセットする。
-                $this->tpl_onload="fnUpdateParent('".URL_PAYMENT_TOP."'); window.close();";
+                $this->tpl_onload="fnUpdateParent('".ADMIN_PAYMENT_URL_PATH."'); window.close();";
             }
 
             break;
@@ -145,7 +145,7 @@ class LC_Page_Admin_Basis_Payment_Input extends LC_Page_Admin {
         $this->arrForm = $this->objFormParam->getFormParamList();
 
         // FORM表示用配列を渡す。
-        $this->arrFile = $this->objUpFile->getFormFileList(IMAGE_TEMP_URL, IMAGE_SAVE_URL);
+        $this->arrFile = $this->objUpFile->getFormFileList(IMAGE_TEMP_URL_PATH, IMAGE_SAVE_URL_PATH);
         // HIDDEN用に配列を渡す。
         $this->arrHidden = array_merge((array)$this->arrHidden, (array)$this->objUpFile->getHiddenFileList());
     }

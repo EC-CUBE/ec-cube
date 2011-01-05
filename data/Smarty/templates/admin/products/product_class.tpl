@@ -66,7 +66,7 @@
     </tr>
   </table>
   <div class="btn">
-    <a class="btn-normal" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.URL_SEARCH_TOP}-->'); fnModeSubmit('search','',''); return false;" ><span>検索結果へ戻る</span></a>
+    <a class="btn-normal" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_PRODUCTS_URL_PATH}-->'); fnModeSubmit('search','',''); return false;" ><span>検索結果へ戻る</span></a>
     <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('disp','','')"><span>表示する</span></a>
     <!--{if count($arrClassCat) > 0}-->
     <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete','','');"><span>削除する</span></a>

@@ -227,7 +227,7 @@ function fnCheckStock(form) {
         <a name="product<!--{$id|h}-->" />
             <div class="listphoto">
                 <!--★画像★-->
-                <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProduct.product_id|u}-->" class="over"><!--商品写真--><img src="<!--{$smarty.const.IMAGE_SAVE_URL|sfTrimURL}-->/<!--{$arrProduct.main_list_image|sfNoImageMainList|h}-->" alt="<!--{$arrProduct.name|h}-->" class="picture" /></a>
+                <a href="<!--{$smarty.const.P_DETAIL_URL_PATH}--><!--{$arrProduct.product_id|u}-->" class="over"><!--商品写真--><img src="<!--{$smarty.const.IMAGE_SAVE_URL_PATH|sfTrimURL}-->/<!--{$arrProduct.main_list_image|sfNoImageMainList|h}-->" alt="<!--{$arrProduct.name|h}-->" class="picture" /></a>
             </div>
             
             <div class="listrightblock">
@@ -245,7 +245,7 @@ function fnCheckStock(form) {
                 
                 <!--★商品名★-->
                 <h3>
-                    <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProduct.product_id|u}-->" name="product<!--{$arrProduct.product_id}-->"><!--{$arrProduct.name|h}--></a>
+                    <a href="<!--{$smarty.const.P_DETAIL_URL_PATH}--><!--{$arrProduct.product_id|u}-->" name="product<!--{$arrProduct.product_id}-->"><!--{$arrProduct.name|h}--></a>
                 </h3>
                 
                 <!--★コメント★-->
@@ -268,7 +268,7 @@ function fnCheckStock(form) {
                     <!--★詳細ボタン★-->
                     <span class="btnbox">
                         <!--{assign var=name value="detail`$id`"}-->
-                        <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProduct.product_id|u}-->" onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_detail_on.gif','<!--{$name}-->');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_detail.gif','<!--{$name}-->');">
+                        <a href="<!--{$smarty.const.P_DETAIL_URL_PATH}--><!--{$arrProduct.product_id|u}-->" onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_detail_on.gif','<!--{$name}-->');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_detail.gif','<!--{$name}-->');">
                             <img src="<!--{$TPL_DIR}-->img/button/btn_detail.gif" width="115" height="25" alt="詳しくはこちら" name="<!--{$name}-->" id="<!--{$name}-->" /></a>
                     </span>
                 </p>

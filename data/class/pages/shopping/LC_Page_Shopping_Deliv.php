@@ -166,7 +166,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
                 // 正常に登録されたことを記録しておく
                 $objSiteSess->setRegistFlag();
                 // お支払い方法選択ページへ移動
-                $this->objDisplay->redirect($this->getLocation(URL_SHOP_PAYMENT, array(), true));
+                $this->objDisplay->redirect($this->getLocation(SHOPPING_PAYMENT_URL_PATH, array(), true));
                 exit;
             // 別のお届け先がチェックされている場合
             } elseif($_POST['deliv_check'] >= 1) {
@@ -182,7 +182,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
                     // 正常に登録されたことを記録しておく
                     $objSiteSess->setRegistFlag();
                     // お支払い方法選択ページへ移動
-                    $this->objDisplay->redirect($this->getLocation(URL_SHOP_PAYMENT, array(), true));
+                    $this->objDisplay->redirect($this->getLocation(SHOPPING_PAYMENT_URL_PATH, array(), true));
                     exit;
                 }
             }else{
@@ -193,7 +193,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         // 前のページに戻る
         case 'return':
             // 確認ページへ移動
-            $this->objDisplay->redirect($this->getLocation(URL_CART_TOP, array(), true));
+            $this->objDisplay->redirect($this->getLocation(CART_URL_PATH, array(), true));
             exit;
             break;
         default:
@@ -325,12 +325,12 @@ class LC_Page_Shopping_Deliv extends LC_Page {
                     // 正常に登録されたことを記録しておく
                     $objSiteSess->setRegistFlag();
                     // ダウンロード商品有りの場合は、支払方法画面に転送
-                    $this->objDisplay->redirect($this->getLocation(MOBILE_URL_SHOP_PAYMENT), array());
+                    $this->objDisplay->redirect($this->getLocation(MOBILE_SHOPPING_PAYMENT_URL_PATH), array());
                     exit;
                 }
             } else {
                 // ログインページに戻る
-                $this->objDisplay->redirect($this->getLocation(MOBILE_URL_SHOP_TOP));
+                $this->objDisplay->redirect($this->getLocation(MOBILE_SHOPPING_URL));
                 exit;
             }
 
@@ -367,7 +367,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
                 // 正常に登録されたことを記録しておく
                 $objSiteSess->setRegistFlag();
                 // お支払い方法選択ページへ移動
-                $this->objDisplay->redirect($this->getLocation(MOBILE_URL_SHOP_PAYMENT));
+                $this->objDisplay->redirect($this->getLocation(MOBILE_SHOPPING_PAYMENT_URL_PATH));
                 exit;
             }else{
                 // エラーを返す
@@ -390,7 +390,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
                     // 正常に登録されたことを記録しておく
                     $objSiteSess->setRegistFlag();
                     // お支払い方法選択ページへ移動
-                    $this->objDisplay->redirect($this->getLocation(MOBILE_URL_SHOP_PAYMENT));
+                    $this->objDisplay->redirect($this->getLocation(MOBILE_SHOPPING_PAYMENT_URL_PATH));
                     exit;
                 }
             }else{
@@ -402,7 +402,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
             // 前のページに戻る
         case 'return':
             // 確認ページへ移動
-            $this->objDisplay->redirect($this->getLocation(MOBILE_URL_CART_TOP));
+            $this->objDisplay->redirect($this->getLocation(MOBILE_CART_URL_PATH));
             exit;
             break;
         default:

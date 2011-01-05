@@ -142,7 +142,7 @@ class LC_Page_Shopping extends LC_Page {
                 // 正常に登録されたことを記録しておく
                 $objSiteSess->setRegistFlag();
                 // お支払い方法選択ページへ移動
-                $this->objDisplay->redirect($this->getLocation(URL_SHOP_PAYMENT));
+                $this->objDisplay->redirect($this->getLocation(SHOPPING_PAYMENT_URL_PATH));
                 exit;
             }
 
@@ -150,7 +150,7 @@ class LC_Page_Shopping extends LC_Page {
         // 前のページに戻る
         case 'return':
             // 確認ページへ移動
-            $this->objDisplay->redirect($this->getLocation(URL_CART_TOP));
+            $this->objDisplay->redirect($this->getLocation(CART_URL_PATH));
             exit;
             break;
         case 'nonmember':

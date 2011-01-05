@@ -75,7 +75,7 @@
                     <td class="phototd">
                         <a
                             <!--{if $item.productsClass.main_image|strlen >= 1}-->
-                                href="<!--{$smarty.const.IMAGE_SAVE_URL}--><!--{$item.productsClass.main_image|sfNoImageMainList|h}-->"
+                                href="<!--{$smarty.const.IMAGE_SAVE_URL_PATH}--><!--{$item.productsClass.main_image|sfNoImageMainList|h}-->"
                                 class="expansion"
                                 target="_blank"
                             <!--{/if}-->

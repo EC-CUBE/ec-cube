@@ -87,7 +87,7 @@ class LC_Page_Admin_System_Delete extends LC_Page_Admin {
         $objQuery->commit();
 
         // リダイレクト
-        $url = $this->getLocation(URL_SYSTEM_TOP)
+        $url = $this->getLocation(ADMIN_SYSTEM_URL_PATH)
              . '?pageno=' . $this->objForm->getValue('pageno');
         $this->objDisplay->redirect($url);
     }

@@ -267,7 +267,7 @@ class LC_Page_Products_Detail extends LC_Page {
                         exit;
                     }
 
-                    $this->objDisplay->redirect($this->getLocation(URL_CART_TOP));
+                    $this->objDisplay->redirect($this->getLocation(CART_URL_PATH));
                     exit;
                 }
                 break;
@@ -346,7 +346,7 @@ class LC_Page_Products_Detail extends LC_Page {
                     }
 
                     $objCartSess->addProduct(array($_POST['product_id'], $product_class_id, $classcategory_id1, $classcategory_id2), $this->objFormParam->getValue('quantity'));
-                    $this->objDisplay->redirect($this->getLocation(URL_CART_TOP));
+                    $this->objDisplay->redirect($this->getLocation(CART_URL_PATH));
                     exit;
                 }
                 break;
@@ -633,7 +633,7 @@ class LC_Page_Products_Detail extends LC_Page {
         // DBからのデータを引き継ぐ
         $this->objUpFile->setDBFileList($this->arrProduct);
         // ファイル表示用配列を渡す
-        $this->arrFile = $this->objUpFile->getFormFileList(IMAGE_TEMP_URL, IMAGE_SAVE_URL, true);
+        $this->arrFile = $this->objUpFile->getFormFileList(IMAGE_TEMP_URL_PATH, IMAGE_SAVE_URL_PATH, true);
 
         // サブ画像の有無を判定
         $this->subImageFlag = false;

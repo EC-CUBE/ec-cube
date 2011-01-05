@@ -70,12 +70,12 @@
 <div id="header">
   <div id="logo"><a href="<!--{$smarty.const.URL_PATH}--><!--{$smarty.const.ADMIN_DIR}-->home.php"><img src="<!--{$TPL_DIR}-->img/header/logo.jpg" width="230" height="50" alt="EC CUBE" /></a></div>
   <ul id="sites">
-    <li><a href="<!--{$smarty.const.URL_HOME}-->"><span>MAIN PAGE</span></a></li>
+    <li><a href="<!--{$smarty.const.ADMIN_HOME_URL_PATH}-->"><span>MAIN PAGE</span></a></li>
     <li><a href="<!--{$smarty.const.HTTP_URL}--><!--{$smarty.const.DIR_INDEX_URL}-->" target="_blank"><span>SITE CHECK</span></a></li>
   </ul>
   <p>
     WELCOME!&nbsp;<span><!--{* ログイン名 *}--><!--{$smarty.session.login_name|h}--></span>&nbsp;様&nbsp;
-    <a href="<!--{$smarty.const.URL_LOGOUT}-->">LOGOUT</a>
+    <a href="<!--{$smarty.const.ADMIN_LOGOUT_URL_PATH}-->">LOGOUT</a>
   </p>
 </div>
 <!--{* ▲HEADER *}-->
@@ -131,7 +131,7 @@
 <div style="clear: both;"></div>
 <!--{* ▲NAVI *}-->
 
-<!--{if $smarty.server.PHP_SELF != $smarty.const.URL_HOME && $tpl_subtitle}-->
+<!--{if $smarty.server.PHP_SELF != $smarty.const.ADMIN_HOME_URL_PATH && $tpl_subtitle}-->
 <h1><!--{$tpl_subtitle}--></h1>
 <!--{/if}-->
 

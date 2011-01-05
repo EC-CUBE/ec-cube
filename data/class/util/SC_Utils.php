@@ -339,10 +339,10 @@ class SC_Utils {
                 // カート情報表示に強制移動する
                 // FIXME false を返して, Page クラスで遷移させるべき...
                 if (defined("MOBILE_SITE")) {
-                    header("Location: ". MOBILE_URL_CART_TOP
+                    header("Location: ". MOBILE_CART_URL_PATH
                            . "?" . session_name() . "=" . session_id());
                 } else {
-                    header("Location: ".URL_CART_TOP);
+                    header("Location: ".CART_URL_PATH);
                 }
                 exit;
             }

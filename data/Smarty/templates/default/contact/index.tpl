@@ -88,7 +88,7 @@
             <a href="http://search.post.japanpost.jp/zipcode/" target="_blank"><span class="fs12">郵便番号検索</span></a>
           </p>
           <p class="zipimg">
-            <a href="javascript:fnCallAddress('<!--{$smarty.const.URL_INPUT_ZIP}-->', 'zip01', 'zip02', 'pref', 'addr01');">
+            <a href="javascript:fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URL_PATH}-->', 'zip01', 'zip02', 'pref', 'addr01');">
               <img src="<!--{$TPL_DIR}-->img/button/btn_address_input.gif" width="86" height="20" alt="住所自動入力" /></a>
             <span class="mini">&nbsp;郵便番号を入力後、クリックしてください。</span>
           </p>

@@ -205,7 +205,7 @@ class SC_SessionFactory_UseRequest extends SC_SessionFactory {
                 header('Location: ' . $objMobile->gfAddSessionId());
             } else {
                 // GET 以外の場合はトップページへリダイレクトする。
-                header('Location: ' . URL_SITE_TOP . '?' . SID);
+                header('Location: ' . TOP_URL_PATH . '?' . SID);
             }
             exit;
         }

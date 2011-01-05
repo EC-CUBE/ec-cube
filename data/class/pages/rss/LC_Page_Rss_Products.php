@@ -75,11 +75,11 @@ class LC_Page_Rss_Products extends LC_Page {
                 $arrProduct[$key]["price02"] = SC_Helper_DB_Ex::sfCalcIncTax($arrProduct[$key]["price02"]);
 
                 // 画像ファイルのURLセット
-                (file_exists(IMAGE_SAVE_REALDIR . $arrProduct[$key]["main_list_image"])) ? $dir = IMAGE_SAVE_URL_RSS : $dir = IMAGE_TEMP_URL_RSS;
+                (file_exists(IMAGE_SAVE_REALDIR . $arrProduct[$key]["main_list_image"])) ? $dir = IMAGE_SAVE_RSS_URL : $dir = IMAGE_TEMP_RSS_URL;
                 $arrProduct[$key]["main_list_image"] = $dir . $arrProduct[$key]["main_list_image"];
-                (file_exists(IMAGE_SAVE_REALDIR . $arrProduct[$key]["main_image"])) ? $dir = IMAGE_SAVE_URL_RSS : $dir = IMAGE_TEMP_URL_RSS;
+                (file_exists(IMAGE_SAVE_REALDIR . $arrProduct[$key]["main_image"])) ? $dir = IMAGE_SAVE_RSS_URL : $dir = IMAGE_TEMP_RSS_URL;
                 $arrProduct[$key]["main_image"] = $dir . $arrProduct[$key]["main_image"];
-                (file_exists(IMAGE_SAVE_REALDIR . $arrProduct[$key]["main_large_image"])) ? $dir = IMAGE_SAVE_URL_RSS : $dir = IMAGE_TEMP_URL_RSS;
+                (file_exists(IMAGE_SAVE_REALDIR . $arrProduct[$key]["main_large_image"])) ? $dir = IMAGE_SAVE_RSS_URL : $dir = IMAGE_TEMP_RSS_URL;
                 $arrProduct[$key]["main_large_image"] = $dir . $arrProduct[$key]["main_large_image"];
 
                 // ポイント計算
@@ -101,11 +101,11 @@ class LC_Page_Rss_Products extends LC_Page {
                 $arrProduct[$key]["price02_min"] = SC_Helper_DB_Ex::sfCalcIncTax($arrProduct[$key]["price02_min"]);
 
                 // 画像ファイルのURLセット
-                (file_exists(IMAGE_SAVE_REALDIR . $arrProduct[$key]["main_list_image"])) ? $dir = IMAGE_SAVE_URL_RSS : $dir = IMAGE_TEMP_URL_RSS;
+                (file_exists(IMAGE_SAVE_REALDIR . $arrProduct[$key]["main_list_image"])) ? $dir = IMAGE_SAVE_RSS_URL : $dir = IMAGE_TEMP_RSS_URL;
                 $arrProduct[$key]["main_list_image"] = $dir . $arrProduct[$key]["main_list_image"];
-                (file_exists(IMAGE_SAVE_REALDIR . $arrProduct[$key]["main_image"])) ? $dir = IMAGE_SAVE_URL_RSS : $dir = IMAGE_TEMP_URL_RSS;
+                (file_exists(IMAGE_SAVE_REALDIR . $arrProduct[$key]["main_image"])) ? $dir = IMAGE_SAVE_RSS_URL : $dir = IMAGE_TEMP_RSS_URL;
                 $arrProduct[$key]["main_image"] = $dir . $arrProduct[$key]["main_image"];
-                (file_exists(IMAGE_SAVE_REALDIR . $arrProduct[$key]["main_large_image"])) ? $dir = IMAGE_SAVE_URL_RSS : $dir = IMAGE_TEMP_URL_RSS;
+                (file_exists(IMAGE_SAVE_REALDIR . $arrProduct[$key]["main_large_image"])) ? $dir = IMAGE_SAVE_RSS_URL : $dir = IMAGE_TEMP_RSS_URL;
                 $arrProduct[$key]["main_large_image"] = $dir . $arrProduct[$key]["main_large_image"];
 
                 // ポイント計算
@@ -128,7 +128,7 @@ class LC_Page_Rss_Products extends LC_Page {
 
         //XMLテキスト(これがないと正常にRSSとして認識してくれないツールがあるため)
         header("Content-type: application/xml");
-        DETAIL_P_HTML;
+        P_DETAIL_URL_PATH;
 
         //画面表示
         $objView->display($this->tpl_mainpage, true);

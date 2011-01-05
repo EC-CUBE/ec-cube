@@ -36,13 +36,13 @@
 <!--{/if}-->
 
 <a href="./<!--{$smarty.const.DIR_INDEX_URL}-->" accesskey="1"><!--{1|numeric_emoji}-->同意して登録へ</a><br>
-<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="2"><!--{2|numeric_emoji}-->同意しない</a><br>
+<a href="<!--{$smarty.const.MOBILE_TOP_URL_PATH}-->" accesskey="2"><!--{2|numeric_emoji}-->同意しない</a><br>
 
 <br>
 <hr>
 
-<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>
-<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
+<a href="<!--{$smarty.const.MOBILE_CART_URL_PATH}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>
+<a href="<!--{$smarty.const.MOBILE_TOP_URL_PATH}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
 
 <br>
 

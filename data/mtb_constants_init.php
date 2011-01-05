@@ -66,7 +66,7 @@ define('FAVORITE_ERROR', 13);
 /** グラフ格納ディレクトリ */
 define('GRAPH_REALDIR', HTML_REALDIR . "upload/graph_image/");
 /** グラフURL */
-define('GRAPH_URL', URL_PATH . "upload/graph_image/");
+define('GRAPH_URL_PATH', URL_PATH . "upload/graph_image/");
 /** 円グラフ最大表示数 */
 define('GRAPH_PIE_MAX', 10);
 /** グラフのラベルの文字数 */
@@ -226,49 +226,41 @@ define('IMAGE_TEMP_REALDIR', HTML_REALDIR . "upload/temp_image/");
 /** 画像保存先 */
 define('IMAGE_SAVE_REALDIR', HTML_REALDIR . "upload/save_image/");
 /** 画像一時保存URL */
-define('IMAGE_TEMP_URL', URL_PATH . "upload/temp_image/");
+define('IMAGE_TEMP_URL_PATH', URL_PATH . "upload/temp_image/");
 /** 画像保存先URL */
-define('IMAGE_SAVE_URL', URL_PATH . "upload/save_image/");
+define('IMAGE_SAVE_URL_PATH', URL_PATH . "upload/save_image/");
 /** RSS用画像一時保存URL */
-define('IMAGE_TEMP_URL_RSS', HTTP_URL . "upload/temp_image/");
+define('IMAGE_TEMP_RSS_URL', HTTP_URL . "upload/temp_image/");
 /** RSS用画像保存先URL */
-define('IMAGE_SAVE_URL_RSS', HTTP_URL . "upload/save_image/");
+define('IMAGE_SAVE_RSS_URL', HTTP_URL . "upload/save_image/");
 /** エンコードCSVの一時保存先 */
 define('CSV_TEMP_REALDIR', DATA_REALDIR . "upload/csv/");
 /** 画像がない場合に表示 */
-define('NO_IMAGE_URL', TPL_DIR . "img/picture/img_blank.gif");
-/** 画像がない場合に表示 */
 define('NO_IMAGE_DIR', USER_TEMPLATE_REALDIR . "img/picture/img_blank.gif");
 /** システム管理トップ */
-define('URL_SYSTEM_TOP', URL_PATH . ADMIN_DIR . "system/" . DIR_INDEX_URL);
+define('ADMIN_SYSTEM_URL_PATH', URL_PATH . ADMIN_DIR . "system/" . DIR_INDEX_URL);
 /** 規格登録 */
-define('URL_CLASS_REGIST', URL_PATH . ADMIN_DIR . "products/class.php");
+define('ADMIN_CLASS_REGIST_URL_PATH', URL_PATH . ADMIN_DIR . "products/class.php");
 /** 郵便番号入力 */
-define('URL_INPUT_ZIP', URL_PATH . "input_zip.php");
+define('INPUT_ZIP_URL_PATH', URL_PATH . "input_zip.php");
 /** 配送業者登録 */
-define('URL_DELIVERY_TOP', URL_PATH . ADMIN_DIR . "basis/delivery.php");
+define('ADMIN_DELIVERY_URL_PATH', URL_PATH . ADMIN_DIR . "basis/delivery.php");
 /** 支払い方法登録 */
-define('URL_PAYMENT_TOP', URL_PATH . ADMIN_DIR . "basis/payment.php");
-/** サイト管理情報登録 */
-define('URL_CONTROL_TOP', URL_PATH . ADMIN_DIR . "basis/control.php");
+define('ADMIN_PAYMENT_URL_PATH', URL_PATH . ADMIN_DIR . "basis/payment.php");
 /** ホーム */
-define('URL_HOME', URL_PATH . ADMIN_DIR . "home.php");
+define('ADMIN_HOME_URL_PATH', URL_PATH . ADMIN_DIR . "home.php");
 /** ログインページ */
-define('URL_LOGIN', URL_PATH . ADMIN_DIR . "" . DIR_INDEX_URL);
+define('ADMIN_LOGIN_URL_PATH', URL_PATH . ADMIN_DIR . DIR_INDEX_URL);
 /** 商品検索ページ */
-define('URL_SEARCH_TOP', URL_PATH . ADMIN_DIR . "products/" . DIR_INDEX_URL);
+define('ADMIN_PRODUCTS_URL_PATH', URL_PATH . ADMIN_DIR . "products/" . DIR_INDEX_URL);
 /** 注文編集ページ */
-define('URL_ORDER_EDIT', URL_PATH . ADMIN_DIR . "order/edit.php");
+define('ADMIN_ORDER_EDIT_URL_PATH', URL_PATH . ADMIN_DIR . "order/edit.php");
 /** 注文編集ページ */
-define('URL_SEARCH_ORDER', URL_PATH . ADMIN_DIR . "order/" . DIR_INDEX_URL);
+define('ADMIN_ORDER_URL_PATH', URL_PATH . ADMIN_DIR . "order/" . DIR_INDEX_URL);
 /** 注文編集ページ */
-define('URL_ORDER_MAIL', URL_PATH . ADMIN_DIR . "order/mail.php");
+define('ADMIN_ORDER_MAIL_URL_PATH', URL_PATH . ADMIN_DIR . "order/mail.php");
 /** ログアウトページ */
-define('URL_LOGOUT', URL_PATH . ADMIN_DIR . "logout.php");
-/** システム管理CSV出力ページ */
-define('URL_SYSTEM_CSV', URL_PATH . ADMIN_DIR . "system/member_csv.php");
-/** 管理機能用CSS保管ディレクトリ */
-define('URL_ADMIN_CSS', URL_PATH . ADMIN_DIR . "css/");
+define('ADMIN_LOGOUT_URL_PATH', URL_PATH . ADMIN_DIR . "logout.php");
 /** アクセス成功 */
 define('SUCCESS', 0);
 /** メンバー管理ページ表示行数 */
@@ -335,35 +327,29 @@ define('SEPA_CATNAVI', " > ");
 /** カテゴリ区切り文字 */
 define('SEPA_CATLIST', " | ");
 /** 会員情報入力 */
-define('URL_SHOP_TOP', HTTPS_URL . "shopping/" . DIR_INDEX_URL);
+define('SHOPPING_URL', HTTPS_URL . "shopping/" . DIR_INDEX_URL);
 /** 会員登録ページTOP */
-define('URL_ENTRY_TOP', HTTPS_URL . "entry/" . DIR_INDEX_URL);
+define('ENTRY_URL', HTTPS_URL . "entry/" . DIR_INDEX_URL);
 /** サイトトップ */
-define('URL_SITE_TOP', URL_PATH . DIR_INDEX_URL);
+define('TOP_URL_PATH', URL_PATH . DIR_INDEX_URL);
 /** カートトップ */
-define('URL_CART_TOP', URL_PATH . "cart/" . DIR_INDEX_URL);
+define('CART_URL_PATH', URL_PATH . "cart/" . DIR_INDEX_URL);
 /** お届け先設定 */
-define('URL_DELIV_TOP', URL_PATH . "shopping/deliv.php");
+define('DELIV_URL_PATH', URL_PATH . "shopping/deliv.php");
 /** Myページトップ */
 define('URL_MYPAGE_TOP', HTTPS_URL . "mypage/login.php");
 /** 購入確認ページ */
-define('URL_SHOP_CONFIRM', URL_PATH . "shopping/confirm.php");
+define('SHOPPING_CONFIRM_URL_PATH', URL_PATH . "shopping/confirm.php");
 /** お支払い方法選択ページ */
-define('URL_SHOP_PAYMENT', URL_PATH . "shopping/payment.php");
+define('SHOPPING_PAYMENT_URL_PATH', URL_PATH . "shopping/payment.php");
 /** 購入完了画面 */
-define('URL_SHOP_COMPLETE', URL_PATH . "shopping/complete.php");
-/** カード決済画面 */
-define('URL_SHOP_CREDIT', URL_PATH . "shopping/card.php");
-/** ローン決済画面 */
-define('URL_SHOP_LOAN', URL_PATH . "shopping/loan.php");
-/** コンビニ決済画面 */
-define('URL_SHOP_CONVENIENCE', URL_PATH . "shopping/convenience.php");
+define('SHOPPING_COMPLETE_URL_PATH', URL_PATH . "shopping/complete.php");
 /** モジュール追加用画面 */
-define('URL_SHOP_MODULE', URL_PATH . "shopping/load_payment_module.php");
+define('SHOPPING_MODULE_URL_PATH', URL_PATH . "shopping/load_payment_module.php");
 /** 商品詳細(HTML出力) */
-define('DETAIL_P_HTML', URL_PATH . "products/detail.php?product_id=");
+define('P_DETAIL_URL_PATH', URL_PATH . "products/detail.php?product_id=");
 /** マイページお届け先URL */
-define('MYPAGE_DELIVADDR_URL', URL_PATH . "mypage/delivery.php");
+define('MYPAGE_DELIVADDR_URL_PATH', URL_PATH . "mypage/delivery.php");
 /** メールアドレス種別 */
 define('MAIL_TYPE_PC', 1);
 /** メールアドレス種別 */
@@ -463,23 +449,23 @@ define('MOBILE_KARA_MAIL_ADDRESS_DOMAIN', "");
 /** 携帯電話向け変換画像保存ディレクトリ */
 define('MOBILE_IMAGE_REALDIR', HTML_REALDIR . "upload/mobile_image/");
 /** 携帯電話向け変換画像保存ディレクトリ */
-define('MOBILE_IMAGE_URL', URL_PATH . "upload/mobile_image/");
+define('MOBILE_IMAGE_URL_PATH', URL_PATH . "upload/mobile_image/");
 /** モバイルURL */
-define('MOBILE_URL_SITE_TOP', MOBILE_URL_PATH . DIR_INDEX_URL);
+define('MOBILE_TOP_URL_PATH', MOBILE_URL_PATH . DIR_INDEX_URL);
 /** カートトップ */
-define('MOBILE_URL_CART_TOP', MOBILE_URL_PATH . "cart/" . DIR_INDEX_URL);
+define('MOBILE_CART_URL_PATH', MOBILE_URL_PATH . "cart/" . DIR_INDEX_URL);
 /** 会員情報入力 */
-define('MOBILE_URL_SHOP_TOP', MOBILE_HTTPS_URL . "shopping/" . DIR_INDEX_URL);
+define('MOBILE_SHOPPING_URL', MOBILE_HTTPS_URL . "shopping/" . DIR_INDEX_URL);
 /** 購入確認ページ */
-define('MOBILE_URL_SHOP_CONFIRM', MOBILE_URL_PATH . "shopping/confirm.php");
+define('MOBILE_SHOPPING_CONFIRM_URL_PATH', MOBILE_URL_PATH . "shopping/confirm.php");
 /** お支払い方法選択ページ */
-define('MOBILE_URL_SHOP_PAYMENT', MOBILE_URL_PATH . "shopping/payment.php");
+define('MOBILE_SHOPPING_PAYMENT_URL_PATH', MOBILE_URL_PATH . "shopping/payment.php");
 /** 商品詳細(HTML出力) */
-define('MOBILE_DETAIL_P_HTML', MOBILE_URL_PATH . "products/detail.php?product_id=");
+define('MOBILE_P_DETAIL_URL_PATH', MOBILE_URL_PATH . "products/detail.php?product_id=");
 /** 購入完了画面 */
-define('MOBILE_URL_SHOP_COMPLETE', MOBILE_URL_PATH . "shopping/complete.php");
+define('MOBILE_SHOPPING_COMPLETE_URL_PATH', MOBILE_URL_PATH . "shopping/complete.php");
 /** モジュール追加用画面 */
-define('MOBILE_URL_SHOP_MODULE', MOBILE_URL_PATH . "shopping/load_payment_module.php");
+define('MOBILE_SHOPPING_MODULE_URL_PATH', MOBILE_URL_PATH . "shopping/load_payment_module.php");
 /** セッション維持方法：useCookie|useRequest */
 define('SESSION_KEEP_METHOD', "useCookie");
 /** セッションの存続時間 (秒) */
