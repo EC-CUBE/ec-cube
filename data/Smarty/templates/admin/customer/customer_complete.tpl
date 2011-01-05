@@ -21,7 +21,15 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<ul class="level1">
-<li<!--{if $tpl_subno == 'index'}--> class="on"<!--{/if}--> id="navi-customer-index"><a href="<!--{$smarty.const.URL_PATH}--><!--{$smarty.const.ADMIN_DIR}-->customer/<!--{$smarty.const.DIR_INDEX_URL}-->"><span>顧客マスタ</span></a></li>
-<li<!--{if $tpl_subno == 'customer'}--> class="on"<!--{/if}--> id="navi-customer-customer"><a href="<!--{$smarty.const.URL_PATH}--><!--{$smarty.const.ADMIN_DIR}-->customer/customer.php"><span>顧客登録</span></a></li>
-</ul>
+<form name="form1" id="form1" method="post" action="?">
+<input type="hidden" name="mode" value="complete" />
+<!--{foreach from=$arrForm key=key item=item}-->
+<!--{if $key ne "mode" && $key ne "subm"}-->
+<input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->" />
+<!--{/if}-->
+<!--{/foreach}-->
+<div id="customer" class="contents-main">
+  <h2>顧客登録</h2>
+  <div class="message">登録が完了致しました。</div>
+</div>
+</form>

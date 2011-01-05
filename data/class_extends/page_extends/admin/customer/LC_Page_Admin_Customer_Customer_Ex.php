@@ -1,4 +1,4 @@
-<!--{*
+<?php
 /*
  * This file is part of EC-CUBE
  *
@@ -20,8 +20,49 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-*}-->
-<ul class="level1">
-<li<!--{if $tpl_subno == 'index'}--> class="on"<!--{/if}--> id="navi-customer-index"><a href="<!--{$smarty.const.URL_PATH}--><!--{$smarty.const.ADMIN_DIR}-->customer/<!--{$smarty.const.DIR_INDEX_URL}-->"><span>顧客マスタ</span></a></li>
-<li<!--{if $tpl_subno == 'customer'}--> class="on"<!--{/if}--> id="navi-customer-customer"><a href="<!--{$smarty.const.URL_PATH}--><!--{$smarty.const.ADMIN_DIR}-->customer/customer.php"><span>顧客登録</span></a></li>
-</ul>
+
+// {{{ requires
+require_once(CLASS_REALDIR . "pages/admin/customer/LC_Page_Admin_Customer_Customer.php");
+
+/**
+ * 顧客情報登録 のページクラス(拡張).
+ *
+ * LC_Page_Admin_Customer_Customer をカスタマイズする場合はこのクラスを編集する.
+ *
+ * @package Page
+ * @author LOCKON CO.,LTD.
+ * @version $Id$
+ */
+class LC_Page_Admin_Customer_Customer_Ex extends LC_Page_Admin_Customer_Customer {
+
+    // }}}
+    // {{{ functions
+
+    /**
+     * Page を初期化する.
+     *
+     * @return void
+     */
+    function init() {
+        parent::init();
+    }
+
+    /**
+     * Page のプロセス.
+     *
+     * @return void
+     */
+    function process() {
+        parent::process();
+    }
+
+    /**
+     * デストラクタ.
+     *
+     * @return void
+     */
+    function destroy() {
+        parent::destroy();
+    }
+}
+?>
