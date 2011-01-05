@@ -177,7 +177,7 @@ class LC_Page_Admin_Mail_Sendmail extends LC_Page_Admin {
             }
         }
         if ($_GET['mode'] == 'now') {
-            $this->objDisplay->redirect('/' . ADMIN_DIR . 'mail/history.php');
+            SC_Response_Ex::sendRedirectFromUrlPath(ADMIN_DIR . 'mail/history.php');
         }
         echo "complete\n";
     }

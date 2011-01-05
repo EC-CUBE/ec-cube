@@ -131,21 +131,21 @@ class SC_Response{
     }
 
     /**
-     * @param string $location 「アプリケーションルートからの相対パス」「現在のURLからの相対パス」「URL」のいずれか
+     * @param string $location 「url-path」「現在のURLからのパス」「URL」のいずれか
      * @return void
      * @static
      */
     function sendRedirect($location, $arrQueryString = array(), $inheritQueryString = false, $useSsl = null) {
 
-        // アプリケーションルートからの相対パス
+        // url-path → URL 変換
         if ($location[0] === '/') {
-            if (!is_bool($useSsl)) {
-                $useSsl = SC_Utils_Ex::sfIsHTTPS();
-            }
-            $url = ($useSsl ? HTTPS_URL : HTTP_URL) . substr($location, 1);
+            $netUrl = new Net_URL();
+            $netUrl->path = $location;
+            $location = $netUrl->getUrl();
         }
+
         // URL の場合
-        elseif (preg_match('/^https?:/', $location)) {
+        if (preg_match('/^https?:/', $location)) {
             $url = $location;
             if (is_bool($useSsl)) {
                 if ($useSsl) {
@@ -160,7 +160,7 @@ class SC_Response{
                 }
             }
         }
-        // 現在のURLからの相対パス
+        // 現在のURLからのパス
         else {
             if (!is_bool($useSsl)) {
                 $useSsl = SC_Utils_Ex::sfIsHTTPS();
@@ -170,23 +170,25 @@ class SC_Response{
             $url = $netUrl->getUrl();
         }
 
-        $netUrl = new Net_URL($url);
-        $arrQueryString = array_merge($netUrl->querystring, $arrQueryString);
-
-        if ($inheritQueryString) {
-            if (!empty($_SERVER['QUERY_STRING'])) {
-                $netUrl->addRawQueryString($_SERVER['QUERY_STRING']);
-            }
-        }
-
-        foreach ($arrQueryString as $key => $val) {
-            $netUrl->addQueryString($key, $val);
-        }
-
-        $url = $netUrl->getURL();
-
+        // アプリケーション内での遷移時の処理
         $pattern = '/^(' . preg_quote(HTTP_URL, '/') . '|' . preg_quote(HTTPS_URL, '/') . ')/';
         if (preg_match($pattern, $url)) {
+            $netUrl = new Net_URL($url);
+            $arrQueryString = array_merge($netUrl->querystring, $arrQueryString);
+            $netUrl->querystring = array();
+
+            if ($inheritQueryString) {
+                if (!empty($_SERVER['QUERY_STRING'])) {
+                    $netUrl->addRawQueryString($_SERVER['QUERY_STRING']);
+                }
+            }
+
+            foreach ($arrQueryString as $key => $val) {
+                $netUrl->addQueryString($key, $val);
+            }
+
+            $url = $netUrl->getURL();
+
             $session = SC_SessionFactory::getInstance();
             if (SC_MobileUserAgent::isMobile() || $session->useCookie() == false) {
                 $netUrl->addQueryString(session_name(), session_id());
@@ -201,6 +203,18 @@ class SC_Response{
     }
 
     /**
+     * HTML_PATH からのパスを指定してリダイレクトする
+     *
+     * @param string $location /html/ からの相対パス
+     * @return void
+     * @static
+     */
+    function sendRedirectFromUrlPath($location, $arrQueryString = array(), $inheritQueryString = false, $useSsl = null) {
+        $location = URL_PATH . $location;
+        SC_Response_Ex::sendRedirect($location, $arrQueryString, $inheritQueryString, $useSsl);
+    }
+
+    /**
      * @static
      */
     function reload($arrQueryString = array(), $removeQueryString = false) {
@@ -212,7 +226,7 @@ class SC_Response{
         }
         $netUrl->querystring = array();
 
-        $this->sendRedirect($netUrl->getURL(), $arrQueryString);
+        SC_Response_Ex::sendRedirect($netUrl->getURL(), $arrQueryString);
     }
 
     function setHeader($headers) {
