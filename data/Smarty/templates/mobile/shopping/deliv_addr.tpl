@@ -23,7 +23,7 @@
 *}-->
 <div align="center">お届け先登録</div>
 <hr>
-<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|h}-->">
+<form name="form1" method="post" action="?">
 	<input type="hidden" name="mode" value="set1">
 
 	<font color="#FF0000">*は必須項目です。</font><br>

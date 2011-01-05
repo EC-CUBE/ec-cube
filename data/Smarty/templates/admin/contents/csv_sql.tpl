@@ -61,7 +61,7 @@ function fnTargetSelf(){
     <!--{ foreach key=key item=item from=$arrSqlList }-->
     <tr style="background-color:<!--{if $item.sql_id == $sql_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->;">
       <td>
-        <a href="<!--{$smarty.server.PHP_SELF|h}-->?sql_id=<!--{$item.sql_id}-->" ><!--{$item.sql_name}--></a>
+        <a href="?sql_id=<!--{$item.sql_id}-->" ><!--{$item.sql_name}--></a>
       </td>
       <td>
         <div class="btn">

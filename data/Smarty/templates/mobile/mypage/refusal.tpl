@@ -26,7 +26,7 @@
 <!--{$CustomerName1|h}--> <!--{$CustomerName2|h}-->様、会員から退会をされますと、登録されているお届け先の情報など全て削除されますがよろしいでしょうか。<br>
 <br>
 <div align="center">
-<form action="<!--{$smarty.server.PHP_SELF|h}-->" method="post">
+<form action="?" method="post">
 	<input type="submit" name="no" value="いいえ">
 	<input type="submit" name="complete" value="はい">
 </form>

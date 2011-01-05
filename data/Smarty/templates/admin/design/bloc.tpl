@@ -68,7 +68,7 @@
     <!--{* ▼ブロック一覧 *}-->
     <h2>編集可能ブロック</h2>
     <div class="btn addnew">
-        <a class='button' href="<!--{$smarty.server.PHP_SELF|h}-->"><span>ブロックを新規入力</span></a>
+        <a class='button' href="?"><span>ブロックを新規入力</span></a>
     </div>
     <table class="list center">
         <tr>
@@ -78,7 +78,7 @@
         <tr style="background-color:<!--{if $item.bloc_id == $bloc_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->;">
             <td><!--{$item.bloc_name}--></td>
             <td>
-                <a href="<!--{$smarty.server.PHP_SELF|h}-->?bloc_id=<!--{$item.bloc_id}-->&amp;device_type_id=<!--{$device_type_id}-->" >編集</a>
+                <a href="?bloc_id=<!--{$item.bloc_id}-->&amp;device_type_id=<!--{$device_type_id}-->" >編集</a>
             </td>
             <td>
                 <!--{if $item.deletable_flg == 1}-->

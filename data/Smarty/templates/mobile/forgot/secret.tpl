@@ -32,7 +32,7 @@
 ご登録時に入力した下記質問の答えを入力して「次へ」ボタンをクリックしてください。<br>
 ※下記質問の答えをお忘れになられた場合は、<a href="mailto:<!--{$arrSiteInfo.email02|h}-->"><!--{$arrSiteInfo.email02|h}--></a>までご連絡ください。<br>
 
-<form action="<!--{$smarty.server.PHP_SELF|h}-->" method="post">
+<form action="?" method="post">
 <input type="hidden" name="mode" value="secret_check">
 
 <!--{$Reminder|h}-->：<input type="text" name="input_reminder" value="" size="40"><br>

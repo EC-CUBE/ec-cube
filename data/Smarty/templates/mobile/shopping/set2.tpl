@@ -23,7 +23,7 @@
 *}-->
 <div align="center">お届け先登録確認</div>
 <hr>
-<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|h}-->">
+<form name="form1" method="post" action="?">
 	<input type="hidden" name="mode" value="complete">
 
 	【個人情報】<br>

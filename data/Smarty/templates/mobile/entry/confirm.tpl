@@ -23,7 +23,7 @@
 *}-->
 <div align="center">登録確認</div>
 <hr>
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|h}-->" utn>
+<form name="form1" id="form1" method="post" action="?" utn>
 	<input type="hidden" name="mode" value="complete">
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 	<!--{foreach from=$list_data key=key item=item}-->

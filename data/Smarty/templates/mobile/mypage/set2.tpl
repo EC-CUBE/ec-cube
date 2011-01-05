@@ -23,7 +23,7 @@
 *}-->
 <div align="center">登録内容変更 3/3</div>
 <hr>
-<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|h}-->">
+<form name="form1" method="post" action="?">
 	<input type="hidden" name="mode" value="confirm">
 
 	<font color="#FF0000">*は必須項目です。</font><br>

@@ -56,7 +56,7 @@
   <!--▼CSSファイル一覧　ここから-->
   <h2>編集可能CSSファイル</h2>
   <div class="btn addnew">
-    <a class="btn-normal" href="<!--{$smarty.server.PHP_SELF|h}-->"><span>CSSを新規入力</span></a>
+    <a class="btn-normal" href="?"><span>CSSを新規入力</span></a>
   </div>
   <table class="list center" id="design-css-list">
     <tr>
@@ -69,7 +69,7 @@
     <tr>
 			<td><!--{$item.file_name}--></td>
       <td style="background:<!--{if $item.css_name == $css_name}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->;">
-        <a href="<!--{$smarty.server.PHP_SELF|h}-->?css_name=<!--{$item.css_name}-->&amp;device_type_id=<!--{$device_type_id}-->">編集</a>
+        <a href="?css_name=<!--{$item.css_name}-->&amp;device_type_id=<!--{$device_type_id}-->">編集</a>
       </td>
       <td style="background:<!--{if $item.css_name == $css_name}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->;">
         <a href="javascript:;" onclick="fnFormModeSubmit('form_css','delete','css_name','<!--{$item.css_name}-->');">削除</a>

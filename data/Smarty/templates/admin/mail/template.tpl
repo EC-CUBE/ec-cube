@@ -23,29 +23,29 @@
 *}-->
 <form name="form1" id="form1" method="post" action="?">
 <div id="mail" class="contents-main">
-  <table class="list center">
-    <tr>
-      <th>作成日</th>
-      <th>subject</th>
-      <th>メール形式</th>
-      <th>編集</th>
-      <th>削除</th>
-      <th>プレビュー</th>
-    </tr>
-    <!--{section name=data loop=$list_data}-->
-    <tr>
-      <td><!--{$list_data[data].disp_date|date_format:'%Y/%m/%d'|h}--></td>
-      <td class="left"><!--{$list_data[data].subject|h}--></td>
-      <!--{assign var=type value=$list_data[data].mail_method|h}-->
-      <td><!--{$arrMagazineType[$type]}--></td>
-      <td><!--{if $list_data[data].mail_method eq 3}--><a href="./htmlmail.php?mode=edit&template_id=<!--{$list_data[data].template_id}-->"><!--{else}--><a href="./template_input.php?mode=edit&template_id=<!--{$list_data[data].template_id}-->"><!--{/if}-->編集</a></td>
-      <td><a href="" onclick="fnDelete('<!--{$smarty.server.PHP_SELF|h}-->?mode=delete&id=<!--{$list_data[data].template_id}-->'); return false;">削除</a></td>
-      <td><!--{if $list_data[data].mail_method eq 3}--><a href="" onclick="win03('./preview.php?method=template&id=<!--{$list_data[data].template_id}-->','preview','650','700'); return false;" target="_blank"><!--{else}--><a href="" onclick="win03('./preview.php?id=<!--{$list_data[data].template_id}-->','preview','650','700'); return false;" target="_blank"><!--{/if}-->プレビュー</a></td>
-    </tr>
-    <!--{/section}-->
-  </table>
+    <table class="list center">
+        <tr>
+            <th>作成日</th>
+            <th>subject</th>
+            <th>メール形式</th>
+            <th>編集</th>
+            <th>削除</th>
+            <th>プレビュー</th>
+        </tr>
+        <!--{section name=data loop=$list_data}-->
+        <tr>
+            <td><!--{$list_data[data].disp_date|date_format:'%Y/%m/%d'|h}--></td>
+            <td class="left"><!--{$list_data[data].subject|h}--></td>
+            <!--{assign var=type value=$list_data[data].mail_method|h}-->
+            <td><!--{$arrMagazineType[$type]}--></td>
+            <td><!--{if $list_data[data].mail_method eq 3}--><a href="./htmlmail.php?mode=edit&template_id=<!--{$list_data[data].template_id}-->"><!--{else}--><a href="./template_input.php?mode=edit&template_id=<!--{$list_data[data].template_id}-->"><!--{/if}-->編集</a></td>
+            <td><a href="#" onclick="fnDelete('?mode=delete&id=<!--{$list_data[data].template_id}-->'); return false;">削除</a></td>
+            <td><!--{if $list_data[data].mail_method eq 3}--><a href="#" onclick="win03('./preview.php?method=template&id=<!--{$list_data[data].template_id}-->','preview','650','700'); return false;" target="_blank"><!--{else}--><a href="#" onclick="win03('./preview.php?id=<!--{$list_data[data].template_id}-->','preview','650','700'); return false;" target="_blank"><!--{/if}-->プレビュー</a></td>
+        </tr>
+        <!--{/section}-->
+    </table>
 
-  <div class="btn addnew">
-    <a class="btn-normal" href="./template_input.php"><span>テンプレートを新規入力</span></a>
-  </div>
+    <div class="btn addnew">
+        <a class="btn-normal" href="./template_input.php"><span>テンプレートを新規入力</span></a>
+    </div>
 </div>

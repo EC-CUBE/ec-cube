@@ -28,7 +28,7 @@
 	<!--{$tpl_message}--><br>
 <!--{/if}-->
 <!--{if count($arrProductsClass) > 0}-->
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|h}-->"  utn>
+<form name="form1" id="form1" method="post" action="?"  utn>
 	<input type="hidden" name="mode" value="confirm">
 	<input type="hidden" name="cart_no" value="">
 	<!--ご注文内容ここから-->
@@ -48,9 +48,9 @@
 		<br>
 		<!--{* 数量 *}-->
 		数量:<!--{$arrProductsClass[cnt].quantity}-->
-		<a href="<!--{$smarty.server.PHP_SELF|h}-->?mode=up&amp;cart_no=<!--{$arrProductsClass[cnt].cart_no}-->">+</a>
-		<a href="<!--{$smarty.server.PHP_SELF|h}-->?mode=down&amp;cart_no=<!--{$arrProductsClass[cnt].cart_no}-->">-</a>
-		<a href="<!--{$smarty.server.PHP_SELF|h}-->?mode=delete&amp;cart_no=<!--{$arrProductsClass[cnt].cart_no}-->">削除</a><br>
+		<a href="?mode=up&amp;cart_no=<!--{$arrProductsClass[cnt].cart_no}-->">+</a>
+		<a href="?mode=down&amp;cart_no=<!--{$arrProductsClass[cnt].cart_no}-->">-</a>
+		<a href="?mode=delete&amp;cart_no=<!--{$arrProductsClass[cnt].cart_no}-->">削除</a><br>
 		<!--{* 合計 *}-->
 		小計:<!--{$arrProductsClass[cnt].total_inctax|number_format}-->円<br>
 		<div align="right"><a href="<!--{$smarty.const.MOBILE_P_DETAIL_URL_PATH}--><!--{$arrProductsClass[cnt].product_id|u}-->">商品詳細へ→</a></div>
@@ -65,7 +65,7 @@
 	<br>
 	<center><input type="submit" value="注文する"></center>
 </form>
-<form method="post" action="<!--{$smarty.server.PHP_SELF|h}-->">
+<form method="post" action="?">
 	<input type="hidden" name="mode" value="continue">
 	<center><input type="submit" value="お買物を続ける"></center>
 </form>

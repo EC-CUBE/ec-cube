@@ -23,7 +23,7 @@
 *}-->
 <div align="center">変更確認</div>
 <hr>
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|h}-->">
+<form name="form1" id="form1" method="post" action="?">
 	<input type="hidden" name="mode" value="complete">
 	<!--{foreach from=$list_data key=key item=item}-->
 		<input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->">

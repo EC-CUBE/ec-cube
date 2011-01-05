@@ -136,7 +136,7 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
         <!--{/foreach}-->
     </table>
     <div class="btn addnew">
-        <a class="btn-normal" href="<!--{$smarty.server.PHP_SELF|h}-->"><span>ページを新規入力</span></a>
+        <a class="btn-normal" href="?"><span>ページを新規入力</span></a>
     </div>
 
 </form>

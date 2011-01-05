@@ -25,7 +25,7 @@
 
 <hr>
 
-<form method="post" action="<!--{$smarty.server.PHP_SELF|h}-->">
+<form method="post" action="?">
 <input type="hidden" name="mode" value="confirm">
 <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
 <input type="hidden" name="payment_id" value="<!--{$arrForm.payment_id.value}-->">

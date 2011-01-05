@@ -23,7 +23,7 @@
 *}-->
 <div align="center">会員情報入力 </div>
 <hr>
-<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|h}-->">
+<form name="form1" method="post" action="?">
     <input type="hidden" name="mode" value="confirm" />
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 	<font color="#FF0000">*は必須項目です。</font><br>

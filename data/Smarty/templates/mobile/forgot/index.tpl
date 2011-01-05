@@ -42,7 +42,7 @@
 ご登録時のメールアドレスを入力して「次へ」ボタンをクリックしてください。<br>
 <!--{/if}-->
 
-<form action="<!--{$smarty.server.PHP_SELF|h}-->" method="post">
+<form action="?" method="post">
 <input type="hidden" name="mode" value="mail_check">
 
 メールアドレス：<input type="text" name="email" value="<!--{$tpl_login_email|h}-->" size="50" istyle="3"><br>
