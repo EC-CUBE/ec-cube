@@ -215,38 +215,6 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin {
         parent::destroy();
     }
 
-
-    // 編集登録
-    function lfRegisDatat($array, $arrRegistColumn) {
-
-        foreach ($arrRegistColumn as $data) {
-            if($array[$data["column"]] != "") {
-                $arrRegist[$data["column"]] = $array[$data["column"]];
-            } else {
-                $arrRegist[$data["column"]] = NULL;
-            }
-        }
-        if (strlen($array["year"]) > 0) {
-            $arrRegist["birth"] = $array["year"] ."/". $array["month"] ."/". $array["day"] ." 00:00:00";
-        }
-
-        //-- パスワードの更新がある場合は暗号化。（更新がない場合はUPDATE文を構成しない）
-        if ($array["password"] != DEFAULT_PASSWORD) {
-            $arrRegist["password"] = sha1($array["password"] . ":" . AUTH_MAGIC);
-        } else {
-            unset($arrRegist['password']);
-        }
-
-        $arrRegist["update_date"] = "Now()";
-
-        //-- 編集登録実行
-        $this->objQuery->begin();
-        $this->objQuery->Insert("dtb_customer", $arrRegist, "customer_id = '" .addslashes($array["customer_id"]). "'");
-
-        $this->objQuery->commit();
-    }
-
-
     //----　取得文字列の変換
     function lfConvertParam($array, $arrRegistColumn) {
         /*
