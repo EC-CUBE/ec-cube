@@ -164,10 +164,12 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin {
                                                     array($_POST['filename'], $device_type_id));
 
                 $bloc_id = $arrBlocData[0]['bloc_id'];
-                $this->objDisplay->redirect($this->getLocation("./bloc.php",
-                                            array("bloc_id" => $bloc_id,
-                                                  "device_type_id" => $device_type_id,
-                                                  "msg" => "on")));
+                $arrQueryString = array(
+                    'bloc_id' => $bloc_id,
+                    'device_type_id' => $device_type_id,
+                    'msg' => 'on',
+                );
+                $this->objDisplay->reload($arrQueryString, true);
                 exit;
             }else{
                 // エラーがあれば入力時のデータを表示する
@@ -202,8 +204,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin {
                     unlink($tplPath);
                 }
             }
-            $this->objDisplay->redirect($this->getLocation("./bloc.php",
-                                                           array("device_type_id" => $device_type_id)));
+            $this->objDisplay->reload(array("device_type_id" => $device_type_id), true);
             exit;
             break;
         default:
@@ -268,7 +269,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin {
             // FIXME device_type_id ごとの連番にする
             $arrUpdData['bloc_id'] = $objQuery->nextVal('dtb_bloc_bloc_id');
             $arrUpdData['device_type_id'] = $device_type_id;
-            $arrUpdData['create_date'] = "now()";
+            $arrUpdData['update_date'] = "now()";
             $ret = $objQuery->insert('dtb_bloc', $arrUpdData);
         } else {
             $ret = $objQuery->update('dtb_bloc', $arrUpdData, 'bloc_id = ? AND device_type_id = ?',

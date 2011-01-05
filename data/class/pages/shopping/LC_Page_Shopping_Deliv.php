@@ -144,7 +144,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
                 // 正常に登録されたことを記録しておく
                 $objSiteSess->setRegistFlag();
                 // ダウンロード商品有りの場合は、支払方法画面に転送
-                $this->objDisplay->redirect($this->getLocation("./payment.php"), array());
+                SC_Response_Ex::sendRedirect('payment.php');
                 exit;
             }
             break;

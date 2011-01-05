@@ -170,7 +170,7 @@ class LC_Page_Contact extends LC_Page {
         if(!$this->arrErr) {
             $this->lfSendMail($this);
             // 完了ページへ移動する
-            $this->objDisplay->redirect($this->getLocation("./complete.php", array(), true));
+            SC_Response_Ex::sendRedirect('complete.php');
             exit;
         } else {
             SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);

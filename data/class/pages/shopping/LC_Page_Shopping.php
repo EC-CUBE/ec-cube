@@ -102,10 +102,10 @@ class LC_Page_Shopping extends LC_Page {
                 // 正常に登録されたことを記録しておく
                 $objSiteSess->setRegistFlag();
                 //カート内が全てダウンロード商品の場合は支払方法設定画面に転送
-                $this->objDisplay->redirect($this->getLocation("./payment.php"), array());
+                SC_Response_Ex::sendRedirect('payment.php');
             } else {
                 // お届け先設定画面に転送
-                $this->objDisplay->redirect($this->getLocation("./deliv.php"), array());
+                SC_Response_Ex::sendRedirect('deliv.php');
             }
             exit;
         }
@@ -253,10 +253,10 @@ class LC_Page_Shopping extends LC_Page {
                 // 正常に登録されたことを記録しておく
                 $objSiteSess->setRegistFlag();
                 //カート内が全てダウンロード商品の場合は支払方法設定画面に転送
-                $this->objDisplay->redirect($this->getLocation("./payment.php"), array());
+                SC_Response_Ex::sendRedirect('payment.php');
             } else {
                 // お届け先設定画面に転送
-                $this->objDisplay->redirect($this->getLocation("./deliv.php"), array());
+                SC_Response_Ex::sendRedirect('deliv.php');
             }
             exit;
         }

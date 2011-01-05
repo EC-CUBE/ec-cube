@@ -183,7 +183,7 @@ class LC_Page_Mypage_Change extends LC_Page {
                 }
 
                 //完了ページへ
-                $this->objDisplay->redirect($this->getLocation("./change_complete.php"));
+                SC_Response_Ex::sendRedirect('change_complete.php');
                 exit;
             } else {
                 SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
@@ -399,7 +399,7 @@ class LC_Page_Mypage_Change extends LC_Page {
                         //セッション情報を最新の状態に更新する
                         $this->objCustomer->updateSession();
                         //完了ページへ
-                        $this->objDisplay->redirect($this->getLocation("./change_complete.php"));
+                        SC_Response_Ex::sendRedirect('change_complete.php');
                         exit;
                     } else {
                         SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);

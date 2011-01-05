@@ -109,7 +109,7 @@ class LC_Page_Mypage_Refusal extends LC_Page {
 
             $objCustomer->EndSession();
             //完了ページへ
-            $this->objDisplay->redirect($this->getLocation("./refusal_complete.php"));
+            SC_Response_Ex::sendRedirect('refusal_complete.php');
             exit;
         }
 
@@ -171,7 +171,7 @@ class LC_Page_Mypage_Refusal extends LC_Page {
             $where = "email = ?";
             $objCustomer->EndSession();
             //完了ページへ
-            $this->objDisplay->redirect($this->getLocation("./refusal_complete.php"));
+            SC_Response_Ex::sendRedirect('refusal_complete.php');
             exit;
         }
 

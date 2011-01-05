@@ -130,50 +130,89 @@ class SC_Response{
         header('HTTP/1.1 '.$errorcode.' '.$this->statusTexts[$errorcode]);
     }
 
-    function sendRedirect($location) {
-        if (preg_match("/(" . preg_quote(HTTP_URL, '/')
-                          . "|" . preg_quote(HTTPS_URL, '/') . ")/", $location)) {
+    /**
+     * @param string $location 「アプリケーションルートからの相対パス」「現在のURLからの相対パス」「URL」のいずれか
+     * @return void
+     * @static
+     */
+    function sendRedirect($location, $arrQueryString = array(), $inheritQueryString = false, $useSsl = null) {
 
-            $netURL = new Net_URL($location);
-            $arrQueryString = $netURL->querystring;
+        // アプリケーションルートからの相対パス
+        if ($location[0] === '/') {
+            if (!is_bool($useSsl)) {
+                $useSsl = SC_Utils_Ex::sfIsHTTPS();
+            }
+            $url = ($useSsl ? HTTPS_URL : HTTP_URL) . substr($location, 1);
+        }
+        // URL の場合
+        elseif (preg_match('/^https?:/', $location)) {
+            $url = $location;
+            if (is_bool($useSsl)) {
+                if ($useSsl) {
+                    $pattern = '/^' . preg_quote(HTTP_URL, '/') . '(.*)/';
+                    $replacement = HTTPS_URL . '\1';
+                    $url = preg_replace($pattern, $replacement, $url);
+                }
+                else {
+                    $pattern = '/^' . preg_quote(HTTPS_URL, '/') . '(.*)/';
+                    $replacement = HTTP_URL . '\1';
+                    $url = preg_replace($pattern, $replacement, $url);
+                }
+            }
+        }
+        // 現在のURLからの相対パス
+        else {
+            if (!is_bool($useSsl)) {
+                $useSsl = SC_Utils_Ex::sfIsHTTPS();
+            }
+            $netUrl = new Net_URL($useSsl ? HTTPS_URL : HTTP_URL);
+            $netUrl->path = dirname($_SERVER['PHP_SELF']) . '/' . $location;
+            $url = $netUrl->getUrl();
+        }
 
+        $netUrl = new Net_URL($url);
+        $arrQueryString = array_merge($netUrl->querystring, $arrQueryString);
+
+        if ($inheritQueryString) {
             if (!empty($_SERVER['QUERY_STRING'])) {
-                $netURL->addRawQueryString($_SERVER['QUERY_STRING']);
+                $netUrl->addRawQueryString($_SERVER['QUERY_STRING']);
             }
+        }
 
-            foreach ($arrQueryString as $key => $val) {
-                $netURL->addQueryString($key, $val);
-            }
+        foreach ($arrQueryString as $key => $val) {
+            $netUrl->addQueryString($key, $val);
+        }
 
+        $url = $netUrl->getURL();
+
+        $pattern = '/^(' . preg_quote(HTTP_URL, '/') . '|' . preg_quote(HTTPS_URL, '/') . ')/';
+        if (preg_match($pattern, $url)) {
             $session = SC_SessionFactory::getInstance();
             if (SC_MobileUserAgent::isMobile() || $session->useCookie() == false) {
-                $netURL->addQueryString(session_name(), session_id());
+                $netUrl->addQueryString(session_name(), session_id());
             }
 
-            $netURL->addQueryString(TRANSACTION_ID_NAME, SC_Helper_Session_Ex::getToken());
-            header("Location: " . $netURL->getURL());
-            exit;
+            $netUrl->addQueryString(TRANSACTION_ID_NAME, SC_Helper_Session_Ex::getToken());
+            $url = $netUrl->getURL();
         }
-        return false;
+
+        header("Location: $url");
+        exit;
     }
 
-    function reload($queryString = array(), $removeQueryString = false) {
+    /**
+     * @static
+     */
+    function reload($arrQueryString = array(), $removeQueryString = false) {
         // 現在の URL を取得
-        $netURL = new Net_URL($_SERVER['REQUEST_URI']);
+        $netUrl = new Net_URL($_SERVER['REQUEST_URI']);
 
-        if ($removeQueryString) {
-            $netURL->querystring = array();
-            $_SERVER['QUERY_STRING'] = ''; // sendRedirect() での処理用らしい
+        if (!$removeQueryString) {
+            $arrQueryString = array_merge($netUrl->querystring, $arrQueryString);
         }
+        $netUrl->querystring = array();
 
-        // QueryString を付与
-        if (!empty($queryString)) {
-            foreach ($queryString as $key => $val) {
-                $netURL->addQueryString($key, $val);
-            }
-        }
-
-        $this->sendRedirect($netURL->getURL());
+        $this->sendRedirect($netUrl->getURL(), $arrQueryString);
     }
 
     function setHeader($headers) {

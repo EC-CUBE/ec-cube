@@ -105,7 +105,7 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page {
 
             if(count($arrErr) == 0) {
                 if($objCustomer->getCustomerDataFromEmailPass($arrForm['login_pass'], $arrForm['login_email'], true)) {
-                    $this->objDisplay->redirect($this->getLocation(URL_PATH, array(), false));
+                    $this->objDisplay->redirect('/', array(), false, true);
                     exit;
                 } else {
                     $arrForm['login_email'] = strtolower($arrForm['login_email']);
@@ -131,9 +131,9 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page {
             $mypage_url_search = strpos('.'.$_POST['url'], "mypage");
             //マイページログイン中はログイン画面へ移行
             if ($mypage_url_search == 2){
-                $this->objDisplay->redirect($this->getLocation(URL_PATH . "mypage/login.php", array(), false));
+                $this->objDisplay->redirect('/mypage/login.php');
             }else{
-                $this->objDisplay->redirect($this->getLocation(URL_PATH, array(), false));
+                $this->objDisplay->redirect('/', array(), false, true);
             }
             exit;
             break;

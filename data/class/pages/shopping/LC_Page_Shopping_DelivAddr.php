@@ -139,7 +139,7 @@ class LC_Page_Shopping_DelivAddr extends LC_Page {
                 $_POST["mode"] = "set1";
                 break;
             default:
-                $this->objDisplay->redirect($this->getLocation("./deliv.php"));
+                SC_Response_Ex::sendRedirect('deliv.php');
                 exit;
             }
         }

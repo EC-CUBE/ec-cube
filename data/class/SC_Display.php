@@ -80,7 +80,7 @@ class SC_Display{
      * SC_Response::sendRedirect() のラッパーです.
      */
     function redirect($location){
-        $this->response->sendRedirect($location);
+        $this->response->sendRedirect($location, array(), true);
     }
 
     /**

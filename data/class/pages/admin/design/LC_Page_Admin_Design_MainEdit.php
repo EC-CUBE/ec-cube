@@ -214,7 +214,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
             }
         }
         $_SESSION['preview'] = "ON";
-        $this->objDisplay->redirect($this->getLocation(URL_PATH . "preview/" . DIR_INDEX_URL, array("filename" => $arrPageData[0]["filename"])));
+        SC_Response_Ex::sendRedirect('/preview/' . DIR_INDEX_URL, array("filename" => $arrPageData[0]["filename"]));
     }
 
     /**
@@ -247,10 +247,12 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
             $cre_tpl = $this->objLayout->getTemplatePath($device_type_id) . $arrData['tpl_dir'] . $arrData['filename'] . '.tpl';
             $this->lfCreateFile($cre_tpl, $_POST['tpl_data']);
 
-            $this->objDisplay->redirect($this->getLocation("./main_edit.php",
-                                    array("page_id" => $arrData['page_id'],
-                                          "device_type_id" => $device_type_id,
-                                          "msg"     => "on")));
+            $arrQueryString = array(
+                "page_id" => $arrData['page_id'],
+                "device_type_id" => $device_type_id,
+                "msg"     => "on",
+            );
+            $this->objDisplay->reload($arrQueryString, true);
             exit;
         } else {
             // エラーがあれば入力時のデータを表示する
@@ -339,8 +341,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
      */
     function lfDeletePageData($page_id, $device_type_id){
         $this->objLayout->lfDelPageData($page_id, $device_type_id);
-        $this->objDisplay->redirect($this->getLocation("./main_edit.php",
-                                                       array("device_type_id" => $device_type_id)));
+        $this->objDisplay->reload(array("device_type_id" => $device_type_id), true);
     }
 
     /**

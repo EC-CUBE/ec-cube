@@ -173,7 +173,7 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin {
         if ($_POST['css_name'] !== '') {
             $objFileManager->sfDeleteDir($css_path);
         }
-        $this->objDisplay->redirect($this->getLocation("./css.php"));
+        $this->objDisplay->reload(array(), true);
     }
 
     /**
