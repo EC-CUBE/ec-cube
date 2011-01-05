@@ -73,13 +73,13 @@ class SC_Initial {
         require_once(realpath(dirname( __FILE__)) ."/../install.php");
 
         if (defined('ECCUBE_INSTALL')) {
-            define('MOBILE_DIR', 'mobile/');
+            define('MOBILE_DIR', '');
             define('MOBILE_HTML_REALDIR', HTML_REALDIR . MOBILE_DIR);
             define('MOBILE_HTTP_URL', HTTP_URL . MOBILE_DIR);
             define('MOBILE_HTTPS_URL', HTTPS_URL . MOBILE_DIR);
             define('MOBILE_URL_PATH', URL_PATH . MOBILE_DIR);
 
-            define('SMARTPHONE_DIR', 'sphone/');
+            define('SMARTPHONE_DIR', '');
             define('SMARTPHONE_HTML_REALDIR', HTML_REALDIR . SMARTPHONE_DIR);
             define('SMARTPHONE_HTTP_URL', HTTP_URL . SMARTPHONE_DIR);
             define('SMARTPHONE_HTTPS_URL', HTTPS_URL . SMARTPHONE_DIR);
