@@ -169,7 +169,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin {
         // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess($objSess);
 
-        $img_path = USER_URL . USER_PACKAGE_DIR . DEFAULT_TEMPLATE_NAME . "/img/";
+        $img_path = USER_URL . USER_PACKAGE_DIR . "/" . ADMIN_DIR . "img/basis/";
 
         ?>
         <html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
@@ -183,8 +183,8 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin {
         // 一部のIEは256バイト以上受け取ってから表示を開始する。
         SC_Utils_Ex::sfFlush(true);
 
-        echo "<img src='" . $img_path . ADMIN_DIR . "basis/zip_install_progress.gif'><br />";
-        echo "<img src='" . $img_path . "install/space_w.gif'>";
+        echo "<img src='" . $img_path . "zip_install_progress.gif'><br />";
+        echo "<img src='" . $img_path . "space_w.gif'>";
         SC_Utils_Ex::sfFlush();
 
         // 画像を一個表示する件数を求める。
@@ -231,7 +231,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin {
 
             // $disp_line件ごとに進捗表示する
             if($cntCurrentLine % $disp_line == 0 && $img_cnt < IMAGE_MAX) {
-                print("<img src='". $img_path ."install/graph_1_w.gif'>");
+                print("<img src='". $img_path ."graph_1_w.gif'>");
                 SC_Utils_Ex::sfFlush();
                 $img_cnt++;
             }
@@ -244,7 +244,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin {
         }
         fclose($fp);
 
-        echo "<img src='". $img_path ."install/space_w.gif'>";
+        echo "<img src='". $img_path ."space_w.gif'>";
         echo "</div>\n";
         
         ?>
