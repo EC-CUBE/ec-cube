@@ -46,15 +46,6 @@ class LC_Page_Index extends LC_Page {
     }
 
     /**
-     * モバイルページを初期化する.
-     *
-     * @return void
-     */
-    function mobileInit() {
-        $this->init();
-    }
-
-    /**
      * Page のプロセス.
      *
      * @return void
