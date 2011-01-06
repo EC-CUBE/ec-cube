@@ -75,25 +75,6 @@ class LC_Page_Index extends LC_Page {
     }
 
     /**
-     * Page のプロセス(モバイル).
-     *
-     * @return void
-     */
-    function mobileProcess() {
-        $this->mobileAction();
-        $this->sendResponse();
-    }
-
-    /**
-     * Page のプロセス(モバイル).
-     *
-     * @return void
-     */
-    function mobileAction() {
-        $objCustomer = new SC_Customer();
-    }
-
-    /**
      * デストラクタ.
      *
      * @return void
