@@ -93,10 +93,9 @@ class LC_Page_Products_Detail extends LC_Page {
 
         // XXX 削除可能か、SC_SiteViewクラスコンストラクタ内の処理を要確認
         $objView = new SC_SiteView(strlen($_POST['mode']) == 0);
-        
+
         $objCustomer = new SC_Customer();
         $objDb = new SC_Helper_DB_Ex();
-        $objProduct = new SC_Product();
 
         // ログイン中のユーザが商品をお気に入りにいれる処理
         if ($objCustomer->isLoginSuccess() === true && strlen($_POST['mode']) > 0 && $_POST['mode'] == "add_favorite" && strlen($_POST['favorite_product_id']) > 0 ) {
@@ -132,46 +131,137 @@ class LC_Page_Products_Detail extends LC_Page {
         }
 
         // 規格選択セレクトボックスの作成
+        $this->lfMakeSelect($product_id);
+
+        $objProduct = new SC_Product();
+        $objProduct->setProductsClassByProductIds(array($product_id));
+
+        // 規格1クラス名
+        $this->tpl_class_name1 = $objProduct->className1[$product_id];
+
+        // 規格2クラス名
+        $this->tpl_class_name2 = $objProduct->className2[$product_id];
+
+        // 規格1
+        $this->arrClassCat1 = $objProduct->classCats1[$product_id];
+
+        // 規格1が設定されている
+        $this->tpl_classcat_find1 = $objProduct->classCat1_find[$product_id];
+        // 規格2が設定されている
+        $this->tpl_classcat_find2 = $objProduct->classCat2_find[$product_id];
+
+        $this->tpl_stock_find = $objProduct->stock_find[$product_id];
+        $this->tpl_product_class_id = $objProduct->classCategories[$product_id]['']['']['product_class_id'];
+        $this->tpl_product_type = $objProduct->classCategories[$product_id]['']['']['product_type'];
+
+        $objJson = new Services_JSON();
+        $this->tpl_javascript .= 'classCategories = ' . $objJson->encode($objProduct->classCategories[$product_id]) . ';';
+        $this->tpl_javascript .= 'function lnOnLoad(){' . $this->js_lnOnload . '}';
+        $this->tpl_onload .= 'lnOnLoad();';
+
+        // モバイル用 規格選択セレクトボックスの作成
         if(Net_UserAgent_Mobile::isMobile() === true) {
             $this->lfMakeSelectMobile($this, $product_id);
-        } else {
-            $this->lfMakeSelect($product_id);
-
-            $objProduct->setProductsClassByProductIds(array($product_id));
-
-            // 規格1クラス名
-            $this->tpl_class_name1 = $objProduct->className1[$product_id];
-
-            // 規格2クラス名
-            $this->tpl_class_name2 = $objProduct->className2[$product_id];
-
-            // 規格1
-            $this->arrClassCat1 = $objProduct->classCats1[$product_id];
-
-            // 規格1が設定されている
-            $this->tpl_classcat_find1 = $objProduct->classCat1_find[$product_id];
-            // 規格2が設定されている
-            $this->tpl_classcat_find2 = $objProduct->classCat2_find[$product_id];
-
-            $this->tpl_stock_find = $objProduct->stock_find[$product_id];
-            $this->tpl_product_class_id = $objProduct->classCategories[$product_id]['']['']['product_class_id'];
-            $this->tpl_product_type = $objProduct->classCategories[$product_id]['']['']['product_type'];
-
-            $objJson = new Services_JSON();
-            $this->tpl_javascript .= 'classCategories = ' . $objJson->encode($objProduct->classCategories[$product_id]) . ';';
-            $this->tpl_javascript .= 'function lnOnLoad(){' . $this->js_lnOnload . '}';
-            $this->tpl_onload .= 'lnOnLoad();';
         }
 
         // 商品IDをFORM内に保持する
         $this->tpl_product_id = $product_id;
 
-        // POSTされるmodeにより処理切り替え
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
+
+        switch($_POST['mode']) {
+            case 'cart':
+                // 入力値の変換
+                $this->objFormParam->convParam();
+                $this->arrErr = $this->lfCheckError();
+                if (count($this->arrErr) == 0) {
+                    $objCartSess = new SC_CartSession();
+                    $classcategory_id1 = $_POST['classcategory_id1'];
+                    $classcategory_id2 = $_POST['classcategory_id2'];
+                    $product_class_id = $_POST['product_class_id'];
+                    $product_type = $_POST['product_type'];
+
+                    if (!empty($_POST['gmo_oneclick'])) {
+                        $objCartSess->delAllProducts();
+                    }
+
+                    // 規格1が設定されていない場合
+                    if(!$this->tpl_classcat_find1) {
+                        $classcategory_id1 = '0';
+                    }
+
+                    // 規格2が設定されていない場合
+                    if(!$this->tpl_classcat_find2) {
+                        $classcategory_id2 = '0';
+                    }
+                    $objCartSess->addProduct($product_class_id, $this->objFormParam->getValue('quantity'), $product_type);
+
+                    if (!empty($_POST['gmo_oneclick'])) {
+                        $objSiteSess = new SC_SiteSession;
+                        $objSiteSess->setRegistFlag();
+                        $objCartSess->saveCurrentCart($objSiteSess->getUniqId());
+
+                        $this->objDisplay->redirect($this->getLocation(
+                            URL_PATH . USER_DIR . 'gmopg_oneclick_confirm.php', array(), true));
+                        exit;
+                    }
+
+                    $this->objDisplay->redirect($this->getLocation(CART_URL_PATH));
+                    exit;
+                }
+                break;
+
+            default:
+                break;
+        }
+
+        // モバイル用 ポストバック処理
         if(Net_UserAgent_Mobile::isMobile() === true) {
-            $this->lfPostActionMobile();
-        } else {
-            $this->arrErr = $this->lfPostAction();
+            switch($_POST['mode']) {
+                case 'select':
+                    // 規格1が設定されている場合
+                    echo $this->tpl_classcat_find1;
+                    if($this->tpl_classcat_find1) {
+                        // templateの変更
+                        $this->tpl_mainpage = "products/select_find1.tpl";
+                        break;
+                    }
+
+                case 'select2':
+                    $this->arrErr = $this->lfCheckError();
+
+                    // 規格1が設定されている場合
+                    if($this->tpl_classcat_find1 and $this->arrErr['classcategory_id1']) {
+                        // templateの変更
+                        $this->tpl_mainpage = "products/select_find1.tpl";
+                        break;
+                    }
+
+                    // 規格2が設定されている場合
+                    if($this->tpl_classcat_find2) {
+                        $this->arrErr = array();
+
+                        $this->tpl_mainpage = "products/select_find2.tpl";
+                        break;
+                    }
+
+                case 'selectItem':
+                    $this->arrErr = $this->lfCheckError();
+
+                    // 規格1が設定されている場合
+                    if($this->tpl_classcat_find2 and $this->arrErr['classcategory_id2']) {
+                        // templateの変更
+                        $this->tpl_mainpage = "products/select_find2.tpl";
+                        break;
+                    }
+                    // 商品数の選択を行う
+                    $this->tpl_mainpage = "products/select_item.tpl";
+                    break;
+
+                default:
+                    $this->tpl_mainpage = "products/detail.tpl";
+                    break;
+            }
         }
 
         // 商品詳細を取得
@@ -220,141 +310,6 @@ class LC_Page_Products_Detail extends LC_Page {
      */
     function destroy() {
         parent::destroy();
-    }
-
-    /**
-     * POSTされるmodeにより処理切り替え
-     *
-     * @return array Error messages.
-     */
-    function lfPostAction() {
-        $arrErr = array();
-        
-        switch($_POST['mode']) {
-            case 'cart':
-                // 入力値の変換
-                $this->objFormParam->convParam();
-                $arrErr = $this->lfCheckError();
-                if (count($arrErr) == 0) {
-                    $objCartSess = new SC_CartSession();
-                    $classcategory_id1 = $_POST['classcategory_id1'];
-                    $classcategory_id2 = $_POST['classcategory_id2'];
-                    $product_class_id = $_POST['product_class_id'];
-                    $product_type = $_POST['product_type'];
-
-                    if (!empty($_POST['gmo_oneclick'])) {
-                        $objCartSess->delAllProducts();
-                    }
-
-                    // 規格1が設定されていない場合
-                    if(!$this->tpl_classcat_find1) {
-                        $classcategory_id1 = '0';
-                    }
-
-                    // 規格2が設定されていない場合
-                    if(!$this->tpl_classcat_find2) {
-                        $classcategory_id2 = '0';
-                    }
-                    $objCartSess->addProduct($product_class_id, $this->objFormParam->getValue('quantity'), $product_type);
-
-                    if (!empty($_POST['gmo_oneclick'])) {
-                        $objSiteSess = new SC_SiteSession;
-                        $objSiteSess->setRegistFlag();
-                        $objCartSess->saveCurrentCart($objSiteSess->getUniqId());
-
-                        $this->objDisplay->redirect($this->getLocation(
-                            URL_PATH . USER_DIR . 'gmopg_oneclick_confirm.php', array(), true));
-                        exit;
-                    }
-
-                    $this->objDisplay->redirect($this->getLocation(CART_URL_PATH));
-                    exit;
-                }
-                break;
-
-            default:
-                break;
-        }
-
-        return $arrErr;
-    }
-
-    /**
-     * POSTされるmodeにより処理切り替え(モバイル)
-     *
-     * @return void
-     */
-    function lfPostActionMobile() {
-        switch($_POST['mode']) {
-            case 'select':
-                // 規格1が設定されている場合
-                if($this->tpl_classcat_find1) {
-                    // templateの変更
-                    $this->tpl_mainpage = "products/select_find1.tpl";
-                    break;
-                }
-
-            case 'select2':
-                $this->arrErr = $this->lfCheckError();
-
-                // 規格1が設定されている場合
-                if($this->tpl_classcat_find1 and $this->arrErr['classcategory_id1']) {
-                    // templateの変更
-                    $this->tpl_mainpage = "products/select_find1.tpl";
-                    break;
-                }
-
-                // 規格2が設定されている場合
-                if($this->tpl_classcat_find2) {
-                    $this->arrErr = array();
-
-                    $this->tpl_mainpage = "products/select_find2.tpl";
-                    break;
-                }
-
-            case 'selectItem':
-                $this->arrErr = $this->lfCheckError();
-
-                // 規格1が設定されている場合
-                if($this->tpl_classcat_find2 and $this->arrErr['classcategory_id2']) {
-                    // templateの変更
-                    $this->tpl_mainpage = "products/select_find2.tpl";
-                    break;
-                }
-                // 商品数の選択を行う
-                $this->tpl_mainpage = "products/select_item.tpl";
-                break;
-
-            case 'cart':
-                // 入力値の変換
-                $this->objFormParam->convParam();
-                $this->arrErr = $this->lfCheckError();
-                if(count($this->arrErr) == 0) {
-                    $objCartSess = new SC_CartSession();
-                    $product_class_id = $_POST['product_class_id'];
-                    $classcategory_id1 = $_POST['classcategory_id1'];
-                    $classcategory_id2 = $_POST['classcategory_id2'];
-
-                    // 規格1が設定されていない場合
-                    if(!$this->tpl_classcat_find1) {
-                        $classcategory_id1 = '0';
-                    }
-
-                    // 規格2が設定されていない場合
-                    if(!$this->tpl_classcat_find2) {
-                        $classcategory_id2 = '0';
-                    }
-
-                    $objCartSess->addProduct(array($_POST['product_id'], $product_class_id, $classcategory_id1, $classcategory_id2), $this->objFormParam->getValue('quantity'));
-                    $this->objDisplay->redirect($this->getLocation(CART_URL_PATH));
-                    exit;
-                }
-                break;
-
-            default:
-                $this->tpl_mainpage = "products/detail.tpl";
-                break;
-        }
     }
 
     /* プロダクトIDの正当性チェック */
@@ -480,12 +435,12 @@ class LC_Page_Products_Detail extends LC_Page {
         $objPage->arrClassCat2 = $arrSele2;
 
         // 規格1が設定されている
-        if($arrProductsClass[0]['classcategory_id1'] != '0') {
+        if(isset($arrProductsClass[0]['classcategory_id1']) && $arrProductsClass[0]['classcategory_id1'] != '0') {
             $classcat_find1 = true;
         }
 
         // 規格2が設定されている
-        if($arrProductsClass[0]['classcategory_id2'] != '0') {
+        if(isset($arrProductsClass[0]['classcategory_id2']) && $arrProductsClass[0]['classcategory_id2'] != '0') {
             $classcat_find2 = true;
         }
 

@@ -33,6 +33,8 @@
 	<input type="hidden" name="classcategory_id1" value="<!--{$arrForm.classcategory_id1.value}-->">
 	<input type="hidden" name="classcategory_id2" value="<!--{$arrForm.classcategory_id2.value}-->">
 	<input type="hidden" name="product_id" value="<!--{$tpl_product_id}-->">
+    <input type="hidden" name="product_class_id" value="<!--{$tpl_product_class_id}-->">
+    <input type="hidden" name="product_type" value="<!--{$tpl_product_type}-->">
 	<center><input type="submit" name="submit" value="かごに入れる"></center>
 </form>
 
