@@ -113,6 +113,53 @@ function fnTargetSelf(){
                 </td>
                 <!-- ★☆★ 上部ナビテーブル ☆★☆ -->
             </tr>
+            
+        <!--{if $device_type_id == $smarty.const.DEVICE_TYPE_MOBILE || $device_type_id == $smarty.const.DEVICE_TYPE_SMARTPHONE}-->
+        	<!--{* メイン上部テーブルここから *}-->
+            <tr>
+                <td colspan="3" id="<!--{$arrTarget[$smarty.const.TARGET_ID_MAIN_HEAD]}-->" class="ui-sortable">
+                    <!--{assign var="firstflg" value=false}-->
+                    <!--{foreach key=key item=item from=$tpl_arrBloc name="bloc_loop"}-->
+                        <!--{if $item.target_id == $arrTarget[$smarty.const.TARGET_ID_MAIN_HEAD]}-->
+                            <div class="sort<!--{if !$firstflg}--> first<!--{/if}-->">
+                                <input type="hidden" class="name" name="name_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.name}-->" />
+                                <input type="hidden" class="id" name="id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_id}-->" />
+                                <input type="hidden" class="target-id" name="target_id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.target_id}-->" />
+                                <input type="hidden" class="top" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->" />
+                                <!--{$item.name}-->
+                                <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{$item.anywhere_selected}--> />全ページ)</label> 
+                            </div>
+                            <!--{assign var="firstflg" value=true}-->
+                        <!--{/if}-->
+                    <!--{/foreach}-->
+                </td>
+            </tr>
+            <!--{* メイン上部テーブルここまで *}-->
+        	<!--{* メインここから *}-->
+            <tr>
+                <th colspan="3" id="layout-main">メイン</td>
+            </tr>
+            <!--{* メインここまで *}-->
+            <!--{* メイン下部ここから *}-->
+            <tr>
+                <td colspan="3" id="<!--{$arrTarget[$smarty.const.TARGET_ID_MAIN_FOOT]}-->" class="ui-sortable">
+                    <!--{assign var="firstflg" value=false}-->
+                    <!--{foreach key=key item=item from=$tpl_arrBloc name="bloc_loop"}-->
+                        <!--{if $item.target_id == $arrTarget[$smarty.const.TARGET_ID_MAIN_FOOT]}-->
+                            <div class="sort<!--{if !$firstflg}--> first<!--{/if}-->">
+                                <input type="hidden" class="name" name="name_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.name}-->" />
+                                <input type="hidden" class="id" name="id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_id}-->" />
+                                <input type="hidden" class="target-id" name="target_id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.target_id}-->" />
+                                <input type="hidden" class="top" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->" />
+                                <!--{$item.name}-->
+                                <label class="anywherecheck">(<input type="checkbox" class="anywhere" name="anywhere_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="1" <!--{$item.anywhere_selected}--> />全ページ)</label> 
+                            </div>
+                            <!--{assign var="firstflg" value=true}-->
+                        <!--{/if}-->
+                    <!--{/foreach}-->
+                </td>
+            </tr>
+        <!--{else}-->
             <tr>
                 <!--{* 左ナビテーブルここから *}-->
                 <td rowspan="3" id="<!--{$arrTarget[$smarty.const.TARGET_ID_LEFT]}-->" class="ui-sortable">
@@ -193,6 +240,7 @@ function fnTargetSelf(){
                     <!--{/foreach}-->
                 </td>
             </tr>
+        <!--{/if}-->
             <tr>
             <!--{* メイン下部ここまで *}-->
                  <!-- ★☆★ 下部ナビテーブル ☆★☆ -->
