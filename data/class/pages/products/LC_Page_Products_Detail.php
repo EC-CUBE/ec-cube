@@ -220,7 +220,6 @@ class LC_Page_Products_Detail extends LC_Page {
             switch($_POST['mode']) {
                 case 'select':
                     // 規格1が設定されている場合
-                    echo $this->tpl_classcat_find1;
                     if($this->tpl_classcat_find1) {
                         // templateの変更
                         $this->tpl_mainpage = "products/select_find1.tpl";
