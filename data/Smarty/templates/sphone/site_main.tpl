@@ -28,15 +28,126 @@
 
 <a name="top" id="top"></a>
 
-<!--▼MAIN-->
-<!--{include file=$tpl_mainpage}-->
-<!--▲MAIN-->
+<!--{* ▼HeaderHeaderTop COLUMN*}-->
+    <!--{if $arrPageLayout.HeaderTopNavi|@count > 0}-->
+        <div>
+            <!--{* ▼上ナビ *}-->
+            <!--{foreach key=HeaderTopNaviKey item=HeaderTopNaviItem from=$arrPageLayout.HeaderTopNavi}-->
+                <!-- ▼<!--{$HeaderTopNaviItem.bloc_name}--> -->
+                <!--{if $HeaderTopNaviItem.php_path != ""}-->
+                    <!--{include_php file=$HeaderTopNaviItem.php_path}-->
+                <!--{else}-->
+                    <!--{include file=$HeaderTopNaviItem.tpl_path}-->
+                <!--{/if}-->
+                <!-- ▲<!--{$HeaderTopNaviItem.bloc_name}--> -->
+            <!--{/foreach}-->
+            <!--{* ▲上ナビ *}-->
+        </div>
+    <!--{/if}-->
+<!--{* ▲HeaderHeaderTop COLUMN*}-->
+<!--{* ▼HEADER *}-->
+<!--{if $arrPageLayout.header_chk != 2}-->
+        <!--{include file= $header_tpl}-->
+<!--{/if}-->
+<!--{* ▲HEADER *}-->
+
+
+<!--{* ▼TOP COLUMN*}-->
+<!--{if $arrPageLayout.TopNavi|@count > 0}-->
+            <div>
+                <!--{* ▼上ナビ *}-->
+                <!--{foreach key=TopNaviKey item=TopNaviItem from=$arrPageLayout.TopNavi}-->
+                    <!-- ▼<!--{$TopNaviItem.bloc_name}--> -->
+                    <!--{if $TopNaviItem.php_path != ""}-->
+                        <!--{include_php file=$TopNaviItem.php_path}-->
+                    <!--{else}-->
+                        <!--{include file=$TopNaviItem.tpl_path}-->
+                    <!--{/if}-->
+                    <!-- ▲<!--{$TopNaviItem.bloc_name}--> -->
+                <!--{/foreach}-->
+                <!--{* ▲上ナビ *}-->
+            </div>
+<!--{/if}-->
+<!--{* ▲TOP COLUMN*}-->
+
+<!--{* ▼CENTER COLUMN *}-->
+        <div>
+            <!--{* ▼メイン上部 *}-->
+            <!--{if $arrPageLayout.MainHead|@count > 0}-->
+                <!--{foreach key=MainHeadKey item=MainHeadItem from=$arrPageLayout.MainHead}-->
+                    <!-- ▼<!--{$MainHeadItem.bloc_name}--> -->
+                    <!--{if $MainHeadItem.php_path != ""}-->
+                        <!--{include_php file=$MainHeadItem.php_path}-->
+                    <!--{else}-->
+                        <!--{include file=$MainHeadItem.tpl_path}-->
+                    <!--{/if}-->
+                    <!-- ▲<!--{$MainHeadItem.bloc_name}--> -->
+                <!--{/foreach}-->
+            <!--{/if}-->
+            <!--{* ▲メイン上部 *}-->
+
+            <!--{* ▼メイン *}-->
+            <!--{include file=$tpl_mainpage}-->
+            <!--{* ▲メイン *}-->
+
+            <!--{* ▼メイン下部 *}-->
+            <!--{if $arrPageLayout.MainFoot|@count > 0}-->
+                <!--{foreach key=MainFootKey item=MainFootItem from=$arrPageLayout.MainFoot}-->
+                    <!-- ▼<!--{$MainFootItem.bloc_name}--> -->
+                    <!--{if $MainFootItem.php_path != ""}-->
+                        <!--{include_php file=$MainFootItem.php_path}-->
+                    <!--{else}-->
+                        <!--{include file=$MainFootItem.tpl_path}-->
+                    <!--{/if}-->
+                    <!-- ▲<!--{$MainFootItem.bloc_name}--> -->
+                <!--{/foreach}-->
+            <!--{/if}-->
+            <!--{* ▲メイン下部 *}-->
+        </div>
+<!--{* ▲CENTER COLUMN *}-->
+        
+<!--{* ▼BOTTOM COLUMN*}-->
+        <!--{if $arrPageLayout.BottomNavi|@count > 0}-->
+            <div>
+                <!--{* ▼下ナビ *}-->
+                <!--{foreach key=BottomNaviKey item=BottomNaviItem from=$arrPageLayout.BottomNavi}-->
+                    <!-- ▼<!--{$BottomNaviItem.bloc_name}--> -->
+                    <!--{if $BottomNaviItem.php_path != ""}-->
+                        <!--{include_php file=$BottomNaviItem.php_path}-->
+                    <!--{else}-->
+                        <!--{include file=$BottomNaviItem.tpl_path}-->
+                    <!--{/if}-->
+                    <!-- ▲<!--{$BottomNaviItem.bloc_name}--> -->
+                <!--{/foreach}-->
+                <!--{* ▲下ナビ *}-->
+            </div>
+        <!--{/if}-->
+<!--{* ▲BOTTOM COLUMN*}-->
+
 
 <!--{* ▼FOOTER *}-->
 <!--{if $arrPageLayout.footer_chk != 2}-->
 <!--{include file= './footer.tpl'}-->
 <!--{/if}-->
 <!--{* ▲FOOTER *}-->
+
+ <!--{* ▼FooterBottom COLUMN*}-->
+    <!--{if $arrPageLayout.FooterBottomNavi|@count > 0}-->
+        <div id="footerbottomcolumn">
+            <!--{* ▼上ナビ *}-->
+            <!--{foreach key=FooterBottomNaviKey item=FooterBottomNaviItem from=$arrPageLayout.FooterBottomNavi}-->
+                <!-- ▼<!--{$FooterBottomNaviItem.bloc_name}--> -->
+                <!--{if $FooterBottomNaviItem.php_path != ""}-->
+                    <!--{include_php file=$FooterBottomNaviItem.php_path}-->
+                <!--{else}-->
+                    <!--{include file=$FooterBottomNaviItem.tpl_path}-->
+                <!--{/if}-->
+                <!-- ▲<!--{$FooterBottomNaviItem.bloc_name}--> -->
+            <!--{/foreach}-->
+            <!--{* ▲上ナビ *}-->
+        </div>
+    <!--{/if}-->
+<!--{* ▲FooterBottom COLUMN*}-->
 
 </body>
 

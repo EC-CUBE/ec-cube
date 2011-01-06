@@ -60,7 +60,21 @@
     });
 //]]>
 </script>
-
+<!--{* ▼Head COLUMN*}-->
+  <!--{if $arrPageLayout.HeadNavi|@count > 0}-->
+    <!--{* ▼上ナビ *}-->
+      <!--{foreach key=HeadNaviKey item=HeadNaviItem from=$arrPageLayout.HeadNavi}-->
+        <!--{* ▼<!--{$HeadNaviItem.bloc_name}--> ここから*}-->
+          <!--{if $HeadNaviItem.php_path != ""}-->
+            <!--{include_php file=$HeadNaviItem.php_path}-->
+          <!--{else}-->
+            <!--{include file=$HeadNaviItem.tpl_path}-->
+          <!--{/if}-->
+        <!--{* ▲<!--{$HeadNaviItem.bloc_name}--> ここまで*}-->
+      <!--{/foreach}-->
+    <!--{* ▲上ナビ *}-->
+  <!--{/if}-->
+<!--{* ▲Head COLUMN*}-->
 </head>
 
 <!-- ▼BODY部 スタート -->

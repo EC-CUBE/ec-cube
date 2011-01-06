@@ -19,37 +19,3 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
-
-<div id="topbox">
-<!--{* ▼ロゴ ここから *}-->
-<div id="header">
-<h1>
-    <a href="<!--{$smarty.const.SMARTPHONE_HTTPS_URL}-->">
-      <em><!--{$arrSiteInfo.shop_name|h}-->/<!--{$tpl_title|h}--></em></a>
-  </h1>
-</div>
-<!--{* ▲ロゴ ここまで *}-->
-
-<!--{* ヘッダメニュー *}-->
-<div id="headmenu">
-
-<!--{* 検索 *}-->
-<div id="searchbar">
-<form method="get" action="<!--{$smarty.const.SMARTPHONE_HTTP_URL}-->products/list.php">
-<input type="text" name="name" maxlength="50" value="<!--{$smarty.get.name|h}-->" placeholder="商品検索" ><input type="submit" name="search" value="検索">
-</form>
-<!--{* searchmenu *}--></div>
-<!--{* headmenu *}--></div>
-<!--{* topbox *}--></div>
-
-<!--{* 新着情報 *}-->
-<!--{include_php file=`$smarty.const.SMARTPHONE_HTML_REALDIR`/frontparts/bloc/news.php}-->
-
-<!--{* ログイン *}-->
-<!--{include_php file=`$smarty.const.SMARTPHONE_HTML_REALDIR`/frontparts/bloc/login.php}-->
-
-<!--{* おすすめ商品 *}-->
-<!--{include_php file=`$smarty.const.SMARTPHONE_HTML_REALDIR`/frontparts/bloc/best5.php}-->
-
-<!-- ▼メニュー ここから -->
-<!--{include_php file=`$smarty.const.SMARTPHONE_HTML_REALDIR`/frontparts/bloc/category.php}-->
