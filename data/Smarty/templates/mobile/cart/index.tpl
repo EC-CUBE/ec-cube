@@ -27,48 +27,50 @@
 <!--{if $tpl_message != ""}-->
 	<!--{$tpl_message}--><br>
 <!--{/if}-->
-<!--{if count($arrProductsClass) > 0}-->
-<form name="form1" id="form1" method="post" action="?"  utn>
+<!--{if count($cartItems) > 0}-->
+<!--{foreach from=$cartKeys item=key}-->
+<form name="form<!--{$key}-->" id="form<!--{$key}-->" method="post" action="?"  utn>
 	<input type="hidden" name="mode" value="confirm">
 	<input type="hidden" name="cart_no" value="">
+	<input type="hidden" name="cartKey" value="<!--{$key}-->">
 	<!--ご注文内容ここから-->
 	<hr>
-	<!--{section name=cnt loop=$arrProductsClass}-->
-		<!--{* 商品名 *}--><!--{$arrProductsClass[cnt].name|h}--><br>
+    <!--{foreach from=$cartItems[$key] item=item}-->
+		<!--{* 商品名 *}--><!--{$item.productsClass.name|h}--><br>
+        <!--{* 規格名1 *}--><!--{if $item.productsClass.classcategory_name1 != ""}--><!--{$item.productsClass.class_name1}-->：<!--{$item.productsClass.classcategory_name1}--><br><!--{/if}-->
+        <!--{* 規格名2 *}--><!--{if $item.productsClass.classcategory_name2 != ""}--><!--{$item.productsClass.class_name2}-->：<!--{$item.productsClass.classcategory_name2}--><br><!--{/if}-->
 		<!--{* 販売価格 *}-->
-		\<!--{$arrProductsClass[cnt].price02|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
-		× <!--{$arrProductsClass[cnt].quantity}--><br>
-		<!--{* 詳細 *}-->
-		<!--{if $arrProductsClass[cnt].classcategory_name1 != ""}-->
-			<!--{$arrProductsClass[cnt].class_name1}-->:<!--{$arrProductsClass[cnt].classcategory_name1}--><br>
-		<!--{/if}-->
-		<!--{if $arrProductsClass[cnt].classcategory_name2 != ""}-->
-			<!--{$arrProductsClass[cnt].class_name2}-->:<!--{$arrProductsClass[cnt].classcategory_name2}--><br>
-		<!--{/if}-->
+		&yen;<!--{$item.productsClass.price02|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
+		× <!--{$item.quantity}--><br>
 		<br>
 		<!--{* 数量 *}-->
-		数量:<!--{$arrProductsClass[cnt].quantity}-->
-		<a href="?mode=up&amp;cart_no=<!--{$arrProductsClass[cnt].cart_no}-->">+</a>
-		<a href="?mode=down&amp;cart_no=<!--{$arrProductsClass[cnt].cart_no}-->">-</a>
-		<a href="?mode=delete&amp;cart_no=<!--{$arrProductsClass[cnt].cart_no}-->">削除</a><br>
+		数量:<!--{$item.quantity}-->
+		<a href="?mode=up&amp;cart_no=<!--{$item.cart_no}-->&amp;cartKey=<!--{$key}-->">+</a>
+		<a href="?mode=down&amp;cart_no=<!--{$item.cart_no}-->&amp;cartKey=<!--{$key}-->">-</a>
+		<a href="?mode=delete&amp;cart_no=<!--{$item.cart_no}-->&amp;cartKey=<!--{$key}-->">削除</a><br>
 		<!--{* 合計 *}-->
-		小計:<!--{$arrProductsClass[cnt].total_inctax|number_format}-->円<br>
-		<div align="right"><a href="<!--{$smarty.const.MOBILE_P_DETAIL_URL_PATH}--><!--{$arrProductsClass[cnt].product_id|u}-->">商品詳細へ→</a></div>
+		小計:<!--{$item.total_inctax|number_format}-->円<br>
+		<div align="right"><a href="<!--{$smarty.const.MOBILE_P_DETAIL_URL_PATH}--><!--{$item.productsClass.product_id|u}-->">商品詳細へ→</a></div>
 		<HR>
-	<!--{/section}-->
-	商品合計:<!--{$tpl_total_inctax|number_format}-->円<br>
-	合計:<!--{$arrData.total-$arrData.deliv_fee|number_format}-->円<br>
-	<!--{if $arrData.birth_point > 0}-->
+	<!--{/foreach}-->
+	商品合計:<!--{$tpl_total_inctax[$key]|number_format}-->円<br>
+	合計:<!--{$arrData[$key].total-$arrData[$key].deliv_fee|number_format}-->円<br>
+	<!--{if $smarty.const.USE_POINT !== false}-->
+        <br>
+    <!--{if $arrData[$key].birth_point > 0}-->
 		お誕生月ﾎﾟｲﾝﾄ<br>
-		<!--{$arrData.birth_point|number_format}-->pt<br>
+		<!--{$arrData[$key].birth_point|number_format}-->pt<br>
+	<!--{/if}-->
+		今回加算ﾎﾟｲﾝﾄ<br>
+        <!--{$arrData[$key].add_point|number_format}-->pt<br>
 	<!--{/if}-->
 	<br>
 	<center><input type="submit" value="注文する"></center>
 </form>
-<form method="post" action="?">
-	<input type="hidden" name="mode" value="continue">
-	<center><input type="submit" value="お買物を続ける"></center>
-</form>
+<!--{/foreach}-->
+<!--{if $tpl_prev_url != ""}-->
+    <a href="<!--{$tpl_prev_url}-->">[emoji:69]お買物を続ける</a>
+<!--{/if}-->
 <!--{else}-->
 	※現在ｶｰﾄ内に商品はございません｡<br>
 <!--{/if}-->
