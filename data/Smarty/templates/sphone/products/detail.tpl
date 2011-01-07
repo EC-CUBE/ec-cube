@@ -175,15 +175,15 @@ $(document).ready(function() {
                 <!--{if $arrProduct.main_large_image|strlen >= 1}-->
                     href="<!--{$smarty.const.IMAGE_SAVE_URL_PATH}--><!--{$arrProduct.main_large_image|h}-->"
                     class="expansion"
-                    onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_expansion_on.gif','expansion01');"
-                    onmouseout="chgImg('<!--{$TPL_DIR}-->img/products/b_expansion.gif','expansion01');"
+                    onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_expansion_on.gif','expansion01');"
+                    onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_expansion.gif','expansion01');"
                     target="_blank"
                 <!--{/if}-->
             >
                 <img src="<!--{$arrFile[$key].filepath|h}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" alt="<!--{$arrProduct.name|h}-->" class="picture" /><br />
                 <!--★拡大する★-->
                 <!--{if $arrProduct.main_large_image|strlen >= 1}-->
-                    <img src="<!--{$TPL_DIR}-->img/products/b_expansion.gif" width="85" height="13" alt="画像を拡大する" name="expansion01" id="expansion01" />
+                    <img src="<!--{$TPL_DIR}-->img/button/btn_expansion.gif" width="85" height="13" alt="画像を拡大する" name="expansion01" id="expansion01" />
                 <!--{/if}-->
             </a>
         </div>
