@@ -8,11 +8,11 @@ create table dtb_module_update_logs(
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_date timestamp NOT NULL,
     PRIMARY KEY (log_id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_ownersstore_settings (
     public_key text
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_kiyaku (
     kiyaku_id int  NOT NULL,
@@ -24,7 +24,7 @@ CREATE TABLE dtb_kiyaku (
     update_date timestamp NOT NULL,
     del_flg smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (kiyaku_id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_holiday (
     holiday_id int  NOT NULL,
@@ -37,7 +37,7 @@ CREATE TABLE dtb_holiday (
     update_date timestamp NOT NULL,
     del_flg smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (holiday_id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE mtb_zip (
     code text,
@@ -55,7 +55,7 @@ CREATE TABLE mtb_zip (
     flg4 text,
     flg5 text,
     flg6 text
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_bat_order_daily_age (
     order_count numeric NOT NULL DEFAULT 0,
@@ -66,7 +66,7 @@ CREATE TABLE dtb_bat_order_daily_age (
     member smallint,
     order_date datetime,
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_update (
     module_id int NOT NULL,
@@ -84,7 +84,7 @@ CREATE TABLE dtb_update (
     update_date timestamp NOT NULL,
     release_date datetime NOT NULL,
     PRIMARY KEY (module_id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_baseinfo (
     company_name text,
@@ -151,7 +151,7 @@ CREATE TABLE dtb_baseinfo (
     longitude text,
     downloadable_days numeric DEFAULT 30,
     downloadable_days_unlimited smallint
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_deliv (
     deliv_id int  NOT NULL,
@@ -166,14 +166,14 @@ CREATE TABLE dtb_deliv (
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_date timestamp NOT NULL,
     PRIMARY KEY (deliv_id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_delivtime (
     deliv_id int NOT NULL,
     time_id int NOT NULL,
     deliv_time text NOT NULL,
     PRIMARY KEY (deliv_id, time_id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_delivfee (
     deliv_id int NOT NULL,
@@ -181,7 +181,7 @@ CREATE TABLE dtb_delivfee (
     fee numeric NOT NULL,
     pref smallint,
     PRIMARY KEY (deliv_id, fee_id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_payment (
     payment_id int  NOT NULL,
@@ -214,14 +214,14 @@ CREATE TABLE dtb_payment (
     memo09 text,
     memo10 text,
     PRIMARY KEY (payment_id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_payment_options (
     product_class_id int NOT NULL,
     payment_id int NOT NULL,
     rank int,
     PRIMARY KEY(product_class_id, payment_id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_mailtemplate (
     template_id int NOT NULL,
@@ -232,7 +232,7 @@ CREATE TABLE dtb_mailtemplate (
     del_flg smallint NOT NULL DEFAULT 0,
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_date timestamp NOT NULL
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_send_history (
     send_id int  NOT NULL,
@@ -249,7 +249,7 @@ CREATE TABLE dtb_send_history (
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_date timestamp NOT NULL,
     PRIMARY KEY (send_id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_send_customer (
     customer_id int,
@@ -258,7 +258,7 @@ CREATE TABLE dtb_send_customer (
     name text,
     send_flag smallint,
     PRIMARY KEY (send_id, customer_id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_products (
     product_id int  NOT NULL,
@@ -307,7 +307,7 @@ CREATE TABLE dtb_products (
     update_date timestamp NOT NULL,
     deliv_date_id int,
     PRIMARY KEY (product_id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_products_class (
     product_class_id int  NOT NULL,
@@ -329,7 +329,7 @@ CREATE TABLE dtb_products_class (
     down_realfilename text,
     del_flg smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (product_class_id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_class (
     class_id int  NOT NULL,
@@ -340,7 +340,7 @@ CREATE TABLE dtb_class (
     update_date timestamp NOT NULL,
     del_flg smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (class_id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_classcategory (
     classcategory_id int  NOT NULL,
@@ -352,7 +352,7 @@ CREATE TABLE dtb_classcategory (
     update_date timestamp NOT NULL,
     del_flg smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (classcategory_id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_class_combination (
     class_combination_id int NOT NULL,
@@ -360,7 +360,7 @@ CREATE TABLE dtb_class_combination (
     classcategory_id int NOT NULL,
     level int,
     PRIMARY KEY(class_combination_id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_category (
     category_id int  NOT NULL,
@@ -373,14 +373,14 @@ CREATE TABLE dtb_category (
     update_date timestamp NOT NULL,
     del_flg smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (category_id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_product_categories (
     product_id int NOT NULL,
     category_id int NOT NULL,
     rank int NOT NULL,
     PRIMARY KEY(product_id, category_id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_product_status (
     product_status_id smallint NOT NULL,
@@ -390,7 +390,7 @@ CREATE TABLE dtb_product_status (
     update_date timestamp NOT NULL,
     del_flg smallint NOT NULL DEFAULT 0,
     PRIMARY KEY(product_status_id, product_id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_bat_order_daily (
     total_order numeric NOT NULL DEFAULT 0,
@@ -414,7 +414,7 @@ CREATE TABLE dtb_bat_order_daily (
     key_month text NOT NULL,
     key_year text NOT NULL,
     key_wday text NOT NULL
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_bat_order_daily_hour (
     total_order numeric NOT NULL DEFAULT 0,
@@ -431,7 +431,7 @@ CREATE TABLE dtb_bat_order_daily_hour (
     hour smallint NOT NULL DEFAULT 0,
     order_date datetime,
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_recommend_products (
     product_id int NOT NULL,
@@ -442,7 +442,7 @@ CREATE TABLE dtb_recommend_products (
     creator_id int NOT NULL,
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_date timestamp NOT NULL
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_review (
     review_id int  NOT NULL,
@@ -460,26 +460,26 @@ CREATE TABLE dtb_review (
     update_date timestamp NOT NULL,
     del_flg smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (review_id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_customer_favorite_products (
     customer_id int NOT NULL,
     product_id int NOT NULL,
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_date timestamp NOT NULL
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_category_count (
     category_id int NOT NULL,
     product_count int NOT NULL,
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_category_total_count (
     category_id int NOT NULL,
     product_count int,
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_news (
     news_id int  NOT NULL,
@@ -495,7 +495,7 @@ CREATE TABLE dtb_news (
     update_date timestamp NOT NULL,
     del_flg smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (news_id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_best_products (
     best_id int  NOT NULL,
@@ -509,7 +509,7 @@ CREATE TABLE dtb_best_products (
     update_date timestamp NOT NULL,
     del_flg smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (best_id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_mail_history (
     send_id int  NOT NULL,
@@ -520,7 +520,7 @@ CREATE TABLE dtb_mail_history (
     subject text,
     mail_body text,
     PRIMARY KEY (send_id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_customer (
     customer_id int  NOT NULL,
@@ -561,7 +561,7 @@ CREATE TABLE dtb_customer (
     mobile_phone_id text,
     mailmaga_flg smallint,
     PRIMARY KEY (customer_id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_order (
     order_id int  NOT NULL,
@@ -638,7 +638,7 @@ CREATE TABLE dtb_order (
     memo09 text,
     memo10 text,
     PRIMARY KEY (order_id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_order_temp (
     order_temp_id text NOT NULL,
@@ -716,7 +716,7 @@ CREATE TABLE dtb_order_temp (
     memo09 text,
     memo10 text,
     session text
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_other_deliv (
     other_deliv_id int  NOT NULL,
@@ -734,7 +734,7 @@ CREATE TABLE dtb_other_deliv (
     tel02 text,
     tel03 text,
     PRIMARY KEY (other_deliv_id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_order_detail (
     order_id int NOT NULL,
@@ -747,7 +747,7 @@ CREATE TABLE dtb_order_detail (
     price numeric,
     quantity numeric,
     point_rate numeric
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_member (
     member_id int  NOT NULL,
@@ -764,14 +764,14 @@ CREATE TABLE dtb_member (
     update_date timestamp NOT NULL,
     login_date datetime,
     PRIMARY KEY (member_id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_bat_relate_products (
     product_id int,
     relate_product_id int,
     customer_id int,
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_pagelayout (
     device_type_id int NOT NULL,
@@ -791,7 +791,7 @@ CREATE TABLE dtb_pagelayout (
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_date timestamp NOT NULL,
     PRIMARY KEY (device_type_id, page_id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_bloc (
     device_type_id int NOT NULL,
@@ -805,7 +805,7 @@ CREATE TABLE dtb_bloc (
     deletable_flg smallint NOT NULL DEFAULT 1,
     PRIMARY KEY (device_type_id, bloc_id),
     UNIQUE (device_type_id, filename)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_blocposition (
     device_type_id int NOT NULL,
@@ -815,7 +815,7 @@ CREATE TABLE dtb_blocposition (
     bloc_row int,
     anywhere smallint DEFAULT 0 NOT NULL,
     PRIMARY KEY (device_type_id, page_id, target_id, bloc_id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_csv (
     no int,
@@ -831,7 +831,7 @@ CREATE TABLE dtb_csv (
     size_const_type text,
     error_check_types text,
     PRIMARY KEY (no)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_csv_sql (
     sql_id int,
@@ -840,7 +840,7 @@ CREATE TABLE dtb_csv_sql (
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_date timestamp NOT NULL,
     PRIMARY KEY (sql_id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_templates (
     template_code varchar(50) NOT NULL,
@@ -848,7 +848,7 @@ CREATE TABLE dtb_templates (
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_date timestamp NOT NULL,
     PRIMARY KEY (template_code)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_table_comment (
     id int,
@@ -856,7 +856,7 @@ CREATE TABLE dtb_table_comment (
     column_name text,
     description text,
     PRIMARY KEY (id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_maker (
     maker_id int NOT NULL,
@@ -867,286 +867,286 @@ CREATE TABLE dtb_maker (
     update_date timestamp NOT NULL,
     del_flg smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (maker_id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_maker_count (
     maker_id int NOT NULL,
     product_count int NOT NULL,
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE mtb_pref (
     id smallint NOT NULL,
     name text,
     rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE mtb_permission (
     id text,
     name text,
     rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id(32))
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE mtb_disable_logout (
     id smallint,
     name text,
     rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE mtb_authority (
     id smallint,
     name text,
     rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE mtb_work (
     id smallint,
     name text,
     rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE mtb_disp (
     id smallint,
     name text,
     rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE mtb_class (
     id smallint,
     name text,
     rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE mtb_status (
     id smallint,
     name text,
     rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE mtb_status_image (
     id smallint,
     name text,
     rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE mtb_allowed_tag (
     id smallint,
     name text,
     rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE mtb_page_max (
     id smallint,
     name text,
     rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE mtb_magazine_type (
     id smallint,
     name text,
     rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE mtb_mail_magazine_type (
     id smallint,
     name text,
     rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE mtb_recommend (
     id smallint,
     name text,
     rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE mtb_taxrule (
     id smallint,
     name text,
     rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE mtb_mail_template (
     id smallint,
     name text,
     rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE mtb_mail_tpl_path (
     id smallint,
     name text,
     rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE mtb_job (
     id smallint,
     name text,
     rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE mtb_reminder (
     id smallint,
     name text,
     rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE mtb_sex (
     id smallint,
     name text,
     rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE mtb_page_rows (
     id smallint,
     name text,
     rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE mtb_mail_type (
     id smallint,
     name text,
     rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE mtb_order_status (
     id smallint,
     name text,
     rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE mtb_product_status_color (
     id smallint,
     name text,
     rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE mtb_order_status_color (
     id smallint,
     name text,
     rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE mtb_wday (
     id smallint,
     name text,
     rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE mtb_delivery_date (
     id smallint,
     name text,
     rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE mtb_product_list_max (
     id smallint,
     name text,
     rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE mtb_convenience (
     id smallint,
     name text,
     rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE mtb_conveni_message (
     id smallint,
     name text,
     rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE mtb_db (
     id smallint,
     name text,
     rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE mtb_target (
     id smallint,
     name text,
     rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE mtb_review_deny_url (
     id smallint,
     name text,
     rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE mtb_track_back_status (
     id smallint,
     name text,
     rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE mtb_site_control_track_back (
     id smallint,
     name text,
     rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE mtb_site_control_affiliate (
     id smallint,
     name text,
     rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE mtb_mobile_domain (
     id smallint,
     name text,
     rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE mtb_ownersstore_err (
     id smallint,
     name text,
     rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE mtb_ownersstore_ips (
     id smallint,
     name text,
     rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE mtb_constants (
     id text,
@@ -1154,21 +1154,21 @@ CREATE TABLE mtb_constants (
     rank smallint NOT NULL DEFAULT 0,
     remarks text,
     PRIMARY KEY (id(64))
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE mtb_product_type (
     id smallint,
     name text,
     rank smallint NOT NULL,
     PRIMARY KEY (id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE mtb_device_type (
     id smallint,
     name text,
     rank smallint NOT NULL,
     PRIMARY KEY (id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_mobile_ext_session_id (
     session_id text NOT NULL,
@@ -1197,7 +1197,7 @@ CREATE TABLE dtb_module (
     del_flg smallint NOT NULL DEFAULT 0,
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_date timestamp NOT NULL
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_session (
     sess_id varchar(50) NOT NULL,
@@ -1205,7 +1205,7 @@ CREATE TABLE dtb_session (
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_date timestamp NOT NULL,
     PRIMARY KEY (sess_id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_site_control (
     control_id int NOT NULL,
@@ -1217,7 +1217,7 @@ CREATE TABLE dtb_site_control (
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_date timestamp NOT NULL,
     PRIMARY KEY (control_id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_trackback (
     trackback_id int  NOT NULL,
@@ -1231,14 +1231,14 @@ CREATE TABLE dtb_trackback (
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_date timestamp NOT NULL,
     PRIMARY KEY (trackback_id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_bkup (
     bkup_name varchar(50),
     bkup_memo text,
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (bkup_name)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE dtb_plugin (
     plugin_id int NOT NULL,
@@ -1249,7 +1249,7 @@ CREATE TABLE dtb_plugin (
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_date timestamp NOT NULL,
     PRIMARY KEY (plugin_id)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE INDEX dtb_customer_mobile_phone_id_key ON dtb_customer (mobile_phone_id(64));
 CREATE INDEX dtb_products_class_product_id_key ON dtb_products_class(product_id);
@@ -1269,4 +1269,4 @@ CREATE TABLE dtb_index_list (
     recommend_flg smallint NOT NULL DEFAULT 0,
     recommend_comment text,
     PRIMARY KEY (table_name, column_name)
-) TYPE=InnoDB;
+) ENGINE=InnoDB;

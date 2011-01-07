@@ -587,6 +587,26 @@ class SC_CheckError {
         }
     }
 
+    /*　IPアドレスの判定　*/
+    //  value[0] = 項目名 value[1] = 判定対象IPアドレス文字列
+    function IP_CHECK( $value ){
+        if(isset($this->arrErr[$value[1]])) {
+            return;
+        }
+        //改行コードが含まれている場合には配列に変換
+        $params = str_replace("\r","",$this->arrParam[$value[1]]);
+        if(strpos("\n",$params) === false){
+            $params .= "\n";
+        }
+        $params = explode("\n",$params);
+        foreach($params as $param){
+            $param = trim($param);
+            if(long2ip(ip2long($param)) != trim($param) and !empty($param)) {
+                $this->arrErr[$value[1]] = "※ " . $value[0] . "に正しい形式のIPアドレスを入力してください。<br />";
+            }
+        }
+    }
+
     /*　拡張子の判定　*/
     // value[0] = 項目名 value[1] = 判定対象 value[2]=array(拡張子)
     function FILE_EXT_CHECK( $value ) {			// 受け取りがない場合エラーを返す

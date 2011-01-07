@@ -31,6 +31,7 @@ require_once HTML_REALDIR . HTML2DATA_DIR . 'require_base.php';
 
 $INSTALL_DIR = realpath(dirname( __FILE__));
 require_once(DATA_REALDIR . "module/Request.php");
+require_once(DATA_REALDIR . "install.php");
 
 define("INSTALL_LOG", "./temp/install.log");
 ini_set("max_execution_time", 300);
@@ -111,7 +112,12 @@ case 'step2':
     if(count($objPage->arrErr) == 0) {
         // 設定ファイルの生成
         lfMakeConfigFile();
-        $objPage = lfDispStep3($objPage);
+        if(!renameAdminDir($objWebParam->getValue('admin_dir'))){
+            $objPage->arrErr["all"] .= "管理者ディレクトリのリネームに失敗しました。権限を確認してください。";
+            $objPage = lfDispStep2($objPage);
+        }else{
+            $objPage = lfDispStep3($objPage);
+        }
     } else {
         $objPage = lfDispStep2($objPage);
     }
@@ -398,6 +404,7 @@ function lfDispStep0($objPage) {
         DATA_REALDIR . "logs/",
         DATA_REALDIR . "downloads/",
         DATA_REALDIR . "upload/",
+        HTML_REALDIR . "admin/"
     );
 
     $mess = "";
@@ -645,11 +652,19 @@ function lfInitWebParam($objWebParam) {
             $admin_mail = $arrRet[0]['email01'];
         }
     }
+    
+    //管理画面のディレクトリ名を取得（再インストール時）
+    if(defined("ADMIN_DIR")){
+        $admin_dir = ADMIN_DIR;
+    }
 
     $objWebParam->addParam("店名", "shop_name", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $shop_name);
     $objWebParam->addParam("管理者：メールアドレス", "admin_mail", MTEXT_LEN, "", array("EXIST_CHECK","EMAIL_CHECK","EMAIL_CHAR_CHECK","MAX_LENGTH_CHECK"), $admin_mail);
     $objWebParam->addParam("管理者：ログインID", "login_id", ID_MAX_LEN, "", array("EXIST_CHECK","SPTAB_CHECK", "ALNUM_CHECK"));
     $objWebParam->addParam("管理者：パスワード", "login_pass", ID_MAX_LEN, "", array("EXIST_CHECK","SPTAB_CHECK", "ALNUM_CHECK"));
+    $objWebParam->addParam("管理画面：ディレクトリ", "admin_dir", ID_MAX_LEN, "a", array("EXIST_CHECK","SPTAB_CHECK", "ALNUM_CHECK"),$admin_dir);
+    $objWebParam->addParam("管理画面：SSL制限", "admin_force_ssl", 1, "n", array("SPTAB_CHECK", "NUM_CHECK","MAX_LENGTH_CHECK"));
+    $objWebParam->addParam("管理画面：IP制限", "admin_allow_hosts", LTEXT_LEN, "an", array("IP_CHECK","MAX_LENGTH_CHECK"));
     $objWebParam->addParam("URL(通常)", "normal_url", MTEXT_LEN, "", array("EXIST_CHECK","URL_CHECK","MAX_LENGTH_CHECK"), $normal_url);
     $objWebParam->addParam("URL(セキュア)", "secure_url", MTEXT_LEN, "", array("EXIST_CHECK","URL_CHECK","MAX_LENGTH_CHECK"), $secure_url);
     $objWebParam->addParam("ドメイン", "domain", MTEXT_LEN, "", array("MAX_LENGTH_CHECK"));
@@ -720,7 +735,7 @@ function lfCheckWebError($objFormParam) {
     $objErr->doFunc(array("管理者：ログインID",'login_id',ID_MIN_LEN , ID_MAX_LEN) ,array("SPTAB_CHECK" ,"NUM_RANGE_CHECK"));
 
     // パスワードのチェック
-    $objErr->doFunc( array("管理者：パスワード",'login_pass',ID_MIN_LEN ,ID_MAX_LEN ) ,array("SPTAB_CHECK" ,"NUM_RANGE_CHECK" ));
+    $objErr->doFunc( array("管理者：パスワード",'login_pass',PASSWORD_LEN1 ,PASSWORD_LEN2 ) ,array("SPTAB_CHECK" ,"NUM_RANGE_CHECK" ));
 
     return $objErr->arrErr;
 }
@@ -901,7 +916,28 @@ function lfMakeConfigFile() {
     $url_dir = ereg_replace("^https?://[a-zA-Z0-9_:~=&\?\.\-]+", "", $normal_url);
 
     $filepath = DATA_REALDIR . "install.php";
-
+    
+    //管理画面SSL制限
+    $force_ssl = FALSE;
+    if($objWebParam->getValue('admin_force_ssl') == 1){
+        $force_ssl = TRUE;
+    }
+    //管理画面IP制限
+    $allow_hosts = array();
+    $hosts = $objWebParam->getValue('admin_allow_hosts');
+    if(!empty($hosts)){
+        $hosts = str_replace("\r","",$hosts);
+        if(strpos("\n",$hosts) === false){
+            $hosts .= "\n";
+        }
+        $hosts = explode("\n",$hosts);
+        foreach($hosts as $key=>$host){
+            $host = trim($host);
+            if(strlen($host) >= 8) {
+                $allow_hosts[] = $host;
+            }
+        }
+    }
     $config_data =
     "<?php\n".
     "    define ('ECCUBE_INSTALL', 'ON');\n" .
@@ -915,7 +951,12 @@ function lfMakeConfigFile() {
     "    define ('DB_SERVER', '" . $objDBParam->getValue('db_server') . "');\n" .
     "    define ('DB_NAME', '" . $objDBParam->getValue('db_name') . "');\n" .
     "    define ('DB_PORT', '" . $objDBParam->getValue('db_port') .  "');\n" .
-    "?>";
+    "    define ('ADMIN_DIR', '" . $objWebParam->getValue('admin_dir') .  "/');\n" .
+    "    define ('ADMIN_FORCE_SSL', " . $force_ssl .  ");\n";
+    if(count($allow_hosts) > 0){
+        $config_data .= "    define ('ADMIN_ALLOW_HOSTS', '".serialize($allow_hosts)."');\n";
+    }
+    $config_data .= "?>";
 
     if($fp = fopen($filepath,"w")) {
         fwrite($fp, $config_data);
@@ -986,5 +1027,25 @@ function getSequences() {
                  array("dtb_site_control", "control_id"),
                  array("dtb_table_comment", "id"),
                  array("dtb_trackback", "trackback_id"));
+}
+
+
+/**
+ * 管理画面のディレクトリ名の変更
+ *
+ * @param string 設定する管理画面のディレクトリ名
+ */
+function renameAdminDir($admin_dir){
+    $old_dir = "admin/";
+    if(defined("ADMIN_DIR")){
+        $old_dir = ADMIN_DIR;
+    }
+    if(!rename(HTML_REALDIR.$old_dir,HTML_REALDIR.$admin_dir)){
+        return FALSE;
+    }
+    if(!rename(USER_TEMPLATE_REALDIR.$old_dir,USER_TEMPLATE_REALDIR.$admin_dir)){
+        return FALSE;
+    }
+    return TRUE;
 }
 ?>

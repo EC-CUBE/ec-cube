@@ -43,6 +43,22 @@ class LC_Page_Admin extends LC_Page {
      */
     function init() {
         $this->template = MAIN_FRAME;
+        
+        //IP制限チェック
+        if(defined("ADMIN_ALLOW_HOSTS")){
+            $allow_hosts = unserialize(ADMIN_ALLOW_HOSTS);
+            if(array_search($_SERVER["REMOTE_ADDR"],$allow_hosts) === FALSE){
+                SC_Response::sendError("403");
+                exit;
+            }
+        }
+        
+        //SSL制限チェック
+        if(ADMIN_FORCE_SSL == TRUE){
+            if(empty($_SERVER['HTTPS']) AND $_SERVER['SERVER_PORT'] != 443){
+                SC_Response::sendRedirect($SERVER["REQUEST_URI"], $_GET,FALSE, TRUE);
+            }
+        }
 
         // ディスプレイクラス生成
         $this->objDisplay = new SC_Display();

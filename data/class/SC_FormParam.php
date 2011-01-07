@@ -189,6 +189,7 @@ class SC_FormParam {
                 case 'GRAPH_CHECK':
                 case 'KANA_CHECK':
                 case 'URL_CHECK':
+                case 'IP_CHECK':
                 case 'SPTAB_CHECK':
                 case 'ZERO_CHECK':
                 case 'ALPHA_CHECK':
