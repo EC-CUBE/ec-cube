@@ -56,7 +56,7 @@ class SC_Initial {
         $this->defineDirectoryIndex();
         $this->defineErrorType();
         $this->defineConstants();
-        $this->mbstringInit();
+        $this->phpconfigInit();
         $this->createCacheDir();
         $this->stripslashesDeepGpc();
         $this->resetSuperglobalsRequest();
@@ -132,7 +132,7 @@ class SC_Initial {
      * @access protected
      * @return void
      */
-    function mbstringInit() {
+    function phpconfigInit() {
         ini_set("mbstring.http_input", CHAR_CODE);
         ini_set("mbstring.http_output", CHAR_CODE);
         ini_set("auto_detect_line_endings", 1);
@@ -149,6 +149,8 @@ class SC_Initial {
         // TODO 上の「ini_set("mbstring.internal_encoding", CHAR_CODE);」を削除できないか検討
         // TODO .htaccess の mbstring.internal_encoding を削除できないか検討
 
+        ini_set("arg_separator.output","&");
+        
         //ロケールを明示的に設定
         setlocale(LC_ALL, LOCALE);
     }
