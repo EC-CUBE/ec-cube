@@ -113,7 +113,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin {
                 default:
                     break;
                 }
-                $this->tpl_onload = "fnCheckLimit('downloadable_days', 'downloadable_days_unlimited', '" . DISABLED_RGB . "'); window.alert('SHOPマスタの登録が完了しました。');";
+                $this->tpl_onload = "fnCheckLimit('downloadable_days', 'downloadable_days_unlimited', '" . DISABLED_RGB . "'); window.alert('SHOPマスタの登録が完了しました。管理画面のURLを変更した場合は、新しいURLにアクセスしてください。');";
             }
             if( empty($this->arrForm['regular_holiday_ids']) ) {
                 $this->arrSel = array();
@@ -128,6 +128,15 @@ class LC_Page_Admin_Basis extends LC_Page_Admin {
 
             $regular_holiday_ids = explode('|', $this->arrForm['regular_holiday_ids']);
             $this->arrForm['regular_holiday_ids'] = $regular_holiday_ids;
+            $admin_dir = str_replace("/","",ADMIN_DIR);
+            $this->arrForm += array("admin_dir"=>$admin_dir);
+            $this->arrForm += array("admin_force_ssl"=>ADMIN_FORCE_SSL);
+            if(defined("ADMIN_ALLOW_HOSTS")){
+                $allow_hosts = unserialize(ADMIN_ALLOW_HOSTS);
+                $this->arrForm += array("admin_allow_hosts"=>implode("\n",$allow_hosts));
+            }else{
+                $this->arrForm += array("admin_allow_hosts"=>"");
+            }
             $this->tpl_onload = "fnCheckLimit('downloadable_days', 'downloadable_days_unlimited', '" . DISABLED_RGB . "');";
         }
     }
@@ -191,6 +200,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin {
             }
         }
         $sqlval['update_date'] = 'Now()';
+        $this->lfUpdateAdminData($array);
         // UPDATEの実行
         $ret = $objQuery->update("dtb_baseinfo", $sqlval);
     }
@@ -202,8 +212,74 @@ class LC_Page_Admin_Basis extends LC_Page_Admin {
             $sqlval[$val] = $array[$val];
         }
         $sqlval['update_date'] = 'Now()';
+        $this->lfUpdateAdminData($array);
         // INSERTの実行
         $ret = $objQuery->insert("dtb_baseinfo", $sqlval);
+    }
+    
+    function lfUpdateAdminData($array){
+        $admin_dir = trim($array['admin_dir'])."/";
+        $admin_force_ssl = "FALSE";
+        if($array['admin_force_ssl'] == 1){
+            $admin_force_ssl = "TRUE";
+        }
+        $admin_allow_hosts = explode("\n",$array['admin_allow_hosts']);
+        foreach($admin_allow_hosts as $key=>$host){
+            $host = trim($host);
+            if(strlen($host) >= 8){
+                $admin_allow_hosts[$key] = $host;
+            }else{
+                unset($admin_allow_hosts[$key]);
+            }
+        }
+        $admin_allow_hosts = serialize($admin_allow_hosts);
+        //権限チェック 
+        if(!is_writable(DATA_REALDIR . "install.php")){
+            $this->arrErr["admin_force_ssl"] = DATA_REALDIR . "install.phpを変更する権限がありません。";
+        }
+        if(count($this->arrErr) > 0){
+            return false;
+        }
+        //install.phpの書き換え
+        $installData = file(DATA_REALDIR."install.php",FILE_IGNORE_NEW_LINES);
+        $diff = 0;
+        foreach($installData as $key=>$line){
+            if(strpos($line,"ADMIN_DIR") !== false and ADMIN_DIR != $admin_dir){
+                if(!is_writable(HTML_REALDIR . ADMIN_DIR)){
+                    $this->arrErr["admin_dir"] = URL_PATH.ADMIN_DIR."のディレクトリ名を変更する権限がありません。";
+                }
+                if(!is_writable(USER_TEMPLATE_REALDIR . ADMIN_DIR)){
+                    $this->arrErr["admin_dir"] = USER_TEMPLATE_REALDIR . ADMIN_DIR."のディレクトリ名を変更する権限がありません。";        
+                }
+                if(count($this->arrErr) > 0 ){
+                    return false;
+                }else{
+                    $installData[$key] = 'define("ADMIN_DIR","'.$admin_dir.'");';
+                    //管理画面ディレクトリのリネーム
+                    rename(HTML_REALDIR.ADMIN_DIR,HTML_REALDIR.$admin_dir);
+                    rename(USER_TEMPLATE_REALDIR.ADMIN_DIR,USER_TEMPLATE_REALDIR.$admin_dir);
+                    $diff ++;
+                }
+            }
+            
+            if(strpos($line,"ADMIN_FORCE_SSL") !== false and ADMIN_FORCE_SSL !== (boolean)$array['admin_force_ssl']){
+                $installData[$key] = 'define("ADMIN_FORCE_SSL",'.$admin_force_ssl.');';
+                $diff ++;
+            }
+            if(strpos($line,"ADMIN_ALLOW_HOSTS") !== false and ADMIN_ALLOW_HOSTS != $admin_allow_hosts) {
+                $installData[$key] = "define('ADMIN_ALLOW_HOSTS','".$admin_allow_hosts."');";
+                $diff ++;
+            }
+        }
+        
+        if($diff > 0) {
+            $fp = fopen(DATA_REALDIR . "install.php","wb");
+            $installData = implode("\n",$installData);
+            echo $installData;
+            fwrite($fp, $installData);
+            fclose($fp);
+        }
+        return true;
     }
 
     /* 取得文字列の変換 */
@@ -238,6 +314,9 @@ class LC_Page_Admin_Basis extends LC_Page_Admin {
         $arrConvList['email02'] = "a";
         $arrConvList['email03'] = "a";
         $arrConvList['email04'] = "a";
+        $arrConvList['admin_dir'] = "a";
+        $arrConvList['admin_force_ssl'] = "n";
+        $arrConvList['admin_allow_hosts'] = "a";
         $arrConvList['tax'] = "n";
         $arrConvList['free_rule'] = "n";
         $arrConvList['business_hour'] = "KVa";
@@ -271,6 +350,12 @@ class LC_Page_Admin_Basis extends LC_Page_Admin {
         $objErr->doFunc(array('問い合わせ受付メールアドレス', "email02", STEXT_LEN) ,array("EXIST_CHECK", "EMAIL_CHECK", "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
         $objErr->doFunc(array('メール送信元メールアドレス', "email03", STEXT_LEN) ,array("EXIST_CHECK", "EMAIL_CHECK", "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
         $objErr->doFunc(array('送信エラー受付メールアドレス', "email04", STEXT_LEN) ,array("EXIST_CHECK", "EMAIL_CHECK", "EMAIL_CHAR_CHECK","MAX_LENGTH_CHECK"));
+        //管理画面設定チェック
+        $objErr->doFunc(array('ディレクトリ名', "admin_dir", ID_MAX_LEN) ,array("EXIST_CHECK","SPTAB_CHECK", "ALNUM_CHECK"));
+        $objErr->doFunc(array('SSL制限', "admin_force_ssl", 1) ,array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objErr->doFunc(array('IP制限', "admin_allow_hosts", LTEXT_LEN) ,array("IP_CHECK", "MAX_LENGTH_CHECK"));
+        
+
         // 電話番号チェック
         $objErr->doFunc(array("TEL", "tel01", "tel02", "tel03"), array("TEL_CHECK"));
         $objErr->doFunc(array("FAX", "fax01", "fax02", "fax03"), array("TEL_CHECK"));

@@ -655,7 +655,7 @@ function lfInitWebParam($objWebParam) {
     
     //管理画面のディレクトリ名を取得（再インストール時）
     if(defined("ADMIN_DIR")){
-        $admin_dir = ADMIN_DIR;
+        $admin_dir = str_replace("/","",ADMIN_DIR);
     }
 
     $objWebParam->addParam("店名", "shop_name", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $shop_name);
@@ -736,9 +736,6 @@ function lfCheckWebError($objFormParam) {
 
     // パスワードのチェック
     $objErr->doFunc( array("管理者：パスワード",'login_pass',ID_MIN_LEN , ID_MAX_LEN ) ,array("SPTAB_CHECK" ,"NUM_RANGE_CHECK" ));
-
-    // 管理画面ディレクトリ名のチェック
-    $objErr->doFunc( array("管理画面：ディレクトリ",'admin_dir',ID_MIN_LEN , ID_MAX_LEN ) ,array("SPTAB_CHECK" ,"NUM_RANGE_CHECK" ));
 
     return $objErr->arrErr;
 }
@@ -923,14 +920,16 @@ function lfMakeConfigFile() {
     //管理画面SSL制限
     $force_ssl = FALSE;
     if($objWebParam->getValue('admin_force_ssl') == 1){
-        $force_ssl = TRUE;
+        $force_ssl = "TRUE";
+    }else{
+        $force_ssl = "FALSE";
     }
     //管理画面IP制限
     $allow_hosts = array();
     $hosts = $objWebParam->getValue('admin_allow_hosts');
     if(!empty($hosts)){
         $hosts = str_replace("\r","",$hosts);
-        if(strpos("\n",$hosts) === false){
+        if(strpos($hosts,"\n") === false){
             $hosts .= "\n";
         }
         $hosts = explode("\n",$hosts);
@@ -955,11 +954,9 @@ function lfMakeConfigFile() {
     "    define ('DB_NAME', '" . $objDBParam->getValue('db_name') . "');\n" .
     "    define ('DB_PORT', '" . $objDBParam->getValue('db_port') .  "');\n" .
     "    define ('ADMIN_DIR', '" . $objWebParam->getValue('admin_dir') .  "/');\n" .
-    "    define ('ADMIN_FORCE_SSL', " . $force_ssl .  ");\n";
-    if(count($allow_hosts) > 0){
-        $config_data .= "    define ('ADMIN_ALLOW_HOSTS', '".serialize($allow_hosts)."');\n";
-    }
-    $config_data .= "?>";
+    "    define ('ADMIN_FORCE_SSL', " . $force_ssl .  ");\n".
+    "    define ('ADMIN_ALLOW_HOSTS', '".serialize($allow_hosts)."');\n".
+    "?>";
 
     if($fp = fopen($filepath,"w")) {
         fwrite($fp, $config_data);

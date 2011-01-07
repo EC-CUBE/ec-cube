@@ -595,14 +595,16 @@ class SC_CheckError {
         }
         //改行コードが含まれている場合には配列に変換
         $params = str_replace("\r","",$this->arrParam[$value[1]]);
-        if(strpos("\n",$params) === false){
-            $params .= "\n";
-        }
-        $params = explode("\n",$params);
-        foreach($params as $param){
-            $param = trim($param);
-            if(long2ip(ip2long($param)) != trim($param) and !empty($param)) {
-                $this->arrErr[$value[1]] = "※ " . $value[0] . "に正しい形式のIPアドレスを入力してください。<br />";
+        if(!empty($params)){
+            if(strpos($params,"\n") === false){
+                $params .= "\n";
+            }
+            $params = explode("\n",$params);
+            foreach($params as $param){
+                $param = trim($param);
+                if(long2ip(ip2long($param)) != trim($param) and !empty($param)) {
+                    $this->arrErr[$value[1]] = "※ " . $value[0] . "に正しい形式のIPアドレスを入力してください。<br />";
+                }
             }
         }
     }
