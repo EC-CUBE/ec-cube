@@ -55,7 +55,6 @@ class LC_Page_Entry extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->tpl_title .= '会員登録(入力ページ)';
         $this->year = "";
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
@@ -69,6 +68,8 @@ class LC_Page_Entry extends LC_Page {
         $this->arrDay = $objDate->getDay(true);
         
         $this->httpCacheControl('nocache');
+        
+        $this->isMobile = Net_UserAgent_Mobile::isMobile();
     }
 
     /**
@@ -333,7 +334,8 @@ class LC_Page_Entry extends LC_Page {
     // {{{ protected functions
 
     // 会員情報の登録
-    function lfRegistData ($array, $arrRegistColumn, $arrRejectRegistColumn, $confirm_flg, $isMobile = false, $email_mobile = "") {
+    function lfRegistData ($array, $arrRegistColumn, $arrRejectRegistColumn, $confirm_flg) {
+        
         $objQuery = new SC_Query();
 
         // 登録データの生成
@@ -392,7 +394,7 @@ class LC_Page_Entry extends LC_Page {
         $arrRegist["first_buy_date"] = "";	 	// 最初の購入日
         $arrRegist["point"] = $this->CONF["welcome_point"]; // 入会時ポイント
 
-        if ($isMobile) {
+        if ($this->isMobile) {
             // 携帯メールアドレス
             $arrRegist['email_mobile'] = $arrRegist['email'];
             //PHONE_IDを取り出す
@@ -460,7 +462,7 @@ class LC_Page_Entry extends LC_Page {
         $objErr->doFunc(array("性別", "sex") ,array("SELECT_CHECK", "NUM_CHECK"));
         $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_BIRTHDAY"));
         
-        if (Net_UserAgent_Mobile::isMobile() === false){
+        if ($this->isMobile === false){
             $objErr->doFunc(array('メールアドレス', "email", MTEXT_LEN) ,array("NO_SPTAB", "EXIST_CHECK", "EMAIL_CHECK", "SPTAB_CHECK" ,"EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
             $objErr->doFunc(array("FAX番号1", 'fax01'), array("SPTAB_CHECK"));
             $objErr->doFunc(array("FAX番号2", 'fax02'), array("SPTAB_CHECK"));
@@ -517,7 +519,7 @@ class LC_Page_Entry extends LC_Page {
     	/**
     	 * 規約ページからの遷移でなければエラー画面へ遷移する
     	 */ 
-        if (Net_UserAgent_Mobile::isMobile() === FALSE
+        if ($this->isMobile === FALSE
         	 && empty($_POST)
         	 && !preg_match('/kiyaku.php/', basename($_SERVER['HTTP_REFERER']))
         	) {
