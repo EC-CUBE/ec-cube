@@ -45,8 +45,8 @@ class LC_Page_Admin extends LC_Page {
         $this->template = MAIN_FRAME;
         
         //IP制限チェック
-        if(defined("ADMIN_ALLOW_HOSTS")){
-            $allow_hosts = unserialize(ADMIN_ALLOW_HOSTS);
+        $allow_hosts = unserialize(ADMIN_ALLOW_HOSTS);
+        if(count($allow_hosts) > 0){
             if(array_search($_SERVER["REMOTE_ADDR"],$allow_hosts) === FALSE){
                 SC_Response::sendError("403");
                 exit;
