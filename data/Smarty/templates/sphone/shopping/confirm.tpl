@@ -19,26 +19,27 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
-<script type="text/javascript" src="<!--{$TPL_DIR}-->jquery.fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
-<script type="text/javascript" src="<!--{$TPL_DIR}-->jquery.fancybox/jquery.fancybox-1.3.4.pack.js"></script>
-<link rel="stylesheet" href="<!--{$TPL_DIR}-->jquery.fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
+<script type="text/javascript" src="<!--{$smarty.const.URL_PATH}-->js/jquery.facebox/facebox.js"></script>
+<link rel="stylesheet" type="text/css" href="<!--{$smarty.const.URL_PATH}-->js/jquery.facebox/facebox.css" media="screen" />
 <script type="text/javascript">//<![CDATA[
-    var send = true;
+var send = true;
 
-    function fnCheckSubmit() {
-        if(send) {
-            send = false;
-            return true;
-        } else {
-            alert("只今、処理中です。しばらくお待ち下さい。");
-            return false;
-        }
+function fnCheckSubmit() {
+    if(send) {
+        send = false;
+        return true;
+    } else {
+        alert("只今、処理中です。しばらくお待ち下さい。");
+        return false;
     }
+}
 
-    $(document).ready(function() {
-        $("a.expansion").fancybox({
-        });
+$(document).ready(function() {
+    $('a.expansion').facebox({
+        loadingImage : '<!--{$smarty.const.URL_PATH}-->js/jquery.facebox/loading.gif',
+        closeImage   : '<!--{$smarty.const.URL_PATH}-->js/jquery.facebox/closelabel.png'
     });
+});
 //]]></script>
 
 <!--▼CONTENTS-->
