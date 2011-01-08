@@ -258,7 +258,7 @@ $(function() {
       <td>
         <!--{assign var=key value="admin_force_ssl"}-->
         <span class="attention"><!--{$arrErr[$key]}--></span>
-        <input type="checkbox" name="<!--{$key}-->" value="1" id="<!--{$key}-->" <!--{if $arrForm[$key] == 1}-->checked="checked"<!--{/if}--> /><label for="<!--{$key}-->">SSLを強制する。</label>
+        <input type="checkbox" name="<!--{$key}-->" value="1" id="<!--{$key}-->" <!--{if $arrForm[$key] == 1}-->checked="checked"<!--{/if}--><!--{if !$tpl_enable_ssl}--> disabled="disabled"<!--{/if}--> /><label for="<!--{$key}-->">SSLを強制する。</label>
       </td>
     </tr>
     <tr>

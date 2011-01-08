@@ -112,8 +112,8 @@ case 'step2':
     if(count($objPage->arrErr) == 0) {
         // 設定ファイルの生成
         lfMakeConfigFile();
-        if(!renameAdminDir($objWebParam->getValue('admin_dir'))){
-            $objPage->arrErr["all"] .= "管理者ディレクトリのリネームに失敗しました。権限を確認してください。";
+        if($err = renameAdminDir($objWebParam->getValue('admin_dir')) !== TRUE){
+            $objPage->arrErr["all"] .= $err;
             $objPage = lfDispStep2($objPage);
         }else{
             $objPage = lfDispStep3($objPage);
@@ -393,6 +393,11 @@ function lfDispStep0($objPage) {
     $objPage->arrHidden['agreement'] = $_POST['agreement'];
     $objPage->tpl_mainpage = 'step0.tpl';
 
+    $admin_dir = "admin/";
+    if(defined("ADMIN_DIR")){
+        $admin_dir = ADMIN_DIR;
+    }
+
     // プログラムで書込みされるファイル・ディレクトリ
     $arrWriteFile = array(
         DATA_REALDIR . "install.php",
@@ -404,7 +409,7 @@ function lfDispStep0($objPage) {
         DATA_REALDIR . "logs/",
         DATA_REALDIR . "downloads/",
         DATA_REALDIR . "upload/",
-        HTML_REALDIR . "admin/"
+        HTML_REALDIR . $admin_dir
     );
 
     $mess = "";
@@ -737,6 +742,13 @@ function lfCheckWebError($objFormParam) {
     // パスワードのチェック
     $objErr->doFunc( array("管理者：パスワード",'login_pass',ID_MIN_LEN , ID_MAX_LEN ) ,array("SPTAB_CHECK" ,"NUM_RANGE_CHECK" ));
 
+    // 管理画面ディレクトリのチェック
+    $objErr->doFunc( array("管理画面：ディレクトリ",'admin_dir',ID_MIN_LEN , ID_MAX_LEN ) ,array("SPTAB_CHECK" ,"NUM_RANGE_CHECK" ));
+    if(file_exists(HTML_REALDIR.$objFormParam->getValue('admin_dir')) OR file_exists(USER_TEMPLATE_REALDIR.$objFormParam->getValue('admin_dir'))){
+        $objErr->arrErr["admin_dir"] = "指定した管理画面ディレクトリは既に存在しています。別の名前を指定していください。";
+    }
+
+
     return $objErr->arrErr;
 }
 
@@ -918,8 +930,7 @@ function lfMakeConfigFile() {
     $filepath = DATA_REALDIR . "install.php";
     
     //管理画面SSL制限
-    $force_ssl = FALSE;
-    if($objWebParam->getValue('admin_force_ssl') == 1){
+    if($objWebParam->getValue('admin_force_ssl') == 1 and strpos($secure_url,"https://") !== FALSE){
         $force_ssl = "TRUE";
     }else{
         $force_ssl = "FALSE";
@@ -1036,15 +1047,18 @@ function getSequences() {
  * @param string 設定する管理画面のディレクトリ名
  */
 function renameAdminDir($admin_dir){
+    if(file_exists(HTML_REALDIR.str_replace("/","",$admin_dir)) OR file_exists(USER_TEMPLATE_REALDIR.$admin_dir)){
+        return  "指定した管理画面ディレクトリは既に存在しています。別の名前を指定していください。";
+    }
     $old_dir = "admin/";
     if(defined("ADMIN_DIR")){
         $old_dir = ADMIN_DIR;
     }
     if(!rename(HTML_REALDIR.$old_dir,HTML_REALDIR.$admin_dir)){
-        return FALSE;
+        return  HTML_REALDIR.$admin_dir."へのリネームに失敗しました。ディレクトリの権限を確認してください。";
     }
     if(!rename(USER_TEMPLATE_REALDIR.$old_dir,USER_TEMPLATE_REALDIR.$admin_dir)){
-        return FALSE;
+        return  USER_TEMPLATE_REALDIR.$admin_dir."へのリネームに失敗しました。ディレクトリの権限を確認してください。";
     }
     return TRUE;
 }

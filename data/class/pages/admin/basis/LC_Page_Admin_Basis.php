@@ -51,6 +51,10 @@ class LC_Page_Admin_Basis extends LC_Page_Admin {
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrTAXRULE = $masterData->getMasterData("mtb_taxrule");
         $this->tpl_subtitle = 'SHOPマスタ';
+        $this->tpl_enable_ssl = FALSE;
+        if(strpos(HTTPS_URL,"https://") !== FALSE){
+            $this->tpl_enable_ssl = TRUE;
+        }
 
         //定休日用配列
         $this->arrRegularHoliday[0] = '日';
@@ -217,6 +221,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin {
         $ret = $objQuery->insert("dtb_baseinfo", $sqlval);
     }
     
+    //管理画面ディレクトリのリネームとinstall.phpの変更
     function lfUpdateAdminData($array){
         $admin_dir = trim($array['admin_dir'])."/";
         $admin_force_ssl = "FALSE";
@@ -233,27 +238,33 @@ class LC_Page_Admin_Basis extends LC_Page_Admin {
             }
         }
         $admin_allow_hosts = serialize($admin_allow_hosts);
+
         //権限チェック 
         if(!is_writable(DATA_REALDIR . "install.php")){
             $this->arrErr["admin_force_ssl"] = DATA_REALDIR . "install.phpを変更する権限がありません。";
-        }
-        if(count($this->arrErr) > 0){
             return false;
         }
+
         //install.phpの書き換え
         $installData = file(DATA_REALDIR."install.php",FILE_IGNORE_NEW_LINES);
         $diff = 0;
         foreach($installData as $key=>$line){
             if(strpos($line,"ADMIN_DIR") !== false and ADMIN_DIR != $admin_dir){
+                //既存ディレクトリのチェック
+                if(file_exists(HTML_REALDIR.$admin_dir)){
+                    $this->arrErr["admin_dir"] .= HTML_REALDIR.$admin_dir."は既に存在しています。別のディレクトリ名を指定してください。";
+                }
+                if(file_exists(USER_TEMPLATE_REALDIR.$admin_dir)){
+                    $this->arrErr["admin_dir"] .= USER_TEMPLATE_REALDIR.$admin_dir."は既に存在しています。別のディレクトリ名を指定してください。";
+                }
+                //権限チェック
                 if(!is_writable(HTML_REALDIR . ADMIN_DIR)){
-                    $this->arrErr["admin_dir"] = URL_PATH.ADMIN_DIR."のディレクトリ名を変更する権限がありません。";
+                    $this->arrErr["admin_dir"] .= URL_PATH.ADMIN_DIR."のディレクトリ名を変更する権限がありません。";
                 }
                 if(!is_writable(USER_TEMPLATE_REALDIR . ADMIN_DIR)){
-                    $this->arrErr["admin_dir"] = USER_TEMPLATE_REALDIR . ADMIN_DIR."のディレクトリ名を変更する権限がありません。";        
+                    $this->arrErr["admin_dir"] .= USER_TEMPLATE_REALDIR . ADMIN_DIR."のディレクトリ名を変更する権限がありません。";        
                 }
-                if(count($this->arrErr) > 0 ){
-                    return false;
-                }else{
+                if(count($this->arrErr) == 0 ){
                     $installData[$key] = 'define("ADMIN_DIR","'.$admin_dir.'");';
                     //管理画面ディレクトリのリネーム
                     rename(HTML_REALDIR.ADMIN_DIR,HTML_REALDIR.$admin_dir);
