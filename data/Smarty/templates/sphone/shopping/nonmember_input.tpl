@@ -29,7 +29,7 @@
       <input type="hidden" name="mode" value="nonmember_confirm" />
       <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->" />
       <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-      <table summary=" ">
+      <table summary="お客様情報入力">
         <tr>
           <th>お名前<span class="attention">※</span></th>
           <td>
@@ -41,7 +41,8 @@
           </td>
         </tr>
         <tr>
-          <th>お名前(フリガナ)<span class="attention">※</span></th>
+          <th>お名前<br />
+          (フリガナ)<span class="attention">※</span></th>
           <td>
             <!--{assign var=key1 value="order_kana01"}-->
             <!--{assign var=key2 value="order_kana02"}-->
@@ -56,11 +57,12 @@
             <!--{assign var=key1 value="order_zip01"}-->
             <!--{assign var=key2 value="order_zip02"}-->
             <span class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></span>
-            <p>〒&nbsp;<input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->"  size="6" class="box60" />&nbsp;-&nbsp;  <input type="text"  name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->"  size="6" class="box60" />　
-              <a href="http://search.post.japanpost.jp/zipcode/" target="_blank"><span class="fs12">郵便番号検索</span></a></p>
+            <p>〒&nbsp;<input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->"  size="6" class="box60" />&nbsp;-&nbsp;  <input type="text"  name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->"  size="6" class="box60" />　<br />
+<a href="http://search.post.japanpost.jp/zipcode/" target="_blank"><span class="fs12">郵便番号検索</span></a></p>
 
             <p class="zipimg"><a href="<!--{$smarty.const.URL_PATH}-->address/<!--{$smarty.const.DIR_INDEX_URL}-->" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URL_PATH}-->', 'order_zip01', 'order_zip02', 'order_pref', 'order_addr01'); return false;" target="_blank"><img src="<!--{$TPL_DIR}-->img/button/btn_address_input.gif" width="86" height="20" alt="住所自動入力" /></a>
-               <span class="mini">&nbsp;郵便番号を入力後、クリックしてください。</span></p>
+               <span class="mini">&nbsp;<br />
+               郵便番号を入力後、クリックしてください。</span></p>
           </td>
         </tr>
         <tr>
@@ -153,7 +155,7 @@
             <span class="attention"><!--{$errBirth}--></span>
             <select name="year" style="<!--{$errBirth|sfGetErrorColor}-->">
               <!--{html_options options=$arrYear selected=$arrForm.year.value|default:''}-->
-            </select>年
+            </select>年<br />
             <select name="month" style="<!--{$errBirth|sfGetErrorColor}-->">
               <!--{html_options options=$arrMonth selected=$arrForm.month.value|default:''}-->
             </select>月
@@ -166,7 +168,8 @@
           <th colspan="2">
           <!--{assign var=key value="deliv_check"}-->
           <input type="checkbox" name="<!--{$key}-->" value="1" onclick="fnCheckInputDeliv();" <!--{$arrForm[$key].value|sfGetChecked:1}--> id="deliv_label" />
-          <label for="deliv_label"><em>お届け先を指定</em>　※上記に入力された住所と同一の場合は省略可能です。</label>
+          <label for="deliv_label"><em>お届け先を指定</em>　<br />
+            ※上記に入力された住所と同一の場合は省略可能です。</label>
           </th>
         </tr>
         <tr>
@@ -180,7 +183,8 @@
           </td>
         </tr>
         <tr>
-          <th>お名前(フリガナ)<span class="attention">※</span></th>
+          <th>お名前<br />
+          (フリガナ)<span class="attention">※</span></th>
           <td>
             <!--{assign var=key1 value="deliv_kana01"}-->
             <!--{assign var=key2 value="deliv_kana02"}-->
@@ -196,10 +200,12 @@
            <!--{assign var=key2 value="deliv_zip02"}-->
             <span class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></span>
             <p>〒&nbsp;<input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->"  size="6" class="box60" />&nbsp;-&nbsp;  <input type="text"  name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->"  size="6" class="box60" />　
-              <a href="http://search.post.japanpost.jp/zipcode/" target="_blank"><span class="fs12">郵便番号検索</span></a></p>
+              <a href="http://search.post.japanpost.jp/zipcode/" target="_blank"><span class="fs12"><br />
+              郵便番号検索</span></a></p>
 
             <p class="zipimg"><a href="<!--{$smarty.const.URL_PATH}-->address/<!--{$smarty.const.DIR_INDEX_URL}-->" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URL_PATH}-->', 'deliv_zip01', 'deliv_zip02', 'deliv_pref', 'deliv_addr01'); return false;" target="_blank"><img src="<!--{$TPL_DIR}-->img/button/btn_address_input.gif" width="86" height="20" alt="住所自動入力" /></a>
-              <span class="mini">&nbsp;郵便番号を入力後、クリックしてください。</span></p>
+              <span class="mini">&nbsp;<br />
+              郵便番号を入力後、クリックしてください。</span></p>
           </td>
         </tr>
         <tr>
@@ -240,7 +246,7 @@
       </table>
 
       <div class="tblareabtn">
-       <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_next_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_next.gif',this)" src="<!--{$TPL_DIR}-->img/button/btn_next.gif" class="box150" alt="次へ" name="next" id="next" />
+       <input type="submit" value="次へ" class="spbtn spbtn-shopping" width="130" height="30" alt="次へ" name="next" id="next" />
       </div>
     </form>
   </div>

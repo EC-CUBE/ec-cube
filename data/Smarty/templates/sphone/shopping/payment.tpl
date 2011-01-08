@@ -76,6 +76,8 @@
                             <!--{html_options options=$arrDelivDate selected=$arrForm[$key].value}-->
                         </select>
                     <!--{/if}-->
+                </div>
+                <div>
                     <!--★お届け時間★-->
                     <!--{assign var=key value="deliv_time_id"}-->
                     <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -96,6 +98,8 @@
                     <!--{assign var=key value="message"}-->
                     <span class="attention"><!--{$arrErr[$key]}--></span>
                     <textarea name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" cols="80" rows="8" class="area660" wrap="head"><!--{$arrForm[$key].value|h}--></textarea>
+                </div>
+                <div>
                     <span class="attention"> (<!--{$smarty.const.LTEXT_LEN}-->文字まで)</span>
                 </div>
             </div>
@@ -123,9 +127,9 @@
             <!-- ▲ポイント使用 ここまで -->
 
             <div class="tblareabtn">
-                <a href="<!--{$tpl_back_url|h}-->" onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_back_on.gif','back03')" onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_back.gif','back03')">
-                    <img src="<!--{$TPL_DIR}-->img/button/btn_back.gif" width="150" height="30" alt="戻る" border="0" name="back03" id="back03" /></a>&nbsp;
-                <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_next_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_next.gif',this)" src="<!--{$TPL_DIR}-->img/button/btn_next.gif" class="box150" alt="次へ" name="next" id="next" />
+                <a href="<!--{$tpl_back_url|h}-->" class="spbtn spbtn-medeum">
+                    戻る</a>&nbsp;
+                <input type="submit" value="次へ" class="spbtn spbtn-shopping" width="130" height="30" alt="次へ" name="next" id="next" />
             </div>
         </form>
     </div>

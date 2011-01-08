@@ -6,7 +6,7 @@ body {
 background: rgb(197,204,211) url(../img/common/stripes.png);
 background-position: 50% 0% fixed;
 font-family: helvetica, Osaka;
-font-size: large;
+font-size:small;
 margin: 0px 3.13% 10px;
 padding: 0px;
 -webkit-user-select: none;
@@ -253,32 +253,32 @@ display: none;
 /* フォーム
 ----------------------------------------------- */
 input[size="40"] {
-width: 60%;
+width: 50%;
 }
 input[type="password"] {
-width: 60%;
+width: 50%;
 }
 input[type="tel"] {
-width: 3.6em;
+width: 3em;
 }
 input, tr, th, td {
 max-width: 93.8%;
 }
 input {
-font-size: large;
+font-size: small;
 }
 textarea{
-font-size: 14px;
+font-size: small;
 width: 95%;
 }
 form dl{
-font: bold 17px helvetica;
+font: bold small helvetica;
 margin: 10px 0;
 }
 form dt{
 margin: 5px 0;
 color:#4D576B;
-font: bold 17px helvetica;
+font: bold small helvetica;
 background-color: transparent;
 text-shadow: 0px 1px 1px #ffffff;
 border: none;
