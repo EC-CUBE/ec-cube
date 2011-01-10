@@ -76,19 +76,17 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         $objCustomer = new SC_Customer();
         $objQuery = new SC_Query();
         $objDb = new SC_Helper_DB_Ex();
+        $objPurchase = new SC_Helper_Purchase_Ex();
 
         // 前のページで正しく登録手続きが行われた記録があるか判定
         SC_Utils_Ex::sfIsPrePage($objSiteSess);
 
         // ユーザユニークIDの取得と購入状態の正当性をチェック
-        $uniqid = SC_Utils_Ex::sfCheckNormalAccess($objSiteSess, $objCartSess);
+        $uniqid = $objSiteSess->getUniqId();
+        $objPurchase->verifyChangeCart($uniqid, $objCartSess);
         $this->tpl_uniqid = $uniqid;
 
-        //ダウンロード商品判定
-        $this->cartdown = $objDb->chkCartDown($objCartSess);
-
-
-        $this->cartKey = $_SESSION['cartKey'];
+        $this->cartKey = $objCartSess->getKey();
 
         // カート内商品のチェック
         $this->tpl_message = $objCartSess->checkProducts($this->cartKey);
@@ -107,7 +105,7 @@ class LC_Page_Shopping_Confirm extends LC_Page {
 
         // TODO リファクタリング
         // 一時受注テーブルの読込
-        $tmpData = $objDb->sfGetOrderTemp($uniqid);
+        $tmpData = $objPurchase->getOrderTemp($uniqid);
 
         // カート集計を元に最終計算
         // FIXME 使用ポイント, 配送都道府県, 支払い方法, 手数料の扱い
@@ -143,25 +141,21 @@ class LC_Page_Shopping_Confirm extends LC_Page {
             // この時点で注文番号を確保しておく（クレジット、コンビニ決済で必要なため）
             $arrData["order_id"] = $objQuery->nextval("dtb_order_order_id");
 
-            // セッション情報を保持
-            $arrData['session'] = serialize($_SESSION);
-
             // 集計結果を受注一時テーブルに反映
             unset($arrData[0]); // FIXME
             unset($arrData[1]);
-            $objDb->sfRegistTempOrder($uniqid, $arrData);
+            $objPurchase->saveOrderTemp($uniqid, $arrData, $objCustomer);
             // 正常に登録されたことを記録しておく
             $objSiteSess->setRegistFlag();
 
             // 決済方法により画面切替
             if($payment_type != "") {
                 $_SESSION["payment_id"] = $arrData['payment_id'];
-                $objPurchase = new SC_Helper_Purchase_Ex();
+
                 $objPurchase->completeOrder(ORDER_PENDING);
                 $this->objDisplay->redirect($this->getLocation(SHOPPING_MODULE_URL_PATH));
             }else{
                 // 受注を完了し, 購入完了ページへ
-                $objPurchase = new SC_Helper_Purchase_Ex();
                 $objPurchase->completeOrder(ORDER_NEW);
                 $objPurchase->sendOrderMail($arrData["order_id"]);
                 $this->objDisplay->redirect($this->getLocation(SHOPPING_COMPLETE_URL_PATH));

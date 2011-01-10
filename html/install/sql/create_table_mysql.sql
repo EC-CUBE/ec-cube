@@ -694,7 +694,7 @@ CREATE TABLE dtb_shipping (
     shipping_addr01 text,
     shipping_addr02 text,
     deliv_id int NOT NULL,
-    time_id int NOT NULL,
+    time_id int,
     shipping_fee NUMERIC,
     shipping_time TEXT,
     shipping_num TEXT,

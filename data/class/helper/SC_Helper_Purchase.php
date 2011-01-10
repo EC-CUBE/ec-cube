@@ -70,7 +70,8 @@ class SC_Helper_Purchase {
 
         $orderTemp['status'] = $orderStatus;
         $orderId = $this->registerOrder($orderTemp, $objCartSession,
-                                        $_SESSION['cartKey']);
+                                        $objCartSession->getKey());
+        $this->registerShipping($orderId, $this->getShippingTemp());
         $objQuery->commit();
         $objCustomer->updateSession();
     }
@@ -171,6 +172,13 @@ class SC_Helper_Purchase {
     }
 
     /**
+     * セッションの配送情報を取得する.
+     */
+    function getShippingTemp() {
+        return $_SESSION['shipping'];
+    }
+
+    /**
      * 配送情報をセッションに保存する.
      */
     function saveShippingTemp(&$src, $other_deliv_id = 0,
@@ -187,6 +195,13 @@ class SC_Helper_Purchase {
     }
 
     /**
+     * セッションの配送情報を破棄する.
+     */
+    function unsetShippingTemp() {
+        unset($_SESSION['shipping']);
+    }
+
+    /**
      * 会員情報を受注情報にコピーする.
      *
      * ユーザーがログインしていない場合は何もしない.
@@ -195,17 +210,16 @@ class SC_Helper_Purchase {
      *
      * @param array $dest コピー先の配列
      * @param SC_Customer $objCustomer SC_Customer インスタンス
-     * @param array $keys コピー対象のキー
      * @param string $prefix コピー先の接頭辞. デフォルト order
+     * @param array $keys コピー対象のキー
      * @return void
      */
-    function copyFromCustomer(&$dest, &$objCustomer,
+    function copyFromCustomer(&$dest, &$objCustomer, $prefix = 'order',
                               $keys = array('name01', 'name02', 'kana01', 'kana02',
                                             'sex', 'zip01', 'zip02', 'pref',
                                             'addr01', 'addr02',
                                             'tel01', 'tel02', 'tel03', 'job',
-                                            'birth', 'email'),
-                              $prefix = 'order') {
+                                            'birth', 'email')) {
         if ($objCustomer->isLoginSuccess(true)) {
 
             foreach ($keys as $key) {
@@ -328,6 +342,39 @@ __EOS__;
                 $arrDelivTime[$val['time_id']] = $val['deliv_time'];
             }
             return $arrDelivTime;
+    }
+
+    /**
+     * 商品種別ID から配送業者ID を取得する.
+     */
+    function getDeliv($productTypeId) {
+        $objQuery =& SC_Query::getSingletonInstance();
+        return $objQuery->get("deliv_id", "dtb_deliv", "product_type_id = ?",
+                                 array($productTypeId));
+    }
+
+    /**
+     * 配送情報を登録する.
+     */
+    function registerShipping($orderId, $params) {
+        $objQuery =& SC_Query::getSingletonInstance();
+
+        $cols = $objQuery->listTableFields('dtb_shipping');
+
+        foreach ($params as $shipping_id => $shipping_val) {
+            // 存在するカラムのみ INSERT
+            foreach ($shipping_val as $key => $val) {
+                if (in_array($key, $cols)) {
+                    $sqlval[$key] = $val;
+                }
+            }
+
+            $sqlval['order_id'] = $orderId;
+            $sqlval['shipping_id'] = $shipping_id;
+            $sqlval['create_date'] = 'Now()';
+            $sqlval['update_date'] = 'Now()';
+            $objQuery->insert("dtb_shipping", $sqlval);
+        }
     }
 
     /**

@@ -140,7 +140,7 @@ class LC_Page_Shopping extends LC_Page {
             // 入力エラーなし
             if(count($this->arrErr) == 0) {
                 // DBへのデータ登録
-                $this->lfRegistData($uniqid, $objPurchase, $objCustomer);
+                $this->lfRegistData($uniqid, $objPurchase, $objCustomer, $this->cartKey);
                 // 正常に登録されたことを記録しておく
                 $objSiteSess->setRegistFlag();
                 // お支払い方法選択ページへ移動
@@ -162,7 +162,7 @@ class LC_Page_Shopping extends LC_Page {
             // 入力エラーなし
             if(count($this->arrErr) == 0) {
                 // DBへのデータ登録
-                $this->lfRegistData($uniqid, $objPurchase, $objCustomer);
+                $this->lfRegistData($uniqid, $objPurchase, $objCustomer, $this->cartKey);
                 // 正常に登録されたことを記録しておく
                 $objSiteSess->setRegistFlag();
 
@@ -336,16 +336,17 @@ class LC_Page_Shopping extends LC_Page {
     }
 
     /* DBへデータの登録 */
-    function lfRegistData($uniqid, &$objPurchase, &$objCustomer) {
+    function lfRegistData($uniqid, &$objPurchase, &$objCustomer, $productTypeId) {
         $params = $this->objFormParam->getHashArray();
         $sqlval = $this->objFormParam->getDbArray();
         // 登録データの作成
         $sqlval['order_birth'] = SC_Utils_Ex::sfGetTimestamp($params['year'], $params['month'], $params['day']);
         $sqlval['update_date'] = 'Now()';
         $sqlval['customer_id'] = '0';
+        $sqlval['deliv_id'] = $objPurchase->getDeliv($productTypeId);
 
         // お届け先を指定しない場合、
-        if ($sqlval['deliv_check'] != '1') {
+        if ($params['deliv_check'] != '1') {
             // order_* を shipping_* へコピー
             $objPurchase->copyFromOrder($sqlval, $params);
         }

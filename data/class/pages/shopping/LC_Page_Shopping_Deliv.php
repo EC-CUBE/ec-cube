@@ -78,6 +78,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         $objCartSess = new SC_CartSession();
         $objCustomer = new SC_Customer();
         $objDb = new SC_Helper_DB_Ex();
+        $objPurchase = new SC_Helper_Purchase_Ex();
         // クッキー管理クラス
         $objCookie = new SC_Cookie(COOKIE_EXPIRE);
         // パラメータ管理クラス
@@ -98,8 +99,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         $uniqid = SC_Utils_Ex::sfCheckNormalAccess($objSiteSess, $objCartSess);
         $this->tpl_uniqid = $uniqid;
 
-        //ダウンロード商品判定
-        $this->cartdown = $objDb->chkCartDown($objCartSess);
+        $this->cartKey = $objCartSess->getKey();
 
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
@@ -138,7 +138,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
                 }
             }
             //ダウンロード商品判定
-            if($this->cartdown==2){
+            if($this->cartKey == PRODUCT_TYPE_DOWNLOAD){
                 // 会員情報の住所を受注一時テーブルに書き込む
                 $objDb->sfRegistDelivData($uniqid, $objCustomer);
                 // 正常に登録されたことを記録しておく
@@ -159,10 +159,15 @@ class LC_Page_Shopping_Deliv extends LC_Page {
             break;
         // 会員登録住所に送る
         case 'customer_addr':
+            $sqlval = array();
             // 会員登録住所がチェックされている場合
             if ($_POST['deliv_check'] == '-1') {
                 // 会員情報の住所を受注一時テーブルに書き込む
-                $this->lfRegistDelivData($uniqid, $objCustomer);
+                $objPurchase->copyFromCustomer($sqlval, $objCustomer, 'shipping');
+                $sqlval['deliv_id'] = $objPurchase->getDeliv($this->cartKey);
+                $objPurchase->saveShippingTemp($sqlval);
+                $objPurchase->saveOrderTemp($uniqid, $sqlval, $objCustomer);
+                //$this->lfRegistDelivData($uniqid, $objCustomer);
                 // 正常に登録されたことを記録しておく
                 $objSiteSess->setRegistFlag();
                 // お支払い方法選択ページへ移動

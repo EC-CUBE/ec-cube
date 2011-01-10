@@ -142,11 +142,13 @@ class LC_Page_Shopping_Payment extends LC_Page {
             // 入力エラーなし
             if(count($this->arrErr) == 0) {
                 // DBへのデータ登録
-                $this->lfRegistData($uniqid);
+                $this->lfRegistData($uniqid, $objPurchase);
+                $_SESSION['shipping'][0]['time_id'] = $this->objFormParam->getValue('deliv_time_id');
+                $_SESSION['shipping'][0]['deliv_date'] = $this->objFormParam->getValue('deliv_date');
                 // 正常に登録されたことを記録しておく
                 $objSiteSess->setRegistFlag();
                 // 確認ページへ移動
-                $this->objDisplay->redirect($this->getLocation(SHOPPING_CONFIRM_URL_PATH, array(), true));
+                SC_Response_Ex::sendRedirect(SHOPPING_CONFIRM_URL_PATH);
                 exit;
             }else{
                 // ユーザユニークIDの取得
@@ -160,7 +162,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
             // 非会員の場合
             // 正常な推移であることを記録しておく
             $objSiteSess->setRegistFlag();
-            $this->objDisplay->redirect(SHOPPING_URL);
+            SC_Response_Ex::sendRedirect(SHOPPING_URL);
             exit;
             break;
 
@@ -363,10 +365,10 @@ class LC_Page_Shopping_Payment extends LC_Page {
     function lfInitParam() {
         $this->objFormParam->addParam("お支払い方法", "payment_id", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
         $this->objFormParam->addParam("ポイント", "use_point", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK", "ZERO_START"));
-        $this->objFormParam->addParam("お届け時間", "deliv_time_id", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"), "", false);
+        $this->objFormParam->addParam("お届け時間", "deliv_time_id", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
         $this->objFormParam->addParam("ご質問", "message", LTEXT_LEN, "KVa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("ポイントを使用する", "point_check", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"), '2');
-        $this->objFormParam->addParam("お届け日", "deliv_date", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"), "", false);
+        $this->objFormParam->addParam("お届け日", "deliv_date", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
     }
 
   
@@ -426,8 +428,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
     }
 
     /* DBへデータの登録 */
-    function lfRegistData($uniqid) {
-        $objDb = new SC_Helper_DB_Ex();
+    function lfRegistData($uniqid, &$objPurchase) {
 
         $sqlval = $this->objFormParam->getDbArray();
         // 登録データの作成
@@ -443,8 +444,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
             $sqlval['use_point'] = 0;
         }
 
-        // 受注_Tempテーブルに登録
-        $objDb->sfRegistTempOrder($uniqid, $sqlval);
+        $objPurchase->saveOrderTemp($uniqid, $sqlval);
     }
 
     /* お届け日一覧を取得する */
