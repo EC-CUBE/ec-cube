@@ -1195,10 +1195,11 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ENTRY_URL', 'HTTPS_
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TOP_URL_PATH', 'URL_PATH . DIR_INDEX_URL', 239, 'サイトトップ');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CART_URL_PATH', 'URL_PATH . "cart/" . DIR_INDEX_URL', 240, 'カートトップ');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DELIV_URL_PATH', 'URL_PATH . "shopping/deliv.php"', 241, 'お届け先設定');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('URL_MYPAGE_TOP', 'HTTPS_URL . "mypage/login.php"', 242, 'Myページトップ');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SHOPPING_CONFIRM_URL_PATH', 'URL_PATH . "shopping/confirm.php"', 243, '購入確認ページ');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SHOPPING_PAYMENT_URL_PATH', 'URL_PATH . "shopping/payment.php"', 244, 'お支払い方法選択ページ');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SHOPPING_COMPLETE_URL_PATH', 'URL_PATH . "shopping/complete.php"', 245, '購入完了画面');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MULTIPLE_URL_PATH', 'URL_PATH . "shopping/multiple.php"', 242, '複数お届け先設定');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('URL_MYPAGE_TOP', 'HTTPS_URL . "mypage/login.php"', 243, 'Myページトップ');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SHOPPING_CONFIRM_URL_PATH', 'URL_PATH . "shopping/confirm.php"', 244, '購入確認ページ');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SHOPPING_PAYMENT_URL_PATH', 'URL_PATH . "shopping/payment.php"', 245, 'お支払い方法選択ページ');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SHOPPING_COMPLETE_URL_PATH', 'URL_PATH . "shopping/complete.php"', 246, '購入完了画面');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SHOPPING_MODULE_URL_PATH', 'URL_PATH . "shopping/load_payment_module.php"', 249, 'モジュール追加用画面');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('P_DETAIL_URL_PATH', 'URL_PATH . "products/detail.php?product_id="', 253, '商品詳細(HTML出力)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MYPAGE_DELIVADDR_URL_PATH', 'URL_PATH . "mypage/delivery.php"', 254, 'マイページお届け先URL');

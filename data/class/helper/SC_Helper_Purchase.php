@@ -71,8 +71,16 @@ class SC_Helper_Purchase {
         $orderTemp['status'] = $orderStatus;
         $orderId = $this->registerOrder($orderTemp, $objCartSession,
                                         $objCartSession->getKey());
-        $this->registerShipping($orderId, $this->getShippingTemp());
+        $shippingTemp =& $this->getShippingTemp();
+        if (count($shippingTemp) > 1) {
+            foreach ($shippingTemp as $shippingId => $val) {
+                $this->registerShipmentItem($orderId, $shippingId,
+                                            $val['shipment_item']);
+            }
+        }
+        $this->registerShipping($orderId, $shippingTemp);
         $objQuery->commit();
+        $this->unsetShippingTemp();
         $objCustomer->updateSession();
     }
 
@@ -256,11 +264,11 @@ class SC_Helper_Purchase {
      * @return void
      */
     function copyFromOrder(&$dest, $src,
+                           $prefix = 'shipping', $src_prefix = 'order',
                            $keys = array('name01', 'name02', 'kana01', 'kana02',
                                          'sex', 'zip01', 'zip02', 'pref',
                                          'addr01', 'addr02',
-                                         'tel01', 'tel02', 'tel03'),
-                           $prefix = 'shipping', $src_prefix = 'order') {
+                                         'tel01', 'tel02', 'tel03')) {
         foreach ($keys as $key) {
             if (in_array($key, $keys)) {
                 $dest[$prefix . '_' . $key] = $src[$src_prefix . '_' . $key];
@@ -374,6 +382,27 @@ __EOS__;
             $sqlval['create_date'] = 'Now()';
             $sqlval['update_date'] = 'Now()';
             $objQuery->insert("dtb_shipping", $sqlval);
+        }
+    }
+
+    /**
+     * 配送商品を登録する.
+     */
+    function registerShipmentItem($orderId, $shippingId, $params) {
+        $objQuery =& SC_Query::getSingletonInstance();
+        $objProduct = new SC_Product();
+        foreach ($params as $productClassId => $val) {
+            $d = $objProduct->getDetailAndProductsClass($productClassId);
+            $sqlval['order_id'] = $orderId;
+            $sqlval['shipping_id'] = $shippingId;
+            $sqlval['product_class_id'] = $productClassId;
+            $sqlval['product_name'] = $d['name'];
+            $sqlval['product_code'] = $d['product_code'];
+            $sqlval['classcategory_name1'] = $d['classcategory_name1'];
+            $sqlval['classcategory_name2'] = $d['classcategory_name2'];
+            $sqlval['price'] = $d['price'];
+            $sqlval['quantity'] = $val['quantity'];
+            $objQuery->insert("dtb_shipment_item", $sqlval);
         }
     }
 

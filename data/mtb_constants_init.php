@@ -336,6 +336,8 @@ define('TOP_URL_PATH', URL_PATH . DIR_INDEX_URL);
 define('CART_URL_PATH', URL_PATH . "cart/" . DIR_INDEX_URL);
 /** お届け先設定 */
 define('DELIV_URL_PATH', URL_PATH . "shopping/deliv.php");
+/** 複数お届け先設定 */
+define('MULTIPLE_URL_PATH', URL_PATH . "shopping/multiple.php");
 /** Myページトップ */
 define('URL_MYPAGE_TOP', HTTPS_URL . "mypage/login.php");
 /** 購入確認ページ */

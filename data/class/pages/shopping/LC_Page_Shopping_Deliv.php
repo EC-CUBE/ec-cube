@@ -79,6 +79,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         $objCustomer = new SC_Customer();
         $objDb = new SC_Helper_DB_Ex();
         $objPurchase = new SC_Helper_Purchase_Ex();
+        $objQuery = SC_Query::getSingletonInstance();;
         // クッキー管理クラス
         $objCookie = new SC_Cookie(COOKIE_EXPIRE);
         // パラメータ管理クラス
@@ -96,7 +97,9 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         $this->objLoginFormParam->setParam($_POST);		// POST値の取得
 
         // ユーザユニークIDの取得と購入状態の正当性をチェック
-        $uniqid = SC_Utils_Ex::sfCheckNormalAccess($objSiteSess, $objCartSess);
+        $uniqid = $objSiteSess->getUniqId();
+        $objPurchase->verifyChangeCart($uniqid, $objCartSess);
+
         $this->tpl_uniqid = $uniqid;
 
         $this->cartKey = $objCartSess->getKey();
@@ -127,7 +130,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
             // ログイン判定
             if(!$objCustomer->getCustomerDataFromEmailPass($arrForm['login_pass'], $arrForm['login_email'])) {
                 // 仮登録の判定
-                $objQuery = new SC_Query;
+
                 $where = "email = ? AND status = 1 AND del_flg = 0";
                 $ret = $objQuery->count("dtb_customer", $where, array($arrForm['login_email']));
 
@@ -140,7 +143,10 @@ class LC_Page_Shopping_Deliv extends LC_Page {
             //ダウンロード商品判定
             if($this->cartKey == PRODUCT_TYPE_DOWNLOAD){
                 // 会員情報の住所を受注一時テーブルに書き込む
-                $objDb->sfRegistDelivData($uniqid, $objCustomer);
+                $objPurchase->copyFromCustomer($sqlval, $objCustomer, 'shipping');
+                $sqlval['deliv_id'] = $objPurchase->getDeliv($this->cartKey);
+                $objPurchase->saveShippingTemp($sqlval);
+                $objPurchase->saveOrderTemp($uniqid, $sqlval, $objCustomer);
                 // 正常に登録されたことを記録しておく
                 $objSiteSess->setRegistFlag();
                 // ダウンロード商品有りの場合は、支払方法画面に転送
@@ -151,7 +157,6 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         // 削除
         case 'delete':
             if (SC_Utils_Ex::sfIsInt($_POST['other_deliv_id'])) {
-                $objQuery = new SC_Query();
                 $where = "other_deliv_id = ?";
                 $arrRet = $objQuery->delete("dtb_other_deliv", $where, array($_POST['other_deliv_id']));
                 $this->objFormParam->setValue('select_addr_id', '');
@@ -167,27 +172,32 @@ class LC_Page_Shopping_Deliv extends LC_Page {
                 $sqlval['deliv_id'] = $objPurchase->getDeliv($this->cartKey);
                 $objPurchase->saveShippingTemp($sqlval);
                 $objPurchase->saveOrderTemp($uniqid, $sqlval, $objCustomer);
-                //$this->lfRegistDelivData($uniqid, $objCustomer);
+
                 // 正常に登録されたことを記録しておく
                 $objSiteSess->setRegistFlag();
                 // お支払い方法選択ページへ移動
-                $this->objDisplay->redirect($this->getLocation(SHOPPING_PAYMENT_URL_PATH, array(), true));
+                SC_Response_Ex::sendRedirect(SHOPPING_PAYMENT_URL_PATH);
                 exit;
             // 別のお届け先がチェックされている場合
             } elseif($_POST['deliv_check'] >= 1) {
                 if (SC_Utils_Ex::sfIsInt($_POST['deliv_check'])) {
-                    $objQuery = new SC_Query();
                     $deliv_count = $objQuery->count("dtb_other_deliv","customer_id=? and other_deliv_id = ?" ,array($objCustomer->getValue('customer_id'), $_POST['deliv_check']));
                     if ($deliv_count != 1) {
                         SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
                     }
 
-                    // 登録済みの別のお届け先を受注一時テーブルに書き込む
-                    $this->lfRegistOtherDelivData($uniqid, $objCustomer, $_POST['deliv_check']);
+                    $otherDeliv = $objQuery->select("*", "dtb_other_deliv",
+                                                    "other_deliv_id = ?",
+                                                    array($other_deliv_id));
+                    $sqlval = $otherDeliv[0];
+                    $sqlval['deliv_id'] = $objPurchase->getDeliv($this->cartKey);
+                    $objPurchase->saveShippingTemp($sqlval, $other_deliv_id);
+                    $objPurchase->saveOrderTemp($uniqid, $sqlval, $objCustomer);
+
                     // 正常に登録されたことを記録しておく
                     $objSiteSess->setRegistFlag();
                     // お支払い方法選択ページへ移動
-                    $this->objDisplay->redirect($this->getLocation(SHOPPING_PAYMENT_URL_PATH, array(), true));
+                    SC_Response_Ex::sendRedirect(SHOPPING_PAYMENT_URL_PATH);
                     exit;
                 }
             }else{
@@ -198,21 +208,19 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         // 前のページに戻る
         case 'return':
             // 確認ページへ移動
-            $this->objDisplay->redirect($this->getLocation(CART_URL_PATH, array(), true));
+            SC_Response_Ex::sendRedirect(CART_URL_PATH);
             exit;
             break;
         // お届け先複数指定
         case 'multiple':
-            $this->objDisplay->redirect($this->getLocation('./multiple.php', array(), true));
+            SC_Response_Ex::sendRedirect('multiple.php');
             exit;
             break;
 
         default:
-            $objQuery = new SC_Query();
-            $where = "order_temp_id = ?";
-            $arrRet = $objQuery->select("*", "dtb_order_temp", $where, array($uniqid));
-            if (empty($arrRet)) $arrRet = array("");
-            $this->objFormParam->setParam($arrRet[0]);
+            $arrOrderTemp = $objPurchase->getOrderTemp($uniqid);
+            if (empty($arrOrderTemp)) $arrOrderTemp = array("");
+            $this->objFormParam->setParam($arrOrderTemp);
             break;
         }
 
@@ -475,100 +483,6 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         $sqlval['customer_id'] = $objCustomer->getValue('customer_id');
         $sqlval['order_birth'] = $objCustomer->getValue('birth');
 
-        $objDb = new SC_Helper_DB_Ex();
-        $objDb->sfRegistTempOrder($uniqid, $sqlval);
-    }
-
-    /* 会員情報の住所を一時受注テーブルへ */
-    function lfRegistDelivData($uniqid, $objCustomer) {
-        // 登録データの作成
-        $sqlval['order_temp_id'] = $uniqid;
-        $sqlval['update_date'] = 'Now()';
-        $sqlval['customer_id'] = $objCustomer->getValue('customer_id');
-        $sqlval['order_name01'] = $objCustomer->getValue('name01');
-        $sqlval['order_name02'] = $objCustomer->getValue('name02');
-        $sqlval['order_kana01'] = $objCustomer->getValue('kana01');
-        $sqlval['order_kana02'] = $objCustomer->getValue('kana02');
-        $sqlval['order_zip01'] = $objCustomer->getValue('zip01');
-        $sqlval['order_zip02'] = $objCustomer->getValue('zip02');
-        $sqlval['order_pref'] = $objCustomer->getValue('pref');
-        $sqlval['order_addr01'] = $objCustomer->getValue('addr01');
-        $sqlval['order_addr02'] = $objCustomer->getValue('addr02');
-        $sqlval['order_tel01'] = $objCustomer->getValue('tel01');
-        $sqlval['order_tel02'] = $objCustomer->getValue('tel02');
-        $sqlval['order_tel03'] = $objCustomer->getValue('tel03');
-        $sqlval['order_fax01'] = $objCustomer->getValue('fax01');
-        $sqlval['order_fax02'] = $objCustomer->getValue('fax02');
-        $sqlval['order_fax03'] = $objCustomer->getValue('fax03');
-        $sqlval['order_birth'] = $objCustomer->getValue('birth');
-        $sqlval['order_email'] = $objCustomer->getValue('email');
-        /*
-        $sqlval['deliv_check'] = '-1';
-        $sqlval['deliv_name01'] = $objCustomer->getValue('name01');
-        $sqlval['deliv_name02'] = $objCustomer->getValue('name02');
-        $sqlval['deliv_kana01'] = $objCustomer->getValue('kana01');
-        $sqlval['deliv_kana02'] = $objCustomer->getValue('kana02');
-        $sqlval['deliv_zip01'] = $objCustomer->getValue('zip01');
-        $sqlval['deliv_zip02'] = $objCustomer->getValue('zip02');
-        $sqlval['deliv_pref'] = $objCustomer->getValue('pref');
-        $sqlval['deliv_addr01'] = $objCustomer->getValue('addr01');
-        $sqlval['deliv_addr02'] = $objCustomer->getValue('addr02');
-        $sqlval['deliv_tel01'] = $objCustomer->getValue('tel01');
-        $sqlval['deliv_tel02'] = $objCustomer->getValue('tel02');
-        $sqlval['deliv_tel03'] = $objCustomer->getValue('tel03');
-        $sqlval['deliv_fax01'] = $objCustomer->getValue('fax01');
-        $sqlval['deliv_fax02'] = $objCustomer->getValue('fax02');
-        $sqlval['deliv_fax03'] = $objCustomer->getValue('fax03');
-        */
-        $objDb = new SC_Helper_DB_Ex();
-        $objDb->sfRegistTempOrder($uniqid, $sqlval);
-    }
-
-    /* 別のお届け先住所を一時受注テーブルへ */
-    function lfRegistOtherDelivData($uniqid, $objCustomer, $other_deliv_id) {
-        // 登録データの作成
-        $sqlval['order_temp_id'] = $uniqid;
-        $sqlval['update_date'] = 'Now()';
-        $sqlval['customer_id'] = $objCustomer->getValue('customer_id');
-
-        $sqlval['order_name01'] = $objCustomer->getValue('name01');
-        $sqlval['order_name02'] = $objCustomer->getValue('name02');
-        $sqlval['order_kana01'] = $objCustomer->getValue('kana01');
-        $sqlval['order_kana02'] = $objCustomer->getValue('kana02');
-        $sqlval['order_zip01'] = $objCustomer->getValue('zip01');
-        $sqlval['order_zip02'] = $objCustomer->getValue('zip02');
-        $sqlval['order_pref'] = $objCustomer->getValue('pref');
-        $sqlval['order_addr01'] = $objCustomer->getValue('addr01');
-        $sqlval['order_addr02'] = $objCustomer->getValue('addr02');
-        $sqlval['order_tel01'] = $objCustomer->getValue('tel01');
-        $sqlval['order_tel02'] = $objCustomer->getValue('tel02');
-        $sqlval['order_tel03'] = $objCustomer->getValue('tel03');
-        $sqlval['order_fax01'] = $objCustomer->getValue('fax01');
-        $sqlval['order_fax02'] = $objCustomer->getValue('fax02');
-        $sqlval['order_fax03'] = $objCustomer->getValue('fax03');
-        $sqlval['order_birth'] = $objCustomer->getValue('birth');
-        $sqlval['order_email'] = $objCustomer->getValue('email');
-
-
-        $objQuery = new SC_Query();
-        $where = "other_deliv_id = ?";
-        $arrRet = $objQuery->select("*", "dtb_other_deliv", $where, array($other_deliv_id));
-        $_SESSION['shipping'] = $arrRet;
-        /*
-        $sqlval['deliv_check'] = $other_deliv_id;
-        $sqlval['deliv_name01'] = $arrRet[0]['name01'];
-        $sqlval['deliv_name02'] = $arrRet[0]['name02'];
-        $sqlval['deliv_kana01'] = $arrRet[0]['kana01'];
-        $sqlval['deliv_kana02'] = $arrRet[0]['kana02'];
-        $sqlval['deliv_zip01'] = $arrRet[0]['zip01'];
-        $sqlval['deliv_zip02'] = $arrRet[0]['zip02'];
-        $sqlval['deliv_pref'] = $arrRet[0]['pref'];
-        $sqlval['deliv_addr01'] = $arrRet[0]['addr01'];
-        $sqlval['deliv_addr02'] = $arrRet[0]['addr02'];
-        $sqlval['deliv_tel01'] = $arrRet[0]['tel01'];
-        $sqlval['deliv_tel02'] = $arrRet[0]['tel02'];
-        $sqlval['deliv_tel03'] = $arrRet[0]['tel03'];
-        */
         $objDb = new SC_Helper_DB_Ex();
         $objDb->sfRegistTempOrder($uniqid, $sqlval);
     }

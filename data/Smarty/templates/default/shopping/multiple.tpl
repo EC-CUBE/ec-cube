@@ -47,7 +47,10 @@
                 <a href="<!--{$smarty.const.URL_PATH}-->mypage/delivery_addr.php" onclick="win02('<!--{$smarty.const.URL_PATH}-->mypage/delivery_addr.php?page=<!--{$smarty.server.PHP_SELF|h}-->','new_deiv','600','640'); return false;" onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_add_address_on.gif','addition');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_add_address.gif','addition');"><img src="<!--{$TPL_DIR}-->img/button/btn_add_address.gif" width="160" height="22" alt="新しいお届け先を追加する" name="addition" id="addition" /></a>
             </p>
         <!--{/if}-->
-
+        <form name="form1" id="form1" method="post" action="?">
+            <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+            <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->" />
+            <input type="hidden" name="mode" value="confirm" />
             <table summary="商品情報">
                 <tr>
                     <th>削除</th>
@@ -56,9 +59,13 @@
                     <th>数量</th>
                     <th>お届け先</th>
                 </tr>
-                <!--{foreach from=$items item=item }-->
+                <!--{foreach from=$items item=item name=cartItem}-->
+                    <!--{assign var=index value=$smarty.foreach.cartItem.index}-->
                     <tr style="<!--{if $item.error}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->">
-                        <td><a href="?" onclick="fnFormModeSubmit('form<!--{$key}-->', 'delete', 'cart_no', '<!--{$item.cart_no}-->'); return false;">削除</a>
+                        <td>
+                          <a href="?" onclick="fnFormModeSubmit('form<!--{$key}-->', 'delete', 'cart_no', '<!--{$smarty.foreach.cartItem.index}-->'); return false;">削除</a>
+                          <input type="hidden" name="cart_no<!--{$index}-->" value="<!--{$index}-->" />
+                          <input type="hidden" name="product_class_id<!--{$index}-->" value="<!--{$item.product_class_id}-->" />
                         </td>
                         <td class="phototd">
                         <a
@@ -79,14 +86,19 @@
                             <!--{/if}-->
                             <!--{$item.price02|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
                         </td>
-                        <td><input type="text" name="quantity" value="1" size="4" /></td>
-                        <td><select name="shipping"><!--{html_options options=$addrs}--></select></td>
+                        <td>
+                          <!--{assign var=key value="quantity`$index`"}-->
+                          <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value}-->" size="4" />
+                        </td>
+                        <td>
+                          <!--{assign var=key value="shipping`$index`"}-->
+                          <select name="<!--{$key}-->"><!--{html_options options=$addrs selected=$arrForm[$key].value}--></select>
+                        </td>
                      </tr>
                   <!--{/foreach}-->
             </table>
-
             <div class="tblareabtn">
-                <a href="<!--{$smarty.const.URL_CART_TOP}-->" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_back_on.gif',back03)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_back.gif',back03)">
+                <a href="<!--{$smarty.const.CART_URL_PATH}-->" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_back_on.gif',back03)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_back.gif',back03)">
                     <img src="<!--{$TPL_DIR}-->img/button/btn_back.gif" width="150" height="30" alt="戻る" border="0" name="back03" id="back03" /></a>
                 <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_address_select_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_address_select.gif',this)" src="<!--{$TPL_DIR}-->img/button/btn_address_select.gif" alt="選択したお届け先に送る" class="box190" name="send_button" id="send_button" />
             </div>

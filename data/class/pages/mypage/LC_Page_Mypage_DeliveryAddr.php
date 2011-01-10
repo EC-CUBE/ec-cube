@@ -137,8 +137,10 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page {
                         if ($val != "") $this->arrForm[$key] = $val;
                     }
                 } else {
-                    
-                    if ($_POST['ParentPage'] == MYPAGE_DELIVADDR_URL_PATH || $_POST['ParentPage'] == DELIV_URL_PATH) {
+                    $validUrl = array(MYPAGE_DELIVADDR_URL_PATH,
+                                      DELIV_URL_PATH,
+                                      MULTIPLE_URL_PATH);
+                    if (in_array($_POST['ParentPage'], $validUrl)) {
                         $this->tpl_onload = "fnUpdateParent('". $this->getLocation($_POST['ParentPage']) ."'); window.close();";
                     } else {
                         SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
