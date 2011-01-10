@@ -112,7 +112,7 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         // カート集計を元に最終計算
         // FIXME 使用ポイント, 配送都道府県, 支払い方法, 手数料の扱い
         $arrData = array_merge($tmpData, $objCartSess->calculate($this->cartKey, $objCustomer, $tmpData['use_point'], $tmpData['deliv_pref'], $tmpData['payment_id'], $tmpData['charge'], $tmpData['discount']));
-
+        unset($arrData['deliv_fee']); // FIXME
         // 会員ログインチェック
         if($objCustomer->isLoginSuccess()) {
             $this->tpl_login = '1';

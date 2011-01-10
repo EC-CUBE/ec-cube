@@ -196,6 +196,12 @@ class LC_Page_Shopping_Deliv extends LC_Page {
             $this->objDisplay->redirect($this->getLocation(CART_URL_PATH, array(), true));
             exit;
             break;
+        // お届け先複数指定
+        case 'multiple':
+            $this->objDisplay->redirect($this->getLocation('./multiple.php', array(), true));
+            exit;
+            break;
+
         default:
             $objQuery = new SC_Query();
             $where = "order_temp_id = ?";
@@ -205,25 +211,8 @@ class LC_Page_Shopping_Deliv extends LC_Page {
             break;
         }
 
-        /** 表示処理 **/
-
-        // 会員登録住所の取得
-        $col = "name01, name02, pref, addr01, addr02";
-        $where = "customer_id = ?";
-        $objQuery = new SC_Query();
-        $arrCustomerAddr = $objQuery->select($col, "dtb_customer", $where, array($_SESSION['customer']['customer_id']));
-        // 別のお届け先住所の取得
-        $col = "other_deliv_id, name01, name02, pref, addr01, addr02";
-        $objQuery->setOrder("other_deliv_id DESC");
-        $objOtherAddr = $objQuery->select($col, "dtb_other_deliv", $where, array($_SESSION['customer']['customer_id']));
-        $this->arrAddr = $arrCustomerAddr;
-        $this->tpl_addrmax = count($objOtherAddr);
-        $cnt = 1;
-        foreach($objOtherAddr as $val) {
-            $this->arrAddr[$cnt] = $val;
-            $cnt++;
-        }
-
+        // 登録済み住所を取得
+        $this->arrAddr = $objCustomer->getCustomerAddress($_SESSION['customer']['customer_id']);
         // 入力値の取得
         if (!isset($arrErr)) $arrErr = array();
         $this->arrForm = $this->objFormParam->getFormParamList();
@@ -508,7 +497,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         $sqlval['order_fax03'] = $objCustomer->getValue('fax03');
         $sqlval['order_birth'] = $objCustomer->getValue('birth');
         $sqlval['order_email'] = $objCustomer->getValue('email');
-
+        /*
         $sqlval['deliv_check'] = '-1';
         $sqlval['deliv_name01'] = $objCustomer->getValue('name01');
         $sqlval['deliv_name02'] = $objCustomer->getValue('name02');
@@ -525,7 +514,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         $sqlval['deliv_fax01'] = $objCustomer->getValue('fax01');
         $sqlval['deliv_fax02'] = $objCustomer->getValue('fax02');
         $sqlval['deliv_fax03'] = $objCustomer->getValue('fax03');
-
+        */
         $objDb = new SC_Helper_DB_Ex();
         $objDb->sfRegistTempOrder($uniqid, $sqlval);
     }
@@ -555,10 +544,12 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         $sqlval['order_birth'] = $objCustomer->getValue('birth');
         $sqlval['order_email'] = $objCustomer->getValue('email');
 
+
         $objQuery = new SC_Query();
         $where = "other_deliv_id = ?";
         $arrRet = $objQuery->select("*", "dtb_other_deliv", $where, array($other_deliv_id));
-
+        $_SESSION['shipping'] = $arrRet;
+        /*
         $sqlval['deliv_check'] = $other_deliv_id;
         $sqlval['deliv_name01'] = $arrRet[0]['name01'];
         $sqlval['deliv_name02'] = $arrRet[0]['name02'];
@@ -572,7 +563,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         $sqlval['deliv_tel01'] = $arrRet[0]['tel01'];
         $sqlval['deliv_tel02'] = $arrRet[0]['tel02'];
         $sqlval['deliv_tel03'] = $arrRet[0]['tel03'];
-
+        */
         $objDb = new SC_Helper_DB_Ex();
         $objDb->sfRegistTempOrder($uniqid, $sqlval);
     }

@@ -478,7 +478,7 @@ class SC_CartSession {
      *
      * - tax: 税額
      * - subtotal: カート内商品の小計
-     * - deliv_fee: カート内商品の合計送料
+     * - deliv_fee: カート内商品の合計送料 FIXME
      * - total: 合計金額
      * - payment_total: お支払い合計
      * - add_point: 加算ポイント
@@ -581,6 +581,10 @@ class SC_CartSession {
 
     function unsetKey() {
         unset($_SESSION['cartKey']);
+    }
+
+    function getKey() {
+        return $_SESSION['cartKey'];
     }
 }
 ?>

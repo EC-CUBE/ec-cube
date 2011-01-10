@@ -82,32 +82,38 @@ class LC_Page_Shopping extends LC_Page {
         $objCustomer = new SC_Customer();
         $objCookie = new SC_Cookie();
         $objDb = new SC_Helper_DB_Ex();
+        $objPurchase = new SC_Helper_Purchase_Ex();
         $this->objFormParam = new SC_FormParam();            // フォーム用
         $this->lfInitParam();                                // パラメータ情報の初期化
         $this->objFormParam->setParam($_POST);            // POST値の取得
 
-        // ユーザユニークIDの取得と購入状態の正当性をチェック
-        $uniqid = SC_Utils_Ex::sfCheckNormalAccess($objSiteSess, $objCartSess);
+        $uniqid = $objSiteSess->getUniqId();
+        $objPurchase->verifyChangeCart($uniqid, $objCartSess);
+
         $this->tpl_uniqid = $uniqid;
 
-        //ダウンロード商品判定
-        $this->cartdown = $objDb->chkCartDown($objCartSess);
+        $this->cartKey = $objCartSess->getKey();
 
         // ログインチェック
         if($objCustomer->isLoginSuccess()) {
-            // すでにログインされている場合
-            if ($this->cartdown == 2) {
+
+            switch ($this->cartKey) {
+            // ダウンロード商品の場合は支払方法設定画面に転送
+            case PRODUCT_TYPE_DOWNLOAD:
                 // 会員情報の住所を受注一時テーブルに書き込む
-                $objDb->sfRegistDelivData($uniqid, $objCustomer);
+                $objPurchase->saveOrderTemp($uniqid, array(), $objCustomer);
                 // 正常に登録されたことを記録しておく
                 $objSiteSess->setRegistFlag();
-                //カート内が全てダウンロード商品の場合は支払方法設定画面に転送
                 SC_Response_Ex::sendRedirect('payment.php');
-            } else {
+                exit;
+                break;
+
+            case PRODUCT_TYPE_NORMAL:
+            default:
                 // お届け先設定画面に転送
                 SC_Response_Ex::sendRedirect('deliv.php');
+                exit;
             }
-            exit;
         }
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -120,29 +126,25 @@ class LC_Page_Shopping extends LC_Page {
 
         switch($_POST['mode']) {
         case 'nonmember_confirm':
-            $this->lfSetNonMember($this);
+            $this->tpl_mainpage = 'shopping/nonmember_input.tpl';
+            $this->tpl_title = 'お客様情報入力';
             //非会員のダウンロード商品を含んだ買い物はNG
-            if($this->cartdown != 0){
-                SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, $objSiteSess, false, "ダウンロード商品を含むお買い物は、会員登録が必要です。<br/>お手数ですが、会員登録をお願いします。");
+            if ($this->cartKey == PRODUCT_TYPE_DOWNLOAD) {
+                SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, $objSiteSess, false,
+                                             "ダウンロード商品を含むお買い物は、会員登録が必要です。<br/>お手数ですが、会員登録をお願いします。");
             }
             // ※breakなし
         case 'confirm':
-            // 入力値の変換
-            $this->objFormParam->convParam();
-            $this->objFormParam->toLower('order_mail');
-            $this->objFormParam->toLower('order_mail_check');
-
             $this->arrErr = $this->lfCheckError();
 
             // 入力エラーなし
             if(count($this->arrErr) == 0) {
                 // DBへのデータ登録
-                $this->lfRegistData($uniqid);
-
+                $this->lfRegistData($uniqid, $objPurchase, $objCustomer);
                 // 正常に登録されたことを記録しておく
                 $objSiteSess->setRegistFlag();
                 // お支払い方法選択ページへ移動
-                $this->objDisplay->redirect($this->getLocation(SHOPPING_PAYMENT_URL_PATH));
+                SC_Response_Ex::sendRedirect(SHOPPING_PAYMENT_URL_PATH);
                 exit;
             }
 
@@ -150,34 +152,47 @@ class LC_Page_Shopping extends LC_Page {
         // 前のページに戻る
         case 'return':
             // 確認ページへ移動
-            $this->objDisplay->redirect($this->getLocation(CART_URL_PATH));
+            SC_Response_Ex::sendRedirect(CART_URL_PATH);
             exit;
             break;
+
+        case 'multiple':
+            $this->arrErr = $this->lfCheckError();
+
+            // 入力エラーなし
+            if(count($this->arrErr) == 0) {
+                // DBへのデータ登録
+                $this->lfRegistData($uniqid, $objPurchase, $objCustomer);
+                // 正常に登録されたことを記録しておく
+                $objSiteSess->setRegistFlag();
+
+                SC_Response_Ex::sendRedirect("multiple.php");
+                exit;
+            }
+            // breakなし
+
         case 'nonmember':
-            $this->lfSetNonMember($this);
+            $this->tpl_mainpage = 'shopping/nonmember_input.tpl';
+            $this->tpl_title = 'お客様情報入力';
             //非会員のダウンロード商品を含んだ買い物はNG
-            if($this->cartdown != 0){
-                SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, $objSiteSess, false, "ダウンロード商品を含むお買い物は、会員登録が必要です。<br/>お手数ですが、会員登録をお願いします。");
+            if ($this->cartKey == PRODUCT_TYPE_DOWNLOAD) {
+                SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, $objSiteSess, false,
+                                             "ダウンロード商品を含むお買い物は、会員登録が必要です。<br/>お手数ですが、会員登録をお願いします。");
             }
             // ※breakなし
         default:
             if(isset($_GET['from']) && $_GET['from'] == 'nonmember') {
-                $this->lfSetNonMember($this);
+                $this->tpl_mainpage = 'shopping/nonmember_input.tpl';
+                $this->tpl_title = 'お客様情報入力';
             }
-            // ユーザユニークIDの取得
-            $uniqid = $objSiteSess->getUniqId();
-            $objQuery = new SC_Query();
-            $where = "order_temp_id = ?";
-            $arrRet = $objQuery->select("*", "dtb_order_temp", $where, array($uniqid));
-            if (empty($arrRet)) $arrRet = array(
-                                                array('order_email' => "",
-                                                      'order_birth' => ""));
+            $arrOrderTemp = $objPurchase->getOrderTemp($uniqid);
+            if (empty($arrOrderTemp)) $arrOrderTemp = array('order_email' => "",
+                                                            'order_birth' => "");
 
             // DB値の取得
-            $this->objFormParam->setParam($arrRet[0]);
-            $this->objFormParam->setValue('order_email02', $arrRet[0]['order_email']);
-            $this->objFormParam->setDBDate($arrRet[0]['order_birth']);
-            break;
+            $this->objFormParam->setParam($arrOrderTemp);
+            $this->objFormParam->setValue('order_email02', $arrOrderTemp['order_email']);
+            $this->objFormParam->setDBDate($arrOrderTemp['order_birth']);
         }
 
         // クッキー判定
@@ -280,12 +295,6 @@ class LC_Page_Shopping extends LC_Page {
         parent::destroy();
     }
 
-    /* 非会員入力ページのセット */
-    function lfSetNonMember(&$objPage) {
-        $objPage->tpl_mainpage = 'shopping/nonmember_input.tpl';
-        $this->tpl_title = 'お客様情報入力';
-    }
-
     /* パラメータ情報の初期化 */
     function lfInitParam() {
         $this->objFormParam->addParam("お名前(姓)", "order_name01", STEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
@@ -310,54 +319,47 @@ class LC_Page_Shopping extends LC_Page {
         $this->objFormParam->addParam("日", "day", INT_LEN, "n", array("MAX_LENGTH_CHECK"), "", false);
         $this->objFormParam->addParam("性別", "order_sex", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
         $this->objFormParam->addParam("職業", "order_job", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $this->objFormParam->addParam("別のお届け先", "deliv_check", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $this->objFormParam->addParam("お名前(姓)", "deliv_name01", STEXT_LEN, "KVa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("お名前(名)", "deliv_name02", STEXT_LEN, "KVa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("お名前(フリガナ・姓)", "deliv_kana01", STEXT_LEN, "KVCa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("お名前(フリガナ・名)", "deliv_kana02", STEXT_LEN, "KVCa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("郵便番号1", "deliv_zip01", ZIP01_LEN, "n", array("NUM_CHECK", "NUM_COUNT_CHECK"));
-        $this->objFormParam->addParam("郵便番号2", "deliv_zip02", ZIP02_LEN, "n", array("NUM_CHECK", "NUM_COUNT_CHECK"));
-        $this->objFormParam->addParam("都道府県", "deliv_pref", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $this->objFormParam->addParam("住所1", "deliv_addr01", MTEXT_LEN, "KVa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("住所2", "deliv_addr02", MTEXT_LEN, "KVa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("電話番号1", "deliv_tel01", TEL_ITEM_LEN, "n", array("MAX_LENGTH_CHECK" ,"NUM_CHECK"));
-        $this->objFormParam->addParam("電話番号2", "deliv_tel02", TEL_ITEM_LEN, "n", array("MAX_LENGTH_CHECK" ,"NUM_CHECK"));
-        $this->objFormParam->addParam("電話番号3", "deliv_tel03", TEL_ITEM_LEN, "n", array("MAX_LENGTH_CHECK" ,"NUM_CHECK"));
+        $this->objFormParam->addParam("別のお届け先", "deliv_check", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"), "", false);
+        $this->objFormParam->addParam("お名前(姓)", "shipping_name01", STEXT_LEN, "KVa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $this->objFormParam->addParam("お名前(名)", "shipping_name02", STEXT_LEN, "KVa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $this->objFormParam->addParam("お名前(フリガナ・姓)", "shipping_kana01", STEXT_LEN, "KVCa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $this->objFormParam->addParam("お名前(フリガナ・名)", "shipping_kana02", STEXT_LEN, "KVCa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $this->objFormParam->addParam("郵便番号1", "shipping_zip01", ZIP01_LEN, "n", array("NUM_CHECK", "NUM_COUNT_CHECK"));
+        $this->objFormParam->addParam("郵便番号2", "shipping_zip02", ZIP02_LEN, "n", array("NUM_CHECK", "NUM_COUNT_CHECK"));
+        $this->objFormParam->addParam("都道府県", "shipping_pref", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $this->objFormParam->addParam("住所1", "shipping_addr01", MTEXT_LEN, "KVa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $this->objFormParam->addParam("住所2", "shipping_addr02", MTEXT_LEN, "KVa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $this->objFormParam->addParam("電話番号1", "shipping_tel01", TEL_ITEM_LEN, "n", array("MAX_LENGTH_CHECK" ,"NUM_CHECK"));
+        $this->objFormParam->addParam("電話番号2", "shipping_tel02", TEL_ITEM_LEN, "n", array("MAX_LENGTH_CHECK" ,"NUM_CHECK"));
+        $this->objFormParam->addParam("電話番号3", "shipping_tel03", TEL_ITEM_LEN, "n", array("MAX_LENGTH_CHECK" ,"NUM_CHECK"));
         $this->objFormParam->addParam("メールマガジン", "mail_flag", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"), 1);
     }
 
     /* DBへデータの登録 */
-    function lfRegistData($uniqid) {
-        $arrRet = $this->objFormParam->getHashArray();
+    function lfRegistData($uniqid, &$objPurchase, &$objCustomer) {
+        $params = $this->objFormParam->getHashArray();
         $sqlval = $this->objFormParam->getDbArray();
         // 登録データの作成
-        $sqlval['order_birth'] = SC_Utils_Ex::sfGetTimestamp($arrRet['year'], $arrRet['month'], $arrRet['day']);
+        $sqlval['order_birth'] = SC_Utils_Ex::sfGetTimestamp($params['year'], $params['month'], $params['day']);
         $sqlval['update_date'] = 'Now()';
         $sqlval['customer_id'] = '0';
 
         // お届け先を指定しない場合、
         if ($sqlval['deliv_check'] != '1') {
-            // 受注一時テーブルに登録する顧客(お客様情報)をお届け先へコピーする
-            $this->lfCopyDeliv($sqlval);
+            // order_* を shipping_* へコピー
+            $objPurchase->copyFromOrder($sqlval, $params);
         }
-
-        // 既存データのチェック
-        $objQuery = new SC_Query();
-        $where = "order_temp_id = ?";
-        $cnt = $objQuery->count("dtb_order_temp", $where, array($uniqid));
-        // 既存データがない場合
-        if ($cnt == 0) {
-            $sqlval['order_temp_id'] = $uniqid;
-            $sqlval['create_date'] = 'Now()';
-            $objQuery->insert("dtb_order_temp", $sqlval);
-        } else {
-            $objQuery->update("dtb_order_temp", $sqlval, $where, array($uniqid));
-        }
-
+        $objPurchase->saveShippingTemp($sqlval);
+        $objPurchase->saveOrderTemp($uniqid, $sqlval, $objCustomer);
     }
 
     /* 入力内容のチェック */
     function lfCheckError() {
+        // 入力値の変換
+        $this->objFormParam->convParam();
+        $this->objFormParam->toLower('order_mail');
+        $this->objFormParam->toLower('order_mail_check');
+
         // 入力データを渡す。
         $arrRet = $this->objFormParam->getHashArray();
         $objErr = new SC_CheckError($arrRet);
@@ -365,27 +367,26 @@ class LC_Page_Shopping extends LC_Page {
 
         // 別のお届け先チェック
         if(isset($_POST['deliv_check']) && $_POST['deliv_check'] == "1") {
-            $objErr->doFunc(array("お名前(姓)", "deliv_name01"), array("EXIST_CHECK"));
-            $objErr->doFunc(array("お名前(名)", "deliv_name02"), array("EXIST_CHECK"));
-            $objErr->doFunc(array("お名前(フリガナ・姓)", "deliv_kana01"), array("EXIST_CHECK"));
-            $objErr->doFunc(array("お名前(フリガナ・名)", "deliv_kana02"), array("EXIST_CHECK"));
-            $objErr->doFunc(array("郵便番号1", "deliv_zip01"), array("EXIST_CHECK"));
-            $objErr->doFunc(array("郵便番号2", "deliv_zip02"), array("EXIST_CHECK"));
-            $objErr->doFunc(array("都道府県", "deliv_pref"), array("EXIST_CHECK"));
-            $objErr->doFunc(array("住所1", "deliv_addr01"), array("EXIST_CHECK"));
-            $objErr->doFunc(array("住所2", "deliv_addr02"), array("EXIST_CHECK"));
-            $objErr->doFunc(array("電話番号1", "deliv_tel01"), array("EXIST_CHECK"));
-            $objErr->doFunc(array("電話番号2", "deliv_tel02"), array("EXIST_CHECK"));
-            $objErr->doFunc(array("電話番号3", "deliv_tel03"), array("EXIST_CHECK"));
+            $objErr->doFunc(array("お名前(姓)", "shipping_name01"), array("EXIST_CHECK"));
+            $objErr->doFunc(array("お名前(名)", "shipping_name02"), array("EXIST_CHECK"));
+            $objErr->doFunc(array("お名前(フリガナ・姓)", "shipping_kana01"), array("EXIST_CHECK"));
+            $objErr->doFunc(array("お名前(フリガナ・名)", "shipping_kana02"), array("EXIST_CHECK"));
+            $objErr->doFunc(array("郵便番号1", "shipping_zip01"), array("EXIST_CHECK"));
+            $objErr->doFunc(array("郵便番号2", "shipping_zip02"), array("EXIST_CHECK"));
+            $objErr->doFunc(array("都道府県", "shipping_pref"), array("EXIST_CHECK"));
+            $objErr->doFunc(array("住所1", "shipping_addr01"), array("EXIST_CHECK"));
+            $objErr->doFunc(array("住所2", "shipping_addr02"), array("EXIST_CHECK"));
+            $objErr->doFunc(array("電話番号1", "shipping_tel01"), array("EXIST_CHECK"));
+            $objErr->doFunc(array("電話番号2", "shipping_tel02"), array("EXIST_CHECK"));
+            $objErr->doFunc(array("電話番号3", "shipping_tel03"), array("EXIST_CHECK"));
         }
 
         // 複数項目チェック
         $objErr->doFunc(array("TEL", "order_tel01", "order_tel02", "order_tel03"), array("TEL_CHECK"));
         $objErr->doFunc(array("FAX", "order_fax01", "order_fax02", "order_fax03"), array("TEL_CHECK"));
         $objErr->doFunc(array("郵便番号", "order_zip01", "order_zip02"), array("ALL_EXIST_CHECK"));
-        $objErr->doFunc(array("TEL", "deliv_tel01", "deliv_tel02", "deliv_tel03"), array("TEL_CHECK"));
-        $objErr->doFunc(array("FAX", "deliv_fax01", "deliv_fax02", "deliv_fax03"), array("TEL_CHECK"));
-        $objErr->doFunc(array("郵便番号", "deliv_zip01", "deliv_zip02"), array("ALL_EXIST_CHECK"));
+        $objErr->doFunc(array("TEL", "shipping_tel01", "shipping_tel02", "shipping_tel03"), array("TEL_CHECK"));
+        $objErr->doFunc(array("郵便番号", "shipping_zip01", "shipping_zip02"), array("ALL_EXIST_CHECK"));
         $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_BIRTHDAY"));
         $objErr->doFunc(array("メールアドレス", "メールアドレス（確認）", "order_email", "order_email02"), array("EQUAL_CHECK"));
 

@@ -174,8 +174,8 @@
         <tr>
           <th>お名前<span class="attention">※</span></th>
           <td>
-            <!--{assign var=key1 value="deliv_name01"}-->
-            <!--{assign var=key2 value="deliv_name02"}-->
+            <!--{assign var=key1 value="shipping_name01"}-->
+            <!--{assign var=key2 value="shipping_name02"}-->
             <span class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></span>
             姓&nbsp;<input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->; ime-mode: active;" size="15" class="box120" />&nbsp;
             名&nbsp;<input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->; ime-mode: active;" size="15" class="box120" />
@@ -184,8 +184,8 @@
         <tr>
           <th>お名前(フリガナ)<span class="attention">※</span></th>
           <td>
-            <!--{assign var=key1 value="deliv_kana01"}-->
-            <!--{assign var=key2 value="deliv_kana02"}-->
+            <!--{assign var=key1 value="shipping_kana01"}-->
+            <!--{assign var=key2 value="shipping_kana02"}-->
             <span class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></span>
             セイ&nbsp;<input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->; ime-mode: active;" size="15" class="box120" />&nbsp;
             メイ&nbsp;<input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->; ime-mode: active;" size="15" class="box120" />
@@ -194,31 +194,31 @@
         <tr>
           <th>郵便番号<span class="attention">※</span></th>
           <td>
-           <!--{assign var=key1 value="deliv_zip01"}-->
-           <!--{assign var=key2 value="deliv_zip02"}-->
+           <!--{assign var=key1 value="shipping_zip01"}-->
+           <!--{assign var=key2 value="shipping_zip02"}-->
             <span class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></span>
             <p>〒&nbsp;<input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->; ime-mode: disabled;"  size="6" class="box60" />&nbsp;-&nbsp;  <input type="text"  name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->; ime-mode: disabled;"  size="6" class="box60" />　
               <a href="http://search.post.japanpost.jp/zipcode/" target="_blank"><span class="fs12">郵便番号検索</span></a></p>
 
-            <p class="zipimg"><a href="<!--{$smarty.const.URL_PATH}-->address/<!--{$smarty.const.DIR_INDEX_URL}-->" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URL_PATH}-->', 'deliv_zip01', 'deliv_zip02', 'deliv_pref', 'deliv_addr01'); return false;" target="_blank"><img src="<!--{$TPL_DIR}-->img/button/btn_address_input.gif" width="86" height="20" alt="住所自動入力" /></a>
+            <p class="zipimg"><a href="<!--{$smarty.const.URL_PATH}-->address/<!--{$smarty.const.DIR_INDEX_URL}-->" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URL_PATH}-->', 'shipping_zip01', 'shipping_zip02', 'shipping_pref', 'shipping_addr01'); return false;" target="_blank"><img src="<!--{$TPL_DIR}-->img/button/btn_address_input.gif" width="86" height="20" alt="住所自動入力" /></a>
               <span class="mini">&nbsp;郵便番号を入力後、クリックしてください。</span></p>
           </td>
         </tr>
         <tr>
           <th>住所<span class="attention">※</span></th>
           <td>
-            <!--{assign var=key value="deliv_pref"}-->
-            <span class="attention"><!--{$arrErr.deliv_pref}--><!--{$arrErr.deliv_addr01}--><!--{$arrErr.deliv_addr02}--></span>
+            <!--{assign var=key value="shipping_pref"}-->
+            <span class="attention"><!--{$arrErr.shipping_pref}--><!--{$arrErr.shipping_addr01}--><!--{$arrErr.shipping_addr02}--></span>
             <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
               <option value="">都道府県を選択</option>
               <!--{html_options options=$arrPref selected=$arrForm[$key].value}-->
             </select>
             <p class="mini">
-              <!--{assign var=key value="deliv_addr01"}-->
+              <!--{assign var=key value="shipping_addr01"}-->
               <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" size="40" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->; ime-mode: active;" class="box380" /><br />
               <!--{$smarty.const.SAMPLE_ADDRESS1}--></p>
             <p class="mini">
-              <!--{assign var=key value="deliv_addr02"}-->
+              <!--{assign var=key value="shipping_addr02"}-->
               <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" size="40"  maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->; ime-mode: active;" class="box380" /><br />
               <!--{$smarty.const.SAMPLE_ADDRESS2}--></p>
             <p class="mini"><em>住所は2つに分けてご記入ください。マンション名は必ず記入してください。</em></p>
@@ -228,9 +228,9 @@
         <tr>
           <th>電話番号<span class="attention">※</span></th>
           <td>
-            <!--{assign var=key1 value="deliv_tel01"}-->
-            <!--{assign var=key2 value="deliv_tel02"}-->
-            <!--{assign var=key3 value="deliv_tel03"}-->
+            <!--{assign var=key1 value="shipping_tel01"}-->
+            <!--{assign var=key2 value="shipping_tel02"}-->
+            <!--{assign var=key3 value="shipping_tel03"}-->
             <span class="attention"><!--{$arrErr[$key1]}--></span>
             <span class="attention"><!--{$arrErr[$key2]}--></span>
             <span class="attention"><!--{$arrErr[$key3]}--></span>
@@ -240,6 +240,7 @@
           </td>
         </tr>
       </table>
+      <p><a href="javascript:;" onclick="fnModeSubmit('multiple', '', ''); return false">お届け先を複数指定する</a></p>
 
       <div class="tblareabtn">
        <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_next_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_next.gif',this)" src="<!--{$TPL_DIR}-->img/button/btn_next.gif" class="box150" alt="次へ" name="next" id="next" />

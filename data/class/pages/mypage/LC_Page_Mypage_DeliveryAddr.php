@@ -148,9 +148,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page {
                 }
                 break;
         }
-        $this->setTemplate($this->tpl_mainpage);
-        //$objView->assignobj($this);
-        //$objView->display($this->tpl_mainpage);
+        $this->setTemplate('mypage/delivery_addr.tpl');
     }
 
     /**

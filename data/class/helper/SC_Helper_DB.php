@@ -361,9 +361,11 @@ class SC_Helper_DB {
      * @param string $uniqid ユニークID
      * @param array $sqlval SQLの値の配列
      * @return void
+     * @deprecated SC_Helper_Purchase::saveOrderTemp() を使用して下さい
      */
     function sfRegistTempOrder($uniqid, $sqlval) {
         if($uniqid != "") {
+            $sqlval['session'] = serialize($_SESSION);
             // 既存データのチェック
             $objQuery =& SC_Query::getSingletonInstance();
             $where = "order_temp_id = ?";
@@ -372,6 +374,7 @@ class SC_Helper_DB {
             if ($cnt == 0) {
                 // 初回書き込み時に会員の登録済み情報を取り込む
                 $sqlval = $this->sfGetCustomerSqlVal($uniqid, $sqlval);
+                $sqlval['order_temp_id'] = $uniqid;
                 $sqlval['create_date'] = "now()";
                 $objQuery->insert("dtb_order_temp", $sqlval);
             } else {
@@ -380,7 +383,7 @@ class SC_Helper_DB {
 
             // 受注_Tempテーブルの名称列を更新
             // ・決済モジュールに対応するため、static メソッドとして扱う
-            SC_Helper_DB_Ex::sfUpdateOrderNameCol($uniqid, true);
+            //SC_Helper_DB_Ex::sfUpdateOrderNameCol($uniqid, true);
         }
     }
 
@@ -390,13 +393,14 @@ class SC_Helper_DB {
      * @param string $uniqid ユニークID
      * @param array $sqlval SQL の値の配列
      * @return array 会員情報を含んだ SQL の値の配列
+     * @deprecated SC_Helper_Purchase::copyFromCustomer() を使用して下さい
      */
     function sfGetCustomerSqlVal($uniqid, $sqlval) {
+
         $objCustomer = new SC_Customer();
         // 会員情報登録処理
         if ($objCustomer->isLoginSuccess(true)) {
             // 登録データの作成
-            $sqlval['order_temp_id'] = $uniqid;
             $sqlval['update_date'] = 'Now()';
             $sqlval['customer_id'] = $objCustomer->getValue('customer_id');
             $sqlval['order_name01'] = $objCustomer->getValue('name01');
@@ -1499,10 +1503,11 @@ __EOS__;
     }
 
     /**
-     * 商品種別からお届け時間を取得する.
+     * FIXME 商品種別からお届け時間を取得する.
      *
      * @param integer $productTypeId 商品種別ID
      * @return array お届け時間の配列
+     * @deprecated SC_Purchase::getDelivTime() を使用して下さい
      */
     function sfGetDelivTime($productTypeId) {
         $objQuery =& SC_Query::getSingletonInstance();

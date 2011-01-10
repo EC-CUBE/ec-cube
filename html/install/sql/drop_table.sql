@@ -31,6 +31,8 @@ DROP TABLE dtb_mail_history;
 DROP TABLE dtb_customer;
 DROP TABLE dtb_order;
 DROP TABLE dtb_order_temp;
+DROP TABLE dtb_shipping;
+DROP TABLE dtb_shipment_item;
 DROP TABLE dtb_other_deliv;
 DROP TABLE dtb_order_detail;
 DROP TABLE mtb_pref;

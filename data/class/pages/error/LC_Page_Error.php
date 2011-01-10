@@ -71,6 +71,7 @@ class LC_Page_Error extends LC_Page {
     function process() {
         parent::process();
 
+        // XXX 未使用？
         if ($this->objSiteSess != "") {
             $this->objSiteSess->setNowPage('error');
         }

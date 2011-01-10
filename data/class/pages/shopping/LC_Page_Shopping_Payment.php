@@ -75,6 +75,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
         $objSiteSess = new SC_SiteSession();
         $objCartSess = new SC_CartSession();
         $objDb = new SC_Helper_DB_Ex();
+        $objPurchase = new SC_Helper_Purchase_Ex();
         $this->objCustomer = new SC_Customer();
 
         // パラメータ管理クラス
@@ -84,20 +85,20 @@ class LC_Page_Shopping_Payment extends LC_Page {
         // POST値の取得
         $this->objFormParam->setParam($_POST);
 
-        // ユーザユニークIDの取得と購入状態の正当性をチェック
-        $uniqid = SC_Utils_Ex::sfCheckNormalAccess($objSiteSess, $objCartSess);
+        $uniqid = $objSiteSess->getUniqId();
+        $objPurchase->verifyChangeCart($uniqid, $objCartSess);
+
         // ユニークIDを引き継ぐ
         $this->tpl_uniqid = $uniqid;
 
-        //ダウンロード商品判定
-        $this->cartdown = $objDb->chkCartDown($objCartSess);
+        $this->cartKey = $objCartSess->getKey();
 
         // 会員ログインチェック
         if($this->objCustomer->isLoginSuccess()) {
             $this->tpl_login = '1';
             $this->tpl_user_point = $this->objCustomer->getValue('point');
             //戻り先URL
-            if ($this->cartdown == 2) {
+            if ($this->cartKey == PRODUCT_TYPE_DOWNLOAD) {
                 // ダウンロード商品のみの場合はカート画面へ戻る
                 $this->tpl_back_url = CART_URL_PATH;
             } else {
@@ -108,15 +109,14 @@ class LC_Page_Shopping_Payment extends LC_Page {
         }
 
         // 一時受注テーブルの読込
-        $arrOrderTemp = $objDb->sfGetOrderTemp($uniqid);
+        $arrOrderTemp = $objPurchase->getOrderTemp($uniqid);
         //不正遷移チェック（正常に受注情報が格納されていない場合は一旦カート画面まで戻す）
         if (!$arrOrderTemp) {
-            $this->objDisplay->redirect($this->getLocation(CART_URL_PATH));
+            SC_Response_Ex::sendRedirect(CART_URL_PATH);
             exit;
         }
 
         // カート内商品の集計処理を行う
-        $this->cartKey = $_SESSION['cartKey'];
         $this->cartItems = $objCartSess->getCartList($this->cartKey);
         $this->tpl_message = $objCartSess->checkProducts($this->cartKey);
 
@@ -130,8 +130,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
         $total_inctax = $objCartSess->getAllProductsTotal($this->cartKey);
 
         // 支払い方法の取得
-        $this->arrPayment = $this->lfGetPayment($total_inctax, $this->cartKey,
-                                                $objCartSess->getAllProductClassID($this->cartKey));
+        $this->arrPayment = $objPurchase->getPayment($total_inctax, $objCartSess->getAllProductClassID($this->cartKey));
 
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
@@ -139,7 +138,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
         case 'confirm':
             // 入力値の変換
             $this->objFormParam->convParam();
-            $this->arrErr = $this->lfCheckError($this->arrData);
+            $this->arrErr = $this->lfCheckError($this->arrData, $this->arrPayment);
             // 入力エラーなし
             if(count($this->arrErr) == 0) {
                 // DBへのデータ登録
@@ -164,20 +163,19 @@ class LC_Page_Shopping_Payment extends LC_Page {
             $this->objDisplay->redirect(SHOPPING_URL);
             exit;
             break;
-        // 支払い方法が変更された場合
-        case 'payment':
-            // 配送時間の配列を生成
-            $this->lfSetDelivTime();
-            break;
+
         default:
             // 受注一時テーブルからの情報を格納
-            $this->lfSetOrderTempData($uniqid);
+            $this->objFormParam->setParam($arrOrderTemp);
             break;
         }
 
+        // 配送時間を取得
+        $this->arrDelivTime = $objPurchase->getDelivTime($this->cartKey);
+
         // 支払い方法の画像があるなしを取得（$img_show true:ある false:なし）
         $this->img_show = $this->lfGetImgShow($this->arrPayment);
-        // お届け日一覧の取得
+        // FIXME お届け日一覧の取得
         $this->arrDelivDate = $this->lfGetDelivDate();
 
         $this->arrForm = $this->objFormParam->getFormParamList();
@@ -341,7 +339,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
         // 購入金額の取得得
         $total_inctax = $objCartSess->getAllProductsTotal();
         // 支払い方法の取得
-        $this->arrPayment = $this->lfGetPayment($total_inctax);
+        //$this->arrPayment = $this->lfGetPayment($total_inctax);
         // お届け時間の取得
         $arrRet = $objDb->sfGetDelivTime($this->objFormParam->getValue('payment_id'));
         $this->arrDelivTime = SC_Utils_Ex::sfArrKeyValue($arrRet, 'time_id', 'deliv_time');
@@ -365,56 +363,15 @@ class LC_Page_Shopping_Payment extends LC_Page {
     function lfInitParam() {
         $this->objFormParam->addParam("お支払い方法", "payment_id", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
         $this->objFormParam->addParam("ポイント", "use_point", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK", "ZERO_START"));
-        $this->objFormParam->addParam("お届け時間", "deliv_time_id", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $this->objFormParam->addParam("お届け時間", "deliv_time_id", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"), "", false);
         $this->objFormParam->addParam("ご質問", "message", LTEXT_LEN, "KVa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("ポイントを使用する", "point_check", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"), '2');
-        $this->objFormParam->addParam("お届け日", "deliv_date", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
+        $this->objFormParam->addParam("お届け日", "deliv_date", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"), "", false);
     }
 
-    function lfGetPayment($total_inctax, $productTypeId, $productClassIds) {
-
-        // 有効な支払方法を取得
-        $objProduct = new SC_Product();
-        $paymentIds = $objProduct->getEnablePaymentIds($productClassIds);
-        $where = 'del_flg = 0 AND payment_id IN (' . implode(', ', array_pad(array(), count($paymentIds), '?')) . ')';
-
-        $objQuery = new SC_Query();
-        $objQuery->setOrder("rank DESC");
-        // 削除されていない支払方法を取得
-        $arrRet = $objQuery->select("payment_id, payment_method, rule, upper_rule, note, payment_image", "dtb_payment", $where, $paymentIds);
-
-        // 配列初期化
-        $data = array();
-        // 選択可能な支払方法を判定
-        foreach($arrRet as $data) {
-            // 下限と上限が設定されている
-            if (strlen($data['rule']) != 0 && strlen($data['upper_rule']) != 0) {
-                if ($data['rule'] <= $total_inctax && $data['upper_rule'] >= $total_inctax) {
-                    $arrPayment[] = $data;
-                }
-            }
-            // 下限のみ設定されている
-            elseif (strlen($data['rule']) != 0) {
-                if($data['rule'] <= $total_inctax) {
-                    $arrPayment[] = $data;
-                }
-            }
-            // 上限のみ設定されている
-            elseif (strlen($data['upper_rule']) != 0) {
-                if($data['upper_rule'] >= $total_inctax) {
-                    $arrPayment[] = $data;
-                }
-            }
-            // いずれも設定なし
-            else {
-                $arrPayment[] = $data;
-            }
-        }
-        return $arrPayment;
-    }
-
+  
     /* 入力内容のチェック */
-    function lfCheckError($arrData) {
+    function lfCheckError($arrData, $arrPayment) {
         // 入力データを渡す。
         $arrRet =  $this->objFormParam->getHashArray();
         $objErr = new SC_CheckError($arrRet);
@@ -445,10 +402,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
 
         $objCartSess = new SC_CartSession();
         // 購入金額の取得得
-        $total_inctax = $objCartSess->getAllProductsTotal();
-        // 支払い方法の取得
-        $arrPayment = $this->lfGetPayment($total_inctax, $this->cartKey,
-                                          $objCartSess->getAllProductClassID($this->cartKey));
+        $total_inctax = $objCartSess->getAllProductsTotal($this->cartKey);
         $pay_flag = true;
         foreach ($arrPayment as $key => $payment) {
             if ($payment['payment_id'] == $arrRet['payment_id']) {
@@ -481,7 +435,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
         $sqlval['update_date'] = 'Now()';
 
         if (strlen($sqlval['payment_id']) >= 1) {
-            list($sqlval['charge'], $sqlval['deliv_id']) = $this->lfGetPaymentInfo($sqlval['payment_id']);
+            // FIXME list($sqlval['charge'], $sqlval['deliv_id']) = $this->lfGetPaymentInfo($sqlval['payment_id']);
         }
 
         // 使用ポイントの設定
@@ -582,7 +536,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
     //一時受注テーブルからの情報を格納する
     function lfSetOrderTempData($uniqid) {
         $objQuery = new SC_Query();
-        $col = "payment_id, use_point, deliv_time_id, message, point_check, deliv_date";
+        $col = "payment_id, use_point, message, point_check ";
         $from = "dtb_order_temp";
         $where = "order_temp_id = ?";
         $arrRet = $objQuery->select($col, $from, $where, array($uniqid));
@@ -594,7 +548,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
     /* 支払い方法の画像があるなしを取得（$img_show true:ある false:なし） */
     function lfGetImgShow($arrPayment) {
         $img_show = false;
-        foreach ($this->arrPayment as $payment) {
+        foreach ($arrPayment as $payment) {
             if (strlen($payment["payment_image"]) > 0 ){
                 $img_show = true;
                 break;

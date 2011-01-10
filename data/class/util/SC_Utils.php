@@ -314,7 +314,7 @@ class SC_Utils {
     }
 
     /**
-     * @deprecated SC_CartSession クラスを使用してください
+     * @deprecated SC_Helper_Purchase::verifyChangeCart() を使用して下さい.
      */
     function sfCheckNormalAccess(&$objSiteSess, &$objCartSess) {
         // ユーザユニークIDの取得

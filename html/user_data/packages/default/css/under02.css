@@ -124,7 +124,10 @@ div#under02column_shopping .payarea {
 }
 
 div#under02column_shopping h3 {
-    margin: 0 0 15px 0;
+    margin: 10px 5px;
+    font-size: 120%;
+    border-bottom: 1px solid #999;
+    text-align: left;
 }
 
 div#under02column_shopping .payarea02 {

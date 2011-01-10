@@ -248,18 +248,18 @@ function fnCheckInputDeliv() {
 	}
 	if(document.form1['deliv_check']) {
 		list = new Array(
-						'deliv_name01',
-						'deliv_name02',
-						'deliv_kana01',
-						'deliv_kana02',
-						'deliv_pref',
-						'deliv_zip01',
-						'deliv_zip02',
-						'deliv_addr01',
-						'deliv_addr02',
-						'deliv_tel01',
-						'deliv_tel02',
-						'deliv_tel03'
+						'shipping_name01',
+						'shipping_name02',
+						'shipping_kana01',
+						'shipping_kana02',
+						'shipping_pref',
+						'shipping_zip01',
+						'shipping_zip02',
+						'shipping_addr01',
+						'shipping_addr02',
+						'shipping_tel01',
+						'shipping_tel02',
+						'shipping_tel03'
 						);
 
 		if(!document.form1['deliv_check'].checked) {
@@ -366,46 +366,4 @@ function ChangeSize(button, TextArea, Max, Min, row_tmp){
 	}else{
 		TextArea.rows =Min; button.value="拡大"; row_tmp.value=Min; button.innerHTML="拡大";
 	}
-}
-
-// お届け時間のリアル反映
-function fnSetDelivTime(mode, r_key, s_id) {
-    var f_key, f_val;
-    var f_cnt = document.form1.length;
-    var f_data = "mode=" + mode;
-
-    // formデータの形成
-    for (i = 0; i < f_cnt; i++) {
-        f_key = document.form1[i].name;
-        f_val = document.form1[i].value;
-        if (f_key != "mode") {
-            if (f_key == r_key) {
-                if (document.form1[i].checked === true) {
-                    f_data += "&" + f_key + "=" + f_val;
-                }
-            } else {
-                f_data += "&" + f_key + "=" + f_val;
-            }
-        }
-    }
-
-    // AJAX
-    $.ajax({
-        type: "POST",
-        url: document.form1.action,
-        data: f_data,
-        dataType: "json",
-        success: function(data) {
-            var elm_s = "select#" + s_id;
-            var elm_o = elm_s + " option";
-            $(elm_o).remove();
-            $(elm_s).append($('<option>').attr({value: ""}).text("指定なし"));
-            for (i = 0; i < data.length; i++) {
-                if (data[i].time_id > 0) {
-                    $(elm_s).append($('<option>').attr({value: data[i].time_id}).text(data[i].deliv_time));
-                    $(elm_s).width();
-                }
-            }
-        }
-    });
 }

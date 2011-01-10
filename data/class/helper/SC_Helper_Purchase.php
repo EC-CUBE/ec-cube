@@ -62,8 +62,10 @@ class SC_Helper_Purchase {
 
         $objQuery->begin();
         SC_Utils_Ex::sfIsPrePage($objSiteSession);
-        $uniqId = SC_Utils_Ex::sfCheckNormalAccess($objSiteSession,
-                                                   $objCartSession);
+
+        $uniqId = $objSiteSession->getUniqId();
+        $this->verifyChangeCart($uniqId, $objCartSession);
+
         $orderTemp = $this->getOrderTemp($uniqId);
 
         $orderTemp['status'] = $orderStatus;
@@ -71,6 +73,50 @@ class SC_Helper_Purchase {
                                         $_SESSION['cartKey']);
         $objQuery->commit();
         $objCustomer->updateSession();
+    }
+
+    /**
+     * カートに変化が無いか検証する.
+     *
+     * ユニークIDとセッションのユニークIDを比較し, 異なる場合は
+     * エラー画面を表示する.
+     *
+     * カートが空の場合, 購入ボタン押下後にカートが変更された場合は
+     * カート画面へ遷移する.
+     *
+     * @param string $uniqId ユニークID
+     * @param SC_CartSession $objCartSession
+     * @return void
+     */
+    function verifyChangeCart($uniqId, &$objCartSession) {
+        $cartkeys = $objCartSession->getKeys();
+
+        foreach ($cartKeys as $cartKey) {
+            // 初回のみカートの内容を保存
+            $objCartSess->saveCurrentCart($uniqid, $cartKey);
+            /*
+             * POSTのユニークIDとセッションのユニークIDを比較
+             *(ユニークIDがPOSTされていない場合はスルー)
+             */
+            if(!SC_SiteSession::checkUniqId()) {
+                // エラーページの表示
+                // XXX $objSiteSess インスタンスは未使用？
+                SC_Utils_Ex::sfDispSiteError(CANCEL_PURCHASE, $objSiteSess);
+            }
+
+            // カート内が空でないか || 購入ボタンを押してから変化がないか
+            $quantity = $objCartSess->getTotalQuantity($cartKey);
+            if($objCartSess->checkChangeCart($cartKey) || !($quantity > 0)) {
+                // カート情報表示に強制移動する
+                if (Net_UserAgent_Mobile::isMobile()) {
+                    header("Location: ". MOBILE_CART_URL_PATH
+                           . "?" . session_name() . "=" . session_id());
+                } else {
+                    header("Location: ".CART_URL_PATH);
+                }
+                exit;
+            }
+        }
     }
 
     /**
@@ -83,6 +129,205 @@ class SC_Helper_Purchase {
         $objQuery =& SC_Query::getSingletonInstance();
         return $objQuery->getRow("*", "dtb_order_temp", "order_temp_id = ?",
                                  array($uniqId));
+    }
+
+    /**
+     * 受注一時情報を保存する.
+     *
+     * 既存のデータが存在しない場合は新規保存. 存在する場合は更新する.
+     * 既存のデータが存在せず, ユーザーがログインしている場合は,
+     * 会員情報をコピーする.
+     *
+     * @param integer $uniqId 受注一時情報ID
+     * @param array $params 登録する受注情報の配列
+     * @param SC_Customer $objCustomer SC_Customer インスタンス
+     * @return array void
+     */
+    function saveOrderTemp($uniqId, $params, &$objCustomer) {
+        if (SC_Utils_Ex::isBlank($uniqId)) {
+            return;
+        }
+
+        $objQuery =& SC_Query::getSingletonInstance();
+        // 存在するカラムのみを対象とする
+        $cols = $objQuery->listTableFields('dtb_order_temp');
+        foreach ($params as $key => $val) {
+            if (in_array($key, $cols)) {
+                $sqlval[$key] = $val;
+            }
+        }
+
+        $sqlval['session'] = serialize($_SESSION);
+        $exists = $this->getOrderTemp($uniqId);
+        if (SC_Utils_Ex::isBlank($exists)) {
+            $this->copyFromCustomer($sqlval, $objCustomer);
+            $sqlval['order_temp_id'] = $uniqId;
+            $sqlval['create_date'] = "now()";
+            $objQuery->insert("dtb_order_temp", $sqlval);
+        } else {
+            $objQuery->update("dtb_order_temp", $sqlval, 'order_temp_id = ?',
+                              array($uniqId));
+        }
+    }
+
+    /**
+     * 配送情報をセッションに保存する.
+     */
+    function saveShippingTemp(&$src, $other_deliv_id = 0,
+                              $keys = array('name01', 'name02', 'kana01', 'kana02',
+                                            'sex', 'zip01', 'zip02', 'pref',
+                                            'addr01', 'addr02',
+                                            'tel01', 'tel02', 'tel03'),
+                              $prefix = 'shipping') {
+        $dest = array();
+        foreach ($keys as $key) {
+            $dest[$prefix . '_' . $key] = $src[$prefix . '_' . $key];
+        }
+        $_SESSION['shipping'][$other_deliv_id] = $src;
+    }
+
+    /**
+     * 会員情報を受注情報にコピーする.
+     *
+     * ユーザーがログインしていない場合は何もしない.
+     * 会員情報を $dest の order_* へコピーする.
+     * customer_id は強制的にコピーされる.
+     *
+     * @param array $dest コピー先の配列
+     * @param SC_Customer $objCustomer SC_Customer インスタンス
+     * @param array $keys コピー対象のキー
+     * @param string $prefix コピー先の接頭辞. デフォルト order
+     * @return void
+     */
+    function copyFromCustomer(&$dest, &$objCustomer,
+                              $keys = array('name01', 'name02', 'kana01', 'kana02',
+                                            'sex', 'zip01', 'zip02', 'pref',
+                                            'addr01', 'addr02',
+                                            'tel01', 'tel02', 'tel03', 'job',
+                                            'birth', 'email'),
+                              $prefix = 'order') {
+        if ($objCustomer->isLoginSuccess(true)) {
+
+            foreach ($keys as $key) {
+                if (in_array($key, $keys)) {
+                    $dest[$prefix . '_' . $key] = $objCustomer->getValue($key);
+                }
+            }
+
+            if (Net_UserAgent_Mobile::isMobile()
+                && in_array('email', $keys)) {
+                $email_mobile = $objCustomer->getValue('email_mobile');
+                if (empty($email_mobile)) {
+                    $dest[$prefix . '_email'] = $objCustomer->getValue('email');
+                } else {
+                    $dest[$prefix . '_email'] = $email_mobile;
+                }
+            }
+
+            $dest['customer_id'] = $objCustomer->getValue('customer_id');
+            $dest['update_date'] = 'Now()';
+        }
+    }
+
+    /**
+     * 受注情報を配送情報にコピーする.
+     *
+     * 受注情報($src)を $dest の order_* へコピーする.
+     *
+     * @param array $dest コピー先の配列
+     * @param array $src コピー元の配列
+     * @param array $keys コピー対象のキー
+     * @param string $prefix コピー先の接頭辞. デフォルト shipping
+     * @param string $src_prefix コピー元の接頭辞. デフォルト order
+     * @return void
+     */
+    function copyFromOrder(&$dest, $src,
+                           $keys = array('name01', 'name02', 'kana01', 'kana02',
+                                         'sex', 'zip01', 'zip02', 'pref',
+                                         'addr01', 'addr02',
+                                         'tel01', 'tel02', 'tel03'),
+                           $prefix = 'shipping', $src_prefix = 'order') {
+        foreach ($keys as $key) {
+            if (in_array($key, $keys)) {
+                $dest[$prefix . '_' . $key] = $src[$src_prefix . '_' . $key];
+            }
+        }
+    }
+
+    /**
+     * 購入金額に応じた支払方法を取得する.
+     *
+     * @param integer $total 購入金額
+     * @param array $productClassIds 購入する商品規格IDの配列
+     * @return array 購入金額に応じた支払方法の配列
+     */
+    function getPayment($total, $productClassIds) {
+        // 有効な支払方法を取得
+        $objProduct = new SC_Product();
+        $paymentIds = $objProduct->getEnablePaymentIds($productClassIds);
+
+        $objQuery =& SC_Query::getSingletonInstance();
+
+        // 削除されていない支払方法を取得
+        $where = 'del_flg = 0 AND payment_id IN (' . implode(', ', array_pad(array(), count($paymentIds), '?')) . ')';
+        $objQuery->setOrder("rank DESC");
+        $payments = $objQuery->select("payment_id, payment_method, rule, upper_rule, note, payment_image", "dtb_payment", $where, $paymentIds);
+
+        foreach ($payments as $data) {
+            // 下限と上限が設定されている
+            if (strlen($data['rule']) != 0 && strlen($data['upper_rule']) != 0) {
+                if ($data['rule'] <= $total_inctax && $data['upper_rule'] >= $total_inctax) {
+                    $arrPayment[] = $data;
+                }
+            }
+            // 下限のみ設定されている
+            elseif (strlen($data['rule']) != 0) {
+                if($data['rule'] <= $total_inctax) {
+                    $arrPayment[] = $data;
+                }
+            }
+            // 上限のみ設定されている
+            elseif (strlen($data['upper_rule']) != 0) {
+                if($data['upper_rule'] >= $total_inctax) {
+                    $arrPayment[] = $data;
+                }
+            }
+            // いずれも設定なし
+            else {
+                $arrPayment[] = $data;
+            }
+          }
+        return $arrPayment;
+    }
+
+    /**
+     * 商品規格IDの配列からお届け予定日の配列を取得する.
+     *
+     * @param array $productClassIds 商品規格IDの配列
+     */
+    function getDelivDate($productClassIds) {
+        // TODO
+    }
+
+    /**
+     * 商品種別ID からお届け時間の配列を取得する.
+     */
+    function getDelivTime($productTypeId) {
+        $objQuery =& SC_Query::getSingletonInstance();
+        $from = <<< __EOS__
+                 dtb_deliv T1
+            JOIN dtb_delivtime T2
+              ON T1.deliv_id = T2. deliv_id
+__EOS__;
+            $objQuery->setOrder("time_id");
+            $where = "deliv_id = ?";
+            $results = $objQuery->select("time_id, deliv_time", $from,
+                                         "product_type_id = ?", array($productTypeId));
+            $arrDelivTime = array();
+            foreach ($results as $val) {
+                $arrDelivTime[$val['time_id']] = $val['deliv_time'];
+            }
+            return $arrDelivTime;
     }
 
     /**
@@ -102,6 +347,7 @@ class SC_Helper_Purchase {
         $objQuery =& SC_Query::getSingletonInstance();
 
         // 別のお届け先を指定が無ければ, お届け先に登録住所をコピー
+        /* FIXME
         if ($orderParams['deliv_check'] == "-1") {
             $keys = array('name01', 'name02', 'kana01', 'kana02', 'pref', 'zip01',
                           'zip02', 'addr01', 'addr02', 'tel01', 'tel02', 'tel03');
@@ -109,7 +355,7 @@ class SC_Helper_Purchase {
                 $orderParams['deliv_' . $key] = $orderParams['order_' . $key];
             }
         }
-
+        */
         // 不要な変数を unset
         $unsets = array('mailmaga_flg', 'deliv_check', 'point_check', 'password',
                         'reminder', 'reminder_answer', 'mail_flag', 'session');
