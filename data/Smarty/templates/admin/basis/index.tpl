@@ -243,7 +243,7 @@ $(function() {
     </tr>
   </table>
 
-  <h2>管理画面設定</h2>
+  <h2>管理機能設定</h2>
   <table id="basis-index-admin">
     <tr>
       <th>ディレクトリ名</th>
@@ -268,7 +268,7 @@ $(function() {
         <span class="attention"><!--{$arrErr[$key]}--></span>
         <textarea name="<!--{$key}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key]|h}--></textarea>
         <span class="attention"> (上限<!--{$smarty.const.LTEXT_LEN}-->文字)</span><br />
-        <span class="fs10">※管理画面へのアクセスを特定のIPアドレスからの接続のみに制限します。アクセスを許可するIPアドレスを1行づつ入力してください。何も入力しない場合は全てを許可します。</span><br />
+        <span class="fs10">※管理機能へのアクセスを特定のIPアドレスからの接続のみに制限します。アクセスを許可するIPアドレスを1行づつ入力してください。何も入力しない場合は全てを許可します。</span><br />
       </td>
     </tr>
   </table>
