@@ -205,10 +205,6 @@ class LC_Page_Admin_Design extends LC_Page_Admin {
 
             // プレビュー処理
             if ($_POST['mode'] == 'preview') {
-                if ($page_id === "") {
-                    SC_Response_Ex::reload(array('device_type_id' => $device_type_id), true);
-                    exit;
-                }
                 $this->lfSetPreData($arrPageData, $objLayout);
 
                 $_SESSION['preview'] = "ON";
