@@ -29,7 +29,7 @@ require_once(CLASS_REALDIR . "pages/LC_Page.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id:LC_Page_Shopping.php 15532 2007-08-31 14:39:46Z nanasess $
+ * @version $Id$
  */
 class LC_Page_Shopping extends LC_Page {
 
@@ -81,7 +81,6 @@ class LC_Page_Shopping extends LC_Page {
         $objCartSess = new SC_CartSession();
         $objCustomer = new SC_Customer();
         $objCookie = new SC_Cookie();
-        $objDb = new SC_Helper_DB_Ex();
         $objPurchase = new SC_Helper_Purchase_Ex();
         $this->objFormParam = new SC_FormParam();            // フォーム用
         $this->lfInitParam();                                // パラメータ情報の初期化
@@ -95,7 +94,7 @@ class LC_Page_Shopping extends LC_Page {
         $this->cartKey = $objCartSess->getKey();
 
         // ログインチェック
-        if($objCustomer->isLoginSuccess()) {
+        if($objCustomer->isLoginSuccess(true)) {
 
             switch ($this->cartKey) {
             // ダウンロード商品の場合は支払方法設定画面に転送
@@ -211,27 +210,11 @@ class LC_Page_Shopping extends LC_Page {
         $this->arrForm = $this->objFormParam->getFormParamList();
 
         $this->transactionid = SC_Helper_Session_Ex::getToken();
-    }
 
-    /**
-     * モバイルページを初期化する.
-     *
-     * @return void
-     */
-    function mobileInit() {
-        $this->init();
-        $this->tpl_mainpage = MOBILE_TEMPLATE_REALDIR . 'shopping/index.tpl';
-    }
-
-    /**
-     * Page のアクション(モバイル).
-     *
-     * @return void
-     */
-    function mobileProcess() {
-        parent::mobileProcess();
-        $this->mobileAction();
-        $this->endResponse();
+        // 携帯端末IDが一致する会員が存在するかどうかをチェックする。
+        if(Net_UserAgent_Mobile::isMobile() === true) {
+            $this->tpl_valid_phone_id = $objCustomer->checkMobilePhoneId();
+        }
     }
 
     /**
