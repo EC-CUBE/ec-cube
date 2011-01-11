@@ -65,36 +65,6 @@ class LC_Page_Products_Search extends LC_Page {
     }
 
     /**
-     * モバイルページを初期化する.
-     *
-     * @return void
-     */
-    function mobileInit() {
-        $this->init();
-        $this->tpl_mainpage = 'products/search.tpl';
-        $this->tpl_title = '商品検索';
-    }
-
-    /**
-     * Page のAction(モバイル).
-     *
-     * @return void
-     */
-    function mobileProcess() {
-        parent::mobileProcess();
-        $this->mobileAction();
-        $this->sendResponse();
-    }
-
-    /**
-     * Page のプロセス(モバイル).
-     *
-     * @return void
-     */
-    function mobileAction() {
-    }
-
-    /**
      * デストラクタ.
      *
      * @return void

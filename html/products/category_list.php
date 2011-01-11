@@ -34,6 +34,6 @@ require_once(CLASS_EX_REALDIR . "page_extends/products/LC_Page_Products_Category
 
 $objPage = new LC_Page_Products_CategoryList_Ex();
 register_shutdown_function(array($objPage, "destroy"));
-$objPage->mobileInit();
-$objPage->mobileProcess();
+$objPage->init();
+$objPage->process();
 ?>

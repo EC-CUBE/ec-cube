@@ -60,46 +60,12 @@ class LC_Page_Products_CategoryList extends LC_Page {
      * Page のAction
      * @return void
      */
-    function action() {}
-
-    /**
-     * モバイルページを初期化する.
-     *
-     * @return void
-     */
-    function mobileInit() {
-        $this->init();
-        $this->tpl_mainpage = MOBILE_TEMPLATE_REALDIR . 'products/category_list.tpl';
-        $this->tpl_title = 'カテゴリ一覧ページ';
-    }
-
-    /**
-     * Page のプロセス（モバイル）.
-     *
-     * @return void
-     */
-    function mobileProcess(){
-        parent::mobileProcess();
-        $this->mobileAction();
-        $this->sendResponse();
-    }
-
-    /**
-     * Page のAction(モバイル).
-     *
-     * @return void
-     */
-    function mobileAction() {
+    function action() {
         // カテゴリIDの正当性チェック
         $this->lfCheckCategoryId();
-        
-        //$objView = new SC_MobileView();
 
         // カテゴリー情報を取得する。
         $this->lfGetCategories(@$_GET['category_id'], true, $this);
-
-        //$objView->assignobj($this);
-        //$objView->display(SITE_FRAME);
     }
 
     /**

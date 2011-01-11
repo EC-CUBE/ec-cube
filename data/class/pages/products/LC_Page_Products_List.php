@@ -29,7 +29,7 @@ require_once(CLASS_REALDIR . "pages/LC_Page.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id:LC_Page_Products_List.php 15532 2007-08-31 14:39:46Z nanasess $
+ * @version $Id$
  */
 class LC_Page_Products_List extends LC_Page {
 
@@ -89,12 +89,12 @@ class LC_Page_Products_List extends LC_Page {
     }
 
     /**
-     *  ページのアクション（旧process)
+     * Page のAction.
+     *
      * @return void
      */
     function action() {
         $this->lfLoadParam();
-        //$objView = new SC_SiteView(!$this->inCart);
         $objQuery = new SC_Query();
         $objDb = new SC_Helper_DB_Ex();
 
@@ -181,100 +181,15 @@ class LC_Page_Products_List extends LC_Page {
             }
         }
 
+        // ページャ用データ設定(モバイル)
+        if (Net_UserAgent_Mobile::isMobile() === true) {
+            $this->lfSetPagerMobile();
+        }
+
         $this->tpl_javascript .= 'function fnOnLoad(){' . $js_fnOnLoad . '}';
         $this->tpl_onload .= 'fnOnLoad(); ';
 
         $this->tpl_rnd = SC_Utils_Ex::sfGetRandomString(3);
-    }
-
-    /**
-     * モバイルページを初期化する.
-     *
-     * @return void
-     */
-    function mobileInit() {
-        $this->init();
-    }
-
-    /**
-     * Page のプロセス(モバイル).
-     *
-     * @return void
-     */
-    function mobileProcess() {
-        parent::mobileProcess();
-        $this->mobieAction();
-        $this->sendResponse();
-    }
-
-    /**
-     * Page のAction(モバイル).
-     *
-     * FIXME スパゲッティ...
-     *
-     * @return void
-     */
-    function mobieAction(){
-        $this->lfLoadParam();
-        //$objView = new SC_MobileView();
-        $objQuery = new SC_Query();
-        $objDb = new SC_Helper_DB_Ex();
-
-        // タイトル編集
-        $tpl_search_mode = false;
-
-        if ($this->mode == 'search') {
-            $this->tpl_subtitle = "検索結果";
-            $tpl_search_mode = true;
-        } elseif ($this->arrSearchData['category_id'] == 0) {
-            $this->tpl_subtitle = "全商品";
-        } else {
-            $arrCat = $objDb->sfGetCat($this->arrSearchData['category_id']);
-            $this->tpl_subtitle = $arrCat['name'];
-        }
-
-        $count = $objQuery->count("dtb_best_products", "category_id = ?", array($this->arrSearchData['category_id']));
-
-            // 商品一覧の表示処理
-        $this->lfDispProductsList();
-
-            // 検索条件を画面に表示
-            // カテゴリー検索条件
-        if ($this->arrSearchData['category_id'] == 0) {
-            $this->arrSearch['category'] = "指定なし";
-        } else {
-                $arrCat = $objQuery->getOne("SELECT category_name FROM dtb_category WHERE category_id = ?",array($category_id));
-            $this->arrSearch['category'] = $arrCat;
-            }
-
-            // 商品名検索条件
-        if ($this->arrForm['name'] === "") {
-            $this->arrSearch['name'] = "指定なし";
-            } else {
-            $this->arrSearch['name'] = $this->arrForm['name'];
-                    }
-
-        // ページ送り機能用のURLを作成する。
-        $objURL = new Net_URL($_SERVER['PHP_SELF']);
-        foreach ($_REQUEST as $key => $value) {
-            if ($key == session_name() || $key == 'pageno') {
-                continue;
-            }
-            $objURL->addQueryString($key, mb_convert_encoding($value, 'SJIS', CHAR_CODE));
-        }
-
-        if ($this->objNavi->now_page > 1) {
-            $objURL->addQueryString('pageno', $this->objNavi->now_page - 1);
-            $this->tpl_previous_page = $objURL->path . '?' . $objURL->getQueryString();
-        }
-        if ($this->objNavi->now_page < $this->objNavi->max_page) {
-            $objURL->addQueryString('pageno', $this->objNavi->now_page + 1);
-            $this->tpl_next_page = $objURL->path . '?' . $objURL->getQueryString();
-        }
-
-        $this->tpl_search_mode = $tpl_search_mode;
-
-        $this->tpl_mainpage = MOBILE_TEMPLATE_REALDIR . "products/list.tpl";
     }
 
     /**
@@ -367,7 +282,7 @@ class LC_Page_Products_List extends LC_Page {
             $where .= " AND alldtl.maker_id = ? ";
             $arrval[] = $this->arrSearchData['maker_id'];
         }
- 
+
         // 検索結果対象となる商品の数を取得
         $objQuery =& SC_Query::getSingletonInstance();
         $objQuery->setWhere($where);
@@ -535,6 +450,31 @@ __EOS__;
         }
         $this->tpl_pageno = $this->arrForm['pageno'];
         $this->inCart = strlen($this->arrForm['product_id']) >= 1;
+    }
+
+    /**
+     * ページャ用データ設定(モバイル)
+     *
+     * @return void
+     */
+    function lfSetPagerMobile() {
+        // ページ送り機能用のURLを作成する。
+        $objURL = new Net_URL($_SERVER['PHP_SELF']);
+        foreach ($_REQUEST as $key => $value) {
+            if ($key == session_name() || $key == 'pageno') {
+                continue;
+            }
+            $objURL->addQueryString($key, mb_convert_encoding($value, 'SJIS', CHAR_CODE));
+        }
+
+        if ($this->objNavi->now_page > 1) {
+            $objURL->addQueryString('pageno', $this->objNavi->now_page - 1);
+            $this->tpl_previous_page = $objURL->path . '?' . $objURL->getQueryString();
+        }
+        if ($this->objNavi->now_page < $this->objNavi->max_page) {
+            $objURL->addQueryString('pageno', $this->objNavi->now_page + 1);
+            $this->tpl_next_page = $objURL->path . '?' . $objURL->getQueryString();
+        }
     }
 }
 ?>
