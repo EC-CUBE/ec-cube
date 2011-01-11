@@ -113,13 +113,13 @@ case 'step1':
 case 'step2':
     //入力値のエラーチェック
     $objPage->arrErr = lfCheckDBError($objDBParam);
-    if(count($objPage->arrErr) == 0) {
+    if (count($objPage->arrErr) == 0) {
         // 設定ファイルの生成
         lfMakeConfigFile();
-        if($err = renameAdminDir($objWebParam->getValue('admin_dir')) !== TRUE){
+        if ($err = renameAdminDir($objWebParam->getValue('admin_dir')) !== true) {
             $objPage->arrErr["all"] .= $err;
             $objPage = lfDispStep2($objPage);
-        }else{
+        } else {
             $objPage = lfDispStep3($objPage);
         }
     } else {
@@ -656,19 +656,17 @@ function lfInitWebParam($objWebParam) {
             $admin_mail = $arrRet[0]['email01'];
         }
     }
-    
-    //管理画面のディレクトリ名を取得（再インストール時）
-    if(defined("ADMIN_DIR")){
-        $admin_dir = str_replace("/","",ADMIN_DIR);
-    }
+
+    // 管理機能のディレクトリ名を取得（再インストール時）
+    $oldAdminDir = SC_Utils_Ex::sfTrimURL(ADMIN_DIR);
 
     $objWebParam->addParam("店名", "shop_name", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $shop_name);
     $objWebParam->addParam("管理者：メールアドレス", "admin_mail", MTEXT_LEN, "", array("EXIST_CHECK","EMAIL_CHECK","EMAIL_CHAR_CHECK","MAX_LENGTH_CHECK"), $admin_mail);
     $objWebParam->addParam("管理者：ログインID", "login_id", ID_MAX_LEN, "", array("EXIST_CHECK","SPTAB_CHECK", "ALNUM_CHECK"));
     $objWebParam->addParam("管理者：パスワード", "login_pass", ID_MAX_LEN, "", array("EXIST_CHECK","SPTAB_CHECK", "ALNUM_CHECK"));
-    $objWebParam->addParam("管理画面：ディレクトリ", "admin_dir", ID_MAX_LEN, "a", array("EXIST_CHECK","SPTAB_CHECK", "ALNUM_CHECK"),$admin_dir);
-    $objWebParam->addParam("管理画面：SSL制限", "admin_force_ssl", 1, "n", array("SPTAB_CHECK", "NUM_CHECK","MAX_LENGTH_CHECK"));
-    $objWebParam->addParam("管理画面：IP制限", "admin_allow_hosts", LTEXT_LEN, "an", array("IP_CHECK","MAX_LENGTH_CHECK"));
+    $objWebParam->addParam("管理機能：ディレクトリ", "admin_dir", ID_MAX_LEN, "a", array("EXIST_CHECK","SPTAB_CHECK", "ALNUM_CHECK"), $oldAdminDir);
+    $objWebParam->addParam("管理機能：SSL制限", "admin_force_ssl", 1, "n", array("SPTAB_CHECK", "NUM_CHECK","MAX_LENGTH_CHECK"));
+    $objWebParam->addParam("管理機能：IP制限", "admin_allow_hosts", LTEXT_LEN, "an", array("IP_CHECK","MAX_LENGTH_CHECK"));
     $objWebParam->addParam("URL(通常)", "normal_url", MTEXT_LEN, "", array("EXIST_CHECK","URL_CHECK","MAX_LENGTH_CHECK"), $normal_url);
     $objWebParam->addParam("URL(セキュア)", "secure_url", MTEXT_LEN, "", array("EXIST_CHECK","URL_CHECK","MAX_LENGTH_CHECK"), $secure_url);
     $objWebParam->addParam("ドメイン", "domain", MTEXT_LEN, "", array("MAX_LENGTH_CHECK"));
@@ -741,12 +739,14 @@ function lfCheckWebError($objFormParam) {
     // パスワードのチェック
     $objErr->doFunc( array("管理者：パスワード",'login_pass',ID_MIN_LEN , ID_MAX_LEN ) ,array("SPTAB_CHECK" ,"NUM_RANGE_CHECK" ));
 
-    // 管理画面ディレクトリのチェック
-    $objErr->doFunc( array("管理画面：ディレクトリ",'admin_dir',ID_MIN_LEN , ID_MAX_LEN ) ,array("SPTAB_CHECK" ,"NUM_RANGE_CHECK" ));
-    if(file_exists(HTML_REALDIR.$objFormParam->getValue('admin_dir')) OR file_exists(USER_TEMPLATE_REALDIR.$objFormParam->getValue('admin_dir'))){
-        $objErr->arrErr["admin_dir"] = "指定した管理画面ディレクトリは既に存在しています。別の名前を指定していください。";
-    }
+    // 管理機能ディレクトリのチェック
+    $objErr->doFunc( array("管理機能：ディレクトリ", 'admin_dir', ID_MIN_LEN, ID_MAX_LEN), array("SPTAB_CHECK" ,"NUM_RANGE_CHECK"));
 
+    $oldAdminDir = SC_Utils_Ex::sfTrimURL(ADMIN_DIR);
+    $newAdminDir = $objFormParam->getValue('admin_dir');
+    if ($oldAdminDir !=== $newAdminDir AND (file_exists(HTML_REALDIR . $newAdminDir) OR file_exists(USER_TEMPLATE_REALDIR . $newAdminDir))) {
+        $objErr->arrErr["admin_dir"] = "指定した管理機能ディレクトリは既に存在しています。別の名前を指定していください。";
+    }
 
     return $objErr->arrErr;
 }
@@ -928,13 +928,13 @@ function lfMakeConfigFile() {
 
     $filepath = DATA_REALDIR . "install.php";
     
-    //管理画面SSL制限
+    //管理機能SSL制限
     if($objWebParam->getValue('admin_force_ssl') == 1 and strpos($secure_url,"https://") !== FALSE){
         $force_ssl = "TRUE";
     }else{
         $force_ssl = "FALSE";
     }
-    //管理画面IP制限
+    //管理機能IP制限
     $allow_hosts = array();
     $hosts = $objWebParam->getValue('admin_allow_hosts');
     if(!empty($hosts)){
@@ -1041,24 +1041,24 @@ function getSequences() {
 
 
 /**
- * 管理画面のディレクトリ名の変更
+ * 管理機能のディレクトリ名の変更
  *
- * @param string 設定する管理画面のディレクトリ名
+ * @param string 設定する管理機能のディレクトリ名
  */
-function renameAdminDir($admin_dir){
-    if(file_exists(HTML_REALDIR.str_replace("/","",$admin_dir)) OR file_exists(USER_TEMPLATE_REALDIR.$admin_dir)){
-        return  "指定した管理画面ディレクトリは既に存在しています。別の名前を指定していください。";
+function renameAdminDir($adminDir) {
+    $oldAdminDir = SC_Utils_Ex::sfTrimURL(ADMIN_DIR);
+    if ($adminDir === $oldAdminDir) {
+        return true;
     }
-    $old_dir = "admin/";
-    if(defined("ADMIN_DIR")){
-        $old_dir = ADMIN_DIR;
+    if (file_exists(HTML_REALDIR . $adminDir) OR file_exists(USER_TEMPLATE_REALDIR . $adminDir)) {
+        return '指定した管理機能ディレクトリは既に存在しています。別の名前を指定していください。';
     }
-    if(!rename(HTML_REALDIR.$old_dir,HTML_REALDIR.$admin_dir)){
-        return  HTML_REALDIR.$admin_dir."へのリネームに失敗しました。ディレクトリの権限を確認してください。";
+    if (!rename(HTML_REALDIR . $oldAdminDir, HTML_REALDIR . $adminDir)) {
+        return HTML_REALDIR . $adminDir . 'へのリネームに失敗しました。ディレクトリの権限を確認してください。';
     }
-    if(!rename(USER_TEMPLATE_REALDIR.$old_dir,USER_TEMPLATE_REALDIR.$admin_dir)){
-        return  USER_TEMPLATE_REALDIR.$admin_dir."へのリネームに失敗しました。ディレクトリの権限を確認してください。";
+    if (!rename(USER_TEMPLATE_REALDIR . $oldAdminDir, USER_TEMPLATE_REALDIR . $adminDir)) {
+        return USER_TEMPLATE_REALDIR . $adminDir . 'へのリネームに失敗しました。ディレクトリの権限を確認してください。';
     }
-    return TRUE;
+    return true;
 }
 ?>

@@ -117,7 +117,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin {
                 default:
                     break;
                 }
-                $this->tpl_onload = "fnCheckLimit('downloadable_days', 'downloadable_days_unlimited', '" . DISABLED_RGB . "'); window.alert('SHOPマスタの登録が完了しました。管理画面のURLを変更した場合は、新しいURLにアクセスしてください。');";
+                $this->tpl_onload = "fnCheckLimit('downloadable_days', 'downloadable_days_unlimited', '" . DISABLED_RGB . "'); window.alert('SHOPマスタの登録が完了しました。管理機能のURLを変更した場合は、新しいURLにアクセスしてください。');";
             }
             if( empty($this->arrForm['regular_holiday_ids']) ) {
                 $this->arrSel = array();
@@ -221,7 +221,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin {
         $ret = $objQuery->insert("dtb_baseinfo", $sqlval);
     }
     
-    //管理画面ディレクトリのリネームとinstall.phpの変更
+    //管理機能ディレクトリのリネームとinstall.phpの変更
     function lfUpdateAdminData($array){
         $admin_dir = trim($array['admin_dir'])."/";
         $admin_force_ssl = "FALSE";
@@ -266,7 +266,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin {
                 }
                 if(count($this->arrErr) == 0 ){
                     $installData[$key] = 'define("ADMIN_DIR","'.$admin_dir.'");';
-                    //管理画面ディレクトリのリネーム
+                    //管理機能ディレクトリのリネーム
                     rename(HTML_REALDIR.ADMIN_DIR,HTML_REALDIR.$admin_dir);
                     rename(USER_TEMPLATE_REALDIR.ADMIN_DIR,USER_TEMPLATE_REALDIR.$admin_dir);
                     $diff ++;
@@ -361,7 +361,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin {
         $objErr->doFunc(array('問い合わせ受付メールアドレス', "email02", STEXT_LEN) ,array("EXIST_CHECK", "EMAIL_CHECK", "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
         $objErr->doFunc(array('メール送信元メールアドレス', "email03", STEXT_LEN) ,array("EXIST_CHECK", "EMAIL_CHECK", "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
         $objErr->doFunc(array('送信エラー受付メールアドレス', "email04", STEXT_LEN) ,array("EXIST_CHECK", "EMAIL_CHECK", "EMAIL_CHAR_CHECK","MAX_LENGTH_CHECK"));
-        //管理画面設定チェック
+        //管理機能設定チェック
         $objErr->doFunc(array('ディレクトリ名', "admin_dir", ID_MAX_LEN) ,array("EXIST_CHECK","SPTAB_CHECK", "ALNUM_CHECK"));
         $objErr->doFunc(array('SSL制限', "admin_force_ssl", 1) ,array("NUM_CHECK", "MAX_LENGTH_CHECK"));
         $objErr->doFunc(array('IP制限', "admin_allow_hosts", LTEXT_LEN) ,array("IP_CHECK", "MAX_LENGTH_CHECK"));

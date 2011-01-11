@@ -206,7 +206,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin {
             // プレビュー処理
             if ($_POST['mode'] == 'preview') {
                 if ($page_id === "") {
-                    $this->objDisplay->redirect($this->getLocation(DIR_INDEX_URL));
+                    SC_Response_Ex::reload(array('device_type_id' => $device_type_id), true);
                     exit;
                 }
                 $this->lfSetPreData($arrPageData, $objLayout);
@@ -217,10 +217,9 @@ class LC_Page_Admin_Design extends LC_Page_Admin {
                 exit;
 
             } else {
-                $this->objDisplay->redirect($this->getLocation(DIR_INDEX_URL,
-                                                               array("device_type_id" => $device_type_id, "page_id" => $page_id, "msg" => "on")));
+                $arrQueryString = array("device_type_id" => $device_type_id, "page_id" => $page_id, "msg" => "on");
+                SC_Response_Ex::reload($arrQueryString, true);
                 exit;
-
             }
         break;
 
@@ -229,7 +228,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin {
             //ベースデータでなければファイルを削除
             if (!$objLayout->lfCheckBaseData($page_id, $device_type_id)) {
                 $objLayout->lfDelPageData($page_id, $device_type_id);
-                $this->objDisplay->redirect($this->getLocation(DIR_INDEX_URL));
+                SC_Response_Ex::reload(array('device_type_id' => $device_type_id));
                 exit;
             }
         break;

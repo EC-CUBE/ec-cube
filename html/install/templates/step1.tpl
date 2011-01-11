@@ -73,35 +73,35 @@
     </td>
 </tr>
 <tr><td height="20"></td></tr>
-<tr><td align="left" class="fs12st">■管理画面の設定</td></tr>
+<tr><td align="left" class="fs12st">■管理機能の設定</td></tr>
 <tr>
     <td bgcolor="#cccccc">
     <table width="500" border="0" cellspacing="1" cellpadding="8" summary=" ">
 
         <tr>
-            <td bgcolor="#f2f1ec" width="150"><span class="fs12n">管理画面：ディレクトリ</span><br/><span class="fs10">半角英数字<!--{$smarty.const.ID_MIN_LEN}-->～<!--{$smarty.const.ID_MAX_LEN}-->文字</span></td>
+            <td bgcolor="#f2f1ec" width="150"><span class="fs12n">管理機能：ディレクトリ</span><br/><span class="fs10">半角英数字<!--{$smarty.const.ID_MIN_LEN}-->～<!--{$smarty.const.ID_MAX_LEN}-->文字</span></td>
             <td bgcolor="#ffffff" width="332">
             <!--{assign var=key value="admin_dir"}-->
             <span class="red"><span class="fs12n"><!--{$arrErr[$key]}--></span></span>
             <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape|default:admin}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->;" size="40" class="box40" />
-            <br><span class="fs10">※管理画面のディレクトリ名です。https://[ホスト名].[ドメイン名]/[ショップディレクトリ]/[管理画面]/で管理画面にアクセスする場合の[管理画面]の部分。</span>
+            <br><span class="fs10">※管理機能のディレクトリ名です。https://[ホスト名].[ドメイン名]/[ショップディレクトリ]/[管理機能：ディレクトリ]/で管理機能にアクセスする場合の[管理機能]の部分。</span>
             </td>
         </tr>
         <tr>
-            <td bgcolor="#f2f1ec" width="150"><span class="fs12n">管理画面：SSL制限</span><br/><span class="fs10"></td>
+            <td bgcolor="#f2f1ec" width="150"><span class="fs12n">管理機能：SSL制限</span><br/><span class="fs10"></td>
             <td bgcolor="#ffffff" width="332">
             <!--{assign var=key value="admin_force_ssl"}-->
             <span class="red"><span class="fs12n"><!--{$arrErr[$key]}--></span></span>
             <input type="checkbox" name="<!--{$key}-->" id="<!--{$key}-->" value="1" <!--{if $arrForm[$key].value == 1}-->checked="checked"<!--{/if}--> /><label for="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->;" class="fs12n">SSLを強制する。</label>
-            <br><span class="fs10">※管理画面へのアクセスをSSL経由(https)の接続に制限します。</span>
+            <br><span class="fs10">※管理機能へのアクセスをSSL経由(https)の接続に制限します。</span>
             </td>
         </tr>
         <tr>
-            <td bgcolor="#f2f1ec" width="150"><span class="fs12n">管理画面：IP制限</span><br/><span class="fs10"></td>
+            <td bgcolor="#f2f1ec" width="150"><span class="fs12n">管理機能：IP制限</span><br/><span class="fs10"></td>
             <td bgcolor="#ffffff" width="332">
             <!--{assign var=key value="admin_allow_hosts"}-->
             <span class="red fs12n"><!--{$arrErr[$key]}--></span>
-            <span class="fs10">※管理画面へのアクセスを特定のIPアドレスからの接続のみに制限します。アクセスを許可するIPアドレスを1行づつ入力してください。何も入力しない場合は全てを許可します。</span><br />
+            <span class="fs10">※管理機能へのアクセスを特定のIPアドレスからの接続のみに制限します。アクセスを許可するIPアドレスを1行づつ入力してください。何も入力しない場合は全てを許可します。</span><br />
             <textarea name="<!--{$key}-->" class="fs12n box40"><!--{$arrForm[$key].value|escape}--></textarea>
             </td>
         </tr>
