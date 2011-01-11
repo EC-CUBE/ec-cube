@@ -117,9 +117,7 @@ class LC_Page_Shopping_Multiple extends LC_Page {
                                                            "shipping");
                         }
                         $sqlval[$other_deliv_id]['deliv_id'] = $objPurchase->getDeliv($this->cartKey);
-                        $sqlval[$other_deliv_id]['shipment_item'][$params['product_class_id' . $i]]['shipping_id'] = $other_deliv_id;
-                        $sqlval[$other_deliv_id]['shipment_item'][$params['product_class_id' . $i]]['quantity'] += $params['quantity' . $i];
-                        $sqlval[$other_deliv_id]['shipment_item'][$params['product_class_id' . $i]]['product_class_id'] = $params['product_class_id' . $i];
+                        $objPurchase->setShipmentItemTemp($other_deliv_id, $params['product_class_id' . $i], $params['quantity' . $i]);
                         $i++;
                     }
 

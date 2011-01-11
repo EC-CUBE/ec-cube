@@ -78,6 +78,7 @@ class SC_Helper_Purchase {
                                             $val['shipment_item']);
             }
         }
+
         $this->registerShipping($orderId, $shippingTemp);
         $objQuery->commit();
         $this->unsetShippingTemp();
@@ -187,19 +188,36 @@ class SC_Helper_Purchase {
     }
 
     /**
+     * 配送商品を設定する.
+     */
+    function setShipmentItemTemp($otherDelivId, $productClassId, $quantity) {
+        $_SESSION['shipping'][$otherDelivId]['shipment_item'][$productClassId]['shipping_id'] = $otherDelivId;
+        $_SESSION['shipping'][$otherDelivId]['shipment_item'][$productClassId]['product_class_id'] = $productClassId;
+        $_SESSION['shipping'][$otherDelivId]['shipment_item'][$productClassId]['quantity'] += $quantity;
+
+        $objProduct = new SC_Product();
+        if (empty($_SESSION['shipping'][$otherDelivId]['shipment_item'][$productClassId]['productsClass'])) {
+            $product = $objProduct->getDetailAndProductsClass($productClassId);
+            $_SESSION['shipping'][$otherDelivId]['shipment_item'][$productClassId]['productsClass'] = $product;
+        }
+        $incTax = SC_Helper_DB_Ex::sfCalcIncTax($_SESSION['shipping'][$otherDelivId]['shipment_item'][$productClassId]['productsClass']['price02']);
+        $_SESSION['shipping'][$otherDelivId]['shipment_item'][$productClassId]['total_inctax'] = $incTax * $_SESSION['shipping'][$otherDelivId]['shipment_item'][$productClassId]['quantity'];
+    }
+
+    /**
+     * 複数配送指定の購入かどうか.
+     *
+     * @return boolean 複数配送指定の購入の場合 true
+     */
+    function isMultiple() {
+        return (count($this->getShippingTemp()) > 1);
+    }
+
+    /**
      * 配送情報をセッションに保存する.
      */
-    function saveShippingTemp(&$src, $other_deliv_id = 0,
-                              $keys = array('name01', 'name02', 'kana01', 'kana02',
-                                            'sex', 'zip01', 'zip02', 'pref',
-                                            'addr01', 'addr02',
-                                            'tel01', 'tel02', 'tel03'),
-                              $prefix = 'shipping') {
-        $dest = array();
-        foreach ($keys as $key) {
-            $dest[$prefix . '_' . $key] = $src[$prefix . '_' . $key];
-        }
-        $_SESSION['shipping'][$other_deliv_id] = $src;
+    function saveShippingTemp(&$src, $otherDelivId = 0) {
+        $_SESSION['shipping'][$otherDelivId] = array_merge($_SESSION['shipping'][$otherDelivId], $src);
     }
 
     /**

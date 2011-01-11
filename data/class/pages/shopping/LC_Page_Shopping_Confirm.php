@@ -78,6 +78,8 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         $objDb = new SC_Helper_DB_Ex();
         $objPurchase = new SC_Helper_Purchase_Ex();
 
+        $this->isMultiple = $objPurchase->isMultiple();
+
         // 前のページで正しく登録手続きが行われた記録があるか判定
         SC_Utils_Ex::sfIsPrePage($objSiteSess);
 
@@ -127,6 +129,8 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         }
         $this->payment_type = $payment_type;
 
+        $this->shipping = $objPurchase->getShippingTemp();
+
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
         switch($_POST['mode']) {
@@ -142,8 +146,6 @@ class LC_Page_Shopping_Confirm extends LC_Page {
             $arrData["order_id"] = $objQuery->nextval("dtb_order_order_id");
 
             // 集計結果を受注一時テーブルに反映
-            unset($arrData[0]); // FIXME
-            unset($arrData[1]);
             $objPurchase->saveOrderTemp($uniqid, $arrData, $objCustomer);
             // 正常に登録されたことを記録しておく
             $objSiteSess->setRegistFlag();

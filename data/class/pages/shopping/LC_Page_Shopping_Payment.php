@@ -53,6 +53,8 @@ class LC_Page_Shopping_Payment extends LC_Page {
         parent::init();
         $this->tpl_onload = "fnCheckInputPoint(); fnSetDelivTime('payment','payment_id','deliv_time_id');";
         $this->tpl_title = "お支払方法・お届け時間等の指定";
+        $masterData = new SC_DB_MasterData();
+        $this->arrPref = $masterData->getMasterData('mtb_pref');
     }
 
     /**
@@ -77,6 +79,9 @@ class LC_Page_Shopping_Payment extends LC_Page {
         $objDb = new SC_Helper_DB_Ex();
         $objPurchase = new SC_Helper_Purchase_Ex();
         $this->objCustomer = new SC_Customer();
+
+        $this->shipping =& $objPurchase->getShippingTemp();
+        $this->isMultiple = $objPurchase->isMultiple();
 
         // パラメータ管理クラス
         $this->objFormParam = new SC_FormParam();
@@ -365,10 +370,13 @@ class LC_Page_Shopping_Payment extends LC_Page {
     function lfInitParam() {
         $this->objFormParam->addParam("お支払い方法", "payment_id", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
         $this->objFormParam->addParam("ポイント", "use_point", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK", "ZERO_START"));
-        $this->objFormParam->addParam("お届け時間", "deliv_time_id", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
         $this->objFormParam->addParam("ご質問", "message", LTEXT_LEN, "KVa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("ポイントを使用する", "point_check", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"), '2');
-        $this->objFormParam->addParam("お届け日", "deliv_date", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
+
+        for ($i = 0; $i < count($this->shipping); $i++) {
+            $this->objFormParam->addParam("お届け時間", "deliv_time_id" . $i, INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+            $this->objFormParam->addParam("お届け日", "deliv_date" . $i, STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
+        }
     }
 
   

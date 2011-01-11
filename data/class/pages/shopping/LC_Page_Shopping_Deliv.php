@@ -218,6 +218,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
             break;
 
         default:
+            //$objPurchase->unsetShippingTemp();
             $arrOrderTemp = $objPurchase->getOrderTemp($uniqid);
             if (empty($arrOrderTemp)) $arrOrderTemp = array("");
             $this->objFormParam->setParam($arrOrderTemp);

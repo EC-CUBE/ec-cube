@@ -159,85 +159,98 @@ $(document).ready(function() {
 
             <!--お届け先ここから-->
             <!--{* 販売方法判定（ダウンロード販売のみの場合はお届け先を表示しない） *}-->
-            <!--{if $cartdown != "2"}-->
+            <!--{if $cartKey != $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
+            <!--{foreach item=shippingItem from=$shipping name=shippingItem}-->
+            <h3>▼お届け先<!--{if $isMultiple}--><!--{$smarty.foreach.shippingItem.iteration}--><!--{/if}--></h3>
+           <!--{if $isMultiple}-->
+            <table summary="ご注文内容確認">
+              <tr>
+                <th>商品写真</th>
+                <th>商品名</th>
+                <th>単価</th>
+                <th>数量</th>
+                <!--{* XXX 購入小計と誤差が出るためコメントアウト
+                <th>小計</th>
+                *}-->
+              </tr>
+              <!--{foreach item=item from=$shippingItem.shipment_item}-->
+                  <tr>
+                      <td class="phototd">
+                        <a
+                            <!--{if $item.productsClass.main_image|strlen >= 1}-->
+                                href="<!--{$smarty.const.IMAGE_SAVE_URL}--><!--{$item.productsClass.main_image|sfNoImageMainList|h}-->"
+                                class="expansion"
+                                target="_blank"
+                            <!--{/if}-->
+                        >
+                            <img src="<!--{$smarty.const.URL_PATH}-->resize_image.php?image=<!--{$item.productsClass.main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" alt="<!--{$item.productsClass.name|h}-->" /></a>
+                      </td>
+                      <td><!--{* 商品名 *}--><strong><!--{$item.productsClass.name|h}--></strong><br />
+                          <!--{if $item.productsClass.classcategory_name1 != ""}-->
+                              <!--{$item.productsClass.class_name1}-->：<!--{$item.productsClass.classcategory_name1}--><br />
+                          <!--{/if}-->
+                          <!--{if $item.productsClass.classcategory_name2 != ""}-->
+                              <!--{$item.productsClass.class_name2}-->：<!--{$item.productsClass.classcategory_name2}-->
+                          <!--{/if}-->
+                      </td>
+                      <td class="pricetd">
+                          <!--{$item.productsClass.price02|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
+                      </td>
+                      <td id="quantity"><!--{$item.quantity}--></td>
+                      <!--{* XXX 購入小計と誤差が出るためコメントアウト
+                      <td class="pricetd"><!--{$item.total_inctax|number_format}-->円</td>
+                      *}-->
+                  </tr>
+              <!--{/foreach}-->
+            </table>
+           <!--{/if}-->
+
             <table summary="お届け先確認" class="delivname">
-                <thead>
-                    <tr>
-                        <th colspan="2">▼お届け先</th>
-                    </tr>
-                </thead>
                 <tbody>
-                    <!--{* 別のお届け先が選択されている場合 *}-->
-                    <!--{if $arrData.deliv_check >= 1}-->
-                        <tr>
-                            <th>お名前</th>
-                            <td><!--{$arrData.deliv_name01|h}--> <!--{$arrData.deliv_name02|h}--></td>
-                        </tr>
-                        <tr>
-                            <th>お名前(フリガナ)</th>
-                            <td><!--{$arrData.deliv_kana01|h}--> <!--{$arrData.deliv_kana02|h}--></td>
-                        </tr>
-                        <tr>
-                            <th>郵便番号</th>
-                            <td>〒<!--{$arrData.deliv_zip01|h}-->-<!--{$arrData.deliv_zip02|h}--></td>
-                        </tr>
-                        <tr>
-                            <th>住所</th>
-                            <td><!--{$arrPref[$arrData.deliv_pref]}--><!--{$arrData.deliv_addr01|h}--><!--{$arrData.deliv_addr02|h}--></td>
-                        </tr>
-                        <tr>
-                            <th>電話番号</th>
-                            <td><!--{$arrData.deliv_tel01}-->-<!--{$arrData.deliv_tel02}-->-<!--{$arrData.deliv_tel03}--></td>
-                        </tr>
-                    <!--{else}-->
-                        <tr>
-                            <th>お名前</th>
-                            <td><!--{$arrData.order_name01|h}--> <!--{$arrData.order_name02|h}--></td>
-                        </tr>
-                        <tr>
-                            <th>お名前(フリガナ)</th>
-                            <td><!--{$arrData.order_kana01|h}--> <!--{$arrData.order_kana02|h}--></td>
-                        </tr>
-                        <tr>
-                            <th>郵便番号</th>
-                            <td>〒<!--{$arrData.order_zip01|h}-->-<!--{$arrData.order_zip02|h}--></td>
-                        </tr>
-                        <tr>
-                            <th>住所</th>
-                            <td><!--{$arrPref[$arrData.order_pref]}--><!--{$arrData.order_addr01|h}--><!--{$arrData.order_addr02|h}--></td>
-                        </tr>
-                        <tr>
-                            <th>電話番号</th>
-                            <td><!--{$arrData.order_tel01}-->-<!--{$arrData.order_tel02}-->-<!--{$arrData.order_tel03}--></td>
-                        </tr>
-                    <!--{/if}-->
+                    <tr>
+                        <th>お名前</th>
+                        <td><!--{$shippingItem.shipping_name01|h}--> <!--{$shippingItem.shipping_name02|h}--></td>
+                    </tr>
+                    <tr>
+                        <th>お名前(フリガナ)</th>
+                        <td><!--{$shippingItem.shipping_kana01|h}--> <!--{$shippingItem.shipping_kana02|h}--></td>
+                    </tr>
+                    <tr>
+                        <th>郵便番号</th>
+                        <td>〒<!--{$shippingItem.shipping_zip01|h}-->-<!--{$shippingItem.shipping_zip02|h}--></td>
+                    </tr>
+                    <tr>
+                        <th>住所</th>
+                        <td><!--{$arrPref[$shippingItem.shipping_pref]}--><!--{$shippingItem.shipping_addr01|h}--><!--{$shippingItem.shipping_addr02|h}--></td>
+                    </tr>
+                    <tr>
+                        <th>電話番号</th>
+                        <td><!--{$shippingItem.shipping_tel01}-->-<!--{$shippingItem.shipping_tel02}-->-<!--{$shippingItem.shipping_tel03}--></td>
+                    </tr>
+                <!--{if $cartKey != $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
+                    <tr>
+                        <th>お届け日</th>
+                        <td><!--{$shippingItem.deliv_date|default:"指定なし"|h}--></td>
+                    </tr>
+                    <tr>
+                       <th>お届け時間</th>
+                        <td><!--{$shippingItem.deliv_time|default:"指定なし"|h}--></td>
+                    </tr>
+                <!--{/if}-->
                 </tbody>
             </table>
+            <!--{/foreach}-->
             <!--{/if}-->
             <!--お届け先ここまで-->
 
+            <h3>▼お支払方法・その他お問い合わせ</h3>
             <table summary="お支払方法・お届け日時の指定・その他お問い合わせ" class="delivname">
-                <thead>
-                <tr>
-                    <th colspan="2">▼お支払方法・お届け日時の指定・その他お問い合わせ</th>
-                </tr>
-                </thead>
                 <tbody>
                 <tr>
                     <th>お支払方法</th>
                     <td><!--{$arrData.payment_method|h}--></td>
                 </tr>
                 <!--{* 販売方法判定（ダウンロード販売のみの場合はお届け日、時間を表示しない） *}-->
-                <!--{if $cartdown != "2"}-->
-                <tr>
-                    <th>お届け日</th>
-                    <td><!--{$arrData.deliv_date|default:"指定なし"|h}--></td>
-                </tr>
-                <tr>
-                    <th>お届け時間</th>
-                    <td><!--{$arrData.deliv_time|default:"指定なし"|h}--></td>
-                </tr>
-                <!--{/if}-->
                 <tr>
                     <th>その他お問い合わせ</th>
                     <td><!--{$arrData.message|h|nl2br}--></td>
