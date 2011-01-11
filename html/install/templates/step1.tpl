@@ -69,6 +69,15 @@
             <br><span class="fs10">※管理機能にログインするためのパスワードです。</span>
             </td>
         </tr>
+    </table>
+    </td>
+</tr>
+<tr><td height="20"></td></tr>
+<tr><td align="left" class="fs12st">■管理画面の設定</td></tr>
+<tr>
+    <td bgcolor="#cccccc">
+    <table width="500" border="0" cellspacing="1" cellpadding="8" summary=" ">
+
         <tr>
             <td bgcolor="#f2f1ec" width="150"><span class="fs12n">管理画面：ディレクトリ</span><br/><span class="fs10">半角英数字<!--{$smarty.const.ID_MIN_LEN}-->～<!--{$smarty.const.ID_MAX_LEN}-->文字</span></td>
             <td bgcolor="#ffffff" width="332">
