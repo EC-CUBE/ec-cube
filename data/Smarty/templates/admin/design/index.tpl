@@ -350,7 +350,7 @@ function fnTargetSelf(){
             </td>
             <td>
                 <!--{if $item.edit_flg == 1}-->
-                    <a href="?" onclick="fnTargetSelf(); fnFormModeSubmit('form1','delete','','');">削除</a>
+                    <a href="#" onclick="fnTargetSelf(); fnFormModeSubmit('form1','delete','page_id','<!--{$item.page_id|h}-->'); return false;">削除</a>
                 <!--{/if}-->
             </td>
         </tr>

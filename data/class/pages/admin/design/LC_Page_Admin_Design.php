@@ -82,7 +82,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin {
         if (isset($_REQUEST['page_id']) && is_numeric($_REQUEST['page_id'])) {
             $page_id = $_REQUEST['page_id'];
         } else {
-            $page_id = 1;
+            $page_id = 1; // FIXME $_REQUEST['page_id'] を受け取れない不具合時に不正処理が行なわれる原因となった
         }
         // 端末種別IDを取得
         if (isset($_REQUEST['device_type_id'])
@@ -224,7 +224,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin {
             //ベースデータでなければファイルを削除
             if (!$objLayout->lfCheckBaseData($page_id, $device_type_id)) {
                 $objLayout->lfDelPageData($page_id, $device_type_id);
-                SC_Response_Ex::reload(array('device_type_id' => $device_type_id));
+                SC_Response_Ex::reload(array('device_type_id' => $device_type_id), true);
                 exit;
             }
         break;
