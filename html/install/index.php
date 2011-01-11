@@ -744,7 +744,7 @@ function lfCheckWebError($objFormParam) {
 
     $oldAdminDir = SC_Utils_Ex::sfTrimURL(ADMIN_DIR);
     $newAdminDir = $objFormParam->getValue('admin_dir');
-    if ($oldAdminDir !=== $newAdminDir AND (file_exists(HTML_REALDIR . $newAdminDir) OR file_exists(USER_TEMPLATE_REALDIR . $newAdminDir))) {
+    if ($oldAdminDir !== $newAdminDir AND (file_exists(HTML_REALDIR . $newAdminDir) OR file_exists(USER_TEMPLATE_REALDIR . $newAdminDir))) {
         $objErr->arrErr["admin_dir"] = "指定した管理機能ディレクトリは既に存在しています。別の名前を指定していください。";
     }
 
