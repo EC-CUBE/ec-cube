@@ -80,6 +80,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin {
         $this->objQuery = new SC_Query();
         $objDb = new SC_Helper_DB_Ex();
         $objDate = new SC_Date(1901);
+        $objCustomerHelper = new SC_Helper_Customer_Ex();
         $this->arrYear = $objDate->getYear();    //　日付プルダウン設定
         $this->arrMonth = $objDate->getMonth();
         $this->arrDay = $objDate->getDay();
@@ -200,7 +201,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin {
                         array_push($arrRegistColumn, array('column' => 'secret_key', 'convert' => 'n'));
                     }
                     //-- 編集登録
-                    $objDb->sfEditCustomerData($this->arrForm, $arrRegistColumn);
+                    $objCustomerHelper->sfEditCustomerData($this->arrForm, $arrRegistColumn);
                 }
             }
         }

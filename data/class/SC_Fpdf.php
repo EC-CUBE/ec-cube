@@ -310,14 +310,13 @@ class SC_Fpdf {
             $where = "order_id = ?";
             $arrRet = $objQuery->select("*", "dtb_order", $where, array($order_id));
             $this->arrDisp = $arrRet[0];
-            list($point) = SC_Helper_DB_Ex::sfGetCustomerPoint($order_id, $arrRet[0]['use_point'], $arrRet[0]['add_point']);
+            list($point) = SC_Helper_Customer_Ex::sfGetCustomerPoint($order_id, $arrRet[0]['use_point'], $arrRet[0]['add_point']);
             $this->arrDisp['point'] = $point;
 
             // 受注詳細データの取得
             $arrRet = $this->lfGetOrderDetail($order_id);
             $arrRet = SC_Utils_Ex::sfSwapArray($arrRet);
             $this->arrDisp = array_merge($this->arrDisp, $arrRet);
-            #$objFormParam->setParam($arrRet);
 
             // その他支払い情報を表示
             if($this->arrDisp["memo02"] != "") $this->arrDisp["payment_info"] = unserialize($this->arrDisp["memo02"]);
