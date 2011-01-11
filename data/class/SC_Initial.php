@@ -84,8 +84,6 @@ class SC_Initial {
             define('SMARTPHONE_HTTP_URL', HTTP_URL . SMARTPHONE_DIR);
             define('SMARTPHONE_HTTPS_URL', HTTPS_URL . SMARTPHONE_DIR);
             define('SMARTPHONE_URL_PATH', URL_PATH . SMARTPHONE_DIR);
-
-            define('ADMIN_DIR', 'admin/');
         }
     }
 
