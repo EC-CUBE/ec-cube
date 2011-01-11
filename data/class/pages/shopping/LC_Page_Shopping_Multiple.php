@@ -72,13 +72,14 @@ class LC_Page_Shopping_Multiple extends LC_Page {
         $objQuery = SC_Query::getSingletonInstance();
         $this->objFormParam = new SC_FormParam();
 
-        $this->addrs = $this->getDelivAddrs($objCustomer);
+        $uniqid = $objSiteSess->getUniqId();
+
+        $this->addrs = $this->getDelivAddrs($objCustomer, $objPurchase, $uniqid);
         $this->items = $this->splitItems($objCartSess);
 
         $this->lfInitParam($this->items);
         $this->objFormParam->setParam($_POST);
 
-        $uniqid = $objSiteSess->getUniqId();
         $objPurchase->verifyChangeCart($uniqid, $objCartSess);
 
         $this->tpl_uniqid = $uniqid;
@@ -105,16 +106,19 @@ class LC_Page_Shopping_Multiple extends LC_Page {
                     $i = 0;
                     while ($params['cart_no' . $i] != null) {
                         $other_deliv_id = $params['shipping' . $i];
-                        if ($other_deliv_id != 0) {
-                            $otherDeliv = $objQuery->select("*", "dtb_other_deliv",
-                                                            "other_deliv_id = ?",
-                                                            array($other_deliv_id));
-                            foreach ($otherDeliv[0] as $key => $val) {
-                                $sqlval[$other_deliv_id]['shipping_' . $key] = $val;
+                        if ($objCustomer->isLoginSuccess()) {
+                            if ($other_deliv_id != 0) {
+                                $otherDeliv = $objQuery->select("*", "dtb_other_deliv",
+                                                                "other_deliv_id = ?",
+                                                                array($other_deliv_id));
+                                foreach ($otherDeliv[0] as $key => $val) {
+                                    $sqlval[$other_deliv_id]['shipping_' . $key] = $val;
+                                }
+                            } else {
+                                $objPurchase->copyFromCustomer($sqlval[0], $objCustomer,
+                                                               "shipping");
                             }
                         } else {
-                            $objPurchase->copyFromCustomer($sqlval[0], $objCustomer,
-                                                           "shipping");
                         }
                         $sqlval[$other_deliv_id]['deliv_id'] = $objPurchase->getDeliv($this->cartKey);
                         $objPurchase->setShipmentItemTemp($other_deliv_id, $params['product_class_id' . $i], $params['quantity' . $i]);
@@ -181,18 +185,22 @@ class LC_Page_Shopping_Multiple extends LC_Page {
      * 会員ログイン済みの場合は, 会員登録住所及び追加登録住所を取得する.
      * 非会員の場合は, 「お届け先の指定」画面で入力した住所を取得する.
      */
-    function getDelivAddrs(&$objCustomer) {
+    function getDelivAddrs(&$objCustomer, &$objPurchase, $uniqid) {
         if ($objCustomer->isLoginSuccess()) {
             $addrs = $objCustomer->getCustomerAddress($_SESSION['customer']['customer_id']);
+            $results = array();
+            foreach ($addrs as $key => $val) {
+                $other_deliv_id = SC_Utils_Ex::isBlank($val['other_deliv_id']) ? 0 : $val['other_deliv_id'];
+                $results[$other_deliv_id] = $val['name01'] . $val['name02']
+                    . " " . $this->arrPref[$val['pref']] . $val['addr01'] . $val['addr02'];
+            }
         } else {
-            // TODO
-            $addrs = array();
-        }
-        $results = array();
-        foreach ($addrs as $key => $val) {
-            $other_deliv_id = SC_Utils_Ex::isBlank($val['other_deliv_id']) ? 0 : $val['other_deliv_id'];
-            $results[$other_deliv_id] = $val['name01'] . $val['name02']
-                . " " . $this->arrPref[$val['pref']] . $val['addr01'] . $val['addr02'];
+            $shipping = $objPurchase->getShippingTemp();
+            foreach ($shipping as $shipping_id => $val) {
+                $results[$shipping_id] = $val['shipping_name01'] . $val['shipping_name02']
+                    . " " . $this->arrPref[$val['shipping_pref']]
+                    . $val['shipping_addr01'] . $val['shipping_addr02'];
+            }
         }
         return $results;
     }

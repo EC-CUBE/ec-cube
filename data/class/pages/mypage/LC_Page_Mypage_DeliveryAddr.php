@@ -79,16 +79,13 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page {
         }
         $this->ParentPage = $ParentPage;
         
-        // ログイン判定 及び 退会判定
-        if (!$objCustomer->isLoginSuccess()){
+        /*
+         * ログイン判定 及び 退会判定
+         * 未ログインでも, 複数配送設定ページからのアクセスの場合は表示する
+         */
+        if (!$objCustomer->isLoginSuccess() && $ParentPage != MULTIPLE_URL_PATH){
             $this->tpl_onload = "fnUpdateParent('". $this->getLocation($_POST['ParentPage']) ."'); window.close();";
         }
-         
-        //退会判定に統合 
-        ////ログイン判定
-        // if (!$objCustomer->isLoginSuccess()){
-        //     SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
-        //}
 
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
         if (!isset($_GET['other_deliv_id'])) $_GET['other_deliv_id'] = "";
@@ -146,7 +143,11 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page {
                         SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
                     }
                     
-                    $this->lfRegistData($_POST, $arrRegistColumn, $objCustomer);
+                    if ($objCustomer->isLoginSuccess()) {
+                        $this->lfRegistData($_POST, $arrRegistColumn, $objCustomer);
+                    } else {
+                        $this->lfRegistDataNonMember($_POST, $arrRegistColumn);
+                    }
                 }
                 break;
         }
@@ -217,6 +218,17 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page {
             $objQuery->update("dtb_other_deliv", $arrRegist,
                                   "other_deliv_id = "
                                   . SC_Utils_Ex::sfQuoteSmart($array["other_deliv_id"]));
+        }
+    }
+
+    function lfRegistDataNonMember($array, $arrRegistColumn) {
+        foreach ($arrRegistColumn as $data) {
+            $arrRegist['shipping_' . $data["column"] ] = $array[ $data["column"] ];
+        }
+        if (count($shipping) >= DELIV_ADDR_MAX) {
+            SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, "", false, '別のお届け先最大登録数に達しています。');
+        } else {
+            $_SESSION['shipping'][] = $arrRegist;
         }
     }
 

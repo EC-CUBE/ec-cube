@@ -217,7 +217,11 @@ class SC_Helper_Purchase {
      * 配送情報をセッションに保存する.
      */
     function saveShippingTemp(&$src, $otherDelivId = 0) {
-        $_SESSION['shipping'][$otherDelivId] = array_merge($_SESSION['shipping'][$otherDelivId], $src);
+        if (empty($_SESSION['shipping'][$otherDelivId])) {
+            $_SESSION['shipping'][$otherDelivId] = $src;
+        } else {
+            $_SESSION['shipping'][$otherDelivId] = array_merge($_SESSION['shipping'][$otherDelivId], $src);
+        }
     }
 
     /**

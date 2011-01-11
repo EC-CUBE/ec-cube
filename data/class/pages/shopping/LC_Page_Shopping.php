@@ -165,7 +165,7 @@ class LC_Page_Shopping extends LC_Page {
                 // 正常に登録されたことを記録しておく
                 $objSiteSess->setRegistFlag();
 
-                SC_Response_Ex::sendRedirect("multiple.php");
+                SC_Response_Ex::sendRedirect(MULTIPLE_URL_PATH);
                 exit;
             }
             // breakなし
@@ -180,6 +180,7 @@ class LC_Page_Shopping extends LC_Page {
             }
             // ※breakなし
         default:
+            $objPurchase->unsetShippingTemp();
             if(isset($_GET['from']) && $_GET['from'] == 'nonmember') {
                 $this->tpl_mainpage = 'shopping/nonmember_input.tpl';
                 $this->tpl_title = 'お客様情報入力';
@@ -333,7 +334,24 @@ class LC_Page_Shopping extends LC_Page {
             // order_* を shipping_* へコピー
             $objPurchase->copyFromOrder($sqlval, $params);
         }
-        $objPurchase->saveShippingTemp($sqlval);
+
+        /*
+         * order_* と shipping_* をそれぞれ $_SESSION['shipping'][$shipping_id]
+         * に, shipping_* というキーで保存
+         */
+        $order_val = array();
+        $shipping_val = array();
+        foreach ($sqlval as $key => $val) {
+            if (preg_match('/^order_/', $key)) {
+                $order_val['shipping_' . str_replace('order_', '', $key)] = $val;
+            } elseif (preg_match('/^shipping_/', $key)) {
+                $shipping_val[$key] = $val;
+            }
+        }
+        $objPurchase->saveShippingTemp($order_val, 0);
+        if ($params['deliv_check'] == '1') {
+            $objPurchase->saveShippingTemp($shipping_val, 1);
+        }
         $objPurchase->saveOrderTemp($uniqid, $sqlval, $objCustomer);
     }
 
@@ -374,52 +392,7 @@ class LC_Page_Shopping extends LC_Page {
         $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_BIRTHDAY"));
         $objErr->doFunc(array("メールアドレス", "メールアドレス（確認）", "order_email", "order_email02"), array("EQUAL_CHECK"));
 
-        //既存メールアドレスでの登録不可（購入時強制会員登録が有効の場合のみ）
-        if (PURCHASE_CUSTOMER_REGIST == '1' && strlen($arrRet["order_email"]) > 0) {
-            $array['email'] = strtolower($arrRet['order_email']);
-            $objQuery = new SC_Query();
-            $arrEmailCheck = $objQuery->select("email, update_date, del_flg", "dtb_customer","email = ? OR email_mobile = ? ORDER BY del_flg", array($array["email"], $array["email"]));
-
-            if(!empty($arrEmailCheck)) {
-                if($arrEmailCheck[0]['del_flg'] != '1') {
-                    // 会員である場合
-                    $objErr->arrErr["order_email"] .= "※ すでに会員登録で使用されているメールアドレスです。<br />";
-                } else {
-                    // 退会した会員である場合
-                    $leave_time = SC_Utils_Ex::sfDBDatetoTime($arrEmailCheck[0]['update_date']);
-                    $now_time = time();
-                    $pass_time = $now_time - $leave_time;
-                    // 退会から何時間-経過しているか判定する。
-                    $limit_time = ENTRY_LIMIT_HOUR * 3600;
-                    if($pass_time < $limit_time) {
-                        $objErr->arrErr["order_email"] .= "※ 退会から一定期間の間は、同じメールアドレスを使用することはできません。<br />";
-                    }
-                }
-            }
-        }
-
         return $objErr->arrErr;
-    }
-
-    /**
-     * 受注一時テーブルに登録する顧客(お客様情報)をお届け先へコピーする
-     *
-     * @param array $sqlval
-     * @return void
-     */
-    function lfCopyDeliv(&$sqlval) {
-        $sqlval['deliv_name01'] = $sqlval['order_name01'];
-        $sqlval['deliv_name02'] = $sqlval['order_name02'];
-        $sqlval['deliv_kana01'] = $sqlval['order_kana01'];
-        $sqlval['deliv_kana02'] = $sqlval['order_kana02'];
-        $sqlval['deliv_pref']   = $sqlval['order_pref'];
-        $sqlval['deliv_zip01']  = $sqlval['order_zip01'];
-        $sqlval['deliv_zip02']  = $sqlval['order_zip02'];
-        $sqlval['deliv_addr01'] = $sqlval['order_addr01'];
-        $sqlval['deliv_addr02'] = $sqlval['order_addr02'];
-        $sqlval['deliv_tel01']  = $sqlval['order_tel01'];
-        $sqlval['deliv_tel02']  = $sqlval['order_tel02'];
-        $sqlval['deliv_tel03']  = $sqlval['order_tel03'];
     }
 }
 ?>
