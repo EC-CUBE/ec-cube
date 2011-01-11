@@ -32,7 +32,7 @@
     <td align="center" class="fs12">
         <strong>EC CUBE インストールが完了しました。</strong><br>
         <br>
-        <a href="<!--{$tpl_sslurl}-->admin/<!--{$smarty.const.DIR_INDEX_URL}-->">管理画面</a>にログインできます。
+        <a href="<!--{$tpl_sslurl}--><!--{$smarty.const.ADMIN_DIR}--><!--{$smarty.const.DIR_INDEX_URL}-->">管理画面</a>にログインできます。
     </td>
 </tr>
 <tr>
