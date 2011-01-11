@@ -21,6 +21,13 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
+<script type="text/javascript">
+var IMG_FOLDER_CLOSE   = "<!--{$TPL_DIR}-->img/contents/folder_close.gif";		// フォルダクローズ時画像
+var IMG_FOLDER_OPEN    = "<!--{$TPL_DIR}-->img/contents/folder_open.gif";		// フォルダオープン時画像
+var IMG_PLUS           = "<!--{$TPL_DIR}-->img/contents/plus.gif";				// プラスライン
+var IMG_MINUS          = "<!--{$TPL_DIR}-->img/contents/minus.gif";				// マイナスライン
+var IMG_NORMAL         = "<!--{$TPL_DIR}-->img/contents/space.gif";				// スペース
+</script>
 <form name="form1" method="post" action="?"  enctype="multipart/form-data">
 <input type="hidden" name="mode" value="" />
 <input type="hidden" name="now_file" value="<!--{$tpl_now_dir}-->" />

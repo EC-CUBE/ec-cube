@@ -33,6 +33,10 @@ $INSTALL_DIR = realpath(dirname( __FILE__));
 require_once(DATA_REALDIR . "module/Request.php");
 require_once(DATA_REALDIR . "install.php");
 
+if(!defined("ADMIN_DIR")){
+    define("ADMIN_DIR","admin/");
+}
+
 define("INSTALL_LOG", "./temp/install.log");
 ini_set("max_execution_time", 300);
 
@@ -393,11 +397,6 @@ function lfDispStep0($objPage) {
     $objPage->arrHidden['agreement'] = $_POST['agreement'];
     $objPage->tpl_mainpage = 'step0.tpl';
 
-    $admin_dir = "admin/";
-    if(defined("ADMIN_DIR")){
-        $admin_dir = ADMIN_DIR;
-    }
-
     // プログラムで書込みされるファイル・ディレクトリ
     $arrWriteFile = array(
         DATA_REALDIR . "install.php",
@@ -409,7 +408,7 @@ function lfDispStep0($objPage) {
         DATA_REALDIR . "logs/",
         DATA_REALDIR . "downloads/",
         DATA_REALDIR . "upload/",
-        HTML_REALDIR . $admin_dir
+        HTML_REALDIR . ADMIN_DIR
     );
 
     $mess = "";

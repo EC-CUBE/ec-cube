@@ -19,11 +19,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-var IMG_FOLDER_CLOSE   = "../../user_data/packages/default/img/admin/contents/folder_close.gif";		// フォルダクローズ時画像
-var IMG_FOLDER_OPEN    = "../../user_data/packages/default/img/admin/contents/folder_open.gif";		// フォルダオープン時画像
-var IMG_PLUS           = "../../user_data/packages/default/img/admin/contents/plus.gif";				// プラスライン
-var IMG_MINUS          = "../../user_data/packages/default/img/admin/contents/minus.gif";				// マイナスライン
-var IMG_NORMAL         = "../../user_data/packages/default/img/admin/contents/space.gif";				// スペース
 
 var tree = "";						// 生成HTML格納
 var count = 0;						// ループカウンタ

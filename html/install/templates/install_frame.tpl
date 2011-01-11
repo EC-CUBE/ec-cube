@@ -27,9 +27,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=<!--{$smarty.const.CHAR_CODE}-->">
 <meta http-equiv="content-script-type" content="text/javascript">
 <meta http-equiv="content-style-type" content="text/css">
-<link rel="stylesheet" href="../admin/css/install.css" type="text/css" >
-<script type="text/javascript" src="<!--{$smarty.const.URL_PATH}-->js/css.js"></script>
-<script type="text/javascript" src="<!--{$smarty.const.URL_PATH}-->js/navi.js"></script>
+<link rel="stylesheet" href="../<!--{$smarty.const.ADMIN_DIR}-->css/install.css" type="text/css" >
+<script type="text/javascript" src="../js/css.js"></script>
+<script type="text/javascript" src="../js/navi.js"></script>
 <title>EC CUBE インストール画面</title>
 </head>
 
@@ -47,7 +47,7 @@
         <td>
         <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" " background="img/header_bg2.jpg">
             <tr valign="top">
-                <td><img src="../<!--{$admin_dir}-->img/header/logo.jpg" width="230" height="50" alt="EC CUBE" border="0"></td>
+                <td><img src="../<!--{$smarty.const.USER_DIR}--><!--{$smarty.const.USER_PACKAGE_DIR}--><!--{$smarty.const.ADMIN_DIR}-->img/header/logo.jpg" width="230" height="50" alt="EC CUBE" border="0"></td>
                 <td width="648" align="right"></td>
             </tr>
         </table>
