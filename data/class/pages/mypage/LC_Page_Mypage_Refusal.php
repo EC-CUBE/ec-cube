@@ -162,7 +162,7 @@ class LC_Page_Mypage_Refusal extends LC_Page {
         }
 
         if (isset($_POST['no'])) {
-            $this->objDisplay->redirect($this->getLocation(DIR_INDEX_URL));
+            SC_Response_Ex::sendRedirect(DIR_INDEX_URL);
             exit;
         } elseif (isset($_POST['complete'])){
             //会員削除
