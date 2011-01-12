@@ -128,28 +128,7 @@ class LC_Page_Regist extends LC_Page {
         $arrRet = $objQuery->select("point", "dtb_customer", $where, array($array["id"]));
 
         $objQuery->update("dtb_customer", $arrRegist, $where, array($array["id"]));
-        $sql = "SELECT mailmaga_flg FROM dtb_customer WHERE email = ?";
-        $result = $objQuery->getOne($sql, array($email));
 
-        switch($result) {
-        // 仮HTML
-        case '4':
-            $arrRegistMail["mailmaga_flg"] = 1;
-            break;
-        // 仮TEXT
-        case '5':
-            $arrRegistMail["mailmaga_flg"] = 2;
-            break;
-        // 仮なし
-        case '6':
-            $arrRegistMail["mailmaga_flg"] = 3;
-            break;
-        default:
-            $arrRegistMail["mailmaga_flg"] = $result;
-            break;
-        }
-
-        $objQuery->update("dtb_customer", $arrRegistMail, "email = " . SC_Utils_Ex::sfQuoteSmart($email). " AND del_flg = 0");
         $objQuery->commit();
 
         return $secret;		// 本登録IDを返す
