@@ -30,14 +30,14 @@
                  readonly="readonly"><!--{$tpl_kiyaku_text}--></textarea>
        <div class="tblareabtn">
        <!--{if $is_campaign}-->
-         <a href="javascript:history.back();" onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_entry_cannot_on.gif','b_noagree');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_entry_cannot.gif','b_noagree');">
-           <img src="<!--{$TPL_DIR}-->img/button/btn_entry_cannot.gif" width="180" height="30" alt="同意しない" border="0" name="b_noagree" /></a>&nbsp;
+          <a href="javascript:history.back();" class="spbtn spbtn-medeum">
+                    同意しない</a>&nbsp;
        <!--{else}-->
-         <a href="<!--{$smarty.const.TOP_URL_PATH}-->" onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_entry_cannot_on.gif','b_noagree');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_entry_cannot.gif','b_noagree');">
-           <img src="<!--{$TPL_DIR}-->img/button/btn_entry_cannot.gif" width="180" height="30" alt="同意しない" border="0" name="b_noagree" /></a>&nbsp;
+       <a href="<!--{$smarty.const.TOP_URL_PATH}-->" class="spbtn spbtn-medeum">
+                    同意しない</a>&nbsp;
        <!--{/if}-->
-         <a href="<!--{$smarty.const.ENTRY_URL}-->" onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_entry_agree_on.gif','b_agree');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_entry_agree.gif','b_agree');">
-           <img src="<!--{$TPL_DIR}-->img/button/btn_entry_agree.gif" width="180" height="30" alt="規約に同意して会員登録" border="0" name="b_agree" /></a>
+       <a href="<!--{$smarty.const.ENTRY_URL}-->" class="spbtn spbtn-shopping">
+                    規約に同意して会員登録</a>&nbsp;
        </div>
      </form>
    </div>
