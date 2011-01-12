@@ -34,12 +34,13 @@
 <form method="post" action="?">
 <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
 <input type="hidden" name="deli" value="<!--{$smarty.section.cnt.iteration}-->">
-<!--{if $smarty.section.cnt.first}-->
 <input type="hidden" name="mode" value="customer_addr">
+<!--{if $smarty.section.cnt.first}-->
 <input type="hidden" name="other_deliv_id" value="">
+<input type="hidden" name="deliv_check" value="-1">
 <!--{else}-->
-<input type="hidden" name="mode" value="other_addr">
 <input type="hidden" name="other_deliv_id" value="<!--{$arrAddr[cnt].other_deliv_id}-->">
+<input type="hidden" name="deliv_check" value="<!--{$arrAddr[cnt].other_deliv_id}-->">
 <!--{/if}-->
 ■お届け先<!--{$smarty.section.cnt.iteration}--><br>
 〒<!--{$arrAddr[cnt].zip01}-->-<!--{$arrAddr[cnt].zip02}--><br>
@@ -47,14 +48,16 @@
 <!--{if $arrAddr[cnt].addr02 != ""}-->
 <!--{$arrAddr[cnt].addr02|h}--><br>
 <!--{/if}-->
+<!--{$arrAddr[cnt].name01}--> <!--{$arrAddr[cnt].name02}--><br>
 <center><input type="submit" value="ここに送る"></center>
 </form>
 <!--{/section}-->
 
 <br>
 
-■その他のお届け先を指定<br>
-<form method="get" action="deliv_addr.php">
+■新しいお届け先を追加する<br>
+<form method="post" action="<!--{$smarty.const.URL_PATH}-->mypage/delivery_addr.php">
+<input type="hidden" name="ParentPage" value="<!--{$smarty.const.DELIV_URL_PATH}-->">
 <center><input type="submit" value="新規登録"></center>
 </form>
 <!--▲CONTENTS-->

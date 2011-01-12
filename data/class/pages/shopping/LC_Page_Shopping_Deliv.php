@@ -29,7 +29,7 @@ require_once(CLASS_REALDIR . "pages/LC_Page.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id:LC_Page_Shopping_Deliv.php 15532 2007-08-31 14:39:46Z nanasess $
+ * @version $Id$
  */
 class LC_Page_Shopping_Deliv extends LC_Page {
 
@@ -73,11 +73,9 @@ class LC_Page_Shopping_Deliv extends LC_Page {
      * @return void
      */
     function action() {
-        $objView = new SC_SiteView();
         $objSiteSess = new SC_SiteSession();
         $objCartSess = new SC_CartSession();
         $objCustomer = new SC_Customer();
-        $objDb = new SC_Helper_DB_Ex();
         $objPurchase = new SC_Helper_Purchase_Ex();
         $objQuery = SC_Query::getSingletonInstance();;
         // クッキー管理クラス
@@ -107,7 +105,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
         // ログインチェック
-        if($_POST['mode'] != 'login' && !$objCustomer->isLoginSuccess()) {
+        if($_POST['mode'] != 'login' && !$objCustomer->isLoginSuccess(true)) {
             // 不正アクセスとみなす
             SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
         }
@@ -128,9 +126,21 @@ class LC_Page_Shopping_Deliv extends LC_Page {
                 SC_Utils_Ex::sfDispSiteError(TEMP_LOGIN_ERROR);
             }
             // ログイン判定
-            if(!$objCustomer->getCustomerDataFromEmailPass($arrForm['login_pass'], $arrForm['login_email'])) {
+            $loginFailFlag = false;
+            if(Net_UserAgent_Mobile::isMobile() === true) {
+                // モバイルサイト
+                if(!$objCustomer->getCustomerDataFromMobilePhoneIdPass($arrForm['login_pass']) &&
+                   !$objCustomer->getCustomerDataFromEmailPass($arrForm['login_pass'], $arrForm['login_email'], true)) {
+                    $loginFailFlag = true;
+                }
+            } else {
+                // モバイルサイト以外
+                if(!$objCustomer->getCustomerDataFromEmailPass($arrForm['login_pass'], $arrForm['login_email'])) {
+                    $loginFailFlag = true;
+                }
+            }
+            if($loginFailFlag === true) {
                 // 仮登録の判定
-
                 $where = "email = ? AND status = 1 AND del_flg = 0";
                 $ret = $objQuery->count("dtb_customer", $where, array($arrForm['login_email']));
 
@@ -140,6 +150,24 @@ class LC_Page_Shopping_Deliv extends LC_Page {
                     SC_Utils_Ex::sfDispSiteError(SITE_LOGIN_ERROR);
                 }
             }
+
+            if(Net_UserAgent_Mobile::isMobile() === true) {
+                // ログインが成功した場合は携帯端末IDを保存する。
+                $objCustomer->updateMobilePhoneId();
+
+                /*
+                 * 携帯メールアドレスが登録されていない場合は,
+                 * 携帯メールアドレス登録画面へ遷移
+                 */
+                $objMobile = new SC_Helper_Mobile_Ex();
+                if (!$objMobile->gfIsMobileMailAddress($objCustomer->getValue('email'))) {
+                    if (!$objCustomer->hasValue('email_mobile')) {
+                        SC_Response_Ex::sendRedirect('../entry/email_mobile.php');
+                        exit;
+                    }
+                }
+            }
+
             //ダウンロード商品判定
             if($this->cartKey == PRODUCT_TYPE_DOWNLOAD){
                 // 会員情報の住所を受注一時テーブルに書き込む
@@ -188,10 +216,10 @@ class LC_Page_Shopping_Deliv extends LC_Page {
 
                     $otherDeliv = $objQuery->select("*", "dtb_other_deliv",
                                                     "other_deliv_id = ?",
-                                                    array($other_deliv_id));
+                                                    array($_POST['deliv_check']));
                     $sqlval = $otherDeliv[0];
                     $sqlval['deliv_id'] = $objPurchase->getDeliv($this->cartKey);
-                    $objPurchase->saveShippingTemp($sqlval, $other_deliv_id);
+                    $objPurchase->saveShippingTemp($sqlval, $_POST['deliv_check']);
                     $objPurchase->saveOrderTemp($uniqid, $sqlval, $objCustomer);
 
                     // 正常に登録されたことを記録しておく
@@ -227,213 +255,6 @@ class LC_Page_Shopping_Deliv extends LC_Page {
 
         // 登録済み住所を取得
         $this->arrAddr = $objCustomer->getCustomerAddress($_SESSION['customer']['customer_id']);
-        // 入力値の取得
-        if (!isset($arrErr)) $arrErr = array();
-        $this->arrForm = $this->objFormParam->getFormParamList();
-        $this->arrErr = $arrErr;
-    }
-
-    /**
-     * モバイルページを初期化する.
-     *
-     * @return void
-     */
-    function mobileInit() {
-        $this->init();
-    }
-
-    /**
-     * Page のプロセス(モバイル).
-     *
-     * @return void
-     */
-    function mobileProcess() {
-        $this->mobileAction();
-        $this->sendResponse();
-    }
-
-    /**
-     * Page のプロセス(モバイル).
-     *
-     * @return void
-     */
-    function mobileAction() {
-        $objView = new SC_MobileView();
-        $objSiteSess = new SC_SiteSession();
-        $objCartSess = new SC_CartSession();
-        $objCustomer = new SC_Customer();
-        $objDb = new SC_Helper_DB_Ex();
-        // クッキー管理クラス
-        $objCookie = new SC_Cookie(COOKIE_EXPIRE);
-        // パラメータ管理クラス
-        $this->objFormParam = new SC_FormParam();
-        // パラメータ情報の初期化
-        $this->lfInitParam();
-        // POST値の取得
-        $this->lfConvertEmail($_POST["login_email"]);
-        $this->lfConvertLoginPass($_POST["login_pass"]);
-
-        $this->objFormParam->setParam($_POST);
-
-        $this->objLoginFormParam = new SC_FormParam();	// ログインフォーム用
-        $this->lfInitLoginFormParam();						// 初期設定
-        $this->objLoginFormParam->setParam($_POST);		// POST値の取得
-
-        // ユーザユニークIDの取得と購入状態の正当性をチェック
-        $uniqid = SC_Utils_Ex::sfCheckNormalAccess($objSiteSess, $objCartSess);
-        $this->tpl_uniqid = $uniqid;
-
-        //ダウンロード商品判定
-        $this->cartdown = $objDb->chkCartDown($objCartSess);
-
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
-
-        // ログインチェック
-        if($_POST['mode'] != 'login' && !$objCustomer->isLoginSuccess(true)) {
-            // 不正アクセスとみなす
-            SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
-        }
-
-        switch($_POST['mode']) {
-        case 'login':
-            $this->objLoginFormParam->toLower('login_email');
-            $this->arrErr = $this->objLoginFormParam->checkError();
-            $arrForm =  $this->objLoginFormParam->getHashArray();
-            // クッキー保存判定
-            if($arrForm['login_memory'] == "1" && $arrForm['login_email'] != "") {
-                $objCookie->setCookie('login_email', $_POST['login_email']);
-            } else {
-                $objCookie->setCookie('login_email', '');
-            }
-
-            if(count($this->arrErr) == 0) {
-                // ログイン判定
-                if(!$objCustomer->getCustomerDataFromMobilePhoneIdPass($arrForm['login_pass']) &&
-                   !$objCustomer->getCustomerDataFromEmailPass($arrForm['login_pass'], $arrForm['login_email'], true)) {
-                    // 仮登録の判定
-                    $objQuery = new SC_Query;
-                    $where = "(email = ? OR email_mobile = ?) AND status = 1 AND del_flg = 0";
-                    $ret = $objQuery->count("dtb_customer", $where, array($arrForm['login_email'], $arrForm['login_email']));
-
-                    if($ret > 0) {
-                        SC_Utils_Ex::sfDispSiteError(TEMP_LOGIN_ERROR);
-                    } else {
-                        SC_Utils_Ex::sfDispSiteError(SITE_LOGIN_ERROR);
-                    }
-                }
-                //ダウンロード商品判定
-                if($this->cartdown==2){
-                    // 会員情報の住所を受注一時テーブルに書き込む
-                    $objDb->sfRegistDelivData($uniqid, $objCustomer);
-                    // 正常に登録されたことを記録しておく
-                    $objSiteSess->setRegistFlag();
-                    // ダウンロード商品有りの場合は、支払方法画面に転送
-                    $this->objDisplay->redirect($this->getLocation(MOBILE_SHOPPING_PAYMENT_URL_PATH), array());
-                    exit;
-                }
-            } else {
-                // ログインページに戻る
-                $this->objDisplay->redirect($this->getLocation(MOBILE_SHOPPING_URL));
-                exit;
-            }
-
-            // ログインが成功した場合は携帯端末IDを保存する。
-            $objCustomer->updateMobilePhoneId();
-
-            /*
-             * 携帯メールアドレスが登録されていない場合は,
-             * 携帯メールアドレス登録画面へ遷移
-             */
-            $objMobile = new SC_Helper_Mobile_Ex();
-            if (!$objMobile->gfIsMobileMailAddress($objCustomer->getValue('email'))) {
-                if (!$objCustomer->hasValue('email_mobile')) {
-                    $this->objDisplay->redirect($this->getLocation("../entry/email_mobile.php"));
-                    exit;
-                }
-            }
-            break;
-            // 削除
-        case 'delete':
-            if (SC_Utils_Ex::sfIsInt($_POST['other_deliv_id'])) {
-                $objQuery = new SC_Query();
-                $where = "other_deliv_id = ?";
-                $arrRet = $objQuery->delete("dtb_other_deliv", $where, array($_POST['other_deliv_id']));
-                $this->objFormParam->setValue('select_addr_id', '');
-            }
-            break;
-            // 会員登録住所に送る
-        case 'customer_addr':
-            // お届け先がチェックされている場合には更新処理を行う
-            if ($_POST['deli'] != "") {
-                // 会員情報の住所を受注一時テーブルに書き込む
-                $this->lfRegistDelivData($uniqid, $objCustomer);
-                // 正常に登録されたことを記録しておく
-                $objSiteSess->setRegistFlag();
-                // お支払い方法選択ページへ移動
-                $this->objDisplay->redirect($this->getLocation(MOBILE_SHOPPING_PAYMENT_URL_PATH));
-                exit;
-            }else{
-                // エラーを返す
-                $arrErr['deli'] = '※ お届け先を選択してください。';
-            }
-            break;
-
-            // 登録済みの別のお届け先に送る
-        case 'other_addr':
-            // お届け先がチェックされている場合には更新処理を行う
-            if ($_POST['deli'] != "") {
-                if (SC_Utils_Ex::sfIsInt($_POST['other_deliv_id'])) {
-                    $objQuery = new SC_Query();
-                    $deliv_count = $objQuery->count("dtb_other_deliv","customer_id=? and other_deliv_id = ?" ,array($objCustomer->getValue('customer_id'), $_POST['other_deliv_id']));
-                    if ($deliv_count != 1) {
-                        SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
-                    }
-                    // 登録済みの別のお届け先を受注一時テーブルに書き込む
-                    $this->lfRegistOtherDelivData($uniqid, $objCustomer, $_POST['other_deliv_id']);
-                    // 正常に登録されたことを記録しておく
-                    $objSiteSess->setRegistFlag();
-                    // お支払い方法選択ページへ移動
-                    $this->objDisplay->redirect($this->getLocation(MOBILE_SHOPPING_PAYMENT_URL_PATH));
-                    exit;
-                }
-            }else{
-                // エラーを返す
-                $arrErr['deli'] = '※ お届け先を選択してください。';
-            }
-            break;
-
-            // 前のページに戻る
-        case 'return':
-            // 確認ページへ移動
-            $this->objDisplay->redirect($this->getLocation(MOBILE_CART_URL_PATH));
-            exit;
-            break;
-        default:
-            $objQuery = new SC_Query();
-            $where = "order_temp_id = ?";
-            $arrRet = $objQuery->select("*", "dtb_order_temp", $where, array($uniqid));
-            $this->objFormParam->setParam($arrRet[0]);
-            break;
-        }
-
-        /** 表示処理 **/
-
-        // 会員登録住所の取得
-        $col = "name01, name02, pref, addr01, addr02, zip01, zip02";
-        $where = "customer_id = ?";
-        $objQuery = new SC_Query();
-        $arrCustomerAddr = $objQuery->select($col, "dtb_customer", $where, array($_SESSION['customer']['customer_id']));
-        // 別のお届け先住所の取得
-        $col = "other_deliv_id, name01, name02, pref, addr01, addr02, zip01, zip02";
-        $objQuery->setOrder("other_deliv_id DESC");
-        $objOtherAddr = $objQuery->select($col, "dtb_other_deliv", $where, array($_SESSION['customer']['customer_id']));
-        $this->arrAddr = $arrCustomerAddr;
-        $cnt = 1;
-        foreach($objOtherAddr as $val) {
-            $this->arrAddr[$cnt] = $val;
-            $cnt++;
-        }
-
         // 入力値の取得
         if (!isset($arrErr)) $arrErr = array();
         $this->arrForm = $this->objFormParam->getFormParamList();

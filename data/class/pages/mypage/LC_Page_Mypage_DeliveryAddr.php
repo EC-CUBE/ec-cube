@@ -148,6 +148,12 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page {
                     } else {
                         $this->lfRegistDataNonMember($_POST, $arrRegistColumn);
                     }
+
+                    if(Net_UserAgent_Mobile::isMobile() === true) {
+                        // モバイルの場合、元のページに遷移
+                        SC_Response_Ex::sendRedirect($this->getLocation($_POST['ParentPage']));
+                        exit;
+                    }
                 }
                 break;
         }
