@@ -93,4 +93,44 @@ class SC_Helper_Customer {
         return array($point, $total_point);
     }
     
+    /**
+     *   emailアドレスから、登録済み会員や退会済み会員をチェックする
+     *	 
+     *	 @param string $email  メールアドレス
+     *   @return integer  0:登録可能     1:登録済み   2:再登録制限期間内削除ユーザー
+     */
+    function lfCheckRegisterUserFromEmail($email){
+        $return = 0;
+        
+        $objQuery =& SC_Query::getSingletonInstance();
+        $arrRet = $objQuery->select("email, update_date, del_flg"
+                                    ,"dtb_customer"
+                                    ,"email = ? OR email_mobile = ? ORDER BY del_flg"
+                                    ,array($email, $email)
+                                    );
+
+        if(count($arrRet) > 0) {
+            if($arrRet[0]['del_flg'] != '1') {
+                // 会員である場合
+                if (!isset($objErr->arrErr['email'])) $objErr->arrErr['email'] = "";
+                $return = 1;
+            } else {
+                // 退会した会員である場合
+                $leave_time = SC_Utils_Ex::sfDBDatetoTime($arrRet[0]['update_date']);
+                $now_time = time();
+                $pass_time = $now_time - $leave_time;
+                // 退会から何時間-経過しているか判定する。
+                $limit_time = ENTRY_LIMIT_HOUR * 3600;
+                if($pass_time < $limit_time) {
+                    if (!isset($objErr->arrErr['email'])) $objErr->arrErr['email'] = "";
+                    $return = 2;
+                }
+            }
+        }
+        return $return;
+    }
+    
+    
+    
+    
 }

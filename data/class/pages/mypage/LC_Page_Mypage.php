@@ -63,7 +63,11 @@ class LC_Page_MyPage extends LC_Page {
      */
     function process() {
         parent::process();
-        $this->action();
+        if (Net_UserAgent_Mobile::isMobile() === true){
+            $this->mobileAction();
+        } else {
+            $this->action();
+        }
         $this->sendResponse();
     }
     
@@ -74,7 +78,6 @@ class LC_Page_MyPage extends LC_Page {
      */
     function action() {
 
-        //$objView = new SC_SiteView();
         $objQuery = new SC_Query();
         $objCustomer = new SC_Customer();
         
@@ -121,31 +124,7 @@ class LC_Page_MyPage extends LC_Page {
         // 支払い方法の取得
         $objDb = new SC_Helper_DB_Ex();
         $this->arrPayment = $objDb->sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
-        //$objView->assignobj($this);				//$objpage内の全てのテンプレート変数をsmartyに格納
-        //$objView->display(SITE_FRAME);				//パスとテンプレート変数の呼び出し、実行
-    }
 
-    /**
-     * モバイルページを初期化する.
-     *
-     * @return void
-     */
-    function mobileInit() {
-        $this->init();
-        $this->tpl_mainpage = 'mypage/index.tpl';
-        $this->tpl_title = 'MYページ/購入履歴一覧';
-        $this->httpCacheControl('nocache');
-    }
-
-    /**
-     * Page のプロセス(モバイル).
-     *
-     * @return void
-     */
-    function mobileProcess() {
-        parent::mobileProcess();
-        $this->mobileAction();
-        $this->sendResponse();
     }
     
     /**
@@ -154,7 +133,6 @@ class LC_Page_MyPage extends LC_Page {
      * @return void
      */
     function mobileAction() {
-        //$objView = new SC_MobileView();
         $objQuery = new SC_Query();
         $objCustomer = new SC_Customer();
         // クッキー管理クラス

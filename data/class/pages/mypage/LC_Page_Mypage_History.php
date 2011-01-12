@@ -43,8 +43,6 @@ class LC_Page_Mypage_History extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->tpl_title = 'MYページ';
-        $this->tpl_subtitle = '購入履歴詳細';
         $this->tpl_navi = TEMPLATE_REALDIR . 'mypage/navi.tpl';
         $this->tpl_mainno = 'mypage';
         $this->tpl_mypageno = 'index';
@@ -52,6 +50,8 @@ class LC_Page_Mypage_History extends LC_Page {
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrMAILTEMPLATE = $masterData->getMasterData("mtb_mail_template");
         $this->arrPref = $masterData->getMasterData('mtb_pref');
+        
+        $this->isMobile = Net_UserAgent_Mobile::isMobile();
    }
 
     /**
@@ -61,7 +61,11 @@ class LC_Page_Mypage_History extends LC_Page {
      */
     function process() {
         parent::process();
-        $this->action();
+        if ( $this->isMobile === false ){
+            $this->action();
+        } else {
+            $this->mobileAction();
+        }
         $this->sendResponse();
     }
 
@@ -71,7 +75,6 @@ class LC_Page_Mypage_History extends LC_Page {
      * @return void
      */
     function action() {
-        //$objView = new SC_SiteView();
         $objQuery = new SC_Query();
         $objCustomer = new SC_Customer();
         $objDb = new SC_Helper_DB_Ex();
@@ -114,8 +117,6 @@ class LC_Page_Mypage_History extends LC_Page {
         // 受注メール送信履歴の取得
         $this->tpl_arrMailHistory = $this->lfGetMailHistory($orderId);
 
-        //$objView->assignobj($this);
-        //$objView->display(SITE_FRAME);
     }
 
     /**
@@ -128,29 +129,6 @@ class LC_Page_Mypage_History extends LC_Page {
     }
 
     /**
-     * モバイルページを初期化する.
-     *
-     * @return void
-     */
-    function mobileInit() {
-        $this->init();
-        $this->tpl_mainpage = MOBILE_TEMPLATE_REALDIR . 'mypage/history.tpl';
-        $this->tpl_title = 'MYページ/購入履歴一覧';
-        $this->httpCacheControl('nocache');
-    }
-
-    /**
-     * Page のプロセス(モバイル).
-     *
-     * @return void
-     */
-    function mobileProcess() {
-        parent::mobileProcess();
-        $this->mobileAction();
-        $this->sendResponse();
-    }
-
-    /**
      * Page のAction(モバイル).
      *
      * @return void
@@ -158,7 +136,6 @@ class LC_Page_Mypage_History extends LC_Page {
     function mobileAction() {
         define ("HISTORY_NUM", 5);
 
-        //$objView = new SC_MobileView();
         $objQuery = new SC_Query();
         $objCustomer = new SC_Customer();
         $pageNo = isset($_GET['pageno']) ? (int) $_GET['pageno'] : 0; // TODO
@@ -209,8 +186,7 @@ class LC_Page_Mypage_History extends LC_Page {
         }
 
         $this->tpl_strnavi = $previous . $bar . $next;
-        //$objView->assignobj($this);				//$objpage内の全てのテンプレート変数をsmartyに格納
-        //$objView->display(SITE_FRAME);				//パスとテンプレート変数の呼び出し、実行
+
     }
 
     /**

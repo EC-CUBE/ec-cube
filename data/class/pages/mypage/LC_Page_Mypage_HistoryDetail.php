@@ -43,6 +43,9 @@ class LC_Page_Mypage_HistoryDetail extends LC_Page {
      */
     function init() {
         parent::init();
+        $this->tpl_mainpage = 'mypage/history_detail.tpl';
+        $this->tpl_title = 'MYページ';
+        $this->tpl_subtitle = '購入履歴詳細';
     }
 
     /**
@@ -61,39 +64,7 @@ class LC_Page_Mypage_HistoryDetail extends LC_Page {
      *
      * @return void
      */
-    function action() {}
-
-    /**
-     * モバイルページを初期化する.
-     *
-     * @return void
-     */
-    function mobileInit() {
-        $this->init();
-        $this->tpl_mainpage = 'mypage/history_detail.tpl';
-        $this->tpl_title = 'MYページ';
-        $this->tpl_subtitle = '購入履歴詳細';
-    }
-
-    /**
-     * Page のプロセス(モバイル).
-     *
-     * @return void
-     */
-    function mobileProcess() {
-        parent::mobileProcess();
-        $this->mobileAction();
-        $this->sendResponse();
-    }
-
-    /**
-     * Page のAction(モバイル).
-     *
-     * @return void
-     */
-    function mobileAction() {
-
-        //$objView = new SC_MobileView();
+    function action() {
         $objQuery = new SC_Query();
         $objCustomer = new SC_Customer();
         $objDb = new SC_Helper_DB_Ex();
@@ -123,9 +94,6 @@ class LC_Page_Mypage_HistoryDetail extends LC_Page {
             $this->CustomerName2 = $objCustomer->getvalue('name02');
             $this->CustomerPoint = $objCustomer->getvalue('point');
         }
-
-        //$objView->assignobj($this);
-        //$objView->display(SITE_FRAME);
     }
 
     /**

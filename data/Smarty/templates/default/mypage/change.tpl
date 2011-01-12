@@ -33,12 +33,10 @@
   <form name="form1" id="form1" method="post" action="?">
   <input type="hidden" name="mode" value="confirm" />
   <input type="hidden" name="customer_id" value="<!--{$arrForm.customer_id|h}-->" />
+  <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <table summary="会員登録内容変更 " class="delivname">
       <!--{include file="`$smarty.const.TEMPLATE_REALDIR`frontparts/form_personal_input.tpl" flgFields=3 emailMobile=true prefix=""}-->
     </table>
-    <!--{if 'sfGMOMypageDisplay'|function_exists}-->
-      <!--{'sfGMOMypageDisplay'|call_user_func}-->
-    <!--{/if}-->
     <div class="tblareabtn">
       <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_confirm_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_confirm.gif',this)" src="<!--{$TPL_DIR}-->img/button/btn_confirm.gif" class="box150" alt="確認ページへ" name="refusal" id="refusal" />
     </div>

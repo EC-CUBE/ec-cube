@@ -44,7 +44,11 @@ class LC_Page_Mypage_RefusalComplete extends LC_Page {
     function init() {
         parent::init();
         $this->tpl_title = 'MYページ';
-        $this->tpl_subtitle = '退会手続き(完了ページ)';
+        if ( Net_UserAgent_Mobile::isMobile() === true){
+            $this->tpl_title .= '/退会手続き(完了ページ)';
+        } else {
+            $this->tpl_subtitle = '退会手続き(完了ページ)';
+        }
         $this->tpl_navi = TEMPLATE_REALDIR . 'mypage/navi.tpl';
         $this->tpl_mypageno = 'refusal';
         $this->point_disp = false;
@@ -67,56 +71,11 @@ class LC_Page_Mypage_RefusalComplete extends LC_Page {
      * @return void
      */
     function action() {
-        //$objView = new SC_SiteView();
-
         $objCustomer = new SC_Customer();
         //マイページトップ顧客情報表示用
         $this->CustomerName1 = $objCustomer->getvalue('name01');
         $this->CustomerName2 = $objCustomer->getvalue('name02');
         $this->CustomerPoint = $objCustomer->getvalue('point');
-
-        //$objView->assignobj($this);
-        //$objView->display(SITE_FRAME);
-    }
-
-    /**
-     * モバイルページを初期化する.
-     *
-     * @return void
-     */
-    function mobileInit() {
-        $this->tpl_mainpage = 'mypage/refusal_complete.tpl';
-        $this->tpl_title = "MYページ/退会手続き(完了ページ)";
-        $this->point_disp = false;
-    }
-
-    /**
-     * Page のプロセス(モバイル).
-     *
-     * @return void
-     */
-    function mobileProcess() {
-         parent::mobileProcess();
-        $this->mobileAction();
-        $this->sendResponse();
-    }
-
-    /**
-     * Page のAction(モバイル).
-     *
-     * @return void
-     */
-    function mobileAction() {
-        //$objView = new SC_MobileView();
-
-        $objCustomer = new SC_Customer();
-        //マイページトップ顧客情報表示用
-        $this->CustomerName1 = $objCustomer->getvalue('name01');
-        $this->CustomerName2 = $objCustomer->getvalue('name02');
-        $this->CustomerPoint = $objCustomer->getvalue('point');
-
-        //$objView->assignobj($this);
-        //$objView->display(SITE_FRAME);
     }
 
     /**

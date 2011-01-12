@@ -86,56 +86,6 @@ class LC_Page_Mypage_Order extends LC_Page {
     }
 
     /**
-     * モバイルページを初期化する.
-     *
-     * @return void
-     */
-    function mobileInit() {
-        $this->init();
-    }
-
-    /**
-     * Page のプロセス(モバイル).
-     *
-     * @return void
-     */
-    function mobileProcess() {
-        parent::mobileProcess();
-        $this->mobileAction();
-        $this->sendResponse();
-    }
-
-    /**
-     * Page のAction(モバイル).
-     *
-     * @return void
-     */
-    function mobileAction() {
-
-        $objCustomer = new SC_Customer();
-        $objCartSess = new SC_CartSession();
-
-        //受注詳細データの取得
-        $arrDisp = $this->lfGetOrderDetail($_POST['order_id']);
-
-        //ログインしていない、またはDBに情報が無い場合
-        if (!$objCustomer->isLoginSuccess(true) or count($arrDisp) == 0){
-            SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
-        }
-
-        for($num = 0; $num < count($arrDisp); $num++) {
-            $product_id = $arrDisp[$num]['product_id'];
-            $product_class_id = $arrDisp[$num]['product_class_id'];
-            $cate_id1 = $arrDisp[$num]['classcategory_id1'];
-            $cate_id2 = $arrDisp[$num]['classcategory_id2'];
-            $quantity = $arrDisp[$num]['quantity'];
-
-            $objCartSess->addProduct(array($product_id, $product_class_id, $cate_id1, $cate_id2), $quantity);
-        }
-        $this->objDisplay->redirect($this->getLocation(MOBILE_CART_URL_PATH));
-    }
-
-    /**
      * デストラクタ.
      *
      * @return void

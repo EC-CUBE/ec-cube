@@ -221,7 +221,6 @@ class LC_Page_Entry extends LC_Page {
         
         // 仮会員登録の場合
         if(CUSTOMER_CONFIRM_MAIL == true) {
-            $sqlval["mailmaga_flg"] = $this->lfChangeMailFlg($sqlval["mailmaga_flg"]);
             $sqlval["status"] = "1";				// 仮会員
         } else {
             $sqlval["status"] = "2";				// 本会員
@@ -314,7 +313,7 @@ class LC_Page_Entry extends LC_Page {
         }
         
         // 現会員の判定 → 現会員もしくは仮登録中は、メアド一意が前提になってるので同じメアドで登録不可
-        $register_user_flg = $this->lfCheckRegisterUserForEmail($arrRet["email"]);
+        $register_user_flg =  SC_Helper_Customer_Ex::lfCheckRegisterUserFromEmail($arrRet["email"]);
         switch($register_user_flg) {
             case 1:
                 $objErr->arrErr["email"] .= "※ すでに会員登録で使用されているメールアドレスです。<br />";
@@ -327,52 +326,6 @@ class LC_Page_Entry extends LC_Page {
         }
         return $objErr->arrErr;
     }
-
-    /**
-     *   emailアドレスから、登録済み会員や退会済み会員をチェックする
-     *   
-     *   @return integer  0:登録可能     1:登録済み   2:再登録制限期間内削除ユーザー
-     */
-    function lfCheckRegisterUserForEmail($email){
-        $return = 0;
-        
-        $objQuery = new SC_Query();
-        $arrRet = $objQuery->select("email, update_date, del_flg"
-                                    ,"dtb_customer"
-                                    ,"email = ? OR email_mobile = ? ORDER BY del_flg"
-                                    ,array($email, $email)
-                                    );
-
-        if(count($arrRet) > 0) {
-            if($arrRet[0]['del_flg'] != '1') {
-                // 会員である場合
-                if (!isset($objErr->arrErr['email'])) $objErr->arrErr['email'] = "";
-                $return = 1;
-            } else {
-                // 退会した会員である場合
-                $leave_time = SC_Utils_Ex::sfDBDatetoTime($arrRet[0]['update_date']);
-                $now_time = time();
-                $pass_time = $now_time - $leave_time;
-                // 退会から何時間-経過しているか判定する。
-                $limit_time = ENTRY_LIMIT_HOUR * 3600;
-                if($pass_time < $limit_time) {
-                    if (!isset($objErr->arrErr['email'])) $objErr->arrErr['email'] = "";
-                    $return = 2;
-                }
-            }
-        }
-        return $return;
-    }
-    
-    //確認ページ用パスワード表示用
-    function lfPassLen($passlen){
-        $ret = "";
-        for ($i=0;$i<$passlen;true){
-        $ret.="*";
-        $i++;
-        }
-        return $ret;
-    }
     
     function lfCheckReferer(){
     	/**
@@ -384,21 +337,6 @@ class LC_Page_Entry extends LC_Page {
         	) {
             SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", true);
         }
-    }
-    
-    function lfChangeMailFlg($mailmaga_flg){
-        switch($mailmaga_flg) {
-            case 1:
-                $mailmaga_flg = 4;
-                break;
-            case 2:
-                $mailmaga_flg = 5;
-                break;
-            default:
-                $mailmaga_flg = 6;
-                break;
-        }
-        return $mailmaga_flg;
     }
 }
 ?>

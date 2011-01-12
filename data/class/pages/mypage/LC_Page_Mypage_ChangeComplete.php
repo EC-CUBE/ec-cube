@@ -66,54 +66,6 @@ class LC_Page_Mypage_ChangeComplete extends LC_Page {
      * @return void
      */
     function action() {
-        //$objView = new SC_SiteView();
-        $objCustomer = new SC_Customer();
-
-        //ログイン判定
-        if (!$objCustomer->isLoginSuccess()){
-            SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
-        } else {
-            //マイページトップ顧客情報表示用
-            $this->tpl_login = true;
-            $this->CustomerName1 = $objCustomer->getvalue('name01');
-            $this->CustomerName2 = $objCustomer->getvalue('name02');
-            $this->CustomerPoint = $objCustomer->getvalue('point');
-        }
-
-        //$objView->assignobj($this);
-        //$objView->display(SITE_FRAME);
-    }
-
-    /**
-     * モバイルページを初期化する.
-     *
-     * @return void
-     */
-    function mobileInit() {
-        $this->init();
-        $this->tpl_mainpage = 'mypage/change_complete.tpl';
-        $this->tpl_title = 'MYページ/会員登録内容変更(完了ページ)';
-    }
-
-    /**
-     * Page のプロセス(モバイル).
-     *
-     * @return void
-     */
-    function mobileProcess() {
-        parent::mobileProcess();
-        $this->mobileAction();
-        $this->sendResponse();
-    }
-
-    /**
-     * Page のAction(モバイル).
-     *
-     * @return void
-     */
-    function mobileAction() {
-
-        //$objView = new SC_MobileView();
         $objCustomer = new SC_Customer();
 
         //セッション情報を最新の状態に更新する
@@ -128,9 +80,6 @@ class LC_Page_Mypage_ChangeComplete extends LC_Page {
             $this->CustomerName2 = $objCustomer->getvalue('name02');
             $this->CustomerPoint = $objCustomer->getvalue('point');
         }
-
-        //$objView->assignobj($this);
-        //$objView->display(SITE_FRAME);
     }
 
     /**

@@ -34,6 +34,6 @@ require_once(CLASS_EX_REALDIR . "page_extends/mypage/LC_Page_Mypage_HistoryDetai
 
 $objPage = new LC_Page_Mypage_HistoryDetail_Ex();
 register_shutdown_function(array($objPage, "destroy"));
-$objPage->mobileInit();
-$objPage->mobileProcess();
+$objPage->init();
+$objPage->process();
 ?>
