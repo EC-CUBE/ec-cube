@@ -267,8 +267,7 @@ class LC_Page_Admin_Customer extends LC_Page_Admin {
             $result_customer = $objQuery->getAll($sql, array($_POST["edit_customer_id"]));
 
             if ($result_customer[0]["status"] == 2) {           //本会員削除
-                $arrDel = array("del_flg" => 1, "update_date" => "NOW()");
-                $objQuery->conn->autoExecute("dtb_customer", $arrDel, "customer_id = " . SC_Utils_Ex::sfQuoteSmart($_POST["edit_customer_id"]) );
+                $objQuery->exec("UPDATE dtb_customer SET del_flg=1, update_date=now() WHERE customer_id=?", array($_POST["edit_customer_id"]));
             } elseif ($result_customer[0]["status"] == 1) {     //仮会員削除
                 $sql = "DELETE FROM dtb_customer WHERE customer_id = ?";
                 $objQuery->query($sql, array($_POST["edit_customer_id"]));
@@ -407,8 +406,7 @@ class LC_Page_Admin_Customer extends LC_Page_Admin {
                     $result_customer = $objQuery->getAll($sql, array($_POST["del_customer_id"]));
 
                     if ($result_customer[0]["status"] == 2) {           //本会員削除
-                        $arrDel = array("del_flg" => 1, "update_date" => "NOW()");
-                        $objQuery->conn->autoExecute("dtb_customer", $arrDel, "customer_id = " . SC_Utils_Ex::sfQuoteSmart($_POST["del_customer_id"]) );
+                        $objQuery->exec("UPDATE dtb_customer SET del_flg=1, update_date=now() WHERE customer_id=?", array($_POST["del_customer_id"]));
                     } elseif ($result_customer[0]["status"] == 1) {     //仮会員削除
                         $sql = "DELETE FROM dtb_customer WHERE customer_id = ?";
                         $objQuery->query($sql, array($_POST["del_customer_id"]));
