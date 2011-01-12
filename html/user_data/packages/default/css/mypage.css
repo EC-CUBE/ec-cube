@@ -20,6 +20,13 @@ div#mypagecolumn h3 {
     letter-spacing: 0.15em;
 }
 
+div#mypagecolumn h4 {
+    margin: 10px auto;
+    font-size: 120%;
+    border-bottom: 1px solid #999;
+    text-align: left;
+}
+
 div#mypagecolumn table {
     width: 510px;
 }

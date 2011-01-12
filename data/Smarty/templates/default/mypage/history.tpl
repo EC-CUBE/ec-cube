@@ -125,46 +125,66 @@
         <!--{/if}-->
         <!-- 使用ポイントここまで -->
 
+        <!--{foreach item=shippingItem name=shippingItem from=$arrShipping}-->
+        <h4>お届け先<!--{if $isMultiple}--><!--{$smarty.foreach.shippingItem.iteration}--><!--{/if}--></h4>
+        <!--{if $isMultiple}-->
+            <table summary="お届け内容確認">
+              <tr>
+                <th>商品コード</th>
+                <th>商品名</th>
+                <th>単価</th>
+                <th>数量</th>
+                <!--{* XXX 購入小計と誤差が出るためコメントアウト
+                <th>小計</th>
+                *}-->
+              </tr>
+              <!--{foreach item=item from=$shippingItem.shipment_item}-->
+                  <tr>
+                      <td><!--{$item.product_code|h}--></td>
+                      <td><!--{* 商品名 *}--><!--{$item.productsClass.name|h}--><br />
+                          <!--{if $item.productsClass.classcategory_name1 != ""}-->
+                              <!--{$item.productsClass.class_name1}-->：<!--{$item.productsClass.classcategory_name1}--><br />
+                          <!--{/if}-->
+                          <!--{if $item.productsClass.classcategory_name2 != ""}-->
+                              <!--{$item.productsClass.class_name2}-->：<!--{$item.productsClass.classcategory_name2}-->
+                          <!--{/if}-->
+                      </td>
+                      <td class="pricetd">
+                          <!--{$item.productsClass.price02|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
+                      </td>
+                      <td id="quantity"><!--{$item.quantity}--></td>
+                      <!--{* XXX 購入小計と誤差が出るためコメントアウト
+                      <td class="pricetd"><!--{$item.total_inctax|number_format}-->円</td>
+                      *}-->
+                  </tr>
+              <!--{/foreach}-->
+            </table>
+         <!--{/if}-->
         <table summary="お届け先" class="delivname">
-            <thead>
-                <tr>
-                    <th colspan="5">▼お届け先</th>
-                </tr>
-            </thead>
             <tbody>
                 <tr>
                     <th>お名前</th>
-                    <!--{assign var=key1 value="deliv_name01"}-->
-                    <!--{assign var=key2 value="deliv_name02"}-->
-                    <td><!--{$arrDisp[$key1]|h}-->&nbsp;<!--{$arrDisp[$key2]|h}--></td>
+                    <td><!--{$shippingItem.shipping_name01|h}-->&nbsp;<!--{$shippingItem.shipping_name02|h}--></td>
                 </tr>
                 <tr>
                     <th>お名前(フリガナ)</th>
-                    <!--{assign var=key1 value="deliv_kana01"}-->
-                    <!--{assign var=key2 value="deliv_kana02"}-->
-                    <td><!--{$arrDisp[$key1]|h}-->&nbsp;<!--{$arrDisp[$key2]|h}--></td>
+                    <td><!--{$shippingItem.shipping_kana01|h}-->&nbsp;<!--{$shippingItem.shipping_kana02|h}--></td>
                 </tr>
                 <tr>
                     <th>郵便番号</th>
-                    <!--{assign var=key1 value="deliv_zip01"}-->
-                    <!--{assign var=key2 value="deliv_zip02"}-->
-                    <td>〒<!--{$arrDisp[$key1]}-->-<!--{$arrDisp[$key2]}--></td>
+                    <td>〒<!--{$shippingItem.shipping_zip01}-->-<!--{$shippingItem.shipping_zip02}--></td>
                 </tr>
                 <tr>
                     <th>住所</th>
-                    <!--{assign var=pref value=`$arrDisp.deliv_pref`}-->
-                    <!--{assign var=key value="deliv_addr01"}-->
-                    <td><!--{$arrPref[$pref]}--><!--{$arrDisp[$key]|h}--><!--{assign var=key value="deliv_addr02"}--><!--{$arrDisp[$key]|h}--></td>
+                    <td><!--{$arrPref[$shippingItem.shipping_pref]}--><!--{$shippingItem.shipping_addr01|h}--><!--{$shippingItem.shipping_addr02|h}--></td>
                 </tr>
                 <tr>
                     <th>電話番号</th>
-                    <!--{assign var=key1 value="deliv_tel01"}-->
-                    <!--{assign var=key2 value="deliv_tel02"}-->
-                    <!--{assign var=key3 value="deliv_tel03"}-->
-                    <td><!--{$arrDisp[$key1]}-->-<!--{$arrDisp[$key2]}-->-<!--{$arrDisp[$key3]}--></td>
+                    <td><!--{$shippingItem.shipping_tel01}-->-<!--{$shippingItem.shipping_tel02}-->-<!--{$shippingItem.shipping_tel03}--></td>
                 </tr>
             </tbody>
         </table>
+        <!--{/foreach}-->
 
         <br />
 

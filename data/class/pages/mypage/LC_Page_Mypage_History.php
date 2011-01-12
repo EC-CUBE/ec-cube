@@ -46,6 +46,7 @@ class LC_Page_Mypage_History extends LC_Page {
         $this->tpl_navi = TEMPLATE_REALDIR . 'mypage/navi.tpl';
         $this->tpl_mainno = 'mypage';
         $this->tpl_mypageno = 'index';
+        $this->tpl_subtitle = '購入履歴詳細';
         $this->httpCacheControl('nocache');
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrMAILTEMPLATE = $masterData->getMasterData("mtb_mail_template");
@@ -99,6 +100,8 @@ class LC_Page_Mypage_History extends LC_Page {
 
         //受注詳細データの取得
         $this->arrDisp = $this->lfGetOrderData($orderId);
+        $this->arrShipping = $this->lfGetShippingData($orderId);
+        $this->isMultiple = count($this->arrShipping) > 1;
         // 支払い方法の取得
         $this->arrPayment = $objDb->sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
         // お届け時間の取得
@@ -198,13 +201,37 @@ class LC_Page_Mypage_History extends LC_Page {
     function lfGetOrderData($orderId) {
         // DBから受注情報を読み込む
         $objQuery = new SC_Query();
+        /*
         $col = "order_id, create_date, payment_id, subtotal, tax, use_point, add_point, discount, ";
         $col .= "deliv_fee, charge, payment_total, deliv_name01, deliv_name02, deliv_kana01, deliv_kana02, ";
         $col .= "deliv_zip01, deliv_zip02, deliv_pref, deliv_addr01, deliv_addr02, deliv_tel01, deliv_tel02, deliv_tel03, deliv_time_id, deliv_date ";
+        */
         $from = "dtb_order";
         $where = "order_id = ?";
-        $arrRet = $objQuery->select($col, $from, $where, array($orderId));
+        $arrRet = $objQuery->select("*", $from, $where, array($orderId));
         return $arrRet[0];
+    }
+
+    /**
+     * 配送情報の取得.
+     * TODO リファクタリング
+     */
+    function lfGetShippingData($orderId) {
+        $objQuery =& SC_Query::getSingletonInstance();
+        $objProduct = new SC_Product();
+        $arrRet = $objQuery->select("*", "dtb_shipping", "order_id = ?", array($orderId));
+        foreach (array_keys($arrRet) as $key) {
+            $arrItems = $objQuery->select("*", "dtb_shipment_item", "order_id = ? AND shipping_id = ?",
+                                       array($orderId, $arrRet[$key]['shipping_id']));
+            foreach ($arrItems as $itemKey => $arrDetail) {
+                foreach ($arrDetail as $detailKey => $detailVal) {
+                    $arrRet[$key]['shipment_item'][$arrDetail['product_class_id']][$detailKey] = $detailVal;
+                }
+
+                $arrRet[$key]['shipment_item'][$arrDetail['product_class_id']]['productsClass'] =& $objProduct->getDetailAndProductsClass($arrDetail['product_class_id']);
+            }
+        }
+        return $arrRet;
     }
 
     /**

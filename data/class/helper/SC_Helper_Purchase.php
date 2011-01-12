@@ -197,7 +197,7 @@ class SC_Helper_Purchase {
 
         $objProduct = new SC_Product();
         if (empty($_SESSION['shipping'][$otherDelivId]['shipment_item'][$productClassId]['productsClass'])) {
-            $product = $objProduct->getDetailAndProductsClass($productClassId);
+            $product =& $objProduct->getDetailAndProductsClass($productClassId);
             $_SESSION['shipping'][$otherDelivId]['shipment_item'][$productClassId]['productsClass'] = $product;
         }
         $incTax = SC_Helper_DB_Ex::sfCalcIncTax($_SESSION['shipping'][$otherDelivId]['shipment_item'][$productClassId]['productsClass']['price02']);
