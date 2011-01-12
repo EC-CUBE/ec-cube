@@ -161,7 +161,7 @@ class LC_Page_Shopping extends LC_Page {
             // 入力エラーなし
             if(count($this->arrErr) == 0) {
                 // DBへのデータ登録
-                $this->lfRegistData($uniqid, $objPurchase, $objCustomer, $this->cartKey);
+                $this->lfRegistData($uniqid, $objPurchase, $objCustomer, $this->cartKey, true);
                 // 正常に登録されたことを記録しておく
                 $objSiteSess->setRegistFlag();
 
@@ -180,7 +180,6 @@ class LC_Page_Shopping extends LC_Page {
             }
             // ※breakなし
         default:
-            $objPurchase->unsetShippingTemp();
             if(isset($_GET['from']) && $_GET['from'] == 'nonmember') {
                 $this->tpl_mainpage = 'shopping/nonmember_input.tpl';
                 $this->tpl_title = 'お客様情報入力';
@@ -188,11 +187,21 @@ class LC_Page_Shopping extends LC_Page {
             $arrOrderTemp = $objPurchase->getOrderTemp($uniqid);
             if (empty($arrOrderTemp)) $arrOrderTemp = array('order_email' => "",
                                                             'order_birth' => "");
-
+            $arrShippingTemp = $objPurchase->getShippingTemp();
             // DB値の取得
             $this->objFormParam->setParam($arrOrderTemp);
+            /*
+             * count($arrShippingTemp) > 1 は複数配送であり,
+             * $arrShippingTemp[0] は注文者が格納されている
+             */
+            if (count($arrShippingTemp) > 1) {
+                $this->objFormParam->setParam($arrShippingTemp[1]);
+            } else {
+                $this->objFormParam->setParam($arrShippingTemp[0]);
+            }
             $this->objFormParam->setValue('order_email02', $arrOrderTemp['order_email']);
             $this->objFormParam->setDBDate($arrOrderTemp['order_birth']);
+            $objPurchase->unsetShippingTemp();
         }
 
         // クッキー判定
@@ -303,7 +312,7 @@ class LC_Page_Shopping extends LC_Page {
         $this->objFormParam->addParam("日", "day", INT_LEN, "n", array("MAX_LENGTH_CHECK"), "", false);
         $this->objFormParam->addParam("性別", "order_sex", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
         $this->objFormParam->addParam("職業", "order_job", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $this->objFormParam->addParam("別のお届け先", "deliv_check", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"), "", false);
+        $this->objFormParam->addParam("別のお届け先", "deliv_check", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
         $this->objFormParam->addParam("お名前(姓)", "shipping_name01", STEXT_LEN, "KVa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("お名前(名)", "shipping_name02", STEXT_LEN, "KVa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("お名前(フリガナ・姓)", "shipping_kana01", STEXT_LEN, "KVCa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
@@ -320,7 +329,7 @@ class LC_Page_Shopping extends LC_Page {
     }
 
     /* DBへデータの登録 */
-    function lfRegistData($uniqid, &$objPurchase, &$objCustomer, $productTypeId) {
+    function lfRegistData($uniqid, &$objPurchase, &$objCustomer, $productTypeId, $isMultiple = false) {
         $params = $this->objFormParam->getHashArray();
         $sqlval = $this->objFormParam->getDbArray();
         // 登録データの作成
@@ -348,9 +357,17 @@ class LC_Page_Shopping extends LC_Page {
                 $shipping_val[$key] = $val;
             }
         }
-        $objPurchase->saveShippingTemp($order_val, 0);
-        if ($params['deliv_check'] == '1') {
-            $objPurchase->saveShippingTemp($shipping_val, 1);
+        if ($isMultiple) {
+            $objPurchase->saveShippingTemp($order_val, 0);
+            if ($params['deliv_check'] == '1') {
+                $objPurchase->saveShippingTemp($shipping_val, 1);
+            }
+        } else {
+            if ($params['deliv_check'] == '1') {
+                $objPurchase->saveShippingTemp($shipping_val, 0);
+            } else {
+                $objPurchase->saveShippingTemp($order_val, 0);
+            }
         }
         $objPurchase->saveOrderTemp($uniqid, $sqlval, $objCustomer);
     }

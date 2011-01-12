@@ -656,6 +656,7 @@ CREATE TABLE dtb_order_temp (
     note text,
     mail_flag smallint,
     status smallint,
+    deliv_check smallint,
     point_check smallint,
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_date timestamp NOT NULL,
