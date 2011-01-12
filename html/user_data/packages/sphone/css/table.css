@@ -480,6 +480,22 @@ text-align: left;
 vertical-align: middle;
 }
 
+/* 会員登録内容変更
+----------------------------------------------- */
+table[summary="会員登録内容変更"] td{
+padding-left:5px;
+text-align: left;
+vertical-align: middle;
+}
+
+/* お届け先登録
+----------------------------------------------- */
+table[summary="お届け先登録"] td{
+padding-left:5px;
+text-align: left;
+vertical-align: middle;
+}
+
 /* お問い合わせ
 ----------------------------------------------- */
 #undercolumn_contact table td {
