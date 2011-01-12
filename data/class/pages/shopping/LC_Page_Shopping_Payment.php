@@ -29,7 +29,7 @@ require_once(CLASS_REALDIR . "pages/LC_Page.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id:LC_Page_Shopping_Payment.php 15532 2009-10-30 20:04:46Z satou $
+ * @version $Id$
  */
 class LC_Page_Shopping_Payment extends LC_Page {
 
@@ -76,7 +76,6 @@ class LC_Page_Shopping_Payment extends LC_Page {
     function action() {
         $objSiteSess = new SC_SiteSession();
         $objCartSess = new SC_CartSession();
-        $objDb = new SC_Helper_DB_Ex();
         $objPurchase = new SC_Helper_Purchase_Ex();
         $this->objCustomer = new SC_Customer();
 
@@ -139,7 +138,45 @@ class LC_Page_Shopping_Payment extends LC_Page {
 
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
+        // 戻るボタンの処理(モバイル)
+        if (Net_UserAgent_Mobile::isMobile() === true) {
+            if (!empty($_POST['return'])) {
+                switch ($_POST['mode']) {
+                case 'confirm':
+                    $_POST['mode'] = 'payment';
+                    break;
+                default:
+                    // 正常な推移であることを記録しておく
+                    $objSiteSess->setRegistFlag();
+                    if ($this->cartdown == 2) {
+                        // ダウンロード商品のみの場合はカート画面へ戻る
+                        $this->objDisplay->redirect($this->getLocation(CART_URL_PATH));
+                    } else {
+                        $this->objDisplay->redirect(SHOPPING_URL);
+                    }
+                    exit;
+                }
+            }
+        }
+
         switch($_POST['mode']) {
+        // お届け日時指定(モバイル)
+        case 'deliv_date':
+            // 入力値の変換
+            $this->objFormParam->convParam();
+            $this->arrErr = $this->lfCheckError($this->arrData, $this->arrPayment);
+            if (!isset($this->arrErr['payment_id'])) {
+                // 支払い方法の入力エラーなし
+                $this->tpl_mainpage = 'shopping/deliv_date.tpl';
+                $this->tpl_title = "お届け日時指定";
+                break;
+            } else {
+                // ユーザユニークIDの取得
+                $uniqid = $objSiteSess->getUniqId();
+                // 受注一時テーブルからの情報を格納
+                $this->lfSetOrderTempData($uniqid);
+            }
+            break;
         case 'confirm':
             // 入力値の変換
             $this->objFormParam->convParam();
@@ -160,6 +197,11 @@ class LC_Page_Shopping_Payment extends LC_Page {
                 $uniqid = $objSiteSess->getUniqId();
                 // 受注一時テーブルからの情報を格納
                 $this->lfSetOrderTempData($uniqid);
+                if (Net_UserAgent_Mobile::isMobile() === true && !isset($this->arrErr['payment_id'])) {
+                    // 支払い方法の入力エラーなし
+                    $this->tpl_mainpage = 'shopping/deliv_date.tpl';
+                    $this->tpl_title = "お届け日時指定";
+                }
             }
             break;
         // 前のページに戻る
@@ -183,175 +225,6 @@ class LC_Page_Shopping_Payment extends LC_Page {
         // 支払い方法の画像があるなしを取得（$img_show true:ある false:なし）
         $this->img_show = $this->lfGetImgShow($this->arrPayment);
         // FIXME お届け日一覧の取得
-        $this->arrDelivDate = $this->lfGetDelivDate();
-
-        $this->arrForm = $this->objFormParam->getFormParamList();
-    }
-
-    /**
-     * モバイルページを初期化する.
-     *
-     * @return void
-     */
-    function mobileInit() {
-        $this->init();
-    }
-
-    /**
-     * Page のプロセス(モバイル).
-     *
-     * @return void
-     */
-    function mobileProcess() {
-        parent::mobileProcess();
-        $this->mobileAction();
-        $this->sendResponse();
-    }
-
-    /**
-     * Page のプロセス(モバイル).
-     *
-     * @return void
-     */
-    function mobileAction() {
-        $objSiteSess = new SC_SiteSession();
-        $objCartSess = new SC_CartSession();
-        $this->objCustomer = new SC_Customer();
-        $objDb = new SC_Helper_DB_Ex();
-
-        // パラメータ管理クラス
-        $this->objFormParam = new SC_FormParam();
-        // パラメータ情報の初期化
-        $this->lfInitParam();
-        // POST値の取得
-        $this->objFormParam->setParam($_POST);
-
-        // ユーザユニークIDの取得と購入状態の正当性をチェック
-        $uniqid = SC_Utils_Ex::sfCheckNormalAccess($objSiteSess, $objCartSess);
-        // ユニークIDを引き継ぐ
-        $this->tpl_uniqid = $uniqid;
-
-        //ダウンロード商品判定
-        $this->cartdown = $objDb->chkCartDown($objCartSess);
-
-        // 会員ログインチェック
-        if($this->objCustomer->isLoginSuccess(true)) {
-            $this->tpl_login = '1';
-            $this->tpl_user_point = $this->objCustomer->getValue('point');
-        }
-
-        // 一時受注テーブルの読込
-        $arrOrderTemp = $objDb->sfGetOrderTemp($uniqid);
-        //不正遷移チェック（正常に受注情報が格納されていない場合は一旦カート画面まで戻す）
-        if (!$arrOrderTemp) {
-            $this->objDisplay->redirect($this->getLocation(MOBILE_CART_URL_PATH));
-            exit;
-        }
-
-        // 金額の取得 (購入途中で売り切れた場合にはこの関数内にてその商品の数量が０になる)
-        $objDb->sfTotalCart($this, $objCartSess);
-        if (strlen($this->tpl_message) >= 1) {
-            SC_Utils_Ex::sfDispSiteError(SOLD_OUT, '', true);
-        }
-
-        $this->arrData = $objDb->sfTotalConfirm(array(), $this, $objCartSess);
-
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
-
-        // 戻るボタンの処理
-        if (!empty($_POST['return'])) {
-            switch ($_POST['mode']) {
-            case 'confirm':
-                $_POST['mode'] = 'payment';
-                break;
-            default:
-                // 正常な推移であることを記録しておく
-                $objSiteSess->setRegistFlag();
-                if ($this->cartdown == 2) {
-                    // ダウンロード商品のみの場合はカート画面へ戻る
-                    $this->objDisplay->redirect($this->getLocation(MOBILE_CART_URL_PATH));
-                } else {
-                    $this->objDisplay->redirect(MOBILE_SHOPPING_URL);
-                }
-                exit;
-            }
-        }
-
-        // ダウンロード商品のみで、モードがお届け日時指定の場合はモードを変更
-        if ($this->cartdown == 2 && $_POST['mode'] == 'deliv_date') {
-            $_POST['mode'] = 'confirm';
-        }
-
-        switch($_POST['mode']) {
-            // 支払い方法指定 → お届け日時指定
-        case 'deliv_date':
-            // 入力値の変換
-            $this->objFormParam->convParam();
-            $this->arrErr = $this->lfCheckError($this->arrData);
-            if (!isset($this->arrErr['payment_id'])) {
-                // 支払い方法の入力エラーなし
-                $this->tpl_mainpage = 'shopping/deliv_date.tpl';
-                $this->tpl_title = "お届け日時指定";
-                break;
-            } else {
-                // ユーザユニークIDの取得
-                $uniqid = $objSiteSess->getUniqId();
-                // 受注一時テーブルからの情報を格納
-                $this->lfSetOrderTempData($uniqid);
-            }
-            break;
-        case 'confirm':
-            // 入力値の変換
-            $this->objFormParam->convParam();
-            $this->arrErr = $this->lfCheckError($this->arrData);
-            // 入力エラーなし
-            if(count($this->arrErr) == 0) {
-                // DBへのデータ登録
-                $this->lfRegistData($uniqid);
-                // 正常に登録されたことを記録しておく
-                $objSiteSess->setRegistFlag();
-                // 確認ページへ移動
-                $this->objDisplay->redirect($this->getLocation(MOBILE_SHOPPING_CONFIRM_URL_PATH));
-                exit;
-            }else{
-                // ユーザユニークIDの取得
-                $uniqid = $objSiteSess->getUniqId();
-                // 受注一時テーブルからの情報を格納
-                $this->lfSetOrderTempData($uniqid);
-                if (!isset($this->arrErr['payment_id'])) {
-                    // 支払い方法の入力エラーなし
-                    $this->tpl_mainpage = 'shopping/deliv_date.tpl';
-                    $this->tpl_title = "お届け日時指定";
-                }
-            }
-            break;
-            // 前のページに戻る
-        case 'return':
-            // 非会員の場合
-            // 正常な推移であることを記録しておく
-            $objSiteSess->setRegistFlag();
-            $this->objDisplay->redirect(MOBILE_SHOPPING_URL);
-            exit;
-            break;
-            // 支払い方法が変更された場合
-        case 'payment':
-            // ここのbreakは、意味があるので外さないで下さい。
-            break;
-        default:
-            // 受注一時テーブルからの情報を格納
-            $this->lfSetOrderTempData($uniqid);
-            break;
-        }
-
-        // 購入金額の取得得
-        $total_inctax = $objCartSess->getAllProductsTotal();
-        // 支払い方法の取得
-        //$this->arrPayment = $this->lfGetPayment($total_inctax);
-        // お届け時間の取得
-        $arrRet = $objDb->sfGetDelivTime($this->objFormParam->getValue('payment_id'));
-        $this->arrDelivTime = SC_Utils_Ex::sfArrKeyValue($arrRet, 'time_id', 'deliv_time');
-
-        // お届け日一覧の取得
         $this->arrDelivDate = $this->lfGetDelivDate();
 
         $this->arrForm = $this->objFormParam->getFormParamList();
