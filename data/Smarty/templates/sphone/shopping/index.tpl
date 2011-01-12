@@ -26,7 +26,7 @@
     <form name="member_form" id="member_form" method="post" action="./deliv.php" onsubmit="return fnCheckLogin('member_form')">
    <div class="loginarea">
      <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-     <p><img src="<!--{$TPL_DIR}-->img/title/tit_sub_member.gif" width="202" height="16" alt="会員登録がお済みのお客様" /></p>
+     <h3>会員登録がお済みのお客様</h3>
      <p class="inputtext">会員の方は、登録時に入力されたメールアドレスとパスワードでログインしてください。</p>
        <input type="hidden" name="mode" value="login" />
        <div class="inputbox">
@@ -61,9 +61,7 @@
       <input type="hidden" name="mode" value="nonmember" />
       <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <div class="loginarea">
-    <p>
-      <img src="<!--{$TPL_DIR}-->img/title/tit_sub_guest.gif" width="247" height="16" alt="まだ会員登録されていないお客様" />
-    </p>
+    <h3>まだ会員登録されていないお客様</h3>
     <p class="inputtext">会員登録をすると便利なMyページをご利用いただけます。<br />
       また、ログインするだけで、毎回お名前や住所などを入力することなくスムーズにお買い物をお楽しみいただけます。
     </p>
