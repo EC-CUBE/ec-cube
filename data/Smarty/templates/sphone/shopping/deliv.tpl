@@ -86,11 +86,11 @@
                 </tr>
             <!--{/section}-->
         </table>
-
+ <p><a href="javascript:;" onclick="fnModeSubmit('multiple', '', ''); return false">お届け先を複数指定する</a></p>
             <div class="tblareabtn">
-                <a href="<!--{$smarty.const.CART_URL_PATH}-->" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_back_on.gif',back03)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_back.gif',back03)">
-                    <img src="<!--{$TPL_DIR}-->img/button/btn_back.gif" width="150" height="30" alt="戻る" border="0" name="back03" id="back03" /></a>
-                <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_address_select_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_address_select.gif',this)" src="<!--{$TPL_DIR}-->img/button/btn_address_select.gif" alt="選択したお届け先に送る" class="box190" name="send_button" id="send_button" />
+                      <a href="<!--{$smarty.const.CART_URL_PATH}-->" class="spbtn spbtn-medeum">
+                    戻る</a>&nbsp;
+                 <input type="submit" value="選択したお届け先に送る" class="spbtn spbtn-shopping" width="130" height="30" alt="選択したお届け先に送る" name="send_button" id="next" />
             </div>
         </form>
     </div>

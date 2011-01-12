@@ -244,7 +244,7 @@
           </td>
         </tr>
       </table>
-
+  <p><a href="javascript:;" onclick="fnModeSubmit('multiple', '', ''); return false">お届け先を複数指定する</a></p>
       <div class="tblareabtn">
        <input type="submit" value="次へ" class="spbtn spbtn-shopping" width="130" height="30" alt="次へ" name="next" id="next" />
       </div>
