@@ -184,7 +184,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin {
                 if ($_POST["mode"] == "confirm") {
                     $this->tpl_mainpage = 'customer/edit_confirm.tpl';
                     $passlen = strlen($this->arrForm['password']);
-                    $this->passlen = $this->lfPassLen($passlen);
+                    $this->passlen = SC_Utils_Ex::lfPassLen($passlen);
 
                 }
                 //--　編集
@@ -201,7 +201,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin {
                         array_push($arrRegistColumn, array('column' => 'secret_key', 'convert' => 'n'));
                     }
                     //-- 編集登録
-                    $objCustomerHelper->sfEditCustomerData($this->arrForm, $arrRegistColumn);
+                    $objCustomerHelper->sfEditCustomerDataAdmin($this->arrForm, $arrRegistColumn);
                 }
             }
         }
@@ -330,14 +330,5 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin {
         return $arrPurchaseHistory;
     }
 
-    //確認ページ用パスワード表示用
-    function lfPassLen($passlen){
-        $ret = "";
-        for ($i=0;$i<$passlen;true){
-            $ret.="*";
-            $i++;
-        }
-        return $ret;
-    }
 }
 ?>

@@ -100,9 +100,9 @@ class LC_Page_Entry extends LC_Page {
         $this->objFormParam->addParam("日", "day", INT_LEN, "n", array("MAX_LENGTH_CHECK"), "", false);
         
         if ($this->isMobile === false){
-            $this->objFormParam->addParam("FAX番号1", 'fax01', "n", array("SPTAB_CHECK"));
-            $this->objFormParam->addParam("FAX番号2", 'fax02', "n", array("SPTAB_CHECK"));
-            $this->objFormParam->addParam("FAX番号3", 'fax03', "n", array("SPTAB_CHECK"));
+            $this->objFormParam->addParam("FAX番号1", 'fax01', TEL_ITEM_LEN, "n", array("SPTAB_CHECK"));
+            $this->objFormParam->addParam("FAX番号2", 'fax02', TEL_ITEM_LEN, "n", array("SPTAB_CHECK"));
+            $this->objFormParam->addParam("FAX番号3", 'fax03', TEL_ITEM_LEN, "n", array("SPTAB_CHECK"));
             $this->objFormParam->addParam("メールマガジン", "mailmaga_flg", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK"));
             $this->objFormParam->addParam("パスワード(確認)", 'password02', STEXT_LEN, "a", array("EXIST_CHECK", "SPTAB_CHECK" ,"ALNUM_CHECK"), "", false);
             $this->objFormParam->addParam('メールアドレス', "email", MTEXT_LEN, "a", array("NO_SPTAB", "EXIST_CHECK", "EMAIL_CHECK", "SPTAB_CHECK" ,"EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
@@ -231,9 +231,6 @@ class LC_Page_Entry extends LC_Page {
                           本会員登録では利用されないがセットしておく。
         */
         $sqlval["secret_key"] = $uniqid;		// 会員登録キー
-        $sqlval["create_date"] = "now()"; 	// 作成日
-        $sqlval["update_date"] = "now()"; 	// 更新日
-        $sqlval["first_buy_date"] = "";	 	// 最初の購入日
         $sqlval["point"] = $this->CONF["welcome_point"]; // 入会時ポイント
 
         if ($this->isMobile === true) {
@@ -243,11 +240,9 @@ class LC_Page_Entry extends LC_Page {
             $sqlval['mobile_phone_id'] =  SC_MobileUserAgent::getId();
         }
        
-        //-- 仮登録実行
+        //-- 登録実行
         $objQuery->begin();
-        $sqlval['customer_id'] = $objQuery->nextVal('dtb_customer_customer_id');
-        $objQuery->insert("dtb_customer", $sqlval);
-        
+        SC_Helper_Customer_Ex::sfEditCustomerData($sqlval);
         $objQuery->commit();
         
         return $uniqid;
