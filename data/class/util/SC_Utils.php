@@ -2252,7 +2252,14 @@ exit;
     function isBlank($val, $greedy = true) {
         if (is_array($val)) {
             if ($greedy) {
+                if (empty($val)) {
+                    return true;
+                }
                 foreach ($val as $in) {
+                    /*
+                     * SC_Utils_Ex への再帰は無限ループやメモリリークの懸念
+                     * 自クラスへ再帰する.
+                     */
                     if (!SC_Utils::isBlank($in, $greedy)) {
                         return false;
                     }
