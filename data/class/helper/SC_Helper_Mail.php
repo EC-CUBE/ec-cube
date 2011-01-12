@@ -135,7 +135,11 @@ class SC_Helper_Mail {
         $objCustomer = new SC_Customer();
         $arrTplVar->tpl_user_point = $objCustomer->getValue('point');
 
-        $objMailView = new SC_SiteView();
+       if(Net_UserAgent_Mobile::isMobile() === true) {
+            $objMailView = new SC_MobileView();
+       } else {
+            $objMailView = new SC_SiteView();
+       }
         // メール本文の取得
         $objMailView->assignobj($arrTplVar);
         $body = $objMailView->fetch($this->arrMAILTPLPATH[$template_id]);

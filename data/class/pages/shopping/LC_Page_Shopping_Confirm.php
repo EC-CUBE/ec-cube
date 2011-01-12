@@ -29,7 +29,7 @@ require_once(CLASS_REALDIR . "pages/LC_Page.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id:LC_Page_Shopping_Confirm.php 15532 2007-08-31 14:39:46Z nanasess $
+ * @version $Id$
  */
 class LC_Page_Shopping_Confirm extends LC_Page {
 
@@ -69,9 +69,7 @@ class LC_Page_Shopping_Confirm extends LC_Page {
      * @return void
      */
     function action() {
-        $objView = new SC_SiteView();
         $objCartSess = new SC_CartSession();
-        $objSiteInfo = $objView->objSiteInfo;
         $objSiteSess = new SC_SiteSession();
         $objCustomer = new SC_Customer();
         $objQuery = new SC_Query();
@@ -114,7 +112,7 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         $arrData = array_merge($tmpData, $objCartSess->calculate($this->cartKey, $objCustomer, $tmpData['use_point'], $tmpData['deliv_pref'], $tmpData['payment_id'], $tmpData['charge'], $tmpData['discount']));
         unset($arrData['deliv_fee']); // FIXME
         // 会員ログインチェック
-        if($objCustomer->isLoginSuccess()) {
+        if($objCustomer->isLoginSuccess(true)) {
             $this->tpl_login = '1';
             $this->tpl_user_point = $objCustomer->getValue('point');
         }
@@ -168,26 +166,6 @@ class LC_Page_Shopping_Confirm extends LC_Page {
             break;
         }
         $this->arrData = $arrData;
-    }
-
-    /**
-     * モバイルページを初期化する.
-     *
-     * @return void
-     */
-    function mobileInit() {
-        $this->init();
-    }
-
-    /**
-     * Page のプロセス(モバイル).
-     *
-     * @return void
-     */
-    function mobileProcess() {
-        parent::mobileProcess();
-        $this->mobileAction();
-        $this->sendResponse();
     }
 
     /**

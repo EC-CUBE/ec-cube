@@ -811,7 +811,7 @@ INSERT INTO mtb_mail_template (id, name, rank) VALUES (4, '取り寄せ確認メ
 INSERT INTO mtb_mail_template (id, name, rank) VALUES (5, 'お問い合わせ受付メール', 4);
 
 INSERT INTO mtb_mail_tpl_path (id, name, rank) VALUES (1, 'mail_templates/order_mail.tpl', 0);
-INSERT INTO mtb_mail_tpl_path (id, name, rank) VALUES (2, 'mobile/mail_templates/order_mail.tpl', 1);
+INSERT INTO mtb_mail_tpl_path (id, name, rank) VALUES (2, 'mail_templates/order_mail.tpl', 1);
 INSERT INTO mtb_mail_tpl_path (id, name, rank) VALUES (3, 'mail_templates/order_mail.tpl', 2);
 INSERT INTO mtb_mail_tpl_path (id, name, rank) VALUES (4, 'mail_templates/order_mail.tpl', 3);
 INSERT INTO mtb_mail_tpl_path (id, name, rank) VALUES (5, 'mail_templates/contact_mail.tpl', 4);

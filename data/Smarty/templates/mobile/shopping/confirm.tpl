@@ -33,44 +33,59 @@
 
 <br>
 
+【ご注文内容】<br>
+<!--{foreach from=$cartItems item=item}-->
+<!--{$item.productsClass.name|h}--><br>
+<!--{if $item.productsClass.classcategory_name1 != ""}--><!--{$item.productsClass.class_name1}-->：<!--{$item.productsClass.classcategory_name1}--><br><!--{/if}-->
+<!--{if $item.productsClass.classcategory_name2 != ""}--><!--{$item.productsClass.class_name2}-->：<!--{$item.productsClass.classcategory_name2}--><br><!--{/if}-->
+&nbsp;単価：<!--{$item.productsClass.price02|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円<br>
+&nbsp;数量：<!--{$item.quantity|number_format}--><br>
+&nbsp;小計：<!--{$item.total_inctax|number_format}-->円<br>
+<br>
+<!--{/foreach}-->
+
+【購入金額】<br>
+商品合計：<!--{$tpl_total_inctax[$cartKey]|number_format}-->円<br>
+送料：<!--{$arrData.deliv_fee|number_format}-->円<br>
+<!--{if $arrData.charge > 0}-->手数料：<!--{$arrData.charge|number_format}-->円<br><!--{/if}-->
+合計：<!--{$arrData.payment_total|number_format}-->円<br>
+(内消費税：<!--{$arrData.tax|number_format}-->円)<br>
+
+<br>
+
+<!--{* 販売方法判定（ダウンロード販売のみの場合はお届け先を表示しない） *}-->
+<!--{if $cartKey != $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
+<!--{foreach item=shippingItem from=$shipping name=shippingItem}-->
 【お届け先】<br>
-<!--{* 別のお届け先が選択されている場合 *}-->
-<!--{if $arrData.deliv_check >= 1}-->
-<!--{$arrData.deliv_name01|h}--> <!--{$arrData.deliv_name02|h}--><br>
-〒<!--{$arrData.deliv_zip01|h}-->-<!--{$arrData.deliv_zip02|h}--><br>
-<!--{$arrPref[$arrData.deliv_pref]}--><!--{$arrData.deliv_addr01|h}--><!--{$arrData.deliv_addr02|h}--><br>
-<!--{else}-->
-<!--{$arrData.order_name01|h}--> <!--{$arrData.order_name02|h}--><br>
-〒<!--{$arrData.order_zip01|h}-->-<!--{$arrData.order_zip02|h}--><br>
-<!--{$arrPref[$arrData.order_pref]}--><!--{$arrData.order_addr01|h}--><!--{$arrData.order_addr02|h}--><br>
+<!--{if $isMultiple}--><!--{* 複数お届け先の表示 *}-->
+<!--{foreach item=item from=$shippingItem.shipment_item}-->
+▼お届け先<!--{if $isMultiple}--><!--{$smarty.foreach.shippingItem.iteration}--><!--{/if}--><br>
+<!--{$item.productsClass.name|h}--><br>
+<!--{if $item.productsClass.classcategory_name1 != ""}--><!--{$item.productsClass.class_name1}-->：<!--{$item.productsClass.classcategory_name1}--><br><!--{/if}-->
+<!--{if $item.productsClass.classcategory_name2 != ""}--><!--{$item.productsClass.class_name2}-->：<!--{$item.productsClass.classcategory_name2}--><br><!--{/if}-->
+数量：<!--{$item.quantity}--><br>
+<!--{/foreach}-->
 <!--{/if}-->
+
+<!--{$shippingItem.shipping_name01|h}--> <!--{$shippingItem.shipping_name02|h}--><br>
+〒<!--{$shippingItem.shipping_zip01|h}-->-<!--{$shippingItem.shipping_zip02|h}--><br>
+<!--{$arrPref[$shippingItem.shipping_pref]}--><!--{$shippingItem.shipping_addr01|h}--><!--{$shippingItem.shipping_addr02|h}--><br>
+<!--{$shippingItem.shipping_tel01}-->-<!--{$shippingItem.shipping_tel02}-->-<!--{$shippingItem.shipping_tel03}--><br>
+<!--{/foreach}-->
 
 <br>
 
 【お届け日時指定】<br>
-日：<!--{$arrData.deliv_date|default:"指定なし"|h}--><br>
-時間：<!--{$arrData.deliv_time|default:"指定なし"|h}--><br>
+日：<!--{$shippingItem.deliv_date|default:"指定なし"|h}--><br>
+時間：<!--{$shippingItem.deliv_time|default:"指定なし"|h}--><br>
 
 <br>
+<!--{/if}-->
 
 【お支払い方法】<br>
 <!--{$arrData.payment_method|h}--><br>
 
 <br>
-
-【ご注文内容】<br>
-<!--{section name=cnt loop=$arrProductsClass}-->
-<!--{$arrProductsClass[cnt].name}--> <!--{$arrProductsClass[cnt].quantity|number_format}--><br>
-<!--{/section}-->
-
-<br>
-
-【購入金額】<br>
-商品合計：<!--{$tpl_total_inctax|number_format}--><br>
-送料：<!--{$arrData.deliv_fee|number_format}--><br>
-<!--{if $arrData.charge > 0}-->手数料：<!--{$arrData.charge|number_format}--><br><!--{/if}-->
-合計：<!--{$arrData.payment_total|number_format}--><br>
-(内消費税：<!--{$arrData.tax|number_format}-->)<br>
 
 <br>
 
