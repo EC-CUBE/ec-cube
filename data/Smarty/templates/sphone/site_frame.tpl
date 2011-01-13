@@ -51,7 +51,7 @@
     <meta name="keywords" content="<!--{$arrPageLayout.keyword|h}-->" />
 <!--{/if}-->
 <!--{* iPhone用アイコン画像 *}-->
-<link rel="apple-touch-icon" href="<!--{$smarty.const.SMARTPHONE_URL_PATH}-->sphone/apple-touch-icon.png" />
+<link rel="apple-touch-icon" href="<!--{$TPL_DIR}-->img/common/apple-touch-icon.png" />
 
 <script type="text/javascript">//<![CDATA[
     <!--{$tpl_javascript}-->
