@@ -81,7 +81,7 @@ class LC_Page_Admin_Login extends LC_Page_Admin {
 
         if($ret) {
             // 成功
-            $this->objDisplay->redirect($this->getLocation(ADMIN_HOME_URL_PATH));
+            SC_Response_Ex::sendRedirect(ADMIN_HOME_URL_PATH);
             exit;
         } else {
             // エラーページの表示

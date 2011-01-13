@@ -201,12 +201,11 @@ class LC_Page_Products_Detail extends LC_Page {
                         $objSiteSess->setRegistFlag();
                         $objCartSess->saveCurrentCart($objSiteSess->getUniqId());
 
-                        $this->objDisplay->redirect($this->getLocation(
-                            URL_PATH . USER_DIR . 'gmopg_oneclick_confirm.php', array(), true));
+                        SC_Response_Ex::sendRedirect(URL_PATH . USER_DIR . 'gmopg_oneclick_confirm.php', array(), false, true);
                         exit;
                     }
 
-                    $this->objDisplay->redirect($this->getLocation(CART_URL_PATH));
+                    SC_Response_Ex::sendRedirect(CART_URL_PATH);
                     exit;
                 }
                 break;

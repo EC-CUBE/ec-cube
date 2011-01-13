@@ -84,7 +84,7 @@ class LC_Page_Admin_System_Rank extends LC_Page_Admin {
         }
         
         // ページの表示
-        $this->objDisplay->redirect($this->getLocation(ADMIN_SYSTEM_URL_PATH));
+        SC_Response_Ex::sendRedirect(ADMIN_SYSTEM_URL_PATH);
     }
 
     /**

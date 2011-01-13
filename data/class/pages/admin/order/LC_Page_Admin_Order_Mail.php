@@ -107,7 +107,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin {
                 // 注文受付メール
                 $objMail->sfSendOrderMail($_POST['order_id'], $_POST['template_id'], $_POST['subject'], $_POST['header'], $_POST['footer']);
             }
-            $this->objDisplay->redirect($this->getLocation(ADMIN_ORDER_URL_PATH));
+            SC_Response_Ex::sendRedirect(ADMIN_ORDER_URL_PATH);
             exit;
             break;
         case 'confirm':

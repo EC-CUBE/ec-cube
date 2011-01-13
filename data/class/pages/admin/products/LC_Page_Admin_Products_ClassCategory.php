@@ -88,7 +88,7 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin {
 
         if(!$get_check) {
             // 規格登録ページに飛ばす。
-            $this->objDisplay->redirect($this->getLocation(ADMIN_CLASS_REGIST_URL_PATH));
+            SC_Response_Ex::sendRedirect(ADMIN_CLASS_REGIST_URL_PATH);
             exit;
         }
 
