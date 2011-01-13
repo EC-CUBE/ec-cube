@@ -129,6 +129,6 @@ background-color: #E19200;
 /* お気に入り
 ----------------------------------------------- */
 #btn-recommend {
-text-align: right;
-margin-top:7px;
+text-align:center;
+margin-top:15px;
 }

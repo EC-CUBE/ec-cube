@@ -340,6 +340,7 @@ $(document).ready(function() {
                 <input type="hidden" name="product_class_id" value="<!--{$tpl_product_class_id}-->" id="product_class_id" />
                 <input type="hidden" name="product_type" value="<!--{$tpl_product_type}-->" id="product_type" />
                 <input type="hidden" name="favorite_product_id" value="" />
+                
 
                 <!--{if $tpl_stock_find}-->
                     <dl>
@@ -388,19 +389,7 @@ $(document).ready(function() {
 
                 <div class="btn">
                     <!--{if $smarty.const.OPTION_FAVOFITE_PRODUCT == 1 && $tpl_login === true}-->
-                        <div>
-                            <!--{assign var=add_favorite value="add_favorite`$product_id`"}-->
-                            <!--{if $arrErr[$add_favorite]}--><div class="attention"><!--{$arrErr[$add_favorite]}--></div><!--{/if}-->
-                            <!--{if !$arrProduct.favorite_count}-->
-                                <a
-                                    href="javascript:fnModeSubmit('add_favorite','favorite_product_id','<!--{$arrProduct.product_id|h}-->');"
-                                    onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/add_favolite_product_on.gif','add_favolite_product');"
-                                    onmouseout="chgImg('<!--{$TPL_DIR}-->img/products/add_favolite_product.gif','add_favolite_product');"
-                                ><img src="<!--{$TPL_DIR}-->img/products/add_favolite_product.gif" width="115" height="20" alt="お気に入りに追加" name="add_favolite_product" id="add_favolite_product" /></a>
-                            <!--{else}-->
-                                <img src="<!--{$TPL_DIR}-->img/products/add_favolite_product_on.gif" width="115" height="20" alt="お気に入り登録済" name="add_favolite_product" id="add_favolite_product" />
-                            <!--{/if}-->
-                        </div>
+                        
                     <!--{/if}-->
 
                     <!--{if $tpl_stock_find}-->
@@ -419,6 +408,16 @@ $(document).ready(function() {
                     <!--{else}-->
                         <div class="attention">申し訳ございませんが、只今品切れ中です。</div>
                     <!--{/if}-->
+                </div>
+                <div class="btn" id="btn-recommend">
+                            <!--{assign var=add_favorite value="add_favorite`$product_id`"}-->
+                            <!--{if $arrErr[$add_favorite]}--><div class="attention"><!--{$arrErr[$add_favorite]}--></div><!--{/if}-->
+                            <!--{if !$arrProduct.favorite_count}-->
+                            <a href="javascript:fnModeSubmit('add_favorite','favorite_product_id','<!--{$arrProduct.product_id|h}-->');" class="spbtn spbtn-small">
+                                    お気に入りに追加</a>
+                            <!--{else}-->
+                            <div>お気に入り登録済</div>
+                            <!--{/if}-->
                 </div>
             </form>
             <!--▲買い物かご-->
