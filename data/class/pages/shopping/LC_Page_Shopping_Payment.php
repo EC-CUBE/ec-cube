@@ -152,7 +152,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
                         // ダウンロード商品のみの場合はカート画面へ戻る
                         SC_Response_Ex::sendRedirect(CART_URL_PATH);
                     } else {
-                        $this->objDisplay->redirect(SHOPPING_URL);
+                        SC_Response_Ex::sendRedirect(SHOPPING_URL);
                     }
                     exit;
                 }

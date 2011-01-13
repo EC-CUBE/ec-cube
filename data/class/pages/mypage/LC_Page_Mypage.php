@@ -175,7 +175,7 @@ class LC_Page_MyPage extends LC_Page {
                     $objMobile = new SC_Helper_Mobile_Ex();
                     if (!$objMobile->gfIsMobileMailAddress($objCustomer->getValue('email'))) {
                         if (!$objCustomer->hasValue('email_mobile')) {
-                            $this->objDisplay->redirect($this->getLocation("../entry/email_mobile.php"));
+                            SC_Response_Ex::sendRedirectFromUrlPath('entry/email_mobile.php');
                             exit;
                         }
                     }

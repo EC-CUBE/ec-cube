@@ -195,7 +195,7 @@ class LC_Page {
      * @see Net_URL
      */
     function sendRedirect($url, $isMobile = false) {
-echo "SC_Response.php::sendRedirect()に移行してね。";
+echo 'SC_Response_Ex::sendRedirect()に移行してね。';
 exit;
 
         if (preg_match("/(" . preg_quote(HTTP_URL, '/')
@@ -382,7 +382,7 @@ exit;
      * @see Net_URL
      */
     function reload($queryString = array(), $removeQueryString = false) {
-echo "SC_Display.php::reload()に移行してね。";
+echo 'SC_Response_Ex::reload()に移行してね。';
 exit;
 
         // 現在の URL を取得

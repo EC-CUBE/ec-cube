@@ -75,15 +75,6 @@ class SC_Display{
     }
 
     /**
-     * リダイレクトを行う.
-     *
-     * SC_Response::sendRedirect() のラッパーです.
-     */
-    function redirect($location){
-        $this->response->sendRedirect($location, array(), true);
-    }
-
-    /**
      * リロードを行う.
      *
      * SC_Response::reload() のラッパーです.

@@ -90,7 +90,7 @@ class LC_Page_Admin_Contents_FileView extends LC_Page_Admin {
             header("Content-type: text/plain\n\n");
             print($objFileManager->sfReadFile(USER_REALDIR . $_GET['file']));
         } else {
-            $this->objDisplay->redirect(USER_URL . $_GET['file']);
+            SC_Response_Ex::sendRedirect(USER_URL . $_GET['file']);
             exit;
         }
     }

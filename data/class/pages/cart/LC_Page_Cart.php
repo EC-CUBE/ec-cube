@@ -120,7 +120,7 @@ class LC_Page_Cart extends LC_Page {
                 // カートを購入モードに設定
                 $objCartSess->saveCurrentCart($uniqid, $cartKey);
                 // 購入ページへ
-                $this->objDisplay->redirect(SHOPPING_URL);
+                SC_Response_Ex::sendRedirect(SHOPPING_URL);
                 exit;
             }
             break;

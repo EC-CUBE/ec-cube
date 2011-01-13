@@ -131,7 +131,9 @@ class SC_Response{
     }
 
     /**
-     * @param string $location 「url-path」「現在のURLからのパス」「URL」のいずれか
+     * アプリケーション内でリダイレクトする
+     *
+     * @param string $location 「url-path」「現在のURLからのパス」「URL」のいずれか。「../」の解釈は行なわない。
      * @return void
      * @static
      */
@@ -170,33 +172,36 @@ class SC_Response{
             $url = $netUrl->getUrl();
         }
 
-        // アプリケーション内での遷移時の処理
         $pattern = '/^(' . preg_quote(HTTP_URL, '/') . '|' . preg_quote(HTTPS_URL, '/') . ')/';
-        if (preg_match($pattern, $url)) {
-            $netUrl = new Net_URL($url);
-            $arrQueryString = array_merge($netUrl->querystring, $arrQueryString);
-            $netUrl->querystring = array();
 
-            if ($inheritQueryString) {
-                if (!empty($_SERVER['QUERY_STRING'])) {
-                    $netUrl->addRawQueryString($_SERVER['QUERY_STRING']);
-                }
-            }
-
-            foreach ($arrQueryString as $key => $val) {
-                $netUrl->addQueryString($key, $val);
-            }
-
-            $url = $netUrl->getURL();
-
-            $session = SC_SessionFactory::getInstance();
-            if (SC_MobileUserAgent::isMobile() || $session->useCookie() == false) {
-                $netUrl->addQueryString(session_name(), session_id());
-            }
-
-            $netUrl->addQueryString(TRANSACTION_ID_NAME, SC_Helper_Session_Ex::getToken());
-            $url = $netUrl->getURL();
+        // アプリケーション外へのリダイレクトは扱わない
+        if (preg_match($pattern, $url) === 0) {
+            SC_Utils_Ex::sfDispException();
         }
+
+        $netUrl = new Net_URL($url);
+        $arrQueryString = array_merge($netUrl->querystring, $arrQueryString);
+        $netUrl->querystring = array();
+
+        if ($inheritQueryString) {
+            if (!empty($_SERVER['QUERY_STRING'])) {
+                $netUrl->addRawQueryString($_SERVER['QUERY_STRING']);
+            }
+        }
+
+        foreach ($arrQueryString as $key => $val) {
+            $netUrl->addQueryString($key, $val);
+        }
+
+        $url = $netUrl->getURL();
+
+        $session = SC_SessionFactory::getInstance();
+        if (SC_MobileUserAgent::isMobile() || $session->useCookie() == false) {
+            $netUrl->addQueryString(session_name(), session_id());
+        }
+
+        $netUrl->addQueryString(TRANSACTION_ID_NAME, SC_Helper_Session_Ex::getToken());
+        $url = $netUrl->getURL();
 
         header("Location: $url");
         exit;
@@ -205,12 +210,12 @@ class SC_Response{
     /**
      * HTML_PATH からのパスを指定してリダイレクトする
      *
-     * @param string $location /html/ からの相対パス
+     * @param string $location /html/ からの相対パス。先頭に / を含むかは任意。「../」の解釈は行なわない。
      * @return void
      * @static
      */
     function sendRedirectFromUrlPath($location, $arrQueryString = array(), $inheritQueryString = false, $useSsl = null) {
-        $location = URL_PATH . $location;
+        $location = URL_PATH . ltrim($location, '/');
         SC_Response_Ex::sendRedirect($location, $arrQueryString, $inheritQueryString, $useSsl);
     }
 
