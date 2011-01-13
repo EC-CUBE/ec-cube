@@ -29,7 +29,7 @@ require_once(CLASS_REALDIR . "pages/frontparts/bloc/LC_Page_FrontParts_Bloc.php"
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id:LC_Page_FrontParts_Bloc_News.php 15532 2007-08-31 14:39:46Z nanasess $
+ * @version $Id$
  */
 class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc {
 
@@ -63,25 +63,6 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc {
      */
     function action() {
         $this->arrNews = $this->lfGetNews();
-    }
-
-
-    /**
-     * モバイルページを初期化する.
-     *
-     * @return void
-     */
-    function mobileInit() {
-        $this->init();
-    }
-
-    /**
-     * Page のプロセス(モバイル).
-     *
-     * @return void
-     */
-    function mobileProcess() {
-        $this->process();
     }
 
     /**

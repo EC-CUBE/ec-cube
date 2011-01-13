@@ -29,7 +29,7 @@ require_once(CLASS_REALDIR . "pages/frontparts/bloc/LC_Page_FrontParts_Bloc.php"
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id:LC_Page_FrontParts_Bloc_Category.php 15532 2007-08-31 14:39:46Z nanasess $
+ * @version $Id$
  */
 class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc {
 
@@ -62,38 +62,18 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc {
      * @return void
      */
     function action() {
-        $objDb = new SC_Helper_DB_Ex();
+        if(Net_UserAgent_Mobile::isMobile() === true) {
+            $this->lfGetMainCat(true, $this);
+        } else {
+            $objDb = new SC_Helper_DB_Ex();
 
-        // 選択中のカテゴリIDを判定する
-        $arrCategory_id = $objDb->sfGetCategoryId($_GET['product_id'], $_GET['category_id']);
+            // 選択中のカテゴリIDを判定する
+            $arrCategory_id = $objDb->sfGetCategoryId($_GET['product_id'], $_GET['category_id']);
 
-        // 選択中のカテゴリID
-        $this->tpl_category_id = empty($arrCategory_id) ? array(0) : $arrCategory_id;;
-        $this->lfGetCatTree($this->tpl_category_id, true, $this);
-    }
-
-    /**
-     * モバイルページを初期化する.
-     *
-     * @return void
-     */
-    function mobileInit() {
-        $this->tpl_mainpage = MOBILE_TEMPLATE_REALDIR . "frontparts/"
-            . BLOC_DIR . 'category.tpl';
-    }
-
-    /**
-     * Page のプロセス(モバイル).
-     *
-     * @return void
-     */
-    function mobileProcess() {
-        $objSubView = new SC_MobileView();
-
-       $this->lfGetMainCat(true, $this);
-
-        $objSubView->assignobj($this);
-        $objSubView->display($this->tpl_mainpage);
+            // 選択中のカテゴリID
+            $this->tpl_category_id = empty($arrCategory_id) ? array(0) : $arrCategory_id;;
+            $this->lfGetCatTree($this->tpl_category_id, true, $this);
+        }
     }
 
     /**

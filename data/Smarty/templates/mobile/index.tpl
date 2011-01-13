@@ -32,14 +32,11 @@
 <!-- ▲新着情報 ここまで -->
 
 <br>
+<hr>
 
 <!-- ▼ピックアップ商品 ここから -->
-<hr>
 <!--{include_php file=`$smarty.const.MOBILE_HTML_REALDIR`frontparts/bloc/best5.php}-->
-<hr>
 <!-- ▲ピックアップ商品 ここまで -->
-
-<br>
 
 <!-- ▼メニュー ここから -->
 <!--{1|numeric_emoji}-->商品カテゴリ<br>

@@ -33,4 +33,6 @@
 <!--{if !$smarty.foreach.best_products.last}--><br><br><!--{/if}-->
 <!--{/foreach}-->
 </center>
+<hr>
+<br>
 <!--{/if}-->
