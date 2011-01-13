@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
+<div id="products" class="contents-main">
 <form name="search_form" method="post" action="?" >
 <input type="hidden" name="mode" value="search" />
   <h2>検索条件設定</h2>
@@ -94,7 +95,11 @@
     <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
     <!--{html_options options=$arrPageMax selected=$arrForm.search_page_max}-->
     </select> 件
-    <a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', '');"><span>この条件で検索する</span></a>
+    <div class="btn-area">
+      <ul>
+        <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', '');"><span class="btn-next">この条件で検索する</span></a></li>
+      </ul>
+    </div>
   </div>
   <!--検索条件設定テーブルここまで-->
 </form>  
@@ -132,8 +137,8 @@
       <th>ブログ名</th>
       <th>ブログ記事タイトル</th>
       <th>状態</th>
-      <th>編集</th>
-      <th>削除</th>
+      <th class="edit">編集</th>
+      <th class="delete">削除</th>
     </tr>
     
     <!--{section name=cnt loop=$arrTrackback}-->
@@ -153,3 +158,4 @@
 </form>
 <!--{ /if }-->
 <!--★★検索結果一覧★★-->    
+</div>

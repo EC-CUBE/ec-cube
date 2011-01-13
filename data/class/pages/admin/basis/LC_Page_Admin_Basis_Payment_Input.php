@@ -148,6 +148,7 @@ class LC_Page_Admin_Basis_Payment_Input extends LC_Page_Admin {
         $this->arrFile = $this->objUpFile->getFormFileList(IMAGE_TEMP_URL_PATH, IMAGE_SAVE_URL_PATH);
         // HIDDEN用に配列を渡す。
         $this->arrHidden = array_merge((array)$this->arrHidden, (array)$this->objUpFile->getHiddenFileList());
+        $this->setTemplate($this->tpl_mainpage);
     }
 
     /**

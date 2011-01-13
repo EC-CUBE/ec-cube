@@ -57,7 +57,7 @@ function lfnCheckSetItem( rank ){
   }
   
   if ( flag ){
-    win03('./recommend_search.php?rank=' + rank,'search','500','500');
+    win03('./recommend_search.php?rank=' + rank,'search','600','600');
   }
 }
 
@@ -70,14 +70,14 @@ function lfnCheckSetItem( rank ){
       <th>#</th>
       <th>画像</th>
       <th>商品名</th>
-      <th>削除</th>
+      <th class="delete">削除</th>
       <th>変更</th>
       <th>コメント</th>
     </tr>
     <!--{section name=cnt loop=$tpl_disp_max}-->
     <!--▼おすすめ商品<!--{$smarty.section.cnt.iteration}-->-->
     <tr>
-      <th><!--{$smarty.section.cnt.iteration}--></th>
+       <th class="column"><!--{$smarty.section.cnt.iteration}--></th>
       <td>
         <!--{if $arrItems[$smarty.section.cnt.iteration].product_id}-->
           <img src="<!--{$smarty.const.IMAGE_SAVE_URL_PATH}--><!--{$arrItems[$smarty.section.cnt.iteration].main_list_image|sfNoImageMainList|h}-->" alt="<!--{$arrItems[$smarty.section.cnt.iteration].name|h}-->" />
@@ -102,7 +102,7 @@ function lfnCheckSetItem( rank ){
         <span class="attention"><!--{$arrErr[$smarty.section.cnt.iteration].comment}--></span>
         <textarea name="comment" cols="45" rows="4" style="width: 337px; height: 82px; <!--{$arrErr[$smarty.section.cnt.iteration].comment|sfGetErrorColor}-->" <!--{$arrItems[$smarty.section.cnt.iteration].product_id|sfGetEnabled}-->><!--{$arrItems[$smarty.section.cnt.iteration].comment}--></textarea>
         <!--{if $arrItems[$smarty.section.cnt.iteration].product_id}-->
-        <br /><a class="btn-normal" href="javascript:;" onclick="return lfnCheckSubmit(document.form<!--{$smarty.section.cnt.iteration}-->);"><span>登録する</span></a>
+        <br /><a class="btn-action" href="javascript:;" onclick="return lfnCheckSubmit(document.form<!--{$smarty.section.cnt.iteration}-->);"><span class="btn-next">登録する</span></a>
         <!--{/if}-->
         </form>
       </td>

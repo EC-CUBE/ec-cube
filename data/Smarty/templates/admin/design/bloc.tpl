@@ -54,33 +54,34 @@
              <textarea name="bloc_html" rows="<!--{$text_row}-->" style="width: 100%;"><!--{$arrBlocData.tpl_data|smarty:nodefaults}--></textarea>
              <input type="hidden" name="html_area_row" value="<!--{$text_row}-->" />
              <div>
-                 <a class="btn-normal" href="javascript:;" onclick="ChangeSize(this, bloc_html, 50, 13, html_area_row)">拡大</a>
+                 <a class="btn-normal" href="javascript:;" onclick="ChangeSize(this, bloc_html, 50, 13, 'html_area_row')">拡大</a>
              </div>
          </td>
      </tr>
  </table>
     <div class="btn">
-        <a class='button' href="javascript:;" name='subm' onclick="fnFormModeSubmit('form_bloc','confirm','','');"><span>登録する</span></a>
-        <a class='button' href="javascript:;" name='preview' onclick="fnFormModeSubmit('form_bloc','preview','','');"><span>プレビュー</span></a>
+        <a class="btn-action" href="javascript:;" name='subm' onclick="fnFormModeSubmit('form_bloc','confirm','','');"><span class="btn-next">登録する</span></a>
+        <a class="btn-normal" href="javascript:;" name='preview' onclick="fnFormModeSubmit('form_bloc','preview','','');"><span>プレビュー</span></a>
     </div>
     <!--{* ▲ブロック設定 *}-->
 
     <!--{* ▼ブロック一覧 *}-->
     <h2>編集可能ブロック</h2>
     <div class="btn addnew">
-        <a class='button' href="?"><span>ブロックを新規入力</span></a>
+        <a class="btn-normal" href="?"><span>ブロックを新規入力</span></a>
     </div>
-    <table class="list center">
+    <table class="list">
         <tr>
-            <th>名称</th><th>編集</th><th>削除</th>
+            <th>名称</th><th class="edit">編集</th>
+            <th class="delete">削除</th>
         </tr>
         <!--{foreach key=key item=item from=$arrBlocList}-->
         <tr style="background-color:<!--{if $item.bloc_id == $bloc_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->;">
             <td><!--{$item.bloc_name}--></td>
-            <td>
+            <td class="center">
                 <a href="?bloc_id=<!--{$item.bloc_id}-->&amp;device_type_id=<!--{$device_type_id}-->" >編集</a>
             </td>
-            <td>
+            <td class="center">
                 <!--{if $item.deletable_flg == 1}-->
                     <a href="javascript:;" onclick="fnFormModeSubmit('form_bloc','delete','bloc_id',this.name.substr(3));">削除</a>
                     <input type="hidden" value="<!--{$item.bloc_id}-->" name="del_id<!--{$item.bloc_id}-->" />

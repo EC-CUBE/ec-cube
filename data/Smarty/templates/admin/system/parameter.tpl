@@ -54,6 +54,10 @@
 <!--{/section}-->
   </table>
 
-  <div class="btn"><a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('form1', 'update', '', '');"><span>この内容で登録する</span></a></div>
+  <div class="btn-area">
+    <ul>
+      <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'update', '', '');"><span class="btn-next">この内容で登録する</span></a></li>
+    </ul>
+  </div>
 </div>
 </form>

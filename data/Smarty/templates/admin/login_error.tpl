@@ -22,12 +22,26 @@
  */
 *}-->
 <!--{* ▼CONTENTS *}-->
-<div id="login-error">
-  <div class="message">
-    <!--{$tpl_error}-->
-  </div>
-  <div class="btn">
-    <a class="btn-normal" href="<!--{$smarty.const.ADMIN_LOGIN_URL_PATH}-->"><span>ログインページにページに戻る</span></button>
+<div id="error-wrap">
+  <div id="error">
+    <div class="logo">
+      <img src="<!--{$TPL_DIR}-->img/contents/logo_resize.jpg" width="99" height="15" alt="EC-CUBE" />
+    </div>
+    <div class="error-top"></div>
+    <div class="contents">
+      <div class="message">
+        <!--{$tpl_error}-->
+      </div>
+    </div>
+    <div class="btn-area-top"></div>
+    <div class="btn-area">
+      <ul>
+        <li>
+          <a class="btn-action" href="<!--{$smarty.const.ADMIN_LOGIN_URL_PATH}-->"><span class="btn-prev">ログインページに戻る</span></a>
+        </li>
+      </ul>
+    </div>
+    <div class="btn-area-bottom"></div>
   </div>
 </div>
 <!--{* ▲CONTENTS *}-->

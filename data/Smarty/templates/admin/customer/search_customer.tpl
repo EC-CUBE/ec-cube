@@ -21,16 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA    02111-1307, USA.
  */
 *}-->
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=<!--{$smarty.const.CHAR_CODE}-->">
-<meta http-equiv="content-script-type" content="text/javascript">
-<meta http-equiv="content-style-type" content="text/css">
-<link rel="stylesheet" href="<!--{$TPL_DIR}-->css/admin_contents.css" type="text/css" media="all" />
-<script type="text/javascript" src="<!--{$smarty.const.URL_PATH}-->js/css.js"></script>
-<script type="text/javascript" src="<!--{$smarty.const.URL_PATH}-->js/navi.js"></script>
-<script type="text/javascript" src="<!--{$TPL_DIR}-->js/admin.js"></script>
+<!--{include file="`$smarty.const.TEMPLATE_ADMIN_REALDIR`admin_popup_header.tpl"}-->
 <script type="text/javascript">
 <!--
 self.moveTo(20,20);self.focus();
@@ -46,18 +37,6 @@ function func_submit(customer_id){
 //-->
 </script>
 
-<title>管理機能</title>
-</head>
-
-<body bgcolor="#ffffff" text="#494E5F" link="#006699" vlink="#006699" alink="#006699" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-<!--{$GLOBAL_ERR}-->
-<noscript>
-<link rel="stylesheet" href="<!--{$smarty.const.URL_PATH}--><!--{$smarty.const.ADMIN_DIR}-->css/common.css" type="text/css" >
-</noscript>
-
-<!--▼CONTENTS-->
-<div align="center">
-　
 <!--▼検索フォーム-->
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.REQUEST_URI|h}-->">
 <input name="mode" type="hidden" value="search">
@@ -91,10 +70,12 @@ function func_submit(customer_id){
     </tr>
 </table>
 
-<br />
-<a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('form1', 'search', '', '');" name="subm">検索を開始</a>
-<br />
-<br />
+<div class="btn-area">
+  <ul>
+    <li><a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('form1', 'search', '', '');" name="subm">検索を開始</a></li>
+  </ul>
+</div>
+
 <!--{if $smarty.post.mode == 'search' }-->
     <!--▼検索結果表示-->
     <table width="420" border="0" cellspacing="0" cellpadding="0" summary=" " bgcolor="#FFFFFF">
@@ -142,9 +123,4 @@ function func_submit(customer_id){
     <!--▲検索結果表示-->
 <!--{/if}-->
 </form>
-
-</div>
-<!--▲CONTENTS-->
-
-</body>
-</html>
+<!--{include file="`$smarty.const.TEMPLATE_ADMIN_REALDIR`admin_popup_footer.tpl"}-->

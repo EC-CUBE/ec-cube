@@ -31,7 +31,7 @@
     <div class="btn">
     <!--{foreach key=key item=item from=$arrORDERSTATUS}-->
       <a
-        class="button"
+        class="btn-normal"
         style="padding-right: 1em;"
         <!--{if $key != $SelectedStatus}-->
           href="javascript:;"

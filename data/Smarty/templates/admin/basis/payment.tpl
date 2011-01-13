@@ -31,8 +31,8 @@
       <th>支払方法</th>
       <th>手数料（円）</th>
       <th>利用条件</th>
-      <th>編集</th>
-      <th>削除</th>
+      <th class="edit">編集</th>
+      <th class="delete">削除</th>
       <th>移動</th>
     </tr>
     <!--{section name=cnt loop=$arrPaymentListFree}-->
@@ -47,7 +47,7 @@
       <td align="center">
         <!--{if $arrPaymentListFree[cnt].rule > 0}--><!--{$arrPaymentListFree[cnt].rule|number_format|h}--><!--{else}-->0<!--{/if}-->円
         <!--{if $arrPaymentListFree[cnt].upper_rule > 0}-->～<!--{$arrPaymentListFree[cnt].upper_rule|number_format|h}-->円<!--{elseif $arrPaymentListFree[cnt].upper_rule == "0"}--><!--{else}-->～無制限<!--{/if}--></td>
-      <td align="center"><!--{if $arrPaymentListFree[cnt].fix != 1}--><a href="?" onclick="win03('./payment_input.php?mode=pre_edit&amp;payment_id=<!--{$arrPaymentListFree[cnt].payment_id}-->','payment_input','530','400'); return false;">編集</a><!--{else}-->-<!--{/if}--></td>
+      <td align="center"><!--{if $arrPaymentListFree[cnt].fix != 1}--><a href="?" onclick="win03('./payment_input.php?mode=pre_edit&amp;payment_id=<!--{$arrPaymentListFree[cnt].payment_id}-->','payment_input','600','400'); return false;">編集</a><!--{else}-->-<!--{/if}--></td>
       <td align="center"><!--{if $arrPaymentListFree[cnt].fix != 1}--><a href="?" onclick="fnModeSubmit('delete', 'payment_id', <!--{$arrPaymentListFree[cnt].payment_id}-->); return false;">削除</a><!--{else}-->-<!--{/if}--></td>
       <td align="center">
       <!--{if $smarty.section.cnt.iteration != 1}-->
@@ -61,7 +61,7 @@
     <!--{/section}-->
   </table>
   <div class="btn addnew">
-    <a class="btn-normal" href="javascript:;" name="subm2" onclick="win03('./payment_input.php','payment_input','550','400');"><span>支払方法を新規入力</span></a>
+    <a class="btn-normal" href="javascript:;" name="subm2" onclick="win03('./payment_input.php','payment_input','600','400');"><span>支払方法を新規入力</span></a>
   </div>
 </div>
 </form>

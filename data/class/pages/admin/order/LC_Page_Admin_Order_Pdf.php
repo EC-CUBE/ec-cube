@@ -146,6 +146,7 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin {
             $this->arrForm = $arrForm;
             break;
         }
+        $this->setTemplate($this->tpl_mainpage);
     }
 
     /**

@@ -30,8 +30,8 @@
     <tr>
       <th>配送業者</th>
       <th>名称</th>
-      <th>編集</th>
-      <th>削除</th>
+      <th class="edit">編集</th>
+      <th class="delete">削除</th>
       <th>移動</th>
     </tr>
     <!--{section name=cnt loop=$arrDelivList}-->

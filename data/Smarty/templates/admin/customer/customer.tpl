@@ -64,6 +64,7 @@
                         <option value="" selected="selected">都道府県を選択</option>
                         <!--{html_options options=$arrPref selected=$list_data.pref}-->
                     </select>
+                    <br />
                     <input type="text" name="addr01" value="<!--{$list_data.addr01|h}-->" size="60" class="box60" <!--{if $arrErr.addr01 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /><br />
                     <!--{$smarty.const.SAMPLE_ADDRESS1}--><br />
                     <input type="text" name="addr02" value="<!--{$list_data.addr02|h}-->" size="60" class="box60" <!--{if $arrErr.addr02 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /><br />

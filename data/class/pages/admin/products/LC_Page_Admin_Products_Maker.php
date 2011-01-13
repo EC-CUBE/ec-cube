@@ -25,7 +25,7 @@
 require_once(CLASS_REALDIR . "pages/admin/LC_Page_Admin.php");
 
 /**
- * メーカー管理 のページクラス.
+ * メーカー登録 のページクラス.
  *
  * @package Page
  * @author LOCKON CO.,LTD.
@@ -46,7 +46,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin {
         $this->tpl_mainpage = 'products/maker.tpl';
         $this->tpl_subnavi = 'products/subnavi.tpl';
         $this->tpl_subno = 'maker';
-        $this->tpl_subtitle = 'メーカー管理';
+        $this->tpl_subtitle = 'メーカー登録';
         $this->tpl_mainno = 'products';
     }
 

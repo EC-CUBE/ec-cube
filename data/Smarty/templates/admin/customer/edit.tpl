@@ -231,9 +231,11 @@
             </tr>
         </table>
 
-        <div class="btn">
-            <a class="btn-normal" href="javascript:;" onclick="return fnReturn();"><span>検索画面に戻る</span></a>
-            <a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('form1', 'confirm', '', '');"><span>確認ページへ</span></a>
+        <div class="btn-area">
+          <ul>
+            <li><a class="btn-action" href="javascript:;" onclick="return fnReturn();"><span class="btn-prev">検索画面に戻る</span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'confirm', '', '');"><span class="btn-next">確認ページへ</span></a></li>
+          </ul>
         </div>
 
         <input type="hidden" name="order_id" value="" />

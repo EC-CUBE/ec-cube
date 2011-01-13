@@ -55,7 +55,7 @@
     </tr>
   </table>
 	<div class="btn">
-		<a class="btn-normal" href='./log.php'>一覧へ戻る</a>
+		<a class="btn-action" href='./log.php'><span class="btn-prev">一覧へ戻る</span></a>
 	</div>
 </div>
 </form>

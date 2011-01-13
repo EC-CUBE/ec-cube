@@ -122,9 +122,11 @@
   </table>
   <!--{/if}-->
 
-  <div class="btn">
-    <a class="btn-normal" href="javascript:;" onclick="location.href='./delivery.php';"><span>前のページに戻る</span></a>
-    <a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('form1', 'edit', '', '');"><span>この内容で登録する</span></a>
+  <div class="btn-area">
+    <ul>
+      <li><a class="btn-action" href="javascript:;" onclick="location.href='./delivery.php';"><span class="btn-prev">前のページに戻る</span></a></li>
+      <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'edit', '', '');"><span class="btn-next">この内容で登録する</span></a></li>
+    </ul>
   </div>
 </div>
 </form>

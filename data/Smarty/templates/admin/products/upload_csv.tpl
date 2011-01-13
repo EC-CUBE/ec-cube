@@ -58,8 +58,10 @@
     </tr>
   </table>
   <!--▲登録テーブルここまで-->
-  <div class="btn">
-    <a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('form1', 'csv_upload', '', '');"><span>この内容で登録する</span></a>
+  <div class="btn-area">
+    <ul>
+      <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'csv_upload', '', '');"><span class="btn-next">この内容で登録する</span></a></li>
+    </ul>
   </div>
 </div>
 </form>  

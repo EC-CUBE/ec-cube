@@ -44,16 +44,20 @@ $().ready(function() {
 <form name="form1" id="form1" method="post" action="?">
 <input type="hidden" name="mode" value="confirm" />
 <input type="hidden" name="tpl_subno_csv" value="<!--{$tpl_subno_csv}-->" />
+
 <div id="admin-contents" class="contents-main">
-    <h2><!--{$SubnaviName}--></h2>
-    <div>
+    <div class="ms2side__area">
         <span class="attention"><!--{$arrErr.output_list}--></span>
         <select multiple name="output_list[]" style="<!--{$arrErr.output_list|sfGetErrorColor}-->;" id="output_list" size="20">
             <!--{html_options options=$arrOptions selected=$arrSelected}-->
         </select>
     </div>
 
-    <div class="btn"><a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('form1', 'confirm', '', '');"><span>この内容で登録する</span></a></div>
+    <div class="btn-area">
+      <ul>
+        <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'confirm', '', '');"><span class="btn-next">この内容で登録する</span></a></li>
+      </ul>
+    </div>
 
 </div>
 </form>

@@ -287,8 +287,8 @@ function fnTargetSelf(){
             </tr>
         </table>
         <div class="btn">
-            <a class='button' href="javascript:;" name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form1','confirm','','');"><span>登録する</span></a>
-            <a class='button' href="javascript:;" name='preview' onclick="doPreview();"<!--{if $page_id == "0" or $exists_page == "0" }--> DISABLED<!--{/if}-->><span>プレビュー</span></a>
+            <a class="btn-action" href="javascript:;" name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form1','confirm','','');"><span class="btn-next">登録する</span></a>
+            <a class="btn-normal" href="javascript:;" name='preview' onclick="doPreview();"<!--{if $page_id == "0" or $exists_page == "0" }--> DISABLED<!--{/if}-->><span>プレビュー</span></a>
         </div>
     </div>
     <!--{* ▲レイアウトここまで *}-->
@@ -318,7 +318,7 @@ function fnTargetSelf(){
                 </td>
             </tr>
         </table>
-        <div class="btn"><a class='button' href="javascript:;" onclick="fnTargetSelf(); fnFormModeSubmit('form1','new_bloc','','');"><span>ブロックを新規入力</span></a></div>
+        <div class="btn"><a class="btn-normal" href="javascript:;" onclick="fnTargetSelf(); fnFormModeSubmit('form1','new_bloc','','');"><span>ブロックを新規入力</span></a></div>
     </div>
     <!--{* ▲未使用ブロックここまで *}-->
     <!--▲レイアウト編集　ここまで-->
@@ -326,29 +326,29 @@ function fnTargetSelf(){
     <!--▼ページ一覧　ここから-->
     <h2 style="clear: both;">編集可能ページ一覧</h2>
     <div class="btn addnew">
-        <a class='button' href="javascript:;" onclick="fnTargetSelf(); fnFormModeSubmit('form1','new_page','','');"><span>ページを新規入力</span></a>
+        <a class="btn-normal" href="javascript:;" onclick="fnTargetSelf(); fnFormModeSubmit('form1','new_page','','');"><span>ページを新規入力</span></a>
     </div>
-    <table class="list center">
-        <tr>
-            <th>名称</th>
-            <th><strong>レイアウト</strong></th>
-            <th>ページ詳細</th>
-            <th>削除</th>
-        </tr>
+    <table class="list">
+    <tr>
+      <th>名称</th>
+      <th class="edit">レイアウト</th>
+      <th class="edit center"><strong>ページ詳細</strong></th>
+      <th class="delete center">削除</th>
+    </tr>
     <!--{foreach key=key item=item from=$arrEditPage}-->
         <tr style="background-color:<!--{if $item.page_id == $page_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->;">
             <td>
                 <!--{$item.page_name}-->
             </td>
-            <td>
+            <td class="center">
                 <a href="?page_id=<!--{$item.page_id}-->&amp;device_type_id=<!--{$item.device_type_id}-->" >編集</a>
             </td>
-            <td>
+            <td class="center">
                 <!--{if $item.filename|strlen >= 1}-->
                     <a href="main_edit.php?page_id=<!--{$item.page_id}-->&amp;device_type_id=<!--{$item.device_type_id}-->">編集</a>
                 <!--{/if}-->
             </td>
-            <td>
+            <td class="center">
                 <!--{if $item.edit_flg == 1}-->
                     <a href="#" onclick="fnTargetSelf(); fnFormModeSubmit('form1','delete','page_id','<!--{$item.page_id|h}-->'); return false;">削除</a>
                 <!--{/if}-->

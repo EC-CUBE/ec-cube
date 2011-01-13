@@ -1,29 +1,23 @@
 #contents-filemanager-tree {
     float: left;
-    width: 328px;
     height: 430px;
 }
+#contents-filemanager-right {margin-left: 22em;}
+
 #tree{
-    height: 410px;
-    width: 308px;
-    overflow: auto;
-    margin: 0px;
-    background-color : #FFFFFF;
-    border-style: solid;
-    border-color: #C0C0C0;
-    border-width: 1px
+    width: 230px;
+    border: 3px solid #ddd;
+    padding: 10px;
+    background-color: #F3F3F3;
 }
 #contents-filemanager-nowdir {
     margin: 0 0 20px 0;
 }
 #file_view {
-    height: 380px;
-    width: 330px;
     overflow: auto;
-    background-color : #FFFFFF;
-    border-style: solid;
-    border-color: #C0C0C0;
-    border-width: 1px
+}
+#file_view td.file-name {
+    cursor: pointer;
 }
 #now_dir {
     height: 20px;

@@ -285,9 +285,11 @@
     <!--{/if}-->
   </table>
 
-  <div class="btn">
-    <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('confirm_return','',''); return false;"><span>前のページに戻る</span></a>
-    <a class="btn-normal" href="javascript:;" onclick="document.form1.submit();"><span>この内容で登録する</span></a>
-  </div>
+	<div class="btn-area">
+		<ul>
+			<li><a class="btn-action" href="javascript:;" onclick="fnModeSubmit('confirm_return','',''); return false;"><span class="btn-prev">前のページに戻る</span></a></li>
+			<li><a class="btn-action" href="javascript:;" onclick="document.form1.submit();"><span class="btn-next">この内容で登録する</span></a></li>
+		</ul>
+	</div>
 </div>
 </form>

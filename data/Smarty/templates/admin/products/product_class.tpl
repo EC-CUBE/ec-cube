@@ -65,12 +65,14 @@
       </td>
     </tr>
   </table>
-  <div class="btn">
-    <a class="btn-normal" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_PRODUCTS_URL_PATH}-->'); fnModeSubmit('search','',''); return false;" ><span>検索結果へ戻る</span></a>
-    <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('disp','','')"><span>表示する</span></a>
+  <div class="btn-area">
+    <ul>
+      <li><a class="btn-action" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_PRODUCTS_URL_PATH}-->'); fnModeSubmit('search','',''); return false;" ><span class="btn-prev">検索結果へ戻る</span></a></li>
+      <li><a class="btn-action" href="javascript:;" onclick="fnModeSubmit('disp','','')"><span class="btn-next">表示する</span></a></li>
     <!--{if count($arrClassCat) > 0}-->
-    <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete','','');"><span>削除する</span></a>
+      <li><a class="btn-action" href="javascript:;" onclick="fnModeSubmit('delete','','');"><span class="btn-next">削除する</span></a></li>
     <!--{/if}-->
+    </ul>
   </div>
 
   <!--{if count($arrClassCat) > 0}-->
@@ -82,7 +84,7 @@
   <!--{/foreach}-->
 
   <div class="btn">
-    <a class="btn-normal" href="javascript:;" onclick="fnCopyValue('<!--{$cnt}-->', '<!--{$smarty.const.DISABLED_RGB}-->'); return false;"><span>一行目のデータをコピーする</span></button>
+    <a class="btn-normal" href="javascript:;" onclick="fnCopyValue('<!--{$cnt}-->', '<!--{$smarty.const.DISABLED_RGB}-->'); return false;"><span>一行目のデータをコピーする</span></a>
   </div>
 
   <!--{assign var=class_id1 value=$arrForm.class_id1}-->
@@ -165,7 +167,11 @@
     <!--{/section}-->
   </table>
 
-  <div class="btn"><a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('form1', 'edit', '', '');"><span>確認ページへ</span></a></div>
+  <div class="btn-area">
+    <ul>
+      <li><a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('form1', 'edit', '', '');"><span>確認ページへ</span></a></li>
+    </ul>
+  </div>
 
   <!--{/if}-->
 

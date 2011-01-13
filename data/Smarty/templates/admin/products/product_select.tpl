@@ -59,8 +59,8 @@ function func_submit( id ){
         <td><input type="text" name="search_name" value="<!--{$arrForm.search_name}-->" size="35" class="box35" /></td>
     </tr>
 </table>
-<div class="btn">
-    <a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('form1', 'search', '', '');" name="subm">検索を開始</a>
+<div class="btn-area">
+    <a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'search', '', '');" name="subm"><span class="btn-next">検索を開始</span></a>
 </div>
 
 <!--▼検索結果表示-->

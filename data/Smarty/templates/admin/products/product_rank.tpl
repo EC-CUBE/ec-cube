@@ -31,7 +31,7 @@
 
   <!--{* ▼画面左 *}-->
   <div id="products-rank-left">
-    <a href="?">▼ホーム</a><br />
+    <a href="?"><img src="<!--{$TPL_DIR}-->img/contents/folder_close.gif" alt="フォルダ">&nbsp;ホーム</a><br />
     <!--{section name=cnt loop=$arrTree}-->
       <!--{assign var=level value="`$arrTree[cnt].level`}-->
       
@@ -48,9 +48,9 @@
       <!--{assign var=disp_name value="`$arrTree[cnt].category_id`.`$arrTree[cnt].category_name`"}-->
       <a href="?" onclick="fnModeSubmit('tree', 'parent_category_id', <!--{$arrTree[cnt].category_id}-->); return false">
       <!--{if $arrForm.parent_category_id == $arrTree[cnt].category_id}-->
-        <img src="<!--{$smarty.const.URL_PATH}-->misc/openf.gif">
+        <img src="<!--{$TPL_DIR}-->img/contents/folder_open.gif" alt="フォルダ">
       <!--{else}-->
-        <img src="<!--{$smarty.const.URL_PATH}-->misc/closef.gif">
+        <img src="<!--{$TPL_DIR}-->img/contents/folder_close.gif" alt="フォルダ">
       <!--{/if}-->
       <!--{$disp_name|sfCutString:20|h}-->(<!--{$arrTree[cnt].product_count|default:0}-->)</a>
     <br />          
@@ -69,9 +69,40 @@
 
   <!--▼画面右-->
   <div id="products-rank-right">
+    <h2><!--{$breadcrumbs}--></h2>
   <!--{if count($arrProductsList) > 0}-->
-                    
-    <p><!--{$tpl_linemax}-->件が該当しました。</p>
+
+
+<script type="text/javascript">
+// カテゴリーテーブルのイニシャライズ
+$(document).ready(function() {
+    $("#categoryTable").tableDnD({
+	    onDragClass: "movingHandle",
+        onDrop: function(table, row) {
+            var rows = table.tBodies[0].rows;
+            var keys = row.id;
+
+            for (var i = 0; i < rows.length; i++) {
+                if (row.id == rows[i].id) {
+                    keys += "-" + i;
+                    break;
+                }
+            }
+
+            fnModeSubmit('moveByDnD','keySet', keys);
+        },
+        dragHandle: "dragHandle"
+    });
+
+    $("#categoryTable tr").hover(function() {
+        $(this.cells[0]).addClass('activeHandle');
+    }, function() {
+        $(this.cells[0]).removeClass('activeHandle');
+    });
+});
+</script>
+
+    <p><span class="attention"><!--{$tpl_linemax}-->件</span>が該当しました。</p>
     <!--{* ▼ページナビ *}-->
     <!--{$tpl_strnavi}-->
     <!--{* ▲ページナビ *}-->
@@ -80,31 +111,31 @@
         <p class="right"><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('renumber', '', '');">内部順位再割り当て</a></p>
     <!--{/if}-->
     
-    <table class="list">
-      <tr>
-        <th>順位</th>
+    <table class="list" id="categoryTable">
+      <tr class="nodrop nodrag">
         <th>商品コード</th>
-        <th>商品画像</th>
         <th>商品名</th>
+        <th>商品画像</th>
+        <th>順位</th>
         <th>移動</th>
       </tr>
+
       <!--{assign var=rank value=$tpl_start_row}-->
       <!--{section name=cnt loop=$arrProductsList}-->
         <tr>
+          <td><!--{from_to from=$arrProductsList[cnt].product_code_min to=$arrProductsList[cnt].product_code_max separator="～<br />"}--></td>          
+          <td>
+            <!--{$arrProductsList[cnt].name|h}-->
+          </td>
+          <td align="center">
+            <!--{* 商品画像 *}-->
+            <img src="<!--{$smarty.const.URL_PATH}-->resize_image.php?image=<!--{$arrProductsList[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" alt="<!--{$arrProducts[cnt].name|h}-->">
+          </td>
           <!--{assign var=rank value=`$rank+1`}-->
           <td align="center">
             <!--{$rank}-->
             <!--{if $arrProductsList[cnt].status == "2"}--><br />(非公開)<!--{/if}-->
           </td>
-          <td><!--{from_to from=$arrProductsList[cnt].product_code_min to=$arrProductsList[cnt].product_code_max separator="～<br />"}--></td>
-          <td align="center">
-            <!--{* 商品画像 *}-->
-            <img src="<!--{$smarty.const.URL_PATH}-->resize_image.php?image=<!--{$arrProductsList[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" alt="<!--{$arrProducts[cnt].name|h}-->">
-          </td>
-          <td align="center">
-            <!--{$arrProductsList[cnt].name|h}-->
-          </td>
-          
           <td align="center">
           <!--{* 移動 *}-->
           <!--{if !(count($arrProductsList) == 1 && $rank == 1)}-->
@@ -131,4 +162,4 @@
   <!--▲画面右-->
 
 </div>
-</form>    
+</form> 

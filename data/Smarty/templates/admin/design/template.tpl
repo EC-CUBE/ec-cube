@@ -40,7 +40,7 @@ function submitRegister() {
 <input type="hidden" name="uniqid" value="<!--{$uniqid}-->" />
 <input type="hidden" name="device_type_id" value="<!--{$device_type_id|h}-->" />
 <div id="design" class="contents-main">
-  <p style="margin-bottom: 20px">
+  <p class="remark">
     テンプレートを選択し、「この内容で登録する」ボタンを押すと、<br />
     選択したテンプレートへデザインを変更することが出来ます。
   </p>
@@ -50,7 +50,7 @@ function submitRegister() {
       <th>名前</th>
       <th>保存先</th>
       <th>ダウンロード</th>
-      <th>削除</th>
+      <th class="delete">削除</th>
     </tr>
     <!--{foreach from=$templates item=tpl}-->
     <!--{assign var=tplcode value=$tpl.template_code}-->
@@ -63,8 +63,10 @@ function submitRegister() {
     </tr>
     <!--{/foreach}-->
   </table>
-  <div class="btn">
-    <a class="btn-normal" href="javascript:;" onclick="submitRegister();return false;"><span>この内容で登録する</span></a>
+  <div class="btn-area">
+    <ul>
+      <li><a class="btn-action" href="javascript:;" onclick="submitRegister();return false;"><span class="btn-next">この内容で登録する</span></a></li>
+    </ul>
   </div>
 </div>
 </form>

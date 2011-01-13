@@ -129,9 +129,10 @@ function func_return(){
                 <td><!--{$arrForm.point|default:"0"|h}--> pt</td>
             </tr>
         </table>
-        <div class="btn">
-            <a class="btn-normal" href="javascript:;" onclick="func_return(); return false;"><span>編集画面に戻る</span></a>
-            <a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('form1', 'complete', '', '');"><span>この内容で登録する</span></a>
+        <div class="btn-area">
+          <ul>
+            <li><a class="btn-action" href="javascript:;" onclick="func_return(); return false;"><span class="btn-prev">編集画面に戻る</span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'complete', '', '');"><span class="btn-next">この内容で登録する</span></a></li>
         </div>
     </div>
 </form>

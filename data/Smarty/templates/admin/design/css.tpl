@@ -43,13 +43,15 @@
         <textarea name="css" cols=90 rows=<!--{$area_row}--> align="left" wrap=off style="width: 650px;"><!--{$css_data}--></textarea>
         <input type="hidden" name="area_row" value="<!--{$area_row}-->" />
         <div class="btn">
-          <a class="btn-normal" href="javascript:;" onclick="ChangeSize(this, css, 50, 30, area_row)">拡大</a>
+          <a class="btn-normal" href="javascript:;" onclick="ChangeSize(this, 'css', 50, 30, 'area_row')">拡大</a>
         </div>
       </td>
     </tr>
   </table>
-  <div class="btn">
-    <a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('form_css','confirm','','');"><span>この内容で登録する</span></a>
+  <div class="btn-area">
+    <ul>
+      <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form_css','confirm','','');"><span class="btn-next">この内容で登録する</span></a></li>
+    </ul>
   </div>
   <!--▲CSS設定　ここまで-->
 
@@ -58,20 +60,20 @@
   <div class="btn addnew">
     <a class="btn-normal" href="?"><span>CSSを新規入力</span></a>
   </div>
-  <table class="list center" id="design-css-list">
+  <table class="list" id="design-css-list">
     <tr>
       <th class="name">ファイル名</th>
-      <th class="menu">編集</th>
-      <th class="action">削除</th>
+      <th class="menu edit">編集</th>
+      <th class="action delete">削除</th>
     </tr>
     <!--{if count($arrCSSList) > 0}-->
     <!--{foreach key=key item=item from=$arrCSSList}-->
     <tr>
 			<td><!--{$item.file_name}--></td>
-      <td style="background:<!--{if $item.css_name == $css_name}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->;">
+      <td class="center" style="background:<!--{if $item.css_name == $css_name}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->;">
         <a href="?css_name=<!--{$item.css_name}-->&amp;device_type_id=<!--{$device_type_id}-->">編集</a>
       </td>
-      <td style="background:<!--{if $item.css_name == $css_name}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->;">
+      <td class="center" style="background:<!--{if $item.css_name == $css_name}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->;">
         <a href="javascript:;" onclick="fnFormModeSubmit('form_css','delete','css_name','<!--{$item.css_name}-->');">削除</a>
       </td>
     </tr>

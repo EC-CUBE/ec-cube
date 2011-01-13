@@ -35,7 +35,7 @@
 
   <!--{* ▼画面左 *}-->
   <div id="products-category-left">
-    <a href="?">▼ホーム</a><br />
+    <a href="?"><img src="<!--{$TPL_DIR}-->img/contents/folder_close.gif" alt="フォルダ">&nbsp;ホーム</a><br />
     <!--{section name=cnt loop=$arrTree}-->
       <!--{assign var=level value="`$arrTree[cnt].level`}-->
 
@@ -53,13 +53,13 @@
       <!--{if $arrTree[cnt].level != $smarty.const.LEVEL_MAX}-->
         <a href="?" onclick="fnModeSubmit('tree', 'parent_category_id', <!--{$arrTree[cnt].category_id}-->); return false;">
         <!--{if $arrForm.parent_category_id == $arrTree[cnt].category_id}-->
-          <img src="<!--{$smarty.const.URL_PATH}-->misc/openf.gif">
+          <img src="<!--{$TPL_DIR}-->img/contents/folder_open.gif" alt="フォルダ">
         <!--{else}-->
-          <img src="<!--{$smarty.const.URL_PATH}-->misc/closef.gif">
+          <img src="<!--{$TPL_DIR}-->img/contents/folder_close.gif" alt="フォルダ">
         <!--{/if}-->
         <!--{$disp_name|sfCutString:20|h}--></a><br />
       <!--{else}-->
-        <img src="<!--{$smarty.const.URL_PATH}-->misc/closef.gif">
+        <img src="<!--{$TPL_DIR}-->img/contents/folder_close.gif" alt="フォルダ">
         <!--{$disp_name|sfCutString:20|h}--></a><br />
       <!--{/if}-->
 
@@ -81,54 +81,30 @@
   <!--{* ▼画面右 *}-->
   <div id="products-category-right">
     
-    <!--{if $arrErr.category_name}-->
-    <span class="attention"><!--{$arrErr.category_name}--></span>
-    <!--{/if}-->
-    <input type="text" name="category_name" value="<!--{$arrForm.category_name|h}-->" size="30" class="box30" maxlength="<!--{$smarty.const.STEXT_LEN}-->" />
-    <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('edit','','');"><span>登録</span></a><span class="attention">（上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
-    
+
+    <div class="now_dir">
+        <!--{if $arrErr.category_name}-->
+        <span class="attention"><!--{$arrErr.category_name}--></span>
+        <!--{/if}-->
+        <input type="text" name="category_name" value="<!--{$arrForm.category_name|h}-->" size="30" class="box30" maxlength="<!--{$smarty.const.STEXT_LEN}-->" />
+        <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('edit','','');"><span class="btn-next">登録</span></a><span class="attention">&nbsp;（上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
+    </div>
+
+    <h2><!--{$breadcrumbs}--></h2>
     <!--{if count($arrList) > 0}-->
-<script type="text/javascript">
-// カテゴリーテーブルのイニシャライズ
-$(document).ready(function() {
-    $("#categoryTable").tableDnD({
-	    onDragClass: "movingHandle",
-        onDrop: function(table, row) {
-            var rows = table.tBodies[0].rows;
-            var keys = row.id;
 
-            for (var i = 0; i < rows.length; i++) {
-                if (row.id == rows[i].id) {
-                    keys += "-" + i;
-                    break;
-                }
-            }
-
-            fnModeSubmit('moveByDnD','keySet', keys);
-        },
-        dragHandle: "dragHandle"
-    });
-
-    $("#categoryTable tr").hover(function() {
-        $(this.cells[0]).addClass('activeHandle');
-    }, function() {
-        $(this.cells[0]).removeClass('activeHandle');
-    });
-});
-</script>
     <table class="list" id="categoryTable">
       <tr class="nodrop nodrag">
-	  	<th width="40">移動</th>
         <th>ID</th>
         <th>カテゴリ名</th>
-        <th>編集</th>
-        <th>削除</th>
+        <th class="edit">編集</th>
+        <th class="delete">削除</th>
         <th>移動</th>
       </tr>
+
       <!--{section name=cnt loop=$arrList}-->
       <tr id="<!--{$arrList[cnt].category_id}-->" style="background:<!--{if $arrForm.category_id != $arrList[cnt].category_id}-->#ffffff<!--{else}--><!--{$smarty.const.SELECT_RGB}--><!--{/if}-->;" align="left">
-        <td class="dragHandle">&sect;</td>
-		<td class="center"><!--{$arrList[cnt].category_id}--></td>
+        <td class="center"><!--{$arrList[cnt].category_id}--></td>
         <td>
         <!--{if $arrList[cnt].level != $smarty.const.LEVEL_MAX}-->
           <a href="?" onclick="fnModeSubmit('tree', 'parent_category_id', <!--{$arrList[cnt].category_id}-->); return false"><!--{$arrList[cnt].category_name|h}--></a>
@@ -136,17 +112,17 @@ $(document).ready(function() {
           <!--{$arrList[cnt].category_name|h}-->
         <!--{/if}-->
         </td>
-        <td align="center">
+        <td class="center">
           <!--{if $arrForm.category_id != $arrList[cnt].category_id}-->
           <a href="?" onclick="fnModeSubmit('pre_edit', 'category_id', <!--{$arrList[cnt].category_id}-->); return false;">編集</a>
           <!--{else}-->
           編集中
           <!--{/if}-->
         </td>
-        <td align="center">
+        <td class="center">
           <a href="?" onclick="fnModeSubmit('delete', 'category_id', <!--{$arrList[cnt].category_id}-->); return false;">削除</a>
         </td>
-        <td align="center">
+        <td class="center">
         <!--{* 移動 *}-->
         <!--{if $smarty.section.cnt.iteration != 1}-->
         <a href="?" onclick="fnModeSubmit('up','category_id', <!--{$arrList[cnt].category_id}-->); return false;">上へ</a>
@@ -155,6 +131,7 @@ $(document).ready(function() {
         <a href="?" onclick="fnModeSubmit('down','category_id', <!--{$arrList[cnt].category_id}-->); return false;">下へ</a>
         <!--{/if}-->
         </td>
+
       </tr>
       <!--{/section}-->
     </table>

@@ -46,6 +46,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin {
     function init() {
         parent::init();
         $this->tpl_mainpage = 'home.tpl';
+        $this->tpl_subtitle = 'ホーム';
     }
 
     /**

@@ -57,13 +57,15 @@
     <!--▲インクルードここまで-->
   </table>
 
-  <div class="btn">
-    <a class="btn-normal" href="javascript:;" name="subm02" onclick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_back', '' )"><span>テンプレート設定画面へ戻る</span></a>
+  <div class="btn-area">
+    <ul>
+      <li><a class="btn-action" href="javascript:;" name="subm02" onclick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_back', '' )"><span class="btn-prev">テンプレート設定画面へ戻る</span></a></li>
     <!--{if $smarty.const.MELMAGA_BATCH_MODE}-->
-    <a class="btn-normal" href="javascript:;" name="subm03" onClick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_complete', '' )" <!--{$list_data.template_id|sfGetEnabled}-->><span>配信を予約する</span></a>
+      <li><a class="btn-action" href="javascript:;" name="subm03" onClick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_complete', '' )" <!--{$list_data.template_id|sfGetEnabled}-->><span class="btn-next">配信を予約する</span></a></li>
     <!--{else}-->
-    <a class="btn-normal" href="javascript:;" name="subm03" onClick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_complete', '' )" <!--{$list_data.template_id|sfGetEnabled}-->><span>配信する</span></a>
+      <li><a class="btn-action" href="javascript:;" name="subm03" onClick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_complete', '' )" <!--{$list_data.template_id|sfGetEnabled}-->><span class="btn-next">配信する</span></a></li>
     <!--{/if}-->
+    </ul>
   </div>
 </div>
 <input type="hidden" name="mode" value="template">

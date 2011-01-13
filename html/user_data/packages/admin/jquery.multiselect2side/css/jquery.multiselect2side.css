@@ -1,18 +1,33 @@
+.ms2side__area {
+	clear: both;
+	padding-bottom: 20px;
+	overflow: auto;
+}
+
 .ms2side__div {
 	clear: left;
-	width: 100%;
 	padding: 1px;
 	float: left;
 	background : url('') repeat-x; // HACK FOR CHROME
 }
 
+.ms2side__div p.AddOne,
+.ms2side__div p.RemoveOne,
+.ms2side__div p.MoveTop,
+.ms2side__div p.MoveDown {
+    margin: 5px auto;
+}
+.ms2side__div p.AddAll,
+.ms2side__div p.RemoveAll,
+.ms2side__div p.MoveUp,
+.ms2side__div p.MoveBottom {
+    margin: 0 auto 5px auto;
+}
 .ms2side__select {
 	float: left;
 }
 
 .ms2side__header {
-	color: blue;
-	background-color: #EEEEFF;
 }
 
 .ms2side__options, .ms2side__updown {
@@ -20,7 +35,7 @@
 	font-size: 10pt;
 	margin: 0;
 	padding: 0 8px;
-	width: 40px;
+	width: 80px;
 	color: black;
 	text-align: center;
 	overflow: hidden;
@@ -31,26 +46,48 @@
 }
 
 .ms2side__options p, .ms2side__updown p {
-	margin: 2px 0;
-	padding: 0;
-	cursor: hand;
-	border: 1px solid black;
+	width:30px;
+	display:inline-block;
+    text-decoration: none;
+    background-attachment: scroll;
+    background-clip: border-box;
+    background-image: url('../../img/button/white-grad.png');
+    padding: 2px 10px;
+    white-space: nowrap;
+    border: solid 1px #bcbecb;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: normal;
+	color: #444757;
+
+    /* CSS3 radius */
+    border-radius: 5px;
+    /* Safari, Chrome radius */
+    -webkit-box-sizing: content-box;
+    -webkit-border-radius: 5px;
+    /* Firefox radius */
+    -moz-border-radius: 5px;
+    /* Safari, Chrome radius */
+    -webkit-box-sizing: content-box;
+    -webkit-border-radius: 5px;
+    /* Firefox radius */
+    -moz-border-radius: 5px;
 }
 
 .ms2side__options p.ms2side_hover, .ms2side__updown p.ms2side_hover {
 	background-color: #F0F0FF;
-	border-color: #0000FF;
+	border-color: #ccc;
 	cursor: hand;
 }
 
 .ms2side__options p.ms2side__hide, .ms2side__updown p.ms2side__hide {
 	cursor: default;
-	color: grey;
-	border: 1px solid grey;
-	background-color: #F0F0F0;
+	color: ccc;
+	border: 1px solid eee;
+	background-color: #eeeeee;
 }
 
 .ms2side__div select {
-	width: 220px;
+	width: 250px;
 	float: left;
 }

@@ -95,6 +95,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin {
             $this->execDefaultMode();
             break;
         }
+        $this->setTemplate($this->tpl_mainpage);
     }
 
     /**

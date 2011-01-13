@@ -149,7 +149,13 @@ function lfnDispChange(){
     <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
     <!--{html_options options=$arrPageMax selected=$arrForm.search_page_max}-->
     </select> 件
-    <a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', '');"><span>この条件で検索する</span></a>
+
+	<div class="btn-area">
+		<ul>
+			<li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', '');"><span class="btn-next">この条件で検索する</span></a></li>
+		</ul>
+	</div>
+
   </div>
   <!--検索条件設定テーブルここまで-->
 </form>  
@@ -172,8 +178,8 @@ function lfnDispChange(){
     <!--{if $smarty.const.ADMIN_MODE == '1'}-->
     <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete_all','','');">検索結果をすべて削除</a>
     <!--{/if}-->
-    <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('csv','','');">CSV ダウンロード</a>
-    <a class="btn-normal" href="../contents/csv.php?tpl_subno_csv=product">CSV 出力項目設定</a>
+    <a class="btn-tool" href="javascript:;" onclick="fnModeSubmit('csv','','');">CSV ダウンロード</a>
+    <a class="btn-tool" href="../contents/csv.php?tpl_subno_csv=product">CSV 出力項目設定</a>
   </div>
   <!--{include file=$tpl_pager}-->
 
@@ -197,7 +203,7 @@ function lfnDispChange(){
       <th rowspan="2">複製</th>
     </tr>
     <tr>
-      <th><a href="#" onClick="lfnDispChange(); return false;">カテゴリ ⇔ URL</a></th>
+      <th nowrap><a href="#" onClick="lfnDispChange(); return false;">カテゴリ ⇔ URL</a></th>
     </tr>
 
     <!--{section name=cnt loop=$arrProducts}-->
@@ -206,20 +212,17 @@ function lfnDispChange(){
     <tr style="background:<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->;">
       <td class="id" rowspan="2"><!--{$arrProducts[cnt].product_id}--></td>
       <td class="thumbnail" rowspan="2">
-      <img src="<!--{$smarty.const.URL_PATH}-->resize_image.php?image=<!--{$arrProducts[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65">
-      </td>
+      <img src="<!--{$smarty.const.URL_PATH}-->resize_image.php?image=<!--{$arrProducts[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65">      </td>
       <td rowspan="2"><!--{$arrProducts[cnt].product_code_min|h}-->
         <!--{if $arrProducts[cnt].product_code_min != $arrProducts[cnt].product_code_max}-->
           <br />～ <!--{$arrProducts[cnt].product_code_max|h}-->
-        <!--{/if}-->
-      </td>
+        <!--{/if}-->      </td>
       <!--{* 価格 *}-->
       <td rowspan="2" class="right">
         <!--{$arrProducts[cnt].price02_min|number_format}-->
         <!--{if $arrProducts[cnt].price02_min != $arrProducts[cnt].price02_max}-->
           <br />～ <!--{$arrProducts[cnt].price02_max|number_format}-->
-        <!--{/if}-->
-      </td>
+        <!--{/if}-->      </td>
       <td><!--{$arrProducts[cnt].name|h}--></td>
       <!--{* 在庫 *}-->
       <!--{* XXX 複数規格でかつ、全ての在庫数量が等しい場合は先頭に「各」と入れたれたら良いと思う。 *}-->
@@ -227,8 +230,7 @@ function lfnDispChange(){
         <!--{if $arrProducts[cnt].stock_unlimited_min}-->無制限<!--{else}--><!--{$arrProducts[cnt].stock_min|number_format}--><!--{/if}-->
         <!--{if $arrProducts[cnt].stock_unlimited_min != $arrProducts[cnt].stock_unlimited_max || $arrProducts[cnt].stock_min != $arrProducts[cnt].stock_max}-->
           <br />～ <!--{if $arrProducts[cnt].stock_unlimited_max}-->無制限<!--{else}--><!--{$arrProducts[cnt].stock_max|number_format}--><!--{/if}-->
-        <!--{/if}-->
-      </td>
+        <!--{/if}-->      </td>
       <!--{* 表示 *}-->
       <!--{assign var=key value=$arrProducts[cnt].status}-->
       <td class="menu" rowspan="2"><!--{$arrDISP[$key]}--></td>
@@ -253,8 +255,7 @@ function lfnDispChange(){
         <!--{* URL *}-->
         <div id="disp_url<!--{$smarty.section.cnt.iteration}-->" style="display:none">
         <!--{$smarty.const.HTTP_URL|sfTrimURL}-->/products/detail.php?product_id=<!--{$arrProducts[cnt].product_id}-->
-        </div>
-      </td>
+        </div>      </td>
     </tr>
     <!--▲商品<!--{$smarty.section.cnt.iteration}-->-->
     <!--{/section}-->

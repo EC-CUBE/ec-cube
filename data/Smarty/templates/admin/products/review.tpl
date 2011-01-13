@@ -96,7 +96,12 @@
     <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
     <!--{html_options options=$arrPageMax selected=$arrForm.search_page_max}-->
     </select> 件
-    <a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', '');"><span>この条件で検索する</span></a>
+    <div class="btn-area">
+      <ul>
+        <li>
+          <a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', '');"><span class="btn-next">この条件で検索する</span></a></li>
+      </ul>
+    </div>
   </div>
 </form>  
 
@@ -132,8 +137,8 @@
       <th>商品名</th>
       <th>おすすめレベル</th>
       <th>表示・非表示</th>
-      <th>編集</th>
-      <th>削除</th>
+      <th class="edit">編集</th>
+      <th class="delete">削除</th>
     </tr>
 
     <!--{section name=cnt loop=$arrReview}-->

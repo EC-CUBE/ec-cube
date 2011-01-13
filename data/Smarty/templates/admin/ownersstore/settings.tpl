@@ -41,8 +41,10 @@
   <!--入力項目ここまで-->
   
   <!--登録ボタンここから-->
-  <div class="btn">
-    <a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('form1', 'register', '', '');"><span>この内容で登録する</span></a>
+  <div class="btn-area">
+    <ul>
+      <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'register', '', '');"><span class="btn-next">この内容で登録する</span></a></li>
+    </ul>
   </div>
   <!--登録ボタンここまで-->
   

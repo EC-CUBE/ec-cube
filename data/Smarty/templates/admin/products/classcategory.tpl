@@ -45,15 +45,17 @@
       </td>
     </tr>
   </table>
-  <div class="btn">
-    <a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('form1', 'edit', '', '');"><span>この内容で登録する</span></a>
+  <div class="btn-area">
+    <ul>
+      <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'edit', '', '');"><span class="btn-next">この内容で登録する</span></a></li>
+    </ul>
   </div>
 
   <table class="list">
     <tr>
       <th>分類名</th>
-      <th>編集</th>
-      <th>削除</th>
+      <th class="edit">編集</th>
+      <th class="delete">削除</th>
       <th>移動</th>
     </tr>
     <!--{section name=cnt loop=$arrClassCat}-->
@@ -81,7 +83,7 @@
     <!--{/section}-->
   </table>
   <div class="btn">
-    <a class="btn-normal" href="./class.php"><span>規格一覧に戻る</span></a>
+    <a class="btn-action" href="./class.php"><span class="btn-prev">規格一覧に戻る</span></a>
   </div>
 </div>
 </form>  

@@ -43,7 +43,6 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin {
      */
     function init() {
         parent::init();
-        $this->tpl_mainpage = 'contents/recomend_search.tpl';
         $this->tpl_mainno = 'contents';
         $this->tpl_subnavi = '';
         $this->tpl_subno = "";
@@ -142,6 +141,8 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin {
 
         // カテゴリ取得
         $this->arrCatList = $objDb->sfGetCategoryList();
+
+        $this->setTemplate('contents/recomend_search.tpl');
     }
 
     /**

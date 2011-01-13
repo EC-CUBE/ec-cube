@@ -98,11 +98,13 @@
   <div class="message">規格が選択されていません。</div>
   <!--{/if}-->
 
-  <div class="btn">
-    <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('confirm_return','',''); return false"><span>前へ戻る</span></a>
+  <div class="btn-area">
+    <ul>
+      <li><a class="btn-action" href="javascript:;" onclick="fnModeSubmit('confirm_return','',''); return false"><span class="btn-prev">前へ戻る</span></a></li>
     <!--{if $tpl_check > 0}-->
-    <a class="btn-normal" href="javascript:;" onclick="document.form1.submit();"><span>この内容で登録する</span></a>
+      <li><a class="btn-action" href="javascript:;" onclick="document.form1.submit();"><span class="btn-next">この内容で登録する</span></a></li>
     <!--{/if}-->
+    </ul>
   </div>
 </div>
 </form>

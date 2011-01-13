@@ -33,9 +33,11 @@
     配信履歴にて配信履歴がご覧いただけます。<br />
     <a href="./<!--{$smarty.const.DIR_INDEX_URL}-->">→続けて設定する</a>
   </div>
-  <div class="btn">
-    <a class="btn-normal" href="javascript:;" name="subm02" onclick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_back', '' )"><span>テンプレート設定画面へ戻る</span></a>
-  　<a class="btn-normal" href="javascript:;" name="subm03" onclick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_complete', '' )" <!--{$list_data.template_id|sfGetEnabled}-->><span>配信を予約する</span></a>
+  <div class="btn-area">
+    <ul>
+      <li><a class="btn-action" href="javascript:;" name="subm02" onclick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_back', '' )"><span class="btn-prev">テンプレート設定画面へ戻る</span></a></li>
+      <li>　<a class="btn-action" href="javascript:;" name="subm03" onclick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_complete', '' )" <!--{$list_data.template_id|sfGetEnabled}-->><span class="btn-next">配信を予約する</span></a></li>
+    </ul>
   </div>
 </div>
 </form>

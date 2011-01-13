@@ -52,21 +52,23 @@
           <!--{html_options options=$arrDay selected=$arrForm.day}-->
         </select>日
         <br />
-        <span class="attention">振替え休日は自動設定されないので、振替え先の日付を設定してください。</span>
+        <span class="attention">振替休日は自動設定されないので、振替え先の日付を設定してください。</span>
       </td>
     </tr>
   </table>
 
-  <div class="btn">
-    <a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('form1', 'edit', '', '');"><span>この内容で登録する</span></a>
+  <div class="btn-area">
+    <ul>
+      <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'edit', '', '');"><span class="btn-next">この内容で登録する</span></a></li>
+    </ul>
   </div>
 
   <table class="list">
     <tr>
       <th>タイトル</th>
       <th>日付</th>
-      <th>編集</th>
-      <th>削除</th>
+      <th class="edit">編集</th>
+      <th class="delete">削除</th>
       <th>移動</th>
     </tr>
     <!--{section name=cnt loop=$arrHoliday}-->

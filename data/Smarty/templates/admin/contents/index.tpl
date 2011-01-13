@@ -163,7 +163,11 @@ function moving(news_id,rank, max_rank) {
   </table>
   <!--{* ▲登録テーブルここまで *}-->
 
-  <div class="btn"><a class="btn-normal" href="javascript:;" onclick="return func_regist();"><span>この内容で登録する</span></a></div>
+  <div class="btn-area">
+    <ul>
+      <li><a class="btn-action" href="javascript:;" onclick="return func_regist();"><span class="btn-next">この内容で登録する</span></a></li>
+    </ul>
+  </div>
 </form>
 
   <h2>新着情報一覧</h2>
@@ -182,8 +186,8 @@ function moving(news_id,rank, max_rank) {
       <th>順位</th>
       <th>日付</th>
       <th>タイトル</th>
-      <th>編集</th>
-      <th>削除</th>
+      <th class="edit">編集</th>
+      <th class="delete">削除</th>
       <th>移動</th>
     </tr>
     <!--{section name=data loop=$list_data}-->

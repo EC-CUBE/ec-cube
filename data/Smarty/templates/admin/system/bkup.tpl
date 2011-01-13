@@ -63,7 +63,7 @@
             <th>作成日</th>
             <th>リストア</th>
             <th>ダウンロード</th>
-            <th>削除</th>
+            <th class="delete">削除</th>
         </tr>
         <!--{section name=cnt loop=$arrBkupList}-->
         <tr>

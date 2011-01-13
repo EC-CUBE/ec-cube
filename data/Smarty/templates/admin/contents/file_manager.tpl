@@ -36,61 +36,16 @@ var IMG_NORMAL         = "<!--{$TPL_DIR}-->img/contents/space.gif";				// スペ
 <input type="hidden" name="select_file" value="" />
 <div id="admin-contents" class="contents-main">
 <div id="contents-filemanager-tree">
-  ディレクトリ
   <div id="tree"></div>
 </div>
-<div id="contents-filemanager-nowdir">
-  <div id="now_dir">
-    <img src="<!--{$TPL_DIR}-->img/contents/folder_open.gif" alt="フォルダ">
-    &nbsp;<!--{$tpl_now_file}-->
-  </div>
-  <div id="file_view">
-    <table id="contents-filemanager-filelist" class="list">
-      <tr>
-        <th>ファイル名</th>
-        <th>サイズ</th>
-        <th>更新日付</th>
-      </tr>
-      <!--{if !$tpl_is_top_dir}-->
-      <tr id="parent_dir" onclick="fnSetFormVal('form1', 'select_file', '<!--{$tpl_parent_dir|h}-->');fnSelectFile('parent_dir', '#808080');" onDblClick="setTreeStatus('tree_status');fnDbClick(arrTree, '<!--{$tpl_parent_dir|h}-->', true, '<!--{$tpl_now_dir|h}-->', true)" style="" onMouseOver="fnChangeBgColor('parent_dir', '#808080');" onMouseOut="fnChangeBgColor('parent_dir', '');">
-        <td>
-          <img src="<!--{$TPL_DIR}-->img/contents/folder_parent.gif" alt="フォルダ">&nbsp;..
-        </td>
-        <td class="right">&nbsp;</td>
-        <td>&nbsp;</td>
-      </tr>
-      <!--{/if}-->
-      <!--{section name=cnt loop=$arrFileList}-->
-      <!--{assign var="id" value="select_file`$smarty.section.cnt.index`"}-->
-      <tr id="<!--{$id}-->" onclick="fnSetFormVal('form1', 'select_file', '<!--{$arrFileList[cnt].file_path|h}-->');fnSelectFile('<!--{$id}-->', '#808080');" onDblClick="setTreeStatus('tree_status');fnDbClick(arrTree, '<!--{$arrFileList[cnt].file_path|h}-->', <!--{if $arrFileList[cnt].is_dir|h}-->true<!--{else}-->false<!--{/if}-->, '<!--{$tpl_now_dir|h}-->', false)" style="" onMouseOver="fnChangeBgColor('<!--{$id}-->', '#808080');" onMouseOut="fnChangeBgColor('<!--{$id}-->', '');">
-        <td>
-          <!--{if $arrFileList[cnt].is_dir}-->
-          <img src="<!--{$TPL_DIR}-->img/contents/folder_close.gif" alt="フォルダ">
-          <!--{else}-->
-          <img src="<!--{$TPL_DIR}-->img/contents/file.gif">
-          <!--{/if}-->
-          <!--{$arrFileList[cnt].file_name|h}-->
-        </td>
-        <td class="right"><!--{$arrFileList[cnt].file_size|number_format}--></td>
-        <td><!--{$arrFileList[cnt].file_time|h}--></td>
-      </tr>
-      <!--{/section}-->
-    </table>
-  </div>
-  <div class="btn">
-    <a class="btn-normal" href="javascript:;" onclick="setTreeStatus('tree_status');fnModeSubmit('view','',''); return false;"><span>表示</span></a>
-    <a class="btn-normal" href="javascript:;" onclick="setTreeStatus('tree_status');fnModeSubmit('download','',''); return false;"><span>ダウンロード</span></a>
-    <a class="btn-normal" href="javascript:;" onclick="setTreeStatus('tree_status');fnModeSubmit('delete','',''); return false;"><span>削除</span></a>
-  </div>
-</div>
-<div id="contents-filemanager-action">
-  <p>現在のディレクトリ&nbsp;：&nbsp;<!--{$tpl_now_dir|sfTrimURL}-->/</p>
-  <table class="form">
+
+<div id="contents-filemanager-right">
+  <table class="now_dir">
     <tr>
       <th>ファイルのアップロード</th>
       <td>
         <!--{if $arrErr.upload_file}--><span class="attention"><!--{$arrErr.upload_file}--></span><!--{/if}-->
-        <input type="file" name="upload_file" size="64" <!--{if $arrErr.upload_file}-->style="background-color:<!--{$smarty.const.ERR_COLOR|h}-->"<!--{/if}-->><a class="btn-normal" href="javascript:;" onclick="setTreeStatus('tree_status');fnModeSubmit('upload','',''); return false;">アップロード</a>
+        <input type="file" name="upload_file" size="46" <!--{if $arrErr.upload_file}-->style="background-color:<!--{$smarty.const.ERR_COLOR|h}-->"<!--{/if}-->><a class="btn-normal" href="javascript:;" onclick="setTreeStatus('tree_status');fnModeSubmit('upload','',''); return false;">アップロード</a>
       </td>
     </tr>
     <tr>
@@ -101,7 +56,52 @@ var IMG_NORMAL         = "<!--{$TPL_DIR}-->img/contents/space.gif";				// スペ
       </td>
     </tr>
   </table>
+
+  <h2><!--{$tpl_now_dir|h}--></h2>
+
+  <div id="file_view">
+    <table id="contents-filemanager-filelist" class="list">
+      <tr>
+        <th>ファイル名</th>
+        <th>サイズ</th>
+        <th>更新日付</th>
+        <th class="edit">表示</th>
+        <th>ダウンロード</th>
+        <th class="delete">削除</th>
+      </tr>
+      <!--{if !$tpl_is_top_dir}-->
+      <tr id="parent_dir" onclick="fnSetFormVal('form1', 'select_file', '<!--{$tpl_parent_dir|h}-->');fnSelectFile('parent_dir', '#808080');" onDblClick="setTreeStatus('tree_status');fnDbClick(arrTree, '<!--{$tpl_parent_dir|h}-->', true, '<!--{$tpl_now_dir|h}-->', true)" style="">
+        <td>
+          <img src="<!--{$TPL_DIR}-->img/contents/folder_parent.gif" alt="フォルダ">&nbsp;..
+        </td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <!--{/if}-->
+      <!--{section name=cnt loop=$arrFileList}-->
+      <!--{assign var="id" value="select_file`$smarty.section.cnt.index`"}-->
+      <tr id="<!--{$id}-->" style="">
+        <td class="file-name" onDblClick="setTreeStatus('tree_status');fnDbClick(arrTree, '<!--{$arrFileList[cnt].file_path|h}-->', <!--{if $arrFileList[cnt].is_dir|h}-->true<!--{else}-->false<!--{/if}-->, '<!--{$tpl_now_dir|h}-->', false)">
+          <!--{if $arrFileList[cnt].is_dir}-->
+          <img src="<!--{$TPL_DIR}-->img/contents/folder_close.gif" alt="フォルダ">
+          <!--{else}-->
+          <img src="<!--{$TPL_DIR}-->img/contents/file.gif">
+          <!--{/if}-->
+          <!--{$arrFileList[cnt].file_name|h}-->
+        </td>
+        <td class="right"><!--{$arrFileList[cnt].file_size|number_format}--></td>
+        <td class="center"><!--{$arrFileList[cnt].file_time|h}--></td>
+        <td class="center"><a href="javascript:;" onclick="fnSetFormVal('form1', 'select_file', '<!--{$arrFileList[cnt].file_path|h}-->');fnSelectFile('<!--{$id}-->', '#808080');fnModeSubmit('view','',''); return false;">表示</a></td>
+        <td class="center"><a href="javascript:;" onclick="fnSetFormVal('form1', 'select_file', '<!--{$arrFileList[cnt].file_path|h}-->');fnSelectFile('<!--{$id}-->', '#808080');setTreeStatus('tree_status');fnModeSubmit('download','',''); return false;">ダウンロード</a></td>
+        <td class="center"><a href="javascript:;" onclick="fnSetFormVal('form1', 'select_file', '<!--{$arrFileList[cnt].file_path|h}-->');fnSelectFile('<!--{$id}-->', '#808080');setTreeStatus('tree_status');fnModeSubmit('delete','',''); return false;">削除</a></td>
+      </tr>
+      <!--{/section}-->
+    </table>
+  </div>
+</div>
 </div>
 
-</div>
 </form>

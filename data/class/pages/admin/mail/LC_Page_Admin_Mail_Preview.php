@@ -142,6 +142,7 @@ class LC_Page_Admin_Mail_Preview extends LC_Page_Admin {
                 $this->body = $result[0]["body"];
             }
         }
+        $this->setTemplate($this->tpl_mainpage);
     }
 
     /**

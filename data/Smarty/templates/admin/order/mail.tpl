@@ -85,9 +85,11 @@
       </td>
     </tr>
   </table>
-  <div class="btn">
-    <a class="btn-normal" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_ORDER_URL_PATH}-->'); fnModeSubmit('search','',''); return false;"><span>検索結果へ戻る</span></a>
-    <a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('form1', 'confirm', '', '');"><span>送信内容を確認</span></a>
+  <div class="btn-area">
+    <ul>
+      <li><a class="btn-action" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_ORDER_URL_PATH}-->'); fnModeSubmit('search','',''); return false;"><span class="btn-prev">検索結果へ戻る</span></a></li>
+      <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'confirm', '', '');"><span class="btn-next">送信内容を確認</span></a></li>
+    </ul>
   </div>
 </div>
 </form>

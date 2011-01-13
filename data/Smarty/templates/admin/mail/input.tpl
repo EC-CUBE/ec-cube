@@ -83,9 +83,11 @@
   </table>
   <!--{/if}-->
 
-  <div class="btn">
-    <a class="btn-normal" href="javascript:;" onclick="return fnInsertValAndSubmit( document.form1, 'mode', 'back', '' )"><span>検索画面に戻る</span></a>
-    <a class="btn-normal" href="javascript:;" onclick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_confirm', '' )" ><span>確認ページへ</span></a>
+  <div class="btn-area">
+    <ul>
+      <li><a class="btn-action" href="javascript:;" onclick="return fnInsertValAndSubmit( document.form1, 'mode', 'back', '' )"><span class="btn-prev">検索画面に戻る</span></a></li>
+      <li><a class="btn-action" href="javascript:;" onclick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_confirm', '' )" ><span class="btn-next">確認ページへ</span></a></li>
+    </ul>
   </div>
 </div>
 <input type="hidden" name="mode" value="template" />

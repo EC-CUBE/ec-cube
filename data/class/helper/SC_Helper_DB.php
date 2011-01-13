@@ -502,6 +502,30 @@ class SC_Helper_DB {
     }
 
     /**
+     * カテゴリツリーを走査し, パンくずリスト用の配列を生成する.
+     *
+     * @param array カテゴリの配列
+     * @param integer $parent 上位カテゴリID
+     * @param array パンくずリスト用の配列
+     * @result void
+     * @see sfGetCatTree()
+     */
+    function findTree(&$arrTree, $parent, &$result) {
+        if ($result[count($result) - 1]['parent_category_id'] === 0) {
+            return;
+        } else {
+            foreach ($arrTree as $key => $val) {
+               if ($val['category_id'] == $parent) {
+                    $result[] = array('category_id' => $val['category_id'],
+                                      'parent_category_id' => (int) $val['parent_category_id'],
+                                      'category_name' => $val['category_name']);
+                    $this->findTree($arrTree, $val['parent_category_id'], $result);
+               }
+            }
+        }
+    }
+
+    /**
      * カテゴリツリーの取得を複数カテゴリーで行う.
      *
      * @param integer $product_id 商品ID

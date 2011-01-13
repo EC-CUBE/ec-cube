@@ -50,3 +50,8 @@
 <noscript>
   <p>JavaScript を有効にしてご利用下さい.</p>
 </noscript>
+<div id="popup-header">
+		<div id="popup-logo"><img src="<!--{$TPL_DIR}-->img/header/logo_popup.jpg" width="99" height="15" alt="EC-CUBE" /></div>
+</div>
+
+<div id="popup-container">

@@ -242,8 +242,8 @@
     </table>
     <!--{* 検索条件設定テーブルここまで *}-->
 
-    <div class="btn">
-        <a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', '');"><span>この条件で検索する</span></a>
+    <div class="btn-area">
+        <a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', '');"><span class="btn-next">この条件で検索する</span></a>
     </div>
 </form>
 
@@ -282,7 +282,7 @@
             <th>メールアドレス</th>
             <th>希望配信</th>
             <th>登録日</th>
-            <th>削除</th>
+            <th class="delete">削除</th>
         </tr>
         <!--{section name=i loop=$arrResults}-->
         <tr>

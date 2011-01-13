@@ -97,25 +97,27 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin {
         switch($_POST['mode']) {
 
             // ファイル表示
+
         case 'view':
             // エラーチェック
+
             $arrErr = $this->lfErrorCheck();
 
             if (empty($arrErr)) {
                 // 選択されたファイルがディレクトリなら移動
                 if(is_dir($_POST['select_file'])) {
-                    ///$now_dir = $_POST['select_file'];
-                    // ツリー遷移用のjavascriptを埋め込む
-                    $arrErr['select_file'] = "※ ディレクトリを表示することは出来ません。<br/>";
-
+                    $now_dir = $this->lfCheckSelectDir($_POST['select_file']);
                 } else {
                     // javascriptで別窓表示(テンプレート側に渡す)
                     // FIXME XSS対策すること
                     $file_url = ereg_replace(USER_REALDIR, "", $_POST['select_file']);
                     $this->tpl_onload = "win02('./file_view.php?file=". $file_url ."', 'user_data', '600', '400');";
+                    $now_dir = $this->lfCheckSelectDir(dirname($_POST['select_file']));
                 }
             }
+
             break;
+            
             // ファイルダウンロード
         case 'download':
 
@@ -187,7 +189,18 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin {
         $this->arrFileList = $objFileManager->sfGetFileList($now_dir);
         $this->tpl_is_top_dir = $is_top_dir;
         $this->tpl_parent_dir = $parent_dir;
-        $this->tpl_now_dir = $now_dir;
+        // TODO JSON で投げて, フロント側で処理した方が良い？
+        $this->tpl_now_dir = "";
+        $arrNowDir = preg_split('/\//', str_replace(HTML_REALDIR, '', $now_dir));
+        for ($i = 0; $i < count($arrNowDir); $i++) {
+            if (!empty($arrNowDir)) {
+                $this->tpl_now_dir .= $arrNowDir[$i];
+                if ($i < count($arrNowDir) - 1) {
+                     // フロント側で &gt; へエスケープするため, ここでは > を使用
+                    $this->tpl_now_dir .= ' > ';
+                }
+            }
+        }
         $this->tpl_now_file = basename($now_dir);
         $this->arrErr = isset($arrErr) ? $arrErr : "";
         $this->arrParam = $_POST;

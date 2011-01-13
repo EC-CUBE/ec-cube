@@ -22,7 +22,7 @@
  */
 *}-->
 <ul class="level1">
-  <li><a><span>PC</span></a>
+  <li><a href="<!--{$smarty.const.URL_PATH}--><!--{$smarty.const.ADMIN_DIR}-->design/<!--{$smarty.const.DIR_INDEX_URL}-->?device_type_id=<!--{$smarty.const.DEVICE_TYPE_PC}-->"><span>PC</span></a>
     <ul class="level2">
       <li<!--{if $tpl_subno == 'layout'}--> class="on"<!--{/if}--> id="navi-design-layout"><a href="<!--{$smarty.const.URL_PATH}--><!--{$smarty.const.ADMIN_DIR}-->design/<!--{$smarty.const.DIR_INDEX_URL}-->?device_type_id=<!--{$smarty.const.DEVICE_TYPE_PC}-->"><span>レイアウト設定</span></a></li>
       <li<!--{if $tpl_subno == 'main_edit'}--> class="on"<!--{/if}--> id="navi-design-main"><a href="<!--{$smarty.const.URL_PATH}--><!--{$smarty.const.ADMIN_DIR}-->design/main_edit.php?device_type_id=<!--{$smarty.const.DEVICE_TYPE_PC}-->"><span>ページ詳細設定</span></a></li>
@@ -33,7 +33,7 @@
       <li<!--{if $tpl_subno == 'up_down'}--> class="on"<!--{/if}--> id="navi-design-add"><a href="<!--{$smarty.const.URL_PATH}--><!--{$smarty.const.ADMIN_DIR}-->design/up_down.php?device_type_id=<!--{$smarty.const.DEVICE_TYPE_PC}-->"><span>テンプレート追加</span></a></li>
     </ul>
   </li>
-  <li><a><span>モバイル</span></a>
+  <li><a href="<!--{$smarty.const.URL_PATH}--><!--{$smarty.const.ADMIN_DIR}-->design/<!--{$smarty.const.DIR_INDEX_URL}-->?device_type_id=<!--{$smarty.const.DEVICE_TYPE_MOBILE}-->"><span>モバイル</span></a>
     <ul class="level2">
       <li<!--{if $tpl_subno == 'layout'}--> class="on"<!--{/if}--> id="navi-design-layout"><a href="<!--{$smarty.const.URL_PATH}--><!--{$smarty.const.ADMIN_DIR}-->design/<!--{$smarty.const.DIR_INDEX_URL}-->?device_type_id=<!--{$smarty.const.DEVICE_TYPE_MOBILE}-->"><span>レイアウト設定</span></a></li>
       <li<!--{if $tpl_subno == 'main_edit'}--> class="on"<!--{/if}--> id="navi-design-main"><a href="<!--{$smarty.const.URL_PATH}--><!--{$smarty.const.ADMIN_DIR}-->design/main_edit.php?device_type_id=<!--{$smarty.const.DEVICE_TYPE_MOBILE}-->"><span>ページ詳細設定</span></a></li>
@@ -44,7 +44,7 @@
       <li<!--{if $tpl_subno == 'up_down'}--> class="on"<!--{/if}--> id="navi-design-add"><a href="<!--{$smarty.const.URL_PATH}--><!--{$smarty.const.ADMIN_DIR}-->design/up_down.php?device_type_id=<!--{$smarty.const.DEVICE_TYPE_MOBILE}-->"><span>テンプレート追加</span></a></li>
     </ul>
   </li>
-  <li><a><span>スマートフォン</span></a>
+  <li><a href="<!--{$smarty.const.URL_PATH}--><!--{$smarty.const.ADMIN_DIR}-->design/<!--{$smarty.const.DIR_INDEX_URL}-->?device_type_id=<!--{$smarty.const.DEVICE_TYPE_SMARTPHONE}-->"><span>スマートフォン</span></a>
     <ul class="level2">
       <li<!--{if $tpl_subno == 'layout'}--> class="on"<!--{/if}--> id="navi-design-layout"><a href="<!--{$smarty.const.URL_PATH}--><!--{$smarty.const.ADMIN_DIR}-->design/<!--{$smarty.const.DIR_INDEX_URL}-->?device_type_id=<!--{$smarty.const.DEVICE_TYPE_SMARTPHONE}-->"><span>レイアウト設定</span></a></li>
       <li<!--{if $tpl_subno == 'main_edit'}--> class="on"<!--{/if}--> id="navi-design-main"><a href="<!--{$smarty.const.URL_PATH}--><!--{$smarty.const.ADMIN_DIR}-->design/main_edit.php?device_type_id=<!--{$smarty.const.DEVICE_TYPE_SMARTPHONE}-->"><span>ページ詳細設定</span></a></li>

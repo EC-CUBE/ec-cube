@@ -131,6 +131,20 @@ __EOS__;
         $this->arrTree = $objDb->sfGetCatTree($this->arrForm['parent_category_id']);
         $this->arrProductsList =
             $this->lfGetProduct($this->arrForm['parent_category_id']);
+        $arrBread = array();
+        $objDb->findTree($this->arrTree, $this->arrForm['parent_category_id'], $arrBread);
+        $this->breadcrumbs = "ホーム";
+        // TODO JSON で投げて, フロント側で処理した方が良い？
+        for ($i = count($arrBread) - 1; $i >= 0; $i--) {
+            // フロント側で &gt; へエスケープするため, ここでは > を使用
+            if ($i === count($arrBread) - 1) {
+                $this->breadcrumbs .= ' > ';
+            }
+            $this->breadcrumbs .= $arrBread[$i]['category_name'];
+            if ($i > 0) {
+                $this->breadcrumbs .= ' > ';
+            }
+        }
     }
 
     /**

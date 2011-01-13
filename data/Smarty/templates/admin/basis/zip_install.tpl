@@ -23,9 +23,7 @@
 *}-->
 <!--{if $tpl_mode|strlen == 0 || $arrErr|@count >= 1}-->
     <style type="text/css">
-        .item {
-            margin-top: 1em;
-        }
+        
     </style>
     <form name="form1" id="form1" method="get" action="?" onsubmit="return false;">
         <input type="hidden" name="mode" value="">
@@ -37,23 +35,27 @@
             <p class="attention">行数に差異があります。登録に異常がある恐れがあります。</p>
         <!--{/if}-->
 
-        <div style="margin: 1em 0;">
+        <div class="basis-zip-item info">
             <p>通常は、[自動登録] を利用してください。<br />
                 ただし、タイムアウトしてしまう環境では、タイムアウトした後に [手動登録] を正常に完了するまで繰り返してください。</p>
         </div>
 
-        <div class="item">
-            <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('auto', '', '');">自動登録</a><br />
-            全ての郵便番号を削除してから、登録しなおします。タイムアウトした場合、元の状態に戻ります。
+        <div class="basis-zip-item">
+            <h2>自動更新</h2>
+            <p>全ての郵便番号を削除してから、登録しなおします。タイムアウトした場合、元の状態に戻ります。</p>
+            <p><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('auto', '', '');"><span class="btn-next">自動更新</span></a></p>
         </div>
-        <div class="item">
-            <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete', '', '');">手動削除</a><br />
-            全ての郵便番号を削除します。再登録するまで、住所自動入力は機能しなくなります。
+
+        <div class="basis-zip-item delete">
+            <h2>手動更新</h2>
+            <p>指定した行数から郵便番号を登録します。タイムアウトした場合、直前まで登録されます。</p>
+            <p><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('manual', '', '');"><span class="btn-next">手動更新</span></a>　開始行: <input type="text" name="startRowNum" value="<!--{$arrForm.startRowNum|default:$tpl_count_mtb_zip+1|h}-->" size="8"><span class="attention"><!--{$arrErr.startRowNum}--></span></p>
         </div>
-        <div class="item">
-            <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('manual', '', '');">手動登録</a>
-            開始行: <input type="text" name="startRowNum" value="<!--{$arrForm.startRowNum|default:$tpl_count_mtb_zip+1|h}-->" size="8"><span class="attention"><!--{$arrErr.startRowNum}--></span><br />
-            指定した行数から郵便番号を登録します。タイムアウトした場合、直前まで登録されます。
+
+        <div class="basis-zip-item end">
+            <h2>削除</h2>
+            <p>全ての郵便番号を削除します。再登録するまで、住所自動入力は機能しなくなります。</p>
+            <p><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete', '', '');"><span class="btn-next">削除</span></a></p>
         </div>
     </form>
 <!--{else}-->

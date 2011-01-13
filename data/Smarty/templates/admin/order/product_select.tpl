@@ -146,8 +146,10 @@ function fnCheckStock(form) {
         <td><input type="text" name="search_product_code" value="<!--{$arrForm.search_product_code}-->" size="35" class="box35" /></td>
     </tr>
 </table>
-<div class="btn">
-    <a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('form1', 'search', '', '');"><span>検索を開始</span></button>
+<div class="btn-area">
+  <ul>
+    <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'search', '', '');"><span class="btn-next">検索を開始</span></a></li>
+  </ul>
 </div>
 </form>
 <!--▼検索結果表示-->

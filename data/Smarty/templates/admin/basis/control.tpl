@@ -26,7 +26,7 @@
     <tr>
       <th>管理タイトル/管理内容</th>
       <th>選択項目</th>
-      <th>編集</th>
+      <th class="edit">編集</th>
     </tr>
     <!--{section name=cnt loop=$arrControlList}-->
     <tr>

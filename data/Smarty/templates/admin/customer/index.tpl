@@ -252,7 +252,11 @@
     <select name="page_rows">
       <!--{html_options options=$arrPageRows selected=$arrForm.page_rows}-->
     </select> 件
-    <a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', '');"><span>この条件で検索する</span></a>
+    <div class="btn-area">
+      <ul>
+        <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', '');"><span class="btn-next">この条件で検索する</span></a></li>
+      </ul>
+    </div>
   </div>
 </form>
 

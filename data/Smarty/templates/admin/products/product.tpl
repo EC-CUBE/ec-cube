@@ -396,7 +396,7 @@ function selectAll(target) {
   <!--{else}-->
   <div id="recommend_select" style="display:none">
   <!--{/if}-->
-	<h2>関連商品</h2>
+  <h2>関連商品</h2>
   <table class="form">
     <!--{if $smarty.const.OPTION_RECOMMEND == 1}-->
     <!--▼関連商品-->
@@ -413,7 +413,7 @@ function selectAll(target) {
       <td>
         <a name="<!--{$anckey}-->"></a>
         <input type="hidden" name="<!--{$key}-->" value="<!--{$arrRecommend[$recommend_no].product_id|h}-->" />
-        <a class="btn-normal" href="javascript:;" name="change" onclick="selectAll('category_id'); win03('./product_select.php?no=<!--{$smarty.section.cnt.iteration}-->', 'search', '500', '500'); ">変更</a>
+        <a class="btn-normal" href="javascript:;" name="change" onclick="selectAll('category_id'); win03('./product_select.php?no=<!--{$smarty.section.cnt.iteration}-->', 'search', '600', '500'); ">変更</a>
         <!--{assign var=key value="recommend_delete`$smarty.section.cnt.iteration`"}-->
         <input type="checkbox" name="<!--{$key}-->" value="1" />削除<br />
         商品コード:<!--{$arrRecommend[$recommend_no].product_code_min}--><br />
@@ -430,13 +430,15 @@ function selectAll(target) {
   </table>
   </div>
 
-  <div class="btn">
+  <div class="btn-area">
     <!--{if count($arrSearchHidden) > 0}-->
     <!--▼検索結果へ戻る-->
-    <a class="btn-normal" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_PRODUCTS_URL_PATH}-->'); fnModeSubmit('search','',''); return false;"><span>検索画面に戻る</span></a>
+    <ul>
+      <li><a class="btn-action" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_PRODUCTS_URL_PATH}-->'); fnModeSubmit('search','',''); return false;"><span class="btn-prev">検索画面に戻る</span></a></li>
     <!--▲検索結果へ戻る-->
     <!--{/if}-->
-    <a class="btn-normal" onclick="selectAll('category_id'); document.form1.submit();"><span>確認ページへ</span></a>
+      <li><a class="btn-action" onclick="selectAll('category_id'); document.form1.submit();"><span class="btn-next">確認ページへ</span></a></li>
+    </ul>
   </div>
 </div>
 </form>

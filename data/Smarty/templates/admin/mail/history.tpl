@@ -37,7 +37,7 @@
             <th>配信失敗数</th>
             <th>未配信数</th>
             <th>再試行</th>
-            <th>削除</th>
+            <th class="delete">削除</th>
         </tr>
         <!--{section name=cnt loop=$arrDataList}-->
         <tr>

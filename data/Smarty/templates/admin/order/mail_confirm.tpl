@@ -44,9 +44,11 @@
     </tr>
   </table>
 
-  <div class="btn">
-    <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('return', '', '');"><span>前のページへ戻る</span></a>
-    <a class="btn-normal" href="javascript:;" onclick="return confirm('この内容でメールを送信しても宜しいですか');"><span>メール送信</span></a>
+  <div class="btn-area">
+    <ul>
+      <li><a class="btn-action" href="javascript:;" onclick="fnModeSubmit('return', '', '');"><span class="btn-prev">前のページへ戻る</span></a></li>
+      <li><a class="btn-action" href="javascript:;" onclick="return confirm('この内容でメールを送信しても宜しいですか');"><span class="btn-next">メール送信</span></a></li>
+    </ul>
   </div>
 </div>
 </form>

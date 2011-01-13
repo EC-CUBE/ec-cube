@@ -389,7 +389,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin {
 
         $this->arrCatList = $objDb->sfGetCategoryList();
 
-        $this->arrCampaignList = $this->lfGetCampaignList($objQuery);
+        // $this->arrCampaignList = $this->lfGetCampaignList($objQuery);
     }
 
     /**
