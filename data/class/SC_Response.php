@@ -208,9 +208,10 @@ class SC_Response{
     }
 
     /**
-     * HTML_PATH からのパスを指定してリダイレクトする
+     * /html/ からのパスを指定してリダイレクトする
      *
-     * @param string $location /html/ からの相対パス。先頭に / を含むかは任意。「../」の解釈は行なわない。
+     * FIXME メソッド名を分かりやすくしたい。現状だと、引数が「url-path より後」とも「url-path」とも読み取れる。(前者が意図したいところ)
+     * @param string $location /html/ からのパス。先頭に / を含むかは任意。「../」の解釈は行なわない。
      * @return void
      * @static
      */
