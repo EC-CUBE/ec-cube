@@ -359,11 +359,13 @@ function fnCharCount(form,sch,cnt) {
 
 
 // テキストエリアのサイズを変更する.
-function ChangeSize(button, TextArea, Max, Min, row_tmp){
+function ChangeSize(buttonSelector, textAreaSelector, max, min) {
 
-	if(TextArea.rows <= Min){
-		TextArea.rows=Max; button.value="縮小"; row_tmp.value=Max; button.innerHTML="縮小";
-	}else{
-		TextArea.rows =Min; button.value="拡大"; row_tmp.value=Min; button.innerHTML="拡大";
-	}
+    if ($(textAreaSelector).attr('rows') <= min) {
+        $(textAreaSelector).attr('rows', max);
+        $(buttonSelector).text('縮小');
+    } else {
+        $(textAreaSelector).attr('rows', min);
+        $(buttonSelector).text('拡大');
+    }
 }

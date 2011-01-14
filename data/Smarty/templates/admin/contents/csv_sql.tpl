@@ -23,15 +23,6 @@
 *}-->
 <script type="text/javascript">
 <!--
-// リストボックスのサイズ変更
-function ChangeSize(button, TextArea, Max, Min, row_tmp){
-  if(TextArea.rows <= Min){
-    TextArea.rows=Max; button.value="小さくする"; row_tmp.value=Max;
-  }else{
-    TextArea.rows =Min; button.value="大きくする"; row_tmp.value=Min;
-  }
-}
-
 // SQL確認画面起動
 function doPreview(){
   document.form1.mode.value="preview"

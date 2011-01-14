@@ -48,9 +48,9 @@ XXX: ヘッダーとフッターでwrapの設定が違うのは疑問。それ�
   <input type="hidden" name="browser_type" value="" />
   <input type="hidden" name="device_type_id" value="<!--{$device_type_id|h}-->" />
 
-    <textarea name="header" rows="<!--{$header_row}-->" wrap="off" style="width: 100%;"><!--{$header_data|smarty:nodefaults}--></textarea>
+    <textarea id="header-area" name="header" rows="<!--{$header_row}-->" wrap="off" style="width: 100%;"><!--{$header_data|smarty:nodefaults}--></textarea>
     <div class="btn">
-      <a class="btn-normal" href="javascript:;" onclick="ChangeSize(this, 'header', 50, 13, 'header_row')"><span><!--{if $header_row > 13}-->縮小<!--{else}-->拡大<!--{/if}--></span></a>
+      <a id="header-area-resize-btn" class="btn-normal" href="javascript:;" onclick="ChangeSize('#header-area-resize-btn', '#header-area', 50, 13)"><span>拡大</span></a>
     </div>
     <div class="btn">
       <a class="btn-action" href="javascript:;" name='subm' onclick="fnFormModeSubmit('form_header','confirm','','');"><span class="btn-next">登録</span></a>
@@ -78,9 +78,9 @@ XXX: ヘッダーとフッターでwrapの設定が違うのは疑問。それ�
   <input type="hidden" name="browser_type" value="" />
   <input type="hidden" name="device_type_id" value="<!--{$device_type_id|h}-->" />
 
-    <textarea name="footer" rows="<!--{$footer_row}-->" style="width: 100%;"><!--{$footer_data|smarty:nodefaults}--></textarea>
+    <textarea id="footer-area" name="footer" rows="<!--{$footer_row}-->" style="width: 100%;"><!--{$footer_data|smarty:nodefaults}--></textarea>
     <div class="btn">
-      <a class="btn-normal" href="javascript:;" onclick="ChangeSize(this, 'footer', 50, 13, 'footer_row')"><span><!--{if $footer_row > 13}-->縮小<!--{else}-->拡大<!--{/if}--></span></a>
+      <a id="footer-area-resize-btn" class="btn-normal" href="javascript:;" onclick="ChangeSize('#footer-area-resize-btn', '#footer-area', 50, 13)"><span>拡大</span></a>
     </div>
     <div class="btn">
       <a class="btn-action" href="javascript:;" name='subm' onclick="fnFormModeSubmit('form_footer','confirm','','');"><span class="btn-next">登録</span></a>

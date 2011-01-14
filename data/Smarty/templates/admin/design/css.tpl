@@ -40,10 +40,10 @@
     <tr>
       <th>CSS内容</th>
       <td>
-        <textarea name="css" cols=90 rows=<!--{$area_row}--> align="left" wrap=off style="width: 650px;"><!--{$css_data}--></textarea>
+        <textarea id="css" name="css" cols=90 rows=<!--{$area_row}--> align="left" wrap=off style="width: 650px;"><!--{$css_data}--></textarea>
         <input type="hidden" name="area_row" value="<!--{$area_row}-->" />
         <div class="btn">
-          <a class="btn-normal" href="javascript:;" onclick="ChangeSize(this, 'css', 50, 30, 'area_row')">拡大</a>
+          <a id="resize-btn" class="btn-normal" href="javascript:;" onclick="ChangeSize('#resize-btn', '#css', 50, 30)">拡大</a>
         </div>
       </td>
     </tr>

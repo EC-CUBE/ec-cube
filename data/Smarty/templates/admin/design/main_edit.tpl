@@ -92,9 +92,9 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
                 <label for="header-chk"><input type="checkbox" name="header_chk" id="header-chk" <!--{$arrPageData.header_chk}--> />共通のヘッダーを使用する</label>&nbsp;
                 <label for="footer-chk"><input type="checkbox" name="footer_chk" id="footer-chk" <!--{$arrPageData.footer_chk}--> />共通のフッターを使用する</label>
                 <div>
-                    <textarea name="tpl_data" rows=<!--{$text_row}--> style="width: 100%;"><!--{$arrPageData.tpl_data|h|smarty:nodefaults}--></textarea>
+                    <textarea id="tpl_data" name="tpl_data" rows=<!--{$text_row}--> style="width: 100%;"><!--{$arrPageData.tpl_data|h|smarty:nodefaults}--></textarea>
                     <input type="hidden" name="html_area_row" value="<!--{$text_row}-->" />
-                    <a class="btn-normal" href="javascript:;" onclick="ChangeSize(this, 'tpl_data', 50, 13, 'html_area_row')"><span><!--{if $text_row > 13}-->縮小<!--{else}-->拡大<!--{/if}--></span></a>
+                    <a id="resize-btn" class="btn-normal" href="javascript:;" onclick="ChangeSize('#resize-btn', '#tpl_data', 50, 13)"><span>拡大</span></a>
                 </div>
             </td>
         </tr>
