@@ -51,18 +51,7 @@ class LC_Page_Mypage_DownLoad extends LC_Page {
      * @return void
      */
     function process() {
-        parent::process();
-        $this->action();
-        $this->sendResponse();
-    }
-
-    /**
-     * Page のAction.
-     *
-     * @return void
-     */
-    function action() {
-    	ob_end_clean();
+        ob_end_clean();
 
         $customer_id = $_SESSION['customer']['customer_id'];
         $order_id = $_GET['order_id'];
@@ -83,14 +72,7 @@ class LC_Page_Mypage_DownLoad extends LC_Page {
         if (!$objCustomer->isLoginSuccess()){
             SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
         }
-    }
 
-    /**
-     * Page のResponse.
-     * @return void
-     */
-    function  sendResponse() {
-        $this->objDisp->noAction();
         //DBから商品情報の読込
         $arrForm = $this->lfGetRealFileName($customer_id, $order_id, $product_id, $product_class_id);
         //ステータスが支払済み以上である事
