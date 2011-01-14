@@ -21,35 +21,88 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<center>支払い方法指定</center>
+<center>お支払方法・お届け時間等の指定</center>
 
 <hr>
 
 <form method="post" action="?">
-<input type="hidden" name="mode" value="deliv_date">
+<input type="hidden" name="mode" value="confirm">
 <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
-<input type="hidden" name="deliv_date" value="<!--{$arrForm.deliv_date.value}-->">
-<input type="hidden" name="deliv_time_id" value="<!--{$arrForm.deliv_time_id.value}-->">
-<!--<input type="hidden" name="message" value="">-->
-<!--{if $tpl_login == 1}-->
-<!--<input type="hidden" name="point_check" value="2">-->
-<!--{/if}-->
-
+■お支払方法 <font color="#FF0000">*</font><br>
 <!--{assign var=key value="payment_id"}-->
 <!--{if $arrErr[$key] != ""}-->
-<font color="red"><!--{$arrErr[$key]}--></font>
+<font color="#FF0000"><!--{$arrErr[$key]}--></font>
 <!--{/if}-->
 <!--{section name=cnt loop=$arrPayment}-->
 <input type="radio" name="<!--{$key}-->" value="<!--{$arrPayment[cnt].payment_id}-->" <!--{$arrPayment[cnt].payment_id|sfGetChecked:$arrForm[$key].value}-->>
 <!--{$arrPayment[cnt].payment_method|h}-->
 <br>
 <!--{/section}-->
+<br>
+
+■お届け日<br>
+<!--{assign var=key value="deliv_date"}-->
+<!--{if $arrErr[$key] != ""}-->
+<font color="#FF0000"><!--{$arrErr[$key]}--></font>
+<!--{/if}-->
+<!--{if $arrDelivDate}-->
+<select name="<!--{$key}-->">
+<option value="">指定なし</option>
+<!--{html_options options=$arrDelivDate selected=$arrForm[$key].value}-->
+</select>
+<!--{else}-->
+ご指定頂けません。
+<!--{/if}-->
+<br>
+<br>
+
+■お届け時間<br>
+<!--{assign var=key value="deliv_time_id"}-->
+<!--{if $arrErr[$key] != ""}-->
+<font color="#FF0000"><!--{$arrErr[$key]}--></font>
+<!--{/if}-->
+<select name="<!--{$key}-->">
+<option value="">指定なし</option>
+<!--{html_options options=$arrDelivTime selected=$arrForm[$key].value}-->
+</select>
+<br>
+<br>
+
+■その他お問い合わせ<br>
+<!--{assign var=key value="message"}-->
+<!--{if $arrErr[$key] != ""}-->
+<font color="#FF0000"><!--{$arrErr[$key]}--></font>
+<!--{/if}-->
+<textarea cols="20" rows="2" name="<!--{$key}-->"><!--{$arrForm[$key].value|h}--></textarea>
+<br>
+<br>
+
+<!--{if $tpl_login == 1 && $smarty.const.USE_POINT !== false}-->
+■ポイント使用の指定<br>
+1ポイントを<!--{$smarty.const.POINT_VALUE}-->円として使用する事ができます。<br>
+<br>
+<!--{$objCustomer->getValue('name01')|h}--> <!--{$objCustomer->getValue('name02')|h}-->様の、現在の所持ポイントは「<!--{$tpl_user_point|number_format|default:0}-->Pt」です。<br>
+<br>
+今回ご購入合計金額： <!--{$arrData.subtotal|number_format}-->円<br>
+(送料、手数料を含みません。)<br>
+<br>
+<input type="radio" name="point_check" value="1" <!--{$arrForm.point_check.value|sfGetChecked:1}-->>ポイントを使用する<br>
+<!--{assign var=key value="use_point"}-->
+<!--{if $arrErr[$key] != ""}-->
+<font color="#FF0000"><!--{$arrErr[$key]}--></font>
+<!--{/if}-->
+<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|default:$tpl_user_point}-->" maxlength="<!--{$arrForm[$key].length}-->" size="6">&nbsp;ポイントを使用する。<br>
+<input type="radio" name="point_check" value="2" <!--{$arrForm.point_check.value|sfGetChecked:2}-->>ポイントを使用しない<br>
+<br>
+<!--{/if}-->
 
 <center><input type="submit" value="次へ"></center>
+</form>
+
+<form action="<!--{$tpl_back_url|h}-->" method="get">
 <center><input type="submit" name="return" value="戻る"></center>
 </form>
 
-<br>
 <hr>
 
 <a href="<!--{$smarty.const.MOBILE_CART_URL_PATH}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>

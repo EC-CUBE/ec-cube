@@ -21,12 +21,24 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<!--▼CONTENTS-->
-<!--▼MAIN ONTENTS-->
-<div align="center"><font color="#000080">かご表示</font></div>
-<!--{if $tpl_message != ""}-->
-	<!--{$tpl_message}--><br>
+<center>かご表示</center>
+
+<hr>
+
+<!--{* カゴの中に商品がある場合にのみ表示 *}-->
+<!--{if count($cartKeys) > 1}-->
+<font color="#FF0000"><!--{foreach from=$cartKeys item=key name=cartKey}--><!--{$arrProductType[$key]}--><!--{if !$smarty.foreach.cartKey.last}-->、<!--{/if}--><!--{/foreach}-->
+は同時購入できません。お手数ですが、個別に購入手続きをお願い致します。<br></font>
 <!--{/if}-->
+
+<!--{if strlen($tpl_error) != 0}-->
+<font color="#FF0000"><!--{$tpl_error|h}--></font><br>
+<!--{/if}-->
+
+<!--{if strlen($tpl_message) != 0}-->
+<!--{$tpl_message|h|nl2br}--><br>
+<!--{/if}-->
+
 <!--{if count($cartItems) > 0}-->
 <!--{foreach from=$cartKeys item=key}-->
 <form name="form<!--{$key}-->" id="form<!--{$key}-->" method="post" action="?"  utn>
@@ -34,7 +46,11 @@
 	<input type="hidden" name="cart_no" value="">
 	<input type="hidden" name="cartKey" value="<!--{$key}-->">
 	<!--ご注文内容ここから-->
-	<hr>
+    <!--{if count($cartKeys) > 1 }-->
+    <hr>
+    <!--{$arrProductType[$key]}-->
+    <hr>
+    <!--{/if}-->
     <!--{foreach from=$cartItems[$key] item=item}-->
 		<!--{* 商品名 *}--><!--{$item.productsClass.name|h}--><br>
         <!--{* 規格名1 *}--><!--{if $item.productsClass.classcategory_name1 != ""}--><!--{$item.productsClass.class_name1}-->：<!--{$item.productsClass.classcategory_name1}--><br><!--{/if}-->
@@ -55,28 +71,47 @@
 	<!--{/foreach}-->
 	商品合計:<!--{$tpl_total_inctax[$key]|number_format}-->円<br>
 	合計:<!--{$arrData[$key].total-$arrData[$key].deliv_fee|number_format}-->円<br>
+    <br>
+
+    <!--{if $arrInfo.free_rule > 0}-->
+    <!--{if $arrData[$key].deliv_fee > 0}-->
+        あと「<!--{$tpl_deliv_free[$key]|number_format}-->円」で送料無料です！！<br>
+    <!--{else}-->
+        現在、「送料無料」です！！<br>
+    <!--{/if}-->
+    <br>
+    <!--{/if}-->
+
 	<!--{if $smarty.const.USE_POINT !== false}-->
-        <br>
     <!--{if $arrData[$key].birth_point > 0}-->
 		お誕生月ﾎﾟｲﾝﾄ<br>
 		<!--{$arrData[$key].birth_point|number_format}-->pt<br>
 	<!--{/if}-->
-		今回加算ﾎﾟｲﾝﾄ<br>
-        <!--{$arrData[$key].add_point|number_format}-->pt<br>
+    今回加算ﾎﾟｲﾝﾄ<br>
+    <!--{$arrData[$key].add_point|number_format}-->pt<br>
+    <br>
 	<!--{/if}-->
-	<br>
+    
 	<center><input type="submit" value="注文する"></center>
 </form>
-<!--{/foreach}-->
+
 <!--{if $tpl_prev_url != ""}-->
     <a href="<!--{$tpl_prev_url}-->">[emoji:69]お買物を続ける</a>
 <!--{/if}-->
+<!--{/foreach}-->
 <!--{else}-->
 	※現在ｶｰﾄ内に商品はございません｡<br>
 <!--{/if}-->
-<!--▲CONTENTS-->
-<!--▲MAIN CONTENTS-->
-<!--▲CONTENTS-->
+
+<!--{if $smarty.const.USE_POINT !== false}-->
+<hr>
+<!--{if $tpl_login}-->
+<!--{$tpl_name|h}--> 様の、現在の所持ポイントは「<!--{$tpl_user_point|number_format|default:0}--> pt」です。<br>
+<!--{else}-->
+ポイント制度をご利用になられる場合は、会員登録後ログインしていだだきますようお願い致します。<br>
+<!--{/if}-->
+ポイントは商品購入時に1ptを<!--{$smarty.const.POINT_VALUE}-->円として使用することができます。<br>
+<!--{/if}-->
 
 <br>
 <hr>

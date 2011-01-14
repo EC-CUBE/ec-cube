@@ -52,3 +52,10 @@
 金額：￥ <!--{$arrOrderDetail[cnt].price|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
 
 <!--{/section}-->
+<!--{if $arrOrder.customer_id && $smarty.const.USE_POINT !== false}-->
+■ポイント情報
+<!--{* ご注文前のポイント {$tpl_user_point} pt *}-->
+ご使用ポイント：<!--{$arrOrder.use_point|number_format|default:0}--> pt
+加算ポイント：<!--{$arrOrder.add_point|number_format|default:0}--> pt
+保持ポイント：<!--{$arrCustomer.point|number_format|default:0}--> pt
+<!--{/if}-->

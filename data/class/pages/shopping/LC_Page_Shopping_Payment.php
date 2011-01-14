@@ -138,45 +138,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
 
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
-        // 戻るボタンの処理(モバイル)
-        if (Net_UserAgent_Mobile::isMobile() === true) {
-            if (!empty($_POST['return'])) {
-                switch ($_POST['mode']) {
-                case 'confirm':
-                    $_POST['mode'] = 'payment';
-                    break;
-                default:
-                    // 正常な推移であることを記録しておく
-                    $objSiteSess->setRegistFlag();
-                    if ($this->cartdown == 2) {
-                        // ダウンロード商品のみの場合はカート画面へ戻る
-                        SC_Response_Ex::sendRedirect(CART_URL_PATH);
-                    } else {
-                        SC_Response_Ex::sendRedirect(SHOPPING_URL);
-                    }
-                    exit;
-                }
-            }
-        }
-
         switch($_POST['mode']) {
-        // お届け日時指定(モバイル)
-        case 'deliv_date':
-            // 入力値の変換
-            $this->objFormParam->convParam();
-            $this->arrErr = $this->lfCheckError($this->arrData, $this->arrPayment);
-            if (!isset($this->arrErr['payment_id'])) {
-                // 支払い方法の入力エラーなし
-                $this->tpl_mainpage = 'shopping/deliv_date.tpl';
-                $this->tpl_title = "お届け日時指定";
-                break;
-            } else {
-                // ユーザユニークIDの取得
-                $uniqid = $objSiteSess->getUniqId();
-                // 受注一時テーブルからの情報を格納
-                $this->lfSetOrderTempData($uniqid);
-            }
-            break;
         case 'confirm':
             // 入力値の変換
             $this->objFormParam->convParam();
@@ -197,11 +159,6 @@ class LC_Page_Shopping_Payment extends LC_Page {
                 $uniqid = $objSiteSess->getUniqId();
                 // 受注一時テーブルからの情報を格納
                 $this->lfSetOrderTempData($uniqid);
-                if (Net_UserAgent_Mobile::isMobile() === true && !isset($this->arrErr['payment_id'])) {
-                    // 支払い方法の入力エラーなし
-                    $this->tpl_mainpage = 'shopping/deliv_date.tpl';
-                    $this->tpl_title = "お届け日時指定";
-                }
             }
             break;
         // 前のページに戻る
@@ -243,7 +200,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
     function lfInitParam() {
         $this->objFormParam->addParam("お支払い方法", "payment_id", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
         $this->objFormParam->addParam("ポイント", "use_point", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK", "ZERO_START"));
-        $this->objFormParam->addParam("ご質問", "message", LTEXT_LEN, "KVa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $this->objFormParam->addParam("その他お問い合わせ", "message", LTEXT_LEN, "KVa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("ポイントを使用する", "point_check", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"), '2');
 
         for ($i = 0; $i < count($this->shipping); $i++) {

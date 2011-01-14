@@ -208,6 +208,7 @@ class LC_Page_MyPage extends LC_Page {
             //マイページトップ顧客情報表示用
             $this->CustomerName1 = $objCustomer->getvalue('name01');
             $this->CustomerName2 = $objCustomer->getvalue('name02');
+            $this->CustomerPoint = $objCustomer->getvalue('point');
         }
     }
 

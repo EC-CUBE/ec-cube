@@ -46,12 +46,29 @@
 
 【購入金額】<br>
 商品合計：<!--{$tpl_total_inctax[$cartKey]|number_format}-->円<br>
+<!--{if $smarty.const.USE_POINT !== false}-->
+<!--{assign var=discount value=`$arrData.use_point*$smarty.const.POINT_VALUE`}-->
+ポイント値引き：-<!--{$discount|number_format|default:0}-->円<br>
+<!--{/if}-->
 送料：<!--{$arrData.deliv_fee|number_format}-->円<br>
 <!--{if $arrData.charge > 0}-->手数料：<!--{$arrData.charge|number_format}-->円<br><!--{/if}-->
 合計：<!--{$arrData.payment_total|number_format}-->円<br>
 (内消費税：<!--{$arrData.tax|number_format}-->円)<br>
 
 <br>
+
+<!--{* ログイン済みの会員のみ *}-->
+<!--{if $tpl_login == 1 && $smarty.const.USE_POINT !== false}-->
+【ポイント確認】<br>
+ご注文前のポイント：<!--{$tpl_user_point|number_format|default:0}-->Pt<br>
+ご使用ポイント：-<!--{$arrData.use_point|number_format|default:0}-->Pt<br>
+<!--{if $arrData.birth_point > 0}-->お誕生月ポイント：+<!--{$arrData.birth_point|number_format|default:0}-->Pt<br><!--{/if}-->
+今回加算予定のポイント：+<!--{$arrData.add_point|number_format|default:0}-->Pt<br>
+<!--{assign var=total_point value=`$tpl_user_point-$arrData.use_point+$arrData.add_point`}-->
+加算後のポイント：<!--{$total_point|number_format}-->Pt<br>
+
+<br>
+<!--{/if}-->
 
 <!--{* 販売方法判定（ダウンロード販売のみの場合はお届け先を表示しない） *}-->
 <!--{if $cartKey != $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
@@ -87,19 +104,20 @@
 
 <br>
 
+<!--{if $arrData.message != ""}-->
+【その他お問い合わせ】<br>
+<!--{$arrData.message|h|nl2br}--><br>
+<!--{/if}-->
+
+<br>
+
 <br>
 
 <center><input type="submit" value="注文"></center>
 </form>
 <form action="<!--{$smarty.const.MOBILE_SHOPPING_PAYMENT_URL_PATH}-->" method="post">
-<input type="hidden" name="mode" value="deliv_date">
+<input type="hidden" name="mode" value="">
 <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
-<input type="hidden" name="payment_id" value="<!--{$arrData.payment_id}-->">
-<input type="hidden" name="deliv_date" value="<!--{$arrData.deliv_date}-->">
-<input type="hidden" name="deliv_time_id" value="<!--{$arrData.deliv_time_id}-->">
-<!--{if $cartdown != 2}-->
-<input type="hidden" name="mode" value="deliv_date">
-<!--{/if}-->
 <center><input type="submit" value="戻る"></center>
 </form>
 

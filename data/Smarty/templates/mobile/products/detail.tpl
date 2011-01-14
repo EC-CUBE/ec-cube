@@ -21,20 +21,18 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<!--▼CONTENTS-->
-<!--▼MAIN CONTENTS-->
-<!--ﾀｲﾄﾙここから-->
-<!--★商品名★-->
-<div align="center"><!--{$arrProduct.name|h}--></div>
+<center><!--{$tpl_subtitle|h}--></center>
 <hr>
-<!--ﾀｲﾄﾙここまで-->
-<!--詳細ここから-->
+
+<!--★商品画像★-->
 <!--{if $smarty.get.image != ''}-->
-  <!--{assign var=key value="`$smarty.get.image`"}-->
+<!--{assign var=key value="`$smarty.get.image`"}-->
 <!--{else}-->
-  <!--{assign var=key value="main_image"}-->
+<!--{assign var=key value="main_image"}-->
 <!--{/if}-->
-<img src="<!--{$arrFile[$key].filepath}-->">
+<center><img src="<!--{$arrFile[$key].filepath}-->"></center>
+
+<!--★商品サブ画像★-->
 <!--{if $subImageFlag == true}-->
 <br>画像
   <!--{if ($smarty.get.image == "" || $smarty.get.image == "main_image")}-->
@@ -55,16 +53,28 @@
     <!--{assign var=num value="`$num+1`"}-->
   <!--{/if}-->
   <!--{/section}-->
+<br>
 <!--{/if}-->
 <br>
+
 <!--{* オペビルダー用 *}-->
 <!--{if "sfViewDetailOpe"|function_exists === TRUE}-->
 <!--{include file=`$smarty.const.MODULE_REALDIR`mdl_opebuilder/detail_ope_mb_view.tpl}-->
 <!--{/if}-->
-<!--★詳細ﾒｲﾝｺﾒﾝﾄ★-->
+
+<!--★詳細メインコメント★-->
 [emoji:76]<!--{$arrProduct.main_comment|nl2br_html}--><br>
 <br>
-<!--ｱｲｺﾝ-->
+
+<!--★商品コード★-->
+商品コード：
+<!--{if $arrProduct.product_code_min == $arrProduct.product_code_max}-->
+<!--{$arrProduct.product_code_min|h}-->
+<!--{else}-->
+<!--{$arrProduct.product_code_min|h}-->～<!--{$arrProduct.product_code_max|h}-->
+<!--{/if}-->
+<br>
+
 <!--★販売価格★-->
 <font color="#FF0000"><!--{$smarty.const.SALE_PRICE_TITLE}-->(税込):
 <!--{if $arrProduct.price02_min == $arrProduct.price02_max}-->
@@ -72,17 +82,48 @@
 <!--{else}-->
 	<!--{$arrProduct.price02_min|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->～<!--{$arrProduct.price02_max|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
 <!--{/if}-->
-円</font><br/>
-<!--★通常価格★-->
+円</font>
+<br/>
+
 <!--{if $arrProduct.price01_max > 0}-->
+<!--★通常価格★-->
 <font color="#FF0000"><!--{$smarty.const.NORMAL_PRICE_TITLE}-->:
 <!--{if $arrProduct.price01_min == $arrProduct.price01_max}-->
 <!--{$arrProduct.price01_min|number_format}-->
 <!--{else}-->
 <!--{$arrProduct.price01_min|number_format}-->～<!--{$arrProduct.price01_max|number_format}-->
 <!--{/if}-->
-円</font><br>
+円</font>
+<br>
 <!--{/if}-->
+
+<!--★ポイント★-->
+<!--{if $smarty.const.USE_POINT !== false}-->
+ポイント：
+<!--{if $arrProduct.price02_min == $arrProduct.price02_max}-->
+    <!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->
+<!--{else}-->
+    <!--{if $arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id == $arrProduct.price02_max|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->
+        <!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->
+    <!--{else}-->
+        <!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->～<!--{$arrProduct.price02_max|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->
+    <!--{/if}-->
+<!--{/if}-->
+Pt<br>
+<!--{/if}-->
+<br>
+
+<!--★関連カテゴリ★-->
+関連カテゴリ：<br>
+<!--{section name=r loop=$arrRelativeCat}-->
+<!--{section name=s loop=$arrRelativeCat[r]}-->
+<a href="<!--{$smarty.const.URL_PATH}-->products/list.php?category_id=<!--{$arrRelativeCat[r][s].category_id}-->"><!--{$arrRelativeCat[r][s].category_name}--></a>
+<!--{if !$smarty.section.s.last}--><!--{$smarty.const.SEPA_CATNAVI}--><!--{/if}-->
+<!--{/section}-->
+<br>
+<!--{/section}-->
+<br>
+
 <form name="form1" method="post" action="<!--{$smarty.server.REQUEST_URI|h}-->">
 	<input type="hidden" name="mode" value="select">
 	<input type="hidden" name="product_id" value="<!--{$tpl_product_id}-->">
@@ -93,10 +134,7 @@
 	<font color="#FF0000">申し訳ございませんが､只今品切れ中です｡</font>
 <!--{/if}-->
 </form>
-<!--詳細ここまで-->
-<!--▲CONTENTS-->
 
-<br>
 <hr>
 
 <a href="<!--{$smarty.const.MOBILE_CART_URL_PATH}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>

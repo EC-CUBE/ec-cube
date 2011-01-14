@@ -27,6 +27,12 @@
 <!--{$CustomerName1|h}--> <!--{$CustomerName2|h}-->様<br>
 いつもご利用いただきありがとうございます。<br>
 <br>
+<!--★現在のポイント★-->
+<!--{if $smarty.const.USE_POINT !== false}-->
+現在の所持ポイントは「<!--{$CustomerPoint|number_format|default:"0"|h}-->」Ptです。<br>
+<br>
+<!--{/if}-->
+
 <a href="history.php" accesskey="1"><!--{1|numeric_emoji}-->購入履歴</a><br>
 <a href="change.php" accesskey="2"><!--{2|numeric_emoji}-->登録内容変更</a><br>
 <a href="refusal.php" accesskey="3"><!--{3|numeric_emoji}-->退会</a><br>
