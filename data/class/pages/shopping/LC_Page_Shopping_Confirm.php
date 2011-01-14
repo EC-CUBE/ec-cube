@@ -79,7 +79,9 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         $this->isMultiple = $objPurchase->isMultiple();
 
         // 前のページで正しく登録手続きが行われた記録があるか判定
-        SC_Utils_Ex::sfIsPrePage($objSiteSess);
+        if (!$objSiteSess->isPrePage()) {
+            SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, $objSiteSess);
+        }
 
         // ユーザユニークIDの取得と購入状態の正当性をチェック
         $uniqid = $objSiteSess->getUniqId();

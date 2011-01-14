@@ -53,18 +53,24 @@ class LC_Page_Shopping_LoadPaymentModule extends LC_Page {
     function process() {
         $objSiteSess = new SC_SiteSession();
         $objCartSess = new SC_CartSession();
-        SC_Utils::sfIsPrePage($objSiteSess);
-        SC_Utils::sfCheckNormalAccess($objSiteSess, $objCartSess);
+        $objPurchase = new SC_Helper_Purchase_Ex();
+
+        if (!$objSiteSess->isPrePage()) {
+            SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, $objSiteSess);
+        }
+
+        $uniqid = $objSiteSess->getUniqId();
+        $objPurchase->verifyChangeCart($uniqid, $objCartSess);
 
         $payment_id = $this->getPaymentId();
         if ($payment_id === false) {
-            SC_Utils::sfDispSiteError(PAGE_ERROR, "", true);
+            SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", true);
             return;
         }
 
         $module_path = $this->getModulePath($payment_id);
         if ($module_path === false) {
-            SC_Utils::sfDispSiteError(FREE_ERROR_MSG, "", true,
+            SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, "", true,
                                       "モジュールファイルの取得に失敗しました。<br />この手続きは無効となりました。");
             return;
         }

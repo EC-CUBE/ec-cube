@@ -336,7 +336,6 @@ class LC_Page_Shopping extends LC_Page {
         $sqlval['order_birth'] = SC_Utils_Ex::sfGetTimestamp($params['year'], $params['month'], $params['day']);
         $sqlval['update_date'] = 'Now()';
         $sqlval['customer_id'] = '0';
-        $sqlval['deliv_id'] = $objPurchase->getDeliv($productTypeId);
 
         // お届け先を指定しない場合、
         if ($params['deliv_check'] != '1') {
@@ -344,12 +343,14 @@ class LC_Page_Shopping extends LC_Page {
             $objPurchase->copyFromOrder($sqlval, $params);
         }
 
+        $deliv_id = $objPurchase->getDeliv($productTypeId);
+        $order_val = array('deliv_id' => $deliv_id);
+        $shipping_val = array('deliv_id' => $deliv_id);
+
         /*
          * order_* と shipping_* をそれぞれ $_SESSION['shipping'][$shipping_id]
          * に, shipping_* というキーで保存
          */
-        $order_val = array();
-        $shipping_val = array();
         foreach ($sqlval as $key => $val) {
             if (preg_match('/^order_/', $key)) {
                 $order_val['shipping_' . str_replace('order_', '', $key)] = $val;
@@ -357,6 +358,7 @@ class LC_Page_Shopping extends LC_Page {
                 $shipping_val[$key] = $val;
             }
         }
+
         if ($isMultiple) {
             $objPurchase->saveShippingTemp($order_val, 0);
             if ($params['deliv_check'] == '1') {

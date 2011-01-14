@@ -61,7 +61,9 @@ class SC_Helper_Purchase {
         $customerId = $objCustomer->getValue('customer_id');
 
         $objQuery->begin();
-        SC_Utils_Ex::sfIsPrePage($objSiteSession);
+        if (!$objSiteSession->isPrePage()) {
+            SC_Utils::sfDispSiteError(PAGE_ERROR, $objSiteSession);
+        }
 
         $uniqId = $objSiteSession->getUniqId();
         $this->verifyChangeCart($uniqId, $objCartSession);

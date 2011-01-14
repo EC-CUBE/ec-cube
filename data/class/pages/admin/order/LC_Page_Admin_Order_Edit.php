@@ -24,27 +24,6 @@
 // {{{ requires
 require_once(CLASS_REALDIR . "pages/admin/LC_Page_Admin.php");
 
-/* GMO決済モジュール連携用 */
-if (file_exists(MODULE_REALDIR . 'mdl_gmopg/inc/include.php') === TRUE) {
-    require_once(MODULE_REALDIR . 'mdl_gmopg/inc/include.php');
-}
-
-/* ペイジェント決済モジュール連携用 */
-if (file_exists(MODULE_REALDIR . 'mdl_paygent/include.php') === TRUE) {
-  require_once(MODULE_REALDIR . 'mdl_paygent/include.php');
-}
-
-/* F-REGI決済モジュール連携用 */
-if (file_exists(MODULE_REALDIR. 'mdl_fregi/LC_Page_Mdl_Fregi_Config.php') === TRUE) {
-    require_once(MODULE_REALDIR. 'mdl_fregi/LC_Page_Mdl_Fregi_Config.php');
-}
-
-/* SPS決済モジュール連携用 */
-if (file_exists(MODULE_REALDIR . 'mdl_sps/request.php') === TRUE) {
-    require_once(MODULE_REALDIR . 'mdl_sps/request.php');
-}
-
-
 /**
  * 受注修正 のページクラス.
  *
@@ -84,18 +63,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin {
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrORDERSTATUS = $masterData->getMasterData("mtb_order_status");
 
-        /* ペイジェント決済モジュール連携用 */
-        if(function_exists("sfPaygentOrderPage")) {
-            $this->arrDispKind = sfPaygentOrderPage();
-        }
-
-        /* F-REGI決済モジュール連携用 */
-        if (file_exists(MODULE_REALDIR. 'mdl_fregi/LC_Page_Mdl_Fregi_Config.php') === TRUE) {
-            global $arrFregiPayment;
-            $this->arrFregiPayment = $arrFregiPayment;
-            global $arrFregiDispKind;
-            $this->arrFregiDispKind = $arrFregiDispKind;
-        }
         $this->httpCacheControl('nocache');
     }
 
@@ -193,10 +160,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin {
             $this->objFormParam->convParam();
             $this->arrErr = $this->lfCheckError();
             break;
-        /* ペイジェント決済モジュール連携用 */
-        case 'paygent_order':
-            $this->paygent_return = sfPaygentOrder($_POST['paygent_type'], $order_id);
-            break;
+
         /* 商品削除*/
         case 'delete_product':
             $delete_no = $_POST['delete_no'];
@@ -249,41 +213,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin {
             $this->lfSetCustomerInfo($_POST['edit_customer_id']);
 
             break;
-        /* F-REGI決済モジュール連携用 */
-        case 'fregi_status':
-            $objFregiConfig = new LC_Page_Mdl_Fregi_Config();
-            $this->fregi_err = $objFregiConfig->getSaleInfo($order_id, $this->arrDisp);
-            $this->lfGetOrderData($order_id);
-            break;
-        case 'fregi_card':
-            $objFregiConfig = new LC_Page_Mdl_Fregi_Config();
-            $this->fregi_card_err = $objFregiConfig->setCardInfo($_POST['card_status'], $order_id, $this->arrDisp);
-            $this->lfGetOrderData($order_id);
-            break;
-        /* SPS決済モジュール連携用 */
-        case 'sps_request':
-            $objErr = new SC_CheckError($_POST);
-            $objErr->doFunc(array("年","sps_year"), array('EXIST_CHECK'));
-            $objErr->doFunc(array("月","sps_month"), array('EXIST_CHECK'));
-            $objErr->doFunc(array("日","sps_date"), array('EXIST_CHECK'));
-            $objErr->doFunc(array("売上・返金日", "sps_year", "sps_month", "sps_date"), array("CHECK_DATE"));
-            if ($objErr->arrErr) {
-                $this->arrErr = $objErr->arrErr;
-                break;
-            }
-            $sps_return = sfSpsRequest( $order_id, $_POST['request_type'] );
-            // DBから受注情報を再読込
-            $this->lfGetOrderData($order_id);
-            $this->tpl_onload = "window.alert('".$sps_return."');";
-            break;
 
-        /* GMOPG連携用 */
-        case 'gmopg_order_edit':
-            require_once(MODULE_REALDIR . 'mdl_gmopg/class/LC_Mdl_GMOPG_OrderEdit.php');
-            $objGMOOrderEdit = new LC_MDL_GMOPG_OrderEdit;
-            $this->gmopg_order_edit_result = $objGMOOrderEdit->proccess();
-            $this->lfGetOrderData($order_id);
-            break;
         default:
             break;
         }
@@ -307,19 +237,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin {
 
         $objSiteInfo = new SC_SiteInfo();
         $this->arrInfo = $objSiteInfo->data;
-
-        /**
-         * SPS決済 クレジット判定用処理
-         */
-        if (file_exists(MODULE_REALDIR . 'mdl_sps/request.php') === TRUE) {
-            $objQuery = new SC_Query();
-            $this->paymentType = $objQuery->getAll("SELECT module_code, memo03 FROM dtb_payment WHERE payment_id = ? ", array($this->arrForm["payment_id"]['value']));
-            $objDate = new SC_Date();
-            $objDate->setStartYear(RELEASE_YEAR);
-            $this->arrYear = $objDate->getYear();
-            $this->arrMonth = $objDate->getMonth();
-            $this->arrDay = $objDate->getDay();
-        }
 
         // 表示モード判定
         if(!$this->disp_mode) {
@@ -356,21 +273,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin {
         $this->objFormParam->addParam("電話番号2", "order_tel02", TEL_ITEM_LEN, "n", array("MAX_LENGTH_CHECK" ,"NUM_CHECK"));
         $this->objFormParam->addParam("電話番号3", "order_tel03", TEL_ITEM_LEN, "n", array("MAX_LENGTH_CHECK" ,"NUM_CHECK"));
 
-        // お届け先情報
-        $this->objFormParam->addParam("お名前1", "deliv_name01", STEXT_LEN, "KVa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("お名前2", "deliv_name02", STEXT_LEN, "KVa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("お名前(フリガナ・姓)", "deliv_kana01", STEXT_LEN, "KVCa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("お名前(フリガナ・名)", "deliv_kana02", STEXT_LEN, "KVCa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("郵便番号1", "deliv_zip01", ZIP01_LEN, "n", array("NUM_CHECK", "NUM_COUNT_CHECK"));
-        $this->objFormParam->addParam("郵便番号2", "deliv_zip02", ZIP02_LEN, "n", array("NUM_CHECK", "NUM_COUNT_CHECK"));
-        $this->objFormParam->addParam("都道府県", "deliv_pref", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $this->objFormParam->addParam("住所1", "deliv_addr01", MTEXT_LEN, "KVa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("住所2", "deliv_addr02", MTEXT_LEN, "KVa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("電話番号1", "deliv_tel01", TEL_ITEM_LEN, "n", array("MAX_LENGTH_CHECK" ,"NUM_CHECK"));
-        $this->objFormParam->addParam("電話番号2", "deliv_tel02", TEL_ITEM_LEN, "n", array("MAX_LENGTH_CHECK" ,"NUM_CHECK"));
-        $this->objFormParam->addParam("電話番号3", "deliv_tel03", TEL_ITEM_LEN, "n", array("MAX_LENGTH_CHECK" ,"NUM_CHECK"));
-
-
         // 受注商品情報
         $this->objFormParam->addParam("値引き", "discount", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"), '0');
         $this->objFormParam->addParam("送料", "deliv_fee", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"), '0');
@@ -382,11 +284,9 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin {
         }
 
         $this->objFormParam->addParam("お支払い方法", "payment_id", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $this->objFormParam->addParam("お届け時間ID", "deliv_time_id", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
         $this->objFormParam->addParam("対応状況", "status", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $this->objFormParam->addParam("お届け日", "deliv_date", STEXT_LEN, "KVa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("お支払方法名称", "payment_method");
-        $this->objFormParam->addParam("お届け時間", "deliv_time");
+
 
         // 受注詳細情報
         $this->objFormParam->addParam("単価", "price", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"), '0');
@@ -435,6 +335,15 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin {
             $this->arrForm = array_merge($this->arrForm, $arrRet);
             $this->objFormParam->setParam($arrRet);
 
+            $this->arrShipping = $this->lfGetShippingData($order_id);
+            $this->lfInitShippingParam($this->arrShipping);
+            foreach ($this->arrShipping as $shipping) {
+                foreach ($shipping as $shippingKey => $shippingVal) {
+                    $this->arrForm[$shippingKey . $shipping['shipping_id']] = $shippingVal;
+                    $this->objFormParam->setValue($shippingKey . $shipping['shipping_id'], $shippingVal);
+                }
+            }
+
             // その他支払い情報を表示
             if($this->arrForm["memo02"] != "") $this->arrForm["payment_info"] = unserialize($this->arrForm["memo02"]);
             if($this->arrForm["memo01"] == PAYMENT_CREDIT_ID){
@@ -456,6 +365,53 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin {
         $where = "order_id = ?";
         $arrRet = $objQuery->select($col, "dtb_order_detail", $where, array($order_id));
         return $arrRet;
+    }
+
+    /**
+     * 配送情報の取得.
+     * TODO リファクタリング
+     */
+    function lfGetShippingData($orderId) {
+        $objQuery =& SC_Query::getSingletonInstance();
+        $objProduct = new SC_Product();
+        $objQuery->setOrder('shipping_id');
+        $arrRet = $objQuery->select("*", "dtb_shipping", "order_id = ?", array($orderId));
+        foreach (array_keys($arrRet) as $key) {
+            $objQuery->setOrder('shipping_id');
+            $arrItems = $objQuery->select("*", "dtb_shipment_item", "order_id = ? AND shipping_id = ?",
+                                       array($orderId, $arrRet[$key]['shipping_id']));
+            foreach ($arrItems as $itemKey => $arrDetail) {
+                foreach ($arrDetail as $detailKey => $detailVal) {
+                    $arrRet[$key]['shipment_item'][$arrDetail['product_class_id']][$detailKey] = $detailVal;
+                }
+
+                $arrRet[$key]['shipment_item'][$arrDetail['product_class_id']]['productsClass'] =& $objProduct->getDetailAndProductsClass($arrDetail['product_class_id']);
+            }
+        }
+        return $arrRet;
+    }
+
+    /**
+     * お届け先用フォームの初期化
+     */
+    function lfInitShippingParam(&$arrShipping) {
+        foreach ($arrShipping as $shipping) {
+            $this->objFormParam->addParam("お名前1", "shipping_name01" . $shipping['shipping_id'], STEXT_LEN, "KVa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+            $this->objFormParam->addParam("お名前2", "shipping_name02" . $shipping['shipping_id'], STEXT_LEN, "KVa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+            $this->objFormParam->addParam("お名前(フリガナ・姓)", "shipping_kana01" . $shipping['shipping_id'], STEXT_LEN, "KVCa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+            $this->objFormParam->addParam("お名前(フリガナ・名)", "shipping_kana02" . $shipping['shipping_id'], STEXT_LEN, "KVCa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+            $this->objFormParam->addParam("郵便番号1", "shipping_zip01" . $shipping['shipping_id'], ZIP01_LEN, "n", array("NUM_CHECK", "NUM_COUNT_CHECK"));
+            $this->objFormParam->addParam("郵便番号2", "shipping_zip02" . $shipping['shipping_id'], ZIP02_LEN, "n", array("NUM_CHECK", "NUM_COUNT_CHECK"));
+            $this->objFormParam->addParam("都道府県", "shipping_pref" . $shipping['shipping_id'], INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+            $this->objFormParam->addParam("住所1", "shipping_addr01" . $shipping['shipping_id'], MTEXT_LEN, "KVa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+            $this->objFormParam->addParam("住所2", "shipping_addr02" . $shipping['shipping_id'], MTEXT_LEN, "KVa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+            $this->objFormParam->addParam("電話番号1", "shipping_tel01" . $shipping['shipping_id'], TEL_ITEM_LEN, "n", array("MAX_LENGTH_CHECK" ,"NUM_CHECK"));
+            $this->objFormParam->addParam("電話番号2", "shipping_tel02" . $shipping['shipping_id'], TEL_ITEM_LEN, "n", array("MAX_LENGTH_CHECK" ,"NUM_CHECK"));
+            $this->objFormParam->addParam("電話番号3", "shipping_tel03" . $shipping['shipping_id'], TEL_ITEM_LEN, "n", array("MAX_LENGTH_CHECK" ,"NUM_CHECK"));
+            $this->objFormParam->addParam("お届け時間ID", "deliv_time_id" . $shipping['shipping_id'], INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+            $this->objFormParam->addParam("お届け時間", "deliv_time" . $shipping['shipping_id']);
+            $this->objFormParam->addParam("お届け日", "deliv_date" . $shipping['shipping_id'], STEXT_LEN, "KVa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        }
     }
 
     /* 入力内容のチェック */

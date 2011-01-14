@@ -219,8 +219,10 @@ class LC_Page_Mypage_History extends LC_Page {
     function lfGetShippingData($orderId) {
         $objQuery =& SC_Query::getSingletonInstance();
         $objProduct = new SC_Product();
+        $objQuery->setOrder('shipping_id');
         $arrRet = $objQuery->select("*", "dtb_shipping", "order_id = ?", array($orderId));
         foreach (array_keys($arrRet) as $key) {
+            $objQuery->setOrder('shipping_id');
             $arrItems = $objQuery->select("*", "dtb_shipment_item", "order_id = ? AND shipping_id = ?",
                                        array($orderId, $arrRet[$key]['shipping_id']));
             foreach ($arrItems as $itemKey => $arrDetail) {

@@ -136,12 +136,9 @@ class LC_Page_Mypage_Refusal extends LC_Page {
 
     // 正しい遷移かどうかをチェック
     function lfIsValidMovement(&$objSiteSess) {
-        // 確認ページからの遷移かどうかをチェック
-        SC_Utils_Ex::sfIsPrePage($objSiteSess);
-
         // uniqid がPOSTされているかをチェック
         $uniqid = $objSiteSess->getUniqId();
-        if ( !empty($_POST['uniqid']) && ($_POST['uniqid'] === $uniqid) ) {
+        if ($objSiteSess->isPrePage() || !empty($_POST['uniqid']) && ($_POST['uniqid'] === $uniqid) ) {
             return;
         } else {
             SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, $objSiteSess);

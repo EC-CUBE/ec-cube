@@ -172,6 +172,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
             if($this->cartKey == PRODUCT_TYPE_DOWNLOAD){
                 // 会員情報の住所を受注一時テーブルに書き込む
                 $objPurchase->copyFromCustomer($sqlval, $objCustomer, 'shipping');
+                // FIXME ダウンロード商品の場合は配送無し
                 $sqlval['deliv_id'] = $objPurchase->getDeliv($this->cartKey);
                 $objPurchase->saveShippingTemp($sqlval);
                 $objPurchase->saveOrderTemp($uniqid, $sqlval, $objCustomer);

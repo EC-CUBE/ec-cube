@@ -300,56 +300,6 @@ class SC_Utils {
         }
     }
 
-    /**
-     * 前のページで正しく登録が行われたか判定
-     *
-     * @deprecated SC_SiteSession::isPrePage() を使用して下さい
-     */
-    function sfIsPrePage(&$objSiteSess) {
-        $ret = $objSiteSess->isPrePage();
-        if($ret != true) {
-            // エラーページの表示
-            SC_Utils::sfDispSiteError(PAGE_ERROR, $objSiteSess);
-        }
-    }
-
-    /**
-     * @deprecated SC_Helper_Purchase::verifyChangeCart() を使用して下さい.
-     */
-    function sfCheckNormalAccess(&$objSiteSess, &$objCartSess) {
-        // ユーザユニークIDの取得
-        $uniqid = $objSiteSess->getUniqId();
-
-        $cartkeys = $objCartSess->getKeys();
-
-        foreach ($cartKeys as $cartKey) {
-            // 購入ボタンを押した時のカート内容がコピーされていない場合のみコピーする。
-            $objCartSess->saveCurrentCart($uniqid, $cartKey);
-            // POSTのユニークIDとセッションのユニークIDを比較(ユニークIDがPOSTされていない場合はスルー)
-            $ret = $objSiteSess->checkUniqId();
-            if($ret != true) {
-                // エラーページの表示
-                SC_Utils_Ex::sfDispSiteError(CANCEL_PURCHASE, $objSiteSess);
-            }
-
-            // カート内が空でないか || 購入ボタンを押してから変化がないか
-            $quantity = $objCartSess->getTotalQuantity($cartKey);
-            $ret = $objCartSess->checkChangeCart($cartKey);
-            if($ret == true || !($quantity > 0)) {
-                // カート情報表示に強制移動する
-                // FIXME false を返して, Page クラスで遷移させるべき...
-                if (defined("MOBILE_SITE")) {
-                    header("Location: ". MOBILE_CART_URL_PATH
-                           . "?" . session_name() . "=" . session_id());
-                } else {
-                    header("Location: ".CART_URL_PATH);
-                }
-                exit;
-            }
-        }
-        return $uniqid;
-    }
-
     /* DB用日付文字列取得 */
     function sfGetTimestamp($year, $month, $day, $last = false) {
         if($year != "" && $month != "" && $day != "") {

@@ -162,6 +162,7 @@ class LC_Page_Admin_Customer_SearchCustomer extends LC_Page_Admin {
 
         }
         $this->arrForm = $arrForm;
+        $this->setTemplate($this->tpl_mainpage);
     }
 
     /**

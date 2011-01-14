@@ -68,36 +68,13 @@
 <input type="hidden" id="delete_no" name="delete_no" value="" />
 
 <div id="order" class="contents-main">
-    <!--{* ペイジェントモジュール連携用 *}-->
-    <!--{assign var=path value=`$smarty.const.MODULE_REALDIR`mdl_paygent/paygent_order.tpl}-->
-    <!--{if file_exists($path)}-->
-        <!--{include file=$path}-->
-    <!--{/if}-->
-
-                        <!--{* GMOPG連携用 *}-->
-                        <!--{assign var=path value=`$smarty.const.MODULE_REALDIR`mdl_gmopg/templates/order_edit.tpl}-->
-                        <!--{if file_exists($path)}-->
-                            <!--{include file=$path}-->
-                        <!--{/if}-->
-
-                        <!--{* SPS連携用 *}-->
-                        <!--{assign var=sps_path value=`$smarty.const.MODULE_REALDIR`mdl_sps/templates/sps_request.tpl}-->
-                        <!--{if file_exists($sps_path) && $paymentType[0].module_code == $smarty.const.MDL_SPS_CODE}-->
-                            <!--{include file=$sps_path}-->
-                        <!--{/if}-->
-
-                        <!--{* ペイジェントモジュール連携用 *}-->
-                        <!--{assign var=path value=`$smarty.const.MODULE_REALDIR`mdl_paygent/paygent_order.tpl}-->
-                        <!--{if file_exists($path)}-->
-                            <!--{include file=$path}-->
-                        <!--{/if}-->
 
     <!--▼お客様情報ここから-->
     <table class="form">
         <!--{if $tpl_mode != 'add'}-->
         <tr>
             <th>帳票出力</th>
-            <td><a class="btn-normal" href="javascript:;" onclick="win02('pdf.php?order_id=<!--{$arrForm.order_id.value}-->','pdf','600','800'); return false;">帳票出力</a></td>
+            <td><a class="btn-normal" href="javascript:;" onclick="win02('pdf.php?order_id=<!--{$arrForm.order_id.value}-->','pdf','1000','800'); return false;">帳票出力</a></td>
         </tr>
         <!--{/if}-->
         <tr>
@@ -138,7 +115,7 @@
     <!--{/foreach}-->
     <h2>お客様情報
         <!--{if $tpl_mode == 'add'}-->
-            <a class="btn-normal" href="javascript:;" name="address_input" onclick="fnOpenWindow('<!--{$smarty.const.HTTP_URL}--><!--{$smarty.const.ADMIN_DIR}-->customer/search_customer.php','search','500','650'); return false;">顧客検索</a>
+            <a class="btn-normal" href="javascript:;" name="address_input" onclick="fnOpenWindow('<!--{$smarty.const.HTTP_URL}--><!--{$smarty.const.ADMIN_DIR}-->customer/search_customer.php','search','600','650'); return false;">顧客検索</a>
         <!--{/if}-->
     </h2>
     <table class="form">
@@ -217,7 +194,7 @@
                 <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" size="60" class="box60" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" /><br />
                 <!--{assign var=key value="order_addr02"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
-                <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" size="60" class="box60 addbox" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
+                <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" size="60" class="box60" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
             </td>
         </tr>
         <tr>
@@ -240,8 +217,7 @@
 
     <!--▼受注商品情報ここから-->
     <h2 id="order_products">
-        <a name="order_products"></a>
-        受注商品情報
+        <a name="order_products">受注商品情報</a>
         <a class="btn-normal" href="javascript:;" name="cheek" onclick="fnModeSubmit('cheek','anchor_key','order_products');">計算結果の確認</a>
         <a class="btn-normal" href="javascript:;" name="add_product" onclick="win03('<!--{$smarty.const.URL_PATH}--><!--{$smarty.const.ADMIN_DIR}-->order/product_select.php<!--{if $tpl_order_id}-->?order_id=<!--{$tpl_order_id}--><!--{/if}-->', 'search', '600', '500'); ">商品の追加</a>
     </h2>
@@ -289,11 +265,11 @@
         </tr>
         <!--{/section}-->
         <tr>
-            <th class="column right" colspan="5"">小計</th>
+            <th colspan="5" class="column right">小計</th>
             <td class="right"><!--{$arrForm.subtotal.value|number_format}-->円</td>
         </tr>
         <tr>
-            <th class="column right" colspan="5"">値引</th>
+            <th colspan="5" class="column right">値引</th>
             <td class="right">
                 <!--{assign var=key value="discount"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -302,7 +278,7 @@
             </td>
         </tr>
         <tr>
-            <th class="column right" colspan="5"">送料</th>
+            <th colspan="5" class="column right">送料</th>
             <td class="right">
                 <!--{assign var=key value="deliv_fee"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -311,7 +287,7 @@
             </td>
         </tr>
         <tr>
-            <th class="column right" colspan="5"">手数料</th>
+            <th colspan="5" class="column right">手数料</th>
             <td class="right">
                 <!--{assign var=key value="charge"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -320,14 +296,14 @@
             </td>
         </tr>
         <tr>
-            <th class="column right" colspan="5"">合計</th>
+            <th colspan="5" class="column right">合計</th>
             <td class="right">
                 <span class="attention"><!--{$arrErr.total}--></span>
                 <!--{$arrForm.total.value|number_format}--> 円
             </td>
         </tr>
         <tr>
-            <th class="column right" colspan="5"">お支払い合計</th>
+            <th colspan="5" class="column right">お支払い合計</th>
             <td class="right">
                 <span class="attention"><!--{$arrErr.payment_total}--></span>
                 <!--{$arrForm.payment_total.value|number_format}-->
@@ -336,7 +312,7 @@
         </tr>
         <!--{if $smarty.const.USE_POINT !== false}-->
             <tr>
-                <th class="column right" colspan="5"">使用ポイント</th>
+                <th colspan="5" class="column right">使用ポイント</th>
                 <td class="right">
                     <!--{assign var=key value="use_point"}-->
                     <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -346,15 +322,15 @@
             </tr>
             <!--{if $arrForm.birth_point.value > 0}-->
             <tr>
-                <th class="column" colspan="5"">お誕生日ポイント</th>
-                <td class="right right">
+                <th colspan="5" class="column right">お誕生日ポイント</th>
+                <td class="right">
                     <!--{$arrForm.birth_point.value|number_format}-->
                      pt
                 </td>
             </tr>
             <!--{/if}-->
             <tr>
-                <th class="column right" colspan="5"">加算ポイント</th>
+                <th colspan="5" class="column right">加算ポイント</th>
                 <td class="right">
                     <!--{$arrForm.add_point.value|number_format|default:0}-->
                      pt
@@ -367,7 +343,7 @@
     <h2>お届け先情報
         <a class="btn-normal" href="javascript:;" name="input_from_order_data" onclick="fnCopyFromOrderData();">お客様情報へお届けする</a>
         <a class="btn-normal" href="javascript:;" name="input_from_order_data" onclick="fnCopyFromOrderData();">お届け先を新規追加</a>
-        <a class="btn-normal" href="javascript:;" name="add_product">複数のお届け先を指定する</a>
+        <a class="btn-normal" href="javascript:;" name="input_from_order_data" onclick="fnCopyFromOrderData();">複数のお届け先を指定する</a>
     </h2>
 
     <!--{foreach item=shippingItem name=shippingItem from=$arrShipping}-->
@@ -395,6 +371,7 @@
         *}-->
       </tr>
       <!--{/foreach}-->
+
     <table class="form">
         <tr>
             <th>お名前</th>
@@ -485,7 +462,6 @@
     <!--{/foreach}-->
     <!--▲お届け先情報ここまで-->
 
-
     <table class="form">
         <tr>
             <th>お支払方法<br /><span class="attention">(お支払方法の変更に伴う手数料の変更は手動にてお願いします。)</span></th>
@@ -529,6 +505,5 @@
         <li><a class="btn-action" href="javascript:;" onclick="return fnFormConfirm();"><span class="btn-next">この内容で登録する</span></a></li>
       </ul>
     </div>
-
-</div>
+  </div>
 </form>
