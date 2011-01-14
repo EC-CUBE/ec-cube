@@ -40,32 +40,39 @@
 <!--{/section}-->
 <br>
 
-■お届け日<br>
-<!--{assign var=key value="deliv_date"}-->
-<!--{if $arrErr[$key] != ""}-->
-<font color="#FF0000"><!--{$arrErr[$key]}--></font>
+<!--{if $cartKey != $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
+■お届け時間の指定<br>
+<!--{foreach item=shippingItem name=shippingItem from=$shipping}-->
+<!--{assign var=index value=$smarty.foreach.shippingItem.index}-->
+<!--{if $isMultiple}-->
+▼お届け先<!--{$smarty.foreach.shippingItem.iteration}--><br>
+<!--{$arrPref[$shippingItem.shipping_pref]}--><!--{$shippingItem.shipping_addr01}--><!--{$shippingItem.shipping_addr02}--><br>
+<!--{$shippingItem.shipping_name01}--><!--{$shippingItem.shipping_name02}--><br>
 <!--{/if}-->
-<!--{if $arrDelivDate}-->
+<!--★お届け日★-->
+<!--{assign var=key value="deliv_date`$index`"}-->
+<!--{if $arrErr[$key] != ""}--><font color="#FF0000"><!--{$arrErr[$key]}--></font><!--{/if}-->
+お届け日：
+<!--{if !$arrDelivDate}-->
+ご指定頂けません。
+<!--{else}-->
 <select name="<!--{$key}-->">
 <option value="">指定なし</option>
 <!--{html_options options=$arrDelivDate selected=$arrForm[$key].value}-->
 </select>
-<!--{else}-->
-ご指定頂けません。
 <!--{/if}-->
 <br>
-<br>
-
-■お届け時間<br>
-<!--{assign var=key value="deliv_time_id"}-->
-<!--{if $arrErr[$key] != ""}-->
-<font color="#FF0000"><!--{$arrErr[$key]}--></font>
-<!--{/if}-->
+<!--★お届け時間★-->
+<!--{assign var=key value="deliv_time_id`$index`"}-->
+<!--{if $arrErr[$key] != ""}--><font color="#FF0000"><!--{$arrErr[$key]}--></font><!--{/if}-->
+お届け時間：
 <select name="<!--{$key}-->">
 <option value="">指定なし</option>
 <!--{html_options options=$arrDelivTime selected=$arrForm[$key].value}-->
 </select>
-<br>
+<hr>
+<!--{/foreach}-->
+<!--{/if}-->
 <br>
 
 ■その他お問い合わせ<br>

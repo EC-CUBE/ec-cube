@@ -60,9 +60,16 @@
 <input type="hidden" name="ParentPage" value="<!--{$smarty.const.DELIV_URL_PATH}-->">
 <center><input type="submit" value="新規登録"></center>
 </form>
-<!--▲CONTENTS-->
 
 <br>
+
+■お届け先を複数指定する<br>
+<form method="post" action="?">
+<input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
+<input type="hidden" name="mode" value="multiple">
+<center><input type="submit" value="複数お届け先"></center>
+</form>
+
 <hr>
 
 <a href="<!--{$smarty.const.MOBILE_CART_URL_PATH}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>

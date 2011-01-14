@@ -72,31 +72,32 @@
 
 <!--{* 販売方法判定（ダウンロード販売のみの場合はお届け先を表示しない） *}-->
 <!--{if $cartKey != $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
-<!--{foreach item=shippingItem from=$shipping name=shippingItem}-->
 【お届け先】<br>
-<!--{if $isMultiple}--><!--{* 複数お届け先の表示 *}-->
-<!--{foreach item=item from=$shippingItem.shipment_item}-->
-▼お届け先<!--{if $isMultiple}--><!--{$smarty.foreach.shippingItem.iteration}--><!--{/if}--><br>
-<!--{$item.productsClass.name|h}--><br>
-<!--{if $item.productsClass.classcategory_name1 != ""}--><!--{$item.productsClass.class_name1}-->：<!--{$item.productsClass.classcategory_name1}--><br><!--{/if}-->
-<!--{if $item.productsClass.classcategory_name2 != ""}--><!--{$item.productsClass.class_name2}-->：<!--{$item.productsClass.classcategory_name2}--><br><!--{/if}-->
-数量：<!--{$item.quantity}--><br>
-<!--{/foreach}-->
+<!--{foreach item=shippingItem from=$shipping name=shippingItem}-->
+<!--{if $isMultiple}-->
+    ▼お届け先<!--{$smarty.foreach.shippingItem.iteration}--><br>
+    <!--{* 複数お届け先の場合、お届け先毎の商品を表示 *}-->
+    <!--{foreach item=item from=$shippingItem.shipment_item}-->
+    <!--{$item.productsClass.name|h}--><br>
+    <!--{if $item.productsClass.classcategory_name1 != ""}--><!--{$item.productsClass.class_name1}-->：<!--{$item.productsClass.classcategory_name1}--><br><!--{/if}-->
+    <!--{if $item.productsClass.classcategory_name2 != ""}--><!--{$item.productsClass.class_name2}-->：<!--{$item.productsClass.classcategory_name2}--><br><!--{/if}-->
+    &nbsp;数量：<!--{$item.quantity}--><br>
+    <br>
+    <!--{/foreach}-->
 <!--{/if}-->
 
-<!--{$shippingItem.shipping_name01|h}--> <!--{$shippingItem.shipping_name02|h}--><br>
 〒<!--{$shippingItem.shipping_zip01|h}-->-<!--{$shippingItem.shipping_zip02|h}--><br>
 <!--{$arrPref[$shippingItem.shipping_pref]}--><!--{$shippingItem.shipping_addr01|h}--><!--{$shippingItem.shipping_addr02|h}--><br>
+<!--{$shippingItem.shipping_name01|h}--> <!--{$shippingItem.shipping_name02|h}--><br>
 <!--{$shippingItem.shipping_tel01}-->-<!--{$shippingItem.shipping_tel02}-->-<!--{$shippingItem.shipping_tel03}--><br>
+
+<br>
+
+お届け日：<!--{$shippingItem.deliv_date|default:"指定なし"|h}--><br>
+お届け時間：<!--{$shippingItem.deliv_time|default:"指定なし"|h}--><br>
+
+<hr>
 <!--{/foreach}-->
-
-<br>
-
-【お届け日時指定】<br>
-日：<!--{$shippingItem.deliv_date|default:"指定なし"|h}--><br>
-時間：<!--{$shippingItem.deliv_time|default:"指定なし"|h}--><br>
-
-<br>
 <!--{/if}-->
 
 【お支払い方法】<br>
