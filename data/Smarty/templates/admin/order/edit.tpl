@@ -346,9 +346,20 @@
         <a class="btn-normal" href="javascript:;" name="input_from_order_data" onclick="fnCopyFromOrderData();">複数のお届け先を指定する</a>
     </h2>
 
-    <!--{foreach item=shippingItem name=shippingItem from=$arrShipping}-->
-    <!--{assign var=shipping_id value=$shippingItem.shipping_id}-->
-    <h3>お届け先<!--{$smarty.foreach.shippingItem.iteration}--></h3>
+    <!--{assign var=key value="shipping_quantity"}-->
+    <input type="hidden" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" />
+
+    <!--{section name=shipping loop=$arrForm.shipping_quantity.value}-->
+    <!--{assign var=shipping_index value="`$smarty.section.shipping.index`"}-->
+
+    <!--{assign var=shipping_id value=$arrShippingIds[$shipping_index]}-->
+    <!--{if $arrForm.shipping_quantity.value > 1}-->
+    <h3>お届け先<!--{$smarty.section.shipping.iteration}--></h3
+    <!--{/if}-->
+
+    <!--{if $arrForm.shipping_quantity.value > 1}-->
+    <!--{assign var=product_quantity value="shipping_product_quantity_`$shipping_id`"}-->
+    <input type="hidden" name="<!--{$product_quantity}-->" value="<!--{$arrForm[$product_quantity].value|h}-->" />
     <table class="list" id="order-edit-products">
       <tr>
         <th class="id">商品コード</th>
@@ -356,28 +367,45 @@
         <th class="price">単価</th>
         <th class="qty">数量</th>
       </tr>
-      <!--{foreach item=item from=$shippingItem.shipment_item}-->
+      <!--{section name=item loop=$arrForm[$product_quantity].value}-->
+      <!--{assign var=item_index value="`$smarty.section.item.index`"}-->
+      <!--{assign var=product_class_id value=$arrProductClassIds[$shipping_index][$item_index]}-->
       <tr>
-        <td><!--{$item.product_code|h}--></td>
         <td>
-            <!--{$item.productsClass.name|h}-->/<!--{$item.productsClass.classcategory_name1|default:"(なし)"|h}-->/<!--{$item.productsClass.classcategory_name2|default:"(なし)"|h}-->
+          <!--{assign var=key value="product_code_`$shipping_id`_`$product_class_id`"}-->
+          <input type="hidden" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" />
+          <!--{$arrForm[$key].value|h}-->
+        </td>
+        <td>
+          <!--{assign var=key1 value="product_name_`$shipping_id`_`$product_class_id`"}-->
+          <!--{assign var=key2 value="classcategory_name1_`$shipping_id`_`$product_class_id`"}-->
+          <!--{assign var=key3 value="classcategory_name2_`$shipping_id`_`$product_class_id`"}-->
+          <input type="hidden" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" />
+          <input type="hidden" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" />
+          <input type="hidden" name="<!--{$key3}-->" value="<!--{$arrForm[$key3].value|h}-->" />
+          <!--{$arrForm[$key1].value|h}-->/<!--{$arrForm[$key2].value|default:"(なし)"|h}-->/<!--{$arrForm[$key3].value|default:"(なし)"|h}-->
         </td>
         <td class="right">
-            <!--{$item.productsClass.price02|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
+          <!--{assign var=key value="price_`$shipping_id`_`$product_class_id`"}-->
+          <!--{$arrForm[$key].value|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
+          <input type="hidden" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" />
         </td>
-        <td class="right"><!--{$item.quantity}--></td>
-        <!--{* XXX 購入小計と誤差が出るためコメントアウト
-        <td class="pricetd"><!--{$item.total_inctax|number_format}-->円</td>
-        *}-->
+        <td class="right">
+          <!--{assign var=key value="quantity_`$shipping_id`_`$product_class_id`"}-->
+          <!--{$arrForm[$key].value|h}-->
+          <input type="hidden" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" />
+        </td>
       </tr>
-      <!--{/foreach}-->
+      <!--{/section}-->
+    </table>
+    <!--{/if}-->
 
     <table class="form">
         <tr>
             <th>お名前</th>
             <td>
-                <!--{assign var=key1 value="shipping_name01`$shipping_id`"}-->
-                <!--{assign var=key2 value="shipping_name02`$shipping_id`"}-->
+                <!--{assign var=key1 value="shipping_name01_`$shipping_id`"}-->
+                <!--{assign var=key2 value="shipping_name02_`$shipping_id`"}-->
                 <span class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></span>
                 <input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" size="15" class="box15" />
                 <input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" size="15" class="box15" />
@@ -386,8 +414,8 @@
         <tr>
             <th>お名前(カナ)</th>
             <td>
-                <!--{assign var=key1 value="shipping_kana01`$shipping_id`"}-->
-                <!--{assign var=key2 value="shipping_kana02`$shipping_id`"}-->
+                <!--{assign var=key1 value="shipping_kana01_`$shipping_id`"}-->
+                <!--{assign var=key2 value="shipping_kana02_`$shipping_id`"}-->
                 <span class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></span>
                 <input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" size="15" class="box15" />
                 <input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" size="15" class="box15" />
@@ -396,9 +424,9 @@
         <tr>
             <th>TEL</th>
             <td>
-                <!--{assign var=key1 value="shipping_tel01`$shipping_id`"}-->
-                <!--{assign var=key2 value="shipping_tel02`$shipping_id`"}-->
-                <!--{assign var=key3 value="shipping_tel03`$shipping_id`"}-->
+                <!--{assign var=key1 value="shipping_tel01_`$shipping_id`"}-->
+                <!--{assign var=key2 value="shipping_tel02_`$shipping_id`"}-->
+                <!--{assign var=key3 value="shipping_tel03_`$shipping_id`"}-->
                 <span class="attention"><!--{$arrErr[$key1]}--></span>
                 <span class="attention"><!--{$arrErr[$key2]}--></span>
                 <span class="attention"><!--{$arrErr[$key3]}--></span>
@@ -410,24 +438,24 @@
         <tr>
             <th>住所</th>
             <td>
-                <!--{assign var=key1 value="shipping_zip01`$shipping_id`"}-->
-                <!--{assign var=key2 value="shipping_zip02`$shipping_id`"}-->
+                <!--{assign var=key1 value="shipping_zip01_`$shipping_id`"}-->
+                <!--{assign var=key2 value="shipping_zip02_`$shipping_id`"}-->
                 <span class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></span>
                 〒
                 <input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" size="6" class="box6" />
                  -
                 <input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" size="6" class="box6" />
                 <a class="btn-normal" href="javascript:;" name="address_input" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URL_PATH}-->', 'shipping_zip01', 'shipping_zip02', 'shipping_pref', 'shipping_addr01');">住所入力</a><br />
-                <!--{assign var=key value="shipping_pref`$shipping_id`"}-->
+                <!--{assign var=key value="shipping_pref_`$shipping_id`"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
                     <option value="" selected="">都道府県を選択</option>
                     <!--{html_options options=$arrPref selected=$arrForm[$key].value}-->
                 </select><br />
-                <!--{assign var=key value="shipping_addr01`$shipping_id`"}-->
+                <!--{assign var=key value="shipping_addr01_`$shipping_id`"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" size="60" class="box60" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" /><br />
-                <!--{assign var=key value="shipping_addr02`$shipping_id`"}-->
+                <!--{assign var=key value="shipping_addr02_`$shipping_id`"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" size="60" class="box60" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
             </td>
@@ -435,7 +463,7 @@
         <tr>
             <th>お届け時間</th>
             <td>
-                <!--{assign var=key value="deliv_time_id`$shipping_id`"}-->
+                <!--{assign var=key value="deliv_time_id_`$shipping_id`"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
                     <option value="" selected="0">指定無し</option>
@@ -446,7 +474,7 @@
         <tr>
             <th>お届け日</th>
             <td>
-                <!--{assign var=key value="deliv_date`$shipping_id`"}-->
+                <!--{assign var=key value="deliv_date_`$shipping_id`"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <input
                     name="<!--{$key|h}-->"
@@ -459,7 +487,7 @@
         </tr>
 
     </table>
-    <!--{/foreach}-->
+    <!--{/section}-->
     <!--▲お届け先情報ここまで-->
 
     <table class="form">
