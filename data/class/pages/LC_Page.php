@@ -370,40 +370,6 @@ exit;
     }
 
     /**
-     * ページをリロードする.
-     *
-     * 引数 $queryString に, $_SERVER['QUERY_STRING'] の値を使用してはならない.
-     * この関数は, 内部で LC_Page::sendRedirect() を使用するため,
-     * $_SERVER['QUERY_STRING'] の値は自動的に付与される.
-     *
-     * @param array $queryString QueryString の配列
-     * @param bool $removeQueryString 付与されていた QueryString を削除する場合 true
-     * @return void
-     * @see Net_URL
-     */
-    function reload($queryString = array(), $removeQueryString = false) {
-echo 'SC_Response_Ex::reload()に移行してね。';
-exit;
-
-        // 現在の URL を取得
-        $netURL = new Net_URL($_SERVER['REQUEST_URI']);
-
-        if ($removeQueryString) {
-            $netURL->querystring = array();
-            $_SERVER['QUERY_STRING'] = ''; // sendRedirect() での処理用らしい
-        }
-
-        // QueryString を付与
-        if (!empty($queryString)) {
-            foreach ($queryString as $key => $val) {
-                $netURL->addQueryString($key, $val);
-            }
-        }
-
-        $this->sendRedirect($netURL->getURL());
-    }
-
-    /**
      * 互換性確保用メソッド
      *
      * @access protected

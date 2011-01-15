@@ -81,10 +81,10 @@ class LC_Page_Admin_GoogleAnalytics extends LC_Page {
         switch ($_POST["mode"]) {
         case "register":
             if ($this->register($_POST['ga_ua'])) {
-                $this->reload(array("mode" => "success"));
+                SC_Response_Ex::reload(array("mode" => "success"), true);
                 exit;
             } else {
-                $this->reload(array("mode" => "failure"));
+                SC_Response_Ex::reload(array("mode" => "failure"), true);
                 exit;
             }
             break;

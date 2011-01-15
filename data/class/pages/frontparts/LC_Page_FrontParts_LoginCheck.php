@@ -105,7 +105,7 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page {
 
             if(count($arrErr) == 0) {
                 if($objCustomer->getCustomerDataFromEmailPass($arrForm['login_pass'], $arrForm['login_email'], true)) {
-                    SC_Response_Ex::sendRedirectFromUrlPath('', array(), false, false);
+                    SC_Response_Ex::sendRedirect(HTTP_URL);
                     exit;
                 } else {
                     $arrForm['login_email'] = strtolower($arrForm['login_email']);
@@ -133,8 +133,10 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page {
             //マイページログイン中はログイン画面へ移行
             if ($mypage_url_search == 2){
                 SC_Response_Ex::sendRedirectFromUrlPath('mypage/login.php');
-            }else{
-                SC_Response_Ex::sendRedirectFromUrlPath('', array(), false, false);
+            }
+            // 上記以外の場合、トップへ遷移
+            else{
+                SC_Response_Ex::sendRedirect(HTTP_URL);
             }
             exit;
             break;
