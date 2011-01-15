@@ -280,6 +280,8 @@ class SC_Helper_Purchase {
      *
      * 受注情報($src)を $dest の order_* へコピーする.
      *
+     * TODO 汎用的にして SC_Utils へ移動
+     *
      * @param array $dest コピー先の配列
      * @param array $src コピー元の配列
      * @param array $keys コピー対象のキー
@@ -293,9 +295,15 @@ class SC_Helper_Purchase {
                                          'sex', 'zip01', 'zip02', 'pref',
                                          'addr01', 'addr02',
                                          'tel01', 'tel02', 'tel03')) {
+        if (!SC_Utils_Ex::isBlank($prefix)) {
+            $prefix = $prefix . '_';
+        }
+        if (!SC_Utils_Ex::isBlank($src_prefix)) {
+            $src_prefix = $src_prefix . '_';
+        }
         foreach ($keys as $key) {
             if (in_array($key, $keys)) {
-                $dest[$prefix . '_' . $key] = $src[$src_prefix . '_' . $key];
+                $dest[$prefix . $key] = $src[$src_prefix . $key];
             }
         }
     }

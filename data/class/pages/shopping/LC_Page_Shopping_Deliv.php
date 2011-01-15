@@ -194,11 +194,11 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         // 会員登録住所に送る
         case 'customer_addr':
             $sqlval = array();
+            $sqlval['deliv_id'] = $objPurchase->getDeliv($this->cartKey);
             // 会員登録住所がチェックされている場合
             if ($_POST['deliv_check'] == '-1') {
                 // 会員情報の住所を受注一時テーブルに書き込む
                 $objPurchase->copyFromCustomer($sqlval, $objCustomer, 'shipping');
-                $sqlval['deliv_id'] = $objPurchase->getDeliv($this->cartKey);
                 $objPurchase->saveShippingTemp($sqlval);
                 $objPurchase->saveOrderTemp($uniqid, $sqlval, $objCustomer);
 
@@ -210,17 +210,14 @@ class LC_Page_Shopping_Deliv extends LC_Page {
             // 別のお届け先がチェックされている場合
             } elseif($_POST['deliv_check'] >= 1) {
                 if (SC_Utils_Ex::sfIsInt($_POST['deliv_check'])) {
-                    $deliv_count = $objQuery->count("dtb_other_deliv","customer_id=? and other_deliv_id = ?" ,array($objCustomer->getValue('customer_id'), $_POST['deliv_check']));
-                    if ($deliv_count != 1) {
+                    $otherDeliv = $objQuery->getRow("*", "dtb_other_deliv","customer_id = ? AND other_deliv_id = ?"
+                                                    ,array($objCustomer->getValue('customer_id'), $_POST['deliv_check']));
+                    if (SC_Utils_Ex::isBlank($otherDeliv)) {
                         SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
                     }
 
-                    $otherDeliv = $objQuery->select("*", "dtb_other_deliv",
-                                                    "other_deliv_id = ?",
-                                                    array($_POST['deliv_check']));
-                    $sqlval = $otherDeliv[0];
-                    $sqlval['deliv_id'] = $objPurchase->getDeliv($this->cartKey);
-                    $objPurchase->saveShippingTemp($sqlval, $_POST['deliv_check']);
+                    $objPurchase->copyFromOrder($sqlval, $otherDeliv, 'shipping', '');;
+                    $objPurchase->saveShippingTemp($sqlval);
                     $objPurchase->saveOrderTemp($uniqid, $sqlval, $objCustomer);
 
                     // 正常に登録されたことを記録しておく
@@ -247,7 +244,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
             break;
 
         default:
-            //$objPurchase->unsetShippingTemp();
+            $objPurchase->unsetShippingTemp();
             $arrOrderTemp = $objPurchase->getOrderTemp($uniqid);
             if (empty($arrOrderTemp)) $arrOrderTemp = array("");
             $this->objFormParam->setParam($arrOrderTemp);

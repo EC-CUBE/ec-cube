@@ -702,6 +702,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin {
         }
         $result = $objQuery->update($table, $dest, "order_id = ?", array($order_id));
         if ($result == 0) {
+            $dest['order_id'] = $order_id;
             $result = $objQuery->insert($table, $dest);
         }
     }
