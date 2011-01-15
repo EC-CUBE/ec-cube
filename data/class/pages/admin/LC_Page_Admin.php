@@ -48,7 +48,7 @@ class LC_Page_Admin extends LC_Page {
         $allow_hosts = unserialize(ADMIN_ALLOW_HOSTS);
         if(count($allow_hosts) > 0){
             if(array_search($_SERVER["REMOTE_ADDR"],$allow_hosts) === FALSE){
-                SC_Response::sendError("403");
+                SC_Response::sendHttpStatus(403);
                 exit;
             }
         }
