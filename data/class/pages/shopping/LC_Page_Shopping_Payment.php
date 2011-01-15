@@ -97,6 +97,9 @@ class LC_Page_Shopping_Payment extends LC_Page {
 
         $this->cartKey = $objCartSess->getKey();
 
+        // 配送時間を取得
+        $this->arrDelivTime = $objPurchase->getDelivTime($this->cartKey);
+
         // 会員ログインチェック
         if($this->objCustomer->isLoginSuccess()) {
             $this->tpl_login = '1';
@@ -145,10 +148,16 @@ class LC_Page_Shopping_Payment extends LC_Page {
             $this->arrErr = $this->lfCheckError($this->arrData, $this->arrPayment);
             // 入力エラーなし
             if(count($this->arrErr) == 0) {
-                // DBへのデータ登録
+
+                foreach (array_keys($_SESSION['shipping']) as $key) {
+                    $timeId = $this->objFormParam->getValue('deliv_time_id' . $key);
+                    $_SESSION['shipping'][$key]['time_id'] = $timeId;
+                    $_SESSION['shipping'][$key]['shipping_time'] = $this->arrDelivTime[$timeId];
+                    // XXX 文字列を代入しておいてもDBで自動変換可能？
+                    $_SESSION['shipping'][$key]['shipping_date'] = $this->objFormParam->getValue('deliv_date' . $key);
+                }
                 $this->lfRegistData($uniqid, $objPurchase);
-                $_SESSION['shipping'][0]['time_id'] = $this->objFormParam->getValue('deliv_time_id');
-                $_SESSION['shipping'][0]['deliv_date'] = $this->objFormParam->getValue('deliv_date');
+
                 // 正常に登録されたことを記録しておく
                 $objSiteSess->setRegistFlag();
                 // 確認ページへ移動
@@ -158,7 +167,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
                 // ユーザユニークIDの取得
                 $uniqid = $objSiteSess->getUniqId();
                 // 受注一時テーブルからの情報を格納
-                $this->lfSetOrderTempData($uniqid);
+                $this->objFormParam->setParam($objPurchase->getOrderTemp($uniqid));
             }
             break;
         // 前のページに戻る
@@ -176,14 +185,10 @@ class LC_Page_Shopping_Payment extends LC_Page {
             break;
         }
 
-        // 配送時間を取得
-        $this->arrDelivTime = $objPurchase->getDelivTime($this->cartKey);
-
         // 支払い方法の画像があるなしを取得（$img_show true:ある false:なし）
         $this->img_show = $this->lfGetImgShow($this->arrPayment);
-        // FIXME お届け日一覧の取得
-        $this->arrDelivDate = $this->lfGetDelivDate();
-
+        // お届け日一覧の取得
+        $this->arrDelivDate = $objPurchase->getDelivDate($objCartSess, $this->cartKey);
         $this->arrForm = $this->objFormParam->getFormParamList();
     }
 
@@ -261,8 +266,8 @@ class LC_Page_Shopping_Payment extends LC_Page {
     function lfGetPaymentInfo($payment_id) {
         $objQuery = new SC_Query();
         $where = "payment_id = ?";
-        $arrRet = $objQuery->select("charge", "dtb_payment", $where, array($payment_id));
-        return (array($arrRet[0]['charge'], $arrRet[0]['deliv_id']));
+        $arrRet = $objQuery->getRow("charge, payment_method", "dtb_payment", $where, array($payment_id));
+        return (array($arrRet['charge'], $arrRet['payment_method']));
     }
 
     /* DBへデータの登録 */
@@ -274,7 +279,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
         $sqlval['update_date'] = 'Now()';
 
         if (strlen($sqlval['payment_id']) >= 1) {
-            // FIXME list($sqlval['charge'], $sqlval['deliv_id']) = $this->lfGetPaymentInfo($sqlval['payment_id']);
+            list($sqlval['charge'], $sqlval['payment_method']) = $this->lfGetPaymentInfo($sqlval['payment_id']);
         }
 
         // 使用ポイントの設定
@@ -285,101 +290,10 @@ class LC_Page_Shopping_Payment extends LC_Page {
         $objPurchase->saveOrderTemp($uniqid, $sqlval);
     }
 
-    /* お届け日一覧を取得する */
-    function lfGetDelivDate() {
-        $objCartSess = new SC_CartSession();
-        $objQuery = new SC_Query();
-        // 商品IDの取得
-        $max = $objCartSess->getMax();
-        for($i = 1; $i <= $max; $i++) {
-            if($_SESSION[$objCartSess->key][$i]['id'][0] != "") {
-                $arrID['product_id'][$i] = $_SESSION[$objCartSess->key][$i]['id'][0];
-            }
-        }
-        if(count($arrID['product_id']) > 0) {
-            $id = implode(",", $arrID['product_id']);
-            //商品から発送目安の取得
-            $deliv_date = $objQuery->get("MAX(deliv_date_id)", "dtb_products", "product_id IN (".$id.")");
-            //発送目安
-            switch($deliv_date) {
-            //即日発送
-            case '1':
-                $start_day = 1;
-                break;
-            //1-2日後
-            case '2':
-                $start_day = 3;
-                break;
-            //3-4日後
-            case '3':
-                $start_day = 5;
-                break;
-            //1週間以内
-            case '4':
-                $start_day = 8;
-                break;
-            //2週間以内
-            case '5':
-                $start_day = 15;
-                break;
-            //3週間以内
-            case '6':
-                $start_day = 22;
-                break;
-            //1ヶ月以内
-            case '7':
-                $start_day = 32;
-                break;
-            //2ヶ月以降
-            case '8':
-                $start_day = 62;
-                break;
-            //お取り寄せ(商品入荷後)
-            case '9':
-                $start_day = "";
-                break;
-            default:
-                //お届け日が設定されていない場合
-                $start_day = "";
-                break;
-            }
-            //お届け可能日のスタート値から、お届け日の配列を取得する
-            $arrDelivDate = $this->lfGetDateArray($start_day, DELIV_DATE_END_MAX);
-        }
-        return $arrDelivDate;
-    }
-
-    //お届け可能日のスタート値から、お届け日の配列を取得する
-    function lfGetDateArray($start_day, $end_day) {
-        $masterData = new SC_DB_MasterData();
-        $arrWDAY = $masterData->getMasterData("mtb_wday");
-        //お届け可能日のスタート値がセットされていれば
-        if($start_day >= 1) {
-            $now_time = time();
-            $max_day = $start_day + $end_day;
-            // 集計
-            for ($i = $start_day; $i < $max_day; $i++) {
-                // 基本時間から日数を追加していく
-                $tmp_time = $now_time + ($i * 24 * 3600);
-                list($y, $m, $d, $w) = split(" ", date("y m d w", $tmp_time));
-                $val = sprintf("%02d/%02d/%02d(%s)", $y, $m, $d, $arrWDAY[$w]);
-                $arrDate[$val] = $val;
-            }
-        } else {
-            $arrDate = false;
-        }
-        return $arrDate;
-    }
-
     //一時受注テーブルからの情報を格納する
-    function lfSetOrderTempData($uniqid) {
-        $objQuery = new SC_Query();
-        $col = "payment_id, use_point, message, point_check ";
-        $from = "dtb_order_temp";
-        $where = "order_temp_id = ?";
-        $arrRet = $objQuery->select($col, $from, $where, array($uniqid));
-        // DB値の取得
-        $this->objFormParam->setParam($arrRet[0]);
+    function lfSetOrderTempData($uniqid, &$objPurchase) {
+        $arrOrderTemp = $objPurchase->getOrderTemp($uniqid);
+        $this->objFormParam->setParam($arrOrderTemp);
         return $this->objFormParam;
     }
 
@@ -393,18 +307,6 @@ class LC_Page_Shopping_Payment extends LC_Page {
             }
         }
         return $img_show;
-    }
-
-    /* 配送時間の配列を生成 */
-    function lfSetDelivTime() {
-        $objDb = new SC_Helper_DB_Ex();
-        $objJson = new Services_JSON;
-
-        // 配送時間の取得
-        $arrRet = $objDb->sfGetDelivTime($this->cartKey);
-        // JSONエンコード
-        echo $objJson->encode($arrRet);
-        exit;
     }
 }
 ?>

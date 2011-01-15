@@ -79,7 +79,7 @@
         <!--{/if}-->
         <tr>
             <th>注文番号</th>
-            <td><!--{$arrForm.order_id.value}--></td>
+            <td><!--{$tpl_order_id|h}--></td>
         </tr>
         <tr>
             <th>受注日</th>
@@ -252,6 +252,7 @@
                 <!--{if $product_count > 1}-->
                     <a class="btn-normal" href="javascript:;" name="delete" onclick="fnSetFormVal('form1', 'delete_no', <!--{$key}-->); fnModeSubmit('delete_product','anchor_key','order_products');">削除</a>
                 <!--{/if}-->
+            <input type="hidden" name="product_type_id[<!--{$key}-->]" value="<!--{$arrForm.product_type_id.value[$key]}-->" id="product_type_id_<!--{$key}-->" />
             <input type="hidden" name="product_id[<!--{$key}-->]" value="<!--{$arrForm.product_id.value[$key]}-->" id="product_id_<!--{$key}-->" />
             <input type="hidden" name="product_class_id[<!--{$key}-->]" value="<!--{$arrForm.product_class_id.value[$key]}-->" id="product_class_id_<!--{$key}-->" />
             <input type="hidden" name="point_rate[<!--{$key}-->]" value="<!--{$arrForm.point_rate.value[$key]}-->" id="point_rate_<!--{$key}-->" />
@@ -463,7 +464,7 @@
         <tr>
             <th>お届け時間</th>
             <td>
-                <!--{assign var=key value="deliv_time_id_`$shipping_id`"}-->
+                <!--{assign var=key value="time_id_`$shipping_id`"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
                     <option value="" selected="0">指定無し</option>
@@ -474,15 +475,21 @@
         <tr>
             <th>お届け日</th>
             <td>
-                <!--{assign var=key value="deliv_date_`$shipping_id`"}-->
-                <span class="attention"><!--{$arrErr[$key]}--></span>
-                <input
-                    name="<!--{$key|h}-->"
-                    value="<!--{$arrForm[$key].value|h}-->"
-                    style="<!--{$arrErr[$key]|sfGetErrorColor}-->"
-                    size="30"
-                    maxlength="<!--{$arrForm[$key].length}-->"
-                >
+              <!--{assign var=key1 value="shipping_date_year_`$shipping_id`"}-->
+              <!--{assign var=key2 value="shipping_date_month_`$shipping_id`"}-->
+              <!--{assign var=key3 value="shipping_date_day_`$shipping_id`"}-->
+              <span class="attention"><!--{$arrErr[$key1]}--></span>
+              <span class="attention"><!--{$arrErr[$key2]}--></span>
+              <span class="attention"><!--{$arrErr[$key3]}--></span>
+              <select name="<!--{$key1}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->">
+              <!--{html_options options=$arrYearShippingDate selected=$arrForm[$key1].value|default:""}-->
+              </select>年
+              <select name="<!--{$key2}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->">
+              <!--{html_options options=$arrMonthShippingDate selected=$arrForm[$key2].value|default:""}-->
+              </select>月
+              <select name="<!--{$key3}-->" style="<!--{$arrErr[$key3]|sfGetErrorColor}-->">
+              <!--{html_options options=$arrDayShippingDate selected=$arrForm[$key3].value|default:""}-->
+              </select>日
             </td>
         </tr>
 

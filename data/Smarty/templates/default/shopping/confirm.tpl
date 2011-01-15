@@ -230,11 +230,11 @@ $(document).ready(function() {
                 <!--{if $cartKey != $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
                     <tr>
                         <th>お届け日</th>
-                        <td><!--{$shippingItem.deliv_date|default:"指定なし"|h}--></td>
+                        <td><!--{$shippingItem.shipping_date|default:"指定なし"|h}--></td>
                     </tr>
                     <tr>
                        <th>お届け時間</th>
-                        <td><!--{$shippingItem.deliv_time|default:"指定なし"|h}--></td>
+                        <td><!--{$shippingItem.shipping_time|default:"指定なし"|h}--></td>
                     </tr>
                 <!--{/if}-->
                 </tbody>
@@ -244,7 +244,7 @@ $(document).ready(function() {
             <!--お届け先ここまで-->
 
             <h3>▼お支払方法・その他お問い合わせ</h3>
-            <table summary="お支払方法・お届け日時の指定・その他お問い合わせ" class="delivname">
+            <table summary="お支払方法・その他お問い合わせ" class="delivname">
                 <tbody>
                 <tr>
                     <th>お支払方法</th>
