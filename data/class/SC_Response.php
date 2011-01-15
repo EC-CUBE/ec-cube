@@ -36,7 +36,7 @@ class SC_Response{
      */
     var $contentType;
     var $body;
-    var $statuscode;
+    var $statusCode;
     var $header = array();
 
     /**
@@ -60,6 +60,9 @@ class SC_Response{
         // HTTPのヘッダ
         foreach ($this->header as $name => $head){
             header($name.': '.$head);
+        }
+        if (strlen($this->statusCode) >= 1) {
+            $this->sendHttpStatus($this->statusCode);
         }
     }
 
@@ -189,14 +192,14 @@ class SC_Response{
         $this->header = $headers;
     }
 
-    function setStatus($sc = 202) {
-        $this->statuscode = $sc;
+    function setStatusCode($statusCode = null) {
+        $this->statusCode = $statusCode;
     }
 
     /**
      * HTTPステータスコードを送出する。
      *
-     * @param integer $code HTTPステータスコード
+     * @param integer $statusCode HTTPステータスコード
      * @return void
      * @author Seasoft (新規作成)
      * @see Moony_Action::status() (オリジナル)
@@ -208,7 +211,7 @@ class SC_Response{
      * @license http://www.gnu.org/licenses/fdl.html GFDL (邦訳)
      * @static
      */
-    function sendHttpStatus($code) {
+    function sendHttpStatus($statusCode) {
         $protocol = $_SERVER['SERVER_PROTOCOL'];
         $httpVersion = (strpos($protocol, '1.1') !== false) ? '1.1' : '1.0';
         $messages = array(
@@ -260,13 +263,13 @@ class SC_Response{
             505 => 'HTTP Version Not Supported',        // サポートしていないHTTPバージョン
             509 => 'Bandwidth Limit Exceeded'           // 帯域幅制限超過
         );
-        if (isset($messages[$code])) {
+        if (isset($messages[$statusCode])) {
             if ($httpVersion !== '1.1') {
                 // HTTP/1.0
                 $messages[302] = 'Moved Temporarily';
             }
-            header("HTTP/{$httpVersion} {$code} {$messages[$code]}");
-            header("Status: {$code} {$messages[$code]}", true, $code);
+            header("HTTP/{$httpVersion} {$statusCode} {$messages[$statusCode]}");
+            header("Status: {$statusCode} {$messages[$statusCode]}", true, $statusCode);
         }
     }
 }
