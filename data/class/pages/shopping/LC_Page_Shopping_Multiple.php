@@ -128,6 +128,7 @@ class LC_Page_Shopping_Multiple extends LC_Page {
                         $objPurchase->saveShippingTemp($val, $shipping_id);
                     }
 
+                    $objPurchase->shippingItemTempToCart($objCartSess);
                     $objPurchase->saveOrderTemp($uniqid, $sqlval[0], $objCustomer);
                     $objSiteSess->setRegistFlag();
                     SC_Response_Ex::sendRedirect("payment.php");

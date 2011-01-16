@@ -207,6 +207,23 @@ class SC_Helper_Purchase {
     }
 
     /**
+     * 配送商品の情報でカートを更新する.
+     */
+    function shippingItemTempToCart(&$objCartSession) {
+        $shipmentItems = array();
+
+        foreach (array_keys($_SESSION['shipping']) as $otherDelivId) {
+            foreach (array_keys($_SESSION['shipping'][$otherDelivId]['shipment_item']) as $productClassId) {
+                $shipmentItems[$productClassId] += $_SESSION['shipping'][$otherDelivId]['shipment_item'][$productClassId]['quantity'];
+           }
+        }
+        foreach ($shipmentItems as $productClassId => $quantity) {
+            $objCartSession->setProductValue($productClassId, 'quantity',
+                                             $quantity,$objCartSession->getKey());
+        }
+    }
+
+    /**
      * 複数配送指定の購入かどうか.
      *
      * @return boolean 複数配送指定の購入の場合 true
