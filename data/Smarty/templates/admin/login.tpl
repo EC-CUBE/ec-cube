@@ -42,28 +42,17 @@
 
 	</div>
 	<div id="copyright">Copyright &copy; 2000-<!--{$smarty.now|date_format:"%Y"}--> LOCKON CO.,LTD. All Rights Reserved.</div>
-
-<!--{* エラーメッセージここから *}-->
-<!--{if $tpl_error}-->
-<div id="loginInputError" style="display:none;">
-  <!--{$tpl_error}-->
-</div>
-<script type="text/javascript">
-<!--
-$(funtion(){
-  tb_show('ERROR!','#TB_inline?height=200&width=400&inlineId=loginInputError','false');
-});
-// -->
-</script>
-<!--{/if}-->
-<!--{* エラーメッセージここまで *}-->
 <!--{* ▲CONTENTS *}-->
 
 <script type="text/javascript">
-<!--
+//<![CDATA[
 document.form1.login_id.focus();
 $(function() {
-  $('#form1').append('<input type="submit" style="position: absolute; top: -1000px" />');
+    jQuery('<input />')
+        .attr('type', 'submit')
+        .css({'position' : 'absolute',
+              'top' : '-1000px'})
+        .appendTo('#form1');
 });
-// -->
+//]]>
 </script>
