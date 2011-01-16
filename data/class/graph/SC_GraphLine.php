@@ -20,8 +20,9 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-$SC_GRAPHLINE_DIR = realpath(dirname( __FILE__));
-require_once($SC_GRAPHLINE_DIR . "/SC_GraphBase.php");
+
+$ownDir = realpath(dirname(__FILE__)) . '/';
+require_once $ownDir . 'SC_GraphBase.php';
 
 // 折れ線グラフ生成クラス
 class SC_GraphLine extends SC_GraphBase{

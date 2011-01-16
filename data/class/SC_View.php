@@ -21,9 +21,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-$SC_VIEW_PHP_DIR = realpath(dirname(__FILE__));
-require_once($SC_VIEW_PHP_DIR . "/../module/Smarty/libs/Smarty.class.php");
-//require_once(CLASS_EX_REALDIR . "util_extends/SC_Utils_Ex.php");
+$viewDir = realpath(dirname(__FILE__)) . '/'; // XXX グローバル変数として流用あり
+require_once $viewDir . '../module/Smarty/libs/Smarty.class.php';
 
 class SC_View {
 
@@ -32,7 +31,7 @@ class SC_View {
 
     // コンストラクタ
     function SC_View($siteinfo = true) {
-        global $SC_VIEW_PHP_DIR;
+        global $viewDir;
 
         $this->_smarty = new Smarty;
         $this->_smarty->left_delimiter = '<!--{';
@@ -51,7 +50,7 @@ class SC_View {
         $this->_smarty->register_modifier("sfPutBR", array("SC_Utils_Ex", "sfPutBR"));
         $this->_smarty->register_modifier("sfRmDupSlash", array("SC_Utils_Ex", "sfRmDupSlash"));
         $this->_smarty->register_modifier("sfCutString", array("SC_Utils_Ex", "sfCutString"));
-        $this->_smarty->plugins_dir=array("plugins", $SC_VIEW_PHP_DIR . "/../smarty_extends");
+        $this->_smarty->plugins_dir=array("plugins", $viewDir . "../smarty_extends");
         $this->_smarty->register_modifier("sf_mb_convert_encoding", array("SC_Utils_Ex", "sf_mb_convert_encoding"));
         $this->_smarty->register_modifier("sfGetEnabled", array("SC_Utils_Ex", "sfGetEnabled"));
         $this->_smarty->register_modifier("sfGetCategoryId", array("SC_Utils_Ex", "sfGetCategoryId"));
@@ -161,9 +160,9 @@ class SC_View {
 
     /* サイト初期設定 */
     function initpath() {
-        global $SC_VIEW_PHP_DIR;
+        global $viewDir;
 
-        $array['tpl_mainnavi'] = $SC_VIEW_PHP_DIR . '/../Smarty/templates/frontparts/mainnavi.tpl';
+        $array['tpl_mainnavi'] = $viewDir . '../Smarty/templates/frontparts/mainnavi.tpl';
 
         $objDb = new SC_Helper_DB_Ex();
         $array['tpl_root_id'] = $objDb->sfGetRootId();

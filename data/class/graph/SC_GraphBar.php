@@ -20,8 +20,9 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-$SC_GRAPHBAR_DIR = realpath(dirname( __FILE__));
-require_once($SC_GRAPHBAR_DIR . "/SC_GraphLine.php");
+
+$ownDir = realpath(dirname(__FILE__)) . '/';
+require_once $ownDir . 'SC_GraphLine.php';
 
 // 棒グラフ生成クラス
 class SC_GraphBar extends SC_GraphLine{

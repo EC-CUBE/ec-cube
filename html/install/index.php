@@ -29,7 +29,7 @@ define('INSTALL_FUNCTION', true);
 require_once HTML_REALDIR . HTML2DATA_DIR . 'require_base.php';
 // ▲require.php 相当
 
-$INSTALL_DIR = realpath(dirname( __FILE__));
+$ownDir = realpath(dirname(__FILE__)) . '/';
 require_once(DATA_REALDIR . "module/Request.php");
 
 if(!defined("ADMIN_DIR")){
@@ -52,14 +52,14 @@ $objPage->arrDB_PORT = array(
 $objDb = new SC_Helper_DB_Ex();
 
 // テンプレートコンパイルディレクトリの書込み権限チェック
-$temp_dir = $INSTALL_DIR . '/temp';
+$temp_dir = $ownDir . 'temp';
 
 if(!is_writable($temp_dir)) {
     SC_Utils_Ex::sfErrorHeader($temp_dir . "にユーザ書込み権限(777, 707等)を付与して下さい。", true);
     exit;
 }
 
-$objView = new SC_InstallView($INSTALL_DIR . '/templates', $INSTALL_DIR . '/temp');
+$objView = new SC_InstallView($ownDir . 'templates', $ownDir . 'temp');
 
 // パラメータ管理クラス
 $objWebParam = new SC_FormParam();

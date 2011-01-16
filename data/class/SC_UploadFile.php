@@ -21,8 +21,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-$SC_UPLOADFILE_DIR = realpath(dirname( __FILE__));
-require_once($SC_UPLOADFILE_DIR . "/../module/gdthumb.php");
+$ownDir = realpath(dirname(__FILE__)) . '/';
+require_once $ownDir . '../module/gdthumb.php';
 
 /* アップロードファイル管理クラス */
 class SC_UploadFile {
