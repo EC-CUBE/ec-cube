@@ -21,21 +21,22 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
-<!--{assign var=default_dir value="`$smarty.const.USER_DIR``$smarty.const.USER_PACKAGE_DIR``$smarty.const.DEFAULT_TEMPLATE_NAME`/"}-->
-<!--{assign var=admin_dir value="`$smarty.const.USER_DIR``$smarty.const.USER_PACKAGE_DIR`admin/"}-->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<!--{$smarty.const.CHAR_CODE}-->">
 <meta http-equiv="content-script-type" content="text/javascript">
 <meta http-equiv="content-style-type" content="text/css">
-<link rel="stylesheet" href="../<!--{$smarty.const.ADMIN_DIR}-->css/install.css" type="text/css" >
 <script type="text/javascript" src="../js/css.js"></script>
 <script type="text/javascript" src="../js/navi.js"></script>
+<style type="text/css">
+  .red {
+      color: #F00;
+  }
+</style>
 <title>EC CUBE インストール画面</title>
 </head>
 
 <body bgcolor="#ffffff" text="#000000" link="#006699" vlink="#006699" alink="#006699" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <noscript>
-<link rel="stylesheet" href="../<!--{$default_dir}-->css/common.css" type="text/css" >
 </noscript>
 <div align="center">
 <a name="top"></a>
@@ -47,7 +48,7 @@
         <td>
         <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" " background="img/header_bg2.jpg">
             <tr valign="top">
-                <td><img src="../<!--{$smarty.const.USER_DIR}--><!--{$smarty.const.USER_PACKAGE_DIR}--><!--{$smarty.const.ADMIN_DIR}-->img/header/logo.jpg" width="230" height="50" alt="EC CUBE" border="0"></td>
+                <td><img src="img/logo.jpg" width="230" height="50" alt="EC CUBE" border="0"></td>
                 <td width="648" align="right"></td>
             </tr>
         </table>
@@ -119,7 +120,7 @@
         </table>
         <table width="878" border="0" cellspacing="0" cellpadding="10" summary=" ">
             <tr>
-                <td class="fs10n"><span class="gray">&nbsp;Copyright &copy; 2000-2010 LOCKON CO.,LTD. All Rights Reserved.</span></td>
+                <td class="fs10n"><span class="gray">&nbsp;Copyright &copy; 2000-<!--{$smarty.now|date_format:"%Y"}--> LOCKON CO.,LTD. All Rights Reserved.</span></td>
             </tr>
         </table>
         </td>

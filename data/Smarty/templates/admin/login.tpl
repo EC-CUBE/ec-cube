@@ -41,7 +41,7 @@
 		</div>
 
 	</div>
-	<div id="copyright">Copyright &copy; 2000-2010 LOCKON CO.,LTD. All Rights Reserved.</div>
+	<div id="copyright">Copyright &copy; 2000-<!--{$smarty.now|date_format:"%Y"}--> LOCKON CO.,LTD. All Rights Reserved.</div>
 
 <!--{* エラーメッセージここから *}-->
 <!--{if $tpl_error}-->
