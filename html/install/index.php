@@ -398,7 +398,6 @@ function lfDispStep0($objPage) {
 
     // プログラムで書込みされるファイル・ディレクトリ
     $arrWriteFile = array(
-        DATA_REALDIR . "install.php",
         USER_REALDIR,
         HTML_REALDIR . "upload",
         DATA_REALDIR . "cache/",
@@ -407,7 +406,7 @@ function lfDispStep0($objPage) {
         DATA_REALDIR . "logs/",
         DATA_REALDIR . "downloads/",
         DATA_REALDIR . "upload/",
-        HTML_REALDIR . ADMIN_DIR
+        HTML_REALDIR . ADMIN_DIR,
     );
 
     $mess = "";
@@ -925,8 +924,6 @@ function lfMakeConfigFile() {
     // ディレクトリの取得
     $url_dir = ereg_replace("^https?://[a-zA-Z0-9_:~=&\?\.\-]+", "", $normal_url);
 
-    $filepath = DATA_REALDIR . "install.php";
-    
     //管理機能SSL制限
     if($objWebParam->getValue('admin_force_ssl') == 1 and strpos($secure_url,"https://") !== FALSE){
         $force_ssl = "TRUE";
@@ -967,7 +964,7 @@ function lfMakeConfigFile() {
     "    define ('ADMIN_ALLOW_HOSTS', '".serialize($allow_hosts)."');\n".
     "?>";
 
-    if($fp = fopen($filepath,"w")) {
+    if ($fp = fopen(CONFIG_REALFILE, 'w')) {
         fwrite($fp, $config_data);
         fclose($fp);
     }

@@ -70,7 +70,10 @@ class SC_Initial {
      */
     function requireInitialConfig() {
 
-        require_once(realpath(dirname( __FILE__)) ."/../install.php");
+        define('CONFIG_REALFILE', realpath(dirname(__FILE__)) . '/../config/config.php');
+        if (file_exists(CONFIG_REALFILE)) {
+            require_once(CONFIG_REALFILE);
+        }
 
         if (defined('ECCUBE_INSTALL')) {
             define('MOBILE_DIR', '');
@@ -131,23 +134,24 @@ class SC_Initial {
      * @return void
      */
     function phpconfigInit() {
-        ini_set("mbstring.http_input", CHAR_CODE);
-        ini_set("mbstring.http_output", CHAR_CODE);
-        ini_set("auto_detect_line_endings", 1);
-        ini_set("default_charset", CHAR_CODE);
-        ini_set("mbstring.internal_encoding", CHAR_CODE);
-        ini_set("mbstring.detect_order", "auto");
-        ini_set("mbstring.substitute_character", "none");
+        ini_set('display_errors', '1');
+        ini_set('mbstring.http_input', CHAR_CODE);
+        ini_set('mbstring.http_output', CHAR_CODE);
+        ini_set('auto_detect_line_endings', 1);
+        ini_set('default_charset', CHAR_CODE);
+        ini_set('mbstring.internal_encoding', CHAR_CODE);
+        ini_set('mbstring.detect_order', 'auto');
+        ini_set('mbstring.substitute_character', 'none');
 
         mb_language('ja'); // mb_internal_encoding() より前に
         // TODO 他に mb_language() している箇所の削除を検討
         // TODO .htaccess の mbstring.language を削除できないか検討
 
         mb_internal_encoding(CHAR_CODE); // mb_language() より後で
-        // TODO 上の「ini_set("mbstring.internal_encoding", CHAR_CODE);」を削除できないか検討
+        // TODO 上の「ini_set('mbstring.internal_encoding', CHAR_CODE);」を削除できないか検討
         // TODO .htaccess の mbstring.internal_encoding を削除できないか検討
 
-        ini_set("arg_separator.output","&");
+        ini_set('arg_separator.output', '&');
         
         //ロケールを明示的に設定
         setlocale(LC_ALL, LOCALE);

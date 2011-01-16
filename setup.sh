@@ -18,7 +18,6 @@ find $WRK_DIR -name ".svn" -type d -print0 | xargs -0 rm -rf
 # find $WRK_DIR -iname "*.bak" -delete
 
 echo "set permissions..."
-chmod a+w $WRK_DIR/data/install.php
 chmod -R a+w $WRK_DIR/html/install/temp
 chmod -R a+w $WRK_DIR/html/user_data
 chmod -R a+w $WRK_DIR/html/upload
@@ -28,5 +27,6 @@ chmod -R a+w $WRK_DIR/data/Smarty
 chmod -R a+w $WRK_DIR/data/class
 chmod -R a+w $WRK_DIR/data/logs
 chmod -R a+w $WRK_DIR/data/upload
+chmod -R a+w $WRK_DIR/data/config
 
 echo "finished."

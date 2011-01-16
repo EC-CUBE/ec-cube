@@ -221,7 +221,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin {
         $ret = $objQuery->insert("dtb_baseinfo", $sqlval);
     }
     
-    //管理機能ディレクトリのリネームとinstall.phpの変更
+    //管理機能ディレクトリのリネームと CONFIG_REALFILE の変更
     function lfUpdateAdminData($array){
         $admin_dir = trim($array['admin_dir'])."/";
         $admin_force_ssl = "FALSE";
@@ -239,14 +239,14 @@ class LC_Page_Admin_Basis extends LC_Page_Admin {
         }
         $admin_allow_hosts = serialize($admin_allow_hosts);
 
-        //権限チェック 
-        if(!is_writable(DATA_REALDIR . "install.php")){
-            $this->arrErr["admin_force_ssl"] = DATA_REALDIR . "install.phpを変更する権限がありません。";
+        // 権限チェック 
+        if(!is_writable(CONFIG_REALFILE)){
+            $this->arrErr["admin_force_ssl"] = CONFIG_REALFILE . ' を変更する権限がありません。';
             return false;
         }
 
-        //install.phpの書き換え
-        $installData = file(DATA_REALDIR."install.php",FILE_IGNORE_NEW_LINES);
+        // CONFIG_REALFILE の書き換え
+        $installData = file(CONFIG_REALFILE, FILE_IGNORE_NEW_LINES);
         $diff = 0;
         foreach($installData as $key=>$line){
             if(strpos($line,"ADMIN_DIR") !== false and ADMIN_DIR != $admin_dir){
