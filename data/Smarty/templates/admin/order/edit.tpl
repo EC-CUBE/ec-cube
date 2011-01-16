@@ -53,6 +53,12 @@
             document.form1.submit();
         }
     }
+
+    function fnMultiple() {
+        document.form1.mode.value = "multiple";
+        document.form1.submit();
+        return false;
+    }
 //-->
 </script>
 <form name="form1" id="form1" method="post" action="?">
@@ -216,8 +222,9 @@
     <!--▲お客様情報ここまで-->
 
     <!--▼受注商品情報ここから-->
+    <a name="order_products"></a>
     <h2 id="order_products">
-        <a name="order_products">受注商品情報</a>
+        受注商品情報
         <a class="btn-normal" href="javascript:;" name="cheek" onclick="fnModeSubmit('cheek','anchor_key','order_products');">計算結果の確認</a>
         <a class="btn-normal" href="javascript:;" name="add_product" onclick="win03('<!--{$smarty.const.URL_PATH}--><!--{$smarty.const.ADMIN_DIR}-->order/product_select.php<!--{if $tpl_order_id}-->?order_id=<!--{$tpl_order_id}--><!--{/if}-->', 'search', '600', '500'); ">商品の追加</a>
     </h2>
@@ -258,7 +265,7 @@
             <input type="hidden" name="point_rate[<!--{$key}-->]" value="<!--{$arrForm.point_rate.value[$key]}-->" id="point_rate_<!--{$key}-->" />
             </td>
             <td align="center"><input type="text" name="price[<!--{$key}-->]" value="<!--{$arrForm.price.value[$key]|h}-->" size="6" class="box6" maxlength="<!--{$arrForm.price.length}-->" id="price_<!--{$key}-->"/> 円</td>
-            <td align="center"><input type="text" name="quantity[<!--{$key}-->]" value="<!--{$arrForm.quantity.value[$key]|h}-->" size="3" class="box3" maxlength="<!--{$arrForm.quantity.length}-->"/></td>
+            <td align="center"><input type="text" name="quantity[<!--{$key}-->]" value="<!--{$arrForm.quantity.value[$key]|h}-->" size="3" class="box3" maxlength="<!--{$arrForm.quantity.length}-->" id="quantity_<!--{$key}-->" /></td>
             <!--{assign var=price value=`$arrForm.price.value[$key]`}-->
             <!--{assign var=quantity value=`$arrForm.quantity.value[$key]`}-->
             <td class="right"><!--{$price|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}--> 円</td>
@@ -341,10 +348,11 @@
     </table>
 
     <!--▼お届け先情報ここから-->
+    <a name="shipping"></a>
     <h2>お届け先情報
         <a class="btn-normal" href="javascript:;" name="input_from_order_data" onclick="fnCopyFromOrderData();">お客様情報へお届けする</a>
         <a class="btn-normal" href="javascript:;" name="input_from_order_data" onclick="fnCopyFromOrderData();">お届け先を新規追加</a>
-        <a class="btn-normal" href="javascript:;" name="input_from_order_data" onclick="fnCopyFromOrderData();">複数のお届け先を指定する</a>
+        <a class="btn-normal" href="javascript:;" name="input_from_order_data" onclick="fnModeSubmit('multiple','anchor_key','shipping');">複数のお届け先を指定する</a>
     </h2>
 
     <!--{assign var=key value="shipping_quantity"}-->
@@ -355,12 +363,13 @@
 
     <!--{assign var=shipping_id value=$arrShippingIds[$shipping_index]}-->
     <!--{if $arrForm.shipping_quantity.value > 1}-->
-    <h3>お届け先<!--{$smarty.section.shipping.iteration}--></h3
+    <h3>お届け先<!--{$smarty.section.shipping.iteration}--></h3>
     <!--{/if}-->
 
     <!--{if $arrForm.shipping_quantity.value > 1}-->
     <!--{assign var=product_quantity value="shipping_product_quantity_`$shipping_id`"}-->
     <input type="hidden" name="<!--{$product_quantity}-->" value="<!--{$arrForm[$product_quantity].value|h}-->" />
+    <input type="hidden" name="shipping_id_<!--{$shipping_id}-->" value="<!--{$shipping_id}-->" id="shipping_id_<!--{$shipping_id}-->" />
     <table class="list" id="order-edit-products">
       <tr>
         <th class="id">商品コード</th>

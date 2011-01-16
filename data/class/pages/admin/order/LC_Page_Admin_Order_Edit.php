@@ -215,6 +215,19 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin {
 
             break;
 
+        // 複数配送設定表示
+        case 'multiple':
+            $this->objFormParam->setParam($_POST);
+            $this->tpl_onload = "win03('" . URL_PATH . ADMIN_DIR . "order/multiple.php', 'multiple', '600', '500');";
+            break;
+
+        // 複数配送設定を反映
+        case 'multiple_set_to':
+            $multipleSize = $_POST['multiple_size'];
+            $this->lfInitMultipleParam($multipleSize);
+            $this->objFormParam->setParam($_POST);
+            $this->setMultipleItemTo($multipleSize);
+            break;
         default:
             break;
         }
@@ -356,6 +369,63 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin {
         }
     }
 
+    /**
+     * 複数配送用フォームの初期化
+     */
+    function lfInitMultipleParam($size) {
+        for ($i = 0; $i < $size; $i++) {
+            $this->objFormParam->addParam("商品規格ID", "multiple_product_class_id" . $i, INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+            $this->objFormParam->addParam("商品コード", "multiple_product_code" . $i, INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"), 1);
+            $this->objFormParam->addParam("商品名", "multiple_product_name" . $i, INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"), 1);
+            $this->objFormParam->addParam("規格1", "multiple_classcategory_name1" . $i, INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"), 1);
+            $this->objFormParam->addParam("規格2", "multiple_classcategory_name2" . $i, INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"), 1);
+            $this->objFormParam->addParam("単価", "multiple_price" . $i, INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"), 1);
+            $this->objFormParam->addParam("数量", "multiple_quantity" . $i, INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"), 1);
+            $this->objFormParam->addParam("配送先住所", "multiple_shipping" . $i, INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+        }
+    }
+
+
+    function setMultipleItemTo($size) {
+        $arrShipmentItem = array();
+        for ($i = 0; $i < $size; $i++) {
+            $shippingId = $this->objFormParam->getValue('multiple_shipping' . $i);
+            $productClassId = $this->objFormParam->getValue('multiple_product_class_id' . $i);
+
+            $name = $this->objFormParam->getValue('multiple_product_name' . $i);
+            $code = $this->objFormParam->getValue('multiple_product_code' . $i);
+            $class1 = $this->objFormParam->getValue('multiple_classcategory_name1' . $i);
+            $class2 = $this->objFormParam->getValue('multiple_classcategory_name2' . $i);
+            $price = $this->objFormParam->getValue('multiple_price' . $i);
+            $quantity = $this->objFormParam->getValue('multiple_quantity' . $i);
+
+            $arrShipmentItem[$shippingId][$productClassId]['shipping_id'] = $shippingId;
+            $arrShipmentItem[$shippingId][$productClassId]['product_class_id'] = $productClassId;
+            $arrShipmentItem[$shippingId][$productClassId]['classcategory_name1'] = $class1;
+            $arrShipmentItem[$shippingId][$productClassId]['classcategory_name2'] = $class2;
+            $arrShipmentItem[$shippingId][$productClassId]['price'] = $price;
+            $arrShipmentItem[$shippingId][$productClassId]['quantity'] += $quantity;
+        }
+
+        $this->arrShippingIds = array();
+        $this->arrProductClassIds = array();
+        foreach ($arrShipmentItem as $shippingId => $items) {
+
+            $this->arrForm['shipping_product_quantity' . '_' . $shippingId] = count($items);
+            $this->objFormParam->setValue('shipping_product_quantity' . '_' . $shippingId,
+                                          $this->arrForm['shipping_product_quantity' . '_' . $shippingId]);
+
+            $this->arrShippingIds[] = $shippingId;
+            $this->arrProductClassIds[] = array_keys($items);
+
+            foreach ($items as $productClassId => $item) {
+                foreach ($item as $itemKey => $itemVal) {
+                    $this->arrForm[$itemKey . '_' . $shippingId . '_' . $productClassId] = $itemVal;
+                    $this->objFormParam->setValue($itemKey . '_' . $shippingId . '_' . $productClassId, $itemVal);
+                }
+            }
+        }
+    }
 
     function lfGetOrderData($order_id) {
         if(SC_Utils_Ex::sfIsInt($order_id)) {
