@@ -151,9 +151,12 @@ class LC_Page_Shopping_Payment extends LC_Page {
 
                 foreach (array_keys($_SESSION['shipping']) as $key) {
                     $timeId = $this->objFormParam->getValue('deliv_time_id' . $key);
+                    /* TODO
+                     * SC_Purchase::getShippingTemp() で取得して,
+                     * リファレンスで代入すると, セッションに添字を追加できない？
+                     */
                     $_SESSION['shipping'][$key]['time_id'] = $timeId;
                     $_SESSION['shipping'][$key]['shipping_time'] = $this->arrDelivTime[$timeId];
-                    // XXX 文字列を代入しておいてもDBで自動変換可能？
                     $_SESSION['shipping'][$key]['shipping_date'] = $this->objFormParam->getValue('deliv_date' . $key);
                 }
                 $this->lfRegistData($uniqid, $objPurchase);

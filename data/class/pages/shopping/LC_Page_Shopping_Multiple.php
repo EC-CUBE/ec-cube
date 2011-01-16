@@ -112,15 +112,15 @@ class LC_Page_Shopping_Multiple extends LC_Page {
                                                                 "other_deliv_id = ?",
                                                                 array($other_deliv_id));
                                 foreach ($otherDeliv[0] as $key => $val) {
-                                    $sqlval[$i]['shipping_' . $key] = $val;
+                                    $sqlval[$other_deliv_id]['shipping_' . $key] = $val;
                                 }
                             } else {
-                                $objPurchase->copyFromCustomer($sqlval[$i], $objCustomer,
+                                $objPurchase->copyFromCustomer($sqlval[0], $objCustomer,
                                                                "shipping");
                             }
                         }
-                        $sqlval[$i]['deliv_id'] = $objPurchase->getDeliv($this->cartKey);
-                        $objPurchase->setShipmentItemTemp($i, $params['product_class_id' . $i], $params['quantity' . $i]);
+                        $sqlval[$other_deliv_id]['deliv_id'] = $objPurchase->getDeliv($this->cartKey);
+                        $objPurchase->setShipmentItemTemp($other_deliv_id, $params['product_class_id' . $i], $params['quantity' . $i]);
                         $i++;
                     }
 

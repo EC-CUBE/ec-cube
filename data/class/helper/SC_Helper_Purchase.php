@@ -481,6 +481,14 @@ __EOS__;
                 }
             }
 
+            // 配送日付を timestamp に変換
+            if (!SC_Utils_Ex::isBlank($sqlval['shipping_date'])) {
+                $d = mb_strcut($sqlval["shipping_date"], 0, 10);
+                $arrDate = split("/", $d);
+                $ts = mktime(0, 0, 0, $arrDate[1], $arrDate[2], $arrDate[0]);
+                $sqlval['shipping_date'] = date("Y-m-d", $ts);
+            }
+
             $sqlval['order_id'] = $orderId;
             $sqlval['shipping_id'] = $shipping_id;
             $sqlval['create_date'] = 'Now()';
