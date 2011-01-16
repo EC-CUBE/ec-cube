@@ -224,6 +224,17 @@ class SC_Helper_Purchase {
     }
 
     /**
+     * 配送先都道府県の配列を返す.
+     */
+    function getShippingPref() {
+        $results = array();
+        foreach ($_SESSION['shipping'] as $val) {
+            $results[] = $val['shipping_pref'];
+        }
+        return $results;
+    }
+
+    /**
      * 複数配送指定の購入かどうか.
      *
      * @return boolean 複数配送指定の購入の場合 true
@@ -551,16 +562,6 @@ __EOS__;
     function registerOrder($orderParams, &$objCartSession, $cartKey) {
         $objQuery =& SC_Query::getSingletonInstance();
 
-        // 別のお届け先を指定が無ければ, お届け先に登録住所をコピー
-        /* FIXME
-        if ($orderParams['deliv_check'] == "-1") {
-            $keys = array('name01', 'name02', 'kana01', 'kana02', 'pref', 'zip01',
-                          'zip02', 'addr01', 'addr02', 'tel01', 'tel02', 'tel03');
-            foreach ($keys as $key) {
-                $orderParams['deliv_' . $key] = $orderParams['order_' . $key];
-            }
-        }
-        */
         // 不要な変数を unset
         $unsets = array('mailmaga_flg', 'deliv_check', 'point_check', 'password',
                         'reminder', 'reminder_answer', 'mail_flag', 'session');

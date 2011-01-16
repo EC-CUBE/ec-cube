@@ -130,8 +130,8 @@ class LC_Page_Shopping_Payment extends LC_Page {
         if (strlen($this->tpl_message) >= 1) {
             SC_Utils_Ex::sfDispSiteError(SOLD_OUT, '', true);
         }
-        // FIXME 使用ポイント, 配送都道府県, 支払い方法, 手数料の扱い
-        $this->arrData = $objCartSess->calculate($this->cartKey, $objCustomer);
+        // FIXME 使用ポイント, 手数料の扱い
+        $this->arrData = $objCartSess->calculate($this->cartKey, $objCustomer, 0, $objPurchase->getShippingPref());
 
         // 購入金額の取得
         $total_inctax = $objCartSess->getAllProductsTotal($this->cartKey);

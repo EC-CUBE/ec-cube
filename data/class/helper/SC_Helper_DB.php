@@ -1476,27 +1476,37 @@ __EOS__;
     }
 
     /**
-     * 都道府県、支払い方法から配送料金を取得する.
+     * 都道府県から配送料金を取得する.
      *
-     * @param array $arrData 各種情報
-     * @return string 指定の都道府県, 支払い方法の配送料金
+     * @param integer|array $pref_id 都道府県ID 又は都道府県IDの配列
+     * @return string 指定の都道府県, 商品種別の配送料金
      */
     function sfGetDelivFee($pref_id, $product_type_id) {
         $objQuery =& SC_Query::getSingletonInstance();
 
-        // 配送業者から配送料を取得
-        if($deliv_id != "") {
-
-            // 都道府県が指定されていない場合は、東京都の番号を指定しておく
-            if($pref_id == "") {
-                $pref_id = 13;
-            }
-
-            $objQuery =& SC_Query::getSingletonInstance();
-            $where = "product_type_id = ? AND pref = ?";
-            $arrRet= $objQuery->select("fee", "dtb_delivfee", $where, array($product_type_id, $pref_id));
+        /*
+         * FIXME 都道府県が指定されていない場合は、東京都の番号を指定しておく
+         * http://svn.ec-cube.net/open_trac/ticket/410
+         */
+        if($pref_id == "") {
+            $pref_id = 13;
         }
-        return $arrRet[0]['fee'];
+        if (!is_array($pref_id)) {
+            $pref_id = array($pref_id);
+        }
+        $sql = <<< __EOS__
+            SELECT SUM(T1.fee) AS fee
+              FROM dtb_delivfee T1
+              JOIN dtb_deliv T2
+                ON T1.deliv_id = T2.deliv_id
+             WHERE T1.pref = ? AND T2.product_type_id = ?
+__EOS__;
+
+        $result = 0;
+        foreach ($pref_id as $pref) {
+            $result += $objQuery->getOne($sql, array($pref, $product_type_id));
+        }
+        return $result;
     }
 
     /**

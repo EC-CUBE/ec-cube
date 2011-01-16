@@ -389,13 +389,15 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin {
                 $this->arrProductClassIds[] = array_keys($shipping['shipment_item']);
 
                 // お届け日の取得
-                $ts = strtotime($shipping["shipping_date"]);
-                $this->objFormParam->setValue('shipping_date_year_' . $shipping['shipping_id'], date("Y", $ts));
-                $this->arrForm['shipping_date_year_' . $shipping['shipping_id']] = date("Y", $ts);
-                $this->objFormParam->setValue('shipping_date_month_' . $shipping['shipping_id'], date("n", $ts));
-                $this->arrForm['shipping_date_month_' . $shipping['shipping_id']] = date("n", $ts);
-                $this->objFormParam->setValue('shipping_date_day_' . $shipping['shipping_id'], date("j", $ts));
-                $this->arrForm['shipping_date_day_' . $shipping['shipping_id']] = date("j", $ts);
+                if (!SC_Utils_Ex::isBlank($shipping["shipping_date"])) {
+                    $ts = strtotime($shipping["shipping_date"]);
+                    $this->objFormParam->setValue('shipping_date_year_' . $shipping['shipping_id'], date("Y", $ts));
+                    $this->arrForm['shipping_date_year_' . $shipping['shipping_id']] = date("Y", $ts);
+                    $this->objFormParam->setValue('shipping_date_month_' . $shipping['shipping_id'], date("n", $ts));
+                    $this->arrForm['shipping_date_month_' . $shipping['shipping_id']] = date("n", $ts);
+                    $this->objFormParam->setValue('shipping_date_day_' . $shipping['shipping_id'], date("j", $ts));
+                    $this->arrForm['shipping_date_day_' . $shipping['shipping_id']] = date("j", $ts);
+                }
 
                 // 配送内容の処理
                 foreach ($shipping as $shippingKey => $shippingVal) {
