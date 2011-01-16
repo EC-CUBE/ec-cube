@@ -411,16 +411,13 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin {
         $this->arrProductClassIds = array();
         foreach ($arrShipmentItem as $shippingId => $items) {
 
-            $this->arrForm['shipping_product_quantity' . '_' . $shippingId] = count($items);
-            $this->objFormParam->setValue('shipping_product_quantity' . '_' . $shippingId,
-                                          $this->arrForm['shipping_product_quantity' . '_' . $shippingId]);
+            $this->objFormParam->setValue('shipping_product_quantity' . '_' . $shippingId, count($items));
 
             $this->arrShippingIds[] = $shippingId;
             $this->arrProductClassIds[] = array_keys($items);
 
             foreach ($items as $productClassId => $item) {
                 foreach ($item as $itemKey => $itemVal) {
-                    $this->arrForm[$itemKey . '_' . $shippingId . '_' . $productClassId] = $itemVal;
                     $this->objFormParam->setValue($itemKey . '_' . $shippingId . '_' . $productClassId, $itemVal);
                 }
             }
@@ -449,8 +446,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin {
             $this->arrShipping = $this->lfGetShippingData($order_id);
             $this->lfInitShippingParam($this->arrShipping);
 
-            $this->arrForm['shipping_quantity'] = count($this->arrShipping);
-            $this->objFormParam->setValue('shipping_quantity', $this->arrForm['shipping_quantity']);
+            $this->objFormParam->setValue('shipping_quantity', count($this->arrShipping));
 
             // 配送情報の処理
             foreach ($this->arrShipping as $shipping) {
@@ -462,27 +458,20 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin {
                 if (!SC_Utils_Ex::isBlank($shipping["shipping_date"])) {
                     $ts = strtotime($shipping["shipping_date"]);
                     $this->objFormParam->setValue('shipping_date_year_' . $shipping['shipping_id'], date("Y", $ts));
-                    $this->arrForm['shipping_date_year_' . $shipping['shipping_id']] = date("Y", $ts);
                     $this->objFormParam->setValue('shipping_date_month_' . $shipping['shipping_id'], date("n", $ts));
-                    $this->arrForm['shipping_date_month_' . $shipping['shipping_id']] = date("n", $ts);
                     $this->objFormParam->setValue('shipping_date_day_' . $shipping['shipping_id'], date("j", $ts));
-                    $this->arrForm['shipping_date_day_' . $shipping['shipping_id']] = date("j", $ts);
                 }
 
                 // 配送内容の処理
                 foreach ($shipping as $shippingKey => $shippingVal) {
 
-                    $this->arrForm[$shippingKey . '_' . $shipping['shipping_id']] = $shippingVal;
                     $this->objFormParam->setValue($shippingKey . '_' . $shipping['shipping_id'], $shippingVal);
 
-                    $this->arrForm['shipping_product_quantity' . '_' . $shipping['shipping_id']] = count($shipping['shipment_item']);
-                    $this->objFormParam->setValue('shipping_product_quantity' . '_' . $shipping['shipping_id'],
-                                                  $this->arrForm['shipping_product_quantity' . '_' . $shipping['shipping_id']]);
+                    $this->objFormParam->setValue('shipping_product_quantity' . '_' . $shipping['shipping_id'], count($shipping['shipment_item']));
 
                     // 配送商品の処理
                     foreach ($shipping['shipment_item'] as $productClassId => $item) {
                         foreach ($item as $itemKey => $itemVal) {
-                            $this->arrForm[$itemKey . '_' . $shipping['shipping_id'] . '_' . $productClassId] = $itemVal;
                             $this->objFormParam->setValue($itemKey . '_' . $shipping['shipping_id'] . '_' . $productClassId, $itemVal);
                         }
                     }
