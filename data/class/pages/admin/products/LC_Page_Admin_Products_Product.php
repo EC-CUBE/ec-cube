@@ -681,7 +681,7 @@ __EOF__;
             $objErr->doFunc(array(NORMAL_PRICE_TITLE, "price01", PRICE_LEN), array("NUM_CHECK", "MAX_LENGTH_CHECK"));
             $objErr->doFunc(array(SALE_PRICE_TITLE, "price02", PRICE_LEN), array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
 
-            if(!isset($array['stock_unlimited']) && $array['stock_unlimited'] != "1") {
+            if(!isset($array['stock_unlimited']) && $array['stock_unlimited'] != UNLIMITED_FLG_UNLIMITED) {
                 $objErr->doFunc(array("在庫数", "stock", AMOUNT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
             }
 
@@ -918,7 +918,7 @@ __EOF__;
         $sqlval = SC_Utils_Ex::sfArrayIntersectKeys($arrList, $checkArray);
         $sqlval = SC_Utils_Ex::arrayDefineIndexes($sqlval, $checkArray);
 
-        $sqlval['stock_unlimited'] = $sqlval['stock_unlimited'] ? '1' : '0';
+        $sqlval['stock_unlimited'] = $sqlval['stock_unlimited'] ? UNLIMITED_FLG_UNLIMITED : UNLIMITED_FLG_LIMITED;
         $sqlval['creator_id'] = strlen($_SESSION['member_id']) >= 1 ? $_SESSION['member_id'] : '0';
 
         if (strlen($sqlval['product_class_id']) == 0) {
