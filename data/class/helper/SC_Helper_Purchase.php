@@ -121,10 +121,10 @@ class SC_Helper_Purchase {
             if($objCartSess->checkChangeCart($cartKey) || !($quantity > 0)) {
                 // カート情報表示に強制移動する
                 if (Net_UserAgent_Mobile::isMobile()) {
-                    header("Location: ". MOBILE_CART_URL_PATH
+                    header("Location: ". MOBILE_CART_URLPATH
                            . "?" . session_name() . "=" . session_id());
                 } else {
-                    header("Location: ".CART_URL_PATH);
+                    header("Location: ".CART_URLPATH);
                 }
                 exit;
             }

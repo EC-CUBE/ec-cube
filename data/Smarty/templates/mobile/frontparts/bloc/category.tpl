@@ -25,9 +25,9 @@
 <!--{section name=cnt loop=$arrCat}-->
 <!--{assign var=disp_name value="`$arrCat[cnt].category_name`"}-->
 <!--{if $arrCat[cnt].has_children}-->
-<!--{assign var=path value="`$smarty.const.MOBILE_URL_PATH`products/category_list.php"}-->
+<!--{assign var=path value="`$smarty.const.MOBILE_URLPATH`products/category_list.php"}-->
 <!--{else}-->
-<!--{assign var=path value="`$smarty.const.MOBILE_URL_PATH`products/list.php"}-->
+<!--{assign var=path value="`$smarty.const.MOBILE_URLPATH`products/list.php"}-->
 <!--{/if}-->
 　<font color="<!--{cycle values="#000000,#880000,#8888ff,#88ff88,#ff0000"}-->">■</font><a href="<!--{$path}-->?category_id=<!--{$arrCat[cnt].category_id}-->"><!--{$disp_name|sfCutString:20|h}--></a><br>
 <!--{/section}-->

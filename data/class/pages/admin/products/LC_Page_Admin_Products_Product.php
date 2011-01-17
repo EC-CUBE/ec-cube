@@ -421,7 +421,7 @@ __EOF__;
         $this->arrHidden = array_merge((array)$this->arrHidden, (array)$this->objUpFile->getHiddenFileList());
         $this->arrHidden = array_merge((array)$this->arrHidden, (array)$this->objDownFile->getHiddenFileList());
         // Form用配列を渡す。
-        $this->arrFile = $this->objUpFile->getFormFileList(IMAGE_TEMP_URL_PATH, IMAGE_SAVE_URL_PATH);
+        $this->arrFile = $this->objUpFile->getFormFileList(IMAGE_TEMP_URLPATH, IMAGE_SAVE_URLPATH);
 
         $this->arrForm['down_realfilename'] = $this->objDownFile->getFormDownFile();
 
@@ -721,7 +721,7 @@ __EOF__;
         $this->arrForm['category_id'] = serialize($this->arrForm['category_id']);
 
         // Form用配列を渡す。
-        $this->arrFile = $this->objUpFile->getFormFileList(IMAGE_TEMP_URL_PATH, IMAGE_SAVE_URL_PATH);
+        $this->arrFile = $this->objUpFile->getFormFileList(IMAGE_TEMP_URLPATH, IMAGE_SAVE_URLPATH);
         $this->arrForm['down_realfilename'] = $this->objDownFile->getFormDownFile();
     }
 

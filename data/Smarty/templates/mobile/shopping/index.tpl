@@ -29,7 +29,7 @@
 <!--▼会員登録がお済みでないお客様-->
 ■初めてご注文の方<br>
 (新規ご登録)<br>
-<form name="member_form" id="member_form" method="post" action="<!--{$smarty.const.MOBILE_URL_PATH}-->entry/kiyaku.php">
+<form name="member_form" id="member_form" method="post" action="<!--{$smarty.const.MOBILE_URLPATH}-->entry/kiyaku.php">
 	<div align="center"><input type="submit" value="新規登録"></div><br>
 </form>
 <!--▲まだ会員登録されていないお客様-->
@@ -53,7 +53,7 @@
 	<!--{assign var=key value="login_pass"}--><font color="#FF0000"><!--{$arrErr[$key]}--></font>
 	<input type="password" name="<!--{$key}-->" size="40" istyle="3"><br>
 	<center><input type="submit" value="送信" name="log"></center><br>
-	<a href="<!--{$smarty.const.MOBILE_URL_PATH}-->forgot/<!--{$smarty.const.DIR_INDEX_URL}-->">パスワードをお忘れの方はこちら</a><br>
+	<a href="<!--{$smarty.const.MOBILE_URLPATH}-->forgot/<!--{$smarty.const.DIR_INDEX_URL}-->">パスワードをお忘れの方はこちら</a><br>
 </form>
 <!--▲会員登録がお済のお客様-->
 <!--▲MAIN ONTENTS-->
@@ -62,8 +62,8 @@
 <br>
 <hr>
 
-<a href="<!--{$smarty.const.MOBILE_CART_URL_PATH}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>
-<a href="<!--{$smarty.const.MOBILE_TOP_URL_PATH}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
+<a href="<!--{$smarty.const.MOBILE_CART_URLPATH}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>
+<a href="<!--{$smarty.const.MOBILE_TOP_URLPATH}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
 
 <br>
 

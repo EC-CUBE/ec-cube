@@ -422,7 +422,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin {
             }
 
             // ファイルパスを返す
-            $ret_path = GRAPH_URL_PATH . $pngname;
+            $ret_path = GRAPH_URLPATH . $pngname;
         }
         return $ret_path;
     }
@@ -472,7 +472,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin {
             }
 
             // ファイルパスを返す
-            $ret_path = GRAPH_URL_PATH . $pngname;
+            $ret_path = GRAPH_URLPATH . $pngname;
         }
         return $ret_path;
     }
@@ -518,7 +518,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin {
             }
 
             // ファイルパスを返す
-            $ret_path = GRAPH_URL_PATH . $pngname;
+            $ret_path = GRAPH_URLPATH . $pngname;
         }
         return $ret_path;
     }

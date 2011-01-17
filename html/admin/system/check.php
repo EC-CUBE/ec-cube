@@ -40,6 +40,6 @@ if(SC_Utils_Ex::sfIsInt($_GET['id']) && ($_GET['no'] == 1 || $_GET['no'] == 0)){
 }
 
 // ページの表示
-$location = "Location: " . ADMIN_SYSTEM_URL_PATH . "?pageno=".$_GET['pageno'];
+$location = "Location: " . ADMIN_SYSTEM_URLPATH . "?pageno=".$_GET['pageno'];
 header($location);
 ?>

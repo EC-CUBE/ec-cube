@@ -177,7 +177,7 @@ $(document).ready(function() {
             <!--★画像★-->
             <a
                 <!--{if $arrProduct.main_large_image|strlen >= 1}-->
-                    href="<!--{$smarty.const.IMAGE_SAVE_URL_PATH}--><!--{$arrProduct.main_large_image|h}-->"
+                    href="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrProduct.main_large_image|h}-->"
                     class="expansion"
                     onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_expansion_on.gif','expansion01');"
                     onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_expansion.gif','expansion01');"
@@ -410,7 +410,7 @@ $(document).ready(function() {
                     <div class="subphotoimg">
                         <a
                             <!--{if $arrProduct[$lkey]|strlen >= 1}-->
-                                href="<!--{$smarty.const.IMAGE_SAVE_URL_PATH}--><!--{$arrProduct[$lkey]|h}-->"
+                                href="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrProduct[$lkey]|h}-->"
                                 class="expansion"
                                 onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_expansion_on.gif', 'expansion_<!--{$lkey|h}-->');"
                                 onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_expansion.gif', 'expansion_<!--{$lkey|h}-->');"
@@ -491,12 +491,12 @@ $(document).ready(function() {
                 <!-- 左列 -->
                 <div class="whoboughtleft">
 
-                    <a href="<!--{$smarty.const.P_DETAIL_URL_PATH}--><!--{$arrRecommend[cnt].product_id|u}-->">
+                    <a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrRecommend[cnt].product_id|u}-->">
                         <img src="<!--{$smarty.const.URL_PATH}-->resize_image.php?image=<!--{$arrRecommend[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[cnt].name|h}-->" /></a>
 
                     <!--{assign var=price02_min value=`$arrRecommend[cnt].price02_min`}-->
                     <!--{assign var=price02_max value=`$arrRecommend[cnt].price02_max`}-->
-                    <h3><a href="<!--{$smarty.const.P_DETAIL_URL_PATH}--><!--{$arrRecommend[cnt].product_id|u}-->"><!--{$arrRecommend[cnt].name|h}--></a></h3>
+                    <h3><a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrRecommend[cnt].product_id|u}-->"><!--{$arrRecommend[cnt].name|h}--></a></h3>
 
                     <p class="sale_price"><!--{$smarty.const.SALE_PRICE_TITLE}--><span class="mini">(税込)</span>：<span class="price">
                         <!--{if $price02_min == $price02_max}-->
@@ -516,12 +516,12 @@ $(document).ready(function() {
                 <!-- 右列 -->
                 <div class="whoboughtright">
 
-                    <a href="<!--{$smarty.const.P_DETAIL_URL_PATH}--><!--{$arrRecommend[cnt].product_id|u}-->">
+                    <a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrRecommend[cnt].product_id|u}-->">
                         <img src="<!--{$smarty.const.URL_PATH}-->resize_image.php?image=<!--{$arrRecommend[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[cnt].name|h}-->" /></a>
 
                     <!--{assign var=price02_min value=`$arrRecommend[cnt].price02_min`}-->
                     <!--{assign var=price02_max value=`$arrRecommend[cnt].price02_max`}-->
-                    <h3><a href="<!--{$smarty.const.P_DETAIL_URL_PATH}--><!--{$arrRecommend[cnt].product_id|u}-->"><!--{$arrRecommend[cnt].name|h}--></a></h3>
+                    <h3><a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrRecommend[cnt].product_id|u}-->"><!--{$arrRecommend[cnt].name|h}--></a></h3>
 
                     <p class="sale_price"><!--{$smarty.const.SALE_PRICE_TITLE}--><span class="mini">(税込)</span>：<span class="price">
 

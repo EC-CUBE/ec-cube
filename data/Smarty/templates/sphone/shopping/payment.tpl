@@ -50,7 +50,7 @@
                         <!--{if $img_show}-->
                             <td>
                                 <!--{if $arrPayment[cnt].payment_image != ""}-->
-                                    <img src="<!--{$smarty.const.IMAGE_SAVE_URL_PATH}--><!--{$arrPayment[cnt].payment_image}-->" />
+                                    <img src="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrPayment[cnt].payment_image}-->" />
                                 <!--{/if}-->
                             </td>
                         <!--{/if}-->

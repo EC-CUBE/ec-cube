@@ -434,7 +434,7 @@ function selectAll(target) {
     <!--{if count($arrSearchHidden) > 0}-->
     <!--▼検索結果へ戻る-->
     <ul>
-      <li><a class="btn-action" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_PRODUCTS_URL_PATH}-->'); fnModeSubmit('search','',''); return false;"><span class="btn-prev">検索画面に戻る</span></a></li>
+      <li><a class="btn-action" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_PRODUCTS_URLPATH}-->'); fnModeSubmit('search','',''); return false;"><span class="btn-prev">検索画面に戻る</span></a></li>
     <!--▲検索結果へ戻る-->
     <!--{/if}-->
       <li><a class="btn-action" onclick="selectAll('category_id'); document.form1.submit();"><span class="btn-next">確認ページへ</span></a></li>

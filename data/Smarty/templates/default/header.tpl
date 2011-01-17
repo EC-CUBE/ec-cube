@@ -22,7 +22,7 @@
 <!--▼HEADER-->
 <div id="header">
   <h1>
-    <a href="<!--{$smarty.const.TOP_URL_PATH}-->">
+    <a href="<!--{$smarty.const.TOP_URLPATH}-->">
       <em><!--{$arrSiteInfo.shop_name|h}-->/<!--{$tpl_title|h}--></em></a>
   </h1>
   <!--{* ▼HeaderInternal COLUMN*}-->
@@ -57,7 +57,7 @@
           <img src="<!--{$TPL_DIR}-->img/common/btn_header_entry.gif" width="95" height="20" alt="会員登録" name="entry" id="entry" /></a>
       </li>
       <li>
-        <a href="<!--{$smarty.const.CART_URL_PATH}-->"
+        <a href="<!--{$smarty.const.CART_URLPATH}-->"
            onmouseover="chgImg('<!--{$TPL_DIR}-->img/common/btn_header_cartin_on.gif','cartin');"
            onmouseout="chgImg('<!--{$TPL_DIR}-->img/common/btn_header_cartin.gif','cartin');">
           <img src="<!--{$TPL_DIR}-->img/common/btn_header_cartin.gif" width="95" height="20" alt="カゴの中を見る" name="cartin" id="cartin" /></a>

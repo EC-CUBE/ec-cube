@@ -246,7 +246,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin {
 
         $this->updateMemberData($_POST['member_id'], $this->objForm->getHashArray());
         // 親ウィンドウを更新後、自ウィンドウを閉じる。
-        $url = ADMIN_SYSTEM_URL_PATH . "?pageno=" . $_POST['pageno'];
+        $url = ADMIN_SYSTEM_URLPATH . "?pageno=" . $_POST['pageno'];
         $this->tpl_onload = "fnUpdateParent('".$url."'); window.close();";
     }
 
@@ -286,7 +286,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin {
      * @return void
      */
     function execParentReloadMode() {
-        $url = ADMIN_SYSTEM_URL_PATH;
+        $url = ADMIN_SYSTEM_URLPATH;
         $this->tpl_onload = "fnUpdateParent('$url')";
     }
 

@@ -27,9 +27,9 @@
 
 <!--{foreach from=$arrChildren key=i item=arrChild}-->
 <!--{if $arrChild.has_children}-->
-<!--{assign var=path value="`$smarty.const.MOBILE_URL_PATH`products/category_list.php"}-->
+<!--{assign var=path value="`$smarty.const.MOBILE_URLPATH`products/category_list.php"}-->
 <!--{else}-->
-<!--{assign var=path value="`$smarty.const.MOBILE_URL_PATH`products/list.php"}-->
+<!--{assign var=path value="`$smarty.const.MOBILE_URLPATH`products/list.php"}-->
 <!--{/if}-->
 <!--{if $i+1<9}-->
 <a href="<!--{$path}-->?category_id=<!--{$arrChild.category_id}-->" accesskey="<!--{$i+1}-->"><!--{$i+1|numeric_emoji}--><!--{$arrChild.category_name|h}-->(<!--{$arrChild.product_count}-->)</a><br>
@@ -41,8 +41,8 @@
 <br>
 <hr>
 
-<a href="<!--{$smarty.const.MOBILE_CART_URL_PATH}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>
-<a href="<!--{$smarty.const.MOBILE_TOP_URL_PATH}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
+<a href="<!--{$smarty.const.MOBILE_CART_URLPATH}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>
+<a href="<!--{$smarty.const.MOBILE_TOP_URLPATH}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
 
 <br>
 

@@ -69,7 +69,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page {
         //$objView = new SC_SiteView(false);
         $objQuery = new SC_Query();
         $objCustomer = new SC_Customer();
-        $ParentPage = MYPAGE_DELIVADDR_URL_PATH;
+        $ParentPage = MYPAGE_DELIVADDR_URLPATH;
 
         // GETでページを指定されている場合には指定ページに戻す
         if (isset($_GET['page'])) {
@@ -83,7 +83,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page {
          * ログイン判定 及び 退会判定
          * 未ログインでも, 複数配送設定ページからのアクセスの場合は表示する
          */
-        if (!$objCustomer->isLoginSuccess() && $ParentPage != MULTIPLE_URL_PATH){
+        if (!$objCustomer->isLoginSuccess() && $ParentPage != MULTIPLE_URLPATH){
             $this->tpl_onload = "fnUpdateParent('". $this->getLocation($_POST['ParentPage']) ."'); window.close();";
         }
 
@@ -134,9 +134,9 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page {
                         if ($val != "") $this->arrForm[$key] = $val;
                     }
                 } else {
-                    $validUrl = array(MYPAGE_DELIVADDR_URL_PATH,
-                                      DELIV_URL_PATH,
-                                      MULTIPLE_URL_PATH);
+                    $validUrl = array(MYPAGE_DELIVADDR_URLPATH,
+                                      DELIV_URLPATH,
+                                      MULTIPLE_URLPATH);
                     if (in_array($_POST['ParentPage'], $validUrl)) {
                         $this->tpl_onload = "fnUpdateParent('". $this->getLocation($_POST['ParentPage']) ."'); window.close();";
                     } else {

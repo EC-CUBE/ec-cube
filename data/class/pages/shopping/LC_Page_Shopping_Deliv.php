@@ -205,7 +205,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
                 // 正常に登録されたことを記録しておく
                 $objSiteSess->setRegistFlag();
                 // お支払い方法選択ページへ移動
-                SC_Response_Ex::sendRedirect(SHOPPING_PAYMENT_URL_PATH);
+                SC_Response_Ex::sendRedirect(SHOPPING_PAYMENT_URLPATH);
                 exit;
             // 別のお届け先がチェックされている場合
             } elseif($_POST['deliv_check'] >= 1) {
@@ -223,7 +223,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
                     // 正常に登録されたことを記録しておく
                     $objSiteSess->setRegistFlag();
                     // お支払い方法選択ページへ移動
-                    SC_Response_Ex::sendRedirect(SHOPPING_PAYMENT_URL_PATH);
+                    SC_Response_Ex::sendRedirect(SHOPPING_PAYMENT_URLPATH);
                     exit;
                 }
             }else{
@@ -234,7 +234,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         // 前のページに戻る
         case 'return':
             // 確認ページへ移動
-            SC_Response_Ex::sendRedirect(CART_URL_PATH);
+            SC_Response_Ex::sendRedirect(CART_URLPATH);
             exit;
             break;
         // お届け先複数指定

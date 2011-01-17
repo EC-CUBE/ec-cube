@@ -35,7 +35,7 @@
             <!--{/if}-->
         </p>
         <p class="btn">
-            <a href="<!--{$smarty.const.CART_URL_PATH}-->" onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_block_cartin_on.gif','button_cartin');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_block_cartin.gif','button_cartin');">
+            <a href="<!--{$smarty.const.CART_URLPATH}-->" onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_block_cartin_on.gif','button_cartin');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_block_cartin.gif','button_cartin');">
                 <img src="<!--{$TPL_DIR}-->img/button/btn_block_cartin.gif" width="87" height="22" alt="カゴの中を見る" border="0" name="button_cartin" id="button_cartin" /></a>
         </p>
     </div>

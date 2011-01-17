@@ -56,7 +56,7 @@
             <!--{foreach from=$tpl_arrOrderDetail item=orderDetail}-->
                 <tr>
                     <td><!--{$orderDetail.product_code|h}--></td>
-                    <td><a<!--{if $orderDetail.enable}--> href="<!--{$smarty.const.P_DETAIL_URL_PATH}--><!--{$orderDetail.product_id|u}-->"<!--{/if}-->><!--{$orderDetail.product_name|h}--></a></td>
+                    <td><a<!--{if $orderDetail.enable}--> href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$orderDetail.product_id|u}-->"<!--{/if}-->><!--{$orderDetail.product_name|h}--></a></td>
                     <td>
                     <!--{ if $orderDetail.product_type_id == PRODUCT_TYPE_DOWNLOAD}-->
                         <!--{ if $orderDetail.price == "0" || ( $orderDetail.status >= "4" && $orderDetail.effective == "1" )}-->

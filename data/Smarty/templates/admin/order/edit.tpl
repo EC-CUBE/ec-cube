@@ -188,7 +188,7 @@
                 <input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" size="6" class="box6" />
                  -
                 <input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" size="6" class="box6" />
-                <a class="btn-normal" href="javascript:;" name="address_input" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URL_PATH}-->', 'order_zip01', 'order_zip02', 'order_pref', 'order_addr01');">住所入力</a><br />
+                <a class="btn-normal" href="javascript:;" name="address_input" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'order_zip01', 'order_zip02', 'order_pref', 'order_addr01');">住所入力</a><br />
                 <!--{assign var=key value="order_pref"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
@@ -455,7 +455,7 @@
                 <input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" size="6" class="box6" />
                  -
                 <input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" size="6" class="box6" />
-                <a class="btn-normal" href="javascript:;" name="address_input" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URL_PATH}-->', 'shipping_zip01', 'shipping_zip02', 'shipping_pref', 'shipping_addr01');">住所入力</a><br />
+                <a class="btn-normal" href="javascript:;" name="address_input" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'shipping_zip01', 'shipping_zip02', 'shipping_pref', 'shipping_addr01');">住所入力</a><br />
                 <!--{assign var=key value="shipping_pref_`$shipping_id`"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
@@ -544,7 +544,7 @@
     <div class="btn-area">
       <ul>
         <!--{if count($arrSearchHidden) > 0}-->
-        <li><a class="btn-action" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_ORDER_URL_PATH}-->'); fnModeSubmit('search','',''); return false;"><span class="btn-prev">検索画面に戻る</span></a></li>
+        <li><a class="btn-action" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_ORDER_URLPATH}-->'); fnModeSubmit('search','',''); return false;"><span class="btn-prev">検索画面に戻る</span></a></li>
         <!--{/if}-->
         <li><a class="btn-action" href="javascript:;" onclick="return fnFormConfirm();"><span class="btn-next">この内容で登録する</span></a></li>
       </ul>

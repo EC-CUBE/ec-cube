@@ -33,7 +33,7 @@
           <a href="javascript:history.back();" class="spbtn spbtn-medeum">
                     同意しない</a>&nbsp;
        <!--{else}-->
-       <a href="<!--{$smarty.const.TOP_URL_PATH}-->" class="spbtn spbtn-medeum">
+       <a href="<!--{$smarty.const.TOP_URLPATH}-->" class="spbtn spbtn-medeum">
                     同意しない</a>&nbsp;
        <!--{/if}-->
        <a href="<!--{$smarty.const.ENTRY_URL}-->" class="spbtn spbtn-shopping">

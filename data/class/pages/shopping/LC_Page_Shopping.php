@@ -143,7 +143,7 @@ class LC_Page_Shopping extends LC_Page {
                 // 正常に登録されたことを記録しておく
                 $objSiteSess->setRegistFlag();
                 // お支払い方法選択ページへ移動
-                SC_Response_Ex::sendRedirect(SHOPPING_PAYMENT_URL_PATH);
+                SC_Response_Ex::sendRedirect(SHOPPING_PAYMENT_URLPATH);
                 exit;
             }
 
@@ -151,7 +151,7 @@ class LC_Page_Shopping extends LC_Page {
         // 前のページに戻る
         case 'return':
             // 確認ページへ移動
-            SC_Response_Ex::sendRedirect(CART_URL_PATH);
+            SC_Response_Ex::sendRedirect(CART_URLPATH);
             exit;
             break;
 
@@ -165,7 +165,7 @@ class LC_Page_Shopping extends LC_Page {
                 // 正常に登録されたことを記録しておく
                 $objSiteSess->setRegistFlag();
 
-                SC_Response_Ex::sendRedirect(MULTIPLE_URL_PATH);
+                SC_Response_Ex::sendRedirect(MULTIPLE_URLPATH);
                 exit;
             }
             // breakなし

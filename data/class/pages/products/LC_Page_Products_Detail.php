@@ -205,7 +205,7 @@ class LC_Page_Products_Detail extends LC_Page {
                         exit;
                     }
 
-                    SC_Response_Ex::sendRedirect(CART_URL_PATH);
+                    SC_Response_Ex::sendRedirect(CART_URLPATH);
                     exit;
                 }
                 break;
@@ -586,7 +586,7 @@ class LC_Page_Products_Detail extends LC_Page {
         // DBからのデータを引き継ぐ
         $this->objUpFile->setDBFileList($this->arrProduct);
         // ファイル表示用配列を渡す
-        $this->arrFile = $this->objUpFile->getFormFileList(IMAGE_TEMP_URL_PATH, IMAGE_SAVE_URL_PATH, true);
+        $this->arrFile = $this->objUpFile->getFormFileList(IMAGE_TEMP_URLPATH, IMAGE_SAVE_URLPATH, true);
 
         // サブ画像の有無を判定
         $this->subImageFlag = false;

@@ -66,7 +66,7 @@
 		<a href="?mode=delete&amp;cart_no=<!--{$item.cart_no}-->&amp;cartKey=<!--{$key}-->">削除</a><br>
 		<!--{* 合計 *}-->
 		小計:<!--{$item.total_inctax|number_format}-->円<br>
-		<div align="right"><a href="<!--{$smarty.const.MOBILE_P_DETAIL_URL_PATH}--><!--{$item.productsClass.product_id|u}-->">商品詳細へ→</a></div>
+		<div align="right"><a href="<!--{$smarty.const.MOBILE_P_DETAIL_URLPATH}--><!--{$item.productsClass.product_id|u}-->">商品詳細へ→</a></div>
 		<HR>
 	<!--{/foreach}-->
 	商品合計:<!--{$tpl_total_inctax[$key]|number_format}-->円<br>
@@ -116,7 +116,7 @@
 <br>
 <hr>
 
-<a href="<!--{$smarty.const.MOBILE_TOP_URL_PATH}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
+<a href="<!--{$smarty.const.MOBILE_TOP_URLPATH}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
 
 <br>
 

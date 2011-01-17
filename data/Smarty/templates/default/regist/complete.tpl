@@ -34,7 +34,7 @@
         E-mall：<a href="mailto:<!--{$arrSiteInfo.email02|escape:'hex'}-->"><!--{$arrSiteInfo.email02|escape:'hexentity'}--></a></p>
 
       <div class="tblareabtn">
-	<a href="<!--{$smarty.const.TOP_URL_PATH}-->" onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_toppage_on.gif','b_toppage');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_toppage.gif','b_toppage');"><img src="<!--{$TPL_DIR}-->img/button/btn_toppage.gif" width="150" height="30" alt="トップページへ" border="0" name="b_toppage" /></a>
+	<a href="<!--{$smarty.const.TOP_URLPATH}-->" onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_toppage_on.gif','b_toppage');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_toppage.gif','b_toppage');"><img src="<!--{$TPL_DIR}-->img/button/btn_toppage.gif" width="150" height="30" alt="トップページへ" border="0" name="b_toppage" /></a>
       </div>
     </div>
   </div>

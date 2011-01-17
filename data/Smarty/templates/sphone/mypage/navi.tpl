@@ -42,17 +42,17 @@
           <!--{else}-->
 
           <!--{* 退会状態 *}-->
-            <li><a href="<!--{$smarty.const.TOP_URL_PATH}-->" class="<!--{if $tpl_mypageno == 'index'}--> selected<!--{/if}-->">
+            <li><a href="<!--{$smarty.const.TOP_URLPATH}-->" class="<!--{if $tpl_mypageno == 'index'}--> selected<!--{/if}-->">
                 購入履歴一覧</a></li>
             <!--{if $smarty.const.OPTION_FAVOFITE_PRODUCT == 1}-->
-                <li><a href="<!--{$smarty.const.TOP_URL_PATH}-->" class="<!--{if $tpl_mypageno == 'favorite'}--> selected<!--{/if}-->">
+                <li><a href="<!--{$smarty.const.TOP_URLPATH}-->" class="<!--{if $tpl_mypageno == 'favorite'}--> selected<!--{/if}-->">
                     お気に入り一覧</a></li>
             <!--{/if}-->
-            <li><a href="<!--{$smarty.const.TOP_URL_PATH}-->" class="<!--{if $tpl_mypageno == 'change'}--> selected<!--{/if}-->">
+            <li><a href="<!--{$smarty.const.TOP_URLPATH}-->" class="<!--{if $tpl_mypageno == 'change'}--> selected<!--{/if}-->">
                 会員登録内容変更</a></li>
-            <li><a href="<!--{$smarty.const.TOP_URL_PATH}-->" class="<!--{if $tpl_mypageno == 'delivery'}--> selected<!--{/if}-->">
+            <li><a href="<!--{$smarty.const.TOP_URLPATH}-->" class="<!--{if $tpl_mypageno == 'delivery'}--> selected<!--{/if}-->">
                 お届け先追加・変更</a></li>
-            <li><a href="<!--{$smarty.const.TOP_URL_PATH}-->" class="<!--{if $tpl_mypageno == 'refusal'}--> selected<!--{/if}-->">
+            <li><a href="<!--{$smarty.const.TOP_URLPATH}-->" class="<!--{if $tpl_mypageno == 'refusal'}--> selected<!--{/if}-->">
                 退会手続き</a></li>
           <!--{/if}-->
 

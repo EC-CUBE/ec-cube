@@ -82,7 +82,7 @@ class LC_Page_Mypage_Order extends LC_Page {
 
             $objCartSess->addProduct(array($product_id, $product_class_id, $cate_id1, $cate_id2), $quantity);
         }
-        SC_Response_Ex::sendRedirect(CART_URL_PATH);
+        SC_Response_Ex::sendRedirect(CART_URLPATH);
     }
 
     /**

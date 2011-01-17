@@ -165,7 +165,7 @@ class LC_Page_Products_List extends LC_Page {
                 $product_type = $this->arrForm['product_type'];
                 $objCartSess = new SC_CartSession();
                 $objCartSess->addProduct($product_class_id, $this->arrForm['quantity'], $product_type);
-                SC_Response_Ex::sendRedirect(CART_URL_PATH);
+                SC_Response_Ex::sendRedirect(CART_URLPATH);
                 exit;
             }
             foreach (array_keys($this->arrProducts) as $key) {

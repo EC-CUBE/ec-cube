@@ -98,7 +98,7 @@
                   <!--{/foreach}-->
             
             <div class="tblareabtn">
-                      <a href="<!--{$smarty.const.CART_URL_PATH}-->" class="spbtn spbtn-medeum">
+                      <a href="<!--{$smarty.const.CART_URLPATH}-->" class="spbtn spbtn-medeum">
                     戻る</a>&nbsp;
                  <input type="submit" value="選択したお届け先に送る" class="spbtn spbtn-shopping" width="130" height="30" alt="選択したお届け先に送る" name="send_button" id="next" />
 </div>

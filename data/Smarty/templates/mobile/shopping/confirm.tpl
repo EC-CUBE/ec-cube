@@ -116,7 +116,7 @@
 
 <center><input type="submit" value="注文"></center>
 </form>
-<form action="<!--{$smarty.const.MOBILE_SHOPPING_PAYMENT_URL_PATH}-->" method="post">
+<form action="<!--{$smarty.const.MOBILE_SHOPPING_PAYMENT_URLPATH}-->" method="post">
 <input type="hidden" name="mode" value="">
 <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
 <center><input type="submit" value="戻る"></center>
@@ -125,8 +125,8 @@
 <br>
 <hr>
 
-<a href="<!--{$smarty.const.MOBILE_CART_URL_PATH}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>
-<a href="<!--{$smarty.const.MOBILE_TOP_URL_PATH}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
+<a href="<!--{$smarty.const.MOBILE_CART_URLPATH}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>
+<a href="<!--{$smarty.const.MOBILE_TOP_URLPATH}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
 
 <br>
 

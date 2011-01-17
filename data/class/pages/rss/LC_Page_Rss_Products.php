@@ -128,7 +128,7 @@ class LC_Page_Rss_Products extends LC_Page {
 
         //XMLテキスト(これがないと正常にRSSとして認識してくれないツールがあるため)
         header("Content-type: application/xml");
-        P_DETAIL_URL_PATH;
+        P_DETAIL_URLPATH;
 
         //画面表示
         $objView->display($this->tpl_mainpage, true);

@@ -308,7 +308,7 @@ class LC_Page_TrackBack extends LC_Page {
             print("<channel>");
             print("<title>" . $retProduct[0]["name"] . "</title>");
             print("<link>");
-            print(HTTP_URL . substr(P_DETAIL_URL_PATH, strlen(URL_PATH)) . $product_id);
+            print(HTTP_URL . substr(P_DETAIL_URLPATH, strlen(URL_PATH)) . $product_id);
             print("</link>");
             print("<description>");
             print($retProduct[0]["main_comment"]);

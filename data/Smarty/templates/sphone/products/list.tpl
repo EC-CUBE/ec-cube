@@ -227,7 +227,7 @@ function fnCheckStock(form) {
         <a name="product<!--{$id|h}-->" />
             <div class="listphoto">
                 <!--★画像★-->
-                <a href="<!--{$smarty.const.P_DETAIL_URL_PATH}--><!--{$arrProduct.product_id|u}-->" class="over"><!--商品写真--><img src="<!--{$smarty.const.IMAGE_SAVE_URL_PATH|sfTrimURL}-->/<!--{$arrProduct.main_list_image|sfNoImageMainList|h}-->" alt="<!--{$arrProduct.name|h}-->" class="picture" /></a>
+                <a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrProduct.product_id|u}-->" class="over"><!--商品写真--><img src="<!--{$smarty.const.IMAGE_SAVE_URLPATH|sfTrimURL}-->/<!--{$arrProduct.main_list_image|sfNoImageMainList|h}-->" alt="<!--{$arrProduct.name|h}-->" class="picture" /></a>
             </div>
             
             <div class="listrightblock">
@@ -245,7 +245,7 @@ function fnCheckStock(form) {
                 
                 <!--★商品名★-->
                 <h3>
-                    <a href="<!--{$smarty.const.P_DETAIL_URL_PATH}--><!--{$arrProduct.product_id|u}-->" name="product<!--{$arrProduct.product_id}-->"><!--{$arrProduct.name|h}--></a>
+                    <a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrProduct.product_id|u}-->" name="product<!--{$arrProduct.product_id}-->"><!--{$arrProduct.name|h}--></a>
                 </h3>
                 
                 <!--★コメント★-->

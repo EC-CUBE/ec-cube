@@ -138,7 +138,7 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         case 'return':
             // 正常な推移であることを記録しておく
             $objSiteSess->setRegistFlag();
-            SC_Response_Ex::sendRedirect(SHOPPING_PAYMENT_URL_PATH);
+            SC_Response_Ex::sendRedirect(SHOPPING_PAYMENT_URLPATH);
             exit;
             break;
         case 'confirm':
@@ -155,12 +155,12 @@ class LC_Page_Shopping_Confirm extends LC_Page {
                 $_SESSION["payment_id"] = $arrData['payment_id'];
 
                 $objPurchase->completeOrder(ORDER_PENDING);
-                SC_Response_Ex::sendRedirect(SHOPPING_MODULE_URL_PATH);
+                SC_Response_Ex::sendRedirect(SHOPPING_MODULE_URLPATH);
             }else{
                 // 受注を完了し, 購入完了ページへ
                 $objPurchase->completeOrder(ORDER_NEW);
                 $objPurchase->sendOrderMail($arrData["order_id"]);
-                SC_Response_Ex::sendRedirect(SHOPPING_COMPLETE_URL_PATH);
+                SC_Response_Ex::sendRedirect(SHOPPING_COMPLETE_URLPATH);
             }
             exit;
             break;
@@ -227,7 +227,7 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         case 'return':
             // 正常な推移であることを記録しておく
             $objSiteSess->setRegistFlag();
-            SC_Response_Ex::sendRedirect(MOBILE_SHOPPING_PAYMENT_URL_PATH);
+            SC_Response_Ex::sendRedirect(MOBILE_SHOPPING_PAYMENT_URLPATH);
             exit;
             break;
         case 'confirm':
@@ -245,9 +245,9 @@ class LC_Page_Shopping_Confirm extends LC_Page {
             // 決済方法により画面切替
             if($payment_type != "") {
                 $_SESSION["payment_id"] = $arrData['payment_id'];
-                SC_Response_Ex::sendRedirect(MOBILE_SHOPPING_MODULE_URL_PATH);
+                SC_Response_Ex::sendRedirect(MOBILE_SHOPPING_MODULE_URLPATH);
             }else{
-                SC_Response_Ex::sendRedirect(MOBILE_SHOPPING_COMPLETE_URL_PATH);
+                SC_Response_Ex::sendRedirect(MOBILE_SHOPPING_COMPLETE_URLPATH);
             }
             exit;
             break;

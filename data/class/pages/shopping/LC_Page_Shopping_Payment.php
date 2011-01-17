@@ -107,9 +107,9 @@ class LC_Page_Shopping_Payment extends LC_Page {
             //戻り先URL
             if ($this->cartKey == PRODUCT_TYPE_DOWNLOAD) {
                 // ダウンロード商品のみの場合はカート画面へ戻る
-                $this->tpl_back_url = CART_URL_PATH;
+                $this->tpl_back_url = CART_URLPATH;
             } else {
-                $this->tpl_back_url = DELIV_URL_PATH;
+                $this->tpl_back_url = DELIV_URLPATH;
             }
         } else {
             $this->tpl_back_url = SHOPPING_URL . "?from=nonmember";
@@ -119,7 +119,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
         $arrOrderTemp = $objPurchase->getOrderTemp($uniqid);
         //不正遷移チェック（正常に受注情報が格納されていない場合は一旦カート画面まで戻す）
         if (!$arrOrderTemp) {
-            SC_Response_Ex::sendRedirect(CART_URL_PATH);
+            SC_Response_Ex::sendRedirect(CART_URLPATH);
             exit;
         }
 
@@ -164,7 +164,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
                 // 正常に登録されたことを記録しておく
                 $objSiteSess->setRegistFlag();
                 // 確認ページへ移動
-                SC_Response_Ex::sendRedirect(SHOPPING_CONFIRM_URL_PATH);
+                SC_Response_Ex::sendRedirect(SHOPPING_CONFIRM_URLPATH);
                 exit;
             }else{
                 // ユーザユニークIDの取得

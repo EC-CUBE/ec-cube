@@ -57,7 +57,7 @@
 
 ■新しいお届け先を追加する<br>
 <form method="post" action="<!--{$smarty.const.URL_PATH}-->mypage/delivery_addr.php">
-<input type="hidden" name="ParentPage" value="<!--{$smarty.const.DELIV_URL_PATH}-->">
+<input type="hidden" name="ParentPage" value="<!--{$smarty.const.DELIV_URLPATH}-->">
 <center><input type="submit" value="新規登録"></center>
 </form>
 
@@ -72,8 +72,8 @@
 
 <hr>
 
-<a href="<!--{$smarty.const.MOBILE_CART_URL_PATH}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>
-<a href="<!--{$smarty.const.MOBILE_TOP_URL_PATH}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
+<a href="<!--{$smarty.const.MOBILE_CART_URLPATH}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>
+<a href="<!--{$smarty.const.MOBILE_TOP_URLPATH}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
 
 <br>
 

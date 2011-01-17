@@ -37,7 +37,7 @@
     <div class="btn-area">
       <ul>
         <li>
-          <a class="btn-action" href="<!--{$smarty.const.ADMIN_LOGIN_URL_PATH}-->"><span class="btn-prev">ログインページに戻る</span></a>
+          <a class="btn-action" href="<!--{$smarty.const.ADMIN_LOGIN_URLPATH}-->"><span class="btn-prev">ログインページに戻る</span></a>
         </li>
       </ul>
     </div>

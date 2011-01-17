@@ -140,7 +140,7 @@ $(function() {
         <span class="attention"><!--{$arrErr.zip01}--></span>
         <span class="attention"><!--{$arrErr.zip02}--></span>
         〒 <input type="text" name="zip01" value="<!--{$arrForm.zip01|h}-->" maxlength="3" size="6" class="box6" style="<!--{if $arrErr.zip01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" /> - <input type="text" name="zip02" value="<!--{$arrForm.zip02|h}-->" maxlength="4"  size="6" class="box6" style="<!--{if $arrErr.zip02 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" />
-        <a class="btn-normal" href="javascript:;" name="address_input" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URL_PATH}-->', 'zip01', 'zip02', 'pref', 'addr01');">住所入力</a>
+        <a class="btn-normal" href="javascript:;" name="address_input" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'zip01', 'zip02', 'pref', 'addr01');">住所入力</a>
       </td>
     </tr>
     <tr>

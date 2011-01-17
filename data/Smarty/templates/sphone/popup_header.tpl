@@ -42,7 +42,7 @@
 
 <title><!--{$arrSiteInfo.shop_name|h}--><!--{if $tpl_subtitle|strlen >= 1}--> / <!--{$tpl_subtitle|h}--><!--{elseif $tpl_title|strlen >= 1}--> / <!--{$tpl_title|h}--><!--{/if}--></title>
 <!--{* iPhone用アイコン画像 *}-->
-<link rel="apple-touch-icon" href="<!--{$smarty.const.SMARTPHONE_URL_PATH}-->sphone/apple-touch-icon.png" />
+<link rel="apple-touch-icon" href="<!--{$smarty.const.SMARTPHONE_URLPATH}-->sphone/apple-touch-icon.png" />
 
 <script type="text/javascript">//<![CDATA[
     <!--{$tpl_javascript}-->

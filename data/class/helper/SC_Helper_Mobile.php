@@ -196,7 +196,7 @@ class SC_Helper_Mobile {
                 header('Location: ' . $this->gfAddSessionId());
             } else {
                 // GET 以外の場合はトップページへリダイレクトする。
-                header('Location: ' . TOP_URL_PATH . '?' . SID);
+                header('Location: ' . TOP_URLPATH . '?' . SID);
             }
             exit;
         }

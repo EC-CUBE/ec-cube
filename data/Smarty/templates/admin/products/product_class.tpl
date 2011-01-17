@@ -67,7 +67,7 @@
   </table>
   <div class="btn-area">
     <ul>
-      <li><a class="btn-action" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_PRODUCTS_URL_PATH}-->'); fnModeSubmit('search','',''); return false;" ><span class="btn-prev">検索結果へ戻る</span></a></li>
+      <li><a class="btn-action" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_PRODUCTS_URLPATH}-->'); fnModeSubmit('search','',''); return false;" ><span class="btn-prev">検索結果へ戻る</span></a></li>
       <li><a class="btn-action" href="javascript:;" onclick="fnModeSubmit('disp','','')"><span class="btn-next">表示する</span></a></li>
     <!--{if count($arrClassCat) > 0}-->
       <li><a class="btn-action" href="javascript:;" onclick="fnModeSubmit('delete','','');"><span class="btn-next">削除する</span></a></li>

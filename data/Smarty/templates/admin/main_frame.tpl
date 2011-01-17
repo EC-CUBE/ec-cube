@@ -69,12 +69,12 @@
 <!--{* ▼HEADER *}-->
 <div id="header">
   <div id="header-contents">
-    <div id="logo"><a href="<!--{$smarty.const.ADMIN_HOME_URL_PATH}-->"><img src="<!--{$TPL_DIR}-->img/header/logo.jpg" width="172" height="25" alt="EC-CUBE" /></a></div>
+    <div id="logo"><a href="<!--{$smarty.const.ADMIN_HOME_URLPATH}-->"><img src="<!--{$TPL_DIR}-->img/header/logo.jpg" width="172" height="25" alt="EC-CUBE" /></a></div>
     <div id="site-check">
       <p class="info"><span>ログインID&nbsp;:&nbsp;<!--{* ログイン名 *}--><!--{$smarty.session.login_name|h}--></span>&nbsp;様&nbsp;</p>
       <ul>
         <li><a href="<!--{$smarty.const.HTTP_URL}--><!--{$smarty.const.DIR_INDEX_URL}-->" class="btn-tool-format" target="_blank"><span>SITE CHECK</span></a></li>
-        <li><a href="<!--{$smarty.const.ADMIN_LOGOUT_URL_PATH}-->" class="btn-tool-format">LOGOUT</a></li>
+        <li><a href="<!--{$smarty.const.ADMIN_LOGOUT_URLPATH}-->" class="btn-tool-format">LOGOUT</a></li>
       </ul>
     </div>
   </div>
