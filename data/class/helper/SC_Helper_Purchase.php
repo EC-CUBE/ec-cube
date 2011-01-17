@@ -540,7 +540,7 @@ __EOS__;
             $sqlval['product_code'] = $d['product_code'];
             $sqlval['classcategory_name1'] = $d['classcategory_name1'];
             $sqlval['classcategory_name2'] = $d['classcategory_name2'];
-            $sqlval['price'] = $d['price'];
+            $sqlval['price'] = $d['price02'];
             $sqlval['quantity'] = $val['quantity'];
             $objQuery->insert("dtb_shipment_item", $sqlval);
         }

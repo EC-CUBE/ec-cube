@@ -55,6 +55,8 @@
     }
 
     function fnMultiple() {
+        win03('<!--{$smarty.const.URL_PATH}--><!--{$smarty.const.ADMIN_DIR}-->order/multiple.php', 'multiple', '600', '500');
+        document.form1.anchor_key.value = "shipping";
         document.form1.mode.value = "multiple";
         document.form1.submit();
         return false;
@@ -80,17 +82,16 @@
         <!--{if $tpl_mode != 'add'}-->
         <tr>
             <th>帳票出力</th>
-            <td><a class="btn-normal" href="javascript:;" onclick="win02('pdf.php?order_id=<!--{$arrForm.order_id.value}-->','pdf','1000','800'); return false;">帳票出力</a></td>
+            <td><a class="btn-normal" href="javascript:;" onclick="win02('pdf.php?order_id=<!--{$arrForm.order_id.value}-->','pdf','615','800'); return false;">帳票出力</a></td>
         </tr>
         <!--{/if}-->
         <tr>
             <th>注文番号</th>
-            <td><!--{$tpl_order_id|h}--></td>
+            <td><!--{$arrForm.order_id.value|h}--></td>
         </tr>
         <tr>
             <th>受注日</th>
-            <td><!--{$arrForm.create_date.value|sfDispDBDate}--></td>
-            <input type="hidden" name="create_date" value="<!--{$arrForm.create_date.value}-->" />
+            <td><!--{$arrForm.create_date.value|sfDispDBDate}--><input type="hidden" name="create_date" value="<!--{$arrForm.create_date.value}-->" /></td>
         </tr>
         <tr>
             <th>対応状況</th>
@@ -352,7 +353,7 @@
     <h2>お届け先情報
         <a class="btn-normal" href="javascript:;" name="input_from_order_data" onclick="fnCopyFromOrderData();">お客様情報へお届けする</a>
         <a class="btn-normal" href="javascript:;" name="input_from_order_data" onclick="fnCopyFromOrderData();">お届け先を新規追加</a>
-        <a class="btn-normal" href="javascript:;" name="input_from_order_data" onclick="fnModeSubmit('multiple','anchor_key','shipping');">複数のお届け先を指定する</a>
+        <a class="btn-normal" href="javascript:;" name="input_from_order_data" onclick="fnMultiple();">複数のお届け先を指定する</a>
     </h2>
 
     <!--{assign var=key value="shipping_quantity"}-->
@@ -535,7 +536,7 @@
             <td>
                 <!--{assign var=key value="note"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
-                <textarea name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="80" rows="6" class="area80" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key].value|h}--></textarea></td>
+                <textarea name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="80" rows="6" class="area80" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key].value|h}--></textarea>
             </td>
         </tr>
     </table>

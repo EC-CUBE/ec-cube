@@ -218,7 +218,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin {
         // 複数配送設定表示
         case 'multiple':
             $this->objFormParam->setParam($_POST);
-            $this->tpl_onload = "win03('" . URL_PATH . ADMIN_DIR . "order/multiple.php', 'multiple', '600', '500');";
             break;
 
         // 複数配送設定を反映
@@ -407,6 +406,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin {
             $arrShipmentItem[$shippingId][$productClassId]['quantity'] += $quantity;
         }
 
+        $arrQuantity = array();
         $this->arrShippingIds = array();
         $this->arrProductClassIds = array();
         foreach ($arrShipmentItem as $shippingId => $items) {
@@ -417,11 +417,24 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin {
             $this->arrProductClassIds[] = array_keys($items);
 
             foreach ($items as $productClassId => $item) {
+                $arrQuantity[$productClassId] += $item['quantity'];
                 foreach ($item as $itemKey => $itemVal) {
                     $this->objFormParam->setValue($itemKey . '_' . $shippingId . '_' . $productClassId, $itemVal);
                 }
             }
         }
+
+        // 受注商品の数量を変更
+        $dest = array();
+        foreach ($arrQuantity as $productClassId => $quantity) {
+            foreach ($this->arrForm['product_class_id'] as $n => $orderProductClassId) {
+                if ($productClassId == $orderProductClassId) {
+                    $dest['quantity'][$n] = $quantity;
+                }
+            }
+        }
+
+        $this->objFormParam->setParam($dest);
     }
 
     function lfGetOrderData($order_id) {
@@ -495,12 +508,15 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin {
     // 受注詳細データの取得
     function lfGetOrderDetail($order_id) {
         $objQuery = new SC_Query();
+        $col = "T1.product_id, T1.product_class_id, T1.product_name, "
+            . "T1.product_code, T1.classcategory_name1, T1.classcategory_name2, "
+            . "T1.price, T1.quantity, T1.point_rate, T2.product_type_id";
         $from = <<< __EOS__
                  dtb_order_detail T1
             JOIN dtb_products_class T2
               ON T1.product_class_id = T2.product_class_id
 __EOS__;
-        $arrRet = $objQuery->select("T1.*, T2.product_type_id", $from,
+        $arrRet = $objQuery->select($col, $from,
                                     "order_id = ?", array($order_id));
         return $arrRet;
     }
@@ -599,6 +615,8 @@ __EOS__;
     /**
      * DB更新処理
      *
+     * TODO リファクタリング
+     *
      * @param integer $order_id 注文番号
      * @return void
      */
@@ -689,6 +707,60 @@ __EOS__;
             }
         }
 
+        // 配送情報の初期化
+        // FIXME UPDATE/INSERT にする
+        $objQuery->delete('dtb_shipping', "order_id = ?", array($order_id));
+        $objQuery->delete('dtb_shipment_item', "order_id = ?", array($order_id));
+
+        $arrParams = $this->objFormParam->getHashArray();
+        // 配送ID の配列を取得
+        $shippingIds = array();
+        foreach (array_keys($arrParams) as $key) {
+            if (preg_match('/^shipping_id_/', $key)) {
+                $shippingIds[] = $arrParams[$key];
+            }
+        }
+
+        $cols = $objQuery->listTableFields('dtb_shipping');
+        foreach ($shippingIds as $shipping_id) {
+
+            $arrParams['shipping_date_' .  $shipping_id] = SC_Utils_Ex::sfGetTimestamp($arrParams['shipping_date_year_' . $shipping_id],
+                                                                                       $arrParams['shipping_date_month_' . $shipping_id],
+                                                                                       $arrParams['shipping_date_day_' . $shipping_id]);
+            $dest = array();
+            foreach ($arrParams as $key => $val) {
+                $key = preg_replace('/_' . $shipping_id . '$/', '', $key);
+                if (in_array($key, $cols)) {
+                    $dest[$key] = $val;
+                }
+            }
+            $dest['shipping_id'] = $shipping_id;
+            $dest['order_id'] = $order_id;
+            $dest['create_date'] = 'Now()';
+            $dest['update_date'] = 'Now()';
+            $objQuery->insert('dtb_shipping', $dest);
+
+            // 商品規格ID の配列を取得
+            $productClassIds = array();
+            foreach (array_keys($arrParams) as $key) {
+                if (preg_match('/^product_class_id_' . $shipping_id . '_/', $key)) {
+                    $productClassIds[] = $arrParams[$key];
+                }
+            }
+
+            foreach ($productClassIds as $product_class_id) {
+                $item['shipping_id'] = $shipping_id;
+                $item['order_id'] = $order_id;
+                $item['product_class_id'] = $product_class_id;
+                $item['product_name'] = $arrParams['product_name_' . $shipping_id . '_' . $product_class_id];
+                $item['product_code'] = $arrParams['product_code_' . $shipping_id . '_' . $product_class_id];
+                $item['classcategory_name1'] = $arrParams['classcategory_name1_' . $shipping_id . '_' . $product_class_id];
+                $item['classcategory_name2'] = $arrParams['classcategory_name2_' . $shipping_id . '_' . $product_class_id];
+                $item['price'] = $arrParams['price_' . $shipping_id . '_' . $product_class_id];
+                $item['quantity'] = $arrParams['quantity_' . $shipping_id . '_' . $product_class_id];
+                $objQuery->insert("dtb_shipment_item", $item);
+            }
+        }
         $objQuery->commit();
     }
 
@@ -779,12 +851,16 @@ __EOS__;
         $cols = $objQuery->listTableFields($table);
         $dest = array();
         foreach ($sqlval as $key => $val) {
-            if (in_array($cols, $key)) {
+            if (in_array($key, $cols)) {
                 $dest[$key] = $val;
             }
         }
-        $result = $objQuery->update($table, $dest, "order_id = ?", array($order_id));
-        if ($result == 0) {
+
+        $exists = $objQuery->count("dtb_order", "order_id = ?", array($order_id));
+        if ($exists > 0) {
+            $objQuery->update($table, $dest, "order_id = ?", array($order_id));
+        } else {
+            // TODO
             $dest['order_id'] = $order_id;
             $result = $objQuery->insert($table, $dest);
         }
