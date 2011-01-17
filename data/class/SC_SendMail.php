@@ -21,8 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-require_once(dirname(__FILE__) . '/../module/Mail.php');
-require_once(dirname(__FILE__) . '/../module/Mail/mime.php');
+require_once 'Mail.php';
 
 //--- テキスト/HTML　メール送信
 class SC_SendMail {
@@ -34,10 +33,6 @@ class SC_SendMail {
     var $bcc;           // BCC
     var $replay_to;     // replay_to
     var $return_path;   // return_path
-    var $arrEncode;
-    var $objMailMime;
-    var $arrTEXTEncode;
-    var $arrHTMLEncode;
     var $objMail;
 
     // コンストラクタ
@@ -50,11 +45,9 @@ class SC_SendMail {
         $this->bcc = "";
         $this->replay_to = "";
         $this->return_path = "";
-        $this->arrEncode = array();
         $this->backend = MAIL_BACKEND;
         $this->host = SMTP_HOST;
         $this->port = SMTP_PORT;
-        $this->objMailMime = new Mail_mime();
         mb_language( "Japanese" );
 
         //-- PEAR::Mailを使ってメール送信オブジェクト作成
