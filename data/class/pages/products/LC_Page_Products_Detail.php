@@ -197,7 +197,9 @@ class LC_Page_Products_Detail extends LC_Page {
                     $objCartSess->addProduct($product_class_id, $this->objFormParam->getValue('quantity'), $product_type);
 
                     // カート「戻るボタン」用に保持
-                    $_SESSION['cart_referer_url'] = $_SERVER['HTTP_REFERER'];
+                    if (SC_Utils_Ex::sfIsInternalDomain($_SERVER['HTTP_REFERER'])) {
+                        $_SESSION['cart_referer_url'] = $_SERVER['HTTP_REFERER'];
+                    }
 
                     if (!empty($_POST['gmo_oneclick'])) {
                         $objSiteSess = new SC_SiteSession;

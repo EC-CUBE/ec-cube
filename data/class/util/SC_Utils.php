@@ -2229,5 +2229,22 @@ exit;
         }
         return true;
     }
+
+    /**
+     * 指定されたURLのドメインが一致するかを返す
+     *
+     * 戻り値：一致(true) 不一致(false)
+     *
+     * @param string $url
+     * @return boolean
+     */
+    function sfIsInternalDomain($url) {
+        $netURL = new Net_URL(HTTP_URL);
+        $host = $netURL->host;
+        if (!$host) return false;
+        $host = preg_quote($host, "#");
+        if (!preg_match("#^(http|https)://{$host}#i", $url)) return false;
+        return true;
+    }
 }
 ?>

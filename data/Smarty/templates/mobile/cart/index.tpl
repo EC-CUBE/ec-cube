@@ -96,7 +96,7 @@
 </form>
 
 <!--{if $tpl_prev_url != ""}-->
-    <a href="<!--{$tpl_prev_url}-->">[emoji:69]お買物を続ける</a>
+    <a href="<!--{$tpl_prev_url|escape}-->">[emoji:69]お買物を続ける</a>
 <!--{/if}-->
 <!--{/foreach}-->
 <!--{else}-->

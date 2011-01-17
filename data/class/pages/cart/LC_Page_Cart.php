@@ -195,13 +195,18 @@ class LC_Page_Cart extends LC_Page {
                 unset($_SESSION['cart_referer_url']);
             } else {
                 if (preg_match("/entry/", $_SERVER['HTTP_REFERER'])) {
-                    $_SESSION['cart_prev_url'] = URL_PATH . 'entry/kiyaku.php';
+                    $_SESSION['cart_prev_url'] = HTTPS_URL . 'entry/kiyaku.php';
                 } else {
                     $_SESSION['cart_prev_url'] = $_SERVER['HTTP_REFERER'];
                 }
             }
         }
-        $this->tpl_prev_url = $_SESSION['cart_prev_url'];
+        // 妥当性チェック
+        if (!SC_Utils_Ex::sfIsInternalDomain($_SESSION['cart_prev_url'])) {
+            $_SESSION['cart_prev_url'] = '';
+        }
+
+        $this->tpl_prev_url = (isset($_SESSION['cart_prev_url'])) ? $_SESSION['cart_prev_url'] : '';
     }
 
     /**

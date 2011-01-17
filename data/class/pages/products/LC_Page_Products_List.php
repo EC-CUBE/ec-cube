@@ -167,7 +167,9 @@ class LC_Page_Products_List extends LC_Page {
                 $objCartSess->addProduct($product_class_id, $this->arrForm['quantity'], $product_type);
 
                 // カート「戻るボタン」用に保持
-                $_SESSION['cart_referer_url'] = $_SERVER['HTTP_REFERER'];
+                if (SC_Utils_Ex::sfIsInternalDomain($_SERVER['HTTP_REFERER'])) {
+                    $_SESSION['cart_referer_url'] = $_SERVER['HTTP_REFERER'];
+                }
 
                 SC_Response_Ex::sendRedirect(CART_URLPATH);
                 exit;

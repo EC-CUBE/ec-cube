@@ -166,7 +166,7 @@ $(document).ready(function() {
 
                 <p>
                     <!--{if $tpl_prev_url != ""}-->
-                     <a href="<!--{$tpl_prev_url}-->" class="spbtn spbtn-medeum">
+                     <a href="<!--{$tpl_prev_url|escape}-->" class="spbtn spbtn-medeum">
                                     買い物を続ける</a>&nbsp;&nbsp;
                     <!--{/if}-->
                     <!--{if strlen($tpl_error) == 0}-->
