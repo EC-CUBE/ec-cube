@@ -1331,6 +1331,13 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TARGET_ID_HEAD', '7
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TARGET_ID_HEAD_TOP', '8', 1208, '配置ID: HeadTopNavi');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TARGET_ID_FOOTER_BOTTOM', '9', 1209, '配置ID: FooterBottomNavi');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TARGET_ID_HEADER_INTERNAL', '10', 1210, '配置ID: HeaderInternalNavi');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CSV_COLUMN_STATUS_FLG_ENABLE', '1', 1211, 'CSV入出力列設定有効無効フラグ: 有効');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CSV_COLUMN_STATUS_FLG_DISABLE', '2', 1212, 'CSV入出力列設定有効無効フラグ: 無効');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CSV_COLUMN_RW_FLG_READ_WRITE', '1', 1213, 'CSV入出力列設定読み書きフラグ: 読み書き可能');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CSV_COLUMN_RW_FLG_READ_ONLY', '2', 1214, 'CSV入出力列設定読み書きフラグ: 読み込みのみ可能');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CSV_COLUMN_RW_FLG_KEY_FIELD', '3', 1215, 'CSV入出力列設定読み書きフラグ: キー列');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('UNLIMITED_FLG_UNLIMITED', '"1"', 1216, '無制限フラグ： 無制限');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('UNLIMITED_FLG_LIMITED', '"0"', 1217, '無制限フラグ： 制限有り');
 
 INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_customer', 'email_mobile', 0, '会員数増加時のログイン処理速度を向上させたいときに試してみてください');
 INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_products', 'name', 2, '商品名検索速度を向上させたいときに試してみてください');

@@ -602,4 +602,18 @@ define('TARGET_ID_HEAD_TOP', 8);
 define('TARGET_ID_FOOTER_BOTTOM', 9);
 /** 配置ID: HeaderInternalNavi */
 define('TARGET_ID_HEADER_INTERNAL', 10);
+/** CSV入出力列設定有効無効フラグ: 有効 */
+define('CSV_COLUMN_STATUS_FLG_ENABLE', 1);
+/** CSV入出力列設定有効無効フラグ: 無効 */
+define('CSV_COLUMN_STATUS_FLG_DISABLE', 2);
+/** CSV入出力列設定読み書きフラグ: 読み書き可能 */
+define('CSV_COLUMN_RW_FLG_READ_WRITE', 1);
+/** CSV入出力列設定読み書きフラグ: 読み込みのみ可能 */
+define('CSV_COLUMN_RW_FLG_READ_ONLY', 2);
+/** CSV入出力列設定読み書きフラグ: キー列 */
+define('CSV_COLUMN_RW_FLG_KEY_FIELD', 3);
+/** 無制限フラグ： 無制限 */
+define('UNLIMITED_FLG_UNLIMITED', "1");
+/** 無制限フラグ： 制限有り */
+define('UNLIMITED_FLG_LIMITED', "0");
 ?>

@@ -77,7 +77,8 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin {
         $this->arrDELIVERYDATE = $masterData->getMasterData("mtb_delivery_date");
         $this->arrProductType = $masterData->getMasterData("mtb_product_type");
         $this->arrMaker = SC_Helper_DB_Ex::sfGetIDValueList("dtb_maker", "maker_id", "name");
-        $this->arrPayments = SC_Helper_DB_Ex::sfGetIDValueList("dtb_payment", "payment_id", "payment_method");            $this->arrAllowedTag = $masterData->getMasterData("mtb_allowed_tag");
+        $this->arrPayments = SC_Helper_DB_Ex::sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
+        $this->arrAllowedTag = $masterData->getMasterData("mtb_allowed_tag");
         $this->arrTagCheckItem = array();
     }
 
@@ -128,8 +129,8 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin {
         $this->objFormParam = new SC_FormParam();
         // パラメータ情報の初期化
         $this->lfInitParam($arrCSVFrame);
-        
-        $colmax = $this->objFormParam->getCount();
+        // 現在のフォーマットにおける列数を取得
+        $col_count = $this->objFormParam->getCount();
         $this->objFormParam->setHtmlDispNameArray();
         $this->arrTitle = $this->objFormParam->getHtmlDispNameArray();
 
@@ -175,13 +176,14 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin {
                     SC_Utils_Ex::sfDispError("");
                 }
 
-                // レコード数を得る
-                $rec_count = $this->objCSV->sfGetCSVRecordCount($fp);
-                if($rec_count === FALSE) {
+                // レコード行数を得る
+                $record_count = $this->objCSV->sfGetCSVRecordCount($fp);
+                // ファイルが無効な場合はエラー
+                if($record_count === FALSE) {
                     SC_Utils_Ex::sfDispError("");
                 }
 
-                $line = 0;      // 行数
+                $line = 0;      // 現在行数
                 $regist = 0;    // 登録数
 
                 $objQuery =& SC_Query::getSingletonInstance();
@@ -191,25 +193,21 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin {
 
                 while(!feof($fp) && !$err) {
                     $arrCSV = fgetcsv($fp, CSV_LINE_MAX);
-
                     // 行カウント
                     $line++;
-
                     if($line <= 1) {
                         continue;
                     }
-
-                    // 項目数カウント
-                    $max = count($arrCSV);
-
+                    // 現在行の項目数カウント
+                    $line_col_count = count($arrCSV);
                     // 項目数が1以下の場合は無視する
-                    if($max <= 1) {
+                    if($line_col_count <= 1) {
                         continue;
                     }
 
                     // 項目数チェック
-                    if($max != $colmax) {
-                        echo "※ 項目数が" . $max . "個検出されました。項目数は" . $colmax . "個になります。</br>\n";
+                    if($line_col_count != $col_count) {
+                        echo "※ 項目数が" . $line_col_count . "個検出されました。項目数は" . $col_count . "個になります。</br>\n";
                         $err = true;
                     } else {
                         // シーケンス配列を格納する。
@@ -224,7 +222,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin {
 
                     // 入力エラーチェック
                     if(count($arrCSVErr) > 0) {
-                        echo "<font color=\"red\">■" . $line . "行目でエラーが発生しました。</font></br>\n";
+                        echo "<font color=\"red\">■ $line / $record_count 行目でエラーが発生しました。</font></br>\n";
                         foreach($arrCSVErr as $val) {
                             $this->printError($val);
                         }
@@ -237,7 +235,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin {
                     }
                     $arrParam = $this->objFormParam->getHashArray();
 
-                    if(!$err) echo $line." / ".$rec_count. "行目　（商品ID：".$arrParam['product_id']." / 商品名：".$arrParam['name'].")\n<br />";
+                    if(!$err) echo $line. "行目　（商品ID：".$arrParam['product_id']." / 商品名：".$arrParam['name'].")\n<br />";
                     flush();
                 }
                 fclose($fp);
@@ -298,7 +296,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin {
         $arrCSVFrame = $this->lfSetParamDefaultValue($arrCSVFrame);
         // CSV項目毎の処理
         foreach($arrCSVFrame as $item) {
-            if($item['status'] == '2') continue;
+            if($item['status'] == CSV_COLUMN_STATUS_FLG_DISABLE) continue;
             //サブクエリ構造の場合は AS名 を使用
             if(preg_match_all('/\(.+\) as (.+)$/i', $item['col'], $match, PREG_SET_ORDER)) {
                 $col = $match[0][1];
@@ -328,7 +326,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin {
                     , $item['mb_convert_kana_option']
                     , $arrErrorCheckTypes
                     , $item['default']
-                    , ($item['rw_flg'] != 2) ? true : false
+                    , ($item['rw_flg'] != CSV_COLUMN_RW_FLG_READ_ONLY) ? true : false
                     );
         }
     }
@@ -515,6 +513,8 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin {
                 case 'product_payment_ids':
                     $arrCSVFrame[$key]['default'] = implode(',',array_keys($this->arrPayments));
                     break;
+                case 'stock_unlimited':
+                    $arrCSVFrame[$key]['default'] = UNLIMITED_FLG_LIMITED;
                 default:
                     break;
             }
@@ -561,19 +561,19 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin {
                 $sqlval['product_type_id'] = DEFAULT_PRODUCT_DOWN;
             }
             // TODO: 在庫数、無制限フラグの扱いについて仕様がぶれているので要調整
-            if($sqlval['stock'] == "" and $sqlval['stock_unlimited'] != '1') {
+            if($sqlval['stock'] == "" and $sqlval['stock_unlimited'] != UNLIMITED_FLG_UNLIMITED) {
                 //在庫数設定がされておらず、かつ無制限フラグが設定されていない場合、強制無制限
-                $sqlval['stock_unlimited'] = '1';
-            }elseif($sqlval['stock'] != "" and $sqlval['stock_unlimited'] != '1') {
+                $sqlval['stock_unlimited'] = UNLIMITED_FLG_UNLIMITED;
+            }elseif($sqlval['stock'] != "" and $sqlval['stock_unlimited'] != UNLIMITED_FLG_UNLIMITED) {
                 //在庫数設定時は在庫無制限フラグをクリア
-                $sqlval['stock_unlimited'] = '0';
-            }elseif($sqlval['stock'] != "" and $sqlval['stock_unlimited'] == '1') {
+                $sqlval['stock_unlimited'] = UNLIMITED_FLG_LIMITED;
+            }elseif($sqlval['stock'] != "" and $sqlval['stock_unlimited'] == UNLIMITED_FLG_UNLIMITED) {
                 //在庫無制限フラグ設定時は在庫数をクリア
                 $sqlval['stock'] = '';
             }
         }else{
             //更新時のみ設定する項目
-            if(array_key_exists('stock_unlimited', $sqlval) and $sqlval['stock_unlimited'] == '1') {
+            if(array_key_exists('stock_unlimited', $sqlval) and $sqlval['stock_unlimited'] == UNLIMITED_FLG_UNLIMITED) {
                 $sqlval['stock'] = '';
             }
         }
@@ -675,7 +675,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin {
         if($item['stock'] == "") {
             if(array_search('stock_unlimited', $this->arrFormKeyList) === FALSE) {
                 $arrErr['stock'] = "※ 在庫数は必須です（無制限フラグ項目がある場合のみ空欄許可）。";
-            }else if($item['stock_unlimited'] != "1") {
+            }else if($item['stock_unlimited'] != UNLIMITED_FLG_UNLIMITED) {
                 $arrErr['stock'] = "※ 在庫数または在庫無制限フラグのいずれかの入力が必須です。";
             }
         }

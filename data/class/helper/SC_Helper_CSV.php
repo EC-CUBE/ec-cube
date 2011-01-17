@@ -92,7 +92,7 @@ class SC_Helper_CSV {
         }
 
         // CSV出力タイトル行の作成
-        $arrCsvOutput = SC_Utils_Ex::sfSwapArray($this->sfgetCsvOutput($csv_id, 'status = 1'));
+        $arrCsvOutput = SC_Utils_Ex::sfSwapArray($this->sfgetCsvOutput($csv_id, 'status = ' . CSV_COLUMN_STATUS_FLG_ENABLE));
 
         if (count($arrCsvOutput) <= 0) break;
 
@@ -112,8 +112,8 @@ class SC_Helper_CSV {
     function sfIsImportCSVFrame(&$arrCSVFrame) {
         $result = true;
         foreach($arrCSVFrame as $key => $val) {
-            if($val['status'] != "1"
-                    and $val['rw_flg'] == "1"
+            if($val['status'] != CSV_COLUMN_STATUS_FLG_ENABLE
+                    and $val['rw_flg'] == CSV_COLUMN_RW_FLG_READ_WRITE
                     and $val['error_check_types'] != ""
                     and stripos($val['error_check_types'], "EXIST_CHECK") !== FALSE) {
                 //必須フィールド
@@ -132,8 +132,8 @@ class SC_Helper_CSV {
     function sfIsUpdateCSVFrame(&$arrCSVFrame) {
         $result = true;
         foreach($arrCSVFrame as $key => $val) {
-            if($val['status'] != "1"
-                    and $val['rw_flg'] == "3") {
+            if($val['status'] != CSV_COLUMN_STATUS_FLG_ENABLE
+                    and $val['rw_flg'] == CSV_COLUMN_RW_FLG_KEY_FIELD) {
                 //キーフィールド
                 $result = false;
             }
@@ -177,7 +177,7 @@ class SC_Helper_CSV {
         @set_time_limit(0);
 
         // CSV出力タイトル行の作成
-        $arrOutput = SC_Utils_Ex::sfSwapArray($this->sfgetCsvOutput(1, 'status = 1'));
+        $arrOutput = SC_Utils_Ex::sfSwapArray($this->sfgetCsvOutput(1, 'status = ' . CSV_COLUMN_STATUS_FLG_ENABLE));
         if (count($arrOutput) <= 0) return false; // 失敗終了
         $arrOutputCols = $arrOutput['col'];
 
@@ -262,7 +262,7 @@ class SC_Helper_CSV {
     function sfDownloadCategoryCsv() {
 
         // CSV出力タイトル行の作成
-        $arrOutput = SC_Utils_Ex::sfSwapArray($this->sfgetCsvOutput(5, 'status = 1'));
+        $arrOutput = SC_Utils_Ex::sfSwapArray($this->sfgetCsvOutput(5, 'status = ' . CSV_COLUMN_STATUS_FLG_ENABLE));
         if (count($arrOutput) <= 0) return false; // 失敗終了
         $arrOutputCols = $arrOutput['col'];
 
