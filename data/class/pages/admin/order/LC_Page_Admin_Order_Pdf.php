@@ -131,7 +131,7 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin {
             // メッセージ
             $arrForm['msg1'] = 'このたびはお買上げいただきありがとうございます。';
             $arrForm['msg2'] = '下記の内容にて納品させていただきます。';
-            $arrForm['msg3'] = 'ご確認いただきますよう、お願いいたします。';
+            $arrForm['msg3'] = 'ご確認くださいますよう、お願いいたします。';
 
             // 注文番号があったら、セットする
             if(SC_Utils_Ex::sfIsInt($_GET['order_id'])) {

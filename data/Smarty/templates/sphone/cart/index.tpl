@@ -41,7 +41,7 @@ $(document).ready(function() {
                     <!--{if $tpl_login}-->
                         <!--{$tpl_name|h}--> 様の、現在の所持ポイントは「<em><!--{$tpl_user_point|number_format|default:0}--> pt</em>」です。<br />
                     <!--{else}-->
-                        ポイント制度をご利用になられる場合は、会員登録後ログインしていだだきますようお願い致します。<br />
+                        ポイント制度をご利用になられる場合は、会員登録後ログインしてくださいますようお願い致します。<br />
                     <!--{/if}-->
                     ポイントは商品購入時に1pt＝<!--{$smarty.const.POINT_VALUE}-->円として使用することができます。<br />
                 <!--{/if}-->
