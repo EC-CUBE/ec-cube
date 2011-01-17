@@ -24,21 +24,21 @@
  */
 class Mail_sendmail extends Mail {
 
-	/**
+    /**
      * The location of the sendmail or sendmail wrapper binary on the
      * filesystem.
      * @var string
      */
     var $sendmail_path = '/usr/sbin/sendmail';
 
-	/**
+    /**
      * Any extra command-line parameters to pass to the sendmail or
      * sendmail wrapper binary.
      * @var string
      */
     var $sendmail_args = '-i';
 
-	/**
+    /**
      * Constructor.
      *
      * Instantiates a new Mail_sendmail:: object based on the parameters
@@ -77,7 +77,7 @@ class Mail_sendmail extends Mail {
         }
     }
 
-	/**
+    /**
      * Implements Mail::send() function using the sendmail
      * command-line binary.
      *
@@ -104,18 +104,33 @@ class Mail_sendmail extends Mail {
      */
     function send($recipients, $headers, $body)
     {
+        if (!is_array($headers)) {
+            return PEAR::raiseError('$headers must be an array');
+        }
+
+        $result = $this->_sanitizeHeaders($headers);
+        if (is_a($result, 'PEAR_Error')) {
+            return $result;
+        }
+
         $recipients = $this->parseRecipients($recipients);
-        if (PEAR::isError($recipients)) {
+        if (is_a($recipients, 'PEAR_Error')) {
             return $recipients;
         }
-        $recipients = escapeShellCmd(implode(' ', $recipients));
+        $recipients = implode(' ', array_map('escapeshellarg', $recipients));
 
-        $this->_sanitizeHeaders($headers);
         $headerElements = $this->prepareHeaders($headers);
-        if (PEAR::isError($headerElements)) {
+        if (is_a($headerElements, 'PEAR_Error')) {
             return $headerElements;
         }
         list($from, $text_headers) = $headerElements;
+
+        /* Since few MTAs are going to allow this header to be forged
+         * unless it's in the MAIL FROM: exchange, we'll use
+         * Return-Path instead of From: if it's set. */
+        if (!empty($headers['Return-Path'])) {
+            $from = $headers['Return-Path'];
+        }
 
         if (!isset($from)) {
             return PEAR::raiseError('No from address given.');
@@ -126,7 +141,8 @@ class Mail_sendmail extends Mail {
             return PEAR::raiseError('From address specified with dangerous characters.');
         }
 
-        $from = escapeShellCmd($from);
+        $from = escapeshellarg($from); // Security bug #16200
+
         $mail = @popen($this->sendmail_path . (!empty($this->sendmail_args) ? ' ' . $this->sendmail_args : '') . " -f$from -- $recipients", 'w');
         if (!$mail) {
             return PEAR::raiseError('Failed to open sendmail [' . $this->sendmail_path . '] for execution.');
