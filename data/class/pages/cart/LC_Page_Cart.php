@@ -188,7 +188,20 @@ class LC_Page_Cart extends LC_Page {
         }
 
         // 前頁のURLを取得
-        $this->tpl_prev_url = $objCartSess->getPrevURL();
+        // TODO: SC_CartSession::setPrevURL()利用不可。
+        if (!preg_match("/cart/", $_SERVER['HTTP_REFERER'])) {
+            if (!empty($_SESSION['cart_referer_url'])) {
+                $_SESSION['cart_prev_url'] = $_SESSION['cart_referer_url'];
+                unset($_SESSION['cart_referer_url']);
+            } else {
+                if (preg_match("/entry/", $_SERVER['HTTP_REFERER'])) {
+                    $_SESSION['cart_prev_url'] = URL_PATH . 'entry/kiyaku.php';
+                } else {
+                    $_SESSION['cart_prev_url'] = $_SERVER['HTTP_REFERER'];
+                }
+            }
+        }
+        $this->tpl_prev_url = $_SESSION['cart_prev_url'];
     }
 
     /**
