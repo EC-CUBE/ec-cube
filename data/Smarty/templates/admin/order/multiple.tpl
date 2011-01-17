@@ -48,51 +48,44 @@ $(function() {
         for (var j = 0; j < $(quantity[i]).val(); j++) {
 
             // 商品規格ID
-            var idfield = jQuery('<input />')
-                .attr({'name': 'multiple_product_class_id' + index,
-                       'type': 'hidden'})
+            var idfield = $('<input type="hidden" />')
+                .attr({'name': 'multiple_product_class_id' + index})
                 .val($(product_class_id[i]).val());
 
             // 商品コード
-            var codefield = jQuery('<input />')
-                .attr({'name': 'multiple_product_code' + index,
-                       'type': 'hidden'})
+            var codefield = $('<input type="hidden" />')
+                .attr({'name': 'multiple_product_code' + index})
                 .val($(product_code[i]).val());
 
             // 商品名
-            var namefield = jQuery('<input />')
-                .attr({'name': 'multiple_product_name' + index,
-                       'type': 'hidden'})
+            var namefield = $('<input type="hidden" />')
+                .attr({'name': 'multiple_product_name' + index})
                 .val($(product_name[i]).val());
 
             // 規格1
-            var class1field = jQuery('<input />')
-                .attr({'name': 'multiple_classcategory_name1' + index,
-                       'type': 'hidden'})
+            var class1field = $('<input type="hidden" />')
+                .attr({'name': 'multiple_classcategory_name1' + index})
                 .val($(classcategory_name1[i]).val());
 
             // 規格2
-            var class2field = jQuery('<input />')
-                .attr({'name': 'multiple_classcategory_name2' + index,
-                       'type': 'hidden'})
+            var class2field = $('<input type="hidden" />')
+                .attr({'name': 'multiple_classcategory_name2' + index})
                 .val($(classcategory_name2[i]).val());
 
             // 単価
-            var pricefield = jQuery('<input />')
-                .attr({'name': 'multiple_price' + index,
-                       'type': 'hidden'})
+            var pricefield = $('<input type="hidden" />')
+                .attr({'name': 'multiple_price' + index})
                 .val($(price[i]).val());
 
 
             // 数量
-            var qfield = jQuery('<input />')
+            var qfield = $('<input type="text" />')
                 .attr({'name': 'multiple_quantity' + index,
-                       'type': 'text',
                        'size': 4})
                 .val(1);
 
             // 数量と hidden を設定
-            var q = jQuery('<td />').addClass('center')
+            var q = $('<td />').addClass('center')
                 .append(idfield)
                 .append(namefield)
                 .append(class1field)
@@ -101,13 +94,13 @@ $(function() {
                 .append(qfield);
 
             // お届け先
-            var select = jQuery('<select />').attr('name', 'multiple_shipping' + index);
-            var s = jQuery('<td />').append(select);
+            var select = $('<select />').attr('name', 'multiple_shipping' + index);
+            var s = $('<td />').append(select);
 
             // 行を生成
-            var tr = jQuery('<tr />')
-                .append(jQuery('<td />').text($(product_code[i]).val()))
-                .append(jQuery('<td />').text($(product_name[i]).val()))
+            var tr = $('<tr />')
+                .append($('<td />').text($(product_code[i]).val()))
+                .append($('<td />').text($(product_name[i]).val()))
                 .append(q)
                 .append(s);
 
@@ -121,33 +114,33 @@ $(function() {
         var text = $(shipping_name01[i]).val() + $(shipping_name02[i]).val()
             + ' ' + $(shipping_pref[i]).text()
             + $(shipping_addr01[i]).val() + $(shipping_addr02[i]).val();
-        var option = jQuery('<option />')
+        var option = $('<option />')
             .val($(shipping_id[i]).val())
             .text(text);
         $('select').append(option);
     }
 });
+
 function func_submit() {
     var err_text = '';
-    var fm = window.opener.jQuery('form');;
+    var fm = window.opener.document.form1;
 
-    fm.get(0).mode.value = 'multiple_set_to';
-    fm.get(0).anchor_key.value = 'shipping';
+    fm.mode.value = 'multiple_set_to';
+    fm.anchor_key.value = 'shipping';
 
+    var div = $('<div />');
     $('input[name^=multiple_], select[name^=multiple_]').each(function() {
-        var input = jQuery('<input />')
-            .attr({'name': $(this).attr('name'),
-                   'type': 'hidden'})
-            .val($(this).val());
-        fm.append(input);
+        // TODO タグをベタ書きにしないと, innerHTML で value が空になってしまう
+        $(div).append('<input type="hidden" name="'
+                      + $(this).attr('name')
+                      + '" value="' + $(this).val() + '" />');
     });
-    fm.append(jQuery('<input />')
-              .attr({'name': 'multiple_size',
-                     'type': 'hidden'})
-              .val($('input[name^=multiple_product_class_id]').length));
+    $(div).append('<input type="hidden" name="multiple_size" value="' + $('input[name^=multiple_product_class_id]').length + '" />');
+
+    // window.opener に対する append は IE で動作しない
+    window.opener.jQuery('#multiple').html(div.html());
     fm.submit();
     window.close();
-
     return true;
 }
 //-->

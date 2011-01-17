@@ -48,11 +48,10 @@
 //<![CDATA[
 document.form1.login_id.focus();
 $(function() {
-    jQuery('<input />')
-        .attr('type', 'submit')
+    $('<input type="submit" />')
         .css({'position' : 'absolute',
               'top' : '-1000px'})
-        .appendTo('#form1');
+        .appendTo('form');
 });
 //]]>
 </script>
