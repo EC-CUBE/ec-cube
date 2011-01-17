@@ -200,7 +200,21 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin {
                 $objDb->sfCategory_Count($objQuery);
                 $objDb->sfMaker_Count($objQuery);
                 // 一時ファイルを本番ディレクトリに移動する
-                $this->objUpFile->moveTempFile();
+                // TODO: SC_UploadFile::moveTempFileの画像削除条件見直し要
+                $objImage = new SC_Image($this->objUpFile->temp_dir);
+                $arrKeyName = $this->objUpFile->keyname;
+                $arrTempFile = $this->objUpFile->temp_file;
+                $arrSaveFile = $this->objUpFile->save_file;
+                $arrImageKey = array();
+                foreach ($arrTempFile as $key => $temp_file) {
+                    if ($temp_file) {
+                        $objImage->moveTempImage($temp_file, $this->objUpFile->save_dir);
+                        $arrImageKey[] = $arrKeyName[$key];
+                        if (!empty($arrSaveFile[$key]) && !$this->lfHasSameProductImage($this->arrForm['product_id'], $arrImageKey, $arrSaveFile[$key]) && !in_array($temp_file, $arrSaveFile)) {
+                            $objImage->deleteImage($arrSaveFile[$key], $this->objUpFile->save_dir);
+                        }
+                    }
+                }
                 $this->objDownFile->moveTempDownFile();
 
                 break;
@@ -218,7 +232,25 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin {
                 break;
             // 画像の削除
             case 'delete_image':
-                $this->objUpFile->deleteFile($_POST['image_key']);
+                // TODO: SC_UploadFile::deleteFileの画像削除条件見直し要
+                $arrTempFile = $this->objUpFile->temp_file;
+                $arrKeyName = $this->objUpFile->keyname;
+                foreach ($arrKeyName as $key => $keyname) {
+                    if ($keyname != $_POST['image_key']) continue;
+                    if (!empty($arrTempFile[$key])) {
+                        $temp_file = $arrTempFile[$key];
+                        $arrTempFile[$key] = '';
+                        if (!in_array($temp_file, $arrTempFile)) {
+                            $this->objUpFile->deleteFile($_POST['image_key']);
+                        } else {
+                            $this->objUpFile->temp_file[$key] = '';
+                            $this->objUpFile->save_file[$key] = '';
+                        }
+                    } else {
+                        $this->objUpFile->temp_file[$key] = '';
+                        $this->objUpFile->save_file[$key] = '';
+                    }
+                }
                 $this->lfProductPage(); // 商品登録ページ
                 break;
             // ダウンロード商品ファイルアップロード
@@ -535,7 +567,20 @@ __EOF__;
             $product_id = $arrList['product_id'];
             // 削除要求のあった既存ファイルの削除
             $arrRet = $this->lfGetProduct($arrList['product_id']);
-            $this->objUpFile->deleteDBFile($arrRet);
+            // TODO: SC_UploadFile::deleteDBFileの画像削除条件見直し要
+            $objImage = new SC_Image($this->objUpFile->temp_dir);
+            $arrKeyName = $this->objUpFile->keyname;
+            $arrSaveFile = $this->objUpFile->save_file;
+            $arrImageKey = array();
+            foreach ($arrKeyName as $key => $keyname) {
+                if ($arrRet[$keyname] && !$arrSaveFile[$key]) {
+                    $arrImageKey[] = $keyname;
+                    $has_same_image = $this->lfHasSameProductImage($arrList['product_id'], $arrImageKey, $arrRet[$keyname]);
+                    if (!$has_same_image) {
+                        $objImage->deleteImage($arrRet[$keyname], $this->objUpFile->save_dir);
+                    }
+                }
+            }
             $this->objDownFile->deleteDBDownFile($arrRet);
 
             // UPDATEの実行
@@ -896,6 +941,46 @@ __EOF__;
     /* ダウンロードファイル情報の初期化 */
     function lfInitDownFile() {
         $this->objDownFile->addFile("ダウンロード販売用ファイル", 'down_file', explode(",", DOWNLOAD_EXTENSION),DOWN_SIZE, true, 0, 0);
+    }
+
+    /**
+     * 同名画像ファイル登録の有無を確認する.
+     *
+     * 画像ファイルの削除可否判定用。
+     * 同名ファイルの登録がある場合には画像ファイルの削除を行わない。
+     * 戻り値： 同名ファイル有り(true) 同名ファイル無し(false)
+     *
+     * @param string $product_id 商品ID
+     * @param string $arrImageKey 対象としない画像カラム名
+     * @param string $image_file_name 画像ファイル名
+     * @return boolean
+     */
+    function lfHasSameProductImage($product_id, $arrImageKey, $image_file_name) {
+        if (!SC_Utils_Ex::sfIsInt($product_id)) return false;
+        if (!$arrImageKey) return false;
+        if (!$image_file_name) return false;
+
+        $arrWhere = array();
+        $sqlval = array('0', $product_id);
+        foreach ($arrImageKey as $image_key) {
+            $arrWhere[] = "{$image_key} = ?";
+            $sqlval[] = $image_file_name;
+        }
+        $where = implode(" OR ", $arrWhere);
+        $where = "del_flg = ? AND ((product_id <> ? AND ({$where}))";
+
+        $arrKeyName = $this->objUpFile->keyname;
+        foreach ($arrKeyName as $key => $keyname) {
+            if (in_array($keyname, $arrImageKey)) continue;
+            $where .= " OR {$keyname} = ?";
+            $sqlval[] = $image_file_name;
+        }
+        $where .= ")";
+
+        $objQuery = new SC_Query();
+        $count = $objQuery->count('dtb_products', $where, $sqlval);
+        if (!$count) return false;
+        return true;
     }
 }
 ?>
