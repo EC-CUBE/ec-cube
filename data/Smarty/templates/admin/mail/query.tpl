@@ -133,8 +133,10 @@ self.moveTo(20,20);self.focus();
     </tr>
   </table>
 
-  <div class="btn">
-    <a class="btn-normal" href="javascript:;" onclick="window.close(); return false;"><span>ウインドウを閉じる</span></a>
+  <div class="btn-area">
+    <ul>
+      <li><a class="btn-action" href="javascript:;" onclick="window.close(); return false;"><span class="btn-next">ウインドウを閉じる</span></a></li>
+    </ul>
   </div>
 </div>
 </form>

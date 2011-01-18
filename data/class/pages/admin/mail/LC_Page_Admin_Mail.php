@@ -209,6 +209,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin {
             $list_data['category_name'] = $arrCatList[$list_data['category_id']];
 
             $this->list_data = $list_data;
+            $this->setTemplate('mail/query.tpl');
             return;
         }
 

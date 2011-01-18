@@ -1032,7 +1032,8 @@ function getSequences() {
                  array("dtb_send_history", "send_id"),
                  array("dtb_site_control", "control_id"),
                  array("dtb_table_comment", "id"),
-                 array("dtb_trackback", "trackback_id"));
+                 array("dtb_trackback", "trackback_id"),
+                 array("dtb_mailmaga_template", "template_id"));
 }
 
 

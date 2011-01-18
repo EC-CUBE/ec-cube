@@ -24,7 +24,8 @@
 <form name="form1" id="form1" method="post" action="?">
 <input type="hidden" name="search_pageno" value="" />
 <input type="hidden" name="mode" value="" />
-<div id="mail" class="contents-main">
+  <!--{if count($arrDataList) > 0}-->
+  <div id="mail" class="contents-main">
     <table class="list center">
         <tr>
             <th>配信開始時刻</th>
@@ -45,7 +46,7 @@
             <td><!--{$arrDataList[cnt].end_date|sfDispDBDate|h}--></td>
             <td class="left"><!--{$arrDataList[cnt].subject|h}--></td>
             <td><a href="javascript:;" onclick="win03('./preview.php?send_id=<!--{$arrDataList[cnt].send_id|h}-->', 'confirm', '720', '600'); return false;">確認</a></td>
-            <td><a href="#" onclick="win03('./<!--{$smarty.const.DIR_INDEX_URL}-->?mode=query&amp;send_id=<!--{$arrDataList[cnt].send_id|h}-->','query','720','420'); return false;">確認</a></td>
+            <td><a href="javascript:;" onclick="win03('./<!--{$smarty.const.DIR_INDEX_URL}-->?mode=query&amp;send_id=<!--{$arrDataList[cnt].send_id|h}-->','query','615','800'); return false;">確認</a></td>
             <td><!--{$arrDataList[cnt].count_all|h}--></td>
             <td><!--{$arrDataList[cnt].count_sent|h}--></td>
             <td style="<!--{if $arrDataList[cnt].count_error >= 1}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->">
@@ -62,6 +63,23 @@
             <td><a href="?mode=delete&send_id=<!--{$arrDataList[cnt].send_id|h}-->" onclick="return window.confirm('配信履歴を削除しても宜しいでしょうか');">削除</a></td>
         </tr>
         <!--{/section}-->
-    </table>
-</div>
+      </table>
+    </div>
+    <!--{else}-->
+	  <div id="complete">
+		  <div class="complete-top"></div>
+		  <div class="contents">
+			  <div class="message">
+          配信履歴はありません
+			  </div>
+		  </div>
+		  <div class="btn-area-top"></div>
+		  <div class="btn-area">
+			  <ul>
+				  <li><a class="btn-action" href="./<!--{$smarty.const.DIR_INDEX_URL}-->"><span class="btn-prev">配信内容設定へ戻る</span></a></li>
+			  </ul>
+		  </div>
+		  <div class="btn-area-bottom"></div>
+	  </div>
+    <!--{/if}-->
 </form>

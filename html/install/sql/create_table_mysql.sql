@@ -234,6 +234,37 @@ CREATE TABLE dtb_mailtemplate (
     update_date timestamp NOT NULL
 ) ENGINE=InnoDB;
 
+CREATE TABLE dtb_mailmaga_template (
+    template_id int NOT NULL,
+    subject text,
+    charge_image text,
+    mail_method int,
+    header text,
+    body text,
+    main_title text,
+    main_comment text,
+    main_product_id int,
+    sub_title text,
+    sub_comment text,
+    sub_product_id01 int,
+    sub_product_id02 int,
+    sub_product_id03 int,
+    sub_product_id04 int,
+    sub_product_id05 int,
+    sub_product_id06 int,
+    sub_product_id07 int,
+    sub_product_id08 int,
+    sub_product_id09 int,
+    sub_product_id10 int,
+    sub_product_id11 int,
+    sub_product_id12 int,
+    del_flg smallint NOT NULL DEFAULT 0,
+    creator_id int NOT NULL,
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_date timestamp NOT NULL,
+    PRIMARY KEY (template_id)
+) ENGINE=InnoDB;
+
 CREATE TABLE dtb_send_history (
     send_id int  NOT NULL,
     mail_method smallint,

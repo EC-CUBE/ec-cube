@@ -141,6 +141,7 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin {
             $objQuery->update("dtb_mailmaga_template", $sqlval, "template_id=".$id );
         } else {
             $sqlval['create_date'] = "now()";
+            $sqlval['template_id'] = $objQuery->nextVal('dtb_mailmaga_template_template_id');
             $objQuery->insert("dtb_mailmaga_template", $sqlval);
         }
     }

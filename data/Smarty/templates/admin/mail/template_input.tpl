@@ -88,4 +88,4 @@ function lfnCheckSubmit(){
     </ul>
   </div>
 </table>
-
+</div>
