@@ -32,6 +32,11 @@ require_once(CLASS_REALDIR . "pages/LC_Page.php");
  */
 class LC_Page_Mypage_DownLoad extends LC_Page {
 
+	// {{{ properties
+
+    /** フォームパラメータの配列 */
+    var $objFormParam;
+
     // }}}
     // {{{ functions
 
@@ -52,26 +57,47 @@ class LC_Page_Mypage_DownLoad extends LC_Page {
      */
     function process() {
         ob_end_clean();
+        parent::process();
+        $this->action();
+        $this->sendResponse();
+    }
 
+    /**
+     * Page のAction.
+     *
+     * @return void
+     */
+    function action() {
+        // ログインチェック
+        $objCustomer = new SC_Customer();
+        if (!$objCustomer->isLoginSuccess()){
+            SC_Utils_Ex::sfDispSiteError(DOWNFILE_NOT_FOUND,"",true);
+        }
+
+        // パラメータチェック
+        $this->objFormParam = new SC_FormParam();
+        $this->lfInitParam();
+        // GET、SESSION['customer']値の取得
+        $this->objFormParam->setParam($_SESSION['customer']);
+        $this->objFormParam->setParam($_GET);
+        $this->arrErr = $this->lfCheckError();
+        if (count($this->arrErr)!=0){
+            SC_Utils_Ex::sfDispSiteError(DOWNFILE_NOT_FOUND,"",true);
+        }
+    }
+
+    /**
+     * Page のResponse.
+     * @return void
+     */
+    function sendResponse() {
+        $this->objDisplay->noAction();
+
+        // パラメータ取得
         $customer_id = $_SESSION['customer']['customer_id'];
         $order_id = $_GET['order_id'];
         $product_id = $_GET['product_id'];
         $product_class_id = $_GET['product_class_id'];
-
-        // ID の数値チェック
-        // TODO SC_FormParam でチェックした方が良い?
-        if (!is_numeric($customer_id)
-            || !is_numeric($order_id)
-            || !is_numeric($product_id)
-            || !is_numeric($product_class_id)) {
-            SC_Utils_Ex::sfDispSiteError("");
-        }
-
-        $objCustomer = new SC_Customer();
-        //ログインしていない場合エラー
-        if (!$objCustomer->isLoginSuccess()){
-            SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
-        }
 
         //DBから商品情報の読込
         $arrForm = $this->lfGetRealFileName($customer_id, $order_id, $product_id, $product_class_id);
@@ -95,7 +121,9 @@ class LC_Page_Mypage_DownLoad extends LC_Page {
         }
         $sdown_filename = mb_convert_encoding($arrForm["down_filename"], $encoding, "auto");
 
-        //TODO SC_Display利用に変更
+        // flushなどを利用しているので、現行のSC_Displayは利用できません。
+        // SC_DisplayやSC_Responseに大容量ファイルレスポンスが実装されたら移行可能だと思います。
+
         //タイプ指定
         header("Content-Type: Application/octet-stream");
         //ファイル名指定
@@ -158,6 +186,24 @@ __EOS__;
         $arrRet = $objQuery->select($col, $table, $where,
                                     array($customer_id, $order_id, $product_id, $product_class_id));
         return $arrRet[0];
+    }
+
+
+    /* パラメータ情報の初期化 */
+    function lfInitParam() {
+        $this->objFormParam->addParam("customer_id", "customer_id", INT_LEN, "n", array("EXIST_CHECK","NUM_CHECK"));
+        $this->objFormParam->addParam("order_id", "order_id", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK"));
+        $this->objFormParam->addParam("product_id", "product_id", INT_LEN, "n", array("EXIST_CHECK","NUM_CHECK"));
+        $this->objFormParam->addParam("product_class_id", "product_class_id", INT_LEN, "n", array("EXIST_CHECK","NUM_CHECK"));
+    }
+
+    /* 入力内容のチェック */
+    function lfCheckError() {
+        // 入力データを渡す。
+        $arrRet = $this->objFormParam->getHashArray();
+        $objErr = new SC_CheckError($arrRet);
+        $objErr->arrErr = $this->objFormParam->checkError();
+        return $objErr->arrErr;
     }
 
     /**

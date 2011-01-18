@@ -148,6 +148,9 @@ class LC_Page_Error extends LC_Page {
             case WRITE_FILE_ERROR:
                 $this->tpl_error="設定ファイルに書き込めません。\n設定ファイルに書き込み権限を与えてください。";
                 break;
+            case DOWNFILE_NOT_FOUND:
+                $this->tpl_error="ダウンロードファイルが存在しません。<br />申し訳ございませんが、店舗までお問合わせ下さい。";
+                break;
             case FREE_ERROR_MSG:
                 $this->tpl_error=$this->err_msg;
                 break;
