@@ -21,10 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<center>ご利用ガイド</center>
-
-<hr>
-
 <!-- ▼メニュー ここから -->
 <a href="usage.php" accesskey="1"><!--{1|numeric_emoji}-->ご利用方法</a><br>
 <a href="privacy.php" accesskey="2"><!--{2|numeric_emoji}-->プライバシーポリシー</a><br>
@@ -34,13 +30,3 @@
 <!-- ▲メニュー ここまで -->
 
 <br>
-<hr>
-
-<a href="<!--{$smarty.const.MOBILE_CART_URLPATH}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>
-<a href="<!--{$smarty.const.MOBILE_TOP_URLPATH}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
-
-<br>
-
-<!-- ▼フッター ここから -->
-<!--{include file='footer.tpl'}-->
-<!-- ▲フッター ここまで -->

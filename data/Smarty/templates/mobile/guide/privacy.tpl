@@ -21,10 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<center>プライバシーポリシー</center>
-
-<hr>
-
 <!-- ▼本文 ここから -->
 <!--{$arrSiteInfo.company_name|h}-->は、個人情報保護の重要性に鑑み、「個人情報の保護に関する法律」及び本プライバシーポリシーを遵守し、お客さまのプライバシー保護に努めます。<br>
 　個人情報の定義<br>
@@ -32,13 +28,3 @@
 <!-- ▲本文 ここまで -->
 
 <br>
-<hr>
-
-<a href="<!--{$smarty.const.MOBILE_CART_URLPATH}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>
-<a href="<!--{$smarty.const.MOBILE_TOP_URLPATH}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
-
-<br>
-
-<!-- ▼フッター ここから -->
-<!--{include file='footer.tpl'}-->
-<!-- ▲フッター ここまで -->

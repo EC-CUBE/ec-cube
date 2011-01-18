@@ -21,10 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<center>本会員登録完了</center>
-
-<hr>
-
 本登録が完了いたしました。<br>
 それではショッピングをお楽しみください。<br>
 
@@ -42,13 +38,5 @@ E-mail：<a href="mailto:<!--{$arrSiteInfo.email02|h}-->"><!--{$arrSiteInfo.emai
 
 <!--{if !$tpl_cart_empty}-->
 <a href="<!--{$smarty.const.MOBILE_URLPATH}-->shopping/deliv.php">ご注文手続きへ進む</a><br>
-<!--{/if}-->
-
-<a href="<!--{$smarty.const.MOBILE_TOP_URLPATH}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページに戻る</a><br>
-
 <br>
-<hr>
-
-<!-- ▼フッター ここから -->
-<!--{include file='footer.tpl'}-->
-<!-- ▲フッター ここまで -->
+<!--{/if}-->

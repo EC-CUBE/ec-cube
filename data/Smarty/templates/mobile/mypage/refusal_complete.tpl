@@ -21,19 +21,5 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<div align="center">退会完了</div>
-<hr>
-
 退会手続きが完了致しました。またのご利用をおまちしております。<br>
 <br>
-
-<a href="<!--{$smarty.const.MOBILE_TOP_URLPATH}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
-
-<hr>
-
-<!-- ▼フッター ここから -->
-<!--{include file='footer.tpl'}-->
-<!-- ▲フッター ここまで -->
-
-
-

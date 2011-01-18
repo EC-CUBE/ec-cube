@@ -29,7 +29,7 @@ require_once(CLASS_REALDIR . "pages/LC_Page.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id:LC_Page_Entry_Complete.php 15532 2007-08-31 14:39:46Z nanasess $
+ * @version $Id$
  */
 class LC_Page_Entry_Complete extends LC_Page {
 
@@ -43,6 +43,10 @@ class LC_Page_Entry_Complete extends LC_Page {
      */
     function init() {
         parent::init();
+        
+        // カートが空かどうかを確認する。
+        $objCartSess = new SC_CartSession();
+        $this->tpl_cart_empty = count($objCartSess->getCartList()) < 1;
 
         // メインテンプレートを設定
         if(CUSTOMER_CONFIRM_MAIL == true) {

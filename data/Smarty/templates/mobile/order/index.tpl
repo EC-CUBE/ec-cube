@@ -21,10 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<center><font color="#008080"><b><!--{$tpl_title|h}--></b></font></center>
-
-<hr>
-
 [emoji:39]<font color="#800000">販売業者</font><br>
 <!--{$arrRet.law_company|h}--><br>
 <hr>
@@ -77,11 +73,4 @@
 
 [emoji:e42]<font color="#800000">返品・交換について</font><br>
 <!--{$arrRet.law_term06|h|nl2br}--><br>
-<hr>
-
-<a href="<!--{$smarty.const.MOBILE_CART_URLPATH}-->" accesskey="9"><!--{9|numeric_emoji}-->カート見る</a><br>
-<a href="<!--{$smarty.const.MOBILE_TOP_URLPATH}-->" accesskey="0"><!--{0|numeric_emoji}-->ホームへ</a><br>
-
 <br>
-
-<!--{include file='footer.tpl'}-->

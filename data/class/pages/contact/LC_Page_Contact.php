@@ -29,7 +29,7 @@ require_once(CLASS_REALDIR . "pages/LC_Page.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id:LC_Page_Contact.php 15532 2007-08-31 14:39:46Z nanasess $
+ * @version $Id$
  */
 class LC_Page_Contact extends LC_Page {
 
@@ -91,9 +91,7 @@ class LC_Page_Contact extends LC_Page {
      */
     function action() {
         $objDb = new SC_Helper_DB_Ex();
-        $CONF = $objDb->sfGetBasisData();			// 店舗基本情報
-
-        $objCustomer = new SC_Customer();
+        $this->CONF = $objDb->sfGetBasisData();			// 店舗基本情報
 
         $this->arrData = isset($_SESSION['customer']) ? $_SESSION['customer'] : "";
 

@@ -21,16 +21,13 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<div align="center">ご利用規約</div>
 <!--{if $offset eq 1}-->
-<hr>
 ご注文に際して必要な内容（ご自宅住所等）をご登録していただきます。<br>
 ご利用の規約をよくお読みの上、ご登録下さい。<br>
-<!--{/if}-->
 <hr>
+<!--{/if}-->
 <!--{$tpl_kiyaku_text|h|nl2br}--><br>
-
-<BR>
+<br>
 <!--{if $max >= $offset+1}-->
 	<a href="kiyaku.php?offset=<!--{$offset+1}-->">次へ→</a><br><br>
 <!--{/if}-->
@@ -39,13 +36,3 @@
 <a href="<!--{$smarty.const.MOBILE_TOP_URLPATH}-->" accesskey="2"><!--{2|numeric_emoji}-->同意しない</a><br>
 
 <br>
-<hr>
-
-<a href="<!--{$smarty.const.MOBILE_CART_URLPATH}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>
-<a href="<!--{$smarty.const.MOBILE_TOP_URLPATH}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
-
-<br>
-
-<!-- ▼フッター ここから -->
-<!--{include file='footer.tpl'}-->
-<!-- ▲フッター ここまで -->

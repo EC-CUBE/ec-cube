@@ -21,10 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<!--▼CONTENTS-->
-<!--▼MAIN ONTENTS-->
-<div align="center"><font color="#000080">ご注文手続き</font></div><br>
-<hr>
 <!--{if !$tpl_valid_phone_id}-->
 <!--▼会員登録がお済みでないお客様-->
 ■初めてご注文の方<br>
@@ -56,17 +52,5 @@
 	<a href="<!--{$smarty.const.MOBILE_URLPATH}-->forgot/<!--{$smarty.const.DIR_INDEX_URL}-->">パスワードをお忘れの方はこちら</a><br>
 </form>
 <!--▲会員登録がお済のお客様-->
-<!--▲MAIN ONTENTS-->
-<!--▲CONTENTS-->
 
 <br>
-<hr>
-
-<a href="<!--{$smarty.const.MOBILE_CART_URLPATH}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>
-<a href="<!--{$smarty.const.MOBILE_TOP_URLPATH}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
-
-<br>
-
-<!-- ▼フッター ここから -->
-<!--{include file='footer.tpl'}-->
-<!-- ▲フッター ここまで -->

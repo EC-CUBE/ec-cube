@@ -21,9 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<div align="center">MYページTOP</div>
-<hr>
-
 <!--{$CustomerName1|h}--> <!--{$CustomerName2|h}-->様<br>
 いつもご利用いただきありがとうございます。<br>
 <br>
@@ -62,7 +59,3 @@
 <!--{$tpl_strnavi}-->
 <br>
 <!--{/if}-->
-
-<!-- ▼フッター ここから -->
-<!--{include file='footer.tpl'}-->
-<!-- ▲フッター ここまで -->

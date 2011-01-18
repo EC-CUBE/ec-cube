@@ -21,58 +21,43 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<center>運営会社紹介</center>
-
-<hr>
-
 <!-- ▼本文 ここから -->
 <!--{if $arrSiteInfo.shop_name != ""}-->
-[emoji:38]<font color="#800000">店名</font><br>
+[emoji:38]店名<br>
 <!--{$arrSiteInfo.shop_name|h}--><br>
 <!--{/if}-->
 <!--{if $arrSiteInfo.company_name != ""}-->
-[emoji:39]<font color="#800000">会社名</font><br>
+[emoji:39]会社名<br>
 <!--{$arrSiteInfo.company_name|h}--><br>
 <!--{/if}-->
 <!--{if $arrSiteInfo.zip01 != ""}-->
-[emoji:121]<font color="#800000">住所</font><br>
+[emoji:121]住所<br>
 〒<!--{$arrSiteInfo.zip01|h}-->-<!--{$arrSiteInfo.zip02|h}--><br>
 <!--{$arrSiteInfo.pref|h}--><!--{$arrSiteInfo.addr01|h}--><!--{$arrSiteInfo.addr02|h}--><br>
 <!--{/if}-->
 <!--{if $arrSiteInfo.tel01 != ""}-->
-[emoji:74]<font color="#800000">電話番号</font><br>
+[emoji:74]電話番号<br>
 <!--{$arrSiteInfo.tel01|h}-->-<!--{$arrSiteInfo.tel02|h}-->-<!--{$arrSiteInfo.tel03|h}--><br>
 <!--{/if}-->
 <!--{if $arrSiteInfo.fax01 != ""}-->
-[emoji:76]<font color="#800000">FAX番号</font><br>
+[emoji:76]FAX番号<br>
 <!--{$arrSiteInfo.fax01|h}-->-<!--{$arrSiteInfo.fax02|h}-->-<!--{$arrSiteInfo.fax03|h}--><br>
 <!--{/if}-->
 <!--{if $arrSiteInfo.business_hour != ""}-->
-[emoji:176]<font color="#800000">営業時間</font><br>
+[emoji:176]営業時間<br>
 <!--{$arrSiteInfo.business_hour|h}--><br>
 <!--{/if}-->
 <!--{if $arrSiteInfo.email02 != ""}-->
-[emoji:110]<font color="#800000">メールアドレス</font><br>
+[emoji:110]メールアドレス<br>
 <a href="mailto:<!--{$arrSiteInfo.email02|h}-->"><!--{$arrSiteInfo.email02|h}--></a><br>
 <!--{/if}-->
 <!--{if $arrSiteInfo.good_traded != ""}-->
-[emoji:72]<font color="#800000">取扱商品</font><br>
+[emoji:72]取扱商品<br>
 <!--{$arrSiteInfo.good_traded|h|nl2br}--><br>
 <!--{/if}-->
 <!--{if $arrSiteInfo.message != ""}-->
-[emoji:70]<font color="#800000">メッセージ</font><br>
+[emoji:70]メッセージ<br>
 <!--{$arrSiteInfo.message|h|nl2br}--><br>
 <!--{/if}-->
 <!-- ▲本文 ここまで -->
-
 <br>
-<hr>
-
-<a href="<!--{$smarty.const.MOBILE_CART_URLPATH}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>
-<a href="<!--{$smarty.const.MOBILE_TOP_URLPATH}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
-
-<br>
-
-<!-- ▼フッター ここから -->
-<!--{include file='footer.tpl'}-->
-<!-- ▲フッター ここまで -->

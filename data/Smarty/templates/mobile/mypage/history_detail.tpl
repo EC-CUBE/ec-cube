@@ -21,9 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<div align="center">購入履歴詳細</div>
-<hr>
-
 ■<!--{$arrDisp.create_date|sfDispDBDate}--><br>
 注文番号:<!--{$arrDisp.order_id}--><br>
 <br>
@@ -71,7 +68,3 @@
 <a href="<!--{$smarty.const.MOBILE_TOP_URLPATH}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
 
 <br>
-
-<!-- ▼フッター ここから -->
-<!--{include file='footer.tpl'}-->
-<!-- ▲フッター ここまで -->

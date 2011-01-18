@@ -21,27 +21,16 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<div align="center">お問い合わせ</div>
-
-<hr>
 
 各種お問い合せは、下記のお電話又はメールにてご連絡下さいませ。<br>
-■<!--{$company_name}--><br>
-【電話】<br>
-営業時間：<br>
-<!--{$business_hour}--><br>
-電話番号：<br>
-<!--{$tel01}-->-<!--{$tel02}-->-<!--{$tel03}--><br>
-【E-mail】<br>
-<a href="mailto:<!--{$email02|u}-->"><!--{$email02|h}--></a><br>
-※お急ぎの場合には、お電話にてお問い合せ下さい。<br>
-
 <br>
-<hr>
-
-<a href="<!--{$smarty.const.MOBILE_CART_URLPATH}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>
-<a href="<!--{$smarty.const.MOBILE_TOP_URLPATH}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
-
-<!-- ▼フッター ここから -->
-<!--{include file='footer.tpl'}-->
-<!-- ▲フッター ここまで -->
+●会社名<br>
+<!--{$CONF.company_name}--><br>
+●電話番号<br>
+<!--{$CONF.tel01}-->-<!--{$CONF.tel02}-->-<!--{$CONF.tel03}--><br>
+●営業時間<br>
+<!--{$CONF.business_hour}--><br>
+●E-mail<br>
+<a href="mailto:<!--{$CONF.email02|u}-->"><!--{$CONF.email02|h}--></a><br>
+※お急ぎの場合には、お電話にてお問い合せ下さい。<br>
+<br>

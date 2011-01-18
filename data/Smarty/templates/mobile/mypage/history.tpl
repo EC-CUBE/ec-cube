@@ -21,9 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<div align="center">購入履歴</div>
-<hr>
-
 購入日時：<!--{$arrDisp.create_date|sfDispDBDate}--><br />
 注文番号：<!--{$arrDisp.order_id}--><br />
 お支払い方法：<!--{$arrPayment[$arrDisp.payment_id]|h}-->
@@ -35,8 +32,8 @@
 <!--{/if}-->
 
 <form action="order.php" method="post">
-<input type="hidden" name="order_id" value="<!--{$arrDisp.order_id}-->">
-<input type="submit" name="submit" value="再注文">
+    <input type="hidden" name="order_id" value="<!--{$arrDisp.order_id}-->">
+    <input type="submit" name="submit" value="再注文">
 </form>
 
 ■購入商品詳細<br>
@@ -127,7 +124,3 @@
 <a href="./mail_view.php?send_id=<!--{$arrMailHistory[cnt].send_id}-->"><!--{$arrMailHistory[cnt].subject|h}--></a><br>
 <!--{/section}-->
 <br>
-
-<!-- ▼フッター ここから -->
-<!--{include file='footer.tpl'}-->
-<!-- ▲フッター ここまで -->

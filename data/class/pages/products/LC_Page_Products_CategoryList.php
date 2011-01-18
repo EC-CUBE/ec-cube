@@ -66,6 +66,7 @@ class LC_Page_Products_CategoryList extends LC_Page {
 
         // カテゴリー情報を取得する。
         $this->lfGetCategories(@$_GET['category_id'], true, $this);
+        $this->tpl_subtitle = $this->arrCategory['category_name'];
     }
 
     /**

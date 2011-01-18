@@ -21,9 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<center><!--{$tpl_subtitle|h}--></center>
-<hr>
-
 <!--★商品画像★-->
 <!--{if $smarty.get.image != ''}-->
 <!--{assign var=key value="`$smarty.get.image`"}-->
@@ -134,14 +131,3 @@ Pt<br>
 	<font color="#FF0000">申し訳ございませんが､只今品切れ中です｡</font>
 <!--{/if}-->
 </form>
-
-<hr>
-
-<a href="<!--{$smarty.const.MOBILE_CART_URLPATH}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>
-<a href="<!--{$smarty.const.MOBILE_TOP_URLPATH}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
-
-<br>
-
-<!-- ▼フッター ここから -->
-<!--{include file='footer.tpl'}-->
-<!-- ▲フッター ここまで -->

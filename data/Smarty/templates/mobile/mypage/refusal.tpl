@@ -21,8 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<div align="center">退会確認</div>
-<hr>
 <!--{$CustomerName1|h}--> <!--{$CustomerName2|h}-->様、会員から退会をされますと、登録されているお届け先の情報など全て削除されますがよろしいでしょうか。<br>
 <br>
 <div align="center">
@@ -32,14 +30,3 @@
 </form>
 </div>
 <br>
-
-<hr>
-
-<a href="<!--{$smarty.const.MOBILE_CART_URLPATH}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>
-<a href="<!--{$smarty.const.MOBILE_TOP_URLPATH}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
-
-<br>
-
-<!-- ▼フッター ここから -->
-<!--{include file='footer.tpl'}-->
-<!-- ▲フッター ここまで -->

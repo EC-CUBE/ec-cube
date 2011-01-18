@@ -29,7 +29,7 @@ require_once(CLASS_REALDIR . "pages/LC_Page.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id:LC_Page_Forgot.php 15532 2007-08-31 14:39:46Z nanasess $
+ * @version $Id$
  */
 class LC_Page_Forgot extends LC_Page {
 
@@ -54,6 +54,7 @@ class LC_Page_Forgot extends LC_Page {
      */
     function init() {
         parent::init();
+        $this->tpl_title = "パスワードを忘れた方";
         $this->tpl_mainpage = 'forgot/index.tpl';
         $this->tpl_mainno = '';
     }
@@ -172,11 +173,13 @@ class LC_Page_Forgot extends LC_Page {
             $this->tpl_login_email = $objCookie->getCookie('login_email');
         }
 
-        // モバイルサイトの場合はトークン生成
         if (defined("MOBILE_SITE") && MOBILE_SITE) {
+            // モバイルサイトの場合はトークン生成
             $this->createMobileToken();
+        } else {
+            // モバイルサイト以外の場合、ポップアップ用テンプレートファイル設定
+            $this->setTemplate($this->tpl_mainpage);
         }
-        $this->setTemplate($this->tpl_mainpage);
     }
 
     /**

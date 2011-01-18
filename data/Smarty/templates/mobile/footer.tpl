@@ -21,8 +21,20 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<center><font size="-2">Copyright &copy; 
+<div align="right"><a href="#top">↑このページのトップへ</a></div>
+
+<hr>
+
+<a href="<!--{$smarty.const.MOBILE_URLPATH}-->mypage/login.php" accesskey="8" utn><!--{8|numeric_emoji}-->MYページ</a><br>
+<a href="<!--{$smarty.const.MOBILE_CART_URLPATH}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>
+<a href="<!--{$smarty.const.MOBILE_TOP_URLPATH}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="center" bgcolor="#666666"><font color="#ffffff" size="-2">Copyright &copy;
 <!--{if $smarty.const.RELEASE_YEAR !=  $smarty.now|date_format:"%Y"}-->
     <!--{$smarty.const.RELEASE_YEAR}-->-
 <!--{/if}-->
-<!--{$smarty.now|date_format:"%Y"}--> <!--{$arrSiteInfo.shop_name_eng|h}--> All rights reserved.</font></center>
+<!--{$smarty.now|date_format:"%Y"}--> <!--{$arrSiteInfo.shop_name_eng|h}--> All rights reserved.</font></td>
+</tr>
+</table>

@@ -21,10 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<center>ご注文完了</center>
-
-<hr>
-
 ご注文、有り難うございました。<br>
 商品到着をお楽しみにお待ち下さいませ。<br>
 どうぞ、今後とも、<!--{$arrInfo.shop_name|h}-->をよろしくお願いします。<br>
@@ -41,12 +37,3 @@
 <br>
 <!-- ▲その他の決済情報 -->
 <!--{/if}-->
-
-<a href="<!--{$smarty.const.MOBILE_TOP_URLPATH}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページに戻る</a><br>
-
-<br>
-<hr>
-
-<!-- ▼フッター ここから -->
-<!--{include file='footer.tpl'}-->
-<!-- ▲フッター ここまで -->

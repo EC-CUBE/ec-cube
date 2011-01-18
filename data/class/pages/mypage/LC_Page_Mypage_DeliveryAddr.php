@@ -66,7 +66,6 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page {
      * @return void
      */
     function action() {
-        //$objView = new SC_SiteView(false);
         $objQuery = new SC_Query();
         $objCustomer = new SC_Customer();
         $ParentPage = MYPAGE_DELIVADDR_URLPATH;
@@ -83,7 +82,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page {
          * ログイン判定 及び 退会判定
          * 未ログインでも, 複数配送設定ページからのアクセスの場合は表示する
          */
-        if (!$objCustomer->isLoginSuccess() && $ParentPage != MULTIPLE_URLPATH){
+        if (!$objCustomer->isLoginSuccess(true) && $ParentPage != MULTIPLE_URLPATH){
             $this->tpl_onload = "fnUpdateParent('". $this->getLocation($_POST['ParentPage']) ."'); window.close();";
         }
 
@@ -97,7 +96,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page {
         if ($_GET['other_deliv_id'] != ""){
             //不正アクセス判定
             $flag = $objQuery->count("dtb_other_deliv", "customer_id=? AND other_deliv_id=?", array($objCustomer->getValue("customer_id"), $_SESSION['other_deliv_id']));
-            if (!$objCustomer->isLoginSuccess() || $flag == 0){
+            if (!$objCustomer->isLoginSuccess(true) || $flag == 0){
                 SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
             }
         }
@@ -157,7 +156,11 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page {
                 }
                 break;
         }
-        $this->setTemplate('mypage/delivery_addr.tpl');
+        if(Net_UserAgent_Mobile::isMobile() === true) {
+            $this->tpl_mainpage = 'mypage/delivery_addr.tpl';
+        } else {
+            $this->setTemplate('mypage/delivery_addr.tpl');
+        }
     }
 
     /**

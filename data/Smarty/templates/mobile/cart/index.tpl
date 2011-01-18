@@ -21,10 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<center>かご表示</center>
-
-<hr>
-
 <!--{* カゴの中に商品がある場合にのみ表示 *}-->
 <!--{if count($cartKeys) > 1}-->
 <font color="#FF0000"><!--{foreach from=$cartKeys item=key name=cartKey}--><!--{$arrProductType[$key]}--><!--{if !$smarty.foreach.cartKey.last}-->、<!--{/if}--><!--{/foreach}-->
@@ -112,14 +108,4 @@
 <!--{/if}-->
 ポイントは商品購入時に1ptを<!--{$smarty.const.POINT_VALUE}-->円として使用することができます。<br>
 <!--{/if}-->
-
 <br>
-<hr>
-
-<a href="<!--{$smarty.const.MOBILE_TOP_URLPATH}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
-
-<br>
-
-<!-- ▼フッター ここから -->
-<!--{include file='footer.tpl'}-->
-<!-- ▲フッター ここまで -->

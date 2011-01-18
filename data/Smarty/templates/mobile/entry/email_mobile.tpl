@@ -21,8 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<div align="center">携帯メール登録</div>
-<hr>
 <!--{$tpl_name|h}-->様<br>
 いつもご利用いただきありがとうございます。ご使用の携帯電話のメールアドレスをご登録下さい。<br>
 <br>
@@ -32,17 +30,5 @@
 <font color="#ff0000"><!--{$arrErr[$key]|default:''}--></font>
 <input type="text" name="email_mobile" value="<!--{$arrForm[$key].value|h}-->" size="40" maxlength="<!--{$arrForm[$key].length}-->" istyle="3"><br>
 <center><input type="submit" value="送信"></center>
-<center><a href="../mypage/<!--{$smarty.const.DIR_INDEX_URL}-->" accesskey="0">今は登録しない</a></center>
+<center><a href="<!--{$smarty.const.MOBILE_URLPATH}-->mypage/<!--{$smarty.const.DIR_INDEX_URL}-->" accesskey="0">今は登録しない</a></center>
 </form>
-
-<br>
-<hr>
-
-<a href="<!--{$smarty.const.MOBILE_CART_URLPATH}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>
-<a href="<!--{$smarty.const.MOBILE_TOP_URLPATH}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
-
-<br>
-
-<!-- ▼フッター ここから -->
-<!--{include file='footer.tpl'}-->
-<!-- ▲フッター ここまで -->

@@ -21,8 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<div align="center">登録確認</div>
-<hr>
 <form name="form1" id="form1" method="post" action="?" utn>
 	<input type="hidden" name="mode" value="complete">
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
@@ -31,40 +29,38 @@
 	<!--{/foreach}-->
 	下記の内容でご登録してもよろしいですか？<br>
 	<br>
-	【ﾒｰﾙｱﾄﾞﾚｽ】<br>
+	●ﾒｰﾙｱﾄﾞﾚｽ<br>
 	<!--{$list_data.email|h}--><br>
 
-	【ﾊﾟｽﾜｰﾄﾞ確認用質問】<br>
+	●ﾊﾟｽﾜｰﾄﾞ確認用質問<br>
 	<!--{$arrReminder[$list_data.reminder]|h}--><br>
 
-	【質問の答え】<br>
+	●質問の答え<br>
 	<!--{$list_data.reminder_answer|h}--><br>
 
-	【個人情報】<br>
+	●お名前<br>
 	<!--{$list_data.name01|h}-->　<!--{$list_data.name02|h}--><br>
+
+	●お名前(フリガナ)<br>
 	<!--{$list_data.kana01|h}-->　<!--{$list_data.kana02|h}--><br>
+
+	●性別<br>
 	<!--{if $list_data.sex eq 1}-->男性<!--{else}-->女性<!--{/if}--><br>
-	<!--{if strlen($list_data.year) > 0 && strlen($list_data.month) > 0 && strlen($list_data.day) > 0}--><!--{$list_data.year|h}-->年<!--{$list_data.month|h}-->月<!--{$list_data.day|h}-->日生まれ<!--{else}-->生年月日 未登録<!--{/if}--><br>
+
+	●生年月日<br>
+	<!--{if strlen($list_data.year) > 0 && strlen($list_data.month) > 0 && strlen($list_data.day) > 0}--><!--{$list_data.year|h}-->年<!--{$list_data.month|h}-->月<!--{$list_data.day|h}-->日生まれ<!--{else}-->未登録<!--{/if}--><br>
+
+	●住所<br>
 	〒<!--{$list_data.zip01|h}--> - <!--{$list_data.zip02|h}--><br>
 	<!--{$arrPref[$list_data.pref]|h}--><!--{$list_data.addr01|h}--><!--{$list_data.addr02|h}--><br>
+
+	●電話番号<br>
 	<!--{$list_data.tel01|h}-->-<!--{$list_data.tel02|h}-->-<!--{$list_data.tel03|h}--><br>
 	
-	【ﾒｰﾙﾏｶﾞｼﾞﾝﾞ】<br>
+	●ﾒｰﾙﾏｶﾞｼﾞﾝﾞ<br>
 	<!--{if $list_data.mailmaga_flg eq 2}-->希望する<!--{else}-->希望しない<!--{/if}--><br>
 	<br>
 
 	<input type="submit" name="submit" value="登録"><br>
 	<input type="submit" name="return" value="戻る">
 </form>
-
-<br>
-<hr>
-
-<a href="<!--{$smarty.const.MOBILE_CART_URLPATH}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>
-<a href="<!--{$smarty.const.MOBILE_TOP_URLPATH}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
-
-<br>
-
-<!-- ▼フッター ここから -->
-<!--{include file='footer.tpl'}-->
-<!-- ▲フッター ここまで -->

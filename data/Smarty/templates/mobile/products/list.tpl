@@ -21,12 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<!-- ▼タイトル ここから -->
-<center><!--{$tpl_subtitle|h}--></center>
-<!-- ▲タイトル ここまで -->
-
-<hr>
-
 <!--{if isset($tpl_previous_page|smarty:nodefaults) || isset($tpl_next_page|smarty:nodefaults)}-->
 <!--{if isset($tpl_previous_page|smarty:nodefaults)}-->
 <a href="<!--{$tpl_previous_page|h}-->">前へ</a>
@@ -83,15 +77,3 @@
 <!--{/if}-->
 <br>
 <!--{/if}-->
-
-<br>
-<hr>
-
-<a href="<!--{$smarty.const.MOBILE_CART_URLPATH}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>
-<a href="<!--{$smarty.const.MOBILE_TOP_URLPATH}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
-
-<br>
-
-<!-- ▼フッター ここから -->
-<!--{include file='footer.tpl'}-->
-<!-- ▲フッター ここまで -->

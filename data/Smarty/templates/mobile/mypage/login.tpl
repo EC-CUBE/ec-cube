@@ -21,9 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<div align="center">ログイン</div>
-<hr>
-
 <form name="member_form" id="member_form" method="post" action="./login_check.php">
 	<input type="hidden" name="mode" value="login" >
 <!--{if !$tpl_valid_phone_id}-->
@@ -47,7 +44,3 @@
 また、ログインするだけで、毎回お名前や住所などを入力することなくスムーズにお買い物をお楽しみいただけます。<br>
 <center><a href="../entry/kiyaku.php">会員登録</a></center>
 <br>
-
-<!-- ▼フッター ここから -->
-<!--{include file='footer.tpl'}-->
-<!-- ▲フッター ここまで -->

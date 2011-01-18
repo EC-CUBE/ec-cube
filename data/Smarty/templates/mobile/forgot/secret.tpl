@@ -21,17 +21,13 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<center>パスワードを忘れた方</center>
-
-<hr>
-
 <!--{if $errmsg}-->
 <font color="#ff0000"><!--{$errmsg}--></font><br>
 <!--{/if}-->
 
 ご登録時に入力した下記質問の答えを入力して「次へ」ボタンをクリックしてください。<br>
 ※下記質問の答えをお忘れになられた場合は、<a href="mailto:<!--{$arrSiteInfo.email02|h}-->"><!--{$arrSiteInfo.email02|h}--></a>までご連絡ください。<br>
-
+<br>
 <form action="?" method="post">
 <input type="hidden" name="mode" value="secret_check">
 
@@ -39,15 +35,3 @@
 
 <center><input type="submit" value="次へ" name="next"></center>
 </form>
-
-<br>
-<hr>
-
-<a href="<!--{$smarty.const.MOBILE_CART_URLPATH}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>
-<a href="<!--{$smarty.const.MOBILE_TOP_URLPATH}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
-
-<br>
-
-<!-- ▼フッター ここから -->
-<!--{include file='footer.tpl'}-->
-<!-- ▲フッター ここまで -->

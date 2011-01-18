@@ -21,23 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<!-- ▼ロゴ ここから -->
-<center><img src="<!--{$TPL_DIR}-->img/header/logo.gif"></center>
-<!-- ▲ロゴ ここまで -->
-
-<br>
-
-<!-- ▼新着情報 ここから -->
-<!--{include_php file=`$smarty.const.MOBILE_HTML_REALDIR`frontparts/bloc/news.php}-->
-<!-- ▲新着情報 ここまで -->
-
-<br>
-<hr>
-
-<!-- ▼ピックアップ商品 ここから -->
-<!--{include_php file=`$smarty.const.MOBILE_HTML_REALDIR`frontparts/bloc/best5.php}-->
-<!-- ▲ピックアップ商品 ここまで -->
-
 <!-- ▼メニュー ここから -->
 <!--{1|numeric_emoji}-->商品カテゴリ<br>
 <!--{include_php file=`$smarty.const.MOBILE_HTML_REALDIR`frontparts/bloc/category.php}-->
@@ -49,12 +32,6 @@
 <!--{/if}-->
 <a href="guide/<!--{$smarty.const.DIR_INDEX_URL}-->" accesskey="4"><!--{4|numeric_emoji}-->ご利用ガイド</a><br>
 <a href="contact/<!--{$smarty.const.DIR_INDEX_URL}-->" accesskey="5"><!--{5|numeric_emoji}-->お問い合せ</a><br>
-<a href="mypage/<!--{$smarty.const.DIR_INDEX_URL}-->" accesskey="6" utn><!--{6|numeric_emoji}-->MYページ</a><br>
-<a href="order/<!--{$smarty.const.DIR_INDEX_URL}-->" accesskey="7"><!--{7|numeric_emoji}-->特定商取引に関する法律に基づく表記</a><br>
+<a href="order/<!--{$smarty.const.DIR_INDEX_URL}-->" accesskey="6"><!--{6|numeric_emoji}-->特定商取引に関する法律に基づく表記</a><br>
 <!-- ▲メニュー ここまで -->
-
 <br>
-
-<!-- ▼フッター ここから -->
-<!--{include file='footer.tpl'}-->
-<!-- ▲フッター ここまで -->
