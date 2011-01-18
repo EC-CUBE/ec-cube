@@ -59,6 +59,7 @@ class LC_Page_Products_Review extends LC_Page {
         $this->arrRECOMMEND = $masterData->getMasterData("mtb_recommend");
         $this->arrSex = $masterData->getMasterData("mtb_sex");
         $this->arrReviewDenyURL = $masterData->getMasterData("mtb_review_deny_url");
+        $this->tpl_mainpage = 'products/review.tpl';
         $this->httpCacheControl('nocache');
     }
 
@@ -176,7 +177,7 @@ class LC_Page_Products_Review extends LC_Page {
         }
 
         $this->transactionid = SC_Helper_Session_Ex::getToken();
-        $this->setTemplate('products/review.tpl');
+        $this->setTemplate($this->tpl_mainpage);
     }
 
     /**

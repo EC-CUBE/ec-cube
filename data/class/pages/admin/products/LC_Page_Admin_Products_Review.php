@@ -264,7 +264,8 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin {
                 $head = SC_Utils_Ex::sfGetCSVList($objCSV->arrREVIEW_CVSTITLE);
                 $data = $objCSV->lfGetReviewCSV($where, '', $arrval);
                 // CSVを送信する。
-                SC_Utils_Ex::sfCSVDownload($head.$data);
+                list($fime_name, $data) = SC_Utils_Ex::sfGetCSVData($head.$data);
+                $this->sendResponseCSV($fime_name, $data);
                 exit;
             }
         }
