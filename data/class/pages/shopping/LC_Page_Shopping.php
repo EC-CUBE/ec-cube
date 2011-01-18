@@ -228,58 +228,6 @@ class LC_Page_Shopping extends LC_Page {
     }
 
     /**
-     * Page のプロセス(モバイル).
-     *
-     * @return void
-     */
-    function mobileAction() {
-        $objView = new SC_MobileView();
-        $objSiteSess = new SC_SiteSession();
-        $objCartSess = new SC_CartSession();
-        $objCustomer = new SC_Customer();
-        $objCookie = new SC_Cookie();
-        $this->objFormParam = new SC_FormParam();            // フォーム用
-        $helperMobile = new SC_Helper_Mobile_Ex();
-        $objDb = new SC_Helper_DB_Ex();
-        $this->lfInitParam();                                // パラメータ情報の初期化
-        $this->objFormParam->setParam($_POST);            // POST値の取得
-
-        // ユーザユニークIDの取得と購入状態の正当性をチェック
-        $uniqid = SC_Utils_Ex::sfCheckNormalAccess($objSiteSess, $objCartSess);
-
-        $this->tpl_uniqid = $uniqid;
-
-        //ダウンロード商品判定
-        $this->cartdown = $objDb->chkCartDown($objCartSess);
-
-        // ログインチェック
-        if($objCustomer->isLoginSuccess(true)) {
-            // すでにログインされている場合
-            if ($this->cartdown == 2) {
-                // 会員情報の住所を受注一時テーブルに書き込む
-                $objDb->sfRegistDelivData($uniqid, $objCustomer);
-                // 正常に登録されたことを記録しておく
-                $objSiteSess->setRegistFlag();
-                //カート内が全てダウンロード商品の場合は支払方法設定画面に転送
-                SC_Response_Ex::sendRedirect('payment.php');
-            } else {
-                // お届け先設定画面に転送
-                SC_Response_Ex::sendRedirect('deliv.php');
-            }
-            exit;
-        }
-
-        // 携帯端末IDが一致する会員が存在するかどうかをチェックする。
-        $this->tpl_valid_phone_id = $objCustomer->checkMobilePhoneId();
-
-        // クッキー判定
-        $this->tpl_login_email = $objCookie->getCookie('login_email');
-        if($this->tpl_login_email != "") {
-            $this->tpl_login_memory = "1";
-        }
-    }
-
-    /**
      * デストラクタ.
      *
      * @return void
