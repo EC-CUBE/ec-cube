@@ -29,7 +29,7 @@ require_once(CLASS_REALDIR . "pages/LC_Page.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id: LC_Page_Mypage_MailView.php 16582 2007-10-29 03:06:29Z nanasess $
+ * @version $Id: $
  */
 class LC_Page_Mypage_MailView extends LC_Page {
 
@@ -63,7 +63,6 @@ class LC_Page_Mypage_MailView extends LC_Page {
      * @return void
      */
     function action() {
-        $objSess = new SC_Session();
         $objCustomer = new SC_Customer();
 
         // ログインチェック
@@ -85,7 +84,12 @@ class LC_Page_Mypage_MailView extends LC_Page {
             $this->tpl_body = $arrRet[0]['mail_body'];
         }
 
-        $this->setTemplate('mypage/mail_view.tpl');
+        if (Net_UserAgent_Mobile::isMobile() === true){
+            $this->tpl_title = 'メール履歴詳細';
+            $this->tpl_mainpage = 'mypage/mail_view.tpl';
+        } else {
+            $this->setTemplate('mypage/mail_view.tpl');
+        }
     }
 
     /**

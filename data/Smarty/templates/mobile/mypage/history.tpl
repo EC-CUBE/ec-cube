@@ -24,29 +24,108 @@
 <div align="center">購入履歴</div>
 <hr>
 
-<!--{section name=cnt loop=$arrOrder}-->
-	■<!--{$arrOrder[cnt].create_date|sfDispDBDate}--><br>
-	注文番号:<!--{$arrOrder[cnt].order_id}--><br>
-	<!--{assign var=payment_id value="`$arrOrder[cnt].payment_id`"}-->
-	合計金額:<!--{$arrOrder[cnt].payment_total|number_format}-->円<br>
+購入日時：<!--{$arrDisp.create_date|sfDispDBDate}--><br />
+注文番号：<!--{$arrDisp.order_id}--><br />
+お支払い方法：<!--{$arrPayment[$arrDisp.payment_id]|h}-->
+<!--{if $arrDisp.deliv_time_id != ""}--><br />
+お届け時間：<!--{$arrDelivTime[$arrDisp.deliv_time_id]|h}-->
+<!--{/if}-->
+<!--{if $arrDisp.deliv_date != ""}--><br />
+お届け日：<!--{$arrDisp.deliv_date|h}-->
+<!--{/if}-->
 
-	<div align="center">
-	<form name="form1" method="post" action="history_detail.php">
-		<input type="hidden" name="order_id" value="<!--{$arrOrder[cnt].order_id}-->">
-		<input type="submit" name="submit" value="詳細を見る">
-	</form>
-	</div>
-	<br>
-<!--{/section}-->
+<form action="order.php" method="post">
+<input type="hidden" name="order_id" value="<!--{$arrDisp.order_id}-->">
+<input type="submit" name="submit" value="再注文">
+</form>
+
+■購入商品詳細<br>
+<!--{foreach from=$tpl_arrOrderDetail item=orderDetail}-->
+<hr>
+商品コード：<!--{$orderDetail.product_code|h}--><br>
+商品名：<a<!--{if $orderDetail.enable}--> href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$orderDetail.product_id|u}-->"<!--{/if}-->><!--{$orderDetail.product_name|h}--></a><br>
+商品種別：
+<!--{ if $orderDetail.product_type_id == PRODUCT_TYPE_DOWNLOAD}-->
+<!--{ if $orderDetail.price == "0" || ( $orderDetail.status >= "4" && $orderDetail.effective == "1" )}-->
+<a target="_self" href="<!--{$smarty.const.URL_PATH}-->mypage/download.php?order_id=<!--{$arrDisp.order_id}-->&product_id=<!--{$orderDetail.product_id}-->&product_class_id=<!--{$orderDetail.product_class_id}-->">ダウンロード</a><br>
+<!--{ elseif $orderDetail.payment_date == "" || $orderDetail.status < "4"}-->
+ダウンロード商品<br>（入金確認中）<br>
+<!--{ elseif $orderDetail.effective != "1"}-->
+ダウンロード商品<br>（期限切れ）<br>
+<!--{ /if }-->
+<!--{ else if $orderDetail.product_type_id == PRODUCT_TYPE_NORMAL}-->
+通常商品<br>
+<!--{ /if }-->
+単価：
+<!--{assign var=price value=`$orderDetail.price`}-->
+<!--{assign var=quantity value=`$orderDetail.quantity`}-->
+<!--{$price|number_format|h}-->円<br>
+数量：<!--{$quantity|h}--><br>
+小計：<!--{$price|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|sfMultiply:$quantity|number_format}-->円<br>
+<!--{/foreach}-->
+<hr>
+小計：<!--{$arrDisp.subtotal|number_format}-->円<br>
+<!--{assign var=point_discount value="`$arrDisp.use_point*$smarty.const.POINT_VALUE`"}-->
+<!--{if $point_discount > 0}-->
+ポイント値引き：<!--{$point_discount|number_format}-->円<br>
+<!--{/if}-->
+<!--{assign var=key value="discount"}-->
+<!--{if $arrDisp[$key] != "" && $arrDisp[$key] > 0}-->
+値引き：<!--{$arrDisp[$key]|number_format}-->円<br>
+<!--{/if}-->
+送料：<!--{assign var=key value="deliv_fee"}--><!--{$arrDisp[$key]|number_format|h}-->円<br>
+手数料：
+<!--{assign var=key value="charge"}-->
+<!--{$arrDisp[$key]|number_format|h}-->円<br>
+合計：<!--{$arrDisp.payment_total|number_format}-->円<br>
+<hr>
+<!-- 使用ポイントここから -->
+<!--{if $smarty.const.USE_POINT !== false}-->
+■使用ポイント<br>
+ご使用ポイント：<!--{assign var=key value="use_point"}--><!--{$arrDisp[$key]|number_format|default:0}--> pt<br>
+今回加算されるポイント：<!--{$arrDisp.add_point|number_format|default:0}--> pt<br>
+<hr>
+<!--{/if}-->
+<!-- 使用ポイントここまで -->
+
+<!--{foreach item=shippingItem name=shippingItem from=$arrShipping}-->
+▼お届け先<!--{if $isMultiple}--><!--{$smarty.foreach.shippingItem.iteration}--><!--{/if}--><br>
+<!--{if $isMultiple}-->
+<!--{foreach item=item from=$shippingItem.shipment_item}-->
+商品コード：<!--{$item.product_code|h}--><br>
+商品名：<!--{* 商品名 *}--><!--{$item.productsClass.name|h}--><br>
+<!--{if $item.productsClass.classcategory_name1 != ""}-->
+<!--{$item.productsClass.class_name1}-->：<!--{$item.productsClass.classcategory_name1}--><br>
+<!--{/if}-->
+<!--{if $item.productsClass.classcategory_name2 != ""}-->
+<!--{$item.productsClass.class_name2}-->：<!--{$item.productsClass.classcategory_name2}--><br>
+<!--{/if}-->
+単価：<!--{$item.productsClass.price02|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円<br>
+数量：<!--{$item.quantity}--><br>
 <br>
-
-<!--{$tpl_strnavi}-->
+<!--{/foreach}-->
+<!--{/if}-->
+●お名前<br>
+<!--{$shippingItem.shipping_name01|h}-->&nbsp;<!--{$shippingItem.shipping_name02|h}--><br>
+●お名前(フリガナ)<br>
+<!--{$shippingItem.shipping_kana01|h}-->&nbsp;<!--{$shippingItem.shipping_kana02|h}--><br>
+●住所<br>
+〒<!--{$shippingItem.shipping_zip01}-->-<!--{$shippingItem.shipping_zip02}--><br>
+<!--{$arrPref[$shippingItem.shipping_pref]}--><!--{$shippingItem.shipping_addr01|h}--><!--{$shippingItem.shipping_addr02|h}--><br>
+●電話番号<br>
+<!--{$shippingItem.shipping_tel01}-->-<!--{$shippingItem.shipping_tel02}-->-<!--{$shippingItem.shipping_tel03}--><br>
+<!--{/foreach}-->
 
 <hr>
 
-<a href="<!--{$smarty.const.MOBILE_CART_URLPATH}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>
-<a href="<!--{$smarty.const.MOBILE_TOP_URLPATH}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
-
+■メール配信履歴一覧<br>
+<!--{section name=cnt loop=$arrMailHistory}-->
+<!--{assign var=key value="`$arrMailHistory[cnt].template_id`"}-->
+処理日：<!--{$arrMailHistory[cnt].send_date|sfDispDBDate|h}--><br>
+通知メール：<!--{$arrMAILTEMPLATE[$key]|h}--><br>
+件名：
+<a href="./mail_view.php?send_id=<!--{$arrMailHistory[cnt].send_id}-->"><!--{$arrMailHistory[cnt].subject|h}--></a><br>
+<!--{/section}-->
 <br>
 
 <!-- ▼フッター ここから -->

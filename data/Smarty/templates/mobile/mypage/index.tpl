@@ -30,19 +30,38 @@
 <!--★現在のポイント★-->
 <!--{if $smarty.const.USE_POINT !== false}-->
 現在の所持ポイントは「<!--{$CustomerPoint|number_format|default:"0"|h}-->」Ptです。<br>
-<br>
 <!--{/if}-->
 
-<a href="history.php" accesskey="1"><!--{1|numeric_emoji}-->購入履歴</a><br>
+<hr>
+<!--{*<a href="index.php" accesskey="1"><!--{1|numeric_emoji}-->購入履歴</a><br>*}-->
 <a href="change.php" accesskey="2"><!--{2|numeric_emoji}-->登録内容変更</a><br>
 <a href="refusal.php" accesskey="3"><!--{3|numeric_emoji}-->退会</a><br>
-
 <hr>
+■購入履歴一覧<br>
+<!--{if $tpl_linemax > 0}-->
+    <!--{$tpl_linemax}-->件の購入履歴があります。<br>
+    <!--{section name=cnt loop=$arrOrder}-->
+    <hr>
+        ●購入日時<br>
+        <!--{$arrOrder[cnt].create_date|sfDispDBDate}--><br>
+        ●注文番号<br>
+        <!--{$arrOrder[cnt].order_id}--><br>
+        <!--{assign var=payment_id value="`$arrOrder[cnt].payment_id`"}-->
+        ●お支払い方法<br>
+        <!--{$arrPayment[$payment_id]|h}--><br>
+        ●合計金額<br>
+        <!--{$arrOrder[cnt].payment_total|number_format}-->円<br>
+        <a href="./history.php?order_id=<!--{$arrOrder[cnt].order_id}-->">詳細を見る</a><br>
+    <!--{/section}-->
+    <hr>
+<!--{else}-->
+    購入履歴はありません。<br>
+<!--{/if}-->
 
-<a href="<!--{$smarty.const.MOBILE_CART_URLPATH}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>
-<a href="<!--{$smarty.const.MOBILE_TOP_URLPATH}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
-
+<!--{if $tpl_strnavi != ""}-->
+<!--{$tpl_strnavi}-->
 <br>
+<!--{/if}-->
 
 <!-- ▼フッター ここから -->
 <!--{include file='footer.tpl'}-->

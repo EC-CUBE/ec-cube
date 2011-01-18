@@ -51,8 +51,6 @@ class LC_Page_Mypage_History extends LC_Page {
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrMAILTEMPLATE = $masterData->getMasterData("mtb_mail_template");
         $this->arrPref = $masterData->getMasterData('mtb_pref');
-        
-        $this->isMobile = Net_UserAgent_Mobile::isMobile();
    }
 
     /**
@@ -62,11 +60,7 @@ class LC_Page_Mypage_History extends LC_Page {
      */
     function process() {
         parent::process();
-        if ( $this->isMobile === false ){
-            $this->action();
-        } else {
-            $this->mobileAction();
-        }
+        $this->action();
         $this->sendResponse();
     }
 
@@ -129,67 +123,6 @@ class LC_Page_Mypage_History extends LC_Page {
      */
     function destroy() {
         parent::destroy();
-    }
-
-    /**
-     * Page のAction(モバイル).
-     *
-     * @return void
-     */
-    function mobileAction() {
-        define ("HISTORY_NUM", 5);
-
-        $objQuery = new SC_Query();
-        $objCustomer = new SC_Customer();
-        $pageNo = isset($_GET['pageno']) ? (int) $_GET['pageno'] : 0; // TODO
-
-        // ログインチェック
-        if(!isset($_SESSION['customer'])) {
-            SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
-        }
-
-        $col = "order_id, create_date, payment_id, payment_total";
-        $from = "dtb_order";
-        $where = "del_flg = 0 AND customer_id=?";
-        $arrval = array($objCustomer->getvalue('customer_id'));
-        $order = "order_id DESC";
-
-        $linemax = $objQuery->count($from, $where, $arrval);
-        $this->tpl_linemax = $linemax;
-
-        // 取得範囲の指定(開始行番号、行数のセット)
-        $objQuery->setLimitOffset(HISTORY_NUM, $pageNo);
-        // 表示順序
-        $objQuery->setOrder($order);
-
-        //購入履歴の取得
-        $this->arrOrder = $objQuery->select($col, $from, $where, $arrval);
-
-        // next
-        if ($pageNo + HISTORY_NUM < $linemax) {
-            $next = "<a href='history.php?pageno=" . ($pageNo + HISTORY_NUM) . "'>次へ→</a>";
-        } else {
-            $next = "";
-        }
-
-        // previous
-        if ($pageNo - HISTORY_NUM > 0) {
-            $previous = "<a href='history.php?pageno=" . ($pageNo - HISTORY_NUM) . "'>←前へ</a>";
-        } elseif ($pageNo == 0) {
-            $previous = "";
-        } else {
-            $previous = "<a href='history.php?pageno=0'>←前へ</a>";
-        }
-
-        // bar
-        if ($next != '' && $previous != '') {
-            $bar = " | ";
-        } else {
-            $bar = "";
-        }
-
-        $this->tpl_strnavi = $previous . $bar . $next;
-
     }
 
     /**

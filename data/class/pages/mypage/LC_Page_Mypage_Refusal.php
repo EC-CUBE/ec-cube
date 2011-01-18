@@ -44,11 +44,7 @@ class LC_Page_Mypage_Refusal extends LC_Page {
     function init() {
         parent::init();
         $this->tpl_title = 'MYページ';
-        if ( Net_UserAgent_Mobile::isMobile() === true){
-            $this->tpl_title .= '/退会手続き(入力ページ)';
-        } else {
-            $this->tpl_subtitle = '退会手続き(入力ページ)';
-        }
+        $this->tpl_subtitle = '退会手続き(入力ページ)';
         $this->tpl_navi = TEMPLATE_REALDIR . 'mypage/navi.tpl';
         $this->tpl_mainno = 'mypage';
         $this->tpl_mypageno = 'refusal';
@@ -61,11 +57,7 @@ class LC_Page_Mypage_Refusal extends LC_Page {
      */
     function process() {
         parent::process();
-        if ( Net_UserAgent_Mobile::isMobile() === true){
-            $this->mobileAction();
-        } else {
-            $this->action();            
-        }
+        $this->action();
         $this->sendResponse();
     }
 
@@ -75,10 +67,11 @@ class LC_Page_Mypage_Refusal extends LC_Page {
      * @return void
      */
     function action() {
+        $objCustomer = new SC_Customer();
         $objSiteSess = new SC_SiteSession();
         
         // 退会判定用情報の取得
-        $this->tpl_login = $objCustomer->isLoginSuccess();
+        $this->tpl_login = $objCustomer->isLoginSuccess(true);
 
         $this->lfCheckLogin();
 
@@ -100,26 +93,6 @@ class LC_Page_Mypage_Refusal extends LC_Page {
         case 'complete':
             // 正しい遷移かどうかをチェック
             $this->lfIsValidMovement($objSiteSess);
-            $this->lfDeleteCustomer();    //会員削除
-        }
-
-    }
-
-    /**
-     * Page のAction(モバイル).
-     *
-     * @return void
-     */
-    function mobileAction() {
-
-        $objQuery = new SC_Query();
-
-        $this->lfCheckLogin();
-
-        if (isset($_POST['no'])) {
-            SC_Response_Ex::sendRedirect(DIR_INDEX_URL);
-            exit;
-        } elseif (isset($_POST['complete'])){
             $this->lfDeleteCustomer();    //会員削除
         }
 
@@ -148,7 +121,7 @@ class LC_Page_Mypage_Refusal extends LC_Page {
     function lfCheckLogin(){
         $objCustomer = new SC_Customer();
         //ログイン判定
-        if (!$objCustomer->isLoginSuccess()){      
+        if (!$objCustomer->isLoginSuccess(true)){
             SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
         }else {
             //マイページトップ顧客情報表示用

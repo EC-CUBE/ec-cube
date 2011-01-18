@@ -27,8 +27,8 @@
 <br>
 <div align="center">
 <form action="?" method="post">
-	<input type="submit" name="no" value="いいえ">
-	<input type="submit" name="complete" value="はい">
+    <input type="hidden" name="mode" value="complete">
+	<input type="submit" name="complete" value="退会する">
 </form>
 </div>
 <br>

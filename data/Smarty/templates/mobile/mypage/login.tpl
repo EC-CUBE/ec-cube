@@ -24,32 +24,28 @@
 <div align="center">ログイン</div>
 <hr>
 
-<!--▼CONTENTS-->
-<form name="login_mypage" id="login_mypage" method="post" action="./<!--{$smarty.const.DIR_INDEX_URL}-->">
+<form name="member_form" id="member_form" method="post" action="./login_check.php">
 	<input type="hidden" name="mode" value="login" >
 <!--{if !$tpl_valid_phone_id}-->
-	▼メールアドレス<br>
-	<!--{assign var=key value="login_email"}-->
+	●メールアドレス<br>
+    <!--{assign var=key value="mypage_login_email"}-->
 	<font color="#FF0000"><!--{$arrErr[$key]}--></font>
-	<input type="text" name="<!--{$key}-->" value="<!--{$login_email|h}-->" 
-		size="40" istyle="3"><br>
+    <input type="text" name="<!--{$key}-->" value="<!--{$tpl_login_email|h}-->" maxlength="<!--{$arrForm[$key].length}-->" size="40" istyle="3"><br>
 <!--{else}-->
-	<input type="hidden" name="login_email" value="dummy">
+	<input type="hidden" name="mypage_login_email" value="dummy">
 <!--{/if}-->
-	▼パスワード<br>
-	<!--{assign var=key value="login_pass"}--><font color="#FF0000"><!--{$arrErr[$key]}--></font>
-	<input type="password" name="<!--{$key}-->" size="40" istyle="3"><br>
+	●パスワード<br>
+    <!--{assign var=key value="mypage_login_pass"}-->
+    <font color="#FF0000"><!--{$arrErr[$key]}--></font>
+    <input type="password" name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" size="40" istyle="3"><br>
 	<center><input type="submit" value="送信" name="log"></center><br>
-	<a href="<!--{$smarty.const.MOBILE_URLPATH}-->forgot/<!--{$smarty.const.DIR_INDEX_URL}-->">パスワードをお忘れの方はこちら</a><br>
+	<a href="<!--{$smarty.const.MOBILE_HTTPS_URL}-->forgot/<!--{$smarty.const.DIR_INDEX_URL}-->">パスワードをお忘れの方はこちら</a><br>
 </form>
-<!--▲CONTENTS-->
 
-<br>
 <hr>
-
-<a href="<!--{$smarty.const.MOBILE_CART_URLPATH}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>
-<a href="<!--{$smarty.const.MOBILE_TOP_URLPATH}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
-
+会員登録をすると便利なMyページをご利用いただけます。<br>
+また、ログインするだけで、毎回お名前や住所などを入力することなくスムーズにお買い物をお楽しみいただけます。<br>
+<center><a href="../entry/kiyaku.php">会員登録</a></center>
 <br>
 
 <!-- ▼フッター ここから -->

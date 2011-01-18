@@ -99,10 +99,21 @@ class LC_Page_Mypage_LoginCheck extends LC_Page {
                 $objCookie->setCookie('login_email', '');
             }
 
-            if($objCustomer->getCustomerDataFromEmailPass($arrForm['mypage_login_pass'], $arrForm['mypage_login_email'], true)) {
-                SC_Response_Ex::sendRedirect(DIR_INDEX_URL);
-                exit;
+            // ログイン判定
+            $loginFailFlag = false;
+            if(Net_UserAgent_Mobile::isMobile() === true) {
+                // モバイルサイト
+                if(!$objCustomer->getCustomerDataFromMobilePhoneIdPass($arrForm['mypage_login_pass']) &&
+                   !$objCustomer->getCustomerDataFromEmailPass($arrForm['mypage_login_pass'], $arrForm['mypage_login_email'], true)) {
+                    $loginFailFlag = true;
+                }
             } else {
+                // モバイルサイト以外
+                if(!$objCustomer->getCustomerDataFromEmailPass($arrForm['mypage_login_pass'], $arrForm['mypage_login_email'])) {
+                    $loginFailFlag = true;
+                }
+            }
+            if($loginFailFlag === true) {
                 $arrForm['mypage_login_email'] = strtolower($arrForm['mypage_login_email']);
                 $objQuery = new SC_Query;
                 $where = "(email = ? OR email_mobile = ?) AND status = 1 AND del_flg = 0";
@@ -113,6 +124,26 @@ class LC_Page_Mypage_LoginCheck extends LC_Page {
                 } else {
                     SC_Utils_Ex::sfDispSiteError(SITE_LOGIN_ERROR);
                 }
+            } else {
+                if(Net_UserAgent_Mobile::isMobile() === true) {
+                    // ログインが成功した場合は携帯端末IDを保存する。
+                    $objCustomer->updateMobilePhoneId();
+
+                    /*
+                     * email がモバイルドメインでは無く,
+                     * 携帯メールアドレスが登録されていない場合
+                     */
+                    $objMobile = new SC_Helper_Mobile_Ex();
+                    if (!$objMobile->gfIsMobileMailAddress($objCustomer->getValue('email'))) {
+                        if (!$objCustomer->hasValue('email_mobile')) {
+                            SC_Response_Ex::sendRedirectFromUrlPath('entry/email_mobile.php');
+                            exit;
+                        }
+                    }
+                }
+                
+                SC_Response_Ex::sendRedirect(DIR_INDEX_URL);
+                exit;
             }
             break;
         }
@@ -130,7 +161,7 @@ class LC_Page_Mypage_LoginCheck extends LC_Page {
     /* パラメータ情報の初期化 */
     function lfInitParam() {
         $this->objFormParam->addParam("記憶する", "mypage_login_memory", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $this->objFormParam->addParam("メールアドレス", "mypage_login_email", MTEXT_LEN, "a", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "EMAIL_CHECK", "NO_SPTAB" ,"EMAIL_CHAR_CHECK"));
+        $this->objFormParam->addParam("メールアドレス", "mypage_login_email", MTEXT_LEN, "a", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("パスワード", "mypage_login_pass", PASSWORD_LEN1, "KVa", array("EXIST_CHECK"));
         $this->objFormParam->addParam("パスワード", "mypage_login_pass1", PASSWORD_LEN1, "KVa", array("EXIST_CHECK", "MIN_LENGTH_CHECK"));
         $this->objFormParam->addParam("パスワード", "mypage_login_pass2", PASSWORD_LEN2, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
