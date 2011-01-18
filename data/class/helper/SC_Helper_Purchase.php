@@ -474,7 +474,6 @@ class SC_Helper_Purchase {
               ON T1.deliv_id = T2. deliv_id
 __EOS__;
             $objQuery->setOrder("time_id");
-            $where = "deliv_id = ?";
             $results = $objQuery->select("time_id, deliv_time", $from,
                                          "product_type_id = ?", array($productTypeId));
             $arrDelivTime = array();

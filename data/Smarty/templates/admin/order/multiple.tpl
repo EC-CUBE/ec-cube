@@ -87,6 +87,7 @@ $(function() {
             // 数量と hidden を設定
             var q = $('<td />').addClass('center')
                 .append(idfield)
+                .append(codefield)
                 .append(namefield)
                 .append(class1field)
                 .append(class2field)
@@ -131,7 +132,7 @@ function func_submit() {
     var div = $('<div />');
     $('input[name^=multiple_], select[name^=multiple_]').each(function() {
         // TODO タグをベタ書きにしないと, innerHTML で value が空になってしまう
-        $(div).append('<input type="hidden" name="'
+        $(div).append('<input type="text" name="'
                       + $(this).attr('name')
                       + '" value="' + $(this).val() + '" />');
     });

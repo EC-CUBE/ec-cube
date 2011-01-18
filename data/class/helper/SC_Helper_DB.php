@@ -1768,6 +1768,8 @@ __EOS__;
     /**
      * 受注の名称列を更新する
      *
+     * FIXME
+     *
      * @param integer $order_id 更新対象の注文番号
      * @param boolean $temp_table 更新対象は「受注_Temp」か
      * @static

@@ -78,34 +78,22 @@ function func_submit(customer_id){
 
 <!--{if $smarty.post.mode == 'search' }-->
     <!--▼検索結果表示-->
-    <table width="420" border="0" cellspacing="0" cellpadding="0" summary=" " bgcolor="#FFFFFF">
         <!--{if $tpl_linemax > 0}-->
-            <tr class="fs12">
-                <td align="left"><!--{$tpl_linemax}-->件が該当しました。	</td>
-            </tr>
+        <p><!--{$tpl_linemax}-->件が該当しました。<!--{$tpl_strnavi}--></p>
         <!--{/if}-->
-        <tr class="fs12">
-            <td align="center">
-            <!--▼ページナビ-->
-            <!--{$tpl_strnavi}-->
-            <!--▲ページナビ-->
-            </td>
-        </tr>
-        <tr><td height="10"></td></tr>
-    </table>
 
     <!--▼検索後表示部分-->
-    <table width="420" border="0" cellspacing="1" cellpadding="5" bgcolor="#cccccc">
-        <tr bgcolor="#f0f0f0" align="center" class="fs12">
-            <td>顧客ID</td>
-            <td>顧客名(カナ)</td>
-            <td>TEL</td>
-            <td>決定</td>
+    <table class="list">
+        <tr>
+            <th>顧客ID</th>
+            <th>顧客名(カナ)</th>
+            <th>TEL</th>
+            <th>決定</th>
         </tr>
         <!--{section name=cnt loop=$arrCustomer}-->
         <!--▼顧客<!--{$smarty.section.cnt.iteration}-->-->
-        <tr bgcolor="#FFFFFF" class="fs12n">
-            <td width="90" align="center">
+        <tr>
+            <td>
             <!--{$arrCustomer[cnt].customer_id|h}-->
             </td>
             <td><!--{$arrCustomer[cnt].name01|h}--><!--{$arrCustomer[cnt].name02|h}-->(<!--{$arrCustomer[cnt].kana01|h}--><!--{$arrCustomer[cnt].kana02|h}-->)</td>
@@ -114,7 +102,7 @@ function func_submit(customer_id){
         </tr>
         <!--▲商品<!--{$smarty.section.cnt.iteration}-->-->
         <!--{sectionelse}-->
-        <tr bgcolor="#FFFFFF" class="fs10n">
+        <tr>
             <td colspan="4">会員情報が存在しません。</td>
         </tr>
         <!--{/section}-->

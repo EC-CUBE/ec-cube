@@ -34,18 +34,18 @@
     function fnCopyFromOrderData() {
         df = document.form1;
 
-        df.deliv_name01.value = df.order_name01.value;
-        df.deliv_name02.value = df.order_name02.value;
-        df.deliv_kana01.value = df.order_kana01.value;
-        df.deliv_kana02.value = df.order_kana02.value;
-        df.deliv_zip01.value = df.order_zip01.value;
-        df.deliv_zip02.value = df.order_zip02.value;
-        df.deliv_tel01.value = df.order_tel01.value;
-        df.deliv_tel02.value = df.order_tel02.value;
-        df.deliv_tel03.value = df.order_tel03.value;
-        df.deliv_pref.value = df.order_pref.value;
-        df.deliv_addr01.value = df.order_addr01.value;
-        df.deliv_addr02.value = df.order_addr02.value;
+        df.shipping_name01_0.value = df.order_name01.value;
+        df.shipping_name02_0.value = df.order_name02.value;
+        df.shipping_kana01_0.value = df.order_kana01.value;
+        df.shipping_kana02_0.value = df.order_kana02.value;
+        df.shipping_zip01_0.value = df.order_zip01.value;
+        df.shipping_zip02_0.value = df.order_zip02.value;
+        df.shipping_tel01_0.value = df.order_tel01.value;
+        df.shipping_tel02_0.value = df.order_tel02.value;
+        df.shipping_tel03_0.value = df.order_tel03.value;
+        df.shipping_pref_0.value = df.order_pref.value;
+        df.shipping_addr01_0.value = df.order_addr01.value;
+        df.shipping_addr02_0.value = df.order_addr02.value;
     }
 
     function fnFormConfirm() {
@@ -61,6 +61,14 @@
         document.form1.submit();
         return false;
     }
+
+    function fnAppendShipping() {
+        document.form1.anchor_key.value = "shipping";
+        document.form1.mode.value = "append_shipping";
+        document.form1.submit();
+        return false;
+    }
+
 //-->
 </script>
 <form name="form1" id="form1" method="post" action="?">
@@ -347,17 +355,17 @@
             </tr>
         <!--{/if}-->
     </table>
-
+    <!--{assign var=key value="shipping_quantity"}-->
+    <input type="hidden" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" />
     <!--▼お届け先情報ここから-->
     <a name="shipping"></a>
     <h2>お届け先情報
+    <!--{if $arrForm.shipping_quantity.value <= 1}-->
         <a class="btn-normal" href="javascript:;" onclick="fnCopyFromOrderData();">お客様情報へお届けする</a>
-        <a class="btn-normal" href="javascript:;"  onclick="fnCopyFromOrderData();">お届け先を新規追加</a>
+    <!--{/if}-->
+        <a class="btn-normal" href="javascript:;"  onclick="fnAppendShipping();">お届け先を新規追加</a>
         <a class="btn-normal" href="javascript:;" onclick="fnMultiple();">複数のお届け先を指定する</a>
     </h2>
-
-    <!--{assign var=key value="shipping_quantity"}-->
-    <input type="hidden" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" />
 
     <!--{section name=shipping loop=$arrForm.shipping_quantity.value}-->
     <!--{assign var=shipping_index value="`$smarty.section.shipping.index`"}-->
@@ -366,11 +374,12 @@
     <!--{if $arrForm.shipping_quantity.value > 1}-->
     <h3>お届け先<!--{$smarty.section.shipping.iteration}--></h3>
     <!--{/if}-->
-
+    <input type="hidden" name="shipping_id_<!--{$shipping_id}-->" value="<!--{$shipping_id}-->" id="shipping_id_<!--{$shipping_id}-->" />
     <!--{if $arrForm.shipping_quantity.value > 1}-->
     <!--{assign var=product_quantity value="shipping_product_quantity_`$shipping_id`"}-->
     <input type="hidden" name="<!--{$product_quantity}-->" value="<!--{$arrForm[$product_quantity].value|h}-->" />
-    <input type="hidden" name="shipping_id_<!--{$shipping_id}-->" value="<!--{$shipping_id}-->" id="shipping_id_<!--{$shipping_id}-->" />
+
+    <!--{if $arrForm[$product_quantity].value > 0}-->
     <table class="list" id="order-edit-products">
       <tr>
         <th class="id">商品コード</th>
@@ -381,8 +390,11 @@
       <!--{section name=item loop=$arrForm[$product_quantity].value}-->
       <!--{assign var=item_index value="`$smarty.section.item.index`"}-->
       <!--{assign var=product_class_id value=$arrProductClassIds[$shipping_index][$item_index]}-->
+
       <tr>
         <td>
+          <!--{assign var=key value="product_class_id_`$shipping_id`_`$product_class_id`"}-->
+          <input type="hidden" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" />
           <!--{assign var=key value="product_code_`$shipping_id`_`$product_class_id`"}-->
           <input type="hidden" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" />
           <!--{$arrForm[$key].value|h}-->
@@ -409,6 +421,7 @@
       </tr>
       <!--{/section}-->
     </table>
+    <!--{/if}-->
     <!--{/if}-->
 
     <table class="form">
