@@ -54,14 +54,14 @@
              <textarea id="bloc_html" name="bloc_html" rows="<!--{$text_row}-->" style="width: 100%;"><!--{$arrBlocData.tpl_data|smarty:nodefaults}--></textarea>
              <input type="hidden" name="html_area_row" value="<!--{$text_row}-->" />
              <div>
-                 <a id="resize-btn" class="btn-normal" href="javascript:;" onclick="ChangeSize('#resize-btn', '#bloc_html', 50, 13)">拡大</a>
+                 <a id="resize-btn" class="btn-normal" href="javascript:;" onclick="ChangeSize('#resize-btn', '#bloc_html', 50, 13); return false;">拡大</a>
              </div>
          </td>
      </tr>
  </table>
     <div class="btn">
-        <a class="btn-action" href="javascript:;" name='subm' onclick="fnFormModeSubmit('form_bloc','confirm','','');"><span class="btn-next">登録する</span></a>
-        <a class="btn-normal" href="javascript:;" name='preview' onclick="fnFormModeSubmit('form_bloc','preview','','');"><span>プレビュー</span></a>
+        <a class="btn-action" href="javascript:;" name='subm' onclick="fnFormModeSubmit('form_bloc','confirm','',''); return false;"><span class="btn-next">登録する</span></a>
+        <a class="btn-normal" href="javascript:;" name='preview' onclick="fnFormModeSubmit('form_bloc','preview','',''); return false;"><span>プレビュー</span></a>
     </div>
     <!--{* ▲ブロック設定 *}-->
 

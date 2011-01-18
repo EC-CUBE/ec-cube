@@ -166,7 +166,7 @@ function func_submit() {
 </table>
 <div class="btn-area">
   <ul>
-    <li><a class="btn-action" href="javascript:;" onclick="func_submit();"><span class="btn-next">決定</span></a></li>
+    <li><a class="btn-action" href="javascript:;" onclick="func_submit(); return false;"><span class="btn-next">決定</span></a></li>
   </ul>
 </div>
 </form>

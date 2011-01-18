@@ -29,7 +29,7 @@
 <input type="hidden" name="keySet" value="">
 <div id="products" class="contents-main">
   <div class="btn">
-    <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('csv','','');">CSV ダウンロード</a>
+    <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('csv','',''); return false;">CSV ダウンロード</a>
     <a class="btn-normal" href='../contents/csv.php?tpl_subno_csv=category'>CSV 出力項目設定</a>
   </div>
 
@@ -87,7 +87,7 @@
         <span class="attention"><!--{$arrErr.category_name}--></span>
         <!--{/if}-->
         <input type="text" name="category_name" value="<!--{$arrForm.category_name|h}-->" size="30" class="box30" maxlength="<!--{$smarty.const.STEXT_LEN}-->" />
-        <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('edit','','');"><span class="btn-next">登録</span></a><span class="attention">&nbsp;（上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
+        <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('edit','',''); return false;"><span class="btn-next">登録</span></a><span class="attention">&nbsp;（上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
     </div>
 
     <h2><!--{$breadcrumbs}--></h2>

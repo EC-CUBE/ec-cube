@@ -189,7 +189,7 @@
                 <input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" size="6" class="box6" />
                  -
                 <input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" size="6" class="box6" />
-                <a class="btn-normal" href="javascript:;" name="address_input" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'order_zip01', 'order_zip02', 'order_pref', 'order_addr01');">住所入力</a><br />
+                <a class="btn-normal" href="javascript:;" name="address_input" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'order_zip01', 'order_zip02', 'order_pref', 'order_addr01'); return false;">住所入力</a><br />
                 <!--{assign var=key value="order_pref"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
@@ -226,8 +226,8 @@
     <a name="order_products"></a>
     <h2 id="order_products">
         受注商品情報
-        <a class="btn-normal" href="javascript:;" name="cheek" onclick="fnModeSubmit('cheek','anchor_key','order_products');">計算結果の確認</a>
-        <a class="btn-normal" href="javascript:;" name="add_product" onclick="win03('<!--{$smarty.const.URL_PATH}--><!--{$smarty.const.ADMIN_DIR}-->order/product_select.php<!--{if $tpl_order_id}-->?order_id=<!--{$tpl_order_id}--><!--{/if}-->', 'search', '600', '500'); ">商品の追加</a>
+        <a class="btn-normal" href="javascript:;" name="cheek" onclick="fnModeSubmit('cheek','anchor_key','order_products'); return false;">計算結果の確認</a>
+        <a class="btn-normal" href="javascript:;" name="add_product" onclick="win03('<!--{$smarty.const.URL_PATH}--><!--{$smarty.const.ADMIN_DIR}-->order/product_select.php<!--{if $tpl_order_id}-->?order_id=<!--{$tpl_order_id}--><!--{/if}-->', 'search', '600', '500'); return false;">商品の追加</a>
     </h2>
     <!--{if $arrErr.product_id || $arrErr.quantity || $arrErr.price}-->
         <span class="attention"><!--{$arrErr.product_id}--></span>
@@ -256,9 +256,9 @@
                 <input type="hidden" name="classcategory_name1[<!--{$key}-->]" value="<!--{$arrForm.classcategory_name1.value[$key]}-->" id="classcategory_name1_<!--{$key}-->" />
                 <input type="hidden" name="classcategory_name2[<!--{$key}-->]" value="<!--{$arrForm.classcategory_name2.value[$key]}-->" id="classcategory_name2_<!--{$key}-->" />
                 <br />
-                <a class="btn-normal" href="javascript:;" name="change" onclick="win03('<!--{$smarty.const.URL_PATH}--><!--{$smarty.const.ADMIN_DIR}-->order/product_select.php?no=<!--{$key}--><!--{if $tpl_order_id}-->&order_id=<!--{$tpl_order_id}--><!--{/if}-->', 'search', '600', '500');">変更</a>
+                <a class="btn-normal" href="javascript:;" name="change" onclick="win03('<!--{$smarty.const.URL_PATH}--><!--{$smarty.const.ADMIN_DIR}-->order/product_select.php?no=<!--{$key}--><!--{if $tpl_order_id}-->&order_id=<!--{$tpl_order_id}--><!--{/if}-->', 'search', '600', '500'); return false;">変更</a>
                 <!--{if $product_count > 1}-->
-                    <a class="btn-normal" href="javascript:;" name="delete" onclick="fnSetFormVal('form1', 'delete_no', <!--{$key}-->); fnModeSubmit('delete_product','anchor_key','order_products');">削除</a>
+                    <a class="btn-normal" href="javascript:;" name="delete" onclick="fnSetFormVal('form1', 'delete_no', <!--{$key}-->); fnModeSubmit('delete_product','anchor_key','order_products'); return false;">削除</a>
                 <!--{/if}-->
             <input type="hidden" name="product_type_id[<!--{$key}-->]" value="<!--{$arrForm.product_type_id.value[$key]}-->" id="product_type_id_<!--{$key}-->" />
             <input type="hidden" name="product_id[<!--{$key}-->]" value="<!--{$arrForm.product_id.value[$key]}-->" id="product_id_<!--{$key}-->" />
@@ -351,9 +351,9 @@
     <!--▼お届け先情報ここから-->
     <a name="shipping"></a>
     <h2>お届け先情報
-        <a class="btn-normal" href="javascript:;" name="input_from_order_data" onclick="fnCopyFromOrderData();">お客様情報へお届けする</a>
-        <a class="btn-normal" href="javascript:;" name="input_from_order_data" onclick="fnCopyFromOrderData();">お届け先を新規追加</a>
-        <a class="btn-normal" href="javascript:;" name="input_from_order_data" onclick="fnMultiple();">複数のお届け先を指定する</a>
+        <a class="btn-normal" href="javascript:;" onclick="fnCopyFromOrderData();">お客様情報へお届けする</a>
+        <a class="btn-normal" href="javascript:;"  onclick="fnCopyFromOrderData();">お届け先を新規追加</a>
+        <a class="btn-normal" href="javascript:;" onclick="fnMultiple();">複数のお届け先を指定する</a>
     </h2>
 
     <!--{assign var=key value="shipping_quantity"}-->
@@ -456,7 +456,7 @@
                 <input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" size="6" class="box6" />
                  -
                 <input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" size="6" class="box6" />
-                <a class="btn-normal" href="javascript:;" name="address_input" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'shipping_zip01', 'shipping_zip02', 'shipping_pref', 'shipping_addr01');">住所入力</a><br />
+                <a class="btn-normal" href="javascript:;" name="address_input" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'shipping_zip01', 'shipping_zip02', 'shipping_pref', 'shipping_addr01'); return false;">住所入力</a><br />
                 <!--{assign var=key value="shipping_pref_`$shipping_id`"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
@@ -547,7 +547,7 @@
         <!--{if count($arrSearchHidden) > 0}-->
         <li><a class="btn-action" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_ORDER_URLPATH}-->'); fnModeSubmit('search','',''); return false;"><span class="btn-prev">検索画面に戻る</span></a></li>
         <!--{/if}-->
-        <li><a class="btn-action" href="javascript:;" onclick="return fnFormConfirm();"><span class="btn-next">この内容で登録する</span></a></li>
+        <li><a class="btn-action" href="javascript:;" onclick="return fnFormConfirm(); return false;"><span class="btn-next">この内容で登録する</span></a></li>
       </ul>
     </div>
   </div>

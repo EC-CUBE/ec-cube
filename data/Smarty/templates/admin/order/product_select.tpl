@@ -148,7 +148,7 @@ function fnCheckStock(form) {
 </table>
 <div class="btn-area">
   <ul>
-    <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'search', '', '');"><span class="btn-next">検索を開始</span></a></li>
+    <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'search', '', ''); return false;"><span class="btn-next">検索を開始</span></a></li>
   </ul>
 </div>
 </form>
@@ -219,7 +219,7 @@ function fnCheckStock(form) {
                         <input type="hidden" name="product_class_id<!--{$id|h}-->" id="product_class_id<!--{$id|h}-->" value="<!--{$tpl_product_class_id[$id]}-->" />
                         <input type="hidden" name="product_type" id="product_type<!--{$id|h}-->" value="<!--{$tpl_product_type[$id]}-->" />
                     </td>
-                    <td class="center"><a href="javascript:;" onclick="return func_submit('<!--{$arrProducts[cnt].product_id}-->', '<!--{$tpl_class_name1[$id]}-->', '<!--{$tpl_class_name2[$id]}-->', '<!--{$tpl_product_class_id[$id]}-->')">決定</a></td>
+                    <td class="center"><a href="javascript:;" onclick="return func_submit('<!--{$arrProducts[cnt].product_id}-->', '<!--{$tpl_class_name1[$id]}-->', '<!--{$tpl_class_name2[$id]}-->', '<!--{$tpl_product_class_id[$id]}-->'); return false;">決定</a></td>
                 </tr>
                 <!--▲商品<!--{$smarty.section.cnt.iteration}-->-->
             </form>

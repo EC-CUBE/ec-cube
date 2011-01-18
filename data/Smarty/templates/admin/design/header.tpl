@@ -50,11 +50,11 @@ XXX: ヘッダーとフッターでwrapの設定が違うのは疑問。それ�
 
     <textarea id="header-area" name="header" rows="<!--{$header_row}-->" wrap="off" style="width: 100%;"><!--{$header_data|smarty:nodefaults}--></textarea>
     <div class="btn">
-      <a id="header-area-resize-btn" class="btn-normal" href="javascript:;" onclick="ChangeSize('#header-area-resize-btn', '#header-area', 50, 13)"><span>拡大</span></a>
+      <a id="header-area-resize-btn" class="btn-normal" href="javascript:;" onclick="ChangeSize('#header-area-resize-btn', '#header-area', 50, 13); return false;"><span>拡大</span></a>
     </div>
     <div class="btn">
-      <a class="btn-action" href="javascript:;" name='subm' onclick="fnFormModeSubmit('form_header','confirm','','');"><span class="btn-next">登録</span></a>
-      <a class="btn-normal" href="javascript:;" name='preview' onclick="lfnSetBrowser('form_header', 'browser_type'); fnFormModeSubmit('form_header','preview','','');"><span>プレビュー</span></a>
+      <a class="btn-action" href="javascript:;" name='subm' onclick="fnFormModeSubmit('form_header','confirm','',''); return false;"><span class="btn-next">登録</span></a>
+      <a class="btn-normal" href="javascript:;" name='preview' onclick="lfnSetBrowser('form_header', 'browser_type'); fnFormModeSubmit('form_header','preview','',''); return false;"><span>プレビュー</span></a>
     </div>
   </form>
   <!--{* ▲ヘッダー編集ここまで *}-->
@@ -80,11 +80,11 @@ XXX: ヘッダーとフッターでwrapの設定が違うのは疑問。それ�
 
     <textarea id="footer-area" name="footer" rows="<!--{$footer_row}-->" style="width: 100%;"><!--{$footer_data|smarty:nodefaults}--></textarea>
     <div class="btn">
-      <a id="footer-area-resize-btn" class="btn-normal" href="javascript:;" onclick="ChangeSize('#footer-area-resize-btn', '#footer-area', 50, 13)"><span>拡大</span></a>
+      <a id="footer-area-resize-btn" class="btn-normal" href="javascript:;" onclick="ChangeSize('#footer-area-resize-btn', '#footer-area', 50, 13); return false;"><span>拡大</span></a>
     </div>
     <div class="btn">
-      <a class="btn-action" href="javascript:;" name='subm' onclick="fnFormModeSubmit('form_footer','confirm','','');"><span class="btn-next">登録</span></a>
-      <a class="btn-normal" href="javascript:;" name='preview' onclick="lfnSetBrowser('form_footer', 'browser_type'); fnFormModeSubmit('form_footer','preview','','');"><span>プレビュー</span></a>
+      <a class="btn-action" href="javascript:;" name='subm' onclick="fnFormModeSubmit('form_footer','confirm','',''); return false;"><span class="btn-next">登録</span></a>
+      <a class="btn-normal" href="javascript:;" name='preview' onclick="lfnSetBrowser('form_footer', 'browser_type'); fnFormModeSubmit('form_footer','preview','',''); return false;"><span>プレビュー</span></a>
     </div>
   </form>
   <!--{* ▲フッター編集ここまで *}-->

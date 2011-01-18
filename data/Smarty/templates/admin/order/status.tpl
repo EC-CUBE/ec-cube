@@ -35,7 +35,7 @@
         style="padding-right: 1em;"
         <!--{if $key != $SelectedStatus}-->
           href="javascript:;"
-          onclick="document.form1.search_pageno.value='1'; fnModeSubmit('search','status','<!--{$key}-->' );"
+          onclick="document.form1.search_pageno.value='1'; fnModeSubmit('search','status','<!--{$key}-->' ); return false;"
         <!--{/if}-->
       ><!--{$item}--></a>
     <!--{/foreach}-->
@@ -53,7 +53,7 @@
       <!--{/foreach}-->
       <option value="delete">削除</option>
     </select>
-    <a class="btn-normal" href="javascript:;" onclick="fnSelectCheckSubmit();"><span>移動</span></a>
+    <a class="btn-normal" href="javascript:;" onclick="fnSelectCheckSubmit(); return false;"><span>移動</span></a>
   </div>
   <span class="attention">※ <!--{$arrORDERSTATUS[$smarty.const.ORDER_CANCEL]}-->もしくは、削除に変更時には、在庫数を手動で戻してください。</span><br />
 

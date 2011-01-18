@@ -108,7 +108,7 @@ $(document).ready(function() {
     <!--{* ▲ページナビ *}-->
     
     <!--{if $smarty.const.ADMIN_MODE == '1'}-->
-        <p class="right"><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('renumber', '', '');">内部順位再割り当て</a></p>
+        <p class="right"><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('renumber', '', ''); return false;">内部順位再割り当て</a></p>
     <!--{/if}-->
     
     <table class="list" id="categoryTable">

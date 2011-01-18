@@ -52,7 +52,7 @@
     <!--{/section}-->
   </table>
   <div class="btn addnew">
-    <a class="btn-normal" href="javascript:;" name="subm2" onclick="fnChangeAction('./delivery_input.php'); fnModeSubmit('pre_edit','','');"><span>配送業者<!--{if $smarty.const.INPUT_DELIV_FEE}-->・配送料<!--{/if}-->を新規入力</span></a>
+    <a class="btn-normal" href="javascript:;" name="subm2" onclick="fnChangeAction('./delivery_input.php'); fnModeSubmit('pre_edit','',''); return false;"><span>配送業者<!--{if $smarty.const.INPUT_DELIV_FEE}-->・配送料<!--{/if}-->を新規入力</span></a>
   </div>
 </div>
 </form>

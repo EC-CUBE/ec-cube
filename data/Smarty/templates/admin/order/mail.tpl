@@ -88,7 +88,7 @@
   <div class="btn-area">
     <ul>
       <li><a class="btn-action" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_ORDER_URLPATH}-->'); fnModeSubmit('search','',''); return false;"><span class="btn-prev">検索結果へ戻る</span></a></li>
-      <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'confirm', '', '');"><span class="btn-next">送信内容を確認</span></a></li>
+      <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'confirm', '', ''); return false;"><span class="btn-next">送信内容を確認</span></a></li>
     </ul>
   </div>
 </div>

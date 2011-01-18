@@ -35,8 +35,8 @@
   </div>
   <div class="btn-area">
     <ul>
-      <li><a class="btn-action" href="javascript:;" name="subm02" onclick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_back', '' )"><span class="btn-prev">テンプレート設定画面へ戻る</span></a></li>
-      <li>　<a class="btn-action" href="javascript:;" name="subm03" onclick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_complete', '' )" <!--{$list_data.template_id|sfGetEnabled}-->><span class="btn-next">配信を予約する</span></a></li>
+      <li><a class="btn-action" href="javascript:;" name="subm02" onclick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_back', '' ); return false;"><span class="btn-prev">テンプレート設定画面へ戻る</span></a></li>
+      <li>　<a class="btn-action" href="javascript:;" name="subm03" onclick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_complete', '' ); return false;" <!--{$list_data.template_id|sfGetEnabled}-->><span class="btn-next">配信を予約する</span></a></li>
     </ul>
   </div>
 </div>

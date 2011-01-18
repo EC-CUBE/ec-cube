@@ -152,7 +152,7 @@ function lfnDispChange(){
 
 	<div class="btn-area">
 		<ul>
-			<li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', '');"><span class="btn-next">この条件で検索する</span></a></li>
+			<li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', ''); return false;"><span class="btn-next">この条件で検索する</span></a></li>
 		</ul>
 	</div>
 
@@ -176,9 +176,9 @@ function lfnDispChange(){
     <span class="attention"><!--検索結果数--><!--{$tpl_linemax}-->件</span>&nbsp;が該当しました。
     <!--検索結果-->
     <!--{if $smarty.const.ADMIN_MODE == '1'}-->
-    <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete_all','','');">検索結果をすべて削除</a>
+    <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete_all','',''); return false;">検索結果をすべて削除</a>
     <!--{/if}-->
-    <a class="btn-tool" href="javascript:;" onclick="fnModeSubmit('csv','','');">CSV ダウンロード</a>
+    <a class="btn-tool" href="javascript:;" onclick="fnModeSubmit('csv','',''); return false;">CSV ダウンロード</a>
     <a class="btn-tool" href="../contents/csv.php?tpl_subno_csv=product">CSV 出力項目設定</a>
   </div>
   <!--{include file=$tpl_pager}-->

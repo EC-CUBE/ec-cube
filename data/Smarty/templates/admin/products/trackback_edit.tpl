@@ -76,8 +76,8 @@
 <!--▲編集テーブルここまで-->
   <div class="btn-area">
     <ul>
-      <li><a class="btn-action" href="javascript:;" onclick="document.form1.action='./trackback.php'; fnModeSubmit('search','','');"><span class="btn-prev">検索画面に戻る</span></a></li>
-      <li><a class="btn-action" href="javascript:;" onclick="fnModeSubmit('complete','','');"><span class="btn-next">この内容で登録する</span></a></li>
+      <li><a class="btn-action" href="javascript:;" onclick="document.form1.action='./trackback.php'; fnModeSubmit('search','',''); return false;"><span class="btn-prev">検索画面に戻る</span></a></li>
+      <li><a class="btn-action" href="javascript:;" onclick="fnModeSubmit('complete','',''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
     </ul>
   </div>
 </div>

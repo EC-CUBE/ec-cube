@@ -68,9 +68,9 @@
   <div class="btn-area">
     <ul>
       <li><a class="btn-action" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_PRODUCTS_URLPATH}-->'); fnModeSubmit('search','',''); return false;" ><span class="btn-prev">検索結果へ戻る</span></a></li>
-      <li><a class="btn-action" href="javascript:;" onclick="fnModeSubmit('disp','','')"><span class="btn-next">表示する</span></a></li>
+      <li><a class="btn-action" href="javascript:;" onclick="fnModeSubmit('disp','',''); return false;"><span class="btn-next">表示する</span></a></li>
     <!--{if count($arrClassCat) > 0}-->
-      <li><a class="btn-action" href="javascript:;" onclick="fnModeSubmit('delete','','');"><span class="btn-next">削除する</span></a></li>
+      <li><a class="btn-action" href="javascript:;" onclick="fnModeSubmit('delete','',''); return false;"><span class="btn-next">削除する</span></a></li>
     <!--{/if}-->
     </ul>
   </div>
@@ -161,7 +161,7 @@
             <a href="" onclick="fnModeSubmit('delete_down', 'down_key', '<!--{$key}-->'); return false;">[ファイルの取り消し]</a><br>
           <!--{/if}-->
           <input type="file" name="<!--{$key}-->" size="50" class="box50" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
-          <a class="btn-normal" href="javascript:;" name="btn" onclick="fnModeSubmit('upload_down', 'down_key', '<!--{$key}-->')">アップロード</a>
+          <a class="btn-normal" href="javascript:;" name="btn" onclick="fnModeSubmit('upload_down', 'down_key', '<!--{$key}-->'); return false;">アップロード</a>
       </td>
     </tr>
     <!--{/section}-->
@@ -169,7 +169,7 @@
 
   <div class="btn-area">
     <ul>
-      <li><a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('form1', 'edit', '', '');"><span>確認ページへ</span></a></li>
+      <li><a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('form1', 'edit', '', ''); return false;"><span>確認ページへ</span></a></li>
     </ul>
   </div>
 

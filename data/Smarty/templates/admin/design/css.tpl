@@ -43,14 +43,14 @@
         <textarea id="css" name="css" cols=90 rows=<!--{$area_row}--> align="left" wrap=off style="width: 650px;"><!--{$css_data}--></textarea>
         <input type="hidden" name="area_row" value="<!--{$area_row}-->" />
         <div class="btn">
-          <a id="resize-btn" class="btn-normal" href="javascript:;" onclick="ChangeSize('#resize-btn', '#css', 50, 30)">拡大</a>
+          <a id="resize-btn" class="btn-normal" href="javascript:;" onclick="ChangeSize('#resize-btn', '#css', 50, 30); return false;">拡大</a>
         </div>
       </td>
     </tr>
   </table>
   <div class="btn-area">
     <ul>
-      <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form_css','confirm','','');"><span class="btn-next">この内容で登録する</span></a></li>
+      <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form_css','confirm','',''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
     </ul>
   </div>
   <!--▲CSS設定　ここまで-->
@@ -74,7 +74,7 @@
         <a href="?css_name=<!--{$item.css_name}-->&amp;device_type_id=<!--{$device_type_id}-->">編集</a>
       </td>
       <td class="center" style="background:<!--{if $item.css_name == $css_name}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->;">
-        <a href="javascript:;" onclick="fnFormModeSubmit('form_css','delete','css_name','<!--{$item.css_name}-->');">削除</a>
+        <a href="javascript:;" onclick="fnFormModeSubmit('form_css','delete','css_name','<!--{$item.css_name}-->'); return false;">削除</a>
       </td>
     </tr>
     <!--{/foreach}-->

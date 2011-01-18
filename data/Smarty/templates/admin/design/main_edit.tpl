@@ -94,7 +94,7 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
                 <div>
                     <textarea id="tpl_data" name="tpl_data" rows=<!--{$text_row}--> style="width: 100%;"><!--{$arrPageData.tpl_data|h|smarty:nodefaults}--></textarea>
                     <input type="hidden" name="html_area_row" value="<!--{$text_row}-->" />
-                    <a id="resize-btn" class="btn-normal" href="javascript:;" onclick="ChangeSize('#resize-btn', '#tpl_data', 50, 13)"><span>拡大</span></a>
+                    <a id="resize-btn" class="btn-normal" href="javascript:;" onclick="ChangeSize('#resize-btn', '#tpl_data', 50, 13); return false;"><span>拡大</span></a>
                 </div>
             </td>
         </tr>
@@ -102,8 +102,8 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
 
 
     <div class="btn">
-      <a class="btn-action" href="javascript:;" name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form_edit','confirm','','');"><span class="btn-next">登録する</span></a>
-      <a class="btn-normal" href="javascript:;" name='preview' onclick="doPreview(); "><span>プレビュー</span></a>
+      <a class="btn-action" href="javascript:;" name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form_edit','confirm','',''); return false;"><span class="btn-next">登録する</span></a>
+      <a class="btn-normal" href="javascript:;" name='preview' onclick="doPreview(); return false;"><span>プレビュー</span></a>
     </div>
 
     <h2>編集可能ページ一覧</h2>
@@ -129,7 +129,7 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
                 </td>
                 <td>
                     <!--{if $item.edit_flg == 1}-->
-                        <a href="javascript:;" onclick="fnTargetSelf(); fnFormModeSubmit('form_edit','delete','page_id','<!--{$item.page_id|escape:'javascript'|h}-->');">削除</a>
+                        <a href="javascript:;" onclick="fnTargetSelf(); fnFormModeSubmit('form_edit','delete','page_id','<!--{$item.page_id|escape:'javascript'|h}-->'); return false;">削除</a>
                     <!--{/if}-->
                 </td>
             </tr>

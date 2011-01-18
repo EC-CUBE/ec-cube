@@ -287,8 +287,8 @@ function fnTargetSelf(){
             </tr>
         </table>
         <div class="btn">
-            <a class="btn-action" href="javascript:;" name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form1','confirm','','');"><span class="btn-next">登録する</span></a>
-            <a class="btn-normal" href="javascript:;" name='preview' onclick="doPreview();"<!--{if $page_id == "0" or $exists_page == "0" }--> DISABLED<!--{/if}-->><span>プレビュー</span></a>
+            <a class="btn-action" href="javascript:;" name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form1','confirm','',''); return false;"><span class="btn-next">登録する</span></a>
+            <a class="btn-normal" href="javascript:;" name='preview' onclick="doPreview(); return false;"<!--{if $page_id == "0" or $exists_page == "0" }--> DISABLED<!--{/if}-->><span>プレビュー</span></a>
         </div>
     </div>
     <!--{* ▲レイアウトここまで *}-->
@@ -318,7 +318,7 @@ function fnTargetSelf(){
                 </td>
             </tr>
         </table>
-        <div class="btn"><a class="btn-normal" href="javascript:;" onclick="fnTargetSelf(); fnFormModeSubmit('form1','new_bloc','','');"><span>ブロックを新規入力</span></a></div>
+        <div class="btn"><a class="btn-normal" href="javascript:;" onclick="fnTargetSelf(); fnFormModeSubmit('form1','new_bloc','',''); return false;"><span>ブロックを新規入力</span></a></div>
     </div>
     <!--{* ▲未使用ブロックここまで *}-->
     <!--▲レイアウト編集　ここまで-->
@@ -326,7 +326,7 @@ function fnTargetSelf(){
     <!--▼ページ一覧　ここから-->
     <h2 style="clear: both;">編集可能ページ一覧</h2>
     <div class="btn addnew">
-        <a class="btn-normal" href="javascript:;" onclick="fnTargetSelf(); fnFormModeSubmit('form1','new_page','','');"><span>ページを新規入力</span></a>
+        <a class="btn-normal" href="javascript:;" onclick="fnTargetSelf(); fnFormModeSubmit('form1','new_page','',''); return false;"><span>ページを新規入力</span></a>
     </div>
     <table class="list">
     <tr>

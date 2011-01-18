@@ -41,7 +41,7 @@
         </form>
       </td>
       <td class="menu">
-        <a href="javascript;" onclick="document.form<!--{$smarty.section.cnt.index}-->.submit();">編集</a>
+        <a href="javascript:;" onclick="document.form<!--{$smarty.section.cnt.index}-->.submit(); return false;">編集</a>
       </td>
     </tr>
     <!--{/section}-->

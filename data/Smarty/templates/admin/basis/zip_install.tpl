@@ -43,19 +43,19 @@
         <div class="basis-zip-item">
             <h2>自動更新</h2>
             <p>全ての郵便番号を削除してから、登録しなおします。タイムアウトした場合、元の状態に戻ります。</p>
-            <p><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('auto', '', '');"><span class="btn-next">自動更新</span></a></p>
+            <p><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('auto', '', ''); return false;"><span class="btn-next">自動更新</span></a></p>
         </div>
 
         <div class="basis-zip-item delete">
             <h2>手動更新</h2>
             <p>指定した行数から郵便番号を登録します。タイムアウトした場合、直前まで登録されます。</p>
-            <p><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('manual', '', '');"><span class="btn-next">手動更新</span></a>　開始行: <input type="text" name="startRowNum" value="<!--{$arrForm.startRowNum|default:$tpl_count_mtb_zip+1|h}-->" size="8"><span class="attention"><!--{$arrErr.startRowNum}--></span></p>
+            <p><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('manual', '', ''); return false;"><span class="btn-next">手動更新</span></a>　開始行: <input type="text" name="startRowNum" value="<!--{$arrForm.startRowNum|default:$tpl_count_mtb_zip+1|h}-->" size="8"><span class="attention"><!--{$arrErr.startRowNum}--></span></p>
         </div>
 
         <div class="basis-zip-item end">
             <h2>削除</h2>
             <p>全ての郵便番号を削除します。再登録するまで、住所自動入力は機能しなくなります。</p>
-            <p><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete', '', '');"><span class="btn-next">削除</span></a></p>
+            <p><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete', '', ''); return false;"><span class="btn-next">削除</span></a></p>
         </div>
     </form>
 <!--{else}-->

@@ -56,7 +56,7 @@
 
   <div class="btn-area">
     <ul>
-      <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'update', '', '');"><span class="btn-next">この内容で登録する</span></a></li>
+      <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'update', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
     </ul>
   </div>
 </div>

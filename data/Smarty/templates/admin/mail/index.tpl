@@ -243,7 +243,7 @@
     <!--{* 検索条件設定テーブルここまで *}-->
 
     <div class="btn-area">
-        <a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', '');"><span class="btn-next">この条件で検索する</span></a>
+        <a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', ''); return false;"><span class="btn-next">この条件で検索する</span></a>
     </div>
 </form>
 
@@ -262,10 +262,10 @@
     <div class="btn">
         <span class="attention"><!--検索結果数--><!--{$tpl_linemax}-->件</span>&nbsp;が該当しました。
         <!--{if $smarty.const.ADMIN_MODE == '1'}-->
-            <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete_all','','');"><span>検索結果をすべて削除</span></a>
+            <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete_all','',''); return false;"><span>検索結果をすべて削除</span></a>
         <!--{/if}-->
         <!--{if $tpl_linemax > 0}-->
-            <a class="btn-normal" href="javascript:;" onclick="document.form1['mode'].value='input';"><span>配信内容を設定する</span></a>
+            <a class="btn-normal" href="javascript:;" onclick="document.form1['mode'].value='input'; document.form1.submit(); return false;"><span>配信内容を設定する</span></a>
         <!--{/if}-->
     </div>
     <!--{include file=$tpl_pager}-->

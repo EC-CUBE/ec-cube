@@ -35,7 +35,7 @@
 				<input type="text" name="login_id" size="20" class="box25" />
 				<p><label for="password">PASSWORD</label></p>
 				<input type="password" name="password" size="20" class="box25" />
-				<p><a class="btn-tool-format" href="javascript:;" onclick="document.form1.submit();"><span>LOGIN</span></a></p>
+				<p><a class="btn-tool-format" href="javascript:;" onclick="document.form1.submit(); return false;"><span>LOGIN</span></a></p>
 			</div>
 	</form>
 		</div>

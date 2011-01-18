@@ -28,7 +28,7 @@
     <select name="master_data_name" id="master_data_name">
     <!--{html_options output=$arrMasterDataName values=$arrMasterDataName selected=$masterDataName}-->
     </select>
-    <a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('form1', 'show', '', '');"><span>選択</span></a>
+    <a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('form1', 'show', '', ''); return false;"><span>選択</span></a>
   </div>
   </form>
 
@@ -67,7 +67,7 @@
   </table>
   <div class="btn-area">
     <ul>
-      <li><a class="btn-action" href="javascript:;" onclick="return document.form2.submit()"><span class="btn-next">この内容で登録する</span></a></li>
+      <li><a class="btn-action" href="javascript:;" onclick="document.form2.submit(); return false;"><span class="btn-next">この内容で登録する</span></a></li>
     </ul>
   </div>
 

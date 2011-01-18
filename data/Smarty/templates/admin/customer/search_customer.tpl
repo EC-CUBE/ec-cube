@@ -72,7 +72,7 @@ function func_submit(customer_id){
 
 <div class="btn-area">
   <ul>
-    <li><a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('form1', 'search', '', '');" name="subm">検索を開始</a></li>
+    <li><a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('form1', 'search', '', ''); return false;" name="subm">検索を開始</a></li>
   </ul>
 </div>
 

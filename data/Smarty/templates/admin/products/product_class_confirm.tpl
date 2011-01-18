@@ -102,7 +102,7 @@
     <ul>
       <li><a class="btn-action" href="javascript:;" onclick="fnModeSubmit('confirm_return','',''); return false"><span class="btn-prev">前へ戻る</span></a></li>
     <!--{if $tpl_check > 0}-->
-      <li><a class="btn-action" href="javascript:;" onclick="document.form1.submit();"><span class="btn-next">この内容で登録する</span></a></li>
+      <li><a class="btn-action" href="javascript:;" onclick="document.form1.submit(); return false;"><span class="btn-next">この内容で登録する</span></a></li>
     <!--{/if}-->
     </ul>
   </div>

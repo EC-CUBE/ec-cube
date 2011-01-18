@@ -140,7 +140,7 @@ $(function() {
         <span class="attention"><!--{$arrErr.zip01}--></span>
         <span class="attention"><!--{$arrErr.zip02}--></span>
         〒 <input type="text" name="zip01" value="<!--{$arrForm.zip01|h}-->" maxlength="3" size="6" class="box6" style="<!--{if $arrErr.zip01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" /> - <input type="text" name="zip02" value="<!--{$arrForm.zip02|h}-->" maxlength="4"  size="6" class="box6" style="<!--{if $arrErr.zip02 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" />
-        <a class="btn-normal" href="javascript:;" name="address_input" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'zip01', 'zip02', 'pref', 'addr01');">住所入力</a>
+        <a class="btn-normal" href="javascript:;" name="address_input" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'zip01', 'zip02', 'pref', 'addr01'); return false;">住所入力</a>
       </td>
     </tr>
     <tr>
@@ -313,7 +313,7 @@ $(function() {
       <td>
         <span class="attention"><!--{$arrErr.downloadable_days}--></span>
         <input type="text" name="downloadable_days" value="<!--{$arrForm.downloadable_days|h}-->" maxlength="<!--{$smarty.const.DAYS_LEN}-->" size="6" class="box6" style="<!--{if $arrErr.downloadable_days != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" /> 日間有効
-        <input type="checkbox" name="downloadable_days_unlimited" value="1" <!--{if $arrForm.downloadable_days_unlimited == "1"}-->checked<!--{/if}--> onclick="fnCheckLimit('downloadable_days', 'downloadable_days_unlimited', '<!--{$smarty.const.DISABLED_RGB}-->');"/>無制限
+        <input type="checkbox" name="downloadable_days_unlimited" value="1" <!--{if $arrForm.downloadable_days_unlimited == "1"}-->checked<!--{/if}--> onclick="fnCheckLimit('downloadable_days', 'downloadable_days_unlimited', '<!--{$smarty.const.DISABLED_RGB}-->'); return false;"/>無制限
       </td>
     </tr>
   </table>
@@ -335,7 +335,7 @@ $(function() {
 
   <div class="btn-area">
     <ul>
-      <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', '<!--{$tpl_mode}-->', '', '');"><span class="btn-next">この内容で登録する</span></a></li>
+      <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', '<!--{$tpl_mode}-->', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
     </ul>
   </div>
 </div>

@@ -97,7 +97,7 @@
     </select> 件
     <div class="btn-area">
       <ul>
-        <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', '');"><span class="btn-next">この条件で検索する</span></a></li>
+        <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', ''); return false;"><span class="btn-next">この条件で検索する</span></a></li>
       </ul>
     </div>
   </div>
@@ -122,9 +122,9 @@
   <div class="btn">
     <span class="attention"><!--検索結果数--><!--{$tpl_linemax}-->件</span>&nbsp;が該当しました。
     <!--{if $smarty.const.ADMIN_MODE == '1'}-->
-    <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete_all','','');"><span>検索結果をすべて削除</span></a>
+    <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete_all','',''); return false;"><span>検索結果をすべて削除</span></a>
     <!--{/if}-->
-    <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('csv','','');" ><span>CSV ダウンロード</span></a>
+    <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('csv','',''); return false;" ><span>CSV ダウンロード</span></a>
   </div>
   <!--{include file=$tpl_pager}-->
   
@@ -148,7 +148,7 @@
       <td><a href="<!--{$arrTrackback[cnt].url|h}-->"><!--{$arrTrackback[cnt].blog_name|h}--></a></td>
       <td><!--{$arrTrackback[cnt].title|h}--></td>
       <td><!--{if $arrTrackback[cnt].status eq 1}-->表示<!--{elseif $arrTrackback[cnt].status eq 2}-->非表示<!--{elseif $arrTrackback[cnt].status eq 3}-->スパム<!--{/if}--></td>
-      <td><a class="btn-normal" href="javascript:;" onclick="fnChangeAction('./trackback_edit.php'); fnModeSubmit('','trackback_id','<!--{$arrTrackback[cnt].trackback_id}-->');"><span>編集</span></a></td>
+      <td><a class="btn-normal" href="javascript:;" onclick="fnChangeAction('./trackback_edit.php'); fnModeSubmit('','trackback_id','<!--{$arrTrackback[cnt].trackback_id}-->'); return false;"><span>編集</span></a></td>
       <td><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete','trackback_id','<!--{$arrTrackback[cnt].trackback_id}-->'); return false;"><span>削除</span></a></td>
     </tr>
     <!--{/section}-->
