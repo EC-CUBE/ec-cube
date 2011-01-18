@@ -257,6 +257,9 @@ class LC_Page_Products_Detail extends LC_Page {
                         $this->tpl_mainpage = "products/select_find2.tpl";
                         break;
                     }
+
+                    $this->tpl_product_class_id = $objProduct->classCategories[$product_id][$_POST['classcategory_id1']][$_POST['classcategory_id2']]['product_class_id'];
+
                     // 商品数の選択を行う
                     $this->tpl_mainpage = "products/select_item.tpl";
                     break;
