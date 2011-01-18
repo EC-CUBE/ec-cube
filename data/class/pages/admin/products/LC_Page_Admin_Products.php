@@ -191,16 +191,18 @@ class LC_Page_Admin_Products extends LC_Page_Admin {
                             $arrval[] = "%$val%";
                             break;
                         case 'search_startyear': // 登録更新日（FROM）
-                            // FIXME POST の値をチェックする
                             $date = SC_Utils_Ex::sfGetTimestamp($_POST['search_startyear'], $_POST['search_startmonth'], $_POST['search_startday']);
-                            $where.= " AND update_date >= '" . $_POST['search_startyear'] . "/" . $_POST['search_startmonth']. "/" .$_POST['search_startday'] . "'";
-                            $view_where.= " AND update_date >= '" . $_POST['search_startyear'] . "/" . $_POST['search_startmonth']. "/" .$_POST['search_startday'] . "'";
+                            $date = date('Y/m/d', strtotime($date));
+                            $where.= " AND update_date >= date(?)";
+                            $view_where.= " AND update_date >= date(?)";
+                            $arrval[] = $date;
                             break;
                         case 'search_endyear': // 登録更新日（TO）
                             $date = SC_Utils_Ex::sfGetTimestamp($_POST['search_endyear'], $_POST['search_endmonth'], $_POST['search_endday']);
                             $date = date('Y/m/d', strtotime($date) + 86400);
-                            $where.= " AND update_date < date('" . $date . "')";
-                            $view_where.= " AND update_date < date('" . $date . "')";
+                            $where.= " AND update_date < date(?)";
+                            $view_where.= " AND update_date < date(?)";
+                            $arrval[] = $date;
                             break;
                         case 'search_product_flag': //種別
                             global $arrSTATUS;
