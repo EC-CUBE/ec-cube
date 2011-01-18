@@ -112,12 +112,14 @@ class LC_Page_Mypage_HistoryDetail extends LC_Page {
         if(SC_Utils_Ex::sfIsInt($order_id)) {
             // DBから受注情報を読み込む
             $objQuery = new SC_Query();
+            /*
             $col = "order_id, create_date, payment_id, subtotal, tax, use_point, add_point, discount, ";
-            $col .= "deliv_fee, charge, payment_total, deliv_name01, deliv_name02, deliv_kana01, deliv_kana02, ";
-            $col .= "deliv_zip01, deliv_zip02, deliv_pref, deliv_addr01, deliv_addr02, deliv_tel01, deliv_tel02, deliv_tel03, deliv_time_id, deliv_date ";
+            $col .= "deliv_fee, charge, payment_total, order_name01, order_name02, order_kana01, order_kana02, ";
+            $col .= "order_zip01, order_zip02, order_pref, order_addr01, order_addr02, order_tel01, order_tel02, order_tel03, create_date ";
+            */
             $from = "dtb_order";
             $where = "order_id = ?";
-            $arrRet = $objQuery->select($col, $from, $where, array($order_id));
+            $arrRet = $objQuery->select("*", $from, $where, array($order_id));
             $arrOrder = $arrRet[0];
             // 受注詳細データの取得
             $arrRet = $this->lfGetOrderDetail($order_id);
