@@ -19,13 +19,13 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
-<script type="text/javascript" src="<!--{$smarty.const.URL_PATH}-->js/jquery.facebox/facebox.js"></script>
-<link rel="stylesheet" type="text/css" href="<!--{$smarty.const.URL_PATH}-->js/jquery.facebox/facebox.css" media="screen" />
+<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.facebox/facebox.js"></script>
+<link rel="stylesheet" type="text/css" href="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.facebox/facebox.css" media="screen" />
 <script type="text/javascript">//<![CDATA[
 $(document).ready(function() {
     $('a.expansion').facebox({
-        loadingImage : '<!--{$smarty.const.URL_PATH}-->js/jquery.facebox/loading.gif',
-        closeImage   : '<!--{$smarty.const.URL_PATH}-->js/jquery.facebox/closelabel.png'
+        loadingImage : '<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.facebox/loading.gif',
+        closeImage   : '<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.facebox/closelabel.png'
     });
 });
 //]]></script>
@@ -115,7 +115,7 @@ $(document).ready(function() {
                                 target="_blank"
                             <!--{/if}-->
                         >
-                            <img src="<!--{$smarty.const.URL_PATH}-->resize_image.php?image=<!--{$item.productsClass.main_list_image|sfNoImageMainList|h}-->&amp;width=40&amp;height=40" alt="<!--{$item.productsClass.name|h}-->" /></a><br />
+                            <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$item.productsClass.main_list_image|sfNoImageMainList|h}-->&amp;width=40&amp;height=40" alt="<!--{$item.productsClass.name|h}-->" /></a><br />
 <a href="?" onclick="fnModeSubmit('delete', 'cart_no', '<!--{$item.cart_no}-->'); return false;">削除</a>
                         </td>
                         <td><!--{* 商品名 *}--><strong><!--{$item.productsClass.name|h}--></strong><br />

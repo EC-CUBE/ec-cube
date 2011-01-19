@@ -402,9 +402,9 @@ exit;
      */
     function sfReload($get = "") {
         if ($_SERVER["SERVER_PORT"] == "443" ){
-            $url = ereg_replace(URL_PATH . "$", "", HTTPS_URL);
+            $url = ereg_replace(ROOT_URLPATH . "$", "", HTTPS_URL);
         } else {
-            $url = ereg_replace(URL_PATH . "$", "", HTTP_URL);
+            $url = ereg_replace(ROOT_URLPATH . "$", "", HTTP_URL);
         }
 
         if($get != "") {

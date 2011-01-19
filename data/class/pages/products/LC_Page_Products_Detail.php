@@ -206,7 +206,7 @@ class LC_Page_Products_Detail extends LC_Page {
                         $objSiteSess->setRegistFlag();
                         $objCartSess->saveCurrentCart($objSiteSess->getUniqId());
 
-                        SC_Response_Ex::sendRedirect(URL_PATH . USER_DIR . 'gmopg_oneclick_confirm.php', array(), false, true);
+                        SC_Response_Ex::sendRedirect(ROOT_URLPATH . USER_DIR . 'gmopg_oneclick_confirm.php', array(), false, true);
                         exit;
                     }
 

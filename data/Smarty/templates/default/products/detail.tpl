@@ -19,8 +19,8 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
-<script type="text/javascript" src="<!--{$smarty.const.URL_PATH}-->js/jquery.facebox/facebox.js"></script>
-<link rel="stylesheet" type="text/css" href="<!--{$smarty.const.URL_PATH}-->js/jquery.facebox/facebox.css" media="screen" />
+<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.facebox/facebox.js"></script>
+<link rel="stylesheet" type="text/css" href="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.facebox/facebox.css" media="screen" />
 <script type="text/javascript">//<![CDATA[
 // 規格2に選択肢を割り当てる。
 function fnSetClassCategories(form, classcat_id2_selected) {
@@ -153,8 +153,8 @@ function fnCheckStock(form) {
 }
 $(document).ready(function() {
     $('a.expansion').facebox({
-        loadingImage : '<!--{$smarty.const.URL_PATH}-->js/jquery.facebox/loading.gif',
-        closeImage   : '<!--{$smarty.const.URL_PATH}-->js/jquery.facebox/closelabel.png'
+        loadingImage : '<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.facebox/loading.gif',
+        closeImage   : '<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.facebox/closelabel.png'
     });
 });
 //]]>
@@ -289,7 +289,7 @@ $(document).ready(function() {
                 <!--{section name=r loop=$arrRelativeCat}-->
                 <p>
                     <!--{section name=s loop=$arrRelativeCat[r]}-->
-                    <a href="<!--{$smarty.const.URL_PATH}-->products/list.php?category_id=<!--{$arrRelativeCat[r][s].category_id}-->"><!--{$arrRelativeCat[r][s].category_name}--></a>
+                    <a href="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php?category_id=<!--{$arrRelativeCat[r][s].category_id}-->"><!--{$arrRelativeCat[r][s].category_name}--></a>
                     <!--{if !$smarty.section.s.last}--><!--{$smarty.const.SEPA_CATNAVI}--><!--{/if}-->
                     <!--{/section}-->
                 </p>
@@ -492,7 +492,7 @@ $(document).ready(function() {
                 <div class="whoboughtleft">
 
                     <a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrRecommend[cnt].product_id|u}-->">
-                        <img src="<!--{$smarty.const.URL_PATH}-->resize_image.php?image=<!--{$arrRecommend[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[cnt].name|h}-->" /></a>
+                        <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrRecommend[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[cnt].name|h}-->" /></a>
 
                     <!--{assign var=price02_min value=`$arrRecommend[cnt].price02_min`}-->
                     <!--{assign var=price02_max value=`$arrRecommend[cnt].price02_max`}-->
@@ -517,7 +517,7 @@ $(document).ready(function() {
                 <div class="whoboughtright">
 
                     <a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrRecommend[cnt].product_id|u}-->">
-                        <img src="<!--{$smarty.const.URL_PATH}-->resize_image.php?image=<!--{$arrRecommend[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[cnt].name|h}-->" /></a>
+                        <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrRecommend[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[cnt].name|h}-->" /></a>
 
                     <!--{assign var=price02_min value=`$arrRecommend[cnt].price02_min`}-->
                     <!--{assign var=price02_max value=`$arrRecommend[cnt].price02_max`}-->

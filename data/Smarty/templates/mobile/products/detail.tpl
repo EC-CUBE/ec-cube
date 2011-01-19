@@ -114,7 +114,7 @@ Pt<br>
 関連カテゴリ：<br>
 <!--{section name=r loop=$arrRelativeCat}-->
 <!--{section name=s loop=$arrRelativeCat[r]}-->
-<a href="<!--{$smarty.const.URL_PATH}-->products/list.php?category_id=<!--{$arrRelativeCat[r][s].category_id}-->"><!--{$arrRelativeCat[r][s].category_name}--></a>
+<a href="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php?category_id=<!--{$arrRelativeCat[r][s].category_id}-->"><!--{$arrRelativeCat[r][s].category_name}--></a>
 <!--{if !$smarty.section.s.last}--><!--{$smarty.const.SEPA_CATNAVI}--><!--{/if}-->
 <!--{/section}-->
 <br>

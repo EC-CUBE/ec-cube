@@ -90,7 +90,7 @@ class SC_SmartphoneUserAgent {
         ;
 
         // XXX サニタイズ必要？
-        $url .= (preg_match('|^' . URL_PATH . '(.*)$|', $_SERVER['REQUEST_URI'], $matches))
+        $url .= (preg_match('|^' . ROOT_URLPATH . '(.*)$|', $_SERVER['REQUEST_URI'], $matches))
             ? $matches[1]
             : ''
         ;

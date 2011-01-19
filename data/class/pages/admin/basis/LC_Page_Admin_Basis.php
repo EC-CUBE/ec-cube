@@ -259,7 +259,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin {
                 }
                 //権限チェック
                 if(!is_writable(HTML_REALDIR . ADMIN_DIR)){
-                    $this->arrErr["admin_dir"] .= URL_PATH.ADMIN_DIR."のディレクトリ名を変更する権限がありません。";
+                    $this->arrErr["admin_dir"] .= ROOT_URLPATH.ADMIN_DIR."のディレクトリ名を変更する権限がありません。";
                 }
                 if(!is_writable(USER_TEMPLATE_REALDIR . ADMIN_DIR)){
                     $this->arrErr["admin_dir"] .= USER_TEMPLATE_REALDIR . ADMIN_DIR."のディレクトリ名を変更する権限がありません。";        

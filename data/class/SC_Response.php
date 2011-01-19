@@ -169,7 +169,7 @@ class SC_Response{
      * @static
      */
     function sendRedirectFromUrlPath($location, $arrQueryString = array(), $inheritQueryString = false, $useSsl = null) {
-        $location = URL_PATH . ltrim($location, '/');
+        $location = ROOT_URLPATH . ltrim($location, '/');
         SC_Response_Ex::sendRedirect($location, $arrQueryString, $inheritQueryString, $useSsl);
     }
 

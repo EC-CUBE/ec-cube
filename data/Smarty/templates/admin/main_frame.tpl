@@ -35,12 +35,12 @@
     google.load("maps", "3", {other_params:'sensor=false'});
 //]]>
 </script>
-<script type="text/javascript" src="<!--{$smarty.const.URL_PATH}-->js/navi.js"></script>
-<script type="text/javascript" src="<!--{$smarty.const.URL_PATH}-->js/win_op.js"></script>
-<script type="text/javascript" src="<!--{$smarty.const.URL_PATH}-->js/site.js"></script>
-<script type="text/javascript" src="<!--{$smarty.const.URL_PATH}-->js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/navi.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/win_op.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/site.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/admin.js"></script>
-<script type="text/javascript" src="<!--{$smarty.const.URL_PATH}-->js/css.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/css.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/file_manager.js"></script>
 <title><!--{$smarty.const.ADMIN_TITLE}--></title>
 <script type="text/javascript">//<![CDATA[
@@ -85,43 +85,43 @@
 <div id="navi-wrap">
 <ul id="navi" class="clearfix">
     <li id="navi-basis" class="<!--{if $tpl_mainno eq "basis"}-->on<!--{/if}-->">
-        <a href="<!--{$smarty.const.URL_PATH}--><!--{$smarty.const.ADMIN_DIR}-->basis/<!--{$smarty.const.DIR_INDEX_URL}-->"><span class="level1">基本情報管理</span></a>
+        <a href="<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->basis/<!--{$smarty.const.DIR_INDEX_URL}-->"><span class="level1">基本情報管理</span></a>
         <!--{include file="`$smarty.const.TEMPLATE_ADMIN_REALDIR`basis/subnavi.tpl"}-->
     </li>
     <li id="navi-products" class="<!--{if $tpl_mainno eq "products"}-->on<!--{/if}-->">
-        <a href="<!--{$smarty.const.URL_PATH}--><!--{$smarty.const.ADMIN_DIR}-->products/<!--{$smarty.const.DIR_INDEX_URL}-->"><span>商品管理</span></a>
+        <a href="<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->products/<!--{$smarty.const.DIR_INDEX_URL}-->"><span>商品管理</span></a>
         <!--{include file="`$smarty.const.TEMPLATE_ADMIN_REALDIR`products/subnavi.tpl"}-->
     </li>
     <li id="navi-customer" class="<!--{if $tpl_mainno eq "customer"}-->on<!--{/if}-->">
-        <a href="<!--{$smarty.const.URL_PATH}--><!--{$smarty.const.ADMIN_DIR}-->customer/<!--{$smarty.const.DIR_INDEX_URL}-->"><span>顧客管理</span></a>
+        <a href="<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->customer/<!--{$smarty.const.DIR_INDEX_URL}-->"><span>顧客管理</span></a>
         <!--{include file="`$smarty.const.TEMPLATE_ADMIN_REALDIR`customer/subnavi.tpl"}-->
     </li>
     <li id="navi-order" class="<!--{if $tpl_mainno eq "order"}-->on<!--{/if}-->">
-        <a href="<!--{$smarty.const.URL_PATH}--><!--{$smarty.const.ADMIN_DIR}-->order/<!--{$smarty.const.DIR_INDEX_URL}-->"><span>受注管理</span></a>
+        <a href="<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->order/<!--{$smarty.const.DIR_INDEX_URL}-->"><span>受注管理</span></a>
         <!--{include file="`$smarty.const.TEMPLATE_ADMIN_REALDIR`order/subnavi.tpl"}-->
     </li>
     <li id="navi-total" class="<!--{if $tpl_mainno eq "total"}-->on<!--{/if}-->">
-        <a href="<!--{$smarty.const.URL_PATH}--><!--{$smarty.const.ADMIN_DIR}-->total/<!--{$smarty.const.DIR_INDEX_URL}-->"><span>売上集計</span></a>
+        <a href="<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->total/<!--{$smarty.const.DIR_INDEX_URL}-->"><span>売上集計</span></a>
         <!--{include file="`$smarty.const.TEMPLATE_ADMIN_REALDIR`total/subnavi.tpl"}-->
     </li>
     <li id="navi-mail" class="<!--{if $tpl_mainno eq "mail"}-->on<!--{/if}-->">
-        <a href="<!--{$smarty.const.URL_PATH}--><!--{$smarty.const.ADMIN_DIR}-->mail/<!--{$smarty.const.DIR_INDEX_URL}-->"><span>メルマガ管理</span></a>
+        <a href="<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->mail/<!--{$smarty.const.DIR_INDEX_URL}-->"><span>メルマガ管理</span></a>
         <!--{include file="`$smarty.const.TEMPLATE_ADMIN_REALDIR`mail/subnavi.tpl"}-->
     </li>
     <li id="navi-contents" class="<!--{if $tpl_mainno eq "contents"}-->on<!--{/if}-->">
-        <a href="<!--{$smarty.const.URL_PATH}--><!--{$smarty.const.ADMIN_DIR}-->contents/<!--{$smarty.const.DIR_INDEX_URL}-->"><span>コンテンツ管理</span></a>
+        <a href="<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->contents/<!--{$smarty.const.DIR_INDEX_URL}-->"><span>コンテンツ管理</span></a>
         <!--{include file="`$smarty.const.TEMPLATE_ADMIN_REALDIR`contents/subnavi.tpl"}-->
     </li>
     <li id="navi-design" class="<!--{if $tpl_mainno eq "design"}-->on<!--{/if}-->">
-        <a href="<!--{$smarty.const.URL_PATH}--><!--{$smarty.const.ADMIN_DIR}-->design/<!--{$smarty.const.DIR_INDEX_URL}-->"><span>デザイン管理</span></a>
+        <a href="<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->design/<!--{$smarty.const.DIR_INDEX_URL}-->"><span>デザイン管理</span></a>
         <!--{include file="`$smarty.const.TEMPLATE_ADMIN_REALDIR`design/subnavi.tpl"}-->
     </li>
     <li id="navi-system" class="<!--{if $tpl_mainno eq "system"}-->on<!--{/if}-->">
-        <a href="<!--{$smarty.const.URL_PATH}--><!--{$smarty.const.ADMIN_DIR}-->system/<!--{$smarty.const.DIR_INDEX_URL}-->"><span>システム設定</span></a>
+        <a href="<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->system/<!--{$smarty.const.DIR_INDEX_URL}-->"><span>システム設定</span></a>
         <!--{include file="`$smarty.const.TEMPLATE_ADMIN_REALDIR`system/subnavi.tpl"}-->
     </li>
     <li id="navi-ownersstore" class="<!--{if $tpl_mainno eq "ownersstore"}-->on<!--{/if}-->">
-        <a href="<!--{$smarty.const.URL_PATH}--><!--{$smarty.const.ADMIN_DIR}-->ownersstore/<!--{$smarty.const.DIR_INDEX_URL}-->"><span>オーナーズストア</span></a>
+        <a href="<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->ownersstore/<!--{$smarty.const.DIR_INDEX_URL}-->"><span>オーナーズストア</span></a>
         <!--{include file="`$smarty.const.TEMPLATE_ADMIN_REALDIR`ownersstore/subnavi.tpl"}-->
     </li>
 </ul>

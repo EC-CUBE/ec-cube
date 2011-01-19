@@ -42,7 +42,7 @@ class SC_Helper_Mobile {
      */
     function lfMobileCheckCompatibility() {
         if (!SC_MobileUserAgent::isSupported()) {
-            header('Location: ' . URL_PATH . 'unsupported/' . DIR_INDEX_URL);
+            header('Location: ' . ROOT_URLPATH . 'unsupported/' . DIR_INDEX_URL);
             exit;
         }
     }
@@ -85,7 +85,7 @@ class SC_Helper_Mobile {
      *                     取得できなかった場合は null を返す。
      */
     function lfMobileGetExtSessionId() {
-        if (!preg_match('|^' . URL_PATH . '(.*)$|', $_SERVER['SCRIPT_NAME'], $matches)) {
+        if (!preg_match('|^' . ROOT_URLPATH . '(.*)$|', $_SERVER['SCRIPT_NAME'], $matches)) {
             return null;
         }
 

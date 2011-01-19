@@ -50,7 +50,7 @@ class SC_Helper_PageLayout {
 
         // 現在のURLの取得
         if ($preview === false) {
-            $url = preg_replace('|^' . preg_quote(URL_PATH) . '|', '', $url);
+            $url = preg_replace('|^' . preg_quote(ROOT_URLPATH) . '|', '', $url);
 
             // URLを元にページデザインを取得
             $arrPageData = $this->lfGetPageData("device_type_id = ? AND url = ? AND page_id <> 0" , array($device_type_id, $url));
@@ -304,18 +304,18 @@ __EOF__;
     function getUserDir($device_type_id = DEVICE_TYPE_PC, $hasPackage = false) {
         switch ($device_type_id) {
         case DEVICE_TYPE_MOBILE:
-            $userDir = URL_PATH . MOBILE_DIR . USER_DIR;
+            $userDir = ROOT_URLPATH . MOBILE_DIR . USER_DIR;
             $templateName = MOBILE_TEMPLATE_NAME;
             break;
 
         case DEVICE_TYPE_SMARTPHONE:
-            $userDir = URL_PATH . SMARTPHONE_DIR . USER_DIR;
+            $userDir = ROOT_URLPATH . SMARTPHONE_DIR . USER_DIR;
             $templateName = SMARTPHONE_TEMPLATE_NAME;
             break;
 
         case DEVICE_TYPE_PC:
         default:
-            $userDir = URL_PATH . USER_DIR;
+            $userDir = ROOT_URLPATH . USER_DIR;
             $templateName = TEMPLATE_NAME;
         }
         if ($hasPackage) {

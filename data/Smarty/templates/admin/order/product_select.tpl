@@ -180,7 +180,7 @@ function fnCheckStock(form) {
                 <!--{assign var=status value="`$arrProducts[cnt].status`"}-->
                 <tr style="background:<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->;">
                     <td class="center">
-                        <img src="<!--{$smarty.const.URL_PATH}-->resize_image.php?image=<!--{$arrProducts[cnt].main_list_image|sfNoImageMainList|h}-->&width=65&height=65" alt="<!--{$arrRecommend[$recommend_no].name|h}-->" />
+                        <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrProducts[cnt].main_list_image|sfNoImageMainList|h}-->&width=65&height=65" alt="<!--{$arrRecommend[$recommend_no].name|h}-->" />
                     </td>    
                     <td>
                         <!--{assign var=codemin value=`$arrProducts[cnt].product_code_min`}-->

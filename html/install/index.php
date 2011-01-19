@@ -951,7 +951,7 @@ function lfMakeConfigFile() {
     "    define ('ECCUBE_INSTALL', 'ON');\n" .
     "    define ('HTTP_URL', '" . $normal_url . "');\n" .
     "    define ('HTTPS_URL', '" . $secure_url . "');\n" .
-    "    define ('URL_PATH', '" . $url_dir . "');\n" .
+    "    define ('ROOT_URLPATH', '" . $url_dir . "');\n" .
     "    define ('DOMAIN_NAME', '" . $objWebParam->getValue('domain') . "');\n" .
     "    define ('DB_TYPE', '" . $objDBParam->getValue('db_type') . "');\n" .
     "    define ('DB_USER', '" . $objDBParam->getValue('db_user') . "');\n" .

@@ -32,10 +32,10 @@
 <!--{* 共通CSS *}-->
 <link rel="stylesheet" media="only screen" href="<!--{$TPL_DIR}-->css/import.css" type="text/css" />
 
-<script type="text/javascript" src="<!--{$smarty.const.URL_PATH}-->js/navi.js"></script>
-<script type="text/javascript" src="<!--{$smarty.const.URL_PATH}-->js/win_op.js"></script>
-<script type="text/javascript" src="<!--{$smarty.const.URL_PATH}-->js/site.js"></script>
-<script type="text/javascript" src="<!--{$smarty.const.URL_PATH}-->js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/navi.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/win_op.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/site.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/barbutton.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/category.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/news.js"></script>

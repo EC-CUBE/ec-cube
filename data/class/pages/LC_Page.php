@@ -350,7 +350,7 @@ exit;
         
         // $path が / で始まっている場合
         if (substr($path, 0, 1) == '/') {
-            $realPath = realpath($htmlPath . substr_replace($path, '', 0, strlen(URL_PATH)));
+            $realPath = realpath($htmlPath . substr_replace($path, '', 0, strlen(ROOT_URLPATH)));
         // 相対パスの場合
         } else {
             $realPath = realpath($path);

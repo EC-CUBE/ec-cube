@@ -91,7 +91,7 @@ class SC_MobileImage {
             // HTML中のIMGタグを変換後のファイルパスに置換する
             foreach ($images[1] as $key => $path) {
                 $realpath = html_entity_decode($path, ENT_QUOTES);
-                $realpath = preg_replace('|^' . URL_PATH . '|', HTML_REALDIR, $realpath);
+                $realpath = preg_replace('|^' . ROOT_URLPATH . '|', HTML_REALDIR, $realpath);
                 $converted = $imageConverter->execute($realpath);
                 if (isset($converted['outputImageName'])) {
                     $buffer = str_replace($path, MOBILE_IMAGE_URLPATH . '/' . $converted['outputImageName'], $buffer);

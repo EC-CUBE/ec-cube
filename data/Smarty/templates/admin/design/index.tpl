@@ -11,8 +11,8 @@ function fnTargetSelf(){
 
 </script>
 
-<script type="text/javascript" src="<!--{$smarty.const.URL_PATH}-->js/ui.core.js"></script>
-<script type="text/javascript" src="<!--{$smarty.const.URL_PATH}-->js/ui.sortable.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/ui.core.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/ui.sortable.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/layout_design.js"></script>
 
 

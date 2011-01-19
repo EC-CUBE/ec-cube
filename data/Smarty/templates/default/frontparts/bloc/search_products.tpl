@@ -24,7 +24,7 @@
         検索条件</h2>
     <div id="searcharea" class="bloc_body">
         <!--検索フォーム-->
-        <form name="search_form" id="search_form" method="get" action="<!--{$smarty.const.URL_PATH}-->products/list.php">
+        <form name="search_form" id="search_form" method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
 
             <p class="mini">商品カテゴリから選ぶ
                 <input type="hidden" name="mode" value="search" />

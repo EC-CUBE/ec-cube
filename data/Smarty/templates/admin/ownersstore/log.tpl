@@ -40,7 +40,7 @@
       <td><!--{if $log.error_flg}-->失敗<!--{else}-->成功<!--{/if}--></td>
       <td class="left"><!--{$log.update_date|sfDispDBDate|h}--></td>
       <td>
-          <a href="<!--{$smarty.const.URL_PATH}--><!--{$smarty.const.ADMIN_DIR}-->ownersstore/log.php?mode=detail&amp;log_id=<!--{$log.log_id}-->">
+          <a href="<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->ownersstore/log.php?mode=detail&amp;log_id=<!--{$log.log_id}-->">
           詳細</a>
       </td>
       <!--{*<td><!--{$log.log_id}--></td>*}-->

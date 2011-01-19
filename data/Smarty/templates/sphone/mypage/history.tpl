@@ -60,7 +60,7 @@
                     <td>
                     <!--{ if $orderDetail.product_type_id == PRODUCT_TYPE_DOWNLOAD}-->
                         <!--{ if $orderDetail.price == "0" || ( $orderDetail.status >= "4" && $orderDetail.effective == "1" )}-->
-                            <a target="_self" href="<!--{$smarty.const.URL_PATH}-->mypage/download.php?order_id=<!--{$arrDisp.order_id}-->&product_id=<!--{$orderDetail.product_id}-->&product_class_id=<!--{$orderDetail.product_class_id}-->">ダウンロード</a>
+                            <a target="_self" href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/download.php?order_id=<!--{$arrDisp.order_id}-->&product_id=<!--{$orderDetail.product_id}-->&product_class_id=<!--{$orderDetail.product_class_id}-->">ダウンロード</a>
                         <!--{ elseif $orderDetail.payment_date == "" || $orderDetail.status < "4"}-->
                             ダウンロード商品<BR />（入金確認中）
                         <!--{ elseif $orderDetail.effective != "1"}-->

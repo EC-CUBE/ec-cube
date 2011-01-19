@@ -53,7 +53,7 @@
      </div>
      <p class="inputtext02">
        パスワードを忘れた方は<a href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/forgot/<!--{$smarty.const.DIR_INDEX_URL}-->" onclick="win01('<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/forgot/<!--{$smarty.const.DIR_INDEX_URL}-->','forget','600','460'); return false;" target="_blank">こちら</a>からパスワードの再発行を行ってください。<br />
-      メールアドレスを忘れた方は、お手数ですが、<a href="<!--{$smarty.const.URL_PATH}-->contact/<!--{$smarty.const.DIR_INDEX_URL}-->">お問い合わせページ</a>からお問い合わせください。
+      メールアドレスを忘れた方は、お手数ですが、<a href="<!--{$smarty.const.ROOT_URLPATH}-->contact/<!--{$smarty.const.DIR_INDEX_URL}-->">お問い合わせページ</a>からお問い合わせください。
      </p>
    </div>
     </form>
@@ -68,7 +68,7 @@
       また、ログインするだけで、毎回お名前や住所などを入力することなくスムーズにお買い物をお楽しみいただけます。
     </p>
     <div class="inputbox02">
-      <a href="<!--{$smarty.const.URL_PATH}-->entry/kiyaku.php" onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_entry_on.gif','b_gotoentry');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_entry.gif','b_gotoentry');">
+      <a href="<!--{$smarty.const.ROOT_URLPATH}-->entry/kiyaku.php" onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_entry_on.gif','b_gotoentry');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_entry.gif','b_gotoentry');">
         <img src="<!--{$TPL_DIR}-->img/button/btn_entry.gif" width="130" height="30" alt="会員登録をする" border="0" name="b_gotoentry" /></a>
       <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_buystep_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_buystep.gif',this)" src="<!--{$TPL_DIR}-->img/button/btn_buystep.gif" class="box130"  alt="購入手続きへ" name="buystep" id="buystep" />
     </div>

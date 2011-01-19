@@ -85,7 +85,7 @@ function func_submit( id ){
     <!--▼商品<!--{$smarty.section.cnt.iteration}-->-->
     <tr>
       <td class="center">
-        <img src="<!--{$smarty.const.URL_PATH}-->resize_image.php?image=<!--{$arrProducts[cnt].main_list_image|sfNoImageMainList|h}-->&width=65&height=65" alt="" />
+        <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrProducts[cnt].main_list_image|sfNoImageMainList|h}-->&width=65&height=65" alt="" />
       </td>
       <td><!--{$arrProducts[cnt].product_code|default:"-"|h}--></td>
       <td><!--{$arrProducts[cnt].name|h}--></td>

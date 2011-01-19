@@ -318,7 +318,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
         // ベースデータの場合には変更しない。
         if (!$this->objLayout->lfCheckBaseData($arrData['page_id'], $device_type_id)) {
             $arrUpdData['page_name']    = $arrData['page_name'] ;
-            $arrUpdData['url']          = preg_replace('|^' . preg_quote(URL_PATH) . '|', '',
+            $arrUpdData['url']          = preg_replace('|^' . preg_quote(ROOT_URLPATH) . '|', '',
                                                        $this->objLayout->getUserDir($device_type_id) . $arrData['url'] . '.php');
             $arrUpdData['php_dir']      = dirname($arrUpdData['url']);
             if ($arrUpdData['php_dir'] == '.') {

@@ -13,7 +13,7 @@
             <div class="whoboughtleft"><!--{* XXX whoboughtleft は本来左列用なので、動作に不具合があるかもしれない。 *}-->
                 
                 <a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrProduct.product_id}-->">
-                    <img src="<!--{$smarty.const.URL_PATH}-->resize_image.php?image=<!--{$arrProduct.main_list_image|sfNoImageMainList|escape}-->&amp;width=65&amp;height=65" alt="<!--{$arrProduct.name|escape}-->" /></a>
+                    <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrProduct.main_list_image|sfNoImageMainList|escape}-->&amp;width=65&amp;height=65" alt="<!--{$arrProduct.name|escape}-->" /></a>
 
                 <!--{assign var=price02_min value=`$arrProduct.price02_min`}-->
                 <!--{assign var=price02_max value=`$arrProduct.price02_max`}-->
