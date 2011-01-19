@@ -129,10 +129,10 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin {
         $sql = "SELECT * FROM dtb_mailtemplate WHERE template_id = ?";
         $result = $objQuery->getAll($sql, array($_POST['template_id']) );
         if ( $result ){
-            $sql_where = "template_id = ". addslashes($_POST['template_id']);
-            $objQuery->query("UPDATE dtb_mailtemplate SET template_id = ?, subject = ?,header = ?, footer = ?,creator_id = ?, update_date = now() WHERE ".$sql_where, $data);
+            $sql_where = "template_id = ?";
+            $objQuery->update("dtb_mailtemplate", $data, $sql_where, array(addslashes($_POST['template_id'])));
         }else{
-            $objQuery->query("INSERT INTO dtb_mailtemplate (template_id,subject,header,footer,creator_id,update_date,create_date) values ( ?,?,?,?,?,now(),now() )", $data);
+            $objQuery->insert("dtb_mailtemplate", $data);
         }
 
     }
