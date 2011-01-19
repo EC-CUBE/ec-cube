@@ -29,7 +29,7 @@ require_once(CLASS_REALDIR . "pages/LC_Page.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id:LC_Page_Index.php 15532 2007-08-31 14:39:46Z nanasess $
+ * @version $Id$
  */
 class LC_Page_Index extends LC_Page {
 
@@ -63,6 +63,8 @@ class LC_Page_Index extends LC_Page {
      */
     function action() {
         $this->tpl_title = '';
+        $objCustomer = new SC_Customer();
+        $this->isLogin = $objCustomer->isLoginSuccess(true);
     }
 
     /**
