@@ -101,7 +101,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
         $this->arrDelivTime = $objPurchase->getDelivTime($this->cartKey);
 
         // 会員ログインチェック
-        if($this->objCustomer->isLoginSuccess()) {
+        if($this->objCustomer->isLoginSuccess(true)) {
             $this->tpl_login = '1';
             $this->tpl_user_point = $this->objCustomer->getValue('point');
             //戻り先URL

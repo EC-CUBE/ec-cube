@@ -66,7 +66,7 @@ class LC_Page_Mypage_MailView extends LC_Page {
         $objCustomer = new SC_Customer();
 
         // ログインチェック
-        if(!$objCustomer->isLoginSuccess()) {
+        if(!$objCustomer->isLoginSuccess(true)) {
             SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
         }
 

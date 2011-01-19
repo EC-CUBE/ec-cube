@@ -88,7 +88,7 @@ class LC_Page_Mypage_History extends LC_Page {
         //DBに情報があるか判定
         $cnt = $objQuery->count($from, $where, $arrval);
         //ログインしていない、またはDBに情報が無い場合
-        if (!$objCustomer->isLoginSuccess() || $cnt == 0){
+        if (!$objCustomer->isLoginSuccess(true) || $cnt == 0){
             SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
         }
 

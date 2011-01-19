@@ -142,7 +142,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page {
                         SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
                     }
                     
-                    if ($objCustomer->isLoginSuccess()) {
+                    if ($objCustomer->isLoginSuccess(true)) {
                         $this->lfRegistData($_POST, $arrRegistColumn, $objCustomer);
                     } else {
                         $this->lfRegistDataNonMember($_POST, $arrRegistColumn);

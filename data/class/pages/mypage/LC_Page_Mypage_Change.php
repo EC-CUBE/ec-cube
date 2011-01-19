@@ -89,7 +89,7 @@ class LC_Page_Mypage_Change extends LC_Page {
         $objCustomer = new SC_Customer();
         
         // ログインチェック
-        if (!$objCustomer->isLoginSuccess()){
+        if (!$objCustomer->isLoginSuccess(true)){
             SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
         }else {
             //マイページトップ顧客情報表示用

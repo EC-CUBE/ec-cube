@@ -29,7 +29,7 @@ require_once(CLASS_REALDIR . "pages/LC_Page.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id$
+ * @version $Id: $
  */
 class LC_Page_Shopping_Multiple extends LC_Page {
 
@@ -106,7 +106,7 @@ class LC_Page_Shopping_Multiple extends LC_Page {
                     $i = 0;
                     while ($params['cart_no' . $i] != null) {
                         $other_deliv_id = $params['shipping' . $i];
-                        if ($objCustomer->isLoginSuccess()) {
+                        if ($objCustomer->isLoginSuccess(true)) {
                             if ($other_deliv_id != 0) {
                                 $otherDeliv = $objQuery->select("*", "dtb_other_deliv",
                                                                 "other_deliv_id = ?",
@@ -185,7 +185,7 @@ class LC_Page_Shopping_Multiple extends LC_Page {
      * 非会員の場合は, 「お届け先の指定」画面で入力した住所を取得する.
      */
     function getDelivAddrs(&$objCustomer, &$objPurchase, $uniqid) {
-        if ($objCustomer->isLoginSuccess()) {
+        if ($objCustomer->isLoginSuccess(true)) {
             $addrs = $objCustomer->getCustomerAddress($_SESSION['customer']['customer_id']);
             $results = array();
             foreach ($addrs as $key => $val) {
