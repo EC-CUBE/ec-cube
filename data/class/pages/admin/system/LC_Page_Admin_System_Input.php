@@ -173,7 +173,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin {
         $objForm->addParam('名前', 'name', STEXT_LEN, 'KV', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
         $objForm->addParam('所属', 'department', STEXT_LEN, 'KV', array('MAX_LENGTH_CHECK'));
         $objForm->addParam('ログインID', 'login_id', '' , '', array('EXIST_CHECK', 'ALNUM_CHECK'));
-        if ($mode == "edit" && $_POST['password'] == DUMMY_PASS) {
+        if ($mode == "edit" && $_POST['password'] == DEFAULT_PASSWORD) {
             $objForm->addParam('パスワード', 'password', '' , '', array('EXIST_CHECK'));
         } else {
         	$objForm->addParam('パスワード', 'password', '' , '', array('EXIST_CHECK', 'ALNUM_CHECK'));
@@ -309,7 +309,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin {
             $this->tpl_member_id = $_GET['id'];
             $this->tpl_onfocus   = "fnClearText(this.name);";
             $this->arrForm       = $this->getMemberData($_GET['id']);
-            $this->arrForm['password'] = DUMMY_PASS;
+            $this->arrForm['password'] = DEFAULT_PASSWORD;
             $this->tpl_old_login_id    = $this->arrForm['login_id'];
         // 新規作成モードで表示
         } else {
@@ -401,7 +401,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin {
         $sqlVal['authority']   = $arrMemberData['authority'];
         $sqlVal['work']   = $arrMemberData['work'];
         $sqlVal['update_date'] = 'NOW()';
-        if($arrMemberData['password'] != DUMMY_PASS) {
+        if($arrMemberData['password'] != DEFAULT_PASSWORD) {
             $salt = SC_Utils_Ex::sfGetRandomString(10);
             $sqlVal['salt']     = $salt;
             $sqlVal['password'] = SC_Utils_Ex::sfGetHashString($arrMemberData['password'], $salt);

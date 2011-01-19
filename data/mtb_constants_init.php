@@ -115,8 +115,6 @@ define('MAIN_FRAME', "main_frame.tpl");
 define('SITE_FRAME', "site_frame.tpl");
 /** 認証文字列 */
 define('CERT_STRING', "7WDhcBTF");
-/** ダミーパスワード */
-define('DUMMY_PASS', "########");
 /** 生年月日登録開始年 */
 define('BIRTH_YEAR', 1901);
 /** 本システムの稼働開始年 */
