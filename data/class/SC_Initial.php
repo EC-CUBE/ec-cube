@@ -158,7 +158,7 @@ class SC_Initial {
     }
 
     /**
-     * 定数 DIR_INDEX_URL を設定する.
+     * 定数 DIR_INDEX_PATH を設定する.
      *
      * @access protected
      * @return void
@@ -170,13 +170,18 @@ class SC_Initial {
             define('DIR_INDEX_FILE', 'index.php');
         }
 
+        $useFilenameDirIndex = is_bool(USE_FILENAME_DIR_INDEX)
+            ? USE_FILENAME_DIR_INDEX
+            : (empty($_SERVER['SERVER_SOFTWARE']) ? false : substr($_SERVER['SERVER_SOFTWARE'], 0, 13) == 'Microsoft-IIS')
+        ;
+
         // DIR_INDEX_FILE にアクセスする時の URL のファイル名部を定義する
-        if (USE_FILENAME_DIR_INDEX === true) {
+        if ($useFilenameDirIndex === true) {
             // ファイル名を使用する
-            define('DIR_INDEX_URL', DIR_INDEX_FILE);
+            define('DIR_INDEX_PATH', DIR_INDEX_FILE);
         } else {
             // ファイル名を使用しない
-            define('DIR_INDEX_URL', '');
+            define('DIR_INDEX_PATH', '');
         }
     }
 

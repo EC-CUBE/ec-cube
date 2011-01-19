@@ -214,7 +214,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
             }
         }
         $_SESSION['preview'] = "ON";
-        SC_Response_Ex::sendRedirectFromUrlPath('preview/' . DIR_INDEX_URL, array("filename" => $arrPageData[0]["filename"]));
+        SC_Response_Ex::sendRedirectFromUrlPath('preview/' . DIR_INDEX_PATH, array("filename" => $arrPageData[0]["filename"]));
     }
 
     /**

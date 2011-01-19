@@ -19,7 +19,7 @@ ob_start();
 
 (function() {
 // オーナーズストア通信スクリプトのパス
-var upgrade_url = '[%ROOT_URLPATH%]upgrade/<?php echo DIR_INDEX_URL; ?>';
+var upgrade_url = '[%ROOT_URLPATH%]upgrade/<?php echo DIR_INDEX_PATH; ?>';
 
 // ロード中メッセージ(配信サーバと通信中です…)
 var loading_message = '\u30B5\u30FC\u30D0\u3068\u901A\u4FE1\u4E2D\u3067\u3059';

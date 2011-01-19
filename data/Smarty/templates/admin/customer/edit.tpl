@@ -25,7 +25,7 @@
 <!--
 
     function fnReturn() {
-        document.search_form.action = './<!--{$smarty.const.DIR_INDEX_URL}-->';
+        document.search_form.action = './<!--{$smarty.const.DIR_INDEX_PATH}-->';
         document.search_form.submit();
         return false;
     }

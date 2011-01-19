@@ -301,7 +301,7 @@ class LC_Page_Forgot extends LC_Page {
         $objMobile = new SC_Helper_Mobile_Ex();
         // 空メール用のトークンを作成。
         if (MOBILE_USE_KARA_MAIL) {
-            $token = $objMobile->gfPrepareKaraMail('forgot/' . DIR_INDEX_URL);
+            $token = $objMobile->gfPrepareKaraMail('forgot/' . DIR_INDEX_PATH);
             if ($token !== false) {
                 $objPage->tpl_kara_mail_to = MOBILE_KARA_MAIL_ADDRESS_USER . MOBILE_KARA_MAIL_ADDRESS_DELIMITER . 'forgot_' . $token . '@' . MOBILE_KARA_MAIL_ADDRESS_DOMAIN;
             }

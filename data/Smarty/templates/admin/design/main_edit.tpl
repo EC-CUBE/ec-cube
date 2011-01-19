@@ -124,7 +124,7 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
                     <!--{$item.page_name}-->
                 </td>
                 <td class="center">
-                    <a href="./<!--{$smarty.const.DIR_INDEX_URL}-->?page_id=<!--{$item.page_id}-->&amp;device_type_id=<!--{$item.device_type_id}-->" >編集</a>
+                    <a href="./<!--{$smarty.const.DIR_INDEX_PATH}-->?page_id=<!--{$item.page_id}-->&amp;device_type_id=<!--{$item.device_type_id}-->" >編集</a>
                 </td>
                 <td class="center">
                     <!--{if $item.filename|strlen >= 1}-->

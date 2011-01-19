@@ -30,8 +30,8 @@
 <!--{else}-->
 <a href="entry/kiyaku.php" accesskey="3"><!--{3|numeric_emoji}-->会員登録</a><br>
 <!--{/if}-->
-<a href="guide/<!--{$smarty.const.DIR_INDEX_URL}-->" accesskey="4"><!--{4|numeric_emoji}-->ご利用ガイド</a><br>
-<a href="contact/<!--{$smarty.const.DIR_INDEX_URL}-->" accesskey="5"><!--{5|numeric_emoji}-->お問い合せ</a><br>
-<a href="order/<!--{$smarty.const.DIR_INDEX_URL}-->" accesskey="6"><!--{6|numeric_emoji}-->特定商取引に関する法律に基づく表記</a><br>
+<a href="guide/<!--{$smarty.const.DIR_INDEX_PATH}-->" accesskey="4"><!--{4|numeric_emoji}-->ご利用ガイド</a><br>
+<a href="contact/<!--{$smarty.const.DIR_INDEX_PATH}-->" accesskey="5"><!--{5|numeric_emoji}-->お問い合せ</a><br>
+<a href="order/<!--{$smarty.const.DIR_INDEX_PATH}-->" accesskey="6"><!--{6|numeric_emoji}-->特定商取引に関する法律に基づく表記</a><br>
 <!-- ▲メニュー ここまで -->
 <br>

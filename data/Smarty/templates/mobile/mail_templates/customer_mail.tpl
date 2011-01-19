@@ -32,6 +32,6 @@
 現在は仮登録の状態です。
 　　　~~~~~~
 本会員登録を完了するには下記URLにアクセスしてください。
-<!--{$smarty.const.MOBILE_HTTPS_URL}-->regist/<!--{$smarty.const.DIR_INDEX_URL}-->?mode=regist&id=<!--{$uniqid}--><!--{$etc_value}-->
+<!--{$smarty.const.MOBILE_HTTPS_URL}-->regist/<!--{$smarty.const.DIR_INDEX_PATH}-->?mode=regist&id=<!--{$uniqid}--><!--{$etc_value}-->
 
 上記URLにて本会員登録が完了いたしましたら改めてご登録内容ご確認メールをお送り致します。

@@ -46,7 +46,7 @@
             <td><!--{$arrDataList[cnt].end_date|sfDispDBDate|h}--></td>
             <td class="left"><!--{$arrDataList[cnt].subject|h}--></td>
             <td><a href="javascript:;" onclick="win03('./preview.php?send_id=<!--{$arrDataList[cnt].send_id|h}-->', 'confirm', '720', '600'); return false;">確認</a></td>
-            <td><a href="javascript:;" onclick="win03('./<!--{$smarty.const.DIR_INDEX_URL}-->?mode=query&amp;send_id=<!--{$arrDataList[cnt].send_id|h}-->','query','615','800'); return false;">確認</a></td>
+            <td><a href="javascript:;" onclick="win03('./<!--{$smarty.const.DIR_INDEX_PATH}-->?mode=query&amp;send_id=<!--{$arrDataList[cnt].send_id|h}-->','query','615','800'); return false;">確認</a></td>
             <td><!--{$arrDataList[cnt].count_all|h}--></td>
             <td><!--{$arrDataList[cnt].count_sent|h}--></td>
             <td style="<!--{if $arrDataList[cnt].count_error >= 1}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->">
@@ -76,7 +76,7 @@
 		  <div class="btn-area-top"></div>
 		  <div class="btn-area">
 			  <ul>
-				  <li><a class="btn-action" href="./<!--{$smarty.const.DIR_INDEX_URL}-->"><span class="btn-prev">配信内容設定へ戻る</span></a></li>
+				  <li><a class="btn-action" href="./<!--{$smarty.const.DIR_INDEX_PATH}-->"><span class="btn-prev">配信内容設定へ戻る</span></a></li>
 			  </ul>
 		  </div>
 		  <div class="btn-area-bottom"></div>

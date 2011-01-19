@@ -54,7 +54,7 @@ class LC_Page_Admin_Logout extends LC_Page_Admin {
         $objSess = new SC_Session();
         $objSess->logout();
 
-        SC_Response_Ex::sendRedirectFromUrlPath(ADMIN_DIR . DIR_INDEX_URL);
+        SC_Response_Ex::sendRedirectFromUrlPath(ADMIN_DIR . DIR_INDEX_PATH);
     }
 
     /**

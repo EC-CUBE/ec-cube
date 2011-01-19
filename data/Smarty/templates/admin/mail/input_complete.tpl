@@ -31,7 +31,7 @@
   <div class="message">
     メール配信設定が完了しました。指定時刻にメール配信が始まります。<br />
     配信履歴にて配信履歴がご覧いただけます。<br />
-    <a href="./<!--{$smarty.const.DIR_INDEX_URL}-->">→続けて設定する</a>
+    <a href="./<!--{$smarty.const.DIR_INDEX_PATH}-->">→続けて設定する</a>
   </div>
   <div class="btn-area">
     <ul>
@@ -50,7 +50,7 @@
   <div class="message">
     メール配信設定が完了しました。指定時刻にメール配信が始まります。<br />
     配信履歴にて配信履歴がご覧いただけます。<br />
-    <a href="./<!--{$smarty.const.DIR_INDEX_URL}-->">→続けて設定する</a>
+    <a href="./<!--{$smarty.const.DIR_INDEX_PATH}-->">→続けて設定する</a>
   </div>
 </div>
 </form>

@@ -206,7 +206,7 @@
         </table>
 
         <div class="tblareabtn">
-            <a href="./<!--{$smarty.const.DIR_INDEX_URL}-->" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back_on.gif','change');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back.gif','change');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_back.gif" width="150" height="30" alt="戻る" name="change" id="change" /></a>
+            <a href="./<!--{$smarty.const.DIR_INDEX_PATH}-->" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back_on.gif','change');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back.gif','change');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_back.gif" width="150" height="30" alt="戻る" name="change" id="change" /></a>
         </div>
 
     </div>

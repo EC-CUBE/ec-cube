@@ -25,10 +25,10 @@
 いつもご利用いただきありがとうございます。ご使用の携帯電話のメールアドレスをご登録下さい。<br>
 <br>
 <!--{assign var=key value='email_mobile'}-->
-<form method="post" action="<!--{$smarty.server.PHP_SELF|h}-->">
+<form method="post" action="?">
 ▼メールアドレス<br>
 <font color="#ff0000"><!--{$arrErr[$key]|default:''}--></font>
 <input type="text" name="email_mobile" value="<!--{$arrForm[$key].value|h}-->" size="40" maxlength="<!--{$arrForm[$key].length}-->" istyle="3"><br>
 <center><input type="submit" value="送信"></center>
-<center><a href="<!--{$smarty.const.MOBILE_URLPATH}-->mypage/<!--{$smarty.const.DIR_INDEX_URL}-->" accesskey="0">今は登録しない</a></center>
+<center><a href="<!--{$smarty.const.MOBILE_URLPATH}-->mypage/<!--{$smarty.const.DIR_INDEX_PATH}-->" accesskey="0">今は登録しない</a></center>
 </form>

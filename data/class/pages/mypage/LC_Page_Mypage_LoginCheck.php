@@ -142,7 +142,7 @@ class LC_Page_Mypage_LoginCheck extends LC_Page {
                     }
                 }
                 
-                SC_Response_Ex::sendRedirect(DIR_INDEX_URL);
+                SC_Response_Ex::sendRedirect(DIR_INDEX_PATH);
                 exit;
             }
             break;

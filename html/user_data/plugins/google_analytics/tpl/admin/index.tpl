@@ -1,4 +1,4 @@
-<form method="post" action="index.php">
+<form method="post" action="?">
     <div id="system" class="contents-main">
         <table class="list">
             <tr>

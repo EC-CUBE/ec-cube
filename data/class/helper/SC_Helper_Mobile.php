@@ -42,7 +42,7 @@ class SC_Helper_Mobile {
      */
     function lfMobileCheckCompatibility() {
         if (!SC_MobileUserAgent::isSupported()) {
-            header('Location: ' . ROOT_URLPATH . 'unsupported/' . DIR_INDEX_URL);
+            header('Location: ' . ROOT_URLPATH . 'unsupported/' . DIR_INDEX_PATH);
             exit;
         }
     }

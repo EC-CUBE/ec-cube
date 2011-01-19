@@ -115,18 +115,18 @@ class LC_Page_MyPage extends LC_Page {
             // ページ送りの取得
             // next
             if ($pageNo + HISTORY_NUM < $linemax) {
-                $next = "<a href='index.php?pageno=" . ($pageNo + HISTORY_NUM) . "'>次へ→</a>";
+                $next = "<a href='?pageno=" . ($pageNo + HISTORY_NUM) . "'>次へ→</a>";
             } else {
                 $next = "";
             }
 
             // previous
             if ($pageNo - HISTORY_NUM > 0) {
-                $previous = "<a href='index.php?pageno=" . ($pageNo - HISTORY_NUM) . "'>←前へ</a>";
+                $previous = "<a href='?pageno=" . ($pageNo - HISTORY_NUM) . "'>←前へ</a>";
             } elseif ($pageNo == 0) {
                 $previous = "";
             } else {
-                $previous = "<a href='index.php?pageno=0'>←前へ</a>";
+                $previous = "<a href='?pageno=0'>←前へ</a>";
             }
 
             // bar

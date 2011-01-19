@@ -23,7 +23,7 @@
     <h2><img src="<!--{$TPL_URLPATH}-->img/icon/ico_block_news.gif" width="27" height="20" alt="*" class="title_icon" />
         新着情報</h2>
     <div class="bloc_body">
-        <p>☆★☆ 新着情報は<a href="<!--{$smarty.const.ROOT_URLPATH}-->rss/<!--{$smarty.const.DIR_INDEX_URL}-->" target="_blank">RSS</a>で配信しています。★☆★</p>
+        <p>☆★☆ 新着情報は<a href="<!--{$smarty.const.ROOT_URLPATH}-->rss/<!--{$smarty.const.DIR_INDEX_PATH}-->" target="_blank">RSS</a>で配信しています。★☆★</p>
 
         <!--{section name=data loop=$arrNews}-->
             <!--{assign var="date_array" value="-"|explode:$arrNews[data].news_date_disp}-->

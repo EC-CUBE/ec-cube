@@ -19,7 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
-<form name="form1" id="form1" method="post" action="./<!--{$smarty.const.DIR_INDEX_URL}-->">
+<form name="form1" id="form1" method="post" action="./<!--{$smarty.const.DIR_INDEX_PATH}-->">
 <input type="hidden" name="mode" value="<!--{$tpl_mode}-->">
 <!--{foreach key=key item=item from=$arrHidden}-->
 <input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->">

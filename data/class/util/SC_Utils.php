@@ -85,9 +85,9 @@ class SC_Utils {
                 exit;
             }
         }
-        $path = HTML_REALDIR . "install/index.php";
+        $path = HTML_REALDIR . 'install/' . DIR_INDEX_FILE;
         if(file_exists($path)) {
-            SC_Utils::sfErrorHeader("&gt;&gt; /install/index.phpは、インストール完了後にファイルを削除してください。");
+            SC_Utils::sfErrorHeader('&gt;&gt; /install/' . DIR_INDEX_FILE . ' は、インストール完了後にファイルを削除してください。');
         }
     }
 
@@ -103,7 +103,7 @@ class SC_Utils {
      * @return string インストーラの URL
      */
     function searchInstallerPath($path) {
-        $installer = 'install/index.php';
+        $installer = 'install/' . DIR_INDEX_PATH;
 
         if (SC_Utils::sfIsHTTPS()) {
             $proto = "https://";

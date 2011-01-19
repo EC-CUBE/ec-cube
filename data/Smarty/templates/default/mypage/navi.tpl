@@ -27,7 +27,7 @@
         
           <!--{if $tpl_login}-->
             <!--{* 会員状態 *}-->
-            <li><a href="./<!--{$smarty.const.DIR_INDEX_URL}-->" class="<!--{if $tpl_mypageno == 'index'}--> selected<!--{/if}-->">
+            <li><a href="./<!--{$smarty.const.DIR_INDEX_PATH}-->" class="<!--{if $tpl_mypageno == 'index'}--> selected<!--{/if}-->">
                 購入履歴一覧</a></li>
             <!--{if $smarty.const.OPTION_FAVOFITE_PRODUCT == 1}-->
                 <li><a href="favorite.php" class="<!--{if $tpl_mypageno == 'favorite'}--> selected<!--{/if}-->">

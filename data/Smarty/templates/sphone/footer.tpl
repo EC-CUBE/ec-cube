@@ -31,7 +31,7 @@
 <div id="footer-info">
 <ul id="footer-menu">
 <li>
-<a href="<!--{$smarty.const.SMARTPHONE_HTTPS_URL|sfTrimURL}-->/cart/index.php">かごを見る</a>
+<a href="<!--{$smarty.const.CART_URLPATH|h}-->">かごを見る</a>
 </li>
 <li>
 <a href="<!--{$smarty.const.SMARTPHONE_HTTPS_URL|sfTrimURL}-->/mypage/login.php">マイページ</a>
@@ -53,10 +53,10 @@ $this->assign('isTop', 1);
 
 </ul>
 <ul id="footer-navi">
-<li><a href="<!--{$smarty.const.SMARTPHONE_HTTP_URL}-->contact/index.php">お問合せ</a></li>
+<li><a href="<!--{$smarty.const.SMARTPHONE_HTTPS_URL}-->contact/<!--{$smarty.const.DIR_INDEX_PATH|h}-->">お問合せ</a></li>
 <li><a href="<!--{$smarty.const.SMARTPHONE_HTTP_URL}-->guide/privacy.php">プライバシーポリシー</a></li>
-<li class="end"><a href="<!--{$smarty.const.SMARTPHONE_HTTP_URL}-->abouts/index.php">店舗情報</a></li>
-<li class="end"><a href="<!--{$smarty.const.SMARTPHONE_HTTP_URL}-->order/index.php">特定商取引法に基づく表記</a></li>
+<li class="end"><a href="<!--{$smarty.const.SMARTPHONE_HTTP_URL}-->abouts/<!--{$smarty.const.DIR_INDEX_PATH|h}-->">店舗情報</a></li>
+<li class="end"><a href="<!--{$smarty.const.SMARTPHONE_HTTP_URL}-->order/<!--{$smarty.const.DIR_INDEX_PATH|h}-->">特定商取引法に基づく表記</a></li>
 </ul>
 
 <div id="copyright">(C) <!--{$arrSiteInfo.shop_name|h}-->.</div>
