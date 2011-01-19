@@ -227,6 +227,11 @@
             <!--{/if}-->
             </td>
         </tr>
+        <tr>
+            <th>アクセス端末</th>
+            <td><!--{$arrDeviceType[$arrForm.device_type_id.value]|h}--></td>
+        </tr>
+
     </table>
     <!--▲お客様情報ここまで-->
 

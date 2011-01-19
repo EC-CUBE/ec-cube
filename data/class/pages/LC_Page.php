@@ -183,109 +183,6 @@ class LC_Page {
     }
 
     /**
-     * 指定の URL へリダイレクトする.
-     *
-     * リダイレクト先 URL に HTTP_URL 及び HTTPS_URL を含むかチェックし,
-     * LC_Page::getToken() の値を URLパラメータで自動的に付与する.
-     *
-     * @param string $url リダイレクト先 URL
-     * @param boolean $isMobile モバイル用にセッションIDを付与する場合 true
-     * @return void|boolean $url に HTTP_URL 及び, HTTPS_URL を含まない場合 false,
-     *                       正常に遷移可能な場合は, $url の ロケーションヘッダを出力する.
-     * @see Net_URL
-     */
-    function sendRedirect($url, $isMobile = false) {
-echo 'SC_Response_Ex::sendRedirect()に移行してね。';
-exit;
-
-        if (preg_match("/(" . preg_quote(HTTP_URL, '/')
-                          . "|" . preg_quote(HTTPS_URL, '/') . ")/", $url)) {
-
-            $netURL = new Net_URL($url);
-            if (!empty($_SERVER['QUERY_STRING'])) {
-                $netURL->addRawQueryString($_SERVER['QUERY_STRING']);
-            }
-
-            $session = SC_SessionFactory::getInstance();
-            if ($isMobile || $session->useCookie() == false) {
-                $netURL->addQueryString(session_name(), session_id());
-            }
-
-            $netURL->addQueryString(TRANSACTION_ID_NAME, $this->getToken());
-            header("Location: " . $netURL->getURL());
-            //return true;
-            exit();
-        }
-        return false;
-    }
-
-    // }}}
-    // {{{ protected functions
-
-    /**
-     * トランザクショントークンを生成し, 取得する.
-     *
-     * 悪意のある不正な画面遷移を防止するため, 予測困難な文字列を生成して返す.
-     * 同時に, この文字列をセッションに保存する.
-     *
-     * この関数を使用するためには, 生成した文字列を次画面へ渡すパラメータとして
-     * 出力する必要がある.
-     *
-     * 例)
-     * <input type="hidden" name="transactionid" value="この関数の返り値" />
-     *
-     * 遷移先のページで, LC_Page::isValidToken() の返り値をチェックすることにより,
-     * 画面遷移の妥当性が確認できる.
-     *
-     * @access protected
-     * @return string トランザクショントークンの文字列
-     */
-    function getToken() {
-echo "SC_Helper_Session.php::getToken()に移行してね。";
-exit;
-        if (empty($_SESSION[TRANSACTION_ID_NAME])) {
-            $_SESSION[TRANSACTION_ID_NAME] = $this->createToken();
-        }
-        return $_SESSION[TRANSACTION_ID_NAME];
-    }
-
-    /**
-     * トランザクショントークンの妥当性をチェックする.
-     *
-     * 前画面で生成されたトランザクショントークンの妥当性をチェックする.
-     * この関数を使用するためには, 前画面のページクラスで LC_Page::getToken()
-     * を呼んでおく必要がある.
-     *
-     * @access protected
-     * @return boolean トランザクショントークンが有効な場合 true
-     */
-    function isValidToken() {
-echo "SC_Helper_Session.php::isValidToken()に移行してね。";
-exit;
-
-        $checkToken = "";
-
-        // $_POST の値を優先する
-        if (isset($_POST[TRANSACTION_ID_NAME])) {
-
-            $checkToken = $_POST[TRANSACTION_ID_NAME];
-        } elseif (isset($_GET[TRANSACTION_ID_NAME])) {
-
-            $checkToken = $_GET[TRANSACTION_ID_NAME];
-        }
-
-        $ret = false;
-        // token の妥当性チェック
-        if ($checkToken === $_SESSION[TRANSACTION_ID_NAME]) {
-
-            $ret = true;
-        }
-
-        unset($_SESSION[TRANSACTION_ID_NAME]);
-        return $ret;
-    }
-
-    /**
      * $path から URL を取得する.
      *
      * 以下の順序で 引数 $path から URL を取得する.
@@ -342,12 +239,12 @@ exit;
         // Windowsの場合は, ディレクトリの区切り文字を\から/に変換する
         $path = str_replace('\\', '/', $path);
         $htmlPath = str_replace('\\', '/', HTML_REALDIR);
-        
+
         // PHP 5.1 対策 ( http://xoops.ec-cube.net/modules/newbb/viewtopic.php?topic_id=4277&forum=9 )
         if (strlen($path) == 0) {
             $path = '.';
         }
-        
+
         // $path が / で始まっている場合
         if (substr($path, 0, 1) == '/') {
             $realPath = realpath($htmlPath . substr_replace($path, '', 0, strlen(ROOT_URLPATH)));
@@ -356,12 +253,12 @@ exit;
             $realPath = realpath($path);
         }
         $realPath = str_replace('\\', '/', $realPath);
-        
+
         // $path が / で終わっている場合、realpath によって削られた末尾の / を復元する。
         if (substr($path, -1, 1) == '/' && substr($realPath, -1, 1) != '/') {
             $realPath .= '/';
         }
-        
+
         // HTML_REALDIR を削除した文字列を取得.
         $rootPath = str_replace($htmlPath, '', $realPath);
         $rootPath = ltrim($rootPath, '/');
@@ -395,7 +292,7 @@ exit;
                 header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
                 header('Last-Modified:');
                 break;
-                
+
             case 'private':
                 $cache_expire = session_cache_expire() * 60;
                 header('Pragma: no-cache');                                                            // anti-proxy
@@ -403,7 +300,7 @@ exit;
                 header("Cache-Control: private, max-age={$cache_expire}, pre-check={$cache_expire}");  // HTTP/1.1 client
                 header('Last-Modified:');
                 break;
-                
+
             default:
                 break;
         }
@@ -420,21 +317,6 @@ exit;
      */
     function p($val) {
         SC_Utils_Ex::sfPrintR($val);
-    }
-
-    // }}}
-    // {{{ private functions
-
-    /**
-     * トランザクショントークン用の予測困難な文字列を生成して返す.
-     *
-     * @access private
-     * @return string トランザクショントークン用の文字列
-     */
-    function createToken() {
-echo "SC_Helper_Session::createToken()に移行してね。";
-exit;
-        return sha1(uniqid(rand(), true));
     }
 }
 ?>

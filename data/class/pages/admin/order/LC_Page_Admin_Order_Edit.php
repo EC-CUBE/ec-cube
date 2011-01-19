@@ -62,6 +62,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin {
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrORDERSTATUS = $masterData->getMasterData("mtb_order_status");
+        $this->arrDeviceType = $masterData->getMasterData('mtb_device_type');
 
         $this->httpCacheControl('nocache');
     }
@@ -352,6 +353,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin {
         $this->objFormParam->addParam("発送日", "commit_date");
         $this->objFormParam->addParam("備考", "message");
         $this->objFormParam->addParam("入金日", "payment_date");
+        $this->objFormParam->addParam("アクセス端末", "device_type_id");
     }
 
     /**

@@ -159,7 +159,7 @@ class SC_Helper_Purchase {
         if (SC_Utils_Ex::isBlank($uniqId)) {
             return;
         }
-
+        $params['device_type_id'] = SC_Display::detectDevice();
         $objQuery =& SC_Query::getSingletonInstance();
         // 存在するカラムのみを対象とする
         $cols = $objQuery->listTableFields('dtb_order_temp');
