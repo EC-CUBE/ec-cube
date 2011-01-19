@@ -208,9 +208,6 @@ class LC_Page_Entry extends LC_Page {
         
         // 登録データの作成
         $sqlval['birth'] = SC_Utils_Ex::sfGetTimestamp($arrRet['year'], $arrRet['month'], $arrRet['day']);
-        
-        // パスワードの暗号化
-        $sqlval["password"] = sha1($arrRegist["password"] . ":" . AUTH_MAGIC);
 
         // 重複しない会員登録キーを発行する。
         $count = 1;
@@ -225,7 +222,7 @@ class LC_Page_Entry extends LC_Page {
         } else {
             $sqlval["status"] = "2";				// 本会員
         }
-        
+
         /*
           secret_keyは、テーブルで重複許可されていない場合があるので、
                           本会員登録では利用されないがセットしておく。
@@ -239,7 +236,7 @@ class LC_Page_Entry extends LC_Page {
             //PHONE_IDを取り出す
             $sqlval['mobile_phone_id'] =  SC_MobileUserAgent::getId();
         }
-       
+
         //-- 登録実行
         $objQuery->begin();
         SC_Helper_Customer_Ex::sfEditCustomerData($sqlval);
