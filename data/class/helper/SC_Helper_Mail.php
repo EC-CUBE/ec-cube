@@ -101,12 +101,30 @@ class SC_Helper_Mail {
         $where = "order_id = ?";
         $arrRet = $objQuery->select("*", "dtb_order", $where, array($order_id));
         $arrOrder = $arrRet[0];
-        $arrOrderDetail = $objQuery->select("*", "dtb_order_detail", $where, array($order_id));
+        $arrTplVar->arrOrderDetail = $objQuery->select("*", "dtb_order_detail", $where, array($order_id));
+
+        $objProduct = new SC_Product();
+        $objQuery->setOrder('shipping_id');
+        $arrRet = $objQuery->select("*", "dtb_shipping", "order_id = ?", array($order_id));
+        foreach (array_keys($arrRet) as $key) {
+            $objQuery->setOrder('shipping_id');
+            $arrItems = $objQuery->select("*", "dtb_shipment_item", "order_id = ? AND shipping_id = ?",
+                                          array($order_id, $arrRet[$key]['shipping_id']));
+            foreach ($arrItems as $itemKey => $arrDetail) {
+                foreach ($arrDetail as $detailKey => $detailVal) {
+                    $arrRet[$key]['shipment_item'][$arrDetail['product_class_id']][$detailKey] = $detailVal;
+                }
+
+                $arrRet[$key]['shipment_item'][$arrDetail['product_class_id']]['productsClass'] =& $objProduct->getDetailAndProductsClass($arrDetail['product_class_id']);
+            }
+        }
+        $arrTplVar->arrShipping = $arrRet;
 
         $arrTplVar->Message_tmp = $arrOrder['message'];
 
         // 顧客情報の取得
         $customer_id = $arrOrder['customer_id'];
+        $objQuery->setOrder('customer_id');
         $arrRet = $objQuery->select("point", "dtb_customer", "customer_id = ?", array($customer_id));
         $arrCustomer = isset($arrRet[0]) ? $arrRet[0] : "";
 
@@ -127,10 +145,7 @@ class SC_Helper_Mail {
         }
 
         // 都道府県変換
-        $arrTplVar->arrOrder['deliv_pref_name'] = $this->arrPref[$arrTplVar->arrOrder['deliv_pref']];
-        $arrTplVar->arrOrder['order_pref_name'] = $this->arrPref[$arrTplVar->arrOrder['order_pref']];
-
-        $arrTplVar->arrOrderDetail = $arrOrderDetail;
+        $arrTplVar->arrPref = $this->arrPref;
 
         $objCustomer = new SC_Customer();
         $arrTplVar->tpl_user_point = $objCustomer->getValue('point');

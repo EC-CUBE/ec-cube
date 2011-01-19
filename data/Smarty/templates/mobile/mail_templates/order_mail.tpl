@@ -23,18 +23,11 @@
 *}-->
 <!--{$arrOrder.order_name01}--> <!--{$arrOrder.order_name02}--> 様
 
-■配送情報とご請求金額
+■ご請求金額
 ご注文番号：<!--{$arrOrder.order_id}-->
 お支払合計：￥ <!--{$arrOrder.payment_total|number_format|default:0}-->
 ご決済方法：<!--{$arrOrder.payment_method}-->
-お届け日：<!--{$arrOrder.deliv_date|default:"指定なし"}-->
-お届け時間：<!--{$arrOrder.deliv_time|default:"指定なし"}-->
-
-◎お届け先
-お名前　：<!--{$arrOrder.deliv_name01}--> <!--{$arrOrder.deliv_name02}-->　様
-郵便番号：〒<!--{$arrOrder.deliv_zip01}-->-<!--{$arrOrder.deliv_zip02}-->
-住所　　：<!--{$arrOrder.deliv_pref_name}--><!--{$arrOrder.deliv_addr01}--><!--{$arrOrder.deliv_addr02}-->
-電話番号：<!--{$arrOrder.deliv_tel01}-->-<!--{$arrOrder.deliv_tel02}-->-<!--{$arrOrder.deliv_tel03}-->
+メッセージ：<!--{$Message_tmp}-->
 
 <!--{if $arrOther.title.value }-->
 ■<!--{$arrOther.title.name}-->情報
@@ -47,11 +40,40 @@
 <!--{/if}-->
 ■ご注文商品明細
 <!--{section name=cnt loop=$arrOrderDetail}-->
+商品コード: <!--{$arrOrderDetail[cnt].product_code}-->
 商品名: <!--{$arrOrderDetail[cnt].product_name}--> <!--{$arrOrderDetail[cnt].classcategory_name1}--> <!--{$arrOrderDetail[cnt].classcategory_name2}-->
+単価：￥ <!--{$arrOrderDetail[cnt].price|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
 数量：<!--{$arrOrderDetail[cnt].quantity}-->
-金額：￥ <!--{$arrOrderDetail[cnt].price|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
 
 <!--{/section}-->
+
+小　計 ￥ <!--{$arrOrder.subtotal|number_format|default:0}--> (うち消費税 ￥<!--{$arrOrder.tax|number_format|default:0}-->）
+値引き ￥ <!--{$arrOrder.use_point+$arrOrder.discount|number_format|default:0}-->
+送　料 ￥ <!--{$arrOrder.deliv_fee|number_format|default:0}-->
+手数料 ￥ <!--{$arrOrder.charge|number_format|default:0}-->
+===============================================================
+合　計 ￥ <!--{$arrOrder.payment_total|number_format|default:0}-->
+
+■配送情報
+
+<!--{foreach item=shipping name=shipping from=$arrShipping}-->
+◎お届け先<!--{if count($arrShipping) > 1}--><!--{$smarty.foreach.shipping.iteration}--><!--{/if}-->
+
+　お名前　：<!--{$shipping.shipping_name01}--> <!--{$shipping.shipping_name02}-->　様
+　郵便番号：〒<!--{$shipping.shipping_zip01}-->-<!--{$shipping.shipping_zip02}-->
+　住所　　：<!--{$arrPref[$shipping.shipping_pref]}--><!--{$shipping.shipping_addr01}--><!--{$shipping.shipping_addr02}-->
+　電話番号：<!--{$shipping.shipping_tel01}-->-<!--{$shipping.shipping_tel02}-->-<!--{$shipping.shipping_tel03}-->
+　お届け日：<!--{$shipping.shipping_date|date_format:"%Y/%m/%d"|default:"指定なし"}-->
+お届け時間：<!--{$shipping.shipping_time|default:"指定なし"}-->
+
+<!--{foreach item=item name=item from=$shipping.shipment_item}-->
+商品コード: <!--{$item.product_code}-->
+商品名: <!--{$item.product_name}--> <!--{$item.classcategory_name1}--> <!--{$item.classcategory_name2}-->
+単価：￥ <!--{$item.price|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
+数量：<!--{$item.quantity}-->
+
+<!--{/foreach}-->
+<!--{/foreach}-->
 <!--{if $arrOrder.customer_id && $smarty.const.USE_POINT !== false}-->
 ■ポイント情報
 <!--{* ご注文前のポイント {$tpl_user_point} pt *}-->
