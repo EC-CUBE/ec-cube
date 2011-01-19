@@ -180,12 +180,12 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
 
         // プレビューの場合ページIDを0にセットする。
         $page_id = '0';
-        $url = 'preview';
+        $url = 'preview/index';
 
         $tmpPost = $_POST;
         $tmpPost['page_id'] = $page_id;
         $tmpPost['url'] = $url;
-        $tmpPost['tpl_dir'] = USER_REALDIR . "templates/preview/";
+        $tmpPost['tpl_dir'] = "{$url}.tpl";
 
         $arrPreData = $this->objLayout->lfGetPageData("page_id = ? AND device_type_id = ?",
                                                       array($page_id, $device_type_id));
@@ -194,7 +194,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
         $this->lfEntryPageData($tmpPost, $device_type_id);
 
         // TPLファイル作成
-        $cre_tpl = $this->objLayout->getTemplatePath($device_type_id) . $url . '.tpl';
+        $cre_tpl = $this->objLayout->getTemplatePath($device_type_id) . "{$url}.tpl";
         $this->lfCreateFile($cre_tpl, $_POST['tpl_data']);
         
         // blocposition を削除
@@ -318,8 +318,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
         // ベースデータの場合には変更しない。
         if (!$this->objLayout->lfCheckBaseData($arrData['page_id'], $device_type_id)) {
             $arrUpdData['page_name']    = $arrData['page_name'] ;
-            $arrUpdData['url']          = preg_replace('|^' . preg_quote(ROOT_URLPATH) . '|', '',
-                                                       $this->objLayout->getUserDir($device_type_id) . $arrData['url'] . '.php');
+            $arrUpdData['url']          = preg_replace('|^' . preg_quote(ROOT_URLPATH) . '|', '', $arrData['url'] . '.php');
             $arrUpdData['php_dir']      = dirname($arrUpdData['url']);
             if ($arrUpdData['php_dir'] == '.') {
                 $arrUpdData['php_dir'] = '';
