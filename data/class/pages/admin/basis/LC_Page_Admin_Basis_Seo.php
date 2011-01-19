@@ -56,6 +56,9 @@ class LC_Page_Admin_Basis_Seo extends LC_Page_Admin {
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrTAXRULE = $masterData->getMasterData("mtb_taxrule");
+        $this->arrDeviceTypeName[DEVICE_TYPE_PC] = 'PCサイト';
+        $this->arrDeviceTypeName[DEVICE_TYPE_MOBILE] = 'モバイルサイト';
+        $this->arrDeviceTypeName[DEVICE_TYPE_SMARTPHONE] = 'スマートフォン';
     }
 
     /**
@@ -75,58 +78,44 @@ class LC_Page_Admin_Basis_Seo extends LC_Page_Admin {
      */
     function action() {
         $objSess = new SC_Session();
-        $objQuery = new SC_Query();
 
         // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess($objSess);
 
         // データの取得
-        $objLayout = new SC_Helper_PageLayout_Ex();
-        $this->arrPageData = $objLayout->lfgetPageData(" edit_flg = 2 ");
+        $this->arrPageData = $this->lfGetSeoPageData();
 
-        if (isset($_POST['page_id'])) {
-            $page_id = $_POST['page_id'];
-        } else {
-            $page_id = "";
-        }
+        $device_type_id = (isset($_POST['device_type_id'])) ? $_POST['device_type_id'] : '';
+        $page_id = (isset($_POST['page_id'])) ? $_POST['page_id'] : '';
 
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
         if($_POST['mode'] == "confirm") {
             // エラーチェック
-            $this->arrErr[$page_id] = $this->lfErrorCheck($_POST['meta'][$page_id]);
+            $this->arrErr[$device_type_id][$page_id] = $this->lfErrorCheck($_POST['meta'][$device_type_id][$page_id]);
 
             // エラーがなければデータを更新
-            if(count($this->arrErr[$page_id]) == 0) {
+            if(count($this->arrErr[$device_type_id][$page_id]) == 0) {
 
                 // 更新データの変換
-                $arrMETA = $this->lfConvertParam($_POST['meta'][$page_id]);
+                $arrMETA = $this->lfConvertParam($_POST['meta'][$device_type_id][$page_id]);
 
                 // 更新データ配列生成
-                $arrUpdData = array($arrMETA['author'], $arrMETA['description'], $arrMETA['keyword'], $page_id);
+                $arrUpdData = array($arrMETA['author'], $arrMETA['description'], $arrMETA['keyword'], $device_type_id, $page_id);
                 // データ更新
                 $this->lfUpdPageData($arrUpdData);
             }else{
                 // POSTのデータを再表示
-                $arrPageData = $this->lfSetData($arrPageData, $_POST['meta']);
+                $arrPageData = $this->lfSetData($this->arrPageData, $_POST['meta']);
                 $this->arrPageData = $arrPageData;
             }
         }
 
-        $arrDisp_flg = array();
         // エラーがなければデータの取得
-        if(count($this->arrErr[$page_id]) == 0) {
+        if(count($this->arrErr[$device_type_id][$page_id]) == 0) {
             // データの取得
-            $arrPageData = $objLayout->lfgetPageData(" edit_flg = 2 ");
-            $this->arrPageData = $arrPageData;
+            $this->arrPageData = $this->lfGetSeoPageData();
         }
-
-        // 表示･非表示切り替え
-        foreach($arrPageData as $key => $val){
-            $arrDisp_flg[$val['page_id']] = $_POST['disp_flg'.$val['page_id']];
-        }
-
-        $this->disp_flg = $arrDisp_flg;
     }
 
     /**
@@ -156,7 +145,8 @@ class LC_Page_Admin_Basis_Seo extends LC_Page_Admin {
         $sql .= "     description = ? , ";
         $sql .= "     keyword = ? ";
         $sql .= " WHERE ";
-        $sql .= "     page_id = ? ";
+        $sql .= "     device_type_id = ? ";
+        $sql .= "     AND page_id = ? ";
         $sql .= " ";
 
         // SQL実行
@@ -190,11 +180,14 @@ class LC_Page_Admin_Basis_Seo extends LC_Page_Admin {
      */
     function lfSetData($arrPageData, $arrDispData){
 
-        foreach($arrPageData as $key => $val){
-            $page_id = $val['page_id'];
-            $arrPageData[$key]['author'] = $arrDispData[$page_id]['author'];
-            $arrPageData[$key]['description'] = $arrDispData[$page_id]['description'];
-            $arrPageData[$key]['keyword'] = $arrDispData[$page_id]['keyword'];
+        foreach($arrPageData as $device_key => $arrVal){
+            foreach($arrVal as $key => $val) {
+                $device_type_id = $val['device_type_id'];
+                $page_id = $val['page_id'];
+                $arrPageData[$device_key][$key]['author'] = $arrDispData[$device_type_id][$page_id]['author'];
+                $arrPageData[$device_key][$key]['description'] = $arrDispData[$device_type_id][$page_id]['description'];
+                $arrPageData[$device_key][$key]['keyword'] = $arrDispData[$device_type_id][$page_id]['keyword'];
+            }
         }
 
         return $arrPageData;
@@ -225,6 +218,23 @@ class LC_Page_Admin_Basis_Seo extends LC_Page_Admin {
             }
         }
         return $array;
+    }
+
+    /**
+     * SEO管理で設定するページのデータを取得する
+     *
+     * @param void
+     * @return array $arrRet ページデータ($arrRet[デバイスタイプID])
+     */
+    function lfGetSeoPageData() {
+        $objLayout = new SC_Helper_PageLayout_Ex();
+        $arrRet = array();
+        
+        $arrRet[DEVICE_TYPE_PC] = $objLayout->lfgetPageData('edit_flg = ? AND device_type_id = ?', array('2', DEVICE_TYPE_PC));
+        $arrRet[DEVICE_TYPE_MOBILE] = $objLayout->lfgetPageData('edit_flg = ? AND device_type_id = ?', array('2', DEVICE_TYPE_MOBILE));
+        $arrRet[DEVICE_TYPE_SMARTPHONE] = $objLayout->lfgetPageData('edit_flg = ? AND device_type_id = ?', array('2', DEVICE_TYPE_SMARTPHONE));
+
+        return $arrRet;
     }
 }
 ?>
