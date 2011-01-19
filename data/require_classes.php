@@ -22,7 +22,6 @@
  */
 
 require_once(DATA_REALDIR . "module/Services/JSON.php");
-require_once DATA_REALDIR . 'module/Compat/Compat.php';
 require_once(CLASS_EX_REALDIR . "util_extends/GC_Utils_Ex.php");
 require_once(CLASS_EX_REALDIR . "util_extends/SC_Utils_Ex.php");
 require_once(CLASS_EX_REALDIR . "db_extends/SC_DB_MasterData_Ex.php");
