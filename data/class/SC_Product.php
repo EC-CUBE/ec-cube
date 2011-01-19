@@ -490,10 +490,14 @@ __EOS__;
      * @return array 商品IDをキーにした商品ステータスIDの配列
      */
     function getProductStatus($productIds) {
+        if (empty($productIds)) {
+            return array();
+        }
         $objQuery =& SC_Query::getSingletonInstance();
-        $productStatus = $objQuery->select("product_id, product_status_id",
-                                           "dtb_product_status",
-                                           'del_flg = 0 AND product_id IN (' . implode(', ', array_pad(array(), count($productIds), '?')) . ')', $productIds);
+        $cols = 'product_id, product_status_id';
+        $from = 'dtb_product_status';
+        $where = 'del_flg = 0 AND product_id IN (' . implode(', ', array_pad(array(), count($productIds), '?')) . ')';
+        $productStatus = $objQuery->select($cols, $from, $where, $productIds);
         $results = array();
         foreach ($productStatus as $status) {
             $results[$status['product_id']][] = $status['product_status_id'];
