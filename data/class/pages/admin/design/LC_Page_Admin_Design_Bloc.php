@@ -123,7 +123,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin {
             $prev_path = USER_INC_REALDIR . 'preview/bloc_preview.tpl';
             // ディレクトリの作成
             SC_Utils::sfMakeDir($prev_path);
-            $res = file_put_contents($new_bloc_path, $_POST['bloc_html']);
+            $res = file_put_contents($prev_path, $_POST['bloc_html']);
             if ($res === false) {
                 SC_Utils_Ex::sfDispException();
             }
