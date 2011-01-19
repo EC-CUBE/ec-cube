@@ -28,8 +28,17 @@
     <p><span class="attention">※新しくパスワードを発行いたしますので、お忘れになったパスワードはご利用できなくなります。</span></p>
     <form action="?" method="post" name="form1">
       <input type="hidden" name="mode" value="secret_check" />
+      <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+      <!--{foreach key=key item=item from=$arrForm}-->
+        <!--{if $key ne 'reminder_answer'}-->
+      <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
+        <!--{/if}-->
+      <!--{/foreach}-->
+
       <div id="completebox">
-        <p><!--{$Reminder}-->：&nbsp;<!--★答え入力★--><input type="text" name="input_reminder" value="" size="40" class="box300" style="<!--{$errmsg|sfGetErrorColor}-->" /></p>
+        <p>
+          <span class="attention"><!--{$arrErr.reminder}--><!--{$arrErr.reminder_answer}--></span>
+          <!--{$arrReminder[$arrForm.reminder]}-->：&nbsp;<!--★答え入力★--><input type="text" name="reminder_answer" value="" size="40" class="box300" style="<!--{$arrErr.reminder_answer|sfGetErrorColor}-->" /></p>
         <span class="attention"><!--{$errmsg}--></span>
       </div>
       <div class="btn">

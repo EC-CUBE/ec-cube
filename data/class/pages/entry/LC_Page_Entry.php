@@ -306,7 +306,7 @@ class LC_Page_Entry extends LC_Page {
         }
         
         // 現会員の判定 → 現会員もしくは仮登録中は、メアド一意が前提になってるので同じメアドで登録不可
-        $register_user_flg =  SC_Helper_Customer_Ex::lfCheckRegisterUserFromEmail($arrRet["email"]);
+        $register_user_flg =  SC_Helper_Customer_Ex::sfCheckRegisterUserFromEmail($arrRet["email"]);
         switch($register_user_flg) {
             case 1:
                 $objErr->arrErr["email"] .= "※ すでに会員登録で使用されているメールアドレスです。<br />";

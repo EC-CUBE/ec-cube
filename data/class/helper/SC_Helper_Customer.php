@@ -92,22 +92,28 @@ class SC_Helper_Customer {
 
         $array["update_date"] = "now()";    // 更新日
         
-        //-- パスワードの更新がある場合は暗号化
-        $salt = "";
-        if ($array["password"] != DEFAULT_PASSWORD) {
+        // salt値の生成(insert時)または取得(update時)。
+        if(is_numeric($customer_id)) {
+            $salt = $objQuery->get("salt", "dtb_customer", "customer_id = ? ", array($customer_id));
+        }else{
             $salt = SC_Utils_Ex::sfGetRandomString(10);
             $array["salt"] = $salt;
-            $array["password"] = SC_Utils_Ex::sfGetHashString($array["password"], $salt);
-        } else {
-            unset($array["password"]);
         }
-        if ($array["reminder_answer"] != DEFAULT_PASSWORD) {
-            if(is_numeric($customer_id) and $salt == "") {
-                $salt = $objQuery->get("salt", "dtb_customer", "customer_id = ? ", array($array['customer_id']));
-            }
+        //-- パスワードの更新がある場合は暗号化
+        if ($array["password"] == DEFAULT_PASSWORD or $array["password"] == "") {
+            //更新しない
+            unset($array["password"]);
+        } else {
+            $array["password"] = SC_Utils_Ex::sfGetHashString($array["password"], $salt);
+        }
+        //-- 秘密の質問の更新がある場合は暗号化
+        if ($array["reminder_answer"] == DEFAULT_PASSWORD or $array["reminder_answer"] == "") {
+            //更新しない
+            unset($array["reminder_answer"]);
+        } else {
             $array["reminder_answer"] = SC_Utils_Ex::sfGetHashString($array["reminder_answer"], $salt);
         }
-       
+
         //-- 編集登録実行
         if (is_numeric($customer_id)){
             // 編集
@@ -163,7 +169,7 @@ class SC_Helper_Customer {
      *	 @param string $email  メールアドレス
      *   @return integer  0:登録可能     1:登録済み   2:再登録制限期間内削除ユーザー  3:自分のアドレス
      */
-    function lfCheckRegisterUserFromEmail($email){
+    function sfCheckRegisterUserFromEmail($email){
         $return = 0;
         
         $objCustomer = new SC_Customer();

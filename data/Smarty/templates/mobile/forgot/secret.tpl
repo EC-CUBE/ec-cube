@@ -29,9 +29,16 @@
 ※下記質問の答えをお忘れになられた場合は、<a href="mailto:<!--{$arrSiteInfo.email02|h}-->"><!--{$arrSiteInfo.email02|h}--></a>までご連絡ください。<br>
 <br>
 <form action="?" method="post">
+<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="secret_check">
+      <!--{foreach key=key item=item from=$arrForm}-->
+        <!--{if $key ne 'reminder_answer'}-->
+      <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
+        <!--{/if}-->
+      <!--{/foreach}-->
 
-<!--{$Reminder|h}-->：<input type="text" name="input_reminder" value="" size="40"><br>
+<!--{$arrReminder[$arrForm.reminder]|h}-->：<input type="text" name="reminder_answer" value="" size="40"><br>
+<font color="#FF0000"><!--{$arrErr.reminder}--><!--{$arrErr.reminder_answer}--></font><br>
 
 <center><input type="submit" value="次へ" name="next"></center>
 </form>
