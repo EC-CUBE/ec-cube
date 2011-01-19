@@ -155,7 +155,9 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin {
         }
 
         $this->insertMemberData($this->objForm->getHashArray());
-        $this->objDisplay->reload(array('mode' => 'parent_reload'));
+        // 親ウィンドウを更新後、自ウィンドウを閉じる。
+        $url = ADMIN_SYSTEM_URLPATH . "?pageno=" . $_POST['pageno'];
+        $this->tpl_onload = "fnUpdateParent('".$url."'); window.close();";
     }
 
     /**
@@ -177,6 +179,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin {
         	$objForm->addParam('パスワード', 'password', '' , '', array('EXIST_CHECK', 'ALNUM_CHECK'));
         }
         $objForm->addParam('権限', 'authority', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objForm->addParam('稼働/非稼働', 'work', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
 
         $objForm->setParam($_POST);
         $objForm->convParam();
@@ -323,7 +326,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin {
      */
     function getMemberData($id) {
         $table   = 'dtb_member';
-        $columns = 'name,department,login_id,authority';
+        $columns = 'name,department,login_id,authority, work';
         $where   = 'member_id = ?';
 
         $objQuery = new SC_Query();
@@ -368,7 +371,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin {
         $sqlVal['password']    = sha1($arrMemberData['password'] . ':' . AUTH_MAGIC);
         $sqlVal['authority']   = $arrMemberData['authority'];
         $sqlVal['rank']        = $objQuery->max('rank', 'dtb_member') + 1;
-        $sqlVal['work']        = '1'; // 稼働に設定
+        $sqlVal['work']        = $arrMemberData['work'];
         $sqlVal['del_flg']     = '0'; // 削除フラグをOFFに設定
         $sqlVal['creator_id']  = $_SESSION['member_id'];
         $sqlVal['create_date'] = 'NOW()';
@@ -394,6 +397,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin {
         $sqlVal['department']  = $arrMemberData['department'];
         $sqlVal['login_id']    = $arrMemberData['login_id'];
         $sqlVal['authority']   = $arrMemberData['authority'];
+        $sqlVal['work']   = $arrMemberData['work'];
         $sqlVal['update_date'] = 'NOW()';
         if($arrMemberData['password'] != DUMMY_PASS) {
             $sqlVal['password'] = sha1($arrMemberData['password'] . ":" . AUTH_MAGIC);

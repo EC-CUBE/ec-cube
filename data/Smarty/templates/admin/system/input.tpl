@@ -84,6 +84,16 @@ self.moveTo(20,20);self.focus();
       <span class="attention">※必須入力</span>
     </td>
   </tr>
+  <tr>
+    <th>稼働/非稼働</th>
+    <td>
+      <!--{if $arrErr.work}--><span class="attention"><!--{$arrErr.work}--></span><!--{/if}-->
+      <!--{assign var=key value="work"}-->
+      <input type="radio" id="<!--{$key}-->_1" name="<!--{$key}-->" value="1" style="<!--{$arrErr.work|sfGetErrorColor}-->" <!--{$arrForm.work|sfGetChecked:1}--> /><label for="<!--{$key}-->_1">稼働</label>
+      <input type="radio" id="<!--{$key}-->_0" name="<!--{$key}-->" value="0" style="<!--{$arrErr.work|sfGetErrorColor}-->" <!--{$arrForm.work|sfGetChecked:0}--> /><label for="<!--{$key}-->_0">非稼働</label>
+      <span class="attention">※必須入力</span>
+    </td>
+  </tr>
 </table>
 
 <div class="btn-area">

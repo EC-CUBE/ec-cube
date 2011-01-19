@@ -118,16 +118,6 @@ function fnGetRadioChecked() {
 	}
 }
 
-// ラジオボタンに変更があったか判定する。
-function fnChangeRadio(name, no, id, pageno) {
-	// 最初の取得状態から変更ありの場合
-	if(lstsave[name] != no) {
-		// DB反映ページ実行
-		url = "./check.php?id=" + id + "&no=" + no + "&pageno=" + pageno;
-		location.href = url;
-	}
-}
-
 // 管理者メンバーページの切替
 function fnMemberPage(pageno) {
 	location.href = "?pageno=" + pageno;

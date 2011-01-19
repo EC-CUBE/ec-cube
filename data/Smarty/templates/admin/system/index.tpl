@@ -34,8 +34,6 @@
     <colgroup width="15%">
     <colgroup width="20%">
     <colgroup width="20%">
-    <colgroup width="10%">
-    <colgroup width="10%">
     <colgroup width="5%">
     <colgroup width="5%">
     <colgroup width="20%">
@@ -46,8 +44,6 @@
       <th>権限</th>
       <th>名前</th>
       <th>所属</th>
-      <th>稼動</th>
-      <th>非稼動</th>
       <th>編集</th>
       <th>削除</th>
       <th>移動</th>
@@ -57,8 +53,6 @@
       <!--{assign var="auth" value=$list_data[data].authority}--><td><!--{$arrAUTHORITY[$auth]|h}--></td>
       <td><!--{$list_data[data].name|h}--></td>
       <td><!--{$list_data[data].department|h}--></td>
-      <td align="center"><!--{if $list_data[data].work eq 1}--><input type="radio" name="radio<!--{$smarty.section.data.iteration}-->" value="稼動" onclick="fnChangeRadio(this.name, 1, <!--{$list_data[data].member_id}-->, <!--{$tpl_disppage}-->);" checked /><!--{else}--><input type="radio" name="radio<!--{$smarty.section.data.iteration}-->" value="稼動" onclick="fnChangeRadio(this.name, 1, <!--{$list_data[data].member_id}-->, <!--{$tpl_disppage}-->);"/><!--{/if}--></td>
-      <td align="center"><!--{if $list_data[data].work eq 0}--><input type="radio" name="radio<!--{$smarty.section.data.iteration}-->" value="非稼動"  onclick="fnChangeRadio(this.name, 0, <!--{$list_data[data].member_id}-->, <!--{$tpl_disppage}-->);" checked /><!--{else}--><input type="radio" name="radio<!--{$smarty.section.data.iteration}-->" value="非稼動" onclick="fnChangeRadio(this.name, 0, <!--{$list_data[data].member_id}-->, <!--{$tpl_disppage}-->);" <!--{if $workmax <= 1 }-->disabled<!--{/if}-->  /><!--{/if}--></td>
       <td align="center"><a href="#" onClick="win01('./input.php?id=<!--{$list_data[data].member_id}-->&amp;pageno=<!--{$tpl_disppage}-->','member_edit','615','450'); return false;">編集</a></td>
       <td align="center"><!--{if $workmax > 1 }--><a href="#" onClick="fnDeleteMember(<!--{$list_data[data].member_id}-->,<!--{$tpl_disppage}-->); return false;">削除</a><!--{else}-->-<!--{/if}--></td>
       <td align="center">
