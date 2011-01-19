@@ -25,7 +25,6 @@ rm -rf $WRK_DIR/*.sh
 rm -rf $WRK_DIR/html/test
 rm -rf $WRK_DIR/data/downloads/module/*
 find ./$WRK_DIR -name "dummy" -delete
-find ./$WRK_DIR -name "info.php" -delete
 
 echo "set permissions..."
 chmod 666 $WRK_DIR/data/install.php
