@@ -63,7 +63,7 @@ class SC_Helper_CSV {
      * @param array $order SQL の ORDER BY 句
      * @return array CSV 項目の配列
      */
-    function sfgetCsvOutput($csv_id = "", $where = '', $arrVal = array(), $order = 'rank, no'){
+    function sfGetCsvOutput($csv_id = "", $where = '', $arrVal = array(), $order = 'rank, no'){
         $objQuery =& SC_Query::getSingletonInstance();
         
         $cols = 'no, csv_id, col, disp_name, rank, status, rw_flg, mb_convert_kana_option, size_const_type, error_check_types';
@@ -92,7 +92,7 @@ class SC_Helper_CSV {
         }
 
         // CSV出力タイトル行の作成
-        $arrCsvOutput = SC_Utils_Ex::sfSwapArray($this->sfgetCsvOutput($csv_id, 'status = ' . CSV_COLUMN_STATUS_FLG_ENABLE));
+        $arrCsvOutput = SC_Utils_Ex::sfSwapArray($this->sfGetCsvOutput($csv_id, 'status = ' . CSV_COLUMN_STATUS_FLG_ENABLE));
 
         if (count($arrCsvOutput) <= 0) break;
 
@@ -106,7 +106,7 @@ class SC_Helper_CSV {
     /**
      * CSVが出力設定でインポート可能かのチェック
      *
-     * @param array sfgetCsvOutputで取得した内容（またはそれと同等の配列)
+     * @param array sfGetCsvOutputで取得した内容（またはそれと同等の配列)
      * @return boolean true:インポート可能、false:インポート不可
      */
     function sfIsImportCSVFrame(&$arrCSVFrame) {
@@ -126,7 +126,7 @@ class SC_Helper_CSV {
     /**
      * CSVが出力設定で更新可能かのチェック
      *
-     * @param array sfgetCsvOutputで取得した内容（またはそれと同等の配列)
+     * @param array sfGetCsvOutputで取得した内容（またはそれと同等の配列)
      * @return boolean true:更新可能、false:新規追加のみ不可
      */
     function sfIsUpdateCSVFrame(&$arrCSVFrame) {
@@ -177,7 +177,7 @@ class SC_Helper_CSV {
         @set_time_limit(0);
 
         // CSV出力タイトル行の作成
-        $arrOutput = SC_Utils_Ex::sfSwapArray($this->sfgetCsvOutput(1, 'status = ' . CSV_COLUMN_STATUS_FLG_ENABLE));
+        $arrOutput = SC_Utils_Ex::sfSwapArray($this->sfGetCsvOutput(1, 'status = ' . CSV_COLUMN_STATUS_FLG_ENABLE));
         if (count($arrOutput) <= 0) return false; // 失敗終了
         $arrOutputCols = $arrOutput['col'];
 
@@ -262,7 +262,7 @@ class SC_Helper_CSV {
     function sfDownloadCategoryCsv() {
 
         // CSV出力タイトル行の作成
-        $arrOutput = SC_Utils_Ex::sfSwapArray($this->sfgetCsvOutput(5, 'status = ' . CSV_COLUMN_STATUS_FLG_ENABLE));
+        $arrOutput = SC_Utils_Ex::sfSwapArray($this->sfGetCsvOutput(5, 'status = ' . CSV_COLUMN_STATUS_FLG_ENABLE));
         if (count($arrOutput) <= 0) return false; // 失敗終了
         $arrOutputCols = $arrOutput['col'];
 

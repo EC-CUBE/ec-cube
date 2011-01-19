@@ -275,7 +275,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin {
                             $option = "ORDER BY $order";
 
                             // CSV出力タイトル行の作成
-                            $arrCsvOutput = SC_Utils_Ex::sfSwapArray($objCSV->sfgetCsvOutput(3, 'status = 1'));
+                            $arrCsvOutput = SC_Utils_Ex::sfSwapArray($objCSV->sfGetCsvOutput(3, 'status = 1'));
 
                             if (count($arrCsvOutput) <= 0) break;
 

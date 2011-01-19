@@ -112,12 +112,12 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin {
         // CSV管理ヘルパー
         $this->objCSV = new SC_Helper_CSV();
         // CSV構造読み込み
-        $arrCSVFrame = $this->objCSV->sfgetCsvOutput($this->csv_id);
+        $arrCSVFrame = $this->objCSV->sfGetCsvOutput($this->csv_id);
         
         // CSV構造がインポート可能かのチェック
         if( !$this->objCSV->sfIsImportCSVFrame($arrCSVFrame) ) {
             // 無効なフォーマットなので初期状態に強制変更
-            $arrCSVFram = $this->objCSV->sfgetCsvOutput($this->csv_id, '', array(), $order ='no');
+            $arrCSVFram = $this->objCSV->sfGetCsvOutput($this->csv_id, '', array(), $order ='no');
             $this->tpl_is_format_default = true;
         }
         // CSV構造は更新可能なフォーマットかのフラグ取得

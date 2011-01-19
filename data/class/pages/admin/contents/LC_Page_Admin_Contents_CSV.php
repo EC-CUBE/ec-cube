@@ -123,14 +123,14 @@ class LC_Page_Admin_Contents_CSV extends LC_Page_Admin {
         }
 
         // 出力項目の取得
-        $arrSelected = SC_Utils_Ex::sfSwapArray($objCSV->sfgetCsvOutput($subno_id, 'status = 1'));
+        $arrSelected = SC_Utils_Ex::sfSwapArray($objCSV->sfGetCsvOutput($subno_id, 'status = 1'));
 
         if (!isset($arrSelected['no'])) $arrSelected['no'] = array();
 
         $this->arrSelected = $arrSelected['no'];
 
         // 全項目の取得
-        $arrOptions = SC_Utils_Ex::sfSwapArray($objCSV->sfgetCsvOutput($subno_id));
+        $arrOptions = SC_Utils_Ex::sfSwapArray($objCSV->sfGetCsvOutput($subno_id));
 
         if (!isset($arrOptions['no'])) $arrOptions['no'] = array();
         if (!isset($arrOptions['disp_name'])) $arrOptions['disp_name'] = array();
