@@ -13,8 +13,8 @@ define('USER_INC_REALDIR', USER_REALDIR . "include/");
 define('ZIP_DSN', DEFAULT_DSN);
 /** ユーザー作成ページ等 */
 define('USER_URL', HTTP_URL . USER_DIR);
-/** 認証用 magic */
-define('AUTH_MAGIC', "31eafcbd7a81d7b401a7fdc12bba047c02d1fae6");
+/** 認証方式 */
+define('AUTH_TYPE', "HMAC");
 /** テンプレートファイル保存先 */
 define('USER_TEMPLATE_DIR', "templates/");
 /** テンプレートファイル保存先 */
@@ -90,7 +90,7 @@ define('OPTION_RECOMMEND', 1);
 /** 商品規格登録(有効:1 無効:0) */
 define('OPTION_CLASS_REGIST', 1);
 /** 会員登録変更(マイページ)パスワード用 */
-define('DEFAULT_PASSWORD', "UAhgGR3L");
+define('DEFAULT_PASSWORD', "********");
 /** 別のお届け先最大登録数 */
 define('DELIV_ADDR_MAX', 20);
 /** 管理画面ステータス一覧表示件数 */

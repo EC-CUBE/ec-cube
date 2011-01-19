@@ -280,7 +280,8 @@ case 'complete':
 
     // 管理者登録
     $login_id = $objWebParam->getValue('login_id');
-    $login_pass = sha1($objWebParam->getValue('login_pass') . ":" . AUTH_MAGIC);
+    $salt = SC_Utils_Ex::sfGetRandomString(10);
+    $login_pass = SC_Utils_Ex::sfGetHashString($objWebParam->getValue('login_pass'), $salt);
 
     $objQuery->delete("dtb_member", "login_id = ?", array($login_id));
 
@@ -289,6 +290,7 @@ case 'complete':
                                           "name" => "管理者",
                                           "login_id" => $login_id,
                                           "password" => $login_pass,
+                                          "salt" => $salt,
                                           "creator_id" => 0,
                                           "authority" => 0,
                                           "work" => 1,
@@ -946,6 +948,19 @@ function lfMakeConfigFile() {
             }
         }
     }
+    //パスワード暗号化方式決定
+    $arrAlgos = hash_algos();
+    if(array_search('sha256', $arrAlgos) !== FALSE) {
+        $algos = 'sha256';
+    }elseif(array_search('sha1', $arrAlgos) !== FALSE) {
+        $algos = 'sha1';
+    }elseif(array_search('md5', $arrAlgos) !== FALSE) {
+        $algos = 'md5';
+    }else{
+        $algos = '';
+    }
+    //MAGICハッシュワード決定
+    $auth_magic = SC_Utils_Ex::sfGetRandomString(40);
     $config_data =
     "<?php\n".
     "    define ('ECCUBE_INSTALL', 'ON');\n" .
@@ -962,6 +977,8 @@ function lfMakeConfigFile() {
     "    define ('ADMIN_DIR', '" . $objWebParam->getValue('admin_dir') .  "/');\n" .
     "    define ('ADMIN_FORCE_SSL', " . $force_ssl .  ");\n".
     "    define ('ADMIN_ALLOW_HOSTS', '".serialize($allow_hosts)."');\n".
+    "    define ('AUTH_MAGIC', '" . $auth_magic . "');\n".
+    "    define ('PASSWORD_HASH_ALGOS', '" . $algos . "');\n".
     "?>";
 
     if ($fp = fopen(CONFIG_REALFILE, 'w')) {

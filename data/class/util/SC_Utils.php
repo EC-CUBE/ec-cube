@@ -2246,5 +2246,52 @@ exit;
         if (!preg_match("#^(http|https)://{$host}#i", $url)) return false;
         return true;
     }
+
+    /**
+     * パスワードのハッシュ化
+     *
+     * @param string $str 暗号化したい文言
+     * @param string $salt salt
+     * @return string ハッシュ暗号化された文字列
+     */
+    function sfGetHashString($str, $salt) {
+        $res = '';
+        if ($salt == '') {
+            $salt = AUTH_MAGIC;
+        }
+        if ( AUTH_TYPE == 'PLAIN') {
+            $res = $str;
+        } else {
+            $res = hash_hmac(PASSWORD_HASH_ALGOS, $str . ":" . AUTH_MAGIC, $salt);
+        }
+        return $res;
+    }
+    
+    /**
+     * パスワード文字列のハッシュ一致判定
+     *
+     * @param string $pass 確認したいパスワード文字列
+     * @param string $hashpass 確認したいパスワードハッシュ文字列
+     * @param string $salt salt
+     * @return boolean 一致判定
+     */
+    function sfIsMatchHashPassword($pass, $hashpass, $salt) {
+        $res = false;
+        if ($hashpass != '') {
+            if (AUTH_TYPE == 'PLAIN') {
+                if($pass === $hashpass) {
+                    $res = true;
+                }
+            } else {
+                $hash = SC_Utils_Ex::sfGetHashString($pass, $salt);
+                if($hash === $hashpass) {
+                    $res = true;
+                }
+            }
+        }
+        return $res;
+    }
+    
+
 }
 ?>

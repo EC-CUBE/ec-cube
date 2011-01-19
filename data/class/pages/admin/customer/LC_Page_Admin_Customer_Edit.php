@@ -149,6 +149,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin {
             $this->list_data["day"] = isset($birth[2]) ? $birth[2] : "";
 
             $this->list_data["password"] = DEFAULT_PASSWORD;
+            $this->list_data["reminder_answer"] = DEFAULT_PASSWORD;
             //DB登録のメールアドレスを渡す
             $this->tpl_edit_email = $result[0]['email'];
             //購入履歴情報の取得
@@ -293,7 +294,9 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin {
             $objErr->doFunc(array("パスワード", 'password', PASSWORD_LEN1, PASSWORD_LEN2), array("EXIST_CHECK", "ALNUM_CHECK", "NUM_RANGE_CHECK"));
         }
         $objErr->doFunc(array("パスワードを忘れたときのヒント 質問", "reminder") ,array("SELECT_CHECK", "NUM_CHECK"));
-        $objErr->doFunc(array("パスワードを忘れたときのヒント 答え", "reminder_answer", STEXT_LEN) ,array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+        if ($array["reminder_answer"] != DEFAULT_PASSWORD) {
+            $objErr->doFunc(array("パスワードを忘れたときのヒント 答え", "reminder_answer", STEXT_LEN) ,array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+        }
         $objErr->doFunc(array("メールマガジン", "mailmaga_flg") ,array("SELECT_CHECK", "NUM_CHECK"));
         $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_DATE"));
         $objErr->doFunc(array("SHOP用メモ", 'note', LTEXT_LEN), array("MAX_LENGTH_CHECK"));

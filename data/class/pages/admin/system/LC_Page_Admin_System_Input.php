@@ -364,11 +364,13 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin {
         $objQuery = new SC_Query();
 
         // INSERTする値を作成する.
+        $salt                  = SC_Utils_Ex::sfGetRandomString(10);
         $sqlVal = array();
         $sqlVal['name']        = $arrMemberData['name'];
         $sqlVal['department']  = $arrMemberData['department'];
         $sqlVal['login_id']    = $arrMemberData['login_id'];
-        $sqlVal['password']    = sha1($arrMemberData['password'] . ':' . AUTH_MAGIC);
+        $sqlVal['password']    = SC_Utils_Ex::sfGetHashString($arrMemberData['password'], $salt);
+        $sqlVal['salt']        = $salt;
         $sqlVal['authority']   = $arrMemberData['authority'];
         $sqlVal['rank']        = $objQuery->max('rank', 'dtb_member') + 1;
         $sqlVal['work']        = $arrMemberData['work'];
@@ -400,7 +402,9 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin {
         $sqlVal['work']   = $arrMemberData['work'];
         $sqlVal['update_date'] = 'NOW()';
         if($arrMemberData['password'] != DUMMY_PASS) {
-            $sqlVal['password'] = sha1($arrMemberData['password'] . ":" . AUTH_MAGIC);
+            $salt = SC_Utils_Ex::sfGetRandomString(10);
+            $sqlVal['salt']     = $salt;
+            $sqlVal['password'] = SC_Utils_Ex::sfGetHashString($arrMemberData['password'], $salt);
         }
 
         $where = "member_id = ?";

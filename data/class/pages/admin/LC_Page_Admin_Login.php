@@ -101,16 +101,16 @@ class LC_Page_Admin_Login extends LC_Page_Admin {
 
     /* 認証パスワードの判定 */
     function fnCheckPassword(&$objQuery) {
-        $sql = "SELECT member_id, password, authority, login_date, name FROM dtb_member WHERE login_id = ? AND del_flg <> 1 AND work = 1";
+        $sql = "SELECT member_id, password, salt, authority, login_date, name FROM dtb_member WHERE login_id = ? AND del_flg <> 1 AND work = 1";
         $arrcol = array ($_POST['login_id']);
         // DBから暗号化パスワードを取得する。
         $data_list = $objQuery->getAll($sql ,$arrcol);
         // パスワードの取得
         $password = $data_list[0]['password'];
+        // saltの取得
+        $salt = $data_list[0]['salt'];
         // ユーザ入力パスワードの判定
-        $ret = sha1($_POST['password'] . ":" . AUTH_MAGIC);
-
-        if ($ret == $password) {
+        if (SC_Utils_Ex::sfIsMatchHashPassword($_POST['password'], $password, $salt)) {
                // セッション登録
             $this->fnSetLoginSession($data_list[0]['member_id'], $data_list[0]['authority'], $data_list[0]['login_date'], $data_list[0]['name']);
             // ログイン日時の登録

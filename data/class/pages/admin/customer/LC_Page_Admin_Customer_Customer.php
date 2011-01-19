@@ -182,12 +182,11 @@ class LC_Page_Admin_Customer_Customer extends LC_Page_Admin {
             $arrRegist["birth"] = $array["year"] ."/". $array["month"] ."/". $array["day"] ." 00:00:00";
         }
 
-        //-- パスワードの更新がある場合は暗号化。（更新がない場合はUPDATE文を構成しない）
-        if ($array["password"] != DEFAULT_PASSWORD) {
-            $arrRegist["password"] = sha1($array["password"] . ":" . AUTH_MAGIC);
-        } else {
-            unset($arrRegist['password']);
-        }
+        //-- パスワード/リマインダーの答え暗号化。
+        $salt = SC_Utils_Ex::sfGetRandomString(10);
+        $arrRegist["salt"] = $salt;
+        $arrRegist["password"] = SC_Utils_Ex::sfGetHashString($array["password"], $salt);
+        $arrRegist["reminder_answer"] = SC_Utils_Ex::sfGetHashString($arrRegist["reminder_answer"], $salt);
 
         $arrRegist["update_date"] = "Now()";
 
@@ -272,9 +271,7 @@ class LC_Page_Admin_Customer_Customer extends LC_Page_Admin {
         $objErr->doFunc(array("FAX番号", "fax01", "fax02", "fax03") ,array("TEL_CHECK"));
         $objErr->doFunc(array("ご性別", "sex") ,array("SELECT_CHECK", "NUM_CHECK"));
         $objErr->doFunc(array("ご職業", "job") ,array("NUM_CHECK"));
-        if ($array["password"] != DEFAULT_PASSWORD) {
-            $objErr->doFunc(array("パスワード", 'password', PASSWORD_LEN1, PASSWORD_LEN2), array("EXIST_CHECK", "ALNUM_CHECK", "NUM_RANGE_CHECK"));
-        }
+        $objErr->doFunc(array("パスワード", 'password', PASSWORD_LEN1, PASSWORD_LEN2), array("EXIST_CHECK", "ALNUM_CHECK", "NUM_RANGE_CHECK"));
         $objErr->doFunc(array("パスワードを忘れたときのヒント 質問", "reminder") ,array("SELECT_CHECK", "NUM_CHECK"));
         $objErr->doFunc(array("パスワードを忘れたときのヒント 答え", "reminder_answer", STEXT_LEN) ,array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
         $objErr->doFunc(array("メールマガジン", "mailmaga_flg") ,array("SELECT_CHECK", "NUM_CHECK"));

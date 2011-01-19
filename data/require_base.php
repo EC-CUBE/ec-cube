@@ -24,6 +24,8 @@
 if (!defined("DATA_REALDIR")) {
     define("DATA_REALDIR", HTML_REALDIR . HTML2DATA_DIR);
 }
+// PHP4互換用関数読み込み(PHP_Compat)
+require_once(DATA_REALDIR . "require_compat.php");
 
 // アプリケーション初期化処理
 require_once(DATA_REALDIR . "app_initial.php");

@@ -159,6 +159,7 @@ class LC_Page_Mypage_Change extends LC_Page {
             $this->arrForm = $this->lfGetCustomerData();
             $this->arrForm['password'] = DEFAULT_PASSWORD;
             $this->arrForm['password02'] = DEFAULT_PASSWORD;
+            $this->arrForm['reminder_answer'] = DEFAULT_PASSWORD;
         }
         $this->transactionid = SC_Helper_Session_Ex::getToken();
     }
@@ -218,12 +219,21 @@ class LC_Page_Mypage_Change extends LC_Page {
         $arrRet = $this->objFormParam->getHashArray();
         $objErr = new SC_CheckError($arrRet);
         $objErr->arrErr = $this->objFormParam->checkError();
+        if(isset($objErr->arrErr['password']) and $arrRet['password'] == DEFAULT_PASSWORD) {
+            unset($objErr->arrErr['password']);
+            unset($objErr->arrErr['password02']);
+        }
+        if(isset($objErr->arrErr['reminder_answer']) and $arrRet['reminder_answer'] == DEFAULT_PASSWORD) {
+            unset($objErr->arrErr['reminder_answer']);
+        }
                         
         $objErr->doFunc(array("お電話番号", "tel01", "tel02", "tel03"),array("TEL_CHECK"));
         $objErr->doFunc(array("郵便番号", "zip01", "zip02"), array("ALL_EXIST_CHECK"));
         $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_BIRTHDAY"));
         if ($this->isMobile === false){
-            $objErr->doFunc(array('パスワード', 'パスワード(確認)', "password", "password02") ,array("EQUAL_CHECK"));
+            if( $arrRet['password'] != DEFAULT_PASSWORD ) {
+                $objErr->doFunc(array('パスワード', 'パスワード(確認)', "password", "password02") ,array("EQUAL_CHECK"));
+            }
             $objErr->doFunc(array('メールアドレス', 'メールアドレス(確認)', "email", "email02") ,array("EQUAL_CHECK"));
             $objErr->doFunc(array("FAX番号", "fax01", "fax02", "fax03") ,array("TEL_CHECK"));
         }

@@ -45,7 +45,7 @@ class SC_Helper_Customer {
         $objQuery =& SC_Query::getSingletonInstance();
 
         foreach ($arrRegistColumn as $data) {
-            if ($data["column"] != "password") {
+            if ($data["column"] != "password" && $data["column"] != "reminder_answer" ) {
                 if($array[ $data['column'] ] != "") {
                     $arrRegist[ $data["column"] ] = $array[ $data["column"] ];
                 } else {
@@ -60,7 +60,19 @@ class SC_Helper_Customer {
         }
 
         //-- パスワードの更新がある場合は暗号化。（更新がない場合はUPDATE文を構成しない）
-        if ($array["password"] != DEFAULT_PASSWORD) $arrRegist["password"] = sha1($array["password"] . ":" . AUTH_MAGIC);
+        $salt = "";
+        if ($array["password"] != DEFAULT_PASSWORD) {
+            $salt = SC_Utils_Ex::sfGetRandomString(10);
+            $arrRegist["salt"] = $salt;
+            $arrRegist["password"] = SC_Utils_Ex::sfGetHashString($array["password"], $salt);
+        }
+        if ($array["reminder_answer"] != DEFAULT_PASSWORD) {
+            if($salt == "") {
+                $salt = $objQuery->get("salt", "dtb_customer", "customer_id = ? ", array($array['customer_id']));
+            }
+            $arrRegist["reminder_answer"] = SC_Utils_Ex::sfGetHashString($array["reminder_answer"], $salt);
+        }
+        
         $arrRegist["update_date"] = "NOW()";
         
         //-- 編集登録実行
@@ -81,10 +93,19 @@ class SC_Helper_Customer {
         $array["update_date"] = "now()";    // 更新日
         
         //-- パスワードの更新がある場合は暗号化
-        if ($array["password"] != DEFAULT_PASSWORD){
-            $array["password"] = sha1($array["password"] . ":" . AUTH_MAGIC);
+        $salt = "";
+        if ($array["password"] != DEFAULT_PASSWORD) {
+            $salt = SC_Utils_Ex::sfGetRandomString(10);
+            $array["salt"] = $salt;
+            $array["password"] = SC_Utils_Ex::sfGetHashString($array["password"], $salt);
         } else {
             unset($array["password"]);
+        }
+        if ($array["reminder_answer"] != DEFAULT_PASSWORD) {
+            if(is_numeric($customer_id) and $salt == "") {
+                $salt = $objQuery->get("salt", "dtb_customer", "customer_id = ? ", array($array['customer_id']));
+            }
+            $array["reminder_answer"] = SC_Utils_Ex::sfGetHashString($array["reminder_answer"], $salt);
         }
        
         //-- 編集登録実行

@@ -480,7 +480,7 @@ http://------.co.jp
 ', 0, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_mailtemplate (template_id, subject, header, footer, creator_id, del_flg, create_date, update_date) VALUES (5, 'お問い合わせを受け付けました', NULL, NULL, 0, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
-INSERT INTO dtb_member (member_id, name, department, login_id, password, authority, rank, work, del_flg, creator_id, update_date, create_date, login_date) VALUES (1, 'dummy', NULL, 'dummy', 'dummy', 0, 0, 1, 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_member (member_id, name, department, login_id, password, salt, authority, rank, work, del_flg, creator_id, update_date, create_date, login_date) VALUES (1, 'dummy', NULL, 'dummy', 'dummy', 'dummy', 0, 0, 1, 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
 
 INSERT INTO dtb_module (module_id, module_code, module_name, sub_data, auto_update_flg, del_flg, create_date, update_date) VALUES (0, '0', 'patch', NULL, 0, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
@@ -1029,7 +1029,7 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('USER_REALDIR', 'HTM
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('USER_INC_REALDIR', 'USER_REALDIR . "include/"', 5, 'ユーザインクルードファイル保存先');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ZIP_DSN', 'DEFAULT_DSN', 8, '郵便番号専用DB');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('USER_URL', 'HTTP_URL . USER_DIR', 9, 'ユーザー作成ページ等');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('AUTH_MAGIC', '"31eafcbd7a81d7b401a7fdc12bba047c02d1fae6"', 10, '認証用 magic');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('AUTH_TYPE', '"HMAC"', 10, '認証方式');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('USER_TEMPLATE_DIR', '"templates/"', 16, 'テンプレートファイル保存先');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('USER_PACKAGE_DIR', '"packages/"', 17, 'テンプレートファイル保存先');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('USER_TEMPLATE_REALDIR', 'USER_REALDIR . USER_PACKAGE_DIR', 18, 'テンプレートファイル保存先');
@@ -1067,7 +1067,7 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('OPTION_PRODUCT_DELI
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('OPTION_DELIV_FEE', '1', 60, '配送業者ごとの配送料を加算する(有効:1 無効:0)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('OPTION_RECOMMEND', '1', 61, 'おすすめ商品登録(有効:1 無効:0)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('OPTION_CLASS_REGIST', '1', 62, '商品規格登録(有効:1 無効:0)');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DEFAULT_PASSWORD', '"UAhgGR3L"', 66, '会員登録変更(マイページ)パスワード用');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DEFAULT_PASSWORD', '"******"', 66, '会員登録変更(マイページ)パスワード用');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DELIV_ADDR_MAX', '20', 67, '別のお届け先最大登録数');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ORDER_STATUS_MAX', '50', 70, '管理画面ステータス一覧表示件数');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('REVIEW_REGIST_MAX', '5', 71, 'フロントレビュー書き込み最大数');
