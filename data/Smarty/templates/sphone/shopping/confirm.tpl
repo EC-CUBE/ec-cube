@@ -220,11 +220,11 @@ $(document).ready(function() {
                 <!--{if $cartKey != $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
                     <tr>
                         <th>お届け日</th>
-                        <td><!--{$shippingItem.deliv_date|default:"指定なし"|h}--></td>
+                        <td><!--{$shippingItem.shipping_date|default:"指定なし"|h}--></td>
                     </tr>
                     <tr>
                        <th>お届け時間</th>
-                        <td><!--{$shippingItem.deliv_time|default:"指定なし"|h}--></td>
+                        <td><!--{$shippingItem.shipping_time|default:"指定なし"|h}--></td>
                     </tr>
                 <!--{/if}-->
                 </tbody>

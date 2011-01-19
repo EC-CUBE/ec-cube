@@ -40,32 +40,32 @@
 ■お届け時間の指定<br>
 <!--{foreach item=shippingItem name=shippingItem from=$shipping}-->
 <!--{assign var=index value=$smarty.foreach.shippingItem.index}-->
-<!--{if $isMultiple}-->
-▼お届け先<!--{$smarty.foreach.shippingItem.iteration}--><br>
-<!--{$arrPref[$shippingItem.shipping_pref]}--><!--{$shippingItem.shipping_addr01}--><!--{$shippingItem.shipping_addr02}--><br>
-<!--{$shippingItem.shipping_name01}--><!--{$shippingItem.shipping_name02}--><br>
-<!--{/if}-->
 <!--★お届け日★-->
 <!--{assign var=key value="deliv_date`$index`"}-->
-<!--{if $arrErr[$key] != ""}--><font color="#FF0000"><!--{$arrErr[$key]}--></font><!--{/if}-->
-お届け日：
+<font color="#FF0000"><!--{$arrErr[$key]}--></font>
+お届け日：<br>
 <!--{if !$arrDelivDate}-->
-ご指定頂けません。
+    ご指定頂けません。
 <!--{else}-->
-<select name="<!--{$key}-->">
-<option value="">指定なし</option>
-<!--{html_options options=$arrDelivDate selected=$arrForm[$key].value}-->
-</select>
+    <select name="<!--{$key}-->">
+        <option value="" selected="">指定なし</option>
+        <!--{html_options options=$arrDelivDate selected=$arrForm[$key].value}-->
+    </select>
 <!--{/if}-->
 <br>
 <!--★お届け時間★-->
 <!--{assign var=key value="deliv_time_id`$index`"}-->
-<!--{if $arrErr[$key] != ""}--><font color="#FF0000"><!--{$arrErr[$key]}--></font><!--{/if}-->
-お届け時間：
-<select name="<!--{$key}-->">
-<option value="">指定なし</option>
-<!--{html_options options=$arrDelivTime selected=$arrForm[$key].value}-->
+<font color="#FF0000"><!--{$arrErr[$key]}--></font>
+お届け時間：<br>
+<select name="<!--{$key}-->" id="<!--{$key}-->">
+    <option value="" selected="">指定なし</option>
+    <!--{html_options options=$arrDelivTime selected=$arrForm[$key].value}-->
 </select>
+<br>
+<!--{if $isMultiple}-->
+    &nbsp;<!--{$shippingItem.shipping_name01}--><!--{$shippingItem.shipping_name02}-->
+    &nbsp;<!--{$arrPref[$shippingItem.shipping_pref]}--><!--{$shippingItem.shipping_addr01}--><!--{$shippingItem.shipping_addr02}-->
+<!--{/if}-->
 <hr>
 <!--{/foreach}-->
 <!--{/if}-->

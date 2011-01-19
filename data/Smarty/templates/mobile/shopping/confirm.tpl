@@ -89,8 +89,8 @@
 
 <br>
 
-お届け日：<!--{$shippingItem.deliv_date|default:"指定なし"|h}--><br>
-お届け時間：<!--{$shippingItem.deliv_time|default:"指定なし"|h}--><br>
+お届け日：<!--{$shippingItem.shipping_date|default:"指定なし"|h}--><br>
+お届け時間：<!--{$shippingItem.shipping_time|default:"指定なし"|h}--><br>
 
 <hr>
 <!--{/foreach}-->
