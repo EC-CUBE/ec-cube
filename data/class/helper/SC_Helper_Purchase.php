@@ -488,8 +488,10 @@ __EOS__;
      */
     function getDeliv($productTypeId) {
         $objQuery =& SC_Query::getSingletonInstance();
-        return $objQuery->get("deliv_id", "dtb_deliv", "product_type_id = ?",
+        $result = $objQuery->get("deliv_id", "dtb_deliv", "product_type_id = ?",
                                  array($productTypeId));
+        // XXX ダウンロード商品の場合の dtb_shipping の扱い
+        return is_null($result) ? 0 : $result;
     }
 
     /**

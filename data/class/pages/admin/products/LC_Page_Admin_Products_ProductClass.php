@@ -53,6 +53,8 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin {
         $this->tpl_mainno = 'products';
         $this->tpl_subno = 'product';
         $this->tpl_subtitle = '商品登録(商品規格)';
+        $masterData = new SC_DB_MasterData_Ex();
+        $this->arrProductType = $masterData->getMasterData("mtb_product_type");
         $this->arrPayments = SC_Helper_DB_Ex::sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
     }
 
@@ -60,7 +62,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin {
     	$i = 1;
         while (isset($_POST['classcategory_id1:' . $i])) {
 	        //ファイル系処理
-	        $this->objDownFile->addFile("ダウンロード販売用ファイル". ":" . $i, 'down_realfilename'. ":" . $i, explode(",", DOWNLOAD_EXTENSION),DOWN_SIZE, true, 0, 0);
+	        $this->objDownFile->addFile("ダウンロード販売用ファイル", 'down_realfilename'. ":" . $i, explode(",", DOWNLOAD_EXTENSION),DOWN_SIZE, true, 0, 0);
             $i++;
         }
     }
@@ -95,25 +97,25 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin {
 
         // Downファイル管理クラス
         $this->objDownFile = new SC_UploadFile(DOWN_TEMP_REALDIR, DOWN_SAVE_REALDIR);
-
+        $this->lfInitDownFile();
         switch ($_POST['mode']) {
         case 'edit':
             // 入力値の変換
             $this->arrForm = $this->lfConvertParam($_POST);
             // エラーチェック
             $this->arrErr = $this->lfProductClassError($this->arrForm);
-            if ($this->arrErr == null){
-            //if (SC_Utils_Ex::isBlank($this->arrErr)) {
+            if (empty($this->arrErr)){
             	$this->tpl_mainpage = 'products/product_class_confirm.tpl';
                 $this->lfProductConfirmPage(); // 確認ページ表示
             } else {
-            	$this->doPreEdit(false,true);
+            	$this->doPreEdit(false ,true);
 		        // Hiddenからのデータを引き継ぐ
 		        $this->objDownFile->setHiddenFileList($_POST);
 	            // HIDDEN用に配列を渡す。
 		        $this->arrHidden = array_merge((array)$this->arrHidden, (array)$this->objDownFile->getHiddenFileList());
 		        // Form用に配列を渡す。
 		        $this->arrForm = array_merge((array)$this->arrForm, (array)$this->objDownFile->getFormKikakuDownFile());
+                $this->doDisp();
             }
             break;
 
@@ -132,7 +134,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin {
             break;
         // ダウンロード商品ファイルアップロード
         case 'upload_down':
-            $this->doPreEdit();
+            $this->doPreEdit(true);
 	        // Hiddenからのデータを引き継ぐ
 	        $this->objDownFile->setHiddenKikakuFileList($_POST);
             // ファイル存在チェック
@@ -143,10 +145,11 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin {
 	        $this->arrHidden = array_merge((array)$this->arrHidden, (array)$this->objDownFile->getHiddenFileList());
 	        // Form用に配列を渡す。
 	        $this->arrForm = array_merge((array)$this->arrForm, (array)$this->objDownFile->getFormKikakuDownFile());
+            $this->doDisp();
             break;
         // ダウンロードファイルの削除
         case 'delete_down':
-            $this->doPreEdit();
+            $this->doPreEdit(true);
 	        // Hiddenからのデータを引き継ぐ
 	        $this->objDownFile->setHiddenKikakuFileList($_POST);
 	        // ファイル削除処理
@@ -155,6 +158,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin {
 	        $this->arrHidden = array_merge((array)$this->arrHidden, (array)$this->objDownFile->getHiddenFileList());
 	        // Form用に配列を渡す。
 	        $this->arrForm = array_merge((array)$this->arrForm, (array)$this->objDownFile->getFormKikakuDownFile());
+            $this->doDisp();
             break;
         case 'confirm_return':
             // フォームパラメータの引き継ぎ
@@ -169,6 +173,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin {
 	        $this->arrHidden = array_merge((array)$this->arrHidden, (array)$this->objDownFile->getHiddenFileList());
 	        // Form用に配列を渡す。
 	        $this->arrForm = array_merge((array)$this->arrForm, (array)$this->objDownFile->getFormKikakuDownFile());
+            $this->doDisp();
             break;
         case 'complete':
             // 完了ページ設定
@@ -219,9 +224,8 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin {
         foreach ($productsClass as $val) {
             $exists[$val['product_class_id']] = $val;
         }
-
         $i = 1;
-        while (isset($arrList['classcategory_id1:' . $i])) {
+        while (isset($arrList['check:' . $i])) {
             $pVal = array();
             $pVal['product_id'] = $product_id;;
             $pVal['product_code'] = $arrList["product_code:".$i];
@@ -364,6 +368,11 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin {
                     $objErr->doFunc(array("在庫数", "stock:".$no, AMOUNT_LEN), array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
                 }
 
+                // 商品種別チェック
+                if (empty($array['product_type_id:' . $no])) {
+                    $objErr->arrErr['product_type_id:' . $no] = "※ 商品種別は、いずれかを選択してください。<br />";
+                }
+
                 // 支払方法チェック
                 if (empty($array['payment_ids:' . $no])) {
                     $objErr->arrErr['payment_ids:' . $no] = "※ 支払方法は、いずれかを選択してください。<br />";
@@ -387,10 +396,16 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin {
                 }
             }
             if(count($objErr->arrErr) > 0) {
-                $objErr->arrErr["error:".$no] = $objErr->arrErr["product_code:".$no];
-                $objErr->arrErr["error:".$no].= $objErr->arrErr["price01:".$no];
-                $objErr->arrErr["error:".$no].= $objErr->arrErr["price02:".$no];
-                $objErr->arrErr["error:".$no].= $objErr->arrErr["stock:".$no];
+                $objErr->arrErr["error:".$no] = $objErr->arrErr["product_type_id:".$no];
+                $objErr->arrErr["error:".$no] .= $objErr->arrErr["payment_ids:".$no];
+                $objErr->arrErr["error:".$no] .= $objErr->arrErr["product_code:".$no];
+                $objErr->arrErr["error:".$no] .= $objErr->arrErr["price01:".$no];
+                $objErr->arrErr["error:".$no] .= $objErr->arrErr["price02:".$no];
+                $objErr->arrErr["error:".$no] .= $objErr->arrErr["stock:".$no];
+                $objErr->arrErr["error:".$no] .= $objErr->arrErr["stock:".$no];
+                $objErr->arrErr["error:".$no] .= $objErr->arrErr["down_filename:".$no];
+                $objErr->arrErr["error:".$no] .= $objErr->arrErr["down_realfilename:".$no];
+
             }
             $no++;
         }
@@ -426,9 +441,8 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin {
     function doDisp() {
         $this->arrForm['select_class_id1'] = $_POST['select_class_id1'];
         $this->arrForm['select_class_id2'] = $_POST['select_class_id2'];
-
-        $this->arrErr = $this->lfClassError();
-        if (SC_Utils_Ex::isBlank($this->arrErr)) {
+        $dispError = $this->lfClassError();
+        if (SC_Utils_Ex::isBlank($dispError)) {
             $this->arrClassCat = $this->getAllClassCategory($_POST['select_class_id1'], $_POST['select_class_id2']);
 
             $productsClass = $this->getProductsClass($_POST['product_id']);
@@ -440,6 +454,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin {
                 }
             }
         }
+        $this->arrErr = array_merge((array) $this->arrErr, $dispError);
         $this->tpl_onload.= "fnCheckAllStockLimit('$total', '" . DISABLED_RGB . "');";
     }
 

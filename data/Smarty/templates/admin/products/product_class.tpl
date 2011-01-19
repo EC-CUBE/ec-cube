@@ -113,7 +113,7 @@
       <th><!--{$smarty.const.NORMAL_PRICE_TITLE}-->(円)</th>
       <th><!--{$smarty.const.SALE_PRICE_TITLE}-->(円)<span class="attention">*</span></th>
       <th>商品種別<span class="attention">*</span></th>
-      <th><label for="allPaymentIds">支払方法</label><span class="attention">*</span> <input type="checkbox" name="allPaymentIds" onclick="fnAllCheck(this, 'input[name^=payment_ids]')" /></th>
+      <th><span class="attention">*</span> <input type="checkbox" name="allPaymentIds" id="allPaymentIds" onclick="fnAllCheck(this, 'input[name^=payment_ids]')" /><label for="allPaymentIds">支払方法</label></th>
       <th>ダウンロード<br>ファイル名<span class="red"><br>上限<!--{$smarty.const.STEXT_LEN}-->文字</span></th>
       <th>ダウンロード商品用<br>ファイル</th>
     </tr>
@@ -150,14 +150,12 @@
       <td class="center"><input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key]}-->" size="6" class="box6" maxlength="<!--{$smarty.const.PRICE_LEN}-->" <!--{if $arrErr[$key] != ""}--><!--{sfSetErrorStyle}--><!--{/if}-->></td>
       <!--{assign var=key value="price02:`$smarty.section.cnt.iteration`"}-->
       <td class="center"><input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key]}-->" size="6" class="box6" maxlength="<!--{$smarty.const.PRICE_LEN}-->" <!--{if $arrErr[$key] != ""}--><!--{sfSetErrorStyle}--><!--{/if}-->></td>
-      <td>
+      <td class="class-product-type">
         <!--{assign var=key value="product_type_id:`$smarty.section.cnt.iteration`"}-->
-        <input type="radio" name="<!--{$key}-->" value="<!--{$smarty.const.PRODUCT_TYPE_NORMAL}-->" <!--{if $arrForm[$key] == "1"}-->checked<!--{/if}-->/>通常<br>
-        <input type="radio" name="<!--{$key}-->" value="<!--{$smarty.const.PRODUCT_TYPE_DOWNLOAD}-->" <!--{if $arrForm[$key] == "2"}-->checked<!--{/if}--> />ダウンロード
+        <!--{html_radios name=$key options=$arrProductType selected=$arrForm[$key] separator='<br />'}-->
       </td>
       <td class="class-payment center">
         <!--{assign var=key value="payment_ids:`$smarty.section.cnt.iteration`"}-->
-        <span class="attention"><!--{$arrErr[$key]}--></span>
         <!--{html_checkboxes name=$key options=$arrPayments selected=$arrForm[$key] separator='<br />'}-->
       </td>
       <td class="center">
@@ -166,14 +164,13 @@
         <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key]|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr[$key] != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" size="10" />
       </td>
       <!--{assign var=key value="down_realfilename:`$smarty.section.cnt.iteration`"}-->
-      <td>
-        <span class="attention"><!--{$arrErr[$key]}--></span>
+      <td><span class="attention"><!--{$arrErr[$key]}--></span>
           <!--{if $arrForm[$key] != ""}-->
             <!--{$arrForm[$key]|h}--><input type="hidden" name="<!--{$key}-->" value="<!--{$arrForm[$key]|h}-->">
-            <a href="" onclick="fnModeSubmit('delete_down', 'down_key', '<!--{$key}-->'); return false;">[ファイルの取り消し]</a><br>
+            <a href="" onclick="fnFormModeSubmit('form1', 'delete_down', 'down_key', '<!--{$key}-->'); return false;">[ファイルの取り消し]</a><br>
           <!--{/if}-->
           <input type="file" name="<!--{$key}-->" size="10" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" /><br />
-          <a class="btn-normal" href="javascript:;" name="btn" onclick="fnModeSubmit('upload_down', 'down_key', '<!--{$key}-->'); return false;">アップロード</a>
+          <a class="btn-normal" href="javascript:;" name="btn" onclick="fnFormModeSubmit('form1', 'upload_down', 'down_key', '<!--{$key}-->'); return false;">アップロード</a>
       </td>
     </tr>
     <!--{/section}-->

@@ -1012,6 +1012,9 @@ body > #container {
 #products label {
     white-space: nowrap;
 }
+#products .class-product-type label {
+   white-space: normal;
+}
 #products .list-info{
     padding-top: 10px;
     border-top: solid 1px #ccc;

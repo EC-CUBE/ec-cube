@@ -78,8 +78,11 @@
       <!--{assign var=key value="price02:`$smarty.section.cnt.iteration`"}-->
       <td class="right"><!--{$arrForm[$key]}--></td>
       <!--{assign var=key value="product_type_id:`$smarty.section.cnt.iteration`"}-->
-      <!--{assign var=inkey value="`$arrForm[$key]`"}-->
-      <td class="right"><!--{$arrDown[$inkey]}--></td>
+      <td class="right">
+      <!--{foreach from=$arrForm[$key] item=product_type_id}-->
+        <!--{$arrProductType[$product_type_id]|h}-->
+      <!--{/foreach}-->
+      </td>
       <!--{assign var=key value="payment_ids:`$smarty.section.cnt.iteration`"}-->
       <td>
       <!--{foreach from=$arrForm[$key] item=payment_id}-->
@@ -100,7 +103,7 @@
 
   <div class="btn-area">
     <ul>
-      <li><a class="btn-action" href="javascript:;" onclick="fnModeSubmit('confirm_return','',''); return false"><span class="btn-prev">前へ戻る</span></a></li>
+      <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'confirm_return','',''); return false"><span class="btn-prev">前へ戻る</span></a></li>
     <!--{if $tpl_check > 0}-->
       <li><a class="btn-action" href="javascript:;" onclick="document.form1.submit(); return false;"><span class="btn-next">この内容で登録する</span></a></li>
     <!--{/if}-->
