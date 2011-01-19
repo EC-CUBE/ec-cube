@@ -442,19 +442,19 @@ function lfDispStep0($objPage) {
                     }
                 }
             } else {
-                $mess.= ">> ×：$path が見つかりません。<br>";
+                $mess.= ">> ×：$path が見つかりません。\n";
                 $hasErr = true;
             }
         }
     }
 
     if (ini_get('safe_mode')) {
-        $mess .= ">> ×：PHPのセーフモードが有効になっています。<br>";
+        $mess .= ">> ×：PHPのセーフモードが有効になっています。\n";
         $hasErr = true;
     }
 
     if (get_magic_quotes_gpc()) {
-        $mess .= ">> ×：PHPの設定ディレクティブ「magic_quotes_gpc」が有効になっています。<br>";
+        $mess .= ">> ×：PHPの設定ディレクティブ「magic_quotes_gpc」が有効になっています。\n";
         $hasErr = true;
     }
 
@@ -498,7 +498,7 @@ function lfDispStep0($objPage) {
         if(!file_exists($path)) {
             mkdir($path);
         }
-        $mess.= ">> ○：アクセス権限は正常です。<br>";
+        $mess.= ">> ○：アクセス権限は正常です。";
     }
 
     $objPage->mess = $mess;

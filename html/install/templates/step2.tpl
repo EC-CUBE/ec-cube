@@ -43,7 +43,7 @@ function lfnChangePort(db_type) {
   <div class="message">
     <h2>データベースの設定</h2>
     ※インストールの前に新しくDBを作成しておく必要があります。
-    <!--{$arrErr.all}-->
+    <div class="attention"><!--{$arrErr.all}--></div>
   </div>
   <div class="block">
   <table>
