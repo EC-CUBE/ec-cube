@@ -31,7 +31,7 @@
 
   <!--{* ▼画面左 *}-->
   <div id="products-rank-left">
-    <a href="?"><img src="<!--{$TPL_DIR}-->img/contents/folder_close.gif" alt="フォルダ">&nbsp;ホーム</a><br />
+    <a href="?"><img src="<!--{$TPL_URLPATH}-->img/contents/folder_close.gif" alt="フォルダ">&nbsp;ホーム</a><br />
     <!--{section name=cnt loop=$arrTree}-->
       <!--{assign var=level value="`$arrTree[cnt].level`}-->
       
@@ -48,9 +48,9 @@
       <!--{assign var=disp_name value="`$arrTree[cnt].category_id`.`$arrTree[cnt].category_name`"}-->
       <a href="?" onclick="fnModeSubmit('tree', 'parent_category_id', <!--{$arrTree[cnt].category_id}-->); return false">
       <!--{if $arrForm.parent_category_id == $arrTree[cnt].category_id}-->
-        <img src="<!--{$TPL_DIR}-->img/contents/folder_open.gif" alt="フォルダ">
+        <img src="<!--{$TPL_URLPATH}-->img/contents/folder_open.gif" alt="フォルダ">
       <!--{else}-->
-        <img src="<!--{$TPL_DIR}-->img/contents/folder_close.gif" alt="フォルダ">
+        <img src="<!--{$TPL_URLPATH}-->img/contents/folder_close.gif" alt="フォルダ">
       <!--{/if}-->
       <!--{$disp_name|sfCutString:20|h}-->(<!--{$arrTree[cnt].product_count|default:0}-->)</a>
     <br />          

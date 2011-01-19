@@ -20,5 +20,5 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 <div id="flasharea">
-  <img src="<!--{$TPL_DIR}-->img/picture/img_main.gif" alt="EC-CUBEイメージ" />
+  <img src="<!--{$TPL_URLPATH}-->img/picture/img_main.gif" alt="EC-CUBEイメージ" />
 </div>

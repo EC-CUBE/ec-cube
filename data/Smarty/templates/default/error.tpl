@@ -29,9 +29,9 @@
 
     <div class="tblareabtn">
     <!--{if $return_top}-->
-      <a href="<!--{$smarty.const.TOP_URLPATH}-->" onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_toppage_on.gif','b_toppage');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_toppage.gif','b_toppage');"><img src="<!--{$TPL_DIR}-->img/button/btn_toppage.gif" width="150" height="30" alt="トップページへ" border="0" name="b_toppage" /></a>
+      <a href="<!--{$smarty.const.TOP_URLPATH}-->" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_toppage_on.gif','b_toppage');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_toppage.gif','b_toppage');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_toppage.gif" width="150" height="30" alt="トップページへ" border="0" name="b_toppage" /></a>
     <!--{else}-->
-      <a href="javascript:history.back()" onmouseOver="chgImg('<!--{$TPL_DIR}-->img/button/btn_back_on.gif','b_back');" onmouseOut="chgImg('<!--{$TPL_DIR}-->img/button/btn_back.gif','b_back');"><img src="<!--{$TPL_DIR}-->img/button/btn_back.gif" width="150" height="30" alt="戻る" name="b_back" id="b_back" /></a>
+      <a href="javascript:history.back()" onmouseOver="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back_on.gif','b_back');" onmouseOut="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back.gif','b_back');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_back.gif" width="150" height="30" alt="戻る" name="b_back" id="b_back" /></a>
     <!--{/if}-->
     </div>
   </div>

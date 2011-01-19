@@ -30,8 +30,8 @@ OwnersStore.download();やOwnersStore.products_list();を呼び出すことで
 購入商品一覧はid="ownersstore_products_list"に出力される
 
 *}-->
-<link rel="stylesheet" href="<!--{$TPL_DIR_DEFAULT}-->css/thickbox.css" type="text/css" media="screen" />
-<script type="text/javascript" src="<!--{$TPL_DIR}-->js/ownersstore.js.php"></script>
+<link rel="stylesheet" href="<!--{$TPL_URLPATH_DEFAULT}-->css/thickbox.css" type="text/css" media="screen" />
+<script type="text/javascript" src="<!--{$TPL_URLPATH}-->js/ownersstore.js.php"></script>
 
 <form name="form1" id="form1" method="post" action="?">
 <div id="ownersstore" class="contents-main">

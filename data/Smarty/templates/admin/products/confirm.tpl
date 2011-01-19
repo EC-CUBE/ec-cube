@@ -59,7 +59,7 @@
       <th>商品ステータス</th>
       <td>
       <!--{foreach from=$arrForm.product_status item=status}-->
-        <img src="<!--{$TPL_DIR_DEFAULT}--><!--{$arrSTATUS_IMAGE[$status]}-->">
+        <img src="<!--{$TPL_URLPATH_DEFAULT}--><!--{$arrSTATUS_IMAGE[$status]}-->">
       <!--{/foreach}-->
       </td>
     </tr>

@@ -78,7 +78,7 @@
           </tr>
         </table>
         <div class="btn">
-          <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_confirm_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_confirm.gif',this)" src="<!--{$TPL_DIR}-->img/button/btn_confirm.gif" class="box150" alt="確認ページへ" name="conf" id="conf" />
+          <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_confirm_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_confirm.gif',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_confirm.gif" class="box150" alt="確認ページへ" name="conf" id="conf" />
         </div>
       </form>
     </div>

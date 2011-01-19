@@ -25,7 +25,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=<!--{$smarty.const.CHAR_CODE}-->" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
-<link rel="stylesheet" href="<!--{$TPL_DIR}-->css/import.css" type="text/css" media="all" />
+<link rel="stylesheet" href="<!--{$TPL_URLPATH}-->css/import.css" type="text/css" media="all" />
 <link rel="alternate" type="application/rss+xml" title="RSS" href="<!--{$smarty.const.HTTP_URL}-->rss/<!--{$smarty.const.DIR_INDEX_URL}-->" />
 <script type="text/javascript" src="http://www.google.com/jsapi?key=xxx"></script>
 <script type="text/javascript">//<![CDATA[

@@ -27,7 +27,7 @@
 	<div id="login-wrap">
 
 		<div id="login-form" class="clearfix">
-			<h1><img src="<!--{$TPL_DIR}-->img/contents/admin_login_logo.jpg" width="140" height="150" alt="EC-CUBE管理画面" /></h1>
+			<h1><img src="<!--{$TPL_URLPATH}-->img/contents/admin_login_logo.jpg" width="140" height="150" alt="EC-CUBE管理画面" /></h1>
 			<div id="input-form">
 				<form name="form1" id="form1" method="post" action="login.php">
 				<p><label for="login_id">ID</label></p>

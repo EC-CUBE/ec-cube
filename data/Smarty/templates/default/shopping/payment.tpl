@@ -23,7 +23,7 @@
 <div id="under02column">
     <div id="under02column_shopping">
         <p class="flowarea">
-            <img src="<!--{$TPL_DIR}-->img/picture/img_flow_02.gif" width="700" height="36" alt="購入手続きの流れ" />
+            <img src="<!--{$TPL_URLPATH}-->img/picture/img_flow_02.gif" width="700" height="36" alt="購入手続きの流れ" />
         </p>
         <h2 class="title"><!--{$tpl_title|h}--></h2>
 
@@ -133,9 +133,9 @@
             <!-- ▲ポイント使用 ここまで -->
 
             <div class="tblareabtn">
-                <a href="<!--{$tpl_back_url|h}-->" onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_back_on.gif','back03')" onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_back.gif','back03')">
-                    <img src="<!--{$TPL_DIR}-->img/button/btn_back.gif" width="150" height="30" alt="戻る" border="0" name="back03" id="back03" /></a>&nbsp;
-                <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_next_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_next.gif',this)" src="<!--{$TPL_DIR}-->img/button/btn_next.gif" class="box150" alt="次へ" name="next" id="next" />
+                <a href="<!--{$tpl_back_url|h}-->" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back_on.gif','back03')" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back.gif','back03')">
+                    <img src="<!--{$TPL_URLPATH}-->img/button/btn_back.gif" width="150" height="30" alt="戻る" border="0" name="back03" id="back03" /></a>&nbsp;
+                <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_next_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_next.gif',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_next.gif" class="box150" alt="次へ" name="next" id="next" />
             </div>
         </form>
     </div>

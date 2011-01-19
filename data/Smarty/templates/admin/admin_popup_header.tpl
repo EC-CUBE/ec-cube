@@ -28,12 +28,12 @@
 <meta http-equiv="content-type" content="application/xhtml+xml; charset=<!--{$smarty.const.CHAR_CODE}-->" />
 <meta http-equiv="content-script-type" content="text/javascript" />
 <meta http-equiv="content-style-type" content="text/css" />
-<link rel="stylesheet" href="<!--{$TPL_DIR}-->css/admin_contents.css" type="text/css" media="all" />
+<link rel="stylesheet" href="<!--{$TPL_URLPATH}-->css/admin_contents.css" type="text/css" media="all" />
 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/navi.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/win_op.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/site.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery-1.4.2.min.js"></script>
-<script type="text/javascript" src="<!--{$TPL_DIR}-->js/admin.js"></script>
+<script type="text/javascript" src="<!--{$TPL_URLPATH}-->js/admin.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/css.js"></script>
 <script type="text/javascript">//<![CDATA[
     <!--{$tpl_javascript}-->
@@ -51,7 +51,7 @@
   <p>JavaScript を有効にしてご利用下さい.</p>
 </noscript>
 <div id="popup-header">
-		<div id="popup-logo"><img src="<!--{$TPL_DIR}-->img/header/logo_popup.jpg" width="99" height="15" alt="EC-CUBE" /></div>
+		<div id="popup-logo"><img src="<!--{$TPL_URLPATH}-->img/header/logo_popup.jpg" width="99" height="15" alt="EC-CUBE" /></div>
 </div>
 
 <div id="popup-container">

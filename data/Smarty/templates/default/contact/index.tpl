@@ -89,7 +89,7 @@
           </p>
           <p class="zipimg">
             <a href="javascript:fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'zip01', 'zip02', 'pref', 'addr01');">
-              <img src="<!--{$TPL_DIR}-->img/button/btn_address_input.gif" width="86" height="20" alt="住所自動入力" /></a>
+              <img src="<!--{$TPL_URLPATH}-->img/button/btn_address_input.gif" width="86" height="20" alt="住所自動入力" /></a>
             <span class="mini">&nbsp;郵便番号を入力後、クリックしてください。</span>
           </p>
         </td>
@@ -188,9 +188,9 @@
     
     <div class="tblareabtn">
       <input type="image"
-             onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_confirm_on.gif', this)"
-             onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_confirm.gif', this)"
-             src="<!--{$TPL_DIR}-->img/button/btn_confirm.gif"
+             onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_confirm_on.gif', this)"
+             onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_confirm.gif', this)"
+             src="<!--{$TPL_URLPATH}-->img/button/btn_confirm.gif"
              style="width:150px; height=30px;"
              alt="確認ページへ"
              name="confirm" />

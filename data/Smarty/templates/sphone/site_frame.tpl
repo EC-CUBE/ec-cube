@@ -30,15 +30,15 @@
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <!--{* 共通CSS *}-->
-<link rel="stylesheet" media="only screen" href="<!--{$TPL_DIR}-->css/import.css" type="text/css" />
+<link rel="stylesheet" media="only screen" href="<!--{$TPL_URLPATH}-->css/import.css" type="text/css" />
 
 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/navi.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/win_op.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/site.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery-1.4.2.min.js"></script>
-<script type="text/javascript" src="<!--{$TPL_DIR}-->js/barbutton.js"></script>
-<script type="text/javascript" src="<!--{$TPL_DIR}-->js/category.js"></script>
-<script type="text/javascript" src="<!--{$TPL_DIR}-->js/news.js"></script>
+<script type="text/javascript" src="<!--{$TPL_URLPATH}-->js/barbutton.js"></script>
+<script type="text/javascript" src="<!--{$TPL_URLPATH}-->js/category.js"></script>
+<script type="text/javascript" src="<!--{$TPL_URLPATH}-->js/news.js"></script>
 
 <title><!--{$arrSiteInfo.shop_name|h}--><!--{if $tpl_subtitle|strlen >= 1}--> / <!--{$tpl_subtitle|h}--><!--{elseif $tpl_title|strlen >= 1}--> / <!--{$tpl_title|h}--><!--{/if}--></title>
 <!--{if $arrPageLayout.author|strlen >= 1}-->
@@ -51,7 +51,7 @@
     <meta name="keywords" content="<!--{$arrPageLayout.keyword|h}-->" />
 <!--{/if}-->
 <!--{* iPhone用アイコン画像 *}-->
-<link rel="apple-touch-icon" href="<!--{$TPL_DIR}-->img/common/apple-touch-icon.png" />
+<link rel="apple-touch-icon" href="<!--{$TPL_URLPATH}-->img/common/apple-touch-icon.png" />
 
 <script type="text/javascript">//<![CDATA[
     <!--{$tpl_javascript}-->

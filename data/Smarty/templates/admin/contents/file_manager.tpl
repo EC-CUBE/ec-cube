@@ -22,11 +22,11 @@
  */
 *}-->
 <script type="text/javascript">
-var IMG_FOLDER_CLOSE   = "<!--{$TPL_DIR}-->img/contents/folder_close.gif";		// フォルダクローズ時画像
-var IMG_FOLDER_OPEN    = "<!--{$TPL_DIR}-->img/contents/folder_open.gif";		// フォルダオープン時画像
-var IMG_PLUS           = "<!--{$TPL_DIR}-->img/contents/plus.gif";				// プラスライン
-var IMG_MINUS          = "<!--{$TPL_DIR}-->img/contents/minus.gif";				// マイナスライン
-var IMG_NORMAL         = "<!--{$TPL_DIR}-->img/contents/space.gif";				// スペース
+var IMG_FOLDER_CLOSE   = "<!--{$TPL_URLPATH}-->img/contents/folder_close.gif";		// フォルダクローズ時画像
+var IMG_FOLDER_OPEN    = "<!--{$TPL_URLPATH}-->img/contents/folder_open.gif";		// フォルダオープン時画像
+var IMG_PLUS           = "<!--{$TPL_URLPATH}-->img/contents/plus.gif";				// プラスライン
+var IMG_MINUS          = "<!--{$TPL_URLPATH}-->img/contents/minus.gif";				// マイナスライン
+var IMG_NORMAL         = "<!--{$TPL_URLPATH}-->img/contents/space.gif";				// スペース
 </script>
 <form name="form1" method="post" action="?"  enctype="multipart/form-data">
 <input type="hidden" name="mode" value="" />
@@ -71,7 +71,7 @@ var IMG_NORMAL         = "<!--{$TPL_DIR}-->img/contents/space.gif";				// スペ
       <!--{if !$tpl_is_top_dir}-->
       <tr id="parent_dir" onclick="fnSetFormVal('form1', 'select_file', '<!--{$tpl_parent_dir|h}-->');fnSelectFile('parent_dir', '#808080');" onDblClick="setTreeStatus('tree_status');fnDbClick(arrTree, '<!--{$tpl_parent_dir|h}-->', true, '<!--{$tpl_now_dir|h}-->', true)" style="">
         <td>
-          <img src="<!--{$TPL_DIR}-->img/contents/folder_parent.gif" alt="フォルダ">&nbsp;..
+          <img src="<!--{$TPL_URLPATH}-->img/contents/folder_parent.gif" alt="フォルダ">&nbsp;..
         </td>
         <td>&nbsp;</td>
         <td>&nbsp;</td>
@@ -85,9 +85,9 @@ var IMG_NORMAL         = "<!--{$TPL_DIR}-->img/contents/space.gif";				// スペ
       <tr id="<!--{$id}-->" style="">
         <td class="file-name" onDblClick="setTreeStatus('tree_status');fnDbClick(arrTree, '<!--{$arrFileList[cnt].file_path|h}-->', <!--{if $arrFileList[cnt].is_dir|h}-->true<!--{else}-->false<!--{/if}-->, '<!--{$tpl_now_dir|h}-->', false)">
           <!--{if $arrFileList[cnt].is_dir}-->
-          <img src="<!--{$TPL_DIR}-->img/contents/folder_close.gif" alt="フォルダ">
+          <img src="<!--{$TPL_URLPATH}-->img/contents/folder_close.gif" alt="フォルダ">
           <!--{else}-->
-          <img src="<!--{$TPL_DIR}-->img/contents/file.gif">
+          <img src="<!--{$TPL_URLPATH}-->img/contents/file.gif">
           <!--{/if}-->
           <!--{$arrFileList[cnt].file_name|h}-->
         </td>

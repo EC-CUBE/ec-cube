@@ -21,7 +21,7 @@
  *}-->
 <!--{if count($arrBestProducts) > 0}-->
 <div id="recomendarea" class="bloc_outer">
-    <h2><img src="<!--{$TPL_DIR}-->img/icon/ico_block_recommend.gif" width="20" height="20" alt="*" class="title_icon" />
+    <h2><img src="<!--{$TPL_URLPATH}-->img/icon/ico_block_recommend.gif" width="20" height="20" alt="*" class="title_icon" />
         おすすめ商品</h2>
     <!--{section name=cnt loop=$arrBestProducts step=2}-->
     <div class="recomendblock">

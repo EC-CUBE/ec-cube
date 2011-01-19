@@ -20,7 +20,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 <!--▼FOOTER-->
-<div id="pagetop" style="clear: both;"><a href="#top"><img src="<!--{$TPL_DIR}-->img/common/btn_pagetop.gif" width="100" height="10" alt="このページのTOPへ" /></a></div>
+<div id="pagetop" style="clear: both;"><a href="#top"><img src="<!--{$TPL_URLPATH}-->img/common/btn_pagetop.gif" width="100" height="10" alt="このページのTOPへ" /></a></div>
 <!--{strip}-->
     <div id="footer">Copyright &copy;&nbsp;
         <!--{if $smarty.const.RELEASE_YEAR != $smarty.now|date_format:"%Y"}-->

@@ -62,8 +62,8 @@
           </tr>
         </table>
         <div class="btn">
-          <input type="image" onclick=" mode.value='return';" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_back_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_back.gif',this)" src="<!--{$TPL_DIR}-->img/button/btn_back.gif" class="box150" alt="戻る"  name="back" id="back" />
-          <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_send_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_send.gif',this)" src="<!--{$TPL_DIR}-->img/button/btn_send.gif" class="box150" alt="送信"  name="send" id="send" />
+          <input type="image" onclick=" mode.value='return';" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_back_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_back.gif',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_back.gif" class="box150" alt="戻る"  name="back" id="back" />
+          <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_send_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_send.gif',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_send.gif" class="box150" alt="送信"  name="send" id="send" />
         </div>
       </form>
     </div>

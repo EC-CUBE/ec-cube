@@ -45,7 +45,7 @@ $(document).ready(function() {
 <!--▼CONTENTS-->
 <div id="under02column">
     <div id="under02column_shopping">
-        <p class="flowarea"><img src="<!--{$TPL_DIR}-->img/picture/img_flow_03.gif" width="700" height="36" alt="購入手続きの流れ" /></p>
+        <p class="flowarea"><img src="<!--{$TPL_URLPATH}-->img/picture/img_flow_03.gif" width="700" height="36" alt="購入手続きの流れ" /></p>
         <h2 class="title"><!--{$tpl_title|h}--></h2>
 
         <p>下記ご注文内容で送信してもよろしいでしょうか？<br />
@@ -56,11 +56,11 @@ $(document).ready(function() {
             <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->" />
 
             <div class="tblareabtn">
-                <a href="./payment.php" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_back_on.gif',back03)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_back.gif',back03)"><img src="<!--{$TPL_DIR}-->img/button/btn_back.gif" width="150" height="30" alt="戻る" border="0" name="back03-top" id="back03-top" /></a>&nbsp;
+                <a href="./payment.php" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_back_on.gif',back03)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_back.gif',back03)"><img src="<!--{$TPL_URLPATH}-->img/button/btn_back.gif" width="150" height="30" alt="戻る" border="0" name="back03-top" id="back03-top" /></a>&nbsp;
                 <!--{if $payment_type != ""}-->
-                <input type="image" onclick="return fnCheckSubmit();" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_next_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_next.gif',this)" src="<!--{$TPL_DIR}-->img/button/btn_next.gif" alt="次へ" class="box150" name="next-top" id="next-top" />
+                <input type="image" onclick="return fnCheckSubmit();" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_next_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_next.gif',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_next.gif" alt="次へ" class="box150" name="next-top" id="next-top" />
                 <!--{else}-->
-                <input type="image" onclick="return fnCheckSubmit();" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_order_complete_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_order_complete.gif',this)" src="<!--{$TPL_DIR}-->img/button/btn_order_complete.gif" alt="ご注文完了ページへ" class="box150" name="next-top" id="next-top" />                <!--{/if}-->
+                <input type="image" onclick="return fnCheckSubmit();" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_order_complete_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_order_complete.gif',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_order_complete.gif" alt="ご注文完了ページへ" class="box150" name="next-top" id="next-top" />                <!--{/if}-->
             </div>
 
             <table summary="ご注文内容確認">
@@ -263,11 +263,11 @@ $(document).ready(function() {
             <!--{/if}-->
 
             <div class="tblareabtn">
-                <a href="./payment.php" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_back_on.gif',back03)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_back.gif',back03)"><img src="<!--{$TPL_DIR}-->img/button/btn_back.gif" width="150" height="30" alt="戻る" border="0" name="back03" id="back03" /></a>&nbsp;
+                <a href="./payment.php" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_back_on.gif',back03)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_back.gif',back03)"><img src="<!--{$TPL_URLPATH}-->img/button/btn_back.gif" width="150" height="30" alt="戻る" border="0" name="back03" id="back03" /></a>&nbsp;
                 <!--{if $payment_type != ""}-->
-                <input type="image" onclick="return fnCheckSubmit();" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_next_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_next.gif',this)" src="<!--{$TPL_DIR}-->img/button/btn_next.gif" alt="次へ" class="box150" name="next" id="next" />
+                <input type="image" onclick="return fnCheckSubmit();" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_next_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_next.gif',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_next.gif" alt="次へ" class="box150" name="next" id="next" />
                 <!--{else}-->
-                <input type="image" onclick="return fnCheckSubmit();" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_order_complete_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_order_complete.gif',this)" src="<!--{$TPL_DIR}-->img/button/btn_order_complete.gif" alt="ご注文完了ページへ" class="box150" name="next" id="next" />
+                <input type="image" onclick="return fnCheckSubmit();" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_order_complete_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_order_complete.gif',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_order_complete.gif" alt="ご注文完了ページへ" class="box150" name="next" id="next" />
                 <!--{/if}-->
             </div>
         </form>

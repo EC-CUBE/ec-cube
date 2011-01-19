@@ -34,7 +34,7 @@
           <!--{* 退会時非表示 *}-->
           <!--{if $tpl_login}-->
             <p class="addbtn">
-                <a href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php" onclick="win03('./delivery_addr.php','delivadd','600','640'); return false;" onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_add_address_on.gif','newadress');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_add_address.gif','newadress');" target="_blank"><img src="<!--{$TPL_DIR}-->img/button/btn_add_address.gif" width="160" height="22" alt="新しいお届け先を追加" border="0" name="newadress" /></a>
+                <a href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php" onclick="win03('./delivery_addr.php','delivadd','600','640'); return false;" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_address_on.gif','newadress');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_address.gif','newadress');" target="_blank"><img src="<!--{$TPL_URLPATH}-->img/button/btn_add_address.gif" width="160" height="22" alt="新しいお届け先を追加" border="0" name="newadress" /></a>
             </p>
           <!--{/if}-->
         <!--{/if}-->

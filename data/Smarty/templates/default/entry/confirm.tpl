@@ -132,8 +132,8 @@
       </table>
 
       <div class="tblareabtn">
-        <a href="?" onclick="fnModeSubmit('return', '', ''); return false;" onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_back_on.gif','back')" onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_back.gif','back')"><img src="<!--{$TPL_DIR}-->img/button/btn_back.gif" width="150" height="30" alt="戻る" border="0" name="back" id="back" /></a>&nbsp;
-        <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_entry_complete_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_entry_complete.gif',this)" src="<!--{$TPL_DIR}-->img/button/btn_entry_complete.gif" class="box150" alt="送信" border="0" name="send" id="send" />
+        <a href="?" onclick="fnModeSubmit('return', '', ''); return false;" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back_on.gif','back')" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back.gif','back')"><img src="<!--{$TPL_URLPATH}-->img/button/btn_back.gif" width="150" height="30" alt="戻る" border="0" name="back" id="back" /></a>&nbsp;
+        <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_entry_complete_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_entry_complete.gif',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_entry_complete.gif" class="box150" alt="送信" border="0" name="send" id="send" />
       </div>
     </form>
   </div>

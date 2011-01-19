@@ -33,8 +33,8 @@
     <div id="completetext">
       <p>退会手続きを実行してもよろしいでしょうか？</p>
       <div class="tblareabtn">
-        <a href="./refusal.php" onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_refuse_not_on.gif','refuse_not');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_refuse_not.gif','refuse_not');"><img src="<!--{$TPL_DIR}-->img/button/btn_refuse_not.gif" width="180" height="30" alt="いいえ、退会しません" name="refuse_not" id="refuse_not" /></a>&nbsp;
-        <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_refuse_do_on.gif',this);" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_refuse_do.gif',this);" src="<!--{$TPL_DIR}-->img/button/btn_refuse_do.gif" class="box180" alt="はい、退会します" name="refuse_do" id="refuse_do" />
+        <a href="./refusal.php" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_refuse_not_on.gif','refuse_not');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_refuse_not.gif','refuse_not');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_refuse_not.gif" width="180" height="30" alt="いいえ、退会しません" name="refuse_not" id="refuse_not" /></a>&nbsp;
+        <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_refuse_do_on.gif',this);" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_refuse_do.gif',this);" src="<!--{$TPL_URLPATH}-->img/button/btn_refuse_do.gif" class="box180" alt="はい、退会します" name="refuse_do" id="refuse_do" />
       </div>
 
       <p class="mini"><em>※退会手続きが完了した時点で、現在保存されている購入履歴や、お届け先等の情報はすべてなくなりますのでご注意ください。</em></p>

@@ -32,7 +32,7 @@
         <span class="attention"><!--{$errmsg}--></span>
       </div>
       <div class="btn">
-        <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_next_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_next.gif',this)" src="<!--{$TPL_DIR}-->img/button/btn_next.gif" alt="次へ" class="box150" name="next" id="next" />
+        <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_next_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_next.gif',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_next.gif" alt="次へ" class="box150" name="next" id="next" />
       </div>
     </form>
   </div>

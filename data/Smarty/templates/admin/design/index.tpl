@@ -13,7 +13,7 @@ function fnTargetSelf(){
 
 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/ui.core.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/ui.sortable.js"></script>
-<script type="text/javascript" src="<!--{$TPL_DIR}-->js/layout_design.js"></script>
+<script type="text/javascript" src="<!--{$TPL_URLPATH}-->js/layout_design.js"></script>
 
 
 <form name="form1" id="form1" method="post" action="?">

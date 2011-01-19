@@ -29,7 +29,7 @@
        今しばらくお待ちくださいませ。</p>
     </div>
     <div class="btn">
-      <a href="javascript:window.close()" onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_close_on.gif','b_close');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_close.gif','b_close');"><img src="<!--{$TPL_DIR}-->img/button/btn_close.gif" width="150" height="30" alt="閉じる" border="0" name="b_close" /></a>
+      <a href="javascript:window.close()" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_close_on.gif','b_close');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_close.gif','b_close');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_close.gif" width="150" height="30" alt="閉じる" border="0" name="b_close" /></a>
     </div>
   </div>
 

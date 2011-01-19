@@ -23,18 +23,18 @@
 *}-->
 <style type="text/css">
 .mainbg {
-  background: #fff url(<!--{$TPL_DIR_DEFAULT}-->img/contents/main_bg.jpg);
+  background: #fff url(<!--{$TPL_URLPATH_DEFAULT}-->img/contents/main_bg.jpg);
   background-repeat: repeat-x;
 }
 
 .infobg {
-  background: #fff url(<!--{$TPL_DIR_DEFAULT}-->img/contents/home_bg.jpg);
+  background: #fff url(<!--{$TPL_URLPATH_DEFAULT}-->img/contents/home_bg.jpg);
   background-repeat: no-repeat;
   background-color: #e3e3e3;
 }
 
 .navi a{
-  background: url(<!--{$TPL_DIR_DEFAULT}-->img/contents/navi_bar.gif);
+  background: url(<!--{$TPL_URLPATH_DEFAULT}-->img/contents/navi_bar.gif);
   background-repeat: repeat-y;
   background-color: #636469;
   width:140px;
@@ -45,7 +45,7 @@
 }
 
 .navi-on a{
-  background: url(<!--{$TPL_DIR_DEFAULT}-->img/contents/navi_bar.gif);
+  background: url(<!--{$TPL_URLPATH_DEFAULT}-->img/contents/navi_bar.gif);
   background-repeat: repeat-y;
   background-color: #a5a5a5;
   width:140px;
@@ -56,43 +56,43 @@
 }
 
 .icon_edit{
-  background: url(<!--{$TPL_DIR_DEFAULT}-->img/contents/icon_edit.jpg);
+  background: url(<!--{$TPL_URLPATH_DEFAULT}-->img/contents/icon_edit.jpg);
   background-repeat: no-repeat;
   padding: 0 0 0 15px;
 }
 
 .icon_mail {
-  background: url(<!--{$TPL_DIR_DEFAULT}-->img/contents/icon_mail.jpg);
+  background: url(<!--{$TPL_URLPATH_DEFAULT}-->img/contents/icon_mail.jpg);
   background-repeat: no-repeat;
   padding: 0 0 0 15px;
 }
 
 .icon_delete {
-  background: url(<!--{$TPL_DIR_DEFAULT}-->img/contents/icon_delete.jpg);
+  background: url(<!--{$TPL_URLPATH_DEFAULT}-->img/contents/icon_delete.jpg);
   background-repeat: no-repeat;
   padding: 0 0 0 15px;
 }
 
 .icon_copy {
-  background: url(<!--{$TPL_DIR_DEFAULT}-->img/contents/icon_copy.jpg);
+  background: url(<!--{$TPL_URLPATH_DEFAULT}-->img/contents/icon_copy.jpg);
   background-repeat: no-repeat;
   padding: 0 0 0 15px;
 }
 
 .icon_class {
-  background: url(<!--{$TPL_DIR_DEFAULT}-->img/contents/icon_class.jpg);
+  background: url(<!--{$TPL_URLPATH_DEFAULT}-->img/contents/icon_class.jpg);
   background-repeat: no-repeat;
   padding: 0 0 0 15px;
 }
 
 .icon_confirm {
-  background: url(<!--{$TPL_DIR_DEFAULT}-->img/contents/icon_confirm.jpg);
+  background: url(<!--{$TPL_URLPATH_DEFAULT}-->img/contents/icon_confirm.jpg);
   background-repeat: no-repeat;
   padding: 0 0 0 15px;
 }
 
 .number a{
-  background: url(<!--{$TPL_DIR_DEFAULT}-->img/contents/number_bg.jpg);
+  background: url(<!--{$TPL_URLPATH_DEFAULT}-->img/contents/number_bg.jpg);
   background-repeat: repeat-x;
   background-color: #505468;
   padding-top: 3px;
@@ -107,7 +107,7 @@
 }
 
 .number a:hover{
-  background: url(<!--{$TPL_DIR_DEFAULT}-->img/contents/number_bg_on.jpg);
+  background: url(<!--{$TPL_URLPATH_DEFAULT}-->img/contents/number_bg_on.jpg);
   background-repeat: repeat-x;
   background-color: #f7c600;
   padding-top: 3px;
@@ -126,7 +126,7 @@
   padding-bottom: 5px;
   padding-left: 8px;
   padding-right: 8px;
-  background: url(<!--{$TPL_DIR_DEFAULT}-->img/contents/number_bg_on.jpg);
+  background: url(<!--{$TPL_URLPATH_DEFAULT}-->img/contents/number_bg_on.jpg);
   background-repeat: repeat-x;
   background-color: #f7c600;
   color:#ffffff;
@@ -138,7 +138,7 @@
 }
 
 .number-on a:hover{
-  background: url(<!--{$TPL_DIR_DEFAULT}-->img/contents/number_bg_on.jpg);
+  background: url(<!--{$TPL_URLPATH_DEFAULT}-->img/contents/number_bg_on.jpg);
   background-repeat: repeat-x;
   background-color: #f7c600;
   padding-top: 3px;

@@ -22,7 +22,7 @@
 <!--▼CONTENTS-->
 <div id="under02column">
   <div id="under02column_customer">
-    <p class="flowarea"><img src="<!--{$TPL_DIR}-->img/picture/img_flow_01.gif" width="700" height="36" alt="購入手続きの流れ" /></p>
+    <p class="flowarea"><img src="<!--{$TPL_URLPATH}-->img/picture/img_flow_01.gif" width="700" height="36" alt="購入手続きの流れ" /></p>
     <h2 class="title"><!--{$tpl_title|h}--></h2>
 
     <p>下記項目にご入力ください。「<span class="attention">※</span>」印は入力必須項目です。<br />
@@ -61,7 +61,7 @@
             <p>〒&nbsp;<input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->; ime-mode: disabled;"  size="6" class="box60" />&nbsp;-&nbsp;  <input type="text"  name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->; ime-mode: disabled;"  size="6" class="box60" />　
               <a href="http://search.post.japanpost.jp/zipcode/" target="_blank"><span class="fs12">郵便番号検索</span></a></p>
 
-            <p class="zipimg"><a href="<!--{$smarty.const.ROOT_URLPATH}-->address/<!--{$smarty.const.DIR_INDEX_URL}-->" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'order_zip01', 'order_zip02', 'order_pref', 'order_addr01'); return false;" target="_blank"><img src="<!--{$TPL_DIR}-->img/button/btn_address_input.gif" width="86" height="20" alt="住所自動入力" /></a>
+            <p class="zipimg"><a href="<!--{$smarty.const.ROOT_URLPATH}-->address/<!--{$smarty.const.DIR_INDEX_URL}-->" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'order_zip01', 'order_zip02', 'order_pref', 'order_addr01'); return false;" target="_blank"><img src="<!--{$TPL_URLPATH}-->img/button/btn_address_input.gif" width="86" height="20" alt="住所自動入力" /></a>
                <span class="mini">&nbsp;郵便番号を入力後、クリックしてください。</span></p>
           </td>
         </tr>
@@ -200,7 +200,7 @@
             <p>〒&nbsp;<input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->; ime-mode: disabled;"  size="6" class="box60" />&nbsp;-&nbsp;  <input type="text"  name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->; ime-mode: disabled;"  size="6" class="box60" />　
               <a href="http://search.post.japanpost.jp/zipcode/" target="_blank"><span class="fs12">郵便番号検索</span></a></p>
 
-            <p class="zipimg"><a href="<!--{$smarty.const.ROOT_URLPATH}-->address/<!--{$smarty.const.DIR_INDEX_URL}-->" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'shipping_zip01', 'shipping_zip02', 'shipping_pref', 'shipping_addr01'); return false;" target="_blank"><img src="<!--{$TPL_DIR}-->img/button/btn_address_input.gif" width="86" height="20" alt="住所自動入力" /></a>
+            <p class="zipimg"><a href="<!--{$smarty.const.ROOT_URLPATH}-->address/<!--{$smarty.const.DIR_INDEX_URL}-->" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'shipping_zip01', 'shipping_zip02', 'shipping_pref', 'shipping_addr01'); return false;" target="_blank"><img src="<!--{$TPL_URLPATH}-->img/button/btn_address_input.gif" width="86" height="20" alt="住所自動入力" /></a>
               <span class="mini">&nbsp;郵便番号を入力後、クリックしてください。</span></p>
           </td>
         </tr>
@@ -243,7 +243,7 @@
       <p><a href="javascript:;" onclick="fnModeSubmit('multiple', '', ''); return false">お届け先を複数指定する</a></p>
 
       <div class="tblareabtn">
-       <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_next_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_next.gif',this)" src="<!--{$TPL_DIR}-->img/button/btn_next.gif" class="box150" alt="次へ" name="next" id="next" />
+       <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_next_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_next.gif',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_next.gif" class="box150" alt="次へ" name="next" id="next" />
       </div>
     </form>
   </div>

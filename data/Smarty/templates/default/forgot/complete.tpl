@@ -30,7 +30,7 @@
         <p><em><!--{$temp_password}--></em></p>
       </div>
       <div class="btn">
-        <a href="javascript:window.close()" onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_close_on.gif','close');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_close.gif','close');"><img src="<!--{$TPL_DIR}-->img/button/btn_close.gif" width="150" height="30" alt="閉じる" name="close" id="close" /></a>
+        <a href="javascript:window.close()" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_close_on.gif','close');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_close.gif','close');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_close.gif" width="150" height="30" alt="閉じる" name="close" id="close" /></a>
       </div>
     </form>
   </div>

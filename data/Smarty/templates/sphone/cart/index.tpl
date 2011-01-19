@@ -132,8 +132,8 @@ $(document).ready(function() {
                         <td><!--{$item.quantity}-->
                         <br />
 <ul id="quantity_level">
-                                <li><a href="?" onclick="fnModeSubmit('up','cart_no','<!--{$item.cart_no}-->'); return false"><img src="<!--{$TPL_DIR}-->img/button/btn_plus.gif" width="8" height="8" alt="＋" /></a></li>
-                                <li><a href="?" onclick="fnModeSubmit('down','cart_no','<!--{$item.cart_no}-->'); return false"><img src="<!--{$TPL_DIR}-->img/button/btn_minus.gif" width="8" height="8" alt="-" /></a></li>
+                                <li><a href="?" onclick="fnModeSubmit('up','cart_no','<!--{$item.cart_no}-->'); return false"><img src="<!--{$TPL_URLPATH}-->img/button/btn_plus.gif" width="8" height="8" alt="＋" /></a></li>
+                                <li><a href="?" onclick="fnModeSubmit('down','cart_no','<!--{$item.cart_no}-->'); return false"><img src="<!--{$TPL_URLPATH}-->img/button/btn_minus.gif" width="8" height="8" alt="-" /></a></li>
                             </ul></td>
                         <td><!--{$item.total_inctax|number_format}-->円</td>
               </tr>

@@ -236,7 +236,7 @@ function fnCheckStock(form) {
                     <ul class="status_icon">
                         <!--{foreach from=$productStatus[$id] item=status}--> 
                             <li>
-                                <img src="<!--{$TPL_DIR}--><!--{$arrSTATUS_IMAGE[$status]}-->" width="60" height="17" alt="<!--{$arrSTATUS[$status]}-->"/>
+                                <img src="<!--{$TPL_URLPATH}--><!--{$arrSTATUS_IMAGE[$status]}-->" width="60" height="17" alt="<!--{$arrSTATUS[$status]}-->"/>
                             </li>
                         <!--{/foreach}-->
                     </ul>
@@ -268,8 +268,8 @@ function fnCheckStock(form) {
                     <!--★詳細ボタン★-->
                     <span class="btnbox">
                         <!--{assign var=name value="detail`$id`"}-->
-                        <a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrProduct.product_id|u}-->" onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_detail_on.gif','<!--{$name}-->');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_detail.gif','<!--{$name}-->');">
-                            <img src="<!--{$TPL_DIR}-->img/button/btn_detail.gif" width="115" height="25" alt="詳しくはこちら" name="<!--{$name}-->" id="<!--{$name}-->" /></a>
+                        <a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrProduct.product_id|u}-->" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_detail_on.gif','<!--{$name}-->');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_detail.gif','<!--{$name}-->');">
+                            <img src="<!--{$TPL_URLPATH}-->img/button/btn_detail.gif" width="115" height="25" alt="詳しくはこちら" name="<!--{$name}-->" id="<!--{$name}-->" /></a>
                     </span>
                 </p>
 
@@ -327,11 +327,11 @@ function fnCheckStock(form) {
                                     <input
                                         type="image"
                                         id="cart<!--{$id}-->"
-                                        src="<!--{$TPL_DIR}-->img/button/btn_cartin.gif"
+                                        src="<!--{$TPL_URLPATH}-->img/button/btn_cartin.gif"
                                         alt="カゴに入れる"
                                         onclick="fnInCart(this.form); return false;"
-                                        onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_cartin_on.gif', this);"
-                                        onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_cartin.gif', this);"
+                                        onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_cartin_on.gif', this);"
+                                        onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_cartin.gif', this);"
                                     />
                                 </div>
                                 <div class="attention" id="cartbtn_dynamic_<!--{$id}-->"></div>

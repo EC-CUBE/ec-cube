@@ -20,7 +20,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 <div class="bloc_outer">
-    <h2><img src="<!--{$TPL_DIR}-->img/icon/ico_block_search_products.gif" width="20" height="20" alt="*" class="title_icon" />
+    <h2><img src="<!--{$TPL_URLPATH}-->img/icon/ico_block_search_products.gif" width="20" height="20" alt="*" class="title_icon" />
         検索条件</h2>
     <div id="searcharea" class="bloc_body">
         <!--検索フォーム-->
@@ -43,7 +43,7 @@
             <!--{/if}-->
             <p class="mini">商品名を入力
               <input type="text" name="name" class="box142" maxlength="50" value="<!--{$smarty.get.name|h}-->" /></p>
-            <p class="btn"><input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_block_search_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_block_search.gif',this)" src="<!--{$TPL_DIR}-->img/button/btn_block_search.gif" class="box51" alt="検索" name="search" /></p>
+            <p class="btn"><input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_block_search_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_block_search.gif',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_block_search.gif" class="box51" alt="検索" name="search" /></p>
         </form>
     </div>
 </div>

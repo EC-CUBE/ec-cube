@@ -176,15 +176,15 @@ $(document).ready(function() {
                 <!--{if $arrProduct.main_large_image|strlen >= 1}-->
                     href="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrProduct.main_large_image|h}-->"
                     class="expansion"
-                    onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_expansion_on.gif','expansion01');"
-                    onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_expansion.gif','expansion01');"
+                    onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_expansion_on.gif','expansion01');"
+                    onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_expansion.gif','expansion01');"
                     target="_blank"
                 <!--{/if}-->
             >
                 <img src="<!--{$arrFile[$key].filepath|h}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" alt="<!--{$arrProduct.name|h}-->" class="picture" /><br />
                 <!--★拡大する★-->
                 <!--{if $arrProduct.main_large_image|strlen >= 1}-->
-                    <img src="<!--{$TPL_DIR}-->img/button/btn_expansion.gif" width="85" height="13" alt="画像を拡大する" name="expansion01" id="expansion01" />
+                    <img src="<!--{$TPL_URLPATH}-->img/button/btn_expansion.gif" width="85" height="13" alt="画像を拡大する" name="expansion01" id="expansion01" />
                 <!--{/if}-->
             </a>
         </div>
@@ -196,7 +196,7 @@ $(document).ready(function() {
                 <ul class="status_icon">
                     <!--{foreach from=$ps item=status}-->
                     <li>
-                        <img src="<!--{$TPL_DIR}--><!--{$arrSTATUS_IMAGE[$status]}-->" width="65" height="17" alt="<!--{$arrSTATUS[$status]}-->" id="icon<!--{$status}-->" />
+                        <img src="<!--{$TPL_URLPATH}--><!--{$arrSTATUS_IMAGE[$status]}-->" width="65" height="17" alt="<!--{$arrSTATUS[$status]}-->" id="icon<!--{$status}-->" />
                     </li>
                     <!--{/foreach}-->
                 </ul>
@@ -396,7 +396,7 @@ $(document).ready(function() {
                         <div id="cartbtn_default">
                             <!--★カゴに入れる★-->
                             <div>
-                                <a href="javascript:void(document.form1.submit())" onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_cartin_on.gif','cart');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/products/b_cartin.gif','cart');" class="spbtn spbtn-agree">
+                                <a href="javascript:void(document.form1.submit())" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/products/b_cartin_on.gif','cart');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/products/b_cartin.gif','cart');" class="spbtn spbtn-agree">
                                     カゴに入れる
                                 </a>
                             </div>
@@ -449,14 +449,14 @@ $(document).ready(function() {
                             <!--{if $arrProduct[$lkey]|strlen >= 1}-->
                                 href="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrProduct[$lkey]|h}-->"
                                 class="expansion"
-                                onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_expansion_on.gif', 'expansion_<!--{$lkey|h}-->');"
-                                onmouseout="chgImg('<!--{$TPL_DIR}-->img/products/b_expansion.gif', 'expansion_<!--{$lkey|h}-->');"
+                                onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/products/b_expansion_on.gif', 'expansion_<!--{$lkey|h}-->');"
+                                onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/products/b_expansion.gif', 'expansion_<!--{$lkey|h}-->');"
                                 target="_blank"
                             <!--{/if}-->
                         >
                             <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrProduct.name|h}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" /><br />
                             <!--{if $arrProduct[$lkey]|strlen >= 1}-->
-                                <img src="<!--{$TPL_DIR}-->img/products/b_expansion.gif" width="85" height="13" alt="画像を拡大する" id="expansion_<!--{$lkey|h}-->" />
+                                <img src="<!--{$TPL_URLPATH}-->img/products/b_expansion.gif" width="85" height="13" alt="画像を拡大する" id="expansion_<!--{$lkey|h}-->" />
                             <!--{/if}-->
                         </a>
                     </div>

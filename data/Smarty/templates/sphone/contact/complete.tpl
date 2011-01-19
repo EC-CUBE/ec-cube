@@ -36,11 +36,11 @@
     </div>
     <div class="tblareabtn">
     <!--{if $is_campaign}-->
-      <a href="<!--{$smarty.const.CAMPAIGN_URL}--><!--{$campaign_dir}-->/<!--{$smarty.const.DIR_INDEX_URL}-->" onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_toppage_on.gif','b_toppage');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_toppage.gif','b_toppage');"><img src="<!--{$TPL_DIR}-->img/button/btn_toppage.gif" width="150" height="30" alt="トップページへ" border="0" name="b_toppage" id="b_toppage" /></a>
+      <a href="<!--{$smarty.const.CAMPAIGN_URL}--><!--{$campaign_dir}-->/<!--{$smarty.const.DIR_INDEX_URL}-->" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_toppage_on.gif','b_toppage');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_toppage.gif','b_toppage');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_toppage.gif" width="150" height="30" alt="トップページへ" border="0" name="b_toppage" id="b_toppage" /></a>
 
     <!--{else}-->
 
-      <a href="<!--{$smarty.const.TOP_URLPATH}-->" onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_toppage_on.gif','b_toppage');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_toppage.gif','b_toppage');"><img src="<!--{$TPL_DIR}-->img/button/btn_toppage.gif" width="150" height="30" alt="トップページへ" border="0" name="b_toppage" id="b_toppage" /></a>
+      <a href="<!--{$smarty.const.TOP_URLPATH}-->" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_toppage_on.gif','b_toppage');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_toppage.gif','b_toppage');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_toppage.gif" width="150" height="30" alt="トップページへ" border="0" name="b_toppage" id="b_toppage" /></a>
     <!--{/if}-->
     </div>
   </div>

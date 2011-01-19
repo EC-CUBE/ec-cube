@@ -177,7 +177,7 @@ class SC_View {
     function assignTemplatePath($device_type_id) {
 
         // テンプレート変数を割り当て
-        $this->assign("TPL_DIR", SC_Helper_PageLayout_Ex::getUserDir($device_type_id, true));
+        $this->assign("TPL_URLPATH", SC_Helper_PageLayout_Ex::getUserDir($device_type_id, true));
 
         // ヘッダとフッタを割り当て
         $templatePath = SC_Helper_PageLayout_Ex::getTemplatePath($device_type_id);
@@ -199,8 +199,8 @@ class SC_AdminView extends SC_View{
         parent::SC_View(false);
         $this->_smarty->template_dir = TEMPLATE_ADMIN_REALDIR;
         $this->_smarty->compile_dir = COMPILE_ADMIN_REALDIR;
-        $this->assign('TPL_DIR_DEFAULT', ROOT_URLPATH . USER_DIR . USER_PACKAGE_DIR . DEFAULT_TEMPLATE_NAME . '/');
-        $this->assign('TPL_DIR', ROOT_URLPATH . USER_DIR . USER_PACKAGE_DIR . ADMIN_DIR);
+        $this->assign('TPL_URLPATH_DEFAULT', ROOT_URLPATH . USER_DIR . USER_PACKAGE_DIR . DEFAULT_TEMPLATE_NAME . '/');
+        $this->assign('TPL_URLPATH', ROOT_URLPATH . USER_DIR . USER_PACKAGE_DIR . ADMIN_DIR);
         $this->initpath();
     }
 }

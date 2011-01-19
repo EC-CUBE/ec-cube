@@ -26,7 +26,7 @@
 <div id="error-wrap">
   <div id="error">
     <div class="logo">
-      <img src="<!--{$TPL_DIR}-->img/contents/logo_resize.jpg" width="99" height="15" alt="EC-CUBE" />
+      <img src="<!--{$TPL_URLPATH}-->img/contents/logo_resize.jpg" width="99" height="15" alt="EC-CUBE" />
     </div>
     <div class="error-top"></div>
     <div class="contents">

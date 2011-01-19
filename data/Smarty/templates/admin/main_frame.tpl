@@ -28,8 +28,8 @@
 <meta http-equiv="content-script-type" content="text/javascript" />
 <meta http-equiv="content-style-type" content="text/css" />
 <meta name="robots" content="noindex,nofollow" />
-<link rel="stylesheet" href="<!--{$TPL_DIR}-->css/admin_contents.css" type="text/css" media="all" />
-<link rel="stylesheet" href="<!--{$TPL_DIR}-->css/admin_file_manager.css" type="text/css" media="all" />
+<link rel="stylesheet" href="<!--{$TPL_URLPATH}-->css/admin_contents.css" type="text/css" media="all" />
+<link rel="stylesheet" href="<!--{$TPL_URLPATH}-->css/admin_file_manager.css" type="text/css" media="all" />
 <script type="text/javascript" src="http://www.google.com/jsapi?key=xxx"></script>
 <script type="text/javascript">//<![CDATA[
     google.load("maps", "3", {other_params:'sensor=false'});
@@ -39,9 +39,9 @@
 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/win_op.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/site.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery-1.4.2.min.js"></script>
-<script type="text/javascript" src="<!--{$TPL_DIR}-->js/admin.js"></script>
+<script type="text/javascript" src="<!--{$TPL_URLPATH}-->js/admin.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/css.js"></script>
-<script type="text/javascript" src="<!--{$TPL_DIR}-->js/file_manager.js"></script>
+<script type="text/javascript" src="<!--{$TPL_URLPATH}-->js/file_manager.js"></script>
 <title><!--{$smarty.const.ADMIN_TITLE}--></title>
 <script type="text/javascript">//<![CDATA[
     <!--{$tpl_javascript}-->
@@ -69,7 +69,7 @@
 <!--{* ▼HEADER *}-->
 <div id="header">
   <div id="header-contents">
-    <div id="logo"><a href="<!--{$smarty.const.ADMIN_HOME_URLPATH}-->"><img src="<!--{$TPL_DIR}-->img/header/logo.jpg" width="172" height="25" alt="EC-CUBE" /></a></div>
+    <div id="logo"><a href="<!--{$smarty.const.ADMIN_HOME_URLPATH}-->"><img src="<!--{$TPL_URLPATH}-->img/header/logo.jpg" width="172" height="25" alt="EC-CUBE" /></a></div>
     <div id="site-check">
       <p class="info"><span>ログイン&nbsp;:&nbsp;<!--{* ログイン名 *}--><!--{$smarty.session.login_name|h}--></span>&nbsp;様&nbsp;</p>
       <ul>
