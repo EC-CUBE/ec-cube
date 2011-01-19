@@ -428,14 +428,14 @@ function lfDispStep0($objPage) {
                 // ディレクトリの場合
                 if(is_dir($path)) {
                     if(!is_writable($path)) {
-                        $mess.= ">> ×：$real_path($filemode) <br>ユーザ書込み権限(777, 707等)を付与して下さい。<br>";
+                        $mess.= ">> ×：$real_path($filemode) \nユーザ書込み権限(777, 707等)を付与して下さい。\n";
                         $hasErr = true;
                     } else {
                         GC_Utils_Ex::gfPrintLog("WRITABLE：".$path, INSTALL_LOG);
                     }
                 } else {
                     if(!is_writable($path)) {
-                        $mess.= ">> ×：$real_path($filemode) <br>ユーザ書込み権限(666, 606等)を付与して下さい。<br>";
+                        $mess.= ">> ×：$real_path($filemode) \nユーザ書込み権限(666, 606等)を付与して下さい。\n";
                         $hasErr = true;
                     } else {
                         GC_Utils_Ex::gfPrintLog("WRITABLE：".$path, INSTALL_LOG);
@@ -727,8 +727,8 @@ function lfCheckWebError($objFormParam) {
     $secure_dir = ereg_replace("^https?://[a-zA-Z0-9_~=&\?\.\-]+", "", $arrRet['secure_url']);
 
     if($normal_dir != $secure_dir) {
-        $objErr->arrErr['normal_url'] = "URLに異なる階層を指定することはできません。";
-        $objErr->arrErr['secure_url'] = "URLに異なる階層を指定することはできません。";
+        $objErr->arrErr['normal_url'] = "※ URLに異なる階層を指定することはできません。";
+        $objErr->arrErr['secure_url'] = "※ URLに異なる階層を指定することはできません。";
     }
 
     // ログインIDチェック
@@ -743,7 +743,7 @@ function lfCheckWebError($objFormParam) {
     $oldAdminDir = SC_Utils_Ex::sfTrimURL(ADMIN_DIR);
     $newAdminDir = $objFormParam->getValue('admin_dir');
     if ($oldAdminDir !== $newAdminDir AND (file_exists(HTML_REALDIR . $newAdminDir) OR file_exists(USER_TEMPLATE_REALDIR . $newAdminDir))) {
-        $objErr->arrErr["admin_dir"] = "指定した管理機能ディレクトリは既に存在しています。別の名前を指定していください。";
+        $objErr->arrErr["admin_dir"] = "※ 指定した管理機能ディレクトリは既に存在しています。別の名前を指定してください。";
     }
 
     return $objErr->arrErr;
@@ -1048,13 +1048,13 @@ function renameAdminDir($adminDir) {
         return true;
     }
     if (file_exists(HTML_REALDIR . $adminDir) OR file_exists(USER_TEMPLATE_REALDIR . $adminDir)) {
-        return '指定した管理機能ディレクトリは既に存在しています。別の名前を指定していください。';
+        return '※ 指定した管理機能ディレクトリは既に存在しています。別の名前を指定してください。';
     }
     if (!rename(HTML_REALDIR . $oldAdminDir, HTML_REALDIR . $adminDir)) {
-        return HTML_REALDIR . $adminDir . 'へのリネームに失敗しました。ディレクトリの権限を確認してください。';
+        return '※ ' . HTML_REALDIR . $adminDir . 'へのリネームに失敗しました。ディレクトリの権限を確認してください。';
     }
     if (!rename(USER_TEMPLATE_REALDIR . $oldAdminDir, USER_TEMPLATE_REALDIR . $adminDir)) {
-        return USER_TEMPLATE_REALDIR . $adminDir . 'へのリネームに失敗しました。ディレクトリの権限を確認してください。';
+        return '※ ' . USER_TEMPLATE_REALDIR . $adminDir . 'へのリネームに失敗しました。ディレクトリの権限を確認してください。';
     }
     return true;
 }

@@ -26,20 +26,21 @@
 <!--{foreach key=key item=item from=$arrHidden}-->
 <input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->">
 <!--{/foreach}-->
+<div class="contents">
+  <div class="message">
+        <h2>EC CUBE インストールが完了しました。</h2>
+  </div>
+  <div class="result-info02">
+        <p><a href="<!--{$tpl_sslurl}--><!--{$smarty.const.ADMIN_DIR}--><!--{$smarty.const.DIR_INDEX_URL}-->">管理画面</a>にログインできます。<br />
+        先ほど登録したID、パスワードを用いてログインしてください。</p>
+  </div>
+</div>
 
-<tr><td height="80"></td></tr>
-<tr>
-    <td align="center" class="fs12">
-        <strong>EC CUBE インストールが完了しました。</strong><br>
-        <br>
-        <a href="<!--{$tpl_sslurl}--><!--{$smarty.const.ADMIN_DIR}--><!--{$smarty.const.DIR_INDEX_URL}-->">管理画面</a>にログインできます。
-    </td>
-</tr>
-<tr>
-    <td align="center" class="fs10">
-        先ほど登録したID、パスワードを用いてログインしてください。
-    </td>
-</tr>
-<tr><td height="80"></td></tr>
-
-</table>
+<div class="btn-area-top"></div>
+  <div class="btn-area">
+    <ul>
+        <li><a class="btn-action" href="<!--{$tpl_sslurl}--><!--{$smarty.const.ADMIN_DIR}--><!--{$smarty.const.DIR_INDEX_URL}-->"><span class="btn-next">管理画面へログインする</span></a></li>
+    </ul>
+  </div>
+  <div class="btn-area-bottom"></div>
+</from>

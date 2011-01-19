@@ -19,29 +19,21 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
-<table width="502" border="0" cellspacing="1" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="./<!--{$smarty.const.DIR_INDEX_URL}-->">
 <input type="hidden" name="mode" value="<!--{$tpl_mode}-->">
-
 <!--{foreach key=key item=item from=$arrHidden}-->
 <input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->">
 <!--{/foreach}-->
-
-<tr><td height="60"></td></tr>
-<tr>
-	<td align="center" class="fs12">
-		<strong>EC CUBE インストールを開始します</strong>
-	</td>
-</tr>
-</table>
-
-<table width="500" border="0" cellspacing="1" cellpadding="8" summary=" ">
-	<tr><td height="30"></td></tr>
-	<tr>
-		<td align="center">
-		<input type="image" onMouseover="chgImgImageSubmit('img/next_on.jpg',this)" onMouseout="chgImgImageSubmit('img/next.jpg',this)" src="img/next.jpg" width="105" height="24" alt="次へ進む" border="0" name="next">
-		</td>
-	</tr>
-	<tr><td height="30"></td></tr>
+<div class="contents">
+  <div class="message">
+    EC-CUBEのインストールを開始します。
+  </div>
+</div>
+<div class="btn-area-top"></div>
+<div class="btn-area">
+  <ul>
+    <li><a class="btn-action" href="javascript:;" onclick="document.form1.submit(); return false;"><span class="btn-next">次へ進む</span></a></li>
+  </ul>
+</div>
+<div class="btn-area-bottom"></div>
 </from>
-</table>

@@ -1,138 +1,54 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html lang="ja">
 <!--{*
- * This file is part of EC-CUBE
- *
- * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
- *
- * http://www.lockon.co.jp/
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *}-->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=<!--{$smarty.const.CHAR_CODE}-->">
-<meta http-equiv="content-script-type" content="text/javascript">
-<meta http-equiv="content-style-type" content="text/css">
-<script type="text/javascript" src="../js/css.js"></script>
-<script type="text/javascript" src="../js/navi.js"></script>
-<style type="text/css">
-  .red {
-      color: #F00;
-  }
-</style>
-<title>EC CUBE インストール画面</title>
-</head>
-
-<body bgcolor="#ffffff" text="#000000" link="#006699" vlink="#006699" alink="#006699" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-<noscript>
-</noscript>
-<div align="center">
-<a name="top"></a>
-
-<!--▼HEADER-->
-<table width="912" border="0" cellspacing="0" cellpadding="0" summary=" ">
-    <tr valign="top">
-        <td><img src="img/header_left.jpg" width="17" height="50" alt=""></td>
-        <td>
-        <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" " background="img/header_bg2.jpg">
-            <tr valign="top">
-                <td><img src="img/logo.jpg" width="230" height="50" alt="EC CUBE" border="0"></td>
-                <td width="648" align="right"></td>
-            </tr>
-        </table>
-        </td>
-        <td><img src="img/header_right.jpg" width="17" height="50" alt=""></td>
-    </tr>
-</table>
-<!--▲HEADER-->
-
-<!--▼CONTENTS-->
-<table width="912" border="0" cellspacing="0" cellpadding="0" summary=" ">
-    <tr valign="top">
-        <td background="img/left_bg.jpg"><img src="img/left.jpg" width="17" height="443" alt=""></td>
-        <td>
-        <!--★★メインコンテンツ★★-->
-        <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
-            <tr valign="top">
-                <td class="mainbg" align="center" height="450">
-                <table width="562" border="0" cellspacing="0" cellpadding="0" summary=" ">
-                    <tr><td height="40"></td></tr>
-                    <tr>
-                        <td colspan="3"><img src="img/error_top.jpg" width="562" height="14" alt=""></td>
-                    </tr>
-                    <tr>
-                        <td background="img/main_left.jpg"><img src="img/_.gif" width="14" height="1" alt=""></td>
-                        <td bgcolor="#cccccc">
-                        <!--検索条件設定テーブルここから-->
-                        <table width="534" border="0" cellspacing="0" cellpadding="0" summary=" ">
-                            <tr>
-                                <td bgcolor="#ffffff" align="center">
-                                <!--{include file=$tpl_mainpage}-->
-                                </td>
-                            </tr>
-                        </table>
-                        <!--検索条件設定テーブルここまで-->
-                        </td>
-                        <td background="img/main_right.jpg"><img src="img/_.gif" width="14" height="1" alt=""></td>
-                    </tr>
-                    <tr>
-                        <td colspan="3"><img src="img/error_bottom.jpg" width="562" height="14" alt=""></td>
-                    </tr>
-                    <tr><td height="40"></td></tr>
-                </table>
-                </td>
-            </tr>
-        </table>
-        <!--★★メインコンテンツ★★-->
-        </td>
-        <td background="img/right_bg.jpg"><div align="justify"><img src="img/right.jpg" width="17" height="443" alt=""></div></td>
-    </tr>
-</table>
-<!--▲CONTENTS-->
-
-<!--▼FOOTER-->
-<table width="912" border="0" cellspacing="0" cellpadding="0" summary=" ">
-    <tr valign="top">
-        <td background="img/left_bg.jpg"><img src="img/_.gif" width="17" height="1" alt=""></td>
-        <td bgcolor="#636469">
-        <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
-            <tr>
-                <td align="center" bgcolor="#f0f0f0">
-                <table width="840" border="0" cellspacing="0" cellpadding="0" summary=" ">
-                    <tr>
-                        <td height="45" align="right"><a href="#top"><img src="img/pagetop.gif" width="105" height="17" alt="GO TO PAGE TOP" border="0"></a></td>
-                    </tr>
-                </table>
-                </td>
-            </tr>
-        </table>
-        <table width="878" border="0" cellspacing="0" cellpadding="10" summary=" ">
-            <tr>
-                <td class="fs10n"><span class="gray">&nbsp;Copyright &copy; 2000-<!--{$smarty.now|date_format:"%Y"}--> LOCKON CO.,LTD. All Rights Reserved.</span></td>
-            </tr>
-        </table>
-        </td>
-        <td background="img/right_bg.jpg"><img src="img/_.gif" width="17" height="1" alt=""></td>
-    </tr>
-    <tr>
-        <td colspan="3"><img src="img/footer.jpg" width="912" height="19" alt=""></td>
-    </tr>
-    <tr><td height="10"></td></tr>
-</table>
-<!--▲FOOTER-->
-</div>
-
-</body>
+    /*
+    * This file is part of EC-CUBE
+    *
+    * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
+    *
+    * http://www.lockon.co.jp/
+    *
+    * This program is free software; you can redistribute it and/or
+    * modify it under the terms of the GNU General Public License
+    * as published by the Free Software Foundation; either version 2
+    * of the License, or (at your option) any later version.
+    *
+    * This program is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    * GNU General Public License for more details.
+    *
+    * You should have received a copy of the GNU General Public License
+    * along with this program; if not, write to the Free Software
+    * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+    */
+    *}-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=<!--{$smarty.const.CHAR_CODE}-->" />
+    <meta http-equiv="content-script-type" content="text/javascript" />
+    <meta http-equiv="content-style-type" content="text/css" />
+    <link rel="stylesheet" href="css/admin_contents.css" type="text/css" media="all" />
+    <script type="text/javascript" src="../js/css.js"></script>
+    <script type="text/javascript" src="../js/navi.js"></script>
+    <script type="text/javascript" src="../js/jquery-1.4.2.min.js"></script>
+    <title>EC-CUBEインストール</title>
+  </head>
+  <body>
+    <!--{$GLOBAL_ERR}-->
+    <noscript>
+      <p>JavaScript を有効にしてご利用下さい。</p>
+    </noscript>
+    <div id="outside-admin">
+      <div id="install-wrap">
+          <div class="logo">
+            <img src="img/logo_resize.jpg" width="99" height="15" alt="EC-CUBE" />
+          </div>
+        <div id="install-area">
+          <div class="install-top"></div>
+          <!--{include file=$tpl_mainpage}-->
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>
