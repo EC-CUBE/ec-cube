@@ -47,7 +47,7 @@
   <div class="btn-area">
     <ul>
       <li><a class="btn-action" href="javascript:;" onclick="fnModeSubmit('return', '', ''); return false;"><span class="btn-prev">前のページへ戻る</span></a></li>
-      <li><a class="btn-action" href="javascript:;" onclick="return confirm('この内容でメールを送信しても宜しいですか'); return false;"><span class="btn-next">メール送信</span></a></li>
+      <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'send', '', ''); return false;"><span class="btn-next">メール送信</span></a></li>
     </ul>
   </div>
 </div>
