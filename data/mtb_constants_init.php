@@ -406,8 +406,12 @@ define('USE_POINT', true);
 define('NOSTOCK_HIDDEN', false);
 /** モバイルサイトを利用するか(true:利用する、false:利用しない) (false は一部対応) */
 define('USE_MOBILE', true);
-/** デフォルトテンプレート名 */
+/** デフォルトテンプレート名(PC) */
 define('DEFAULT_TEMPLATE_NAME', "default");
+/** デフォルトテンプレート名(モバイル) */
+define('MOBILE_DEFAULT_TEMPLATE_NAME', "mobile");
+/** デフォルトテンプレート名(スマートフォン) */
+define('SMARTPHONE_DEFAULT_TEMPLATE_NAME', "sphone");
 /** テンプレート名 */
 define('TEMPLATE_NAME', "default");
 /** モバイルテンプレート名 */

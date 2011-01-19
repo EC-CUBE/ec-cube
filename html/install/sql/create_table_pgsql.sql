@@ -881,6 +881,7 @@ CREATE TABLE dtb_csv_sql (
 
 CREATE TABLE dtb_templates (
     template_code text NOT NULL,
+    device_type_id int NOT NULL,
     template_name text,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp NOT NULL,

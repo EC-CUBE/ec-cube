@@ -680,7 +680,9 @@ INSERT INTO dtb_recommend_products (product_id, recommend_product_id, rank, comm
 
 INSERT INTO dtb_site_control (control_id, control_title, control_text, control_flg, del_flg, memo, create_date, update_date) VALUES (1, 'トラックバック機能', 'トラックバック機能を使用するかどうかを決定します。', 2, 0, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
-INSERT INTO dtb_templates (template_code, template_name, create_date, update_date) VALUES ('default', 'デフォルト', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_templates (template_code, device_type_id, template_name, create_date, update_date) VALUES ('default', 10, 'デフォルト', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_templates (template_code, device_type_id, template_name, create_date, update_date) VALUES ('mobile', 1, 'モバイル', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_templates (template_code, device_type_id, template_name, create_date, update_date) VALUES ('sphone', 2, 'スマートフォン', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (0, 'table', 0);
 INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (1, 'tr', 1);
@@ -1225,15 +1227,17 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('UPDATE_SEND_SITE_IN
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('USE_POINT', 'true', 290, 'ポイントを利用するか(true:利用する、false:利用しない) (false は一部対応)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('NOSTOCK_HIDDEN', 'false', 291, '在庫無し商品の非表示(true:非表示、false:表示)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('USE_MOBILE', 'true', 292, 'モバイルサイトを利用するか(true:利用する、false:利用しない) (false は一部対応)');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DEFAULT_TEMPLATE_NAME', '"default"', 300, 'デフォルトテンプレート名');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TEMPLATE_NAME', '"default"', 301, 'テンプレート名');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MOBILE_TEMPLATE_NAME', '"mobile"', 302, 'モバイルテンプレート名');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SMARTPHONE_TEMPLATE_NAME', '"sphone"', 303, 'スマートフォンテンプレート名');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SMARTY_TEMPLATES_REALDIR', ' DATA_REALDIR . "Smarty/templates/"', 304, 'SMARTYテンプレート');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TEMPLATE_REALDIR', 'SMARTY_TEMPLATES_REALDIR . TEMPLATE_NAME . "/"', 305, 'SMARTYテンプレート(PC)');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TEMPLATE_ADMIN_REALDIR', 'SMARTY_TEMPLATES_REALDIR . "admin/"', 306, 'SMARTYテンプレート(管理機能)');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('COMPILE_DIR', 'DATA_REALDIR . "Smarty/templates_c/" . TEMPLATE_NAME . "/"', 307, 'SMARTYコンパイル');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('COMPILE_ADMIN_REALDIR', 'DATA_REALDIR . "Smarty/templates_c/admin/"', 308, 'SMARTYコンパイル(管理機能)');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DEFAULT_TEMPLATE_NAME', '"default"', 300, 'デフォルトテンプレート名(PC)');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SMARTPHONE_DEFAULT_TEMPLATE_NAME', '"mobile"', 301, 'デフォルトテンプレート名(モバイル)');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MOBILE_DEFAULT_TEMPLATE_NAME', '"sphone"', 302, 'デフォルトテンプレート名(スマートフォン)');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TEMPLATE_NAME', '"default"', 303, 'テンプレート名');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MOBILE_TEMPLATE_NAME', '"mobile"', 304, 'モバイルテンプレート名');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SMARTPHONE_TEMPLATE_NAME', '"sphone"', 305, 'スマートフォンテンプレート名');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SMARTY_TEMPLATES_REALDIR', ' DATA_REALDIR . "Smarty/templates/"', 306, 'SMARTYテンプレート');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TEMPLATE_REALDIR', 'SMARTY_TEMPLATES_REALDIR . TEMPLATE_NAME . "/"', 307, 'SMARTYテンプレート(PC)');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TEMPLATE_ADMIN_REALDIR', 'SMARTY_TEMPLATES_REALDIR . "admin/"', 308, 'SMARTYテンプレート(管理機能)');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('COMPILE_DIR', 'DATA_REALDIR . "Smarty/templates_c/" . TEMPLATE_NAME . "/"', 309, 'SMARTYコンパイル');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('COMPILE_ADMIN_REALDIR', 'DATA_REALDIR . "Smarty/templates_c/admin/"', 310, 'SMARTYコンパイル(管理機能)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('BLOC_DIR', '"frontparts/bloc/"', 311, 'ブロックファイル保存先');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MOBILE_TEMPLATE_REALDIR', 'SMARTY_TEMPLATES_REALDIR . MOBILE_TEMPLATE_NAME . "/"', 312, 'SMARTYテンプレート(mobile)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MOBILE_COMPILE_REALDIR', 'DATA_REALDIR . "Smarty/templates_c/" . MOBILE_TEMPLATE_NAME . "/"', 313, 'SMARTYコンパイル(mobile)');
