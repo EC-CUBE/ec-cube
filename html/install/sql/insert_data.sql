@@ -1285,9 +1285,9 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('OSTORE_E_C_PERMISSI
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('OSTORE_E_C_BATCH_ERR', '"2010"', 522, 'オーナーズストア通信エラーコード');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('OPTION_FAVOFITE_PRODUCT', '1', 523, 'お気に入り商品登録(有効:1 無効:0)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('IMAGE_RENAME', 'true', 525, '画像リネーム設定 (商品画像のみ) (true:リネームする、false:リネームしない)');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_REALDIR', '"plugins/"', 600, 'プラグインディレクトリ');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_PATH', 'USER_REALDIR . PLUGIN_REALDIR', 601, 'プラグイン保存先');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_URL', 'USER_URL . PLUGIN_REALDIR', 602, 'プラグイン URL');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_DIR', '"plugins/"', 600, 'プラグインディレクトリ');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_REALDIR', 'USER_REALDIR . PLUGIN_DIR', 601, 'プラグイン保存先');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_URL', 'USER_URL . PLUGIN_DIR', 602, 'プラグイン URL');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DOWNLOAD_DAYS_LEN', '3', 700, '日数桁数');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DOWNLOAD_EXTENSION', '"zip,lzh,jpg,jpeg,gif,png,mp3,pdf,csv"', 701, 'ダウンロードファイル登録可能拡張子(カンマ区切り)"');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DOWN_SIZE', '50000', 702, 'ダウンロード販売ファイル用サイズ制限(KB)');

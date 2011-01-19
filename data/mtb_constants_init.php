@@ -525,11 +525,11 @@ define('OPTION_FAVOFITE_PRODUCT', 1);
 /** 画像リネーム設定 (商品画像のみ) (true:リネームする、false:リネームしない) */
 define('IMAGE_RENAME', true);
 /** プラグインディレクトリ */
-define('PLUGIN_REALDIR', "plugins/");
+define('PLUGIN_DIR', "plugins/");
 /** プラグイン保存先 */
-define('PLUGIN_PATH', USER_REALDIR . PLUGIN_REALDIR);
+define('PLUGIN_REALDIR', USER_REALDIR . PLUGIN_DIR);
 /** プラグイン URL */
-define('PLUGIN_URL', USER_URL . PLUGIN_REALDIR);
+define('PLUGIN_URL', USER_URL . PLUGIN_DIR);
 /** 日数桁数 */
 define('DOWNLOAD_DAYS_LEN', 3);
 /** ダウンロードファイル登録可能拡張子(カンマ区切り)" */

@@ -30,7 +30,7 @@ define('DEBUG_LOAD_PLUGIN', true);
 if (version_compare("5", PHP_VERSION, "<")) {
     $pluginsXml = SC_Utils_Ex::sfGetPluginsXml();
     foreach ($pluginsXml->plugin as $plugin) {
-        $requireFile = PLUGIN_PATH . "{$plugin->path}/require.php";
+        $requireFile = PLUGIN_REALDIR . "{$plugin->path}/require.php";
         if (file_exists($requireFile)) {
             include_once $requireFile;
         }

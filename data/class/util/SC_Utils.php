@@ -2124,7 +2124,7 @@ exit;
      * @return array プラグイン情報配列
      */
     function sfGetPluginInfoArray($path) {
-        return (array)include_once(PLUGIN_PATH . "$path/plugin_info.php");
+        return (array)include_once(PLUGIN_REALDIR . "$path/plugin_info.php");
     }
 
     /**
@@ -2135,7 +2135,7 @@ exit;
      * @return SimpleXMLElement プラグイン XML
      */
     function sfGetPluginsXml() {
-        return simplexml_load_file(PLUGIN_PATH . 'plugins.xml');
+        return simplexml_load_file(PLUGIN_REALDIR . 'plugins.xml');
     }
 
     /**
@@ -2152,7 +2152,7 @@ exit;
         $xml = $pluginsXml->asXML();
         if (strlen($xml) == 0) SC_Utils_Ex::sfDispException();
 
-        $return = file_put_contents(PLUGIN_PATH . 'plugins.xml', $pluginsXml->asXML());
+        $return = file_put_contents(PLUGIN_REALDIR . 'plugins.xml', $pluginsXml->asXML());
         if ($return === false) SC_Utils_Ex::sfDispException();
         return $return;
     }

@@ -106,10 +106,10 @@ class LC_Page_Admin_Plugin_Install extends LC_Page_Admin {
     function lfInstall($path) {
 
         // アンインストール SQL を実行 (クリーンアップ)
-        SC_Helper_DB_Ex::sfExecSqlByFile(PLUGIN_PATH . "$path/sql/uninstall.sql");
+        SC_Helper_DB_Ex::sfExecSqlByFile(PLUGIN_REALDIR . "$path/sql/uninstall.sql");
 
         // インストール SQL を実行
-        SC_Helper_DB_Ex::sfExecSqlByFile(PLUGIN_PATH . "$path/sql/install.sql");
+        SC_Helper_DB_Ex::sfExecSqlByFile(PLUGIN_REALDIR . "$path/sql/install.sql");
 
         // プラグイン XML に追加
         $this->lfAddToPluginsXml($path);

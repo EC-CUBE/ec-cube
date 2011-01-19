@@ -90,7 +90,7 @@ class LC_Page_Admin_Plugin extends LC_Page_Admin {
         $this->arrInstalledPlugin = array();
         $this->arrInstallablePlugin = array();
 
-        $d = dir(PLUGIN_PATH);
+        $d = dir(PLUGIN_REALDIR);
         while (false !== ($entry = $d->read())) {
             if ($entry == '.') continue;
             if ($entry == '..') continue;
