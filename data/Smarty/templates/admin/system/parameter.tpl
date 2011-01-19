@@ -30,14 +30,14 @@
     設定値によってはサイトが機能しなくなる場合もありますので、十分ご注意下さい。
   </p>
 
-  <table class="form">
+  <table class="list">
     <tr>
       <th>定数名</th>
       <th>パラメータ値</th>
     </tr>
 <!--{section name=cnt loop=$arrKeys}-->
     <tr>
-      <th>
+      <th class="column">
       <!--{$arrKeys[cnt]|h}-->
       </th>
       <td>

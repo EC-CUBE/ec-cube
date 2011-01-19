@@ -27,6 +27,9 @@
         </p>
         <h2 class="title"><!--{$tpl_title|h}--></h2>
 
+<div id="add-wrap" class="clearfix">
+
+<div id="add-left">
         <p>下記一覧よりお届け先住所を選択して、「選択したお届け先に送る」ボタンをクリックしてください。</p>
         <!--{if $tpl_addrmax < $smarty.const.DELIV_ADDR_MAX}-->
             <p>一覧にご希望の住所が無い場合は、「新しいお届け先を追加する」より追加登録してください。</p>
@@ -38,6 +41,16 @@
                 <a href="<!--{$smarty.const.URL_PATH}-->mypage/delivery_addr.php" onclick="win02('<!--{$smarty.const.URL_PATH}-->mypage/delivery_addr.php?page=<!--{$smarty.server.PHP_SELF|h}-->','new_deiv','600','640'); return false;" onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_add_address_on.gif','addition');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_add_address.gif','addition');"><img src="<!--{$TPL_DIR}-->img/button/btn_add_address.gif" width="160" height="22" alt="新しいお届け先を追加する" name="addition" id="addition" /></a>
             </p>
         <!--{/if}-->
+</div>
+
+<div id="add-right">
+<p class="add-m">この商品を複数の<br />お届け先に送りますか？</p>
+<a href="javascript:;" onclick="fnModeSubmit('multiple', '', ''); return false" onmouseover="chgImg('<!--{$TPL_DIR}-->img/button/btn_several_address_on.gif','several');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/btn_several_address.gif','several');"><img src="<!--{$TPL_DIR}-->img/button/btn_several_address.gif" width="129" height="20" alt="お届け先を複数指定する" name="several" id="several" /></a>
+</div>
+
+</div>
+
+        
         <form name="form1" id="form1" method="post" action="?">
             <input type="hidden" name="mode" value="customer_addr" />
             <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->" />
@@ -89,7 +102,7 @@
                 </tr>
             <!--{/section}-->
         </table>
-        <p><a href="javascript:;" onclick="fnModeSubmit('multiple', '', ''); return false">お届け先を複数指定する</a></p>
+
             <div class="tblareabtn">
                 <a href="<!--{$smarty.const.CART_URLPATH}-->" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_back_on.gif',back03)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/button/btn_back.gif',back03)">
                     <img src="<!--{$TPL_DIR}-->img/button/btn_back.gif" width="150" height="30" alt="戻る" border="0" name="back03" id="back03" /></a>

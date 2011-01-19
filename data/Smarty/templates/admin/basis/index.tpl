@@ -148,7 +148,7 @@ $(function() {
       <td>
         <p>
           <span class="attention"><!--{$arrErr.pref}--></span>
-          <select name="pref" style="<!--{if $arrErr.pref != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" >
+          <select class="top" name="pref" style="<!--{if $arrErr.pref != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" >
             <option value="" selected="selected">都道府県を選択</option>
             <!--{html_options options=$arrPref selected=$arrForm.pref}-->
           </select>
@@ -268,7 +268,8 @@ $(function() {
         <span class="attention"><!--{$arrErr[$key]}--></span>
         <textarea name="<!--{$key}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key]|h}--></textarea>
         <span class="attention"> (上限<!--{$smarty.const.LTEXT_LEN}-->文字)</span><br />
-        <span class="fs10">※管理機能へのアクセスを特定のIPアドレスからの接続のみに制限します。アクセスを許可するIPアドレスを1行づつ入力してください。何も入力しない場合は全てを許可します。</span><br />
+        <span>※管理機能へのアクセスを特定のIPアドレスからの接続のみに制限します。<br />
+        アクセスを許可するIPアドレスを1行づつ入力してください。何も入力しない場合は全てを許可します。</span><br />
       </td>
     </tr>
   </table>

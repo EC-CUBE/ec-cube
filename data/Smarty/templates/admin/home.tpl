@@ -112,11 +112,11 @@
             <h2>新規受付一覧</h2>
             <table summary="新規受付一覧" id="home-order">
                 <tr>
-                    <th>受注日</th>
-                    <th>顧客名</th>
-                    <th>購入商品</th>
-                    <th>支払方法</th>
-                    <th>購入金額(円)</th>
+                    <th class="center">受注日</th>
+                    <th class="center">顧客名</th>
+                    <th class="center">購入商品</th>
+                    <th class="center">支払方法</th>
+                    <th class="center">購入金額(円)</th>
                 </tr>
                 <!--{section name=i loop=$arrNewOrder}-->
                 <tr>

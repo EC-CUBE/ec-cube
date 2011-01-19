@@ -83,7 +83,7 @@
 
 <!--{* ▼NAVI *}-->
 <div id="navi-wrap">
-<ul id="navi">
+<ul id="navi" class="clearfix">
     <li id="navi-basis" class="<!--{if $tpl_mainno eq "basis"}-->on<!--{/if}-->">
         <a href="<!--{$smarty.const.URL_PATH}--><!--{$smarty.const.ADMIN_DIR}-->basis/<!--{$smarty.const.DIR_INDEX_URL}-->"><span class="level1">基本情報管理</span></a>
         <!--{include file="`$smarty.const.TEMPLATE_ADMIN_REALDIR`basis/subnavi.tpl"}-->
@@ -126,7 +126,6 @@
     </li>
 </ul>
 </div>
-<div style="clear: both;"></div>
 <!--{* ▲NAVI *}-->
 
 <!--{if $tpl_subtitle}-->
@@ -134,7 +133,7 @@
 <!--{/if}-->
 
 <!--{* ▼CONTENTS *}-->
-<div id="contents" class="clear-block">
+<div id="contents" class="clearfix">
   <!--{include file=$tpl_mainpage}-->
 </div>
 <!--{* ▲CONTENTS *}-->

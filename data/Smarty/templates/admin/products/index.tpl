@@ -141,14 +141,14 @@ function lfnDispChange(){
     </tr>
   </table>
   <div class="btn">
-    検索結果表示件数
+    <p class="page_rows">検索結果表示件数
     <!--{assign var=key value="search_page_max"}-->
     <!--{if $arrErr[$key]}-->
     <span class="attention"><!--{$arrErr[$key]}--></span>
     <!--{/if}-->
     <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
     <!--{html_options options=$arrPageMax selected=$arrForm.search_page_max}-->
-    </select> 件
+    </select> 件</p>
 
 	<div class="btn-area">
 		<ul>
@@ -186,6 +186,18 @@ function lfnDispChange(){
   <!--{if count($arrProducts) > 0}-->
   <!--検索結果表示テーブル-->
   <table class="list" id="products-search-result">
+    <colgroup width="5%">
+    <colgroup width="8%">
+    <colgroup width="8%">
+    <colgroup width="8%">
+    <colgroup width="25%">
+    <colgroup width="8%">
+    <colgroup width="8%">
+    <colgroup width="5%">
+    <colgroup width="5%">
+    <colgroup width="5%">
+    <colgroup width="5%">
+    <colgroup width="5%">
     <tr>
       <th rowspan="2">商品ID</th>
       <th rowspan="2">商品画像</th>

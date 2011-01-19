@@ -42,8 +42,12 @@
             <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'edit', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
           </ul>
         </div>
-
+        <!--{if count($arrMaker) > 0}-->
         <table class="list">
+            <colgroup width="60%">
+            <colgroup width="10%">
+            <colgroup width="10%">
+            <colgroup width="20%">
             <tr>
                 <th>メーカー</th>
                 <th class="edit">編集</th>
@@ -79,5 +83,6 @@
             </tr>
             <!--{/section}-->
         </table>
+        <!--{/if}-->
     </div>
 </form>

@@ -5,6 +5,7 @@
     padding: 0;
 }
 
+
 /* 上記による Fierfox 2 崩れ対応 */
 option {
     margin-right: 0.5em;
@@ -17,10 +18,10 @@ html {
 body {
     width: 100%;
     height: 100%;
-    line-height: 150%;
     background: #fff;
     font-family: "ＭＳ Ｐゴシック","Hiragino Maru Gothic Pro","ヒラギノ丸ゴ Pro W4",Osaka,sans-serif;
     font-size: 80%;
+    line-height: 150%;
 }
 
 option {
@@ -34,8 +35,16 @@ input, textarea {
 }
 
 select {
-    margin-bottom: 5px;
     font-size: 100%;
+}
+select.top,
+input.top,
+textarea.top {
+    margin-bottom: 5px;
+}
+
+.page_rows{
+    margin-bottom:20px;
 }
 
 img {
@@ -56,13 +65,14 @@ h1 {
     height: 30px;
     line-height: 30px;
     color: #444757;
-    background: url(../img/contents/subtitle_back_02.jpg) repeat-x;
+    background: url('../img/contents/subtitle_back_02.jpg') repeat-x;
     font-size: 130%;
 }
 
 h1 .title {
+    padding-top: 2px;
     padding-left: 20px;
-    background: url(../img/contents/subtitle_back.gif) no-repeat;
+    background: url('../img/contents/subtitle_back.gif') no-repeat;
 }
 
 h2 {
@@ -70,17 +80,17 @@ h2 {
     padding: 5px 0;
     border-bottom: 3px solid #ccc;
     color: #444757;
-    font-size: 110%;
-}
-
-h3, h4 {
     font-size: 100%;
 }
 
-/*em {
-    color: #f00;
-    font-style: normal;
-}*/
+h3{
+    margin-bottom: 20px;
+    padding: 5px;
+    color : #fff;
+    background: #999;
+    font-size: 90%;
+}
+
 
 /*テーブル設定*/
 table {
@@ -103,13 +113,13 @@ th {
 }
 
 table.list th {
-    background: url('../img/contents/table_back02.png') repeat-x #c1c1c1;
+    background: url('../img/contents/table_back.png') repeat-x #b4b4b4;
     text-align: center;
 }
 
 table.list th.column {
     background: url('../img/contents/table_back.png') repeat-x #f4f5f5;
-    text-align: center; 
+    text-align: left; 
 }
 
 table.list .edit, table.list .delete {
@@ -137,12 +147,20 @@ table.list td.menu {
     text-align: center;
 }
 
-table.form thead th {
-    width: auto;
-    text-align: center;
+table.form th {
+    width: 240px;
+    text-align: left;
 }
 
-.contents-main .btn-area, #popup .btn-area {
+table tr.last {
+    background: #e0e0e0;
+}
+
+#popup-container table th.column {
+    width: 200px;
+}
+
+.contents-main .btn-area, #popup .btn-area, #form_edit .btn-area{
     margin : 0 0 60px 0;
     padding: 20px 0;
     clear: both;
@@ -151,13 +169,19 @@ table.form thead th {
     text-align: center;
 }
 
-.contents-main .btn-area li, #popup .btn-area li {
+.contents-main .btn-area li, #popup .btn-area li ,.btn-area li{
     margin-right: 10px;
     display: inline;
 }
 
+.addnew{
+    margin-bottom: 20px;
+}
+
+
 /*通常ボタン*/
 .btn-normal, a.btn-normal:link, a.btn-normal:visited {
+    margin-right: 5px;
     padding: 2px 10px;
     border: solid 1px #bcbecb;
     display: inline-block;
@@ -167,7 +191,7 @@ table.form thead th {
     background-clip: border-box;
     background-color: #eee;
     font-weight: normal;
-    font-size: 100%;
+    font-size: 90%;
     text-decoration: none;
     white-space: nowrap;
     cursor: pointer;
@@ -186,6 +210,7 @@ table.form thead th {
     -moz-border-radius: 5px;
 }
 
+
 /*ツールボタン 共通部分*/
 .btn-tool-format, a.btn-tool-format:link, a.btn-tool-format:visited {
     padding: 0 6px;
@@ -198,7 +223,7 @@ table.form thead th {
     background-clip: border-box;
     background-color: #c9cbcb;
     font-weight: bold;
-    font-size: 80%;
+    font-size: 90%;
     text-decoration: none;
     cursor: pointer;
 
@@ -215,6 +240,7 @@ table.form thead th {
     /* Firefox radius */
     -moz-border-radius: 4px;
 }
+
 
 /*ツールボタン コンテンツ*/
 .btn-tool, a.btn-tool:link, a.btn-tool:visited {
@@ -245,6 +271,7 @@ table.form thead th {
     -moz-border-radius: 4px;
 }
 
+
 /*登録する・検索するボタン*/
 .btn-action, a.btn-action:link, a.btn-action:visited {
     padding: 5px 10px;
@@ -274,6 +301,7 @@ table.form thead th {
     -moz-border-radius: 5px;
 }
 
+
 /*戻るボタン*/
 .btn-action .btn-prev {
     padding: 0 0 0 20px;
@@ -282,6 +310,7 @@ table.form thead th {
     font-weight: bold;
     font-size: 114%;
 }
+
 
 /*進むボタン*/
 .btn-action .btn-next {
@@ -292,19 +321,20 @@ table.form thead th {
     font-size: 114%;
 }
 
-a.btn-normal:hover, a.btn-action:hover {
+a.btn-normal:hover, a.btn-action:hover, a.btn-tool:hover{
     border: solid 1px #d5d7df;
     color: #6d728b;
+}
+
+a.btn-tool-format:hover{
+    border: solid 1px #363a47;
+    color: #6b728b;
 }
 
 a.btn:active, a.btn-normal:active {
     background-image: url('../img/button/white-grad-active.png');
 }
 
-/*
-#contents ul {
-    margin: 0 0 0 2em;
-}*/
 
 /*LINK*/
 a:link {
@@ -337,6 +367,7 @@ a:hover {
 .attention {
     color: #f00;
 }
+
 
 /* ヘッダー
 ----------------------------------------------- */
@@ -378,63 +409,108 @@ a:hover {
     float: left;
 }
 
+
 /* ヘッダーナビ
 ----------------------------------------------- */
-#navi-wrap {
-    width: 100%;
-    background: #dcdddd;
-}
-
 #navi {
     z-index: 90;
-    height: 33px;
+    height: 28px;
     background: url('../img/header/navi_back.jpg') top left repeat-x;
+    font-size: 100%;
+    line-height: 100%;
 }
 
 #navi li {
     background: url('../img/header/navi_back_line.jpg') no-repeat right;
-}
-
-#navi li, #navi li a, #navi li a span {
     display: block;
     float: left;
     cursor: pointer;
+    height: 28px;
+    position: relative;
 }
 
-#navi li {
-    position: relative;
+#navi li a, #navi li a span {
+    display: block;
+    _float: left;/*IE6対策*/
+    cursor: pointer;
 }
 
 #navi li a {
     color: #2d2f39;
+    height: 28px;
     font-weight: bold;
     text-decoration: none;
 }
 
 #navi li a span {
-    height: 26px;
-    padding: 7px 8px 0;
+    padding: 7px 10px;
+    _padding: 9px 10px 5px;/*IE6対策*/
+    height: 15px;
+    _height: 13px;/*IE6対策*/
 }
 
-#navi li a:hover, #navi li a:hover span, #navi li.on a, #navi li.on a span, #navi li.sfhover a, #navi li.sfhover a span {
-    background: url(../img/header/navi_on.jpg) left 0 repeat-x;
+#navi li a:hover {
+    background: url('../img/header/navi_on.jpg') left 0 repeat-x;
+}
+
+#navi li a:hover span {
+    background: url('../img/header/navi_on.jpg') left 0 repeat-x;
+}
+
+#navi li.on a {
+    background: url('../img/header/navi_on.jpg') left 0 repeat-x;
+}
+
+#navi li.on a span {
+    background: url('../img/header/navi_on.jpg') left 0 repeat-x;
+}
+
+#navi li.sfhover a {
+    background: url('../img/header/navi_on.jpg') left 0 repeat-x;
+}
+
+#navi li.sfhover a span {
+    background: url('../img/header/navi_on.jpg') left 0 repeat-x;
 }
 
 #navi li ul {
     position: absolute;
-    top: 31px;
+    top: 26px;
     left: -9999px;
-    clear: both;
     width: 14px;
+    font-weight: normal;
+    clear: both;
+}
+
+
+/*プルダウンメニュー 第1階層*/
+#navi li li {
+    display: block;
+    top: 2px;
+    width: 180px;
+    height: 27px;
+    line-height: 24px;
+    color: #fff;
+    background: url('../img/header/subnavi_bak.gif') top left no-repeat #787878;
     font-weight: normal;
 }
 
-/*プルダウンメニュー 第1階層*/
-#navi li li, #navi li li a, #navi li li a span {
+#navi li li a {
     display: block;
     top: 2px;
-    width: 189px;
-    height: 28px;
+    width: 180px;
+    height: 27px;
+    line-height: 24px;
+    color: #fff;
+    background: url('../img/header/subnavi_bak.gif') top left no-repeat #787878;
+    font-weight: normal;
+}
+
+#navi li li a span {
+    display: block;
+    top: 2px;
+    width: 180px;
+    height: 27px;
     line-height: 24px;
     color: #fff;
     background: url('../img/header/subnavi_bak.gif') top left no-repeat #787878;
@@ -475,12 +551,12 @@ a:hover {
     background: url('../img/header/subnavi_bak_on.gif') top left no-repeat #474747;
 }
 
+
 /*プルダウンメニュー 第2階層*/
 #navi li ul.level2 {
     position: absolute;
-    top: 28px;
+    top: 27px;
     left: -9999px;
-    clear: both;
     width: 14px;
     font-weight: normal;
 }
@@ -488,17 +564,18 @@ a:hover {
 #navi li li li, #navi li li a, #navi li li li a span {
     margin-left: 0;
     display: block;
-    width: 189px;
+    width: 180px;
     top: 1px;
     height: 27px;
     line-height: 24px;
     color: #fff;
     background: #787878;
     font-weight: normal;
+    background: url('../img/header/subnavi_bak.gif') top left no-repeat #787878;
 }
 
 #navi li li li.sfhover a:hover {
-    width: 189px;
+    width: 180px;
     top: 1px;
     height: 27px;
     color: #fff;
@@ -506,8 +583,8 @@ a:hover {
 }
 
 #navi li ul ul {
-    margin: -28px 0 0 189px;
-    _margin: -28px 0 0 194px;/*IE6応急 */
+    margin: -28px 0 0 180px;
+    _margin: -28px 0 0 187px;/*IE6応急 */
 }
 
 #navi li:hover ul ul, #navi li:hover ul ul ul, #navi li.sfhover ul ul, #navi li.sfhover ul ul ul {
@@ -517,6 +594,7 @@ a:hover {
 #navi li:hover ul, #navi li li:hover ul, #navi li li li:hover ul, #navi li.sfhover ul, #navi li li.sfhover ul, #navi li li li.sfhover ul {
     left: auto;
 }
+
 
 /*subnavi*/
 .subnavi a {
@@ -540,7 +618,7 @@ a:hover {
     padding: 0 0 0 8px;
     font-size: 71%;
 }
-.subnavi-on a{
+.subnavi-on a {
     padding: 6px 5px 4px 5px;
     display: block;
     width: 140px;
@@ -577,6 +655,7 @@ a:hover {
     background-color : #fff;
 }
 
+
 /* ページャ */
 #contents .pager ul {
     margin: 10px 0;
@@ -601,6 +680,7 @@ a:hover {
     background: #fff5ee;
 }
 
+
 /* コンテンツ
 ----------------------------------------------- */
 * html div#container {
@@ -619,16 +699,17 @@ body > #container {
 }
 
 #contents {
-    padding: 20px 20px 40px;
+    padding: 20px 20px 100px;
     width: 1000px;
 }
 
 #footer {
+    margin-top: 30px;
     position: absolute;
     bottom: 0;
     width: 100%;
     height: 40px;
-    background: url(../img/contents/footer_back.jpg) 0 0 repeat-x;
+    background: url('../img/contents/footer_back.jpg') 0 0 repeat-x;
 }
 
 #footer-contents {
@@ -637,7 +718,7 @@ body > #container {
     text-align: right;
 }
 
-#footer #copyright{
+#footer #copyright {
     margin-left: 20px;
     float: left;
     color: #fff;
@@ -649,36 +730,32 @@ body > #container {
     float: right;
 }
 
+
 /* ログイン
 ----------------------------------------------- */
 #login {
-	width: 100%;
-	margin: 150px auto 0;
-	text-align: center;
+    margin: 0 auto;
+    padding: 0;
+    width: 100%;
+    text-align: center;
 }
 
-#login-form-wrap {
-	width:556px;
-	height: 250px;
-	margin: 0 auto;
+#login-wrap {
+    margin: 150px auto 0;
     padding: 0;
     border: 0;
     text-align: left;
+    width:556px;
     z-index: 2;
     background: url('../img/contents/admin_login_bg.jpg') center top repeat-x;
     -moz-box-shadow: 0 0 5px #000;/* Firefox */
     -webkit-box-shadow: 0 0 5px #000;/* Safari and Chrome */
-    box-shadow: 0 0 5px #000;/* Opera 10.5+, future browsers and IE6+ using IE-CSS3 */
-    behavior: url('ie-css3.htc');
-}
-
-#login-form {
-	width: 556px;
 }
 
 #login-form h1 {
-    margin-top: 46px;
+    margin: 46px auto 20px;
     padding-left: 50px;
+    padding-bottom: 40px;
     border: none;
     float: left;
     width: 140px;
@@ -696,7 +773,7 @@ body > #container {
 #input-form p {
     margin-top: 10px;
     color: #fff;
-    font-size: 80%;
+    font-size: 100%;
 }
 
 #input-form .btn-tool {
@@ -704,29 +781,29 @@ body > #container {
 }
 
 #login #copyright {
-    color: #000;
-    font-size: 87%;
-    padding-top: 30px;
-    text-align: center;
+    margin: 0 auto;
+    padding-top: 10px;
+    width: 556px;
+    color: #000000;
+    font-size: 80%;
+    text-align: left;
 }
+
 
 /* エラーメッセージ
 ----------------------------------------------- */
-#login-error-wrap {
+#error-wrap {
+    margin: 150px auto 0;
     width: 100%;
-    height: 100%;
+    text-align: center;
 }
-
 #error-wrap #error .logo {
     padding-bottom: 5px;
     float: right;
 }
 
 #error {
-    margin: -126px 0 0 -279px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
+    margin: 0 auto;
     width: 560px;
 }
 
@@ -768,6 +845,7 @@ body > #container {
     height: 10px;
     background: url('../img/contents/login_back_btn_bottom.jpg') bottom left no-repeat #eeeff0;
 }
+
 
 /* 完了メッセージ
 ----------------------------------------------- */
@@ -821,6 +899,7 @@ body > #container {
     background: url('../img/contents/login_back_btn_bottom.jpg') bottom left no-repeat #eeeff0;
 }
 
+
 /* メインページ
 ----------------------------------------------- */
 #home-main {
@@ -870,6 +949,7 @@ body > #container {
     background: #ddd;
 }
 
+
 /* 基本情報管理
 ----------------------------------------------- */
 /* 郵便番号DB登録 */
@@ -889,11 +969,13 @@ body > #container {
     margin-bottom: 10px;
 }
 
+
 /* 商品管理
 ----------------------------------------------- */
 #products-category-left, #products-rank-left {
     float: left;
     width: 285px;
+    min-height: 200px;
 }
 
 #products-category-right, #products-rank-right {
@@ -904,7 +986,13 @@ body > #container {
     width: 100px;
 }
 
+#contents-filemanager-tree #tree {
+    float: left;
+    min-height: 200px;
+}
+
 #products-category-left, #products-rank-left {
+    min-height: 200px;
     padding: 10px;
     border: 3px solid #ddd;
     width: 230px;
@@ -917,6 +1005,27 @@ body > #container {
     border: 1px solid #ccc;
 }
 
+#products .class-payment {
+    padding-top: 15px;
+    font-size: 88%;
+}
+#products label {
+    white-space: nowrap;
+}
+#products .list-info{
+    padding-top: 10px;
+    border-top: solid 1px #ccc;
+}
+#products .list-info .btn {
+    float: left;
+    margin-right:20px;
+}
+#products .list-info p {
+    float: right;
+    color: #444757;
+}
+
+
 /* 受注管理
 ----------------------------------------------- */
 /* ステータス管理 */
@@ -924,16 +1033,17 @@ body > #container {
     width: 40px;
 }
 
+
 /* 期間別集計
 ----------------------------------------------- */
 #graph-image {
     margin: 0 0 20px 0;
 }
 
+
 /* デザイン管理
 ----------------------------------------------- */
 /* レイアウト設定 */
-
 .design-layout {
     table-layout: fixed;
 }
@@ -967,9 +1077,8 @@ body > #container {
     padding: 5px 2px;
     border: 1px solid #000;
     color: #333;
-    background: c3d9ff;
+    background: #eee;
     font-size: 100%;
-    text-align: center;
 }
 
 .design-layout .anywherecheck {
@@ -985,14 +1094,18 @@ body > #container {
     vertical-align: middle;
 }
 
-/* フォーム
+
+/* コンテンツ管理
 ----------------------------------------------- */
-div.btn, p.remark {
-    margin: 0 0 20px 0;
+#contents-csv-sqltbl {
+    margin-bottom: 40px;
 }
 
-.addbox {
-margin-top: 5px;
+
+/* フォーム
+----------------------------------------------- */
+div.btn,p.remark {
+    margin: 0 0 20px 0;
 }
 
 /*FORM*/
@@ -1029,7 +1142,7 @@ margin-top: 5px;
 }/*W35*/
 
 .box40 {
-    width: 292px;
+    width: 276px;
 }/*W40*/
 
 .box45 {
@@ -1149,31 +1262,23 @@ margin-top: 5px;
     color: #f00;
 }
 
-/*
-** Markup free clearing
-** Details: http://www.positioniseverything.net/easyclearing.html
-*/
-.clear-block:after {
-    display: block;
-    clear: both;
-    height: 0;
-    visibility: hidden;
-    content: ".";
+
+/*FONT*/
+.bold {
+    font-weight:bold;
 }
 
-.clear-block {
-    display: inline-block;
+
+/* フロート解除 */
+.clearfix:after {
+    display:block;
+    clear:both;
+    height:0;
+    line-height:0;
+    visibility:hidden;
+    content:".";
 }
 
-/* Hides from IE-mac \*/
-* html .clear-block {
-    height: 1%;
-}
-.clear-block {
-    display: block;
-}
-
-/* End hide from IE-mac */
 
 /* 権限 */
 x-dummy
@@ -1192,10 +1297,12 @@ x-dummy
     visibility: hidden;
 }
 
+
 /* DnD並び替え系の設定 */
 tr.movingHandle td {
     background-color: #eee;
 }
+
 
 .dragHandle { /* ハンドルの設定 */
     font-weight: bold;
@@ -1203,9 +1310,11 @@ tr.movingHandle td {
     cursor: n-resize;
 }
 
+
 .activeHandle { /* アクティブハンドルの設定 */
     color: #f9a406;
 }
+
 
 table.layout, table.layout th, table.layout td {
     margin: 0;
@@ -1214,6 +1323,7 @@ table.layout, table.layout th, table.layout td {
     width: auto;
     vertical-align: top;
 }
+
 
 /* ログ表示用 */
 .log td {
@@ -1225,6 +1335,7 @@ table.layout, table.layout th, table.layout td {
 .log .date {
     white-space: nowrap;
 }
+
 
 /* ポップアップ画面用 */
 body#popup {
@@ -1248,3 +1359,4 @@ body#popup {
     padding: 0 20px;
     width: 560px;
 }
+

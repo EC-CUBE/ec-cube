@@ -263,12 +263,12 @@
     </table>
 
     <div class="btn">
-        検索結果表示件数
+        <p class="page_rows">検索結果表示件数
         <!--{assign var=key value="search_page_max"}-->
         <span class="attention"><!--{$arrErr[$key]}--></span>
         <select name="<!--{$arrForm[$key].keyname}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
         <!--{html_options options=$arrPageMax selected=$arrForm[$key].value}-->
-        </select> 件
+        </select> 件</p>
         <div class="btn-area">
           <ul>
             <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', ''); return false;"><span class="btn-next">この条件で検索する</span></a></li>
@@ -302,7 +302,18 @@
     <!--{if count($arrResults) > 0}-->
 
     <!--{* 検索結果表示テーブル *}-->
-    <table class="list">
+        <table class="list">
+        <colgroup width="10%">
+        <colgroup width="10%">
+        <colgroup width="15%">
+        <colgroup width="10%">
+        <colgroup width="10%">
+        <colgroup width="10%">
+        <colgroup width="10%">
+        <colgroup width="10%">
+        <colgroup width="5%">
+        <colgroup width="5%">
+        <colgroup width="5%">
         <!--{* ペイジェントモジュール連携用 *}-->
         <!--{assign var=path value=`$smarty.const.MODULE_REALDIR`mdl_paygent/paygent_order_index.tpl}-->
         <!--{if file_exists($path)}-->
@@ -317,9 +328,9 @@
             <th>全商品発送日</th>
             <th>対応状況</th>
             <th><label for="pdf_check">帳票</label> <input type="checkbox" name="pdf_check" id="pdf_check" onclick="fnAllCheck(this, 'input[name=pdf_order_id[]]')" /></th>
-            <th class="edit">編集</th>
+            <th>編集</th>
             <th>メール</th>
-            <th class="delete">削除</th>
+            <th>削除</th>
         </tr>
 
         <!--{section name=cnt loop=$arrResults}-->
@@ -334,8 +345,8 @@
             <td class="center"><!--{$arrResults[cnt].commit_date|sfDispDBDate|default:"未発送"}--></td>
             <td class="center"><!--{$arrORDERSTATUS[$status]}--></td>
             <td class="center">
-                <input type="checkbox" name="pdf_order_id[]" value="<!--{$arrResults[cnt].order_id}-->" id="pdf_order_id_<!--{$arrResults[cnt].order_id}-->"/><label for="pdf_order_id_<!--{$arrResults[cnt].order_id}-->">一括出力</label>&nbsp;
-                <a href="./" onClick="win02('pdf.php?order_id=<!--{$arrResults[cnt].order_id}-->','pdf_input','600','650'); return false;"><span class="icon_class">個別出力</span></a>
+                <input type="checkbox" name="pdf_order_id[]" value="<!--{$arrResults[cnt].order_id}-->" id="pdf_order_id_<!--{$arrResults[cnt].order_id}-->"/><label for="pdf_order_id_<!--{$arrResults[cnt].order_id}-->">一括出力</label><br>
+                <a href="./" onClick="win02('pdf.php?order_id=<!--{$arrResults[cnt].order_id}-->','pdf_input','615','650'); return false;"><span class="icon_class">個別出力</span></a>
             </td>
             <td class="center"><a href="?" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_ORDER_EDIT_URLPATH}-->'); fnModeSubmit('pre_edit', 'order_id', '<!--{$arrResults[cnt].order_id}-->'); return false;"><span class="icon_edit">編集</span></a></td>
             <td class="center">

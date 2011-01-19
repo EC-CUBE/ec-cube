@@ -84,7 +84,7 @@
       <th>都道府県</th>
       <td>
         <!--{if $arrErr.pref}--><span class="attention"><!--{$arrErr.pref}--></span><br /><!--{/if}-->
-        <select name="pref">
+        <select class="top" name="pref">
           <option value="" selected="selected" <!--{if $arrErr.name}--><!--{sfSetErrorStyle}--><!--{/if}-->>都道府県を選択</option>
           <!--{html_options options=$arrPref selected=$arrForm.pref}-->
         </select>
@@ -248,10 +248,10 @@
     </tr>
   </table>
   <div class="btn">
-    検索結果表示件数
+    <p class="page_rows">検索結果表示件数
     <select name="page_rows">
       <!--{html_options options=$arrPageRows selected=$arrForm.page_rows}-->
-    </select> 件
+    </select> 件</p>
     <div class="btn-area">
       <ul>
         <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', ''); return false;"><span class="btn-next">この条件で検索する</span></a></li>
@@ -299,6 +299,13 @@
 
   <!--検索結果表示テーブル-->
   <table class="list" id="customer-search-result">
+    <colgroup width="5%">
+    <colgroup width="10%">
+    <colgroup width="25%">
+    <colgroup width="5%">
+    <colgroup width="30%">
+    <colgroup width="7%">
+    <colgroup width="7%">
     <tr>
       <th rowspan="2">種別</th>
       <th>顧客ID</th>
@@ -316,7 +323,7 @@
       <tr>
         <td class="center" rowspan="2"><!--{if $row.status eq 1}-->仮<!--{else}-->本<!--{/if}--></td>
         <td><!--{$row.customer_id|h}--></td>
-        <td rowspan="2"><!--{$row.name01|h}--> <!--{$row.name02|h}-->(<!--{$row.kana01|h}--> <!--{$row.kana02|h}-->)</td>
+        <td rowspan="2"><!--{$row.name01|h}--> <!--{$row.name02|h}--><br>(<!--{$row.kana01|h}--> <!--{$row.kana02|h}-->)</td>
         <td class="center" rowspan="2"><!--{$arrSex[$row.sex]|h}--></td>
         <td><!--{$row.tel01|h}-->-<!--{$row.tel02|h}-->-<!--{$row.tel03|h}--></td>
         <td class="center" rowspan="2"><span class="icon_edit"><a href="#" onclick="return fnEdit('<!--{$row.customer_id|h}-->');">編集</a></span></td>

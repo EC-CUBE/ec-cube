@@ -73,7 +73,7 @@ function lfnCheckSubmit(){
     <tr>
       <th>本文<span class="attention"> *</span><br />（名前差し込み時は {name} といれてください）</th>
       <td>
-        <textarea name="body" cols="90" rows="40" class="area90" <!--{if $arrErr.body}--><!--{sfSetErrorStyle}--><!--{/if}-->><!--{$arrForm.body|h}--></textarea>
+        <textarea name="body" cols="90" rows="40" class="area90 top" <!--{if $arrErr.body}--><!--{sfSetErrorStyle}--><!--{/if}-->><!--{$arrForm.body|h}--></textarea>
         <!--{if $arrErr.body}--><br /><span class="attention"><!--{$arrErr.body}--></span><!--{/if}-->
 				<div>
 					<a class="btn-normal" href="javascript:;" onclick="fnCharCount('form1','body','cnt_footer'); return false;" name="next" id="next"><span>文字数カウント</span></a>
@@ -87,5 +87,5 @@ function lfnCheckSubmit(){
       <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', '<!--{$mode}-->', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
     </ul>
   </div>
-</table>
+</form>
 </div>

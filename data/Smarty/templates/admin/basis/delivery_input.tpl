@@ -34,21 +34,21 @@
       <td colspan="3">
       <!--{assign var=key value="name"}-->
       <span class="attention"><!--{$arrErr[$key]}--></span>
-      <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="30" class="box30" /></td>
+      <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" /></td>
     </tr>
     <tr>
       <th>名称<span class="attention"> *</span></td>
       <td colspan="3">
       <!--{assign var=key value="service_name"}-->
       <span class="attention"><!--{$arrErr[$key]}--></span>
-      <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="30" class="box30" /></td>
+      <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" /></td>
     </tr>
     <tr>
       <th>伝票No.URL</td>
       <td colspan="3">
       <!--{assign var=key value="confirm_url"}-->
       <span class="attention"><!--{$arrErr[$key]}--></span>
-      <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="30" class="box30" /></td>
+      <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" /></td>
     </tr>
     <!--{section name=cnt loop=$smarty.const.DELIVTIME_MAX}-->
     <!--{assign var=type value="`$smarty.section.cnt.index%2`"}-->

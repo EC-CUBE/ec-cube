@@ -112,6 +112,11 @@ $(document).ready(function() {
     <!--{/if}-->
     
     <table class="list" id="categoryTable">
+        <colgroup width="20%">
+        <colgroup width="47%">
+        <colgroup width="10%">
+        <colgroup width="7%">
+        <colgroup width="15%">
       <tr class="nodrop nodrag">
         <th>商品コード</th>
         <th>商品名</th>

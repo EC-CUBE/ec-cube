@@ -51,7 +51,7 @@
      </tr>
      <tr>
          <td colspan="2">
-             <textarea id="bloc_html" name="bloc_html" rows="<!--{$text_row}-->" style="width: 100%;"><!--{$arrBlocData.tpl_data|smarty:nodefaults}--></textarea>
+             <textarea class="top" id="bloc_html" name="bloc_html" rows="<!--{$text_row}-->" style="width: 99%; height:80px"><!--{$arrBlocData.tpl_data|smarty:nodefaults}--></textarea>
              <input type="hidden" name="html_area_row" value="<!--{$text_row}-->" />
              <div>
                  <a id="resize-btn" class="btn-normal" href="javascript:;" onclick="ChangeSize('#resize-btn', '#bloc_html', 50, 13); return false;">拡大</a>
@@ -59,9 +59,11 @@
          </td>
      </tr>
  </table>
-    <div class="btn">
-        <a class="btn-action" href="javascript:;" name='subm' onclick="fnFormModeSubmit('form_bloc','confirm','',''); return false;"><span class="btn-next">登録する</span></a>
-        <a class="btn-normal" href="javascript:;" name='preview' onclick="fnFormModeSubmit('form_bloc','preview','',''); return false;"><span>プレビュー</span></a>
+    <div class="btn-area">
+        <ul>
+            <li><a class="btn-action" href="javascript:;" name='preview' onclick="fnFormModeSubmit('form_bloc','preview','',''); return false;"><span class="btn-prev">プレビュー</span></a></li>
+            <li><a class="btn-action" href="javascript:;" name='subm' onclick="fnFormModeSubmit('form_bloc','confirm','',''); return false;"><span class="btn-next">登録する</span></a></li>
+        </ul>
     </div>
     <!--{* ▲ブロック設定 *}-->
 
@@ -72,7 +74,8 @@
     </div>
     <table class="list">
         <tr>
-            <th>名称</th><th class="edit">編集</th>
+            <th>名称</th>
+            <th class="edit">編集</th>
             <th class="delete">削除</th>
         </tr>
         <!--{foreach key=key item=item from=$arrBlocList}-->

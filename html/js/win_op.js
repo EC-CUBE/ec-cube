@@ -45,8 +45,8 @@
 
 <!--
 function winSubmit(URL,formName,Winname,Wwidth,Wheight){
-	WIN = window.open(URL,Winname,"width="+Wwidth+",height="+Wheight+",scrollbars=yes,resizable=yes,toolbar=no,location=no,directories=no,status=no,menubar=no");
+	var WIN = window.open(URL,Winname,"width="+Wwidth+",height="+Wheight+",scrollbars=yes,resizable=yes,toolbar=no,location=no,directories=no,status=no,menubar=no");
     document.forms[formName].target = Winname;
-	WIN.focus();
+    WIN.focus();
 }
 //-->

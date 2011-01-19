@@ -88,30 +88,34 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
         </tr>
         <tr>
             <td colspan="2">
-
-                <label for="header-chk"><input type="checkbox" name="header_chk" id="header-chk" <!--{$arrPageData.header_chk}--> />共通のヘッダーを使用する</label>&nbsp;
-                <label for="footer-chk"><input type="checkbox" name="footer_chk" id="footer-chk" <!--{$arrPageData.footer_chk}--> />共通のフッターを使用する</label>
+                <label for="header-chk"><input type="checkbox" name="header_chk" id="header-chk" checked="<!--{$arrPageData.header_chk}-->" />共通のヘッダーを使用する</label>&nbsp;
+                <label for="footer-chk"><input type="checkbox" name="footer_chk" id="footer-chk" checked="<!--{$arrPageData.footer_chk}-->" />共通のフッターを使用する</label>
                 <div>
-                    <textarea id="tpl_data" name="tpl_data" rows=<!--{$text_row}--> style="width: 100%;"><!--{$arrPageData.tpl_data|h|smarty:nodefaults}--></textarea>
-                    <input type="hidden" name="html_area_row" value="<!--{$text_row}-->" />
+                    <textarea id="tpl_data" class="top" name="tpl_data" rows=<!--{$text_row}--> style="width: 98%;"><!--{$arrPageData.tpl_data|h|smarty:nodefaults}--></textarea>
+                    <input type="hidden" name="html_area_row" value="<!--{$text_row}-->" /><br />
                     <a id="resize-btn" class="btn-normal" href="javascript:;" onclick="ChangeSize('#resize-btn', '#tpl_data', 50, 13); return false;"><span>拡大</span></a>
                 </div>
             </td>
         </tr>
     </table>
 
-
-    <div class="btn">
-      <a class="btn-action" href="javascript:;" name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form_edit','confirm','',''); return false;"><span class="btn-next">登録する</span></a>
-      <a class="btn-normal" href="javascript:;" name='preview' onclick="doPreview(); return false;"><span>プレビュー</span></a>
+    <div class="btn-area">
+        <ul>
+          <li><a class="btn-action" href="javascript:;" name='preview' onclick="doPreview(); return false;"><span class="btn-prev">プレビュー</span></a></li>
+          <li><a class="btn-action" href="javascript:;" name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form_edit','confirm','',''); return false;"><span class="btn-next">登録する</span></a></li>
+        </ul>
     </div>
 
     <h2>編集可能ページ一覧</h2>
-    <table class="list center">
+    <table class="list">
+        <colgroup width="70%">
+        <colgroup width="10%">
+        <colgroup width="10%">
+        <colgroup width="10%">
         <tr>
             <th>名称</th>
             <th>レイアウト</th>
-            <th><strong>ページ詳細</strong></th>
+            <th>ページ詳細</th>
             <th>削除</th>
         </tr>
         <!--{foreach key=key item=item from=$arrPageList}-->
@@ -119,15 +123,15 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
                 <td>
                     <!--{$item.page_name}-->
                 </td>
-                <td>
+                <td class="center">
                     <a href="./<!--{$smarty.const.DIR_INDEX_URL}-->?page_id=<!--{$item.page_id}-->&amp;device_type_id=<!--{$item.device_type_id}-->" >編集</a>
                 </td>
-                <td>
+                <td class="center">
                     <!--{if $item.filename|strlen >= 1}-->
                         <a href="?page_id=<!--{$item.page_id}-->&amp;device_type_id=<!--{$item.device_type_id}-->">編集</a>
                     <!--{/if}-->
                 </td>
-                <td>
+                <td class="center">
                     <!--{if $item.edit_flg == 1}-->
                         <a href="javascript:;" onclick="fnTargetSelf(); fnFormModeSubmit('form_edit','delete','page_id','<!--{$item.page_id|escape:'javascript'|h}-->'); return false;">削除</a>
                     <!--{/if}-->

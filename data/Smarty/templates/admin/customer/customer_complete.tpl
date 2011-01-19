@@ -28,8 +28,19 @@
 <input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->" />
 <!--{/if}-->
 <!--{/foreach}-->
-<div id="customer" class="contents-main">
-  <h2>顧客登録</h2>
-  <div class="message">登録が完了致しました。</div>
-</div>
+	<div id="complete">
+		<div class="complete-top"></div>
+		<div class="contents">
+			<div class="message">
+				登録が完了致しました。
+			</div>
+		</div>
+		<div class="btn-area-top"></div>
+		<div class="btn-area">
+			<ul>
+				<li><a class="btn-action" href="./customer.php"><span class="btn-next">続けて登録を行う</span></a></li>
+			</ul>
+		</div>
+		<div class="btn-area-bottom"></div>
+	</div>
 </form>

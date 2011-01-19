@@ -128,6 +128,8 @@ function fnCheckStock(form) {
 <input name="search_pageno" type="hidden" value="" />
 <input name="no" type="hidden" value="<!--{$tpl_no}-->" />
 <table class="form">
+    <colgroup width="20%">
+    <colgroup width="80%">
     <tr>
         <th>カテゴリ</th>
         <td>
@@ -161,6 +163,10 @@ function fnCheckStock(form) {
 
     <!--▼検索後表示部分-->
     <table class="list">
+    <colgroup width="20%">
+    <colgroup width="20%">
+    <colgroup width="50%">
+    <colgroup width="10%">
         <tr>
             <th class="image">商品画像</th>
             <th class="id">商品コード</th>

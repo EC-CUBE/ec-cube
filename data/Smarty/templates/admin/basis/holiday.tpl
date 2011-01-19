@@ -64,6 +64,11 @@
   </div>
 
   <table class="list">
+    <colgroup width="50%">
+    <colgroup width="15%">
+    <colgroup width="5%">
+    <colgroup width="5%">
+    <colgroup width="15%">
     <tr>
       <th>タイトル</th>
       <th>日付</th>

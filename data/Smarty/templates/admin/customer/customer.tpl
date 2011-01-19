@@ -60,7 +60,7 @@
                 <th>住所<span class="attention"> *</span></th>
                 <td>
                     <span class="attention"><!--{$arrErr.pref}--><!--{$arrErr.addr01}--><!--{$arrErr.addr02}--></span>
-                    <select name="pref" <!--{if $arrErr.pref != ""}--><!--{sfSetErrorStyle}--><!--{/if}-->>
+                    <select class="top" name="pref" <!--{if $arrErr.pref != ""}--><!--{sfSetErrorStyle}--><!--{/if}-->>
                         <option value="" selected="selected">都道府県を選択</option>
                         <!--{html_options options=$arrPref selected=$list_data.pref}-->
                     </select>
@@ -148,7 +148,7 @@
                 <td>
                     <span class="attention"><!--{$arrErr.reminder}--><!--{$arrErr.reminder_answer}--></span>
                     質問： 
-                    <select name="reminder" <!--{if $arrErr.reminder != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> >
+                    <select class="top" name="reminder" <!--{if $arrErr.reminder != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> >
                         <option value="" selected="selected">選択してください</option>
                         <!--{html_options options=$arrReminder selected=$list_data.reminder}-->
                     </select><br />
@@ -181,8 +181,11 @@
             </tr>
         </table>
 
-        <div class="btn">
-            <a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('form1', 'confirm', '', ''); return false;"><span>確認ページへ</span></a>
+        <div class="btn-area">
+            <ul>
+                <li><a class="btn-action" href="javascript:;" onclick="fnSetFormSubmit('form1', 'mode', 'confirm'); return false;"><span class="btn-next">確認ページへ</span></a></li>
+            </ul>
         </div>
     </div>
 </form>
+

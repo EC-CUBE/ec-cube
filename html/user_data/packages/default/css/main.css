@@ -38,6 +38,17 @@ br.clear {
     line-height: 0%;
     height: 0px
 }
+
+/* フロート解除 */
+.clearfix:after {
+	display:block;
+	clear:both;
+	height:0px;
+	line-height:0px;
+	visibility:hidden;
+	content:".";
+}
+
 /* リンク指定
 ----------------------------------------------- */
 a:link {
@@ -529,4 +540,33 @@ input[type='image'].box51 {
     color: #fff;
     text-align: center;
     clear: both;
+}
+
+/* お届け先の指定
+----------------------------------------------- */
+div#add-wrap {
+    
+}
+
+div#add-left {
+    float: left;
+    width: 540px;
+}
+
+div#add-right {
+    padding: 5px;
+    border: 1px solid #CCCCCC;
+    float: right;
+    width: 140px;
+    text-align: center;
+    background: #FFF1E3;
+}
+
+img#several {
+    margin: 5px auto 5px;
+}
+
+p.add-m {
+    font-size: 10px;
+    font-weight: bold;
 }

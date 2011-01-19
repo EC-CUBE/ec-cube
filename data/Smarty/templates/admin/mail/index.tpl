@@ -44,7 +44,7 @@
             <th>都道府県</th>
             <td>
                 <!--{if $arrErr.pref}--><span class="attention"><!--{$arrErr.pref}--></span><br /><!--{/if}-->
-                <select name="pref">
+                <select class="top" name="pref">
                     <option value="" selected="selected" style="<!--{$arrErr.pref|sfGetErrorColor}-->">都道府県を選択</option>
                     <!--{html_options options=$arrPref selected=$list_data.pref}-->
                 </select>
@@ -274,6 +274,14 @@
 
     <!--検索結果表示テーブル-->
     <table class="list">
+    <colgroup width="5%">
+    <colgroup width="10%">
+    <colgroup width="10%">
+    <colgroup width="25%">
+    <colgroup width="15%">
+    <colgroup width="10%">
+    <colgroup width="15%">
+    <colgroup width="5%">
         <tr>
             <th>#</th>
             <th>会員番号</th>
@@ -282,7 +290,7 @@
             <th>メールアドレス</th>
             <th>希望配信</th>
             <th>登録日</th>
-            <th class="delete">削除</th>
+            <th>削除</th>
         </tr>
         <!--{section name=i loop=$arrResults}-->
         <tr>

@@ -45,6 +45,11 @@ function submitRegister() {
     選択したテンプレートへデザインを変更することが出来ます。
   </p>
   <table class="list center">
+    <colgroup width="5%">
+    <colgroup width="30%">
+    <colgroup width="50%">
+    <colgroup width="10%">
+    <colgroup width="5%">
     <tr>
       <th>選択</th>
       <th>名前</th>

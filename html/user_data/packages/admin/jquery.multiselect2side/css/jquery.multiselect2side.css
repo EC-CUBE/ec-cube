@@ -1,14 +1,18 @@
+div#admin-contents {
+	width: 100%;
+}
+
 .ms2side__area {
-	clear: both;
-	padding-bottom: 20px;
-	overflow: auto;
+    overflow: auto;
+    padding-bottom: 20px;
+    padding-left: 112px;
 }
 
 .ms2side__div {
-	clear: left;
-	padding: 1px;
-	float: left;
-	background : url('') repeat-x; // HACK FOR CHROME
+    padding: 1px;
+    clear: left;
+    float: left;
+    background: url("") repeat-x scroll 0 0 transparent;
 }
 
 .ms2side__div p.AddOne,
@@ -21,19 +25,23 @@
 .ms2side__div p.RemoveAll,
 .ms2side__div p.MoveUp,
 .ms2side__div p.MoveBottom {
-    margin: 0 auto 5px auto;
+    margin: 5px auto;
 }
 .ms2side__select {
-	float: left;
+    border: 1px solid #CCCCCC;
+    float: left;
+    padding: 9px;
 }
 
 .ms2side__header {
-}
+    background: none repeat scroll 0 0 #DDDDDD;
+    margin: 0 0 7px;
+    padding: 5px;}
 
 .ms2side__options, .ms2side__updown {
 	float: left;
-	font-size: 10pt;
-	margin: 0;
+	font-size: 12px;
+    margin: 90px 0 0;
 	padding: 0 8px;
 	width: 80px;
 	color: black;
@@ -42,17 +50,27 @@
 }
 
 .ms2side__updown {
-	font-size: 9pt;
+    margin-top: 0;
+    margin-left: 10px;
+    padding-top: 10px;
+    padding-bottom: 5px;
+    background: none repeat scroll 0 0 #EEEEEE;
+    font-size: 12px;
+}
+
+div.Sort {
+    margin-bottom: 5px;
+    margin-top: 10px;
 }
 
 .ms2side__options p, .ms2side__updown p {
-	width:30px;
+	width:40px;
 	display:inline-block;
     text-decoration: none;
     background-attachment: scroll;
     background-clip: border-box;
     background-image: url('../../img/button/white-grad.png');
-    padding: 2px 10px;
+    padding: 2px 8px;
     white-space: nowrap;
     border: solid 1px #bcbecb;
     cursor: pointer;

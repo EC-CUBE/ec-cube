@@ -24,20 +24,19 @@
 
 
 <!--{* ▼CONTENTS *}-->
-	<div id="login-form-wrap">
+	<div id="login-wrap">
 
-
-		<div id="login-form">
-	<form name="form1" id="form1" method="post" action="login.php">
+		<div id="login-form" class="clearfix">
 			<h1><img src="<!--{$TPL_DIR}-->img/contents/admin_login_logo.jpg" width="140" height="150" alt="EC-CUBE管理画面" /></h1>
 			<div id="input-form">
+				<form name="form1" id="form1" method="post" action="login.php">
 				<p><label for="login_id">ID</label></p>
 				<input type="text" name="login_id" size="20" class="box25" />
 				<p><label for="password">PASSWORD</label></p>
 				<input type="password" name="password" size="20" class="box25" />
 				<p><a class="btn-tool-format" href="javascript:;" onclick="document.form1.submit(); return false;"><span>LOGIN</span></a></p>
+				</form>
 			</div>
-	</form>
 		</div>
 
 	</div>

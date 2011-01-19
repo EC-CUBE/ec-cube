@@ -87,14 +87,14 @@
   </table>
 
   <div class="btn">
-    検索結果表示件数
+    <p class="page_rows">検索結果表示件数
     <!--{assign var=key value="search_page_max"}-->
     <!--{if $arrErr[$key]}-->
     <span class="attention"><!--{$arrErr[$key]}--></span>
     <!--{/if}-->
     <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
     <!--{html_options options=$arrPageMax selected=$arrForm.search_page_max}-->
-    </select> 件
+    </select> 件</p>
     <div class="btn-area">
       <ul>
         <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', ''); return false;"><span class="btn-next">この条件で検索する</span></a></li>

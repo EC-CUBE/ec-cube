@@ -26,6 +26,8 @@
 <h2>受注詳細</h2>
 
 <table class="form">
+    <colgroup width="30%">
+    <colgroup width="80%">
     <tr>
         <th>対応状況</th>
         <td>
@@ -48,6 +50,8 @@
 
 <h3>お客様情報</h3>
 <table class="form">
+    <colgroup width="30%">
+    <colgroup width="80%">
     <tr>
         <th>注文番号</th>
         <td><!--{$arrForm.order_id.value}--></td>
@@ -99,6 +103,8 @@
 <!--▼お届け先情報ここから-->
 <h3>お届け先情報</h3>
 <table class="form">
+    <colgroup width="30%">
+    <colgroup width="80%">
     <tr>
         <th>お名前</th>
         <td>
@@ -150,18 +156,23 @@
 
 <h3>受注商品情報</h3>
 <table class="list">
+    <colgroup width="15%">
+    <colgroup width="35%">
+    <colgroup width="15%">
+    <colgroup width="10%">
+    <colgroup width="15%">
     <tr>
-        <th class="id">商品コード</th>
-        <th class="name">商品名/規格1/規格2</th>
-        <th class="price">単価</th>
-        <th class="qty">数量</th>
-        <th class="price">小計</th>
+        <th>商品コード</th>
+        <th>商品名/規格1/規格2</th>
+        <th>単価</th>
+        <th>数量</th>
+        <th>小計</th>
     </tr>
     <!--{section name=cnt loop=$arrForm.quantity.value}-->
     <!--{assign var=key value="`$smarty.section.cnt.index`"}-->
     <tr>
         <td><!--{$arrForm.product_code.value[$key]|h}--></td>
-        <td><!--{$arrForm.product_name.value[$key]|h}-->/<!--{$arrForm.classcategory_name1.value[$key]|default:"(なし)"|h}-->/<!--{$arrForm.classcategory_name2.value[$key]|default:"(なし)"|h}--></td>
+        <td><!--{$arrForm.product_name.value[$key]|h}--><br><!--{$arrForm.classcategory_name1.value[$key]|default:"(なし)"|h}-->/<!--{$arrForm.classcategory_name2.value[$key]|default:"(なし)"|h}--></td>
         <td class="right"><!--{if $arrForm.price.value[$key] != 0}--><!--{$arrForm.price.value[$key]|number_format}-->円<!--{else}-->無料<!--{/if}--></td>
         <td class="center"><!--{$arrForm.quantity.value[$key]|h}--></td>
         <!--{assign var=price value=`$arrForm.price.value[$key]`}-->
@@ -170,68 +181,68 @@
     </tr>
     <!--{/section}-->
     <tr>
-        <th colspan="4" class="right">小計</th>
+        <th colspan="4" class="column right">小計</th>
         <td align="right"><!--{$arrForm.subtotal.value|number_format}-->円</td>
     </tr>
     <tr>
-        <th colspan="4" class="right">ポイント値引き</th>
+        <th colspan="4" class="column right">ポイント値引き</th>
         <td align="right"><!--{assign var=point_discount value="`$arrForm.use_point.value*$smarty.const.POINT_VALUE`"}--><!--{$point_discount|number_format}-->円</td>
     </tr>
     <!--{assign var=discount value="`$arrForm.discount.value`"}-->
     <!--{if $discount != "" && $discount > 0}-->
                          <tr>
-        <th colspan="4" class="right">値引き</th>
+        <th colspan="4" class="column right">値引き</th>
         <td align="right"><!--{$discount|number_format}-->円</td>
     </tr>
     <!--{/if}-->
     <tr>
-        <th colspan="4" class="right">送料</th>
+        <th colspan="4" class="column right">送料</th>
         <td align="right"><!--{assign var=key value="deliv_fee"}--><!--{$arrForm[$key].value|number_format|h}--> 円</td>
     </tr>
     <tr>
-        <th colspan="4" class="right">手数料</th>
+        <th colspan="4" class="column right">手数料</th>
         <td align="right"><!--{assign var=key value="charge"}-->
     <span class="attention"><!--{$arrErr[$key]}--></span><!--{$arrForm[$key].value|number_format|h}--> 円</td>
     </tr>
     <tr>
-        <th colspan="4" class="right">合計</th>
+        <th colspan="4" class="column right">合計</th>
         <td align="right"><!--{$arrForm.total.value|number_format}--> 円</td>
     </tr>
     <tr>
-        <th colspan="4" class="right">お支払い合計</th>
+        <th colspan="4" class="column right">お支払い合計</th>
         <td align="right"><!--{$arrForm.payment_total.value|number_format}--> 円</td>
     </tr>
     <tr>
-        <th colspan="4" class="right">使用ポイント</th>
+        <th colspan="4" class="column right">使用ポイント</th>
         <td align="right"><!--{assign var=key value="use_point"}--><!--{if $arrForm[$key].value != ""}--><!--{$arrForm[$key].value|number_format}--><!--{else}-->0<!--{/if}--> pt</td>
     </tr>
     <!--{if $arrForm.birth_point.value > 0}-->
     <tr>
-        <th colspan="4" class="right">お誕生日ポイント</th>
+        <th colspan="4" class="column right">お誕生日ポイント</th>
         <td align="right">
         <!--{$arrForm.birth_point.value|number_format}-->
          pt</td>
     </tr>
     <!--{/if}-->
     <tr>
-        <th colspan="4" class="right">加算ポイント</th>
+        <th colspan="4" class="column right">加算ポイント</th>
         <td align="right">
         <!--{$arrForm.add_point.value|default:0|number_format}-->
          pt</td>
     </tr>
     <tr>
         <!--{if $arrForm.customer_id.value > 0}-->
-        <th colspan="4" class="right">現在ポイント</th>
+        <th colspan="4" class="column right">現在ポイント</th>
         <td align="right">
         <!--{$arrForm.point.value|number_format}-->
          pt</td>
         <!--{else}-->
-        <th colspan="4" class="right">現在ポイント</th><td align="center">(なし)</td>
+        <th colspan="4" class="column right">現在ポイント</th><td align="center">(なし)</td>
         <!--{/if}-->
     </tr>
     <!--{*
     <tr>
-        <th colspan="4" class="right">反映後ポイント (ポイントの変更は<a href="?" onclick="return fnEdit('<!--{$arrForm.customer_id.value}-->');">顧客編集</a>から手動にてお願い致します。)</th>
+        <th colspan="4" class="column right">反映後ポイント (ポイントの変更は<a href="?" onclick="return fnEdit('<!--{$arrForm.customer_id.value}-->');">顧客編集</a>から手動にてお願い致します。)</th>
         <td align="right">
             <span class="attention"><!--{$arrErr.total_point}--></span>
             <!--{$arrForm.total_point.value|number_format}-->
@@ -242,6 +253,8 @@
 </table>
 
 <table class="form">
+    <colgroup width="30%">
+    <colgroup width="80%">
     <tr>
         <th>お支払方法</th>
         <td>

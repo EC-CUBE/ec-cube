@@ -44,6 +44,8 @@ function func_submit( id ){
 <input name="mode" type="hidden" value="search" />
 <input name="search_pageno" type="hidden" value="" />
   <table class="form">
+    <colgroup width="20%">
+    <colgroup width="80%">
     <tr>
       <th>カテゴリ</th>
       <td>
@@ -69,6 +71,10 @@ function func_submit( id ){
   <!--{$tpl_strnavi}-->
     
   <table class="list">
+    <colgroup width="15%">
+    <colgroup width="13%">
+    <colgroup width="60%">
+    <colgroup width="13%">
     <tr>
       <th>商品画像</th>
       <th>商品コード</th>

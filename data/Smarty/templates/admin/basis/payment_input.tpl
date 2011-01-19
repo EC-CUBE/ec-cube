@@ -41,6 +41,8 @@ self.moveTo(20,20);self.focus();
   <h2>支払方法登録・編集</h2>
   
     <table class="form">
+    <colgroup width="20%">
+    <colgroup width="80%">
       <tr>
         <th>支払方法<span class="attention"> *</span></th>
         <td>
@@ -84,7 +86,7 @@ self.moveTo(20,20);self.focus();
           <!--{if $arrFile[$key].filepath != ""}-->
           <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->">　<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br />
           <!--{/if}-->
-          <input type="file" name="<!--{$key}-->" size="25" class="box25" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
+          <input type="file" name="<!--{$key}-->" size="30" class="box30" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
           <a class="btn-normal" href="javascript:;" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->'); return false;">アップロード</a>
         </td>
       </tr>

@@ -71,8 +71,8 @@ function confirmSubmit(mode, msg) {
       </td>
     </tr>
   </table>
-  <div class="btn">
-    <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('upload', '', '');return false;"><span>アップロード</span></a>
+  <div class="btn-area">
+    <a class="btn-action" href="javascript:;" onclick="fnModeSubmit('upload', '', '');return false;"><span class="btn-next">この内容で登録する</span></a>
   </div>
 </div>
 </form>

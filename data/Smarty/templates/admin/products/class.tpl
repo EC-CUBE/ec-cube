@@ -45,6 +45,11 @@
   </div>
 
   <table class="list">
+    <colgroup width="45%">
+    <colgroup width="15%">
+    <colgroup width="10%">
+    <colgroup width="10%">
+    <colgroup width="15%">
     <tr>
       <th>規格名 (登録数)</th>
       <th>分類登録</th>

@@ -63,6 +63,15 @@
   </p>
 
   <table class="list center">
+    <colgroup width="5%">
+    <colgroup width="7%">
+    <colgroup width="9%">
+    <colgroup width="15%">
+    <colgroup width="20%">
+    <colgroup width="10%">
+    <colgroup width="10%">
+    <colgroup width="12%">
+    <colgroup width="12%">
     <tr>
       <th><label for="move_check">選択</label> <input type="checkbox" name="move_check" id="move_check" onclick="fnAllCheck(this, 'input[name=move[]]')" /></th>
       <th>対応状況</th>

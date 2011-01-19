@@ -45,7 +45,7 @@ var IMG_NORMAL         = "<!--{$TPL_DIR}-->img/contents/space.gif";				// スペ
       <th>ファイルのアップロード</th>
       <td>
         <!--{if $arrErr.upload_file}--><span class="attention"><!--{$arrErr.upload_file}--></span><!--{/if}-->
-        <input type="file" name="upload_file" size="46" <!--{if $arrErr.upload_file}-->style="background-color:<!--{$smarty.const.ERR_COLOR|h}-->"<!--{/if}-->><a class="btn-normal" href="javascript:;" onclick="setTreeStatus('tree_status');fnModeSubmit('upload','',''); return false;">アップロード</a>
+        <input type="file" name="upload_file" size="40" <!--{if $arrErr.upload_file}-->style="background-color:<!--{$smarty.const.ERR_COLOR|h}-->"<!--{/if}-->><a class="btn-normal" href="javascript:;" onclick="setTreeStatus('tree_status');fnModeSubmit('upload','',''); return false;">アップロード</a>
       </td>
     </tr>
     <tr>
@@ -59,8 +59,7 @@ var IMG_NORMAL         = "<!--{$TPL_DIR}-->img/contents/space.gif";				// スペ
 
   <h2><!--{$tpl_now_dir|h}--></h2>
 
-  <div id="file_view">
-    <table id="contents-filemanager-filelist" class="list">
+    <table class="list">
       <tr>
         <th>ファイル名</th>
         <th>サイズ</th>
@@ -101,7 +100,6 @@ var IMG_NORMAL         = "<!--{$TPL_DIR}-->img/contents/space.gif";				// スペ
       <!--{/section}-->
     </table>
   </div>
-</div>
 </div>
 
 </form>

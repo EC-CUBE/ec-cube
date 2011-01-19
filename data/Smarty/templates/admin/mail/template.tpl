@@ -22,8 +22,18 @@
  */
 *}-->
 <form name="form1" id="form1" method="post" action="?">
+<div class="btn">
+    <a class="btn-action" href="./template_input.php"><span class="btn-next">テンプレートを新規入力</span></a>
+</div>
+<!--{if count($list_data) > 0}-->
 <div id="mail" class="contents-main">
     <table class="list center">
+    <colgroup width="15%">
+    <colgroup width="35%">
+    <colgroup width="20%">
+    <colgroup width="10%">
+    <colgroup width="10%">
+    <colgroup width="10%">
         <tr>
             <th>作成日</th>
             <th>subject</th>
@@ -44,8 +54,5 @@
         </tr>
         <!--{/section}-->
     </table>
-
-    <div class="btn addnew">
-        <a class="btn-normal" href="./template_input.php"><span>テンプレートを新規入力</span></a>
-    </div>
 </div>
+<!--{/if}-->

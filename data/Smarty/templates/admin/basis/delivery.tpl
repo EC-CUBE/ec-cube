@@ -25,13 +25,22 @@
 <input type="hidden" name="mode" value="edit" />
 <input type="hidden" name="deliv_id" value="" />
 <div id="basis" class="contents-main">
-
+  <div class="btn">
+    <ul>
+        <li><a class="btn-action" href="javascript:;" name="subm2" onclick="fnChangeAction('./delivery_input.php'); fnModeSubmit('pre_edit','','');"><span class="btn-next">配送業者<!--{if $smarty.const.INPUT_DELIV_FEE}-->・配送料<!--{/if}-->を新規入力</span></a></li>
+    </ul>
+  </div>
   <table class="list">
+    <colgroup width="35%">
+    <colgroup width="30%">
+    <colgroup width="10%">
+    <colgroup width="10%">
+    <colgroup width="15%">
     <tr>
       <th>配送業者</th>
       <th>名称</th>
-      <th class="edit">編集</th>
-      <th class="delete">削除</th>
+      <th>編集</th>
+      <th>削除</th>
       <th>移動</th>
     </tr>
     <!--{section name=cnt loop=$arrDelivList}-->
@@ -51,8 +60,5 @@
       </tr>
     <!--{/section}-->
   </table>
-  <div class="btn addnew">
-    <a class="btn-normal" href="javascript:;" name="subm2" onclick="fnChangeAction('./delivery_input.php'); fnModeSubmit('pre_edit','',''); return false;"><span>配送業者<!--{if $smarty.const.INPUT_DELIV_FEE}-->・配送料<!--{/if}-->を新規入力</span></a>
-  </div>
 </div>
 </form>

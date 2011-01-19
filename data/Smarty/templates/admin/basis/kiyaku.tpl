@@ -50,10 +50,14 @@
   </div>
 
   <table class="list">
+    <colgroup width="65%">
+    <colgroup width="10%">
+    <colgroup width="10%">
+    <colgroup width="15%">
     <tr>
       <th>規約タイトル</th>
-      <th class="edit">編集</th>
-      <th class="delete">削除</th>
+      <th>編集</th>
+      <th>削除</th>
       <th>移動</th>
     </tr>
     <!--{section name=cnt loop=$arrKiyaku}-->

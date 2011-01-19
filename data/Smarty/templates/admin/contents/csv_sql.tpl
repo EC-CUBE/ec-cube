@@ -81,7 +81,7 @@ function fnTargetSelf(){
       </td>
     </tr>
     <tr>
-      <th align="center">SQL文<br /> (SELECTは記述しないでください。)<span class="attention"> *</span></td>
+      <th align="center">SQL文<span class="attention"> *</span><br /> (SELECTは記述しないでください。)</td>
       <td align="left">
         <span class="attention"><!--{$arrErr.csv_sql}--></span>
         <div>
@@ -93,12 +93,13 @@ function fnTargetSelf(){
 
   <div class="btn">
     <a class="btn-normal" href="javascript:;" name="subm" onclick="doPreview(); return false;"><span>構文エラーを確認する</span></a>
-    <div class="btn-area">
-      <ul>
-        <li><a class="btn-action" href="javascript:;" name="subm" onclick="mode.value='confirm'; fnTargetSelf(); return false;"><span class="btn-next">この内容で登録する</span></a></li>
-      </ul>
-    </div>
   </div>
+  <div class="btn-area">
+    <ul>
+      <li><a class="btn-action" href="javascript:;" name="subm" onclick="mode.value='confirm'; fnTargetSelf(); return false;"><span class="btn-next">この内容で登録する</span></a></li>
+    </ul>
+  </div>
+
 
 
   <div id="contents-csv-sqltbl">

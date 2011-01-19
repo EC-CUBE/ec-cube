@@ -47,16 +47,16 @@
 			// UP AND DOWN
 			var divUpDown =
 					"<div class='ms2side__updown'>" +
-						"<p class='SelSort' title='Sort'>" + o.labelSort + "</p>" +
-						"<p class='MoveTop' title='Move on top selected option'>" + o.labelTop + "</p>" +
+						"<div class='Sort' title='Sort'>" + o.labelSort + "</div>" +
 						"<p class='MoveUp' title='Move up selected option'>" + o.labelUp + "</p>" +
 						"<p class='MoveDown' title='Move down selected option'>" + o.labelDown + "</p>" +
+						"<p class='MoveTop' title='Move on top selected option'>" + o.labelTop + "</p>" +
 						"<p class='MoveBottom' title='Move on bottom selected option'>" + o.labelBottom + "</p>" +
 					"</div>";
 
 			// CREATE NEW ELEMENT (AND HIDE IT) AFTER THE HIDDED ORGINAL SELECT
 			var htmlToAdd = 
-				"<div class='ms2side__div'>" +
+				"<div class='ms2side__div clearfix'>" +
 						((o.selectedPosition != 'right' && o.moveOptions) ? divUpDown : "") +
 					"<div class='ms2side__select'>" +
 						(o.labelsx ? ("<div class='ms2side__header'>" + o.labelsx + "</div>") : "") +
@@ -65,22 +65,22 @@
 					"<div class='ms2side__options'>" +
 						((o.selectedPosition == 'right')
 						?
-						("<p class='AddOne' title='Add Selected'>&rsaquo;</p>" +
-						"<p class='AddAll' title='Add All'>&raquo;</p>" +
-						"<p class='RemoveOne' title='Remove Selected'>&lsaquo;</p>" +
-						"<p class='RemoveAll' title='Remove All'>&laquo;</p>")
+						("<p class='RemoveOne' title='Remove Selected'>&lsaquo;</p>" +
+						"<p class='RemoveAll' title='Remove All'>&laquo;</p>" +
+						"<p class='AddOne' title='Add Selected'>&rsaquo;</p>" +
+						"<p class='AddAll' title='Add All'>&raquo;</p>")
 						:
-						("<p class='AddOne' title='Add Selected'>&lsaquo;</p>" +
-						"<p class='AddAll' title='Add All'>&laquo;</p>" +
-						"<p class='RemoveOne' title='Remove Selected'>&rsaquo;</p>" +
-						"<p class='RemoveAll' title='Remove All'>&raquo;</p>")
+						("<p class='RemoveOne' title='Remove Selected'>&lsaquo;</p>" +
+						"<p class='RemoveAll' title='Remove All'>&laquo;</p>" +
+						"<p class='AddOne' title='Add Selected'>&rsaquo;</p>" +
+						"<p class='AddAll' title='Add All'>&raquo;</p>")
 						) +
 					"</div>" +
 					"<div class='ms2side__select'>" +
 						(o.labeldx ? ("<div class='ms2side__header'>" + o.labeldx + "</div>") : "") +
 						"<select title='" + o.labeldx + "' name='" + nameDx + "' id='" + nameDx + "' size='" + size + "' multiple='multiple' ></select>" +
-					"</div>" +
 					((o.selectedPosition == 'right' && o.moveOptions) ? divUpDown : "") +
+					"</div>" +
 				"</div>";
 			$(this).after(htmlToAdd).hide();
 
@@ -93,9 +93,12 @@
 			
 			// CENTER MOVE OPTIONS AND UPDOWN OPTIONS
 			$(this).next().find('.ms2side__options, .ms2side__updown').each(function(){
+                /************************************************
+                 * レイアウト調整のためコメントアウト
 				var	top = ((heightDiv/2) - ($(this).height()/2));
 				if (top > 0)
 					$(this).css('padding-top',  top + 'px' );
+                *************************************************/
 			})
 
 			// MOVE SELECTED OPTION TO RIGHT, NOT SELECTED TO LEFT

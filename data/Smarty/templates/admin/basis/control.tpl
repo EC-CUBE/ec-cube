@@ -23,6 +23,9 @@
 *}-->
 <div id="basis" class="contents-main">
   <table class="list">
+    <colgroup width="80%">
+    <colgroup width="10%">
+    <colgroup width="10%">
     <tr>
       <th>管理タイトル/管理内容</th>
       <th>選択項目</th>

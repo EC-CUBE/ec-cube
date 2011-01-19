@@ -66,7 +66,7 @@
           <!--{if $arrErr[$key]}-->
           <span class="attention"><!--{$arrErr[$key]}--></span>
           <!--{/if}-->
-          <select name="<!--{$arrForm[$key].keyname}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
+          <select class="top" name="<!--{$arrForm[$key].keyname}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
           <option value="" selected="selected">都道府県を選択</option>
           <!--{html_options options=$arrPref selected=$arrForm[$key].value}-->
           </select><br />

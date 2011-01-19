@@ -90,7 +90,7 @@
         <!--{if $tpl_mode != 'add'}-->
         <tr>
             <th>帳票出力</th>
-            <td><a class="btn-normal" href="javascript:;" onclick="win02('pdf.php?order_id=<!--{$arrForm.order_id.value}-->','pdf','615','800'); return false;">帳票出力</a></td>
+            <td><a class="btn-normal" href="javascript:;" onclick="win02('pdf.php?order_id=<!--{$arrForm.order_id.value}-->','pdf','615','650'); return false;">帳票出力</a></td>
         </tr>
         <!--{/if}-->
         <tr>
@@ -200,13 +200,13 @@
                 <a class="btn-normal" href="javascript:;" name="address_input" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'order_zip01', 'order_zip02', 'order_pref', 'order_addr01'); return false;">住所入力</a><br />
                 <!--{assign var=key value="order_pref"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
-                <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
+                <select class="top" name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
                     <option value="" selected="">都道府県を選択</option>
                     <!--{html_options options=$arrPref selected=$arrForm[$key].value}-->
                 </select><br />
                 <!--{assign var=key value="order_addr01"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
-                <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" size="60" class="box60" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" /><br />
+                <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" size="60" class="box60 top" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" /><br />
                 <!--{assign var=key value="order_addr02"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" size="60" class="box60" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
@@ -234,8 +234,8 @@
     <a name="order_products"></a>
     <h2 id="order_products">
         受注商品情報
-        <a class="btn-normal" href="javascript:;" name="cheek" onclick="fnModeSubmit('cheek','anchor_key','order_products'); return false;">計算結果の確認</a>
-        <a class="btn-normal" href="javascript:;" name="add_product" onclick="win03('<!--{$smarty.const.URL_PATH}--><!--{$smarty.const.ADMIN_DIR}-->order/product_select.php<!--{if $tpl_order_id}-->?order_id=<!--{$tpl_order_id}--><!--{/if}-->', 'search', '600', '500'); return false;">商品の追加</a>
+        <a class="btn-normal" href="javascript:;" name="cheek" onclick="fnModeSubmit('cheek','anchor_key','order_products');">計算結果の確認</a>
+        <a class="btn-normal" href="javascript:;" name="add_product" onclick="win03('<!--{$smarty.const.URL_PATH}--><!--{$smarty.const.ADMIN_DIR}-->order/product_select.php<!--{if $tpl_order_id}-->?order_id=<!--{$tpl_order_id}--><!--{/if}-->', 'search', '615', '500'); return false;">商品の追加</a>
     </h2>
     <!--{if $arrErr.product_id || $arrErr.quantity || $arrErr.price}-->
         <span class="attention"><!--{$arrErr.product_id}--></span>
@@ -264,7 +264,7 @@
                 <input type="hidden" name="classcategory_name1[<!--{$key}-->]" value="<!--{$arrForm.classcategory_name1.value[$key]}-->" id="classcategory_name1_<!--{$key}-->" />
                 <input type="hidden" name="classcategory_name2[<!--{$key}-->]" value="<!--{$arrForm.classcategory_name2.value[$key]}-->" id="classcategory_name2_<!--{$key}-->" />
                 <br />
-                <a class="btn-normal" href="javascript:;" name="change" onclick="win03('<!--{$smarty.const.URL_PATH}--><!--{$smarty.const.ADMIN_DIR}-->order/product_select.php?no=<!--{$key}--><!--{if $tpl_order_id}-->&order_id=<!--{$tpl_order_id}--><!--{/if}-->', 'search', '600', '500'); return false;">変更</a>
+                <a class="btn-normal" href="javascript:;" name="change" onclick="win03('<!--{$smarty.const.URL_PATH}--><!--{$smarty.const.ADMIN_DIR}-->order/product_select.php?no=<!--{$key}--><!--{if $tpl_order_id}-->&order_id=<!--{$tpl_order_id}--><!--{/if}-->', 'search', '615', '500'); return false;">変更</a>
                 <!--{if $product_count > 1}-->
                     <a class="btn-normal" href="javascript:;" name="delete" onclick="fnSetFormVal('form1', 'delete_no', <!--{$key}-->); fnModeSubmit('delete_product','anchor_key','order_products'); return false;">削除</a>
                 <!--{/if}-->
@@ -472,13 +472,13 @@
                 <a class="btn-normal" href="javascript:;" name="address_input" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'shipping_zip01', 'shipping_zip02', 'shipping_pref', 'shipping_addr01'); return false;">住所入力</a><br />
                 <!--{assign var=key value="shipping_pref_`$shipping_id`"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
-                <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
+                <select class="top" name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
                     <option value="" selected="">都道府県を選択</option>
                     <!--{html_options options=$arrPref selected=$arrForm[$key].value}-->
                 </select><br />
                 <!--{assign var=key value="shipping_addr01_`$shipping_id`"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
-                <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" size="60" class="box60" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" /><br />
+                <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" size="60" class="box60 top" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" /><br />
                 <!--{assign var=key value="shipping_addr02_`$shipping_id`"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" size="60" class="box60" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />

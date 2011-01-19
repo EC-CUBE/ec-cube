@@ -286,10 +286,6 @@ function fnTargetSelf(){
                 <!-- ★☆★ フッタより下部ナビテーブル ☆★☆ -->
             </tr>
         </table>
-        <div class="btn">
-            <a class="btn-action" href="javascript:;" name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form1','confirm','',''); return false;"><span class="btn-next">登録する</span></a>
-            <a class="btn-normal" href="javascript:;" name='preview' onclick="doPreview(); return false;"<!--{if $page_id == "0" or $exists_page == "0" }--> DISABLED<!--{/if}-->><span>プレビュー</span></a>
-        </div>
     </div>
     <!--{* ▲レイアウトここまで *}-->
 
@@ -321,6 +317,12 @@ function fnTargetSelf(){
         <div class="btn"><a class="btn-normal" href="javascript:;" onclick="fnTargetSelf(); fnFormModeSubmit('form1','new_bloc','',''); return false;"><span>ブロックを新規入力</span></a></div>
     </div>
     <!--{* ▲未使用ブロックここまで *}-->
+        <div class="btn-area">
+            <ul>
+                <li><a class="btn-action" href="javascript:;" name='preview' onclick="doPreview();"<!--{if $page_id == "0" or $exists_page == "0" }--> DISABLED<!--{/if}-->><span class="btn-prev">プレビュー</span></a></li>
+                <li><a class="btn-action" href="javascript:;" name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form1','confirm','',''); return false;"><span class="btn-next">登録する</span></a></li>
+            </ul>
+        </div>
     <!--▲レイアウト編集　ここまで-->
 
     <!--▼ページ一覧　ここから-->
@@ -332,14 +334,14 @@ function fnTargetSelf(){
     <tr>
       <th>名称</th>
       <th class="edit">レイアウト</th>
-      <th class="edit center"><strong>ページ詳細</strong></th>
+      <th class="edit center">ページ詳細</th>
       <th class="delete center">削除</th>
     </tr>
     <!--{foreach key=key item=item from=$arrEditPage}-->
         <tr style="background-color:<!--{if $item.page_id == $page_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->;">
             <td>
                 <!--{$item.page_name}-->
-            </td>
+            </th>
             <td class="center">
                 <a href="?page_id=<!--{$item.page_id}-->&amp;device_type_id=<!--{$item.device_type_id}-->" >編集</a>
             </td>

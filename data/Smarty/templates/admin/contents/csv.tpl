@@ -27,10 +27,15 @@
 <!--
 $().ready(function() {
     $('#output_list').multiselect2side({
-        selectedPosition: 'left',
+        selectedPosition: 'right',
         moveOptions: true,
-        labelsx: '出力項目一覧',
-        labeldx: '出力可能項目一覧'
+        labelsx: 'CSV出力しない項目',
+        labeldx: 'CSV出力する項目',
+        labelTop: '一番上',
+        labelBottom: '一番下',
+        labelUp: '一つ上',
+        labelDown: '一つ下',
+        labelSort: '項目順序'
     });
     // multiselect2side の初期選択を解除
     $('.ms2side__div select').val(null);
@@ -44,7 +49,6 @@ $().ready(function() {
 <form name="form1" id="form1" method="post" action="?">
 <input type="hidden" name="mode" value="confirm" />
 <input type="hidden" name="tpl_subno_csv" value="<!--{$tpl_subno_csv}-->" />
-
 <div id="admin-contents" class="contents-main">
     <div class="ms2side__area">
         <span class="attention"><!--{$arrErr.output_list}--></span>

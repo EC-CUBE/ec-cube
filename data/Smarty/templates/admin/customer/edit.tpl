@@ -111,10 +111,10 @@
                 <th>住所<span class="attention"> *</span></th>
                 <td>
                     <span class="attention"><!--{$arrErr.pref}--><!--{$arrErr.addr01}--><!--{$arrErr.addr02}--></span>
-                    <select name="pref" <!--{if $arrErr.pref != ""}--><!--{sfSetErrorStyle}--><!--{/if}-->>
-                        <option value="" selected="selected">都道府県を選択</option>
+                    <select class="top" name="pref" <!--{if $arrErr.pref != ""}--><!--{sfSetErrorStyle}--><!--{/if}-->>
+                        <option class="top" value="" selected="selected">都道府県を選択</option>
                         <!--{html_options options=$arrPref selected=$list_data.pref}-->
-                    </select>
+                    </select><br />
                     <input type="text" name="addr01" value="<!--{$list_data.addr01|h}-->" size="60" class="box60" <!--{if $arrErr.addr01 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /><br />
                     <!--{$smarty.const.SAMPLE_ADDRESS1}--><br />
                     <input type="text" name="addr02" value="<!--{$list_data.addr02|h}-->" size="60" class="box60" <!--{if $arrErr.addr02 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /><br />
@@ -198,7 +198,7 @@
                 <td>
                     <span class="attention"><!--{$arrErr.reminder}--><!--{$arrErr.reminder_answer}--></span>
                     質問： 
-                    <select name="reminder" <!--{if $arrErr.reminder != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> >
+                    <select class="top" name="reminder" <!--{if $arrErr.reminder != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> >
                         <option value="" selected="selected">選択してください</option>
                         <!--{html_options options=$arrReminder selected=$list_data.reminder}-->
                     </select><br />
@@ -234,7 +234,7 @@
         <div class="btn-area">
           <ul>
             <li><a class="btn-action" href="javascript:;" onclick="return fnReturn();"><span class="btn-prev">検索画面に戻る</span></a></li>
-            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'confirm', '', ''); return false;"><span class="btn-next">確認ページへ</span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnSetFormSubmit('form1', 'mode', 'confirm'); return false;"><span class="btn-next">確認ページへ</span></a></li>
           </ul>
         </div>
 
@@ -243,11 +243,11 @@
         <input type="hidden" name="edit_customer_id" value="<!--{$edit_customer_id}-->" >
 
         <h2>購入履歴一覧</h2>
+        <!--{if $tpl_linemax > 0}-->
         <p><span class="attention"><!--購入履歴一覧--><!--{$tpl_linemax}-->件</span>&nbsp;が該当しました。</p>
 
         <!--{include file=$tpl_pager}-->
 
-        <!--{if $tpl_linemax > 0}-->
             <!--{* 購入履歴一覧表示テーブル *}-->
             <table class="list">
                 <tr>

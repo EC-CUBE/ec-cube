@@ -25,31 +25,44 @@
 <input type="hidden" name="mode" value="edit" />
 <input type="hidden" name="payment_id" value="<!--{$tpl_payment_id}-->" />
 <div id="basis" class="contents-main">
+  <div class="btn">
+    <ul>
+        <li>    <a class="btn-action" href="javascript:;" name="subm2" onclick="win03('./payment_input.php','payment_input','620','400');"><span class="btn-next">支払方法を新規入力</span></a>
+</li>
+    </ul>
+  </div>
   <table class="list">
+    <colgroup width="5%">
+    <colgroup width="30%">
+    <colgroup width="20%">
+    <colgroup width="20%">
+    <colgroup width="5%">
+    <colgroup width="5%">
+    <colgroup width="15%">
     <tr>
-      <th>ID</th>
+      <th class="center">ID</th>
       <th>支払方法</th>
       <th>手数料（円）</th>
       <th>利用条件</th>
-      <th class="edit">編集</th>
-      <th class="delete">削除</th>
+      <th>編集</th>
+      <th>削除</th>
       <th>移動</th>
     </tr>
     <!--{section name=cnt loop=$arrPaymentListFree}-->
     <tr>
-      <td><!--{$arrPaymentListFree[cnt].payment_id|h}--></td>
-      <td><!--{$arrPaymentListFree[cnt].payment_method|h}--></td>
+      <td class="center"><!--{$arrPaymentListFree[cnt].payment_id|h}--></td>
+      <td class="center"><!--{$arrPaymentListFree[cnt].payment_method|h}--></td>
       <!--{if $arrPaymentListFree[cnt].charge_flg == 2}-->
-        <td align="center">-</td>
+        <td class="center">-</td>
       <!--{else}-->
-        <td align="right"><!--{$arrPaymentListFree[cnt].charge|number_format|h}--></td>
+        <td class="right"><!--{$arrPaymentListFree[cnt].charge|number_format|h}--></td>
       <!--{/if}-->
-      <td align="center">
+      <td class="center">
         <!--{if $arrPaymentListFree[cnt].rule > 0}--><!--{$arrPaymentListFree[cnt].rule|number_format|h}--><!--{else}-->0<!--{/if}-->円
         <!--{if $arrPaymentListFree[cnt].upper_rule > 0}-->～<!--{$arrPaymentListFree[cnt].upper_rule|number_format|h}-->円<!--{elseif $arrPaymentListFree[cnt].upper_rule == "0"}--><!--{else}-->～無制限<!--{/if}--></td>
-      <td align="center"><!--{if $arrPaymentListFree[cnt].fix != 1}--><a href="?" onclick="win03('./payment_input.php?mode=pre_edit&amp;payment_id=<!--{$arrPaymentListFree[cnt].payment_id}-->','payment_input','600','400'); return false;">編集</a><!--{else}-->-<!--{/if}--></td>
-      <td align="center"><!--{if $arrPaymentListFree[cnt].fix != 1}--><a href="?" onclick="fnModeSubmit('delete', 'payment_id', <!--{$arrPaymentListFree[cnt].payment_id}-->); return false;">削除</a><!--{else}-->-<!--{/if}--></td>
-      <td align="center">
+      <td class="center"><!--{if $arrPaymentListFree[cnt].fix != 1}--><a href="?" onclick="win03('./payment_input.php?mode=pre_edit&amp;payment_id=<!--{$arrPaymentListFree[cnt].payment_id}-->','payment_input','620','400'); return false;">編集</a><!--{else}-->-<!--{/if}--></td>
+      <td class="center"><!--{if $arrPaymentListFree[cnt].fix != 1}--><a href="?" onclick="fnModeSubmit('delete', 'payment_id', <!--{$arrPaymentListFree[cnt].payment_id}-->); return false;">削除</a><!--{else}-->-<!--{/if}--></td>
+      <td class="center">
       <!--{if $smarty.section.cnt.iteration != 1}-->
       <a href="?" onclick="fnModeSubmit('up','payment_id', <!--{$arrPaymentListFree[cnt].payment_id}-->); return false;">上へ</a>
       <!--{/if}-->
@@ -60,8 +73,5 @@
     </tr>
     <!--{/section}-->
   </table>
-  <div class="btn addnew">
-    <a class="btn-normal" href="javascript:;" name="subm2" onclick="win03('./payment_input.php','payment_input','600','400');"><span>支払方法を新規入力</span></a>
-  </div>
 </div>
 </form>

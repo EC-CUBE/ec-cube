@@ -24,7 +24,14 @@
 
 <form name="index_form"  method="post" action="?"> 
   <input type="hidden" name="mode" value="confirm" />
+    <div class="btn">
+        <a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('index_form', 'confirm', '', '');"><span class="btn-next">変更する</span></a>
+    </div>
       <table class="list">
+        <colgroup width="8%">
+        <colgroup width="28%">
+        <colgroup width="25%">
+        <colgroup width="45%">
       <tr>
         <th>インデックス</th>
         <th>テーブル名</th>
@@ -37,8 +44,8 @@
   
     <tr>
     <td class="center"><input type="checkbox" name="indexflag_new[]" value="<!--{$smarty.section.cnt.index}-->" <!--{if $arrForm[cnt].indexflag == "1"}-->checked<!--{/if}--> /></td>
-    <td><!--{$arrForm[cnt].table_name}--></td>
-    <td><!--{$arrForm[cnt].column_name}--></td>
+    <th class="column"><!--{$arrForm[cnt].table_name}--></th>
+    <th class="column"><!--{$arrForm[cnt].column_name}--></th>
     <td><!--{$arrForm[cnt].recommend_comment}--></td>
     </tr>
 <input type="hidden" name="table_name[]" value="<!--{$arrForm[cnt].table_name}-->" />
