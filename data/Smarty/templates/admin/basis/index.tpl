@@ -243,38 +243,6 @@ $(function() {
     </tr>
   </table>
 
-  <h2>管理機能設定</h2>
-  <table id="basis-index-admin">
-    <tr>
-      <th>ディレクトリ名</th>
-      <td>
-        <!--{assign var=key value="admin_dir"}-->
-        <span class="attention"><!--{$arrErr[$key]}--></span>
-        <!--{$smarty.const.ROOT_URLPATH}--><input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key]|h}-->" maxlength="<!--{$smarty.const.ID_MAX_LEN}-->" size="40" class="box40" style="<!--{if $arrErr[$key] != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/>/
-      </td>
-    </tr>
-    <tr>
-      <th>SSL制限</th>
-      <td>
-        <!--{assign var=key value="admin_force_ssl"}-->
-        <span class="attention"><!--{$arrErr[$key]}--></span>
-        <input type="checkbox" name="<!--{$key}-->" value="1" id="<!--{$key}-->" <!--{if $arrForm[$key] == 1}-->checked="checked"<!--{/if}--><!--{if !$tpl_enable_ssl}--> disabled="disabled"<!--{/if}--> /><label for="<!--{$key}-->">SSLを強制する。</label>
-      </td>
-    </tr>
-    <tr>
-      <th>IP制限</th>
-      <td>
-        <!--{assign var=key value="admin_allow_hosts"}-->
-        <span class="attention"><!--{$arrErr[$key]}--></span>
-        <textarea name="<!--{$key}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key]|h}--></textarea>
-        <span class="attention"> (上限<!--{$smarty.const.LTEXT_LEN}-->文字)</span><br />
-        <span>※管理機能へのアクセスを特定のIPアドレスからの接続のみに制限します。<br />
-        アクセスを許可するIPアドレスを1行づつ入力してください。何も入力しない場合は全てを許可します。</span><br />
-      </td>
-    </tr>
-  </table>
-
-
   <h2>定休日設定</h2>
   <table id="basis-index-holiday">
     <tr>

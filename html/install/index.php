@@ -409,6 +409,7 @@ function lfDispStep0($objPage) {
         DATA_REALDIR . "downloads/",
         DATA_REALDIR . "upload/",
         HTML_REALDIR . ADMIN_DIR,
+        HTML_REALDIR
     );
 
     $mess = "";
@@ -416,7 +417,7 @@ function lfDispStep0($objPage) {
     foreach($arrWriteFile as $val) {
         // listdirsの保持データを初期化
         initdirs();
-        if (is_dir($val)) {
+        if (is_dir($val) and $val != HTML_REALDIR .ADMIN_DIR and $val != HTML_REALDIR) {
            $arrDirs = listdirs($val);
         } else {
             $arrDirs = array($val);
@@ -744,7 +745,7 @@ function lfCheckWebError($objFormParam) {
 
     $oldAdminDir = SC_Utils_Ex::sfTrimURL(ADMIN_DIR);
     $newAdminDir = $objFormParam->getValue('admin_dir');
-    if ($oldAdminDir !== $newAdminDir AND (file_exists(HTML_REALDIR . $newAdminDir) OR file_exists(USER_TEMPLATE_REALDIR . $newAdminDir))) {
+    if ($oldAdminDir !== $newAdminDir AND file_exists(HTML_REALDIR . $newAdminDir) and $newAdminDir != "admin") {
         $objErr->arrErr["admin_dir"] = "※ 指定した管理機能ディレクトリは既に存在しています。別の名前を指定してください。";
     }
 
@@ -1064,14 +1065,11 @@ function renameAdminDir($adminDir) {
     if ($adminDir === $oldAdminDir) {
         return true;
     }
-    if (file_exists(HTML_REALDIR . $adminDir) OR file_exists(USER_TEMPLATE_REALDIR . $adminDir)) {
+    if (file_exists(HTML_REALDIR . $adminDir)) {
         return '※ 指定した管理機能ディレクトリは既に存在しています。別の名前を指定してください。';
     }
     if (!rename(HTML_REALDIR . $oldAdminDir, HTML_REALDIR . $adminDir)) {
         return '※ ' . HTML_REALDIR . $adminDir . 'へのリネームに失敗しました。ディレクトリの権限を確認してください。';
-    }
-    if (!rename(USER_TEMPLATE_REALDIR . $oldAdminDir, USER_TEMPLATE_REALDIR . $adminDir)) {
-        return '※ ' . USER_TEMPLATE_REALDIR . $adminDir . 'へのリネームに失敗しました。ディレクトリの権限を確認してください。';
     }
     return true;
 }
