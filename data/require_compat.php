@@ -23,16 +23,16 @@
 
 require_once(DATA_REALDIR . "module/Compat/Compat.php");
 
-//TODO: ‚±‚Ìƒ‰ƒCƒuƒ‰ƒŠ‚ðŽg‚¤‚Ì‚ª—Ç‚¢‚Ì‚©APEAR/Crypt_HMAC2‚ðŽg‚¤‚×‚«‚©ŒŸ“¢‚µ‚½‚ª
-//      Crypt_HMAC2‚Í5.0.0ˆÈã‚Å‚ ‚Á‚½‚½‚ßA4.0.0‚©‚ç‚Ì“®ì‚ª‰Â”\‚È‰º‹L‚ðˆø—pB
+//TODO: ã“ã®ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ã†ã®ãŒè‰¯ã„ã®ã‹ã€PEAR/Crypt_HMAC2ã‚’ä½¿ã†ã¹ãã‹æ¤œè¨Žã—ãŸãŒ
+//      Crypt_HMAC2ã¯5.0.0ä»¥ä¸Šã§ã‚ã£ãŸãŸã‚ã€4.0.0ã‹ã‚‰ã®å‹•ä½œãŒå¯èƒ½ãªä¸‹è¨˜ã‚’å¼•ç”¨ã€‚
 
 // hash_algos (PHP 5 >= 5.1.2, PECL hash >= 1.1)
-// ƒpƒXƒ[ƒhEƒŠƒ}ƒCƒ“ƒ_[‚ÌƒnƒbƒVƒ…ˆÃ†‰»‚É—˜—p
+// ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ãƒ»ãƒªãƒžã‚¤ãƒ³ãƒ€ãƒ¼ã®ãƒãƒƒã‚·ãƒ¥æš—å·åŒ–ã«åˆ©ç”¨
 PHP_Compat::loadFunction("hash_algos");
 
 // hash_hmac (PHP 5 >= 5.1.2, PECL hash >= 1.1)
-// ƒpƒXƒ[ƒhEƒŠƒ}ƒCƒ“ƒ_[‚ÌƒnƒbƒVƒ…ˆÃ†‰»‚É—˜—p
-// http://pear.php.net/bugs/bug.php?id=16521 ‚æ‚èPHP_CompatŒÝŠ·Žd—l‚ÌhashŠÖ˜AŠÖ”’Ç‰Á
+// ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ãƒ»ãƒªãƒžã‚¤ãƒ³ãƒ€ãƒ¼ã®ãƒãƒƒã‚·ãƒ¥æš—å·åŒ–ã«åˆ©ç”¨
+// http://pear.php.net/bugs/bug.php?id=16521 ã‚ˆã‚ŠPHP_Compatäº’æ›ä»•æ§˜ã®hashé–¢é€£é–¢æ•°è¿½åŠ 
 PHP_Compat::loadFunction("hash_hmac");
 
 ?>
