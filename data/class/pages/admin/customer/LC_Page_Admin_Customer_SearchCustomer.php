@@ -29,7 +29,7 @@ require_once(CLASS_REALDIR . "pages/admin/LC_Page_Admin.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id$
+ * @version $Id: $
  */
 class LC_Page_Admin_Customer_SearchCustomer extends LC_Page_Admin {
 
@@ -84,6 +84,10 @@ class LC_Page_Admin_Customer_SearchCustomer extends LC_Page_Admin {
             // エラーチェック
             $this->arrErr = $this->lfCheckError();
             $is_select = empty($this->arrErr);
+
+            $sqlval = array();
+            $where = "";
+            
             if ($is_select) {
                 $where = "del_flg = 0";
 
@@ -94,23 +98,23 @@ class LC_Page_Admin_Customer_SearchCustomer extends LC_Page_Admin {
                         switch($key){
                             case 'customer_id':
                                 $where .= " AND customer_id = ? ";
-                                $sqlval[$key] = $val;
+                                $sqlval[] = $val;
                                 break;
                             case 'name01':
                                     $where .= " AND name01 ILIKE ? ";
-                                    $sqlval[$key] = '%'.$val.'%';
+                                    $sqlval[] = '%'.$val.'%';
                                 break;
                             case 'name02':
                                     $where .= " AND name02 ILIKE ? ";
-                                    $sqlval[$key] = '%'.$val.'%';
+                                    $sqlval[] = '%'.$val.'%';
                                 break;
                             case 'kana01':
                                     $where .= " AND kana01 ILIKE ? ";
-                                    $sqlval[$key] = '%'.$val.'%';
+                                    $sqlval[] = '%'.$val.'%';
                                 break;
                             case 'kana02':
                                     $where .= " AND kana02 ILIKE ? ";
-                                    $sqlval[$key] = '%'.$val.'%';
+                                    $sqlval[] = '%'.$val.'%';
                                 break;
                             default :
                                 break;
