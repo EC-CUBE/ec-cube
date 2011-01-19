@@ -74,13 +74,11 @@ class LC_Page_Mypage_Order extends LC_Page {
         }
 
         for($num = 0; $num < count($arrDisp); $num++) {
-            $product_id = $arrDisp[$num]['product_id'];
             $product_class_id = $arrDisp[$num]['product_class_id'];
-            $cate_id1 = $arrDisp[$num]['classcategory_id1'];
-            $cate_id2 = $arrDisp[$num]['classcategory_id2'];
             $quantity = $arrDisp[$num]['quantity'];
+            $product_type_id = $arrDisp[$num]['product_type_id'];
 
-            $objCartSess->addProduct(array($product_id, $product_class_id, $cate_id1, $cate_id2), $quantity);
+            $objCartSess->addProduct($product_class_id, $quantity, $product_type_id);
         }
         SC_Response_Ex::sendRedirect(CART_URLPATH);
     }
@@ -102,10 +100,11 @@ class LC_Page_Mypage_Order extends LC_Page {
         $customer_id = $objCustomer->getValue("customer_id");
         $order_count = $objQuery->count("dtb_order", "order_id = ? and customer_id = ?", array($order_id, $customer_id));
         if ($order_count != 1) return array();
-        $col = "product_id, product_class_id, quantity";
+        $col = "product_class_id, quantity, product_type_id";
+        $table = "dtb_order_detail LEFT JOIN dtb_products_class USING(product_class_id)";
         $where = "order_id = ?";
         $objQuery->setOrder("product_class_id");
-        $arrRet = $objQuery->select($col, "dtb_order_detail", $where, array($order_id));
+        $arrRet = $objQuery->select($col, $table, $where, array($order_id));
         return $arrRet;
     }
 
