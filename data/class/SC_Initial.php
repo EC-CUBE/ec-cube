@@ -234,8 +234,8 @@ class SC_Initial {
     function createCacheDir() {
         if (defined("HTML_REALDIR")) {
             umask(0);
-            if (!file_exists(COMPILE_DIR)) {
-                mkdir(COMPILE_DIR);
+            if (!file_exists(COMPILE_REALDIR)) {
+                mkdir(COMPILE_REALDIR);
             }
 
             if (!file_exists(MOBILE_COMPILE_REALDIR)) {

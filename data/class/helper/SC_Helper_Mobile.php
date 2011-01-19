@@ -226,7 +226,7 @@ class SC_Helper_Mobile {
      */
     function lfMobileInitOutput() {
         // Smarty 用のディレクトリーを作成する。
-        @mkdir(COMPILE_DIR);
+        @mkdir(COMPILE_REALDIR);
 
         // 出力用のエンコーディングを Shift JIS に固定する。
         mb_http_output('SJIS-win');

@@ -236,7 +236,7 @@ define('IMAGE_SAVE_RSS_URL', HTTP_URL . "upload/save_image/");
 /** エンコードCSVの一時保存先 */
 define('CSV_TEMP_REALDIR', DATA_REALDIR . "upload/csv/");
 /** 画像がない場合に表示 */
-define('NO_IMAGE_DIR', USER_TEMPLATE_REALDIR . "img/picture/img_blank.gif");
+define('NO_IMAGE_REALDIR', USER_TEMPLATE_REALDIR . "img/picture/img_blank.gif");
 /** システム管理トップ */
 define('ADMIN_SYSTEM_URLPATH', ROOT_URLPATH . ADMIN_DIR . "system/" . DIR_INDEX_URL);
 /** 規格登録 */
@@ -425,7 +425,7 @@ define('TEMPLATE_REALDIR', SMARTY_TEMPLATES_REALDIR . TEMPLATE_NAME . "/");
 /** SMARTYテンプレート(管理機能) */
 define('TEMPLATE_ADMIN_REALDIR', SMARTY_TEMPLATES_REALDIR . "admin/");
 /** SMARTYコンパイル */
-define('COMPILE_DIR', DATA_REALDIR . "Smarty/templates_c/" . TEMPLATE_NAME . "/");
+define('COMPILE_REALDIR', DATA_REALDIR . "Smarty/templates_c/" . TEMPLATE_NAME . "/");
 /** SMARTYコンパイル(管理機能) */
 define('COMPILE_ADMIN_REALDIR', DATA_REALDIR . "Smarty/templates_c/admin/");
 /** ブロックファイル保存先 */
@@ -438,8 +438,6 @@ define('MOBILE_COMPILE_REALDIR', DATA_REALDIR . "Smarty/templates_c/" . MOBILE_T
 define('SMARTPHONE_TEMPLATE_REALDIR', SMARTY_TEMPLATES_REALDIR . SMARTPHONE_TEMPLATE_NAME . "/");
 /** SMARTYコンパイル(smartphone) */
 define('SMARTPHONE_COMPILE_REALDIR', DATA_REALDIR . "Smarty/templates_c/" . SMARTPHONE_TEMPLATE_NAME . "/");
-/** ブロックファイル保存先 */
-define('BLOC_PATH', TEMPLATE_REALDIR . BLOC_DIR);
 /** EメールアドレスチェックをRFC準拠にするか(true:準拠する、false:準拠しない) */
 define('RFC_COMPLIANT_EMAIL_CHECK', false);
 /** モバイルサイトのセッションの存続時間 (秒) */

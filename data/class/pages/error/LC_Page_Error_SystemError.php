@@ -79,7 +79,7 @@ class LC_Page_Error_SystemError extends LC_Page_Error {
         } elseif($this->adminPage) {
             $objView = new SC_AdminView();
         } else {
-            $objView = new SC_InstallView(TEMPLATE_REALDIR, COMPILE_DIR);
+            $objView = new SC_InstallView(TEMPLATE_REALDIR, COMPILE_REALDIR);
         }
 
         $this->tpl_error = "システムエラーが発生しました。<br />大変お手数ですが、サイト管理者までご連絡ください。";

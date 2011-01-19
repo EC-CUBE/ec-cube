@@ -1140,7 +1140,7 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('IMAGE_SAVE_URLPATH'
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('IMAGE_TEMP_RSS_URL', 'HTTP_URL . "upload/temp_image/"', 154, 'RSS用画像一時保存URL');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('IMAGE_SAVE_RSS_URL', 'HTTP_URL . "upload/save_image/"', 155, 'RSS用画像保存先URL');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CSV_TEMP_REALDIR', 'DATA_REALDIR . "upload/csv/"', 156, 'エンコードCSVの一時保存先');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('NO_IMAGE_DIR', 'USER_TEMPLATE_REALDIR . "img/picture/img_blank.gif"', 158, '画像がない場合に表示');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('NO_IMAGE_REALDIR', 'USER_TEMPLATE_REALDIR . "img/picture/img_blank.gif"', 158, '画像がない場合に表示');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ADMIN_SYSTEM_URLPATH', 'ROOT_URLPATH . ADMIN_DIR . "system/" . DIR_INDEX_URL', 159, 'システム管理トップ');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ADMIN_CLASS_REGIST_URLPATH', 'ROOT_URLPATH . ADMIN_DIR . "products/class.php"', 160, '規格登録');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('INPUT_ZIP_URLPATH', 'ROOT_URLPATH . "input_zip.php"', 161, '郵便番号入力');
@@ -1235,14 +1235,13 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SMARTPHONE_TEMPLATE
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SMARTY_TEMPLATES_REALDIR', ' DATA_REALDIR . "Smarty/templates/"', 306, 'SMARTYテンプレート');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TEMPLATE_REALDIR', 'SMARTY_TEMPLATES_REALDIR . TEMPLATE_NAME . "/"', 307, 'SMARTYテンプレート(PC)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TEMPLATE_ADMIN_REALDIR', 'SMARTY_TEMPLATES_REALDIR . "admin/"', 308, 'SMARTYテンプレート(管理機能)');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('COMPILE_DIR', 'DATA_REALDIR . "Smarty/templates_c/" . TEMPLATE_NAME . "/"', 309, 'SMARTYコンパイル');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('COMPILE_REALDIR', 'DATA_REALDIR . "Smarty/templates_c/" . TEMPLATE_NAME . "/"', 309, 'SMARTYコンパイル');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('COMPILE_ADMIN_REALDIR', 'DATA_REALDIR . "Smarty/templates_c/admin/"', 310, 'SMARTYコンパイル(管理機能)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('BLOC_DIR', '"frontparts/bloc/"', 311, 'ブロックファイル保存先');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MOBILE_TEMPLATE_REALDIR', 'SMARTY_TEMPLATES_REALDIR . MOBILE_TEMPLATE_NAME . "/"', 312, 'SMARTYテンプレート(mobile)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MOBILE_COMPILE_REALDIR', 'DATA_REALDIR . "Smarty/templates_c/" . MOBILE_TEMPLATE_NAME . "/"', 313, 'SMARTYコンパイル(mobile)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SMARTPHONE_TEMPLATE_REALDIR', 'SMARTY_TEMPLATES_REALDIR . SMARTPHONE_TEMPLATE_NAME . "/"', 314, 'SMARTYテンプレート(smart phone)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SMARTPHONE_COMPILE_REALDIR', 'DATA_REALDIR . "Smarty/templates_c/" . SMARTPHONE_TEMPLATE_NAME . "/"', 315, 'SMARTYコンパイル(smartphone)');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('BLOC_PATH', 'TEMPLATE_REALDIR . BLOC_DIR', 316, 'ブロックファイル保存先');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('RFC_COMPLIANT_EMAIL_CHECK', 'false', 401, 'EメールアドレスチェックをRFC準拠にするか(true:準拠する、false:準拠しない)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MOBILE_SESSION_LIFETIME', '1800', 402, 'モバイルサイトのセッションの存続時間 (秒)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MOBILE_USE_KARA_MAIL', 'false', 403, '空メール機能を使用するかどうか(true:送信する、false:送信しない)');

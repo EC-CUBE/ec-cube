@@ -210,7 +210,7 @@ class SC_SiteView extends SC_View{
         parent::SC_View();
 
         $this->_smarty->template_dir = TEMPLATE_REALDIR;
-        $this->_smarty->compile_dir = COMPILE_DIR;
+        $this->_smarty->compile_dir = COMPILE_REALDIR;
 
         $this->assignTemplatePath(DEVICE_TYPE_PC);
         $this->initpath();
@@ -223,7 +223,7 @@ class SC_SiteView extends SC_View{
 }
 
 class SC_UserView extends SC_SiteView{
-    function SC_UserView($template_dir, $compile_dir = COMPILE_DIR) {
+    function SC_UserView($template_dir, $compile_dir = COMPILE_REALDIR) {
         parent::SC_SiteView();
         $this->_smarty->template_dir = $template_dir;
         $this->_smarty->compile_dir = $compile_dir;
@@ -231,7 +231,7 @@ class SC_UserView extends SC_SiteView{
 }
 
 class SC_InstallView extends SC_View{
-    function SC_InstallView($template_dir, $compile_dir = COMPILE_DIR) {
+    function SC_InstallView($template_dir, $compile_dir = COMPILE_REALDIR) {
         parent::SC_View(false);
         $this->_smarty->template_dir = $template_dir;
         $this->_smarty->compile_dir = $compile_dir;
