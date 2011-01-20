@@ -1846,9 +1846,10 @@ __EOS__;
      * @param integer|null $newStatus 対応状況 (null=変更無し)
      * @param integer|null $newAddPoint 加算ポイント (null=変更無し)
      * @param integer|null $newUsePoint 使用ポイント (null=変更無し)
+     * @param array $sqlval 更新後の値をリファレンスさせるためのパラメータ
      * @return void
      */
-    function sfUpdateOrderStatus($orderId, $newStatus = null, $newAddPoint = null, $newUsePoint = null) {
+    function sfUpdateOrderStatus($orderId, $newStatus = null, $newAddPoint = null, $newUsePoint = null, &$sqlval = array()) {
         $objQuery =& SC_Query::getSingletonInstance();
 
         $arrOrderOld = $objQuery->getRow('status, add_point, use_point, customer_id', 'dtb_order', 'order_id = ?', array($orderId));
@@ -1929,7 +1930,10 @@ __EOS__;
         }
 
         // ▼受注テーブルの更新
-        $sqlval = array();
+        if (empty($sqlval)) {
+            $sqlval = array();
+        }
+
         if (USE_POINT !== false) {
             $sqlval['add_point'] = $newAddPoint;
             $sqlval['use_point'] = $newUsePoint;
@@ -1946,7 +1950,15 @@ __EOS__;
         $sqlval['status'] = $newStatus;
         $sqlval['update_date'] = 'Now()';
 
-        $objQuery->update('dtb_order', $sqlval, 'order_id = ?', array($orderId));
+        $cols = $objQuery->listTableFields('dtb_order');
+        $dest = array();
+        foreach ($sqlval as $key => $val) {
+            if (in_array($key, $cols)) {
+                $dest[$key] = $val;
+            }
+        }
+
+        $objQuery->update('dtb_order', $dest, 'order_id = ?', array($orderId));
         // ▲受注テーブルの更新
     }
 

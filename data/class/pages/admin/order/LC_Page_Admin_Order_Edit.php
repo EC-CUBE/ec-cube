@@ -683,10 +683,7 @@ __EOS__;
         $objQuery->begin();
 
         // 受注.対応状況の更新
-        SC_Helper_DB_Ex::sfUpdateOrderStatus($order_id, $sqlval['status'], $sqlval['add_point'], $sqlval['use_point']);
-        unset($sqlval['status']);
-        unset($sqlval['add_point']);
-        unset($sqlval['use_point']);
+        SC_Helper_DB_Ex::sfUpdateOrderStatus($order_id, $sqlval['status'], $sqlval['add_point'], $sqlval['use_point'], $sqlval);
 
         // 受注テーブルの更新
         $this->registerOrder($sqlval, $order_id);
