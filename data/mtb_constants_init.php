@@ -542,8 +542,6 @@ define('DOWN_TEMP_REALDIR', DATA_REALDIR . "download/temp/");
 define('DOWN_SAVE_REALDIR', DATA_REALDIR . "download/save/");
 /** ダウンロードファイル存在エラー */
 define('DOWNFILE_NOT_FOUND', 22);
-/** ダウンロード販売機能用オンライン決済payment_id(カンマ区切り) */
-define('ONLINE_PAYMENT', "1");
 /** ダウンロード販売機能 ダウンロードファイル読み込みバイト(KB) */
 define('DOWNLOAD_BLOCK', 1024);
 /** 新規注文 */
