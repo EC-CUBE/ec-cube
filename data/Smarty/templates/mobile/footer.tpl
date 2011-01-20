@@ -25,7 +25,7 @@
 
 <hr>
 
-<a href="<!--{$smarty.const.MOBILE_URLPATH}-->mypage/login.php" accesskey="8" utn><!--{8|numeric_emoji}-->MYページ</a><br>
+<a href="<!--{$smarty.const.MOBILE_HTTPS_URL}-->mypage/login.php?<!--{$smarty.const.SID}-->" accesskey="8" utn><!--{8|numeric_emoji}-->MYページ</a><br>
 <a href="<!--{$smarty.const.MOBILE_CART_URLPATH}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>
 <a href="<!--{$smarty.const.MOBILE_TOP_URLPATH}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
 
