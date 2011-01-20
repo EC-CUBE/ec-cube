@@ -29,7 +29,7 @@ require_once(CLASS_REALDIR . "pages/admin/LC_Page_Admin.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id:LC_Page_Admin_Products.php 15532 2007-08-31 14:39:46Z nanasess $
+ * @version $Id$
  */
 class LC_Page_Admin_Products extends LC_Page_Admin {
 
@@ -205,12 +205,16 @@ class LC_Page_Admin_Products extends LC_Page_Admin {
                             $arrval[] = $date;
                             break;
                         case 'search_product_flag': //種別
-                            global $arrSTATUS;
-                            $search_product_flag = SC_Utils_Ex::sfSearchCheckBoxes($val);
-                            if($search_product_flag != "") {
-                                $where.= " AND product_flag LIKE ?";
-                                $view_where.= " AND product_flag LIKE ?";
-                                $arrval[] = $search_product_flag;
+                            if(count($val) > 0) {
+                                $where .= " AND product_id IN (SELECT product_id FROM dtb_product_status WHERE product_status_id IN (";
+                                $view_where .= " AND product_id IN (SELECT product_id FROM dtb_product_status WHERE product_status_id IN (";
+                                foreach($val as $param) {
+                                    $where .= "?,";
+                                    $view_where .= "?,";
+                                    $arrval[] = $param;
+                                }
+                                $where = preg_replace("/,$/", "))", $where);
+                                $view_where = preg_replace("/,$/", "))", $where);
                             }
                             break;
                         case 'search_status': // ステータス
