@@ -95,7 +95,6 @@
                         <!--{html_options options=$arrDelivTime selected=$arrForm[$key].value}-->
                     </select>
                 </div>
-                <p></p>
                 <!--{/foreach}-->
             </div>
             <!--{/if}-->
