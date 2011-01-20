@@ -69,18 +69,11 @@ function lfnDispChange(){
   <table>
     <tr>
       <th>商品ID</th>
-      <td>
+      <td colspan="3">
         <!--{if $arrErr.search_product_id}-->
         <span class="attention"><!--{$arrErr.search_product_id}--></span>
         <!--{/if}-->
         <input type="text" name="search_product_id" value="<!--{$arrForm.search_product_id|h}-->" size="30" class="box30" style="<!--{$arrErr.search_product_id|sfGetErrorColor}-->"/>
-      </td>
-			<th>規格名称</th>
-			<td>
-        <!--{if $arrErr.search_product_class_name}-->
-        <span class="attention"><!--{$arrErr.search_product_class_name}--></span>
-        <!--{/if}-->
-        <input type="text" name="search_product_class_name" value="<!--{$arrForm.search_product_class_name|h}-->" size="30" class="box30"style="<!--{$arrErr.search_product_class_name|sfGetErrorColor}-->" />
       </td>
     </tr>
     <tr>

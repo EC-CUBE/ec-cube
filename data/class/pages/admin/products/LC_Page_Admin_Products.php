@@ -162,16 +162,6 @@ class LC_Page_Admin_Products extends LC_Page_Admin {
                             $view_where .= " AND product_id = ?";
                             $arrval[] = $val;
                             break;
-                        case 'search_product_class_name': //規格名称
-                            $where_in = " (SELECT classcategory_id FROM dtb_classcategory WHERE class_id IN (SELECT class_id FROM dtb_class WHERE name LIKE ?)) ";
-                            $where .= " AND product_id IN (SELECT product_id FROM dtb_products_class WHERE classcategory_id1 IN " . $where_in;
-                            $where .= " OR classcategory_id2 IN" . $where_in . ")";
-                            $view_where .= " AND product_id IN (SELECT product_id FROM dtb_products_class WHERE classcategory_id1 IN " . $where_in;
-                            $view_where .= " OR classcategory_id2 IN" . $where_in . ")";
-                            $arrval[] = "%$val%";
-                            $arrval[] = "%$val%";
-                            $view_where = $where;
-                            break;
                         case 'search_name': // 商品名
                             $where .= " AND name ILIKE ?";
                             $view_where .= " AND name ILIKE ?";
