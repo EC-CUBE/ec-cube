@@ -233,7 +233,7 @@ class LC_Page_Admin_Design_Up_Down extends LC_Page_Admin {
         return $arrErr;
     }
     /**
-     * DBおよびTPL_PKG_PATHにテンプレートパッケージを追加する.
+     * DBおよびファイルシステムにテンプレートパッケージを追加する.
      *
      * @param object $objForm SC_FormParamのインスタンス
      * @param object $objUpFile SC_UploadFileのインスタンス

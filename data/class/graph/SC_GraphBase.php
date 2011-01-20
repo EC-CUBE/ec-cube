@@ -22,7 +22,7 @@
  */
 
 /** TTFフォントファイル */
-define("FONT_PATH", DATA_REALDIR . "fonts/wlmaru20044.ttf");
+define("FONT_REALFILE", DATA_REALDIR . "fonts/wlmaru20044.ttf");
 
 /** フォントサイズ */
 define("FONT_SIZE", 8);
@@ -261,7 +261,7 @@ class SC_GraphBase {
         /*
             ※正確な値が取得できなかったので廃止
             // テキスト幅の取得
-            $arrPos = imagettfbbox($font_size, 0, FONT_PATH, $text);
+            $arrPos = imagettfbbox($font_size, 0, FONT_REALFILE, $text);
             $ret = $arrPos[2] - $arrPos[0];
         */
         return $ret;
@@ -293,9 +293,9 @@ class SC_GraphBase {
         $text = mb_convert_encoding($text, "EUC-JP", CHAR_CODE);
         //$text = mb_convert_encoding($text, CHAR_CODE);
         if($color != NULL) {
-            ImageTTFText($this->image, $font_size, $angle, $left, $top + $font_size, $color, FONT_PATH, $text);
+            ImageTTFText($this->image, $font_size, $angle, $left, $top + $font_size, $color, FONT_REALFILE, $text);
         } else {
-            ImageTTFText($this->image, $font_size, $angle, $left, $top + $font_size, $this->text_color, FONT_PATH, $text);
+            ImageTTFText($this->image, $font_size, $angle, $left, $top + $font_size, $this->text_color, FONT_REALFILE, $text);
         }
     }
 
@@ -315,7 +315,7 @@ class SC_GraphBase {
             $this->text_top = FONT_SIZE + LINE_PAD;
         }
         // テキスト描画
-        ImageTTFText($this->image, FONT_SIZE, 0, LINE_PAD, $this->text_top, $this->text_color, FONT_PATH, $text);
+        ImageTTFText($this->image, FONT_SIZE, 0, LINE_PAD, $this->text_top, $this->text_color, FONT_REALFILE, $text);
         $this->text_top += FONT_SIZE + LINE_PAD;
     }
 
