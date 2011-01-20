@@ -586,5 +586,9 @@ class SC_CartSession {
     function getKey() {
         return $_SESSION['cartKey'];
     }
+
+    function isMultiple() {
+        return count($this->getKeys()) > 1;
+    }
 }
 ?>

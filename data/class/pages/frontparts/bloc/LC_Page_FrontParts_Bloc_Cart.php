@@ -93,14 +93,12 @@ class LC_Page_FrontParts_Bloc_Cart extends LC_Page_FrontParts_Bloc {
         // 送料無料までの金額
         $arrCartList[0]['ProductsTotal'] = $ProductsTotal;
         $arrCartList[0]['TotalQuantity'] = $TotalQuantity;
-        /*
-         * FIXME
-         * 商品種別ごとに送料無料までの金額を計算するよう要修正
-         */
+
         $deliv_free = $arrInfo['free_rule'] - $ProductsTotal;
         $arrCartList[0]['free_rule'] = $arrInfo['free_rule'];
         $arrCartList[0]['deliv_free'] = $deliv_free;
 
+        $this->isMultiple = $objCart->isMultiple();
         $this->arrCartList = $arrCartList;
     }
 
