@@ -51,22 +51,16 @@
                 <!--{foreach from=$items item=item name=cartItem}-->
                 <table summary="商品情報">
                 <tr>
-                    <th>削除</th>
                     <th>商品写真</th>
                     <th>商品名</th>
                     <th>数量</th>
                 </tr>
                     <!--{assign var=index value=$smarty.foreach.cartItem.index}-->
                     <tr style="<!--{if $item.error}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->">
-                        <td>
-                          <a href="?" onclick="fnFormModeSubmit('form<!--{$key}-->', 'delete', 'cart_no', '<!--{$smarty.foreach.cartItem.index}-->'); return false;">削除</a>
-                          <input type="hidden" name="cart_no<!--{$index}-->" value="<!--{$index}-->" />
-                          <input type="hidden" name="product_class_id<!--{$index}-->" value="<!--{$item.product_class_id}-->" />
-                        </td>
                         <td class="phototd">
                         <a
                             <!--{if $item.main_image|strlen >= 1}-->
-                                href="<!--{$smarty.const.IMAGE_SAVE_URL}--><!--{$item.main_image|sfNoImageMainList|h}-->"
+                                href="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$item.main_image|sfNoImageMainList|h}-->"
                                 class="expansion"
                                 target="_blank"
                             <!--{/if}-->
@@ -83,15 +77,17 @@
                             <!--{$item.price02|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
                         </td>
                         <td>
+                          <input type="hidden" name="cart_no<!--{$index}-->" value="<!--{$index}-->" />
+                          <input type="hidden" name="product_class_id<!--{$index}-->" value="<!--{$item.product_class_id}-->" />
                           <!--{assign var=key value="quantity`$index`"}-->
                           <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value}-->" size="4" />
                         </td>
                      </tr>
                     <tr style="<!--{if $item.error}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->">
-                      <td colspan="4">お届け先</td>
+                      <td colspan="3">お届け先</td>
                     </tr>
                     <tr style="<!--{if $item.error}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->">
-                      <td colspan="4"><!--{assign var=key value="shipping`$index`"}-->
+                      <td colspan="3"><!--{assign var=key value="shipping`$index`"}-->
                           <select name="<!--{$key}-->"><!--{html_options options=$addrs selected=$arrForm[$key].value}--></select></td>
                     </tr>
                    </table>

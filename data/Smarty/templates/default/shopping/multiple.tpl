@@ -20,12 +20,13 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 <!--▼CONTENTS-->
-<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
-<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.fancybox/jquery.fancybox-1.3.4.pack.js"></script>
-<link rel="stylesheet" href="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
+<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.facebox/facebox.js"></script>
+<link rel="stylesheet" type="text/css" href="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.facebox/facebox.css" media="screen" />
 <script type="text/javascript">//<![CDATA[
     $(document).ready(function() {
-        $("a.expansion").fancybox({
+        $("a.expansion").facebox({
+            loadingImage : '<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.facebox/loading.gif',
+            closeImage   : '<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.facebox/closelabel.png'
         });
     });
 //]]></script>
@@ -53,7 +54,6 @@
             <input type="hidden" name="mode" value="confirm" />
             <table summary="商品情報">
                 <tr>
-                    <th>削除</th>
                     <th>商品写真</th>
                     <th>商品名</th>
                     <th>数量</th>
@@ -62,15 +62,10 @@
                 <!--{foreach from=$items item=item name=cartItem}-->
                     <!--{assign var=index value=$smarty.foreach.cartItem.index}-->
                     <tr style="<!--{if $item.error}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->">
-                        <td>
-                          <a href="?" onclick="fnFormModeSubmit('form<!--{$key}-->', 'delete', 'cart_no', '<!--{$smarty.foreach.cartItem.index}-->'); return false;">削除</a>
-                          <input type="hidden" name="cart_no<!--{$index}-->" value="<!--{$index}-->" />
-                          <input type="hidden" name="product_class_id<!--{$index}-->" value="<!--{$item.product_class_id}-->" />
-                        </td>
                         <td class="phototd">
                         <a
                             <!--{if $item.main_image|strlen >= 1}-->
-                                href="<!--{$smarty.const.IMAGE_SAVE_URL}--><!--{$item.main_image|sfNoImageMainList|h}-->"
+                                href="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$item.main_image|sfNoImageMainList|h}-->"
                                 class="expansion"
                                 target="_blank"
                             <!--{/if}-->
@@ -91,6 +86,8 @@
                           <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value}-->" size="4" />
                         </td>
                         <td>
+                          <input type="hidden" name="cart_no<!--{$index}-->" value="<!--{$index}-->" />
+                          <input type="hidden" name="product_class_id<!--{$index}-->" value="<!--{$item.product_class_id}-->" />
                           <!--{assign var=key value="shipping`$index`"}-->
                           <select name="<!--{$key}-->"><!--{html_options options=$addrs selected=$arrForm[$key].value}--></select>
                         </td>

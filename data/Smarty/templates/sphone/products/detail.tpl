@@ -19,8 +19,9 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
-<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.facebox/facebox.js"></script>
-<link rel="stylesheet" type="text/css" href="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.facebox/facebox.css" media="screen" />
+<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+<link rel="stylesheet" href="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
 <script type="text/javascript">//<![CDATA[
 // 規格2に選択肢を割り当てる。
 function fnSetClassCategories(form, classcat_id2_selected) {
@@ -51,7 +52,7 @@ function fnSetClassCategories(form, classcat_id2_selected) {
 }
 function fnCheckStock(form) {
     classcat_id1 = form.classcategory_id1.value;
-    classcat_id2 = form.classcategory_id2 ? form.classcategory_id2.value : 0;
+    classcat_id2 = form.classcategory_id2 ? form.classcategory_id2.value : '';
     classcat2 = classCategories[classcat_id1][classcat_id2];
 
     // 商品コード
@@ -152,10 +153,7 @@ function fnCheckStock(form) {
     }
 }
 $(document).ready(function() {
-    $('a.expansion').facebox({
-        loadingImage : '<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.facebox/loading.gif',
-        closeImage   : '<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.facebox/closelabel.png'
-    });
+    $('a.expansion').fancybox();
 });
 //]]>
 </script>
