@@ -183,6 +183,7 @@ class SC_SessionFactory_UseRequest extends SC_SessionFactory {
         // セッションIDの受け渡しにクッキーを使用しない。
         ini_set('session.use_cookies', '0');
         ini_set('session.use_trans_sid', '1');
+        ini_set('session.use_only_cookies', '0');
 
         // パラメーターから有効なセッションIDを取得する。
         $sessionId = $this->getSessionId();

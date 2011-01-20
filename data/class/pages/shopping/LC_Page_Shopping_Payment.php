@@ -51,7 +51,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->tpl_onload = "fnCheckInputPoint(); fnSetDelivTime('payment','payment_id','deliv_time_id');";
+        $this->tpl_onload = "fnCheckInputPoint();";
         $this->tpl_title = "お支払方法・お届け時間等の指定";
         $masterData = new SC_DB_MasterData();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
