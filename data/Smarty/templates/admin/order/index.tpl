@@ -56,8 +56,7 @@
 
     function fnOpenPdfSettingPage(action){
         var fm = document.form1;
-        var WIN;
-        WIN = window.open("about:blank", "pdf", "width=500,height=600,scrollbars=yes,resizable=yes,toolbar=no,location=no,directories=no,status=no");
+        win02("about:blank", "pdf", "620","650");
         
         // 退避
         tmpTarget = fm.target;

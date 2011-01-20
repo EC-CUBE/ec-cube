@@ -98,8 +98,8 @@ class SC_Fpdf {
     function setShopData() {
         // ショップ情報
 
-        $objInfo = new SC_SiteInfo();
-        $arrInfo = $objInfo->data;
+        $objDb = new SC_Helper_DB_Ex();
+        $arrInfo = $objDb->sfGetBasisData();
 
         $this->lfText(125, 60, $arrInfo['shop_name'], 8, 'B');          //ショップ名
         $this->lfText(125, 63, $arrInfo['law_url'], 8);          //URL
@@ -151,16 +151,8 @@ class SC_Fpdf {
 
         // お届け先情報
         $this->pdf->SetFont('SJIS', '', 10);
-        $text = "〒 ".$this->arrDisp['deliv_zip01']." - ".$this->arrDisp['deliv_zip02'];
-        $this->lfText(22, 128, $text, 10); //お届け先郵便番号
-        $text = $this->arrPref[$this->arrDisp['deliv_pref']] . $this->arrDisp['deliv_addr01'];
-        $this->lfText(26, 132, $text, 10); //お届け先都道府県+住所1
-        $this->lfText(26, 136, $this->arrDisp['deliv_addr02'], 10); //お届け先住所2
-        $text = $this->arrDisp['deliv_name01']."　".$this->arrDisp['deliv_name02']."　様";
-        $this->lfText(26, 140, $text, 10); //お届け先氏名
-
-        $this->lfText(144, 121, SC_Utils_Ex::sfDispDBDate($this->arrDisp['create_date']), 10); //ご注文日
-        $this->lfText(144, 131, $this->arrDisp['order_id'], 10); //注文番号
+        $this->lfText(25, 125, SC_Utils_Ex::sfDispDBDate($this->arrDisp['create_date']), 10); //ご注文日
+        $this->lfText(25, 135, $this->arrDisp['order_id'], 10); //注文番号
 
         $this->pdf->SetFont('SJIS', 'B', 15);
         $this->pdf->Cell(0, 10, $this->sjis_conv($this->tpl_title), 0, 2, 'C', 0, '');  //文書タイトル（納品書・請求書）
