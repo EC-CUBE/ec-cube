@@ -25,8 +25,19 @@
     <p class="flowarea"><img src="<!--{$TPL_URLPATH}-->img/picture/img_flow_01.gif" width="700" height="36" alt="購入手続きの流れ" /></p>
     <h2 class="title"><!--{$tpl_title|h}--></h2>
 
-    <p>下記項目にご入力ください。「<span class="attention">※</span>」印は入力必須項目です。<br />
-      入力後、一番下の「確認ページへ」ボタンをクリックしてください。</p>
+    <div id="add-wrap" class="clearfix">
+
+      <div id="add-left">
+
+        <p>下記項目にご入力ください。「<span class="attention">※</span>」印は入力必須項目です。<br />
+        入力後、一番下の「次へ」ボタンをクリックしてください。</p>
+      </div>
+      <div id="add-right">
+        <p class="add-m">この商品を複数の<br />お届け先に送りますか？</p>
+        <a href="javascript:;" onclick="fnModeSubmit('multiple', '', ''); return false" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_several_address_on.gif','several');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_several_address.gif','several');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_several_address.gif" width="129" height="20" alt="お届け先を複数指定する" name="several" id="several" /></a>
+      </div>
+    </div>
+
     <form name="form1" id="form1" method="post" action="?">
       <input type="hidden" name="mode" value="nonmember_confirm" />
       <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->" />
@@ -240,7 +251,6 @@
           </td>
         </tr>
       </table>
-      <p><a href="javascript:;" onclick="fnModeSubmit('multiple', '', ''); return false">お届け先を複数指定する</a></p>
 
       <div class="tblareabtn">
        <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_next_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_next.gif',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_next.gif" class="box150" alt="次へ" name="next" id="next" />
