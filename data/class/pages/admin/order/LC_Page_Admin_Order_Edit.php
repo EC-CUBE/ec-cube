@@ -153,7 +153,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin {
                 // DBから受注情報を再読込
                 $this->lfGetOrderData($order_id);
                 $this->lfInitShippingParam($this->arrShipping);
-                $this->objFormParam->setParam($_POST);
                 $this->tpl_onload = "window.alert(".$text.");";
             }
             break;
