@@ -1849,7 +1849,7 @@ __EOS__;
      * @param array $sqlval 更新後の値をリファレンスさせるためのパラメータ
      * @return void
      */
-    function sfUpdateOrderStatus($orderId, $newStatus = null, $newAddPoint = null, $newUsePoint = null, &$sqlval = array()) {
+    function sfUpdateOrderStatus($orderId, $newStatus = null, $newAddPoint = null, $newUsePoint = null) {
         $objQuery =& SC_Query::getSingletonInstance();
 
         $arrOrderOld = $objQuery->getRow('status, add_point, use_point, customer_id', 'dtb_order', 'order_id = ?', array($orderId));

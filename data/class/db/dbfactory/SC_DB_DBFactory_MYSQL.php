@@ -286,7 +286,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
      * @return string 変換後の SQL 文
      */
     function sfChangeArrayToString($sql){
-        if(stripos($sql, 'ARRAY_TO_STRING') !== FALSE) {
+        if(strpos(strtoupper($sql), 'ARRAY_TO_STRING') !== FALSE) {
             preg_match_all('/ARRAY_TO_STRING.*?\(.*?ARRAY\(.*?SELECT (.+?) FROM (.+?) WHERE (.+?)\).*?\,.*?\'(.+?)\'.*?\)/is', $sql, $match, PREG_SET_ORDER);
             
             foreach($match as $item) {
