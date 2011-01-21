@@ -57,7 +57,6 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin {
      */
     function initForm() {
         $objForm = new SC_FormParam();
-        var_dump($_POST);
         $objForm->addParam('mode', 'mode', INT_LEN, '', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
         $objForm->addParam('plugin_name', 'plugin_name', INT_LEN, '', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
 
