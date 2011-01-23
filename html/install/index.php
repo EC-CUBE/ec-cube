@@ -409,6 +409,7 @@ function lfDispStep0($objPage) {
         DATA_REALDIR . "downloads/",
         DATA_REALDIR . "upload/",
         HTML_REALDIR,
+        DATA_REALDIR . "config/"
     );
 
     $mess = "";
