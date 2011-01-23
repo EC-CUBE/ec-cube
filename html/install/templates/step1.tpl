@@ -52,7 +52,7 @@
             <span class="attention"><!--{$arrErr[$key]}--></span>
             <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50"  /><br>
             <span class="ex-text">受注メールなどの宛先になります。<br>
-            (例)example@ec-cube.net</span>
+            (例) eccube@example.com</span>
             </td>
         </tr>
         <tr>
