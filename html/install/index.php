@@ -408,8 +408,7 @@ function lfDispStep0($objPage) {
         DATA_REALDIR . "logs/",
         DATA_REALDIR . "downloads/",
         DATA_REALDIR . "upload/",
-        HTML_REALDIR . ADMIN_DIR,
-        HTML_REALDIR
+        HTML_REALDIR,
     );
 
     $mess = "";
@@ -417,8 +416,8 @@ function lfDispStep0($objPage) {
     foreach($arrWriteFile as $val) {
         // listdirsの保持データを初期化
         initdirs();
-        if (is_dir($val) and $val != HTML_REALDIR .ADMIN_DIR and $val != HTML_REALDIR) {
-           $arrDirs = listdirs($val);
+        if (is_dir($val) and $val != HTML_REALDIR) {
+            $arrDirs = listdirs($val);
         } else {
             $arrDirs = array($val);
         }

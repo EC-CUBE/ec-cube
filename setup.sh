@@ -27,5 +27,6 @@ chmod -R a+w $WRK_DIR/data/class
 chmod -R a+w $WRK_DIR/data/logs
 chmod -R a+w $WRK_DIR/data/upload
 chmod -R a+w $WRK_DIR/data/config
+chmod a+w $WRK_DIR/html
 
 echo "finished."
