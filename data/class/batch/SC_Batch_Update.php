@@ -57,7 +57,7 @@ class SC_Batch_Update extends SC_Batch {
         $bkupDistInfoArray = array(); //バックアップファイル用のdistinfoファイル内容
         $bkupPath = DATA_REALDIR . 'downloads/backup/update_' . time() . '/';
         $bkupPathFile = $bkupPath . 'files/';
-        $this->mkdir_p($bkupPathFile . 'dummy');
+        $this->lfMkdirRecursive($bkupPathFile . 'dummy');
 
         $arrLog = array(
             'err' =>  array(),
@@ -148,7 +148,7 @@ class SC_Batch_Update extends SC_Batch {
                         $handle = @fopen($out, "w");
                         if (!$handle) {
                             // ディレクトリ作成を行ってリトライ
-                            $this->mkdir_p($out);
+                            $this->lfMkdirRecursive($out);
                             $handle = @fopen($out, "w");
                             if (!$handle) {
                                 $msg = "コピー先に書き込み権限がありません: " . $out;
@@ -215,7 +215,7 @@ class SC_Batch_Update extends SC_Batch {
      *
      * @param string $path 絶対パス
      */
-    function mkdir_p($path){
+    function lfMkdirRecursive($path){
         $path = dirname($path);
         
         // HTML_REALDIR/DATA_REALDIRの判別

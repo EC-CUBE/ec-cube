@@ -312,7 +312,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin {
                           array($pVal['product_class_id']));
 
         // 件数カウントバッチ実行
-        $objDb->sfCategory_Count($objQuery);
+        $objDb->sfCountCategory($objQuery);
         $objQuery->commit();
     }
 
@@ -528,7 +528,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin {
         // 在庫無し商品の非表示対応
         if (NOSTOCK_HIDDEN === true) {
             // 件数カウントバッチ実行
-            $objDb->sfCategory_Count($objQuery);
+            $objDb->sfCountCategory($objQuery);
         }
     }
 

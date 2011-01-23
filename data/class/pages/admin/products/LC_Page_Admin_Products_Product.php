@@ -197,8 +197,8 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin {
                 $this->arrForm['product_id'] = $this->lfRegistProduct($_POST);      // データ登録
 
                 // 件数カウントバッチ実行
-                $objDb->sfCategory_Count($objQuery);
-                $objDb->sfMaker_Count($objQuery);
+                $objDb->sfCountCategory($objQuery);
+                $objDb->sfCountMaker($objQuery);
                 // 一時ファイルを本番ディレクトリに移動する
                 // TODO: SC_UploadFile::moveTempFileの画像削除条件見直し要
                 $objImage = new SC_Image($this->objUpFile->temp_dir);

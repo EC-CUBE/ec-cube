@@ -244,8 +244,8 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin {
                     $objQuery->commit();
                     echo "■" . $regist . "件のレコードを登録しました。";
                     // 商品件数カウント関数の実行
-                    $this->objDb->sfCategory_Count($objQuery);
-                    $this->objDb->sfMaker_Count($objQuery);
+                    $this->objDb->sfCountCategory($objQuery);
+                    $this->objDb->sfCountMaker($objQuery);
                 } else {
                     $objQuery->rollback();
                 }

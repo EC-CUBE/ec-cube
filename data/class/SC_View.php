@@ -51,7 +51,7 @@ class SC_View {
         $this->_smarty->register_modifier("sfRmDupSlash", array("SC_Utils_Ex", "sfRmDupSlash"));
         $this->_smarty->register_modifier("sfCutString", array("SC_Utils_Ex", "sfCutString"));
         $this->_smarty->plugins_dir=array("plugins", $viewDir . "../smarty_extends");
-        $this->_smarty->register_modifier("sf_mb_convert_encoding", array("SC_Utils_Ex", "sf_mb_convert_encoding"));
+        $this->_smarty->register_modifier("sfMbConvertEncoding", array("SC_Utils_Ex", "sfMbConvertEncoding"));
         $this->_smarty->register_modifier("sfGetEnabled", array("SC_Utils_Ex", "sfGetEnabled"));
         $this->_smarty->register_modifier("sfGetCategoryId", array("SC_Utils_Ex", "sfGetCategoryId"));
         $this->_smarty->register_modifier("sfNoImageMainList", array("SC_Utils_Ex", "sfNoImageMainList"));

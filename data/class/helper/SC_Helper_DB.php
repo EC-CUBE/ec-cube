@@ -874,7 +874,7 @@ class SC_Helper_DB {
      * @param boolean $is_force_all_count 全カテゴリの集計を強制する場合 true
      * @return void
      */
-    function sfCategory_Count($objQuery = NULL, $is_force_all_count = false){
+    function sfCountCategory($objQuery = NULL, $is_force_all_count = false){
         $objProduct = new SC_Product();
         
         if($objQuery == NULL) {
@@ -1642,7 +1642,7 @@ __EOS__;
      * @param SC_Query $objQuery SC_Query インスタンス
      * @return void
      */
-    function sfMaker_Count($objQuery){
+    function sfCountMaker($objQuery){
         $sql = "";
 
         //テーブル内容の削除

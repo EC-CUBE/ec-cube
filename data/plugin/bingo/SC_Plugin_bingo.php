@@ -39,8 +39,8 @@ class SC_Plugin_bingo extends SC_Plugin_Ex {
         $this->X = 1;
     }
 
-    function is_enable($class_name) {
-//        parent::is_enable($class_name);
+    function isEnable($class_name) {
+//        parent::isEnable($class_name);
 
         $arrEnableClass = array(
             'LC_Page_Shopping_Confirm_Ex',

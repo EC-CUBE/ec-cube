@@ -51,7 +51,7 @@ class SC_Helper_Plugin{
             $plugin_class_name = $plugins['class_name'];
             require_once DATA_REALDIR."plugin/{$plugin_name}/{$plugin_class_name}.php";
 
-            $code_str = "\$is_enable = {$plugin_class_name}::is_enable(\$class_name);";
+            $code_str = "\$is_enable = {$plugin_class_name}::isEnable(\$class_name);";
             eval($code_str);
             if ($is_enable) {
                 $arrPluginList[] = $plugin_class_name;

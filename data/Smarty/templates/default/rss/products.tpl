@@ -24,11 +24,11 @@
 
 <!--{* channel要素 *}-->
 <channel>
-<title><!--{$title|sf_mb_convert_encoding:$encode}--></title>
-<shop_name><!--{$arrSiteInfo.shop_name|sf_mb_convert_encoding:$encode}--></shop_name>
-<shop_kana><!--{$arrSiteInfo.shop_kana|sf_mb_convert_encoding:$encode}--></shop_kana>
+<title><!--{$title|sfMbConvertEncoding:$encode}--></title>
+<shop_name><!--{$arrSiteInfo.shop_name|sfMbConvertEncoding:$encode}--></shop_name>
+<shop_kana><!--{$arrSiteInfo.shop_kana|sfMbConvertEncoding:$encode}--></shop_kana>
 <site_url><!--{$smarty.const.HTTP_URL}--></site_url>
-<description><!--{section name=cnt loop=$arrProduct}--><!--{$arrProduct[cnt].product_id|sf_mb_convert_encoding:$encode}-->,<!--{/section}--></description>
+<description><!--{section name=cnt loop=$arrProduct}--><!--{$arrProduct[cnt].product_id|sfMbConvertEncoding:$encode}-->,<!--{/section}--></description>
 <language>ja</language>
 <docs>http://backend.userland.com/rss</docs>
 <!--{section name=cnt loop=$arrProduct}-->
@@ -36,7 +36,7 @@
 	<item>
 		<link><!--{$smarty.const.HTTP_URL}-->rss/product.php?product_id=<!--{$arrProduct[cnt].product_id}--></link>
 		<!--{foreach key=key item=item from=$arrProductKeys}-->
-			<<!--{$item}-->><!--{$arrProduct[cnt][$item]|h|sf_mb_convert_encoding:$encode}--></<!--{$item}-->>
+			<<!--{$item}-->><!--{$arrProduct[cnt][$item]|h|sfMbConvertEncoding:$encode}--></<!--{$item}-->>
 		<!--{/foreach}-->
 	</item>
 <!--{/section}-->

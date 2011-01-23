@@ -22,9 +22,9 @@
  *}-->
 <rss version="2.0">
     <channel>
-        <title><!--{$site_title|sf_mb_convert_encoding:$encode|h}--></title>
+        <title><!--{$site_title|sfMbConvertEncoding:$encode|h}--></title>
         <link><!--{$smarty.const.HTTP_URL}--></link>
-        <description><!--{$description|sf_mb_convert_encoding:$encode|h}--></description>
+        <description><!--{$description|sfMbConvertEncoding:$encode|h}--></description>
         <language>ja</language>
         <managingEditor><!--{$email|h}--></managingEditor>
         <webMaster><!--{$email|h}--></webMaster>
@@ -40,8 +40,8 @@
                 <!--{else}-->
                     <link><!--{$arrNews[cnt].news_url|h}--></link>
                 <!--{/if}-->
-                <title><!--{ $arrNews[cnt].news_title|sf_mb_convert_encoding:$encode|escape }--></title>
-                <description><!--{$arrNews[cnt].news_comment|truncate:256|sf_mb_convert_encoding:$encode|h}--></description>
+                <title><!--{ $arrNews[cnt].news_title|sfMbConvertEncoding:$encode|escape }--></title>
+                <description><!--{$arrNews[cnt].news_comment|truncate:256|sfMbConvertEncoding:$encode|h}--></description>
                 <pubDate><!--{$arrNews[cnt].news_date|h}--></pubDate>
             </item>
         <!--{/section}-->

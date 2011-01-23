@@ -1136,7 +1136,7 @@ exit;
     }
 
     // PHPのmb_convert_encoding関数をSmartyでも使えるようにする
-    function sf_mb_convert_encoding($str, $encode = 'CHAR_CODE') {
+    function sfMbConvertEncoding($str, $encode = 'CHAR_CODE') {
         return  mb_convert_encoding($str, $encode);
     }
 

@@ -71,7 +71,7 @@ $objData->relateClass();
 $objData->relateProductsCategories();
 
 $objDb = new SC_Helper_DB_Ex();
-$objDb->sfCategory_Count(NULL, true);
+$objDb->sfCountCategory(NULL, true);
 
 //$objData->objQuery->rollback();
 //$objData->objQuery->commit();

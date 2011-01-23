@@ -42,10 +42,10 @@ class SC_Fpdf {
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->width_cell = array(110.3,12,21.7,24.5);
 
-        $this->label_cell[] = $this->sjis_conv("商品名 / 商品コード / [ 規格 ]");
-        $this->label_cell[] = $this->sjis_conv("数量");
-        $this->label_cell[] = $this->sjis_conv("単価");
-        $this->label_cell[] = $this->sjis_conv("金額(税込)");
+        $this->label_cell[] = $this->lfConvSjis("商品名 / 商品コード / [ 規格 ]");
+        $this->label_cell[] = $this->lfConvSjis("数量");
+        $this->label_cell[] = $this->lfConvSjis("単価");
+        $this->label_cell[] = $this->lfConvSjis("金額(税込)");
 
         $this->arrMessage = array(
             'このたびはお買上げいただきありがとうございます。',
@@ -155,16 +155,16 @@ class SC_Fpdf {
         $this->lfText(25, 135, $this->arrDisp['order_id'], 10); //注文番号
 
         $this->pdf->SetFont('SJIS', 'B', 15);
-        $this->pdf->Cell(0, 10, $this->sjis_conv($this->tpl_title), 0, 2, 'C', 0, '');  //文書タイトル（納品書・請求書）
+        $this->pdf->Cell(0, 10, $this->lfConvSjis($this->tpl_title), 0, 2, 'C', 0, '');  //文書タイトル（納品書・請求書）
         $this->pdf->Cell(0, 66, '', 0, 2, 'R', 0, '');
         $this->pdf->Cell(5, 0, '', 0, 0, 'R', 0, '');
-        $this->pdf->Cell(67, 8, $this->sjis_conv(number_format($this->arrDisp['payment_total'])." 円"), 0, 2, 'R', 0, '');
+        $this->pdf->Cell(67, 8, $this->lfConvSjis(number_format($this->arrDisp['payment_total'])." 円"), 0, 2, 'R', 0, '');
         $this->pdf->Cell(0, 45, '', 0, 2, '', 0, '');
 
         $this->pdf->SetFont('SJIS', '', 8);
 
-        $monetary_unit = $this->sjis_conv("円");
-        $point_unit = $this->sjis_conv("Pt");
+        $monetary_unit = $this->lfConvSjis("円");
+        $point_unit = $this->lfConvSjis("Pt");
 
         // 購入商品情報
         for ($i = 0; $i < count($this->arrDisp['quantity']); $i++) {
@@ -178,14 +178,14 @@ class SC_Fpdf {
             // 小計（商品毎）
             $data[2] = $data[0] * $data[1];
 
-            $arrOrder[$i][0]  = $this->sjis_conv($this->arrDisp['product_name'][$i]." / ");
-            $arrOrder[$i][0] .= $this->sjis_conv($this->arrDisp['product_code'][$i]." / ");
+            $arrOrder[$i][0]  = $this->lfConvSjis($this->arrDisp['product_name'][$i]." / ");
+            $arrOrder[$i][0] .= $this->lfConvSjis($this->arrDisp['product_code'][$i]." / ");
             if ($this->arrDisp['classcategory_name1'][$i]) {
-                $arrOrder[$i][0] .= $this->sjis_conv(" [ ".$this->arrDisp['classcategory_name1'][$i]);
+                $arrOrder[$i][0] .= $this->lfConvSjis(" [ ".$this->arrDisp['classcategory_name1'][$i]);
                 if ($this->arrDisp['classcategory_name2'][$i] == "") {
                     $arrOrder[$i][0] .= " ]";
                 } else {
-                    $arrOrder[$i][0] .= $this->sjis_conv(" * ".$this->arrDisp['classcategory_name2'][$i]." ]");
+                    $arrOrder[$i][0] .= $this->lfConvSjis(" * ".$this->arrDisp['classcategory_name2'][$i]." ]");
                 }
             }
             $arrOrder[$i][1]  = number_format($data[0]);
@@ -202,31 +202,31 @@ class SC_Fpdf {
         $i++;
         $arrOrder[$i][0] = "";
         $arrOrder[$i][1] = "";
-        $arrOrder[$i][2] = $this->sjis_conv("商品合計");
+        $arrOrder[$i][2] = $this->lfConvSjis("商品合計");
         $arrOrder[$i][3] = number_format($this->arrDisp['subtotal']).$monetary_unit;
 
         $i++;
         $arrOrder[$i][0] = "";
         $arrOrder[$i][1] = "";
-        $arrOrder[$i][2] = $this->sjis_conv("送料");
+        $arrOrder[$i][2] = $this->lfConvSjis("送料");
         $arrOrder[$i][3] = number_format($this->arrDisp['deliv_fee']).$monetary_unit;
 
         $i++;
         $arrOrder[$i][0] = "";
         $arrOrder[$i][1] = "";
-        $arrOrder[$i][2] = $this->sjis_conv("手数料");
+        $arrOrder[$i][2] = $this->lfConvSjis("手数料");
         $arrOrder[$i][3] = number_format($this->arrDisp['charge']).$monetary_unit;
 
         $i++;
         $arrOrder[$i][0] = "";
         $arrOrder[$i][1] = "";
-        $arrOrder[$i][2] = $this->sjis_conv("値引き");
+        $arrOrder[$i][2] = $this->lfConvSjis("値引き");
         $arrOrder[$i][3] = "- ".number_format(($this->arrDisp['use_point'] * POINT_VALUE) + $this->arrDisp['discount']).$monetary_unit;
 
         $i++;
         $arrOrder[$i][0] = "";
         $arrOrder[$i][1] = "";
-        $arrOrder[$i][2] = $this->sjis_conv("請求金額");
+        $arrOrder[$i][2] = $this->lfConvSjis("請求金額");
         $arrOrder[$i][3] = number_format($this->arrDisp['payment_total']).$monetary_unit;
 
         // ポイント表記
@@ -240,19 +240,19 @@ class SC_Fpdf {
             $i++;
             $arrOrder[$i][0] = "";
             $arrOrder[$i][1] = "";
-            $arrOrder[$i][2] = $this->sjis_conv("利用ポイント");
+            $arrOrder[$i][2] = $this->lfConvSjis("利用ポイント");
             $arrOrder[$i][3] = number_format($this->arrDisp['use_point']).$point_unit;
 
             $i++;
             $arrOrder[$i][0] = "";
             $arrOrder[$i][1] = "";
-            $arrOrder[$i][2] = $this->sjis_conv("加算ポイント");
+            $arrOrder[$i][2] = $this->lfConvSjis("加算ポイント");
             $arrOrder[$i][3] = number_format($this->arrDisp['add_point']).$point_unit;
 
             $i++;
             $arrOrder[$i][0] = "";
             $arrOrder[$i][1] = "";
-            $arrOrder[$i][2] = $this->sjis_conv("所有ポイント");
+            $arrOrder[$i][2] = $this->lfConvSjis("所有ポイント");
             $arrOrder[$i][3] = number_format($this->arrDisp['point']).$point_unit;
         }
 
@@ -262,10 +262,10 @@ class SC_Fpdf {
     function setEtcData() {
         $this->pdf->Cell(0, 10, '', 0, 1, 'C', 0, '');
         $this->pdf->SetFont('SJIS', '', 9);
-        $this->pdf->MultiCell(0, 6, $this->sjis_conv("＜ 備 考 ＞"), 'T', 2, 'L', 0, '');  //備考
+        $this->pdf->MultiCell(0, 6, $this->lfConvSjis("＜ 備 考 ＞"), 'T', 2, 'L', 0, '');  //備考
         $this->pdf->Ln();
         $this->pdf->SetFont('SJIS', '', 8);
-        $this->pdf->MultiCell(0, 4, $this->sjis_conv($this->arrData['etc1']."\n".$this->arrData['etc2']."\n".$this->arrData['etc3']), '', 2, 'L', 0, '');  //備考
+        $this->pdf->MultiCell(0, 4, $this->lfConvSjis($this->arrData['etc1']."\n".$this->arrData['etc2']."\n".$this->arrData['etc3']), '', 2, 'L', 0, '');  //備考
     }
 
     function createPdf() {
@@ -277,7 +277,7 @@ class SC_Fpdf {
             } else {
                 $filename = "nouhinsyo.pdf";
             }
-            $this->pdf->Output($this->sjis_conv($filename), D);
+            $this->pdf->Output($this->lfConvSjis($filename), D);
         } else {
             $this->pdf->Output();
         }
@@ -333,7 +333,7 @@ class SC_Fpdf {
     }
 
     // 文字コードSJIS変換 -> japanese.phpで使用出来る文字コードはSJIS-winのみ
-    function sjis_conv($conv_str) {
+    function lfConvSjis($conv_str) {
         return (mb_convert_encoding($conv_str, "SJIS-win", CHAR_CODE));
     }
 

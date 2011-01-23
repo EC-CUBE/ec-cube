@@ -132,8 +132,8 @@ class LC_Page_Admin_Products extends LC_Page_Admin {
             $objQuery->delete("dtb_customer_favorite_products", "product_id = ?", array($_POST['product_id']));
 
             // 件数カウントバッチ実行
-            $objDb->sfCategory_Count($objQuery);
-            $objDb->sfMaker_Count($objQuery);
+            $objDb->sfCountCategory($objQuery);
+            $objDb->sfCountMaker($objQuery);
         }
 
 
@@ -255,7 +255,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin {
                         $objQuery->delete("dtb_customer_favorite_products", $where, $arrval);
 
                         // 件数カウントバッチ実行
-                        $objDb->sfCategory_Count($objQuery);
+                        $objDb->sfCountCategory($objQuery);
 
                         break;
                     default:
