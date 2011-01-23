@@ -212,47 +212,6 @@ class LC_Page_Admin_Contents extends LC_Page_Admin {
         return $data;
     }
 
-    //----　指定順位へ移動
-    function sf_setRankPosition(&$objQuery, $tableName, $keyIdColumn, $keyId, $position) {
-
-        // 自身のランクを取得する
-        $objQuery->begin();
-        $rank = $objQuery->getOne("SELECT rank FROM $tableName WHERE $keyIdColumn = ?", array($keyId));
-
-        if( $position > $rank ) $term = "- 1";  //入れ替え先の順位が入れ換え元の順位より大きい場合
-        if( $position < $rank ) $term = "+ 1";  //入れ替え先の順位が入れ換え元の順位より小さい場合
-
-        //--　指定した順位の商品から移動させる商品までのrankを１つずらす
-        $sql = "UPDATE $tableName SET rank = rank $term, update_date = NOW() WHERE rank BETWEEN ? AND ? AND del_flg = 0";
-        if( $position > $rank ) $objQuery->query( $sql, array( $rank + 1, $position ) );
-        if( $position < $rank ) $objQuery->query( $sql, array( $position, $rank - 1 ) );
-
-        //-- 指定した順位へrankを書き換える。
-        $sql  = "UPDATE $tableName SET rank = ?, update_date = NOW() WHERE $keyIdColumn = ? AND del_flg = 0 ";
-        $objQuery->query( $sql, array( $position, $keyId ) );
-        $objQuery->commit();
-    }
-
-    //---- 入力エラーチェック（順位移動用）
-    function sf_errorCheckPosition(&$objQuery, $tableName, $position, $keyIdColumn, $keyId) {
-
-        $objErr = new SC_CheckError();
-        $objErr->doFunc( array("移動順位", "moveposition", 4 ), array( "ZERO_CHECK", "NUM_CHECK", "EXIST_CHECK", "MAX_LENGTH_CHECK" ) );
-
-        // 自身のランクを取得する。
-        $rank = $objQuery->getOne("SELECT rank FROM $tableName WHERE $keyIdColumn = ?", array($keyId));
-        if ($rank == $position ) $objErr->arrErr["moveposition"] .= "※ 指定した移動順位は現在の順位です。";
-
-        // rankの最大値以上の入力を許容しない
-        if( ! $objErr->arrErr["position"] ) {
-            $sql = "SELECT MAX( rank ) FROM " .$tableName. " WHERE del_flg = 0";
-            $result = $objQuery->getOne($sql);
-            if( $position > $result ) $objErr->arrErr["moveposition"] .= "※ 入力された順位は、登録数の最大値を超えています。";
-        }
-
-        return $objErr->arrErr;
-    }
-
     //---- 入力エラーチェック
     function lfErrorCheck(){
 
