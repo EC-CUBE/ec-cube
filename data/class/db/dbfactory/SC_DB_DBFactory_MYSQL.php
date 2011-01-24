@@ -433,5 +433,29 @@ __EOS__;
         return $sql;
 
     }
+    
+    /**
+     * インデックス作成の追加定義を取得する
+     *
+     * 引数に部分一致するテーブル名を配列で返す.
+     *
+     * @param string $table 対象テーブル名
+     * @param string $name 対象カラム名
+     * @return array インデックス設定情報配列
+     */
+    function sfGetCreateIndexDefinition($table, $name, $definition) {
+        $objQuery =& SC_Query::getSingletonInstance();
+        $arrTblInfo = $objQuery->getTableInfo($table);
+        foreach($arrTblInfo as $fieldInfo) {
+            if(array_key_exists($fieldInfo['name'], $definition['fields'])) {
+                if($fieldInfo['nativetype'] == 'text') {
+                    // TODO: text型フィールドの場合に255文字以内決めうちでインデックス列のサイズとして
+                    //       指定して良いか確認は必要。
+                    $definition['fields'][$fieldInfo['name']]['length'] = '255';
+                }
+            }
+        }
+        return $definition;
+    }
 }
 ?>

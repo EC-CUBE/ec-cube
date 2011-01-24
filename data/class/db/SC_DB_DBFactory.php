@@ -155,5 +155,17 @@ class SC_DB_DBFactory {
      * @return array テーブル名の配列
      */
     function findTableNames($expression = "") { return array(); }
+
+    /**
+     * インデックス作成の追加定義を取得する
+     *
+     * 引数に部分一致するテーブル名を配列で返す.
+     *
+     * @param string $table 対象テーブル名
+     * @param string $name 対象カラム名
+     * @return array インデックス設定情報配列
+     */
+    function sfGetCreateIndexDefinition($table, $name, $definition) { return $definition; }
+
 }
 ?>

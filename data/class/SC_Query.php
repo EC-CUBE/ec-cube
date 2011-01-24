@@ -790,8 +790,10 @@ class SC_Query {
      * @param string $table テーブル名
      * @param string $name インデックス名
      * @param array $definition フィールド名など　通常のフィールド指定時は、$definition=array('fields' => array('フィールド名' => array()));
+     *               MySQLのtext型フィールドを指定する場合は $definition['length'] = 'text_field(NNN)' が必要
      */
     function createIndex($table, $name, $definition) {
+        $definition = $this->dbFactory->sfGetCreateIndexDefinition($table, $name, $definition);
         $objManager =& $this->conn->loadModule('Manager');
         return $objManager->createIndex($table, $name, $definition);
     }
@@ -806,7 +808,18 @@ class SC_Query {
         $objManager =& $this->conn->loadModule('Manager');
         return $objManager->dropIndex($table, $name);
     }
-    
+
+    /**
+     * テーブルの詳細情報を取得する。
+     *
+     * @param string $table テーブル名
+     * @return array テーブル情報の配列
+     */
+    function getTableInfo($table) {
+        $objManager =& $this->conn->loadModule('Reverse');
+        return $objManager->tableInfo($table, NULL);
+    }
+
     /**
      * 値を適切にクォートする.
      *
