@@ -401,15 +401,15 @@ function lfDispStep0($objPage) {
     // プログラムで書込みされるファイル・ディレクトリ
     $arrWriteFile = array(
         USER_REALDIR,
-        HTML_REALDIR . "upload",
-        DATA_REALDIR . "cache/",
-        DATA_REALDIR . "class/",
-        DATA_REALDIR . "Smarty/",
-        DATA_REALDIR . "logs/",
-        DATA_REALDIR . "downloads/",
-        DATA_REALDIR . "upload/",
+        HTML_REALDIR . 'upload/',
+        DATA_REALDIR . 'cache/',
+        DATA_REALDIR . 'class/',
+        DATA_REALDIR . 'Smarty/',
+        DATA_REALDIR . 'logs/',
+        DATA_REALDIR . 'downloads/',
+        DATA_REALDIR . 'upload/',
         HTML_REALDIR,
-        DATA_REALDIR . "config/"
+        DATA_REALDIR . 'config/',
     );
 
     $mess = "";
