@@ -31,6 +31,9 @@ class SC_CartSession {
 
     /* コンストラクタ */
     function SC_CartSession($cartKey = "cart") {
+        if (!isset($_SESSION[$cartKey])) {
+            $_SESSION[$cartKey] = array();
+        }
         $this->cartSession =& $_SESSION[$cartKey];
     }
 
@@ -250,7 +253,7 @@ class SC_CartSession {
         $exclude = false;
         // ページチェックを行う。
         foreach($arrExclude as $val) {
-            if(preg_match("/" . preg_quote($val) . "/", $url)) {
+            if(preg_match("|" . preg_quote($val) . "|", $url)) {
                 $exclude = true;
                 break;
             }

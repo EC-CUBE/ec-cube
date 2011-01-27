@@ -96,7 +96,7 @@ class SC_Query {
      * @return SC_Query シングルトンの SC_Query インスタンス
      */
     function getSingletonInstance($dsn = "", $force_run = false, $new = false) {
-        if (is_null($this->instance)) {
+        if (!isset($this->instance) || is_null($this->instance)) {
             $this->instance =& new SC_Query($dsn, $force_run, $new);
         }
         $this->instance->where = "";

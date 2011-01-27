@@ -101,7 +101,7 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc {
         $arrRet = $objQuery->select($col, $from, $where);
 
         foreach ($arrParent_category_id as $category_id) {
-            $arrParentID = $objDb->sfGetParents($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $category_id);
+            $arrParentID = $objDb->sfGetParents('dtb_category', 'parent_category_id', 'category_id', $category_id);
             $arrBrothersID = SC_Utils_Ex::sfGetBrothersArray($arrRet, 'parent_category_id', 'category_id', $arrParentID);
             $arrChildrenID = SC_Utils_Ex::sfGetUnderChildrenArray($arrRet, 'parent_category_id', 'category_id', $category_id);
 

@@ -354,8 +354,6 @@ define('MYPAGE_DELIVADDR_URLPATH', ROOT_URLPATH . "mypage/delivery.php");
 define('MAIL_TYPE_PC', 1);
 /** メールアドレス種別 */
 define('MAIL_TYPE_MOBILE', 2);
-/** 受注ステータス変更の際にポイント等を加算するステータス番号 (発送済み) */
-define('ODERSTATUS_COMMIT', ORDER_DELIV);
 /** 新着情報管理画面 開始年(西暦) */
 define('ADMIN_NEWS_STARTYEAR', 2005);
 /** 会員登録 */

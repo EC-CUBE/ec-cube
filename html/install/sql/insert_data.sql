@@ -1143,7 +1143,6 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('P_DETAIL_URLPATH', 
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MYPAGE_DELIVADDR_URLPATH', 'ROOT_URLPATH . "mypage/delivery.php"', 254, 'マイページお届け先URL');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MAIL_TYPE_PC', '1', 255, 'メールアドレス種別');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MAIL_TYPE_MOBILE', '2', 256, 'メールアドレス種別');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ODERSTATUS_COMMIT', 'ORDER_DELIV', 263, '受注ステータス変更の際にポイント等を加算するステータス番号 (発送済み)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ADMIN_NEWS_STARTYEAR', '2005', 264, '新着情報管理画面 開始年(西暦) ');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ENTRY_CUSTOMER_TEMP_SUBJECT', '"会員仮登録が完了いたしました。"', 265, '会員登録');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ENTRY_CUSTOMER_REGIST_SUBJECT', '"本会員登録が完了いたしました。"', 266, '会員登録');

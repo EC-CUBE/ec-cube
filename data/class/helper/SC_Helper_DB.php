@@ -170,7 +170,7 @@ class SC_Helper_DB {
                 // 選択中のカテゴリIDを判定する
                 $category_id = $this->sfGetCategoryId($_GET['product_id'], $_GET['category_id']);
                 // ROOTカテゴリIDの取得
-                $arrRet = $this->sfGetParents($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $category_id);
+                $arrRet = $this->sfGetParents('dtb_category', 'parent_category_id', 'category_id', $category_id);
                 $root_id = isset($arrRet[0]) ? $arrRet[0] : "";
             } else {
                 // ROOTカテゴリIDをなしに設定する
@@ -487,7 +487,7 @@ class SC_Helper_DB {
         $objQuery->setOption("ORDER BY rank DESC");
         $arrRet = $objQuery->select($col, $from, $where);
 
-        $arrParentID = $this->sfGetParents($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $parent_category_id);
+        $arrParentID = $this->sfGetParents('dtb_category', 'parent_category_id', 'category_id', $parent_category_id);
 
         foreach($arrRet as $key => $array) {
             foreach($arrParentID as $val) {
@@ -559,7 +559,7 @@ class SC_Helper_DB {
 
         $arrCatTree = array();
         foreach ($arrCategory_id as $pkey => $parent_category_id) {
-            $arrParentID = $this->sfGetParents($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $parent_category_id);
+            $arrParentID = $this->sfGetParents('dtb_category', 'parent_category_id', 'category_id', $parent_category_id);
 
             foreach($arrParentID as $pid) {
                 foreach($arrRet as $key => $array) {
@@ -583,7 +583,7 @@ class SC_Helper_DB {
     function sfGetCatCombName($category_id){
         // 商品が属するカテゴリIDを縦に取得
         $objQuery =& SC_Query::getSingletonInstance();
-        $arrCatID = $this->sfGetParents($objQuery, "dtb_category", "parent_category_id", "category_id", $category_id);
+        $arrCatID = $this->sfGetParents("dtb_category", "parent_category_id", "category_id", $category_id);
         $ConbName = "";
 
         // カテゴリー名称を取得する
@@ -625,7 +625,7 @@ class SC_Helper_DB {
         // 商品が属するカテゴリIDを縦に取得
         $objQuery =& SC_Query::getSingletonInstance();
         $arrRet = array();
-        $arrCatID = $this->sfGetParents($objQuery, "dtb_category", "parent_category_id", "category_id", $category_id);
+        $arrCatID = $this->sfGetParents("dtb_category", "parent_category_id", "category_id", $category_id);
         $arrRet['id'] = $arrCatID[0];
 
         // カテゴリー名称を取得する
@@ -981,7 +981,7 @@ __EOS__;
         $arrTgtCategory_id = array();
         foreach ($arrDiffCategory_id as $parent_category_id) {
             $arrTgtCategory_id[] = $parent_category_id;
-            $arrParentID = $this->sfGetParents($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $parent_category_id);
+            $arrParentID = $this->sfGetParents('dtb_category', 'parent_category_id', 'category_id', $parent_category_id);
             foreach($arrParentID as $pid) {
                 $arrTgtCategory_id[] = $pid;
             }
@@ -1105,7 +1105,7 @@ __EOS__;
      * @param integer $id ID
      * @return array 親IDの配列
      */
-    function sfGetParents($objQuery, $table, $pid_name, $id_name, $id) {
+    function sfGetParents($table, $pid_name, $id_name, $id) {
         $arrRet = $this->sfGetParentsArray($table, $pid_name, $id_name, $id);
         // 配列の先頭1つを削除する。
         array_shift($arrRet);
