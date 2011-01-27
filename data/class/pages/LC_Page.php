@@ -307,6 +307,30 @@ class LC_Page {
     }
 
     /**
+     * リクエストパラメータ "mode" を取得する.
+     *
+     * 1. $_GET['mode'] の値を取得する.
+     * 2. 1 が存在しない場合は $_POST['mode'] の値を取得する.
+     * 3. どちらも存在しない場合は null を返す.
+     *
+     * mode に, 半角英数字とアンダーバー(_) 以外の文字列が検出された場合は null を
+     * 返す.
+     *
+     * @access protected
+     * @return string $_GET['mode'] 又は $_POST['mode'] の文字列
+     */
+    function getMode() {
+        $pattern = '/^[a-zA-Z0-9_]+$/';
+        $mode = null;
+        if (isset($_GET['mode']) && preg_match($pattern, $_GET['mode'])) {
+            $mode =  $_GET['mode'];
+        } elseif (isset($_POST['mode']) && preg_match($pattern, $_POST['mode'])) {
+            $mode = $_POST['mode'];
+        }
+        return $mode;
+    }
+
+    /**
      * デバック出力を行う.
      *
      * デバック用途のみに使用すること.
