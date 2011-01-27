@@ -96,14 +96,15 @@ class SC_Query {
      * @return SC_Query シングルトンの SC_Query インスタンス
      */
     function getSingletonInstance($dsn = "", $force_run = false, $new = false) {
-        if (!isset($this->instance) || is_null($this->instance)) {
-            $this->instance =& new SC_Query($dsn, $force_run, $new);
+        if (!isset($GLOBALS['_SC_Query_instance'])
+            || is_null($GLOBALS['_SC_Query_instance'])) {
+            $GLOBALS['_SC_Query_instance'] =& new SC_Query($dsn, $force_run, $new);
         }
-        $this->instance->where = "";
-        $this->instance->order = "";
-        $this->instance->groupby = "";
-        $this->instance->option = "";
-        return $this->instance;
+        $GLOBALS['_SC_Query_instance']->where = "";
+        $GLOBALS['_SC_Query_instance']->order = "";
+        $GLOBALS['_SC_Query_instance']->groupby = "";
+        $GLOBALS['_SC_Query_instance']->option = "";
+        return $GLOBALS['_SC_Query_instance'];
     }
 
     /**
