@@ -94,7 +94,7 @@ class LC_Page_Admin_Basis_Tradelaw extends LC_Page_Admin {
         } else {
             $this->tpl_mode = "insert";
         }
-
+        //TODO 要リファクタリング(MODE if利用)
         if($this->getMode()!=null) {
             // 入力値の変換
             $this->objFormParam->convParam();

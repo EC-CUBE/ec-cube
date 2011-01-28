@@ -82,8 +82,8 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin {
             $this->tpl_no = strval($_POST['no']);
         }
 
-        if ($this->getMode() == "search") {
-
+        switch ($this->getMode()) {
+        case 'search':
             // POST値の引き継ぎ
             $this->arrForm = $_POST;
             // 入力文字の強制変換
@@ -198,6 +198,9 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin {
             $this->tpl_classcat_find2 = $objProduct->classCat2_find;
             $this->tpl_product_class_id = $objProduct->product_class_id;
             $this->tpl_stock_find = $objProduct->stock_find;
+            break;
+        default:
+            break;
         }
 
         // カテゴリ取得

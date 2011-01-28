@@ -89,10 +89,14 @@ class LC_Page_MyPage_Favorite extends LC_Page {
             $this->CustomerPoint = $objCustomer->getvalue('point');
         }
 
+        switch ($this->getMode()) {
+        case 'delete_favorite':
         // お気に入り削除
-        if ($this->getMode() == 'delete_favorite') {
             $customer_id = $objCustomer->getValue('customer_id');
             $this->lfDeleteFavoriteProduct($customer_id, $_POST['product_id']);
+            break;
+        default:
+            break;
         }
 
         // ページ送り用

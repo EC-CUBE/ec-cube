@@ -85,8 +85,8 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin {
         // キーの配列を生成
         $this->arrKeys = $this->getParamKeys($masterData);
 
-        if ($this->getMode() == "update") {
-
+        switch ($this->getMode()) {
+        case 'update':
             // データの引き継ぎ
             $this->arrForm = $_POST;
 
@@ -101,7 +101,9 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin {
                                                               $this->arrKeys);
                 $this->tpl_onload = "window.alert('エラーが発生しました。入力内容をご確認下さい。');";
             }
-
+            break;
+        default:
+            break;
         }
 
         if (empty($this->arrErr)) {

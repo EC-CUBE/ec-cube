@@ -119,7 +119,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin {
         //---- 登録除外用カラム配列
         $arrRejectRegistColumn = array("year", "month", "day");
 
-        // 検索条件を保持
+        // 検索条件を保持 TODO 要リファクタリング(MODE if利用)
         if ($this->getMode() == "edit_search") {
             $arrSearch = $_POST;
         }else{
@@ -134,78 +134,82 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin {
         $this->arrSearchData= $arrSearchData;
 
         //----　顧客編集情報取得
-        $mode = $this->getMode();
-        if (($mode == "edit" || $mode == "edit_search") && is_numeric($_POST["edit_customer_id"])) {
+        switch ($this->getMode()) {
+        case 'edit':
+        case 'edit_search':
+            if (is_numeric($_POST["edit_customer_id"])) {
 
-            //--　顧客データ取得
-            $sql = "SELECT * FROM dtb_customer WHERE del_flg = 0 AND customer_id = ?";
-            $result = $this->objQuery->getAll($sql, array($_POST["edit_customer_id"]));
-            $this->list_data = $result[0];
+                //--　顧客データ取得
+                $sql = "SELECT * FROM dtb_customer WHERE del_flg = 0 AND customer_id = ?";
+                $result = $this->objQuery->getAll($sql, array($_POST["edit_customer_id"]));
+                $this->list_data = $result[0];
 
-            $birth = split(" ", $this->list_data["birth"]);
-            $birth = split("-",$birth[0]);
+                $birth = split(" ", $this->list_data["birth"]);
+                $birth = split("-",$birth[0]);
 
-            $this->list_data["year"] = $birth[0];
-            $this->list_data["month"] = isset($birth[1]) ? $birth[1] : "";
-            $this->list_data["day"] = isset($birth[2]) ? $birth[2] : "";
+                $this->list_data["year"] = $birth[0];
+                $this->list_data["month"] = isset($birth[1]) ? $birth[1] : "";
+                $this->list_data["day"] = isset($birth[2]) ? $birth[2] : "";
 
-            $this->list_data["password"] = DEFAULT_PASSWORD;
-            $this->list_data["reminder_answer"] = DEFAULT_PASSWORD;
-            //DB登録のメールアドレスを渡す
-            $this->tpl_edit_email = $result[0]['email'];
-            //購入履歴情報の取得
-            $this->arrPurchaseHistory = $this->lfPurchaseHistory($_POST['edit_customer_id']);
-            // 支払い方法の取得
-            $this->arrPayment = $objDb->sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
-        }
-
-        //----　顧客情報編集
-        if ( $mode != "edit" && $mode != "edit_search" && is_numeric($_POST["customer_id"])) {
-
-            //-- POSTデータの引き継ぎ
-            $this->arrForm = $_POST;
-            $this->arrForm['email'] = strtolower($this->arrForm['email']);        // emailはすべて小文字で処理
-
-            //-- 入力データの変換
-            $this->arrForm = $this->lfConvertParam($this->arrForm, $arrRegistColumn);
-            //-- 入力チェック
-            $this->arrErr = $this->lfErrorCheck($this->arrForm);
-
-            //-- 入力エラー発生 or リターン時
-            if ($this->arrErr || $mode == "return") {
-                foreach($this->arrForm as $key => $val) {
-                    $this->list_data[ $key ] = $val;
-                }
+                $this->list_data["password"] = DEFAULT_PASSWORD;
+                $this->list_data["reminder_answer"] = DEFAULT_PASSWORD;
+                //DB登録のメールアドレスを渡す
+                $this->tpl_edit_email = $result[0]['email'];
                 //購入履歴情報の取得
-                $this->arrPurchaseHistory = $this->lfPurchaseHistory($_POST['customer_id']);
+                $this->arrPurchaseHistory = $this->lfPurchaseHistory($_POST['edit_customer_id']);
                 // 支払い方法の取得
                 $this->arrPayment = $objDb->sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
+            }
+            break;
+        default:
+        	//----　顧客情報編集
+            if (is_numeric($_POST["customer_id"])) {
+                //-- POSTデータの引き継ぎ
+                $this->arrForm = $_POST;
+                $this->arrForm['email'] = strtolower($this->arrForm['email']);        // emailはすべて小文字で処理
 
-            } else {
-                //-- 確認
-                if ($mode == "confirm") {
-                    $this->tpl_mainpage = 'customer/edit_confirm.tpl';
-                    $passlen = strlen($this->arrForm['password']);
-                    $this->passlen = SC_Utils_Ex::lfPassLen($passlen);
+                //-- 入力データの変換
+                $this->arrForm = $this->lfConvertParam($this->arrForm, $arrRegistColumn);
+                //-- 入力チェック
+                $this->arrErr = $this->lfErrorCheck($this->arrForm);
 
-                }
-                //--　編集
-                if($mode == "complete") {
-                    $this->tpl_mainpage = 'customer/edit_complete.tpl';
-
-                    // 現在の会員情報を取得する
-                    $arrCusSts = $this->objQuery->getOne("SELECT status FROM dtb_customer WHERE customer_id = ?", array($_POST["customer_id"]));
-
-                    // 会員情報が変更されている場合にはシークレット№も更新する。
-                    if ($arrCusSts != $_POST['status']){
-                        $secret = SC_Utils_Ex::sfGetUniqRandomId("r");
-                        $this->arrForm['secret_key'] = $secret;
-                        array_push($arrRegistColumn, array('column' => 'secret_key', 'convert' => 'n'));
+                //-- 入力エラー発生 or リターン時
+                if ($this->arrErr || $mode == "return") {
+                    foreach($this->arrForm as $key => $val) {
+                        $this->list_data[ $key ] = $val;
                     }
-                    //-- 編集登録
-                    $objCustomerHelper->sfEditCustomerDataAdmin($this->arrForm, $arrRegistColumn);
+                    //購入履歴情報の取得
+                    $this->arrPurchaseHistory = $this->lfPurchaseHistory($_POST['customer_id']);
+                    // 支払い方法の取得
+                    $this->arrPayment = $objDb->sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
+
+                } else {
+                    //-- 確認
+                    if ($mode == "confirm") {
+                        $this->tpl_mainpage = 'customer/edit_confirm.tpl';
+                        $passlen = strlen($this->arrForm['password']);
+                        $this->passlen = SC_Utils_Ex::lfPassLen($passlen);
+
+                    }
+                    //--　編集
+                    if($mode == "complete") {
+                        $this->tpl_mainpage = 'customer/edit_complete.tpl';
+
+                        // 現在の会員情報を取得する
+                        $arrCusSts = $this->objQuery->getOne("SELECT status FROM dtb_customer WHERE customer_id = ?", array($_POST["customer_id"]));
+
+                        // 会員情報が変更されている場合にはシークレット№も更新する。
+                        if ($arrCusSts != $_POST['status']){
+                            $secret = SC_Utils_Ex::sfGetUniqRandomId("r");
+                            $this->arrForm['secret_key'] = $secret;
+                            array_push($arrRegistColumn, array('column' => 'secret_key', 'convert' => 'n'));
+                        }
+                        //-- 編集登録
+                        $objCustomerHelper->sfEditCustomerDataAdmin($this->arrForm, $arrRegistColumn);
+                    }
                 }
             }
+            break;
         }
     }
 

@@ -79,7 +79,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin {
         $objQuery = new SC_Query();
         $objFileManager = new SC_Helper_FileManager_Ex();
 
-        // 現在の階層を取得
+        // 現在の階層を取得 TODO 要リファクタリング(MODE if利用)
         if($this->getMode() != null) {
             $now_dir = $_POST['now_file'];
         } else {

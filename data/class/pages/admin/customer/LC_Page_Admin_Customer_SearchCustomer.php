@@ -69,7 +69,8 @@ class LC_Page_Admin_Customer_SearchCustomer extends LC_Page_Admin {
         SC_Utils_Ex::sfIsSuccess($objSess);
 
         // POSTのモードがsearchなら顧客検索開始
-        if($this->getMode() == 'search'){
+        switch ($this->getMode()) {
+        case 'search':
             $this->objFormParam = new SC_FormParam();
             // 値の初期化
             $this->lfInitParam();
@@ -163,7 +164,9 @@ class LC_Page_Admin_Customer_SearchCustomer extends LC_Page_Admin {
                 // 検索結果の取得
                 $this->arrCustomer = $objQuery->select($col, $from, $where, $sqlval);
             }
-
+            break;
+        default:
+            break;
         }
         $this->arrForm = $arrForm;
         $this->setTemplate($this->tpl_mainpage);

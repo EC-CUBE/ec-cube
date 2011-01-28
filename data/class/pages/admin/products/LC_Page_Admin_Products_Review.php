@@ -115,15 +115,12 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin {
                 }
             }
         }
-        $mode = $this->getMode();
-
-        if ($mode == "delete"){
+        switch ($this->getMode()) {
+        case 'delete':
             //レビューの削除
             $objQuery->exec("UPDATE dtb_review SET del_flg=1 WHERE review_id=?", array($_POST['review_id']));
-        }
-
-        if ($mode == 'search' || $mode == 'csv' || $mode == 'delete'){
-
+        case 'search':
+        case 'csv':
             //削除されていない商品を検索
             $where="A.del_flg = 0 AND B.del_flg = 0";
             $this->arrForm = $_POST;
@@ -267,6 +264,9 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin {
                 $this->sendResponseCSV($fime_name, $data);
                 exit;
             }
+            break;
+        default:
+            break;
         }
     }
 

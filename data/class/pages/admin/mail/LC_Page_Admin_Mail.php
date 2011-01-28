@@ -167,51 +167,52 @@ class LC_Page_Admin_Mail extends LC_Page_Admin {
         // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess($objSess);
 
-        /*
-         query:配信履歴「確認」
-        */
-        if ($this->getMode() == "query" && SC_Utils_Ex::sfCheckNumLength($_GET["send_id"])) {
-            // 送信履歴より、送信条件確認画面
-            $sql = "SELECT search_data FROM dtb_send_history WHERE send_id = ?";
-            $result = $objQuery->getOne($sql, array($_GET["send_id"]));
-            $tpl_path = "mail/query.tpl";
-
-            $list_data = unserialize($result);
-
-            // 都道府県を変換
-            $list_data['pref_disp'] = $this->arrPref[$list_data['pref']];
-
-            // 配信形式
-            $list_data['htmlmail_disp'] = $this->arrHtmlmail[$list_data['htmlmail']];
-
-            // 性別の変換
-            if (count($list_data['sex']) > 0) {
-                foreach($list_data['sex'] as $key => $val){
-                    $list_data['sex'][$key] = $this->arrSex[$val];
-                    $sex_disp .= $list_data['sex'][$key] . " ";
-                }
-                $list_data['sex_disp'] = $sex_disp;
-            }
-
-            // 職業の変換
-            if (count($list_data['job']) > 0) {
-                foreach($list_data['job'] as $key => $val){
-                    $list_data['job'][$key] = $this->arrJob[$val];
-                    $job_disp .= $list_data['job'][$key] . " ";
-                }
-                $list_data['job_disp'] = $job_disp;
-            }
-
-            // カテゴリ変換
-            $arrCatList = $objDb->sfGetCategoryList();
-            $list_data['category_name'] = $arrCatList[$list_data['category_id']];
-
-            $this->list_data = $list_data;
-            $this->setTemplate('mail/query.tpl');
-            return;
-        }
-
         switch($this->getMode()) {
+        case 'query':
+            /*
+             query:配信履歴「確認」
+            */
+            if (SC_Utils_Ex::sfCheckNumLength($_GET["send_id"])) {
+                // 送信履歴より、送信条件確認画面
+                $sql = "SELECT search_data FROM dtb_send_history WHERE send_id = ?";
+                $result = $objQuery->getOne($sql, array($_GET["send_id"]));
+                $tpl_path = "mail/query.tpl";
+
+                $list_data = unserialize($result);
+
+                // 都道府県を変換
+                $list_data['pref_disp'] = $this->arrPref[$list_data['pref']];
+
+                // 配信形式
+                $list_data['htmlmail_disp'] = $this->arrHtmlmail[$list_data['htmlmail']];
+
+                // 性別の変換
+                if (count($list_data['sex']) > 0) {
+                    foreach($list_data['sex'] as $key => $val){
+                        $list_data['sex'][$key] = $this->arrSex[$val];
+                        $sex_disp .= $list_data['sex'][$key] . " ";
+                    }
+                    $list_data['sex_disp'] = $sex_disp;
+                }
+
+                // 職業の変換
+                if (count($list_data['job']) > 0) {
+                    foreach($list_data['job'] as $key => $val){
+                        $list_data['job'][$key] = $this->arrJob[$val];
+                        $job_disp .= $list_data['job'][$key] . " ";
+                    }
+                    $list_data['job_disp'] = $job_disp;
+                }
+
+                // カテゴリ変換
+                $arrCatList = $objDb->sfGetCategoryList();
+                $list_data['category_name'] = $arrCatList[$list_data['category_id']];
+
+                $this->list_data = $list_data;
+                $this->setTemplate('mail/query.tpl');
+                return;
+            }
+            break;
             /*
              search:「検索」ボタン
              back:検索結果画面「戻る」ボタン
@@ -352,7 +353,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin {
                 $this->list_data['name'] =
                     isset($this->list_data['name'])
                     ? $this->list_data['name'] : "";
-
+                //TODO 要リファクタリング(MODE if利用)
                 if ( $this->getMode() == 'regist_confirm'){
                     $this->tpl_mainpage = 'mail/input_confirm.tpl';
                 } else if( $this->getMode() == 'regist_complete' ){

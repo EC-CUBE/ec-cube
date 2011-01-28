@@ -102,7 +102,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
 
         $this->cartKey = $objCartSess->getKey();
 
-        // ログインチェック
+        // ログインチェック TODO 要リファクタリング(MODE if利用)
         if($this->getMode() != 'login' && !$objCustomer->isLoginSuccess(true)) {
             // 不正アクセスとみなす
             SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
@@ -311,7 +311,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         $arrRet =  $this->objFormParam->getHashArray();
         $objErr = new SC_CheckError($arrRet);
         $objErr->arrErr = $this->objFormParam->checkError();
-        // 複数項目チェック
+        // 複数項目チェック TODO 要リファクタリング(MODE if利用)
         if ($this->getMode() == 'login'){
             $objErr->doFunc(array("メールアドレス", "login_email", STEXT_LEN), array("EXIST_CHECK"));
             $objErr->doFunc(array("パスワード", "login_pass", STEXT_LEN), array("EXIST_CHECK"));

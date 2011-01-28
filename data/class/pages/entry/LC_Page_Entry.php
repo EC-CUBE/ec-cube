@@ -147,9 +147,9 @@ class LC_Page_Entry extends LC_Page {
             $this->objFormParam->toLower('email02');
             $this->arrForm = $this->objFormParam->getHashArray();
 
+            switch ($this->getMode()) {
+            case 'confirm':
             //-- 確認
-            if ($this->getMode() == "confirm") {
-
                 $this->arrErr = $this->lfErrorCheck();
 
                 // 入力エラーなし
@@ -164,8 +164,8 @@ class LC_Page_Entry extends LC_Page {
                     $this->tpl_mainpage = 'entry/confirm.tpl';
                     $this->tpl_title = '会員登録(確認ページ)';
                 }
-
-            } elseif ($this->getMode() == "complete") {
+                break;
+            case 'complete':
                 //-- 会員登録と完了画面
 
                 // 会員情報の登録
@@ -181,7 +181,9 @@ class LC_Page_Entry extends LC_Page {
                 $customer_id = $objQuery->get("customer_id", "dtb_customer", "secret_key = ?", array($this->uniqid));
                 SC_Response_Ex::sendRedirect('complete.php', array("ci" => $customer_id));
                 exit;
-
+                break;
+            default:
+                break;
             }
         }
         $this->transactionid = SC_Helper_Session_Ex::getToken();

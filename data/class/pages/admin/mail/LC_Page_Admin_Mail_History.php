@@ -78,13 +78,18 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin {
         if (!isset($_GET['send_id'])) $_GET['send_id'] = "";
         if (!isset($_POST['search_pageno'])) $_POST['search_pageno'] = "";
 
-        // 削除時
-        if (SC_Utils_Ex::sfCheckNumLength($_GET['send_id']) && ($this->getMode()=='delete')) {
-
-            $sql = "UPDATE dtb_send_history SET del_flg = 1 WHERE send_id = ?";
-            $objQuery->query($sql, array($_GET['send_id']) );
-            $_SERVER['QUERY_STRING'] = "";
-            $this->objDisplay->reload();
+        switch ($this->getMode()) {
+        case 'delete':
+            // 削除時
+            if (SC_Utils_Ex::sfCheckNumLength($_GET['send_id'])) {
+                $sql = "UPDATE dtb_send_history SET del_flg = 1 WHERE send_id = ?";
+                $objQuery->query($sql, array($_GET['send_id']) );
+                $_SERVER['QUERY_STRING'] = "";
+                $this->objDisplay->reload();
+            }
+            break;
+        default:
+            break;
         }
         $from = "dtb_send_history";
 

@@ -72,8 +72,9 @@ class LC_Page_Regist extends LC_Page {
         $objDb = new SC_Helper_DB_Ex();
         $this->CONF = $objDb->sfGetBasisData();
 
+        switch ($this->getMode()) {
+        case 'regist':
         //--　本登録完了のためにメールから接続した場合
-        if ($this->getMode() == "regist") {
             //-- 入力チェック
             $this->arrErr = $this->lfErrorCheck($_GET);
             if ($this->arrErr) {
@@ -91,10 +92,11 @@ class LC_Page_Regist extends LC_Page {
                 SC_Response_Ex::sendRedirect('complete.php', $etc_val);
                 exit;
             }
-
+            break;
         //--　それ以外のアクセスは無効とする
-        } else {
+        default:
             SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, "", true, "無効なアクセスです。");
+            break;
         }
     }
 

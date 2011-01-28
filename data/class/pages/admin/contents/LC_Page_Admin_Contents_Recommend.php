@@ -83,10 +83,10 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin {
         $this->tpl_disp_max = RECOMMEND_NUM;
 
         if (!isset($_POST['category_id'])) $_POST['category_id'] = "";
-
-        // 登録時
-        if ( $this->getMode() == 'regist' ){
-
+        //TODO: 要リファクタリング(MODE switch 2か所で行われている)
+        switch ($this->getMode()) {
+        case 'regist':
+            // 登録時
             // 入力文字の強制変換
             $this->arrForm = $_POST;
             $this->arrForm = $this->lfConvertParam($this->arrForm, $arrRegistColumn);
@@ -104,13 +104,14 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin {
                 $this->arrForm['best_id'] = $objQuery->nextVal('dtb_best_products_best_id');
                 $objQuery->insert("dtb_best_products", $this->arrForm );
             }
-
-        } elseif ( $this->getMode() == 'delete' ){
+            break;
+        case 'delete':
             // 削除時
-
             $sql = "DELETE FROM dtb_best_products WHERE category_id = ? AND rank = ?";
             $objQuery->query($sql, array($_POST['category_id'] ,$_POST['rank']));
-
+            break;
+        default:
+            break;
         }
 
         // カテゴリID取得 無いときはトップページ
@@ -129,20 +130,25 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin {
         }
 
         // 商品変更時 or 登録エラー時は、選択された商品に一時的に置き換える
-        if (
-            $this->getMode() == 'set_item'
-            || $this->getMode() == 'regist' && !empty($this->arrErr[$this->arrForm['rank']])
-        ) {
-            $sql = "SELECT product_id, name, main_list_image FROM dtb_products WHERE product_id = ? AND del_flg = 0";
-            $result = $objQuery->getAll($sql, array($_POST['product_id']));
-            if ( $result ){
-                $data = $result[0];
-                foreach( $data as $key=>$val){
-                    $this->arrItems[$_POST['rank']][$key] = $val;
+        //TODO: 要リファクタリング(MODE switch 2か所で行われている)
+        switch ($this->getMode()) {
+        case 'set_item':
+        case 'regist':
+            if (!empty($this->arrErr[$this->arrForm['rank']])) {
+                $sql = "SELECT product_id, name, main_list_image FROM dtb_products WHERE product_id = ? AND del_flg = 0";
+                $result = $objQuery->getAll($sql, array($_POST['product_id']));
+                if ( $result ){
+                    $data = $result[0];
+                    foreach( $data as $key=>$val){
+                        $this->arrItems[$_POST['rank']][$key] = $val;
+                    }
+                    $this->arrItems[$_POST['rank']]['rank'] = $_POST['rank'];
                 }
-                $this->arrItems[$_POST['rank']]['rank'] = $_POST['rank'];
+                $this->checkRank = $_POST['rank'];
             }
-            $this->checkRank = $_POST['rank'];
+            break;
+        default:
+            break;
         }
 
         //各ページ共通

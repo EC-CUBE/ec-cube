@@ -123,7 +123,8 @@ class LC_Page_Admin_Basis_Payment_Input extends LC_Page_Admin {
             break;
         }
 
-        if($this->getMode() == "") {
+        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+        	//TODO: 要リファクタリング(MODE switch 入れ子)
             switch($this->getMode()) {
             case 'pre_edit':
                 if(SC_Utils_Ex::sfIsInt($_GET['payment_id'])) {

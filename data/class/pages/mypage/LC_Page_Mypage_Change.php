@@ -126,9 +126,10 @@ class LC_Page_Mypage_Change extends LC_Page {
             $this->objFormParam->toLower('email_mobile02');
             $this->arrForm = $this->objFormParam->getHashArray();
 
-            //-- 確認
-            if ($this->getMode() == "confirm") {
 
+            switch ($this->getMode()) {
+            case 'confirm':
+            //-- 確認
                 $this->arrErr = $this->lfErrorCheck();
 
                 // 入力エラーなし
@@ -143,8 +144,8 @@ class LC_Page_Mypage_Change extends LC_Page {
                     $this->tpl_mainpage = 'mypage/change_confirm.tpl';
                     $this->tpl_title = '会員登録(確認ページ)';
                 }
-
-            } elseif ($this->getMode() == "complete") {
+                break;
+            case 'complete':
                 //-- 会員登録と完了画面
 
                 // 会員情報の登録
@@ -154,7 +155,9 @@ class LC_Page_Mypage_Change extends LC_Page {
                 // 完了ページに移動させる。
                 SC_Response_Ex::sendRedirect('change_complete.php');
                 exit;
-
+                break;
+            default:
+                break;
             }
         } else {
             $this->arrForm = $this->lfGetCustomerData();

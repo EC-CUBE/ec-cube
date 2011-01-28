@@ -88,6 +88,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page {
 
         if (!isset($_GET['other_deliv_id'])) $_GET['other_deliv_id'] = "";
 
+        //TODO 要リファクタリング(MODE if利用)
         if ($this->getMode() == null){
             $_SESSION['other_deliv_id'] = $_GET['other_deliv_id'];
         }

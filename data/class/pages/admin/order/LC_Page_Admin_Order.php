@@ -119,17 +119,14 @@ class LC_Page_Admin_Order extends LC_Page_Admin {
 
         if (!isset($arrRet)) $arrRet = array();
 
-        if($this->getMode() == 'delete') {
-            if(SC_Utils_Ex::sfIsInt($_POST['order_id'])) {
-                $objQuery = new SC_Query();
-                $where = "order_id = ?";
-                $sqlval['del_flg'] = '1';
-                $objQuery->update("dtb_order", $sqlval, $where, array($_POST['order_id']));
-            }
-        }
-
         switch($this->getMode()) {
             case 'delete':
+                if(SC_Utils_Ex::sfIsInt($_POST['order_id'])) {
+                    $objQuery = new SC_Query();
+                    $where = "order_id = ?";
+                    $sqlval['del_flg'] = '1';
+                    $objQuery->update("dtb_order", $sqlval, $where, array($_POST['order_id']));
+                }
             case 'csv':
             case 'delete_all':
             case 'search':
@@ -265,6 +262,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin {
                     }
 
                     $order = "update_date DESC";
+                    //TODO 要リファクタリング(MODE 入れ子switch)
                     switch($this->getMode()) {
                         case 'csv':
 

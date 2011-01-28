@@ -497,14 +497,17 @@ class LC_Page_Products_Detail extends LC_Page {
 
     /* 入力内容のチェック */
     function lfCheckError() {
-        if ($this->getMode() == "add_favorite") {
+
+        switch ($this->getMode()) {
+        case 'add_favorite':
             $objCustomer = new SC_Customer();
             $objErr = new SC_CheckError();
             $customer_id = $objCustomer->getValue('customer_id');
             if (SC_Helper_DB_Ex::sfDataExists('dtb_customer_favorite_products', 'customer_id = ? AND product_id = ?', array($customer_id, $favorite_product_id))) {
                 $objErr->arrErr['add_favorite'.$favorite_product_id] = "※ この商品は既にお気に入りに追加されています。<br />";
             }
-        } else {
+            break;
+        default:
             // 入力データを渡す。
             $arrRet =  $this->objFormParam->getHashArray();
             $objErr = new SC_CheckError($arrRet);
@@ -517,6 +520,7 @@ class LC_Page_Products_Detail extends LC_Page {
             if ($this->tpl_classcat_find2) {
                 $objErr->doFunc(array("規格2", "classcategory_id2"), array("EXIST_CHECK"));
             }
+            break;
         }
 
         return $objErr->arrErr;

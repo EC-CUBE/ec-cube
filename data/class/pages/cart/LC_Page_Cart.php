@@ -95,6 +95,7 @@ class LC_Page_Cart extends LC_Page {
         }
         $this->cartItems =& $objCartSess->getAllCartList();
 
+        //TODO: 要リファクタリング(MODE switch 2か所で行われている)
         switch($this->getMode()) {
         case 'confirm':
             // カート内情報の取得
@@ -130,6 +131,7 @@ class LC_Page_Cart extends LC_Page {
         /*
          * FIXME モバイルの場合 sfReload() ではなく sendRedirect() を使った方が良いが無限ループしてしまう...
          */
+        //TODO: 要リファクタリング(MODE switch 2か所で行われている)
         switch($this->getMode()) {
         case 'up':
             if(Net_UserAgent_Mobile::isMobile() === true) {

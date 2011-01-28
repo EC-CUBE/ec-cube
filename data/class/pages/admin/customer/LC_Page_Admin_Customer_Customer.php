@@ -117,10 +117,11 @@ class LC_Page_Admin_Customer_Customer extends LC_Page_Admin {
         //---- 登録除外用カラム配列
         $arrRejectRegistColumn = array("year", "month", "day");
 
-        $mode = $this->getMode();
         //----　顧客情報編集
-        if ($mode == "confirm" || $mode == "complete" || $mode == "return") {
-
+        switch ($this->getMode()) {
+        case 'confirm':
+        case 'complete':
+        case 'return':
             //-- POSTデータの引き継ぎ
             $this->arrForm = $_POST;
             $this->arrForm['email'] = strtolower($this->arrForm['email']);        // emailはすべて小文字で処理
@@ -157,7 +158,11 @@ class LC_Page_Admin_Customer_Customer extends LC_Page_Admin {
                     $this->lfRegisData($this->arrForm, $arrRegistColumn);
                 }
             }
+            break;
+        default:
+            break;
         }
+
     }
 
     /**

@@ -63,8 +63,8 @@ class LC_Page_Rss_Products extends LC_Page {
 
         //商品IDを取得
         $product_id = $_GET['product_id'];
+        //TODO 要リファクタリング(MODE if利用)
         $mode = $this->getMode();
-
         if(($product_id != "" and is_numeric($product_id)) or $mode == "all"){
             //商品詳細を取得
             ($mode == "all") ? $arrProduct = $this->lfGetProductsDetail($objQuery, $mode) : $arrProduct = $this->lfGetProductsDetail($objQuery, $product_id);

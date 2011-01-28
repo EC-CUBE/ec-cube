@@ -117,9 +117,9 @@ class LC_Page_Admin_Products extends LC_Page_Admin {
         // ページ送り用
         $this->arrHidden['search_pageno'] = isset($_POST['search_pageno']) ? $_POST['search_pageno'] : "";
 
+        switch ($this->getMode()) {
+        case 'delete':
         // 商品削除
-        $mode = $this->getMode();
-        if ($mode == "delete") {
             $objQuery = new SC_Query();
             $objQuery->delete("dtb_products",
                           "product_id = ?", array($_POST['product_id']));
@@ -133,10 +133,10 @@ class LC_Page_Admin_Products extends LC_Page_Admin {
             // 件数カウントバッチ実行
             $objDb->sfCountCategory($objQuery);
             $objDb->sfCountMaker($objQuery);
-        }
-
-
-        if ($mode == "search" || $mode == "csv"  || $mode == "delete" || $mode == "delete_all" || $mode == "camp_search") {
+        case 'search':
+        case 'csv':
+        case 'delete_all':
+        case 'camp_search':
             // 入力文字の強制変換
             $this->lfConvertParam();
             // エラーチェック
@@ -232,7 +232,8 @@ class LC_Page_Admin_Products extends LC_Page_Admin {
                 $order = "update_date DESC, product_id DESC";
                 $objQuery = new SC_Query();
                 $objProduct = new SC_Product();
-                switch($mode) {
+                //TODO: 要リファクタリング(MODE switch 入れ子)
+                switch ($this->getMode()) {
                     case 'csv':
                         require_once(CLASS_EX_REALDIR . "helper_extends/SC_Helper_CSV_Ex.php");
 
@@ -305,6 +306,9 @@ class LC_Page_Admin_Products extends LC_Page_Admin {
                         }
                 }
             }
+            break;
+        default:
+            break;
         }
 
         // カテゴリの読込

@@ -104,10 +104,10 @@ class LC_Page_Admin_Contents_CSV extends LC_Page_Admin {
         // subnoの番号を取得
         $subno_id = array_keys($this->arrSubnavi,$subno_csv);
         $subno_id = $subno_id[0];
+
         // データの登録
-
-        if ($this->getMode() == "confirm") {
-
+        switch ($this->getMode()) {
+        case 'confirm':
             // エラーチェック
             $this->arrErr = $this->lfCheckError($_POST['output_list']);
 
@@ -118,6 +118,9 @@ class LC_Page_Admin_Contents_CSV extends LC_Page_Admin {
                 // 画面のリロード
                 $this->objDisplay->reload(array("tpl_subno_csv" => $subno_csv));
             }
+            break;
+        default:
+            break;
         }
 
         // 出力項目の取得

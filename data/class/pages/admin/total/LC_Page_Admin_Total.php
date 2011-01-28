@@ -231,7 +231,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin {
 
                     break;
                 }
-
+                //TODO 要リファクタリング(MODE if利用)
                 if($this->getMode() == 'csv') {
                     // CSV出力タイトル行の取得
                     list($arrTitleCol, $arrDataCol) = $this->lfGetCSVColum($page, $this->keyname);

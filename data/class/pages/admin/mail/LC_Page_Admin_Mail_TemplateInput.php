@@ -87,17 +87,17 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin {
             $this->title = "新規登録";
         }
 
-        // モードによる処理分岐
-        if ( $this->getMode() == 'edit' && SC_Utils_Ex::sfCheckNumLength($_GET['template_id'])===true ){
-
-            // 編集
-            $sql = "SELECT * FROM dtb_mailmaga_template WHERE template_id = ? AND del_flg = 0";
-            $result = $objQuery->getAll($sql, array($_GET['template_id']));
-            $this->arrForm = $result[0];
-
-
-        } elseif ( $this->getMode() == 'regist' ) {
-
+        switch ($this->getMode()) {
+        case 'edit':
+            // モードによる処理分岐
+            if ( SC_Utils_Ex::sfCheckNumLength($_GET['template_id'])===true ){
+                // 編集
+                $sql = "SELECT * FROM dtb_mailmaga_template WHERE template_id = ? AND del_flg = 0";
+                $result = $objQuery->getAll($sql, array($_GET['template_id']));
+                $this->arrForm = $result[0];
+            }
+            break;
+        case 'regist':
             // 新規登録
             $this->arrForm = $this->lfConvData( $_POST );
             $this->arrErr = $this->lfErrorCheck($this->arrForm);
@@ -108,11 +108,13 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin {
                 // 自分を再読込して、完了画面へ遷移
                 $this->objDisplay->reload(array("mode" => "complete"));
             }
-
-        } elseif ( $this->getMode() == 'complete' ) {
-
+            break;
+        case 'complete':
             // 完了画面表示
             $this->tpl_mainpage = 'mail/template_complete.tpl';
+            break;
+        default:
+            break;
         }
     }
 

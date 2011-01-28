@@ -75,8 +75,8 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin {
 
 
         $this->arrMailTEMPLATE = $masterData->getMasterData("mtb_mail_template");
-
-        if ( $this->getMode() == 'id_set'){
+        switch ($this->getMode()) {
+        case 'id_set':
             // テンプレートプルダウン変更時
 
             if ( SC_Utils_Ex::sfCheckNumLength( $_POST['template_id']) ){
@@ -88,26 +88,30 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin {
                     $this->arrForm['template_id'] = $_POST['template_id'];
                 }
             }
+            break;
+        case 'regist':
+            if (SC_Utils_Ex::sfCheckNumLength( $_POST['template_id']) ){
 
-        } elseif ( $this->getMode() == 'regist' && SC_Utils_Ex::sfCheckNumLength( $_POST['template_id']) ){
+                // POSTデータの引き継ぎ
+                $this->arrForm = $this->lfConvertParam($_POST);
+                $this->arrErr = $this->fnErrorCheck($this->arrForm);
 
-            // POSTデータの引き継ぎ
-            $this->arrForm = $this->lfConvertParam($_POST);
-            $this->arrErr = $this->fnErrorCheck($this->arrForm);
+                if ( $this->arrErr ){
+                    // エラーメッセージ
+                    $this->tpl_msg = "エラーが発生しました";
 
-            if ( $this->arrErr ){
-                // エラーメッセージ
-                $this->tpl_msg = "エラーが発生しました";
+                } else {
+                    // 正常
+                    $this->lfRegist($objQuery, $this->arrForm);
 
-            } else {
-                // 正常
-                $this->lfRegist($objQuery, $this->arrForm);
-
-                // 完了メッセージ
-                $this->tpl_onload = "window.alert('メール設定が完了しました。テンプレートを選択して内容をご確認ください。');";
-                unset($this->arrForm);
+                    // 完了メッセージ
+                    $this->tpl_onload = "window.alert('メール設定が完了しました。テンプレートを選択して内容をご確認ください。');";
+                    unset($this->arrForm);
+                }
             }
-
+            break;
+        default:
+            break;
         }
     }
 

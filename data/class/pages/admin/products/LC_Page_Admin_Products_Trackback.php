@@ -105,15 +105,11 @@ class LC_Page_Admin_Products_Trackback extends LC_Page_Admin {
                 $this->arrHidden[$key] = $val;
             }
         }
-
-        $mode = $this->getMode();
-        // トラックバックの削除
-        if ($mode == "delete") {
+        switch ($this->getMode()) {
+        case 'delete':
             $objQuery->exec("UPDATE dtb_trackback SET del_flg = 1, update_date = now() WHERE trackback_id = ?", array($_POST['trackback_id']));
-        }
-
-        if ($mode == 'search' || $mode == 'csv' || $mode == 'delete'){
-
+        case 'search':
+        case 'csv':
             //削除されていない商品を検索
             $where="A.del_flg = 0 AND B.del_flg = 0";
             $this->arrForm = $_POST;
@@ -243,6 +239,9 @@ class LC_Page_Admin_Products_Trackback extends LC_Page_Admin {
                 SC_Utils_Ex::sfCSVDownload($head.$data);
                 exit;
             }
+            break;
+        default:
+            break;
         }
     }
 

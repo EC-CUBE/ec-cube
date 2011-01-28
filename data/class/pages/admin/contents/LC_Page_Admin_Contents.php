@@ -85,7 +85,8 @@ class LC_Page_Admin_Contents extends LC_Page_Admin {
         $this->arrDay = $objDate->getDay();
 
         //---- 新規登録/編集登録
-        if ( $this->getMode() == 'regist'){
+        switch ($this->getMode()) {
+        case 'regist':
             $_POST = $this->lfConvData($_POST);
 
             if ($this->arrErr = $this->lfErrorCheck()) {       // 入力エラーのチェック
@@ -110,60 +111,63 @@ class LC_Page_Admin_Contents extends LC_Page_Admin {
 
                 $this->tpl_onload = "window.alert('編集が完了しました');";
             }
-        }
-
+            break;
+        case 'search':
         //----　編集データ取得
-        if ($this->getMode() == "search" && is_numeric($_POST["news_id"])) {
-            $sql = "SELECT *, cast(news_date as date) as cast_news_date FROM dtb_news WHERE news_id = ? ";
-            $result = $objQuery->getAll($sql, array($_POST["news_id"]));
-            $this->arrForm = $result[0];
+            if (is_numeric($_POST["news_id"])) {
+                $sql = "SELECT *, cast(news_date as date) as cast_news_date FROM dtb_news WHERE news_id = ? ";
+                $result = $objQuery->getAll($sql, array($_POST["news_id"]));
+                $this->arrForm = $result[0];
 
-            $arrData = split("-", $result[0]["cast_news_date"]);
-            $this->arrForm['year']  = $arrData[0];
-            $this->arrForm['month'] = $arrData[1];
-            $this->arrForm['day']   = $arrData[2];
+                $arrData = split("-", $result[0]["cast_news_date"]);
+                $this->arrForm['year']  = $arrData[0];
+                $this->arrForm['month'] = $arrData[1];
+                $this->arrForm['day']   = $arrData[2];
 
-            $this->edit_mode = "on";
-        }
-
-        //----　データ削除
-        if ( $this->getMode() == 'delete' && is_numeric($_POST["news_id"])) {
-
-            // rankを取得
-            $pre_rank = $objQuery->getOne(" SELECT rank FROM dtb_news WHERE del_flg = 0 AND news_id = ? ", array( $_POST['news_id']  ));
-
-            //-- 削除する新着情報以降のrankを1つ繰り上げておく
-            $objQuery->begin();
-            $sql = "UPDATE dtb_news SET rank = rank - 1, update_date = NOW() WHERE del_flg = 0 AND rank > ?";
-            $objQuery->query( $sql, array( $pre_rank  ) );
-
-            $sql = "UPDATE dtb_news SET rank = 0, del_flg = 1, update_date = NOW() WHERE news_id = ?";
-            $objQuery->query( $sql, array( $_POST['news_id'] ) );
-            $objQuery->commit();
-
-            $this->objDisplay->reload();             //自分にリダイレクト（再読込による誤動作防止）
-        }
-
-        //----　表示順位移動
-
-        if ( $this->getMode() == 'move' && is_numeric($_POST["news_id"]) ) {
-            if ($_POST["term"] == "up") {
-                $objDb->sfRankUp("dtb_news", "news_id", $_POST["news_id"]);
-            } else if ($_POST["term"] == "down") {
-                $objDb->sfRankDown("dtb_news", "news_id", $_POST["news_id"]);
+                $this->edit_mode = "on";
             }
-            //sf_rebuildIndex($conn);
-            $this->objDisplay->reload();
-        }
+            break;
+        case 'delete':
+        //----　データ削除
+            if (is_numeric($_POST["news_id"])) {
+                // rankを取得
+                $pre_rank = $objQuery->getOne(" SELECT rank FROM dtb_news WHERE del_flg = 0 AND news_id = ? ", array( $_POST['news_id']  ));
 
+                //-- 削除する新着情報以降のrankを1つ繰り上げておく
+                $objQuery->begin();
+                $sql = "UPDATE dtb_news SET rank = rank - 1, update_date = NOW() WHERE del_flg = 0 AND rank > ?";
+                $objQuery->query( $sql, array( $pre_rank  ) );
+
+                $sql = "UPDATE dtb_news SET rank = 0, del_flg = 1, update_date = NOW() WHERE news_id = ?";
+                $objQuery->query( $sql, array( $_POST['news_id'] ) );
+                $objQuery->commit();
+
+                $this->objDisplay->reload();             //自分にリダイレクト（再読込による誤動作防止）
+            }
+            break;
+        case 'move':
+        //----　表示順位移動
+            if (is_numeric($_POST["news_id"]) ) {
+                if ($_POST["term"] == "up") {
+                    $objDb->sfRankUp("dtb_news", "news_id", $_POST["news_id"]);
+                } else if ($_POST["term"] == "down") {
+                    $objDb->sfRankDown("dtb_news", "news_id", $_POST["news_id"]);
+                }
+                //sf_rebuildIndex($conn);
+                $this->objDisplay->reload();
+            }
+            break;
+        case 'moveRankSet':
         //----　指定表示順位移動
-        if ($this->getMode() == 'moveRankSet') {
             $key = "pos-".$_POST['news_id'];
             $input_pos = mb_convert_kana($_POST[$key], "n");
             if(SC_Utils_Ex::sfIsInt($input_pos)) {
                 $objDb->sfMoveRank("dtb_news", "news_id", $_POST['news_id'], $input_pos);
                 $this->objDisplay->reload();
             }
+            break;
+        default:
+            break;
         }
 
         //---- 全データ取得

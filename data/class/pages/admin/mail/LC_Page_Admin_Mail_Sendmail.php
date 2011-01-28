@@ -73,19 +73,23 @@ class LC_Page_Admin_Mail_Sendmail extends LC_Page_Admin {
         $where = 'del_flg = 0';
         $sqlval = array();
         // リアルタイム配信モードがオンのとき
-        if ($this->getMode() == 'now') {
+        switch ($this->getMode()) {
+        case 'now':
             // 指定データを取得する
             $where .= ' AND send_id = ?';
             $sqlval[] = $_GET['send_id'];
             if ($_GET['retry'] != 'yes') {
                 $where .= ' AND complete_count = 0 AND end_date IS NULL';
             }
-        } else {
+            break;
+        default:
             $where .= ' AND end_date IS NULL';
             $dbFactory = SC_DB_DBFactory::getInstance();
             $where .= $dbFactory->getSendHistoryWhereStartdateSql();
             // 30分毎にCronが送信時間データ確認
+            break;
         }
+
         $objQuery->setOrder('send_id');
         $arrMailList = $objQuery->select('*', 'dtb_send_history', $where, $sqlval);
         $objQuery->setOrder('');
@@ -176,6 +180,7 @@ class LC_Page_Admin_Mail_Sendmail extends LC_Page_Admin {
                 $sendResut = $this->objMail->sendHtmlMail();
             }
         }
+        //TODO 要リファクタリング(MODE if利用)
         if ($this->getMode() == 'now') {
             SC_Response_Ex::sendRedirectFromUrlPath(ADMIN_DIR . 'mail/history.php');
         }

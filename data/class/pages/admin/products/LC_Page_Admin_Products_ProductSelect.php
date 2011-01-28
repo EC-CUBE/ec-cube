@@ -75,8 +75,8 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page_Admin {
         // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess($objSess);
 
-        if ($this->getMode() == "search") {
-
+        switch ($this->getMode()) {
+        case 'search':
             // POST値の引き継ぎ
             $this->arrForm = $_POST;
             // 入力文字の強制変換
@@ -142,6 +142,9 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page_Admin {
             // 検索結果の取得
             // FIXME 商品コードの表示
             $this->arrProducts = $objQuery->select("*", SC_Product::alldtlSQL(), $where, $arrval);
+            break;
+        default:
+            break;
         }
 
         // カテゴリ取得

@@ -95,7 +95,8 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin {
             fclose($fp);
 
             // 登録時はプレビュー用テンプレートをコピーする
-            if ($this->getMode() == 'confirm'){
+            switch ($this->getMode()) {
+            case 'regist':
                 copy($pre_DIR.$division.".tpl", $this->objLayout->getTemplatePath($device_type_id) . $division . ".tpl");
                 // 完了メッセージ（プレビュー時は表示しない）
                 $this->tpl_onload="alert('登録が完了しました。');";
@@ -103,11 +104,14 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin {
                 // テキストエリアの幅を元に戻す(処理の統一のため)
                 $_POST['header_row'] = "";
                 $_POST['footer_row'] = "";
-            }else if ($this->getMode() == 'preview'){
+                break;
+            case 'preview':
                 if ($division == "header") $this->header_prev = "on";
                 if ($division == "footer") $this->footer_prev = "on";
+                break;
+            default:
+                break;
             }
-
             // ヘッダーファイルの読み込み(プレビューデータ)
             $header_data = file_get_contents($pre_DIR . "header.tpl");
 

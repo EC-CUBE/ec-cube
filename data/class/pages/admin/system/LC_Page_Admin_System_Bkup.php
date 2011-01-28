@@ -106,14 +106,10 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin {
             break;
 
             // リストア
-        case 'restore':
         case 'restore_config':
-            if ($this->getMode() == 'restore_config') {
-                $this->mode = "restore_config";
-            }
-
+        	$this->mode = "restore_config";
+        case 'restore':
             $this->lfRestore($_POST['list_name']);
-
             break;
 
             // 削除

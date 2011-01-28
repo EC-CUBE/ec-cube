@@ -77,22 +77,26 @@ class LC_Page_Admin_Mail_Template extends LC_Page_Admin {
 
         if (!isset($_GET['id'])) $_GET['id'] = "";
 
-        if ( $this->getMode() == "delete" && SC_Utils_Ex::sfCheckNumLength($_GET['id'])===true ){
+        switch ($this->getMode()) {
+        case 'delete':
+            if ( SC_Utils_Ex::sfCheckNumLength($_GET['id'])===true ){
+                // メール担当の画像があれば削除しておく
+                $sql = "SELECT charge_image FROM dtb_mailmaga_template WHERE template_id = ?";
+                $result = $objQuery->getOne($sql, array($_GET["id"]));
+                if (strlen($result) > 0) {
+                    @unlink(IMAGE_SAVE_REALDIR. $result);
+                }
 
-            // メール担当の画像があれば削除しておく
-            $sql = "SELECT charge_image FROM dtb_mailmaga_template WHERE template_id = ?";
-            $result = $objQuery->getOne($sql, array($_GET["id"]));
-            if (strlen($result) > 0) {
-                @unlink(IMAGE_SAVE_REALDIR. $result);
+                // 登録削除
+                $sql = "UPDATE dtb_mailmaga_template SET del_flg = 1 WHERE template_id = ?";
+                $objQuery->query($sql, array($_GET['id']));
+
+                $this->objDisplay->reload(null, true);
             }
-
-            // 登録削除
-            $sql = "UPDATE dtb_mailmaga_template SET del_flg = 1 WHERE template_id = ?";
-            $objQuery->query($sql, array($_GET['id']));
-
-            $this->objDisplay->reload(null, true);
+            break;
+        default:
+            break;
         }
-
 
         $sql = "SELECT *, create_date as disp_date FROM dtb_mailmaga_template WHERE del_flg = 0 ORDER BY create_date DESC";
         $this->list_data = $objQuery->getAll($sql);

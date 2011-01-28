@@ -130,6 +130,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin {
 
         case 'confirm':
         case 'preview':
+            //TODO 要リファクタリング(MODE if利用)
             $page_id = $_POST['page_id'];
             if ($this->getMode() == 'preview') {
                 $page_id = '0';
@@ -201,7 +202,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin {
                 $arrRet = $objQuery->insert("dtb_blocposition", $arrInsData);
             }
 
-            // プレビュー処理
+            // プレビュー処理 TODO 要リファクタリング(MODE if利用)
             if ($this->getMode() == 'preview') {
                 $this->lfSetPreData($arrPageData, $objLayout);
 

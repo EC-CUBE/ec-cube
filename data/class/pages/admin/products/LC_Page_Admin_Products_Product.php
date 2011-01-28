@@ -156,7 +156,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin {
                 $this->lfPreGetRecommendProducts($_POST['product_id']);
 
                 $this->lfProductPage();     // 商品登録ページ
-
+                //TODO 要リファクタリング(MODE if利用)
                 if($this->getMode() == "copy"){
                     $this->arrForm["copy_product_id"] = $this->arrForm["product_id"];
                     $this->arrForm["product_id"] = "";
