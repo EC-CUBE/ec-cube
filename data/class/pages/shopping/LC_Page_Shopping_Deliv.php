@@ -102,15 +102,13 @@ class LC_Page_Shopping_Deliv extends LC_Page {
 
         $this->cartKey = $objCartSess->getKey();
 
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
-
         // ログインチェック
-        if($_POST['mode'] != 'login' && !$objCustomer->isLoginSuccess(true)) {
+        if($this->getMode() != 'login' && !$objCustomer->isLoginSuccess(true)) {
             // 不正アクセスとみなす
             SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
         }
 
-        switch($_POST['mode']) {
+        switch($this->getMode()) {
         case 'login':
             $this->objLoginFormParam->toLower('login_email');
             $this->arrErr = $this->objLoginFormParam->checkError();
@@ -314,7 +312,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         $objErr = new SC_CheckError($arrRet);
         $objErr->arrErr = $this->objFormParam->checkError();
         // 複数項目チェック
-        if ($_POST['mode'] == 'login'){
+        if ($this->getMode() == 'login'){
             $objErr->doFunc(array("メールアドレス", "login_email", STEXT_LEN), array("EXIST_CHECK"));
             $objErr->doFunc(array("パスワード", "login_pass", STEXT_LEN), array("EXIST_CHECK"));
         }

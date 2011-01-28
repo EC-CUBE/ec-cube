@@ -92,7 +92,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin {
             $this->tpl_mode = "insert";
         }
 
-        if(isset($_POST['mode']) && !empty($_POST["mode"])) {
+        if(!empty($this->getMode())) {
             // POSTデータの引き継ぎ
             $this->arrForm = $_POST;
 
@@ -103,7 +103,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin {
             $this->arrErr = $this->lfErrorCheck($this->arrForm);
 
             if(count($this->arrErr) == 0) {
-                switch($_POST['mode']) {
+                switch($this->getMode()) {
                 case 'update':
                     $this->lfUpdateData($this->arrForm);	// 既存編集
                     break;
@@ -205,7 +205,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin {
         // INSERTの実行
         $ret = $objQuery->insert("dtb_baseinfo", $sqlval);
     }
-    
+
 
     /* 取得文字列の変換 */
     function lfConvertParam($array) {

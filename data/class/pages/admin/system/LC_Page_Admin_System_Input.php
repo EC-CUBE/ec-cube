@@ -52,7 +52,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin {
         // マスタ-データから権限配列を取得
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrAUTHORITY = $masterData->getMasterData('mtb_authority');
-        
+
         $this->httpCacheControl('nocache');
     }
 
@@ -108,22 +108,6 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin {
     }
 
     /**
-     * switchアクション振り分け用パラメータを取得する.
-     *
-     * @param void
-     * @return string モード名
-     */
-    function getMode() {
-        $mode = '';
-        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            if(isset($_GET['mode'])) $mode = $_GET['mode'];
-        } elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            if(isset($_POST['mode'])) $mode = $_POST['mode'];
-        }
-        return $mode;
-    }
-
-    /**
      * newアクションの実行
      * メンバーデータの新規登録を行う.
      *
@@ -141,7 +125,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin {
 
         if (count($arrErr) > 0) {
             // 入力された値を保持する
-            $this->tpl_mode      = $_POST['mode'];
+            $this->tpl_mode      = $this->getMode();
             $this->tpl_member_id = $_POST['member_id'];
             $this->tpl_old_login_id = $_POST['old_login_id'];
             $this->arrForm = $this->objForm->getHashArray();
@@ -234,7 +218,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin {
 
         if (count($arrErr) > 0) {
             // 入力された値を保持する
-            $this->tpl_mode      = $_POST['mode'];
+            $this->tpl_mode      = $this->getMode();
             $this->tpl_member_id = $_POST['member_id'];
             $this->tpl_old_login_id = $_POST['old_login_id'];
             $this->arrForm = $this->objForm->getHashArray();

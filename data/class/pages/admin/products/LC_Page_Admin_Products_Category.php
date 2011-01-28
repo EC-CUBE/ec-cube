@@ -89,9 +89,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin {
         $this->arrForm['parent_category_id'] =
             isset($_POST['parent_category_id']) ? $_POST['parent_category_id'] : "";
 
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
-
-        switch($_POST['mode']) {
+        switch($this->getMode()) {
         case 'edit':
             $this->objFormParam->convParam();
             $arrRet =  $this->objFormParam->getHashArray();
@@ -187,7 +185,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin {
             if ($keys[0] && $keys[1]) {
                 $objQuery = new SC_Query();
                 $objQuery->begin();
-        
+
                 // 移動したデータのrank、level、parent_category_idを取得
                 $rank   = $objQuery->get("rank", "dtb_category", "category_id = ?", array($keys[0]));
                 $level  = $objQuery->get("level", "dtb_category", "category_id = ?", array($keys[0]));

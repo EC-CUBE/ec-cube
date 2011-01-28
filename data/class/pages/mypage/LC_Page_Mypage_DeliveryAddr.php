@@ -77,7 +77,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page {
             $ParentPage = htmlspecialchars($_POST['ParentPage'],ENT_QUOTES);
         }
         $this->ParentPage = $ParentPage;
-        
+
         /*
          * ログイン判定 及び 退会判定
          * 未ログインでも, 複数配送設定ページからのアクセスの場合は表示する
@@ -86,10 +86,9 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page {
             $this->tpl_onload = "fnUpdateParent('". $this->getLocation($_POST['ParentPage']) ."'); window.close();";
         }
 
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
         if (!isset($_GET['other_deliv_id'])) $_GET['other_deliv_id'] = "";
 
-        if ($_POST['mode'] == ""){
+        if ($this->getMode() == null){
             $_SESSION['other_deliv_id'] = $_GET['other_deliv_id'];
         }
 
@@ -124,7 +123,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page {
             $this->arrForm = $arrOtherDeliv[0];
         }
 
-        switch ($_POST['mode']) {
+        switch ($this->getMode()) {
             case 'edit':
                 $_POST = $this->lfConvertParam($_POST,$arrRegistColumn);
                 $this->arrErr = $this->lfErrorCheck($_POST);
@@ -141,7 +140,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page {
                     } else {
                         SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
                     }
-                    
+
                     if ($objCustomer->isLoginSuccess(true)) {
                         $this->lfRegistData($_POST, $arrRegistColumn, $objCustomer);
                     } else {
@@ -211,18 +210,18 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page {
             if ($deliv_count >= DELIV_ADDR_MAX) {
                 SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, "", false, '別のお届け先最大登録数に達しています。');
             }
-            
+
             // 実行
             $arrRegist['other_deliv_id'] = $objQuery->nextVal('dtb_other_deliv_other_deliv_id');
             $objQuery->insert("dtb_other_deliv", $arrRegist);
-            
+
         // 変更
         } else {
             $deliv_count = $objQuery->count("dtb_other_deliv","customer_id=? and other_deliv_id = ?" ,array($objCustomer->getValue('customer_id'), $_POST['other_deliv_id']));
             if ($deliv_count != 1) {
                 SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, "", false, '一致する別のお届け先がありません。');
             }
-            
+
             // 実行
             $objQuery->update("dtb_other_deliv", $arrRegist,
                                   "other_deliv_id = "

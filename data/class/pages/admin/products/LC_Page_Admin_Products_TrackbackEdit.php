@@ -104,7 +104,7 @@ class LC_Page_Admin_Products_TrackbackEdit extends LC_Page_Admin {
         // 両方選択可能
         $this->tpl_status_change = true;
 
-        switch($_POST['mode']) {
+        switch($this->getMode()) {
             // 登録
         case 'complete':
             //フォーム値の変換

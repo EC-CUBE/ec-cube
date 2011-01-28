@@ -69,7 +69,7 @@ class LC_Page_Admin_Customer_SearchCustomer extends LC_Page_Admin {
         SC_Utils_Ex::sfIsSuccess($objSess);
 
         // POSTのモードがsearchなら顧客検索開始
-        if($_POST['mode'] == 'search'){
+        if($this->getMode() == 'search'){
             $this->objFormParam = new SC_FormParam();
             // 値の初期化
             $this->lfInitParam();
@@ -87,7 +87,7 @@ class LC_Page_Admin_Customer_SearchCustomer extends LC_Page_Admin {
 
             $sqlval = array();
             $where = "";
-            
+
             if ($is_select) {
                 $where = "del_flg = 0";
 

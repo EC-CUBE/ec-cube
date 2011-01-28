@@ -87,10 +87,8 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin {
             $this->title = "新規登録";
         }
 
-        if (!isset($_GET['mode'])) $_GET['mode'] = "";
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
         // モードによる処理分岐
-        if ( $_GET['mode'] == 'edit' && SC_Utils_Ex::sfCheckNumLength($_GET['template_id'])===true ){
+        if ( $this->getMode() == 'edit' && SC_Utils_Ex::sfCheckNumLength($_GET['template_id'])===true ){
 
             // 編集
             $sql = "SELECT * FROM dtb_mailmaga_template WHERE template_id = ? AND del_flg = 0";
@@ -98,7 +96,7 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin {
             $this->arrForm = $result[0];
 
 
-        } elseif ( $_POST['mode'] == 'regist' ) {
+        } elseif ( $this->getMode() == 'regist' ) {
 
             // 新規登録
             $this->arrForm = $this->lfConvData( $_POST );
@@ -111,7 +109,7 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin {
                 $this->objDisplay->reload(array("mode" => "complete"));
             }
 
-        } elseif ( $_GET['mode'] == 'complete' ) {
+        } elseif ( $this->getMode() == 'complete' ) {
 
             // 完了画面表示
             $this->tpl_mainpage = 'mail/template_complete.tpl';

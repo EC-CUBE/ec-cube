@@ -91,9 +91,7 @@ class LC_Page_Shopping_Multiple extends LC_Page {
             }
         }
 
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
-
-        switch ($_POST['mode']) {
+        switch ($this->getMode()) {
             case 'delete':
                 // TODO
                 break;

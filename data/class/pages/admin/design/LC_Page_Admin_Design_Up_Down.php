@@ -89,7 +89,7 @@ class LC_Page_Admin_Design_Up_Down extends LC_Page_Admin {
         // uniqidをテンプレートへ埋め込み
         $this->uniqid = $objSession->getUniqId();
 
-        switch($this->lfGetMode()) {
+        switch($this->getMode()) {
 
             // ダウンロードボタン押下時の処理
         case 'download':
@@ -138,15 +138,6 @@ class LC_Page_Admin_Design_Up_Down extends LC_Page_Admin {
         parent::destroy();
     }
 
-    /**
-     * POSTされるmodeパラメータを取得する.
-     *
-     * @param void
-     * @return string modeパラメータ, 無ければnull
-     */
-    function lfGetMode(){
-        if (isset($_POST['mode'])) return $_POST['mode'];
-    }
     /**
      * SC_UploadFileクラスの初期化.
      *

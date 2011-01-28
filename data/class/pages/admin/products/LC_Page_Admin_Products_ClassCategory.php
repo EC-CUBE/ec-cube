@@ -92,8 +92,6 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin {
             exit;
         }
 
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
-
         if (isset($_POST['class_id'])) {
             if (!SC_Utils_Ex::sfIsInt($_POST['class_id'])) {
                 SC_Utils_Ex::sfDispError("");
@@ -101,7 +99,7 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin {
         }
 
         // 新規作成 or 編集
-        switch($_POST['mode']) {
+        switch($this->getMode()) {
             // 登録ボタン押下
         case 'edit':
             // POST値の引き継ぎ

@@ -82,7 +82,6 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin {
         // トランザクションIDの取得
         $this->transactionid = SC_Helper_Session_Ex::getToken();
 
-        // $_POST['mode']によってアクション振り分け
         switch($this->getMode()) {
         // 入力内容をDBへ登録する
         case 'register':
@@ -101,22 +100,6 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin {
      */
     function destroy() {
         parent::destroy();
-    }
-
-    /**
-     * switchアクション振り分け用パラメータを取得する.
-     *
-     * @param void
-     * @return string モード名
-     */
-    function getMode() {
-        $mode = '';
-        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            if (isset($_GET['mode'])) $mode = $_GET['mode'];
-        } elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            if (isset($_POST['mode'])) $mode = $_POST['mode'];
-        }
-        return $mode;
     }
 
     /**

@@ -126,8 +126,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin {
             }
         }
 
-        $mode = $this->objFormParam->getValue('mode');
-        switch($mode) {
+        switch($this->getMode()) {
         case 'csv':
         case 'search':
             // 入力値の変換
@@ -233,7 +232,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin {
                     break;
                 }
 
-                if($mode == 'csv') {
+                if($this->getMode() == 'csv') {
                     // CSV出力タイトル行の取得
                     list($arrTitleCol, $arrDataCol) = $this->lfGetCSVColum($page, $this->keyname);
                     $head = SC_Utils_Ex::sfGetCSVList($arrTitleCol);

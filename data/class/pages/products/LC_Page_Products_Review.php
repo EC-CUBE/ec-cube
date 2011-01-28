@@ -101,8 +101,7 @@ class LC_Page_Products_Review extends LC_Page {
 
                                 );
 
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
-        switch ($_POST['mode']){
+        switch ($this->getMode()){
         case 'confirm':
             $arrForm = $this->lfConvertParam($_POST, $arrRegistColumn);
             $this->arrErr = $this->lfErrorCheck($arrForm);

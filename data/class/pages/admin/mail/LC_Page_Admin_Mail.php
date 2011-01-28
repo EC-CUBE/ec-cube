@@ -134,10 +134,8 @@ class LC_Page_Admin_Mail extends LC_Page_Admin {
 
         if (!isset($_POST['htmlmail'])) $_POST['htmlmail'] = "";
         if (!isset($_POST['mail_type'])) $_POST['mail_type'] = "";
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
         if (!isset($_POST['buy_product_code'])) $_POST['buy_product_code'] = "";
-        if (!isset($_GET['mode'])) $_GET['mode'] = "";
-        
+
         $this->httpCacheControl('nocache');
     }
 
@@ -172,7 +170,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin {
         /*
          query:配信履歴「確認」
         */
-        if ($_GET["mode"] == "query" && SC_Utils_Ex::sfCheckNumLength($_GET["send_id"])) {
+        if ($this->getMode() == "query" && SC_Utils_Ex::sfCheckNumLength($_GET["send_id"])) {
             // 送信履歴より、送信条件確認画面
             $sql = "SELECT search_data FROM dtb_send_history WHERE send_id = ?";
             $result = $objQuery->getOne($sql, array($_GET["send_id"]));
@@ -213,10 +211,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin {
             return;
         }
 
-        if($_POST['mode'] == 'delete') {
-        }
-
-        switch($_POST['mode']) {
+        switch($this->getMode()) {
             /*
              search:「検索」ボタン
              back:検索結果画面「戻る」ボタン
@@ -358,9 +353,9 @@ class LC_Page_Admin_Mail extends LC_Page_Admin {
                     isset($this->list_data['name'])
                     ? $this->list_data['name'] : "";
 
-                if ( $_POST['mode'] == 'regist_confirm'){
+                if ( $this->getMode() == 'regist_confirm'){
                     $this->tpl_mainpage = 'mail/input_confirm.tpl';
-                } else if( $_POST['mode'] == 'regist_complete' ){
+                } else if( $this->getMode() == 'regist_complete' ){
                     $sendId = $this->lfRegistData($objQuery, $this->list_data);
                     if (MELMAGA_SEND) {
                         if (MELMAGA_BATCH_MODE) {

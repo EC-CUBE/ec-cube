@@ -91,7 +91,7 @@ class LC_Page_Admin_Basis_Payment_Input extends LC_Page_Admin {
         // POST値の取得
         $this->objFormParam->setParam($_POST);
 
-        switch($_POST['mode']) {
+        switch($this->getMode()) {
         case 'edit':
             // 入力値の変換
             $this->objFormParam->convParam();
@@ -123,8 +123,8 @@ class LC_Page_Admin_Basis_Payment_Input extends LC_Page_Admin {
             break;
         }
 
-        if($_POST['mode'] == "") {
-            switch($_GET['mode']) {
+        if($this->getMode() == "") {
+            switch($this->getMode()) {
             case 'pre_edit':
                 if(SC_Utils_Ex::sfIsInt($_GET['payment_id'])) {
                     $arrRet = $this->lfGetData($_GET['payment_id']);

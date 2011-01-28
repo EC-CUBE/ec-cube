@@ -69,15 +69,13 @@ class LC_Page_Mypage_Refusal extends LC_Page {
     function action() {
         $objCustomer = new SC_Customer();
         $objSiteSess = new SC_SiteSession();
-        
+
         // 退会判定用情報の取得
         $this->tpl_login = $objCustomer->isLoginSuccess(true);
 
         $this->lfCheckLogin();
 
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
-
-        switch ($_POST['mode']){
+        switch ($this->getMode()){
         case 'confirm':
 
             $this->tpl_mainpage = TEMPLATE_REALDIR . 'mypage/refusal_confirm.tpl';
@@ -117,7 +115,7 @@ class LC_Page_Mypage_Refusal extends LC_Page {
             SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, $objSiteSess);
         }
     }
-    
+
     function lfCheckLogin(){
         $objCustomer = new SC_Customer();
         //ログイン判定
@@ -130,7 +128,7 @@ class LC_Page_Mypage_Refusal extends LC_Page {
             $this->CustomerPoint = $objCustomer->getvalue('point');
         }
     }
-    
+
     function lfDeleteCustomer(){
         $objQuery = new SC_Query();
         $objCustomer = new SC_Customer();
@@ -142,6 +140,6 @@ class LC_Page_Mypage_Refusal extends LC_Page {
         SC_Response_Ex::sendRedirect('refusal_complete.php');
         exit;
     }
-    
+
 }
 ?>

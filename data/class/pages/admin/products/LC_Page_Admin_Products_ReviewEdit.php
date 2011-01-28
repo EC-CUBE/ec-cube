@@ -85,8 +85,7 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin {
         // 両方選択可能
         $this->tpl_status_change = true;
 
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
-        switch ($_POST['mode']) {
+        switch ($this->getMode()) {
             // 登録
             case 'complete':
                 // 取得文字列の変換用カラム

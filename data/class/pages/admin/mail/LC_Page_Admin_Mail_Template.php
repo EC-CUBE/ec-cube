@@ -75,10 +75,9 @@ class LC_Page_Admin_Mail_Template extends LC_Page_Admin {
         // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess($objSess);
 
-        if (!isset($_GET['mode'])) $_GET['mode'] = "";
         if (!isset($_GET['id'])) $_GET['id'] = "";
 
-        if ( $_GET['mode'] == "delete" && SC_Utils_Ex::sfCheckNumLength($_GET['id'])===true ){
+        if ( $this->getMode() == "delete" && SC_Utils_Ex::sfCheckNumLength($_GET['id'])===true ){
 
             // メール担当の画像があれば削除しておく
             $sql = "SELECT charge_image FROM dtb_mailmaga_template WHERE template_id = ?";

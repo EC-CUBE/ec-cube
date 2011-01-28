@@ -69,7 +69,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin {
         $this->tpl_subtitle = '郵便番号DB登録';
         $this->tpl_mainno = 'basis';
 
-        $this->tpl_mode = $_GET['mode'];
+        $this->tpl_mode = $this->getMode();
         $this->exec = (boolean)$_GET['exec'];
     }
 
@@ -246,7 +246,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin {
 
         echo "<img src='". $img_path ."space_w.gif'>";
         echo "</div>\n";
-        
+
         ?>
         <script type="text/javascript" language="javascript">
             <!--

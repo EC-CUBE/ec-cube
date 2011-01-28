@@ -81,9 +81,7 @@ class LC_Page_Admin_Basis_Control extends LC_Page_Admin {
         // POST値の取得
         $this->objFormParam->setParam($_POST);
 
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
-
-        switch($_POST['mode']) {
+        switch($this->getMode()) {
             case 'edit':
                 // 入力値の変換
                 $this->objFormParam->convParam();

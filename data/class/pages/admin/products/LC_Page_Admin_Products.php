@@ -93,8 +93,6 @@ class LC_Page_Admin_Products extends LC_Page_Admin {
         $objSess = new SC_Session();
         SC_Utils_Ex::sfIsSuccess($objSess);
 
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
-
         // POST値の引き継ぎ
         $this->arrForm = $_POST;
 
@@ -120,7 +118,8 @@ class LC_Page_Admin_Products extends LC_Page_Admin {
         $this->arrHidden['search_pageno'] = isset($_POST['search_pageno']) ? $_POST['search_pageno'] : "";
 
         // 商品削除
-        if ($_POST['mode'] == "delete") {
+        $mode = $this->getMode();
+        if ($mode == "delete") {
             $objQuery = new SC_Query();
             $objQuery->delete("dtb_products",
                           "product_id = ?", array($_POST['product_id']));
@@ -137,7 +136,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin {
         }
 
 
-        if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == "delete" || $_POST['mode'] == "delete_all" || $_POST['mode'] == "camp_search") {
+        if ($mode == "search" || $mode == "csv"  || $mode == "delete" || $mode == "delete_all" || $mode == "camp_search") {
             // 入力文字の強制変換
             $this->lfConvertParam();
             // エラーチェック
@@ -233,7 +232,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin {
                 $order = "update_date DESC, product_id DESC";
                 $objQuery = new SC_Query();
                 $objProduct = new SC_Product();
-                switch($_POST['mode']) {
+                switch($mode) {
                     case 'csv':
                         require_once(CLASS_EX_REALDIR . "helper_extends/SC_Helper_CSV_Ex.php");
 
@@ -296,7 +295,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin {
 
                         // 検索結果の取得
                         $this->arrProducts = $objQuery->select($col, $from, $where, $arrval);
-                        
+
                         // 各商品ごとのカテゴリIDを取得
                         if (count($this->arrProducts) > 0) {
                             foreach ($this->arrProducts as $key => $val) {

@@ -92,13 +92,13 @@ class LC_Page_Admin_Basis_Point extends LC_Page_Admin {
             $this->tpl_mode = "insert";
         }
 
-        if(isset($_POST['mode']) && !empty($_POST['mode'])) {
+        if(!empty($this->getMode())) {
             // 入力値の変換
             $this->objFormParam->convParam();
             $this->arrErr = $this->objFormParam->checkError();
 
             if(count($this->arrErr) == 0) {
-                switch($_POST['mode']) {
+                switch($this->getMode()) {
                 case 'update':
                     $this->lfUpdateData(); // 既存編集
                     break;

@@ -106,14 +106,13 @@ class LC_Page_Admin_Products_Trackback extends LC_Page_Admin {
             }
         }
 
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
-
+        $mode = $this->getMode();
         // トラックバックの削除
-        if ($_POST['mode'] == "delete") {
+        if ($mode == "delete") {
             $objQuery->exec("UPDATE dtb_trackback SET del_flg = 1, update_date = now() WHERE trackback_id = ?", array($_POST['trackback_id']));
         }
 
-        if ($_POST['mode'] == 'search' || $_POST['mode'] == 'csv' || $_POST['mode'] == 'delete'){
+        if ($mode == 'search' || $mode == 'csv' || $mode == 'delete'){
 
             //削除されていない商品を検索
             $where="A.del_flg = 0 AND B.del_flg = 0";
@@ -231,7 +230,7 @@ class LC_Page_Admin_Products_Trackback extends LC_Page_Admin {
             $this->arrTrackback = $objQuery->select($select, $from, $where, $arrval);
 
             //CSVダウンロード
-            if ($_POST['mode'] == 'csv'){
+            if ($mode == 'csv'){
 
                 $objCSV = new SC_Helper_CSV_Ex();
 
@@ -259,7 +258,7 @@ class LC_Page_Admin_Products_Trackback extends LC_Page_Admin {
     // 入力エラーチェック
     function lfCheckError() {
         $objErr = new SC_CheckError();
-        switch ($_POST['mode']){
+        switch ($this->getMode()){
         case 'search':
             $objErr->doFunc(array("投稿者", "search_startyear", "search_startmonth", "search_startday"), array("CHECK_DATE"));
             $objErr->doFunc(array("開始日", "search_startyear", "search_startmonth", "search_startday"), array("CHECK_DATE"));

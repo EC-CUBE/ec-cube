@@ -115,15 +115,14 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin {
                 }
             }
         }
+        $mode = $this->getMode();
 
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
-
-        if ($_POST['mode'] == "delete"){
+        if ($mode == "delete"){
             //レビューの削除
             $objQuery->exec("UPDATE dtb_review SET del_flg=1 WHERE review_id=?", array($_POST['review_id']));
         }
 
-        if ($_POST['mode'] == 'search' || $_POST['mode'] == 'csv' || $_POST['mode'] == 'delete'){
+        if ($mode == 'search' || $mode == 'csv' || $mode == 'delete'){
 
             //削除されていない商品を検索
             $where="A.del_flg = 0 AND B.del_flg = 0";
@@ -255,7 +254,7 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin {
             $this->arrReview = $objQuery->select($select, $from, $where, $arrval);
 
             //CSVダウンロード
-            if ($_POST['mode'] == 'csv'){
+            if ($mode == 'csv'){
 
                 $objCSV = new SC_Helper_CSV_Ex();
                 // オプションの指定
@@ -284,9 +283,7 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin {
     function lfCheckError() {
         $objErr = new SC_CheckError();
 
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
-
-        switch ($_POST['mode']){
+        switch ($this->getMode()){
         case 'search':
             $objErr->doFunc(array("投稿者", "search_startyear", "search_startmonth", "search_startday"), array("CHECK_DATE"));
             $objErr->doFunc(array("開始日", "search_startyear", "search_startmonth", "search_startday"), array("CHECK_DATE"));

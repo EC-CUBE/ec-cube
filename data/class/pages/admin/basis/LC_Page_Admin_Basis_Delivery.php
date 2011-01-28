@@ -76,9 +76,7 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin {
         // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess($objSess);
 
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
-
-        switch($_POST['mode']) {
+        switch($this->getMode()) {
         case 'delete':
             // ランク付きレコードの削除
             $objDb->sfDeleteRankRecord("dtb_deliv", "deliv_id", $_POST['deliv_id']);

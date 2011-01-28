@@ -49,17 +49,17 @@ class LC_Page_Admin_Customer_Customer extends LC_Page_Admin {
         $this->tpl_subno = 'index';
         $this->tpl_pager = TEMPLATE_REALDIR . 'admin/pager.tpl';
         $this->tpl_subtitle = '顧客登録';
-        
+
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrJob = $masterData->getMasterData("mtb_job");
         $this->arrSex = $masterData->getMasterData("mtb_sex");
-        $this->arrReminder = $masterData->getMasterData("mtb_reminder");        
+        $this->arrReminder = $masterData->getMasterData("mtb_reminder");
     }
 
     /**
      * Page のプロセス.
-     * 
+     *
      * @return void
      */
     function process() {
@@ -76,7 +76,7 @@ class LC_Page_Admin_Customer_Customer extends LC_Page_Admin {
         // 認証可否の判定
         $objSess = new SC_Session();
         SC_Utils_Ex::sfIsSuccess($objSess);
-        
+
         $this->objQuery = new SC_Query();
         $objDate = new SC_Date(1901);
         $this->arrYear = $objDate->getYear();    //　日付プルダウン設定
@@ -117,8 +117,9 @@ class LC_Page_Admin_Customer_Customer extends LC_Page_Admin {
         //---- 登録除外用カラム配列
         $arrRejectRegistColumn = array("year", "month", "day");
 
+        $mode = $this->getMode();
         //----　顧客情報編集
-        if ($_POST["mode"] == "confirm" || $_POST["mode"] == "complete" || $_POST["mode"] == "return") {
+        if ($mode == "confirm" || $mode == "complete" || $mode == "return") {
 
             //-- POSTデータの引き継ぎ
             $this->arrForm = $_POST;
@@ -130,28 +131,28 @@ class LC_Page_Admin_Customer_Customer extends LC_Page_Admin {
             $this->arrErr = $this->lfErrorCheck($this->arrForm);
 
             //-- 入力エラー発生 or リターン時
-            if ($this->arrErr  || $_POST["mode"] == "return") {
+            if ($this->arrErr  || $mode == "return") {
                 foreach($this->arrForm as $key => $val) {
                     $this->list_data[ $key ] = $val;
                 }
 
             } else {
                 //-- 確認
-                if ($_POST["mode"] == "confirm") {
+                if ($mode == "confirm") {
                     $this->tpl_mainpage = 'customer/customer_confirm.tpl';
                     $passlen = strlen($this->arrForm['password']);
                     $this->passlen = $this->lfPassLen($passlen);
 
                 }
                 //--　登録
-                if($_POST["mode"] == "complete") {
+                if($mode == "complete") {
                     $this->tpl_mainpage = 'customer/customer_complete.tpl';
 
                     // シークレット№も登録する。
                     $secret = SC_Utils_Ex::sfGetUniqRandomId("r");
                     $this->arrForm['secret_key'] = $secret;
                     array_push($arrRegistColumn, array('column' => 'secret_key', 'convert' => 'n'));
-                        
+
                     //-- 登録
                     $this->lfRegisData($this->arrForm, $arrRegistColumn);
                 }

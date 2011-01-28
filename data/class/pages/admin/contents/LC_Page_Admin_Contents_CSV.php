@@ -106,9 +106,7 @@ class LC_Page_Admin_Contents_CSV extends LC_Page_Admin {
         $subno_id = $subno_id[0];
         // データの登録
 
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
-
-        if ($_POST["mode"] == "confirm") {
+        if ($this->getMode() == "confirm") {
 
             // エラーチェック
             $this->arrErr = $this->lfCheckError($_POST['output_list']);

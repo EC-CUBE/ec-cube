@@ -76,15 +76,13 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin {
         // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess($objSess);
 
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
-
         if ($_GET['no'] != '') {
             $this->tpl_no = strval($_GET['no']);
         } elseif ($_POST['no'] != '') {
             $this->tpl_no = strval($_POST['no']);
         }
 
-        if ($_POST['mode'] == "search") {
+        if ($this->getMode() == "search") {
 
             // POST値の引き継ぎ
             $this->arrForm = $_POST;

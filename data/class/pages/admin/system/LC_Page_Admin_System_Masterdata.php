@@ -73,9 +73,7 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin {
                                                                    "mtb_constants"));
         $masterData = new SC_DB_MasterData_Ex();
 
-        if (!isset($_POST["mode"])) $_POST["mode"] = "";
-
-        switch ($_POST["mode"]) {
+        switch ($this->getMode()) {
         case "edit":
             // POST 文字列の妥当性チェック
             $this->checkMasterDataName();

@@ -130,9 +130,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin {
         // FORMデータの引き継ぎ
         $this->arrForm = $_POST;
 
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
-
-        switch($_POST['mode']) {
+        switch($this->getMode()) {
             // 検索画面からの編集
             case 'pre_edit':
             case 'copy' :
@@ -159,7 +157,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin {
 
                 $this->lfProductPage();     // 商品登録ページ
 
-                if($_POST['mode'] == "copy"){
+                if($this->getMode() == "copy"){
                     $this->arrForm["copy_product_id"] = $this->arrForm["product_id"];
                     $this->arrForm["product_id"] = "";
                     // 画像ファイルのコピー

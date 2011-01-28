@@ -259,10 +259,9 @@ class LC_Page_Admin_Customer extends LC_Page_Admin {
             }
         }
 
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
         // 顧客削除
-        if ($_POST['mode'] == "delete") {
+        if ($this->getMode() == "delete") {
             $sql = "SELECT status,email FROM dtb_customer WHERE customer_id = ? AND del_flg = 0";
             $result_customer = $objQuery->getAll($sql, array($_POST["edit_customer_id"]));
 
@@ -274,7 +273,7 @@ class LC_Page_Admin_Customer extends LC_Page_Admin {
             }
         }
         // 登録メール再送
-        if ($_POST['mode'] == "resend_mail") {
+        if ($this->getMode() == "resend_mail") {
             $arrRet = $objQuery->select("name01, name02, secret_key, email, email_mobile", "dtb_customer","customer_id = ? AND del_flg <> 1 AND status = 1", array($_POST["edit_customer_id"]));
             if( is_array($arrRet) === true && count($arrRet) > 0 ){
 
@@ -319,8 +318,8 @@ class LC_Page_Admin_Customer extends LC_Page_Admin {
             }
 
         }
-
-        if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == "delete" || $_POST['mode'] == "delete_all" || $_POST['mode'] == "resend_mail") {
+        $mode = $this->getMode();
+        if ($mode == "search" || $mode == "csv"  || $mode == "delete" || $mode == "delete_all" || $mode == "resend_mail") {
 
             // 入力文字の強制変換
             $this->lfConvertParam();
@@ -352,7 +351,7 @@ class LC_Page_Admin_Customer extends LC_Page_Admin {
                 $offset = $page_max * ($this->arrForm['search_pageno'] - 1);
                 $objSelect->setLimitOffset($page_max, $offset);
 
-                if ($_POST["mode"] == 'csv') {
+                if ($this->getMode() == 'csv') {
                     $searchSql = $objSelect->getListCSV($this->arrColumnCSV);
                 }else{
                     $searchSql = $objSelect->getList();
@@ -360,7 +359,7 @@ class LC_Page_Admin_Customer extends LC_Page_Admin {
 
                 $this->search_data = $objQuery->getAll($searchSql, $objSelect->arrVal);
 
-                switch($_POST['mode']) {
+                switch($this->getMode()) {
                 case 'csv':
                     require_once(CLASS_EX_REALDIR . "helper_extends/SC_Helper_CSV_Ex.php");
 

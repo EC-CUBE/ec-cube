@@ -95,9 +95,7 @@ class LC_Page_Cart extends LC_Page {
         }
         $this->cartItems =& $objCartSess->getAllCartList();
 
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
-
-        switch($_POST['mode']) {
+        switch($this->getMode()) {
         case 'confirm':
             // カート内情報の取得
             $cartKey = $_POST['cartKey'];
@@ -129,11 +127,10 @@ class LC_Page_Cart extends LC_Page {
         }
 
         // 商品の個数変更、削除処理
-        $changeCartMode = (Net_UserAgent_Mobile::isMobile() === true) ? $_GET['mode'] : $_POST['mode'];
         /*
          * FIXME モバイルの場合 sfReload() ではなく sendRedirect() を使った方が良いが無限ループしてしまう...
          */
-        switch($changeCartMode) {
+        switch($this->getMode()) {
         case 'up':
             if(Net_UserAgent_Mobile::isMobile() === true) {
                 $objCartSess->upQuantity($_GET['cart_no'], $_GET['cartKey']);
@@ -164,7 +161,7 @@ class LC_Page_Cart extends LC_Page {
         default:
             break;
         }
-        
+
         // 基本情報の取得
         $this->arrInfo = $objSiteInfo->data;
         foreach ($this->cartKeys as $key) {

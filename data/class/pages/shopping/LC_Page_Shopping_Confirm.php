@@ -131,9 +131,7 @@ class LC_Page_Shopping_Confirm extends LC_Page {
 
         $this->shipping = $objPurchase->getShippingTemp();
 
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
-
-        switch($_POST['mode']) {
+        switch($this->getMode()) {
         // 前のページに戻る
         case 'return':
             // 正常な推移であることを記録しておく

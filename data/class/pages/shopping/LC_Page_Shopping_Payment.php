@@ -139,9 +139,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
         // 支払い方法の取得
         $this->arrPayment = $objPurchase->getPayment($total_inctax, $objCartSess->getAllProductClassID($this->cartKey));
 
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
-
-        switch($_POST['mode']) {
+        switch($this->getMode()) {
         case 'confirm':
             // 入力値の変換
             $this->objFormParam->convParam();
@@ -217,7 +215,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
         }
     }
 
-  
+
     /* 入力内容のチェック */
     function lfCheckError($arrData, $arrPayment) {
         // 入力データを渡す。

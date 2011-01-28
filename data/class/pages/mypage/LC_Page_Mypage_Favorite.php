@@ -75,7 +75,7 @@ class LC_Page_MyPage_Favorite extends LC_Page {
 
         $objQuery = new SC_Query();
         $objCustomer = new SC_Customer();
-        
+
         // 退会判定用情報の取得
         $this->tpl_login = $objCustomer->isLoginSuccess(true);
 
@@ -90,7 +90,7 @@ class LC_Page_MyPage_Favorite extends LC_Page {
         }
 
         // お気に入り削除
-        if ($_POST['mode'] == 'delete_favorite') {
+        if ($this->getMode() == 'delete_favorite') {
             $customer_id = $objCustomer->getValue('customer_id');
             $this->lfDeleteFavoriteProduct($customer_id, $_POST['product_id']);
         }
@@ -103,7 +103,7 @@ class LC_Page_MyPage_Favorite extends LC_Page {
         // FIXME SC_Product クラスを使用した実装
         $col = "alldtl.*";
         $from = "dtb_customer_favorite_products AS dcfp LEFT JOIN vw_products_allclass_detail AS alldtl USING(product_id)";
-        
+
         $where = "dcfp.customer_id = ? AND alldtl.del_flg = 0 AND alldtl.status = 1";
         // 在庫無し商品の非表示
         if (NOSTOCK_HIDDEN === true) {

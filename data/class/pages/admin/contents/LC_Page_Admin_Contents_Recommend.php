@@ -82,11 +82,10 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin {
         //最大登録数の表示
         $this->tpl_disp_max = RECOMMEND_NUM;
 
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
         if (!isset($_POST['category_id'])) $_POST['category_id'] = "";
 
         // 登録時
-        if ( $_POST['mode'] == 'regist' ){
+        if ( $this->getMode() == 'regist' ){
 
             // 入力文字の強制変換
             $this->arrForm = $_POST;
@@ -106,7 +105,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin {
                 $objQuery->insert("dtb_best_products", $this->arrForm );
             }
 
-        } elseif ( $_POST['mode'] == 'delete' ){
+        } elseif ( $this->getMode() == 'delete' ){
             // 削除時
 
             $sql = "DELETE FROM dtb_best_products WHERE category_id = ? AND rank = ?";
@@ -131,8 +130,8 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin {
 
         // 商品変更時 or 登録エラー時は、選択された商品に一時的に置き換える
         if (
-            $_POST['mode'] == 'set_item'
-            || $_POST['mode'] == 'regist' && !empty($this->arrErr[$this->arrForm['rank']])
+            $this->getMode() == 'set_item'
+            || $this->getMode() == 'regist' && !empty($this->arrErr[$this->arrForm['rank']])
         ) {
             $sql = "SELECT product_id, name, main_list_image FROM dtb_products WHERE product_id = ? AND del_flg = 0";
             $result = $objQuery->getAll($sql, array($_POST['product_id']));

@@ -104,9 +104,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
             $this->arrPageData = $this->lfGetPageData($page_id, $device_type_id, $objView);
         }
 
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
-
-        switch ($_POST['mode']) {
+        switch ($this->getMode()) {
         case 'preview':
             $this->lfPreviewPageData($page_id, $device_type_id);
             exit;
@@ -196,7 +194,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
         // TPLファイル作成
         $cre_tpl = $this->objLayout->getTemplatePath($device_type_id) . "{$url}.tpl";
         $this->lfCreateFile($cre_tpl, $_POST['tpl_data']);
-        
+
         // blocposition を削除
         $objQuery = new SC_Query(); // DB操作オブジェクト
         $ret = $objQuery->delete('dtb_blocposition', 'page_id = 0 AND device_type_id = ?', array($device_type_id));
@@ -371,25 +369,25 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
 
         // 同一のURLが存在している場合にはエラー
         $params = array();
-        
+
         $sqlWhere = 'url = ?';
         $params[] = $this->objLayout->getUserDir($device_type_id) . $array['url'] . '.php';
-        
+
         // プレビュー用のレコードは除外
         $sqlWhere .= ' AND page_id <> 0';
-        
+
         // 変更の場合、自身のレコードは除外
         if (strlen($array['page_id']) != 0) {
             $sqlWhere .= ' AND page_id <> ?';
             $params[] = $array['page_id'];
         }
-        
+
         $arrChk = $this->objLayout->lfgetPageData($sqlWhere , $params);
-        
+
         if (count($arrChk) >= 1) {
             $objErr->arrErr['url'] = '※ 同じURLのデータが存在しています。別のURLを付けてください。<br />';
         }
-        
+
         return $objErr->arrErr;
     }
 

@@ -117,10 +117,9 @@ class LC_Page_Admin_Order extends LC_Page_Admin {
         // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess($objSess);
 
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
         if (!isset($arrRet)) $arrRet = array();
 
-        if($_POST['mode'] == 'delete') {
+        if($this->getMode() == 'delete') {
             if(SC_Utils_Ex::sfIsInt($_POST['order_id'])) {
                 $objQuery = new SC_Query();
                 $where = "order_id = ?";
@@ -129,7 +128,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin {
             }
         }
 
-        switch($_POST['mode']) {
+        switch($this->getMode()) {
             case 'delete':
             case 'csv':
             case 'delete_all':
@@ -266,7 +265,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin {
                     }
 
                     $order = "update_date DESC";
-                    switch($_POST['mode']) {
+                    switch($this->getMode()) {
                         case 'csv':
 
                             require_once(CLASS_EX_REALDIR . "helper_extends/SC_Helper_CSV_Ex.php");

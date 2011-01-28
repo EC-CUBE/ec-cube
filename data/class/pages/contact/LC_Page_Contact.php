@@ -95,9 +95,7 @@ class LC_Page_Contact extends LC_Page {
 
         $this->arrData = isset($_SESSION['customer']) ? $_SESSION['customer'] : "";
 
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
-
-        switch ($_POST['mode']) {
+        switch ($this->getMode()) {
             case 'confirm':
               $this->lfContactConfirm();
               break;

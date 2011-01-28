@@ -82,29 +82,27 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin {
         //支払方法の取得
         $this->arrPayment = $objDb->sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
 
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
         if (!isset($_POST['search_pageno'])) $_POST['search_pageno'] = 1;
 
-        switch ($_POST['mode']){
-
+        switch ($this->getMode()){
         case 'update':
             if (!isset($_POST['change_status'])) $_POST['change_status'] = "";
-            
+
             switch ($_POST['change_status']) {
                 case '':
                     break;
-                
+
                 // 削除
                 case 'delete':
                     $this->lfDelete($_POST['move']);
                     break;
-                
+
                 // 更新
                 default:
                     $this->lfStatusMove($_POST['change_status'], $_POST['move']);
                     break;
             }
-            
+
             //ステータス情報
             $status = isset($_POST['status']) ? $_POST['status'] : "";
             break;
@@ -174,21 +172,21 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin {
      */
     function lfStatusMove($statusId, $arrOrderId) {
         $objQuery = new SC_Query();
-        
+
         if (!isset($arrOrderId) || !is_array($arrOrderId)) {
             return false;
         }
         $masterData = new SC_DB_MasterData_Ex();
         $arrORDERSTATUS = $masterData->getMasterData("mtb_order_status");
-        
+
         $objQuery->begin();
-        
+
         foreach ($arrOrderId as $orderId) {
             SC_Helper_DB_Ex::sfUpdateOrderStatus($orderId, $statusId);
         }
-        
+
         $objQuery->commit();
-        
+
         $this->tpl_onload = "window.alert('選択項目を" . $arrORDERSTATUS[$statusId] . "へ移動しました。');";
         return true;
     }
@@ -198,24 +196,24 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin {
      */
     function lfDelete($arrOrderId) {
         $objQuery = new SC_Query();
-        
+
         if (!isset($arrOrderId) || !is_array($arrOrderId)) {
             return false;
         }
-        
+
         $arrUpdate = array(
              'del_flg' => 1
             ,'update_date' => 'Now()'
         );
-        
+
         $objQuery->begin();
-        
+
         foreach ($arrOrderId as $orderId) {
             $objQuery->update('dtb_order', $arrUpdate, 'order_id = ?', array($orderId));
         }
-        
+
         $objQuery->commit();
-        
+
         $this->tpl_onload = "window.alert('選択項目を削除しました。');";
         return true;
     }

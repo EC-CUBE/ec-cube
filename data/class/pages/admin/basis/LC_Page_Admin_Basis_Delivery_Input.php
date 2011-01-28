@@ -56,7 +56,7 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page_Admin {
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrProductType = $masterData->getMasterData("mtb_product_type");
         $this->tpl_subtitle = '配送業者設定';
-        $this->mode = isset($_POST['mode']) ? $_POST['mode'] : '';
+        $this->mode = $this->getMode();
     }
 
     /**
@@ -157,7 +157,7 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page_Admin {
     /**
      * 配送情報を登録する
      *
-     * @return $deliv_id 
+     * @return $deliv_id
      */
     function lfRegistData() {
         $arrRet = $this->objFormParam->getHashArray();

@@ -10,7 +10,7 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -82,7 +82,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin {
     function action() {
         SC_Utils_Ex::sfIsSuccess(new SC_Session);
         $this->initForm();
-        switch($this->objForm->getValue('mode')) {
+        switch($this->getMode()) {
             // PHP INFOを表示
             case 'install':
                 $name = $this->objForm->getValue('plugin_name');
@@ -101,7 +101,7 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin {
                 require_once(DATA_REALDIR.'/plugin/'.$name.'/'.$name.'.php');
                 $plugin = new $name();
                 $plugin->enable();
-                
+
                 break;
             case 'disable':
               $name = $this->objForm->getValue('plugin_name');

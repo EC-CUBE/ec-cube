@@ -73,10 +73,8 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin {
         // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess($objSess);
 
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
-
         // 要求判定
-        switch($_POST['mode']) {
+        switch($this->getMode()) {
         // 編集処理
         case 'edit':
             // POST値の引き継ぎ

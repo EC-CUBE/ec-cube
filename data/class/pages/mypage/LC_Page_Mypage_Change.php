@@ -57,13 +57,13 @@ class LC_Page_Mypage_Change extends LC_Page {
         $this->arrMAILMAGATYPE = $masterData->getMasterData("mtb_mail_magazine_type");
         $this->arrSex = $masterData->getMasterData("mtb_sex");
         $this->httpCacheControl('nocache');
-        
+
         // 生年月日選択肢の取得
         $objDate = new SC_Date(START_BIRTH_YEAR, date("Y",strtotime("now")));
         $this->arrYear = $objDate->getYear('', 1950, '');
         $this->arrMonth = $objDate->getMonth(true);
         $this->arrDay = $objDate->getDay(true);
-        
+
         $this->isMobile = Net_UserAgent_Mobile::isMobile();
     }
 
@@ -76,7 +76,7 @@ class LC_Page_Mypage_Change extends LC_Page {
         $this->action();
         $this->sendResponse();
     }
-    
+
     /**
      * Page のプロセス
      * @return void
@@ -84,10 +84,10 @@ class LC_Page_Mypage_Change extends LC_Page {
     function action() {
         $objDb = new SC_Helper_DB_Ex();
         $CONF = $objDb->sfGetBasisData();
-        
+
         $objQuery = new SC_Query();
         $objCustomer = new SC_Customer();
-        
+
         // ログインチェック
         if (!$objCustomer->isLoginSuccess(true)){
             SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
@@ -98,63 +98,63 @@ class LC_Page_Mypage_Change extends LC_Page {
             $this->CustomerName2 = $objCustomer->getvalue('name02');
             $this->CustomerPoint = $objCustomer->getvalue('point');
         }
-        
+
         // mobile用（戻るボタンでの遷移かどうかを判定）
         if (!empty($_POST["return"])) {
             $_POST["mode"] = "return";
         }
-        
+
         // パラメータ管理クラス,パラメータ情報の初期化
         $this->objFormParam = new SC_FormParam();
         $this->lfInitParam();
         $this->objFormParam->setParam($_POST);    // POST値の取得
-        
-       
+
+
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            
+
             //CSRF対策
             /*
             if (!SC_Helper_Session_Ex::isValidToken()) {
                 SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", true);
             }
             */
-                        
+
             $this->objFormParam->convParam();
             $this->objFormParam->toLower('email');
             $this->objFormParam->toLower('email02');
             $this->objFormParam->toLower('email_mobile');
             $this->objFormParam->toLower('email_mobile02');
             $this->arrForm = $this->objFormParam->getHashArray();
-                 
+
             //-- 確認
-            if ($_POST["mode"] == "confirm") {
+            if ($this->getMode() == "confirm") {
 
                 $this->arrErr = $this->lfErrorCheck();
-                
+
                 // 入力エラーなし
                 if(count($this->arrErr) == 0) {
-                    
+
                     $this->list_data = $this->objFormParam->getHashArray();
-                
+
                     //パスワード表示
                     $passlen = strlen($this->arrForm['password']);
                     $this->passlen = SC_Utils_Ex::lfPassLen($passlen);
-    
+
                     $this->tpl_mainpage = 'mypage/change_confirm.tpl';
                     $this->tpl_title = '会員登録(確認ページ)';
                 }
 
-            } elseif ($_POST["mode"] == "complete") {
+            } elseif ($this->getMode() == "complete") {
                 //-- 会員登録と完了画面
-           
+
                 // 会員情報の登録
                 $this->CONF = $CONF;
                 $this->lfRegistData();
-                
+
                 // 完了ページに移動させる。
                 SC_Response_Ex::sendRedirect('change_complete.php');
                 exit;
-                
+
             }
         } else {
             $this->arrForm = $this->lfGetCustomerData();
@@ -176,7 +176,7 @@ class LC_Page_Mypage_Change extends LC_Page {
 
     /* パラメータ情報の初期化 */
     function lfInitParam() {
-                         
+
         $this->objFormParam->addParam("お名前(姓)", 'name01', STEXT_LEN, "aKV", array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("お名前(名)", 'name02', STEXT_LEN, "aKV", array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" , "MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("お名前(フリガナ・姓)", 'kana01', STEXT_LEN, "CKV", array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK", "KANA_CHECK"));
@@ -198,7 +198,7 @@ class LC_Page_Mypage_Change extends LC_Page {
         $this->objFormParam->addParam("月", "month", INT_LEN, "n", array("MAX_LENGTH_CHECK"), "", false);
         $this->objFormParam->addParam("日", "day", INT_LEN, "n", array("MAX_LENGTH_CHECK"), "", false);
         $this->objFormParam->addParam("メールマガジン", "mailmaga_flg", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK"));
-        
+
         if ($this->isMobile === false){
             $this->objFormParam->addParam("FAX番号1", 'fax01', TEL_ITEM_LEN, "n", array("SPTAB_CHECK"));
             $this->objFormParam->addParam("FAX番号2", 'fax02', TEL_ITEM_LEN, "n", array("SPTAB_CHECK"));
@@ -227,7 +227,7 @@ class LC_Page_Mypage_Change extends LC_Page {
         if(isset($objErr->arrErr['reminder_answer']) and $arrRet['reminder_answer'] == DEFAULT_PASSWORD) {
             unset($objErr->arrErr['reminder_answer']);
         }
-                        
+
         $objErr->doFunc(array("お電話番号", "tel01", "tel02", "tel03"),array("TEL_CHECK"));
         $objErr->doFunc(array("郵便番号", "zip01", "zip02"), array("ALL_EXIST_CHECK"));
         $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_BIRTHDAY"));
@@ -238,7 +238,7 @@ class LC_Page_Mypage_Change extends LC_Page {
             $objErr->doFunc(array('メールアドレス', 'メールアドレス(確認)', "email", "email02") ,array("EQUAL_CHECK"));
             $objErr->doFunc(array("FAX番号", "fax01", "fax02", "fax03") ,array("TEL_CHECK"));
         }
-                
+
         // 現会員の判定 → 現会員もしくは仮登録中は、メアド一意が前提になってるので同じメアドで登録不可
         $register_user_flg = SC_Helper_Customer_Ex::sfCheckRegisterUserFromEmail($arrRet["email"]);
         switch($register_user_flg) {
@@ -253,23 +253,23 @@ class LC_Page_Mypage_Change extends LC_Page {
         }
         return $objErr->arrErr;
     }
-    
+
     function lfRegistData() {
-                
+
         $objQuery = new SC_Query();
         $objCustomer = new SC_Customer();
-        
+
         $arrRet = $this->objFormParam->getHashArray();
-        
+
         // 登録データの作成
         $sqlval = $this->objFormParam->getDbArray();
         $sqlval['birth'] = SC_Utils_Ex::sfGetTimestamp($arrRet['year'], $arrRet['month'], $arrRet['day']);
-                       
+
         $objQuery->begin();
-        SC_Helper_Customer_Ex::sfEditCustomerData($sqlval, $objCustomer->getValue('customer_id'));        
+        SC_Helper_Customer_Ex::sfEditCustomerData($sqlval, $objCustomer->getValue('customer_id'));
         $objQuery->commit();
     }
-    
+
     /**
      * 顧客情報の取得
      *
@@ -278,7 +278,7 @@ class LC_Page_Mypage_Change extends LC_Page {
     function lfGetCustomerData(){
         $objQuery = new SC_Query();
         $objCustomer = new SC_Customer();
-        
+
         // 顧客情報DB取得
         $ret = $objQuery->select("*","dtb_customer","customer_id=?", array($objCustomer->getValue('customer_id')));
         $arrForm = $ret[0];
@@ -309,6 +309,6 @@ class LC_Page_Mypage_Change extends LC_Page {
             }
         }
     }
-    
+
 }
 ?>

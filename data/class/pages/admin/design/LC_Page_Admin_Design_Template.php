@@ -92,7 +92,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin {
 
         $objView = new SC_AdminView();
 
-        switch($this->lfGetMode()) {
+        switch($this->getMode()) {
 
             // 登録ボタン押下時
         case 'register':
@@ -137,7 +137,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin {
             if ($objForm->checkError()) {
                 SC_Utils::sfDispError('');
             }
-                
+
             //現在使用中のテンプレートとデフォルトのテンプレートは削除できないようにする
             $template_code = $objForm->getValue('template_code_temp');
             if ($template_code == $this->getTemplateName($device_type_id)
@@ -185,10 +185,6 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin {
      */
     function destroy() {
         parent::destroy();
-    }
-
-    function lfGetMode(){
-        if (isset($_POST['mode'])) return $_POST['mode'];
     }
 
     function lfInitRegister() {
@@ -251,7 +247,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin {
         // キャッシュを生成
         $masterData->createCache('mtb_constants', array(), true, array('id', 'remarks'));
     }
-    
+
     /**
      * ブロック位置の更新
      */
@@ -261,7 +257,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin {
          * FIXME 各端末に合わせて作成する必要あり
          * $filepath = USER_TEMPLATE_REALDIR. $template_code. "/sql/update_bloc.sql";
          */
-        
+
         // ブロック位置更新SQLファイル有
         if(file_exists($filepath)) {
             if($fp = fopen($filepath, "r")) {

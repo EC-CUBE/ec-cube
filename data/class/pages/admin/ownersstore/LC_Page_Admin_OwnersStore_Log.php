@@ -70,8 +70,7 @@ class LC_Page_Admin_OwnersStore_Log extends LC_Page_Admin {
         // ログインチェック
         SC_Utils::sfIsSuccess(new SC_Session());
 
-        $mode = isset($_GET['mode']) ? $_GET['mode'] : '';
-        switch ($mode) {
+        switch ($this->getMode()) {
         case 'detail':
             $objForm = $this->initParam();
             if ($objForm->checkError()) {

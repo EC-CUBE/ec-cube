@@ -81,7 +81,7 @@ class LC_Page_Admin_System_System extends LC_Page_Admin {
         SC_Utils_Ex::sfIsSuccess(new SC_Session);
 
         $this->initForm();
-        switch($this->objForm->getValue('mode')) {
+        switch($this->getMode()) {
 
         // PHP INFOを表示
         case 'info':

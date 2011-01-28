@@ -76,9 +76,7 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin {
 
         $this->arrMailTEMPLATE = $masterData->getMasterData("mtb_mail_template");
 
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
-
-        if ( $_POST['mode'] == 'id_set'){
+        if ( $this->getMode() == 'id_set'){
             // テンプレートプルダウン変更時
 
             if ( SC_Utils_Ex::sfCheckNumLength( $_POST['template_id']) ){
@@ -91,7 +89,7 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin {
                 }
             }
 
-        } elseif ( $_POST['mode'] == 'regist' && SC_Utils_Ex::sfCheckNumLength( $_POST['template_id']) ){
+        } elseif ( $this->getMode() == 'regist' && SC_Utils_Ex::sfCheckNumLength( $_POST['template_id']) ){
 
             // POSTデータの引き継ぎ
             $this->arrForm = $this->lfConvertParam($_POST);

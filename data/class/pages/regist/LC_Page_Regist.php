@@ -73,12 +73,12 @@ class LC_Page_Regist extends LC_Page {
         $this->CONF = $objDb->sfGetBasisData();
 
         //--　本登録完了のためにメールから接続した場合
-        if ($_GET["mode"] == "regist") {
+        if ($this->getMode() == "regist") {
             //-- 入力チェック
             $this->arrErr = $this->lfErrorCheck($_GET);
             if ($this->arrErr) {
                 SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, "", true, $this->arrErr["id"]);
-            
+
             } else {
                 $registSecretKey = $this->lfRegistData($_GET);			//本会員登録（フラグ変更）
                 $this->lfSendRegistMail($registSecretKey);				//本会員登録完了メール送信

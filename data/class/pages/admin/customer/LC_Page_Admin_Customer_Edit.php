@@ -120,7 +120,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin {
         $arrRejectRegistColumn = array("year", "month", "day");
 
         // 検索条件を保持
-        if ($_POST['mode'] == "edit_search") {
+        if ($this->getMode() == "edit_search") {
             $arrSearch = $_POST;
         }else{
             $arrSearch = $_POST['search_data'];
@@ -134,7 +134,8 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin {
         $this->arrSearchData= $arrSearchData;
 
         //----　顧客編集情報取得
-        if (($_POST["mode"] == "edit" || $_POST["mode"] == "edit_search") && is_numeric($_POST["edit_customer_id"])) {
+        $mode = $this->getMode();
+        if (($mode == "edit" || $mode == "edit_search") && is_numeric($_POST["edit_customer_id"])) {
 
             //--　顧客データ取得
             $sql = "SELECT * FROM dtb_customer WHERE del_flg = 0 AND customer_id = ?";
@@ -159,7 +160,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin {
         }
 
         //----　顧客情報編集
-        if ( $_POST["mode"] != "edit" && $_POST["mode"] != "edit_search" && is_numeric($_POST["customer_id"])) {
+        if ( $mode != "edit" && $mode != "edit_search" && is_numeric($_POST["customer_id"])) {
 
             //-- POSTデータの引き継ぎ
             $this->arrForm = $_POST;
@@ -171,7 +172,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin {
             $this->arrErr = $this->lfErrorCheck($this->arrForm);
 
             //-- 入力エラー発生 or リターン時
-            if ($this->arrErr || $_POST["mode"] == "return") {
+            if ($this->arrErr || $mode == "return") {
                 foreach($this->arrForm as $key => $val) {
                     $this->list_data[ $key ] = $val;
                 }
@@ -182,14 +183,14 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin {
 
             } else {
                 //-- 確認
-                if ($_POST["mode"] == "confirm") {
+                if ($mode == "confirm") {
                     $this->tpl_mainpage = 'customer/edit_confirm.tpl';
                     $passlen = strlen($this->arrForm['password']);
                     $this->passlen = SC_Utils_Ex::lfPassLen($passlen);
 
                 }
                 //--　編集
-                if($_POST["mode"] == "complete") {
+                if($mode == "complete") {
                     $this->tpl_mainpage = 'customer/edit_complete.tpl';
 
                     // 現在の会員情報を取得する

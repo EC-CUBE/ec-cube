@@ -77,9 +77,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin {
         // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess($objSess);
 
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
-
-        switch($_POST['mode']) {
+        switch($this->getMode()) {
             // バックアップを作成する
         case 'bkup':
             // 入力文字列の変換
@@ -110,7 +108,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin {
             // リストア
         case 'restore':
         case 'restore_config':
-            if ($_POST['mode'] == 'restore_config') {
+            if ($this->getMode() == 'restore_config') {
                 $this->mode = "restore_config";
             }
 

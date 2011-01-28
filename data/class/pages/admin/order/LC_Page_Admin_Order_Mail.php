@@ -89,7 +89,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin {
 
         $objMail = new SC_Helper_Mail_Ex();
 
-        switch($_POST['mode']) {
+        switch($this->getMode()) {
         case 'pre_edit':
             break;
         case 'return':

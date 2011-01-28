@@ -32,7 +32,7 @@ require_once(CLASS_REALDIR . "pages/admin/LC_Page_Admin.php");
  * @version $Id$
  */
 class LC_Page_Admin_Mail_Sendmail extends LC_Page_Admin {
-    
+
     var $objMail;
     // }}}
     // {{{ functions
@@ -73,7 +73,7 @@ class LC_Page_Admin_Mail_Sendmail extends LC_Page_Admin {
         $where = 'del_flg = 0';
         $sqlval = array();
         // リアルタイム配信モードがオンのとき
-        if ($_GET['mode'] == 'now') {
+        if ($this->getMode() == 'now') {
             // 指定データを取得する
             $where .= ' AND send_id = ?';
             $sqlval[] = $_GET['send_id'];
@@ -176,7 +176,7 @@ class LC_Page_Admin_Mail_Sendmail extends LC_Page_Admin {
                 $sendResut = $this->objMail->sendHtmlMail();
             }
         }
-        if ($_GET['mode'] == 'now') {
+        if ($this->getMode() == 'now') {
             SC_Response_Ex::sendRedirectFromUrlPath(ADMIN_DIR . 'mail/history.php');
         }
         echo "complete\n";

@@ -88,9 +88,7 @@ class LC_Page_Admin_Basis_Seo extends LC_Page_Admin {
         $device_type_id = (isset($_POST['device_type_id'])) ? $_POST['device_type_id'] : '';
         $page_id = (isset($_POST['page_id'])) ? $_POST['page_id'] : '';
 
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
-
-        if($_POST['mode'] == "confirm") {
+        if($this->getMode() == "confirm") {
             // エラーチェック
             $this->arrErr[$device_type_id][$page_id] = $this->lfErrorCheck($_POST['meta'][$device_type_id][$page_id]);
 
@@ -229,7 +227,7 @@ class LC_Page_Admin_Basis_Seo extends LC_Page_Admin {
     function lfGetSeoPageData() {
         $objLayout = new SC_Helper_PageLayout_Ex();
         $arrRet = array();
-        
+
         $arrRet[DEVICE_TYPE_PC] = $objLayout->lfgetPageData('edit_flg = ? AND device_type_id = ?', array('2', DEVICE_TYPE_PC));
         $arrRet[DEVICE_TYPE_MOBILE] = $objLayout->lfgetPageData('edit_flg = ? AND device_type_id = ?', array('2', DEVICE_TYPE_MOBILE));
         $arrRet[DEVICE_TYPE_SMARTPHONE] = $objLayout->lfgetPageData('edit_flg = ? AND device_type_id = ?', array('2', DEVICE_TYPE_SMARTPHONE));

@@ -93,12 +93,11 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin {
         $this->tpl_product_id =
             isset($_POST['product_id']) ? $_POST['product_id'] : "" ;
         $this->tpl_pageno = isset($_POST['pageno']) ? $_POST['pageno'] : "";
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
         // Downファイル管理クラス
         $this->objDownFile = new SC_UploadFile(DOWN_TEMP_REALDIR, DOWN_SAVE_REALDIR);
         $this->lfInitDownFile();
-        switch ($_POST['mode']) {
+        switch ($this->getMode()) {
         case 'edit':
             // 入力値の変換
             $this->arrForm = $this->lfConvertParam($_POST);

@@ -71,8 +71,7 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin {
         // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess($objSess);
 
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
-        if ($_POST['mode'] == "search") {
+         if ($this->getMode() == "search") {
 
             // POST値の引き継ぎ
             $this->arrForm = $_POST;

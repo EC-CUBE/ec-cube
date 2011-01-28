@@ -115,9 +115,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin {
         // ブロックを取得
         $arrBloc = $objQuery->select("*", "dtb_bloc", "device_type_id = ?", array($device_type_id));
 
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
-
-        switch ($_POST['mode']) {
+        switch ($this->getMode()) {
         // 新規ブロック作成
         case 'new_bloc':
             SC_Response_Ex::sendRedirect('bloc.php', array("device_type_id" => $device_type_id));
@@ -133,7 +131,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin {
         case 'confirm':
         case 'preview':
             $page_id = $_POST['page_id'];
-            if ($_POST['mode'] == 'preview') {
+            if ($this->getMode() == 'preview') {
                 $page_id = '0';
             }
 
@@ -204,7 +202,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin {
             }
 
             // プレビュー処理
-            if ($_POST['mode'] == 'preview') {
+            if ($this->getMode() == 'preview') {
                 $this->lfSetPreData($arrPageData, $objLayout);
 
                 $_SESSION['preview'] = "ON";

@@ -97,10 +97,9 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin {
         $this->lfInitParam();
         $this->objFormParam->setParam($_POST);
 
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
         if (!isset($arrRet)) $arrRet = array();
 
-        switch($_POST['mode']) {
+        switch($this->getMode()) {
         case "confirm":
             // 入力値の変換
             $this->objFormParam->convParam();

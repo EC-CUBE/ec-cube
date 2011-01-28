@@ -90,15 +90,15 @@ class LC_Page_Products_Detail extends LC_Page {
     function action() {
         // プロダクトIDの正当性チェック
         $product_id = $this->lfCheckProductId();
-
+        $mode = $this->getMode();
         // XXX 削除可能か、SC_SiteViewクラスコンストラクタ内の処理を要確認
-        $objView = new SC_SiteView(strlen($_POST['mode']) == 0);
+        $objView = new SC_SiteView(strlen($mode) == 0);
 
         $objCustomer = new SC_Customer();
         $objDb = new SC_Helper_DB_Ex();
 
         // ログイン中のユーザが商品をお気に入りにいれる処理
-        if ($objCustomer->isLoginSuccess() === true && strlen($_POST['mode']) > 0 && $_POST['mode'] == "add_favorite" && strlen($_POST['favorite_product_id']) > 0 ) {
+        if ($objCustomer->isLoginSuccess() === true && strlen($mode) > 0 && $mode == "add_favorite" && strlen($_POST['favorite_product_id']) > 0 ) {
             // 値の正当性チェック
             if(!SC_Utils_Ex::sfIsInt($_POST['favorite_product_id']) || !$objDb->sfIsRecord("dtb_products", "product_id", $_POST['favorite_product_id'], "del_flg = 0 AND status = 1")) {
                 SC_Utils_Ex::sfDispSiteError(PRODUCT_NOT_FOUND);
@@ -167,9 +167,7 @@ class LC_Page_Products_Detail extends LC_Page {
         // 商品IDをFORM内に保持する
         $this->tpl_product_id = $product_id;
 
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
-
-        switch($_POST['mode']) {
+        switch($mode) {
             case 'cart':
                 // 入力値の変換
                 $this->objFormParam->convParam();
@@ -221,7 +219,7 @@ class LC_Page_Products_Detail extends LC_Page {
 
         // モバイル用 ポストバック処理
         if(Net_UserAgent_Mobile::isMobile() === true) {
-            switch($_POST['mode']) {
+            switch($mode) {
                 case 'select':
                     // 規格1が設定されている場合
                     if($this->tpl_classcat_find1) {
@@ -331,14 +329,13 @@ class LC_Page_Products_Detail extends LC_Page {
         }
 
         if (defined('MOBILE_SITE')) {
-            if (!isset($_POST['mode'])) $_POST['mode'] = "";
-            if (!empty($_POST['mode'])) {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $product_id = $_POST['product_id'];
             } else {
                 $product_id = $_GET['product_id'];
             }
         } else {
-            if(isset($_POST['mode']) && $_POST['mode'] != '') {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $product_id = $_POST['product_id'];
             } else {
                 $product_id = $_GET['product_id'];
@@ -500,7 +497,7 @@ class LC_Page_Products_Detail extends LC_Page {
 
     /* 入力内容のチェック */
     function lfCheckError() {
-        if ($_POST['mode'] == "add_favorite") {
+        if ($this->getMode() == "add_favorite") {
             $objCustomer = new SC_Customer();
             $objErr = new SC_CheckError();
             $customer_id = $objCustomer->getValue('customer_id');

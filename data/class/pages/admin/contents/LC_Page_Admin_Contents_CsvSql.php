@@ -73,7 +73,6 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin {
         $objSess = new SC_Session();
         SC_Utils_Ex::sfIsSuccess($objSess);
 
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
         if (!isset($_POST['sql_id'])) $_POST['sql_id'] = "";
         if (!isset($_GET['sql_id'])) $_GET['sql_id'] = "";
         if (!isset($_POST['selectTable'])) $_POST['selectTable'] = "";
@@ -87,9 +86,9 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin {
             $sql_id = "";
         }
 
-        $mode = $_POST['mode'];
+        $mode = $this->getMode();
 
-        switch($_POST['mode']) {
+        switch($mode) {
             // データの登録
         case "confirm":
             // エラーチェック

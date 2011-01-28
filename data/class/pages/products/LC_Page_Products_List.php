@@ -439,7 +439,7 @@ __EOS__;
     function lfLoadParam() {
         $this->arrForm = $_GET;
 
-        $this->mode = $this->arrForm['mode'];
+        $this->mode = $this->getMode();
         $this->arrSearchData['category_id'] = $this->lfGetCategoryId($this->arrForm['category_id']);
         $this->arrSearchData['maker_id'] = $this->arrForm['maker_id'];
         $this->arrSearchData['name'] = $this->arrForm['name'];

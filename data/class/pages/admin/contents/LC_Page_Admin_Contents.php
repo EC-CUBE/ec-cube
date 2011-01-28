@@ -84,10 +84,8 @@ class LC_Page_Admin_Contents extends LC_Page_Admin {
         $this->arrMonth = $objDate->getMonth();
         $this->arrDay = $objDate->getDay();
 
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
-
         //---- 新規登録/編集登録
-        if ( $_POST['mode'] == 'regist'){
+        if ( $this->getMode() == 'regist'){
             $_POST = $this->lfConvData($_POST);
 
             if ($this->arrErr = $this->lfErrorCheck()) {       // 入力エラーのチェック
@@ -115,7 +113,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin {
         }
 
         //----　編集データ取得
-        if ($_POST["mode"] == "search" && is_numeric($_POST["news_id"])) {
+        if ($this->getMode() == "search" && is_numeric($_POST["news_id"])) {
             $sql = "SELECT *, cast(news_date as date) as cast_news_date FROM dtb_news WHERE news_id = ? ";
             $result = $objQuery->getAll($sql, array($_POST["news_id"]));
             $this->arrForm = $result[0];
@@ -129,7 +127,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin {
         }
 
         //----　データ削除
-        if ( $_POST['mode'] == 'delete' && is_numeric($_POST["news_id"])) {
+        if ( $this->getMode() == 'delete' && is_numeric($_POST["news_id"])) {
 
             // rankを取得
             $pre_rank = $objQuery->getOne(" SELECT rank FROM dtb_news WHERE del_flg = 0 AND news_id = ? ", array( $_POST['news_id']  ));
@@ -148,7 +146,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin {
 
         //----　表示順位移動
 
-        if ( $_POST['mode'] == 'move' && is_numeric($_POST["news_id"]) ) {
+        if ( $this->getMode() == 'move' && is_numeric($_POST["news_id"]) ) {
             if ($_POST["term"] == "up") {
                 $objDb->sfRankUp("dtb_news", "news_id", $_POST["news_id"]);
             } else if ($_POST["term"] == "down") {
@@ -159,7 +157,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin {
         }
 
         //----　指定表示順位移動
-        if ($_POST['mode'] == 'moveRankSet') {
+        if ($this->getMode() == 'moveRankSet') {
             $key = "pos-".$_POST['news_id'];
             $input_pos = mb_convert_kana($_POST[$key], "n");
             if(SC_Utils_Ex::sfIsInt($input_pos)) {

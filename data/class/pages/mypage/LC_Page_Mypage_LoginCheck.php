@@ -80,9 +80,7 @@ class LC_Page_Mypage_LoginCheck extends LC_Page {
         // POST値の取得
         $this->objFormParam->setParam($_POST);
 
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
-
-        switch($_POST['mode']) {
+        switch($this->getMode()) {
         case 'login':
             $this->objFormParam->toLower('mypage_login_email');
             $arrErr = $this->objFormParam->checkError();
@@ -141,7 +139,7 @@ class LC_Page_Mypage_LoginCheck extends LC_Page {
                         }
                     }
                 }
-                
+
                 SC_Response_Ex::sendRedirect(DIR_INDEX_PATH);
                 exit;
             }

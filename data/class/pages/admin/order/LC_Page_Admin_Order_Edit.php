@@ -121,7 +121,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin {
             $this->lfGetOrderData($order_id);
         }
 
-        switch($_POST['mode']) {
+        switch($this->getMode()) {
         case 'pre_edit':
         case 'order_id':
             break;
@@ -136,7 +136,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin {
             $this->arrErr = $this->lfCheckError();
 
             if(count($this->arrErr) == 0) {
-                if ($_POST['mode'] == 'add') {
+                if ($this->getMode() == 'add') {
                     $order_id = $this->lfRegistNewData($objPurchase);
 
                     $this->tpl_order_id = $order_id;
@@ -643,10 +643,10 @@ __EOS__;
 
         // 加算ポイント
         $arrVal['add_point'] = SC_Helper_DB_Ex::sfGetAddPoint($totalpoint, $arrVal['use_point']);
-        
+
         // 最終保持ポイント
         $arrVal['total_point'] = $this->objFormParam->getValue('point') - $arrVal['use_point'] + $arrVal['add_point'];
-        
+
         if ($arrVal['total'] < 0) {
             $arrErr['total'] = '合計額がマイナス表示にならないように調整して下さい。<br />';
         }
@@ -655,7 +655,7 @@ __EOS__;
             $arrErr['payment_total'] = 'お支払い合計額がマイナス表示にならないように調整して下さい。<br />';
         }
         //新規追加受注のみ
-        if ($_POST['mode'] == "add") {
+        if ($this->getMode() == "add") {
             if ($arrVal['total_point'] < 0) {
                 $arrErr['use_point'] = '最終保持ポイントがマイナス表示にならないように調整して下さい。<br />';
             }
@@ -828,7 +828,7 @@ __EOS__;
      *
      * @return integer 注文番号
      */
-    function lfRegistNewData(&$objPurchase) {
+    function $this->getMode()(&$objPurchase) {
         $objQuery = new SC_Query();
 
         $sqlval = $this->lfMakeSqlvalForDtbOrder();

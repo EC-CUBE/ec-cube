@@ -72,13 +72,13 @@ class LC_Page_Mypage_Delivery extends LC_Page {
     function action() {
         //$objView = new SC_SiteView();
         $objCustomer = new SC_Customer();
-        
+
         // 退会判定用情報の取得
         $this->tpl_login = $objCustomer->isLoginSuccess();
 
         // ポップアップを開けたまま退会された状態でポップアップが閉じた場合のエラー画面の抑止。
         // コメントアウトした「ログイン判定」は他の「Mypage」内に施した退会時処理で補間。
-        
+
         // XXX コメントアウトによる問題が確認された場合はコメントアウトを外し、エラー画面が出る様に戻す。
         ////ログイン判定
         // if(!$objCustomer->isLoginSuccess()) {
@@ -90,10 +90,8 @@ class LC_Page_Mypage_Delivery extends LC_Page {
             $this->CustomerPoint = $objCustomer->getvalue('point');
         //}
 
-        $mode = isset($_POST['mode']) ? $_POST['mode'] : '';
         $customerId = $objCustomer->getValue('customer_id');
-
-        switch($mode) {
+        switch($this->getMode()) {
 
         // お届け先の削除
         case 'delete':

@@ -43,7 +43,7 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin {
      */
     function init() {
         parent::init();
-        
+
         $this->tpl_mainpage = 'system/editdb.tpl';
         $this->tpl_subnavi  = 'system/subnavi.tpl';
         $this->tpl_subno    = 'editdb';
@@ -88,7 +88,7 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin {
         //フォームの値を取得
         $this->initForm();
 
-        switch($this->objForm->getValue('mode')) {
+        switch($this->getMode()) {
         case 'confirm' :
             $this->lfDoChange();
             break;
@@ -108,7 +108,7 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin {
     function destroy() {
         parent::destroy();
     }
-    
+
     function lfGetTargetData() {
         $objQuery = new SC_Query();
         $arrIndexFlag = $this->objForm->getValue('indexflag');
@@ -195,5 +195,5 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin {
         }
         return $arrIndexList;
     }
-    
+
 }

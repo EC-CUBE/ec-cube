@@ -37,13 +37,13 @@ class LC_Page_Forgot extends LC_Page {
 
     /** フォームパラメータの配列 */
     var $objFormParam;
-    
+
     /** 秘密の質問の答え */
     var $arrReminder;
 
     /** 変更後パスワード */
     var $temp_password;
-    
+
     /** エラーメッセージ */
     var $errmsg;
 
@@ -83,15 +83,13 @@ class LC_Page_Forgot extends LC_Page {
      */
     function action() {
         $objQuery = new SC_Query();
-        
+
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (!SC_Helper_Session_Ex::isValidToken()) {
                 SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", true);
             }
         }
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
-
-        switch($_POST["mode"]) {
+        switch($this->getMode()) {
             case 'mail_check':
                 $this->lfForgotMailCheck();
                 break;
@@ -113,14 +111,14 @@ class LC_Page_Forgot extends LC_Page {
             $this->setTemplate($this->tpl_mainpage);
         }
     }
-    
+
     // 最初に開いた時の処理（メールアドレス入力画面）
     function lfForgotDefault() {
         // クッキー管理クラス
         $objCookie = new SC_Cookie(COOKIE_EXPIRE);
         $this->tpl_login_email = $objCookie->getCookie('login_email');
     }
-    
+
     // メールアドレス確認（秘密の質問入力画面）
     function lfForgotMailCheck() {
         // パラメータ管理クラス,パラメータ情報の初期化
@@ -161,7 +159,7 @@ class LC_Page_Forgot extends LC_Page {
         $objErr->arrErr = $this->objFormParam->checkError();
         return $objErr->arrErr;
     }
-    
+
     // メールアドレス確認におけるパラメーター情報の初期化
     function lfMailCheckInitParam() {
         $this->objFormParam->addParam("お名前(姓)", 'name01', STEXT_LEN, "aKV", array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
@@ -171,7 +169,7 @@ class LC_Page_Forgot extends LC_Page {
         } else {
             $this->objFormParam->addParam('メールアドレス', "email", MTEXT_LEN, "a", array("EXIST_CHECK", "EMAIL_CHECK", "NO_SPTAB" ,"EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK","MOBILE_EMAIL_CHECK"));
         }
-        
+
     }
 
     // 秘密の質問確認
@@ -194,7 +192,7 @@ class LC_Page_Forgot extends LC_Page {
             $result = $objQuery->select("customer_id, reminder, reminder_answer, salt", "dtb_customer", $where, $arrVal);
             if (isset($result[0]['reminder']) and isset($this->arrReminder[$result[0]['reminder']])
                     and $result[0]['reminder'] == $this->arrForm['reminder']) {
-                
+
                 if (SC_Utils_Ex::sfIsMatchHashPassword($this->arrForm['reminder_answer'], $result[0]['reminder_answer'], $result[0]['salt'])) {
                     // 秘密の答えが一致
                     // 新しいパスワードを設定する
@@ -227,7 +225,7 @@ class LC_Page_Forgot extends LC_Page {
             $this->tpl_mainpage = 'forgot/secret.tpl';
         }
     }
-    
+
     function lfSecretCheckInitParam() {
         // メールチェックと同等のチェックを再度行う
         $this->lfMailCheckInitParam();

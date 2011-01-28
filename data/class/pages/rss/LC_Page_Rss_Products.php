@@ -63,7 +63,7 @@ class LC_Page_Rss_Products extends LC_Page {
 
         //商品IDを取得
         $product_id = $_GET['product_id'];
-        $mode = $_GET['mode'];
+        $mode = $this->getMode();
 
         if(($product_id != "" and is_numeric($product_id)) or $mode == "all"){
             //商品詳細を取得
@@ -214,14 +214,14 @@ class LC_Page_Rss_Products extends LC_Page {
                 ,(SELECT main_large_image FROM dtb_products AS prod WHERE prod.product_id = allcls.product_id) AS main_large_image
             FROM  vw_products_allclass as allcls
             WHERE allcls.del_flg = 0 AND allcls.status = 1";
-        
+
         // 在庫無し商品の非表示
         if (NOSTOCK_HIDDEN === true) {
             $sql .= ' AND (allcls.stock_max >= 1 OR allcls.stock_unlimited_max = 1)';
         }
-        
+
         $sql .= " ORDER BY allcls.product_id";
-        
+
         $arrProduct = $objQuery->getAll($sql);
         return $arrProduct;
     }

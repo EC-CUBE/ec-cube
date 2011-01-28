@@ -121,9 +121,7 @@ class LC_Page_Shopping extends LC_Page {
             }
         }
 
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
-
-        switch($_POST['mode']) {
+        switch($this->getMode()) {
         case 'nonmember_confirm':
             $this->tpl_mainpage = 'shopping/nonmember_input.tpl';
             $this->tpl_title = 'お客様情報入力';

@@ -79,10 +79,8 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin {
         $objQuery = new SC_Query();
         $objFileManager = new SC_Helper_FileManager_Ex();
 
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
-		
         // 現在の階層を取得
-        if($_POST['mode'] != "") {
+        if($this->getMode() != null) {
             $now_dir = $_POST['now_file'];
         } else {
             // 初期表示はルートディレクトリ(user_data/)を表示
@@ -94,7 +92,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin {
         // ファイル情報の初期化
         $this->lfInitFile($objUpFile);
 
-        switch($_POST['mode']) {
+        switch($this->getMode()) {
 
             // ファイル表示
 
@@ -117,7 +115,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin {
             }
 
             break;
-            
+
             // ファイルダウンロード
         case 'download':
 

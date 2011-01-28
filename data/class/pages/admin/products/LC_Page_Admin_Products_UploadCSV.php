@@ -44,13 +44,13 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin {
 
     /** SC_UploadFile インスタンス */
     var $objUpfile;
-    
+
     /** TAGエラーチェックフィールド情報 */
     var $arrTagCheckItem;
-    
+
     /** 商品テーブルカラム情報 (登録処理用) **/
     var $arrProductColumn;
-    
+
     /** 商品規格テーブルカラム情報 (登録処理用) **/
     var $arrProductClassColumn;
 
@@ -113,7 +113,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin {
         $this->objCSV = new SC_Helper_CSV();
         // CSV構造読み込み
         $arrCSVFrame = $this->objCSV->sfGetCsvOutput($this->csv_id);
-        
+
         // CSV構造がインポート可能かのチェック
         if( !$this->objCSV->sfIsImportCSVFrame($arrCSVFrame) ) {
             // 無効なフォーマットなので初期状態に強制変更
@@ -134,15 +134,13 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin {
         $this->objFormParam->setHtmlDispNameArray();
         $this->arrTitle = $this->objFormParam->getHtmlDispNameArray();
 
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
-
-        switch($_POST['mode']) {
+        switch($this->getMode()) {
         case 'csv_upload':
             // 登録先テーブル カラム情報の初期化
             $this->lfInitTableInfo();
             // 登録フォーム カラム情報
             $this->arrFormKeyList = $this->objFormParam->getKeyList();
-            
+
             $err = false;
             // CSVファイルアップロード エラーチェック
             $arrErr['csv_file'] = $this->objUpFile->makeTempFile('csv_file');
@@ -330,7 +328,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin {
                     );
         }
     }
-    
+
     /**
      * 入力チェックを行う.
      *
@@ -362,7 +360,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin {
         $this->arrProductColumn = $objQuery->listTableFields('dtb_products');
         $this->arrProductClassColumn = $objQuery->listTableFields('dtb_products_class');
     }
-    
+
     /**
      * 商品登録を行う.
      *
@@ -410,7 +408,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin {
             $arrStatus_id = explode(',', $arrList['product_statuses']);
             $objProduct->setProductStatus($product_id, $arrStatus_id);
         }
-        
+
         // 商品規格情報を登録する
         $this->lfRegistProductClass($objQuery, $arrList, $product_id, $arrList['product_class_id']);
 
@@ -679,7 +677,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin {
                 $arrErr['stock'] = "※ 在庫数または在庫無制限フラグのいずれかの入力が必須です。";
             }
         }
-*/        
+*/
         // ダウンロード商品チェック
         if(array_search('product_type_id', $this->arrFormKeyList) !== FALSE
                  and $item['product_type_id'] == PRODUCT_TYPE_NORMAL) {
@@ -776,7 +774,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin {
         }
         $count = count($arrItems);
         $where = $tblkey ." IN (" . implode(",", array_fill(0, $count, "?")) . ")";
-        
+
         $objQuery =& SC_Query::getSingletonInstance();
         $db_count = $objQuery->count($table, $where, $arrItems);
         if($count != $db_count) {

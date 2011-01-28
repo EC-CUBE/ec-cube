@@ -37,8 +37,8 @@ class LC_Page_Entry extends LC_Page {
 
     /** フォームパラメータの配列 */
     var $objFormParam;
-    
-    
+
+
     // }}}
     // {{{ functions
 
@@ -53,31 +53,31 @@ class LC_Page_Entry extends LC_Page {
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrJob = $masterData->getMasterData("mtb_job");
         $this->arrReminder = $masterData->getMasterData("mtb_reminder");
-        
+
         // 生年月日選択肢の取得
         $objDate = new SC_Date(START_BIRTH_YEAR, date("Y",strtotime("now")));
         $this->arrYear = $objDate->getYear('', 1950, '');
         $this->arrMonth = $objDate->getMonth(true);
         $this->arrDay = $objDate->getDay(true);
-        
+
         $this->httpCacheControl('nocache');
-        
+
         $this->isMobile = Net_UserAgent_Mobile::isMobile();
     }
 
     /**
      * Page のプロセス.
-     * 
+     *
      * @return void
      */
     function process() {
         $this->action();
         $this->sendResponse();
     }
-    
+
     /* パラメータ情報の初期化 */
     function lfInitParam() {
-                         
+
         $this->objFormParam->addParam("お名前(姓)", 'name01', STEXT_LEN, "aKV", array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("お名前(名)", 'name02', STEXT_LEN, "aKV", array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" , "MAX_LENGTH_CHECK"));
         $this->objFormParam->addParam("お名前(フリガナ・姓)", 'kana01', STEXT_LEN, "CKV", array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK", "KANA_CHECK"));
@@ -99,7 +99,7 @@ class LC_Page_Entry extends LC_Page {
         $this->objFormParam->addParam("月", "month", INT_LEN, "n", array("MAX_LENGTH_CHECK"), "", false);
         $this->objFormParam->addParam("日", "day", INT_LEN, "n", array("MAX_LENGTH_CHECK"), "", false);
         $this->objFormParam->addParam("メールマガジン", "mailmaga_flg", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK"));
-        
+
         if ($this->isMobile === false){
             $this->objFormParam->addParam("FAX番号1", 'fax01', TEL_ITEM_LEN, "n", array("SPTAB_CHECK"));
             $this->objFormParam->addParam("FAX番号2", 'fax02', TEL_ITEM_LEN, "n", array("SPTAB_CHECK"));
@@ -124,50 +124,50 @@ class LC_Page_Entry extends LC_Page {
 
         // PC時は規約ページからの遷移でなければエラー画面へ遷移する
         $this->lfCheckReferer();
-        
+
         // mobile用（戻るボタンでの遷移かどうかを判定）
         if (!empty($_POST["return"])) {
             $_POST["mode"] = "return";
         }
-        
+
         // パラメータ管理クラス,パラメータ情報の初期化
         $this->objFormParam = new SC_FormParam();
         $this->lfInitParam();
         $this->objFormParam->setParam($_POST);    // POST値の取得
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            
+
             //CSRF対策
             if (!SC_Helper_Session_Ex::isValidToken()) {
                 SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", true);
             }
-            
+
             $this->objFormParam->convParam();
             $this->objFormParam->toLower('email');
             $this->objFormParam->toLower('email02');
             $this->arrForm = $this->objFormParam->getHashArray();
-     
+
             //-- 確認
-            if ($_POST["mode"] == "confirm") {
+            if ($this->getMode() == "confirm") {
 
                 $this->arrErr = $this->lfErrorCheck();
-                
+
                 // 入力エラーなし
                 if(count($this->arrErr) == 0) {
-                    
+
                     $this->list_data = $this->objFormParam->getHashArray();
-                
+
                     //パスワード表示
                     $passlen = strlen($this->arrForm['password']);
                     $this->passlen = SC_Utils_Ex::lfPassLen($passlen);
-    
+
                     $this->tpl_mainpage = 'entry/confirm.tpl';
                     $this->tpl_title = '会員登録(確認ページ)';
                 }
 
-            } elseif ($_POST["mode"] == "complete") {
+            } elseif ($this->getMode() == "complete") {
                 //-- 会員登録と完了画面
-           
+
                 // 会員情報の登録
                 $this->CONF = $CONF;
                 $this->uniqid = $this->lfRegistData();
@@ -181,7 +181,7 @@ class LC_Page_Entry extends LC_Page {
                 $customer_id = $objQuery->get("customer_id", "dtb_customer", "secret_key = ?", array($this->uniqid));
                 SC_Response_Ex::sendRedirect('complete.php', array("ci" => $customer_id));
                 exit;
-                
+
             }
         }
         $this->transactionid = SC_Helper_Session_Ex::getToken();
@@ -201,11 +201,11 @@ class LC_Page_Entry extends LC_Page {
 
     // 会員情報の登録
     function lfRegistData() {
-                
+
         $objQuery = new SC_Query();
         $arrRet = $this->objFormParam->getHashArray();
         $sqlval = $this->objFormParam->getDbArray();
-        
+
         // 登録データの作成
         $sqlval['birth'] = SC_Utils_Ex::sfGetTimestamp($arrRet['year'], $arrRet['month'], $arrRet['day']);
 
@@ -215,7 +215,7 @@ class LC_Page_Entry extends LC_Page {
             $uniqid = SC_Utils_Ex::sfGetUniqRandomId("r");
             $count = $objQuery->count("dtb_customer", "secret_key = ?", array($uniqid));
         }
-        
+
         // 仮会員登録の場合
         if(CUSTOMER_CONFIRM_MAIL == true) {
             $sqlval["status"] = "1";				// 仮会員
@@ -241,10 +241,10 @@ class LC_Page_Entry extends LC_Page {
         $objQuery->begin();
         SC_Helper_Customer_Ex::sfEditCustomerData($sqlval);
         $objQuery->commit();
-        
+
         return $uniqid;
     }
-    
+
     function lfSendMail(){
         // 完了メール送信
         $arrRet = $this->objFormParam->getHashArray();
@@ -304,7 +304,7 @@ class LC_Page_Entry extends LC_Page {
             $objErr->doFunc(array('メールアドレス', 'メールアドレス(確認)', "email", "email02") ,array("EQUAL_CHECK"));
             $objErr->doFunc(array("FAX番号", "fax01", "fax02", "fax03") ,array("TEL_CHECK"));
         }
-        
+
         // 現会員の判定 → 現会員もしくは仮登録中は、メアド一意が前提になってるので同じメアドで登録不可
         $register_user_flg =  SC_Helper_Customer_Ex::sfCheckRegisterUserFromEmail($arrRet["email"]);
         switch($register_user_flg) {
@@ -319,11 +319,11 @@ class LC_Page_Entry extends LC_Page {
         }
         return $objErr->arrErr;
     }
-    
+
     function lfCheckReferer(){
     	/**
     	 * 規約ページからの遷移でなければエラー画面へ遷移する
-    	 */ 
+    	 */
         if ($this->isMobile === FALSE
         	 && empty($_POST)
         	 && !preg_match('/kiyaku.php/', basename($_SERVER['HTTP_REFERER']))

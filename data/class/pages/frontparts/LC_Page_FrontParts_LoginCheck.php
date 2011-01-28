@@ -84,9 +84,7 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page {
         // POST値の取得
         $this->objFormParam->setParam($_POST);
 
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
-
-        switch($_POST['mode']) {
+        switch($this->getMode()) {
         case 'login':
             $this->objFormParam->toLower('login_email');
             $arrErr = $this->objFormParam->checkError();

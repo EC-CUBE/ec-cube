@@ -115,9 +115,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin {
             $this->tpl_onload="alert('登録が完了しました。');";
         }
 
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
-
-        switch($_POST['mode']) {
+        switch($this->getMode()) {
         case 'preview':
             // プレビューファイル作成
             $prev_path = USER_INC_REALDIR . 'preview/bloc_preview.tpl';
@@ -208,9 +206,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin {
             exit;
             break;
         default:
-            if(isset($_POST['mode'])) {
-               GC_Utils::gfPrintLog("MODEエラー：".$_POST['mode']);
-            }
+            GC_Utils::gfPrintLog("MODEエラー：".$this->getMode());
             break;
         }
         $this->device_type_id = $device_type_id;

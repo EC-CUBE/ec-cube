@@ -114,9 +114,7 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin {
         // テキストエリアに表示
         $this->css_data = $css_data;
 
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
-
-        switch($_POST['mode']) {
+        switch($this->getMode()) {
             // データ更新処理
             case 'confirm':
                 $this->lfExecuteConfirm($css_dir, $css_name, $old_css_name, $css_path);
@@ -125,9 +123,7 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin {
                 $this->lfExecuteDelete($css_path);
                 break;
             default:
-                if(isset($_POST['mode'])) {
-                   GC_Utils::gfPrintLog("MODEエラー：".$_POST['mode']);
-                }
+                GC_Utils::gfPrintLog("MODEエラー：".$this->getMode());
                 break;
         }
 

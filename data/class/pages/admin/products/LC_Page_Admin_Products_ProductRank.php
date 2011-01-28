@@ -79,8 +79,7 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin {
         $this->arrForm['parent_category_id'] =
             isset($_POST['parent_category_id']) ? $_POST['parent_category_id'] : 0;
 
-        if (!isset($_POST['mode'])) $_POST['mode'] = "";
-        switch($_POST['mode']) {
+        switch($this->getMode()) {
         case 'up':
             $where = "category_id = " . SC_Utils_Ex::sfQuoteSmart($_POST['parent_category_id']);
             $objDb->sfRankUp("dtb_product_categories", "product_id", $_POST['product_id'], $where);
@@ -101,7 +100,7 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin {
             // カテゴリの切替は、ページ番号をクリアする。
             $this->tpl_pageno = "";
             break;
-            
+
         case 'renumber':
             $sql = <<< __EOS__
                 UPDATE dtb_product_categories
@@ -123,7 +122,7 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin {
 __EOS__;
             $objQuery->query($sql, array($_POST['parent_category_id']));
             break;
-        
+
         default:
             break;
         }
