@@ -136,6 +136,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin {
             $this->arrErr = $this->lfCheckError();
 
             if(count($this->arrErr) == 0) {
+            	//TODO 要リファクタリング(MODE if利用)
                 if ($this->getMode() == 'add') {
                     $order_id = $this->lfRegistNewData($objPurchase);
 
@@ -654,7 +655,7 @@ __EOS__;
         if ($arrVal['payment_total'] < 0) {
             $arrErr['payment_total'] = 'お支払い合計額がマイナス表示にならないように調整して下さい。<br />';
         }
-        //新規追加受注のみ
+        //新規追加受注のみ TODO 要リファクタリング(MODE if利用)
         if ($this->getMode() == "add") {
             if ($arrVal['total_point'] < 0) {
                 $arrErr['use_point'] = '最終保持ポイントがマイナス表示にならないように調整して下さい。<br />';
@@ -828,7 +829,7 @@ __EOS__;
      *
      * @return integer 注文番号
      */
-    function $this->getMode()(&$objPurchase) {
+    function lfRegistNewData(&$objPurchase) {
         $objQuery = new SC_Query();
 
         $sqlval = $this->lfMakeSqlvalForDtbOrder();
