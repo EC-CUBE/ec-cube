@@ -91,8 +91,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin {
         } else {
             $this->tpl_mode = "insert";
         }
-
-        if(!empty($this->getMode())) {
+        if($this->getMode()!=null) {
             // POSTデータの引き継ぎ
             $this->arrForm = $_POST;
 
