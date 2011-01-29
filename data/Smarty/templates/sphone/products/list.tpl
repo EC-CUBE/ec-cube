@@ -20,34 +20,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 <script type="text/javascript">//<![CDATA[
-// 規格2に選択肢を割り当てる。
-function fnSetClassCategories(form, classcat_id2_selected) {
-    sele1 = form.classcategory_id1;
-    sele2 = form.classcategory_id2;
-    product_id = form.product_id.value;
-
-    if (sele1) {
-        if (sele2) {
-            // 規格2の選択肢をクリア
-            count = sele2.options.length;
-            for(i = count; i >= 0; i--) {
-                sele2.options[i] = null;
-            }
-            
-            // 規格2に選択肢を割り当てる
-            classcats = productsClassCategories[product_id][sele1.value];
-            i = 0;
-            for (var classcat_id2_key in classcats) {
-                sele2.options[i] = new Option(classcats[classcat_id2_key].name, classcat_id2_key);
-                if (classcat_id2_key == classcat_id2_selected) {
-                    sele2.options[i].selected = true;
-                }
-                i++;
-            }
-        }
-        fnCheckStock(form);
-    }
-}
 // 並び順を変更
 function fnChangeOrderby(orderby) {
     fnSetVal('orderby', orderby);
@@ -59,79 +31,6 @@ function fnChangeDispNumber(dispNumber) {
     fnSetVal('disp_number', dispNumber);
     fnSetVal('pageno', 1);
     fnSubmit();
-}
-// カゴに入れる
-function fnInCart(productForm) {
-    var product_id = productForm["product_id"].value;
-    fnChangeAction("?#product" + product_id);
-    if (productForm["classcategory_id1"]) {
-        fnSetVal("classcategory_id1", productForm["classcategory_id1"].value);
-    }
-    if (productForm["classcategory_id2"]) {
-        fnSetVal("classcategory_id2", productForm["classcategory_id2"].value);
-    }
-    fnSetVal("quantity", productForm["quantity"].value);
-    fnSetVal("product_id", productForm["product_id"].value);
-    fnSetVal("product_class_id", productForm["product_class_id"].value);
-    fnSetVal("product_type", productForm["product_type"].value);
-    fnSubmit();
-}
-function fnCheckStock(form) {
-    product_id = form.product_id.value;
-    classcat_id1 = form.classcategory_id1.value;
-    classcat_id2 = form.classcategory_id2 ? form.classcategory_id2.value : 0;
-    classcat2 = productsClassCategories[product_id][classcat_id1][classcat_id2];
-    
-    // 在庫(品切れ)
-    eleDefault = document.getElementById('cartbtn_default_' + product_id);
-    eleDynamic = document.getElementById('cartbtn_dynamic_' + product_id);
-    if (
-           classcat2
-        && classcat2.stock_find === false
-    ) {
-        eleDefault.style.display = 'none';
-        eleDynamic.innerHTML = '申し訳ございませんが、只今品切れ中です。';
-    } else {
-        eleDefault.style.display = '';
-        eleDynamic.innerHTML = '';
-    }
-    
-    // 販売価格
-    eleDefault = document.getElementById('price02_default_' + product_id);
-    eleDynamic = document.getElementById('price02_dynamic_' + product_id);
-    if (
-           classcat2
-        && typeof classcat2.price02 != 'undefined'
-        && String(classcat2.price02).length >= 1
-    ) {
-        eleDefault.style.display = 'none';
-        eleDynamic.innerHTML = classcat2.price02;
-    } else {
-        eleDefault.style.display = '';
-        eleDynamic.innerHTML = '';
-    }
-    // 商品規格
-    eleDynamic = document.getElementById('product_class_id' + product_id);
-    if (
-           classcat2
-        && typeof classcat2.product_class_id != 'undefined'
-        && String(classcat2.product_class_id).length >= 1
-    ) {
-        eleDynamic.value = classcat2.product_class_id;
-    } else {
-        eleDynamic.value = ''
-    }
-    // 商品種別
-    eleDynamic = document.getElementById('product_type' + product_id);
-    if (
-           classcat2
-        && typeof classcat2.product_type != 'undefined'
-        && String(classcat2.product_type).length >= 1
-    ) {
-        eleDynamic.value = classcat2.product_type;
-    } else {
-        eleDynamic.value = ''
-    }
 }
 //]]>
 </script>
