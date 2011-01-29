@@ -172,7 +172,7 @@ class SC_Initial {
 
         $useFilenameDirIndex = is_bool(USE_FILENAME_DIR_INDEX)
             ? USE_FILENAME_DIR_INDEX
-            : (empty($_SERVER['SERVER_SOFTWARE']) ? false : substr($_SERVER['SERVER_SOFTWARE'], 0, 13) == 'Microsoft-IIS')
+            : (isset($_SERVER['SERVER_SOFTWARE']) ? substr($_SERVER['SERVER_SOFTWARE'], 0, 13) == 'Microsoft-IIS' : false)
         ;
 
         // DIR_INDEX_FILE にアクセスする時の URL のファイル名部を定義する
