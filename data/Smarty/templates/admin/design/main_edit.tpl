@@ -77,7 +77,7 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
                     <!--{$smarty.const.HTTP_URL|h}--><!--{$arrPageData.url|h}-->
                     <input type="hidden" name="url" value="<!--{$arrPageData.filename|h}-->" />
                 <!--{else}-->
-                    <!--{$user_URL|h}--><input type="text" name="url" value="<!--{$arrPageData.directory|h}--><!--{$arrPageData.filename|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.url != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}--> ime-mode: disabled;" size="40" class="box40" />.php<span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
+                    <!--{$smarty.const.USER_URL|h}--><input type="text" name="url" value="<!--{$arrPageData.filename|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.url != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}--> ime-mode: disabled;" size="40" class="box40" />.php<span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
                 <!--{/if}-->
                 <!--{if $arrErr.url != ""}-->
                     <div class="attention">

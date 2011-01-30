@@ -45,7 +45,6 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
         parent::init();
         $this->tpl_mainpage = 'design/main_edit.tpl';
         $this->tpl_subnavi  = 'design/subnavi.tpl';
-        $this->user_URL     = USER_URL;
         $this->text_row     = 13;
         $this->tpl_subno = "main_edit";
         $this->tpl_mainno = "design";
@@ -155,14 +154,14 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
 
         // テンプレートを読み込む
         $templatePath = $this->objLayout->getTemplatePath($device_type_id);
-        $arrPageData[0]['tpl_data'] = file_get_contents($templatePath . $arrPageData[0]['tpl_dir'] . $arrPageData[0]['filename'] . ".tpl");
+        $arrPageData[0]['tpl_data'] = file_get_contents($templatePath . $arrPageData[0]['filename'] . ".tpl");
 
         // チェックボックスの値変更
         $arrPageData[0]['header_chk'] = SC_Utils_Ex::sfChangeCheckBox($arrPageData[0]['header_chk'], true);
         $arrPageData[0]['footer_chk'] = SC_Utils_Ex::sfChangeCheckBox($arrPageData[0]['footer_chk'], true);
 
         // ディレクトリを画面表示用に編集
-        $arrPageData[0]['directory'] = str_replace(USER_DIR, '', $arrPageData[0]['php_dir']);
+        $arrPageData[0]['filename'] = preg_replace('|^' . preg_quote(USER_DIR) . '|', '', $arrPageData[0]['filename']);
 
         return $arrPageData[0];
     }
@@ -180,16 +179,18 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
         $page_id = '0';
         $url = 'preview/index';
 
-        $tmpPost = $_POST;
-        $tmpPost['page_id'] = $page_id;
-        $tmpPost['url'] = $url;
-        $tmpPost['tpl_dir'] = "{$url}.tpl";
-
         $arrPreData = $this->objLayout->lfGetPageData("page_id = ? AND device_type_id = ?",
                                                       array($page_id, $device_type_id));
 
         // DBへデータを更新する
-        $this->lfEntryPageData($tmpPost, $device_type_id);
+        $this->lfEntryPageData(
+            $device_type_id,
+            $page_id,
+            $_POST['page_name'],
+            $url,
+            $_POST['header_chk'],
+            $_POST['footer_chk']
+        );
 
         // TPLファイル作成
         $cre_tpl = $this->objLayout->getTemplatePath($device_type_id) . "{$url}.tpl";
@@ -229,7 +230,14 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
         // エラーがなければ更新処理を行う
         if (count($this->arrErr) == 0) {
             // DBへデータを更新する
-            $arrTmp = $this->lfEntryPageData($_POST, $device_type_id);
+            $arrTmp = $this->lfEntryPageData(
+                $device_type_id,
+                $page_id,
+                $_POST['page_name'],
+                USER_DIR . $_POST['url'],
+                $_POST['header_chk'],
+                $_POST['footer_chk']
+            );
             $page_id = $arrTmp['page_id'];
 
             $arrTmp = $this->objLayout->lfGetPageData('page_id = ? AND device_type_id = ?', array($page_id, $device_type_id));
@@ -242,7 +250,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
             }
 
             // TPLファイル作成
-            $cre_tpl = $this->objLayout->getTemplatePath($device_type_id) . $arrData['tpl_dir'] . $arrData['filename'] . '.tpl';
+            $cre_tpl = $this->objLayout->getTemplatePath($device_type_id) . $arrData['filename'] . '.tpl';
             $this->lfCreateFile($cre_tpl, $_POST['tpl_data']);
 
             $arrQueryString = array(
@@ -265,24 +273,29 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
     /**
      * ブロック情報を更新する.
      *
-     * @param array $arrData 基となる更新データ
+     * @param integer $device_type_id
+     * @param integer $page_id
+     * @param string $page_name
+     * @param string $filename
+     * @param integer $header_chk
+     * @param integer $footer_chk
      * @return array 実際に使用した更新データ
      */
-    function lfEntryPageData($arrData, $device_type_id){
+    function lfEntryPageData($device_type_id, $page_id, $page_name, $filename, $header_chk, $footer_chk) {
         $objQuery = new SC_Query();
         $arrChk = array();          // 排他チェック用
 
-        // 更新データの変換
-        $sqlval = $this->lfGetUpdData($arrData, $device_type_id);
+        // 更新用データの変換
+        $sqlval = $this->lfGetUpdData($device_type_id, $page_id, $page_name, $filename, $header_chk, $footer_chk);
 
         // データが存在しているかチェックを行う
-        if($arrData['page_id'] !== ''){
+        if ($page_id !== ''){
             $arrChk = $this->objLayout->lfGetPageData("page_id = ? AND device_type_id = ?",
-                                                      array($arrData['page_id'], $device_type_id));
+                                                      array($page_id, $device_type_id));
         }
 
         // page_id が空 若しくは データが存在していない場合にはINSERTを行う
-        if ($arrData['page_id'] === '' || !isset($arrChk[0])) {
+        if ($page_id === '' || !isset($arrChk[0])) {
             // FIXME device_type_id ごとの連番にする
             $sqlval['page_id'] = $objQuery->nextVal('dtb_pagelayout_page_id');
             $sqlval['device_type_id'] = $device_type_id;
@@ -292,9 +305,9 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
         // データが存在してる場合にはアップデートを行う
         else {
             $objQuery->update('dtb_pagelayout', $sqlval, 'page_id = ? AND device_type_id = ?',
-                              array($arrData['page_id'], $device_type_id));
+                              array($page_id, $device_type_id));
             // 戻り値用
-            $sqlval['page_id'] = $arrData['page_id'];
+            $sqlval['page_id'] = $page_id;
         }
         return $sqlval;
     }
@@ -302,29 +315,27 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
     /**
      * DBへ更新を行うデータを生成する.
      *
-     * @param array $arrData 更新データ
+     * @param integer $device_type_id
+     * @param integer $page_id
+     * @param string $page_name
+     * @param string $filename
+     * @param integer $header_chk
+     * @param integer $footer_chk
      * @return array 更新データ
      */
-    function lfGetUpdData($arrData, $device_type_id) {
+    function lfGetUpdData($device_type_id, $page_id, $page_name, $filename, $header_chk, $footer_chk) {
         $arrUpdData = array(
-            'header_chk'    => SC_Utils_Ex::sfChangeCheckBox($arrData['header_chk']),   // ヘッダー使用
-            'footer_chk'    => SC_Utils_Ex::sfChangeCheckBox($arrData['footer_chk']),   // フッター使用
-            'update_url'    => $_SERVER['HTTP_REFERER'],                                // 更新URL
+            'header_chk'    => SC_Utils_Ex::sfChangeCheckBox($header_chk),  // ヘッダー使用
+            'footer_chk'    => SC_Utils_Ex::sfChangeCheckBox($footer_chk),  // フッター使用
+            'update_url'    => $_SERVER['HTTP_REFERER'],                    // 更新URL
             'update_date'   => 'now()',
         );
 
         // ベースデータの場合には変更しない。
-        if (!$this->objLayout->lfCheckBaseData($arrData['page_id'], $device_type_id)) {
-            $arrUpdData['page_name']    = $arrData['page_name'] ;
-            $arrUpdData['url']          = preg_replace('|^' . preg_quote(ROOT_URLPATH) . '|', '', $arrData['url'] . '.php');
-            $arrUpdData['php_dir']      = dirname($arrUpdData['url']);
-            if ($arrUpdData['php_dir'] == '.') {
-                $arrUpdData['php_dir'] = '';
-            } else {
-                $arrUpdData['php_dir'] .= '/';
-            }
-            $arrUpdData['tpl_dir']      = $arrUpdData['php_dir'];
-            $arrUpdData['filename']     = basename($arrData['url']); // 拡張子を付加しない
+        if (!$this->objLayout->lfCheckBaseData($page_id, $device_type_id)) {
+            $arrUpdData['page_name']    = $page_name;
+            $arrUpdData['url']          = $filename . '.php';
+            $arrUpdData['filename']     = $filename; // 拡張子を付加しない
         }
 
         return $arrUpdData;
