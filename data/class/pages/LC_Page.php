@@ -63,7 +63,7 @@ class LC_Page {
     /** ログインメールアドレス */
     var $tpl_login_email;
 
-    /** body タグの onload 属性 */
+    /** HTML ロード後に実行する JavaScript コード */
     var $tpl_onload;
 
     /** 送料合計 */
