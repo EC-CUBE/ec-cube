@@ -37,8 +37,9 @@ function fnSetClassCategories(form, classcat_id2_selected) {
             classcats = classCategories[sele1.value];
             i = 0;
             for (var classcat_id2_key in classcats) {
-                sele2.options[i] = new Option(classcats[classcat_id2_key].name, classcat_id2_key);
-                if (classcat_id2_key == classcat_id2_selected) {
+                classcategory_id2 = classcats[classcat_id2_key].classcategory_id2;
+                sele2.options[i] = new Option(classcats[classcat_id2_key].name, classcategory_id2);
+                if (classcategory_id2 == classcat_id2_selected) {
                     sele2.options[i].selected = true;
                 }
                 i++;

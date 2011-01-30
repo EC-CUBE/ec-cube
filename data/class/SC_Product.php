@@ -206,12 +206,10 @@ __EOS__;
      */
     function setProductsClassByProductIds($arrProductId) {
 
-        foreach ($arrProductId as $productId) {
-            $rows[$productId] = $this->getProductsClassFullByProductId($productId);
-        }
-
         $arrProductsClass = array();
-        foreach ($rows as $productId => $arrProductClass) {
+        foreach ($arrProductId as $productId) {
+            $arrProductClass = $this->getProductsClassFullByProductId($productId);
+
             $classCats1 = array();
             $classCats1[''] = '選択してください';
 
@@ -242,15 +240,16 @@ __EOS__;
             // 商品種別
             $this->product_type[$productId] = $arrProductClass[0]['product_type_id'];
             foreach ($arrProductClass as $productsClass) {
+                $classCats2 = array();
                 $productsClass1 = $productsClass['classcategory_id1'];
                 $productsClass2 = $productsClass['classcategory_id2'];
-                $classCategories[$productsClass1]['']['name'] = '選択してください';
                 // 在庫
                 $stock_find_class = ($productsClass['stock_unlimited'] || $productsClass['stock'] > 0);
 
-                $classCategories[$productsClass1][$productsClass2]['name'] = $productsClass['classcategory_name2'] . ($stock_find_class ? '' : ' (品切れ中)');
+                $classCats2['classcategory_id2'] = $productsClass2;
+                $classCats2['name'] = $productsClass['classcategory_name2'] . ($stock_find_class ? '' : ' (品切れ中)');
 
-                $classCategories[$productsClass1][$productsClass2]['stock_find'] = $stock_find_class;
+                $classCats2['stock_find'] = $stock_find_class;
 
                 if ($stock_find_class) {
                     $this->stock_find[$productId] = true;
@@ -262,27 +261,34 @@ __EOS__;
                 }
 
                 // 価格
-                $classCategories[$productsClass1][$productsClass2]['price01']
+                $classCats2['price01']
                     = strlen($productsClass['price01'])
                     ? number_format(SC_Helper_DB_Ex::sfCalcIncTax($productsClass['price01']))
                     : '';
 
-                $classCategories[$productsClass1][$productsClass2]['price02']
+                $classCats2['price02']
                     = strlen($productsClass['price02'])
                     ? number_format(SC_Helper_DB_Ex::sfCalcIncTax($productsClass['price02']))
                     : '';
 
                 // ポイント
                 // XXX sfPrePoint() の第4パラメータは、処理にバグがあるため現状省略している。(http://xoops.ec-cube.net/modules/newbb/viewtopic.php?topic_id=3540&forum=1&post_id=13853#forumpost13853)
-                $classCategories[$productsClass1][$productsClass2]['point']
+                $classCats2['point']
                     = SC_Utils_Ex::sfPrePoint($productsClass['price02'], $productsClass['point_rate']);
 
                 // 商品コード
-                $classCategories[$productsClass1][$productsClass2]['product_code'] = $productsClass['product_code'];
+                $classCats2['product_code'] = $productsClass['product_code'];
                 // 商品規格ID
-                $classCategories[$productsClass1][$productsClass2]['product_class_id'] = $productsClass['product_class_id'];
+                $classCats2['product_class_id'] = $productsClass['product_class_id'];
                 // 商品種別
-                $classCategories[$productsClass1][$productsClass2]['product_type'] = $productsClass['product_type_id'];
+                $classCats2['product_type'] = $productsClass['product_type_id'];
+
+                // #929(GC8 規格のプルダウン順序表示不具合)対応のため、2次キーは「#」を前置
+                $classCategories[$productsClass1]['#'] = array(
+                    'classcategory_id2' => '',
+                    'name' => '選択してください',
+                );
+                $classCategories[$productsClass1]['#' . $productsClass2] = $classCats2;
             }
 
             $this->classCategories[$productId] = $classCategories;
