@@ -31,7 +31,7 @@
   <tr>
     <th>エラー内容</th>
     <td>
-      <!--{if $sqlerr != "" }-->
+      <!--{if $sqlerr != ""}-->
         <!--{$sqlerr|h|nl2br}-->
       <!--{else}-->
         エラーはありません

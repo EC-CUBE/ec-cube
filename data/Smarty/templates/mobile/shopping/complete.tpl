@@ -26,7 +26,7 @@
 どうぞ、今後とも、<!--{$arrInfo.shop_name|h}-->をよろしくお願いします。<br>
 <br>
 
-<!--{if $arrOther.title.value }-->
+<!--{if $arrOther.title.value}-->
 <!-- ▼その他の決済情報 -->
 ■<!--{$arrOther.title.name}-->情報<br>
 <!--{foreach key=key item=item from=$arrOther}-->

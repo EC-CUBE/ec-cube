@@ -128,7 +128,7 @@
   </div>
   <!--{include file=$tpl_pager}-->
   
-  <!--{ if $arrReview > 0 & $tpl_linemax > 0 }-->
+  <!--{if $arrReview > 0 & $tpl_linemax > 0}-->
   <!--検索結果表示テーブル-->
   <table id="products-review-result" class="list">
     <tr>
@@ -155,8 +155,8 @@
     <!--{/section}-->
   </table>
   <!--検索結果表示テーブル-->
-  <!--{ /if }-->
+  <!--{/if}-->
 </form>
-<!--{ /if }-->
+<!--{/if}-->
 <!--★★検索結果一覧★★-->
 </div>

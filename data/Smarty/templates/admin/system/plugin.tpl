@@ -22,7 +22,7 @@
       <td><!--{$plugins[data].plugin_name|h}--></td>
       <td><!--{$plugins[data].plugin_name|h}--></td>
       <td>
-        <!--{if $plugins[data].create_date == null }-->
+        <!--{if $plugins[data].create_date == null}-->
         <input type="hidden" name="plugin_name" value="<!--{$plugins[data].plugin_name}-->" />
            <a class="btn-normal" href="javascript:;" name="install" onclick="fnModeSubmit('install','',''); return false;">install</a>
         <!--{else}-->

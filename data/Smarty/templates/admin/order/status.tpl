@@ -42,7 +42,7 @@
     </div>
   <h2>ステータス変更</h2>
   <!--{* 登録テーブルここから *}-->
-  <!--{if $tpl_linemax > 0 }-->
+  <!--{if $tpl_linemax > 0}-->
   <div class="btn">
     <select name="change_status">
       <option value="" selected="selected" style="<!--{$Errormes|sfGetErrorColor}-->" >選択してください</option>

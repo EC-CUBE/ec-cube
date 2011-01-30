@@ -29,7 +29,7 @@
 ご決済方法：<!--{$arrOrder.payment_method}-->
 メッセージ：<!--{$Message_tmp}-->
 
-<!--{if $arrOther.title.value }-->
+<!--{if $arrOther.title.value}-->
 ■<!--{$arrOther.title.name}-->情報
 <!--{foreach key=key item=item from=$arrOther}-->
 <!--{if $key != "title"}-->

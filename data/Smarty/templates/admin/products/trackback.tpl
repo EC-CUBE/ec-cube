@@ -128,7 +128,7 @@
   </div>
   <!--{include file=$tpl_pager}-->
   
-  <!--{ if $arrTrackback > 0 & $tpl_linemax > 0 }-->
+  <!--{if $arrTrackback > 0 & $tpl_linemax > 0}-->
   <!--{* 検索結果表示テーブル *}-->
   <table class="list" id="products-trackback-result">
     <tr>
@@ -154,8 +154,8 @@
     <!--{/section}-->
   </table>
   <!--{* 検索結果表示テーブル *}-->
-  <!--{ /if }-->
+  <!--{/if}-->
 </form>
-<!--{ /if }-->
+<!--{/if}-->
 <!--★★検索結果一覧★★-->    
 </div>

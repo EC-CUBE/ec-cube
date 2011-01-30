@@ -71,7 +71,7 @@ $(document).ready(function() {
             <input type="hidden" name="mode" value="confirm" />
             <input type="hidden" name="cart_no" value="" />
             <input type="hidden" name="cartKey" value="<!--{$key}-->" />
-            <!--{if count($cartKeys) > 1 }-->
+            <!--{if count($cartKeys) > 1}-->
             <h3><!--{$arrProductType[$key]}--></h3>
                 <p>
                     <!--{$arrProductType[$key]}-->の合計金額は「<em><!--{$tpl_total_inctax[$key]|number_format}-->円</em>」です。

@@ -33,7 +33,7 @@
     <tr>
       <th>CSSファイル名</th>
       <td>
-        <!--{ if $arrErr.css_name != "" }--><span class="attention"><!--{$arrErr.css_name}--></span><br /><!--{/if}-->
+        <!--{if $arrErr.css_name != ""}--><span class="attention"><!--{$arrErr.css_name}--></span><br /><!--{/if}-->
         <input type="text" name="css_name" value="<!--{$css_name}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.css_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" />.css<span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
       </td>
     </tr>

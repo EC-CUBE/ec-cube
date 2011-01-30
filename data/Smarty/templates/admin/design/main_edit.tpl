@@ -63,7 +63,7 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
                 <!--{else}-->
                     <input type="text" name="page_name" value="<!--{$arrPageData.page_name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.page_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" /><span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
                 <!--{/if}-->
-                <!--{ if $arrErr.page_name != "" }-->
+                <!--{if $arrErr.page_name != ""}-->
                     <div class="message">
                         <span class="attention"><!--{$arrErr.page_name}--></span>
                     </div>
@@ -79,7 +79,7 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
                 <!--{else}-->
                     <!--{$user_URL|h}--><input type="text" name="url" value="<!--{$arrPageData.directory|h}--><!--{$arrPageData.filename|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.url != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}--> ime-mode: disabled;" size="40" class="box40" />.php<span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
                 <!--{/if}-->
-                <!--{ if $arrErr.url != "" }-->
+                <!--{if $arrErr.url != ""}-->
                     <div class="attention">
                         <span class="attention"><!--{$arrErr.url}--></span>
                     </div>

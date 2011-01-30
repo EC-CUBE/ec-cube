@@ -42,7 +42,7 @@
 	<input type="hidden" name="cart_no" value="">
 	<input type="hidden" name="cartKey" value="<!--{$key}-->">
 	<!--ご注文内容ここから-->
-    <!--{if count($cartKeys) > 1 }-->
+    <!--{if count($cartKeys) > 1}-->
     <hr>
     <!--{$arrProductType[$key]}-->
     <hr>

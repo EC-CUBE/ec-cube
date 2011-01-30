@@ -35,12 +35,12 @@
 
         <!--{section name=cnt loop=$arrNews}-->
             <item>
-                <!--{if $arrNews[cnt].news_url == '' }-->
+                <!--{if $arrNews[cnt].news_url == ''}-->
                     <link><!--{$smarty.const.HTTP_URL}--></link>
                 <!--{else}-->
                     <link><!--{$arrNews[cnt].news_url|h}--></link>
                 <!--{/if}-->
-                <title><!--{ $arrNews[cnt].news_title|sfMbConvertEncoding:$encode|escape }--></title>
+                <title><!--{$arrNews[cnt].news_title|sfMbConvertEncoding:$encode|escape}--></title>
                 <description><!--{$arrNews[cnt].news_comment|truncate:256|sfMbConvertEncoding:$encode|h}--></description>
                 <pubDate><!--{$arrNews[cnt].news_date|h}--></pubDate>
             </item>

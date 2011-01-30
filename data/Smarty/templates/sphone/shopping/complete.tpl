@@ -26,7 +26,7 @@
     <h2 class="title"><!--{$tpl_title|h}--></h2>
 
     <!-- ▼その他決済情報を表示する場合は表示 -->
-    <!--{if $arrOther.title.value }-->
+    <!--{if $arrOther.title.value}-->
     <p><em>■<!--{$arrOther.title.name}-->情報</em><br />
         <!--{foreach key=key item=item from=$arrOther}-->
         <!--{if $key != "title"}-->

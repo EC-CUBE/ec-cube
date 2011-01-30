@@ -46,7 +46,7 @@
           </tr>
           <tr>
             <th>性別</th>
-            <td><!--{if $arrForm.sex eq 1 }-->男性<!--{elseif $arrForm.sex eq 2 }-->女性<!--{/if}--></td>
+            <td><!--{if $arrForm.sex eq 1}-->男性<!--{elseif $arrForm.sex eq 2}-->女性<!--{/if}--></td>
           </tr>
           <tr>
             <th>おすすめレベル<span class="attention">※</span></th>

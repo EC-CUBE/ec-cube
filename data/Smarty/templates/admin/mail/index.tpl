@@ -248,7 +248,7 @@
 </form>
 
 
-<!--{if count($arrErr) == 0 and ($smarty.post.mode == 'search' or $smarty.post.mode == 'delete' or $smarty.post.mode == 'back') }-->
+<!--{if count($arrErr) == 0 and ($smarty.post.mode == 'search' or $smarty.post.mode == 'delete' or $smarty.post.mode == 'back')}-->
 
 <form name="form1" id="form1" method="post" action="?">
 <input type="hidden" name="mode" value="" />

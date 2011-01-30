@@ -49,7 +49,7 @@ function fnTargetSelf(){
 
   <!--{if $arrSqlList}-->
   <table id="contents-csv-sqllist" class="list center">
-    <!--{ foreach key=key item=item from=$arrSqlList }-->
+    <!--{foreach key=key item=item from=$arrSqlList}-->
     <tr style="background-color:<!--{if $item.sql_id == $sql_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->;">
       <td>
         <a href="?sql_id=<!--{$item.sql_id}-->" ><!--{$item.sql_name}--></a>
@@ -61,7 +61,7 @@ function fnTargetSelf(){
         </div>
       </td>
     </tr>
-    <!--{ /foreach }-->
+    <!--{/foreach}-->
   </table>
   <!--{/if}-->
 

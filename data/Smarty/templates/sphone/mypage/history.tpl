@@ -58,17 +58,17 @@
                     <td><!--{$orderDetail.product_code|h}--></td>
                     <td><a<!--{if $orderDetail.enable}--> href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$orderDetail.product_id|u}-->"<!--{/if}-->><!--{$orderDetail.product_name|h}--></a></td>
                     <td>
-                    <!--{ if $orderDetail.product_type_id == PRODUCT_TYPE_DOWNLOAD}-->
-                        <!--{ if $orderDetail.price == "0" || ( $orderDetail.status >= "4" && $orderDetail.effective == "1" )}-->
+                    <!--{if $orderDetail.product_type_id == PRODUCT_TYPE_DOWNLOAD}-->
+                        <!--{if $orderDetail.price == "0" || ( $orderDetail.status >= "4" && $orderDetail.effective == "1" )}-->
                             <a target="_self" href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/download.php?order_id=<!--{$arrDisp.order_id}-->&product_id=<!--{$orderDetail.product_id}-->&product_class_id=<!--{$orderDetail.product_class_id}-->">ダウンロード</a>
-                        <!--{ elseif $orderDetail.payment_date == "" || $orderDetail.status < "4"}-->
+                        <!--{elseif $orderDetail.payment_date == "" || $orderDetail.status < "4"}-->
                             ダウンロード商品<BR />（入金確認中）
-                        <!--{ elseif $orderDetail.effective != "1"}-->
+                        <!--{elseif $orderDetail.effective != "1"}-->
                             ダウンロード商品<BR />（期限切れ）
-                        <!--{ /if }-->
-                    <!--{ else if $orderDetail.product_type_id == PRODUCT_TYPE_NORMAL}-->
+                        <!--{/if}-->
+                    <!--{else if $orderDetail.product_type_id == PRODUCT_TYPE_NORMAL}-->
                             通常商品
-                    <!--{ /if }-->
+                    <!--{/if}-->
                     </td>
                     <!--{assign var=price value=`$orderDetail.price`}-->
                     <!--{assign var=quantity value=`$orderDetail.quantity`}-->

@@ -30,15 +30,15 @@ XXX: ヘッダーとフッターでwrapの設定が違うのは疑問。それ�
   <!--{* ▼ヘッダー編集ここから *}-->
   <h2>ヘッダー編集</h2>
   <!--{* プレビューここから *}-->
-  <!--{ if $header_prev == "on"}-->
+  <!--{if $header_prev == "on"}-->
   <dic id="design-header-preview">
-    <!--{if $browser_type == 1 }-->
+    <!--{if $browser_type == 1}-->
       <div style="zoom:0.8"><!--{include file="`$smarty.const.USER_REALDIR`include/preview/header.tpl"}--></div>
-    <!--{ else }-->
+    <!--{else}-->
       <span class="attention"><strong>プレビューはIEでのみ表示されます。</strong></span>
-    <!--{ /if }-->
+    <!--{/if}-->
   </div>
-  <!--{ /if }-->
+  <!--{/if}-->
   <!--{* プレビューここまで *}-->
     
   <form name="form_header" id="form_header" method="post" action="?" >
@@ -65,15 +65,15 @@ XXX: ヘッダーとフッターでwrapの設定が違うのは疑問。それ�
 
   <!--{* ▼フッター編集ここから *}-->
   <h2>フッター編集</h2>
-  <!--{ if $footer_prev == "on"}-->
+  <!--{if $footer_prev == "on"}-->
   <div id="design-footer-preview">
-    <!--{if $browser_type == 1 }-->
+    <!--{if $browser_type == 1}-->
       <div style="zoom:0.8"><!--{include file="`$smarty.const.USER_REALDIR`/include/preview/footer.tpl"}--></div>
-    <!--{ else }-->
+    <!--{else}-->
       <span class="attention"><strong>プレビューはIEでのみ表示されます。</strong></span>
-    <!--{ /if }-->
+    <!--{/if}-->
   </div>
-  <!--{ /if }-->
+  <!--{/if}-->
 
   <form name="form_footer" id="form_footer" method="post" action="?" >
   <input type="hidden" name="mode" value="" />

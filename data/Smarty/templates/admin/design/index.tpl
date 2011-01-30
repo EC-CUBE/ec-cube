@@ -319,7 +319,7 @@ function fnTargetSelf(){
     <!--{* ▲未使用ブロックここまで *}-->
         <div class="btn-area">
             <ul>
-                <li><a class="btn-action" href="javascript:;" name='preview' onclick="doPreview();"<!--{if $page_id == "0" or $exists_page == "0" }--> DISABLED<!--{/if}-->><span class="btn-prev">プレビュー</span></a></li>
+                <li><a class="btn-action" href="javascript:;" name='preview' onclick="doPreview();"<!--{if $page_id == "0" or $exists_page == "0"}--> DISABLED<!--{/if}-->><span class="btn-prev">プレビュー</span></a></li>
                 <li><a class="btn-action" href="javascript:;" name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form1','confirm','',''); return false;"><span class="btn-next">登録する</span></a></li>
             </ul>
         </div>

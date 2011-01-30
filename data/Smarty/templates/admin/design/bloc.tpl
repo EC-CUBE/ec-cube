@@ -40,13 +40,13 @@
             <th>ブロック名</th>
             <td>
                 <input type="text" name="bloc_name" value="<!--{$arrBlocData.bloc_name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.bloc_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" /><span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
-                <!--{ if $arrErr.bloc_name != "" }--> <div align="center"> <span class="attention"><!--{$arrErr.bloc_name}--></span></div> <!--{/if}-->
+                <!--{if $arrErr.bloc_name != ""}--> <div align="center"> <span class="attention"><!--{$arrErr.bloc_name}--></span></div> <!--{/if}-->
             </td>
         </tr>
         <tr>
             <th>ファイル名</th>
             <td><input type="text" name="filename" value="<!--{$arrBlocData.filename|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.filename != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" />.tpl<span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
-        <!--{ if $arrErr.filename != "" }--> <div align="center"> <span class="attention"><!--{$arrErr.filename}--></span></div> <!--{/if}-->
+        <!--{if $arrErr.filename != ""}--> <div align="center"> <span class="attention"><!--{$arrErr.filename}--></span></div> <!--{/if}-->
          </td>
      </tr>
      <tr>

@@ -26,9 +26,9 @@
 <input type="hidden" name="device_type_id" value="" />
 <input type="hidden" name="page_id" value="" />
 <div id="basis" class="contents-main">
-  <!--{if count($arrPageData) > 0 }-->
+  <!--{if count($arrPageData) > 0}-->
     <!--{foreach name=device key=device_key item=arrDevicePageData from=$arrPageData}-->
-    <!--{if count($arrDevicePageData) > 0 }-->
+    <!--{if count($arrDevicePageData) > 0}-->
     <!--{foreach name=page key=key item=item from=$arrDevicePageData}-->
     <!-- <!--{$item.page_name}--> ここから -->
     <!--{if $smarty.foreach.page.first == true}--><h1><!--{$arrDeviceTypeName[$item.device_type_id]}--></h1><!--{/if}-->

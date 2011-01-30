@@ -79,7 +79,7 @@ function func_submit(customer_id){
 </div>
 
 <p>
-<!--{if $smarty.post.mode == 'search' }-->
+<!--{if $smarty.post.mode == 'search'}-->
     <!--▼検索結果表示-->
         <!--{if $tpl_linemax > 0}-->
         <p><!--{$tpl_linemax}-->件が該当しました。<!--{$tpl_strnavi}--></p>
