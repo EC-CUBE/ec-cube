@@ -64,7 +64,7 @@ CREATE TABLE dtb_bat_order_daily_age (
     start_age smallint,
     end_age smallint,
     member smallint,
-    order_date timestamp,
+    order_date datetime,
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
@@ -82,7 +82,7 @@ CREATE TABLE dtb_update (
     del_flg smallint NOT NULL DEFAULT 0,
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_date timestamp NOT NULL,
-    release_date timestamp NOT NULL,
+    release_date datetime NOT NULL,
     PRIMARY KEY (module_id)
 ) ENGINE=InnoDB;
 
@@ -272,8 +272,8 @@ CREATE TABLE dtb_send_history (
     body text,
     send_count int,
     complete_count int NOT NULL DEFAULT 0,
-    start_date timestamp,
-    end_date timestamp,
+    start_date datetime,
+    end_date datetime,
     search_data text,
     del_flg smallint NOT NULL DEFAULT 0,
     creator_id int NOT NULL,
@@ -435,7 +435,7 @@ CREATE TABLE dtb_bat_order_daily (
     women_nonmember numeric NOT NULL DEFAULT 0,
     total numeric NOT NULL DEFAULT 0,
     total_average numeric NOT NULL DEFAULT 0,
-    order_date timestamp NOT NULL,
+    order_date datetime NOT NULL,
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     year smallint NOT NULL,
     month smallint NOT NULL,
@@ -460,7 +460,7 @@ CREATE TABLE dtb_bat_order_daily_hour (
     total numeric NOT NULL DEFAULT 0,
     total_average numeric NOT NULL DEFAULT 0,
     hour smallint NOT NULL DEFAULT 0,
-    order_date timestamp,
+    order_date datetime,
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
@@ -515,7 +515,7 @@ CREATE TABLE dtb_category_total_count (
 
 CREATE TABLE dtb_news (
     news_id int  NOT NULL,
-    news_date timestamp,
+    news_date datetime,
     rank int,
     news_title text NOT NULL,
     news_comment text,
@@ -546,7 +546,7 @@ CREATE TABLE dtb_best_products (
 CREATE TABLE dtb_mail_history (
     send_id int  NOT NULL,
     order_id int NOT NULL,
-    send_date timestamp,
+    send_date datetime,
     template_id int,
     creator_id int NOT NULL,
     subject text,
@@ -575,14 +575,14 @@ CREATE TABLE dtb_customer (
     fax03 text,
     sex smallint,
     job smallint,
-    birth timestamp,
+    birth datetime,
     password text,
     reminder smallint,
     reminder_answer text,
     salt text,
     secret_key varchar(50) NOT NULL UNIQUE,
-    first_buy_date timestamp,
-    last_buy_date timestamp,
+    first_buy_date datetime,
+    last_buy_date datetime,
     buy_times numeric DEFAULT 0,
     buy_total numeric DEFAULT 0,
     point numeric DEFAULT 0,
@@ -618,7 +618,7 @@ CREATE TABLE dtb_order (
     order_addr01 text,
     order_addr02 text,
     order_sex smallint,
-    order_birth timestamp,
+    order_birth datetime,
     order_job int,
     subtotal numeric,
     discount numeric,
@@ -636,8 +636,8 @@ CREATE TABLE dtb_order (
     status smallint,
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_date timestamp NOT NULL,
-    commit_date timestamp,
-    payment_date timestamp,
+    commit_date datetime,
+    payment_date datetime,
     device_type_id int,
     del_flg smallint NOT NULL DEFAULT 0,
     memo01 text,
@@ -674,7 +674,7 @@ CREATE TABLE dtb_order_temp (
     order_addr01 text,
     order_addr02 text,
     order_sex smallint,
-    order_birth timestamp,
+    order_birth datetime,
     order_job int,
     subtotal numeric,
     discount numeric,
@@ -733,8 +733,8 @@ CREATE TABLE dtb_shipping (
     time_id int,
     shipping_time text,
     shipping_num text,
-    shipping_date timestamp,
-    shipping_commit_date timestamp,
+    shipping_date datetime,
+    shipping_commit_date datetime,
     rank int,
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_date timestamp NOT NULL,
@@ -800,7 +800,7 @@ CREATE TABLE dtb_member (
     creator_id int NOT NULL,
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_date timestamp NOT NULL,
-    login_date timestamp,
+    login_date datetime,
     PRIMARY KEY (member_id)
 ) ENGINE=InnoDB;
 
