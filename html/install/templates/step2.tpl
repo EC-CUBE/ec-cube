@@ -37,7 +37,7 @@ function lfnChangePort(db_type) {
 <input type="hidden" name="mode" value="<!--{$tpl_mode}-->">
 <input type="hidden" name="step" value="0">
 <!--{foreach key=key item=item from=$arrHidden}-->
-<input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->">
+<input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->">
 <!--{/foreach}-->
 <div class="contents">
   <div class="message">
@@ -64,7 +64,7 @@ function lfnChangePort(db_type) {
             <td>
             <!--{assign var=key value="db_server"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
-            <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" />
+            <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" />
             </td>
         </tr>
         <tr>
@@ -72,7 +72,7 @@ function lfnChangePort(db_type) {
             <td>
             <!--{assign var=key value="db_port"}-->
             <span class="attention"><span class="fs12n"><!--{$arrErr[$key]}--></span></span>
-            <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" />
+            <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" />
             </td>
         </tr>
         <tr>
@@ -80,7 +80,7 @@ function lfnChangePort(db_type) {
             <td>
             <!--{assign var=key value="db_name"}-->
             <span class="attention"><span class="fs12n"><!--{$arrErr[$key]}--></span></span>
-            <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" />
+            <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" />
             </td>
         </tr>
         <tr>
@@ -88,7 +88,7 @@ function lfnChangePort(db_type) {
             <td>
             <!--{assign var=key value="db_user"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
-            <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" />
+            <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" />
             </td>
         </tr>
         <tr>
@@ -96,7 +96,7 @@ function lfnChangePort(db_type) {
             <td>
             <!--{assign var=key value="db_password"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
-            <input type="password" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" />
+            <input type="password" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" />
             </td>
         </tr>
     </table>

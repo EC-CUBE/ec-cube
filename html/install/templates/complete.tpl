@@ -24,7 +24,7 @@
 <input type="hidden" name="mode" value="<!--{$tpl_mode}-->">
 
 <!--{foreach key=key item=item from=$arrHidden}-->
-<input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->">
+<input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->">
 <!--{/foreach}-->
 <div class="contents">
   <div class="message">

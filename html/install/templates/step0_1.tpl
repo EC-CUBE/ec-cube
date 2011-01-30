@@ -33,7 +33,7 @@
 <input type="hidden" name="step" value="0">
 
 <!--{foreach key=key item=item from=$arrHidden}-->
-<input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->">
+<input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->">
 <!--{/foreach}-->
   <div class="result-info02">
         <!--{if $hasErr}-->

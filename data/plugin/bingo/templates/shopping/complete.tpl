@@ -25,7 +25,7 @@
     <p class="flowarea">
       <img src="<!--{$TPL_URLPATH}-->img/shopping/flow04.gif" width="700" height="36" alt="購入手続きの流れ" />
     </p>
-    <h2 class="title"><!--{$tpl_title|escape}--></h2>
+    <h2 class="title"><!--{$tpl_title|h}--></h2>
 
     <!-- ▼その他決済情報を表示する場合は表示 -->
     <!--{if $arrOther.title.value}-->
@@ -50,13 +50,13 @@
         当たり！当たり！当たり！<br />
       </em><br />
 
-      <em><!--{$arrInfo.shop_name|escape}-->の商品をご購入いただき、ありがとうございました。</em>
+      <em><!--{$arrInfo.shop_name|h}-->の商品をご購入いただき、ありがとうございました。</em>
 
       <p>ただいま、ご注文の確認メールをお送りさせていただきました。<br />
         万一、ご確認メールが届かない場合は、トラブルの可能性もありますので大変お手数ではございますがもう一度お問い合わせいただくか、お電話にてお問い合わせくださいませ。<br />
         今後ともご愛顧賜りますようよろしくお願い申し上げます。</p>
 
-      <p><!--{$arrInfo.shop_name|escape}--><br />
+      <p><!--{$arrInfo.shop_name|h}--><br />
         TEL：<!--{$arrInfo.tel01}-->-<!--{$arrInfo.tel02}-->-<!--{$arrInfo.tel03}--> <!--{if $arrInfo.business_hour != ""}-->（受付時間/<!--{$arrInfo.business_hour}-->）<!--{/if}--><br />
         E-mail：<a href="mailto:<!--{$arrInfo.email02|escape:'hex'}-->"><!--{$arrInfo.email02|escape:'hexentity'}--></a></p>
     </div>

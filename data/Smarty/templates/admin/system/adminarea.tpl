@@ -36,7 +36,7 @@ jQuery(function(){
     <h2><span class="red">注意！</span>間違った設定を適用すると管理画面にアクセス出来なくなる可能性があります。</h2>
     <p class="red">良く解らない場合はこの設定は変更しないでください</p>
     <!--{if $arrErr.all}-->
-    <p class="error"><!--{$arrErr.all|escape}--></p>
+    <p class="error"><!--{$arrErr.all|h}--></p>
     <!--{/if}-->
   </div>
   <h2>管理機能設定</h2>

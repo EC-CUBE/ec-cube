@@ -165,7 +165,7 @@ $(document).ready(function() {
 
                 <p>
                     <!--{if $tpl_prev_url != ""}-->
-                        <a href="<!--{$tpl_prev_url|escape}-->" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back_on.gif','back');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back.gif','back');">
+                        <a href="<!--{$tpl_prev_url|h}-->" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back_on.gif','back');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back.gif','back');">
                             <img src="<!--{$TPL_URLPATH}-->img/button/btn_back.gif" width="150" height="30" alt="買い物を続ける" name="back" /></a>&nbsp;&nbsp;
                     <!--{/if}-->
                     <!--{if strlen($tpl_error) == 0}-->

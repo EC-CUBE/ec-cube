@@ -24,7 +24,7 @@
 <input type="hidden" name="step" value="0">
 
 <!--{foreach key=key item=item from=$arrHidden}-->
-<input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->">
+<input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->">
 <!--{/foreach}-->
 
 <div class="contents">
@@ -41,7 +41,7 @@
             <td>
             <!--{assign var=key value="shop_name"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
-            <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50"  /><br>
+            <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50"  /><br>
             <span class="ex-text">あなたの店名をご記入ください。</span>
             </td>
         </tr>
@@ -50,7 +50,7 @@
             <td>
             <!--{assign var=key value="admin_mail"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
-            <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50"  /><br>
+            <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50"  /><br>
             <span class="ex-text">受注メールなどの宛先になります。<br>
             (例) eccube@example.com</span>
             </td>
@@ -60,7 +60,7 @@
             <td>
             <!--{assign var=key value="login_id"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
-            <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50"  /><br>
+            <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50"  /><br>
             <span class="ex-text">管理機能にログインするためのIDです。</span><br />
             </td>
         </tr>
@@ -69,7 +69,7 @@
             <td>
             <!--{assign var=key value="login_pass"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
-            <input type="password" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$smarty.const.ID_MAX_LEN}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->;" size="50"  /><br>
+            <input type="password" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$smarty.const.ID_MAX_LEN}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->;" size="50"  /><br>
             <span class="ex-text">管理機能にログインするためのパスワードです。</sapn><br />
             </td>
         </tr>
@@ -86,7 +86,7 @@
             <td>
             <!--{assign var=key value="admin_dir"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
-            <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape|default:admin}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->;" size="50" /><br>
+            <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|default:'admin'|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->;" size="50" /><br>
             <span class="ex-text">管理機能のディレクトリ名です。<br>
              下記で管理機能にアクセスする場合の[管理機能]の部分です。<br>
              https://[ホスト名].[ドメイン名]/[ショップディレクトリ]/<span class="bold">[ディレクトリ]</span>/</span><br />
@@ -108,7 +108,7 @@
             <span class="ex-text">管理機能へのアクセスを特定のIPアドレスからの接続のみに制限します。<br />
             アクセスを許可するIPアドレスを1行づつ入力してください。<br />
             何も入力しない場合は全てを許可します。</span><br />
-            <textarea name="<!--{$key}-->" class="box280"><!--{$arrForm[$key].value|escape}--></textarea>
+            <textarea name="<!--{$key}-->" class="box280"><!--{$arrForm[$key].value|h}--></textarea>
             </td>
         </tr>
     </table>
@@ -122,7 +122,7 @@
             <td>
             <!--{assign var=key value="normal_url"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
-            <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50"  />
+            <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50"  />
             </td>
         </tr>
         <tr>
@@ -130,7 +130,7 @@
             <td>
             <!--{assign var=key value="secure_url"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
-            <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50"  />
+            <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50"  />
             </td>
         </tr>
         <tr>
@@ -138,7 +138,7 @@
             <td>
             <!--{assign var=key value="domain"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
-            <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50"  /><br>
+            <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50"  /><br>
             <span class="ex-text">通常URLとセキュアURLでサブドメインが異なる場合に指定します。</span>
             </td>
         </tr>

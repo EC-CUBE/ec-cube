@@ -40,7 +40,7 @@
                 <!--{else}-->
                     <link><!--{$arrNews[cnt].news_url|h}--></link>
                 <!--{/if}-->
-                <title><!--{$arrNews[cnt].news_title|sfMbConvertEncoding:$encode|escape}--></title>
+                <title><!--{$arrNews[cnt].news_title|sfMbConvertEncoding:$encode|h}--></title>
                 <description><!--{$arrNews[cnt].news_comment|truncate:256|sfMbConvertEncoding:$encode|h}--></description>
                 <pubDate><!--{$arrNews[cnt].news_date|h}--></pubDate>
             </item>
