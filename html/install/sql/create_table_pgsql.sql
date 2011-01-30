@@ -64,7 +64,7 @@ CREATE TABLE dtb_bat_order_daily_age (
     start_age smallint,
     end_age smallint,
     member smallint,
-    order_date timestamp DEFAULT now(),
+    order_date timestamp,
     create_date timestamp NOT NULL DEFAULT now()
 );
 
@@ -423,7 +423,6 @@ CREATE TABLE dtb_product_status (
     PRIMARY KEY (product_status_id, product_id)
 );
 
-
 CREATE TABLE dtb_bat_order_daily (
     total_order numeric NOT NULL DEFAULT 0,
     member numeric NOT NULL DEFAULT 0,
@@ -436,7 +435,7 @@ CREATE TABLE dtb_bat_order_daily (
     women_nonmember numeric NOT NULL DEFAULT 0,
     total numeric NOT NULL DEFAULT 0,
     total_average numeric NOT NULL DEFAULT 0,
-    order_date timestamp NOT NULL DEFAULT now(),
+    order_date timestamp NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
     year smallint NOT NULL,
     month smallint NOT NULL,
@@ -461,7 +460,7 @@ CREATE TABLE dtb_bat_order_daily_hour (
     total numeric NOT NULL DEFAULT 0,
     total_average numeric NOT NULL DEFAULT 0,
     hour smallint NOT NULL DEFAULT 0,
-    order_date timestamp DEFAULT now(),
+    order_date timestamp,
     create_date timestamp NOT NULL DEFAULT now()
 );
 
@@ -916,7 +915,7 @@ CREATE TABLE dtb_maker_count (
 );
 
 CREATE TABLE mtb_pref (
-    id text,
+    id smallint,
     name text,
     rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
@@ -1175,14 +1174,14 @@ CREATE TABLE mtb_mobile_domain (
 );
 
 CREATE TABLE mtb_ownersstore_err (
-    id text,
+    id smallint,
     name text,
     rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE mtb_ownersstore_ips (
-    id text,
+    id smallint,
     name text,
     rank smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
@@ -1295,12 +1294,10 @@ CREATE INDEX dtb_customer_mobile_phone_id_key ON dtb_customer (mobile_phone_id);
 CREATE INDEX dtb_products_class_product_id_key ON dtb_products_class(product_id);
 CREATE INDEX dtb_order_detail_product_id_key ON dtb_order_detail(product_id);
 CREATE INDEX dtb_send_customer_customer_id_key ON dtb_send_customer(customer_id);
-
 CREATE INDEX dtb_mobile_ext_session_id_param_key_key ON dtb_mobile_ext_session_id (param_key);
 CREATE INDEX dtb_mobile_ext_session_id_param_value_key ON dtb_mobile_ext_session_id (param_value);
 CREATE INDEX dtb_mobile_ext_session_id_url_key ON dtb_mobile_ext_session_id (url);
 CREATE INDEX dtb_mobile_ext_session_id_create_date_key ON dtb_mobile_ext_session_id (create_date);
-
 CREATE INDEX dtb_mobile_kara_mail_token_key ON dtb_mobile_kara_mail (token);
 CREATE INDEX dtb_mobile_kara_mail_create_date_key ON dtb_mobile_kara_mail (create_date);
 CREATE INDEX dtb_mobile_kara_mail_receive_date_key ON dtb_mobile_kara_mail (receive_date);
