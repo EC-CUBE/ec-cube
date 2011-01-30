@@ -1213,7 +1213,7 @@ CREATE TABLE dtb_mobile_ext_session_id (
     param_key text,
     param_value text,
     url text,
-    create_date timestamp NOT NULL DEFAULT now()
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE dtb_mobile_kara_mail (
@@ -1221,7 +1221,7 @@ CREATE TABLE dtb_mobile_kara_mail (
     session_id text NOT NULL,
     token text NOT NULL,
     next_url text NOT NULL,
-    create_date timestamp NOT NULL DEFAULT now(),
+    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     email text,
     receive_date timestamp
 );

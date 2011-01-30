@@ -738,7 +738,7 @@ CREATE TABLE dtb_shipping (
     shipping_commit_date timestamp,
     rank int,
     create_date timestamp NOT NULL DEFAULT now(),
-    update_date timestamp,
+    update_date timestamp NOT NULL,
     del_flg smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (shipping_id, order_id)
 );
