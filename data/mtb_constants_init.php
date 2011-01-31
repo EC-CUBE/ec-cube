@@ -374,20 +374,6 @@ define('PURCHASE_CUSTOMER_REGIST', 0);
 define('CV_PAYMENT_LIMIT', 14);
 /** 商品レビューでURL書き込みを許可するか否か */
 define('REVIEW_ALLOW_URL', 0);
-/** トラックバック 表示 */
-define('TRACKBACK_STATUS_VIEW', 1);
-/** トラックバック 非表示 */
-define('TRACKBACK_STATUS_NOT_VIEW', 2);
-/** トラックバック スパム */
-define('TRACKBACK_STATUS_SPAM', 3);
-/** フロント最大表示数 */
-define('TRACKBACK_VIEW_MAX', 10);
-/** トラックバック先URL */
-define('TRACKBACK_TO_URL', HTTP_URL . "tb/" . DIR_INDEX_PATH . "?pid=");
-/** サイト管理 トラックバック */
-define('SITE_CONTROL_TRACKBACK', 1);
-/** サイト管理 アフィリエイト */
-define('SITE_CONTROL_AFFILIATE', 2);
 /** Pear::Mail バックエンド:mail|smtp|sendmail */
 define('MAIL_BACKEND', "smtp");
 /** SMTPサーバー */

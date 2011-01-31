@@ -620,8 +620,6 @@ INSERT INTO dtb_product_status (product_status_id, product_id, creator_id, creat
 
 INSERT INTO dtb_recommend_products (product_id, recommend_product_id, rank, comment, status, creator_id, create_date, update_date) VALUES (2, 1, 4, 'お口直しに。', 0, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
-INSERT INTO dtb_site_control (control_id, control_title, control_text, control_flg, del_flg, memo, create_date, update_date) VALUES (1, 'トラックバック機能', 'トラックバック機能を使用するかどうかを決定します。', 2, 0, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-
 INSERT INTO dtb_templates (template_code, device_type_id, template_name, create_date, update_date) VALUES ('default', 10, 'デフォルト', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_templates (template_code, device_type_id, template_name, create_date, update_date) VALUES ('mobile', 1, 'モバイル', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_templates (template_code, device_type_id, template_name, create_date, update_date) VALUES ('sphone', 2, 'スマートフォン', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
@@ -916,12 +914,6 @@ INSERT INTO mtb_review_deny_url (id, name, rank) VALUES (3, 'ttps://', 3);
 INSERT INTO mtb_sex (id, name, rank) VALUES (1, '男性', 0);
 INSERT INTO mtb_sex (id, name, rank) VALUES (2, '女性', 1);
 
-INSERT INTO mtb_site_control_affiliate (id, name, rank) VALUES (1, '有効', 0);
-INSERT INTO mtb_site_control_affiliate (id, name, rank) VALUES (2, '無効', 1);
-
-INSERT INTO mtb_site_control_track_back (id, name, rank) VALUES (1, '有効', 0);
-INSERT INTO mtb_site_control_track_back (id, name, rank) VALUES (2, '無効', 1);
-
 INSERT INTO mtb_status (id, name, rank) VALUES (1, 'NEW', 0);
 INSERT INTO mtb_status (id, name, rank) VALUES (2, '残りわずか', 1);
 INSERT INTO mtb_status (id, name, rank) VALUES (3, 'ポイント２倍', 2);
@@ -949,10 +941,6 @@ INSERT INTO mtb_target (id, name, rank) VALUES (10, 'HeaderInternalNavi', 10);
 INSERT INTO mtb_taxrule (id, name, rank) VALUES (1, '四捨五入', 0);
 INSERT INTO mtb_taxrule (id, name, rank) VALUES (2, '切り捨て', 1);
 INSERT INTO mtb_taxrule (id, name, rank) VALUES (3, '切り上げ', 2);
-
-INSERT INTO mtb_track_back_status (id, name, rank) VALUES (1, '表示', 0);
-INSERT INTO mtb_track_back_status (id, name, rank) VALUES (2, '非表示', 1);
-INSERT INTO mtb_track_back_status (id, name, rank) VALUES (3, 'スパム', 2);
 
 INSERT INTO mtb_wday (id, name, rank) VALUES (0, '日', 0);
 INSERT INTO mtb_wday (id, name, rank) VALUES (1, '月', 1);
@@ -1153,13 +1141,6 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DELIV_DATE_END_MAX'
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PURCHASE_CUSTOMER_REGIST', '0', 273, '購入時強制会員登録(1:有効　0:無効)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CV_PAYMENT_LIMIT', '14', 275, '支払期限');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('REVIEW_ALLOW_URL', '0', 277, '商品レビューでURL書き込みを許可するか否か');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TRACKBACK_STATUS_VIEW', '1', 278, 'トラックバック 表示');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TRACKBACK_STATUS_NOT_VIEW', '2', 279, 'トラックバック 非表示');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TRACKBACK_STATUS_SPAM', '3', 280, 'トラックバック スパム');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TRACKBACK_VIEW_MAX', '10', 281, 'フロント最大表示数');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TRACKBACK_TO_URL', 'HTTP_URL . "tb/" . DIR_INDEX_PATH . "?pid="', 282, 'トラックバック先URL');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SITE_CONTROL_TRACKBACK', '1', 283, 'サイト管理 トラックバック');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SITE_CONTROL_AFFILIATE', '2', 284, 'サイト管理 アフィリエイト');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MAIL_BACKEND', '"smtp"', 285, 'Pear::Mail バックエンド:mail|smtp|sendmail');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SMTP_HOST', '"127.0.0.1"', 287, 'SMTPサーバー');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SMTP_PORT', '"25"', 288, 'SMTPポート');
