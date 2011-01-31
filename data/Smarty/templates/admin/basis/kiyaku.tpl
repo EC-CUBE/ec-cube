@@ -30,7 +30,7 @@
       <th>規約タイトル<span class="attention"> *</span></th>
       <td>
         <span class="attention"><!--{$arrErr.kiyaku_title}--></span>
-        <input type="text" name="kiyaku_title" value="<!--{$arrForm.kiyaku_title|h}-->" maxlength="<!--{$smarty.const.SMTEXT_LEN}-->" style="" size="60" class="box60"/>
+        <input type="text" name="kiyaku_title" value="<!--{$arrForm.kiyaku_title|h}-->" maxlength="<!--{$smarty.const.SMTEXT_LEN}-->" style="<!--{if $arrErr.kiyaku_title != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60"/>
         <span class="attention"> (上限<!--{$smarty.const.SMTEXT_LEN}-->文字)</span>
       </td>
     </tr>
@@ -38,7 +38,7 @@
       <th>規約内容<span class="attention"> *</span></th>
       <td>
       <span class="attention"><!--{$arrErr.kiyaku_text}--></span>
-      <textarea name="kiyaku_text" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" cols="60" rows="8" class="area60" style="" ><!--{$arrForm.kiyaku_text|h}--></textarea>
+      <textarea name="kiyaku_text" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" cols="60" rows="8" class="area60" style="<!--{if $arrErr.kiyaku_text != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" ><!--{$arrForm.kiyaku_text|h}--></textarea>
       <span class="attention"> (上限<!--{$smarty.const.MLTEXT_LEN}-->文字)</span>
       </td>
     </tr>
