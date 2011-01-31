@@ -546,8 +546,6 @@ INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES 
 INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (561, 'dtb_pagelayout', 'page_id', 'ページID 0はプレビュー用データ');
 INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (562, 'dtb_pagelayout', 'page_name', 'ページ名称');
 INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (563, 'dtb_pagelayout', 'url', 'ページURL PKEY1');
-INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (564, 'dtb_pagelayout', 'php_dir', 'PHPファイル保存先');
-INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (565, 'dtb_pagelayout', 'tpl_dir', 'テンプレートファイル保存先');
 INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (566, 'dtb_pagelayout', 'filename', 'ファイル名（拡張子なし）');
 INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (567, 'dtb_pagelayout', 'header_chk', 'ヘッダー使用チェック　1：使用、2：未使用');
 INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (568, 'dtb_pagelayout', 'footer_chk', 'フッター使用チェック　1：使用、2：未使用');

@@ -401,7 +401,6 @@ class LC_Page_Admin_Design extends LC_Page_Admin {
         $sql .= "     ,header_chk = ?";
         $sql .= "     ,footer_chk = ?";
         $sql .= "     ,url = ?";
-        $sql .= "     ,tpl_dir = ?";
         $sql .= "     ,filename = ?";
 //      $sql .= "     ,anywhere = ?";
         $sql .= " where page_id = 0";
@@ -411,7 +410,6 @@ class LC_Page_Admin_Design extends LC_Page_Admin {
         $arrUpdData = array($ret[0]['page_id']
         ,$ret[0]['page_id']
         ,$ret[0]['page_id']
-        ,USER_DIR . "templates/" . TEMPLATE_NAME . "/"
         ,USER_DIR . "templates/" . TEMPLATE_NAME . "/"
         ,$filename
 //      ,$ret[0]['anywhere']

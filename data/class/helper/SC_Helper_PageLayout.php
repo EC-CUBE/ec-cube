@@ -63,7 +63,7 @@ class SC_Helper_PageLayout {
 
         $arrPageLayout = $arrPageData[0];
 
-        $objPage->tpl_mainpage = $this->getTemplatePath($device_type_id) . $arrPageLayout['tpl_dir'] . $arrPageLayout['filename'] . ".tpl";
+        $objPage->tpl_mainpage = $this->getTemplatePath($device_type_id) . $arrPageLayout['filename'] . ".tpl";
 
         // ページタイトルを設定
         if (!isset($objPage->tpl_title)) {
@@ -201,8 +201,8 @@ __EOF__;
      */
     function lfDelFile($arrData) {
         // ファイルディレクトリ取得
-        $del_php = HTML_REALDIR . $arrData['php_dir'] . $arrData['filename'] . ".php";
-        $del_tpl = HTML_REALDIR . $arrData['tpl_dir'] . $arrData['filename'] . ".tpl";
+        $del_php = HTML_REALDIR . $arrData['filename'] . ".php";
+        $del_tpl = HTML_REALDIR . $arrData['filename'] . ".tpl"; // FIXME パスが誤っている
 
         // phpファイルの削除
         if (file_exists($del_php)) {

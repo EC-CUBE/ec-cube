@@ -281,8 +281,6 @@ class LC_Page_Sitemap extends LC_Page {
         $sql .= " page_id";             // ページID
         $sql .= " ,page_name";          // 名称
         $sql .= " ,url";                // URL
-        $sql .= " ,php_dir";            // php保存先ディレクトリ
-        $sql .= " ,tpl_dir";            // tpl保存先ディdレクトリ
         $sql .= " ,filename";           // ファイル名称
         $sql .= " ,header_chk ";        // ヘッダー使用FLG
         $sql .= " ,footer_chk ";        // フッター使用FLG

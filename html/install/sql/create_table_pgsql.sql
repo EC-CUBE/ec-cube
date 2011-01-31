@@ -816,8 +816,6 @@ CREATE TABLE dtb_pagelayout (
     page_id int NOT NULL,
     page_name text,
     url text NOT NULL,
-    php_dir text,
-    tpl_dir text,
     filename text,
     header_chk smallint DEFAULT 1,
     footer_chk smallint DEFAULT 1,
