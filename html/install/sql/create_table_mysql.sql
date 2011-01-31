@@ -1239,9 +1239,6 @@ CREATE INDEX dtb_mobile_ext_session_id_param_key_key ON dtb_mobile_ext_session_i
 CREATE INDEX dtb_mobile_ext_session_id_param_value_key ON dtb_mobile_ext_session_id (param_value(64));
 CREATE INDEX dtb_mobile_ext_session_id_url_key ON dtb_mobile_ext_session_id (url(64));
 CREATE INDEX dtb_mobile_ext_session_id_create_date_key ON dtb_mobile_ext_session_id (create_date);
-CREATE INDEX dtb_mobile_kara_mail_token_key ON dtb_mobile_kara_mail (token(64));
-CREATE INDEX dtb_mobile_kara_mail_create_date_key ON dtb_mobile_kara_mail (create_date);
-CREATE INDEX dtb_mobile_kara_mail_receive_date_key ON dtb_mobile_kara_mail (receive_date);
 
 CREATE TABLE dtb_index_list (
     table_name varchar(30) NOT NULL DEFAULT '',
