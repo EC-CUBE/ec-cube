@@ -1143,27 +1143,6 @@ CREATE TABLE mtb_review_deny_url (
     PRIMARY KEY (id)
 ) ENGINE=InnoDB;
 
-CREATE TABLE mtb_track_back_status (
-    id smallint,
-    name text,
-    rank smallint NOT NULL DEFAULT 0,
-    PRIMARY KEY (id)
-) ENGINE=InnoDB;
-
-CREATE TABLE mtb_site_control_track_back (
-    id smallint,
-    name text,
-    rank smallint NOT NULL DEFAULT 0,
-    PRIMARY KEY (id)
-) ENGINE=InnoDB;
-
-CREATE TABLE mtb_site_control_affiliate (
-    id smallint,
-    name text,
-    rank smallint NOT NULL DEFAULT 0,
-    PRIMARY KEY (id)
-) ENGINE=InnoDB;
-
 CREATE TABLE mtb_mobile_domain (
     id smallint,
     name text,
@@ -1242,32 +1221,6 @@ CREATE TABLE dtb_session (
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_date timestamp NOT NULL,
     PRIMARY KEY (sess_id)
-) ENGINE=InnoDB;
-
-CREATE TABLE dtb_site_control (
-    control_id int NOT NULL,
-    control_title varchar(255),
-    control_text text,
-    control_flg smallint NOT NULL DEFAULT 2,
-    del_flg smallint NOT NULL DEFAULT 0,
-    memo text,
-    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    update_date timestamp NOT NULL,
-    PRIMARY KEY (control_id)
-) ENGINE=InnoDB;
-
-CREATE TABLE dtb_trackback (
-    trackback_id int  NOT NULL,
-    product_id int NOT NULL,
-    blog_name varchar(255) NOT NULL,
-    title varchar(255) NOT NULL,
-    excerpt text NOT NULL,
-    url text NOT NULL,
-    status smallint NOT NULL DEFAULT 2,
-    del_flg smallint NOT NULL DEFAULT 0,
-    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    update_date timestamp NOT NULL,
-    PRIMARY KEY (trackback_id)
 ) ENGINE=InnoDB;
 
 CREATE TABLE dtb_bkup (
