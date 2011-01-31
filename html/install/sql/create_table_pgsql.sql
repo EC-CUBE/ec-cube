@@ -1194,16 +1194,6 @@ CREATE TABLE dtb_mobile_ext_session_id (
     create_date timestamp NOT NULL DEFAULT now()
 );
 
-CREATE TABLE dtb_mobile_kara_mail (
-    kara_mail_id int PRIMARY KEY,
-    session_id text NOT NULL,
-    token text NOT NULL,
-    next_url text NOT NULL,
-    create_date timestamp NOT NULL DEFAULT now(),
-    email text,
-    receive_date timestamp
-);
-
 CREATE TABLE dtb_module (
     module_id int NOT NULL UNIQUE,
     module_code text NOT NULL,

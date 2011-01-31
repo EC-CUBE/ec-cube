@@ -1037,7 +1037,6 @@ function getSequences() {
                  array("dtb_mail_history", "send_id"),
                  array("dtb_maker", "maker_id"),
                  array("dtb_member", "member_id"),
-                 array("dtb_mobile_kara_mail", "kara_mail_id"),
                  array("dtb_module_update_logs", "log_id"),
                  array("dtb_news", "news_id"),
                  array("dtb_order", "order_id"),
@@ -1049,9 +1048,7 @@ function getSequences() {
                  array("dtb_class_combination", "class_combination_id"),
                  array("dtb_review", "review_id"),
                  array("dtb_send_history", "send_id"),
-                 array("dtb_site_control", "control_id"),
                  array("dtb_table_comment", "id"),
-                 array("dtb_trackback", "trackback_id"),
                  array("dtb_mailmaga_template", "template_id"));
 }
 
