@@ -117,7 +117,6 @@ class LC_Page_Entry extends LC_Page {
      * @return void
      */
     function action() {
-        $objView = new SC_SiteView();
         $objDb = new SC_Helper_DB_Ex();
         $CONF = $objDb->sfGetBasisData();
         $objQuery = new SC_Query();

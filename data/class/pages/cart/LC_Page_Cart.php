@@ -80,7 +80,6 @@ class LC_Page_Cart extends LC_Page {
      * @return void
      */
     function action() {
-        $objView = new SC_SiteView(false);
         $objCartSess = new SC_CartSession();
         $objSiteSess = new SC_SiteSession();
         $objSiteInfo = $objView->objSiteInfo;
