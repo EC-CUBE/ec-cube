@@ -116,47 +116,43 @@ class LC_Page_Admin_Customer_Customer extends LC_Page_Admin {
 
         //---- 登録除外用カラム配列
         $arrRejectRegistColumn = array("year", "month", "day");
-
+        
+        //-- POSTデータの引き継ぎ
+        $this->arrForm = $_POST;
+        $this->arrForm['email'] = strtolower($this->arrForm['email']); // emailはすべて小文字で処理
+        
         //----　顧客情報編集
         switch ($this->getMode()) {
         case 'confirm':
-        case 'complete':
-        case 'return':
-            //-- POSTデータの引き継ぎ
-            $this->arrForm = $_POST;
-            $this->arrForm['email'] = strtolower($this->arrForm['email']);        // emailはすべて小文字で処理
-
             //-- 入力データの変換
             $this->arrForm = $this->lfConvertParam($this->arrForm, $arrRegistColumn);
             //-- 入力チェック
             $this->arrErr = $this->lfErrorCheck($this->arrForm);
-
-            //-- 入力エラー発生 or リターン時
-            if ($this->arrErr  || $mode == "return") {
+            // エラーなしの場合
+            if(count($this->arrErr) == 0) {
+                $this->tpl_mainpage = 'customer/customer_confirm.tpl'; // 確認ページ
+                $passlen = strlen($this->arrForm['password']);
+                $this->passlen = $this->lfPassLen($passlen);
+            } else {
                 foreach($this->arrForm as $key => $val) {
                     $this->list_data[ $key ] = $val;
                 }
-
-            } else {
-                //-- 確認
-                if ($mode == "confirm") {
-                    $this->tpl_mainpage = 'customer/customer_confirm.tpl';
-                    $passlen = strlen($this->arrForm['password']);
-                    $this->passlen = $this->lfPassLen($passlen);
-
-                }
-                //--　登録
-                if($mode == "complete") {
-                    $this->tpl_mainpage = 'customer/customer_complete.tpl';
-
-                    // シークレット№も登録する。
-                    $secret = SC_Utils_Ex::sfGetUniqRandomId("r");
-                    $this->arrForm['secret_key'] = $secret;
-                    array_push($arrRegistColumn, array('column' => 'secret_key', 'convert' => 'n'));
-
-                    //-- 登録
-                    $this->lfRegisData($this->arrForm, $arrRegistColumn);
-                }
+            }
+            break;
+        case 'complete':
+            $this->tpl_mainpage = 'customer/customer_complete.tpl';
+            
+            // シークレット№も登録する。
+            $secret = SC_Utils_Ex::sfGetUniqRandomId("r");
+            $this->arrForm['secret_key'] = $secret;
+            array_push($arrRegistColumn, array('column' => 'secret_key', 'convert' => 'n'));
+            
+            //-- 登録
+            $this->lfRegisData($this->arrForm, $arrRegistColumn);
+            break;
+        case 'return':
+            foreach($this->arrForm as $key => $val) {
+                $this->list_data[ $key ] = $val;
             }
             break;
         default:
