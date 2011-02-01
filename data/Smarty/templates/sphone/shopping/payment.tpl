@@ -106,7 +106,7 @@
                     <!--★その他お問い合わせ事項★-->
                     <!--{assign var=key value="message"}-->
                     <span class="attention"><!--{$arrErr[$key]}--></span>
-                    <textarea name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" cols="80" rows="8" class="area660" wrap="head"><!--{$arrForm[$key].value|h}--></textarea>
+                    <textarea name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" cols="80" rows="8" class="area660" wrap="hard"><!--{$arrForm[$key].value|h}--></textarea>
                 </div>
                 <div>
                     <span class="attention"> (<!--{$smarty.const.LTEXT_LEN}-->文字まで)</span>
