@@ -132,6 +132,7 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page_Admin {
                 $this->objFormParam->addParam('配送業者ID', 'deliv_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
                 $this->objFormParam->addParam("配送業者名", "name", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
                 $this->objFormParam->addParam("名称", "service_name", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+                $this->objFormParam->addParam("説明", "remark", LLTEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
                 $this->objFormParam->addParam("伝票No.確認URL", "confirm_url", STEXT_LEN, "n", array("URL_CHECK", "MAX_LENGTH_CHECK"), "http://");
                 $this->objFormParam->addParam("取扱商品種別", "product_type_id", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
                 $this->objFormParam->addParam("取扱支払方法", "payment_ids", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
@@ -169,6 +170,7 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page_Admin {
         // 入力データを渡す。
         $sqlval['name'] = $arrRet['name'];
         $sqlval['service_name'] = $arrRet['service_name'];
+        $sqlval['remark'] = $arrRet['remark'];
         $sqlval['confirm_url'] = $arrRet['confirm_url'];
         $sqlval['product_type_id'] = $arrRet['product_type_id'];
         $sqlval['creator_id'] = $_SESSION['member_id'];
@@ -284,7 +286,7 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page_Admin {
         $this->lfInitParam('edit');
 
         // 配送業者一覧の取得
-        $col = "deliv_id, name, service_name, confirm_url, product_type_id";
+        $col = "deliv_id, name, service_name, remark, confirm_url, product_type_id";
         $where = "deliv_id = ?";
         $table = "dtb_deliv";
         $arrRet = $objQuery->select($col, $table, $where, array($deliv_id));

@@ -44,6 +44,13 @@
       <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" /></td>
     </tr>
     <tr>
+      <th>説明</td>
+      <td colspan="3">
+      <!--{assign var=key value="remark"}-->
+      <span class="attention"><!--{$arrErr[$key]}--></span>
+      <textarea name="<!--{$arrForm[$key].keyname}-->" cols="60" rows="8" class="area60" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{$arrForm[$key].value|h}--></textarea></td>
+    </tr>
+    <tr>
       <th>伝票No.URL</td>
       <td colspan="3">
       <!--{assign var=key value="confirm_url"}-->
