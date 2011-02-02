@@ -182,13 +182,6 @@ function selectAll(target) {
         <input type="checkbox" name="stock_unlimited" value="1" <!--{if $arrForm.stock_unlimited == "1"}-->checked<!--{/if}--> onclick="fnCheckStockLimit('<!--{$smarty.const.DISABLED_RGB}-->');"/>無制限
       </td>
     </tr>
-    <tr>
-      <th>支払方法<span class="attention"> *</span></th>
-       <td>
-         <span class="attention"><!--{$arrErr.payment_ids}--></span>
-         <!--{html_checkboxes name="payment_ids" options=$arrPayments selected=$arrForm.payment_ids separator='&nbsp;&nbsp;'}-->
-       </td>
-    </tr>
     <!--{/if}-->
 
     <tr>

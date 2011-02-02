@@ -73,7 +73,6 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin {
         $this->arrAllowedTag = $masterData->getMasterData("mtb_allowed_tag");
         $this->arrProductType = $masterData->getMasterData("mtb_product_type");
         $this->arrMaker = SC_Helper_DB_Ex::sfGetIDValueList("dtb_maker", "maker_id", "name");
-        $this->arrPayments = SC_Helper_DB_Ex::sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
         $this->tpl_nonclass = true;
     }
 
@@ -142,7 +141,6 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin {
                 $this->arrForm = $this->lfGetProduct($_POST['product_id']);
                 $productStatus= $objProduct->getProductStatus(array($_POST['product_id']));
                 $this->arrForm['product_status'] = $productStatus[$_POST['product_id']];
-                $this->arrForm['payment_ids'] = $objProduct->getEnablePaymentIds(array($this->arrForm['product_class_id']));
 
                 // DBデータから画像ファイル名の読込
                 $this->objUpFile->setDBFileList($this->arrForm);
@@ -683,11 +681,6 @@ __EOF__;
                 $objErr->doFunc(array("在庫数", "stock", AMOUNT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
             }
 
-            // 支払方法チェック
-            if (empty($array['payment_ids'])) {
-                $objErr->arrErr['payment_ids'] = "※ 支払方法は、いずれかを選択してください。<br />";
-            }
-
             //ダウンロード商品チェック
             if($array['product_type_id'] == PRODUCT_TYPE_DOWNLOAD) {
                 $objErr->doFunc(array("ダウンロードファイル名", "down_filename", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
@@ -931,9 +924,6 @@ __EOF__;
             $objQuery->update('dtb_products_class', $sqlval, "product_class_id = ?", array($sqlval['product_class_id']));
 
         }
-
-        $objProduct = new SC_Product();
-        $objProduct->setPaymentOptions($sqlval['product_class_id'], $arrList['payment_ids']);
     }
 
     /* ダウンロードファイル情報の初期化 */

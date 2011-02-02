@@ -113,7 +113,6 @@
       <th><!--{$smarty.const.NORMAL_PRICE_TITLE}-->(円)</th>
       <th><!--{$smarty.const.SALE_PRICE_TITLE}-->(円)<span class="attention">*</span></th>
       <th>商品種別<span class="attention">*</span></th>
-      <th><span class="attention">*</span> <input type="checkbox" name="allPaymentIds" id="allPaymentIds" onclick="fnAllCheck(this, 'input[name^=payment_ids]')" /><label for="allPaymentIds">支払方法</label></th>
       <th>ダウンロード<br>ファイル名<span class="red"><br>上限<!--{$smarty.const.STEXT_LEN}-->文字</span></th>
       <th>ダウンロード商品用<br>ファイル</th>
     </tr>
@@ -153,10 +152,6 @@
       <td class="class-product-type">
         <!--{assign var=key value="product_type_id:`$smarty.section.cnt.iteration`"}-->
         <!--{html_radios name=$key options=$arrProductType selected=$arrForm[$key] separator='<br />'}-->
-      </td>
-      <td class="class-payment center">
-        <!--{assign var=key value="payment_ids:`$smarty.section.cnt.iteration`"}-->
-        <!--{html_checkboxes name=$key options=$arrPayments selected=$arrForm[$key] separator='<br />'}-->
       </td>
       <td class="center">
         <!--{assign var=key value="down_filename:`$smarty.section.cnt.iteration`"}-->

@@ -340,20 +340,18 @@ class SC_Helper_Purchase {
      * 購入金額に応じた支払方法を取得する.
      *
      * @param integer $total 購入金額
-     * @param array $productClassIds 購入する商品規格IDの配列
+     * @param integer $deliv_id 配送業者ID
      * @return array 購入金額に応じた支払方法の配列
      */
-    function getPayment($total, $productClassIds) {
-        // 有効な支払方法を取得
-        $objProduct = new SC_Product();
-        $paymentIds = $objProduct->getEnablePaymentIds($productClassIds);
+    function getPaymentsByPrice($total, $deliv_id) {
 
+        $arrPaymentIds = $this->getPayments($deliv_id);
         $objQuery =& SC_Query::getSingletonInstance();
 
         // 削除されていない支払方法を取得
-        $where = 'del_flg = 0 AND payment_id IN (' . implode(', ', array_pad(array(), count($paymentIds), '?')) . ')';
+        $where = 'del_flg = 0 AND payment_id IN (' . implode(', ', array_pad(array(), count($arrPaymentIds), '?')) . ')';
         $objQuery->setOrder("rank DESC");
-        $payments = $objQuery->select("payment_id, payment_method, rule, upper_rule, note, payment_image", "dtb_payment", $where, $paymentIds);
+        $payments = $objQuery->select("payment_id, payment_method, rule, upper_rule, note, payment_image", "dtb_payment", $where, $arrPaymentIds);
 
         foreach ($payments as $data) {
             // 下限と上限が設定されている
@@ -484,14 +482,30 @@ __EOS__;
     }
 
     /**
-     * 商品種別ID から配送業者ID を取得する.
+     * 商品種別ID から配送業者を取得する.
      */
     function getDeliv($productTypeId) {
         $objQuery =& SC_Query::getSingletonInstance();
-        $result = $objQuery->get("deliv_id", "dtb_deliv", "product_type_id = ?",
+        return $objQuery->select("*", "dtb_deliv", "product_type_id = ?",
                                  array($productTypeId));
-        // XXX ダウンロード商品の場合の dtb_shipping の扱い
-        return is_null($result) ? 0 : $result;
+    }
+
+    /**
+     * 配送業者ID から, 有効な支払方法を取得する.
+     *
+     * @param integer $deliv_id 配送業者ID
+     * @return array 有効な支払方法IDの配列
+     */
+    function getPayments($deliv_id) {
+        $objQuery =& SC_Query::getSingletonInstance();
+        $from = <<< __EOS__
+                      dtb_deliv T1
+            LEFT JOIN dtb_payment_options T2
+                   ON T1.deliv_id = T2.deliv_id
+__EOS__;
+        $objQuery->setOrder('T2.rank');
+        return $objQuery->getCol('payment_id', $from, 'T1.deliv_id = ?',
+                                 array($deliv_id), MDB2_FETCHMODE_ORDERED);
     }
 
     /**

@@ -84,7 +84,19 @@
   <table>
     <tr>
       <th>商品種別</th>
-      <td><span class="attention"><!--{$arrErr[$key]}--></span><!--{html_radios name=$key options=$arrProductType selected=$arrForm[$key].value}--></td>
+      <td><span class="attention"><!--{$arrErr[$key]}--></span><!--{html_radios name=$key options=$arrProductType selected=$arrForm[$key].value separator='&nbsp;&nbsp;'}--></td>
+    </tr>
+  </table>
+
+  <h2>取扱支払方法</h2>
+  <!--{assign var=key value="payment_ids"}-->
+  <table>
+    <tr>
+      <th>支払方法</th>
+      <td>
+        <span class="attention"><!--{$arrErr[$key]}--></span>
+        <!--{html_checkboxes name=$key options=$arrPayments selected=$arrForm[$key].value separator='&nbsp;&nbsp;'}-->
+      </td>
     </tr>
   </table>
 

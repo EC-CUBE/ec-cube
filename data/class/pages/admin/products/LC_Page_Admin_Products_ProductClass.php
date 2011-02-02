@@ -55,7 +55,6 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin {
         $this->tpl_subtitle = '商品登録(商品規格)';
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrProductType = $masterData->getMasterData("mtb_product_type");
-        $this->arrPayments = SC_Helper_DB_Ex::sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
     }
 
     function lfInitDownFile() {
@@ -297,9 +296,6 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin {
                 $objQuery->insert("dtb_products_class", $pVal);
             }
 
-            // 支払方法登録
-            $objProduct = new SC_Product();
-            $objProduct->setPaymentOptions($pVal['product_class_id'], $arrList['payment_ids:'.$i]);
             $i++;
         }
 
@@ -372,11 +368,6 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin {
                     $objErr->arrErr['product_type_id:' . $no] = "※ 商品種別は、いずれかを選択してください。<br />";
                 }
 
-                // 支払方法チェック
-                if (empty($array['payment_ids:' . $no])) {
-                    $objErr->arrErr['payment_ids:' . $no] = "※ 支払方法は、いずれかを選択してください。<br />";
-                }
-
                 //ダウンロード商品チェック
                 if($array["product_type_id:".$no] == PRODUCT_TYPE_DOWNLOAD) {
                     $objErr->doFunc(array("ダウンロードファイル名", "down_filename:".$no, STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
@@ -396,7 +387,6 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin {
             }
             if(count($objErr->arrErr) > 0) {
                 $objErr->arrErr["error:".$no] = $objErr->arrErr["product_type_id:".$no];
-                $objErr->arrErr["error:".$no] .= $objErr->arrErr["payment_ids:".$no];
                 $objErr->arrErr["error:".$no] .= $objErr->arrErr["product_code:".$no];
                 $objErr->arrErr["error:".$no] .= $objErr->arrErr["price01:".$no];
                 $objErr->arrErr["error:".$no] .= $objErr->arrErr["price02:".$no];
@@ -489,9 +479,6 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin {
                     $this->objDownFile->addFile("ダウンロード販売用ファイル". ":" . ($i+1), 'down_realfilename'. ":" . ($i+1), explode(",", DOWNLOAD_EXTENSION),DOWN_SIZE, true, 0, 0);
                     break;
 
-                    case 'product_class_id':
-                        $this->arrForm["payment_ids:" . ($i+1)] = $objProduct->getEnablePaymentIds(array($val));
-                        break;
                 default:
                 }
             }

@@ -171,7 +171,8 @@ class LC_Page_Shopping_Deliv extends LC_Page {
                 // 会員情報の住所を受注一時テーブルに書き込む
                 $objPurchase->copyFromCustomer($sqlval, $objCustomer, 'shipping');
                 // FIXME ダウンロード商品の場合は配送無し
-                $sqlval['deliv_id'] = $objPurchase->getDeliv($this->cartKey);
+                $arrDeliv = $objPurchase->getDeliv($this->cartKey);
+                $sqlval['deliv_id'] = $arrDeliv[0]['deliv_id'];
                 $objPurchase->saveShippingTemp($sqlval);
                 $objPurchase->saveOrderTemp($uniqid, $sqlval, $objCustomer);
                 // 正常に登録されたことを記録しておく
@@ -192,7 +193,8 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         // 会員登録住所に送る
         case 'customer_addr':
             $sqlval = array();
-            $sqlval['deliv_id'] = $objPurchase->getDeliv($this->cartKey);
+            $arrDeliv = $objPurchase->getDeliv($this->cartKey);
+            $sqlval['deliv_id'] = $arrDeliv[0]['deliv_id'];
             // 会員登録住所がチェックされている場合
             if ($_POST['deliv_check'] == '-1') {
                 // 会員情報の住所を受注一時テーブルに書き込む

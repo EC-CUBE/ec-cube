@@ -24,13 +24,7 @@
 <h2>確認</h2>
 <form name="form1" id="form1" method="post" action="?" enctype="multipart/form-data">
 <!--{foreach key=key item=item from=$arrForm}-->
-  <!--{if '/payment_ids:/'|preg_match:$key}-->
-    <!--{foreach item=paymentsVal from=$item}-->
-      <input type="hidden" name="<!--{$key}-->[]" value="<!--{$paymentsVal|h}-->" />
-    <!--{/foreach}-->
-  <!--{else}-->
     <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
-  <!--{/if}-->
 <!--{/foreach}-->
 
 <!--{foreach key=key item=item from=$arrHidden}-->
@@ -50,7 +44,6 @@
       <th><!--{$smarty.const.NORMAL_PRICE_TITLE}-->(円)</th>
       <th><!--{$smarty.const.SALE_PRICE_TITLE}-->(円)</th>
       <th>商品種別</th>
-      <th>支払方法</th>
       <th>ダウンロードファイル名</th>
       <th>ダウンロード商品用ファイルアップロード</th>
     </tr>
@@ -81,12 +74,6 @@
       <td class="right">
       <!--{foreach from=$arrForm[$key] item=product_type_id}-->
         <!--{$arrProductType[$product_type_id]|h}-->
-      <!--{/foreach}-->
-      </td>
-      <!--{assign var=key value="payment_ids:`$smarty.section.cnt.iteration`"}-->
-      <td>
-      <!--{foreach from=$arrForm[$key] item=payment_id}-->
-        <!--{$arrPayments[$payment_id]|h}-->&nbsp;
       <!--{/foreach}-->
       </td>
       <!--{assign var=key value="down_filename:`$smarty.section.cnt.iteration`"}-->

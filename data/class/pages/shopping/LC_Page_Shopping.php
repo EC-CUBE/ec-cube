@@ -289,9 +289,9 @@ class LC_Page_Shopping extends LC_Page {
             $objPurchase->copyFromOrder($sqlval, $params);
         }
 
-        $deliv_id = $objPurchase->getDeliv($productTypeId);
-        $order_val = array('deliv_id' => $deliv_id);
-        $shipping_val = array('deliv_id' => $deliv_id);
+        $arrDeliv = $objPurchase->getDeliv($productTypeId);
+        $order_val = array('deliv_id' => $arrDeliv[0]['deliv_id']);
+        $shipping_val = array('deliv_id' => $arrDeliv[0]['deliv_id']);
 
         /*
          * order_* と shipping_* をそれぞれ $_SESSION['shipping'][$shipping_id]

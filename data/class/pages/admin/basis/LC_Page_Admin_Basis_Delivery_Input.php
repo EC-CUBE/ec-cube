@@ -55,6 +55,7 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page_Admin {
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrProductType = $masterData->getMasterData("mtb_product_type");
+        $this->arrPayments = SC_Helper_DB_Ex::sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
         $this->tpl_subtitle = '配送業者設定';
         $this->mode = $this->getMode();
     }
@@ -133,6 +134,7 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page_Admin {
                 $this->objFormParam->addParam("名称", "service_name", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
                 $this->objFormParam->addParam("伝票No.確認URL", "confirm_url", STEXT_LEN, "n", array("URL_CHECK", "MAX_LENGTH_CHECK"), "http://");
                 $this->objFormParam->addParam("取扱商品種別", "product_type_id", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+                $this->objFormParam->addParam("取扱支払方法", "payment_ids", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
 
                 for($cnt = 1; $cnt <= DELIVTIME_MAX; $cnt++) {
                     $this->objFormParam->addParam("お届け時間$cnt", "deliv_time$cnt", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
@@ -258,6 +260,18 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page_Admin {
                 }
             }
         }
+
+        // TODO 支払方法登録
+        $objQuery->delete('dtb_payment_options', 'deliv_id = ?', array($_POST['deliv_id']));
+        $sqlval = array();
+        $i = 1;
+        foreach ($arrRet['payment_ids'] as $val) {
+            $sqlval['deliv_id'] = $deliv_id;
+            $sqlval['payment_id'] = $val;
+            $sqlval['rank'] = $i;
+            $objQuery->insert('dtb_payment_options', $sqlval);
+            $i++;
+        }
         $objQuery->commit();
         return $deliv_id;
     }
@@ -287,6 +301,16 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page_Admin {
         $table = "dtb_delivfee";
         $arrRet = $objQuery->select($col, $table, $where, array($deliv_id));
         $this->objFormParam->setParamList($arrRet, 'fee');
+        // 支払方法
+        $col = 'payment_id';
+        $where = 'deliv_id = ? ORDER BY rank';
+        $table = 'dtb_payment_options';
+        $arrRet = $objQuery->select($col, $table, $where, array($deliv_id));
+        $arrPaymentIds = array();
+        foreach ($arrRet as $val) {
+            $arrPaymentIds[] = $val['payment_id'];
+        }
+        $this->objFormParam->setValue('payment_ids', $arrPaymentIds);
     }
 
     /* 入力内容のチェック */

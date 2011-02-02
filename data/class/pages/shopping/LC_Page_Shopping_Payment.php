@@ -136,8 +136,9 @@ class LC_Page_Shopping_Payment extends LC_Page {
         // 購入金額の取得
         $total_inctax = $objCartSess->getAllProductsTotal($this->cartKey);
 
-        // 支払い方法の取得
-        $this->arrPayment = $objPurchase->getPayment($total_inctax, $objCartSess->getAllProductClassID($this->cartKey));
+        // FIXME 支払い方法の取得
+        $arrDeliv = $objPurchase->getDeliv($this->cartKey);
+        $this->arrPayment = $objPurchase->getPaymentsByPrice($total_inctax, $arrDeliv[0]['deliv_id']);
 
         switch($this->getMode()) {
         case 'confirm':

@@ -586,46 +586,6 @@ __EOS__;
     }
 
     /**
-     * 引数の商品規格IDで有効な支払方法IDの配列を取得する.
-     *
-     * @param array $productClassIds 商品規格IDの配列
-     * @return array 支払方法IDの配列
-     */
-    function getEnablePaymentIds($productClassIds) {
-        $size = count($productClassIds);
-        $objQuery =& SC_Query::getSingletonInstance();
-        $objQuery->groupby = 'GROUP BY payment_id HAVING COUNT(payment_id) = ?';
-        $paymentIds = $objQuery->getCol('payment_id', 'dtb_payment_options',
-                                        'product_class_id IN (' . implode(', ', array_pad(array(), $size, '?')) . ')',
-                                        array_merge($productClassIds, array($size)),
-                                        MDB2_FETCHMODE_ORDERED);
-        return $paymentIds;
-    }
-
-    /**
-     * 商品規格に支払方法を設定する.
-     *
-     * TODO 現在は DELETE/INSERT だが, UPDATE を検討する.
-     *
-     * @param integer $productClassId 商品規格ID
-     * @param array 設定する支払方法IDの配列
-     * @return void
-     */
-    function setPaymentOptions($productClassId, $paymentIds) {
-        $val['product_class_id'] = $productClassId;
-
-        $objQuery =& SC_Query::getSingletonInstance();
-        $objQuery->delete('dtb_payment_options', 'product_class_id = ?', array($productClassId));
-        $rank = 1;
-        foreach ($paymentIds as $paymentId) {
-            $val['payment_id'] = $paymentId;
-            $val['rank'] = $rank;
-            $objQuery->insert('dtb_payment_options', $val);
-            $rank++;
-        }
-    }
-
-    /**
      * 商品詳細の SQL を取得する.
      *
      * @param string $where 商品詳細の WHERE 句

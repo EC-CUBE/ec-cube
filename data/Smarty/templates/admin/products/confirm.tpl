@@ -23,7 +23,7 @@
 *}-->
 <form name="form1" id="form1" method="post" action="?" enctype="multipart/form-data">
   <!--{foreach key=key item=item from=$arrForm}-->
-    <!--{if $key == 'product_status' || $key == 'payment_ids'}-->
+    <!--{if $key == 'product_status'}-->
       <!--{foreach item=statusVal from=$item}-->
       <input type="hidden" name="<!--{$key}-->[]" value="<!--{$statusVal|h}-->" />
       <!--{/foreach}-->
@@ -111,14 +111,6 @@
       <!--{else}-->
         <!--{$arrForm.stock|h}-->
       <!--{/if}-->
-      </td>
-    </tr>
-    <tr>
-      <th>支払方法</th>
-      <td>
-      <!--{foreach from=$arrForm.payment_ids item=payment_id}-->
-        <!--{$arrPayments[$payment_id]|h}-->&nbsp;
-      <!--{/foreach}-->
       </td>
     </tr>
     <!--{/if}-->
