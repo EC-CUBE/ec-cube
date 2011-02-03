@@ -231,7 +231,7 @@ class LC_Page_Contact extends LC_Page {
     function lfSendMail(&$objPage){
         $objDb = new SC_Helper_DB_Ex();
         $CONF = $objDb->sfGetBasisData();			// 店舗基本情報
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
         $objSiteInfo = $this->objView->objSiteInfo;
         $arrInfo = $objSiteInfo->data;
         $objPage->tpl_shopname = $arrInfo['shop_name'];
