@@ -48,21 +48,24 @@ class LC_Page_Entry extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->year = "";
-        $masterData = new SC_DB_MasterData_Ex();
-        $this->arrPref = $masterData->getMasterData('mtb_pref');
-        $this->arrJob = $masterData->getMasterData("mtb_job");
-        $this->arrReminder = $masterData->getMasterData("mtb_reminder");
+        $masterData         = new SC_DB_MasterData_Ex();
+        $this->arrPref      = $masterData->getMasterData('mtb_pref');
+        $this->arrJob       = $masterData->getMasterData("mtb_job");
+        $this->arrReminder  = $masterData->getMasterData("mtb_reminder");
 
         // 生年月日選択肢の取得
-        $objDate = new SC_Date(START_BIRTH_YEAR, date("Y",strtotime("now")));
-        $this->arrYear = $objDate->getYear('', 1950, '');
-        $this->arrMonth = $objDate->getMonth(true);
-        $this->arrDay = $objDate->getDay(true);
+        $objDate            = new SC_Date(START_BIRTH_YEAR, date("Y",strtotime("now")));
+        $this->arrYear      = $objDate->getYear('', 1950, '');
+        $this->arrMonth     = $objDate->getMonth(true);
+        $this->arrDay       = $objDate->getDay(true);
 
         $this->httpCacheControl('nocache');
 
-        $this->isMobile = Net_UserAgent_Mobile::isMobile();
+        $this->isMobile     = Net_UserAgent_Mobile::isMobile();
+
+        // パラメータ管理クラス,パラメータ情報の初期化
+        $this->objFormParam = new SC_FormParam();
+        $this->lfInitParam();
     }
 
     /**
@@ -117,74 +120,41 @@ class LC_Page_Entry extends LC_Page {
      * @return void
      */
     function action() {
-        $objDb = new SC_Helper_DB_Ex();
-        $CONF = $objDb->sfGetBasisData();
-        $objQuery = new SC_Query();
+        $this->lfPreMode();
+        $this->arrForm  = $this->objFormParam->getHashArray();
 
-        // PC時は規約ページからの遷移でなければエラー画面へ遷移する
-        $this->lfCheckReferer();
+        switch ($this->getMode()) {
+        case 'confirm':
+        //-- 確認
+            $this->arrErr = $this->lfErrorCheck();
+            // 入力エラーなし
+            if(empty($this->arrErr)) {
+                //パスワード表示
+                $this->passlen      = SC_Utils_Ex::lfPassLen(strlen($this->arrForm['password']));
 
-        // mobile用（戻るボタンでの遷移かどうかを判定）
-        if (!empty($_POST["return"])) {
-            $_POST["mode"] = "return";
-        }
-
-        // パラメータ管理クラス,パラメータ情報の初期化
-        $this->objFormParam = new SC_FormParam();
-        $this->lfInitParam();
-        $this->objFormParam->setParam($_POST);    // POST値の取得
-
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-            //CSRF対策
-            if (!SC_Helper_Session_Ex::isValidToken()) {
-                SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", true);
+                $this->tpl_mainpage = 'entry/confirm.tpl';
+                $this->tpl_title    = '会員登録(確認ページ)';
             }
-
-            $this->objFormParam->convParam();
-            $this->objFormParam->toLower('email');
-            $this->objFormParam->toLower('email02');
-            $this->arrForm = $this->objFormParam->getHashArray();
-
-            switch ($this->getMode()) {
-            case 'confirm':
-            //-- 確認
-                $this->arrErr = $this->lfErrorCheck();
-
-                // 入力エラーなし
-                if(count($this->arrErr) == 0) {
-
-                    $this->list_data = $this->objFormParam->getHashArray();
-
-                    //パスワード表示
-                    $passlen = strlen($this->arrForm['password']);
-                    $this->passlen = SC_Utils_Ex::lfPassLen($passlen);
-
-                    $this->tpl_mainpage = 'entry/confirm.tpl';
-                    $this->tpl_title = '会員登録(確認ページ)';
-                }
-                break;
-            case 'complete':
-                //-- 会員登録と完了画面
-
-                // 会員情報の登録
-                $this->CONF = $CONF;
-                $this->uniqid = $this->lfRegistData();
+            break;
+        case 'complete':
+            //-- 会員登録と完了画面
+            $this->arrErr = $this->lfErrorCheck();
+            if(empty($this->arrErr)) {
+                $this->uniqid       = $this->lfRegistData();
 
                 $this->tpl_mainpage = 'entry/complete.tpl';
-                $this->tpl_title = '会員登録(完了ページ)';
+                $this->tpl_title    = '会員登録(完了ページ)';
 
                 $this->lfSendMail();
 
                 // 完了ページに移動させる。
-                $customer_id = $objQuery->get("customer_id", "dtb_customer", "secret_key = ?", array($this->uniqid));
-                SC_Response_Ex::sendRedirect('complete.php', array("ci" => $customer_id));
-                exit;
-                break;
-            default:
-                break;
+                SC_Response_Ex::sendRedirect('complete.php', array("ci" => $this->lfGetCustomerId($this->uniqid)));
             }
+            break;
+        default:
+            break;
         }
+
         $this->transactionid = SC_Helper_Session_Ex::getToken();
     }
 
@@ -200,64 +170,106 @@ class LC_Page_Entry extends LC_Page {
     // }}}
     // {{{ protected functions
 
-    // 会員情報の登録
+
+    /**
+     * lfPreMode
+     *
+     * @access public
+     * @return void
+     */
+    function lfPreMode() {
+        // PC時は規約ページからの遷移でなければエラー画面へ遷移する
+        $this->lfCheckReferer();
+
+        // mobile用（戻るボタンでの遷移かどうかを判定）
+        if (!empty($_POST["return"])) {
+            $_POST["mode"] = "return";
+        }
+
+        //CSRF対策
+        $this->lfCheckCSRF();
+
+        $this->objFormParam->setParam($_POST);    // POST値の取得
+        $this->objFormParam->convParam();
+        $this->objFormParam->toLower('email');
+        $this->objFormParam->toLower('email02');
+    }
+
+
+    /**
+     * lfRegistData
+     *
+     * 会員情報の登録
+     *
+     * @access public
+     * @return void
+     */
     function lfRegistData() {
-
         $objQuery = new SC_Query();
-        $arrRet = $this->objFormParam->getHashArray();
-        $sqlval = $this->objFormParam->getDbArray();
-
-        // 登録データの作成
-        $sqlval['birth'] = SC_Utils_Ex::sfGetTimestamp($arrRet['year'], $arrRet['month'], $arrRet['day']);
-
-        // 重複しない会員登録キーを発行する。
-        $count = 1;
-        while ($count != 0) {
-            $uniqid = SC_Utils_Ex::sfGetUniqRandomId("r");
-            $count = $objQuery->count("dtb_customer", "secret_key = ?", array($uniqid));
-        }
-
-        // 仮会員登録の場合
-        if(CUSTOMER_CONFIRM_MAIL == true) {
-            $sqlval["status"] = "1";				// 仮会員
-        } else {
-            $sqlval["status"] = "2";				// 本会員
-        }
-
-        /*
-          secret_keyは、テーブルで重複許可されていない場合があるので、
-                          本会員登録では利用されないがセットしておく。
-        */
-        $sqlval["secret_key"] = $uniqid;		// 会員登録キー
-        $sqlval["point"] = $this->CONF["welcome_point"]; // 入会時ポイント
-
-        if ($this->isMobile === true) {
-            // 携帯メールアドレス
-            $sqlval['email_mobile'] = $sqlval['email'];
-            //PHONE_IDを取り出す
-            $sqlval['mobile_phone_id'] =  SC_MobileUserAgent::getId();
-        }
-
         //-- 登録実行
         $objQuery->begin();
-        SC_Helper_Customer_Ex::sfEditCustomerData($sqlval);
+        SC_Helper_Customer_Ex::sfEditCustomerData($this->lfMakeSqlVal());
         $objQuery->commit();
 
         return $uniqid;
     }
 
+
+    /**
+     * lfMakeSqlVal
+     *
+     * 会員登録に必要なsqlを作成する
+     *
+     * @access public
+     * @return void
+     */
+    function lfMakeSqlVal() {
+        $arrRet     = $this->objFormParam->getHashArray();
+        $sqlval     = $this->objFormParam->getDbArray();
+
+        // 登録データの作成
+        $sqlval['birth']  = SC_Utils_Ex::sfGetTimestamp($arrRet['year'], $arrRet['month'], $arrRet['day']);
+
+        // 仮会員 1 本会員 2
+        $sqlval["status"] = (CUSTOMER_CONFIRM_MAIL == true) ? "1" : "2";
+
+        /*
+          secret_keyは、テーブルで重複許可されていない場合があるので、
+                          本会員登録では利用されないがセットしておく。
+        */
+        $sqlval["secret_key"] = SC_Helper_Customer_Ex::sfGetUniqSecretKey();		// 会員登録キー
+
+        $CONF = SC_Helper_DB_Ex::sfGetBasisData();
+        $sqlval["point"] = $CONF["welcome_point"]; // 入会時ポイント
+
+        if ($this->isMobile === true) {
+            // 携帯メールアドレス
+            $sqlval['email_mobile']     = $sqlval['email'];
+            //PHONE_IDを取り出す
+            $sqlval['mobile_phone_id']  =  SC_MobileUserAgent::getId();
+        }
+
+        return $sqlval;
+    }
+
+
+    /**
+     * lfSendMail
+     *
+     * @access public
+     * @return void
+     */
     function lfSendMail(){
         // 完了メール送信
-        $arrRet = $this->objFormParam->getHashArray();
-        $this->name01 = $arrRet['name01'];
-        $this->name02 = $arrRet['name02'];
-        $objMailText = new SC_SiteView();
+        $arrRet         = $this->objFormParam->getHashArray();
+        $this->name01   = $arrRet['name01'];
+        $this->name02   = $arrRet['name02'];
+        $objMailText    = new SC_SiteView();
         $objMailText->assignobj($this);
 
-        $objHelperMail = new SC_Helper_Mail_Ex();
-        $objQuery = new SC_Query();
-        $objCustomer = new SC_Customer();
-        $CONF = SC_Helper_DB_Ex::sfGetBasisData();
+        $objHelperMail  = new SC_Helper_Mail_Ex();
+        $objCustomer    = new SC_Customer();
+        $CONF           = SC_Helper_DB_Ex::sfGetBasisData();
 
         // 仮会員が有効の場合
         if(CUSTOMER_CONFIRM_MAIL == true) {
@@ -288,8 +300,15 @@ class LC_Page_Entry extends LC_Page {
         $objMail->sendMail();
     }
 
-
-    //---- 入力エラーチェック
+    /**
+     * lfErrorCheck
+     *
+     * 入力エラーチェック
+     *
+     * @param mixed $array
+     * @access public
+     * @return void
+     */
     function lfErrorCheck($array) {
 
         // 入力データを渡す。
@@ -321,6 +340,12 @@ class LC_Page_Entry extends LC_Page {
         return $objErr->arrErr;
     }
 
+    /**
+     * lfCheckReferer
+     *
+     * @access public
+     * @return void
+     */
     function lfCheckReferer(){
     	/**
     	 * 規約ページからの遷移でなければエラー画面へ遷移する
@@ -332,5 +357,32 @@ class LC_Page_Entry extends LC_Page {
             SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", true);
         }
     }
+
+
+    /**
+     * lfCheckCSRF
+     *
+     * @access public
+     * @return void
+     */
+    function lfCheckCSRF() {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            if (!SC_Helper_Session_Ex::isValidToken()) {
+                SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", true);
+            }
+        }
+    }
+
+
+    /**
+     * lfGetCustomerId
+     *
+     * @param mixed $uniqid
+     * @access public
+     * @return void
+     */
+    function lfGetCustomerId($uniqid) {
+        $objQuery = new SC_Query();
+        return $objQuery->get("customer_id", "dtb_customer", "secret_key = ?", array($uniqid));
+    }
 }
-?>
