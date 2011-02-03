@@ -43,21 +43,6 @@ class LC_Page_Entry_Complete extends LC_Page {
      */
     function init() {
         parent::init();
-        
-        // カートが空かどうかを確認する。
-        $objCartSess = new SC_CartSession();
-        $this->tpl_cart_empty = count($objCartSess->getCartList()) < 1;
-
-        // メインテンプレートを設定
-        if(CUSTOMER_CONFIRM_MAIL == true) {
-            // 仮会員登録完了
-            $this->tpl_mainpage = 'entry/complete.tpl';
-        } else {
-            // 本会員登録完了
-            $this->tpl_mainpage = 'regist/complete.tpl';
-            $this->tpl_conv_page = AFF_ENTRY_COMPLETE;
-        }
-
         $this->httpCacheControl('nocache');
     }
 
@@ -80,6 +65,20 @@ class LC_Page_Entry_Complete extends LC_Page {
         // transaction check
         if (!SC_Helper_Session_Ex::isValidToken()) {
             SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", true);
+        }
+
+        // カートが空かどうかを確認する。
+        $objCartSess            = new SC_CartSession();
+        $this->tpl_cart_empty   = count($objCartSess->getCartList()) < 1;
+
+        // メインテンプレートを設定
+        if(CUSTOMER_CONFIRM_MAIL == true) {
+            // 仮会員登録完了
+            $this->tpl_mainpage     = 'entry/complete.tpl';
+        } else {
+            // 本会員登録完了
+            $this->tpl_mainpage     = 'regist/complete.tpl';
+            $this->tpl_conv_page    = AFF_ENTRY_COMPLETE;
         }
     }
 
