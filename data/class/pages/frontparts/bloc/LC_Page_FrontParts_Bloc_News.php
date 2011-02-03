@@ -74,11 +74,26 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc {
         parent::destroy();
     }
 
+    /**
+     * 新着情報を取得する.
+     *
+     * @return array $arrNewsList 新着情報の配列を返す
+     */
     function lfGetNews(){
         $objQuery = new SC_Query();
-        $sql = "SELECT *, cast(news_date as date) as news_date_disp FROM dtb_news WHERE del_flg = '0' ORDER BY rank DESC";
-        $list_data = $objQuery->getAll($sql);
-        return $list_data;
+        $sql = '';
+        $sql .= " SELECT ";
+        $sql .= "   *, ";
+        $sql .= "   cast(news_date as date) as news_date_disp ";
+        $sql .= " FROM ";
+        $sql .= "   dtb_news ";
+        $sql .= " WHERE ";
+        $sql .= "   del_flg = '0' ";
+        $sql .= " ORDER BY ";
+        $sql .= "   rank DESC ";
+        
+        $arrNewsList = $objQuery->getAll($sql);
+        return $arrNewsList;
     }
 }
 ?>

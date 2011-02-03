@@ -62,17 +62,17 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc {
      * @return void
      */
     function action() {
-        if(Net_UserAgent_Mobile::isMobile() === true) {
-            $this->lfGetMainCat(true, $this);
+        // モバイル判定
+        if (SC_Display::detectDevice() === true) {
+            // --- モバイルの場合
+            // メインカテゴリーの取得
+            $this->arrCat = $this->lfGetMainCat(true);
         } else {
-            $objDb = new SC_Helper_DB_Ex();
-
-            // 選択中のカテゴリIDを判定する
-            $arrCategory_id = $objDb->sfGetCategoryId($_GET['product_id'], $_GET['category_id']);
-
+            // --- PCの場合
             // 選択中のカテゴリID
-            $this->tpl_category_id = empty($arrCategory_id) ? array(0) : $arrCategory_id;;
-            $this->lfGetCatTree($this->tpl_category_id, true, $this);
+            $this->tpl_category_id = $this->lfGetSelectedCategoryId();
+            // カテゴリツリーの取得
+            $this->arrTree = $this->lfGetCatTree($this->tpl_category_id, true);
         }
     }
 
@@ -85,30 +85,72 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc {
         parent::destroy();
     }
 
-    // カテゴリツリーの取得
-    function lfGetCatTree($arrParent_category_id, $count_check = false) {
+    /**
+     * 選択中のカテゴリIDを取得する.
+     *
+     * @return array $arrCategoryId 選択中のカテゴリID
+     */
+    function lfGetSelectedCategoryId() {
+        // 商品ID取得
+        if ( !isset($_GET['product_id']) || $_GET['product_id'] == '' || !is_numeric($_GET['product_id']) ) {
+            return array(0);
+        }
+        $product_id = $_GET['product_id'];
+        // カテゴリID取得
+        if ( !isset($_GET['category_id']) || $_GET['category_id'] == '' || !is_numeric($_GET['category_id']) ) {
+            return array(0);
+        }
+        $category_id = $_GET['category_id'];
+        // 選択中のカテゴリIDを判定する
+        $objDb = new SC_Helper_DB_Ex();
+        $arrCategoryId = $objDb->sfGetCategoryId($product_id, $category_id);
+        if (empty($arrCategoryId)) {
+            $arrCategoryId = array(0);
+        }
+        return $arrCategoryId;
+    }
+
+    /**
+     * カテゴリツリーの取得.
+     *
+     * @param array $arrParentCategoryId 親カテゴリの配列
+     * @param boolean $count_check 登録商品数をチェックする場合はtrue
+     * @return array $arrRet カテゴリーツリーの配列を返す
+     */
+    function lfGetCatTree($arrParentCategoryId, $count_check = false) {
         $objQuery = new SC_Query();
         $objDb = new SC_Helper_DB_Ex();
-        $col = "*";
-        $from = "dtb_category left join dtb_category_total_count using (category_id)";
+        $col = '*';
+        $from = 'dtb_category left join dtb_category_total_count using (category_id)';
         // 登録商品数のチェック
         if($count_check) {
-            $where = "del_flg = 0 AND product_count > 0";
+            $where = 'del_flg = 0 AND product_count > 0';
         } else {
-            $where = "del_flg = 0";
+            $where = 'del_flg = 0';
         }
-        $objQuery->setOption("ORDER BY rank DESC");
+        $objQuery->setOption('ORDER BY rank DESC');
         $arrRet = $objQuery->select($col, $from, $where);
-
-        foreach ($arrParent_category_id as $category_id) {
-            $arrParentID = $objDb->sfGetParents('dtb_category', 'parent_category_id', 'category_id', $category_id);
-            $arrBrothersID = SC_Utils_Ex::sfGetBrothersArray($arrRet, 'parent_category_id', 'category_id', $arrParentID);
-            $arrChildrenID = SC_Utils_Ex::sfGetUnderChildrenArray($arrRet, 'parent_category_id', 'category_id', $category_id);
-
+        foreach ($arrParentCategoryId as $category_id) {
+            $arrParentID = $objDb->sfGetParents(
+                'dtb_category',
+                'parent_category_id',
+                'category_id',
+                $category_id
+            );
+            $arrBrothersID = SC_Utils_Ex::sfGetBrothersArray(
+                $arrRet,
+                'parent_category_id',
+                'category_id',
+                $arrParentID
+            );
+            $arrChildrenID = SC_Utils_Ex::sfGetUnderChildrenArray(
+                $arrRet,
+                'parent_category_id',
+                'category_id',
+                $category_id
+            );
             $this->root_parent_id[] = $arrParentID[0];
-
             $arrDispID = array_merge($arrBrothersID, $arrChildrenID);
-
             foreach($arrRet as $key => $array) {
                 foreach($arrDispID as $val) {
                     if($array['category_id'] == $val) {
@@ -118,39 +160,44 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc {
                 }
             }
         }
-
-        $this->arrTree = $arrRet;
+        return $arrRet;
     }
 
-    // メインカテゴリーの取得
-    function lfGetMainCat($count_check = false, &$objSubPage) {
+    /**
+     * メインカテゴリーの取得.
+     *
+     * @param boolean $count_check 登録商品数をチェックする場合はtrue
+     * @return array $arrMainCat メインカテゴリーの配列を返す
+     */
+    function lfGetMainCat($count_check = false) {
         $objQuery = new SC_Query();
-        $col = "*";
-        $from = "dtb_category left join dtb_category_total_count using (category_id)";
+        $col = '*';
+        $from = 'dtb_category left join dtb_category_total_count using (category_id)';
         // メインカテゴリーとその直下のカテゴリーを取得する。
         $where = 'level <= 2 AND del_flg = 0';
         // 登録商品数のチェック
         if($count_check) {
-            $where .= " AND product_count > 0";
+            $where .= ' AND product_count > 0';
         }
-        $objQuery->setOption("ORDER BY rank DESC");
+        $objQuery->setOption('ORDER BY rank DESC');
         $arrRet = $objQuery->select($col, $from, $where);
-
         // メインカテゴリーを抽出する。
         $arrMainCat = array();
         foreach ($arrRet as $cat) {
             if ($cat['level'] != 1) {
                 continue;
             }
-
             // 子カテゴリーを持つかどうかを調べる。
-            $arrChildrenID = SC_Utils_Ex::sfGetUnderChildrenArray($arrRet, 'parent_category_id', 'category_id', $cat['category_id']);
+            $arrChildrenID = SC_Utils_Ex::sfGetUnderChildrenArray(
+                $arrRet,
+                'parent_category_id',
+                'category_id',
+                $cat['category_id']
+            );
             $cat['has_children'] = count($arrChildrenID) > 0;
             $arrMainCat[] = $cat;
         }
-
-        $objSubPage->arrCat = $arrMainCat;
-        return $objSubPage;
+        return $arrMainCat;
     }
 }
 ?>

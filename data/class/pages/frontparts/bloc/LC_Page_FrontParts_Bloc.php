@@ -33,7 +33,11 @@ require_once(CLASS_REALDIR . "pages/LC_Page.php");
  */
 class LC_Page_FrontParts_Bloc extends LC_Page {
 
-    // TODO
+    /**
+     * Page を初期化する.
+     *
+     * @return void
+     */
     function init() {
         // 開始時刻を設定する。
         $this->timeStart = SC_Utils_Ex::sfMicrotimeFloat();

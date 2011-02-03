@@ -62,33 +62,14 @@ class LC_Page_FrontParts_Bloc_SearchProducts extends LC_Page_FrontParts_Bloc {
      * @return void
      */
     function action() {
-        $arrSearch = array();	// 検索項目表示用
-        $objDb = new SC_Helper_DB_Ex();
         // 選択中のカテゴリIDを判定する
-        $this->category_id = $objDb->sfGetCategoryId($_GET['product_id'], $_GET['category_id']);
+        $this->category_id = $this->lfGetSelectedCategoryId();
         // カテゴリ検索用選択リスト
-        $arrRet = $objDb->sfGetCategoryList('', true, '　');
-
-        if(is_array($arrRet)) {
-            // 文字サイズを制限する
-            foreach($arrRet as $key => $val) {
-                $str = SC_Utils_Ex::sfCutString($val, SEARCH_CATEGORY_LEN, false);
-                $arrRet[$key] = preg_replace('/　/', "&nbsp;&nbsp;", $str);
-            }
-        }
-        $this->arrCatList = $arrRet;
-
+        $this->arrCatList = $this->lfGetCategoryList();
         // 選択中のメーカーIDを判定する
-        $this->maker_id = $objDb->sfGetMakerId($_GET['product_id'], $_GET['maker_id']);
+        $this->maker_id = $this->lfGetSelectedMakerId();
         // メーカー検索用選択リスト
-        $arrRet = $objDb->sfGetMakerList('', true);
-        if(is_array($arrRet)) {
-            // 文字サイズを制限する
-            foreach($arrRet as $key => $val) {
-                $arrRet[$key] = SC_Utils_Ex::sfCutString($val, SEARCH_CATEGORY_LEN);
-            }
-        }
-        $this->arrMakerList = $arrRet;
+        $this->arrMakerList = $this->lfGetMakerList();
     }
 
     /**
@@ -99,5 +80,87 @@ class LC_Page_FrontParts_Bloc_SearchProducts extends LC_Page_FrontParts_Bloc {
     function destroy() {
         parent::destroy();
     }
+
+    /**
+     * 選択中のカテゴリIDを取得する
+     *
+     * @return array $arrCategoryId 選択中のカテゴリID
+     */
+    function lfGetSelectedCategoryId() {
+        // 商品ID取得
+        if ( !isset($_GET['product_id']) || $_GET['product_id'] == '' || !is_numeric($_GET['product_id']) ) {
+            return array();
+        }
+        $product_id = $_GET['product_id'];
+        // カテゴリID取得
+        if ( !isset($_GET['category_id']) || $_GET['category_id'] == '' || !is_numeric($_GET['category_id']) ) {
+            return array();
+        }
+        $category_id = $_GET['category_id'];
+        // 選択中のカテゴリIDを判定する
+        $objDb = new SC_Helper_DB_Ex();
+        $arrCategoryId = $objDb->sfGetCategoryId($product_id, $category_id);
+        return $arrCategoryId;
+    }
+
+    /**
+     * 選択中のメーカーIDを取得する
+     *
+     * @return array $arrMakerId 選択中のメーカーID
+     */
+    function lfGetSelectedMakerId() {
+        // 商品ID取得
+        if ( !isset($_GET['product_id']) || $_GET['product_id'] == '' || !is_numeric($_GET['product_id']) ) {
+            return array();
+        }
+        $product_id = $_GET['product_id'];
+        // メーカーID取得
+        if ( !isset($_GET['maker_id']) || $_GET['maker_id'] == '' || !is_numeric($_GET['maker_id']) ) {
+            return array();
+        }
+        $maker_id = $_GET['maker_id'];
+        // 選択中のメーカーIDを判定する
+        $objDb = new SC_Helper_DB_Ex();
+        $arrMakerId = $objDb->sfGetMakerId($product_id, $maker_id);
+        return $arrMakerId;
+    }
+
+    /**
+     * カテゴリ検索用選択リストを取得する
+     *
+     * @return array $arrCategoryList カテゴリ検索用選択リスト
+     */
+    function lfGetCategoryList() {
+        $objDb = new SC_Helper_DB_Ex();
+        // カテゴリ検索用選択リスト
+        $arrCategoryList = $objDb->sfGetCategoryList('', true, '　');
+        if (is_array($arrCategoryList)) {
+            // 文字サイズを制限する
+            foreach($arrCategoryList as $key => $val) {
+                $truncate_str = SC_Utils_Ex::sfCutString($val, SEARCH_CATEGORY_LEN, false);
+                $arrCategoryList[$key] = preg_replace('/　/', "&nbsp;&nbsp;", $truncate_str);
+            }
+        }
+        return $arrCategoryList;
+    }
+
+    /**
+     * メーカー検索用選択リストを取得する
+     *
+     * @return array $arrMakerList メーカー検索用選択リスト
+     */
+    function lfGetMakerList() {
+        $objDb = new SC_Helper_DB_Ex();
+        // メーカー検索用選択リスト
+        $arrMakerList = $objDb->sfGetMakerList('', true);
+        if (is_array($arrMakerList)) {
+            // 文字サイズを制限する
+            foreach($arrMakerList as $key => $val) {
+                $arrMakerList[$key] = SC_Utils_Ex::sfCutString($val, SEARCH_CATEGORY_LEN);
+            }
+        }
+        return $arrMakerList;
+    }
+
 }
 ?>
