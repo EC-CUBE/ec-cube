@@ -260,7 +260,7 @@ class SC_Utils {
      * @param string $passlen 変換する文字列
      * @return string アスタリスクへ変換した文字列
      */
-    function lfPassLen($passlen){
+    function sfPassLen($passlen){
         $ret = "";
         for ($i=0;$i<$passlen;true){
             $ret.="*";

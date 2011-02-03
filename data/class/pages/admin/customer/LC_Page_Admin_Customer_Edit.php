@@ -188,7 +188,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin {
                     if ($mode == "confirm") {
                         $this->tpl_mainpage = 'customer/edit_confirm.tpl';
                         $passlen = strlen($this->arrForm['password']);
-                        $this->passlen = SC_Utils_Ex::lfPassLen($passlen);
+                        $this->passlen = SC_Utils_Ex::sfPassLen($passlen);
 
                     }
                     //--　編集

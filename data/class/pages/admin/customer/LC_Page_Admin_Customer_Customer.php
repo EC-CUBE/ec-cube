@@ -132,7 +132,7 @@ class LC_Page_Admin_Customer_Customer extends LC_Page_Admin {
             if(count($this->arrErr) == 0) {
                 $this->tpl_mainpage = 'customer/customer_confirm.tpl'; // 確認ページ
                 $passlen = strlen($this->arrForm['password']);
-                $this->passlen = $this->lfPassLen($passlen);
+                $this->passlen = SC_Utils_Ex::sfPassLen($passlen);
             } else {
                 foreach($this->arrForm as $key => $val) {
                     $this->list_data[ $key ] = $val;
@@ -282,17 +282,6 @@ class LC_Page_Admin_Customer_Customer extends LC_Page_Admin {
         $objErr->doFunc(array("所持ポイント", "point", TEL_LEN) ,array("MAX_LENGTH_CHECK", "NUM_CHECK"));
         return $objErr->arrErr;
 
-    }
-
-
-    //確認ページ用パスワード表示用
-    function lfPassLen($passlen){
-        $ret = "";
-        for ($i=0;$i<$passlen;true){
-            $ret.="*";
-            $i++;
-        }
-        return $ret;
     }
 
 }

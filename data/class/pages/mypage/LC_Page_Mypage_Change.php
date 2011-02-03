@@ -139,7 +139,7 @@ class LC_Page_Mypage_Change extends LC_Page {
 
                     //パスワード表示
                     $passlen = strlen($this->arrForm['password']);
-                    $this->passlen = SC_Utils_Ex::lfPassLen($passlen);
+                    $this->passlen = SC_Utils_Ex::sfPassLen($passlen);
 
                     $this->tpl_mainpage = 'mypage/change_confirm.tpl';
                     $this->tpl_title = '会員登録(確認ページ)';

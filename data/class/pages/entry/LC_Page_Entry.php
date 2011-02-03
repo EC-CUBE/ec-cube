@@ -130,7 +130,7 @@ class LC_Page_Entry extends LC_Page {
             // 入力エラーなし
             if(empty($this->arrErr)) {
                 //パスワード表示
-                $this->passlen      = SC_Utils_Ex::lfPassLen(strlen($this->arrForm['password']));
+                $this->passlen      = SC_Utils_Ex::sfPassLen(strlen($this->arrForm['password']));
 
                 $this->tpl_mainpage = 'entry/confirm.tpl';
                 $this->tpl_title    = '会員登録(確認ページ)';
