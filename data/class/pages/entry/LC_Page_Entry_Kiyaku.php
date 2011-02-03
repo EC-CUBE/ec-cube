@@ -63,24 +63,16 @@ class LC_Page_Entry_Kiyaku extends LC_Page {
      */
     function action() {
 
-        // 規約内容の取得
-        $objQuery = new SC_Query();
-        $objQuery->setOrder("rank DESC");
-        $arrRet = $objQuery->select("kiyaku_title, kiyaku_text", "dtb_kiyaku", "del_flg <> 1");
-        $this->max = count($arrRet);
-        
+        $arrKiyaku = $this->lfGetKiyakuData();
+        $this->max = count($arrKiyaku);
+
+        $offset    = '';
         // mobile時はGETでページ指定
         if ( Net_UserAgent_Mobile::isMobile() === true ){
-        	$this->offset = is_numeric($_GET['offset'])===true ? $offset = intval($_GET['offset']) : 1;
+            $this->offset = $this->lfSetOffset($_GET['offset']);
         }
 
-        // 規約文の作成
-        $this->tpl_kiyaku_text = "";
-        for ($i = 0; $i < $this->max; $i++) {
-        	if ($this->offset !== null && ($this->offset - 1) <> $i) continue;
-            $this->tpl_kiyaku_text.=$arrRet[$i]['kiyaku_title'] . "\n\n";
-            $this->tpl_kiyaku_text.=$arrRet[$i]['kiyaku_text'] . "\n\n";
-        }
+        $this->tpl_kiyaku_text = $this->lfMakeKiyakuText($arrKiyaku, $this->max, $this->offset);
     }
 
     /**
@@ -91,5 +83,55 @@ class LC_Page_Entry_Kiyaku extends LC_Page {
     function destroy() {
         parent::destroy();
     }
+
+    /**
+     * lfMakeKiyakuText
+     *
+     * 規約文の作成
+     *
+     * @param mixed $arrKiyaku
+     * @param mixed $max
+     * @param mixed $offset
+     * @access public
+     * @return void
+     */
+    function lfMakeKiyakuText($arrKiyaku, $max, $offset) {
+        $this->tpl_kiyaku_text = "";
+        for ($i = 0; $i < $max; $i++) {
+        	if ($offset !== null && ($offset - 1) <> $i) continue;
+            $tpl_kiyaku_text.=$arrKiyaku[$i]['kiyaku_title'] . "\n\n";
+            $tpl_kiyaku_text.=$arrKiyaku[$i]['kiyaku_text'] . "\n\n";
+        }
+        return $tpl_kiyaku_text;
+    }
+
+    /**
+     * lfGetKiyakuData
+     *
+     * 規約内容の取得
+     *
+     * @access public
+     * @return void
+     */
+    function lfGetKiyakuData() {
+
+        $objQuery = new SC_Query();
+        $objQuery->setOrder("rank DESC");
+        $arrRet = $objQuery->select("kiyaku_title, kiyaku_text", "dtb_kiyaku", "del_flg <> 1");
+
+        return $arrRet;
+    }
+
+    /**
+     * lfSetOffset
+     *
+     * @param mixed $offset
+     * @access public
+     * @return void
+     */
+    function lfSetOffset($offset) {
+       return is_numeric($offset) === true ? intval($offset) : 1;
+    }
+
 }
 ?>
