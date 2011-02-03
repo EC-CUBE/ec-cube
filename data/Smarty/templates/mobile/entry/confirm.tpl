@@ -24,41 +24,41 @@
 <form name="form1" id="form1" method="post" action="?" utn>
 	<input type="hidden" name="mode" value="complete">
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-	<!--{foreach from=$list_data key=key item=item}-->
+	<!--{foreach from=$arrForm key=key item=item}-->
 		<input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->">
 	<!--{/foreach}-->
 	下記の内容でご登録してもよろしいですか？<br>
 	<br>
 	●ﾒｰﾙｱﾄﾞﾚｽ<br>
-	<!--{$list_data.email|h}--><br>
+	<!--{$arrForm.email|h}--><br>
 
 	●ﾊﾟｽﾜｰﾄﾞ確認用質問<br>
-	<!--{$arrReminder[$list_data.reminder]|h}--><br>
+	<!--{$arrReminder[$arrForm.reminder]|h}--><br>
 
 	●質問の答え<br>
-	<!--{$list_data.reminder_answer|h}--><br>
+	<!--{$arrForm.reminder_answer|h}--><br>
 
 	●お名前<br>
-	<!--{$list_data.name01|h}-->　<!--{$list_data.name02|h}--><br>
+	<!--{$arrForm.name01|h}-->　<!--{$arrForm.name02|h}--><br>
 
 	●お名前(フリガナ)<br>
-	<!--{$list_data.kana01|h}-->　<!--{$list_data.kana02|h}--><br>
+	<!--{$arrForm.kana01|h}-->　<!--{$arrForm.kana02|h}--><br>
 
 	●性別<br>
-	<!--{if $list_data.sex eq 1}-->男性<!--{else}-->女性<!--{/if}--><br>
+	<!--{if $arrForm.sex eq 1}-->男性<!--{else}-->女性<!--{/if}--><br>
 
 	●生年月日<br>
-	<!--{if strlen($list_data.year) > 0 && strlen($list_data.month) > 0 && strlen($list_data.day) > 0}--><!--{$list_data.year|h}-->年<!--{$list_data.month|h}-->月<!--{$list_data.day|h}-->日生まれ<!--{else}-->未登録<!--{/if}--><br>
+	<!--{if strlen($arrForm.year) > 0 && strlen($arrForm.month) > 0 && strlen($arrForm.day) > 0}--><!--{$arrForm.year|h}-->年<!--{$arrForm.month|h}-->月<!--{$arrForm.day|h}-->日生まれ<!--{else}-->未登録<!--{/if}--><br>
 
 	●住所<br>
-	〒<!--{$list_data.zip01|h}--> - <!--{$list_data.zip02|h}--><br>
-	<!--{$arrPref[$list_data.pref]|h}--><!--{$list_data.addr01|h}--><!--{$list_data.addr02|h}--><br>
+	〒<!--{$arrForm.zip01|h}--> - <!--{$arrForm.zip02|h}--><br>
+	<!--{$arrPref[$arrForm.pref]|h}--><!--{$arrForm.addr01|h}--><!--{$arrForm.addr02|h}--><br>
 
 	●電話番号<br>
-	<!--{$list_data.tel01|h}-->-<!--{$list_data.tel02|h}-->-<!--{$list_data.tel03|h}--><br>
+	<!--{$arrForm.tel01|h}-->-<!--{$arrForm.tel02|h}-->-<!--{$arrForm.tel03|h}--><br>
 	
 	●ﾒｰﾙﾏｶﾞｼﾞﾝﾞ<br>
-	<!--{if $list_data.mailmaga_flg eq 2}-->希望する<!--{else}-->希望しない<!--{/if}--><br>
+	<!--{if $arrForm.mailmaga_flg eq 2}-->希望する<!--{else}-->希望しない<!--{/if}--><br>
 	<br>
 
 	<input type="submit" name="submit" value="登録"><br>

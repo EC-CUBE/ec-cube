@@ -27,7 +27,7 @@
       よろしければ、一番下の「会員登録完了へ」ボタンをクリックしてください。</p>
     <form name="form1" id="form1" method="post" action="?">
       <input type="hidden" name="mode" value="complete">
-      <!--{foreach from=$list_data key=key item=item}-->
+      <!--{foreach from=$arrForm key=key item=item}-->
         <input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->" />
       <!--{/foreach}-->
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
@@ -36,40 +36,40 @@
         <tr>
           <th>お名前<span class="attention">※</span></th>
           <td>
-            <!--{$list_data.name01|h}-->&nbsp;
-            <!--{$list_data.name02|h}-->
+            <!--{$arrForm.name01|h}-->&nbsp;
+            <!--{$arrForm.name02|h}-->
           </td>
         </tr>
         <tr>
           <th>お名前(フリガナ)<span class="attention">※</span></th>
           <td>
-            <!--{$list_data.kana01|h}-->&nbsp;
-            <!--{$list_data.kana02|h}-->
+            <!--{$arrForm.kana01|h}-->&nbsp;
+            <!--{$arrForm.kana02|h}-->
           </td>
         </tr>
         <tr>
           <th>郵便番号<span class="attention">※</span></th>
           <td>
-            〒<!--{$list_data.zip01|h}--> - <!--{$list_data.zip02|h}-->
+            〒<!--{$arrForm.zip01|h}--> - <!--{$arrForm.zip02|h}-->
           </td>
         </tr>
         <tr>
           <th>住所<span class="attention">※</span></th>
           <td>
-            <!--{$arrPref[$list_data.pref]|h}--><!--{$list_data.addr01|h}--><!--{$list_data.addr02|h}-->
+            <!--{$arrPref[$arrForm.pref]|h}--><!--{$arrForm.addr01|h}--><!--{$arrForm.addr02|h}-->
           </td>
         </tr>
         <tr>
           <th>電話番号<span class="attention">※</span></th>
           <td>
-            <!--{$list_data.tel01|h}--> - <!--{$list_data.tel02|h}--> - <!--{$list_data.tel03|h}-->
+            <!--{$arrForm.tel01|h}--> - <!--{$arrForm.tel02|h}--> - <!--{$arrForm.tel03|h}-->
           </td>
         </tr>
         <tr>
           <th>FAX</th>
           <td>
-            <!--{if strlen($list_data.fax01) > 0 && strlen($list_data.fax02) > 0 && strlen($list_data.fax03) > 0}-->
-              <!--{$list_data.fax01|h}--> - <!--{$list_data.fax02|h}--> - <!--{$list_data.fax03|h}-->
+            <!--{if strlen($arrForm.fax01) > 0 && strlen($arrForm.fax02) > 0 && strlen($arrForm.fax03) > 0}-->
+              <!--{$arrForm.fax01|h}--> - <!--{$arrForm.fax02|h}--> - <!--{$arrForm.fax03|h}-->
             <!--{else}-->
               未登録
             <!--{/if}-->
@@ -78,13 +78,13 @@
         <tr>
           <th>メールアドレス<span class="attention">※</span></th>
           <td>
-            <a href="mailto:<!--{$list_data.email|escape:'hex'}-->"><!--{$list_data.email|escape:'hexentity'}--></a>
+            <a href="mailto:<!--{$arrForm.email|escape:'hex'}-->"><!--{$arrForm.email|escape:'hexentity'}--></a>
           </td>
         </tr>
         <tr>
           <th>性別<span class="attention">※</span></th>
           <td>
-            <!--{if $list_data.sex eq 1}-->
+            <!--{if $arrForm.sex eq 1}-->
             男性
             <!--{else}-->
             女性
@@ -93,13 +93,13 @@
         </tr>
         <tr>
           <th>職業</th>
-          <td><!--{$arrJob[$list_data.job]|default:"未登録"|h}--></td>
+          <td><!--{$arrJob[$arrForm.job]|default:"未登録"|h}--></td>
         </tr>
         <tr>
           <th>生年月日</th>
           <td>
-            <!--{if strlen($list_data.year) > 0 && strlen($list_data.month) > 0 && strlen($list_data.day) > 0}-->
-              <!--{$list_data.year|h}-->年<!--{$list_data.month|h}-->月<!--{$list_data.day|h}-->日
+            <!--{if strlen($arrForm.year) > 0 && strlen($arrForm.month) > 0 && strlen($arrForm.day) > 0}-->
+              <!--{$arrForm.year|h}-->年<!--{$arrForm.month|h}-->月<!--{$arrForm.day|h}-->日
             <!--{else}-->
             未登録
             <!--{/if}-->
@@ -113,16 +113,16 @@
         <tr>
           <th>パスワードを忘れた時のヒント<span class="attention">※</span></th>
           <td>
-              質問：<!--{$arrReminder[$list_data.reminder]|h}--><br />
-              答え：<!--{$list_data.reminder_answer|h}-->
+              質問：<!--{$arrReminder[$arrForm.reminder]|h}--><br />
+              答え：<!--{$arrForm.reminder_answer|h}-->
           </td>
         </tr>
         <tr>
           <th>メールマガジン送付について<span class="attention">※</span></th>
           <td>
-            <!--{if $list_data.mailmaga_flg eq 1}-->
+            <!--{if $arrForm.mailmaga_flg eq 1}-->
             HTMLメール＋テキストメールを受け取る
-            <!--{elseif $list_data.mailmaga_flg eq 2}-->
+            <!--{elseif $arrForm.mailmaga_flg eq 2}-->
             テキストメールを受け取る
             <!--{else}-->
             受け取らない
