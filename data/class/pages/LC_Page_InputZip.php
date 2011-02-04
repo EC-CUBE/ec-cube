@@ -71,11 +71,11 @@ class LC_Page_InputZip extends LC_Page {
             $zipcode = mb_convert_kana($zipcode ,"n");
 
             // 郵便番号検索
-            $data_list = SC_Utils_Ex::sfGetAddress($zipcode);
+            $arrAdsList = SC_Utils_Ex::sfGetAddress($zipcode);
 
             // 郵便番号が発見された場合
-            if(!empty($data_list)) {
-                $data = $data_list[0]['state']. "|". $data_list[0]['city']. "|". $data_list[0]['town'];
+            if(!empty($arrAdsList)) {
+                $data = $arrAdsList[0]['state']. "|". $arrAdsList[0]['city']. "|". $arrAdsList[0]['town'];
                 echo $data;
 
             // 該当無し
@@ -95,34 +95,42 @@ class LC_Page_InputZip extends LC_Page {
     }
 
 
-    /* 入力エラーのチェック */
-    function fnErrorCheck($array) {
-        // エラーメッセージ配列の初期化
-        $objErr = new SC_CheckError($array);
-
-        // 郵便番号
-        $objErr->doFunc( array("郵便番号1",'zip1',ZIP01_LEN ) ,array( "NUM_COUNT_CHECK", "NUM_CHECK" ) );
-        $objErr->doFunc( array("郵便番号2",'zip2',ZIP02_LEN ) ,array( "NUM_COUNT_CHECK", "NUM_CHECK" ) );
+    /**
+     * 入力エラーのチェック.
+     *
+     * @param array $arrRequest リクエスト値($_GET)
+     * @return array $arrErr エラーメッセージ配列
+     */
+    function fnErrorCheck($arrRequest) {
+        // パラメータ管理クラス
+        $objFormParam = new SC_FormParam();
+        // パラメータ情報の初期化
+        $objFormParam->addParam('郵便番号1', 'zip1', ZIP01_LEN, 'n', array('NUM_COUNT_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('郵便番号2', 'zip2', ZIP02_LEN, 'n', array('NUM_COUNT_CHECK', 'NUM_CHECK'));
+        // // リクエスト値をセット
+        $objFormParam->setParam($arrRequest);
+        // エラーチェック
+        $arrErr = $objFormParam->checkError();
         // 親ウィンドウの戻り値を格納するinputタグのnameのエラーチェック
-        if (!$this->lfInputNameCheck($array['input1'])) {
-            $objErr->arrErr['input1'] = "※ 入力形式が不正です。<br />";
+        if ( !$this->lfInputNameCheck($arrRequest['input1']) ) {
+            $arrErr['input1'] = "※ 入力形式が不正です。<br />";
         }
-        if (!$this->lfInputNameCheck($array['input2'])) {
-            $objErr->arrErr['input2'] = "※ 入力形式が不正です。<br />";
+        if ( !$this->lfInputNameCheck($arrRequest['input2']) ) {
+            $arrErr['input2'] = "※ 入力形式が不正です。<br />";
         }
-
-        return $objErr->arrErr;
+        
+        return $arrErr;
     }
 
     /**
-     * エラーチェック
+     * エラーチェック.
      *
      * @param string $value
      * @return エラーなし：true エラー：false
      */
     function lfInputNameCheck($value) {
         // 半角英数字と_（アンダーバー）以外の文字を使用していたらエラー
-        if(strlen($value) > 0 && !ereg("^[a-zA-Z0-9_]+$", $value)) {
+        if(strlen($value) > 0 && !preg_match("/^[a-zA-Z0-9_]+$/", $value)) {
             return false;
         }
 

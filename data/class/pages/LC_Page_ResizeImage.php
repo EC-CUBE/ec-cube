@@ -80,7 +80,11 @@ class LC_Page_ResizeImage extends LC_Page {
         parent::destroy();
     }
 
-    // ファイル名の形式をチェック
+    /**
+     * ファイル名の形式をチェック.
+     *
+     * @return boolean 正常な形式:true 不正な形式:false
+     */
     function lfCheckFileName() {
         //$pattern = '|^[0-9]+_[0-9a-z]+\.[a-z]{3}$|';
         $pattern = '|\./|';

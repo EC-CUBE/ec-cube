@@ -91,7 +91,7 @@ class LC_Page_Sitemap extends LC_Page {
         // ページのデータを取得
         $this->arrPageList = $this->getPageData();
 
-        $objQuery = new SC_Query();
+        $objQuery = SC_Query::getSingletonInstance();
 
         //キャッシュしない(念のため)
         header("Paragrama: no-cache");
@@ -107,9 +107,9 @@ class LC_Page_Sitemap extends LC_Page {
         print("<urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>\n");
 
         // TOPページを処理
-        $topPage = $this->getTopPage($this->arrPageList);
-        $this->createSitemap($topPage[0]['url'],
-                             $this->date2W3CDatetime($topPage[0]['update_date']),
+        $arrTopPagesList = $this->getTopPage($this->arrPageList);
+        $this->createSitemap($arrTopPagesList[0]['url'],
+                             $this->date2W3CDatetime($arrTopPagesList[0]['update_date']),
                              'daily', 1.0);
 
         // 静的なページを処理
@@ -118,23 +118,23 @@ class LC_Page_Sitemap extends LC_Page {
         }
 
         // 編集可能ページを処理
-        $editablePages = $this->getEditablePage($this->arrPageList);
-        foreach ($editablePages as $editablePage) {
-            $this->createSitemap($editablePage['url'],
-                                 $this->date2W3CDatetime($editablePage['update_date']));
+        $arrEditablePagesList = $this->getEditablePage($this->arrPageList);
+        foreach ($arrEditablePagesList as $arrEditablePage) {
+            $this->createSitemap($arrEditablePage['url'],
+                                 $this->date2W3CDatetime($arrEditablePage['update_date']));
         }
 
         // 商品一覧ページを処理
-        $products = $this->getAllProducts();
-        foreach ($products as $product) {
-            $this->createSitemap($product['url'], '', 'daily');
+        $arrProductPagesList = $this->getAllProducts();
+        foreach ($arrProductPagesList as $arrProductPage) {
+            $this->createSitemap($arrProductPage['url'], '', 'daily');
         }
 
         // 商品詳細ページを処理
-        $details = $this->getAllDetail();
-        foreach ($details as $detail) {
-            $this->createSitemap($detail['url'],
-                                 $this->date2W3CDatetime($detail['update_date']));
+        $arrDetailPagesList = $this->getAllDetail();
+        foreach ($arrDetailPagesList as $arrDetailPage) {
+            $this->createSitemap($arrDetailPage['url'],
+                                 $this->date2W3CDatetime($arrDetailPage['update_date']));
         }
 
         print("</urlset>\n");
@@ -179,14 +179,14 @@ class LC_Page_Sitemap extends LC_Page {
     /**
      * TOPページの情報を取得する.
      *
-     * @param array $pageData すべてのページ情報の配列
+     * @param array $arrPageList すべてのページ情報の配列
      * @return array TOPページの情報
      */
-    function getTopPage($pageData) {
+    function getTopPage($arrPageList) {
         $arrRet = array();
-        foreach ($pageData as $page) {
-            if ($page['page_id'] == "1") {
-                $arrRet[0] = $page;
+        foreach ($arrPageList as $arrPage) {
+            if ($arrPage['page_id'] == "1") {
+                $arrRet[0] = $arrPage;
                 return $arrRet;
             }
         }
@@ -195,14 +195,14 @@ class LC_Page_Sitemap extends LC_Page {
     /**
      * すべての編集可能ページの情報を取得する.
      *
-     * @param array $pageData すべてのページ情報の配列
+     * @param array $arrPageList すべてのページ情報の配列
      * @return array 編集可能ページ
      */
-    function getEditablePage($pageData) {
+    function getEditablePage($arrPageList) {
         $arrRet = array();
-        foreach ($pageData as $page) {
-            if ($page['page_id'] > 4) {
-                $arrRet[] = $page;
+        foreach ($arrPageList as $arrPage) {
+            if ($arrPage['page_id'] > 4) {
+                $arrRet[] = $arrPage;
             }
         }
         return $arrRet;
@@ -216,7 +216,7 @@ class LC_Page_Sitemap extends LC_Page {
     function getAllProducts() {
         
         // XXX: 商品登録の無いカテゴリーは除外する方が良い気もする
-        $objQuery = new SC_Query();
+        $objQuery = SC_Query::getSingletonInstance();
         $sql = "SELECT category_id FROM dtb_category WHERE del_flg = 0";
         $result = $objQuery->getAll($sql);
 
@@ -224,13 +224,13 @@ class LC_Page_Sitemap extends LC_Page {
         foreach ($result as $row) {
             // :TODO: カテゴリの最終更新日を取得できるようにする
             
-            $page["url"] = HTTP_URL . 'products/list.php?category_id=' . $row['category_id'];
-            $arrRet[] = $page;
+            $arrPage["url"] = HTTP_URL . 'products/list.php?category_id=' . $row['category_id'];
+            $arrRet[] = $arrPage;
             
             // モバイルサイト
             if (USE_MOBILE !== false) {
-                $page["url"] = MOBILE_HTTP_URL . 'products/list.php?category_id=' . $row['category_id'];
-                $arrRet[] = $page;
+                $arrPage["url"] = MOBILE_HTTP_URL . 'products/list.php?category_id=' . $row['category_id'];
+                $arrRet[] = $arrPage;
             }
         }
         return $arrRet;
@@ -242,22 +242,22 @@ class LC_Page_Sitemap extends LC_Page {
      * @return array 検索エンジンからアクセス可能な商品詳細ページの情報
      */
     function getAllDetail() {
-        $objQuery = new SC_Query();
+        $objQuery = SC_Query::getSingletonInstance();
         $sql = "SELECT product_id, update_date FROM dtb_products WHERE del_flg = 0 AND status = 1";
         $result = $objQuery->getAll($sql);
 
         $arrRet = array();
         foreach ($result as $row) {
             
-            $page["update_date"] = $row['update_date'];
+            $arrPage["update_date"] = $row['update_date'];
             
-            $page["url"] = HTTP_URL . substr(P_DETAIL_URLPATH, strlen(ROOT_URLPATH)) . $row['product_id'];
-            $arrRet[] = $page;
+            $arrPage["url"] = HTTP_URL . substr(P_DETAIL_URLPATH, strlen(ROOT_URLPATH)) . $row['product_id'];
+            $arrRet[] = $arrPage;
             
             // モバイルサイト
             if (USE_MOBILE !== false) {
-                $page["url"] = HTTP_URL . substr(MOBILE_P_DETAIL_URLPATH, strlen(ROOT_URLPATH)) . $row['product_id'];
-                $arrRet[] = $page;
+                $arrPage["url"] = HTTP_URL . substr(MOBILE_P_DETAIL_URLPATH, strlen(ROOT_URLPATH)) . $row['product_id'];
+                $arrRet[] = $arrPage;
             }
         }
         return $arrRet;
@@ -269,10 +269,10 @@ class LC_Page_Sitemap extends LC_Page {
      *
      * @param string $where WHERE句
      * @param array  $arrVal WHERE句の値を格納した配列
-     * @return ブロック情報
+     * @return array $arrPageList ブロック情報
      */
     function getPageData($where = '', $arrVal = ''){
-        $objQuery = new SC_Query();     // DB操作オブジェクト
+        $objQuery = SC_Query::getSingletonInstance();     // DB操作オブジェクト
         $sql = "";                      // データ取得SQL生成用
         $arrRet = array();              // データ取得用
 
@@ -300,19 +300,19 @@ class LC_Page_Sitemap extends LC_Page {
 
         $sql .= " ORDER BY page_id";
 
-        $pageData = $objQuery->getAll($sql, $arrVal);
+        $arrPageList = $objQuery->getAll($sql, $arrVal);
         
         // URL にプロトコルの記載が無い場合、HTTP_URL を前置する。
-        foreach (array_keys($pageData) as $key) {
-            $page =& $pageData[$key];
-            if (!preg_match('|^https?://|i', $page['url'])) {
-                $page['url'] = HTTP_URL . $page['url'];
+        foreach (array_keys($arrPageList) as $key) {
+            $arrPage =& $arrPageList[$key];
+            if (!preg_match('|^https?://|i', $arrPage['url'])) {
+                $arrPage['url'] = HTTP_URL . $arrPage['url'];
             }
-            $page['url'] = preg_replace('|/' . preg_quote(DIR_INDEX_FILE) . '$|', '/' . DIR_INDEX_PATH, $page['url']);
+            $arrPage['url'] = preg_replace('|/' . preg_quote(DIR_INDEX_FILE) . '$|', '/' . DIR_INDEX_PATH, $arrPage['url']);
         }
-        unset($page);
+        unset($arrPage);
         
-        return $pageData;
+        return $arrPageList;
     }
 
     /**
@@ -324,7 +324,7 @@ class LC_Page_Sitemap extends LC_Page {
     function date2W3CDatetime($date) {
         $arr = array();
         // 正規表現で文字列を抽出
-        ereg("^([0-9]{4})-([0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2}):([0-9]{2})",
+        preg_match("/^([0-9]{4})-([0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2}):([0-9]{2})/",
              $date, $arr);
         // :TODO: time zone も取得するべき...
         return sprintf("%04d-%02d-%02dT%02d:%02d:%02d+09:00",
