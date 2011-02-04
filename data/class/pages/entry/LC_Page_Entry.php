@@ -272,6 +272,7 @@ class LC_Page_Entry extends LC_Page {
         $objHelperMail  = new SC_Helper_Mail_Ex();
         $objCustomer    = new SC_Customer();
         $CONF           = SC_Helper_DB_Ex::sfGetBasisData();
+        $this->CONF     = $CONF;
 
         // 仮会員が有効の場合
         if(CUSTOMER_CONFIRM_MAIL == true) {
