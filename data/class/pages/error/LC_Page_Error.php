@@ -59,8 +59,20 @@ class LC_Page_Error extends LC_Page {
      * @return void
      */
     function init() {
+		parent::init();
         $this->tpl_mainpage = 'error.tpl';
         $this->tpl_title = 'エラー';
+    }
+
+    /**
+     * Page のプロセス.
+     *
+     * @return void
+     */
+    function process() {
+        parent::process();
+        $this->action();
+        $this->sendResponse();
     }
 
     /**
@@ -68,20 +80,7 @@ class LC_Page_Error extends LC_Page {
      *
      * @return void
      */
-    function process() {
-        parent::process();
-
-        // XXX 未使用？
-        if ($this->objSiteSess != "") {
-            $this->objSiteSess->setNowPage('error');
-        }
-
-        if($this->is_mobile === true) {
-            $objView = new SC_MobileView();
-        } else {
-            $objView = new SC_SiteView();
-        }
-
+    function action(){
         switch ($this->type) {
             case PRODUCT_NOT_FOUND:
                 $this->tpl_error="ご指定のページはございません。";
@@ -158,9 +157,6 @@ class LC_Page_Error extends LC_Page {
                 $this->tpl_error="エラーが発生しました。";
                 break;
         }
-
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
     }
 
     /**
