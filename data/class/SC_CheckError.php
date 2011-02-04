@@ -985,6 +985,16 @@ class SC_CheckError {
         }
     }
 
+    /**
+     * CHECK_REGIST_CUSTOMER_EMAIL
+     *
+     * メールアドレスが会員登録されているか調べる
+     * value[0] = 項目名 value[1] = 判定対象メールアドレス
+     *
+     * @param mixed $value
+     * @access public
+     * @return void
+     */
     function CHECK_REGIST_CUSTOMER_EMAIL ($value) {
         if(isset($this->arrErr[$value[1]])) {
             return;

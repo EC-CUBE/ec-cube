@@ -116,7 +116,15 @@ class LC_Page_Regist extends LC_Page {
         return $arrRegist["secret_key"];		// 本登録IDを返す
     }
 
-    //---- 入力エラーチェック
+    /**
+     * lfErrorCheck
+     *
+     * 入力エラーチェック
+     *
+     * @param mixed $array
+     * @access public
+     * @return void
+     */
     function lfErrorCheck($array) {
         $objErr     = new SC_CheckError($array);
 
@@ -132,7 +140,15 @@ class LC_Page_Regist extends LC_Page {
         return $objErr->arrErr;
     }
 
-    //---- 正会員登録完了メール送信
+    /**
+     * lfSendRegistMail
+     *
+     * 正会員登録完了メール送信
+     *
+     * @param mixed $registSecretKey
+     * @access public
+     * @return void
+     */
     function lfSendRegistMail($registSecretKey) {
         $objCustomer    = new SC_Customer();
         $objQuery       = new SC_Query();
