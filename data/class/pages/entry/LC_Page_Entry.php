@@ -103,7 +103,7 @@ class LC_Page_Entry extends LC_Page {
         $this->objFormParam->addParam("日", "day", INT_LEN, "n", array("MAX_LENGTH_CHECK"), "", false);
         $this->objFormParam->addParam("メールマガジン", "mailmaga_flg", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK"));
 
-        if ($this->isMobile === false){
+        if (SC_Display::detectDevice() !== DEVICE_TYPE_MOBILE){
             $this->objFormParam->addParam("FAX番号1", 'fax01', TEL_ITEM_LEN, "n", array("SPTAB_CHECK"));
             $this->objFormParam->addParam("FAX番号2", 'fax02', TEL_ITEM_LEN, "n", array("SPTAB_CHECK"));
             $this->objFormParam->addParam("FAX番号3", 'fax03', TEL_ITEM_LEN, "n", array("SPTAB_CHECK"));
@@ -120,13 +120,32 @@ class LC_Page_Entry extends LC_Page {
      * @return void
      */
     function action() {
-        $this->lfPreMode();
+        // PC時は規約ページからの遷移でなければエラー画面へ遷移する
+        if ($this->lfCheckReferer($_POST, $_SERVER['HTTP_REFERER']) === false) {
+            SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", true);
+        }
+
+        // mobile用（戻るボタンでの遷移かどうかを判定）
+        if (!empty($_POST["return"])) {
+            $_POST["mode"] = "return";
+        }
+
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            if (!SC_Helper_Session_Ex::isValidToken()) {
+                SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", true);
+            }
+        }
+
+        $this->objFormParam->setParam($_POST);    // POST値の取得
+        $this->objFormParam->convParam();
+        $this->objFormParam->toLower('email');
+        $this->objFormParam->toLower('email02');
         $this->arrForm  = $this->objFormParam->getHashArray();
 
         switch ($this->getMode()) {
         case 'confirm':
-        //-- 確認
-            $this->arrErr = $this->lfErrorCheck();
+            //-- 確認
+            $this->arrErr = $this->lfErrorCheck($this->arrForm);
             // 入力エラーなし
             if(empty($this->arrErr)) {
                 //パスワード表示
@@ -138,14 +157,20 @@ class LC_Page_Entry extends LC_Page {
             break;
         case 'complete':
             //-- 会員登録と完了画面
-            $this->arrErr = $this->lfErrorCheck();
+            $this->arrErr = $this->lfErrorCheck($this->arrForm);
             if(empty($this->arrErr)) {
-                $uniqid             = $this->lfRegistData();
+                $uniqid             = $this->lfRegistData($this->arrForm, $this->objFormParam->getDbArray());
 
                 $this->tpl_mainpage = 'entry/complete.tpl';
                 $this->tpl_title    = '会員登録(完了ページ)';
+                $this->lfSendMail($uniqid, $this->arrForm);
 
-                $this->lfSendMail($uniqid);
+                // 仮会員が無効の場合
+                if(CUSTOMER_CONFIRM_MAIL == false) {
+                    // ログイン状態にする
+                    $objCustomer = new SC_Customer();
+                    $objCustomer->setLogin($this->arrForm["email"]);
+                }
 
                 // 完了ページに移動させる。
                 SC_Response_Ex::sendRedirect('complete.php', array("ci" => SC_Helper_Customer_Ex::sfGetCustomerId($uniqid)));
@@ -169,33 +194,6 @@ class LC_Page_Entry extends LC_Page {
 
     // }}}
     // {{{ protected functions
-
-
-    /**
-     * lfPreMode
-     *
-     * @access public
-     * @return void
-     */
-    function lfPreMode() {
-        // PC時は規約ページからの遷移でなければエラー画面へ遷移する
-        $this->lfCheckReferer();
-
-        // mobile用（戻るボタンでの遷移かどうかを判定）
-        if (!empty($_POST["return"])) {
-            $_POST["mode"] = "return";
-        }
-
-        //CSRF対策
-        $this->lfCheckCSRF();
-
-        $this->objFormParam->setParam($_POST);    // POST値の取得
-        $this->objFormParam->convParam();
-        $this->objFormParam->toLower('email');
-        $this->objFormParam->toLower('email02');
-    }
-
-
     /**
      * lfRegistData
      *
@@ -204,10 +202,10 @@ class LC_Page_Entry extends LC_Page {
      * @access public
      * @return void
      */
-    function lfRegistData() {
-        $objQuery   = new SC_Query();
+    function lfRegistData($arrForm, $arrResults) {
+        $objQuery   = SC_Query::getSingletonInstance();
         //-- 登録実行
-        $sqlval     = $this->lfMakeSqlVal();
+        $sqlval     = $this->lfMakeSqlVal($arrForm, $arrResults);
         $objQuery->begin();
         SC_Helper_Customer_Ex::sfEditCustomerData($sqlval);
         $objQuery->commit();
@@ -217,89 +215,88 @@ class LC_Page_Entry extends LC_Page {
 
 
     /**
-     * lfMakeSqlVal
+     * 会員登録に必要なSQLパラメータの配列を生成する.
      *
-     * 会員登録に必要なsqlを作成する
+     * フォームに入力された情報を元に, SQLパラメータの配列を生成する.
+     * モバイル端末の場合は, email を email_mobile にコピーし,
+     * mobile_phone_id に携帯端末IDを格納する.
      *
-     * @access public
-     * @return void
+     * @access protected
+     * @param array $arrForm フォームパラメータの配列
+     * @param array $arrResults 結果用の配列. SC_FormParam::getDbArray() の結果
+     * @return array SQLパラメータの配列
+     * @see SC_FormParam::getDbArray()
      */
-    function lfMakeSqlVal() {
-        $arrRet     = $this->objFormParam->getHashArray();
-        $sqlval     = $this->objFormParam->getDbArray();
-
-        // 登録データの作成
-        $sqlval['birth']  = SC_Utils_Ex::sfGetTimestamp($arrRet['year'], $arrRet['month'], $arrRet['day']);
+    function lfMakeSqlVal($arrForm, $arrResults) {
+        // 生年月日の作成
+        $arrResults['birth']  = SC_Utils_Ex::sfGetTimestamp($arrForm['year'], $arrForm['month'], $arrForm['day']);
 
         // 仮会員 1 本会員 2
-        $sqlval["status"] = (CUSTOMER_CONFIRM_MAIL == true) ? "1" : "2";
+        $arrResults["status"] = (CUSTOMER_CONFIRM_MAIL == true) ? "1" : "2";
 
         /*
-          secret_keyは、テーブルで重複許可されていない場合があるので、
-                          本会員登録では利用されないがセットしておく。
-        */
-        $sqlval["secret_key"] = SC_Helper_Customer_Ex::sfGetUniqSecretKey();		// 会員登録キー
+         * secret_keyは、テーブルで重複許可されていない場合があるので、
+         * 本会員登録では利用されないがセットしておく。
+         */
+        $arrResults["secret_key"] = SC_Helper_Customer_Ex::sfGetUniqSecretKey();
 
+        // 入会時ポイント
         $CONF = SC_Helper_DB_Ex::sfGetBasisData();
-        $sqlval["point"] = $CONF["welcome_point"]; // 入会時ポイント
+        $arrResults["point"] = $CONF["welcome_point"];
 
-        if ($this->isMobile === true) {
+        if (SC_Display::detectDevice() == DEVICE_TYPE_MOBILE) {
             // 携帯メールアドレス
-            $sqlval['email_mobile']     = $sqlval['email'];
-            //PHONE_IDを取り出す
-            $sqlval['mobile_phone_id']  =  SC_MobileUserAgent::getId();
+            $arrResults['email_mobile']     = $arrResults['email'];
+            // PHONE_IDを取り出す
+            $arrResults['mobile_phone_id']  =  SC_MobileUserAgent::getId();
         }
-
-        return $sqlval;
+        return $arrResults;
     }
 
 
     /**
-     * lfSendMail
+     * 会員登録完了メール送信する
      *
      * @access public
      * @return void
      */
-    function lfSendMail($uniqid){
-        // 完了メール送信
-        $arrRet         = $this->objFormParam->getHashArray();
-        $this->name01   = $arrRet['name01'];
-        $this->name02   = $arrRet['name02'];
-        $this->uniqid   = $uniqid;
+    function lfSendMail($uniqid, $arrForm){
         $CONF           = SC_Helper_DB_Ex::sfGetBasisData();
-        $this->CONF     = $CONF;
+
         $objMailText    = new SC_SiteView();
+        $objMailText->assign("CONF", $CONF);
+        $objMailText->assign("name01", $arrForm['name01']);
+        $objMailText->assign("name02", $arrForm['name02']);
+        $objMailText->assign("uniqid", $uniqid);
         $objMailText->assignobj($this);
 
         $objHelperMail  = new SC_Helper_Mail_Ex();
 
         // 仮会員が有効の場合
         if(CUSTOMER_CONFIRM_MAIL == true) {
-            $subject = $objHelperMail->sfMakeSubject('会員登録のご確認');
+            $subject        = $objHelperMail->sfMakeSubject('会員登録のご確認');
             $toCustomerMail = $objMailText->fetch("mail_templates/customer_mail.tpl");
         } else {
-            $subject = $objHelperMail->sfMakeSubject('会員登録のご完了');
+            $subject        = $objHelperMail->sfMakeSubject('会員登録のご完了');
             $toCustomerMail = $objMailText->fetch("mail_templates/customer_regist_mail.tpl");
-            // ログイン状態にする
-            $objCustomer = new SC_Customer();
-            $objCustomer->setLogin($arrRet["email"]);
         }
 
         $objMail = new SC_SendMail();
         $objMail->setItem(
-                              ''                    // 宛先
-                            , $subject              // サブジェクト
-                            , $toCustomerMail       // 本文
-                            , $CONF["email03"]      // 配送元アドレス
-                            , $CONF["shop_name"]    // 配送元 名前
-                            , $CONF["email03"]      // reply_to
-                            , $CONF["email04"]      // return_path
-                            , $CONF["email04"]      // Errors_to
-                            , $CONF["email01"]      // Bcc
+            ''                    // 宛先
+            , $subject              // サブジェクト
+            , $toCustomerMail       // 本文
+            , $CONF["email03"]      // 配送元アドレス
+            , $CONF["shop_name"]    // 配送元 名前
+            , $CONF["email03"]      // reply_to
+            , $CONF["email04"]      // return_path
+            , $CONF["email04"]      // Errors_to
+            , $CONF["email01"]      // Bcc
         );
         // 宛先の設定
-        $name = $arrRet["name01"] . $arrRet["name02"] ." 様";
-        $objMail->setTo($arrRet["email"], $name);
+        $objMail->setTo($arrForm["email"],
+                        $arrForm["name01"] . $arrForm["name02"] ." 様");
+
         $objMail->sendMail();
     }
 
@@ -312,17 +309,17 @@ class LC_Page_Entry extends LC_Page {
      * @access public
      * @return void
      */
-    function lfErrorCheck($array) {
+    function lfErrorCheck($arrForm) {
 
         // 入力データを渡す。
-        $arrRet = $this->objFormParam->getHashArray();
-        $objErr = new SC_CheckError($arrRet);
+        $objErr = new SC_CheckError($arrForm);
         $objErr->arrErr = $this->objFormParam->checkError();
 
         $objErr->doFunc(array("お電話番号", "tel01", "tel02", "tel03"),array("TEL_CHECK"));
         $objErr->doFunc(array("郵便番号", "zip01", "zip02"), array("ALL_EXIST_CHECK"));
         $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_BIRTHDAY"));
-        if ($this->isMobile === false){
+
+        if (SC_Display::detectDevice() !== DEVICE_TYPE_MOBILE){
             $objErr->doFunc(array('パスワード', 'パスワード(確認)', "password", "password02") ,array("EQUAL_CHECK"));
             $objErr->doFunc(array('メールアドレス', 'メールアドレス(確認)', "email", "email02") ,array("EQUAL_CHECK"));
             $objErr->doFunc(array("FAX番号", "fax01", "fax02", "fax03") ,array("TEL_CHECK"));
@@ -335,35 +332,25 @@ class LC_Page_Entry extends LC_Page {
     }
 
     /**
-     * lfCheckReferer
+     * kiyaku.php からの遷移の妥当性をチェックする
      *
-     * @access public
-     * @return void
-     */
-    function lfCheckReferer(){
-    	/**
-    	 * 規約ページからの遷移でなければエラー画面へ遷移する
-    	 */
-        if ($this->isMobile === FALSE
-        	 && empty($_POST)
-        	 && !preg_match('/kiyaku.php/', basename($_SERVER['HTTP_REFERER']))
-        	) {
-            SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", true);
-        }
-    }
-
-
-    /**
-     * lfCheckCSRF
+     * 以下の内容をチェックし, 妥当であれば true を返す.
+     * 1. 規約ページからの遷移かどうか
+     * 2. PC及びスマートフォンかどうか
+     * 3. $post に何も含まれていないかどうか
      *
-     * @access public
-     * @return void
+     * @access protected
+     * @param array $post $_POST のデータ
+     * @param string $referer $_SERVER['HTTP_REFERER'] のデータ
+     * @return boolean kiyaku.php からの妥当な遷移であれば true
      */
-    function lfCheckCSRF() {
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            if (!SC_Helper_Session_Ex::isValidToken()) {
-                SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", true);
+    function lfCheckReferer(&$post, $referer){
+
+        if (SC_Display::detectDevice() !== DEVICE_TYPE_MOBILE
+            && empty($post)
+            && (preg_match('/kiyaku.php/', basename($referer)) === 0)) {
+            return false;
             }
-        }
+        return true;
     }
 }
