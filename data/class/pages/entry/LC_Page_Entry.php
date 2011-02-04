@@ -140,15 +140,15 @@ class LC_Page_Entry extends LC_Page {
             //-- 会員登録と完了画面
             $this->arrErr = $this->lfErrorCheck();
             if(empty($this->arrErr)) {
-                $this->uniqid       = $this->lfRegistData();
+                $uniqid             = $this->lfRegistData();
 
                 $this->tpl_mainpage = 'entry/complete.tpl';
                 $this->tpl_title    = '会員登録(完了ページ)';
 
-                $this->lfSendMail();
+                $this->lfSendMail($uniqid);
 
                 // 完了ページに移動させる。
-                SC_Response_Ex::sendRedirect('complete.php', array("ci" => $this->lfGetCustomerId($this->uniqid)));
+                SC_Response_Ex::sendRedirect('complete.php', array("ci" => $this->lfGetCustomerId($uniqid)));
             }
             break;
         default:
@@ -259,11 +259,12 @@ class LC_Page_Entry extends LC_Page {
      * @access public
      * @return void
      */
-    function lfSendMail(){
+    function lfSendMail($uniqid){
         // 完了メール送信
         $arrRet         = $this->objFormParam->getHashArray();
         $this->name01   = $arrRet['name01'];
         $this->name02   = $arrRet['name02'];
+        $this->uniqid   = $uniqid;
         $objMailText    = new SC_SiteView();
         $objMailText->assignobj($this);
 
