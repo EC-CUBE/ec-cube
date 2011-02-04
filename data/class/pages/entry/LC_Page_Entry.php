@@ -205,13 +205,14 @@ class LC_Page_Entry extends LC_Page {
      * @return void
      */
     function lfRegistData() {
-        $objQuery = new SC_Query();
+        $objQuery   = new SC_Query();
         //-- 登録実行
+        $sqlval     = $this->lfMakeSqlVal();
         $objQuery->begin();
-        SC_Helper_Customer_Ex::sfEditCustomerData($this->lfMakeSqlVal());
+        SC_Helper_Customer_Ex::sfEditCustomerData($sqlval);
         $objQuery->commit();
 
-        return $uniqid;
+        return $sqlval["secret_key"];
     }
 
 
