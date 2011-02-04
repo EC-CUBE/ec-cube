@@ -120,7 +120,7 @@
     <!--{assign var=key value="error:`$smarty.section.cnt.iteration`"}-->
     <!--{if $arrErr[$key] != ""}-->
     <tr>
-      <td colspan="8"><span class="attention"><!--{$arrErr[$key]}--></span></td>
+      <td colspan="10"><span class="attention"><!--{$arrErr[$key]}--></span></td>
     </tr>
     <!--{/if}-->
     <tr >
