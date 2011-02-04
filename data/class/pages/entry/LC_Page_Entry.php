@@ -61,8 +61,6 @@ class LC_Page_Entry extends LC_Page {
 
         $this->httpCacheControl('nocache');
 
-        $this->isMobile     = Net_UserAgent_Mobile::isMobile();
-
         // パラメータ管理クラス,パラメータ情報の初期化
         $this->objFormParam = new SC_FormParam();
         $this->lfInitParam();
