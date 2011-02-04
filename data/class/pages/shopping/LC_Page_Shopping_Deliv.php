@@ -69,85 +69,66 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         $objCartSess = new SC_CartSession();
         $objCustomer = new SC_Customer();
         $objPurchase = new SC_Helper_Purchase_Ex();
-        $objQuery = SC_Query::getSingletonInstance();;
+        $objFormParam = new SC_FormParam();
         $objCookie = new SC_Cookie(COOKIE_EXPIRE);
+
         $this->tpl_uniqid = $objSiteSess->getUniqId();
         $objPurchase->verifyChangeCart($this->tpl_uniqid, $objCartSess);
 
         $this->cartKey = $objCartSess->getKey();
 
         // ログインチェック
-        if(!$objCustomer->isLoginSuccess(true)) {
+        if (!$objCustomer->isLoginSuccess(true)) {
             SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
         }
 
-        if($this->cartKey == PRODUCT_TYPE_DOWNLOAD){
-            // 会員情報の住所を受注一時テーブルに書き込む
+        // ダウンロード商品の場合は、支払方法画面に転送
+        if ($this->cartKey == PRODUCT_TYPE_DOWNLOAD) {
             $objPurchase->copyFromCustomer($sqlval, $objCustomer, 'shipping');
             $objPurchase->saveShippingTemp($sqlval);
             $objPurchase->saveOrderTemp($this->tpl_uniqid, $sqlval, $objCustomer);
-            // 正常に登録されたことを記録しておく
             $objSiteSess->setRegistFlag();
-            // ダウンロード商品有りの場合は、支払方法画面に転送
             SC_Response_Ex::sendRedirect('payment.php');
             exit;
         }
 
+        $this->lfInitParam($objFormParam);
+        $objFormParam->setParam($_POST);
+        $objFormParam->convParam();
+        $arrErr = $objFormParam->checkError();
+        if (!SC_Utils_Ex::isBlank($arrErr)) {
+            SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", true);
+            exit;
+        }
+
+        $arrForm = $objFormParam->getHashArray();
+
         switch($this->getMode()) {
         // 削除
         case 'delete':
-            if (SC_Utils_Ex::sfIsInt($_POST['other_deliv_id'])) {
-                $where = "other_deliv_id = ?";
-                $arrRet = $objQuery->delete("dtb_other_deliv", $where, array($_POST['other_deliv_id']));
-            }
+            $this->doDelete($arrForm['other_deliv_id']);
             break;
+
         // 会員登録住所に送る
         case 'customer_addr':
-            $sqlval = array();
-            $arrDeliv = $objPurchase->getDeliv($this->cartKey);
-            $sqlval['deliv_id'] = $arrDeliv[0]['deliv_id'];
-            // 会員登録住所がチェックされている場合
-            if ($_POST['deliv_check'] == '-1') {
-                // 会員情報の住所を受注一時テーブルに書き込む
-                $objPurchase->copyFromCustomer($sqlval, $objCustomer, 'shipping');
-                $objPurchase->saveShippingTemp($sqlval);
-                $objPurchase->saveOrderTemp($this->tpl_uniqid, $sqlval, $objCustomer);
-
-                // 正常に登録されたことを記録しておく
+            if ($this->registerDeliv($arrForm['deliv_check'], $this->tpl_uniqid,
+                                     $objPurchase, $objCustomer)) {
                 $objSiteSess->setRegistFlag();
-                // お支払い方法選択ページへ移動
                 SC_Response_Ex::sendRedirect(SHOPPING_PAYMENT_URLPATH);
                 exit;
-            // 別のお届け先がチェックされている場合
-            } elseif($_POST['deliv_check'] >= 1) {
-                if (SC_Utils_Ex::sfIsInt($_POST['deliv_check'])) {
-                    $otherDeliv = $objQuery->getRow("*", "dtb_other_deliv","customer_id = ? AND other_deliv_id = ?"
-                                                    ,array($objCustomer->getValue('customer_id'), $_POST['deliv_check']));
-                    if (SC_Utils_Ex::isBlank($otherDeliv)) {
-                        SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
-                    }
 
-                    $objPurchase->copyFromOrder($sqlval, $otherDeliv, 'shipping', '');;
-                    $objPurchase->saveShippingTemp($sqlval);
-                    $objPurchase->saveOrderTemp($this->tpl_uniqid, $sqlval, $objCustomer);
-
-                    // 正常に登録されたことを記録しておく
-                    $objSiteSess->setRegistFlag();
-                    // お支払い方法選択ページへ移動
-                    SC_Response_Ex::sendRedirect(SHOPPING_PAYMENT_URLPATH);
-                    exit;
-                }
-            }else{
-                // エラーを返す
-                $arrErr['deli'] = '※ お届け先を選択してください。';
+            } else {
+                SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", true);
             }
             break;
+
         // 前のページに戻る
         case 'return':
             // 確認ページへ移動
             SC_Response_Ex::sendRedirect(CART_URLPATH);
             exit;
             break;
+
         // お届け先複数指定
         case 'multiple':
             SC_Response_Ex::sendRedirect('multiple.php');
@@ -156,15 +137,11 @@ class LC_Page_Shopping_Deliv extends LC_Page {
 
         default:
             $objPurchase->unsetShippingTemp();
-
             break;
         }
 
         // 登録済み住所を取得
-        $this->arrAddr = $objCustomer->getCustomerAddress($_SESSION['customer']['customer_id']);
-        // 入力値の取得
-        if (!isset($arrErr)) $arrErr = array();
-        $this->arrErr = $arrErr;
+        $this->arrAddr = $objCustomer->getCustomerAddress($objCustomer->getValue('customer_id'));
     }
 
     /**
@@ -174,6 +151,72 @@ class LC_Page_Shopping_Deliv extends LC_Page {
      */
     function destroy() {
         parent::destroy();
+    }
+
+    /**
+     * パラメータ情報の初期化を行う.
+     *
+     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @return void
+     */
+    function lfInitParam(&$objFormParam) {
+        $objFormParam->addParam("その他のお届け先ID", "other_deliv_id", INT_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("お届け先チェック", "deliv_check", INT_LEN, "n", array("MAX_LENGTH_CHECK"));
+    }
+
+    /**
+     * その他のお届け先情報を削除する.
+     *
+     * @param integer $other_deliv_id その他のお届け先ID
+     * @return void
+     */
+    function doDelete($other_deliv_id) {
+        $objQuery =& SC_Query::getSingletonInstance();
+        $where = "other_deliv_id = ?";
+        $objQuery->delete("dtb_other_deliv", $where, array($other_deliv_id));
+    }
+
+    /**
+     * お届け先チェックの値に応じて, お届け先情報を保存する.
+     *
+     * 会員住所がチェックされている場合は, 会員情報からお届け先を取得する.
+     * その他のお届け先がチェックされている場合は, その他のお届け先からお届け先を取得する.
+     * お届け先チェックの値が不正な場合は false を返す.
+     *
+     * @param integer $deliv_check お届け先チェック
+     * @param string $uniqid 受注一時テーブルのユニークID
+     * @param SC_Helper_Purchase $objPurchase SC_Helper_Purchase インスタンス
+     * @param SC_Customer $objCustomer SC_Customer インスタンス
+     * @return boolean お届け先チェックの値が妥当な場合 true
+     */
+    function registerDeliv($deliv_check, $uniqid, &$objPurchase, &$objCustomer) {
+        $arrValues = array();
+        // 会員登録住所がチェックされている場合
+        if ($deliv_check == '-1') {
+            $objPurchase->copyFromCustomer($arrValues, $objCustomer, 'shipping');
+            $objPurchase->saveShippingTemp($arrValues);
+            $objPurchase->saveOrderTemp($uniqid, $arrValues, $objCustomer);
+            return true;
+        }
+        // 別のお届け先がチェックされている場合
+        elseif ($deliv_check >= 1) {
+            $objQuery =& SC_Query::getSingletonInstance();
+            $arrOtherDeliv = $objQuery->getRow("*", "dtb_other_deliv",
+                                               "customer_id = ? AND other_deliv_id = ?",
+                                               array($objCustomer->getValue('customer_id'), $deliv_check));
+            if (SC_Utils_Ex::isBlank($arrOtherDeliv)) {
+                return false;
+            }
+
+            $objPurchase->copyFromOrder($arrValues, $arrOtherDeliv, 'shipping', '');;
+            $objPurchase->saveShippingTemp($arrValues);
+            $objPurchase->saveOrderTemp($uniqid, $arrValues, $objCustomer);
+            return true;
+        }
+        // お届け先チェックが不正な場合
+        else {
+            return false;
+        }
     }
 }
 ?>
