@@ -78,7 +78,7 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page {
         $this->lfInitParam($this->objFormParam);
         
         // リクエスト値をフォームにセット
-        $objFormParam->setParam($this->lfConvertParam($_POST));
+        $this->objFormParam->setParam($this->lfConvertParam($_POST));
         
         // モードによって分岐
         switch ($this->getMode()) {

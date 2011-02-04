@@ -91,16 +91,16 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc {
      * @return array $arrCategoryId 選択中のカテゴリID
      */
     function lfGetSelectedCategoryId() {
-        // 商品ID取得
-        if ( !isset($_GET['product_id']) || $_GET['product_id'] == '' || !is_numeric($_GET['product_id']) ) {
-            return array(0);
+            // 商品ID取得
+        $product_id = '';
+        if ( isset($_GET['product_id']) && $_GET['product_id'] != '' && is_numeric($_GET['product_id']) ) {
+            $product_id = $_GET['product_id'];
         }
-        $product_id = $_GET['product_id'];
         // カテゴリID取得
-        if ( !isset($_GET['category_id']) || $_GET['category_id'] == '' || !is_numeric($_GET['category_id']) ) {
-            return array(0);
+        $category_id = '';
+        if ( isset($_GET['category_id']) && $_GET['category_id'] != '' && is_numeric($_GET['category_id']) ) {
+            $category_id = $_GET['category_id'];
         }
-        $category_id = $_GET['category_id'];
         // 選択中のカテゴリIDを判定する
         $objDb = new SC_Helper_DB_Ex();
         $arrCategoryId = $objDb->sfGetCategoryId($product_id, $category_id);
