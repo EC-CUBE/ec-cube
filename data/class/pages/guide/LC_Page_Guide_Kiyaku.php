@@ -82,11 +82,11 @@ class LC_Page_Guide_Kiyaku extends LC_Page {
      * @return void
      */
     function lfGetKiyaku($index, &$objPage) {
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
         $objQuery->setOrder('rank DESC');
-        $arrRet = $objQuery->select('kiyaku_title, kiyaku_text', 'dtb_kiyaku', 'del_flg <> 1');
+        $arrKiyaku = $objQuery->select('kiyaku_title, kiyaku_text', 'dtb_kiyaku', 'del_flg <> 1');
 
-        $number = count($arrRet);
+        $number = count($arrKiyaku);
         if ($number > 0) {
             $last = $number - 1;
         } else {
@@ -99,8 +99,8 @@ class LC_Page_Guide_Kiyaku extends LC_Page {
             $index = $last;
         }
 
-        $objPage->tpl_kiyaku_title = $arrRet[$index]['kiyaku_title'];
-        $objPage->tpl_kiyaku_text = $arrRet[$index]['kiyaku_text'];
+        $objPage->tpl_kiyaku_title = $arrKiyaku[$index]['kiyaku_title'];
+        $objPage->tpl_kiyaku_text = $arrKiyaku[$index]['kiyaku_text'];
         $objPage->tpl_kiyaku_index = $index;
         $objPage->tpl_kiyaku_last_index = $last;
         $objPage->tpl_kiyaku_is_first = $index <= 0;
