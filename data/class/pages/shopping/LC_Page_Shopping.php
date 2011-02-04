@@ -82,8 +82,6 @@ class LC_Page_Shopping extends LC_Page {
         $objPurchase = new SC_Helper_Purchase_Ex();
         $objFormParam = new SC_FormParam();
 
-        $this->lfInitParam($objFormParam);
-        $objFormParam->setParam($_POST);
 
         $this->tpl_uniqid = $objSiteSess->getUniqId();
         $objPurchase->verifyChangeCart($this->tpl_uniqid, $objCartSess);
@@ -94,7 +92,7 @@ class LC_Page_Shopping extends LC_Page {
         if ($objCustomer->isLoginSuccess(true)) {
             SC_Response_Ex::sendRedirect(
                     $this->getNextLocation($this->cartKey, $this->tpl_uniqid,
-                                           $objCustomer));
+                                           $objCustomer, $objPurchase));
             exit;
         }
         // 非会員かつ, ダウンロード商品の場合はエラー表示
@@ -115,10 +113,50 @@ class LC_Page_Shopping extends LC_Page {
         }
 
         switch ($this->getMode()) {
-        // 登録
+        // ログイン実行
+        case 'login':
+            $this->lfInitLoginFormParam($objFormParam);
+            $objFormParam->setParam($_POST);
+            $objFormParam->trimParam();
+            $objFormParam->convParam();
+            $objFormParam->toLower('login_email');
+            $this->arrErr = $objFormParam->checkError();
+
+            // ログイン判定
+            if (SC_Utils_Ex::isBlank($this->arrErr)
+                && $this->doLogin($objCustomer,
+                                  $objFormParam->getValue('login_email'),
+                                  $objFormParam->getValue('login_pass'))) {
+
+                // モバイルサイトで携帯アドレスの登録が無い場合
+                if($this->hasEmailMobile($objCustomer)) {
+                    SC_Response_Ex::sendRedirect('../entry/email_mobile.php');
+                    exit;
+                }
+                SC_Response_Ex::sendRedirect(
+                        $this->getNextLocation($this->cartKey, $this->tpl_uniqid,
+                                               $objCustomer, $objPurchase));
+                exit;
+            }
+            // ログインに失敗した場合
+            else {
+                // 仮登録の場合
+                if($this->checkTempCustomer($objFormParam->getValue('login_email'))) {
+                    SC_Utils_Ex::sfDispSiteError(TEMP_LOGIN_ERROR);
+                    exit;
+                } else {
+                    SC_Utils_Ex::sfDispSiteError(SITE_LOGIN_ERROR);
+                    exit;
+                }
+            }
+            break;
+
+        // お客様情報登録
         case 'nonmember_confirm':
             $this->tpl_mainpage = 'shopping/nonmember_input.tpl';
             $this->tpl_title = 'お客様情報入力';
+            $this->lfInitParam($objFormParam);
+            $objFormParam->setParam($_POST);
 
             $this->arrErr = $this->lfCheckError($objFormParam);
 
@@ -139,8 +177,10 @@ class LC_Page_Shopping extends LC_Page {
             exit;
             break;
 
-        // 複数配送
+        // 複数配送ページへ遷移
         case 'multiple':
+            $this->lfInitParam($objFormParam);
+            $objFormParam->setParam($_POST);
             $this->arrErr = $this->lfCheckError($objFormParam);
 
             if (SC_Utils_Ex::isBlank($this->arrErr)) {
@@ -153,18 +193,22 @@ class LC_Page_Shopping extends LC_Page {
             }
             // ※breakなし
 
-        // 入力
+        // お客様情報入力ページの表示
         case 'nonmember':
             $this->tpl_mainpage = 'shopping/nonmember_input.tpl';
             $this->tpl_title = 'お客様情報入力';
-
             // ※breakなし
 
         default:
-            // 前のページから戻ってきた場合
+            // 前のページから戻ってきた場合は, お客様情報入力ページ
             if (isset($_GET['from']) && $_GET['from'] == 'nonmember') {
                 $this->tpl_mainpage = 'shopping/nonmember_input.tpl';
                 $this->tpl_title = 'お客様情報入力';
+                $this->lfInitParam($objFormParam);
+            }
+            // 通常はログインページ
+            else {
+                $this->lfInitLoginFormParam($objFormParam);
             }
 
             $this->setFormParams($objFormParam, $objPurchase, $this->tpl_uniqid);
@@ -198,12 +242,13 @@ class LC_Page_Shopping extends LC_Page {
     }
 
     /**
-     * パラメータ情報の初期化を行う.
+     * お客様情報入力時のパラメータ情報の初期化を行う.
      *
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
     function lfInitParam(&$objFormParam) {
+
         $objFormParam->addParam("お名前(姓)", "order_name01", STEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $objFormParam->addParam("お名前(名)", "order_name02", STEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $objFormParam->addParam("お名前(フリガナ・姓)", "order_kana01", STEXT_LEN, "KVCa", array("EXIST_CHECK", "KANA_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
@@ -243,6 +288,18 @@ class LC_Page_Shopping extends LC_Page {
     }
 
     /**
+     * ログイン時のパラメータ情報の初期化を行う.
+     *
+     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @return void
+     */
+    function lfInitLoginFormParam(&$objFormParam) {
+        $objFormParam->addParam("記憶する", "login_memory", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("メールアドレス", "login_email", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("パスワード", "login_pass", PASSWORD_LEN2, "", array("EXIST_CHECK"));
+    }
+
+    /**
      * ログイン済みの場合の遷移先を取得する.
      *
      * 商品種別IDが, ダウンロード商品の場合は, 会員情報を受注一時情報に保存し,
@@ -250,9 +307,12 @@ class LC_Page_Shopping extends LC_Page {
      * それ以外は, お届け先選択画面のパスを返す.
      *
      * @param integer $product_type_id 商品種別ID
+     * @param string $uniqid 受注一時テーブルのユニークID
+     * @param SC_Customer $objCustomer SC_Customer インスタンス
+     * @param SC_Helper_Purchase $objPurchase SC_Helper_Purchase インスタンス
      * @return string 遷移先のパス
      */
-    function getNextLocation($product_type_id, $uniqid, &$objCustomer) {
+    function getNextLocation($product_type_id, $uniqid, &$objCustomer, &$objPurchase) {
         switch ($product_type_id) {
         case PRODUCT_TYPE_DOWNLOAD:
             $objPurchase->saveOrderTemp($uniqid, array(), $objCustomer);
@@ -325,7 +385,7 @@ class LC_Page_Shopping extends LC_Page {
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return array エラー情報の配
      */
-    function lfCheckError($objFormParam) {
+    function lfCheckError(&$objFormParam) {
         // 入力値の変換
         $objFormParam->convParam();
         $objFormParam->toLower('order_mail');
@@ -375,25 +435,101 @@ class LC_Page_Shopping extends LC_Page {
      * @return void
      */
     function setFormParams(&$objFormParam, &$objPurchase, $uniqid) {
-          $arrOrderTemp = $objPurchase->getOrderTemp($uniqid);
-          if (SC_Utils_Ex::isBlank($arrOrderTemp)) {
-              $arrOrderTemp = array('order_email' => "",
-                                    'order_birth' => "");
-          }
-          $arrShippingTemp = $objPurchase->getShippingTemp();
+        $arrOrderTemp = $objPurchase->getOrderTemp($uniqid);
+        if (SC_Utils_Ex::isBlank($arrOrderTemp)) {
+            $arrOrderTemp = array('order_email' => "",
+                                  'order_birth' => "");
+        }
+        $arrShippingTemp = $objPurchase->getShippingTemp();
 
-          $objFormParam->setParam($arrOrderTemp);
-          /*
-           * count($arrShippingTemp) > 1 は複数配送であり,
-           * $arrShippingTemp[0] は注文者が格納されている
-           */
-          if (count($arrShippingTemp) > 1) {
-              $objFormParam->setParam($arrShippingTemp[1]);
-          } else {
-              $objFormParam->setParam($arrShippingTemp[0]);
-          }
-          $objFormParam->setValue('order_email02', $arrOrderTemp['order_email']);
-          $objFormParam->setDBDate($arrOrderTemp['order_birth']);
+        $objFormParam->setParam($arrOrderTemp);
+        /*
+         * count($arrShippingTemp) > 1 は複数配送であり,
+         * $arrShippingTemp[0] は注文者が格納されている
+         */
+        if (count($arrShippingTemp) > 1) {
+            $objFormParam->setParam($arrShippingTemp[1]);
+        } else {
+            $objFormParam->setParam($arrShippingTemp[0]);
+        }
+        $objFormParam->setValue('order_email02', $arrOrderTemp['order_email']);
+        $objFormParam->setDBDate($arrOrderTemp['order_birth']);
+    }
+
+    /**
+     * ログインを実行する.
+     *
+     * ログインを実行し, 成功した場合はユーザー情報をセッションに格納し,
+     * true を返す.
+     * モバイル端末の場合は, 携帯端末IDを保存する.
+     * ログインに失敗した場合は, false を返す.
+     *
+     * @param SC_Customer $objCustomer SC_Customer インスタンス
+     * @param string $login_email ログインメールアドレス
+     * @param string $login_pass ログインパスワード
+     * @return boolean ログインに成功した場合 true; 失敗した場合 false
+     */
+    function doLogin(&$objCustomer, $login_email, $login_pass) {
+
+        switch (SC_Display::detectDevice()) {
+        case DEVICE_TYPE_MOBILLE:
+            if(!$objCustomer->getCustomerDataFromMobilePhoneIdPass($login_pass) &&
+               !$objCustomer->getCustomerDataFromEmailPass($login_pass, $login_email, true)) {
+                return false;
+            } else {
+                $objCustomer->updateMobilePhoneId();
+                return true;
+            }
+            break;
+
+        case DEVICE_TYPE_SMARTPHONE:
+        case DEVICE_TYPE_PC:
+        default:
+            if(!$objCustomer->getCustomerDataFromEmailPass($login_pass, $login_email)) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+    }
+
+    /**
+     * ログインした会員の携帯メールアドレス登録があるかどうか
+     *
+     * 端末種別がモバイルの場合, ログインした会員の携帯メールアドレスの存在をチェックする
+     *
+     * @param SC_Customer $objCustomer SC_Customer インスタンス
+     * @return boolean 会員の携帯メールアドレス登録がある場合 true
+     */
+    function hasEmailMobile(&$objCustomer) {
+        switch (SC_Display::detectDevice()) {
+        case DEVICE_TYPE_MOBILLE:
+            $objMobile = new SC_Helper_Mobile_Ex();
+            if (!$objMobile->gfIsMobileMailAddress($objCustomer->getValue('email'))) {
+                if (!$objCustomer->hasValue('email_mobile')) {
+                    return true;
+                }
+            }
+            break;
+
+        case DEVICE_TYPE_SMARTPHONE:
+        case DEVICE_TYPE_PC:
+        default:
+        }
+        return false;
+    }
+
+    /**
+     * 仮会員かどうかを判定する.
+     *
+     * @param string $login_email メールアドレス
+     * @return boolean 仮会員の場合 true
+     */
+    function checkTempCustomer($login_email) {
+        $objQuery =& SC_Query::getSingletonInstance();
+        $where = "email = ? AND status = 1 AND del_flg = 0";
+        $count = $objQuery->count("dtb_customer", $where, array($login_email));
+        return $count > 0;
     }
 }
 ?>

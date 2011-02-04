@@ -25,6 +25,7 @@
  * パラメータ管理クラス
  *
  * :XXX: addParam と setParam で言う「パラメータ」が用語として競合しているように感じる。(2009/10/17 Seasoft 塚田)
+ * TODO 配列の再帰処理
  *
  * @package SC
  * @author LOCKON CO.,LTD.
@@ -408,6 +409,37 @@ class SC_FormParam {
             if($val == $keyname) {
                 if(isset($this->param[$cnt]) && !is_array($this->param[$cnt])) {
                     $this->param[$cnt] = split("-", $this->param[$cnt]);
+                }
+            }
+            $cnt++;
+        }
+    }
+
+    /**
+     * 入力パラメータの先頭及び末尾にある空白文字を削除する.
+     *
+     * @param boolean $has_wide_space 全角空白も削除する場合 true
+     * @return void
+     */
+    function trimParam($has_wide_space = true) {
+        $cnt = 0;
+        $pattern = '/^[ 　\r\n\t]*(.*?)[ 　\r\n\t]*$/u';
+        foreach ($this->keyname as $val) {
+            if (!isset($this->param[$cnt])) $this->param[$cnt] = "";
+
+            if (!is_array($this->param[$cnt])) {
+                if ($has_wide_space) {
+                    $this->param[$cnt] = preg_replace($pattern, '$1', $this->param[$cnt]);
+                }
+                $this->param[$cnt] = trim($this->param[$cnt]);
+            } else {
+                $max = count($this->param[$cnt]);
+                // XXX foreach の方が良い?
+                for ($i = 0; $i < $max; $i++) {
+                    if ($has_wide_space) {
+                        $this->param[$cnt][$i] = preg_replace($pattern, '$1', $this->param[$cnt][$i]);
+                    }
+                    $this->param[$cnt][$i] = trim($this->param[$cnt][$i]);
                 }
             }
             $cnt++;
