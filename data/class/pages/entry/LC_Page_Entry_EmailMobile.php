@@ -91,11 +91,9 @@ class LC_Page_Entry_EmailMobile extends LC_Page {
         parent::destroy();
     }
 
-
     /**
      * lfInitParam
      *
-     * @param mixed $objFormParam
      * @access public
      * @return void
      */
@@ -107,7 +105,6 @@ class LC_Page_Entry_EmailMobile extends LC_Page {
     /**
      * lfCheckError
      *
-     * @param mixed $objFormParam
      * @param mixed $objCustomer
      * @access public
      * @return void
@@ -125,7 +122,6 @@ class LC_Page_Entry_EmailMobile extends LC_Page {
     /**
      * lfRegister
      *
-     * @param mixed $objFormParam
      * @param mixed $objCustomer
      * @access public
      * @return void
