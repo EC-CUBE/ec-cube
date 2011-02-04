@@ -172,29 +172,26 @@ class SC_Helper_Customer {
     function sfCheckRegisterUserFromEmail($email){
         $return = 0;
 
-        $objCustomer = new SC_Customer();
-        $objQuery =& SC_Query::getSingletonInstance();
+        $objCustomer    = new SC_Customer();
+        $objQuery       =& SC_Query::getSingletonInstance();
 
-        $arrRet = $objQuery->select("email, update_date, del_flg"
-                                    ,"dtb_customer"
-                                    ,"email = ? OR email_mobile = ? ORDER BY del_flg"
-                                    ,array($email, $email)
-                                    );
+        $arrRet         = $objQuery->select("email, update_date, del_flg",
+                                            "dtb_customer",
+                                            "email = ? OR email_mobile = ? ORDER BY del_flg",
+                                            array($email, $email));
 
         if(count($arrRet) > 0) {
             if($arrRet[0]['del_flg'] != '1') {
                 // 会員である場合
-                if (!isset($objErr->arrErr['email'])) $objErr->arrErr['email'] = "";
                 $return = 1;
             } else {
                 // 退会した会員である場合
                 $leave_time = SC_Utils_Ex::sfDBDatetoTime($arrRet[0]['update_date']);
-                $now_time = time();
-                $pass_time = $now_time - $leave_time;
+                $now_time   = time();
+                $pass_time  = $now_time - $leave_time;
                 // 退会から何時間-経過しているか判定する。
                 $limit_time = ENTRY_LIMIT_HOUR * 3600;
                 if($pass_time < $limit_time) {
-                    if (!isset($objErr->arrErr['email'])) $objErr->arrErr['email'] = "";
                     $return = 2;
                 }
             }
@@ -202,15 +199,14 @@ class SC_Helper_Customer {
 
         // ログインしている場合、すでに登録している自分のemailの場合はエラーを返さない
         if ($objCustomer->getValue('customer_id')){
-            $arrRet = $objQuery->select("email, email_mobile"
-                            ,"dtb_customer"
-                            ,"customer_id = ? ORDER BY del_flg"
-                            ,array($objCustomer->getValue('customer_id'))
-                            );
-            if ($email == $arrRet[0]["email"]
-                || $email == $arrRet[0]["email_mobile"]){
-                    $return = 3;
-                }
+            $arrRet = $objQuery->select("email, email_mobile",
+                                        "dtb_customer",
+                                        "customer_id = ? ORDER BY del_flg",
+                                        array($objCustomer->getValue('customer_id')));
+
+            if ($email == $arrRet[0]["email"] || $email == $arrRet[0]["email_mobile"]) {
+                $return = 3;
+            }
         }
         return $return;
     }

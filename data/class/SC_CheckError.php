@@ -794,14 +794,14 @@ class SC_CheckError {
         $this->createParam($value);
         // 年が入力されている。
         if ($this->arrParam[$value[1]] > 0) {
-            
+
             // 年の数字チェック、最小数値制限チェック
             $this->doFunc(array($value[0].'(年)', $value[1], START_BIRTH_YEAR), array("NUM_CHECK", "MIN_CHECK"));
             // 上のチェックでエラーある場合、中断する。
             if (isset($this->arrErr[$value[1]])) {
                 return;
             }
-            
+
             // 年の最大数値制限チェック
             $this->doFunc(array($value[0].'(年)', $value[1], date("Y",strtotime("now"))), array("MAX_CHECK"));
             // 上のチェックでエラーある場合、中断する。
@@ -809,7 +809,7 @@ class SC_CheckError {
                 return;
             }
         }
-        
+
         // XXX createParam() が二重に呼ばれる問題を抱える
         $this->CHECK_DATE($value);
     }
@@ -984,6 +984,27 @@ class SC_CheckError {
             $this->arrErr[$value[1]] = "※ " . $value[0] . "は携帯電話のものではありません。<br />";
         }
     }
+
+    function CHECK_REGIST_CUSTOMER_EMAIL ($value) {
+        if(isset($this->arrErr[$value[1]])) {
+            return;
+        }
+        $this->createParam($value);
+
+        $register_user_flg =  SC_Helper_Customer_Ex::sfCheckRegisterUserFromEmail($this->arrParam[$value[1]]);
+        switch($register_user_flg) {
+            case 1:
+                $this->arrErr[$value[1]] .= "※ すでに会員登録で使用されている" . $value[0] . "です。<br />";
+                break;
+            case 2:
+                $this->arrErr[$value[1]] .= "※ 退会から一定期間の間は、同じ" . $value[0] . "を使用することはできません。<br />";
+                break;
+            default:
+                break;
+        }
+    }
+
+
     /**
      * 禁止文字列のチェック
      * value[0] = 項目名 value[1] = 判定対象文字列

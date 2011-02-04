@@ -328,17 +328,8 @@ class LC_Page_Entry extends LC_Page {
         }
 
         // 現会員の判定 → 現会員もしくは仮登録中は、メアド一意が前提になってるので同じメアドで登録不可
-        $register_user_flg =  SC_Helper_Customer_Ex::sfCheckRegisterUserFromEmail($arrRet["email"]);
-        switch($register_user_flg) {
-            case 1:
-                $objErr->arrErr["email"] .= "※ すでに会員登録で使用されているメールアドレスです。<br />";
-                break;
-            case 2:
-                $objErr->arrErr["email"] .= "※ 退会から一定期間の間は、同じメールアドレスを使用することはできません。<br />";
-                break;
-            default:
-                break;
-        }
+        $objErr->doFunc(array("メールアドレス", "email"), array("CHECK_REGIST_CUSTOMER_EMAIL"));
+
         return $objErr->arrErr;
     }
 
