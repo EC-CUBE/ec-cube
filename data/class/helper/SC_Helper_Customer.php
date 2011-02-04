@@ -221,7 +221,7 @@ class SC_Helper_Customer {
      * @return void
      */
     function sfGetUniqSecretKey() {
-        $objQuery   = new SC_Query();
+        $objQuery   =& SC_Query::getSingletonInstance();
         $count      = 1;
         while ($count != 0) {
             $uniqid = SC_Utils_Ex::sfGetUniqRandomId("r");
@@ -229,4 +229,25 @@ class SC_Helper_Customer {
         }
         return $uniqid;
     }
+
+
+    /**
+     * sfGetCustomerId
+     *
+     * @param mixed $uniqid
+     * @param mixed $check_status
+     * @access public
+     * @return void
+     */
+    function sfGetCustomerId($uniqid, $check_status = false) {
+        $objQuery   =& SC_Query::getSingletonInstance();
+        $where      = "secret_key = ?";
+
+        if ($check_status) {
+            $where .= ' AND status = 1 AND del_flg = 0';
+        }
+
+        return $objQuery->get("customer_id", "dtb_customer", $where, array($uniqid));
+    }
+
 }

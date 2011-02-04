@@ -148,7 +148,7 @@ class LC_Page_Entry extends LC_Page {
                 $this->lfSendMail($uniqid);
 
                 // 完了ページに移動させる。
-                SC_Response_Ex::sendRedirect('complete.php', array("ci" => $this->lfGetCustomerId($uniqid)));
+                SC_Response_Ex::sendRedirect('complete.php', array("ci" => SC_Helper_Customer_Ex::sfGetCustomerId($uniqid)));
             }
             break;
         default:
@@ -266,13 +266,12 @@ class LC_Page_Entry extends LC_Page {
         $this->name01   = $arrRet['name01'];
         $this->name02   = $arrRet['name02'];
         $this->uniqid   = $uniqid;
+        $CONF           = SC_Helper_DB_Ex::sfGetBasisData();
+        $this->CONF     = $CONF;
         $objMailText    = new SC_SiteView();
         $objMailText->assignobj($this);
 
         $objHelperMail  = new SC_Helper_Mail_Ex();
-        $objCustomer    = new SC_Customer();
-        $CONF           = SC_Helper_DB_Ex::sfGetBasisData();
-        $this->CONF     = $CONF;
 
         // 仮会員が有効の場合
         if(CUSTOMER_CONFIRM_MAIL == true) {
@@ -282,6 +281,7 @@ class LC_Page_Entry extends LC_Page {
             $subject = $objHelperMail->sfMakeSubject('会員登録のご完了');
             $toCustomerMail = $objMailText->fetch("mail_templates/customer_regist_mail.tpl");
             // ログイン状態にする
+            $objCustomer = new SC_Customer();
             $objCustomer->setLogin($arrRet["email"]);
         }
 
@@ -365,18 +365,5 @@ class LC_Page_Entry extends LC_Page {
                 SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", true);
             }
         }
-    }
-
-
-    /**
-     * lfGetCustomerId
-     *
-     * @param mixed $uniqid
-     * @access public
-     * @return void
-     */
-    function lfGetCustomerId($uniqid) {
-        $objQuery = new SC_Query();
-        return $objQuery->get("customer_id", "dtb_customer", "secret_key = ?", array($uniqid));
     }
 }
