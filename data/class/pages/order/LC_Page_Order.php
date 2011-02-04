@@ -45,7 +45,6 @@ class LC_Page_Order extends LC_Page {
         parent::init();
         $this->tpl_page_category = 'order';
         $this->tpl_title = '特定商取引に関する法律に基づく表記';
-
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
     }
@@ -67,10 +66,10 @@ class LC_Page_Order extends LC_Page {
      * @return void
      */
     function action() {
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
         $layout = new SC_Helper_PageLayout_Ex();
         $objDb = new SC_Helper_DB_Ex();
-        $this->arrRet = $objDb->sfGetBasisData();
+        $this->arrOrder = $objDb->sfGetBasisData();
     }
 
     /**

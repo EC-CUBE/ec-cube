@@ -26,55 +26,55 @@
     <table summary="特定商取引に関する法律に基づく表記">
       <tr>
         <th>販売業者</th>
-        <td><!--{$arrRet.law_company|h}--></td>
+        <td><!--{$arrOrder.law_company|h}--></td>
       </tr>
       <tr>
         <th>運営責任者</th>
-        <td><!--{$arrRet.law_manager|h}--></td>
+        <td><!--{$arrOrder.law_manager|h}--></td>
       </tr>
       <tr>
         <th>住所</th>
-        <td>〒<!--{$arrRet.law_zip01|h}-->-<!--{$arrRet.law_zip02|h}--><br /><!--{$arrPref[$arrRet.law_pref]|h}--><!--{$arrRet.law_addr01|h}--><!--{$arrRet.law_addr02|h}--></td>
+        <td>〒<!--{$arrOrder.law_zip01|h}-->-<!--{$arrOrder.law_zip02|h}--><br /><!--{$arrPref[$arrOrder.law_pref]|h}--><!--{$arrOrder.law_addr01|h}--><!--{$arrOrder.law_addr02|h}--></td>
       </tr>
       <tr>
         <th>電話番号</th>
-        <td><!--{$arrRet.law_tel01|h}-->-<!--{$arrRet.law_tel02|h}-->-<!--{$arrRet.law_tel03|h}--></td>
+        <td><!--{$arrOrder.law_tel01|h}-->-<!--{$arrOrder.law_tel02|h}-->-<!--{$arrOrder.law_tel03|h}--></td>
       </tr>
       <tr>
         <th>FAX番号</th>
-        <td><!--{$arrRet.law_fax01|h}-->-<!--{$arrRet.law_fax02|h}-->-<!--{$arrRet.law_fax03|h}--></td>
+        <td><!--{$arrOrder.law_fax01|h}-->-<!--{$arrOrder.law_fax02|h}-->-<!--{$arrOrder.law_fax03|h}--></td>
       </tr>
       <tr>
         <th>メールアドレス</th>
-        <td><a href="mailto:<!--{$arrRet.law_email|escape:'hex'}-->"><!--{$arrRet.law_email|escape:'hexentity'}--></a></td>
+        <td><a href="mailto:<!--{$arrOrder.law_email|escape:'hex'}-->"><!--{$arrOrder.law_email|escape:'hexentity'}--></a></td>
       </tr>
       <tr>
         <th>URL</th>
-        <td><a href="<!--{$arrRet.law_url|h}-->"><!--{$arrRet.law_url|h}--></a></td>
+        <td><a href="<!--{$arrOrder.law_url|h}-->"><!--{$arrOrder.law_url|h}--></a></td>
       </tr>
       <tr>
         <th>商品以外の必要代金</th>
-        <td><!--{$arrRet.law_term01|h|nl2br}--></td>
+        <td><!--{$arrOrder.law_term01|h|nl2br}--></td>
       </tr>
       <tr>
         <th>注文方法</th>
-        <td><!--{$arrRet.law_term02|h|nl2br}--></td>
+        <td><!--{$arrOrder.law_term02|h|nl2br}--></td>
       </tr>
       <tr>
         <th>支払方法</th>
-        <td><!--{$arrRet.law_term03|h|nl2br}--></td>
+        <td><!--{$arrOrder.law_term03|h|nl2br}--></td>
       </tr>
       <tr>
         <th>支払期限</th>
-        <td><!--{$arrRet.law_term04|h|nl2br}--></td>
+        <td><!--{$arrOrder.law_term04|h|nl2br}--></td>
       </tr>
       <tr>
         <th>引渡し時期</th>
-        <td><!--{$arrRet.law_term05|h|nl2br}--></td>
+        <td><!--{$arrOrder.law_term05|h|nl2br}--></td>
       </tr>
       <tr>
         <th>返品・交換について</th>
-        <td><!--{$arrRet.law_term06|h|nl2br}--></td>
+        <td><!--{$arrOrder.law_term06|h|nl2br}--></td>
       </tr>
     </table>
   </div>
