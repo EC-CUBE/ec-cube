@@ -42,7 +42,7 @@
   <div class="result-info01">
           <ul class="site-info-list">
             <li><span class="bold">サイトURL：</span><!--{$tpl_site_url}--></li>
-            <li<span class="bold">店舗名：</span><!--{$tpl_shop_name}--></li>
+            <li><span class="bold">店舗名：</span><!--{$tpl_shop_name}--></li>
             <li><span class="bold">EC-CUBEバージョン：</span><!--{$tpl_cube_ver}--></li>
             <li><span class="bold">PHP情報：</span><!--{$tpl_php_ver}--></li>
             <li><span class="bold">DB情報：</span><!--{$tpl_db_ver}--></li>
