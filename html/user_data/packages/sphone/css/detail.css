@@ -132,3 +132,11 @@ background-color: #E19200;
 text-align:center;
 margin-top:15px;
 }
+
+
+/* 会員登録
+----------------------------------------------- */
+div#undercolumn_entry .kiyaku_text {
+    height: 250px;
+}
+

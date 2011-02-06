@@ -80,8 +80,9 @@ div#undercolumn_entry {
 
 }
 
-div#undercolumn_entry .area470 {
+div#undercolumn_entry .kiyaku_text {
     height: 520px;
+    width: 100%;
     margin: 5px 0 0 0;
     padding: 2px;
     border: 1px solid #ccc;

@@ -20,25 +20,20 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 <div id="undercolumn">
-  <div id="undercolumn_entry">
-    <h2 class="title"><!--{$tpl_title|h}--></h2>
-    <p><em>【重要】 会員登録をされる前に、下記ご利用規約をよくお読みください。</em><br />
-      規約には、本サービスを使用するに当たってのあなたの権利と義務が規定されております。<br />
-     「規約に同意して会員登録」ボタン をクリックすると、あなたが本規約の全ての条件に同意したことになります。</p>
-    <form name="form1" id="form1" method="post" action="?">
-       <textarea name="textfield" class="area470"  cols="80" rows="30"
-                 readonly="readonly"><!--{$tpl_kiyaku_text}--></textarea>
-       <div class="tblareabtn">
-       <!--{if $is_campaign}-->
-          <a href="javascript:history.back();" class="spbtn spbtn-medeum">
+    <div id="undercolumn_entry">
+        <h2 class="title"><!--{$tpl_title|h}--></h2>
+        <p><em>【重要】 会員登録をされる前に、下記ご利用規約をよくお読みください。</em><br />
+            規約には、本サービスを使用するに当たってのあなたの権利と義務が規定されております。<br />
+            「規約に同意して会員登録」ボタン をクリックすると、あなたが本規約の全ての条件に同意したことになります。</p>
+        <form name="form1" id="form1" method="post" action="?">
+            <textarea name="textfield" class="kiyaku_text" cols="80" rows="17"
+                readonly="readonly"><!--{$tpl_kiyaku_text}--></textarea>
+            <div class="tblareabtn">
+                <a href="<!--{$smarty.const.TOP_URLPATH}-->" class="spbtn spbtn-medeum">
                     同意しない</a>&nbsp;
-       <!--{else}-->
-       <a href="<!--{$smarty.const.TOP_URLPATH}-->" class="spbtn spbtn-medeum">
-                    同意しない</a>&nbsp;
-       <!--{/if}-->
-       <a href="<!--{$smarty.const.ENTRY_URL}-->" class="spbtn spbtn-shopping">
-                    規約に同意して会員登録</a>&nbsp;
-       </div>
-     </form>
-   </div>
- </div>
+                <a href="<!--{$smarty.const.ENTRY_URL}-->" class="spbtn spbtn-shopping">
+                    規約に同意して会員登録</a>
+            </div>
+        </form>
+    </div>
+</div>
