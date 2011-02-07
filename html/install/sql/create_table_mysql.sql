@@ -158,6 +158,7 @@ CREATE TABLE dtb_deliv (
     product_type_id int,
     name text,
     service_name text,
+    remark text,
     confirm_url text,
     rank int,
     status smallint NOT NULL DEFAULT 1,
@@ -166,6 +167,13 @@ CREATE TABLE dtb_deliv (
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_date timestamp NOT NULL,
     PRIMARY KEY (deliv_id)
+) ENGINE=InnoDB;
+
+CREATE TABLE dtb_payment_options (
+    deliv_id int NOT NULL,
+    payment_id int NOT NULL,
+    rank int,
+    PRIMARY KEY (deliv_id, payment_id)
 ) ENGINE=InnoDB;
 
 CREATE TABLE dtb_delivtime (
@@ -214,13 +222,6 @@ CREATE TABLE dtb_payment (
     memo09 text,
     memo10 text,
     PRIMARY KEY (payment_id)
-) ENGINE=InnoDB;
-
-CREATE TABLE dtb_payment_options (
-    product_class_id int NOT NULL,
-    payment_id int NOT NULL,
-    rank int,
-    PRIMARY KEY(product_class_id, payment_id)
 ) ENGINE=InnoDB;
 
 CREATE TABLE dtb_mailtemplate (
