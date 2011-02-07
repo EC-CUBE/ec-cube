@@ -35,10 +35,6 @@ class LC_Page_Entry extends LC_Page {
 
     // {{{ properties
 
-    /** フォームパラメータの配列 */
-    var $objFormParam;
-
-
     // }}}
     // {{{ functions
 
@@ -60,10 +56,6 @@ class LC_Page_Entry extends LC_Page {
         $this->arrDay       = $objDate->getDay(true);
 
         $this->httpCacheControl('nocache');
-
-        // パラメータ管理クラス,パラメータ情報の初期化
-        $this->objFormParam = new SC_FormParam();
-        $this->lfInitParam();
     }
 
     /**
@@ -77,39 +69,39 @@ class LC_Page_Entry extends LC_Page {
     }
 
     /* パラメータ情報の初期化 */
-    function lfInitParam() {
+    function lfInitParam(&$objFormParam) {
 
-        $this->objFormParam->addParam("お名前(姓)", 'name01', STEXT_LEN, "aKV", array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("お名前(名)", 'name02', STEXT_LEN, "aKV", array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" , "MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("お名前(フリガナ・姓)", 'kana01', STEXT_LEN, "CKV", array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK", "KANA_CHECK"));
-        $this->objFormParam->addParam("お名前(フリガナ・名)", 'kana02', STEXT_LEN, "CKV", array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK", "KANA_CHECK"));
-        $this->objFormParam->addParam("パスワード", 'password', STEXT_LEN, "a", array("EXIST_CHECK", "SPTAB_CHECK" ,"ALNUM_CHECK"));
-        $this->objFormParam->addParam("パスワード確認用の質問", "reminder", STEXT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK"));
-        $this->objFormParam->addParam("パスワード確認用の質問の答え", "reminder_answer", STEXT_LEN, "aKV", array("EXIST_CHECK","SPTAB_CHECK" , "MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("郵便番号1", "zip01", ZIP01_LEN, "n", array("EXIST_CHECK", "SPTAB_CHECK" ,"NUM_CHECK", "NUM_COUNT_CHECK"));
-        $this->objFormParam->addParam("郵便番号2", "zip02", ZIP02_LEN, "n", array("EXIST_CHECK", "SPTAB_CHECK" ,"NUM_CHECK", "NUM_COUNT_CHECK"));
-        $this->objFormParam->addParam("都道府県", 'pref', INT_LEN, "n", array("EXIST_CHECK","NUM_CHECK"));
-        $this->objFormParam->addParam("住所1", "addr01", MTEXT_LEN, "aKV", array("EXIST_CHECK","SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("住所2", "addr02", MTEXT_LEN, "aKV", array("EXIST_CHECK","SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("お電話番号1", 'tel01', TEL_ITEM_LEN, "n", array("EXIST_CHECK","SPTAB_CHECK" ));
-        $this->objFormParam->addParam("お電話番号2", 'tel02', TEL_ITEM_LEN, "n", array("EXIST_CHECK","SPTAB_CHECK" ));
-        $this->objFormParam->addParam("お電話番号3", 'tel03', TEL_ITEM_LEN, "n", array("EXIST_CHECK","SPTAB_CHECK" ));
-        $this->objFormParam->addParam("性別", "sex", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK"));
-        $this->objFormParam->addParam("職業", "job", INT_LEN, "n", array("NUM_CHECK"));
-        $this->objFormParam->addParam("年", "year", INT_LEN, "n", array("MAX_LENGTH_CHECK"), "", false);
-        $this->objFormParam->addParam("月", "month", INT_LEN, "n", array("MAX_LENGTH_CHECK"), "", false);
-        $this->objFormParam->addParam("日", "day", INT_LEN, "n", array("MAX_LENGTH_CHECK"), "", false);
-        $this->objFormParam->addParam("メールマガジン", "mailmaga_flg", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("お名前(姓)", 'name01', STEXT_LEN, "aKV", array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("お名前(名)", 'name02', STEXT_LEN, "aKV", array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" , "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("お名前(フリガナ・姓)", 'kana01', STEXT_LEN, "CKV", array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK", "KANA_CHECK"));
+        $objFormParam->addParam("お名前(フリガナ・名)", 'kana02', STEXT_LEN, "CKV", array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK", "KANA_CHECK"));
+        $objFormParam->addParam("パスワード", 'password', STEXT_LEN, "a", array("EXIST_CHECK", "SPTAB_CHECK" ,"ALNUM_CHECK"));
+        $objFormParam->addParam("パスワード確認用の質問", "reminder", STEXT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("パスワード確認用の質問の答え", "reminder_answer", STEXT_LEN, "aKV", array("EXIST_CHECK","SPTAB_CHECK" , "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("郵便番号1", "zip01", ZIP01_LEN, "n", array("EXIST_CHECK", "SPTAB_CHECK" ,"NUM_CHECK", "NUM_COUNT_CHECK"));
+        $objFormParam->addParam("郵便番号2", "zip02", ZIP02_LEN, "n", array("EXIST_CHECK", "SPTAB_CHECK" ,"NUM_CHECK", "NUM_COUNT_CHECK"));
+        $objFormParam->addParam("都道府県", 'pref', INT_LEN, "n", array("EXIST_CHECK","NUM_CHECK"));
+        $objFormParam->addParam("住所1", "addr01", MTEXT_LEN, "aKV", array("EXIST_CHECK","SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("住所2", "addr02", MTEXT_LEN, "aKV", array("EXIST_CHECK","SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("お電話番号1", 'tel01', TEL_ITEM_LEN, "n", array("EXIST_CHECK","SPTAB_CHECK" ));
+        $objFormParam->addParam("お電話番号2", 'tel02', TEL_ITEM_LEN, "n", array("EXIST_CHECK","SPTAB_CHECK" ));
+        $objFormParam->addParam("お電話番号3", 'tel03', TEL_ITEM_LEN, "n", array("EXIST_CHECK","SPTAB_CHECK" ));
+        $objFormParam->addParam("性別", "sex", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("職業", "job", INT_LEN, "n", array("NUM_CHECK"));
+        $objFormParam->addParam("年", "year", INT_LEN, "n", array("MAX_LENGTH_CHECK"), "", false);
+        $objFormParam->addParam("月", "month", INT_LEN, "n", array("MAX_LENGTH_CHECK"), "", false);
+        $objFormParam->addParam("日", "day", INT_LEN, "n", array("MAX_LENGTH_CHECK"), "", false);
+        $objFormParam->addParam("メールマガジン", "mailmaga_flg", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK"));
 
         if (SC_Display::detectDevice() !== DEVICE_TYPE_MOBILE){
-            $this->objFormParam->addParam("FAX番号1", 'fax01', TEL_ITEM_LEN, "n", array("SPTAB_CHECK"));
-            $this->objFormParam->addParam("FAX番号2", 'fax02', TEL_ITEM_LEN, "n", array("SPTAB_CHECK"));
-            $this->objFormParam->addParam("FAX番号3", 'fax03', TEL_ITEM_LEN, "n", array("SPTAB_CHECK"));
-            $this->objFormParam->addParam("パスワード(確認)", 'password02', STEXT_LEN, "a", array("EXIST_CHECK", "SPTAB_CHECK" ,"ALNUM_CHECK"), "", false);
-            $this->objFormParam->addParam('メールアドレス', "email", MTEXT_LEN, "a", array("NO_SPTAB", "EXIST_CHECK", "EMAIL_CHECK", "SPTAB_CHECK" ,"EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
-            $this->objFormParam->addParam('メールアドレス(確認)', "email02", MTEXT_LEN, "a", array("NO_SPTAB", "EXIST_CHECK", "EMAIL_CHECK","SPTAB_CHECK" , "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"), "", false);
+            $objFormParam->addParam("FAX番号1", 'fax01', TEL_ITEM_LEN, "n", array("SPTAB_CHECK"));
+            $objFormParam->addParam("FAX番号2", 'fax02', TEL_ITEM_LEN, "n", array("SPTAB_CHECK"));
+            $objFormParam->addParam("FAX番号3", 'fax03', TEL_ITEM_LEN, "n", array("SPTAB_CHECK"));
+            $objFormParam->addParam("パスワード(確認)", 'password02', STEXT_LEN, "a", array("EXIST_CHECK", "SPTAB_CHECK" ,"ALNUM_CHECK"), "", false);
+            $objFormParam->addParam('メールアドレス', "email", MTEXT_LEN, "a", array("NO_SPTAB", "EXIST_CHECK", "EMAIL_CHECK", "SPTAB_CHECK" ,"EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
+            $objFormParam->addParam('メールアドレス(確認)', "email02", MTEXT_LEN, "a", array("NO_SPTAB", "EXIST_CHECK", "EMAIL_CHECK","SPTAB_CHECK" , "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"), "", false);
         } else {
-            $this->objFormParam->addParam('メールアドレス', "email", MTEXT_LEN, "a", array("EXIST_CHECK", "EMAIL_CHECK", "NO_SPTAB" ,"EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK","MOBILE_EMAIL_CHECK"));
+            $objFormParam->addParam('メールアドレス', "email", MTEXT_LEN, "a", array("EXIST_CHECK", "EMAIL_CHECK", "NO_SPTAB" ,"EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK","MOBILE_EMAIL_CHECK"));
         }
     }
 
@@ -118,13 +110,19 @@ class LC_Page_Entry extends LC_Page {
      * @return void
      */
     function action() {
+        $objFormParam = new SC_FormParam();
+
+        $this->lfInitParam($objFormParam);
+        $objFormParam->setParam($_POST);
+        $this->arrForm  = $objFormParam->getHashArray();
+
         // PC時は規約ページからの遷移でなければエラー画面へ遷移する
-        if ($this->lfCheckReferer($_POST, $_SERVER['HTTP_REFERER']) === false) {
+        if ($this->lfCheckReferer($this->arrForm, $_SERVER['HTTP_REFERER']) === false) {
             SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", true);
         }
 
         // mobile用（戻るボタンでの遷移かどうかを判定）
-        if (!empty($_POST["return"])) {
+        if (!empty($this->arrForm["return"])) {
             $_POST["mode"] = "return";
         }
 
@@ -134,16 +132,10 @@ class LC_Page_Entry extends LC_Page {
             }
         }
 
-        $this->objFormParam->setParam($_POST);    // POST値の取得
-        $this->objFormParam->convParam();
-        $this->objFormParam->toLower('email');
-        $this->objFormParam->toLower('email02');
-        $this->arrForm  = $this->objFormParam->getHashArray();
-
         switch ($this->getMode()) {
         case 'confirm':
             //-- 確認
-            $this->arrErr = $this->lfErrorCheck($this->arrForm);
+            $this->arrErr = $this->lfErrorCheck($objFormParam);
             // 入力エラーなし
             if(empty($this->arrErr)) {
                 //パスワード表示
@@ -155,9 +147,10 @@ class LC_Page_Entry extends LC_Page {
             break;
         case 'complete':
             //-- 会員登録と完了画面
-            $this->arrErr = $this->lfErrorCheck($this->arrForm);
+            $this->arrErr = $this->lfErrorCheck($objFormParam);
             if(empty($this->arrErr)) {
-                $uniqid             = $this->lfRegistData($this->arrForm, $this->objFormParam->getDbArray());
+
+                $uniqid             = $this->lfRegistCustomerData($this->lfMakeSqlVal($objFormParam));
 
                 $this->tpl_mainpage = 'entry/complete.tpl';
                 $this->tpl_title    = '会員登録(完了ページ)';
@@ -193,17 +186,14 @@ class LC_Page_Entry extends LC_Page {
     // }}}
     // {{{ protected functions
     /**
-     * lfRegistData
-     *
      * 会員情報の登録
      *
-     * @access public
-     * @return void
+     * @access private
+     * @return uniqid
      */
-    function lfRegistData($arrForm, $arrResults) {
+    function lfRegistCustomerData($sqlval) {
         $objQuery   = SC_Query::getSingletonInstance();
         //-- 登録実行
-        $sqlval     = $this->lfMakeSqlVal($arrForm, $arrResults);
         $objQuery->begin();
         SC_Helper_Customer_Ex::sfEditCustomerData($sqlval);
         $objQuery->commit();
@@ -219,18 +209,19 @@ class LC_Page_Entry extends LC_Page {
      * モバイル端末の場合は, email を email_mobile にコピーし,
      * mobile_phone_id に携帯端末IDを格納する.
      *
-     * @access protected
-     * @param array $arrForm フォームパラメータの配列
-     * @param array $arrResults 結果用の配列. SC_FormParam::getDbArray() の結果
-     * @return array SQLパラメータの配列
-     * @see SC_FormParam::getDbArray()
+     * @param mixed $objFormParam
+     * @access private
+     * @return $arrResults
      */
-    function lfMakeSqlVal($arrForm, $arrResults) {
+    function lfMakeSqlVal(&$objFormParam) {
+        $arrForm                = $objFormParam->getHashArray();
+        $arrResults             = $objFormParam->getDbArray();
+
         // 生年月日の作成
-        $arrResults['birth']  = SC_Utils_Ex::sfGetTimestamp($arrForm['year'], $arrForm['month'], $arrForm['day']);
+        $arrResults['birth']    = SC_Utils_Ex::sfGetTimestamp($arrForm['year'], $arrForm['month'], $arrForm['day']);
 
         // 仮会員 1 本会員 2
-        $arrResults["status"] = (CUSTOMER_CONFIRM_MAIL == true) ? "1" : "2";
+        $arrResults["status"]   = (CUSTOMER_CONFIRM_MAIL == true) ? "1" : "2";
 
         /*
          * secret_keyは、テーブルで重複許可されていない場合があるので、
@@ -255,7 +246,7 @@ class LC_Page_Entry extends LC_Page {
     /**
      * 会員登録完了メール送信する
      *
-     * @access public
+     * @access private
      * @return void
      */
     function lfSendMail($uniqid, $arrForm){
@@ -303,15 +294,18 @@ class LC_Page_Entry extends LC_Page {
      *
      * 入力エラーチェック
      *
-     * @param mixed $array
-     * @access public
-     * @return void
+     * @param mixed $objFormParam
+     * @access private
+     * @return array エラー情報の配列
      */
-    function lfErrorCheck($arrForm) {
+    function lfErrorCheck(&$objFormParam) {
+        $objFormParam->convParam();
+        $objFormParam->toLower('email');
+        $objFormParam->toLower('email02');
 
         // 入力データを渡す。
-        $objErr = new SC_CheckError($arrForm);
-        $objErr->arrErr = $this->objFormParam->checkError();
+        $objErr = new SC_CheckError();
+        $objErr->arrErr = $objFormParam->checkError();
 
         $objErr->doFunc(array("お電話番号", "tel01", "tel02", "tel03"),array("TEL_CHECK"));
         $objErr->doFunc(array("郵便番号", "zip01", "zip02"), array("ALL_EXIST_CHECK"));

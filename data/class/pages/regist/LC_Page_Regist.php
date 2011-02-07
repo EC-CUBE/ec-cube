@@ -94,18 +94,15 @@ class LC_Page_Regist extends LC_Page {
     }
 
     /**
-     * lfRegistData
-     *
      * 仮会員を本会員にUpdateする
      *
      * @param mixed $array
-     * @access public
-     * @return void
+     * @access private
+     * @return string $arrRegist["secret_key"] 本登録ID
      */
     function lfRegistData($array) {
-        $objQuery = new SC_Query();
-
-        $arrRegist["secret_key"]    = SC_Helper_Customer_Ex::sfGetUniqSecretKey(); //　本登録ID発行
+        $objQuery                   = SC_Query::getSingletonInstance();
+        $arrRegist["secret_key"]    = SC_Helper_Customer_Ex::sfGetUniqSecretKey(); //本登録ID発行
         $arrRegist["status"]        = 2;
         $arrRegist["update_date"]   = "NOW()";
 
@@ -113,17 +110,15 @@ class LC_Page_Regist extends LC_Page {
         $objQuery->update("dtb_customer", $arrRegist, "secret_key = ? AND status = 1", array($array["id"]));
         $objQuery->commit();
 
-        return $arrRegist["secret_key"];		// 本登録IDを返す
+        return $arrRegist["secret_key"];
     }
 
     /**
-     * lfErrorCheck
-     *
      * 入力エラーチェック
      *
      * @param mixed $array
-     * @access public
-     * @return void
+     * @access private
+     * @return array エラーの配列
      */
     function lfErrorCheck($array) {
         $objErr     = new SC_CheckError($array);
@@ -141,28 +136,26 @@ class LC_Page_Regist extends LC_Page {
     }
 
     /**
-     * lfSendRegistMail
-     *
      * 正会員登録完了メール送信
      *
      * @param mixed $registSecretKey
-     * @access public
+     * @access private
      * @return void
      */
     function lfSendRegistMail($registSecretKey) {
+        $objQuery       = SC_Query::getSingletonInstance();
         $objCustomer    = new SC_Customer();
-        $objQuery       = new SC_Query();
         $objHelperMail  = new SC_Helper_Mail_Ex();
-        $this->CONF     = SC_Helper_DB_Ex::sfGetBasisData();
+        $CONF           = SC_Helper_DB_Ex::sfGetBasisData();
 
         //-- 会員データを取得
-        $result         = $objQuery->select("*", "dtb_customer", "secret_key = ?", array($registSecretKey));
-        $data           = $result[0];
+        $arrCustomer    = $objQuery->select("*", "dtb_customer", "secret_key = ?", array($registSecretKey));
+        $data           = $arrCustomer[0];
         $objCustomer->setLogin($data['email']);
 
         //--　メール送信
         $objMailText    = new SC_SiteView();
-        $objMailText->assign("CONF", $this->CONF);
+        $objMailText->assign("CONF", $CONF);
         $objMailText->assign("name01", $data["name01"]);
         $objMailText->assign("name02", $data["name02"]);
         $toCustomerMail = $objMailText->fetch("mail_templates/customer_regist_mail.tpl");

@@ -85,15 +85,13 @@ class LC_Page_Entry_Kiyaku extends LC_Page {
     }
 
     /**
-     * lfMakeKiyakuText
-     *
      * 規約文の作成
      *
      * @param mixed $arrKiyaku
      * @param mixed $max
      * @param mixed $offset
      * @access public
-     * @return void
+     * @return string 規約の内容をテキストエリアで表示するように整形したデータ
      */
     function lfMakeKiyakuText($arrKiyaku, $max, $offset) {
         $this->tpl_kiyaku_text = "";
@@ -106,28 +104,28 @@ class LC_Page_Entry_Kiyaku extends LC_Page {
     }
 
     /**
-     * lfGetKiyakuData
-     *
      * 規約内容の取得
      *
-     * @access public
-     * @return void
+     * @access private
+     * @return array $arrKiyaku 規約の配列
      */
     function lfGetKiyakuData() {
 
-        $objQuery = new SC_Query();
-        $objQuery->setOrder("rank DESC");
-        $arrRet = $objQuery->select("kiyaku_title, kiyaku_text", "dtb_kiyaku", "del_flg <> 1");
+        $objQuery   = SC_Query::getSingletonInstance();
 
-        return $arrRet;
+        $objQuery->setOrder("rank DESC");
+        $arrKiyaku  = $objQuery->select("kiyaku_title, kiyaku_text", "dtb_kiyaku", "del_flg <> 1");
+
+        return $arrKiyaku;
     }
 
     /**
-     * lfSetOffset
+     *
+     * 携帯の場合getで来る次ページのidを適切に処理する
      *
      * @param mixed $offset
-     * @access public
-     * @return void
+     * @access private
+     * @return int
      */
     function lfSetOffset($offset) {
        return is_numeric($offset) === true ? intval($offset) : 1;

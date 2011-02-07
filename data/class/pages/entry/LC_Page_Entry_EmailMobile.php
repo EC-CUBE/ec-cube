@@ -44,8 +44,7 @@ class LC_Page_Entry_EmailMobile extends LC_Page {
     function init() {
         parent::init();
 
-        $this->objFormParam = new SC_FormParam();
-        $this->lfInitParam();
+
     }
 
     /**
@@ -65,21 +64,24 @@ class LC_Page_Entry_EmailMobile extends LC_Page {
      */
     function action() {
         $objCustomer    = new SC_Customer;
+        $objFormParam   = new SC_FormParam();
+
+        $this->lfInitParam($objFormParam);
+        $objFormParam->setParam($_POST);
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $this->objFormParam->setParam($_POST);
-            $this->objFormParam->convParam();
-            $this->arrErr = $this->lfCheckError($objCustomer);
+            $this->arrErr = $this->lfCheckError($objFormParam);
 
             if (empty($this->arrErr)) {
-                $this->lfRegister($objCustomer);
+                $this->lfRegistEmailMobile(strtolower($objFormParam->getValue('email_mobile')),
+                                           $objCustomer->getValue('customer_id'));
                 $this->tpl_mainpage = 'entry/email_mobile_complete.tpl';
                 $this->tpl_title = '携帯メール登録完了';
             }
         }
 
         $this->tpl_name = $objCustomer->getValue('name01');
-        $this->arrForm  = $this->objFormParam->getFormParamList();
+        $this->arrForm  = $objFormParam->getFormParamList();
     }
 
     /**
@@ -97,22 +99,23 @@ class LC_Page_Entry_EmailMobile extends LC_Page {
      * @access public
      * @return void
      */
-    function lfInitParam() {
-        $this->objFormParam->addParam('メールアドレス', 'email_mobile', MTEXT_LEN, 'a',
+    function lfInitParam(&$objFormParam) {
+        $objFormParam->addParam('メールアドレス', 'email_mobile', MTEXT_LEN, 'a',
                                 array('NO_SPTAB', 'EXIST_CHECK', 'MAX_LENGTH_CHECK', 'CHANGE_LOWER', 'EMAIL_CHAR_CHECK', 'EMAIL_CHECK', 'MOBILE_EMAIL_CHECK'));
     }
 
     /**
-     * lfCheckError
+     * エラーチェックする
      *
+     * @param mixed $objFormParam
      * @param mixed $objCustomer
-     * @access public
-     * @return void
+     * @access private
+     * @return array エラー情報の配列
      */
-    function lfCheckError(&$objCustomer) {
-        $arrRet         = $this->objFormParam->getHashArray();
-        $objErr         = new SC_CheckError($arrRet);
-        $objErr->arrErr = $this->objFormParam->checkError();
+    function lfCheckError(&$objFormParam) {
+        $objFormParam->convParam();
+        $objErr         = new SC_CheckError();
+        $objErr->arrErr = $objFormParam->checkError();
 
         $objErr->doFunc(array("メールアドレス", "email_mobile"), array("CHECK_REGIST_CUSTOMER_EMAIL"));
 
@@ -120,18 +123,21 @@ class LC_Page_Entry_EmailMobile extends LC_Page {
     }
 
     /**
-     * lfRegister
      *
+     * 携帯メールアドレスが登録されていないユーザーに携帯アドレスを登録する
+     *
+     * 登録完了後にsessionのemail_mobileを更新する
+     *
+     * @param mixed $objFormParam
      * @param mixed $objCustomer
-     * @access public
+     * @access private
      * @return void
      */
-    function lfRegister(&$objCustomer) {
-        $customer_id    = $objCustomer->getValue('customer_id');
-        $email_mobile   = strtolower($this->objFormParam->getValue('email_mobile'));
-
-        $objQuery       = new SC_Query();
-        $objQuery->update('dtb_customer', array('email_mobile' => $email_mobile), 'customer_id = ?', array($customer_id));
+    function lfRegistEmailMobile($email_mobile, $customer_id) {
+        $objQuery = SC_Query::getSingletonInstance();
+        $objQuery->update('dtb_customer',
+                          array('email_mobile' => $email_mobile),
+                          'customer_id = ?', array($customer_id));
 
         $objCustomer->setValue('email_mobile', $email_mobile);
     }
