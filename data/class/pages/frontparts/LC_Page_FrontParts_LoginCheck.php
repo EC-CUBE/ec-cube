@@ -65,7 +65,10 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page {
      */
     function action() {
         // URLチェック
-        $this->lfCheckValidAccess();
+        if ( !SC_Helper_Session_Ex::isValidToken() ) {
+            GC_Utils_Ex::gfPrintLog('invalid access :login_check.php $POST["url"]=' . $_POST['url']);
+            SC_Utils_Ex::sfDispSiteError(PAGE_ERROR);
+        }
         
         // 会員管理クラス
         $objCustomer = new SC_Customer();
@@ -83,12 +86,71 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page {
         // モードによって分岐
         switch ($this->getMode()) {
         case 'login':
-            // ログイン
-            $this->lfLogin($objCustomer, $objCookie);
+            // --- ログイン
+            
+            // 入力値のエラーチェック
+            $this->objFormParam->toLower('login_email');
+            $arrErr = $this->objFormParam->checkError();
+            
+            // エラーの場合はエラー画面に遷移
+            if (count($arrErr) > 0) {
+                SC_Utils_Ex::sfDispSiteError(TEMP_LOGIN_ERROR);
+            }
+            
+            // 入力チェック後の値を取得
+            $arrForm = $this->objFormParam->getHashArray();
+            
+            // クッキー保存判定
+            if ($arrForm['login_memory'] == '1' && $arrForm['login_email'] != '') {
+                $objCookie->setCookie('login_email', $arrForm['login_email']);
+            } else {
+                $objCookie->setCookie('login_email', '');
+            }
+            
+            // 遷移先の制御
+            if (count($arrErr) == 0) {
+                // ログイン処理
+                if ($objCustomer->getCustomerDataFromEmailPass($arrForm['login_pass'], $arrForm['login_email'], true)) {
+                    // --- ログインに成功した場合
+                    SC_Response_Ex::sendRedirect(HTTP_URL);
+                    exit;
+                } else {
+                    // --- ログインに失敗した場合
+                    $arrForm['login_email'] = strtolower($arrForm['login_email']);
+                    $objQuery = SC_Query::getSingletonInstance();
+                    $where = '(email = ? OR email_mobile = ?) AND status = 1 AND del_flg = 0';
+                    $ret = $objQuery->count("dtb_customer", $where, array($arrForm['login_email'], $arrForm['login_email']));
+                    // ログインエラー表示
+                    if($ret > 0) {
+                        SC_Utils_Ex::sfDispSiteError(TEMP_LOGIN_ERROR);
+                    } else {
+                        SC_Utils_Ex::sfDispSiteError(SITE_LOGIN_ERROR);
+                    }
+                }
+            } else {
+                // 入力エラーの場合、元のアドレスに戻す。
+                // FIXME $_POST['url'] には、URL ではなく、url-path が渡るもよう。HTTPS 利用に関わる問題も考えられるので、URL が渡るように改善した方が良いように感じる。
+                SC_Response_Ex::sendRedirect($_POST['url']);
+                exit;
+            }
+            
             break;
         case 'logout':
-            // ログアウト
-            $this->lfLogout($objCustomer);
+            // --- ログアウト
+            
+            // ログイン情報の解放
+            $objCustomer->EndSession();
+            // 画面遷移の制御
+            $mypage_url_search = strpos('.'.$_POST['url'], 'mypage');
+            if ($mypage_url_search == 2) {
+                // マイページログイン中はログイン画面へ移行
+                SC_Response_Ex::sendRedirectFromUrlPath('mypage/login.php');
+            } else {
+                // 上記以外の場合、トップへ遷移
+                SC_Response_Ex::sendRedirect(HTTP_URL);
+            }
+            exit;
+            
             break;
         default:
             break;
@@ -103,21 +165,6 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page {
      */
     function destroy() {
         parent::destroy();
-    }
-
-    /**
-     * 正常なアクセスかチェックする.
-     *
-     * @return void
-     */
-    function lfCheckValidAccess() {
-        
-        // 不正なURLがPOSTされた場合はエラー表示
-        if (!SC_Helper_Session_Ex::isValidToken()) {
-            GC_Utils_Ex::gfPrintLog('invalid access :login_check.php $POST["url"]=' . $_POST['url']);
-            SC_Utils_Ex::sfDispSiteError(PAGE_ERROR);
-        }
-        
     }
 
     /**
@@ -148,84 +195,6 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page {
         $arrRequest['login_pass1'] = $arrRequest['login_pass'];      //最小桁数比較用
         $arrRequest['login_pass2'] = $arrRequest['login_pass'];      //最大桁数比較用
         return $arrRequest;
-    }
-
-    /**
-     * ログイン.
-     *
-     * @param SC_Customer $objCustomer 会員管理クラス
-     * @param SC_Cookie $objCookie クッキー管理クラス
-     * @return void
-     */
-    function lfLogin($objCustomer, $objCookie) {
-        // 入力値のエラーチェック
-        $this->objFormParam->toLower('login_email');
-        $arrErr = $this->objFormParam->checkError();
-        
-        // エラーの場合はエラー画面に遷移
-        if (count($arrErr) > 0) {
-            SC_Utils_Ex::sfDispSiteError(TEMP_LOGIN_ERROR);
-        }
-        
-        // 入力チェック後の値を取得
-        $arrForm = $this->objFormParam->getHashArray();
-        
-        // クッキー保存判定
-        if ($arrForm['login_memory'] == '1' && $arrForm['login_email'] != '') {
-            $objCookie->setCookie('login_email', $arrForm['login_email']);
-        } else {
-            $objCookie->setCookie('login_email', '');
-        }
-        
-        // 遷移先の制御
-        if (count($arrErr) == 0) {
-            // ログイン処理
-            if ($objCustomer->getCustomerDataFromEmailPass($arrForm['login_pass'], $arrForm['login_email'], true)) {
-                // --- ログインに成功した場合
-                SC_Response_Ex::sendRedirect(HTTP_URL);
-                exit;
-            } else {
-                // --- ログインに失敗した場合
-                $arrForm['login_email'] = strtolower($arrForm['login_email']);
-                $objQuery = SC_Query::getSingletonInstance();
-                $where = '(email = ? OR email_mobile = ?) AND status = 1 AND del_flg = 0';
-                $ret = $objQuery->count("dtb_customer", $where, array($arrForm['login_email'], $arrForm['login_email']));
-                // ログインエラー表示
-                if($ret > 0) {
-                    SC_Utils_Ex::sfDispSiteError(TEMP_LOGIN_ERROR);
-                } else {
-                    SC_Utils_Ex::sfDispSiteError(SITE_LOGIN_ERROR);
-                }
-            }
-        } else {
-            // 入力エラーの場合、元のアドレスに戻す。
-            // FIXME $_POST['url'] には、URL ではなく、url-path が渡るもよう。HTTPS 利用に関わる問題も考えられるので、URL が渡るように改善した方が良いように感じる。
-            SC_Response_Ex::sendRedirect($_POST['url']);
-            exit;
-        }
-    }
-
-    /**
-     * ログアウト.
-     *
-     * @param SC_Customer $objCustomer 会員管理クラス
-     * @return void
-     */
-    function lfLogout($objCustomer) {
-        // ログイン情報の解放
-        $objCustomer->EndSession();
-        
-        // 画面遷移の制御
-        $mypage_url_search = strpos('.'.$_POST['url'], 'mypage');
-        if ($mypage_url_search == 2) {
-            // マイページログイン中はログイン画面へ移行
-            SC_Response_Ex::sendRedirectFromUrlPath('mypage/login.php');
-        } else {
-            // 上記以外の場合、トップへ遷移
-            SC_Response_Ex::sendRedirect(HTTP_URL);
-        }
-        
-        exit;
     }
 
 }

@@ -62,12 +62,18 @@ class LC_Page_FrontParts_Bloc_SearchProducts extends LC_Page_FrontParts_Bloc {
      * @return void
      */
     function action() {
+        // 商品ID取得
+        $product_id = $this -> lfGetProductId();
+        // カテゴリID取得
+        $category_id = $this -> lfGetCategoryId();
+        // メーカーID取得
+        $maker_id = $this -> lfGetMakerId();
         // 選択中のカテゴリIDを判定する
-        $this->category_id = $this->lfGetSelectedCategoryId();
+        $this->category_id = $this->lfGetSelectedCategoryId($product_id, $category_id);
         // カテゴリ検索用選択リスト
         $this->arrCatList = $this->lfGetCategoryList();
         // 選択中のメーカーIDを判定する
-        $this->maker_id = $this->lfGetSelectedMakerId();
+        $this->maker_id = $this->lfGetSelectedMakerId($product_id, $maker_id);
         // メーカー検索用選択リスト
         $this->arrMakerList = $this->lfGetMakerList();
     }
@@ -80,23 +86,52 @@ class LC_Page_FrontParts_Bloc_SearchProducts extends LC_Page_FrontParts_Bloc {
     function destroy() {
         parent::destroy();
     }
-
+    
+    /**
+     * 商品IDを取得する.
+     * 
+     * @return string $product_id 商品ID
+     */
+    function lfGetProductId() {
+        $product_id = '';
+        if ( isset($_GET['product_id']) && $_GET['product_id'] != '' && is_numeric($_GET['product_id']) ) {
+            $product_id = $_GET['product_id'];
+        }
+        return $product_id;
+    }
+    
+    /**
+     * カテゴリIDを取得する.
+     * 
+     * @return string $category_id カテゴリID
+     */
+    function lfGetCategoryId() {
+        $category_id = '';
+        if ( isset($_GET['category_id']) && $_GET['category_id'] != '' && is_numeric($_GET['category_id']) ) {
+            $category_id = $_GET['category_id'];
+        }
+        return $category_id;
+    }
+    
+    /**
+     * メーカーIDを取得する.
+     * 
+     * @return string $maker_id メーカーID
+     */
+    function lfGetCategoryId() {
+        $maker_id = '';
+        if ( isset($_GET['maker_id']) && $_GET['maker_id'] != '' && is_numeric($_GET['maker_id']) ) {
+            $maker_id = $_GET['maker_id'];
+        }
+        return $maker_id;
+    }
+    
     /**
      * 選択中のカテゴリIDを取得する
      *
      * @return array $arrCategoryId 選択中のカテゴリID
      */
-    function lfGetSelectedCategoryId() {
-        // 商品ID取得
-        if ( !isset($_GET['product_id']) || $_GET['product_id'] == '' || !is_numeric($_GET['product_id']) ) {
-            return array();
-        }
-        $product_id = $_GET['product_id'];
-        // カテゴリID取得
-        if ( !isset($_GET['category_id']) || $_GET['category_id'] == '' || !is_numeric($_GET['category_id']) ) {
-            return array();
-        }
-        $category_id = $_GET['category_id'];
+    function lfGetSelectedCategoryId($product_id, $category_id) {
         // 選択中のカテゴリIDを判定する
         $objDb = new SC_Helper_DB_Ex();
         $arrCategoryId = $objDb->sfGetCategoryId($product_id, $category_id);
@@ -108,17 +143,7 @@ class LC_Page_FrontParts_Bloc_SearchProducts extends LC_Page_FrontParts_Bloc {
      *
      * @return array $arrMakerId 選択中のメーカーID
      */
-    function lfGetSelectedMakerId() {
-        // 商品ID取得
-        if ( !isset($_GET['product_id']) || $_GET['product_id'] == '' || !is_numeric($_GET['product_id']) ) {
-            return array();
-        }
-        $product_id = $_GET['product_id'];
-        // メーカーID取得
-        if ( !isset($_GET['maker_id']) || $_GET['maker_id'] == '' || !is_numeric($_GET['maker_id']) ) {
-            return array();
-        }
-        $maker_id = $_GET['maker_id'];
+    function lfGetSelectedMakerId($product_id, $maker_id) {
         // 選択中のメーカーIDを判定する
         $objDb = new SC_Helper_DB_Ex();
         $arrMakerId = $objDb->sfGetMakerId($product_id, $maker_id);

@@ -84,7 +84,7 @@ class LC_Page_FrontParts_Bloc_Cart extends LC_Page_FrontParts_Bloc {
      * @param SC_SiteInfo $objSiteInfo サイト情報クラス
      * @return array $arrCartList カートデータ配列
      */
-    function lfGetCartData($objCart, $objSiteInfo) {
+    function lfGetCartData(&$objCart, &$objSiteInfo) {
         $arrCartKeys = $objCart->getKeys();
         foreach ($arrCartKeys as $cart_key) {
             // カート情報を取得

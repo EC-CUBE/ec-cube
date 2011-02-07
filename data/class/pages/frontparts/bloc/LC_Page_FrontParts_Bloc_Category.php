@@ -63,16 +63,17 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc {
      */
     function action() {
         // モバイル判定
-        if (SC_Display::detectDevice() === true) {
-            // --- モバイルの場合
-            // メインカテゴリーの取得
-            $this->arrCat = $this->lfGetMainCat(true);
-        } else {
-            // --- PCの場合
-            // 選択中のカテゴリID
-            $this->tpl_category_id = $this->lfGetSelectedCategoryId();
-            // カテゴリツリーの取得
-            $this->arrTree = $this->lfGetCatTree($this->tpl_category_id, true);
+        switch ( SC_Display::detectDevice() ) {
+            case DEVICE_TYPE_MOBILE:
+                // メインカテゴリーの取得
+                $this->arrCat = $this->lfGetMainCat(true);
+                break;
+            default:
+                // 選択中のカテゴリID
+                $this->tpl_category_id = $this->lfGetSelectedCategoryId($_GET);
+                // カテゴリツリーの取得
+                $this->arrTree = $this->lfGetCatTree($this->tpl_category_id, true);
+                break;
         }
     }
 
@@ -88,18 +89,19 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc {
     /**
      * 選択中のカテゴリIDを取得する.
      *
+     * @param array $arrRequest リクエスト配列
      * @return array $arrCategoryId 選択中のカテゴリID
      */
-    function lfGetSelectedCategoryId() {
+    function lfGetSelectedCategoryId($arrRequest) {
             // 商品ID取得
         $product_id = '';
-        if ( isset($_GET['product_id']) && $_GET['product_id'] != '' && is_numeric($_GET['product_id']) ) {
-            $product_id = $_GET['product_id'];
+        if ( isset($arrRequest['product_id']) && $arrRequest['product_id'] != '' && is_numeric($arrRequest['product_id']) ) {
+            $product_id = $arrRequest['product_id'];
         }
         // カテゴリID取得
         $category_id = '';
-        if ( isset($_GET['category_id']) && $_GET['category_id'] != '' && is_numeric($_GET['category_id']) ) {
-            $category_id = $_GET['category_id'];
+        if ( isset($arrRequest['category_id']) && $arrRequest['category_id'] != '' && is_numeric($arrRequest['category_id']) ) {
+            $category_id = $arrRequest['category_id'];
         }
         // 選択中のカテゴリIDを判定する
         $objDb = new SC_Helper_DB_Ex();
