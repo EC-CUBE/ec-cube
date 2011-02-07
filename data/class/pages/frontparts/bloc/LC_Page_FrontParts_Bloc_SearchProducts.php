@@ -118,7 +118,7 @@ class LC_Page_FrontParts_Bloc_SearchProducts extends LC_Page_FrontParts_Bloc {
      * 
      * @return string $maker_id メーカーID
      */
-    function lfGetCategoryId() {
+    function lfGetMakerId() {
         $maker_id = '';
         if ( isset($_GET['maker_id']) && $_GET['maker_id'] != '' && is_numeric($_GET['maker_id']) ) {
             $maker_id = $_GET['maker_id'];
