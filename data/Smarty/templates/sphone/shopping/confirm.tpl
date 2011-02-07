@@ -231,28 +231,21 @@ $(document).ready(function() {
             <!--{/if}-->
             <!--お届け先ここまで-->
 
-            <table summary="お支払方法・お届け日時の指定・その他お問い合わせ" class="delivname">
+            <table summary="配送方法・お支払方法・お届け日時の指定・その他お問い合わせ" class="delivname">
                 <thead>
                 <tr>
-                    <th colspan="2">▼お支払方法・お届け日時の指定・その他お問い合わせ</th>
+                    <th colspan="2">▼配送方法・お支払方法・お届け日時の指定・その他お問い合わせ</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
+                    <th>配送方法</th>
+                    <td><!--{$arrDeliv[$arrData.deliv_id]|h}--></td>
+                </tr>
+                <tr>
                     <th>お支払方法</th>
                     <td><!--{$arrData.payment_method|h}--></td>
                 </tr>
-                <!--{* 販売方法判定（ダウンロード販売のみの場合はお届け日、時間を表示しない） *}-->
-                <!--{if $cartdown != "2"}-->
-                <tr>
-                    <th>お届け日</th>
-                    <td><!--{$arrData.deliv_date|default:"指定なし"|h}--></td>
-                </tr>
-                <tr>
-                    <th>お届け時間</th>
-                    <td><!--{$arrData.deliv_time|default:"指定なし"|h}--></td>
-                </tr>
-                <!--{/if}-->
                 <tr>
                     <th>その他お問い合わせ</th>
                     <td><!--{$arrData.message|h|nl2br}--></td>

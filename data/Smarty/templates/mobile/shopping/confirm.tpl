@@ -96,6 +96,11 @@
 <!--{/foreach}-->
 <!--{/if}-->
 
+【配送方法】<br>
+<!--{$arrDeliv[$arrData.deliv_id]|h}--><br>
+
+<br>
+
 【お支払い方法】<br>
 <!--{$arrData.payment_method|h}--><br>
 

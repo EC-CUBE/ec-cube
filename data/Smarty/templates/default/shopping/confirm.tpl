@@ -243,24 +243,23 @@ $(document).ready(function() {
             <!--{/if}-->
             <!--お届け先ここまで-->
 
-            <h3>▼お支払方法・その他お問い合わせ</h3>
-            <table summary="お支払方法・その他お問い合わせ" class="delivname">
+            <h3>▼配送方法・お支払方法・その他お問い合わせ</h3>
+            <table summary="配送方法・お支払方法・その他お問い合わせ" class="delivname">
                 <tbody>
+                <tr>
+                    <th>配送方法</th>
+                    <td><!--{$arrDeliv[$arrData.deliv_id]|h}--></td>
+                </tr>
                 <tr>
                     <th>お支払方法</th>
                     <td><!--{$arrData.payment_method|h}--></td>
                 </tr>
-                <!--{* 販売方法判定（ダウンロード販売のみの場合はお届け日、時間を表示しない） *}-->
                 <tr>
                     <th>その他お問い合わせ</th>
                     <td><!--{$arrData.message|h|nl2br}--></td>
                 </tr>
                 </tbody>
             </table>
-
-            <!--{if 'sfTSPrintOrderBox'|function_exists}-->
-                <!--{'sfTSPrintOrderBox'|call_user_func}-->
-            <!--{/if}-->
 
             <div class="tblareabtn">
                 <a href="./payment.php" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_back_on.gif',back03)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_back.gif',back03)"><img src="<!--{$TPL_URLPATH}-->img/button/btn_back.gif" width="150" height="30" alt="戻る" border="0" name="back03" id="back03" /></a>&nbsp;

@@ -20,6 +20,84 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 <!--▼CONTENTS-->
+<script type="text/javascript">//<![CDATA[
+    $(function() {
+        $('input[id^=deliv_]').click(function() {
+            var data = {};
+            data.mode = 'select_deliv';
+            data.deliv_id = $(this).val();
+            $.ajax({
+                type : 'POST',
+                url : location.pathname,
+                data: data,
+                cache : false,
+                dataType : 'json',
+                error : remoteException,
+                success : function(data, dataType) {
+                    if (data.error) {
+                        remoteException();
+                    } else {
+                        // 支払い方法の行を生成
+                        var payment_tbody = $('#payment tbody');
+                        payment_tbody.empty();
+                        for (var i in data.arrPayment) {
+                            // ラジオボタン
+                            var radio = $('<input type="radio" />')
+                                .attr('name', 'payment_id')
+                                .attr('id', 'pay_' + i)
+                                .val(data.arrPayment[i].payment_id);
+                            // ラベル
+                            var label = $('<label />')
+                                .attr('for', 'pay_' + i)
+                                .text(data.arrPayment[i].payment_method);
+                            // 行
+                            var tr = $('<tr />')
+                                .append($('<td />')
+                                        .addClass('centertd')
+                                        .append(radio))
+                                .append($('<td />').append(label));
+
+                            // 支払方法の画像が登録されている場合は表示
+                            if (data.img_show) {
+                                var payment_image = data.arrPayment[i].payment_image;
+                                $('th#payment_method').attr('colspan', 3);
+                                if (payment_image) {
+                                    var img = $('<img />').attr('src', '<!--{$smarty.const.IMAGE_SAVE_URLPATH}-->' + payment_image);
+                                    tr.append($('<td />').append(img));
+                                } else {
+                                    tr.append($('<td />'));
+                                }
+                            } else {
+                                $('th#payment_method').attr('colspan', 2);
+                            }
+
+                            tr.appendTo(payment_tbody);
+                        }
+                        // お届け時間を生成
+                        var deliv_time_id_select = $('select[id^=deliv_time_id]');
+                        deliv_time_id_select.empty();
+                        deliv_time_id_select.append($('<option />').text('指定なし').val(''));
+                        for (var i in data.arrDelivTime) {
+                            var option = $('<option />')
+                                .val(i)
+                                .text(data.arrDelivTime[i])
+                                .appendTo(deliv_time_id_select);
+                        }
+                    }
+                }
+            });
+        });
+
+        /**
+         * 通信エラー表示.
+         */
+        function remoteException(XMLHttpRequest, textStatus, errorThrown) {
+            alert('通信中にエラーが発生しました。カート画面に移動します。');
+            location.href = '<!--{$smarty.const.CART_URLPATH}-->';
+        }
+    });
+//]]>
+</script>
 <div id="under02column">
     <div id="under02column_shopping">
         <p class="flowarea">
@@ -30,6 +108,36 @@
         <form name="form1" id="form1" method="post" action="?">
             <input type="hidden" name="mode" value="confirm" />
             <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->" />
+
+            <!--{assign var=key value="deliv_id"}-->
+            <!--{if $is_single_deliv}-->
+                <input type="hidden" name="<!--{$key}-->" value="<!--{$arrForm[$key].value}-->" />
+            <!--{else}-->
+            <div class="payarea">
+                <h3>配送方法の指定</h3>
+                <p>配送方法をご選択ください。</p>
+
+                <!--{if $arrErr[$key] != ""}-->
+                <p class="attention"><!--{$arrErr[$key]}--></p>
+                <!--{/if}-->
+                <table summary="配送方法選択">
+                    <tr>
+                        <th>選択</th>
+                        <th colspan="2">配送方法</th>
+                    </tr>
+                    <!--{section name=cnt loop=$arrDeliv}-->
+                    <tr>
+                        <td class="centertd"><input type="radio" id="deliv_<!--{$smarty.section.cnt.iteration}-->" name="<!--{$key}-->"  value="<!--{$arrDeliv[cnt].deliv_id}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" <!--{$arrDeliv[cnt].deliv_id|sfGetChecked:$arrForm[$key].value}--> />
+                        </td>
+                        <td>
+                            <label for="deliv_<!--{$smarty.section.cnt.iteration}-->"><!--{$arrDeliv[cnt].name|h}--><!--{if $arrDeliv[cnt].remark != ""}--><p><!--{$arrDeliv[cnt].remark|h}--></p><!--{/if}--></label>
+                        </td>
+                    </tr>
+                    <!--{/section}-->
+                </table>
+            </div>
+            <!--{/if}-->
+
             <div class="payarea">
                 <h3>お支払方法の指定</h3>
                 <p>お支払方法をご選択ください。</p>
@@ -38,17 +146,19 @@
                 <!--{if $arrErr[$key] != ""}-->
                 <p class="attention"><!--{$arrErr[$key]}--></p>
                 <!--{/if}-->
-                <table summary="お支払方法選択">
-                    <tr>
+                <table summary="お支払方法選択" id="payment">
+                    <thead>
+                      <tr>
                         <th>選択</th>
-                        <th colspan="<!--{if !$img_show}-->2<!--{else}-->3<!--{/if}-->">お支払方法</th>
-                    </tr>
-                    <!--{section name=cnt loop=$arrPayment}-->
-                    <tr>
-                        <td class="centertd"><input type="radio" id="pay_<!--{$smarty.section.cnt.iteration}-->" name="<!--{$key}-->"  value="<!--{$arrPayment[cnt].payment_id}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" <!--{$arrPayment[cnt].payment_id|sfGetChecked:$arrForm[$key].value}--> />
-                        </td>
+                        <th colspan="<!--{if !$img_show}-->2<!--{else}-->3<!--{/if}-->" id="payment_method">お支払方法</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!--{section name=cnt loop=$arrPayment}-->
+                      <tr>
+                        <td class="centertd"><input type="radio" id="pay_<!--{$smarty.section.cnt.iteration}-->" name="<!--{$key}-->"  value="<!--{$arrPayment[cnt].payment_id}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" <!--{$arrPayment[cnt].payment_id|sfGetChecked:$arrForm[$key].value}--> /></td>
                         <td>
-                            <label for="pay_<!--{$smarty.section.cnt.iteration}-->"><!--{$arrPayment[cnt].payment_method|h}--><!--{if $arrPayment[cnt].note != ""}--><!--{/if}--></label>
+                          <label for="pay_<!--{$smarty.section.cnt.iteration}-->"><!--{$arrPayment[cnt].payment_method|h}--><!--{if $arrPayment[cnt].note != ""}--><!--{/if}--></label>
                         </td>
                         <!--{if $img_show}-->
                             <td>
@@ -57,8 +167,9 @@
                                 <!--{/if}-->
                             </td>
                         <!--{/if}-->
-                    </tr>
+                      </tr>
                     <!--{/section}-->
+                  </tbody>
                 </table>
             </div>
 
@@ -66,7 +177,7 @@
             <div class="payarea02">
                 <h3>お届け時間の指定</h3>
                 <p>ご希望の方は、お届け時間を選択してください。</p>
-                <!--{foreach item=shippingItem name=shippingItem from=$shipping}-->
+                <!--{foreach item=shippingItem name=shippingItem from=$arrShipping}-->
                 <!--{assign var=index value=$smarty.foreach.shippingItem.index}-->
                 <div>
                     <!--★お届け日★-->
@@ -76,7 +187,7 @@
                     <!--{if !$arrDelivDate}-->
                         ご指定頂けません。
                     <!--{else}-->
-                        <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
+                        <select name="<!--{$key}-->" id="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
                             <option value="" selected="">指定なし</option>
                             <!--{html_options options=$arrDelivDate selected=$arrForm[$key].value}-->
                         </select>
@@ -89,7 +200,7 @@
                         <option value="" selected="">指定なし</option>
                         <!--{html_options options=$arrDelivTime selected=$arrForm[$key].value}-->
                     </select>
-                    <!--{if $isMultiple}-->
+                    <!--{if $is_multiple}-->
                         &nbsp;<!--{$shippingItem.shipping_name01}--><!--{$shippingItem.shipping_name02}-->
                         &nbsp;<!--{$arrPref[$shippingItem.shipping_pref]}--><!--{$shippingItem.shipping_addr01}--><!--{$shippingItem.shipping_addr02}-->
                     <!--{/if}-->

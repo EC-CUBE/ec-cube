@@ -24,6 +24,8 @@
 <form method="post" action="?">
 <input type="hidden" name="mode" value="confirm">
 <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
+<!--{assign var=key value="deliv_id"}-->
+<input type="hidden" name="<!--{$key}-->" value="<!--{$arrForm[$key].value}-->">
 ■お支払方法 <font color="#FF0000">*</font><br>
 <!--{assign var=key value="payment_id"}-->
 <!--{if $arrErr[$key] != ""}-->
@@ -38,7 +40,7 @@
 
 <!--{if $cartKey != $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
 ■お届け時間の指定<br>
-<!--{foreach item=shippingItem name=shippingItem from=$shipping}-->
+<!--{foreach item=shippingItem name=shippingItem from=$arrShipping}-->
 <!--{assign var=index value=$smarty.foreach.shippingItem.index}-->
 <!--★お届け日★-->
 <!--{assign var=key value="deliv_date`$index`"}-->
@@ -62,7 +64,7 @@
     <!--{html_options options=$arrDelivTime selected=$arrForm[$key].value}-->
 </select>
 <br>
-<!--{if $isMultiple}-->
+<!--{if $is_multiple}-->
     &nbsp;<!--{$shippingItem.shipping_name01}--><!--{$shippingItem.shipping_name02}-->
     &nbsp;<!--{$arrPref[$shippingItem.shipping_pref]}--><!--{$shippingItem.shipping_addr01}--><!--{$shippingItem.shipping_addr02}-->
 <!--{/if}-->

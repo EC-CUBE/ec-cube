@@ -432,9 +432,10 @@ class SC_CartSession {
      * エラーが発生した場合は, 商品をカート内から削除又は数量を調整し,
      * エラーメッセージを返す.
      *
-     * 1. 削除/非表示商品のチェック
-     * 2. 商品購入制限数のチェック
-     * 3. 在庫数チェック
+     * 1. 商品種別に関連づけられた配送業者の存在チェック
+     * 2. 削除/非表示商品のチェック
+     * 3. 商品購入制限数のチェック
+     * 4. 在庫数チェック
      *
      * @param string $key 商品種別ID
      * @return string エラーが発生した場合はエラーメッセージ
@@ -448,6 +449,15 @@ class SC_CartSession {
         foreach (array_keys($items) as $key) {
             $item =& $items[$key];
             $product =& $item['productsClass'];
+
+            /*
+             * 配送業者のチェック
+             */
+            $arrDeliv = SC_Helper_Purchase_Ex::getDeliv($productTypeId);
+            if (SC_Utils_Ex::isBlank($arrDeliv)) {
+                $tpl_message .= "※「" . $product['name'] . "」はまだ配送の準備ができておりません。恐れ入りますがお問い合わせページよりお問い合わせください。\n";
+            }
+
             /*
              * 表示/非表示商品のチェック
              */

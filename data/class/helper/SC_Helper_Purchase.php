@@ -460,49 +460,48 @@ class SC_Helper_Purchase {
     }
 
     /**
-     * 商品種別ID からお届け時間の配列を取得する.
+     * 配送業者IDからお届け時間の配列を取得する.
+     *
+     * @param integer $deliv_id 配送業者ID
+     * @return array お届け時間の配列
      */
-    function getDelivTime($productTypeId) {
+    function getDelivTime($deliv_id) {
         $objQuery =& SC_Query::getSingletonInstance();
-        $from = <<< __EOS__
-                 dtb_deliv T1
-            JOIN dtb_delivtime T2
-              ON T1.deliv_id = T2. deliv_id
-__EOS__;
-            $objQuery->setOrder("time_id");
-            $results = $objQuery->select("time_id, deliv_time", $from,
-                                         "product_type_id = ?", array($productTypeId));
-            $arrDelivTime = array();
-            foreach ($results as $val) {
-                $arrDelivTime[$val['time_id']] = $val['deliv_time'];
-            }
-            return $arrDelivTime;
+        $objQuery->setOrder('time_id');
+        $results = $objQuery->select('time_id, deliv_time',
+                                     'dtb_delivtime',
+                                     'deliv_id = ?', array($deliv_id));
+        $arrDelivTime = array();
+        foreach ($results as $val) {
+            $arrDelivTime[$val['time_id']] = $val['deliv_time'];
+        }
+        return $arrDelivTime;
     }
 
     /**
      * 商品種別ID から配送業者を取得する.
+     *
+     * @param integer $product_type_id 商品種別ID
+     * @return array 配送業者の配列
      */
-    function getDeliv($productTypeId) {
+    function getDeliv($product_type_id) {
         $objQuery =& SC_Query::getSingletonInstance();
-        return $objQuery->select("*", "dtb_deliv", "product_type_id = ?",
-                                 array($productTypeId));
+        $objQuery->setOrder('rank');
+        return $objQuery->select('*', 'dtb_deliv', 'product_type_id = ?',
+                                 array($product_type_id));
     }
 
     /**
-     * 配送業者ID から, 有効な支払方法を取得する.
+     * 配送業者ID から, 有効な支払方法IDを取得する.
      *
      * @param integer $deliv_id 配送業者ID
      * @return array 有効な支払方法IDの配列
      */
     function getPayments($deliv_id) {
         $objQuery =& SC_Query::getSingletonInstance();
-        $from = <<< __EOS__
-                      dtb_deliv T1
-            LEFT JOIN dtb_payment_options T2
-                   ON T1.deliv_id = T2.deliv_id
-__EOS__;
-        $objQuery->setOrder('T2.rank');
-        return $objQuery->getCol('payment_id', $from, 'T1.deliv_id = ?',
+        $objQuery->setOrder('rank');
+        return $objQuery->getCol('payment_id', 'dtb_payment_options',
+                                 'deliv_id = ?',
                                  array($deliv_id), MDB2_FETCHMODE_ORDERED);
     }
 

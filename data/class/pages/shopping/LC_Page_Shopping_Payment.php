@@ -78,27 +78,23 @@ class LC_Page_Shopping_Payment extends LC_Page {
         $objCartSess = new SC_CartSession();
         $objPurchase = new SC_Helper_Purchase_Ex();
         $this->objCustomer = new SC_Customer();
-
-        $this->shipping =& $objPurchase->getShippingTemp();
-        $this->isMultiple = $objPurchase->isMultiple();
-
-        // パラメータ管理クラス
         $this->objFormParam = new SC_FormParam();
-        // パラメータ情報の初期化
-        $this->lfInitParam();
-        // POST値の取得
-        $this->objFormParam->setParam($_POST);
 
-        $uniqid = $objSiteSess->getUniqId();
-        $objPurchase->verifyChangeCart($uniqid, $objCartSess);
-
-        // ユニークIDを引き継ぐ
-        $this->tpl_uniqid = $uniqid;
+        $this->arrShipping =& $objPurchase->getShippingTemp();
+        $this->is_multiple = $objPurchase->isMultiple();
+        $this->tpl_uniqid = $objSiteSess->getUniqId();
+        $objPurchase->verifyChangeCart($this->tpl_uniqid, $objCartSess);
 
         $this->cartKey = $objCartSess->getKey();
 
-        // 配送時間を取得
-        $this->arrDelivTime = $objPurchase->getDelivTime($this->cartKey);
+        // 配送業者を取得
+        $this->arrDeliv = $objPurchase->getDeliv($this->cartKey);
+        if (count($this->arrDeliv) == 1) {
+            $this->is_single_deliv = true;
+            $deliv_id = $this->arrDeliv[0]['deliv_id'];
+        } else {
+            $this->is_single_deliv = false;
+        }
 
         // 会員ログインチェック
         if($this->objCustomer->isLoginSuccess(true)) {
@@ -116,7 +112,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
         }
 
         // 一時受注テーブルの読込
-        $arrOrderTemp = $objPurchase->getOrderTemp($uniqid);
+        $arrOrderTemp = $objPurchase->getOrderTemp($this->tpl_uniqid);
         //不正遷移チェック（正常に受注情報が格納されていない場合は一旦カート画面まで戻す）
         if (!$arrOrderTemp) {
             SC_Response_Ex::sendRedirect(CART_URLPATH);
@@ -128,7 +124,8 @@ class LC_Page_Shopping_Payment extends LC_Page {
         $this->tpl_message = $objCartSess->checkProducts($this->cartKey);
 
         if (strlen($this->tpl_message) >= 1) {
-            SC_Utils_Ex::sfDispSiteError(SOLD_OUT, '', true);
+            SC_Response_Ex::sendRedirect(CART_URLPATH);
+            exit;
         }
         // FIXME 使用ポイント, 手数料の扱い
         $this->arrData = $objCartSess->calculate($this->cartKey, $objCustomer, 0, $objPurchase->getShippingPref());
@@ -136,29 +133,63 @@ class LC_Page_Shopping_Payment extends LC_Page {
         // 購入金額の取得
         $total_inctax = $objCartSess->getAllProductsTotal($this->cartKey);
 
-        // FIXME 支払い方法の取得
-        $arrDeliv = $objPurchase->getDeliv($this->cartKey);
-        $this->arrPayment = $objPurchase->getPaymentsByPrice($total_inctax, $arrDeliv[0]['deliv_id']);
+        // お届け日一覧の取得
+        $this->arrDelivDate = $objPurchase->getDelivDate($objCartSess, $this->cartKey);
 
         switch($this->getMode()) {
+        case 'select_deliv':
+            $this->objFormParam->convParam();
+            $this->lfInitParam(true);
+            $this->objFormParam->setParam($_POST);
+            $arrErr = $this->objFormParam->checkError();
+            if (SC_Utils_Ex::isBlank($arrErr)) {
+                $deliv_id = $this->objFormParam->getValue('deliv_id');
+                $this->arrPayment = $objPurchase->getPaymentsByPrice($total_inctax, $deliv_id);
+                $this->img_show = $this->lfGetImgShow($this->arrPayment);
+                // 配送時間を取得
+                $this->arrDelivTime = $objPurchase->getDelivTime($deliv_id);
+                $arrSelectDeliv = array('error' => false,
+                                        'arrPayment' => $this->arrPayment,
+                                        'arrDelivTime' => $this->arrDelivTime,
+                                        'img_show' => $this->img_show);
+            } else {
+                $arrSelectDeliv = array('error' => true);
+            }
+
+            if (SC_Display::detectDevice() != DEVICE_TYPE_MOBILE) {
+                $objJson = new Services_JSON();
+                echo $objJson->encode($arrSelectDeliv);
+                exit;
+            }
+            break;
+
         case 'confirm':
+            // パラメータ情報の初期化
+            $this->lfInitParam();
+            // POST値の取得
+            $this->objFormParam->setParam($_POST);
             // 入力値の変換
             $this->objFormParam->convParam();
+            $deliv_id = $this->objFormParam->getValue('deliv_id');
+            $this->arrPayment = $objPurchase->getPaymentsByPrice($total_inctax, $deliv_id);
+            $this->arrDelivTime = $objPurchase->getDelivTime($deliv_id);
             $this->arrErr = $this->lfCheckError($this->arrData, $this->arrPayment);
             // 入力エラーなし
             if(count($this->arrErr) == 0) {
 
                 foreach (array_keys($_SESSION['shipping']) as $key) {
                     $timeId = $this->objFormParam->getValue('deliv_time_id' . $key);
+
                     /* TODO
                      * SC_Purchase::getShippingTemp() で取得して,
                      * リファレンスで代入すると, セッションに添字を追加できない？
                      */
+                    $_SESSION['shipping'][$key]['deliv_id'] = $deliv_id;
                     $_SESSION['shipping'][$key]['time_id'] = $timeId;
                     $_SESSION['shipping'][$key]['shipping_time'] = $this->arrDelivTime[$timeId];
                     $_SESSION['shipping'][$key]['shipping_date'] = $this->objFormParam->getValue('deliv_date' . $key);
                 }
-                $this->lfRegistData($uniqid, $objPurchase);
+                $this->lfRegistData($this->tpl_uniqid, $objPurchase);
 
                 // 正常に登録されたことを記録しておく
                 $objSiteSess->setRegistFlag();
@@ -166,15 +197,14 @@ class LC_Page_Shopping_Payment extends LC_Page {
                 SC_Response_Ex::sendRedirect(SHOPPING_CONFIRM_URLPATH);
                 exit;
             }else{
-                // ユーザユニークIDの取得
-                $uniqid = $objSiteSess->getUniqId();
                 // 受注一時テーブルからの情報を格納
-                $this->objFormParam->setParam($objPurchase->getOrderTemp($uniqid));
+                $this->img_show = $this->lfGetImgShow($this->arrPayment);
+                $this->objFormParam->setParam($objPurchase->getOrderTemp($this->tpl_uniqid));
             }
             break;
         // 前のページに戻る
         case 'return':
-            // 非会員の場合
+
             // 正常な推移であることを記録しておく
             $objSiteSess->setRegistFlag();
             SC_Response_Ex::sendRedirect(SHOPPING_URL);
@@ -182,15 +212,44 @@ class LC_Page_Shopping_Payment extends LC_Page {
             break;
 
         default:
-            // 受注一時テーブルからの情報を格納
+
+            // 前のページから戻ってきた場合の初期値を設定
+            $this->lfInitParam();
             $this->objFormParam->setParam($arrOrderTemp);
+            $this->objFormParam->convParam();
+
+            if (!$this->is_single_deliv) {
+                $deliv_id = $this->objFormParam->getValue('deliv_id');
+            }
+
+            if (!SC_Utils_Ex::isBlank($deliv_id)) {
+                $this->objFormParam->setValue('deliv_id', $deliv_id);
+                $this->arrPayment = $objPurchase->getPaymentsByPrice($total_inctax, $deliv_id);
+                // XXX セッションからデフォルト値を取得する必要あり
+                $this->arrDelivTime = $objPurchase->getDelivTime($deliv_id);
+                $this->img_show = $this->lfGetImgShow($this->arrPayment);
+            }
             break;
         }
 
-        // 支払い方法の画像があるなしを取得（$img_show true:ある false:なし）
-        $this->img_show = $this->lfGetImgShow($this->arrPayment);
-        // お届け日一覧の取得
-        $this->arrDelivDate = $objPurchase->getDelivDate($objCartSess, $this->cartKey);
+        // モバイル用 ポストバック処理
+        if (SC_Display::detectDevice() == DEVICE_TYPE_MOBILE) {
+            switch($this->getMode()) {
+            case 'select_deliv':
+                $this->tpl_mainpage = 'shopping/payment.tpl';
+                break;
+
+            case 'confirm':
+            case 'return':
+            default:
+                if ($this->is_single_deliv) {
+                    $this->tpl_mainpage = 'shopping/payment.tpl';
+                } else {
+                    $this->tpl_mainpage = 'shopping/select_deliv.tpl';
+                }
+            }
+        }
+
         $this->arrForm = $this->objFormParam->getFormParamList();
     }
 
@@ -204,15 +263,19 @@ class LC_Page_Shopping_Payment extends LC_Page {
     }
 
     /* パラメータ情報の初期化 */
-    function lfInitParam() {
-        $this->objFormParam->addParam("お支払い方法", "payment_id", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $this->objFormParam->addParam("ポイント", "use_point", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK", "ZERO_START"));
-        $this->objFormParam->addParam("その他お問い合わせ", "message", LTEXT_LEN, "KVa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("ポイントを使用する", "point_check", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"), '2');
+    function lfInitParam($deliv_only = false) {
+        $this->objFormParam->addParam("配送業者", "deliv_id", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
 
-        for ($i = 0; $i < count($this->shipping); $i++) {
-            $this->objFormParam->addParam("お届け時間", "deliv_time_id" . $i, INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-            $this->objFormParam->addParam("お届け日", "deliv_date" . $i, STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
+        if (!$deliv_only) {
+            $this->objFormParam->addParam("お支払い方法", "payment_id", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+            $this->objFormParam->addParam("ポイント", "use_point", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK", "ZERO_START"));
+            $this->objFormParam->addParam("その他お問い合わせ", "message", LTEXT_LEN, "KVa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+            $this->objFormParam->addParam("ポイントを使用する", "point_check", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"), '2');
+
+            for ($i = 0; $i < count($this->shipping); $i++) {
+                $this->objFormParam->addParam("お届け時間", "deliv_time_id" . $i, INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+                $this->objFormParam->addParam("お届け日", "deliv_date" . $i, STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
+            }
         }
     }
 

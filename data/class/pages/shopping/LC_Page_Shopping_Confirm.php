@@ -49,6 +49,7 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         $this->arrSex = $masterData->getMasterData("mtb_sex");
         $this->arrMAILMAGATYPE = $masterData->getMasterData("mtb_mail_magazine_type");
         $this->arrReminder = $masterData->getMasterData("mtb_reminder");
+        $this->arrDeliv = SC_Helper_DB_Ex::sfGetIDValueList("dtb_deliv", "deliv_id", "service_name");
         $this->httpCacheControl('nocache');
     }
 
@@ -93,7 +94,8 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         // カート内商品のチェック
         $this->tpl_message = $objCartSess->checkProducts($this->cartKey);
         if (strlen($this->tpl_message) >= 1) {
-            SC_Utils_Ex::sfDispSiteError(SOLD_OUT, '', true);
+            SC_Response_Ex::sendRedirect(CART_URLPATH);
+            exit;
         }
 
         // カートの商品を取得
