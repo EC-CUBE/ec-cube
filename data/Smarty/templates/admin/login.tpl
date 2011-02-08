@@ -29,7 +29,9 @@
 		<div id="login-form" class="clearfix">
 			<h1><img src="<!--{$TPL_URLPATH}-->img/contents/admin_login_logo.jpg" width="140" height="150" alt="EC-CUBE管理画面" /></h1>
 			<div id="input-form">
-				<form name="form1" id="form1" method="post" action="login.php">
+				<form name="form1" id="form1" method="post" action="?">
+				<input type="hidden" name="mode" value="login" />
+				<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 				<p><label for="login_id">ID</label></p>
 				<input type="text" name="login_id" size="20" class="box25" />
 				<p><label for="password">PASSWORD</label></p>

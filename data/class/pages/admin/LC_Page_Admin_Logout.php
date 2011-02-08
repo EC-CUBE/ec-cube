@@ -51,10 +51,28 @@ class LC_Page_Admin_Logout extends LC_Page_Admin {
      * @return void
      */
     function process() {
+        $this->action();
+    }
+
+    /**
+     * Page のアクション.
+     *
+     * @return void
+     */
+    function action() {
+        $this->lfDoLogout();
+        // ログイン画面に遷移
+        SC_Response_Ex::sendRedirectFromUrlPath(ADMIN_DIR . DIR_INDEX_PATH);
+    }
+
+    /**
+     * ログアウト処理
+     *
+     * @return void
+     */
+    function lfDoLogout() {
         $objSess = new SC_Session();
         $objSess->logout();
-
-        SC_Response_Ex::sendRedirectFromUrlPath(ADMIN_DIR . DIR_INDEX_PATH);
     }
 
     /**
