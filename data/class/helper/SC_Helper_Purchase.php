@@ -349,7 +349,7 @@ class SC_Helper_Purchase {
         // 削除されていない支払方法を取得
         $where = 'del_flg = 0 AND payment_id IN (' . implode(', ', array_pad(array(), count($arrPaymentIds), '?')) . ')';
         $objQuery->setOrder("rank DESC");
-        $payments = $objQuery->select("payment_id, payment_method, rule, upper_rule, note, payment_image", "dtb_payment", $where, $arrPaymentIds);
+        $payments = $objQuery->select("payment_id, payment_method, rule, upper_rule, note, payment_image, charge", "dtb_payment", $where, $arrPaymentIds);
 
         foreach ($payments as $data) {
             // 下限と上限が設定されている

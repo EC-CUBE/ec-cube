@@ -254,8 +254,8 @@
                         <p><span class="attention">1ポイントを1円</span>として使用する事ができます。<br />
                             使用する場合は、「ポイントを使用する」にチェックを入れた後、使用するポイントをご記入ください。</p>
                     <div>
-                        <p><!--{$objCustomer->getValue('name01')|h}--> <!--{$objCustomer->getValue('name02')|h}-->様の、現在の所持ポイントは「<em><!--{$tpl_user_point|default:0}-->Pt</em>」です。</p>
-                        <p>今回ご購入合計金額：<span class="price"><!--{$arrData.subtotal|number_format}-->円</span> <span class="attention">(送料、手数料を含みません。)</span></p>
+                        <p><!--{$name01|h}--> <!--{$name02|h}-->様の、現在の所持ポイントは「<em><!--{$tpl_user_point|default:0}-->Pt</em>」です。</p>
+                        <p>今回ご購入合計金額：<span class="price"><!--{$arrPrices.subtotal|number_format}-->円</span> <span class="attention">(送料、手数料を含みません。)</span></p>
                         <ul>
                             <li><input type="radio" id="point_on" name="point_check" value="1" <!--{$arrForm.point_check.value|sfGetChecked:1}--> onclick="fnCheckInputPoint();" /><label for="point_on">ポイントを使用する</label></li>
                              <!--{assign var=key value="use_point"}-->
