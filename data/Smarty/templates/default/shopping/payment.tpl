@@ -22,7 +22,14 @@
 <!--▼CONTENTS-->
 <script type="text/javascript">//<![CDATA[
     $(function() {
+        if ($('input[name=deliv_id]:checked').val()
+            || $('#deliv_id').val()) {
+            showForm(true);
+        } else {
+            showForm(false);
+        }
         $('input[id^=deliv_]').click(function() {
+            showForm(true);
             var data = {};
             data.mode = 'select_deliv';
             data.deliv_id = $(this).val();
@@ -95,6 +102,19 @@
             alert('通信中にエラーが発生しました。カート画面に移動します。');
             location.href = '<!--{$smarty.const.CART_URLPATH}-->';
         }
+
+        /**
+         * 配送方法の選択状態により表示を切り替える
+         */
+        function showForm(show) {
+            if (show) {
+                $('#payment, div.delivdate, .select-msg').show();
+                $('.non-select-msg').hide();
+            } else {
+                $('#payment, div.delivdate, .select-msg').hide();
+                $('.non-select-msg').show();
+            }
+        }
     });
 //]]>
 </script>
@@ -111,7 +131,7 @@
 
             <!--{assign var=key value="deliv_id"}-->
             <!--{if $is_single_deliv}-->
-                <input type="hidden" name="<!--{$key}-->" value="<!--{$arrForm[$key].value}-->" />
+                <input type="hidden" name="<!--{$key}-->" value="<!--{$arrForm[$key].value}-->" id="deliv_id" />
             <!--{else}-->
             <div class="payarea">
                 <h3>配送方法の指定</h3>
@@ -140,7 +160,8 @@
 
             <div class="payarea">
                 <h3>お支払方法の指定</h3>
-                <p>お支払方法をご選択ください。</p>
+                <p class="select-msg">お支払方法をご選択ください。</p>
+                <p class="non-select-msg">まずはじめに、配送方法を選択ください。</p>
 
                 <!--{assign var=key value="payment_id"}-->
                 <!--{if $arrErr[$key] != ""}-->
@@ -176,10 +197,11 @@
             <!--{if $cartKey != $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
             <div class="payarea02">
                 <h3>お届け時間の指定</h3>
-                <p>ご希望の方は、お届け時間を選択してください。</p>
+                <p class="select-msg">ご希望の方は、お届け時間を選択してください。</p>
+                <p class="non-select-msg">まずはじめに、配送方法を選択ください。</p>
                 <!--{foreach item=shippingItem name=shippingItem from=$arrShipping}-->
                 <!--{assign var=index value=$smarty.foreach.shippingItem.index}-->
-                <div>
+                <div class="delivdate">
                     <!--★お届け日★-->
                     <!--{assign var=key value="deliv_date`$index`"}-->
                     <span class="attention"><!--{$arrErr[$key]}--></span>
