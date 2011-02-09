@@ -15,7 +15,7 @@
 // | Authors: Stephan Schmidt <schst@php.net>                             |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id: get_include_path.php,v 1.4 2005/01/26 04:55:13 aidan Exp $
 
 
 /**

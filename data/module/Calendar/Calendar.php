@@ -18,11 +18,11 @@
 // |          Lorenzo Alberton <l dot alberton at quipo dot it>           |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id: Calendar.php,v 1.3 2005/10/22 10:07:11 quipo Exp $
 //
 /**
  * @package Calendar
- * @version $Id$
+ * @version $Id: Calendar.php,v 1.3 2005/10/22 10:07:11 quipo Exp $
  */
 
 /**

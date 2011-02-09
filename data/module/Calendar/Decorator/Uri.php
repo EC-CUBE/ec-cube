@@ -18,11 +18,11 @@
 // |          Lorenzo Alberton <l dot alberton at quipo dot it>           |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id: Uri.php,v 1.3 2004/08/16 09:04:20 hfuecks Exp $
 //
 /**
  * @package Calendar
- * @version $Id$
+ * @version $Id: Uri.php,v 1.3 2004/08/16 09:04:20 hfuecks Exp $
  */
 
 /**

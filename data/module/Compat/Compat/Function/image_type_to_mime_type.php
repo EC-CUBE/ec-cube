@@ -15,7 +15,7 @@
 // | Authors: Aidan Lister <aidan@php.net>                                |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id: image_type_to_mime_type.php,v 1.8 2005/01/26 04:55:13 aidan Exp $
 
 
 if (!defined('IMAGETYPE_GIF')) {

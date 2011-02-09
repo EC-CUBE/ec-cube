@@ -15,7 +15,7 @@
 // | Authors: Aidan Lister <aidan@php.net>                                |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id: array_udiff_uassoc.php,v 1.8 2005/01/26 04:55:13 aidan Exp $
 
 
 /**

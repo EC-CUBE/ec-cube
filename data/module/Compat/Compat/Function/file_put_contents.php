@@ -15,7 +15,7 @@
 // | Authors: Aidan Lister <aidan@php.net>                                |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id: file_put_contents.php,v 1.25 2005/12/05 09:25:15 aidan Exp $
 
 
 if (!defined('FILE_USE_INCLUDE_PATH')) {

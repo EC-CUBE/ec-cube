@@ -1,5 +1,5 @@
 <?php
-// $Id$
+// $Id: all_tests.php,v 1.2 2004/08/16 08:55:24 hfuecks Exp $
 
 require_once('simple_include.php');
 require_once('calendar_include.php');

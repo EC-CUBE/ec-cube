@@ -17,11 +17,11 @@
 // | Authors: Harry Fuecks <hfuecks@phppatterns.com>                      |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id: Weekdays.php,v 1.4 2005/10/22 10:28:49 quipo Exp $
 //
 /**
  * @package Calendar
- * @version $Id$
+ * @version $Id: Weekdays.php,v 1.4 2005/10/22 10:28:49 quipo Exp $
  */
 
 /**

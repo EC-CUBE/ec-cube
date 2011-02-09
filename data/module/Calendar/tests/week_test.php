@@ -1,5 +1,5 @@
 <?php
-// $Id$
+// $Id: week_test.php,v 1.4 2005/10/20 18:56:21 quipo Exp $
 define('CALENDAR_FIRST_DAY_OF_WEEK', 1); //force firstDay = monday
 
 require_once('simple_include.php');

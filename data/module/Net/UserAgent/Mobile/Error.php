@@ -33,7 +33,7 @@
  * @author     KUBO Atsuhiro <kubo@iteman.jp>
  * @copyright  2009 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version    CVS: $Id$
+ * @version    CVS: $Id: Error.php,v 1.1 2009/05/26 08:48:16 kuboa Exp $
  * @since      File available since Release 1.0.0RC3
  */
 

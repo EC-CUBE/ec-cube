@@ -16,7 +16,7 @@
 // | Authors: Shane Caraveo <Shane@Caraveo.com>                           |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id: smtp.php,v 1.5 2005/03/10 23:16:40 yunosh Exp $
 //
 // include soap client class
 include("SOAP/Client.php");

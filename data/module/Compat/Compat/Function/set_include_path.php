@@ -15,7 +15,7 @@
 // | Authors: Stephan Schmidt <schst@php.net>                             |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id: set_include_path.php,v 1.4 2005/12/07 21:08:57 aidan Exp $
 
 
 /**

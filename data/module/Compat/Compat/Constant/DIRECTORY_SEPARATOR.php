@@ -15,7 +15,7 @@
 // | Authors: Aidan Lister <aidan@php.net>                                |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id: DIRECTORY_SEPARATOR.php,v 1.1 2004/11/28 03:55:28 aidan Exp $
 
 
 /**

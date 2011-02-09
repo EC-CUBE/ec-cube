@@ -42,7 +42,7 @@
 // | Author: Lukas Smith <smith@pooteeweet.org>                           |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id: LOB.php,v 1.34 2006/10/25 11:52:21 lsmith Exp $
 
 /**
  * @package  MDB2

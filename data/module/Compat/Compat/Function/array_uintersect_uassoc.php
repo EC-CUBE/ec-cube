@@ -15,7 +15,7 @@
 // | Authors: Aidan Lister <aidan@php.net>                                |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id: array_uintersect_uassoc.php,v 1.12 2005/01/26 04:55:13 aidan Exp $
 
 
 /**

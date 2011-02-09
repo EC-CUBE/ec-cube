@@ -17,11 +17,11 @@
 // | Authors: Harry Fuecks <hfuecks@phppatterns.com>                      |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id: Hour.php,v 1.1 2004/05/24 22:25:42 quipo Exp $
 //
 /**
  * @package Calendar
- * @version $Id$
+ * @version $Id: Hour.php,v 1.1 2004/05/24 22:25:42 quipo Exp $
  */
 
 /**

@@ -16,7 +16,7 @@
 // |          Aidan Lister <aidan@php.net>                                |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id: html_entity_decode.php,v 1.8 2005/12/07 21:08:57 aidan Exp $
 
 
 if (!defined('ENT_NOQUOTES')) {

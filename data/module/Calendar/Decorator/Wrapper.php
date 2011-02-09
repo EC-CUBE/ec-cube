@@ -18,11 +18,11 @@
 // |          Lorenzo Alberton <l dot alberton at quipo dot it>           |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id: Wrapper.php,v 1.2 2005/11/03 20:35:03 quipo Exp $
 //
 /**
  * @package Calendar
- * @version $Id$
+ * @version $Id: Wrapper.php,v 1.2 2005/11/03 20:35:03 quipo Exp $
  */
 
 /**

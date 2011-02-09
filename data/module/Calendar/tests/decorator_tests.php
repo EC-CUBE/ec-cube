@@ -1,5 +1,5 @@
 <?php
-// $Id$
+// $Id: decorator_tests.php,v 1.1 2004/05/24 22:25:43 quipo Exp $
 
 require_once('simple_include.php');
 require_once('calendar_include.php');

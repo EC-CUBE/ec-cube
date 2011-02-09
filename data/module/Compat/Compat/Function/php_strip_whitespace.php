@@ -15,7 +15,7 @@
 // | Authors: Aidan Lister <aidan@php.net>                                |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id: php_strip_whitespace.php,v 1.10 2005/01/26 04:55:13 aidan Exp $
 
 
 /**

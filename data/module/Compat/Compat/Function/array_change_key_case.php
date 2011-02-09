@@ -16,7 +16,7 @@
 // |          Aidan Lister <aidan@php.net>                                |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id: array_change_key_case.php,v 1.11 2005/12/07 21:08:57 aidan Exp $
 
 
 if (!defined('CASE_LOWER')) {

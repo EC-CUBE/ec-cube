@@ -16,7 +16,7 @@
 // | Authors: Shane Caraveo <Shane@Caraveo.com>                           |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id: wsdl_client.php,v 1.5 2007/01/22 11:33:27 yunosh Exp $
 //
 include("SOAP/Client.php");
 

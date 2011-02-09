@@ -16,7 +16,7 @@
 // | Authors: Shane Caraveo <Shane@Caraveo.com>   Port to PEAR and more   |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id: email_client.php,v 1.4 2005/03/10 23:16:40 yunosh Exp $
 //
 
 /*

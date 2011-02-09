@@ -17,11 +17,11 @@
 // | Authors: Lorenzo Alberton <l dot alberton at quipo dot it>           |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id: PearDate.php,v 1.8 2004/08/20 20:00:55 quipo Exp $
 //
 /**
  * @package Calendar
- * @version $Id$
+ * @version $Id: PearDate.php,v 1.8 2004/08/20 20:00:55 quipo Exp $
  */
 /**
  * Load PEAR::Date class

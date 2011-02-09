@@ -18,7 +18,7 @@
 // | Authors: Dietrich Ayala <dietrich@ganx4.com> Original Author         |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id: stockquote.php,v 1.7 2005/03/10 23:16:40 yunosh Exp $
 //
 // include soap client class
 include("SOAP/Client.php");

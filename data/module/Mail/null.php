@@ -47,7 +47,7 @@
  * Null implementation of the PEAR Mail:: interface.
  * @access public
  * @package Mail
- * @version $Revision: 19942 $
+ * @version $Revision$
  */
 class Mail_null extends Mail {
 

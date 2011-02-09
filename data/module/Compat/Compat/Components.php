@@ -15,7 +15,7 @@
 // | Authors: Aidan Lister <aidan@php.net>                                |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id: Components.php,v 1.10 2005/12/05 14:49:56 aidan Exp $
 
 
 // Functions

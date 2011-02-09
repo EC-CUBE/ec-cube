@@ -43,7 +43,7 @@
 // | Author: Paul Cooper <pgc@ucecom.com>                                 |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id: pgsql.php,v 1.203 2008/11/29 14:04:46 afz Exp $
 
 /**
  * MDB2 PostGreSQL driver

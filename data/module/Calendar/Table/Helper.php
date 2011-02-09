@@ -17,11 +17,11 @@
 // | Authors: Harry Fuecks <hfuecks@phppatterns.com>                      |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id: Helper.php,v 1.5 2005/10/22 09:51:53 quipo Exp $
 //
 /**
  * @package Calendar
- * @version $Id$
+ * @version $Id: Helper.php,v 1.5 2005/10/22 09:51:53 quipo Exp $
  */
 
 /**

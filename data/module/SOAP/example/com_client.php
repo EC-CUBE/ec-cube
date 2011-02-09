@@ -16,7 +16,7 @@
 // | Authors: Shane Caraveo <Shane@Caraveo.com>                           |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id: com_client.php,v 1.3 2005/03/10 23:16:40 yunosh Exp $
 //
 // SOAPStruct is defined in the following file
 require_once 'example_types.php';

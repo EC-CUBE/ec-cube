@@ -46,7 +46,7 @@
 /**
  * internal PHP-mail() implementation of the PEAR Mail:: interface.
  * @package Mail
- * @version $Revision: 19942 $
+ * @version $Revision$
  */
 class Mail_mail extends Mail {
 

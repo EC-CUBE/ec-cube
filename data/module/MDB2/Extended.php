@@ -42,7 +42,7 @@
 // | Author: Lukas Smith <smith@pooteeweet.org>                           |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id: Extended.php,v 1.60 2007/11/28 19:49:34 quipo Exp $
 
 /**
  * @package  MDB2

@@ -16,7 +16,7 @@
 // | Authors: Shane Caraveo <Shane@Caraveo.com>                           |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id: tcp_server.php,v 1.4 2005/03/10 23:16:40 yunosh Exp $
 //
 
 // first, include the SOAP/Server class
