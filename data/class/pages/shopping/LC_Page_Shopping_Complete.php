@@ -44,10 +44,6 @@ class LC_Page_Shopping_Complete extends LC_Page {
     function init() {
         parent::init();
         $this->tpl_title = "ご注文完了";
-
-        $masterData = new SC_DB_MasterData_Ex();
-        $this->arrCONVENIENCE = $masterData->getMasterData("mtb_convenience");
-        $this->arrCONVENIMESSAGE = $masterData->getMasterData("mtb_conveni_message");
     }
 
     /**
@@ -67,9 +63,7 @@ class LC_Page_Shopping_Complete extends LC_Page {
      * @return void
      */
     function action() {
-        $objView = new SC_SiteView();
-        $objSiteInfo = $objView->objSiteInfo;
-        $this->arrInfo = $objSiteInfo->data;
+        $this->arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
     }
 
     /**
