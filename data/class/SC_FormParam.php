@@ -175,7 +175,7 @@ class SC_FormParam {
     function checkError($br = true, $keyname = "") {
         // 連想配列の取得
         $arrRet = $this->getHashArray($keyname);
-        $objErr = new SC_CheckError($arrRet);
+        $objErr->arrErr = array();
 
         $cnt = 0;
         foreach($this->keyname as $val) {
@@ -201,43 +201,16 @@ class SC_FormParam {
                 case 'DOMAIN_CHECK':
                 case 'FILE_NAME_CHECK':
                 case 'MOBILE_EMAIL_CHECK':
-
-                    if(!is_array($this->param[$cnt])) {
-                        $objErr->doFunc(array($this->disp_name[$cnt], $val), array($func));
-                    } else {
-                        $max = count($this->param[$cnt]);
-                        for($i = 0; $i < $max; $i++) {
-                            $objSubErr = new SC_CheckError($this->param[$cnt]);
-                            $objSubErr->doFunc(array($this->disp_name[$cnt], $i), array($func));
-                            if(count($objSubErr->arrErr) > 0) {
-                                foreach($objSubErr->arrErr as $mess) {
-                                    if($mess != "") {
-                                        $objErr->arrErr[$val] = $mess;
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    $this->recursionCheck($this->disp_name[$cnt], $func,
+                                          $this->param[$cnt], $objErr->arrErr,
+                                          $val, $this->length[$cnt]);
                     break;
                 case 'MAX_LENGTH_CHECK':
                 case 'MIN_LENGTH_CHECK':
                 case 'NUM_COUNT_CHECK':
-                    if(!is_array($this->param[$cnt])) {
-                        $objErr->doFunc(array($this->disp_name[$cnt], $val, $this->length[$cnt]), array($func));
-                    } else {
-                        $max = count($this->param[$cnt]);
-                        for($i = 0; $i < $max; $i++) {
-                            $objSubErr = new SC_CheckError($this->param[$cnt]);
-                            $objSubErr->doFunc(array($this->disp_name[$cnt], $i, $this->length[$cnt]), array($func));
-                            if(count($objSubErr->arrErr) > 0) {
-                                foreach($objSubErr->arrErr as $mess) {
-                                    if($mess != "") {
-                                        $objErr->arrErr[$val] = $mess;
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    $this->recursionCheck($this->disp_name[$cnt], $func,
+                                          $this->param[$cnt], $objErr->arrErr,
+                                          $val, $this->length[$cnt]);
                     break;
                 // 小文字に変換
                 case 'CHANGE_LOWER':
@@ -267,6 +240,37 @@ class SC_FormParam {
             $cnt++;
         }
         return $objErr->arrErr;
+    }
+
+    /**
+     * SC_CheckError::doFunc() を再帰的に実行する.
+     *
+     * @param string $disp_name 表示名
+     * @param string $func チェック種別
+     * @param mixed $value チェック対象の値. 配列の場合は再帰的にチェックする.
+     * @param array $arrErr エラーメッセージを格納する配列
+     * @param string $error_key エラーメッセージを格納する配列のキー
+     * @param integer $length チェック対象の値の長さ
+     * @return void
+     */
+    function recursionCheck($disp_name, $func, $value, &$arrErr, $error_key,
+                            $length = 0) {
+        if (is_array($value)) {
+            foreach ($value as $in) {
+                $this->recursionCheck($disp_name, $func, $in, $arrErr, $error_key,
+                                      $length);
+            }
+        } else {
+            $objSubErr = new SC_CheckError(array(0 => $value));
+            $objSubErr->doFunc(array($disp_name, 0, $length), array($func));
+            if(count($objSubErr->arrErr) > 0) {
+                foreach($objSubErr->arrErr as $mess) {
+                    if($mess != "") {
+                        $arrErr[$error_key] .= $mess;
+                    }
+                }
+            }
+        }
     }
 
     // 入力文字の変換
