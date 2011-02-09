@@ -17,11 +17,11 @@
 // | Authors: Harry Fuecks <hfuecks@phppatterns.com>                      |
 // +----------------------------------------------------------------------+
 //
-// $Id: Decorator.php,v 1.3 2005/10/22 10:29:46 quipo Exp $
+// $Id$
 //
 /**
  * @package Calendar
- * @version $Id: Decorator.php,v 1.3 2005/10/22 10:29:46 quipo Exp $
+ * @version $Id$
  */
 /**
  * Decorates any calendar class.

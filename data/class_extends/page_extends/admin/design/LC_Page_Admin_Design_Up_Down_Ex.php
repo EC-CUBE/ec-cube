@@ -31,7 +31,7 @@ require_once(CLASS_REALDIR . "pages/admin/design/LC_Page_Admin_Design_Up_Down.ph
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id: LC_Page_Admin_Design_Upload_Ex.php 16582 2007-10-29 03:06:29Z nanasess $
+ * @version $Id$
  */
 class LC_Page_Admin_Design_Up_Down_Ex extends LC_Page_Admin_Design_Up_Down {
 

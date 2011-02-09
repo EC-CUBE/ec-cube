@@ -42,7 +42,7 @@
 // | Author: Lukas Smith <smith@pooteeweet.org>                           |
 // +----------------------------------------------------------------------+
 //
-// $Id: Iterator.php,v 1.22 2006/05/06 14:03:41 lsmith Exp $
+// $Id$
 
 /**
  * PHP5 Iterator

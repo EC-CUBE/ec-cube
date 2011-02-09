@@ -31,7 +31,7 @@ require_once(CLASS_REALDIR . "pages/mypage/LC_Page_Mypage_Favorite.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id: LC_Page_Mypage_Favorite_Ex.php 16582 2007-10-29 03:06:29Z nanasess $
+ * @version $Id$
  */
 class LC_Page_Mypage_Favorite_Ex extends LC_Page_Mypage_Favorite {
 

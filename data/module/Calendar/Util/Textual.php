@@ -18,11 +18,11 @@
 // |          Lorenzo Alberton <l dot alberton at quipo dot it>           |
 // +----------------------------------------------------------------------+
 //
-// $Id: Textual.php,v 1.2 2004/08/16 13:13:09 hfuecks Exp $
+// $Id$
 //
 /**
  * @package Calendar
- * @version $Id: Textual.php,v 1.2 2004/08/16 13:13:09 hfuecks Exp $
+ * @version $Id$
  */
 
 /**

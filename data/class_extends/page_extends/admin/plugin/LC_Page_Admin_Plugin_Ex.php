@@ -30,7 +30,7 @@ require_once(CLASS_REALDIR . "pages/admin/plugin/LC_Page_Admin_Plugin.php");
  *
  * @package Page
  * @author Seasoft 塚田将久
- * @version $Id:$
+ * @version $Id$
  */
 class LC_Page_Admin_Plugin_Ex extends LC_Page_Admin_Plugin {
 

@@ -28,7 +28,7 @@ require_once CLASS_REALDIR . 'pages/frontparts/bloc/LC_Page_FrontParts_Bloc.php'
  *
  * @package Page
  * @author Seasoft 塚田将久
- * @version $Id:$
+ * @version $Id$
  */
 class LC_Page_FrontParts_Bloc_Recommend extends LC_Page_FrontParts_Bloc {
 

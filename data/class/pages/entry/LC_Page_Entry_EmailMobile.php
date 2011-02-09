@@ -29,7 +29,7 @@ require_once(CLASS_REALDIR . "pages/LC_Page.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id: $
+ * @version $Id$
  */
 class LC_Page_Entry_EmailMobile extends LC_Page {
 

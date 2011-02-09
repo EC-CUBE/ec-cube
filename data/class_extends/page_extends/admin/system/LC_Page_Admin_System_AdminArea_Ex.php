@@ -31,7 +31,7 @@ require_once(CLASS_REALDIR . "pages/admin/system/LC_Page_Admin_System_AdminArea.
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id: LC_Page_Admin_System_System_Ex.php 19805 2010-12-31 14:23:49Z Seasoft $
+ * @version $Id$
  */
 class LC_Page_Admin_System_AdminArea_Ex extends LC_Page_Admin_System_AdminArea {
 

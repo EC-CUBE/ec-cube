@@ -29,7 +29,7 @@ require_once(CLASS_REALDIR . "pages/LC_Page.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id: $
+ * @version $Id$
  */
 class LC_Page_Mypage_MailView extends LC_Page {
 

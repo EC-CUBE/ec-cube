@@ -31,7 +31,7 @@ require_once(CLASS_REALDIR . "pages/admin/system/LC_Page_Admin_System_Editdb.php
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id: LC_Page_Admin_System_Editdb_Ex.php 18701 2010-06-14 08:30:18Z nanasess $
+ * @version $Id$
  */
 class LC_Page_Admin_System_Editdb_Ex extends LC_Page_Admin_System_Editdb {
 

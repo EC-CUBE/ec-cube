@@ -40,7 +40,7 @@
  * @author      Chuck Hagenbuch <chuck@horde.org>
  * @copyright   2010 Chuck Hagenbuch
  * @license     http://opensource.org/licenses/bsd-license.php New BSD License
- * @version     CVS: $Id: smtp.php 294747 2010-02-08 08:18:33Z clockwerx $
+ * @version     CVS: $Id$
  * @link        http://pear.php.net/package/Mail/
  */
 

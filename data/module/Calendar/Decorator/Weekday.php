@@ -18,11 +18,11 @@
 // |          Lorenzo Alberton <l dot alberton at quipo dot it>           |
 // +----------------------------------------------------------------------+
 //
-// $Id: Weekday.php,v 1.3 2004/08/16 12:25:15 hfuecks Exp $
+// $Id$
 //
 /**
  * @package Calendar
- * @version $Id: Weekday.php,v 1.3 2004/08/16 12:25:15 hfuecks Exp $
+ * @version $Id$
  */
 
 /**

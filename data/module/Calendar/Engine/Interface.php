@@ -17,11 +17,11 @@
 // | Authors: Harry Fuecks <hfuecks@phppatterns.com>                      |
 // +----------------------------------------------------------------------+
 //
-// $Id: Interface.php,v 1.5 2004/08/16 12:29:18 hfuecks Exp $
+// $Id$
 //
 /**
  * @package Calendar
- * @version $Id: Interface.php,v 1.5 2004/08/16 12:29:18 hfuecks Exp $
+ * @version $Id$
  */
 /**
  * The methods the classes implementing the Calendar_Engine must implement.

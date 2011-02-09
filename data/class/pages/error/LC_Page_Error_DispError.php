@@ -30,7 +30,7 @@ require_once(CLASS_REALDIR . "pages/error/LC_Page_Error.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id: LC_Page_Error.php 15141 2007-07-27 10:59:11Z nanasess $
+ * @version $Id$
  */
 class LC_Page_Error_DispError extends LC_Page_Error {
 

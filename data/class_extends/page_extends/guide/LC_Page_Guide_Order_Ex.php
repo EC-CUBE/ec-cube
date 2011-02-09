@@ -31,7 +31,7 @@ require_once(CLASS_REALDIR . "pages/guide/LC_Page_Guide_Order.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id: LC_Page_Guide_Usage_Ex.php 16806 2007-11-26 08:50:31Z adachi $
+ * @version $Id$
  */
 class LC_Page_Guide_Order_Ex extends LC_Page_Guide_Order {
 

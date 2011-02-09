@@ -16,7 +16,7 @@
 // |          Aidan Lister <aidan@php.net>                                |
 // +----------------------------------------------------------------------+
 //
-// $Id: htmlspecialchars_decode.php,v 1.3 2005/06/18 14:02:09 aidan Exp $
+// $Id$
 
 
 /**

@@ -31,7 +31,7 @@ require_once(CLASS_REALDIR . "SC_SendMail.php");
  *
  * @package
  * @author LOCKON CO.,LTD.
- * @version $Id: SC_SendMail_Ex.php 16326 2007-10-08 10:26:55Z naka $
+ * @version $Id$
  */
 class SC_SendMail_Ex extends SC_SendMail {
     function SC_SendMail_Ex() {

@@ -31,7 +31,7 @@ require_once(CLASS_REALDIR . "pages/admin/products/LC_Page_Admin_Products_Upload
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $$Id: LC_Page_Admin_Products_UploadCSV_Ex.php 16741 2007-11-08 00:43:24Z adachi $$
+ * @version $$Id$$
  */
 class LC_Page_Admin_Products_UploadCSVCategory_Ex extends LC_Page_Admin_Products_UploadCSVCategory {
 

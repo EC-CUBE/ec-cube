@@ -17,11 +17,11 @@
 // | Authors: Harry Fuecks <hfuecks@phppatterns.com>                      |
 // +----------------------------------------------------------------------+
 //
-// $Id: UnixTS.php,v 1.9 2004/08/20 20:00:55 quipo Exp $
+// $Id$
 //
 /**
  * @package Calendar
- * @version $Id: UnixTS.php,v 1.9 2004/08/20 20:00:55 quipo Exp $
+ * @version $Id$
  */
 /**
  * Performs calendar calculations based on the PHP date() function and

@@ -43,7 +43,7 @@
  * @author     gERD Schaufelberger <gerd@php-tools.net>
  * @copyright  2010 gERD Schaufelberger
  * @license    http://opensource.org/licenses/bsd-license.php New BSD License
- * @version    CVS: $Id: smtpmx.php 294747 2010-02-08 08:18:33Z clockwerx $
+ * @version    CVS: $Id$
  * @link       http://pear.php.net/package/Mail/
  */
 

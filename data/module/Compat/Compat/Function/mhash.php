@@ -15,7 +15,7 @@
 // | Authors: Aidan Lister <aidan@php.net>                                |
 // +----------------------------------------------------------------------+
 //
-// $Id: mhash.php,v 1.1 2005/05/10 07:56:44 aidan Exp $
+// $Id$
 
 
 if (!defined('MHASH_CRC32')) {

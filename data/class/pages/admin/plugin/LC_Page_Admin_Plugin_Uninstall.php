@@ -31,7 +31,7 @@ require_once(CLASS_REALDIR . "pages/admin/LC_Page_Admin.php");
  *
  * @package Page
  * @author Seasoft 塚田将久
- * @version $Id:$
+ * @version $Id$
  */
 class LC_Page_Admin_Plugin_Uninstall extends LC_Page_Admin {
 

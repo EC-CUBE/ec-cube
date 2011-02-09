@@ -16,7 +16,7 @@
 // | Authors: Shane Hanna <iordy_at_iordy_dot_com>                        |
 // +----------------------------------------------------------------------+
 //
-// $Id: tcp_client.php,v 1.5 2007/01/22 11:33:27 yunosh Exp $
+// $Id$
 //
 
 require_once('SOAP/Client.php');

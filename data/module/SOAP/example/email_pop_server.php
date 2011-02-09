@@ -16,7 +16,7 @@
 // | Authors: Shane Caraveo <Shane@Caraveo.com>   Port to PEAR and more   |
 // +----------------------------------------------------------------------+
 //
-// $Id: email_pop_server.php,v 1.6 2005/03/10 23:16:40 yunosh Exp $
+// $Id$
 //
 
 /* include the Email server class, which knows how to

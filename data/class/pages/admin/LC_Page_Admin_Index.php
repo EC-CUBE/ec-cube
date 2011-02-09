@@ -29,7 +29,7 @@ require_once(CLASS_REALDIR . "pages/admin/LC_Page_Admin.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id: LC_Page_Admin.php 18701 2010-06-14 08:30:18Z nanasess $
+ * @version $Id$
  */
 class LC_Page_Admin_Index extends LC_Page_Admin {
 

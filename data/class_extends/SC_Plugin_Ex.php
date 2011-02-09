@@ -31,7 +31,7 @@ require_once(CLASS_REALDIR . "SC_Plugin.php");
  *
  * @package
  * @author LOCKON CO.,LTD.
- * @version $Id: $
+ * @version $Id$
  */
 class SC_Plugin_Ex extends SC_Plugin {
     function SC_Plugin_Ex() {

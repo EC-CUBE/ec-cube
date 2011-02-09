@@ -29,7 +29,7 @@ require_once(CLASS_REALDIR . "pages/admin/LC_Page_Admin.php");
  *
  * @package Page
  * @author Seasoft 塚田将久
- * @version $Id: LC_Page_Admin_System_System.php 17576 2008-08-28 06:08:09Z Seasoft $
+ * @version $Id$
  */
 class LC_Page_Admin_System_Log extends LC_Page_Admin {
 

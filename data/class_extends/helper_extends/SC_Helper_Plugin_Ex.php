@@ -31,7 +31,7 @@ require_once(CLASS_REALDIR . "helper/SC_Helper_Plugin.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id: $
+ * @version $Id$
  */
 class SC_Helper_Plugin_Ex extends SC_Helper_Plugin {
 }

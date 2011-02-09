@@ -1,5 +1,5 @@
 <?php
-// $Id: unixts_engine_test.php,v 1.2 2004/08/16 11:36:51 hfuecks Exp $
+// $Id$
 
 require_once('simple_include.php');
 require_once('calendar_include.php');

@@ -28,7 +28,7 @@ require_once(CLASS_REALDIR . "pages/LC_Page.php");
  *
  * @package Page
  * @author CUORE CO.,LTD.
- * @version $Id: LC_Page_Mypage_DownLoad.php 1 2009-08-04 00:00:00Z $
+ * @version $Id$
  */
 class LC_Page_Mypage_DownLoad extends LC_Page {
 
