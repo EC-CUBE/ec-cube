@@ -113,6 +113,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin {
         }
 
         // ブロックを取得
+        $objQuery->setOrder('');
         $arrBloc = $objQuery->select("*", "dtb_bloc", "device_type_id = ?", array($device_type_id));
 
         switch ($this->getMode()) {
