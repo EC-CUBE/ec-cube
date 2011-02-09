@@ -30,7 +30,7 @@
 <br>
 
 【ご注文内容】<br>
-<!--{foreach from=$cartItems item=item}-->
+<!--{foreach from=$arrCartItems item=item}-->
 <!--{$item.productsClass.name|h}--><br>
 <!--{if $item.productsClass.classcategory_name1 != ""}--><!--{$item.productsClass.class_name1}-->：<!--{$item.productsClass.classcategory_name1}--><br><!--{/if}-->
 <!--{if $item.productsClass.classcategory_name2 != ""}--><!--{$item.productsClass.class_name2}-->：<!--{$item.productsClass.classcategory_name2}--><br><!--{/if}-->
@@ -43,13 +43,13 @@
 【購入金額】<br>
 商品合計：<!--{$tpl_total_inctax[$cartKey]|number_format}-->円<br>
 <!--{if $smarty.const.USE_POINT !== false}-->
-<!--{assign var=discount value=`$arrData.use_point*$smarty.const.POINT_VALUE`}-->
+<!--{assign var=discount value=`$arrForm.use_point*$smarty.const.POINT_VALUE`}-->
 ポイント値引き：-<!--{$discount|number_format|default:0}-->円<br>
 <!--{/if}-->
-送料：<!--{$arrData.deliv_fee|number_format}-->円<br>
-<!--{if $arrData.charge > 0}-->手数料：<!--{$arrData.charge|number_format}-->円<br><!--{/if}-->
-合計：<!--{$arrData.payment_total|number_format}-->円<br>
-(内消費税：<!--{$arrData.tax|number_format}-->円)<br>
+送料：<!--{$arrForm.deliv_fee|number_format}-->円<br>
+<!--{if $arrForm.charge > 0}-->手数料：<!--{$arrForm.charge|number_format}-->円<br><!--{/if}-->
+合計：<!--{$arrForm.payment_total|number_format}-->円<br>
+(内消費税：<!--{$arrForm.tax|number_format}-->円)<br>
 
 <br>
 
@@ -57,10 +57,10 @@
 <!--{if $tpl_login == 1 && $smarty.const.USE_POINT !== false}-->
 【ポイント確認】<br>
 ご注文前のポイント：<!--{$tpl_user_point|number_format|default:0}-->Pt<br>
-ご使用ポイント：-<!--{$arrData.use_point|number_format|default:0}-->Pt<br>
-<!--{if $arrData.birth_point > 0}-->お誕生月ポイント：+<!--{$arrData.birth_point|number_format|default:0}-->Pt<br><!--{/if}-->
-今回加算予定のポイント：+<!--{$arrData.add_point|number_format|default:0}-->Pt<br>
-<!--{assign var=total_point value=`$tpl_user_point-$arrData.use_point+$arrData.add_point`}-->
+ご使用ポイント：-<!--{$arrForm.use_point|number_format|default:0}-->Pt<br>
+<!--{if $arrForm.birth_point > 0}-->お誕生月ポイント：+<!--{$arrForm.birth_point|number_format|default:0}-->Pt<br><!--{/if}-->
+今回加算予定のポイント：+<!--{$arrForm.add_point|number_format|default:0}-->Pt<br>
+<!--{assign var=total_point value=`$tpl_user_point-$arrForm.use_point+$arrForm.add_point`}-->
 加算後のポイント：<!--{$total_point|number_format}-->Pt<br>
 
 <br>
@@ -69,8 +69,8 @@
 <!--{* 販売方法判定（ダウンロード販売のみの場合はお届け先を表示しない） *}-->
 <!--{if $cartKey != $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
 【お届け先】<br>
-<!--{foreach item=shippingItem from=$shipping name=shippingItem}-->
-<!--{if $isMultiple}-->
+<!--{foreach item=shippingItem from=$arrShipping name=shippingItem}-->
+<!--{if $is_multiple}-->
     ▼お届け先<!--{$smarty.foreach.shippingItem.iteration}--><br>
     <!--{* 複数お届け先の場合、お届け先毎の商品を表示 *}-->
     <!--{foreach item=item from=$shippingItem.shipment_item}-->
@@ -97,18 +97,18 @@
 <!--{/if}-->
 
 【配送方法】<br>
-<!--{$arrDeliv[$arrData.deliv_id]|h}--><br>
+<!--{$arrDeliv[$arrForm.deliv_id]|h}--><br>
 
 <br>
 
 【お支払い方法】<br>
-<!--{$arrData.payment_method|h}--><br>
+<!--{$arrForm.payment_method|h}--><br>
 
 <br>
 
-<!--{if $arrData.message != ""}-->
+<!--{if $arrForm.message != ""}-->
 【その他お問い合わせ】<br>
-<!--{$arrData.message|h|nl2br}--><br>
+<!--{$arrForm.message|h|nl2br}--><br>
 <br>
 <!--{/if}-->
 

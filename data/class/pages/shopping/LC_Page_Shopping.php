@@ -128,8 +128,8 @@ class LC_Page_Shopping extends LC_Page {
                                   $objFormParam->getValue('login_pass'))) {
 
                 // モバイルサイトで携帯アドレスの登録が無い場合
-                if($this->hasEmailMobile($objCustomer)) {
-                    SC_Response_Ex::sendRedirect('../entry/email_mobile.php');
+                if(!$this->hasEmailMobile($objCustomer)) {
+                    SC_Response_Ex::sendRedirectFromUrlPath('entry/email_mobile.php');
                     exit;
                 }
                 SC_Response_Ex::sendRedirect(
@@ -469,9 +469,8 @@ class LC_Page_Shopping extends LC_Page {
      * @return boolean ログインに成功した場合 true; 失敗した場合 false
      */
     function doLogin(&$objCustomer, $login_email, $login_pass) {
-
         switch (SC_Display::detectDevice()) {
-        case DEVICE_TYPE_MOBILLE:
+        case DEVICE_TYPE_MOBILE:
             if(!$objCustomer->getCustomerDataFromMobilePhoneIdPass($login_pass) &&
                !$objCustomer->getCustomerDataFromEmailPass($login_pass, $login_email, true)) {
                 return false;
@@ -502,10 +501,10 @@ class LC_Page_Shopping extends LC_Page {
      */
     function hasEmailMobile(&$objCustomer) {
         switch (SC_Display::detectDevice()) {
-        case DEVICE_TYPE_MOBILLE:
+        case DEVICE_TYPE_MOBILE:
             $objMobile = new SC_Helper_Mobile_Ex();
             if (!$objMobile->gfIsMobileMailAddress($objCustomer->getValue('email'))) {
-                if (!$objCustomer->hasValue('email_mobile')) {
+                if ($objCustomer->hasValue('email_mobile')) {
                     return true;
                 }
             }

@@ -77,7 +77,7 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         $objDb = new SC_Helper_DB_Ex();
         $objPurchase = new SC_Helper_Purchase_Ex();
 
-        $this->isMultiple = $objPurchase->isMultiple();
+        $this->is_multiple = $objPurchase->isMultiple();
 
         // 前のページで正しく登録手続きが行われた記録があるか判定
         if (!$objSiteSess->isPrePage()) {
@@ -85,21 +85,21 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         }
 
         // ユーザユニークIDの取得と購入状態の正当性をチェック
-        $uniqid = $objSiteSess->getUniqId();
-        $objPurchase->verifyChangeCart($uniqid, $objCartSess);
-        $this->tpl_uniqid = $uniqid;
+        $this->tpl_uniqid = $objSiteSess->getUniqId();
+        $objPurchase->verifyChangeCart($this->tpl_uniqid, $objCartSess);
 
         $this->cartKey = $objCartSess->getKey();
 
         // カート内商品のチェック
         $this->tpl_message = $objCartSess->checkProducts($this->cartKey);
-        if (strlen($this->tpl_message) >= 1) {
+        if (!SC_Utils_Ex::isBlank($this->tpl_message)) {
             SC_Response_Ex::sendRedirect(CART_URLPATH);
             exit;
         }
 
         // カートの商品を取得
-        $this->cartItems = $objCartSess->getCartList($this->cartKey);
+        $this->arrShipping = $objPurchase->getShippingTemp();
+        $this->arrCartItems = $objCartSess->getCartList($this->cartKey);
         // 合計金額
         $this->tpl_total_inctax[$this->cartKey] = $objCartSess->getAllProductsTotal($this->cartKey);
         // 税額
@@ -107,13 +107,16 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         // ポイント合計
         $this->tpl_total_point[$this->cartKey] = $objCartSess->getAllProductsPoint($this->cartKey);
 
-        // TODO リファクタリング
         // 一時受注テーブルの読込
-        $tmpData = $objPurchase->getOrderTemp($uniqid);
+        $arrOrderTemp = $objPurchase->getOrderTemp($this->tpl_uniqid);
 
         // カート集計を元に最終計算
-        // FIXME 使用ポイント, 手数料の扱い
-        $arrData = array_merge($tmpData, $objCartSess->calculate($this->cartKey, $objCustomer, $tmpData['use_point'], $objPurchase->getShippingPref(), $tmpData['charge'], $tmpData['discount']));
+        $arrCalcResults = $objCartSess->calculate($this->cartKey, $objCustomer,
+                                                  $arrOrderTemp['use_point'],
+                                                  $objPurchase->getShippingPref(),
+                                                  $arrOrderTemp['charge'],
+                                                  $arrOrderTemp['discount']);
+        $this->arrForm = array_merge($arrOrderTemp, $arrCalcResults);
 
         // 会員ログインチェック
         if($objCustomer->isLoginSuccess(true)) {
@@ -121,17 +124,8 @@ class LC_Page_Shopping_Confirm extends LC_Page {
             $this->tpl_user_point = $objCustomer->getValue('point');
         }
 
-        // 決済区分を取得する
-        $payment_type = "";
-        if($objDb->sfColumnExists("dtb_payment", "memo01")){
-            // MEMO03に値が入っている場合には、モジュール追加されたものとみなす
-            $sql = "SELECT memo03 FROM dtb_payment WHERE payment_id = ?";
-            $arrPayment = $objQuery->getAll($sql, array($arrData['payment_id']));
-            $payment_type = $arrPayment[0]["memo03"];
-        }
-        $this->payment_type = $payment_type;
-
-        $this->shipping = $objPurchase->getShippingTemp();
+        // 決済モジュールを使用するかどうか
+        $this->use_module = $this->useModule($this->arrForm['payment_id']);
 
         switch($this->getMode()) {
         // 前のページに戻る
@@ -142,24 +136,28 @@ class LC_Page_Shopping_Confirm extends LC_Page {
             exit;
             break;
         case 'confirm':
-            // この時点で注文番号を確保しておく（クレジット、コンビニ決済で必要なため）
-            $arrData["order_id"] = $objQuery->nextval("dtb_order_order_id");
+            /*
+             * 決済モジュールで必要なため, 受注番号を取得
+             */
+            $this->arrForm["order_id"] = $objQuery->nextval("dtb_order_order_id");
 
             // 集計結果を受注一時テーブルに反映
-            $objPurchase->saveOrderTemp($uniqid, $arrData, $objCustomer);
+            $objPurchase->saveOrderTemp($this->tpl_uniqid, $this->arrForm,
+                                        $objCustomer);
+
             // 正常に登録されたことを記録しておく
             $objSiteSess->setRegistFlag();
 
-            // 決済方法により画面切替
-            if($payment_type != "") {
-                $_SESSION["payment_id"] = $arrData['payment_id'];
-
+            // 決済モジュールを使用する場合
+            if ($this->use_module) {
+                $_SESSION["payment_id"] = $this->arrForm['payment_id'];
                 $objPurchase->completeOrder(ORDER_PENDING);
                 SC_Response_Ex::sendRedirect(SHOPPING_MODULE_URLPATH);
-            }else{
-                // 受注を完了し, 購入完了ページへ
+            }
+            // 購入完了ページ
+            else {
                 $objPurchase->completeOrder(ORDER_NEW);
-                $objPurchase->sendOrderMail($arrData["order_id"]);
+                $objPurchase->sendOrderMail($this->arrForm["order_id"]);
                 SC_Response_Ex::sendRedirect(SHOPPING_COMPLETE_URLPATH);
             }
             exit;
@@ -167,7 +165,6 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         default:
             break;
         }
-        $this->arrData = $arrData;
     }
 
     /**
@@ -177,6 +174,21 @@ class LC_Page_Shopping_Confirm extends LC_Page {
      */
     function destroy() {
         parent::destroy();
+    }
+
+    /**
+     * 決済モジュールを使用するかどうか.
+     *
+     * dtb_payment.memo03 に値が入っている場合は決済モジュールと見なす.
+     *
+     * @param integer $payment_id 支払い方法ID
+     * @return boolean 決済モジュールを使用する支払い方法の場合 true
+     */
+    function useModule($payment_id) {
+        $objQuery =& SC_Query::getSingletonInstance();
+        $memo03 = $objQuery->get('memo03', 'dtb_payment', 'payment_id = ?',
+                                 array($payment_id));
+        return !SC_Utils_Ex::isBlank($memo03);
     }
 }
 ?>

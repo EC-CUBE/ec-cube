@@ -46,7 +46,7 @@ $(document).ready(function() {
          <h2 class="title"><!--{$tpl_title|h}--></h2>
 
         <p>下記ご注文内容で送信してもよろしいでしょうか？<br />
-            よろしければ、「<!--{if $payment_type != ""}-->次へ<!--{else}-->ご注文完了ページへ<!--{/if}-->」ボタンをクリックしてください。</p>
+            よろしければ、「<!--{if $use_module}-->次へ<!--{else}-->ご注文完了ページへ<!--{/if}-->」ボタンをクリックしてください。</p>
 
         <form name="form1" id="form1" method="post" action="?">
             <input type="hidden" name="mode" value="confirm" />
@@ -59,7 +59,7 @@ $(document).ready(function() {
                     <th>数量</th>
                     <th>小計</th>
                 </tr>
-                <!--{foreach from=$cartItems item=item}-->
+                <!--{foreach from=$arrCartItems item=item}-->
                 <tr>
                     <td class="phototd">
                         <a
@@ -97,21 +97,21 @@ $(document).ready(function() {
                     <tr>
                         <th colspan="4" class="resulttd">値引き（ポイントご使用時）</th>
                         <td class="pricetd">
-                        <!--{assign var=discount value=`$arrData.use_point*$smarty.const.POINT_VALUE`}-->
+                        <!--{assign var=discount value=`$arrForm.use_point*$smarty.const.POINT_VALUE`}-->
                          -<!--{$discount|number_format|default:0}-->円</td>
                     </tr>
                 <!--{/if}-->
                 <tr>
                     <th colspan="4" class="resulttd">送料</th>
-                    <td class="pricetd"><!--{$arrData.deliv_fee|number_format}-->円</td>
+                    <td class="pricetd"><!--{$arrForm.deliv_fee|number_format}-->円</td>
                 </tr>
                 <tr>
                     <th colspan="4" class="resulttd">手数料</th>
-                    <td class="pricetd"><!--{$arrData.charge|number_format}-->円</td>
+                    <td class="pricetd"><!--{$arrForm.charge|number_format}-->円</td>
                 </tr>
                 <tr>
                     <th colspan="4" class="resulttd">合計</th>
-                    <td class="pricetd"><em><!--{$arrData.payment_total|number_format}-->円</em></td>
+                    <td class="pricetd"><em><!--{$arrForm.payment_total|number_format}-->円</em></td>
                 </tr>
             </table>
 
@@ -124,20 +124,20 @@ $(document).ready(function() {
                     </tr>
                     <tr>
                         <th>ご使用ポイント</th>
-                        <td>-<!--{$arrData.use_point|number_format|default:0}-->Pt</td>
+                        <td>-<!--{$arrForm.use_point|number_format|default:0}-->Pt</td>
                     </tr>
-                    <!--{if $arrData.birth_point > 0}-->
+                    <!--{if $arrForm.birth_point > 0}-->
                     <tr>
                         <th>お誕生月ポイント</th>
-                        <td>+<!--{$arrData.birth_point|number_format|default:0}-->Pt</td>
+                        <td>+<!--{$arrForm.birth_point|number_format|default:0}-->Pt</td>
                     </tr>
                     <!--{/if}-->
                     <tr>
                         <th>今回加算予定のポイント</th>
-                        <td>+<!--{$arrData.add_point|number_format|default:0}-->Pt</td>
+                        <td>+<!--{$arrForm.add_point|number_format|default:0}-->Pt</td>
                     </tr>
                     <tr>
-                    <!--{assign var=total_point value=`$tpl_user_point-$arrData.use_point+$arrData.add_point`}-->
+                    <!--{assign var=total_point value=`$tpl_user_point-$arrForm.use_point+$arrForm.add_point`}-->
                         <th>加算後のポイント</th>
                         <td><!--{$total_point|number_format}-->Pt</td>
                     </tr>
@@ -148,9 +148,9 @@ $(document).ready(function() {
             <!--お届け先ここから-->
             <!--{* 販売方法判定（ダウンロード販売のみの場合はお届け先を表示しない） *}-->
             <!--{if $cartKey != $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
-            <!--{foreach item=shippingItem from=$shipping name=shippingItem}-->
-            <h3>▼お届け先<!--{if $isMultiple}--><!--{$smarty.foreach.shippingItem.iteration}--><!--{/if}--></h3>
-           <!--{if $isMultiple}-->
+            <!--{foreach item=shippingItem from=$arrShipping name=shippingItem}-->
+            <h3>▼お届け先<!--{if $is_multiple}--><!--{$smarty.foreach.shippingItem.iteration}--><!--{/if}--></h3>
+           <!--{if $is_multiple}-->
             <table summary="ご注文内容確認">
               <tr>
                 <th>商品写真</th>
@@ -240,27 +240,23 @@ $(document).ready(function() {
                 <tbody>
                 <tr>
                     <th>配送方法</th>
-                    <td><!--{$arrDeliv[$arrData.deliv_id]|h}--></td>
+                    <td><!--{$arrDeliv[$arrForm.deliv_id]|h}--></td>
                 </tr>
                 <tr>
                     <th>お支払方法</th>
-                    <td><!--{$arrData.payment_method|h}--></td>
+                    <td><!--{$arrForm.payment_method|h}--></td>
                 </tr>
                 <tr>
                     <th>その他お問い合わせ</th>
-                    <td><!--{$arrData.message|h|nl2br}--></td>
+                    <td><!--{$arrForm.message|h|nl2br}--></td>
                 </tr>
                 </tbody>
             </table>
 
-            <!--{if 'sfTSPrintOrderBox'|function_exists}-->
-                <!--{'sfTSPrintOrderBox'|call_user_func}-->
-            <!--{/if}-->
-
             <div class="tblareabtn">
             <a href="./payment.php" class="spbtn spbtn-medeum">
                     戻る</a>&nbsp;
-                <!--{if $payment_type != ""}-->
+                <!--{if $use_module}-->
                  <input type="submit" value="次へ" class="spbtn spbtn-shopping" width="130" height="30" alt="次へ" name="next" id="next" />
                 <!--{else}-->
                  <input type="submit" value="ご注文完了ページへ" class="spbtn spbtn-shopping" width="130" height="30" alt="ご注文完了ページへ" name="next" id="next" />

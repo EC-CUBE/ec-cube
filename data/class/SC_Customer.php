@@ -250,7 +250,10 @@ __EOS__;
 
     // パラメータがNULLかどうかの判定
     function hasValue($keyname) {
-        return isset($_SESSION['customer'][$keyname]);
+        if (isset($_SESSION['customer'][$keyname])) {
+            return !SC_Utils_Ex::isBlank($_SESSION['customer'][$keyname]);
+        }
+        return false;
     }
 
     // 誕生日月であるかどうかの判定
