@@ -194,6 +194,8 @@ class LC_Page_Shopping_Payment extends LC_Page {
 
             if (!$this->is_single_deliv) {
                 $deliv_id = $objFormParam->getValue('deliv_id');
+            } else {
+                $deliv_id = $this->arrDeliv[0]['deliv_id'];
             }
 
             if (!SC_Utils_Ex::isBlank($deliv_id)) {
