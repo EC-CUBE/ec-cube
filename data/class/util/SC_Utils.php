@@ -611,15 +611,6 @@ exit;
         return $line;
     }
 
-    /* 配列の要素をPDFフォーマットで出力する。*/
-    function sfGetPDFList($array) {
-        foreach($array as $key => $val) {
-            $line .= "\t".$val;
-        }
-        $line.="\n";
-        return $line;
-    }
-
 
 
     /*-----------------------------------------------------------------*/
@@ -1093,20 +1084,6 @@ exit;
         $end_date = sprintf("%d/%d/%d 23:59:59", $end_year, $end_month, $end_day);
 
         return array($start_date, $end_date);
-    }
-
-    // PDF用のRGBカラーを返す
-    function sfGetPdfRgb($hexrgb) {
-        $hex = substr($hexrgb, 0, 2);
-        $r = hexdec($hex) / 255;
-
-        $hex = substr($hexrgb, 2, 2);
-        $g = hexdec($hex) / 255;
-
-        $hex = substr($hexrgb, 4, 2);
-        $b = hexdec($hex) / 255;
-
-        return array($r, $g, $b);
     }
 
     // 再帰的に多段配列を検索して一次元配列(Hidden引渡し用配列)に変換する。
