@@ -147,6 +147,45 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
         return "(SELECT IF((SELECT d1.downloadable_days_unlimited FROM dtb_baseinfo d1)=1, 1, DATE(NOW()) <= DATE(DATE_ADD(o.payment_date, INTERVAL (SELECT downloadable_days FROM dtb_baseinfo) DAY))))";
     }
 
+
+    /**
+     * 売上集計の期間別集計のSQLを返す
+     *
+     * @param mixed $type
+     * @return string 検索条件のSQL
+     */
+    function getOrderTotalDaysWhereSql($type) {
+        switch($type){
+        case 'month':
+            $format = '%m';
+            break;
+        case 'year':
+            $format = '%Y';
+            break;
+        case 'wday':
+            $format = '%a';
+            break;
+        case 'hour':
+            $format = '%H';
+            break;
+        default:
+            $format = '%Y-%m-%d';
+            break;
+        }
+
+        return " date_format(create_date, '".$format."') AS str_date,
+            COUNT(order_id) AS total_order,
+            SUM(CASE WHEN order_sex = 1 THEN 1 ELSE 0 END) AS men,
+            SUM(CASE WHEN order_sex = 2 THEN 1 ELSE 0 END) AS women,
+            SUM(CASE WHEN customer_id <> 0 AND order_sex = 1 THEN 1 ELSE 0 END) AS men_member,
+            SUM(CASE WHEN customer_id <> 0 AND order_sex = 2 THEN 1 ELSE 0 END) AS women_member,
+            SUM(CASE WHEN customer_id = 0 AND order_sex = 1 THEN 1 ELSE 0 END) AS men_nonmember,
+            SUM(CASE WHEN customer_id = 0 AND order_sex = 2 THEN 1 ELSE 0 END) AS women_nonmember,
+            SUM(total) AS total,
+            AVG(total) AS total_average";
+    }
+
+
     /**
      * 文字列連結を行う.
      *
@@ -277,7 +316,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
         $changesql = eregi_replace("( TRUNC)", " TRUNCATE", $sql);
         return $changesql;
     }
-    
+
     /**
      * ARRAY_TO_STRING(ARRAY(A),B) を GROUP_CONCAT() に変換する.
      *
@@ -288,7 +327,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
     function sfChangeArrayToString($sql){
         if(strpos(strtoupper($sql), 'ARRAY_TO_STRING') !== FALSE) {
             preg_match_all('/ARRAY_TO_STRING.*?\(.*?ARRAY\(.*?SELECT (.+?) FROM (.+?) WHERE (.+?)\).*?\,.*?\'(.+?)\'.*?\)/is', $sql, $match, PREG_SET_ORDER);
-            
+
             foreach($match as $item) {
                 $replace = 'GROUP_CONCAT(' . $item[1] . ' SEPARATOR \'' . $item[4] . '\') FROM ' . $item[2] . ' WHERE ' . $item[3];
                 $sql = str_replace($item[0], $replace, $sql);
@@ -296,7 +335,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
         }
         return $sql;
     }
-    
+
     /**
      * WHERE 句置換用の配列を返す.
      *
@@ -433,7 +472,7 @@ __EOS__;
         return $sql;
 
     }
-    
+
     /**
      * インデックス作成の追加定義を取得する
      *

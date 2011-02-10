@@ -130,6 +130,44 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
     }
 
     /**
+     * 売上集計の期間別集計のSQLを返す
+     *
+     * @param mixed $type
+     * @return string 検索条件のSQL
+     */
+    function getOrderTotalDaysWhereSql($type) {
+        switch($type){
+        case 'month':
+            $format = 'MM';
+            break;
+        case 'year':
+            $format = 'YYYY';
+            break;
+        case 'wday':
+            $format = 'Dy';
+            break;
+        case 'hour':
+            $format = 'HH24';
+            break;
+        default:
+            $format = 'YYYY-MM-DD';
+            break;
+        }
+
+        return "to_char(create_date, '".$format."') AS str_date,
+            COUNT(order_id) AS total_order,
+            SUM(CASE WHEN order_sex = 1 THEN 1 ELSE 0 END) AS men,
+            SUM(CASE WHEN order_sex = 2 THEN 1 ELSE 0 END) AS women,
+            SUM(CASE WHEN customer_id <> 0 AND order_sex = 1 THEN 1 ELSE 0 END) AS men_member,
+            SUM(CASE WHEN customer_id <> 0 AND order_sex = 2 THEN 1 ELSE 0 END) AS women_member,
+            SUM(CASE WHEN customer_id = 0 AND order_sex = 1 THEN 1 ELSE 0 END) AS men_nonmember,
+            SUM(CASE WHEN customer_id = 0 AND order_sex = 2 THEN 1 ELSE 0 END) AS women_nonmember,
+            SUM(total) AS total,
+            AVG(total) AS total_average";
+    }
+
+
+    /**
      * 文字列連結を行う.
      *
      * @param array $columns 連結を行うカラム名
