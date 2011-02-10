@@ -73,8 +73,10 @@ class LC_Page_Entry_EmailMobile extends LC_Page {
             $this->arrErr = $this->lfCheckError($objFormParam);
 
             if (empty($this->arrErr)) {
-                $this->lfRegistEmailMobile(strtolower($objFormParam->getValue('email_mobile')),
-                                           $objCustomer->getValue('customer_id'));
+                $email_mobile = $this->lfRegistEmailMobile(strtolower($objFormParam->getValue('email_mobile')),
+                    $objCustomer->getValue('customer_id'));
+
+                $objCustomer->setValue('email_mobile', $email_mobile);
                 $this->tpl_mainpage = 'entry/email_mobile_complete.tpl';
                 $this->tpl_title = '携帯メール登録完了';
             }
@@ -139,7 +141,7 @@ class LC_Page_Entry_EmailMobile extends LC_Page {
                           array('email_mobile' => $email_mobile),
                           'customer_id = ?', array($customer_id));
 
-        $objCustomer->setValue('email_mobile', $email_mobile);
+        return $email_mobile;
     }
 }
 ?>
