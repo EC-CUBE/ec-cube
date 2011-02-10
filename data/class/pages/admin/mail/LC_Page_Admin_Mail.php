@@ -47,7 +47,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin {
         $this->tpl_mainno = 'mail';
         $this->tpl_subnavi = 'mail/subnavi.tpl';
         $this->tpl_subno = "index";
-        $this->tpl_pager = TEMPLATE_REALDIR . 'admin/pager.tpl';
+        $this->tpl_pager = 'pager.tpl';
         $this->tpl_subtitle = '配信内容設定';
 
         $masterData = new SC_DB_MasterData_Ex();

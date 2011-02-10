@@ -47,7 +47,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin {
         $this->tpl_mainno = 'products';
         $this->tpl_subnavi = 'products/subnavi.tpl';
         $this->tpl_subno = 'index';
-        $this->tpl_pager = TEMPLATE_REALDIR . 'admin/pager.tpl';
+        $this->tpl_pager = 'pager.tpl';
         $this->tpl_subtitle = '商品マスタ';
 
         $masterData = new SC_DB_MasterData_Ex();
