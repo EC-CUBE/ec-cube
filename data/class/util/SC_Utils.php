@@ -416,6 +416,9 @@ exit;
     }
 
     // チェックボックスの値をマージ
+    /**
+     * @deprecated
+     */
     function sfMergeCBValue($keyname, $max) {
         $conv = "";
         $cnt = 1;
@@ -430,6 +433,9 @@ exit;
     }
 
     // html_checkboxesの値をマージして2進数形式に変更する。
+    /**
+     * @deprecated
+     */
     function sfMergeCheckBoxes($array, $max) {
         $ret = "";
         if(is_array($array)) {
@@ -449,6 +455,9 @@ exit;
 
 
     // html_checkboxesの値をマージして「-」でつなげる。
+    /**
+     * @deprecated
+     */
     function sfMergeParamCheckBoxes($array) {
         $ret = '';
         if(is_array($array)) {
@@ -466,6 +475,9 @@ exit;
     }
 
     // html_checkboxesの値をマージしてSQL検索用に変更する。
+    /**
+     * @deprecated
+     */
     function sfSearchCheckBoxes($array) {
         $max = max($array);
         $ret = '';
@@ -479,6 +491,9 @@ exit;
     }
 
     // 2進数形式の値をhtml_checkboxes対応の値に切り替える
+    /**
+     * @deprecated
+     */
     function sfSplitCheckBoxes($val) {
         $arrRet = array();
         $len = strlen($val);
@@ -491,6 +506,9 @@ exit;
     }
 
     // チェックボックスの値をマージ
+    /**
+     * @deprecated
+     */
     function sfMergeCBSearchValue($keyname, $max) {
         $conv = "";
         $cnt = 1;
@@ -505,6 +523,9 @@ exit;
     }
 
     // チェックボックスの値を分解
+    /**
+     * @deprecated
+     */
     function sfSplitCBValue($val, $keyname = "") {
         $arr = array();
         $len = strlen($val);

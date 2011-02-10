@@ -25,7 +25,6 @@
  * パラメータ管理クラス
  *
  * :XXX: addParam と setParam で言う「パラメータ」が用語として競合しているように感じる。(2009/10/17 Seasoft 塚田)
- * TODO 配列の再帰処理
  *
  * @package SC
  * @author LOCKON CO.,LTD.
@@ -201,10 +200,6 @@ class SC_FormParam {
                 case 'DOMAIN_CHECK':
                 case 'FILE_NAME_CHECK':
                 case 'MOBILE_EMAIL_CHECK':
-                    $this->recursionCheck($this->disp_name[$cnt], $func,
-                                          $this->param[$cnt], $objErr->arrErr,
-                                          $val, $this->length[$cnt]);
-                    break;
                 case 'MAX_LENGTH_CHECK':
                 case 'MIN_LENGTH_CHECK':
                 case 'NUM_COUNT_CHECK':
@@ -397,16 +392,9 @@ class SC_FormParam {
         return $ret;
     }
 
-    function splitCheckBoxes($keyname) {
-        $cnt = 0;
-        foreach($this->keyname as $val) {
-            if($val == $keyname) {
-                $this->param[$cnt] = sfSplitCheckBoxes($this->param[$cnt]);
-            }
-            $cnt++;
-        }
-    }
-
+    /**
+     * @deprecated
+     */
     function splitParamCheckBoxes($keyname) {
         $cnt = 0;
         foreach($this->keyname as $val) {
@@ -448,6 +436,27 @@ class SC_FormParam {
             }
             $cnt++;
         }
+    }
+
+    /**
+     * 検索結果引き継ぎ用の連想配列を取得する.
+     *
+     * 引数で指定した文字列で始まるパラメータ名の入力値を連想配列で取得する.
+     *
+     * @param string $prefix パラメータ名の接頭辞
+     * @return array 検索結果引き継ぎ用の連想配列.
+     */
+    function getSearchArray($prefix = 'search_') {
+        $cnt = 0;
+        $arrResults = array();
+        foreach ($this->keyname as $key) {
+            if (preg_match('/^' . $prefix . '/', $key)) {
+                $arrResults[$key] = isset($this->param[$cnt])
+                    ? $this->param[$cnt] : "";
+            }
+            $cnt++;
+        }
+        return $arrResults;
     }
 }
 ?>
