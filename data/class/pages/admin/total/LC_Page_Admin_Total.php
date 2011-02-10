@@ -193,6 +193,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin {
         $objFormParam->addParam("", "page");
         $objFormParam->addParam("", "type");
         $objFormParam->addParam("", "mode");
+        $objFormParam->addParam("", "form");
     }
 
     /* 入力内容のチェック */
@@ -208,9 +209,8 @@ class LC_Page_Admin_Total extends LC_Page_Admin {
         }
 
         if($objFormParam->getValue('form') == 2) {
-            $objErr->doFunc(array("期間", "search_startyear", "search_endyear"), array("ONE_EXIST_CHECK"));
+            $objErr->doFunc(array("期間", "search_startyear", "search_startmonth", "search_startday", "search_endyear", "search_endmonth", "search_endday"), array("FULL_EXIST_CHECK"));
         }
-
         $objErr->doFunc(array("月度", "search_startyear_m", "search_startmonth_m"), array("ALL_EXIST_CHECK"));
         $objErr->doFunc(array("開始日", "search_startyear", "search_startmonth", "search_startday"), array("CHECK_DATE"));
         $objErr->doFunc(array("終了日", "search_endyear", "search_endmonth", "search_endday"), array("CHECK_DATE"));
