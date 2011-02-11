@@ -43,10 +43,7 @@ class LC_Page_Mypage_Refusal extends LC_Page_AbstractMypage {
      */
     function init() {
         parent::init();
-        $this->tpl_title    = 'MYページ';
         $this->tpl_subtitle = '退会手続き(入力ページ)';
-        $this->tpl_navi     = TEMPLATE_REALDIR . 'mypage/navi.tpl';
-        $this->tpl_mainno   = 'mypage';
         $this->tpl_mypageno = 'refusal';
     }
 
@@ -103,7 +100,7 @@ class LC_Page_Mypage_Refusal extends LC_Page_AbstractMypage {
      * @return void
      */
     function lfDeleteCustomer($customer_id){
-        $objQuery       = SC_Query::getSingletonInstance();
+        $objQuery = SC_Query::getSingletonInstance();
 
         $sqlval['del_flg']      = 1;
         $sqlval['update_date']  = 'now()';

@@ -67,7 +67,6 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage {
      * @return void
      */
     function action() {
-        $objQuery       = new SC_Query();
         $objCustomer    = new SC_Customer();
         $objDb          = new SC_Helper_DB_Ex();
 
@@ -170,4 +169,3 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage {
         return $objQuery->select($col, 'dtb_mail_history', $where, array($order_id));
     }
 }
-?>

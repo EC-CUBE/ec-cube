@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/LC_Page.php");
+require_once(CLASS_REALDIR . "pages/mypage/LC_Page_AbstractMypage.php");
 
 /**
  * 受注履歴からカート遷移 のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_REALDIR . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Mypage_Order extends LC_Page {
+class LC_Page_Mypage_Order extends LC_Page_AbstractMypage {
 
     // }}}
     // {{{ functions
@@ -52,8 +52,6 @@ class LC_Page_Mypage_Order extends LC_Page {
      */
     function process() {
         parent::process();
-        $this->action();
-        $this->sendResponse();
     }
 
     /**
@@ -68,7 +66,7 @@ class LC_Page_Mypage_Order extends LC_Page {
         $arrOrderDetail = $this->lfGetOrderDetail($_POST['order_id']);
 
         //ログインしていない、またはDBに情報が無い場合
-        if (!$objCustomer->isLoginSuccess(true) || empty($arrOrderDetail)){
+        if (empty($arrOrderDetail)){
             SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
         }
 

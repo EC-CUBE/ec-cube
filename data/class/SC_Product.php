@@ -738,7 +738,7 @@ __EOS__;
 __EOS__;
         return $sql;
     }
-    
+
     /**
      * 商品規格ID1、2に紐づいた,product_class_idを取得する.
      *

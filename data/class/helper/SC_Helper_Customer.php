@@ -287,10 +287,24 @@ class SC_Helper_Customer {
     }
 
 
+    /**
+     * 会員登録時フォーム初期化
+     *
+     * @param mixed $objFormParam
+     * @access public
+     * @return void
+     */
     function sfCustomerEntryParam (&$objFormParam) {
         SC_Helper_Customer_Ex::sfCustomerCommonParam($objFormParam);
     }
 
+    /**
+     * 会員情報変更フォーム初期化
+     *
+     * @param mixed $objFormParam
+     * @access public
+     * @return void
+     */
     function sfCustomerMypageParam (&$objFormParam) {
         SC_Helper_Customer_Ex::sfCustomerCommonParam($objFormParam);
         if (SC_Display::detectDevice() !== DEVICE_TYPE_MOBILE){
@@ -299,6 +313,13 @@ class SC_Helper_Customer {
         }
     }
 
+    /**
+     * 会員フォーム共通
+     *
+     * @param mixed $objFormParam
+     * @access public
+     * @return void
+     */
     function sfCustomerCommonParam (&$objFormParam) {
 
         $objFormParam->addParam("お名前(姓)", 'name01', STEXT_LEN, "aKV", array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
@@ -335,11 +356,25 @@ class SC_Helper_Customer {
         }
     }
 
+    /**
+     * 会員登録エラーチェック
+     *
+     * @param mixed $objFormParam
+     * @access public
+     * @return array エラーの配列
+     */
     function sfCustomerEntryErrorCheck(&$objFormParam) {
         $objErr->arrErr = SC_Helper_Customer_Ex::sfCustomerCommonErrorCheck(&$objFormParam);
         return $objErr->arrErr;
     }
 
+    /**
+     * 会員情報変更エラーチェック
+     *
+     * @param mixed $objFormParam
+     * @access public
+     * @return array エラーの配列
+     */
     function sfCustomerMypageErrorCheck(&$objFormParam) {
 
         $objFormParam->toLower('email_mobile');
@@ -358,7 +393,7 @@ class SC_Helper_Customer {
     }
 
     /**
-     * 入力エラーチェック
+     * 会員エラーチェック共通
      *
      * @param mixed $objFormParam
      * @access private
@@ -389,7 +424,4 @@ class SC_Helper_Customer {
 
         return $objErr->arrErr;
     }
-
-
-
 }

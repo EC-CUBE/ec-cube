@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/LC_Page.php");
+require_once(CLASS_REALDIR . "pages/mypage/LC_Page_AbstractMypage.php");
 
 /**
  * MyPage のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_REALDIR . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_MyPage extends LC_Page {
+class LC_Page_MyPage extends LC_Page_AbstractMypage {
 
     // {{{ properties
 
@@ -48,15 +48,15 @@ class LC_Page_MyPage extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->tpl_title = 'MYページ';
+        $this->tpl_title        = 'MYページ';
         if (Net_UserAgent_Mobile::isMobile() === true){
             $this->tpl_subtitle = 'MYページ';
         } else {
             $this->tpl_subtitle = '購入履歴一覧';
         }
-        $this->tpl_navi = TEMPLATE_REALDIR . 'mypage/navi.tpl';
-        $this->tpl_mainno = 'mypage';
-        $this->tpl_mypageno = 'index';
+        $this->tpl_navi         = TEMPLATE_REALDIR . 'mypage/navi.tpl';
+        $this->tpl_mainno       = 'mypage';
+        $this->tpl_mypageno     = 'index';
         $this->httpCacheControl('nocache');
     }
 
@@ -67,10 +67,8 @@ class LC_Page_MyPage extends LC_Page {
      */
     function process() {
         parent::process();
-        $this->action();
-        $this->sendResponse();
     }
-    
+
     /**
      * Page のAction.
      *
@@ -80,19 +78,6 @@ class LC_Page_MyPage extends LC_Page {
 
         $objQuery = new SC_Query();
         $objCustomer = new SC_Customer();
-        
-        // 退会判定用情報の取得
-        $this->tpl_login = $objCustomer->isLoginSuccess(true);
-
-        // ログインチェック
-        if(!$objCustomer->isLoginSuccess(true)) {
-            SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
-        }else {
-            //マイページトップ顧客情報表示用
-            $this->CustomerName1 = $objCustomer->getvalue('name01');
-            $this->CustomerName2 = $objCustomer->getvalue('name02');
-            $this->CustomerPoint = $objCustomer->getvalue('point');
-        }
 
         //ページ送り用
         if (isset($_POST['pageno'])) {
@@ -145,11 +130,11 @@ class LC_Page_MyPage extends LC_Page {
             $objNavi = new SC_PageNavi($this->tpl_pageno, $linemax, SEARCH_PMAX, "fnNaviPage", NAVI_PMAX);
             $this->tpl_strnavi = $objNavi->strnavi;		// 表示文字列
             $startno = $objNavi->start_row;
-            
+
             // 取得範囲の指定(開始行番号、行数のセット)
             $objQuery->setLimitOffset(SEARCH_PMAX, $startno);
         }
-        
+
         // 表示順序
         $objQuery->setOrder($order);
 
@@ -170,23 +155,4 @@ class LC_Page_MyPage extends LC_Page {
     function destroy() {
         parent::destroy();
     }
-
-    //エラーチェック
-
-    function lfErrorCheck() {
-        $objErr = new SC_CheckError();
-        $objErr->doFunc(array("メールアドレス", "login_email", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","EMAIL_CHECK","MAX_LENGTH_CHECK"));
-        $objErr->dofunc(array("パスワード", "login_password", PASSWORD_LEN2), array("EXIST_CHECK","ALNUM_CHECK"));
-        return $objErr->arrErr;
-    }
-
-    /* パラメータ情報の初期化 */
-    function lfInitParam(&$objFormParam) {
-
-        $objFormParam->addParam("記憶する", "login_memory", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("メールアドレス", "login_email", MTEXT_LEN, "a", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("パスワード", "login_pass", STEXT_LEN, "a", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-    }
-
 }
-?>
