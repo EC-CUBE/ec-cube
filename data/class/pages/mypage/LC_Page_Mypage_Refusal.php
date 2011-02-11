@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/LC_Page.php");
+require_once(CLASS_REALDIR . "pages/mypage/LC_Page_AbstractMypage.php");
 
 /**
  * 退会手続き のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_REALDIR . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Mypage_Refusal extends LC_Page {
+class LC_Page_Mypage_Refusal extends LC_Page_AbstractMypage {
 
     // }}}
     // {{{ functions
@@ -43,10 +43,10 @@ class LC_Page_Mypage_Refusal extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->tpl_title = 'MYページ';
+        $this->tpl_title    = 'MYページ';
         $this->tpl_subtitle = '退会手続き(入力ページ)';
-        $this->tpl_navi = TEMPLATE_REALDIR . 'mypage/navi.tpl';
-        $this->tpl_mainno = 'mypage';
+        $this->tpl_navi     = TEMPLATE_REALDIR . 'mypage/navi.tpl';
+        $this->tpl_mainno   = 'mypage';
         $this->tpl_mypageno = 'refusal';
     }
 
@@ -57,8 +57,6 @@ class LC_Page_Mypage_Refusal extends LC_Page {
      */
     function process() {
         parent::process();
-        $this->action();
-        $this->sendResponse();
     }
 
     /**
@@ -67,33 +65,25 @@ class LC_Page_Mypage_Refusal extends LC_Page {
      * @return void
      */
     function action() {
-        $objCustomer = new SC_Customer();
-        $objSiteSess = new SC_SiteSession();
-
-        // 退会判定用情報の取得
-        $this->tpl_login = $objCustomer->isLoginSuccess(true);
-
-        $this->lfCheckLogin();
 
         switch ($this->getMode()){
         case 'confirm':
-
-            $this->tpl_mainpage = TEMPLATE_REALDIR . 'mypage/refusal_confirm.tpl';
-            $this->tpl_subtitle = '退会手続き(確認ページ)';
-
-            // 確認ページを経由したことを登録
-            $objSiteSess->setRegistFlag();
-            // hiddenにuniqidを埋め込む
-            $this->tpl_uniqid = $objSiteSess->getUniqId();
-
+            $this->tpl_mainpage     = TEMPLATE_REALDIR . 'mypage/refusal_confirm.tpl';
+            $this->tpl_subtitle     = '退会手続き(確認ページ)';
             break;
 
         case 'complete':
-            // 正しい遷移かどうかをチェック
-            $this->lfIsValidMovement($objSiteSess);
-            $this->lfDeleteCustomer();    //会員削除
-        }
+            if (!SC_Helper_Session_Ex::isValidToken()) {
+                SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", true);
+            }
 
+            $objCustomer = new SC_Customer();
+            $this->lfDeleteCustomer($objCustomer->getValue('customer_id'));
+            $objCustomer->EndSession();
+            SC_Response_Ex::sendRedirect('refusal_complete.php');
+        }
+        // mobileは確認画面がない
+        $this->transactionid    = SC_Helper_Session_Ex::getToken();
     }
 
     /**
@@ -105,41 +95,20 @@ class LC_Page_Mypage_Refusal extends LC_Page {
         parent::destroy();
     }
 
-    // 正しい遷移かどうかをチェック
-    function lfIsValidMovement(&$objSiteSess) {
-        // uniqid がPOSTされているかをチェック
-        $uniqid = $objSiteSess->getUniqId();
-        if ($objSiteSess->isPrePage() || !empty($_POST['uniqid']) && ($_POST['uniqid'] === $uniqid) ) {
-            return;
-        } else {
-            SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, $objSiteSess);
-        }
-    }
 
-    function lfCheckLogin(){
-        $objCustomer = new SC_Customer();
-        //ログイン判定
-        if (!$objCustomer->isLoginSuccess(true)){
-            SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
-        }else {
-            //マイページトップ顧客情報表示用
-            $this->CustomerName1 = $objCustomer->getvalue('name01');
-            $this->CustomerName2 = $objCustomer->getvalue('name02');
-            $this->CustomerPoint = $objCustomer->getvalue('point');
-        }
-    }
+    /**
+     * 会員情報を削除する
+     *
+     * @access private
+     * @return void
+     */
+    function lfDeleteCustomer($customer_id){
+        $objQuery       = SC_Query::getSingletonInstance();
 
-    function lfDeleteCustomer(){
-        $objQuery = new SC_Query();
-        $objCustomer = new SC_Customer();
-        //会員削除
-        $objQuery->exec("UPDATE dtb_customer SET del_flg=1, update_date=now() WHERE customer_id=?", array($objCustomer->getValue('customer_id')));
-
-        $objCustomer->EndSession();
-        //完了ページへ
-        SC_Response_Ex::sendRedirect('refusal_complete.php');
-        exit;
+        $sqlval['del_flg']      = 1;
+        $sqlval['update_date']  = 'now()';
+        $where                  = 'customer_id = ?';
+        $objQuery->update('dtb_customer', $sqlval, $where, array($customer_id));
     }
 
 }
-?>
