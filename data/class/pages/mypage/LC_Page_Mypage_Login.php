@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/LC_Page.php");
+require_once(CLASS_REALDIR . "pages/mypage/LC_Page_AbstractMypage.php");
 
 /**
  * Myページログイン のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_REALDIR . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Mypage_Login extends LC_Page {
+class LC_Page_Mypage_Login extends LC_Page_AbstractMypage {
 
     // }}}
     // {{{ functions
@@ -54,8 +54,6 @@ class LC_Page_Mypage_Login extends LC_Page {
      */
     function process() {
         parent::process();
-        $this->action();
-        $this->sendResponse();
     }
 
     /**
@@ -64,33 +62,7 @@ class LC_Page_Mypage_Login extends LC_Page {
      * @return void
      */
     function action() {
-        $objCustomer = new SC_Customer();
-
-        // クッキー管理クラス
-        $objCookie = new SC_Cookie(COOKIE_EXPIRE);
-
-        // ログイン判定
-        if($objCustomer->isLoginSuccess(true)) {
-            SC_Response_Ex::sendRedirect(DIR_INDEX_PATH);
-            exit;
-        } else {
-            // クッキー判定(メールアドレスをクッキーに保存しているか）
-            $this->tpl_login_email = $objCookie->getCookie('login_email');
-            if($this->tpl_login_email != "") {
-                $this->tpl_login_memory = "1";
-            }
-
-            // POSTされてきたIDがある場合は優先する。
-            if(isset($_POST['mypage_login_email'])
-               && $_POST['mypage_login_email'] != "") {
-                $this->tpl_login_email = $_POST['mypage_login_email'];
-            }
-            
-            // 携帯端末IDが一致する会員が存在するかどうかをチェックする。
-            if (Net_UserAgent_Mobile::isMobile() === true){
-                $this->tpl_valid_phone_id = $objCustomer->checkMobilePhoneId();
-            }
-        }
+        SC_Response_Ex::sendRedirect(DIR_INDEX_PATH);
     }
 
     /**
