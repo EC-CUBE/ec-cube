@@ -43,15 +43,16 @@ class LC_Page_Mypage_RefusalComplete extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->tpl_title = 'MYページ';
-        if ( Net_UserAgent_Mobile::isMobile() === true){
+        $this->tpl_title    = 'MYページ';
+
+        if (SC_Display::detectDevice() === DEVICE_TYPE_MOBILE){
             $this->tpl_title .= '/退会手続き(完了ページ)';
         } else {
             $this->tpl_subtitle = '退会手続き(完了ページ)';
         }
-        $this->tpl_navi = TEMPLATE_REALDIR . 'mypage/navi.tpl';
+        $this->tpl_navi     = TEMPLATE_REALDIR . 'mypage/navi.tpl';
         $this->tpl_mypageno = 'refusal';
-        $this->point_disp = false;
+        $this->point_disp   = false;
     }
 
     /**
@@ -60,7 +61,7 @@ class LC_Page_Mypage_RefusalComplete extends LC_Page {
      * @return void
      */
     function process() {
-         parent::process();
+        parent::process();
         $this->action();
         $this->sendResponse();
     }
@@ -71,11 +72,6 @@ class LC_Page_Mypage_RefusalComplete extends LC_Page {
      * @return void
      */
     function action() {
-        $objCustomer = new SC_Customer();
-        //マイページトップ顧客情報表示用
-        $this->CustomerName1 = $objCustomer->getvalue('name01');
-        $this->CustomerName2 = $objCustomer->getvalue('name02');
-        $this->CustomerPoint = $objCustomer->getvalue('point');
     }
 
     /**
@@ -87,4 +83,3 @@ class LC_Page_Mypage_RefusalComplete extends LC_Page {
         parent::destroy();
     }
 }
-?>
