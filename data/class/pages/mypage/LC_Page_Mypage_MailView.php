@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/LC_Page.php");
+require_once(CLASS_REALDIR . "pages/mypage/LC_Page_AbstractMypage.php");
 
 /**
  * 受注管理メール確認 のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_REALDIR . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Mypage_MailView extends LC_Page {
+class LC_Page_Mypage_MailView extends LC_Page_AbstractMypage {
 
     // }}}
     // {{{ functions
@@ -53,8 +53,6 @@ class LC_Page_Mypage_MailView extends LC_Page {
      */
     function process() {
         parent::process();
-        $this->action();
-        $this->sendResponse();
     }
 
     /**
@@ -64,31 +62,24 @@ class LC_Page_Mypage_MailView extends LC_Page {
      */
     function action() {
         $objCustomer = new SC_Customer();
-
-        // ログインチェック
-        if(!$objCustomer->isLoginSuccess(true)) {
+        if(!SC_Utils_Ex::sfIsInt($_GET['send_id'])) {
             SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
         }
 
-        if(SC_Utils_Ex::sfIsInt($_GET['send_id'])) {
-            $objQuery = new SC_Query();
-            $col = "subject, mail_body";
-            $where = "send_id = ? AND customer_id = ?";
-            $arrval = array($_GET['send_id'], $objCustomer->getValue('customer_id'));
-            $arrRet = $objQuery->select($col, "dtb_mail_history LEFT JOIN dtb_order USING(order_id)", $where, $arrval);
+        $arrMailView = $this->lfGetMailView($_GET['send_id'], $objCustomer->getValue('customer_id'));
 
-            if (empty($arrRet)) {
-                SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
-            }
-            $this->tpl_subject = $arrRet[0]['subject'];
-            $this->tpl_body = $arrRet[0]['mail_body'];
+        if (empty($arrMailView)) {
+            SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
         }
 
-        if (Net_UserAgent_Mobile::isMobile() === true){
-            $this->tpl_title = 'メール履歴詳細';
-            $this->tpl_mainpage = 'mypage/mail_view.tpl';
-        } else {
+        $this->tpl_subject  = $arrMailView[0]['subject'];
+        $this->tpl_body     = $arrMailView[0]['mail_body'];
+
+        if (SC_Display::detectDevice() === DEVICE_TYPE_PC){
             $this->setTemplate('mypage/mail_view.tpl');
+        } else {
+            $this->tpl_title    = 'メール履歴詳細';
+            $this->tpl_mainpage = 'mypage/mail_view.tpl';
         }
     }
 
@@ -100,5 +91,21 @@ class LC_Page_Mypage_MailView extends LC_Page {
     function destroy() {
         parent::destroy();
     }
+
+
+    /**
+     * GETで指定された受注idのメール送信内容を返す
+     *
+     * @param mixed $send_id
+     * @param mixed $customer_id
+     * @access private
+     * @return array
+     */
+    function lfGetMailView($send_id, $customer_id) {
+        $objQuery   = SC_Query::getSingletonInstance();
+        $col        = "subject, mail_body";
+        $where      = "send_id = ? AND customer_id = ?";
+        $arrval     = array($send_id, $customer_id);
+        return $objQuery->select($col, "dtb_mail_history LEFT JOIN dtb_order USING(order_id)", $where, $arrval);
+    }
 }
-?>
