@@ -44,7 +44,8 @@ class LC_Page_Error_DispError extends LC_Page_Error {
      */
     function init() {
         parent::init();
-        $this->tpl_mainpage = 'login_error.tpl';
+        $this->tpl_mainpage = 'error.tpl';
+        $this->tpl_title = 'ログインエラー';
     }
 
     /**
@@ -53,8 +54,16 @@ class LC_Page_Error_DispError extends LC_Page_Error {
      * @return void
      */
     function process() {
-        $objView = new SC_AdminView();
-
+        $this->action();
+        $this->sendResponse();
+    }
+	
+    /**
+     * Page のプロセス。
+     *
+     * @return void
+     */
+    function action(){
         switch ($this->type) {
             case LOGIN_ERROR:
                 $this->tpl_error="ＩＤまたはパスワードが正しくありません。<br />もう一度ご確認のうえ、再度入力してください。";
@@ -72,9 +81,6 @@ class LC_Page_Error_DispError extends LC_Page_Error {
                 $this->tpl_error="エラーが発生しました。<br />もう一度ご確認のうえ、再度ログインしてください。";
                 break;
         }
-
-        $objView->assignobj($this);
-        $objView->display(LOGIN_FRAME);
     }
 
     /**

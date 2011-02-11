@@ -52,17 +52,9 @@ class LC_Page_Error_SystemError extends LC_Page_Error {
      * @return void
      */
     function init() {
-        parent::init();
-
-        $this->tpl_title = 'システムエラー';
-        $this->adminPage = SC_Utils_Ex::sfIsAdminFunction();
-
-        if ($this->adminPage) {
-            $this->tpl_mainpage = 'login_error.tpl';
-            $this->frame = LOGIN_FRAME;
-        } else {
-            $this->frame = SITE_FRAME;
-        }
+		parent::init();
+        $this->tpl_mainpage = 'error.tpl';
+         $this->tpl_title = 'システムエラー';
     }
 
     /**
@@ -71,10 +63,27 @@ class LC_Page_Error_SystemError extends LC_Page_Error {
      * @return void
      */
     function process() {
-        require_once CLASS_REALDIR . 'SC_MobileUserAgent.php';
+        $this->action();
+        $this->sendResponse();
+    }
 
+    /**
+     * Page のプロセス。
+     *
+     * @return void
+     */
+    function action(){
+		$this->adminPage = SC_Utils_Ex::sfIsAdminFunction();
+
+        if ($this->adminPage) {
+            $this->tpl_mainpage = 'login_error.tpl';
+            $this->frame = LOGIN_FRAME;
+        } else {
+            $this->frame = SITE_FRAME;
+        }
+		
         $objView = null;
-        if (SC_MobileUserAgent::isMobile() && $this->adminPage == false) {
+        if (SC_Display::detectDevice() == DEVICE_TYPE_MOBILE && $this->adminPage == false) {
             $objView = new SC_InstallView(MOBILE_TEMPLATE_REALDIR, MOBILE_COMPILE_REALDIR);
         } elseif($this->adminPage) {
             $objView = new SC_AdminView();
