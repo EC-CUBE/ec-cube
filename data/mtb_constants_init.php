@@ -598,4 +598,8 @@ define('CSV_COLUMN_RW_FLG_KEY_FIELD', 3);
 define('UNLIMITED_FLG_UNLIMITED', "1");
 /** 無制限フラグ： 制限有り */
 define('UNLIMITED_FLG_LIMITED', "0");
+/** EC-CUBE更新情報取得 (true:取得する false:取得しない) */
+define('ECCUBE_INFO', true);
+/** 外部サイトHTTP取得タイムアウト時間(秒) */
+define('HTTP_REQUEST_TIMEOUT', "5");
 ?>

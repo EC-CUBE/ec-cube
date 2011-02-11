@@ -1267,6 +1267,8 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CSV_COLUMN_RW_FLG_R
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CSV_COLUMN_RW_FLG_KEY_FIELD', '3', 1215, 'CSV入出力列設定読み書きフラグ: キー列');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('UNLIMITED_FLG_UNLIMITED', '"1"', 1216, '無制限フラグ： 無制限');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('UNLIMITED_FLG_LIMITED', '"0"', 1217, '無制限フラグ： 制限有り');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ECCUBE_INFO', 'true', 1218, ' EC-CUBE更新情報取得 (true:取得する false:取得しない)');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('HTTP_REQUEST_TIMEOUT', '"5"', 1219, '外部サイトHTTP取得タイムアウト時間(秒)');
 
 INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_customer', 'email_mobile', 0, '会員数増加時のログイン処理速度を向上させたいときに試してみてください');
 INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_products', 'name', 2, '商品名検索速度を向上させたいときに試してみてください');
