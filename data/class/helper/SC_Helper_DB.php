@@ -454,7 +454,7 @@ class SC_Helper_DB {
         }
         return array($point, $rollback_point);
     }
-    
+
 
 
     /**
@@ -868,7 +868,7 @@ class SC_Helper_DB {
 
     /**
      * カテゴリ数の登録を行う.
-     * 
+     *
      *
      * @param SC_Query $objQuery SC_Query インスタンス
      * @param boolean $is_force_all_count 全カテゴリの集計を強制する場合 true
@@ -876,17 +876,17 @@ class SC_Helper_DB {
      */
     function sfCountCategory($objQuery = NULL, $is_force_all_count = false){
         $objProduct = new SC_Product();
-        
+
         if($objQuery == NULL) {
             $objQuery =& SC_Query::getSingletonInstance();
         }
-        
+
         $is_out_trans = false;
         if(!$objQuery->inTransaction()){
             $objQuery->begin();
             $is_out_trans = true;
         }
-        
+
         //共通のfrom/where文の構築
         $sql_where = 'alldtl.del_flg = 0 AND alldtl.status = 1';
         // 在庫無し商品の非表示
@@ -896,11 +896,11 @@ class SC_Helper_DB {
         }else{
             $from = " dtb_products as alldtl ";
         }
-        
+
         //dtb_category_countの構成
         // 各カテゴリに所属する商品の数を集計。集計対象には子カテゴリを含まない。
         // 2.5で消える予定だったが復活させます。DELETE処理は無くしました。
-        
+
         //まずテーブル内容の元を取得
         if(!$is_force_all_count) {
             $arrCategoryCountOld = $objQuery->select('category_id,product_count','dtb_category_count');
@@ -921,10 +921,10 @@ class SC_Helper_DB {
 __EOS__;
 
         $arrCategoryCountNew = $objQuery->getAll($sql);
-        // 各カテゴリに所属する商品の数を集計。集計対象には子カテゴリを「含む」。        
+        // 各カテゴリに所属する商品の数を集計。集計対象には子カテゴリを「含む」。
         //差分を取得して、更新対象カテゴリだけを確認する。
 
-        //各カテゴリ毎のデータ値において以前との差を見る        
+        //各カテゴリ毎のデータ値において以前との差を見る
         //古いデータの構造入れ替え
         $arrOld = array();
         foreach($arrCategoryCountOld as $item){
@@ -949,7 +949,7 @@ __EOS__;
                 $arrDiffCategory_id[] = $cid;
             }
         }
-        
+
         //対象IDが無ければ終了
         if(count($arrDiffCategory_id) == 0){
             if($is_out_trans) {
@@ -960,7 +960,7 @@ __EOS__;
 
         //差分対象カテゴリIDの重複を除去
         $arrDiffCategory_id = array_unique($arrDiffCategory_id);
-        
+
         //dtb_category_countの更新 差分のあったカテゴリだけ更新する。
         foreach($arrDiffCategory_id as $cid) {
             $sqlval = array();
@@ -976,7 +976,7 @@ __EOS__;
                 $objQuery->insert('dtb_category_count', $sqlval);
             }
         }
-        
+
         //差分があったIDとその親カテゴリIDのリストを取得する
         $arrTgtCategory_id = array();
         foreach ($arrDiffCategory_id as $parent_category_id) {
@@ -986,7 +986,7 @@ __EOS__;
                 $arrTgtCategory_id[] = $pid;
             }
         }
-        
+
         //重複を取り除く
         $arrTgtCategory_id = array_unique($arrTgtCategory_id);
 
@@ -2076,5 +2076,32 @@ __EOS__;
 
         $this->sfRegistTempOrder($uniqid, $sqlval);
     }
+
+
+    /**
+     * 配送情報の取得.
+     * TODO リファクタリング
+     */
+    function sfGetShippingData($orderId) {
+        $objQuery =& SC_Query::getSingletonInstance();
+        $objProduct = new SC_Product();
+        $objQuery->setOrder('shipping_id');
+        $arrRet = $objQuery->select("*", "dtb_shipping", "order_id = ?", array($orderId));
+
+        foreach (array_keys($arrRet) as $key) {
+            $objQuery->setOrder('shipping_id');
+            $arrItems = $objQuery->select("*", "dtb_shipment_item", "order_id = ? AND shipping_id = ?",
+                                       array($orderId, $arrRet[$key]['shipping_id']));
+            foreach ($arrItems as $itemKey => $arrDetail) {
+                foreach ($arrDetail as $detailKey => $detailVal) {
+                    $arrRet[$key]['shipment_item'][$arrDetail['product_class_id']][$detailKey] = $detailVal;
+                }
+
+                $arrRet[$key]['shipment_item'][$arrDetail['product_class_id']]['productsClass'] =& $objProduct->getDetailAndProductsClass($arrDetail['product_class_id']);
+            }
+        }
+        return $arrRet;
+    }
+
 }
 ?>

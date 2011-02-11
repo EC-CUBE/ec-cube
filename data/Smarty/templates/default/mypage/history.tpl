@@ -28,19 +28,19 @@
     <div id="mycontentsarea">
         <h3><!--{$tpl_subtitle|h}--></h3>
         <p class="myconditionarea">
-        <strong>購入日時：&nbsp;</strong><!--{$arrDisp.create_date|sfDispDBDate}--><br />
-        <strong>注文番号：&nbsp;</strong><!--{$arrDisp.order_id}--><br />
-        <strong>お支払い方法：&nbsp;</strong><!--{$arrPayment[$arrDisp.payment_id]|h}-->
-        <!--{if $arrDisp.deliv_time_id != ""}--><br />
-        <strong>お届け時間：&nbsp;</strong><!--{$arrDelivTime[$arrDisp.deliv_time_id]|h}-->
+        <strong>購入日時：&nbsp;</strong><!--{$tpl_arrOrderData.create_date|sfDispDBDate}--><br />
+        <strong>注文番号：&nbsp;</strong><!--{$tpl_arrOrderData.order_id}--><br />
+        <strong>お支払い方法：&nbsp;</strong><!--{$arrPayment[$tpl_arrOrderData.payment_id]|h}-->
+        <!--{if $tpl_arrOrderData.deliv_time_id != ""}--><br />
+        <strong>お届け時間：&nbsp;</strong><!--{$arrDelivTime[$tpl_arrOrderData.deliv_time_id]|h}-->
         <!--{/if}-->
-        <!--{if $arrDisp.deliv_date != ""}--><br />
-        <strong>お届け日：&nbsp;</strong><!--{$arrDisp.deliv_date|h}-->
+        <!--{if $tpl_arrOrderData.deliv_date != ""}--><br />
+        <strong>お届け日：&nbsp;</strong><!--{$tpl_arrOrderData.deliv_date|h}-->
         <!--{/if}-->
         </p>
 
         <form action="order.php" method="post">
-            <input type="hidden" name="order_id" value="<!--{$arrDisp.order_id}-->">
+            <input type="hidden" name="order_id" value="<!--{$tpl_arrOrderData.order_id}-->">
             <input type="submit" name="submit" value="再注文">
         </form>
 
@@ -60,7 +60,7 @@
                     <td>
                     <!--{if $orderDetail.product_type_id == PRODUCT_TYPE_DOWNLOAD}-->
                         <!--{if $orderDetail.price == "0" || ( $orderDetail.status >= "4" && $orderDetail.effective == "1" )}-->
-                            <a target="_self" href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/download.php?order_id=<!--{$arrDisp.order_id}-->&product_id=<!--{$orderDetail.product_id}-->&product_class_id=<!--{$orderDetail.product_class_id}-->">ダウンロード</a>
+                            <a target="_self" href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/download.php?order_id=<!--{$tpl_arrOrderData.order_id}-->&product_id=<!--{$orderDetail.product_id}-->&product_class_id=<!--{$orderDetail.product_class_id}-->">ダウンロード</a>
                         <!--{elseif $orderDetail.payment_date == "" || $orderDetail.status < "4"}-->
                             ダウンロード商品<BR />（入金確認中）
                         <!--{elseif $orderDetail.effective != "1"}-->
@@ -79,9 +79,9 @@
             <!--{/foreach}-->
             <tr>
                 <th colspan="5" class="resulttd">小計</th>
-                <td class="pricetd"><!--{$arrDisp.subtotal|number_format}-->円</td>
+                <td class="pricetd"><!--{$tpl_arrOrderData.subtotal|number_format}-->円</td>
             </tr>
-            <!--{assign var=point_discount value="`$arrDisp.use_point*$smarty.const.POINT_VALUE`"}-->
+            <!--{assign var=point_discount value="`$tpl_arrOrderData.use_point*$smarty.const.POINT_VALUE`"}-->
             <!--{if $point_discount > 0}-->
             <tr>
                 <th colspan="5" class="resulttd">ポイント値引き</th>
@@ -89,24 +89,24 @@
             </tr>
             <!--{/if}-->
             <!--{assign var=key value="discount"}-->
-            <!--{if $arrDisp[$key] != "" && $arrDisp[$key] > 0}-->
+            <!--{if $tpl_arrOrderData[$key] != "" && $tpl_arrOrderData[$key] > 0}-->
             <tr>
                 <th colspan="5" class="resulttd">値引き</th>
-                <td class="pricetd"><!--{$arrDisp[$key]|number_format}-->円</td>
+                <td class="pricetd"><!--{$tpl_arrOrderData[$key]|number_format}-->円</td>
             </tr>
             <!--{/if}-->
             <tr>
                 <th colspan="5" class="resulttd">送料</th>
-                <td class="pricetd"><!--{assign var=key value="deliv_fee"}--><!--{$arrDisp[$key]|number_format|h}-->円</td>
+                <td class="pricetd"><!--{assign var=key value="deliv_fee"}--><!--{$tpl_arrOrderData[$key]|number_format|h}-->円</td>
             </tr>
             <tr>
                 <th colspan="5" class="resulttd">手数料</th>
                 <!--{assign var=key value="charge"}-->
-                <td class="pricetd"><!--{$arrDisp[$key]|number_format|h}-->円</td>
+                <td class="pricetd"><!--{$tpl_arrOrderData[$key]|number_format|h}-->円</td>
             </tr>
             <tr>
                 <th colspan="5" class="resulttd">合計</th>
-                <td class="pricetd"><em><!--{$arrDisp.payment_total|number_format}-->円</em></td>
+                <td class="pricetd"><em><!--{$tpl_arrOrderData.payment_total|number_format}-->円</em></td>
             </tr>
         </table>
 
@@ -115,11 +115,11 @@
             <table summary="使用ポイント">
                 <tr>
                     <th>ご使用ポイント</th>
-                    <td class="pricetd"><!--{assign var=key value="use_point"}--><!--{$arrDisp[$key]|number_format|default:0}--> pt</td>
+                    <td class="pricetd"><!--{assign var=key value="use_point"}--><!--{$tpl_arrOrderData[$key]|number_format|default:0}--> pt</td>
                 </tr>
                 <tr>
                     <th>今回加算されるポイント</th>
-                    <td class="pricetd"><!--{$arrDisp.add_point|number_format|default:0}--> pt</td>
+                    <td class="pricetd"><!--{$tpl_arrOrderData.add_point|number_format|default:0}--> pt</td>
                 </tr>
             </table>
         <!--{/if}-->

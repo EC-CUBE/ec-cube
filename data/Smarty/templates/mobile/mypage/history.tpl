@@ -21,18 +21,18 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-購入日時：<!--{$arrDisp.create_date|sfDispDBDate}--><br />
-注文番号：<!--{$arrDisp.order_id}--><br />
-お支払い方法：<!--{$arrPayment[$arrDisp.payment_id]|h}-->
-<!--{if $arrDisp.deliv_time_id != ""}--><br />
-お届け時間：<!--{$arrDelivTime[$arrDisp.deliv_time_id]|h}-->
+購入日時：<!--{$tpl_arrOrderData.create_date|sfDispDBDate}--><br />
+注文番号：<!--{$tpl_arrOrderData.order_id}--><br />
+お支払い方法：<!--{$arrPayment[$tpl_arrOrderData.payment_id]|h}-->
+<!--{if $tpl_arrOrderData.deliv_time_id != ""}--><br />
+お届け時間：<!--{$arrDelivTime[$tpl_arrOrderData.deliv_time_id]|h}-->
 <!--{/if}-->
-<!--{if $arrDisp.deliv_date != ""}--><br />
-お届け日：<!--{$arrDisp.deliv_date|h}-->
+<!--{if $tpl_arrOrderData.deliv_date != ""}--><br />
+お届け日：<!--{$tpl_arrOrderData.deliv_date|h}-->
 <!--{/if}-->
 
 <form action="order.php" method="post">
-    <input type="hidden" name="order_id" value="<!--{$arrDisp.order_id}-->">
+    <input type="hidden" name="order_id" value="<!--{$tpl_arrOrderData.order_id}-->">
     <input type="submit" name="submit" value="再注文">
 </form>
 
@@ -44,7 +44,7 @@
 商品種別：
 <!--{if $orderDetail.product_type_id == PRODUCT_TYPE_DOWNLOAD}-->
 <!--{if $orderDetail.price == "0" || ( $orderDetail.status >= "4" && $orderDetail.effective == "1" )}-->
-<a target="_self" href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/download.php?order_id=<!--{$arrDisp.order_id}-->&product_id=<!--{$orderDetail.product_id}-->&product_class_id=<!--{$orderDetail.product_class_id}-->">ダウンロード</a><br>
+<a target="_self" href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/download.php?order_id=<!--{$tpl_arrOrderData.order_id}-->&product_id=<!--{$orderDetail.product_id}-->&product_class_id=<!--{$orderDetail.product_class_id}-->">ダウンロード</a><br>
 <!--{elseif $orderDetail.payment_date == "" || $orderDetail.status < "4"}-->
 ダウンロード商品<br>（入金確認中）<br>
 <!--{elseif $orderDetail.effective != "1"}-->
@@ -61,26 +61,26 @@
 小計：<!--{$price|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|sfMultiply:$quantity|number_format}-->円<br>
 <!--{/foreach}-->
 <hr>
-小計：<!--{$arrDisp.subtotal|number_format}-->円<br>
-<!--{assign var=point_discount value="`$arrDisp.use_point*$smarty.const.POINT_VALUE`"}-->
+小計：<!--{$tpl_arrOrderData.subtotal|number_format}-->円<br>
+<!--{assign var=point_discount value="`$tpl_arrOrderData.use_point*$smarty.const.POINT_VALUE`"}-->
 <!--{if $point_discount > 0}-->
 ポイント値引き：<!--{$point_discount|number_format}-->円<br>
 <!--{/if}-->
 <!--{assign var=key value="discount"}-->
-<!--{if $arrDisp[$key] != "" && $arrDisp[$key] > 0}-->
-値引き：<!--{$arrDisp[$key]|number_format}-->円<br>
+<!--{if $tpl_arrOrderData[$key] != "" && $tpl_arrOrderData[$key] > 0}-->
+値引き：<!--{$tpl_arrOrderData[$key]|number_format}-->円<br>
 <!--{/if}-->
-送料：<!--{assign var=key value="deliv_fee"}--><!--{$arrDisp[$key]|number_format|h}-->円<br>
+送料：<!--{assign var=key value="deliv_fee"}--><!--{$tpl_arrOrderData[$key]|number_format|h}-->円<br>
 手数料：
 <!--{assign var=key value="charge"}-->
-<!--{$arrDisp[$key]|number_format|h}-->円<br>
-合計：<!--{$arrDisp.payment_total|number_format}-->円<br>
+<!--{$tpl_arrOrderData[$key]|number_format|h}-->円<br>
+合計：<!--{$tpl_arrOrderData.payment_total|number_format}-->円<br>
 <hr>
 <!-- 使用ポイントここから -->
 <!--{if $smarty.const.USE_POINT !== false}-->
 ■使用ポイント<br>
-ご使用ポイント：<!--{assign var=key value="use_point"}--><!--{$arrDisp[$key]|number_format|default:0}--> pt<br>
-今回加算されるポイント：<!--{$arrDisp.add_point|number_format|default:0}--> pt<br>
+ご使用ポイント：<!--{assign var=key value="use_point"}--><!--{$tpl_arrOrderData[$key]|number_format|default:0}--> pt<br>
+今回加算されるポイント：<!--{$tpl_arrOrderData.add_point|number_format|default:0}--> pt<br>
 <hr>
 <!--{/if}-->
 <!-- 使用ポイントここまで -->
