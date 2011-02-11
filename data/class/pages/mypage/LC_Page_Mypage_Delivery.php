@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/LC_Page.php");
+require_once(CLASS_REALDIR . "pages/mypage/LC_Page_AbstractMypage.php");
 
 /**
  * お届け先編集 のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_REALDIR . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Mypage_Delivery extends LC_Page {
+class LC_Page_Mypage_Delivery extends LC_Page_AbstractMypage {
 
     // }}}
     // {{{ functions
@@ -43,13 +43,10 @@ class LC_Page_Mypage_Delivery extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->tpl_title = 'MYページ';
         $this->tpl_subtitle = 'お届け先追加･変更';
-        $this->tpl_navi = TEMPLATE_REALDIR . 'mypage/navi.tpl';
-        $this->tpl_mainno = 'mypage';
         $this->tpl_mypageno = 'delivery';
-        $masterData = new SC_DB_MasterData_Ex();
-        $this->arrPref= $masterData->getMasterData('mtb_pref');
+        $masterData         = new SC_DB_MasterData_Ex();
+        $this->arrPref      = $masterData->getMasterData('mtb_pref');
         $this->httpCacheControl('nocache');
     }
 
@@ -60,8 +57,6 @@ class LC_Page_Mypage_Delivery extends LC_Page {
      */
     function process() {
         parent::process();
-        $this->action();
-        $this->sendResponse();
     }
 
     /**
@@ -70,38 +65,24 @@ class LC_Page_Mypage_Delivery extends LC_Page {
      * @return void
      */
     function action() {
-        //$objView = new SC_SiteView();
-        $objCustomer = new SC_Customer();
+        $objCustomer    = new SC_Customer();
+        $customer_id    = $objCustomer->getValue('customer_id');
+        $objFormParam   = new SC_FormParam();
 
-        // 退会判定用情報の取得
-        $this->tpl_login = $objCustomer->isLoginSuccess();
+        $this->lfInitParam($objFormParam);
+        $objFormParam->setParam($_POST);
+        $objFormParam->convParam();
 
-        // ポップアップを開けたまま退会された状態でポップアップが閉じた場合のエラー画面の抑止。
-        // コメントアウトした「ログイン判定」は他の「Mypage」内に施した退会時処理で補間。
-
-        // XXX コメントアウトによる問題が確認された場合はコメントアウトを外し、エラー画面が出る様に戻す。
-        ////ログイン判定
-        // if(!$objCustomer->isLoginSuccess()) {
-        //     SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
-        // }else {
-            //マイページトップ顧客情報表示用
-            $this->CustomerName1 = $objCustomer->getvalue('name01');
-            $this->CustomerName2 = $objCustomer->getvalue('name02');
-            $this->CustomerPoint = $objCustomer->getvalue('point');
-        //}
-
-        $customerId = $objCustomer->getValue('customer_id');
         switch($this->getMode()) {
 
         // お届け先の削除
         case 'delete':
-            $objForm = $this->initParam();
-            if ($objForm->checkError()) {
+            if ($objFormParam->checkError()) {
                 SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
                 exit;
             }
 
-            $this->deleteOtherDeliv($customerId, $objForm->getValue('other_deliv_id'));
+            $this->deleteOtherDeliv($customer_id, $objFormParam->getValue('other_deliv_id'));
             break;
 
         // お届け先の表示
@@ -110,13 +91,10 @@ class LC_Page_Mypage_Delivery extends LC_Page {
         }
 
         //別のお届け先情報
-        $this->arrOtherDeliv = $this->getOtherDeliv($customerId);
+        $this->arrOtherDeliv = $this->getOtherDeliv($customer_id);
 
         //お届け先登録数
-        $this->tpl_linemax = count($this->arrOtherDeliv);;
-
-        //$objView->assignobj($this);
-        //$objView->display(SITE_FRAME);
+        $this->tpl_linemax = count($this->arrOtherDeliv);
     }
 
     /**
@@ -133,12 +111,8 @@ class LC_Page_Mypage_Delivery extends LC_Page {
      *
      * @return SC_FormParam
      */
-    function initParam() {
-        $objForm = new SC_FormParam();
-        $objForm->addParam('お届け先ID', 'other_deliv_id', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objForm->setParam($_POST);
-        $objForm->convParam();
-        return $objForm;
+    function lfInitParam(&$objFormParam) {
+        $objFormParam->addParam('お届け先ID', 'other_deliv_id', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
     /**
@@ -147,11 +121,10 @@ class LC_Page_Mypage_Delivery extends LC_Page {
      * @param integer $customerId
      * @return array
      */
-    function getOtherDeliv($customerId) {
-        $objQuery = new SC_Query;
+    function getOtherDeliv($customer_id) {
+        $objQuery   =& SC_Query::getSingletonInstance();
         $objQuery->setOrder('other_deliv_id DESC');
-        $arrRet = $objQuery->select('*', 'dtb_other_deliv', 'customer_id = ?', array($customerId));
-        return empty($arrRet) ? array() : $arrRet;
+        return $objQuery->select('*', 'dtb_other_deliv', 'customer_id = ?', array($customer_id));
     }
 
     /**
@@ -160,10 +133,9 @@ class LC_Page_Mypage_Delivery extends LC_Page {
      * @param integer $customerId
      * @param integer $delivId
      */
-    function deleteOtherDeliv($customerId, $delivId) {
-        $where = 'customer_id = ? AND other_deliv_id = ?';
-        $objQuery = new SC_Query;
-        $objQuery->delete("dtb_other_deliv", $where, array($customerId, $delivId));
+    function deleteOtherDeliv($customer_id, $deliv_id) {
+        $where      = 'customer_id = ? AND other_deliv_id = ?';
+        $objQuery   =& SC_Query::getSingletonInstance();
+        $objQuery->delete("dtb_other_deliv", $where, array($customer_id, $deliv_id));
     }
 }
-?>
