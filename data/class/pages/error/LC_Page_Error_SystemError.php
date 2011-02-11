@@ -53,8 +53,7 @@ class LC_Page_Error_SystemError extends LC_Page_Error {
      */
     function init() {
 		parent::init();
-        $this->tpl_mainpage = 'error.tpl';
-         $this->tpl_title = 'システムエラー';
+        $this->tpl_title = 'システムエラー';
     }
 
     /**
