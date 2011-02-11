@@ -63,23 +63,16 @@ class LC_Page_Mypage_Order extends LC_Page {
      */
     function action() {
         $objCustomer = new SC_Customer();
-        $objCartSess = new SC_CartSession();
 
         //受注詳細データの取得
-        $arrDisp = $this->lfGetOrderDetail($_POST['order_id']);
+        $arrOrderDetail = $this->lfGetOrderDetail($_POST['order_id']);
 
         //ログインしていない、またはDBに情報が無い場合
-        if (!$objCustomer->isLoginSuccess(true) or count($arrDisp) == 0){
+        if (!$objCustomer->isLoginSuccess(true) || empty($arrOrderDetail)){
             SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
         }
 
-        for($num = 0; $num < count($arrDisp); $num++) {
-            $product_class_id = $arrDisp[$num]['product_class_id'];
-            $quantity = $arrDisp[$num]['quantity'];
-            $product_type_id = $arrDisp[$num]['product_type_id'];
-
-            $objCartSess->addProduct($product_class_id, $quantity, $product_type_id);
-        }
+        $this->lfAddCartProducts($arrOrderDetail);
         SC_Response_Ex::sendRedirect(CART_URLPATH);
     }
 
@@ -94,19 +87,34 @@ class LC_Page_Mypage_Order extends LC_Page {
 
     // 受注詳細データの取得
     function lfGetOrderDetail($order_id) {
-        $objQuery = new SC_Query();
-        $objCustomer = new SC_Customer();
+        $objQuery       = SC_Query::getSingletonInstance();
+
+        $objCustomer    = new SC_Customer();
         //customer_idを検証
-        $customer_id = $objCustomer->getValue("customer_id");
-        $order_count = $objQuery->count("dtb_order", "order_id = ? and customer_id = ?", array($order_id, $customer_id));
+        $customer_id    = $objCustomer->getValue("customer_id");
+        $order_count    = $objQuery->count("dtb_order", "order_id = ? and customer_id = ?", array($order_id, $customer_id));
         if ($order_count != 1) return array();
-        $col = "product_class_id, quantity, product_type_id";
-        $table = "dtb_order_detail LEFT JOIN dtb_products_class USING(product_class_id)";
-        $where = "order_id = ?";
+
+        $col    = "product_class_id, quantity, product_type_id";
+        $table  = "dtb_order_detail LEFT JOIN dtb_products_class USING(product_class_id)";
+        $where  = "order_id = ?";
         $objQuery->setOrder("product_class_id");
-        $arrRet = $objQuery->select($col, $table, $where, array($order_id));
-        return $arrRet;
+        $arrOrderDetail = $objQuery->select($col, $table, $where, array($order_id));
+        return $arrOrderDetail;
     }
+
+    // 商品をカートに追加
+    function lfAddCartProducts($arrOrderDetail) {
+
+        $objCartSess = new SC_CartSession();
+        foreach($arrOrderDetail as $order_row) {
+
+            $objCartSess->addProduct($order_row['product_class_id'],
+                                     $order_row['quantity'],
+                                     $order_row['product_type_id']);
+        }
+    }
+
 
 }
 ?>
