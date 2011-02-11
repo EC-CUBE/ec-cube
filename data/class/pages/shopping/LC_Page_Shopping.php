@@ -90,8 +90,9 @@ class LC_Page_Shopping extends LC_Page {
         // ログイン済みの場合は次画面に遷移
         if ($objCustomer->isLoginSuccess(true)) {
             SC_Response_Ex::sendRedirect(
-                    $this->getNextLocation($this->cartKey, $this->tpl_uniqid,
-                                           $objCustomer, $objPurchase));
+                    $this->getNextlocation($this->cartKey, $this->tpl_uniqid,
+                                           $objCustomer, $objPurchase,
+                                           $objSiteSess));
             exit;
         }
         // 非会員かつ, ダウンロード商品の場合はエラー表示
@@ -134,7 +135,8 @@ class LC_Page_Shopping extends LC_Page {
                 }
                 SC_Response_Ex::sendRedirect(
                         $this->getNextLocation($this->cartKey, $this->tpl_uniqid,
-                                               $objCustomer, $objPurchase));
+                                               $objCustomer, $objPurchase,
+                                               $objSiteSess));
                 exit;
             }
             // ログインに失敗した場合
@@ -309,9 +311,10 @@ class LC_Page_Shopping extends LC_Page {
      * @param string $uniqid 受注一時テーブルのユニークID
      * @param SC_Customer $objCustomer SC_Customer インスタンス
      * @param SC_Helper_Purchase $objPurchase SC_Helper_Purchase インスタンス
+     * @param SC_SiteSession $objSiteSess SC_SiteSession インスタンス
      * @return string 遷移先のパス
      */
-    function getNextLocation($product_type_id, $uniqid, &$objCustomer, &$objPurchase) {
+    function getNextLocation($product_type_id, $uniqid, &$objCustomer, &$objPurchase, &$objSiteSess) {
         switch ($product_type_id) {
         case PRODUCT_TYPE_DOWNLOAD:
             $objPurchase->saveOrderTemp($uniqid, array(), $objCustomer);
