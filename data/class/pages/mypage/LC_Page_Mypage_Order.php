@@ -114,7 +114,4 @@ class LC_Page_Mypage_Order extends LC_Page {
                                      $order_row['product_type_id']);
         }
     }
-
-
 }
-?>
