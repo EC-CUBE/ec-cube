@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/LC_Page.php");
+require_once(CLASS_REALDIR . "pages/mypage/LC_Page_AbstractMypage.php");
 
 /**
  * MyPage のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_REALDIR . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_MyPage_Favorite extends LC_Page {
+class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage {
 
     // {{{ properties
 
@@ -48,10 +48,7 @@ class LC_Page_MyPage_Favorite extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->tpl_title = 'MYページ';
         $this->tpl_subtitle = 'お気に入り一覧';
-        $this->tpl_navi = TEMPLATE_REALDIR . 'mypage/navi.tpl';
-        $this->tpl_mainno = 'mypage';
         $this->tpl_mypageno = 'favorite';
     }
 
@@ -62,8 +59,6 @@ class LC_Page_MyPage_Favorite extends LC_Page {
      */
     function process() {
         parent::process();
-        $this->action();
-        $this->sendResponse();
     }
 
     /**
@@ -73,29 +68,13 @@ class LC_Page_MyPage_Favorite extends LC_Page {
      */
     function action() {
 
-        $objQuery = new SC_Query();
         $objCustomer = new SC_Customer();
-
-        // 退会判定用情報の取得
-        $this->tpl_login = $objCustomer->isLoginSuccess(true);
-
-        // ログインチェック
-        if(!$objCustomer->isLoginSuccess(true)) {
-            SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
-        }else {
-            // マイページトップ顧客情報表示用
-            $this->CustomerName1 = $objCustomer->getvalue('name01');
-            $this->CustomerName2 = $objCustomer->getvalue('name02');
-            $this->CustomerPoint = $objCustomer->getvalue('point');
-        }
+        $customer_id = $objCustomer->getValue('customer_id');
 
         switch ($this->getMode()) {
         case 'delete_favorite':
-        // お気に入り削除
-            $customer_id = $objCustomer->getValue('customer_id');
+            // お気に入り削除
             $this->lfDeleteFavoriteProduct($customer_id, $_POST['product_id']);
-            break;
-        default:
             break;
         }
 
@@ -103,44 +82,7 @@ class LC_Page_MyPage_Favorite extends LC_Page {
         if (isset($_POST['pageno'])) {
             $this->tpl_pageno = htmlspecialchars($_POST['pageno'], ENT_QUOTES, CHAR_CODE);
         }
-
-        // FIXME SC_Product クラスを使用した実装
-        $col = "alldtl.*";
-        $from = "dtb_customer_favorite_products AS dcfp LEFT JOIN vw_products_allclass_detail AS alldtl USING(product_id)";
-
-        $where = "dcfp.customer_id = ? AND alldtl.del_flg = 0 AND alldtl.status = 1";
-        // 在庫無し商品の非表示
-        if (NOSTOCK_HIDDEN === true) {
-            $where .= ' AND (alldtl.stock_max >= 1 OR alldtl.stock_unlimited_max = 1)';
-        }
-        $order = "create_date DESC";
-
-        $arrval = array($objCustomer->getvalue('customer_id'));
-
-        // お気に入りの数を取得
-        $linemax = $objQuery->count($from, $where, $arrval);
-        $this->tpl_linemax = $linemax;
-
-        // ページ送りの取得
-        $objNavi = new SC_PageNavi($this->tpl_pageno, $linemax, SEARCH_PMAX, "fnNaviPage", NAVI_PMAX);
-        $this->tpl_strnavi = $objNavi->strnavi;		// 表示文字列
-        $startno = $objNavi->start_row;
-
-        // 取得範囲の指定(開始行番号、行数のセット)
-        $objQuery->setLimitOffset(SEARCH_PMAX, $startno);
-        // 表示順序
-        $objQuery->setOrder($order);
-
-        // お気に入りの取得
-        $this->arrFavorite = $objQuery->select($col, $from, $where, $arrval);
-
-        // パラメータ管理クラス
-        $this->objFormParam = new SC_FormParam();
-        // POST値の取得
-        $this->objFormParam->setParam($_POST);
-
-        // 入力情報を渡す
-        $this->arrForm = $this->objFormParam->getFormParamList();
+        $this->arrFavorite = $this->lfGetFavoriteProduct($customer_id, $this);
     }
 
     /**
@@ -152,19 +94,79 @@ class LC_Page_MyPage_Favorite extends LC_Page {
         parent::destroy();
     }
 
-    //エラーチェック
 
-    function lfErrorCheck() {
-        $objErr = new SC_CheckError();
-        $objErr->doFunc(array("メールアドレス", "login_email", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","EMAIL_CHECK","MAX_LENGTH_CHECK"));
-        $objErr->dofunc(array("パスワード", "login_password", PASSWORD_LEN2), array("EXIST_CHECK","ALNUM_CHECK"));
-        return $objErr->arrErr;
+    /**
+     * お気に入りを取得する
+     *
+     * @param mixed $customer_id
+     * @param mixed $objPage
+     * @access private
+     * @return array お気に入り商品一覧
+     */
+    function lfGetFavoriteProduct($customer_id, &$objPage) {
+        $objQuery       = SC_Query::getSingletonInstance();
+        $objProduct     = new SC_Product();
+
+        $objQuery->setOrder('create_date DESC');
+        $arrProduct_id  = $objQuery->getCol('product_id', 'dtb_customer_favorite_products', 'customer_id = ?', array($customer_id));
+
+        $objQuery       =& SC_Query::getSingletonInstance();
+        $objQuery->setWhere($this->lfMakeWhere('alldtl.', $arrProduct_id));
+        $linemax        = $objProduct->findProductCount($objQuery);
+
+        $objPage->tpl_linemax = $linemax;   // 何件が該当しました。表示用
+
+        // ページ送りの取得
+        $objNavi        = new SC_PageNavi($objPage->tpl_pageno, $linemax, SEARCH_PMAX, "fnNaviPage", NAVI_PMAX);
+        $this->tpl_strnavi = $objNavi->strnavi;		// 表示文字列
+        $startno        = $objNavi->start_row;
+
+        $objQuery       =& SC_Query::getSingletonInstance();
+        //$objQuery->setLimitOffset(SEARCH_PMAX, $startno);
+        // 取得範囲の指定(開始行番号、行数のセット)
+        $arrProduct_id  = array_slice($arrProduct_id, $startno, SEARCH_PMAX);
+
+        $objQuery->setWhere($this->lfMakeWhere('', $arrProduct_id));
+        $objProduct->setProductsOrder('create_date', 'dtb_customer_favorite_products', 'DESC');
+        $arrProducts    = $objProduct->lists($objQuery, $arrProduct_id);
+
+        //取得している並び順で並び替え
+        $arrProducts2 = array();
+        foreach($arrProducts as $item) {
+            $arrProducts2[ $item['product_id'] ] = $item;
+        }
+        $arrProductsList = array();
+        foreach($arrProduct_id as $product_id) {
+            $arrProductsList[] = $arrProducts2[$product_id];
+        }
+
+        return $arrProductsList;
     }
+
+
+    /* 仕方がない処理。。 */
+    function lfMakeWhere ($tablename, $arrProduct_id) {
+
+        // 取得した表示すべきIDだけを指定して情報を取得。
+        $where = "";
+        if (is_array($arrProduct_id) && !empty($arrProduct_id)) {
+            $where = $tablename . 'product_id IN (' . implode(',', $arrProduct_id) . ')';
+        } else {
+            // 一致させない
+            $where = '0<>0';
+        }
+        // 在庫無し商品の非表示
+        if (NOSTOCK_HIDDEN === true) {
+            $where .= ' AND (stock_max >= 1 OR stock_unlimited_max = 1)';
+        }
+        return $where;
+    }
+
 
     // お気に入り商品削除
     function lfDeleteFavoriteProduct($customer_id, $product_id) {
-        $objQuery = new SC_Query();
-        $count = $objQuery->count("dtb_customer_favorite_products", "customer_id = ? AND product_id = ?", array($customer_id, $product_id));
+        $objQuery   = new SC_Query();
+        $count      = $objQuery->count("dtb_customer_favorite_products", "customer_id = ? AND product_id = ?", array($customer_id, $product_id));
 
         if ($count > 0) {
             $objQuery->begin();
@@ -173,4 +175,3 @@ class LC_Page_MyPage_Favorite extends LC_Page {
         }
     }
 }
-?>
