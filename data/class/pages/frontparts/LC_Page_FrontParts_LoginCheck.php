@@ -69,50 +69,82 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page {
             GC_Utils_Ex::gfPrintLog('invalid access :login_check.php $POST["url"]=' . $_POST['url']);
             SC_Utils_Ex::sfDispSiteError(PAGE_ERROR);
         }
-        
+
         // 会員管理クラス
         $objCustomer = new SC_Customer();
         // クッキー管理クラス
         $objCookie = new SC_Cookie(COOKIE_EXPIRE);
         // パラメータ管理クラス
         $this->objFormParam = new SC_FormParam();
-        
+
         // パラメータ情報の初期化
         $this->lfInitParam($this->objFormParam);
-        
+
         // リクエスト値をフォームにセット
         $this->objFormParam->setParam($this->lfConvertParam($_POST));
-        
+
         // モードによって分岐
         switch ($this->getMode()) {
         case 'login':
             // --- ログイン
-            
+
             // 入力値のエラーチェック
             $this->objFormParam->toLower('login_email');
             $arrErr = $this->objFormParam->checkError();
-            
+
             // エラーの場合はエラー画面に遷移
             if (count($arrErr) > 0) {
                 SC_Utils_Ex::sfDispSiteError(TEMP_LOGIN_ERROR);
             }
-            
+
             // 入力チェック後の値を取得
             $arrForm = $this->objFormParam->getHashArray();
-            
+
             // クッキー保存判定
             if ($arrForm['login_memory'] == '1' && $arrForm['login_email'] != '') {
                 $objCookie->setCookie('login_email', $arrForm['login_email']);
             } else {
                 $objCookie->setCookie('login_email', '');
             }
-            
+
             // 遷移先の制御
             if (count($arrErr) == 0) {
+                // ログイン判定
+                $loginFailFlag = false;
+                if(SC_Display::detectDevice() === DEVICE_TYPE_MOBILE) {
+                    // モバイルサイト
+                    if(!$objCustomer->getCustomerDataFromMobilePhoneIdPass($arrForm['login_pass']) &&
+                       !$objCustomer->getCustomerDataFromEmailPass($arrForm['login_pass'], $arrForm['login_email'], true)) {
+                        $loginFailFlag = true;
+                    }
+                } else {
+                    // モバイルサイト以外
+                    if(!$objCustomer->getCustomerDataFromEmailPass($arrForm['login_pass'], $arrForm['login_email'])) {
+                        $loginFailFlag = true;
+                    }
+                }
+
                 // ログイン処理
-                if ($objCustomer->getCustomerDataFromEmailPass($arrForm['login_pass'], $arrForm['login_email'], true)) {
+                if ($loginFailFlag == false) {
+                    if(SC_Display::detectDevice() === DEVICE_TYPE_MOBILE) {
+                        // ログインが成功した場合は携帯端末IDを保存する。
+                        $objCustomer->updateMobilePhoneId();
+
+                        /*
+                         * email がモバイルドメインでは無く,
+                         * 携帯メールアドレスが登録されていない場合
+                         */
+                        $objMobile = new SC_Helper_Mobile_Ex();
+                        if (!$objMobile->gfIsMobileMailAddress($objCustomer->getValue('email'))) {
+                            if (!$objCustomer->hasValue('email_mobile')) {
+                                SC_Response_Ex::sendRedirectFromUrlPath('entry/email_mobile.php');
+                                exit;
+                            }
+                        }
+                    }
+
                     // --- ログインに成功した場合
-                    SC_Response_Ex::sendRedirect(HTTP_URL);
+                    SC_Response_Ex::sendRedirect($_POST['url']);
                     exit;
                 } else {
                     // --- ログインに失敗した場合
@@ -133,11 +165,11 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page {
                 SC_Response_Ex::sendRedirect($_POST['url']);
                 exit;
             }
-            
+
             break;
         case 'logout':
             // --- ログアウト
-            
+
             // ログイン情報の解放
             $objCustomer->EndSession();
             // 画面遷移の制御
@@ -150,12 +182,12 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page {
                 SC_Response_Ex::sendRedirect(HTTP_URL);
             }
             exit;
-            
+
             break;
         default:
             break;
         }
-        
+
     }
 
     /**
@@ -175,7 +207,7 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page {
      */
     function lfInitParam(&$objFormParam) {
         $objFormParam->addParam('記憶する', 'login_memory', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam('メールアドレス', 'login_email', MTEXT_LEN, 'a', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'EMAIL_CHECK', 'NO_SPTAB' ,'EMAIL_CHAR_CHECK'));
+        $objFormParam->addParam('メールアドレス', 'login_email', MTEXT_LEN, 'a', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NO_SPTAB' ,'EMAIL_CHAR_CHECK'));
         $objFormParam->addParam('パスワード', 'login_pass', PASSWORD_LEN1, '', array('EXIST_CHECK'));
         $objFormParam->addParam('パスワード', 'login_pass1', PASSWORD_LEN1, '', array('EXIST_CHECK', 'MIN_LENGTH_CHECK'));
         $objFormParam->addParam('パスワード', 'login_pass2', PASSWORD_LEN2, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));

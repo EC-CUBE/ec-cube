@@ -70,17 +70,18 @@ class LC_Page_AbstractMypage extends LC_Page {
             }
 
             // POSTされてきたIDがある場合は優先する。
-            if(isset($_POST['mypage_login_email'])
-               && $_POST['mypage_login_email'] != "") {
-                $this->tpl_login_email = $_POST['mypage_login_email'];
+            if(isset($_POST['login_email'])
+               && $_POST['login_email'] != "") {
+                $this->tpl_login_email = $_POST['login_email'];
             }
 
             // 携帯端末IDが一致する会員が存在するかどうかをチェックする。
             if (SC_Display::detectDevice() === DEVICE_TYPE_MOBILE){
                 $this->tpl_valid_phone_id = $objCustomer->checkMobilePhoneId();
             }
-            $this->tpl_title    = 'MYページ(ログイン)';
-            $this->tpl_mainpage = 'mypage/login.tpl';
+            $this->tpl_title        = 'MYページ(ログイン)';
+            $this->tpl_mainpage     = 'mypage/login.tpl';
+            $this->transactionid    = SC_Helper_Session_Ex::getToken();
 
         } else {
             //マイページ顧客情報表示用共通処理

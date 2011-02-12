@@ -25,13 +25,15 @@
 <div id="under02column">
   <div id="under02column_login">
     <h2 class="title"><!--{$tpl_title|h}--></h2>
-    <form name="login_mypage" id="login_mypage" method="post" action="./login_check.php" onsubmit="return fnCheckLogin('login_mypage')">
+    <form name="login_mypage" id="login_mypage" method="post" action="<!--{$smarty.const.HTTPS_URL}-->frontparts/login_check.php" onsubmit="return fnCheckLogin('login_mypage')">
     <input type="hidden" name="mode" value="login" />
+            <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+            <input type="hidden" name="url" value="<!--{$smarty.server.PHP_SELF|h}-->" />    
    <div class="loginarea">
      <h3>会員登録がお済みのお客様</h3>
      <p class="inputtext">会員の方は、登録時に入力されたメールアドレスとパスワードでログインしてください。</p>
        <div class="inputbox">
-       <!--{assign var=key value="mypage_login_email"}-->
+       <!--{assign var=key value="login_email"}-->
        <span class="attention"><!--{$arrErr[$key]}--></span>
        <p>メールアドレス:&nbsp;
          <input type="text" name="<!--{$key}-->"
@@ -41,12 +43,12 @@
                 size="40" class="box300" />
        </p>
        <p class="mini">
-         <!--{assign var=key value="mypage_login_memory"}-->
+         <!--{assign var=key value="login_memory"}-->
          <input type="checkbox" name="<!--{$key}-->" value="1" <!--{$tpl_login_memory|sfGetChecked:1}--> id="login_memory" />
          <label for="login_memory">メールアドレスを記憶させる</label>
        </p>
        <p class="passwd">
-         <!--{assign var=key value="mypage_login_pass"}-->
+         <!--{assign var=key value="login_pass"}-->
          <span class="attention"><!--{$arrErr[$key]}--></span>
          パスワード:&nbsp;
          <input type="password" name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="40" class="box300" />
