@@ -164,6 +164,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin {
                 $searchHiddenParams[$key] = $val;
             }
         }
+        return $searchHiddenParams;
     }
 
 
