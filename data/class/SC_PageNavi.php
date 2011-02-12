@@ -41,14 +41,14 @@ class SC_PageNavi {
     var $arrPagenavi = array(); // ページ
 
     // コンストラクタ
-    function SC_PageNavi($now_page, $all_row, $page_row, $func_name, $navi_max = NAVI_PMAX, $urlParam = '') {
+    function SC_PageNavi($now_page, $all_row, $page_row, $func_name, $navi_max = NAVI_PMAX, $urlParam = '', $display_number = true) {
         $this->arrPagenavi['mode'] = 'search';
 
         //現在ページ($now_page)が正しい数値でない場合
-        if (!eregi("^[[:digit:]]+$", $now_page) || $now_page < 1 || strlen($now_page) == 0) {
+        if (!preg_match("/^[[:digit:]]+$/", $now_page) || $now_page < 1 || strlen($now_page) == 0) {
             $this->now_page = 1;
         } else {
-            $this->now_page = $now_page;
+            $this->now_page = htmlspecialchars($now_page, ENT_QUOTES, CHAR_CODE);
         }
         $this->arrPagenavi['now_page'] = $this->now_page;
 
@@ -60,7 +60,8 @@ class SC_PageNavi {
             $this->now_page = 1;
         }
 
-        $this->start_row = ($this->now_page - 1) * $page_row;
+        $this->start_row    = ($this->now_page - 1) * $page_row;
+        $this->all_row      = $all_row;
 
         // 開始行が不正な場合
         if (!($this->start_row < $all_row && $this->start_row >= 0)) {
@@ -136,7 +137,7 @@ class SC_PageNavi {
             }
 
             if ($before || $next) {
-                $this->strnavi = $before .$page_number .$next;
+                $this->strnavi = $before .(($display_number) ? $page_number : ' | ') .$next;
             }
         } else {
             $this->arrPagenavi['arrPageno'][0] = 1;

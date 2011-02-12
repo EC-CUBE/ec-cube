@@ -48,15 +48,12 @@ class LC_Page_MyPage extends LC_Page_AbstractMypage {
      */
     function init() {
         parent::init();
-        $this->tpl_title        = 'MYページ';
-        if (Net_UserAgent_Mobile::isMobile() === true){
+        $this->tpl_mypageno = 'index';
+        if (SC_Display::detectDevice() === DEVICE_TYPE_MOBILE){
             $this->tpl_subtitle = 'MYページ';
         } else {
             $this->tpl_subtitle = '購入履歴一覧';
         }
-        $this->tpl_navi         = TEMPLATE_REALDIR . 'mypage/navi.tpl';
-        $this->tpl_mainno       = 'mypage';
-        $this->tpl_mypageno     = 'index';
         $this->httpCacheControl('nocache');
     }
 
@@ -76,75 +73,22 @@ class LC_Page_MyPage extends LC_Page_AbstractMypage {
      */
     function action() {
 
-        $objQuery = new SC_Query();
         $objCustomer = new SC_Customer();
+        $customer_id = $objCustomer->getvalue('customer_id');
 
         //ページ送り用
-        if (isset($_POST['pageno'])) {
-            $this->tpl_pageno = htmlspecialchars($_POST['pageno'], ENT_QUOTES, CHAR_CODE);
-        }
+        $this->objNavi = new SC_PageNavi($_REQUEST['pageno'],
+                                         $this->lfGetOrderHistory($customer_id),
+                                         SEARCH_PMAX,
+                                         "fnNaviPage",
+                                         NAVI_PMAX,
+                                         'pageno=#page#',
+                                         SC_Display::detectDevice() !== DEVICE_TYPE_MOBILE);
 
-        $col = "order_id, create_date, payment_id, payment_total";
-        $from = "dtb_order";
-        $where = "del_flg = 0 AND customer_id=?";
-        $arrval = array($objCustomer->getvalue('customer_id'));
-        $order = "order_id DESC";
-
-        $linemax = $objQuery->count($from, $where, $arrval);
-        $this->tpl_linemax = $linemax;
-
-        if (Net_UserAgent_Mobile::isMobile() === true){
-            define ("HISTORY_NUM", 5);  // TODO
-            $pageNo = isset($_GET['pageno']) ? (int) $_GET['pageno'] : 0; // TODO
-
-            // ページ送りの取得
-            // next
-            if ($pageNo + HISTORY_NUM < $linemax) {
-                $next = "<a href='?pageno=" . ($pageNo + HISTORY_NUM) . "'>次へ→</a>";
-            } else {
-                $next = "";
-            }
-
-            // previous
-            if ($pageNo - HISTORY_NUM > 0) {
-                $previous = "<a href='?pageno=" . ($pageNo - HISTORY_NUM) . "'>←前へ</a>";
-            } elseif ($pageNo == 0) {
-                $previous = "";
-            } else {
-                $previous = "<a href='?pageno=0'>←前へ</a>";
-            }
-
-            // bar
-            if ($next != '' && $previous != '') {
-                $bar = " | ";
-            } else {
-                $bar = "";
-            }
-
-            $this->tpl_strnavi = $previous . $bar . $next;
-
-            // 取得範囲の指定(開始行番号、行数のセット)
-            $objQuery->setLimitOffset(HISTORY_NUM, $pageNo);
-        } else {
-            // ページ送りの取得
-            $objNavi = new SC_PageNavi($this->tpl_pageno, $linemax, SEARCH_PMAX, "fnNaviPage", NAVI_PMAX);
-            $this->tpl_strnavi = $objNavi->strnavi;		// 表示文字列
-            $startno = $objNavi->start_row;
-
-            // 取得範囲の指定(開始行番号、行数のセット)
-            $objQuery->setLimitOffset(SEARCH_PMAX, $startno);
-        }
-
-        // 表示順序
-        $objQuery->setOrder($order);
-
-        //購入履歴の取得
-        $this->arrOrder = $objQuery->select($col, $from, $where, $arrval);
+        $this->arrOrder = $this->lfGetOrderHistory($customer_id, $this->objNavi->start_row);
 
         // 支払い方法の取得
-        $objDb = new SC_Helper_DB_Ex();
-        $this->arrPayment = $objDb->sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
-
+        $this->arrPayment = SC_Helper_DB_Ex::sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
     }
 
     /**
@@ -154,5 +98,35 @@ class LC_Page_MyPage extends LC_Page_AbstractMypage {
      */
     function destroy() {
         parent::destroy();
+    }
+
+
+    /**
+     * 受注履歴を返す
+     *
+     * @param mixed $customer_id
+     * @param mixed $startno 0以上の場合は受注履歴を返却する -1の場合は件数を返す
+     * @access private
+     * @return void
+     */
+    function lfGetOrderHistory($customer_id, $startno = -1) {
+        $objQuery   = SC_Query::getSingletonInstance();
+
+        $col        = "order_id, create_date, payment_id, payment_total";
+        $from       = "dtb_order";
+        $where      = "del_flg = 0 AND customer_id = ?";
+        $arrval     = array($customer_id);
+        $order      = "order_id DESC";
+
+        if ($startno == -1) {
+            return $objQuery->count($from, $where, $arrval);
+        }
+
+        $objQuery->setLimitOffset(SEARCH_PMAX, $startno);
+        // 表示順序
+        $objQuery->setOrder($order);
+
+        //購入履歴の取得
+        return $objQuery->select($col, $from, $where, $arrval);
     }
 }

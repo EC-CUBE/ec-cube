@@ -34,8 +34,8 @@
 <a href="refusal.php" accesskey="3"><!--{3|numeric_emoji}-->退会</a><br>
 <hr>
 ■購入履歴一覧<br>
-<!--{if $tpl_linemax > 0}-->
-    <!--{$tpl_linemax}-->件の購入履歴があります。<br>
+<!--{if $objNavi->all_row > 0}-->
+    <!--{$objNavi->all_row}-->件の購入履歴があります。<br>
     <!--{section name=cnt loop=$arrOrder}-->
     <hr>
         ●購入日時<br>
@@ -54,7 +54,7 @@
     購入履歴はありません。<br>
 <!--{/if}-->
 
-<!--{if $tpl_strnavi != ""}-->
-<!--{$tpl_strnavi}-->
+<!--{if $objNavi->strnavi != ""}-->
+<!--{$objNavi->strnavi}-->
 <br>
 <!--{/if}-->

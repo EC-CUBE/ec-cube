@@ -32,15 +32,15 @@
   <div id="mycontentsarea">
     <form name="form1" method="post" action="?">
     <input type="hidden" name="order_id" value="" />
-    <input type="hidden" name="pageno" value="<!--{$tpl_pageno}-->" />
+    <input type="hidden" name="pageno" value="<!--{$objNavi->nowpage}-->" />
     <h3><!--{$tpl_subtitle|h}--></h3>
 
-<!--{if $tpl_linemax > 0}-->
+<!--{if $objNavi->all_row > 0}-->
 
-    <p><!--{$tpl_linemax}-->件の購入履歴があります。</p>
+    <p><!--{$objNavi->all_row}-->件の購入履歴があります。</p>
     <div>
       <!--▼ページナビ-->
-      <!--{$tpl_strnavi}-->
+      <!--{$objNavi->all_row}-->
       <!--▲ページナビ-->
     </div>
 
