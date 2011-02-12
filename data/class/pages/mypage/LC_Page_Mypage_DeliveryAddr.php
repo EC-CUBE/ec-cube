@@ -66,7 +66,6 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page {
      * @return void
      */
     function action() {
-        $objQuery    = new SC_Query();
         $objCustomer = new SC_Customer();
         $ParentPage  = MYPAGE_DELIVADDR_URLPATH;
 
