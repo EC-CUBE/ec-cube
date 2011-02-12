@@ -70,12 +70,10 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin {
      * @return void
      */
     function action() {
-        $objSess = new SC_Session();
-        SC_Utils_Ex::sfIsSuccess($objSess);
+        SC_Utils_Ex::sfIsSuccess(new SC_Session());
 
         // 検索パラメータの引き継ぎ
         $this->arrSearchHidden = $this->getSearchParameters($_POST);
-
         
         $this->tpl_order_id = $_POST['order_id'];
 
@@ -180,7 +178,6 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin {
 
     /* パラメータ情報の初期化 */
     function lfInitParam(&$objFormParam) {
-
         $objFormParam->addParam("テンプレート", "template_id", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
         $objFormParam->addParam("メールタイトル", "subject", STEXT_LEN, "KVa",  array("EXIST_CHECK", "MAX_LENGTH_CHECK", "SPTAB_CHECK"));
         $objFormParam->addParam("ヘッダー", "header", LTEXT_LEN, "KVa", array("MAX_LENGTH_CHECK", "SPTAB_CHECK"));
