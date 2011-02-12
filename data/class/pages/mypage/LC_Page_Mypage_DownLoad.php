@@ -75,12 +75,12 @@ class LC_Page_Mypage_DownLoad extends LC_Page {
         }
 
         // パラメータチェック
-        $this->objFormParam = new SC_FormParam();
-        $this->lfInitParam();
+        $objFormParam = new SC_FormParam();
+        $this->lfInitParam($objFormParam);
         // GET、SESSION['customer']値の取得
-        $this->objFormParam->setParam($_SESSION['customer']);
-        $this->objFormParam->setParam($_GET);
-        $this->arrErr = $this->lfCheckError();
+        $objFormParam->setParam($_SESSION['customer']);
+        $objFormParam->setParam($_GET);
+        $this->arrErr = $this->lfCheckError($objFormParam);
         if (count($this->arrErr)!=0){
             SC_Utils_Ex::sfDispSiteError(DOWNFILE_NOT_FOUND,"",true);
         }
@@ -88,6 +88,8 @@ class LC_Page_Mypage_DownLoad extends LC_Page {
 
     /**
      * Page のResponse.
+     *
+     * todo たいした処理でないのに異常に処理が重い
      * @return void
      */
     function sendResponse() {
@@ -190,19 +192,17 @@ __EOS__;
 
 
     /* パラメータ情報の初期化 */
-    function lfInitParam() {
-        $this->objFormParam->addParam("customer_id", "customer_id", INT_LEN, "n", array("EXIST_CHECK","NUM_CHECK"));
-        $this->objFormParam->addParam("order_id", "order_id", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK"));
-        $this->objFormParam->addParam("product_id", "product_id", INT_LEN, "n", array("EXIST_CHECK","NUM_CHECK"));
-        $this->objFormParam->addParam("product_class_id", "product_class_id", INT_LEN, "n", array("EXIST_CHECK","NUM_CHECK"));
+    function lfInitParam(&$objFormParam) {
+        $objFormParam->addParam("customer_id", "customer_id", INT_LEN, "n", array("EXIST_CHECK","NUM_CHECK"));
+        $objFormParam->addParam("order_id", "order_id", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("product_id", "product_id", INT_LEN, "n", array("EXIST_CHECK","NUM_CHECK"));
+        $objFormParam->addParam("product_class_id", "product_class_id", INT_LEN, "n", array("EXIST_CHECK","NUM_CHECK"));
     }
 
     /* 入力内容のチェック */
-    function lfCheckError() {
-        // 入力データを渡す。
-        $arrRet = $this->objFormParam->getHashArray();
-        $objErr = new SC_CheckError($arrRet);
-        $objErr->arrErr = $this->objFormParam->checkError();
+    function lfCheckError(&$objFormParam) {
+        $objErr = new SC_CheckError($objFormParam->getHashArray());
+        $objErr->arrErr = $objFormParam->checkError();
         return $objErr->arrErr;
     }
 
