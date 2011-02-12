@@ -73,7 +73,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin {
         SC_Utils_Ex::sfIsSuccess(new SC_Session());
 
         // 検索パラメータの引き継ぎ
-        $this->arrSearchHidden = $this->getSearchParameters($_POST);
+        $this->arrSearchHidden = SC_Utils_Ex::sfFilterKey($_POST,"^search_");
         
         $this->tpl_order_id = $_POST['order_id'];
 
