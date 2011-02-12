@@ -60,7 +60,7 @@ class LC_Page_AbstractMypage extends LC_Page {
         $objCustomer = new SC_Customer();
 
         // ログインしていない場合は必ずログインページを表示する
-        if(!$objCustomer->isLoginSuccess(true)) {
+        if($objCustomer->isLoginSuccess(true) === false) {
             // クッキー管理クラス
             $objCookie = new SC_Cookie(COOKIE_EXPIRE);
             // クッキー判定(メールアドレスをクッキーに保存しているか）

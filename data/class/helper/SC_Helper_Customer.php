@@ -296,6 +296,7 @@ class SC_Helper_Customer {
      */
     function sfCustomerEntryParam (&$objFormParam) {
         SC_Helper_Customer_Ex::sfCustomerCommonParam($objFormParam);
+        SC_Helper_Customer_Ex::sfCustomerRegisterParam($objFormParam);
     }
 
     /**
@@ -307,6 +308,7 @@ class SC_Helper_Customer {
      */
     function sfCustomerMypageParam (&$objFormParam) {
         SC_Helper_Customer_Ex::sfCustomerCommonParam($objFormParam);
+        SC_Helper_Customer_Ex::sfCustomerRegisterParam($objFormParam);
         if (SC_Display::detectDevice() !== DEVICE_TYPE_MOBILE){
             $objFormParam->addParam('携帯メールアドレス', "email_mobile", MTEXT_LEN, "a", array("NO_SPTAB", "EMAIL_CHECK", "SPTAB_CHECK" ,"EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
             $objFormParam->addParam('携帯メールアドレス(確認)', "email_mobile02", MTEXT_LEN, "a", array("NO_SPTAB", "EMAIL_CHECK","SPTAB_CHECK" , "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"), "", false);
@@ -314,29 +316,47 @@ class SC_Helper_Customer {
     }
 
     /**
-     * 会員フォーム共通
+     * お届け先フォーム初期化
+     *
+     * @param mixed $objFormParam
+     * @access public
+     * @return void
+     */
+    function sfCustomerOtherDelivParam (&$objFormParam) {
+        SC_Helper_Customer_Ex::sfCustomerCommonParam($objFormParam);
+        $objFormParam->addParam("", 'other_deliv_id');
+    }
+
+    /**
+     * 会員共通
      *
      * @param mixed $objFormParam
      * @access public
      * @return void
      */
     function sfCustomerCommonParam (&$objFormParam) {
-
         $objFormParam->addParam("お名前(姓)", 'name01', STEXT_LEN, "aKV", array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
         $objFormParam->addParam("お名前(名)", 'name02', STEXT_LEN, "aKV", array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" , "MAX_LENGTH_CHECK"));
         $objFormParam->addParam("お名前(フリガナ・姓)", 'kana01', STEXT_LEN, "CKV", array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK", "KANA_CHECK"));
         $objFormParam->addParam("お名前(フリガナ・名)", 'kana02', STEXT_LEN, "CKV", array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK", "KANA_CHECK"));
-        $objFormParam->addParam("パスワード", 'password', STEXT_LEN, "a", array("EXIST_CHECK", "SPTAB_CHECK" ,"ALNUM_CHECK"));
-        $objFormParam->addParam("パスワード確認用の質問", "reminder", STEXT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("パスワード確認用の質問の答え", "reminder_answer", STEXT_LEN, "aKV", array("EXIST_CHECK","SPTAB_CHECK" , "MAX_LENGTH_CHECK"));
         $objFormParam->addParam("郵便番号1", "zip01", ZIP01_LEN, "n", array("EXIST_CHECK", "SPTAB_CHECK" ,"NUM_CHECK", "NUM_COUNT_CHECK"));
         $objFormParam->addParam("郵便番号2", "zip02", ZIP02_LEN, "n", array("EXIST_CHECK", "SPTAB_CHECK" ,"NUM_CHECK", "NUM_COUNT_CHECK"));
         $objFormParam->addParam("都道府県", 'pref', INT_LEN, "n", array("EXIST_CHECK","NUM_CHECK"));
         $objFormParam->addParam("住所1", "addr01", MTEXT_LEN, "aKV", array("EXIST_CHECK","SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
         $objFormParam->addParam("住所2", "addr02", MTEXT_LEN, "aKV", array("EXIST_CHECK","SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("お電話番号1", 'tel01', TEL_ITEM_LEN, "n", array("EXIST_CHECK","SPTAB_CHECK" ));
-        $objFormParam->addParam("お電話番号2", 'tel02', TEL_ITEM_LEN, "n", array("EXIST_CHECK","SPTAB_CHECK" ));
-        $objFormParam->addParam("お電話番号3", 'tel03', TEL_ITEM_LEN, "n", array("EXIST_CHECK","SPTAB_CHECK" ));
+        $objFormParam->addParam("お電話番号1", 'tel01', TEL_ITEM_LEN, "n", array("EXIST_CHECK","SPTAB_CHECK"));
+        $objFormParam->addParam("お電話番号2", 'tel02', TEL_ITEM_LEN, "n", array("EXIST_CHECK","SPTAB_CHECK"));
+        $objFormParam->addParam("お電話番号3", 'tel03', TEL_ITEM_LEN, "n", array("EXIST_CHECK","SPTAB_CHECK"));
+    }
+
+    /*
+     * 会員登録共通
+     *
+     */
+    function sfCustomerRegisterParam (&$objFormParam) {
+        $objFormParam->addParam("パスワード", 'password', STEXT_LEN, "a", array("EXIST_CHECK", "SPTAB_CHECK" ,"ALNUM_CHECK"));
+        $objFormParam->addParam("パスワード確認用の質問", "reminder", STEXT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("パスワード確認用の質問の答え", "reminder_answer", STEXT_LEN, "aKV", array("EXIST_CHECK","SPTAB_CHECK" , "MAX_LENGTH_CHECK"));
         $objFormParam->addParam("性別", "sex", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK"));
         $objFormParam->addParam("職業", "job", INT_LEN, "n", array("NUM_CHECK"));
         $objFormParam->addParam("年", "year", INT_LEN, "n", array("MAX_LENGTH_CHECK"), "", false);
@@ -356,6 +376,11 @@ class SC_Helper_Customer {
         }
     }
 
+    function sfCustomerOtherDelivErrorCheck(&$objFormParam) {
+        $objErr = SC_Helper_Customer_Ex::sfCustomerCommonErrorCheck(&$objFormParam);
+        return $objErr->arrErr;
+    }
+
     /**
      * 会員登録エラーチェック
      *
@@ -364,7 +389,9 @@ class SC_Helper_Customer {
      * @return array エラーの配列
      */
     function sfCustomerEntryErrorCheck(&$objFormParam) {
-        $objErr->arrErr = SC_Helper_Customer_Ex::sfCustomerCommonErrorCheck(&$objFormParam);
+        $objErr = SC_Helper_Customer_Ex::sfCustomerCommonErrorCheck(&$objFormParam);
+        $objErr = SC_Helper_Customer_Ex::sfCustomerRegisterErrorCheck(&$objErr);
+
         return $objErr->arrErr;
     }
 
@@ -380,7 +407,8 @@ class SC_Helper_Customer {
         $objFormParam->toLower('email_mobile');
         $objFormParam->toLower('email_mobile02');
 
-        $objErr->arrErr = SC_Helper_Customer_Ex::sfCustomerCommonErrorCheck($objFormParam);
+        $objErr = SC_Helper_Customer_Ex::sfCustomerCommonErrorCheck($objFormParam);
+        $objErr = SC_Helper_Customer_Ex::sfCustomerRegisterErrorCheck(&$objErr);
 
         if (isset($objErr->arrErr['password']) && $objFormParam->getValue('password') == DEFAULT_PASSWORD) {
             unset($objErr->arrErr['password']);
@@ -411,6 +439,14 @@ class SC_Helper_Customer {
 
         $objErr->doFunc(array("お電話番号", "tel01", "tel02", "tel03"),array("TEL_CHECK"));
         $objErr->doFunc(array("郵便番号", "zip01", "zip02"), array("ALL_EXIST_CHECK"));
+
+        return $objErr;
+    }
+
+    /*
+     * 会員登録編集共通
+     */
+    function sfCustomerRegisterErrorCheck(&$objErr) {
         $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_BIRTHDAY"));
 
         if (SC_Display::detectDevice() !== DEVICE_TYPE_MOBILE){
@@ -422,6 +458,7 @@ class SC_Helper_Customer {
         // 現会員の判定 → 現会員もしくは仮登録中は、メアド一意が前提になってるので同じメアドで登録不可
         $objErr->doFunc(array("メールアドレス", "email"), array("CHECK_REGIST_CUSTOMER_EMAIL"));
 
-        return $objErr->arrErr;
+        return $objErr;
     }
+
 }
