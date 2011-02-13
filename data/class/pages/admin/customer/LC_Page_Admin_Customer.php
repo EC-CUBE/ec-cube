@@ -97,6 +97,8 @@ class LC_Page_Admin_Customer extends LC_Page_Admin {
                 SC_Utils_Ex::sfDispError(INVALID_MOVE_ERRORR);
             }
         }
+        // トランザクションID
+        $this->transactionid = SC_Helper_Session_Ex::getToken();
 
         // パラメータ管理クラス
         $objFormParam = new SC_FormParam();
@@ -137,9 +139,6 @@ class LC_Page_Admin_Customer extends LC_Page_Admin {
         default:
             break;
         }
-
-        // トランザクションID
-        $this->transactionid = SC_Helper_Session_Ex::getToken();
     }
 
     /**
