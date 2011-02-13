@@ -927,6 +927,9 @@ INSERT INTO mtb_review_deny_url (id, name, rank) VALUES (3, 'ttps://', 3);
 INSERT INTO mtb_sex (id, name, rank) VALUES (1, '男性', 0);
 INSERT INTO mtb_sex (id, name, rank) VALUES (2, '女性', 1);
 
+INSERT INTO mtb_customer_status (id, name, rank) VALUES (1, '仮会員', 0);
+INSERT INTO mtb_customer_status (id, name, rank) VALUES (2, '本会員', 1);
+
 INSERT INTO mtb_status (id, name, rank) VALUES (1, 'NEW', 0);
 INSERT INTO mtb_status (id, name, rank) VALUES (2, '残りわずか', 1);
 INSERT INTO mtb_status (id, name, rank) VALUES (3, 'ポイント２倍', 2);

@@ -1055,6 +1055,13 @@ CREATE TABLE mtb_sex (
     PRIMARY KEY (id)
 ) ENGINE=InnoDB;
 
+CREATE TABLE mtb_customer_status (
+    id smallint,
+    name text,
+    rank smallint NOT NULL DEFAULT 0,
+    PRIMARY KEY (id)
+) ENGINE=InnoDB;
+
 CREATE TABLE mtb_page_rows (
     id smallint,
     name text,

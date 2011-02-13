@@ -74,6 +74,7 @@
 <div id="customer" class="contents-main">
 <form name="search_form" id="search_form" method="post" action="?">
 <input type="hidden" name="mode" value="search" />
+<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
   <h2>検索条件設定</h2>
 
   <!--検索条件設定テーブルここから-->
@@ -282,20 +283,18 @@
 <input type="hidden" name="del_customer_id" value="" />
 <input type="hidden" name="search_pageno" value="<!--{$smarty.post.search_pageno|h}-->" />
 <input type="hidden" name="csv_mode" value="" />
+<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 
   <h2>検索結果一覧</h2>
   <div class="btn">
     <span class="attention"><!--検索結果数--><!--{$tpl_linemax}-->件</span>&nbsp;が該当しました。
     <!--検索結果-->
-    <!--{if $smarty.const.ADMIN_MODE == '1'}-->
-    <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete_all','',''); return false;">検索結果をすべて削除</a>
-    <!--{/if}-->
     <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('csv','',''); return false;">CSV ダウンロード</a>
     <a class="btn-normal" href="javascript:;" onclick="location.href='../contents/csv.php?tpl_subno_csv=customer'">CSV 出力項目設定</a>
   </div>
   <!--{include file=$tpl_pager}-->
 
-  <!--{if count($search_data) > 0}-->
+  <!--{if count($arrData) > 0}-->
 
   <!--検索結果表示テーブル-->
   <table class="list" id="customer-search-result">
@@ -319,7 +318,7 @@
       <th>都道府県</th>
       <th>メールアドレス</th>
     </tr>
-    <!--{foreach from=$search_data item=row}-->
+    <!--{foreach from=$arrData item=row}-->
       <tr>
         <td class="center" rowspan="2"><!--{if $row.status eq 1}-->仮<!--{else}-->本<!--{/if}--></td>
         <td><!--{$row.customer_id|h}--></td>

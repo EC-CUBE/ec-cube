@@ -203,6 +203,7 @@ class SC_FormParam {
                 case 'MAX_LENGTH_CHECK':
                 case 'MIN_LENGTH_CHECK':
                 case 'NUM_COUNT_CHECK':
+                case 'KANABLANK_CHECK':
                     $this->recursionCheck($this->disp_name[$cnt], $func,
                                           $this->param[$cnt], $objErr->arrErr,
                                           $val, $this->length[$cnt]);

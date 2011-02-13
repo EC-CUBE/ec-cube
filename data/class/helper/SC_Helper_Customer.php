@@ -249,6 +249,32 @@ class SC_Helper_Customer {
     }
 
     /**
+     * 顧客ID指定またはwhere条件指定での顧客情報取得(単一行データ)
+     *
+     * TODO: sfGetCustomerDataと統合したい
+     *
+     * @param integer $customer_id 顧客ID (指定無しでも構わないが、Where条件を入れる事)
+     * @param string $add_where 追加WHERE条件
+     * @param array $arrAddVal 追加WHEREパラメーター
+     * @access public
+     * @return array 対象顧客データ
+     */
+    function sfGetCustomerDataFromId($customer_id, $add_where = '', $arrAddVal = array()) {
+        $objQuery   =& SC_Query::getSingletonInstance();
+        if($where == '') {
+            $where = 'customer_id = ?';
+            $arrData = $objQuery->getRow("*", "dtb_customer", $where, array($customer_id));
+        }else{
+            if(SC_Utils_Ex::sfIsInt($customer_id)) {
+                $where .= ' AND customer_id = ?';
+                $arrAddVal[] = $customer_id;
+            }
+            $arrData = $objQuery->getRow("*", "dtb_customer", $where, $arrAddVal);
+        }
+        return $arrData;
+    }
+
+    /**
      * sfGetUniqSecretKey
      *
      * 重複しない会員登録キーを発行する。
@@ -460,5 +486,4 @@ class SC_Helper_Customer {
 
         return $objErr;
     }
-
 }

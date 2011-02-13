@@ -264,5 +264,68 @@ class SC_Helper_Mail {
         }
         return false;
     }
+
+    /**
+     * 登録メールを送信する。
+     *
+     * @param string $secret_key 顧客固有キー
+     * @param integer $customer_id 顧客ID
+     * @param boolean $is_mobile false(default):PCアドレスにメールを送る true:携帯アドレスにメールを送る 
+     * @return boolean true:成功 false:失敗
+     */
+    function sfSendRegistMail($secret_key, $customer_id = '', $is_mobile = false) {
+        // 顧客データの取得
+        if(SC_Utils_Ex::sfIsInt($customer_id)) {
+            $arrCustomerData = SC_Helper_Customer_Ex::sfGetCustomerDataFromId($customer_id);
+        }else{
+            $arrCustomerData = SC_Helper_Customer_Ex::sfGetCustomerDataFromId('', "secret_key = ?", array($secret_key));
+        }
+        if(SC_Utils_Ex::isBlank($arrCustomerData)) {
+            return false;
+        }
+
+        $CONF = SC_Helper_DB_Ex::sfGetBasisData();
+        
+        $objMailText = new SC_SiteView();
+        $objMailText->assign("CONF", $CONF);
+        $objMailText->assign("name", $arrCustomerData['name01'] . $arrCustomerData['name02']);
+        $objMailText->assign("uniqid", $arrCustomerData['secret_key']);
+        $objMailText->assignobj($arrCustomerData);
+        $objMailText->assignobj($this);
+
+        $objHelperMail  = new SC_Helper_Mail_Ex();
+
+        // 仮会員が有効の場合
+        if(CUSTOMER_CONFIRM_MAIL == true and $arrCustomerData['status'] == 1) {
+            $subject        = $objHelperMail->sfMakeSubject('会員登録のご確認');
+            $toCustomerMail = $objMailText->fetch("mail_templates/customer_mail.tpl");
+        } else {
+            $subject        = $objHelperMail->sfMakeSubject('会員登録のご完了');
+            $toCustomerMail = $objMailText->fetch("mail_templates/customer_regist_mail.tpl");
+        }
+
+        $objMail = new SC_SendMail();
+        $objMail->setItem(
+            ''                    // 宛先
+            , $subject              // サブジェクト
+            , $toCustomerMail       // 本文
+            , $CONF["email03"]      // 配送元アドレス
+            , $CONF["shop_name"]    // 配送元 名前
+            , $CONF["email03"]      // reply_to
+            , $CONF["email04"]      // return_path
+            , $CONF["email04"]      // Errors_to
+            , $CONF["email01"]      // Bcc
+        );
+        // 宛先の設定
+        if($is_mobile) {
+            $to_addr = $arrCustomerData["email_mobile"];
+        }else{
+            $to_addr = $arrCustomerData["email"];
+        }
+        $objMail->setTo($to_addr, $arrCustomerData["name01"] . $arrCustomerData["name02"] ." 様");
+
+        $objMail->sendMail();
+        return true;
+    }
 }
 ?>
