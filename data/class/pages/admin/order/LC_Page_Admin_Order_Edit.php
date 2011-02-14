@@ -791,7 +791,8 @@ __EOS__;
             if (SC_Utils::isBlank($dest['deliv_id'])) {
                 // XXX 商品種別IDは0番目の配列を使用
                 $product_type_id = $this->objFormParam->getValue('product_type_id');
-                $dest['deliv_id'] = $objPurchase->getDeliv($product_type_id[0]);
+                $arrDeliv = $objPurchase->getDeliv($product_type_id[0]);
+                $dest['deliv_id'] = $arrDeliv[0]['deliv_id'];
             }
 
             $dest['shipping_id'] = $shipping_id;
@@ -922,7 +923,8 @@ __EOS__;
             if (SC_Utils::isBlank($dest['deliv_id'])) {
                 // XXX 商品種別IDは0番目の配列を使用
                 $product_type_id = $this->objFormParam->getValue('product_type_id');
-                $dest['deliv_id'] = $objPurchase->getDeliv($product_type_id[0]);
+                $arrDeliv = $objPurchase->getDeliv($product_type_id[0]);
+                $dest['deliv_id'] = $arrDeliv[0]['deliv_id'];
             }
 
             $dest['shipping_id'] = $shipping_id;
