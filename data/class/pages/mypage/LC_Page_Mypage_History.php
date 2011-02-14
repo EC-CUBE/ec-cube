@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/mypage/LC_Page_AbstractMypage.php");
+require_once(CLASS_EX_REALDIR . "page_extends/mypage/LC_Page_AbstractMypage_Ex.php");
 
 /**
  * 購入履歴 のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_REALDIR . "pages/mypage/LC_Page_AbstractMypage.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Mypage_History extends LC_Page_AbstractMypage {
+class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex {
 
     // }}}
     // {{{ functions
