@@ -79,7 +79,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin {
      */
     function action() {
         $objSess = new SC_Session();
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
 
         // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess($objSess);
@@ -180,7 +180,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin {
     }
 
     function lfUpdateData($array) {
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
         $arrCol = $this->lfGetCol();
         foreach($arrCol as $val) {
             //配列の場合は、パイプ区切りの文字列に変換
@@ -196,7 +196,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin {
     }
 
     function lfInsertData($array) {
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
         $arrCol = $this->lfGetCol();
         foreach($arrCol as $val) {
             $sqlval[$val] = $array[$val];

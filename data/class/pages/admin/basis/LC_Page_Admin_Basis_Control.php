@@ -135,7 +135,7 @@ class LC_Page_Admin_Basis_Control extends LC_Page_Admin {
 
     // サイト管理情報の取得
     function lfGetControlList() {
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
         // サイト管理情報の取得
         $sql = "SELECT * FROM dtb_site_control ";
         $sql .= "WHERE del_flg = 0";
@@ -160,7 +160,7 @@ class LC_Page_Admin_Basis_Control extends LC_Page_Admin {
 
     /* DBへデータを登録する */
     function lfSiteControlData($control_id = "") {
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
         $sqlval = $this->objFormParam->getHashArray();
         $sqlval['update_date'] = 'Now()';
 

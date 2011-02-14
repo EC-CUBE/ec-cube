@@ -164,7 +164,7 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page_Admin {
      */
     function lfRegistData() {
         $arrRet = $this->objFormParam->getHashArray();
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
         $objQuery->begin();
 
         // 入力データを渡す。
@@ -280,7 +280,7 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page_Admin {
 
     /* 配送業者情報の取得 */
     function lfGetDelivData($deliv_id) {
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
 
         // パラメータ情報の初期化
         $this->lfInitParam('edit');

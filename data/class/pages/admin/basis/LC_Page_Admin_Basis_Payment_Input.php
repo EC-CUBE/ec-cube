@@ -178,7 +178,7 @@ class LC_Page_Admin_Basis_Payment_Input extends LC_Page_Admin {
 
     /* DBからデータを読み込む */
     function lfGetData($payment_id) {
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
         $where = "payment_id = ?";
         $arrRet = $objQuery->select("*", "dtb_payment", $where, array($payment_id));
         return $arrRet[0];
@@ -187,7 +187,7 @@ class LC_Page_Admin_Basis_Payment_Input extends LC_Page_Admin {
     /* DBへデータを登録する */
     function lfRegistData($payment_id = "") {
 
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
         $sqlval = $this->objFormParam->getHashArray();
         $arrRet = $this->objUpFile->getDBFileList();	// ファイル名の取得
         $sqlval = array_merge($sqlval, $arrRet);

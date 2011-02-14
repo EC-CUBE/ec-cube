@@ -89,7 +89,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin {
      * @return void
      */
     function action() {
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
 
         SC_Utils_Ex::sfIsSuccess(new SC_Session);
 
@@ -163,7 +163,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin {
      * @return void
      */
     function insertMtbZip($start = 1) {
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
         $objSess = new SC_Session();
 
         // 認証可否の判定
@@ -300,7 +300,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin {
     }
 
     function countMtbZip() {
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
         return $objQuery->count('mtb_zip');
     }
 

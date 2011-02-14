@@ -70,7 +70,7 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin {
      */
     function action() {
         $objSess = new SC_Session();
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
         $objDb = new SC_Helper_DB_Ex();
 
         // 認証可否の判定

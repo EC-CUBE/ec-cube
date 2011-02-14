@@ -72,7 +72,7 @@ class LC_Page_Admin_Basis_Point extends LC_Page_Admin {
      */
     function action() {
         $objSess = new SC_Session();
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
 
         // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess($objSess);
@@ -142,7 +142,7 @@ class LC_Page_Admin_Basis_Point extends LC_Page_Admin {
         // 入力データを渡す。
         $sqlval = $this->objFormParam->getHashArray();
         $sqlval['update_date'] = 'Now()';
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
         // UPDATEの実行
         $ret = $objQuery->update("dtb_baseinfo", $sqlval);
     }
@@ -151,7 +151,7 @@ class LC_Page_Admin_Basis_Point extends LC_Page_Admin {
         // 入力データを渡す。
         $sqlval = $this->objFormParam->getHashArray();
         $sqlval['update_date'] = 'Now()';
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
         // INSERTの実行
         $ret = $objQuery->insert("dtb_baseinfo", $sqlval);
     }

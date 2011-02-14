@@ -67,7 +67,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin {
      */
     function action() {
         $objSess = new SC_Session();
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
         $objDb = new SC_Helper_DB_Ex();
 
         $objDate = new SC_Date();
@@ -150,7 +150,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin {
 
     /* DBへの挿入 */
     function lfInsertClass($arrData) {
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
         // INSERTする値を作成する。
         $sqlval['title'] = $arrData['title'];
         $sqlval['month'] = $arrData['month'];
@@ -167,7 +167,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin {
 
     /* DBへの更新 */
     function lfUpdateClass($arrData) {
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
         // UPDATEする値を作成する。
         $sqlval['title'] = $arrData['title'];
         $sqlval['month'] = $arrData['month'];
@@ -202,7 +202,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin {
         $objErr->doFunc(array("月", "month", INT_LEN), array("SELECT_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
         $objErr->doFunc(array("日", "day", INT_LEN), array("SELECT_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
         if(!isset($objErr->arrErr['date'])) {
-            $objQuery = new SC_Query();
+            $objQuery =& SC_Query::getSingletonInstance();
             $where = "del_flg = 0 AND month = ? AND day = ?";
             $arrval = array($_POST['month'], $_POST['day']);
             if (!empty($_POST['holiday_id'])) {

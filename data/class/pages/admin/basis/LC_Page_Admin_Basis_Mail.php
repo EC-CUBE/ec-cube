@@ -66,7 +66,7 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin {
      * @return void
      */
     function action() {
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
         $objSess = new SC_Session();
         $masterData = new SC_DB_MasterData_Ex();
 

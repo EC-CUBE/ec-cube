@@ -67,7 +67,7 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin {
      */
     function action() {
         $objSess = new SC_Session();
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
         $objDb = new SC_Helper_DB_Ex();
 
         // 認証可否の判定
@@ -145,7 +145,7 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin {
 
     /* DBへの挿入 */
     function lfInsertClass($arrData) {
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
         // INSERTする値を作成する。
         $sqlval['kiyaku_title'] = $arrData['kiyaku_title'];
         $sqlval['kiyaku_text'] = $arrData['kiyaku_text'];
@@ -161,7 +161,7 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin {
 
     /* DBへの更新 */
     function lfUpdateClass($arrData) {
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
         // UPDATEする値を作成する。
         $sqlval['kiyaku_title'] = $arrData['kiyaku_title'];
         $sqlval['kiyaku_text'] = $arrData['kiyaku_text'];
@@ -193,7 +193,7 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin {
         $objErr->doFunc(array("規約タイトル", "kiyaku_title", SMTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
         $objErr->doFunc(array("規約内容", "kiyaku_text", MLTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
         if(!isset($objErr->arrErr['name'])) {
-            $objQuery = new SC_Query();
+            $objQuery =& SC_Query::getSingletonInstance();
             $arrRet = $objQuery->select("kiyaku_id, kiyaku_title", "dtb_kiyaku", "del_flg = 0 AND kiyaku_title = ?", array($_POST['kiyaku_title']));
             // 編集中のレコード以外に同じ名称が存在する場合
             if ($arrRet[0]['kiyaku_id'] != $_POST['kiyaku_id'] && $arrRet[0]['kiyaku_title'] == $_POST['kiyaku_title']) {
