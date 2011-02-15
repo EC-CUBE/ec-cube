@@ -250,59 +250,35 @@ class LC_Page_Rss_Products extends LC_Page {
      * @return array $arrProduct 取得結果を配列で返す
      */
     function lfGetProductsDetail(&$objQuery, $product_id = 'all'){
-        $sql = '';
-        $sql .= 'SELECT ';
-        $sql .= '   prod.product_id ';
-        $sql .= '   ,prod.name AS product_name ';
-        $sql .= '   ,prod.category_id ';
-        $sql .= '   ,prod.point_rate ';
-        $sql .= '   ,prod.comment3 ';
-        $sql .= '   ,prod.main_list_comment ';
-        $sql .= '   ,prod.main_list_image ';
-        $sql .= '   ,prod.main_comment ';
-        $sql .= '   ,prod.main_image ';
-        $sql .= '   ,prod.main_large_image ';
-        $sql .= '   ,cls.product_code ';
-        $sql .= '   ,cls.price01 ';
-        $sql .= '   ,cls.price02 ';
-        $sql .= '   ,cls.stock ';
-        $sql .= '   ,cls.stock_unlimited ';
-        $sql .= '   ,cls.classcategory_id1 ';
-        $sql .= '   ,cls.classcategory_id2 ';
-        $sql .= '   ,( ';
-        $sql .= '     SELECT ';
-        $sql .= '        name ';
-        $sql .= '     FROM ';
-        $sql .= '        dtb_classcategory AS clscat ';
-        $sql .= '     WHERE ';
-        $sql .= '        clscat.classcategory_id = cls.classcategory_id1 ';
-        $sql .= '   ) AS classcategory_name1 ';
-        $sql .= '   ,( ';
-        $sql .= '     SELECT ';
-        $sql .= '        name ';
-        $sql .= '     FROM ';
-        $sql .= '        dtb_classcategory AS clscat ';
-        $sql .= '     WHERE ';
-        $sql .= '        clscat.classcategory_id = cls.classcategory_id2 ';
-        $sql .= '   ) AS classcategory_name2 ';
-        $sql .= '   ,( ';
-        $sql .= '     SELECT ';
-        $sql .= '        category_name ';
-        $sql .= '     FROM ';
-        $sql .= '        dtb_category AS cat ';
-        $sql .= '     WHERE ';
-        $sql .= '        cat.category_id = prod.category_id ';
-        $sql .= '   ) AS category_name ';
-        $sql .= '   ,prod.update_date ';
-        $sql .= ' FROM dtb_products AS prod, dtb_products_class AS cls';
-        $sql .= ' WHERE prod.product_id = cls.product_id AND prod.del_flg = 0 AND prod.status = 1';
-
-        if($product_id != 'all'){
-            $sql .= ' AND prod.product_id = ?';
-            $arrval = array($product_id);
+        // --- 商品詳細の取得
+        if ($product_id != 'all') {
+            $where = 'product_id = ' . $product_id;
+            $objQuery->setWhere($where);
         }
-        $sql .= ' ORDER BY prod.product_id, cls.classcategory_id1, cls.classcategory_id2';
-        $arrProduct = $objQuery->getAll($sql, $arrval);
+        $objQuery->setOrder('product_id');
+        $objProduct = new SC_Product();
+        $arrProductLsit = $objProduct->lists($objQuery);
+        // 各商品のカテゴリIDとランクの取得
+        $arrProduct = array();
+        foreach( $arrProductLsit as $key => $val ) {
+            $sql = '';
+            $sql .= ' SELECT';
+            $sql .= '   T1.category_id,';
+            $sql .= '   T1.rank AS product_rank,';
+            $sql .= '   T2.rank AS category_rank';
+            $sql .= ' FROM';
+            $sql .= '   dtb_product_categories AS T1';
+            $sql .= ' LEFT JOIN';
+            $sql .= '   dtb_category AS T2';
+            $sql .= ' ON';
+            $sql .= '   T1.category_id = T2.category_id';
+            $sql .= ' WHERE';
+            $sql .= '   product_id = ?';
+            $arrCategory = $objQuery->getAll($sql, array($val['product_id']));
+            if ( !empty($arrCategory) ) {
+                $arrProduct[$key] = array_merge($val, $arrCategory[0]);
+            }
+        }
         return $arrProduct;
     }
 
@@ -313,113 +289,32 @@ class LC_Page_Rss_Products extends LC_Page {
      * @return array $arrProduct 取得結果を配列で返す
      */
     function lfGetProductsAllclass(&$objQuery){
-        $sql = '';
-        $sql .= ' SELECT';
-        $sql .= '     T1.product_id,';
-        $sql .= '     T1.name as product_name,';
-        $sql .= '     T1.maker_id,';
-        $sql .= '     T1.status,';
-        $sql .= '     T1.comment1,';
-        $sql .= '     T1.comment2,';
-        $sql .= '     T1.comment3,';
-        $sql .= '     T1.comment4,';
-        $sql .= '     T1.comment5,';
-        $sql .= '     T1.comment6,';
-        $sql .= '     T1.note,';
-        $sql .= '     T1.main_list_comment,';
-        $sql .= '     T1.main_list_image,';
-        $sql .= '     T1.main_comment,';
-        $sql .= '     T1.main_image,';
-        $sql .= '     T1.main_large_image,';
-        $sql .= '     T1.sub_title1,';
-        $sql .= '     T1.sub_comment1,';
-        $sql .= '     T1.sub_image1,';
-        $sql .= '     T1.sub_large_image1,';
-        $sql .= '     T1.sub_title2,';
-        $sql .= '     T1.sub_comment2,';
-        $sql .= '     T1.sub_image2,';
-        $sql .= '     T1.sub_large_image2,';
-        $sql .= '     T1.sub_title3,';
-        $sql .= '     T1.sub_comment3,';
-        $sql .= '     T1.sub_image3,';
-        $sql .= '     T1.sub_large_image3,';
-        $sql .= '     T1.sub_title4,';
-        $sql .= '     T1.sub_comment4,';
-        $sql .= '     T1.sub_image4,';
-        $sql .= '     T1.sub_large_image4,';
-        $sql .= '     T1.sub_title5,';
-        $sql .= '     T1.sub_comment5,';
-        $sql .= '     T1.sub_image5,';
-        $sql .= '     T1.sub_large_image5,';
-        $sql .= '     T1.sub_title6,';
-        $sql .= '     T1.sub_comment6,';
-        $sql .= '     T1.sub_image6,';
-        $sql .= '     T1.sub_large_image6,';
-        $sql .= '     T1.del_flg,';
-        $sql .= '     T1.creator_id,';
-        $sql .= '     T1.create_date,';
-        $sql .= '     T1.update_date,';
-        $sql .= '     T1.deliv_date_id,';
-        $sql .= '     T4.product_code_min,';
-        $sql .= '     T4.product_code_max,';
-        $sql .= '     T4.price01_min,';
-        $sql .= '     T4.price01_max,';
-        $sql .= '     T4.price02_min,';
-        $sql .= '     T4.price02_max,';
-        $sql .= '     T4.stock_min,';
-        $sql .= '     T4.stock_max,';
-        $sql .= '     T4.stock_unlimited_min,';
-        $sql .= '     T4.stock_unlimited_max,';
-        $sql .= '     T4.class_count,';
-        $sql .= '     T3.rank AS category_rank,';
-        $sql .= '     T2.category_id,';
-        $sql .= '     T2.rank AS product_rank';
-        $sql .= ' FROM';
-        $sql .= '     dtb_products AS T1';
-        $sql .= '     LEFT JOIN';
-        $sql .= '         (';
-        $sql .= '             SELECT';
-        $sql .= '                 product_id,';
-        $sql .= '                 MIN(product_code) AS product_code_min,';
-        $sql .= '                 MAX(product_code) AS product_code_max,';
-        $sql .= '                 MIN(price01) AS price01_min,';
-        $sql .= '                 MAX(price01) AS price01_max,';
-        $sql .= '                 MIN(price02) AS price02_min,';
-        $sql .= '                 MAX(price02) AS price02_max,';
-        $sql .= '                 MIN(stock) AS stock_min,';
-        $sql .= '                 MAX(stock) AS stock_max,';
-        $sql .= '                 MIN(stock_unlimited) AS stock_unlimited_min,';
-        $sql .= '                 MAX(stock_unlimited) AS stock_unlimited_max,';
-        $sql .= '                 COUNT(*) as class_count';
-        $sql .= '             FROM';
-        $sql .= '                 dtb_products_class';
-        $sql .= '             GROUP BY';
-        $sql .= '                 product_id';
-        $sql .= '         ) AS T4';
-        $sql .= '     ON';
-        $sql .= '         T1.product_id = T4.product_id';
-        $sql .= '     LEFT JOIN';
-        $sql .= '         dtb_product_categories AS T2';
-        $sql .= '     ON';
-        $sql .= '         T1.product_id = T2.product_id';
-        $sql .= '     LEFT JOIN';
-        $sql .= '         dtb_category AS T3';
-        $sql .= '     ON';
-        $sql .= '         T2.category_id = T3.category_id';
-        $sql .= ' WHERE';
-        $sql .= '     T1.del_flg = 0 AND T1.status = 1 ';
-        
-        // 在庫無し商品の非表示
-        if (NOSTOCK_HIDDEN === true) {
-            $sql .= ' AND (T4.stock_max >= 1 OR T4.stock_unlimited_max = 1)';
+        // --- 商品一覧の取得
+        $objQuery->setOrder('product_id');
+        $objProduct = new SC_Product();
+        $arrProductLsit = $objProduct->lists($objQuery);
+        // 各商品のカテゴリIDとランクの取得
+        $arrProduct = array();
+        foreach( $arrProductLsit as $key => $val ) {
+            $sql = '';
+            $sql .= ' SELECT';
+            $sql .= '   T1.category_id,';
+            $sql .= '   T1.rank AS product_rank,';
+            $sql .= '   T2.rank AS category_rank';
+            $sql .= ' FROM';
+            $sql .= '   dtb_product_categories AS T1';
+            $sql .= ' LEFT JOIN';
+            $sql .= '   dtb_category AS T2';
+            $sql .= ' ON';
+            $sql .= '   T1.category_id = T2.category_id';
+            $sql .= ' WHERE';
+            $sql .= '   product_id = ?';
+            $arrCategory = $objQuery->getAll($sql, array($val['product_id']));
+            if ( !empty($arrCategory) ) {
+                $arrProduct[$key] = array_merge($val, $arrCategory[0]);
+            }
         }
-        
-        $sql .= ' ORDER BY';
-        $sql .= '     T1.product_id asc';
-        
-        $arrProduct = $objQuery->getAll($sql);
         return $arrProduct;
-        
     }
 
     /**

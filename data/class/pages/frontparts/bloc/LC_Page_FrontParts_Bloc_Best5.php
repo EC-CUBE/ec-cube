@@ -86,24 +86,39 @@ class LC_Page_FrontParts_Bloc_Best5 extends LC_Page_FrontParts_Bloc {
      * @return array $arrBestProducts 検索結果配列
      */
     function lfGetRanking(){
+        // おすすめ商品取得
         $objQuery = SC_Query::getSingletonInstance();
-        // FIXME SC_Product クラスを使用した実装
-        $col = 'DISTINCT A.*, name, price02_min, price01_min, main_list_image ';
-        $from = 'dtb_best_products AS A INNER JOIN vw_products_allclass AS allcls using(product_id)';
-        $where = 'allcls.del_flg = 0 AND allcls.status = 1';
-        
-        // 在庫無し商品の非表示
-        if (NOSTOCK_HIDDEN === true) {
-            $where .= ' AND (allcls.stock_max >= 1 OR allcls.stock_unlimited_max = 1)';
-        }
-        
-        $order = 'rank';
-        $objQuery->setOrder($order);
+        $sql = '';
+        $sql .= ' SELECT';
+        $sql .= ' DISTINCT';
+        $sql .= '    T1.best_id,';
+        $sql .= '    T1.category_id,';
+        $sql .= '    T1.rank,';
+        $sql .= '    T1.product_id,';
+        $sql .= '    T1.title,';
+        $sql .= '    T1.comment,';
+        $sql .= '    T1.create_date,';
+        $sql .= '    T1.update_date';
+        $sql .= ' FROM';
+        $sql .= '   dtb_best_products AS T1';
+        $sql .= ' WHERE';
+        $sql .= '   del_flg = 0';
+        $objQuery->setOrder('rank');
         $objQuery->setLimit(RECOMMEND_NUM);
-
-        $arrBestProducts = $objQuery->select($col, $from, $where);
-
-        return $arrBestProducts;
+        $arrBestProducts = $objQuery->getAll($sql);
+        // 各商品の詳細情報を取得
+        $objQuery = SC_Query::getSingletonInstance();
+        $arrProduct = array();
+        $objProduct = new SC_Product();
+        foreach( $arrBestProducts as $key => $val ) {
+            $where = 'product_id = ' . $val['product_id'];
+            $objQuery->setWhere($where);
+            $arrProductLsit = $objProduct->lists($objQuery);
+            if ( !empty($arrProductLsit) ) {
+                $arrProduct[$key] = array_merge($val, $arrProductLsit[0]);
+            }
+        }
+        return $arrProduct;
     }
 }
 ?>
