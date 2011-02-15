@@ -29,7 +29,7 @@ self.moveTo(20,20);self.focus();
 //-->
 </script>
 
-<form name="form1" id="form1" method="post" action="" enctype="multipart/form-data">
+<form name="form1" id="form1" method="post" action="./payment_input.php" enctype="multipart/form-data">
 <input type="hidden" name="mode" value="edit" />
 <input type="hidden" name="payment_id" value="<!--{$tpl_payment_id}-->" />
 <input type="hidden" name="image_key" value="" />
@@ -39,7 +39,7 @@ self.moveTo(20,20);self.focus();
 <!--{/foreach}-->
 <input type="hidden" name="charge_flg" value="<!--{$charge_flg}-->" />
   <h2>支払方法登録・編集</h2>
-  
+
     <table class="form">
     <colgroup width="20%">
     <colgroup width="80%">
@@ -73,7 +73,7 @@ self.moveTo(20,20);self.focus();
           <span class="attention"><!--{$arrErr[$key_to]}--></span>
           <input type="text" name="<!--{$arrForm[$key_from].keyname}-->" value="<!--{$arrForm[$key_from].value|h}-->" size="10" class="box10" maxlength="<!--{$arrForm[$key_from].length}-->" style="<!--{$arrErr[$key_from]|sfGetErrorColor}-->" />
            円
-           ～ 
+           ～
           <input type="text" name="<!--{$arrForm[$key_to].keyname}-->" value="<!--{$arrForm[$key_to].value|h}-->" size="10" class="box10" maxlength="<!--{$arrForm[$key_to].length}-->" style="<!--{$arrErr[$key_to]|sfGetErrorColor}-->" />
            円
         </td>
@@ -91,13 +91,13 @@ self.moveTo(20,20);self.focus();
         </td>
       </tr>
     </table>
-  
+
   <div class="btn-area">
     <ul>
       <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'edit', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
     </ul>
   </div>
-  
+
 </div>
 </form>
 
