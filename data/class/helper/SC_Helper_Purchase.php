@@ -106,6 +106,7 @@ class SC_Helper_Purchase {
         // カート内が空でないか
         if (SC_Utils_Ex::isBlank($cartKeys)) {
             SC_Response_Ex::sendRedirect(CART_URLPATH);
+            exit;
         }
 
         foreach ($cartKeys as $cartKey) {
@@ -118,6 +119,7 @@ class SC_Helper_Purchase {
              */
             if(!SC_SiteSession::checkUniqId()) {
                 SC_Utils_Ex::sfDispSiteError(CANCEL_PURCHASE);
+                exit;
             }
 
             // 購入ボタンを押してから変化がないか
@@ -189,34 +191,44 @@ class SC_Helper_Purchase {
 
     /**
      * 配送商品を設定する.
+     *
+     * @param integer $shipping_id 配送先ID
+     * @param integer $product_class_id 商品規格ID
+     * @param integer $quantity 数量
+     * @return void
      */
-    function setShipmentItemTemp($otherDelivId, $productClassId, $quantity) {
-        $_SESSION['shipping'][$otherDelivId]['shipment_item'][$productClassId]['shipping_id'] = $otherDelivId;
-        $_SESSION['shipping'][$otherDelivId]['shipment_item'][$productClassId]['product_class_id'] = $productClassId;
-        $_SESSION['shipping'][$otherDelivId]['shipment_item'][$productClassId]['quantity'] += $quantity;
+    function setShipmentItemTemp($shipping_id, $product_class_id, $quantity) {
+        // 配列が長くなるので, リファレンスを使用する
+        $arrItems =& $_SESSION['shipping'][$shipping_id]['shipment_item'];
+
+        $arrItems[$product_class_id]['shipping_id'] = $shipping_id;
+        $arrItems[$product_class_id]['product_class_id'] = $product_class_id;
+        $arrItems[$product_class_id]['quantity'] += $quantity;
 
         $objProduct = new SC_Product();
-        if (empty($_SESSION['shipping'][$otherDelivId]['shipment_item'][$productClassId]['productsClass'])) {
-            $product =& $objProduct->getDetailAndProductsClass($productClassId);
-            $_SESSION['shipping'][$otherDelivId]['shipment_item'][$productClassId]['productsClass'] = $product;
+        if (empty($arrItems[$product_class_id]['productsClass'])) {
+            $product =& $objProduct->getDetailAndProductsClass($product_class_id);
+            $arrItems[$product_class_id]['productsClass'] = $product;
         }
-        $incTax = SC_Helper_DB_Ex::sfCalcIncTax($_SESSION['shipping'][$otherDelivId]['shipment_item'][$productClassId]['productsClass']['price02']);
-        $_SESSION['shipping'][$otherDelivId]['shipment_item'][$productClassId]['total_inctax'] = $incTax * $_SESSION['shipping'][$otherDelivId]['shipment_item'][$productClassId]['quantity'];
+        $incTax = SC_Helper_DB_Ex::sfCalcIncTax($arrItems[$product_class_id]['productsClass']['price02']);
+        $arrItems[$product_class_id]['total_inctax'] = $incTax * $arrItems[$product_class_id]['quantity'];
     }
 
     /**
      * 配送商品の情報でカートを更新する.
+     *
+     * @param SC_CartSession $objCartSession SC_CartSession インスタンス
      */
     function shippingItemTempToCart(&$objCartSession) {
-        $shipmentItems = array();
+        $arrShipmentItems = array();
 
-        foreach (array_keys($_SESSION['shipping']) as $otherDelivId) {
-            foreach (array_keys($_SESSION['shipping'][$otherDelivId]['shipment_item']) as $productClassId) {
-                $shipmentItems[$productClassId] += $_SESSION['shipping'][$otherDelivId]['shipment_item'][$productClassId]['quantity'];
+        foreach (array_keys($_SESSION['shipping']) as $shipping_id) {
+            foreach (array_keys($_SESSION['shipping'][$shipping_id]['shipment_item']) as $product_class_id) {
+                $arrShipmentItems[$product_class_id] += $_SESSION['shipping'][$shipping_id]['shipment_item'][$product_class_id]['quantity'];
            }
         }
-        foreach ($shipmentItems as $productClassId => $quantity) {
-            $objCartSession->setProductValue($productClassId, 'quantity',
+        foreach ($arrShipmentItems as $product_class_id => $quantity) {
+            $objCartSession->setProductValue($product_class_id, 'quantity',
                                              $quantity,$objCartSession->getKey());
         }
     }
@@ -243,12 +255,18 @@ class SC_Helper_Purchase {
 
     /**
      * 配送情報をセッションに保存する.
+     *
+     * @param array $arrSrc 配送情報の連想配列
+     * @param integer $shipping_id 配送先ID
+     * @return void
      */
-    function saveShippingTemp(&$src, $otherDelivId = 0) {
-        if (empty($_SESSION['shipping'][$otherDelivId])) {
-            $_SESSION['shipping'][$otherDelivId] = $src;
+    function saveShippingTemp(&$arrSrc, $shipping_id = 0) {
+        if (empty($_SESSION['shipping'][$shipping_id])) {
+            $_SESSION['shipping'][$shipping_id] = $arrSrc;
+            $_SESSION['shipping'][$shipping_id]['shipping_id'] = $shipping_id;
         } else {
-            $_SESSION['shipping'][$otherDelivId] = array_merge($_SESSION['shipping'][$otherDelivId], $src);
+            $_SESSION['shipping'][$shipping_id] = array_merge($_SESSION['shipping'][$shipping_id], $arrSrc);
+            $_SESSION['shipping'][$shipping_id]['shipping_id'] = $shipping_id;
         }
     }
 
@@ -506,39 +524,44 @@ class SC_Helper_Purchase {
     }
 
     /**
-     * 配送情報を登録する.
+     * 配送情報の登録を行う.
+     *
+     * $arrParam のうち, dtb_shipping テーブルに存在するカラムのみを登録する.
+     *
+     * @param integer $order_id 受注ID
+     * @param array $arrParams 配送情報の連想配列
+     * @return void
      */
-    function registerShipping($orderId, $params) {
+    function registerShipping($order_id, $arrParams) {
         $objQuery =& SC_Query::getSingletonInstance();
+        $table = 'dtb_shipping';
 
-        $cols = $objQuery->listTableFields('dtb_shipping');
+         foreach ($arrParams as $arrShipping) {
 
-        foreach ($params as $shipping_id => $shipping_val) {
-            // 存在するカラムのみ INSERT
-            foreach ($shipping_val as $key => $val) {
-                if (in_array($key, $cols)) {
-                    $sqlval[$key] = $val;
-                }
-            }
+            $arrValues = $objQuery->extractOnlyColsOf($table, $arrShipping);
 
             // 配送日付を timestamp に変換
-            if (!SC_Utils_Ex::isBlank($sqlval['shipping_date'])) {
-                $d = mb_strcut($sqlval["shipping_date"], 0, 10);
+            if (!SC_Utils_Ex::isBlank($arrValues['shipping_date'])) {
+                $d = mb_strcut($arrValues["shipping_date"], 0, 10);
                 $arrDate = split("/", $d);
                 $ts = mktime(0, 0, 0, $arrDate[1], $arrDate[2], $arrDate[0]);
-                $sqlval['shipping_date'] = date("Y-m-d", $ts);
+                $arrValues['shipping_date'] = date("Y-m-d", $ts);
             }
 
-            $sqlval['order_id'] = $orderId;
-            $sqlval['shipping_id'] = $shipping_id;
-            $sqlval['create_date'] = 'Now()';
-            $sqlval['update_date'] = 'Now()';
-            $objQuery->insert("dtb_shipping", $sqlval);
+            $arrValues['order_id'] = $order_id;
+            $arrValues['create_date'] = 'Now()';
+            $arrValues['update_date'] = 'Now()';
+            $objQuery->insert($table, $arrValues);
         }
     }
 
     /**
      * 配送商品を登録する.
+     *
+     * @param integer $order_id 受注ID
+     * @param integer $shipping_id 配送先ID
+     * @param array $arrParams 配送商品の配列
+     * @return void
      */
     function registerShipmentItem($orderId, $shippingId, $params) {
         $objQuery =& SC_Query::getSingletonInstance();
@@ -637,6 +660,126 @@ class SC_Helper_Purchase {
         $objCartSession->delAllProducts($cartKey);
         SC_SiteSession::unsetUniqId();
         return $orderParams['order_id'];
+    }
+
+    /**
+     * 受注情報を取得する.
+     *
+     * @param integer $order_id 受注ID
+     * @param integer $customer_id 顧客ID
+     * @return array 受注情報の配列
+     */
+    function getOrder($order_id, $customer_id = null) {
+        $objQuery =& SC_Query::getSingletonInstance();
+        $where = 'order_id = ?';
+        $arrValues = array($order_id);
+        if (!SC_Utils_Ex::isBlank($customer_id)) {
+            $where .= ' AND customer_id = ?';
+            $arrValues[] = $customer_id;
+        }
+        return $objQuery->getRow('*', 'dtb_order', $where, $arrValues);
+    }
+
+    /**
+     * 受注詳細を取得する.
+     *
+     * @param integer $order_id 受注ID
+     * @return array 受注詳細の配列
+     */
+    function getOrderDetail($order_id) {
+        $objQuery =& SC_Query::getSingletonInstance();
+        $dbFactory  = SC_DB_DBFactory_Ex::getInstance();
+        $col = <<< __EOS__
+            T3.product_id,
+            T3.product_class_id as product_class_id,
+            T3.product_type_id AS product_type_id,
+            T2.product_code,
+            T2.product_name,
+            T2.classcategory_name1 AS classcategory_name1,
+            T2.classcategory_name2 AS classcategory_name2,
+            T2.price,
+            T2.quantity,
+            T2.point_rate,
+            T1.status AS status,
+            T1.payment_date AS payment_date,
+            CASE WHEN EXISTS(
+                    SELECT 1 FROM dtb_products
+                     WHERE product_id = T3.product_id
+                       AND del_flg = 0
+                       AND status = 1)
+                 THEN '1' ELSE '0'
+                  END AS enable,
+__EOS__;
+        $col .= $dbFactory->getDownloadableDaysWhereSql('T1') . ' AS effective';
+        $from = <<< __EOS__
+                 dtb_order T1
+            JOIN dtb_order_detail T2
+              ON T1.order_id = T2.order_id
+            JOIN dtb_products_class T3
+              ON T2.product_class_id = T3.product_class_id
+__EOS__;
+        return $objQuery->select($col, $from, 'T1.order_id = ?', array($order_id));
+    }
+
+    /**
+     * 配送情報を取得する.
+     *
+     * @param integer $order_id 受注ID
+     * @param boolean $has_items 結果に配送商品も含める場合 true
+     * @return array 配送情報の配列
+     */
+    function getShippings($order_id, $has_items = true) {
+        $objQuery =& SC_Query::getSingletonInstance();
+        $arrResults = array();
+        $objQuery->setOrder('shipping_id');
+        $arrShippings = $objQuery->select("*", "dtb_shipping", "order_id = ?",
+                                          array($order_id));
+        // shipping_id ごとの配列を生成する
+        foreach ($arrShippings as $shipping) {
+            foreach ($shipping as $key => $val) {
+                $arrResults[$shipping['shipping_id']][$key] = $val;
+            }
+        }
+
+        if ($has_items) {
+            $objProduct = new SC_Product();
+            foreach (array_keys($arrResults) as $shipping_id) {
+                $arrResults[$shipping_id]['shipment_item']
+                        =& $this->getShipmentItems($order_id, $shipping_id);
+            }
+        }
+        return $arrResults;
+    }
+
+    /**
+     * 配送商品を取得する.
+     *
+     * @param integer $order_id 受注ID
+     * @param integer $shipping_id 配送先ID
+     * @param boolean $has_detail 商品詳細も取得する場合 true
+     * @return array 商品規格IDをキーにした配送商品の配列
+     */
+    function getShipmentItems($order_id, $shipping_id, $has_detail = true) {
+        $objQuery =& SC_Query::getSingletonInstance();
+        $objProduct = new SC_Product();
+        $arrResults = array();
+        $arrItems = $objQuery->select("*", "dtb_shipment_item",
+                                      "order_id = ? AND shipping_id = ?",
+                                      array($order_id, $shipping_id));
+
+        foreach ($arrItems as $key => $arrItem) {
+            $product_class_id = $arrItem['product_class_id'];
+
+            foreach ($arrItem as $detailKey => $detailVal) {
+                $arrResults[$product_class_id][$detailKey] = $detailVal;
+            }
+            // 商品詳細を関連づける
+            if ($has_detail) {
+                $arrResults[$product_class_id]['productsClass']
+                    =& $objProduct->getDetailAndProductsClass($product_class_id);
+            }
+        }
+        return $arrResults;
     }
 
     /**

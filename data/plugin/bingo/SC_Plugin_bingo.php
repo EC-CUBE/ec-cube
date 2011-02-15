@@ -95,8 +95,9 @@ class SC_Plugin_bingo extends SC_Plugin_Ex {
             $objCartSess = new SC_CartSession();
             $objCustomer = new SC_Customer();
             $objSiteSess = new SC_SiteSession();
+            $objPurchase = new SC_Helper_Purchase_Ex();
 
-            $tmpData = $objDb->sfGetOrderTemp($uniqid);
+            $tmpData = $objPurchase->getOrderTemp($uniqid);
 
             // 当たりなので、使用ポイントを未使用にする。
             $tmpData['use_point'] = 0;
@@ -111,7 +112,7 @@ class SC_Plugin_bingo extends SC_Plugin_Ex {
             $tmpData['note'] = '当たり';
 
             $uniqid = $objSiteSess->getUniqId();
-            $objDb->sfRegistTempOrder($uniqid, $tmpData);
+            $objPurchase->saveOrderTemp($uniqid, $tmpData, $objCustomer);
 
             // is_bingoセット
             $_SESSION['plugin_bingo'] = array('is_bingo'=>true);

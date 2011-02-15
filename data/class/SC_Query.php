@@ -837,6 +837,24 @@ class SC_Query {
     }
 
     /**
+     * パラメータの連想配列から, テーブルに存在する列のみを取得する.
+     *
+     * @param string $table テーブル名
+     * @param array ブレースホルダの連想配列
+     * @return array テーブルに存在する列のみ抽出した連想配列
+     */
+    function extractOnlyColsOf($table, $arrParams) {
+        $arrCols = $this->listTableFields($table);
+        $arrResults = array();
+        foreach ($arrParams as $key => $val) {
+            if (in_array($key, $arrCols)) {
+                $arrResults[$key] = $val;
+            }
+        }
+        return $arrResults;
+    }
+
+    /**
      * プリペアドステートメントを構築する.
      *
      * @access private

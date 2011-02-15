@@ -69,31 +69,30 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex {
     function action() {
         $objCustomer    = new SC_Customer();
         $objDb          = new SC_Helper_DB_Ex();
+        $objPurchase = new SC_Helper_Purchase_Ex();
 
         if (!SC_Utils_Ex::sfIsInt($_GET['order_id'])) {
             SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
         }
 
         $order_id        = $_GET['order_id'];
-        $arrOrderData   = $this->lfGetOrderData($objCustomer->getValue('customer_id'), $order_id);
 
-        if (empty($arrOrderData)){
+        //受注データの取得
+        $this->tpl_arrOrderData = $objPurchase->getOrder($order_id, $objCustomer->getValue('customer_id'));
+
+        if (empty($this->tpl_arrOrderData)){
             SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
         }
 
-        //受注詳細データの取得
-        $this->tpl_arrOrderData = $arrOrderData[0];
+        $this->arrShipping      = $objPurchase->getShippings($order_id);
 
-        $this->arrShipping      = $objDb->sfGetShippingData($order_id);
         $this->isMultiple       = count($this->arrShipping) > 1;
         // 支払い方法の取得
         $this->arrPayment       = $objDb->sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
-        // お届け時間の取得
-        $this->arrDelivTime     = SC_Utils_Ex::sfArrKeyValue($objDb->sfGetDelivTime($this->tpl_arrOrderData['payment_id']),
-                                                            'time_id',
-                                                            'deliv_time');
+        // FIXME お届け時間の取得
+        //$this->arrDelivTime     = $objPurchase->getDelivTime($this->tpl_arrOrderData['deliv_id']);
         // 受注商品明細の取得
-        $this->tpl_arrOrderDetail = $this->lfGetOrderDetail($order_id);
+        $this->tpl_arrOrderDetail = $objPurchase->getOrderDetail($order_id);
         // 受注メール送信履歴の取得
         $this->tpl_arrMailHistory = $this->lfGetMailHistory($order_id);
 
@@ -106,53 +105,6 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex {
      */
     function destroy() {
         parent::destroy();
-    }
-
-    /**
-     * 受注の取得
-     *
-     * @param integer $orderId 注文番号
-     * @return array 受注の内容
-     */
-    function lfGetOrderData($customer_id, $order_id) {
-        // DBから受注情報を読み込む
-        $objQuery   =& SC_Query::getSingletonInstance();
-        $from       = "dtb_order";
-        $where      = "del_flg = 0 AND customer_id = ? AND order_id = ?";
-        return $objQuery->select("*", $from, $where, array($customer_id, $order_id));
-    }
-
-    /**
-     * 受注商品明細の取得
-     *
-     * @param integer $orderId 注文番号
-     * @return array 受注商品明細の内容
-     */
-    function lfGetOrderDetail($order_id) {
-        $objQuery   =& SC_Query::getSingletonInstance();
-        $dbFactory  = SC_DB_DBFactory_Ex::getInstance();
-
-        $col    = "
-            od.product_id AS product_id,
-            od.product_code AS product_code,
-            od.product_name AS product_name,
-            od.classcategory_name1 AS classcategory_name1,
-            od.classcategory_name2 AS classcategory_name2,
-            od.price AS price,
-            od.quantity AS quantity,
-            od.point_rate AS point_rate
-            ,CASE WHEN EXISTS(SELECT * FROM dtb_products WHERE product_id = od.product_id AND del_flg = 0 AND status = 1) THEN '1' ELSE '0' END AS enable
-            ,o.status AS status,
-            pc.product_type_id AS product_type_id,
-            o.payment_date AS payment_date,
-            od.product_class_id as product_class_id,
-            ".$dbFactory->getDownloadableDaysWhereSql()."
-            AS effective";
-
-        $from   = "dtb_products p, dtb_products_class pc, dtb_order_detail od, dtb_order o";
-        $where  = "p.product_id = od.product_id AND pc.product_id = od.product_id AND pc.product_class_id = od.product_class_id AND od.order_id = o.order_id AND od.order_id = ?";
-
-        return $objQuery->select($col, $from, $where, array($order_id));
     }
 
     /**
