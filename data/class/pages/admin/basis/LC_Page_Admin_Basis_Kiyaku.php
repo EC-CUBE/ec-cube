@@ -67,7 +67,6 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin {
      */
     function action() {
         $objSess = new SC_Session();
-        $objQuery =& SC_Query::getSingletonInstance();
         $objDb = new SC_Helper_DB_Ex();
 
         // 認証可否の判定
@@ -105,12 +104,12 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin {
             break;
         // 編集前処理
         case 'pre_edit':
-            // 編集項目をDBより取得する。
-            $where = "kiyaku_id = ?";
-            $arrRet = $objQuery->select("kiyaku_text, kiyaku_title", "dtb_kiyaku", $where, array($_POST['kiyaku_id']));
+            // 編集項目を取得する。
+            $arrKiyakuData = $this->lfGetKiyakuDataByKiyakuID($_POST['kiyaku_id']);
+
             // 入力項目にカテゴリ名を入力する。
-            $this->arrForm['kiyaku_title'] = $arrRet[0]['kiyaku_title'];
-            $this->arrForm['kiyaku_text'] = $arrRet[0]['kiyaku_text'];
+            $this->arrForm['kiyaku_title'] = $arrKiyakuData[0]['kiyaku_title'];
+            $this->arrForm['kiyaku_text'] = $arrKiyakuData[0]['kiyaku_text'];
             // POSTデータを引き継ぐ
             $this->tpl_kiyaku_id = $_POST['kiyaku_id'];
         break;
@@ -128,10 +127,7 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin {
             break;
         }
 
-        // 規格の読込
-        $where = "del_flg <> 1";
-        $objQuery->setOrder("rank DESC");
-        $this->arrKiyaku = $objQuery->select("kiyaku_title, kiyaku_text, kiyaku_id", "dtb_kiyaku", $where);
+        $this->arrKiyaku = $this->lfGetKiyakuList();
     }
 
     /**
@@ -157,6 +153,21 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin {
         $sqlval['kiyaku_id'] = $objQuery->nextVal('dtb_kiyaku_kiyaku_id');
         $ret = $objQuery->insert("dtb_kiyaku", $sqlval);
         return $ret;
+    }
+
+    function lfGetKiyakuDataByKiyakuID($kiyaku_id) {
+        $objQuery =& SC_Query::getSingletonInstance();
+
+        $where = "kiyaku_id = ?";
+        return $objQuery->select("kiyaku_text, kiyaku_title", "dtb_kiyaku", $where, array($kiyaku_id));
+    }
+
+    function lfGetKiyakuList() {
+        $objQuery =& SC_Query::getSingletonInstance();
+
+        $where = "del_flg <> 1";
+        $objQuery->setOrder("rank DESC");
+        return $objQuery->select("kiyaku_title, kiyaku_text, kiyaku_id", "dtb_kiyaku", $where);
     }
 
     /* DBへの更新 */

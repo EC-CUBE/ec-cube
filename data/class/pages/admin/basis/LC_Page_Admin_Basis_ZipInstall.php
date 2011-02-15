@@ -89,7 +89,6 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin {
      * @return void
      */
     function action() {
-        $objQuery =& SC_Query::getSingletonInstance();
 
         SC_Utils_Ex::sfIsSuccess(new SC_Session);
 
@@ -109,10 +108,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin {
             switch ($this->tpl_mode) {
                 // 自動登録
                 case 'auto':
-                    $objQuery->begin();
-                    $objQuery->delete('mtb_zip');
-                    $this->insertMtbZip();
-                    $objQuery->commit();
+                    $this->lfAutoCommit();
                     break;
                 // 手動登録
                 case 'manual':
@@ -125,7 +121,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin {
         switch ($this->tpl_mode) {
             // 手動削除
             case 'delete':
-                $objQuery->delete('mtb_zip');
+                $this->lfDeleteZip();
 
                 // 進捗・完了画面を表示しない
                 $this->tpl_mode = null;
@@ -144,6 +140,21 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin {
      */
     function destroy() {
         parent::destroy();
+    }
+
+    function lfAutoCommit() {
+        $objQuery =& SC_Query::getSingletonInstance();
+
+        $objQuery->begin();
+        $objQuery->delete('mtb_zip');
+        $this->insertMtbZip();
+        $objQuery->commit();
+    }
+
+    function lfDeleteZip() {
+        $objQuery =& SC_Query::getSingletonInstance();
+
+        $objQuery->delete('mtb_zip');
     }
 
     /**

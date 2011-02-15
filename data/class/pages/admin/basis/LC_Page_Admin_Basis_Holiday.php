@@ -67,7 +67,6 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin {
      */
     function action() {
         $objSess = new SC_Session();
-        $objQuery =& SC_Query::getSingletonInstance();
         $objDb = new SC_Helper_DB_Ex();
 
         $objDate = new SC_Date();
@@ -109,13 +108,13 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin {
             break;
         // 編集前処理
         case 'pre_edit':
-            // 編集項目をDBより取得する。
-            $where = "holiday_id = ?";
-            $arrRet = $objQuery->select("title, month, day", "dtb_holiday", $where, array($_POST['holiday_id']));
+            // 編集項目を取得する。
+            $arrHolidayData = $this->lfGetHolidayDataByHolidayID($_POST['holiday_id']);
+
             // 入力項目にカテゴリ名を入力する。
-            $this->arrForm['title'] = $arrRet[0]['title'];
-            $this->arrForm['month'] = $arrRet[0]['month'];
-            $this->arrForm['day'] = $arrRet[0]['day'];
+            $this->arrForm['title'] = $arrHolidayData[0]['title'];
+            $this->arrForm['month'] = $arrHolidayData[0]['month'];
+            $this->arrForm['day'] = $arrHolidayData[0]['day'];
             // POSTデータを引き継ぐ
             $this->tpl_holiday_id = $_POST['holiday_id'];
         break;
@@ -133,10 +132,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin {
             break;
         }
 
-        // 規格の読込
-        $where = "del_flg <> 1";
-        $objQuery->setOrder("rank DESC");
-        $this->arrHoliday = $objQuery->select("holiday_id, title, month, day", "dtb_holiday", $where);
+        $this->arrHoliday = $this->lfGetHolidayList();
     }
 
     /**
@@ -146,6 +142,21 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin {
      */
     function destroy() {
         parent::destroy();
+    }
+
+    function lfGetHolidayDataByHolidayID($holiday_id) {
+        $objQuery =& SC_Query::getSingletonInstance();
+
+        $where = "holiday_id = ?";
+        return $objQuery->select("title, month, day", "dtb_holiday", $where, array($holiday_id));
+    }
+
+    function lfGetHolidayList() {
+        $objQuery =& SC_Query::getSingletonInstance();
+
+        $where = "del_flg <> 1";
+        $objQuery->setOrder("rank DESC");
+        return $objQuery->select("holiday_id, title, month, day", "dtb_holiday", $where);
     }
 
     /* DBへの挿入 */

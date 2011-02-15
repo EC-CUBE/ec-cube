@@ -66,7 +66,7 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin {
      * @return void
      */
     function action() {
-        $objQuery =& SC_Query::getSingletonInstance();
+
         $objSess = new SC_Session();
         $masterData = new SC_DB_MasterData_Ex();
 
@@ -80,8 +80,7 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin {
             // テンプレートプルダウン変更時
 
             if ( SC_Utils_Ex::sfCheckNumLength( $_POST['template_id']) ){
-                $sql = "SELECT * FROM dtb_mailtemplate WHERE template_id = ?";
-                $result = $objQuery->getAll($sql, array($_POST['template_id']) );
+                $result = $this->lfGetMailTemplateByTemplateID($_POST['template_id']);
                 if ( $result ){
                     $this->arrForm = $result[0];
                 } else {
@@ -102,7 +101,7 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin {
 
                 } else {
                     // 正常
-                    $this->lfRegist($objQuery, $this->arrForm);
+                    $this->lfRegist($this->arrForm);
 
                     // 完了メッセージ
                     $this->tpl_onload = "window.alert('メール設定が完了しました。テンプレートを選択して内容をご確認ください。');";
@@ -124,7 +123,15 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin {
         parent::destroy();
     }
 
-    function lfRegist(&$objQuery, $data ){
+    function lfGetMailTemplateByTemplateID($template_id) {
+        $objQuery =& SC_Query::getSingletonInstance();
+
+        $sql = "SELECT * FROM dtb_mailtemplate WHERE template_id = ?";
+        return $objQuery->getAll($sql, array($template_id) );
+    }
+
+    function lfRegist($data ){
+        $objQuery =& SC_Query::getSingletonInstance();
 
         $data['creator_id'] = $_SESSION['member_id'];
 

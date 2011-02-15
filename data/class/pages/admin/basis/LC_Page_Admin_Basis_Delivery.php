@@ -70,7 +70,6 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin {
      */
     function action() {
         $objSess = new SC_Session();
-        $objQuery =& SC_Query::getSingletonInstance();
         $objDb = new SC_Helper_DB_Ex();
 
         // 認証可否の判定
@@ -94,12 +93,23 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin {
             break;
         }
 
-        // 配送業者一覧の取得
+        $this->arrDelivList = $this->lfGetDelivList();
+    }
+
+    /**
+     * 配送業者一覧の取得
+     *
+     * @return array
+     */
+    function lfGetDelivList() {
+        $objQuery =& SC_Query::getSingletonInstance();
+
         $col = "deliv_id, name, service_name";
         $where = "del_flg = 0";
         $table = "dtb_deliv";
         $objQuery->setOrder("rank DESC");
-        $this->arrDelivList = $objQuery->select($col, $table, $where);
+
+        return $objQuery->select($col, $table, $where);
     }
 
     /**

@@ -79,12 +79,11 @@ class LC_Page_Admin_Basis extends LC_Page_Admin {
      */
     function action() {
         $objSess = new SC_Session();
-        $objQuery =& SC_Query::getSingletonInstance();
 
         // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess($objSess);
 
-        $cnt = $objQuery->count("dtb_baseinfo");
+        $cnt = $this->lfGetBaseInfoCount();
 
         if ($cnt > 0) {
             $this->tpl_mode = "update";
@@ -122,8 +121,8 @@ class LC_Page_Admin_Basis extends LC_Page_Admin {
             }
         } else {
             $arrCol = $this->lfGetCol();
-            $col	= SC_Utils_Ex::sfGetCommaList($arrCol);
-            $arrRet = $objQuery->select($col, "dtb_baseinfo");
+            $col    = SC_Utils_Ex::sfGetCommaList($arrCol);
+            $arrRet = $this->lfGetBaseInfoData($col);
             $this->arrForm = $arrRet[0];
 
             $regular_holiday_ids = explode('|', $this->arrForm['regular_holiday_ids']);
@@ -139,6 +138,28 @@ class LC_Page_Admin_Basis extends LC_Page_Admin {
      */
     function destroy() {
         parent::destroy();
+    }
+
+    /**
+     * 基本情報の登録数を取得する
+     *
+     * @return int
+     */
+    function lfGetBaseInfoCount() {
+        $objQuery =& SC_Query::getSingletonInstance();
+
+        return $objQuery->count("dtb_baseinfo");
+    }
+
+    /**
+     * 基本情報のデータを取得する
+     *
+     * @return array
+     */
+    function lfGetBaseInfoData($col) {
+        $objQuery =& SC_Query::getSingletonInstance();
+
+        return $objQuery->select($col, "dtb_baseinfo");
     }
 
     // 基本情報用のカラムを取り出す。
