@@ -403,7 +403,7 @@ class SC_Helper_Customer {
     }
 
     function sfCustomerOtherDelivErrorCheck(&$objFormParam) {
-        $objErr = SC_Helper_Customer_Ex::sfCustomerCommonErrorCheck(&$objFormParam);
+        $objErr = SC_Helper_Customer_Ex::sfCustomerCommonErrorCheck($objFormParam);
         return $objErr->arrErr;
     }
 
@@ -415,8 +415,8 @@ class SC_Helper_Customer {
      * @return array エラーの配列
      */
     function sfCustomerEntryErrorCheck(&$objFormParam) {
-        $objErr = SC_Helper_Customer_Ex::sfCustomerCommonErrorCheck(&$objFormParam);
-        $objErr = SC_Helper_Customer_Ex::sfCustomerRegisterErrorCheck(&$objErr);
+        $objErr = SC_Helper_Customer_Ex::sfCustomerCommonErrorCheck($objFormParam);
+        $objErr = SC_Helper_Customer_Ex::sfCustomerRegisterErrorCheck($objErr);
 
         return $objErr->arrErr;
     }
@@ -434,7 +434,7 @@ class SC_Helper_Customer {
         $objFormParam->toLower('email_mobile02');
 
         $objErr = SC_Helper_Customer_Ex::sfCustomerCommonErrorCheck($objFormParam);
-        $objErr = SC_Helper_Customer_Ex::sfCustomerRegisterErrorCheck(&$objErr);
+        $objErr = SC_Helper_Customer_Ex::sfCustomerRegisterErrorCheck($objErr);
 
         if (isset($objErr->arrErr['password']) && $objFormParam->getValue('password') == DEFAULT_PASSWORD) {
             unset($objErr->arrErr['password']);
