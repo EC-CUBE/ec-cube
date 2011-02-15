@@ -94,8 +94,8 @@ class LC_Page_Admin_Basis_Tradelaw extends LC_Page_Admin {
         } else {
             $this->tpl_mode = "insert";
         }
-        //TODO 要リファクタリング(MODE if利用)
-        if($this->getMode()!=null) {
+
+        if(!empty($_POST)) {
             // 入力値の変換
             $this->objFormParam->convParam();
             $this->arrErr = $this->lfCheckError();
@@ -117,9 +117,9 @@ class LC_Page_Admin_Basis_Tradelaw extends LC_Page_Admin {
             }
         } else {
             $arrCol = $this->objFormParam->getKeyList(); // キー名一覧を取得
-            $col	= SC_Utils_Ex::sfGetCommaList($arrCol);
-            $arrRet = $objQuery->select($col, "dtb_baseinfo");
+            $col    = SC_Utils_Ex::sfGetCommaList($arrCol);
             // DB値の取得
+            $arrRet = $objQuery->select($col, "dtb_baseinfo");
             $this->objFormParam->setParam($arrRet[0]);
         }
 

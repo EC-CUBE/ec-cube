@@ -119,27 +119,22 @@ class LC_Page_Admin_Basis_Payment_Input extends LC_Page_Admin {
         case 'delete_image':
             $this->objUpFile->deleteFile($_POST['image_key']);
             break;
+
+        case 'pre_edit':
+            if ($_SERVER['REQUEST_METHOD'] == 'GET' && SC_Utils_Ex::sfIsInt($_GET['payment_id'])) {
+                $arrRet = $this->lfGetData($_GET['payment_id']);
+                $this->objFormParam->setParam($arrRet);
+                $this->charge_flg = $arrRet["charge_flg"];
+                // DBデータから画像ファイル名の読込
+                $this->objUpFile->setDBFileList($arrRet);
+                $this->tpl_payment_id = $_GET['payment_id'];
+            }
+            break;
         default:
             break;
         }
 
-        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-        	//TODO: 要リファクタリング(MODE switch 入れ子)
-            switch($this->getMode()) {
-            case 'pre_edit':
-                if(SC_Utils_Ex::sfIsInt($_GET['payment_id'])) {
-                    $arrRet = $this->lfGetData($_GET['payment_id']);
-                    $this->objFormParam->setParam($arrRet);
-                    $this->charge_flg = $arrRet["charge_flg"];
-                    // DBデータから画像ファイル名の読込
-                    $this->objUpFile->setDBFileList($arrRet);
-                    $this->tpl_payment_id = $_GET['payment_id'];
-                }
-                break;
-            default:
-                break;
-            }
-        } else {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->tpl_payment_id = $_POST['payment_id'];
         }
 
