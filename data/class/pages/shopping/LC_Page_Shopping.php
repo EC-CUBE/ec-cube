@@ -128,11 +128,14 @@ class LC_Page_Shopping extends LC_Page {
                                   $objFormParam->getValue('login_email'),
                                   $objFormParam->getValue('login_pass'))) {
 
-                // モバイルサイトで携帯アドレスの登録が無い場合
-                if(!$this->hasEmailMobile($objCustomer)) {
-                    SC_Response_Ex::sendRedirectFromUrlPath('entry/email_mobile.php');
-                    exit;
+                // モバイルサイトで携帯アドレスの登録が無い場合、携帯アドレス登録ページへ遷移
+                if(SC_Display::detectDevice() == DEVICE_TYPE_MOBILE) {
+                    if($this->hasEmailMobile($objCustomer) == false) {
+                        SC_Response_Ex::sendRedirectFromUrlPath('entry/email_mobile.php');
+                        exit;
+                    }
                 }
+                
                 SC_Response_Ex::sendRedirect(
                         $this->getNextLocation($this->cartKey, $this->tpl_uniqid,
                                                $objCustomer, $objPurchase,
@@ -497,25 +500,17 @@ class LC_Page_Shopping extends LC_Page {
     /**
      * ログインした会員の携帯メールアドレス登録があるかどうか
      *
-     * 端末種別がモバイルの場合, ログインした会員の携帯メールアドレスの存在をチェックする
+     * ログインした会員の携帯メールアドレスの存在をチェックする
      *
      * @param SC_Customer $objCustomer SC_Customer インスタンス
      * @return boolean 会員の携帯メールアドレス登録がある場合 true
      */
     function hasEmailMobile(&$objCustomer) {
-        switch (SC_Display::detectDevice()) {
-        case DEVICE_TYPE_MOBILE:
-            $objMobile = new SC_Helper_Mobile_Ex();
-            if (!$objMobile->gfIsMobileMailAddress($objCustomer->getValue('email'))) {
-                if ($objCustomer->hasValue('email_mobile')) {
-                    return true;
-                }
+        $objMobile = new SC_Helper_Mobile_Ex();
+        if (!$objMobile->gfIsMobileMailAddress($objCustomer->getValue('email'))) {
+            if ($objCustomer->hasValue('email_mobile')) {
+                return true;
             }
-            break;
-
-        case DEVICE_TYPE_SMARTPHONE:
-        case DEVICE_TYPE_PC:
-        default:
         }
         return false;
     }
