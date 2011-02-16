@@ -67,70 +67,116 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin {
      */
     function action() {
         $objSess = new SC_Session();
-        $objQuery =& SC_Query::getSingletonInstance();
         $objDb = new SC_Helper_DB_Ex();
+        $objFormParam = new SC_FormParam();
 
         // 認証可否の判定
-        SC_Utils_Ex::sfIsSuccess($objSess);
+        SC_Utils_Ex::sfIsSuccess(new SC_Session());
 
         // 要求判定
         switch($this->getMode()) {
             // 編集処理
         case 'edit':
-            // POST値の引き継ぎ
-            $this->arrForm = $_POST;
-            // 入力文字の変換
-            $this->arrForm = $this->lfConvertParam($this->arrForm);
-            // エラーチェック
-            $this->arrErr = $this->lfErrorCheck();
-            if(count($this->arrErr) <= 0) {
-                if($_POST['class_id'] == "") {
+            // パラメータ設定
+            $this->lfInitParam($objFormParam);
+            $objFormParam->setParam($_POST);
+            $objFormParam->convParam();
+            // 入力パラメーターチェック
+            $this->arrErr = $this->lfCheckError($objFormParam);
+            if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                $this->arrForm = $objFormParam->getHashArray();
+                //新規規格追加かどうかを判定する
+                $is_insert = $this->lfCheckInsert($this->arrForm);
+                if($is_insert) {
                     $this->lfInsertClass($this->arrForm); // 新規作成
                 } else {
                     $this->lfUpdateClass($this->arrForm); // 既存編集
                 }
                 // 再表示
-                $this->objDisplay->reload();
+                SC_Response::reload();
             } else {
                 // POSTデータを引き継ぐ
-                $this->tpl_class_id = $_POST['class_id'];
+                $this->tpl_class_id = $this->arrForm['class_id'];
             }
             break;
+
             // 削除
         case 'delete':
-            $objDb->sfDeleteRankRecord("dtb_class", "class_id", $_POST['class_id'], "", true);
-            $objQuery->delete("dtb_classcategory", "class_id = ?", $_POST['class_id']);
+            // パラメータ設定
+            $this->lfClassIdParam($objFormParam);
+            $objFormParam->setParam($_POST);
+            $objFormParam->convParam();
+            // 入力パラメーターチェック
+            $this->arrErr = $objFormParam->checkError();
+            if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                $class_id = $objFormParam->getValue('class_id');
+            }else{
+                break;
+            }
+                //規格データの削除処理
+            $this->lfDeleteClass($class_id ,$objDb);
             // 再表示
-            $this->objDisplay->reload();
+            SC_Response::reload();
             break;
             // 編集前処理
         case 'pre_edit':
-            // 編集項目をDBより取得する。
-            $where = "class_id = ?";
-            $class_name = $objQuery->get("name", "dtb_class", $where, array($_POST['class_id']));
+            // パラメータ設定
+            $this->lfClassIdParam($objFormParam);
+            $objFormParam->setParam($_POST);
+            $objFormParam->convParam();
+            // 入力パラメーターチェック
+            $this->arrErr = $objFormParam->checkError();
+            if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                $class_id = $objFormParam->getValue('class_id');
+            }else{
+                break;
+            }
+            // 規格名を取得する。
+            $class_name = $this->lfGetClassName($class_id);
             // 入力項目にカテゴリ名を入力する。
             $this->arrForm['name'] = $class_name;
+
             // POSTデータを引き継ぐ
-            $this->tpl_class_id = $_POST['class_id'];
+            $this->tpl_class_id = $class_id;
             break;
         case 'down':
-            $objDb->sfRankDown("dtb_class", "class_id", $_POST['class_id']);
+            // パラメータ設定
+            $this->lfClassIdParam($objFormParam);
+            $objFormParam->setParam($_POST);
+            $objFormParam->convParam();
+            // 入力パラメーターチェック
+            $this->arrErr = $objFormParam->checkError();
+            if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                $class_id = $objFormParam->getValue('class_id');
+            }else{
+                break;
+            }
+            $objDb->sfRankDown("dtb_class", "class_id", $class_id);
             // 再表示
-            $this->objDisplay->reload();
+            SC_Response::reload();
             break;
         case 'up':
-            $objDb->sfRankUp("dtb_class", "class_id", $_POST['class_id']);
+            // パラメータ設定
+            $this->lfClassIdParam($objFormParam);
+            $objFormParam->setParam($_POST);
+            $objFormParam->convParam();
+            // 入力パラメーターチェック
+            $this->arrErr = $objFormParam->checkError();
+            if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                $class_id = $objFormParam->getValue('class_id');
+            }else{
+                break;
+            }
+            $objDb->sfRankUp("dtb_class", "class_id", $class_id);
             // 再表示
-            $this->objDisplay->reload();
+            SC_Response::reload();
             break;
         default:
             break;
         }
 
         // 規格の読込
-        $where = "del_flg <> 1";
-        $objQuery->setOrder("rank DESC");
-        $this->arrClass = $objQuery->select("name, class_id", "dtb_class", $where);
+        $this->arrClass = $this->lfGetClass();
         $this->arrClassCatCount = SC_Utils_Ex::sfGetClassCatCount();
     }
 
@@ -143,11 +189,65 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin {
         parent::destroy();
     }
 
-    /* DBへの挿入 */
-    function lfInsertClass($arrData) {
+    /**
+     * パラメータの初期化を行う.
+     *
+     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @return void
+     */
+    function lfInitParam(&$objFormParam) {
+        $objFormParam->addParam("規格名", "name", STEXT_LEN, "a", array("EXIST_CHECK" ,"SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("規格ID", "class_id", INT_LEN, "n", array("NUM_CHECK"));
+    }
+
+    /**
+     * 規格IDの初期化を行う.
+     *
+     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @return void
+     */
+    function lfClassIdParam(&$objFormParam) {
+        $objFormParam->addParam("規格ID", "class_id", INT_LEN, "n", array("NUM_CHECK"));
+    }
+
+   /**
+     * 有効な規格情報の取得
+     *
+     * @param array $objFormParam フォームパラメータークラス
+     * @return array 規格情報
+     */
+    function lfGetClass($arrData) {
+        $objQuery =& SC_Query::getSingletonInstance();
+
+        $where = "del_flg <> 1";
+        $objQuery->setOrder("rank DESC");
+        $arrClass = $objQuery->select("name, class_id", "dtb_class", $where);
+        return $arrClass;
+    }
+
+   /**
+     * 規格名を取得する
+     *
+     * @param array $arrForm フォームパラメータークラス
+     * @return string $class_name 規格名
+     */
+    function lfGetClassName($class_id) {
+        $objQuery =& SC_Query::getSingletonInstance();
+        $where = "class_id = ?";
+        $class_name = $objQuery->get("name", "dtb_class", $where, array($class_id));
+        return $class_name;
+    }
+
+   /**
+     * 規格情報を新規登録
+     *
+     * @param array $arrForm フォームパラメータークラス
+     * @return boolean DB登録結果 成功：True 失敗:false
+     */
+    function lfInsertClass($arrForm) {
         $objQuery =& SC_Query::getSingletonInstance();
         // INSERTする値を作成する。
-        $sqlval['name'] = $arrData['name'];
+        $sqlval['name'] = $arrForm['name'];
         $sqlval['creator_id'] = $_SESSION['member_id'];
         $sqlval['rank'] = $objQuery->max("rank", "dtb_class") + 1;
         $sqlval['create_date'] = "now()";
@@ -155,50 +255,81 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin {
         // INSERTの実行
         $sqlval['class_id'] = $objQuery->nextVal('dtb_class_class_id');
         $ret = $objQuery->insert("dtb_class", $sqlval);
-
         return $ret;
     }
 
-    /* DBへの更新 */
-    function lfUpdateClass($arrData) {
+   /**
+     * 規格情報を更新
+     *
+     * @param array $arrForm フォームパラメータークラス
+     * @return boolean DB登録結果 成功:True 失敗:false
+     */
+    function lfUpdateClass($arrForm) {
         $objQuery =& SC_Query::getSingletonInstance();
         // UPDATEする値を作成する。
-        $sqlval['name'] = $arrData['name'];
+        $sqlval['name'] = $arrForm['name'];
         $sqlval['update_date'] = "Now()";
         $where = "class_id = ?";
         // UPDATEの実行
-        $ret = $objQuery->update("dtb_class", $sqlval, $where, array($arrData['class_id']));
+        $ret = $objQuery->update("dtb_class", $sqlval, $where, array($arrForm['class_id']));
         return $ret;
     }
 
-    /* 取得文字列の変換 */
-    function lfConvertParam($array) {
-        // 文字変換
-        $arrConvList['name'] = "KVa";
+    /**
+     * 規格情報を削除する.
+     *
+     * @param integer $class_id 規格ID
+     * @param SC_Helper_DB $objDb SC_Helper_DBのインスタンス
+     * @return boolean 削除結果 成功:True 失敗:false
+     */
+    function lfDeleteClass($class_id , &$objDb) {
+        $objQuery =& SC_Query::getSingletonInstance();
 
-        foreach ($arrConvList as $key => $val) {
-            // POSTされてきた値のみ変換する。
-            if(isset($array[$key])) {
-                $array[$key] = mb_convert_kana($array[$key] ,$val);
-            }
-        }
-        return $array;
+        $objDb->sfDeleteRankRecord("dtb_class", "class_id", $class_id, "", true);
+        $where= "class_id = ?";
+        $ret = $objQuery->delete("dtb_classcategory", $where, array($class_id));
+        return $ret;
     }
 
-    /* 入力エラーチェック */
-    function lfErrorCheck() {
-        $objErr = new SC_CheckError();
-        $objErr->doFunc(array("規格名", "name", STEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-
-        if(!isset($objErr->arrErr['name'])) {
-            $objQuery =& SC_Query::getSingletonInstance();
-            $arrRet = $objQuery->select("class_id, name", "dtb_class", "del_flg = 0 AND name = ?", array($_POST['name']));
-            // 編集中のレコード以外に同じ名称が存在する場合
-            if ($arrRet[0]['class_id'] != $_POST['class_id'] && $arrRet[0]['name'] == $_POST['name']) {
-                $objErr->arrErr['name'] = "※ 既に同じ内容の登録が存在します。<br>";
-            }
+   /**
+     * エラーチェック
+     *
+     * @param array $objFormParam フォームパラメータークラス
+     * @return array エラー配列
+     */
+    function lfCheckError(&$objFormParam) {
+        $objQuery =& SC_Query::getSingletonInstance();
+        // パラメーターの基本チェック
+        $arrErr = $objFormParam->checkError();
+        if (!SC_Utils_Ex::isBlank($arrErr)) {
+            return $arrErr;
+        }else{
+            $arrForm = $objFormParam->getHashArray();
         }
-        return $objErr->arrErr;
+
+        $where = "del_flg = 0 AND name = ?";
+        $arrClass = $objQuery->select("class_id, name", "dtb_class", $where, array($arrForm['name']));
+        // 編集中のレコード以外に同じ名称が存在する場合
+        if ($arrClass[0]['class_id'] != $arrForm['class_id'] && $arrClass[0]['name'] == $arrForm['name']) {
+            $arrErr['name'] = "※ 既に同じ内容の登録が存在します。<br>";
+        }
+        return $arrErr;
     }
+
+    /**
+     * 新規規格追加かどうかを判定する.
+     *
+     * @param string $arrForm フォームの入力値
+     * @return boolean 新規商品追加の場合 true
+     */
+    function lfCheckInsert($arrForm) {
+        //class_id のあるなしで新規商品かどうかを判定
+        if (empty($arrForm['class_id'])){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
 }
 ?>
