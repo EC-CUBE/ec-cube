@@ -137,14 +137,20 @@ class SC_Helper_DB {
      * 店舗基本情報を取得する.
      *
      * @param boolean $force 強制的にDB取得するか
+     * @param string $col 取得カラムを指定する
      * @return array 店舗基本情報の配列
      */
-    function sfGetBasisData($force = false) {
+    function sfGetBasisData($force = false, $col = "") {
         static $data;
 
         if ($force || !isset($data)) {
             $objQuery =& SC_Query::getSingletonInstance();
-            $arrRet = $objQuery->select('*', 'dtb_baseinfo');
+
+            if ($col === "") {
+                $arrRet = $objQuery->select('*', 'dtb_baseinfo');
+            } else {
+                $arrRet = $objQuery->select($col, "dtb_baseinfo");
+            }
 
             if (isset($arrRet[0])) {
                 $data = $arrRet[0];
@@ -152,9 +158,20 @@ class SC_Helper_DB {
                 $data = array();
             }
         }
-
         return $data;
     }
+
+    /**
+     * 基本情報の登録数を取得する
+     *
+     * @return int
+     */
+    function sfGetBasisCount() {
+        $objQuery =& SC_Query::getSingletonInstance();
+
+        return $objQuery->count("dtb_baseinfo");
+    }
+
 
     /* 選択中のアイテムのルートカテゴリIDを取得する */
     function sfGetRootId() {

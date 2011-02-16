@@ -79,6 +79,8 @@ class LC_Page_Admin_Basis_Tradelaw extends LC_Page_Admin {
         // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess($objSess);
 
+        $objDb = new SC_Helper_DB_Ex();
+
         // パラメータ管理クラス
         $this->objFormParam = new SC_FormParam();
         // パラメータ情報の初期化
@@ -86,8 +88,7 @@ class LC_Page_Admin_Basis_Tradelaw extends LC_Page_Admin {
         // POST値の取得
         $this->objFormParam->setParam($_POST);
 
-        $cnt = $this->lfGetBaseInfoCount();
-
+        $cnt = $objDb->sfGetBasisCount();
         if ($cnt > 0) {
             $this->tpl_mode = "update";
         } else {
@@ -117,8 +118,8 @@ class LC_Page_Admin_Basis_Tradelaw extends LC_Page_Admin {
         } else {
             $arrCol = $this->objFormParam->getKeyList(); // キー名一覧を取得
             $col    = SC_Utils_Ex::sfGetCommaList($arrCol);
-            $arrRet = $this->lfGetBaseInfoData($col);
-            $this->objFormParam->setParam($arrRet[0]);
+            $arrRet = $objDb->sfGetBasisData(true, $col);
+            $this->objFormParam->setParam($arrRet);
         }
 
         $this->arrForm = $this->objFormParam->getFormParamList();
@@ -131,28 +132,6 @@ class LC_Page_Admin_Basis_Tradelaw extends LC_Page_Admin {
      */
     function destroy() {
         parent::destroy();
-    }
-
-    /**
-     * 基本情報の登録数を取得する
-     *
-     * @return int
-     */
-    function lfGetBaseInfoCount() {
-        $objQuery =& SC_Query::getSingletonInstance();
-
-        return $objQuery->count("dtb_baseinfo");
-    }
-
-    /**
-     * 基本情報のデータを取得する
-     *
-     * @return array
-     */
-    function lfGetBaseInfoData($col) {
-        $objQuery =& SC_Query::getSingletonInstance();
-
-        return $objQuery->select($col, "dtb_baseinfo");
     }
 
     /* パラメータ情報の初期化 */
