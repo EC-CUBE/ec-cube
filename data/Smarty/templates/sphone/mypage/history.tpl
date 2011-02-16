@@ -195,12 +195,12 @@
                 <th>通知メール</th>
                 <th>件名</th>
             </tr>
-            <!--{section name=cnt loop=$arrMailHistory}-->
+            <!--{section name=cnt loop=$tpl_arrMailHistory}-->
             <tr class="center">
-                <td><!--{$arrMailHistory[cnt].send_date|sfDispDBDate|h}--></td>
-                <!--{assign var=key value="`$arrMailHistory[cnt].template_id`"}-->
+                <td><!--{$tpl_arrMailHistory[cnt].send_date|sfDispDBDate|h}--></td>
+                <!--{assign var=key value="`$tpl_arrMailHistory[cnt].template_id`"}-->
                 <td><!--{$arrMAILTEMPLATE[$key]|h}--></td>
-                <td><a href="#" onclick="win02('./mail_view.php?send_id=<!--{$arrMailHistory[cnt].send_id}-->','mail_view','650','800'); return false;"><!--{$arrMailHistory[cnt].subject|h}--></a></td>
+                <td><a href="#" onclick="win02('./mail_view.php?send_id=<!--{$tpl_arrMailHistory[cnt].send_id}-->','mail_view','650','800'); return false;"><!--{$tpl_arrMailHistory[cnt].subject|h}--></a></td>
             </tr>
             <!--{/section}-->
         </table>

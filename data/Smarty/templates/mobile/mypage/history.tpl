@@ -116,11 +116,11 @@
 <hr>
 
 ■メール配信履歴一覧<br>
-<!--{section name=cnt loop=$arrMailHistory}-->
-<!--{assign var=key value="`$arrMailHistory[cnt].template_id`"}-->
-処理日：<!--{$arrMailHistory[cnt].send_date|sfDispDBDate|h}--><br>
+<!--{section name=cnt loop=$tpl_arrMailHistory}-->
+<!--{assign var=key value="`$tpl_arrMailHistory[cnt].template_id`"}-->
+処理日：<!--{$tpl_arrMailHistory[cnt].send_date|sfDispDBDate|h}--><br>
 通知メール：<!--{$arrMAILTEMPLATE[$key]|h}--><br>
 件名：
-<a href="./mail_view.php?send_id=<!--{$arrMailHistory[cnt].send_id}-->"><!--{$arrMailHistory[cnt].subject|h}--></a><br>
+<a href="./mail_view.php?send_id=<!--{$tpl_arrMailHistory[cnt].send_id}-->"><!--{$tpl_arrMailHistory[cnt].subject|h}--></a><br>
 <!--{/section}-->
 <br>
