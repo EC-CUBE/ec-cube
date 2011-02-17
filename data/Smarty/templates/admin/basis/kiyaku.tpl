@@ -30,7 +30,8 @@
       <th>規約タイトル<span class="attention"> *</span></th>
       <td>
         <span class="attention"><!--{$arrErr.kiyaku_title}--></span>
-        <input type="text" name="kiyaku_title" value="<!--{$arrForm.kiyaku_title|h}-->" maxlength="<!--{$smarty.const.SMTEXT_LEN}-->" style="<!--{if $arrErr.kiyaku_title != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60"/>
+        <span class="attention"><!--{$arrErr.name}--></span>
+        <input type="text" name="kiyaku_title" value="<!--{$arrForm.kiyaku_title|h}-->" maxlength="<!--{$smarty.const.SMTEXT_LEN}-->" style="<!--{if $arrErr.kiyaku_title != "" || $arrErr.name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60"/>
         <span class="attention"> (上限<!--{$smarty.const.SMTEXT_LEN}-->文字)</span>
       </td>
     </tr>
@@ -91,4 +92,4 @@
   </table>
 
 </div>
-</form>    
+</form>
