@@ -108,7 +108,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin {
             switch ($this->tpl_mode) {
                 // 自動登録
                 case 'auto':
-                    $this->lfAutoCommit();
+                    $this->lfAutoCommitZip();
                     break;
                 // 手動登録
                 case 'manual':
@@ -142,7 +142,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin {
         parent::destroy();
     }
 
-    function lfAutoCommit() {
+    function lfAutoCommitZip() {
         $objQuery =& SC_Query::getSingletonInstance();
 
         $objQuery->begin();
