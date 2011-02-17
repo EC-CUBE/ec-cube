@@ -72,8 +72,7 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin {
         SC_Utils_Ex::sfIsSuccess(new SC_Session());
 
         $this->lfInitParam($objFormParam);
-        $objFormParam->setParam($_POST);
-        $objFormParam->setParam($_GET);
+        $objFormParam->setParam($_REQUEST);
         $objFormParam->convParam();
         $class_id = $objFormParam->getValue('class_id');
         $classcategory_id = $objFormParam->getValue('classcategory_id');
