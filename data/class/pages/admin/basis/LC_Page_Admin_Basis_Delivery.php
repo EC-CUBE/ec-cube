@@ -75,7 +75,17 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin {
         // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess($objSess);
 
-        switch($this->getMode()) {
+        $mode = $this->getMode();
+
+        if (!empty($_POST)) {
+            $this->arrErr = $this->lfCheckError($mode);
+            if (!empty($this->arrErr['deliv_id'])) {
+                SC_Utils_Ex::sfDispException();
+                return;
+            }
+        }
+
+        switch($mode) {
         case 'delete':
             // ランク付きレコードの削除
             $objDb->sfDeleteRankRecord("dtb_deliv", "deliv_id", $_POST['deliv_id']);
@@ -110,6 +120,31 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin {
         $objQuery->setOrder("rank DESC");
 
         return $objQuery->select($col, $table, $where);
+    }
+
+    /**
+     * 入力エラーチェック
+     *
+     * @param string $mode
+     * @return array
+     */
+    function lfCheckError($mode) {
+        $arrErr = array();
+        switch ($mode) {
+            case "delete":
+            case "up":
+            case "down":
+                $this->objFormParam = new SC_FormParam();
+                $this->objFormParam->addParam('配送業者ID', 'deliv_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                $this->objFormParam->setParam($_POST);
+                $this->objFormParam->convParam();
+
+                $arrErr = $this->objFormParam->checkError();
+                break;
+            default:
+                break;
+        }
+        return $arrErr;
     }
 
     /**

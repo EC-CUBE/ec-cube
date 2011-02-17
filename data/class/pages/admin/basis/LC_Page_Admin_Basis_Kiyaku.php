@@ -72,22 +72,28 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin {
         // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess($objSess);
 
+        $mode = $this->getMode();
+
+        if (!empty($_POST)) {
+            $this->arrErr = $this->lfCheckError($mode);
+            if (!empty($this->arrErr['kiyaku_id'])) {
+                SC_Utils_Ex::sfDispException();
+                return;
+            }
+        }
+
         // 要求判定
-        switch($this->getMode()) {
+        switch($mode) {
         // 編集処理
         case 'edit':
             // POST値の引き継ぎ
             $this->arrForm = $_POST;
-            // 入力文字の変換
-            $this->arrForm = $this->lfConvertParam($this->arrForm);
 
-            // エラーチェック
-            $this->arrErr = $this->lfErrorCheck();
             if(count($this->arrErr) <= 0) {
                 if($_POST['kiyaku_id'] == "") {
-                    $this->lfInsertClass($this->arrForm);	// 新規作成
+                    $this->lfInsertClass($this->arrForm);    // 新規作成
                 } else {
-                    $this->lfUpdateClass($this->arrForm);	// 既存編集
+                    $this->lfUpdateClass($this->arrForm);    // 既存編集
                 }
                 // 再表示
                 $this->objDisplay->reload();
@@ -198,20 +204,45 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin {
         return $array;
     }
 
-    /* 入力エラーチェック */
-    function lfErrorCheck() {
-        $objErr = new SC_CheckError();
-        $objErr->doFunc(array("規約タイトル", "kiyaku_title", SMTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("規約内容", "kiyaku_text", MLTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-        if(!isset($objErr->arrErr['name'])) {
-            $objQuery =& SC_Query::getSingletonInstance();
-            $arrRet = $objQuery->select("kiyaku_id, kiyaku_title", "dtb_kiyaku", "del_flg = 0 AND kiyaku_title = ?", array($_POST['kiyaku_title']));
-            // 編集中のレコード以外に同じ名称が存在する場合
-            if ($arrRet[0]['kiyaku_id'] != $_POST['kiyaku_id'] && $arrRet[0]['kiyaku_title'] == $_POST['kiyaku_title']) {
-                $objErr->arrErr['name'] = "※ 既に同じ内容の登録が存在します。<br>";
-            }
+    /**
+     * 入力エラーチェック
+     *
+     * @param string $mode
+     * @return array
+     */
+    function lfCheckError($mode) {
+        $arrErr = array();
+
+        switch ($mode) {
+            case 'edit':
+                $_POST = $this->lfConvertParam($_POST);
+
+                $objErr = new SC_CheckError();
+                $objErr->doFunc(array("規約タイトル", "kiyaku_title", SMTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+                $objErr->doFunc(array("規約内容", "kiyaku_text", MLTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+                if(!isset($objErr->arrErr['name'])) {
+                    $objQuery =& SC_Query::getSingletonInstance();
+                    $arrRet = $objQuery->select("kiyaku_id, kiyaku_title", "dtb_kiyaku", "del_flg = 0 AND kiyaku_title = ?", array($_POST['kiyaku_title']));
+                    // 編集中のレコード以外に同じ名称が存在する場合
+                    if ($arrRet[0]['kiyaku_id'] != $_POST['kiyaku_id'] && $arrRet[0]['kiyaku_title'] == $_POST['kiyaku_title']) {
+                        $objErr->arrErr['name'] = "※ 既に同じ内容の登録が存在します。<br>";
+                    }
+                }
+            case 'delete':
+            case 'pre_edit':
+            case 'down':
+            case 'up':
+                $this->objFormParam = new SC_FormParam();
+                $this->objFormParam->addParam('規約ID', 'kiyaku_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                $this->objFormParam->setParam($_POST);
+                $this->objFormParam->convParam();
+                $arrErr = $this->objFormParam->checkError();
+
+                break;
+            default:
+                break;
         }
-        return $objErr->arrErr;
+        return array_merge((array)$objErr->arrErr, (array)$arrErr);
     }
 }
 ?>

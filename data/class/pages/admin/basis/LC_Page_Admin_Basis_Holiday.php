@@ -76,17 +76,23 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin {
         // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess($objSess);
 
+        $mode = $this->getMode();
+
+        if (!empty($_POST)) {
+            $this->arrErr = $this->lfCheckError($mode);
+            if (!empty($this->arrErr['holiday_id'])) {
+                SC_Utils_Ex::sfDispException();
+                return;
+            }
+        }
+
         // 要求判定
-        switch($this->getMode()) {
+        switch($mode) {
         // 編集処理
         case 'edit':
             // POST値の引き継ぎ
             $this->arrForm = $_POST;
-            // 入力文字の変換
-            $this->arrForm = $this->lfConvertParam($this->arrForm);
 
-            // エラーチェック
-            $this->arrErr = $this->lfErrorCheck();
             if(count($this->arrErr) <= 0) {
                 if($_POST['holiday_id'] == "") {
                     $this->lfInsertClass($this->arrForm);	// 新規作成
@@ -206,27 +212,51 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin {
         return $array;
     }
 
-    /* 入力エラーチェック */
-    function lfErrorCheck() {
-        $objErr = new SC_CheckError();
-        $objErr->doFunc(array("タイトル", "title", SMTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("月", "month", INT_LEN), array("SELECT_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("日", "day", INT_LEN), array("SELECT_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-        if(!isset($objErr->arrErr['date'])) {
-            $objQuery =& SC_Query::getSingletonInstance();
-            $where = "del_flg = 0 AND month = ? AND day = ?";
-            $arrval = array($_POST['month'], $_POST['day']);
-            if (!empty($_POST['holiday_id'])) {
-                $where .= " AND holiday_id <> ?";
-                $arrval[] = $_POST['holiday_id'];
-            }
-            $arrRet = $objQuery->select("count(holiday_id)", "dtb_holiday", $where, $arrval);
-            // 編集中のレコード以外に同じ日付が存在する場合
-            if ($arrRet[0]['count'] > 0) {
-                $objErr->arrErr['date'] = "※ 既に同じ日付の登録が存在します。<br>";
-            }
+    /**
+     * 入力エラーチェック
+     *
+     * @param string $mode
+     * @return array
+     */
+    function lfCheckError($mode) {
+        $arrErr = array();
+        switch ($mode) {
+            case 'edit':
+                $_POST = $this->lfConvertParam($_POST);
+
+                $objErr = new SC_CheckError();
+                $objErr->doFunc(array("タイトル", "title", SMTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+                $objErr->doFunc(array("月", "month", INT_LEN), array("SELECT_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+                $objErr->doFunc(array("日", "day", INT_LEN), array("SELECT_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+                if(!isset($objErr->arrErr['date'])) {
+                    $objQuery =& SC_Query::getSingletonInstance();
+                    $where = "del_flg = 0 AND month = ? AND day = ?";
+                    $arrval = array($_POST['month'], $_POST['day']);
+                    if (!empty($_POST['holiday_id'])) {
+                        $where .= " AND holiday_id <> ?";
+                        $arrval[] = $_POST['holiday_id'];
+                    }
+                    $arrRet = $objQuery->select("count(holiday_id)", "dtb_holiday", $where, $arrval);
+                    // 編集中のレコード以外に同じ日付が存在する場合
+                    if ($arrRet[0]['count'] > 0) {
+                        $objErr->arrErr['date'] = "※ 既に同じ日付の登録が存在します。<br>";
+                    }
+                }
+                // breakしない
+            case 'delete':
+            case 'pre_edit':
+            case 'down':
+            case 'up':
+                $this->objFormParam = new SC_FormParam();
+                $this->objFormParam->addParam('定休日ID', 'holiday_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                $this->objFormParam->setParam($_POST);
+                $this->objFormParam->convParam();
+                $arrErr = $this->objFormParam->checkError();
+                break;
+            default:
+                break;
         }
-        return $objErr->arrErr;
+        return array_merge((array)$objErr->arrErr, (array)$arrErr);
     }
 }
 ?>

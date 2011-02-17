@@ -72,6 +72,16 @@ class LC_Page_Admin_Basis_Payment extends LC_Page_Admin {
         // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess($objSess);
 
+        $mode = $this->getMode();
+
+        if (!empty($_POST)) {
+            $this->arrErr = $this->lfCheckError($mode);
+            if (!empty($this->arrErr['payment_id'])) {
+                SC_Utils_Ex::sfDispException();
+                return;
+            }
+        }
+
         switch($this->getMode()) {
             case 'delete':
                 // ランク付きレコードの削除
@@ -115,6 +125,29 @@ class LC_Page_Admin_Basis_Payment extends LC_Page_Admin {
         $objQuery->setOrder("rank DESC");
         $arrRet = $objQuery->select($col, $table, $where);
         return $arrRet;
+    }
+
+    /**
+     * 入力エラーチェック
+     *
+     * @param string $mode
+     * @return array
+     */
+    function lfCheckError($mode) {
+        $arrErr = array();
+        switch($mode) {
+            case 'delete':
+            case 'up':
+            case 'down':
+                $this->objFormParam = new SC_FormParam();
+                $this->objFormParam->addParam('配送業者ID', 'payment_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                $this->objFormParam->setParam($_POST);
+                $this->objFormParam->convParam();
+                $arrErr = $this->objFormParam->checkError();
+
+                break;
+        }
+        return $arrErr;
     }
 }
 ?>
