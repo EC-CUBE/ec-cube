@@ -129,8 +129,8 @@ class LC_Page_InputZip extends LC_Page {
      * @return エラーなし：true エラー：false
      */
     function lfInputNameCheck($value) {
-        // 半角英数字と_（アンダーバー）以外の文字を使用していたらエラー
-        if(strlen($value) > 0 && !preg_match("/^[a-zA-Z0-9_]+$/", $value)) {
+        // 半角英数字と_（アンダーバー）, []以外の文字を使用していたらエラー
+        if(strlen($value) > 0 && !preg_match("/^[a-zA-Z0-9_\[\]]+$/", $value)) {
             return false;
         }
 
