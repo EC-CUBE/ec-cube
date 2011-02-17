@@ -241,61 +241,80 @@ class SC_FormParam {
     /**
      * SC_CheckError::doFunc() を再帰的に実行する.
      *
+     * 再帰実行した場合は, エラーメッセージを多次元配列で格納する
+     *
+     * TODO 二次元以上のエラーメッセージへの対応
+     *
      * @param string $disp_name 表示名
      * @param string $func チェック種別
      * @param mixed $value チェック対象の値. 配列の場合は再帰的にチェックする.
      * @param array $arrErr エラーメッセージを格納する配列
      * @param string $error_key エラーメッセージを格納する配列のキー
      * @param integer $length チェック対象の値の長さ
+     * @param integer $depth 再帰実行した場合の深度
+     * @param integer $recursion_count 再帰実行した回数
      * @return void
      */
     function recursionCheck($disp_name, $func, $value, &$arrErr, $error_key,
-                            $length = 0) {
+                            $length = 0, $depth = 0, $recursion_count = 0) {
         if (is_array($value)) {
+            $depth++;
+            $recursion_count = 0;
             foreach ($value as $in) {
                 $this->recursionCheck($disp_name, $func, $in, $arrErr, $error_key,
-                                      $length);
+                                      $length, $depth, $recursion_count);
+                $recursion_count++;
             }
         } else {
-            $objSubErr = new SC_CheckError(array(0 => $value));
-            $objSubErr->doFunc(array($disp_name, 0, $length), array($func));
-            if(count($objSubErr->arrErr) > 0) {
-                foreach($objSubErr->arrErr as $mess) {
-                    if($mess != "") {
-                        $arrErr[$error_key] .= $mess;
+            $objErr = new SC_CheckError(array(0 => $value));
+            $objErr->doFunc(array($disp_name, 0, $length), array($func));
+            if (!SC_Utils_Ex::isBlank($objErr->arrErr)) {
+                foreach($objErr->arrErr as $message) {
+
+                    if(!SC_Utils_Ex::isBlank($message)) {
+                        // 再帰した場合は多次元配列のエラーメッセージを生成
+                        $error_var = '$arrErr[$error_key]';
+                        for ($i = 0; $i < $depth; $i++) {
+                            // FIXME 二次元以上の対応
+                            $error_var .= '[' . $recursion_count . ']';
+                        }
+                        eval($error_var . ' = $message;');
                     }
                 }
             }
         }
     }
 
-    // 入力文字の変換
+    /**
+     * フォームの入力パラメータに応じて, 再帰的に mb_convert_kana 関数を実行する.
+     *
+     * @return voi
+     * @see mb_convert_kana
+     */
     function convParam() {
-        /*
-         *	文字列の変換
-         *	K :  「半角(ﾊﾝｶｸ)片仮名」を「全角片仮名」に変換
-         *	C :  「全角ひら仮名」を「全角かた仮名」に変換
-         *	V :  濁点付きの文字を一文字に変換。"K","H"と共に使用します
-         *	n :  「全角」数字を「半角(ﾊﾝｶｸ)」に変換
-         *  a :  「全角」英字を「半角」英字に変換
-         */
         $cnt = 0;
         foreach ($this->keyname as $val) {
             if (!isset($this->param[$cnt])) $this->param[$cnt] = "";
-
-            if(!is_array($this->param[$cnt])) {
-                if($this->convert[$cnt] != "") {
-                    $this->param[$cnt] = mb_convert_kana($this->param[$cnt] ,$this->convert[$cnt]);
-                }
-            } else {
-                $max = count($this->param[$cnt]);
-                for($i = 0; $i < $max; $i++) {
-                    if($this->convert[$cnt] != "") {
-                        $this->param[$cnt][$i] = mb_convert_kana($this->param[$cnt][$i] ,$this->convert[$cnt]);
-                    }
-                }
-            }
+            $this->recursionConvParam($this->param[$cnt], $this->convert[$cnt]);
             $cnt++;
+        }
+    }
+
+    /**
+     * 再帰的に mb_convert_kana を実行する.
+     *
+     * @param mixed $value 変換する値. 配列の場合は再帰的に実行する.
+     * @param string $convert mb_convert_kana の変換オプション
+     */
+    function recursionConvParam(&$value, $convert) {
+        if (is_array($value)) {
+            foreach (array_keys($value) as $key) {
+                $this->recursionConvParam($value[$key], $convert);
+            }
+        } else {
+            if (!SC_Utils_Ex::isBlank($value)) {
+                $value = mb_convert_kana($value, $convert);
+            }
         }
     }
 
@@ -416,26 +435,33 @@ class SC_FormParam {
      */
     function trimParam($has_wide_space = true) {
         $cnt = 0;
-        $pattern = '/^[ 　\r\n\t]*(.*?)[ 　\r\n\t]*$/u';
         foreach ($this->keyname as $val) {
             if (!isset($this->param[$cnt])) $this->param[$cnt] = "";
-
-            if (!is_array($this->param[$cnt])) {
-                if ($has_wide_space) {
-                    $this->param[$cnt] = preg_replace($pattern, '$1', $this->param[$cnt]);
-                }
-                $this->param[$cnt] = trim($this->param[$cnt]);
-            } else {
-                $max = count($this->param[$cnt]);
-                // XXX foreach の方が良い?
-                for ($i = 0; $i < $max; $i++) {
-                    if ($has_wide_space) {
-                        $this->param[$cnt][$i] = preg_replace($pattern, '$1', $this->param[$cnt][$i]);
-                    }
-                    $this->param[$cnt][$i] = trim($this->param[$cnt][$i]);
-                }
-            }
+            $this->recursionTrim($this->param[$cnt], $has_wide_space);
             $cnt++;
+        }
+    }
+
+    /**
+     * 再帰的に入力パラメータの先頭及び末尾にある空白文字を削除する.
+     *
+     * @param mixed $value 変換する値. 配列の場合は再帰的に実行する.
+     * @param boolean $has_wide_space 全角空白も削除する場合 true
+     * @return void
+     */
+    function recursionTrim(&$value, $has_wide_space = true) {
+        $pattern = '/^[ 　\r\n\t]*(.*?)[ 　\r\n\t]*$/u';
+        if (is_array($value)) {
+            foreach (array_keys($value) as $key) {
+                $this->recursionTrim($value[$key], $convert);
+            }
+        } else {
+            if (!SC_Utils_Ex::isBlank($value)) {
+                if ($has_wide_space) {
+                    $value = preg_replace($pattern, '$1', $value);
+                }
+                $value = trim($value);
+            }
         }
     }
 

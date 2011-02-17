@@ -171,6 +171,7 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin {
      * ステータス情報の更新
      */
     function lfStatusMove($statusId, $arrOrderId) {
+        $objPurchase = new SC_Helper_Purchase_Ex();
         $objQuery = new SC_Query();
 
         if (!isset($arrOrderId) || !is_array($arrOrderId)) {
@@ -182,7 +183,7 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin {
         $objQuery->begin();
 
         foreach ($arrOrderId as $orderId) {
-            SC_Helper_DB_Ex::sfUpdateOrderStatus($orderId, $statusId);
+            $objPurchase->sfUpdateOrderStatus($orderId, $statusId);
         }
 
         $objQuery->commit();
