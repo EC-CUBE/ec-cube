@@ -29,46 +29,46 @@
       <input type="hidden" name="mode" value="complete" />
       <!--{foreach key=key item=item from=$arrForm}-->
         <!--{if $key ne 'mode'}-->
-      <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
+      <input type="hidden" name="<!--{$key}-->" value="<!--{$item.value|h}-->" />
         <!--{/if}-->
       <!--{/foreach}-->
       <table summary="お問い合わせ内容確認">
         <tr>
           <th>お名前<span class="attention">※</span></th>
-          <td><!--{$arrForm.name01|h}-->　<!--{$arrForm.name02|h}--></td>
+          <td><!--{$arrForm.name01.value|h}-->　<!--{$arrForm.name02.value|h}--></td>
         </tr>
         <tr>
           <th>お名前(フリガナ)<span class="attention">※</span></th>
-          <td><!--{$arrForm.kana01|h}-->　<!--{$arrForm.kana02|h}--></td>
+          <td><!--{$arrForm.kana01.value|h}-->　<!--{$arrForm.kana02.value|h}--></td>
         </tr>
         <tr>
           <th>郵便番号</th>
           <td>
-             <!--{if strlen($arrForm.zip01) > 0 && strlen($arrForm.zip02) > 0}-->
-               〒<!--{$arrForm.zip01|h}-->-<!--{$arrForm.zip02|h}-->
+             <!--{if strlen($arrForm.zip01.value) > 0 && strlen($arrForm.zip02.value) > 0}-->
+               〒<!--{$arrForm.zip01.value|h}-->-<!--{$arrForm.zip02.value|h}-->
              <!--{/if}-->
           </td>
         </tr>
         <tr>
           <th>住所</th>
-          <td><!--{$arrPref[$arrForm.pref]}--><!--{$arrForm.addr01|h}--><!--{$arrForm.addr02|h}--></td>
+          <td><!--{$arrPref[$arrForm.pref.value]}--><!--{$arrForm.addr01.value|h}--><!--{$arrForm.addr02.value|h}--></td>
         </tr>
         <tr>
           <th>電話番号</th>
           <td>
-            <!--{if strlen($arrForm.tel01) > 0 && strlen($arrForm.tel02) > 0 && strlen($arrForm.tel03) > 0}-->
-              <!--{$arrForm.tel01|h}-->-<!--{$arrForm.tel02|h}-->-<!--{$arrForm.tel03|h}-->
+            <!--{if strlen($arrForm.tel01.value) > 0 && strlen($arrForm.tel02.value) > 0 && strlen($arrForm.tel03.value) > 0}-->
+              <!--{$arrForm.tel01.value|h}-->-<!--{$arrForm.tel02.value|h}-->-<!--{$arrForm.tel03.value|h}-->
             <!--{/if}-->
           </td>
         </tr>
         <tr>
           <th>メールアドレス<span class="attention">※</span></th>
-          <td><a href="mailto:<!--{$arrForm.email|escape:'hex'}-->"><!--{$arrForm.email|escape:'hexentity'}--></a></td>
+          <td><a href="mailto:<!--{$arrForm.email.value|escape:'hex'}-->"><!--{$arrForm.email.value|escape:'hexentity'}--></a></td>
         </tr>
         <tr>
           <th>お問い合わせ内容<span class="attention">※</span><br />
              <span class="mini">（全角1000字以下）</span></th>
-          <td><!--{$arrForm.contents|h|nl2br}--></td>
+          <td><!--{$arrForm.contents.value|h|nl2br}--></td>
         </tr>
       </table>
       <div class="tblareabtn">

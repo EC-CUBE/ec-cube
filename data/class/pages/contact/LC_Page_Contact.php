@@ -1,3 +1,4 @@
+
 <?php
 /*
  * This file is part of EC-CUBE
@@ -37,29 +38,6 @@ class LC_Page_Contact extends LC_Page {
     // {{{ functions
 
     /**
-     * フォーム値変換用カラム
-     *
-     *
-     */
-    var $arrConvertColumn = array(
-        array("column" => "name01",    "convert" => "aKV"),
-        array("column" => "name02",    "convert" => "aKV"),
-        array("column" => "kana01",    "convert" => "CKV"),
-        array("column" => "kana02",    "convert" => "CKV"),
-        array("column" => "zip01",     "convert" => "n"),
-        array("column" => "zip02",     "convert" => "n"),
-        array("column" => "pref",      "convert" => "n"),
-        array("column" => "addr01",    "convert" => "aKV"),
-        array("column" => "addr02",    "convert" => "aKV"),
-        array("column" => "email",     "convert" => "a"),
-        array("column" => "email02",   "convert" => "a"),
-        array("column" => "tel01",     "convert" => "n"),
-        array("column" => "tel02",     "convert" => "n"),
-        array("column" => "tel03",     "convert" => "n"),
-        array("column" => "contents",  "convert" => "aKV"),
-    );
-
-    /**
      * Page を初期化する.
      *
      * @return void
@@ -91,21 +69,49 @@ class LC_Page_Contact extends LC_Page {
      */
     function action() {
         $objDb = new SC_Helper_DB_Ex();
+        $objFormParam = new SC_FormParam();
         $this->CONF = $objDb->sfGetBasisData();			// 店舗基本情報
 
         $this->arrData = isset($_SESSION['customer']) ? $_SESSION['customer'] : "";
 
         switch ($this->getMode()) {
             case 'confirm':
-              $this->lfContactConfirm();
+              // エラーチェック
+        		$this->lfInitParam($objFormParam);
+       			$objFormParam->setParam($_POST);
+				$objFormParam->convParam();
+        		$objFormParam->toLower('email');
+        		$objFormParam->toLower('email02');
+        		$this->arrErr = $objFormParam->checkError();
+				// 入力値の取得
+        		$this->arrForm = $objFormParam->getFormParamList();
+       		
+					if ( ! $this->arrErr ){
+            		// エラー無しで完了画面
+            		$this->tpl_mainpage = 'contact/confirm.tpl';
+            		$this->tpl_title = 'お問い合わせ(確認ページ)';
+        			}
+					
               break;
 
             case 'return':
-              $this->lfContactReturn();
+              	$this->lfInitParam($objFormParam);
+				$objFormParam->setParam($_POST);
+				$this->arrForm = $objFormParam->getFormParamList();
               break;
-
             case 'complete':
-              $this->lfContactComplete();
+             	$this->lfInitParam($objFormParam);
+        		$objFormParam->setParam($_POST);
+				$this->arrErr = $objFormParam->checkError();
+				$this->arrForm = $objFormParam->getFormParamList();
+        			if(!$this->arrErr) {
+           			$this->lfSendMail($this);
+            		// 完了ページへ移動する
+            		SC_Response_Ex::sendRedirect('complete.php');
+            		exit;
+        			} else {
+            		SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
+        			}
               break;
 
             default:
@@ -124,106 +130,30 @@ class LC_Page_Contact extends LC_Page {
 
     // }}}
     // {{{ protected functions
-
-    /**
-     * 確認画面
+	
+	 /**
+     * お問い合わせ入力時のパラメータ情報の初期化を行う.
      *
+     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function lfContactConfirm() {
-        // エラーチェック
-        $arrForm = $_POST;
-        $arrForm['email'] = strtolower($_POST['email']);
-        $this->arrForm = $this->lfConvertParam($arrForm, $this->arrConvertColumn);
-        $this->arrErr = $this->lfErrorCheck($this->arrForm);
-        if ( ! $this->arrErr ){
-            // エラー無しで完了画面
-            $this->tpl_mainpage = 'contact/confirm.tpl';
-            $this->tpl_title = 'お問い合わせ(確認ページ)';
-        }
-    }
-
-    /**
-     * 前に戻る
-     *
-     * @return void
-     */
-    function lfContactReturn() {
-        $this->arrForm = $_POST;
-    }
-
-    /**
-     * 完了ページへ
-     *
-     * @return void
-     */
-    function lfContactComplete() {
-        $arrForm = $_POST;
-        $arrForm['email']   = isset($_POST['email']) ? strtolower($_POST['email']) : '';
-        $arrForm['email02'] = isset($_POST['email02']) ? strtolower($_POST['email02']) : '';
-        $this->arrForm = $this->lfConvertParam($arrForm, $this->arrConvertColumn);
-        $this->arrErr = $this->lfErrorCheck($this->arrForm);
-        if(!$this->arrErr) {
-            $this->lfSendMail($this);
-            // 完了ページへ移動する
-            SC_Response_Ex::sendRedirect('complete.php');
-            exit;
-        } else {
-            SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
-        }
-    }
-
-    //エラーチェック処理部
-    function lfErrorCheck($array) {
-        $objErr = new SC_CheckError($array);
-        $objErr->doFunc(array("お名前(姓)", 'name01', STEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("お名前(名)", 'name02', STEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("お名前(フリガナ・姓)", 'kana01', STEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK", "KANA_CHECK"));
-        $objErr->doFunc(array("お名前(フリガナ・名)", 'kana02', STEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK", "KANA_CHECK"));
-        $objErr->doFunc(array("郵便番号1", "zip01", ZIP01_LEN ) ,array("SPTAB_CHECK" ,"NUM_CHECK", "NUM_COUNT_CHECK"));
-        $objErr->doFunc(array("郵便番号2", "zip02", ZIP02_LEN ) ,array("SPTAB_CHECK" ,"NUM_CHECK", "NUM_COUNT_CHECK"));
-        $objErr->doFunc(array("住所1", "addr01", MTEXT_LEN), array("SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("住所2", "addr02", MTEXT_LEN), array("SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("お問い合わせ内容", "contents", MLTEXT_LEN), array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array('メールアドレス', "email", MTEXT_LEN) ,array("EXIST_CHECK", "EMAIL_CHECK", "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array('メールアドレス(確認)', "email02", MTEXT_LEN) ,array("EXIST_CHECK", "EMAIL_CHECK", "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array('メールアドレス', 'メールアドレス(確認)', "email", "email02") ,array("EQUAL_CHECK"));
-        $objErr->doFunc(array("お電話番号1", 'tel01', TEL_ITEM_LEN), array("NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("お電話番号2", 'tel02', TEL_ITEM_LEN), array("NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("お電話番号3", 'tel03', TEL_ITEM_LEN), array("NUM_CHECK", "MAX_LENGTH_CHECK"));
-
-        if (REVIEW_ALLOW_URL == false) {
-            // URLの入力を禁止
-            $masterData = new SC_DB_MasterData_Ex();
-            $objErr->doFunc(array("URL", "contents", $masterData->getMasterData("mtb_review_deny_url")), array("PROHIBITED_STR_CHECK"));
-        }
-
-        return $objErr->arrErr;
-    }
-
-    //----　取得文字列の変換
-    function lfConvertParam($array, $arrConvertColumn) {
-        /*
-         *	文字列の変換
-         *	K :  「半角(ﾊﾝｶｸ)片仮名」を「全角片仮名」に変換
-         *	C :  「全角ひら仮名」を「全角かた仮名」に変換
-         *	V :  濁点付きの文字を一文字に変換。"K","H"と共に使用します
-         *	n :  「全角」数字を「半角(ﾊﾝｶｸ)」に変換
-         *  a :  全角英数字を半角英数字に変換する
-         */
-        // カラム名とコンバート情報
-        foreach ($arrConvertColumn as $data) {
-            $arrConvList[ $data["column"] ] = $data["convert"];
-        }
-
-        // 文字変換
-        foreach ($arrConvList as $key => $val) {
-            // POSTされてきた値のみ変換する。
-            if(strlen(($array[$key])) > 0) {
-                $array[$key] = mb_convert_kana($array[$key] ,$val);
-            }
-        }
-        return $array;
+    function lfInitParam(&$objFormParam) {
+		
+		$objFormParam->addParam("お名前(姓)", 'name01', STEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("お名前(名)", 'name02', STEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("お名前(フリガナ・姓)", 'kana01', STEXT_LEN, "KVCa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK", "KANA_CHECK"));
+        $objFormParam->addParam("お名前(フリガナ・名)", 'kana02', STEXT_LEN, "KVCa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK", "KANA_CHECK"));
+        $objFormParam->addParam("郵便番号1", "zip01", ZIP01_LEN, "n",array("SPTAB_CHECK" ,"NUM_CHECK", "NUM_COUNT_CHECK"));
+        $objFormParam->addParam("郵便番号2", "zip02", ZIP02_LEN, "n",array("SPTAB_CHECK" ,"NUM_CHECK", "NUM_COUNT_CHECK"));
+		$objFormParam->addParam("都道府県", "pref", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("住所1", "addr01", MTEXT_LEN, "KVa", array("SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("住所2", "addr02", MTEXT_LEN, "KVa", array("SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("お問い合わせ内容", "contents", MLTEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam('メールアドレス', "email", MTEXT_LEN, "KVa",array("EXIST_CHECK", "EMAIL_CHECK", "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam('メールアドレス(確認)', "email02", MTEXT_LEN, "KVa",array("EXIST_CHECK", "EMAIL_CHECK", "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("お電話番号1", 'tel01', TEL_ITEM_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("お電話番号2", 'tel02', TEL_ITEM_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("お電話番号3", 'tel03', TEL_ITEM_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
     }
 
     // ------------  メール送信 ------------
@@ -237,12 +167,12 @@ class LC_Page_Contact extends LC_Page {
         $objPage->tpl_shopname = $arrInfo['shop_name'];
         $objPage->tpl_infoemail = $arrInfo['email02'];
 
-        $fromMail_name = $objPage->arrForm['name01'] ." 様";
-        $fromMail_address = $objPage->arrForm['email'];
+        $fromMail_name = $objPage->arrForm['name01']['value'] ." 様";
+        $fromMail_address = $objPage->arrForm['email']['value'];
 
         $helperMail = new SC_Helper_Mail_Ex();
         $helperMail->sfSendTemplateMail($CONF["email02"], $CONF["shop_name"], "5", $objPage, $fromMail_address, $fromMail_name, $fromMail_address);
-        $helperMail->sfSendTemplateMail($objPage->arrForm['email'], $objPage->arrForm['name01'] ." 様", "5", $objPage, $CONF["email03"], $CONF["shop_name"], $CONF["email02"]);
+        $helperMail->sfSendTemplateMail($objPage->arrForm['email']['value'], $objPage->arrForm['name01']['value'] ." 様", "5", $objPage, $CONF["email03"], $CONF["shop_name"], $CONF["email02"]);
     }
 }
 ?>
