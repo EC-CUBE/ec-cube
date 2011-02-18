@@ -70,48 +70,50 @@ class LC_Page_Contact extends LC_Page {
     function action() {
         $objDb = new SC_Helper_DB_Ex();
         $objFormParam = new SC_FormParam();
-        $this->CONF = $objDb->sfGetBasisData();			// 店舗基本情報
 
         $this->arrData = isset($_SESSION['customer']) ? $_SESSION['customer'] : "";
 
         switch ($this->getMode()) {
             case 'confirm':
               // エラーチェック
-        		$this->lfInitParam($objFormParam);
-       			$objFormParam->setParam($_POST);
-				$objFormParam->convParam();
-        		$objFormParam->toLower('email');
-        		$objFormParam->toLower('email02');
-        		$this->arrErr = $objFormParam->checkError();
-				// 入力値の取得
-        		$this->arrForm = $objFormParam->getFormParamList();
-       		
-					if ( ! $this->arrErr ){
-            		// エラー無しで完了画面
-            		$this->tpl_mainpage = 'contact/confirm.tpl';
-            		$this->tpl_title = 'お問い合わせ(確認ページ)';
-        			}
-					
+                $this->lfInitParam($objFormParam);
+                $objFormParam->setParam($_POST);
+                $objFormParam->convParam();
+                $objFormParam->toLower('email');
+                $objFormParam->toLower('email02');
+                $this->arrErr = $objFormParam->checkError();
+                // 入力値の取得
+                $this->arrForm = $objFormParam->getFormParamList();
+               
+                    if ( ! $this->arrErr ){
+                    // エラー無しで完了画面
+                    $this->tpl_mainpage = 'contact/confirm.tpl';
+                    $this->tpl_title = 'お問い合わせ(確認ページ)';
+                    }
+                    
               break;
 
             case 'return':
-              	$this->lfInitParam($objFormParam);
-				$objFormParam->setParam($_POST);
-				$this->arrForm = $objFormParam->getFormParamList();
+                $this->lfInitParam($objFormParam);
+                $objFormParam->setParam($_POST);
+                $this->arrForm = $objFormParam->getFormParamList();
+				
               break;
+			  
             case 'complete':
-             	$this->lfInitParam($objFormParam);
-        		$objFormParam->setParam($_POST);
-				$this->arrErr = $objFormParam->checkError();
-				$this->arrForm = $objFormParam->getFormParamList();
-        			if(!$this->arrErr) {
-           			$this->lfSendMail($this);
-            		// 完了ページへ移動する
-            		SC_Response_Ex::sendRedirect('complete.php');
-            		exit;
-        			} else {
-            		SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
-        			}
+                $this->lfInitParam($objFormParam);
+                $objFormParam->setParam($_POST);
+                $this->arrErr = $objFormParam->checkError();
+                $this->arrForm = $objFormParam->getFormParamList();
+                    if(!$this->arrErr) {
+                       $this->lfSendMail($this);
+                    // 完了ページへ移動する
+                    SC_Response_Ex::sendRedirect('complete.php');
+                    exit;
+                    } else {
+                    SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
+                    }
+					
               break;
 
             default:
@@ -130,22 +132,22 @@ class LC_Page_Contact extends LC_Page {
 
     // }}}
     // {{{ protected functions
-	
-	 /**
+    
+     /**
      * お問い合わせ入力時のパラメータ情報の初期化を行う.
      *
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-		
-		$objFormParam->addParam("お名前(姓)", 'name01', STEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+        
+        $objFormParam->addParam("お名前(姓)", 'name01', STEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
         $objFormParam->addParam("お名前(名)", 'name02', STEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
         $objFormParam->addParam("お名前(フリガナ・姓)", 'kana01', STEXT_LEN, "KVCa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK", "KANA_CHECK"));
         $objFormParam->addParam("お名前(フリガナ・名)", 'kana02', STEXT_LEN, "KVCa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK", "KANA_CHECK"));
         $objFormParam->addParam("郵便番号1", "zip01", ZIP01_LEN, "n",array("SPTAB_CHECK" ,"NUM_CHECK", "NUM_COUNT_CHECK"));
         $objFormParam->addParam("郵便番号2", "zip02", ZIP02_LEN, "n",array("SPTAB_CHECK" ,"NUM_CHECK", "NUM_COUNT_CHECK"));
-		$objFormParam->addParam("都道府県", "pref", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("都道府県", "pref", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
         $objFormParam->addParam("住所1", "addr01", MTEXT_LEN, "KVa", array("SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
         $objFormParam->addParam("住所2", "addr02", MTEXT_LEN, "KVa", array("SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
         $objFormParam->addParam("お問い合わせ内容", "contents", MLTEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
@@ -156,11 +158,15 @@ class LC_Page_Contact extends LC_Page {
         $objFormParam->addParam("お電話番号3", 'tel03', TEL_ITEM_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
     }
 
-    // ------------  メール送信 ------------
+    /**
+     * メールの送信を行う。
+     *
+     * @return void
+     */
 
     function lfSendMail(&$objPage){
         $objDb = new SC_Helper_DB_Ex();
-        $CONF = $objDb->sfGetBasisData();			// 店舗基本情報
+        $CONF = $objDb->sfGetBasisData();            // 店舗基本情報
         $objQuery =& SC_Query::getSingletonInstance();
         $objSiteInfo = $this->objView->objSiteInfo;
         $arrInfo = $objSiteInfo->data;
