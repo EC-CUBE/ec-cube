@@ -71,7 +71,8 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin {
      */
     function action() {
         $objSess = new SC_Session();
-        $this->objQuery = new SC_Query();
+        $this->objQuery =& SC_Query::getSingletonInstance();
+
         // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess($objSess);
 
@@ -107,9 +108,8 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin {
                 if ($this->arrErr) {
                     // 入力内容を引き継ぐ
                     $this->arrReview = $arrReview;
-                }
+                } else {
                 // エラー無し
-                else {
                     // レビュー情報の更新
                     $this->lfRegistReviewData($arrReview, $arrRegistColumn);
 
