@@ -81,67 +81,7 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page_Admin {
             $this->arrForm = $_POST;
             // 入力文字の強制変換
             $this->lfConvertParam();
-
-            $where = "del_flg = 0";
-
-            /* 入力エラーなし */
-            foreach ($this->arrForm as $key => $val) {
-                if($val == "") {
-                    continue;
-                }
-
-                switch ($key) {
-                case 'search_name':
-                    $where .= " AND name ILIKE ?";
-                    $arrval[] = "%$val%";
-                    break;
-                case 'search_category_id':
-                    list($tmp_where, $tmp_arrval) = $objDb->sfGetCatWhere($val);
-                    if($tmp_where != "") {
-                        $where.= " AND product_id IN (SELECT product_id FROM dtb_product_categories WHERE " . $tmp_where . ")";
-                        $arrval = array_merge((array)$arrval, (array)$tmp_arrval);
-                    }
-                    break;
-                case 'search_product_code':
-                    $where .= " AND product_id IN (SELECT product_id FROM dtb_products_class WHERE product_code LIKE ? GROUP BY product_id)";
-                    $arrval[] = "$val%";
-                    break;
-                default:
-                    break;
-                }
-            }
-
-            $order = "update_date DESC, product_id DESC ";
-
-            $objQuery = new SC_Query();
-            // 行数の取得
-            if (empty($arrval)) {
-                $arrval = array();
-            }
-            $linemax = $objQuery->count("dtb_products", $where, $arrval);
-            $this->tpl_linemax = $linemax;              // 何件が該当しました。表示用
-
-            // ページ送りの処理
-            if(isset($_POST['search_page_max'])
-               && is_numeric($_POST['search_page_max'])) {
-                $page_max = $_POST['search_page_max'];
-            } else {
-                $page_max = SEARCH_PMAX;
-            }
-
-            // ページ送りの取得
-            $objNavi = new SC_PageNavi($_POST['search_pageno'], $linemax, $page_max, "fnNaviSearchOnlyPage", NAVI_PMAX);
-            $this->tpl_strnavi = $objNavi->strnavi;     // 表示文字列
-            $startno = $objNavi->start_row;
-
-            // 取得範囲の指定(開始行番号、行数のセット)
-            $objQuery->setLimitOffset($page_max, $startno);
-            // 表示順序
-            $objQuery->setOrder($order);
-
-            // 検索結果の取得
-            // FIXME 商品コードの表示
-            $this->arrProducts = $objQuery->select("*", SC_Product::alldtlSQL(), $where, $arrval);
+            $this->arrProducts = $this->lfGetProducts($objDb);
             break;
         default:
             break;
@@ -180,6 +120,69 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page_Admin {
                 $this->arrForm[$key] = mb_convert_kana($this->arrForm[$key] ,$val);
             }
         }
+    }
+
+    /* 商品検索結果取得 */
+    function lfGetProducts(&$objDb) {
+        $where = "del_flg = 0";
+
+        /* 入力エラーなし */
+        foreach ($this->arrForm AS $key=>$val) {
+            if($val == "") continue;
+
+            switch ($key) {
+            case 'search_name':
+                $where .= " AND name ILIKE ?";
+                $arrval[] = "%$val%";
+                break;
+            case 'search_category_id':
+                list($tmp_where, $tmp_arrval) = $objDb->sfGetCatWhere($val);
+                if($tmp_where != "") {
+                    $where.= " AND product_id IN (SELECT product_id FROM dtb_product_categories WHERE " . $tmp_where . ")";
+                    $arrval = array_merge((array)$arrval, (array)$tmp_arrval);
+                }
+                break;
+            case 'search_product_code':
+                $where .= " AND product_id IN (SELECT product_id FROM dtb_products_class WHERE product_code LIKE ? GROUP BY product_id)";
+                $arrval[] = "$val%";
+                break;
+            default:
+                break;
+            }
+        }
+
+        $order = "update_date DESC, product_id DESC ";
+
+        $objQuery = new SC_Query();
+        // 行数の取得
+        if (empty($arrval)) {
+            $arrval = array();
+        }
+        $linemax = $objQuery->count("dtb_products", $where, $arrval);
+        $this->tpl_linemax = $linemax;              // 何件が該当しました。表示用
+
+        // ページ送りの処理
+        if(isset($_POST['search_page_max'])
+           && is_numeric($_POST['search_page_max'])) {
+            $page_max = $_POST['search_page_max'];
+        } else {
+            $page_max = SEARCH_PMAX;
+        }
+
+        // ページ送りの取得
+        $objNavi = new SC_PageNavi($_POST['search_pageno'], $linemax, $page_max, "fnNaviSearchOnlyPage", NAVI_PMAX);
+        $this->tpl_strnavi = $objNavi->strnavi;     // 表示文字列
+        $startno = $objNavi->start_row;
+
+        // 取得範囲の指定(開始行番号、行数のセット)
+        $objQuery->setLimitOffset($page_max, $startno);
+        // 表示順序
+        $objQuery->setOrder($order);
+
+        // 検索結果の取得
+        // FIXME 商品コードの表示
+        $arrProducts = $objQuery->select("*", SC_Product::alldtlSQL(), $where, $arrval);
+        return $arrProducts;
     }
 }
 ?>
