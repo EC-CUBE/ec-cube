@@ -66,7 +66,7 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin {
      * @return void
      */
     function action() {
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
         $objSess = new SC_Session();
         $objDb = new SC_Helper_DB_Ex();
 
@@ -121,7 +121,7 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin {
     /* 商品読み込み */
     function lfGetProduct($category_id) {
         // FIXME SC_Product クラスを使用した実装
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
         $col = "product_id, name, main_list_image, product_code_min, product_code_max, status";
         $table = "vw_products_allclass AS allcls";
         $where = "del_flg = 0 AND category_id = ?";
@@ -151,7 +151,7 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin {
      * 商品の数値指定での並び替え実行
      */
     function lfRenumber($parent_category_id) {
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
 
         $sql = <<< __EOS__
             UPDATE dtb_product_categories
