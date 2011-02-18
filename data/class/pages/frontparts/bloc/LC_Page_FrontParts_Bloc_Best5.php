@@ -90,7 +90,6 @@ class LC_Page_FrontParts_Bloc_Best5 extends LC_Page_FrontParts_Bloc {
         $objQuery = SC_Query::getSingletonInstance();
         $sql = '';
         $sql .= ' SELECT';
-        $sql .= ' DISTINCT';
         $sql .= '    T1.best_id,';
         $sql .= '    T1.category_id,';
         $sql .= '    T1.rank,';
@@ -108,14 +107,26 @@ class LC_Page_FrontParts_Bloc_Best5 extends LC_Page_FrontParts_Bloc {
         $arrBestProducts = $objQuery->getAll($sql);
         // 各商品の詳細情報を取得
         $objQuery = SC_Query::getSingletonInstance();
-        $arrProduct = array();
         $objProduct = new SC_Product();
+        // where条件生成&セット
+        $arrBestProductIds = array();
+        $where = 'product_id IN ( ';
         foreach( $arrBestProducts as $key => $val ) {
-            $where = 'product_id = ' . $val['product_id'];
-            $objQuery->setWhere($where);
-            $arrProductLsit = $objProduct->lists($objQuery);
-            if ( !empty($arrProductLsit) ) {
-                $arrProduct[$key] = array_merge($val, $arrProductLsit[0]);
+            $arrBestProductIds[] = $val['product_id'];
+        }
+        $where .= implode(', ', $arrBestProductIds);
+        $where .= ' )';
+        $objQuery->setWhere($where);
+        // 取得
+        $arrProductList = $objProduct->lists($objQuery);
+        // おすすめ商品情報とマージ
+        $arrProduct = array();
+        foreach( $arrProductList as $pdct_key => $pdct_val ) {
+            foreach( $arrBestProducts as $best_key => $best_val ) {
+                if ( $pdct_val['product_id'] == $best_val['product_id'] ) {
+                    $arrProduct[$best_key] = array_merge($best_val, $pdct_val);
+                    break;
+                }
             }
         }
         return $arrProduct;
