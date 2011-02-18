@@ -78,72 +78,35 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin {
         // 通常時は親カテゴリを0に設定する。
         $this->arrForm['parent_category_id'] =
             isset($_POST['parent_category_id']) ? $_POST['parent_category_id'] : 0;
+        $this->arrForm['product_id'] =
+            isset($_POST['product_id']) ? $_POST['product_id'] : '';
 
         switch($this->getMode()) {
         case 'up':
-            $where = "category_id = " . SC_Utils_Ex::sfQuoteSmart($_POST['parent_category_id']);
-            $objDb->sfRankUp("dtb_product_categories", "product_id", $_POST['product_id'], $where);
+            $this->lfRankUp($objDb, $this->arrForm['parent_category_id'], $this->arrForm['product_id']);
             break;
         case 'down':
-            $where = "category_id = " . SC_Utils_Ex::sfQuoteSmart($_POST['parent_category_id']);
-            $objDb->sfRankDown("dtb_product_categories", "product_id", $_POST['product_id'], $where);
+            $this->lfRankDown($objDb, $this->arrForm['parent_category_id'], $this->arrForm['product_id']);
             break;
         case 'move':
-            $key = "pos-".$_POST['product_id'];
-            $input_pos = mb_convert_kana($_POST[$key], "n");
-            if(SC_Utils_Ex::sfIsInt($input_pos)) {
-                $where = "category_id = " . SC_Utils_Ex::sfQuoteSmart($_POST['parent_category_id']);
-                $objDb->sfMoveRank("dtb_product_categories", "product_id", $_POST['product_id'], $input_pos, $where);
-            }
+            $this->lfRankMove($objDb, $this->arrForm['parent_category_id'], $this->arrForm['product_id']);
             break;
         case 'tree':
             // カテゴリの切替は、ページ番号をクリアする。
             $this->tpl_pageno = "";
             break;
-
         case 'renumber':
-            $sql = <<< __EOS__
-                UPDATE dtb_product_categories
-                SET
-                    rank =
-                        (
-                            SELECT COUNT(*)
-                            FROM dtb_product_categories t_in
-                            WHERE t_in.category_id = dtb_product_categories.category_id
-                                AND (
-                                    t_in.rank < dtb_product_categories.rank
-                                    OR (
-                                        t_in.rank = dtb_product_categories.rank
-                                        AND t_in.product_id < dtb_product_categories.product_id
-                                    )
-                                )
-                        ) + 1
-                WHERE dtb_product_categories.category_id = ?
-__EOS__;
-            $objQuery->query($sql, array($_POST['parent_category_id']));
+            $this->lfRenumber($this->arrForm['parent_category_id']);
             break;
-
         default:
             break;
         }
 
         $this->arrTree = $objDb->sfGetCatTree($this->arrForm['parent_category_id']);
-        $this->arrProductsList =
-            $this->lfGetProduct($this->arrForm['parent_category_id']);
+        $this->arrProductsList = $this->lfGetProduct($this->arrForm['parent_category_id']);
         $arrBread = array();
         $objDb->findTree($this->arrTree, $this->arrForm['parent_category_id'], $arrBread);
-        $this->breadcrumbs = "ホーム";
-        // TODO JSON で投げて, フロント側で処理した方が良い？
-        for ($i = count($arrBread) - 1; $i >= 0; $i--) {
-            // フロント側で &gt; へエスケープするため, ここでは > を使用
-            if ($i === count($arrBread) - 1) {
-                $this->breadcrumbs .= ' > ';
-            }
-            $this->breadcrumbs .= $arrBread[$i]['category_name'];
-            if ($i > 0) {
-                $this->breadcrumbs .= ' > ';
-            }
-        }
+        $this->breadcrumbs = $this->lfGetBreadcrumbs($arrBread);
     }
 
     /**
@@ -183,5 +146,73 @@ __EOS__;
         $arrRet = $objQuery->select($col, $table, $where, array($category_id));
         return $arrRet;
     }
+
+    /*
+     * 商品の数値指定での並び替え実行
+     */
+    function lfRenumber($parent_category_id) {
+        $objQuery = new SC_Query();
+
+        $sql = <<< __EOS__
+            UPDATE dtb_product_categories
+            SET
+                rank =
+                    (
+                        SELECT COUNT(*)
+                        FROM dtb_product_categories t_in
+                        WHERE t_in.category_id = dtb_product_categories.category_id
+                            AND (
+                                t_in.rank < dtb_product_categories.rank
+                                OR (
+                                    t_in.rank = dtb_product_categories.rank
+                                    AND t_in.product_id < dtb_product_categories.product_id
+                                )
+                            )
+                    ) + 1
+            WHERE dtb_product_categories.category_id = ?
+__EOS__;
+        $arrRet = $objQuery->query($sql, array($parent_category_id));
+        return $arrRet;
+    }
+
+    function lfRankUp(&$objDb, $parent_category_id, $product_id) {
+        $where = "category_id = " . SC_Utils_Ex::sfQuoteSmart($parent_category_id);
+        $objDb->sfRankUp("dtb_product_categories", "product_id", $product_id, $where);
+    }
+
+    function lfRankDown(&$objDb, $parent_category_id, $product_id) {
+        $where = "category_id = " . SC_Utils_Ex::sfQuoteSmart($parent_category_id);
+        $objDb->sfRankDown("dtb_product_categories", "product_id", $product_id, $where);
+    }
+
+    function lfRankMove(&$objDb, $parent_category_id, $product_id) {
+        $key = "pos-".$product_id;
+        $input_pos = mb_convert_kana($_POST[$key], "n");
+        if(SC_Utils_Ex::sfIsInt($input_pos)) {
+            $where = "category_id = " . SC_Utils_Ex::sfQuoteSmart($parent_category_id);
+            $objDb->sfMoveRank("dtb_product_categories", "product_id", $product_id, $input_pos, $where);
+        }
+    }
+
+
+    function lfGetBreadcrumbs($arrBread) {
+        $breadcrumbs = "ホーム";
+        // TODO JSON で投げて, フロント側で処理した方が良い？
+        for ($i = count($arrBread) - 1; $i >= 0; $i--) {
+            // フロント側で &gt; へエスケープするため, ここでは > を使用
+            if ($i === count($arrBread) - 1) {
+                $breadcrumbs .= ' > ';
+            }
+            $breadcrumbs .= $arrBread[$i]['category_name'];
+            if ($i > 0) {
+                $breadcrumbs .= ' > ';
+            }
+        }
+
+        return $breadcrumbs;
+    }
+
+
+
 }
 ?>
