@@ -64,7 +64,7 @@ class LC_Page_FrontParts_Bloc_Best5 extends LC_Page_FrontParts_Bloc {
     function action() {
 
         // 基本情報を渡す
-        $objSiteInfo = new SC_SiteInfo();
+        $objSiteInfo = SC_Helper_DB_Ex::sfGetBasisData();
         $this->arrInfo = $objSiteInfo->data;
 
         //おすすめ商品表示
@@ -86,6 +86,7 @@ class LC_Page_FrontParts_Bloc_Best5 extends LC_Page_FrontParts_Bloc {
      * @return array $arrBestProducts 検索結果配列
      */
     function lfGetRanking(){
+        $arrProduct = array();
         // おすすめ商品取得
         $objQuery = SC_Query::getSingletonInstance();
         $sql = '';
@@ -105,27 +106,28 @@ class LC_Page_FrontParts_Bloc_Best5 extends LC_Page_FrontParts_Bloc {
         $objQuery->setOrder('rank');
         $objQuery->setLimit(RECOMMEND_NUM);
         $arrBestProducts = $objQuery->getAll($sql);
-        // 各商品の詳細情報を取得
-        $objQuery = SC_Query::getSingletonInstance();
-        $objProduct = new SC_Product();
-        // where条件生成&セット
-        $arrBestProductIds = array();
-        $where = 'product_id IN ( ';
-        foreach( $arrBestProducts as $key => $val ) {
-            $arrBestProductIds[] = $val['product_id'];
-        }
-        $where .= implode(', ', $arrBestProductIds);
-        $where .= ' )';
-        $objQuery->setWhere($where);
-        // 取得
-        $arrProductList = $objProduct->lists($objQuery);
-        // おすすめ商品情報とマージ
-        $arrProduct = array();
-        foreach( $arrProductList as $pdct_key => $pdct_val ) {
-            foreach( $arrBestProducts as $best_key => $best_val ) {
-                if ( $pdct_val['product_id'] == $best_val['product_id'] ) {
-                    $arrProduct[$best_key] = array_merge($best_val, $pdct_val);
-                    break;
+        if ( is_array($arrBestProducts) && count($arrBestProducts) > 0 ) {
+            // 各商品の詳細情報を取得
+            $objQuery = SC_Query::getSingletonInstance();
+            $objProduct = new SC_Product();
+            // where条件生成&セット
+            $arrBestProductIds = array();
+            $where = 'product_id IN ( ';
+            foreach( $arrBestProducts as $key => $val ) {
+                $arrBestProductIds[] = $val['product_id'];
+            }
+            $where .= implode(', ', $arrBestProductIds);
+            $where .= ' )';
+            $objQuery->setWhere($where);
+            // 取得
+            $arrProductList = $objProduct->lists($objQuery);
+            // おすすめ商品情報とマージ
+            foreach( $arrProductList as $pdct_key => $pdct_val ) {
+                foreach( $arrBestProducts as $best_key => $best_val ) {
+                    if ( $pdct_val['product_id'] == $best_val['product_id'] ) {
+                        $arrProduct[$best_key] = array_merge($best_val, $pdct_val);
+                        break;
+                    }
                 }
             }
         }
