@@ -94,53 +94,43 @@ class LC_Page_Products_List extends LC_Page {
      * @return void
      */
     function action() {
-        $this->lfLoadParam();
-        $objQuery = new SC_Query();
-        $objDb = new SC_Helper_DB_Ex();
+        $objQuery = new SC_Query();//$this->queryにしたい
+        $objDb = new SC_Helper_DB_Ex();//$this->helperDBにしたい
 
-        // タイトル編集
-        if ($this->mode == 'search') {
-            $this->tpl_subtitle = "検索結果";
-        } elseif ($this->arrSearchData['category_id'] == 0) {
-            $this->tpl_subtitle = "全商品";
-        } else {
-            $arrCat = $objDb->sfGetCat($this->arrSearchData['category_id']);
-            $this->tpl_subtitle = $arrCat['name'];
-        }
+        $this->arrForm = $_GET;
+        //modeの取得
+        $this->mode = $this->getMode();
+        
+        //表示条件の取得
+        $this->arrSearchData = array(
+            'category_id' => $this->lfGetCategoryId($this->arrForm['category_id'],&$objDb),
+            'maker_id'=>$this->arrForm['maker_id'],
+            'name'=>$this->arrForm['name']
+        );
+        $this->orderby = $this->arrForm['orderby'];
+        
+        //ページング設定
+        $this->tpl_pageno = $this->arrForm['pageno'];
+        $this->disp_number = $this->lfGetDisplayNum($this->arrForm['disp_number']);
 
-        $count = $objQuery->count("dtb_best_products", "category_id = ?", array($this->arrSearchData['category_id']));
+        // 画面に表示するサブタイトルの設定
+        $this->tpl_subtitle = $this->lfGetPageTitle($this->mode,$this->arrSearchData['category_id'],$objDb);
+
+        // 画面に表示する検索条件を設定
+        $this->arrSearch = $this->lfGetSearchCondition($this->arrSearchData,$objQuery);
+        //この辺まではinit()に書いちゃダメなのかな？
+//2011-02-17 ここまでやった
 
         // 商品一覧の表示処理
-        $this->lfDispProductsList();
+        $this->arrProducts = $this->lfGetProductsList($objDb);
 
-        // 検索条件を画面に表示
-        // カテゴリー検索条件
-        if ($this->arrSearchData['category_id'] == 0) {
-            $this->arrSearch['category'] = "指定なし";
-        } else {
-            $arrCat = $objQuery->getOne("SELECT category_name FROM dtb_category WHERE category_id = ?", array($this->arrSearchData['category_id']));
-            $this->arrSearch['category'] = $arrCat;
-        }
-
-        // メーカー検索条件
-        if (strlen($this->arrSearchData['maker_id']) == 0) {
-            $this->arrSearch['maker'] = "指定なし";
-        } else {
-            $this->arrSearch['maker'] = $objQuery->getOne("SELECT name FROM dtb_maker WHERE maker_id = ?", $this->arrSearchData['maker_id']);
-        }
-
-        // 商品名検索条件
-        if (strlen($this->arrSearchData['name']) == 0) {
-            $this->arrSearch['name'] = "指定なし";
-        } else {
-            $this->arrSearch['name'] = $this->arrSearchData['name'];
-        }
-
+        //onloadスクリプトを設定
         foreach ($this->arrProducts as $arrProduct) {
             $js_fnOnLoad .= "fnSetClassCategories(document.product_form{$arrProduct['product_id']});\n";
-        }
+        }    
 
-        if ($this->inCart) {
+        //カート処理
+        if (intval($this->arrForm['product_id']) > 0) {
             // 商品IDの正当性チェック
             if (!SC_Utils_Ex::sfIsInt($this->arrForm['product_id']) || !$objDb->sfIsRecord("dtb_products", "product_id", $this->arrForm['product_id'], "del_flg = 0 AND status = 1")) {
                 SC_Utils_Ex::sfDispSiteError(PRODUCT_NOT_FOUND);
@@ -212,9 +202,7 @@ class LC_Page_Products_List extends LC_Page {
      *
      * @return integer カテゴリID
      */
-    function lfGetCategoryId($category_id) {
-        $objDb = new SC_Helper_DB_Ex();
-
+    function lfGetCategoryId($category_id,&$objDb) {
         // 指定なしの場合、0 を返す
         if (
             strlen($category_id) == 0
@@ -243,8 +231,7 @@ class LC_Page_Products_List extends LC_Page {
     }
 
     /* 商品一覧の表示 */
-    function lfDispProductsList() {
-        $objDb = new SC_Helper_DB_Ex();
+    function lfGetProductsList($objDb) {
         $arrval = array();
         $arrval_order = array();
         $arrval_category = array();
@@ -378,9 +365,9 @@ __EOS__;
         foreach($arrProducts as $item) {
             $arrProducts2[ $item['product_id'] ] = $item;
         }
-        $this->arrProducts = array();
+        $arrProducts = array();
         foreach($arrProduct_id as $product_id) {
-            $this->arrProducts[] = $arrProducts2[$product_id];
+            $arrProducts[] = $arrProducts2[$product_id];
         }
 
         // 規格を設定
@@ -411,6 +398,7 @@ __EOS__;
 
         $objJson = new Services_JSON();
         $this->tpl_javascript .= 'productsClassCategories = ' . $objJson->encode($productsClassCategories) . '; ';
+        return $arrProducts;
     }
 
     /* 入力内容のチェック */
@@ -436,26 +424,15 @@ __EOS__;
      *
      * @return void
      */
-    function lfLoadParam() {
-        $this->arrForm = $_GET;
-
-        $this->mode = $this->getMode();
-        $this->arrSearchData['category_id'] = $this->lfGetCategoryId($this->arrForm['category_id']);
-        $this->arrSearchData['maker_id'] = $this->arrForm['maker_id'];
-        $this->arrSearchData['name'] = $this->arrForm['name'];
-        $this->orderby = $this->arrForm['orderby'];
+    function lfGetDisplayNum($display_number) {
         // 表示件数
-        if (
-            isset($this->arrForm['disp_number'])
-            && SC_Utils_Ex::sfIsInt($this->arrForm['disp_number'])
+        if (!isset($display_number)
+            OR !SC_Utils_Ex::sfIsInt($display_number)
         ) {
-            $this->disp_number = $this->arrForm['disp_number'];
-        } else {
             //最小表示件数を選択
-            $this->disp_number = current(array_keys($this->arrPRODUCTLISTMAX));
+            return current(array_keys($this->arrPRODUCTLISTMAX));
         }
-        $this->tpl_pageno = $this->arrForm['pageno'];
-        $this->inCart = strlen($this->arrForm['product_id']) >= 1;
+        return $display_number;
     }
 
     /**
@@ -481,6 +458,47 @@ __EOS__;
             $objURL->addQueryString('pageno', $this->objNavi->now_page + 1);
             $this->tpl_next_page = $objURL->path . '?' . $objURL->getQueryString();
         }
+    }
+
+    /**
+     * ページタイトルの設定
+     *
+     * @return str
+     */    
+    function lfGetPageTitle($mode,$category_id = 0,$objDb){
+        if ($mode == 'search') {
+            return "検索結果";
+        } elseif ($category_id == 0) {
+            return "全商品";
+        } else {
+            $arrCat = $objDb->sfGetCat($category_id);
+            return $arrCat['name'];
+        }
+        return "";       
+    }
+
+    /**
+     * 検索条件の設定
+     *
+     * @return array
+     */    
+    function lfGetSearchCondition($arrSearchData,$objQuery){
+        $arrSearch = array('category'=>"指定なし",'maker'=>"指定なし",'name'=>"指定なし");
+        // カテゴリー検索条件
+        if ($arrSearchData['category_id'] > 0) {
+            $arrSearch['category'] = $objQuery->getOne("SELECT category_name FROM dtb_category WHERE category_id = ?", array($arrSearchData['category_id']));
+        }
+
+        // メーカー検索条件
+        if (strlen($arrSearchData['maker_id']) > 0) {
+            $arrSearch['maker'] = $objQuery->getOne("SELECT name FROM dtb_maker WHERE maker_id = ?", array($arrSearchData['maker_id']));
+        }
+
+        // 商品名検索条件
+        if (strlen($arrSearchData['name']) > 0) {
+            $arrSearch['name'] = $arrSearchData['name'];
+        }
+        return $arrSearch;
     }
 }
 ?>
