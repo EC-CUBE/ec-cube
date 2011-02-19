@@ -543,8 +543,8 @@ class LC_Page_Admin_Total extends LC_Page_Admin {
         }*/
 
         // 要index
-        //$objQuery->setGroupBy('product_id, product_name, product_code, price');
-        $objQuery->setGroupBy('product_id');
+        $objQuery->setGroupBy('product_id, product_name, product_code, price');
+        //$objQuery->setGroupBy('product_id');
         $objQuery->setOrder('total DESC');
         $arrTotalResults = $objQuery->select($col, $from, $where, $arrval);
 
