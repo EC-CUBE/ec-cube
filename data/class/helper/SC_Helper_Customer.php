@@ -30,57 +30,8 @@
  * @version $Id$
  */
 class SC_Helper_Customer {
-
-
     /**
-     * 会員編集登録処理を行う.
-     *
-     * @param array $array パラメータの配列
-     * @param array $arrRegistColumn 登録するカラムの配列
-     * @return void
-     * @deprecated
-     * @todo sfEditCustomerData に統一。LC_Page_Admin_Customer_Edit から呼び出されているだけ
-     */
-    function sfEditCustomerDataAdmin($array, $arrRegistColumn) {
-        $objQuery =& SC_Query::getSingletonInstance();
-
-        foreach ($arrRegistColumn as $data) {
-            if ($data["column"] != "password" && $data["column"] != "reminder_answer" ) {
-                if($array[ $data['column'] ] != "") {
-                    $arrRegist[ $data["column"] ] = $array[ $data["column"] ];
-                } else {
-                    $arrRegist[ $data['column'] ] = NULL;
-                }
-            }
-        }
-        if (strlen($array["year"]) > 0 && strlen($array["month"]) > 0 && strlen($array["day"]) > 0) {
-            $arrRegist["birth"] = $array["year"] ."/". $array["month"] ."/". $array["day"] ." 00:00:00";
-        } else {
-            $arrRegist["birth"] = NULL;
-        }
-
-        //-- パスワードの更新がある場合は暗号化。（更新がない場合はUPDATE文を構成しない）
-        $salt = "";
-        if ($array["password"] != DEFAULT_PASSWORD) {
-            $salt = SC_Utils_Ex::sfGetRandomString(10);
-            $arrRegist["salt"] = $salt;
-            $arrRegist["password"] = SC_Utils_Ex::sfGetHashString($array["password"], $salt);
-        }
-        if ($array["reminder_answer"] != DEFAULT_PASSWORD) {
-            if($salt == "") {
-                $salt = $objQuery->get("salt", "dtb_customer", "customer_id = ? ", array($array['customer_id']));
-            }
-            $arrRegist["reminder_answer"] = SC_Utils_Ex::sfGetHashString($array["reminder_answer"], $salt);
-        }
-
-        $arrRegist["update_date"] = "NOW()";
-
-        //-- 編集登録実行
-        $objQuery->update("dtb_customer", $arrRegist, "customer_id = ? ", array($array['customer_id']));
-    }
-
-    /**
-     * 会員編集登録処理を行う.
+     * 会員編集登録・更新処理を行う.
      *
      * @param array $array 登録するデータの配列（SC_FormParamのgetDbArrayの戻り値）
      * @param array $customer_id nullの場合はinsert, 存在する場合はupdate
@@ -419,7 +370,7 @@ class SC_Helper_Customer {
     }
 
     function sfCustomerOtherDelivErrorCheck(&$objFormParam) {
-        $objErr = SC_Helper_Customer_Ex::sfCustomerCommonErrorCheck($objFormParam);
+        $objErr = SC_Helper_Customer_Ex::sfCustomerCommonErrorCheck(&$objFormParam);
         return $objErr->arrErr;
     }
 
@@ -431,8 +382,8 @@ class SC_Helper_Customer {
      * @return array エラーの配列
      */
     function sfCustomerEntryErrorCheck(&$objFormParam) {
-        $objErr = SC_Helper_Customer_Ex::sfCustomerCommonErrorCheck($objFormParam);
-        $objErr = SC_Helper_Customer_Ex::sfCustomerRegisterErrorCheck($objErr);
+        $objErr = SC_Helper_Customer_Ex::sfCustomerCommonErrorCheck(&$objFormParam);
+        $objErr = SC_Helper_Customer_Ex::sfCustomerRegisterErrorCheck(&$objErr);
 
         return $objErr->arrErr;
     }
@@ -451,7 +402,7 @@ class SC_Helper_Customer {
         $objFormParam->toLower('email_mobile02');
 
         $objErr = SC_Helper_Customer_Ex::sfCustomerCommonErrorCheck($objFormParam);
-        $objErr = SC_Helper_Customer_Ex::sfCustomerRegisterErrorCheck($objErr);
+        $objErr = SC_Helper_Customer_Ex::sfCustomerRegisterErrorCheck(&$objErr, $isAdmin);
 
         if ((isset($objErr->arrErr['password'])
                 && $objFormParam->getValue('password') == DEFAULT_PASSWORD)
