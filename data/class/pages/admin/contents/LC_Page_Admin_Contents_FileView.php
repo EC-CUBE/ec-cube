@@ -62,37 +62,27 @@ class LC_Page_Admin_Contents_FileView extends LC_Page_Admin {
      * @return void
      */
     function action() {
-        // FIXME パスのチェック関数が必要
-        if (preg_match('|\./|', $_GET['file'])) {
-            SC_Utils_Ex::sfDispError('');
-        }
         // ユーザー認証
         SC_Utils_Ex::sfIsSuccess(new SC_Session());
 
-        // ソースとして表示するファイルを定義(直接実行しないファイル)
-        $arrViewFile = array(
-                             'html',
-                             'htm',
-                             'tpl',
-                             'php',
-                             'css',
-                             'js',
-                             );
+        switch($this->getMode()){
+            default:
+                // フォーム操作クラス
+                $objFormParam = new SC_FormParam();
+                // パラメータ情報の初期化
+                $this->lfInitParam($objFormParam);
+                $objFormParam->setParam($_GET);
+                $objFormParam->convParam();
 
-        // 拡張子取得
-        $arrResult = split('\.', $_GET['file']);
-        $ext = $arrResult[count($arrResult)-1];
-
-        // ファイル内容表示
-        if(in_array($ext, $arrViewFile)) {
-            $objFileManager = new SC_Helper_FileManager_Ex();
-            // ファイルを読み込んで表示
-            header("Content-type: text/plain\n\n");
-            print($objFileManager->sfReadFile(USER_REALDIR . $_GET['file']));
-        } else {
-            SC_Response_Ex::sendRedirect(USER_URL . $_GET['file']);
+                // 表示するファイルにエラーチェックを行う
+                if ($this->checkErrorDispFile($objFormParam)) {
+                    $this->execFileView($objFormParam);
+                } else {
+                    SC_Utils_Ex::sfDispError('');
+                }
+                exit;
+            break;
         }
-        exit;
     }
 
     /**
@@ -102,6 +92,61 @@ class LC_Page_Admin_Contents_FileView extends LC_Page_Admin {
      */
     function destroy() {
         parent::destroy();
+    }
+
+    /**
+     * 初期化を行う.
+     *
+     * @param SC_FormParam $objFormParam SC_FormParamインスタンス
+     * @return void
+     */
+    function lfInitParam(&$objFormParam) {
+        $objFormParam->addParam("ファイル名", "file", MTEXT_LEN, "a", array("EXIST_CHECK"));
+    }
+
+    /**
+     * 表示するファイルにエラーチェックを行う
+     *
+     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @return boolen $file_check_flg エラーチェックの結果
+     */
+    function checkErrorDispFile($objFormParam) {
+        $file_check_flg = false;
+
+        // FIXME パスのチェック関数が必要
+        $file = $objFormParam->getValue('file');
+
+        // ソースとして表示するファイルを定義(直接実行しないファイル)
+        $arrViewFile = array(
+            'html',
+            'htm',
+            'tpl',
+            'php',
+            'css',
+            'js',
+        );
+
+        // 拡張子取得
+        $arrResult = split('\.', $objFormParam->getValue('file'));
+        $ext = $arrResult[count($arrResult)-1];
+
+        if (!preg_match('|\./|', $file) && in_array($ext, $arrViewFile)) {
+            $file_check_flg = true;
+        }
+
+        return $file_check_flg;
+    }
+
+    /**
+     * ファイル内容を表示する
+     * 
+     * @return void
+     */
+    function execFileView($objFormParam) {
+        $objFileManager = new SC_Helper_FileManager_Ex();
+        // ファイルを読み込んで表示
+        header("Content-type: text/plain\n\n");
+        print($objFileManager->sfReadFile(USER_REALDIR . $objFormParam->getValue('file')));
     }
 }
 ?>
