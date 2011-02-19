@@ -94,7 +94,7 @@ class LC_Page_Products_Detail extends LC_Page {
         // パラメータ管理クラス
         $this->objFormParam = new SC_FormParam();
         // パラメータ情報の初期化
-        $this->arrForm = $this->lfInitParam(&$this->objFormParam);
+        $this->arrForm = $this->lfInitParam($this->objFormParam);
         // ファイル管理クラス
         $this->objUpFile = new SC_UploadFile(IMAGE_TEMP_REALDIR, IMAGE_SAVE_REALDIR);
         // ファイル情報の初期化
@@ -428,22 +428,38 @@ class LC_Page_Products_Detail extends LC_Page {
         $objQuery =& SC_Query::getSingletonInstance();
         $objQuery->setOrder("rank DESC");
         $arrRecommendData = $objQuery->select("recommend_product_id, comment", "dtb_recommend_products", "product_id = ?", array($product_id));
-
+        
+        $arrRecommendProductId = array();
+        foreach($arrRecommendData as $recommend){
+            $arrRecommendProductId[] = $recommend["recommend_product_id"];
+            $arrRecommendData[$recommend["recommend_product_id"]] = $recommend["comment"];
+        }
+        
         $objProduct = new SC_Product();
-
+        
         $where = "";
-        if (is_array($arrRecommendData["recommend_product_id"]) && !empty($arrRecommendData["recommend_product_id"])) {
-            $where = 'product_id IN (' . implode(',', $arrRecommendData["recommend_product_id"]) . ')';
+        if (!empty($arrRecommendProductId)) {
+            $where = 'product_id IN (' . implode(',', $arrRecommendProductId) . ')';
         } else {
             return $arrRecommend;
         }
         $objQuery =& SC_Query::getSingletonInstance();
         $objQuery->setWhere($where);
-        $arrProducts = $objProduct->lists($objQuery,$arrRecommendData["recommend_product_id"]);
-        foreach($arrProducts as $key=>$product){
-            $arrProducts[$key] += array("comment"=>$arrRecommendData[$key]["comment"]); 
+        $arrProducts = $objProduct->lists($objQuery, $arrRecommendProductId);
+
+        //取得している並び順で並び替え
+        // FIXME SC_Productあたりにソート処理はもってくべき
+        $arrProducts2 = array();
+        foreach($arrProducts as $item) {
+            $arrProducts2[ $item['product_id'] ] = $item;
         }
-        return $arrProducts;
+        $arrProducts = array();
+        foreach($arrRecommendProductId as $product_id) {
+            $arrProducts2[$product_id]["comment"] = $arrRecommendData[$product_id];
+            $arrRecommend[] = $arrProducts2[$product_id];
+        }
+
+        return $arrRecommend;
     }
 
     /* 入力内容のチェック */
