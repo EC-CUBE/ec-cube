@@ -484,10 +484,10 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
      * @return array エラーメッセージの配列
      */
     function lfCheckError(&$objFormParam) {
-        $objErr->arrErr = $objFormParam->checkError();
+        $arrErr = $objFormParam->checkError();
 
         if (!SC_Utils_Ex::isBlank($objErr->arrErr)) {
-            return $objErr->arrErr;
+            return $arrErr;
         }
 
         $arrValues = $objFormParam->getHashArray();
@@ -522,19 +522,19 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         $arrValues['total_point'] = $objFormParam->getValue('point') - $arrValues['use_point'] + $arrValues['add_point'];
 
         if ($arrValues['total'] < 0) {
-            $objErr->arrErr['total'] = '合計額がマイナス表示にならないように調整して下さい。<br />';
+            $arrErr['total'] = '合計額がマイナス表示にならないように調整して下さい。<br />';
         }
 
         if ($arrValues['payment_total'] < 0) {
-            $objErr->arrErr['payment_total'] = 'お支払い合計額がマイナス表示にならないように調整して下さい。<br />';
+            $arrErr['payment_total'] = 'お支払い合計額がマイナス表示にならないように調整して下さい。<br />';
         }
 
         if ($arrValues['total_point'] < 0) {
-            $objErr->arrErr['use_point'] = '最終保持ポイントがマイナス表示にならないように調整して下さい。<br />';
+            $arrErr['use_point'] = '最終保持ポイントがマイナス表示にならないように調整して下さい。<br />';
         }
 
         $objFormParam->setParam($arrValues);
-        return $objErr->arrErr;
+        return $arrErr;
     }
 
     /**
