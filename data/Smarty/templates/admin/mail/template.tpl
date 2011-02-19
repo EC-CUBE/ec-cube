@@ -48,9 +48,9 @@
             <td class="left"><!--{$arrTemplates[data].subject|h}--></td>
             <!--{assign var=type value=$arrTemplates[data].mail_method|h}-->
             <td><!--{$arrMagazineType[$type]}--></td>
-            <td><!--{if $arrTemplates[data].mail_method eq 3}--><a href="./htmlmail.php?mode=edit&template_id=<!--{$arrTemplates[data].template_id}-->"><!--{else}--><a href="./template_input.php?mode=edit&template_id=<!--{$arrTemplates[data].template_id}-->"><!--{/if}-->編集</a></td>
+            <td><a href="./template_input.php?mode=edit&template_id=<!--{$arrTemplates[data].template_id}-->">編集</a></td>
             <td><a href="#" onclick="fnDelete('?mode=delete&id=<!--{$arrTemplates[data].template_id}-->'); return false;">削除</a></td>
-            <td><!--{if $arrTemplates[data].mail_method eq 3}--><a href="#" onclick="win03('./preview.php?method=template&id=<!--{$arrTemplates[data].template_id}-->','preview','650','700'); return false;" target="_blank"><!--{else}--><a href="#" onclick="win03('./preview.php?id=<!--{$arrTemplates[data].template_id}-->','preview','650','700'); return false;" target="_blank"><!--{/if}-->プレビュー</a></td>
+            <td><a href="#" onclick="win03('./preview.php?mode=template&template_id=<!--{$arrTemplates[data].template_id}-->','preview','650','700'); return false;" target="_blank">プレビュー</a></td>
         </tr>
         <!--{/section}-->
     </table>

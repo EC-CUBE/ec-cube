@@ -354,5 +354,32 @@ class SC_Helper_Mail {
         $arrResults = $objQuery->select('*', 'dtb_mailmaga_template', $where, $arrValues);
         return $arrResults;
     }
+    
+    /**
+     * 保存されている送信履歴の取得
+     * @param integer 特定の送信履歴を取り出したい時はsend_idを指定。未指定時は全件取得
+     * @return　array 送信履歴情報を格納した配列
+     */
+    function sfGetSendHistory($send_id = null){
+        // 初期化
+        $where = '';
+        $objQuery =& SC_Query::getSingletonInstance();
+        
+        // 条件文
+        $where = 'del_flg = ?';
+        $arrValues[] = 0;
+        
+        //send_id指定時
+        if (SC_Utils_Ex::sfIsInt($send_id) === true) {
+            $where .= 'AND send_id = ?';
+            $arrValues[] = $send_id;
+        }
+        
+        // 表示順
+        $objQuery->setOrder("create_date DESC");
+        
+        $arrResults = $objQuery->select('*', 'dtb_send_history', $where, $arrValues);
+        return $arrResults;
+    }
 }
 ?>

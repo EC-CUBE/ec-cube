@@ -62,33 +62,27 @@ class LC_Page_Admin_Mail_Preview extends LC_Page_Admin {
      * @return void
      */
     function action() {
-        $objQuery = new SC_Query();
+        
+        $objMailHelper = new SC_Helper_Mail_Ex();
         $objSess = new SC_Session();
-        $objDate = new SC_Date();
-
         // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess($objSess);
 
-        if (SC_Utils_Ex::sfIsInt($_GET['send_id'])
-                   || SC_Utils_Ex::sfIsInt($_GET['id'])){
-                       
-            if (is_numeric($_GET["send_id"])) {
-                $id = $_GET["send_id"];
-                $sql = "SELECT body, mail_method FROM dtb_send_history WHERE send_id = ?";
-            } else {
-                $sql = "SELECT body, mail_method FROM dtb_mailmaga_template WHERE template_id = ?";
-                $id = $_GET['id'];
+        switch ($this->getMode()) {
+        case 'template':
+            if (SC_Utils_Ex::sfIsInt($_GET['template_id'])){
+                $arrMail = $objMailHelper->sfGetMailTemplate($_GET['template_id']);
             }
-            $result = $objQuery->getAll($sql, array($id));
-
-            if ( $result ){
-                if ( $result[0]["mail_method"] == 2 ){
-                    // テキスト形式の時はタグ文字をエスケープ
-                    $this->escape_flag = 1;
-                }    
-                $this->body = $result[0]["body"];
+            break;
+        case 'history';
+            if (SC_Utils_Ex::sfIsInt($_GET['send_id'])){
+                $arrMail = $objMailHelper->sfGetSendHistory($_GET['send_id']);
             }
+            break;
+        default:
         }
+
+        $this->mail = $arrMail[0];
         $this->setTemplate($this->tpl_mainpage);
     }
 
