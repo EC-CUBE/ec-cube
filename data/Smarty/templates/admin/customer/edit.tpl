@@ -48,10 +48,10 @@
         <!--{if $key ne "customer_id" && $key ne "mode" && $key ne "del_mode" && $key ne "edit_customer_id" && $key ne "del_customer_id" && $key ne "csv_mode" && $key ne "job" && $key ne "sex"}--><input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->"><!--{/if}-->
     <!--{/foreach}-->
     <!--{foreach from=$arrSearchData.job key="key" item="item"}-->
-        <input type="hidden" name="job[]" value="<!--{$item|h}-->" />
+        <input type="hidden" name="job[]" value="<!--{$item}-->" />
     <!--{/foreach}-->
     <!--{foreach from=$arrSearchData.sex key="key" item="item"}-->
-        <input type="hidden" name="sex[]" value="<!--{$item|h}-->" />
+        <input type="hidden" name="sex[]" value="<!--{$item}-->" />
     <!--{/foreach}-->
 </form>
 
