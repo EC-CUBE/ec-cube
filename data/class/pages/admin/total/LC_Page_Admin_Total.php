@@ -591,9 +591,17 @@ class LC_Page_Admin_Total extends LC_Page_Admin {
 
         list($where, $arrval) = $this->lfGetWhereMember('create_date', $sdate, $edate, $type);
 
-        // todo postgres
-        $col    = '
-            trunc((YEAR(create_date) - YEAR(order_birth)) - (RIGHT(create_date, 5) < RIGHT(order_birth, 5)), -1) as age,
+        if (DB_TYPE == 'pgsql') {
+            $col = '
+                EXTRACT(YEAR FROM AGE(create_date, order_birth)) AS age,
+                ';
+        } else {
+            $col = '
+                trunc((YEAR(create_date) - YEAR(order_birth)) - (RIGHT(create_date, 5) < RIGHT(order_birth, 5)), -1) as age,
+                ';
+        }
+
+        $col .= '
             COUNT(order_id) AS order_count,
             SUM(total) AS total,
             AVG(total) AS total_average
