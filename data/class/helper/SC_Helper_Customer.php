@@ -325,7 +325,12 @@ class SC_Helper_Customer {
         SC_Helper_Customer_Ex::sfCustomerCommonParam($objFormParam);
         SC_Helper_Customer_Ex::sfCustomerRegisterParam($objFormParam, $isAdmin);
         if($isAdmin) {
+            $objFormParam->addParam("顧客ID", "customer_id", INT_LEN, "n", array("NUM_CHECK"));
             $objFormParam->addParam('携帯メールアドレス', "email_mobile", MTEXT_LEN, "a", array("NO_SPTAB", "EMAIL_CHECK", "SPTAB_CHECK" ,"EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK", "MOBILE_EMAIL_CHECK"));
+            $objFormParam->addParam("会員状態", "status", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+            $objFormParam->addParam("SHOP用メモ", "note", INT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
+            $objFormParam->addParam("所持ポイント", "point", INT_LEN, "n", array("NUM_CHECK"));
+            
         }
     }
 
@@ -436,10 +441,11 @@ class SC_Helper_Customer {
      * 会員情報変更エラーチェック
      *
      * @param mixed $objFormParam
+     * @param boolean $isAdmin 管理画面チェック時:true
      * @access public
      * @return array エラーの配列
      */
-    function sfCustomerMypageErrorCheck(&$objFormParam) {
+    function sfCustomerMypageErrorCheck(&$objFormParam, $isAdmin = false) {
 
         $objFormParam->toLower('email_mobile');
         $objFormParam->toLower('email_mobile02');
@@ -447,11 +453,15 @@ class SC_Helper_Customer {
         $objErr = SC_Helper_Customer_Ex::sfCustomerCommonErrorCheck($objFormParam);
         $objErr = SC_Helper_Customer_Ex::sfCustomerRegisterErrorCheck($objErr);
 
-        if (isset($objErr->arrErr['password']) && $objFormParam->getValue('password') == DEFAULT_PASSWORD) {
+        if ((isset($objErr->arrErr['password'])
+                && $objFormParam->getValue('password') == DEFAULT_PASSWORD)
+              or $isAdmin) {
             unset($objErr->arrErr['password']);
             unset($objErr->arrErr['password02']);
         }
-        if (isset($objErr->arrErr['reminder_answer']) && $objFormParam->getValue('reminder_answer') == DEFAULT_PASSWORD) {
+        if ((isset($objErr->arrErr['reminder_answer'])
+                && $objFormParam->getValue('reminder_answer') == DEFAULT_PASSWORD)
+              or $isAdmin) {
             unset($objErr->arrErr['reminder_answer']);
         }
         return $objErr->arrErr;
@@ -483,18 +493,21 @@ class SC_Helper_Customer {
     /*
      * 会員登録編集共通
      */
-    function sfCustomerRegisterErrorCheck(&$objErr) {
+    function sfCustomerRegisterErrorCheck(&$objErr, $isAdmin = false) {
         $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_BIRTHDAY"));
 
         if (SC_Display::detectDevice() !== DEVICE_TYPE_MOBILE){
-            $objErr->doFunc(array('パスワード', 'パスワード(確認)', "password", "password02") ,array("EQUAL_CHECK"));
-            $objErr->doFunc(array('メールアドレス', 'メールアドレス(確認)', "email", "email02") ,array("EQUAL_CHECK"));
+            if(!$isAdmin) {
+                $objErr->doFunc(array('パスワード', 'パスワード(確認)', "password", "password02") ,array("EQUAL_CHECK"));
+                $objErr->doFunc(array('メールアドレス', 'メールアドレス(確認)', "email", "email02") ,array("EQUAL_CHECK"));
+            }
             $objErr->doFunc(array("FAX番号", "fax01", "fax02", "fax03") ,array("TEL_CHECK"));
         }
 
-        // 現会員の判定 → 現会員もしくは仮登録中は、メアド一意が前提になってるので同じメアドで登録不可
-        $objErr->doFunc(array("メールアドレス", "email"), array("CHECK_REGIST_CUSTOMER_EMAIL"));
-
+        if(!$isAdmin) {
+            // 現会員の判定 → 現会員もしくは仮登録中は、メアド一意が前提になってるので同じメアドで登録不可
+            $objErr->doFunc(array("メールアドレス", "email"), array("CHECK_REGIST_CUSTOMER_EMAIL"));
+        }
         return $objErr;
     }
 

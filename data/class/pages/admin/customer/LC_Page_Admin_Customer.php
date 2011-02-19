@@ -57,6 +57,7 @@ class LC_Page_Admin_Customer extends LC_Page_Admin {
         $this->arrSex = $masterData->getMasterData("mtb_sex");
         $this->arrPageRows = $masterData->getMasterData("mtb_page_rows");
         $this->arrStatus = $masterData->getMasterData("mtb_customer_status");
+        $this->arrMagazineType = $masterData->getMasterData("mtb_magazine_type");
 
         // 日付プルダウン設定
         $objDate = new SC_Date(BIRTH_YEAR);
@@ -157,45 +158,7 @@ class LC_Page_Admin_Customer extends LC_Page_Admin {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam('顧客コード', 'customer_id', ID_MAX_LEN, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
-        $objFormParam->addParam('顧客名', 'name', STEXT_LEN, 'KVa', array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam('顧客名(カナ)', 'kana', STEXT_LEN, 'CKV', array("SPTAB_CHECK", "MAX_LENGTH_CHECK", "KANABLANK_CHECK"));
-        $objFormParam->addParam('都道府県', 'pref', INT_LEN, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
-        $objFormParam->addParam('誕生日(開始年)', 'b_start_year', 4, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
-        $objFormParam->addParam('誕生日(開始月)', 'b_start_month', 2, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
-        $objFormParam->addParam('誕生日(開始日)', 'b_start_day', 2, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
-
-        $objFormParam->addParam('誕生日(終了年)', 'b_end_year', 4, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
-        $objFormParam->addParam('誕生日(終了月)', 'b_end_month', 2, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
-        $objFormParam->addParam('誕生日(終了日)', 'b_end_day', 2, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
-        $objFormParam->addParam('誕生月', 'birth_month', 2, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
-        $objFormParam->addParam('メールアドレス', 'email', MTEXT_LEN, 'a', array("SPTAB_CHECK", "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam('携帯メールアドレス', 'email_mobile', MTEXT_LEN, 'a', array("SPTAB_CHECK", "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam('電話番号', 'birth_month', TEL_LEN, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
-        $objFormParam->addParam('購入金額(開始)', 'buy_total_from', PRICE_LEN, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
-        $objFormParam->addParam('購入金額(終了)', 'buy_total_to', PRICE_LEN, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
-        $objFormParam->addParam('購入回数(開始)', 'buy_times_from', INT_LEN, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
-        $objFormParam->addParam('購入回数(終了)', 'buy_times_to', INT_LEN, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
-        $objFormParam->addParam('登録・更新日(開始年)', 'start_year', 4, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
-        $objFormParam->addParam('登録・更新日(開始月)', 'start_month', 2, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
-        $objFormParam->addParam('登録・更新日(開始日)', 'start_day', 2, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
-        $objFormParam->addParam('登録・更新日(終了年)', 'end_year', 4, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
-        $objFormParam->addParam('登録・更新日(終了月)', 'end_month', 2, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
-        $objFormParam->addParam('登録・更新日(終了日)', 'end_day', 2, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
-        $objFormParam->addParam('表示件数', 'page_rows', 3, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
-        $objFormParam->addParam('最終購入日(開始年)', 'buy_start_year', 4, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
-        $objFormParam->addParam('最終購入日(開始月)', 'buy_start_month', 2, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
-        $objFormParam->addParam('最終購入日(開始日)', 'buy_start_day', 2, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
-        $objFormParam->addParam('最終購入日(終了年)', 'buy_end_year', 4, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
-        $objFormParam->addParam('最終購入日(終了月)', 'buy_end_month', 2, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
-        $objFormParam->addParam('最終購入日(終了日)', 'buy_end_day', 2, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
-        $objFormParam->addParam('購入商品コード', 'buy_product_code', STEXT_LEN, 'KVa', array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam('購入商品名', 'buy_product_name', STEXT_LEN, 'KVa', array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam('カテゴリ', 'category_id', INT_LEN, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
-        $objFormParam->addParam('編集対象顧客ID', 'edit_customer_id', INT_LEN, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
-        $objFormParam->addParam('性別', 'sex');
-        $objFormParam->addParam('会員状態', 'status');
-        $objFormParam->addParam('職業', 'job');
+        SC_Helper_Customer_Ex::sfSetSearchParam($objFormParam);
     }
 
     /**
@@ -205,38 +168,7 @@ class LC_Page_Admin_Customer extends LC_Page_Admin {
      * @return array エラー配列
      */
     function lfCheckError(&$objFormParam) {
-        // パラメーターの基本チェック
-        $arrErr = $objFormParam->checkError();
-        // 拡張エラーチェック初期化
-        $objErr = new SC_CheckError($objFormParam->getHashArray());
-        // 拡張エラーチェック
-        $objErr->doFunc(array("誕生日(開始日)", "b_start_year", "b_start_month", "b_start_day"), array("CHECK_DATE"));
-        $objErr->doFunc(array("誕生日(終了日)", "b_end_year", "b_end_month", "b_end_day"), array("CHECK_DATE"));
-        
-        $objErr->doFunc(array("誕生日(開始日)","誕生日(終了日)", "b_start_year", "b_start_month", "b_start_day", "b_end_year", "b_end_month", "b_end_day"), array("CHECK_SET_TERM"));
-        $objErr->doFunc(array("登録・更新日(開始日)", "start_year", "start_month", "start_day",), array("CHECK_DATE"));
-        $objErr->doFunc(array("登録・更新日(終了日)", "end_year", "end_month", "end_day"), array("CHECK_DATE"));
-        $objErr->doFunc(array("登録・更新日(開始日)","登録・更新日(終了日)", "start_year", "start_month", "start_day", "end_year", "end_month", "end_day"), array("CHECK_SET_TERM"));
-        $objErr->doFunc(array("最終購入日(開始日)", "buy_start_year", "buy_start_month", "buy_start_day",), array("CHECK_DATE"));
-        $objErr->doFunc(array("最終購入(終了日)", "buy_end_year", "buy_end_month", "buy_end_day"), array("CHECK_DATE"));
-        //購入金額(from) ＞ 購入金額(to) の場合はエラーとする
-        $objErr->doFunc(array("最終購入日(開始日)","登録・更新日(終了日)", "buy_start_year", "buy_start_month", "buy_start_day", "buy_end_year", "buy_end_month", "buy_end_day"), array("CHECK_SET_TERM"));
-
-        if ((SC_Utils_Ex::sfIsInt($array["buy_total_from"])
-             && SC_Utils_Ex::sfIsInt($array["buy_total_to"]))
-             && ($array["buy_total_from"] > $array["buy_total_to"])) {
-            $objErr->arrErr["buy_total_from"] .= "※ 購入金額の指定範囲が不正です。";
-        }
-
-        if ((SC_Utils_Ex::sfIsInt($array["buy_times_from"])
-             && SC_Utils_Ex::sfIsInt($array["buy_times_to"]))
-             && ($array["buy_times_from"] > $array["buy_times_to"])) {
-            $objErr->arrErr["buy_times_from"] .= "※ 購入回数の指定範囲が不正です。";
-        }
-        if(!SC_Utils::isBlank($objErr->arrErr)) {
-            $arrErr = array_merge($arrErr, $objErr->arrErr);
-        }
-        return $arrErr;
+        return SC_Helper_Customer_Ex::sfCheckErrorSearchParam($objFormParam);
     }
 
     /**

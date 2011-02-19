@@ -55,6 +55,18 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin {
         $this->arrJob = $masterData->getMasterData("mtb_job");
         $this->arrSex = $masterData->getMasterData("mtb_sex");
         $this->arrReminder = $masterData->getMasterData("mtb_reminder");
+        $this->arrStatus = $masterData->getMasterData("mtb_customer_status");
+        $this->arrMagazineType = $masterData->getMasterData("mtb_magazine_type");
+
+        // 日付プルダウン設定
+        $objDate = new SC_Date(BIRTH_YEAR);
+        $this->arrYear = $objDate->getYear();    
+        $this->arrMonth = $objDate->getMonth();
+        $this->arrDay = $objDate->getDay();
+        
+        // 支払い方法種別
+        $objDb = new SC_Helper_DB_Ex();
+        $this->arrPayment = $objDb->sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
     }
 
     /**
@@ -74,141 +86,100 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin {
      */
     function action() {
         // 認証可否の判定
-        $objSess = new SC_Session();
-        SC_Utils_Ex::sfIsSuccess($objSess);
+        SC_Utils_Ex::sfIsSuccess(new SC_Session());
 
-        $this->objQuery = new SC_Query();
-        $objDb = new SC_Helper_DB_Ex();
-        $objDate = new SC_Date(1901);
-        $objCustomerHelper = new SC_Helper_Customer_Ex();
-        $this->arrYear = $objDate->getYear();    //　日付プルダウン設定
-        $this->arrMonth = $objDate->getMonth();
-        $this->arrDay = $objDate->getDay();
-
-        //---- 登録用カラム配列
-        $arrRegistColumn = array(
-                                 array(  "column" => "name01",        "convert" => "aKV" ),
-                                 array(  "column" => "name02",        "convert" => "aKV" ),
-                                 array(  "column" => "kana01",        "convert" => "CKV" ),
-                                 array(  "column" => "kana02",        "convert" => "CKV" ),
-                                 array(  "column" => "zip01",        "convert" => "n" ),
-                                 array(  "column" => "zip02",        "convert" => "n" ),
-                                 array(  "column" => "pref",        "convert" => "n" ),
-                                 array(  "column" => "addr01",        "convert" => "aKV" ),
-                                 array(  "column" => "addr02",        "convert" => "aKV" ),
-                                 array(  "column" => "email",        "convert" => "a" ),
-                                 array(  "column" => "email_mobile",    "convert" => "a" ),
-                                 array(  "column" => "tel01",        "convert" => "n" ),
-                                 array(  "column" => "tel02",        "convert" => "n" ),
-                                 array(  "column" => "tel03",        "convert" => "n" ),
-                                 array(  "column" => "fax01",        "convert" => "n" ),
-                                 array(  "column" => "fax02",        "convert" => "n" ),
-                                 array(  "column" => "fax03",        "convert" => "n" ),
-                                 array(  "column" => "sex",            "convert" => "n" ),
-                                 array(  "column" => "job",            "convert" => "n" ),
-                                 array(  "column" => "birth",        "convert" => "n" ),
-                                 array(  "column" => "password",    "convert" => "a" ),
-                                 array(  "column" => "reminder",    "convert" => "n" ),
-                                 array(  "column" => "reminder_answer", "convert" => "aKV" ),
-                                 array(  "column" => "mailmaga_flg", "convert" => "n" ),
-                                 array(  "column" => "note",        "convert" => "aKV" ),
-                                 array(  "column" => "point",        "convert" => "n" ),
-                                 array(  "column" => "status",        "convert" => "n" )
-                                 );
-
-        //---- 登録除外用カラム配列
-        $arrRejectRegistColumn = array("year", "month", "day");
-
-        // 検索条件を保持 TODO 要リファクタリング(MODE if利用)
-        if ($this->getMode() == "edit_search") {
-            $arrSearch = $_POST;
-        }else{
-            $arrSearch = $_POST['search_data'];
-        }
-        if(is_array($arrSearch)){
-            foreach($arrSearch as $key => $val){
-                $arrSearchData[$key] = $val;
+        // 不正アクセスチェック 
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            if (!SC_Helper_Session_Ex::isValidToken()) {
+//                SC_Utils_Ex::sfDispError(INVALID_MOVE_ERRORR);
+                echo "不正アクセス";
+                exit;
             }
         }
+        // トランザクションID
+        $this->transactionid = SC_Helper_Session_Ex::getToken();
 
-        $this->arrSearchData= $arrSearchData;
+        // パラメータ管理クラス
+        $objFormParam = new SC_FormParam();
+        // 検索引き継ぎ用パラメーター管理クラス
+        $objFormSearchParam = new SC_FormParam();
 
-        //----　顧客編集情報取得
+        // モードによる処理切り替え
         switch ($this->getMode()) {
         case 'edit':
         case 'edit_search':
-            if (is_numeric($_POST["edit_customer_id"])) {
-
-                //--　顧客データ取得
-                $sql = "SELECT * FROM dtb_customer WHERE del_flg = 0 AND customer_id = ?";
-                $result = $this->objQuery->getAll($sql, array($_POST["edit_customer_id"]));
-                $this->list_data = $result[0];
-
-                $birth = split(" ", $this->list_data["birth"]);
-                $birth = split("-",$birth[0]);
-
-                $this->list_data["year"] = $birth[0];
-                $this->list_data["month"] = isset($birth[1]) ? $birth[1] : "";
-                $this->list_data["day"] = isset($birth[2]) ? $birth[2] : "";
-
-                $this->list_data["password"] = DEFAULT_PASSWORD;
-                $this->list_data["reminder_answer"] = DEFAULT_PASSWORD;
-                //DB登録のメールアドレスを渡す
-                $this->tpl_edit_email = $result[0]['email'];
-                //購入履歴情報の取得
-                $this->arrPurchaseHistory = $this->lfPurchaseHistory($_POST['edit_customer_id']);
-                // 支払い方法の取得
-                $this->arrPayment = $objDb->sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
+            //検索引き継ぎ用パラメーター処理
+            $this->lfInitSearchParam($objFormSearchParam);
+            $objFormSearchParam->setParam($_REQUEST);
+            $this->arrErr = $this->lfCheckErrorSearchParam($objFormSearchParam);
+            $this->arrSearchData = $objFormSearchParam->getHashArray();
+            if(!SC_Utils_Ex::isBlank($this->arrErr)) {
+                return;
             }
+            //指定顧客の情報をセット
+            $this->arrForm = SC_Helper_Customer::sfGetCustomerData($objFormSearchParam->getValue("edit_customer_id"), true);
+            //購入履歴情報の取得
+//            $this->arrPurchaseHistory = $this->lfPurchaseHistory($objFormSearchParam->getValue("edit_customer_id"));
+            break;
+        case 'confirm':
+            //パラメーター処理
+            $this->lfInitParam($objFormParam);
+            $objFormParam->setParam($_POST);
+            $objFormParam->convParam();
+            // 入力パラメーターチェック
+            $this->arrErr = $this->lfCheckError($objFormParam);
+            $this->arrForm = $objFormParam->getHashArray();
+            //検索引き継ぎ用パラメーター処理
+            $this->lfInitSearchParam($objFormSearchParam);
+            $objFormSearchParam->setParam($objFormParam->getValue("search_data"));
+            $this->arrSearchErr = $this->lfCheckErrorSearchParam($objFormSearchParam);
+            $this->arrSearchData = $objFormSearchParam->getHashArray();
+            if(!SC_Utils_Ex::isBlank($this->arrErr) or !SC_Utils_Ex::isBlank($this->arrSearchErr)) {
+                return;
+            }
+            // 確認画面テンプレートに切り替え
+            $this->tpl_mainpage = 'customer/edit_confirm.tpl';
+            break;
+        case 'return':
+            //パラメーター処理
+            $this->lfInitParam($objFormParam);
+            $objFormParam->setParam($_POST);
+            $objFormParam->convParam();
+            // 入力パラメーターチェック
+            $this->arrErr = $this->lfCheckError($objFormParam);
+            $this->arrForm = $objFormParam->getHashArray();
+            //検索引き継ぎ用パラメーター処理
+            $this->lfInitSearchParam($objFormSearchParam);
+            $objFormSearchParam->setParam($objFormParam->getValue("search_data"));
+            $this->arrSearchErr = $this->lfCheckErrorSearchParam($objFormSearchParam);
+            $this->arrSearchData = $objFormSearchParam->getHashArray();
+            if(!SC_Utils_Ex::isBlank($this->arrErr) or !SC_Utils_Ex::isBlank($this->arrSearchErr)) {
+                return;
+            }
+            //購入履歴情報の取得
+//            $this->arrPurchaseHistory = $this->lfPurchaseHistory($objFormParam->getValue("customer_id"));
+            break;
+        case 'complete':
+            //登録・保存処理
+            //パラメーター処理
+            $this->lfInitParam($objFormParam);
+            $objFormParam->setParam($_POST);
+            $objFormParam->convParam();
+            // 入力パラメーターチェック
+            $this->arrErr = $this->lfCheckError($objFormParam);
+            $this->arrForm = $objFormParam->getHashArray();
+            //検索引き継ぎ用パラメーター処理
+            $this->lfInitSearchParam($objFormSearchParam);
+            $objFormSearchParam->setParam($objFormParam->getValue("search_data"));
+            $this->arrSearchErr = $this->lfCheckErrorSearchParam($objFormSearchParam);
+            $this->arrSearchData = $objFormSearchParam->getHashArray();
+            if(!SC_Utils_Ex::isBlank($this->arrErr) or !SC_Utils_Ex::isBlank($this->arrSearchErr)) {
+                return;
+            }
+            $this->lfRegistData($objFormParam);
+            $this->tpl_mainpage = 'customer/edit_complete.tpl';
             break;
         default:
-        	//----　顧客情報編集
-            if (is_numeric($_POST["customer_id"])) {
-                //-- POSTデータの引き継ぎ
-                $this->arrForm = $_POST;
-                $this->arrForm['email'] = strtolower($this->arrForm['email']);        // emailはすべて小文字で処理
-
-                //-- 入力データの変換
-                $this->arrForm = $this->lfConvertParam($this->arrForm, $arrRegistColumn);
-                //-- 入力チェック
-                $this->arrErr = $this->lfErrorCheck($this->arrForm);
-
-                //-- 入力エラー発生 or リターン時
-                if ($this->arrErr || $mode == "return") {
-                    foreach($this->arrForm as $key => $val) {
-                        $this->list_data[ $key ] = $val;
-                    }
-                    //購入履歴情報の取得
-                    $this->arrPurchaseHistory = $this->lfPurchaseHistory($_POST['customer_id']);
-                    // 支払い方法の取得
-                    $this->arrPayment = $objDb->sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
-
-                } else {
-                    //-- 確認
-                    if ($mode == "confirm") {
-                        $this->tpl_mainpage = 'customer/edit_confirm.tpl';
-                        $passlen = strlen($this->arrForm['password']);
-                        $this->passlen = SC_Utils_Ex::sfPassLen($passlen);
-
-                    }
-                    //--　編集
-                    if($mode == "complete") {
-                        $this->tpl_mainpage = 'customer/edit_complete.tpl';
-
-                        // 現在の会員情報を取得する
-                        $arrCusSts = $this->objQuery->getOne("SELECT status FROM dtb_customer WHERE customer_id = ?", array($_POST["customer_id"]));
-
-                        // 会員情報が変更されている場合にはシークレット№も更新する。
-                        if ($arrCusSts != $_POST['status']){
-                            $secret = SC_Utils_Ex::sfGetUniqRandomId("r");
-                            $this->arrForm['secret_key'] = $secret;
-                            array_push($arrRegistColumn, array('column' => 'secret_key', 'convert' => 'n'));
-                        }
-                        //-- 編集登録
-                        $objCustomerHelper->sfEditCustomerDataAdmin($this->arrForm, $arrRegistColumn);
-                    }
-                }
-            }
             break;
         }
     }
@@ -222,103 +193,117 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin {
         parent::destroy();
     }
 
-    //----　取得文字列の変換
-    function lfConvertParam($array, $arrRegistColumn) {
-        /*
-         *    文字列の変換
-         *    K :  「半角(ﾊﾝｶｸ)片仮名」を「全角片仮名」に変換
-         *    C :  「全角ひら仮名」を「全角かた仮名」に変換
-         *    V :  濁点付きの文字を一文字に変換。"K","H"と共に使用します
-         *    n :  「全角」数字を「半角(ﾊﾝｶｸ)」に変換
-         *  a :  全角英数字を半角英数字に変換する
-         */
-        // カラム名とコンバート情報
-        foreach ($arrRegistColumn as $data) {
-            $arrConvList[ $data["column"] ] = $data["convert"];
-        }
-        // 文字変換
-        foreach ($arrConvList as $key => $val) {
-            // POSTされてきた値のみ変換する。
-            if(strlen(($array[$key])) > 0) {
-                $array[$key] = mb_convert_kana($array[$key] ,$val);
-            }
-        }
-        return $array;
+    /**
+     * パラメーター情報の初期化
+     *
+     * @param array $objFormParam フォームパラメータークラス
+     * @return void
+     */
+    function lfInitParam(&$objFormParam) {
+        // 会員項目のパラメーター取得
+        SC_Helper_Customer_Ex::sfCustomerEntryParam($objFormParam, true);
+        // 検索結果一覧画面への戻り用パラメーター
+        $objFormParam->addParam("検索用データ", "search_data", "", "", array(), "", false);
     }
 
-    //---- 入力エラーチェック
-    function lfErrorCheck($array) {
+    /**
+     * 検索パラメーター引き継ぎ用情報の初期化
+     *
+     * @param array $objFormParam フォームパラメータークラス
+     * @return void
+     */
+    function lfInitSearchParam(&$objFormParam) {
+        SC_Helper_Customer_Ex::sfSetSearchParam($objFormParam);
+        // 初回受け入れ時用
+        $objFormParam->addParam("編集対象顧客ID", "edit_customer_id", INT_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+    }
 
-        $objErr = new SC_CheckError($array);
-
-        $objErr->doFunc(array("会員状態", 'status'), array("EXIST_CHECK"));
-        $objErr->doFunc(array("お名前(姓)", 'name01', STEXT_LEN), array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("お名前(名)", 'name02', STEXT_LEN), array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("お名前(フリガナ・姓)", 'kana01', STEXT_LEN), array("EXIST_CHECK", "MAX_LENGTH_CHECK", "KANA_CHECK"));
-        $objErr->doFunc(array("お名前(フリガナ・名)", 'kana02', STEXT_LEN), array("EXIST_CHECK", "MAX_LENGTH_CHECK", "KANA_CHECK"));
-        $objErr->doFunc(array("郵便番号1", "zip01", ZIP01_LEN ) ,array("EXIST_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK"));
-        $objErr->doFunc(array("郵便番号2", "zip02", ZIP02_LEN ) ,array("EXIST_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK"));
-        $objErr->doFunc(array("郵便番号", "zip01", "zip02"), array("ALL_EXIST_CHECK"));
-        $objErr->doFunc(array("都道府県", 'pref'), array("SELECT_CHECK","NUM_CHECK"));
-        $objErr->doFunc(array("住所（1）", "addr01", MTEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("住所（2）", "addr02", MTEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array('メールアドレス', "email", MTEXT_LEN) ,array("EXIST_CHECK", "NO_SPTAB", "EMAIL_CHECK", "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
-
-        //現会員の判定 →　現会員もしくは仮登録中は、メアド一意が前提になってるので同じメアドで登録不可
-        if (strlen($array["email"]) > 0) {
-            $array['email'] = strtolower($array['email']);
-            $sql = "SELECT customer_id FROM dtb_customer WHERE (email ILIKE ? escape '#' OR email_mobile ILIKE ? escape '#') AND (status = 1 OR status = 2) AND del_flg = 0 AND customer_id <> ?";
-            $checkMail = ereg_replace( "_", "#_", $array["email"]);
-            $result = $this->objQuery->getAll($sql, array($checkMail, $checkMail, $array["customer_id"]));
-            if (count($result) > 0) {
-                $objErr->arrErr["email"] .= "※ すでに登録されているメールアドレスです。<br />";
+    /**
+     * 検索パラメーターエラーチェック
+     *
+     * @param array $objFormParam フォームパラメータークラス
+     * @return array エラー配列
+     */
+    function lfCheckErrorSearchParam(&$objFormParam) {
+        return SC_Helper_Customer_Ex::sfCheckErrorSearchParam($objFormParam);
+    }
+    
+    /**
+     * フォーム入力パラメーターエラーチェック
+     *
+     * @param array $objFormParam フォームパラメータークラス
+     * @return array エラー配列
+     */
+    function lfCheckError(&$objFormParam) {
+        $arrErr = SC_Helper_Customer_Ex::sfCustomerMypageErrorCheck($objFormParam, true);
+        
+        //メアド重複チェック(共通ルーチンは使えない)
+        $objQuery   =& SC_Query::getSingletonInstance();
+        $col = "email, email_mobile, customer_id";
+        $table = "dtb_customer";
+        $where = "del_flg <> 1 AND (email Like ? OR email_mobile Like ?)";
+        $arrVal = array($objFormParam->getValue('email'), $objFormParam->getValue('email_mobile'));
+        if($objFormParam->getValue("customer_id")) {
+            $where .= " AND customer_id <> ?";
+            $arrVal[] = $objFormParam->getValue("customer_id");
+        }
+        $arrData = $objQuery->getRow($col, $table, $where, $arrVal);
+        if(!SC_Utils_Ex::isBlank($arrData['email'])) {
+            if($arrData['email'] == $objFormParam->getValue('email')) {
+                $arrErr['email'] = '※ すでに他の会員(ID:' . $arrData['customer_id'] . ')が使用しているアドレスです。';
+            }else if($arrData['email'] == $objFormParam->getValue('email_mobile')) {
+                $arrErr['email_mobile'] = '※ すでに他の会員(ID:' . $arrData['customer_id'] . ')が使用しているアドレスです。';
             }
         }
-
-        $objErr->doFunc(array('メールアドレス(モバイル)', "email_mobile", MTEXT_LEN) ,array("EMAIL_CHECK", "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
-        //現会員の判定 →　現会員もしくは仮登録中は、メアド一意が前提になってるので同じメアドで登録不可
-        if (strlen($array["email_mobile"]) > 0) {
-            $array['email_mobile'] = strtolower($array['email_mobile']);
-            $sql = "SELECT customer_id FROM dtb_customer WHERE (email ILIKE ? escape '#' OR email_mobile ILIKE ? escape '#') AND (status = 1 OR status = 2) AND del_flg = 0 AND customer_id <> ?";
-            $checkMail = ereg_replace( "_", "#_", $array["email_mobile"]);
-            $result = $this->objQuery->getAll($sql, array($checkMail, $checkMail, $array["customer_id"]));
-            if (count($result) > 0) {
-                $objErr->arrErr["email_mobile"] .= "※ すでに登録されているメールアドレス(モバイル)です。<br />";
+        if(!SC_Utils_Ex::isBlank($arrData['email_mobile'])) {
+            if($arrData['email_mobile'] == $objFormParam->getValue('email_mobile')) {
+                $arrErr['email_mobile'] = '※ すでに他の会員(ID:' . $arrData['customer_id'] . ')が使用している携帯アドレスです。';
+            }else if($arrData['email_mobile'] == $objFormParam->getValue('email')) {
+                $arrErr['email_mobile'] = '※ すでに他の会員(ID:' . $arrData['customer_id'] . ')が使用している携帯アドレスです。';
             }
         }
+        return $arrErr;
+    }
 
-
-        $objErr->doFunc(array("お電話番号1", 'tel01'), array("EXIST_CHECK"));
-        $objErr->doFunc(array("お電話番号2", 'tel02'), array("EXIST_CHECK"));
-        $objErr->doFunc(array("お電話番号3", 'tel03'), array("EXIST_CHECK"));
-        $objErr->doFunc(array("お電話番号", "tel01", "tel02", "tel03") ,array("TEL_CHECK"));
-        $objErr->doFunc(array("FAX番号", "fax01", "fax02", "fax03") ,array("TEL_CHECK"));
-        $objErr->doFunc(array("ご性別", "sex") ,array("SELECT_CHECK", "NUM_CHECK"));
-        $objErr->doFunc(array("ご職業", "job") ,array("NUM_CHECK"));
-        if ($array["password"] != DEFAULT_PASSWORD) {
-            $objErr->doFunc(array("パスワード", 'password', PASSWORD_LEN1, PASSWORD_LEN2), array("EXIST_CHECK", "ALNUM_CHECK", "NUM_RANGE_CHECK"));
+    /**
+     * 登録処理
+     *
+     * @param array $objFormParam フォームパラメータークラス
+     * @return array エラー配列
+     */
+    function lfRegistData(&$objFormParam) {
+        $objQuery   =& SC_Query::getSingletonInstance();
+        // 登録用データ取得
+        $arrData = $objFormParam->getDbArray();
+        // 足りないものを作る
+        if(!SC_Utils_Ex::isBlank($objFormParam->getValue('year'))) {
+            $arrData['birth'] = $objFormParam->getValue('year') . '/'
+                            . $objFormParam->getValue('month') . '/'
+                            . $objFormParam->getValue('day') 
+                            . ' 00:00:00';
         }
-        $objErr->doFunc(array("パスワードを忘れたときのヒント 質問", "reminder") ,array("SELECT_CHECK", "NUM_CHECK"));
-        if ($array["reminder_answer"] != DEFAULT_PASSWORD) {
-            $objErr->doFunc(array("パスワードを忘れたときのヒント 答え", "reminder_answer", STEXT_LEN) ,array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-        }
-        $objErr->doFunc(array("メールマガジン", "mailmaga_flg") ,array("SELECT_CHECK", "NUM_CHECK"));
-        $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_DATE"));
-        $objErr->doFunc(array("SHOP用メモ", 'note', LTEXT_LEN), array("MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("所持ポイント", "point", TEL_LEN) ,array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        return $objErr->arrErr;
 
+        if(!is_numeric($arrData['customer_id'])) {
+            $arrData['secret_key'] = SC_Utils_Ex::sfGetUniqRandomId("r");
+        }else {
+            $arrOldCustomerData = SC_Helper_Customer_Ex::sfGetCustomerData($arrData['customer_id']);
+            if($arrOldCustomerData['status'] != $arrData['status']) {
+                $arrData['secret_key'] = SC_Utils_Ex::sfGetUniqRandomId("r");
+            }
+        }
+        return SC_Helper_Customer_Ex::sfEditCustomerData($arrData, $arrData['customer_id']);
     }
 
     //購入履歴情報の取得
     function lfPurchaseHistory($customer_id){
+        $objQuery   =& SC_Query::getSingletonInstance();
         $this->tpl_pageno = $_POST['search_pageno'];
         $this->edit_customer_id = $customer_id;
 
         // ページ送りの処理
         $page_max = SEARCH_PMAX;
         //購入履歴の件数取得
-        $this->tpl_linemax = $this->objQuery->count("dtb_order","customer_id=? AND del_flg = 0 ", array($customer_id));
+        $this->tpl_linemax = $objQuery->count("dtb_order","customer_id=? AND del_flg = 0 ", array($customer_id));
         $linemax = $this->tpl_linemax;
 
         // ページ送りの取得
