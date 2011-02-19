@@ -138,16 +138,10 @@ class LC_Page_Admin_Products extends LC_Page_Admin {
                 switch($this->getMode()) {
                 // CSVを送信する。
                 case 'csv':
-                    require_once(CLASS_EX_REALDIR . "helper_extends/SC_Helper_CSV_Ex.php");
-
-                    $objCSV = new SC_Helper_CSV_Ex();
-
-                    // CSVを送信する。正常終了の場合、終了。
-                    $objCSV->sfDownloadProductsCsv($where, $arrval, $order, true);
-                    // FIXME: sendResponseに渡した方が良いのか？
-//                        $data = $objCSV->sfDownloadProductsCsv($where, $arrval, $order);
-//                        $this->sendResponseCSV($fime_name, $data);
+                    list($file_name, $data) = $this->getCSV($where, $arrval, $order, $objProduct);
+                    $this->sendResponseCSV($file_name, $data);
                     exit;
+                    
                 // 全件削除(ADMIN_MODE)
                 case 'delete_all':
                     $this->doDelete($where, $arrval);
@@ -354,6 +348,42 @@ class LC_Page_Admin_Products extends LC_Page_Admin {
             }
             break;
         }
+    }
+
+    /**
+     * CSV データを構築して取得する.
+     *
+     * 構築に成功した場合は, ファイル名と出力内容を配列で返す.
+     * 構築に失敗した場合は, false を返す.
+     *
+     * @param string $where 検索条件の WHERE 句
+     * @param array $arrValues 検索条件のパラメータ
+     * @param string $order 検索結果の並び順
+     * @param SC_Product $objProduct SC_Product インスタンス
+     * @return array|boolean 構築に成功した場合, ファイルと出力内容の配列;
+     *                       失敗した場合 false
+     */
+    function getCSV($where, $arrValues, $order, &$objProduct) {
+        require_once(CLASS_EX_REALDIR . "helper_extends/SC_Helper_CSV_Ex.php");
+        $objCSV = new SC_Helper_CSV_Ex();
+
+        $option = "ORDER BY $order";
+
+        // CSV出力タイトル行の作成
+        $arrCsvOutput = SC_Utils_Ex::sfSwapArray($objCSV->sfGetCsvOutput(1, 'status = 1'));
+
+        if (count($arrCsvOutput) <= 0) {
+            return false;
+        }
+
+        $arrCsvOutputCols = $arrCsvOutput['col'];
+        $arrCsvOutputConvs = $arrCsvOutput['conv'];
+        $arrCsvOutputTitle = $arrCsvOutput['disp_name'];
+        $head = SC_Utils_Ex::sfGetCSVList($arrCsvOutputTitle);
+        $from = $objProduct->prdclsSQL();
+        $data = $objCSV->lfGetCSV($from, $where, $option, $arrValues,
+                                  $arrCsvOutputCols, $arrCsvOutputConvs);
+        return SC_Utils_Ex::sfGetCSVData($head . $data);
     }
 
     /**
