@@ -585,7 +585,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin {
         }
         $tpl_image     = $this->lfGetGraphPie($arrTotalResults, "job_name", "job_" . $type, "(売上比率)", $sdate, $edate);
 
-        return array($arrResults, $tpl_image);
+        return array($arrTotalResults, $tpl_image);
     }
 
     /** 年代別集計 **/
