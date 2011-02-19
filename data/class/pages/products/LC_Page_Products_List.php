@@ -97,7 +97,7 @@ class LC_Page_Products_List extends LC_Page {
         $objQuery =& SC_Query::getSingletonInstance();
         $objProduct = new SC_Product();
 
-        $this->arrForm = $_REQUEST;
+        $this->arrForm = $_REQUEST;//時間が無いのでコレで勘弁してください。 tao_s
         //modeの取得
         $this->mode = $this->getMode();
         
@@ -171,14 +171,15 @@ class LC_Page_Products_List extends LC_Page {
             // 入力内容のチェック
             $arrErr = $this->lfCheckError($target_product_id,&$this->arrForm,$this->tpl_classcat_find1,$this->tpl_classcat_find2);
             if (count($arrErr) == 0) {
-                $this->lfAddCart($this->arrForm,$this->tpl_classcat_find1,$this->tpl_classcat_find2,$target_product_id);
+                $this->lfAddCart($this->arrForm,$this->tpl_classcat_find1,$this->tpl_classcat_find2,$target_product_id,$_SERVER['HTTP_REFERER']);
+                SC_Response_Ex::sendRedirect(CART_URLPATH);
                 exit;
             }
             $js_fnOnLoad .= $this->lfSetSelectedData(&$this->arrProducts,$this->arrForm,$arrErr,$target_product_id);
         }
 
         // ページャ用データ設定(モバイル)
-        if (Net_UserAgent_Mobile::isMobile() === true) {
+        if (SC_Display::detectDevice() == DEVICE_TYPE_MOBILE) {
             $this->tpl_previous_page = $this->objNavi->arrPagenavi['before'];
             $this->tpl_next_page =  $this->objNavi->arrPagenavi['next'];
         }
@@ -441,7 +442,7 @@ __EOS__;
 
         // 商品名をwhere文に
         $name = $arrSearchData['name'];
-        $name = ereg_replace(",", "", $name);// XXX
+        $name = str_replace(",", "", $name);
         // 全角スペースを半角スペースに変換
         $name = str_replace('　', ' ', $name);
         // スペースでキーワードを分割
@@ -488,7 +489,7 @@ __EOS__;
      *
      * @return void
      */   
-    function lfAddCart($arrForm,$tpl_classcat_find1,$tpl_classcat_find2,$target_product_id){
+    function lfAddCart($arrForm,$tpl_classcat_find1,$tpl_classcat_find2,$target_product_id,$referer){
         $classcategory_id1 = $arrForm['classcategory_id1'];
         $classcategory_id2 = $arrForm['classcategory_id2'];
         // 規格1が設定されていない場合
@@ -507,11 +508,10 @@ __EOS__;
         $objCartSess->addProduct($product_class_id, $arrForm['quantity'], $product_type);
 
         // カート「戻るボタン」用に保持
-        if (SC_Utils_Ex::sfIsInternalDomain($_SERVER['HTTP_REFERER'])) {
-            $_SESSION['cart_referer_url'] = $_SERVER['HTTP_REFERER'];
+        if (SC_Utils_Ex::sfIsInternalDomain($referer)) {
+            //該当メソッドが無いため、$_SESSIONに直接セット
+            $_SESSION['cart_referer_url'] = $referer;
         }
-
-        SC_Response_Ex::sendRedirect(CART_URLPATH);
     }
 }
 ?>
