@@ -30,6 +30,7 @@
             <tr>
                 <th>メーカー名<span class="attention"> *</span></th>
                 <td>
+                    <!--{if $arrErr.maker_id}--><span class="attention"><!--{$arrErr.maker_id}--></span><br /><!--{/if}-->
                     <!--{if $arrErr.name}--><span class="attention"><!--{$arrErr.name}--></span><!--{/if}-->
                     <input type="text" name="name" value="<!--{$arrForm.name|h}-->" maxlength="<!--{$smarty.const.SMTEXT_LEN}-->" style="" size="60" class="box60"/>
                     <span class="attention"> (上限<!--{$smarty.const.SMTEXT_LEN}-->文字)</span>

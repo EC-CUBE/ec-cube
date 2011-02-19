@@ -66,71 +66,63 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin {
      * @return void
      */
     function action() {
-        $objSess = new SC_Session();
-        $objQuery = new SC_Query();
-        $objDb = new SC_Helper_DB_Ex();
 
-        // 認証可否の判定
-        SC_Utils_Ex::sfIsSuccess($objSess);
+        // 認証可否の判定.
+        SC_Utils_Ex::sfIsSuccess(new SC_Session());
 
-        // 要求判定
+        // POST値の引き継ぎ
+        $this->arrForm = $_POST;
+
+        // 入力文字の変換
+        $this->arrForm = $this->lfConvertParam($this->arrForm);
+
+        // モードによる処理切り替え.
         switch($this->getMode()) {
-        // 編集処理
-        case 'edit':
-            // POST値の引き継ぎ
-            $this->arrForm = $_POST;
-            // 入力文字の変換
-            $this->arrForm = $this->lfConvertParam($this->arrForm);
 
+        // 編集処理.
+        case 'edit':
             // エラーチェック
-            $this->arrErr = $this->lfErrorCheck();
+            $this->arrErr = $this->lfErrorCheck($this->arrForm);
             if(count($this->arrErr) <= 0) {
-                if($_POST['maker_id'] == "") {
-                    $this->lfInsertClass($this->arrForm);	// 新規作成
+                if($this->arrForm['maker_id'] == "") {
+                    // メーカー情報新規登録.
+                    $this->lfInsert($this->arrForm);
                 } else {
-                    $this->lfUpdateClass($this->arrForm);	// 既存編集
+                    // メーカー情報編集.
+                    $this->lfUpdate($this->arrForm);
                 }
-                // 再表示
+                // 再表示.
                 $this->objDisplay->reload();
             } else {
                 // POSTデータを引き継ぐ
-                $this->tpl_maker_id = $_POST['maker_id'];
+                $this->tpl_maker_id = $this->arrForm['maker_id'];
             }
             break;
-        // 削除
-        case 'delete':
-            $objDb->sfDeleteRankRecord("dtb_maker", "maker_id", $_POST['maker_id'], "", true);
-            // 再表示
-            $this->objDisplay->reload();
-            break;
+
         // 編集前処理
         case 'pre_edit':
-            // 編集項目をDBより取得する。
-            $where = "maker_id = ?";
-            $arrRet = $objQuery->select("name", "dtb_maker", $where, array($_POST['maker_id']));
-            // 入力項目にカテゴリ名を入力する。
-            $this->arrForm['name'] = $arrRet[0]['name'];
-            // POSTデータを引き継ぐ
-            $this->tpl_maker_id = $_POST['maker_id'];
-        break;
-        case 'down':
-            $objDb->sfRankDown("dtb_maker", "maker_id", $_POST['maker_id']);
-            // 再表示
-            $this->objDisplay->reload();
+            $this->arrForm = $this->lfPreEdit($this->arrForm, $this->arrForm['maker_id']);
+            $this->tpl_maker_id = $this->arrForm['maker_id'];
             break;
+
         case 'up':
-            $objDb->sfRankUp("dtb_maker", "maker_id", $_POST['maker_id']);
-            // 再表示
-            $this->objDisplay->reload();
+        case 'down':
+            // メーカー順変更
+            $this->lfRankChange($this->arrForm['maker_id'], $this->getMode());
             break;
+
+        // 削除.
+        case 'delete':
+            $this->lfDelete($this->arrForm['maker_id']);
+            break;
+
         default:
             break;
         }
 
-        // 規格の読込
-        $where = "del_flg <> 1";
-        $objQuery->setOrder("rank DESC");
-        $this->arrMaker = $objQuery->select("maker_id, name", "dtb_maker", $where);
+        // メーカー情報読み込み
+        $this->arrMaker = $this->lfDisp();
+
     }
 
     /**
@@ -142,59 +134,170 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin {
         parent::destroy();
     }
 
-    /* DBへの挿入 */
-    function lfInsertClass($arrData) {
-        $objQuery = new SC_Query();
-        // INSERTする値を作成する。
-        $sqlval['name'] = $arrData['name'];
+
+    /**
+     * メーカー情報表示
+     *
+     * @return array @arrMaker メーカー情報
+     */
+    function lfDisp() {
+        $objQuery =& SC_Query::getSingletonInstance();
+
+        // 削除されていないメーカー情報を表示する.
+        $where = "del_flg = 0";
+        $objQuery->setOrder("rank DESC");
+        $arrMaker = array();
+        $arrMaker = $objQuery->select("maker_id, name", "dtb_maker", $where);
+        return $arrMaker;
+    }
+
+    /**
+     * メーカー情報新規登録
+     *
+     * @return void
+     */
+    function lfInsert($arrForm) {
+        $objQuery =& SC_Query::getSingletonInstance();
+
+        // INSERTする値を作成する
+        $sqlval['name'] = $arrForm['name'];
         $sqlval['rank'] = $objQuery->max("rank", "dtb_maker") + 1;
         $sqlval['creator_id'] = $_SESSION['member_id'];
         $sqlval['update_date'] = "Now()";
         $sqlval['create_date'] = "Now()";
-        // INSERTの実行
         $sqlval['maker_id'] = $objQuery->nextVal('dtb_maker_maker_id');
-        $ret = $objQuery->insert("dtb_maker", $sqlval);
-        return $ret;
+
+        // INSERTの実行
+        $objQuery->insert("dtb_maker", $sqlval);
     }
 
-    /* DBへの更新 */
-    function lfUpdateClass($arrData) {
-        $objQuery = new SC_Query();
-        // UPDATEする値を作成する。
-        $sqlval['name'] = $arrData['name'];
+    /**
+     * メーカー情報更新
+     *
+     * @return void
+     */
+    function lfUpdate($arrForm) {
+        $objQuery =& SC_Query::getSingletonInstance();
+
+        // UPDATEする値を作成する.
+        $sqlval['name'] = $arrForm['name'];
         $sqlval['update_date'] = "Now()";
         $where = "maker_id = ?";
-        // UPDATEの実行
-        $ret = $objQuery->update("dtb_maker", $sqlval, $where, array($_POST['maker_id']));
-        return $ret;
+
+        // UPDATEの実行.
+        $objQuery->update("dtb_maker", $sqlval, $where, array($arrForm['maker_id']));
     }
 
-    /* 取得文字列の変換 */
-    function lfConvertParam($array) {
+    /**
+     * メーカー情報削除
+     *
+     * @param integer $maker_id メーカーID
+     * @return void
+     */
+    function lfDelete($maker_id) {
+        $objDb = new SC_Helper_DB_Ex();
+        $objDb->sfDeleteRankRecord("dtb_maker", "maker_id", $maker_id, "", true);
+
+        // 再表示
+        $this->objDisplay->reload();
+    }
+
+    /**
+     * メーカー情報順番変更
+     *
+     * @param  integer $maker_id メーカーID
+     * @param  string  $mode up か down のモードを示す文字列
+     * @return void
+     */
+    function lfRankChange($maker_id, $mode) {
+        $objDb = new SC_Helper_DB_Ex();
+        
+        switch($mode) {
+        case 'up':
+            $objDb->sfRankUp("dtb_maker", "maker_id", $maker_id);
+            break;
+
+        case 'down':
+            $objDb->sfRankDown("dtb_maker", "maker_id", $maker_id);
+            break;
+        }
+
+        // 再表示
+        $this->objDisplay->reload();
+    }
+
+
+    /**
+     * メーカー情報編集前処理
+     *
+     * @param array   $arrForm
+     * @param integer $maker_id メーカーID
+     * @return array  $arrForm メーカー名を追加
+     */
+    function lfPreEdit(&$arrForm, $maker_id) {
+        $objQuery =& SC_Query::getSingletonInstance();
+
+        // 編集項目を取得する
+        $where = "maker_id = ?";
+        $arrMaker = array();
+        $arrMaker = $objQuery->select("name", "dtb_maker", $where, array($maker_id));
+        $arrForm['name'] = $arrMaker[0]['name'];
+
+        return $arrForm;
+    }
+
+    /**
+     * 取得文字列の変換
+     *
+     * @param  array $arrForm 変換前
+     * @return array $arrForm 変換後
+     */
+    function lfConvertParam($arrForm) {
         // 文字変換
+        $arrConvList['maker_id'] = "n";
         $arrConvList['name'] = "KVa";
 
         foreach ($arrConvList as $key => $val) {
-            // POSTされてきた値のみ変換する。
-            if(isset($array[$key])) {
-                $array[$key] = mb_convert_kana($array[$key] ,$val);
+            // POSTされてきた値のみ変換する
+            if(isset($arrForm[$key])) {
+                $arrForm[$key] = mb_convert_kana($arrForm[$key] ,$val);
             }
         }
-        return $array;
+        return $arrForm;
     }
 
-    /* 入力エラーチェック */
-    function lfErrorCheck() {
-        $objErr = new SC_CheckError();
+    /**
+     * 入力エラーチェック
+     *
+     * @param  array $arrForm
+     * @return array $objErr->arrErr エラー内容
+     */
+    function lfErrorCheck($arrForm) {
+        $objErr = new SC_CheckError($arrForm);
         $objErr->doFunc(array("メーカー名", "name", SMTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-        if(!isset($objErr->arrErr['name'])) {
-            $objQuery = new SC_Query();
-            $arrRet = $objQuery->select("maker_id, name", "dtb_maker", "del_flg = 0 AND name = ?", array($_POST['name']));
-            // 編集中のレコード以外に同じ名称が存在する場合
-            if ($arrRet[0]['maker_id'] != $_POST['maker_id'] && $arrRet[0]['name'] == $_POST['name']) {
-                $objErr->arrErr['name'] = "※ 既に同じ内容の登録が存在します。<br>";
+
+        // maker_id の正当性チェック
+        if(!empty($arrForm['maker_id'])) {
+            $objDb = new SC_Helper_DB_Ex();
+            if(!SC_Utils_Ex::sfIsInt($arrForm['maker_id']) 
+              || SC_Utils_Ex::sfIsZeroFilling($arrForm['maker_id'])
+              || !$objDb->sfIsRecord('dtb_maker', 'maker_id', array($arrForm['maker_id']))) {
+
+              // maker_idが指定されていて、且つその値が不正と思われる場合はエラー.
+              $objErr->arrErr['maker_id'] = "※ メーカーIDが不正です<br />";
             }
         }
+        if(!isset($objErr->arrErr['name'])) {
+            $objQuery =& SC_Query::getSingletonInstance();
+            $arrMaker = array();
+            $arrMaker = $objQuery->select("maker_id, name", "dtb_maker", "del_flg = 0 AND name = ?", array($arrForm['name']));
+
+            // 編集中のレコード以外に同じ名称が存在する場合
+            if ($arrMaker[0]['maker_id'] != $arrForm['maker_id'] && $arrMaker[0]['name'] == $arrForm['name']) {
+                $objErr->arrErr['name'] = "※ 既に同じ内容の登録が存在します。<br />";
+            }
+        }
+
         return $objErr->arrErr;
     }
 }
