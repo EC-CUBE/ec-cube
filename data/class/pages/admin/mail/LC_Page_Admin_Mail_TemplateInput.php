@@ -48,10 +48,9 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin {
         $this->tpl_subnavi = 'mail/subnavi.tpl';
         $this->tpl_subtitle = 'テンプレート設定';
         $this->tpl_subno = "template";
+        $this->mode = "regist";
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrMagazineType = $masterData->getMasterData("mtb_magazine_type");
-        // arrMagazineTypAll ではないため, unset する.
-        unset($this->arrMagazineType['3']);
     }
 
     /**
@@ -70,43 +69,36 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin {
      * @return void
      */
     function action() {
-        $objQuery = new SC_Query();
+        $objMailHelper = new SC_Helper_Mail_Ex();
         $objSess = new SC_Session();
 
         // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess($objSess);
 
-
-        $this->mode = "regist";
-
-        // idが指定されているときは「編集」表示
-        if (!isset($_REQUEST['template_id'])) $_REQUEST['template_id'] = "";
-        if ( $_REQUEST['template_id'] ){
-            $this->title = "編集";
-        } else {
-            $this->title = "新規登録";
-        }
-
         switch ($this->getMode()) {
         case 'edit':
-            // モードによる処理分岐
+            // 編集
             if ( SC_Utils_Ex::sfIsInt($_GET['template_id'])===true ){
-                // 編集
-                $sql = "SELECT * FROM dtb_mailmaga_template WHERE template_id = ? AND del_flg = 0";
-                $result = $objQuery->getAll($sql, array($_GET['template_id']));
-                $this->arrForm = $result[0];
+                $arrMail = $objMailHelper->sfGetMailTemplate($_GET['template_id']);
+                $this->arrForm = $arrMail[0];
             }
             break;
         case 'regist':
             // 新規登録
-            $this->arrForm = $this->lfConvData( $_POST );
-            $this->arrErr = $this->lfErrorCheck($this->arrForm);
-
-            if ( ! $this->arrErr ){
+            $objFormParam = new SC_FormParam();
+            
+            $this->lfInitParam($objFormParam);
+            $objFormParam->setParam($_POST);
+            $this->arrErr = $objFormParam->checkError();
+            $this->arrForm = $objFormParam->getHashArray();
+                        
+            if (SC_Utils_Ex::isBlank($this->arrErr)) {
                 // エラーが無いときは登録・編集
-                $this->lfRegistData( $this->arrForm, $_POST['template_id']);
+                $this->lfRegistData( $objFormParam, $_POST['template_id']);
                 // 自分を再読込して、完了画面へ遷移
                 $this->objDisplay->reload(array("mode" => "complete"));
+            } else {
+                $this->arrForm['template_id'] = $_POST['template_id'];
             }
             break;
         case 'complete':
@@ -127,51 +119,43 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin {
         parent::destroy();
     }
 
-    function lfRegistData( $arrVal, $id = null ){
+    /**
+     * メルマガテンプレートデータの登録・更新を行う
+     * 
+     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param integer template_id 更新時は指定
+     * @return void
+     */
+    function lfRegistData( &$objFormParam, $template_id = null ){
+        
+        $objQuery =& SC_Query::getSingletonInstance();
+        $sqlval = $objFormParam->getDbArray();
 
-        $objQuery = new SC_Query();
-
-        $sqlval['subject'] = $arrVal['subject'];
-        $sqlval['mail_method'] = $arrVal['mail_method'];
         $sqlval['creator_id'] = $_SESSION['member_id'];
-        $sqlval['body'] = $arrVal['body'];
         $sqlval['update_date'] = "now()";
 
-        if ( $id ){
-            $objQuery->update("dtb_mailmaga_template", $sqlval, "template_id=".$id );
+        if ( SC_Utils_Ex::sfIsInt($template_id) ){
+            // 更新時
+            $objQuery->update("dtb_mailmaga_template", $sqlval, "template_id=".$template_id );
         } else {
+            // 新規登録時
             $sqlval['create_date'] = "now()";
             $sqlval['template_id'] = $objQuery->nextVal('dtb_mailmaga_template_template_id');
             $objQuery->insert("dtb_mailmaga_template", $sqlval);
         }
     }
 
-    function lfConvData( $data ){
-
-        // 文字列の変換（mb_convert_kanaの変換オプション）
-        $arrFlag = array(
-                         "subject" => "KV"
-                         ,"body" => "KV"
-                         );
-
-        if ( is_array($data) ){
-            foreach ($arrFlag as $key=>$line) {
-                $data[$key] = mb_convert_kana($data[$key], $line);
-            }
-        }
-
-        return $data;
+    /**
+     * お問い合わせ入力時のパラメータ情報の初期化を行う.
+     *
+     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @return void
+     */
+    function lfInitParam(&$objFormParam) {
+        $objFormParam->addParam("メール形式", 'mail_method', INT_LEN, "n", array("EXIST_CHECK","ALNUM_CHECK"));
+        $objFormParam->addParam("Subject", 'subject', STEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("本文", 'body', LLTEXT_LEN, "KVCa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
     }
 
-    // 入力エラーチェック
-    function lfErrorCheck() {
-        $objErr = new SC_CheckError();
-
-        $objErr->doFunc(array("メール形式", "mail_method"), array("EXIST_CHECK", "ALNUM_CHECK"));
-        $objErr->doFunc(array("Subject", "subject", STEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("本文", 'body', LLTEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
-
-        return $objErr->arrErr;
-    }
 }
 ?>

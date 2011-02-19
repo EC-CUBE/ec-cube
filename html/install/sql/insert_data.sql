@@ -744,7 +744,6 @@ INSERT INTO mtb_job (id, name, rank) VALUES (18, 'その他', 17);
 
 INSERT INTO mtb_magazine_type (id, name, rank) VALUES (1, 'HTML', 0);
 INSERT INTO mtb_magazine_type (id, name, rank) VALUES (2, 'テキスト', 1);
-INSERT INTO mtb_magazine_type (id, name, rank) VALUES (3, 'HTMLテンプレート', 2);
 
 INSERT INTO mtb_mail_magazine_type (id, name, rank) VALUES (1, 'HTMLメール', 0);
 INSERT INTO mtb_mail_magazine_type (id, name, rank) VALUES (2, 'テキストメール', 1);

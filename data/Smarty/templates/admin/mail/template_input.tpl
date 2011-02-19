@@ -53,7 +53,7 @@ function lfnCheckSubmit(){
 
 <form name="form1" id="form1" method="post" action="?" onSubmit="return lfnCheckSubmit();">
 <input type="hidden" name="mode" value="<!--{$mode}-->" />
-<input type="hidden" name="template_id" value="<!--{$arrForm.template_id}-->" />
+<input type="hidden" name="template_id" value="<!--{$arrForm.template_id|h}-->" />
 <div id="mail" class="contents-main">
   <table class="form">
     <tr>
