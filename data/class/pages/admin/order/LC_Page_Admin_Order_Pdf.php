@@ -87,64 +87,85 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin {
 
         // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess($objSess);
-
         // 画面遷移の正当性チェック用にuniqidを埋め込む
         $objPage->tpl_uniqid = $objSess->getUniqId();
 
         // パラメータ管理クラス
         $this->objFormParam = new SC_FormParam();
         // パラメータ情報の初期化
-        $this->lfInitParam();
+        $this->lfInitParam($this->objFormParam);
         $this->objFormParam->setParam($_POST);
+        // 入力値の変換
+        $this->objFormParam->convParam();
         
-        // どんな状態の時に isset($arrRet) == trueになるんだ?
+        // どんな状態の時に isset($arrRet) == trueになるんだ? これ以前に$arrRet無いが、、、、
         if (!isset($arrRet)) $arrRet = array();
-        
         switch($this->getMode()) {
             case "confirm":
-                // 入力値の変換
-                $this->confirm($this->objFormParam);
+                $status = $this->createPdf($this->objFormParam);
+                if($status === true){
+                    exit;
+                }else{
+                    $this->arrErr = $status;
+                    var_dump($status);
+                    echo "\n\n<br/>#######--------- line is ".__LINE__." on ".__FILE__."--------########<br/>\n\n";
+                           
+                }
                 break;
             default:
-                // ここが$arrFormの初登場ということを明示するため宣言する。
-                $arrForm = array();
-                // タイトルをセット
-                $arrForm['title'] = "お買上げ明細書(納品書)";
-
-                // 今日の日付をセット
-                $arrForm['year']  = date("Y");
-                $arrForm['month'] = date("m");
-                $arrForm['day']   = date("d");
-
-                // メッセージ
-                $arrForm['msg1'] = 'このたびはお買上げいただきありがとうございます。';
-                $arrForm['msg2'] = '下記の内容にて納品させていただきます。';
-                $arrForm['msg3'] = 'ご確認くださいますよう、お願いいたします。';
-
-                // 注文番号があったら、セットする
-                if(SC_Utils_Ex::sfIsInt($_GET['order_id'])) {
-                    $arrForm['order_id'][0] = $_GET['order_id'];
-                } elseif (is_array($_POST['pdf_order_id'])) {
-                    sort($_POST['pdf_order_id']);
-                    foreach ($_POST['pdf_order_id'] AS $key=>$val) {
-                        $arrForm['order_id'][] = $val;
-                    }
-                }
-
-                $this->arrForm = $arrForm;
+                $this->arrForm = $this->createFromValues();
                 break;
         }
         $this->setTemplate($this->tpl_mainpage);
     }
 
-    function confirm(&$objFormParam){
-        $this->objFormParam->convParam();
-        $this->arrErr = $this->lfCheckError($arrRet);
-        $arrRet = $this->objFormParam->getHashArray();
+    /**
+     *
+     * PDF作成フォームのデフォルト値の生成
+     */
+    function createFromValues(){
+        // ここが$arrFormの初登場ということを明示するため宣言する。
+        $arrForm = array();
+        // タイトルをセット
+        $arrForm['title'] = "お買上げ明細書(納品書)";
+
+        // 今日の日付をセット
+        $arrForm['year']  = date("Y");
+        $arrForm['month'] = date("m");
+        $arrForm['day']   = date("d");
+
+        // メッセージ
+        $arrForm['msg1'] = 'このたびはお買上げいただきありがとうございます。';
+        $arrForm['msg2'] = '下記の内容にて納品させていただきます。';
+        $arrForm['msg3'] = 'ご確認くださいますよう、お願いいたします。';
+
+        // 注文番号があったら、セットする
+        if(SC_Utils_Ex::sfIsInt($_GET['order_id'])) {
+            $arrForm['order_id'][0] = $_GET['order_id'];
+        } elseif (is_array($_POST['pdf_order_id'])) {
+            $this->getOrderIdFromPost($objFormParam);
+            sort($_POST['pdf_order_id']);
+            foreach ($_POST['pdf_order_id'] AS $key=>$val) {
+                $arrForm['order_id'][] = $val;
+            }
+        }
+
+        return $arrForm;
+    }
+
+    /**
+     *
+     * PDFの作成
+     * @param SC_FormParam $objFormParam
+     */
+    function createPdf(&$objFormParam){
         
+        $arrErr = $this->lfCheckError($objFormParam);
+        $arrRet = $objFormParam->getHashArray();
+
         $this->arrForm = $arrRet;
         // エラー入力なし
-        if (count($this->arrErr) == 0) {
+        if (count($arrErr) == 0) {
             $objFpdf = new SC_Fpdf($arrRet['download'], $arrRet['title']);
             foreach ($arrRet['order_id'] AS $key => $val) {
                 $arrPdfData = $arrRet;
@@ -152,7 +173,9 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin {
                 $objFpdf->setData($arrPdfData);
             }
             $objFpdf->createPdf();
-            exit;
+            return true;
+        }else{
+            return $arrErr;
         }
     }
 
@@ -167,41 +190,60 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin {
         parent::destroy();
     }
 
-    /* パラメータ情報の初期化 */
-    function lfInitParam() {
-        $this->objFormParam->addParam("注文番号", "order_id", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $this->objFormParam->addParam("発行日", "year", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $this->objFormParam->addParam("発行日", "month", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $this->objFormParam->addParam("発行日", "day", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $this->objFormParam->addParam("帳票の種類", "type", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $this->objFormParam->addParam("ダウンロード方法", "download", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $this->objFormParam->addParam("帳票タイトル", "title", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("帳票メッセージ1行目", "msg1", STEXT_LEN*3/5, "KVa", array("MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("帳票メッセージ2行目", "msg2", STEXT_LEN*3/5, "KVa", array("MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("帳票メッセージ3行目", "msg3", STEXT_LEN*3/5, "KVa", array("MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("備考1行目", "etc1", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("備考2行目", "etc2", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("備考3行目", "etc3", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("ポイント表記", "disp_point", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+    /**
+     *  パラメータ情報の初期化 
+     *  @param SC_FormParam 
+     */
+    function lfInitParam(&$objFormParam) {
+        $objFormParam->addParam("注文番号", "order_id", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("注文番号", "pdf_order_id", INT_LEN, "n", array( "MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("発行日", "year", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("発行日", "month", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("発行日", "day", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("帳票の種類", "type", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("ダウンロード方法", "download", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("帳票タイトル", "title", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("帳票メッセージ1行目", "msg1", STEXT_LEN*3/5, "KVa", array("MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("帳票メッセージ2行目", "msg2", STEXT_LEN*3/5, "KVa", array("MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("帳票メッセージ3行目", "msg3", STEXT_LEN*3/5, "KVa", array("MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("備考1行目", "etc1", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("備考2行目", "etc2", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("備考3行目", "etc3", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("ポイント表記", "disp_point", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
     }
 
     /**
      *  入力内容のチェック
      *  @var SC_FormParam
      */
-    
+
     function lfCheckError(&$objFormParam) {
         // 入力データを渡す。
         $arrRet = $objFormParam->getHashArray();
-        $objFormParam->
-        $objErr = new SC_CheckError($arrRet);
-        
-        $objErr->arrErr = $this->objFormParam->checkError();
-        
-        // 特殊項目チェック
-        $objErr->doFunc(array("発行日", "year", "month", "day"), array("CHECK_DATE"));
+        $arrErr = $objFormParam->checkError();
 
-        return $objErr->arrErr;
+        $year = $objFormParam->getValue('year');
+        if(!is_numeric($year)){
+            $arrErr['year'] = "発行年は数値で入力してください。";
+        }
+
+        $month = $objFormParam->getValue('month');
+        if(!is_numeric($month)){
+            $arrErr['month'] = "発行月は数値で入力してください。";
+        }else if(0 >= $month && 12 < $month){
+                   
+            $arrErr['month'] = "発行月は1〜12の間で入力してください。";
+        }
+        
+        $day = $objFormParam->getValue('day');
+        if(!is_numeric($day)){
+            $arrErr['day'] = "発行日は数値で入力してください。";
+        }else if(0 >= $day && 31 < $day){
+                   
+            $arrErr['day'] = "発行日は1〜31の間で入力してください。";
+        }
+
+        return $arrErr;
     }
 
 
