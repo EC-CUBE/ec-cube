@@ -107,13 +107,10 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin {
                     exit;
                 }else{
                     $this->arrErr = $status;
-                    var_dump($status);
-                    echo "\n\n<br/>#######--------- line is ".__LINE__." on ".__FILE__."--------########<br/>\n\n";
-                           
                 }
                 break;
             default:
-                $this->arrForm = $this->createFromValues();
+                $this->arrForm = $this->createFromValues($_GET['order_id'],$_POST['pdf_order_id']);
                 break;
         }
         $this->setTemplate($this->tpl_mainpage);
@@ -123,7 +120,7 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin {
      *
      * PDF作成フォームのデフォルト値の生成
      */
-    function createFromValues(){
+    function createFromValues($order_id,$pdf_order_id){
         // ここが$arrFormの初登場ということを明示するため宣言する。
         $arrForm = array();
         // タイトルをセット
@@ -140,12 +137,12 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin {
         $arrForm['msg3'] = 'ご確認くださいますよう、お願いいたします。';
 
         // 注文番号があったら、セットする
-        if(SC_Utils_Ex::sfIsInt($_GET['order_id'])) {
-            $arrForm['order_id'][0] = $_GET['order_id'];
-        } elseif (is_array($_POST['pdf_order_id'])) {
+        if(SC_Utils_Ex::sfIsInt($order_id)) {
+            $arrForm['order_id'][0] = $order_id;
+        } elseif (is_array($pdf_order_id)) {
             $this->getOrderIdFromPost($objFormParam);
-            sort($_POST['pdf_order_id']);
-            foreach ($_POST['pdf_order_id'] AS $key=>$val) {
+            sort($pdf_order_id);
+            foreach ($pdf_order_id AS $key=>$val) {
                 $arrForm['order_id'][] = $val;
             }
         }
