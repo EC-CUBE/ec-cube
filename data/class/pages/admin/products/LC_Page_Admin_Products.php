@@ -75,6 +75,8 @@ class LC_Page_Admin_Products extends LC_Page_Admin {
     function action() {
         $objDb = new SC_Helper_DB_Ex();
         $objDate = new SC_Date();
+        $objFormParam = new SC_FormParam();
+        $objProduct = new SC_Product();
 
         // 登録・更新検索開始年
         $objDate->setStartYear(RELEASE_YEAR);
@@ -93,221 +95,92 @@ class LC_Page_Admin_Products extends LC_Page_Admin {
         $objSess = new SC_Session();
         SC_Utils_Ex::sfIsSuccess($objSess);
 
-        // POST値の引き継ぎ
-        $this->arrForm = $_POST;
-
-        // 検索ワードの引き継ぎ
-        foreach ($_POST as $key => $val) {
-            if (ereg("^search_", $key) || ereg("^campaign_", $key)) {
-                switch($key) {
-                    case 'search_product_flag':
-                    case 'search_status':
-                        $this->arrHidden[$key] = SC_Utils_Ex::sfMergeParamCheckBoxes($val);
-                        if(!is_array($val)) {
-                            $this->arrForm[$key] = split("-", $val);
-                        }
-                        break;
-                    default:
-                        $this->arrHidden[$key] = $val;
-                        break;
-                }
-            }
-        }
+        // パラメータ情報の初期化
+        $this->lfInitParam($objFormParam);
+        $objFormParam->setParam($_POST);
+        $this->arrHidden = $objFormParam->getSearchArray();
+        $this->arrForm = $objFormParam->getFormParamList();
 
         // ページ送り用
         $this->arrHidden['search_pageno'] = isset($_POST['search_pageno']) ? $_POST['search_pageno'] : "";
 
         switch ($this->getMode()) {
         case 'delete':
-        // 商品削除
-            $objQuery = new SC_Query();
-            $objQuery->delete("dtb_products",
-                          "product_id = ?", array($_POST['product_id']));
-
-            // 子テーブル(商品規格)の削除
-            $objQuery->delete("dtb_products_class", "product_id = ?", array($_POST['product_id']));
-
-            // お気に入り商品削除
-            $objQuery->delete("dtb_customer_favorite_products", "product_id = ?", array($_POST['product_id']));
-
+            // 商品、子テーブル(商品規格)、お気に入り商品の削除
+            $this->doDelete("product_id = ?", array($objFormParam->getValue('product_id')));
             // 件数カウントバッチ実行
             $objDb->sfCountCategory($objQuery);
             $objDb->sfCountMaker($objQuery);
-        case 'search':
+            // 削除後に検索結果を表示するため breakしない
+
+        // 検索パラメータ生成後に処理実行するため breakしない
         case 'csv':
         case 'delete_all':
-        case 'camp_search':
-            // 入力文字の強制変換
-            $this->lfConvertParam();
-            // エラーチェック
-            $this->arrErr = $this->lfCheckError();
 
-            $where = "del_flg = 0";
-            $view_where = "del_flg = 0";
+        case 'search':
+            $objFormParam->convParam();
+            $objFormParam->trimParam();
+            $this->arrErr = $this->lfCheckError($objFormParam);
+            $arrParam = $objFormParam->getHashArray();
 
-            // 入力エラーなし
             if (count($this->arrErr) == 0) {
-
-                $arrval = array();
-                foreach ($this->arrForm as $key => $val) {
-
+                $where = "del_flg = 0";
+                $view_where = "del_flg = 0";
+                foreach ($arrParam as $key => $val) {
                     if($val == "") {
                         continue;
                     }
-
-                    switch ($key) {
-                        case 'search_product_id': // 商品ID
-                            $where .= " AND product_id = ?";
-                            $view_where .= " AND product_id = ?";
-                            $arrval[] = $val;
-                            break;
-                        case 'search_name': // 商品名
-                            $where .= " AND name ILIKE ?";
-                            $view_where .= " AND name ILIKE ?";
-                            $arrval[] = "%$val%";
-                            break;
-                        case 'search_category_id': // カテゴリー
-                            list($tmp_where, $tmp_arrval) = $objDb->sfGetCatWhere($val);
-                            if($tmp_where != "") {
-                                $where.= " AND product_id IN (SELECT product_id FROM dtb_product_categories WHERE " . $tmp_where . ")";
-                                $view_where.= " AND product_id IN (SELECT product_id FROM dtb_product_categories WHERE " . $tmp_where . ")";
-                                $arrval = array_merge((array)$arrval, (array)$tmp_arrval);
-                            }
-                            break;
-                        case 'search_product_code': // 商品コード
-                            $where .= " AND product_id IN (SELECT product_id FROM dtb_products_class WHERE product_code ILIKE ? GROUP BY product_id)";
-                            $view_where .= " AND EXISTS (SELECT product_id FROM dtb_products_class as cls WHERE cls.product_code ILIKE ? AND dtb_products.product_id = cls.product_id GROUP BY cls.product_id )";
-                            $arrval[] = "%$val%";
-                            break;
-                        case 'search_startyear': // 登録更新日（FROM）
-                            $date = SC_Utils_Ex::sfGetTimestamp($_POST['search_startyear'], $_POST['search_startmonth'], $_POST['search_startday']);
-                            $date = date('Y/m/d', strtotime($date));
-                            $where.= " AND update_date >= date(?)";
-                            $view_where.= " AND update_date >= date(?)";
-                            $arrval[] = $date;
-                            break;
-                        case 'search_endyear': // 登録更新日（TO）
-                            $date = SC_Utils_Ex::sfGetTimestamp($_POST['search_endyear'], $_POST['search_endmonth'], $_POST['search_endday']);
-                            $date = date('Y/m/d', strtotime($date) + 86400);
-                            $where.= " AND update_date < date(?)";
-                            $view_where.= " AND update_date < date(?)";
-                            $arrval[] = $date;
-                            break;
-                        case 'search_product_flag': //種別
-                            if(count($val) > 0) {
-                                $where .= " AND product_id IN (SELECT product_id FROM dtb_product_status WHERE product_status_id IN (";
-                                $view_where .= " AND product_id IN (SELECT product_id FROM dtb_product_status WHERE product_status_id IN (";
-                                foreach($val as $param) {
-                                    $where .= "?,";
-                                    $view_where .= "?,";
-                                    $arrval[] = $param;
-                                }
-                                $where = preg_replace("/,$/", "))", $where);
-                                $view_where = preg_replace("/,$/", "))", $where);
-                            }
-                            break;
-                        case 'search_status': // ステータス
-                            $tmp_where = "";
-                            foreach ($val as $element){
-                                if ($element != ""){
-                                    if ($tmp_where == ""){
-                                        $tmp_where.="AND (status = ? ";
-                                    }else{
-                                        $tmp_where.="OR status = ? ";
-                                    }
-                                    $arrval[]=$element;
-                                }
-                            }
-                            if ($tmp_where != ""){
-                                $tmp_where.=")";
-                                $where.= " $tmp_where";
-                                $view_where.= " $tmp_where";
-                            }
-                            break;
-                        default:
-                            break;
-                    }
+                    $this->buildQuery($key, $where, $view_where, $arrval, $objFormParam, $objDb);
                 }
 
-                $order = "update_date DESC, product_id DESC";
-                $objQuery = new SC_Query();
-                $objProduct = new SC_Product();
-                //TODO: 要リファクタリング(MODE switch 入れ子)
-                switch ($this->getMode()) {
-                    case 'csv':
-                        require_once(CLASS_EX_REALDIR . "helper_extends/SC_Helper_CSV_Ex.php");
+                $order = "update_date DESC";
 
-                        $objCSV = new SC_Helper_CSV_Ex();
+                /* -----------------------------------------------
+                 * 処理を実行
+                 * ----------------------------------------------- */
+                switch($this->getMode()) {
+                // CSVを送信する。
+                case 'csv':
+                    require_once(CLASS_EX_REALDIR . "helper_extends/SC_Helper_CSV_Ex.php");
 
-                        // CSVを送信する。正常終了の場合、終了。
-                        $objCSV->sfDownloadProductsCsv($where, $arrval, $order, true);
-                        // FIXME: sendResponseに渡した方が良いのか？
+                    $objCSV = new SC_Helper_CSV_Ex();
+
+                    // CSVを送信する。正常終了の場合、終了。
+                    $objCSV->sfDownloadProductsCsv($where, $arrval, $order, true);
+                    // FIXME: sendResponseに渡した方が良いのか？
 //                        $data = $objCSV->sfDownloadProductsCsv($where, $arrval, $order);
 //                        $this->sendResponseCSV($fime_name, $data);
-                        exit;
-                        break;
-                    case 'delete_all':
-                        // 検索結果をすべて削除
-                        $where = "product_id IN (SELECT product_id FROM "
-                            . $objProduct->alldtlSQL() . " WHERE $where)";
-                        $sqlval['del_flg'] = 1;
-                        $objQuery->update("dtb_products", $sqlval, $where, $arrval);
-                        $objQuery->delete("dtb_customer_favorite_products", $where, $arrval);
+                    exit;
+                // 全件削除(ADMIN_MODE)
+                case 'delete_all':
+                    $this->doDelete($where, $arrval);
+                    break;
 
-                        // 件数カウントバッチ実行
-                        $objDb->sfCountCategory($objQuery);
+                // 検索実行
+                default:
+                    // 行数の取得
+                    $this->tpl_linemax = $this->getNumberOfLines($where, $arrval);
+                    // ページ送りの処理
+                    $page_max = $this->getPageMax($objFormParam);
+                    // ページ送りの取得
+                    $objNavi = new SC_PageNavi($this->arrHidden['search_pageno'],
+                                               $this->tpl_linemax, $page_max,
+                                               "fnNaviSearchPage", NAVI_PMAX);
+                    $this->arrPagenavi = $objNavi->arrPagenavi;
 
-                        break;
-                    default:
-                        // 読み込む列とテーブルの指定
-                        $col = "product_id, name, main_list_image, status, product_code_min, product_code_max, price02_min, price02_max, stock_min, stock_max, stock_unlimited_min, stock_unlimited_max, update_date";
-                        $from = $objProduct->alldtlSQL();
-
-                        // 行数の取得
-                        $linemax = $objQuery->count("dtb_products", $view_where, $arrval);
-                        $this->tpl_linemax = $linemax; // 何件が該当しました。表示用
-
-                        // ページ送りの処理
-                        if(is_numeric($_POST['search_page_max'])) {
-                            $page_max = $_POST['search_page_max'];
-                        } else {
-                            $page_max = SEARCH_PMAX;
+                    // 検索結果の取得
+                    $this->arrProducts = $this->findProducts($where, $arrval,
+                                                          $page_max, $objNavi->start_row, $order, $objProduct);
+                    
+                    // 各商品ごとのカテゴリIDを取得
+                    if (count($this->arrProducts) > 0) {
+                        foreach ($this->arrProducts as $key => $val) {
+                            $this->arrProducts[$key]["categories"] = $objDb->sfGetCategoryId($val["product_id"], 0, true);
+                            $objDb->g_category_on = false;
                         }
-
-                        // ページ送りの取得
-                        $objNavi = new SC_PageNavi($this->arrHidden['search_pageno'], $linemax, $page_max, "fnNaviSearchPage", NAVI_PMAX);
-                        $startno = $objNavi->start_row;
-                        $this->arrPagenavi = $objNavi->arrPagenavi;
-
-                        //キャンペーン商品検索時は、全結果の商品IDを変数に格納する
-                        if(isset($_POST['search_mode']) && $_POST['search_mode'] == 'campaign') {
-                            $arrRet = $objQuery->select($col, $from, $where, $arrval);
-                            if(count($arrRet) > 0) {
-                                $arrRet = sfSwapArray($arrRet);
-                                $pid = implode("-", $arrRet['product_id']);
-                                $this->arrHidden['campaign_product_id'] = $pid;
-                            }
-                        }
-
-                        // 取得範囲の指定(開始行番号、行数のセット)
-                        $objQuery->setLimitOffset($page_max, $startno);
-                        // 表示順序
-                        $objQuery->setOrder($order);
-
-                        // 検索結果の取得
-                        $this->arrProducts = $objQuery->select($col, $from, $where, $arrval);
-
-                        // 各商品ごとのカテゴリIDを取得
-                        if (count($this->arrProducts) > 0) {
-                            foreach ($this->arrProducts as $key => $val) {
-                                $this->arrProducts[$key]["categories"] = $objDb->sfGetCategoryId($val["product_id"], 0, true);
-                                $objDb->g_category_on = false;
-                            }
-                        }
+                    }
                 }
             }
-            break;
-        default:
             break;
         }
 
@@ -325,55 +198,43 @@ class LC_Page_Admin_Products extends LC_Page_Admin {
         parent::destroy();
     }
 
-    // 取得文字列の変換
-    function lfConvertParam() {
-        global $objPage;
-        /*
-         *  文字列の変換
-         *  K :  「半角(ﾊﾝｶｸ)片仮名」を「全角片仮名」に変換
-         *  C :  「全角ひら仮名」を「全角かた仮名」に変換
-         *  V :  濁点付きの文字を一文字に変換。"K","H"と共に使用します
-         *  n :  「全角」数字を「半角(ﾊﾝｶｸ)」に変換
-         */
-        $arrConvList['search_name'] = "KVa";
-        $arrConvList['search_product_code'] = "KVa";
+    /**
+     * パラメータ情報の初期化を行う.
+     *
+     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @return void
+     */
+    function lfInitParam(&$objFormParam) {
+        // 検索条件
+        $objFormParam->addParam("商品ID", "search_product_id", INT_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("商品コード", "search_product_code", STEXT_LEN, "KVna", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("商品名", "search_name", STEXT_LEN, "KVa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("カテゴリ", "search_category_id", STEXT_LEN, "n", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("種別", "search_status", INT_LEN, "n", array("MAX_LENGTH_CHECK"));
+        // 登録・更新日
+        $objFormParam->addParam("開始年", "search_startyear", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("開始月", "search_startmonth", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("開始日", "search_startday", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("終了年", "search_endyear", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("終了月", "search_endmonth", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("終了日", "search_endday", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
 
-        // 文字変換
-        foreach ($arrConvList as $key => $val) {
-            // POSTされてきた値のみ変換する。
-            if(isset($objPage->arrForm[$key])) {
-                $objPage->arrForm[$key] = mb_convert_kana($objPage->arrForm[$key] ,$val);
-            }
-        }
+        $objFormParam->addParam("ステータス", "search_product_flag", INT_LEN, "n", array("MAX_LENGTH_CHECK"));
     }
 
-    // エラーチェック
-    // 入力エラーチェック
-    function lfCheckError() {
-        $objErr = new SC_CheckError();
-        $objErr->doFunc(array("商品ID", "search_product_id"), array("NUM_CHECK"));
-        $objErr->doFunc(array("開始日", "search_startyear", "search_startmonth", "search_startday"), array("CHECK_DATE"));
-        $objErr->doFunc(array("終了日", "search_endyear", "search_endmonth", "search_endday"), array("CHECK_DATE"));
+    /**
+     * 入力内容のチェックを行う.
+     *
+     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @return void
+     */
+    function lfCheckError(&$objFormParam) {
+        $objErr = new SC_CheckError($objFormParam->getHashArray());
+        $objErr->arrErr = $objFormParam->checkError();
+
         $objErr->doFunc(array("開始日", "終了日", "search_startyear", "search_startmonth", "search_startday", "search_endyear", "search_endmonth", "search_endday"), array("CHECK_SET_TERM"));
-        return $objErr->arrErr;
-    }
 
-    // チェックボックス用WHERE文作成
-    function lfGetCBWhere($key, $max) {
-        $str = "";
-        $find = false;
-        for ($cnt = 1; $cnt <= $max; $cnt++) {
-            if ($_POST[$key . $cnt] == "1") {
-                $str.= "1";
-                $find = true;
-            } else {
-                $str.= "_";
-            }
-        }
-        if (!$find) {
-            $str = "";
-        }
-        return $str;
+        return $objErr->arrErr;
     }
 
     // カテゴリIDをキー、カテゴリ名を値にする配列を返す。
@@ -385,6 +246,174 @@ class LC_Page_Admin_Products extends LC_Page_Admin {
             $arrRet[$key] = $val;
         }
         return $arrRet;
+    }
+
+    /**
+     * 商品を削除する.
+     *
+     * @param string $where 削除対象の WHERE 句
+     * @param array $arrParam 削除対象の値
+     * @return void
+     */
+    function doDelete($where, $arrParam = array()) {
+        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery->update("dtb_products", array('del_flg' => 1), $where, $arrParam);
+        $objQuery->update("dtb_products_class", array('del_flg' => 1), $where, $arrParam);
+        $objQuery->update("dtb_customer_favorite_products", array('del_flg' => 1), $where, $arrParam);
+    }
+
+    /**
+     * クエリを構築する.
+     *
+     * 検索条件のキーに応じた WHERE 句と, クエリパラメータを構築する.
+     * クエリパラメータは, SC_FormParam の入力値から取得する.
+     *
+     * 構築内容は, 引数の $where, $view_where 及び $arrValues にそれぞれ追加される.
+     *
+     * @param string $key 検索条件のキー
+     * @param string $where 構築する WHERE 句
+     * @param string $view_where 構築する WHERE 句
+     * @param array $arrValues 構築するクエリパラメータ
+     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param SC_FormParam $objDb SC_Helper_DB_Ex インスタンス
+     * @return void
+     */
+    function buildQuery($key, &$where, &$view_where, &$arrValues, &$objFormParam, &$objDb) {
+        $dbFactory = SC_DB_DBFactory::getInstance();
+        switch ($key) {
+        // 商品ID
+        case 'search_product_id':
+            $where .= " AND product_id = ?";
+            $view_where .= " AND product_id = ?";
+            $arrValues[] = sprintf('%d', $objFormParam->getValue($key));
+            break;
+        // 商品コード
+        case 'search_product_code':
+            $where .= " AND product_id IN (SELECT product_id FROM dtb_products_class WHERE product_code ILIKE ? GROUP BY product_id)";
+            $view_where .= " AND EXISTS (SELECT product_id FROM dtb_products_class as cls WHERE cls.product_code ILIKE ? AND dtb_products.product_id = cls.product_id GROUP BY cls.product_id )";
+            $arrValues[] = sprintf('%%%s%%', $objFormParam->getValue($key));
+            break;
+        // 商品名
+        case 'search_name':
+            $where .= " AND name LIKE ?";
+            $view_where .= " AND name LIKE ?";
+            $arrValues[] = sprintf('%%%s%%', $objFormParam->getValue($key));
+            break;
+        // カテゴリ
+        case 'search_category_id':
+            list($tmp_where, $tmp_Values) = $objDb->sfGetCatWhere($objFormParam->getValue($key));
+            if($tmp_where != "") {
+                $where.= " AND product_id IN (SELECT product_id FROM dtb_product_categories WHERE " . $tmp_where . ")";
+                $view_where.= " AND product_id IN (SELECT product_id FROM dtb_product_categories WHERE " . $tmp_where . ")";
+                $arrValues = array_merge((array)$arrValues, (array)$tmp_Values);
+            }
+            break;
+        // 種別
+        case 'search_status':
+            $tmp_where = "";
+            foreach($objFormParam->getValue($key) as $element) {
+                if($element != "") {
+                    if(SC_Utils_Ex::isBlank($tmp_where)) {
+                        $tmp_where .= " AND (status = ?";
+                    } else {
+                        $tmp_where .= " OR status = ?";
+                    }
+                    $arrValues[] = $element;
+                }
+            }
+
+            if(!SC_Utils_Ex::isBlank($tmp_where)) {
+                $tmp_where .= ")";
+                $where .= " $tmp_where ";
+                $view_where .= " $tmp_where";
+            }
+            break;
+        // 登録・更新日(開始)
+        case 'search_startyear':
+            $date = SC_Utils_Ex::sfGetTimestamp($objFormParam->getValue('search_startyear'),
+                                                $objFormParam->getValue('search_startmonth'),
+                                                $objFormParam->getValue('search_startday'));
+            $where.= " AND update_date >= ?";
+            $view_where.= " AND update_date >= ?";
+            $arrValues[] = $date;
+            break;
+        // 登録・更新日(終了)
+        case 'search_endyear':
+            $date = SC_Utils_Ex::sfGetTimestamp($objFormParam->getValue('search_endyear'),
+                                                $objFormParam->getValue('search_endmonth'),
+                                                $objFormParam->getValue('search_endday'), true);
+            $where.= " AND update_date <= ?";
+            $view_where.= " AND update_date <= ?";
+            $arrValues[] = $date;
+            break;
+        //ステータス
+        case 'search_product_flag':
+            if(count($objFormParam->getValue($key)) > 0) {
+                $where .= " AND product_id IN (SELECT product_id FROM dtb_product_status WHERE product_status_id IN (";
+                foreach($objFormParam->getValue($key) as $param) {
+                    $where .= "?,";
+                    $view_where .= "?,";
+                    $arrValues[] = $param;
+                }
+                $where = preg_replace("/,$/", "))", $where);
+                $view_where = preg_replace("/,$/", "))", $where);
+            }
+            break;
+        }
+    }
+
+    /**
+     * 検索結果の行数を取得する.
+     *
+     * @param string $where 検索条件の WHERE 句
+     * @param array $arrValues 検索条件のパラメータ
+     * @return integer 検索結果の行数
+     */
+    function getNumberOfLines($where, $arrValues) {
+        $objQuery =& SC_Query::getSingletonInstance();
+        return $objQuery->count('dtb_products', $where, $arrValues);
+    }
+
+    /**
+     * 最大表示件数を取得する.
+     *
+     * フォームの入力値から最大表示件数を取得する.
+     * 取得できなかった場合は, 定数 SEARCH_PMAX の値を返す.
+     *
+     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @return integer 最大表示件数
+     */
+    function getPageMax(&$objFormParam) {
+        $page_max = $objFormParam->getValue('search_page_max');
+        if(is_numeric($page_max)) {
+            return $page_max;
+        } else {
+            return SEARCH_PMAX;
+        }
+    }
+
+    /**
+     * 商品を検索する.
+     *
+     * @param string $where 検索条件の WHERE 句
+     * @param array $arrValues 検索条件のパラメータ
+     * @param integer $limit 表示件数
+     * @param integer $offset 開始件数
+     * @param string $order 検索結果の並び順
+     * @param SC_Product $objProduct SC_Product インスタンス
+     * @return array 商品の検索結果
+     */
+    function findProducts($where, $arrValues, $limit, $offset, $order, &$objProduct) {
+        $objQuery =& SC_Query::getSingletonInstance();
+
+        // 読み込む列とテーブルの指定
+        $col = "product_id, name, main_list_image, status, product_code_min, product_code_max, price02_min, price02_max, stock_min, stock_max, stock_unlimited_min, stock_unlimited_max, update_date";
+        $from = $objProduct->alldtlSQL();
+
+        $objQuery->setLimitOffset($limit, $offset);
+        $objQuery->setOrder($order);
+
+        return $objQuery->select($col, $from, $where, $arrValues);
     }
 }
 ?>

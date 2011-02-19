@@ -70,28 +70,47 @@ function lfnDispChange(){
     <tr>
       <th>商品ID</th>
       <td colspan="3">
-        <!--{if $arrErr.search_product_id}-->
-        <span class="attention"><!--{$arrErr.search_product_id}--></span>
+        <!--{assign var=key value="search_product_id"}-->
+        <!--{if $arrErr[$key]}-->
+        <span class="attention"><!--{$arrErr[$key]}--></span>
         <!--{/if}-->
-        <input type="text" name="search_product_id" value="<!--{$arrForm.search_product_id|h}-->" size="30" class="box30" style="<!--{$arrErr.search_product_id|sfGetErrorColor}-->"/>
+        <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="30" class="box30"/>
       </td>
     </tr>
     <tr>
       <th>商品コード</th>
-      <td><input type="text" name="search_product_code" value="<!--{$arrForm.search_product_code|h}-->" size="30" class="box30" /></td>
+      <td>
+        <!--{assign var=key value="search_product_code"}-->
+        <!--{if $arrErr[$key]}-->
+        <span class="attention"><!--{$arrErr[$key]}--></span>
+        <!--{/if}-->
+        <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="30" class="box30" />
+      </td>
       <th>商品名</th>
-      <td><input type="text" name="search_name" value="<!--{$arrForm.search_name|h}-->" size="30" class="box30" /></td>
+      <td>
+        <!--{assign var=key value="search_name"}-->
+        <!--{if $arrErr[$key]}-->
+        <span class="attention"><!--{$arrErr[$key]}--></span>
+        <!--{/if}-->
+        <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="30" class="box30" />
+      </td>
     </tr>
     <tr>
       <th>カテゴリ</th>
       <td>
-        <select name="search_category_id" style="<!--{if $arrErr.search_category_id != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->">
+        <!--{assign var=key value="search_category_id"}-->
+        <span class="attention"><!--{$arrErr[$key]}--></span>
+        <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
         <option value="">選択してください</option>
-        <!--{html_options options=$arrCatList selected=$arrForm.search_category_id}-->
+        <!--{html_options options=$arrCatList selected=$arrForm[$key]}-->
         </select>
       </td>
       <th>種別</th>
-      <td><!--{html_checkboxes name="search_status" options=$arrDISP selected=$arrForm.search_status}--></td>
+      <td>
+        <!--{assign var=key value="search_status"}-->
+        <span class="attention"><!--{$arrErr[$key]|h}--></span>
+        <!--{html_checkboxes name="$key" options=$arrDISP selected=$arrForm[$key].value}-->
+      </td>
     </tr>
     <tr>
       <th>登録・更新日</th>
@@ -102,34 +121,36 @@ function lfnDispChange(){
         <!--{/if}-->
         <select name="search_startyear" style="<!--{$arrErr.search_startyear|sfGetErrorColor}-->">
         <option value="">----</option>
-        <!--{html_options options=$arrStartYear selected=$arrForm.search_startyear}-->
+        <!--{html_options options=$arrStartYear selected=$arrForm.search_startyear.value}-->
         </select>年
         <select name="search_startmonth" style="<!--{$arrErr.search_startyear|sfGetErrorColor}-->">
         <option value="">--</option>
-        <!--{html_options options=$arrStartMonth selected=$arrForm.search_startmonth}-->
+        <!--{html_options options=$arrStartMonth selected=$arrForm.search_startmonth.value}-->
         </select>月
         <select name="search_startday" style="<!--{$arrErr.search_startyear|sfGetErrorColor}-->">
         <option value="">--</option>
-        <!--{html_options options=$arrStartDay selected=$arrForm.search_startday}-->
+        <!--{html_options options=$arrStartDay selected=$arrForm.search_startday.value}-->
         </select>日～
         <select name="search_endyear" style="<!--{$arrErr.search_endyear|sfGetErrorColor}-->">
         <option value="">----</option>
-        <!--{html_options options=$arrEndYear selected=$arrForm.search_endyear}-->
+        <!--{html_options options=$arrEndYear selected=$arrForm.search_endyear.value}-->
         </select>年
         <select name="search_endmonth" style="<!--{$arrErr.search_endyear|sfGetErrorColor}-->">
         <option value="">--</option>
-        <!--{html_options options=$arrEndMonth selected=$arrForm.search_endmonth}-->
+        <!--{html_options options=$arrEndMonth selected=$arrForm.search_endmonth.value}-->
         </select>月
         <select name="search_endday" style="<!--{$arrErr.search_endyear|sfGetErrorColor}-->">
         <option value="">--</option>
-        <!--{html_options options=$arrEndDay selected=$arrForm.search_endday}-->
+        <!--{html_options options=$arrEndDay selected=$arrForm.search_endday.value}-->
         </select>日
       </td>
     </tr>
     <tr>
       <th>ステータス</th>
       <td colspan="3">
-      <!--{html_checkboxes name="search_product_flag" options=$arrSTATUS selected=$arrForm.search_product_flag}-->
+      <!--{assign var=key value="search_product_flag"}-->
+      <span class="attention"><!--{$arrErr[$key]|h}--></span>
+      <!--{html_checkboxes name="$key" options=$arrSTATUS selected=$arrForm[$key].value}-->
       </td>
     </tr>
   </table>
