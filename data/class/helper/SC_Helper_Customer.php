@@ -75,9 +75,7 @@ class SC_Helper_Customer {
 
             // 会員ID
             $customer_id = $objQuery->nextVal('dtb_customer_customer_id');
-            if (is_null($array["customer_id"])){
-                $array['customer_id'] = $customer_id;
-            }
+            $array['customer_id'] = $customer_id;
             // 作成日
             if (is_null($array["create_date"])){
                 $array["create_date"] = "now()";
