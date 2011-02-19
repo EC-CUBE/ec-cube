@@ -593,7 +593,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin {
 
         if (DB_TYPE == 'pgsql') {
             $col = '
-                EXTRACT(YEAR FROM AGE(create_date, order_birth)) AS age,
+                TRUNC(CAST(EXTRACT(YEAR FROM AGE(create_date, order_birth)) AS INT), -1) AS age,
                 ';
         } else {
             $col = '
