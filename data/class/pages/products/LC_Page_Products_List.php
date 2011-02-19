@@ -252,7 +252,7 @@ class LC_Page_Products_List extends LC_Page {
             default:
                 if (strlen($searchCondition["where_category"]) >= 1) {
                     $dtb_product_categories = "(SELECT * FROM dtb_product_categories WHERE ".$searchCondition["where_category"].")";
-                    $arrval_order = $searchCondition["arrvalCategory"];
+                    $arrval_order = array_merge($searchCondition["arrvalCategory"], $searchCondition["arrvalCategory"]);
                 } else {
                     $dtb_product_categories = 'dtb_product_categories';
                 }
@@ -265,7 +265,7 @@ class LC_Page_Products_List extends LC_Page {
                             JOIN dtb_category T3
                                 USING (category_id)
                         WHERE T2.product_id = alldtl.product_id
-                        ORDER BY T3.rank DESC, T2.rank DESC
+                        ORDER BY T2.rank DESC, T3.rank DESC
                         LIMIT 1
                     ) DESC
                     ,(
@@ -281,7 +281,7 @@ class LC_Page_Products_List extends LC_Page {
                     ) DESC
                     ,product_id
 __EOS__;
-                    //$objQuery->setOrder($order);
+                    $objQuery->setOrder($order);
                 break;
         }
         // 取得範囲の指定(開始行番号、行数のセット)
