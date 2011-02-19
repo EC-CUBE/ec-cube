@@ -79,6 +79,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin {
         $this->lfInitParam($objFormParam);
         // POST値の取得
         $objFormParam->setParam($_POST);
+        $objFormParam->convParam();
         $this->tpl_order_id = $objFormParam->getValue('order_id');
 
         switch($this->getMode()) {
@@ -87,33 +88,24 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin {
             case 'return':
                 break;
             case 'send':
-                // 入力値の変換 TODO ここ気持ち悪いんだ returnの時にやってなかったからもって上でやっていいものなのかどうか。
-                $objFormParam->convParam();
-                $sendStatus = $this->doSend($objFormParam,
-                $objFormParam->getValue('order_id'),
-                $objFormParam->getValue('template_id'),
-                $objFormParam->getValue('subject'),
-                $objFormParam->getValue('header'),
-                $objFormParam->getValue('footer'));
-                if($sendStatus){
+                $sendStatus = $this->doSend($objFormParam);
+                if($sendStatus === true){
                     SC_Response_Ex::sendRedirect(ADMIN_ORDER_URLPATH);
                     exit;
+                }else{
+                    $this->arrErr = $sendStatus;
                 }
             case 'confirm':
-                // 入力値の変換 ここ気持ち悪いんだ
-                $objFormParam->convParam();
-                $status = $this->confirm($objFormParam,
-                $objFormParam->getValue('order_id'),
-                $objFormParam->getValue('template_id'),
-                $objFormParam->getValue('subject'),
-                $objFormParam->getValue('header'),
-                $objFormParam->getValue('footer'));
-                if($status){
+                $status = $this->confirm($objFormParam);
+                if($status === true){
+                    $this->arrHidden = $objFormParam->getHashArray();
                     return ;
+                }else{
+                    $this->arrErr = $status;
                 }
                 break;
             case 'change':
-                $this->changeData($objFormParam);
+                $objFormParam =  $this->changeData($objFormParam);
                 break;
         }
 
@@ -141,68 +133,74 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin {
      * メールを送る。
      * @param SC_FormParam $objFormParam
      */
-    function doSend(&$objFormParam,$order_id, $template_id, $subject, $header, $footer){
-        // 入力値の変換
-        $objFormParam->convParam();
+    function doSend(&$objFormParam){
+        $arrErr = $objFormParam->checkerror();
 
-        $this->arrErr = $objFormParam->checkerror();
         // メールの送信
-        if (count($this->arrErr) == 0) {
+        if (count($arrErr) == 0) {
             // 注文受付メール
             $objMail = new SC_Helper_Mail_Ex();
-            $objSendMail = $objMail->sfSendOrderMail($order_id, $template_id, $subject, $header, $footer);
+            $objSendMail = $objMail->sfSendOrderMail($objFormParam->getValue('order_id'),
+            $objFormParam->getValue('template_id'),
+            $objFormParam->getValue('subject'),
+            $objFormParam->getValue('header'),
+            $objFormParam->getValue('footer'));
             // TODO $SC_SendMail から送信がちゃんと出来たか確認できたら素敵。
             return true;
         }
-        return false;
+        return $arrErr;
     }
 
     /**
      * 確認画面を表示する為の準備
      * @param SC_FormParam $objFormParam
-     * @param int $order_id
-     * @param int $template_id
-     * @param string $subject
-     * @param string $header
-     * @param string $footer
      */
-    function confirm(&$objFormParam,$order_id, $template_id, $subject, $header, $footer){
-        // 入力値の引き継ぎ
-        $this->arrHidden = $objFormParam->getHashArray();
-        $this->arrErr = $objFormParam->checkerror();
+    function confirm(&$objFormParam){
+        $arrErr = $objFormParam->checkerror();
         // メールの送信
-        if (count($this->arrErr) == 0) {
+        if (count($arrErr) == 0) {
             // 注文受付メール(送信なし)
             $objMail = new SC_Helper_Mail_Ex();
             $objSendMail = $objMail->sfSendOrderMail(
-            $order_id,
-            $template_id,
-            $subject,
-            $header,
-            $footer, false);
-            
+            $objFormParam->getValue('order_id'),
+            $objFormParam->getValue('template_id'),
+            $objFormParam->getValue('subject'),
+            $objFormParam->getValue('header'),
+            $objFormParam->getValue('footer'), false);
+
             $this->tpl_subject = $objFormParam->getValue('subject');
             $this->tpl_body = mb_convert_encoding( $objSendMail->body, CHAR_CODE, "auto" );
             $this->tpl_to = $objSendMail->tpl_to;
             $this->tpl_mainpage = 'order/mail_confirm.tpl';
             return true;
         }
-        return false;
+        return $arrErr;
     }
 
     /**
-     * 
+     *
      * テンプレートの文言をフォームに入れる。
      * @param SC_FormParam $objFormParam
      */
     function changeData(&$objFormParam){
-        $objFormParam->setValue('template_id', $objFormParam->getValue('template_id'));
         if(SC_Utils_Ex::sfIsInt($objFormParam->getValue('template_id'))) {
             $objQuery =& SC_Query::getSingletonInstance();
             $where = "template_id = ?";
             $mailTemplates = $objQuery->select("subject, header, footer", "dtb_mailtemplate", $where, array($objFormParam->getValue('template_id')));
+            if(!is_null($mailTemplates )){
+                foreach(array('subject','header','footer') as $key){
+                    $objFormParam->setValue($key,$mailTemplates[$key]);
+                }
+            }else{
+
+            }
             $objFormParam->setParam($mailTemplates[0]);
+        }else{
+            foreach(array('subject','header','footer') as $key){
+                $objFormParam->setValue($key,"");
+            }
         }
+        return $objFormParam;
     }
 
 
