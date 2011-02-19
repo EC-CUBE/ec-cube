@@ -77,6 +77,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin {
         $objDate = new SC_Date();
         $objFormParam = new SC_FormParam();
         $objProduct = new SC_Product();
+        $objQuery =& SC_Query::getSingletonInstance();
 
         // 登録・更新検索開始年
         $objDate->setStartYear(RELEASE_YEAR);
@@ -101,12 +102,9 @@ class LC_Page_Admin_Products extends LC_Page_Admin {
         $this->arrHidden = $objFormParam->getSearchArray();
         $this->arrForm = $objFormParam->getFormParamList();
 
-        // ページ送り用
-        $this->arrHidden['search_pageno'] = isset($_POST['search_pageno']) ? $_POST['search_pageno'] : "";
-
         switch ($this->getMode()) {
         case 'delete':
-            // 商品、子テーブル(商品規格)、お気に入り商品の削除
+            // 商品、子テーブル(商品規格)、会員お気に入り商品の削除
             $this->doDelete("product_id = ?", array($objFormParam->getValue('product_id')));
             // 件数カウントバッチ実行
             $objDb->sfCountCategory($objQuery);
@@ -171,7 +169,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin {
                     // 検索結果の取得
                     $this->arrProducts = $this->findProducts($where, $arrval,
                                                           $page_max, $objNavi->start_row, $order, $objProduct);
-                    
+
                     // 各商品ごとのカテゴリIDを取得
                     if (count($this->arrProducts) > 0) {
                         foreach ($this->arrProducts as $key => $val) {
@@ -205,6 +203,13 @@ class LC_Page_Admin_Products extends LC_Page_Admin {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
+
+        // POSTされる値
+        $objFormParam->addParam("商品ID", "product_id", INT_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("カテゴリID", "category_id", STEXT_LEN, "n", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("ページ送り番号","search_pageno", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("表示件数", "search_page_max", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+
         // 検索条件
         $objFormParam->addParam("商品ID", "search_product_id", INT_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
         $objFormParam->addParam("商品コード", "search_product_code", STEXT_LEN, "KVna", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
@@ -249,7 +254,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin {
     }
 
     /**
-     * 商品を削除する.
+     * 商品、子テーブル(商品規格)、お気に入り商品の削除
      *
      * @param string $where 削除対象の WHERE 句
      * @param array $arrParam 削除対象の値
@@ -259,7 +264,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin {
         $objQuery =& SC_Query::getSingletonInstance();
         $objQuery->update("dtb_products", array('del_flg' => 1), $where, $arrParam);
         $objQuery->update("dtb_products_class", array('del_flg' => 1), $where, $arrParam);
-        $objQuery->update("dtb_customer_favorite_products", array('del_flg' => 1), $where, $arrParam);
+        $objQuery->delete("dtb_customer_favorite_products", $where, $arrParam);
     }
 
     /**
