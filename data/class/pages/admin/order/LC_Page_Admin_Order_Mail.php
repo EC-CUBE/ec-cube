@@ -191,8 +191,6 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin {
                 foreach(array('subject','header','footer') as $key){
                     $objFormParam->setValue($key,$mailTemplates[$key]);
                 }
-            }else{
-
             }
             $objFormParam->setParam($mailTemplates[0]);
         }else{
