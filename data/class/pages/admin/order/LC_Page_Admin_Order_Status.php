@@ -70,12 +70,10 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin {
      * @return void
      */
     function action() {
-        $objSess = new SC_Session();
         $objDb = new SC_Helper_DB_Ex();
 
         // 認証可否の判定
-        $objSess = new SC_Session();
-        SC_Utils_Ex::sfIsSuccess($objSess);
+        SC_Utils_Ex::sfIsSuccess(new SC_Session());
 
         $this->arrForm = $_POST;
 
@@ -136,7 +134,7 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin {
 
     //ステータス一覧の表示
     function lfStatusDisp($status,$pageno){
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
 
         $select ="*";
         $from = "dtb_order";

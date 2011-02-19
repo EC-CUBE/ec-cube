@@ -71,18 +71,13 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin {
      */
     function action() {
         SC_Utils_Ex::sfIsSuccess(new SC_Session());
-
         // 検索パラメータの引き継ぎ
         $this->arrSearchHidden = SC_Utils_Ex::sfFilterKey($_POST,"^search_");
-        
         $this->tpl_order_id = $_POST['order_id'];
-
         // パラメータ管理クラス
         $objFormParam = new SC_FormParam();
         // パラメータ情報の初期化
         $this->lfInitParam($objFormParam);
-
-        $objMail = new SC_Helper_Mail_Ex();
 
         switch($this->getMode()) {
             case 'pre_edit':
@@ -92,48 +87,14 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin {
                 $objFormParam->setParam($_POST);
                 break;
             case 'send':
-                // POST値の取得
-                $objFormParam->setParam($_POST);
-                // 入力値の変換
-                $objFormParam->convParam();
-                $this->arrErr = $objFormParam->checkerror();
-                // メールの送信
-                if (count($this->arrErr) == 0) {
-                    // 注文受付メール
-                    $objMail->sfSendOrderMail($_POST['order_id'], $_POST['template_id'], $_POST['subject'], $_POST['header'], $_POST['footer']);
-                }
-                SC_Response_Ex::sendRedirect(ADMIN_ORDER_URLPATH);
+                $this->send($objFormParam);
                 exit;
-                break;
             case 'confirm':
-                // POST値の取得
-                $objFormParam->setParam($_POST);
-                // 入力値の変換
-                $objFormParam->convParam();
-                // 入力値の引き継ぎ
-                $this->arrHidden = $objFormParam->getHashArray();
-                $this->arrErr = $objFormParam->checkerror();
-                // メールの送信
-                if (count($this->arrErr) == 0) {
-                    // 注文受付メール(送信なし)
-                    $objSendMail = $objMail->sfSendOrderMail($_POST['order_id'], $_POST['template_id'], $_POST['subject'], $_POST['header'], $_POST['footer'], false);
-                    // 確認ページの表示
-                    $this->tpl_subject = $_POST['subject'];
-                    $this->tpl_body = mb_convert_encoding( $objSendMail->body, CHAR_CODE, "auto" );
-                    $this->tpl_to = $objSendMail->tpl_to;
-                    $this->tpl_mainpage = 'order/mail_confirm.tpl';
-                    return;
-                }
+                $this->confirm($objFormParam);
                 break;
             case 'change':
                 // POST値の取得
-                $objFormParam->setValue('template_id', $_POST['template_id']);
-                if(SC_Utils_Ex::sfIsInt($_POST['template_id'])) {
-                    $objQuery = new SC_Query();
-                    $where = "template_id = ?";
-                    $arrRet = $objQuery->select("subject, header, footer", "dtb_mailtemplate", $where, array($_POST['template_id']));
-                    $objFormParam->setParam($arrRet[0]);
-                }
+                $this->changeData($objFormParam);
                 break;
         }
 
@@ -149,20 +110,51 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin {
         $this->arrForm = $objFormParam->getFormParamList();
     }
 
-    /**
-     * TODO これ色々なところでやっていそうなので、どこかに共通化した方がよいんちゃうかな
-     * 検索パラメータを配列で返す
-     * 
-     */
-    function getSearchParameters($post){
-        // 検索パラメータの引き継ぎ
-        $searchHiddenParams = array();
-        foreach ($post as $key => $val) {
-            if (preg_match("/^search_/", $key)) {
-                $searchHiddenParams[$key] = $val;
-            }
+    function send(&$objFormParam){
+        // POST値の取得
+        $objFormParam->setParam($_POST);
+        // 入力値の変換
+        $objFormParam->convParam();
+        $this->arrErr = $objFormParam->checkerror();
+        // メールの送信
+        if (count($this->arrErr) == 0) {
+            // 注文受付メール
+            $objMail = new SC_Helper_Mail_Ex();
+            $objMail->sfSendOrderMail($_POST['order_id'], $_POST['template_id'], $_POST['subject'], $_POST['header'], $_POST['footer']);
         }
-        return $searchHiddenParams;
+        SC_Response_Ex::sendRedirect(ADMIN_ORDER_URLPATH);
+    }
+
+    function confirm(&$objFormParam){
+        // POST値の取得
+        $objFormParam->setParam($_POST);
+        // 入力値の変換
+        $objFormParam->convParam();
+        // 入力値の引き継ぎ
+        $this->arrHidden = $objFormParam->getHashArray();
+        $this->arrErr = $objFormParam->checkerror();
+        // メールの送信
+        if (count($this->arrErr) == 0) {
+            // 注文受付メール(送信なし)
+            $objMail = new SC_Helper_Mail_Ex();
+            $objSendMail = $objMail->sfSendOrderMail($_POST['order_id'], $_POST['template_id'], $_POST['subject'], $_POST['header'], $_POST['footer'], false);
+            // 確認ページの表示
+            $this->tpl_subject = $_POST['subject'];
+            $this->tpl_body = mb_convert_encoding( $objSendMail->body, CHAR_CODE, "auto" );
+            $this->tpl_to = $objSendMail->tpl_to;
+            $this->tpl_mainpage = 'order/mail_confirm.tpl';
+            return;
+        }
+    }
+
+    function changeData(&$objFormParam){
+        $objFormParam->setValue('template_id', $_POST['template_id']);
+        if(SC_Utils_Ex::sfIsInt($_POST['template_id'])) {
+            $objQuery =& SC_Query::getSingletonInstance();
+            $where = "template_id = ?";
+            $arrRet = $objQuery->select("subject, header, footer", "dtb_mailtemplate", $where, array($_POST['template_id']));
+            $objFormParam->setParam($arrRet[0]);
+        }
     }
 
 

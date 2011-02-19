@@ -96,57 +96,67 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin {
         // パラメータ情報の初期化
         $this->lfInitParam();
         $this->objFormParam->setParam($_POST);
-
+        
+        // どんな状態の時に isset($arrRet) == trueになるんだ?
         if (!isset($arrRet)) $arrRet = array();
-
+        
         switch($this->getMode()) {
-        case "confirm":
-            // 入力値の変換
-            $this->objFormParam->convParam();
-            $this->arrErr = $this->lfCheckError($arrRet);
-            $arrRet = $this->objFormParam->getHashArray();
-            $this->arrForm = $arrRet;
-            // エラー入力なし
-            if (count($this->arrErr) == 0) {
-                $objFpdf = new SC_Fpdf($arrRet['download'], $arrRet['title']);
-                foreach ($arrRet['order_id'] AS $key => $val) {
-                    $arrPdfData = $arrRet;
-                    $arrPdfData['order_id'] = $val;
-                    $objFpdf->setData($arrPdfData);
+            case "confirm":
+                // 入力値の変換
+                $this->confirm($this->objFormParam);
+                break;
+            default:
+                // ここが$arrFormの初登場ということを明示するため宣言する。
+                $arrForm = array();
+                // タイトルをセット
+                $arrForm['title'] = "お買上げ明細書(納品書)";
+
+                // 今日の日付をセット
+                $arrForm['year']  = date("Y");
+                $arrForm['month'] = date("m");
+                $arrForm['day']   = date("d");
+
+                // メッセージ
+                $arrForm['msg1'] = 'このたびはお買上げいただきありがとうございます。';
+                $arrForm['msg2'] = '下記の内容にて納品させていただきます。';
+                $arrForm['msg3'] = 'ご確認くださいますよう、お願いいたします。';
+
+                // 注文番号があったら、セットする
+                if(SC_Utils_Ex::sfIsInt($_GET['order_id'])) {
+                    $arrForm['order_id'][0] = $_GET['order_id'];
+                } elseif (is_array($_POST['pdf_order_id'])) {
+                    sort($_POST['pdf_order_id']);
+                    foreach ($_POST['pdf_order_id'] AS $key=>$val) {
+                        $arrForm['order_id'][] = $val;
+                    }
                 }
-                $objFpdf->createPdf();
-                exit;
-            }
-            break;
-        default:
-            // タイトルをセット
-            $arrForm['title'] = "お買上げ明細書(納品書)";
 
-            // 今日の日付をセット
-            $arrForm['year']  = date("Y");
-            $arrForm['month'] = date("m");
-            $arrForm['day']   = date("d");
-
-            // メッセージ
-            $arrForm['msg1'] = 'このたびはお買上げいただきありがとうございます。';
-            $arrForm['msg2'] = '下記の内容にて納品させていただきます。';
-            $arrForm['msg3'] = 'ご確認くださいますよう、お願いいたします。';
-
-            // 注文番号があったら、セットする
-            if(SC_Utils_Ex::sfIsInt($_GET['order_id'])) {
-	              $arrForm['order_id'][0] = $_GET['order_id'];
-            } elseif (is_array($_POST['pdf_order_id'])) {
-                sort($_POST['pdf_order_id']);
-                foreach ($_POST['pdf_order_id'] AS $key=>$val) {
-	                  $arrForm['order_id'][] = $val;
-                }
-            }
-
-            $this->arrForm = $arrForm;
-            break;
+                $this->arrForm = $arrForm;
+                break;
         }
         $this->setTemplate($this->tpl_mainpage);
     }
+
+    function confirm(&$objFormParam){
+        $this->objFormParam->convParam();
+        $this->arrErr = $this->lfCheckError($arrRet);
+        $arrRet = $this->objFormParam->getHashArray();
+        
+        $this->arrForm = $arrRet;
+        // エラー入力なし
+        if (count($this->arrErr) == 0) {
+            $objFpdf = new SC_Fpdf($arrRet['download'], $arrRet['title']);
+            foreach ($arrRet['order_id'] AS $key => $val) {
+                $arrPdfData = $arrRet;
+                $arrPdfData['order_id'] = $val;
+                $objFpdf->setData($arrPdfData);
+            }
+            $objFpdf->createPdf();
+            exit;
+        }
+    }
+
+
 
     /**
      * デストラクタ.
@@ -175,13 +185,19 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin {
         $this->objFormParam->addParam("ポイント表記", "disp_point", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
     }
 
-    /* 入力内容のチェック */
-    function lfCheckError() {
+    /**
+     *  入力内容のチェック
+     *  @var SC_FormParam
+     */
+    
+    function lfCheckError(&$objFormParam) {
         // 入力データを渡す。
-        $arrRet =  $this->objFormParam->getHashArray();
+        $arrRet = $objFormParam->getHashArray();
+        $objFormParam->
         $objErr = new SC_CheckError($arrRet);
+        
         $objErr->arrErr = $this->objFormParam->checkError();
-
+        
         // 特殊項目チェック
         $objErr->doFunc(array("発行日", "year", "month", "day"), array("CHECK_DATE"));
 
@@ -191,4 +207,3 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin {
 
 }
 
-?>

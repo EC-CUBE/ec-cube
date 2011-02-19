@@ -63,13 +63,11 @@ class LC_Page_Admin_Order_MailView extends LC_Page_Admin {
      * @return void
      */
     function action() {
-        $objSess = new SC_Session();
-
         // 認証可否の判定
-        SC_Utils_Ex::sfIsSuccess($objSess);
+        SC_Utils_Ex::sfIsSuccess(new SC_Session());
 
         if(SC_Utils_Ex::sfIsInt($_GET['send_id'])) {
-            $objQuery = new SC_Query();
+            $objQuery =& SC_Query::getSingletonInstance();
             $col = "subject, mail_body";
             $where = "send_id = ?";
             $arrRet = $objQuery->select($col, "dtb_mail_history", $where, array($_GET['send_id']));
