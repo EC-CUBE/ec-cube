@@ -68,161 +68,135 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin {
      * @return void
      */
     function action() {
-        //---- 認証可否の判定
-        $objSess = new SC_Session();
-        SC_Utils_Ex::sfIsSuccess($objSess);
+        // 認証可否の判定
+        SC_Utils_Ex::sfIsSuccess(new SC_Session());
 
-        // ルートディレクトリ
-        $top_dir = USER_REALDIR;
-
-        $objView = new SC_AdminView();
-        $objQuery = new SC_Query();
-        $objFileManager = new SC_Helper_FileManager_Ex();
-
-        // 現在の階層を取得 TODO 要リファクタリング(MODE if利用)
-        if($this->getMode() != null) {
-            $now_dir = $_POST['now_file'];
-        } else {
-            // 初期表示はルートディレクトリ(user_data/)を表示
-            $now_dir = $top_dir;
-        }
+        // フォーム操作クラス
+        $objFormParam = new SC_FormParam();
+        // パラメータ情報の初期化
+        $this->lfInitParam($objFormParam);
+        $objFormParam->setParam($this->createSetParam($_POST));
+        $objFormParam->convParam();
 
         // ファイル管理クラス
-        $objUpFile = new SC_UploadFile($now_dir, $now_dir);
+        $objUpFile = new SC_UploadFile($objFormParam->getValue('now_dir'), $objFormParam->getValue('now_dir'));
         // ファイル情報の初期化
         $this->lfInitFile($objUpFile);
 
+        // ファイル操作クラス
+        $objFileManager = new SC_Helper_FileManager_Ex();
+
         switch($this->getMode()) {
-
-            // ファイル表示
-
-        case 'view':
-            // エラーチェック
-
-            $arrErr = $this->lfErrorCheck();
-
-            if (empty($arrErr)) {
-                // 選択されたファイルがディレクトリなら移動
-                if(is_dir($_POST['select_file'])) {
-                    $now_dir = $this->lfCheckSelectDir($_POST['select_file']);
-                } else {
-                    // javascriptで別窓表示(テンプレート側に渡す)
-                    // FIXME XSS対策すること
-                    $file_url = ereg_replace(USER_REALDIR, "", $_POST['select_file']);
-                    $this->tpl_onload = "win02('./file_view.php?file=". $file_url ."', 'user_data', '600', '400');";
-                    $now_dir = $this->lfCheckSelectDir(dirname($_POST['select_file']));
-                }
+        // フォルダ移動
+        case 'move':
+            $objFormParam = new SC_FormParam();
+            $this->lfInitParamModeMove($objFormParam);
+            $objFormParam->setParam($this->createSetParam($_POST));
+            $objFormParam->convParam();
+            
+            $this->arrErr = $objFormParam->checkError();
+            if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                $now_dir = $this->lfCheckSelectDir($objFormParam, $objFormParam->getValue('tree_select_file'));
+                $objFormParam->setValue('now_dir', $now_dir);
             }
-
             break;
 
-            // ファイルダウンロード
-        case 'download':
+        // ファイル表示
+        case 'view':
+            $objFormParam = new SC_FormParam();
+            $this->lfInitParamModeView($objFormParam);
+            $objFormParam->setParam($this->createSetParam($_POST));
+            $objFormParam->convParam();
+            
+            $this->arrErr = $objFormParam->checkError();
+            if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                if($this->tryView($objFormParam)){
+                    $file_url = htmlspecialchars(ereg_replace($objFormParam->getValue('top_dir'), "", $objFormParam->getValue('select_file')));
+                    $tpl_onload = "win02('./file_view.php?file=". $file_url ."', 'user_data', '600', '400');";
+                    $this->setTplOnLoad($tpl_onload);
+                }
+            }
+            break;
 
-            // エラーチェック
-            $arrErr = $this->lfErrorCheck();
-            if (empty($arrErr)) {
-                if(is_dir($_POST['select_file'])) {
-                    // ディレクトリの場合はjavascriptエラー
-                    $arrErr['select_file'] = "※ ディレクトリをダウンロードすることは出来ません。<br/>";
+        // ファイルダウンロード
+        case 'download':
+            $objFormParam = new SC_FormParam();
+            $this->lfInitParamModeView($objFormParam);
+            $objFormParam->setParam($this->createSetParam($_POST));
+            $objFormParam->convParam();
+
+            $this->arrErr = $objFormParam->checkError();
+            if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                if(is_dir($objFormParam->getValue('select_file'))) {
+                    $dispError = "※ ディレクトリをダウンロードすることは出来ません。<br/>";
+                    $this->setDispError('select_file', $dispError);
                 } else {
                     // ファイルダウンロード
-                    $objFileManager->sfDownloadFile($_POST['select_file']);
+                    $objFileManager->sfDownloadFile($objFormParam->getValue('select_file'));
                     exit;
                 }
             }
             break;
-            // ファイル削除
+        // ファイル削除
         case 'delete':
-            // エラーチェック
-            $arrErr = $this->lfErrorCheck();
-            if (empty($arrErr)) {
-                $objFileManager->sfDeleteDir($_POST['select_file']);
+            $objFormParam = new SC_FormParam();
+            $this->lfInitParamModeView($objFormParam);
+            $objFormParam->setParam($this->createSetParam($_POST));
+            $objFormParam->convParam();
+
+            $this->arrErr = $objFormParam->checkError();
+            if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                $objFileManager->sfDeleteDir($objFormParam->getValue('select_file'));
             }
             break;
-            // ファイル作成
+        // ファイル作成
         case 'create':
-            // エラーチェック
-            $arrErr = $this->lfCreateErrorCheck();
-            if (empty($arrErr)) {
-                $create_dir = ereg_replace("/$", "", $now_dir);
-                // ファイル作成
-                if(!$objFileManager->sfCreateFile($create_dir."/".$_POST['create_file'], 0755)) {
-                    // 作成エラー
-                    $arrErr['create_file'] = "※ ".$_POST['create_file']."の作成に失敗しました。<br/>";
+            $objFormParam = new SC_FormParam();
+            $this->lfInitParamModeCreate($objFormParam);
+            $objFormParam->setParam($this->createSetParam($_POST));
+            $objFormParam->convParam();
+            
+            $this->arrErr = $objFormParam->checkError();
+            if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                if(!$this->tryCreateDir($objFileManager, $objFormParam)){
+                    $disp_error = "※ ".htmlspecialchars($objFormParam->getValue('create_file'), ENT_QUOTES)."の作成に失敗しました。<br/>";
+                    $this->setDispError('create_file', $dispError);
                 } else {
-                    $this->tpl_onload .= "alert('フォルダを作成しました。');";
+                    $tpl_onload = "alert('フォルダを作成しました。');";
+                    $this->setTplOnLoad($tpl_onload);
                 }
             }
             break;
-            // ファイルアップロード
+        // ファイルアップロード
         case 'upload':
             // 画像保存処理
             $ret = $objUpFile->makeTempFile('upload_file', false);
-            if($ret != "") {
-                $arrErr['upload_file'] = $ret;
+            if (SC_Utils_Ex::isBlank($ret)) {
+                $tpl_onload = "alert('ファイルをアップロードしました。');";
+                $this->setTplOnLoad($tpl_onload);
             } else {
-                $this->tpl_onload .= "alert('ファイルをアップロードしました。');";
+                $this->setDispError('upload_file', $ret);
             }
             break;
-            // フォルダ移動
-        case 'move':
-            $now_dir = $this->lfCheckSelectDir($_POST['tree_select_file']);
-            break;
-            // 初期表示
+        // 初期表示
         default :
             break;
         }
-        // トップディレクトリか調査
-        $is_top_dir = false;
-        // 末尾の/をとる
-        $top_dir_check = ereg_replace("/$", "", $top_dir);
-        $now_dir_check = ereg_replace("/$", "", $now_dir);
-        if($top_dir_check == $now_dir_check) $is_top_dir = true;
 
-        // 現在の階層より一つ上の階層を取得
-        $parent_dir = $this->lfGetParentDir($now_dir);
-
+        // 値をテンプレートに渡す
+        $this->arrParam = $objFormParam->getHashArray();
+        // 現在の階層がルートディレクトリかどうかテンプレートに渡す
+        $this->setIsTopDir($objFormParam);
+        // 現在の階層より一つ上の階層をテンプレートに渡す
+        $this->setParentDir($objFormParam);
+        // 現在いる階層(表示用)をテンプレートに渡す
+        $this->setDispPath($objFormParam);
         // 現在のディレクトリ配下のファイル一覧を取得
-        $this->arrFileList = $objFileManager->sfGetFileList($now_dir);
-        $this->tpl_is_top_dir = $is_top_dir;
-        $this->tpl_parent_dir = $parent_dir;
-        // TODO JSON で投げて, フロント側で処理した方が良い？
-        $this->tpl_now_dir = "";
-        $arrNowDir = preg_split('/\//', str_replace(HTML_REALDIR, '', $now_dir));
-        for ($i = 0; $i < count($arrNowDir); $i++) {
-            if (!empty($arrNowDir)) {
-                $this->tpl_now_dir .= $arrNowDir[$i];
-                if ($i < count($arrNowDir) - 1) {
-                     // フロント側で &gt; へエスケープするため, ここでは > を使用
-                    $this->tpl_now_dir .= ' > ';
-                }
-            }
-        }
-        $this->tpl_now_file = basename($now_dir);
-        $this->arrErr = isset($arrErr) ? $arrErr : "";
-        $this->arrParam = $_POST;
-
-        // ツリーを表示する divタグid, ツリー配列変数名, 現在ディレクトリ, 選択ツリーhidden名, ツリー状態hidden名, mode hidden名
-        $treeView = "fnTreeView('tree', arrTree, '$now_dir', 'tree_select_file', 'tree_status', 'move');";
-        if (!empty($this->tpl_onload)) {
-            $this->tpl_onload .= $treeView;
-        } else {
-            $this->tpl_onload = $treeView;
-        }
-
-        // ツリー配列作成用 javascript
-        if (!isset($_POST['tree_status'])) $_POST['tree_status'] = "";
-        $arrTree = $objFileManager->sfGetFileTree($top_dir, $_POST['tree_status']);
-        $this->tpl_javascript .= "arrTree = new Array();\n";
-        foreach($arrTree as $arrVal) {
-            $this->tpl_javascript .= "arrTree[".$arrVal['count']."] = new Array(".$arrVal['count'].", '".$arrVal['type']."', '".$arrVal['path']."', ".$arrVal['rank'].",";
-            if ($arrVal['open']) {
-                $this->tpl_javascript .= "true);\n";
-            } else {
-                $this->tpl_javascript .= "false);\n";
-            }
-        }
+        $this->arrFileList = $objFileManager->sfGetFileList($objFormParam->getValue('now_dir'));
+        // 現在の階層のディレクトリをテンプレートに渡す
+        $this->setDispParam('tpl_now_file', $objFormParam->getValue('now_dir'));
+        // ディレクトリツリー表示
+        $this->setDispTree($objFileManager, $objFormParam);
     }
 
     /**
@@ -234,74 +208,289 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin {
         parent::destroy();
     }
 
-    /*
-     * 関数名：lfErrorCheck()
-     * 説明　：エラーチェック
+    /**
+     * 初期化を行う.
+     *
+     * @param SC_FormParam $objFormParam SC_FormParamインスタンス
+     * @return void
      */
-    function lfErrorCheck() {
-        $objErr = new SC_CheckError($_POST);
-        $objErr->doFunc(array("ファイル", "select_file"), array("SELECT_CHECK"));
-
-        return $objErr->arrErr;
+    function lfInitParam(&$objFormParam) {
+        // 共通定義
+        $this->lfInitParamCommon($objFormParam);
     }
 
-    /*
-     * 関数名：lfCreateErrorCheck()
-     * 説明　：ファイル作成処理エラーチェック
+    /**
+     * ディレクトリ移動時、パラメータ定義
+     *
+     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @return void
      */
-    function lfCreateErrorCheck() {
-        $objErr = new SC_CheckError($_POST);
-        $objErr->doFunc(array("作成ファイル名", "create_file"), array("EXIST_CHECK", "FILE_NAME_CHECK_BY_NOUPLOAD"));
-
-        return $objErr->arrErr;
+    function lfInitParamModeMove(&$objFormParam) {
+        // 共通定義
+        $this->lfInitParamCommon($objFormParam);
+        $objFormParam->addParam("選択ファイル", "select_file", MTEXT_LEN, "a", array());
     }
 
+    /**
+     * ファイル表示時、パラメータ定義
+     *
+     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @return void
+     */
+    function lfInitParamModeView(&$objFormParam) {
+        // 共通定義
+        $this->lfInitParamCommon($objFormParam);
+        $objFormParam->addParam("選択ファイル", "select_file", MTEXT_LEN, "a", array("SELECT_CHECK"));
+    }
+
+    /**
+     * ファイル表示時、パラメータ定義
+     *
+     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @return void
+     */
+    function lfInitParamModeCreate(&$objFormParam) {
+        // 共通定義
+        $this->lfInitParamCommon($objFormParam);
+        $objFormParam->addParam("選択ファイル", "select_file", MTEXT_LEN, "a", array());
+        $objFormParam->addParam("作成ファイル名", "create_file", MTEXT_LEN, "a", array("EXIST_CHECK", "FILE_NAME_CHECK_BY_NOUPLOAD"));
+    }
+
+    /**
+     * ファイル表示時、パラメータ定義
+     *
+     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @return void
+     */
+    function lfInitParamCommon(&$objFormParam) {
+        $objFormParam->addParam("ルートディレクトリ", "top_dir", MTEXT_LEN, "a", array());
+        $objFormParam->addParam("現在の階層ディレクトリ", "now_dir", MTEXT_LEN, "a", array());
+        $objFormParam->addParam("現在の階層ファイル", "now_file", MTEXT_LEN, "a", array());
+        $objFormParam->addParam("ツリー選択状態", "tree_status", MTEXT_LEN, "a", array());
+        $objFormParam->addParam("ツリー選択ディレクトリ", "tree_select_file", MTEXT_LEN, "a", array());
+    }
+    
+
     /*
-     * 関数名：lfInitFile()
-     * 説明　：ファイル情報の初期化
+     * ファイル情報の初期化
+     *
+     * @param object $objUpFile SC_UploadFileインスタンス
+     * @return void
      */
     function lfInitFile(&$objUpFile) {
         $objUpFile->addFile("ファイル", 'upload_file', array(), FILE_SIZE, true, 0, 0, false);
     }
 
-    /*
-     * 関数名：lfCheckSelectDir()
-     * 引数１：ディレクトリ
-     * 説明：選択ディレクトリがUSER_REALDIR以下かチェック
+    /**
+     * テンプレートに渡す値を整形する
+     *
+     * @param array $_POST $_POST
+     * @return array $setParam テンプレートに渡す値
      */
-    function lfCheckSelectDir($dir) {
-        $top_dir = USER_REALDIR;
-        // USER_REALDIR以下の場合
-            if (preg_match("@^\Q". $top_dir. "\E@", $dir) > 0) {
-            // 相対パスがある場合、USER_REALDIRを返す.
-            if (preg_match("@\Q..\E@", $dir) > 0) {
-                return $top_dir;
-            // 相対パスがない場合、そのままディレクトリパスを返す.
-            } else {
-                return $dir;
+    function createSetParam($_POST) {
+        $setParam = $_POST;
+        // Windowsの場合は, ディレクトリの区切り文字を\から/に変換する
+        $setParam['top_dir'] = (strpos(PHP_OS, 'WIN') === false) ? USER_REALDIR : str_replace('\\', '/', USER_REALDIR);
+        // 初期表示はルートディレクトリ(user_data/)を表示
+        if (SC_Utils_Ex::isBlank($this->getMode())) {
+            $setParam['now_dir'] = $setParam['top_dir'];
+        }
+        return $setParam;
+    }
+
+    /**
+     * テンプレートに値を渡す
+     * 
+     * @param string $key キー名
+     * @param string $val 値
+     * @return void
+     */
+    function setDispParam($key, $val){
+        $this->$key = $val;
+    }
+
+    /**
+     * ディレクトリを作成
+     *
+     * @param object $objFileManager SC_Helper_FileManager_Exインスタンス
+     * @param SC_FormParam $objFormParam SC_FormParamインスタンス
+     * @return boolean ディレクトリ作成できたかどうか
+     */
+    function tryCreateDir($objFileManager, $objFormParam){
+        $create_dir_flg = false;
+        $create_dir = ereg_replace("/$", "", $objFormParam->getValue('now_dir'));
+        // ファイル作成
+        if($objFileManager->sfCreateFile($create_dir."/".$objFormParam->getValue('create_file'), 0755)) {
+            $create_dir_flg = true;
+        }
+        return $create_dir_flg;
+    }
+
+    /**
+     * ファイル表示を行う
+     *
+     * @param SC_FormParam $objFormParam SC_FormParamインスタンス
+     * @return boolean ファイル表示するかどうか
+     */
+    function tryView(&$objFormParam){
+        $view_flg = false;
+        $now_dir = $this->lfCheckSelectDir($objFormParam, dirname($objFormParam->getValue('select_file')));
+        $objFormParam->setValue('now_dir', $now_dir);
+        if (!strpos($objFormParam->getValue('select_file'), $objFormParam->getValue('top_dir'))) {
+            $view_flg = true;
+        }
+        return $view_flg;
+    }
+
+    /**
+     * 現在の階層の一つ上の階層のディレクトリをテンプレートに渡す
+     *
+     * @param SC_FormParam $objFormParam SC_FormParamインスタンス
+     * @return void
+     */
+    function setParentDir($objFormParam){
+        $parent_dir = $this->lfGetParentDir($objFormParam->getValue('now_dir'));
+        $this->setDispParam('tpl_parent_dir', $parent_dir);
+    }
+
+    /**
+     * 現在の階層のパスをテンプレートに渡す
+     *
+     * @param SC_FormParam $objFormParam SC_FormParamインスタンス
+     * @return void
+     */
+    function setDispPath($objFormParam){
+        // TODO JSON で投げて, フロント側で処理した方が良い？
+        $tpl_now_dir = "";
+        $arrNowDir = preg_split('/\//', str_replace(HTML_REALDIR, '', $objFormParam->getValue('now_dir')));
+        for ($i = 0; $i < count($arrNowDir); $i++) {
+            if (!empty($arrNowDir)) {
+                $tpl_now_dir .= $arrNowDir[$i];
+                if ($i < count($arrNowDir) - 1) {
+                     // フロント側で &gt; へエスケープするため, ここでは > を使用
+                    $tpl_now_dir .= ' > ';
+                }
             }
-        // USER_REALDIR以下でない場合、USER_REALDIRを返す.
-        } else {
-            return $top_dir;
+        }
+        $this->setDispParam('tpl_now_dir', $tpl_now_dir);
+    }
+
+    /**
+     * エラーを表示用の配列に格納
+     *
+     * @param string $key キー名
+     * @param string $value エラー内容
+     * @return void
+     */
+    function setDispError($key, $value){
+        // 既にエラーがある場合は、処理しない
+        if (SC_Utils_Ex::isBlank($this->arrErr[$key])) {
+            $this->arrErr[$key] = $value;
         }
     }
 
+    /**
+     * javascriptをテンプレートに渡す
+     * 
+     * @param string $tpl_onload javascript
+     * @return void
+     */
+    function setTplOnLoad($tpl_onload){
+        $this->tpl_onload .= $tpl_onload;
+    }
+
     /*
-     * 関数名：lfGetParentDir()
-     * 引数1 ：ディレクトリ
-     * 説明　：親ディレクトリ取得
+     * 選択ディレクトリがUSER_REALDIR以下かチェック
+     *
+     * @param object $objFormParam SC_FormParamインスタンス
+     * @param string $dir ディレクトリ
+     * @return string $select_dir 選択ディレクトリ
+     */
+    function lfCheckSelectDir($objFormParam, $dir) {
+        $select_dir = '';
+        $top_dir = $objFormParam->getValue('top_dir');
+        // USER_REALDIR以下の場合
+        if (preg_match("@^\Q". $top_dir. "\E@", $dir) > 0) {
+            // 相対パスがある場合、USER_REALDIRを返す.
+            if (preg_match("@\Q..\E@", $dir) > 0) {
+                $select_dir = $top_dir;
+            // 相対パスがない場合、そのままディレクトリパスを返す.
+            } else {
+                $select_dir= $dir;
+            }
+        // USER_REALDIR以下でない場合、USER_REALDIRを返す.
+        } else {
+            $select_dir = $top_dir;
+        }
+        return $select_dir;
+    }
+
+    /**
+     * 親ディレクトリ取得
+     * 
+     * @param string $dir 現在いるディレクトリ
+     * @return string $parent_dir 親ディレクトリ
      */
     function lfGetParentDir($dir) {
+        $parent_dir = "";
         $dir = ereg_replace("/$", "", $dir);
         $arrDir = split('/', $dir);
         array_pop($arrDir);
-        $parent_dir = "";
         foreach($arrDir as $val) {
             $parent_dir .= "$val/";
         }
         $parent_dir = ereg_replace("/$", "", $parent_dir);
-
         return $parent_dir;
     }
+
+    /**
+     * ディレクトリツリー生成
+     *
+     * @param object $objFileManager SC_Helper_FileManager_Exインスタンス
+     * @param SC_FormParam $objFormParam SC_FormParamインスタンス
+     * @return void
+     */
+    function setDispTree($objFileManager, $objFormParam){
+        $tpl_onload = '';
+        // ツリーを表示する divタグid, ツリー配列変数名, 現在ディレクトリ, 選択ツリーhidden名, ツリー状態hidden名, mode hidden名
+        $now_dir = $objFormParam->getValue('now_dir');
+        $treeView = "fnTreeView('tree', arrTree, '$now_dir', 'tree_select_file', 'tree_status', 'move');";
+        if (!empty($this->tpl_onload)) {
+            $tpl_onload .= $treeView;
+        } else {
+            $tpl_onload = $treeView;
+        }
+        $this->setTplOnLoad($tpl_onload);
+
+        $tpl_javascript = '';
+        $arrTree = $objFileManager->sfGetFileTree($objFormParam->getValue('top_dir'), $objFormParam->getValue('tree_status'));
+        $tpl_javascript .= "arrTree = new Array();\n";
+        foreach($arrTree as $arrVal) {
+            $tpl_javascript .= "arrTree[".$arrVal['count']."] = new Array(".$arrVal['count'].", '".$arrVal['type']."', '".$arrVal['path']."', ".$arrVal['rank'].",";
+            if ($arrVal['open']) {
+                $tpl_javascript .= "true);\n";
+            } else {
+                $tpl_javascript .= "false);\n";
+            }
+        }
+        $this->setDispParam('tpl_javascript', $tpl_javascript);
+    }
+
+    /**
+     * 現在の階層がルートディレクトリかどうかテンプレートに渡す
+     *
+     * @param object $objFormParam SC_FormParamインスタンス
+     * @return void
+     */
+    function setIsTopDir($objFormParam){
+        // トップディレクトリか調査
+        $is_top_dir = false;
+        // 末尾の/をとる
+        $top_dir_check = ereg_replace("/$", "", $objFormParam->getValue('top_dir'));
+        $now_dir_check = ereg_replace("/$", "", $objFormParam->getValue('now_dir'));
+        if($top_dir_check == $now_dir_check) $is_top_dir = true;
+        $this->setDispParam('tpl_is_top_dir', $is_top_dir);
+    }
+
 }
 ?>
