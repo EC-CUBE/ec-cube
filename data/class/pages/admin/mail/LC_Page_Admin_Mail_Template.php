@@ -77,7 +77,7 @@ class LC_Page_Admin_Mail_Template extends LC_Page_Admin {
 
         switch ($this->getMode()) {
         case 'delete':
-            if ( SC_Utils_Ex::sfCheckNumLength($_GET['id'])===true ){
+            if ( SC_Utils_Ex::sfIsInt($_GET['id'])===true ){
                 $this->lfDeleteMailTemplate($_GET['id']);
                 $this->objDisplay->reload(null, true);
             }
@@ -85,7 +85,7 @@ class LC_Page_Admin_Mail_Template extends LC_Page_Admin {
         default:
             break;
         }
-        $this->list_data = $objMailHelper->sfGetMailTemplate();
+        $this->arrTemplates = $objMailHelper->sfGetMailTemplate();
     }
 
     /**
@@ -104,9 +104,10 @@ class LC_Page_Admin_Mail_Template extends LC_Page_Admin {
      */
     function lfDeleteMailTemplate($template_id){
         $objQuery =& SC_Query::getSingletonInstance();
-        $sqlval["del_flg"] = "1";
-        $arrValIn[] = $template_id;
-        $objQuery->update("dtb_mailmaga_template", $sqlval, "template_id = ?", $arrValIn);
+        $objQuery->update("dtb_mailmaga_template",
+                          array('del_flg' =>1),
+                          "template_id = ?",
+                          array($template_id));
     }
 
 }

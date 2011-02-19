@@ -670,21 +670,6 @@ exit;
         return 'style="background-color:'.ERR_COLOR.'"';
     }
 
-    /* DBに渡す数値のチェック
-     * 10桁以上はオーバーフローエラーを起こすので。
-     */
-    function sfCheckNumLength( $value ){
-        if ( ! is_numeric($value)  ){
-            return false;
-        }
-
-        if ( strlen($value) > 9 ) {
-            return false;
-        }
-
-        return true;
-    }
-
     // 一致した値のキー名を取得
     function sfSearchKey($array, $word, $default) {
         foreach($array as $key => $val) {

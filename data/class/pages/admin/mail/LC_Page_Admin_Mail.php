@@ -172,7 +172,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin {
             /*
              query:配信履歴「確認」
             */
-            if (SC_Utils_Ex::sfCheckNumLength($_GET["send_id"])) {
+            if (SC_Utils_Ex::sfIsInt($_GET["send_id"])) {
                 // 送信履歴より、送信条件確認画面
                 $sql = "SELECT search_data FROM dtb_send_history WHERE send_id = ?";
                 $result = $objQuery->getOne($sql, array($_GET["send_id"]));
@@ -674,7 +674,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin {
     /* テンプレートIDからテンプレートデータを取得 */
     function getTemplateData(&$objQuery, $id){
 
-        if ( SC_Utils_Ex::sfCheckNumLength($id) ){
+        if ( SC_Utils_Ex::sfIsInt($id) ){
             $sql = "SELECT * FROM dtb_mailmaga_template WHERE template_id = ? ORDER BY template_id DESC";
             $result = $objQuery->getAll( $sql, array($id) );
             if ( is_array($result) ) {

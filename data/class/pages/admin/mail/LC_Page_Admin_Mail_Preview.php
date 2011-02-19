@@ -69,55 +69,9 @@ class LC_Page_Admin_Mail_Preview extends LC_Page_Admin {
         // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess($objSess);
 
-        if (!isset($_POST['body'])) $_POST['body'] = "";
-        if (!isset($_REQUEST['method'])) $_REQUEST['method'] = "";
-        if (!isset($_REQUEST['id'])) $_REQUEST['id'] = "";
-        if (!isset($_GET['send_id'])) $_GET['send_id'] = "";
-
-        if ( $_POST['body'] ){
-            $this->body = $_POST['body'];
-
-            // HTMLメールテンプレートのプレビュー
-        } elseif ($_REQUEST["method"] == "template"
-                  && SC_Utils_Ex::sfCheckNumLength($_REQUEST['id'])) {
-
-            $sql = "SELECT * FROM dtb_mailmaga_template WHERE template_id = ?";
-            $result = $objQuery->getAll($sql, array($_REQUEST["id"]));
-            $this->list_data = $result[0];
-
-            // メイン商品の情報取得
-            // FIXME SC_Product クラスを使用した実装
-            $sql = "SELECT name, main_image, point_rate, deliv_fee, price01_min, price01_max, price02_min, price02_max FROM vw_products_allclass AS allcls WHERE product_id = ?";
-            $main = $objQuery->getAll($sql, array($this->list_data["main_product_id"]));
-            $this->list_data["main"] = $main[0];
-
-            // サブ商品の情報取得
-            // FIXME SC_Product クラスを使用した実装
-            $sql = "SELECT product_id, name, main_list_image, price01_min, price01_max, price02_min, price02_max FROM vw_products_allclass WHERE product_id = ?";
-            $k = 0;
-            $l = 0;
-            for ($i = 1; $i <= 12; $i ++) {
-                if ($l == 4) {
-                    $l = 0;
-                    $k ++;
-                }
-                $result = "";
-                $j = sprintf("%02d", $i);
-                if ($i > 0 && $i < 5 ) $k = 0;
-                if ($i > 4 && $i < 9 ) $k = 1;
-                if ($i > 8 && $i < 13 ) $k = 2;
-
-                if (is_numeric($this->list_data["sub_product_id" .$j])) {
-                    $result = $objQuery->getAll($sql, array($this->list_data["sub_product_id" .$j]));
-                    $this->list_data["sub"][$k][$l] = $result[0];
-                    $this->list_data["sub"][$k]["data_exists"] = "OK";	//当該段にデータが１つ以上存在するフラグ
-                }
-                $l ++;
-            }
-            $this->tpl_mainpage = 'mail/html_template.tpl';
-
-        } elseif (SC_Utils_Ex::sfCheckNumLength($_GET['send_id'])
-                   || SC_Utils_Ex::sfCheckNumLength($_GET['id'])){
+        if (SC_Utils_Ex::sfIsInt($_GET['send_id'])
+                   || SC_Utils_Ex::sfIsInt($_GET['id'])){
+                       
             if (is_numeric($_GET["send_id"])) {
                 $id = $_GET["send_id"];
                 $sql = "SELECT body, mail_method FROM dtb_send_history WHERE send_id = ?";
@@ -131,7 +85,7 @@ class LC_Page_Admin_Mail_Preview extends LC_Page_Admin {
                 if ( $result[0]["mail_method"] == 2 ){
                     // テキスト形式の時はタグ文字をエスケープ
                     $this->escape_flag = 1;
-                }
+                }    
                 $this->body = $result[0]["body"];
             }
         }

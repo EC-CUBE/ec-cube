@@ -79,7 +79,7 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin {
         case 'id_set':
             // テンプレートプルダウン変更時
 
-            if ( SC_Utils_Ex::sfCheckNumLength( $_POST['template_id']) ){
+            if ( SC_Utils_Ex::sfIsInt( $_POST['template_id']) ){
                 $result = $this->lfGetMailTemplateByTemplateID($_POST['template_id']);
                 if ( $result ){
                     $this->arrForm = $result[0];
@@ -89,7 +89,7 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin {
             }
             break;
         case 'regist':
-            if (SC_Utils_Ex::sfCheckNumLength( $_POST['template_id']) ){
+            if (SC_Utils_Ex::sfIsInt( $_POST['template_id']) ){
 
                 // POSTデータの引き継ぎ
                 $this->arrForm = $this->lfConvertParam($_POST);

@@ -90,7 +90,7 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin {
         switch ($this->getMode()) {
         case 'edit':
             // モードによる処理分岐
-            if ( SC_Utils_Ex::sfCheckNumLength($_GET['template_id'])===true ){
+            if ( SC_Utils_Ex::sfIsInt($_GET['template_id'])===true ){
                 // 編集
                 $sql = "SELECT * FROM dtb_mailmaga_template WHERE template_id = ? AND del_flg = 0";
                 $result = $objQuery->getAll($sql, array($_GET['template_id']));

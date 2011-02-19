@@ -81,7 +81,7 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin {
         switch ($this->getMode()) {
         case 'delete':
             // 削除時
-            if (SC_Utils_Ex::sfCheckNumLength($_GET['send_id'])) {
+            if (SC_Utils_Ex::sfIsInt($_GET['send_id'])) {
                 $sql = "UPDATE dtb_send_history SET del_flg = 1 WHERE send_id = ?";
                 $objQuery->query($sql, array($_GET['send_id']) );
                 $_SERVER['QUERY_STRING'] = "";

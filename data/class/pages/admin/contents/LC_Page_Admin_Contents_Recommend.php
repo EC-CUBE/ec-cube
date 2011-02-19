@@ -115,7 +115,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin {
         }
 
         // カテゴリID取得 無いときはトップページ
-        if ( SC_Utils_Ex::sfCheckNumLength($_POST['category_id']) ){
+        if ( SC_Utils_Ex::sfIsInt($_POST['category_id']) ){
             $this->category_id = $_POST['category_id'];
         } else {
             $this->category_id = 0;

@@ -330,23 +330,22 @@ class SC_Helper_Mail {
     
     /**
      * 保存されているメールテンプレートの取得
-     * @param array $arrParams 特定IDのテンプレートを取り出したい時は$arrParams['template_id']で指定
+     * @param integer 特定IDのテンプレートを取り出したい時はtemplate_idを指定。未指定時は全件取得
      * @return　array メールテンプレート情報を格納した配列
      * @todo   表示順も引数で変更できるように
      */
-    function sfGetMailTemplate($arrParams = array()){
+    function sfGetMailTemplate($template_id = null){
         // 初期化
         $where = '';
-        $arrValues = array();
         $objQuery =& SC_Query::getSingletonInstance();
         
         // 条件文
         $where = 'del_flg = ?';
         $arrValues[] = 0;
         //template_id指定時
-        if (isset($arrParams['template_id'])) {
+        if (SC_Utils_Ex::sfIsInt($template_id) === true) {
             $where .= 'AND template_id = ?';
-            $arrValues[] = $arrParams['template_id'];
+            $arrValues[] = $template_id;
         }
         
         // 表示順
