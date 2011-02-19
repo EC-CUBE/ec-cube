@@ -77,6 +77,8 @@ class LC_Page_Admin_Order_MailView extends LC_Page_Admin {
         $this->setTemplate($this->tpl_mainpage);
     }
 
+
+
     /**
      * デストラクタ.
      *
