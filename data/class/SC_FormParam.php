@@ -204,6 +204,8 @@ class SC_FormParam {
                 case 'MIN_LENGTH_CHECK':
                 case 'NUM_COUNT_CHECK':
                 case 'KANABLANK_CHECK':
+                case 'SELECT_CHECK':
+                case 'FILE_NAME_CHECK_BY_NOUPLOAD':
                     $this->recursionCheck($this->disp_name[$cnt], $func,
                                           $this->param[$cnt], $objErr->arrErr,
                                           $val, $this->length[$cnt]);
