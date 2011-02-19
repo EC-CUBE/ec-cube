@@ -265,7 +265,7 @@ class LC_Page_Products_List extends LC_Page {
                             JOIN dtb_category T3
                                 USING (category_id)
                         WHERE T2.product_id = alldtl.product_id
-                        ORDER BY T2.rank DESC, T3.rank DESC
+                        ORDER BY T3.rank DESC, T2.rank DESC
                         LIMIT 1
                     ) DESC
                     ,(
