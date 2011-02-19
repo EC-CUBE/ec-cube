@@ -508,9 +508,9 @@ class SC_Helper_DB {
             $this->g_category_on = true;
             $category_id = (int) $category_id;
             $product_id = (int) $product_id;
-            if (SC_Utils_Ex::sfIsInt($category_id) && $category_id != 0 && $this->sfIsRecord("dtb_category","category_id", $category_id)) {
+            if (SC_Utils_Ex::sfIsInt($category_id) && $category_id != 0 && SC_Helper_DB_Ex::sfIsRecord("dtb_category","category_id", $category_id)) {
                 $this->g_category_id = array($category_id);
-            } else if (SC_Utils_Ex::sfIsInt($product_id) && $product_id != 0 && $this->sfIsRecord("dtb_products","product_id", $product_id, $status)) {
+            } else if (SC_Utils_Ex::sfIsInt($product_id) && $product_id != 0 && SC_Helper_DB_Ex::sfIsRecord("dtb_products","product_id", $product_id, $status)) {
                 $objQuery =& SC_Query::getSingletonInstance();
                 $where = "product_id = ?";
                 $category_id = $objQuery->getCol("category_id", "dtb_product_categories", "product_id = ?", array($product_id));
@@ -828,11 +828,11 @@ __EOS__;
         $arrChildren = array();
         $arrChildren[] = $id;
 
-        $arrRet = $this->sfGetChildrenArraySub($arrData, $pid_name, $id_name, $arrPID);
+        $arrRet = SC_Helper_DB_Ex::sfGetChildrenArraySub($arrData, $pid_name, $id_name, $arrPID);
 
         while(count($arrRet) > 0) {
             $arrChildren = array_merge($arrChildren, $arrRet);
-            $arrRet = $this->sfGetChildrenArraySub($arrData, $pid_name, $id_name, $arrRet);
+            $arrRet = SC_Helper_DB_Ex::sfGetChildrenArraySub($arrData, $pid_name, $id_name, $arrRet);
         }
 
         return $arrChildren;
@@ -916,7 +916,7 @@ __EOS__;
      */
     function sfGetCatWhere($category_id) {
         // 子カテゴリIDの取得
-        $arrRet = $this->sfGetChildsID("dtb_category", "parent_category_id", "category_id", $category_id);
+        $arrRet = SC_Helper_DB_Ex::sfGetChildrenArray("dtb_category", "parent_category_id", "category_id", $category_id);
         $tmp_where = "";
         foreach ($arrRet as $val) {
             if($tmp_where == "") {
