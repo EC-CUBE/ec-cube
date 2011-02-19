@@ -98,18 +98,30 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin {
                 break;
         }
 
-        $objQuery =& SC_Query::getSingletonInstance();
-        $col = "send_date, subject, template_id, send_id";
-        $where = "order_id = ?";
-        $objQuery->setOrder("send_date DESC");
-
         if(SC_Utils_Ex::sfIsInt($_POST['order_id'])) {
-            $this->arrMailHistory = $objQuery->select($col, "dtb_mail_history", $where, array($_POST['order_id']));
+            $this->arrMailHistory = $this->getMailHistory($_POST['order_id']);
         }
 
         $this->arrForm = $objFormParam->getFormParamList();
     }
+    
+    /**
+     * 指定された注文番号のメール履歴を取得する。
+     * @var int order_id
+     */
+    function getMailHistory($order_id){
+        $objQuery =& SC_Query::getSingletonInstance();
+        $col = "send_date, subject, template_id, send_id";
+        $where = "order_id = ?";
+        $objQuery->setOrder("send_date DESC");
+        return $objQuery->select($col, "dtb_mail_history", $where, array($order_id));
+    }
 
+    /**
+     * 
+     * メールを送る。
+     * @param SC_FormParam $objFormParam
+     */
     function send(&$objFormParam){
         // POST値の取得
         $objFormParam->setParam($_POST);
@@ -169,6 +181,10 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin {
 
 
     /* パラメータ情報の初期化 */
+    /**
+     * パラメータ情報の初期化
+     * @param SC_FormParam $objFormParam
+     */
     function lfInitParam(&$objFormParam) {
         $objFormParam->addParam("テンプレート", "template_id", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
         $objFormParam->addParam("メールタイトル", "subject", STEXT_LEN, "KVa",  array("EXIST_CHECK", "MAX_LENGTH_CHECK", "SPTAB_CHECK"));
