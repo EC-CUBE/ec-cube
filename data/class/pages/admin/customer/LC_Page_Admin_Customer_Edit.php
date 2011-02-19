@@ -91,8 +91,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin {
         // 不正アクセスチェック 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (!SC_Helper_Session_Ex::isValidToken()) {
-//                SC_Utils_Ex::sfDispError(INVALID_MOVE_ERRORR);
-                echo "不正アクセス";
+                SC_Utils_Ex::sfDispError(INVALID_MOVE_ERRORR);
                 exit;
             }
         }
@@ -106,7 +105,6 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin {
 
         // モードによる処理切り替え
         switch ($this->getMode()) {
-        case 'edit':
         case 'edit_search':
             //検索引き継ぎ用パラメーター処理
             $this->lfInitSearchParam($objFormSearchParam);
@@ -119,7 +117,10 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin {
             //指定顧客の情報をセット
             $this->arrForm = SC_Helper_Customer::sfGetCustomerData($objFormSearchParam->getValue("edit_customer_id"), true);
             //購入履歴情報の取得
-//            $this->arrPurchaseHistory = $this->lfPurchaseHistory($objFormSearchParam->getValue("edit_customer_id"));
+            list($this->tpl_linemax, $this->arrPurchaseHistory, $this->objNavi) = $this->lfPurchaseHistory($objFormSearchParam->getValue("edit_customer_id"));
+            $this->arrPagenavi = $this->objNavi->arrPagenavi;
+            $this->arrPagenavi['mode'] = 'return';
+            $this->tpl_pageno = '0';
             break;
         case 'confirm':
             //パラメーター処理
@@ -157,7 +158,11 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin {
                 return;
             }
             //購入履歴情報の取得
-//            $this->arrPurchaseHistory = $this->lfPurchaseHistory($objFormParam->getValue("customer_id"));
+            list($this->tpl_linemax, $this->arrPurchaseHistory, $this->objNavi) = $this->lfPurchaseHistory($objFormParam->getValue("customer_id"), $objFormParam->getValue("search_pageno"));
+            $this->arrPagenavi = $this->objNavi->arrPagenavi;
+            $this->arrPagenavi['mode'] = 'return';
+            $this->tpl_pageno = $objFormParam->getValue("search_pageno");
+            
             break;
         case 'complete':
             //登録・保存処理
@@ -204,6 +209,8 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin {
         SC_Helper_Customer_Ex::sfCustomerEntryParam($objFormParam, true);
         // 検索結果一覧画面への戻り用パラメーター
         $objFormParam->addParam("検索用データ", "search_data", "", "", array(), "", false);
+        // 顧客購入履歴ページング用
+        $objFormParam->addParam("", "search_pageno", INT_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"), "", false);
     }
 
     /**
@@ -294,34 +301,34 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin {
         return SC_Helper_Customer_Ex::sfEditCustomerData($arrData, $arrData['customer_id']);
     }
 
-    //購入履歴情報の取得
-    function lfPurchaseHistory($customer_id){
-        $objQuery   =& SC_Query::getSingletonInstance();
-        $this->tpl_pageno = $_POST['search_pageno'];
-        $this->edit_customer_id = $customer_id;
-
-        // ページ送りの処理
+    /**
+     * 購入履歴情報の取得
+     *
+     * @param array $arrParam 検索パラメーター連想配列
+     * @return array( integer 全体件数, mixed 顧客データ一覧配列, mixed SC_PageNaviオブジェクト)
+     */
+    function lfPurchaseHistory($customer_id, $pageno = 0){
+        if(SC_Utils_Ex::isBlank($customer_id)) {
+            return array('0', array(), NULL);
+        }
+        $objQuery =& SC_Query::getSingletonInstance();
         $page_max = SEARCH_PMAX;
+        $table = "dtb_order";
+        $where = "customer_id = ? AND del_flg <> 1";
+        $arrVal = array($customer_id);
         //購入履歴の件数取得
-        $this->tpl_linemax = $objQuery->count("dtb_order","customer_id=? AND del_flg = 0 ", array($customer_id));
-        $linemax = $this->tpl_linemax;
-
+        $linemax = $objQuery->count($table, $where, $arrVal);
         // ページ送りの取得
-        $objNavi = new SC_PageNavi($_POST['search_pageno'], $linemax, $page_max, "fnNaviSearchPage2", NAVI_PMAX);
-        $this->arrPagenavi = $objNavi->arrPagenavi;
-        $this->arrPagenavi['mode'] = 'edit';
-        $startno = $objNavi->start_row;
-
+        $objNavi = new SC_PageNavi($pageno, $linemax, $page_max, "fnNaviSearchPage2", NAVI_PMAX);
         // 取得範囲の指定(開始行番号、行数のセット)
-        $this->objQuery->setLimitOffset($page_max, $startno);
+        $objQuery->setLimitOffset($page_max, $objNavi->start_row);
         // 表示順序
         $order = "order_id DESC";
-        $this->objQuery->setOrder($order);
+        $objQuery->setOrder($order);
         //購入履歴情報の取得
-        $arrPurchaseHistory = $this->objQuery->select("*", "dtb_order", "customer_id=? AND del_flg = 0 ", array($customer_id));
+        $arrPurchaseHistory = $objQuery->select("*", $table, $where, $arrVal);
 
-        return $arrPurchaseHistory;
+        return array($linemax, $arrPurchaseHistory, $objNavi);
     }
-
 }
 ?>
