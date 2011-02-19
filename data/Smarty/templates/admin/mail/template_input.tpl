@@ -21,37 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<script language="JavaScript">
-<!--
-function lfnCheckSubmit(){
-  
-  fm = document.form1;
-  var err = '';
-  
-  if ( ! fm["subject"].value ){
-    err += 'Subjectを入力して下さい。';
-  }
-  if ( ! fm["body"].value ){
-    if ( err ) err += '
-';
-    err += '本文を入力して下さい。';
-  }
-  if ( err ){
-    alert(err);
-    return false;
-  } else {
-    if(window.confirm('内容を登録しても宜しいですか')){
-      return true;
-    }else{
-      return false;
-    }
-  }
-}
-//-->
-</script>
-
-
-<form name="form1" id="form1" method="post" action="?" onSubmit="return lfnCheckSubmit();">
+<form name="form1" id="form1" method="post" action="">
 <input type="hidden" name="mode" value="<!--{$mode}-->" />
 <input type="hidden" name="template_id" value="<!--{$arrForm.template_id|h}-->" />
 <div id="mail" class="contents-main">
@@ -75,10 +45,10 @@ function lfnCheckSubmit(){
       <td>
         <textarea name="body" cols="90" rows="40" class="area90 top" <!--{if $arrErr.body}--><!--{sfSetErrorStyle}--><!--{/if}-->><!--{$arrForm.body|h}--></textarea>
         <!--{if $arrErr.body}--><br /><span class="attention"><!--{$arrErr.body}--></span><!--{/if}-->
-				<div>
-					<a class="btn-normal" href="javascript:;" onclick="fnCharCount('form1','body','cnt_footer'); return false;" name="next" id="next"><span>文字数カウント</span></a>
-					<span>今までに入力したのは<input type="text" name="cnt_footer" size="4" class="box4" readonly = true style="text-align:right" />文字です。</span>
-				</div>
+        <div>
+            <a class="btn-normal" href="javascript:;" onclick="fnCharCount('form1','body','cnt_footer'); return false;" name="next" id="next"><span>文字数カウント</span></a>
+            <span>今までに入力したのは<input type="text" name="cnt_footer" size="4" class="box4" readonly = true style="text-align:right" />文字です。</span>
+        </div>
       </td>
     </tr>
   </table>
