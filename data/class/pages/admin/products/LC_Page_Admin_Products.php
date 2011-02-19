@@ -123,12 +123,11 @@ class LC_Page_Admin_Products extends LC_Page_Admin {
 
             if (count($this->arrErr) == 0) {
                 $where = "del_flg = 0";
-                $view_where = "del_flg = 0";
                 foreach ($arrParam as $key => $val) {
                     if($val == "") {
                         continue;
                     }
-                    $this->buildQuery($key, $where, $view_where, $arrval, $objFormParam, $objDb);
+                    $this->buildQuery($key, $where, $arrval, $objFormParam, $objDb);
                 }
 
                 $order = "update_date DESC";
@@ -273,35 +272,31 @@ class LC_Page_Admin_Products extends LC_Page_Admin {
      * 検索条件のキーに応じた WHERE 句と, クエリパラメータを構築する.
      * クエリパラメータは, SC_FormParam の入力値から取得する.
      *
-     * 構築内容は, 引数の $where, $view_where 及び $arrValues にそれぞれ追加される.
+     * 構築内容は, 引数の $where 及び $arrValues にそれぞれ追加される.
      *
      * @param string $key 検索条件のキー
      * @param string $where 構築する WHERE 句
-     * @param string $view_where 構築する WHERE 句
      * @param array $arrValues 構築するクエリパラメータ
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @param SC_FormParam $objDb SC_Helper_DB_Ex インスタンス
      * @return void
      */
-    function buildQuery($key, &$where, &$view_where, &$arrValues, &$objFormParam, &$objDb) {
+    function buildQuery($key, &$where, &$arrValues, &$objFormParam, &$objDb) {
         $dbFactory = SC_DB_DBFactory::getInstance();
         switch ($key) {
         // 商品ID
         case 'search_product_id':
             $where .= " AND product_id = ?";
-            $view_where .= " AND product_id = ?";
             $arrValues[] = sprintf('%d', $objFormParam->getValue($key));
             break;
         // 商品コード
         case 'search_product_code':
             $where .= " AND product_id IN (SELECT product_id FROM dtb_products_class WHERE product_code ILIKE ? GROUP BY product_id)";
-            $view_where .= " AND EXISTS (SELECT product_id FROM dtb_products_class as cls WHERE cls.product_code ILIKE ? AND dtb_products.product_id = cls.product_id GROUP BY cls.product_id )";
             $arrValues[] = sprintf('%%%s%%', $objFormParam->getValue($key));
             break;
         // 商品名
         case 'search_name':
             $where .= " AND name LIKE ?";
-            $view_where .= " AND name LIKE ?";
             $arrValues[] = sprintf('%%%s%%', $objFormParam->getValue($key));
             break;
         // カテゴリ
@@ -309,7 +304,6 @@ class LC_Page_Admin_Products extends LC_Page_Admin {
             list($tmp_where, $tmp_Values) = $objDb->sfGetCatWhere($objFormParam->getValue($key));
             if($tmp_where != "") {
                 $where.= " AND product_id IN (SELECT product_id FROM dtb_product_categories WHERE " . $tmp_where . ")";
-                $view_where.= " AND product_id IN (SELECT product_id FROM dtb_product_categories WHERE " . $tmp_where . ")";
                 $arrValues = array_merge((array)$arrValues, (array)$tmp_Values);
             }
             break;
@@ -330,7 +324,6 @@ class LC_Page_Admin_Products extends LC_Page_Admin {
             if(!SC_Utils_Ex::isBlank($tmp_where)) {
                 $tmp_where .= ")";
                 $where .= " $tmp_where ";
-                $view_where .= " $tmp_where";
             }
             break;
         // 登録・更新日(開始)
@@ -339,7 +332,6 @@ class LC_Page_Admin_Products extends LC_Page_Admin {
                                                 $objFormParam->getValue('search_startmonth'),
                                                 $objFormParam->getValue('search_startday'));
             $where.= " AND update_date >= ?";
-            $view_where.= " AND update_date >= ?";
             $arrValues[] = $date;
             break;
         // 登録・更新日(終了)
@@ -348,7 +340,6 @@ class LC_Page_Admin_Products extends LC_Page_Admin {
                                                 $objFormParam->getValue('search_endmonth'),
                                                 $objFormParam->getValue('search_endday'), true);
             $where.= " AND update_date <= ?";
-            $view_where.= " AND update_date <= ?";
             $arrValues[] = $date;
             break;
         //ステータス
@@ -357,11 +348,9 @@ class LC_Page_Admin_Products extends LC_Page_Admin {
                 $where .= " AND product_id IN (SELECT product_id FROM dtb_product_status WHERE product_status_id IN (";
                 foreach($objFormParam->getValue($key) as $param) {
                     $where .= "?,";
-                    $view_where .= "?,";
                     $arrValues[] = $param;
                 }
                 $where = preg_replace("/,$/", "))", $where);
-                $view_where = preg_replace("/,$/", "))", $where);
             }
             break;
         }
