@@ -321,11 +321,11 @@ class SC_Helper_DB {
         $objQuery->setOption("ORDER BY rank DESC");
         $arrRet = $objQuery->select($col, $from, $where);
 
-        $arrCategory_id = $this->sfGetCategoryId($product_id);
+        $arrCategory_id = SC_Helper_DB_Ex::sfGetCategoryId($product_id);
 
         $arrCatTree = array();
         foreach ($arrCategory_id as $pkey => $parent_category_id) {
-            $arrParentID = $this->sfGetParents('dtb_category', 'parent_category_id', 'category_id', $parent_category_id);
+            $arrParentID = SC_Helper_DB_Ex::sfGetParents('dtb_category', 'parent_category_id', 'category_id', $parent_category_id);
 
             foreach($arrParentID as $pid) {
                 foreach($arrRet as $key => $array) {
@@ -503,24 +503,19 @@ class SC_Helper_DB {
         } else {
             $status = "status = 1";
         }
-
-        if(!$this->g_category_on) {
-            $this->g_category_on = true;
-            $category_id = (int) $category_id;
-            $product_id = (int) $product_id;
-            if (SC_Utils_Ex::sfIsInt($category_id) && $category_id != 0 && SC_Helper_DB_Ex::sfIsRecord("dtb_category","category_id", $category_id)) {
-                $this->g_category_id = array($category_id);
-            } else if (SC_Utils_Ex::sfIsInt($product_id) && $product_id != 0 && SC_Helper_DB_Ex::sfIsRecord("dtb_products","product_id", $product_id, $status)) {
-                $objQuery =& SC_Query::getSingletonInstance();
-                $where = "product_id = ?";
-                $category_id = $objQuery->getCol("category_id", "dtb_product_categories", "product_id = ?", array($product_id));
-                $this->g_category_id = $category_id;
-            } else {
-                // 不正な場合は、空の配列を返す。
-                $this->g_category_id = array();
-            }
+        $category_id = (int) $category_id;
+        $product_id = (int) $product_id;
+        if (SC_Utils_Ex::sfIsInt($category_id) && $category_id != 0 && SC_Helper_DB_Ex::sfIsRecord("dtb_category","category_id", $category_id)) {
+            $category_id = array($category_id);
+        } else if (SC_Utils_Ex::sfIsInt($product_id) && $product_id != 0 && SC_Helper_DB_Ex::sfIsRecord("dtb_products","product_id", $product_id, $status)) {
+            $objQuery =& SC_Query::getSingletonInstance();
+            $where = "product_id = ?";
+            $category_id = $objQuery->getCol("category_id", "dtb_product_categories", "product_id = ?", array($product_id));
+        } else {
+            // 不正な場合は、空の配列を返す。
+            $category_id = array();
         }
-        return $this->g_category_id;
+        return $category_id;
     }
 
     /**
@@ -872,7 +867,7 @@ __EOS__;
      * @return array 親IDの配列
      */
     function sfGetParents($table, $pid_name, $id_name, $id) {
-        $arrRet = $this->sfGetParentsArray($table, $pid_name, $id_name, $id);
+        $arrRet = SC_Helper_DB_Ex::sfGetParentsArray($table, $pid_name, $id_name, $id);
         // 配列の先頭1つを削除する。
         array_shift($arrRet);
         return $arrRet;
