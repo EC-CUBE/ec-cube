@@ -63,20 +63,29 @@ class LC_Page_Admin_Order_MailView extends LC_Page_Admin {
      * @return void
      */
     function action() {
+        $send_id = $_GET['send_id'];
         // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess(new SC_Session());
-
-        if(SC_Utils_Ex::sfIsInt($_GET['send_id'])) {
-            $objQuery =& SC_Query::getSingletonInstance();
-            $col = "subject, mail_body";
-            $where = "send_id = ?";
-            $arrRet = $objQuery->select($col, "dtb_mail_history", $where, array($_GET['send_id']));
-            $this->tpl_subject = $arrRet[0]['subject'];
-            $this->tpl_body = $arrRet[0]['mail_body'];
+        if(SC_Utils_Ex::sfIsInt($send_id)) {
+            $mailHistory = $this->getMailHistory($send_id);
+            $this->tpl_subject = $mailHistory[0]['subject'];
+            $this->tpl_body = $mailHistory[0]['mail_body'];
         }
         $this->setTemplate($this->tpl_mainpage);
     }
 
+    /**
+     * 
+     * メールの履歴を取り出す。
+     * @param int $send_id
+     */
+    function getMailHistory($send_id){
+        $objQuery =& SC_Query::getSingletonInstance();
+        $col = "subject, mail_body";
+        $where = "send_id = ?";
+        $mailHistory = $objQuery->select($col, "dtb_mail_history", $where, array($send_id));
+        return $mailHistory;
+    }
 
 
     /**
