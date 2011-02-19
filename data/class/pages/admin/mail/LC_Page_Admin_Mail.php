@@ -317,11 +317,6 @@ class LC_Page_Admin_Mail extends LC_Page_Admin {
                     $objTemplate->list_data = lfGetHtmlTemplateData($_POST['template_id']);
                     $objSiteInfo = new SC_SiteInfo();
                     $objTemplate->arrInfo = $objSiteInfo->data;
-                    // メール担当写真の表示
-                    $objUpFile = new SC_UploadFile(IMAGE_TEMP_URLPATH, IMAGE_SAVE_URLPATH);
-                    $objUpFile->addFile("メール担当写真", 'charge_image', array('jpg'), IMAGE_SIZE, true, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT);
-                    $objUpFile->setDBFileList($objTemplate->list_data);
-                    $objTemplate->arrFile = $objUpFile->getFormFileList(IMAGE_TEMP_URLPATH, IMAGE_SAVE_URLPATH);
                     $objMakeTemplate = new SC_AdminView();
                     $objMakeTemplate->assignobj($objTemplate);
                     $this->list_data["body"] = $objMakeTemplate->fetch("mail/html_template.tpl");

@@ -327,5 +327,33 @@ class SC_Helper_Mail {
         $objMail->sendMail();
         return true;
     }
+    
+    /**
+     * 保存されているメールテンプレートの取得
+     * @param array $arrParams 特定IDのテンプレートを取り出したい時は$arrParams['template_id']で指定
+     * @return　array メールテンプレート情報を格納した配列
+     * @todo   表示順も引数で変更できるように
+     */
+    function sfGetMailTemplate($arrParams = array()){
+        // 初期化
+        $where = '';
+        $arrValues = array();
+        $objQuery =& SC_Query::getSingletonInstance();
+        
+        // 条件文
+        $where = 'del_flg = ?';
+        $arrValues[] = 0;
+        //template_id指定時
+        if (isset($arrParams['template_id'])) {
+            $where .= 'AND template_id = ?';
+            $arrValues[] = $arrParams['template_id'];
+        }
+        
+        // 表示順
+        $objQuery->setOrder("create_date DESC");
+        
+        $arrResults = $objQuery->select('*', 'dtb_mailmaga_template', $where, $arrValues);
+        return $arrResults;
+    }
 }
 ?>

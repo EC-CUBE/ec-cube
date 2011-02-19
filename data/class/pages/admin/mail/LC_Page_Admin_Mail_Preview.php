@@ -85,13 +85,6 @@ class LC_Page_Admin_Mail_Preview extends LC_Page_Admin {
             $result = $objQuery->getAll($sql, array($_REQUEST["id"]));
             $this->list_data = $result[0];
 
-            //メール担当写真の表示
-            $objUpFile = new SC_UploadFile(IMAGE_TEMP_URLPATH, IMAGE_SAVE_URLPATH);
-            $objUpFile->addFile("メール担当写真", 'charge_image', array('jpg'), IMAGE_SIZE, true, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT);
-            $objUpFile->setDBFileList($this->list_data);
-            // Form用配列を渡す。
-            $this->arrFile = $objUpFile->getFormFileList(IMAGE_TEMP_URLPATH, IMAGE_SAVE_URLPATH);
-
             // メイン商品の情報取得
             // FIXME SC_Product クラスを使用した実装
             $sql = "SELECT name, main_image, point_rate, deliv_fee, price01_min, price01_max, price02_min, price02_max FROM vw_products_allclass AS allcls WHERE product_id = ?";

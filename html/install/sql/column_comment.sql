@@ -99,7 +99,6 @@ INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES 
 INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (99, 'dtb_mailmaga_template', 'template_id', 'テンプレートID');
 INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (414, 'dtb_order', 'deliv_pref', '都道府県');
 INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (100, 'dtb_mailmaga_template', 'subject', '件名');
-INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (101, 'dtb_mailmaga_template', 'charge_image', 'メール担当写真');
 INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (102, 'dtb_mailmaga_template', 'mail_method', '1:テキストメール 2:HTMLメール 3:HTMLTEMPLATE');
 INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (103, 'dtb_mailmaga_template', 'header', 'ヘッダーテキスト');
 INSERT INTO dtb_table_comment (id, table_name, column_name, description) VALUES (104, 'dtb_mailmaga_template', 'body', '本文（テキスト登録用）');

@@ -69,37 +69,23 @@ class LC_Page_Admin_Mail_Template extends LC_Page_Admin {
      * @return void
      */
     function action() {
-        $objQuery = new SC_Query();
+        $objMailHelper = new SC_Helper_Mail_Ex();
         $objSess = new SC_Session();
 
         // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess($objSess);
 
-        if (!isset($_GET['id'])) $_GET['id'] = "";
-
         switch ($this->getMode()) {
         case 'delete':
             if ( SC_Utils_Ex::sfCheckNumLength($_GET['id'])===true ){
-                // メール担当の画像があれば削除しておく
-                $sql = "SELECT charge_image FROM dtb_mailmaga_template WHERE template_id = ?";
-                $result = $objQuery->getOne($sql, array($_GET["id"]));
-                if (strlen($result) > 0) {
-                    @unlink(IMAGE_SAVE_REALDIR. $result);
-                }
-
-                // 登録削除
-                $sql = "UPDATE dtb_mailmaga_template SET del_flg = 1 WHERE template_id = ?";
-                $objQuery->query($sql, array($_GET['id']));
-
+                $this->lfDeleteMailTemplate($_GET['id']);
                 $this->objDisplay->reload(null, true);
             }
             break;
         default:
             break;
         }
-
-        $sql = "SELECT *, create_date as disp_date FROM dtb_mailmaga_template WHERE del_flg = 0 ORDER BY create_date DESC";
-        $this->list_data = $objQuery->getAll($sql);
+        $this->list_data = $objMailHelper->sfGetMailTemplate();
     }
 
     /**
@@ -110,5 +96,18 @@ class LC_Page_Admin_Mail_Template extends LC_Page_Admin {
     function destroy() {
         parent::destroy();
     }
+    
+    /**
+     * メールテンプレートの削除
+     * @param integer 削除したいテンプレートのID
+     * @return void
+     */
+    function lfDeleteMailTemplate($template_id){
+        $objQuery =& SC_Query::getSingletonInstance();
+        $sqlval["del_flg"] = "1";
+        $arrValIn[] = $template_id;
+        $objQuery->update("dtb_mailmaga_template", $sqlval, "template_id = ?", $arrValIn);
+    }
+
 }
 ?>

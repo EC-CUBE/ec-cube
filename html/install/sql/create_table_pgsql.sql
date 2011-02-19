@@ -238,7 +238,6 @@ CREATE TABLE dtb_mailtemplate (
 CREATE TABLE dtb_mailmaga_template (
     template_id int NOT NULL,
     subject text,
-    charge_image text,
     mail_method int,
     header text,
     body text,

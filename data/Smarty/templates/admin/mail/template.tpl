@@ -44,7 +44,7 @@
         </tr>
         <!--{section name=data loop=$list_data}-->
         <tr>
-            <td><!--{$list_data[data].disp_date|date_format:'%Y/%m/%d'|h}--></td>
+            <td><!--{$list_data[data].create_date|date_format:'%Y/%m/%d'|h}--></td>
             <td class="left"><!--{$list_data[data].subject|h}--></td>
             <!--{assign var=type value=$list_data[data].mail_method|h}-->
             <td><!--{$arrMagazineType[$type]}--></td>
