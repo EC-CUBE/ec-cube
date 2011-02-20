@@ -71,9 +71,15 @@ class LC_Page_Admin_System_Log extends LC_Page_Admin {
         // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess(new SC_Session);
 
-        $this->objForm = $this->lfInitParam();
+        $objFormParam = new SC_FormParam;
 
-        if (SC_Utils::sfIsInt($tmp = $this->objForm->getValue('line'))) {
+        // パラメータ情報初期化
+        $this->lfInitParam($objFormParam);
+
+        // POST値をセット
+        $objFormParam->setParam($_POST);
+
+        if (SC_Utils::sfIsInt($tmp = $objFormParam->getValue('line'))) {
             $this->line_max = $tmp;
         }
 
@@ -93,13 +99,10 @@ class LC_Page_Admin_System_Log extends LC_Page_Admin {
      * パラメータの初期化.
      *
      * @return object SC_FormParam インスタンス
+     * @return void
      */
-    function lfInitParam() {
-        $objForm = new SC_FormParam;
-        $objForm->addParam('line_max', 'line_max', INT_LEN, '', array('NUM_CHECK', 'MAX_LENGTH_CHECK', 'EXIST_CHECK'));
-        $objForm->setParam($_POST);
-
-        return $objForm;
+    function lfInitParam(&$objFormParam) {
+        $objFormParam->addParam('line_max', 'line_max', INT_LEN, '', array('NUM_CHECK', 'MAX_LENGTH_CHECK', 'EXIST_CHECK'));
     }
 
     /**
