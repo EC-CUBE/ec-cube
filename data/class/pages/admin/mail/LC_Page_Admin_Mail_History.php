@@ -48,7 +48,7 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin {
         $this->tpl_subnavi = 'mail/subnavi.tpl';
         $this->tpl_subno = "history";
         $this->tpl_subtitle = '配信履歴';
-
+        $this->tpl_pager = 'pager.tpl';
     }
 
     /**
@@ -68,15 +68,9 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin {
      */
     function action() {
         // ページ初期設定
-        $objQuery = new SC_Query();
         $objSess = new SC_Session();
-        $objDate = new SC_Date();
-
         // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess($objSess);
-
-        if (!isset($_GET['send_id'])) $_GET['send_id'] = "";
-        if (!isset($_POST['search_pageno'])) $_POST['search_pageno'] = "";
 
         switch ($this->getMode()) {
         case 'delete':
@@ -91,14 +85,9 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin {
         default:
             break;
         }
-        $from = "dtb_send_history";
-
-        $where = " del_flg = ?";
-        $arrval[] = "0";
 
         // 行数の取得
         $linemax = $objQuery->count($from, $where, $arrval);
-        $this->tpl_linemax = $linemax;              // 何件が該当しました。表示用
 
         // ページ送りの取得
         $objNavi = new SC_PageNavi($_POST['search_pageno'], $linemax, SEARCH_PMAX, "fnNaviSearchPage", NAVI_PMAX);
@@ -108,18 +97,8 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin {
         // 取得範囲の指定(開始行番号、行数のセット)
         $objQuery->setLimitOffset(SEARCH_PMAX, $startno);
 
-        // 表示順序
-        $order = "start_date DESC, send_id DESC";
-        $objQuery->setOrder($order);
-
-        $col = "*";
-        $col .= ",(SELECT COUNT(*) FROM dtb_send_customer WHERE dtb_send_customer.send_id = dtb_send_history.send_id) AS count_all";
-        $col .= ",(SELECT COUNT(*) FROM dtb_send_customer WHERE dtb_send_customer.send_id = dtb_send_history.send_id AND send_flag = 1) AS count_sent";
-        $col .= ",(SELECT COUNT(*) FROM dtb_send_customer WHERE dtb_send_customer.send_id = dtb_send_history.send_id AND send_flag = 2) AS count_error";
-        $col .= ",(SELECT COUNT(*) FROM dtb_send_customer WHERE dtb_send_customer.send_id = dtb_send_history.send_id AND send_flag IS NULL) AS count_unsent";
-
         // 検索結果の取得
-        $this->arrDataList = $objQuery->select($col, $from, $where, $arrval);
+        $this->arrDataList = $this->lfGetMailHistory();
     }
 
     /**
@@ -130,5 +109,50 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin {
     function destroy() {
         parent::destroy();
     }
+    
+    /**
+     * 実行履歴の取得
+     *
+     * @return array( integer 全体件数, mixed メール配信データ一覧配列, mixed SC_PageNaviオブジェクト)
+     */
+    function lfGetMailHistory() {
+        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery->setOrder("start_date DESC, send_id DESC");
+        
+        $col = "*";
+        $col .= ",(SELECT COUNT(*) FROM dtb_send_customer WHERE dtb_send_customer.send_id = dtb_send_history.send_id) AS count_all";
+        $col .= ",(SELECT COUNT(*) FROM dtb_send_customer WHERE dtb_send_customer.send_id = dtb_send_history.send_id AND send_flag = 1) AS count_sent";
+        $col .= ",(SELECT COUNT(*) FROM dtb_send_customer WHERE dtb_send_customer.send_id = dtb_send_history.send_id AND send_flag = 2) AS count_error";
+        $col .= ",(SELECT COUNT(*) FROM dtb_send_customer WHERE dtb_send_customer.send_id = dtb_send_history.send_id AND send_flag IS NULL) AS count_unsent";
+        
+        $arrResult = $objQuery->select($col, "dtb_send_history", " del_flg = 0");
+        return $arrResult;
+        
+        /*
+        $page_rows = $arrParam['page_rows'];
+        if(SC_Utils_Ex::sfIsInt($page_rows)) {
+            $page_max = $page_rows;
+        }else{
+            $page_max = SEARCH_PMAX;
+        }
+        $disp_pageno = $arrParam['search_pageno'];
+        if($disp_pageno == 0) {
+            $disp_pageno = 1;
+        }
+        $offset = $page_max * ($disp_pageno - 1);
+        $objSelect->setLimitOffset($page_max, $offset);
+        $arrData = $objQuery->getAll($objSelect->getList(), $objSelect->arrVal);
+        
+        // 該当全体件数の取得
+        $linemax = $objQuery->getOne($objSelect->getListCount(), $objSelect->arrVal);
+        // ページ送りの取得
+        $objNavi = new SC_PageNavi($arrParam['search_pageno'],
+                                    $linemax,
+                                    $page_max,
+                                    "fnCustomerPage",
+                                    NAVI_PMAX);
+        return array($linemax, $arrData, $objNavi);
+    }	*/
+    
 }
 ?>

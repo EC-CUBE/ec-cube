@@ -24,6 +24,7 @@
 <form name="form1" id="form1" method="post" action="?">
 <input type="hidden" name="search_pageno" value="" />
 <input type="hidden" name="mode" value="" />
+  <!--{include file=$tpl_pager}-->
   <!--{if count($arrDataList) > 0}-->
   <div id="mail" class="contents-main">
     <table class="list center">
@@ -45,7 +46,7 @@
             <td><!--{$arrDataList[cnt].start_date|sfDispDBDate|h}--></td>
             <td><!--{$arrDataList[cnt].end_date|sfDispDBDate|h}--></td>
             <td class="left"><!--{$arrDataList[cnt].subject|h}--></td>
-            <td><a href="javascript:;" onclick="win03('./preview.php?send_id=<!--{$arrDataList[cnt].send_id|h}-->', 'confirm', '720', '600'); return false;">確認</a></td>
+            <td><a href="javascript:;" onclick="win03('./preview.php?mode=history&amp;send_id=<!--{$arrDataList[cnt].send_id|h}-->', 'confirm', '720', '600'); return false;">確認</a></td>
             <td><a href="javascript:;" onclick="win03('./<!--{$smarty.const.DIR_INDEX_PATH}-->?mode=query&amp;send_id=<!--{$arrDataList[cnt].send_id|h}-->','query','615','800'); return false;">確認</a></td>
             <td><!--{$arrDataList[cnt].count_all|h}--></td>
             <td><!--{$arrDataList[cnt].count_sent|h}--></td>
@@ -66,20 +67,20 @@
       </table>
     </div>
     <!--{else}-->
-	  <div id="complete">
-		  <div class="complete-top"></div>
-		  <div class="contents">
-			  <div class="message">
+      <div id="complete">
+          <div class="complete-top"></div>
+          <div class="contents">
+              <div class="message">
           配信履歴はありません
-			  </div>
-		  </div>
-		  <div class="btn-area-top"></div>
-		  <div class="btn-area">
-			  <ul>
-				  <li><a class="btn-action" href="./<!--{$smarty.const.DIR_INDEX_PATH}-->"><span class="btn-prev">配信内容設定へ戻る</span></a></li>
-			  </ul>
-		  </div>
-		  <div class="btn-area-bottom"></div>
-	  </div>
+              </div>
+          </div>
+          <div class="btn-area-top"></div>
+          <div class="btn-area">
+              <ul>
+                  <li><a class="btn-action" href="./<!--{$smarty.const.DIR_INDEX_PATH}-->"><span class="btn-prev">配信内容設定へ戻る</span></a></li>
+              </ul>
+          </div>
+          <div class="btn-area-bottom"></div>
+      </div>
     <!--{/if}-->
 </form>
