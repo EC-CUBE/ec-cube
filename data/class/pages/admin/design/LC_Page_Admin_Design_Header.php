@@ -74,8 +74,6 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin {
         $objSess = new SC_Session();
         SC_Utils_Ex::sfIsSuccess($objSess);
 
-        $this->objLayout = new SC_Helper_PageLayout_Ex();
-
         // 端末種別IDを取得
         if (isset($_REQUEST['device_type_id'])
             && is_numeric($_REQUEST['device_type_id'])) {
@@ -83,76 +81,79 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin {
         } else {
             $device_type_id = DEVICE_TYPE_PC;
         }
+        $this->device_type_id = $device_type_id;
 
-        $division = isset($_POST['division']) ? $_POST['division'] : "";
-        $pre_DIR = USER_INC_REALDIR . 'preview/';
+        // テンプレートのパス
+        $template_path = $this->lfGetTemplatePath($device_type_id);
+        $preview_template_path = $this->lfGetPreviewTemplatePath();
 
         // データ更新処理
-        if ($division != ''){
-            // プレビュー用テンプレートに書き込み
-            $fp = fopen($pre_DIR.$division.'.tpl',"w"); // TODO
-            fwrite($fp, $_POST[$division]);
-            fclose($fp);
+        if (isset($_POST['division']) && $_POST['division'] != '') {
+            $division = $_POST['division'];
+            $content = $_POST[$division]; // TODO no checked?
+            // プレビュー用のテンプレートに書き込む
+            $preview_template = $preview_template_path.'/'.$division.'.tpl';
+            $this->lfUpdateTemplate($preview_template, $content);
 
-            // 登録時はプレビュー用テンプレートをコピーする
             switch ($this->getMode()) {
             case 'regist':
-                copy($pre_DIR.$division.".tpl", $this->objLayout->getTemplatePath($device_type_id) . $division . ".tpl");
-                // 完了メッセージ（プレビュー時は表示しない）
+                // 正規のテンプレートに書き込む
+                $template = $template_path . '/' . $division . '.tpl';
+                $this->lfUpdateTemplate($template, $content);
                 $this->tpl_onload="alert('登録が完了しました。');";
-
-                // テキストエリアの幅を元に戻す(処理の統一のため)
-                $_POST['header_row'] = "";
-                $_POST['footer_row'] = "";
                 break;
             case 'preview':
                 if ($division == "header") $this->header_prev = "on";
                 if ($division == "footer") $this->footer_prev = "on";
+                $this->header_row = isset($_POST['header_row']) ? $_POST['header_row'] : $this->header_row;
+                $this->footer_row = isset($_POST['footer_row']) ? $_POST['footer_row'] : $this->footer_row;
                 break;
             default:
+                // なにもしない
                 break;
             }
-            // ヘッダーファイルの読み込み(プレビューデータ)
-            $header_data = file_get_contents($pre_DIR . "header.tpl");
-
-            // フッターファイルの読み込み(プレビューデータ)
-            $footer_data = file_get_contents($pre_DIR . "footer.tpl");
         }else{
-            // postでデータが渡されなければ新規読み込みと判断をし、プレビュー用データを正規のデータで上書きする
-            if (!is_dir($pre_DIR)) {
-                mkdir($pre_DIR);
-            }
-
-            // ユーザーパスにテンプレートが存在しなければ,
-            // 指定テンプレートから読み込む
-            $header_tpl = $this->objLayout->getTemplatePath($device_type_id) . "header.tpl";
-            $footer_tpl = $this->objLayout->getTemplatePath($device_type_id) . "footer.tpl";
-
-            copy($header_tpl, $pre_DIR . "header.tpl");
-            copy($footer_tpl, $pre_DIR . "footer.tpl");
-
-            // ヘッダーファイルの読み込み
-            $header_data = file_get_contents($header_tpl);
-            // フッターファイルの読み込み
-            $footer_data = file_get_contents($footer_tpl);
+            // postでデータが渡されなければ新規読み込みと判断をし、
+            // プレビュー用テンプレートに正規のテンプレートをロードする
+            $templates = array(
+                'header.tpl',
+                'footer.tpl'
+            );
+            $this->lfLoadPreviewTemplates($preview_template_path, $template_path, $templates);
         }
 
         // テキストエリアに表示
-        $this->header_data = $header_data;
-        $this->footer_data = $footer_data;
-        $this->device_type_id = $device_type_id;
-
-        if (isset($_POST['header_row']) && $_POST['header_row'] != ''){
-            $this->header_row = $_POST['header_row'];
-        }
-
-        if (isset($_POST['footer_row']) && $_POST['footer_row'] != ''){
-            $this->footer_row = $_POST['footer_row'];
-        }
+        $this->header_data = file_get_contents($preview_template_path . '/header.tpl');
+        $this->footer_data = file_get_contents($preview_template_path . '/footer.tpl');
 
         // ブラウザタイプ
-        $this->browser_type =
-            isset($_POST['browser_type']) ? $_POST['browser_type'] : "";
+        $this->browser_type = isset($_POST['browser_type']) ? $_POST['browser_type'] : "";
+    }
+
+    protected function lfLoadPreviewTemplates($preview_template_path, $template_path, $templates) {
+        if (!is_dir($preview_template_path)) {
+            mkdir($preview_template_path);
+        }
+        foreach($templates as $template) {
+            $source = $template_path . '/' . $template;
+            $dest = $preview_template_path . '/' . $template;
+            copy($source, $dest);
+        }
+    }
+
+    protected function lfUpdateTemplate($template, $content) {
+        $fp = fopen($template,"w");
+        fwrite($fp, $content);
+        fclose($fp);
+    }
+
+    protected function lfGetTemplatePath($device_type_id) {
+        $objLayout = new SC_Helper_PageLayout_Ex();
+        return $objLayout->getTemplatePath($device_type_id);
+    }
+
+    protected function lfGetPreviewTemplatePath() {
+        return USER_INC_REALDIR . 'preview';
     }
 
     /**
@@ -164,4 +165,3 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin {
         parent::destroy();
     }
 }
-?>

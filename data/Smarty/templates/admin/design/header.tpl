@@ -31,7 +31,7 @@ XXX: ヘッダーとフッターでwrapの設定が違うのは疑問。それ�
   <h2>ヘッダー編集</h2>
   <!--{* プレビューここから *}-->
   <!--{if $header_prev == "on"}-->
-  <dic id="design-header-preview">
+  <div id="design-header-preview">
     <!--{if $browser_type == 1}-->
       <div style="zoom:0.8"><!--{include file="`$smarty.const.USER_REALDIR`include/preview/header.tpl"}--></div>
     <!--{else}-->
@@ -50,13 +50,13 @@ XXX: ヘッダーとフッターでwrapの設定が違うのは疑問。それ�
 
     <textarea id="header-area" class="top" name="header" rows="<!--{$header_row}-->" wrap="off" style="width: 100%;"><!--{$header_data|smarty:nodefaults}--></textarea>
     <div class="btn">
-      <a id="header-area-resize-btn" class="btn-normal" href="javascript:;" onclick="ChangeSize('#header-area-resize-btn', '#header-area', 50, 13); return false;"><span>拡大</span></a>
+      <a id="header-area-resize-btn" class="btn-normal" href="javascript:;" onclick="ChangeSize('#header-area-resize-btn', '#header-area', 50, 13); $('input[name=header_row]').val($('#header-area').attr('rows'));return false;"><span>拡大</span></a>
     </div>
 
     <div class="btn-area">
         <ul>
           <li><a class="btn-action" href="javascript:;" name='preview' onclick="lfnSetBrowser('form_header', 'browser_type'); fnFormModeSubmit('form_header','preview','',''); return false;"><span class="btn-prev">プレビュー</span></a></li>
-          <li><a class="btn-action" href="javascript:;" name='subm' onclick="fnFormModeSubmit('form_header','confirm','',''); return false;"><span class="btn-next">登録する</span></a></li>
+          <li><a class="btn-action" href="javascript:;" name='subm' onclick="fnFormModeSubmit('form_header','regist','',''); return false;"><span class="btn-next">登録する</span></a></li>
         </ul>
     </div>
 
@@ -84,13 +84,13 @@ XXX: ヘッダーとフッターでwrapの設定が違うのは疑問。それ�
 
     <textarea id="footer-area" class="top" name="footer" rows="<!--{$footer_row}-->" style="width: 100%;"><!--{$footer_data|smarty:nodefaults}--></textarea>
     <div class="btn">
-      <a id="footer-area-resize-btn" class="btn-normal" href="javascript:;" onclick="ChangeSize('#footer-area-resize-btn', '#footer-area', 50, 13); return false;"><span>拡大</span></a>
+      <a id="footer-area-resize-btn" class="btn-normal" href="javascript:;" onclick="ChangeSize('#footer-area-resize-btn', '#footer-area', 50, 13); $('input[name=footer_row]').val($('#footer-area').attr('rows'));return false;"><span>拡大</span></a>
     </div>
 
     <div class="btn-area">
         <ul>
           <li><a class="btn-action" href="javascript:;" name='preview' onclick="lfnSetBrowser('form_footer', 'browser_type'); fnFormModeSubmit('form_footer','preview','',''); return false;"><span class="btn-prev">プレビュー</span></a></li>
-          <li><a class="btn-action" href="javascript:;" name='subm' onclick="fnFormModeSubmit('form_footer','confirm','',''); return false;"><span class="btn-next">登録する</span></a></li>
+          <li><a class="btn-action" href="javascript:;" name='subm' onclick="fnFormModeSubmit('form_footer','regist','',''); return false;"><span class="btn-next">登録する</span></a></li>
         </ul>
     </div>
 
