@@ -47,6 +47,10 @@ class LC_Page_Cart extends LC_Page {
     /** 商品規格情報の配列 */
     var $arrData;
 
+    /** 動作モード */
+    var $mode;
+
+
     // }}}
     // {{{ functions
 
@@ -84,6 +88,9 @@ class LC_Page_Cart extends LC_Page {
         $objSiteSess = new SC_SiteSession();
         $objSiteInfo = $objView->objSiteInfo;
         $objCustomer = new SC_Customer();
+        
+        $objFormParam = $this->lfInitParam($_REQUEST);
+        $this->mode = $this->getMode();
 
         $this->cartKeys = $objCartSess->getKeys();
         foreach ($this->cartKeys as $key) {
@@ -94,70 +101,36 @@ class LC_Page_Cart extends LC_Page {
         }
         $this->cartItems =& $objCartSess->getAllCartList();
 
-        //TODO: 要リファクタリング(MODE switch 2か所で行われている)
-        switch($this->getMode()) {
+        $cart_no = $objFormParam->getValue('cart_no');
+        $cartKey = $objFormParam->getValue('cartKey');
+        
+        switch($this->mode) {
         case 'confirm':
             // カート内情報の取得
-            $cartKey = $_POST['cartKey'];
             $cartList = $objCartSess->getCartList($cartKey);
             // カート商品が1件以上存在する場合
             if(count($cartList) > 0) {
-                // 正常に登録されたことを記録しておく
-                $objSiteSess->setRegistFlag();
-                $pre_uniqid = $objSiteSess->getUniqId();
-                // 注文一時IDの発行
-                $objSiteSess->setUniqId();
-                $uniqid = $objSiteSess->getUniqId();
-                // エラーリトライなどで既にuniqidが存在する場合は、設定を引き継ぐ
-                if($pre_uniqid != "") {
-                    $sqlval['order_temp_id'] = $uniqid;
-                    $where = "order_temp_id = ?";
-                    $objQuery = new SC_Query();
-                    $objQuery->update("dtb_order_temp", $sqlval, $where, array($pre_uniqid));
-                }
                 // カートを購入モードに設定
-                $objCartSess->saveCurrentCart($uniqid, $cartKey);
+                $this->lfSetCurrentCart($objSiteSess,$objCartSess);
                 // 購入ページへ
                 SC_Response_Ex::sendRedirect(SHOPPING_URL);
                 exit;
             }
             break;
-        default:
+        case 'up'://1個追加
+            $objCartSess->upQuantity($cart_no, $cartKey);
+            //SC_Response_Ex::reload();
+            $this->lfReload();
             break;
-        }
-
-        // 商品の個数変更、削除処理
-        /*
-         * FIXME モバイルの場合 sfReload() ではなく sendRedirect() を使った方が良いが無限ループしてしまう...
-         */
-        //TODO: 要リファクタリング(MODE switch 2か所で行われている)
-        switch($this->getMode()) {
-        case 'up':
-            if(Net_UserAgent_Mobile::isMobile() === true) {
-                $objCartSess->upQuantity($_GET['cart_no'], $_GET['cartKey']);
-                SC_Utils_Ex::sfReload(session_name() . "=" . session_id());
-            } else {
-                $objCartSess->upQuantity($_POST['cart_no'], $_POST['cartKey']);
-                $this->objDisplay->reload(); // PRG pattern
-            }
+        case 'down'://1個減らす
+            $objCartSess->downQuantity($cart_no, $cartKey);
+            //SC_Response_Ex::reload();
+            $this->lfReload();
             break;
-        case 'down':
-            if(Net_UserAgent_Mobile::isMobile() === true) {
-                $objCartSess->downQuantity($_GET['cart_no'], $_GET['cartKey']);
-                SC_Utils_Ex::sfReload(session_name() . "=" . session_id());
-            } else {
-                $objCartSess->downQuantity($_POST['cart_no'], $_POST['cartKey']);
-                $this->objDisplay->reload(); // PRG pattern
-            }
-            break;
-        case 'delete':
-            if(Net_UserAgent_Mobile::isMobile() === true) {
-                $objCartSess->delProduct($_GET['cart_no'], $_GET['cartKey']);
-                SC_Utils_Ex::sfReload(session_name() . "=" . session_id());
-            } else {
-                $objCartSess->delProduct($_POST['cart_no'], $_POST['cartKey']);
-                $this->objDisplay->reload(); // PRG pattern
-            }
+        case 'delete'://カートから削除
+            $objCartSess->delProduct($cart_no, $cartKey);
+            //SC_Response_Ex::reload();
+            $this->lfReload();
             break;
         default:
             break;
@@ -187,22 +160,7 @@ class LC_Page_Cart extends LC_Page {
 
         // 前頁のURLを取得
         // TODO: SC_CartSession::setPrevURL()利用不可。
-        if (!preg_match("/cart/", $_SERVER['HTTP_REFERER'])) {
-            if (!empty($_SESSION['cart_referer_url'])) {
-                $_SESSION['cart_prev_url'] = $_SESSION['cart_referer_url'];
-                unset($_SESSION['cart_referer_url']);
-            } else {
-                if (preg_match("/entry/", $_SERVER['HTTP_REFERER'])) {
-                    $_SESSION['cart_prev_url'] = HTTPS_URL . 'entry/kiyaku.php';
-                } else {
-                    $_SESSION['cart_prev_url'] = $_SERVER['HTTP_REFERER'];
-                }
-            }
-        }
-        // 妥当性チェック
-        if (!SC_Utils_Ex::sfIsInternalDomain($_SESSION['cart_prev_url'])) {
-            $_SESSION['cart_prev_url'] = '';
-        }
+        $this->lfGetCartPrevUrl($_SESSION,$_SERVER['HTTP_REFERER']);
 
         $this->tpl_prev_url = (isset($_SESSION['cart_prev_url'])) ? $_SESSION['cart_prev_url'] : '';
     }
@@ -214,6 +172,101 @@ class LC_Page_Cart extends LC_Page {
      */
     function destroy() {
         parent::destroy();
+    }
+    
+
+    /**
+     * ユーザ入力値の処理
+     *
+     * @return object
+     */
+    function lfInitParam($arrRequest) {
+        $objFormParam = new SC_FormParam();
+        $objFormParam->addParam("カートキー", "cartKey", INT_LEN, "n", array('NUM_CHECK',"MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("カートナンバー", "cart_no", INT_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+        // 値の取得
+        $objFormParam->setParam($arrRequest);
+        // 入力値の変換
+        $objFormParam->convParam();
+        return $objFormParam;        
+    }
+
+    /**
+     * order_temp_id の更新
+     *
+     * @return 
+     */    
+    function lfUpdateOrderTempid($pre_uniqid,$uniqid){
+        $sqlval['order_temp_id'] = $uniqid;
+        $where = "order_temp_id = ?";
+        $objQuery =& SC_Query::getSingletonInstance();
+        $res = $objQuery->update("dtb_order_temp", $sqlval, $where, array($pre_uniqid));
+        if($res != 1){
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 前頁のURLを取得
+     *
+     * @return void
+     */        
+    function lfGetCartPrevUrl(&$session,$referer){
+        if (!preg_match("/cart/", $referer)) {
+            if (!empty($session['cart_referer_url'])) {
+                $session['cart_prev_url'] = $session['cart_referer_url'];
+                unset($session['cart_referer_url']);
+            } else {
+                if (preg_match("/entry/", $referer)) {
+                    $session['cart_prev_url'] = HTTPS_URL . 'entry/kiyaku.php';
+                } else {
+                    $session['cart_prev_url'] = $referer;
+                }
+            }
+        }
+        // 妥当性チェック
+        if (!SC_Utils_Ex::sfIsInternalDomain($session['cart_prev_url'])) {
+            $session['cart_prev_url'] = '';
+        }  
+    }
+    
+    /**
+     * カートを購入モードに設定
+     *
+     * @return void
+     */            
+    function lfSetCurrentCart(&$objSiteSess,&$objCartSess){
+        // 正常に登録されたことを記録しておく
+        $objSiteSess->setRegistFlag();
+        $pre_uniqid = $objSiteSess->getUniqId();
+        // 注文一時IDの発行
+        $objSiteSess->setUniqId();
+        $uniqid = $objSiteSess->getUniqId();
+        // エラーリトライなどで既にuniqidが存在する場合は、設定を引き継ぐ
+        if($pre_uniqid != "") {
+            $this->lfUpdateOrderTempid($pre_uniqid,$uniqid);
+        }
+        // カートを購入モードに設定
+        $objCartSess->saveCurrentCart($uniqid, $cartKey);
+    }
+
+    /**
+     * 端末ごとのリロード処理
+     *
+     * @return void
+     */                
+    function lfReload(){
+        //FIXME SC_Response_Ex::reload()だと携帯で無限リダイレクト
+        if(SC_Display::detectDevice() == DEVICE_TYPE_MOBILE){
+            $_SERVER['REQUEST_URI'] = str_replace("mode=delete","",$_SERVER['REQUEST_URI']);
+            $_SERVER['REQUEST_URI'] = str_replace("mode=up","",$_SERVER['REQUEST_URI']);
+            $_SERVER['REQUEST_URI'] = str_replace("mode=down","",$_SERVER['REQUEST_URI']);
+            $_SERVER['REQUEST_URI'] = str_replace("&&","&",$_SERVER['REQUEST_URI']);
+            $this->objDisplay->reload();
+            exit;
+        }
+        SC_Response_Ex::reload();
     }
 }
 ?>
