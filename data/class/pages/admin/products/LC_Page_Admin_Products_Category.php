@@ -325,7 +325,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin {
         }
 
         // 階層上限チェック
-        if ($this->isOverLevel()) {
+        if ($this->isOverLevel($objFormParam->getValue('parent_category_id')) {
             $this->arrErr['category_name']  = "※ " . LEVEL_MAX . "階層以上の登録はできません。<br/>";
             $this->arrForm['category_name'] = $objFormParam->getValue('category_name');
             return;
