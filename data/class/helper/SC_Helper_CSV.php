@@ -28,12 +28,6 @@ class SC_Helper_CSV {
     /** レビュータイトル */
     var $arrREVIEW_CVSTITLE;
 
-    /** トラックバック項目 */
-    var $arrTRACKBACK_CVSCOL;
-
-    /** トラックバックタイトル */
-    var $arrTRACKBACK_CVSTITLE;
-
 
     // }}}
     // {{{ constructor
@@ -191,25 +185,6 @@ class SC_Helper_CSV {
         return $data;
     }
 
-    // CSV出力データを作成する。(トラックバック)
-    function lfGetTrackbackCSV($where, $option, $arrval) {
-        $from = "dtb_trackback AS A INNER JOIN dtb_products AS B on A.product_id = B.product_id ";
-        $cols = SC_Utils_Ex::sfGetCommaList($this->arrTRACKBACK_CVSCOL);
-
-        $objQuery =& SC_Query::getSingletonInstance();
-        $objQuery->setOption($option);
-
-        $list_data = $objQuery->select($cols, $from, $where, $arrval);
-
-        $max = count($list_data);
-        if (!isset($data)) $data = "";
-        for($i = 0; $i < $max; $i++) {
-            // 各項目をCSV出力用に変換する。
-            $data .= $this->lfMakeTrackbackCSV($list_data[$i]);
-        }
-        return $data;
-    }
-
     // CSVを送信する。(カテゴリ)
     function sfDownloadCategoryCsv() {
 
@@ -318,30 +293,6 @@ class SC_Helper_CSV {
         return $line;
     }
 
-    // 各項目をCSV出力用に変換する。(トラックバック)
-    function lfMakeTrackbackCSV($list) {
-
-        $line = "";
-
-        foreach($list as $key => $val) {
-            $tmp = "";
-            switch($key) {
-            case 'status':
-                $tmp = $this->arrTrackBackStatus[$val];
-                break;
-            default:
-                $tmp = $val;
-                break;
-            }
-
-            $tmp = preg_replace('/[",]/', " ", $tmp);
-            $line .= "\"".$tmp."\",";
-        }
-        // 文末の","を変換
-        $line = $this->replaceLineSuffix($line);
-        return $line;
-    }
-
     /**
      * 行末の ',' を CRLF へ変換する.
      *
@@ -399,24 +350,6 @@ class SC_Helper_CSV {
                                           'タイトル',
                                           'コメント'
                                           );
-
-        $this->arrTRACKBACK_CVSTITLE = array(
-                                             '商品名',
-                                             'ブログ名',
-                                             'ブログ記事タイトル',
-                                             'ブログ記事内容',
-                                             '状態',
-                                             '投稿日'
-                                             );
-
-        $this->arrTRACKBACK_CVSCOL = array(
-                                           'B.name',
-                                           'A.blog_name',
-                                           'A.title',
-                                           'A.excerpt',
-                                           'A.status',
-                                           'A.create_date'
-                                           );
     }
     
     /**

@@ -266,16 +266,7 @@ class LC_Page_Products_Detail extends LC_Page {
         $this->arrPayment = $this->lfGetPayment();
         //レビュー情報の取得
         $this->arrReview = $this->lfGetReviewData($product_id);
-        // トラックバック情報の取得
 
-        // トラックバック機能の稼働状況チェック
-        if (SC_Utils_Ex::sfGetSiteControlFlg(SITE_CONTROL_TRACKBACK) != 1) {
-            $this->arrTrackbackView = "OFF";
-        } else {
-            $this->arrTrackbackView = "ON";
-            $this->arrTrackback = $this->lfGetTrackbackData($product_id);
-        }
-        $this->trackback_url = TRACKBACK_TO_URL . $product_id;
         //関連商品情報表示
         $this->arrRecommend = $this->lfPreGetRecommendProducts($product_id);
     }
@@ -513,25 +504,6 @@ class LC_Page_Products_Detail extends LC_Page {
         $arrval[] = $id;
         $arrReview = $objQuery->select($col, $from, $where, $arrval);
         return $arrReview;
-    }
-
-    /*
-     * 商品ごとのトラックバック情報を取得する
-     *
-     * @param $product_id
-     * @return $arrTrackback
-     */
-    function lfGetTrackbackData($product_id) {
-
-        $arrTrackback = array();
-
-        $objQuery =& SC_Query::getSingletonInstance();
-        //商品ごとのトラックバック情報を取得する
-        $col = "blog_name, url, title, excerpt, title, create_date";
-        $from = "dtb_trackback";
-        $where = "del_flg = 0 AND status = 1 AND product_id = ? ORDER BY create_date DESC LIMIT " . TRACKBACK_VIEW_MAX;
-        $arrTrackback = $objQuery->select($col, $from, $where, array($product_id));
-        return $arrTrackback;
     }
 
     //支払方法の取得

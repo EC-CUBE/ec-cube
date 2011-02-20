@@ -106,11 +106,6 @@ class LC_Page_Admin_Basis_Control extends LC_Page_Admin {
         // プルダウンの作成
         for ($i = 0; $i < count($arrSiteControlList); $i++) {
             switch ($arrSiteControlList[$i]["control_id"]) {
-                // トラックバック
-                case SITE_CONTROL_TRACKBACK:
-                    $arrSiteControlList[$i]["control_area"]
-                            = $masterData->getMasterData("mtb_site_control_track_back");
-                    break;
                 // アフィリエイト
                 case SITE_CONTROL_AFFILIATE:
                     $arrSiteControlList[$i]["control_area"]

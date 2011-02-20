@@ -460,26 +460,6 @@ $(document).ready(function() {
     <!--お客様の声ここまで-->
 
 
-    <!--{if $arrTrackbackView == "ON"}-->
-        <!--▼トラックバック-->
-        <div id="trackbackarea">
-            <h2>この商品に対するトラックバック</h2>
-            <h3>この商品のトラックバック先URL</h3>
-            <input type="text" name="trackback" value="<!--{$trackback_url}-->" size="100" class="box500" />
-
-            <!--{if $arrTrackback}-->
-                <ul>
-                <!--{section name=cnt loop=$arrTrackback}-->
-                    <li><strong><!--{$arrTrackback[cnt].create_date|sfDispDBDate:false}-->　<a href="<!--{$arrTrackback[cnt].url}-->" target="_blank"><!--{$arrTrackback[cnt].title|h}--></a> from <!--{$arrTrackback[cnt].blog_name|h}--></strong>
-                        <p><!--{$arrTrackback[cnt].excerpt|mb_strimwidth:0:200:"..."|h}--></p></li>
-                <!--{/section}-->
-                </ul>
-            <!--{/if}-->
-        </div>
-        <!--▲トラックバック-->
-    <!--{/if}-->
-
-
     <!--▼関連商品-->
     <!--{if $arrRecommend}-->
         <div id="whoboughtarea">

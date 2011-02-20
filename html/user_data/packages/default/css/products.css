@@ -286,28 +286,6 @@ div#customervoicearea li {
     color: #FF0000;
 }
 
-/* トラックバック
------------------------------------------------ */
-div#trackbackarea {
-    clear: both;
-    padding: 35px 0 0 0;
-}
-
-div#trackbackarea h2 {
-    padding: 0 0 10px 0;
-}
-
-div#trackbackarea h3 {
-    font-size: 100%;
-    font-weight: bold;
-    padding: 0 0 10px 0;
-}
-
-div#trackbackarea .box500 {
-    width: 500px;
-    border: solid 1px #ccc;
-}
-
 /* 関連商品
 ----------------------------------------------- */
 div#whoboughtarea {
