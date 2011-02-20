@@ -74,9 +74,11 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin {
 
         switch ($this->getMode()) {
         case 'delete':
-            // 削除時
-            $this->lfDeleteHistory($_GET['send_id']);
-            $this->objDisplay->reload(null, true);
+            if (SC_Utils_Ex::sfIsInt($send_id)) {
+                // 削除時
+                $this->lfDeleteHistory($_GET['send_id']);
+                $this->objDisplay->reload(null, true);
+            }
             break;
         default:
             break;
@@ -138,13 +140,11 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin {
      * @return void
      */
     function lfDeleteHistory($send_id){
-        if (SC_Utils_Ex::sfIsInt($send_id)) {
             $objQuery =& SC_Query::getSingletonInstance(); 
             $objQuery->update("dtb_send_history",
                               array('del_flg' =>1),
                               "send_id = ?",
                               array($send_id));
-        }
     }
 }
 ?>
