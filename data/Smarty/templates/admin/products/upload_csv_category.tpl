@@ -63,5 +63,27 @@
       <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'csv_upload', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
     </ul>
   </div>
+  <!--{if $arrRowErr}-->
+  <table class="form">
+    <tr>
+      <td>
+        <!--{foreach item=err from=$arrRowErr}-->
+        <span class="attention"><!--{$err}--></span>
+        <!--{/foreach}-->
+      </td>
+    </tr>
+  </table>
+  <!--{/if}-->
+  <!--{if $arrRowResult}-->
+  <table class="form">
+    <tr>
+      <td>
+        <!--{foreach item=result from=$arrRowResult}-->
+        <span><!--{$result}--><br/></span>
+        <!--{/foreach}-->
+      </td>
+    </tr>
+  </table>
+  <!--{/if}-->
 </div>
 </form>
