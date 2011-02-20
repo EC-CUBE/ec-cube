@@ -104,20 +104,13 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin {
                 $objNavi = new SC_PageNavi($_POST['search_pageno'], $linemax, $page_max, "fnNaviSearchOnlyPage", NAVI_PMAX);
                 $this->tpl_strnavi = $objNavi->strnavi;     // 表示文字列
                 $startno = $objNavi->start_row;
-                //ぶった斬りポイント==================================================================
                 $arrProduct_id = $this->getProducts($wheres, $objProduct);
-                //ぶった斬りポイント==================================================================
                 $productList = $this->getProductList($arrProduct_id,$objProduct);
-                //ぶった斬りポイント==================================================================
                 //取得している並び順で並び替え
                 $this->arrProducts = $this->sortProducts($arrProduct_id,$productList);
-                //ぶった斬りポイント==================================================================
                 $objProduct->setProductsClassByProductIds($arrProduct_id);
-                //ぶった斬りポイント==================================================================
                 $this->tpl_javascript .= $this->getTplJavascript($objProduct);
-                //ぶった斬りポイント==================================================================
                 $js_fnOnLoad = $this->getFnOnload($this->arrProducts);
-                //ぶった斬りポイント==================================================================
                 $this->tpl_javascript .= 'function fnOnLoad(){' . $js_fnOnLoad . '}';
                 $this->tpl_onload .= 'fnOnLoad(); ';
                 // 規格1クラス名
@@ -142,6 +135,12 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin {
         $this->setTemplate($this->tpl_mainpage);
     }
 
+    /**
+     * 
+     * 商品取得
+     * @param array $arrProduct_id
+     * @param SC_Product $objProduct
+     */
     function getProductList($arrProduct_id,&$objProduct){
         $where = "";
         if (is_array($arrProduct_id) && !empty($arrProduct_id)) {
@@ -155,13 +154,20 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin {
         return $objProduct->lists($objQuery, $arrProduct_id);
     }
 
-
+    /**
+     * ロード時に実行するJavascriptを生成
+     * @param array $arrProducts
+     */
     function getFnOnload($arrProducts){
         foreach ($arrProducts as $arrProduct) {
             $js_fnOnLoad .= "fnSetClassCategories(document.product_form{$arrProduct['product_id']});\n";
         }
     }
 
+    /**
+     * 規格クラス用JavaScript生成
+     * @param SC_Product $objProduct
+     */
     function getTplJavascript(&$objProduct){
         $objJson = new Services_JSON();
         return  'productsClassCategories = ' . $objJson->encode($objProduct->classCategories) . '; ';
@@ -189,9 +195,9 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin {
 
     /**
      *
-     * Enter description here ...
-     * @param unknown_type $whereAndBind
-     * @param unknown_type $objProduct
+     * 検索結果対象となる商品の数を返す。
+     * @param array $whereAndBind
+     * @param SC_Product $objProduct
      */
     function getLineCount($whereAndBind,&$objProduct){
         $where = $whereAndBind['where'];
@@ -281,7 +287,6 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin {
 
     /**
      * デストラクタ.
-     *
      * @return void
      */
     function destroy() {
@@ -304,6 +309,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin {
         $arrConvList['search_product_code'] = "KVa";
         return $arrConvList;
     }
+    
     /**
      * パラメータ情報の初期化
      * @param SC_FormParam $objFormParam
