@@ -63,6 +63,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin {
         $this->sendResponse();
     }
 
+
     /**
      * Page のアクション.
      *
@@ -74,56 +75,23 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin {
 
         // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess($objSess);
+        $objFormParam = new SC_FormParam();
+        $this->lfInitParam($objFormParam);
+        $objFormParam->setParam($_POST);
+        $objFormParam->convParam();
 
-        if ($_GET['no'] != '') {
-            $this->tpl_no = strval($_GET['no']);
-        } elseif ($_POST['no'] != '') {
-            $this->tpl_no = strval($_POST['no']);
-        }
+        $this->tpl_no = $this->getNo(array($_GET,$_POST));
 
         switch ($this->getMode()) {
             case 'search':
-                // 入力文字の強制変換とPOST値の引き継ぎ
-                SC_FormParam::convParam();
-                $this->arrForm = $this->lfConvertParam($_POST,$this->getConvertRule());
-
-                $where = "alldtl.del_flg = 0";
-                $arrval = array();
-
-                /* 入力エラーなし */
-                foreach ($this->arrForm as $key => $val) {
-                    if($val == "") {
-                        continue;
-                    }
-
-                    switch ($key) {
-                        case 'search_name':
-                            $where .= " AND name ILIKE ?";
-                            $arrval[] = "%$val%";
-                            break;
-                        case 'search_category_id':
-                            list($tmp_where, $tmp_arrval) = $objDb->sfGetCatWhere($val);
-                            if($tmp_where != "") {
-                                $where.= " AND alldtl.product_id IN (SELECT product_id FROM dtb_product_categories WHERE " . $tmp_where . ")";
-                                $arrval = array_merge((array)$arrval, (array)$tmp_arrval);
-                            }
-                            break;
-                        case 'search_product_code':
-                            $where .= " AND alldtl.product_id IN (SELECT product_id FROM dtb_products_class WHERE product_code LIKE ? GROUP BY product_id)";
-                            $arrval[] = "$val%";
-                            break;
-                        default:
-                            break;
-                    }
-                }
-
-                // 検索結果対象となる商品の数を取得
-                $objQuery =& SC_Query::getSingletonInstance();
-                $objQuery->setWhere($where);
                 $objProduct = new SC_Product();
-                $linemax = $objProduct->findProductCount($objQuery, $arrval);
-                $this->tpl_linemax = $linemax;   // 何件が該当しました。表示用
+                // 入力文字の強制変換とPOST値の引き継ぎ
+                //                $this->arrForm = $this->lfConvertParam($_POST,$this->getConvertRule());
+                $this->arrForm = $objFormParam->getHashArray();
+                $wheres = $this->createWhere($objFormParam,$objDb);
+                $this->tpl_linemax = $this->getLineCount($wheres,$objProduct);
 
+                //ぶった斬りポイント==================================================================
                 // ページ送りの処理
                 if(isset($_POST['search_page_max'])
                 && is_numeric($_POST['search_page_max'])) {
@@ -136,60 +104,28 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin {
                 $objNavi = new SC_PageNavi($_POST['search_pageno'], $linemax, $page_max, "fnNaviSearchOnlyPage", NAVI_PMAX);
                 $this->tpl_strnavi = $objNavi->strnavi;     // 表示文字列
                 $startno = $objNavi->start_row;
-
-                $objProduct = new SC_Product();
-                $objQuery =& SC_Query::getSingletonInstance();
-                $objQuery->setWhere($where);
-
-                // 取得範囲の指定(開始行番号、行数のセット)
-                $objQuery->setLimitOffset($page_max, $startno);
-                // 表示順序
-                $objQuery->setOrder($order);
-
-                // 検索結果の取得
-                $arrProduct_id = $objProduct->findProductIdsOrder($objQuery, $arrval);
-
-                $where = "";
-                if (is_array($arrProduct_id) && !empty($arrProduct_id)) {
-                    $where = 'product_id IN (' . implode(',', $arrProduct_id) . ')';
-                } else {
-                    // 一致させない
-                    $where = '0<>0';
-                }
-                $objQuery =& SC_Query::getSingletonInstance();
-                $objQuery->setWhere($where);
-                $arrProducts = $objProduct->lists($objQuery, $arrProduct_id);
-
+                //ぶった斬りポイント==================================================================
+                $arrProduct_id = $this->getProducts($wheres, $objProduct);
+                //ぶった斬りポイント==================================================================
+                $productList = $this->getProductList($arrProduct_id,$objProduct);
+                //ぶった斬りポイント==================================================================
                 //取得している並び順で並び替え
-                $arrProducts2 = array();
-                foreach($arrProducts as $item) {
-                    $arrProducts2[ $item['product_id'] ] = $item;
-                }
-                $this->arrProducts = array();
-                foreach($arrProduct_id as $product_id) {
-                    $this->arrProducts[] = $arrProducts2[$product_id];
-                }
-
+                $this->arrProducts = $this->sortProducts($arrProduct_id,$productList);
+                //ぶった斬りポイント==================================================================
                 $objProduct->setProductsClassByProductIds($arrProduct_id);
-                $objJson = new Services_JSON();
-                $this->tpl_javascript .= 'productsClassCategories = ' . $objJson->encode($objProduct->classCategories) . '; ';
-
-                foreach ($this->arrProducts as $arrProduct) {
-                    $js_fnOnLoad .= "fnSetClassCategories(document.product_form{$arrProduct['product_id']});\n";
-                }
-
+                //ぶった斬りポイント==================================================================
+                $this->tpl_javascript .= $this->getTplJavascript($objProduct);
+                //ぶった斬りポイント==================================================================
+                $js_fnOnLoad = $this->getFnOnload($this->arrProducts);
+                //ぶった斬りポイント==================================================================
                 $this->tpl_javascript .= 'function fnOnLoad(){' . $js_fnOnLoad . '}';
                 $this->tpl_onload .= 'fnOnLoad(); ';
-
                 // 規格1クラス名
                 $this->tpl_class_name1 = $objProduct->className1;
-
                 // 規格2クラス名
                 $this->tpl_class_name2 = $objProduct->className2;
-
                 // 規格1
                 $this->arrClassCat1 = $objProduct->classCats1;
-
                 // 規格1が設定されている
                 $this->tpl_classcat_find1 = $objProduct->classCat1_find;
                 // 規格2が設定されている
@@ -205,6 +141,143 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin {
         $this->arrCatList = $objDb->sfGetCategoryList();
         $this->setTemplate($this->tpl_mainpage);
     }
+
+    function getProductList($arrProduct_id,&$objProduct){
+        $where = "";
+        if (is_array($arrProduct_id) && !empty($arrProduct_id)) {
+            $where = 'product_id IN (' . implode(',', $arrProduct_id) . ')';
+        } else {
+            // 一致させない
+            $where = '0<>0';
+        }
+        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery->setWhere($where);
+        return $objProduct->lists($objQuery, $arrProduct_id);
+    }
+
+
+    function getFnOnload($arrProducts){
+        foreach ($arrProducts as $arrProduct) {
+            $js_fnOnLoad .= "fnSetClassCategories(document.product_form{$arrProduct['product_id']});\n";
+        }
+    }
+
+    function getTplJavascript(&$objProduct){
+        $objJson = new Services_JSON();
+        return  'productsClassCategories = ' . $objJson->encode($objProduct->classCategories) . '; ';
+    }
+
+
+    /**
+     * 検索結果の取得
+     * @param array $whereAndBind string whereと array bindの連想配列
+     * @param SC_Product $objProduct
+     */
+    function getProducts($whereAndBind,&$objProduct){
+        $where = $whereAndBind['where'];
+        $bind = $whereAndBind['bind'];
+        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery->setWhere($where);
+        // 取得範囲の指定(開始行番号、行数のセット)
+        $objQuery->setLimitOffset($page_max, $startno);
+        // 表示順序
+        $objQuery->setOrder($order);
+         
+        // 検索結果の取得
+        return $objProduct->findProductIdsOrder($objQuery, $bind);
+    }
+
+    /**
+     *
+     * Enter description here ...
+     * @param unknown_type $whereAndBind
+     * @param unknown_type $objProduct
+     */
+    function getLineCount($whereAndBind,&$objProduct){
+        $where = $whereAndBind['where'];
+        $bind = $whereAndBind['bind'];
+        // 検索結果対象となる商品の数を取得
+        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery->setWhere($where);
+        $linemax = $objProduct->findProductCount($objQuery, $bind);
+        return  $linemax;   // 何件が該当しました。表示用
+    }
+
+
+    /**
+     *
+     * POSTされた値からSQLのWHEREとBINDを配列で返す。
+     * @return array ('where' => where string, 'bind' => databind array)
+     * @param SC_FormParam $objFormParam
+     */
+    function createWhere(&$objFormParam,&$objDb){
+        $arrForm = $objFormParam->getHashArray();
+        $where = "alldtl.del_flg = 0";
+        $bind = array();
+        foreach ($arrForm as $key => $val) {
+            if($val == "") {
+                continue;
+            }
+
+            switch ($key) {
+                case 'search_name':
+                    $where .= " AND name ILIKE ?";
+                    $bind[] = "%".$val."%";
+                    break;
+                case 'search_category_id':
+                    list($tmp_where, $tmp_bind) = $objDb->sfGetCatWhere($val);
+                    if($tmp_where != "") {
+                        $where.= " AND alldtl.product_id IN (SELECT product_id FROM dtb_product_categories WHERE " . $tmp_where . ")";
+                        $bind = array_merge((array)$bind, (array)$tmp_bind);
+                    }
+                    break;
+                case 'search_product_code':
+                    $where .=    " AND alldtl.product_id IN (SELECT product_id FROM dtb_products_class WHERE product_code LIKE ? GROUP BY product_id)";
+                    //                            $arrval[] = "$val%";
+                    $bind[] = '%'.$val.'%';
+                    break;
+
+                default:
+                    break;
+            }
+        }
+        return array(
+            'where'=>$where,
+        	'bind' => $bind
+        );
+    }
+
+
+    /**
+     * リクエストパラメータnoを取ってくる。
+     * @param unknown_type $globalParams
+     */
+    function getNo($globalParams){
+        foreach ($globalParams as $params){
+            if(isset($params['no']) && $params['no']!= ''){
+                return strval($params['no']);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 取得している並び順で並び替え
+     * @param $arrProduct_id
+     * @param $productList
+     */
+    function sortProducts($arrProduct_id,$productList){
+        $products  = array();
+        foreach($productList as $item) {
+            $products[ $item['product_id'] ] = $item;
+        }
+        $arrProducts = array();
+        foreach($arrProduct_id as $product_id) {
+            $arrProducts[] = $products[$product_id];
+        }
+        return $arrProducts;
+    }
+
 
     /**
      * デストラクタ.
@@ -230,6 +303,17 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin {
         $arrConvList['search_name'] = "KVa";
         $arrConvList['search_product_code'] = "KVa";
         return $arrConvList;
+    }
+    /**
+     * パラメータ情報の初期化
+     * @param SC_FormParam $objFormParam
+     */
+    function lfInitParam(&$objFormParam) {
+        $objFormParam->addParam("オーダーID", "order_id", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("商品名", "search_name", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("カテゴリID", "search_category_id", STEXT_LEN, "KVa",  array("MAX_LENGTH_CHECK", "SPTAB_CHECK"));
+        $objFormParam->addParam("商品コード", "search_product_code", LTEXT_LEN, "KVa", array("MAX_LENGTH_CHECK", "SPTAB_CHECK"));
+        $objFormParam->addParam("フッター", "footer", LTEXT_LEN, "KVa", array("MAX_LENGTH_CHECK", "SPTAB_CHECK"));
     }
 
     /**
