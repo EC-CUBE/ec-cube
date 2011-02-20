@@ -23,6 +23,7 @@
 
 // {{{ requires
 require_once(CLASS_REALDIR . "pages/admin/LC_Page_Admin.php");
+require_once(CLASS_EX_REALDIR . "helper_extends/SC_Helper_FileManager_Ex.php");
 
 /**
  * システム情報 のページクラス.
@@ -51,20 +52,6 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin {
     }
 
     /**
-     * フォームパラメータ初期化
-     *
-     * @return void
-     */
-    function initForm() {
-        $objForm = new SC_FormParam();
-        $objForm->addParam('mode', 'mode', INT_LEN, '', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
-        $objForm->addParam('plugin_name', 'plugin_name', INT_LEN, '', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
-
-        $objForm->setParam($_POST);
-        $this->objForm = $objForm;
-    }
-
-    /**
      * Page のプロセス.
      *
      * @return void
@@ -80,72 +67,66 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin {
      * @return void
      */
     function action() {
+        // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess(new SC_Session);
-        $this->initForm();
-        switch($this->getMode()) {
-            // PHP INFOを表示
-            case 'install':
-                $name = $this->objForm->getValue('plugin_name');
-                require_once(DATA_REALDIR.'/plugin/'.$name.'/'.$name.'.php');
-                $plugin = new $name();
-                $plugin->install();
-                break;
-            case 'uninstall':
-                $name = $this->objForm->getValue('plugin_name');
-                require_once(DATA_REALDIR.'/plugin/'.$name.'/'.$name.'.php');
-                $plugin = new $name();
-                $plugin->uninstall();
-                break;
-            case 'enable':
-                $name = $this->objForm->getValue('plugin_name');
-                require_once(DATA_REALDIR.'/plugin/'.$name.'/'.$name.'.php');
-                $plugin = new $name();
-                $plugin->enable();
 
-                break;
-            case 'disable':
-              $name = $this->objForm->getValue('plugin_name');
-                require_once(DATA_REALDIR.'/'.$name.'/'.$name.'.php');
-                $plugin = new $name();
-                $plugin->disable();
-                break;
-            default:
-                $plugins = SC_Helper_Plugin_Ex::getAllPlugin();
-                $this->plugins = array_merge($plugins,
-                $this->getPluginOnFilesystem($plugins));
-                break;
-        }
+        // パラメータ管理クラス
+        $objFormParam = new SC_FormParam();
+        // パラメータ情報の初期化
+        $this->lfInitParam($objFormParam);
+        $objFormParam->setParam($_POST);
+        
+        $mode = $this->getMode();
 
-        $this->arrSystemInfo = $this->getSystemInfo();
-    }
+        switch($mode) {
+        case 'install':
+        case 'uninstall':
+        case 'enable':
+        case 'disable':
+            // エラーチェック
+            $this->arrErr = $objFormParam->checkError();
 
-    /*
-     CREATE TABLE dtb_plugin (
-     plugin_id INT NOT NULL,
-     plugin_name VARCHAR(255) NOT NULL DEFAULT "",
-     enable INT NOT NULL DEFAULT 0,
-     del_flg INT NOT NULL DEFAULT 0,
-     class_name VARCHAR(255) NOT NULL DEFAULT NULL,
-     create_date DATETIME NOT NULL,
-     update_date DATETIME NOT NULL,
-     PRIMARY KEY (plugin_id)
-     ) TYPE=InnoDB;
-     */
+            if(count($this->arrErr) == 0) {
+                $plugin_id = $objFormParam->getValue('plugin_id');
+                $plugin_code = $objFormParam->getValue('plugin_code');
+                
+                // プラグインファイルを読み込み、modeで指定されたメソッドを実行
+                $this->arrErr = $this->lfExecPlugin($plugin_id, $plugin_code, $mode);
+            }
+            break;
+        case 'upload':
+            // プラグイン情報を設定
+            $plugin_code = $this->lfGetPluginCode($_FILES['plugin_file']['name']);
+            $plugin_dir = $this->lfGetPluginDir($plugin_code);
 
-    function getPluginOnFilesystem($existsPlugins){
+            // ファイルアップロード情報を設定
+            $objUpFile = new SC_UploadFile(TEMPLATE_TEMP_REALDIR, $plugin_dir);
+            $this->lfInitUploadFile($objUpFile);
 
-        $dir = DATA_REALDIR."plugin/";
-        $arrPlugins = array();
-        if($dh =  opendir($dir)){
-            while(($file = readdir($dh)) !== false){
-                if(!preg_match('/^\\./', $file) && $file !='..' && filetype($dir.$file) == 'dir'){
-                    $arrPlugins[] = array('plugin_name'=>$file,'class_name'=>$file);
+            // エラーチェック
+            $this->arrErr = $this->lfCheckErrorUploadFile($plugin_code, $plugin_dir);
 
+            if(count($this->arrErr) == 0) {
+                // 一時ディレクトリへアップロード
+                $this->arrErr['plugin_file'] = $objUpFile->makeTempFile('plugin_file', false);
+
+                if($this->arrErr['plugin_file'] == "") {
+                    // プラグイン保存ディレクトリへ解凍
+                    $this->arrErr = $this->lfUploadPlugin($objUpFile, $plugin_dir, $plugin_code, $_FILES['plugin_file']['name']);
+
+                    // 完了メッセージアラート設定
+                    if(count($this->arrErr) == 0) {
+                        $this->tpl_onload = "alert('プラグインをアップロードしました。');";
+                    }
                 }
             }
+            break;
+        default:
+            break;
         }
-        //        var_dump($arrPlugins);
-        return $arrPlugins;
+
+        // DBからプラグイン情報を取得
+        $this->plugins = SC_Helper_Plugin_Ex::getAllPlugin();
     }
 
     /**
@@ -158,22 +139,183 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin {
     }
 
     /**
-     * システム情報を取得する
+     * パラメータ初期化.
      *
-     * @return array
+     * @param object $objFormParam
+     * @return void
+     * 
      */
-    function getSystemInfo() {
-        $objDB = SC_DB_DBFactory_Ex::getInstance();
+    function lfInitParam(&$objFormParam) {
+        $objFormParam->addParam('mode', 'mode', INT_LEN, '', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('plugin_id', 'plugin_id', INT_LEN, '', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('plugin_code', 'plugin_code', MTEXT_LEN, '', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
+    }
 
-        $arrSystemInfo = array(
-        array('title' => 'EC-CUBE',  'value' => ECCUBE_VERSION),
-        array('title' => 'OS',       'value' => php_uname()),
-        array('title' => 'DBサーバ',  'value' => $objDB->sfGetDBVersion()),
-        array('title' => 'WEBサーバ', 'value' => $_SERVER['SERVER_SOFTWARE']),
-        array('title' => 'PHP',      'value' => phpversion()),
-        array('title' => 'GD',       'value' => extension_loaded('GD') ? 'Loaded' : '--'),
-        );
+    /**
+     * アップロードファイルパラメータ初期化.
+     *
+     * @param object $objUpFile SC_UploadFileのインスタンス.
+     * @return void
+     */
+    function lfInitUploadFile(&$objUpFile) {
+        $objUpFile->addFile("プラグイン", 'plugin_file', array('tar', 'tar.gz'), TEMPLATE_SIZE, true, 0, 0, false);
+    }
 
-        return $arrSystemInfo;
+    /**
+     * アップロードファイルのエラーチェック.
+     * 
+     * @param string $plugin_code
+     * @param string $plugin_dir
+     * @return array エラー情報を格納した連想配列.
+     * 
+     */
+    function lfCheckErrorUploadFile($plugin_code, $plugin_dir) {
+        $arrErr = array();
+
+        // プラグイン重複チェック
+        $plugins = SC_Helper_Plugin_Ex::getAllPlugin();
+        foreach($plugins as $val) {
+            if($val['plugin_code'] == $plugin_code) {
+                $arrErr['plugin_file'] = "※ 同名のプラグインがすでに登録されています。<br/>";
+            }
+        }
+
+        return $arrErr;
+    }
+
+    /**
+     * プラグイン名(物理名)を取得する.
+     * (アップロードされたファイル名をプラグイン名(物理名)とする).
+     * 
+     * @param string $upload_file_name
+     * @return string プラグイン名(物理名).
+     * 
+     */
+    function lfGetPluginCode($upload_file_name) {
+        $array_ext = explode(".", $upload_file_name);
+        return $array_ext[0];
+    }
+
+    /**
+     * プラグイン保存ディレクトリのパスを取得する.
+     *
+     * @param string $plugin_code
+     * @return string プラグイン保存ディレクトリ.
+     * 
+     */
+    function lfGetPluginDir($plugin_code) {
+        $plugin_dir = DATA_REALDIR . 'plugin/' . $plugin_code . '/';
+        return $plugin_dir;
+    }
+
+    /**
+     * プラグインファイルのパスを取得する.
+     * 
+     * @param string $plugin_code
+     * @return string プラグインファイルパス.
+     */
+    function lfGetPluginFilePath($plugin_code) {
+        $plugin_file_path = $this->lfGetPluginDir($plugin_code) . $plugin_code . '.php';
+        return $plugin_file_path;
+    }
+    /**
+     * プラグインをアップロードする.
+     * 
+     * @param object $objUpFile
+     * @param string $plugin_dir
+     * @param string $plugin_code
+     * @param string $plugin_file_name
+     * @return array エラー情報を格納した連想配列.
+     * 
+     */
+    function lfUploadPlugin(&$objUpFile, $plugin_dir, $plugin_code, $plugin_file_name) {
+        $arrErr = array();
+        
+        // 必須チェック
+        $arrErr = $objUpFile->checkEXISTS('plugin_file');
+
+        if(count($arrErr) == 0) {
+            // プラグイン保存ディレクトリ作成
+            if(file_exists($plugin_dir)) {
+                $arrErr['plugin_file'] = "※ 同名のディレクトリがすでに存在します。<br/>";
+            } else {
+                mkdir($plugin_dir);
+            }
+
+            if(count($arrErr) == 0) {
+                // 一時ディレクトリからプラグイン保存ディレクトリへ移動
+                $objUpFile->moveTempFile();
+
+                // プラグイン保存ディレクトリへ解凍
+                SC_Helper_FileManager::unpackFile($plugin_dir . $plugin_file_name);
+
+                // プラグイン情報をDB登録
+                $this->lfRegistData($plugin_dir, $plugin_code);
+            }
+        }
+
+        return $arrErr;
+    }
+
+    /**
+     * プラグイン情報をDB登録.
+     *
+     * @param string $plugin_dir
+     * @param string $plugin_code
+     * @return void
+     *
+     */
+    function lfRegistData($plugin_dir, $plugin_code) {
+        $objQuery =& SC_Query::getSingletonInstance();
+        $sqlval = array();
+        
+        $sqlval['plugin_id'] = $objQuery->nextVal('dtb_plugin_plugin_id');
+        $sqlval['plugin_code'] = $plugin_code;
+        $sqlval['status'] = PLUGIN_STATUS_UPLOADED;
+        $sqlval['enable'] = PLUGIN_ENABLE_FALSE;
+        $sqlval['update_date'] = 'now()';
+        $objQuery->insert('dtb_plugin', $sqlval);
+    }
+
+    /**
+     * プラグインファイルを読み込む.
+     * 
+     * @param string $plugin_code
+     * @return array エラー情報を格納した連想配列.
+     */
+    function lfRequirePluginFile($plugin_code) {
+        $arrErr = array();
+        $plugin_file_path = $this->lfGetPluginFilePath($plugin_code);
+
+        if(file_exists($plugin_file_path)) {
+            require_once($plugin_file_path);
+        } else {
+            $arrErr['plugin_error'] = "※ " . $plugin_code . ".phpが存在しないため実行できません。<br/>";
+        }
+        
+        return $arrErr;
+    }
+
+    /**
+     * プラグインファイルを読み込み、指定されたメソッドを実行する.
+     *
+     * @param integer $plugin_id
+     * @param string $plugin_code
+     * @param string $exec_mode プラグイン実行メソッド名.
+     * @return array エラー情報を格納した連想配列.
+     *
+     */
+    function lfExecPlugin($plugin_id, $plugin_code, $exec_mode) {
+        $arrErr = array();
+
+        // プラグインファイル読み込み
+        $arrErr = $this->lfRequirePluginFile($plugin_code);
+        
+        if(count($arrErr) == 0) {
+            $plugin = new $plugin_code();
+            $arrErr = $plugin->$exec_mode($plugin_id);
+        }
+
+        return $arrErr;
     }
 }

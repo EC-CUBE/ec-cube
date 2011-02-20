@@ -602,4 +602,12 @@ define('UNLIMITED_FLG_LIMITED', "0");
 define('ECCUBE_INFO', true);
 /** 外部サイトHTTP取得タイムアウト時間(秒) */
 define('HTTP_REQUEST_TIMEOUT', "5");
+/** プラグインの状態：アップロード済み */
+define('PLUGIN_STATUS_UPLOADED', "1");
+/** プラグインの状態：インストール済み */
+define('PLUGIN_STATUS_INSTALLED', "2");
+/** プラグイン有効/無効：有効 */
+define('PLUGIN_ENABLE_TRUE', "1");
+/** プラグイン有効/無効：無効 */
+define('PLUGIN_ENABLE_FALSE', "2");
 ?>

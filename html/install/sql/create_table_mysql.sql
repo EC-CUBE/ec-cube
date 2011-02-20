@@ -1231,10 +1231,17 @@ CREATE TABLE dtb_bkup (
 
 CREATE TABLE dtb_plugin (
     plugin_id int NOT NULL,
-    plugin_name varchar(255) NOT NULL,
+    plugin_name varchar(255) NOT NULL DEFAULT '',
+    plugin_code varchar(255) NOT NULL,
+    author varchar(255) NOT NULL DEFAULT '',
+    plugin_site_url varchar(255) NOT NULL DEFAULT '',
+    plugin_version varchar(255) NOT NULL DEFAULT '',
+    plugin_description varchar(255) NOT NULL DEFAULT '',
+    plugin_setting_path varchar(255) NOT NULL DEFAULT '',
+    class_name varchar(255) NOT NULL DEFAULT '',
+    status smallint NOT NULL DEFAULT 0,
     enable smallint NOT NULL DEFAULT 0,
     del_flg smallint NOT NULL DEFAULT 0,
-    class_name varchar(255) NOT NULL,
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_date timestamp NOT NULL,
     PRIMARY KEY (plugin_id)

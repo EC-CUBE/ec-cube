@@ -1270,6 +1270,10 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('UNLIMITED_FLG_UNLIM
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('UNLIMITED_FLG_LIMITED', '"0"', 1217, '無制限フラグ： 制限有り');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ECCUBE_INFO', 'true', 1218, ' EC-CUBE更新情報取得 (true:取得する false:取得しない)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('HTTP_REQUEST_TIMEOUT', '"5"', 1219, '外部サイトHTTP取得タイムアウト時間(秒)');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_STATUS_UPLOADED', '"1"', 1220, 'プラグインの状態：アップロード済み');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_STATUS_INSTALLED', '"2"', 1221, 'プラグインの状態：インストール済み');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_ENABLE_TRUE', '"1"', 1222, 'プラグイン有効/無効：有効');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_ENABLE_FALSE', '"2"', 1223, 'プラグイン有効/無効：無効');
 
 INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_customer', 'email_mobile', 0, '会員数増加時のログイン処理速度を向上させたいときに試してみてください');
 INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_products', 'name', 2, '商品名検索速度を向上させたいときに試してみてください');

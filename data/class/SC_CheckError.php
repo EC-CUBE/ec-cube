@@ -620,12 +620,26 @@ class SC_CheckError {
         if($_FILES[$value[1]]['name'] != "" ) {
             $errFlag = 1;
             $array_ext = explode(".", $_FILES[$value[1]]['name']);
-            $ext = $array_ext[ count ( $array_ext ) - 1 ];
-            $ext = strtolower($ext);
 
             $strExt = "";
 
             foreach ( $value[2] as $checkExt ){
+                $ext = "";
+
+                // チェック拡張子のピリオドの数を取得('tar.gz'の場合1個、'jpg'のように通常は0個)
+                $count_period = substr_count($checkExt, ".");
+                
+                if($count_period > 0) {
+                    for($i = max(array_keys($array_ext)) - $count_period; $i < count($array_ext); $i++) {
+                        $ext .= $array_ext[$i] . ".";
+                    }
+                    $ext = preg_replace("/.$/", "" ,$ext);
+                } else {
+                    $ext = $array_ext[ count ( $array_ext ) - 1 ];
+                }
+
+                $ext = strtolower($ext);
+
                 if ( $ext == $checkExt) {
                     $errFlag = 0;
                 }
