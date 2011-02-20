@@ -51,18 +51,6 @@ class LC_Page_Admin_System_System extends LC_Page_Admin {
     }
 
     /**
-     * フォームパラメータ初期化.
-     *
-     * @return void
-     */
-    function initForm() {
-        $objForm = new SC_FormParam();
-        $objForm->addParam('mode', 'mode', INT_LEN, '', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
-        $objForm->setParam($_GET);
-        $this->objForm = $objForm;
-    }
-
-    /**
      * Page のプロセス.
      *
      * @return void
@@ -103,6 +91,18 @@ class LC_Page_Admin_System_System extends LC_Page_Admin {
      */
     function destroy() {
         parent::destroy();
+    }
+
+    /**
+     * フォームパラメータ初期化.
+     *
+     * @return void
+     */
+    function initForm() {
+        $objForm = new SC_FormParam();
+        $objForm->addParam('mode', 'mode', INT_LEN, '', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
+        $objForm->setParam($_GET);
+        $this->objForm = $objForm;
     }
 
     /**
