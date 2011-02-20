@@ -34,7 +34,15 @@
         <table>
             <tr>
                 <th>商品名</th>
-                <td><!--{$arrReview.name|h}--></td>
+                <td><!--{$arrReview.name|h}-->
+                <input type="hidden" name="name" value="<!--{$arrReview.name}-->">
+                </td>
+            </tr>
+            <tr>
+                <th>投稿日</th>
+                <td><!--{$arrReview.create_date|sfDispDBDate}-->
+                <input type="hidden" name="create_date" value="<!--{$arrReview.create_date}-->">
+                </td>
             </tr>
             <tr>
                 <th>レビュー表示</th>
@@ -42,10 +50,6 @@
                     <!--{if $arrErr.status}--><span class="attention"><!--{$arrErr.status}--></span><!--{/if}-->
                     <input type="radio" name="status" value="2" <!--{if $arrReview.status eq 2}-->checked<!--{/if}-->>非表示<!--{if $arrReview.status eq 2 && !$tpl_status_change}--><!--{else}--><input type="radio" name="status" value="1" <!--{if $arrReview.status eq 1}-->checked<!--{/if}-->>表示<!--{/if}-->
                 </td>
-            </tr>
-            <tr>
-                <th>投稿日</th>
-                <td><!--{$arrReview.create_date|sfDispDBDate}--></td>
             </tr>
             <tr>
                 <th>投稿者名 <span class="attention">*</span></th>

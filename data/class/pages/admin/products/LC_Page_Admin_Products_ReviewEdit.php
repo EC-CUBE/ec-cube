@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/admin/LC_Page_Admin.php");
+require_once(CLASS_REALDIR . "pages/admin/products/LC_Page_Admin_Products_Review.php");
 
 /**
  * レビュー編集 のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_REALDIR . "pages/admin/LC_Page_Admin.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin {
+class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin_Products_Review {
 
     // }}}
     // {{{ functions
@@ -47,6 +47,8 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin {
         $this->tpl_subnavi = 'products/subnavi.tpl';
         $this->tpl_mainno = 'products';
         $this->tpl_subno = 'review';
+        // 両方選択可能
+        $this->tpl_status_change = true;
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrRECOMMEND = $masterData->getMasterData("mtb_recommend");
@@ -72,57 +74,34 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin {
     function action() {
         $objSess = new SC_Session();
         $this->objQuery =& SC_Query::getSingletonInstance();
-
         // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess($objSess);
 
-        // 検索ワードの引継ぎ
-        foreach ($_POST as $key => $val){
-            if (ereg("^search_", $key)){
-                $this->arrSearchHidden[$key] = $val;
-            }
-        }
-
-        // 両方選択可能
-        $this->tpl_status_change = true;
-
+        // パラメータ情報の初期化
+        $objFormParam = new SC_FormParam();
+        $this->lfInitParam($objFormParam);
+        $objFormParam->setParam($_POST);
+        $objFormParam->convParam();
+        // 検索ワードの引き継ぎ
+        $this->arrSearchHidden = $objFormParam->getSearchArray();
+        $this->arrReview = $objFormParam->getHashArray();
+                
         switch ($this->getMode()) {
             // 登録
             case 'complete':
-                // 取得文字列の変換用カラム
-                $arrRegistColumn = array (
-                    array("column" => "status"),
-                    array("column" => "recommend_level"),
-                    array("column" => "title", "convert" => "KVa"),
-                    array("column" => "comment", "convert" => "KVa"),
-                    array("column" => "reviewer_name", "convert" => "KVa"),
-                    array("column" => "reviewer_url", "convert" => "KVa"),
-                    array("column" => "sex", "convert" => "n")
-                );
-
-                // フォーム値の変換
-                $arrReview = $this->lfConvertParam($_POST, $arrRegistColumn);
-                $this->arrErr = $this->lfCheckError($arrReview);
-
-                // エラー有り
-                if ($this->arrErr) {
-                    // 入力内容を引き継ぐ
-                    $this->arrReview = $arrReview;
-                } else {
+                $this->arrErr = $this->lfCheckError($objFormParam);
                 // エラー無し
+                if (!$this->arrErr) {
                     // レビュー情報の更新
-                    $this->lfRegistReviewData($arrReview, $arrRegistColumn);
-
+                    $this->lfRegistReviewData($objFormParam);
                     // レビュー情報のDB取得
-                    $this->arrReview = $this->lfGetReviewData($arrReview['review_id']);
-
+                    $this->arrReview = $this->lfGetReviewData($this->arrReview['review_id']);
                     $this->tpl_onload = "alert('登録が完了しました。');";
                 }
                 break;
-
             default:
                 // レビュー情報のDB取得
-                $this->arrReview = $this->lfGetReviewData($_POST['review_id']);
+                $this->arrReview = $this->lfGetReviewData($this->arrReview['review_id']);
                 break;
         }
     }
@@ -137,47 +116,39 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin {
     }
 
     /**
-     * 入力エラーチェック
+     * パラメータ情報の初期化を行う.
      *
+     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @return void
      */
-    function lfCheckError($arrReview) {
-        $objErr = new SC_CheckError($arrReview);
-        $objErr->doFunc(array("おすすめレベル", "recommend_level"), array("SELECT_CHECK"));
-        $objErr->doFunc(array("タイトル", "title", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("コメント", "comment", LTEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("投稿者名", "reviewer_name", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("投稿者URL", "reviewer_url", URL_LEN), array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("性別", "sex", STEXT_LEN), array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        return $objErr->arrErr;
-    }
+    function lfInitParam(&$objFormParam) {
+    	// 検索条件のパラメータを初期化
+        parent::lfInitParam($objFormParam);
+    	$objFormParam->addParam("レビューID", "review_id");
+    	$objFormParam->addParam("商品名", "name", "", "", array(), "", false);
+    	$objFormParam->addParam("投稿日", "create_date", "", "", array(), "", false);
+        
+    	// 登録情報
+        $objFormParam->addParam("レビュー表示", "status", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("投稿者名", "reviewer_name", STEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("投稿者URL", "reviewer_url", URL_LEN, "KVCa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+		$objFormParam->addParam("性別", "sex", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+		$objFormParam->addParam("おすすめレベル", "recommend_level", INT_LEN, "n", array("SELECT_CHECK"));
+	    $objFormParam->addParam("タイトル", "title", STEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("コメント", "comment", LTEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	}    
 
-    /**
-     * 取得文字列の変換
+	/**
+     * フォーム入力パラメーターエラーチェック
      *
+     * @param array $objFormParam フォームパラメータークラス
+     * @return array エラー配列
      */
-    function lfConvertParam($array, $arrRegistColumn) {
-        /*
-         *	文字列の変換
-         *	K :  「半角(ﾊﾝｶｸ)片仮名」を「全角片仮名」に変換
-         *	C :  「全角ひら仮名」を「全角かた仮名」に変換
-         *	V :  濁点付きの文字を一文字に変換。"K","H"と共に使用します
-         *	n :  「全角」数字を「半角(ﾊﾝｶｸ)」に変換
-         *  a :  全角英数字を半角英数字に変換する
-         */
-        // カラム名とコンバート情報
-        foreach ($arrRegistColumn as $data) {
-            $arrConvList[ $data["column"] ] = isset($data["convert"])
-                ? $data["convert"] : "";
+    function lfCheckError(&$objFormParam) {
+		$arrErr = $objFormParam->checkError();
+        if (!SC_Utils_Ex::isBlank($arrErr)) {
+            return $arrErr;
         }
-
-        // 文字変換
-        foreach ($arrConvList as $key => $val) {
-            // POSTされてきた値のみ変換する。
-            if(strlen(($array[$key])) > 0) {
-                $array[$key] = mb_convert_kana($array[$key] ,$val);
-            }
-        }
-        return $array;
     }
 
     /**
@@ -193,7 +164,6 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin {
         if (empty($arrReview)) {
             SC_Utils_Ex::sfDispError("");
         }
-
         return $arrReview[0];
     }
 
@@ -201,14 +171,10 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin {
      * レビュー情報の更新
      *
      */
-    function lfRegistReviewData($arrReview, $arrRegistColumn){
-        foreach ($arrRegistColumn as $data) {
-            $arrRegist[ $data["column"] ] = $arrReview[ $data["column"] ];
-        }
-        $arrRegist['update_date'] = 'now()';
-
-        // 更新実行
-        $this->objQuery->update("dtb_review", $arrRegist, "review_id = ?", array($arrReview['review_id']));
+    function lfRegistReviewData(&$objFormParam){
+    	$arrValues = $objFormParam->getDbArray();
+        $arrValues['update_date'] = 'now()';
+        $this->objQuery->update("dtb_review", $arrValues, "review_id = ?", array($arrValues['review_id']));
     }
 }
 ?>

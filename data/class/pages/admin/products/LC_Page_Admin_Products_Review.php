@@ -55,6 +55,20 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin {
         $this->arrPageMax = $masterData->getMasterData("mtb_page_max");
         $this->arrRECOMMEND = $masterData->getMasterData("mtb_recommend");
         $this->arrSex = $masterData->getMasterData("mtb_sex");
+        
+        $objDate = new SC_Date();
+        // 登録・更新検索開始年
+        $objDate->setStartYear(RELEASE_YEAR);
+        $objDate->setEndYear(DATE("Y"));
+        $this->arrStartYear = $objDate->getYear();
+        $this->arrStartMonth = $objDate->getMonth();
+        $this->arrStartDay = $objDate->getDay();
+        // 登録・更新検索終了年
+        $objDate->setStartYear(RELEASE_YEAR);
+        $objDate->setEndYear(DATE("Y"));
+        $this->arrEndYear = $objDate->getYear();
+        $this->arrEndMonth = $objDate->getMonth();
+        $this->arrEndDay = $objDate->getDay();
     }
 
     /**
@@ -74,34 +88,18 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin {
      */
     function action() {
         $objSess = new SC_Session();
-        $objDate = new SC_Date();
+
         $objQuery =& SC_Query::getSingletonInstance();
 
         // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess($objSess);
 
-        // 登録・更新検索開始年
-        $objDate->setStartYear(RELEASE_YEAR);
-        $objDate->setEndYear(DATE("Y"));
-        $this->arrStartYear = $objDate->getYear();
-        $this->arrStartMonth = $objDate->getMonth();
-        $this->arrStartDay = $objDate->getDay();
-        // 登録・更新検索終了年
-        $objDate->setStartYear(RELEASE_YEAR);
-        $objDate->setEndYear(DATE("Y"));
-        $this->arrEndYear = $objDate->getYear();
-        $this->arrEndMonth = $objDate->getMonth();
-        $this->arrEndDay = $objDate->getDay();
-
         // パラメータ管理クラス
-        $this->objFormParam = new SC_FormParam();
-        // パラメータ情報の初期化
-        $this->lfInitParam();
-        $this->objFormParam->setParam($_POST);
-        $arrForm = $this->objFormParam->getHashArray();
-
-        // hidden の設定
-        $this->arrHidden = $this->lfSetHidden($arrForm);
+        $objFormParam = new SC_FormParam();
+        $this->lfInitParam($objFormParam);
+        $objFormParam->setParam($_POST);
+        $this->arrForm = $objFormParam->getHashArray();
+        $this->arrHidden = $this->lfSetHidden($this->arrForm);
 
         switch ($this->getMode()) {
         case 'delete':
@@ -109,10 +107,10 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin {
         case 'search':
         case 'csv':
             // エラーチェック
-            $this->arrErr = $this->lfCheckError();
+            $this->arrErr = $this->lfCheckError($objFormParam);
             if (!$this->arrErr){
                 // 検索条件を取得
-                list($where, $arrval) = $this->lfGetWhere($arrForm);
+                list($where, $arrval) = $this->lfGetWhere($this->arrForm);
             }
 
             //CSVダウンロード
@@ -122,13 +120,11 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin {
             }
 
             // 検索条件を取得
-            $this->arrReview = $this->lfGetRevire($arrForm, $where, $arrval);
+            $this->arrReview = $this->lfGetReview($this->arrForm, $where, $arrval);
             break;
         default:
             break;
         }
-
-        $this->arrForm = $arrForm;
     }
 
     /**
@@ -141,11 +137,11 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin {
     }
 
     // 入力エラーチェック
-    function lfCheckError() {
+    function lfCheckError(&$objFormParam) {
         // 入力データを渡す。
-        $arrRet =  $this->objFormParam->getHashArray();
+        $arrRet =  $objFormParam->getHashArray();
         $objErr = new SC_CheckError($arrRet);
-        $objErr->arrErr = $this->objFormParam->checkError();
+        $objErr->arrErr = $objFormParam->checkError();
 
         switch ($this->getMode()){
         case 'search':
@@ -183,7 +179,6 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin {
                         $arrForm[$key] = split("-", $val);
                     }
                     break;
-
                 default:
                     $arrHidden[$key] = $val;
                     break;
@@ -194,22 +189,22 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin {
     }
 
     /* パラメータ情報の初期化 */
-    function lfInitParam() {
-        $this->objFormParam->addParam("投稿者名", "search_reviewer_name", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("投稿者URL", "search_reviewer_url", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("商品名", "search_name", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("商品コード", "search_product_code", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("性別", "search_sex", INT_LEN, "n", array("MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("おすすめレベル", "search_recommend_level", INT_LEN, "n", array("MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("投稿年", "search_startyear", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $this->objFormParam->addParam("投稿月", "search_startmonth", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $this->objFormParam->addParam("投稿日", "search_startday", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $this->objFormParam->addParam("投稿年", "search_endyear", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $this->objFormParam->addParam("投稿月", "search_endmonth", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $this->objFormParam->addParam("投稿日", "search_endday", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $this->objFormParam->addParam("最大表示件数", "search_page_max", INT_LEN, "n", array("MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("ページ番号件数", "search_pageno", INT_LEN, "n", array("MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("レビューID", "review_id", INT_LEN, "n", array("MAX_LENGTH_CHECK"));
+    function lfInitParam(&$objFormParam) {
+        $objFormParam->addParam("投稿者名", "search_reviewer_name", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"),"",false);
+        $objFormParam->addParam("投稿者URL", "search_reviewer_url", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"),"",false);
+        $objFormParam->addParam("商品名", "search_name", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"),"",false);
+        $objFormParam->addParam("商品コード", "search_product_code", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"),"",false);
+        $objFormParam->addParam("性別", "search_sex", INT_LEN, "n", array("MAX_LENGTH_CHECK"),"",false);
+        $objFormParam->addParam("おすすめレベル", "search_recommend_level", INT_LEN, "n", array("MAX_LENGTH_CHECK"),"",false);
+        $objFormParam->addParam("投稿年", "search_startyear", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"),"",false);
+        $objFormParam->addParam("投稿月", "search_startmonth", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"),"",false);
+        $objFormParam->addParam("投稿日", "search_startday", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"),"",false);
+        $objFormParam->addParam("投稿年", "search_endyear", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"),"",false);
+        $objFormParam->addParam("投稿月", "search_endmonth", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"),"",false);
+        $objFormParam->addParam("投稿日", "search_endday", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"),"",false);
+        $objFormParam->addParam("最大表示件数", "search_page_max", INT_LEN, "n", array("MAX_LENGTH_CHECK"),"",false);
+        $objFormParam->addParam("ページ番号件数", "search_pageno", INT_LEN, "n", array("MAX_LENGTH_CHECK"),"",false);
+        $objFormParam->addParam("レビューID", "review_id", INT_LEN, "n", array("MAX_LENGTH_CHECK"),"",false);
     }
 
     // CSV ファイル出力実行
@@ -312,7 +307,7 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin {
     /*
      * レビューの検索結果取得
      */
-    function lfGetRevire($arrForm, $where, $arrval) {
+    function lfGetReview($arrForm, $where, $arrval) {
         $objQuery =& SC_Query::getSingletonInstance();
 
         // ページ送りの処理
