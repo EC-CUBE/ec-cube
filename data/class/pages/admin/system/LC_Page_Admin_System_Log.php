@@ -67,14 +67,16 @@ class LC_Page_Admin_System_Log extends LC_Page_Admin {
      * @return void
      */
     function action() {
+
+        // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess(new SC_Session);
-        
-        $this->lfInitParam();
-        
+
+        $this->objForm = $this->lfInitParam();
+
         if (SC_Utils::sfIsInt($tmp = $this->objForm->getValue('line'))) {
             $this->line_max = $tmp;
         }
-        
+
         $this->tpl_ec_log = $this->getEccubeLog();
     }
 
@@ -86,25 +88,27 @@ class LC_Page_Admin_System_Log extends LC_Page_Admin {
     function destroy() {
         parent::destroy();
     }
-    
+
     /**
-     * パラメータの初期化
+     * パラメータの初期化.
      *
-     * @return array
+     * @return object SC_FormParam インスタンス
      */
     function lfInitParam() {
-        $this->objForm = new SC_FormParam;
-        $this->objForm->addParam('line_max', 'line_max', INT_LEN, '', array('NUM_CHECK', 'MAX_LENGTH_CHECK', 'EXIST_CHECK'));
-        $this->objForm->setParam($_POST);
+        $objForm = new SC_FormParam;
+        $objForm->addParam('line_max', 'line_max', INT_LEN, '', array('NUM_CHECK', 'MAX_LENGTH_CHECK', 'EXIST_CHECK'));
+        $objForm->setParam($_POST);
+
+        return $objForm;
     }
 
     /**
-     * EC-CUBE ログを取得する
+     * EC-CUBE ログを取得する.
      *
-     * @return array
+     * @return array $arrLogs 取得したログ
      */
     function getEccubeLog() {
-        
+
         $index = 0;
         $arrLogs = array();
         for ($gen = 0 ; $gen <= MAX_LOG_QUANTITY; $gen++) {
@@ -112,12 +116,12 @@ class LC_Page_Admin_System_Log extends LC_Page_Admin {
             if ($gen != 0) {
                 $path .= ".$gen";
             }
-            
+
             // ファイルが存在しない場合、前世代のログへ
             if (!file_exists($path)) continue;
-            
+
             $arrLogTmp = array_reverse(file($path));
-            
+
             $arrBodyReverse = array();
             foreach ($arrLogTmp as $line) {
                 $line = chop($line);
@@ -131,9 +135,9 @@ class LC_Page_Admin_System_Log extends LC_Page_Admin {
                     $arrBodyReverse[] = $arrMatch[3];
                     $arrLogLine['body'] = implode("\n", array_reverse($arrBodyReverse));
                     $arrBodyReverse = array();
-                    
+
                     $arrLogs[] = $arrLogLine;
-                    
+
                     // 上限に達した場合、処理を抜ける
                     if (count($arrLogs) >= $this->line_max) break 2;
                 } else {
