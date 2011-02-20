@@ -56,6 +56,8 @@ class LC_Page_Admin_System extends LC_Page_Admin {
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrAUTHORITY = $masterData->getMasterData('mtb_authority');
+        $this->arrWORK[0]   = "非稼働";
+        $this->arrWORK[1]   = "稼働";
     }
 
     /**
@@ -74,10 +76,9 @@ class LC_Page_Admin_System extends LC_Page_Admin {
      * @return void
      */
     function action() {
-        $objSess  = new SC_Session();
 
         // 認証可否の判定
-        SC_Utils_Ex::sfIsSuccess($objSess);
+        SC_Utils_Ex::sfIsSuccess(new SC_Session());
 
         // ADMIN_ID以外の管理者件数を取得
         $linemax = $this->getMemberCount("del_flg <> 1 AND member_id <> " . ADMIN_ID);
@@ -86,8 +87,9 @@ class LC_Page_Admin_System extends LC_Page_Admin {
         $this->workmax
             = $this->getMemberCount("work = 1 AND del_flg <> 1 AND member_id <> " . ADMIN_ID);
 
-        // ページ送りの処理
-        $pageno = isset($_GET['pageno']) ? $_GET['pageno'] : 1;
+        // ページ送りの処理 $_GET['pageno']が信頼しうる値かどうかチェックする。
+        $pageno = $this->lfCheckPageNo($_GET['pageno']);
+
         $objNavi = new SC_PageNavi($pageno, $linemax, MEMBER_PMAX, "fnMemberPage", NAVI_PMAX);
         $this->tpl_strnavi  = $objNavi->strnavi;
         $this->tpl_disppage = $objNavi->now_page;
@@ -114,7 +116,7 @@ class LC_Page_Admin_System extends LC_Page_Admin {
      * @return integer 件数
      */
      function getMemberCount($where) {
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
         $table = 'dtb_member';
         return $objQuery->count($table, $where);
      }
@@ -133,10 +135,34 @@ class LC_Page_Admin_System extends LC_Page_Admin {
         $objSql->setWhere("del_flg <> 1 AND member_id <> ". ADMIN_ID);
         $objSql->setLimitOffset(MEMBER_PMAX, $startno);
 
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
         $arrMemberData = $objQuery->getAll($objSql->getSql());
 
         return $arrMemberData;
      }
+
+    /**
+     * ページ番号が信頼しうる値かチェックする.
+     *
+     * @access private
+     * @param integer  $pageno ページの番号（$_GETから入ってきた値）
+     * @return integer $clean_pageno チェック後のページの番号
+     */
+    function lfCheckPageNo($pageno) {
+
+        $clean_pageno = "";
+
+        // $pagenoが0以上の整数かチェック
+        if(SC_Utils_Ex::sfIsInt($pageno) && $pageno > 0) {
+            $clean_pageno = $pageno;
+        }
+
+        // 例外は全て1とする
+        else {
+            $clean_pageno = 1;
+        }
+
+        return $clean_pageno;
+    }
 }
 ?>
