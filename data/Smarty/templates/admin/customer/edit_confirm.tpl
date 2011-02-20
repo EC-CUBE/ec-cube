@@ -46,10 +46,10 @@ function func_return(){
         <!--{if $key ne "job" && $key ne "sex"}--><input type="hidden" name="search_data[<!--{$key|h}-->]" value="<!--{$item|h}-->"><!--{/if}-->
     <!--{/foreach}-->
     <!--{foreach from=$arrSearchData.job key="key" item="item"}-->
-        <input type="hidden" name="search_data[job][]" value=<!--{$item}--> />
+        <input type="hidden" name="search_data[job][]" value="<!--{$item}-->" />
     <!--{/foreach}-->
     <!--{foreach from=$arrSearchData.sex key="key" item="item"}-->
-        <input type="hidden" name="search_data[sex][]" value=<!--{$item}--> />
+        <input type="hidden" name="search_data[sex][]" value="<!--{$item}-->" />
     <!--{/foreach}-->
     <div id="customer" class="contents-main">
         <h2>顧客編集</h2>
