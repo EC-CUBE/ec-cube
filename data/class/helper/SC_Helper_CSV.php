@@ -49,6 +49,51 @@ class SC_Helper_CSV {
     // {{{ functions
 
     /**
+     * 項目情報を初期化する.
+     *
+     * @access private
+     * @return void
+     */
+    function init() {
+        $this->arrSubnavi = array(
+                                  1 => 'product',
+                                  2 => 'customer',
+                                  3 => 'order',
+                                  5 => 'category'
+                                  );
+
+        $this->arrSubnaviName = array(
+                                      1 => '商品管理',
+                                      2 => '顧客管理',
+                                      3 => '受注管理',
+                                      5 => 'カテゴリ'
+                                      );
+
+
+        $this->arrREVIEW_CVSCOL = array(
+                                        'B.name',
+                                        'A.status',
+                                        'A.create_date',
+                                        'A.reviewer_name',
+                                        'A.sex',
+                                        'A.recommend_level',
+                                        'A.title',
+                                        'A.comment'
+                                        );
+
+        $this->arrREVIEW_CVSTITLE = array(
+                                          '商品名',
+                                          'レビュー表示',
+                                          '投稿日',
+                                          '投稿者名',
+                                          '性別',
+                                          'おすすめレベル',
+                                          'タイトル',
+                                          'コメント'
+                                          );
+    }
+
+    /**
      * CSV 項目を出力する.
      *
      * @param integer $csv_id CSV ID
@@ -77,26 +122,7 @@ class SC_Helper_CSV {
         return $arrRet;
     }
 
-    // CSVを送信する。(共通。現状は受注のみ利用。)
-    function sfDownloadCsv($csv_id, $where, $arrval, $order) {
-        switch ($csv_id) {
-            case 3: // 受注
-                $from = 'dtb_order';
-                break;
-        }
 
-        // CSV出力タイトル行の作成
-        $arrCsvOutput = SC_Utils_Ex::sfSwapArray($this->sfGetCsvOutput($csv_id, 'status = ' . CSV_COLUMN_STATUS_FLG_ENABLE));
-
-        if (count($arrCsvOutput) <= 0) break;
-
-        $arrCsvOutputCols = $arrCsvOutput['col'];
-        $arrCsvOutputConvs = $arrCsvOutput['conv'];
-        $arrCsvOutputTitle = $arrCsvOutput['disp_name'];
-        $head = SC_Utils_Ex::sfGetCSVList($arrCsvOutputTitle);
-        $data = $objCSV->lfGetCSV("dtb_order", $where, $option, $arrval, $arrCsvOutputCols, $arrCsvOutputConvs);
-    }
-    
     /**
      * CSVが出力設定でインポート可能かのチェック
      *
@@ -142,7 +168,6 @@ class SC_Helper_CSV {
      * @return integer CSV のカウント数
      */
     function sfGetCSVRecordCount($fp) {
-
         $count = 0;
         while(!feof($fp)) {
             $arrCSV = fgetcsv($fp, CSV_LINE_MAX);
@@ -156,8 +181,13 @@ class SC_Helper_CSV {
         }
     }
 
-    //  CSV作成 コールバック関数
-    function cbOutputProductCSV($data) {
+    /**
+     * CSV作成 テンポラリファイル出力 コールバック関数
+     *
+     * @param mixed $data 出力データ
+     * @return boolean true (true:固定 false:中断)
+     */
+    function cbOutputCSV($data) {
         $line = $this->sfArrayToCSV($data);
         $line = mb_convert_encoding($line, 'SJIS-Win');
         $line .= "\r\n";
@@ -165,24 +195,44 @@ class SC_Helper_CSV {
         return true;
     }
 
-    // CSVを送信する。(商品)
-    function sfDownloadProductsCsv($where, $arrval, $order, $is_download = false) {
+    /**
+     * CSVファイルを送信する
+     *
+     * @param integer $csv_id CSVフォーマットID
+     * @param string $where WHERE条件文
+     * @param array $arrVal プリペアドステートメントの実行時に使用される配列。配列の要素数は、クエリ内のプレースホルダの数と同じでなければなりません。 
+     * @param string $order ORDER文
+     * @param boolean $is_download true:ダウンロード用出力までさせる false:CSVの内容を返す(旧方式、メモリを食います。）
+     * @return mixed $is_download = true時 成功失敗フラグ(boolean) 、$is_downalod = false時 string
+     */
+    function sfDownloadCsv($csv_id, $where = "", $arrVal = array(), $order = "", $is_download = false) {
         // 実行時間を制限しない
         @set_time_limit(0);
 
         // CSV出力タイトル行の作成
-        $arrOutput = SC_Utils_Ex::sfSwapArray($this->sfGetCsvOutput(1, 'status = ' . CSV_COLUMN_STATUS_FLG_ENABLE));
+        $arrOutput = SC_Utils_Ex::sfSwapArray($this->sfGetCsvOutput($csv_id, 'status = ' . CSV_COLUMN_STATUS_FLG_ENABLE));
         if (count($arrOutput) <= 0) return false; // 失敗終了
         $arrOutputCols = $arrOutput['col'];
 
         $objQuery =& SC_Query::getSingletonInstance();
-        $objQuery->setOrder($order);
-        
-        $objProduct = new SC_Product();
+        $objQuery->setOrder($order);        
         $cols = SC_Utils_Ex::sfGetCommaList($arrOutputCols, true);
-        // このWhereを足さないと無効な規格も出力される。現行仕様と合わせる為追加。
-        $inner_where = 'dtb_products_class.del_flg = 0';
-        $sql = $objQuery->getSql($cols, $objProduct->prdclsSQL($inner_where),$where);
+        
+        // TODO: 固有処理 なんかエレガントな処理にしたい
+        if($csv_id == '1') {
+            //商品の場合
+            $objProduct = new SC_Product();
+            // このWhereを足さないと無効な規格も出力される。現行仕様と合わせる為追加。
+            $inner_where = 'dtb_products_class.del_flg = 0';
+            $sql = $objQuery->getSql($cols, $objProduct->prdclsSQL($inner_where),$where);
+        }else if($csv_id == '2') {
+            // 顧客の場合
+            $sql = "SELECT " . $cols . " FROM dtb_customer " . $where . " " . $order;
+            
+        }
+        // 固有処理ここまで
+        
+        // ヘッダ構築
         $header = $this->sfArrayToCSV($arrOutput['disp_name']);
         $header = mb_convert_encoding($header, 'SJIS-Win');
         $header .= "\r\n";
@@ -191,18 +241,17 @@ class SC_Helper_CSV {
         // TODO: パフォーマンス向上には、ストリームを使うようにすると良い
         //  環境要件がバージョン5.1以上になったら使うように変えても良いかと
         //  fopen('php://temp/maxmemory:'. (5*1024*1024), 'r+');
-        $tmp_filename = tempnam(CSV_TEMP_REALDIR, 'product_csv');
+        $tmp_filename = tempnam(CSV_TEMP_REALDIR, $this->arrSubnavi[$csv_id] . '_csv');
         $this->fpOutput = fopen($tmp_filename, "w+");
-
         fwrite($this->fpOutput, $header);
 
-        $objQuery->doCallbackAll(array(&$this, 'cbOutputProductCSV'), $sql, $arrval);
+        $objQuery->doCallbackAll(array(&$this, 'cbOutputCSV'), $sql, $arrVal);
 
         fclose($this->fpOutput);
 
         if($is_download) {
             // CSVを送信する。
-            $this->lfDownloadCSVFile($tmp_filename,"product_");
+            $this->lfDownloadCSVFile($tmp_filename,$this->arrSubnavi[$csv_id] . "_");
             $res = true;
         }else{
             $res = SC_Utils_Ex::sfReadFile($tmp_filename);
@@ -353,53 +402,7 @@ class SC_Helper_CSV {
         return preg_replace('/,$/',"\r\n",$line);
     }
 
-    /**
-     * 項目情報を初期化する.
-     *
-     * @access private
-     * @return void
-     */
-    function init() {
-        $this->arrSubnavi = array(
-                                  1 => 'product',
-                                  2 => 'customer',
-                                  3 => 'order',
-                                  4 => 'campaign',
-                                  5 => 'category'
-                                  );
 
-        $this->arrSubnaviName = array(
-                                      1 => '商品管理',
-                                      2 => '顧客管理',
-                                      3 => '受注管理',
-                                      4 => 'キャンペーン',
-                                      5 => 'カテゴリ'
-                                      );
-
-
-        $this->arrREVIEW_CVSCOL = array(
-                                        'B.name',
-                                        'A.status',
-                                        'A.create_date',
-                                        'A.reviewer_name',
-                                        'A.sex',
-                                        'A.recommend_level',
-                                        'A.title',
-                                        'A.comment'
-                                        );
-
-        $this->arrREVIEW_CVSTITLE = array(
-                                          '商品名',
-                                          'レビュー表示',
-                                          '投稿日',
-                                          '投稿者名',
-                                          '性別',
-                                          'おすすめレベル',
-                                          'タイトル',
-                                          'コメント'
-                                          );
-    }
-    
     /**
      * 1次元配列を1行のCSVとして返す
      * 参考: http://jp.php.net/fputcsv

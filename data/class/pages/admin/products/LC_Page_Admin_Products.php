@@ -141,12 +141,8 @@ class LC_Page_Admin_Products extends LC_Page_Admin {
                     require_once(CLASS_EX_REALDIR . "helper_extends/SC_Helper_CSV_Ex.php");
 
                     $objCSV = new SC_Helper_CSV_Ex();
-
                     // CSVを送信する。正常終了の場合、終了。
-                    $objCSV->sfDownloadProductsCsv($where, $arrval, $order, true);
-                    // FIXME: sendResponseに渡した方が良いのか？
-//                        $data = $objCSV->sfDownloadProductsCsv($where, $arrval, $order);
-//                        $this->sendResponseCSV($fime_name, $data);
+                    $objCSV->sfDownloadCsv(1, $where, $arrval, $order, true);
                     exit;
                 // 全件削除(ADMIN_MODE)
                 case 'delete_all':
