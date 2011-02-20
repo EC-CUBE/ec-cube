@@ -46,9 +46,6 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin {
 
         $this->tpl_mainpage = 'system/input.tpl';
 
-        // ページ送り用ナンバーの取得
-        $this->tpl_pageno = isset($_REQUEST['pageno']) ? $_REQUEST['pageno'] : 1;
-
         // マスタ-データから権限配列を取得
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrAUTHORITY = $masterData->getMasterData('mtb_authority');
@@ -78,6 +75,9 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin {
         // トランザクショントークンの取得
         $this->transactionid = SC_Helper_Session_Ex::getToken();
 
+        // ページ送りの処理 $_REQUEST['pageno']が信頼しうる値かどうかチェックする。
+        $this->tpl_pageno = $this->lfCheckPageNo($_REQUEST['pageno']);
+
         switch($this->getMode()) {
         case 'new':
             $this->execNewMode();
@@ -86,10 +86,6 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin {
         case 'edit':
             $this->execEditMode();
             break;
-
-        case 'parent_reload':
-            $this->execParentReloadMode();
-            // defaultアクションも実行させるためbreakしない
 
         default:
             $this->execDefaultMode();
@@ -119,16 +115,18 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin {
             SC_Utils::sfDispError('');
         }
 
-        $this->initNewMode();
+        $this->objForm = $this->initNewMode();
 
         $arrErr = $this->validateNewMode();
+
+        $this->arrForm = $this->objForm->getHashArray();
 
         if (count($arrErr) > 0) {
             // 入力された値を保持する
             $this->tpl_mode      = $this->getMode();
-            $this->tpl_member_id = $_POST['member_id'];
-            $this->tpl_old_login_id = $_POST['old_login_id'];
-            $this->arrForm = $this->objForm->getHashArray();
+            $this->tpl_member_id = '';
+            $this->tpl_old_login_id = '';
+
             // パスワードは保持しない
             $this->arrForm['password'] = '';
             // エラー情報をセットする
@@ -138,9 +136,9 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin {
             return;
         }
 
-        $this->insertMemberData($this->objForm->getHashArray());
+        $this->insertMemberData($this->arrForm);
         // 親ウィンドウを更新後、自ウィンドウを閉じる。
-        $url = ADMIN_SYSTEM_URLPATH . "?pageno=" . $_POST['pageno'];
+        $url = ADMIN_SYSTEM_URLPATH . "?pageno=" . $this->arrForm['pageno'];
         $this->tpl_onload = "fnUpdateParent('".$url."'); window.close();";
     }
 
@@ -148,15 +146,17 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin {
      * newアクションの初期化.
      * SC_FormParamのインスタンスをメンバ変数にセットする.
      *
-     * @param void
-     * @return void
+     * @param string $mode editの時は指定
+     * @return object SC_FormParamのインスタンス
      */
     function initNewMode($mode = "") {
         $objForm = new SC_FormParam();
 
+        $objForm->addParam('メンバーID', 'member_id', INT_LEN, 'n', array('NUM_CHECK'));
         $objForm->addParam('名前', 'name', STEXT_LEN, 'KV', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
         $objForm->addParam('所属', 'department', STEXT_LEN, 'KV', array('MAX_LENGTH_CHECK'));
         $objForm->addParam('ログインID', 'login_id', '' , '', array('EXIST_CHECK', 'ALNUM_CHECK'));
+        $objForm->addParam('変更前ログインID', 'old_login_id', '' , '', array('ALNUM_CHECK'));
         if ($mode == "edit" && $_POST['password'] == DEFAULT_PASSWORD) {
             $objForm->addParam('パスワード', 'password', '' , '', array('EXIST_CHECK'));
         } else {
@@ -164,11 +164,12 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin {
         }
         $objForm->addParam('権限', 'authority', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objForm->addParam('稼働/非稼働', 'work', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objForm->addParam('ページ', 'pageno', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
 
         $objForm->setParam($_POST);
         $objForm->convParam();
 
-        $this->objForm = $objForm;
+        return $objForm;
     }
 
     /**
@@ -212,16 +213,18 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin {
             SC_Utils::sfDispError('');
         }
 
-        $this->initNewMode("edit");
+        $this->objForm = $this->initNewMode("edit");
 
         $arrErr = $this->validateEditMode();
+
+        $this->arrForm = $this->objForm->getHashArray();
 
         if (count($arrErr) > 0) {
             // 入力された値を保持する
             $this->tpl_mode      = $this->getMode();
-            $this->tpl_member_id = $_POST['member_id'];
-            $this->tpl_old_login_id = $_POST['old_login_id'];
-            $this->arrForm = $this->objForm->getHashArray();
+            $this->tpl_member_id = $this->arrForm['member_id'];
+            $this->tpl_old_login_id = $this->arrForm['old_login_id'];
+
             // パスワードは保持しない
             $this->arrForm['password'] = '';
             // エラー情報をセットする
@@ -231,9 +234,9 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin {
             return;
         }
 
-        $this->updateMemberData($_POST['member_id'], $this->objForm->getHashArray());
+        $this->updateMemberData($this->arrForm['member_id'], $this->arrForm);
         // 親ウィンドウを更新後、自ウィンドウを閉じる。
-        $url = ADMIN_SYSTEM_URLPATH . "?pageno=" . $_POST['pageno'];
+        $url = ADMIN_SYSTEM_URLPATH . "?pageno=" . $this->arrForm['pageno'];
         $this->tpl_onload = "fnUpdateParent('".$url."'); window.close();";
     }
 
@@ -266,18 +269,6 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin {
     }
 
     /**
-     * parent_reloadアクションを実行する.
-     * テンプレートに親windowをリロードするjavascriptをセットする.
-     *
-     * @param void
-     * @return void
-     */
-    function execParentReloadMode() {
-        $url = ADMIN_SYSTEM_URLPATH;
-        $this->tpl_onload = "fnUpdateParent('$url')";
-    }
-
-    /**
      * defaultアクションを実行する.
      * 初回表示時に実行される.
      * $GET['id']が渡された場合、編集モードとして表示,
@@ -287,18 +278,35 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin {
      * @return void
      */
     function execDefaultMode() {
-        // $_GET['id']があれば編集モードで表示する
-        if (isset($_GET['id']) && SC_Utils::sfIsInt($_GET['id'])) {
-            $this->tpl_mode      = 'edit';
-            $this->tpl_member_id = $_GET['id'];
+
+        // $_GET['id']（member_id）が登録済みのものかチェック。
+        // 登録されていない場合は不正なものとして、新規扱いとする。
+        $clean_id = "";
+        $clean_mode_flg = "new";
+        
+        // idが0より大きい数字で整数の場合
+        if (isset($_GET['id']) && SC_Utils::sfIsInt($_GET['id']) && $_GET['id'] > 0) {
+            if ($this->memberDataExists('member_id = ? AND del_flg = 0', $_GET['id'])) {
+                $clean_id = $_GET['id'];
+                $clean_mode_flg = "edit";
+            }
+        }
+
+        switch($clean_mode_flg) {
+        case 'edit':
+            $this->tpl_mode      = $clean_mode_flg;
+            $this->tpl_member_id = $clean_id;
             $this->tpl_onfocus   = "fnClearText(this.name);";
-            $this->arrForm       = $this->getMemberData($_GET['id']);
+            $this->arrForm       = $this->getMemberData($clean_id);
             $this->arrForm['password'] = DEFAULT_PASSWORD;
             $this->tpl_old_login_id    = $this->arrForm['login_id'];
-        // 新規作成モードで表示
-        } else {
-            $this->tpl_mode = "new";
+            break;
+
+        case 'new':
+        default:
+            $this->tpl_mode = $clean_mode_flg;
             $this->arrForm['authority'] = -1;
+            break;
         }
     }
 
@@ -313,7 +321,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin {
         $columns = 'name,department,login_id,authority, work';
         $where   = 'member_id = ?';
 
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
         $arrRet = $objQuery->select($columns, $table, $where, array($id));
 
         if (is_null($arrRet)) return array();
@@ -331,11 +339,35 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin {
     function memberDataExists($where, $val) {
         $table = 'dtb_member';
 
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
         $count = $objQuery->count($table, $where, array($val));
 
         if ($count > 0) return true;
         return false;
+    }
+
+    /**
+     * ページ番号が信頼しうる値かチェックする.
+     *
+     * @access private
+     * @param  integer $pageno ページの番号
+     * @return integer $clean_pageno チェック後のページの番号
+     */
+    function lfCheckPageNo($pageno) {
+
+        $clean_pageno = "";
+
+        // $pagenoが0以上の整数かチェック
+        if(SC_Utils_Ex::sfIsInt($pageno) && $pageno > 0) {
+            $clean_pageno = $pageno;
+        }
+
+        // 例外は全て1とする
+        else {
+            $clean_pageno = 1;
+        }
+
+        return $clean_pageno;
     }
 
     /**
@@ -345,7 +377,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin {
      * @return void
      */
     function insertMemberData($arrMemberData) {
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
 
         // INSERTする値を作成する.
         $salt                  = SC_Utils_Ex::sfGetRandomString(10);
@@ -375,7 +407,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin {
      * @return void
      */
     function updateMemberData($member_id, $arrMemberData) {
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
 
         // Updateする値を作成する.
         $sqlVal = array();
