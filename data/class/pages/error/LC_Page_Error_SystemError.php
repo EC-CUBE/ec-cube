@@ -72,28 +72,7 @@ class LC_Page_Error_SystemError extends LC_Page_Error {
      * @return void
      */
     function action(){
-		$this->adminPage = SC_Utils_Ex::sfIsAdminFunction();
-
-        if ($this->adminPage) {
-            $this->tpl_mainpage = 'login_error.tpl';
-            $this->frame = LOGIN_FRAME;
-        } else {
-            $this->frame = SITE_FRAME;
-        }
-		
-        $objView = null;
-        if (SC_Display::detectDevice() == DEVICE_TYPE_MOBILE && $this->adminPage == false) {
-            $objView = new SC_InstallView(MOBILE_TEMPLATE_REALDIR, MOBILE_COMPILE_REALDIR);
-        } elseif($this->adminPage) {
-            $objView = new SC_AdminView();
-        } else {
-            $objView = new SC_InstallView(TEMPLATE_REALDIR, COMPILE_REALDIR);
-        }
-
         $this->tpl_error = "システムエラーが発生しました。<br />大変お手数ですが、サイト管理者までご連絡ください。";
-
-        $objView->assignobj($this);
-        $objView->display($this->frame);
 
         if (DEBUG_MODE) {
             echo '<div class="debug">';
@@ -105,6 +84,26 @@ class LC_Page_Error_SystemError extends LC_Page_Error {
             echo '</div>';
         }
     }
+
+    /**
+     * Page のレスポンス送信.
+     *
+     * @return void
+     */
+    function sendResponse() {
+        $this->adminPage = SC_Utils_Ex::sfIsAdminFunction();
+
+        if ($this->adminPage) {
+            $this->tpl_mainpage = 'login_error.tpl';
+            $this->template = LOGIN_FRAME;
+            $this->objDisplay->prepare($this, true);
+        } else {
+            $this->objDisplay->prepare($this);
+        }
+
+        $this->objDisplay->response->write();
+    }
+
 
     /**
      * デストラクタ.

@@ -23,7 +23,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/error/LC_Page_Error.php");
+require_once(CLASS_REALDIR . "pages/admin/LC_Page_Admin.php");
 
 /**
  * エラー表示のページクラス
@@ -32,7 +32,7 @@ require_once(CLASS_REALDIR . "pages/error/LC_Page_Error.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Error_DispError extends LC_Page_Error {
+class LC_Page_Error_DispError extends LC_Page_Admin {
 
     // }}}
     // {{{ functions
@@ -44,6 +44,7 @@ class LC_Page_Error_DispError extends LC_Page_Error {
      */
     function init() {
         parent::init();
+        $this->template = LOGIN_FRAME;
         $this->tpl_mainpage = 'login_error.tpl';
         $this->tpl_title = 'ログインエラー';
     }
