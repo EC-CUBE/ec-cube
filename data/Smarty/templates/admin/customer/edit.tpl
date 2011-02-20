@@ -214,7 +214,7 @@
                 <td>
                     <span class="attention"><!--{$arrErr.mailmaga_flg}--></span>
                     <span <!--{if $arrErr.mailmaga_flg != ""}--><!--{sfSetErrorStyle}--><!--{/if}-->>
-                        <!--{html_radios name="mailmaga_flg" options=$arrMagazineType separator=" " selected=$arrForm.mailmaga_flg}-->
+                        <!--{html_radios name="mailmaga_flg" options=$arrMailMagazineType separator=" " selected=$arrForm.mailmaga_flg}-->
                     </span>
                 </td>
             </tr>
