@@ -65,7 +65,10 @@ class LC_Page_Products_CategoryList extends LC_Page {
         $this->lfCheckCategoryId();
 
         // カテゴリー情報を取得する。
-        $this->lfGetCategories(@$_GET['category_id'], true, $this);
+        $objFormParam = $this->lfInitParam($_REQUEST);
+        $arrCategoryData = $this->lfGetCategories($objFormParam->getValue('category_id'), true, $this);
+        $this->arrCategory = $arrCategoryData["arrCategory"];
+        $this->arrChildren = $arrCategoryData["arrChildren"];
         $this->tpl_subtitle = $this->arrCategory['category_name'];
     }
 
@@ -79,16 +82,11 @@ class LC_Page_Products_CategoryList extends LC_Page {
     }
 
     /* カテゴリIDの正当性チェック */
-    function lfCheckCategoryId() {
-        $objDb = new SC_Helper_DB_Ex();
-        $category_id = $_POST['category_id'] ? $_POST['category_id'] : $_GET['category_id'];
-        if (!defined('MOBILE_SITE') && !isset($_REQUEST['category_id']))
-            SC_Utils_Ex::sfDispSiteError(CATEGORY_NOT_FOUND);
-        if ($category_id
-                && (!SC_Utils_Ex::sfIsInt($category_id)
-                || SC_Utils_Ex::sfIsZeroFilling($category_id)
-                || !$objDb->sfIsRecord('dtb_category', 'category_id', (array)$category_id, 'del_flg = 0')))
-            SC_Utils_Ex::sfDispSiteError(CATEGORY_NOT_FOUND);
+    function lfCheckCategoryId($category_id) {
+        if ($category_id && !SC_Helper_DB_Ex::sfIsRecord('dtb_category', 'category_id', (array)$category_id, 'del_flg = 0')){
+            return 0;
+        }
+        return $category_id;
     }
 
     /**
@@ -101,10 +99,8 @@ class LC_Page_Products_CategoryList extends LC_Page {
      * @return void
      */
     function lfGetCategories($category_id, $count_check = false, &$objPage) {
-        $objDb = new SC_Helper_DB_Ex();
         // カテゴリーの正しいIDを取得する。
-        $arrCategory_id = $objDb->sfGetCategoryId('', $category_id);
-        $category_id = $arrCategory_id[0];
+        $category_id = $this->lfCheckCategoryId($category_id);
         if ($category_id == 0) {
             SC_Utils_Ex::sfDispSiteError(CATEGORY_NOT_FOUND);
         }
@@ -112,7 +108,7 @@ class LC_Page_Products_CategoryList extends LC_Page {
         $arrCategory = null;	// 選択されたカテゴリー
         $arrChildren = array();	// 子カテゴリー
 
-        $arrAll = $objDb->sfGetCatTree($category_id, $count_check);
+        $arrAll = SC_Helper_DB_Ex::sfGetCatTree($category_id, $count_check);
         foreach ($arrAll as $category) {
             // 選択されたカテゴリーの場合
             if ($category['category_id'] == $category_id) {
@@ -148,9 +144,24 @@ class LC_Page_Products_CategoryList extends LC_Page {
             array_unshift($arrChildren, $arrCategory);
         }
 
-        // 結果を格納する。
-        $objPage->arrCategory = $arrCategory;
-        $objPage->arrChildren = $arrChildren;
+        return array("arrChildren"=>$arrChildren, "arrCategory"=>$arrCategory);
     }
+
+    /**
+     * ユーザ入力値の処理
+     *
+     * @return object
+     */
+    function lfInitParam($arrRequest) {
+        $objFormParam = new SC_FormParam();
+        $objFormParam->addParam("カテゴリID", "category_id", INT_LEN, "n", array('NUM_CHECK',"MAX_LENGTH_CHECK"));
+        // 値の取得
+        $objFormParam->setParam($arrRequest);
+        // 入力値の変換
+        $objFormParam->convParam();
+        return $objFormParam;        
+    }
+
+
 }
 ?>
