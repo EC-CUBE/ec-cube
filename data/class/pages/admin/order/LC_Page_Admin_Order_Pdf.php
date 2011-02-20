@@ -140,7 +140,6 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin {
         if(SC_Utils_Ex::sfIsInt($order_id)) {
             $arrForm['order_id'][0] = $order_id;
         } elseif (is_array($pdf_order_id)) {
-            $this->getOrderIdFromPost($objFormParam);
             sort($pdf_order_id);
             foreach ($pdf_order_id AS $key=>$val) {
                 $arrForm['order_id'][] = $val;
