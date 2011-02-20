@@ -402,14 +402,18 @@ class SC_FormParam {
     }
 
     // キー名と一致した値を返す
-    function getValue($keyname) {
+    function getValue($keyname,$default="") {
         $cnt = 0;
+        $ret = null;
         foreach($this->keyname as $val) {
             if($val == $keyname) {
                 $ret = isset($this->param[$cnt]) ? $this->param[$cnt] : "";
                 break;
             }
             $cnt++;
+        }
+        if(is_null($ret)){
+            $ret = $default;
         }
         return $ret;
     }
