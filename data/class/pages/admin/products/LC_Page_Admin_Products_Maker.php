@@ -29,7 +29,6 @@ require_once(CLASS_REALDIR . "pages/admin/LC_Page_Admin.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id$
  */
 class LC_Page_Admin_Products_Maker extends LC_Page_Admin {
 
@@ -66,32 +65,42 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin {
      * @return void
      */
     function action() {
+        $objFormParam = new SC_FormParam();
 
-        // 認証可否の判定.
+        // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess(new SC_Session());
 
-        // POST値の引き継ぎ
-        $this->arrForm = $_POST;
+        // パラメータ情報の初期化
+        $this->lfInitParam($objFormParam);
 
-        // 入力文字の変換
-        $this->arrForm = $this->lfConvertParam($this->arrForm);
+        // POST値をセット
+        $objFormParam->setParam($_POST);
+        
+        // POST値の入力文字変換
+        $objFormParam->convParam();
 
-        // モードによる処理切り替え.
+        // 変換後のPOST値を取得
+        $this->arrForm  = $objFormParam->getHashArray();
+
+
+        // モードによる処理切り替え
         switch($this->getMode()) {
 
-        // 編集処理.
+        // 編集処理
         case 'edit':
+        // 入力文字の変換
+
             // エラーチェック
             $this->arrErr = $this->lfErrorCheck($this->arrForm);
             if(count($this->arrErr) <= 0) {
                 if($this->arrForm['maker_id'] == "") {
-                    // メーカー情報新規登録.
+                    // メーカー情報新規登録
                     $this->lfInsert($this->arrForm);
                 } else {
-                    // メーカー情報編集.
+                    // メーカー情報編集
                     $this->lfUpdate($this->arrForm);
                 }
-                // 再表示.
+                // 再表示
                 $this->objDisplay->reload();
             } else {
                 // POSTデータを引き継ぐ
@@ -105,15 +114,19 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin {
             $this->tpl_maker_id = $this->arrForm['maker_id'];
             break;
 
+        // メーカー順変更
         case 'up':
         case 'down':
-            // メーカー順変更
             $this->lfRankChange($this->arrForm['maker_id'], $this->getMode());
+            // リロード
+            SC_Response_Ex::reload();
             break;
 
-        // 削除.
+        // 削除
         case 'delete':
             $this->lfDelete($this->arrForm['maker_id']);
+            // リロード
+            SC_Response_Ex::reload();
             break;
 
         default:
@@ -134,16 +147,26 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin {
         parent::destroy();
     }
 
+    /**
+     * パラメータ情報の初期化を行う.
+     *
+     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @return void
+     */
+    function lfInitParam(&$objFormParam) {
+        $objFormParam->addParam("メーカーID", "maker_id", INT_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("メーカー名", "name", SMTEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+    }
 
     /**
-     * メーカー情報表示
+     * メーカー情報表示.
      *
-     * @return array @arrMaker メーカー情報
+     * @return array $arrMaker メーカー情報
      */
     function lfDisp() {
         $objQuery =& SC_Query::getSingletonInstance();
 
-        // 削除されていないメーカー情報を表示する.
+        // 削除されていないメーカー情報を表示する
         $where = "del_flg = 0";
         $objQuery->setOrder("rank DESC");
         $arrMaker = array();
@@ -152,11 +175,12 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin {
     }
 
     /**
-     * メーカー情報新規登録
+     * メーカー情報新規登録.
      *
+     * @param array $arrForm メーカー情報
      * @return void
      */
-    function lfInsert($arrForm) {
+    function lfInsert(&$arrForm) {
         $objQuery =& SC_Query::getSingletonInstance();
 
         // INSERTする値を作成する
@@ -172,24 +196,25 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin {
     }
 
     /**
-     * メーカー情報更新
+     * メーカー情報更新.
      *
+     * @param array $arrForm メーカー情報
      * @return void
      */
-    function lfUpdate($arrForm) {
+    function lfUpdate(&$arrForm) {
         $objQuery =& SC_Query::getSingletonInstance();
 
-        // UPDATEする値を作成する.
+        // UPDATEする値を作成する
         $sqlval['name'] = $arrForm['name'];
         $sqlval['update_date'] = "Now()";
         $where = "maker_id = ?";
 
-        // UPDATEの実行.
+        // UPDATEの実行
         $objQuery->update("dtb_maker", $sqlval, $where, array($arrForm['maker_id']));
     }
 
     /**
-     * メーカー情報削除
+     * メーカー情報削除.
      *
      * @param integer $maker_id メーカーID
      * @return void
@@ -197,13 +222,10 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin {
     function lfDelete($maker_id) {
         $objDb = new SC_Helper_DB_Ex();
         $objDb->sfDeleteRankRecord("dtb_maker", "maker_id", $maker_id, "", true);
-
-        // 再表示
-        $this->objDisplay->reload();
     }
 
     /**
-     * メーカー情報順番変更
+     * メーカー情報順番変更.
      *
      * @param  integer $maker_id メーカーID
      * @param  string  $mode up か down のモードを示す文字列
@@ -220,17 +242,17 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin {
         case 'down':
             $objDb->sfRankDown("dtb_maker", "maker_id", $maker_id);
             break;
-        }
 
-        // 再表示
-        $this->objDisplay->reload();
+        default:
+            break;
+        }
     }
 
 
     /**
-     * メーカー情報編集前処理
+     * メーカー情報編集前処理.
      *
-     * @param array   $arrForm
+     * @param array   $arrForm メーカー情報
      * @param integer $maker_id メーカーID
      * @return array  $arrForm メーカー名を追加
      */
@@ -247,32 +269,12 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin {
     }
 
     /**
-     * 取得文字列の変換
+     * 入力エラーチェック.
      *
-     * @param  array $arrForm 変換前
-     * @return array $arrForm 変換後
-     */
-    function lfConvertParam($arrForm) {
-        // 文字変換
-        $arrConvList['maker_id'] = "n";
-        $arrConvList['name'] = "KVa";
-
-        foreach ($arrConvList as $key => $val) {
-            // POSTされてきた値のみ変換する
-            if(isset($arrForm[$key])) {
-                $arrForm[$key] = mb_convert_kana($arrForm[$key] ,$val);
-            }
-        }
-        return $arrForm;
-    }
-
-    /**
-     * 入力エラーチェック
-     *
-     * @param  array $arrForm
+     * @param  array $arrForm メーカー情報
      * @return array $objErr->arrErr エラー内容
      */
-    function lfErrorCheck($arrForm) {
+    function lfErrorCheck(&$arrForm) {
         $objErr = new SC_CheckError($arrForm);
         $objErr->doFunc(array("メーカー名", "name", SMTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
 
@@ -283,7 +285,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin {
               || SC_Utils_Ex::sfIsZeroFilling($arrForm['maker_id'])
               || !$objDb->sfIsRecord('dtb_maker', 'maker_id', array($arrForm['maker_id']))) {
 
-              // maker_idが指定されていて、且つその値が不正と思われる場合はエラー.
+              // maker_idが指定されていて、且つその値が不正と思われる場合はエラー
               $objErr->arrErr['maker_id'] = "※ メーカーIDが不正です<br />";
             }
         }
