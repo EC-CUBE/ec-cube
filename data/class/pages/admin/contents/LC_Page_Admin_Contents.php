@@ -53,6 +53,11 @@ class LC_Page_Admin_Contents extends LC_Page_Admin {
             'day' => date('j'),
         );
         $this->tpl_subtitle = '新着情報管理';
+        //---- 日付プルダウン設定
+        $objDate = new SC_Date(ADMIN_NEWS_STARTYEAR);
+        $this->arrYear = $objDate->getYear();
+        $this->arrMonth = $objDate->getMonth();
+        $this->arrDay = $objDate->getDay();
     }
 
     /**
@@ -71,98 +76,71 @@ class LC_Page_Admin_Contents extends LC_Page_Admin {
      * @return void
      */
     function action() {
-
-        //---- ページ初期設定
-        $objQuery = new SC_Query();
-        $objDate = new SC_Date(ADMIN_NEWS_STARTYEAR);
-        $objDb = new SC_Helper_DB_Ex();
-
+        // アクセス権があるかを判定し、ない場合はエラー画面を表示する。
         SC_Utils_Ex::sfIsSuccess(new SC_Session());
-
-        //---- 日付プルダウン設定
-        $this->arrYear = $objDate->getYear();
-        $this->arrMonth = $objDate->getMonth();
-        $this->arrDay = $objDate->getDay();
+        
+        $objDb = new SC_Helper_DB_Ex();        
+        $objFormParam = new SC_FormParam();
+        $this->lfInitParam($objFormParam);
+        $objFormParam->setParam($_POST);
+        $objFormParam->convParam();
+        $news_id = $objFormParam->getValue('news_id');
 
         //---- 新規登録/編集登録
         switch ($this->getMode()) {
         case 'regist':
-            $_POST = $this->lfConvData($_POST);
-
-            if ($this->arrErr = $this->lfErrorCheck()) {       // 入力エラーのチェック
-                $this->arrForm = $_POST;
-            } else {
-
-                if (isset($_POST['link_method']) == ""){
-                    $_POST['link_method'] = 1;
-                }
-
-                $this->registDate = $_POST['year'] ."/". $_POST['month'] ."/". $_POST['day'];
-
-                //-- 編集登録
-                if (strlen($_POST["news_id"]) > 0 && is_numeric($_POST["news_id"])) {
-
-                    $this->lfNewsUpdate($objQuery);
-
-                    //--　新規登録
+            $arrPost = $objFormParam->getHashArray();
+            $this->arrErr = $this->lfCheckError(&$objFormParam);
+            if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                // ニュースIDの値がPOSTされて来た場合は既存データの編集とみなし、
+                // 更新メソッドを呼び出す。
+                // ニュースIDが存在しない場合は新規登録を行う。
+                $arrPost['link_method'] = $this->checkLinkMethod($arrPost['link_method']);
+                $arrPost['news_date'] = $this->getRegistDate($arrPost);
+                $member_id = $_SESSION['member_id'];
+                if (strlen($news_id) > 0 && is_numeric($news_id)) {
+                    $this->lfNewsUpdate($arrPost,$member_id);
                 } else {
-                    $this->lfNewsInsert($objQuery);
+                    $this->lfNewsInsert($arrPost,$member_id);
                 }
-
                 $this->tpl_onload = "window.alert('編集が完了しました');";
+            } else {
+                $this->arrForm = $arrPost;
             }
             break;
         case 'search':
-        //----　編集データ取得
-            if (is_numeric($_POST["news_id"])) {
-                $sql = "SELECT *, cast(news_date as date) as cast_news_date FROM dtb_news WHERE news_id = ? ";
-                $result = $objQuery->getAll($sql, array($_POST["news_id"]));
-                $this->arrForm = $result[0];
-
-                $arrData = split("-", $result[0]["cast_news_date"]);
-                $this->arrForm['year']  = $arrData[0];
-                $this->arrForm['month'] = $arrData[1];
-                $this->arrForm['day']   = $arrData[2];
-
+            if (is_numeric($news_id)) {
+                list($this->arrForm) = $this->getNews($news_id);
+                list($this->arrForm['year'],$this->arrForm['month'],$this->arrForm['day']) = $this->splitNewsDate($this->arrForm['cast_news_date']);
                 $this->edit_mode = "on";
             }
             break;
         case 'delete':
         //----　データ削除
-            if (is_numeric($_POST["news_id"])) {
-                // rankを取得
-                $pre_rank = $objQuery->getOne(" SELECT rank FROM dtb_news WHERE del_flg = 0 AND news_id = ? ", array( $_POST['news_id']  ));
-
-                //-- 削除する新着情報以降のrankを1つ繰り上げておく
-                $objQuery->begin();
-                $sql = "UPDATE dtb_news SET rank = rank - 1, update_date = NOW() WHERE del_flg = 0 AND rank > ?";
-                $objQuery->query( $sql, array( $pre_rank  ) );
-
-                $sql = "UPDATE dtb_news SET rank = 0, del_flg = 1, update_date = NOW() WHERE news_id = ?";
-                $objQuery->query( $sql, array( $_POST['news_id'] ) );
-                $objQuery->commit();
-
+            if (is_numeric($news_id)) {
+                $this->p($news_id);
+                $pre_rank = $this->getRankByNewsId($news_id);
+                $this->computeRankForDelete($news_id,$pre_rank);
                 $this->objDisplay->reload();             //自分にリダイレクト（再読込による誤動作防止）
             }
             break;
         case 'move':
         //----　表示順位移動
-            if (is_numeric($_POST["news_id"]) ) {
-                if ($_POST["term"] == "up") {
-                    $objDb->sfRankUp("dtb_news", "news_id", $_POST["news_id"]);
-                } else if ($_POST["term"] == "down") {
-                    $objDb->sfRankDown("dtb_news", "news_id", $_POST["news_id"]);
+            if (strlen($news_id) > 0 && is_numeric($news_id) == true ) {
+                $term = $objFormParam->getValue('term');
+                if ($term == "up") {
+                    $objDb->sfRankUp("dtb_news", "news_id", $news_id);
+                } else if ($term == "down") {
+                    $objDb->sfRankDown("dtb_news", "news_id", $news_id);
                 }
-                //sf_rebuildIndex($conn);
                 $this->objDisplay->reload();
             }
             break;
         case 'moveRankSet':
         //----　指定表示順位移動
-            $key = "pos-".$_POST['news_id'];
-            $input_pos = mb_convert_kana($_POST[$key], "n");
+            $input_pos = $this->getPostRank($objFormParam,$news_id);
             if(SC_Utils_Ex::sfIsInt($input_pos)) {
-                $objDb->sfMoveRank("dtb_news", "news_id", $_POST['news_id'], $input_pos);
+                $objDb->sfMoveRank("dtb_news", "news_id", $news_id, $input_pos);
                 $this->objDisplay->reload();
             }
             break;
@@ -170,12 +148,9 @@ class LC_Page_Admin_Contents extends LC_Page_Admin {
             break;
         }
 
-        //---- 全データ取得
-        $sql = "SELECT *, cast(news_date as date) as cast_news_date FROM dtb_news WHERE del_flg = '0' ORDER BY rank DESC";
-        $this->list_data = $objQuery->getAll($sql);
+        $this->list_data = $this->getNews();
         $this->line_max = count($this->list_data);
-        $sql = "SELECT MAX(rank) FROM dtb_news WHERE del_flg = '0'";        // rankの最大値を取得
-        $this->max_rank = $objQuery->getOne($sql);
+        $this->max_rank = $this->getRankMax();
     }
 
 
@@ -188,79 +163,204 @@ class LC_Page_Admin_Contents extends LC_Page_Admin {
         parent::destroy();
     }
 
-
-    //---- 入力文字列を配列へ
-    function lfConvData( $data ){
-
-        // 文字列の変換（mb_convert_kanaの変換オプション）
-        $arrFlag = array(
-                         "year" => "n"
-                         ,"month" => "n"
-                         ,"day" => "n"
-                         ,"url" => "a"
-                         ,"news_title" => "aKV"
-                         ,"news_comment" => "aKV"
-                         ,"link_method" => "n"
-                         );
-
-        if ( is_array($data) ){
-            foreach ($arrFlag as $key=>$line) {
-                $data[$key] = isset($data[$key])
-                                      ? mb_convert_kana($data[$key], $line)
-                                      : "";
-            }
-        }
-
-        return $data;
-    }
-
-    //---- 入力エラーチェック
-    function lfErrorCheck(){
-
-        $objErr = new SC_CheckError();
-
-        $objErr->doFunc(array("日付(年)", "year"), array("EXIST_CHECK"));
-        $objErr->doFunc(array("日付(月)", "month"), array("EXIST_CHECK"));
-        $objErr->doFunc(array("日付(日)", "day"), array("EXIST_CHECK"));
+    /**
+     * 入力されたパラメータのエラーチェックを行う。
+     * @param Object $objFormParam
+     * @return Array エラー内容
+     */
+    function lfCheckError(&$objFormParam){
+        $objErr = new SC_CheckError($objFormParam->getHashArray());
+        $objErr->arrErr = $objFormParam->checkError();
         $objErr->doFunc(array("日付", "year", "month", "day"), array("CHECK_DATE"));
-        $objErr->doFunc(array("タイトル", 'news_title', MTEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("本文", 'url', URL_LEN), array("MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("本文", 'news_comment', LTEXT_LEN), array("MAX_LENGTH_CHECK"));
-
         return $objErr->arrErr;
     }
 
-    //INSERT文
-    function lfNewsInsert(&$objQuery){
 
-        if ($_POST["link_method"] == "") {
-            $_POST["link_method"] = 1;
-        }
+    /**
+     * パラメータの初期化を行う
+     * @param Object $objFormParam
+     */
+    function lfInitParam(&$objFormParam){
+        $objFormParam->addParam("news_id", 'news_id');
+        $objFormParam->addParam("日付(年)", "year", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("日付(月)", "month", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("日付(日)", "day", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("タイトル", 'news_title', MTEXT_LEN, "KVa", array("EXIST_CHECK","MAX_LENGTH_CHECK","SPTAB_CHECK"));
+        $objFormParam->addParam("URL", 'news_url', URL_LEN, "KVa", array("MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("本文", 'news_comment', LTEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("別ウィンドウで開く", 'link_method', INT_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("ランク移動", 'term', INT_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+    }
 
-        //rankの最大+1を取得する
-        $rank_max = $objQuery->getOne("SELECT MAX(rank) + 1 FROM dtb_news WHERE del_flg = '0'");
-
-        $sql = "INSERT INTO dtb_news (news_id, news_date, news_title, creator_id, news_url, link_method, news_comment, rank, create_date, update_date)
-            VALUES (?,?,?,?,?,?,?,?,now(),now())";
-        $arrRegist = array($objQuery->nextVal('dtb_news_news_id'), $this->registDate, $_POST["news_title"], $_SESSION['member_id'],  $_POST["news_url"], $_POST["link_method"], $_POST["news_comment"], $rank_max);
-
-        $objQuery->query($sql, $arrRegist);
+    /**
+     * 新着記事のデータの登録を行う
+     * @param Array $arrPost POSTデータの配列
+     * @param Integer $member_id 登録した管理者のID
+     */
+    function lfNewsInsert($arrPost,$member_id){
+        $objQuery = $objQuery =& SC_Query::getSingletonInstance();
+        
+        // rankの最大+1を取得する
+        $rank_max = $this->getRankMax();
+        $rank_max = $rank_max + 1;
+        
+        $table = 'dtb_news';
+        $sqlval = array();
+        $news_id = $objQuery->nextVal('dtb_news_news_id');
+        $sqlval['news_id'] = $news_id;
+        $sqlval['news_date'] = $arrPost['news_date'];
+        $sqlval['news_title'] = $arrPost['news_title'];
+        $sqlval['creator_id'] = $member_id;
+        $sqlval['news_url'] = $arrPost['news_url'];
+        $sqlval['link_method'] = $arrPost['link_method'];
+        $sqlval['news_comment'] = $arrPost['news_comment'];
+        $sqlval['rank'] = $rank_max;
+        $sqlval['create_date'] = 'now()';
+        $sqlval['update_date'] = 'now()';
+        $objQuery->insert($table, $sqlval);
 
         // 最初の1件目の登録はrankにNULLが入るので対策
-        $sql = "UPDATE dtb_news SET rank = 1 WHERE del_flg = 0 AND rank IS NULL";
-        $objQuery->query($sql);
+        $sqlval = array();
+        $sqlval['rank'] = 1;
+        $where = ' del_flg = 0 AND rank IS NULL';
+        $objQuery->update($table, $sqlval, $where);
     }
 
-    function lfNewsUpdate(&$objQuery){
+    
+    function lfNewsUpdate($arrPost,$member_id){
+        $objQuery = $objQuery =& SC_Query::getSingletonInstance();
 
-        if ($_POST["link_method"] == "") {
-            $_POST["link_method"] = 1;
+        $table = 'dtb_news';
+        $sqlval = array();
+        $sqlval['news_date'] = $arrPost['news_date'];
+        $sqlval['news_title'] = $arrPost['news_title'];
+        $sqlval['creator_id'] = $member_id;
+        $sqlval['news_url'] = $arrPost['news_url'];
+        $sqlval['news_comment'] = $arrPost['news_comment'];
+        $sqlval['link_method'] = $arrPost['link_method'];
+        $sqlval['update_date'] = 'NOW()';
+        $where = 'news_id = ?';
+        $arrValIn = array($arrPost['news_id']);
+        $objQuery->update($table, $sqlval, $where, $arrValIn);
+    }
+
+    /**
+     * データの登録日を返す。
+     * @param Array $arrPost POSTのグローバル変数
+     * @return string 登録日を示す文字列
+     */
+    function getRegistDate($arrPost){
+        $registDate = $arrPost['year'] ."/". $arrPost['month'] ."/". $arrPost['day'];
+        return $registDate;
+    }
+
+
+    /**
+     * チェックボックスの値が空の時は無効な値として1を格納する
+     * @param int $link_method
+     * @return int
+     */
+    function checkLinkMethod($link_method){
+        if(strlen($link_method) == 0){
+            $link_method = 1;
         }
-
-        $sql = "UPDATE dtb_news SET news_date = ?, news_title = ?, creator_id = ?, update_date = NOW(),  news_url = ?, link_method = ?, news_comment = ? WHERE news_id = ?";
-        $arrRegist = array($this->registDate, $_POST['news_title'], $_SESSION['member_id'], $_POST['news_url'], $_POST["link_method"], $_POST['news_comment'], $_POST['news_id']);
-
-        $objQuery->query($sql, $arrRegist);
+        return $link_method;
     }
+
+    /**
+     * ニュース記事を取得する。
+     * @param Integer news_id ニュースID
+     */
+    function getNews($news_id = ''){
+        $objQuery = $objQuery =& SC_Query::getSingletonInstance();
+        $col = '*, cast(news_date as date) as cast_news_date';
+        $table = 'dtb_news';
+        $order = 'rank DESC';
+        if(strlen($news_id) == 0){
+            $where = 'del_flg = 0';
+            $arrval = array();
+        }else{
+            $where = 'del_flg = 0 AND news_id = ?';
+            $arrval = array($news_id);
+        }
+        $objQuery->setOrder($order);
+        return $objQuery->select($col, $table, $where,$arrval);
+    }
+
+    /**
+     * 指定されたニュースのランクの値を取得する。
+     * @param Integer $news_id
+     */
+    function getRankByNewsId($news_id){
+        $objQuery = $objQuery =& SC_Query::getSingletonInstance();
+        $col = 'rank';
+        $table = 'dtb_news';
+        $where = 'del_flg = 0 AND news_id = ?';
+        $arrval = array($news_id);
+        list($rank) = $objQuery->select($col, $table, $where, $arrval);
+        return $rank['rank'];
+    }
+
+    /**
+     * 削除する新着情報以降のrankを1つ繰り上げる。
+     * @param Integer $news_id
+     * @param Integer $rank
+     */
+    function computeRankForDelete($news_id,$rank){
+        $objQuery = $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery->begin();
+        $table = 'dtb_news';
+        $sqlval = array();
+        $sqlval['rank'] = $rank;
+        $sqlval['update_date'] = 'NOW()';
+        $where = 'del_flg = 0 AND rank > ?';
+        $arrValIn = array($rank);
+        $objQuery->update($table, $sqlval, $where, $arrValIn);
+
+        $sqlval = array();
+        $sqlval['rank'] = '0';
+        $sqlval['del_flg'] = '1';
+        $sqlval['update_date'] = 'NOW()';
+        $where = 'news_id = ?';
+        $arrValIn = array($news_id);
+        $objQuery->update($table, $sqlval, $where, $arrValIn);
+        $objQuery->commit();
+    }
+
+    /**
+     * ニュースの日付の値をフロントでの表示形式に合わせるために分割
+     * @param String $news_date
+     */
+    function splitNewsDate($news_date){
+        return split("-", $news_date);
+    }
+
+
+    /**
+     * ランクの最大値の値を返す。
+     * @return Intger $max ランクの最大値の値
+     */
+    function getRankMax(){
+        $objQuery =& SC_Query::getSingletonInstance();
+        $col = 'MAX(rank)';
+        $table = 'dtb_news';
+        $where = 'del_flg = 0';
+        list($result) = $objQuery->select($col, $table, $where);
+        return $result['max'];
+    }
+
+    /**
+     * POSTされたランクの値を取得する
+     * @param Object $objFormParam
+     * @param Integer $news_id
+     */
+    function getPostRank($news_id){
+        if(strlen($news_id) > 0 && is_numeric($news_id) == true){
+           $key = "pos-".$news_id;
+           $input_pos = $_POST[$key];
+           return $input_pos;
+        }
+    }
+
 }
 ?>

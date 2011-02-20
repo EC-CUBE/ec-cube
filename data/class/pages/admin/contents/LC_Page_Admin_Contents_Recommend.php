@@ -43,11 +43,13 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin {
      */
     function init() {
         parent::init();
-        $this->tpl_mainpage = 'contents/recomend.tpl';
+        $this->tpl_mainpage = 'contents/recommend.tpl';
         $this->tpl_mainno = 'contents';
         $this->tpl_subnavi = 'contents/subnavi.tpl';
         $this->tpl_subno = "recommend";
         $this->tpl_subtitle = 'おすすめ商品管理';
+        //最大登録数の表示
+        $this->tpl_disp_max = RECOMMEND_NUM;
     }
 
     /**
@@ -66,95 +68,52 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin {
      * @return void
      */
     function action() {
-        $objQuery = new SC_Query();
-        $objSess = new SC_Session();
-
-        $arrRegistColumn = array(
-                                 array(  "column" => "product_id", "convert" => "n" ),
-                                 array(  "column" => "category_id", "convert" => "n" ),
-                                 array(  "column" => "rank", "convert" => "n" ),
-                                 array(  "column" => "comment", "convert" => "aKV" ),
-                                 );
-
         // 認証可否の判定
-        SC_Utils_Ex::sfIsSuccess($objSess);
-
-        //最大登録数の表示
-        $this->tpl_disp_max = RECOMMEND_NUM;
-
-        if (!isset($_POST['category_id'])) $_POST['category_id'] = "";
-        //TODO: 要リファクタリング(MODE switch 2か所で行われている)
+        SC_Utils_Ex::sfIsSuccess(new SC_Session());
+        $objFormParam = new SC_FormParam();
+        $this->lfInitParam($objFormParam);
+        $objFormParam->setParam($_POST);
+        $objFormParam->convParam();
+        
         switch ($this->getMode()) {
-        case 'regist':
-            // 登録時
-            // 入力文字の強制変換
-            $this->arrForm = $_POST;
-            $this->arrForm = $this->lfConvertParam($this->arrForm, $arrRegistColumn);
-            // エラーチェック
-            $this->arrErr[$this->arrForm['rank']] = $this->lfErrorCheck();
-            if ( ! $this->arrErr[$this->arrForm['rank']]) {
-                // 古いのを消す
-                $sql = "DELETE FROM dtb_best_products WHERE category_id = ? AND rank = ?";
-                $objQuery->query($sql, array($this->arrForm['category_id'] ,$this->arrForm['rank']));
-
-                // ＤＢ登録
-                $this->arrForm['creator_id'] = $_SESSION['member_id'];
-                $this->arrForm['update_date'] = "NOW()";
-                $this->arrForm['create_date'] = "NOW()";
-                $this->arrForm['best_id'] = $objQuery->nextVal('dtb_best_products_best_id');
-                $objQuery->insert("dtb_best_products", $this->arrForm );
+        case 'regist': // 商品を登録する。
+            $this->arrErr = $this->lfCheckError(&$objFormParam);
+            $arrPost = $objFormParam->getHashArray();
+            // 登録処理にエラーがあった場合は商品選択の時と同じ処理を行う。
+            if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                $member_id = $_SESSION['member_id'];
+                $this->insertRecommendProduct($arrPost,$member_id);
+                $arrItems = $this->getRecommendProducts();
+            }else{
+                $arrItems = $this->setProducts($arrPost, $arrItems);
+                $this->checkRank = $arrPost['rank'];
             }
+            $this->tpl_onload = "window.alert('編集が完了しました');";
             break;
-        case 'delete':
-            // 削除時
-            $sql = "DELETE FROM dtb_best_products WHERE category_id = ? AND rank = ?";
-            $objQuery->query($sql, array($_POST['category_id'] ,$_POST['rank']));
+        case 'delete': // 商品を削除する。
+            $this->arrErr = $this->lfCheckError(&$objFormParam);
+            $arrPost = $objFormParam->getHashArray();
+            if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                $this->deleteProduct($arrPost);
+                $arrItems = $this->getRecommendProducts();
+            }
+            $this->tpl_onload = "window.alert('削除しました');";
             break;
-        default:
-            break;
-        }
-
-        // カテゴリID取得 無いときはトップページ
-        if ( SC_Utils_Ex::sfIsInt($_POST['category_id']) ){
-            $this->category_id = $_POST['category_id'];
-        } else {
-            $this->category_id = 0;
-        }
-
-        // 既に登録されている内容を取得する
-        $sql = "SELECT B.name, B.main_list_image, A.* FROM dtb_best_products as A INNER JOIN dtb_products as B USING (product_id)
-		 WHERE A.del_flg = 0 ORDER BY rank";
-        $arrItems = $objQuery->getAll($sql);
-        foreach( $arrItems as $data ){
-            $this->arrItems[$data['rank']] = $data;
-        }
-
-        // 商品変更時 or 登録エラー時は、選択された商品に一時的に置き換える
-        //TODO: 要リファクタリング(MODE switch 2か所で行われている)
-        switch ($this->getMode()) {
-        case 'set_item':
-        case 'regist':
-            if (!empty($this->arrErr[$this->arrForm['rank']])) {
-                $sql = "SELECT product_id, name, main_list_image FROM dtb_products WHERE product_id = ? AND del_flg = 0";
-                $result = $objQuery->getAll($sql, array($_POST['product_id']));
-                if ( $result ){
-                    $data = $result[0];
-                    foreach( $data as $key=>$val){
-                        $this->arrItems[$_POST['rank']][$key] = $val;
-                    }
-                    $this->arrItems[$_POST['rank']]['rank'] = $_POST['rank'];
-                }
-                $this->checkRank = $_POST['rank'];
+        case 'set_item': // 商品を選択する。
+            $this->arrErr = $this->lfCheckError(&$objFormParam);
+            $arrPost = $objFormParam->getHashArray();
+            if (SC_Utils_Ex::isBlank($this->arrErr['rank']) && SC_Utils_Ex::isBlank($this->arrErr['product_id'])) {
+                $arrItems = $this->setProducts($arrPost, $this->getRecommendProducts());
+                $this->checkRank = $arrPost['rank'];
             }
             break;
         default:
+            $arrItems = $this->getRecommendProducts();
             break;
         }
-
-        //各ページ共通
-        $this->cnt_question = 6;
-        $this->arrActive = isset($arrActive) ? $arrActive : "";;
-        $this->arrQuestion = isset($arrQuestion) ? $arrQuestion : "";
+        
+        $this->category_id = $this->getCategoryId($arrPost['category_id']);
+        $this->arrItems = $arrItems;
 
         // カテゴリ取得
         $objDb = new SC_Helper_DB_Ex();
@@ -170,33 +129,125 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin {
         parent::destroy();
     }
 
-    //----　取得文字列の変換
-    function lfConvertParam($array, $arrRegistColumn) {
-
-        // カラム名とコンバート情報
-        foreach ($arrRegistColumn as $data) {
-            $arrConvList[ $data["column"] ] = $data["convert"];
-        }
-        // 文字変換
-        $new_array = array();
-        foreach ($arrConvList as $key => $val) {
-            $new_array[$key] = isset($array[$key]) ? $array[$key] : "";
-            if( strlen($val) > 0) {
-                $new_array[$key] = mb_convert_kana($new_array[$key] ,$val);
-            }
-        }
-        return $new_array;
-
+     /**
+     * パラメータの初期化を行う
+     * @param Object $objFormParam
+     */
+    function lfInitParam(&$objFormParam){
+        $objFormParam->addParam("商品ID", "product_id", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("カテゴリID", "category_id", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("ランク", "rank", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("コメント", "comment", LTEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
     }
 
-    /* 入力エラーチェック */
-    function lfErrorCheck() {
-        $objQuery = new SC_Query;
-        $objErr = new SC_CheckError();
-
-        $objErr->doFunc(array("コメント", "comment", LTEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
-
+    /**
+     * 入力されたパラメータのエラーチェックを行う。
+     * @param Object $objFormParam
+     * @return Array エラー内容
+     */
+    function lfCheckError(&$objFormParam){
+        $objErr = new SC_CheckError($objFormParam->getHashArray());
+        $objErr->arrErr = $objFormParam->checkError();
         return $objErr->arrErr;
+    }
+
+    /**
+     * 既に登録されている内容を取得する
+     * @return Array $arrReturnProducts データベースに登録されているおすすめ商品の配列
+     */
+    function getRecommendProducts(){
+        $objQuery = $objQuery =& SC_Query::getSingletonInstance();
+        $col = 'dtb_products.name,dtb_products.main_list_image,dtb_best_products.*';
+        $table = 'dtb_best_products INNER JOIN dtb_products USING (product_id)';
+        $where = 'dtb_best_products.del_flg = 0';
+        $order = 'rank';
+        $objQuery->setOrder($order);
+        $arrProducts = $objQuery->select($col, $table, $where);
+        
+        $arrReturnProducts = array();
+        foreach( $arrProducts as $data ){
+            $arrReturnProducts[$data['rank']] = $data;
+        }
+        return $arrReturnProducts;
+    }
+
+    /**
+     * おすすめ商品の新規登録を行う。
+     * @param Array $arrPost POSTの値を格納した配列
+     * @param Integer $member_id 登録した管理者を示すID
+     */
+    function insertRecommendProduct($arrPost,$member_id){
+        $objQuery = $objQuery =& SC_Query::getSingletonInstance();
+        // 古いおすすめ商品のデータを削除する。
+        $this->deleteProduct($arrPost);
+
+        $sqlval = array();
+        $sqlval['product_id'] = $arrPost['product_id'];
+        $sqlval['category_id'] = $arrPost['category_id'];
+        $sqlval['rank'] = $arrPost['rank'];
+        $sqlval['comment'] = $arrPost['comment'];
+        $sqlval['creator_id'] = $member_id;
+        $sqlval['create_date'] = "NOW()";
+        $sqlval['update_date'] = "NOW()";
+        $sqlval['best_id'] = $objQuery->nextVal('dtb_best_products_best_id');
+        $objQuery->insert("dtb_best_products", $sqlval);
+    }
+
+    /**
+     * データを削除する
+     * @param Array $arrPost POSTの値を格納した配列
+     */
+    function deleteProduct($arrPost){
+        $objQuery = $objQuery =& SC_Query::getSingletonInstance();
+        $table = 'dtb_best_products';
+        $where = 'category_id = ? AND rank = ?';
+        $arrval = array($arrPost['category_id'],$arrPost['rank']);
+        $objQuery->delete($table, $where, $arrval);
+    }
+
+    /**
+     * 商品情報を取得する
+     * @param Integer $product_id 商品ID
+     * @return Array $arrProduct 商品のデータを格納した配列
+     */
+    function getProduct($product_id){
+        $objQuery = $objQuery =& SC_Query::getSingletonInstance();
+        $col = 'product_id,main_list_image,name';
+        $table = 'dtb_products';
+        $where = 'product_id = ? AND del_flg = 0';
+        $arrval = array($product_id);
+        $arrProduct = $objQuery->select($col, $table, $where, $arrval);
+        return $arrProduct[0];
+    }
+
+    /**
+     * 商品のデータを表示用に処理する
+     * @param Array $arrPost POSTのデータを格納した配列
+     * @param Array $arrItems フロントに表示される商品の情報を格納した配列
+     */
+    function setProducts($arrPost,$arrItems){
+        $arrProduct = $this->getProduct($arrPost['product_id']);
+        if (count($arrProduct) > 0) {
+            $rank = $arrPost['rank'];
+            foreach( $arrProduct as $key => $val){
+                $arrItems[$rank][$key] = $val;
+            }
+            $arrItems[$rank]['rank'] = $rank;
+        }
+        return $arrItems;
+    }
+
+    /**
+     * カテゴリーIDを取得する。
+     * @param Integer $category_id
+     * @return Integer
+     */
+    function getCategoryId($category_id){
+        if ( SC_Utils_Ex::sfIsInt($category_id)){
+            return $category_id;
+        }else{
+            return 0;
+        }
     }
 
 }
