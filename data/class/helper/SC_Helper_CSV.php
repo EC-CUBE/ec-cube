@@ -165,6 +165,54 @@ class SC_Helper_CSV {
         return true;
     }
 
+    // CSVを送信する。(商品)
+    function sfDownloadProductsCsv($where, $arrval, $order, $is_download = false) {
+        // 実行時間を制限しない
+        @set_time_limit(0);
+
+        // CSV出力タイトル行の作成
+        $arrOutput = SC_Utils_Ex::sfSwapArray($this->sfGetCsvOutput(1, 'status = ' . CSV_COLUMN_STATUS_FLG_ENABLE));
+        if (count($arrOutput) <= 0) return false; // 失敗終了
+        $arrOutputCols = $arrOutput['col'];
+
+        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery->setOrder($order);
+        
+        $objProduct = new SC_Product();
+        $cols = SC_Utils_Ex::sfGetCommaList($arrOutputCols, true);
+        // このWhereを足さないと無効な規格も出力される。現行仕様と合わせる為追加。
+        $inner_where = 'dtb_products_class.del_flg = 0';
+        $sql = $objQuery->getSql($cols, $objProduct->prdclsSQL($inner_where),$where);
+        $header = $this->sfArrayToCSV($arrOutput['disp_name']);
+        $header = mb_convert_encoding($header, 'SJIS-Win');
+        $header .= "\r\n";
+        
+        //テンポラリファイル作成
+        // TODO: パフォーマンス向上には、ストリームを使うようにすると良い
+        //  環境要件がバージョン5.1以上になったら使うように変えても良いかと
+        //  fopen('php://temp/maxmemory:'. (5*1024*1024), 'r+');
+        $tmp_filename = tempnam(CSV_TEMP_REALDIR, 'product_csv');
+        $this->fpOutput = fopen($tmp_filename, "w+");
+
+        fwrite($this->fpOutput, $header);
+
+        $objQuery->doCallbackAll(array(&$this, 'cbOutputProductCSV'), $sql, $arrval);
+
+        fclose($this->fpOutput);
+
+        if($is_download) {
+            // CSVを送信する。
+            $this->lfDownloadCSVFile($tmp_filename,"product_");
+            $res = true;
+        }else{
+            $res = SC_Utils_Ex::sfReadFile($tmp_filename);
+        }
+        
+        //テンポラリファイル削除
+        unlink($tmp_filename);
+        return $res;
+    }
+
     // CSV出力データを作成する。(レビュー)
     function lfGetReviewCSV($where, $option, $arrval) {
 
