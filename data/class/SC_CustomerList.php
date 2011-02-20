@@ -50,59 +50,59 @@ class SC_CustomerList extends SC_SelectSql {
         }
 
         // 顧客ID
-        if (!isset($this->arrSql['customer_id'])) $this->arrSql['customer_id'] = "";
-        if ( strlen($this->arrSql['customer_id']) > 0 ) {
+        if (!isset($this->arrSql['search_customer_id'])) $this->arrSql['search_customer_id'] = "";
+        if ( strlen($this->arrSql['search_customer_id']) > 0 ) {
             $this->setWhere( "customer_id =  ?" );
-            $this->arrVal[] = $this->arrSql['customer_id'];
+            $this->arrVal[] = $this->arrSql['search_customer_id'];
         }
 
         // 名前
-        if (!isset($this->arrSql['name'])) $this->arrSql['name'] = "";
-        if ( strlen($this->arrSql['name']) > 0 ) {
+        if (!isset($this->arrSql['search_name'])) $this->arrSql['search_name'] = "";
+        if ( strlen($this->arrSql['search_name']) > 0 ) {
             $this->setWhere("(" . $dbFactory->concatColumn(array("name01", "name02")) . " LIKE ?)" );
-            $searchName = $this->addSearchStr($this->arrSql['name']);
+            $searchName = $this->addSearchStr($this->arrSql['search_name']);
             $this->arrVal[] = mb_ereg_replace("[ 　]+","",$searchName);
         }
 
         // 名前(カナ)
-        if (!isset($this->arrSql['kana'])) $this->arrSql['kana'] = "";
-        if ( strlen($this->arrSql['kana']) > 0 ) {
+        if (!isset($this->arrSql['search_kana'])) $this->arrSql['search_kana'] = "";
+        if ( strlen($this->arrSql['search_kana']) > 0 ) {
             $this->setWhere("(" . $dbFactory->concatColumn(array("kana01", "kana02")) . " LIKE ?)" );
-            $searchKana = $this->addSearchStr($this->arrSql['kana']);
+            $searchKana = $this->addSearchStr($this->arrSql['search_kana']);
             $this->arrVal[] = mb_ereg_replace("[ 　]+","",$searchKana);
         }
 
         // 都道府県
-        if (!isset($this->arrSql['pref'])) $this->arrSql['pref'] = "";
-        if ( strlen($this->arrSql['pref']) > 0 ) {
+        if (!isset($this->arrSql['search_pref'])) $this->arrSql['search_pref'] = "";
+        if ( strlen($this->arrSql['search_pref']) > 0 ) {
             $this->setWhere( "pref = ?" );
-            $this->arrVal[] = $this->arrSql['pref'];
+            $this->arrVal[] = $this->arrSql['search_pref'];
         }
 
         // 電話番号
-        if (!isset($this->arrSql['tel'])) $this->arrSql['tel'] = "";
-        if ( is_numeric( $this->arrSql['tel'] ) ) {
+        if (!isset($this->arrSql['search_tel'])) $this->arrSql['search_tel'] = "";
+        if ( is_numeric( $this->arrSql['search_tel'] ) ) {
             $this->setWhere("(" . $dbFactory->concatColumn(array("tel01", "tel02", "tel03")) . " LIKE ?)" );
-            $searchTel = $this->addSearchStr($this->arrSql['tel']);
+            $searchTel = $this->addSearchStr($this->arrSql['search_tel']);
             $this->arrVal[] = ereg_replace("-", "", $searchTel);
         }
 
         // 性別
-        if (!isset($this->arrSql['sex'])) $this->arrSql['sex'] = "";
-        if ( is_array( $this->arrSql['sex'] ) ){
-            $arrSexVal = $this->setItemTerm( $this->arrSql['sex'] ,"sex" );
+        if (!isset($this->arrSql['search_sex'])) $this->arrSql['search_sex'] = "";
+        if ( is_array( $this->arrSql['search_sex'] ) ){
+            $arrSexVal = $this->setItemTerm( $this->arrSql['search_sex'] ,"sex" );
             foreach ($arrSexVal as $data) {
                 $this->arrVal[] = $data;
             }
         }
 
         // 職業
-        if (!isset($this->arrSql['job'])) $this->arrSql['job'] = "";
-        if ( is_array( $this->arrSql['job'] ) ){
-            if ( in_array("不明", $this->arrSql['job'] ) ) {
-                $arrJobVal = $this->setItemTermWithNull( $this->arrSql['job'] ,"job" );
+        if (!isset($this->arrSql['search_job'])) $this->arrSql['search_job'] = "";
+        if ( is_array( $this->arrSql['search_job'] ) ){
+            if ( in_array("不明", $this->arrSql['search_job'] ) ) {
+                $arrJobVal = $this->setItemTermWithNull( $this->arrSql['search_job'] ,"job" );
             } else {
-                $arrJobVal = $this->setItemTerm( $this->arrSql['job'] ,"job" );
+                $arrJobVal = $this->setItemTerm( $this->arrSql['search_job'] ,"job" );
             }
             if (is_array($arrJobVal)) {
                 foreach ($arrJobVal as $data) {
@@ -112,12 +112,12 @@ class SC_CustomerList extends SC_SelectSql {
         }
 
         // E-MAIL
-        if (!isset($this->arrSql['email'])) $this->arrSql['email'] = "";
-        if (strlen($this->arrSql['email']) > 0) {
+        if (!isset($this->arrSql['search_email'])) $this->arrSql['search_email'] = "";
+        if (strlen($this->arrSql['search_email']) > 0) {
             //カンマ区切りで複数の条件指定可能に
-            $this->arrSql['email'] = explode(",", $this->arrSql['email']);
+            $this->arrSql['search_email'] = explode(",", $this->arrSql['search_email']);
             $sql_where = "";
-            foreach($this->arrSql['email'] as $val) {
+            foreach($this->arrSql['search_email'] as $val) {
                 $val = trim($val);
                 //検索条件を含まない
                 if($this->arrSql['not_emailinc'] == '1') {
@@ -140,13 +140,13 @@ class SC_CustomerList extends SC_SelectSql {
         }
 
         // E-MAIL(mobile)
-        if (!isset($this->arrSql['email_mobile'])) $this->arrSql['email_mobile'] = "";
+        if (!isset($this->arrSql['search_email_mobile'])) $this->arrSql['search_email_mobile'] = "";
         
-        if (strlen($this->arrSql['email_mobile']) > 0) {
+        if (strlen($this->arrSql['search_email_mobile']) > 0) {
             //カンマ区切りで複数の条件指定可能に
-            $this->arrSql['email_mobile'] = explode(",", $this->arrSql['email_mobile']);
+            $this->arrSql['search_email_mobile'] = explode(",", $this->arrSql['search_email_mobile']);
             $sql_where = "";
-            foreach($this->arrSql['email_mobile'] as $val) {
+            foreach($this->arrSql['search_email_mobile'] as $val) {
                 $val = trim($val);
                 //検索条件を含まない
                 if($this->arrSql['not_email_mobileinc'] == '1') {
@@ -171,10 +171,10 @@ class SC_CustomerList extends SC_SelectSql {
         // メールマガジンの場合
         if($mode == "customer") {
             // メルマガ受け取りの選択項目がフォームに存在する場合
-            if ( isset($this->arrSql['htmlmail'])){
-                if (SC_Utils_Ex::sfIsInt($this->arrSql['htmlmail'])){
+            if ( isset($this->arrSql['search_htmlmail'])){
+                if (SC_Utils_Ex::sfIsInt($this->arrSql['search_htmlmail'])){
                     $this->setWhere("mailmaga_flg = ?");
-                    $this->arrVal[] = $this->arrSql['htmlmail'];
+                    $this->arrVal[] = $this->arrSql['search_htmlmail'];
                 } else {
                     //　メルマガ購読拒否は省く
                     $this->setWhere("mailmaga_flg <> 3");
@@ -184,9 +184,9 @@ class SC_CustomerList extends SC_SelectSql {
 
         // 配信メールアドレス種別
         if ( $mode == 'customer' ){
-            if (isset($this->arrSql['mail_type'])){
+            if (isset($this->arrSql['search_mail_type'])){
                 $sqlEmailMobileIsEmpty = "(dtb_customer.email_mobile IS NULL OR dtb_customer.email_mobile = '')";
-                switch ($this->arrSql['mail_type']) {
+                switch ($this->arrSql['search_mail_type']) {
                     // PCメールアドレス
                     case 1:
                         $this->setWhere("(dtb_customer.email <> dtb_customer.email_mobile OR $sqlEmailMobileIsEmpty)");
@@ -208,37 +208,37 @@ class SC_CustomerList extends SC_SelectSql {
         }
 
         // 購入金額指定
-        if (!isset($this->arrSql['buy_total_from'])) $this->arrSql['buy_total_from'] = "";
-        if (!isset($this->arrSql['buy_total_to'])) $this->arrSql['buy_total_to'] = "";
-        if( is_numeric( $this->arrSql["buy_total_from"] ) || is_numeric( $this->arrSql["buy_total_to"] ) ) {
-            $arrBuyTotal = $this->selectRange($this->arrSql["buy_total_from"], $this->arrSql["buy_total_to"], "buy_total");
+        if (!isset($this->arrSql['search_buy_total_from'])) $this->arrSql['search_buy_total_from'] = "";
+        if (!isset($this->arrSql['search_buy_total_to'])) $this->arrSql['search_buy_total_to'] = "";
+        if( is_numeric( $this->arrSql["search_buy_total_from"] ) || is_numeric( $this->arrSql["search_buy_total_to"] ) ) {
+            $arrBuyTotal = $this->selectRange($this->arrSql["search_buy_total_from"], $this->arrSql["search_buy_total_to"], "buy_total");
             foreach ($arrBuyTotal as $data1) {
                 $this->arrVal[] = $data1;
             }
         }
 
         // 購入回数指定
-        if (!isset($this->arrSql['buy_times_from'])) $this->arrSql['buy_times_from'] = "";
-        if (!isset($this->arrSql['buy_times_to'])) $this->arrSql['buy_times_to'] = "";
-        if( is_numeric( $this->arrSql["buy_times_from"] ) || is_numeric( $this->arrSql["buy_times_to"] ) ) {
-            $arrBuyTimes = $this->selectRange($this->arrSql["buy_times_from"], $this->arrSql["buy_times_to"], "buy_times");
+        if (!isset($this->arrSql['search_buy_times_from'])) $this->arrSql['search_buy_times_from'] = "";
+        if (!isset($this->arrSql['search_buy_times_to'])) $this->arrSql['search_buy_times_to'] = "";
+        if( is_numeric( $this->arrSql["search_buy_times_from"] ) || is_numeric( $this->arrSql["search_buy_times_to"] ) ) {
+            $arrBuyTimes = $this->selectRange($this->arrSql["search_buy_times_from"], $this->arrSql["search_buy_times_to"], "buy_times");
             foreach ($arrBuyTimes as $data2) {
                 $this->arrVal[] = $data2;
             }
         }
 
         // 誕生日期間指定
-        if (!isset($this->arrSql['b_start_year'])) $this->arrSql['b_start_year'] = "";
-        if (!isset($this->arrSql['b_start_month'])) $this->arrSql['b_start_month'] = "";
-        if (!isset($this->arrSql['b_start_day'])) $this->arrSql['b_start_day'] = "";
-        if (!isset($this->arrSql['b_end_year'])) $this->arrSql['b_end_year'] = "";
-        if (!isset($this->arrSql['b_end_month'])) $this->arrSql['b_end_month'] = "";
-        if (!isset($this->arrSql['b_end_day'])) $this->arrSql['b_end_day'] = "";
-        if ( (strlen($this->arrSql['b_start_year']) > 0 && strlen($this->arrSql['b_start_month']) > 0 && strlen($this->arrSql['b_start_day']) > 0) ||
-              strlen($this->arrSql['b_end_year']) > 0 && strlen($this->arrSql['b_end_month']) > 0 && strlen($this->arrSql['b_end_day']) > 0) {
+        if (!isset($this->arrSql['search_b_start_year'])) $this->arrSql['search_b_start_year'] = "";
+        if (!isset($this->arrSql['search_b_start_month'])) $this->arrSql['search_b_start_month'] = "";
+        if (!isset($this->arrSql['search_b_start_day'])) $this->arrSql['search_b_start_day'] = "";
+        if (!isset($this->arrSql['search_b_end_year'])) $this->arrSql['search_b_end_year'] = "";
+        if (!isset($this->arrSql['search_b_end_month'])) $this->arrSql['search_b_end_month'] = "";
+        if (!isset($this->arrSql['search_b_end_day'])) $this->arrSql['search_b_end_day'] = "";
+        if ( (strlen($this->arrSql['search_b_start_year']) > 0 && strlen($this->arrSql['search_b_start_month']) > 0 && strlen($this->arrSql['search_b_start_day']) > 0) ||
+              strlen($this->arrSql['search_b_end_year']) > 0 && strlen($this->arrSql['search_b_end_month']) > 0 && strlen($this->arrSql['search_b_end_day']) > 0) {
 
-            $arrBirth = $this->selectTermRange($this->arrSql['b_start_year'], $this->arrSql['b_start_month'], $this->arrSql['b_start_day']
-                      , $this->arrSql['b_end_year'], $this->arrSql['b_end_month'], $this->arrSql['b_end_day'], "birth");
+            $arrBirth = $this->selectTermRange($this->arrSql['search_b_start_year'], $this->arrSql['search_b_start_month'], $this->arrSql['search_b_start_day']
+                      , $this->arrSql['search_b_end_year'], $this->arrSql['search_b_end_month'], $this->arrSql['search_b_end_day'], "birth");
             if (is_array($arrBirth)) {
                 foreach ($arrBirth as $data3) {
                     $this->arrVal[] = $data3;
@@ -247,24 +247,24 @@ class SC_CustomerList extends SC_SelectSql {
         }
 
         // 誕生月の検索
-        if (!isset($this->arrSql['birth_month'])) $this->arrSql['birth_month'] = "";
-        if (is_numeric($this->arrSql["birth_month"])) {
+        if (!isset($this->arrSql['search_birth_month'])) $this->arrSql['search_birth_month'] = "";
+        if (is_numeric($this->arrSql["search_birth_month"])) {
             $this->setWhere(" EXTRACT(month from birth) = ?");
-            $this->arrVal[] = $this->arrSql["birth_month"];
+            $this->arrVal[] = $this->arrSql["search_birth_month"];
         }
 
         // 登録期間指定
-        if (!isset($this->arrSql['start_year'])) $this->arrSql['start_year'] = "";
-        if (!isset($this->arrSql['start_month'])) $this->arrSql['start_month'] = "";
-        if (!isset($this->arrSql['start_day'])) $this->arrSql['start_day'] = "";
-        if (!isset($this->arrSql['end_year'])) $this->arrSql['end_year'] = "";
-        if (!isset($this->arrSql['end_month'])) $this->arrSql['end_month'] = "";
-        if (!isset($this->arrSql['end_day'])) $this->arrSql['end_day'] = "";
-        if ( (strlen($this->arrSql['start_year']) > 0 && strlen($this->arrSql['start_month']) > 0 && strlen($this->arrSql['start_day']) > 0 ) ||
-                (strlen($this->arrSql['end_year']) > 0 && strlen($this->arrSql['end_month']) >0 && strlen($this->arrSql['end_day']) > 0) ) {
+        if (!isset($this->arrSql['search_start_year'])) $this->arrSql['search_start_year'] = "";
+        if (!isset($this->arrSql['search_start_month'])) $this->arrSql['search_start_month'] = "";
+        if (!isset($this->arrSql['search_start_day'])) $this->arrSql['search_start_day'] = "";
+        if (!isset($this->arrSql['search_end_year'])) $this->arrSql['search_end_year'] = "";
+        if (!isset($this->arrSql['search_end_month'])) $this->arrSql['search_end_month'] = "";
+        if (!isset($this->arrSql['search_end_day'])) $this->arrSql['search_end_day'] = "";
+        if ( (strlen($this->arrSql['search_start_year']) > 0 && strlen($this->arrSql['search_start_month']) > 0 && strlen($this->arrSql['search_start_day']) > 0 ) ||
+                (strlen($this->arrSql['search_end_year']) > 0 && strlen($this->arrSql['search_end_month']) >0 && strlen($this->arrSql['search_end_day']) > 0) ) {
 
-            $arrRegistTime = $this->selectTermRange($this->arrSql['start_year'], $this->arrSql['start_month'], $this->arrSql['start_day']
-                            , $this->arrSql['end_year'], $this->arrSql['end_month'], $this->arrSql['end_day'], $regdate_col);
+            $arrRegistTime = $this->selectTermRange($this->arrSql['ssearch_tart_year'], $this->arrSql['search_start_month'], $this->arrSql['search_start_day']
+                            , $this->arrSql['search_end_year'], $this->arrSql['search_end_month'], $this->arrSql['search_end_day'], $regdate_col);
             if (is_array($arrRegistTime)) {
                 foreach ($arrRegistTime as $data4) {
                     $this->arrVal[] = $data4;
@@ -273,17 +273,17 @@ class SC_CustomerList extends SC_SelectSql {
         }
 
         // 最終購入日指定
-        if (!isset($this->arrSql['buy_start_year'])) $this->arrSql['buy_start_year'] = "";
-        if (!isset($this->arrSql['buy_start_month'])) $this->arrSql['buy_start_month'] = "";
-        if (!isset($this->arrSql['buy_start_day'])) $this->arrSql['buy_start_day'] = "";
-        if (!isset($this->arrSql['buy_end_year'])) $this->arrSql['buy_end_year'] = "";
-        if (!isset($this->arrSql['buy_end_month'])) $this->arrSql['buy_end_month'] = "";
-        if (!isset($this->arrSql['buy_end_day'])) $this->arrSql['buy_end_day'] = "";
+        if (!isset($this->arrSql['search_buy_start_year'])) $this->arrSql['search_buy_start_year'] = "";
+        if (!isset($this->arrSql['search_buy_start_month'])) $this->arrSql['search_buy_start_month'] = "";
+        if (!isset($this->arrSql['search_buy_start_day'])) $this->arrSql['search_buy_start_day'] = "";
+        if (!isset($this->arrSql['search_buy_end_year'])) $this->arrSql['search_buy_end_year'] = "";
+        if (!isset($this->arrSql['search_buy_end_month'])) $this->arrSql['search_buy_end_month'] = "";
+        if (!isset($this->arrSql['search_buy_end_day'])) $this->arrSql['search_buy_end_day'] = "";
 
-        if ( (strlen($this->arrSql['buy_start_year']) > 0 && strlen($this->arrSql['buy_start_month']) > 0 && strlen($this->arrSql['buy_start_day']) > 0 ) ||
-                (strlen($this->arrSql['buy_end_year']) > 0 && strlen($this->arrSql['buy_end_month']) >0 && strlen($this->arrSql['buy_end_day']) > 0) ) {
-            $arrRegistTime = $this->selectTermRange($this->arrSql['buy_start_year'], $this->arrSql['buy_start_month'], $this->arrSql['buy_start_day']
-                            , $this->arrSql['buy_end_year'], $this->arrSql['buy_end_month'], $this->arrSql['buy_end_day'], "last_buy_date");
+        if ( (strlen($this->arrSql['search_buy_start_year']) > 0 && strlen($this->arrSql['search_buy_start_month']) > 0 && strlen($this->arrSql['search_buy_start_day']) > 0 ) ||
+                (strlen($this->arrSql['search_buy_end_year']) > 0 && strlen($this->arrSql['search_buy_end_month']) >0 && strlen($this->arrSql['search_buy_end_day']) > 0) ) {
+            $arrRegistTime = $this->selectTermRange($this->arrSql['search_buy_start_year'], $this->arrSql['search_buy_start_month'], $this->arrSql['search_buy_start_day']
+                            , $this->arrSql['search_buy_end_year'], $this->arrSql['search_buy_end_month'], $this->arrSql['search_buy_end_day'], "last_buy_date");
             if (is_array($arrRegistTime)) {
                 foreach ($arrRegistTime as $data4) {
                     $this->arrVal[] = $data4;
@@ -292,26 +292,26 @@ class SC_CustomerList extends SC_SelectSql {
         }
 
         // 購入商品コード
-        if (!isset($this->arrSql['buy_product_code'])) $this->arrSql['buy_product_code'] = "";
-        if ( strlen($this->arrSql['buy_product_code']) > 0 ) {
+        if (!isset($this->arrSql['search_buy_product_code'])) $this->arrSql['search_buy_product_code'] = "";
+        if ( strlen($this->arrSql['search_buy_product_code']) > 0 ) {
             $this->setWhere( "customer_id IN (SELECT customer_id FROM dtb_order WHERE order_id IN (SELECT order_id FROM dtb_order_detail WHERE product_code LIKE ? ))");
-            $search_buyproduct_code = $this->addSearchStr($this->arrSql['buy_product_code']);
+            $search_buyproduct_code = $this->addSearchStr($this->arrSql['search_buy_product_code']);
             $this->arrVal[] = $search_buyproduct_code;
         }
 
         // 購入商品名称
-        if (!isset($this->arrSql['buy_product_name'])) $this->arrSql['buy_product_name'] = "";
-        if ( strlen($this->arrSql['buy_product_name']) > 0 ) {
+        if (!isset($this->arrSql['search_buy_product_name'])) $this->arrSql['search_buy_product_name'] = "";
+        if ( strlen($this->arrSql['search_buy_product_name']) > 0 ) {
             $this->setWhere( "customer_id IN (SELECT customer_id FROM dtb_order WHERE order_id IN (SELECT order_id FROM dtb_order_detail WHERE product_name LIKE ? ))");
-            $search_buyproduct_name = $this->addSearchStr($this->arrSql['buy_product_name']);
+            $search_buyproduct_name = $this->addSearchStr($this->arrSql['search_buy_product_name']);
             $this->arrVal[] = $search_buyproduct_name;
         }
 
         // カテゴリーを選択している場合のみ絞込検索を行う
-        if (!isset($this->arrSql['category_id'])) $this->arrSql['category_id'] = "";
-        if ( strlen($this->arrSql['category_id']) > 0){
+        if (!isset($this->arrSql['search_category_id'])) $this->arrSql['search_category_id'] = "";
+        if ( strlen($this->arrSql['search_category_id']) > 0){
             // カテゴリーで絞込検索を行うSQL文生成
-            list($tmp_where, $tmp_arrval) = $objDb->sfGetCatWhere($this->arrSql['category_id']);
+            list($tmp_where, $tmp_arrval) = $objDb->sfGetCatWhere($this->arrSql['search_category_id']);
 
             // カテゴリーで絞込みが可能の場合
             if($tmp_where != "") {
@@ -320,17 +320,17 @@ class SC_CustomerList extends SC_SelectSql {
             }
         }
         // 携帯電話番号
-        if (!isset($this->arrSql['cell'])) $this->arrSql['cell'] = "";
-        if ( is_numeric( $this->arrSql['cell'] ) ) {
+        if (!isset($this->arrSql['search_cell'])) $this->arrSql['search_cell'] = "";
+        if ( is_numeric( $this->arrSql['search_cell'] ) ) {
             $this->setWhere( "(cell01 || cell02 || cell03 LIKE ?)" );
-            $searchTel = $this->addSearchStr($this->arrSql['cell']);
+            $searchTel = $this->addSearchStr($this->arrSql['search_cell']);
             $this->arrVal[] = ereg_replace("-", "", $searchTel);
         }
 
         // 会員状態
-        if (!isset($this->arrSql['status'])) $this->arrSql['status'] = "";
-        if ( is_array( $this->arrSql['status'] ) ){
-            $arrStatusVal = $this->setItemTerm( $this->arrSql['status'] ,"status" );
+        if (!isset($this->arrSql['search_status'])) $this->arrSql['search_status'] = "";
+        if ( is_array( $this->arrSql['search_status'] ) ){
+            $arrStatusVal = $this->setItemTerm( $this->arrSql['search_status'] ,"status" );
             foreach ($arrStatusVal as $data) {
                 $this->arrVal[] = $data;
             }
