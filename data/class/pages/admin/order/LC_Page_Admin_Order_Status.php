@@ -75,53 +75,90 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin {
         // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess(new SC_Session());
 
-        $this->arrForm = $_POST;
+        // パラメータ管理クラス
+        $objFormParam = new SC_FormParam();
+        // パラメータ情報の初期化
+        $this->lfInitParam($objFormParam);
+        $objFormParam->setParam($_POST);
+        // 入力値の変換
+        $objFormParam->convParam();
+
+        $this->arrForm = $objFormParam->getHashArray();
+        //        $this->arrForm = $_POST;
 
         //支払方法の取得
         $this->arrPayment = $objDb->sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
 
-        if (!isset($_POST['search_pageno'])) $_POST['search_pageno'] = 1;
-
         switch ($this->getMode()){
-        case 'update':
-            if (!isset($_POST['change_status'])) $_POST['change_status'] = "";
+            case 'update':
+                switch ($objFormParam->getValue('change_status')) {
+                    case '':
+                        break;
+                        // 削除
+                    case 'delete':
+                        $this->lfDelete($objFormParam->getValue('move'));
+                        break;
+                        // 更新
+                    default:
+                        $this->lfStatusMove($objFormParam->getValue('change_status'), $objFormParam->getValue('move'));
+                        break;
+                }
 
-            switch ($_POST['change_status']) {
-                case '':
-                    break;
+                //ステータス情報
+                $status = !is_null($objFormParam->getValue('status')) ? $objFormParam->getValue('status') : "";
+                break;
 
-                // 削除
-                case 'delete':
-                    $this->lfDelete($_POST['move']);
-                    break;
+            case 'search':
+                //ステータス情報
+                $status = !is_null($_POST['status']) ? $objFormParam->getValue('status') : "";
+                break;
 
-                // 更新
-                default:
-                    $this->lfStatusMove($_POST['change_status'], $_POST['move']);
-                    break;
-            }
-
-            //ステータス情報
-            $status = isset($_POST['status']) ? $_POST['status'] : "";
-            break;
-
-        case 'search':
-            //ステータス情報
-            $status = isset($_POST['status']) ? $_POST['status'] : "";
-            break;
-
-        default:
-            //ステータス情報
-            //デフォルトで新規受付一覧表示
-            $status = ORDER_NEW;
-            break;
+            default:
+                //ステータス情報
+                //デフォルトで新規受付一覧表示
+                $status = ORDER_NEW;
+                break;
         }
 
         //ステータス情報
         $this->SelectedStatus = $status;
         //検索結果の表示
-        $this->lfStatusDisp($status, $_POST['search_pageno']);
+        $this->lfStatusDisp($status, $objFormParam->getValue('search_pageno'));
     }
+
+    /**
+     *  パラメータ情報の初期化
+     *  @param SC_FormParam
+     */
+    function lfInitParam(&$objFormParam) {
+        $objFormParam->addParam("注文番号", "order_id", INT_LEN, "n", array( "MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("変更前ステータス", "status", INT_LEN, "n", array( "MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("変更後ステータス", "change_status", STEXT_LEN, "KVa", array( "MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("ページ番号", "search_pageno", INT_LEN, "n", array( "MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("移動注文番号", "move", INT_LEN, "n", array( "MAX_LENGTH_CHECK", "NUM_CHECK"));
+    }
+
+    /**
+     *  入力内容のチェック
+     *  @param SC_FormParam
+     */
+    function lfCheckError(&$objFormParam) {
+        // 入力データを渡す。
+        $arrRet = $objFormParam->getHashArray();
+        $arrErr = $objFormParam->checkError();
+        if(is_null($objFormParam->getValue('search_pageno'))){
+            $objFormParam->setValue('search_pageno', 1);
+        }
+
+        if($this->getMode() == 'change'){
+            if(is_null($objFormParam->getValue('change_status'))){
+                $objFormParam->setValue('change_status',"");
+            }
+        }
+
+    }
+
+
 
     /**
      * デストラクタ.
@@ -202,7 +239,7 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin {
 
         $arrUpdate = array(
              'del_flg' => 1
-            ,'update_date' => 'Now()'
+        ,'update_date' => 'Now()'
         );
 
         $objQuery->begin();
