@@ -503,7 +503,6 @@ class SC_Helper_Customer {
         $objFormParam->addParam('購入商品コード', 'search_buy_product_code', STEXT_LEN, 'KVa', array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $objFormParam->addParam('購入商品名', 'search_buy_product_name', STEXT_LEN, 'KVa', array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $objFormParam->addParam('カテゴリ', 'search_category_id', INT_LEN, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
-        $objFormParam->addParam('編集対象顧客ID', 'search_edit_customer_id', INT_LEN, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
         $objFormParam->addParam('性別', 'search_sex', INT_LEN, "n", array("MAX_LENGTH_CHECK"));
         $objFormParam->addParam('会員状態', 'search_status', INT_LEN, "n", array("MAX_LENGTH_CHECK"));
         $objFormParam->addParam('職業', 'search_job', INT_LEN, "n", array("MAX_LENGTH_CHECK"));
@@ -549,5 +548,41 @@ class SC_Helper_Customer {
             $arrErr = array_merge($arrErr, $objErr->arrErr);
         }
         return $arrErr;
+    }
+    
+    /**
+     * 顧客一覧検索をする処理（ページング処理付き、管理画面用共通処理）
+     *
+     * @param array $arrParam 検索パラメーター連想配列
+     * @return array( integer 全体件数, mixed 顧客データ一覧配列, mixed SC_PageNaviオブジェクト)
+     */
+    function sfGetSearchData($arrParam) {
+        $objQuery =& SC_Query::getSingletonInstance();
+        $objSelect = new SC_CustomerList($arrParam, "customer");
+        $page_rows = $arrParam['search_page_rows'];
+        if(SC_Utils_Ex::sfIsInt($page_rows)) {
+            $page_max = $page_rows;
+        }else{
+            $page_max = SEARCH_PMAX;
+        }
+        $disp_pageno = $arrParam['search_pageno'];
+        if($disp_pageno == 0) {
+            $disp_pageno = 1;
+        }
+        $offset = intval($page_max) * (intval($disp_pageno) - 1);
+        $objSelect->setLimitOffset($page_max, $offset);
+        
+        $arrData = $objQuery->getAll($objSelect->getList(), $objSelect->arrVal);
+
+        // 該当全体件数の取得
+        $linemax = $objQuery->getOne($objSelect->getListCount(), $objSelect->arrVal);
+
+        // ページ送りの取得
+        $objNavi = new SC_PageNavi($arrParam['search_pageno'],
+                                    $linemax,
+                                    $page_max,
+                                    "fnCustomerPage",
+                                    NAVI_PMAX);
+        return array($linemax, $arrData, $objNavi);
     }
 }

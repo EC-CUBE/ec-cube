@@ -37,24 +37,34 @@
     <input type="hidden" name="mode" value="search" />
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <!--{foreach from=$arrSearchData key="key" item="item"}-->
-        <!--{if $key ne "customer_id" && $key ne "mode" && $key ne "del_mode" && $key ne "edit_customer_id" && $key ne "del_customer_id" && $key ne "csv_mode" && $key ne "job" && $key ne "sex"}--><input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->"><!--{/if}-->
-    <!--{/foreach}-->
-
-    <!--{foreach from=$arrSearchData.job key="key" item="item"}-->
-        <input type="hidden" name="job[]" value="<!--{$item}-->" />
-    <!--{/foreach}-->
-    <!--{foreach from=$arrSearchData.sex key="key" item="item"}-->
-        <input type="hidden" name="sex[]" value="<!--{$item}-->" />
+        <!--{if $key ne "customer_id" && $key ne "mode" && $key ne "edit_customer_id" && $key ne $smarty.const.TRANSACTION_ID_NAME}-->
+		  <!--{if is_array($item)}-->
+		    <!--{foreach item=c_item from=$item}-->
+		      <input type="hidden" name="<!--{$key|h}-->[]" value="<!--{$c_item|h}-->" />
+		    <!--{/foreach}-->
+		  <!--{else}-->
+		    <input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->" />
+		  <!--{/if}-->
+        <!--{/if}-->
     <!--{/foreach}-->
 </form>
 
 <form name="form1" id="form1" method="post" action="?">
-<input type="hidden" name="mode" value="complete" />
-<!--{foreach from=$arrForm key=key item=item}-->
-<!--{if $key ne "mode" && $key ne "subm"}-->
-<input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->" />
-<!--{/if}-->
-<!--{/foreach}-->
+    <input type="hidden" name="mode" value="complete_return" />
+    <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+    <!-- 検索条件の保持 -->
+    <!--{foreach from=$arrSearchData key="key" item="item"}-->
+        <!--{if $key ne "customer_id" && $key ne "mode" && $key ne "edit_customer_id" && $key ne $smarty.const.TRANSACTION_ID_NAME}-->
+		  <!--{if is_array($item)}-->
+		    <!--{foreach item=c_item from=$item}-->
+		      <input type="hidden" name="search_data[<!--{$key|h}-->][]" value="<!--{$c_item|h}-->" />
+		    <!--{/foreach}-->
+		  <!--{else}-->
+		    <input type="hidden" name="search_data[<!--{$key|h}-->]" value="<!--{$item|h}-->" />
+		  <!--{/if}-->
+        <!--{/if}-->
+    <!--{/foreach}-->
+
 	<div id="complete">
 		<div class="complete-top"></div>
 		<div class="contents">
@@ -65,8 +75,10 @@
 		<div class="btn-area-top"></div>
 		<div class="btn-area">
 			<ul>
-				<li><!--{* TODO *}--><a class="btn-action" href="javascript:;" onclick="return fnReturn();"><span class="btn-prev">検索結果へ戻る</span></a></li>
-				<li><a class="btn-action" href="./edit.php"><span class="btn-next">続けて登録を行う</span></a></li>
+                <!--{if $arrSearchData}-->
+				<li><a class="btn-action" href="javascript:;" onclick="return fnReturn();"><span class="btn-prev">検索結果へ戻る</span></a></li>
+                <!--{/if}-->
+				<li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'complete_return', '', ''); return false;"><span class="btn-next">続けて登録を行う</span></a></li>
 			</ul>
 		</div>
 		<div class="btn-area-bottom"></div>

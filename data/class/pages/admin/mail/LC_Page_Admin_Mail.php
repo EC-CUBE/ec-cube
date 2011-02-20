@@ -347,33 +347,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin {
      * @return array( integer 全体件数, mixed 顧客データ一覧配列, mixed SC_PageNaviオブジェクト)
      */
     function lfDoSearch($arrParam) {
-        $objQuery =& SC_Query::getSingletonInstance();
-        $objSelect = new SC_CustomerList($arrParam, "customer");
-        $page_rows = $arrParam['search_page_rows'];
-        if(SC_Utils_Ex::sfIsInt($page_rows)) {
-            $page_max = $page_rows;
-        }else{
-            $page_max = SEARCH_PMAX;
-        }
-        $disp_pageno = $arrParam['search_pageno'];
-        if($disp_pageno == 0) {
-            $disp_pageno = 1;
-        }
-        $offset = intval($page_max) * (intval($disp_pageno) - 1);
-        $objSelect->setLimitOffset($page_max, $offset);
-        
-        $arrData = $objQuery->getAll($objSelect->getList(), $objSelect->arrVal);
-
-        // 該当全体件数の取得
-        $linemax = $objQuery->getOne($objSelect->getListCount(), $objSelect->arrVal);
-
-        // ページ送りの取得
-        $objNavi = new SC_PageNavi($arrParam['search_pageno'],
-                                    $linemax,
-                                    $page_max,
-                                    "fnCustomerPage",
-                                    NAVI_PMAX);
-        return array($linemax, $arrData, $objNavi);
+        return SC_Helper_Customer_Ex::sfGetSearchData($arrParam);
     }
     
     // 現在時刻の取得（配信時間デフォルト値）

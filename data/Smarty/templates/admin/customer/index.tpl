@@ -30,9 +30,9 @@
   }
 
   function fnCSVDownload(pageno) {
-    document.form1['csv_mode'].value = 'csv';
+    document.form1.mode.value = 'csv';
     document.form1.submit();
-    document.form1['csv_mode'].value = '';
+    document.form1.mode.value = '';
     return false;
   }
 
@@ -82,12 +82,12 @@
     <!--{include file="`$smarty.const.TEMPLATE_ADMIN_REALDIR`/adminparts/form_customer_search.tpl"}-->
     <tr>
       <th>会員状態</th>
-      <td colspan="3"><!--{html_checkboxes name="status" options=$arrStatus separator="&nbsp;" selected=$arrForm.status}--></td>
+      <td colspan="3"><!--{html_checkboxes name="search_status" options=$arrStatus separator="&nbsp;" selected=$arrForm.search_status.value}--></td>
     </tr>
   </table>
   <div class="btn">
     <p class="page_rows">検索結果表示件数
-    <select name="page_rows">
+    <select name="search_page_rows">
       <!--{html_options options=$arrPageRows selected=$arrForm.page_rows}-->
     </select> 件</p>
     <div class="btn-area">
@@ -97,30 +97,25 @@
     </div>
   </div>
 </form>
-
 <!--{if count($arrErr) == 0 and ($smarty.post.mode == 'search' or $smarty.post.mode == 'delete' or $smarty.post.mode == 'resend_mail')}-->
 
 <!--★★検索結果一覧★★-->
 <form name="form1" id="form1" method="post" action="?">
-<!--{foreach from=$smarty.post key="key" item="item"}-->
-<!--{if $key ne "mode" && $key ne "del_mode" && $key ne "edit_customer_id" && $key ne "del_customer_id" && $key ne "search_pageno" && $key ne "csv_mode" && $key ne "job" && $key ne "sex" && $key ne "status"}--><input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->"><!--{/if}-->
-<!--{/foreach}-->
-<!--{foreach from=$smarty.post.job key="key" item="item"}-->
-<input type="hidden" name="job[]" value=<!--{$item}-->>
-<!--{/foreach}-->
-<!--{foreach from=$smarty.post.sex key="key" item="item"}-->
-<input type="hidden" name="sex[]" value=<!--{$item}-->>
-<!--{/foreach}-->
-<!--{foreach from=$smarty.post.status key="key" item="item"}-->
-<input type="hidden" name="status[]" value=<!--{$item}-->>
-<!--{/foreach}-->
 <input type="hidden" name="mode" value="search" />
-<input type="hidden" name="del_mode" value="" />
-<input type="hidden" name="edit_customer_id" value="" />
-<input type="hidden" name="del_customer_id" value="" />
-<input type="hidden" name="search_pageno" value="<!--{$smarty.post.search_pageno|h}-->" />
-<input type="hidden" name="csv_mode" value="" />
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+<input type="hidden" name="edit_customer_id" value="" />
+<input type="hidden" name="search_pageno" value="<!--{$smarty.post.search_pageno|h}-->" />
+<!--{foreach from=$smarty.post key="key" item="item"}-->
+  <!--{if $key ne "mode" && $key ne "edit_customer_id" && $key ne $smarty.const.TRANSACTION_ID_NAME}-->
+    <!--{if is_array($item)}-->
+      <!--{foreach item=c_item from=$item}-->
+        <input type="hidden" name="<!--{$key|h}-->[]" value="<!--{$c_item|h}-->" />
+      <!--{/foreach}-->
+    <!--{else}-->
+      <input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->" />
+    <!--{/if}-->
+  <!--{/if}-->
+<!--{/foreach}-->
 
   <h2>検索結果一覧</h2>
   <div class="btn">

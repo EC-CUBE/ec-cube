@@ -93,8 +93,9 @@ class LC_Page_Admin_Customer extends LC_Page_Admin {
         SC_Utils_Ex::sfIsSuccess(new SC_Session());
 
         // 不正アクセスチェック 
+        // FIXME: nanasessさんが作り変えて共通化しているようなので暫定で isValidToken(false)
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            if (!SC_Helper_Session_Ex::isValidToken()) {
+            if (!SC_Helper_Session_Ex::isValidToken(false)) {
                 SC_Utils_Ex::sfDispError(INVALID_MOVE_ERRORR);
             }
         }
@@ -108,9 +109,10 @@ class LC_Page_Admin_Customer extends LC_Page_Admin {
         $objFormParam->setParam($_POST);
         $objFormParam->convParam();
         // パラメーター読み込み
-        $this->arrForm = $this->lfGetFormParam($objFormParam);
+        $this->arrForm = $objFormParam->getFormParamList();
         // 検索ワードの引き継ぎ
-        $this->arrHidden = $this->lfGetSearchWords($objFormParam);
+        $this->arrHidden = $objFormParam->getSearchArray();
+
         // 入力パラメーターチェック
         $this->arrErr = $this->lfCheckError($objFormParam);
         if(!SC_Utils_Ex::isBlank($this->arrErr)) {
@@ -121,20 +123,20 @@ class LC_Page_Admin_Customer extends LC_Page_Admin {
         switch ($this->getMode()) {
         case 'delete':
             $this->is_delete = $this->lfDoDeleteCustomer($objFormParam->getValue('edit_customer_id'));
-            list($this->tpl_linemax, $this->arrData, $this->objNavi) = $this->lfDoSearch($this->arrForm);
+            list($this->tpl_linemax, $this->arrData, $this->objNavi) = $this->lfDoSearch($objFormParam->getHashArray());
             $this->arrPagenavi = $this->objNavi->arrPagenavi;
             break;
         case 'resend_mail':
             $this->is_resendmail = $this->lfDoResendMail($objFormParam->getValue('edit_customer_id'));
-            list($this->tpl_linemax, $this->arrData, $this->objNavi) = $this->lfDoSearch($this->arrForm);
+            list($this->tpl_linemax, $this->arrData, $this->objNavi) = $this->lfDoSearch($objFormParam->getHashArray());
             $this->arrPagenavi = $this->objNavi->arrPagenavi;
             break;
         case 'search':
-            list($this->tpl_linemax, $this->arrData, $this->objNavi) = $this->lfDoSearch($this->arrForm);
+            list($this->tpl_linemax, $this->arrData, $this->objNavi) = $this->lfDoSearch($objFormParam->getHashArray());
             $this->arrPagenavi = $this->objNavi->arrPagenavi;
             break;
         case 'csv':
-            $this->lfDoCSV($this->arrForm);
+            $this->lfDoCSV($objFormParam->getHashArray());
             exit;
             break;
         default:
@@ -159,6 +161,7 @@ class LC_Page_Admin_Customer extends LC_Page_Admin {
      */
     function lfInitParam(&$objFormParam) {
         SC_Helper_Customer_Ex::sfSetSearchParam($objFormParam);
+        $objFormParam->addParam('編集対象顧客ID', 'edit_customer_id', INT_LEN, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
     }
 
     /**
@@ -215,31 +218,7 @@ class LC_Page_Admin_Customer extends LC_Page_Admin {
      * @return array( integer 全体件数, mixed 顧客データ一覧配列, mixed SC_PageNaviオブジェクト)
      */
     function lfDoSearch($arrParam) {
-        $objQuery =& SC_Query::getSingletonInstance();
-        $objSelect = new SC_CustomerList($arrParam, "customer");
-        $page_rows = $arrParam['page_rows'];
-        if(SC_Utils_Ex::sfIsInt($page_rows)) {
-            $page_max = $page_rows;
-        }else{
-            $page_max = SEARCH_PMAX;
-        }
-        $disp_pageno = $arrParam['search_pageno'];
-        if($disp_pageno == 0) {
-            $disp_pageno = 1;
-        }
-        $offset = $page_max * ($disp_pageno - 1);
-        $objSelect->setLimitOffset($page_max, $offset);
-        $arrData = $objQuery->getAll($objSelect->getList(), $objSelect->arrVal);
-        
-        // 該当全体件数の取得
-        $linemax = $objQuery->getOne($objSelect->getListCount(), $objSelect->arrVal);
-        // ページ送りの取得
-        $objNavi = new SC_PageNavi($arrParam['search_pageno'],
-                                    $linemax,
-                                    $page_max,
-                                    "fnCustomerPage",
-                                    NAVI_PMAX);
-        return array($linemax, $arrData, $objNavi);
+        return SC_Helper_Customer_Ex::sfGetSearchData($arrParam);
     }
 
     /**
@@ -251,48 +230,11 @@ class LC_Page_Admin_Customer extends LC_Page_Admin {
     function lfDoCSV($arrParam) {
         $objSelect = new SC_CustomerList($arrParam, "customer");
         $order = "update_date DESC, customer_id DESC";
+        
         require_once(CLASS_EX_REALDIR . "helper_extends/SC_Helper_CSV_Ex.php");
         $objCSV = new SC_Helper_CSV_Ex();
         list($where, $arrVal) = $objSelect->getWhere();
-        $objCSV->sfDownloadCsv('2', $where, $arrVal);
+        return $objCSV->sfDownloadCsv('2', $where, $arrVal, $order, true);
     }
-
-    /**
-     * 検索パラメーター引継ぎ用展開
-     *
-     * @param array $objFormParam フォームパラメータークラス
-     * @return array 引き継ぎ用連想配列
-     */
-    function lfGetSearchWords(&$objFormParam) {
-        $arrData = $objFormParam->getSearchArray("search_");
-        $arrData['sex'] = SC_Utils_Ex::sfMergeParamCheckBoxes($objFormParam->getValue('sex'));
-        $arrData['status'] = SC_Utils_Ex::sfMergeParamCheckBoxes($objFormParam->getValue('status'));
-        $arrData['job'] = SC_Utils_Ex::sfMergeParamCheckBoxes($objFormParam->getValue('job'));
-    }
-
-    /**
-     * 表示用パラメーター値取得処理
-     *
-     * @param array $objFormParam フォームパラメータークラス
-     * @return array 表示用連想配列
-     */
-    function lfGetFormParam(&$objFormParam) {
-        $arrForm = $objFormParam->getHashArray();
-        // 配列形式のデータの展開処理
-        $val_sex = $objFormParam->getValue('sex');
-        if(!is_array($val_sex) and !SC_Utils_Ex::isBlank($val_sex)) {
-            $arrForm['sex'] = explode("-", $val_sex);
-        }
-        $val_status = $objFormParam->getValue('status');
-        if(!is_array($val_status) and !SC_Utils_Ex::isBlank($val_status)) {
-            $arrForm['status'] = explode("-", $val_status);
-        }
-        $val_job = $objFormParam->getValue('job');
-        if(!is_array($val_job) and !SC_Utils_Ex::isBlank($val_job)) {
-            $arrForm['job'] = explode("-", $val_job);
-        }
-        return $arrForm;
-    }
-
 }
 ?>

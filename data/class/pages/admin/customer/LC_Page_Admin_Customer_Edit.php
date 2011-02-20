@@ -110,7 +110,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin {
             $this->lfInitSearchParam($objFormSearchParam);
             $objFormSearchParam->setParam($_REQUEST);
             $this->arrErr = $this->lfCheckErrorSearchParam($objFormSearchParam);
-            $this->arrSearchData = $objFormSearchParam->getHashArray();
+            $this->arrSearchData = $objFormSearchParam->getSearchArray();
             if(!SC_Utils_Ex::isBlank($this->arrErr)) {
                 return;
             }
@@ -134,7 +134,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin {
             $this->lfInitSearchParam($objFormSearchParam);
             $objFormSearchParam->setParam($objFormParam->getValue("search_data"));
             $this->arrSearchErr = $this->lfCheckErrorSearchParam($objFormSearchParam);
-            $this->arrSearchData = $objFormSearchParam->getHashArray();
+            $this->arrSearchData = $objFormSearchParam->getSearchArray();
             if(!SC_Utils_Ex::isBlank($this->arrErr) or !SC_Utils_Ex::isBlank($this->arrSearchErr)) {
                 return;
             }
@@ -153,7 +153,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin {
             $this->lfInitSearchParam($objFormSearchParam);
             $objFormSearchParam->setParam($objFormParam->getValue("search_data"));
             $this->arrSearchErr = $this->lfCheckErrorSearchParam($objFormSearchParam);
-            $this->arrSearchData = $objFormSearchParam->getHashArray();
+            $this->arrSearchData = $objFormSearchParam->getSearchArray();
             if(!SC_Utils_Ex::isBlank($this->arrErr) or !SC_Utils_Ex::isBlank($this->arrSearchErr)) {
                 return;
             }
@@ -177,13 +177,24 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin {
             $this->lfInitSearchParam($objFormSearchParam);
             $objFormSearchParam->setParam($objFormParam->getValue("search_data"));
             $this->arrSearchErr = $this->lfCheckErrorSearchParam($objFormSearchParam);
-            $this->arrSearchData = $objFormSearchParam->getHashArray();
+            $this->arrSearchData = $objFormSearchParam->getSearchArray();
             if(!SC_Utils_Ex::isBlank($this->arrErr) or !SC_Utils_Ex::isBlank($this->arrSearchErr)) {
                 return;
             }
             $this->lfRegistData($objFormParam);
             $this->tpl_mainpage = 'customer/edit_complete.tpl';
             break;
+        case 'complete_return':
+            //検索引き継ぎ用パラメーター処理
+            $this->lfInitParam($objFormParam);
+            $objFormParam->setParam($_POST);
+            $this->lfInitSearchParam($objFormSearchParam);
+            $objFormSearchParam->setParam($objFormParam->getValue("search_data"));
+            $this->arrSearchErr = $this->lfCheckErrorSearchParam($objFormSearchParam);
+            $this->arrSearchData = $objFormSearchParam->getSearchArray();
+            if(!SC_Utils_Ex::isBlank($this->arrSearchErr)) {
+                return;
+            }
         default:
             break;
         }

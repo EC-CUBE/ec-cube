@@ -227,16 +227,16 @@ class SC_Helper_CSV {
             $sql = $objQuery->getSql($cols, $objProduct->prdclsSQL($inner_where),$where);
         }else if($csv_id == '2') {
             // 顧客の場合
-            $sql = "SELECT " . $cols . " FROM dtb_customer " . $where . " " . $order;
+            $sql = "SELECT " . $cols . " FROM dtb_customer " . $where;
             
         }
         // 固有処理ここまで
-        
+
         // ヘッダ構築
         $header = $this->sfArrayToCSV($arrOutput['disp_name']);
         $header = mb_convert_encoding($header, 'SJIS-Win');
         $header .= "\r\n";
-        
+
         //テンポラリファイル作成
         // TODO: パフォーマンス向上には、ストリームを使うようにすると良い
         //  環境要件がバージョン5.1以上になったら使うように変えても良いかと
@@ -244,7 +244,6 @@ class SC_Helper_CSV {
         $tmp_filename = tempnam(CSV_TEMP_REALDIR, $this->arrSubnavi[$csv_id] . '_csv');
         $this->fpOutput = fopen($tmp_filename, "w+");
         fwrite($this->fpOutput, $header);
-
         $objQuery->doCallbackAll(array(&$this, 'cbOutputCSV'), $sql, $arrVal);
 
         fclose($this->fpOutput);
@@ -398,7 +397,6 @@ class SC_Helper_CSV {
      * @return string 行末の ',' を CRLF に変換した文字列
      */
     function replaceLineSuffix($line) {
-//        return mb_ereg_replace(",$", "\r\n", $line);  
         return preg_replace('/,$/',"\r\n",$line);
     }
 
@@ -408,7 +406,6 @@ class SC_Helper_CSV {
      * 参考: http://jp.php.net/fputcsv
      */
     function sfArrayToCsv($fields, $delimiter = ',', $enclosure = '"', $arrayDelimiter = '|') {
-        
         if( strlen($delimiter) != 1 ) {
             trigger_error('delimiter must be a single character', E_USER_WARNING);
             return "";

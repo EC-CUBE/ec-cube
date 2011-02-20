@@ -175,9 +175,10 @@ class SC_Helper_Session {
      * を呼んでおく必要がある.
      *
      * @access protected
+     * @param boolean $is_unset TODO: nanasessさんが作り変えているらしいですが暫定対応で
      * @return boolean トランザクショントークンが有効な場合 true
      */
-    function isValidToken() {
+    function isValidToken($is_unset = true) {
 
         $checkToken = "";
 
@@ -197,7 +198,9 @@ class SC_Helper_Session {
             $ret = true;
         }
 
-        unset($_SESSION[TRANSACTION_ID_NAME]);
+        if ($is_unset) {
+            unset($_SESSION[TRANSACTION_ID_NAME]);
+        }
         return $ret;
     }
 }
