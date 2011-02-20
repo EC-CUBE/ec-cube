@@ -94,11 +94,11 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin {
                         
             if (SC_Utils_Ex::isBlank($this->arrErr)) {
                 // エラーが無いときは登録・編集
-                $this->lfRegistData( $objFormParam, $_POST['template_id']);
+                $this->lfRegistData( $objFormParam, $objFormParam->getValue('template_id'));
                 // 自分を再読込して、完了画面へ遷移
                 $this->objDisplay->reload(array("mode" => "complete"));
             } else {
-                $this->arrForm['template_id'] = $_POST['template_id'];
+                $this->arrForm['template_id'] = $objFormParam->getValue('template_id');
             }
             break;
         case 'complete':
@@ -136,7 +136,7 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin {
 
         if ( SC_Utils_Ex::sfIsInt($template_id) ){
             // 更新時
-            $objQuery->update("dtb_mailmaga_template", $sqlval, "template_id=".$template_id );
+            $objQuery->update("dtb_mailmaga_template", $sqlval, "template_id = ?", array($template_id));
         } else {
             // 新規登録時
             $sqlval['create_date'] = "now()";
