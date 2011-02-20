@@ -24,8 +24,8 @@
 <form name="form1" id="form1" method="post" action="?">
 <input type="hidden" name="search_pageno" value="" />
 <input type="hidden" name="mode" value="" />
-  <!--{include file=$tpl_pager}-->
   <!--{if count($arrDataList) > 0}-->
+  <!--{include file=$tpl_pager}-->
   <div id="mail" class="contents-main">
     <table class="list center">
         <tr>

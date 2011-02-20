@@ -126,9 +126,10 @@
     <!--{/if}-->
     <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('csv','',''); return false;" ><span>CSV ダウンロード</span></a>
   </div>
-  <!--{include file=$tpl_pager}-->
-  
   <!--{if $arrTrackback > 0 & $tpl_linemax > 0}-->
+
+  <!--{include file=$tpl_pager}-->
+
   <!--{* 検索結果表示テーブル *}-->
   <table class="list" id="products-trackback-result">
     <tr>

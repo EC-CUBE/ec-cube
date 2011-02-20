@@ -129,9 +129,9 @@
     <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('csv','',''); return false;">CSV ダウンロード</a>
     <a class="btn-normal" href="javascript:;" onclick="location.href='../contents/csv.php?tpl_subno_csv=customer'">CSV 出力項目設定</a>
   </div>
-  <!--{include file=$tpl_pager}-->
-
   <!--{if count($arrData) > 0}-->
+
+  <!--{include file=$tpl_pager}-->
 
   <!--検索結果表示テーブル-->
   <table class="list" id="customer-search-result">

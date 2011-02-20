@@ -71,9 +71,9 @@
             <a class="btn-normal" href="javascript:;" onclick="document.form1['mode'].value='input'; document.form1.submit(); return false;"><span>配信内容を設定する</span></a>
         <!--{/if}-->
     </div>
-    <!--{include file=$tpl_pager}-->
-
     <!--{if count($arrResults) > 0}-->
+
+    <!--{include file=$tpl_pager}-->
 
     <!--検索結果表示テーブル-->
     <table class="list">

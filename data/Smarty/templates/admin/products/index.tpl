@@ -195,9 +195,10 @@ function lfnDispChange(){
     <a class="btn-tool" href="javascript:;" onclick="fnModeSubmit('csv','',''); return false;">CSV ダウンロード</a>
     <a class="btn-tool" href="../contents/csv.php?tpl_subno_csv=product">CSV 出力項目設定</a>
   </div>
+  <!--{if count($arrProducts) > 0}-->
+
   <!--{include file=$tpl_pager}-->
 
-  <!--{if count($arrProducts) > 0}-->
   <!--検索結果表示テーブル-->
   <table class="list" id="products-search-result">
     <colgroup width="5%">

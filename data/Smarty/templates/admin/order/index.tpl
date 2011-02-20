@@ -296,9 +296,9 @@
         <a class="btn-normal" href="../contents/csv.php?tpl_subno_csv=order">CSV 出力項目設定</a>
         <a class="btn-normal" href="javascript:;" onclick="fnSelectCheckSubmit('pdf.php'); return false;"><span>PDF一括出力</span></a>
     </div>
-    <!--{include file=$tpl_pager}-->
-
     <!--{if count($arrResults) > 0}-->
+
+    <!--{include file=$tpl_pager}-->
 
     <!--{* 検索結果表示テーブル *}-->
         <table class="list">
