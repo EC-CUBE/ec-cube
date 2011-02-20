@@ -55,87 +55,21 @@ class LC_Page_Admin_Mail extends LC_Page_Admin {
         $this->arrJob = $masterData->getMasterData("mtb_job");
         $this->arrJob["不明"] = "不明";
         $this->arrSex = $masterData->getMasterData("mtb_sex");
-        $this->arrMailType = $masterData->getMasterData("mtb_mail_type");
         $this->arrPageRows = $masterData->getMasterData("mtb_page_rows");
-        // ページナビ用
-        $this->tpl_pageno = isset($_POST['search_pageno']) ? $_POST['search_pageno'] : "";
-        $this->arrMAILMAGATYPE = $masterData->getMasterData("mtb_mail_magazine_type");
-        $this->arrHtmlmail[''] = "すべて";
-        $this->arrHtmlmail[1] = $this->arrMAILMAGATYPE[1];
-        $this->arrHtmlmail[2] = $this->arrMAILMAGATYPE[2];
-        $this->arrMagazineTypeAll = $masterData->getMasterData("mtb_magazine_type");
-
-        // 検索用項目配列
         $this->arrHtmlmail = array( "" => "両方",  1 => "HTML", 2 => "TEXT" );
+        $this->arrMailType = $masterData->getMasterData("mtb_mail_type");
+        
+        // 日付プルダウン設定
+        $objDate = new SC_Date(BIRTH_YEAR);
+        $this->arrYear = $objDate->getYear();   
+        $this->arrMonth = $objDate->getMonth();
+        $this->arrDay = $objDate->getDay();
+        $this->objDate = $objDate;
 
-
-        // 配列内容専用項目の配列
-        $this->arrRegistColumn = array(
-              array(  "column" => "template_id",    "convert" => "n" ),
-              array(  "column" => "mail_method",    "convert" => "n" ),
-              array(  "column" => "send_year",      "convert" => "n" ),
-              array(  "column" => "send_month",     "convert" => "n" ),
-              array(  "column" => "send_day",       "convert" => "n" ),
-              array(  "column" => "send_hour",      "convert" => "n" ),
-              array(  "column" => "send_minutes",   "convert" => "n" ),
-              array(  "column" => "subject",        "convert" => "aKV" ),
-              array(  "column" => "body",           "convert" => "KV" )
-              );
-
-        // メルマガ会員種別
-        $this->arrCustomerType = array(1 => "会員",
-                                       2 => "非会員",
-                                       // 3 => "CSV登録"
-                                       );
-
-        // 検索項目
-        $this->arrSearchColumn = array(
-             array(  "column" => "name",                "convert" => "aKV"),
-             array(  "column" => "pref",                "convert" => "n" ),
-             array(  "column" => "kana",                "convert" => "CKV"),
-             array(  "column" => "sex",                 "convert" => "" ),
-             array(  "column" => "tel",                 "convert" => "n" ),
-             array(  "column" => "job",                 "convert" => "" ),
-             array(  "column" => "email",               "convert" => "a" ),
-             array(  "column" => "email_mobile",        "convert" => "a" ),
-             array(  "column" => "htmlmail",            "convert" => "n" ),
-             array(  "column" => "customer",            "convert" => "" ),
-             array(  "column" => "buy_total_from",      "convert" => "n" ),
-             array(  "column" => "buy_total_to",        "convert" => "n" ),
-             array(  "column" => "buy_times_from",      "convert" => "n" ),
-             array(  "column" => "buy_times_to",        "convert" => "n" ),
-             array(  "column" => "birth_month",         "convert" => "n" ),
-             array(  "column" => "b_start_year",        "convert" => "n" ),
-             array(  "column" => "b_start_month",       "convert" => "n" ),
-             array(  "column" => "b_start_day",         "convert" => "n" ),
-             array(  "column" => "b_end_year",          "convert" => "n" ),
-             array(  "column" => "b_end_month",         "convert" => "n" ),
-             array(  "column" => "b_end_day",           "convert" => "n" ),
-             array(  "column" => "start_year",          "convert" => "n" ),
-             array(  "column" => "start_month",         "convert" => "n" ),
-             array(  "column" => "start_day",           "convert" => "n" ),
-             array(  "column" => "end_year",            "convert" => "n" ),
-             array(  "column" => "end_month",           "convert" => "n" ),
-             array(  "column" => "end_day",             "convert" => "n" ),
-             array(  "column" => "buy_start_year",      "convert" => "n" ),
-             array(  "column" => "buy_start_month",     "convert" => "n" ),
-             array(  "column" => "buy_start_day",       "convert" => "n" ),
-             array(  "column" => "buy_end_year",        "convert" => "n" ),
-             array(  "column" => "buy_end_month",       "convert" => "n" ),
-             array(  "column" => "buy_end_day",         "convert" => "n" ),
-             array(  "column" => "buy_product_code",    "convert" => "aKV" ),
-             array(  "column" => "buy_product_name",    "convert" => "aKV" ),
-             array(  "column" => "category_id",         "convert" => "" ),
-             array(  "column" => "buy_total_from",      "convert" => "n" ),
-             array(  "column" => "buy_total_to",        "convert" => "n" ),
-             array(  "column" => "campaign_id",         "convert" => "" ),
-             array(  "column" => "mail_type",           "convert" => "" )
-             );
-
-        if (!isset($_POST['htmlmail'])) $_POST['htmlmail'] = "";
-        if (!isset($_POST['mail_type'])) $_POST['mail_type'] = "";
-        if (!isset($_POST['buy_product_code'])) $_POST['buy_product_code'] = "";
-
+        // カテゴリ一覧設定
+        $objDb = new SC_Helper_DB_Ex();
+        $this->arrCatList = $objDb->sfGetCategoryList();
+        
         $this->httpCacheControl('nocache');
     }
 
@@ -155,6 +89,37 @@ class LC_Page_Admin_Mail extends LC_Page_Admin {
      * @return void
      */
     function action() {
+        
+         // 認証可否の判定
+        SC_Utils_Ex::sfIsSuccess(new SC_Session());
+
+        // パラメータ管理クラス
+        $objFormParam = new SC_FormParam();
+        $this->lfInitParamSearchCustomer($objFormParam);
+        $objFormParam->setParam($_POST);
+
+        // パラメーター読み込み
+        $this->arrHidden = $objFormParam->getSearchArray();
+        $this->arrForm = $objFormParam->getFormParamList();
+
+        // 入力パラメーターチェック
+        $this->arrErr = $this->lfCheckError($objFormParam);
+        if(!SC_Utils_Ex::isBlank($this->arrErr)) {
+            return;
+        }
+
+        // モードによる処理切り替え
+        switch ($this->getMode()) {
+        case 'search':
+            list($this->tpl_linemax, $this->arrResults, $this->objNavi) = $this->lfDoSearch($objFormParam->getHashArray());
+            $this->arrPagenavi = $this->objNavi->arrPagenavi;
+            break;
+        default:
+            break;
+        }
+        
+        
+        /*
         // ページ初期設定
         $objDate = new SC_Date();
         $objQuery = new SC_Query();
@@ -169,9 +134,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin {
 
         switch($this->getMode()) {
         case 'query':
-            /*
-             query:配信履歴「確認」
-            */
+            // query:配信履歴「確認」
             if (SC_Utils_Ex::sfIsInt($_GET["send_id"])) {
                 // 送信履歴より、送信条件確認画面
                 $sql = "SELECT search_data FROM dtb_send_history WHERE send_id = ?";
@@ -213,11 +176,8 @@ class LC_Page_Admin_Mail extends LC_Page_Admin {
                 return;
             }
             break;
-            /*
-             search:「検索」ボタン
-             back:検索結果画面「戻る」ボタン
-            */
-        case 'delete':
+             //search:「検索」ボタン
+             //back:検索結果画面「戻る」ボタン
         case 'search':
         case 'back':
             // 入力値コンバート
@@ -265,9 +225,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin {
                 $this->arrNowDate = $this->lfGetNowDate();
             }
             break;
-            /*
-             input:検索結果画面「htmlmail内容設定」ボタン
-            */
+             // input:検索結果画面「htmlmail内容設定」ボタン
         case 'input':
             // 入力値コンバート
             $this->list_data = $this->lfConvertParam($_POST, $this->arrSearchColumn);
@@ -281,9 +239,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin {
                 $this->tpl_mainpage = 'mail/input.tpl';
             }
             break;
-            /*
-             template:テンプレート選択
-            */
+            // template:テンプレート選択
         case 'template':
             // 入力値コンバート
             $this->list_data = $this->lfConvertParam($_POST, $this->arrSearchColumn);
@@ -311,23 +267,11 @@ class LC_Page_Admin_Mail extends LC_Page_Admin {
                     }
                 }
 
-                // HTMLテンプレートを使用する場合は、HTMLソースを生成してBODYへ挿入
-                if ( $this->list_data["mail_method"] == 3) {
-                    $objTemplate = new LC_HTMLtemplate;
-                    $objTemplate->list_data = lfGetHtmlTemplateData($_POST['template_id']);
-                    $objSiteInfo = new SC_SiteInfo();
-                    $objTemplate->arrInfo = $objSiteInfo->data;
-                    $objMakeTemplate = new SC_AdminView();
-                    $objMakeTemplate->assignobj($objTemplate);
-                    $this->list_data["body"] = $objMakeTemplate->fetch("mail/html_template.tpl");
-                }
             }
             break;
-            /*
-             regist_confirm:「入力内容を確認」
-             regist_back:「テンプレート設定画面へ戻る」
-             regist_complete:「登録」
-            */
+           //  regist_confirm:「入力内容を確認」
+           //  regist_back:「テンプレート設定画面へ戻る」
+           //  regist_complete:「登録」
         case 'regist_confirm':
         case 'regist_back':
         case 'regist_complete':
@@ -353,35 +297,14 @@ class LC_Page_Admin_Mail extends LC_Page_Admin {
                     $this->tpl_mainpage = 'mail/input_confirm.tpl';
                 } else if( $this->getMode() == 'regist_complete' ){
                     $sendId = $this->lfRegistData($objQuery, $this->list_data);
-                    if (MELMAGA_SEND) {
-                        if (MELMAGA_BATCH_MODE) {
-                            SC_Response_Ex::sendRedirectFromUrlPath(ADMIN_DIR . 'mail/history.php');
-                        } else {
-                            SC_Response_Ex::sendRedirectFromUrlPath(ADMIN_DIR . 'mail/sendmail.php', array('mode' => 'now', 'send_id' => $sendId));
-                        }
-                        exit;
-                    } else {
-                        SC_Utils_Ex::sfErrorHeader(">> 本サイトではメルマガ配信は行えません。");
-                    }
+                    SC_Response_Ex::sendRedirectFromUrlPath(ADMIN_DIR . 'mail/sendmail.php', array('mode' => 'now', 'send_id' => $sendId));
+                    exit;
                 }
             }
             break;
         default:
-            $this->list_data['mail_type'] = 1;
-            break;
         }
-
-        // 配信時間の年を、「現在年~現在年＋１」の範囲に設定
-        for ($year=date("Y"); $year<=date("Y") + 1;$year++){
-            $arrYear[$year] = $year;
-        }
-        $this->arrYear = $arrYear;
-
-        $this->arrCustomerOrderId = $this->lfGetCustomerOrderId($_POST['buy_product_code']);
-
-        $this->arrCatList = $objDb->sfGetCategoryList();
-
-        // $this->arrCampaignList = $this->lfGetCampaignList($objQuery);
+        */
     }
 
     /**
@@ -393,21 +316,66 @@ class LC_Page_Admin_Mail extends LC_Page_Admin {
         parent::destroy();
     }
 
-    // 商品コードで検索された場合にヒットした注文番号を取得する。
-    function lfGetCustomerOrderId($keyword) {
-        $arrCustomerOrderId = null;
-        if($keyword != "") {
-            $col = "dtb_order.customer_id, dtb_order.order_id";
-            $from = "dtb_order LEFT JOIN dtb_order_detail USING(order_id)";
-            $where = "product_code LIKE ? AND del_flg = 0";
-            $objQuery = new SC_Query();
-            $objQuery->setGroupBy("customer_id, order_id");
-            $arrRet = $objQuery->select($col, $from, $where, array($keyword));
-            $arrCustomerOrderId = SC_Utils_Ex::sfArrKeyValues($arrRet, "customer_id", "order_id");
-        }
-        return $arrCustomerOrderId;
+    /**
+     * パラメーター情報の初期化
+     *
+     * @param array $objFormParam フォームパラメータークラス
+     * @return void
+     */
+    function lfInitParamSearchCustomer(&$objFormParam) {
+        SC_Helper_Customer_Ex::sfSetSearchParam($objFormParam);
+        $objFormParam->addParam('配信形式', 'search_htmlmail', INT_LEN, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
+        $objFormParam->addParam('配信メールアドレス種別', 'search_mail_type', INT_LEN, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
+        $objFormParam->addParam('ページ番号', 'search_pageno', INT_LEN, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"),1,false);
+        $objFormParam->addParam('１ページ表示件数', 'search_page_rows', INT_LEN, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"),1,false);
     }
+    
+    /**
+     * エラーチェック
+     *
+     * @param array $objFormParam フォームパラメータークラス
+     * @return array エラー配列
+     */
+    function lfCheckError(&$objFormParam) {
+        return SC_Helper_Customer_Ex::sfCheckErrorSearchParam($objFormParam);
+    }
+    
+    /**
+     * 顧客一覧を検索する処理
+     *
+     * @param array $arrParam 検索パラメーター連想配列
+     * @return array( integer 全体件数, mixed 顧客データ一覧配列, mixed SC_PageNaviオブジェクト)
+     */
+    function lfDoSearch($arrParam) {
+        $objQuery =& SC_Query::getSingletonInstance();
+        $objSelect = new SC_CustomerList($arrParam, "customer");
+        $page_rows = $arrParam['search_page_rows'];
+        if(SC_Utils_Ex::sfIsInt($page_rows)) {
+            $page_max = $page_rows;
+        }else{
+            $page_max = SEARCH_PMAX;
+        }
+        $disp_pageno = $arrParam['search_pageno'];
+        if($disp_pageno == 0) {
+            $disp_pageno = 1;
+        }
+        $offset = intval($page_max) * (intval($disp_pageno) - 1);
+        $objSelect->setLimitOffset($page_max, $offset);
+        
+        $arrData = $objQuery->getAll($objSelect->getList(), $objSelect->arrVal);
 
+        // 該当全体件数の取得
+        $linemax = $objQuery->getOne($objSelect->getListCount(), $objSelect->arrVal);
+
+        // ページ送りの取得
+        $objNavi = new SC_PageNavi($arrParam['search_pageno'],
+                                    $linemax,
+                                    $page_max,
+                                    "fnCustomerPage",
+                                    NAVI_PMAX);
+        return array($linemax, $arrData, $objNavi);
+    }
+    
     // 現在時刻の取得（配信時間デフォルト値）
     function lfGetNowDate(){
         $nowdate = date("Y/n/j/G/i");
@@ -502,46 +470,6 @@ class LC_Page_Admin_Mail extends LC_Page_Admin {
         return $is_mobile;
     }
 
-
-    // HTMLテンプレートを使用する場合、データを取得する。
-    function lfGetHtmlTemplateData($id) {
-
-        $objQuery = new SC_Query();
-        $sql = "SELECT * FROM dtb_mailmaga_template WHERE template_id = ?";
-        $result = $objQuery->getAll($sql, array($id));
-        $list_data = $result[0];
-
-        // メイン商品の情報取得
-        // FIXME SC_Product クラスを使用した実装
-        $sql = "SELECT name, main_image, point_rate, deliv_fee, price01_min, price01_max, price02_min, price02_max FROM vw_products_allclass AS allcls WHERE product_id = ?";
-        $main = $objQuery->getAll($sql, array($list_data["sub_product_id" .$j]));
-        $list_data["main"] = $main[0];
-
-        // サブ商品の情報取得
-        $sql = "SELECT product_id, name, main_list_image, price01_min, price01_max, price02_min, price02_max FROM vw_products_allclass AS allcls WHERE product_id = ?";
-        $k = 0;
-        $l = 0;
-        for ($i = 1; $i <= 12; $i ++) {
-            if ($l == 4) {
-                $l = 0;
-                $k ++;
-            }
-            $result = "";
-            $j = sprintf("%02d", $i);
-            if ($i > 0 && $i < 5 ) $k = 0;
-            if ($i > 4 && $i < 9 ) $k = 1;
-            if ($i > 8 && $i < 13 ) $k = 2;
-
-            if (is_numeric($list_data["sub_product_id" .$j])) {
-                $result = $objQuery->getAll($sql, array($list_data["sub_product_id" .$j]));
-                $list_data["sub"][$k][$l] = $result[0];
-                $list_data["sub"][$k]["data_exists"] = "OK";    // 当該段にデータが１つ以上存在するフラグ
-            }
-            $l ++;
-        }
-        return $list_data;
-    }
-
     // hidden要素出力用配列の作成
     function lfGetHidden( $array ){
         if ( is_array($array) ){
@@ -587,64 +515,9 @@ class LC_Page_Admin_Mail extends LC_Page_Admin {
 
         $objErr = new SC_CheckError($array);
 
-        $objErr->doFunc(array("顧客コード", "customer_id", INT_LEN), array("NUM_CHECK","MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("都道府県", "pref", 2), array("NUM_CHECK","MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("顧客名", "name", STEXT_LEN), array("MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("顧客名(カナ)", "kana", STEXT_LEN), array("KANA_CHECK", "MAX_LENGTH_CHECK"));
-
-        $objErr->doFunc(array('メールアドレス', "email", STEXT_LEN) ,array("EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("電話番号", "tel", TEL_LEN), array("NUM_CHECK","MAX_LENGTH_CHECK"));
-
-        $objErr->doFunc(array("購入回数(開始)", "buy_times_from", INT_LEN), array("NUM_CHECK","MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("購入回数(終了)", "buy_times_to", INT_LEN), array("NUM_CHECK","MAX_LENGTH_CHECK"));
-        if (!isset($array['buy_total_from'])) $array['buy_total_from'] = "";
-        if (!isset($array['buy_total_to'])) $array['buy_total_to'] = "";
-        if (!isset($array['buy_times_from'])) $array['buy_times_from'] = "";
-        if (!isset($array['buy_times_from'])) $array['buy_times_from'] = "";
-        if ((is_numeric($array["buy_total_from"]) && is_numeric($array["buy_total_to"]) ) && ($array["buy_times_from"] > $array["buy_times_to"]) ) $objErr->arrErr["buy_times_from"] .= "※ 購入回数の指定範囲が不正です。";
-
-        $objErr->doFunc(array("誕生月", "birth_month", 2), array("NUM_CHECK","MAX_LENGTH_CHECK"));
-
-        $objErr->doFunc(array("誕生日(開始日)", "b_start_year", "b_start_month", "b_start_day",), array("CHECK_DATE"));
-        $objErr->doFunc(array("誕生日(終了日)", "b_end_year", "b_end_month", "b_end_day"), array("CHECK_DATE"));
-        $objErr->doFunc(array("誕生日(開始日)","誕生日(終了日)", "b_start_year", "b_start_month", "b_start_day", "b_end_year", "b_end_month", "b_end_day"), array("CHECK_SET_TERM"));
-
-        $objErr->doFunc(array("登録・更新日(開始日)", "start_year", "start_month", "start_day",), array("CHECK_DATE"));
-        $objErr->doFunc(array("登録・更新日(終了日)", "end_year", "end_month", "end_day"), array("CHECK_DATE"));
-        $objErr->doFunc(array("登録・更新日(開始日)","登録・更新日(終了日)", "start_year", "start_month", "start_day", "end_year", "end_month", "end_day"), array("CHECK_SET_TERM"));
-
-        $objErr->doFunc(array("最終購入日(開始日)", "buy_start_year", "buy_start_month", "buy_start_day",), array("CHECK_DATE"));
-        $objErr->doFunc(array("最終購入(終了日)", "buy_end_year", "buy_end_month", "buy_end_day"), array("CHECK_DATE"));
-        $objErr->doFunc(array("最終購入日(開始日)","登録・更新日(終了日)", "buy_start_year", "buy_start_month", "buy_start_day", "buy_end_year", "buy_end_month", "buy_end_day"), array("CHECK_SET_TERM"));
-
-        $objErr->doFunc(array("購入商品コード", "buy_product_code", STEXT_LEN), array("MAX_LENGTH_CHECK"));
-
-        $objErr->doFunc(array("購入商品名", "buy_product_name", STEXT_LEN), array("MAX_LENGTH_CHECK"));
-
-        $objErr->doFunc(array("購入金額(開始)", "buy_total_from", INT_LEN), array("NUM_CHECK","MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("購入金額(終了)", "buy_total_to", INT_LEN), array("NUM_CHECK","MAX_LENGTH_CHECK"));
-
-        $objErr->doFunc(array("キャンペーン", "campaign_id", INT_LEN), array("NUM_CHECK"));
-
-        // 購入金額(from) ＞ 購入金額(to) の場合はエラーとする
-        if ( (is_numeric($array["buy_total_from"]) && is_numeric($array["buy_total_to"]) ) &&
-             ($array["buy_total_from"] > $array["buy_total_to"]) ) {
-            $objErr->arrErr["buy_total_from"] .= "※ 購入金額の指定範囲が不正です。";
-        }
-
         if ( $flag ){
             $objErr->doFunc(array("テンプレート", "template_id"), array("EXIST_CHECK", "NUM_CHECK"));
             $objErr->doFunc(array("メール送信法法", "mail_method"), array("EXIST_CHECK", "NUM_CHECK"));
-
-            if(MELMAGA_BATCH_MODE) {
-                $objErr->doFunc(array("配信日（年）","send_year"), array("EXIST_CHECK", "NUM_CHECK"));
-                $objErr->doFunc(array("配信日（月）","send_month"), array("EXIST_CHECK", "NUM_CHECK"));
-                $objErr->doFunc(array("配信日（日）","send_day"), array("EXIST_CHECK", "NUM_CHECK"));
-                $objErr->doFunc(array("配信日（時）","send_hour"), array("EXIST_CHECK", "NUM_CHECK"));
-                $objErr->doFunc(array("配信日（分）","send_minutes"), array("EXIST_CHECK", "NUM_CHECK"));
-                $objErr->doFunc(array("配信日", "send_year", "send_month", "send_day"), array("CHECK_DATE"));
-                $objErr->doFunc(array("配信日", "send_year", "send_month", "send_day","send_hour", "send_minutes"), array("ALL_EXIST_CHECK"));
-            }
             $objErr->doFunc(array("Subject", "subject", STEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
             $objErr->doFunc(array("本文", 'body', LLTEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));    // HTMLテンプレートを使用しない場合
         }
@@ -685,8 +558,4 @@ class LC_Page_Admin_Mail extends LC_Page_Admin {
     }
 
 }
-class LC_HTMLtemplate {
-    var $list_data;
-}
-
 ?>

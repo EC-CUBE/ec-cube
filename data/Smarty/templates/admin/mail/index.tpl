@@ -31,23 +31,34 @@
         <!--{include file="`$smarty.const.TEMPLATE_ADMIN_REALDIR`/adminparts/form_customer_search.tpl"}-->
         <tr>
             <th>配信形式</th>
-            <td>
-                <!--{if $arrErr.htmlmail}--><span class="attention"><!--{$arrErr.htmlmail}--></span><br /><!--{/if}-->
-                <!--{html_radios name="htmlmail" options=$arrHtmlmail separator="&nbsp;" selected=$list_data.htmlmail}-->
+            <td colspan="3">
+              <!--{assign var=key value="search_htmlmail"}-->
+              <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><br /><!--{/if}-->
+              <!--{html_radios name=$key options=$arrHtmlmail separator="&nbsp;" selected=$arrForm[$key].value}-->
             </td>
         </tr>
         <tr>
             <th>配信メールアドレス種別</th>
             <td colspan="3">
-                <!--{html_radios name="mail_type" options=$arrMailType separator="<br />" selected=$list_data.mail_type}-->
+              <!--{assign var=key value="search_mail_type"}-->
+              <!--{html_radios name=$key options=$arrMailType separator="<br />" selected=$arrForm[$key].value|default:1}-->
             </td>
         </tr>
     </table>
     <!--{* 検索条件設定テーブルここまで *}-->
-
+    
+  <div class="btn">
+    <p class="page_rows">検索結果表示件数
+    <!--{assign var=key value="search_page_rows"}-->
+    <select name="<!--{$key}-->">
+      <!--{html_options options=$arrPageRows selected=$arrForm[$key]}-->
+    </select> 件</p>
     <div class="btn-area">
-        <a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', ''); return false;"><span class="btn-next">この条件で検索する</span></a>
+      <ul>
+        <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', ''); return false;"><span class="btn-next">この条件で検索する</span></a></li>
+      </ul>
     </div>
+  </div>
 </form>
 
 
@@ -55,10 +66,14 @@
 
 <form name="form1" id="form1" method="post" action="?">
 <input type="hidden" name="mode" value="" />
-<input type="hidden" name="search_pageno" value="<!--{$tpl_pageno}-->" />
-<input type="hidden" name="result_email" value="" />
-<!--{foreach key=key item=val from=$arrHidden}-->
-<input type="hidden" name="<!--{$key}-->" value="<!--{$val|h}-->" />
+<!--{foreach key=key item=item from=$arrHidden}-->
+<!--{if is_array($item)}-->
+  <!--{foreach item=c_item from=$item}-->
+    <input type="hidden" name="<!--{$key}-->[]" value="<!--{$c_item|h}-->" />
+  <!--{/foreach}-->
+<!--{else}-->
+<input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
+<!--{/if}-->
 <!--{/foreach}-->
 
     <h2>検索結果一覧</h2>
@@ -78,47 +93,25 @@
     <!--検索結果表示テーブル-->
     <table class="list">
     <colgroup width="5%">
-    <colgroup width="10%">
-    <colgroup width="10%">
+    <colgroup width="20%">
+    <colgroup width="30%">
+    <colgroup width="15%">
     <colgroup width="25%">
-    <colgroup width="15%">
-    <colgroup width="10%">
-    <colgroup width="15%">
-    <colgroup width="5%">
         <tr>
-            <th>#</th>
             <th>会員番号</th>
-            <th>注文番号</th>
             <th>名前</th>
             <th>メールアドレス</th>
             <th>希望配信</th>
-            <th>登録日</th>
-            <th>削除</th>
+            <th>登録・更新日</th>
         </tr>
         <!--{section name=i loop=$arrResults}-->
         <tr>
-            <td class="center"><!--{$smarty.section.i.iteration}--></td>
-            <td class="center"><!--{$arrResults[i].customer_id|default:"非会員"}--></td>
-
-            <!--{assign var=key value="`$arrResults[i].customer_id`"}-->
-            <td class="center">
-                <!--{foreach key=key item=val from=$arrCustomerOrderId[$key]}-->
-                <a href="#" onclick="fnOpenWindow('../order/edit.php?order_id=<!--{$val}-->','order_disp','800','900'); return false;" ><!--{$val}--></a><br />
-                <!--{foreachelse}-->
-                -
-                <!--{/foreach}-->
-            </td>
-
+            <td class="center"><!--{$arrResults[i].customer_id}--></td>
             <td><!--{$arrResults[i].name01|h}--> <!--{$arrResults[i].name02|h}--></td>
             <td><!--{$arrResults[i].email|h}--></td>
             <!--{assign var="key" value="`$arrResults[i].mailmaga_flg`"}-->
-            <td class="center"><!--{$arrMAILMAGATYPE[$key]}--></td>
-            <td><!--{$arrResults[i].create_date|sfDispDBDate}--></td>
-            <!--{if $arrResults[i].customer_id != ""}-->
-            <td class="center">-</td>
-            <!--{else}-->
-            <td class="center"><a href="?" onclick="fnFormModeSubmit('form1','delete','result_email','<!--{$arrResults[i].email|h}-->'); return false;">削除</a></td>
-            <!--{/if}-->
+            <td><!--{$arrHtmlmail[$key]}--></td>
+            <td><!--{$arrResults[i].update_date|sfDispDBDate}--></td>
         </tr>
         <!--{/section}-->
     </table>
