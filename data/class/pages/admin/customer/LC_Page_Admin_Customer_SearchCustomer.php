@@ -65,110 +65,40 @@ class LC_Page_Admin_Customer_SearchCustomer extends LC_Page_Admin {
      */
     function action() {
         // 認証可否の判定
-        $objSess = new SC_Session();
-        SC_Utils_Ex::sfIsSuccess($objSess);
+        SC_Utils_Ex::sfIsSuccess(new SC_Session());
+
+        // 不正アクセスチェック 
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            if (!SC_Helper_Session_Ex::isValidToken()) {
+                SC_Utils_Ex::sfDispError(INVALID_MOVE_ERRORR);
+            }
+        }
+        // トランザクションID
+        $this->transactionid = SC_Helper_Session_Ex::getToken();
+
+        // パラメータ管理クラス
+        $objFormParam = new SC_FormParam();
+        // パラメータ設定
+        $this->lfInitParam($objFormParam);
+        $objFormParam->setParam($_POST);
+        $objFormParam->convParam();
+        // パラメーター読み込み
+        $this->arrForm = $objFormParam->getFormParamList();
+        // 入力パラメーターチェック
+        $this->arrErr = $this->lfCheckError($objFormParam);
+        if(!SC_Utils_Ex::isBlank($this->arrErr)) {
+            return;
+        }
 
         // POSTのモードがsearchなら顧客検索開始
         switch ($this->getMode()) {
         case 'search':
-            $this->objFormParam = new SC_FormParam();
-            // 値の初期化
-            $this->lfInitParam();
-            // POST値の取得
-            $this->objFormParam->setParam($_POST);
-            // 入力値の変換
-            $this->objFormParam->convParam();
-
-            // 入力された値を取得する
-            $arrForm = $this->objFormParam->getHashArray();
-
-            // エラーチェック
-            $this->arrErr = $this->lfCheckError();
-            $is_select = empty($this->arrErr);
-
-            $sqlval = array();
-            $where = "";
-
-            if ($is_select) {
-                $where = "del_flg = 0";
-
-                // 検索
-                foreach($arrForm as $tmp_key => $val){
-                    if( is_array($val) === false && 0 < strlen($val)){
-                        $key = strtr($tmp_key , array('search_' => ''));
-                        switch($key){
-                            case 'customer_id':
-                                $where .= " AND customer_id = ? ";
-                                $sqlval[] = $val;
-                                break;
-                            case 'name01':
-                                    $where .= " AND name01 ILIKE ? ";
-                                    $sqlval[] = '%'.$val.'%';
-                                break;
-                            case 'name02':
-                                    $where .= " AND name02 ILIKE ? ";
-                                    $sqlval[] = '%'.$val.'%';
-                                break;
-                            case 'kana01':
-                                    $where .= " AND kana01 ILIKE ? ";
-                                    $sqlval[] = '%'.$val.'%';
-                                break;
-                            case 'kana02':
-                                    $where .= " AND kana02 ILIKE ? ";
-                                    $sqlval[] = '%'.$val.'%';
-                                break;
-                            default :
-                                break;
-                        }
-                    }
-                }
-            }
-
-
-            if( $is_select === true ){
-                $objQuery = new SC_Query();
-
-                // 既に購入した事がある顧客を取得
-                $col = '*';
-                $from = 'dtb_customer';
-                $order = 'customer_id';
-                $arrCustomer = $objQuery->select($col, $from, $where, $sqlval);
-
-                // 顧客情報を取得できたら、テンプレートに
-                if( is_array($arrCustomer) === true && count($arrCustomer) > 0){
-                    $customer_count = count($arrCustomer);
-                    if( $customer_count != 0 ){
-                        $this->tpl_linemax = $customer_count;
-                    }
-                } else {
-                    $this->tpl_linemax = null;
-                }
-
-                // ページ送りの処理
-                if(isset($_POST['search_page_max'])
-                   && is_numeric($_POST['search_page_max'])) {
-                    $page_max = $_POST['search_page_max'];
-                } else {
-                    $page_max = SEARCH_PMAX;
-                }
-
-                // ページ送りの取得
-                $objNavi = new SC_PageNavi($_POST['search_pageno'], $customer_count, $page_max, "fnNaviSearchOnlyPage", NAVI_PMAX);
-                $this->tpl_strnavi = $objNavi->strnavi;      // 表示文字列
-                $startno = $objNavi->start_row;
-
-                // 取得範囲の指定(開始行番号、行数のセット)
-                $objQuery->setLimitOffset($page_max, $startno);
-                // 表示順序
-                $objQuery->setOrder($order);
-                // 検索結果の取得
-                $this->arrCustomer = $objQuery->select($col, $from, $where, $sqlval);
-            }
+            list($this->tpl_linemax, $this->arrCustomer, $this->objNavi) = $this->lfDoSearch($objFormParam->getHashArray());
+            $this->arrPagenavi = $this->objNavi->arrPagenavi;
             break;
         default:
             break;
         }
-        $this->arrForm = $arrForm;
         $this->setTemplate($this->tpl_mainpage);
     }
 
@@ -182,23 +112,34 @@ class LC_Page_Admin_Customer_SearchCustomer extends LC_Page_Admin {
         parent::destroy();
     }
 
-    /* パラメータ情報の初期化 */
-    function lfInitParam() {
-        $this->objFormParam->addParam("顧客ID", "search_customer_id", INT_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("顧客名(姓)", "search_name01", STEXT_LEN, "aKV", array("NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("顧客名(名)", "search_name02", STEXT_LEN, "aKV", array("NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("顧客名(カナ)", 'search_kana01', STEXT_LEN, "CKV", array("NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK", "KANA_CHECK"));
-        $this->objFormParam->addParam("顧客名(カナ/名)", 'search_kana02', STEXT_LEN, "CKV", array("NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK", "KANA_CHECK"));
+    /**
+     * パラメーター情報の初期化
+     *
+     * @param array $objFormParam フォームパラメータークラス
+     * @return void
+     */
+    function lfInitParam(&$objFormParam) {
+        SC_Helper_Customer_Ex::sfSetSearchParam($objFormParam);
     }
 
-    /* 入力内容のチェック */
-    function lfCheckError() {
-        // 入力データを渡す。
-        $arrRet =  $this->objFormParam->getHashArray();
-        $objErr = new SC_CheckError($arrRet);
-        $objErr->arrErr = $this->objFormParam->checkError();
+    /**
+     * エラーチェック
+     *
+     * @param array $objFormParam フォームパラメータークラス
+     * @return array エラー配列
+     */
+    function lfCheckError(&$objFormParam) {
+        return SC_Helper_Customer_Ex::sfCheckErrorSearchParam($objFormParam);
+    }
 
-        return $objErr->arrErr;
+    /**
+     * 顧客一覧を検索する処理
+     *
+     * @param array $arrParam 検索パラメーター連想配列
+     * @return array( integer 全体件数, mixed 顧客データ一覧配列, mixed SC_PageNaviオブジェクト)
+     */
+    function lfDoSearch($arrParam) {
+        return SC_Helper_Customer_Ex::sfGetSearchData($arrParam);
     }
 }
 ?>

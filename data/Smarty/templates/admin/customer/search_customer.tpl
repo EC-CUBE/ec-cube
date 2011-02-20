@@ -42,32 +42,33 @@ function func_submit(customer_id){
 <input name="mode" type="hidden" value="search">
 <input name="search_pageno" type="hidden" value="">
 <input name="customer_id" type="hidden" value="">
+<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+
 <table class="form">
     <colgroup width="20%">
     <colgroup width="80%">
     <tr>
         <th class="colmun">顧客ID</th>
         <td width="287" colspan="2">
-            <!--{if $arrErr.search_customer_id}--><span class="red12"><!--{$arrErr.search_customer_id}--></span><!--{/if}-->
-            <input type="text" name="search_customer_id" value="<!--{$arrForm.search_customer_id|h}-->" size="40" class="box40" style="<!--{$arrErr.search_customer_id|sfGetErrorColor}-->"/>
+          <!--{assign var=key value="search_customer_id"}-->
+          <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><br /><!--{/if}-->
+          <input type="text" name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" value="<!--{$arrForm[$key].value|h}-->" size="30" class="box30" <!--{if $arrErr[$key]}--><!--{sfSetErrorStyle}--><!--{/if}--> />
         </td>
     </tr>
     <tr>
         <th class="colmun">顧客名</th>
         <td>
-            <!--{if $arrErr.search_name01}--><span class="red12"><!--{$arrErr.search_name01}--></span><!--{/if}-->
-            <!--{if $arrErr.search_name02}--><span class="red12"><!--{$arrErr.search_name02}--></span><!--{/if}-->
-            姓&nbsp;&nbsp;<input type="text" name="search_name01" value="<!--{$arrForm.search_name01|h}-->" size="15" class="box15" style="<!--{$arrErr.search_name01|sfGetErrorColor}-->"/>
-            &nbsp;名&nbsp;&nbsp;<input type="text" name="search_name02" value="<!--{$arrForm.search_name02|h}-->" size="15" class="box15" style="<!--{$arrErr.search_name02|sfGetErrorColor}-->"/>
+          <!--{assign var=key value="search_name"}-->
+          <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><br /><!--{/if}-->
+          <input type="text" name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" value="<!--{$arrForm[$key].value|h}-->" size="30" class="box30" <!--{if $arrErr[$key]}--><!--{sfSetErrorStyle}--><!--{/if}--> />
         </td>
     </tr>
     <tr class="n">
         <th class="colmun">顧客名(カナ)</th>
         <td>
-            <!--{if $arrErr.search_kana01}--><span class="red12"><!--{$arrErr.search_kana01}--></span><!--{/if}-->
-            <!--{if $arrErr.search_kana02}--><span class="red12"><!--{$arrErr.search_kana02}--></span><!--{/if}-->
-            セイ<input type="text" name="search_kana01" value="<!--{$arrForm.search_kana01|h}-->" size="15" class="box15" style="<!--{$arrErr.search_kana01|sfGetErrorColor}-->"/>
-                                                メイ&nbsp;<input type="text" name="search_kana02" value="<!--{$arrForm.search_kana02|h}-->" size="15" class="box15" style="<!--{$arrErr.search_kana02|sfGetErrorColor}-->"/>
+        <!--{assign var=key value="search_kana"}-->
+        <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><br /><!--{/if}-->
+        <input type="text" name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" value="<!--{$arrForm[$key].value|h}-->" size="30" class="box30" <!--{if $arrErr[$key]}--><!--{sfSetErrorStyle}--><!--{/if}--> />
         </td>
     </tr>
 </table>
