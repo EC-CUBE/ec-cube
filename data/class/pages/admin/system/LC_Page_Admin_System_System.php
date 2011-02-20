@@ -51,7 +51,7 @@ class LC_Page_Admin_System_System extends LC_Page_Admin {
     }
 
     /**
-     * フォームパラメータ初期化
+     * フォームパラメータ初期化.
      *
      * @return void
      */
@@ -106,9 +106,9 @@ class LC_Page_Admin_System_System extends LC_Page_Admin {
     }
 
     /**
-     * システム情報を取得する
+     * システム情報を取得する.
      *
-     * @return array
+     * @return array システム情報
      */
     function getSystemInfo() {
         $objDB = SC_DB_DBFactory_Ex::getInstance();
