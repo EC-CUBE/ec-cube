@@ -49,14 +49,6 @@ class SC_CustomerList extends SC_SelectSql {
             $regdate_col = 'dtb_customer.update_date';
         }
 
-        // メールマガジンの場合
-        if($mode == "magazine") {
-            $this->setWhere("(del_flg = 0 OR del_flg IS NULL)");
-            $this->setWhere("status = 2");
-            // 登録日を示すカラム
-            $regdate_col = 'dtb_customer.create_date';
-        }
-
         // 顧客ID
         if (!isset($this->arrSql['customer_id'])) $this->arrSql['customer_id'] = "";
         if ( strlen($this->arrSql['customer_id']) > 0 ) {
@@ -176,38 +168,42 @@ class SC_CustomerList extends SC_SelectSql {
             $this->setWhere($sql_where);
         }
 
-        // 配信メールアドレス種別
-        if ( $mode == 'magazine' ){
-            $sqlEmailMobileIsEmpty = "(dtb_customer.email_mobile IS NULL OR dtb_customer.email_mobile = '')";
-            if (!isset($this->arrSql['mail_type'])) $this->arrSql['mail_type'] = "";
-            switch ($this->arrSql['mail_type']) {
-                // PCメールアドレス
-                case 1:
-                    $this->setWhere("(dtb_customer.email <> dtb_customer.email_mobile OR $sqlEmailMobileIsEmpty)");
-                    break;
-                // 携帯メールアドレス
-                case 2:
-                    $this->setWhere("NOT $sqlEmailMobileIsEmpty");
-                    break;
-                // PCメールアドレス (携帯メールアドレスを登録している顧客は除外)
-                case 3:
-                    $this->setWhere($sqlEmailMobileIsEmpty);
-                    break;
-                // 携帯メールアドレス (PCメールアドレスを登録している顧客は除外)
-                case 4:
-                    $this->setWhere('dtb_customer.email = dtb_customer.email_mobile');
-                    break;
+        // メールマガジンの場合
+        if($mode == "customer") {
+            // メルマガ受け取りの選択項目がフォームに存在する場合
+            if ( isset($this->arrSql['htmlmail'])){
+                if (SC_Utils_Ex::sfIsInt($this->arrSql['htmlmail'])){
+                    $this->setWhere("mailmaga_flg = ?");
+                    $this->arrVal[] = $this->arrSql['htmlmail'];
+                } else {
+                    //　メルマガ購読拒否は省く
+                    $this->setWhere("mailmaga_flg <> 3");
+                }
             }
         }
 
-        // HTML-mail
-        if ( $mode == 'magazine' ){
-            if (!isset($this->arrSql['htmlmail'])) $this->arrSql['htmlmail'] = "";
-            if ( strlen($this->arrSql['htmlmail']) > 0 ) {
-                $this->setWhere( " mailmaga_flg = ? ");
-                $this->arrVal[] = $this->arrSql['htmlmail'];
-            } else {
-                $this->setWhere( " (mailmaga_flg = 1 or mailmaga_flg = 2) ");
+        // 配信メールアドレス種別
+        if ( $mode == 'customer' ){
+            if (isset($this->arrSql['mail_type'])){
+                $sqlEmailMobileIsEmpty = "(dtb_customer.email_mobile IS NULL OR dtb_customer.email_mobile = '')";
+                switch ($this->arrSql['mail_type']) {
+                    // PCメールアドレス
+                    case 1:
+                        $this->setWhere("(dtb_customer.email <> dtb_customer.email_mobile OR $sqlEmailMobileIsEmpty)");
+                        break;
+                    // 携帯メールアドレス
+                    case 2:
+                        $this->setWhere("NOT $sqlEmailMobileIsEmpty");
+                        break;
+                    // PCメールアドレス (携帯メールアドレスを登録している顧客は除外)
+                    case 3:
+                        $this->setWhere($sqlEmailMobileIsEmpty);
+                        break;
+                    // 携帯メールアドレス (PCメールアドレスを登録している顧客は除外)
+                    case 4:
+                        $this->setWhere('dtb_customer.email = dtb_customer.email_mobile');
+                        break;
+                }
             }
         }
 
@@ -345,7 +341,7 @@ class SC_CustomerList extends SC_SelectSql {
 
     // 検索用SQL
     function getList() {
-        $this->select = "SELECT customer_id,name01,name02,kana01,kana02,sex,email,tel01,tel02,tel03,pref,status FROM dtb_customer ";
+        $this->select = "SELECT customer_id,name01,name02,kana01,kana02,sex,email,tel01,tel02,tel03,pref,status,update_date,mailmaga_flg FROM dtb_customer ";
         return $this->getSql(0);
     }
 
@@ -358,30 +354,6 @@ class SC_CustomerList extends SC_SelectSql {
             FROM
                 dtb_customer";
         return $this->getSql(0);
-    }
-
-    function getMailMagazineColumn($is_mobile= false) {
-        if($is_mobile == true) {
-            $email_column = "dtb_customer.email_mobile as email";
-        } else {
-            $email_column = "dtb_customer.email";
-        }
-
-        $column ="dtb_customer.customer_id,
-                dtb_customer.name01,
-                dtb_customer.name02,
-                dtb_customer.kana01,
-                dtb_customer.kana02,
-                dtb_customer.sex,
-                $email_column,
-                dtb_customer.tel01,
-                dtb_customer.tel02,
-                dtb_customer.tel03,
-                dtb_customer.pref,
-                dtb_customer.create_date,
-                dtb_customer.mailmaga_flg";
-
-        return $column;
     }
 
     // 検索総数カウント用SQL
