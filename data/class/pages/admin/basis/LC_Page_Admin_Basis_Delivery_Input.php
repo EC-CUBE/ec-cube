@@ -32,12 +32,6 @@ require_once(CLASS_REALDIR . "pages/admin/LC_Page_Admin.php");
  * @version $Id$
  */
 class LC_Page_Admin_Basis_Delivery_Input extends LC_Page_Admin {
-
-    // {{{ properties
-
-    /** フォームパラメータの配列 */
-    var $objFormParam;
-
     // }}}
     // {{{ functions
 
