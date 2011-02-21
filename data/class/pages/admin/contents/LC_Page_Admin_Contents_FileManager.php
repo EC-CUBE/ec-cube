@@ -128,8 +128,8 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin {
             $this->arrErr = $objFormParam->checkError();
             if (SC_Utils_Ex::isBlank($this->arrErr)) {
                 if(is_dir($objFormParam->getValue('select_file'))) {
-                    $dispError = "※ ディレクトリをダウンロードすることは出来ません。<br/>";
-                    $this->setDispError('select_file', $dispError);
+                    $disp_error = "※ ディレクトリをダウンロードすることは出来ません。<br/>";
+                    $this->setDispError('select_file', $disp_error);
                 } else {
                     // ファイルダウンロード
                     $objFileManager->sfDownloadFile($objFormParam->getValue('select_file'));
@@ -160,7 +160,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin {
             if (SC_Utils_Ex::isBlank($this->arrErr)) {
                 if(!$this->tryCreateDir($objFileManager, $objFormParam)){
                     $disp_error = "※ ".htmlspecialchars($objFormParam->getValue('create_file'), ENT_QUOTES)."の作成に失敗しました。<br/>";
-                    $this->setDispError('create_file', $dispError);
+                    $this->setDispError('create_file', $disp_error);
                 } else {
                     $tpl_onload = "alert('フォルダを作成しました。');";
                     $this->setTplOnLoad($tpl_onload);
