@@ -112,7 +112,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin {
             break;
         }
         
-        $this->category_id = $this->getCategoryId($arrPost['category_id']);
+        $this->category_id = intval($arrPost['category_id']);
         $this->arrItems = $arrItems;
 
         // カテゴリ取得
@@ -235,19 +235,6 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin {
             $arrItems[$rank]['rank'] = $rank;
         }
         return $arrItems;
-    }
-
-    /**
-     * カテゴリーIDを取得する。
-     * @param Integer $category_id
-     * @return Integer
-     */
-    function getCategoryId($category_id){
-        if ( SC_Utils_Ex::sfIsInt($category_id)){
-            return $category_id;
-        }else{
-            return 0;
-        }
     }
 
 }

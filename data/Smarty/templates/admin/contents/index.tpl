@@ -196,26 +196,26 @@ function moving(news_id,rank, max_rank) {
       <th class="delete">削除</th>
       <th>移動</th>
     </tr>
-    <!--{section name=data loop=$list_data}-->
-    <tr style="background:<!--{if $list_data[data].news_id eq $news_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->;" class="center">
-      <!--{assign var=db_rank value="`$list_data[data].rank`"}-->
-      <!--{assign var=rank value="`$line_max-$db_rank+1`"}-->
+    <!--{section name=data loop=$arrNews}-->
+    <tr style="background:<!--{if $arrNews[data].news_id eq $news_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->;" class="center">
+      <!--{assign var=db_rank value="`$arrNews[data].rank`"}-->
+      <!--{assign var=rank value="`$line_max - $db_rank+1`"}-->
       <td><!--{$rank|h}--></td>
-      <td><!--{$list_data[data].cast_news_date|date_format:"%Y/%m/%d"}--></td>
+      <td><!--{$arrNews[data].cast_news_date|date_format:"%Y/%m/%d"}--></td>
       <td class="left">
-        <!--{if $list_data[data].link_method eq 1 && $list_data[data].news_url != ""}--><a href="<!--{$list_data[data].news_url|h}-->" ><!--{$list_data[data].news_title|h|nl2br}--></a>
-        <!--{elseif $list_data[data].link_method eq 1 && $list_data[data].news_url == ""}--><!--{$list_data[data].news_title|h|nl2br}-->
-        <!--{elseif $list_data[data].link_method eq 2 && $list_data[data].news_url != ""}--><a href="<!--{$list_data[data].news_url|h}-->" target="_blank" ><!--{$list_data[data].news_title|h|nl2br}--></a>
-        <!--{else}--><!--{$list_data[data].news_title|h|nl2br}-->
+        <!--{if $arrNews[data].link_method eq 1 && $arrNews[data].news_url != ""}--><a href="<!--{$arrNews[data].news_url|h}-->" ><!--{$arrNews[data].news_title|h|nl2br}--></a>
+        <!--{elseif $arrNews[data].link_method eq 1 && $arrNews[data].news_url == ""}--><!--{$arrNews[data].news_title|h|nl2br}-->
+        <!--{elseif $arrNews[data].link_method eq 2 && $arrNews[data].news_url != ""}--><a href="<!--{$arrNews[data].news_url|h}-->" target="_blank" ><!--{$arrNews[data].news_title|h|nl2br}--></a>
+        <!--{else}--><!--{$arrNews[data].news_title|h|nl2br}-->
         <!--{/if}-->
       </td>
-      <td><a href="#" onclick="return func_edit('<!--{$list_data[data].news_id|h}-->');">編集</a></td>
-      <td><a href="#" onclick="return func_del('<!--{$list_data[data].news_id|h}-->');">削除</a></td>
+      <td><a href="#" onclick="return func_edit('<!--{$arrNews[data].news_id|h}-->');">編集</a></td>
+      <td><a href="#" onclick="return func_del('<!--{$arrNews[data].news_id|h}-->');">削除</a></td>
       <td>
-      <!--{if count($list_data) != 1}-->
-      <input type="text" name="pos-<!--{$list_data[data].news_id|h}-->" size="3" class="box3" />番目へ<a href="?" onclick="fnFormModeSubmit('move', 'moveRankSet','news_id', '<!--{$list_data[data].news_id|h}-->'); return false;">移動</a><br />
+      <!--{if count($arrNews) != 1}-->
+      <input type="text" name="pos-<!--{$arrNews[data].news_id|h}-->" size="3" class="box3" />番目へ<a href="?" onclick="fnFormModeSubmit('move', 'moveRankSet','news_id', '<!--{$arrNews[data].news_id|h}-->'); return false;">移動</a><br />
       <!--{/if}-->
-      <!--{if $list_data[data].rank ne $max_rank}--><a href="#" onclick="return func_rankMove('up', '<!--{$list_data[data].news_id|h}-->', '<!--{$max_rank|h}-->');">上へ</a><!--{/if}-->　<!--{if $list_data[data].rank ne 1}--><a href="#" onclick="return func_rankMove('down', '<!--{$list_data[data].news_id|h}-->', '<!--{$max_rank|h}-->');">下へ</a><!--{/if}-->
+      <!--{if $arrNews[data].rank ne $max_rank}--><a href="#" onclick="return func_rankMove('up', '<!--{$arrNews[data].news_id|h}-->', '<!--{$max_rank|h}-->');">上へ</a><!--{/if}-->　<!--{if $arrNews[data].rank ne 1}--><a href="#" onclick="return func_rankMove('down', '<!--{$arrNews[data].news_id|h}-->', '<!--{$max_rank|h}-->');">下へ</a><!--{/if}-->
       </td>
     </tr>
     <!--{sectionelse}-->

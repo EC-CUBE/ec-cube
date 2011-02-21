@@ -118,10 +118,9 @@ class LC_Page_Admin_Contents extends LC_Page_Admin {
         case 'delete':
         //----　データ削除
             if (is_numeric($news_id)) {
-                $this->p($news_id);
                 $pre_rank = $this->getRankByNewsId($news_id);
                 $this->computeRankForDelete($news_id,$pre_rank);
-                $this->objDisplay->reload();             //自分にリダイレクト（再読込による誤動作防止）
+                SC_Response_Ex::reload();             //自分にリダイレクト（再読込による誤動作防止）
             }
             break;
         case 'move':
@@ -148,8 +147,8 @@ class LC_Page_Admin_Contents extends LC_Page_Admin {
             break;
         }
 
-        $this->list_data = $this->getNews();
-        $this->line_max = count($this->list_data);
+        $this->arrNews = $this->getNews();
+        $this->line_max = count($this->arrNews);
         $this->max_rank = $this->getRankMax();
     }
 

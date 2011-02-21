@@ -175,12 +175,22 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin {
             return array($where, $arrval);
     }
 
+    /**
+     * 指定された条件の商品の数を取得する
+     * @param String $where 検索条件
+     * @param Array $arrval 検索パラメータ
+     * @return Integer $linemax 条件にマッチする商品の数
+     */
     function getLineCount($where,$arrval){
         $objQuery =& SC_Query::getSingletonInstance();
         $linemax = $objQuery->count("dtb_products", $where, $arrval);
         return $linemax;
     }
 
+    /**
+     * @param  $search_page_max
+     * @return string
+     */
     function setPageMax($search_page_max){
             // ページ送りの処理
             if(isset($search_page_max)  && is_numeric($search_page_max)) {
@@ -191,6 +201,13 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin {
             return $page_max;
     }
 
+    /**
+     * 指定された条件の商品データを取得する。
+     * @param Object $objQuery ObjQueryオブジェクト
+     * @param Array $arrval 検索パラメータ
+     * @param String $where 検索条件
+     * @return Array 商品情報の配列
+     */
     function getProducts(&$objQuery,$arrval,$where){
         $objQuery =& SC_Query::getSingletonInstance();
         return $objQuery->select("*", SC_Product::alldtlSQL(), $where, $arrval);
