@@ -110,12 +110,12 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin {
             $this->arrForm['name'] = $class_name;
             break;
         case 'down':
-            $objDb->sfRankDown("dtb_class", "class_id", $class_id);
+            $this->lfDownRank($class_id);
             // 再表示
             SC_Response::reload();
             break;
         case 'up':
-            $objDb->sfRankUp("dtb_class", "class_id", $class_id);
+            $this->lfUpRank($class_id);
             // 再表示
             SC_Response::reload();
             break;
@@ -271,6 +271,25 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin {
             return false;
         }
     }
-
+    /**
+     * 並び順を上げる
+     *
+     * @param integer $class_id 規格ID
+     * @return void
+     */
+    function lfUpRank($class_id) {
+        $objDb = new SC_Helper_DB_Ex();
+        $objDb->sfRankUp("dtb_class", "class_id", $class_id);
+    }
+    /**
+     * 並び順を下げる
+     *
+     * @param integer $class_id 規格ID
+     * @return void
+     */
+    function lfDownRank($class_id) {
+        $objDb = new SC_Helper_DB_Ex();
+        $objDb->sfRankDown("dtb_class", "class_id", $class_id);
+    }
 }
 ?>
