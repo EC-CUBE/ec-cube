@@ -77,14 +77,14 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin {
         case 'search':
             $objQuery = new SC_Query();
             // POST値の引き継ぎ
-            $this->arrErr = $this->lfCheckError(&$objFormParam);
+            $this->arrErr = $this->lfCheckError($objFormParam);
             $arrPost = $objFormParam->getHashArray();
             // 入力された値にエラーがない場合、検索処理を行う。
             // 検索結果の数に応じてページャの処理も入れる。
             if (SC_Utils_Ex::isBlank($this->arrErr)) {
                 $where = 'del_flg = 0';
                 $order = "update_date DESC, product_id DESC";
-                list($where, $arrval) = $this->getSearchParam(&$objDb,$arrPost,$where);
+                list($where, $arrval) = $this->getSearchParam($objDb,$arrPost,$where);
                 $linemax = $this->getLineCount($where, $arrval);
                 $page_max = $this->setPageMax($arrPost['search_page_max']);
 

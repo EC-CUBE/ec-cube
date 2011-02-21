@@ -90,7 +90,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin {
         switch ($this->getMode()) {
         case 'regist':
             $arrPost = $objFormParam->getHashArray();
-            $this->arrErr = $this->lfCheckError(&$objFormParam);
+            $this->arrErr = $this->lfCheckError($objFormParam);
             if (SC_Utils_Ex::isBlank($this->arrErr)) {
                 // ニュースIDの値がPOSTされて来た場合は既存データの編集とみなし、
                 // 更新メソッドを呼び出す。
@@ -137,7 +137,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin {
             break;
         case 'moveRankSet':
         //----　指定表示順位移動
-            $input_pos = $this->getPostRank($objFormParam,$news_id);
+            $input_pos = $this->getPostRank($news_id);
             if(SC_Utils_Ex::sfIsInt($input_pos)) {
                 $objDb->sfMoveRank("dtb_news", "news_id", $news_id, $input_pos);
                 $this->objDisplay->reload();

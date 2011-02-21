@@ -77,7 +77,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin {
         
         switch ($this->getMode()) {
         case 'regist': // 商品を登録する。
-            $this->arrErr = $this->lfCheckError(&$objFormParam);
+            $this->arrErr = $this->lfCheckError($objFormParam);
             $arrPost = $objFormParam->getHashArray();
             // 登録処理にエラーがあった場合は商品選択の時と同じ処理を行う。
             if (SC_Utils_Ex::isBlank($this->arrErr)) {
@@ -91,7 +91,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin {
             $this->tpl_onload = "window.alert('編集が完了しました');";
             break;
         case 'delete': // 商品を削除する。
-            $this->arrErr = $this->lfCheckError(&$objFormParam);
+            $this->arrErr = $this->lfCheckError($objFormParam);
             $arrPost = $objFormParam->getHashArray();
             if (SC_Utils_Ex::isBlank($this->arrErr)) {
                 $this->deleteProduct($arrPost);
@@ -100,7 +100,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin {
             $this->tpl_onload = "window.alert('削除しました');";
             break;
         case 'set_item': // 商品を選択する。
-            $this->arrErr = $this->lfCheckError(&$objFormParam);
+            $this->arrErr = $this->lfCheckError($objFormParam);
             $arrPost = $objFormParam->getHashArray();
             if (SC_Utils_Ex::isBlank($this->arrErr['rank']) && SC_Utils_Ex::isBlank($this->arrErr['product_id'])) {
                 $arrItems = $this->setProducts($arrPost, $this->getRecommendProducts());

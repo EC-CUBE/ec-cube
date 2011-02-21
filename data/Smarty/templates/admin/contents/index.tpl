@@ -199,8 +199,7 @@ function moving(news_id,rank, max_rank) {
     <!--{section name=data loop=$arrNews}-->
     <tr style="background:<!--{if $arrNews[data].news_id eq $news_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->;" class="center">
       <!--{assign var=db_rank value="`$arrNews[data].rank`"}-->
-      <!--{assign var=rank value="`$line_max - $db_rank+1`"}-->
-      <td><!--{$rank|h}--></td>
+      <td><!--{math equation="$line_max - $db_rank + 1"}--></td>
       <td><!--{$arrNews[data].cast_news_date|date_format:"%Y/%m/%d"}--></td>
       <td class="left">
         <!--{if $arrNews[data].link_method eq 1 && $arrNews[data].news_url != ""}--><a href="<!--{$arrNews[data].news_url|h}-->" ><!--{$arrNews[data].news_title|h|nl2br}--></a>
