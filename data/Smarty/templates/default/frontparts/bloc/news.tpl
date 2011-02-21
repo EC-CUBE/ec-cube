@@ -21,7 +21,7 @@
  *}-->
 <div class="bloc_outer">
     <div id="newsarea">
-    <h2><img src="<!--{$TPL_URLPATH}-->img/title/tit_bloc_news.jpg"alt="新着情報" /><span class="rss"><a href="<!--{$smarty.const.ROOT_URLPATH}-->rss/<!--{$smarty.const.DIR_INDEX_PATH}-->" target="_blank"><span><img src="<!--{$TPL_URLPATH}-->img/button/btn_rss.jpg"alt="RSS" /></a></span></h2>
+    <h2><img src="<!--{$TPL_URLPATH}-->img/title/tit_bloc_news.jpg"alt="新着情報" /><span class="rss"><a href="<!--{$smarty.const.ROOT_URLPATH}-->rss/<!--{$smarty.const.DIR_INDEX_PATH}-->" target="_blank"><img src="<!--{$TPL_URLPATH}-->img/button/btn_rss.jpg"alt="RSS" /></a></span></h2>
         <div class="bloc_body">
             <div class="newsContents">
             <!--{section name=data loop=$arrNews}-->
