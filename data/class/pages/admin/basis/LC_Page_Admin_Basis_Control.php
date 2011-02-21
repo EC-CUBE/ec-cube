@@ -138,6 +138,7 @@ class LC_Page_Admin_Basis_Control extends LC_Page_Admin {
     /* パラメータ情報の初期化 */
     function lfInitParam(&$objFormParam) {
         $objFormParam->addParam("設定状況", "control_flg", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam('コントロールID', 'control_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
     /* DBへデータを登録する */
@@ -147,7 +148,7 @@ class LC_Page_Admin_Basis_Control extends LC_Page_Admin {
         $sqlval['update_date'] = 'Now()';
 
         // 新規登録
-        if($control_id == "") {
+        if($post['control_id'] == "") {
             // INSERTの実行
             $sqlval['create_date'] = 'Now()';
             $objQuery->nextVal("dtb_site_control_control_id");
