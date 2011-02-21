@@ -248,72 +248,78 @@ body > #container {
 
 /* インストールメッセージ
 ----------------------------------------------- */
-#outside-admin {
+
+/*以下エラーページと共通■触るべからず*/
+
+#outside {
     margin:0 auto;
     padding:0;
     text-align:center;
     width:100%;
 }
 
-#install-wrap {
+#out-wrap {
     margin:100px auto;
     width: 560px;
 }
 
-#install-area {
+#out-area {
     width:560px;
     text-align: left;
 
 }
-#install-area .contents {
-    width:560px;
-    background: url('../img/login_back_contents.gif') top left repeat-y;
-    text-align: left;
-}
 
-#install-wrap .logo {
+#out-wrap .logo {
     padding-bottom: 5px;
     float: right;
 }
 
-#install-area{
+#out-area{
     width: 558px;
 }
-#install-area .install-top {
+#out-area .out-top {
     clear: both;
     width: 560px;
     height: 10px;
     background: url('../img/login_back_top.jpg') bottom left no-repeat;
 }
 
-#install-area .btn-area-top {
+/*以上エラーページと共通■触るべからず*/
+
+#out-area .contents {
+    width:560px;
+    background: url('../img/login_back_contents.gif') top left repeat-y;
+    text-align: left;
+}
+
+#out-area .btn-area-top {
     width: 560px;
     height: 10px;
     background: url('../img/login_back_btn_top.jpg') left no-repeat;
 }
-#install-area .btn-area ul {
+#out-area .btn-area ul {
     padding: 20px 0 10px 0;
     width: 560px;
     text-align: center;
     background: url('../img/login_back_btn_contents.jpg') top left no-repeat #f4f5f5;
 }
-#install-area .btn-area-bottom {
+#out-area .btn-area-bottom {
     width: 560px;
     height: 10px;
     background: url('../img/login_back_btn_bottom.jpg') bottom left no-repeat #eeeff0;
 }
-#install-area .contents .block {
+#out-area .contents .block {
     margin: 0 auto;
     width: 520px;
 }
-#install-area .contents .message {
+#out-area .contents .message {
     margin: 0 auto 0px auto;
     padding: 5px 0;
     width: 520px;
     color:#444757;
     font-size:100%;
 }
-#install-area .contents h2 {
+#out-area .contents h2 {
     margin: 0 auto 10px auto;
     padding: 5px 0;
     width: 520px;
@@ -322,7 +328,7 @@ body > #container {
     font-weight: bold;
     border-bottom: solid 3px #ccc;
 }
-#install-area .contents .result-info01 {
+#out-area .contents .result-info01 {
     margin: 0 auto 10px auto;
     padding: 20px;
     width: 480px;
@@ -331,15 +337,15 @@ body > #container {
     font-weight: bold;
     line-height:160%;
 }
-#install-area .contents .result-info02 {
+#out-area .contents .result-info02 {
     margin: 0 auto;
     padding-bottom: 30px;
     width: 520px;
 }
-#install-area .contents .result-info02 p {
+#out-area .contents .result-info02 p {
     margin-bottom: 10px;
 }
-#install-area .contents .result-info02 p.action-message {
+#out-area .contents .result-info02 p.action-message {
     margin: 20px 0 0 0;
     padding-bottom: 10px;
     color:#444757;
@@ -349,7 +355,7 @@ body > #container {
     font-size: 86%;
 }
 
-#install-area .contents .result-info01 .site-info-list li {
+#out-area .contents .result-info01 .site-info-list li {
 	margin-bottom: 5px;
 	font-size: 120%;
 	font-weight: normal;

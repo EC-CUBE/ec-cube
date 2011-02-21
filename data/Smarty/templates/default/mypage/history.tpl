@@ -25,17 +25,17 @@
 <div id="mypagecolumn">
     <h2 class="title"><!--{$tpl_title|h}--></h2>
     <!--{include file=$tpl_navi}-->
-    <div id="mycontentsarea">
+    <div id="mycontents_area">
         <h3><!--{$tpl_subtitle|h}--></h3>
         <p class="myconditionarea">
-        <strong>購入日時：&nbsp;</strong><!--{$tpl_arrOrderData.create_date|sfDispDBDate}--><br />
-        <strong>注文番号：&nbsp;</strong><!--{$tpl_arrOrderData.order_id}--><br />
-        <strong>お支払い方法：&nbsp;</strong><!--{$arrPayment[$tpl_arrOrderData.payment_id]|h}-->
+        <span class="st">購入日時：&nbsp;</span><!--{$tpl_arrOrderData.create_date|sfDispDBDate}--><br />
+        <span class="st">注文番号：&nbsp;</span><!--{$tpl_arrOrderData.order_id}--><br />
+        <span class="st">お支払い方法：&nbsp;</span><!--{$arrPayment[$tpl_arrOrderData.payment_id]|h}-->
         <!--{if $tpl_arrOrderData.deliv_time_id != ""}--><br />
-        <strong>お届け時間：&nbsp;</strong><!--{$arrDelivTime[$tpl_arrOrderData.deliv_time_id]|h}-->
+        <span class="st">お届け時間：&nbsp;</span><!--{$arrDelivTime[$tpl_arrOrderData.deliv_time_id]|h}-->
         <!--{/if}-->
         <!--{if $tpl_arrOrderData.deliv_date != ""}--><br />
-        <strong>お届け日：&nbsp;</strong><!--{$tpl_arrOrderData.deliv_date|h}-->
+        <span class="st">お届け日：&nbsp;</span><!--{$tpl_arrOrderData.deliv_date|h}-->
         <!--{/if}-->
         </p>
 
@@ -45,6 +45,12 @@
         </form>
 
         <table summary="購入商品詳細">
+            <colgroup width="15%"></colgroup>
+            <colgroup width="25%"></colgroup>
+            <colgroup width="20%"></colgroup>
+            <colgroup width="15%"></colgroup>
+            <colgroup width="10%"></colgroup>
+            <colgroup width="15%"></colgroup>
             <tr>
                 <th>商品コード</th>
                 <th>商品名</th>
@@ -72,63 +78,67 @@
                     </td>
                     <!--{assign var=price value=`$orderDetail.price`}-->
                     <!--{assign var=quantity value=`$orderDetail.quantity`}-->
-                    <td class="pricetd"><!--{$price|number_format|h}-->円</td>
-                    <td><!--{$quantity|h}--></td>
-                    <td class="pricetd"><!--{$price|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|sfMultiply:$quantity|number_format}-->円</td>
+                    <td class="alignR"><!--{$price|number_format|h}-->円</td>
+                    <td class="alignR"><!--{$quantity|h}--></td>
+                    <td class="alignR"><!--{$price|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|sfMultiply:$quantity|number_format}-->円</td>
                 </tr>
             <!--{/foreach}-->
             <tr>
-                <th colspan="5" class="resulttd">小計</th>
-                <td class="pricetd"><!--{$tpl_arrOrderData.subtotal|number_format}-->円</td>
+                <th colspan="5" class="alignR">小計</th>
+                <td class="alignR"><!--{$tpl_arrOrderData.subtotal|number_format}-->円</td>
             </tr>
             <!--{assign var=point_discount value="`$tpl_arrOrderData.use_point*$smarty.const.POINT_VALUE`"}-->
             <!--{if $point_discount > 0}-->
             <tr>
-                <th colspan="5" class="resulttd">ポイント値引き</th>
-                <td class="pricetd"><!--{$point_discount|number_format}-->円</td>
+                <th colspan="5" class="alignR">ポイント値引き</th>
+                <td class="alignR"><!--{$point_discount|number_format}-->円</td>
             </tr>
             <!--{/if}-->
             <!--{assign var=key value="discount"}-->
             <!--{if $tpl_arrOrderData[$key] != "" && $tpl_arrOrderData[$key] > 0}-->
             <tr>
-                <th colspan="5" class="resulttd">値引き</th>
-                <td class="pricetd"><!--{$tpl_arrOrderData[$key]|number_format}-->円</td>
+                <th colspan="5" class="alignR">値引き</th>
+                <td class="alignR"><!--{$tpl_arrOrderData[$key]|number_format}-->円</td>
             </tr>
             <!--{/if}-->
             <tr>
-                <th colspan="5" class="resulttd">送料</th>
-                <td class="pricetd"><!--{assign var=key value="deliv_fee"}--><!--{$tpl_arrOrderData[$key]|number_format|h}-->円</td>
+                <th colspan="5" class="alignR">送料</th>
+                <td class="alignR"><!--{assign var=key value="deliv_fee"}--><!--{$tpl_arrOrderData[$key]|number_format|h}-->円</td>
             </tr>
             <tr>
-                <th colspan="5" class="resulttd">手数料</th>
+                <th colspan="5" class="alignR">手数料</th>
                 <!--{assign var=key value="charge"}-->
-                <td class="pricetd"><!--{$tpl_arrOrderData[$key]|number_format|h}-->円</td>
+                <td class="alignR"><!--{$tpl_arrOrderData[$key]|number_format|h}-->円</td>
             </tr>
             <tr>
-                <th colspan="5" class="resulttd">合計</th>
-                <td class="pricetd"><em><!--{$tpl_arrOrderData.payment_total|number_format}-->円</em></td>
+                <th colspan="5" class="alignR">合計</th>
+                <td class="alignR"><span class="price"><!--{$tpl_arrOrderData.payment_total|number_format}-->円</price></td>
             </tr>
         </table>
 
         <!-- 使用ポイントここから -->
         <!--{if $smarty.const.USE_POINT !== false}-->
             <table summary="使用ポイント">
+                <colgroup width="30%"></colgroup>
+                <colgroup width="70%"></colgroup>
                 <tr>
-                    <th>ご使用ポイント</th>
-                    <td class="pricetd"><!--{assign var=key value="use_point"}--><!--{$tpl_arrOrderData[$key]|number_format|default:0}--> pt</td>
+                    <th class="alignL">ご使用ポイント</th>
+                    <td class="alignL"><!--{assign var=key value="use_point"}--><!--{$tpl_arrOrderData[$key]|number_format|default:0}--> pt</td>
                 </tr>
                 <tr>
-                    <th>今回加算されるポイント</th>
-                    <td class="pricetd"><!--{$tpl_arrOrderData.add_point|number_format|default:0}--> pt</td>
+                    <th class="alignL">今回加算されるポイント</th>
+                    <td class="alignL"><!--{$tpl_arrOrderData.add_point|number_format|default:0}--> pt</td>
                 </tr>
             </table>
         <!--{/if}-->
         <!-- 使用ポイントここまで -->
 
         <!--{foreach item=shippingItem name=shippingItem from=$arrShipping}-->
-        <h4>お届け先<!--{if $isMultiple}--><!--{$smarty.foreach.shippingItem.iteration}--><!--{/if}--></h4>
+        <h3>お届け先<!--{if $isMultiple}--><!--{$smarty.foreach.shippingItem.iteration}--><!--{/if}--></h3>
         <!--{if $isMultiple}-->
             <table summary="お届け内容確認">
+              <colgroup width="30%"></colgroup>
+              <colgroup width="70%"></colgroup>
               <tr>
                 <th>商品コード</th>
                 <th>商品名</th>
@@ -149,19 +159,20 @@
                               <!--{$item.productsClass.class_name2}-->：<!--{$item.productsClass.classcategory_name2}-->
                           <!--{/if}-->
                       </td>
-                      <td class="pricetd">
+                      <td class="alignR">
                           <!--{$item.productsClass.price02|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
                       </td>
                       <td id="quantity"><!--{$item.quantity}--></td>
                       <!--{* XXX 購入小計と誤差が出るためコメントアウト
-                      <td class="pricetd"><!--{$item.total_inctax|number_format}-->円</td>
+                      <td class="alignR"><!--{$item.total_inctax|number_format}-->円</td>
                       *}-->
                   </tr>
               <!--{/foreach}-->
             </table>
          <!--{/if}-->
         <table summary="お届け先" class="delivname">
-            <tbody>
+                <colgroup width="30%"></colgroup>
+                <colgroup width="70%"></colgroup>
                 <tr>
                     <th>お名前</th>
                     <td><!--{$shippingItem.shipping_name01|h}-->&nbsp;<!--{$shippingItem.shipping_name02|h}--></td>
@@ -205,8 +216,12 @@
             <!--{/section}-->
         </table>
 
-        <div class="tblareabtn">
-            <a href="./<!--{$smarty.const.DIR_INDEX_PATH}-->" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back_on.gif','change');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back.gif','change');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_back.gif" width="150" height="30" alt="戻る" name="change" id="change" /></a>
+        <div class="btn_area">
+            <ul>
+                <li>
+                 <a href="./<!--{$smarty.const.DIR_INDEX_PATH}-->" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back_on.jpg','change');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back.jpg','change');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_back.jpg" alt="戻る" name="change" id="change" /></a>
+                </li>
+            </ul>
         </div>
 
     </div>

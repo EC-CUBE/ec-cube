@@ -22,16 +22,20 @@
  <!--▼CONTENTS-->
 <div id="under02column">
   <div id="under02column_error">
-    <div class="messagearea">
+    <div class="message_area">
       <!--★エラーメッセージ-->
       <p class="error"><!--{$tpl_error}--></p>
     </div>
 
-    <div class="tblareabtn">
+    <div class="btn_area">
     <!--{if $return_top}-->
-      <a href="<!--{$smarty.const.TOP_URLPATH}-->" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_toppage_on.gif','b_toppage');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_toppage.gif','b_toppage');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_toppage.gif" width="150" height="30" alt="トップページへ" border="0" name="b_toppage" /></a>
-    <!--{else}-->
-      <a href="javascript:history.back()" onmouseOver="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back_on.gif','b_back');" onmouseOut="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back.gif','b_back');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_back.gif" width="150" height="30" alt="戻る" name="b_back" id="b_back" /></a>
+            <ul>
+                <li>
+                    <a href="<!--{$smarty.const.TOP_URLPATH}-->" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_toppage_on.jpg','b_toppage');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_toppage.jpg','b_toppage');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_toppage.jpg" alt="トップページへ" border="0" name="b_toppage" /></a>
+                <!--{else}-->
+                    <a href="javascript:history.back()" onmouseOver="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back_on.jpg','b_back');" onmouseOut="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back.jpg','b_back');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_back.jpg" alt="戻る" name="b_back" id="b_back" /></a>
+                </li>
+            </ul>
     <!--{/if}-->
     </div>
   </div>

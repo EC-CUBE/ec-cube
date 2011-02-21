@@ -1,0 +1,52 @@
+﻿@charset "utf-8";
+
+/************************************************
+ tables
+************************************************ */
+/* デフォルトテーブル
+----------------------------------------------- */
+table {
+    width: 100%;
+    margin: 15px auto 20px auto;
+    border-top: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    border-collapse: collapse;
+    text-align: left;
+}
+table th {
+    color: #333;
+    padding: 8px;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    background-color: #f0f0f0;
+    font-weight: normal;
+}
+table td {
+    padding: 8px;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+
+/* 見出し
+----------------------------------------------- */
+div#under02column_shopping table th {
+    text-align: center;
+}
+div#under02column_shopping table.delivname th {
+    text-align: left;
+    width: 155px;
+}
+div#mycontents_area table th {
+    text-align: center;
+}
+div#mycontents_area table th.alignR {
+    text-align: right;
+}
+
+/* 見出し
+----------------------------------------------- */
+table select {
+    border: solid 1px #ccc;
+    margin-bottom: 7px;
+}
+

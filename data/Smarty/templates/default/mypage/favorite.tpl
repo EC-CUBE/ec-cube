@@ -29,7 +29,7 @@
     <!--{include file=`$smarty.const.TEMPLATE_REALDIR`mypage/navi.tpl}-->
   <!--{/if}-->
 
-  <div id="mycontentsarea">
+  <div id="mycontents_area">
     <form name="form1" method="post" action="?">
     <input type="hidden" name="order_id" value="" />
     <input type="hidden" name="pageno" value="<!--{$tpl_pageno}-->" />
@@ -37,7 +37,7 @@
 
 <!--{if $tpl_linemax > 0}-->
 
-    <p><!--{$tpl_linemax}-->件のお気に入りがあります。</p>
+    <p><span class="attention"><!--{$tpl_linemax}-->件</span>のお気に入りがあります。</p>
     <div class="paging">
       <!--▼ページナビ-->
       <!--{$tpl_strnavi}-->
@@ -47,20 +47,24 @@
     <form name="form1" id="form1" method="post" action="?">
     <input type="hidden" name="mode" value="cart" />
     <input type="hidden" name="product_id" value="" />
-    <table summary="お気に入り" id="mypage-history-list" class="list">
+    <table summary="お気に入り">
+        <colgroup width="15%"></colgroup>
+        <colgroup width="20%"></colgroup>
+        <colgroup width="45%"></colgroup>
+        <colgroup width="20%"></colgroup>
       <tr>
-        <th width="40">削除</th>
-        <th width="60">商品画像</th>
-        <th width="200">商品名</th>
-        <th width="200" class="sale_price"><!--{$smarty.const.SALE_PRICE_TITLE}--><span class="mini">(税込)</span></th>
+        <th>削除</th>
+        <th>商品画像</th>
+        <th>商品名</th>
+        <th><!--{$smarty.const.SALE_PRICE_TITLE}-->(税込)</th>
       </tr>
       <!--{section name=cnt loop=$arrFavorite}-->
       <!--{assign var=product_id value="`$arrFavorite[cnt].product_id`"}-->
       <tr>
-       <td><a href="javascript:fnModeSubmit('delete_favorite','product_id','<!--{$product_id|h}-->');">削除</a></td>
-       <td><a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$product_id|u}-->"><img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrFavorite[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65"></a></td>
+       <td class="alignC"><a href="javascript:fnModeSubmit('delete_favorite','product_id','<!--{$product_id|h}-->');">削除</a></td>
+       <td class="alignC"><a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$product_id|u}-->"><img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrFavorite[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65"></a></td>
        <td><a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$product_id|u}-->"><!--{$arrFavorite[cnt].name}--></a></td>
-       <td class="right sale_price">
+       <td class="alignR sale_price">
         <span class="price">
           <!--{if $arrFavorite[cnt].price02_min == $arrFavorite[cnt].price02_max}-->
             <!--{$arrFavorite[cnt].price02_min|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->

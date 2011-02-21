@@ -25,16 +25,20 @@
 <div id="mypagecolumn">
   <h2 class="title"><!--{$tpl_title|h}--></h2>
   <!--{include file = $tpl_navi}-->
-  <div id="mycontentsarea">
+  <div id="mycontents_area">
     <h3><!--{$tpl_subtitle|h}--></h3>
-    <div id="completetext">
-      <p class="changetext">退会手続きが完了いたしました。<br />
+    <div id="complete_area">
+      <div class="message">退会手続きが完了いたしました。<br />
         MYページをご利用いただき誠にありがとうございました。<br />
-        またのご利用を心よりお待ち申し上げます。<br />
-      <!--{$arrSiteInfo.company_name|h}--><br />
-      TEL：<!--{$arrSiteInfo.tel01}-->-<!--{$arrSiteInfo.tel02}-->-<!--{$arrSiteInfo.tel03}--> <!--{if $arrSiteInfo.business_hour != ""}-->（受付時間/<!--{$arrSiteInfo.business_hour}-->）<!--{/if}--><br />
-      E-mail：<a href="mailto:<!--{$arrSiteInfo.email02|escape:'hex'}-->"><!--{$arrSiteInfo.email02|escape:'hexentity'}--></a></p>
+        またのご利用を心よりお待ち申し上げます。
     </div>
+
+        <div class="shop_information">
+            <p class="name"><!--{$arrSiteInfo.company_name|h}--></p>
+            <p>TEL：<!--{$arrSiteInfo.tel01}-->-<!--{$arrSiteInfo.tel02}-->-<!--{$arrSiteInfo.tel03}--> <!--{if $arrSiteInfo.business_hour != ""}-->（受付時間/<!--{$arrSiteInfo.business_hour}-->）<!--{/if}--><br />
+            E-mail：<a href="mailto:<!--{$arrSiteInfo.email02|escape:'hex'}-->"><!--{$arrSiteInfo.email02|escape:'hexentity'}--></a></p>
+    </div>
+
   </div>
 </div>
 <!--▲CONTENTS-->

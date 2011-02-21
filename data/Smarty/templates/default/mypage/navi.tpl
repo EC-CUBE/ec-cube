@@ -21,9 +21,9 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<div id="mynavarea">
+<div id="mynavi_area">
     <!--{strip}-->
-        <ul class="button_like">
+        <ul class="mynavi_list clearfix">
         
           <!--{if $tpl_login}-->
             <!--{* 会員状態 *}-->
@@ -55,21 +55,21 @@
             <li><a href="<!--{$smarty.const.TOP_URLPATH}-->" class="<!--{if $tpl_mypageno == 'refusal'}--> selected<!--{/if}-->">
                 退会手続き</a></li>
           <!--{/if}-->
-
         </ul>
-        
+
         <!--▼現在のポイント-->
         <!--{if $point_disp !== false}-->
-            <ul>
-                 <li>ようこそ <br />
-                     <!--{$CustomerName1|h}--> <!--{$CustomerName2|h}-->様
-                     <!--{if $smarty.const.USE_POINT !== false}-->
-                         <br />現在の所持ポイントは<em><!--{$CustomerPoint|number_format|default:"0"|h}-->pt</em>です。
+            <div class="point_announce clearfix">
+                 <p>ようこそ&nbsp;／&nbsp;
+                     <span class="user_name"><!--{$CustomerName1|h}--> <!--{$CustomerName2|h}-->様</span>
+                     <!--{if $smarty.const.USE_POINT !== false}-->&nbsp
+                         現在の所持ポイントは&nbsp;<span class="point st"><!--{$CustomerPoint|number_format|default:"0"|h}-->pt</span>&nbsp;です。
                      <!--{/if}-->
-                 </li>
-            </ul>
+                 </p>
+            </div>
         <!--{/if}-->
         <!--▲現在のポイント-->
     <!--{/strip}-->
+
 </div>
 <!--▲NAVI-->

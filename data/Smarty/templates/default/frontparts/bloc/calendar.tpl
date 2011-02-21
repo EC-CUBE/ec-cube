@@ -19,13 +19,16 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
-<div id="block-calendar" class="bloc_outer">
+<div class="bloc_outer">
+    <div id="calenderarea">
+    <h2><img src="<!--{$TPL_URLPATH}-->img/title/tit_bloc_calender.gif"alt="カレンダー" /></h2>
+        <div class="bloc_body">
     <!--{section name=num loop=$arrCalendar}-->
         <!--{assign var=arrCal value=`$arrCalendar[num]`}-->
         <!--{section name=cnt loop=$arrCal}-->
             <!--{if $smarty.section.cnt.first}-->
                 <table>
-                    <caption><!--{$arrCal[cnt].year}-->年<!--{$arrCal[cnt].month}-->月の定休日</caption>
+                    <caption><div class="month"><!--{$arrCal[cnt].year}-->年<!--{$arrCal[cnt].month}-->月の定休日</div></caption>
                     <thead><tr><th>日</th><th>月</th><th>火</th><th>水</th><th>木</th><th>金</th><th>土</th></tr></thead>
             <!--{/if}-->
             <!--{if $arrCal[cnt].first}-->
@@ -46,4 +49,8 @@
             </table>
         <!--{/if}-->
     <!--{/section}-->
+            <p class="information">※赤字は休業日です</p>
+        </div>
+
+    </div>
 </div>

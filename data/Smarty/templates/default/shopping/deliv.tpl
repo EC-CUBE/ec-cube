@@ -23,34 +23,30 @@
 <div id="under02column">
     <div id="under02column_shopping">
         <p class="flowarea">
-            <img src="<!--{$TPL_URLPATH}-->img/picture/img_flow_01.gif" width="700" height="36" alt="購入手続きの流れ" />
+            <img src="<!--{$TPL_URLPATH}-->img/picture/img_flow_01.gif" alt="購入手続きの流れ" />
         </p>
         <h2 class="title"><!--{$tpl_title|h}--></h2>
 
-<div id="add-wrap" class="clearfix">
+    <div id="address_area" class="clearfix">
+        <div class="information">
+                <p>下記一覧よりお届け先住所を選択して、「選択したお届け先に送る」ボタンをクリックしてください。</p>
+                    <!--{if $tpl_addrmax < $smarty.const.DELIV_ADDR_MAX}-->
+                <p>一覧にご希望の住所が無い場合は、「新しいお届け先を追加する」より追加登録してください。</p>
+            <!--{/if}-->
+            <p class="mini attention">※最大<!--{$smarty.const.DELIV_ADDR_MAX|h}-->件まで登録できます。</p>
+        </div>
+        <div class="add_multiple">
+            <p>この商品を複数の<br />お届け先に送りますか？</p>
+            <a href="javascript:;" onclick="fnModeSubmit('multiple', '', ''); return false" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_several_address_on.jpg','several');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_several_address.jpg','several');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_several_address.jpg" alt="お届け先を複数指定する" name="several" id="several" /></a>
+        </div>
+    </div>
 
-<div id="add-left">
-        <p>下記一覧よりお届け先住所を選択して、「選択したお届け先に送る」ボタンをクリックしてください。</p>
-        <!--{if $tpl_addrmax < $smarty.const.DELIV_ADDR_MAX}-->
-            <p>一覧にご希望の住所が無い場合は、「新しいお届け先を追加する」より追加登録してください。</p>
-        <!--{/if}-->
-        <p>※最大<!--{$smarty.const.DELIV_ADDR_MAX|h}-->件まで登録できます。</p>
+    <!--{if $tpl_addrmax < $smarty.const.DELIV_ADDR_MAX}-->
+        <p class="addbtn">
+            <a href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php" onclick="win02('<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php?page=<!--{$smarty.server.PHP_SELF|h}-->','new_deiv','600','640'); return false;" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_address_on.jpg','addition');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_address.jpg','addition');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_add_address.jpg" alt="新しいお届け先を追加する" name="addition" id="addition" /></a>
+        </p>
+    <!--{/if}-->
 
-        <!--{if $tpl_addrmax < $smarty.const.DELIV_ADDR_MAX}-->
-            <p class="addbtn">
-                <a href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php" onclick="win02('<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php?page=<!--{$smarty.server.PHP_SELF|h}-->','new_deiv','600','640'); return false;" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_address_on.gif','addition');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_address.gif','addition');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_add_address.gif" width="160" height="22" alt="新しいお届け先を追加する" name="addition" id="addition" /></a>
-            </p>
-        <!--{/if}-->
-</div>
-
-<div id="add-right">
-<p class="add-m">この商品を複数の<br />お届け先に送りますか？</p>
-<a href="javascript:;" onclick="fnModeSubmit('multiple', '', ''); return false" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_several_address_on.gif','several');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_several_address.gif','several');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_several_address.gif" width="129" height="20" alt="お届け先を複数指定する" name="several" id="several" /></a>
-</div>
-
-</div>
-
-        
         <form name="form1" id="form1" method="post" action="?">
             <input type="hidden" name="mode" value="customer_addr" />
             <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->" />
@@ -59,6 +55,11 @@
                 <p class="attention"><!--{$arrErr.deli}--></p>
             <!--{/if}-->
             <table summary="お届け先の指定">
+                <colgroup width="10%"></colgroup>
+                <colgroup width="20%"></colgroup>
+                <colgroup width="50%"></colgroup>
+                <colgroup width="10%"></colgroup>
+                <colgroup width="10%"></colgroup>
                 <tr>
                     <th>選択</th>
                     <th>住所種類</th>
@@ -68,14 +69,14 @@
                 </tr>
                 <!--{section name=cnt loop=$arrAddr}-->
                 <tr>
-                     <td class="centertd">
+                     <td class="alignC">
                          <!--{if $smarty.section.cnt.first}-->
                             <input type="radio" name="deliv_check" id="chk_id_<!--{$smarty.section.cnt.iteration}-->" value="-1" <!--{if $arrForm.deliv_check.value == "" || $arrForm.deliv_check.value == -1}--> checked="checked"<!--{/if}--> />
                          <!--{else}-->
                             <input type="radio" name="deliv_check" id="chk_id_<!--{$smarty.section.cnt.iteration}-->" value="<!--{$arrAddr[cnt].other_deliv_id}-->"<!--{if $arrForm.deliv_check.value == $arrAddr[cnt].other_deliv_id}--> checked="checked"<!--{/if}--> />
                          <!--{/if}-->
                     </td>
-                    <td>
+                    <td class="alignC">
                         <label for="chk_id_<!--{$smarty.section.cnt.iteration}-->">
                             <!--{if $smarty.section.cnt.first}-->
                                 会員登録住所
@@ -89,25 +90,36 @@
                         <!--{$arrPref[$key]}--><!--{$arrAddr[cnt].addr01|h}--><!--{$arrAddr[cnt].addr02|h}--><br />
                         <!--{$arrAddr[cnt].name01|h}--> <!--{$arrAddr[cnt].name02|h}-->
                     </td>
-                    <td class="centertd">
+                    <td class="alignC">
                         <!--{if !$smarty.section.cnt.first}-->
                             <a href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php" onclick="win02('<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php?page=<!--{$smarty.server.PHP_SELF|h}-->&amp;other_deliv_id=<!--{$arrAddr[cnt].other_deliv_id}-->','new_deiv','600','640'); return false;">変更</a>
-                        <!--{/if}-->
+                            <!--{else}-->
+                                -
+                            <!--{/if}-->
                     </td>
-                    <td class="centertd">
+                    <td class="alignC">
                         <!--{if !$smarty.section.cnt.first}-->
                             <a href="?" onclick="fnModeSubmit('delete', 'other_deliv_id', '<!--{$arrAddr[cnt].other_deliv_id}-->'); return false">削除</a>
-                        <!--{/if}-->
+                            <!--{else}-->
+                                -
+                            <!--{/if}-->
                     </td>
                 </tr>
             <!--{/section}-->
         </table>
 
-            <div class="tblareabtn">
-                <a href="<!--{$smarty.const.CART_URLPATH}-->" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_back_on.gif',back03)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_back.gif',back03)">
-                    <img src="<!--{$TPL_URLPATH}-->img/button/btn_back.gif" width="150" height="30" alt="戻る" border="0" name="back03" id="back03" /></a>
-                <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_address_select_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_address_select.gif',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_address_select.gif" alt="選択したお届け先に送る" class="box190" name="send_button" id="send_button" />
+            <div class="btn_area">
+                 <ul>
+                     <li>
+                          <a href="<!--{$smarty.const.CART_URLPATH}-->" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_back_on.jpg',back03)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_back.jpg',back03)">
+                         <img src="<!--{$TPL_URLPATH}-->img/button/btn_back.jpg" alt="戻る" border="0" name="back03" id="back03" /></a>
+                     </li>
+                     <li>
+                     <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_next_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_next.jpg',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_next.jpg" alt="選択したお届け先に送る" name="send_button" id="send_button" />
+                     </li>
+                </ul>
             </div>
+
         </form>
     </div>
 </div>

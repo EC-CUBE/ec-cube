@@ -72,7 +72,6 @@ class LC_Page_Admin_Design extends LC_Page_Admin {
      */
     function action() {
         $objLayout = new SC_Helper_PageLayout_Ex();
-        $objQuery =& SC_Query::getSingletonInstance();
 
         // 認証可否の判定
         $objSess = new SC_Session();
@@ -113,7 +112,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin {
         }
 
         // ブロックを取得
-        $objQuery->setOrder('');
+        $objQuery = SC_Query::getSingletonInstance();
         $arrBloc = $objQuery->select("*", "dtb_bloc", "device_type_id = ?", array($device_type_id));
 
         switch ($this->getMode()) {

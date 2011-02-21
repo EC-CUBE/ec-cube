@@ -138,22 +138,22 @@ $(document).ready(function() {
                  <!--{/foreach}-->
                  <tr>
                      <th colspan="3" class="resulttd">小計</th>
-                     <td colspan="2" class="pricetd"><!--{$tpl_total_inctax[$key]|number_format}-->円</td>
+                     <td colspan="2" class="alignR"><!--{$tpl_total_inctax[$key]|number_format}-->円</td>
                  </tr>
                  <tr>
                      <th colspan="3" class="resulttd">合計</th>
-                     <td colspan="2" class="pricetd"><em><!--{$arrData[$key].total-$arrData[$key].deliv_fee|number_format}-->円</em></td>
+                     <td colspan="2" class="alignR"><em><!--{$arrData[$key].total-$arrData[$key].deliv_fee|number_format}-->円</em></td>
                  </tr>
                  <!--{if $smarty.const.USE_POINT !== false}-->
                      <!--{if $arrData.birth_point > 0}-->
                          <tr>
                              <th colspan="3" class="resulttd">お誕生月ポイント</th>
-                             <td colspan="2" class="pricetd"><!--{$arrData.birth_point|number_format}-->pt</td>
+                             <td colspan="2" class="alignR"><!--{$arrData.birth_point|number_format}-->pt</td>
                          </tr>
                      <!--{/if}-->
                      <tr>
                          <th colspan="3" class="resulttd">今回加算ポイント</th>
-                         <td colspan="2" class="pricetd"><!--{$arrData.add_point|number_format}-->pt</td>
+                         <td colspan="2" class="alignR"><!--{$arrData.add_point|number_format}-->pt</td>
                     </tr>
                 <!--{/if}-->
             </table>

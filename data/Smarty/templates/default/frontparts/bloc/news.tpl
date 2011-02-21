@@ -19,29 +19,27 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
-<div id="newsarea" class="bloc_outer">
-    <h2><img src="<!--{$TPL_URLPATH}-->img/icon/ico_block_news.gif" width="27" height="20" alt="*" class="title_icon" />
-        新着情報</h2>
-    <div class="bloc_body">
-        <p>☆★☆ 新着情報は<a href="<!--{$smarty.const.ROOT_URLPATH}-->rss/<!--{$smarty.const.DIR_INDEX_PATH}-->" target="_blank">RSS</a>で配信しています。★☆★</p>
-
-        <!--{section name=data loop=$arrNews}-->
+<div class="bloc_outer">
+    <div id="newsarea">
+    <h2><img src="<!--{$TPL_URLPATH}-->img/title/tit_bloc_news.jpg"alt="新着情報" /><span class="rss"><a href="<!--{$smarty.const.ROOT_URLPATH}-->rss/<!--{$smarty.const.DIR_INDEX_PATH}-->" target="_blank"><span><img src="<!--{$TPL_URLPATH}-->img/button/btn_rss.jpg"alt="RSS" /></a></span></h2>
+        <div class="bloc_body">
+            <div class="newsContents">
+            <!--{section name=data loop=$arrNews}-->
             <!--{assign var="date_array" value="-"|explode:$arrNews[data].news_date_disp}-->
-            <dl>
+            <dl class="newsList">
                 <dt><!--{$date_array[0]}-->年<!--{$date_array[1]}-->月<!--{$date_array[2]}-->日</dt>
-                <dd>
+                <dt>
                     <a
-                        <!--{if $arrNews[data].news_url}-->
-                            href="<!--{$arrNews[data].news_url}-->"
-                            <!--{if $arrNews[data].link_method eq "2"}-->
-                                target="_blank"
+                        <!--{if $arrNews[data].news_url}--> href="<!--{$arrNews[data].news_url}-->" <!--{if $arrNews[data].link_method eq "2"}--> target="_blank"
                             <!--{/if}-->
                         <!--{/if}-->
                     >
-                        <!--{$arrNews[data].news_title|h|nl2br}--></a><br />
-                    <!--{$arrNews[data].news_comment|h|nl2br}-->
-                 </dd>
+                        <!--{$arrNews[data].news_title|h|nl2br}--></a>
+                </dt>
+                <dd class="mini"><!--{$arrNews[data].news_comment|h|nl2br}--></dd>
             </dl>
-        <!--{/section}-->
+            <!--{/section}-->
+            </div>
+        </div>
     </div>
 </div>

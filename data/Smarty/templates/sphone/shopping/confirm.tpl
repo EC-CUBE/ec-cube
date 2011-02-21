@@ -82,21 +82,21 @@ $(document).ready(function() {
                             <!--{/if}-->
                         </ul>
                  </td>
-                 <td class="pricetd">
+                 <td class="alignR">
                      <!--{$item.productsClass.price02|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
                  </td>
                  <td><!--{$item.quantity|number_format}--></td>
-                 <td class="pricetd"><!--{$item.total_inctax|number_format}-->円</td>
+                 <td class="alignR"><!--{$item.total_inctax|number_format}-->円</td>
              </tr>
              <!--{/foreach}-->
                 <tr>
                     <th colspan="4" class="resulttd">小計</th>
-                    <td class="pricetd"><!--{$tpl_total_inctax[$cartKey]|number_format}-->円</td>
+                    <td class="alignR"><!--{$tpl_total_inctax[$cartKey]|number_format}-->円</td>
                 </tr>
                 <!--{if $smarty.const.USE_POINT !== false}-->
                     <tr>
                         <th colspan="4" class="resulttd">値引き（ポイントご使用時）</th>
-                        <td class="pricetd">
+                        <td class="alignR">
                         <!--{assign var=discount value=`$arrForm.use_point*$smarty.const.POINT_VALUE`}-->
                          -<!--{$discount|number_format|default:0}-->円</td>
                     </tr>
@@ -181,12 +181,12 @@ $(document).ready(function() {
                               <!--{$item.productsClass.class_name2}-->：<!--{$item.productsClass.classcategory_name2}-->
                           <!--{/if}-->
                       </td>
-                      <td class="pricetd">
+                      <td class="alignR">
                           <!--{$item.productsClass.price02|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
                       </td>
                       <td id="quantity"><!--{$item.quantity}--></td>
                       <!--{* XXX 購入小計と誤差が出るためコメントアウト
-                      <td class="pricetd"><!--{$item.total_inctax|number_format}-->円</td>
+                      <td class="alignR"><!--{$item.total_inctax|number_format}-->円</td>
                       *}-->
                   </tr>
               <!--{/foreach}-->

@@ -13,35 +13,43 @@
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
+ * G
+ this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 <!--▼CONTENTS-->
 <div id="undercolumn">
-  <div id="undercolumn_contact">
     <h2 class="title"><!--{$tpl_title|h}--></h2>
-    <div id="completetext">
-      お問い合わせ内容の送信が完了いたしました。<br />
-      万一、ご回答メールが届かない場合は、トラブルの可能性もありますので大変お手数ではございますがもう一度お問い合わせいただくか、お電話にてお問い合わせください。<br />
-      今後ともご愛顧賜りますようよろしくお願い申し上げます。
-    <p><!--{$arrSiteInfo.company_name|h}--><br />
-      TEL：<!--{$arrSiteInfo.tel01}-->-<!--{$arrSiteInfo.tel02}-->-<!--{$arrSiteInfo.tel03}-->
-       <!--{if $arrSiteInfo.business_hour != ""}-->
-      (受付時間/<!--{$arrSiteInfo.business_hour}-->)
-       <!--{/if}--><br />
-      E-mail：<a href="mailto:<!--{$arrSiteInfo.email02|escape:'hex'}-->"><!--{$arrSiteInfo.email02|escape:'hexentity'}--></a></p>
-    </div>
-    <div class="tblareabtn">
-    <!--{if $is_campaign}-->
-      <a href="<!--{$smarty.const.CAMPAIGN_URL}--><!--{$campaign_dir}-->/<!--{$smarty.const.DIR_INDEX_PATH}-->" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_toppage_on.gif','b_toppage');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_toppage.gif','b_toppage');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_toppage.gif" width="150" height="30" alt="トップページへ" border="0" name="b_toppage" id="b_toppage" /></a>
+    <div id="undercolumn_contact">
+        <div id="complete_area">
+            <p class="message">お問い合わせ内容の送信が完了いたしました。</p>
+            <p>
+                万一、ご回答メールが届かない場合は、トラブルの可能性もありますので<br />大変お手数ではございますがもう一度お問い合わせいただくか、お電話にてお問い合わせください。<br />
+                今後ともご愛顧賜りますようよろしくお願い申し上げます。
+            </p>
+            <div class="shop_information">
+            <p class="name"><!--{$arrSiteInfo.company_name|h}--><br />
+            <p>TEL：<!--{$arrSiteInfo.tel01}-->-<!--{$arrSiteInfo.tel02}-->-<!--{$arrSiteInfo.tel03}-->
+                <!--{if $arrSiteInfo.business_hour != ""}-->
+                (受付時間/<!--{$arrSiteInfo.business_hour}-->)
+                <!--{/if}--><br />
+                E-mail：<a href="mailto:<!--{$arrSiteInfo.email02|escape:'hex'}-->"><!--{$arrSiteInfo.email02|escape:'hexentity'}--></a></p>
+            </p>
+            </div>
 
-    <!--{else}-->
-
-      <a href="<!--{$smarty.const.TOP_URLPATH}-->" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_toppage_on.gif','b_toppage');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_toppage.gif','b_toppage');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_toppage.gif" width="150" height="30" alt="トップページへ" border="0" name="b_toppage" id="b_toppage" /></a>
-    <!--{/if}-->
+            <div class="btn_area">
+                <ul>
+                <li>
+                    <!--{if $is_campaign}-->
+                    <a href="<!--{$smarty.const.CAMPAIGN_URL}--><!--{$campaign_dir}-->/<!--{$smarty.const.DIR_INDEX_PATH}-->" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_toppage_on.jpg','b_toppage');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_toppage.jpg','b_toppage');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_toppage.jpg" alt="トップページへ" border="0" name="b_toppage" id="b_toppage" /></a>
+                </li>
+                    <!--{else}-->
+                <li>
+                    <a href="<!--{$smarty.const.TOP_URLPATH}-->" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_toppage_on.jpg','b_toppage');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_toppage.jpg','b_toppage');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_toppage.jpg" alt="トップページへ" border="0" name="b_toppage" id="b_toppage" /></a>
+                </li>
+                </ul>
+                <!--{/if}-->
+            </div>
+        </div>
     </div>
-  </div>
 </div>

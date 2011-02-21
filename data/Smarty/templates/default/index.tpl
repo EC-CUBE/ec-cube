@@ -19,6 +19,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
-<div id="flasharea">
-  <img src="<!--{$TPL_URLPATH}-->img/picture/img_main.gif" alt="EC-CUBEイメージ" />
+<div id="mainImage">
+  <img src="<!--{$TPL_URLPATH}-->img/banner/bnr_top_main.jpg" alt="EC-CUBEイメージ" />
 </div>

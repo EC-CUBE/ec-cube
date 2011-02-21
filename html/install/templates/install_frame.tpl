@@ -38,13 +38,13 @@
     <noscript>
       <p>JavaScript を有効にしてご利用下さい。</p>
     </noscript>
-    <div id="outside-admin">
-      <div id="install-wrap">
+    <div id="outside">
+      <div id="out-wrap">
           <div class="logo">
             <img src="img/logo_resize.jpg" width="99" height="15" alt="EC-CUBE" />
           </div>
-        <div id="install-area">
-          <div class="install-top"></div>
+        <div id="out-area">
+          <div class="out-top"></div>
           <!--{include file=$tpl_mainpage}-->
           </div>
         </div>

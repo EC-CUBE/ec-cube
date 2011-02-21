@@ -20,26 +20,29 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 <div class="bloc_outer">
-    <h2><img src="<!--{$TPL_URLPATH}-->img/icon/ico_block_cart.gif" width="20" height="20" alt="*" class="title_icon" />
-        現在のカゴの中</h2>
-    <div id="cartarea" class="bloc_body">
-        <p class="item">商品数：<!--{$arrCartList.0.TotalQuantity|number_format|default:0}-->点</p>
-        <p>合計：<span class="price"><!--{$arrCartList.0.ProductsTotal|number_format|default:0}-->円</span><br />
-            <!--{*************************************
-                  カゴの中に商品がある場合にのみ表示
-                  複数の商品種別が存在する場合は非表示
-                 *************************************}-->
-            <!--{if $arrCartList.0.TotalQuantity > 0 and $arrCartList.0.free_rule > 0 and !$isMultiple}-->
-                <!--{if $arrCartList.0.deliv_free > 0}-->
-                    送料手数料無料まであと<!--{$arrCartList.0.deliv_free|number_format|default:0}-->円（税込）です。
-                <!--{else}-->
-                    現在、送料は「<span class="price">無料</span>」です。
+    <div id="cartarea">
+    <h2 class="cart"><p class="title"><img src="<!--{$TPL_URLPATH}-->img/title/tit_bloc_cart.gif"alt="現在のカゴの中" /></p></h2>
+        <div class="bloc_body">
+            <div class="information">
+                <p class="item">商品数：<span class="attention"><!--{$arrCartList.0.TotalQuantity|number_format|default:0}-->点</span></p>
+                <p class="total">合計：<span class="price"><!--{$arrCartList.0.ProductsTotal|number_format|default:0}-->円</span></p>
+                <!--{*************************************
+                      カゴの中に商品がある場合にのみ表示
+                      複数の商品種別が存在する場合は非表示
+                     *************************************}-->
+                <!--{if $arrCartList.0.TotalQuantity > 0 and $arrCartList.0.free_rule > 0 and !$isMultiple}-->
+                <p class="postage">
+                    <!--{if $arrCartList.0.deliv_free > 0}-->
+                        <span class="point_announce">送料手数料無料まで</span>あと<span class="price"><!--{$arrCartList.0.deliv_free|number_format|default:0}-->円（税込）</span>です。
+                    <!--{else}-->
+                        現在、送料は「<span class="price">無料</span>」です。
+                    <!--{/if}-->
+                </p>
                 <!--{/if}-->
-            <!--{/if}-->
-        </p>
-        <p class="btn">
-            <a href="<!--{$smarty.const.CART_URLPATH}-->" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_block_cartin_on.gif','button_cartin');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_block_cartin.gif','button_cartin');">
-                <img src="<!--{$TPL_URLPATH}-->img/button/btn_block_cartin.gif" width="87" height="22" alt="カゴの中を見る" border="0" name="button_cartin" id="button_cartin" /></a>
-        </p>
+            </div>
+            <div class="btn">
+                <a href="<!--{$smarty.const.CART_URLPATH}-->" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_bloc_cart_on.jpg','button_cart');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_bloc_cart.jpg','button_cart');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_bloc_cart.jpg" alt="カゴの中を見る" border="0" name="button_cart" id="button_cart" /></a>
+            </div>
+        </div>
     </div>
 </div>

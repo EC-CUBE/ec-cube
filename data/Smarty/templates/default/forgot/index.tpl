@@ -21,37 +21,40 @@
  *}-->
 <!--{include file="`$smarty.const.TEMPLATE_REALDIR`popup_header.tpl" subtitle="パスワードを忘れた方(入力ページ)"}-->
 
-  <div id="windowarea">
+<div id="windowarea">
     <h2>パスワードの再発行</h2>
-    <p>ご登録時のメールアドレスと、ご登録されたお名前を入力して「次へ」ボタンをクリックしてください。<br />
-      <span class="attention">※新しくパスワードを発行いたしますので、お忘れになったパスワードはご利用できなくなります。</span></p>
+    <p class="information">ご登録時のメールアドレスと、ご登録されたお名前を入力して「次へ」ボタンをクリックしてください。<br />
+    <span class="attention">※新しくパスワードを発行いたしますので、お忘れになったパスワードはご利用できなくなります。</span></p>
     <form action="?" method="post" name="form1">
-      <input type="hidden" name="mode" value="mail_check" />
-      <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-      <div id="completebox">
-        <p>メールアドレス：&nbsp;
-			<span class="attention"><!--{$arrErr.email}--></span>
-			<input type="text" name="email" value="<!--{$arrForm.email|default:$tpl_login_email|h}-->" size="40" class="box300" style="<!--{$arrErr.email|sfGetErrorColor}-->; ime-mode: disabled;" /><br />
-        <br />
-        お名前：&nbsp;
-          <span class="attention"><!--{$arrErr.name01}--><!--{$arrErr.name02}--></span>
-          姓&nbsp;<input type="text"
-                         class="box120"
-                         name="name01"
-                         value="<!--{$arrForm.name01|default:''|h}-->"
-                         maxlength="<!--{$smarty.const.STEXT_LEN}-->"
-                         style="<!--{$arrErr.name01|sfGetErrorColor}-->; ime-mode: active;" />　
-          名&nbsp;<input type="text" class="box120" name="name02"
-                         value="<!--{$arrForm.name02|default:''|h}-->"
-                         maxlength="<!--{$smarty.const.STEXT_LEN}-->"
-                         style="<!--{$arrErr.name02|sfGetErrorColor}-->; ime-mode: active;" />
-        </p>
-        <span class="attention"><!--{$errmsg}--></span>
-      </div>
-      <div class="btn">
-        <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_next_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_next.gif',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_next.gif" alt="次へ" class="box150" name="next" id="next" />
-      </div>
-    </form>
-  </div>
-
+    <input type="hidden" name="mode" value="mail_check" />
+    <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+    <div id="forgot">
+        <div class="contents">
+            <div class="mailaddres">
+                <p class="attention"><!--{$arrErr.email}--></p>
+                <p>
+                    メールアドレス：&nbsp;
+                    <input type="text" name="email" value="<!--{$arrForm.email|default:$tpl_login_email|h}-->" class="box300" style="<!--{$arrErr.email|sfGetErrorColor}-->; ime-mode: disabled;" />
+                </p>
+            </div>
+            <div class="name">
+                <p class="attention">
+                    <!--{$arrErr.name01}--><!--{$arrErr.name02}-->
+                    <!--{$errmsg}-->
+                </p>
+                <p>
+                    お名前：&nbsp;
+                    姓&nbsp;<input type="text" class="box120" name="name01" value="<!--{$arrForm.name01|default:''|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.name01|sfGetErrorColor}-->; ime-mode: active;" />
+                    名&nbsp;<input type="text" class="box120" name="name02" value="<!--{$arrForm.name02|default:''|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.name02|sfGetErrorColor}-->; ime-mode: active;" />
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="btn_area">
+        <ul>
+                <li><input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_next_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_next.jpg',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_next.jpg" alt="次へ" name="next" id="next" /></li>
+        </ul>
+    </div>
+</div>
 <!--{include file="`$smarty.const.TEMPLATE_REALDIR`popup_footer.tpl"}-->
+

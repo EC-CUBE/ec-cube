@@ -1,0 +1,453 @@
+@charset "utf-8";
+
+/************************************************
+ブロック用
+************************************************ */
+/*** 目次 ***
+
+▼ブロック共通
+リスト
+タイトル
+ヘッダー上、フッター下のブロックエリア
+
+▼各機能ブロックの指定
+-新着情報
+-現在のカゴの中
+-カテゴリー
+-ガイドリンク
+-ログイン
+-検索
+-カレンダー
+-おすすめ商品
+    tplファイルのマークアップが同じ項目
+    *メインカラム用 2カラム時 [two_maincolumn_right]
+    *メインカラム用 3カラム時 [three_maincolumn]
+    *サイドカラム用           [side_column]
+    *商品詳細のオススメ商品   [whobought_area]
+ */
+
+
+/* ==============================================
+ブロック共通
+/* ============================================= */
+#container .bloc_body {
+    background-color: #fff;
+}
+.side_column {
+    overflow-x: hidden; /* IE6 表示乱れ防止 */
+}
+.side_column .bloc_outer {
+    margin: 10px 7%;
+}
+.side_column .bloc_body ,
+.main_column .bloc_body {
+    border: solid 1px #ccc;
+    border-top: none;
+}
+.side_column .bloc_body .box {
+    width: 145px;
+    border: solid 1px #ccc;
+}
+.main_column .bloc_outer {
+    margin-bottom: 20px;
+}
+
+
+/* リスト
+----------------------------------------------- */
+/* ログイン 検索条件 */
+#container .bloc_outer .bloc_body dl.formList {
+    margin-bottom: 8px;
+}
+#container .bloc_outer .bloc_body dl.formList dd {
+    margin-bottom: 5px;
+}
+#container .bloc_outer .bloc_body dl.formList dt {
+    margin-bottom: 3px;
+    padding-left: 15px;
+    background: url("../img/icon/ico_arrow_03.gif") no-repeat left;
+    font-size: 90%;
+}
+#container .bloc_outer .bloc_body dl.formList span{
+    vertical-align: top;
+}
+
+
+/* タイトル
+----------------------------------------------- */
+/* タイトルの背景 白 */
+#loginarea h2 ,
+#searcharea h2 ,
+#calenderarea h2 ,
+#cartarea h2 ,
+#cart h2 {
+    border-style: solid;
+    border-color: #f90 #ccc #ccc;
+    border-width: 1px 1px 0;
+    background: url('../img/background/bg_tit_bloc_01.jpg') repeat-x left bottom;
+    padding: 5px 0 8px 10px;
+    font-size: 14px;
+}
+#categoryarea h2 {
+    border-top: solid 1px #f90;
+    background: url('../img/background/bg_tit_bloc_01.jpg') repeat-x left bottom;
+    padding: 5px 0 8px 10px;
+    font-size: 14px;
+}
+
+/* タイトルの背景 オレンジ */
+#recomendarea .titleWrap ,
+#newsarea.titleWrap {
+    padding-bottom: 1px;
+    font-size: 14px;
+}
+
+#recomendarea h2 ,
+#newsarea h2 {
+    border-style: solid;
+    border-color: #f90 #ccc #ccc;
+    border-width: 1px 1px 0;
+    padding: 5px 0 8px 10px;
+    background: url('../img/background/bg_btn_bloc_02.jpg') repeat-x left bottom #fef3d8;
+}
+
+
+/* ==============================================
+▼ヘッダー上、フッター下のブロックエリア
+=============================================== */
+div#topcolumn{
+    clear:both;
+    margin:0px; 
+}
+div#bottomcolumn{
+    clear: both;
+    margin:0px;
+}
+
+
+/* ***********************************************
+▼各機能ブロックの指定
+/*********************************************** */
+
+/* ===============================================
+▼新着情報
+=============================================== */
+#newsarea .bloc_body {
+    padding: 10px;
+}
+#newsarea .newsContents {
+    padding-right: 10px;
+    height: 260px;
+    overflow:auto;
+    overflow-y:scroll;
+}
+#newsarea dl.newsList {
+    background: url("../img/background/line_dot_01.gif") repeat-x bottom;
+}
+#newsarea dl.newsList dt {
+    margin-bottom: 5px;
+}
+#newsarea dl.newsList dd {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+}
+#newsarea dl.end {
+    padding: 10px 0;
+    background: url("") no-repeat bottom;
+}
+
+/* ===============================================
+▼現在のカゴの中
+=============================================== */
+#cartarea .information {
+    padding: 10px;
+}
+#cartarea .postage {
+    margin-top: 10px;
+    padding-top: 10px;
+    background: url("../img/background/line_dot_01.gif") repeat-x top;
+}
+#cartarea .postage .point_announce {
+    padding: 2px 0 2px 20px;
+    background: url("../img/icon/ico_price.gif") no-repeat left top;
+}
+#cartarea .btn {
+    padding: 10px 0;
+    background: url("../img/background/line_dot_01.gif") repeat-x top #f7f7e6;
+    text-align: center;
+}
+
+
+/* ===============================================
+▼カテゴリー
+=============================================== */
+#categoryarea .bloc_body{
+    background-color: #fffaf0;
+}
+
+#categoryarea li{
+    padding-left: 5px;
+}
+#categoryarea li.level1{
+    border-bottom: solid 1px #ccc;
+}
+#categoryarea li.level1 p{
+    padding-left: 20px;
+    margin: 7px 3px;
+}
+#categoryarea li.level1 p {
+    background: url("../img/icon/ico_arrow_01.gif") 2px 3px no-repeat;
+}
+#categoryarea li.level1 li p {
+    background: url("../img/icon/ico_level.gif") 7px 7px no-repeat;
+}
+#categoryarea li a {
+    display: block;
+    padding: 0;
+}
+a.onlink:link {
+    color: #f00;
+    text-decoration: underline;
+}
+a.onlink:visited {
+    color: #f00;
+}
+a.onlink:hover {
+    color: #f00;
+}
+
+/* ===============================================
+▼ガイドリンク
+=============================================== */
+#guidearea {
+    margin-top: 1em;
+    border: none;
+}
+#guidearea li{
+    margin-bottom: 5px;
+    letter-spacing: -0.05em;
+}
+ul.button_like li {
+    margin: 0;
+    padding: 0 0 1px 0;
+    background: url("../img/background/bg_btn_list.jpg") bottom repeat-x;
+}
+ul.button_like li a {
+    display: block;
+    padding: 10px 15px 10px 10px;
+    text-decoration: none;
+    border: 1px solid;
+    border-bottom: none;
+    border-color: #ccc;
+    background: url("../img/icon/ico_arrow_02.gif") no-repeat right;
+    outline: none;
+    margin: 0;
+}
+
+
+/* ===============================================
+▼ログイン
+※ヘッダー用はheader_block.css内に記述
+=============================================== */
+#container div#loginarea .bloc_body {
+    padding: 10px;
+}
+
+#container div#loginarea .bloc_body p {
+    margin-bottom: 5px;
+}
+
+#container div#loginarea .bloc_body .btn {
+    text-align: center;
+}
+#container .login_area dl.formList {
+    width: 420px;
+    margin-bottom: 8px;
+}
+#container .login_area dl.formList dt {
+    width: 90px;
+    margin-bottom: 3px;
+    padding-left: 15px;
+    background: url("../img/icon/ico_arrow_03.gif") no-repeat left;
+    font-size: 90%;
+    color: #333;
+    float: left;
+}
+#container .login_area dl.formList dd {
+    width: 300px;
+    margin-bottom: 5px;
+    float: right;
+    text-align: left;
+    vertical-align: bottom;
+}
+#container .login_area .login_memory {
+    margin-top: 5px;
+}
+
+
+/* ===============================================
+▼検索
+=============================================== */
+div#searcharea .bloc_body {
+    padding: 10px;
+}
+div#searcharea .bloc_body .btn {
+    text-align: center;
+}
+
+/* ===============================================
+▼カレンダー
+=============================================== */
+#calenderarea {
+    background-color: transparent;
+    border: none;
+}
+#calenderarea .bloc_body {
+    padding: 10px 0;
+    background-color: #f1f9fc;
+}
+#calenderarea table {
+    width: 150px;
+    margin: 0 auto 5px;
+    background: #fff;
+    border: none;
+    text-align:center;
+    font-size: 90%;
+}
+#calenderarea table td {
+    padding: 1px 3px;
+    border-top: 1px solid #ccc;
+    border-right: none;
+}
+#calenderarea th {
+    text-align: center;
+    padding: 1px 3px;
+    background: #fff;
+    border: none;
+}
+#calenderarea table .month {
+    margin-bottom: 5px;
+    padding-left: 12px;
+    background: url("../img/icon/ico_arrow_04.gif") no-repeat left;
+    font-size: 120%;
+}
+#calenderarea .off {
+    color: #f00;
+}
+#calenderarea .information {
+    margin-left: 10px;
+    font-size: 90%;
+}
+
+
+/* ===============================================
+▼おすすめ商品
+=============================================== */
+/*
+   tplファイルのマークアップが同じ項目
+   メインカラム用 2カラム時 [two_maincolumn_right]
+   メインカラム用 3カラム時 [three_maincolumn]
+   サイドカラム用           [side_column]
+   商品詳細のオススメ商品   [whobought_area]
+=============================================== */
+/* 共通
+----------------------------------------------- */
+#recomendarea .bloc_body ,
+#whobought_area .whobought_bloc {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px 0 10px;
+    border: none;
+    background: url("../img/background/line_dot_01.gif") repeat-x bottom;
+}
+
+#recomendarea .bloc_body p ,
+#whobought_area .whobought_bloc p {
+    margin: 0 0 5px 0;
+}
+
+#recomendarea .bloc_body img ,
+#whobought .whobought_bloc img {
+    display: block;
+    float: left;
+    margin: 0 5px 0 0;
+}
+
+#recomendarea .bloc_body h3 ,
+#whobought_area .whobought_bloc h3 {
+    font-size: 100%;
+    font-weight: normal;
+}
+
+/* 画像
+----------------------------------------------- */
+#recomendarea .bloc_body .productImage ,
+#whobought_area .whobought_bloc .productImage {
+    float: left;
+    width: 90px;
+    margin-bottom: 10px;
+}
+
+/* 左右の振り分け
+----------------------------------------------- */
+#two_maincolumn_right #recomendarea .recomendleft ,
+#three_maincolumn #recomendarea .recomendleft ,
+#whobought_area .whobought_bloc .whobought_left {
+    float: left;
+    width: 47.5%;
+}
+#two_maincolumn_right #recomendarea .recomendright ,
+#three_maincolumn #recomendarea .recomendright ,
+#whobought_area .whobought_bloc .whobought_right {
+    float: right;
+    width: 47.5%;
+}
+
+
+/* 商品説明テキスト横幅
+----------------------------------------------- */
+/* メインカラム用 2カラム時*/
+#two_maincolumn_right #recomendarea .bloc_body .productContents ,
+#two_maincolumn_right #whobought_area .whobought_bloc .productContents {
+    float: right;
+    width: 74%;
+}
+
+/* メインカラム用 3カラム時*/
+#three_maincolumn #recomendarea .bloc_body .productContents ,
+#three_maincolumn #whobought_area .whobought_bloc .productContents {
+    float: right;
+    width: 67%;
+}
+
+
+/* サイドカラム用 (幅px固定)
+----------------------------------------------- */
+.side_column #recomendarea .bloc_body {
+    margin-top: 5px;
+    margin-right: 0px;
+    width: 157px;
+    padding: 0px;
+}
+.side_column #recomendarea .bloc_body .productContents {
+    width: 80px;
+    padding: 0px;
+    margin: 0px;
+}
+.side_column #recomendarea .recomendleft {
+    width: 70px;
+    padding: 0;
+    float: left;
+}
+.side_column #recomendarea .recomendright {
+    width: 70px;
+    margin: 0;
+    padding: 0;
+    float: right;
+}
+
+/* IE6以下*/
+* html .side_column #recomendarea .bloc_body {
+    width: 180px;
+}
+

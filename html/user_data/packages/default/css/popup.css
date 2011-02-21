@@ -1,0 +1,106 @@
+@charset "utf-8";
+
+/************************************************
+ポップアップウィンドウ
+************************************************ */
+/* 共通
+----------------------------------------------- */
+div#windowcolumn {
+    height: 100%;
+    margin: 15px 15px 0 15px;
+    background: #fff;
+    border-top: solid 3px #f90;
+}
+
+div#windowcolumn h2 {
+    margin-bottom: 10px;
+    border-top: solid 1px #ebeced;
+    background: url("../img/background/bg_tit_sub_01.jpg") repeat-x left bottom;
+    background-color: #fef3d8;
+    padding: 8px;
+    font-size: 170%;
+    color: #f60;
+}
+
+div#windowarea {
+    width: 540px;
+    margin: 15px auto 0 auto;
+    padding-bottom: 20px;
+}
+
+div#windowarea p.information {
+    margin-bottom: 20px;
+}
+
+div#windowarea .message {
+    margin-bottom: 20px;
+    font-size: 140%;
+    line-height: 150%;
+    font-weight: bold;
+    color: #f60;
+}
+div#windowarea table {
+    width: 540px;
+}
+
+/* お客様の声の書き込み、新しいお届け先の追加・変更
+----------------------------------------------- */
+div#windowarea #forgot {
+    margin: 0 auto;
+    width: 440px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    text-align: left;
+}
+div#windowarea #forgot .mailaddres {
+    margin-bottom: 10px;
+}
+div#windowarea .zipimg img {
+    margin: 5px 0 0 0;
+}
+
+/* 商品詳細拡大写真、カート拡大写真
+----------------------------------------------- */
+div#bigimage,
+div#cartimage {
+    margin-top: 15px;
+    background-color: #fff;
+    text-align: center;
+}
+
+div#bigimage img,
+div#cartimage img {
+    padding: 10px;
+    background-color: #fff;
+}
+
+/* 郵便番号検索
+----------------------------------------------- */
+div#zipsearchcolumn {
+    width: 460px;
+    margin: 15px auto 0 auto;
+    background-color: #fff;
+    border-top: 5px solid #ffa85c;
+    border-bottom: 5px solid #ffa85c;
+}
+
+div#zipsearchcolumn h2 {
+    width: 460px;
+    margin: 0 0 15px 0;
+}
+
+div#zipsearcharea {
+    width: 460px;
+    margin: 15px auto 0 auto;
+}
+
+div#zipsearchcolumn .btn {
+    margin: 15px 0 30px 0;
+    text-align: center;
+}
+
+div#zipsearcharea #completebox p{
+    padding: 60px 5px;
+    text-align: center;
+}
+

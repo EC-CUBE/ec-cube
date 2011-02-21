@@ -35,9 +35,14 @@
             <!--{include file="`$smarty.const.TEMPLATE_REALDIR`frontparts/form_personal_input.tpl" flgFields=3 emailMobile=false prefix=""}-->
             </table>
 
-            <div class="tblareabtn">
-                <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_confirm_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_confirm.gif',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_confirm.gif" class="box150" alt="確認ページへ" name="confirm" id="confirm" />
+            <div class="btn_area">
+                 <ul>
+                     <li>
+                         <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_confirm_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_confirm.jpg',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_confirm.jpg" alt="確認ページへ" name="confirm" id="confirm" />
+                     </li>
+                 </ul>
             </div>
+
         </form>
     </div>
 </div>

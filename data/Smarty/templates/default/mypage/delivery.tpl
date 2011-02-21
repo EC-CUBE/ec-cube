@@ -25,16 +25,16 @@
 <div id="mypagecolumn">
     <h2 class="title"><!--{$tpl_title|h}--></h2>
 <!--{include file=$tpl_navi}-->
-    <div id="mycontentsarea">
+    <div id="mycontents_area">
         <h3><!--{$tpl_subtitle|h}--></h3>
-        <p>登録住所以外への住所へ送付される場合等にご利用いただくことができます。</p>
-        <p>※最大<!--{$smarty.const.DELIV_ADDR_MAX|h}-->件まで登録できます。</p>
+        <p class="inforamtion">登録住所以外への住所へ送付される場合等にご利用いただくことができます。<br />
+        ※最大<span class="attention"><!--{$smarty.const.DELIV_ADDR_MAX|h}-->件</span>まで登録できます。</p>
 
         <!--{if $tpl_linemax < $smarty.const.DELIV_ADDR_MAX}-->
           <!--{* 退会時非表示 *}-->
           <!--{if $tpl_login}-->
-            <p class="addbtn">
-                <a href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php" onclick="win03('./delivery_addr.php','delivadd','600','640'); return false;" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_address_on.gif','newadress');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_address.gif','newadress');" target="_blank"><img src="<!--{$TPL_URLPATH}-->img/button/btn_add_address.gif" width="160" height="22" alt="新しいお届け先を追加" border="0" name="newadress" /></a>
+            <p class="add_address">
+                <a href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php" onclick="win03('./delivery_addr.php','delivadd','600','640'); return false;" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_address_on.jpg','newadress');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_address.jpg','newadress');" target="_blank"><img src="<!--{$TPL_URLPATH}-->img/button/btn_add_address.jpg" alt="新しいお届け先を追加" border="0" name="newadress" /></a>
             </p>
           <!--{/if}-->
         <!--{/if}-->
@@ -46,23 +46,28 @@
             <input type="hidden" name="pageno" value="<!--{$tpl_pageno}-->" />
 
             <table summary="お届け先">
+            <colgroup width="5%"></colgroup>
+            <colgroup width="25%"></colgroup>
+            <colgroup width="50%"></colgroup>
+           	<colgroup width="10%"></colgroup>
+            <colgroup width="10%"></colgroup>
                 <tr>
-                    <th colspan="5">▼お届け先</th>
+                    <th colspan="5">お届け先</th>
                 </tr>
                 <!--{section name=cnt loop=$arrOtherDeliv}-->
                     <!--{assign var=OtherPref value="`$arrOtherDeliv[cnt].pref`"}-->
                     <tr>
-                        <td class="centertd"><!--{$smarty.section.cnt.iteration}--></td>
+                        <td class="alignC"><!--{$smarty.section.cnt.iteration}--></td>
                         <td><label for="add<!--{$smarty.section.cnt.iteration}-->">お届け先住所</label></td>
                         <td>
                             〒<!--{$arrOtherDeliv[cnt].zip01}-->-<!--{$arrOtherDeliv[cnt].zip02}--><br />
                             <!--{$arrPref[$OtherPref]|h}--><!--{$arrOtherDeliv[cnt].addr01|h}--><!--{$arrOtherDeliv[cnt].addr02|h}--><br />
                             <!--{$arrOtherDeliv[cnt].name01|h}-->&nbsp;<!--{$arrOtherDeliv[cnt].name02|h}-->
                         </td>
-                        <td class="centertd">
+                        <td class="alignC">
                             <a href="./delivery_addr.php" onclick="win02('./delivery_addr.php?other_deliv_id=<!--{$arrOtherDeliv[cnt].other_deliv_id}-->','deliv_disp','600','640'); return false;">変更</a>
                         </td>
-                        <td class="centertd">
+                        <td class="alignC">
                             <a href="#" onclick="fnModeSubmit('delete','other_deliv_id','<!--{$arrOtherDeliv[cnt].other_deliv_id}-->'); return false;">削除</a>
                         </td>
                     </tr>

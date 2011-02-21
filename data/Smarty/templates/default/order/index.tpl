@@ -24,6 +24,8 @@
   <div id="undercolumn_order">
     <h2 class="title"><!--{$tpl_title|h}--></h2>
     <table summary="特定商取引に関する法律に基づく表記">
+        <colgroup width="20%"></colgroup>
+        <colgroup width="80%"></colgroup>
       <tr>
         <th>販売業者</th>
         <td><!--{$arrOrder.law_company|h}--></td>

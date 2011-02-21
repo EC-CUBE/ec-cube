@@ -42,28 +42,42 @@ $(document).ready(function() {
 });
 //]]></script>
 
-<!--▼CONTENTS-->
+<!--CONTENTS-->
 <div id="under02column">
     <div id="under02column_shopping">
-        <p class="flowarea"><img src="<!--{$TPL_URLPATH}-->img/picture/img_flow_03.gif" width="700" height="36" alt="購入手続きの流れ" /></p>
+        <p class="flowarea"><img src="<!--{$TPL_URLPATH}-->img/picture/img_flow_03.jpg" alt="購入手続きの流れ" /></p>
         <h2 class="title"><!--{$tpl_title|h}--></h2>
 
-        <p>下記ご注文内容で送信してもよろしいでしょうか？<br />
+        <p class="information">下記ご注文内容で送信してもよろしいでしょうか？<br />
             よろしければ、「<!--{if $use_module}-->次へ<!--{else}-->ご注文完了ページへ<!--{/if}-->」ボタンをクリックしてください。</p>
 
         <form name="form1" id="form1" method="post" action="?">
             <input type="hidden" name="mode" value="confirm" />
             <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->" />
 
-            <div class="tblareabtn">
-                <a href="./payment.php" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_back_on.gif',back03)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_back.gif',back03)"><img src="<!--{$TPL_URLPATH}-->img/button/btn_back.gif" width="150" height="30" alt="戻る" border="0" name="back03-top" id="back03-top" /></a>&nbsp;
-                <!--{if $use_module}-->
-                <input type="image" onclick="return fnCheckSubmit();" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_next_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_next.gif',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_next.gif" alt="次へ" class="box150" name="next-top" id="next-top" />
-                <!--{else}-->
-                <input type="image" onclick="return fnCheckSubmit();" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_order_complete_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_order_complete.gif',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_order_complete.gif" alt="ご注文完了ページへ" class="box150" name="next-top" id="next-top" />                <!--{/if}-->
+            <div class="btn_area">
+                 <ul>
+                     <li>
+                          <a href="./payment.php" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_back_on.jpg',back03-top)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_back.jpg',back03-top)"><img src="<!--{$TPL_URLPATH}-->img/button/btn_back.jpg" alt="戻る" border="0" name="back03-top" id="back03-top" /></a>
+                     </li>
+                          <!--{if $use_module}-->
+                     <li>
+                          <input type="image" onclick="return fnCheckSubmit();" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_next_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_next.jpg',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_next.jpg" alt="次へ" name="next-top" id="next-top" />
+                     </li> 
+                         <!--{else}-->
+                     <li>
+                          <input type="image" onclick="return fnCheckSubmit();" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_order_complete_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_order_complete.jpg',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_order_complete.jpg" alt="ご注文完了ページへ" name="next-top" id="next-top" />
+                     </li>
+                     <!--{/if}-->
+                 </ul>
             </div>
 
             <table summary="ご注文内容確認">
+                <colgroup width="10%"></colgroup>
+                <colgroup width="40%"></colgroup>
+                <colgroup width="20%"></colgroup>
+                <colgroup width="10%"></colgroup>
+                <colgroup width="20%"></colgroup>
                 <tr>
                     <th>商品写真</th>
                     <th>商品名</th>
@@ -73,12 +87,9 @@ $(document).ready(function() {
                 </tr>
                 <!--{foreach from=$arrCartItems item=item}-->
                 <tr>
-                    <td class="phototd">
+                    <td class="alignC">
                         <a
-                            <!--{if $item.productsClass.main_image|strlen >= 1}-->
-                                href="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$item.productsClass.main_image|sfNoImageMainList|h}-->"
-                                class="expansion"
-                                target="_blank"
+                            <!--{if $item.productsClass.main_image|strlen >= 1}--> href="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$item.productsClass.main_image|sfNoImageMainList|h}-->" class="expansion" target="_blank"
                             <!--{/if}-->
                         >
                             <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$item.productsClass.main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" alt="<!--{$item.productsClass.name|h}-->" /></a>
@@ -94,42 +105,44 @@ $(document).ready(function() {
                             <!--{/if}-->
                         </ul>
                  </td>
-                 <td class="pricetd">
+                 <td class="alignR">
                      <!--{$item.productsClass.price02|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
                  </td>
-                 <td><!--{$item.quantity|number_format}--></td>
-                 <td class="pricetd"><!--{$item.total_inctax|number_format}-->円</td>
+                 <td class="alignR"><!--{$item.quantity|number_format}--></td>
+                 <td class="alignR"><!--{$item.total_inctax|number_format}-->円</td>
              </tr>
              <!--{/foreach}-->
                 <tr>
                     <th colspan="4" class="resulttd">小計</th>
-                    <td class="pricetd"><!--{$tpl_total_inctax[$cartKey]|number_format}-->円</td>
+                    <td class="alignR"><!--{$tpl_total_inctax[$cartKey]|number_format}-->円</td>
                 </tr>
                 <!--{if $smarty.const.USE_POINT !== false}-->
                     <tr>
                         <th colspan="4" class="resulttd">値引き（ポイントご使用時）</th>
-                        <td class="pricetd">
+                        <td class="alignR">
                         <!--{assign var=discount value=`$arrForm.use_point*$smarty.const.POINT_VALUE`}-->
                          -<!--{$discount|number_format|default:0}-->円</td>
                     </tr>
                 <!--{/if}-->
                 <tr>
                     <th colspan="4" class="resulttd">送料</th>
-                    <td class="pricetd"><!--{$arrForm.deliv_fee|number_format}-->円</td>
+                    <td class="alignR"><!--{$arrForm.deliv_fee|number_format}-->円</td>
                 </tr>
                 <tr>
                     <th colspan="4" class="resulttd">手数料</th>
-                    <td class="pricetd"><!--{$arrForm.charge|number_format}-->円</td>
+                    <td class="alignR"><!--{$arrForm.charge|number_format}-->円</td>
                 </tr>
                 <tr>
                     <th colspan="4" class="resulttd">合計</th>
-                    <td class="pricetd"><em><!--{$arrForm.payment_total|number_format}-->円</em></td>
+                    <td class="alignR"><span class="price"><!--{$arrForm.payment_total|number_format}-->円</span></td>
                 </tr>
             </table>
 
             <!--{* ログイン済みの会員のみ *}-->
             <!--{if $tpl_login == 1 && $smarty.const.USE_POINT !== false}-->
                 <table summary="ポイント確認" class="delivname">
+                <colgroup width="30%"></colgroup>
+                <colgroup width="70%"></colgroup>
                     <tr>
                         <th>ご注文前のポイント</th>
                         <td><!--{$tpl_user_point|number_format|default:0}-->Pt</td>
@@ -161,9 +174,11 @@ $(document).ready(function() {
             <!--{* 販売方法判定（ダウンロード販売のみの場合はお届け先を表示しない） *}-->
             <!--{if $cartKey != $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
             <!--{foreach item=shippingItem from=$arrShipping name=shippingItem}-->
-            <h3>▼お届け先<!--{if $is_multiple}--><!--{$smarty.foreach.shippingItem.iteration}--><!--{/if}--></h3>
+            <h3>お届け先<!--{if $is_multiple}--><!--{$smarty.foreach.shippingItem.iteration}--><!--{/if}--></h3>
            <!--{if $is_multiple}-->
             <table summary="ご注文内容確認">
+                <colgroup width="30%"></colgroup>
+                <colgroup width="70%"></colgroup>
               <tr>
                 <th>商品写真</th>
                 <th>商品名</th>
@@ -175,12 +190,9 @@ $(document).ready(function() {
               </tr>
               <!--{foreach item=item from=$shippingItem.shipment_item}-->
                   <tr>
-                      <td class="phototd">
+                      <td class="alignC">
                         <a
-                            <!--{if $item.productsClass.main_image|strlen >= 1}-->
-                                href="<!--{$smarty.const.IMAGE_SAVE_URL}--><!--{$item.productsClass.main_image|sfNoImageMainList|h}-->"
-                                class="expansion"
-                                target="_blank"
+                            <!--{if $item.productsClass.main_image|strlen >= 1}--> href="<!--{$smarty.const.IMAGE_SAVE_URL}--><!--{$item.productsClass.main_image|sfNoImageMainList|h}-->" class="expansion" target="_blank"
                             <!--{/if}-->
                         >
                             <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$item.productsClass.main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" alt="<!--{$item.productsClass.name|h}-->" /></a>
@@ -193,12 +205,12 @@ $(document).ready(function() {
                               <!--{$item.productsClass.class_name2}-->：<!--{$item.productsClass.classcategory_name2}-->
                           <!--{/if}-->
                       </td>
-                      <td class="pricetd">
+                      <td class="alignR">
                           <!--{$item.productsClass.price02|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
                       </td>
                       <td id="quantity"><!--{$item.quantity}--></td>
                       <!--{* XXX 購入小計と誤差が出るためコメントアウト
-                      <td class="pricetd"><!--{$item.total_inctax|number_format}-->円</td>
+                      <td class="alignR"><!--{$item.total_inctax|number_format}-->円</td>
                       *}-->
                   </tr>
               <!--{/foreach}-->
@@ -206,6 +218,8 @@ $(document).ready(function() {
            <!--{/if}-->
 
             <table summary="お届け先確認" class="delivname">
+                <colgroup width="30%"></colgroup>
+                <colgroup width="70%"></colgroup>
                 <tbody>
                     <tr>
                         <th>お名前</th>
@@ -243,8 +257,10 @@ $(document).ready(function() {
             <!--{/if}-->
             <!--お届け先ここまで-->
 
-            <h3>▼配送方法・お支払方法・その他お問い合わせ</h3>
+            <h3>配送方法・お支払方法・その他お問い合わせ</h3>
             <table summary="配送方法・お支払方法・その他お問い合わせ" class="delivname">
+                <colgroup width="30%"></colgroup>
+                <colgroup width="70%"></colgroup>
                 <tbody>
                 <tr>
                     <th>配送方法</th>
@@ -261,13 +277,22 @@ $(document).ready(function() {
                 </tbody>
             </table>
 
-            <div class="tblareabtn">
-                <a href="./payment.php" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_back_on.gif',back03)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_back.gif',back03)"><img src="<!--{$TPL_URLPATH}-->img/button/btn_back.gif" width="150" height="30" alt="戻る" border="0" name="back03" id="back03" /></a>&nbsp;
-                <!--{if $use_module}-->
-                <input type="image" onclick="return fnCheckSubmit();" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_next_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_next.gif',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_next.gif" alt="次へ" class="box150" name="next" id="next" />
-                <!--{else}-->
-                <input type="image" onclick="return fnCheckSubmit();" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_order_complete_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_order_complete.gif',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_order_complete.gif" alt="ご注文完了ページへ" class="box150" name="next" id="next" />
-                <!--{/if}-->
+            <div class="btn_area">
+                 <ul>
+                     <li>
+                          <a href="./payment.php" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_back_on.jpg','back<!--{$key}-->');" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_back.jpg','back<!--{$key}-->');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_back.jpg" alt="戻る" name="back<!--{$key}-->" /></a>&nbsp;
+                     </li>
+                     <!--{if $use_module}-->
+                     <li>
+                          <input type="image" onclick="return fnCheckSubmit();" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_next_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_next.jpg',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_next.jpg" alt="次へ" name="next" id="next" />
+                     </li>
+                     <!--{else}-->
+                     <li>
+                          <input type="image" onclick="return fnCheckSubmit();" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_order_complete_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_order_complete.jpg',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_order_complete.jpg" alt="ご注文完了ページへ"  name="next" id="next" />
+                     </li>
+                     <!--{/if}-->
+            </ul>
+
             </div>
         </form>
     </div>

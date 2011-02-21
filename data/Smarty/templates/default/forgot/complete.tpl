@@ -23,18 +23,20 @@
 
   <div id="windowarea">
     <h2 class="title">パスワードを忘れた方</h2>
-    <p>パスワードの発行が完了いたしました。ログインには下記のパスワードをご利用ください。<br />
+    <p class="information">パスワードの発行が完了いたしました。ログインには下記のパスワードをご利用ください。<br />
     ※下記パスワードは、MYページの「会員登録内容変更」よりご変更いただけます。</p>
     <form action="?" method="post" name="form1">
-      <div id="completebox">
-		<!--{if $smarty.const.FORGOT_MAIL != 1}-->
-        <p><em><!--{$arrForm.new_password}--></em></p>
-		<!--{else}-->
-		<p><em>ご登録メールアドレスに送付致しました。</em></p>
-		<!--{/if}-->
+      <div id="forgot">
+        <!--{if $smarty.const.FORGOT_MAIL != 1}-->
+            <p><span class="attention"><!--{$arrForm.new_password}--></span></p>
+        <!--{else}-->
+        <p><span class="attention">ご登録メールアドレスに送付致しました。</span></p>
+        <!--{/if}-->
       </div>
-      <div class="btn">
-        <a href="javascript:window.close()" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_close_on.gif','close');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_close.gif','close');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_close.gif" width="150" height="30" alt="閉じる" name="close" id="close" /></a>
+    <div class="btn_area">
+        <ul>
+                <li><a href="javascript:window.close()" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_close_on.jpg','close');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_close.jpg','close');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_close.jpg" alt="閉じる" name="close" id="close" /></a></li>
+        </ul>
       </div>
     </form>
   </div>

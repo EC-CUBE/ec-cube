@@ -22,21 +22,25 @@
 <!--▼CONTENTS-->
 <div id="under02column">
   <div id="under02column_customer">
-    <p class="flowarea"><img src="<!--{$TPL_URLPATH}-->img/picture/img_flow_01.gif" width="700" height="36" alt="購入手続きの流れ" /></p>
+    <p class="flowarea"><img src="<!--{$TPL_URLPATH}-->img/picture/img_flow_01.jpg" alt="購入手続きの流れ" /></p>
     <h2 class="title"><!--{$tpl_title|h}--></h2>
 
-    <div id="add-wrap" class="clearfix">
-
-      <div id="add-left">
-
-        <p>下記項目にご入力ください。「<span class="attention">※</span>」印は入力必須項目です。<br />
+    <div id="address_area" class="clearfix">
+        <div class="information">
+                <p>下記項目にご入力ください。「<span class="attention">※</span>」印は入力必須項目です。<br />
         入力後、一番下の「次へ」ボタンをクリックしてください。</p>
-      </div>
-      <div id="add-right">
-        <p class="add-m">この商品を複数の<br />お届け先に送りますか？</p>
-        <a href="javascript:;" onclick="fnModeSubmit('multiple', '', ''); return false" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_several_address_on.gif','several');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_several_address.gif','several');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_several_address.gif" width="129" height="20" alt="お届け先を複数指定する" name="several" id="several" /></a>
-      </div>
+        </div>
+        <div class="add_plural">
+            <p>この商品を複数の<br />お届け先に送りますか？</p>
+        <a href="javascript:;" onclick="fnModeSubmit('multiple', '', ''); return false" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_several_address_on.jpg','several');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_several_address.jpg','several');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_several_address.jpg" alt="お届け先を複数指定する" name="several" id="several" /></a>
+        </div>
     </div>
+
+    <!--{if $tpl_addrmax < $smarty.const.DELIV_ADDR_MAX}-->
+        <p class="addbtn">
+            <a href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php" onclick="win02('<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php?page=<!--{$smarty.server.PHP_SELF|h}-->','new_deiv','600','640'); return false;" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_address_on.jpg','addition');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_address.jpg','addition');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_add_address.jpg" alt="新しいお届け先を追加する" name="addition" id="addition" /></a>
+        </p>
+    <!--{/if}-->
 
     <form name="form1" id="form1" method="post" action="?">
       <input type="hidden" name="mode" value="nonmember_confirm" />
@@ -70,9 +74,9 @@
             <!--{assign var=key2 value="order_zip02"}-->
             <span class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></span>
             <p>〒&nbsp;<input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->; ime-mode: disabled;"  size="6" class="box60" />&nbsp;-&nbsp;  <input type="text"  name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->; ime-mode: disabled;"  size="6" class="box60" />　
-              <a href="http://search.post.japanpost.jp/zipcode/" target="_blank"><span class="fs12">郵便番号検索</span></a></p>
+              <a href="http://search.post.japanpost.jp/zipcode/" target="_blank"><span class="mini">郵便番号検索</span></a></p>
 
-            <p class="zipimg"><a href="<!--{$smarty.const.ROOT_URLPATH}-->address/<!--{$smarty.const.DIR_INDEX_PATH}-->" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'order_zip01', 'order_zip02', 'order_pref', 'order_addr01'); return false;" target="_blank"><img src="<!--{$TPL_URLPATH}-->img/button/btn_address_input.gif" width="86" height="20" alt="住所自動入力" /></a>
+            <p class="zipimg"><a href="<!--{$smarty.const.ROOT_URLPATH}-->address/<!--{$smarty.const.DIR_INDEX_PATH}-->" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'order_zip01', 'order_zip02', 'order_pref', 'order_addr01'); return false;" target="_blank"><img src="<!--{$TPL_URLPATH}-->img/button/btn_address_input.jpg" alt="住所自動入力" /></a>
                <span class="mini">&nbsp;郵便番号を入力後、クリックしてください。</span></p>
           </td>
         </tr>
@@ -93,7 +97,7 @@
               <!--{assign var=key value="order_addr02"}-->
               <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" size="40"  maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->; ime-mode: active;" class="box380" /><br />
               <!--{$smarty.const.SAMPLE_ADDRESS2}--></p>
-            <p class="mini"><em>住所は2つに分けてご記入ください。マンション名は必ず記入してください。</em></p></td>
+            <p class="mini"><span class="attention">住所は2つに分けてご記入ください。マンション名は必ず記入してください。</span></p></td>
         </tr>
         <tr>
           <th>電話番号<span class="attention">※</span></th>
@@ -132,7 +136,7 @@
             <!--{assign var=key value="order_email02"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
             <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->; ime-mode: disabled;" size="40" class="box380" /><br />
-            <p class="mini"><em>確認のため2度入力してください。</em></p>
+            <p class="mini"><span class="attention">確認のため2度入力してください。</span></p>
           </td>
         </tr>
         <tr>
@@ -179,7 +183,7 @@
           <th colspan="2">
           <!--{assign var=key value="deliv_check"}-->
           <input type="checkbox" name="<!--{$key}-->" value="1" onclick="fnCheckInputDeliv();" <!--{$arrForm[$key].value|sfGetChecked:1}--> id="deliv_label" />
-          <label for="deliv_label"><em>お届け先を指定</em>　※上記に入力された住所と同一の場合は省略可能です。</label>
+          <label for="deliv_label"><span class="attention">お届け先を指定</span>　※上記に入力された住所と同一の場合は省略可能です。</label>
           </th>
         </tr>
         <tr>
@@ -208,10 +212,10 @@
            <!--{assign var=key1 value="shipping_zip01"}-->
            <!--{assign var=key2 value="shipping_zip02"}-->
             <span class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></span>
-            <p>〒&nbsp;<input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->; ime-mode: disabled;"  size="6" class="box60" />&nbsp;-&nbsp;  <input type="text"  name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->; ime-mode: disabled;"  size="6" class="box60" />　
-              <a href="http://search.post.japanpost.jp/zipcode/" target="_blank"><span class="fs12">郵便番号検索</span></a></p>
+            <p>〒&nbsp;<input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->; ime-mode: disabled;"  size="6" class="box60" />&nbsp;-&nbsp;  <input type="text"  name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->; ime-mode: disabled;" class="box60" />　
+              <a href="http://search.post.japanpost.jp/zipcode/" target="_blank"><span class="mini">郵便番号検索</span></a></p>
 
-            <p class="zipimg"><a href="<!--{$smarty.const.ROOT_URLPATH}-->address/<!--{$smarty.const.DIR_INDEX_PATH}-->" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'shipping_zip01', 'shipping_zip02', 'shipping_pref', 'shipping_addr01'); return false;" target="_blank"><img src="<!--{$TPL_URLPATH}-->img/button/btn_address_input.gif" width="86" height="20" alt="住所自動入力" /></a>
+            <p class="zipimg"><a href="<!--{$smarty.const.ROOT_URLPATH}-->address/<!--{$smarty.const.DIR_INDEX_PATH}-->" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'shipping_zip01', 'shipping_zip02', 'shipping_pref', 'shipping_addr01'); return false;" target="_blank"><img src="<!--{$TPL_URLPATH}-->img/button/btn_address_input.jpg" alt="住所自動入力" /></a>
               <span class="mini">&nbsp;郵便番号を入力後、クリックしてください。</span></p>
           </td>
         </tr>
@@ -232,7 +236,7 @@
               <!--{assign var=key value="shipping_addr02"}-->
               <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" size="40"  maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->; ime-mode: active;" class="box380" /><br />
               <!--{$smarty.const.SAMPLE_ADDRESS2}--></p>
-            <p class="mini"><em>住所は2つに分けてご記入ください。マンション名は必ず記入してください。</em></p>
+            <p class="mini"><span class="attention">住所は2つに分けてご記入ください。マンション名は必ず記入してください。</span></p>
 
           </td>
         </tr>
@@ -252,9 +256,14 @@
         </tr>
       </table>
 
-      <div class="tblareabtn">
-       <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_next_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_next.gif',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_next.gif" class="box150" alt="次へ" name="next" id="next" />
+      <div class="btn_area">
+            <ul>
+                <li>
+                      <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_next_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_next.jpg',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_next.jpg" alt="次へ" name="next" id="next" />
+                </li>
+            </ul>
       </div>
+
     </form>
   </div>
 </div>

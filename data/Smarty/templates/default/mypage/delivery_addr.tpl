@@ -25,8 +25,8 @@
 
 <div id="windowarea">
     <h2 class="title"><!--{$tpl_title|h}--></h2>
-    <p>下記項目にご入力ください。「<span class="attention">※</span>」印は入力必須項目です。</p>
-    <p>入力後、一番下の「登録する」ボタンをクリックしてください。</p>
+    <p>下記項目にご入力ください。「<span class="attention">※</span>」印は入力必須項目です。<br />
+    入力後、一番下の「登録する」ボタンをクリックしてください。</p>
 
     <form name="form1" id="form1" method="post" action="?">
         <input type="hidden" name="mode" value="edit" />
@@ -36,9 +36,10 @@
         <table summary="お届け先登録">
             <!--{include file="`$smarty.const.TEMPLATE_REALDIR`frontparts/form_personal_input.tpl" flgFields=1 emailMobile=false prefix=""}-->
         </table>
-
-        <div class="btn">
-            <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_add_address_complete_on.gif',this);" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_add_address_complete.gif',this);" src="<!--{$TPL_URLPATH}-->img/button/btn_add_address_complete.gif" class="box150" alt="登録する" name="register" id="register" />
+        <div class="btn_area">
+            <ul>
+                <li><input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_add_address_complete_on.jpg',this);" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_add_address_complete.jpg',this);" src="<!--{$TPL_URLPATH}-->img/button/btn_add_address_complete.jpg" alt="登録する" name="register" id="register" /></li>
+            </ul>
         </div>
     </form>
 </div>

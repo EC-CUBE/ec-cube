@@ -29,7 +29,7 @@
   <!--{else}-->
     <!--{include file=`$smarty.const.TEMPLATE_REALDIR`mypage/navi.tpl}-->
   <!--{/if}-->
-  <div id="mycontentsarea">
+  <div id="mycontents_area">
     <form name="form1" method="post" action="?">
     <input type="hidden" name="order_id" value="" />
     <input type="hidden" name="pageno" value="<!--{$objNavi->nowpage}-->" />
@@ -37,7 +37,7 @@
 
 <!--{if $objNavi->all_row > 0}-->
 
-    <p><!--{$objNavi->all_row}-->件の購入履歴があります。</p>
+    <p><span class="attention"><!--{$objNavi->all_row}-->件</span>の購入履歴があります。</p>
     <div>
       <!--▼ページナビ-->
       <!--{$objNavi->strnavi}-->
@@ -58,8 +58,8 @@
        <td><!--{$arrOrder[cnt].order_id}--></td>
        <!--{assign var=payment_id value="`$arrOrder[cnt].payment_id`"}-->
        <td><!--{$arrPayment[$payment_id]|h}--></td>
-       <td class="pricetd"><!--{$arrOrder[cnt].payment_total|number_format}-->円</td>
-       <td class="centertd"><a href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/history.php?order_id=<!--{$arrOrder[cnt].order_id}-->">詳細</a></td>
+       <td class="alignR"><!--{$arrOrder[cnt].payment_total|number_format}-->円</td>
+       <td class="alignC"><a href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/history.php?order_id=<!--{$arrOrder[cnt].order_id}-->">詳細</a></td>
      </tr>
      <!--{/section}-->
     </table>

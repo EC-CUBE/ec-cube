@@ -24,56 +24,85 @@
   <div id="under02column_login">
     <h2 class="title"><!--{$tpl_title|h}--></h2>
     <form name="member_form" id="member_form" method="post" action="?" onsubmit="return fnCheckLogin('member_form')">
-   <div class="loginarea">
-     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-     <p><img src="<!--{$TPL_URLPATH}-->img/title/tit_sub_member.gif" width="202" height="16" alt="会員登録がお済みのお客様" /></p>
-     <p class="inputtext">会員の方は、登録時に入力されたメールアドレスとパスワードでログインしてください。</p>
-       <input type="hidden" name="mode" value="login" />
-       <div class="inputbox">
-       <!--{assign var=key value="login_email"}--><span class="attention"><!--{$arrErr[$key]}--></span>
-       <p>メールアドレス:&nbsp;
-         <input type="text" name="<!--{$key}-->"
-                value="<!--{$tpl_login_email|h}-->"
-                maxlength="<!--{$arrForm[$key].length}-->"
-                style="<!--{$arrErr[$key]|sfGetErrorColor}-->; ime-mode: disabled;"
-                size="40" class="box300" />
-       </p>
-       <p class="mini">
-         <input type="checkbox" name="login_memory" value="1" <!--{$tpl_login_memory|sfGetChecked:1}--> id="login_memory" />
-         <label for="login_memory">メールアドレスをコンピューターに記憶させる</label>
-       </p>
-       <p class="passwd">
-         <!--{assign var=key value="login_pass"}--><span class="attention"><!--{$arrErr[$key]}--></span>
-         パスワード:&nbsp;
-         <input type="password" name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="40" class="box300" />
-       </p>
-     </div>
-     <div class="tblareabtn">
-      <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_login_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_login.gif',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_login.gif" alt="ログイン" name="log" id="log" class="box140" />
-     </div>
-     <p class="inputtext02">
-       パスワードを忘れた方は<a href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/forgot/<!--{$smarty.const.DIR_INDEX_PATH}-->" onclick="win01('<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/forgot/<!--{$smarty.const.DIR_INDEX_PATH}-->','forget','600','460'); return false;" target="_blank">こちら</a>からパスワードの再発行を行ってください。<br />
-      メールアドレスを忘れた方は、お手数ですが、<a href="<!--{$smarty.const.ROOT_URLPATH}-->contact/<!--{$smarty.const.DIR_INDEX_PATH}-->">お問い合わせページ</a>からお問い合わせください。
-     </p>
-   </div>
-    </form>
-    <form name="member_form2" id="member_form2" method="post" action="?">
-      <input type="hidden" name="mode" value="nonmember" />
-      <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-    <div class="loginarea">
-    <p>
-      <img src="<!--{$TPL_URLPATH}-->img/title/tit_sub_guest.gif" width="247" height="16" alt="まだ会員登録されていないお客様" />
-    </p>
-    <p class="inputtext">会員登録をすると便利なMyページをご利用いただけます。<br />
-      また、ログインするだけで、毎回お名前や住所などを入力することなくスムーズにお買い物をお楽しみいただけます。
-    </p>
-    <div class="inputbox02">
-      <a href="<!--{$smarty.const.ROOT_URLPATH}-->entry/kiyaku.php" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_entry_on.gif','b_gotoentry');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_entry.gif','b_gotoentry');">
-        <img src="<!--{$TPL_URLPATH}-->img/button/btn_entry.gif" width="130" height="30" alt="会員登録をする" border="0" name="b_gotoentry" /></a>
-      <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_buystep_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_buystep.gif',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_buystep.gif" class="box130"  alt="購入手続きへ" name="buystep" id="buystep" />
+    <input type="hidden" name="mode" value="login" />
+    <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+
+        <div class="login_area">
+            <h3>会員登録がお済みのお客様</h3>
+            <p class="inputtext">会員の方は、登録時に入力されたメールアドレスとパスワードでログインしてください。</p>
+            <div class="inputbox">
+                <dl class="formList clearfix">
+                    <!--{assign var=key value="login_email"}-->
+                    <span class="attention"><!--{$arrErr[$key]}--></span>
+                    <dt>メールアドレス&nbsp;：</dt>
+                    <dd>
+                        <input type="text" name="<!--{$key}-->" value="<!--{$tpl_login_email|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->; ime-mode: disabled;" size="20" class="box300" />
+                        <p class="login_memory">
+                            <!--{assign var=key value="login_memory"}-->
+                            <input type="checkbox" name="<!--{$key}-->" value="1"<!--{$tpl_login_memory|sfGetChecked:1}--> id="login_memory" />
+                            <label for="login_memory">メールアドレスをコンピューターに記憶させる</label>
+                        </p>
+                    </dd>
+                </dl>
+                <dl class="formList clearfix">
+                    <dt>
+                        <!--{assign var=key value="login_pass"}-->
+                        <span class="attention"><!--{$arrErr[$key]}--></span>
+                        パスワード&nbsp;：
+                    </dt>
+                    <dd>
+                        <input type="password" name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="40" class="box300" />
+                    </dd>
+                </dl>
+                <div class="btn_area">
+                    <ul>
+                        <li>
+                            <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_login_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_login.jpg',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_login.jpg" alt="ログイン" name="log" id="log" />
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <p>
+                ※パスワードを忘れた方は<a href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/forgot/<!--{$smarty.const.DIR_INDEX_PATH}-->" onclick="win01('<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/forgot/<!--{$smarty.const.DIR_INDEX_PATH}-->','forget','600','460'); return false;" target="_blank">こちら</a>からパスワードの再発行を行ってください。<br />
+                ※メールアドレスを忘れた方は、お手数ですが、<a href="<!--{$smarty.const.ROOT_URLPATH}-->contact/<!--{$smarty.const.DIR_INDEX_PATH}-->">お問い合わせページ</a>からお問い合わせください。
+            </p>
+        </div>
+        </form>
+        <div class="login_area">
+            <h3>まだ会員登録されていないお客様</h3>
+
+
+            <h4>会員登録をする</h4>
+            <p class="inputtext">会員登録をすると便利なMyページをご利用いただけます。<br />
+                また、ログインするだけで、毎回お名前や住所などを入力することなくスムーズにお買い物をお楽しみいただけます。
+            </p>
+            <div class="inputbox">
+                <div class="btn_area">
+                    <ul>
+                        <li>
+                            <a href="<!--{$smarty.const.ROOT_URLPATH}-->entry/kiyaku.php" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_entry_on.jpg','b_gotoentry');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_entry.jpg','b_gotoentry');">
+                            <img src="<!--{$TPL_URLPATH}-->img/button/btn_entry.jpg" alt="会員登録をする" border="0" name="b_gotoentry" /></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <h4>会員登録をせずに購入手続きへ進む</h4>
+            <p class="inputtext">会員登録をせずに購入手続きをされたい方は、下記よりお進みください。</p>
+            <form name="member_form2" id="member_form2" method="post" action="?">
+            <input type="hidden" name="mode" value="nonmember" />
+            <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+            <div class="inputbox">
+                <div class="btn_area">
+                    <ul>
+                        <li>
+                           <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_buystep_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_buystep.jpg',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_buystep.jpg" alt="購入手続きへ" name="buystep" id="buystep" />
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            </form>
+        </div>
     </div>
-  </div>
-</form>
-</div>
 </div>
 <!--▲CONTENTS-->

@@ -25,7 +25,7 @@
 <script type="text/javascript">//<![CDATA[
     $(document).ready(function() {
         $("a.expansion").facebox({
-            loadingImage : '<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.facebox/loading.gif',
+            loadingImage : '<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.facebox/loading.jpg',
             closeImage   : '<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.facebox/closelabel.png'
         });
     });
@@ -33,19 +33,18 @@
 <div id="under02column">
     <div id="under02column_shopping">
         <p class="flowarea">
-            <img src="<!--{$TPL_URLPATH}-->img/picture/img_flow_01.gif" width="700" height="36" alt="購入手続きの流れ" />
+            <img src="<!--{$TPL_URLPATH}-->img/picture/img_flow_01.jpg" alt="購入手続きの流れ" />
         </p>
         <h2 class="title"><!--{$tpl_title|h}--></h2>
-
-        <p>各商品のお届け先を選択してください。</p>
+        <p class="information">各商品のお届け先を選択してください。</p>
         <!--{if $tpl_addrmax < $smarty.const.DELIV_ADDR_MAX}-->
             <p>一覧にご希望の住所が無い場合は、「新しいお届け先を追加する」より追加登録してください。</p>
         <!--{/if}-->
-        <p>※最大<!--{$smarty.const.DELIV_ADDR_MAX|h}-->件まで登録できます。</p>
+        <p class="mini attention">※最大<!--{$smarty.const.DELIV_ADDR_MAX|h}-->件まで登録できます。</p>
 
         <!--{if $tpl_addrmax < $smarty.const.DELIV_ADDR_MAX}-->
             <p class="addbtn">
-                <a href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php" onclick="win02('<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php?page=<!--{$smarty.server.PHP_SELF|h}-->','new_deiv','600','640'); return false;" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_address_on.gif','addition');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_address.gif','addition');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_add_address.gif" width="160" height="22" alt="新しいお届け先を追加する" name="addition" id="addition" /></a>
+                <a href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php" onclick="win02('<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php?page=<!--{$smarty.server.PHP_SELF|h}-->','new_deiv','600','640'); return false;" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_address_on.jpg','addition');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_address.jpg','addition');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_add_address.jpg" alt="新しいお届け先を追加する" name="addition" id="addition" /></a>
             </p>
         <!--{/if}-->
         <form name="form1" id="form1" method="post" action="?">
@@ -53,6 +52,10 @@
             <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->" />
             <input type="hidden" name="mode" value="confirm" />
             <table summary="商品情報">
+                <colgroup width="10%"></colgroup>
+                <colgroup width="35%"></colgroup>
+                <colgroup width="10%"></colgroup>
+                <colgroup width="50%"></colgroup>
                 <tr>
                     <th>商品写真</th>
                     <th>商品名</th>
@@ -62,12 +65,9 @@
                 <!--{foreach from=$items item=item name=cartItem}-->
                     <!--{assign var=index value=$smarty.foreach.cartItem.index}-->
                     <tr style="<!--{if $item.error}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->">
-                        <td class="phototd">
+                        <td class="alignC">
                         <a
-                            <!--{if $item.main_image|strlen >= 1}-->
-                                href="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$item.main_image|sfNoImageMainList|h}-->"
-                                class="expansion"
-                                target="_blank"
+                            <!--{if $item.main_image|strlen >= 1}--> href="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$item.main_image|sfNoImageMainList|h}-->" class="expansion" target="_blank"
                             <!--{/if}-->
                         >
                             <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$item.main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" alt="<!--{$item.productsClass.name|h}-->" /></a>
@@ -94,10 +94,16 @@
                      </tr>
                   <!--{/foreach}-->
             </table>
-            <div class="tblareabtn">
-                <a href="<!--{$smarty.const.CART_URLPATH}-->" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_back_on.gif',back03)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_back.gif',back03)">
-                    <img src="<!--{$TPL_URLPATH}-->img/button/btn_back.gif" width="150" height="30" alt="戻る" border="0" name="back03" id="back03" /></a>
-                <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_address_select_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_address_select.gif',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_address_select.gif" alt="選択したお届け先に送る" class="box190" name="send_button" id="send_button" />
+            <div class="btn_area">
+                 <ul>
+                     <li>
+                     <a href="<!--{$smarty.const.CART_URLPATH}-->" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_back_on.jpg',back03)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_back.jpg',back03)">
+                         <img src="<!--{$TPL_URLPATH}-->img/button/btn_back.jpg" alt="戻る" border="0" name="back03" id="back03" /></a>
+                     </li>
+                     <li>
+                     <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_address_select_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_address_select.jpg',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_address_select.jpg" alt="選択したお届け先に送る" class="box190" name="send_button" id="send_button" />
+                     </li>
+                 </ul>
             </div>
 
     </div>

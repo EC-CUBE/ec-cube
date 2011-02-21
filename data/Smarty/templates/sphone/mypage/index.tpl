@@ -58,7 +58,7 @@
        <td><!--{$arrOrder[cnt].order_id}--></td>
        <!--{assign var=payment_id value="`$arrOrder[cnt].payment_id`"}-->
        <td><!--{$arrPayment[$payment_id]|h}--></td>
-       <td class="pricetd"><!--{$arrOrder[cnt].payment_total|number_format}-->円</td>
+       <td class="alignR"><!--{$arrOrder[cnt].payment_total|number_format}-->円</td>
        <td class="centertd"><a href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/history.php?order_id=<!--{$arrOrder[cnt].order_id}-->">詳細</a></td>
      </tr>
      <!--{/section}-->

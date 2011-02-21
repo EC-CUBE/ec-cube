@@ -21,7 +21,7 @@ body {
     background: #fff;
     font-family: "ＭＳ Ｐゴシック","Hiragino Maru Gothic Pro","ヒラギノ丸ゴ Pro W4",Osaka,sans-serif;
     font-size: 80%;
-    line-height: 150%;
+    line-height: 120%;
 }
 
 option {
@@ -179,6 +179,49 @@ table tr.last {
 }
 
 
+/*おすすめ商品管理*/
+
+table#recommend-table {
+    border-collapse: collapse;
+    font-size: 100%;
+    margin: 0 0 50px;
+    width: 100%;
+}
+
+div#table-wrap {
+    margin-top: 6px;
+}
+
+div#table-wrap div.table-img {
+    float: left;
+    padding-left: 6px;
+}
+
+div#table-wrap div.table-detail {
+    float: left;
+    text-align: left;
+    padding-left: 11px;
+}
+
+div#table-wrap div.table-detail div.detail-name {
+    margin-bottom: 5px;
+}
+
+td.no-border {
+    border: 0;
+    background: #f5f5f5;
+    padding: 20px;
+}
+
+td.no-border-w {
+    border: 0;
+}
+
+td.AlignLeft {
+    text-align: left;
+	padding-left: 11px;
+}
+
 /*通常ボタン*/
 .btn-normal, a.btn-normal:link, a.btn-normal:visited {
     margin-right: 5px;
@@ -283,6 +326,35 @@ table tr.last {
     background-clip: border-box;
     font-weight: normal;
     font-size: 80%;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+
+    /* CSS3 radius */
+    border-radius: 5px;
+    /* Safari, Chrome radius */
+    -webkit-box-sizing: content-box;
+    -webkit-border-radius: 5px;
+    /* Firefox radius */
+    -moz-border-radius: 5px;
+    /* Safari, Chrome radius */
+    -webkit-box-sizing: content-box;
+    -webkit-border-radius: 5px;
+    /* Firefox radius */
+    -moz-border-radius: 5px;
+}
+
+/*商品を選択するボタン(2/18追加)*/
+.btn-action-m, a.btn-action-m:link, a.btn-action-m:visited {
+    padding: 3px 10px;
+    border: solid 1px #bcbecb;
+    display: inline-block;
+    color: #444757;
+    background: url('../img/button/white-grad04.png') top repeat-x #eee;
+    background-attachment: scroll;
+    background-clip: border-box;
+    font-weight: normal;
+    font-size: 90%;
     text-decoration: none;
     white-space: nowrap;
     cursor: pointer;
@@ -792,27 +864,34 @@ body > #container {
 
 /* エラーメッセージ
 ----------------------------------------------- */
-#error-wrap {
-    margin: 150px auto 0;
-    width: 100%;
-    text-align: center;
+
+
+/*以下インストールページと共通■触るべからず*/
+
+#out-wrap {
+    margin: 100px auto;
+    width: 560px;
 }
-#error-wrap #error .logo {
+
+#out-wrap .logo {
     padding-bottom: 5px;
     float: right;
 }
 
-#error {
+#out {
     margin: 0 auto;
     width: 560px;
 }
 
-#error .error-top {
+#error .out-top {
     clear: both;
     width: 560px;
     height: 10px;
     background: url('../img/contents/login_back_top.jpg') bottom left no-repeat;
 }
+
+/*以上インストールページと共通■触るべからず*/
+
 
 #error .contents {
     border-right: solid 1px #d9dadf;
@@ -1072,7 +1151,7 @@ body > #container {
 .design-layout #MainHead, .design-layout #MainFoot, .design-layout #RightNavi, .design-layout #BottomNavi,
 .design-layout #FooterBottomNavi, .design-layout #HeaderInternalNavi, .design-layout #Unused {
     padding-bottom: 20px;
-    height: 10px; /* IE6応急処置 */
+    height: 10px; /*IE6応急処置 */
 }
 
 .design-layout div.sort {
@@ -1363,3 +1442,14 @@ body#popup {
     width: 560px;
 }
 
+
+/*以下インストールページと共通■触るべからず*/
+
+#outside {
+    margin:0 auto;
+    padding:0;
+    text-align:center;
+    width:100%;
+}
+
+/*以上インストールページと共通■触るべからず*/

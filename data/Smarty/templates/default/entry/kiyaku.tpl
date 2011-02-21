@@ -22,18 +22,27 @@
 <div id="undercolumn">
   <div id="undercolumn_entry">
     <h2 class="title"><!--{$tpl_title|h}--></h2>
-    <p><em>【重要】 会員登録をされる前に、下記ご利用規約をよくお読みください。</em><br />
-      規約には、本サービスを使用するに当たってのあなたの権利と義務が規定されております。<br />
-     「規約に同意して会員登録」ボタン をクリックすると、あなたが本規約の全ての条件に同意したことになります。</p>
+    <p class="message">【重要】 会員登録をされる前に、下記ご利用規約をよくお読みください。</p>
+      <p>規約には、本サービスを使用するに当たってのあなたの権利と義務が規定されております。<br />
+     「同意して会員登録」ボタンをクリックすると、あなたが本規約の全ての条件に同意したことになります。
+      </p>
+
     <form name="form1" id="form1" method="post" action="?">
-       <textarea name="textfield" class="kiyaku_text" cols="80" rows="30"
-                 readonly="readonly"><!--{$tpl_kiyaku_text}--></textarea>
-       <div class="tblareabtn">
-         <a href="<!--{$smarty.const.TOP_URLPATH}-->" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_entry_cannot_on.gif','b_noagree');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_entry_cannot.gif','b_noagree');">
-           <img src="<!--{$TPL_URLPATH}-->img/button/btn_entry_cannot.gif" width="180" height="30" alt="同意しない" border="0" name="b_noagree" /></a>&nbsp;
-         <a href="<!--{$smarty.const.ENTRY_URL}-->" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_entry_agree_on.gif','b_agree');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_entry_agree.gif','b_agree');">
-           <img src="<!--{$TPL_URLPATH}-->img/button/btn_entry_agree.gif" width="180" height="30" alt="規約に同意して会員登録" border="0" name="b_agree" /></a>
+       <textarea name="textfield" class="kiyaku_text" cols="80" rows="30" readonly="readonly"><!--{$tpl_kiyaku_text}--></textarea>
+
+       <div class="btn_area">
+            <ul>
+                <li>
+                   <a href="<!--{$smarty.const.TOP_URLPATH}-->" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_entry_cannot_on.jpg','b_noagree');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_entry_cannot.jpg','b_noagree');">
+                     <img src="<!--{$TPL_URLPATH}-->img/button/btn_entry_cannot.jpg" alt="同意しない" border="0" name="b_noagree" /></a>&nbsp;
+                <li>
+                </li>
+                   <a href="<!--{$smarty.const.ENTRY_URL}-->" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_entry_agree_on.jpg','b_agree');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_entry_agree.jpg','b_agree');">
+                <img src="<!--{$TPL_URLPATH}-->img/button/btn_entry_agree.jpg" alt="規約に同意して会員登録" border="0" name="b_agree" /></a>
+                </li>
+            </ul>
        </div>
+
      </form>
    </div>
  </div>

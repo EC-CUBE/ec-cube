@@ -24,7 +24,7 @@
   <div id="undercolumn_entry">
     <h2 class="title"><!--{$tpl_title|h}--></h2>
     <p>下記の内容で送信してもよろしいでしょうか？<br />
-      よろしければ、一番下の「会員登録完了へ」ボタンをクリックしてください。</p>
+      よろしければ、一番下の「会員登録をする」ボタンをクリックしてください。</p>
     <form name="form1" id="form1" method="post" action="?">
       <input type="hidden" name="mode" value="complete">
       <!--{foreach from=$arrForm key=key item=item}-->
@@ -131,10 +131,17 @@
         </tr>
       </table>
 
-      <div class="tblareabtn">
-        <a href="?" onclick="fnModeSubmit('return', '', ''); return false;" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back_on.gif','back')" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back.gif','back')"><img src="<!--{$TPL_URLPATH}-->img/button/btn_back.gif" width="150" height="30" alt="戻る" border="0" name="back" id="back" /></a>&nbsp;
-        <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_entry_complete_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_entry_complete.gif',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_entry_complete.gif" class="box150" alt="送信" border="0" name="send" id="send" />
+      <div class="btn_area">
+            <ul>
+                <li>
+                       <a href="?" onclick="fnModeSubmit('return', '', ''); return false;" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back_on.jpg','back')" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back.jpg','back')"><img src="<!--{$TPL_URLPATH}-->img/button/btn_back.jpg" alt="戻る" border="0" name="back" id="back" /></a>
+                <li>
+                </li>
+                      <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_entry_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_entry.jpg',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_entry.jpg" alt="会員登録をする" border="0" name="send" id="send" />
+                </li>
+            </ul>
       </div>
+
     </form>
   </div>
 </div>

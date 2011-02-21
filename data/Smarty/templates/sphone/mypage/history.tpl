@@ -72,9 +72,9 @@
                     </td>
                     <!--{assign var=price value=`$orderDetail.price`}-->
                     <!--{assign var=quantity value=`$orderDetail.quantity`}-->
-                    <td class="pricetd"><!--{$price|number_format|h}-->円</td>
+                    <td class="alignR"><!--{$price|number_format|h}-->円</td>
                     <td><!--{$quantity|h}--></td>
-                    <td class="pricetd"><!--{$price|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|sfMultiply:$quantity|number_format}-->円</td>
+                    <td class="alignR"><!--{$price|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|sfMultiply:$quantity|number_format}-->円</td>
                 </tr>
             <!--{/foreach}-->
             <tr>
@@ -85,7 +85,7 @@
             <!--{if $point_discount > 0}-->
             <tr>
                 <th colspan="5" class="resulttd">ポイント値引き</th>
-                <td class="pricetd"><!--{$point_discount|number_format}-->円</td>
+                <td class="alignR"><!--{$point_discount|number_format}-->円</td>
             </tr>
             <!--{/if}-->
             <!--{assign var=key value="discount"}-->
@@ -149,12 +149,12 @@
                               <!--{$item.productsClass.class_name2}-->：<!--{$item.productsClass.classcategory_name2}-->
                           <!--{/if}-->
                       </td>
-                      <td class="pricetd">
+                      <td class="alignR">
                           <!--{$item.productsClass.price02|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
                       </td>
                       <td id="quantity"><!--{$item.quantity}--></td>
                       <!--{* XXX 購入小計と誤差が出るためコメントアウト
-                      <td class="pricetd"><!--{$item.total_inctax|number_format}-->円</td>
+                      <td class="alignR"><!--{$item.total_inctax|number_format}-->円</td>
                       *}-->
                   </tr>
               <!--{/foreach}-->

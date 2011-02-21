@@ -20,13 +20,14 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 <!--▼FOOTER-->
-<div id="pagetop" style="clear: both;"><a href="#top"><img src="<!--{$TPL_URLPATH}-->img/common/btn_pagetop.gif" width="100" height="10" alt="このページのTOPへ" /></a></div>
-<!--{strip}-->
-    <div id="footer">Copyright &copy;&nbsp;
-        <!--{if $smarty.const.RELEASE_YEAR != $smarty.now|date_format:"%Y"}-->
-            <!--{$smarty.const.RELEASE_YEAR}-->-
-        <!--{/if}-->
-        <!--{$smarty.now|date_format:"%Y"}--> <!--{$arrSiteInfo.shop_name_eng|default:$arrSiteInfo.shop_name|h}--> All rights reserved.
+<div id="footerWrap">
+    <div id="footer" class="clearfix">
+        <div id="pagetop"><a href="#top">このページの先頭へ</a></div>
+        <!--{strip}-->
+            <div id="copyright">Copyright &copy;&nbsp;
+                <!--{if $smarty.const.RELEASE_YEAR != $smarty.now|date_format:"%Y"}--><!--{$smarty.const.RELEASE_YEAR}-->-<!--{/if}--><!--{$smarty.now|date_format:"%Y"}--><!--{$arrSiteInfo.shop_name_eng|default:$arrSiteInfo.shop_name|h}--> All rights reserved.
+            </div>
+        <!--{/strip}-->
     </div>
-<!--{/strip}-->
+</div>
 <!--▲FOOTER-->

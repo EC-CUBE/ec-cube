@@ -21,10 +21,10 @@
  *}-->
 
 <div id="undercolumn">
+  <h2 class="title"><!--{$tpl_title|h}--></h2>
   <div id="undercolumn_contact">
-    <h2 class="title"><!--{$tpl_title|h}--></h2>
     <p>下記入力内容で送信してもよろしいでしょうか？<br />
-      よろしければ、一番下の「送信」ボタンをクリックしてください。</p>
+      よろしければ、一番下の「完了ページへ」ボタンをクリックしてください。</p>
     <form name="form1" id="form1" method="post" action="?">
       <input type="hidden" name="mode" value="complete" />
       <!--{foreach key=key item=item from=$arrForm}-->
@@ -33,6 +33,8 @@
         <!--{/if}-->
       <!--{/foreach}-->
       <table summary="お問い合わせ内容確認">
+        <colgroup width="30%"></colgroup>
+        <colgroup width="70%"></colgroup>
         <tr>
           <th>お名前<span class="attention">※</span></th>
           <td><!--{$arrForm.name01.value|h}-->　<!--{$arrForm.name02.value|h}--></td>
@@ -71,18 +73,17 @@
           <td><!--{$arrForm.contents.value|h|nl2br}--></td>
         </tr>
       </table>
-      <div class="tblareabtn">
-      <a href="?"
-         onclick="fnModeSubmit('return', '', ''); return false;"
-         onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back_on.gif','back02');"
-         onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back.gif','back02');">
-        <img src="<!--{$TPL_URLPATH}-->img/button/btn_back.gif" width="150" height="30"
-             alt="戻る" name="back02" id="back02" /></a>
-      <input type="image"
-             onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_send_on.gif',this)"
-             onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_send.gif',this)"
-             src="<!--{$TPL_URLPATH}-->img/button/btn_send.gif" alt="送信" name="send" id="send" class="box150" />
+      <div class="btn_area">
+            <ul>
+                <li>
+                      <a href="?" onclick="fnModeSubmit('return', '', ''); return false;" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back_on.jpg','back02');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back.jpg','back02');"> <img src="<!--{$TPL_URLPATH}-->img/button/btn_back.jpg" alt="戻る" name="back02" id="back02" /></a>
+                </li>
+                <li>
+                     <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_complete_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_complete.jpg',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_complete.jpg" alt="送信" name="send" id="send" />
+                </li>
+            </ul>
        </div>
+
      </form>
    </div>
 </div>

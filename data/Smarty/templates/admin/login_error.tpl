@@ -23,12 +23,13 @@
 *}-->
 
 <!--{* ▼CONTENTS *}-->
-<div id="error-wrap">
-  <div id="error">
+<div id="outside">
+<div id="out-wrap">
     <div class="logo">
       <img src="<!--{$TPL_URLPATH}-->img/contents/logo_resize.jpg" width="99" height="15" alt="EC-CUBE" />
     </div>
-    <div class="error-top"></div>
+  <div id="error">
+    <div class="out-top"></div>
     <div class="contents">
       <div class="message">
         <!--{$tpl_error}-->
@@ -45,4 +46,8 @@
     <div class="btn-area-bottom"></div>
   </div>
 </div>
+</div>
+
+
+
 <!--{* ▲CONTENTS *}-->
