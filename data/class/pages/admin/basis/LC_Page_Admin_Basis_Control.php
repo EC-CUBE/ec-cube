@@ -81,9 +81,9 @@ class LC_Page_Admin_Basis_Control extends LC_Page_Admin {
                 $objFormParam->convParam();
 
                 // エラーチェック
-                $this->arrErr = $this->lfCheckError();
+                $this->arrErr = $objFormParam->checkError();
                 if(count($this->arrErr) == 0) {
-                    $this->lfSiteControlData($_POST['control_id'], $objFormParam->getHashArray());
+                    $this->lfSiteControlData($objFormParam->getHashArray());
                     // javascript実行
                     $this->tpl_onload = "alert('更新が完了しました。');";
                 }
@@ -93,6 +93,10 @@ class LC_Page_Admin_Basis_Control extends LC_Page_Admin {
                 break;
         }
 
+        $this->arrControlList = $arrSiteControlList;
+    }
+
+    function lfGetControlList() {
         // サイト管理情報の取得
         $arrSiteControlList = $this->lfGetControlList();
         $masterData = new SC_DB_MasterData_Ex();
@@ -109,8 +113,7 @@ class LC_Page_Admin_Basis_Control extends LC_Page_Admin {
                     break;
             }
         }
-
-        $this->arrControlList = $arrSiteControlList;
+        return $arrSiteControlList;
     }
 
     /**
@@ -137,18 +140,8 @@ class LC_Page_Admin_Basis_Control extends LC_Page_Admin {
         $objFormParam->addParam("設定状況", "control_flg", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
     }
 
-    /* 入力内容のチェック */
-    function lfCheckError(&$objFormParam) {
-        // 入力データを渡す。
-        $arrRet =  $objFormParam->getHashArray();
-        $objErr = new SC_CheckError($arrRet);
-        $objErr->arrErr = $objFormParam->checkError();
-
-        return $objErr->arrErr;
-    }
-
     /* DBへデータを登録する */
-    function lfSiteControlData($control_id = "", $post) {
+    function lfSiteControlData($post) {
         $objQuery =& SC_Query::getSingletonInstance();
         $sqlval = $post;
         $sqlval['update_date'] = 'Now()';
@@ -162,7 +155,7 @@ class LC_Page_Admin_Basis_Control extends LC_Page_Admin {
         // 既存編集
         } else {
             $where = "control_id = ?";
-            $objQuery->update("dtb_site_control", $sqlval, $where, array($control_id));
+            $objQuery->update("dtb_site_control", $sqlval, $where, array($post['control_id']));
         }
     }
 }
