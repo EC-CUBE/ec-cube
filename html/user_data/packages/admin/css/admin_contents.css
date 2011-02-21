@@ -69,7 +69,8 @@ h1 {
     font-size: 130%;
 }
 
-h1 .title {
+h1 span.title {
+    display:block;
     padding-top: 2px;
     padding-left: 20px;
     background: url('../img/contents/subtitle_back.gif') no-repeat;
@@ -443,6 +444,14 @@ a:hover {
 
 /* ヘッダー
 ----------------------------------------------- */
+#errorHeader {
+    color: #F00;
+    font-weight: bold;
+    font-size: 12px;
+    background-color: #FEB;
+    text-align: center;
+    padding: 5px;
+}
 #header {
     width: 100%;
     height: 51px;

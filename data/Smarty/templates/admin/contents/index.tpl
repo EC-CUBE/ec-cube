@@ -119,15 +119,15 @@ function moving(news_id,rank, max_rank) {
       <td>
         <!--{if $arrErr.year || $arrErr.month || $arrErr.day}--><span class="attention"><!--{$arrErr.year}--><!--{$arrErr.month}--><!--{$arrErr.day}--></span><!--{/if}-->
         <select name="year" <!--{if $arrErr.year || $arrErr.month || $arrErr.day }-->style="background-color:<!--{$smarty.const.ERR_COLOR|h}-->"<!--{/if}-->>
-          <option value="" selected>----</option>
+          <option value="" selected="selected">----</option>
           <!--{html_options options=$arrYear selected=$arrForm.year}-->
         </select>年
         <select name="month" <!--{if $arrErr.year || $arrErr.month || $arrErr.day}-->style="background-color:<!--{$smarty.const.ERR_COLOR|h}-->"<!--{/if}-->>
-          <option value="" selected>--</option>
+          <option value="" selected="selected">--</option>
           <!--{html_options options=$arrMonth selected=$arrForm.month}-->
         </select>月
         <select name="day" <!--{if $arrErr.year || $arrErr.month || $arrErr.day}-->style="background-color:<!--{$smarty.const.ERR_COLOR|h}-->"<!--{/if}-->>
-          <option value="" selected>--</option>
+          <option value="" selected="selected">--</option>
           <!--{html_options options=$arrDay selected=$arrForm.day}-->
         </select>日
       </td>

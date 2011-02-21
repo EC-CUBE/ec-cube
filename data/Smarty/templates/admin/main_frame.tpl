@@ -129,7 +129,7 @@
 <!--{* ▲NAVI *}-->
 
 <!--{if $tpl_subtitle}-->
-<h1><div class="title"><!--{$tpl_subtitle}--></div></h1>
+<h1><span class="title"><!--{$tpl_subtitle}--></span></h1>
 <!--{/if}-->
 
 <!--{* ▼CONTENTS *}-->

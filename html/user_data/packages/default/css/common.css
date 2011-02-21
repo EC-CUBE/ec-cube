@@ -227,6 +227,14 @@ div#under02column_login .login_area h4 {
 =============================================== */
 /* レイアウト
 ----------------------------------------------- */
+#errorHeader {
+    color: #F00;
+	  font-weight: bold;
+	  font-size: 12px;
+    background-color: #FEB;
+    text-align: center;
+    padding: 5px;
+}
 #headerWrap {
     min-height: 82px;
     background: url("../img/common/bg_header.gif") repeat-x bottom #fffaf0;
