@@ -203,5 +203,32 @@ class SC_Helper_Session {
         }
         return $ret;
     }
+
+    /**
+     * 管理画面の認証を行う.
+     *
+     * mtb_auth_excludes へ登録されたページは, 認証を除外する.
+     *
+     * @return void
+     */
+    function adminAuthorization() {
+        $masterData = new SC_DB_MasterData_Ex();
+        $arrExcludes = $masterData->getMasterData('mtb_auth_excludes');
+        if (preg_match('|^' . ROOT_URLPATH . ADMIN_DIR . '|',
+                       $_SERVER['PHP_SELF'])) {
+            $is_auth = true;
+
+            foreach ($arrExcludes as $exclude) {
+                if (preg_match('|^' . ROOT_URLPATH . ADMIN_DIR . $exclude . '|',
+                               $_SERVER['PHP_SELF'])) {
+                    $is_auth = false;
+                    break;
+                }
+            }
+            if ($is_auth) {
+                SC_Utils_Ex::sfIsSuccess(new SC_Session());
+            }
+        }
+    }
 }
 ?>

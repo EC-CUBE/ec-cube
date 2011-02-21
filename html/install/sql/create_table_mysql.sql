@@ -942,6 +942,13 @@ CREATE TABLE mtb_authority (
     PRIMARY KEY (id)
 ) ENGINE=InnoDB;
 
+CREATE TABLE mtb_auth_excludes (
+    id smallint,
+    name text,
+    rank smallint NOT NULL DEFAULT 0,
+    PRIMARY KEY (id)
+) ENGINE=InnoDB;
+
 CREATE TABLE mtb_work (
     id smallint,
     name text,

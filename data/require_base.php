@@ -47,6 +47,12 @@ if (!SC_Utils_Ex::sfIsInstallFunction()) {
     $sessionFactory = SC_SessionFactory::getInstance();
     $sessionFactory->initSession();
 
+    /*
+     * 管理画面の場合は認証行う.
+     * 認証処理忘れ防止のため, LC_Page_Admin::init() 等ではなく, ここでチェックする.
+     */
+    $objSession->adminAuthorization();
+
     // プラグインを読み込む
     //require_once(DATA_REALDIR . 'require_plugin.php');
 }
