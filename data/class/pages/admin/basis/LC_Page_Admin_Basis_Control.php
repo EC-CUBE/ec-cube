@@ -33,9 +33,6 @@ require_once(CLASS_REALDIR . "pages/admin/LC_Page_Admin.php");
  */
 class LC_Page_Admin_Basis_Control extends LC_Page_Admin {
 
-    /** フォームパラメータの配列 */
-    var $objFormParam;
-
     // }}}
     // {{{ functions
 
