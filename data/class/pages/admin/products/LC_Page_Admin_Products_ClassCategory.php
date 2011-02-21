@@ -103,6 +103,7 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin {
         case 'delete':
             // ランク付きレコードの削除
             $this->lfDeleteClassCat($class_id, $classcategory_id);
+            SC_Response::reload();
             break;
             // 編集前処理
         case 'pre_edit':
@@ -114,10 +115,12 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin {
         case 'down':
             //並び順を下げる
             $this->lfDownRank($class_id, $classcategory_id);
+            SC_Response::reload();
             break;
         case 'up':
             //並び順を上げる
             $this->lfUpRank($class_id, $classcategory_id);
+            SC_Response::reload();
             break;
         default:
             break;
