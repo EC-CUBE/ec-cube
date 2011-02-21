@@ -199,26 +199,31 @@ function fnCheckStock(form) {
                         <!--{assign var=class1 value=classcategory_id`$id`_1}-->
                         <!--{assign var=class2 value=classcategory_id`$id`_2}-->
                         <!--{if $tpl_classcat_find1[$id]}-->
-                        <dt><!--{$tpl_class_name1[$id]|h}-->：</dt>
-                        <dd>
-                            <select name="classcategory_id1" id="<!--{$class1}-->" style="<!--{$arrErr[$class1]|sfGetErrorColor}-->"    onchange="fnSetClassCategories(this.form);">
-                                <!--{html_options options=$arrClassCat1[$id] selected=$arrForm[$class1]}-->
-                            </select>
-                            <!--{if $arrErr[$class1] != ""}-->
-                            <br /><span class="attention">※ <!--{$tpl_class_name1[$id]}-->を入力して下さい。</span>
-                            <!--{/if}-->
-                        </dd>
+                        <dl>
+                            <dt><!--{$tpl_class_name1[$id]|h}-->：</dt>
+                            <dd>
+                                <select name="classcategory_id1" id="<!--{$class1}-->" style="<!--{$arrErr[$class1]|sfGetErrorColor}-->"    onchange="fnSetClassCategories(this.form);">
+                                    <!--{html_options options=$arrClassCat1[$id] selected=$arrForm[$class1]}-->
+                                </select>
+                                <!--{if $arrErr[$class1] != ""}-->
+                                <br /><span class="attention">※ <!--{$tpl_class_name1[$id]}-->を入力して下さい。</span>
+                                <!--{/if}-->
+                            </dd>
+                        </dl>
                         <!--{else}-->
                         <input type="hidden" name="<!--{$class1}-->" id="<!--{$class1}-->" value="" />
                         <!--{/if}-->
+
                         <!--{if $tpl_classcat_find2[$id]}-->
-                        <dt><!--{$tpl_class_name2[$id]|h}-->：</dt>
-                        <dd>
-                            <select name="classcategory_id2" id="<!--{$class2}-->" style="<!--{$arrErr[$class2]|sfGetErrorColor}-->" onchange="fnCheckStock(this.form);"></select>
-                            <!--{if $arrErr[$class2] != ""}-->
-                            <br /><span class="attention">※ <!--{$tpl_class_name2[$id]}-->を入力して下さい。</span>
-                            <!--{/if}-->
-                        </dd>
+                        <dl>
+                            <dt><!--{$tpl_class_name2[$id]|h}-->：</dt>
+                            <dd>
+                                <select name="classcategory_id2" id="<!--{$class2}-->" style="<!--{$arrErr[$class2]|sfGetErrorColor}-->" onchange="fnCheckStock(this.form);"></select>
+                                <!--{if $arrErr[$class2] != ""}-->
+                                <br /><span class="attention">※ <!--{$tpl_class_name2[$id]}-->を入力して下さい。</span>
+                                <!--{/if}-->
+                            </dd>
+                        </dl>
                         <!--{else}-->
                         <input type="hidden" name="<!--{$class2}-->" id="<!--{$class2}-->" value="" />
                         <!--{/if}-->
