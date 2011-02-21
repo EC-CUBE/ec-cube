@@ -26,7 +26,7 @@ class LC_Page_User extends LC_Page {
      * @return void
      */
     function process() {
-        $objView = new SC_SiteView();
+        $objView = new SC_SiteView_Ex();
 
         // 画面の表示
         $objView->assignobj($this);

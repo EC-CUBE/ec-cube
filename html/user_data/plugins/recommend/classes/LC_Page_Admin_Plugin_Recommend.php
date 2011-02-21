@@ -57,7 +57,7 @@ class LC_Page_Admin_Plugin_Recommend extends LC_Page {
         // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess(new SC_Session());
 
-        $objView = new SC_AdminView();
+        $objView = new SC_AdminView_Ex();
         $objView->assignobj($this);
         $objView->display(MAIN_FRAME);
     }

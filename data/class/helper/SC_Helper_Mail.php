@@ -56,7 +56,7 @@ class SC_Helper_Mail {
         $objSiteInfo = new SC_SiteInfo();
         $arrInfo = $objSiteInfo->data;
 
-        $objMailView = new SC_SiteView();
+        $objMailView = new SC_SiteView_Ex();
         // メール本文の取得
         $objMailView->assignobj($objPage);
         $body = $objMailView->fetch($this->arrMAILTPLPATH[$template_id]);
@@ -151,9 +151,9 @@ class SC_Helper_Mail {
         $arrTplVar->tpl_user_point = $objCustomer->getValue('point');
 
        if(Net_UserAgent_Mobile::isMobile() === true) {
-            $objMailView = new SC_MobileView();
+            $objMailView = new SC_MobileView_Ex();
        } else {
-            $objMailView = new SC_SiteView();
+            $objMailView = new SC_SiteView_Ex();
        }
         // メール本文の取得
         $objMailView->assignobj($arrTplVar);
@@ -182,7 +182,7 @@ class SC_Helper_Mail {
 
     // テンプレートを使用したメールの送信
     function sfSendTplMail($to, $tmp_subject, $tplpath, &$objPage) {
-        $objMailView = new SC_SiteView();
+        $objMailView = new SC_SiteView_Ex();
         $objSiteInfo = new SC_SiteInfo();
         $arrInfo = $objSiteInfo->data;
         // メール本文の取得
@@ -219,7 +219,7 @@ class SC_Helper_Mail {
     //件名にテンプレートを用いる
     function sfMakeSubject($subject) {
         $objQuery = new SC_Query();
-        $objMailView = new SC_SiteView();
+        $objMailView = new SC_SiteView_Ex();
         $objTplAssign = new stdClass;
         
         $arrInfo = $objQuery->select("*","dtb_baseinfo");
@@ -286,7 +286,7 @@ class SC_Helper_Mail {
 
         $CONF = SC_Helper_DB_Ex::sfGetBasisData();
         
-        $objMailText = new SC_SiteView();
+        $objMailText = new SC_SiteView_Ex();
         $objMailText->assign("CONF", $CONF);
         $objMailText->assign("name", $arrCustomerData['name01'] . $arrCustomerData['name02']);
         $objMailText->assign("uniqid", $arrCustomerData['secret_key']);

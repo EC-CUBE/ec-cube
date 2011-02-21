@@ -59,7 +59,7 @@ if(!is_writable($temp_dir)) {
     exit;
 }
 
-$objView = new SC_InstallView($ownDir . 'templates', $ownDir . 'temp');
+$objView = new SC_InstallView_Ex($ownDir . 'templates', $ownDir . 'temp');
 
 // パラメータ管理クラス
 $objWebParam = new SC_FormParam();

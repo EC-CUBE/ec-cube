@@ -210,7 +210,7 @@ class LC_Page_Entry extends LC_Page {
     function lfSendMail($uniqid, $arrForm){
         $CONF           = SC_Helper_DB_Ex::sfGetBasisData();
 
-        $objMailText    = new SC_SiteView();
+        $objMailText    = new SC_SiteView_Ex();
         $objMailText->assign("CONF", $CONF);
         $objMailText->assign("name01", $arrForm['name01']);
         $objMailText->assign("name02", $arrForm['name02']);

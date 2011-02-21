@@ -55,7 +55,7 @@ class LC_Page_RSS extends LC_Page {
      */
     function process() {
         $objQuery = SC_Query::getSingletonInstance();
-        $objView = new SC_SiteView(false);
+        $objView = new SC_SiteView_Ex(false);
 
         //新着情報を取得
         $arrNews = $this->lfGetNews($objQuery);

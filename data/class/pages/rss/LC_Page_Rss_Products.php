@@ -63,7 +63,7 @@ class LC_Page_Rss_Products extends LC_Page {
      * @return void
      */
     function action() {
-        $objView = new SC_SiteView();
+        $objView = new SC_SiteView_Ex();
         $objSiteInfo = new SC_SiteInfo();
         
         //店舗情報をセット

@@ -55,7 +55,7 @@ class LC_Page_FrontParts_Bloc_GoogleAnalytics extends LC_Page {
      * @return void
      */
     function process() {
-        $objView = new SC_SiteView();
+        $objView = new SC_SiteView_Ex();
         $objView->assignobj($this);
         $objView->display($this->tpl_mainpage);
     }

@@ -104,7 +104,7 @@ class LC_Page_Admin_GoogleAnalytics extends LC_Page {
           default:
         }
 
-        $objView = new SC_AdminView();
+        $objView = new SC_AdminView_Ex();
         $objView->assignobj($this);
         $objView->display(MAIN_FRAME);
     }

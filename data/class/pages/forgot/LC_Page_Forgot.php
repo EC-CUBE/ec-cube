@@ -278,7 +278,7 @@ class LC_Page_Forgot extends LC_Page {
      */
     function lfSendMail(&$CONF, $email, $customer_name, $new_password){
         // パスワード変更お知らせメール送信
-        $objMailText = new SC_SiteView(false);
+        $objMailText = new SC_SiteView_Ex(false);
         $objMailText->assign('customer_name', $customer_name);
         $objMailText->assign('new_password', $new_password);
         $toCustomerMail = $objMailText->fetch("mail_templates/forgot_mail.tpl");

@@ -154,7 +154,7 @@ class LC_Page_Regist extends LC_Page {
         $objCustomer->setLogin($data['email']);
 
         //--　メール送信
-        $objMailText    = new SC_SiteView();
+        $objMailText    = new SC_SiteView_Ex();
         $objMailText->assign("CONF", $CONF);
         $objMailText->assign("name01", $data["name01"]);
         $objMailText->assign("name02", $data["name02"]);

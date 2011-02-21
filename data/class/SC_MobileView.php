@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-class SC_MobileView extends SC_SiteView {
+class SC_MobileView extends SC_SiteView_Ex {
     function SC_MobileView($setPrevURL = true) {
         parent::SC_SiteView($setPrevURL);
         $this->_smarty->template_dir = MOBILE_TEMPLATE_REALDIR;

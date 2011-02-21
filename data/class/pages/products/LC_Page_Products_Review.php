@@ -78,7 +78,7 @@ class LC_Page_Products_Review extends LC_Page {
      * @return void
      */
     function action() {
-        //$objView = new SC_SiteView();
+        //$objView = new SC_SiteView_Ex();
         $objQuery = new SC_Query();
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {

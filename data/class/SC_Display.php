@@ -103,16 +103,16 @@ class SC_Display{
         switch ($device){
             case DEVICE_TYPE_MOBILE:
                 $this->response->setContentType("text/html");
-                $this->setView(new SC_MobileView());
+                $this->setView(new SC_MobileView_Ex());
                 break;
             case DEVICE_TYPE_SMARTPHONE:
-                $this->setView(new SC_SmartphoneView());
+                $this->setView(new SC_SmartphoneView_Ex());
                 break;
             case DEVICE_TYPE_PC:
-                $this->setView(new SC_SiteView());
+                $this->setView(new SC_SiteView_Ex());
                 break;
             case DEVICE_TYPE_ADMIN:
-                $this->setView(new SC_AdminView());
+                $this->setView(new SC_AdminView_Ex());
         }
         $this->deviceSeted = true;
     }

@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-class SC_UserView extends SC_SiteView {
+class SC_UserView extends SC_SiteView_Ex {
     function SC_UserView($template_dir, $compile_dir = COMPILE_REALDIR) {
         parent::SC_SiteView();
         $this->_smarty->template_dir = $template_dir;

@@ -67,7 +67,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
      * @return void
      */
     function action() {
-        $objView = new SC_AdminView();
+        $objView = new SC_AdminView_Ex();
         $this->objLayout = new SC_Helper_PageLayout_Ex();
 
         // 認証可否の判定

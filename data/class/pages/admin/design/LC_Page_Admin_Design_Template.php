@@ -90,7 +90,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin {
         // uniqidをテンプレートへ埋め込み
         $this->uniqid = $objSession->getUniqId();
 
-        $objView = new SC_AdminView();
+        $objView = new SC_AdminView_Ex();
 
         switch($this->getMode()) {
 

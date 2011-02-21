@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-class SC_AdminView extends SC_View {
+class SC_AdminView extends SC_View_Ex {
     function SC_AdminView() {
         parent::SC_View(false);
         $this->_smarty->template_dir = TEMPLATE_ADMIN_REALDIR;

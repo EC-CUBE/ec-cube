@@ -56,7 +56,7 @@ class LC_Page_FrontParts_Bloc_Recommend extends LC_Page_FrontParts_Bloc {
      * @return void
      */
     function process() {
-        $objSubView = new SC_SiteView(false);
+        $objSubView = new SC_SiteView_Ex(false);
 
         $this->arrRecommendProducts = $this->lfGetRecommendProducts($_REQUEST['product_id']);
 

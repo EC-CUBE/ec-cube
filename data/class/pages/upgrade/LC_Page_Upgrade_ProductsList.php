@@ -126,7 +126,7 @@ class LC_Page_Upgrade_ProductsList extends LC_Page_Upgrade_Base {
             foreach ($objRet->data as $product) {
                 $arrProducts[] = get_object_vars($product);
             }
-            $objView = new SC_AdminView();
+            $objView = new SC_AdminView_Ex();
             $objView->assign('arrProducts', $arrProducts);
 
             $template = 'ownersstore/products_list.tpl';

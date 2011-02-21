@@ -52,7 +52,7 @@ class LC_Page_InputZip extends LC_Page {
      * @return void
      */
     function process() {
-        $objView = new SC_SiteView(false);
+        $objView = new SC_SiteView_Ex(false);
 
         // 入力エラーチェック
         $arrErr = $this->fnErrorCheck($_GET);
