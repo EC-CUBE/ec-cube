@@ -124,7 +124,7 @@ class LC_Page_Products_List extends LC_Page {
         $this->tpl_linemax = $this->lfGetProductAllNum($arrSearchCondition);
         $urlParam = "category_id={$this->arrSearchData['category_id']}&pageno=#page#";
         $this->objNavi = new SC_PageNavi($this->tpl_pageno, $this->tpl_linemax, $this->disp_number, "fnNaviPage", NAVI_PMAX, $urlParam,SC_Display::detectDevice() !== DEVICE_TYPE_MOBILE);
-        $this->arrProducts = $this->lfGetProductsList($arrSearchCondition,$this->disp_number,$this->objNavi->start_row,$this->tpl_linemax,&$objProduct);
+        $this->arrProducts = $this->lfGetProductsList($arrSearchCondition,$this->disp_number,$this->objNavi->start_row,$this->tpl_linemax,$objProduct);
         //商品一覧の表示処理
         $strnavi = $this->objNavi->strnavi;
         // 表示文字列
@@ -169,13 +169,13 @@ class LC_Page_Products_List extends LC_Page {
             }
 
             // 入力内容のチェック
-            $arrErr = $this->lfCheckError($target_product_id,&$this->arrForm,$this->tpl_classcat_find1,$this->tpl_classcat_find2);
+            $arrErr = $this->lfCheckError($target_product_id,$this->arrForm,$this->tpl_classcat_find1,$this->tpl_classcat_find2);
             if (count($arrErr) == 0) {
                 $this->lfAddCart($this->arrForm,$this->tpl_classcat_find1,$this->tpl_classcat_find2,$target_product_id,$_SERVER['HTTP_REFERER']);
                 SC_Response_Ex::sendRedirect(CART_URLPATH);
                 exit;
             }
-            $js_fnOnLoad .= $this->lfSetSelectedData(&$this->arrProducts,$this->arrForm,$arrErr,$target_product_id);
+            $js_fnOnLoad .= $this->lfSetSelectedData($this->arrProducts,$this->arrForm,$arrErr,$target_product_id);
         }
 
         // ページャ用データ設定(モバイル)
