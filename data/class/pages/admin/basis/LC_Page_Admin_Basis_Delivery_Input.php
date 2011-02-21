@@ -81,20 +81,18 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page_Admin {
         // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess($objSess);
 
-        // パラメータ管理クラス
-        $this->objFormParam = new SC_FormParam();
-        // パラメータ情報の初期化
-        $this->lfInitParam();
-        // POST値をパラメータとする
-        $this->objFormParam->setParam($_POST);
+        $objFormParam = new SC_FormParam();
+        $this->lfInitParam($this->mode, $objFormParam);
+        $objFormParam->setParam($_POST);
+
         // 入力値の変換
-        $this->objFormParam->convParam();
-        $this->arrErr = $this->lfCheckError();
+        $objFormParam->convParam();
+        $this->arrErr = $this->lfCheckError($objFormParam);
 
         switch ($this->mode) {
             case 'edit':
                 if (count($this->arrErr) == 0) {
-                    $this->objFormParam->setValue('deliv_id', $this->lfRegistData());
+                    $objFormParam->setValue('deliv_id', $this->lfRegistData($objFormParam->getHashArray(), $_SESSION['member_id']));
                     $this->tpl_onload = "window.alert('配送業者設定が完了しました。');";
                 }
                 break;
@@ -102,13 +100,13 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page_Admin {
                 if (count($this->arrErr) > 0) {
                     SC_Utils_Ex::sfDispException();
                 }
-                $this->lfGetDelivData($this->objFormParam->getValue('deliv_id'));
+                $this->lfGetDelivData($objFormParam);
                 break;
             default:
                 break;
         }
 
-        $this->arrForm = $this->objFormParam->getFormParamList();
+        $this->arrForm = $objFormParam->getFormParamList();
     }
 
     /**
@@ -121,35 +119,32 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page_Admin {
     }
 
     /* パラメータ情報の初期化 */
-    function lfInitParam($mode = null) {
-
-        if (is_null($mode)) $mode = $this->mode;
-
-        $this->objFormParam->initParam();
+    function lfInitParam($mode, &$objFormParam) {
+        $objFormParam->initParam();
 
         switch ($mode) {
             case 'edit':
-                $this->objFormParam->addParam('配送業者ID', 'deliv_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-                $this->objFormParam->addParam("配送業者名", "name", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-                $this->objFormParam->addParam("名称", "service_name", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-                $this->objFormParam->addParam("説明", "remark", LLTEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
-                $this->objFormParam->addParam("伝票No.確認URL", "confirm_url", STEXT_LEN, "n", array("URL_CHECK", "MAX_LENGTH_CHECK"), "http://");
-                $this->objFormParam->addParam("取扱商品種別", "product_type_id", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
-                $this->objFormParam->addParam("取扱支払方法", "payment_ids", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+                $objFormParam->addParam('配送業者ID', 'deliv_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                $objFormParam->addParam("配送業者名", "name", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+                $objFormParam->addParam("名称", "service_name", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+                $objFormParam->addParam("説明", "remark", LLTEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
+                $objFormParam->addParam("伝票No.確認URL", "confirm_url", STEXT_LEN, "n", array("URL_CHECK", "MAX_LENGTH_CHECK"), "http://");
+                $objFormParam->addParam("取扱商品種別", "product_type_id", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+                $objFormParam->addParam("取扱支払方法", "payment_ids", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
 
                 for($cnt = 1; $cnt <= DELIVTIME_MAX; $cnt++) {
-                    $this->objFormParam->addParam("お届け時間$cnt", "deliv_time$cnt", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
+                    $objFormParam->addParam("お届け時間$cnt", "deliv_time$cnt", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
                 }
 
                 if(INPUT_DELIV_FEE) {
                     for($cnt = 1; $cnt <= DELIVFEE_MAX; $cnt++) {
-                        $this->objFormParam->addParam("配送料金$cnt", "fee$cnt", PRICE_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+                        $objFormParam->addParam("配送料金$cnt", "fee$cnt", PRICE_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
                     }
                 }
                 break;
 
             case 'pre_edit':
-                $this->objFormParam->addParam('配送業者ID', 'deliv_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                $objFormParam->addParam('配送業者ID', 'deliv_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
                 break;
 
             default:
@@ -162,8 +157,7 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page_Admin {
      *
      * @return $deliv_id
      */
-    function lfRegistData() {
-        $arrRet = $this->objFormParam->getHashArray();
+    function lfRegistData($arrRet, $member_id) {
         $objQuery =& SC_Query::getSingletonInstance();
         $objQuery->begin();
 
@@ -173,13 +167,13 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page_Admin {
         $sqlval['remark'] = $arrRet['remark'];
         $sqlval['confirm_url'] = $arrRet['confirm_url'];
         $sqlval['product_type_id'] = $arrRet['product_type_id'];
-        $sqlval['creator_id'] = $_SESSION['member_id'];
+        $sqlval['creator_id'] = $member_id;
         $sqlval['update_date'] = 'Now()';
 
 
         // deliv_id が決まっていた場合
-        if($_POST['deliv_id'] != "") {
-            $deliv_id = $_POST['deliv_id'];
+        if($arrRet['deliv_id'] != "") {
+            $deliv_id = $arrRet['deliv_id'];
             $where = "deliv_id = ?";
             $objQuery->update("dtb_deliv", $sqlval, $where, array($deliv_id));
 
@@ -263,8 +257,7 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page_Admin {
             }
         }
 
-        // TODO 支払方法登録
-        $objQuery->delete('dtb_payment_options', 'deliv_id = ?', array($_POST['deliv_id']));
+        $objQuery->delete('dtb_payment_options', 'deliv_id = ?', array($arrRet['deliv_id']));
         $sqlval = array();
         $i = 1;
         foreach ($arrRet['payment_ids'] as $val) {
@@ -279,30 +272,32 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page_Admin {
     }
 
     /* 配送業者情報の取得 */
-    function lfGetDelivData($deliv_id) {
+    function lfGetDelivData(&$objFormParam) {
         $objQuery =& SC_Query::getSingletonInstance();
 
+        $deliv_id = $objFormParam->getValue('deliv_id');
+
         // パラメータ情報の初期化
-        $this->lfInitParam('edit');
+        $this->lfInitParam('edit', $objFormParam);
 
         // 配送業者一覧の取得
         $col = "deliv_id, name, service_name, remark, confirm_url, product_type_id";
         $where = "deliv_id = ?";
         $table = "dtb_deliv";
         $arrRet = $objQuery->select($col, $table, $where, array($deliv_id));
-        $this->objFormParam->setParam($arrRet[0]);
+        $objFormParam->setParam($arrRet[0]);
         // お届け時間の取得
         $col = "deliv_time";
         $where = "deliv_id = ?  ORDER BY time_id";
         $table = "dtb_delivtime";
         $arrRet = $objQuery->select($col, $table, $where, array($deliv_id));
-        $this->objFormParam->setParamList($arrRet, 'deliv_time');
+        $objFormParam->setParamList($arrRet, 'deliv_time');
         // 配送料金の取得
         $col = "fee";
         $where = "deliv_id = ? ORDER BY pref";
         $table = "dtb_delivfee";
         $arrRet = $objQuery->select($col, $table, $where, array($deliv_id));
-        $this->objFormParam->setParamList($arrRet, 'fee');
+        $objFormParam->setParamList($arrRet, 'fee');
         // 支払方法
         $col = 'payment_id';
         $where = 'deliv_id = ? ORDER BY rank';
@@ -312,17 +307,17 @@ class LC_Page_Admin_Basis_Delivery_Input extends LC_Page_Admin {
         foreach ($arrRet as $val) {
             $arrPaymentIds[] = $val['payment_id'];
         }
-        $this->objFormParam->setValue('payment_ids', $arrPaymentIds);
+        $objFormParam->setValue('payment_ids', $arrPaymentIds);
     }
 
     /* 入力内容のチェック */
-    function lfCheckError() {
+    function lfCheckError(&$objFormParam) {
         // 入力データを渡す。
-        $arrRet =  $this->objFormParam->getHashArray();
+        $arrRet =  $objFormParam->getHashArray();
         $objErr = new SC_CheckError($arrRet);
-        $objErr->arrErr = $this->objFormParam->checkError();
+        $objErr->arrErr = $objFormParam->checkError();
 
-        if(!isset($objErr->arrErr['name']) && $_POST['deliv_id'] == "") {
+        if(!isset($objErr->arrErr['name']) && $arrRet['deliv_id'] == "") {
             // 既存チェック
             $objDb = new SC_Helper_DB_Ex();
             $ret = $objDb->sfIsRecord("dtb_deliv", "service_name", array($arrRet['service_name']));
