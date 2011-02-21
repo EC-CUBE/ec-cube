@@ -55,7 +55,7 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin {
         $this->arrPageMax = $masterData->getMasterData("mtb_page_max");
         $this->arrRECOMMEND = $masterData->getMasterData("mtb_recommend");
         $this->arrSex = $masterData->getMasterData("mtb_sex");
-        
+
         $objDate = new SC_Date();
         // 登録・更新検索開始年
         $objDate->setStartYear(RELEASE_YEAR);
@@ -88,9 +88,6 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin {
      */
     function action() {
         $objSess = new SC_Session();
-
-        $objQuery =& SC_Query::getSingletonInstance();
-
         // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess($objSess);
 
@@ -98,6 +95,10 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin {
         $objFormParam = new SC_FormParam();
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_POST);
+        $objFormParam->convParam();
+        // URLを小文字に変換
+        $objFormParam->toLower('search_reviewer_url');
+
         $this->arrForm = $objFormParam->getHashArray();
         $this->arrHidden = $this->lfSetHidden($this->arrForm);
 
@@ -136,7 +137,12 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin {
         parent::destroy();
     }
 
-    // 入力エラーチェック
+    /**
+     * 入力内容のチェックを行う.
+     *
+     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @return void
+     */
     function lfCheckError(&$objFormParam) {
         // 入力データを渡す。
         $arrRet =  $objFormParam->getHashArray();
@@ -160,14 +166,24 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin {
         return $objErr->arrErr;
     }
 
-    //レビューの削除
+    /**
+     * 商品レビューの削除
+     *
+     * @param integer $review_id 商品レビューのID
+     * @return void
+     */
     function lfDeleteReview($review_id) {
         $objQuery =& SC_Query::getSingletonInstance();
         $sqlval['del_flg'] = 1;
         $objQuery->update("dtb_review", $sqlval, "review_id = ?", array($review_id));
     }
 
-    // 検索ワードの引き継ぎ
+    /**
+     * hidden情報の作成
+     *
+     * @param array $arrForm フォームデータ
+     * @return array hidden情報
+     */
     function lfSetHidden($arrForm) {
         $arrHidden = array();
         foreach ($arrForm AS $key=>$val) {
@@ -188,12 +204,17 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin {
         return $arrHidden;
     }
 
-    /* パラメータ情報の初期化 */
+    /**
+     * パラメータ情報の初期化を行う.
+     *
+     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @return void
+     */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam("投稿者名", "search_reviewer_name", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"),"",false);
-        $objFormParam->addParam("投稿者URL", "search_reviewer_url", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"),"",false);
-        $objFormParam->addParam("商品名", "search_name", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"),"",false);
-        $objFormParam->addParam("商品コード", "search_product_code", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"),"",false);
+        $objFormParam->addParam("投稿者名", "search_reviewer_name", STEXT_LEN, "KVas", array("MAX_LENGTH_CHECK"),"",false);
+        $objFormParam->addParam("投稿者URL", "search_reviewer_url", STEXT_LEN, "KVas", array("MAX_LENGTH_CHECK"),"",false);
+        $objFormParam->addParam("商品名", "search_name", STEXT_LEN, "KVas", array("MAX_LENGTH_CHECK"),"",false);
+        $objFormParam->addParam("商品コード", "search_product_code", STEXT_LEN, "KVas", array("MAX_LENGTH_CHECK"),"",false);
         $objFormParam->addParam("性別", "search_sex", INT_LEN, "n", array("MAX_LENGTH_CHECK"),"",false);
         $objFormParam->addParam("おすすめレベル", "search_recommend_level", INT_LEN, "n", array("MAX_LENGTH_CHECK"),"",false);
         $objFormParam->addParam("投稿年", "search_startyear", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"),"",false);
@@ -207,7 +228,13 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin {
         $objFormParam->addParam("レビューID", "review_id", INT_LEN, "n", array("MAX_LENGTH_CHECK"),"",false);
     }
 
-    // CSV ファイル出力実行
+    /**
+     * CSV ファイル出力実行
+     *
+     * @param string $where WHERE文
+     * @param array $arrval WHERE文の判定値
+     * @return void
+     */
     function lfCsv($where, $arrval) {
         $objCSV = new SC_Helper_CSV_Ex();
         // CSV出力タイトル行の作成
@@ -219,7 +246,12 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin {
     }
 
 
-    // 検索条件の取得
+    /**
+     * WHERE文の作成
+     *
+     * @param array $arrForm フォームデータ
+     * @return array WHERE文、判定値
+     */
     function lfGetWhere($arrForm) {
         //削除されていない商品を検索
         $where = "A.del_flg = 0 AND B.del_flg = 0";
@@ -229,30 +261,26 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin {
 
             switch ($key){
             case 'search_reviewer_name':
-                $val = mb_convert_kana($val, 's');
                 $val = preg_replace("/ /", "%", $val);
-                $where.= " AND reviewer_name ILIKE ? ";
+                $where.= " AND reviewer_name LIKE ? ";
                 $arrval[] = "%$val%";
                 break;
 
             case 'search_reviewer_url':
-                $val = mb_convert_kana($val, 's');
                 $val = preg_replace("/ /", "%", $val);
-                $where.= " AND reviewer_url ILIKE ? ";
+                $where.= " AND reviewer_url LIKE ? ";
                 $arrval[] = "%$val%";
                 break;
 
             case 'search_name':
-                $val = mb_convert_kana($val, 's');
                 $val = preg_replace("/ /", "%", $val);
-                $where.= " AND name ILIKE ? ";
+                $where.= " AND name LIKE ? ";
                 $arrval[] = "%$val%";
                 break;
 
             case 'search_product_code':
-                $val = mb_convert_kana($val, 's');
                 $val = preg_replace("/ /", "%", $val);
-                $where.= " AND A.product_id IN (SELECT product_id FROM dtb_products_class WHERE product_code ILIKE ? )";
+                $where.= " AND A.product_id IN (SELECT product_id FROM dtb_products_class WHERE product_code LIKE ? )";
                 $arrval[] = "%$val%";
                 break;
 
@@ -304,8 +332,13 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin {
         return array($where, $arrval);
     }
 
-    /*
-     * レビューの検索結果取得
+    /**
+     * レビュー検索結果の取得
+     *
+     * @param array $arrForm フォームデータ
+     * @param string $where WHERE文
+     * @param array $arrval WHERE文の判定値
+     * @return array レビュー一覧
      */
     function lfGetReview($arrForm, $where, $arrval) {
         $objQuery =& SC_Query::getSingletonInstance();
