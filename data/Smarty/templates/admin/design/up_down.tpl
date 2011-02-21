@@ -46,7 +46,7 @@ function confirmSubmit(mode, msg) {
   <table>
     <!--{assign var=key value="template_code"}-->
     <tr>
-      <th>テンプレートコード</td>
+      <th>テンプレートコード</th>
       <td>
         <span class="attention"><!--{$arrErr[$key]}--></span>
         <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box54">
@@ -54,7 +54,7 @@ function confirmSubmit(mode, msg) {
     </tr>
     <!--{assign var=key value="template_name"}-->
     <tr>
-      <th>テンプレート名</td>
+      <th>テンプレート名</th>
       <td>
         <span class="attention"><!--{$arrErr[$key]}--></span>
         <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box54">
@@ -64,7 +64,7 @@ function confirmSubmit(mode, msg) {
     <tr>
       <th>テンプレートファイル<br/>
         <span class="attention"><span class="fs14n">※ファイル形式は.tar/.tar.gzのみ</span></span>
-      </td>
+      </th>
       <td>
         <span class="attention"><!--{$arrErr[$key]}--></span>
         <input type="file" name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box54" size="64" <!--{if $arrErr[$key]}-->style="background-color:<!--{$smarty.const.ERR_COLOR|h}-->"<!--{/if}-->>

@@ -27,7 +27,7 @@ function fnTargetSelf(){
     <div style="float: left; width: 75%;" align="center">
         <table id="design-layout-used" class="design-layout">
             <tr>
-                <th colspan="3">&lt;head&gt;</td>
+                <th colspan="3">&lt;head&gt;</th>
             </tr>
             <tr>
                 <!-- ★☆★ HEADタグ内テーブル ☆★☆ -->
@@ -50,7 +50,7 @@ function fnTargetSelf(){
                 <!-- ★☆★ Headタグ内テーブル ☆★☆ -->
             </tr>
             <tr>
-                <th colspan="3">&lt;/head&gt;</td>
+                <th colspan="3">&lt;/head&gt;</th>
             </tr>
             <tr>
                 <!-- ★☆★ ヘッダより上部ナビテーブル ☆★☆ -->
@@ -137,7 +137,7 @@ function fnTargetSelf(){
             <!--{* メイン上部テーブルここまで *}-->
         	<!--{* メインここから *}-->
             <tr>
-                <th colspan="3" id="layout-main">メイン</td>
+                <th colspan="3" id="layout-main">メイン</th>
             </tr>
             <!--{* メインここまで *}-->
             <!--{* メイン下部ここから *}-->
@@ -218,7 +218,7 @@ function fnTargetSelf(){
             </tr>
             <!--{* メインここから *}-->
             <tr>
-                <th id="layout-main">メイン</td>
+                <th id="layout-main">メイン</th>
             </tr>
             <!--{* メインここまで *}-->
             <!--{* メイン下部ここから *}-->
@@ -263,7 +263,7 @@ function fnTargetSelf(){
                 <!-- ★☆★ 下部ナビテーブル ☆★☆ --> 
             </tr>
             <tr>
-                <th colspan="3" id="layout-footer">フッター部</td>
+                <th colspan="3" id="layout-footer">フッター部</th>
             </tr>
             <tr>
                 <!-- ★☆★ フッタより下部ナビテーブル ☆★☆ -->
@@ -341,7 +341,7 @@ function fnTargetSelf(){
         <tr style="background-color:<!--{if $item.page_id == $page_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->;">
             <td>
                 <!--{$item.page_name}-->
-            </th>
+            </td>
             <td class="center">
                 <a href="?page_id=<!--{$item.page_id}-->&amp;device_type_id=<!--{$item.device_type_id}-->" >編集</a>
             </td>
