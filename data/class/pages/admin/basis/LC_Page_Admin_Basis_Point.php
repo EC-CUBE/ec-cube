@@ -100,10 +100,10 @@ class LC_Page_Admin_Basis_Point extends LC_Page_Admin {
             if(count($this->arrErr) == 0) {
                 switch($this->getMode()) {
                 case 'update':
-                    $this->lfUpdateData(); // 既存編集
+                    $this->lfUpdateData($this->objFormParam->getHashArray()); // 既存編集
                     break;
                 case 'insert':
-                    $this->lfInsertData(); // 新規作成
+                    $this->lfInsertData($this->objFormParam->getHashArray()); // 新規作成
                     break;
                 default:
                     break;
@@ -137,18 +137,18 @@ class LC_Page_Admin_Basis_Point extends LC_Page_Admin {
         $this->objFormParam->addParam("会員登録時付与ポイント", "welcome_point", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
     }
 
-    function lfUpdateData() {
+    function lfUpdateData($post) {
         // 入力データを渡す。
-        $sqlval = $this->objFormParam->getHashArray();
+        $sqlval = $post;
         $sqlval['update_date'] = 'Now()';
         $objQuery =& SC_Query::getSingletonInstance();
         // UPDATEの実行
         $ret = $objQuery->update("dtb_baseinfo", $sqlval);
     }
 
-    function lfInsertData() {
+    function lfInsertData($post) {
         // 入力データを渡す。
-        $sqlval = $this->objFormParam->getHashArray();
+        $sqlval = $post;
         $sqlval['update_date'] = 'Now()';
         $objQuery =& SC_Query::getSingletonInstance();
         // INSERTの実行

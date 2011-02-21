@@ -79,7 +79,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin {
         $mode = $this->getMode();
 
         if (!empty($_POST)) {
-            $this->arrErr = $this->lfCheckError($mode);
+            $this->arrErr = $this->lfCheckError($mode, $_POST);
             if (!empty($this->arrErr['holiday_id'])) {
                 SC_Utils_Ex::sfDispException();
                 return;
@@ -95,9 +95,9 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin {
 
             if(count($this->arrErr) <= 0) {
                 if($_POST['holiday_id'] == "") {
-                    $this->lfInsertClass($this->arrForm);	// 新規作成
+                    $this->lfInsertClass($this->arrForm, $_SESSION['member_id']);    // 新規作成
                 } else {
-                    $this->lfUpdateClass($this->arrForm);	// 既存編集
+                    $this->lfUpdateClass($this->arrForm, $_POST['holiday_id']);	// 既存編集
                 }
                 // 再表示
                 $this->objDisplay->reload();
@@ -166,13 +166,13 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin {
     }
 
     /* DBへの挿入 */
-    function lfInsertClass($arrData) {
+    function lfInsertClass($arrData, $member_id) {
         $objQuery =& SC_Query::getSingletonInstance();
         // INSERTする値を作成する。
         $sqlval['title'] = $arrData['title'];
         $sqlval['month'] = $arrData['month'];
         $sqlval['day'] = $arrData['day'];
-        $sqlval['creator_id'] = $_SESSION['member_id'];
+        $sqlval['creator_id'] = $member_id;
         $sqlval['rank'] = $objQuery->max("rank", "dtb_holiday") + 1;
         $sqlval['update_date'] = "Now()";
         $sqlval['create_date'] = "Now()";
@@ -183,7 +183,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin {
     }
 
     /* DBへの更新 */
-    function lfUpdateClass($arrData) {
+    function lfUpdateClass($arrData, $holiday_id) {
         $objQuery =& SC_Query::getSingletonInstance();
         // UPDATEする値を作成する。
         $sqlval['title'] = $arrData['title'];
@@ -192,7 +192,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin {
         $sqlval['update_date'] = "Now()";
         $where = "holiday_id = ?";
         // UPDATEの実行
-        $ret = $objQuery->update("dtb_holiday", $sqlval, $where, array($_POST['holiday_id']));
+        $ret = $objQuery->update("dtb_holiday", $sqlval, $where, array($holiday_id));
         return $ret;
     }
 
@@ -218,11 +218,11 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin {
      * @param string $mode
      * @return array
      */
-    function lfCheckError($mode) {
+    function lfCheckError($mode, $post) {
         $arrErr = array();
         switch ($mode) {
             case 'edit':
-                $_POST = $this->lfConvertParam($_POST);
+                $post = $this->lfConvertParam($post);
 
                 $objErr = new SC_CheckError();
                 $objErr->doFunc(array("タイトル", "title", SMTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
@@ -231,10 +231,10 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin {
                 if(!isset($objErr->arrErr['date'])) {
                     $objQuery =& SC_Query::getSingletonInstance();
                     $where = "del_flg = 0 AND month = ? AND day = ?";
-                    $arrval = array($_POST['month'], $_POST['day']);
-                    if (!empty($_POST['holiday_id'])) {
+                    $arrval = array($post['month'], $post['day']);
+                    if (!empty($post['holiday_id'])) {
                         $where .= " AND holiday_id <> ?";
-                        $arrval[] = $_POST['holiday_id'];
+                        $arrval[] = $post['holiday_id'];
                     }
                     $arrRet = $objQuery->select("count(holiday_id)", "dtb_holiday", $where, $arrval);
                     // 編集中のレコード以外に同じ日付が存在する場合
@@ -249,7 +249,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin {
             case 'up':
                 $this->objFormParam = new SC_FormParam();
                 $this->objFormParam->addParam('定休日ID', 'holiday_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-                $this->objFormParam->setParam($_POST);
+                $this->objFormParam->setParam($post);
                 $this->objFormParam->convParam();
                 $arrErr = $this->objFormParam->checkError();
                 break;

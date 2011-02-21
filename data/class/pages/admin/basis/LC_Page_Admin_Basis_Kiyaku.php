@@ -75,7 +75,7 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin {
         $mode = $this->getMode();
 
         if (!empty($_POST)) {
-            $this->arrErr = $this->lfCheckError($mode);
+            $this->arrErr = $this->lfCheckError($mode, $_POST);
             if (!empty($this->arrErr['kiyaku_id'])) {
                 SC_Utils_Ex::sfDispException();
                 return;
@@ -91,9 +91,9 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin {
 
             if(count($this->arrErr) <= 0) {
                 if($_POST['kiyaku_id'] == "") {
-                    $this->lfInsertClass($this->arrForm);    // 新規作成
+                    $this->lfInsertClass($this->arrForm, $_SESSION['member_id']);    // 新規作成
                 } else {
-                    $this->lfUpdateClass($this->arrForm);    // 既存編集
+                    $this->lfUpdateClass($this->arrForm, $_POST['kiyaku_id']);    // 既存編集
                 }
                 // 再表示
                 $this->objDisplay->reload();
@@ -146,12 +146,12 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin {
     }
 
     /* DBへの挿入 */
-    function lfInsertClass($arrData) {
+    function lfInsertClass($arrData, $member_id) {
         $objQuery =& SC_Query::getSingletonInstance();
         // INSERTする値を作成する。
         $sqlval['kiyaku_title'] = $arrData['kiyaku_title'];
         $sqlval['kiyaku_text'] = $arrData['kiyaku_text'];
-        $sqlval['creator_id'] = $_SESSION['member_id'];
+        $sqlval['creator_id'] = $member_id;
         $sqlval['rank'] = $objQuery->max("rank", "dtb_kiyaku") + 1;
         $sqlval['update_date'] = "Now()";
         $sqlval['create_date'] = "Now()";
@@ -177,7 +177,7 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin {
     }
 
     /* DBへの更新 */
-    function lfUpdateClass($arrData) {
+    function lfUpdateClass($arrData, $kiyaku_id) {
         $objQuery =& SC_Query::getSingletonInstance();
         // UPDATEする値を作成する。
         $sqlval['kiyaku_title'] = $arrData['kiyaku_title'];
@@ -185,7 +185,7 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin {
         $sqlval['update_date'] = "Now()";
         $where = "kiyaku_id = ?";
         // UPDATEの実行
-        $ret = $objQuery->update("dtb_kiyaku", $sqlval, $where, array($_POST['kiyaku_id']));
+        $ret = $objQuery->update("dtb_kiyaku", $sqlval, $where, array($kiyaku_id));
         return $ret;
     }
 
@@ -210,21 +210,21 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin {
      * @param string $mode
      * @return array
      */
-    function lfCheckError($mode) {
+    function lfCheckError($mode, $post) {
         $arrErr = array();
 
         switch ($mode) {
             case 'edit':
-                $_POST = $this->lfConvertParam($_POST);
+                $_POST = $this->lfConvertParam($post);
 
                 $objErr = new SC_CheckError();
                 $objErr->doFunc(array("規約タイトル", "kiyaku_title", SMTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
                 $objErr->doFunc(array("規約内容", "kiyaku_text", MLTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
                 if(!isset($objErr->arrErr['name'])) {
                     $objQuery =& SC_Query::getSingletonInstance();
-                    $arrRet = $objQuery->select("kiyaku_id, kiyaku_title", "dtb_kiyaku", "del_flg = 0 AND kiyaku_title = ?", array($_POST['kiyaku_title']));
+                    $arrRet = $objQuery->select("kiyaku_id, kiyaku_title", "dtb_kiyaku", "del_flg = 0 AND kiyaku_title = ?", array($post['kiyaku_title']));
                     // 編集中のレコード以外に同じ名称が存在する場合
-                    if ($arrRet[0]['kiyaku_id'] != $_POST['kiyaku_id'] && $arrRet[0]['kiyaku_title'] == $_POST['kiyaku_title']) {
+                    if ($arrRet[0]['kiyaku_id'] != $post['kiyaku_id'] && $arrRet[0]['kiyaku_title'] == $post['kiyaku_title']) {
                         $objErr->arrErr['name'] = "※ 既に同じ内容の登録が存在します。<br>";
                     }
                 }
@@ -234,7 +234,7 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin {
             case 'up':
                 $this->objFormParam = new SC_FormParam();
                 $this->objFormParam->addParam('規約ID', 'kiyaku_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-                $this->objFormParam->setParam($_POST);
+                $this->objFormParam->setParam($post);
                 $this->objFormParam->convParam();
                 $arrErr = $this->objFormParam->checkError();
 

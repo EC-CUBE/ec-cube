@@ -97,10 +97,10 @@ class LC_Page_Admin_Basis_Payment_Input extends LC_Page_Admin {
             $this->objFormParam->convParam();
 
             // エラーチェック
-            $this->arrErr = $this->lfCheckError();
+            $this->arrErr = $this->lfCheckError($_POST);
             $this->charge_flg = $_POST["charge_flg"];
             if(count($this->arrErr) == 0) {
-                $this->lfRegistData($_POST['payment_id']);
+                $this->lfRegistData($_POST['payment_id'], $_SESSION['member_id']);
                 // 一時ファイルを本番ディレクトリに移動する
                 $this->objUpFile->moveTempFile();
                 // 親ウィンドウを更新するようにセットする。
@@ -180,7 +180,7 @@ class LC_Page_Admin_Basis_Payment_Input extends LC_Page_Admin {
     }
 
     /* DBへデータを登録する */
-    function lfRegistData($payment_id = "") {
+    function lfRegistData($payment_id = "", $member_id) {
 
         $objQuery =& SC_Query::getSingletonInstance();
         $sqlval = $this->objFormParam->getHashArray();
@@ -195,7 +195,7 @@ class LC_Page_Admin_Basis_Payment_Input extends LC_Page_Admin {
         // 新規登録
         if($payment_id == "") {
             // INSERTの実行
-            $sqlval['creator_id'] = $_SESSION['member_id'];
+            $sqlval['creator_id'] = $member_id;
             $sqlval['rank'] = $objQuery->max("rank", "dtb_payment") + 1;
             $sqlval['create_date'] = 'Now()';
             $sqlval['payment_id'] = $objQuery->nextVal('dtb_payment_payment_id');
@@ -210,10 +210,10 @@ class LC_Page_Admin_Basis_Payment_Input extends LC_Page_Admin {
     /*　利用条件の数値チェック */
 
     /* 入力内容のチェック */
-    function lfCheckError() {
+    function lfCheckError($post) {
 
         // DBのデータを取得
-        $arrPaymentData = $this->lfGetData($_POST['payment_id']);
+        $arrPaymentData = $this->lfGetData($post['payment_id']);
 
         // 手数料を設定できない場合には、手数料を0にする
         if($arrPaymentData["charge_flg"] == 2) $this->objFormParam->setValue("charge", "0");

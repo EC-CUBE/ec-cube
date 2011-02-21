@@ -75,7 +75,7 @@ class LC_Page_Admin_Basis_Payment extends LC_Page_Admin {
         $mode = $this->getMode();
 
         if (!empty($_POST)) {
-            $this->arrErr = $this->lfCheckError($mode);
+            $this->arrErr = $this->lfCheckError($mode, $_POST);
             if (!empty($this->arrErr['payment_id'])) {
                 SC_Utils_Ex::sfDispException();
                 return;
@@ -133,7 +133,7 @@ class LC_Page_Admin_Basis_Payment extends LC_Page_Admin {
      * @param string $mode
      * @return array
      */
-    function lfCheckError($mode) {
+    function lfCheckError($mode, $post) {
         $arrErr = array();
         switch($mode) {
             case 'delete':
@@ -141,7 +141,7 @@ class LC_Page_Admin_Basis_Payment extends LC_Page_Admin {
             case 'down':
                 $this->objFormParam = new SC_FormParam();
                 $this->objFormParam->addParam('配送業者ID', 'payment_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-                $this->objFormParam->setParam($_POST);
+                $this->objFormParam->setParam($post);
                 $this->objFormParam->convParam();
                 $arrErr = $this->objFormParam->checkError();
 

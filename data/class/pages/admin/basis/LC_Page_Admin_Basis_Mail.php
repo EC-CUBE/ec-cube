@@ -73,7 +73,6 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin {
         // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess($objSess);
 
-
         $this->arrMailTEMPLATE = $masterData->getMasterData("mtb_mail_template");
         switch ($this->getMode()) {
         case 'id_set':
@@ -101,7 +100,7 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin {
 
                 } else {
                     // 正常
-                    $this->lfRegist($this->arrForm);
+                    $this->lfRegist($this->arrForm, $_POST['template_id'], $_SESSION['member_id']);
 
                     // 完了メッセージ
                     $this->tpl_onload = "window.alert('メール設定が完了しました。テンプレートを選択して内容をご確認ください。');";
@@ -130,16 +129,16 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin {
         return $objQuery->getAll($sql, array($template_id) );
     }
 
-    function lfRegist($data ){
+    function lfRegist($data, $template_id, $member_id){
         $objQuery =& SC_Query::getSingletonInstance();
 
-        $data['creator_id'] = $_SESSION['member_id'];
+        $data['creator_id'] = $member_id;
 
         $sql = "SELECT * FROM dtb_mailtemplate WHERE template_id = ?";
-        $result = $objQuery->getAll($sql, array($_POST['template_id']) );
+        $result = $objQuery->getAll($sql, array($template_id));
         if ( $result ){
             $sql_where = "template_id = ?";
-            $objQuery->update("dtb_mailtemplate", $data, $sql_where, array(addslashes($_POST['template_id'])));
+            $objQuery->update("dtb_mailtemplate", $data, $sql_where, array(addslashes($template_id)));
         }else{
             $objQuery->insert("dtb_mailtemplate", $data);
         }
