@@ -110,7 +110,6 @@ function fnCheckStock(form) {
         eleDynamic.innerHTML = classcat2.price02;
     } else {
         eleDefault.style.display = '';
-        eleDynamic.style.display = 'none';
         eleDynamic.innerHTML = '';
     }
     // 商品規格

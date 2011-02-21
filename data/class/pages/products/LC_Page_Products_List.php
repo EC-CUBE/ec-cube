@@ -153,11 +153,11 @@ class LC_Page_Products_List extends LC_Page {
         unset($this->arrProducts["productStatus"]);
 
         $objJson = new Services_JSON();
-        $this->tpl_javascript .= 'var productsClassCategories = ' . $objJson->encode($objProduct->classCategories) . ';\n';
+        $this->tpl_javascript .= 'var productsClassCategories = ' . $objJson->encode($objProduct->classCategories) . ';';
 
         //onloadスクリプトを設定
         foreach ($this->arrProducts as $arrProduct) {
-            $js_fnOnLoad .= "fnSetClassCategories(document.product_form{$arrProduct['product_id']});\n";
+            $js_fnOnLoad .= "fnSetClassCategories(document.product_form{$arrProduct['product_id']});";
         }
 
         //カート処理
@@ -184,7 +184,7 @@ class LC_Page_Products_List extends LC_Page {
             $this->tpl_next_page =  $this->objNavi->arrPagenavi['next'];
         }
 
-        $this->tpl_javascript .= 'function fnOnLoad(){' . $js_fnOnLoad . '}'."\n";
+        $this->tpl_javascript .= 'function fnOnLoad(){' . $js_fnOnLoad . '}';
         $this->tpl_onload .= 'fnOnLoad(); ';
 
         $this->tpl_rnd = SC_Utils_Ex::sfGetRandomString(3);
@@ -478,7 +478,7 @@ __EOS__;
                 $arrProducts[$key]['classcategory_id2'] = $arrForm['classcategory_id2'];
                 $arrProducts[$key]['quantity'] = $arrForm['quantity'];
                 $arrProducts[$key]['arrErr'] = $arrErr;
-                $js_fnOnLoad .= "fnSetClassCategories(document.product_form{$arrProducts[$key]['product_id']}, '{$arrForm['classcategory_id2']}');\n";
+                $js_fnOnLoad .= "fnSetClassCategories(document.product_form{$arrProducts[$key]['product_id']}, '{$arrForm['classcategory_id2']}');";
             }
         }
         return $js_fnOnLoad;
@@ -505,7 +505,7 @@ __EOS__;
         $product_class_id = $arrForm['product_class_id'];
         $product_type = $arrForm['product_type'];
         $objCartSess = new SC_CartSession();
-        $objCartSess->addProduct($product_class_id, $arrForm['quantity'], $product_type);
+        $objCartSess->addProduct($product_class_id, $arrForm['quantity']);
 
         // カート「戻るボタン」用に保持
         if (SC_Utils_Ex::sfIsInternalDomain($referer)) {

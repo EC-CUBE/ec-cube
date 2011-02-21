@@ -168,7 +168,7 @@ class LC_Page_Products_Detail extends LC_Page {
                     if(!$this->tpl_classcat_find2) {
                         $classcategory_id2 = '0';
                     }
-                    $objCartSess->addProduct($product_class_id, $this->objFormParam->getValue('quantity'), $product_type);
+                    $objCartSess->addProduct($product_class_id, $this->objFormParam->getValue('quantity'));
 
                     // カート「戻るボタン」用に保持
                     if (SC_Utils_Ex::sfIsInternalDomain($_SERVER['HTTP_REFERER'])) {

@@ -224,12 +224,15 @@ class SC_CartSession {
     }
 
     // カートへの商品追加
-    function addProduct($id, $quantity, $productTypeId) {
+    function addProduct($product_class_id, $quantity) {
+        $objProduct = new SC_Product();
+        $arrProduct = $objProduct->getProductsClass($product_class_id);
+        $productTypeId = $arrProduct['product_type_id'];
         $find = false;
         $max = $this->getMax($productTypeId);
         for($i = 0; $i <= $max; $i++) {
 
-            if($this->cartSession[$productTypeId][$i]['id'] == $id) {
+            if($this->cartSession[$productTypeId][$i]['id'] == $product_class_id) {
                 $val = $this->cartSession[$productTypeId][$i]['quantity'] + $quantity;
                 if(strlen($val) <= INT_LEN) {
                     $this->cartSession[$productTypeId][$i]['quantity'] += $quantity;
@@ -238,7 +241,7 @@ class SC_CartSession {
             }
         }
         if(!$find) {
-            $this->cartSession[$productTypeId][$max+1]['id'] = $id;
+            $this->cartSession[$productTypeId][$max+1]['id'] = $product_class_id;
             $this->cartSession[$productTypeId][$max+1]['quantity'] = $quantity;
             $this->cartSession[$productTypeId][$max+1]['cart_no'] = $this->getNextCartID($productTypeId);
         }

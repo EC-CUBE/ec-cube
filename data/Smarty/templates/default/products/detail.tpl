@@ -149,7 +149,6 @@ function fnCheckStock(form) {
         eleDynamic.style.display = '';
     } else {
         eleDynamic.value = ''
-        eleDynamic.style.display = 'none';
     }
     // 商品種別
     eleDynamic = document.getElementById('product_type');
@@ -162,7 +161,6 @@ function fnCheckStock(form) {
         eleDynamic.style.display = '';
     } else {
         eleDynamic.value = ''
-        eleDynamic.style.display = 'none';
     }
 }
 $(document).ready(function() {

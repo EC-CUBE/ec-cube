@@ -93,7 +93,7 @@ class LC_Page_Mypage_Order extends LC_Page_AbstractMypage_Ex {
         $order_count    = $objQuery->count("dtb_order", "order_id = ? and customer_id = ?", array($order_id, $customer_id));
         if ($order_count != 1) return array();
 
-        $col    = "product_class_id, quantity, product_type_id";
+        $col    = "product_class_id, quantity";
         $table  = "dtb_order_detail LEFT JOIN dtb_products_class USING(product_class_id)";
         $where  = "order_id = ?";
         $objQuery->setOrder("product_class_id");
@@ -108,8 +108,7 @@ class LC_Page_Mypage_Order extends LC_Page_AbstractMypage_Ex {
         foreach($arrOrderDetail as $order_row) {
 
             $objCartSess->addProduct($order_row['product_class_id'],
-                                     $order_row['quantity'],
-                                     $order_row['product_type_id']);
+                                     $order_row['quantity']);
         }
     }
 }
