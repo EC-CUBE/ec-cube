@@ -140,7 +140,7 @@
               </tr>
               <!--{foreach item=item from=$shippingItem.shipment_item}-->
                   <tr>
-                      <td><!--{$item.product_code|h}--></td>
+                      <td><!--{$item.productsClass.product_code|h}--></td>
                       <td><!--{* 商品名 *}--><!--{$item.productsClass.name|h}--><br />
                           <!--{if $item.productsClass.classcategory_name1 != ""}-->
                               <!--{$item.productsClass.class_name1}-->：<!--{$item.productsClass.classcategory_name1}--><br />

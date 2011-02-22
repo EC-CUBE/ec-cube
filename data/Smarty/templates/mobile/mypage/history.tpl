@@ -89,7 +89,7 @@
 ▼お届け先<!--{if $isMultiple}--><!--{$smarty.foreach.shippingItem.iteration}--><!--{/if}--><br>
 <!--{if $isMultiple}-->
 <!--{foreach item=item from=$shippingItem.shipment_item}-->
-商品コード：<!--{$item.product_code|h}--><br>
+商品コード：<!--{$item.productsClass.product_code|h}--><br>
 商品名：<!--{* 商品名 *}--><!--{$item.productsClass.name|h}--><br>
 <!--{if $item.productsClass.classcategory_name1 != ""}-->
 <!--{$item.productsClass.class_name1}-->：<!--{$item.productsClass.classcategory_name1}--><br>
