@@ -73,40 +73,48 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin {
         // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess($objSess);
 
-        $this->arrMailTEMPLATE = $masterData->getMasterData("mtb_mail_template");
-        switch ($this->getMode()) {
-        case 'id_set':
-            // テンプレートプルダウン変更時
+        $mode = $this->getMode();
 
-            if ( SC_Utils_Ex::sfIsInt( $_POST['template_id']) ){
-                $result = $this->lfGetMailTemplateByTemplateID($_POST['template_id']);
-                if ( $result ){
+        if (!empty($_POST)) {
+            $objFormParam = new SC_FormParam();
+            $this->lfInitParam($mode, $objFormParam);
+            $objFormParam->setParam($_POST);
+            $objFormParam->convParam();
+
+            $this->arrErr = $objFormParam->checkError();
+            if (!empty($this->arrErr['template_id'])) {
+                SC_Utils_Ex::sfDispException();
+                return;
+            }
+            $post = $objFormParam->getHashArray();
+        }
+
+        $this->arrMailTEMPLATE = $masterData->getMasterData("mtb_mail_template");
+
+        switch ($mode) {
+        case 'id_set':
+                $result = $this->lfGetMailTemplateByTemplateID($post['template_id']);
+                if ($result){
                     $this->arrForm = $result[0];
                 } else {
-                    $this->arrForm['template_id'] = $_POST['template_id'];
+                    $this->arrForm['template_id'] = $post['template_id'];
                 }
-            }
             break;
         case 'regist':
-            if (SC_Utils_Ex::sfIsInt( $_POST['template_id']) ){
 
-                // POSTデータの引き継ぎ
-                $this->arrForm = $this->lfConvertParam($_POST);
-                $this->arrErr = $this->fnErrorCheck($this->arrForm);
-
-                if ( $this->arrErr ){
+                $this->arrForm = $post;
+                if ($this->arrErr){
                     // エラーメッセージ
                     $this->tpl_msg = "エラーが発生しました";
 
                 } else {
                     // 正常
-                    $this->lfRegist($this->arrForm, $_POST['template_id'], $_SESSION['member_id']);
+                    $this->lfRegistMailTemplate($this->arrForm, $_SESSION['member_id']);
 
                     // 完了メッセージ
                     $this->tpl_onload = "window.alert('メール設定が完了しました。テンプレートを選択して内容をご確認ください。');";
                     unset($this->arrForm);
                 }
-            }
             break;
         default:
             break;
@@ -129,44 +137,34 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin {
         return $objQuery->getAll($sql, array($template_id) );
     }
 
-    function lfRegist($data, $template_id, $member_id){
+    function lfRegistMailTemplate($post, $member_id){
         $objQuery =& SC_Query::getSingletonInstance();
 
-        $data['creator_id'] = $member_id;
+        $post['creator_id'] = $member_id;
 
         $sql = "SELECT * FROM dtb_mailtemplate WHERE template_id = ?";
-        $result = $objQuery->getAll($sql, array($template_id));
-        if ( $result ){
+        $template_data = $objQuery->getAll($sql, array($post['template_id']));
+        if ($template_data){
             $sql_where = "template_id = ?";
-            $objQuery->update("dtb_mailtemplate", $data, $sql_where, array(addslashes($template_id)));
+            $objQuery->update("dtb_mailtemplate", $post, $sql_where, array(addslashes($post['template_id'])));
         }else{
-            $objQuery->insert("dtb_mailtemplate", $data);
+            $objQuery->insert("dtb_mailtemplate", $post);
         }
 
     }
 
-
-    function lfConvertParam($array) {
-
-        $new_array["template_id"] = $array["template_id"];
-        $new_array["subject"] = mb_convert_kana($array["subject"] ,"KV");
-        $new_array["header"] = mb_convert_kana($array["header"] ,"KV");
-        $new_array["footer"] = mb_convert_kana($array["footer"] ,"KV");
-
-        return $new_array;
-    }
-
-    /* 入力エラーのチェック */
-    function fnErrorCheck($array) {
-
-        $objErr = new SC_CheckError($array);
-
-        $objErr->doFunc(array("テンプレート",'template_id'), array("EXIST_CHECK"));
-        $objErr->doFunc(array("メールタイトル",'subject',MTEXT_LEN,"BIG"), array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("ヘッダー",'header',LTEXT_LEN,"BIG"), array("MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("フッター",'footer',LTEXT_LEN,"BIG"), array("MAX_LENGTH_CHECK"));
-
-        return $objErr->arrErr;
+    function lfInitParam($mode, &$objFormParam) {
+        switch ($mode) {
+            case 'regist':
+                $objFormParam->addParam('メールタイトル', 'subject', MTEXT_LEN, 'KVa', array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+                $objFormParam->addParam('ヘッダー', 'header', LTEXT_LEN, 'KVa', array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+                $objFormParam->addParam('フッター', 'footer', LTEXT_LEN, 'KVa', array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+            case 'id_set':
+                $objFormParam->addParam('テンプレート', 'template_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                break;
+            default:
+                break;
+        }
     }
 }
 ?>

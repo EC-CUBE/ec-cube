@@ -75,11 +75,17 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin {
         $mode = $this->getMode();
 
         if (!empty($_POST)) {
-            $this->arrErr = $this->lfCheckError($mode, $_POST);
+            $objFormParam = new SC_FormParam();
+            $this->lfInitParam($mode, $objFormParam);
+            $objFormParam->setParam($_POST);
+            $objFormParam->convParam();
+
+            $this->arrErr = $this->lfCheckError($mode, $objFormParam);
             if (!empty($this->arrErr['kiyaku_id'])) {
                 SC_Utils_Ex::sfDispException();
                 return;
             }
+            $post = $objFormParam->getHashArray();
         }
 
         // 要求判定
@@ -90,42 +96,42 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin {
             $this->arrForm = $_POST;
 
             if(count($this->arrErr) <= 0) {
-                if($_POST['kiyaku_id'] == "") {
+                if($post['kiyaku_id'] == "") {
                     $this->lfInsertClass($this->arrForm, $_SESSION['member_id']);    // 新規作成
                 } else {
-                    $this->lfUpdateClass($this->arrForm, $_POST['kiyaku_id']);    // 既存編集
+                    $this->lfUpdateClass($this->arrForm, $post['kiyaku_id']);    // 既存編集
                 }
                 // 再表示
                 $this->objDisplay->reload();
             } else {
                 // POSTデータを引き継ぐ
-                $this->tpl_kiyaku_id = $_POST['kiyaku_id'];
+                $this->tpl_kiyaku_id = $post['kiyaku_id'];
             }
             break;
         // 削除
         case 'delete':
-            $objDb->sfDeleteRankRecord("dtb_kiyaku", "kiyaku_id", $_POST['kiyaku_id'], "", true);
+            $objDb->sfDeleteRankRecord("dtb_kiyaku", "kiyaku_id", $post['kiyaku_id'], "", true);
             // 再表示
             $this->objDisplay->reload();
             break;
         // 編集前処理
         case 'pre_edit':
             // 編集項目を取得する。
-            $arrKiyakuData = $this->lfGetKiyakuDataByKiyakuID($_POST['kiyaku_id']);
+            $arrKiyakuData = $this->lfGetKiyakuDataByKiyakuID($post['kiyaku_id']);
 
             // 入力項目にカテゴリ名を入力する。
             $this->arrForm['kiyaku_title'] = $arrKiyakuData[0]['kiyaku_title'];
             $this->arrForm['kiyaku_text'] = $arrKiyakuData[0]['kiyaku_text'];
             // POSTデータを引き継ぐ
-            $this->tpl_kiyaku_id = $_POST['kiyaku_id'];
+            $this->tpl_kiyaku_id = $post['kiyaku_id'];
         break;
         case 'down':
-            $objDb->sfRankDown("dtb_kiyaku", "kiyaku_id", $_POST['kiyaku_id']);
+            $objDb->sfRankDown("dtb_kiyaku", "kiyaku_id", $post['kiyaku_id']);
             // 再表示
             $this->objDisplay->reload();
             break;
         case 'up':
-            $objDb->sfRankUp("dtb_kiyaku", "kiyaku_id", $_POST['kiyaku_id']);
+            $objDb->sfRankUp("dtb_kiyaku", "kiyaku_id", $post['kiyaku_id']);
             // 再表示
             $this->objDisplay->reload();
             break;
@@ -189,19 +195,20 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin {
         return $ret;
     }
 
-    /* 取得文字列の変換 */
-    function lfConvertParam($array) {
-        // 文字変換
-        $arrConvList['kiyaku_title'] = "KVa";
-        $arrConvList['kiyaku_text'] = "KVa";
-
-        foreach ($arrConvList as $key => $val) {
-            // POSTされてきた値のみ変換する。
-            if(isset($array[$key])) {
-                $array[$key] = mb_convert_kana($array[$key] ,$val);
-            }
+    function lfInitParam($mode, &$objFormParam) {
+        switch ($mode) {
+            case 'edit':
+                $objFormParam->addParam('規約タイトル', 'kiyaku_title', SMTEXT_LEN, 'KVa', array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+                $objFormParam->addParam('規約内容', 'kiyaku_text', MLTEXT_LEN, 'KVa', array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+            case 'delete':
+            case 'pre_edit':
+            case 'down':
+            case 'up':
+                $objFormParam->addParam('規約ID', 'kiyaku_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                break;
+            default:
+                break;
         }
-        return $array;
     }
 
     /**
@@ -210,39 +217,18 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin {
      * @param string $mode
      * @return array
      */
-    function lfCheckError($mode, $post) {
-        $arrErr = array();
-
-        switch ($mode) {
-            case 'edit':
-                $_POST = $this->lfConvertParam($post);
-
-                $objErr = new SC_CheckError();
-                $objErr->doFunc(array("規約タイトル", "kiyaku_title", SMTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-                $objErr->doFunc(array("規約内容", "kiyaku_text", MLTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-                if(!isset($objErr->arrErr['name'])) {
-                    $objQuery =& SC_Query::getSingletonInstance();
-                    $arrRet = $objQuery->select("kiyaku_id, kiyaku_title", "dtb_kiyaku", "del_flg = 0 AND kiyaku_title = ?", array($post['kiyaku_title']));
-                    // 編集中のレコード以外に同じ名称が存在する場合
-                    if ($arrRet[0]['kiyaku_id'] != $post['kiyaku_id'] && $arrRet[0]['kiyaku_title'] == $post['kiyaku_title']) {
-                        $objErr->arrErr['name'] = "※ 既に同じ内容の登録が存在します。<br>";
-                    }
-                }
-            case 'delete':
-            case 'pre_edit':
-            case 'down':
-            case 'up':
-                $this->objFormParam = new SC_FormParam();
-                $this->objFormParam->addParam('規約ID', 'kiyaku_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-                $this->objFormParam->setParam($post);
-                $this->objFormParam->convParam();
-                $arrErr = $this->objFormParam->checkError();
-
-                break;
-            default:
-                break;
+    function lfCheckError($mode, $objFormParam) {
+        $arrErr = $objFormParam->checkError();
+        if(!isset($arrErr['name']) && $mode == 'edit') {
+            $post = $objFormParam->getHashArray();
+            $objQuery =& SC_Query::getSingletonInstance();
+            $arrRet = $objQuery->select("kiyaku_id, kiyaku_title", "dtb_kiyaku", "del_flg = 0 AND kiyaku_title = ?", array($post['kiyaku_title']));
+            // 編集中のレコード以外に同じ名称が存在する場合
+            if ($arrRet[0]['kiyaku_id'] != $post['kiyaku_id'] && $arrRet[0]['kiyaku_title'] == $post['kiyaku_title']) {
+                $arrErr['name'] = "※ 既に同じ内容の登録が存在します。<br>";
+            }
         }
-        return array_merge((array)$objErr->arrErr, (array)$arrErr);
+        return $arrErr;
     }
 }
 ?>
