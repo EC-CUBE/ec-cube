@@ -98,12 +98,8 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin {
      * @return void
      */
     function action() {
-        $objSess = new SC_Session();
         $this->objDb = new SC_Helper_DB_Ex();
         $objView = new SC_SiteView_Ex();
-
-        // 認証可否の判定
-        SC_Utils_Ex::sfIsSuccess($objSess);
 
         // ファイル管理クラス
         $this->objUpFile = new SC_UploadFile(IMAGE_TEMP_REALDIR, IMAGE_SAVE_REALDIR);

@@ -67,8 +67,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin {
      * @return void
      */
     function action() {
-        // ログインチェック
-        SC_Utils::sfIsSuccess(new SC_Session());
+        // nothing.
     }
 
     /**

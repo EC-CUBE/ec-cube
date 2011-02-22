@@ -66,15 +66,11 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin {
      * @return void
      */
     function action() {
-        $objSess = new SC_Session();
         $objDb = new SC_Helper_DB_Ex();
 
         $objDate = new SC_Date();
         $this->arrMonth = $objDate->getMonth();
         $this->arrDay = $objDate->getDay();
-
-        // 認証可否の判定
-        SC_Utils_Ex::sfIsSuccess($objSess);
 
         $mode = $this->getMode();
 

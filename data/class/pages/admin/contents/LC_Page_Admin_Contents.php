@@ -76,10 +76,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin {
      * @return void
      */
     function action() {
-        // アクセス権があるかを判定し、ない場合はエラー画面を表示する。
-        SC_Utils_Ex::sfIsSuccess(new SC_Session());
-        
-        $objDb = new SC_Helper_DB_Ex();        
+        $objDb = new SC_Helper_DB_Ex();
         $objFormParam = new SC_FormParam();
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_POST);

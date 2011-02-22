@@ -72,10 +72,6 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin_Products_Review {
      * @return void
      */
     function action() {
-        $objSess = new SC_Session();
-        // 認証可否の判定
-        SC_Utils_Ex::sfIsSuccess($objSess);
-
         // パラメータ情報の初期化
         $objFormParam = new SC_FormParam();
         $this->lfInitParam($objFormParam);

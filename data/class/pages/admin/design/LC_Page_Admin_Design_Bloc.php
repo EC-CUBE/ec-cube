@@ -70,11 +70,6 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin {
      * @return void
      */
     function action() {
-
-        // 認証可否の判定
-        $objSess = new SC_Session();
-        SC_Utils_Ex::sfIsSuccess($objSess);
-
         // ページIDを取得
         if (isset($_REQUEST['bloc_id']) && is_numeric($_REQUEST['bloc_id'])) {
             $bloc_id = $_REQUEST['bloc_id'];

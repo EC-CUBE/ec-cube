@@ -67,8 +67,6 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin {
      */
     function action() {
         $objFormParam = new SC_FormParam();
-        // 認証可否の判定
-        SC_Utils_Ex::sfIsSuccess(new SC_Session());
 
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_POST);

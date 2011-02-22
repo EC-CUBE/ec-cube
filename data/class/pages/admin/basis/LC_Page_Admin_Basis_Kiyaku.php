@@ -66,11 +66,7 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin {
      * @return void
      */
     function action() {
-        $objSess = new SC_Session();
         $objDb = new SC_Helper_DB_Ex();
-
-        // 認証可否の判定
-        SC_Utils_Ex::sfIsSuccess($objSess);
 
         $mode = $this->getMode();
 

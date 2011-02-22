@@ -72,9 +72,6 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin {
     function action() {
         $objDb = new SC_Helper_DB_Ex();
 
-        // 認証可否の判定
-        SC_Utils_Ex::sfIsSuccess(new SC_Session());
-
         // パラメータ管理クラス
         $objFormParam = new SC_FormParam();
         // パラメータ情報の初期化

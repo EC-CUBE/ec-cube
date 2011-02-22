@@ -67,11 +67,6 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin {
      * @return void
      */
     function action() {
-        // ページ初期設定
-        $objSess = new SC_Session();
-        // 認証可否の判定
-        SC_Utils_Ex::sfIsSuccess($objSess);
-
         switch ($this->getMode()) {
         case 'delete':
             if (SC_Utils_Ex::sfIsInt($send_id)) {

@@ -82,8 +82,6 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin {
      * @return void
      */
     function action() {
-        $this->authorization();
-
         $this->arrSearchHidden = $this->createSearchParams($_POST);
 
         // FORMデータの引き継ぎ
@@ -633,13 +631,6 @@ __EOS__;
     function getProductsClassAndClasscategory($productId) {
         $objProduct = new SC_Product();
         return $objProduct->getProductsClassFullByProductId($productId);
-    }
-
-    /**
-     * @access private
-     */
-    function authorization() {
-        SC_Utils_Ex::sfIsSuccess(new SC_Session());
     }
 }
 ?>

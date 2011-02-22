@@ -66,9 +66,6 @@ class LC_Page_Admin_Home extends LC_Page_Admin {
      */
     function action() {
 
-        // 認証可否の判定
-        SC_Utils_Ex::sfIsSuccess(new SC_Session());
-
         // DBバージョンの取得
         $this->db_version = $this->lfGetDBVersion();
 

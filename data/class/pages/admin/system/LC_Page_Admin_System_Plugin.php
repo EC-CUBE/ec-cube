@@ -67,9 +67,6 @@ class LC_Page_Admin_System_Plugin extends LC_Page_Admin {
      * @return void
      */
     function action() {
-        // 認証可否の判定
-        SC_Utils_Ex::sfIsSuccess(new SC_Session);
-
         // パラメータ管理クラス
         $objFormParam = new SC_FormParam();
         // パラメータ情報の初期化

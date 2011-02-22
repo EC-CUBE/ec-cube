@@ -70,10 +70,6 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin {
         $objView = new SC_AdminView_Ex();
         $this->objLayout = new SC_Helper_PageLayout_Ex();
 
-        // 認証可否の判定
-        $objSess = new SC_Session();
-        SC_Utils_Ex::sfIsSuccess($objSess);
-
         // ページIDを取得
         if (isset($_REQUEST['page_id']) && is_numeric($_REQUEST['page_id'])) {
             $page_id = $_REQUEST['page_id'];

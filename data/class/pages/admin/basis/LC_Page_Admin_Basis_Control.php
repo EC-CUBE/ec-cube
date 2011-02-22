@@ -66,10 +66,6 @@ class LC_Page_Admin_Basis_Control extends LC_Page_Admin {
      * @return void
      */
     function action() {
-        $objSess = new SC_Session();
-
-        // 認証可否の判定
-        SC_Utils_Ex::sfIsSuccess($objSess);
 
         $objFormParam = new SC_FormParam();
         $this->lfInitParam($objFormParam);

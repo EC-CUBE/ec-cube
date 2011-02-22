@@ -67,8 +67,6 @@ class LC_Page_Admin_Order_Multiple extends LC_Page_Admin {
      * @return void
      */
     function action() {
-        // 認証可否の判定
-        SC_Utils_Ex::sfIsSuccess(new SC_Session());
         $this->setTemplate($this->tpl_mainpage);
     }
 

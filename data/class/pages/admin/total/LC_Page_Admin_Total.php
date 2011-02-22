@@ -103,10 +103,6 @@ class LC_Page_Admin_Total extends LC_Page_Admin {
      * @return void
      */
     function action() {
-        $objSess = new SC_Session();
-        // 認証可否の判定
-        SC_Utils_Ex::sfIsSuccess($objSess);
-
         if(isset($_GET['draw_image']) && $_GET['draw_image'] != ""){
             define('DRAW_IMAGE' , true);
         }else{

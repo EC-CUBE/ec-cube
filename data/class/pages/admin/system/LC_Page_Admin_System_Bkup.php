@@ -72,11 +72,6 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin {
     function action() {
         $objQuery = new SC_Query();
 
-        // セッションクラス
-        $objSess = new SC_Session();
-        // 認証可否の判定
-        SC_Utils_Ex::sfIsSuccess($objSess);
-
         switch($this->getMode()) {
             // バックアップを作成する
         case 'bkup':

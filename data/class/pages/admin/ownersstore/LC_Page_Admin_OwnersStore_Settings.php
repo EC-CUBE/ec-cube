@@ -76,9 +76,6 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin {
      * @return void
      */
     function action() {
-        // ログインチェック
-        SC_Utils::sfIsSuccess(new SC_Session());
-
         switch($this->getMode()) {
         // 入力内容をDBへ登録する
         case 'register':

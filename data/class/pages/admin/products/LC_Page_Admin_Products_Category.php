@@ -70,13 +70,9 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin {
      * @return void
      */
     function action() {
-        $objSession = new SC_Session();
         $objDb      = new SC_Helper_DB_Ex();
         $objFormParam = new SC_FormParam();
 
-        // 認証可否の判定
-        SC_Utils_Ex::sfIsSuccess($objSession);
-        
         // 入力パラメータ初期化
         $this->initParam($objFormParam);
         $objFormParam->setParam($_POST);

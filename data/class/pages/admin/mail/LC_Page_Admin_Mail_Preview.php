@@ -64,9 +64,6 @@ class LC_Page_Admin_Mail_Preview extends LC_Page_Admin {
     function action() {
         
         $objMailHelper = new SC_Helper_Mail_Ex();
-        $objSess = new SC_Session();
-        // 認証可否の判定
-        SC_Utils_Ex::sfIsSuccess($objSess);
 
         switch ($this->getMode()) {
         case 'template':

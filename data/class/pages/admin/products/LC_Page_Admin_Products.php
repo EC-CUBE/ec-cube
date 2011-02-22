@@ -92,10 +92,6 @@ class LC_Page_Admin_Products extends LC_Page_Admin {
         $this->arrEndMonth = $objDate->getMonth();
         $this->arrEndDay = $objDate->getDay();
 
-        // 認証可否の判定
-        $objSess = new SC_Session();
-        SC_Utils_Ex::sfIsSuccess($objSess);
-
         // パラメータ情報の初期化
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_POST);

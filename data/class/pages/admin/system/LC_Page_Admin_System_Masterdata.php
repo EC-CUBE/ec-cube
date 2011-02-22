@@ -66,8 +66,6 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin {
      * @return void
      */
     function action() {
-        SC_Utils_Ex::sfIsSuccess(new SC_Session);
-
         $this->arrMasterDataName = $this->getMasterDataNames(array("mtb_pref",
                                                                    "mtb_zip",
                                                                    "mtb_constants"));

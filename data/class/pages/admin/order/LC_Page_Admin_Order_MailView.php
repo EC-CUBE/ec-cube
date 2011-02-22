@@ -64,8 +64,6 @@ class LC_Page_Admin_Order_MailView extends LC_Page_Admin {
      */
     function action() {
         $send_id = $_GET['send_id'];
-        // 認証可否の判定
-        SC_Utils_Ex::sfIsSuccess(new SC_Session());
         if(SC_Utils_Ex::sfIsInt($send_id)) {
             $mailHistory = $this->getMailHistory($send_id);
             $this->tpl_subject = $mailHistory[0]['subject'];

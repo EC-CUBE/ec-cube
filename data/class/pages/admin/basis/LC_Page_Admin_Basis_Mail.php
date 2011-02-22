@@ -66,12 +66,7 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin {
      * @return void
      */
     function action() {
-
-        $objSess = new SC_Session();
         $masterData = new SC_DB_MasterData_Ex();
-
-        // 認証可否の判定
-        SC_Utils_Ex::sfIsSuccess($objSess);
 
         $mode = $this->getMode();
 

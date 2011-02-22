@@ -89,9 +89,6 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin {
      * @return void
      */
     function action() {
-
-        SC_Utils_Ex::sfIsSuccess(new SC_Session);
-
         // パラメータ管理クラス
         $this->objFormParam = new SC_FormParam();
         // パラメータ情報の初期化
@@ -175,10 +172,6 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin {
      */
     function insertMtbZip($start = 1) {
         $objQuery =& SC_Query::getSingletonInstance();
-        $objSess = new SC_Session();
-
-        // 認証可否の判定
-        SC_Utils_Ex::sfIsSuccess($objSess);
 
         $img_path = USER_URL . USER_PACKAGE_DIR . "/" . ADMIN_DIR . "img/basis/";
 

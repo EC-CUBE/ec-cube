@@ -69,9 +69,6 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin {
      * @return void
      */
     function action() {
-        // ログインチェック
-        SC_Utils::sfIsSuccess(new SC_Session());
-
         // ページ送りの処理 $_REQUEST['pageno']が信頼しうる値かどうかチェックする。
         $this->tpl_pageno = $this->lfCheckPageNo($_REQUEST['pageno']);
 

@@ -83,8 +83,6 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin {
      * @return void
      */
     function action() {
-        SC_Utils_Ex::sfIsSuccess(new SC_Session);
-
         //フォームの値を取得
         $this->initForm();
 

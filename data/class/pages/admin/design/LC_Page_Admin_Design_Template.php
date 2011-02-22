@@ -73,10 +73,6 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin {
      * @return void
      */
     function action() {
-        // 認証可否の判定
-        $objSession = new SC_Session();
-        SC_Utils::sfIsSuccess($objSession);
-
         // 端末種別IDを取得
         if (isset($_REQUEST['device_type_id'])
             && is_numeric($_REQUEST['device_type_id'])) {

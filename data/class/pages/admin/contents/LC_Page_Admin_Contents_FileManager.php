@@ -68,9 +68,6 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin {
      * @return void
      */
     function action() {
-        // 認証可否の判定
-        SC_Utils_Ex::sfIsSuccess(new SC_Session());
-
         // フォーム操作クラス
         $objFormParam = new SC_FormParam();
         // パラメータ情報の初期化

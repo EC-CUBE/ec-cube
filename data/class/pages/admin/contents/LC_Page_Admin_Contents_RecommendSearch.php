@@ -65,8 +65,6 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin {
      * @return void
      */
     function action() {
-        // 認証可否の判定
-        SC_Utils_Ex::sfIsSuccess(new SC_Session());
         $objDb = new SC_Helper_DB_Ex();
         $objFormParam = new SC_FormParam();
         $this->lfInitParam($objFormParam);

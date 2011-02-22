@@ -67,10 +67,6 @@ class LC_Page_Admin_System_Log extends LC_Page_Admin {
      * @return void
      */
     function action() {
-
-        // 認証可否の判定
-        SC_Utils_Ex::sfIsSuccess(new SC_Session);
-
         $objFormParam = new SC_FormParam;
 
         // パラメータ情報初期化

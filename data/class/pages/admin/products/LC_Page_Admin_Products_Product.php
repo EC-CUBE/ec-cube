@@ -97,10 +97,6 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin {
         $objDb = new SC_Helper_DB_Ex();
         $objProduct = new SC_Product();
 
-        // 認証可否の判定
-        $objSess = new SC_Session();
-        SC_Utils_Ex::sfIsSuccess($objSess);
-
         // Downファイル管理クラス
         $this->objDownFile = new SC_UploadFile(DOWN_TEMP_REALDIR, DOWN_SAVE_REALDIR);
         // Downファイル情報の初期化

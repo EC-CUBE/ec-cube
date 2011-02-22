@@ -62,9 +62,6 @@ class LC_Page_Admin_Contents_FileView extends LC_Page_Admin {
      * @return void
      */
     function action() {
-        // ユーザー認証
-        SC_Utils_Ex::sfIsSuccess(new SC_Session());
-
         switch($this->getMode()){
             default:
                 // フォーム操作クラス

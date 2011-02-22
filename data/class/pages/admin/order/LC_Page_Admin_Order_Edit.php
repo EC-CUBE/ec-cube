@@ -82,9 +82,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
      * @return void
      */
     function action() {
-        // 認証可否の判定
-        SC_Utils_Ex::sfIsSuccess(new SC_Session());
-
         $objPurchase = new SC_Helper_Purchase_Ex();
         $objFormParam = new SC_FormParam();
 

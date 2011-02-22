@@ -60,10 +60,6 @@ class LC_Page_Admin_System_Rank extends LC_Page_Admin {
      * @return void
      */
     function action() {
-
-        // ログインチェック
-        SC_Utils::sfIsSuccess(new SC_Session());
-
         // チェック後のデータを格納
         $arrClean = array();
 

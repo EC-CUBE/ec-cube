@@ -70,10 +70,6 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin {
      * @return void
      */
     function action() {
-        // 認証可否の判定
-        $objSess = new SC_Session();
-        SC_Utils_Ex::sfIsSuccess($objSess);
-
         $objFileManager = new SC_Helper_FileManager_Ex();
         $this->objLayout = new SC_Helper_PageLayout_Ex();
 

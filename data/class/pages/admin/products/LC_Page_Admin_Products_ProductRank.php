@@ -67,11 +67,7 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin {
      */
     function action() {
         $objQuery =& SC_Query::getSingletonInstance();
-        $objSess = new SC_Session();
         $objDb = new SC_Helper_DB_Ex();
-
-        // 認証可否の判定
-        SC_Utils_Ex::sfIsSuccess($objSess);
 
         $this->tpl_pageno = isset($_POST['pageno']) ? $_POST['pageno'] : "";
 

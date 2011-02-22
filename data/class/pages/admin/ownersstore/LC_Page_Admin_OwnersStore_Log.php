@@ -66,10 +66,6 @@ class LC_Page_Admin_OwnersStore_Log extends LC_Page_Admin {
      * @return void
      */
     function action() {
-
-        // ログインチェック
-        SC_Utils::sfIsSuccess(new SC_Session());
-
         switch ($this->getMode()) {
         case 'detail':
             $objForm = $this->initParam();

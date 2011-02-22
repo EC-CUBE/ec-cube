@@ -77,16 +77,12 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin {
      */
     function action() {
         $objDb = new SC_Helper_DB_Ex();
-        $objSess = new SC_Session();
-
         $objDate = new SC_Date(1901);
         $objDate->setStartYear(RELEASE_YEAR);
         $this->arrYear = $objDate->getYear();
         $this->arrMonth = $objDate->getMonth();
         $this->arrDay = $objDate->getDay();
 
-        // 認証可否の判定
-        SC_Utils_Ex::sfIsSuccess($objSess);
         // 画面遷移の正当性チェック用にuniqidを埋め込む
         $objPage->tpl_uniqid = $objSess->getUniqId();
 
