@@ -171,26 +171,6 @@ case 'step3':
         }
     }
 
-    // カラムコメントの書込み
-    if(count($objPage->arrErr) == 0) {
-        $objPage->arrErr = lfExecuteSQL("./sql/column_comment.sql", $dsn);
-        if(count($objPage->arrErr) == 0) {
-            $objPage->tpl_message.="○：カラムコメントの書込みに成功しました。<br>";
-        } else {
-            $objPage->tpl_message.="×：カラムコメントの書込みに失敗しました。<br>";
-        }
-    }
-
-    // テーブルコメントの書込み
-    if(count($objPage->arrErr) == 0) {
-        $objPage->arrErr = lfExecuteSQL("./sql/table_comment.sql", $dsn);
-        if(count($objPage->arrErr) == 0) {
-            $objPage->tpl_message.="○：テーブルコメントの書込みに成功しました。<br>";
-        } else {
-            $objPage->tpl_message.="×：テーブルコメントの書込みに失敗しました。<br>";
-        }
-    }
-
     // シーケンスの作成
     if (count($objPage->arrErr) == 0) {
         $objPage->arrErr = lfCreateSequence(getSequences(), $dsn);
@@ -1048,7 +1028,6 @@ function getSequences() {
                  array("dtb_class_combination", "class_combination_id"),
                  array("dtb_review", "review_id"),
                  array("dtb_send_history", "send_id"),
-                 array("dtb_table_comment", "id"),
                  array("dtb_mailmaga_template", "template_id"));
 }
 
