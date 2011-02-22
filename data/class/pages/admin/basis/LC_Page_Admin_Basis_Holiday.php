@@ -257,7 +257,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin {
                 $where .= " AND holiday_id <> ?";
                 $arrval[] = $post['holiday_id'];
             }
-            $arrRet = $objQuery->select("count(holiday_id)", "dtb_holiday", $where, $arrval);
+            $arrRet = $objQuery->select("count(holiday_id) as count", "dtb_holiday", $where, $arrval);
 
             // 編集中のレコード以外に同じ日付が存在する場合
             if ($arrRet[0]['count'] > 0) {
