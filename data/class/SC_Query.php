@@ -729,12 +729,12 @@ class SC_Query {
 
         $sth =& $this->prepare($n, $types, $result_types);
         if (PEAR::isError($sth) && $this->force_run) {
-            return;
+            return $sth;
         }
 
         $result = $this->execute($sth, $arr);
         if (PEAR::isError($result) && $this->force_run) {
-            return;
+            return $sth;
         }
         
         //PREPAREの解放
@@ -937,6 +937,37 @@ class SC_Query {
 
         return $err;
     }
+
+    /**
+     * SQLクエリの結果セットのカラム名だけを取得する
+     *
+     * @param string $n 実行する SQL 文
+     * @param array $arr ブレースホルダに挿入する値
+     * @param boolean エラーが発生しても処理を続行する場合 true
+     * @param mixed $types プレースホルダの型指定 デフォルトnull = string
+     * @param mixed $result_types 返値の型指定またはDML実行(MDB2_PREPARE_MANIP)
+     * @return array 実行結果の配列
+     */
+    function getQueryDefsFields($n ,$arr = array(), $ignore_err = false, $types = null, $result_types = MDB2_PREPARE_RESULT ){
+
+        $n = $this->dbFactory->sfChangeMySQL($n);
+
+        $sth =& $this->prepare($n, $types, $result_types);
+        if (PEAR::isError($sth) && ($this->force_run || $ignore_err)) {
+            return;
+        }
+
+        $result = $this->execute($sth, $arr);
+        if (PEAR::isError($result) && ($this->force_run || $ignore_err)) {
+            return;
+        }
+        $arrRet = $result->getColumnNames();
+        //PREPAREの解放
+        $sth->free();
+
+        return $arrRet;
+    }
+
 }
 
 ?>
