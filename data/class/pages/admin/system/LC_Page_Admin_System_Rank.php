@@ -60,29 +60,48 @@ class LC_Page_Admin_System_Rank extends LC_Page_Admin {
      * @return void
      */
     function action() {
-        $objQuery = new SC_Query();
 
         // ログインチェック
         SC_Utils::sfIsSuccess(new SC_Session());
 
-        // ランキングの変更
-        if($_GET['move'] == 'up') {
-            // 正当な数値であった場合
-            if(SC_Utils::sfIsInt($_GET['id'])){
-                $this->lfRunkUp($objQuery, $_GET['id']);
-            // エラー処理
-            } else {
-                GC_Utils::gfPrintLog("error id=".$_GET['id']);
-            }
-        } else if($_GET['move'] == 'down') {
-            if(SC_Utils::sfIsInt($_GET['id'])){
-                $this->lfRunkDown($objQuery, $_GET['id']);
-            // エラー処理
-            } else {
-                GC_Utils::gfPrintLog("error id=".$_GET['id']);
+        // チェック後のデータを格納
+        $arrClean = array();
+
+        // $_GET['move'] が想定値かどうかチェック
+        switch($_GET['move']) {
+            case 'up':
+            case 'down':
+                $arrClean['move'] = $_GET['move'];
+                break;
+            default:
+                $arrClean['move'] = "";
+                break;
+        }
+
+
+        // 正当な数値であればOK
+        if (SC_Utils::sfIsInt($_GET['id'])) {
+            $arrClean['id'] = $_GET['id'];
+
+            switch($arrClean['move']) {
+                case 'up':
+                    $this->lfRunkUp($arrClean['id']);
+                    break;
+
+                case 'down':
+                    $this->lfRunkDown($arrClean['id']);
+                    break;
+
+                default:
+                    break;
             }
         }
         
+        // エラー処理
+        else {
+            GC_Utils::gfPrintLog("error id=".$_GET['id']);
+        }
+
         // ページの表示
         SC_Response_Ex::sendRedirect(ADMIN_SYSTEM_URLPATH);
     }
@@ -97,9 +116,12 @@ class LC_Page_Admin_System_Rank extends LC_Page_Admin {
     }
 
     // ランキングを上げる。
-    function lfRunkUp($objQuery, $id) {
+    function lfRunkUp($id) {
+        $objQuery =& SC_Query::getSingletonInstance();
+
         // 自身のランクを取得する。
-        $rank = $objQuery->getOne("SELECT rank FROM dtb_member WHERE member_id = ".$id);
+        $rank = $objQuery->getOne("SELECT rank FROM dtb_member WHERE member_id = ?", array($id));
+
         // ランクの最大値を取得する。
         $maxno = $objQuery->getOne("SELECT max(rank) FROM dtb_member");
         // ランクが最大値よりも小さい場合に実行する。
@@ -107,19 +129,28 @@ class LC_Page_Admin_System_Rank extends LC_Page_Admin {
             // ランクがひとつ上のIDを取得する。
             $sqlse = "SELECT member_id FROM dtb_member WHERE rank = ?";
             $up_id = $objQuery->getOne($sqlse, $rank + 1);
+
+            // Updateする値を作成する.
+            $sqlVal1 = array();
+            $sqlVal2 = array();
+            $sqlVal1['rank'] = $rank + 1;
+            $sqlVal2['rank'] = $rank;
+            $where = "member_id = ?";
+
             // ランク入れ替えの実行
             $objQuery->begin();
-            $sqlup = "UPDATE dtb_member SET rank = ? WHERE member_id = ?";
-            $objQuery->query($sqlup, array($rank + 1, $id));
-            $objQuery->query($sqlup, array($rank, $up_id));
+            $objQuery->update("dtb_member", $sqlVal1, $where, array($id));
+            $objQuery->update("dtb_member", $sqlVal2, $where, array($up_id));
             $objQuery->commit();
         }
     }
 
     // ランキングを下げる。
-    function lfRunkDown($objQuery, $id) {
+    function lfRunkDown($id) {
+        $objQuery =& SC_Query::getSingletonInstance();
+
         // 自身のランクを取得する。
-        $rank = $objQuery->getOne("SELECT rank FROM dtb_member WHERE member_id = ".$id);
+        $rank = $objQuery->getOne("SELECT rank FROM dtb_member WHERE member_id = ?", array($id));
         // ランクの最小値を取得する。
         $minno = $objQuery->getOne("SELECT min(rank) FROM dtb_member");
         // ランクが最大値よりも大きい場合に実行する。
@@ -127,12 +158,19 @@ class LC_Page_Admin_System_Rank extends LC_Page_Admin {
             // ランクがひとつ下のIDを取得する。
             $sqlse = "SELECT member_id FROM dtb_member WHERE rank = ?";
             $down_id = $objQuery->getOne($sqlse, $rank - 1);
+
+            // Updateする値を作成する.
+            $sqlVal1 = array();
+            $sqlVal2 = array();
+            $sqlVal1['rank'] = $rank - 1;
+            $sqlVal2['rank'] = $rank;
+            $where = "member_id = ?";
+
             // ランク入れ替えの実行
             $objQuery->begin();
-            $sqlup = "UPDATE dtb_member SET rank = ? WHERE member_id = ?";
-            $objQuery->query($sqlup, array($rank - 1, $id));
-            $objQuery->query($sqlup, array($rank, $down_id));
-            $objQuery->query("COMMIT");
+            $objQuery->update("dtb_member", $sqlVal1, $where, array($id));
+            $objQuery->update("dtb_member", $sqlVal2, $where, array($down_id));
+            $objQuery->commit();
         }
     }
 }
