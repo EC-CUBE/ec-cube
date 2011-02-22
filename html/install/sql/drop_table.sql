@@ -45,7 +45,6 @@ DROP TABLE dtb_blocposition;
 DROP TABLE dtb_csv;
 DROP TABLE dtb_csv_sql;
 DROP TABLE dtb_templates;
-DROP TABLE dtb_table_comment;
 DROP TABLE dtb_ownersstore_settings;
 DROP TABLE dtb_module_update_logs;
 DROP TABLE mtb_work;

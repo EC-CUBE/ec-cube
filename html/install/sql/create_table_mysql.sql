@@ -889,14 +889,6 @@ CREATE TABLE dtb_templates (
     PRIMARY KEY (template_code)
 ) ENGINE=InnoDB;
 
-CREATE TABLE dtb_table_comment (
-    id int,
-    table_name text,
-    column_name text,
-    description text,
-    PRIMARY KEY (id)
-) ENGINE=InnoDB;
-
 CREATE TABLE dtb_maker (
     maker_id int NOT NULL,
     name text NOT NULL,

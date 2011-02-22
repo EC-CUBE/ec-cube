@@ -113,9 +113,6 @@ su ${PGUSER} -c "${PSQL} -U ${DBUSER} -f ${SQL_DIR}/create_table_pgsql.sql ${DBN
 echo "create_view..."
 su ${PGUSER} -c "${PSQL} -U ${DBUSER} -f ${SQL_DIR}/create_view.sql ${DBNAME}"
 
-echo "adding table comment..."
-su ${PGUSER} -c "${PSQL} -U ${DBUSER} -f ${SQL_DIR}/table_comment.sql ${DBNAME}"
-
 echo "adding tables..."
 su ${PGUSER} -c "${PSQL} -U ${DBUSER} -f ${SQL_DIR}/add/dtb_campaign_order_pgsql.sql ${DBNAME}"
 su ${PGUSER} -c "${PSQL} -U ${DBUSER} -f ${SQL_DIR}/add/dtb_mobile_ext_session_id_pgsql.sql ${DBNAME}"
