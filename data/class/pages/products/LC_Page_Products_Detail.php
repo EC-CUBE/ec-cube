@@ -233,7 +233,7 @@ class LC_Page_Products_Detail extends LC_Page {
                         break;
                     }
 
-                    $this->tpl_product_class_id = $objProduct->classCategories[$product_id][$this->objFormParam->getValue('classcategory_id1')][$this->objFormParam->getValue('classcategory_id2')]['product_class_id'];
+                    $this->tpl_product_class_id = $objProduct->classCategories[$product_id][$this->objFormParam->getValue('classcategory_id1')]['#' . $this->objFormParam->getValue('classcategory_id2')]['product_class_id'];
 
                     // 商品数の選択を行う
                     $this->tpl_mainpage = "products/select_item.tpl";

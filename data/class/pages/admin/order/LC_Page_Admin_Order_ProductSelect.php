@@ -169,7 +169,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin {
      */
     function getFnOnload($arrProducts){
         foreach ($arrProducts as $arrProduct) {
-            $js_fnOnLoad .= "fnSetClassCategories(document.product_form{$arrProduct['product_id']});\n";
+            $js_fnOnLoad .= "fnSetClassCategories(document.product_form{$arrProduct['product_id']});";
         }
     }
 

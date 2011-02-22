@@ -81,7 +81,7 @@ function fnCheckStock(form) {
     product_id = form.product_id.value;
     classcat_id1 = form.classcategory_id1.value;
     classcat_id2 = form.classcategory_id2 ? form.classcategory_id2.value : '';
-    classcat2 = productsClassCategories[product_id][classcat_id1][classcat_id2];
+    classcat2 = productsClassCategories[product_id][classcat_id1]['#' + classcat_id2];
     
     // 在庫(品切れ)
     eleDefault = document.getElementById('cartbtn_default_' + product_id);

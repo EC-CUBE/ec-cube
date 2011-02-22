@@ -53,7 +53,7 @@ function fnSetClassCategories(form, classcat_id2_selected) {
 function fnCheckStock(form) {
     classcat_id1 = form.classcategory_id1.value;
     classcat_id2 = form.classcategory_id2 ? form.classcategory_id2.value : '';
-    classcat2 = classCategories[classcat_id1][classcat_id2];
+    classcat2 = classCategories[classcat_id1]['#' + classcat_id2];
 
     // 商品コード
     eleDefault = document.getElementById('product_code_default');

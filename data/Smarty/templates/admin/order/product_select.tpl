@@ -27,7 +27,7 @@
 <!--
 self.moveTo(20,20);self.focus();
 
-function func_submit(product_id, class_name1, class_name2, product_class_id) {
+function func_submit(product_id, class_name1, class_name2) {
     var err_text = '';
     var fm = window.opener.document.form1;
     var fm1 = window.opener.document;
@@ -36,6 +36,7 @@ function func_submit(product_id, class_name1, class_name2, product_class_id) {
 
     var class1_id = document.getElementById(class1).value;
     var class2_id = document.getElementById(class2).value;
+    var product_class_id = document.getElementById("product_class_id" + product_id).value;
 
     <!--{if $tpl_no != ''}-->
     var opner_product_id = 'edit_product_id';
@@ -106,7 +107,7 @@ function fnCheckStock(form) {
     product_id = form.product_id.value;
     classcat_id1 = form.classcategory_id1.value;
     classcat_id2 = form.classcategory_id2 ? form.classcategory_id2.value : 0;
-    classcat2 = productsClassCategories[product_id][classcat_id1][classcat_id2];
+    classcat2 = productsClassCategories[product_id][classcat_id1]['#' + classcat_id2];
     // 商品規格
     eleDynamic = document.getElementById('product_class_id' + product_id);
     if (
@@ -231,7 +232,7 @@ function fnCheckStock(form) {
                         <input type="hidden" name="product_class_id<!--{$id|h}-->" id="product_class_id<!--{$id|h}-->" value="<!--{$tpl_product_class_id[$id]}-->" />
                         <input type="hidden" name="product_type" id="product_type<!--{$id|h}-->" value="<!--{$tpl_product_type[$id]}-->" />
                     </td>
-                    <td class="center"><a href="javascript:;" onclick="return func_submit('<!--{$arrProducts[cnt].product_id}-->', '<!--{$tpl_class_name1[$id]}-->', '<!--{$tpl_class_name2[$id]}-->', '<!--{$tpl_product_class_id[$id]}-->'); return false;">決定</a></td>
+                    <td class="center"><a href="javascript:;" onclick="return func_submit('<!--{$arrProducts[cnt].product_id}-->', '<!--{$tpl_class_name1[$id]}-->', '<!--{$tpl_class_name2[$id]}-->'); return false;">決定</a></td>
                 </tr>
                 <!--▲商品<!--{$smarty.section.cnt.iteration}-->-->
             </form>
