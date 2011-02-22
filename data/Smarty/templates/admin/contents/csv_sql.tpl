@@ -41,18 +41,18 @@ function fnTargetSelf(){
 
 <form name="form1" id="form1" method="post" action="?">
 <input type="hidden" name="mode" value="confirm" />
-<input type="hidden" name="sql_id" value="<!--{$sql_id}-->" />
+<input type="hidden" name="sql_id" value="<!--{$arrForm.sql_id|h}-->" />
 <input type="hidden" name="csv_output_id" value="" />
-<input type="hidden" name="selectTable" value="" />
+<input type="hidden" name="select_table" value="" />
 <div id="admin-contents" class="contents-main">
   <h2>SQL一覧</h2>
 
   <!--{if $arrSqlList}-->
   <table id="contents-csv-sqllist" class="list center">
     <!--{foreach key=key item=item from=$arrSqlList}-->
-    <tr style="background-color:<!--{if $item.sql_id == $sql_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->;">
+    <tr style="background-color:<!--{if $item.sql_id == $arrForm.sql_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->;">
       <td>
-        <a href="?sql_id=<!--{$item.sql_id}-->" ><!--{$item.sql_name}--></a>
+        <a href="?sql_id=<!--{$item.sql_id}-->" ><!--{$item.sql_name|h}--></a>
       </td>
       <td>
         <div class="btn">
@@ -76,16 +76,16 @@ function fnTargetSelf(){
       <th>名称<span class="attention"> *</span></th>
       <td>
         <span class="attention"><!--{$arrErr.sql_name}--></span>
-        <input type="text" name="sql_name" value="<!--{$arrSqlData.sql_name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" />
+        <input type="text" name="sql_name" value="<!--{$arrForm.sql_name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" />
         <span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
       </td>
     </tr>
     <tr>
-      <th align="center">SQL文<span class="attention"> *</span><br /> (SELECTは記述しないでください。)</td>
+      <th align="center">SQL文<span class="attention"> *</span><br /> (最初のSELECTは記述しないでください。)</td>
       <td align="left">
         <span class="attention"><!--{$arrErr.csv_sql}--></span>
         <div>
-          <textarea name="csv_sql" cols=75 rows=30 align="left" wrap=off style="<!--{if $arrErr.csv_sql != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"><!--{$arrSqlData.csv_sql}--></textarea>
+          <textarea name="csv_sql" cols=50 rows=20 align="left" wrap=off style="<!--{if $arrErr.csv_sql != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"><!--{$arrForm.csv_sql|h}--></textarea>
         </div>
       </td>
     </tr>
@@ -96,7 +96,7 @@ function fnTargetSelf(){
   </div>
   <div class="btn-area">
     <ul>
-      <li><a class="btn-action" href="javascript:;" name="subm" onclick="mode.value='confirm'; fnTargetSelf(); return false;"><span class="btn-next">この内容で登録する</span></a></li>
+      <li><a class="btn-action" href="javascript:;" name="subm" onclick="fnFormModeSubmit('form1', 'confirm', '', '')"><span class="btn-next">この内容で登録する</span></a></li>
     </ul>
   </div>
 
@@ -104,8 +104,8 @@ function fnTargetSelf(){
 
   <div id="contents-csv-sqltbl">
     <h3>テーブル一覧</h3>
-    <select name="arrTableList[]" size="20" style="width:325px; height:300px;" onChange="mode.value=''; selectTable.value=this.value; submit();" onDblClick="csv_sql.value = csv_sql.value +' , ' + this.value;">
-      <!--{html_options options=$arrTableList selected=$selectTable}-->
+    <select name="arrTableList[]" size="20" style="width:325px; height:300px;" onChange="mode.value=''; select_table.value=this.value; submit();" onDblClick="csv_sql.value = csv_sql.value +' , ' + this.value;">
+      <!--{html_options options=$arrTableList selected=$arrForm.select_table}-->
     </select>
   </div>
   <div id="contents-csv-sqlcol">

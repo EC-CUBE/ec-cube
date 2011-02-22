@@ -26,14 +26,19 @@
 <table class="form">
   <tr>
     <th>SQL文</th>
-    <td><!--{$sql|h|nl2br}--></td>
+    <td>SELECT <!--{$arrForm.csv_sql|h|nl2br}--></td>
   </tr>
   <tr>
     <th>エラー内容</th>
     <td>
+      <!--{if $arrErr}-->
+         <!--{foreach key=key item=item from=$arrErr key=key}-->
+            <!--{$item}-->
+         <!--{/foreach}-->
+      <!--{/if}-->
       <!--{if $sqlerr != ""}-->
         <!--{$sqlerr|h|nl2br}-->
-      <!--{else}-->
+      <!--{elseif !$arrErr}-->
         エラーはありません
       <!--{/if}-->
     </td>

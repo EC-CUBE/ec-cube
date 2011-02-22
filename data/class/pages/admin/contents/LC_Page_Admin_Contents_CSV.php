@@ -47,9 +47,13 @@ class LC_Page_Admin_Contents_CSV extends LC_Page_Admin {
         $this->tpl_mainpage = 'contents/csv.tpl';
         $this->tpl_subnavi = 'contents/subnavi.tpl';
         $this->tpl_subno = 'csv';
-
         $this->tpl_mainno = "contents";
         $this->tpl_subtitle = 'CSV出力設定';
+
+        $objCSV = new SC_Helper_CSV_Ex();
+        $this->arrSubnavi = $objCSV->arrSubnavi; // 別名
+        $this->tpl_subno_csv = $objCSV->arrSubnavi[1]; //デフォルト
+        $this->arrSubnaviName = $objCSV->arrSubnaviName; // 表示名
     }
 
     /**
@@ -68,80 +72,114 @@ class LC_Page_Admin_Contents_CSV extends LC_Page_Admin {
      * @return void
      */
     function action() {
-        $objSess = new SC_Session();
-        $objCSV = new SC_Helper_CSV_Ex();
-
-        $this->arrSubnavi = $objCSV->arrSubnavi;
-        $this->tpl_subno_csv = $objCSV->arrSubnavi[1];
-        $this->arrSubnaviName = $objCSV->arrSubnaviName;
-
         // 認証可否の判定
-        $objSess = new SC_Session();
-        SC_Utils_Ex::sfIsSuccess($objSess);
+        SC_Utils_Ex::sfIsSuccess(new SC_Session());
 
-        $get_tpl_subno_csv = isset($_GET['tpl_subno_csv'])
-                                     ? $_GET['tpl_subno_csv'] : "";
-
-        // GETで値が送られている場合にはその値を元に画面表示を切り替える
-        if ($get_tpl_subno_csv != ""){
-            // 送られてきた値が配列に登録されていなければTOPを表示
-            if (in_array($get_tpl_subno_csv,$this->arrSubnavi)){
-                $subno_csv = $get_tpl_subno_csv;
-            }else{
-                $subno_csv = $this->arrSubnavi[1];
-            }
-        } else {
-            // GETで値がなければPOSTの値を使用する
-            if (isset($_POST['tpl_subno_csv'])
-                && $_POST['tpl_subno_csv'] != "") {
-
-                $subno_csv = $_POST['tpl_subno_csv'];
-            }else{
-                $subno_csv = $this->arrSubnavi[1];
+        // 不正アクセスチェック 
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            if (!SC_Helper_Session_Ex::isValidToken()) {
+                SC_Utils_Ex::sfDispError(INVALID_MOVE_ERRORR);
             }
         }
+        // トランザクションID
+        $this->transactionid = SC_Helper_Session_Ex::getToken();
 
-        // subnoの番号を取得
-        $subno_id = array_keys($this->arrSubnavi,$subno_csv);
-        $subno_id = $subno_id[0];
+        // パラメータ管理クラス
+        $objFormParam = new SC_FormParam();
+        // パラメータ設定
+        $this->lfInitParam($objFormParam);
+        $objFormParam->setParam($_POST);
+        $objFormParam->setParam($_GET);
+        $objFormParam->convParam();
 
-        // データの登録
+        // CSV_IDの読み込み
+        $this->tpl_subno_csv = $objFormParam->getValue('tpl_subno_csv');
+        $this->tpl_csv_id = $this->lfGetCsvId($this->tpl_subno_csv);
+
         switch ($this->getMode()) {
         case 'confirm':
-            // エラーチェック
-            $this->arrErr = $this->lfCheckError($_POST['output_list']);
-
-            if (count($this->arrErr) <= 0){
-                // データの更新
-                $this->lfUpdCsvOutput($subno_id, $_POST['output_list']);
-
-                // 画面のリロード
-                $this->objDisplay->reload(array("tpl_subno_csv" => $subno_csv));
+            // 入力パラメーターチェック
+            $this->arrErr = $objFormParam->checkError();
+            if(SC_Utils_Ex::isBlank($this->arrErr)) {
+                // 更新
+                $this->tpl_is_update = $this->lfUpdCsvOutput($this->tpl_csv_id, $objFormParam->getValue('output_list'));
             }
+            break;
+        case 'defaultset':
+            //初期値に戻す
+            $this->tpl_is_update = $this->lfSetDefaultCsvOutput($this->tpl_csv_id);
             break;
         default:
             break;
         }
+        $this->arrSelected = $this->lfGetSelected($this->tpl_csv_id);
+        $this->arrOptions = $this->lfGetOptions($this->tpl_csv_id);
+        $this->tpl_subtitle .= ' - ' . $this->arrSubnaviName[ $this->tpl_csv_id ];
+    }
 
-        // 出力項目の取得
-        $arrSelected = SC_Utils_Ex::sfSwapArray($objCSV->sfGetCsvOutput($subno_id, 'status = 1'));
+    /**
+     * パラメーター情報の初期化
+     *
+     * @param array $objFormParam フォームパラメータークラス
+     * @return void
+     */
+    function lfInitParam(&$objFormParam) {
+        $objFormParam->addParam('編集種別', 'tpl_subno_csv', STEXT_LEN, 'a', array("ALNUM_CHECK", "MAX_LENGTH_CHECK"), 'product');
+        $objFormParam->addParam('出力設定リスト', 'output_list', INT_LEN, 'n', array("NUM_CHECK", "MAX_LENGTH_CHECK", "EXIST_CHECK"));
+        //デフォルト値で上書き
+        $objFormParam->setParam(array('tpl_subno_csv' => 'product'));
+    }
 
-        if (!isset($arrSelected['no'])) $arrSelected['no'] = array();
+    /**
+     * CSVカラム設定の読み込み
+     *
+     * @param integer $csv_id CSV ID
+     * @param integer $csv_status_flg 読み込む対象のフラグ CSV_COLUMN_STATUS_FLG_ENABLE or ''
+     * @return array SwapArrayしたカラム設定
+     */
+    function lfGetCSVColumn($csv_id, $csv_status_flg = '', $order ='rank, no') {
+        $objCSV = new SC_Helper_CSV_Ex();
+        if(SC_Utils_Ex::sfIsInt($csv_id)) {
+            if($csv_status_flg !="") {
+                $arrData = $objCSV->sfGetCsvOutput($csv_id, 'status = ?' , array($csv_status_flg), $order);
+            }else{
+                $arrData = $objCSV->sfGetCsvOutput($csv_id, '', array(), $order);
+            }
+            $arrData = SC_Utils_Ex::sfSwapArray($arrData);
+        }else{
+            $arrData = array();
+        }
+        return $arrData;
+    }
 
-        $this->arrSelected = $arrSelected['no'];
+    /**
+     * 選択済みカラム列情報を取得
+     *
+     * @param integer $csv_id CSV ID
+     * @return array 選択済みカラム列情報
+     */
+    function lfGetSelected($csv_id) {
+        $arrData = $this->lfGetCSVColumn($csv_id, CSV_COLUMN_STATUS_FLG_ENABLE);
+        if (!isset($arrData['no'])) {
+            $arrData['no'] = array();
+        }
+        return $arrData['no'];
+    }
 
-        // 全項目の取得
-        $arrOptions = SC_Utils_Ex::sfSwapArray($objCSV->sfGetCsvOutput($subno_id));
-
-        if (!isset($arrOptions['no'])) $arrOptions['no'] = array();
-        if (!isset($arrOptions['disp_name'])) $arrOptions['disp_name'] = array();
-
-        $arrOptions = SC_Utils_Ex::sfarrCombine($arrOptions['no'], $arrOptions['disp_name']);
-
-        $this->arrOptions = $arrOptions;
-
-        $this->SubnaviName = $this->arrSubnaviName[$subno_id];
-        $this->tpl_subno_csv = $subno_csv;
+    /**
+     * カラム列情報と表示名情報を取得
+     *
+     * @param integer $csv_id CSV ID
+     * @return array 選択済みカラム列情報
+     */
+    function lfGetOptions($csv_id) {
+        $arrData = $this->lfGetCSVColumn($csv_id);
+        if (!isset($arrData['no'])) {
+            $arrData['no'] = array();
+            $arrData['disp_name'] = array();
+        }
+        $arrData = SC_Utils_Ex::sfArrCombine($arrData['no'], $arrData['disp_name']);
+        return $arrData;
     }
 
    /**
@@ -153,28 +191,67 @@ class LC_Page_Admin_Contents_CSV extends LC_Page_Admin {
         parent::destroy();
     }
 
-    function lfUpdCsvOutput($csv_id, $arrData = array()){
-        $objQuery = new SC_Query();
-
-        // ひとまず、全部使用しないで更新する
-        $upd_sql = "UPDATE dtb_csv SET status = 2, rank = NULL, update_date = now() WHERE csv_id = ?";
-        $objQuery->query($upd_sql, array($csv_id));
-
-        // 使用するものだけ、再更新する。
-        if (is_array($arrData)) {
-            foreach($arrData as $key => $val){
-                $upd_sql = "UPDATE dtb_csv SET status = 1, rank = ? WHERE csv_id = ? AND no = ? ";
-                $objQuery->query($upd_sql, array($key+1, $csv_id, $val));
-            }
+    /**
+     * CSV名からCSV_IDを取得する。
+     *
+     * @param string $subno_csv CSV名
+     * @return integer CSV_ID
+     */
+    function lfGetCsvId($subno_csv) {
+        $objCSV = new SC_Helper_CSV_Ex();
+        $arrKey = array_keys($objCSV->arrSubnavi,$subno_csv);
+        $csv_id = $arrKey[0];
+        if(!SC_Utils_Ex::sfIsInt($csv_id)) {
+            //初期値取りだし
+            $arrKey = array_keys($objCSV->arrSubnavi);
+            $csv_id = $arrKey[0];
         }
+        return $csv_id;
     }
 
-    Function Lfcheckerror($data){
-        $objErr = new SC_CheckError();
-        $objErr->doFunc( array("出力項目", "output_list"), array("EXIST_CHECK") );
+    /**
+     * CSV出力項目設定を初期化する
+     *
+     * @param integer $csv_id CSV_ID
+     * @return boolean 成功:true
+     */
+    function lfSetDefaultCsvOutput($csv_id) {
+        $arrData = $this->lfGetCSVColumn($csv_id, '', $order = 'no');
+        if (!isset($arrData['no'])) {
+            $arrData['no'] = array();
+        }
+        return $this->lfUpdCsvOutput($csv_id, $arrData['no']);
+    }
 
-        return $objErr->arrErr;
+    /**
+     * CSV出力項目設定を更新する処理
+     *
+     * @param integer $csv_id CSV_ID
+     * @param array $arrData 有効にするCSV列データ配列
+     * @return boolean 成功:true
+     */
+    function lfUpdCsvOutput($csv_id, $arrData = array()){
+        $objQuery =& SC_Query::getSingletonInstance();
+        // ひとまず、全部使用しないで更新する
+        $table = "dtb_csv";
+        $where = "csv_id = ?";
+        $arrWhereVal = array($csv_id);
+        $arrUpdVal = array( 'status' => '2', 'rank' => NULL, 'update_date' => 'now()' );
 
+        $objQuery->begin();
+        $objQuery->update($table, $arrUpdVal, $where, $arrWhereVal);
+        // 使用するものだけ、再更新する。
+        if (is_array($arrData)) {
+            $where .= " AND no = ?";
+            $arrUpdVal = array('status' => '1');
+            foreach($arrData as $key => $val){
+                $arrWhereVal = array($csv_id, $val);
+                $arrUpdVal['rank'] = $key + 1;
+                $objQuery->update($table, $arrUpdVal, $where, $arrWhereVal);
+            }
+        }
+        $objQuery->commit();
+        return true;
     }
 }
 ?>

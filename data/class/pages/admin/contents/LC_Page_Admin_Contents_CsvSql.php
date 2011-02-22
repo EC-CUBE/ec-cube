@@ -67,159 +67,171 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin {
      * @return void
      */
     function action() {
-        $objDbFactory = SC_DB_DBFactory_Ex::getInstance();
-
         // 認証可否の判定
-        $objSess = new SC_Session();
-        SC_Utils_Ex::sfIsSuccess($objSess);
+        SC_Utils_Ex::sfIsSuccess(new SC_Session());
 
-        if (!isset($_POST['sql_id'])) $_POST['sql_id'] = "";
-        if (!isset($_GET['sql_id'])) $_GET['sql_id'] = "";
-        if (!isset($_POST['selectTable'])) $_POST['selectTable'] = "";
+        // パラメータ管理クラス
+        $objFormParam = new SC_FormParam();
+        // パラメータ設定
+        $this->lfInitParam($objFormParam);
+        $objFormParam->setParam($_POST);
+        $objFormParam->setParam($_GET);
+        $objFormParam->convParam();
+        $this->arrForm = $objFormParam->getHashArray();
 
-        // SQL_IDの取得
-        if ($_POST['sql_id'] != "") {
-            $sql_id = $_POST['sql_id'];
-        }elseif($_GET['sql_id'] != ""){
-            $sql_id = $_GET['sql_id'];
-        }else{
-            $sql_id = "";
-        }
-
-        $mode = $this->getMode();
-
-        switch($mode) {
-            // データの登録
+        switch($this->getMode()) {
+        // データの登録
         case "confirm":
-            // エラーチェック
-            $this->arrErr = $this->lfCheckError($_POST);
-
-            if (count($this->arrErr) <= 0){
+            $this->arrErr = $this->lfCheckConfirmError($objFormParam);
+            if(SC_Utils_Ex::isBlank($this->arrErr)) {
                 // データの更新
-                $sql_id = $this->lfUpdData($sql_id, $_POST);
+                $this->arrForm['sql_id'] = $this->lfUpdData($objFormParam->getValue('sql_id'), $objFormParam->getDbArray());
                 // 完了メッセージ表示
                 $this->tpl_onload = "alert('登録が完了しました。');";
             }
             break;
-
-            // 確認画面
+        // 確認画面
         case "preview":
-            // SQL文表示
-            $sql = "SELECT \n" . $_POST['csv_sql']; // FIXME
-            $this->sql = $sql;
-
-            // エラー表示
-            $objErrMsg = $this->lfCheckSQL($_POST);
-            if ($objErrMsg != "") {
-                $errMsg = $objErrMsg->message . "\n" . $objErrMsg->userinfo;
+            $this->arrErr = $this->lfCheckPreviewError($objFormParam);
+            if(SC_Utils_Ex::isBlank($this->arrErr)) {
+                $this->sqlerr = $this->lfCheckSQL($objFormParam->getValue('csv_sql'));
             }
-
-            $this->sqlerr = isset($errMsg) ? $errMsg : "" ;
-
-            // 画面の表示
             $this->setTemplate('contents/csv_sql_view.tpl');
             return;
             break;
-
-            // 新規作成
+        // 新規作成
         case "new_page":
-            $this->objDisplay->reload(array(), true);
-            exit;
+            // リロード
+            SC_Response_Ex::reload();
             break;
-
-            // データ削除
+        // データ削除
         case "delete":
-            $this->lfDelData($sql_id);
-            $this->objDisplay->reload(array(), true);
-            exit;
-            break;
-
-        case "csv_output":
-            // CSV出力データ取得
-            $arrCsvData = $this->lfGetSqlList(" WHERE sql_id = ?", array($_POST['csv_output_id']));
-
-            $objQuery = new SC_Query();
-
-            $arrCsvOutputData = $objQuery->getAll("SELECT " . $arrCsvData[0]['csv_sql']);
-
-            if (count($arrCsvOutputData) > 0) {
-
-                $arrKey = array_keys(SC_Utils_Ex::sfSwapArray($arrCsvOutputData));
-                $i = 0;
-                $header = "";
-                foreach($arrKey as $data) {
-                    if ($i != 0) $header .= ",";
-                    $header .= $data;
-                    $i ++;
-                }
-                $header .= "\n";
-
-                $data = SC_Utils_Ex::getCSVData($arrCsvOutputData, $arrKey);
-                // CSV出力
-                SC_Utils_Ex::sfCSVDownload($header.$data);
+            $this->arrErr = $this->lfCheckDeleteError($objFormParam);
+            if(SC_Utils_Ex::isBlank($this->arrErr)) {
+                $this->lfDelData($objFormParam->getValue('sql_id'));
+                SC_Response_Ex::reload();
                 exit;
-            }else{
-                $this->tpl_onload = "alert('出力データがありません。');";
-                $sql_id = "";
-                $_POST="";
+            }
+            break;
+        // CSV出力
+        case "csv_output":
+            $this->arrErr = $this->lfCheckOutputError($objFormParam);
+            if(SC_Utils_Ex::isBlank($this->arrErr)) {
+                $this->lfDoCsvOutput($objFormParam->getValue('csv_output_id'));
+                exit;
+            }
+            break;
+        default:
+            $this->arrErr = $objFormParam->checkError();
+            if(SC_Utils_Ex::isBlank($this->arrErr)) {
+                // 設定内容を取得する
+                $this->arrForm = $this->lfGetSqlData($objFormParam);
+                // カラム一覧を取得する
+                $this->arrColList = $this->lfGetColList($objFormParam->getValue('select_table'));
             }
             break;
         }
 
-        // mode が confirm 以外のときは完了メッセージは出力しない
-        if ($mode != "confirm" and $mode != "csv_output") {
-            $this->tpl_onload = "";
-        }
-
         // 登録済みSQL一覧取得
-        $arrSqlList = $this->lfGetSqlList();
-
-        // 編集用SQLデータの取得
-        if ($sql_id != "") {
-            $arrSqlData = $this->lfGetSqlList(" WHERE sql_id = ?", array($sql_id));
-        }
-
+        $this->arrSqlList = $this->lfGetSqlList();
         // テーブル一覧を取得する
-        $arrTableList = $this->lfGetTableList();
-        $arrTableList = SC_Utils_Ex::sfSwapArray($arrTableList);
+        $this->arrTableList = $this->lfGetTableList();
+    }
 
-        // 現在選択されているテーブルを取得する
-        if ($_POST['selectTable'] == ""){
-            $selectTable = $arrTableList['table_name'][0];
-        }else{
-            $selectTable = $_POST['selectTable'];
+    /**
+     * パラメーター情報の初期化
+     *
+     * @param array $objFormParam フォームパラメータークラス
+     * @return void
+     */
+    function lfInitParam(&$objFormParam) {
+        $objFormParam->addParam('SQL ID', 'sql_id', INT_LEN, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
+        $objFormParam->addParam('CSV出力対象SQL ID', 'csv_output_id', INT_LEN, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"), "", false);
+        $objFormParam->addParam('選択テーブル', 'select_table', STEXT_LEN, 'KVa', array("GRAPH_CHECK","MAX_LENGTH_CHECK"), "", false);
+        $objFormParam->addParam('名称', 'sql_name', STEXT_LEN, 'KVa', array("MAX_LENGTH_CHECK","SPTAB_CHECK"));
+        $objFormParam->addParam('SQL文', 'csv_sql', "30000", 'KVa', array("MAX_LENGTH_CHECK","SPTAB_CHECK"));
+    }
+    
+    /**
+     * SQL登録エラーチェック
+     *
+     * @param array $objFormParam フォームパラメータークラス
+     * @return array エラー配列
+     */
+    function lfCheckConfirmError(&$objFormParam) {
+        // パラメーターの基本チェック
+        $arrErr = $objFormParam->checkError();
+        // 拡張エラーチェック
+        $objErr = new SC_CheckError($objFormParam->getHashArray());
+        $objErr->doFunc( array("名称", "sql_name"), array("EXIST_CHECK") );
+        $objErr->doFunc( array("SQL文", "csv_sql", "30000"), array("EXIST_CHECK", "MAX_LENGTH_CHECK") );
+        $objErr->doFunc( array('SQL文には読み込み関係以外のSQLコマンドおよび";"記号', 'csv_sql', $this->lfGetSqlDenyList()), array("PROHIBITED_STR_CHECK"));
+        if(!SC_Utils_Ex::isBlank($objErr->arrErr)) {
+            $arrErr = array_merge($arrErr, $objErr->arrErr);
         }
-
-        // カラム一覧を取得する
-        $arrColList = $this->lfGetColumnList($selectTable);
-        $arrColList =  SC_Utils_Ex::sfSwapArray($arrColList);
-
-        // 表示させる内容を編集
-        foreach ($arrTableList['description'] as $key => $val) {
-            $arrTableList['description'][$key] = $arrTableList['table_name'][$key] . "：" . $arrTableList['description'][$key];
+        // SQL文自体の確認、エラーが無い時のみ実行
+        if(SC_Utils_Ex::isBlank($arrErr)) {
+            $sql_error = $this->lfCheckSQL($objFormParam->getValue('csv_sql'));
+            if(!SC_Utils_Ex::isBlank($sql_error)) {
+                $arrErr["csv_sql"] = "※ SQL文が不正です。SQL文を見直してください";
+            }
         }
-        foreach ($arrColList['description'] as $key => $val) {
-            $arrColList['description'][$key] = $arrColList['column_name'][$key] . "：" . $arrColList['description'][$key];
+        return $arrErr;
+    }
+
+    /**
+     * SQL確認エラーチェック
+     *
+     * @param array $objFormParam フォームパラメータークラス
+     * @return array エラー配列
+     */
+    function lfCheckPreviewError(&$objFormParam) {
+        // パラメーターの基本チェック
+        $arrErr = $objFormParam->checkError();
+        // 拡張エラーチェック
+        $objErr = new SC_CheckError($objFormParam->getHashArray());
+        $objErr->doFunc( array("SQL文", "csv_sql", "30000"), array("EXIST_CHECK", "MAX_LENGTH_CHECK") );
+        $objErr->doFunc( array('SQL文には読み込み関係以外のSQLコマンドおよび";"記号', 'csv_sql', $this->lfGetSqlDenyList()), array("PROHIBITED_STR_CHECK"));
+        if(!SC_Utils_Ex::isBlank($objErr->arrErr)) {
+            $arrErr = array_merge($arrErr, $objErr->arrErr);
         }
+        return $arrErr;
+    }
 
-
-        $arrDiff = array_diff($objDbFactory->sfGetColumnList($selectTable), $arrColList["column_name"]);
-        $arrColList["column_name"] = array_merge($arrColList["column_name"], $arrDiff);
-        $arrColList["description"] = array_merge($arrColList["description"], $arrDiff);
-
-        // テンプレートに出力するデータをセット
-        $this->arrSqlList = $arrSqlList;	// SQL一覧
-        $this->arrTableList = SC_Utils_Ex::sfarrCombine($arrTableList['table_name'], $arrTableList['description']);	// テーブル一覧
-        $this->arrColList = SC_Utils_Ex::sfarrCombine($arrColList['column_name'],$arrColList['description']);			// カラム一覧
-        $this->selectTable = $selectTable;	// 選択されているテーブル
-        $this->sql_id = $sql_id;			// 選択されているSQL
-
-        // POSTされたデータをセットする
-        if (isset($_POST['sql_name']) && isset($_POST['csv_sql'])){
-            $arrSqlData[0]['sql_name'] = isset($_POST['sql_name']) ? $_POST['sql_name'] : "";
-            $arrSqlData[0]['csv_sql'] = isset($_POST['csv_sql']) ? $_POST['csv_sql'] : "";
+    /**
+     * SQL設定 削除エラーチェック
+     *
+     * @param array $objFormParam フォームパラメータークラス
+     * @return array エラー配列
+     */
+    function lfCheckDeleteError(&$objFormParam) {
+        // パラメーターの基本チェック
+        $arrErr = $objFormParam->checkError();
+        // 拡張エラーチェック
+        $objErr = new SC_CheckError($objFormParam->getHashArray());
+        $objErr->doFunc( array("SQL ID", "sql_id"), array("EXIST_CHECK") );
+        if(!SC_Utils_Ex::isBlank($objErr->arrErr)) {
+            $arrErr = array_merge($arrErr, $objErr->arrErr);
         }
-        $this->arrSqlData = $arrSqlData[0];	// 選択されているSQLデータ
+        return $arrErr;
+    }
+
+    /**
+     * SQL設定 CSV出力エラーチェック
+     *
+     * @param array $objFormParam フォームパラメータークラス
+     * @return array エラー配列
+     */
+    function lfCheckOutputError(&$objFormParam) {
+        // パラメーターの基本チェック
+        $arrErr = $objFormParam->checkError();
+        // 拡張エラーチェック
+        $objErr = new SC_CheckError($objFormParam->getHashArray());
+        $objErr->doFunc( array("CSV出力対象SQL ID", "csv_output_id"), array("EXIST_CHECK") );
+        if(!SC_Utils_Ex::isBlank($objErr->arrErr)) {
+            $arrErr = array_merge($arrErr, $objErr->arrErr);
+        }
+        return $arrErr;
     }
 
     /**
@@ -234,16 +246,25 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin {
     /**
      * テーブル一覧を取得する.
      *
-     * @return void
+     * @return array テーブル名一覧
      */
     function lfGetTableList(){
-        $objQuery = new SC_Query();
-        $arrRet = array();		// 結果取得用
-
-        $sql = "";
-        $sql .= "SELECT table_name, description FROM dtb_table_comment WHERE column_name IS NULL ORDER BY table_name";
-        $arrRet = $objQuery->getAll($sql);
-
+        $objQuery =& SC_Query::getSingletonInstance();
+        // 実テーブル上のカラム設定を見に行く仕様に変更 ref #476
+        $arrTable = $objQuery->listTables();
+        if(SC_Utils_Ex::isBlank($arrTable)) {
+            return array();
+        }
+        $arrRet = array();
+        foreach($arrTable as $table) {
+            if(substr($table, 0, 4) == 'dtb_') {
+                $arrRet[ $table ] = 'データテーブル: ' . $table;
+            }else if(substr($table, 0, 4) == 'mtb_') {
+                $arrRet[ $table ] = 'マスタテーブル: ' . $table;
+            }else if(substr($table, 0, 3) == 'vw_') {
+                $arrRet[ $table ] = 'ビュー: ' . $table;
+            }
+        }
         return $arrRet;
     }
 
@@ -253,137 +274,122 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin {
      * @param string $selectTable テーブル名
      * @return array カラム一覧の配列
      */
-    function lfGetColumnList($selectTable){
-        $objQuery = new SC_Query();
-        $arrRet = array();		// 結果取得用
-        $sql = "";
-        $sql .= " SELECT column_name, description FROM dtb_table_comment WHERE table_name = ? AND column_name IS NOT NULL";
-        $arrRet = $objQuery->getAll($sql, array($selectTable));
-
-        return $arrRet;
+    function lfGetColList($table){
+        if(SC_Utils_Ex::isBlank($table)) {
+            return array();
+        }
+        $objQuery =& SC_Query::getSingletonInstance();
+        // 実テーブル上のカラム設定を見に行く仕様に変更 ref #476
+        $arrColList = $objQuery->listTableFields($table);
+        $arrColList= SC_Utils_Ex::sfArrCombine($arrColList, $arrColList);
+        return $arrColList;
     }
 
     /**
      * 登録済みSQL一覧を取得する.
      *
      * @param string $where Where句
-     * @param array $arrData 絞り込みデータ
+     * @param array $arrVal 絞り込みデータ
      * @return array 取得結果の配列
      */
-    function lfGetSqlList($where = "" , $arrData = array()){
-        $objQuery = new SC_Query();
-        $arrRet = array();		// 結果取得用
-
-        $sql = "";
-        $sql .= " SELECT";
-        $sql .= "     sql_id,";
-        $sql .= "     sql_name,";
-        $sql .= "     csv_sql,";
-        $sql .= "     update_date,";
-        $sql .= "     create_date";
-        $sql .= " FROM";
-        $sql .= "     dtb_csv_sql";
-
-        // Where句の指定があれば結合する
-        if ($where != "") {
-            $sql .= " $where ";
-        }else{
-            $sql .= " ORDER BY sql_id ";
-        }
-        $sql .= " ";
-
-        // データを引数で渡されている場合にはセットする
-        if (count($arrData) > 0) {
-            $arrRet = $objQuery->getAll($sql, $arrData);
-        }else{
-            $arrRet = $objQuery->getAll($sql);
-        }
-
-        return $arrRet;
+    function lfGetSqlList($where = "" , $arrVal = array()){
+        $objQuery =& SC_Query::getSingletonInstance();
+        $table = "dtb_csv_sql";
+        $objQuery->setOrder('sql_id');
+        return $objQuery->select('*', $table, $where, $arrVal);
     }
 
     /**
-     * 入力項目のエラーチェックを行う.
+     * 入力されたSQL文が正しく実行出来るかのチェックを行う.
      *
-     * @param array POSTデータ
-     * @return array エラー内容の配列
+     * @param string SQL文データ(頭にSELECTは入れない)
+     * @return string エラー内容
      */
-    function lfCheckError($data){
-        $objErr = new SC_CheckError();
-        $objErr->doFunc( array("名称", "sql_name"), array("EXIST_CHECK") );
-        $objErr->doFunc( array("SQL文", "csv_sql", "30000"), array("EXIST_CHECK", "MAX_LENGTH_CHECK") );
+    function lfCheckSQL($sql){
+        // FIXME: 意図的に new SC_Query しています。 force_runをtrueにする必要があるので.本当はqueryの引数で制御したい。ref SC_Query
+        $objQuery = new SC_Query("", true);
+        $err = "";
+        $sql = "SELECT " . $sql . " ";
+        $objErrMsg = $objQuery->query($sql);
+        if (PEAR::isError($objErrMsg)){
+            $err = $objErrMsg->message . "\n" . $objErrMsg->userinfo;
+        }
+        return $err;
+    }
 
-        // SQLの妥当性チェック
-        if ($objErr->arrErr['csv_sql'] == "") {
-            $objsqlErr = $this->lfCheckSQL($data);
-            if ($objsqlErr != "") {
-                $objErr->arrErr["csv_sql"] = "SQL文が不正です。SQL文を見直してください";
+    /**
+     * SQL詳細設定情報呼び出し (編集中データがある場合はそれを保持する）
+     *
+     * @param array $objFormParam フォームパラメータークラス
+     * @return mixed 表示用パラメーター
+     */
+    function lfGetSqlData(&$objFormParam) {
+        // 編集中データがある場合
+        if(!SC_Utils_Ex::isBlank($objFormParam->getValue('sql_name'))
+                or !SC_Utils_Ex::isBlank($objFormParam->getValue('csv_sql'))) {
+            return $objFormParam->getHashArray();
+        }
+        $csv_id = $objFormParam->getValue('csv_id');
+        if(!SC_Utils_Ex::isBlank($csv_id)) {
+            $arrData = $this->lfGetSqlList('csv_id = ?', array($csv_id));
+            return $arrData[0];
+        }
+        return array();
+    }
+
+    /**
+     * DBにデータを保存する.
+     *
+     * @param integer $sql_id 出力するデータのSQL_ID
+     * @return void
+     */
+    function lfDoCsvOutput($sql_id) {
+        $arrData = $this->lfGetSqlList('sql_id = ?', array($sql_id));
+        $sql = "SELECT " . $arrData[0]['csv_sql'] . " ";
+
+        // TODO: ヘッダ取得 SQL内にLIMIT文がある場合はLIMIT句は追加しないので重いかも
+        $objQuery =& SC_Query::getSingletonInstance();
+
+        $arrHeader = array();
+        if(!preg_match("/ LIMIT /", $sql)) {
+            $head_sql = $sql . " LIMIT 0";
+        }else{
+            $head_sql = $sql;
+        }
+        $arrData = $objQuery->getQueryDefsFields($head_sql, array(), true);
+        if(!SC_Utils_Ex::isBlank($arrData)) {
+            foreach($arrData as $key => $val) {
+                $arrHeader[] = $key;
             }
         }
-
-        return $objErr->arrErr;
-    }
-
-    /**
-     * 入力されたSQL文が正しいかチェックを行う.
-     *
-     * @param array POSTデータ
-     * @return array エラー内容
-     */
-    function lfCheckSQL($data){
-        $err = "";
-        $objQuery = new SC_Query();
-        $sql = "SELECT " . $data['csv_sql'] . " ";
-        $ret = $objQuery->query($sql);
-        if (PEAR::isError($ret)){
-            $err = $ret;
-        }
-
-        return $err;
+        require_once(CLASS_EX_REALDIR . "helper_extends/SC_Helper_CSV_Ex.php");
+        $objCSV = new SC_Helper_CSV_Ex();
+        $objCSV->sfDownloadCsvFromSql($sql, array(), "contents", $arrHeader, true);
+        exit;
     }
 
     /**
      * DBにデータを保存する.
      *
      * @param integer $sql_id 更新するデータのSQL_ID
-     * @param array $arrData 更新データの配列
+     * @param array $arrSqlVal 更新データの配列
      * @return integer $sql_id SQL_IDを返す
      */
-    function lfUpdData($sql_id = "", $arrData = array()){
-        $objQuery = new SC_Query();		// DB操作オブジェクト
-        $sql = "";						// データ取得SQL生成用
-        $arrRet = array();				// データ取得用(更新判定)
-        $arrVal = array();				// データ更新
-
-        // sql_id が指定されている場合にはUPDATE
-        if ($sql_id != "") {
-            // 存在チェック
-            $arrSqlData = $this->lfGetSqlList(" WHERE sql_id = ?", array($sql_id));
-            if (count($arrSqlData) > 0) {
-                // データ更新
-                $sql = "UPDATE dtb_csv_sql SET sql_name = ?, csv_sql = ?, update_date = now() WHERE sql_id = ? ";
-                $arrVal= array($arrData['sql_name'], $arrData['csv_sql'], $sql_id);
-            }else{
-                // データの新規作成
-                $sql_id = "";
-                $sql = "INSERT INTO dtb_csv_sql (sql_id, sql_name, csv_sql, create_date, update_date) values (?, ?, ?, now(), now()) ";
-                $arrVal= array($objQuery->nextVal('dtb_csv_sql_sql_id'), $arrData['sql_name'], $arrData['csv_sql']);
-
-            }
+    function lfUpdData($sql_id, $arrSqlVal){
+        $objQuery =& SC_Query::getSingletonInstance();
+        $table = "dtb_csv_sql";
+        $arrSqlVal['update_date'] = 'now()';
+        if (SC_Utils_Ex::sfIsInt($sql_id)) {
+            //データ更新
+            $where = "sql_id = ?";
+            $objQuery->update($table, $arrSqlVal, $where, array($sql_id));
         }else{
-            // データの新規作成
-            $sql = "INSERT INTO dtb_csv_sql (sql_id, sql_name, csv_sql, create_date, update_date) values (?, ?, ?, now(), now()) ";
-            $arrVal= array($objQuery->nextVal('dtb_csv_sql_sql_id'), $arrData['sql_name'], $arrData['csv_sql']);
+            //新規作成
+            $sql_id = $objQuery->nextVal('dtb_csv_sql_sql_id');
+            $arrSqlVal['sql_id'] = $sql_id;
+            $arrSqlVal['create_date'] = 'now()';
+            $objQuery->insert($table, $arrSqlVal);
         }
-        // SQL実行
-        $arrRet = $objQuery->query($sql,$arrVal);
-
-        // 新規作成時は$sql_idを取得
-        if ($sql_id == "") {
-            $arrNewData = $this->lfGetSqlList(" ORDER BY create_date DESC");
-            $sql_id = $arrNewData[0]['sql_id'];
-        }
-
         return $sql_id;
     }
 
@@ -392,25 +398,87 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin {
      * 登録済みデータを削除する.
      *
      * @param integer $sql_id 削除するデータのSQL_ID
-     * @return bool 実行結果 TRUE：成功 FALSE：失敗
+     * @return boolean 実行結果 true：成功
      */
-    function lfDelData($sql_id = ""){
-        $objQuery = new SC_Query();		// DB操作オブジェクト
-        $sql = "";						// データ取得SQL生成用
-        $Ret = false;					// 実行結果
-
-        // sql_id が指定されている場合のみ実行
-        if ($sql_id != "") {
-            // データの削除
-            $sql = "DELETE FROM dtb_csv_sql WHERE sql_id = ? ";
-            // SQL実行
-            $ret = $objQuery->query($sql,array($sql_id));
-        }else{
-            $ret = false;
+    function lfDelData($sql_id){
+        $objQuery =& SC_Query::getSingletonInstance();
+        $table = "dtb_csv_sql";
+        $where = "sql_id = ?";
+        if(SC_Utils_Ex::sfIsInt($sql_id)) {
+            $objQuery->delete($table, $where, array($sql_id));
+            return true;
         }
+        return false;
+    }
 
-        // 結果を返す
-        return $ret;
+    /**
+     * SQL文に含めることを許可しないSQLキーワード
+     * 基本的にEC-CUBEのデータを取得するために必要なコマンドしか許可しない。複数クエリも不可
+     *
+     * FIXME: キーワードの精査。危険な部分なのでプログラム埋め込みで実装しました。mtb化の有無判断必要。
+     *
+     * @return array 不許可ワード配列
+     */
+    function lfGetSqlDenyList() {
+        $arrList = array(';'
+            ,'CREATE\s'
+            ,'INSERT\s'
+            ,'UPDATE\s'
+            ,'DELETE\s'
+            ,'ALTER\s'
+            ,'ABORT\s'
+            ,'ANALYZE\s'
+            ,'CLUSTER\s'
+            ,'COMMENT\s'
+            ,'COPY\s'
+            ,'DECLARE\s'
+            ,'DISCARD\s'
+            ,'DO\s'
+            ,'DROP\s'
+            ,'EXECUTE\s'
+            ,'EXPLAIN\s'
+            ,'GRANT\s'
+            ,'LISTEN\s'
+            ,'LOAD\s'
+            ,'LOCK\s'
+            ,'NOTIFY\s'
+            ,'PREPARE\s'
+            ,'REASSIGN\s'
+//            ,'REINDEX\s'      // REINDEXは許可で良いかなと
+            ,'RELEASE\sSAVEPOINT'
+            ,'RENAME\s'
+            ,'REST\s'
+            ,'REVOKE\s'
+            ,'SAVEPOINT\s'
+            ,'SET\s'
+            ,'SHOW\s'
+            ,'START\sTRANSACTION'
+            ,'TRUNCATE\s'
+            ,'UNLISTEN\s'
+            ,'VACCUM\s'
+            ,'HANDLER\s'
+            ,'LOAD\sDATA\s'
+            ,'LOAD\sXML\s'
+            ,'REPLACE\s'
+            ,'OPTIMIZE\s'
+            ,'REPAIR\s'
+            ,'INSTALL\sPLUGIN\s'
+            ,'UNINSTALL\sPLUGIN\s'
+            ,'BINLOG\s'
+            ,'KILL\s'
+            ,'RESET\s'
+            ,'PURGE\s'
+            ,'CHANGE\sMASTER'
+            ,'START\sSLAVE'
+            ,'STOP\sSLAVE'
+            ,'MASTER\sPOS\sWAIT'
+            ,'SIGNAL\s'
+            ,'RESIGNAL\s'
+            ,'RETURN\s'
+            ,'USE\s'
+            ,'HELP\s'
+            );
+        return $arrList;
     }
 }
 ?>

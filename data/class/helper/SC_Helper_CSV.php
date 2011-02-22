@@ -231,17 +231,36 @@ class SC_Helper_CSV {
             
         }
         // 固有処理ここまで
+        return $this->sfDownloadCsvFromSql($sql, $arrVal, $this->arrSubnavi[$csv_id], $arrOutput['disp_name'], $is_download);
+    }
 
+    /**
+     * SQL文からクエリ実行し CSVファイルを送信する
+     *
+     * @param integer $sql SQL文
+     * @param array $arrVal プリペアドステートメントの実行時に使用される配列。配列の要素数は、クエリ内のプレースホルダの数と同じでなければなりません。 
+     * @param string $file_head ファイル名の頭に付ける文字列
+     * @param array $arrHeader ヘッダ出力列配列
+     * @param boolean $is_download true:ダウンロード用出力までさせる false:CSVの内容を返す(旧方式、メモリを食います。）
+     * @return mixed $is_download = true時 成功失敗フラグ(boolean) 、$is_downalod = false時 string
+     */
+    function sfDownloadCsvFromSql($sql, $arrVal = array(), $file_head = 'csv', $arrHeader = array(), $is_download = false) {
+        $objQuery =& SC_Query::getSingletonInstance();
+
+        // 実行時間を制限しない
+        @set_time_limit(0);
         // ヘッダ構築
-        $header = $this->sfArrayToCSV($arrOutput['disp_name']);
-        $header = mb_convert_encoding($header, 'SJIS-Win');
-        $header .= "\r\n";
+        if(is_array($arrHeader)) {
+            $header = $this->sfArrayToCSV($arrHeader);
+            $header = mb_convert_encoding($header, 'SJIS-Win');
+            $header .= "\r\n";
+        }
 
         //テンポラリファイル作成
         // TODO: パフォーマンス向上には、ストリームを使うようにすると良い
-        //  環境要件がバージョン5.1以上になったら使うように変えても良いかと
+        //  環境要件がPHPバージョン5.1以上になったら使うように変えても良いかと
         //  fopen('php://temp/maxmemory:'. (5*1024*1024), 'r+');
-        $tmp_filename = tempnam(CSV_TEMP_REALDIR, $this->arrSubnavi[$csv_id] . '_csv');
+        $tmp_filename = tempnam(CSV_TEMP_REALDIR, $file_head . '_csv');
         $this->fpOutput = fopen($tmp_filename, "w+");
         fwrite($this->fpOutput, $header);
         $objQuery->doCallbackAll(array(&$this, 'cbOutputCSV'), $sql, $arrVal);
@@ -250,16 +269,17 @@ class SC_Helper_CSV {
 
         if($is_download) {
             // CSVを送信する。
-            $this->lfDownloadCSVFile($tmp_filename,$this->arrSubnavi[$csv_id] . "_");
+            $this->lfDownloadCSVFile($tmp_filename, $file_head . "_");
             $res = true;
         }else{
             $res = SC_Utils_Ex::sfReadFile($tmp_filename);
         }
-        
+
         //テンポラリファイル削除
         unlink($tmp_filename);
         return $res;
     }
+
 
     // CSV出力データを作成する。(レビュー)
     function lfGetReviewCSV($where, $option, $arrval) {
