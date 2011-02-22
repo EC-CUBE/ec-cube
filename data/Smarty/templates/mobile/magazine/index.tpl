@@ -27,6 +27,7 @@
 ※<!--{if $arrSiteInfo.shop_name != ""}--><!--{$arrSiteInfo.shop_name|h}-->では<!--{/if}-->ご利用規約に従い利用者のアドレスを保護しています。<br>
 <br>
 <form action="confirm.php" method="post">
+
 	■登録<br>
 	<font color="#FF0000"><!--{$arrErr.regist}--></font>
 	<input type="text" name="regist" value="<!--{$arrForm.regist|h}-->" istyle="3"><br>

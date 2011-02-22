@@ -25,7 +25,6 @@
     <h2 class="title"><!--{$tpl_title|h}--></h2>
     <form name="member_form" id="member_form" method="post" action="?" onsubmit="return fnCheckLogin('member_form')">
    <div class="loginarea">
-     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
      <h3>会員登録がお済みのお客様</h3>
      <p class="inputtext">会員の方は、登録時に入力されたメールアドレスとパスワードでログインしてください。</p>
        <input type="hidden" name="mode" value="login" />
@@ -59,7 +58,6 @@
     </form>
     <form name="member_form2" id="member_form2" method="post" action="?">
       <input type="hidden" name="mode" value="nonmember" />
-      <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <div class="loginarea">
     <h3>まだ会員登録されていないお客様</h3>
     <p class="inputtext">会員登録をすると便利なMyページをご利用いただけます。<br />

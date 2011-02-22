@@ -66,6 +66,10 @@ class LC_Page_Admin extends LC_Page {
         // プラグインクラス生成
         // $this->objPlagin = new SC_Helper_Plugin_Ex();
         // $this->objPlagin->preProcess($this);
+
+        // トランザクショントークンの検証と生成
+        $this->doValidToken(true);
+        $this->setTokenTo();
     }
 
     /**

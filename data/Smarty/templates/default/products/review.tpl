@@ -31,7 +31,6 @@
         <form name="form1" method="post" action="?">
         <input type="hidden" name="mode" value="confirm" />
         <input type="hidden" name="product_id" value="<!--{$arrForm.product_id}-->" />
-        <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <table summary="お客様の声書き込み">
           <tr>
             <th>商品名</th>

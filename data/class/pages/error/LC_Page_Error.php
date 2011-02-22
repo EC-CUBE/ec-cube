@@ -167,5 +167,12 @@ class LC_Page_Error extends LC_Page {
     function destroy() {
         parent::destroy();
     }
+
+    /**
+     * エラーページではトランザクショントークンの自動検証は行わない
+     */
+    function doValidToken() {
+        // queit.
+    }
 }
 ?>

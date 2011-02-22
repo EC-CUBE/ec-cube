@@ -105,13 +105,6 @@ class LC_Page_Shopping extends LC_Page {
             }
         }
 
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            if (!SC_Helper_Session_Ex::isValidToken()) {
-                SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", true);
-                exit;
-            }
-        }
-
         switch ($this->getMode()) {
         // ログイン実行
         case 'login':
@@ -227,8 +220,6 @@ class LC_Page_Shopping extends LC_Page {
 
         // 入力値の取得
         $this->arrForm = $objFormParam->getFormParamList();
-
-        $this->transactionid = SC_Helper_Session_Ex::getToken();
 
         // 携帯端末IDが一致する会員が存在するかどうかをチェックする。
         if (SC_Display::detectDevice() === DEVICE_TYPE_MOBILE) {

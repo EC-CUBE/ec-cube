@@ -22,6 +22,7 @@
  */
 *}-->
 <form method="post" action="?">
+<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="confirm">
 <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
 
@@ -115,6 +116,7 @@
 <center><input type="submit" value="注文"></center>
 </form>
 <form action="<!--{$smarty.const.MOBILE_SHOPPING_PAYMENT_URLPATH}-->" method="post">
+<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="">
 <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
 <center><input type="submit" value="戻る"></center>

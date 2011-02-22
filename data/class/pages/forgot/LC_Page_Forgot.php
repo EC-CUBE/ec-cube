@@ -85,13 +85,6 @@ class LC_Page_Forgot extends LC_Page {
      * @return void
      */
     function action() {
-        // 不正アクセスチェック
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            if (!SC_Helper_Session_Ex::isValidToken()) {
-                SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", true);
-            }
-        }
-        
         // パラメータ管理クラス
         $objFormParam = new SC_FormParam();
 
@@ -137,8 +130,6 @@ class LC_Page_Forgot extends LC_Page {
                 break;
         }
 
-        $this->transactionid = SC_Helper_Session_Ex::getToken();
-        
         // ポップアップ用テンプレート設定
         if($this->device_type == DEVICE_TYPE_PC) {
             $this->setTemplate($this->tpl_mainpage);

@@ -32,7 +32,7 @@
     </p>
     <form action="?" method="post" name="form1">
     <input type="hidden" name="mode" value="secret_check" />
-    <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+
     <!--{foreach key=key item=item from=$arrForm}-->
     <!--{if $key ne 'reminder_answer'}-->
     <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />

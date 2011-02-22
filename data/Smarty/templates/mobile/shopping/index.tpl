@@ -26,6 +26,7 @@
 ■初めてご注文の方<br>
 (新規ご登録)<br>
 <form name="member_form" id="member_form" method="post" action="<!--{$smarty.const.MOBILE_URLPATH}-->entry/kiyaku.php">
+<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 	<div align="center"><input type="submit" value="新規登録"></div><br>
 </form>
 <!--▲まだ会員登録されていないお客様-->

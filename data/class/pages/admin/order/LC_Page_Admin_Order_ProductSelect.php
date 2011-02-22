@@ -112,7 +112,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin {
                 $this->tpl_javascript .= $this->getTplJavascript($objProduct);
                 $js_fnOnLoad = $this->getFnOnload($this->arrProducts);
                 $this->tpl_javascript .= 'function fnOnLoad(){' . $js_fnOnLoad . '}';
-                $this->tpl_onload .= 'fnOnLoad(); ';
+                $this->tpl_onload .= 'fnOnLoad();';
                 // 規格1クラス名
                 $this->tpl_class_name1 = $objProduct->className1;
                 // 規格2クラス名
@@ -133,6 +133,19 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin {
         // カテゴリ取得
         $this->arrCatList = $objDb->sfGetCategoryList();
         $this->setTemplate($this->tpl_mainpage);
+    }
+
+    /**
+     * トランザクショントークンを unset しないようオーバーライド.
+     *
+     * @return void
+     */
+    function doValidToken() {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            if (!SC_Helper_Session_Ex::isValidToken(false)) {
+                SC_Utils_Ex::sfDispError(INVALID_MOVE_ERRORR);
+            }
+        }
     }
 
     /**

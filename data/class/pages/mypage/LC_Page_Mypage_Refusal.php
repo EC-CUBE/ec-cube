@@ -70,17 +70,11 @@ class LC_Page_Mypage_Refusal extends LC_Page_AbstractMypage_Ex {
             break;
 
         case 'complete':
-            if (!SC_Helper_Session_Ex::isValidToken()) {
-                SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", true);
-            }
-
             $objCustomer = new SC_Customer();
             $this->lfDeleteCustomer($objCustomer->getValue('customer_id'));
             $objCustomer->EndSession();
             SC_Response_Ex::sendRedirect('refusal_complete.php');
         }
-        // mobileは確認画面がない
-        $this->transactionid    = SC_Helper_Session_Ex::getToken();
     }
 
     /**

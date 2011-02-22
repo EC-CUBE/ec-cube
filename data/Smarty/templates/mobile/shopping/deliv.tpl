@@ -28,6 +28,7 @@
 <!--▼CONTENTS-->
 <!--{section name=cnt loop=$arrAddr}-->
 <form method="post" action="?">
+<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
 <input type="hidden" name="deli" value="<!--{$smarty.section.cnt.iteration}-->">
 <input type="hidden" name="mode" value="customer_addr">
@@ -53,6 +54,7 @@
 
 ■新しいお届け先を追加する<br>
 <form method="post" action="<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php">
+<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="ParentPage" value="<!--{$smarty.const.DELIV_URLPATH}-->">
 <center><input type="submit" value="新規登録"></center>
 </form>
@@ -61,6 +63,7 @@
 
 ■お届け先を複数指定する<br>
 <form method="post" action="?">
+<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
 <input type="hidden" name="mode" value="multiple">
 <center><input type="submit" value="複数お届け先"></center>

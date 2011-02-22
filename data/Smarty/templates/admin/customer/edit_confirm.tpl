@@ -35,7 +35,7 @@ function func_return(){
 
 <form name="form1" id="form1" method="post" action="?">
     <input type="hidden" name="mode" value="complete" />
-    <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+
     <!--{foreach from=$arrForm key=key item=item}-->
         <!--{if $key ne "mode" && $key ne "subm" && $key ne $smarty.const.TRANSACTION_ID_NAME}-->
             <input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->" />

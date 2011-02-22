@@ -89,12 +89,6 @@ class LC_Page_Entry extends LC_Page {
             $_POST["mode"] = "return";
         }
 
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            if (!SC_Helper_Session_Ex::isValidToken()) {
-                SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", true);
-            }
-        }
-
         switch ($this->getMode()) {
         case 'confirm':
             //-- 確認
@@ -133,8 +127,6 @@ class LC_Page_Entry extends LC_Page {
         default:
             break;
         }
-
-        $this->transactionid = SC_Helper_Session_Ex::getToken();
     }
 
     /**

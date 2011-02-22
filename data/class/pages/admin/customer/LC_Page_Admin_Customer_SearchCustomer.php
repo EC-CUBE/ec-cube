@@ -67,15 +67,6 @@ class LC_Page_Admin_Customer_SearchCustomer extends LC_Page_Admin {
         // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess(new SC_Session());
 
-        // 不正アクセスチェック 
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            if (!SC_Helper_Session_Ex::isValidToken()) {
-                SC_Utils_Ex::sfDispError(INVALID_MOVE_ERRORR);
-            }
-        }
-        // トランザクションID
-        $this->transactionid = SC_Helper_Session_Ex::getToken();
-
         // パラメータ管理クラス
         $objFormParam = new SC_FormParam();
         // パラメータ設定

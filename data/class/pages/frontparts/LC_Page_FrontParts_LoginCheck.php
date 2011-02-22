@@ -64,12 +64,6 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page {
      * @return void
      */
     function action() {
-        // URLチェック
-        if ( !SC_Helper_Session_Ex::isValidToken() ) {
-            GC_Utils_Ex::gfPrintLog('invalid access :login_check.php $POST["url"]=' . $_POST['url']);
-            SC_Utils_Ex::sfDispSiteError(PAGE_ERROR);
-        }
-
         // 会員管理クラス
         $objCustomer = new SC_Customer();
         // クッキー管理クラス

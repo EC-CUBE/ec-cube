@@ -79,9 +79,6 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin {
         // ログインチェック
         SC_Utils::sfIsSuccess(new SC_Session());
 
-        // トランザクションIDの取得
-        $this->transactionid = SC_Helper_Session_Ex::getToken();
-
         switch($this->getMode()) {
         // 入力内容をDBへ登録する
         case 'register':
@@ -110,9 +107,6 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin {
      * @return void
      */
     function execRegisterMode() {
-        if (SC_Helper_Session_Ex::isValidToken() !== true) {
-            SC_Utils_Ex::sfDispError('');
-        }
         // パラメータオブジェクトの初期化
         $this->initRegisterMode();
         // POSTされたパラメータの検証
@@ -122,7 +116,6 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin {
         if (!empty($arrErr)) {
             $this->arrErr  = $arrErr;
             $this->arrForm = $this->objForm->getHashArray();
-            $this->transactionid = SC_Helper_Session_Ex::getToken();
             return;
         }
 
@@ -133,7 +126,6 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin {
         $this->arrForm = $arrForm;
 
         $this->tpl_onload = "alert('登録しました。')";
-        $this->transactionid = SC_Helper_Session_Ex::getToken();
     }
 
     /**

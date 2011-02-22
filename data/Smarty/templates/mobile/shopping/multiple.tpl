@@ -51,6 +51,7 @@
 
 <!--{if $tpl_addrmax < $smarty.const.DELIV_ADDR_MAX}-->
 <form method="post" action="<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php">
+<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="ParentPage" value="<!--{$smarty.const.MULTIPLE_URLPATH}-->">
     一覧にご希望の住所が無い場合は、お届け先を新規登録してください。<br>
     <center><input type="submit" value="新規登録"></center>

@@ -62,11 +62,6 @@ class LC_Page_Entry_Complete extends LC_Page {
      * @return void
      */
     function action() {
-        // transaction check
-        if (!SC_Helper_Session_Ex::isValidToken()) {
-            SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", true);
-        }
-
         // カートが空かどうかを確認する。
         $objCartSess            = new SC_CartSession();
         $this->tpl_cart_empty   = count($objCartSess->getCartList()) < 1;

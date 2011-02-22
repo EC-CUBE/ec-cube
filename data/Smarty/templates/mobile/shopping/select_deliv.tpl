@@ -22,6 +22,7 @@
  */
 *}-->
 <form method="post" action="?">
+<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="select_deliv">
 <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
 ■配送方法 <font color="#FF0000">*</font><br>

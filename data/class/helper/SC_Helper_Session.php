@@ -197,7 +197,6 @@ class SC_Helper_Session {
 
             $ret = true;
         }
-
         if ($is_unset) {
             unset($_SESSION[TRANSACTION_ID_NAME]);
         }

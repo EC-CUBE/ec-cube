@@ -79,13 +79,6 @@ class LC_Page_Shopping_Multiple extends LC_Page {
         $objFormParam->setParam($_POST);
         $objPurchase->verifyChangeCart($this->tpl_uniqid, $objCartSess);
 
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            if (!SC_Helper_Session_Ex::isValidToken()) {
-                SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", true);
-                exit;
-            }
-        }
-
         switch ($this->getMode()) {
             case 'confirm':
                 $this->arrErr = $this->lfCheckError($objFormParam);
@@ -103,7 +96,6 @@ class LC_Page_Shopping_Multiple extends LC_Page {
         }
 
         $this->arrForm = $objFormParam->getFormParamList();
-        $this->transactionid = SC_Helper_Session_Ex::getToken();
     }
 
     /**

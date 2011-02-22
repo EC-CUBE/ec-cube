@@ -74,7 +74,7 @@
 <div id="customer" class="contents-main">
 <form name="search_form" id="search_form" method="post" action="?">
 <input type="hidden" name="mode" value="search" />
-<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+
   <h2>検索条件設定</h2>
 
   <!--検索条件設定テーブルここから-->
@@ -102,7 +102,6 @@
 <!--★★検索結果一覧★★-->
 <form name="form1" id="form1" method="post" action="?">
 <input type="hidden" name="mode" value="search" />
-<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="edit_customer_id" value="" />
 <input type="hidden" name="search_pageno" value="<!--{$smarty.post.search_pageno|h}-->" />
 <!--{foreach from=$smarty.post key="key" item="item"}-->

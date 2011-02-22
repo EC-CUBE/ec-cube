@@ -34,7 +34,7 @@ self.moveTo(20,20);self.focus();
 <input type="hidden" name="member_id" value="<!--{$tpl_member_id|h}-->">
 <input type="hidden" name="pageno" value="<!--{$tpl_pageno|h}-->">
 <input type="hidden" name="old_login_id" value="<!--{$tpl_old_login_id|h}-->">
-<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid|h}-->">
+
 <h2>メンバー登録/編集</h2>
 
 <table>

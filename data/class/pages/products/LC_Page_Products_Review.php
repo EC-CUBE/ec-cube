@@ -81,12 +81,6 @@ class LC_Page_Products_Review extends LC_Page {
         //$objView = new SC_SiteView_Ex();
         $objQuery = new SC_Query();
 
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            if (!SC_Helper_Session_Ex::isValidToken()) {
-                SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", true);
-            }
-        }
-
         //---- 登録用カラム配列
         $arrRegistColumn = array(
                                      array(  "column" => "review_id", "convert" => "aKV" ),
@@ -175,7 +169,6 @@ class LC_Page_Products_Review extends LC_Page {
 
         }
 
-        $this->transactionid = SC_Helper_Session_Ex::getToken();
         $this->setTemplate($this->tpl_mainpage);
     }
 

@@ -31,6 +31,19 @@
 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/navi.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery-1.4.2.min.js"></script>
 <title>管理機能</title>
+<script type="text/javascript">//<![CDATA[
+    <!--{$tpl_javascript}-->
+    $(function(){
+        var tx = $('<input type="hidden" />')
+            .attr('name', '<!--{$smarty.const.TRANSACTION_ID_NAME}-->')
+            .val('<!--{$transactionid}-->');
+        tx.appendTo('form');
+
+        <!--{$tpl_onload}-->
+    });
+//]]>
+</script>
+
 </head>
 
 <body>

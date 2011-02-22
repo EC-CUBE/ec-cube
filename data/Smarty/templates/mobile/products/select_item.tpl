@@ -28,6 +28,7 @@
 	<font color="#FF0000">※数量を入力して下さい｡</font><br>
 <!--{/if}-->
 <form method="post" action="<!--{$smarty.server.REQUEST_URI|h}-->">
+  <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 	<input type="text" name="quantity" size="3" value="<!--{$arrForm.quantity.value|default:1}-->" maxlength=<!--{$smarty.const.INT_LEN}--> istyle="4"><br>
 	<input type="hidden" name="mode" value="cart">
 	<input type="hidden" name="classcategory_id1" value="<!--{$arrForm.classcategory_id1.value}-->">

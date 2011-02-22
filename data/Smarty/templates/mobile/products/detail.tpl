@@ -123,6 +123,8 @@ Pt<br>
 
 <form name="form1" method="post" action="<!--{$smarty.server.REQUEST_URI|h}-->">
 	<input type="hidden" name="mode" value="select">
+  <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+
 	<input type="hidden" name="product_id" value="<!--{$tpl_product_id}-->">
 <!--{if $tpl_stock_find}-->
 	<!--★商品を選ぶ★-->

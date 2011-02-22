@@ -27,7 +27,6 @@
   <!--{include file=$tpl_navi}-->
   <form name="form1" method="post" action="?">
   <input type="hidden" name="mode" value="complete" />
-  <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
   <div id="mycontentsarea">
     <h3><!--{$tpl_subtitle|h}--></h3>
     <div id="completetext">

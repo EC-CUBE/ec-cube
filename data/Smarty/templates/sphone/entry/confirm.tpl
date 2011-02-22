@@ -30,7 +30,6 @@
       <!--{foreach from=$arrForm key=key item=item}-->
         <input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->" />
       <!--{/foreach}-->
-        <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 
       <table summary="入力内容確認">
         <tr>

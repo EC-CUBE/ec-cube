@@ -72,12 +72,6 @@ class LC_Page_Admin_Index extends LC_Page_Admin {
      * @return void
      */
     function action() {
-        // 不正アクセスチェック 
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            if (!SC_Helper_Session_Ex::isValidToken()) {
-                SC_Utils_Ex::sfDispError(LOGIN_ERROR);
-            }
-        }
         // パラメータ管理クラス
         $objFormParam = new SC_FormParam();
         
@@ -97,8 +91,7 @@ class LC_Page_Admin_Index extends LC_Page_Admin {
         default:
             break;
         }
-        // トランザクションID
-        $this->transactionid = SC_Helper_Session_Ex::getToken();
+
         // 管理者ログインテンプレートフレームの設定
         $this->setTemplate(LOGIN_FRAME);
     }

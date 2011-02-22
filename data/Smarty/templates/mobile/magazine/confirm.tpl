@@ -28,6 +28,7 @@
 
 <br>
 <form action="confirm.php" method="post">
+  <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 	<input type="hidden" name="mode" value="<!--{$arrForm.type}-->">
 	<input type="hidden" name="email" value="<!--{$arrForm.mail|h}-->">
 	■メールアドレス<br>

@@ -72,9 +72,6 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin {
         // ログインチェック
         SC_Utils::sfIsSuccess(new SC_Session());
 
-        // トランザクショントークンの取得
-        $this->transactionid = SC_Helper_Session_Ex::getToken();
-
         // ページ送りの処理 $_REQUEST['pageno']が信頼しうる値かどうかチェックする。
         $this->tpl_pageno = $this->lfCheckPageNo($_REQUEST['pageno']);
 
@@ -111,9 +108,6 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin {
      * @return void
      */
     function execNewMode() {
-        if (SC_Helper_Session_Ex::isValidToken() !== true) {
-            SC_Utils::sfDispError('');
-        }
 
         $this->objForm = $this->initNewMode();
 
@@ -131,8 +125,6 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin {
             $this->arrForm['password'] = '';
             // エラー情報をセットする
             $this->arrErr = $arrErr;
-            // トランザクショントークンの取得
-            $this->transactionid = SC_Helper_Session_Ex::getToken();
             return;
         }
 
@@ -229,8 +221,6 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin {
             $this->arrForm['password'] = '';
             // エラー情報をセットする
             $this->arrErr = $arrErr;
-            // トランザクショントークンの取得
-            $this->transactionid = SC_Helper_Session_Ex::getToken();
             return;
         }
 

@@ -99,6 +99,10 @@ class LC_Page {
         // プラグインクラス生成
         $this->objPlugin = new SC_Helper_Plugin_Ex();
         $this->objPlugin->preProcess($this);
+
+        // トランザクショントークンの検証と生成
+        $this->doValidToken();
+        $this->setTokenTo();
     }
 
     /**
@@ -107,13 +111,6 @@ class LC_Page {
      * @return void
      */
     function process() {}
-
-    /**
-     * Page のプロセス.(モバイル）
-     *
-     * @return void
-     */
-    function mobileProcess() {}
 
     /**
      * Page のレスポンス送信.
@@ -328,6 +325,44 @@ class LC_Page {
             $mode = $_POST['mode'];
         }
         return $mode;
+    }
+
+    /**
+     * POST アクセスの妥当性を検証する.
+     *
+     * 前画面で生成されたトランザクショントークンの妥当性を検証し,
+     * 不正な場合はエラー画面へ遷移する.
+     *
+     * この関数は, 基本的に init() 関数で呼び出され, POST アクセスの場合は自動的に
+     * トランザクショントークンを検証する.
+     * ページによって検証タイミングなどを制御する必要がある場合は, この関数を
+     * オーバーライドし, 個別に設定を行うこと.
+     *
+     * @access protected
+     * @param boolean $is_admin 管理画面でエラー表示をする場合 true
+     * @return void
+     */
+    function doValidToken($is_admin = false) {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            if (!SC_Helper_Session_Ex::isValidToken()) {
+                if ($is_admin) {
+                    SC_Utils_Ex::sfDispError(INVALID_MOVE_ERRORR);
+                } else {
+                    SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", true);
+                }
+                exit;
+            }
+        }
+    }
+
+    /**
+     * トランザクショントークンを取得し, 設定する.
+     *
+     * @access protected
+     * @return void
+     */
+    function setTokenTo() {
+        $this->transactionid = SC_Helper_Session_Ex::getToken();
     }
 
     /**

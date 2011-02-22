@@ -27,7 +27,7 @@
     <span class="attention">※新しくパスワードを発行いたしますので、お忘れになったパスワードはご利用できなくなります。</span></p>
     <form action="?" method="post" name="form1">
     <input type="hidden" name="mode" value="mail_check" />
-    <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+
     <div id="forgot">
         <div class="contents">
             <div class="mailaddres">

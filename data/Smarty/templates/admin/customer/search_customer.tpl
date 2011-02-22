@@ -42,7 +42,6 @@ function func_submit(customer_id){
 <input name="mode" type="hidden" value="search">
 <input name="search_pageno" type="hidden" value="">
 <input name="customer_id" type="hidden" value="">
-<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 
 <table class="form">
     <colgroup width="20%">

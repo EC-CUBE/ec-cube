@@ -24,7 +24,6 @@
         <h2><img src="<!--{$TPL_URLPATH}-->img/title/tit_bloc_login.gif"alt="ログイン" /></h2>
         <form name="login_form" id="login_form" method="post" action="<!--{$smarty.const.HTTPS_URL}-->frontparts/login_check.php" onsubmit="return fnCheckLogin('login_form')">
             <input type="hidden" name="mode" value="login" />
-            <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
             <input type="hidden" name="url" value="<!--{$smarty.server.PHP_SELF|h}-->" />
             <div class="bloc_body">
                 <!--{if $tpl_login}-->

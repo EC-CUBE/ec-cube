@@ -29,7 +29,6 @@
         <!--{if $key ne "mode"}-->
         <input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->" /><!--{/if}-->
         <!--{/foreach}-->
-        <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 
         <table summary="お客様の声書き込み">
           <tr>
