@@ -1158,7 +1158,7 @@ exit;
     }
 
     // 2つの配列を用いて連想配列を作成する
-    function sfarrCombine($arrKeys, $arrValues) {
+    function sfArrCombine($arrKeys, $arrValues) {
 
         if(count($arrKeys) <= 0 and count($arrValues) <= 0) return array();
 
