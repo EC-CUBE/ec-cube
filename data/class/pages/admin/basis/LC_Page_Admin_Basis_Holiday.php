@@ -84,9 +84,6 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin {
             $this->lfInitParam($mode, $objFormParam);
             $objFormParam->setParam($_POST);
 
-            //var_dump($_POST);
-            //var_dump($objFormParam->getHashArray());
-
             $this->arrErr = $this->lfCheckError($mode, $objFormParam);
             if (!empty($this->arrErr['holiday_id'])) {
                 SC_Utils_Ex::sfDispException();
