@@ -76,35 +76,18 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin {
         switch ($this->getMode()) {
         case "edit":
             // POST 文字列の妥当性チェック
-            $this->checkMasterDataName();
-            $this->errorMessage = $this->checkUniqueID();
+            $this->masterDataName = $this->checkMasterDataName($_POST, $this->arrMasterDataName);
+            $this->errorMessage = $this->checkUniqueID($_POST);
 
             if (empty($this->errorMessage)) {
                 // 取得したデータからマスタデータを生成
-                $arrData = array();
-                foreach ($_POST['id'] as $key => $val) {
-
-                    // ID が空のデータは生成しない
-                    if ($val != "") {
-                        $arrData[$val] = $_POST['name'][$key];
-                    }
-                }
-
-                // マスタデータを更新
-                $masterData->objQuery = new SC_Query();
-                $masterData->objQuery->begin();
-                $masterData->deleteMasterData($this->masterDataName, false);
-                // TODO カラム名はメタデータから取得した方が良い
-                $masterData->registMasterData($this->masterDataName,
-                                              array("id", "name", "rank"),
-                                              $arrData, false);
-                $masterData->objQuery->commit();
+                $this->registMasterData($_POST, $masterData, $this->masterDataName);
                 $this->tpl_onload = "window.alert('マスタデータの設定が完了しました。');";
             }
 
         case "show":
             // POST 文字列の妥当性チェック
-            $this->checkMasterDataName();
+            $this->masterDataName = $this->checkMasterDataName($_POST, $this->arrMasterDataName);
 
             // DB からマスタデータを取得
             $this->arrMasterData =
@@ -128,16 +111,19 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin {
      * マスタデータ名チェックを行う
      *
      * @access private
-     * @return void
+     * @param array $_POST値
+     * @param array $arrMasterDataName  マスターデータテーブル名のリスト
+     * @return string $master_data_name 選択しているマスターデータのテーブル名
      */
-    function checkMasterDataName() {
+    function checkMasterDataName(&$arrParams, &$arrMasterDataName) {
 
-        if (in_array($_POST['master_data_name'], $this->arrMasterDataName)) {
-            $this->masterDataName = $_POST['master_data_name'];
-            return true;
+        if (in_array($arrParams['master_data_name'], $arrMasterDataName)) {
+            $master_data_name = $arrParams['master_data_name'];
+            return $master_data_name;
         } else {
             SC_Utils_Ex::sfDispeError("");
         }
+
     }
 
     /**
@@ -171,9 +157,9 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin {
      * @access private
      * @return void|string エラーが発生した場合はエラーメッセージを返す.
      */
-    function checkUniqueID() {
+    function checkUniqueID(&$arrParams) {
 
-        $arrId = $_POST['id'];
+        $arrId = $arrParams['id'];
         for ($i = 0; $i < count($arrId); $i++) {
 
             $id = $arrId[$i];
@@ -186,6 +172,39 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin {
                 }
             }
         }
+    }
+
+
+    /**
+     * マスターデータの登録.
+     *
+     * @access private{
+     * @param array  $arrParams $_POST値
+     * @param object $masterData SC_DB_MasterData_Ex()
+     * @param string $master_data_name 登録対象のマスターデータのテーブル名
+     * @return void
+     */
+    function registMasterData($arrParams, &$masterData, $master_data_name) {
+
+        $arrTmp = array();
+        foreach ($arrParams['id'] as $key => $val) {
+
+            // ID が空のデータは生成しない
+            if ($val != "") {
+                $arrTmp[$val] = $arrParams['name'][$key];
+            }
+        }
+
+        // マスタデータを更新
+        $masterData->objQuery =& SC_Query::getSingletonInstance();
+        $masterData->objQuery->begin();
+        $masterData->deleteMasterData($master_data_name, false);
+        // TODO カラム名はメタデータから取得した方が良い
+        $masterData->registMasterData($master_data_name,
+                                             array("id", "name", "rank"),
+                                             $arrTmp, false);
+        $masterData->objQuery->commit();
+
     }
 }
 ?>
