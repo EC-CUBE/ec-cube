@@ -79,7 +79,15 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin {
         $mode = $this->getMode();
 
         if (!empty($_POST)) {
-            $this->arrErr = $this->lfCheckError($mode, $_POST);
+
+            $objFormParam = new SC_FormParam();
+            $this->lfInitParam($mode, $objFormParam);
+            $objFormParam->setParam($_POST);
+
+            //var_dump($_POST);
+            //var_dump($objFormParam->getHashArray());
+
+            $this->arrErr = $this->lfCheckError($mode, $objFormParam);
             if (!empty($this->arrErr['holiday_id'])) {
                 SC_Utils_Ex::sfDispException();
                 return;
@@ -211,6 +219,24 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin {
         }
         return $array;
     }
+    function lfInitParam($mode, &$objFormParam)
+    {
+        switch ($mode) {
+            case 'edit':
+                $objFormParam->addParam('タイトル', 'title', STEXT_LEN, 'KVa', array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+                $objFormParam->addParam('月', 'month', INT_LEN, 'n', array("SELECT_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+                $objFormParam->addParam('日', 'day', INT_LEN, 'n', array("SELECT_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+                // breakしない
+            case 'delete':
+            case 'pre_edit':
+            case 'down':
+            case 'up':
+                $objFormParam->addParam('定休日ID', 'holiday_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                break;
+            default:
+                break;
+        }
+    }
 
     /**
      * 入力エラーチェック
@@ -218,45 +244,27 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin {
      * @param string $mode
      * @return array
      */
-    function lfCheckError($mode, $post) {
-        $arrErr = array();
-        switch ($mode) {
-            case 'edit':
-                $post = $this->lfConvertParam($post);
+    function lfCheckError($mode, &$objFormParam) {
+        $objFormParam->convParam();
+        $arrErr = $objFormParam->checkError();
+        $post = $objFormParam->getHashArray();
 
-                $objErr = new SC_CheckError();
-                $objErr->doFunc(array("タイトル", "title", SMTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-                $objErr->doFunc(array("月", "month", INT_LEN), array("SELECT_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-                $objErr->doFunc(array("日", "day", INT_LEN), array("SELECT_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-                if(!isset($objErr->arrErr['date'])) {
-                    $objQuery =& SC_Query::getSingletonInstance();
-                    $where = "del_flg = 0 AND month = ? AND day = ?";
-                    $arrval = array($post['month'], $post['day']);
-                    if (!empty($post['holiday_id'])) {
-                        $where .= " AND holiday_id <> ?";
-                        $arrval[] = $post['holiday_id'];
-                    }
-                    $arrRet = $objQuery->select("count(holiday_id)", "dtb_holiday", $where, $arrval);
-                    // 編集中のレコード以外に同じ日付が存在する場合
-                    if ($arrRet[0]['count'] > 0) {
-                        $objErr->arrErr['date'] = "※ 既に同じ日付の登録が存在します。<br>";
-                    }
-                }
-                // breakしない
-            case 'delete':
-            case 'pre_edit':
-            case 'down':
-            case 'up':
-                $this->objFormParam = new SC_FormParam();
-                $this->objFormParam->addParam('定休日ID', 'holiday_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-                $this->objFormParam->setParam($post);
-                $this->objFormParam->convParam();
-                $arrErr = $this->objFormParam->checkError();
-                break;
-            default:
-                break;
+        if(!isset($arrErr['date'])) {
+            $objQuery =& SC_Query::getSingletonInstance();
+            $where = "del_flg = 0 AND month = ? AND day = ?";
+            $arrval = array($post['month'], $post['day']);
+            if (!empty($post['holiday_id'])) {
+                $where .= " AND holiday_id <> ?";
+                $arrval[] = $post['holiday_id'];
+            }
+            $arrRet = $objQuery->select("count(holiday_id)", "dtb_holiday", $where, $arrval);
+
+            // 編集中のレコード以外に同じ日付が存在する場合
+            if ($arrRet[0]['count'] > 0) {
+                $arrErr['date'] = "※ 既に同じ日付の登録が存在します。<br>";
+            }
         }
-        return array_merge((array)$objErr->arrErr, (array)$arrErr);
+        return $arrErr;
     }
 }
 ?>

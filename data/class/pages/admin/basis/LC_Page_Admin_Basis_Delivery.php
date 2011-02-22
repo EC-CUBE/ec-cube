@@ -77,8 +77,13 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin {
 
         $mode = $this->getMode();
 
+
+
         if (!empty($_POST)) {
-            $this->arrErr = $this->lfCheckError($mode);
+            $objFormParam = new SC_FormParam();
+            $objFormParam->setParam($_POST);
+
+            $this->arrErr = $this->lfCheckError($mode, $objFormParam);
             if (!empty($this->arrErr['deliv_id'])) {
                 SC_Utils_Ex::sfDispException();
                 return;
@@ -128,18 +133,17 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin {
      * @param string $mode
      * @return array
      */
-    function lfCheckError($mode) {
+    function lfCheckError($mode, &$objFormParam) {
         $arrErr = array();
         switch ($mode) {
             case "delete":
             case "up":
             case "down":
-                $this->objFormParam = new SC_FormParam();
-                $this->objFormParam->addParam('配送業者ID', 'deliv_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-                $this->objFormParam->setParam($_POST);
-                $this->objFormParam->convParam();
+                $objFormParam->addParam('配送業者ID', 'deliv_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
 
-                $arrErr = $this->objFormParam->checkError();
+                $objFormParam->convParam();
+
+                $arrErr = $objFormParam->checkError();
                 break;
             default:
                 break;
