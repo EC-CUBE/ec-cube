@@ -77,10 +77,11 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin {
      * @return void
      */
     function action() {
-        $masterData = new SC_DB_MasterData_Ex();
 
         // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess(new SC_Session());
+
+        $masterData = new SC_DB_MasterData_Ex();
 
         // キーの配列を生成
         $this->arrKeys = $this->getParamKeys($masterData);
@@ -91,10 +92,10 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin {
             $this->arrForm = $_POST;
 
             // エラーチェック
-            $this->arrErr = $this->errorCheck();
+            $this->arrErr = $this->errorCheck($this->arrKeys, $this->arrForm);
             // エラーの無い場合は update
             if (empty($this->arrErr)) {
-                $this->update();
+                $this->update($this->arrKeys, $this->arrForm);
                 $this->tpl_onload = "window.alert('パラメータの設定が完了しました。');";
             } else {
                 $this->arrValues = SC_Utils_Ex::getHash2Array($this->arrForm,
@@ -135,11 +136,11 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin {
      * @access private
      * @return void
      */
-    function update() {
+    function update(&$arrKeys, &$arrForm) {
         $data = array();
         $masterData = new SC_DB_MasterData_Ex();
-        foreach ($this->arrKeys as $key) {
-            $data[$key] = $_POST[$key];
+        foreach ($arrKeys as $key) {
+            $data[$key] = $arrForm[$key];
         }
 
         // DBのデータを更新
@@ -153,13 +154,14 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin {
      * エラーチェックを行う.
      *
      * @access private
+     * @param array $arrForm $_POST 値
      * @return void
      */
-    function errorCheck() {
-        $objErr = new SC_CheckError($this->arrForm);
-        for ($i = 0; $i < count($this->arrKeys); $i++) {
-            $objErr->doFunc(array($this->arrKeys[$i],
-                                  $this->arrForm[$this->arrKeys[$i]]),
+    function errorCheck(&$arrKeys, &$arrForm) {
+        $objErr = new SC_CheckError($arrForm);
+        for ($i = 0; $i < count($arrKeys); $i++) {
+            $objErr->doFunc(array($arrKeys[$i],
+                                  $arrForm[$arrKeys[$i]]),
                             array("EXIST_CHECK_REVERSE", "EVAL_CHECK"));
         }
         return $objErr->arrErr;
