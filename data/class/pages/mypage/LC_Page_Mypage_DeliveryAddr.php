@@ -133,18 +133,15 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page {
             default :
 
                 if ($_GET['other_deliv_id'] != ""){
-                    //不正アクセス判定
-                    $flag = $objQuery->count("dtb_other_deliv",
-                                             "customer_id = ? AND other_deliv_id = ?",
-                                             array($objCustomer->getValue("customer_id"),
-                                             $_SESSION['other_deliv_id']));
+                    $arrOtherDeliv = $this->lfGetOtherDeliv($objCustomer->getValue("customer_id"), $_SESSION['other_deliv_id']);
 
-                    if (!$objCustomer->isLoginSuccess(true) || $flag == 0){
+                    //不正アクセス判定
+                    if (!$objCustomer->isLoginSuccess(true)
+                        || count($arrOtherDeliv) == 0){
                         SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
                     }
 
                     //別のお届け先情報取得
-                    $arrOtherDeliv = $objQuery->select("*", "dtb_other_deliv", "other_deliv_id = ? ", array($_SESSION['other_deliv_id']));
                     $this->arrForm = $arrOtherDeliv[0];
                 }
                 break;
@@ -166,6 +163,21 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page {
         parent::destroy();
     }
 
+
+    /**
+     * ほかのお届け先を取得する
+     *
+     * @param mixed $customer_id
+     * @param mixed $other_deliv_id
+     * @access private
+     * @return array()
+     */
+    function lfGetOtherDeliv($customer_id, $other_deliv_id) {
+        $objQuery =& SC_Query::getSingletonInstance();
+        return $objQuery->select("*", "dtb_other_deliv", "customer_id = ? AND other_deliv_id = ?", array($customer_id, $other_deliv_id));
+
+         $arrOtherDeliv[0];
+    }
 
     /* 登録実行 */
     function lfRegistData($objFormParam, $customer_id) {
