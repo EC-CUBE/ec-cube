@@ -98,5 +98,12 @@ class LC_Page_Upgrade_Base extends LC_Page {
             ? $arrRet[0]['public_key']
             : null;
     }
+
+    /**
+     * オーナーズストアからの POST のため, トークンチェックしない.
+     */
+    function doValidToken() {
+        // nothing.
+    }
 }
 ?>
