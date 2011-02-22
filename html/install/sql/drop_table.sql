@@ -97,3 +97,4 @@ DROP TABLE dtb_plugin;
 DROP TABLE dtb_index_list;
 DROP TABLE dtb_payment_options;
 DROP TABLE dtb_mailmaga_template;
+DROP TABLE mtb_auth_excludes;
