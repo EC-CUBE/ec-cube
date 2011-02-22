@@ -121,7 +121,7 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin {
             $master_data_name = $arrParams['master_data_name'];
             return $master_data_name;
         } else {
-            SC_Utils_Ex::sfDispeError("");
+            SC_Utils_Ex::sfDispError("");
         }
 
     }
