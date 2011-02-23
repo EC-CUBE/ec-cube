@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/LC_Page.php");
+require_once(CLASS_EX_REALDIR . "page_extends/LC_Page_Ex.php");
 
 /**
  * Sitemapプロトコル ファイル生成モジュール.
@@ -51,7 +51,7 @@ require_once(CLASS_REALDIR . "pages/LC_Page.php");
  * :TODO: 各ページの changefreq や priority を指定できるようにする
  * :TODO: filemtime 関数を使えば、静的なページの更新時間も取得できそう
  */
-class LC_Page_Sitemap extends LC_Page {
+class LC_Page_Sitemap extends LC_Page_Ex {
 
     // }}}
     // {{{ properties

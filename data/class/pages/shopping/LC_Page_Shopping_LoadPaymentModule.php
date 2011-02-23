@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/LC_Page.php");
+require_once(CLASS_EX_REALDIR . "page_extends/LC_Page_Ex.php");
 
 /**
  * 決済モジュールの呼び出しを行うクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_REALDIR . "pages/LC_Page.php");
  * @author Kentaro Ohkouchi
  * @version $Id$
  */
-class LC_Page_Shopping_LoadPaymentModule extends LC_Page {
+class LC_Page_Shopping_LoadPaymentModule extends LC_Page_Ex {
 
     // }}}
     // {{{ functions

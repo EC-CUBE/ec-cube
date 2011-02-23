@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-require_once CLASS_REALDIR . "pages/LC_Page.php";
+require_once CLASS_EX_REALDIR . "page_extends/LC_Page_Ex.php";
 
 /**
  * こんな商品も買っていますプラグインの管理画面を制御するクラス.
@@ -30,7 +30,7 @@ require_once CLASS_REALDIR . "pages/LC_Page.php";
  * @author Seasoft 塚田将久
  * @version $Id$
  */
-class LC_Page_Admin_Plugin_Recommend extends LC_Page {
+class LC_Page_Admin_Plugin_Recommend extends LC_Page_Ex {
 
     /** プラグイン情報配列 (呼び出し元でセットする) */
     var $arrPluginInfo;

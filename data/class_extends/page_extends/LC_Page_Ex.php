@@ -21,55 +21,9 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
-require_once(CLASS_EX_REALDIR . "page_extends/LC_Page_Ex.php");
+require_once(CLASS_REALDIR . "pages/LC_Page.php");
 
-/**
- * プライバシーポリシー のページクラス.
- *
- * @package Page
- * @author LOCKON CO.,LTD.
- * @version $Id$
- */
-class LC_Page_Guide_Privacy extends LC_Page_Ex {
-
-    // }}}
-    // {{{ functions
-
-    /**
-     * Page を初期化する.
-     *
-     * @return void
-     */
-    function init() {
-        parent::init();
-    }
-
-    /**
-     * Page のプロセス.
-     *
-     * @return void
-     */
-    function process() {
-        parent::process();
-        $this->action();
-        $this->sendResponse();
-    }
-    
-    /**
-     * Page のアクション.
-     *
-     * @return void
-     */
-    function action() {}
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy() {
-        parent::destroy();
-    }
+class LC_Page_Ex extends LC_Page {
 }
+
 ?>

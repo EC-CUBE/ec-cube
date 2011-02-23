@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/LC_Page.php");
+require_once(CLASS_EX_REALDIR . "page_extends/LC_Page_Ex.php");
 
 /**
  * ダウンロード商品ダウンロード のページクラス.
@@ -30,7 +30,7 @@ require_once(CLASS_REALDIR . "pages/LC_Page.php");
  * @author CUORE CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Mypage_DownLoad extends LC_Page {
+class LC_Page_Mypage_DownLoad extends LC_Page_Ex {
 
 	// {{{ properties
 

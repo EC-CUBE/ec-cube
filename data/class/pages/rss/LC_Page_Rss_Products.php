@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/LC_Page.php");
+require_once(CLASS_EX_REALDIR . "page_extends/LC_Page_Ex.php");
 
 /**
  * RSS(商品) のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_REALDIR . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Rss_Products extends LC_Page {
+class LC_Page_Rss_Products extends LC_Page_Ex {
 
     // }}}
     // {{{ functions

@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once CLASS_REALDIR . "pages/LC_Page.php";
+require_once CLASS_EX_REALDIR . "page_extends/LC_Page_Ex.php";
 
 /**
  * Google Analytics プラグインの管理画面を制御するクラス.
@@ -31,7 +31,7 @@ require_once CLASS_REALDIR . "pages/LC_Page.php";
  * @author Kentaro Ohkouchi
  * @version $Id$
  */
-class LC_Page_Admin_GoogleAnalytics extends LC_Page {
+class LC_Page_Admin_GoogleAnalytics extends LC_Page_Ex {
 
     /** プラグイン情報配列 (呼び出し元でセットする) */
     var $arrPluginInfo;

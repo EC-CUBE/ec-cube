@@ -1,6 +1,6 @@
 <?php
 // {{{ requires
-require_once CLASS_REALDIR . 'pages/LC_Page.php';
+require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
 require_once CLASS_REALDIR . 'pages/upgrade/helper/LC_Upgrade_Helper_Log.php';
 require_once CLASS_REALDIR . 'pages/upgrade/helper/LC_Upgrade_Helper_Json.php';
 require_once DATA_REALDIR . 'module/Request.php';
@@ -12,7 +12,7 @@ require_once DATA_REALDIR . 'module/Request.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Upgrade_Base extends LC_Page {
+class LC_Page_Upgrade_Base extends LC_Page_Ex {
     function isValidIP() {
     	$objLog  = new LC_Upgrade_Helper_Log;
         $masterData = new SC_DB_MasterData();

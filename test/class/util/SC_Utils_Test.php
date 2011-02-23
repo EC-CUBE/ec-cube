@@ -23,7 +23,7 @@
 
 // {{{ requires
 require_once(realpath(dirname(__FILE__)) . '/../../require.php');
-require_once(realpath(dirname(__FILE__)) . '/../../../data/class/pages/LC_Page.php');
+require_once(realpath(dirname(__FILE__)) . '/../../../data/class/pages/LC_Page_Ex.php');
 
 /**
  * SC_Utils のテストケース.

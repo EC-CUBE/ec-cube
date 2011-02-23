@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/LC_Page.php");
+require_once(CLASS_EX_REALDIR . "page_extends/LC_Page_Ex.php");
 
 /**
  * サイト概要のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_REALDIR . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id:LC_Page_Abouts.php 15532 2007-08-31 14:39:46Z nanasess $
  */
-class LC_Page_Abouts extends LC_Page {
+class LC_Page_Abouts extends LC_Page_Ex {
 
     // }}}
     // {{{ functions

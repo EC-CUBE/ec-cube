@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/LC_Page.php");
+require_once(CLASS_EX_REALDIR . "page_extends/LC_Page_Ex.php");
 require_once(DATA_REALDIR . "module/gdthumb.php");
 
 /**
@@ -32,7 +32,7 @@ require_once(DATA_REALDIR . "module/gdthumb.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_ResizeImage extends LC_Page {
+class LC_Page_ResizeImage extends LC_Page_Ex {
 
     // }}}
     // {{{ functions

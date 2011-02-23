@@ -1,6 +1,6 @@
 <?php
 exit; // Don't rewrite. This line is rewritten by EC-CUBE.
-require_once CLASS_REALDIR . 'pages/LC_Page.php';
+require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
 
 /**
  * ユーザーカスタマイズ用のページクラス
@@ -9,7 +9,7 @@ require_once CLASS_REALDIR . 'pages/LC_Page.php';
  *
  * @package Page
  */
-class LC_Page_User extends LC_Page {
+class LC_Page_User extends LC_Page_Ex {
 
     /**
      * Page を初期化する.
