@@ -146,7 +146,7 @@ $(document).ready(function() {
                                 <!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->～<!--{$arrProduct.price02_max|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->
                             <!--{/if}-->
                         <!--{/if}-->
-                        <span><span id="point_dynamic"></span>
+                        </span><span id="point_dynamic"></span>
                         Pt
                     </span>
                 </div>
