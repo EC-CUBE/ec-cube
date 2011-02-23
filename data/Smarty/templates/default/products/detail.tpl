@@ -19,149 +19,17 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
+<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/products.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.facebox/facebox.js"></script>
 <link rel="stylesheet" type="text/css" href="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.facebox/facebox.css" media="screen" />
 <script type="text/javascript">//<![CDATA[
 // 規格2に選択肢を割り当てる。
 function fnSetClassCategories(form, classcat_id2_selected) {
-    sele1 = form.classcategory_id1;
-    sele2 = form.classcategory_id2;
-
-    if (sele1) {
-        if (sele2) {
-            // 規格2の選択肢をクリア
-            count = sele2.options.length;
-            for(i = count; i >= 0; i--) {
-                sele2.options[i] = null;
-            }
-
-            // 規格2に選択肢を割り当てる
-            classcats = classCategories[sele1.value];
-            i = 0;
-            for (var classcat_id2_key in classcats) {
-                classcategory_id2 = classcats[classcat_id2_key].classcategory_id2;
-                sele2.options[i] = new Option(classcats[classcat_id2_key].name, classcategory_id2);
-                if (classcategory_id2 == classcat_id2_selected) {
-                    sele2.options[i].selected = true;
-                }
-                i++;
-            }
-        }
-        fnCheckStock(form);
-    }
-}
-function fnCheckStock(form) {
-    classcat_id1 = form.classcategory_id1.value;
-    classcat_id2 = form.classcategory_id2 ? form.classcategory_id2.value : '';
-    classcat2 = classCategories[classcat_id1]['#' + classcat_id2];
-
-    // 商品コード
-    eleDefault = document.getElementById('product_code_default');
-    eleDynamic = document.getElementById('product_code_dynamic');
-    if (
-           classcat2
-        && typeof classcat2.product_code != 'undefined'
-    ) {
-        eleDefault.style.display = 'none';
-        eleDynamic.innerHTML = classcat2.product_code;
-    } else {
-        eleDefault.style.display = '';
-        eleDynamic.innerHTML = '';
-        eleDynamic.style.display = 'none';
-    }
-
-    // 在庫(品切れ)
-    eleDefault = document.getElementById('cartbtn_default');
-    eleDynamic = document.getElementById('cartbtn_dynamic');
-    if (
-           classcat2
-        && classcat2.stock_find === false
-    ) {
-        eleDefault.style.display = 'none';
-        eleDynamic.innerHTML = '申し訳ございませんが、只今品切れ中です。';
-        eleDynamic.style.display = '';
-    } else {
-        eleDefault.style.display = '';
-        eleDynamic.innerHTML = '';
-        eleDynamic.style.display = 'none';
-    }
-
-    // 通常価格
-    eleDefault = document.getElementById('price01_default');
-    eleDynamic = document.getElementById('price01_dynamic');
-    if (eleDefault && eleDynamic) {
-        if (
-               classcat2
-            && typeof classcat2.price01 != 'undefined'
-            && String(classcat2.price01).length >= 1
-        ) {
-            eleDefault.style.display = 'none';
-            eleDynamic.innerHTML = classcat2.price01;
-            eleDynamic.style.display = '';
-        } else {
-            eleDefault.style.display = '';
-            eleDynamic.innerHTML = '';
-            eleDynamic.style.display = 'none';
-        }
-    }
-
-    // 販売価格
-    eleDefault = document.getElementById('price02_default');
-    eleDynamic = document.getElementById('price02_dynamic');
-    if (
-           classcat2
-        && typeof classcat2.price02 != 'undefined'
-        && String(classcat2.price02).length >= 1
-    ) {
-        eleDefault.style.display = 'none';
-        eleDynamic.innerHTML = classcat2.price02;
-        eleDynamic.style.display = '';
-    } else {
-        eleDefault.style.display = '';
-        eleDynamic.innerHTML = '';
-        eleDynamic.style.display = 'none';
-    }
-
-    // ポイント
-    eleDefault = document.getElementById('point_default');
-    eleDynamic = document.getElementById('point_dynamic');
-    if (
-           classcat2
-        && typeof classcat2.point != 'undefined'
-        && String(classcat2.point).length >= 1
-    ) {
-        eleDefault.style.display = 'none';
-        eleDynamic.innerHTML = classcat2.point;
-    eleDynamic.style.display = '';
-    } else {
-        eleDefault.style.display = '';
-        eleDynamic.innerHTML = '';
-        eleDynamic.style.display = 'none';
-    }
-    // 商品規格
-    eleDynamic = document.getElementById('product_class_id');
-    if (
-           classcat2
-        && typeof classcat2.product_class_id != 'undefined'
-        && String(classcat2.product_class_id).length >= 1
-    ) {
-        eleDynamic.value = classcat2.product_class_id;
-        eleDynamic.style.display = '';
-    } else {
-        eleDynamic.value = ''
-    }
-    // 商品種別
-    eleDynamic = document.getElementById('product_type');
-    if (
-           classcat2
-        && typeof classcat2.product_type != 'undefined'
-        && String(classcat2.product_type).length >= 1
-    ) {
-        eleDynamic.value = classcat2.product_type;
-        eleDynamic.style.display = '';
-    } else {
-        eleDynamic.value = ''
-    }
+    var $form = $(form);
+    var product_id = $form.find('input[name=product_id]').val();
+    var $sele1 = $form.find('select[name=classcategory_id1]');
+    var $sele2 = $form.find('select[name=classcategory_id2]');
+    setClassCategories($form, product_id, $sele1, $sele2, classcat_id2_selected);
 }
 $(document).ready(function() {
     $('a.expansion').facebox({
@@ -174,6 +42,7 @@ $(document).ready(function() {
 
 <!--▼CONTENTS-->
 <div id="undercolumn" class="product product_detail">
+  <form name="form1" id="form1" method="post" action="?">
     <div id="detailarea" class="clearfix">
         <div id="detailphotobloc">
             <div class="photo">
@@ -310,7 +179,6 @@ $(document).ready(function() {
 
     <div class="cart_area clearfix">
 
-    <form name="form1" id="form1" method="post" action="?">
     <input type="hidden" name="mode" value="cart" />
     <input type="hidden" name="product_id" value="<!--{$tpl_product_id}-->" />
     <input type="hidden" name="product_class_id" value="<!--{$tpl_product_class_id}-->" id="product_class_id" />
@@ -324,7 +192,7 @@ $(document).ready(function() {
                 <ul class="clearfix">
                     <li><!--{$tpl_class_name1|h}-->：</li>
                     <li>
-                      <select name="classcategory_id1" style="<!--{$arrErr.classcategory_id1|sfGetErrorColor}-->" onchange="fnSetClassCategories(this.form);">
+                      <select name="classcategory_id1" style="<!--{$arrErr.classcategory_id1|sfGetErrorColor}-->">
                       <!--{html_options options=$arrClassCat1 selected=$arrForm.classcategory_id1.value}-->
                       </select>
                       <!--{if $arrErr.classcategory_id1 != ""}-->
@@ -338,7 +206,7 @@ $(document).ready(function() {
                 <ul class="clearfix">
                       <li><!--{$tpl_class_name2|h}-->：</li>
                       <li>
-                        <select name="classcategory_id2" style="<!--{$arrErr.classcategory_id2|sfGetErrorColor}-->" onchange="fnCheckStock(this.form);">
+                        <select name="classcategory_id2" style="<!--{$arrErr.classcategory_id2|sfGetErrorColor}-->">
                         </select>
                         <!--{if $arrErr.classcategory_id2 != ""}-->
                         <br /><span class="attention">※ <!--{$tpl_class_name2}-->を入力して下さい。</span>
@@ -389,11 +257,11 @@ $(document).ready(function() {
                     </div>
                   <!--{/if}-->
                 </div>
-          </form>
           </div>
         </div>
       <!--▲買い物かご-->
     </div>
+  </form>
 
     <!--詳細ここまで-->
 
