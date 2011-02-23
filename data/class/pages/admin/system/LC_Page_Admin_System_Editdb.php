@@ -66,10 +66,7 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-<<<<<<< .mine
 
-=======
->>>>>>> .r20348
         // 認証可否の判定
         SC_Utils_Ex::sfIsSuccess(new SC_Session());
 
