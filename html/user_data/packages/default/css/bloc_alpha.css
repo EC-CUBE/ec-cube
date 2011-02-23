@@ -1,0 +1,86 @@
+@charset "utf-8";
+
+/* ***********************************************
+ インヘッダーブロック
+************************************************ */
+#headerInternalColumn {
+    margin-top: 5px;
+    float: right;
+    width: 520px;
+    height: 35px;
+}
+
+/* ログイン
+----------------------------------------------- */
+#header_login_area {
+    padding: 0 10px;
+    border: solid 1px #ffc979;
+    height: 30px;
+    background: #fef3d3;
+    letter-spacing: -0.075em;
+}
+#header_login_area ul.formList {
+    margin-top: 5px;
+}
+#header_login_area ul.formList li {
+    float: left;
+}
+#header_login_area ul.formList li.mail {
+    padding-left: 28px;
+    width: 155px;
+    background: url("../img/common/ico_arrow_login.gif") no-repeat left;
+    font-size: 90%;
+}
+#header_login_area ul.formList li.password {
+    padding-right: 5px;
+}
+#header_login_area ul.formList li.login_memory {
+    padding-right: 5px;
+    font-size: 90%;
+}
+#header_login_area ul.formList li.forgot{
+    margin-top: 3px;
+    padding-right: 5px;
+    font-size: 90%;
+}
+#header_login_area ul.formList li.btn {
+    padding-right: 5px;
+    width: 53px;
+}
+
+
+/* ***********************************************
+追加ブロック
+************************************************ */
+/* 共通
+----------------------------------------------- */
+#container .bloc_outer #banner_area .bloc_body {
+    border: none;
+}
+
+/* 【メイン】バナーエリア_02
+----------------------------------------------- */
+.main_column .bloc_outer #banner_area .bloc_body ul {
+    width: 100%;
+}
+.main_column .bloc_outer #banner_area .bloc_body ul li {
+    float: left;
+}
+.main_column .bloc_outer #banner_area .bloc_body ul li.sub_01{
+    padding-right: 8px;
+}
+
+/* 【サイド】バナーエリア_01
+----------------------------------------------- */
+/* 【サイド】バナーエリア_02
+----------------------------------------------- */
+#leftcolumn .bloc_outer #banner_area .bloc_body ul li ,
+#rightcolumn .bloc_outer #banner_area .bloc_body ul li {
+    margin-bottom: 8px;
+}
+
+
+
+
+
+
