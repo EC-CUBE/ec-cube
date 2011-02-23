@@ -76,6 +76,10 @@ class LC_Page_Admin_System extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
+
+        // 認証可否の判定
+        SC_Utils_Ex::sfIsSuccess(new SC_Session());
+
         // ADMIN_ID以外の管理者件数を取得
         $linemax = $this->getMemberCount("del_flg <> 1 AND member_id <> " . ADMIN_ID);
 
