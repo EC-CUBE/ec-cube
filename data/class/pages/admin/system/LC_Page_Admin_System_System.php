@@ -66,7 +66,10 @@ class LC_Page_Admin_System_System extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        $this->initForm();
+
+        $objFormParam = new SC_FormParam();
+
+        $this->initForm($objFormParam, $_GET);
         switch($this->getMode()) {
 
         // PHP INFOを表示
@@ -94,13 +97,12 @@ class LC_Page_Admin_System_System extends LC_Page_Admin_Ex {
     /**
      * フォームパラメータ初期化.
      *
+     * @pram object $objFormParam
      * @return void
      */
-    function initForm() {
-        $objForm = new SC_FormParam();
+    function initForm(&$objFormParam, &$arrParams) {
         $objForm->addParam('mode', 'mode', INT_LEN, '', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
-        $objForm->setParam($_GET);
-        $this->objForm = $objForm;
+        $objForm->setParam($arrParams);
     }
 
     /**
