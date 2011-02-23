@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/admin/LC_Page_Admin.php");
+require_once(CLASS_EX_REALDIR . "page_extends/admin/LC_Page_Admin_Ex.php");
 
 /**
  * 商品並べ替え のページクラス.
@@ -31,7 +31,7 @@ require_once(CLASS_REALDIR . "pages/admin/LC_Page_Admin.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin {
+class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin_Ex {
 
     // }}}
     // {{{ functions

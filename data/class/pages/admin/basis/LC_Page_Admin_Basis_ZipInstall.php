@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/admin/LC_Page_Admin.php");
+require_once(CLASS_EX_REALDIR . "page_extends/admin/LC_Page_Admin_Ex.php");
 
 /** CSV ファイルの最大行数 */
 define("ZIP_CSV_LINE_MAX", 8192);
@@ -43,7 +43,7 @@ define("ZIP_CSV_UTF8_REALFILE", DATA_REALDIR . "downloads/KEN_ALL_utf-8.CSV");
  * @author LOCKON CO.,LTD.
  * @version $Id:LC_Page_Admin_Basis_ZipInstall.php 16741 2007-11-08 00:43:24Z adachi $
  */
-class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin {
+class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
 
     /** CSVの行数 */
     var $tpl_line = 0;

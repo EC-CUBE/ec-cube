@@ -23,7 +23,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/admin/LC_Page_Admin.php");
+require_once(CLASS_EX_REALDIR . "page_extends/admin/LC_Page_Admin_Ex.php");
 
 /**
  * 複数配送設定 のページクラス.
@@ -32,7 +32,7 @@ require_once(CLASS_REALDIR . "pages/admin/LC_Page_Admin.php");
  * @author Kentaro Ohkouchi
  * @version $Id$
  */
-class LC_Page_Admin_Order_Multiple extends LC_Page_Admin {
+class LC_Page_Admin_Order_Multiple extends LC_Page_Admin_Ex {
 
     // }}}
     // {{{ functions
