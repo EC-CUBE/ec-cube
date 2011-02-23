@@ -22,9 +22,9 @@
  */
 *}-->
 <!--▼CONTENTS-->
-<div id="under02column">
+<div id="undercolumn">
     <h2 class="title"><!--{$tpl_title|h}--></h2>
-    <div id="under02column_login">
+    <div id="undercolumn_login">
         <form name="login_mypage" id="login_mypage" method="post" action="<!--{$smarty.const.HTTPS_URL}-->frontparts/login_check.php" onsubmit="return fnCheckLogin('login_mypage')">
         <input type="hidden" name="mode" value="login" />
         <input type="hidden" name="url" value="<!--{$smarty.server.PHP_SELF|h}-->" />
@@ -38,7 +38,7 @@
                     <span class="attention"><!--{$arrErr[$key]}--></span>
                     <dt>メールアドレス&nbsp;：</dt>
                     <dd>
-                        <input type="text" name="<!--{$key}-->" value="<!--{$tpl_login_email|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->; ime-mode: disabled;" size="20" class="box300" />
+                        <input type="text" name="<!--{$key}-->" value="<!--{$tpl_login_email|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->; ime-mode: disabled;" class="box300" />
                         <p class="login_memory">
                             <!--{assign var=key value="mypage_login_memory"}-->
                             <input type="checkbox" name="<!--{$key}-->" value="1"<!--{$tpl_login_memory|sfGetChecked:1}--> id="login_memory" />
@@ -53,7 +53,7 @@
                         パスワード&nbsp;：
                     </dt>
                     <dd>
-                        <input type="password" name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="40" class="box300" />
+                        <input type="password" name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box300" />
                     </dd>
                 </dl>
                 <div class="btn_area">

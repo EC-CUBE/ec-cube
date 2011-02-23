@@ -20,7 +20,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 <!--▼FOOTER-->
-<div id="footerWrap">
+<div id="footer_wrap">
     <div id="footer" class="clearfix">
         <div id="pagetop"><a href="#top">このページの先頭へ</a></div>
         <!--{strip}-->

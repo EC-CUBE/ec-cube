@@ -32,13 +32,13 @@
 <language>ja</language>
 <docs>http://backend.userland.com/rss</docs>
 <!--{section name=cnt loop=$arrProduct}-->
-	<!--{* １つのitem要素を出力する *}-->
-	<item>
-		<link><!--{$smarty.const.HTTP_URL}-->rss/product.php?product_id=<!--{$arrProduct[cnt].product_id}--></link>
-		<!--{foreach key=key item=item from=$arrProductKeys}-->
-			<<!--{$item}-->><!--{$arrProduct[cnt][$item]|h|sfMbConvertEncoding:$encode}--></<!--{$item}-->>
-		<!--{/foreach}-->
-	</item>
+    <!--{* １つのitem要素を出力する *}-->
+    <item>
+        <link><!--{$smarty.const.HTTP_URL}-->rss/product.php?product_id=<!--{$arrProduct[cnt].product_id}--></link>
+        <!--{foreach key=key item=item from=$arrProductKeys}-->
+            <<!--{$item}-->><!--{$arrProduct[cnt][$item]|h|sfMbConvertEncoding:$encode}--></<!--{$item}-->>
+        <!--{/foreach}-->
+    </item>
 <!--{/section}-->
 </channel>
 </rss >

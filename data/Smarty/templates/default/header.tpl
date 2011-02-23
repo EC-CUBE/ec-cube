@@ -20,10 +20,10 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA    02111-1307, USA.
  *}-->
 <!--▼HEADER-->
-<div id="headerWrap">
+<div id="header_wrap">
     <div id="header" class="clearfix">
-        <div id="logoArea">
-            <p id="siteDescription">EC-CUBEは日本発のオープンソースECサイト構築システムです。</p>
+        <div id="logo_area">
+            <p id="site_description">EC-CUBEは日本発のオープンソースECサイト構築システムです。</p>
             <h1>
                 <a href="<!--{$smarty.const.TOP_URLPATH}-->"><img src="<!--{$TPL_URLPATH}-->img/common/logo.jpg" alt="EC-CUBE ONLINE SHOPPING SITE" /><span><!--{$arrSiteInfo.shop_name|h}-->/<!--{$tpl_title|h}--></span></a>
             </h1>
@@ -46,7 +46,7 @@
             <!--{/if}-->
             <!--{* ▲HeaderInternal COLUMN*}-->
             </div>
-            <div id="headerNavi">
+            <div id="header_navi">
                 <ul>
                     <li class="mypage">
                     <a href="<!--{$smarty.const.HTTPS_URL}-->mypage/login.php" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/common/btn_header_mypage_on.jpg','mypage');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/common/btn_header_mypage.jpg','mypage');"><img src="<!--{$TPL_URLPATH}-->img/common/btn_header_mypage.jpg" alt="MYページ" name="mypage" id="mypage" /></a>

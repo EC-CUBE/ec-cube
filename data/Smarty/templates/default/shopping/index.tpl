@@ -20,8 +20,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 <!--▼CONTENTS-->
-<div id="under02column">
-  <div id="under02column_login">
+<div id="undercolumn">
+  <div id="undercolumn_login">
     <h2 class="title"><!--{$tpl_title|h}--></h2>
     <form name="member_form" id="member_form" method="post" action="?" onsubmit="return fnCheckLogin('member_form')">
     <input type="hidden" name="mode" value="login" />
@@ -35,7 +35,7 @@
                     <span class="attention"><!--{$arrErr[$key]}--></span>
                     <dt>メールアドレス&nbsp;：</dt>
                     <dd>
-                        <input type="text" name="<!--{$key}-->" value="<!--{$tpl_login_email|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->; ime-mode: disabled;" size="20" class="box300" />
+                        <input type="text" name="<!--{$key}-->" value="<!--{$tpl_login_email|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->; ime-mode: disabled;" class="box300" />
                         <p class="login_memory">
                             <!--{assign var=key value="login_memory"}-->
                             <input type="checkbox" name="<!--{$key}-->" value="1"<!--{$tpl_login_memory|sfGetChecked:1}--> id="login_memory" />
@@ -50,7 +50,7 @@
                         パスワード&nbsp;：
                     </dt>
                     <dd>
-                        <input type="password" name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="40" class="box300" />
+                        <input type="password" name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box300" />
                     </dd>
                 </dl>
                 <div class="btn_area">

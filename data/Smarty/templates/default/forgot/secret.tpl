@@ -21,7 +21,7 @@
  *}-->
 <!--{include file="`$smarty.const.TEMPLATE_REALDIR`popup_header.tpl" subtitle="パスワードを忘れた方(確認ページ)"}-->
 
-<div id="windowarea">
+<div id="window_area">
     <h2>パスワードの再発行 秘密の質問の確認</h2>
     <p class="information">
         ご登録時に入力した下記質問の答えを入力して「次へ」ボタンをクリックしてください。<br />
@@ -42,7 +42,7 @@
     <div id="completebox">
     <p>
         <span class="attention"><!--{$arrErr.reminder}--><!--{$arrErr.reminder_answer}--></span>
-        <!--{$arrReminder[$arrForm.reminder]}-->：&nbsp;<!--★答え入力★--><input type="text" name="reminder_answer" value="" size="40" class="box300" style="<!--{$arrErr.reminder_answer|sfGetErrorColor}-->" /></p>
+        <!--{$arrReminder[$arrForm.reminder]}-->：&nbsp;<!--★答え入力★--><input type="text" name="reminder_answer" value="" class="box300" style="<!--{$arrErr.reminder_answer|sfGetErrorColor}-->" /></p>
         <span class="attention"><!--{$errmsg}--></span>
     </div>
     <div class="btn_area">

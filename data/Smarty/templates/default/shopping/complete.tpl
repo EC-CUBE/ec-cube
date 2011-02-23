@@ -20,9 +20,9 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 <!--▼CONTENTS-->
-<div id="under02column">
-  <div id="under02column_shopping">
-    <p class="flowarea">
+<div id="undercolumn">
+  <div id="undercolumn_shopping">
+    <p class="flow_area">
       <img src="<!--{$TPL_URLPATH}-->img/picture/img_flow_04.jpg" alt="購入手続きの流れ" />
     </p>
     <h2 class="title"><!--{$tpl_title|h}--></h2>

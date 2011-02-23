@@ -168,7 +168,7 @@ function fnCheckStock(form) {
     
     <!--▼検索条件-->
     <!--{if $tpl_subtitle == "検索結果"}-->
-        <ul class="pagecondarea">
+        <ul class="pagecond_area">
             <li><strong>商品カテゴリ：</strong><!--{$arrSearch.category|h}--></li>
         <!--{if $arrSearch.maker|strlen >= 1}--><li><strong>メーカー：</strong><!--{$arrSearch.maker|h}--></li><!--{/if}-->
             <li><strong>商品名：</strong><!--{$arrSearch.name|h}--></li>
@@ -178,7 +178,7 @@ function fnCheckStock(form) {
 
     <!--▼ページナビ(本文)-->
     <!--{capture name=page_navi_body}-->
-        <div class="pagenumberarea clearfix">
+        <div class="pagenumber_area clearfix">
             <div class="change">
                 <!--{if $orderby != 'price'}-->
                     <a href="javascript:fnChangeOrderby('price');">価格順</a>

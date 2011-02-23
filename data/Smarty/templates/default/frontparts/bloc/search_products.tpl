@@ -20,7 +20,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 <div class="bloc_outer">
-    <div id="searcharea">
+    <div id="search_area">
     <h2><span class="title"><img src="<!--{$TPL_URLPATH}-->img/title/tit_bloc_search.gif"alt="検索条件" /></span></h2>
         <div class="bloc_body">
         <!--検索フォーム-->
@@ -46,7 +46,7 @@
             <dl class="formList">
                 <!--{/if}-->
                 <dt>商品名を入力</dt>
-                <dd><input type="text" name="name" class="box140" size="10" maxlength="50" value="<!--{$smarty.get.name|h}-->" /></dd>
+                <dd><input type="text" name="name" class="box140" maxlength="50" value="<!--{$smarty.get.name|h}-->" /></dd>
             </dl>
             <p class="btn"><input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_bloc_search_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_bloc_search.jpg',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_bloc_search.jpg" alt="検索" name="search" /></p>
             </form>

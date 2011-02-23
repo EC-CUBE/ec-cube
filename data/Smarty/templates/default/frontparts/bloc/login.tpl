@@ -20,7 +20,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 <div class="bloc_outer">
-    <div id="loginarea">
+    <div id="login_area">
         <h2><img src="<!--{$TPL_URLPATH}-->img/title/tit_bloc_login.gif"alt="ログイン" /></h2>
         <form name="login_form" id="login_form" method="post" action="<!--{$smarty.const.HTTPS_URL}-->frontparts/login_check.php" onsubmit="return fnCheckLogin('login_form')">
             <input type="hidden" name="mode" value="login" />
@@ -45,7 +45,9 @@
                         <input type="text" name="login_email" class="box140" value="<!--{$tpl_login_email|h}-->" style="ime-mode: disabled;" />
                     </dd>
                     <dd class="mini">
-                        <input type="checkbox" name="login_memory" id="login_memory" value="1" <!--{$tpl_login_memory|sfGetChecked:1}--> /><label for="login_memory"><span>コンピューターに記憶する</span></label>
+                        <input type="checkbox" name="login_memory" id="login_memory" value="1" <!--{$tpl_login_memory|sfGetChecked:1}-->
+/>
+<label for="login_memory"><span>コンピューターに記憶する</span></label>
                     </dd>
                 </dl>
                 <dl class="formList">
@@ -56,7 +58,7 @@
                     </dd>
                 </dl>
                 <p class="btn">
-                    <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_bloc_login_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_bloc_login.jpg',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_bloc_login.jpg" />
+                    <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_bloc_login_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_bloc_login.jpg',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_bloc_login.jpg" alt="ログイン" />
                 </p>
               <!--{/if}-->
             </div>

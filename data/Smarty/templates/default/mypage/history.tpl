@@ -27,22 +27,28 @@
     <!--{include file=$tpl_navi}-->
     <div id="mycontents_area">
         <h3><!--{$tpl_subtitle|h}--></h3>
-        <p class="myconditionarea">
-        <span class="st">購入日時：&nbsp;</span><!--{$tpl_arrOrderData.create_date|sfDispDBDate}--><br />
-        <span class="st">注文番号：&nbsp;</span><!--{$tpl_arrOrderData.order_id}--><br />
-        <span class="st">お支払い方法：&nbsp;</span><!--{$arrPayment[$tpl_arrOrderData.payment_id]|h}-->
-        <!--{if $tpl_arrOrderData.deliv_time_id != ""}--><br />
-        <span class="st">お届け時間：&nbsp;</span><!--{$arrDelivTime[$tpl_arrOrderData.deliv_time_id]|h}-->
-        <!--{/if}-->
-        <!--{if $tpl_arrOrderData.deliv_date != ""}--><br />
-        <span class="st">お届け日：&nbsp;</span><!--{$tpl_arrOrderData.deliv_date|h}-->
-        <!--{/if}-->
-        </p>
+        <div class="mycondition_area clearfix">
+            <p>
+                <span class="st">購入日時：&nbsp;</span><!--{$tpl_arrOrderData.create_date|sfDispDBDate}--><br />
+                <span class="st">注文番号：&nbsp;</span><!--{$tpl_arrOrderData.order_id}--><br />
+                <span class="st">お支払い方法：&nbsp;</span><!--{$arrPayment[$tpl_arrOrderData.payment_id]|h}-->
+                <!--{if $tpl_arrOrderData.deliv_time_id != ""}--><br />
+                <span class="st">お届け時間：&nbsp;</span><!--{$arrDelivTime[$tpl_arrOrderData.deliv_time_id]|h}-->
+                <!--{/if}-->
+                <!--{if $tpl_arrOrderData.deliv_date != ""}--><br />
+                <span class="st">お届け日：&nbsp;</span><!--{$tpl_arrOrderData.deliv_date|h}-->
+                <!--{/if}-->
+            </p>
+            <p class="btn">
+                <a href="./<!--{$smarty.const.DIR_INDEX_PATH}-->" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_order_re_on.jpg','order_id');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_order_re.jpg','order_id');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_order_re.jpg" alt="この購入内容で再注文する" name="order_id" id="order_id" /></a>
+            </p>
+        </div>
 
-        <form action="order.php" method="post">
+<!--        <form action="order.php" method="post">
             <input type="hidden" name="order_id" value="<!--{$tpl_arrOrderData.order_id}-->">
-            <input type="submit" name="submit" value="再注文">
+            <input type="submit" name="submit" value="この購入内容で再注文する">
         </form>
+-->
 
         <table summary="購入商品詳細">
             <colgroup width="15%"></colgroup>
@@ -123,11 +129,11 @@
                 <colgroup width="70%"></colgroup>
                 <tr>
                     <th class="alignL">ご使用ポイント</th>
-                    <td class="alignL"><!--{assign var=key value="use_point"}--><!--{$tpl_arrOrderData[$key]|number_format|default:0}--> pt</td>
+                    <td><!--{assign var=key value="use_point"}--><!--{$tpl_arrOrderData[$key]|number_format|default:0}--> pt</td>
                 </tr>
                 <tr>
                     <th class="alignL">今回加算されるポイント</th>
-                    <td class="alignL"><!--{$tpl_arrOrderData.add_point|number_format|default:0}--> pt</td>
+                    <td><!--{$tpl_arrOrderData.add_point|number_format|default:0}--> pt</td>
                 </tr>
             </table>
         <!--{/if}-->
@@ -174,23 +180,23 @@
                 <colgroup width="30%"></colgroup>
                 <colgroup width="70%"></colgroup>
                 <tr>
-                    <th>お名前</th>
+                    <th class="alignL">お名前</th>
                     <td><!--{$shippingItem.shipping_name01|h}-->&nbsp;<!--{$shippingItem.shipping_name02|h}--></td>
                 </tr>
                 <tr>
-                    <th>お名前(フリガナ)</th>
+                    <th class="alignL">お名前(フリガナ)</th>
                     <td><!--{$shippingItem.shipping_kana01|h}-->&nbsp;<!--{$shippingItem.shipping_kana02|h}--></td>
                 </tr>
                 <tr>
-                    <th>郵便番号</th>
+                    <th class="alignL">郵便番号</th>
                     <td>〒<!--{$shippingItem.shipping_zip01}-->-<!--{$shippingItem.shipping_zip02}--></td>
                 </tr>
                 <tr>
-                    <th>住所</th>
+                    <th class="alignL">住所</th>
                     <td><!--{$arrPref[$shippingItem.shipping_pref]}--><!--{$shippingItem.shipping_addr01|h}--><!--{$shippingItem.shipping_addr02|h}--></td>
                 </tr>
                 <tr>
-                    <th>電話番号</th>
+                    <th class="alignL">電話番号</th>
                     <td><!--{$shippingItem.shipping_tel01}-->-<!--{$shippingItem.shipping_tel02}-->-<!--{$shippingItem.shipping_tel03}--></td>
                 </tr>
             </tbody>

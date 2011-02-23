@@ -31,8 +31,8 @@ $(document).ready(function() {
 //]]></script>
 
 <!--▼CONTENTS-->
-<div id="under02column">
-    <div id="under02column_cart">
+<div id="undercolumn">
+    <div id="undercolumn_cart">
         <h2 class="title"><!--{$tpl_title|h}--></h2>
 
         <!--{if $smarty.const.USE_POINT !== false || count($arrProductsClass) > 0}-->

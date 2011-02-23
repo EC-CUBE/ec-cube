@@ -350,43 +350,47 @@ $(document).ready(function() {
             </div>
         <!--{/if}-->
 
-        <div class="cartin clearfix">
+          <!--★数量★-->
           <div class="quantity">
-              数量：<input type="text" class="box60" name="quantity" value="<!--{$arrForm.quantity.value|default:1}-->" maxlength="<!--{$smarty.const.INT_LEN}-->" style="<!--{$arrErr.quantity|sfGetErrorColor}-->" />
+            <ul class="clearfix">
+                <li>数量：</li>
+                <li><input type="text" class="box60" name="quantity" value="<!--{$arrForm.quantity.value|default:1}-->" maxlength="<!--{$smarty.const.INT_LEN}-->" style="<!--{$arrErr.quantity|sfGetErrorColor}-->" />
               <!--{if $arrErr.quantity != ""}-->
-              <br /><span class="attention"><!--{$arrErr.quantity}--></span>
+                  <br /><span class="attention"><!--{$arrErr.quantity}--></span>
               <!--{/if}-->
+                </li>
           </div>
-          <div class="cartin_btn">
-            <div id="cartbtn_default">
-                  <!--★カゴに入れる★-->
-                  <div>
-                      <a href="javascript:void(document.form1.submit())" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_cartin_on.jpg','cart');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_cartin.jpg','cart');">
-                      <img src="<!--{$TPL_URLPATH}-->img/button/btn_cartin.jpg" alt="カゴに入れる" name="cart" id="cart" /></a>
-                  </div>
+
+        <div class="cartin">
+            <div class="cartin_btn">
+                <div id="cartbtn_default">
+                <!--★カゴに入れる★-->
+                    <a href="javascript:void(document.form1.submit())" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_cartin_on.jpg','cart');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_cartin.jpg','cart');">
+                    <img src="<!--{$TPL_URLPATH}-->img/button/btn_cartin.jpg" alt="カゴに入れる" name="cart" id="cart" /></a>
+                </div>
             </div>
-          </div>
-        </div>
-      <div class="attention" id="cartbtn_dynamic"></div>
-    <!--{else}-->
-      <div class="attention" id="cartbtn_default">申し訳ございませんが、只今品切れ中です。</div>
-    <!--{/if}-->
-    <!--★カゴに入れる★-->
-    <!--{if $smarty.const.OPTION_FAVOFITE_PRODUCT == 1 && $tpl_login === true}-->
-          <div class="favorite">
-              <div>
-                  <!--{assign var=add_favorite value="add_favorite`$product_id`"}-->
-                  <!--{if $arrErr[$add_favorite]}--><div class="attention"><!--{$arrErr[$add_favorite]}--></div><!--{/if}-->
-                  <!--{if !$arrProduct.favorite_count}-->
-                      <a href="javascript:fnModeSubmit('add_favorite','favorite_product_id','<!--{$arrProduct.product_id|h}-->');" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_favorite_on.jpg','add_favolite_product');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_favorite.jpg','add_favolite_product');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_add_favorite.jpg" alt="お気に入りに追加" name="add_favolite_product" id="add_favolite_product" /></a>
-                  <!--{else}-->
-                      <img src="<!--{$TPL_URLPATH}-->img/button/btn_add_favorite_on.jpg" alt="お気に入り登録済" name="add_favolite_product" id="add_favolite_product" />
+
+        <div class="attention" id="cartbtn_dynamic"></div>
+        <!--{else}-->
+            <div class="attention" id="cartbtn_default">申し訳ございませんが、只今品切れ中です。</div>
+        <!--{/if}-->
+
+        <!--★お気に入り登録★-->
+        <!--{if $smarty.const.OPTION_FAVOFITE_PRODUCT == 1 && $tpl_login === true}-->
+            <div class="favorite_btn">
+                <!--{assign var=add_favorite value="add_favorite`$product_id`"}-->
+                    <!--{if $arrErr[$add_favorite]}-->
+                        <div class="attention"><!--{$arrErr[$add_favorite]}--></div><!--{/if}-->
+                            <!--{if !$arrProduct.favorite_count}-->
+                                <a href="javascript:fnModeSubmit('add_favorite','favorite_product_id','<!--{$arrProduct.product_id|h}-->');" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_favorite_on.jpg','add_favolite_product');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_favorite.jpg','add_favolite_product');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_add_favorite.jpg" alt="お気に入りに追加" name="add_favolite_product" id="add_favolite_product" /></a>
+                            <!--{else}-->
+                            <img src="<!--{$TPL_URLPATH}-->img/button/btn_add_favorite_on.jpg" alt="お気に入り登録済" name="add_favolite_product" id="add_favolite_product" />
+                        <!--{/if}-->
+                    </div>
                   <!--{/if}-->
                 </div>
-          </div>
-   <!--{/if}-->
-            </div>
           </form>
+          </div>
         </div>
       <!--▲買い物かご-->
     </div>
@@ -397,7 +401,7 @@ $(document).ready(function() {
     <!--{section name=cnt loop=$smarty.const.PRODUCTSUB_MAX}-->
         <!--{assign var=key value="sub_title`$smarty.section.cnt.index+1`"}-->
         <!--{if $arrProduct[$key] != ""}-->
-            <div class="subarea clearfix">
+            <div class="sub_area clearfix">
                 <h3><!--★サブタイトル★--><!--{$arrProduct[$key]|h}--></h3>
                 <!--{assign var=ckey value="sub_comment`$smarty.section.cnt.index+1`"}-->
 
@@ -408,23 +412,13 @@ $(document).ready(function() {
                 <!--{assign var=lkey value="sub_large_image`$smarty.section.cnt.index+1`"}-->
                 <!--{if $arrProduct[$key]|strlen >= 1}-->
                     <div class="subphotoimg">
-                    <!--{if $arrProduct[$lkey]|strlen >= 1}-->
-                        <a
-                            href="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrProduct[$lkey]|h}-->"
-                            class="expansion"
-                            onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_expansion_on.gif', 'expansion_<!--{$lkey|h}-->');"
-                            onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_expansion.gif', 'expansion_<!--{$lkey|h}-->');"
-                             target="_blank"
-                         >
-                    <!--{/if}-->
-                    <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrProduct.name|h}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" />
+                        <!--{if $arrProduct[$lkey]|strlen >= 1}-->
+                            <a href="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrProduct[$lkey]|h}-->" class="expansion" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_expansion_on.gif', 'expansion_<!--{$lkey|h}-->');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_expansion.gif', 'expansion_<!--{$lkey|h}-->');" target="_blank" >
+                        <!--{/if}-->
+                        <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrProduct.name|h}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" />
                 <!--{if $arrProduct[$lkey]|strlen >= 1}--></a>
             <span class="mini">
-                <a
-                   href="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrProduct[$lkey]|h}-->"
-                   class="expansion"
-                   target="_blank"
-                 >
+                <a href="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrProduct[$lkey]|h}-->" class="expansion" target="_blank">
                    画像を拡大する
                  </a>
             </span>
@@ -510,7 +504,6 @@ $(document).ready(function() {
                     <div class="productContents">
                         <h3><a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrRecommend[$cnt2].product_id|u}-->"><!--{$arrRecommend[$cnt2].name|h}--></a></h3>
                         <p class="sale_price"><!--{$smarty.const.SALE_PRICE_TITLE}-->(税込)：<span class="price">
-
                             <!--{if $price02_min == $price02_max}-->
                                 <!--{$price02_min|sfCalcIncTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
                             <!--{else}-->

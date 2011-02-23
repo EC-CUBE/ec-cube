@@ -20,7 +20,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 <div class="bloc_outer">
-    <div id="categoryarea">
+    <div id="category_area">
         <div class="bloc_body">
         <h2><img src="<!--{$TPL_URLPATH}-->img/title/tit_bloc_category.gif"alt="商品カテゴリー" /></h2>
         <!--{strip}-->

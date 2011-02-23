@@ -20,7 +20,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 <div class="bloc_outer">
-    <div id="guidearea" class="bloc_body">
+    <div id="guide_area" class="bloc_body">
         <!--{strip}-->
         <ul class="button_like">
         <li>

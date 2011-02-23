@@ -21,7 +21,7 @@
  *}-->
 <!--{include file="`$smarty.const.TEMPLATE_REALDIR`popup_header.tpl" subtitle="パスワードを忘れた方(完了ページ)"}-->
 
-  <div id="windowarea">
+  <div id="window_area">
     <h2 class="title">パスワードを忘れた方</h2>
     <p class="information">パスワードの発行が完了いたしました。ログインには下記のパスワードをご利用ください。<br />
     ※下記パスワードは、MYページの「会員登録内容変更」よりご変更いただけます。</p>

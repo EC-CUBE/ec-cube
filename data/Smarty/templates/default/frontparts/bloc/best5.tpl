@@ -21,7 +21,7 @@
  *}-->
 <!--{if count($arrBestProducts) > 0}-->
 <div class="bloc_outer" class="clearfix">
-  <div id="recomendarea">
+  <div id="recomend_area">
     <h2><img src="<!--{$TPL_URLPATH}-->img/title/tit_bloc_recommend.jpg" alt="*" class="title_icon" /></h2>
     <!--{section name=cnt loop=$arrBestProducts step=2}-->
     <div class="bloc_body clearfix">

@@ -16,7 +16,7 @@ select {
     border: solid 1px #ccc;
 }
 
-/*PHOTO*/
+/*写真*/
 .picture {
     border: 1px solid #ccc;
 }
@@ -27,19 +27,20 @@ select {
 =============================================== */
 /* 全体を包括 */
 .frame_outer {
-    width: 100%;
     margin: 0 auto;
+    width: 100%;
     text-align: center;
 }
 
 /* コンテンツ */
 #container {
-    width: 980px;
     margin: 0 auto;
     padding: 0 0 30px 0;
-    text-align: left;
+    width: 980px;
     background: #fff;
+    text-align: left;
 }
+
 
 /* ==============================================
  カラム指定
@@ -49,9 +50,9 @@ select {
 #topcolumn ,
 #bottomcolumn ,
 #footerbottomcolumn {
-    width: 950px;
     margin: 0 auto;
     padding: 15px;
+    width: 950px;
     background: #fff;
     text-align: left;
 }
@@ -65,34 +66,33 @@ select {
 
 /* 1カラム設定 */
 #one_maincolumn {
-    width: 80%;
     margin: 0 auto;
+    width: 80%;
 }
 
 /* 2カラム設定 (メイン部が左) */
 #two_maincolumn_left {
-    width: 79%;
+    padding-left: 1.5%;
     float: left;
+    width: 78%;
 }
 
 /* 2カラム設定 (メイン部が右) */
 #two_maincolumn_right {
+    padding-right: 1.5%;
     width: 78%;
-    margin-right: 1.5%; /* 側を同等幅の未定義空間として、段落崩れを防ぐ */
     float: right;
 }
 
 /* 3カラム設定 */
 #three_maincolumn {
+    padding-left: 0.5%;
     width: 59%;
-    padding-left: 0.5%; /* 右側を同等幅の未定義空間として、段落崩れを防ぐ */
     float: left;
 }
 
 /* 下層コンテンツ */
-div#undercolumn { width: 100%; margin: 0;}
-/*
-#under02column
+div#undercolumn { width: 100%; margin: 0 0 30px 0;}
 
 
 /* ==============================================
@@ -100,14 +100,6 @@ div#undercolumn { width: 100%; margin: 0;}
 =============================================== */
 /* フロート回り込み解除
 ----------------------------------------------- */
-br.clear {/* 消す */
-    clear: both;
-    display: none;
-    font-size: 0px;
-    line-height: 0%;
-    height: 0px
-}
-
 .clearfix:after {
     display:block;
     clear:both;
@@ -121,19 +113,19 @@ br.clear {/* 消す */
 /* リンク指定
 ----------------------------------------------- */
 a:link {
-    color: #3399cc;
+    color: #39c;
     text-decoration: none;
 }
 a:visited {
-    color: #3399cc;
+    color: #39c;
     text-decoration: none;
 }
 a:link:hover {
-    color: #ff6600;
+    color: #f60;
     text-decoration: underline;
 }
 a[href]:hover { 
-    color: #ff6600;
+    color: #f60;
 }
 
 
@@ -141,21 +133,16 @@ a[href]:hover {
 ----------------------------------------------- */
 h1,h2,h3,h4,h5 { font-size: 100%; line-height: 150%;}
 .price { color: #f00; }
+.sale_price { color: #f00; }
 .point { color: #f00; font-weight: bold; }
 .user_name { font-weight: bold; }
-.sale_price { color: #f00; }
-.normal_price { color: #f00; }
+.normal_price { color: #f00; font-size: 90%; }
 .recommend_level { color: #ecbd00; }
 
 .attention { color: #f00; }
 .attentionSt { color: #f00; font-weight: bold; }
 .st { font-weight: bold; }
 .mini { font-size: 90%; }
-
-em {/* 消す */
-    font-style: normal;
-    color: #f00;
-}
 
 
 /* 行揃え
@@ -166,6 +153,7 @@ em {/* 消す */
 .alignL { text-align: left; }
 .pricetd em { font-weight: bold;}
 
+
 /* フォーム
 ----------------------------------------------- */
 input[type='text'] ,
@@ -174,6 +162,8 @@ input[type='password'] ,
     border: solid 1px #ccc;
     padding: 2px;
 }
+
+.box40 {width: 40px; }
 .box60 {width: 60px; }
 .box100 {width: 100px; }
 .box120 {width: 120px; }
@@ -182,9 +172,11 @@ input[type='password'] ,
 .box150 {width: 150px; }
 .box240 {width: 240px; }
 .box300 {width: 300px; }
+.box320 {width: 320px; }
 .box350 {width: 350px; }
 .box380 {width: 380px; }
-/* フォームが縦に重なり合う場合にboxと併用する余白 */
+
+/* フォームが縦に重なり合う場合に併用する余白 */
 .top { margin-bottom: 5px; }
 
 
@@ -192,31 +184,30 @@ input[type='password'] ,
 ----------------------------------------------- */
 h2.title {
     margin-bottom: 10px;
+    padding: 8px;
     border-top: solid 1px #ebeced;
+    color: #f60;
     background: url("../img/background/bg_tit_sub_01.jpg") repeat-x left bottom;
     background-color: #fef3d8;
-    padding: 8px;
     font-size: 170%;
-    color: #f60;
 }
 
-#one_maincolumn .subarea h3 ,
-#under02column .subarea h3 ,
-#two_maincolumn_right .subarea h3 ,
-#three_maincolumn .subarea h3 ,
-div#under02column_login .login_area h3 ,
-#under02column_shopping h3 ,
+#one_maincolumn .sub_area h3 ,
+#two_maincolumn_right .sub_area h3 ,
+#two_maincolumn_left .sub_area h3 ,
+#three_maincolumn .sub_area h3 ,
+#undercolumn_login .login_area h3 ,
+#undercolumn_shopping h3 ,
 #mypagecolumn h3 ,
-#under02column_cart h3 {
-    font-size: 120%;
+#undercolumn_cart h3 {
     margin: 0 0 10px 0;
     padding: 5px 0 10px;
-    background: url("../img/background/line_01.gif") repeat-x left bottom;
     color: #f60;
-    clear: both;
+    background: url("../img/background/line_01.gif") repeat-x left bottom;
+    font-size: 120%;
 }
 
-div#under02column_login .login_area h4 {
+div#undercolumn_login .login_area h4 {
     padding-left: 15px;
     background: url("../img/icon/ico_arrow_05.gif") no-repeat left;
 }
@@ -229,59 +220,62 @@ div#under02column_login .login_area h4 {
 ----------------------------------------------- */
 #errorHeader {
     color: #F00;
-	  font-weight: bold;
-	  font-size: 12px;
+    font-weight: bold;
+    font-size: 12px;
     background-color: #FEB;
     text-align: center;
     padding: 5px;
 }
-#headerWrap {
+
+#header_wrap {
+    border-top: solid 3px #f90;
     min-height: 82px;
     background: url("../img/common/bg_header.gif") repeat-x bottom #fffaf0;
-    border-top: solid 3px #f90;
 }
 #header {
-    width: 980px;
     margin: auto;
+    width: 980px;
 }
-#logoArea {
+#logo_area {
     padding-left: 10px;
-    width: 390px;
     float: left;
+    width: 390px;
     text-align: left;
 }
 #header_utility {
-    width: 580px;
     float: right;
+    width: 580px;
 }
+
 
 /* ロゴ
 ----------------------------------------------- */
-#siteDescription {
+#site_description {
     margin-top: 13px;
     font-size:90%;
 }
-#logoArea h1 {
+#logo_area h1 {
     width: 378px;
     height: 33px;
 }
-#logoArea h1 span{
+#logo_area h1 span{
     display: none;/* テキストロゴ非表示 */
 }
 
+
 /* ヘッダーナビ
 ----------------------------------------------- */
-div#headerNavi {
+div#header_navi {
+    float: right;
     width: 409px;
     height: 38px;
-    float: right;
 }
-div#headerNavi ul li {
-    float: left;
+div#header_navi ul li {
     display: block;
+    float: left;
 }
-div#headerNavi ul li.mypage,
-div#headerNavi ul li.entry {
+div#header_navi ul li.mypage,
+div#header_navi ul li.entry {
     margin-top: 6px;
 }
 
@@ -289,17 +283,17 @@ div#headerNavi ul li.entry {
 /* ==============================================
  フッター
 =============================================== */
-#footerWrap {
+#footer_wrap {
+    margin: 0 auto;
     width: 980px;
     height: 80px;
-    margin: 0 auto;
     background: #fff;
 }
 #footer {
-    width: 950px;
-    margin: auto;
     padding-top: 10px;
     border-top: solid 1px #ccc;
+    width: 950px;
+    margin: auto;
 }
 #pagetop {
     width: 210px;
@@ -313,24 +307,23 @@ div#headerNavi ul li.entry {
     font-size: 97%;
 }
 
+
 /* ==============================================
  パーツ
 =============================================== */
 /* ボタン
 ----------------------------------------------- */
 .btn_area {
+    margin-top: 10px;
     width: 100%;
     text-align: center;
 }
 
 .btn_area li {
-    display: inline;
     padding-right: 10px;
+    display: inline;
 }
 
-#cartbtn_default {
-    margin: 7px 0;
-}
 
 /* 完了メッセージ
 ----------------------------------------------- */
@@ -340,10 +333,10 @@ div#complete_area {
 div#complete_area .message ,
 div#undercolumn_entry .message {
     margin-bottom: 20px;
-    font-size: 160%;
+    color: #f60;
     line-height: 150%;
     font-weight: bold;
-    color: #f60;
+    font-size: 160%;
 }
 div#complete_area .shop_information {
     margin-top: 40px;
@@ -352,7 +345,7 @@ div#complete_area .shop_information {
 }
 div#complete_area .shop_information .name {
     margin-bottom: 10px;
-    font-size: 140%;
     font-weight: bold;
+    font-size: 140%;
 }
 
