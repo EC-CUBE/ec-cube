@@ -97,12 +97,13 @@ class LC_Page_Admin_System_System extends LC_Page_Admin_Ex {
     /**
      * フォームパラメータ初期化.
      *
-     * @pram object $objFormParam
+     * @param object $objFormParam
+     * @param array $arrParams $_GET値
      * @return void
      */
     function initForm(&$objFormParam, &$arrParams) {
-        $objForm->addParam('mode', 'mode', INT_LEN, '', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
-        $objForm->setParam($arrParams);
+        $objFormParam->addParam('mode', 'mode', INT_LEN, '', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->setParam($arrParams);
     }
 
     /**
