@@ -199,7 +199,7 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex {
      * @param integer $customer_id 顧客ID
      * @return boolean true:成功 false:失敗
      */
-    function lfDoResendMail($cutomer_id) {
+    function lfDoResendMail($customer_id) {
         $arrData = SC_Helper_Customer_Ex::sfGetCustomerDataFromId($customer_id);
         if(SC_Utils_Ex::isBlank($arrData) or $arrData['del_flg'] == 1) {
             //対象となるデータが見つからない、または削除済み
