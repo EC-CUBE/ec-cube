@@ -271,7 +271,7 @@ class LC_Page {
      * @deprecated 決済モジュール互換のため
      */
     function allowClientCache() {
-        LC_Page::httpCacheControl('private');
+        $this->httpCacheControl('private');
     }
 
     /**
