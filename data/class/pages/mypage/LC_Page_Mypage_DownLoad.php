@@ -183,7 +183,7 @@ __EOS__;
 
         $dbFactory = SC_DB_DBFactory_Ex::getInstance();
         $where = "o.customer_id = ? AND o.order_id = ? AND pc.product_id = ? AND pc.product_class_id = ?";
-        $where .= " AND " . $dbFactory->getDownloadableDaysWhereSql();
+        $where .= " AND " . $dbFactory->getDownloadableDaysWhereSql('o');
         $where .= " = 1";
         $arrRet = $objQuery->select($col, $table, $where,
                                     array($customer_id, $order_id, $product_id, $product_class_id));
