@@ -30,106 +30,135 @@ self.moveTo(20,20);self.focus();
 </script>
 </head>
 
-
 <form name="form1" id="form1" method="post" action="?">
-<input type="hidden" name="mode" value="search" />
 <div id="mail" class="contents-main">
   <h2>配信条件</h2>
 
   <table class="form">
     <tr>
       <th>顧客名</th>
-      <td><!--{$list_data.name|default:"(未指定)"|h}--></td>
+      <td><!--{$arrSearchData.search_name|default:"(未指定)"|h}--></td>
     </tr>
     <tr>
       <th>顧客名(カナ)</th>
-      <td width="249"><!--{$list_data.kana|default:"(未指定)"|h}--></td>
+      <td><!--{$arrSearchData.search_kana|default:"(未指定)"|h}--></td>
     </tr>
     <tr>
       <th>都道府県</th>
-      <td><!--{$list_data.pref_disp|default:"(未指定)"}--></td>
+      <td>
+      <!--{assign var=key value="search_pref"}-->
+      <!--{if is_array($arrSearchData[$key])}-->
+        <!--{foreach item=item from=$arrSearchData[$key]}-->
+          <!--{$arrPref[$item]|h}-->　
+        <!--{/foreach}-->
+      <!--{else}-->(未指定)<!--{/if}-->
+      </td>
     </tr>
     <tr>
       <th>TEL</th>
-      <td width="249"><!--{$list_data.tel|default:"(未指定)"|h}--></td>
+      <td><!--{$arrSearchData.search_tel|default:"(未指定)"|h}--></td>
     </tr>
     <tr>
       <th>性別</th>
-      <td><!--{$list_data.sex_disp|default:"(未指定)"}--></td>
+      <td>
+      <!--{assign var=key value="search_sex"}-->
+      <!--{if is_array($arrSearchData[$key])}-->
+        <!--{foreach item=item from=$arrSearchData[$key]}-->
+          <!--{$arrSex[$item]|h}-->　
+        <!--{/foreach}-->
+      <!--{else}-->(未指定)<!--{/if}-->
+      </td>
     </tr>
     <tr>
       <th>誕生月</th>
-      <td width="249"><!--{if $list_data.birth_month}--><!--{$list_data.birth_month|h}-->月<!--{else}-->(未指定)<!--{/if}--></td>        
+      <td><!--{if $arrSearchData.search_birth_month}--><!--{$arrSearchData.search_birth_month|h}-->月<!--{else}-->(未指定)<!--{/if}--></td>        
     </tr>
     <tr>
       <th>配信形式</th>
-      <td><!--{$list_data.htmlmail_disp|default:"(未指定)"|h}--></td>
+      <td><!--{$arrSearchData.htmlmail_disp|default:"(未指定)"|h}--></td>
     </tr>
     <tr>
       <th>購入回数</th>
       <td>
-        <!--{if $list_data.buy_times_from == null}-->(未指定)<!--{else}--><!--{$list_data.buy_times_from|h}-->回<!--{/if}--> ～ 
-        <!--{if $list_data.buy_times_to == null}-->(未指定)<!--{else}--><!--{$list_data.buy_times_to|h}-->回<!--{/if}-->
+        <!--{if $arrSearchData.search_buy_times_from == null}-->(未指定)<!--{else}--><!--{$arrSearchData.search_buy_times_from|h}-->回<!--{/if}--> ～ 
+        <!--{if $arrSearchData.search_buy_times_to == null}-->(未指定)<!--{else}--><!--{$arrSearchData.search_buy_times_to|h}-->回<!--{/if}-->
       </td>
     </tr>
-    <!--{*非会員は選択できない
-    <tr>
-      <th>種別</th>
-      <td>
-      <!--{$list_data.customer|default:"すべて"|h}-->
-      </td>
-    </tr>
-    *}-->
     <tr>
       <th>購入商品コード</th>
-      <td><!--{$list_data.buy_product_code|default:"(未指定)"|h}--></td>
+      <td><!--{$arrSearchData.search_buy_product_code|default:"(未指定)"|h}--></td>
     </tr>
     <tr>
       <th>購入金額</th>
       <td>
-        <!--{if $list_data.buy_total_from == null}-->(未指定)<!--{else}--><!--{$list_data.buy_total_from|h}-->円<!--{/if}--> ～ 
-        <!--{if $list_data.buy_total_to == null}-->(未指定)<!--{else}--><!--{$list_data.buy_total_to|h}-->円<!--{/if}-->
+        <!--{if $arrSearchData.search_buy_total_from == null}-->(未指定)<!--{else}--><!--{$arrSearchData.search_buy_total_from|h}-->円<!--{/if}--> ～ 
+        <!--{if $arrSearchData.search_buy_total_to == null}-->(未指定)<!--{else}--><!--{$arrSearchData.search_buy_total_to|h}-->円<!--{/if}-->
       </td>
     </tr>
     <tr>
       <th>メールアドレス</th>
-      <td><!--{$list_data.email|default:"(未指定)"|h}--></td>
+      <td><!--{$arrSearchData.search_email|default:"(未指定)"|h}--></td>
     </tr>
     <tr>
       <th>職業</th>
-      <td><!--{$list_data.job_disp|default:"(未指定)"|h}--></td>
+      <td>
+      <!--{assign var=key value="search_job"}-->
+      <!--{if is_array($arrSearchData[$key])}-->
+        <!--{foreach item=item from=$arrSearchData[$key]}-->
+          <!--{$arrJob[$item]|h}-->　
+        <!--{/foreach}-->
+      <!--{else}-->(未指定)<!--{/if}-->
+      </td>
     </tr>
     <tr>
       <th>生年月日</th>
       <td>
-      <!--{if $list_data.b_start_year}-->
-        <!--{$list_data.b_start_year}-->年<!--{$list_data.b_start_month}-->月<!--{$list_data.b_start_day}-->日&nbsp;?&nbsp;<!--{$list_data.b_end_year}-->年<!--{$list_data.b_end_month}-->月<!--{$list_data.b_end_day}-->日
+      <!--{if $arrSearchData.search_b_start_year}-->
+        <!--{$arrSearchData.search_b_start_year}-->年<!--{$arrSearchData.search_b_start_month}-->月<!--{$arrSearchData.search_b_start_day}-->日&nbsp;～
+        <!--{if $arrSearchData.search_b_end_year}-->&nbsp;<!--{$arrSearchData.search_b_end_year}-->年<!--{$arrSearchData.search_b_end_month}-->月<!--{$arrSearchData.search_b_end_day}-->日<!--{/if}-->
       <!--{else}-->(未指定)<!--{/if}-->
       </td>
     </tr>  
     <tr>
       <th>登録日</th>
       <td>
-      <!--{if $list_data.start_year}-->
-        <!--{$list_data.start_year}-->年<!--{$list_data.start_month}-->月<!--{$list_data.start_day}-->日&nbsp;?&nbsp;<!--{$list_data.end_year}-->年<!--{$list_data.end_month}-->月<!--{$list_data.end_day}-->日
+      <!--{if $arrSearchData.search_start_year}-->
+        <!--{$arrSearchData.search_start_year}-->年<!--{$arrSearchData.search_start_month}-->月<!--{$arrSearchData.search_start_day}-->日&nbsp;～
+        <!--{if $arrSearchData.search_end_year}-->&nbsp;<!--{$arrSearchData.search_end_year}-->年<!--{$arrSearchData.search_end_month}-->月<!--{$arrSearchData.search_end_day}-->日<!--{/if}-->
       <!--{else}-->(未指定)<!--{/if}-->
       </td>
-    </tr>      
+    </tr>
     <tr>
       <th>最終購入日</th>
       <td>
-      <!--{if $list_data.buy_start_year}-->
-        <!--{$list_data.buy_start_year}-->年<!--{$list_data.buy_start_month}-->月<!--{$list_data.buy_start_day}-->日&nbsp;?&nbsp;<!--{$list_data.buy_end_year}-->年<!--{$list_data.buy_end_month}-->月<!--{$list_data.buy_end_day}-->日
+      <!--{if $arrSearchData.search_buy_start_year}-->
+        <!--{$arrSearchData.search_buy_start_year}-->年<!--{$arrSearchData.search_buy_start_month}-->月<!--{$arrSearchData.search_buy_start_day}-->日&nbsp;～
+        <!--{if $arrSearchData.search_buy_end_year}-->&nbsp;<!--{$arrSearchData.search_buy_end_year}-->年<!--{$arrSearchData.search_buy_end_month}-->月<!--{$arrSearchData.search_buy_end_day}-->日<!--{/if}-->
       <!--{else}-->(未指定)<!--{/if}-->  
       </td>
     </tr>
     <tr>
       <th>購入商品名</th>
-      <td><!--{$list_data.buy_product_name|default:"(未指定)"|h}--></td>
+      <td><!--{$arrSearchData.search_buy_product_name|default:"(未指定)"|h}--></td>
     </tr>
     <tr>
       <th>カテゴリ</th>
-      <td><!--{$list_data.category_name|default:"(未指定)"|h}--></td>
+      <td>
+      <!--{assign var=key value="search_category_id"}-->
+      <!--{if is_array($arrSearchData[$key])}-->
+        <!--{foreach item=item from=$arrSearchData[$key]}-->
+          <!--{$arrCatList[$item]|h}-->　
+        <!--{/foreach}-->
+      <!--{else}-->(未指定)<!--{/if}-->
+      </td>
+    </tr>
+    <tr>
+      <th>配信形式</th>
+      <td><!--{$arrHtmlmail[$arrSearchData.search_htmlmail]|default:"(未指定)"|h}--></td>
+    </tr>
+    <tr>
+      <th>配信メールアドレス種別</th>
+      <td><!--{$arrMailType[$arrSearchData.search_mail_type]|default:"(未指定)"|h}--></td>
     </tr>
   </table>
 

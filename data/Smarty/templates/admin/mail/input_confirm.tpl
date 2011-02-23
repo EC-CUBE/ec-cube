@@ -21,56 +21,53 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
+<script type="text/javascript">
+<!--
+function winSubmitMail(URL,formName,Winname,Wwidth,Wheight){
+	var WIN = window.open(URL,Winname,"width="+Wwidth+",height="+Wheight+",scrollbars=yes,resizable=yes,toolbar=no,location=no,directories=no,status=no,menubar=no");
+    document.forms[formName].target = Winname;
+    document.forms[formName].submit();
+    WIN.focus();
+}
+//-->
+</script>
 <form name="form1" id="form1" method="post" action="?">
-<!--{foreach key=key item=val from=$arrHidden}-->
-<input type="hidden" name="<!--{$key}-->" value="<!--{$val|h}-->" />
+<input type="hidden" name="mode" value="template">
+<input type="hidden" name="subject" value="<!--{$arrForm.subject.value|h}-->">
+<input type="hidden" name="body" value="<!--{$arrForm.body.value|h}-->">
+<input type="hidden" name="mail_method" value="<!--{$arrForm.mail_method.value|h}-->">
+<input type="hidden" name="template_id" value="<!--{$arrForm.template_id.value|h}-->">
+<!--{foreach key=key item=item from=$arrHidden}-->
+    <!--{if is_array($item)}-->
+      <!--{foreach item=c_item from=$item}-->
+        <input type="hidden" name="<!--{$key}-->[]" value="<!--{$c_item|h}-->" />
+      <!--{/foreach}-->
+    <!--{else}-->
+      <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
+    <!--{/if}-->
 <!--{/foreach}-->
 <div id="mail" class="contents-main">
   <table class="form">
-    <!--{if $smarty.const.MELMAGA_BATCH_MODE}-->
-    <tr>
-      <th>配信時間設定<span class="attention"> *</span></th>
-      <td>
-      <!--{$list_data.send_year}-->年<!--{$list_data.send_month}-->月<!--{$list_data.send_day}-->日
-      <!--{$list_data.send_hour}-->時<!--{$list_data.send_minutes}-->分
-      </td>
-    </tr>
-    <!--{/if}-->
-    <!--▼インクルードここから-->
-    <!--{if $list_data.template_id}-->
     <tr>
       <th>Subject<span class="attention"> *</span></th>
-      <td><!--{$list_data.subject|h}--></td>
+      <td><!--{$arrForm.subject.value|h}--></td>
     </tr>
-    <!--{if $list_data.mail_method ne 2}-->
-    <tr>
-      <td colspan="2"><a href="#" onClick="return document.form2.submit();">HTMLで確認</a></td>
-    </tr>
+    <!--{if $arrForm.mail_method.value ne 2}-->
+      <tr>
+        <td colspan="2"><a href="javascript:;" onClick="winSubmitMail('','form2','preview',650,700); return false;">HTMLで確認</a></td>
+      </tr>
     <!--{/if}-->
-    <!--{if $smarty.post.template_mode ne "html_template"}-->
     <tr>
       <th>本文<span class="attention"> *</span><br />（名前差し込み時は {name} といれてください）</th>
-      <td><!--{$list_data.body|h|nl2br}--></td>
+      <td><!--{$arrForm.body.value|h|nl2br}--></td>
     </tr>
-    <!--{/if}-->
-    <!--{/if}-->
-    <!--▲インクルードここまで-->
   </table>
 
   <div class="btn-area">
     <ul>
       <li><a class="btn-action" href="javascript:;" name="subm02" onclick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_back', '' ); return false;"><span class="btn-prev">テンプレート設定画面へ戻る</span></a></li>
-    <!--{if $smarty.const.MELMAGA_BATCH_MODE}-->
-      <li><a class="btn-action" href="javascript:;" name="subm03" onClick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_complete', '' ); return false;" <!--{$list_data.template_id|sfGetEnabled}-->><span class="btn-next">配信を予約する</span></a></li>
-    <!--{else}-->
-      <li><a class="btn-action" href="javascript:;" name="subm03" onClick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_complete', '' ); return false;" <!--{$list_data.template_id|sfGetEnabled}-->><span class="btn-next">配信する</span></a></li>
-    <!--{/if}-->
+      <li><a class="btn-action" href="javascript:;" name="subm03" onClick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_complete', '' ); return false;"><span class="btn-next">配信する</span></a></li>
     </ul>
   </div>
 </div>
-<input type="hidden" name="mode" value="template">
-</form>
-<form name="form2" id="form2" method="post" action="./preview.php" target="_blank">
-  <input type="hidden" name="subject" value="<!--{$list_data.subject|h}-->" />
-  <input type="hidden" name="body" value="<!--{$list_data.body|h}-->" />
 </form>

@@ -22,62 +22,48 @@
  */
 *}-->
 <form name="form1" id="form1" method="post" action="?">
-<!--{foreach key=key item=val from=$arrHidden}-->
-<input type="hidden" name="<!--{$key}-->" value="<!--{$val|h}-->" />
+<!--{foreach key=key item=item from=$arrHidden}-->
+    <!--{if is_array($item)}-->
+      <!--{foreach item=c_item from=$item}-->
+        <input type="hidden" name="<!--{$key}-->[]" value="<!--{$c_item|h}-->" />
+      <!--{/foreach}-->
+    <!--{else}-->
+      <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
+    <!--{/if}-->
 <!--{/foreach}-->
+<input type="hidden" name="mode" value="template" />
+<input type="hidden" name="mail_method" value="<!--{$arrForm.mail_method.value}-->" />
 <div id="mail" class="contents-main">
   <table class="form">
     <tr>
       <th>テンプレート選択<span class="attention"> *</span></th>
       <td>
-        <!--{if $arrErr.template_id}--><span class="attention"><!--{$arrErr.template_id}--></span><!--{/if}-->
-        <select name="template_id" onchange="return fnInsertValAndSubmit( document.form1, 'mode', 'template', '' ) " style="<!--{$arrErr.template_id|sfGetErrorColor}-->">
+        <!--{assign var=key value="template_id"}-->
+        <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><!--{/if}-->
+        <select name="<!--{$key}-->" onchange="return fnInsertValAndSubmit( document.form1, 'mode', 'template', '' ) " style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
         <option value="" selected="selected">選択してください</option>
-        <!--{html_options options=$arrTemplate selected=$list_data.template_id}-->
+        <!--{html_options options=$arrTemplate selected=$arrForm[$key].value}-->
         </select>
       </td>
     </tr>
-    
-    <!--{* バッチモードの場合のみ表示 *}-->
-    <!--{if $smarty.const.MELMAGA_BATCH_MODE}-->
-    <tr>
-      <th>配信時間設定<span class="attention"> *</span></th>
-      <td>
-        <!--{if $arrErr.send_year || $arrErr.send_month || $arrErr.send_day || $arrErr.send_hour || $arrErr.send_minutes}--><span class="attention"><!--{$arrErr.send_year}--><!--{$arrErr.send_month}--><!--{$arrErr.send_day}--><!--{$arrErr.send_hour}--><!--{$arrErr.send_minutes}--></span><br /><!--{/if}-->
-        <select name="send_year" style="<!--{$arrErr.send_year|sfGetErrorColor}-->">
-        <!--{html_options options=$arrYear selected=$arrNowDate.year}-->
-        </select>年
-        <select name="send_month" style="<!--{$arrErr.send_month|sfGetErrorColor}-->">
-        <!--{html_options options=$objDate->getMonth() selected=$arrNowDate.month}-->
-        </select>月
-        <select name="send_day" style="<!--{$arrErr.send_day|sfGetErrorColor}-->">
-        <!--{html_options options=$objDate->getDay() selected=$arrNowDate.day}-->
-        </select>日
-        <select name="send_hour" style="<!--{$arrErr.send_hour|sfGetErrorColor}-->">
-        <!--{html_options options=$objDate->getHour() selected=$arrNowDate.hour}-->
-        </select>時
-        <select name="send_minutes" style="<!--{$arrErr.send_minutes|sfGetErrorColor}-->">
-        <!--{html_options options=$objDate->getMinutesInterval() selected=$arrNowDate.minutes}-->
-        </select>分
-      </td>
-    </tr>
-    <!--{/if}-->
   </table>
 
-  <!--{if $list_data.template_id}-->
+  <!--{if $arrForm.template_id.value}-->
   <table class="form">
     <tr>
       <th>Subject<span class="attention"> *</span></th>
       <td>
-        <!--{if $arrErr.subject}--><span class="attention"><!--{$arrErr.subject}--></span><!--{/if}-->
-        <input type="text" name="subject" size="65" class="box65" <!--{if $arrErr.subject}--><!--{sfSetErrorStyle}--><!--{/if}--> value="<!--{$list_data.subject|h}-->" />
+        <!--{assign var=key value="subject"}-->
+        <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><!--{/if}-->
+        <input type="text" name="subject" size="65" class="box65" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" value="<!--{$arrForm[$key].value|h}-->" />
       </td>
     </tr>
     <tr>
       <th>本文<span class="attention"> *</span><br />（名前差し込み時は {name} といれてください）</th>
       <td>
-        <!--{if $arrErr.body}--><span class="attention"><!--{$arrErr.body}--></span><!--{/if}-->
-        <textarea name="body" cols="90" rows="40" class="area90" <!--{if $arrErr.body}--><!--{sfSetErrorStyle}--><!--{/if}-->><!--{$list_data.body|h}--></textarea>
+        <!--{assign var=key value="body"}-->
+        <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><!--{/if}-->
+        <textarea name="body" cols="90" rows="40" class="area90" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{$arrForm[$key].value|h}--></textarea>
       </td>
     </tr>
   </table>
@@ -90,6 +76,4 @@
     </ul>
   </div>
 </div>
-<input type="hidden" name="mode" value="template" />
-<input type="hidden" name="mail_method" value="<!--{$list_data.mail_method}-->" />
 </form>
