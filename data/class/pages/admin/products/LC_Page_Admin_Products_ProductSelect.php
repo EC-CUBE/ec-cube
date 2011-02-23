@@ -97,6 +97,19 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page_Admin_Ex {
         parent::destroy();
     }
 
+    /**
+     * トランザクショントークンを unset しないようオーバーライド.
+     *
+     * @return void
+     */
+    function doValidToken() {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            if (!SC_Helper_Session_Ex::isValidToken(false)) {
+                SC_Utils_Ex::sfDispError(INVALID_MOVE_ERRORR);
+            }
+        }
+    }
+
     /* 取得文字列の変換 */
     function lfConvertParam() {
         /*
