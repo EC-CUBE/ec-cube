@@ -43,28 +43,11 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex {
      */
     function init() {
         parent::init();
-
         $this->tpl_mainpage = 'system/editdb.tpl';
         $this->tpl_subnavi  = 'system/subnavi.tpl';
         $this->tpl_subno    = 'editdb';
         $this->tpl_mainno   = 'system';
         $this->tpl_subtitle = '高度なデータベース管理';
-    }
-
-    /**
-     * フォームパラメータ初期化
-     *
-     * @return void
-     */
-    function initForm() {
-        $objForm = new SC_FormParam();
-        $objForm->addParam('モード', 'mode', INT_LEN, 'n', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
-        $objForm->addParam('テーブル名', 'table_name');
-        $objForm->addParam('カラム名', 'column_name');
-        $objForm->addParam('インデックス', 'indexflag');
-        $objForm->addParam('インデックス（変更後）', 'indexflag_new');
-        $objForm->setParam($_POST);
-        $this->objForm = $objForm;
     }
 
     /**
@@ -83,16 +66,29 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        //フォームの値を取得
-        $this->initForm();
+<<<<<<< .mine
+
+=======
+>>>>>>> .r20348
+        // 認証可否の判定
+        SC_Utils_Ex::sfIsSuccess(new SC_Session());
+
+        $objFormParam = new SC_FormParam();
+
+        // パラメータの初期化
+        $this->initForm($objFormParam, $_POST);
+
 
         switch($this->getMode()) {
         case 'confirm' :
-            $this->lfDoChange();
+            $message = $this->lfDoChange($objFormParam);
+            if (!is_array($message) && $message != "") {
+                $this->tpl_onload = $message;
+            }
             break;
         default:
             break;
-	    }
+	}
 
         //インデックスの現在値を取得
         $this->arrForm = $this->lfGetIndexList();
@@ -107,13 +103,58 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex {
         parent::destroy();
     }
 
-    function lfGetTargetData() {
-        $objQuery = new SC_Query();
-        $arrIndexFlag = $this->objForm->getValue('indexflag');
-        $arrIndexFlagNew = $this->objForm->getValue('indexflag_new');
-        $arrTableName = $this->objForm->getValue('table_name');
-        $arrColumnName =$this->objForm->getValue('column_name');
+    /**
+     * フォームパラメータ初期化
+     *
+     * @param object $objFormParam
+     * @param array $arrParams $_POST値
+     * @return void
+     */
+    function initForm(&$objFormParam, &$arrParams) {
+
+        $objFormParam->addParam('モード', 'mode', INT_LEN, 'n', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('テーブル名', 'table_name');
+        $objFormParam->addParam('カラム名', 'column_name');
+        $objFormParam->addParam('インデックス', 'indexflag');
+        $objFormParam->addParam('インデックス（変更後）', 'indexflag_new');
+        $objFormParam->setParam($arrParams);
+
+    }
+
+    function lfDoChange(&$objFormParam) {
+        $objQuery =& SC_Query::getSingletonInstance();
+        $arrTarget = $this->lfGetTargetData($objFormParam);
+        $message = "";
+        if(is_array($arrTarget) && count($arrTarget) == 0) {
+            $message = "window.alert('変更対象となるデータはありませんでした。');";
+            return $message;
+        } elseif(!is_array($arrTarget) && $arrTarget != "") {
+            return $arrTarget; // window.alert が返ってきているはず。
+        }
+
+        // 変更対象の設定変更
+        foreach($arrTarget as $item) {
+            $index_name = $item['table_name'] . '_' . $item['column_name'] . "_key";
+            $arrField = array( 'fields' => array($item['column_name'] => array()));
+            if($item['indexflag_new'] == '1') {
+                $objQuery->createIndex($item['table_name'], $index_name, $arrField);
+            }else{
+                $objQuery->dropIndex($item['table_name'], $index_name);
+            }
+        }
+        $message = "window.alert('インデックスの変更が完了しました。');";
+        return $message;
+    }
+
+    function lfGetTargetData(&$objFormParam) {
+        $objQuery =& SC_Query::getSingletonInstance();
+        $arrIndexFlag    = $objFormParam->getValue('indexflag');
+        $arrIndexFlagNew = $objFormParam->getValue('indexflag_new');
+        $arrTableName    = $objFormParam->getValue('table_name');
+        $arrColumnName   = $objFormParam->getValue('column_name');
         $arrTarget = array();
+        $message = "";
+
         // 変更されている対象を走査
         for($i = 1; $i <= count($arrIndexFlag); $i++) {
             //入力値チェック
@@ -130,8 +171,8 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex {
             $arrErr = $objErr->arrErr;
             if(count($arrErr) != 0) {
                 // 通常の送信ではエラーにならないはずです。
-                $this->tpl_onload = "window.alert('不正なデータがあったため処理を中断しました。');";
-                return;
+                $message = "window.alert('不正なデータがあったため処理を中断しました。');";
+                return $message;
             }
             if($param['indexflag'] != $param['indexflag_new']) {
                 // 入力値がデータにある対象テーブルかのチェック
@@ -143,26 +184,7 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex {
         return $arrTarget;
     }
 
-    function lfDoChange() {
-        $objQuery = new SC_Query();
-        $arrTarget = $this->lfGetTargetData();
-        if(count($arrTarget) == 0) {
-            $this->tpl_onload = "window.alert('変更対象となるデータはありませんでした。');";
-            return;
-        }
 
-        // 変更対象の設定変更
-        foreach($arrTarget as $item) {
-            $index_name = $item['table_name'] . '_' . $item['column_name'] . "_key";
-            $arrField = array( 'fields' => array($item['column_name'] => array()));
-            if($item['indexflag_new'] == '1') {
-                $objQuery->createIndex($item['table_name'], $index_name, $arrField);
-            }else{
-                $objQuery->dropIndex($item['table_name'], $index_name);
-            }
-        }
-        $this->tpl_onload = "window.alert('インデックスの変更が完了しました。');";
-    }
 
     /**
      * インデックス設定を行う一覧を返す関数
@@ -172,7 +194,7 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex {
     function lfGetIndexList()
     {
         // データベースからインデックス設定一覧を取得する
-        $objQuery = new SC_Query();
+        $objQuery =& SC_Query::getSingletonInstance();
         $objQuery->setOrder("table_name, column_name");
         $arrIndexList = $objQuery->select("table_name , column_name , recommend_flg, recommend_comment", "dtb_index_list");
 
