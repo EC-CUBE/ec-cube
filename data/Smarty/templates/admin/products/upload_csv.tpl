@@ -21,20 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-<script type="text/javascript">
-<!--
-self.moveTo(20,20);self.focus();
-
-function lfPopwinSubmit(formName) {
-  win02('about:blank','csv_upload','500','400');
-  document[formName].target = "csv_upload";
-  document[formName].submit();
-  return false;
-}
-//-->
-</script>
-
-<form name="form1" id="form1" method="post" action="?" enctype="multipart/form-data" onSubmit="lfPopwinSubmit('form1');">
+<form name="form1" id="form1" method="post" action="?" enctype="multipart/form-data"">
 <input type="hidden" name="mode" value="csv_upload" />
 <div id="products" class="contents-main">
   <!--{if $tpl_errtitle != ""}-->
@@ -73,7 +60,7 @@ function lfPopwinSubmit(formName) {
   <!--▲登録テーブルここまで-->
   <div class="btn-area">
     <ul>
-      <li><a class="btn-action" href="javascript:;" onclick="lfPopwinSubmit('form1'); return false;"><span class="btn-next">この内容で登録する</span></a></li>
+      <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'csv_upload', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
     </ul>
   </div>
 </div>

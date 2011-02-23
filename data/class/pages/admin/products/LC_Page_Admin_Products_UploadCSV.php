@@ -57,6 +57,10 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
     /** 登録フォームカラム情報 **/
     var $arrFormKeyList;
 
+    var $arrRowErr;
+
+    var $arrRowResult;
+    
     /**
      * Page を初期化する.
      *
@@ -99,21 +103,20 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
      */
     function action() {
         $this->objDb = new SC_Helper_DB_Ex();
-        $objView = new SC_SiteView_Ex();
 
         // ファイル管理クラス
         $this->objUpFile = new SC_UploadFile(IMAGE_TEMP_REALDIR, IMAGE_SAVE_REALDIR);
         // サイト基本情報 (ポイントレート初期値用)
         $this->arrInfo = $this->objDb->sfGetBasisData();
         // CSV管理ヘルパー
-        $this->objCSV = new SC_Helper_CSV();
+        $this->objCSV = new SC_Helper_CSV_Ex();
         // CSV構造読み込み
         $arrCSVFrame = $this->objCSV->sfGetCsvOutput($this->csv_id);
 
         // CSV構造がインポート可能かのチェック
         if( !$this->objCSV->sfIsImportCSVFrame($arrCSVFrame) ) {
             // 無効なフォーマットなので初期状態に強制変更
-            $arrCSVFram = $this->objCSV->sfGetCsvOutput($this->csv_id, '', array(), $order ='no');
+            $arrCSVFrame = $this->objCSV->sfGetCsvOutput($this->csv_id, '', array(), 'no');
             $this->tpl_is_format_default = true;
         }
         // CSV構造は更新可能なフォーマットかのフラグ取得
@@ -125,141 +128,149 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         $this->objFormParam = new SC_FormParam();
         // パラメータ情報の初期化
         $this->lfInitParam($arrCSVFrame);
-        // 現在のフォーマットにおける列数を取得
-        $col_count = $this->objFormParam->getCount();
+
         $this->objFormParam->setHtmlDispNameArray();
         $this->arrTitle = $this->objFormParam->getHtmlDispNameArray();
 
         switch($this->getMode()) {
         case 'csv_upload':
-            // 登録先テーブル カラム情報の初期化
-            $this->lfInitTableInfo();
-            // 登録フォーム カラム情報
-            $this->arrFormKeyList = $this->objFormParam->getKeyList();
-
-            $err = false;
-            // CSVファイルアップロード エラーチェック
-            $arrErr['csv_file'] = $this->objUpFile->makeTempFile('csv_file');
-
-            if($arrErr['csv_file'] == "") {
-                $arrErr = $this->objUpFile->checkEXISTS();
-            }
-
-            $objView->assignobj($this);
-            $objView->display('admin_popup_header.tpl');
-
-            // 実行時間を制限しない
-            set_time_limit(0);
-
-            // 出力をバッファリングしない(==日本語自動変換もしない)
-            ob_end_flush();
-
-            // IEのために256バイト空文字出力
-            echo str_pad('',256);
-
-            if(empty($arrErr['csv_file'])) {
-                // 一時ファイル名の取得
-                $filepath = $this->objUpFile->getTempFilePath('csv_file');
-                // エンコード
-                $enc_filepath = SC_Utils_Ex::sfEncodeFile($filepath,
-                                                          CHAR_CODE, CSV_TEMP_REALDIR);
-                $fp = fopen($enc_filepath, "r");
-
-                // 無効なファイルポインタが渡された場合はエラー表示
-                if ($fp === false) {
-                    SC_Utils_Ex::sfDispError("");
-                }
-
-                // レコード行数を得る
-                $record_count = $this->objCSV->sfGetCSVRecordCount($fp);
-                // ファイルが無効な場合はエラー
-                if($record_count === FALSE) {
-                    SC_Utils_Ex::sfDispError("");
-                }
-
-                $line = 0;      // 現在行数
-                $regist = 0;    // 登録数
-
-                $objQuery =& SC_Query::getSingletonInstance();
-                $objQuery->begin();
-
-                echo "■　CSV登録進捗状況 <br/><br/>\n";
-
-                while(!feof($fp) && !$err) {
-                    $arrCSV = fgetcsv($fp, CSV_LINE_MAX);
-                    // 行カウント
-                    $line++;
-                    if($line <= 1) {
-                        continue;
-                    }
-                    // 現在行の項目数カウント
-                    $line_col_count = count($arrCSV);
-                    // 項目数が1以下の場合は無視する
-                    if($line_col_count <= 1) {
-                        continue;
-                    }
-
-                    // 項目数チェック
-                    if($line_col_count != $col_count) {
-                        echo "※ 項目数が" . $line_col_count . "個検出されました。項目数は" . $col_count . "個になります。</br>\n";
-                        $err = true;
-                    } else {
-                        // シーケンス配列を格納する。
-                        $this->objFormParam->setParam($arrCSV, true);
-                        $arrRet = $this->objFormParam->getHashArray();
-                        $this->objFormParam->setParam($arrRet);
-                        // 入力値の変換
-                        $this->objFormParam->convParam();
-                        // <br>なしでエラー取得する。
-                        $arrCSVErr = $this->lfCheckError();
-                    }
-
-                    // 入力エラーチェック
-                    if(count($arrCSVErr) > 0) {
-                        echo "<font color=\"red\">■ $line / $record_count 行目でエラーが発生しました。</font></br>\n";
-                        foreach($arrCSVErr as $val) {
-                            $this->printError($val);
-                        }
-                        $err = true;
-                    }
-
-                    if(!$err) {
-                        $this->lfRegistProduct($objQuery, $line);
-                        $regist++;
-                    }
-                    $arrParam = $this->objFormParam->getHashArray();
-
-                    if(!$err) echo $line. "行目　（商品ID：".$arrParam['product_id']." / 商品名：".$arrParam['name'].")\n<br />";
-                    flush();
-                }
-                fclose($fp);
-
-                if(!$err) {
-                    $objQuery->commit();
-                    echo "■" . $regist . "件のレコードを登録しました。";
-                    // 商品件数カウント関数の実行
-                    $this->objDb->sfCountCategory($objQuery);
-                    $this->objDb->sfCountMaker($objQuery);
-                } else {
-                    $objQuery->rollback();
-                }
-            } else {
-                foreach($arrErr as $val) {
-                    $this->printError($val);
-                }
-            }
-            echo "<br/><a href=\"javascript:window.close()\">→閉じる</a>";
-            flush();
-
-            $this->setTemplate('admin_popup_footer.tpl');
-
-            return;
+            $this->doUploadCsv();
             break;
         default:
             break;
         }
     }
 
+    /**
+     * 登録/編集結果のメッセージをプロパティへ追加する
+     *
+     * @param integer $line_count 行数
+     * @param stirng $message メッセージ
+     * @return void
+     */
+    function addRowResult($line_count, $message) {
+        $this->arrRowResult[] = $line_count . "行目：" . $message;
+    }
+
+    /**
+     * 登録/編集結果のエラーメッセージをプロパティへ追加する
+     *
+     * @param integer $line_count 行数
+     * @param stirng $message メッセージ
+     * @return void
+     */
+    function addRowErr($line_count, $message) {
+        $this->arrRowErr[] = $line_count . "行目：" . $message;
+    }
+
+    /**
+     * CSVアップロードを実行します.
+     * 
+     * @return void
+     */
+    function doUploadCsv() {
+        // ファイルアップロードのチェック
+        $this->objUpFile->makeTempFile('csv_file');
+        $arrErr = $this->objUpFile->checkExists();
+        if (count($arrErr) > 0) {
+            $this->arrErr = $arrErr;
+            return;
+        }
+        // 一時ファイル名の取得
+        $filepath = $this->objUpFile->getTempFilePath('csv_file');
+        // CSVファイルの文字コード変換
+        $enc_filepath = SC_Utils_Ex::sfEncodeFile($filepath, CHAR_CODE, CSV_TEMP_REALDIR);
+        // CSVファイルのオープン
+        $fp = fopen($enc_filepath, "r");
+        // 失敗した場合はエラー表示
+        if (!$fp) {
+             SC_Utils_Ex::sfDispError("");
+        }
+        
+        // 登録先テーブル カラム情報の初期化
+        $this->lfInitTableInfo();
+        
+        // 登録フォーム カラム情報
+        $this->arrFormKeyList = $this->objFormParam->getKeyList();
+
+        $err = false;
+
+        // レコード行数を得る
+        $record_count = $this->objCSV->sfGetCSVRecordCount($fp);
+        // ファイルが無効な場合はエラー
+        if($record_count === FALSE) {
+            SC_Utils_Ex::sfDispError("");
+        }
+
+        // 登録対象の列数
+        $col_max_count = $this->objFormParam->getCount();
+        // 行数
+        $line_count = 0;
+
+        $objQuery =& SC_Query::getSingletonInstance();
+        $objQuery->begin();
+
+        $errFlag = false;
+
+        while (!feof($fp) && !$err) {
+            $arrCSV = fgetcsv($fp, CSV_LINE_MAX);
+            // 行カウント
+            $line_count++;
+            // ヘッダ行はスキップ
+            if ($line_count == 1) {
+                continue;
+            }
+            // 空行はスキップ
+            if (empty($arrCSV)) {
+                continue;
+            }
+            // 列数が異なる場合はエラー
+            if ($col_max_count != count($arrCSV)) {
+                $errFlag = true;
+                break;
+            }
+            // シーケンス配列を格納する。
+            $this->objFormParam->setParam($arrCSV, true);
+            $arrRet = $this->objFormParam->getHashArray();
+            $this->objFormParam->setParam($arrRet);
+            // 入力値の変換
+            $this->objFormParam->convParam();
+            // <br>なしでエラー取得する。
+            $arrCSVErr = $this->lfCheckError();
+
+            // 入力エラーチェック
+            if (count($arrCSVErr) > 0) {
+                foreach ($arrCSVErr as $err) {
+                    $this->addRowErr($line_count, $err);
+                }
+                $errFlag = true;
+                break;
+            }
+
+            $this->lfRegistProduct($objQuery, $line_count);
+            $arrParam = $this->objFormParam->getHashArray();
+
+            $this->addRowResult($line_count, "商品ID：".$arrParam['product_id'] . " / 商品名：" . $arrParam['name']);
+        }
+
+        // 実行結果画面を表示
+        $this->tpl_mainpage = 'products/upload_csv_complete.tpl';
+
+        fclose($fp);
+
+        if ($errFlag) {
+            $objQuery->rollback();
+            return;
+        }
+
+        $objQuery->commit();
+
+        // 商品件数カウント関数の実行
+        $this->objDb->sfCountCategory($objQuery);
+        $this->objDb->sfCountMaker($objQuery);
+        return;
+    }
+    
     /**
      * デストラクタ.
      *
@@ -275,8 +286,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitFile() {
-        $this->objUpFile->addFile("CSVファイル", 'csv_file', array('csv'),
-                                  CSV_SIZE, true, 0, 0, false);
+        $this->objUpFile->addFile("CSVファイル", 'csv_file', array('csv'), CSV_SIZE, true, 0, 0, false);
     }
 
     /**
@@ -709,7 +719,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
     function lfGetDbFormatTimeWithLine($line_no = '') {
         $time = date("Y-m-d H:i:s");
         // 秒以下を生成
-        if($line != '') {
+        if($line_no != '') {
             $microtime = sprintf("%06d", $line_no);
             $time .= ".$microtime";
         }
@@ -814,19 +824,4 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         }
         return true;
     }
-
-    /**
-     * 引数の文字列をエラー出力する.
-     *
-     * 引数 $val の内容は, htmlspecialchars() によってサニタイズされる
-     *
-     * @param string $val 出力する文字列
-     * @return void
-     */
-    function printError($val) {
-         echo "<font color=\"red\">"
-             . htmlspecialchars($val, ENT_QUOTES)
-             . "</font><br />\n";
-    }
 }
-?>
