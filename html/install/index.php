@@ -150,17 +150,6 @@ case 'step3':
         $objPage->tpl_message.="×：テーブルの作成に失敗しました。<br>";
     }
 
-    // ビューの作成
-    if(count($objPage->arrErr) == 0 and $arrRet['db_type'] == 'pgsql') {
-        // ビューの作成
-        $objPage->arrErr = lfExecuteSQL("./sql/create_view.sql", $dsn);
-        if(count($objPage->arrErr) == 0) {
-            $objPage->tpl_message.="○：ビューの作成に成功しました。<br>";
-        } else {
-            $objPage->tpl_message.="×：ビューの作成に失敗しました。<br>";
-        }
-    }
-
     // 初期データの作成
     if(count($objPage->arrErr) == 0) {
         $objPage->arrErr = lfExecuteSQL("./sql/insert_data.sql", $dsn);
@@ -200,16 +189,6 @@ case 'drop':
         define("DB_TYPE", $arrRet['db_type']);
     }
     $dsn = $arrRet['db_type']."://".$arrRet['db_user'].":".$arrRet['db_password']."@".$arrRet['db_server'].":".$arrRet['db_port']."/".$arrRet['db_name'];
-
-    if ($arrRet['db_type'] == 'pgsql'){
-        // ビューの削除
-        $objPage->arrErr = lfExecuteSQL("./sql/drop_view.sql", $dsn, false);
-        if(count($objPage->arrErr) == 0) {
-            $objPage->tpl_message.="○：ビューの削除に成功しました。<br>";
-        } else {
-            $objPage->tpl_message.="×：ビューの削除に失敗しました。<br>";
-        }
-    }
 
     // テーブルの削除
     if(count($objPage->arrErr) == 0) {
