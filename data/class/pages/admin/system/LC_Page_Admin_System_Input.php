@@ -272,11 +272,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
         $where   = 'member_id = ?';
 
         $objQuery =& SC_Query::getSingletonInstance();
-        $arrRet = $objQuery->select($columns, $table, $where, array($id));
-
-        if (is_null($arrRet)) return array();
-
-        return $arrRet[0];
+        return $objQuery->getRow($columns, $table, $where, array($id));
     }
 
     /**
