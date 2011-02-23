@@ -19,6 +19,12 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
+<script type="text/javascript">//<![CDATA[
+    $(function(){
+        $('#category_area li.level1:last').css('border-bottom', 'none');
+    });
+//]]>
+</script>
 <div class="bloc_outer">
     <div id="category_area">
         <div class="bloc_body">

@@ -470,6 +470,7 @@ $(document).ready(function() {
 
             <!--{section name=cnt loop=$arrRecommend step=2}-->
             <div class="whobought_bloc clearfix">
+              <!--{if $arrRecommend[cnt]}-->
                 <!-- 左列 -->
                 <div class="whobought_left">
                     <div class="productImage">
@@ -491,11 +492,13 @@ $(document).ready(function() {
                     </div>
                 </div>
                 <!-- 左列 -->
+              <!--{/if}-->
 
+              <!--{assign var=cnt2 value=`$smarty.section.cnt.iteration*$smarty.section.cnt.step-1`}-->
+              <!--{if $arrRecommend[$cnt2]}-->
                 <!-- 右列 -->
                 <div class="whobought_right clearfix">
                     <div class="productImage">
-                        <!--{assign var=cnt2 value=`$smarty.section.cnt.iteration*$smarty.section.cnt.step-1`}-->
                         <a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrRecommend[$cnt2].product_id|u}-->">
                             <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrRecommend[$cnt2].main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[$cnt2].name|h}-->" /></a>
                         <!--{assign var=price02_min value=`$arrRecommend[$cnt2].price02_min`}-->
@@ -513,6 +516,7 @@ $(document).ready(function() {
                     </div>
                 </div>
                 <!-- 右列 -->
+              <!--{/if}-->
             </div>
             <!--{if $smarty.section.cnt.last}-->
             </div>
