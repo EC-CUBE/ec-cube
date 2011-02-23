@@ -71,7 +71,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
         $this->arrCatList = $objDb->sfGetCategoryList();
         
         // テンプレート一覧設定
-        $this->arrTemplate = $this->lfGetMailTemplateList(SC_Helper_Mail_Ex::sfGetMailTemplate());
+        $this->arrTemplate = $this->lfGetMailTemplateList(SC_Helper_Mail_Ex::sfGetMailmagaTemplate());
         
         $this->httpCacheControl('nocache');
     }
@@ -142,19 +142,26 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
             $objFormParam->setParam($_POST);
             $this->arrErr = $objFormParam->checkError();
             if (SC_Utils_Ex::isBlank($this->arrErr)){
-                $this->lfRegisterData($objFormParam);
                 $this->tpl_mainpage = 'mail/index.tpl';
-                //SC_Helper_Mail_Ex::hogehoge();  //送信処理
-                $this->tpl_onload = "window.alert('メール送信が完了しました。配信履歴画面から確認してください。');";
+                SC_Helper_Mail_Ex::sfSendMailmagazine($this->lfRegisterData($objFormParam));  // DB登録・送信
+                SC_Response_Ex::sendRedirect("./history.php");
             }
             break;
-        // query:配信履歴「確認」
+        // query:配信履歴から「確認」
         case 'query':
             if (SC_Utils_Ex::sfIsInt($_GET["send_id"])) {
                 $this->arrSearchData = $this->lfGetMailQuery();
             }
             $this->setTemplate('mail/query.tpl');
             break;
+        // query:配信履歴から「再送信」
+        case 'retry':
+            if (SC_Utils_Ex::sfIsInt($_GET["send_id"])) {
+                SC_Helper_Mail_Ex::sfSendMailmagazine($_GET['send_id']);  // DB登録・送信
+                SC_Response_Ex::sendRedirect("./history.php");
+            } else {
+                $this->tpl_onload = "window.alert('メール送信IDが正しくありません');";
+            }
         default:
             break;
         }
@@ -198,9 +205,9 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
     }
     
     /**
-     * テンプレート一覧情報の取得
+     * メルマガテンプレート一覧情報の取得
      *
-     * @param array $arrTemplate SC_Helper_Mail_Ex::sfGetMailTemplate()の戻り値
+     * @param array $arrTemplate SC_Helper_Mail_Ex::sfGetMailmagaTemplate()の戻り値
      * @return array key:template_id value:サブジェクト【配信形式】 
      */
     function lfGetMailTemplateList($arrTemplate){
@@ -230,7 +237,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
     /**
      * 配信内容と配信リストを書き込む
      *
-     * @return string 登録した行の dtb_send_history.send_id の値
+     * @return integer 登録した行の dtb_send_history.send_id の値
      */
     function lfRegisterData(&$objFormParam){
         $objQuery =& SC_Query::getSingletonInstance();
@@ -262,6 +269,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
                 $objQuery->insert("dtb_send_customer", $dtb_send_customer );
             }
         }
+        return $send_id;
     }
     
     /**

@@ -81,7 +81,7 @@ class LC_Page_Admin_Mail_Template extends LC_Page_Admin_Ex {
         default:
             break;
         }
-        $this->arrTemplates = $objMailHelper->sfGetMailTemplate();
+        $this->arrTemplates = $objMailHelper->sfGetMailmagaTemplate();
     }
 
     /**

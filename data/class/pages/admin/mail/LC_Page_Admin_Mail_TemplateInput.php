@@ -75,7 +75,7 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin_Ex {
         case 'edit':
             // 編集
             if ( SC_Utils_Ex::sfIsInt($_GET['template_id'])===true ){
-                $arrMail = $objMailHelper->sfGetMailTemplate($_GET['template_id']);
+                $arrMail = $objMailHelper->sfGetMailmagaTemplate($_GET['template_id']);
                 $this->arrForm = $arrMail[0];
             }
             break;

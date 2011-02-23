@@ -329,12 +329,12 @@ class SC_Helper_Mail {
     }
     
     /**
-     * 保存されているメールテンプレートの取得
+     * 保存されているメルマガテンプレートの取得
      * @param integer 特定IDのテンプレートを取り出したい時はtemplate_idを指定。未指定時は全件取得
      * @return　array メールテンプレート情報を格納した配列
      * @todo   表示順も引数で変更できるように
      */
-    function sfGetMailTemplate($template_id = null){
+    function sfGetMailmagaTemplate($template_id = null){
         // 初期化
         $where = '';
         $objQuery =& SC_Query::getSingletonInstance();
@@ -356,7 +356,7 @@ class SC_Helper_Mail {
     }
     
     /**
-     * 保存されている送信履歴の取得
+     * 保存されているメルマガ送信履歴の取得
      * @param integer 特定の送信履歴を取り出したい時はsend_idを指定。未指定時は全件取得
      * @return　array 送信履歴情報を格納した配列
      */
@@ -380,6 +380,98 @@ class SC_Helper_Mail {
         
         $arrResults = $objQuery->select('*', 'dtb_send_history', $where, $arrValues);
         return $arrResults;
+    }
+
+    /**
+     * 指定したIDのメルマガ配送を行う
+     * 
+     * @param integer $send_id dtb_send_history の情報
+     * @return　boolean true:成功 false:失敗
+     */
+    function sfSendMailmagazine($send_id) {
+        $objQuery =& SC_Query::getSingletonInstance();
+        $objDb = new SC_Helper_DB_Ex();
+        $objSite = $objDb->sfGetBasisData();
+        $objMail = new SC_SendMail_Ex();
+        
+        $where = 'del_flg = 0 AND send_id = ?';
+        $arrMail = $objQuery->getRow('*', 'dtb_send_history', $where, array($send_id));
+
+        // 対象となる$send_idが見つからない
+        if (SC_Utils_Ex::isBlank($arrMail)) return false;
+
+        // 送信先リストの取得
+        $arrDestinationList = $objQuery->select(
+            '*',
+            'dtb_send_customer',
+            'send_id = ? AND (send_flag = 2 OR send_flag IS NULL)',
+            array($send_id)
+        );
+        
+        // 現在の配信数
+        $complete_count = $arrMail['complete_count'];
+        if(SC_Utils_Ex::isBlank($arrMail)) $complete_count = 0;
+        
+        foreach ($arrDestinationList as $arrDestination) {
+
+            // 顧客名の変換
+            $customerName = trim($arrDestination["name"]);
+            $subjectBody = ereg_replace("{name}", $customerName, $arrMail["subject"]);
+            $mailBody = ereg_replace("{name}", $customerName, $arrMail["body"]);
+
+            $objMail->setItem(
+                $arrDestination["email"],
+                $subjectBody,
+                $mailBody,
+                $objSite->data["email03"],      // 送信元メールアドレス
+                $objSite->data["shop_name"],    // 送信元名
+                $objSite->data["email03"],      // reply_to
+                $objSite->data["email04"],      // return_path
+                $objSite->data["email04"]       // errors_to
+            );
+
+            // テキストメール配信の場合
+            if ($arrMail["mail_method"] == 2) {
+                $sendResut = $objMail->sendMail();
+            // HTMLメール配信の場合
+            } else {
+                $sendResut = $objMail->sendHtmlMail();
+            }
+
+            // 送信完了なら1、失敗なら2をメール送信結果フラグとしてDBに挿入
+            if (!$sendResut) {
+                $sendFlag = '2';
+            } else {
+                // 完了を 1 増やす
+                $sendFlag = '1';
+                $complete_count++;
+            }
+            
+            // 送信結果情報を更新
+            $objQuery->update('dtb_send_customer',
+                              array('send_flag'=>$sendFlag),
+                              'send_id = ? AND customer_id = ?',
+                              array($send_id,$arrDestination["customer_id"]));
+        }
+
+        // メール全件送信完了後の処理
+        $completeSql = "UPDATE dtb_send_history SET end_date = now(), complete_count = ? WHERE send_id = ?";
+        $objQuery->query($completeSql, array($complete_count, $send_id));
+
+        // 送信完了　報告メール
+        $compSubject = date("Y年m月d日H時i分") . "  下記メールの配信が完了しました。";
+        // 管理者宛に変更
+        $objMail->setTo($objSite->data["email03"]);
+        $objMail->setSubject($compSubject);
+
+        // テキストメール配信の場合
+        if ($arrMail["mail_method"] == 2 ) {
+            $sendResut = $objMail->sendMail();
+        // HTMLメール配信の場合
+        } else {
+            $sendResut = $objMail->sendHtmlMail();
+        }
+        return true;
     }
 }
 ?>

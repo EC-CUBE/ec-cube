@@ -68,7 +68,7 @@ class LC_Page_Admin_Mail_Preview extends LC_Page_Admin_Ex {
         switch ($this->getMode()) {
         case 'template':
             if (SC_Utils_Ex::sfIsInt($_GET['template_id'])){
-                $arrMail = $objMailHelper->sfGetMailTemplate($_GET['template_id']);
+                $arrMail = $objMailHelper->sfGetMailmagaTemplate($_GET['template_id']);
                 $this->mail = $arrMail[0];
             }
             break;

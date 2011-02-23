@@ -69,7 +69,7 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex {
     function action() {
         switch ($this->getMode()) {
         case 'delete':
-            if (SC_Utils_Ex::sfIsInt($send_id)) {
+            if (SC_Utils_Ex::sfIsInt($_GET['send_id'])) {
                 // 削除時
                 $this->lfDeleteHistory($_GET['send_id']);
                 $this->objDisplay->reload(null, true);
