@@ -387,7 +387,7 @@ class SC_Helper_Mail {
      * 指定したIDのメルマガ配送を行う
      * 
      * @param integer $send_id dtb_send_history の情報
-     * @return　boolean true:成功 false:失敗
+     * @return　void
      */
     function sfSendMailmagazine($send_id) {
         $objQuery =& SC_Query::getSingletonInstance();
@@ -399,7 +399,7 @@ class SC_Helper_Mail {
         $arrMail = $objQuery->getRow('*', 'dtb_send_history', $where, array($send_id));
 
         // 対象となる$send_idが見つからない
-        if (SC_Utils_Ex::isBlank($arrMail)) return false;
+        if (SC_Utils_Ex::isBlank($arrMail)) return;
 
         // 送信先リストの取得
         $arrDestinationList = $objQuery->select(
@@ -417,20 +417,20 @@ class SC_Helper_Mail {
 
             // 顧客名の変換
             $customerName = trim($arrDestination["name"]);
-            $subjectBody = ereg_replace("{name}", $customerName, $arrMail["subject"]);
-            $mailBody = ereg_replace("{name}", $customerName, $arrMail["body"]);
+            $subjectBody = preg_replace("/{name}/", $customerName, $arrMail["subject"]);
+            $mailBody = preg_replace("/{name}/", $customerName, $arrMail["body"]);
 
             $objMail->setItem(
                 $arrDestination["email"],
                 $subjectBody,
                 $mailBody,
-                $objSite->data["email03"],      // 送信元メールアドレス
-                $objSite->data["shop_name"],    // 送信元名
-                $objSite->data["email03"],      // reply_to
-                $objSite->data["email04"],      // return_path
-                $objSite->data["email04"]       // errors_to
+                $objSite["email03"],      // 送信元メールアドレス
+                $objSite["shop_name"],    // 送信元名
+                $objSite["email03"],      // reply_to
+                $objSite["email04"],      // return_path
+                $objSite["email04"]       // errors_to
             );
-
+            
             // テキストメール配信の場合
             if ($arrMail["mail_method"] == 2) {
                 $sendResut = $objMail->sendMail();
@@ -456,13 +456,15 @@ class SC_Helper_Mail {
         }
 
         // メール全件送信完了後の処理
-        $completeSql = "UPDATE dtb_send_history SET end_date = now(), complete_count = ? WHERE send_id = ?";
-        $objQuery->query($completeSql, array($complete_count, $send_id));
+        $objQuery->update('dtb_send_history',
+                          array('end_date'=>"now()", 'complete_count'=>$complete_count),
+                          'send_id = ?',
+                          array($send_id));
 
         // 送信完了　報告メール
         $compSubject = date("Y年m月d日H時i分") . "  下記メールの配信が完了しました。";
         // 管理者宛に変更
-        $objMail->setTo($objSite->data["email03"]);
+        $objMail->setTo($objSite["email03"]);
         $objMail->setSubject($compSubject);
 
         // テキストメール配信の場合
@@ -472,7 +474,7 @@ class SC_Helper_Mail {
         } else {
             $sendResut = $objMail->sendHtmlMail();
         }
-        return true;
+        return;
     }
 }
 ?>
