@@ -33,11 +33,6 @@ require_once(CLASS_REALDIR . "pages/admin/LC_Page_Admin.php");
  */
 class LC_Page_Admin_Basis_Point extends LC_Page_Admin {
 
-    // {{{ properties
-
-    /** フォームパラメータの配列 */
-    var $objFormParam;
-
     // }}}
     // {{{ functions
 
@@ -74,11 +69,11 @@ class LC_Page_Admin_Basis_Point extends LC_Page_Admin {
         $objDb = new SC_Helper_DB_Ex();
 
         // パラメータ管理クラス
-        $this->objFormParam = new SC_FormParam();
+        $objFormParam = new SC_FormParam();
         // パラメータ情報の初期化
-        $this->lfInitParam();
+        $this->lfInitParam($objFormParam);
         // POST値の取得
-        $this->objFormParam->setParam($_POST);
+        $objFormParam->setParam($_POST);
 
         $cnt = $objDb->sfGetBasisCount();
         if ($cnt > 0) {
@@ -89,16 +84,16 @@ class LC_Page_Admin_Basis_Point extends LC_Page_Admin {
 
         if(!empty($_POST)) {
             // 入力値の変換
-            $this->objFormParam->convParam();
-            $this->arrErr = $this->objFormParam->checkError();
+            $objFormParam->convParam();
+            $this->arrErr = $objFormParam->checkError();
 
             if(count($this->arrErr) == 0) {
                 switch($this->getMode()) {
                 case 'update':
-                    $this->lfUpdateData($this->objFormParam->getHashArray()); // 既存編集
+                    $this->lfUpdateData($objFormParam->getHashArray()); // 既存編集
                     break;
                 case 'insert':
-                    $this->lfInsertData($this->objFormParam->getHashArray()); // 新規作成
+                    $this->lfInsertData($objFormParam->getHashArray()); // 新規作成
                     break;
                 default:
                     break;
@@ -108,13 +103,12 @@ class LC_Page_Admin_Basis_Point extends LC_Page_Admin {
                 $this->tpl_onload = "window.alert('ポイント設定が完了しました。');";
             }
         } else {
-            $arrCol = $this->objFormParam->getKeyList(); // キー名一覧を取得
+            $arrCol = $objFormParam->getKeyList(); // キー名一覧を取得
             $col    = SC_Utils_Ex::sfGetCommaList($arrCol);
             $arrRet = $objDb->sfGetBasisData(true, $col);
-            $this->objFormParam->setParam($arrRet);
+            $objFormParam->setParam($arrRet);
         }
-
-        $this->arrForm = $this->objFormParam->getFormParamList();
+        $this->arrForm = $objFormParam->getFormParamList();
     }
 
     /**
@@ -127,9 +121,9 @@ class LC_Page_Admin_Basis_Point extends LC_Page_Admin {
     }
 
     /* パラメータ情報の初期化 */
-    function lfInitParam() {
-        $this->objFormParam->addParam("ポイント付与率", "point_rate", PERCENTAGE_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $this->objFormParam->addParam("会員登録時付与ポイント", "welcome_point", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+    function lfInitParam(&$objFormParam) {
+        $objFormParam->addParam("ポイント付与率", "point_rate", PERCENTAGE_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("会員登録時付与ポイント", "welcome_point", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
     }
 
     function lfUpdateData($post) {

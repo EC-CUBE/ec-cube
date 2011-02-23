@@ -35,9 +35,6 @@ class LC_Page_Admin_Basis_Payment_Input extends LC_Page_Admin {
 
     // {{{ properties
 
-    /** フォームパラメータの配列 */
-    var $objFormParam;
-
     /** SC_UploadFile インスタンス */
     var $objUpFile;
 
@@ -73,6 +70,21 @@ class LC_Page_Admin_Basis_Payment_Input extends LC_Page_Admin {
     function action() {
         $objDb = new SC_Helper_DB_Ex();
 
+        $mode = $this->getMode();
+
+        if (!empty($_POST) || !empty($_GET)) {
+            $objFormParam = new SC_FormParam();
+            $this->lfInitParam($mode, $objFormParam);
+
+            $param = (empty($_POST))? $_GET : $_POST;
+
+            $objFormParam->setParam($param);
+            $objFormParam->convParam();
+
+            $this->arrErr = $objFormParam->checkError();
+            $post = $objFormParam->getHashArray();
+        }
+
         // ファイル管理クラス
         $this->objUpFile = new SC_UploadFile(IMAGE_TEMP_REALDIR, IMAGE_SAVE_REALDIR);
         // ファイル情報の初期化
@@ -80,26 +92,12 @@ class LC_Page_Admin_Basis_Payment_Input extends LC_Page_Admin {
         // Hiddenからのデータを引き継ぐ
         $this->objUpFile->setHiddenFileList($_POST);
 
-        // パラメータ管理クラス
-        $this->objFormParam = new SC_FormParam();
-        // パラメータ情報の初期化
-        $this->lfInitParam();
-        // POST値の取得
-        $this->objFormParam->setParam($_POST);
-
-        switch($this->getMode()) {
+        switch($mode) {
         case 'edit':
-            // 入力値の変換
-            $this->objFormParam->convParam();
-
-            // エラーチェック
-            $this->arrErr = $this->lfCheckError($_POST);
-            $this->charge_flg = $_POST["charge_flg"];
+            $this->charge_flg = $post["charge_flg"];
             if(count($this->arrErr) == 0) {
-                $this->lfRegistData($_POST['payment_id'], $_SESSION['member_id']);
-                // 一時ファイルを本番ディレクトリに移動する
+                $this->lfRegistData($post['payment_id'], $_SESSION['member_id'], $objFormParam);
                 $this->objUpFile->moveTempFile();
-                // 親ウィンドウを更新するようにセットする。
                 $this->tpl_onload="fnUpdateParent('".ADMIN_PAYMENT_URLPATH."'); window.close();";
             }
 
@@ -107,24 +105,29 @@ class LC_Page_Admin_Basis_Payment_Input extends LC_Page_Admin {
         // 画像のアップロード
         case 'upload_image':
             // ファイル存在チェック
-            $this->arrErr = $this->objUpFile->checkEXISTS($_POST['image_key']);
+            $this->arrErr = $this->objUpFile->checkEXISTS($post['image_key']);
             // 画像保存処理
-            $this->arrErr[$_POST['image_key']] = $this->objUpFile->makeTempFile($_POST['image_key']);
+            $this->arrErr[$post['image_key']] = $this->objUpFile->makeTempFile($post['image_key']);
             break;
         // 画像の削除
         case 'delete_image':
-            $this->objUpFile->deleteFile($_POST['image_key']);
+
+            $this->objUpFile->deleteFile($post['image_key']);
             break;
 
         case 'pre_edit':
-            if ($_SERVER['REQUEST_METHOD'] == 'GET' && SC_Utils_Ex::sfIsInt($_GET['payment_id'])) {
-                $arrRet = $this->lfGetData($_GET['payment_id']);
-                $this->objFormParam->setParam($arrRet);
+                $arrRet = $this->lfGetData($post['payment_id']);
+                
+                $objFormParam->addParam("支払方法", "payment_method", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+                $objFormParam->addParam("手数料", "charge", PRICE_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+                $objFormParam->addParam("利用条件(～円以上)", "rule", PRICE_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+                $objFormParam->addParam("利用条件(～円以下)", "upper_rule", PRICE_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+                $objFormParam->addParam("固定", "fix");
+                $objFormParam->setParam($arrRet);
+
                 $this->charge_flg = $arrRet["charge_flg"];
-                // DBデータから画像ファイル名の読込
                 $this->objUpFile->setDBFileList($arrRet);
-                $this->tpl_payment_id = $_GET['payment_id'];
-            }
+                $this->tpl_payment_id = $post['payment_id'];
             break;
         default:
             break;
@@ -134,7 +137,7 @@ class LC_Page_Admin_Basis_Payment_Input extends LC_Page_Admin {
             $this->tpl_payment_id = $_POST['payment_id'];
         }
 
-        $this->arrForm = $this->objFormParam->getFormParamList();
+        $this->arrForm = $objFormParam->getFormParamList();
 
         // FORM表示用配列を渡す。
         $this->arrFile = $this->objUpFile->getFormFileList(IMAGE_TEMP_URLPATH, IMAGE_SAVE_URLPATH);
@@ -159,12 +162,37 @@ class LC_Page_Admin_Basis_Payment_Input extends LC_Page_Admin {
     }
 
     /* パラメータ情報の初期化 */
-    function lfInitParam() {
-        $this->objFormParam->addParam("支払方法", "payment_method", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("手数料", "charge", PRICE_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("利用条件(～円以上)", "rule", PRICE_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("利用条件(～円以下)", "upper_rule", PRICE_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("固定", "fix");
+    function lfInitParam($mode, &$objFormParam) {
+
+        switch ($mode) {
+            case "edit":
+                $objFormParam->addParam("支払方法", "payment_method", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+                $objFormParam->addParam("手数料", "charge", PRICE_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+                $objFormParam->addParam("利用条件(～円以上)", "rule", PRICE_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+                $objFormParam->addParam("利用条件(～円以下)", "upper_rule", PRICE_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+                $objFormParam->addParam("固定", "fix");
+                $objFormParam->addParam('支払いID', 'payment_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                $objFormParam->addParam('課金フラグ', 'charge_flg', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+
+                break;
+            case "upload_image":
+            case "delete_image":
+                $objFormParam->addParam("支払方法", "payment_method", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+                $objFormParam->addParam("手数料", "charge", PRICE_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+                $objFormParam->addParam("利用条件(～円以上)", "rule", PRICE_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+                $objFormParam->addParam("利用条件(～円以下)", "upper_rule", PRICE_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+                $objFormParam->addParam("固定", "fix");
+                $objFormParam->addParam("画像キー", "image_key", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+
+                break;
+            case "pre_edit":
+                $objFormParam->addParam('支払いID', 'payment_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                $objFormParam->addParam('課金フラグ', 'charge_flg', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                break;
+
+            default:
+                break;
+        }
     }
 
     /* DBからデータを読み込む */
@@ -176,10 +204,10 @@ class LC_Page_Admin_Basis_Payment_Input extends LC_Page_Admin {
     }
 
     /* DBへデータを登録する */
-    function lfRegistData($payment_id = "", $member_id) {
+    function lfRegistData($payment_id = "", $member_id, &$objFormParam) {
 
         $objQuery =& SC_Query::getSingletonInstance();
-        $sqlval = $this->objFormParam->getHashArray();
+        $sqlval = $objFormParam->getHashArray();
         $arrRet = $this->objUpFile->getDBFileList();	// ファイル名の取得
         $sqlval = array_merge($sqlval, $arrRet);
         $sqlval['update_date'] = 'Now()';

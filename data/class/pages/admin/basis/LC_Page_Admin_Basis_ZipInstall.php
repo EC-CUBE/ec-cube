@@ -50,8 +50,6 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin {
     var $tpl_mode;
     var $exec;
     var $tpl_count_mtb_zip;
-    /** フォームパラメータの配列 */
-    var $objFormParam;
 
     // }}}
     // {{{ functions
@@ -90,13 +88,12 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin {
      */
     function action() {
         // パラメータ管理クラス
-        $this->objFormParam = new SC_FormParam();
+        $objFormParam = new SC_FormParam();
         // パラメータ情報の初期化
-        $this->lfInitParam();
-        // POST値の取得
-        $this->objFormParam->setParam($_GET);
-        $this->arrErr = $this->objFormParam->checkError();
-        $this->arrForm = $this->objFormParam->getHashArray();
+        $this->lfInitParam($this->tpl_mode, $objFormParam);
+        $objFormParam->setParam($_GET);
+        $this->arrErr = $objFormParam->checkError();
+        $this->arrForm = $objFormParam->getHashArray();
 
         if ($this->exec) {
             if (!empty($this->arrErr)) {
@@ -159,9 +156,9 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin {
      *
      * @return void
      */
-    function lfInitParam() {
-        if ($this->tpl_mode == 'manual') {
-            $this->objFormParam->addParam("開始行", "startRowNum", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+    function lfInitParam($tpl_mode, &$objFormParam) {
+        if ($tpl_mode == 'manual') {
+            $objFormParam->addParam("開始行", "startRowNum", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
         }
     }
 

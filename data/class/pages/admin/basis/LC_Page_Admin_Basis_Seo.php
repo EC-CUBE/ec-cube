@@ -80,19 +80,28 @@ class LC_Page_Admin_Basis_Seo extends LC_Page_Admin {
         // データの取得
         $this->arrPageData = $this->lfGetSeoPageData();
 
-        $device_type_id = (isset($_POST['device_type_id'])) ? $_POST['device_type_id'] : '';
-        $page_id = (isset($_POST['page_id'])) ? $_POST['page_id'] : '';
+        $mode = $this->getMode();
 
-        switch ($this->getMode()) {
+        if (!empty($_POST)) {
+            $objFormParam = new SC_FormParam();
+            $this->lfInitParam($mode, $objFormParam);
+            $objFormParam->setParam($_POST);
+            $objFormParam->convParam();
+
+            $this->arrErr = $objFormParam->checkError();
+            $post = $objFormParam->getHashArray();
+        }
+        $device_type_id = (isset($post['device_type_id'])) ? $post['device_type_id'] : '';
+        $page_id = (isset($post['page_id'])) ? $post['page_id'] : '';
+
+        switch ($mode) {
         case 'confirm':
-            // エラーチェック
-            $this->arrErr[$device_type_id][$page_id] = $this->lfErrorCheck($_POST['meta'][$device_type_id][$page_id]);
+            $objFormParam->setParam($_POST['meta'][$device_type_id][$page_id]);
+            $this->arrErr[$device_type_id][$page_id] = $objFormParam->checkError();
 
             // エラーがなければデータを更新
             if(count($this->arrErr[$device_type_id][$page_id]) == 0) {
-
-                // 更新データの変換
-                $arrMETA = $this->lfConvertParam($_POST['meta'][$device_type_id][$page_id]);
+                $arrMETA = $objFormParam->getHashArray();
 
                 // 更新データ配列生成
                 $arrUpdData = array($arrMETA['author'], $arrMETA['description'], $arrMETA['keyword'], $device_type_id, $page_id);
@@ -152,20 +161,13 @@ class LC_Page_Admin_Basis_Seo extends LC_Page_Admin {
         return $ret;
     }
 
-    /**
-     * 入力項目のエラーチェックを行う.
-     *
-     * @param array $array エラーチェック対象データ
-     * @return array エラー内容
-     */
-    function lfErrorCheck($array) {
-        $objErr = new SC_CheckError($array);
 
-        $objErr->doFunc(array("メタタグ:Author", "author", STEXT_LEN), array("MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("メタタグ:Description", "description", STEXT_LEN), array("MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("メタタグ:Keywords", "keyword", STEXT_LEN), array("MAX_LENGTH_CHECK"));
-
-        return $objErr->arrErr;
+    function lfInitParam($mode, &$objFormParam) {
+        $objFormParam->addParam('デバイスID', 'device_type_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('ページID', 'page_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('メタタグ:Author', 'author', STEXT_LEN, 'KVa', array("MAX_LENGTH_CHECK"));
+        $objFormParam->addParam('メタタグ:Description', 'description', STEXT_LEN, 'KVa', array("MAX_LENGTH_CHECK"));
+        $objFormParam->addParam('メタタグ:Keywords', 'keyword', STEXT_LEN, 'KVa', array("MAX_LENGTH_CHECK"));
     }
 
     /**
@@ -188,33 +190,6 @@ class LC_Page_Admin_Basis_Seo extends LC_Page_Admin {
         }
 
         return $arrPageData;
-    }
-
-    /* 取得文字列の変換 */
-    function lfConvertParam($array) {
-        /*
-         *	文字列の変換
-         *	K :  「半角(ﾊﾝｶｸ)片仮名」を「全角片仮名」に変換
-         *	C :  「全角ひら仮名」を「全角かた仮名」に変換
-         *	V :  濁点付きの文字を一文字に変換。"K","H"と共に使用します
-         *	n :  「全角」数字を「半角(ﾊﾝｶｸ)」に変換
-         *  a :  全角英数字を半角英数字に変換する
-         */
-        // 人物基本情報
-
-        // スポット商品
-        $arrConvList['author'] = "KVa";
-        $arrConvList['description'] = "KVa";
-        $arrConvList['keyword'] = "KVa";
-
-        // 文字変換
-        foreach ($arrConvList as $key => $val) {
-            // POSTされてきた値のみ変換する。
-            if(isset($array[$key])) {
-                $array[$key] = mb_convert_kana($array[$key] ,$val);
-            }
-        }
-        return $array;
     }
 
     /**
