@@ -288,7 +288,8 @@ class SC_Helper_Mail {
         
         $objMailText = new SC_SiteView_Ex();
         $objMailText->assign("CONF", $CONF);
-        $objMailText->assign("name", $arrCustomerData['name01'] . $arrCustomerData['name02']);
+        $objMailText->assign("name01", $arrCustomerData['name01']);
+        $objMailText->assign("name02", $arrCustomerData['name02']);
         $objMailText->assign("uniqid", $arrCustomerData['secret_key']);
         $objMailText->assignobj($arrCustomerData);
         $objMailText->assignobj($this);
