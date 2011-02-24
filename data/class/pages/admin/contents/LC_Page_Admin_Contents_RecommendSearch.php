@@ -90,7 +90,7 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex {
                 $page_max = SC_Utils_Ex::sfGetSearchPageMax($arrPost['search_page_max']);
 
                 // ページ送りの取得
-                $objNavi = new SC_PageNavi($arrPost['search_pageno'], $linemax, $page_max, "fnNaviSearchOnlyPage", NAVI_PMAX);
+                $objNavi = new SC_PageNavi($arrPost['search_pageno'], $this->tpl_linemax, $page_max, "fnNaviSearchOnlyPage", NAVI_PMAX);
                 $this->tpl_strnavi = $objNavi->strnavi;      // 表示文字列
                 $startno = $objNavi->start_row;
 
@@ -126,6 +126,7 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex {
         $objFormParam->addParam("商品ID", "search_name", LTEXT_LEN, "KVa", array( "MAX_LENGTH_CHECK"));
         $objFormParam->addParam("商品ID", "search_category_id", INT_LEN, "n", array( "MAX_LENGTH_CHECK","NUM_CHECK"));
         $objFormParam->addParam("商品コード", "search_product_code", LTEXT_LEN, "KVa", array( "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("ページ番号", "search_pageno", INT_LEN, "n", array( "MAX_LENGTH_CHECK","NUM_CHECK"));
     }
 
     /**
