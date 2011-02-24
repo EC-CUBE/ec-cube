@@ -22,6 +22,10 @@
  */
 *}-->
 <form name="form1" id="form1" method="post" action="?" enctype="multipart/form-data">
+<!--{foreach key=key item=item from=$arrSearchHidden}-->
+<input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
+<!--{/foreach}-->
+<input type="hidden" name="mode" value="complete" />
   <!--{foreach key=key item=item from=$arrForm}-->
     <!--{if $key == 'product_status'}-->
       <!--{foreach item=statusVal from=$item}-->
@@ -43,8 +47,8 @@
     <tr>
       <th>商品カテゴリ</th>
       <td>
-      <!--{section name=cnt loop=$arrCategory_id}-->
-        <!--{assign var=key value=$arrCategory_id[cnt]}-->
+      <!--{section name=cnt loop=$arrForm.arrCategoryId}-->
+        <!--{assign var=key value=$arrForm.arrCategoryId[cnt]}-->
         <!--{$arrCatList[$key]|strip|sfTrim}--><br />
       <!--{/section}-->
       </td>
@@ -64,7 +68,7 @@
       </td>
     </tr>
 
-    <!--{if $tpl_nonclass == true}-->
+    <!--{if $arrForm.has_product_class != true}-->
     <tr>
       <th>商品種別</th>
       <td>
@@ -72,7 +76,7 @@
       </td>
     </tr>
     <tr>
-      <th>ダウンロードファイル名</th>
+      <th>ダウンロード商品ファイル名</th>
       <td>
       <!--{$arrForm.down_filename|h}-->
       </td>
@@ -187,8 +191,8 @@
       <th>一覧-メイン画像</th>
       <td>
       <!--{assign var=key value="main_list_image"}-->
-      <!--{if $arrFile[$key].filepath != ""}-->
-      <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->" /><br />
+      <!--{if $arrForm.arrFile[$key].filepath != ""}-->
+      <img src="<!--{$arrForm.arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->" /><br />
       <!--{/if}-->
       </td>
     </tr>
@@ -196,8 +200,8 @@
       <th>詳細-メイン画像</th>
       <td>
       <!--{assign var=key value="main_image"}-->
-      <!--{if $arrFile[$key].filepath != ""}-->
-      <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->" /><br />
+      <!--{if $arrForm.arrFile[$key].filepath != ""}-->
+      <img src="<!--{$arrForm.arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->" /><br />
       <!--{/if}-->
       </td>
     </tr>
@@ -205,8 +209,8 @@
       <th>詳細-メイン拡大画像</th>
       <td>
       <!--{assign var=key value="main_large_image"}-->
-      <!--{if $arrFile[$key].filepath != ""}-->
-      <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->" /><br />
+      <!--{if $arrForm.arrFile[$key].filepath != ""}-->
+      <img src="<!--{$arrForm.arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->" /><br />
       <!--{/if}-->
       </td>
     </tr>
@@ -236,8 +240,8 @@
       <th>詳細-サブ画像（<!--{$smarty.section.cnt.iteration}-->）</th>
       <td>
       <!--{assign var=key value="sub_image`$smarty.section.cnt.iteration`"}-->
-      <!--{if $arrFile[$key].filepath != ""}-->
-      <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->" /><br />
+      <!--{if $arrForm.arrFile[$key].filepath != ""}-->
+      <img src="<!--{$arrForm.arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->" /><br />
       <!--{/if}-->
       </td>
     </tr>
@@ -245,8 +249,8 @@
       <th>詳細-サブ拡大画像（<!--{$smarty.section.cnt.iteration}-->）</th>
       <td>
       <!--{assign var=key value="sub_large_image`$smarty.section.cnt.iteration`"}-->
-      <!--{if $arrFile[$key].filepath != ""}-->
-      <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->" /><br />
+      <!--{if $arrForm.arrFile[$key].filepath != ""}-->
+      <img src="<!--{$arrForm.arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->" /><br />
       <!--{/if}-->
       </td>
     </tr>

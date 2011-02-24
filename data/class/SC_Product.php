@@ -530,6 +530,7 @@ __EOS__;
         $objQuery =& SC_Query::getSingletonInstance();
         $objQuery->delete('dtb_product_status', 'product_id = ?', array($productId));
         foreach ($productStatusIds as $productStatusId) {
+            if($productStatusId == '') continue;
             $val['product_status_id'] = $productStatusId;
             $objQuery->insert('dtb_product_status', $val);
         }

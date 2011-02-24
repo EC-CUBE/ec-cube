@@ -22,7 +22,7 @@
  */
 *}-->
 <script type="text/javascript">
-// URLの表示非表示切り替え
+// 表示非表示切り替え
 function lfDispSwitch(id){
   var obj = document.getElementById(id);
   if (obj.style.display == 'none') {
@@ -68,7 +68,8 @@ function selectAll(target) {
 <input type="hidden" name="product_class_id" value="<!--{$arrForm.product_class_id}-->" />
 <input type="hidden" name="copy_product_id" value="<!--{$arrForm.copy_product_id}-->" />
 <input type="hidden" name="anchor_key" value="" />
-<!--{foreach key=key item=item from=$arrHidden}-->
+<input type="hidden" name="has_product_class" value="<!--{$arrForm.has_product_class|h}-->" />
+<!--{foreach key=key item=item from=$arrForm.arrHidden}-->
 <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
 <!--{/foreach}-->
 <div id="products" class="contents-main">
@@ -122,7 +123,7 @@ function selectAll(target) {
         <!--{html_checkboxes name="product_status" options=$arrSTATUS selected=$arrForm.product_status separator='&nbsp;&nbsp;'}-->
       </td>
     </tr>
-    <!--{if $tpl_nonclass == true}-->
+    <!--{if $arrForm.has_product_class == false}-->
     <tr>
       <th>商品種別<span class="attention"> *</span></th>
       <td>
@@ -130,7 +131,7 @@ function selectAll(target) {
       </td>
     </tr>
     <tr>
-      <th>ダウンロードファイル名<span class="attention"> *</span></th>
+      <th>ダウンロード商品ファイル名<span class="attention"> *</span></th>
       <td>
         <span class="attention"><!--{$arrErr.down_filename}--></span>
         <input type="text" name="down_filename" value="<!--{$arrForm.down_filename|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.down_filename != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" size="60" class="box60" />
@@ -139,8 +140,9 @@ function selectAll(target) {
     </tr>
     <tr>
       <!--{assign var=key value="down_file"}-->
-      <th>ダウンロード商品用ファイルアップロード<span class="attention"> *</span></th>
+      <th>ダウンロード商品用<br />ファイルアップロード<span class="attention"> *</span></th>
       <td>
+        <a name="<!--{$key}-->"></a>
         <span class="attention"><!--{$arrErr[$key]}--><!--{$arrErr.down_realfilename}--></span>
           <!--{if $arrForm.down_realfilename != ""}-->
             <!--{$arrForm.down_realfilename|h}--><input type="hidden" name="down_realfilename" value="<!--{$arrForm.down_realfilename|h}-->">
@@ -197,7 +199,7 @@ function selectAll(target) {
       <th>ポイント付与率<span class="attention"> *</span></th>
       <td>
         <span class="attention"><!--{$arrErr.point_rate}--></span>
-        <input type="text" name="point_rate" value="<!--{$arrForm.point_rate|default:$arrInfo.point_rate|h}-->" size="6" class="box6" maxlength="<!--{$smarty.const.PERCENTAGE_LEN}-->" style="<!--{if $arrErr.point_rate != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/>％
+        <input type="text" name="point_rate" value="<!--{$arrForm.point_rate|default:$arrForm.arrInfo.point_rate|h}-->" size="6" class="box6" maxlength="<!--{$smarty.const.PERCENTAGE_LEN}-->" style="<!--{if $arrErr.point_rate != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/>％
         <span class="attention"> (半角数字で入力)</span>
       </td>
     </tr>
@@ -277,8 +279,8 @@ function selectAll(target) {
         <a name="main_image"></a>
         <a name="main_large_image"></a>
         <span class="attention"><!--{$arrErr[$key]}--></span>
-        <!--{if $arrFile[$key].filepath != ""}-->
-        <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->" />　<a href="" onclick="selectAll('category_id'); fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br />
+        <!--{if $arrForm.arrFile[$key].filepath != ""}-->
+        <img src="<!--{$arrForm.arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->" />　<a href="" onclick="selectAll('category_id'); fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br />
         <!--{/if}-->
         <input type="file" name="main_list_image" size="40" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
         <a class="btn-normal" href="javascript:;" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->'); return false;">アップロード</a>
@@ -289,8 +291,8 @@ function selectAll(target) {
       <th>詳細-メイン画像<br />[<!--{$smarty.const.NORMAL_IMAGE_WIDTH}-->×<!--{$smarty.const.NORMAL_IMAGE_HEIGHT}-->]</th>
       <td>
         <span class="attention"><!--{$arrErr[$key]}--></span>
-        <!--{if $arrFile[$key].filepath != ""}-->
-        <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->" />　<a href="" onclick="selectAll('category_id'); fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br />
+        <!--{if $arrForm.arrFile[$key].filepath != ""}-->
+        <img src="<!--{$arrForm.arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->" />　<a href="" onclick="selectAll('category_id'); fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br />
         <!--{/if}-->
         <input type="file" name="main_image" size="40" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
         <a class="btn-normal" href="javascript:;" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->'); return false;">アップロード</a>
@@ -301,8 +303,8 @@ function selectAll(target) {
       <th>詳細-メイン拡大画像<br />[<!--{$smarty.const.LARGE_IMAGE_WIDTH}-->×<!--{$smarty.const.LARGE_IMAGE_HEIGHT}-->]</th>
       <td>
         <span class="attention"><!--{$arrErr[$key]}--></span>
-        <!--{if $arrFile[$key].filepath != ""}-->
-        <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->" />　<a href="" onclick="selectAll('category_id'); fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br />
+        <!--{if $arrForm.arrFile[$key].filepath != ""}-->
+        <img src="<!--{$arrForm.arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->" />　<a href="" onclick="selectAll('category_id'); fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br />
         <!--{/if}-->
         <input type="file" name="<!--{$key}-->" size="40" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
         <a class="btn-normal" href="javascript:;" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->'); return false;">アップロード</a>
@@ -319,7 +321,7 @@ function selectAll(target) {
     <a class="btn-normal" href="javascript:;" onclick="selectAll('category_id'); lfDispSwitch('sub_detail'); return false;"><span>サブ情報表示/非表示</span></a>
   </div>
 
-  <!--{if $sub_find == true}-->
+  <!--{if $arrForm.sub_find == true}-->
   <div id="sub_detail" style="">
   <!--{else}-->
   <div id="sub_detail" style="display:none">
@@ -354,8 +356,8 @@ function selectAll(target) {
         <!--{assign var=largekey value="sub_large_image`$smarty.section.cnt.iteration`"}-->
         <a name="<!--{$largekey}-->"></a>
         <span class="attention"><!--{$arrErr[$key]}--></span>
-        <!--{if $arrFile[$key].filepath != ""}-->
-        <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->" />　<a href="" onclick="selectAll('category_id'); fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br />
+        <!--{if $arrForm.arrFile[$key].filepath != ""}-->
+        <img src="<!--{$arrForm.arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->" />　<a href="" onclick="selectAll('category_id'); fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br />
         <!--{/if}-->
         <input type="file" name="<!--{$key}-->" size="40" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"/>
         <a class="btn-normal" href="javascript:;" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->'); return false;">アップロード</a>
@@ -366,8 +368,8 @@ function selectAll(target) {
       <th>詳細-サブ拡大画像(<!--{$smarty.section.cnt.iteration}-->)<br />[<!--{$smarty.const.LARGE_SUBIMAGE_WIDTH}-->×<!--{$smarty.const.LARGE_SUBIMAGE_HEIGHT}-->]</th>
       <td>
         <span class="attention"><!--{$arrErr[$key]}--></span>
-        <!--{if $arrFile[$key].filepath != ""}-->
-        <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->" />　<a href="" onclick="selectAll('category_id'); fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br />
+        <!--{if $arrForm.arrFile[$key].filepath != ""}-->
+        <img src="<!--{$arrForm.arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->" />　<a href="" onclick="selectAll('category_id'); fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br />
         <!--{/if}-->
         <input type="file" name="<!--{$key}-->" size="40" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"/>
         <a class="btn-normal" href="javascript:;" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->'); return false;">アップロード</a>
@@ -382,6 +384,7 @@ function selectAll(target) {
     <a class="btn-normal" href="javascript:;" onclick="selectAll('category_id'); lfDispSwitch('recommend_select'); return false;"><span>関連商品表示/非表示</span></a>
   </div>
 
+  <!--{if $smarty.const.OPTION_RECOMMEND == 1}-->
   <!--{if count($arrRecommend) > 0}-->
   <div id="recommend_select" style="">
   <!--{else}-->
@@ -389,7 +392,6 @@ function selectAll(target) {
   <!--{/if}-->
   <h2>関連商品</h2>
   <table class="form">
-    <!--{if $smarty.const.OPTION_RECOMMEND == 1}-->
     <!--▼関連商品-->
     <!--{section name=cnt loop=$smarty.const.RECOMMEND_PRODUCT_MAX}-->
     <!--{assign var=recommend_no value="`$smarty.section.cnt.iteration`"}-->
@@ -417,9 +419,9 @@ function selectAll(target) {
     </tr>
     <!--{/section}-->
     <!--▲関連商品-->
-    <!--{/if}-->
   </table>
   </div>
+  <!--{/if}-->
 
   <div class="btn-area">
     <!--{if count($arrSearchHidden) > 0}-->
