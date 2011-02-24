@@ -187,8 +187,6 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
         SC_Helper_Customer_Ex::sfSetSearchParam($objFormParam);
         $objFormParam->addParam('配信形式', 'search_htmlmail', INT_LEN, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
         $objFormParam->addParam('配信メールアドレス種別', 'search_mail_type', INT_LEN, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
-        $objFormParam->addParam('ページ番号', 'search_pageno', INT_LEN, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"),1,false);
-        $objFormParam->addParam('１ページ表示件数', 'search_page_rows', INT_LEN, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"),1,false);
     }
     
     /**
