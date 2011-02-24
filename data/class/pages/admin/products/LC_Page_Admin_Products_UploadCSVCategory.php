@@ -147,8 +147,10 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
                 continue;
             }
             // 列数が異なる場合はエラー
-            if ($col_max_count != count($arrRow)) {
+            $col_count = count($arrRow);
+            if ($col_max_count != $col_count) {
                 $errFlg = true;
+                $this->addRowErr($line_count, "※ 項目数が" . $col_count . "個検出されました。項目数は" . $col_max_count . "個になります。");
                 break;
             }
             // 数値インデックスから, カラム名 => 値の連想配列へ変換
@@ -241,8 +243,11 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
                 $this->addRowResult($line_count, $message);
             }
         }
-        
+
         fclose($fp);
+
+        // 実行結果画面を表示
+        $this->tpl_mainpage = 'products/upload_csv_category_complete.tpl';
 
         if ($errFlg) {
             $objQuery->rollback();

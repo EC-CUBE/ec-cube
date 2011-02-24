@@ -209,7 +209,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
             }
             // 列数が異なる場合はエラー
             $col_count = count($arrCSV);
-            if ($col_max_count != count($arrCSV)) {
+            if ($col_max_count != $col_count) {
                 $this->addRowErr($line_count, "※ 項目数が" . $col_count . "個検出されました。項目数は" . $col_max_count . "個になります。");
                 $errFlag = true;
                 break;
