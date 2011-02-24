@@ -33,6 +33,7 @@
             var data = {};
             data.mode = 'select_deliv';
             data.deliv_id = $(this).val();
+            data['<!--{$smarty.const.TRANSACTION_ID_NAME}-->'] = '<!--{$transactionid}-->';
             $.ajax({
                 type : 'POST',
                 url : location.pathname,
