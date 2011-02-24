@@ -101,8 +101,8 @@ class LC_Page {
         $this->objPlugin->preProcess($this);
 
         // トランザクショントークンの検証と生成
-        //$this->doValidToken();
-        //$this->setTokenTo();
+        $this->doValidToken();
+        $this->setTokenTo();
     }
 
     /**
