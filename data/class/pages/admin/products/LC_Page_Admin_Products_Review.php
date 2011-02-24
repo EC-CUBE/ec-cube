@@ -100,7 +100,7 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
 
         switch ($this->getMode()) {
         case 'delete':
-            $this->lfDeleteReview($arrForm['review_id']);
+            $this->lfDeleteReview($this->arrForm['review_id']);
         case 'search':
         case 'csv':
             // エラーチェック
