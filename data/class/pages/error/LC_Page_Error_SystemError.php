@@ -115,6 +115,18 @@ class LC_Page_Error_SystemError extends LC_Page_Error {
     }
 
     /**
+     * トランザクショントークンに関して処理しないようにオーバーライド
+     */
+    function doValidToken() {
+    }
+
+    /**
+     * トランザクショントークンに関して処理しないようにオーバーライド
+     */
+    function setTokenTo() {
+    }
+
+    /**
      * エラーメッセージを生成する
      *
      * @return string
