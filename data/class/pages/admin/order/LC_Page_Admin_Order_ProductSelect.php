@@ -97,10 +97,10 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex {
                 }
 
                 // ページ送りの取得
-                $objNavi = new SC_PageNavi($_POST['search_pageno'], $linemax, $page_max, "fnNaviSearchOnlyPage", NAVI_PMAX);
+                $objNavi = new SC_PageNavi($_POST['search_pageno'], $this->tpl_linemax, $page_max, "fnNaviSearchOnlyPage", NAVI_PMAX);
                 $this->tpl_strnavi = $objNavi->strnavi;     // 表示文字列
                 $startno = $objNavi->start_row;
-                $arrProduct_id = $this->getProducts($wheres, $objProduct);
+                $arrProduct_id = $this->getProducts($wheres, $objProduct, $page_max, $startno);
                 $productList = $this->getProductList($arrProduct_id,$objProduct);
                 //取得している並び順で並び替え
                 $this->arrProducts = $this->sortProducts($arrProduct_id,$productList);
@@ -188,7 +188,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex {
      * @param array $whereAndBind string whereと array bindの連想配列
      * @param SC_Product $objProduct
      */
-    function getProducts($whereAndBind,&$objProduct){
+    function getProducts($whereAndBind,&$objProduct, $page_max, $startno){
         $where = $whereAndBind['where'];
         $bind = $whereAndBind['bind'];
         $objQuery =& SC_Query::getSingletonInstance();
