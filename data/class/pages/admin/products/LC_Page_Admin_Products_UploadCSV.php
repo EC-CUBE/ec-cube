@@ -39,9 +39,6 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
     // }}}
     // {{{ functions
 
-    /** フォームパラメータ */
-    var $objFormParam;
-
     /** TAGエラーチェックフィールド情報 */
     var $arrTagCheckItem;
 
@@ -188,8 +185,6 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         // 登録フォーム カラム情報
         $this->arrFormKeyList = $objFormParam->getKeyList();
 
-        $err = false;
-
         // 登録対象の列数
         $col_max_count = $objFormParam->getCount();
         // 行数
@@ -200,7 +195,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
 
         $errFlag = false;
 
-        while (!feof($fp) && !$err) {
+        while (!feof($fp)) {
             $arrCSV = fgetcsv($fp, CSV_LINE_MAX);
             // 行カウント
             $line_count++;
