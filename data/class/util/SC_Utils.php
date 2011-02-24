@@ -2292,6 +2292,23 @@ exit;
         return $res;
     }
 
+    /**
+     * 検索結果の1ページあたりの最大表示件数を取得する
+     * 
+     * フォームの入力値から最大表示件数を取得する
+     * 取得できなかった場合は, 定数 SEARCH_PMAX の値を返す
+     *
+     * @param string $search_page_max 表示件数の選択値
+     * @return integer 1ページあたりの最大表示件数
+     */
+    function sfGetSearchPageMax($search_page_max) {
+        if (SC_Utils_Ex::sfIsInt($search_page_max) && $search_page_max > 0) {
+            $page_max = intval($search_page_max);
+        } else {
+            $page_max = SEARCH_PMAX;
+        }
+        return $page_max;
+    }
 
 }
 ?>

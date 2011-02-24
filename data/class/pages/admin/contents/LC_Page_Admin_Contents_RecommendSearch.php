@@ -84,7 +84,7 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex {
                 $order = "update_date DESC, product_id DESC";
                 list($where, $arrval) = $this->getSearchParam($objDb,$arrPost,$where);
                 $linemax = $this->getLineCount($where, $arrval);
-                $page_max = $this->setPageMax($arrPost['search_page_max']);
+                $page_max = SC_Utils_Ex::sfGetSearchPageMax($arrPost['search_page_max']);
 
                 // ページ送りの取得
                 $objNavi = new SC_PageNavi($arrPost['search_pageno'], $linemax, $page_max, "fnNaviSearchOnlyPage", NAVI_PMAX);
@@ -183,20 +183,6 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex {
         $objQuery =& SC_Query::getSingletonInstance();
         $linemax = $objQuery->count("dtb_products", $where, $arrval);
         return $linemax;
-    }
-
-    /**
-     * @param  $search_page_max
-     * @return string
-     */
-    function setPageMax($search_page_max){
-            // ページ送りの処理
-            if(isset($search_page_max)  && is_numeric($search_page_max)) {
-                $page_max = $search_page_max;
-            } else {
-                $page_max = SEARCH_PMAX;
-            }
-            return $page_max;
     }
 
     /**

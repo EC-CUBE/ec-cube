@@ -150,7 +150,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
                     // 行数の取得
                     $this->tpl_linemax = $this->getNumberOfLines($where, $arrval);
                     // ページ送りの処理
-                    $page_max = $this->getPageMax($objFormParam);
+                    $page_max = SC_Utils_Ex::sfGetSearchPageMax($objFormParam->getValue('search_page_max'));
                     // ページ送りの取得
                     $objNavi = new SC_PageNavi($this->arrHidden['search_pageno'],
                                                $this->tpl_linemax, $page_max,
@@ -358,24 +358,6 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
     function getNumberOfLines($where, $arrValues) {
         $objQuery =& SC_Query::getSingletonInstance();
         return $objQuery->count('dtb_products', $where, $arrValues);
-    }
-
-    /**
-     * 最大表示件数を取得する.
-     *
-     * フォームの入力値から最大表示件数を取得する.
-     * 取得できなかった場合は, 定数 SEARCH_PMAX の値を返す.
-     *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
-     * @return integer 最大表示件数
-     */
-    function getPageMax(&$objFormParam) {
-        $page_max = $objFormParam->getValue('search_page_max');
-        if(is_numeric($page_max)) {
-            return $page_max;
-        } else {
-            return SEARCH_PMAX;
-        }
     }
 
     /**

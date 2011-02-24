@@ -340,11 +340,7 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
         $objQuery =& SC_Query::getSingletonInstance();
 
         // ページ送りの処理
-        if(is_numeric($arrForm['search_page_max'])) {
-            $page_max = $arrForm['search_page_max'];
-        } else {
-            $page_max = SEARCH_PMAX;
-        }
+        $page_max = SC_Utils_Ex::sfGetSearchPageMax($arrForm['search_page_max']);
 
         if (!isset($arrval)) $arrval = array();
 

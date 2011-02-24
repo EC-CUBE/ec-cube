@@ -171,12 +171,7 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page_Admin_Ex {
         $this->tpl_linemax = $linemax;              // 何件が該当しました。表示用
 
         // ページ送りの処理
-        if(isset($_POST['search_page_max'])
-           && is_numeric($_POST['search_page_max'])) {
-            $page_max = $_POST['search_page_max'];
-        } else {
-            $page_max = SEARCH_PMAX;
-        }
+        $page_max = SC_Utils_Ex::sfGetSearchPageMax($_POST['search_page_max']);
 
         // ページ送りの取得
         $objNavi = new SC_PageNavi($_POST['search_pageno'], $linemax, $page_max, "fnNaviSearchOnlyPage", NAVI_PMAX);
