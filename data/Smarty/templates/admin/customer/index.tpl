@@ -88,7 +88,7 @@
   <div class="btn">
     <p class="page_rows">検索結果表示件数
     <select name="search_page_rows">
-      <!--{html_options options=$arrPageRows selected=$arrForm.page_rows}-->
+      <!--{html_options options=$arrPageRows selected=$arrForm.search_page_rows}-->
     </select> 件</p>
     <div class="btn-area">
       <ul>
