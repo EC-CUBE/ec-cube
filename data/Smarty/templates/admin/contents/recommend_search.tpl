@@ -87,7 +87,16 @@ function func_submit( id ){
       <td class="center">
         <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrProducts[cnt].main_list_image|sfNoImageMainList|h}-->&width=65&height=65" alt="" />
       </td>
-      <td><!--{$arrProducts[cnt].product_code|default:"-"|h}--></td>
+      <td>
+        <!--{assign var=codemin value=`$arrProducts[cnt].product_code_min`}-->
+        <!--{assign var=codemax value=`$arrProducts[cnt].product_code_max`}-->
+        <!--{* 商品コード *}-->
+        <!--{if $codemin != $codemax}-->
+            <!--{$codemin|h}-->～<!--{$codemax|h}-->
+        <!--{else}-->
+            <!--{$codemin|h}-->
+        <!--{/if}-->
+      </td>
       <td><!--{$arrProducts[cnt].name|h}--></td>
       <td class="center"><a href="" onClick="return func_submit(<!--{$arrProducts[cnt].product_id}-->)">決定</a></td>
     </tr>
