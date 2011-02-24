@@ -62,8 +62,6 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
     function sfChangeMySQL($sql){
         // 改行、タブを1スペースに変換
         $sql = preg_replace("/[\r\n\t]/"," ",$sql);
-        // view表をインラインビューに変換する
-        $sql = $this->sfChangeView($sql);
         // ILIKE検索をLIKE検索に変換する
         $sql = $this->sfChangeILIKE($sql);
         // RANDOM()をRAND()に変換する
@@ -239,49 +237,6 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
     }
 
     /**
-     * View の WHERE 句を置換する.
-     *
-     * @param string $target 置換対象の文字列
-     * @param string $where 置換する文字列
-     * @param array $arrval WHERE 句の要素の配列
-     * @param string $option SQL 文の追加文字列
-     * @return string 置換後の SQL 文
-     */
-    function sfViewWhere($target, $where = "", $arrval = array(), $option = ""){
-
-        $arrWhere = split("[?]", $where);
-        $where_tmp = " WHERE " . $arrWhere[0];
-        for($i = 1; $i < count($arrWhere); $i++){
-            $where_tmp .= SC_Utils_Ex::sfQuoteSmart($arrval[$i - 1]) . $arrWhere[$i];
-        }
-        $arrWhere = $this->getWhereConverter();
-        $arrWhere[$target] = $where_tmp . " " . $option;
-        return $arrWhere[$target];
-    }
-
-    /**
-     * View をインラインビューに変換する.
-     *
-     * @access private
-     * @param string $sql SQL 文
-     * @return string インラインビューに変換した SQL 文
-     */
-    function sfChangeView($sql){
-
-        $arrViewTmp = $this->viewToSubQuery();
-
-            // viewのwhereを変換
-        foreach($arrViewTmp as $key => $val){
-            $arrViewTmp[$key] = strtr($arrViewTmp[$key], $this->getWhereConverter());
-        }
-
-            // viewを変換
-        $changesql = strtr($sql, $arrViewTmp);
-
-        return $changesql;
-    }
-
-    /**
      * ILIKE句 を LIKE句へ変換する.
      *
      * @access private
@@ -334,143 +289,6 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
             }
         }
         return $sql;
-    }
-
-    /**
-     * WHERE 句置換用の配列を返す.
-     *
-     * @access private
-     * @return array WHERE 句置換用の配列
-     */
-    function getWhereConverter() {
-        return array(
-            "&&crscls_where&&" => "",
-            "&&crsprdcls_where&&" =>"",
-            "&&noncls_where&&" => "",
-            "&&allcls_where&&" => "",
-            "&&allclsdtl_where&&" => "",
-            "&&prdcls_where&&" => "",
-            "&&catcnt_where&&" => ""
-        );
-    }
-
-    /**
-     * View をサブクエリに変換するための配列を返す.
-     *
-     * @access private
-     * @return array View をサブクエリに変換するための配列
-     */
-    function viewToSubQuery() {
-
-        static $sql = array();
-
-        if (empty($sql)) {
-
-
-            $sql['vw_products_allclass_detail'] = <<< __EOS__
-                (
-                    SELECT
-                        dtb_products.product_id,
-                        dtb_products.name,
-                        dtb_products.maker_id,
-                        dtb_products.status,
-                        dtb_products.comment1,
-                        dtb_products.comment2,
-                        dtb_products.comment3,
-                        dtb_products.comment4,
-                        dtb_products.comment5,
-                        dtb_products.comment6,
-                        dtb_products.note,
-                        dtb_products.main_list_comment,
-                        dtb_products.main_list_image,
-                        dtb_products.main_comment,
-                        dtb_products.main_image,
-                        dtb_products.main_large_image,
-                        dtb_products.sub_title1,
-                        dtb_products.sub_comment1,
-                        dtb_products.sub_image1,
-                        dtb_products.sub_large_image1,
-                        dtb_products.sub_title2,
-                        dtb_products.sub_comment2,
-                        dtb_products.sub_image2,
-                        dtb_products.sub_large_image2,
-                        dtb_products.sub_title3,
-                        dtb_products.sub_comment3,
-                        dtb_products.sub_image3,
-                        dtb_products.sub_large_image3,
-                        dtb_products.sub_title4,
-                        dtb_products.sub_comment4,
-                        dtb_products.sub_image4,
-                        dtb_products.sub_large_image4,
-                        dtb_products.sub_title5,
-                        dtb_products.sub_comment5,
-                        dtb_products.sub_image5,
-                        dtb_products.sub_large_image5,
-                        dtb_products.sub_title6,
-                        dtb_products.sub_comment6,
-                        dtb_products.sub_image6,
-                        dtb_products.sub_large_image6,
-                        dtb_products.del_flg,
-                        dtb_products.creator_id,
-                        dtb_products.create_date,
-                        dtb_products.update_date,
-                        dtb_products.deliv_date_id,
-                        T4.product_code_min,
-                        T4.product_code_max,
-                        T4.price01_min,
-                        T4.price01_max,
-                        T4.price02_min,
-                        T4.price02_max,
-                        T4.stock_min,
-                        T4.stock_max,
-                        T4.stock_unlimited_min,
-                        T4.stock_unlimited_max,
-                        T4.class_count
-                    FROM
-                        dtb_products
-                    JOIN
-                            (
-                                SELECT
-                                    product_id,
-                                    MIN(product_code) AS product_code_min,
-                                    MAX(product_code) AS product_code_max,
-                                    MIN(price01) AS price01_min,
-                                    MAX(price01) AS price01_max,
-                                    MIN(price02) AS price02_min,
-                                    MAX(price02) AS price02_max,
-                                    MIN(stock) AS stock_min,
-                                    MAX(stock) AS stock_max,
-                                    MIN(stock_unlimited) AS stock_unlimited_min,
-                                    MAX(stock_unlimited) AS stock_unlimited_max,
-                                    COUNT(*) as class_count
-                                FROM dtb_products_class
-                                GROUP BY product_id
-                            ) AS T4
-                            ON dtb_products.product_id = T4.product_id
-                )
-__EOS__;
-
-            $sql['vw_products_allclass'] = <<< __EOS__
-                (
-                    SELECT
-                        alldtl.*,
-                        dtb_category.rank AS category_rank,
-                        T2.category_id,
-                        T2.rank AS product_rank
-                    FROM
-                        {$sql['vw_products_allclass_detail']} AS alldtl
-                        LEFT JOIN
-                            dtb_product_categories AS T2
-                            ON alldtl.product_id = T2.product_id
-                        LEFT JOIN
-                            dtb_category
-                            ON T2.category_id = dtb_category.category_id
-                )
-__EOS__;
-        }
-
-        return $sql;
-
     }
 
     /**

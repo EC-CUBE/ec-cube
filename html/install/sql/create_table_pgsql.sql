@@ -57,17 +57,6 @@ CREATE TABLE mtb_zip (
     flg6 text
 );
 
-CREATE TABLE dtb_bat_order_daily_age (
-    order_count numeric NOT NULL DEFAULT 0,
-    total numeric NOT NULL DEFAULT 0,
-    total_average numeric NOT NULL DEFAULT 0,
-    start_age smallint,
-    end_age smallint,
-    member smallint,
-    order_date timestamp,
-    create_date timestamp NOT NULL DEFAULT now()
-);
-
 CREATE TABLE dtb_update (
     module_id int NOT NULL,
     module_name text NOT NULL,
@@ -403,47 +392,6 @@ CREATE TABLE dtb_product_status (
     update_date timestamp NOT NULL,
     del_flg smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (product_status_id, product_id)
-);
-
-CREATE TABLE dtb_bat_order_daily (
-    total_order numeric NOT NULL DEFAULT 0,
-    member numeric NOT NULL DEFAULT 0,
-    nonmember numeric NOT NULL DEFAULT 0,
-    men numeric NOT NULL DEFAULT 0,
-    women numeric NOT NULL DEFAULT 0,
-    men_member numeric NOT NULL DEFAULT 0,
-    men_nonmember numeric NOT NULL DEFAULT 0,
-    women_member numeric NOT NULL DEFAULT 0,
-    women_nonmember numeric NOT NULL DEFAULT 0,
-    total numeric NOT NULL DEFAULT 0,
-    total_average numeric NOT NULL DEFAULT 0,
-    order_date timestamp NOT NULL,
-    create_date timestamp NOT NULL DEFAULT now(),
-    year smallint NOT NULL,
-    month smallint NOT NULL,
-    day smallint NOT NULL,
-    wday smallint NOT NULL,
-    key_day text NOT NULL,
-    key_month text NOT NULL,
-    key_year text NOT NULL,
-    key_wday text NOT NULL
-);
-
-CREATE TABLE dtb_bat_order_daily_hour (
-    total_order numeric NOT NULL DEFAULT 0,
-    member numeric NOT NULL DEFAULT 0,
-    nonmember numeric NOT NULL DEFAULT 0,
-    men numeric NOT NULL DEFAULT 0,
-    women numeric NOT NULL DEFAULT 0,
-    men_member numeric NOT NULL DEFAULT 0,
-    men_nonmember numeric NOT NULL DEFAULT 0,
-    women_member numeric NOT NULL DEFAULT 0,
-    women_nonmember numeric NOT NULL DEFAULT 0,
-    total numeric NOT NULL DEFAULT 0,
-    total_average numeric NOT NULL DEFAULT 0,
-    hour smallint NOT NULL DEFAULT 0,
-    order_date timestamp,
-    create_date timestamp NOT NULL DEFAULT now()
 );
 
 CREATE TABLE dtb_recommend_products (
@@ -786,13 +734,6 @@ CREATE TABLE dtb_member (
     update_date timestamp NOT NULL,
     login_date timestamp,
     PRIMARY KEY (member_id)
-);
-
-CREATE TABLE dtb_bat_relate_products (
-    product_id int,
-    relate_product_id int,
-    customer_id int,
-    create_date timestamp NOT NULL DEFAULT now()
 );
 
 CREATE TABLE dtb_pagelayout (
