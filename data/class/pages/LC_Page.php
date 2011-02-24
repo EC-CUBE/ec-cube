@@ -330,7 +330,7 @@ class LC_Page {
     /**
      * POST アクセスの妥当性を検証する.
      *
-     * 前画面で生成されたトランザクショントークンの妥当性を検証し,
+     * 生成されたトランザクショントークンの妥当性を検証し,
      * 不正な場合はエラー画面へ遷移する.
      *
      * この関数は, 基本的に init() 関数で呼び出され, POST アクセスの場合は自動的に
@@ -344,7 +344,7 @@ class LC_Page {
      */
     function doValidToken($is_admin = false) {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            if (!SC_Helper_Session_Ex::isValidToken()) {
+            if (!SC_Helper_Session_Ex::isValidToken(false)) {
                 if ($is_admin) {
                     SC_Utils_Ex::sfDispError(INVALID_MOVE_ERRORR);
                 } else {

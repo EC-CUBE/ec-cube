@@ -170,15 +170,22 @@ class SC_Helper_Session {
     /**
      * トランザクショントークンの妥当性をチェックする.
      *
-     * 前画面で生成されたトランザクショントークンの妥当性をチェックする.
+     * 生成されたトランザクショントークンの妥当性をチェックする.
      * この関数を使用するためには, 前画面のページクラスで LC_Page::getToken()
      * を呼んでおく必要がある.
      *
+     * トランザクショントークンは, SC_Helper_Session::getToken() が呼ばれた際に
+     * 生成される.
+     * 引数 $is_unset が false の場合は, トークンの妥当性検証が不正な場合か,
+     * セッションが破棄されるまで, トークンを保持する.
+     * 引数 $is_unset が true の場合は, 妥当性検証後に破棄される.
+     *
      * @access protected
-     * @param boolean $is_unset TODO: nanasessさんが作り変えているらしいですが暫定対応で
+     * @param boolean $is_unset 妥当性検証後, トークンを unset する場合 true;
+     *                          デフォルト値は false
      * @return boolean トランザクショントークンが有効な場合 true
      */
-    function isValidToken($is_unset = true) {
+    function isValidToken($is_unset = false) {
 
         $checkToken = "";
 
@@ -194,13 +201,21 @@ class SC_Helper_Session {
         $ret = false;
         // token の妥当性チェック
         if ($checkToken === $_SESSION[TRANSACTION_ID_NAME]) {
-
             $ret = true;
         }
-        if ($is_unset) {
-            unset($_SESSION[TRANSACTION_ID_NAME]);
+        if ($is_unset || $ret === false) {
+            SC_Helper_Session_Ex::destroyToken();
         }
         return $ret;
+    }
+
+    /**
+     * トランザクショントークンを破棄する.
+     *
+     * @return void
+     */
+    function destroyToken() {
+        unset($_SESSION[TRANSACTION_ID_NAME]);
     }
 
     /**

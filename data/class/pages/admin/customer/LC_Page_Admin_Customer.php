@@ -141,19 +141,6 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex {
     }
 
     /**
-     * トランザクショントークンを unset しないようオーバーライド.
-     *
-     * @return void
-     */
-    function doValidToken() {
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            if (!SC_Helper_Session_Ex::isValidToken(false)) {
-                SC_Utils_Ex::sfDispError(INVALID_MOVE_ERRORR);
-            }
-        }
-    }
-
-    /**
      * パラメーター情報の初期化
      *
      * @param array $objFormParam フォームパラメータークラス

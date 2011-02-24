@@ -211,6 +211,8 @@ __EOS__;
     function EndSession() {
         // $_SESSION['customer']の解放
         unset($_SESSION['customer']);
+        // トランザクショントークンの破棄
+        SC_Helper_Session_Ex::destroyToken();
         $objSiteSess = new SC_SiteSession();
         $objSiteSess->unsetUniqId();
         // ログに記録する

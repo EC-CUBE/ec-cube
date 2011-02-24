@@ -127,19 +127,6 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex {
     }
 
     /**
-     * トランザクショントークンを unset しないようオーバーライド.
-     *
-     * @return void
-     */
-    function doValidToken() {
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            if (!SC_Helper_Session_Ex::isValidToken(false)) {
-                SC_Utils_Ex::sfDispError(INVALID_MOVE_ERRORR);
-            }
-        }
-    }
-
-    /**
      * 
      * 商品取得
      * @param array $arrProduct_id

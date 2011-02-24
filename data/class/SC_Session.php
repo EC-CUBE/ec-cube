@@ -120,6 +120,8 @@ class SC_Session {
         unset($_SESSION['authority']);
         unset($_SESSION['member_id']);
         unset($_SESSION['uniqid']);
+        // トランザクショントークンを破棄
+        SC_Helper_Session_Ex::destroyToken();
         // ログに記録する
         GC_Utils_Ex::gfPrintLog("logout : user=".$this->login_id." auth=".$this->authority." sid=".$this->sid);
     }

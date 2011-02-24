@@ -91,19 +91,6 @@ class LC_Page_Admin_Customer_SearchCustomer extends LC_Page_Admin_Ex {
     }
 
     /**
-     * トランザクショントークンを unset しないようオーバーライド.
-     *
-     * @return void
-     */
-    function doValidToken() {
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            if (!SC_Helper_Session_Ex::isValidToken(false)) {
-                SC_Utils_Ex::sfDispError(INVALID_MOVE_ERRORR);
-            }
-        }
-    }
-
-    /**
      * デストラクタ.
      *
      * @return void

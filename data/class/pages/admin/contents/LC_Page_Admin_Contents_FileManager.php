@@ -206,19 +206,6 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
     }
 
     /**
-     * トランザクショントークンを unset しないようオーバーライド.
-     *
-     * @return void
-    */
-    function doValidToken() {
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            if (!SC_Helper_Session_Ex::isValidToken(false)) {
-                SC_Utils_Ex::sfDispError(INVALID_MOVE_ERRORR);
-            }
-        }
-    }
-
-    /**
      * 初期化を行う.
      *
      * @param SC_FormParam $objFormParam SC_FormParamインスタンス
