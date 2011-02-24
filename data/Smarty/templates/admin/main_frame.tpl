@@ -30,11 +30,13 @@
 <meta name="robots" content="noindex,nofollow" />
 <link rel="stylesheet" href="<!--{$TPL_URLPATH}-->css/admin_contents.css" type="text/css" media="all" />
 <link rel="stylesheet" href="<!--{$TPL_URLPATH}-->css/admin_file_manager.css" type="text/css" media="all" />
+<!--{if $tpl_mainno eq "basis"}-->
 <script type="text/javascript" src="http://www.google.com/jsapi?key=xxx"></script>
 <script type="text/javascript">//<![CDATA[
     google.load("maps", "3", {other_params:'sensor=false'});
 //]]>
 </script>
+<!--{/if}-->
 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/navi.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/win_op.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/site.js"></script>
@@ -53,7 +55,7 @@
 
         <!--{$tpl_onload}-->
         $("div#wrap_loading").hide();
-        $("a,input[type=submit]").click(function(){
+        $("a:not(div#tree a),input[type=submit]").click(function(){
             $("div#wrap_loading").height($(document).height());
             $("div#wrap_loading").show();
         });
