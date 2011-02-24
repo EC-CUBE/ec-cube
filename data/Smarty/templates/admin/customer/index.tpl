@@ -24,18 +24,6 @@
 <script type="text/javascript">
 <!--
 
-  function fnCustomerPage(pageno) {
-    document.form1.search_pageno.value = pageno;
-    document.form1.submit();
-  }
-
-  function fnCSVDownload(pageno) {
-    document.form1.mode.value = 'csv';
-    document.form1.submit();
-    document.form1.mode.value = '';
-    return false;
-  }
-
   function fnDelete(customer_id) {
     if (confirm('この顧客情報を削除しても宜しいですか？')) {
       document.form1.mode.value = "delete"
@@ -61,11 +49,6 @@
       document.form1.submit();
       return false;
     }
-  }
-
-  function fnSubmit() {
-    document.form1.submit();
-    return false;
   }
 //-->
 </script>
