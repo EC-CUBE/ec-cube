@@ -109,18 +109,18 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         // サイト基本情報 (ポイントレート初期値用)
         $this->arrInfo = $this->objDb->sfGetBasisData();
         // CSV管理ヘルパー
-        $this->objCSV = new SC_Helper_CSV_Ex();
+        $objCSV = new SC_Helper_CSV_Ex();
         // CSV構造読み込み
-        $arrCSVFrame = $this->objCSV->sfGetCsvOutput($this->csv_id);
+        $arrCSVFrame = $objCSV->sfGetCsvOutput($this->csv_id);
 
         // CSV構造がインポート可能かのチェック
-        if( !$this->objCSV->sfIsImportCSVFrame($arrCSVFrame) ) {
+        if(!$objCSV->sfIsImportCSVFrame($arrCSVFrame) ) {
             // 無効なフォーマットなので初期状態に強制変更
-            $arrCSVFrame = $this->objCSV->sfGetCsvOutput($this->csv_id, '', array(), 'no');
+            $arrCSVFrame = $objCSV->sfGetCsvOutput($this->csv_id, '', array(), 'no');
             $this->tpl_is_format_default = true;
         }
         // CSV構造は更新可能なフォーマットかのフラグ取得
-        $this->tpl_is_update = $this->objCSV->sfIsUpdateCSVFrame($arrCSVFrame);
+        $this->tpl_is_update = $objCSV->sfIsUpdateCSVFrame($arrCSVFrame);
 
         // CSVファイルアップロード情報の初期化
         $this->lfInitFile();
@@ -195,13 +195,6 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
 
         $err = false;
 
-        // レコード行数を得る
-        $record_count = $this->objCSV->sfGetCSVRecordCount($fp);
-        // ファイルが無効な場合はエラー
-        if($record_count === FALSE) {
-            SC_Utils_Ex::sfDispError("");
-        }
-
         // 登録対象の列数
         $col_max_count = $this->objFormParam->getCount();
         // 行数
@@ -225,7 +218,9 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
                 continue;
             }
             // 列数が異なる場合はエラー
+            $col_count = count($arrCSV);
             if ($col_max_count != count($arrCSV)) {
+                $this->addRowErr($line_count, "※ 項目数が" . $col_count . "個検出されました。項目数は" . $col_max_count . "個になります。");
                 $errFlag = true;
                 break;
             }
