@@ -82,7 +82,7 @@ class LC_Page_Admin_Customer_SearchCustomer extends LC_Page_Admin_Ex {
         switch ($this->getMode()) {
         case 'search':
             list($this->tpl_linemax, $this->arrCustomer, $this->objNavi) = $this->lfDoSearch($objFormParam->getHashArray());
-            $this->arrPagenavi = $this->objNavi->arrPagenavi;
+            $this->tpl_strnavi = $this->objNavi->strnavi;
             break;
         default:
             break;

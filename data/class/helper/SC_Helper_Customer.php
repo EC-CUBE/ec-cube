@@ -577,7 +577,7 @@ class SC_Helper_Customer {
         $objNavi = new SC_PageNavi($arrParam['search_pageno'],
                                     $linemax,
                                     $page_max,
-                                    "fnCustomerPage",
+                                    "fnNaviSearchOnlyPage",
                                     NAVI_PMAX);
         return array($linemax, $arrData, $objNavi);
     }
