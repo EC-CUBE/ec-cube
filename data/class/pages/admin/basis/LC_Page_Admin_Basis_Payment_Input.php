@@ -69,11 +69,11 @@ class LC_Page_Admin_Basis_Payment_Input extends LC_Page_Admin_Ex {
      */
     function action() {
         $objDb = new SC_Helper_DB_Ex();
+        $objFormParam = new SC_FormParam();
 
         $mode = $this->getMode();
 
         if (!empty($_POST) || !empty($_GET)) {
-            $objFormParam = new SC_FormParam();
             $this->lfInitParam($mode, $objFormParam);
 
             $param = (empty($_POST))? $_GET : $_POST;
