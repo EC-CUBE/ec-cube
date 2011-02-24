@@ -494,6 +494,7 @@ class SC_Helper_Customer {
         $objFormParam->addParam('登録・更新日(終了月)', 'search_end_month', 2, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
         $objFormParam->addParam('登録・更新日(終了日)', 'search_end_day', 2, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
         $objFormParam->addParam('表示件数', 'search_page_rows', 3, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
+        $objFormParam->addParam('ページ番号', 'search_pageno', INT_LEN, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"), 1, false);
         $objFormParam->addParam('最終購入日(開始年)', 'search_buy_start_year', 4, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
         $objFormParam->addParam('最終購入日(開始月)', 'search_buy_start_month', 2, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
         $objFormParam->addParam('最終購入日(開始日)', 'search_buy_start_day', 2, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
