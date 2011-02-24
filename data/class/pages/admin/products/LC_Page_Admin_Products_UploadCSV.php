@@ -42,9 +42,6 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
     /** フォームパラメータ */
     var $objFormParam;
 
-    /** SC_UploadFile インスタンス */
-    var $objUpfile;
-
     /** TAGエラーチェックフィールド情報 */
     var $arrTagCheckItem;
 
@@ -82,6 +79,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         $this->arrProductType = $masterData->getMasterData("mtb_product_type");
         $this->arrMaker = SC_Helper_DB_Ex::sfGetIDValueList("dtb_maker", "maker_id", "name");
         $this->arrPayments = SC_Helper_DB_Ex::sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
+        $this->arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
         $this->arrAllowedTag = $masterData->getMasterData("mtb_allowed_tag");
         $this->arrTagCheckItem = array();
     }
@@ -103,11 +101,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
      */
     function action() {
         $this->objDb = new SC_Helper_DB_Ex();
-
-        // ファイル管理クラス
-        $this->objUpFile = new SC_UploadFile(IMAGE_TEMP_REALDIR, IMAGE_SAVE_REALDIR);
-        // サイト基本情報 (ポイントレート初期値用)
-        $this->arrInfo = $this->objDb->sfGetBasisData();
+        
         // CSV管理ヘルパー
         $objCSV = new SC_Helper_CSV_Ex();
         // CSV構造読み込み
@@ -123,18 +117,19 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         $this->tpl_is_update = $objCSV->sfIsUpdateCSVFrame($arrCSVFrame);
 
         // CSVファイルアップロード情報の初期化
-        $this->lfInitFile();
-        // パラメータ管理クラス
-        $this->objFormParam = new SC_FormParam();
-        // パラメータ情報の初期化
-        $this->lfInitParam($arrCSVFrame);
+        $objUpFile = new SC_UploadFile(IMAGE_TEMP_REALDIR, IMAGE_SAVE_REALDIR);
+        $this->lfInitFile($objUpFile);
 
-        $this->objFormParam->setHtmlDispNameArray();
-        $this->arrTitle = $this->objFormParam->getHtmlDispNameArray();
+        // パラメータ情報の初期化
+        $objFormParam = new SC_FormParam();
+        $this->lfInitParam($objFormParam, $arrCSVFrame);
+
+        $objFormParam->setHtmlDispNameArray();
+        $this->arrTitle = $objFormParam->getHtmlDispNameArray();
 
         switch($this->getMode()) {
         case 'csv_upload':
-            $this->doUploadCsv();
+            $this->doUploadCsv($objFormParam, $objUpFile);
             break;
         default:
             break;
@@ -168,16 +163,16 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
      * 
      * @return void
      */
-    function doUploadCsv() {
+    function doUploadCsv(&$objFormParam, &$objUpFile) {
         // ファイルアップロードのチェック
-        $this->objUpFile->makeTempFile('csv_file');
-        $arrErr = $this->objUpFile->checkExists();
+        $objUpFile->makeTempFile('csv_file');
+        $arrErr = $objUpFile->checkExists();
         if (count($arrErr) > 0) {
             $this->arrErr = $arrErr;
             return;
         }
         // 一時ファイル名の取得
-        $filepath = $this->objUpFile->getTempFilePath('csv_file');
+        $filepath = $objUpFile->getTempFilePath('csv_file');
         // CSVファイルの文字コード変換
         $enc_filepath = SC_Utils_Ex::sfEncodeFile($filepath, CHAR_CODE, CSV_TEMP_REALDIR);
         // CSVファイルのオープン
@@ -191,12 +186,12 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         $this->lfInitTableInfo();
         
         // 登録フォーム カラム情報
-        $this->arrFormKeyList = $this->objFormParam->getKeyList();
+        $this->arrFormKeyList = $objFormParam->getKeyList();
 
         $err = false;
 
         // 登録対象の列数
-        $col_max_count = $this->objFormParam->getCount();
+        $col_max_count = $objFormParam->getCount();
         // 行数
         $line_count = 0;
 
@@ -225,13 +220,13 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
                 break;
             }
             // シーケンス配列を格納する。
-            $this->objFormParam->setParam($arrCSV, true);
-            $arrRet = $this->objFormParam->getHashArray();
-            $this->objFormParam->setParam($arrRet);
+            $objFormParam->setParam($arrCSV, true);
+            $arrRet = $objFormParam->getHashArray();
+            $objFormParam->setParam($arrRet);
             // 入力値の変換
-            $this->objFormParam->convParam();
+            $objFormParam->convParam();
             // <br>なしでエラー取得する。
-            $arrCSVErr = $this->lfCheckError();
+            $arrCSVErr = $this->lfCheckError($objFormParam);
 
             // 入力エラーチェック
             if (count($arrCSVErr) > 0) {
@@ -242,8 +237,8 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
                 break;
             }
 
-            $this->lfRegistProduct($objQuery, $line_count);
-            $arrParam = $this->objFormParam->getHashArray();
+            $this->lfRegistProduct($objQuery, $line_count, $objFormParam);
+            $arrParam = $objFormParam->getHashArray();
 
             $this->addRowResult($line_count, "商品ID：".$arrParam['product_id'] . " / 商品名：" . $arrParam['name']);
         }
@@ -280,8 +275,8 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function lfInitFile() {
-        $this->objUpFile->addFile("CSVファイル", 'csv_file', array('csv'), CSV_SIZE, true, 0, 0, false);
+    function lfInitFile(&$objUpFile) {
+        $objUpFile->addFile("CSVファイル", 'csv_file', array('csv'), CSV_SIZE, true, 0, 0, false);
     }
 
     /**
@@ -290,7 +285,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
      * @param array CSV構造設定配列
      * @return void
      */
-    function lfInitParam(&$arrCSVFrame) {
+    function lfInitParam(&$objFormParam, &$arrCSVFrame) {
         // 固有の初期値調整
         $arrCSVFrame = $this->lfSetParamDefaultValue($arrCSVFrame);
         // CSV項目毎の処理
@@ -318,7 +313,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
                 }
             }
             // パラメーター登録
-            $this->objFormParam->addParam(
+            $objFormParam->addParam(
                     $item['disp_name']
                     , $col
                     , constant($item['size_const_type'])
@@ -335,11 +330,11 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function lfCheckError() {
+    function lfCheckError(&$objFormParam) {
         // 入力データを渡す。
-        $arrRet =  $this->objFormParam->getHashArray();
+        $arrRet =  $objFormParam->getHashArray();
         $objErr = new SC_CheckError($arrRet);
-        $objErr->arrErr = $this->objFormParam->checkError(false);
+        $objErr->arrErr = $objFormParam->checkError(false);
         // HTMLタグチェックの実行
         foreach($this->arrTagCheckItem as $item) {
             $objErr->doFunc(array( $item['disp_name'], $item['col'], $this->arrAllowedTag), array("HTML_TAG_CHECK"));
@@ -371,10 +366,10 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
      * @param string|integer $line 処理中の行数
      * @return void
      */
-    function lfRegistProduct($objQuery, $line = "") {
+    function lfRegistProduct($objQuery, $line = "", &$objFormParam) {
         $objProduct = new SC_Product();
         // 登録データ対象取得
-        $arrList = $this->objFormParam->getHashArray();
+        $arrList = $objFormParam->getHashArray();
         // 登録時間を生成(DBのnow()だとcommitした際、すべて同一の時間になってしまう)
         $arrList['update_date'] = $this->lfGetDbFormatTimeWithLine($line);
 
