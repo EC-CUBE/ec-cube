@@ -40,6 +40,7 @@ function fnTargetSelf(){
 
 
 <form name="form1" id="form1" method="post" action="?">
+<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="confirm" />
 <input type="hidden" name="sql_id" value="<!--{$arrForm.sql_id|h}-->" />
 <input type="hidden" name="csv_output_id" value="" />

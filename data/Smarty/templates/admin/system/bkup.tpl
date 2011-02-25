@@ -22,6 +22,7 @@
  */
 *}-->
 <form name="form1" id="form1" method="post" action="" onsubmit="return false;">
+<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="edit" />
 <input type="hidden" name="list_name" value="" />
 <div id="system" class="contents-main">

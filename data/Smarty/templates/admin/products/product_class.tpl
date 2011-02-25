@@ -23,6 +23,7 @@
 *}-->
 <h2>商品規格登録</h2>
 <form name="form1" id="form1" method="post" action="" enctype="multipart/form-data">
+<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <!--{foreach key=key item=item from=$arrSearchHidden}-->
 <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
 <!--{/foreach}-->

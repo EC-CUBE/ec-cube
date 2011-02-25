@@ -25,6 +25,7 @@
     <h2>住所検索</h2>
     <div id="zipsearch_area">
       <form name="form1" id="form1" method="post" action="?">
+        <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="state" value="<!--{$tpl_state}-->" />
         <input type="hidden" name="city" value="<!--{$tpl_city}-->" />
         <input type="hidden" name="town" value="<!--{$tpl_town}-->" />

@@ -30,6 +30,7 @@ self.moveTo(20,20);self.focus();
 </script>
 
 <form name="form1" id="form1" method="post" action="./payment_input.php" enctype="multipart/form-data">
+<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="edit" />
 <input type="hidden" name="payment_id" value="<!--{$tpl_payment_id}-->" />
 <input type="hidden" name="image_key" value="" />

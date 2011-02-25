@@ -26,6 +26,7 @@
   <div id="under02column_login">
     <h2 class="title"><!--{$tpl_title|h}--></h2>
     <form name="login_mypage" id="login_mypage" method="post" action="<!--{$smarty.const.HTTPS_URL}-->frontparts/login_check.php" onsubmit="return fnCheckLogin('login_mypage')">
+    <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="mode" value="login" />
     <input type="hidden" name="url" value="<!--{$smarty.server.PHP_SELF|h}-->" />
    <div class="loginarea">

@@ -45,6 +45,7 @@
             </p>
         <!--{/if}-->
         <form name="form1" id="form1" method="post" action="?">
+            <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
             <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->" />
             <input type="hidden" name="mode" value="confirm" />
                 <!--{foreach from=$items item=item name=cartItem}-->
@@ -96,7 +97,7 @@
                       <a href="<!--{$smarty.const.CART_URLPATH}-->" class="spbtn spbtn-medeum">
                     戻る</a>&nbsp;
                  <input type="submit" value="選択したお届け先に送る" class="spbtn spbtn-shopping" width="130" height="30" alt="選択したお届け先に送る" name="send_button" id="next" />
-</div>
-
+            </div>
+        </form>
     </div>
 </div>

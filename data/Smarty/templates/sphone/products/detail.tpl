@@ -207,6 +207,7 @@ function fnSetClassCategories(form, classcat_id2_selected) {
 
             <!--▼買い物かご-->
             <form name="form1" id="form1" method="post" action="?">
+                <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
                 <input type="hidden" name="mode" value="cart" />
                 <input type="hidden" name="product_id" value="<!--{$tpl_product_id}-->" />
                 <input type="hidden" name="product_class_id" value="<!--{$tpl_product_class_id}-->" id="product_class_id" />

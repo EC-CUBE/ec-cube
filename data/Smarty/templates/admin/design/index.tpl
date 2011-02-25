@@ -17,6 +17,7 @@ function fnTargetSelf(){
 
 
 <form name="form1" id="form1" method="post" action="?">
+<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="" />
 <input type="hidden" name="page_id" value="<!--{$page_id}-->" />
 <input type="hidden" name="bloc_cnt" value="<!--{$bloc_cnt}-->" />

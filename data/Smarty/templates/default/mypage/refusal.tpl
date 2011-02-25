@@ -28,6 +28,7 @@
   <div id="mycontents_area">
     <h3><!--{$tpl_subtitle|h}--></h3>
     <form name="form1" method="post" action="?">
+      <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
       <input type="hidden" name="mode" value="confirm" />
       <div id="complete_area">
         <div class="message">会員を退会された場合には、現在保存されている購入履歴や、お届け先などの情報は、すべて削除されますがよろしいでしょうか？</div>
@@ -39,6 +40,7 @@
                   <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_refuse_on.jpg',this);" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_refuse.jpg',this);" src="<!--{$TPL_URLPATH}-->img/button/btn_refuse.jpg" alt="会員退会を行う" name="refusal" id="refusal" />
                 </li>
             </ul>
+        </div>
         </div>
       </div>
     </form>

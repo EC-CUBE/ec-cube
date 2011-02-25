@@ -43,6 +43,7 @@ $(document).ready(function() {
 <!--▼CONTENTS-->
 <div id="undercolumn" class="product product_detail">
   <form name="form1" id="form1" method="post" action="?">
+    <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <div id="detailarea" class="clearfix">
         <div id="detailphotobloc">
             <div class="photo">

@@ -36,6 +36,7 @@
 <!--{* 検索 *}-->
 <div id="searchbar">
 <form method="get" action="<!--{$smarty.const.SMARTPHONE_HTTP_URL}-->products/list.php">
+<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="text" name="name" maxlength="50" value="<!--{$smarty.get.name|h}-->" placeholder="商品検索" ><input type="submit" name="search" value="検索">
 </form>
 <!--{* searchmenu *}--></div>

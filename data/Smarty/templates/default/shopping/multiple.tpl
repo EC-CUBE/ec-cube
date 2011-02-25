@@ -48,6 +48,7 @@
             </p>
         <!--{/if}-->
         <form name="form1" id="form1" method="post" action="?">
+            <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
             <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->" />
             <input type="hidden" name="mode" value="confirm" />
             <table summary="商品情報">
@@ -89,7 +90,7 @@
                      </tr>
                   <!--{/foreach}-->
             </table>
-<div class="btn_area">
+            <div class="btn_area">
                  <ul>
                      <li>
                      <a href="<!--{$smarty.const.CART_URLPATH}-->" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_back_on.jpg',back03)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_back.jpg',back03)">
@@ -100,6 +101,6 @@
                      </li>
                  </ul>
             </div>
-
+        </form>
     </div>
 </div>

@@ -51,11 +51,6 @@
 <script type="text/javascript">//<![CDATA[
     <!--{$tpl_javascript}-->
     $(function(){
-        var tx = $('<input type="hidden" />')
-            .attr('name', '<!--{$smarty.const.TRANSACTION_ID_NAME}-->')
-            .val('<!--{$transactionid}-->');
-        tx.appendTo('form');
-
         <!--{$tpl_onload}-->
     });
 //]]>

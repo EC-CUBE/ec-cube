@@ -22,6 +22,7 @@
  */
 *}-->
 <form name="form1" id="form1" method="post" action="?" enctype="multipart/form-data"">
+<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="csv_upload" />
 <div id="products" class="contents-main">
   <!--{if $tpl_errtitle != ""}-->

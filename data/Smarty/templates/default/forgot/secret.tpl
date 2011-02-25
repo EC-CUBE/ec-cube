@@ -31,6 +31,7 @@
         【重要】新しくパスワードを発行いたしますので、お忘れになったパスワードはご利用できなくなります。</p>
     </p>
     <form action="?" method="post" name="form1">
+    <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="mode" value="secret_check" />
 
     <!--{foreach key=key item=item from=$arrForm}-->

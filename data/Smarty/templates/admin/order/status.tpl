@@ -22,6 +22,7 @@
  */
 *}-->
 <form name="form1" id="form1" method="POST" action="?" >
+<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="" />
 <input type="hidden" name="status" value="<!--{if $arrForm.status == ""}-->1<!--{else}--><!--{$arrForm.status}--><!--{/if}-->" />
 <input type="hidden" name="search_pageno" value="<!--{$tpl_pageno}-->" >

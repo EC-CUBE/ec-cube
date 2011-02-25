@@ -22,6 +22,7 @@
  */
 *}-->
 <form name="form1" id="form1" method="post" action="?">
+<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <!--{foreach key=key item=item from=$arrHidden}-->
     <!--{if is_array($item)}-->
       <!--{foreach item=c_item from=$item}-->

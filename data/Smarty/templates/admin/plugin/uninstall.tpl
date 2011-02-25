@@ -22,6 +22,7 @@
  */
 *}-->
 <form name="form1" id="form1" method="post" action="">
+    <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <div class="contents-main">
         <h2>結果</h2>
         <div><!--{$tpl_result|h|nl2br}--></div>

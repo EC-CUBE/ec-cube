@@ -40,6 +40,7 @@
                 <!--{/if}-->
             </p>
             <form action="order.php" method="post">
+              <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
               <p class="btn">
                 <input type="hidden" name="order_id" value="<!--{$tpl_arrOrderData.order_id|h}-->">
                 <input type="image" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_order_re_on.jpg', this);" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_order_re.jpg', this);" src="<!--{$TPL_URLPATH}-->img/button/btn_order_re.jpg" alt="この購入内容で再注文する" name="submit" value="この購入内容で再注文する" />

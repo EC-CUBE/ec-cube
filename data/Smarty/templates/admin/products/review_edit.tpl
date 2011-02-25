@@ -22,6 +22,7 @@
  */
 *}-->
 <form name="form1" id="form1" method="post" action="?">
+    <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="mode" value="complete" />
     <input type="hidden" name="review_id" value="<!--{$arrForm.review_id|h}-->" />
     <!--{foreach key=key item=item from=$arrSearchHidden}-->

@@ -26,6 +26,7 @@
     <p>ご登録時のメールアドレスを入力して「次へ」ボタンをクリックしてください。<br />
       <span class="attention">※新しくパスワードを発行いたしますので、お忘れになったパスワードはご利用できなくなります。</span></p>
     <form action="?" method="post" name="form1">
+      <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
       <input type="hidden" name="mode" value="mail_check" />
       <div id="completebox">
         <p>メールアドレス：&nbsp;<!--★メールアドレス入力★--><input type="text" name="email" value="<!--{$tpl_login_email|h}-->" size="40" class="box300" style="<!--{$errmsg|sfGetErrorColor}-->; ime-mode: disabled;" /><br />

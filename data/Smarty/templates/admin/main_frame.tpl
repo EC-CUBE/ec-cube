@@ -48,17 +48,7 @@
 <script type="text/javascript">//<![CDATA[
     <!--{$tpl_javascript}-->
     $(function(){
-        var tx = $('<input type="hidden" />')
-            .attr('name', '<!--{$smarty.const.TRANSACTION_ID_NAME}-->')
-            .val('<!--{$transactionid}-->');
-        tx.appendTo('form');
-
         <!--{$tpl_onload}-->
-        $("div#wrap_loading").hide();
-        $("a:not(div#tree a),input[type=submit]").click(function(){
-            $("div#wrap_loading").height($(document).height());
-            $("div#wrap_loading").show();
-        });
     });
 //]]>
 </script>
@@ -66,7 +56,6 @@
 </head>
 
 <body class="<!--{if strlen($tpl_authority) >= 1}-->authority_<!--{$tpl_authority}--><!--{/if}-->">
-<div id="wrap_loading"></div>
 <!--{$GLOBAL_ERR}-->
 <noscript>
   <p>JavaScript を有効にしてご利用下さい.</p>

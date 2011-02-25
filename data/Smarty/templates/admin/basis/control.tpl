@@ -36,6 +36,7 @@
       <td><strong><!--{$arrControlList[cnt].control_title|h}--></strong><br /><!--{$arrControlList[cnt].control_text|h}--></td>
       <td align="center">
         <form name="form<!--{$smarty.section.cnt.index}-->" id="form<!--{$smarty.section.cnt.index}-->" method="post" action="?">
+        <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="edit" />
         <input type="hidden" name="control_id" value="<!--{$arrControlList[cnt].control_id}-->" />
         <select name="control_flg" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">

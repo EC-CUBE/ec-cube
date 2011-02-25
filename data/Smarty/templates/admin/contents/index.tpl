@@ -109,6 +109,7 @@ function moving(news_id,rank, max_rank) {
 
 <div id="admin-contents" class="contents-main">
 <form name="form1" id="form1" method="post" action="?">
+<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="" />
 <input type="hidden" name="news_id" value="<!--{$arrForm.news_id|h}-->" />
 <input type="hidden" name="term" value="" />
@@ -176,6 +177,7 @@ function moving(news_id,rank, max_rank) {
   <!--{/if}-->
   <!--{* ▼一覧表示エリアここから *}-->
   <form name="move" id="move" method="post" action="?">
+  <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
   <input type="hidden" name="mode" value="moveRankSet" />
   <input type="hidden" name="term" value="setposition" />
   <input type="hidden" name="news_id" value="" />

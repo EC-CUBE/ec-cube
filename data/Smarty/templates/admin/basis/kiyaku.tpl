@@ -22,6 +22,7 @@
  */
 *}-->
 <form name="form1" id="form1" method="post" action="?">
+<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="edit" />
 <input type="hidden" name="kiyaku_id" value="<!--{$tpl_kiyaku_id}-->" />
 <div id="basis" class="contents-main">

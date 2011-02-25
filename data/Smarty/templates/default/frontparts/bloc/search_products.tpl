@@ -25,6 +25,7 @@
         <div class="bloc_body">
         <!--検索フォーム-->
         <form name="search_form" id="search_form" method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
+            <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
             <dl class="formList">
                 <dt>商品カテゴリから選ぶ</dt>
                 <dd><input type="hidden" name="mode" value="search" />

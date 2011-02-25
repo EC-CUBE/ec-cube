@@ -38,6 +38,7 @@ function fnChangeDispNumber(dispNumber) {
 <!--▼CONTENTS-->
 <div id="undercolumn" class="product product_list">
     <form name="form1" id="form1" method="get" action="?">
+        <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="<!--{$mode|h}-->" />
         <!--{* ▼検索条件 *}-->
         <input type="hidden" name="category_id" value="<!--{$arrSearchData.category_id|h}-->" />
@@ -114,6 +115,7 @@ function fnChangeDispNumber(dispNumber) {
             
             <!--▼ページナビ(上部)-->
             <form name="page_navi_top" id="page_navi_top" action="?">
+                <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
                 <!--{if $tpl_linemax > 0}--><!--{$smarty.capture.page_navi_body|smarty:nodefaults}--><!--{/if}-->
             </form>
             <!--▲ページナビ(上部)-->
@@ -172,6 +174,7 @@ function fnChangeDispNumber(dispNumber) {
         <!--{if $smarty.foreach.arrProducts.last}-->
             <!--▼ページナビ(下部)-->
             <form name="page_navi_bottom" id="page_navi_bottom" action="?">
+                <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
                 <!--{if $tpl_linemax > 0}--><!--{$smarty.capture.page_navi_body|smarty:nodefaults}--><!--{/if}-->
             </form>
             <!--▲ページナビ(下部)-->

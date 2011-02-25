@@ -42,6 +42,7 @@
 </script>
 
 <form name="search_form" method="post" action="">
+    <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="mode" value="search" />
 
     <!--{foreach from=$arrSearchData key="key" item="item"}-->
@@ -58,6 +59,7 @@
 </form>
 
 <form name="form1" id="form1" method="post" action="?">
+    <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="mode" value="confirm" />
     <input type="hidden" name="customer_id" value="<!--{$arrForm.customer_id|h}-->" />
 

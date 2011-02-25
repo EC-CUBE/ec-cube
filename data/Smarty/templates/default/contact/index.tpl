@@ -31,6 +31,7 @@
     <p class="mini"><span class="attention">※ご注文に関するお問い合わせには、必ず「ご注文番号」と「お名前」をご記入の上、メールくださいますようお願いいたします。</span></p>
     
     <form name="form1" method="post" action="?">
+    <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="mode" value="confirm" />
     
     <table summary="お問い合わせ">

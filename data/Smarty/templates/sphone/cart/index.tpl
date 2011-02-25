@@ -64,6 +64,7 @@ $(document).ready(function() {
 
     <!--{foreach from=$cartKeys item=key}-->
         <form name="form1" id="form1" method="post" action="?">
+            <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
             <!--{if 'sfGMOCartDisplay'|function_exists}-->
                 <!--{'sfGMOCartDisplay'|call_user_func}-->
             <!--{/if}-->

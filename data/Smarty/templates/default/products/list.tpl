@@ -62,6 +62,7 @@ function fnInCart(productForm) {
 <!--▼CONTENTS-->
 <div id="undercolumn" class="product product_list">
     <form name="form1" id="form1" method="get" action="?">
+        <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="<!--{$mode|h}-->" />
         <!--{* ▼検索条件 *}-->
         <input type="hidden" name="category_id" value="<!--{$arrSearchData.category_id|h}-->" />
@@ -138,6 +139,7 @@ function fnInCart(productForm) {
             
             <!--▼ページナビ(上部)-->
             <form name="page_navi_top" id="page_navi_top" action="?">
+                <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
                 <!--{if $tpl_linemax > 0}--><!--{$smarty.capture.page_navi_body|smarty:nodefaults}--><!--{/if}-->
             </form>
             <!--▲ページナビ(上部)-->
@@ -147,6 +149,7 @@ function fnInCart(productForm) {
         <!--{assign var=arrErr value=$arrProduct.arrErr}-->
         <!--▼商品-->
         <form name="product_form<!--{$id|h}-->" action="?" onsubmit="return false;">
+            <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
             <div class="list_area clearfix">
             <a name="product<!--{$id|h}-->"></a>
                 <div class="listphoto">
@@ -261,6 +264,7 @@ function fnInCart(productForm) {
         <!--{if $smarty.foreach.arrProducts.last}-->
             <!--▼ページナビ(下部)-->
             <form name="page_navi_bottom" id="page_navi_bottom" action="?">
+                <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
                 <!--{if $tpl_linemax > 0}--><!--{$smarty.capture.page_navi_body|smarty:nodefaults}--><!--{/if}-->
             </form>
             <!--▲ページナビ(下部)-->

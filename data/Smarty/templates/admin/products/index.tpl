@@ -57,6 +57,7 @@ function lfnDispChange(){
 
 <div id="products" class="contents-main">
 <form name="search_form" id="search_form" method="post" action="?">
+  <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
   <input type="hidden" name="mode" value="search" />
   <!--{foreach key=key item=item from=$arrHidden}-->
   <!--{if $key == 'campaign_id' || $key == 'search_mode'}-->
@@ -179,6 +180,7 @@ function lfnDispChange(){
 
 <!--★★検索結果一覧★★-->
 <form name="form1" id="form1" method="post" action="?">
+  <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
   <input type="hidden" name="mode" value="search" />
   <input type="hidden" name="product_id" value="" />
   <input type="hidden" name="category_id" value="" />

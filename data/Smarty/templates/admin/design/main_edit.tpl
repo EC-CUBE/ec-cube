@@ -45,6 +45,7 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
 
 
 <form name="form_edit" id="form_edit" method="post" action="?" >
+<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="" />
 <input type="hidden" name="page_id" value="<!--{$page_id}-->" />
 <input type="hidden" name="device_type_id" value="<!--{$device_type_id|h}-->" />

@@ -42,6 +42,7 @@ XXX: ヘッダーとフッターでwrapの設定が違うのは疑問。それ�
   <!--{* プレビューここまで *}-->
     
   <form name="form_header" id="form_header" method="post" action="?" >
+  <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
   <input type="hidden" name="mode" value="" />
   <input type="hidden" name="division" value="header" />
   <input type="hidden" name="header_row" value="<!--{$header_row}-->" />
@@ -76,6 +77,7 @@ XXX: ヘッダーとフッターでwrapの設定が違うのは疑問。それ�
   <!--{/if}-->
 
   <form name="form_footer" id="form_footer" method="post" action="?" >
+  <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
   <input type="hidden" name="mode" value="" />
   <input type="hidden" name="division" value="footer" />
   <input type="hidden" name="footer_row" value=<!--{$footer_row}--> />

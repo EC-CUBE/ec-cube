@@ -31,6 +31,7 @@
   <!--{/if}-->
   <div id="mycontents_area">
     <form name="form1" method="post" action="?">
+    <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="order_id" value="" />
     <input type="hidden" name="pageno" value="<!--{$objNavi->nowpage}-->" />
     <h3><!--{$tpl_subtitle|h}--></h3>

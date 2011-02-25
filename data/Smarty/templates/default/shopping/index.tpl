@@ -24,6 +24,7 @@
   <div id="undercolumn_login">
     <h2 class="title"><!--{$tpl_title|h}--></h2>
     <form name="member_form" id="member_form" method="post" action="?" onsubmit="return fnCheckLogin('member_form')">
+    <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="mode" value="login" />
 
         <div class="login_area">
@@ -89,6 +90,7 @@
             <h4>会員登録をせずに購入手続きへ進む</h4>
             <p class="inputtext">会員登録をせずに購入手続きをされたい方は、下記よりお進みください。</p>
             <form name="member_form2" id="member_form2" method="post" action="?">
+            <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
             <input type="hidden" name="mode" value="nonmember" />
             <div class="inputbox">
                 <div class="btn_area">

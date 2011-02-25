@@ -26,6 +26,7 @@
     <p>下記項目にご入力ください。「<span class="attention">※</span>」印は入力必須項目です。<br />
       入力後、一番下の「確認ページへ」ボタンをクリックしてください。</p>
     <form name="form1" id="form1" method="post" action="?">
+      <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
       <input type="hidden" name="mode" value="nonmember_confirm" />
       <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->" />
       <table summary="お客様情報入力">

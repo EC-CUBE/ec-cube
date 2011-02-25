@@ -40,6 +40,7 @@
         </p>
 
         <form action="order.php" method="post">
+            <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
             <input type="hidden" name="order_id" value="<!--{$tpl_arrOrderData.order_id}-->">
             <input type="submit" name="submit" value="再注文">
         </form>

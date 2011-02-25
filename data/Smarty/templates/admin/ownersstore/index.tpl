@@ -34,6 +34,7 @@ OwnersStore.download();やOwnersStore.products_list();を呼び出すことで
 <script type="text/javascript" src="<!--{$TPL_URLPATH}-->js/ownersstore.js.php"></script>
 
 <form name="form1" id="form1" method="post" action="?">
+<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <div id="ownersstore" class="contents-main">
 
   <!--購入商品一覧ここから-->

@@ -23,6 +23,7 @@
 *}-->
 <div id="basis" class="contents-main">
   <form name="form1" id="form1" method="post" action="?">
+  <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
   <input type="hidden" name="mode" value="show" />
   <div id="basis-masterdata-select" class="btn">
     <select name="master_data_name" id="master_data_name">
@@ -35,6 +36,7 @@
   <!--{if $smarty.post.mode == 'show'}-->
 
   <form name="form2" id="form2" method="post" action="?">
+  <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
   <input type="hidden" name="mode" value="edit" />
   <input type="hidden" name="master_data_name" value="<!--{$masterDataName}-->" />
   <p class="remark attention">

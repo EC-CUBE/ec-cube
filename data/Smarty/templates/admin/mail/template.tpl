@@ -22,6 +22,7 @@
  */
 *}-->
 <form name="form1" id="form1" method="post" action="?">
+<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <div class="btn">
     <a class="btn-action" href="./template_input.php"><span class="btn-next">テンプレートを新規入力</span></a>
 </div>
@@ -56,3 +57,4 @@
     </table>
 </div>
 <!--{/if}-->
+</form>

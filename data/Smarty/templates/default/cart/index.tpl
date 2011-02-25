@@ -70,6 +70,7 @@ $(document).ready(function() {
     <!--{foreach from=$cartKeys item=key}-->
     <div class="form_area">
         <form name="form<!--{$key}-->" id="form<!--{$key}-->" method="post" action="?">
+            <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
             <input type="hidden" name="mode" value="confirm" />
             <input type="hidden" name="cart_no" value="" />
             <input type="hidden" name="cartKey" value="<!--{$key}-->" />

@@ -39,6 +39,7 @@
     <!--{* メインエリア *}-->
     <div id="home-main">
     <form name="form1" method="post" action="#">
+    <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 
             <!--{* システム情報ここから *}-->
             <h2>システム情報</h2>

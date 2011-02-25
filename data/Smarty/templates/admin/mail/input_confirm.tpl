@@ -32,6 +32,7 @@ function winSubmitMail(URL,formName,Winname,Wwidth,Wheight){
 //-->
 </script>
 <form name="form1" id="form1" method="post" action="?">
+<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="template">
 <input type="hidden" name="subject" value="<!--{$arrForm.subject.value|h}-->">
 <input type="hidden" name="body" value="<!--{$arrForm.body.value|h}-->">

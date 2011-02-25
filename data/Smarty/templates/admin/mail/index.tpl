@@ -23,6 +23,7 @@
 *}-->
 <div id="mail" class="contents-main">
 <form name="search_form" id="search_form" method="post" action="?">
+<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="search" />
     <h2>配信先検索条件設定</h2>
 
@@ -65,6 +66,7 @@
 <!--{if count($arrErr) == 0 and ($smarty.post.mode == 'search' or $smarty.post.mode == 'delete' or $smarty.post.mode == 'back')}-->
 
 <form name="form1" id="form1" method="post" action="?">
+<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="" />
 <!--{foreach key=key item=item from=$arrHidden}-->
 <!--{if is_array($item)}-->

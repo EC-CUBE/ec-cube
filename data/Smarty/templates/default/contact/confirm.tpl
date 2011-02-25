@@ -26,6 +26,7 @@
     <p>下記入力内容で送信してもよろしいでしょうか？<br />
       よろしければ、一番下の「完了ページへ」ボタンをクリックしてください。</p>
     <form name="form1" id="form1" method="post" action="?">
+      <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
       <input type="hidden" name="mode" value="complete" />
       <!--{foreach key=key item=item from=$arrForm}-->
         <!--{if $key ne 'mode'}-->

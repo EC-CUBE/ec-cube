@@ -54,6 +54,7 @@
 				<div class="fs12n" id="comment01">下記から、お支払いするコンビニをご選択くださいませ。<br />
 				選択後、一番下の「ご注文完了ページへ」ボタンをクリックしてください。</div>
 				<form name="form1" id="form1" method="post" action="?">
+                <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 				<input type="hidden" name="mode" value="complete">
 				<input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
 				<span class="red12st"><!--{$arrErr.convenience}--></span>

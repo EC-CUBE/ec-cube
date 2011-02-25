@@ -78,6 +78,7 @@
 </script>
 <div id="order" class="contents-main">
 <form name="search_form" id="search_form" method="post" action="?">
+<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="search" />
     <h2>検索条件設定</h2>
     <!--{* 検索条件設定テーブルここから *}-->
@@ -281,6 +282,7 @@
 
 <!--★★検索結果一覧★★-->
 <form name="form1" id="form1" method="post" action="?">
+<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="search" />
 <input type="hidden" name="order_id" value="" />
 <!--{foreach key=key item=item from=$arrHidden}-->

@@ -30,6 +30,7 @@ jQuery(function(){
 });
 </script>
 <form name="form1" id="form1" method="post" action="?">
+<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <!--{* ▼登録テーブルここから *}-->
 <div id="system" class="contents-main">
   <div class="notice">

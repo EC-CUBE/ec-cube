@@ -26,6 +26,7 @@
         
     </style>
     <form name="form1" id="form1" method="get" action="?" onsubmit="return false;">
+        <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="">
         <p>郵便番号CSVには <!--{$tpl_line|h}--> 行のデータがあります。</p>
         <p>郵便番号DBには <!--{$tpl_count_mtb_zip|h}--> 行のデータがあります。</p>

@@ -22,6 +22,7 @@
  */
 *}-->
 <form name="form_css" method="post" action="?" >
+<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="" />
 <input type="hidden" name="area_row" value="<!--{$area_row}-->" />
 <input type="hidden" name="old_css_name" value="<!--{$old_css_name}-->" />
