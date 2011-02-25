@@ -50,7 +50,7 @@
             <colgroup width="5%"></colgroup>
             <colgroup width="25%"></colgroup>
             <colgroup width="50%"></colgroup>
-               <colgroup width="10%"></colgroup>
+            <colgroup width="10%"></colgroup>
             <colgroup width="10%"></colgroup>
                 <tr>
                     <th colspan="5">お届け先</th>

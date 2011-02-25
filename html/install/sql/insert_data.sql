@@ -6,6 +6,7 @@ INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, cr
 INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (10, 6, 'ログイン', 'login.tpl', 'login', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/login.php', 0);
 INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (10, 7, 'おすすめ商品', 'recommend.tpl', 'recommend', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/recommend.php', 0);
 INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (10, 8, 'カレンダー', 'calendar.tpl', 'calendar', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/calendar.php', 0);
+INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (10, 9, '【ヘッダー】ログイン', 'login_header.tpl', 'login_header', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/login_header.php', 0);
 INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (1, 1, 'カテゴリ', 'category.tpl', 'category', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/category.php', 0);
 INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (1, 2, '利用ガイド', 'guide.tpl', 'guide', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, 0);
 INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (1, 3, 'かごの中', 'cart.tpl', 'cart', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/cart.php', 0);
@@ -32,6 +33,7 @@ INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_
 INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 1, 4, 7, 1, 0);
 INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 1, 4, 5, 2, 0);
 INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 1, 3, 6, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 1, 10, 9, 1, 1);
 INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 2, 1, 1, 2, 0);
 INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 2, 1, 2, 3, 0);
 INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 2, 1, 3, 1, 0);

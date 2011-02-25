@@ -1,6 +1,6 @@
 @charset "utf-8";
 
-/* ***********************************************
+/************************************************
  インヘッダーブロック
 ************************************************ */
 #headerInternalColumn {
@@ -10,7 +10,7 @@
     height: 35px;
 }
 
-/* ログイン
+/* ログイン（ヘッダー用）
 ----------------------------------------------- */
 #header_login_area {
     padding: 0 10px;
@@ -19,35 +19,42 @@
     background: #fef3d3;
     letter-spacing: -0.075em;
 }
-#header_login_area ul.formList {
+#header_login_area ul.formlist {
     margin-top: 5px;
 }
-#header_login_area ul.formList li {
+#header_login_area ul.formlist li {
     float: left;
 }
-#header_login_area ul.formList li.mail {
+#header_login_area ul.formlist li.mail {
     padding-left: 28px;
     width: 155px;
     background: url("../img/common/ico_arrow_login.gif") no-repeat left;
     font-size: 90%;
 }
-#header_login_area ul.formList li.password {
+#header_login_area ul.formlist li.password {
     padding-right: 5px;
 }
-#header_login_area ul.formList li.login_memory {
+#header_login_area ul.formlist li.login_memory {
     padding-right: 5px;
     font-size: 90%;
 }
-#header_login_area ul.formList li.forgot{
+#header_login_area ul.formlist li.forgot{
     margin-top: 3px;
     padding-right: 5px;
     font-size: 90%;
 }
-#header_login_area ul.formList li.btn {
+#header_login_area ul.formlist li.btn {
     padding-right: 5px;
     width: 53px;
 }
-
+#header_login_area p.btn {
+    height: 20px;
+    padding: 5px 0;
+    vertical-align: middle;
+}
+#header_login_area p.btn input[type=image] {
+    vertical-align: middle;
+}
 
 /* ***********************************************
 追加ブロック
@@ -78,9 +85,4 @@
 #rightcolumn .bloc_outer #banner_area .bloc_body ul li {
     margin-bottom: 8px;
 }
-
-
-
-
-
 

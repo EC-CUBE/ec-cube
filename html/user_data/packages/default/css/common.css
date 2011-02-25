@@ -2,7 +2,7 @@
 
 /************************************************
  共通設定
-/************************************************/
+************************************************ */
 body {
     font-family: Verdana,Arial,Helvetica,sans-serif;
     color: #666;
@@ -92,7 +92,7 @@ select {
 }
 
 /* 下層コンテンツ */
-div#undercolumn { width: 100%; margin: 0 0 30px 0;}
+#undercolumn { width: 100%; margin: 0 0 30px 0;}
 
 
 /* ==============================================
@@ -126,6 +126,7 @@ a:link:hover {
 }
 a[href]:hover { 
     color: #f60;
+    text-decoration: underline;
 }
 
 
@@ -134,9 +135,9 @@ a[href]:hover {
 h1,h2,h3,h4,h5 { font-size: 100%; line-height: 150%;}
 .price { color: #f00; }
 .sale_price { color: #f00; }
+.normal_price { color: #f00; font-size: 90%; }
 .point { color: #f00; font-weight: bold; }
 .user_name { font-weight: bold; }
-.normal_price { color: #f00; font-size: 90%; }
 .recommend_level { color: #ecbd00; }
 
 .attention { color: #f00; }
@@ -147,7 +148,6 @@ h1,h2,h3,h4,h5 { font-size: 100%; line-height: 150%;}
 
 /* 行揃え
 ----------------------------------------------- */
-.phototd { width: 75px; text-align: center; }
 .alignC { text-align: center; }
 .alignR { text-align: right; }
 .alignL { text-align: left; }
@@ -163,18 +163,18 @@ input[type='password'] ,
     padding: 2px;
 }
 
-.box40 {width: 40px; }
-.box60 {width: 60px; }
-.box100 {width: 100px; }
-.box120 {width: 120px; }
-.box140 {width: 140px; }
-.box145 {width: 145px; }
-.box150 {width: 150px; }
-.box240 {width: 240px; }
-.box300 {width: 300px; }
-.box320 {width: 320px; }
-.box350 {width: 350px; }
-.box380 {width: 380px; }
+.box40 { width: 40px; }
+.box60 { width: 60px; }
+.box100 { width: 100px; }
+.box120 { width: 120px; }
+.box140 { width: 140px; }
+.box145 { width: 145px; }
+.box150 { width: 150px; }
+.box240 { width: 240px; }
+.box300 { width: 300px; }
+.box320 { width: 320px; }
+.box350 { width: 350px; }
+.box380 { width: 380px; }
 
 /* フォームが縦に重なり合う場合に併用する余白 */
 .top { margin-bottom: 5px; }
@@ -218,15 +218,6 @@ div#undercolumn_login .login_area h4 {
 =============================================== */
 /* レイアウト
 ----------------------------------------------- */
-#errorHeader {
-    color: #F00;
-    font-weight: bold;
-    font-size: 12px;
-    background-color: #FEB;
-    text-align: center;
-    padding: 5px;
-}
-
 #header_wrap {
     border-top: solid 3px #f90;
     min-height: 82px;
@@ -258,7 +249,7 @@ div#undercolumn_login .login_area h4 {
     width: 378px;
     height: 33px;
 }
-#logo_area h1 span{
+#logo_area h1 span {
     display: none;/* テキストロゴ非表示 */
 }
 
@@ -290,10 +281,10 @@ div#header_navi ul li.entry {
     background: #fff;
 }
 #footer {
+    margin: auto;
     padding-top: 10px;
     border-top: solid 1px #ccc;
     width: 950px;
-    margin: auto;
 }
 #pagetop {
     width: 210px;

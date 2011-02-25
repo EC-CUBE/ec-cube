@@ -1,4 +1,5 @@
-<!--{*
+<?php
+/*
  * This file is part of EC-CUBE
  *
  * Copyright(c) 2000-2010 LOCKON CO.,LTD. All Rights Reserved.
@@ -18,9 +19,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *}-->
-<div id="main_image">
-    <a href="http://www.ec-cube.net/" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/banner/bnr_top_main_on.jpg','bnr_top_main');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/banner/bnr_top_main.jpg','bnr_top_main');">
-        <img src="<!--{$TPL_URLPATH}-->img/banner/bnr_top_main.jpg" alt="EC-CUBE" id="bnr_top_main" name="bnr_top_main" />
-    </a>
-</div>
+ */
+
+// {{{ requires
+require_once(realpath(dirname(__FILE__)) . "/../../require.php");
+require_once(CLASS_EX_REALDIR . "page_extends/frontparts/bloc/LC_Page_FrontParts_Bloc_LoginHeader_Ex.php");
+
+// }}}
+// {{{ generate page
+$objPage = new LC_Page_FrontParts_BLoc_LoginHeader_Ex();
+register_shutdown_function(array($objPage, "destroy"));
+$objPage->init();
+$objPage->process();
+?>

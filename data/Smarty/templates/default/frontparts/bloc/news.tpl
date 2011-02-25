@@ -23,10 +23,10 @@
     <div id="news_area">
     <h2><img src="<!--{$TPL_URLPATH}-->img/title/tit_bloc_news.jpg"alt="新着情報" /><span class="rss"><a href="<!--{$smarty.const.ROOT_URLPATH}-->rss/<!--{$smarty.const.DIR_INDEX_PATH}-->" target="_blank"><img src="<!--{$TPL_URLPATH}-->img/button/btn_rss.jpg"alt="RSS" /></a></span></h2>
         <div class="bloc_body">
-            <div class="newsContents">
+            <div class="news_contents">
             <!--{section name=data loop=$arrNews}-->
             <!--{assign var="date_array" value="-"|explode:$arrNews[data].news_date_disp}-->
-            <dl class="newsList">
+            <dl class="newslist">
                 <dt><!--{$date_array[0]}-->年<!--{$date_array[1]}-->月<!--{$date_array[2]}-->日</dt>
                 <dt>
                     <a

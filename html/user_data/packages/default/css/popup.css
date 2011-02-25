@@ -7,6 +7,7 @@
 ----------------------------------------------- */
 div#windowcolumn {
     border-top: solid 3px #f90;
+    width: 560px;
     height: 100%;
     margin: 15px 15px 0 15px;
     background: #fff;
@@ -26,6 +27,8 @@ div#window_area {
     margin: 15px auto 0 auto;
     padding-bottom: 20px;
     width: 540px;
+    min-height:300px;
+    height: auto !important;
 }
 
 div#window_area p.information {
@@ -53,9 +56,6 @@ div#window_area #forgot {
 }
 div#window_area #forgot .mailaddres {
     margin-bottom: 10px;
-}
-div#window_area .zipimg img {
-    margin: 5px 0 0 0;
 }
 
 /* 商品詳細拡大写真、カート拡大写真

@@ -114,27 +114,27 @@ $(document).ready(function() {
              </tr>
              <!--{/foreach}-->
                 <tr>
-                    <th colspan="4" class="resulttd">小計</th>
+                    <th colspan="4" class="alignR">小計</th>
                     <td class="alignR"><!--{$tpl_total_inctax[$cartKey]|number_format}-->円</td>
                 </tr>
                 <!--{if $smarty.const.USE_POINT !== false}-->
                     <tr>
-                        <th colspan="4" class="resulttd">値引き（ポイントご使用時）</th>
+                        <th colspan="4" class="alignR">値引き（ポイントご使用時）</th>
                         <td class="alignR">
                         <!--{assign var=discount value=`$arrForm.use_point*$smarty.const.POINT_VALUE`}-->
                          -<!--{$discount|number_format|default:0}-->円</td>
                     </tr>
                 <!--{/if}-->
                 <tr>
-                    <th colspan="4" class="resulttd">送料</th>
+                    <th colspan="4" class="alignR">送料</th>
                     <td class="alignR"><!--{$arrForm.deliv_fee|number_format}-->円</td>
                 </tr>
                 <tr>
-                    <th colspan="4" class="resulttd">手数料</th>
+                    <th colspan="4" class="alignR">手数料</th>
                     <td class="alignR"><!--{$arrForm.charge|number_format}-->円</td>
                 </tr>
                 <tr>
-                    <th colspan="4" class="resulttd">合計</th>
+                    <th colspan="4" class="alignR">合計</th>
                     <td class="alignR"><span class="price"><!--{$arrForm.payment_total|number_format}-->円</span></td>
                 </tr>
             </table>

@@ -60,7 +60,7 @@ function fnInCart(productForm) {
 </script>
 
 <!--▼CONTENTS-->
-<div id="undercolumn" class="product product_list">
+<div id="undercolumn">
     <form name="form1" id="form1" method="get" action="?">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="<!--{$mode|h}-->" />

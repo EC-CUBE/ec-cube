@@ -207,7 +207,7 @@
                 <p class="non-select-msg">まずはじめに、配送方法を選択ください。</p>
                 <!--{foreach item=shippingItem name=shippingItem from=$arrShipping}-->
                 <!--{assign var=index value=$smarty.foreach.shippingItem.index}-->
-                <div class="delivdate">
+                <div class="delivdate top">
                     <!--★お届け日★-->
                     <!--{assign var=key value="deliv_date`$index`"}-->
                     <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -229,8 +229,9 @@
                         <!--{html_options options=$arrDelivTime selected=$arrForm[$key].value}-->
                     </select>
                     <!--{if $is_multiple}-->
-                        &nbsp;<!--{$shippingItem.shipping_name01}--><!--{$shippingItem.shipping_name02}-->
-                        &nbsp;<!--{$arrPref[$shippingItem.shipping_pref]}--><!--{$shippingItem.shipping_addr01}--><!--{$shippingItem.shipping_addr02}-->
+                         <br />
+                        <!--{$shippingItem.shipping_name01}--><!--{$shippingItem.shipping_name02}-->
+                        <!--{$arrPref[$shippingItem.shipping_pref]}--><!--{$shippingItem.shipping_addr01}--><!--{$shippingItem.shipping_addr02}-->
                     <!--{/if}-->
                  </div>
                  <!--{/foreach}-->

@@ -15,12 +15,11 @@
 -現在のカゴの中
 -カテゴリー
 -ガイドリンク
--ログイン
+-ログイン（サイド用）
 -検索
 -カレンダー
 -おすすめ商品
-    tplファイルのマークアップが同じ項目
-    *メインカラム用 1カラム時 [one_maincolumn 
+    *メインカラム用 1カラム時 [one_maincolumn]
     *メインカラム用 2カラム時 [two_maincolumn_left]
                               [two_maincolumn_right]
     *メインカラム用 3カラム時 [three_maincolumn]
@@ -58,19 +57,19 @@
 /* リスト
 ----------------------------------------------- */
 /* ログイン 検索条件 */
-#container .bloc_outer .bloc_body dl.formList {
+#container .bloc_outer .bloc_body dl.formlist {
     margin-bottom: 8px;
 }
-#container .bloc_outer .bloc_body dl.formList dd {
+#container .bloc_outer .bloc_body dl.formlist dd {
     margin-bottom: 5px;
 }
-#container .bloc_outer .bloc_body dl.formList dt {
+#container .bloc_outer .bloc_body dl.formlist dt {
     margin-bottom: 3px;
     padding-left: 15px;
     background: url("../img/icon/ico_arrow_03.gif") no-repeat left;
     font-size: 90%;
 }
-#container .bloc_outer .bloc_body dl.formList span{
+#container .bloc_outer .bloc_body dl.formlist span{
     vertical-align: top;
 }
 
@@ -98,12 +97,6 @@
 }
 
 /* タイトルの背景 オレンジ */
-#recomend_area .titleWrap ,
-#news_area.titleWrap {
-    padding-bottom: 1px;
-    font-size: 14px;
-}
-
 #recomend_area h2 ,
 #news_area h2 {
     padding: 5px 0 8px 10px;
@@ -137,7 +130,7 @@ div#bottomcolumn {
 #news_area .bloc_body {
     padding: 10px;
 }
-#news_area .newsContents {
+#news_area .news_contents {
     padding-right: 10px;
     max-height:260px;
     height: auto !important;
@@ -146,13 +139,13 @@ div#bottomcolumn {
     overflow-y:scroll;
 }
 
-#news_area dl.newsList {
+#news_area dl.newslist {
     background: url("../img/background/line_dot_01.gif") repeat-x bottom;
 }
-#news_area dl.newsList dt {
+#news_area dl.newslist dt {
     margin-bottom: 5px;
 }
-#news_area dl.newsList dd {
+#news_area dl.newslist dd {
     margin-bottom: 10px;
     padding-bottom: 10px;
 }
@@ -253,8 +246,8 @@ ul.button_like li a {
 
 
 /* ===============================================
-▼ログイン
-※ヘッダー用はheader_block.css内に記述
+▼ログイン（サイド用）
+※ヘッダー用はbloc_alpha.css内に記述
 =============================================== */
 #container div#login_area .bloc_body {
     padding: 10px;
@@ -267,11 +260,11 @@ ul.button_like li a {
 #container div#login_area .bloc_body .btn {
     text-align: center;
 }
-#container .login_area dl.formList {
+#container .login_area dl.formlist {
     margin-bottom: 8px;
     width: 420px;
 }
-#container .login_area dl.formList dt {
+#container .login_area dl.formlist dt {
     margin-bottom: 3px;
     padding-left: 15px;
     color: #333;
@@ -280,7 +273,7 @@ ul.button_like li a {
     float: left;
     font-size: 90%;
 }
-#container .login_area dl.formList dd {
+#container .login_area dl.formlist dd {
     margin-bottom: 5px;
     float: right;
     width: 300px;
@@ -443,7 +436,6 @@ div#search_area .bloc_body .btn {
     float: right;
     width: 67%;
 }
-
 
 /* サイドカラム用 (幅px固定) */
 .side_column #recomend_area .bloc_body {

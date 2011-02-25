@@ -132,7 +132,7 @@
           <td>
             <!--{assign var=key value="order_email"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
-            <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->; ime-mode: disabled;" class="box380" /><br />
+            <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->; ime-mode: disabled;" class="box380 top" /><br />
             <!--{assign var=key value="order_email02"}-->
             <span class="attention"><!--{$arrErr[$key]}--></span>
             <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->; ime-mode: disabled;" class="box380" /><br />
@@ -143,11 +143,13 @@
           <th>性別<span class="attention">※</span></th>
           <td>
             <!--{assign var=key value="order_sex"}-->
-            <span class="attention"><!--{$arrErr[$key]}--></span>
-            <!--{if $arrErr[$key]}-->
-              <!--{assign var=err value="background-color: `$smarty.const.ERR_COLOR`"}-->
-            <!--{/if}-->
-            <!--{html_radios name="$key" options=$arrSex selected=$arrForm[$key].value style="$err"}-->
+    <!--{if $arrErr[$key]}-->
+    <div class="attention"><!--{$arrErr[$key]}--></div>
+    <!--{/if}-->
+    <span style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
+        <input type="radio" id="man" name="<!--{$key}-->" value="1" <!--{if $arrForm[$key] eq 1}--> checked="checked" <!--{/if}--> /><label for="man">男性</label>
+        <input type="radio" id="woman" name="<!--{$key}-->" value="2" <!--{if $arrForm[$key] eq 2}--> checked="checked" <!--{/if}--> /><label for="woman">女性</label>
+    </span>
           </td>
         </tr>
         <tr>

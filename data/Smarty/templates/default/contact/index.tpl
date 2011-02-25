@@ -102,7 +102,7 @@
         <th>メールアドレス<span class="attention">※</span></th>
         <td>
           <span class="attention"><!--{$arrErr.email}--><!--{$arrErr.email02}--></span>
-          <input type="text" class="box380" name="email" value="<!--{$arrForm.email.value|h|default:$arrData.email|h}-->" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" style="<!--{$arrErr.email|sfGetErrorColor}-->; ime-mode: disabled;" /><br />
+          <input type="text" class="box380 top" name="email" value="<!--{$arrForm.email.value|h|default:$arrData.email|h}-->" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" style="<!--{$arrErr.email|sfGetErrorColor}-->; ime-mode: disabled;" /><br />
           <!--{* ログインしていれば入力済みにする *}-->
           <!--{if $smarty.server.REQUEST_METHOD != 'POST' && $smarty.session.customer}-->
           <!--{assign var=email02 value=$arrData.email}-->
@@ -116,7 +116,7 @@
         <span class="mini">（全角<!--{$smarty.const.MLTEXT_LEN}-->字以下）</span></th>
         <td>
           <span class="attention"><!--{$arrErr.contents}--></span>
-          <textarea name="contents" class="area380" cols="60" rows="20" style="<!--{$arrErr.contents.value|h|sfGetErrorColor}-->; ime-mode: active;"><!--{$arrForm.contents|h}--></textarea>
+          <textarea name="contents" class="box380" cols="60" rows="20" style="<!--{$arrErr.contents.value|h|sfGetErrorColor}-->; ime-mode: active;"><!--{$arrForm.contents|h}--></textarea>
         </td>
       </tr>
     </table>

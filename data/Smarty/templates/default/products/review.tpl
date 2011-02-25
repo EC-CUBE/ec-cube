@@ -33,6 +33,8 @@
         <input type="hidden" name="mode" value="confirm" />
         <input type="hidden" name="product_id" value="<!--{$arrForm.product_id}-->" />
         <table summary="お客様の声書き込み">
+          <colgroup width="30%"></colgroup>
+          <colgroup width="70%"></colgroup>
           <tr>
             <th>商品名</th>
             <td><!--{$arrForm.name|h}--></td>

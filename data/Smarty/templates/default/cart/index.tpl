@@ -137,7 +137,7 @@ $(document).ready(function() {
                         <td class="alignR">
                             <!--{$item.productsClass.price02|sfCalcIncTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->円
                         </td>
-                        <td id="quantity"><!--{$item.quantity}-->
+                        <td class="alignC"><!--{$item.quantity}-->
                             <ul id="quantity_level">
                                 <li><a href="?" onclick="fnFormModeSubmit('form<!--{$key}-->','up','cart_no','<!--{$item.cart_no}-->'); return false"><img src="<!--{$TPL_URLPATH}-->img/button/btn_plus.jpg" width="16" height="16" alt="＋" /></a></li>
                                 <li><a href="?" onclick="fnFormModeSubmit('form<!--{$key}-->','down','cart_no','<!--{$item.cart_no}-->'); return false"><img src="<!--{$TPL_URLPATH}-->img/button/btn_minus.jpg" width="16" height="16" alt="-" /></a></li>
@@ -147,22 +147,22 @@ $(document).ready(function() {
                      </tr>
                  <!--{/foreach}-->
                  <tr>
-                     <th colspan="5" class="resulttd">小計</th>
+                     <th colspan="5" class="alignR">小計</th>
                      <td class="alignR"><!--{$tpl_total_inctax[$key]|number_format}-->円</td>
                  </tr>
                  <tr>
-                     <th colspan="5" class="resulttd">合計</th>
+                     <th colspan="5" class="alignR">合計</th>
                      <td class="alignR"><span class="price"><!--{$arrData[$key].total-$arrData[$key].deliv_fee|number_format}-->円</span></td>
                  </tr>
                  <!--{if $smarty.const.USE_POINT !== false}-->
                      <!--{if $arrData[$key].birth_point > 0}-->
                          <tr>
-                             <th colspan="5" class="resulttd">お誕生月ポイント</th>
+                             <th colspan="5" class="alignR">お誕生月ポイント</th>
                              <td class="alignR"><!--{$arrData[$key].birth_point|number_format}-->pt</td>
                          </tr>
                      <!--{/if}-->
                      <tr>
-                         <th colspan="5" class="resulttd">今回加算ポイント</th>
+                         <th colspan="5" class="alignR">今回加算ポイント</th>
                          <td class="alignR"><!--{$arrData[$key].add_point|number_format}-->pt</td>
                     </tr>
                 <!--{/if}-->

@@ -35,7 +35,7 @@
                 </select>
                 </dd>
             </dl>
-            <dl class="formList">
+            <dl class="formlist">
                 <!--{if $arrMakerList}-->
                 <dt>メーカーから選ぶ</dt>
                 <dd><select name="maker_id" class="box145">
@@ -44,7 +44,7 @@
                 </select>
                 </dd>
             </dl>
-            <dl class="formList">
+            <dl class="formlist">
                 <!--{/if}-->
                 <dt>商品名を入力</dt>
                 <dd><input type="text" name="name" class="box140" maxlength="50" value="<!--{$smarty.get.name|h}-->" /></dd>

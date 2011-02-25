@@ -91,6 +91,9 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
      * @return void
      */
     function action() {
+        // 顧客クラスs
+        $objCustomer = new SC_Customer();
+
         // パラメータ管理クラス
         $this->objFormParam = new SC_FormParam();
         // パラメータ情報の初期化
@@ -103,14 +106,6 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
         // プロダクトIDの正当性チェック
         $product_id = $this->lfCheckProductId($this->objFormParam->getValue('admin'),$this->objFormParam->getValue('product_id'));
         $this->mode = $this->getMode();
-
-        $objCustomer = new SC_Customer();
-
-        // ログイン判定
-        if ($objCustomer->isLoginSuccess() === true) {
-            //お気に入りボタン表示
-            $this->tpl_login = true;
-        }
 
         // 規格選択セレクトボックスの作成
         $this->js_lnOnload .= $this->lfMakeSelect();
@@ -269,6 +264,14 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
 
         //関連商品情報表示
         $this->arrRecommend = $this->lfPreGetRecommendProducts($product_id);
+
+        // ログイン判定
+        if ($objCustomer->isLoginSuccess() === true) {
+            //お気に入りボタン表示
+            $this->tpl_login = true;
+            $this->is_favorite = SC_Helper_DB_Ex::sfDataExists('dtb_customer_favorite_products', 'customer_id = ? AND product_id = ?', array($objCustomer->getValue('customer_id'), $product_id));
+        }
+
     }
 
     /**

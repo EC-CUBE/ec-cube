@@ -31,7 +31,7 @@
             <h3>会員登録がお済みのお客様</h3>
             <p class="inputtext">会員の方は、登録時に入力されたメールアドレスとパスワードでログインしてください。</p>
             <div class="inputbox">
-                <dl class="formList clearfix">
+                <dl class="formlist clearfix">
                     <!--{assign var=key value="login_email"}-->
                     <span class="attention"><!--{$arrErr[$key]}--></span>
                     <dt>メールアドレス&nbsp;：</dt>
@@ -44,7 +44,7 @@
                         </p>
                     </dd>
                 </dl>
-                <dl class="formList clearfix">
+                <dl class="formlist clearfix">
                     <dt>
                         <!--{assign var=key value="login_pass"}-->
                         <span class="attention"><!--{$arrErr[$key]}--></span>

@@ -34,15 +34,6 @@
       </div>
        <p>今後ともご愛顧賜りますようよろしくお願い申し上げます。</p>
     </div>
-
-    <div class="btn_area">
-            <ul>
-                <li>
-                     <a href="<!--{$smarty.const.TOP_URLPATH}-->" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_toppage_on.jpg','fortop');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_toppage.jpg','fortop');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_toppage.jpg" alt="トップページへ" name="fortop" id="fortop" /></a>
-                </li>
-            </ul>
-    </div>
-
   </div>
 </div>
 <!--▲CONTENTS-->

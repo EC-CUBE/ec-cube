@@ -40,7 +40,7 @@
                 </p>
                     <!--{/if}-->
                 <!--{else}-->
-                <dl class="formList">
+                <dl class="formlist">
                     <dt>メールアドレス</dt>
                     <dd>
                         <input type="text" name="login_email" class="box140" value="<!--{$tpl_login_email|h}-->" style="ime-mode: disabled;" />
@@ -51,7 +51,7 @@
 <label for="login_memory"><span>コンピューターに記憶する</span></label>
                     </dd>
                 </dl>
-                <dl class="formList">
+                <dl class="formlist">
                     <dt class="password">パスワード</dt>
                     <dd><input type="password" name="login_pass" class="box140" /></dd>
                     <dd class="mini">
