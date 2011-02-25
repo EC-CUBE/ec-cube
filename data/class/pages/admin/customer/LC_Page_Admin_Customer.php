@@ -55,7 +55,7 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex {
         $this->arrJob = $masterData->getMasterData("mtb_job");
         $this->arrJob["不明"] = "不明";
         $this->arrSex = $masterData->getMasterData("mtb_sex");
-        $this->arrPageRows = $masterData->getMasterData("mtb_page_rows");
+        $this->arrPageRows = $masterData->getMasterData("mtb_page_max");
         $this->arrStatus = $masterData->getMasterData("mtb_customer_status");
         $this->arrMagazineType = $masterData->getMasterData("mtb_magazine_type");
 

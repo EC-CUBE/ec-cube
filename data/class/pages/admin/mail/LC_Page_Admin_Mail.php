@@ -55,7 +55,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
         $this->arrJob = $masterData->getMasterData("mtb_job");
         $this->arrJob["不明"] = "不明";
         $this->arrSex = $masterData->getMasterData("mtb_sex");
-        $this->arrPageRows = $masterData->getMasterData("mtb_page_rows");
+        $this->arrPageRows = $masterData->getMasterData("mtb_page_max");
         $this->arrHtmlmail = array( "" => "両方",  1 => "HTML", 2 => "TEXT" );
         $this->arrMailType = $masterData->getMasterData("mtb_mail_type");
         

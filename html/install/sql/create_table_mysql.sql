@@ -983,13 +983,6 @@ CREATE TABLE mtb_customer_status (
     PRIMARY KEY (id)
 ) ENGINE=InnoDB;
 
-CREATE TABLE mtb_page_rows (
-    id smallint,
-    name text,
-    rank smallint NOT NULL DEFAULT 0,
-    PRIMARY KEY (id)
-) ENGINE=InnoDB;
-
 CREATE TABLE mtb_mail_type (
     id smallint,
     name text,

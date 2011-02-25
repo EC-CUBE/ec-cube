@@ -832,17 +832,6 @@ INSERT INTO mtb_page_max (id, name, rank) VALUES (80, '80', 7);
 INSERT INTO mtb_page_max (id, name, rank) VALUES (90, '90', 8);
 INSERT INTO mtb_page_max (id, name, rank) VALUES (100, '100', 9);
 
-INSERT INTO mtb_page_rows (id, name, rank) VALUES (10, '10', 0);
-INSERT INTO mtb_page_rows (id, name, rank) VALUES (20, '20', 1);
-INSERT INTO mtb_page_rows (id, name, rank) VALUES (30, '30', 2);
-INSERT INTO mtb_page_rows (id, name, rank) VALUES (40, '40', 3);
-INSERT INTO mtb_page_rows (id, name, rank) VALUES (50, '50', 4);
-INSERT INTO mtb_page_rows (id, name, rank) VALUES (60, '60', 5);
-INSERT INTO mtb_page_rows (id, name, rank) VALUES (70, '70', 6);
-INSERT INTO mtb_page_rows (id, name, rank) VALUES (80, '80', 7);
-INSERT INTO mtb_page_rows (id, name, rank) VALUES (90, '90', 8);
-INSERT INTO mtb_page_rows (id, name, rank) VALUES (100, '100', 9);
-
 INSERT INTO mtb_permission (id, name, rank) VALUES ('/admin/system/index.php', '0', 0);
 INSERT INTO mtb_permission (id, name, rank) VALUES ('/admin/system/delete.php', '0', 1);
 INSERT INTO mtb_permission (id, name, rank) VALUES ('/admin/system/input.php', '0', 2);

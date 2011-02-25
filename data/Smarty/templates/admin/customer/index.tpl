@@ -71,8 +71,8 @@
   </table>
   <div class="btn">
     <p class="page_rows">検索結果表示件数
-    <select name="search_page_rows">
-      <!--{html_options options=$arrPageRows selected=$arrForm.search_page_rows}-->
+    <select name="search_page_max">
+      <!--{html_options options=$arrPageRows selected=$arrForm.search_page_max}-->
     </select> 件</p>
     <div class="btn-area">
       <ul>

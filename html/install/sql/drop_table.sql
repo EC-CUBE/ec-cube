@@ -56,7 +56,6 @@ DROP TABLE mtb_recommend;
 DROP TABLE mtb_product_status_color;
 DROP TABLE mtb_product_list_max;
 DROP TABLE mtb_permission;
-DROP TABLE mtb_page_rows;
 DROP TABLE mtb_page_max;
 DROP TABLE mtb_order_status_color;
 DROP TABLE mtb_order_status;

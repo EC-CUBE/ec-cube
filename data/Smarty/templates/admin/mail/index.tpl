@@ -50,7 +50,7 @@
     
   <div class="btn">
     <p class="page_rows">検索結果表示件数
-    <!--{assign var=key value="search_page_rows"}-->
+    <!--{assign var=key value="search_page_max"}-->
     <select name="<!--{$key}-->">
       <!--{html_options options=$arrPageRows selected=$arrForm[$key]}-->
     </select> 件</p>

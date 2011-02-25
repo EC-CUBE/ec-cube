@@ -493,7 +493,7 @@ class SC_Helper_Customer {
         $objFormParam->addParam('登録・更新日(終了年)', 'search_end_year', 4, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
         $objFormParam->addParam('登録・更新日(終了月)', 'search_end_month', 2, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
         $objFormParam->addParam('登録・更新日(終了日)', 'search_end_day', 2, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
-        $objFormParam->addParam('表示件数', 'search_page_rows', INT_LEN, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"), 1, false);
+        $objFormParam->addParam('表示件数', 'search_page_max', INT_LEN, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"), 1, false);
         $objFormParam->addParam('ページ番号', 'search_pageno', INT_LEN, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"), 1, false);
         $objFormParam->addParam('最終購入日(開始年)', 'search_buy_start_year', 4, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
         $objFormParam->addParam('最終購入日(開始月)', 'search_buy_start_month', 2, 'n', array("NUM_CHECK","MAX_LENGTH_CHECK"));
@@ -560,7 +560,7 @@ class SC_Helper_Customer {
     function sfGetSearchData($arrParam) {
         $objQuery =& SC_Query::getSingletonInstance();
         $objSelect = new SC_CustomerList($arrParam, "customer");
-        $page_max = SC_Utils_Ex::sfGetSearchPageMax($arrParam['search_page_rows']);
+        $page_max = SC_Utils_Ex::sfGetSearchPageMax($arrParam['search_page_max']);
         $disp_pageno = $arrParam['search_pageno'];
         if($disp_pageno == 0) {
             $disp_pageno = 1;
