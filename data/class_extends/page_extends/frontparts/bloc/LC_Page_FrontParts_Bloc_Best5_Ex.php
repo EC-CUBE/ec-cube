@@ -22,18 +22,18 @@
  */
 
 // {{{ requires
-require_once(CLASS_REALDIR . "pages/frontparts/bloc/LC_Page_FrontParts_Bloc_Best5.php");
+require_once(CLASS_REALDIR . "pages/frontparts/bloc/LC_Page_FrontParts_Bloc_Recommend.php");
 
 /**
- * Best5 のページクラス(拡張).
+ * Recommend のページクラス(拡張).
  *
- * LC_Page_FrontParts_Bloc_Best5 をカスタマイズする場合はこのクラスを編集する.
+ * LC_Page_FrontParts_Bloc_Recommend をカスタマイズする場合はこのクラスを編集する.
  *
  * @package Page
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_FrontParts_Bloc_Best5_Ex extends LC_Page_FrontParts_Bloc_Best5 {
+class LC_Page_FrontParts_Bloc_Recommend_Ex extends LC_Page_FrontParts_Bloc_Recommend {
 
     // }}}
     // {{{ functions
