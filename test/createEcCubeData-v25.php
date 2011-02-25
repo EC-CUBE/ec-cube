@@ -53,7 +53,7 @@ define("PRODUCTS_VOLUME", 1000);
 // }}}
 // {{{ Logic
 set_time_limit(0);
-ob_end_flush();
+while (@ob_end_flush());
 
 $objData = new CreateEcCubeData();
 $start = microtime_float();
@@ -209,7 +209,7 @@ class CreateEcCubeData {
 
         // 規格2
         for ($i = 0; $i < CLASSCATEGORY2_VOLUME; $i++) {
-            $this->createClassCategory($this->arrSize[$i],
+            $this->createClassCategory($this->arrColor[$i],
                                        $this->arrclass_id[1], "color");
         }
 
@@ -260,6 +260,7 @@ class CreateEcCubeData {
             $this->arrProduct_id[] = $sqlval['product_id'];
             print("*");
         }
+        print("\n");
     }
 
     /**
@@ -337,9 +338,11 @@ class CreateEcCubeData {
 
 
         $sqlval['product_id'] = $product_id;
+        $sqlval['product_type_id'] = 1;
         $sqlval['stock_unlimited'] = 1;
         $sqlval['price01'] = 1000;
         $sqlval['price02'] = 2000;
+        $sqlval['point_rate'] = 10;
         $sqlval['creator_id'] = 2;
         $sqlval['create_date'] = "now()";
         $sqlval['update_date'] = "now()";
@@ -347,12 +350,12 @@ class CreateEcCubeData {
 
         $count = 0;
         foreach ($this->arrClassCategory_id1 as $classCategory_id1) {
-            $c1['classcategory_id'] = $classCategory_id1;
-            $c1['class_combination_id'] = $this->objQuery->nextVal('dtb_class_combination_class_combination_id');
-            $c1['level'] = 1;
-            $this->objQuery->insert("dtb_class_combination", $c1);
-
             foreach ($this->arrClassCategory_id2 as $classCategory_id2) {
+                $c1['classcategory_id'] = $classCategory_id1;
+                $c1['class_combination_id'] = $this->objQuery->nextVal('dtb_class_combination_class_combination_id');
+                $c1['level'] = 1;
+                $this->objQuery->insert("dtb_class_combination", $c1);
+
                 $c2['classcategory_id'] = $classCategory_id2;
                 $c2['class_combination_id'] = $this->objQuery->nextVal('dtb_class_combination_class_combination_id');
                 $c2['parent_class_combination_id'] = $c1['class_combination_id'];
