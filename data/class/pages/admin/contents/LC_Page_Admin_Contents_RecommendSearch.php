@@ -81,9 +81,6 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex {
             if (SC_Utils_Ex::isBlank($this->arrErr)) {
                 $objProduct = new SC_Product();
 
-                $where = 'del_flg = 0';
-                $order = "update_date DESC, product_id DESC";
-
                 $wheres = $this->createWhere($objFormParam,$objDb);
                 $this->tpl_linemax = $this->getLineCount($wheres,$objProduct);
 
@@ -95,9 +92,7 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex {
                 $startno = $objNavi->start_row;
 
                 $arrProduct_id = $this->getProducts($wheres, $objProduct, $page_max, $startno);
-                $productList = $this->getProductList($arrProduct_id,$objProduct);
-                //取得している並び順で並び替え
-                $this->arrProducts = $this->sortProducts($arrProduct_id,$productList);
+                $this->arrProducts = $this->getProductList($arrProduct_id,$objProduct);
             }
             break;
         default:
@@ -210,8 +205,6 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex {
         $objQuery->setWhere($where);
         // 取得範囲の指定(開始行番号、行数のセット)
         $objQuery->setLimitOffset($page_max, $startno);
-        // 表示順序
-        $objQuery->setOrder($order);
 
         // 検索結果の取得
         return $objProduct->findProductIdsOrder($objQuery, $bind);
@@ -233,24 +226,10 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex {
         }
         $objQuery =& SC_Query::getSingletonInstance();
         $objQuery->setWhere($where);
+        // 表示順序
+        $order = "update_date DESC, product_id DESC";
+        $objQuery->setOrder($order);
         return $objProduct->lists($objQuery, $arrProduct_id);
-    }
-
-    /**
-     * 取得している並び順で並び替え
-     * @param $arrProduct_id
-     * @param $productList
-     */
-    function sortProducts($arrProduct_id,$productList){
-        $products  = array();
-        foreach($productList as $item) {
-            $products[ $item['product_id'] ] = $item;
-        }
-        $arrProducts = array();
-        foreach($arrProduct_id as $product_id) {
-            $arrProducts[] = $products[$product_id];
-        }
-        return $arrProducts;
     }
 }
 ?>
