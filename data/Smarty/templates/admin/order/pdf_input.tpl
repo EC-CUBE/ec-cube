@@ -42,7 +42,6 @@ function lfPopwinSubmit(formName) {
 <!--{foreach from=$arrForm.order_id item=order_id}-->
     <input type="hidden" name="order_id[]" value="<!--{$order_id}-->">
 <!--{/foreach}-->
-<input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->" />
 
   <h2><!--コンテンツタイトル-->帳票の作成</h2>
 

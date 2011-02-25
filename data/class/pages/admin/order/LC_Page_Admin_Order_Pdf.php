@@ -83,9 +83,6 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
         $this->arrMonth = $objDate->getMonth();
         $this->arrDay = $objDate->getDay();
 
-        // 画面遷移の正当性チェック用にuniqidを埋め込む
-        $objPage->tpl_uniqid = $objSess->getUniqId();
-
         // パラメータ管理クラス
         $this->objFormParam = new SC_FormParam();
         // パラメータ情報の初期化
