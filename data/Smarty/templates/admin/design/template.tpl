@@ -38,7 +38,6 @@ function submitRegister() {
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="" />
 <input type="hidden" name="template_code_temp" value="" />
-<input type="hidden" name="uniqid" value="<!--{$uniqid}-->" />
 <input type="hidden" name="device_type_id" value="<!--{$device_type_id|h}-->" />
 <div id="design" class="contents-main">
   <p class="remark">

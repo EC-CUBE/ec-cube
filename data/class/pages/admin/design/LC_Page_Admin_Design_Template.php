@@ -83,19 +83,12 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
 
         $this->tpl_select = $this->getTemplateName($device_type_id);
 
-        // uniqidをテンプレートへ埋め込み
-        $this->uniqid = $objSession->getUniqId();
-
         $objView = new SC_AdminView_Ex();
 
         switch($this->getMode()) {
 
             // 登録ボタン押下時
         case 'register':
-            // 画面遷移の正当性チェック
-            if (!SC_Utils::sfIsValidTransition($objSession)) {
-                sfDispError('');
-            }
             // パラメータ検証
             $objForm = $this->lfInitRegister();
             if ($objForm->checkError()) {
@@ -124,10 +117,6 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
 
             // 削除ボタン押下時
         case 'delete':
-            // 画面遷移の正当性チェック
-            if (!SC_Utils::sfIsValidTransition($objSession)) {
-                SC_Utils::sfDispError('');
-            }
             // パラメータ検証
             $objForm = $this->lfInitDelete();
             if ($objForm->checkError()) {
@@ -146,10 +135,6 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
 
             // downloadボタン押下時
         case 'download':
-            // 画面遷移の正当性チェック
-            if (!SC_Utils::sfIsValidTransition($objSession)) {
-                SC_Utils::sfDispError('');
-            }
             // パラメータ検証
             $objForm = $this->lfInitDownload();
             $template_code = $objForm->getValue('template_code_temp');

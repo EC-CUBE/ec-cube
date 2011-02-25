@@ -81,9 +81,6 @@ class LC_Page_Admin_Design_Up_Down extends LC_Page_Admin_Ex {
             $device_type_id = DEVICE_TYPE_PC;
         }
 
-        // uniqidをテンプレートへ埋め込み
-        $this->uniqid = $objSession->getUniqId();
-
         switch($this->getMode()) {
 
             // ダウンロードボタン押下時の処理
@@ -91,10 +88,6 @@ class LC_Page_Admin_Design_Up_Down extends LC_Page_Admin_Ex {
             break;
             // アップロードボタン押下時の処理
         case 'upload':
-            // 画面遷移の正当性チェック
-            if (!SC_Utils::sfIsValidTransition($objSession)) {
-                SC_Utils::sfDispError('');
-            }
             // フォームパラメータ初期化
             $objForm = $this->lfInitUpload();
             // エラーチェック
