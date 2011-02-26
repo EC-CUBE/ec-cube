@@ -71,12 +71,14 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page_Admin_Ex {
     function action() {
         $objDb = new SC_Helper_DB_Ex();
 
+        $objFormParam = new SC_FormParam();
+        $this->lfInitParam($objFormParam);
+        $objFormParam->setParam($_POST);
+        $objFormParam->convParam();
+        $this->arrForm = $objFormParam->getHashArray();
+
         switch ($this->getMode()) {
         case 'search':
-            // POST値の引き継ぎ
-            $this->arrForm = $_POST;
-            // 入力文字の強制変換
-            $this->lfConvertParam();
             $this->arrProducts = $this->lfGetProducts($objDb);
             break;
         default:
@@ -97,25 +99,16 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page_Admin_Ex {
         parent::destroy();
     }
 
-    /* 取得文字列の変換 */
-    function lfConvertParam() {
-        /*
-         *  文字列の変換
-         *  K :  「半角(ﾊﾝｶｸ)片仮名」を「全角片仮名」に変換
-         *  C :  「全角ひら仮名」を「全角かた仮名」に変換
-         *  V :  濁点付きの文字を一文字に変換。"K","H"と共に使用します
-         *  n :  「全角」数字を「半角(ﾊﾝｶｸ)」に変換
-         */
-        $arrConvList['search_name'] = "KVa";
-        $arrConvList['search_product_code'] = "KVa";
-
-        // 文字変換
-        foreach ($arrConvList as $key => $val) {
-            // POSTされてきた値のみ変換する。
-            if(isset($this->arrForm[$key])) {
-                $this->arrForm[$key] = mb_convert_kana($this->arrForm[$key] ,$val);
-            }
-        }
+    /**
+     * パラメータ情報の初期化を行う.
+     *
+     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @return void
+     */
+    function lfInitParam(&$objFormParam) {
+        $objFormParam->addParam("カテゴリ", "search_category_id", STEXT_LEN, "n");
+        $objFormParam->addParam("商品名", "search_name", STEXT_LEN, "KVa");
+        $objFormParam->addParam("商品コード", "search_product_code", STEXT_LEN, "KVa");
     }
 
     /* 商品検索結果取得 */
