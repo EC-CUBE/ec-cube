@@ -113,19 +113,7 @@ class LC_Page_Admin_Contents_FileView extends LC_Page_Admin_Ex {
         // FIXME パスのチェック関数が必要
         $file = $objFormParam->getValue('file');
 
-        // ソースとして表示するファイルを定義(直接実行しないファイル)
-        $arrViewFile = array(
-            'html',
-            'htm',
-            'tpl',
-            'php',
-            'css',
-            'js',
-        );
-
-        $extension = pathinfo($objFormParam->getValue('file'), PATHINFO_EXTENSION);
-
-        if (!preg_match('|\./|', $file) && in_array($extension, $arrViewFile)) {
+        if (!preg_match('|\./|', $file)) {
             $file_check_flg = true;
         }
 
@@ -138,10 +126,28 @@ class LC_Page_Admin_Contents_FileView extends LC_Page_Admin_Ex {
      * @return void
      */
     function execFileView($objFormParam) {
-        $objFileManager = new SC_Helper_FileManager_Ex();
-        // ファイルを読み込んで表示
-        header("Content-type: text/plain\n\n");
-        print($objFileManager->sfReadFile(USER_REALDIR . $objFormParam->getValue('file')));
+        $file = $objFormParam->getValue('file');
+
+        // ソースとして表示するファイルを定義(直接実行しないファイル)
+        $arrViewFile = array(
+            'html',
+            'htm',
+            'tpl',
+            'php',
+            'css',
+            'js',
+        );
+
+        $extension = pathinfo($file, PATHINFO_EXTENSION);
+
+        if (in_array($extension, $arrViewFile)) {
+            $objFileManager = new SC_Helper_FileManager_Ex();
+            // ファイルを読み込んで表示
+            header("Content-type: text/plain\n\n");
+            print($objFileManager->sfReadFile(USER_REALDIR . $file));
+        } else {
+            SC_Response_Ex::sendRedirect(USER_URL . $file);
+        }
     }
 }
 ?>
