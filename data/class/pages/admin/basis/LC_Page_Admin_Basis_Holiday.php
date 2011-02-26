@@ -200,21 +200,6 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
         return $ret;
     }
 
-    /* 取得文字列の変換 */
-    function lfConvertParam($array) {
-        // 文字変換
-        $arrConvList['title'] = "KVa";
-        $arrConvList['month'] = "n";
-        $arrConvList['day'] = "n";
-
-        foreach ($arrConvList as $key => $val) {
-            // POSTされてきた値のみ変換する。
-            if(isset($array[$key])) {
-                $array[$key] = mb_convert_kana($array[$key] ,$val);
-            }
-        }
-        return $array;
-    }
     function lfInitParam($mode, &$objFormParam)
     {
         switch ($mode) {

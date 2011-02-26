@@ -272,11 +272,11 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
             $objFormParam->addParam("規格名", "name1:$i", null, null, array());
             $objFormParam->addParam("企画名", "name2:$i", null, null, array());
             $objFormParam->addParam("product_class_id", "product_class_id:$i", null, null, array());
-            $objFormParam->addParam("商品コード", "product_code:$i", STEXT_LEN, null, array("MAX_LENGTH_CHECK"));
-            $objFormParam->addParam("在庫数", "stock:$i", AMOUNT_LEN, null, array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+            $objFormParam->addParam("商品コード", "product_code:$i", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
+            $objFormParam->addParam("在庫数", "stock:$i", AMOUNT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
             $objFormParam->addParam("在庫数", "stock_unlimited:$i", null, null, array());
-            $objFormParam->addParam(NORMAL_PRICE_TITLE, "price01:$i", PRICE_LEN, null, array("NUM_CHECK", "MAX_LENGTH_CHECK"));
-            $objFormParam->addParam(SALE_PRICE_TITLE, "price02:$i", PRICE_LEN, null, array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+            $objFormParam->addParam(NORMAL_PRICE_TITLE, "price01:$i", PRICE_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+            $objFormParam->addParam(SALE_PRICE_TITLE, "price02:$i", PRICE_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
             $objFormParam->addParam("商品種別", "product_type_id:$i", null, null, array());
             $objFormParam->addParam("DLファイル名", "down_filename:$i", null, null, array());
             $objFormParam->addParam("DLファイル名", "down_realfilename:$i", null, null, array());
@@ -436,35 +436,6 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
         $objErr->doFunc(array("規格", "select_class_id1", "select_class_id2"), array("TOP_EXIST_CHECK"));
         $objErr->doFunc(array("規格1", "規格2", "select_class_id1", "select_class_id2"), array("DIFFERENT_CHECK"));
         return $objErr->arrErr;
-    }
-
-    /* 取得文字列の変換 */
-    function lfConvertParam($array) {
-        /*
-         *  文字列の変換
-         *  K :  「半角(ﾊﾝｶｸ)片仮名」を「全角片仮名」に変換
-         *  C :  「全角ひら仮名」を「全角かた仮名」に変換
-         *  V :  濁点付きの文字を一文字に変換。"K","H"と共に使用します
-         *  n :  「全角」数字を「半角(ﾊﾝｶｸ)」に変換
-         */
-
-        $no = 1; // FIXME 未定義変数の修正
-        while($array["classcategory_id1:".$no] != "") {
-            $arrConvList["product_code:".$no] = "KVa";
-            $arrConvList["price01:".$no] = "n";
-            $arrConvList["price02:".$no] = "n";
-            $arrConvList["stock:".$no] = "n";
-            $no++;
-        }
-
-        // 文字変換
-        foreach ($arrConvList as $key => $val) {
-            // POSTされてきた値のみ変換する。
-            if(isset($array[$key])) {
-                $array[$key] = mb_convert_kana($array[$key] ,$val);
-            }
-        }
-        return $array;
     }
 
     // 商品規格エラーチェック

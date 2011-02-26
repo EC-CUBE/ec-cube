@@ -81,8 +81,6 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex {
         switch ($this->getMode()) {
             case 'search':
                 $objProduct = new SC_Product();
-                // 入力文字の強制変換とPOST値の引き継ぎ
-                //                $this->arrForm = $this->lfConvertParam($_POST,$this->getConvertRule());
                 $this->arrForm = $objFormParam->getHashArray();
                 $wheres = $this->createWhere($objFormParam,$objDb);
                 $this->tpl_linemax = $this->getLineCount($wheres,$objProduct);
@@ -284,23 +282,6 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex {
     }
 
     /**
-     * 文字列の変換ルールを返す
-     */
-    function getConvertRule(){
-        /*
-         *  文字列の変換
-         *  K :  「半角(ﾊﾝｶｸ)片仮名」を「全角片仮名」に変換
-         *  C :  「全角ひら仮名」を「全角かた仮名」に変換
-         *  V :  濁点付きの文字を一文字に変換。"K","H"と共に使用します
-         *  n :  「全角」数字を「半角(ﾊﾝｶｸ)」に変換
-         */
-        $arrConvList = array();
-        $arrConvList['search_name'] = "KVa";
-        $arrConvList['search_product_code'] = "KVa";
-        return $arrConvList;
-    }
-    
-    /**
      * パラメータ情報の初期化
      * @param SC_FormParam $objFormParam
      */
@@ -310,23 +291,6 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex {
         $objFormParam->addParam("カテゴリID", "search_category_id", STEXT_LEN, "KVa",  array("MAX_LENGTH_CHECK", "SPTAB_CHECK"));
         $objFormParam->addParam("商品コード", "search_product_code", LTEXT_LEN, "KVa", array("MAX_LENGTH_CHECK", "SPTAB_CHECK"));
         $objFormParam->addParam("フッター", "footer", LTEXT_LEN, "KVa", array("MAX_LENGTH_CHECK", "SPTAB_CHECK"));
-    }
-
-    /**
-     * 取得文字列の変換
-     * @param Array $param 取得文字列
-     * @param Array $convList 変換ルール
-     */
-    function lfConvertParam($param,$convList){
-        $convedParam = array();
-        foreach ($convList as $key => $value){
-            if(isset($param[$key])) {
-                $convedParam[$key] = mb_convert_kana($param[$key],$value);
-            }else{
-                $convedParam[$key] = $param[$key];
-            }
-        }
-        return $convedParam;
     }
 }
 ?>
