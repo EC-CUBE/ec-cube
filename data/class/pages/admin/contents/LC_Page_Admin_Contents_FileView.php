@@ -123,11 +123,9 @@ class LC_Page_Admin_Contents_FileView extends LC_Page_Admin_Ex {
             'js',
         );
 
-        // 拡張子取得
-        $arrResult = split('\.', $objFormParam->getValue('file'));
-        $ext = $arrResult[count($arrResult)-1];
+        $extension = pathinfo($objFormParam->getValue('file'), PATHINFO_EXTENSION);
 
-        if (!preg_match('|\./|', $file) && in_array($ext, $arrViewFile)) {
+        if (!preg_match('|\./|', $file) && in_array($extension, $arrViewFile)) {
             $file_check_flg = true;
         }
 
