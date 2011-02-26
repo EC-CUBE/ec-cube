@@ -682,9 +682,10 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         $product_class_id = $objFormParam->getValue('add_product_class_id');
         if (SC_Utils_Ex::isBlank($product_class_id)) {
             $product_class_id = $objFormParam->getValue('edit_product_class_id');
+            $changed_no = $objFormParam->getValue('no');
         }
 
-        // フォームの内容を更新
+        // 選択済みの商品であれば数量を1増やす
         $exists = false;
         $arrExistsProductClassIds = $objFormParam->getValue('product_class_id');
         foreach (array_keys($arrExistsProductClassIds) as $key) {
@@ -698,6 +699,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         }
 
         // 新しく商品を追加した場合はフォームに登録
+        // 商品を変更した場合は、該当行を変更
         if (!$exists) {
             $objProduct = new SC_Product();
             $arrProduct = $objProduct->getDetailAndProductsClass($product_class_id);
@@ -712,9 +714,16 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
                                    'quantity', 'price');
             foreach ($arrUpdateKeys as $key) {
                 $arrValues = $objFormParam->getValue($key);
-                $arrValues[] = $arrProduct[$key];
+                if (isset($changed_no)) {
+                    $arrValues[$changed_no] = $arrProduct[$key];
+                } else {
+                    $arrValues[] = $arrProduct[$key];
+                }
                 $objFormParam->setValue($key, $arrValues);
             }
+        } elseif (isset($changed_no)) {
+            // 変更したが、既に選択していた場合は、
+            $this->doDeleteProduct($changed_no, $objFormParam);
         }
     }
 
