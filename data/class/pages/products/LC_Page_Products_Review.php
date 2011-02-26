@@ -78,7 +78,6 @@ class LC_Page_Products_Review extends LC_Page_Ex {
      * @return void
      */
     function action() {
-        //$objView = new SC_SiteView_Ex();
         $objQuery = new SC_Query();
 
         //---- 登録用カラム配列
