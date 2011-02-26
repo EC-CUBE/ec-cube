@@ -78,94 +78,49 @@ class LC_Page_Products_Review extends LC_Page_Ex {
      * @return void
      */
     function action() {
-        $objQuery = new SC_Query();
-
-        //---- 登録用カラム配列
-        $arrRegistColumn = array(
-                                     array(  "column" => "review_id", "convert" => "aKV" ),
-                                     array(  "column" => "product_id", "convert" => "aKV" ),
-                                     array(  "column" => "reviewer_name", "convert" => "aKV" ),
-                                     array(  "column" => "reviewer_url", "convert" => "a"),
-                                     array(  "column" => "sex", "convert" => "n" ),
-                                     array(  "column" => "email", "convert" => "a" ),
-                                     array(  "column" => "recommend_level", "convert" => "n" ),
-                                     array(  "column" => "title", "convert" => "aKV" ),
-                                     array(  "column" => "comment", "convert" => "aKV" ),
-
-                                );
+        $objFormParam = new SC_FormParam();
+        $this->lfInitParam($objFormParam);
+        $objFormParam->setParam($_POST);
+        $objFormParam->convParam();
 
         switch ($this->getMode()){
         case 'confirm':
-            $arrForm = $this->lfConvertParam($_POST, $arrRegistColumn);
-            $this->arrErr = $this->lfErrorCheck($arrForm);
-            //重複メッセージの判定
-            $flag = $objQuery->count("dtb_review","product_id = ? AND title = ? ", array($arrForm['product_id'], $arrForm['title']));
-
-            if ($flag > 0){
-                $this->arrErr['title'] .= "重複したタイトルは登録できません。";
-            }
+            $this->arrErr = $this->lfCheckError($objFormParam);
 
             //エラーチェック
             if (empty($this->arrErr)) {
                 //重複タイトルでない
-                if($flag == 0){
-                    //商品名の取得
-                    $arrForm['name'] = $objQuery->get("name", "dtb_products", "product_id = ? ", array($arrForm['product_id']));
-                    $this->arrForm = $arrForm;
-                    $this->tpl_mainpage = 'products/review_confirm.tpl';
-                }
-            } else {
-                //商品名の取得
-                $arrForm['name'] = $objQuery->get("name", "dtb_products", "product_id = ? ", array($arrForm['product_id']));
-                $this->arrForm = $arrForm;
+                $this->tpl_mainpage = 'products/review_confirm.tpl';
             }
             break;
 
         case 'return':
-            foreach($_POST as $key => $val){
-                $this->arrForm[ $key ] = $val;
-            }
-
-            //商品名の取得
-            $this->arrForm['name'] = $objQuery->get("name", "dtb_products", "product_id = ? ", array($this->arrForm['product_id']));
-            if(empty($this->arrForm['name'])) {
-                SC_Utils_Ex::sfDispSiteError(PAGE_ERROR);
-            }
             break;
 
         case 'complete':
-            $arrForm = $this->lfConvertParam($_POST, $arrRegistColumn);
-            $arrErr = $this->lfErrorCheck($arrForm);
-            //重複メッセージの判定
-            $flag = $objQuery->count("dtb_review","product_id = ? AND title = ? ", array($arrForm['product_id'], $arrForm['title']));
+            $this->arrErr = $this->lfCheckError($objFormParam);
             //エラーチェック
             if (empty($this->arrErr)) {
-                //重複タイトルでない
-                if($flag == 0) {
-                    //登録実行
-                    $this->lfRegistRecommendData($arrForm, $arrRegistColumn);
-                    //レビュー書き込み完了ページへ
-                    SC_Response_Ex::sendRedirect('review_complete.php');
-                    exit;
-                }
-            } else {
-                if($flag > 0) {
-                    SC_Utils_Ex::sfDispSiteError(PAGE_ERROR);
-                }
+                //登録実行
+                $this->lfRegistRecommendData($objFormParam);
+
+                //レビュー書き込み完了ページへ
+                SC_Response_Ex::sendRedirect('review_complete.php');
+                exit;
             }
             break;
 
         default:
-            if(SC_Utils_Ex::sfIsInt($_GET['product_id'])) {
-                //商品情報の取得
-                $arrForm = $objQuery->select("product_id, name", "dtb_products", "del_flg = 0 AND status = 1 AND product_id=?", array($_GET['product_id']));
-                if(empty($arrForm)) {
-                    SC_Utils_Ex::sfDispSiteError(PAGE_ERROR);
-                }
-                $this->arrForm = $arrForm[0];
-            }
-            break;
+            // 最初のproduct_idは、$_GETで渡ってくる。
+            $objFormParam->setParam($_GET);
+        }
 
+        $this->arrForm = $objFormParam->getHashArray();
+
+        //商品名の取得
+        $this->arrForm['name'] = $this->lfGetProductName($this->arrForm['product_id']);
+        if (empty($this->arrForm['name'])) {
+            SC_Utils_Ex::sfDispSiteError(PAGE_ERROR);
         }
 
         $this->setTemplate($this->tpl_mainpage);
@@ -180,62 +135,73 @@ class LC_Page_Products_Review extends LC_Page_Ex {
         parent::destroy();
     }
 
-    //エラーチェック
-
-    function lfErrorCheck() {
-        $objErr = new SC_CheckError();
-        $objErr->doFunc(array("商品ID", "product_id", INT_LEN), array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("投稿者名", "reviewer_name", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("投稿者URL", "reviewer_url", MTEXT_LEN), array("NO_SPTAB", "SPTAB_CHECK", "MAX_LENGTH_CHECK", "URL_CHECK"));
-        $objErr->doFunc(array("おすすめレベル", "recommend_level"), array("SELECT_CHECK"));
-        $objErr->doFunc(array("タイトル", "title", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("コメント", "comment", LTEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-
-        if (REVIEW_ALLOW_URL == false) {
-            // コメント欄へのURLの入力を禁止
-            $objErr->doFunc(array("URL", "comment", $this->arrReviewDenyURL), array("PROHIBITED_STR_CHECK"));
-        }
-
-        return $objErr->arrErr;
+    /**
+     * パラメータ情報の初期化を行う.
+     *
+     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @return void
+     */
+    function lfInitParam(&$objFormParam) {
+        $objFormParam->addParam("レビューID", "review_id", INT_LEN, "aKV");
+        $objFormParam->addParam("商品ID", "product_id", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("投稿者名", "reviewer_name", STEXT_LEN, "aKV", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("投稿者URL", "reviewer_url", MTEXT_LEN, "a", array("NO_SPTAB", "SPTAB_CHECK", "MAX_LENGTH_CHECK", "URL_CHECK"));
+        $objFormParam->addParam("性別", "sex", INT_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("おすすめレベル", "recommend_level", INT_LEN, "n", array("EXIST_CHECK", "SELECT_CHECK"));
+        $objFormParam->addParam("タイトル", "title", STEXT_LEN, "aKV", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("コメント", "comment", LTEXT_LEN, "aKV", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
     }
 
-    //----　取得文字列の変換
-    function lfConvertParam($array, $arrRegistColumn) {
-        /*
-         *	文字列の変換
-         *	K :  「半角(ﾊﾝｶｸ)片仮名」を「全角片仮名」に変換
-         *	C :  「全角ひら仮名」を「全角かた仮名」に変換
-         *	V :  濁点付きの文字を一文字に変換。"K","H"と共に使用します
-         *	n :  「全角」数字を「半角(ﾊﾝｶｸ)」に変換
-         *  a :  全角英数字を半角英数字に変換する
-         */
-        // カラム名とコンバート情報
-        foreach ($arrRegistColumn as $data) {
-            $arrConvList[ $data["column"] ] = $data["convert"];
+    /**
+     * 入力内容のチェックを行う.
+     *
+     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @return array エラーメッセージの配列
+     */
+    function lfCheckError(&$objFormParam) {
+        $arrErr = $objFormParam->checkError();
+
+        $arrForm = $objFormParam->getHashArray();
+
+        //重複メッセージの判定
+        $objQuery =& SC_Query::getSingletonInstance();
+        $flag = $objQuery->count("dtb_review","product_id = ? AND title = ? ", array($arrForm['product_id'], $arrForm['title']));
+        if ($flag > 0){
+            $arrErr['title'] .= "重複したタイトルは登録できません。";
         }
-        // 文字変換
-        foreach ($arrConvList as $key => $val) {
-            // POSTされてきた値のみ変換する。
-            if(!empty($array[$key])) {
-                $array[$key] = mb_convert_kana($array[$key] ,$val);
-            }
+
+        if (REVIEW_ALLOW_URL == false) {
+            $objErr = new SC_CheckError($objFormParam->getHashArray());
+            // コメント欄へのURLの入力を禁止
+            $objErr->doFunc(array("URL", "comment", $this->arrReviewDenyURL), array("PROHIBITED_STR_CHECK"));
+            $arrErr += $objErr->arrErr;
         }
-        return $array;
+
+        return $arrErr;
+    }
+
+    /**
+     * 商品名を取得
+     *
+     * @param integer $product_id 商品ID
+     * @return string $product_name 商品名
+     */
+    function lfGetProductName($product_id) {
+        $objQuery =& SC_Query::getSingletonInstance();
+
+        return $objQuery->get("name", "dtb_products", "product_id = ? ", array($product_id));
     }
 
     //登録実行
-    function lfRegistRecommendData ($array, $arrRegistColumn) {
-        // 仮登録
-        foreach ($arrRegistColumn as $data) {
-            if (strlen($array[ $data["column"] ]) > 0 ) {
-                $arrRegist[ $data["column"] ] = $array[ $data["column"] ];
-            }
-        }
+    function lfRegistRecommendData (&$objFormParam) {
+        $objQuery =& SC_Query::getSingletonInstance();
+        $arrRegist = $objFormParam->getDbArray();
+
         $arrRegist['create_date'] = 'now()';
         $arrRegist['update_date'] = 'now()';
         $arrRegist['creator_id'] = '0';
+
         //-- 登録実行
-        $objQuery = new SC_Query();
         $objQuery->begin();
         $arrRegist['review_id'] = $objQuery->nextVal('dtb_review_review_id');
         $objQuery->insert("dtb_review", $arrRegist);
