@@ -92,7 +92,7 @@ function lfnCheckSetItem( rank ){
                     <!--{/if}-->
                 </div>
                 <div class="table-detail">
-                   <div class="detail-name">商品名： <!--{$arrItems[$smarty.section.cnt.iteration].name|h}--></div>
+                   <div class="detail-name">商品名：<!--{$arrItems[$smarty.section.cnt.iteration].name|h}--></div>
                      <div class="detail-form">
                          <form name="form<!--{$smarty.section.cnt.iteration}-->" id="form<!--{$smarty.section.cnt.iteration}-->" method="post" action="?">
                            <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />

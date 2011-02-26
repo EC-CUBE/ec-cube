@@ -89,7 +89,7 @@
 <br>
 <!--{$name01|h}--> <!--{$name02|h}-->様の、現在の所持ポイントは「<!--{$tpl_user_point|number_format|default:0}-->Pt」です。<br>
 <br>
-今回ご購入合計金額： <!--{$arrPrices.subtotal|number_format}-->円<br>
+今回ご購入合計金額：<!--{$arrPrices.subtotal|number_format}-->円<br>
 (送料、手数料を含みません。)<br>
 <br>
 <input type="radio" name="point_check" value="1" <!--{$arrForm.point_check.value|sfGetChecked:1}-->>ポイントを使用する<br>

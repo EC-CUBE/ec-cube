@@ -118,8 +118,8 @@ function func_return(){
             <tr>
                 <th>パスワードを忘れたときのヒント<span class="attention"> *</span></th>
                 <td>
-                    質問： <!--{$arrReminder[$arrForm.reminder]|h}--><br />
-                    答え： <!--{$arrForm.reminder_answer|h}-->
+                    質問：<!--{$arrReminder[$arrForm.reminder]|h}--><br />
+                    答え：<!--{$arrForm.reminder_answer|h}-->
                 </td>
             </tr>
             <tr>
