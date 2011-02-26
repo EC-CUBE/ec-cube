@@ -1,6 +1,6 @@
 <?php
 require_once '../../../../require.php';
-ob_start();
+header('Content-Type: application/x-javascript');
 ?>
 /*
  * Thickbox 3.1 - One Box To Rule Them All.
@@ -19,14 +19,14 @@ ob_start();
 
 (function() {
 // オーナーズストア通信スクリプトのパス
-var upgrade_url = '[%ROOT_URLPATH%]upgrade/<?php echo DIR_INDEX_PATH; ?>';
+var upgrade_url = '<?php echo ROOT_URLPATH ?>upgrade/<?php echo DIR_INDEX_PATH; ?>';
 
 // ロード中メッセージ(配信サーバと通信中です…)
 var loading_message = '\u30B5\u30FC\u30D0\u3068\u901A\u4FE1\u4E2D\u3067\u3059';
 
 // ロード中画像の先読み
 var loading_img = new Image();
-loading_img.src = '[%ROOT_URLPATH%]user_data/packages/default/img/ajax/loading.gif';
+loading_img.src = '<?php echo ROOT_URLPATH . USER_DIR ?>packages/default/img/ajax/loading.gif';
 
 var OwnersStore = function() {}
 OwnersStore.prototype = {
@@ -174,7 +174,3 @@ OwnersStore.prototype = {
 }
 window.OwnersStore = new OwnersStore();
 })();
-<?php
-header('Content-Type: application/x-javascript');
-echo str_replace('[%ROOT_URLPATH%]', ROOT_URLPATH, ob_get_clean());
-?>
