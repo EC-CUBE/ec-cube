@@ -306,8 +306,8 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
             $objGraphLine->setYTitle($ytitle);
 
             // メインタイトル作成
-            list($sy, $sm, $sd) = split("[/ ]" , $sdate);
-            list($ey, $em, $ed) = split("[/ ]" , $edate);
+            list($sy, $sm, $sd) = preg_split("|[/ ]|" , $sdate);
+            list($ey, $em, $ed) = preg_split("|[/ ]|" , $edate);
             $start_date = $sy . "年" . $sm . "月" . $sd . "日";
             $end_date = $ey . "年" . $em . "月" . $ed . "日";
             $objGraphLine->drawTitle("集計期間：" . $start_date . " - " . $end_date);
@@ -350,8 +350,8 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
             $objGraphPie->setLegend(array_keys($arrList));
 
             // メインタイトル作成
-            list($sy, $sm, $sd) = split("[/ ]" , $sdate);
-            list($ey, $em, $ed) = split("[/ ]" , $edate);
+            list($sy, $sm, $sd) = preg_split("|[/ ]|" , $sdate);
+            list($ey, $em, $ed) = preg_split("|[/ ]|" , $edate);
             $start_date = $sy . "年" . $sm . "月" . $sd . "日";
             $end_date = $ey . "年" . $em . "月" . $ed . "日";
             $objGraphPie->drawTitle("集計期間：" . $start_date . " - " . $end_date);
@@ -398,8 +398,8 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
 
             // メインタイトル作成
             $arrKey = array_keys($arrList);
-            list($sy, $sm, $sd) = split("[/ ]" , $sdate);
-            list($ey, $em, $ed) = split("[/ ]" , $edate);
+            list($sy, $sm, $sd) = preg_split("|[/ ]|" , $sdate);
+            list($ey, $em, $ed) = preg_split("|[/ ]|" , $edate);
             $start_date = $sy . "年" . $sm . "月" . $sd . "日";
             $end_date = $ey . "年" . $em . "月" . $ed . "日";
             $objGraphBar->drawTitle("集計期間：" . $start_date . " - " . $end_date);

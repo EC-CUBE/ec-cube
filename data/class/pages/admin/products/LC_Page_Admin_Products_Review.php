@@ -188,7 +188,7 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
                 case 'search_sex':
                     $arrHidden[$key] = SC_Utils_Ex::sfMergeParamCheckBoxes($val);
                     if(!is_array($val)) {
-                        $arrForm[$key] = split("-", $val);
+                        $arrForm[$key] = explode("-", $val);
                     }
                     break;
                 default:

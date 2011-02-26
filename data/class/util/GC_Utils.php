@@ -96,7 +96,7 @@ class GC_Utils {
         $ty = date("Y");
         $tm = date("m");
         $td = date("d");
-        list($by, $bm, $bd) = split("[-/ ]", $dbdate);
+        list($by, $bm, $bd) = preg_split("/[-/ ]/", $dbdate);
         $age = $ty - $by;
         if($tm * 100 + $td < $bm * 100 + $bd) $age--;
         return $age;

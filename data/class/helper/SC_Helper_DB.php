@@ -85,7 +85,7 @@ class SC_Helper_DB {
 
         // 正常に接続されている場合
         if(!$objQuery->isError()) {
-            list($db_type) = split(":", $dsn);
+            list($db_type) = explode(":", $dsn);
 
             // カラムリストを取得
             $columns = $objQuery->listTableFields($table_name);
@@ -1241,7 +1241,7 @@ __EOS__;
      */
     function sfIsRecord($table, $col, $arrval, $addwhere = "") {
         $objQuery =& SC_Query::getSingletonInstance();
-        $arrCol = split("[, ]", $col);
+        $arrCol = preg_split("/[, ]/", $col);
 
         $where = "del_flg = 0";
 

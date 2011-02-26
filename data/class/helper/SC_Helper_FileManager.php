@@ -170,7 +170,7 @@ class SC_Helper_FileManager {
 
         $cnt = 0;
         $arrTree = array();
-        $default_rank = count(split('/', $dir));
+        $default_rank = count(explode('/', $dir));
 
         // 文末の/を取り除く
         $dir = ereg_replace("/$", "", $dir);
@@ -229,7 +229,7 @@ class SC_Helper_FileManager {
                             }
 
                             // 階層を割り出す
-                            $arrCnt = split('/', $path);
+                            $arrCnt = explode('/', $path);
                             $rank = count($arrCnt);
                             $arrTree[$cnt]['rank'] = $rank - $default_rank + 1;
                             $arrTree[$cnt]['count'] = $cnt;
@@ -279,7 +279,7 @@ class SC_Helper_FileManager {
      * @return bool 前回開かれた状態の場合 true
      */
     function lfIsFileOpen($dir, $tree_status) {
-        $arrTreeStatus = split('\|', $tree_status);
+        $arrTreeStatus = explode('\|', $tree_status);
         if(in_array($dir, $arrTreeStatus)) {
             return true;
         }

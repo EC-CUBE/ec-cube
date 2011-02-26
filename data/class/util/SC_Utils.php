@@ -141,7 +141,7 @@ class SC_Utils {
      */
     function getRealURL($url) {
         $parse = parse_url($url);
-        $tmp = split('/', $parse['path']);
+        $tmp = explode('/', $parse['path']);
         $results = array();
         foreach ($tmp as $v) {
             if ($v == '' || $v == '.') {
@@ -386,7 +386,7 @@ exit;
     /* 1階層上のディレクトリ名を取得する */
     function sfUpDirName() {
         $path = $_SERVER['PHP_SELF'];
-        $arrVal = split("/", $path);
+        $arrVal = explode("/", $path);
         $cnt = count($arrVal);
         return $arrVal[($cnt - 2)];
     }
@@ -842,7 +842,7 @@ exit;
 
     /* DBから取り出した日付の文字列を調整する。*/
     function sfDispDBDate($dbdate, $time = true) {
-        list($y, $m, $d, $H, $M) = split("[- :]", $dbdate);
+        list($y, $m, $d, $H, $M) = preg_split("/[- :]/", $dbdate);
 
         if(strlen($y) > 0 && strlen($m) > 0 && strlen($d) > 0) {
             if ($time) {
@@ -1414,7 +1414,7 @@ exit;
                 while (!feof($src_fp)) {
                     $line = fgets($src_fp);
                     if(ereg("@version", $line)) {
-                        $arrLine = split(" ", $line);
+                        $arrLine = explode(" ", $line);
                         $version = $arrLine[5];
                     }
                 }
@@ -1652,7 +1652,7 @@ exit;
 
         $cnt = 0;
         $arrTree = array();
-        $default_rank = count(split('/', $dir));
+        $default_rank = count(explode('/', $dir));
 
         // 文末の/を取り除く
         $dir = ereg_replace("/$", "", $dir);
@@ -1708,7 +1708,7 @@ exit;
                             }
 
                             // 階層を割り出す
-                            $arrCnt = split('/', $path);
+                            $arrCnt = explode('/', $path);
                             $rank = count($arrCnt);
                             $arrTree[$cnt]['rank'] = $rank - $default_rank + 1;
                             $arrTree[$cnt]['count'] = $cnt;
@@ -1755,7 +1755,7 @@ exit;
      * 引数2 ：現在のツリーの状態開いているフォルダのパスが | 区切りで格納
      */
     function lfIsFileOpen($dir, $tree_status) {
-        $arrTreeStatus = split('\|', $tree_status);
+        $arrTreeStatus = explode('\|', $tree_status);
         if(in_array($dir, $arrTreeStatus)) {
             return true;
         }

@@ -328,7 +328,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
      * @param String $news_date
      */
     function splitNewsDate($news_date){
-        return split("-", $news_date);
+        return explode("-", $news_date);
     }
 
 

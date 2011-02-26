@@ -467,7 +467,7 @@ class SC_Helper_Purchase {
             for ($i = $start_day; $i < $max_day; $i++) {
                 // 基本時間から日数を追加していく
                 $tmp_time = $now_time + ($i * 24 * 3600);
-                list($y, $m, $d, $w) = split(" ", date("Y m d w", $tmp_time));
+                list($y, $m, $d, $w) = explode(" ", date("Y m d w", $tmp_time));
                 $val = sprintf("%04d/%02d/%02d(%s)", $y, $m, $d, $arrWDAY[$w]);
                 $arrDate[$val] = $val;
             }
@@ -549,7 +549,7 @@ class SC_Helper_Purchase {
             if (!SC_Utils_Ex::isBlank($arrValues['shipping_date'])
                 && $convert_shipping_date) {
                 $d = mb_strcut($arrValues["shipping_date"], 0, 10);
-                $arrDate = split("/", $d);
+                $arrDate = explode("/", $d);
                 $ts = mktime(0, 0, 0, $arrDate[1], $arrDate[2], $arrDate[0]);
                 $arrValues['shipping_date'] = date("Y-m-d", $ts);
             }

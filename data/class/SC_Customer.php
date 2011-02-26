@@ -261,7 +261,7 @@ __EOS__;
     // 誕生日月であるかどうかの判定
     function isBirthMonth() {
         if (isset($_SESSION['customer']['birth'])) {
-            $arrRet = split("[- :/]", $_SESSION['customer']['birth']);
+            $arrRet = preg_split("|[- :/]|", $_SESSION['customer']['birth']);
             $birth_month = intval($arrRet[1]);
             $now_month = intval(date("m"));
 

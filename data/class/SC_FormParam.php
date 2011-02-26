@@ -140,7 +140,7 @@ class SC_FormParam {
     function setDBDate($db_date, $year_key = 'year', $month_key = 'month', $day_key = 'day') {
 
         if (!empty($db_date)) {
-            list($y, $m, $d) = split("[- ]", $db_date);
+            list($y, $m, $d) = preg_split("/[- ]/", $db_date);
             $this->setValue($year_key, $y);
             $this->setValue($month_key, $m);
             $this->setValue($day_key, $d);
@@ -426,7 +426,7 @@ class SC_FormParam {
         foreach($this->keyname as $val) {
             if($val == $keyname) {
                 if(isset($this->param[$cnt]) && !is_array($this->param[$cnt])) {
-                    $this->param[$cnt] = split("-", $this->param[$cnt]);
+                    $this->param[$cnt] = explode("-", $this->param[$cnt]);
                 }
             }
             $cnt++;

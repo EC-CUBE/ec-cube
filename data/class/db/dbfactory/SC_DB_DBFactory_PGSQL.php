@@ -47,7 +47,7 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
     function sfGetDBVersion($dsn = "") {
         $objQuery =& SC_Query::getSingletonInstance();
         $val = $objQuery->getOne("select version()");
-        $arrLine = split(" " , $val);
+        $arrLine = explode(" " , $val);
         return $arrLine[0] . " " . str_replace(",", "", $arrLine[1]);
     }
 

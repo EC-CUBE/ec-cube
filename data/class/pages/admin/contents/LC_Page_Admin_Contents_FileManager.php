@@ -431,7 +431,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
     function lfGetParentDir($dir) {
         $parent_dir = "";
         $dir = ereg_replace("/$", "", $dir);
-        $arrDir = split('/', $dir);
+        $arrDir = explode('/', $dir);
         array_pop($arrDir);
         foreach($arrDir as $val) {
             $parent_dir .= "$val/";
