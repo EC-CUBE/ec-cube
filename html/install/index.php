@@ -483,7 +483,6 @@ function lfDispStep0_1($objPage) {
     $objPage->tpl_mainpage = 'step0_1.tpl';
     $objPage->tpl_mode = 'step0_1';
     // ファイルコピー
-    $objPage->copy_mess = SC_Utils_Ex::sfCopyDir("./user_data/", USER_REALDIR, $objPage->copy_mess);
     $objPage->copy_mess = SC_Utils_Ex::sfCopyDir("./save_image/", HTML_REALDIR . "upload/save_image/", $objPage->copy_mess);
     return $objPage;
 }
