@@ -532,7 +532,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
             // カラムフラグがたっていない場合にはカラムセット
             if (!$col_flg) {
                 if ($mode != "restore_config"){
-                    for($i = 0; $i <= count($data); $i++){
+                    for($i = 0; $i < count($data)-1; $i++){
                         $arrCol[$i] = $data[$i];
                     }
                 }
@@ -540,7 +540,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
                 continue;
             }
 
-            for($i = 0; $i <= count($data); $i++) {
+            for($i = 0; $i < count($data)-1; $i++) {
                 $arrVal[$arrCol[$i]] = $data[$i];
             }
 
