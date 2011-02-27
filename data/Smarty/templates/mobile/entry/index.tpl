@@ -33,10 +33,10 @@
   <br>
 
 	●パスワード<font color="#FF0000"> *</font><br>
-	（半角英数字<!--{$smarty.const.PASSWORD_LEN1}-->文字以上<!--{$smarty.const.PASSWORD_LEN2}-->文字以内）<br>
+	（半角英数字<!--{$smarty.const.PASSWORD_MIN_LEN}-->文字以上<!--{$smarty.const.PASSWORD_MAX_LEN}-->文字以内）<br>
 	<font color="#FF0000"><!--{$arrErr.password}--></font>
-	<!--{assign var="size" value="`$smarty.const.PASSWORD_LEN2+2`"}-->
-	<input type="password" name="password" value="<!--{$arrForm.password}-->" istyle="4" maxlength="<!--{$smarty.const.PASSWORD_LEN2}-->" size="<!--{$size}-->"><br>
+	<!--{assign var="size" value="`$smarty.const.PASSWORD_MAX_LEN+2`"}-->
+	<input type="password" name="password" value="<!--{$arrForm.password}-->" istyle="4" maxlength="<!--{$smarty.const.PASSWORD_MAX_LEN}-->" size="<!--{$size}-->"><br>
 
 	●パスワード確認用の質問<font color="#FF0000"> *</font><br>
 	<font color="#FF0000"><!--{$arrErr.reminder}--></font>

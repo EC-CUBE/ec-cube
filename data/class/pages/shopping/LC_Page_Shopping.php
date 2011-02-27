@@ -290,8 +290,8 @@ class LC_Page_Shopping extends LC_Page_Ex {
      */
     function lfInitLoginFormParam(&$objFormParam) {
         $objFormParam->addParam("記憶する", "login_memory", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("メールアドレス", "login_email", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("パスワード", "login_pass", PASSWORD_LEN2, "", array("EXIST_CHECK"));
+        $objFormParam->addParam("メールアドレス", "login_email", STEXT_LEN, "a", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("パスワード", "login_pass", PASSWORD_MAX_LEN, "", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
     }
 
     /**

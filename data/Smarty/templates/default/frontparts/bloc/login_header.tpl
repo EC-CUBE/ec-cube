@@ -1,6 +1,6 @@
 <div class="bloc_outer">
     <div id="header_login_area" class="clearfix">
-        <form name="login_form" id="login_form" method="post" action="<!--{$smarty.const.HTTPS_URL}-->frontparts/login_check.php" onsubmit="return fnCheckLogin('login_form')">
+        <form name="login_header_form" id="login_header_form" method="post" action="<!--{$smarty.const.HTTPS_URL}-->frontparts/login_check.php" onsubmit="return fnCheckLogin('login_header_form')">
             <input type="hidden" name="mode" value="login" />
             <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
             <input type="hidden" name="url" value="<!--{$smarty.server.PHP_SELF|h}-->" />
@@ -13,7 +13,7 @@
                     <!--{if $smarty.const.USE_POINT !== false}-->
                         所持ポイント: <span class="point"> <!--{$tpl_user_point|number_format|default:0}--> pt</span>
                     <!--{/if}-->&nbsp;&nbsp;
-                       <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/common/btn_header_logout_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/common/btn_header_logout.jpg',this)" src="<!--{$TPL_URLPATH}-->img/common/btn_header_logout.jpg" onclick="fnFormModeSubmit('login_form', 'logout', '', ''); return false;" alt="ログアウト" />
+                       <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/common/btn_header_logout_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/common/btn_header_logout.jpg',this)" src="<!--{$TPL_URLPATH}-->img/common/btn_header_logout.jpg" onclick="fnFormModeSubmit('login_header_form', 'logout', '', ''); return false;" alt="ログアウト" />
                      </p>
                     <!--{/if}-->
                 <!--{else}-->

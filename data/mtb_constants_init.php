@@ -287,7 +287,7 @@ define('LLTEXT_LEN', 99999);
 /** URLの文字長 */
 define('URL_LEN', 1024);
 /** 管理画面用：ID・パスワードの文字数制限 */
-define('ID_MAX_LEN', 15);
+define('ID_MAX_LEN', STEXT_LEN);
 /** 管理画面用：ID・パスワードの文字数制限 */
 define('ID_MIN_LEN', 4);
 /** 金額桁数 */
@@ -305,9 +305,9 @@ define('TEL_ITEM_LEN', 6);
 /** 電話番号総数 */
 define('TEL_LEN', 12);
 /** フロント画面用：パスワードの最小文字数 */
-define('PASSWORD_LEN1', 4);
+define('PASSWORD_MIN_LEN', 4);
 /** フロント画面用：パスワードの最大文字数 */
-define('PASSWORD_LEN2', 10);
+define('PASSWORD_MAX_LEN', STEXT_LEN);
 /** 検査数値用桁数(INT) */
 define('INT_LEN', 9);
 /** クレジットカードの文字数 */

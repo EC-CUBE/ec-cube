@@ -69,13 +69,13 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
         // クッキー管理クラス
         $objCookie = new SC_Cookie(COOKIE_EXPIRE);
         // パラメータ管理クラス
-        $this->objFormParam = new SC_FormParam();
+        $objFormParam = new SC_FormParam();
 
         // パラメータ情報の初期化
-        $this->lfInitParam($this->objFormParam);
+        $this->lfInitParam($objFormParam);
 
         // リクエスト値をフォームにセット
-        $this->objFormParam->setParam($this->lfConvertParam($_POST));
+        $objFormParam->setParam($_POST);
 
         // モードによって分岐
         switch ($this->getMode()) {
@@ -83,8 +83,9 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
             // --- ログイン
 
             // 入力値のエラーチェック
-            $this->objFormParam->toLower('login_email');
-            $arrErr = $this->objFormParam->checkError();
+            $objFormParam->trimParam();
+            $objFormParam->toLower('login_email');
+            $arrErr = $objFormParam->checkError();
 
             // エラーの場合はエラー画面に遷移
             if (count($arrErr) > 0) {
@@ -92,7 +93,7 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
             }
 
             // 入力チェック後の値を取得
-            $arrForm = $this->objFormParam->getHashArray();
+            $arrForm = $objFormParam->getHashArray();
 
             // クッキー保存判定
             if ($arrForm['login_memory'] == '1' && $arrForm['login_email'] != '') {
@@ -197,31 +198,12 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
      * パラメータ情報の初期化.
      *
      * @param SC_FormParam $objFormParam パラメータ管理クラス
-     * @return SC_FormParam $objFormParam 初期化したパラメータ管理クラスを返す
+     * @return void
      */
     function lfInitParam(&$objFormParam) {
         $objFormParam->addParam('記憶する', 'login_memory', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam('メールアドレス', 'login_email', MTEXT_LEN, 'a', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NO_SPTAB' ,'EMAIL_CHAR_CHECK'));
-        $objFormParam->addParam('パスワード', 'login_pass', PASSWORD_LEN1, '', array('EXIST_CHECK'));
-        $objFormParam->addParam('パスワード', 'login_pass1', PASSWORD_LEN1, '', array('EXIST_CHECK', 'MIN_LENGTH_CHECK'));
-        $objFormParam->addParam('パスワード', 'login_pass2', PASSWORD_LEN2, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
-        return $objFormParam;
+        $objFormParam->addParam('メールアドレス', 'login_email', MTEXT_LEN, 'a', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('パスワード', 'login_pass', PASSWORD_MAX_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
     }
-
-    /**
-     * リクエスト値の整形.
-     *
-     * @param array $arrRequest リクエスト
-     * @return array $arrRequest 整形したリクエストを返す
-     */
-    function lfConvertParam($arrRequest) {
-        // パスワード・Eメールにある空白をトリム
-        $arrRequest['login_email'] = preg_replace('/^[ 　\r\n]*(.*?)[ 　\r\n]*$/u', '$1', $arrRequest['login_email']);
-        $arrRequest['login_pass'] = trim($arrRequest['login_pass']); //認証用
-        $arrRequest['login_pass1'] = $arrRequest['login_pass'];      //最小桁数比較用
-        $arrRequest['login_pass2'] = $arrRequest['login_pass'];      //最大桁数比較用
-        return $arrRequest;
-    }
-
 }
 ?>
