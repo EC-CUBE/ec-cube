@@ -52,9 +52,15 @@
         </tr>
     </table>
 
-    <div class="btn"><a class="btn-normal" href="javascript:;" name="cre_bkup" onclick="document.body.style.cursor = 'wait'; form1.mode.value='bkup'; submit(); return false;"><span>バックアップデータを作成する</span></a></div>
+    <div class="btn"><a class="btn-normal" href="javascript:;" name="cre_bkup" onclick="document.body.style.cursor = 'wait'; form1.mode.value='bkup'; document.form1.submit(); return false;"><span>バックアップデータを作成する</span></a></div>
+
 
     <h2>バックアップ一覧</h2>
+
+
+    <!--{if $arrErr.list_name}-->
+    <span class="attention"><!--{$arrErr.list_name}--></span><br />
+    <!--{/if}-->
     <!--{* 一覧が存在する場合のみ表示する *}-->
     <!--{if count($arrBkupList) > 0}-->
     <table class="list">

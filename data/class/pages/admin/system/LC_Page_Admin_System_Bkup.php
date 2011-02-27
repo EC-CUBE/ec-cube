@@ -69,15 +69,13 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-        $objQuery =& SC_Query::getSingletonInstance();
-
 
         $objFormParam = new SC_FormParam;
 
         // パラメータの初期化
         $this->initParam($objFormParam, $_POST);
 
-        $arrErr  = array();
+        $arrErrTmp  = array();
         $arrForm = array();
 
         switch($this->getMode()) {
@@ -86,34 +84,35 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
         case 'bkup':
 
             // データ型エラーチェック
-            $arrErr[1] = $objFormParam->checkError();
+            $arrErrTmp[1] = $objFormParam->checkError();
 
             // データ型に問題がない場合
-            if(SC_Utils_Ex::isBlank($arrErr[1])) {
+            if(SC_Utils_Ex::isBlank($arrErrTmp[1])) {
                 // データ型以外のエラーチェック
-                $arrErr[2] = $this->lfCheckError($objFormParam->getHashArray());
+                $arrErrTmp[2] = $this->lfCheckError($objFormParam->getHashArray(), $this->getMode());
             }
 
             // エラーがなければバックアップ処理を行う
-            if (SC_Utils_Ex::isBlank($arrErr[1]) && SC_Utils_Ex::isBlank($arrErr[2])) {
+            if (SC_Utils_Ex::isBlank($arrErrTmp[1]) && SC_Utils_Ex::isBlank($arrErrTmp[2])) {
             
                 $arrData = $objFormParam->getHashArray();
             
                 // バックアップファイル作成
-                $arrErr[3] = $this->lfCreateBkupData($arrData['bkup_name'], $this->bkup_dir);
+                $arrErrTmp[3] = $this->lfCreateBkupData($arrData['bkup_name'], $this->bkup_dir);
 
                 // DBにデータ更新
-                if (SC_Utils_Ex::isBlank($arrErr[3])) {
+                if (SC_Utils_Ex::isBlank($arrErrTmp[3])) {
                     $this->lfUpdBkupData($arrData);
                 }else{
                     $arrForm = $arrData;
+                    $arrErr = $arrErrTmp[3];
                 }
 
                 $this->tpl_onload = "alert('バックアップ完了しました');";
-            }else{
+            } else {
                 $arrForm = $objFormParam->getHashArray();
+                $arrErr = array_merge((array)$arrErrTmp[1],(array)$arrErrTmp[2]);
             }
-
             break;
 
         // リストア
@@ -121,39 +120,62 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
         	$this->mode = "restore_config";
 
         case 'restore':
-            $this->lfRestore($_POST['list_name'], $this->bkup_dir, $this->bkup_ext, $this->mode);
+            // データベースに存在するかどうかチェック
+            $arrErr = $this->lfCheckError($objFormParam->getHashArray(), $this->getMode());
+
+            // エラーがなければリストア処理を行う
+            if (SC_Utils_Ex::isBlank($arrErr)) {
+                $arrData = $objFormParam->getHashArray();
+                $this->lfRestore($arrData['list_name'], $this->bkup_dir, $this->bkup_ext, $this->mode);
+            }
             break;
 
         // 削除
         case 'delete':
-            $del_file = $this->bkup_dir.$_POST['list_name'] . $this->bkup_ext;
-            // ファイルの削除
-            if(is_file($del_file)){
-                $ret = unlink($del_file);
-            }
 
-            // DBから削除
-            $delsql = "DELETE FROM dtb_bkup WHERE bkup_name = ?";
-            $objQuery->query($delsql, array($_POST['list_name']));
+            // データベースに存在するかどうかチェック
+            $arrErr = $this->lfCheckError($objFormParam->getHashArray(), $this->getMode());
+
+            // エラーがなければリストア処理を行う
+            if (SC_Utils_Ex::isBlank($arrErr)) {
+
+                $arrData = $objFormParam->getHashArray();
+
+                // DBとファイルを削除
+                $this->lfDeleteBackUp($arrData, $this->bkup_dir, $this->bkup_ext);
+            }
 
             break;
 
             // ダウンロード
         case 'download' :
-            $filename = $_POST['list_name'] . $this->bkup_ext;
-            $dl_file = $this->bkup_dir.$_POST['list_name'] . $this->bkup_ext;
 
-            // ダウンロード開始
-            Header("Content-disposition: attachment; filename=${filename}");
-            Header("Content-type: application/octet-stream; name=${filename}");
-            header("Content-Length: " .filesize($dl_file));
-            readfile ($dl_file);
-            exit();
-            break;
+            // データベースに存在するかどうかチェック
+            $arrErr = $this->lfCheckError($objFormParam->getHashArray(), $this->getMode());
+
+            // エラーがなければダウンロード処理を行う
+            if (SC_Utils_Ex::isBlank($arrErr)) {
+
+                $arrData = $objFormParam->getHashArray();
+
+                $filename = $arrData['list_name'] . $this->bkup_ext;
+                $dl_file = $this->bkup_dir.$arrData['list_name'] . $this->bkup_ext;
+
+                // ダウンロード開始
+                Header("Content-disposition: attachment; filename=${filename}");
+                Header("Content-type: application/octet-stream; name=${filename}");
+                header("Content-Length: " .filesize($dl_file));
+                readfile ($dl_file);
+                exit();
+                break;
+            }
 
         default:
             break;
         }
+
+        // 不要になった変数を解放
+        unset($arrErrTmp);
 
         // バックアップリストを取得する
         $arrBkupList = $this->lfGetBkupData("ORDER BY create_date DESC");
@@ -184,6 +206,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
 
         $objFormParam->addParam('バックアップ名', 'bkup_name', STEXT_LEN, 'a', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NO_SPTAB', 'ALNUM_CHECK'));
         $objFormParam->addParam('バックアップメモ', 'bkup_memo', MTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('バックアップ名(リスト)', 'list_name', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK', 'NO_SPTAB', 'ALNUM_CHECK'));
         $objFormParam->setParam($arrParams);
         $objFormParam->convParam();
 
@@ -192,15 +215,37 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
     /**
      * データ型以外のエラーチェック.
      *
-     * @param array $arrForm
+     * @param array  $arrForm
+     * @param string $mode
      * @return $arrErr
      */
-    function lfCheckError(&$arrForm){
+    function lfCheckError(&$arrForm, $mode){
 
-        // 重複チェック
-        $ret = $this->lfGetBkupData("WHERE bkup_name = ?", array($arrForm['bkup_name']));
-        if (count($ret) > 0) {
+        $arrVal = array();
+
+        switch($mode) {
+        case 'bkup':
+            $arrVal[] = $arrFrom['bkup_name'];
+            break;
+
+        case 'restore_config':
+        case 'restore':
+        case 'download':
+        case 'delete':
+            $arrVal[] = $arrForm['list_name'];
+            break;
+
+        default:
+            break;
+
+        }
+
+        // 重複・存在チェック
+        $ret = $this->lfGetBkupData("WHERE bkup_name = ?", $arrVal);
+        if (count($ret) > 0 && $mode == 'bkup') {
             $arrErr['bkup_name'] = "バックアップ名が重複しています。別名を入力してください。";
+        } elseif (count($ret) <= 0 && $mode != 'bkup') {
+            $arrErr['list_name'] = "選択されたデータがみつかりませんでした。既に削除されている可能性があります。";
         }
 
         return $arrErr;
@@ -358,8 +403,12 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
     function lfUpdBkupData($data){
         $objQuery =& SC_Query::getSingletonInstance();
 
-        $sql = "INSERT INTO dtb_bkup (bkup_name,bkup_memo,create_date) values (?,?,now())";
-        $objQuery->query($sql, array($data['bkup_name'],$data['bkup_memo']));
+        $arrVal = array();
+        $arrVal['bkup_name'] = $data['bkup_name'];
+        $arrVal['bkup_memo'] = $data['bkup_memo'];
+        $arrVal['create_date'] = "now()";
+        
+        $objQuery->insert('dtb_bkup', $arrVal);
     }
 
     // バックアップテーブルからデータを取得する
@@ -390,7 +439,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
         $csv_data = "";
         $success = true;
 
-        $bkup_dir = $bkup_dir . $bkup_name . "/";
+        //$bkup_dir = $bkup_dir . $bkup_name . "/";
 
         //バックアップフォルダに移動する
         chdir($bkup_dir);
@@ -400,6 +449,9 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
 
         //指定されたフォルダ内に解凍する
         $success = $tar->extract("./");
+
+        //バックアップフォルダに移動する
+        chdir($bkup_dir . $bkup_name . "/");
 
         // 無事解凍できれば、リストアを行う
         if ($success) {
@@ -428,6 +480,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
                 $this->restore_err = false;
             }
         }
+
     }
 
     /**
@@ -440,12 +493,13 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
      */
     function lfExeInsertSQL(&$objQuery, $csv, $mode){
 
-        $sql = "";
-        $base_sql = "";
         $tbl_flg = false;
         $col_flg = false;
         $ret = true;
         $pagelayout_flg = false;
+        $table_name = "";
+        $arrVal = array();
+        $arrCol = array();
 
         // csvファイルからデータの取得
         $fp = fopen($csv, "r");
@@ -454,18 +508,21 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
 
             //空白行のときはテーブル変更
             if (count($data) <= 1 and $data[0] == "") {
-                $base_sql = "";
                 $tbl_flg = false;
                 $col_flg = false;
+                $table_name = "";
+                $arrVal = array();
+                $arrCol = array();
+
                 continue;
             }
 
             // テーブルフラグがたっていない場合にはテーブル名セット
             if (!$tbl_flg) {
-                $base_sql = "INSERT INTO $data[0] ";
+                $table_name = $data[0];
                 $tbl_flg = true;
 
-                if($data[0] == "dtb_pagelayout"){
+                if($table_name == "dtb_pagelayout"){
                     $pagelayout_flg = true;
                 }
 
@@ -475,24 +532,20 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
             // カラムフラグがたっていない場合にはカラムセット
             if (!$col_flg) {
                 if ($mode != "restore_config"){
-                    $base_sql .= " ( $data[0] ";
-                    for($i = 1; $i < count($data); $i++){
-                        $base_sql .= "," . $data[$i];
+                    for($i = 0; $i <= count($data); $i++){
+                        $arrCol[$i] = $data[$i];
                     }
-                    $base_sql .= " ) ";
                 }
                 $col_flg = true;
                 continue;
             }
 
-            // インサートする値をセット
-            $sql = $base_sql . "VALUES ( ? ";
-            for($i = 1; $i < count($data); $i++){
-                $sql .= ", ?";
+            for($i = 0; $i <= count($data); $i++) {
+                $arrVal[$arrCol[$i]] = $data[$i];
             }
-            $sql .= " );";
-            $data = str_replace("\\\"", "\"", $data);
-            $err = $objQuery->query($sql, $data);
+
+            $err = $objQuery->insert($table_name, $arrVal);
+
 
             // エラーがあれば終了
             if (PEAR::isError($err)){
@@ -542,5 +595,22 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
         }
         return true;
     }
+
+    // 選択したバックアップをDBから削除
+    function lfDeleteBackUp(&$arrForm, $bkup_dir, $bkup_ext) {
+
+        $objQuery =& SC_Query::getSingletonInstance();
+
+        $del_file = $bkup_dir.$arrForm['list_name'] . $bkup_ext;
+        // ファイルの削除
+        if(is_file($del_file)){
+            $ret = unlink($del_file);
+        }
+
+        $delsql = "DELETE FROM dtb_bkup WHERE bkup_name = ?";
+        $objQuery->delete("dtb_bkup", "bkup_name = ?", array($arrForm['list_name']));
+
+    }
+
 }
 ?>
