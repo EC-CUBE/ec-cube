@@ -240,7 +240,7 @@ class SC_Helper_Session {
                 }
             }
             if ($is_auth) {
-                SC_Utils_Ex::sfIsSuccess(new SC_Session());
+                SC_Utils_Ex::sfIsSuccess(new SC_Session_Ex());
             }
         }
     }

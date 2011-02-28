@@ -71,7 +71,7 @@ class LC_Page_Admin_Logout extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfDoLogout() {
-        $objSess = new SC_Session();
+        $objSess = new SC_Session_Ex();
         $objSess->logout();
     }
 

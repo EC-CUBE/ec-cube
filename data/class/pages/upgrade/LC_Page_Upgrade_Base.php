@@ -74,7 +74,7 @@ class LC_Page_Upgrade_Base extends LC_Page_Ex {
     }
 
     function isLoggedInAdminPage() {
-        $objSess = new SC_Session;
+        $objSess = new SC_Session_Ex();
 
         if ($objSess->isSuccess() === SUCCESS) {
             return true;

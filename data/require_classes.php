@@ -32,7 +32,7 @@ require_once(CLASS_EX_REALDIR . "SC_UserView_Ex.php");
 require_once(CLASS_EX_REALDIR . "SC_InstallView_Ex.php");
 require_once(CLASS_EX_REALDIR . "SC_MobileView_Ex.php");
 require_once(CLASS_EX_REALDIR . "SC_SmartphoneView_Ex.php");
-require_once(CLASS_REALDIR . "SC_Session.php");
+require_once(CLASS_EX_REALDIR . "SC_Session_Ex.php");
 require_once(CLASS_REALDIR . "SC_Query.php");
 require_once(CLASS_REALDIR . "SC_SelectSql.php");
 require_once(CLASS_REALDIR . "SC_CheckError.php");

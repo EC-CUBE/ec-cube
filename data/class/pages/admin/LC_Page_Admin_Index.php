@@ -183,7 +183,7 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex {
      * @return string $sid 設定したセッションのセッションID
      */
     function lfSetLoginSession($member_id, $login_id, $authority, $login_name, $last_login) {
-        $objSess = new SC_Session();
+        $objSess = new SC_Session_Ex();
         // 認証済みの設定
         $objSess->SetSession('cert', CERT_STRING);
         $objSess->SetSession('member_id', $member_id);

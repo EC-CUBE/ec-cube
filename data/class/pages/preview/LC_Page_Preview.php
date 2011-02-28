@@ -52,7 +52,7 @@ class LC_Page_Preview extends LC_Page_Ex {
      */
     function process() {
         $objView = new SC_SiteView_Ex();
-        $objSess = new SC_Session();
+        $objSess = new SC_Session_Ex();
 
         SC_Utils_Ex::sfIsSuccess($objSess);
 
