@@ -131,8 +131,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
         $this->tpl_product_class_id = $objProduct->classCategories[$product_id]['']['']['product_class_id'];
         $this->tpl_product_type = $objProduct->classCategories[$product_id]['']['']['product_type'];
 
-        $objJson = new Services_JSON();
-        $this->tpl_javascript .= 'classCategories = ' . $objJson->encode($objProduct->classCategories[$product_id]) . ';';
+        $this->tpl_javascript .= 'classCategories = ' . SC_Utils_Ex::jsonEncode($objProduct->classCategories[$product_id]) . ';';
         $this->tpl_javascript .= 'function lnOnLoad(){' . $this->js_lnOnload . '}';
         $this->tpl_onload .= 'lnOnLoad();';
 
@@ -315,7 +314,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
     function lfMakeSelect() {
         return  'fnSetClassCategories('
             . 'document.form1, '
-            . Services_JSON::encode($this->objFormParam->getValue('classcategory_id2'))
+            . SC_Utils_Ex::jsonEncode($this->objFormParam->getValue('classcategory_id2'))
             . '); ';
     }
 

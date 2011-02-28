@@ -82,14 +82,9 @@ class LC_Upgrade_Helper_Json extends Services_JSON {
      *
      * @param string $str
      * @return StdClass
+     * @see SC_Utils_Ex::jsonDecode
      */
     function decode($str) {
-        if (function_exists('json_decode')) {
-            LC_Upgrade_Helper_Log::log(' *use json_decode()');
-            return json_decode($str);
-        }
-
-        LC_Upgrade_Helper_Log::log(' *use Services_JSON::decode()');
-        return parent::decode($str);
+        return SC_Utils_Ex::jsonDecode($str);
     }
 }

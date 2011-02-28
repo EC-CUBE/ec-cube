@@ -142,8 +142,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
             }
 
             if (SC_Display::detectDevice() != DEVICE_TYPE_MOBILE) {
-                $objJson = new Services_JSON();
-                echo $objJson->encode($arrSelectedDeliv);
+                echo SC_Utils_Ex::jsonEncode($arrSelectedDeliv);
                 exit;
             } else {
                 $this->arrPayment = $arrSelectedDeliv['arrPayment'];

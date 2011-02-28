@@ -158,8 +158,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex {
      * @param SC_Product $objProduct
      */
     function getTplJavascript(&$objProduct){
-        $objJson = new Services_JSON();
-        return  'productsClassCategories = ' . $objJson->encode($objProduct->classCategories) . '; ';
+        return  'productsClassCategories = ' . SC_Utils_Ex::jsonEncode($objProduct->classCategories) . '; ';
     }
 
 

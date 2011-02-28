@@ -151,10 +151,7 @@ class LC_Page_Products_List extends LC_Page_Ex {
         // 商品ステータスを取得
         $this->productStatus = $this->arrProducts["productStatus"];
         unset($this->arrProducts["productStatus"]);
-
-        $objJson = new Services_JSON();
-        $this->tpl_javascript .= 'var productsClassCategories = ' . $objJson->encode($objProduct->classCategories) . ';';
-
+        $this->tpl_javascript .= 'var productsClassCategories = ' . SC_Utils_Ex::jsonEncode($objProduct->classCategories) . ';';
         //onloadスクリプトを設定
         foreach ($this->arrProducts as $arrProduct) {
             $js_fnOnLoad .= "fnSetClassCategories(document.product_form{$arrProduct['product_id']});";

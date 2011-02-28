@@ -316,8 +316,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
         
         $jsonStr = @file_get_contents($url, false, stream_context_create($context));
 
-        $objJson = new Services_JSON;
-        $arrTmpData = is_string($jsonStr) ? $objJson->decode($jsonStr) : null;
+        $arrTmpData = is_string($jsonStr) ? SC_Utils_Ex::jsonDecode($jsonStr) : null;
 
         if (empty($arrTmpData)) {
             SC_Utils_Ex::sfErrorHeader(">> 更新情報の取得に失敗しました。");

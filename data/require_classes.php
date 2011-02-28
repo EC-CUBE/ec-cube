@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-require_once(DATA_REALDIR . "module/Services/JSON.php");
 require_once(CLASS_EX_REALDIR . "util_extends/GC_Utils_Ex.php");
 require_once(CLASS_EX_REALDIR . "util_extends/SC_Utils_Ex.php");
 require_once(CLASS_EX_REALDIR . "db_extends/SC_DB_MasterData_Ex.php");

@@ -95,8 +95,7 @@ function displayProductsList() {
     // FIXME 一覧を取得するたびに更新されるのは微妙かも..
     updateModuleTable($arrProductsList);
 
-    $objJson = new Services_JSON();
-    echo $objJson->encode($arrRet);
+    echo SC_Utils_Ex::jsonEncode($arrRet);
 }
 
 /**
