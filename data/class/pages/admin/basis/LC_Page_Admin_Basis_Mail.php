@@ -132,6 +132,7 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex {
         $objQuery =& SC_Query::getSingletonInstance();
 
         $post['creator_id'] = $member_id;
+        $post['update_date'] = 'now()';
 
         $sql = "SELECT * FROM dtb_mailtemplate WHERE template_id = ?";
         $template_data = $objQuery->getAll($sql, array($post['template_id']));
