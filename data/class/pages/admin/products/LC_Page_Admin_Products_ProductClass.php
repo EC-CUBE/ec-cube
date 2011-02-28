@@ -101,16 +101,16 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
             // エラーチェック
             $this->arrErr = $this->lfProductClassError($this->arrForm);
             if (empty($this->arrErr)){
-            	$this->tpl_mainpage = 'products/product_class_confirm.tpl';
+                $this->tpl_mainpage = 'products/product_class_confirm.tpl';
                 $this->lfProductConfirmPage($this->arrForm); // 確認ページ表示
             } else {
-            	$this->doPreEdit($objFormParam->getValue('product_id'), false ,true);
+                $this->doPreEdit($objFormParam->getValue('product_id'), false ,true);
                 // Hiddenからのデータを引き継ぐ
-		        $this->objDownFile->setHiddenFileList($_POST);
-	            // HIDDEN用に配列を渡す。
-		        $this->arrHidden = array_merge((array)$this->arrHidden, (array)$this->objDownFile->getHiddenFileList());
-		        // Form用に配列を渡す。
-		        $this->arrForm = array_merge((array)$this->arrForm, (array)$this->objDownFile->getFormKikakuDownFile());
+                $this->objDownFile->setHiddenFileList($_POST);
+                // HIDDEN用に配列を渡す。
+                $this->arrHidden = array_merge((array)$this->arrHidden, (array)$this->objDownFile->getHiddenFileList());
+                // Form用に配列を渡す。
+                $this->arrForm = array_merge((array)$this->arrForm, (array)$this->objDownFile->getFormKikakuDownFile());
                 $this->doDisp($objFormParam->getValue('product_id'),
                               $objFormParam->getValue('select_class_id1'),
                               $objFormParam->getValue('select_class_id2'));
@@ -126,7 +126,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
         case 'pre_edit':
             $this->doPreEdit($objFormParam->getValue('product_id'));
             // HIDDEN用に配列を渡す。
-	        $this->arrHidden = array_merge((array)$this->arrHidden, (array)$this->objDownFile->getHiddenFileList());
+            $this->arrHidden = array_merge((array)$this->arrHidden, (array)$this->objDownFile->getHiddenFileList());
             break;
 
         // 「表示する」ボタン押下時
@@ -142,16 +142,16 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
             $down_key   = $objFormParam->getValue('down_key');
             // 編集画面用パラメータをセット
             $this->doPreEdit($product_id, true);
-	        // Hiddenからのデータを引き継ぐ
-	        $this->objDownFile->setHiddenKikakuFileList($_POST);
+            // Hiddenからのデータを引き継ぐ
+            $this->objDownFile->setHiddenKikakuFileList($_POST);
             // ファイル存在チェック
             $this->arrErr = array_merge((array)$this->arrErr, (array)$this->objDownFile->checkEXISTS($down_key));
             // ファイル保存処理
             $this->arrErr[$down_key] = $this->objDownFile->makeTempDownFile($down_key);
             // HIDDEN用に配列を渡す。
-	        $this->arrHidden = array_merge((array)$this->arrHidden, (array)$this->objDownFile->getHiddenFileList());
-	        // Form用に配列を渡す。
-	        $this->arrForm = array_merge((array)$this->arrForm, (array)$this->objDownFile->getFormKikakuDownFile());
+            $this->arrHidden = array_merge((array)$this->arrHidden, (array)$this->objDownFile->getHiddenFileList());
+            // Form用に配列を渡す。
+            $this->arrForm = array_merge((array)$this->arrForm, (array)$this->objDownFile->getFormKikakuDownFile());
             // 規格の組み合わせ一覧を表示
             $this->doDisp($product_id,
                           $objFormParam->getValue('select_class_id1'),
@@ -164,14 +164,14 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
             $down_key   = $objFormParam->getValue('down_key');
             // 編集画面用パラメータをセット
             $this->doPreEdit($product_id, true);
-	        // Hiddenからのデータを引き継ぐ
-	        $this->objDownFile->setHiddenKikakuFileList($_POST);
-	        // ファイル削除処理
+            // Hiddenからのデータを引き継ぐ
+            $this->objDownFile->setHiddenKikakuFileList($_POST);
+            // ファイル削除処理
             $this->objDownFile->deleteKikakuFile($down_key);
             // HIDDEN用に配列を渡す。
-	        $this->arrHidden = array_merge((array)$this->arrHidden, (array)$this->objDownFile->getHiddenFileList());
-	        // Form用に配列を渡す。
-	        $this->arrForm = array_merge((array)$this->arrForm, (array)$this->objDownFile->getFormKikakuDownFile());
+            $this->arrHidden = array_merge((array)$this->arrHidden, (array)$this->objDownFile->getHiddenFileList());
+            // Form用に配列を渡す。
+            $this->arrForm = array_merge((array)$this->arrForm, (array)$this->objDownFile->getFormKikakuDownFile());
             // 規格の組み合わせ一覧を表示
             $this->doDisp($product_id,
                           $objFormParam->getValue('select_class_id1'),
@@ -184,12 +184,12 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
             $this->arrForm['select_class_id1'] = "";
             $this->arrForm['select_class_id2'] = "";
             $this->doPreEdit($objFormParam->getValue('product_id'), false, true);
-	        // Hiddenからのデータを引き継ぐ
-	        $this->objDownFile->setHiddenFileList($_POST);
+            // Hiddenからのデータを引き継ぐ
+            $this->objDownFile->setHiddenFileList($_POST);
             // HIDDEN用に配列を渡す。
-	        $this->arrHidden = array_merge((array)$this->arrHidden, (array)$this->objDownFile->getHiddenFileList());
-	        // Form用に配列を渡す。
-	        $this->arrForm = array_merge((array)$this->arrForm, (array)$this->objDownFile->getFormKikakuDownFile());
+            $this->arrHidden = array_merge((array)$this->arrHidden, (array)$this->objDownFile->getHiddenFileList());
+            // Form用に配列を渡す。
+            $this->arrForm = array_merge((array)$this->arrForm, (array)$this->objDownFile->getFormKikakuDownFile());
             $this->doDisp($objFormParam->getValue('product_id'),
                           $objFormParam->getValue('select_class_id1'),
                           $objFormParam->getValue('select_class_id2'));
@@ -198,8 +198,8 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
             // 完了ページ設定
             $this->tpl_mainpage = 'products/product_class_complete.tpl';
             // ファイル情報の初期化
-	        // Hiddenからのデータを引き継ぐ
-	        $this->objDownFile->setHiddenFileList($_POST);
+            // Hiddenからのデータを引き継ぐ
+            $this->objDownFile->setHiddenFileList($_POST);
             // 商品規格の登録
             $arrList = $objFormParam->getHashArray();
             $this->registerProductClass($arrList, $objFormParam->getValue('product_id'));
@@ -291,7 +291,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
      * @param SC_FormParam $objDownFile
      */
     function initDownFile($count, &$objDownFile) {
-    	$i = 1;
+        $i = 1;
         for ($i = 1; $i < $count; $i++) {
             $objDownFile->addFile("ダウンロード販売用ファイル", 'down_realfilename'. ":" . $i, explode(",", DOWNLOAD_EXTENSION), DOWN_SIZE, true, 0, 0);
         }
@@ -335,7 +335,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
             $exists[$val['product_class_id']] = $val;
         }
         $i = 1;
-        while (isset($arrList['check:' . $i])) {
+        while (!SC_Utils_Ex::isBlank($arrList['check:' . $i])) {
             $pVal = array();
             $pVal['product_id'] = $product_id;;
             $pVal['product_code'] = $arrList["product_code:".$i];
