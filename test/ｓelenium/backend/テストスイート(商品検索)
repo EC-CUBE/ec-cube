@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="content-type" />
+  <title>Test Suite</title>
+</head>
+<body>
+<table id="suiteTable" cellpadding="1" cellspacing="1" border="1" class="selenium"><tbody>
+<tr><td><b>Test Suite</b></td></tr>
+<tr><td><a href="商品検索(指定なし)">商品検索(指定なし)</a></td></tr>
+<tr><td><a href="商品検索(商品IDのみ)">商品検索(商品IDのみ)</a></td></tr>
+<tr><td><a href="商品検索(商品コードのみ)">商品検索(商品コードのみ)</a></td></tr>
+<tr><td><a href="商品検索(商品名のみ)">商品検索(商品名のみ)</a></td></tr>
+<tr><td><a href="商品検索(カテゴリのみ)">商品検索(カテゴリのみ)</a></td></tr>
+<tr><td><a href="商品検索(種別のみ)">商品検索(種別のみ)</a></td></tr>
+<tr><td><a href="商品検索(登録・更新日のみ)">商品検索(登録・更新日のみ)</a></td></tr>
+<tr><td><a href="商品検索(ステータスのみ)">商品検索(ステータスのみ)</a></td></tr>
+<tr><td><a href="商品検索(商品ID・カテゴリ)">商品検索(商品ID・カテゴリ)</a></td></tr>
+<tr><td><a href="商品検索(商品名・種別)">商品検索(商品名・種別)</a></td></tr>
+<tr><td><a href="商品検索(商品コード・カテゴリ・登録・更新日)">商品検索(商品コード・カテゴリ・登録・更新日)</a></td></tr>
+<tr><td><a href="商品検索(商品名・カテゴリ・ステータス)">商品検索(商品名・カテゴリ・ステータス)</a></td></tr>
+</tbody></table>
+</body>
+</html>

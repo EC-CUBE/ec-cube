@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="content-type" />
+  <title>Test Suite</title>
+</head>
+<body>
+<table id="suiteTable" cellpadding="1" cellspacing="1" border="1" class="selenium"><tbody>
+<tr><td><b>Test Suite</b></td></tr>
+<tr><td><a href="受注管理(編集)">受注管理(編集)</a></td></tr>
+<tr><td><a href="受注管理(削除)">受注管理(削除)</a></td></tr>
+<tr><td><a href="受注管理(新規受注入力)">受注管理(新規受注入力)</a></td></tr>
+<tr><td><a href="受注管理(新規受注入力：会員)">受注管理(新規受注入力：会員)</a></td></tr>
+<tr><td><a href="受注管理(メール通知)">受注管理(メール通知)</a></td></tr>
+<tr><td><a href="受注管理(CSVダウンロード)">受注管理(CSVダウンロード)</a></td></tr>
+<tr><td><a href="受注管理(CSV出力設定)">受注管理(CSV出力設定)</a></td></tr>
+<tr><td><a href="受注管理(帳票PDF一括出力)">受注管理(帳票PDF一括出力)</a></td></tr>
+<tr><td><a href="受注管理(帳票PDF個別出力)">受注管理(帳票PDF個別出力)</a></td></tr>
+<tr><td><a href="受注管理(ステータス管理：注文番号)">受注管理(ステータス管理：注文番号)</a></td></tr>
+</tbody></table>
+</body>
+</html>

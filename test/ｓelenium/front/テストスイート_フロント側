@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="content-type" />
+  <title>Test Suite</title>
+</head>
+<body>
+<table id="suiteTable" cellpadding="1" cellspacing="1" border="1" class="selenium"><tbody>
+<tr><td><b>Test Suite</b></td></tr>
+<tr><td><a href="お問い合わせ(非ログイン)">お問い合わせ(非ログイン)</a></td></tr>
+<tr><td><a href="お問い合わせ(ログイン)">お問い合わせ(ログイン)</a></td></tr>
+<tr><td><a href="会員登録">会員登録</a></td></tr>
+<tr><td><a href="パスワードリマインダ">パスワードリマインダ</a></td></tr>
+<tr><td><a href="マイページ(表示)">マイページ表示</a></td></tr>
+<tr><td><a href="お気に入り商品登録">お気に入り商品登録</a></td></tr>
+<tr><td><a href="お気に入り商品確認">お気に入り商品確認</a></td></tr>
+<tr><td><a href="お気に入り商品削除">お気に入り商品削除</a></td></tr>
+</tbody></table>
+</body>
+</html>
