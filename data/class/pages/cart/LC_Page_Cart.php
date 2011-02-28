@@ -23,9 +23,6 @@
 
 // {{{ requires
 require_once(CLASS_EX_REALDIR . "page_extends/LC_Page_Ex.php");
-if (file_exists(MODULE_REALDIR . "mdl_gmopg/inc/function.php")) {
-    require_once(MODULE_REALDIR . "mdl_gmopg/inc/function.php");
-}
 
 /**
  * カート のページクラス.
@@ -37,12 +34,6 @@ if (file_exists(MODULE_REALDIR . "mdl_gmopg/inc/function.php")) {
 class LC_Page_Cart extends LC_Page_Ex {
 
     // {{{ properties
-
-    /** セッションの配列 */
-    var $arrSession;
-
-    /** カテゴリの配列 */
-    var $arrProductsClass;
 
     /** 商品規格情報の配列 */
     var $arrData;
@@ -86,9 +77,8 @@ class LC_Page_Cart extends LC_Page_Ex {
     function action() {
         $objCartSess = new SC_CartSession();
         $objSiteSess = new SC_SiteSession();
-        $objSiteInfo = $objView->objSiteInfo;
         $objCustomer = new SC_Customer();
-        
+
         $objFormParam = $this->lfInitParam($_REQUEST);
         $this->mode = $this->getMode();
 
@@ -103,7 +93,7 @@ class LC_Page_Cart extends LC_Page_Ex {
 
         $cart_no = $objFormParam->getValue('cart_no');
         $cartKey = $objFormParam->getValue('cartKey');
-        
+
         switch($this->mode) {
         case 'confirm':
             // カート内情報の取得
@@ -119,25 +109,23 @@ class LC_Page_Cart extends LC_Page_Ex {
             break;
         case 'up'://1個追加
             $objCartSess->upQuantity($cart_no, $cartKey);
-            //SC_Response_Ex::reload();
-            $this->lfReload();
+            SC_Response_Ex::reload(array(), true);
+            exit;
             break;
         case 'down'://1個減らす
             $objCartSess->downQuantity($cart_no, $cartKey);
-            //SC_Response_Ex::reload();
-            $this->lfReload();
+            SC_Response_Ex::reload(array(), true);
+            exit;
             break;
         case 'delete'://カートから削除
             $objCartSess->delProduct($cart_no, $cartKey);
-            //SC_Response_Ex::reload();
-            $this->lfReload();
+            SC_Response_Ex::reload(array(), true);
+            exit;
             break;
         default:
             break;
         }
-
-        // 基本情報の取得
-        $this->arrInfo = $objSiteInfo->data;
+        $this->arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
         foreach ($this->cartKeys as $key) {
             // カート集計処理
             $this->tpl_message = $objCartSess->checkProducts($key);
@@ -173,7 +161,6 @@ class LC_Page_Cart extends LC_Page_Ex {
     function destroy() {
         parent::destroy();
     }
-    
 
     /**
      * ユーザ入力値の処理
@@ -188,14 +175,14 @@ class LC_Page_Cart extends LC_Page_Ex {
         $objFormParam->setParam($arrRequest);
         // 入力値の変換
         $objFormParam->convParam();
-        return $objFormParam;        
+        return $objFormParam;
     }
 
     /**
      * order_temp_id の更新
      *
-     * @return 
-     */    
+     * @return
+     */
     function lfUpdateOrderTempid($pre_uniqid,$uniqid){
         $sqlval['order_temp_id'] = $uniqid;
         $where = "order_temp_id = ?";
@@ -211,7 +198,7 @@ class LC_Page_Cart extends LC_Page_Ex {
      * 前頁のURLを取得
      *
      * @return void
-     */        
+     */
     function lfGetCartPrevUrl(&$session,$referer){
         if (!preg_match("/cart/", $referer)) {
             if (!empty($session['cart_referer_url'])) {
@@ -228,14 +215,14 @@ class LC_Page_Cart extends LC_Page_Ex {
         // 妥当性チェック
         if (!SC_Utils_Ex::sfIsInternalDomain($session['cart_prev_url'])) {
             $session['cart_prev_url'] = '';
-        }  
+        }
     }
-    
+
     /**
      * カートを購入モードに設定
      *
      * @return void
-     */            
+     */
     function lfSetCurrentCart(&$objSiteSess,&$objCartSess){
         // 正常に登録されたことを記録しておく
         $objSiteSess->setRegistFlag();
@@ -249,24 +236,6 @@ class LC_Page_Cart extends LC_Page_Ex {
         }
         // カートを購入モードに設定
         $objCartSess->saveCurrentCart($uniqid, $cartKey);
-    }
-
-    /**
-     * 端末ごとのリロード処理
-     *
-     * @return void
-     */                
-    function lfReload(){
-        //FIXME SC_Response_Ex::reload()だと携帯で無限リダイレクト
-        if(SC_Display::detectDevice() == DEVICE_TYPE_MOBILE){
-            $_SERVER['REQUEST_URI'] = str_replace("mode=delete","",$_SERVER['REQUEST_URI']);
-            $_SERVER['REQUEST_URI'] = str_replace("mode=up","",$_SERVER['REQUEST_URI']);
-            $_SERVER['REQUEST_URI'] = str_replace("mode=down","",$_SERVER['REQUEST_URI']);
-            $_SERVER['REQUEST_URI'] = str_replace("&&","&",$_SERVER['REQUEST_URI']);
-            $this->objDisplay->reload();
-            exit;
-        }
-        SC_Response_Ex::reload();
     }
 }
 ?>
