@@ -71,7 +71,7 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex {
      */
     function action() {
         $objCartSess = new SC_CartSession_Ex();
-        $objSiteSess = new SC_SiteSession();
+        $objSiteSess = new SC_SiteSession_Ex();
         $objCustomer = new SC_Customer();
         $objQuery = new SC_Query();
         $objDb = new SC_Helper_DB_Ex();

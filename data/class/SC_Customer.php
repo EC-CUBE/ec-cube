@@ -213,7 +213,7 @@ __EOS__;
         unset($_SESSION['customer']);
         // トランザクショントークンの破棄
         SC_Helper_Session_Ex::destroyToken();
-        $objSiteSess = new SC_SiteSession();
+        $objSiteSess = new SC_SiteSession_Ex();
         $objSiteSess->unsetUniqId();
         // ログに記録する
         GC_Utils_Ex::gfPrintLog("logout : user=".$this->customer_data['customer_id'] ."\t"."ip=". $this->getRemoteHost(), CUSTOMER_LOG_REALFILE );

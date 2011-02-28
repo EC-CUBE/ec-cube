@@ -76,7 +76,7 @@ class LC_Page_Cart extends LC_Page_Ex {
      */
     function action() {
         $objCartSess = new SC_CartSession_Ex();
-        $objSiteSess = new SC_SiteSession();
+        $objSiteSess = new SC_SiteSession_Ex();
         $objCustomer = new SC_Customer();
 
         $objFormParam = $this->lfInitParam($_REQUEST);

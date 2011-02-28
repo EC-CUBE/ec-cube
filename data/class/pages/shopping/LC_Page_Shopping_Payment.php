@@ -74,7 +74,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
      * @return void
      */
     function action() {
-        $objSiteSess = new SC_SiteSession();
+        $objSiteSess = new SC_SiteSession_Ex();
         $objCartSess = new SC_CartSession_Ex();
         $objPurchase = new SC_Helper_Purchase_Ex();
         $objCustomer = new SC_Customer();

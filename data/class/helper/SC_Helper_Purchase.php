@@ -55,7 +55,7 @@ class SC_Helper_Purchase {
      */
     function completeOrder($orderStatus = ORDER_NEW) {
         $objQuery =& SC_Query::getSingletonInstance();
-        $objSiteSession = new SC_SiteSession();
+        $objSiteSession = new SC_SiteSession_Ex();
         $objCartSession = new SC_CartSession_Ex();
         $objCustomer = new SC_Customer();
         $customerId = $objCustomer->getValue('customer_id');
@@ -117,7 +117,7 @@ class SC_Helper_Purchase {
              * POSTのユニークIDとセッションのユニークIDを比較
              *(ユニークIDがPOSTされていない場合はスルー)
              */
-            if(!SC_SiteSession::checkUniqId()) {
+            if(!SC_SiteSession_Ex::checkUniqId()) {
                 SC_Utils_Ex::sfDispSiteError(CANCEL_PURCHASE);
                 exit;
             }
@@ -675,10 +675,10 @@ class SC_Helper_Purchase {
 
         $objQuery->update("dtb_order_temp", array('del_flg' => 1),
                           "order_temp_id = ?",
-                          array(SC_SiteSession::getUniqId()));
+                          array(SC_SiteSession_Ex::getUniqId()));
 
         $objCartSession->delAllProducts($cartKey);
-        SC_SiteSession::unsetUniqId();
+        SC_SiteSession_Ex::unsetUniqId();
         return $orderParams['order_id'];
     }
 
