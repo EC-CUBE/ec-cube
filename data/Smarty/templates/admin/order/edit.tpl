@@ -220,7 +220,7 @@
             <th>現在ポイント</th>
             <td>
                 <!--{if $arrForm.customer_id > 0}-->
-                    <!--{$arrForm.point.value|number_format}-->
+                    <!--{$arrForm.customer_point.value|number_format}-->
                      pt
                 <!--{else}-->
                     (非会員)

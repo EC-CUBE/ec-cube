@@ -635,12 +635,6 @@ class SC_Helper_Purchase {
             unset($orderParams[$unset]);
         }
 
-        // ポイントは別登録
-        $addPoint = $orderParams['add_point'];
-        $usePoint = $orderParams['use_point'];
-        $orderParams['add_point'] = 0;
-        $orderParams['use_point'] = 0;
-
         // 注文ステータスの指定が無い場合は新規受付
         if(SC_Utils_Ex::isBlank($orderParams['status'])) {
             $orderParams['status'] = ORDER_NEW;

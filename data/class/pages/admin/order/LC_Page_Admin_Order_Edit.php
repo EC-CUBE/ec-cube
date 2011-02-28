@@ -278,7 +278,8 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         $objFormParam->addParam("最終保持ポイント", "total_point");
         $objFormParam->addParam("顧客ID", "customer_id", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"), '0');
         $objFormParam->addParam("顧客ID", "edit_customer_id", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"), '0');
-        $objFormParam->addParam("現在のポイント", "point");
+        $objFormParam->addParam("現在のポイント", "customer_point");
+        $objFormParam->addParam("受注前ポイント", "point");
         $objFormParam->addParam("注文番号", "order_id");
         $objFormParam->addParam("受注日", "create_date");
         $objFormParam->addParam("発送日", "commit_date");
@@ -472,6 +473,11 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         list($db_point, $rollback_point) = SC_Helper_DB_Ex::sfGetRollbackPoint($order_id, $arrOrder['use_point'], $arrOrder['add_point']);
         $objFormParam->setValue('total_point', $db_point);
         $objFormParam->setValue('point', $rollback_point);
+
+        if (!SC_Utils_Ex::isBlank($objFormParam->getValue('customer_id'))) {
+            $this->setCustomerTo($objFormParam->getValue('customer_id'),
+                                 $objFormParam);
+        }
     }
 
     /**
@@ -779,6 +785,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
             $objFormParam->setValue('order_' . $key, $val);
         }
         $objFormParam->setValue('customer_id', $customer_id);
+        $objFormParam->setValue('customer_point', $arrCustomer['point']);
     }
 
     /**
