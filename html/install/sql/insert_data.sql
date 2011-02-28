@@ -688,18 +688,6 @@ INSERT INTO mtb_auth_excludes (id, name, rank) VALUES (1, 'logout.php', 1);
 INSERT INTO mtb_class (id, name, rank) VALUES (1, '規格無し', 0);
 INSERT INTO mtb_class (id, name, rank) VALUES (2, '規格有り', 1);
 
-INSERT INTO mtb_conveni_message (id, name, rank) VALUES (1, '上記URLから振込票を印刷、もしくは振込票番号を紙に控えて、全国のセブンイレブンにてお支払いください。', 0);
-INSERT INTO mtb_conveni_message (id, name, rank) VALUES (2, '企業コード、受付番号を紙などに控えて、全国のファミリーマートにお支払いください。', 1);
-INSERT INTO mtb_conveni_message (id, name, rank) VALUES (3, '上記URLから振込票を印刷、もしくはケータイ決済番号を紙などに控えて、全国のサークルKサンクスにてお支払ください。', 2);
-INSERT INTO mtb_conveni_message (id, name, rank) VALUES (4, '振込票番号を紙に控えて、全国のローソンまたはセイコーマートにてお支払いください。', 3);
-INSERT INTO mtb_conveni_message (id, name, rank) VALUES (5, '上記URLから振込票を印刷し、全国のミニストップ・デイリーヤマザキ・ヤマザキデイリーストアにてお支払いください。', 4);
-
-INSERT INTO mtb_convenience (id, name, rank) VALUES (1, 'セブンイレブン', 0);
-INSERT INTO mtb_convenience (id, name, rank) VALUES (2, 'ファミリーマート', 1);
-INSERT INTO mtb_convenience (id, name, rank) VALUES (3, 'サークルKサンクス', 2);
-INSERT INTO mtb_convenience (id, name, rank) VALUES (4, 'ローソン・セイコーマート', 3);
-INSERT INTO mtb_convenience (id, name, rank) VALUES (5, 'ミニストップ・デイリーヤマザキ・ヤマザキデイリーストア', 4);
-
 INSERT INTO mtb_db (id, name, rank) VALUES (1, 'PostgreSQL', 0);
 INSERT INTO mtb_db (id, name, rank) VALUES (2, 'MySQL', 1);
 
@@ -1035,8 +1023,6 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('FORGOT_MAIL', '0', 
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('HTML_TEMPLATE_SUB_MAX', '12', 96, '登録できるサブ商品の数');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('LINE_LIMIT_SIZE', '60', 97, '文字数が多すぎるときに強制改行するサイズ(半角)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('BIRTH_MONTH_POINT', '0', 98, '誕生日月ポイント');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PAYMENT_CREDIT_ID', '1', 108, 'クレジットカード');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PAYMENT_CONVENIENCE_ID', '2', 109, 'コンビニ決済');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('LARGE_IMAGE_WIDTH', '500', 110, '拡大画像横');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('LARGE_IMAGE_HEIGHT', '500', 111, '拡大画像縦');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SMALL_IMAGE_WIDTH', '130', 112, '一覧画像横');

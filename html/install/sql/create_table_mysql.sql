@@ -1034,20 +1034,6 @@ CREATE TABLE mtb_product_list_max (
     PRIMARY KEY (id)
 ) ENGINE=InnoDB;
 
-CREATE TABLE mtb_convenience (
-    id smallint,
-    name text,
-    rank smallint NOT NULL DEFAULT 0,
-    PRIMARY KEY (id)
-) ENGINE=InnoDB;
-
-CREATE TABLE mtb_conveni_message (
-    id smallint,
-    name text,
-    rank smallint NOT NULL DEFAULT 0,
-    PRIMARY KEY (id)
-) ENGINE=InnoDB;
-
 CREATE TABLE mtb_db (
     id smallint,
     name text,

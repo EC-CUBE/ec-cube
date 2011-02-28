@@ -147,10 +147,6 @@ define('HTML_TEMPLATE_SUB_MAX', 12);
 define('LINE_LIMIT_SIZE', 60);
 /** 誕生日月ポイント */
 define('BIRTH_MONTH_POINT', 0);
-/** クレジットカード */
-define('PAYMENT_CREDIT_ID', 1);
-/** コンビニ決済 */
-define('PAYMENT_CONVENIENCE_ID', 2);
 /** 拡大画像横 */
 define('LARGE_IMAGE_WIDTH', 500);
 /** 拡大画像縦 */

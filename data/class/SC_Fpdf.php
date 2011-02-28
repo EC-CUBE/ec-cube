@@ -312,13 +312,7 @@ class SC_Fpdf {
 
             // その他支払い情報を表示
             if($this->arrDisp["memo02"] != "") $this->arrDisp["payment_info"] = unserialize($this->arrDisp["memo02"]);
-            if($this->arrDisp["memo01"] == PAYMENT_CREDIT_ID){
-                  $this->arrDisp["payment_type"] = "クレジット決済";
-            } elseif ($this->arrDisp["memo01"] == PAYMENT_CONVENIENCE_ID) {
-                  $this->arrDisp["payment_type"] = "コンビニ決済";
-            } else {
-                  $this->arrDisp["payment_type"] = "お支払い";
-            }
+            $this->arrDisp["payment_type"] = "お支払い";
         }
     }
 
