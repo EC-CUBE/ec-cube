@@ -147,7 +147,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
             case 'cart':
                 $this->arrErr = $this->lfCheckError($this->mode,$this->objFormParam);
                 if (count($this->arrErr) == 0) {
-                    $objCartSess = new SC_CartSession();
+                    $objCartSess = new SC_CartSession_Ex();
                     $classcategory_id1 = $this->objFormParam->getValue('classcategory_id1');
                     $classcategory_id2 = $this->objFormParam->getValue('classcategory_id2');
                     $product_class_id = $this->objFormParam->getValue('product_class_id');

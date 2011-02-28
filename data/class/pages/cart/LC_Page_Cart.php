@@ -75,7 +75,7 @@ class LC_Page_Cart extends LC_Page_Ex {
      * @return void
      */
     function action() {
-        $objCartSess = new SC_CartSession();
+        $objCartSess = new SC_CartSession_Ex();
         $objSiteSess = new SC_SiteSession();
         $objCustomer = new SC_Customer();
 

@@ -66,7 +66,7 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
      */
     function action() {
         $objSiteSess = new SC_SiteSession();
-        $objCartSess = new SC_CartSession();
+        $objCartSess = new SC_CartSession_Ex();
         $objCustomer = new SC_Customer();
         $objPurchase = new SC_Helper_Purchase_Ex();
         $objFormParam = new SC_FormParam();

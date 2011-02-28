@@ -64,7 +64,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
      */
     function action() {
         $objSiteSess = new SC_SiteSession();
-        $objCartSess = new SC_CartSession();
+        $objCartSess = new SC_CartSession_Ex();
         $objPurchase = new SC_Helper_Purchase_Ex();
         $objCustomer = new SC_Customer();
         $objFormParam = new SC_FormParam();

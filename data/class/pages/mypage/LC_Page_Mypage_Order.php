@@ -104,7 +104,7 @@ class LC_Page_Mypage_Order extends LC_Page_AbstractMypage_Ex {
     // 商品をカートに追加
     function lfAddCartProducts($arrOrderDetail) {
 
-        $objCartSess = new SC_CartSession();
+        $objCartSess = new SC_CartSession_Ex();
         foreach($arrOrderDetail as $order_row) {
 
             $objCartSess->addProduct($order_row['product_class_id'],

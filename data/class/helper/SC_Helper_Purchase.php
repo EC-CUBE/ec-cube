@@ -56,7 +56,7 @@ class SC_Helper_Purchase {
     function completeOrder($orderStatus = ORDER_NEW) {
         $objQuery =& SC_Query::getSingletonInstance();
         $objSiteSession = new SC_SiteSession();
-        $objCartSession = new SC_CartSession();
+        $objCartSession = new SC_CartSession_Ex();
         $objCustomer = new SC_Customer();
         $customerId = $objCustomer->getValue('customer_id');
 

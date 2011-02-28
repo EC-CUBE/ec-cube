@@ -21,21 +21,9 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-class SC_SiteView extends SC_View_Ex {
-    function SC_SiteView($setPrevURL = true) {
-        parent::SC_View();
+require_once(CLASS_REALDIR . "SC_CartSession.php");
 
-        $this->_smarty->template_dir = TEMPLATE_REALDIR;
-        $this->_smarty->compile_dir = COMPILE_REALDIR;
-
-        $this->assignTemplatePath(DEVICE_TYPE_PC);
-        $this->initpath();
-
-        if ($setPrevURL) {
-            $objCartSess = new SC_CartSession_Ex();
-            $objCartSess->setPrevURL($_SERVER['REQUEST_URI']);
-        }
-    }
+class SC_CartSession_Ex extends SC_CartSession {
 }
 
 ?>

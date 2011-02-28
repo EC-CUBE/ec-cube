@@ -52,7 +52,7 @@ class LC_Page_Shopping_LoadPaymentModule extends LC_Page_Ex {
      */
     function process() {
         $objSiteSess = new SC_SiteSession();
-        $objCartSess = new SC_CartSession();
+        $objCartSess = new SC_CartSession_Ex();
         $objPurchase = new SC_Helper_Purchase_Ex();
 
         if (!$objSiteSess->isPrePage()) {

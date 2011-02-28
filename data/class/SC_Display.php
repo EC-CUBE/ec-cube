@@ -55,7 +55,7 @@ class SC_Display{
 
     function setPrevURL(){
         // TODO SC_SiteSession で実装した方が良さげ
-        $objCartSess = new SC_CartSession();
+        $objCartSess = new SC_CartSession_Ex();
         $objCartSess->setPrevURL($_SERVER['REQUEST_URI']);
     }
 

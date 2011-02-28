@@ -501,7 +501,7 @@ __EOS__;
         // 規格IDを取得
         $product_class_id = $arrForm['product_class_id'];
         $product_type = $arrForm['product_type'];
-        $objCartSess = new SC_CartSession();
+        $objCartSess = new SC_CartSession_Ex();
         $objCartSess->addProduct($product_class_id, $arrForm['quantity']);
 
         // カート「戻るボタン」用に保持

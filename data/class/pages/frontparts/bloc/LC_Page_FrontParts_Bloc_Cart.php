@@ -62,7 +62,7 @@ class LC_Page_FrontParts_Bloc_Cart extends LC_Page_FrontParts_Bloc {
      * @return void
      */
     function action() {
-        $objCart = new SC_CartSession();
+        $objCart = new SC_CartSession_Ex();
         $objSiteInfo = new SC_SiteInfo;
         $this->isMultiple = $objCart->isMultiple();
         $this->arrCartList = $this->lfGetCartData($objCart, $objSiteInfo);
