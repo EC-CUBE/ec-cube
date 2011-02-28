@@ -151,7 +151,7 @@
 
 </body>
 
-<!--{if "/\/top.tpl$/"|preg_match:$tpl_mainpage}-->
+<!--{if "/\/index.tpl$/"|preg_match:$tpl_mainpage}-->
 <!--{else}-->
 <script type="text/javascript" language="JavaScript">
 //<![CDATA[
