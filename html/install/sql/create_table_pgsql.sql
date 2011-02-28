@@ -706,6 +706,7 @@ CREATE TABLE dtb_other_deliv (
 );
 
 CREATE TABLE dtb_order_detail (
+    order_detail_id int NOT NULL,
     order_id int NOT NULL,
     product_id int NOT NULL,
     product_class_id int NOT NULL,
@@ -715,7 +716,8 @@ CREATE TABLE dtb_order_detail (
     classcategory_name2 text,
     price numeric,
     quantity numeric,
-    point_rate numeric
+    point_rate numeric,
+    PRIMARY KEY (order_detail_id)
 );
 
 CREATE TABLE dtb_member (

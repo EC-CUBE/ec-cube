@@ -475,8 +475,7 @@ INSERT INTO dtb_mailtemplate (template_id, subject, header, footer, creator_id, 
 下記ご注文内容にお間違えがないかご確認下さい。
 
 ', '
-
-===============================================================
+============================================
 
 
 このメッセージはお客様へのお知らせ専用ですので、
@@ -484,7 +483,6 @@ INSERT INTO dtb_mailtemplate (template_id, subject, header, footer, creator_id, 
 ご了承ください。
 
 ご質問やご不明な点がございましたら、こちらからお願いいたします。
-http://------.co.jp
 
 ', 0, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_mailtemplate (template_id, subject, header, footer, creator_id, del_flg, create_date, update_date) VALUES (5, 'お問い合わせを受け付けました', NULL, NULL, 0, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);

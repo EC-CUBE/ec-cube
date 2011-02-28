@@ -101,6 +101,7 @@ class SC_Helper_Mail {
         $where = "order_id = ?";
         $arrRet = $objQuery->select("*", "dtb_order", $where, array($order_id));
         $arrOrder = $arrRet[0];
+        $objQuery->setOrder('order_detail_id');
         $arrTplVar->arrOrderDetail = $objQuery->select("*", "dtb_order_detail", $where, array($order_id));
 
         $objProduct = new SC_Product();

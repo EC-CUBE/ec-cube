@@ -96,7 +96,7 @@ class LC_Page_Mypage_Order extends LC_Page_AbstractMypage_Ex {
         $col    = "product_class_id, quantity";
         $table  = "dtb_order_detail LEFT JOIN dtb_products_class USING(product_class_id)";
         $where  = "order_id = ?";
-        $objQuery->setOrder("product_class_id");
+        $objQuery->setOrder("order_detail_id");
         $arrOrderDetail = $objQuery->select($col, $table, $where, array($order_id));
         return $arrOrderDetail;
     }

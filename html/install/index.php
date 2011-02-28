@@ -998,6 +998,7 @@ function getSequences() {
                  array("dtb_module_update_logs", "log_id"),
                  array("dtb_news", "news_id"),
                  array("dtb_order", "order_id"),
+                 array("dtb_order_detail", "order_detail_id"),
                  array("dtb_other_deliv", "other_deliv_id"),
                  array("dtb_pagelayout", "page_id"),
                  array("dtb_payment", "payment_id"),

@@ -255,7 +255,9 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
                     FROM
                         dtb_order_detail AS det
                     WHERE
-                        ord.order_id = det.order_id LIMIT 1
+                        ord.order_id = det.order_id
+                    ORDER BY det.order_detail_id
+                    LIMIT 1
                     ) AS product_name,
                     (SELECT
                         pay.payment_method

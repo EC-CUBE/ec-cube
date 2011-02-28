@@ -754,6 +754,7 @@ class SC_Helper_Purchase {
         $objQuery->delete($table, $where, array($order_id));
         foreach ($arrParams as $arrDetail) {
             $arrValues = $objQuery->extractOnlyColsOf($table, $arrDetail);
+            $arrValues['order_detail_id'] = $objQuery->nextVal('dtb_order_detail_order_detail_id');
             $arrValues['order_id'] = $order_id;
             $objQuery->insert($table, $arrValues);
         }
@@ -821,6 +822,7 @@ __EOS__;
             JOIN dtb_products_class T3
               ON T2.product_class_id = T3.product_class_id
 __EOS__;
+        $objQuery->setOrder('T2.order_detail_id');
         return $objQuery->select($col, $from, 'T1.order_id = ?', array($order_id));
     }
 
