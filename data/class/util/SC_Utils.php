@@ -183,7 +183,6 @@ class SC_Utils {
 
     /* サイトエラーページの表示 */
     function sfDispSiteError($type, $objSiteSess = "", $return_top = false, $err_msg = "") {
-        global $objCampaignSess;
 
         require_once(CLASS_EX_REALDIR . "page_extends/error/LC_Page_Error_Ex.php");
 

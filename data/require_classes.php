@@ -45,7 +45,6 @@ require_once(CLASS_EX_REALDIR . "SC_SendMail_Ex.php");
 require_once(CLASS_REALDIR . "SC_FormParam.php");
 require_once(CLASS_REALDIR . "SC_CartSession.php");
 require_once(CLASS_REALDIR . "SC_SiteSession.php");
-require_once(CLASS_REALDIR . "SC_CampaignSession.php");
 require_once(CLASS_REALDIR . "SC_Customer.php");
 require_once(CLASS_REALDIR . "SC_CustomerList.php");
 require_once(CLASS_REALDIR . "SC_Cookie.php");
