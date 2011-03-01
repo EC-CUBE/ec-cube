@@ -116,7 +116,7 @@
         <span class="mini">（全角<!--{$smarty.const.MLTEXT_LEN}-->字以下）</span></th>
         <td>
           <span class="attention"><!--{$arrErr.contents}--></span>
-          <textarea name="contents" class="box380" cols="60" rows="20" style="<!--{$arrErr.contents.value|h|sfGetErrorColor}-->; ime-mode: active;"><!--{$arrForm.contents|h}--></textarea>
+          <textarea name="contents" class="box380" cols="60" rows="20" style="<!--{$arrErr.contents.value|h|sfGetErrorColor}-->; ime-mode: active;"><!--{$arrForm.contents.value|h}--></textarea>
         </td>
       </tr>
     </table>
