@@ -628,7 +628,7 @@ class SC_CheckError {
 
                 // チェック拡張子のピリオドの数を取得('tar.gz'の場合1個、'jpg'のように通常は0個)
                 $count_period = substr_count($checkExt, ".");
-                
+
                 if($count_period > 0) {
                     for($i = max(array_keys($array_ext)) - $count_period; $i < count($array_ext); $i++) {
                         $ext .= $array_ext[$i] . ".";
@@ -671,7 +671,7 @@ class SC_CheckError {
         }
 
         $path = $dir . "/" . $this->arrParam[$value[1]];
-        $path = ereg_replace("//", "/", $path);
+        $path = str_replace("//", "/", $path);
 
         if($this->arrParam[$value[1]] != "" && !file_exists($path)){
             $this->arrErr[$value[1]] = "※ " . $path . "が見つかりません。<br />";
