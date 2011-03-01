@@ -277,9 +277,9 @@ class SC_Helper_Customer {
             $objFormParam->addParam("顧客ID", "customer_id", INT_LEN, "n", array("NUM_CHECK"));
             $objFormParam->addParam('携帯メールアドレス', "email_mobile", MTEXT_LEN, "a", array("NO_SPTAB", "EMAIL_CHECK", "SPTAB_CHECK" ,"EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK", "MOBILE_EMAIL_CHECK"));
             $objFormParam->addParam("会員状態", "status", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
-            $objFormParam->addParam("SHOP用メモ", "note", INT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
+            $objFormParam->addParam("SHOP用メモ", "note", LTEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
             $objFormParam->addParam("所持ポイント", "point", INT_LEN, "n", array("NUM_CHECK"));
-            
+
         }
     }
 
@@ -524,7 +524,7 @@ class SC_Helper_Customer {
         // 拡張エラーチェック
         $objErr->doFunc(array("誕生日(開始日)", "search_b_start_year", "search_b_start_month", "search_b_start_day"), array("CHECK_DATE"));
         $objErr->doFunc(array("誕生日(終了日)", "search_b_end_year", "search_b_end_month", "search_b_end_day"), array("CHECK_DATE"));
-        
+
         $objErr->doFunc(array("誕生日(開始日)","誕生日(終了日)", "search_b_start_year", "search_b_start_month", "search_b_start_day", "search_b_end_year", "search_b_end_month", "search_b_end_day"), array("CHECK_SET_TERM"));
         $objErr->doFunc(array("登録・更新日(開始日)", "search_start_year", "search_start_month", "search_start_day",), array("CHECK_DATE"));
         $objErr->doFunc(array("登録・更新日(終了日)", "search_end_year", "search_end_month", "search_end_day"), array("CHECK_DATE"));
@@ -550,7 +550,7 @@ class SC_Helper_Customer {
         }
         return $arrErr;
     }
-    
+
     /**
      * 顧客一覧検索をする処理（ページング処理付き、管理画面用共通処理）
      *
@@ -567,7 +567,7 @@ class SC_Helper_Customer {
         }
         $offset = intval($page_max) * (intval($disp_pageno) - 1);
         $objSelect->setLimitOffset($page_max, $offset);
-        
+
         $arrData = $objQuery->getAll($objSelect->getList(), $objSelect->arrVal);
 
         // 該当全体件数の取得
