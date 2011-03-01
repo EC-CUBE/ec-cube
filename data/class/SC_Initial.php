@@ -324,15 +324,18 @@ class SC_Initial {
     }
 
     /**
-     * クォートされた文字列のクォート部分を再帰的に取り除く
+     * クォートされた文字列のクォート部分を再帰的に取り除く.
      *
      * {@link http://jp2.php.net/manual/ja/function.get-magic-quotes-gpc.php PHP Manual} の記事を参考に実装。
      * $_REQUEST は後続の処理で再構成されるため、本処理では外している。
+     * この関数は, PHP5以上を対象とし, PHP4 の場合は何もしない.
+     *
      * @return void
      */
     function stripslashesDeepGpc() {
         // Strip magic quotes from request data.
-        if (get_magic_quotes_gpc()) {
+        if (get_magic_quotes_gpc()
+            && version_compare(PHP_VERSION, '5.0.0', '>=')) {
             // Create lamba style unescaping function (for portability)
             $quotes_sybase = strtolower(ini_get('magic_quotes_sybase'));
             $unescape_function = (empty($quotes_sybase) || $quotes_sybase === 'off') ? 'stripslashes($value)' : 'str_replace("\'\'","\'",$value)';
