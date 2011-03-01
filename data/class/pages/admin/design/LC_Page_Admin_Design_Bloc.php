@@ -282,10 +282,10 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
         $objErr->doFunc(array("ファイル名", "filename", STEXT_LEN), array("EXIST_CHECK", "NO_SPTAB", "MAX_LENGTH_CHECK","FILE_NAME_CHECK_BY_NOUPLOAD"));
 
         // 同一のファイル名が存在している場合にはエラー
-        if(!isset($objErr->arrErr['filename']) and $array['filename'] !== ''){
+        if(!isset($objErr->arrErr['filename']) && $array['filename'] !== ''){
             $arrChk = $this->lfgetBlocData("filename = ?", array($array['filename']));
 
-            if (count($arrChk[0]) >= 1 and $arrChk[0]['bloc_id'] != $array['bloc_id']) {
+            if (count($arrChk[0]) >= 1 && $arrChk[0]['bloc_id'] != $array['bloc_id']) {
                 $objErr->arrErr['filename'] = '※ 同じファイル名のデータが存在しています。別の名称を付けてください。';
             }
         }

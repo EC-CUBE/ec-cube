@@ -60,7 +60,7 @@ class SC_CheckError {
             $find = false;
 
             foreach($value[2] as $tag) {
-                if(eregi("^" . $tag . "$", $val)) {
+                if(preg_match("/^" . $tag . "$/i", $val)) {
                     $find = true;
                 } else {
                 }
@@ -76,13 +76,13 @@ class SC_CheckError {
     /*　必須入力の判定　*/
     // value[0] = 項目名 value[1] = 判定対象
     function EXIST_CHECK( $value ) {			// 受け取りがない場合エラーを返す
-        if(isset($this->arrErr[$value[1]])) {
+        if (isset($this->arrErr[$value[1]])) {
             return;
         }
         $this->createParam($value);
-        if(!is_array($this->arrParam[$value[1]]) and strlen($this->arrParam[$value[1]]) == 0 ){
+        if (!is_array($this->arrParam[$value[1]]) && strlen($this->arrParam[$value[1]]) == 0 ){
             $this->arrErr[$value[1]] = "※ " . $value[0] . "が入力されていません。<br />";
-        }else if(is_array($this->arrParam[$value[1]]) and count($this->arrParam[$value[1]]) == 0) {
+        } else if (is_array($this->arrParam[$value[1]]) && count($this->arrParam[$value[1]]) == 0) {
             $this->arrErr[$value[1]] = "※ " . $value[0] . "が選択されていません。<br />";
         }
     }
@@ -106,7 +106,7 @@ class SC_CheckError {
             return;
         }
         $this->createParam($value);
-        if(strlen($this->arrParam[$value[1]]) != 0 && ereg("^[ 　\t\r\n]+$", $this->arrParam[$value[1]])){
+        if(strlen($this->arrParam[$value[1]]) != 0 && preg_match("/^[ 　\t\r\n]+$/", $this->arrParam[$value[1]])){
             $this->arrErr[$value[1]] = "※ " . $value[0] . "にスペース、タブ、改行のみの入力はできません。<br />";
         }
     }
@@ -118,7 +118,7 @@ class SC_CheckError {
             return;
         }
         $this->createParam($value);
-        if(strlen($this->arrParam[$value[1]]) != 0 && mb_ereg("[　 \t\r\n]+", $this->arrParam[$value[1]])){
+        if(strlen($this->arrParam[$value[1]]) != 0 && preg_match("/[　 \t\r\n]+/u", $this->arrParam[$value[1]])){
             $this->arrErr[$value[1]] = "※ " . $value[0] . "にスペース、タブ、改行は含めないで下さい。<br />";
         }
     }
@@ -129,7 +129,7 @@ class SC_CheckError {
             return;
         }
         $this->createParam($value);
-        if(strlen($this->arrParam[$value[1]]) != 0 && ereg("^[0]+[0-9]+$", $this->arrParam[$value[1]])){
+        if(strlen($this->arrParam[$value[1]]) != 0 && preg_match("/^[0]+[0-9]+$/", $this->arrParam[$value[1]])){
             $this->arrErr[$value[1]] = "※ " . $value[0] . "に0で始まる数値が入力されています。<br />";
         }
     }
@@ -245,19 +245,19 @@ class SC_CheckError {
             return;
         }
         $this->createParam($value);
-        if( strlen($this->arrParam[$value[1]]) > 0 && !EregI("^[[:digit:]]+$", $this->arrParam[$value[1]])) {
+        if ( $this->numelicCheck($this->arrParam[$value[1]]) ) {
             $this->arrErr[$value[1]] = "※ " . $value[0] . "は数字で入力してください。<br />";
         }
     }
 
-        /*　小数点を含む数字の判定　*/
+    /*　小数点を含む数字の判定　*/
     // value[0] = 項目名 value[1] = 判定対象文字列
     function NUM_POINT_CHECK( $value ) {				// 入力文字が数字以外ならエラーを返す
         if(isset($this->arrErr[$value[1]])) {
             return;
         }
         $this->createParam($value);
-        if( strlen($this->arrParam[$value[1]]) > 0 && !EregI("^[[:digit:]]+[\.]?[[:digit:]]+$", $this->arrParam[$value[1]])) {
+        if ( strlen($this->arrParam[$value[1]]) > 0 && !is_numeric($this->arrParam[$value[1]])) {
             $this->arrErr[$value[1]] = "※ " . $value[0] . "は数字で入力してください。<br />";
         }
     }
@@ -267,7 +267,7 @@ class SC_CheckError {
             return;
         }
         $this->createParam($value);
-        if( strlen($this->arrParam[$value[1]]) > 0 && !EregI("^[[:alpha:]]+$", $this->arrParam[$value[1]])) {
+        if( strlen($this->arrParam[$value[1]]) > 0 && !ctype_alpha($this->arrParam[$value[1]])) {
             $this->arrErr[$value[1]] = "※ " . $value[0] . "は半角英字で入力してください。<br />";
         }
     }
@@ -309,7 +309,7 @@ class SC_CheckError {
         for($i = 1; $i <= 3; $i++) {
             if(strlen($this->arrParam[$value[$i]]) > 0 && strlen($this->arrParam[$value[$i]]) > $telItemLen) {
                 $this->arrErr[$value[$i]] .= "※ " . $value[0] . $i . "は" . $telItemLen . "字以内で入力してください。<br />";
-            } else if (strlen($this->arrParam[$value[$i]]) > 0 && !EregI("^[[:digit:]]+$", $this->arrParam[$value[$i]])) {
+            } else if ($this->numelicCheck($this->arrParam[$value[1]])) {
                 $this->arrErr[$value[$i]] .= "※ " . $value[0] . $i . "は数字で入力してください。<br />";
             }
             $total_count += strlen($this->arrParam[$value[$i]]);
@@ -450,7 +450,7 @@ class SC_CheckError {
             return;
         }
         $this->createParam($value);
-        if(strlen($this->arrParam[$value[1]]) > 0 && ! mb_ereg("^[ァ-ヶｦ-ﾟー]+$", $this->arrParam[$value[1]])) {
+        if(strlen($this->arrParam[$value[1]]) > 0 && !preg_match("/^[ァ-ヶｦ-ﾟー]+$/u", $this->arrParam[$value[1]])) {
             $this->arrErr[$value[1]] = "※ " . $value[0] . "はカタカナで入力してください。<br />";
         }
     }
@@ -462,7 +462,7 @@ class SC_CheckError {
             return;
         }
         $this->createParam($value);
-        if(strlen($this->arrParam[$value[1]]) > 0 && ! mb_ereg("^([　 \t\r\n]|[ァ-ヶ]|[ー])+$", $this->arrParam[$value[1]])) {
+        if(strlen($this->arrParam[$value[1]]) > 0 && !preg_match("/^([　 \t\r\n]|[ァ-ヶ]|[ー])+$/u", $this->arrParam[$value[1]])) {
             $this->arrErr[$value[1]] = "※ " . $value[0] . "はカタカナで入力してください。<br />";
         }
     }
@@ -474,7 +474,7 @@ class SC_CheckError {
             return;
         }
         $this->createParam($value);
-        if( strlen($this->arrParam[$value[1]]) > 0 && ! EregI("^[[:alnum:]]+$", $this->arrParam[$value[1]] ) ) {
+        if( strlen($this->arrParam[$value[1]]) > 0 && !ctype_alnum($this->arrParam[$value[1]]) ) {
             $this->arrErr[$value[1]] = "※ " . $value[0] . "は英数字で入力してください。<br />";
         }
     }
@@ -486,7 +486,7 @@ class SC_CheckError {
             return;
         }
         $this->createParam($value);
-        if( strlen($this->arrParam[$value[1]]) > 0 && ! EregI("^[[:graph:]|[:space:]]+$", $this->arrParam[$value[1]] ) ) {
+        if( strlen($this->arrParam[$value[1]]) > 0 && !preg_match("/^[[:graph:]|[:space:]]+$/i", $this->arrParam[$value[1]] ) ) {
             $this->arrErr[$value[1]] = "※ " . $value[0] . "は英数記号で入力してください。<br />";
         }
     }
@@ -571,7 +571,7 @@ class SC_CheckError {
             return;
         }
         $this->createParam($value);
-        if(strlen($this->arrParam[$value[1]]) > 0 && !ereg("^[a-zA-Z0-9_\.@\+\?-]+$",$this->arrParam[$value[1]]) ) {
+        if(strlen($this->arrParam[$value[1]]) > 0 && !preg_match("/^[a-zA-Z0-9_\.@\+\?-]+$/i",$this->arrParam[$value[1]]) ) {
             $this->arrErr[$value[1]] = "※ " . $value[0] . "に使用する文字を正しく入力してください。<br />";
         }
     }
@@ -582,7 +582,7 @@ class SC_CheckError {
          if(isset($this->arrErr[$value[1]])) {
             return;
         }
-        if( strlen($this->arrParam[$value[1]]) > 0 && !ereg( "^https?://+($|[a-zA-Z0-9_~=:&\?\.\/-])+$", $this->arrParam[$value[1]] ) ) {
+        if( strlen($this->arrParam[$value[1]]) > 0 && !preg_match( "/^https?://+($|[a-zA-Z0-9_~=:&\?\.\/-])+$/i", $this->arrParam[$value[1]] ) ) {
             $this->arrErr[$value[1]] = "※ " . $value[0] . "を正しく入力してください。<br />";
         }
     }
@@ -602,7 +602,7 @@ class SC_CheckError {
             $params = explode("\n",$params);
             foreach($params as $param){
                 $param = trim($param);
-                if(long2ip(ip2long($param)) != trim($param) and !empty($param)) {
+                if(long2ip(ip2long($param)) != trim($param) && !empty($param)) {
                     $this->arrErr[$value[1]] = "※ " . $value[0] . "に正しい形式のIPアドレスを入力してください。<br />";
                 }
             }
@@ -976,12 +976,12 @@ class SC_CheckError {
         }
     }
 
-    //ディレクトリ存在チェック
+    // ドメインチェック
     function DOMAIN_CHECK ($value) {
         if(isset($this->arrErr[$value[1]])) {
             return;
         }
-        if(strlen($this->arrParam[$value[1]]) > 0 && !ereg("^\.[^.]+\..+", $this->arrParam[$value[1]])) {
+        if(strlen($this->arrParam[$value[1]]) > 0 && !preg_match("/^\.[^.]+\..+/i", $this->arrParam[$value[1]])) {
             $this->arrErr[$value[1]] = "※ " . $value[0] . "の形式が不正です。<br />";
         }
     }
@@ -1096,6 +1096,16 @@ class SC_CheckError {
                 if (!isset($this->arrParam[$key]))  $this->arrParam[$key] = "";
             }
         }
+    }
+
+
+    /*
+     * 値が数字だけかどうかチェックする
+     *
+     * @access private
+     */
+    function numelicCheck($string) {
+        return (strlen($string) > 0 && !ctype_digit($string));
     }
 }
 ?>
