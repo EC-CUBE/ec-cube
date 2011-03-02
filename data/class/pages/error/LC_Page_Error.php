@@ -56,12 +56,15 @@ class LC_Page_Error extends LC_Page_Ex {
     /**
      * Page を初期化する.
      *
+     * DBエラー発生時, エラーページを表示しようした際の DB 接続を防ぐため,
+     * ここでは, parent::init() を行わない.
      * @return void
      */
     function init() {
-		parent::init();
         $this->tpl_mainpage = 'error.tpl';
         $this->tpl_title = 'エラー';
+        // ディスプレイクラス生成
+        $this->objDisplay = new SC_Display();
     }
 
     /**

@@ -33,10 +33,10 @@ require_once(CLASS_REALDIR . "pages/error/LC_Page_Error.php");
  * @version $Id$
  */
 class LC_Page_Error_SystemError extends LC_Page_Error {
-    
+
     /** PEAR_Error */
     var $pearResult;
-    
+
     /** PEAR_Error がセットされていない場合用のバックトレーススタック */
     var $backtrace;
 
@@ -52,7 +52,7 @@ class LC_Page_Error_SystemError extends LC_Page_Error {
      * @return void
      */
     function init() {
-		parent::init();
+        parent::init();
         $this->tpl_title = 'システムエラー';
     }
 
@@ -174,7 +174,7 @@ class LC_Page_Error_SystemError extends LC_Page_Error {
 
         return $errmsg;
     }
-    
+
     /**
      * エラーメッセージの冒頭部を生成する
      *
@@ -187,7 +187,7 @@ class LC_Page_Error_SystemError extends LC_Page_Error {
         $errmsg .= "SERVER_ADDR: " . $_SERVER['SERVER_ADDR'] . "\n";
         $errmsg .= "REMOTE_ADDR: " . $_SERVER['REMOTE_ADDR'] . "\n";
         $errmsg .= "USER_AGENT: " . $_SERVER['HTTP_USER_AGENT'] . "\n";
-        
+
         return $errmsg;
     }
 

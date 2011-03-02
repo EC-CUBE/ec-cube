@@ -94,8 +94,9 @@ function handle_error($errno, $errstr, $errfile, $errline) {
  * @return void
  */
 function displaySystemError($errstr = null) {
-    if (SC_Utils_Ex::sfIsMobileSite()) {
+    if (SC_Display::detectDevice() == DEVICE_TYPE_MOBILE) {
         ob_clean();
+        ob_start(array('SC_MobileEmoji', 'handler'));
     } else {
         // 最下層以外の出力用バッファをクリアし、出力のバッファリングを解除する
         // FIXME #811(出力バッファリングの利用を見直し)

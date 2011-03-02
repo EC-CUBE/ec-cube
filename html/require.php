@@ -28,16 +28,16 @@ require_once HTML_REALDIR . 'define.php';
 require_once HTML_REALDIR . 'handle_error.php';
 require_once HTML_REALDIR . HTML2DATA_DIR . 'require_base.php';
 
-if ( Net_UserAgent_Mobile::isMobile() === true ){
-	define('MOBILE_SITE', true);
+if (SC_Display::detectDevice() == DEVICE_TYPE_MOBILE){
+    define('MOBILE_SITE', true);
     $objMobile = new SC_Helper_Mobile_Ex();
     $objMobile->sfMobileInit();
     ob_start();
-    
+
 } else {
-	define('FRONT_FUNCTION_PC_SITE', true);	
-	
-	// 絵文字変換 (除去) フィルターを組み込む。
-	ob_start(array('SC_MobileEmoji', 'handler'));
+    define('FRONT_FUNCTION_PC_SITE', true);
+
+    // 絵文字変換 (除去) フィルターを組み込む。
+    ob_start(array('SC_MobileEmoji', 'handler'));
 }
 ?>
