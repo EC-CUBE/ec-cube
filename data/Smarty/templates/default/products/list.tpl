@@ -53,7 +53,6 @@ function fnInCart(productForm) {
     fnSetVal("quantity", productForm["quantity"].value);
     fnSetVal("product_id", productForm["product_id"].value);
     fnSetVal("product_class_id", productForm["product_class_id"].value);
-    fnSetVal("product_type", productForm["product_type"].value);
     fnSubmit();
 }
 //]]>
@@ -79,7 +78,6 @@ function fnInCart(productForm) {
         <input type="hidden" name="classcategory_id1" value="" />
         <input type="hidden" name="classcategory_id2" value="" />
         <input type="hidden" name="product_class_id" value="" />
-        <input type="hidden" name="product_type" value="" />
         <input type="hidden" name="quantity" value="" />
         <!--{* ▲注文関連 *}-->
         <input type="hidden" name="rnd" value="<!--{$tpl_rnd|h}-->" />
@@ -201,7 +199,6 @@ function fnInCart(productForm) {
                    <!--▼買い物かご-->
                    <input type="hidden" name="product_id" value="<!--{$id|h}-->" />
                    <input type="hidden" name="product_class_id" id="product_class_id<!--{$id|h}-->" value="<!--{$tpl_product_class_id[$id]}-->" />
-                   <input type="hidden" name="product_type" id="product_type<!--{$id|h}-->" value="<!--{$tpl_product_type[$id]}-->" />
 
                    <div class="cart_area clearfix">
                    <!--{if $tpl_stock_find[$id]}-->

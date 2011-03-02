@@ -50,9 +50,8 @@ function setClassCategories($form, product_id, $sele1, $sele2, selected_id2) {
                 }
                 $sele2.append(option);
             }
-        }
-        if ($sele1.val()) {
-            checkStock($form, product_id, $sele1.val(), $sele2.val());
+            checkStock($form, product_id, $sele1.val() ? $sele1.val() : '',
+                       $sele2.val() ? $sele2.val() : '');
         }
     }
 }
@@ -81,7 +80,11 @@ function checkStock($form, product_id, classcat_id1, classcat_id2) {
     if (classcat2
         && typeof classcat2['product_code'] != 'undefined') {
         $product_code_default.hide();
+        $product_code_dynamic.show();
         $product_code_dynamic.text(classcat2['product_code']);
+    } else {
+        $product_code_default.show();
+        $product_code_dynamic.hide();
     }
     
     // 在庫(品切れ)
@@ -141,9 +144,11 @@ function checkStock($form, product_id, classcat_id1, classcat_id2) {
     // 商品規格
     var $product_class_id_dynamic = $form.find('[id^=product_class_id]');
     if (classcat2
-        && typeof classcat2['product_type'] != 'undefined'
-        && String(classcat2['product_type']).length >= 1) {
+        && typeof classcat2['product_class_id'] != 'undefined'
+        && String(classcat2['product_class_id']).length >= 1) {
 
         $product_class_id_dynamic.val(classcat2['product_class_id']);
+    } else {
+        $product_class_id_dynamic.val('');
     }
 }

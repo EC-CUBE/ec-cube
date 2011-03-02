@@ -168,7 +168,7 @@ class LC_Page_Products_List extends LC_Page_Ex {
             // 入力内容のチェック
             $arrErr = $this->lfCheckError($target_product_id,$this->arrForm,$this->tpl_classcat_find1,$this->tpl_classcat_find2);
             if (count($arrErr) == 0) {
-                $this->lfAddCart($this->arrForm,$this->tpl_classcat_find1,$this->tpl_classcat_find2,$target_product_id,$_SERVER['HTTP_REFERER']);
+                $this->lfAddCart($this->arrForm, $_SERVER['HTTP_REFERER']);
                 SC_Response_Ex::sendRedirect(CART_URLPATH);
                 exit;
             }
@@ -330,6 +330,8 @@ __EOS__;
         if ($tpl_classcat_find2[$product_id]) {
             $objErr->doFunc(array("規格2", 'classcategory_id2', INT_LEN), array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
         }
+
+        $objErr->doFunc(array("商品規格ID", 'product_class_id', INT_LEN), array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
         $objErr->doFunc(array("数量", 'quantity', INT_LEN), array("EXIST_CHECK", "ZERO_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
 
         return $objErr->arrErr;
@@ -486,21 +488,8 @@ __EOS__;
      *
      * @return void
      */   
-    function lfAddCart($arrForm,$tpl_classcat_find1,$tpl_classcat_find2,$target_product_id,$referer){
-        $classcategory_id1 = $arrForm['classcategory_id1'];
-        $classcategory_id2 = $arrForm['classcategory_id2'];
-        // 規格1が設定されていない場合
-        if (!$tpl_classcat_find1[$target_product_id]) {
-            $classcategory_id1 = '0';
-        }
-        // 規格2が設定されていない場合
-        if (!$tpl_classcat_find2[$target_product_id]) {
-            $classcategory_id2 = '0';
-        }
-
-        // 規格IDを取得
+    function lfAddCart($arrForm, $referer){
         $product_class_id = $arrForm['product_class_id'];
-        $product_type = $arrForm['product_type'];
         $objCartSess = new SC_CartSession_Ex();
         $objCartSess->addProduct($product_class_id, $arrForm['quantity']);
 

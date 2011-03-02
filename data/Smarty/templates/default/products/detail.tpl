@@ -182,7 +182,6 @@ $(document).ready(function() {
     <input type="hidden" name="mode" value="cart" />
     <input type="hidden" name="product_id" value="<!--{$tpl_product_id}-->" />
     <input type="hidden" name="product_class_id" value="<!--{$tpl_product_class_id}-->" id="product_class_id" />
-    <input type="hidden" name="product_type" value="<!--{$tpl_product_type}-->" id="product_type" />
     <input type="hidden" name="favorite_product_id" value="" />
 
     <!--{if $tpl_stock_find}-->

@@ -55,7 +55,6 @@ function fnChangeDispNumber(dispNumber) {
         <input type="hidden" name="classcategory_id1" value="" />
         <input type="hidden" name="classcategory_id2" value="" />
         <input type="hidden" name="product_class_id" value="" />
-        <input type="hidden" name="product_type" value="" />
         <input type="hidden" name="quantity" value="" />
         <!--{* ▲注文関連 *}-->
         <input type="hidden" name="rnd" value="<!--{$tpl_rnd|h}-->" />

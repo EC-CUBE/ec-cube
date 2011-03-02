@@ -145,23 +145,13 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
 
         switch($this->mode) {
             case 'cart':
-                $this->arrErr = $this->lfCheckError($this->mode,$this->objFormParam);
+                $this->arrErr = $this->lfCheckError($this->mode,$this->objFormParam,
+                                                    $this->tpl_classcat_find1,
+                                                    $this->tpl_classcat_find2);
                 if (count($this->arrErr) == 0) {
                     $objCartSess = new SC_CartSession_Ex();
-                    $classcategory_id1 = $this->objFormParam->getValue('classcategory_id1');
-                    $classcategory_id2 = $this->objFormParam->getValue('classcategory_id2');
                     $product_class_id = $this->objFormParam->getValue('product_class_id');
-                    $product_type = $this->objFormParam->getValue('product_type');
 
-                    // 規格1が設定されていない場合
-                    if(!$this->tpl_classcat_find1) {
-                        $classcategory_id1 = '0';
-                    }
-
-                    // 規格2が設定されていない場合
-                    if(!$this->tpl_classcat_find2) {
-                        $classcategory_id2 = '0';
-                    }
                     $objCartSess->addProduct($product_class_id, $this->objFormParam->getValue('quantity'));
 
                     // カート「戻るボタン」用に保持
@@ -256,8 +246,6 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
             = SC_Utils_Ex::sfNoImageMain($this->arrProduct['main_image']);
 
         $this->subImageFlag = $this->lfSetFile($this->objUpFile,$this->arrProduct,$this->arrFile);
-        // 支払方法の取得
-        $this->arrPayment = $this->lfGetPayment();
         //レビュー情報の取得
         $this->arrReview = $this->lfGetReviewData($product_id);
 
@@ -330,11 +318,6 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
         $arrClassName = SC_Helper_DB_Ex::sfGetIDValueList("dtb_class", "class_id", "name");
         // 規格分類名一覧
         $arrClassCatName = SC_Helper_DB_Ex::sfGetIDValueList("dtb_classcategory", "classcategory_id", "name");
-        /*
-         * FIXME
-         * パフォーマンスが出ないため,
-         * SC_Product::getProductsClassByProductIds() を使用した実装に変更
-         */
         // 商品規格情報の取得
         $arrProductsClass = $this->lfGetProductsClass($product_id);
 
@@ -399,8 +382,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
         $objFormParam->addParam("管理者ログイン", "admin", INT_LEN, "a", array('ALNUM_CHECK',"MAX_LENGTH_CHECK"));
         $objFormParam->addParam("商品ID", "product_id", INT_LEN, "n", array("EXIST_CHECK", "ZERO_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
         $objFormParam->addParam("お気に入り商品ID", "favorite_product_id", INT_LEN, "n", array("ZERO_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("商品規格ID", "product_class_id", INT_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("商品種別", "product_type", INT_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("商品規格ID", "product_class_id", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
         // 値の取得
         $objFormParam->setParam($_REQUEST);
         // 入力値の変換
@@ -496,19 +478,6 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
         $arrval[] = $id;
         $arrReview = $objQuery->select($col, $from, $where, $arrval);
         return $arrReview;
-    }
-
-    //支払方法の取得
-    //payment_id	1:クレジット　2:ショッピングローン
-    function lfGetPayment() {
-        $objQuery =& SC_Query::getSingletonInstance();
-        $col = "payment_id, rule, payment_method";
-        $from = "dtb_payment";
-        $where = "del_flg = 0";
-        $order = "payment_id";
-        $objQuery->setOrder($order);
-        $arrPaymentId = $objQuery->select($col, $from, $where);
-        return $arrPaymentId;
     }
 
     /*
