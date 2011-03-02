@@ -136,6 +136,9 @@ class SC_Helper_DB {
     /**
      * 店舗基本情報を取得する.
      *
+     * 引数 $force が false の場合は, 初回のみ DB 接続し,
+     * 2回目以降はキャッシュされた結果を使用する.
+     *
      * @param boolean $force 強制的にDB取得するか
      * @param string $col 取得カラムを指定する
      * @return array 店舗基本情報の配列

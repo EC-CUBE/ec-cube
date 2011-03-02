@@ -64,10 +64,9 @@ class LC_Page_Rss_Products extends LC_Page_Ex {
      */
     function action() {
         $objView = new SC_SiteView_Ex();
-        $objSiteInfo = new SC_SiteInfo();
         
         //店舗情報をセット
-        $this->arrSiteInfo = $objSiteInfo->data;
+        $this->arrSiteInfo = SC_Helper_DB_Ex::sfGetBasisData();
         
         //商品IDを取得
         if ( isset($_GET['product_id']) && $_GET['product_id'] != '' && is_numeric($_GET['product_id']) ) {

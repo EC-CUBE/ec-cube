@@ -40,7 +40,6 @@ require_once(CLASS_REALDIR . "SC_PageNavi.php");
 require_once(CLASS_REALDIR . "SC_Date.php");
 require_once(CLASS_REALDIR . "SC_Image.php");
 require_once(CLASS_REALDIR . "SC_UploadFile.php");
-require_once(CLASS_REALDIR . "SC_SiteInfo.php");
 require_once(CLASS_EX_REALDIR . "SC_SendMail_Ex.php");
 require_once(CLASS_REALDIR . "SC_FormParam.php");
 require_once(CLASS_EX_REALDIR . "SC_CartSession_Ex.php");

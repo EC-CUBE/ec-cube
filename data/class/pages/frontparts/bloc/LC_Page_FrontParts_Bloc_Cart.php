@@ -63,9 +63,8 @@ class LC_Page_FrontParts_Bloc_Cart extends LC_Page_FrontParts_Bloc {
      */
     function action() {
         $objCart = new SC_CartSession_Ex();
-        $objSiteInfo = new SC_SiteInfo;
         $this->isMultiple = $objCart->isMultiple();
-        $this->arrCartList = $this->lfGetCartData($objCart, $objSiteInfo);
+        $this->arrCartList = $this->lfGetCartData($objCart);
     }
 
     /**
@@ -81,10 +80,9 @@ class LC_Page_FrontParts_Bloc_Cart extends LC_Page_FrontParts_Bloc {
      * カートの情報を取得する
      *
      * @param SC_CartSession $objCart カートセッション管理クラス
-     * @param SC_SiteInfo $objSiteInfo サイト情報クラス
      * @return array $arrCartList カートデータ配列
      */
-    function lfGetCartData(&$objCart, &$objSiteInfo) {
+    function lfGetCartData(&$objCart) {
         $arrCartKeys = $objCart->getKeys();
         foreach ($arrCartKeys as $cart_key) {
             // カート情報を取得
@@ -105,7 +103,7 @@ class LC_Page_FrontParts_Bloc_Cart extends LC_Page_FrontParts_Bloc {
         }
         
         // 店舗情報の取得
-        $arrInfo = $objSiteInfo->data;
+        $arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
         
         // 送料無料までの金額
         $arrCartList[0]['ProductsTotal'] = $products_total;
@@ -116,8 +114,6 @@ class LC_Page_FrontParts_Bloc_Cart extends LC_Page_FrontParts_Bloc {
         $arrCartList[0]['deliv_free'] = $deliv_free;
         
         return $arrCartList;
-        
     }
-
 }
 ?>

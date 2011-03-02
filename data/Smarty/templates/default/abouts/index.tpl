@@ -22,7 +22,6 @@
  */
 *}-->
 <!--▼CONTENTS-->
-<!--{assign var=_site value=$arrSiteInfo}-->
 <script type="text/javascript">//<![CDATA[
 $(function() {
     $("#maps").css({
@@ -32,8 +31,8 @@ $(function() {
         'width': '98%',
         'height': '300px'
     });
-    var lat = <!--{$_site.latitude}-->
-    var lng = <!--{$_site.longitude}-->
+    var lat = <!--{$objSiteInfo->data.latitude}-->
+    var lng = <!--{$objSiteInfo->data.longitude}-->
     if (lat && lng) {
         var latlng = new google.maps.LatLng(lat, lng);
         var mapOptions = {zoom: 15,

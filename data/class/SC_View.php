@@ -21,17 +21,14 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-$viewDir = realpath(dirname(__FILE__)) . '/'; // XXX グローバル変数として流用あり
-require_once $viewDir . '../module/Smarty/libs/Smarty.class.php';
+require_once realpath(dirname(__FILE__)) . '/../module/Smarty/libs/Smarty.class.php';
 
 class SC_View {
 
     var $_smarty;
-    var $objSiteInfo; // サイト情報
 
     // コンストラクタ
     function SC_View($siteinfo = true) {
-        global $viewDir;
 
         $this->_smarty = new Smarty;
         $this->_smarty->left_delimiter = '<!--{';
@@ -50,7 +47,7 @@ class SC_View {
         $this->_smarty->register_modifier("sfPutBR", array("SC_Utils_Ex", "sfPutBR"));
         $this->_smarty->register_modifier("sfRmDupSlash", array("SC_Utils_Ex", "sfRmDupSlash"));
         $this->_smarty->register_modifier("sfCutString", array("SC_Utils_Ex", "sfCutString"));
-        $this->_smarty->plugins_dir=array("plugins", $viewDir . "../smarty_extends");
+        $this->_smarty->plugins_dir=array("plugins", realpath(dirname(__FILE__)) . "/../smarty_extends");
         $this->_smarty->register_modifier("sfMbConvertEncoding", array("SC_Utils_Ex", "sfMbConvertEncoding"));
         $this->_smarty->register_modifier("sfGetEnabled", array("SC_Utils_Ex", "sfGetEnabled"));
         $this->_smarty->register_modifier("sfGetCategoryId", array("SC_Utils_Ex", "sfGetCategoryId"));
@@ -62,29 +59,6 @@ class SC_View {
 
         if(ADMIN_MODE == '1') {
             $this->time_start = SC_Utils_Ex::sfMicrotimeFloat();
-        }
-
-        // サイト情報を取得する
-        // XXX LC_Page 配下で取得した方が良い
-        if($siteinfo) {
-            if(!defined('LOAD_SITEINFO')) {
-                $this->objSiteInfo = new SC_SiteInfo();
-                $arrInfo['arrSiteInfo'] = $this->objSiteInfo->data;
-
-                // 都道府県名を変換
-                $masterData = new SC_DB_MasterData_Ex();
-                $arrPref = $masterData->getMasterData('mtb_pref');
-                $arrInfo['arrSiteInfo']['pref'] =
-                    isset($arrPref[$arrInfo['arrSiteInfo']['pref']])
-                    ? $arrPref[$arrInfo['arrSiteInfo']['pref']] : "";
-
-                 // サイト情報を割り当てる
-                foreach ($arrInfo as $key => $value){
-                    $this->_smarty->assign($key, $value);
-                }
-
-                define('LOAD_SITEINFO', 1);
-            }
         }
     }
 
@@ -160,9 +134,8 @@ class SC_View {
 
     /* サイト初期設定 */
     function initpath() {
-        global $viewDir;
 
-        $array['tpl_mainnavi'] = $viewDir . '../Smarty/templates/frontparts/mainnavi.tpl';
+        $array['tpl_mainnavi'] = realpath(dirname(__FILE__)) . '/../Smarty/templates/frontparts/mainnavi.tpl';
 
         $objDb = new SC_Helper_DB_Ex();
         $array['tpl_root_id'] = $objDb->sfGetRootId();

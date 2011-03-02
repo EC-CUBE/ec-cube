@@ -53,8 +53,7 @@ class SC_Helper_Mail {
         $objPage->tpl_footer = $arrRet[0]['footer'];
         $tmp_subject = $arrRet[0]['subject'];
 
-        $objSiteInfo = new SC_SiteInfo();
-        $arrInfo = $objSiteInfo->data;
+        $arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
 
         $objMailView = new SC_SiteView_Ex();
         // メール本文の取得
@@ -78,8 +77,7 @@ class SC_Helper_Mail {
     function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $footer = "", $send = true) {
 
         $arrTplVar = new stdClass();
-        $objSiteInfo = new SC_SiteInfo();
-        $arrInfo = $objSiteInfo->data;
+        $arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
         $arrTplVar->arrInfo = $arrInfo;
 
         $objQuery = new SC_Query();
@@ -184,8 +182,7 @@ class SC_Helper_Mail {
     // テンプレートを使用したメールの送信
     function sfSendTplMail($to, $tmp_subject, $tplpath, &$objPage) {
         $objMailView = new SC_SiteView_Ex();
-        $objSiteInfo = new SC_SiteInfo();
-        $arrInfo = $objSiteInfo->data;
+        $arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
         // メール本文の取得
         $objPage->tpl_shopname=$arrInfo['shop_name'];
         $objPage->tpl_infoemail = $arrInfo['email02'];
@@ -204,8 +201,7 @@ class SC_Helper_Mail {
 
     // 通常のメール送信
     function sfSendMail($to, $tmp_subject, $body) {
-        $objSiteInfo = new SC_SiteInfo();
-        $arrInfo = $objSiteInfo->data;
+        $arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
         // メール送信処理
         $objSendMail = new SC_SendMail_Ex();
         $bcc = $arrInfo['email01'];

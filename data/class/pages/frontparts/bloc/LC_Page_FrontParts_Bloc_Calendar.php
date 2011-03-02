@@ -148,8 +148,8 @@ class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc {
      * @return array $arrRegularHoliday 定休日情報の配列を返す
      */
     function lfGetRegularHoliday() {
-        $objSiteInfo = new SC_SiteInfo();
-        $arrRegularHoliday = explode('|', $objSiteInfo->data['regular_holiday_ids']);
+        $arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
+        $arrRegularHoliday = explode('|', $arrInfo['regular_holiday_ids']);
         return $arrRegularHoliday;
     }
 

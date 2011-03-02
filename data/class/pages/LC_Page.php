@@ -75,6 +75,9 @@ class LC_Page {
     /** メインテンプレート名 */
     var $template = SITE_FRAME;
 
+    /** 店舗基本情報 */
+    var $arrSiteInfo;
+
     // }}}
     // {{{ functions
 
@@ -99,6 +102,9 @@ class LC_Page {
         // プラグインクラス生成
         $this->objPlugin = new SC_Helper_Plugin_Ex();
         $this->objPlugin->preProcess($this);
+
+        // 店舗基本情報取得
+        $this->arrSiteInfo = SC_Helper_DB_Ex::sfGetBasisData();
 
         // トランザクショントークンの検証と生成
         $this->doValidToken();
