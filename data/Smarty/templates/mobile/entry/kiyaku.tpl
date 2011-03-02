@@ -32,7 +32,7 @@
 	<a href="kiyaku.php?offset=<!--{$offset+1}-->">次へ→</a><br><br>
 <!--{/if}-->
 
-<a href="<!--{$smarty.const.MOBILE_HTTPS_URL}-->entry/<!--{$smarty.const.DIR_INDEX_PATH}-->?<!--{$smarty.const.SID}-->" accesskey="1"><!--{1|numeric_emoji}-->同意して登録へ</a><br>
+<a href="<!--{$smarty.const.HTTPS_URL}-->entry/<!--{$smarty.const.DIR_INDEX_PATH}-->?<!--{$smarty.const.SID}-->" accesskey="1"><!--{1|numeric_emoji}-->同意して登録へ</a><br>
 <a href="<!--{$smarty.const.MOBILE_TOP_URLPATH}-->" accesskey="2"><!--{2|numeric_emoji}-->同意しない</a><br>
 
 <br>

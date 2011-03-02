@@ -23,12 +23,12 @@
 *}-->
 <!-- ▼メニュー ここから -->
 <!--{1|numeric_emoji}-->商品カテゴリ<br>
-<!--{include_php file=`$smarty.const.MOBILE_HTML_REALDIR`frontparts/bloc/category.php}-->
+<!--{include_php file=`$smarty.const.HTML_REALDIR`frontparts/bloc/category.php}-->
 <!--<a href="products/search.php" accesskey="2"><!--{2|numeric_emoji}-->商品検索</a><br>-->
 <!--{if $isLogin eq true}-->
-<a href="<!--{$smarty.const.MOBILE_HTTPS_URL}-->mypage/refusal.php?<!--{$smarty.const.SID}-->" accesskey="3"><!--{3|numeric_emoji}-->会員退会</a><br>
+<a href="<!--{$smarty.const.HTTPS_URL}-->mypage/refusal.php?<!--{$smarty.const.SID}-->" accesskey="3"><!--{3|numeric_emoji}-->会員退会</a><br>
 <!--{else}-->
-<a href="<!--{$smarty.const.MOBILE_HTTPS_URL}-->entry/kiyaku.php?<!--{$smarty.const.SID}-->" accesskey="3"><!--{3|numeric_emoji}-->会員登録</a><br>
+<a href="<!--{$smarty.const.HTTPS_URL}-->entry/kiyaku.php?<!--{$smarty.const.SID}-->" accesskey="3"><!--{3|numeric_emoji}-->会員登録</a><br>
 <!--{/if}-->
 <a href="guide/<!--{$smarty.const.DIR_INDEX_PATH}-->" accesskey="4"><!--{4|numeric_emoji}-->ご利用ガイド</a><br>
 <a href="contact/<!--{$smarty.const.DIR_INDEX_PATH}-->" accesskey="5"><!--{5|numeric_emoji}-->お問い合せ</a><br>

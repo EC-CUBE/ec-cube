@@ -73,30 +73,5 @@ class SC_SmartphoneUserAgent {
     function setPcDsiplayOff() {
         $_SESSION['pc_disp'] = false;
     }
-
-    /**
-     * スマートフォン端末の判定とリダイレクト
-     *
-     * @return void
-     */
-    function sfAutoRedirectSmartphoneSite() {
-        // SPでない場合は、処理しない
-        if (SC_SmartphoneUserAgent::isNonSmartphone()) return;
-
-
-        $url = SC_Utils_Ex::sfIsHTTPS()
-            ? SMARTPHONE_HTTPS_URL
-            : SMARTPHONE_HTTP_URL
-        ;
-
-        // XXX サニタイズ必要？
-        $url .= (preg_match('|^' . ROOT_URLPATH . '(.*)$|', $_SERVER['REQUEST_URI'], $matches))
-            ? $matches[1]
-            : ''
-        ;
-
-        header("Location: ". SC_Utils_Ex::sfRmDupSlash($url));
-        exit;
-    }
 }
 ?>

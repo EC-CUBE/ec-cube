@@ -34,29 +34,29 @@
 <a href="<!--{$smarty.const.CART_URLPATH|h}-->">かごを見る</a>
 </li>
 <li>
-<a href="<!--{$smarty.const.SMARTPHONE_HTTPS_URL|sfTrimURL}-->/mypage/login.php">マイページ</a>
+<a href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/login.php">マイページ</a>
 </li>
 <li>
-<a href="<!--{$smarty.const.SMARTPHONE_HTTPS_URL|sfTrimURL}-->/entry/kiyaku.php">会員登録</a>
+<a href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/entry/kiyaku.php">会員登録</a>
 </li>
 
 <!--{php}-->
 $tmp = $this->get_template_vars('tpl_mainpage');
-if(preg_match("/top\.tpl$/", $tmp))
+if(preg_match("/index\.tpl$/", $tmp))
 $this->assign('isTop', 1);
 <!--{/php}-->
 <!--{if $isTop ne 1}-->
 <li>
-<a href="<!--{$smarty.const.SMARTPHONE_HTTP_URL|sfTrimURL}-->">TOPページへ</a>
+<a href="<!--{$smarty.const.HTTP_URL|sfTrimURL}-->">TOPページへ</a>
 </li>
 <!--{/if}-->
 
 </ul>
 <ul id="footer-navi">
-<li><a href="<!--{$smarty.const.SMARTPHONE_HTTPS_URL}-->contact/<!--{$smarty.const.DIR_INDEX_PATH|h}-->">お問合せ</a></li>
-<li><a href="<!--{$smarty.const.SMARTPHONE_HTTP_URL}-->guide/privacy.php">プライバシーポリシー</a></li>
-<li class="end"><a href="<!--{$smarty.const.SMARTPHONE_HTTP_URL}-->abouts/<!--{$smarty.const.DIR_INDEX_PATH|h}-->">店舗情報</a></li>
-<li class="end"><a href="<!--{$smarty.const.SMARTPHONE_HTTP_URL}-->order/<!--{$smarty.const.DIR_INDEX_PATH|h}-->">特定商取引法に基づく表記</a></li>
+<li><a href="<!--{$smarty.const.HTTPS_URL}-->contact/<!--{$smarty.const.DIR_INDEX_PATH|h}-->">お問合せ</a></li>
+<li><a href="<!--{$smarty.const.HTTP_URL}-->guide/privacy.php">プライバシーポリシー</a></li>
+<li class="end"><a href="<!--{$smarty.const.HTTP_URL}-->abouts/<!--{$smarty.const.DIR_INDEX_PATH|h}-->">店舗情報</a></li>
+<li class="end"><a href="<!--{$smarty.const.HTTP_URL}-->order/<!--{$smarty.const.DIR_INDEX_PATH|h}-->">特定商取引法に基づく表記</a></li>
 </ul>
 
 <div id="copyright">(C) <!--{$arrSiteInfo.shop_name|h}-->.</div>

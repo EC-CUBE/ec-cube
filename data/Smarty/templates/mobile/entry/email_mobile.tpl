@@ -31,5 +31,5 @@
 <font color="#ff0000"><!--{$arrErr[$key]|default:''}--></font>
 <input type="text" name="email_mobile" value="<!--{$arrForm[$key].value|h}-->" size="40" maxlength="<!--{$arrForm[$key].length}-->" istyle="3"><br>
 <center><input type="submit" value="送信"></center>
-<center><a href="<!--{$smarty.const.MOBILE_HTTPS_URL}-->mypage/<!--{$smarty.const.DIR_INDEX_PATH}-->?<!--{$smarty.const.SID}-->" accesskey="0">今は登録しない</a></center>
+<center><a href="<!--{$smarty.const.HTTPS_URL}-->mypage/<!--{$smarty.const.DIR_INDEX_PATH}-->?<!--{$smarty.const.SID}-->" accesskey="0">今は登録しない</a></center>
 </form>

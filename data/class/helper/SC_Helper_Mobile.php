@@ -405,7 +405,7 @@ class SC_Helper_Mobile {
         $objQuery->delete('dtb_mobile_kara_mail', 'token = ?', array($token));
 
         list($session_id, $next_url, $email) = $arrRow;
-        $objURL = new Net_URL(MOBILE_HTTP_URL . $next_url);
+        $objURL = new Net_URL(HTTP_URL . $next_url);
         $objURL->addQueryString(session_name(), $session_id);
         $url = $objURL->getURL();
 

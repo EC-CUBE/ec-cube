@@ -420,34 +420,26 @@ define('SMARTPHONE_COMPILE_REALDIR', DATA_REALDIR . "Smarty/templates_c/" . SMAR
 define('RFC_COMPLIANT_EMAIL_CHECK', false);
 /** モバイルサイトのセッションの存続時間 (秒) */
 define('MOBILE_SESSION_LIFETIME', 1800);
-/** 空メール機能を使用するかどうか(true:送信する、false:送信しない) */
-define('MOBILE_USE_KARA_MAIL', false);
-/** 空メール受け付けアドレスのユーザー名部分 */
-define('MOBILE_KARA_MAIL_ADDRESS_USER', "eccube");
-/** 空メール受け付けアドレスのユーザー名とコマンドの間の区切り文字 qmail の場合は - */
-define('MOBILE_KARA_MAIL_ADDRESS_DELIMITER', "+");
-/** 空メール受け付けアドレスのドメイン部分 */
-define('MOBILE_KARA_MAIL_ADDRESS_DOMAIN', "");
 /** 携帯電話向け変換画像保存ディレクトリ */
 define('MOBILE_IMAGE_REALDIR', HTML_REALDIR . "upload/mobile_image/");
 /** 携帯電話向け変換画像保存ディレクトリ */
 define('MOBILE_IMAGE_URLPATH', ROOT_URLPATH . "upload/mobile_image/");
 /** モバイルURL */
-define('MOBILE_TOP_URLPATH', MOBILE_URLPATH . DIR_INDEX_PATH);
+define('MOBILE_TOP_URLPATH', ROOT_URLPATH . DIR_INDEX_PATH);
 /** カートトップ */
-define('MOBILE_CART_URLPATH', MOBILE_URLPATH . "cart/" . DIR_INDEX_PATH);
+define('MOBILE_CART_URLPATH', ROOT_URLPATH . "cart/" . DIR_INDEX_PATH);
 /** 会員情報入力 */
-define('MOBILE_SHOPPING_URL', MOBILE_HTTPS_URL . "shopping/" . DIR_INDEX_PATH);
+define('MOBILE_SHOPPING_URL', HTTPS_URL . "shopping/" . DIR_INDEX_PATH);
 /** 購入確認ページ */
-define('MOBILE_SHOPPING_CONFIRM_URLPATH', MOBILE_URLPATH . "shopping/confirm.php");
+define('MOBILE_SHOPPING_CONFIRM_URLPATH', ROOT_URLPATH . "shopping/confirm.php");
 /** お支払い方法選択ページ */
-define('MOBILE_SHOPPING_PAYMENT_URLPATH', MOBILE_URLPATH . "shopping/payment.php");
+define('MOBILE_SHOPPING_PAYMENT_URLPATH', ROOT_URLPATH . "shopping/payment.php");
 /** 商品詳細(HTML出力) */
-define('MOBILE_P_DETAIL_URLPATH', MOBILE_URLPATH . "products/detail.php?product_id=");
+define('MOBILE_P_DETAIL_URLPATH', ROOT_URLPATH . "products/detail.php?product_id=");
 /** 購入完了画面 */
-define('MOBILE_SHOPPING_COMPLETE_URLPATH', MOBILE_URLPATH . "shopping/complete.php");
+define('MOBILE_SHOPPING_COMPLETE_URLPATH', ROOT_URLPATH . "shopping/complete.php");
 /** モジュール追加用画面 */
-define('MOBILE_SHOPPING_MODULE_URLPATH', MOBILE_URLPATH . "shopping/load_payment_module.php");
+define('MOBILE_SHOPPING_MODULE_URLPATH', ROOT_URLPATH . "shopping/load_payment_module.php");
 /** セッション維持方法：useCookie|useRequest */
 define('SESSION_KEEP_METHOD', "useCookie");
 /** セッションの存続時間 (秒) */

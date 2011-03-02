@@ -28,7 +28,7 @@
         <div class="recomendleft">
 
             <a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrBestProducts[cnt].product_id|u}-->">
-                <img src="<!--{$smarty.const.SMARTPHONE_URLPATH}-->resize_image.php?image=<!--{$arrBestProducts[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=80&amp;height=80" alt="<!--{$arrBestProducts[cnt].name|h}-->" /></a>
+                <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrBestProducts[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=80&amp;height=80" alt="<!--{$arrBestProducts[cnt].name|h}-->" /></a>
             
             <div class="recomendrightblock">
                 <h3>
@@ -50,7 +50,7 @@
         <!--{if $arrBestProducts[$cnt2]|count > 0}-->
         <div class="recomendright">
             <a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrBestProducts[$cnt2].product_id|u}-->">
-                <img src="<!--{$smarty.const.SMARTPHONE_URLPATH}-->resize_image.php?image=<!--{$arrBestProducts[$cnt2].main_list_image|sfNoImageMainList|h}-->&amp;width=80&amp;height=80" alt="<!--{$arrBestProducts[$cnt2].name|h}-->" /></a>
+                <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrBestProducts[$cnt2].main_list_image|sfNoImageMainList|h}-->&amp;width=80&amp;height=80" alt="<!--{$arrBestProducts[$cnt2].name|h}-->" /></a>
 
             <div class="recomendrightblock">
                 <h3>

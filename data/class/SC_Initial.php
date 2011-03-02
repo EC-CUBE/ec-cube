@@ -74,20 +74,6 @@ class SC_Initial {
         if (file_exists(CONFIG_REALFILE)) {
             require_once(CONFIG_REALFILE);
         }
-
-        if (defined('ECCUBE_INSTALL')) {
-            define('MOBILE_DIR', '');
-            define('MOBILE_HTML_REALDIR', HTML_REALDIR . MOBILE_DIR);
-            define('MOBILE_HTTP_URL', HTTP_URL . MOBILE_DIR);
-            define('MOBILE_HTTPS_URL', HTTPS_URL . MOBILE_DIR);
-            define('MOBILE_URLPATH', ROOT_URLPATH . MOBILE_DIR);
-
-            define('SMARTPHONE_DIR', '');
-            define('SMARTPHONE_HTML_REALDIR', HTML_REALDIR . SMARTPHONE_DIR);
-            define('SMARTPHONE_HTTP_URL', HTTP_URL . SMARTPHONE_DIR);
-            define('SMARTPHONE_HTTPS_URL', HTTPS_URL . SMARTPHONE_DIR);
-            define('SMARTPHONE_URLPATH', ROOT_URLPATH . SMARTPHONE_DIR);
-        }
     }
 
     /**

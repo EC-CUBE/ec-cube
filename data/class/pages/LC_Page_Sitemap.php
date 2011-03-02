@@ -78,7 +78,7 @@ class LC_Page_Sitemap extends LC_Page_Ex {
         
         $this->staticURL[] = HTTP_URL . 'rss/' . DIR_INDEX_PATH;
         if (USE_MOBILE !== false) {
-            $this->staticURL[] = MOBILE_HTTP_URL;
+            $this->staticURL[] = HTTP_URL;
         }
     }
 
@@ -229,7 +229,7 @@ class LC_Page_Sitemap extends LC_Page_Ex {
             
             // モバイルサイト
             if (USE_MOBILE !== false) {
-                $arrPage["url"] = MOBILE_HTTP_URL . 'products/list.php?category_id=' . $row['category_id'];
+                $arrPage["url"] = HTTP_URL . 'products/list.php?category_id=' . $row['category_id'];
                 $arrRet[] = $arrPage;
             }
         }

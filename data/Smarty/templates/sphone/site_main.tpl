@@ -155,7 +155,7 @@
 <!--{else}-->
 <script type="text/javascript" language="JavaScript">
 //<![CDATA[
-setTopButton("<!--{$smarty.const.SMARTPHONE_HTTPS_URL}-->");
+setTopButton("<!--{$smarty.const.HTTPS_URL}-->");
 //]]>
 <!--{/if}-->
 </script>

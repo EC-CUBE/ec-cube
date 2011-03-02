@@ -432,7 +432,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
      */
     function lfCreatePHPFile($url, $device_type_id){
 
-        $path = $this->objLayout->getUserPath($device_type_id) . $url . ".php";
+        $path = USER_REALDIR . $url . ".php";
 
         // カスタマイズを考慮し、上書きしない。(#831)
         if (file_exists($path)) {
