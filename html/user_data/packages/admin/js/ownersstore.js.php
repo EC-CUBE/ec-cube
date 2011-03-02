@@ -163,6 +163,7 @@ OwnersStore.prototype = {
             function(resp, status) {
                 if (resp.status == 'SUCCESS') {
                     remove();
+                    $('#ownersstore_index').hide();
                     $('#ownersstore_products_list').html(resp.msg);
                 } else {
                     show(resp, status);
