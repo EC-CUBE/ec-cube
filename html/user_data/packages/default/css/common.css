@@ -238,11 +238,18 @@ div#undercolumn_login .login_area h4 {
     width: 580px;
 }
 
+#errorHeader {
+    color: #F00;
+    font-weight: bold;
+    font-size: 12px;
+    background-color: #FEB;
+    text-align: center;
+    padding: 5px;
+}
 
 /* ロゴ
 ----------------------------------------------- */
 #site_description {
-    margin-top: 13px;
     font-size:90%;
 }
 #logo_area h1 {
