@@ -486,16 +486,6 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
         return $objErr->arrErr;
     }
 
-    //閲覧履歴新規登録
-    function lfRegistReadingData($product_id, $customer_id){
-        $objQuery =& SC_Query::getSingletonInstance();
-        $sqlval['customer_id'] = $customer_id;
-        $sqlval['reading_product_id'] = $product_id;
-        $sqlval['create_date'] = 'NOW()';
-        $sqlval['update_date'] = 'NOW()';
-        $objQuery->insert("dtb_customer_reading", $sqlval);
-    }
-
     //商品ごとのレビュー情報を取得する
     function lfGetReviewData($id) {
         $objQuery =& SC_Query::getSingletonInstance();
