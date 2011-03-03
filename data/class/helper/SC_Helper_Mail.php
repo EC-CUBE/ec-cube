@@ -66,7 +66,7 @@ class SC_Helper_Mail {
         if ($from_name == "") $from_name = $arrInfo['shop_name'];
         if ($reply_to == "") $reply_to = $arrInfo['email03'];
         $error = $arrInfo['email04'];
-        $tosubject = $this->sfMakeSubject($tmp_subject);
+        $tosubject = $this->sfMakeSubject($tmp_subject, $objMailView);
         
         $objSendMail->setItem('', $tosubject, $body, $from_address, $from_name, $reply_to, $error, $error);
         $objSendMail->setTo($to, $to_name);
@@ -163,7 +163,7 @@ class SC_Helper_Mail {
         $bcc = $arrInfo['email01'];
         $from = $arrInfo['email03'];
         $error = $arrInfo['email04'];
-        $tosubject = $this->sfMakeSubject($tmp_subject);
+        $tosubject = $this->sfMakeSubject($tmp_subject, $objMailView);
 
         $objSendMail->setItem('', $tosubject, $body, $from, $arrInfo['shop_name'], $from, $error, $error, $bcc);
         $objSendMail->setTo($arrOrder["order_email"], $arrOrder["order_name01"] . " ". $arrOrder["order_name02"] ." 様");
@@ -193,7 +193,7 @@ class SC_Helper_Mail {
         $bcc = $arrInfo['email01'];
         $from = $arrInfo['email03'];
         $error = $arrInfo['email04'];
-        $tosubject = $this->sfMakeSubject($tmp_subject);
+        $tosubject = $this->sfMakeSubject($tmp_subject, $objMailView);
         
         $objSendMail->setItem($to, $tosubject, $body, $from, $arrInfo['shop_name'], $from, $error, $error, $bcc);
         $objSendMail->sendMail();
@@ -214,13 +214,13 @@ class SC_Helper_Mail {
     }
 
     //件名にテンプレートを用いる
-    function sfMakeSubject($subject) {
-        $objQuery = new SC_Query();
-        $objMailView = new SC_SiteView_Ex();
+    function sfMakeSubject($subject, &$objMailView) {
+        if (empty($objMailView)) {
+            $objMailView = new SC_SiteView_Ex();
+        }
         $objTplAssign = new stdClass;
         
-        $arrInfo = $objQuery->select("*","dtb_baseinfo");
-        $arrInfo = $arrInfo[0];
+        $arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
         $objTplAssign->tpl_shopname=$arrInfo['shop_name'];
         $objTplAssign->tpl_infoemail=$subject; // 従来互換
         $objTplAssign->tpl_mailtitle=$subject;
@@ -295,10 +295,10 @@ class SC_Helper_Mail {
 
         // 仮会員が有効の場合
         if(CUSTOMER_CONFIRM_MAIL == true and $arrCustomerData['status'] == 1) {
-            $subject        = $objHelperMail->sfMakeSubject('会員登録のご確認');
+            $subject        = $objHelperMail->sfMakeSubject('会員登録のご確認', $objMailText);
             $toCustomerMail = $objMailText->fetch("mail_templates/customer_mail.tpl");
         } else {
-            $subject        = $objHelperMail->sfMakeSubject('会員登録のご完了');
+            $subject        = $objHelperMail->sfMakeSubject('会員登録のご完了', $objMailText);
             $toCustomerMail = $objMailText->fetch("mail_templates/customer_regist_mail.tpl");
         }
 
