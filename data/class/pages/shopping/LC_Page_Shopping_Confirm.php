@@ -150,7 +150,7 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex {
 
             // 決済モジュールを使用する場合
             if ($this->use_module) {
-                $_SESSION["payment_id"] = $this->arrForm['payment_id'];
+                $_SESSION["order_id"] = $this->arrForm['order_id'];
                 $objPurchase->completeOrder(ORDER_PENDING);
                 SC_Response_Ex::sendRedirect(SHOPPING_MODULE_URLPATH);
             }

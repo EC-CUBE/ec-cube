@@ -27,6 +27,9 @@ require_once(CLASS_EX_REALDIR . "page_extends/LC_Page_Ex.php");
 /**
  * 決済モジュールの呼び出しを行うクラス.
  *
+ * 決済フローの妥当性検証は, トランザクションID等を使用して, 決済モジュール側で
+ * 行う必要がある.
+ *
  * @package Page
  * @author Kentaro Ohkouchi
  * @version $Id$
@@ -51,48 +54,20 @@ class LC_Page_Shopping_LoadPaymentModule extends LC_Page_Ex {
      * @return void
      */
     function process() {
-        $objSiteSess = new SC_SiteSession_Ex();
-        $objCartSess = new SC_CartSession_Ex();
-        $objPurchase = new SC_Helper_Purchase_Ex();
 
-        if (!$objSiteSess->isPrePage()) {
-            SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, $objSiteSess);
-        }
-
-        $uniqid = $objSiteSess->getUniqId();
-        $objPurchase->verifyChangeCart($uniqid, $objCartSess);
-
-        $payment_id = $this->getPaymentId();
-        if ($payment_id === false) {
+        $order_id = $this->getOrderId();
+        if ($order_id === false) {
             SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", true);
             return;
         }
 
-        $module_path = $this->getModulePath($payment_id);
+        $module_path = $this->getModulePath($order_id);
         if ($module_path === false) {
             SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, "", true,
                                       "モジュールファイルの取得に失敗しました。<br />この手続きは無効となりました。");
             return;
         }
         require_once($module_path);
-    }
-
-    /**
-     * モバイルページを初期化する.
-     *
-     * @return void
-     */
-    function mobileInit() {
-        $this->init();
-    }
-
-    /**
-     * Page のプロセス(モバイル).
-     *
-     * @return void
-     */
-    function mobileProcess() {
-        $this->process();
     }
 
     /**
@@ -105,23 +80,25 @@ class LC_Page_Shopping_LoadPaymentModule extends LC_Page_Ex {
     }
 
     /**
-     * 支払い方法IDをキーにして, 決済モジュールのパスを取得する.
+     * 受注IDをキーにして, 決済モジュールのパスを取得する.
      *
      * 決済モジュールが取得できた場合は, require 可能な決済モジュールのパスを返す.
-     * 支払い方法IDが無効な場合, 取得したパスにファイルが存在しない場合は false
+     * 受注IDが無効な場合, 取得したパスにファイルが存在しない場合は false
      *
-     * @param integer $payment_id 支払い方法ID
+     * @param integer $order_id 受注ID
      * @return string|boolean 成功した場合は決済モジュールのパス;
      *                        失敗した場合 false
      */
-    function getModulePath($payment_id) {
+    function getModulePath($order_id) {
         $objQuery =& SC_Query::getSingletonInstance();
         $sql = <<< __EOS__
             SELECT module_path
-              FROM dtb_payment
-             WHERE payment_id = ?
+              FROM dtb_payment T1
+              JOIN dtb_order T2
+                ON T1.payment_id = T2.payment_id
+             WHERE order_id = ?
 __EOS__;
-        $module_path = $objQuery->getOne($sql, array($payment_id));
+        $module_path = $objQuery->getOne($sql, array($order_id));
         if (file_exists($module_path)) {
             return $module_path;
         }
@@ -129,36 +106,38 @@ __EOS__;
     }
 
     /**
-     * 支払い方法ID を取得する.
+     * 受注ID を取得する.
      *
-     * 以下の順序で支払い方法IDを取得する.
+     * 以下の順序で受注IDを取得する.
      *
-     * 1. $_SESSION['payment_id']
-     * 2. $_POST['payment_id']
-     * 3. $_GET['payment_id']
+     * 1. $_SESSION['order_id']
+     * 2. $_POST['order_id']
+     * 3. $_GET['order_id']
      *
-     * 支払い方法IDが取得できない場合は false を返す.
+     * 受注IDが取得できない場合は false を返す.
      *
      * @access private
-     * @return integer|boolean 支払い方法の取得に成功した場合は支払い方法IDを返す;
+     * @return integer|boolean 受注IDの取得に成功した場合は受注IDを返す;
      *                         失敗した場合は, false を返す.
      */
-    function getPaymentId() {
-        if (isset($_SESSION['payment_id'])
-            && !SC_Utils_Ex::isBlank($_SESSION['payment_id'])) {
-            return $_SESSION['payment_id'];
+    function getOrderId() {
+        if (isset($_SESSION['order_id'])
+            && !SC_Utils_Ex::isBlank($_SESSION['order_id'])
+            && SC_Utils_Ex::sfIsInt($_SESSION['order_id'])) {
+            return $_SESSION['order_id'];
         }
 
-        if (isset($_POST['payment_id'])
-            && !SC_Utils_Ex::isBlank($_POST['payment_id'])) {
-            return $_POST['payment_id'];
+        if (isset($_POST['order_id'])
+            && !SC_Utils_Ex::isBlank($_POST['order_id'])
+            && SC_Utils_Ex::sfIsInt($_POST['order_id'])) {
+            return $_POST['order_id'];
         }
 
-        if (isset($_GET['payment_id'])
-            && !SC_Utils_Ex::isBlank($_GET['payment_id'])) {
-            return $_GET['payment_id'];
+        if (isset($_GET['order_id'])
+            && !SC_Utils_Ex::isBlank($_GET['order_id'])
+            && SC_Utils_Ex::sfIsInt($_GET['order_id'])) {
+            return $_GET['order_id'];
         }
-
         return false;
     }
 }

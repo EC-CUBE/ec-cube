@@ -45,57 +45,59 @@ class LC_Page_Shopping_LoadPaymentModule_Test extends PHPUnit_Framework_TestCase
         $this->objPage = null;
     }
 
-    function testGetPaymentIdBySession() {
-        $_SESSION['payment_id'] = 1;
-        $_GET['payment_id'] = 2;
-        $_POST['payment_id'] = 3;
+    function testGetOrderIdBySession() {
+        $_SESSION['order_id'] = 1;
+        $_GET['order_id'] = 2;
+        $_POST['order_id'] = 3;
 
-        $this->expected = $_SESSION['payment_id'];
-        $this->actual = $this->objPage->getPaymentId();
-
-        $this->verify();
-    }
-
-    function testGetPaymentIdByPOST() {
-        $_GET['payment_id'] = 1;
-        $_POST['payment_id'] = 1;
-
-        $this->expected = $_POST['payment_id'];
-        $this->actual = $this->objPage->getPaymentId();
+        $this->expected = $_SESSION['order_id'];
+        $this->actual = $this->objPage->getOrderId();
 
         $this->verify();
     }
 
-    function testGetPaymentIdByGET() {
-        $_GET['payment_id'] = 2;
+    function testGetOrderIdByPOST() {
+        $_GET['order_id'] = 1;
+        $_POST['order_id'] = 1;
 
-        $this->expected = $_GET['payment_id'];
-        $this->actual = $this->objPage->getPaymentId();
+        $this->expected = $_POST['order_id'];
+        $this->actual = $this->objPage->getOrderId();
 
         $this->verify();
     }
 
-    function testGetPaymentIdIsNull() {
-        $this->assertFalse($this->objPage->getPaymentId());
+    function testGetOrderIdByGET() {
+        $_GET['order_id'] = 2;
+
+        $this->expected = $_GET['order_id'];
+        $this->actual = $this->objPage->getOrderId();
+
+        $this->verify();
+    }
+
+    function testGetOrderIdIsNull() {
+        $this->assertFalse($this->objPage->getOrderId());
     }
 
     function testGetModulePath() {
+        $order_id = 10000;
         $payment_id = 10000;
         $module_path = __FILE__;
-        $this->setPayment($payment_id, $module_path);
+        $this->setPayment($order_id, $payment_id, $module_path);
 
         $this->expected = __FILE__;
-        $this->actual = $this->objPage->getModulePath($payment_id);
+        $this->actual = $this->objPage->getModulePath($order_id);
 
         $this->verify();
     }
 
     function testGetModulePathIsFailure() {
+        $order_id = 10000;
         $payment_id = 10000;
         $module_path = "aaa";
-        $this->setPayment($payment_id, $module_path);
+        $this->setPayment($order_id, $payment_id, $module_path);
 
-        $this->actual = $this->objPage->getModulePath($payment_id);
+        $this->actual = $this->objPage->getModulePath($order_id);
 
         $this->assertFalse($this->actual);
 
@@ -105,9 +107,17 @@ class LC_Page_Shopping_LoadPaymentModule_Test extends PHPUnit_Framework_TestCase
         $this->assertEquals($this->expected, $this->actual);
     }
 
-    function setPayment($payment_id, $module_path) {
-        $this->objQuery->insert("dtb_payment", array('payment_id' => $payment_id,
+    function setPayment($order_id, $payment_id, $module_path) {
+        $this->objQuery->insert('dtb_order', array('order_id' => $order_id,
+                                                   'customer_id' => (int) 0,
+                                                   'payment_id' => $payment_id,
+                                                   'create_date' => 'now()',
+                                                   'update_date' => 'now()'));
+
+        $this->objQuery->insert("dtb_payment", array('payment_id' => $order_id,
                                                      'module_path' => $module_path,
-                                                     'creator_id' => 1));
+                                                     'creator_id' => 1,
+                                                     'create_date' => 'now()',
+                                                     'update_date' => 'now()'));
     }
 }
