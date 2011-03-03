@@ -248,12 +248,6 @@ class SC_Fpdf {
             $arrOrder[$i][1] = "";
             $arrOrder[$i][2] = $this->lfConvSjis("加算ポイント");
             $arrOrder[$i][3] = number_format($this->arrDisp['add_point']).$point_unit;
-
-            $i++;
-            $arrOrder[$i][0] = "";
-            $arrOrder[$i][1] = "";
-            $arrOrder[$i][2] = $this->lfConvSjis("所有ポイント");
-            $arrOrder[$i][3] = number_format($this->arrDisp['point']).$point_unit;
         }
 
         $this->pdf->FancyTable($this->label_cell, $arrOrder, $this->width_cell);
