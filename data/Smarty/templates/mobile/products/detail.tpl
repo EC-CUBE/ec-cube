@@ -35,7 +35,7 @@
   <!--{if ($smarty.get.image == "" || $smarty.get.image == "main_image")}-->
 [1]
   <!--{else}-->
-[<a href="?product_id=<!--{$smarty.get.product_id}-->&image=main_image">1</a>]
+[<a href="?product_id=<!--{$smarty.get.product_id}-->&amp;image=main_image">1</a>]
   <!--{/if}-->
   
   <!--{assign var=num value="2"}-->
@@ -45,7 +45,7 @@
     <!--{if $key == $smarty.get.image}-->
 [<!--{$num}-->]
     <!--{else}-->
-[<a href="?product_id=<!--{$smarty.get.product_id}-->&image=<!--{$key}-->"><!--{$num}--></a>]
+[<a href="?product_id=<!--{$smarty.get.product_id}-->&amp;image=<!--{$key}-->"><!--{$num}--></a>]
     <!--{/if}-->
     <!--{assign var=num value="`$num+1`"}-->
   <!--{/if}-->

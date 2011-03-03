@@ -61,8 +61,8 @@
       <td align="center"><!--{if $workmax > 1}--><a href="#" onClick="fnDeleteMember(<!--{$list_data[data].member_id}-->,<!--{$tpl_disppage}-->); return false;">削除</a><!--{else}-->-<!--{/if}--></td>
       <td align="center">
       <!--{$tpl_nomove}-->
-      <!--{if !($smarty.section.data.first && $tpl_disppage eq 1)}--><a href="./rank.php?id=<!--{$list_data[data].member_id}-->&move=up&pageno=<!--{$tpl_disppage}-->">上へ</a><!--{/if}-->
-      <!--{if !($smarty.section.data.last && $tpl_disppage eq $tpl_pagemax)}--><a href="./rank.php?id=<!--{$list_data[data].member_id}-->&move=down&pageno=<!--{$tpl_disppage}-->">下へ</a><!--{/if}-->
+      <!--{if !($smarty.section.data.first && $tpl_disppage eq 1)}--><a href="./rank.php?id=<!--{$list_data[data].member_id}-->&amp;move=up&amp;pageno=<!--{$tpl_disppage}-->">上へ</a><!--{/if}-->
+      <!--{if !($smarty.section.data.last && $tpl_disppage eq $tpl_pagemax)}--><a href="./rank.php?id=<!--{$list_data[data].member_id}-->&amp;move=down&amp;pageno=<!--{$tpl_disppage}-->">下へ</a><!--{/if}-->
       </td>
     </tr>
     <!--▲メンバー<!--{$smarty.section.data.iteration}-->-->
