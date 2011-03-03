@@ -154,5 +154,8 @@
 <!--{* ▲FOOTER *}-->
 
 </div>
+    <!--{if $smarty.const.ADMIN_MODE == 1}-->
+    <!--{debug output='html'}-->
+    <!--{/if}-->
 </body>
 </html>
