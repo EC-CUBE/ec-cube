@@ -42,6 +42,15 @@ $(function() {
     var shipping_addr01 = window.opener.jQuery('input[name^=shipping_addr01]');
     var shipping_addr02 = window.opener.jQuery('input[name^=shipping_addr02]');
 
+    // 都道府県の入力チェック
+    shipping_pref.each(function() {
+        if (!$(this).val()) {
+            alert('お届け先住所が入力されていません。');
+            window.close();
+            return;
+        }
+    });
+
     var index = 0;
     for (var i = 0; i < product_class_id.length; i++) {
 
