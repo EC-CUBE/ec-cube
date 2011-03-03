@@ -50,8 +50,8 @@ class LC_Page_Shopping extends LC_Page_Ex {
         $this->arrJob = $masterData->getMasterData("mtb_job");
         $this->tpl_onload = 'fnCheckInputDeliv();';
 
-        $objDate = new SC_Date(START_BIRTH_YEAR, date("Y",strtotime("now")));
-        $this->arrYear = $objDate->getYear('', 1950, '');
+        $objDate = new SC_Date(BIRTH_YEAR, date("Y",strtotime("now")));
+        $this->arrYear = $objDate->getYear('', START_BIRTH_YEAR, '');
         $this->arrMonth = $objDate->getMonth(true);
         $this->arrDay = $objDate->getDay(true);
 

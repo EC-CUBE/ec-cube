@@ -205,8 +205,8 @@ define('DISABLED_RGB', "#C9C9C9");
 define('ERR_COLOR', "#ffe8e8");
 /** 親カテゴリ表示文字 */
 define('CATEGORY_HEAD', ">");
-/** 生年月日選択開始年 */
-define('START_BIRTH_YEAR', 1901);
+/** 生年月日初期選択年 */
+define('START_BIRTH_YEAR', 1970);
 /** 価格名称 */
 define('NORMAL_PRICE_TITLE', "通常価格");
 /** 価格名称 */

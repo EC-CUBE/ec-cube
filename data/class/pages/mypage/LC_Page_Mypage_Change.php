@@ -56,8 +56,8 @@ class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex {
         $this->httpCacheControl('nocache');
 
         // 生年月日選択肢の取得
-        $objDate            = new SC_Date(START_BIRTH_YEAR, date("Y",strtotime("now")));
-        $this->arrYear      = $objDate->getYear('', 1950, '');
+        $objDate            = new SC_Date(BIRTH_YEAR, date("Y",strtotime("now")));
+        $this->arrYear      = $objDate->getYear('', START_BIRTH_YEAR, '');
         $this->arrMonth     = $objDate->getMonth(true);
         $this->arrDay       = $objDate->getDay(true);
     }

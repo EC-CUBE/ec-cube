@@ -810,7 +810,7 @@ class SC_CheckError {
         if ($this->arrParam[$value[1]] > 0) {
 
             // 年の数字チェック、最小数値制限チェック
-            $this->doFunc(array($value[0].'(年)', $value[1], START_BIRTH_YEAR), array("NUM_CHECK", "MIN_CHECK"));
+            $this->doFunc(array($value[0].'(年)', $value[1], BIRTH_YEAR), array("NUM_CHECK", "MIN_CHECK"));
             // 上のチェックでエラーある場合、中断する。
             if (isset($this->arrErr[$value[1]])) {
                 return;
