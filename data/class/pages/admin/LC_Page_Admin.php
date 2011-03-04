@@ -61,7 +61,7 @@ class LC_Page_Admin extends LC_Page_Ex {
         }
 
         // ディスプレイクラス生成
-        $this->objDisplay = new SC_Display();
+        $this->objDisplay = new SC_Display_Ex();
 
         // プラグインクラス生成
         // $this->objPlagin = new SC_Helper_Plugin_Ex();

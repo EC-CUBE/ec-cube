@@ -93,7 +93,7 @@ class LC_Page {
         $this->tpl_authority = $_SESSION['authority'];
 
         // ディスプレイクラス生成
-        $this->objDisplay = new SC_Display();
+        $this->objDisplay = new SC_Display_Ex();
 
         $layout = new SC_Helper_PageLayout_Ex();
         $layout->sfGetPageLayout($this, false, $_SERVER['PHP_SELF'],
