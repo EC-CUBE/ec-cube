@@ -54,7 +54,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
         );
         $this->tpl_subtitle = '新着情報管理';
         //---- 日付プルダウン設定
-        $objDate = new SC_Date(ADMIN_NEWS_STARTYEAR);
+        $objDate = new SC_Date_Ex(ADMIN_NEWS_STARTYEAR);
         $this->arrYear = $objDate->getYear();
         $this->arrMonth = $objDate->getMonth();
         $this->arrDay = $objDate->getDay();

@@ -59,7 +59,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         $this->arrJob               = $masterData->getMasterData("mtb_job");
 
         // 登録・更新日検索用
-        $objDate                    = new SC_Date();
+        $objDate                    = new SC_Date_Ex();
         $objDate->setStartYear(RELEASE_YEAR);
         $objDate->setEndYear(DATE("Y"));
         $this->arrYear              = $objDate->getYear();

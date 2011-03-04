@@ -59,7 +59,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
         $this->arrMailMagazineType = $masterData->getMasterData("mtb_mail_magazine_type");
 
         // 日付プルダウン設定
-        $objDate = new SC_Date(BIRTH_YEAR);
+        $objDate = new SC_Date_Ex(BIRTH_YEAR);
         $this->arrYear = $objDate->getYear();    
         $this->arrMonth = $objDate->getMonth();
         $this->arrDay = $objDate->getDay();

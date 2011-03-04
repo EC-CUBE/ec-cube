@@ -56,7 +56,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
         $this->arrSex = $masterData->getMasterData("mtb_sex");
         $this->arrPageMax = $masterData->getMasterData("mtb_page_max");
 
-        $objDate = new SC_Date();
+        $objDate = new SC_Date_Ex();
         // 登録・更新日検索用
         $objDate->setStartYear(RELEASE_YEAR);
         $objDate->setEndYear(DATE("Y"));

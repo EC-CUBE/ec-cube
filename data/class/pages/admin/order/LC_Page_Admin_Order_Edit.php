@@ -52,7 +52,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         $this->arrORDERSTATUS = $masterData->getMasterData("mtb_order_status");
         $this->arrDeviceType = $masterData->getMasterData('mtb_device_type');
 
-        $objDate = new SC_Date(RELEASE_YEAR);
+        $objDate = new SC_Date_Ex(RELEASE_YEAR);
         $this->arrYearShippingDate = $objDate->getYear('', date('Y'), '');
         $this->arrMonthShippingDate = $objDate->getMonth(true);
         $this->arrDayShippingDate = $objDate->getDay(true);

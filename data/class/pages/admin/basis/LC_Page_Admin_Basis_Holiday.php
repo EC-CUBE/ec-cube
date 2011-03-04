@@ -68,7 +68,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
     function action() {
         $objDb = new SC_Helper_DB_Ex();
 
-        $objDate = new SC_Date();
+        $objDate = new SC_Date_Ex();
         $this->arrMonth = $objDate->getMonth();
         $this->arrDay = $objDate->getDay();
 

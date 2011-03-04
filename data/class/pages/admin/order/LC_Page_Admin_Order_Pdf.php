@@ -77,7 +77,7 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
      */
     function action() {
         $objDb = new SC_Helper_DB_Ex();
-        $objDate = new SC_Date(1901);
+        $objDate = new SC_Date_Ex(1901);
         $objDate->setStartYear(RELEASE_YEAR);
         $this->arrYear = $objDate->getYear();
         $this->arrMonth = $objDate->getMonth();

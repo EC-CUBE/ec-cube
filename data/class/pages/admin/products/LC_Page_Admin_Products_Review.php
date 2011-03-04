@@ -56,7 +56,7 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
         $this->arrRECOMMEND = $masterData->getMasterData("mtb_recommend");
         $this->arrSex = $masterData->getMasterData("mtb_sex");
 
-        $objDate = new SC_Date();
+        $objDate = new SC_Date_Ex();
         // 登録・更新検索開始年
         $objDate->setStartYear(RELEASE_YEAR);
         $objDate->setEndYear(DATE("Y"));

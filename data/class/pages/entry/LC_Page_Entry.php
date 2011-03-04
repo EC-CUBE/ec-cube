@@ -50,7 +50,7 @@ class LC_Page_Entry extends LC_Page_Ex {
         $this->arrReminder  = $masterData->getMasterData("mtb_reminder");
 
         // 生年月日選択肢の取得
-        $objDate            = new SC_Date(BIRTH_YEAR, date("Y",strtotime("now")));
+        $objDate            = new SC_Date_Ex(BIRTH_YEAR, date("Y",strtotime("now")));
         $this->arrYear      = $objDate->getYear('', START_BIRTH_YEAR, '');
         $this->arrMonth     = $objDate->getMonth(true);
         $this->arrDay       = $objDate->getDay(true);
