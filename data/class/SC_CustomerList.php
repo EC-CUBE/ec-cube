@@ -24,7 +24,7 @@
 /*  [名称] SC_CustomerList
  *  [概要] 会員検索用クラス
  */
-class SC_CustomerList extends SC_SelectSql {
+class SC_CustomerList extends SC_SelectSql_Ex {
 
     var $arrColumnCSV;
 

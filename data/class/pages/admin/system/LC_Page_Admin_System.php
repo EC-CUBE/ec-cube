@@ -126,7 +126,7 @@ class LC_Page_Admin_System extends LC_Page_Admin_Ex {
      * @return array 管理者データの連想配列
      */
     function getMemberData($startno) {
-        $objSql = new SC_SelectSql();
+        $objSql = new SC_SelectSql_Ex();
         $objSql->setSelect("SELECT member_id,name,department,login_id,authority,rank,work FROM dtb_member");
         $objSql->setOrder("rank DESC");
         $objSql->setWhere("del_flg <> 1 AND member_id <> ". ADMIN_ID);

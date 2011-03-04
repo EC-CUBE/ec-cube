@@ -34,7 +34,7 @@ require_once(CLASS_EX_REALDIR . "SC_MobileView_Ex.php");
 require_once(CLASS_EX_REALDIR . "SC_SmartphoneView_Ex.php");
 require_once(CLASS_EX_REALDIR . "SC_Session_Ex.php");
 require_once(CLASS_REALDIR . "SC_Query.php");
-require_once(CLASS_REALDIR . "SC_SelectSql.php");
+require_once(CLASS_EX_REALDIR . "SC_SelectSql_Ex.php");
 require_once(CLASS_REALDIR . "SC_CheckError.php");
 require_once(CLASS_EX_REALDIR . "SC_PageNavi_Ex.php");
 require_once(CLASS_EX_REALDIR . "SC_Date_Ex.php");
