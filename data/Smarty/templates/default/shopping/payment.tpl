@@ -246,7 +246,7 @@
                             使用する場合は、「ポイントを使用する」にチェックを入れた後、使用するポイントをご記入ください。
                         </p>
                         <div class="point_announce">
-                           <p><span class="user_name"><!--{$name01|h}--> <!--{$name02|h}-->様</span>の、現在の所持ポイントは「<span class="point"><!--{$tpl_user_point|default:0}-->Pt</span>」です。<br />
+                           <p><span class="user_name"><!--{$name01|h}--> <!--{$name02|h}-->様</span>の、現在の所持ポイントは「<span class="point"><!--{$tpl_user_point|default:0|number_format}-->Pt</span>」です。<br />
                            今回ご購入合計金額：<span class="price"><!--{$arrPrice.subtotal|number_format}-->円</span> <span class="attention">(送料、手数料を含みません。)</span>
                            </p>
                             <ul>

@@ -89,8 +89,8 @@
 <!--{if $arrOrder.customer_id && $smarty.const.USE_POINT !== false}-->
 ============================================
 <!--{* ご注文前のポイント {$tpl_user_point} pt *}-->
-ご使用ポイント <!--{$arrOrder.use_point|default:0}--> pt
-今回加算される加算ポイント <!--{$arrOrder.add_point|default:0}--> pt
-保持ポイント <!--{$arrCustomer.point|default:0}--> pt
+ご使用ポイント <!--{$arrOrder.use_point|default:0|number_format}--> pt
+今回加算される加算ポイント <!--{$arrOrder.add_point|default:0|number_format}--> pt
+保持ポイント <!--{$arrCustomer.point|default:0|number_format}--> pt
 <!--{/if}-->
 <!--{$tpl_footer}-->
