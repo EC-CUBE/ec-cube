@@ -38,7 +38,7 @@ require_once(CLASS_REALDIR . "SC_SelectSql.php");
 require_once(CLASS_REALDIR . "SC_CheckError.php");
 require_once(CLASS_EX_REALDIR . "SC_PageNavi_Ex.php");
 require_once(CLASS_REALDIR . "SC_Date.php");
-require_once(CLASS_REALDIR . "SC_Image.php");
+require_once(CLASS_EX_REALDIR . "SC_Image_Ex.php");
 require_once(CLASS_EX_REALDIR . "SC_UploadFile_Ex.php");
 require_once(CLASS_EX_REALDIR . "SC_SendMail_Ex.php");
 require_once(CLASS_REALDIR . "SC_FormParam.php");

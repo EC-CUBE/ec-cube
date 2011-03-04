@@ -168,7 +168,7 @@ class SC_UploadFile {
 
     // 画像を削除する。
     function deleteFile($keyname) {
-        $objImage = new SC_Image($this->temp_dir);
+        $objImage = new SC_Image_Ex($this->temp_dir);
         $cnt = 0;
         foreach($this->keyname as $val) {
             if ($val == $keyname) {
@@ -185,7 +185,7 @@ class SC_UploadFile {
 
     // 画像を削除する。
     function deleteKikakuFile($keyname) {
-        $objImage = new SC_Image($this->temp_dir);
+        $objImage = new SC_Image_Ex($this->temp_dir);
         $cnt = 0;
         foreach($this->keyname as $val) {
             if ($val == $keyname) {
@@ -218,7 +218,7 @@ class SC_UploadFile {
     // 一時ファイルを保存ディレクトリに移す
     function moveTempFile() {
         $cnt = 0;
-        $objImage = new SC_Image($this->temp_dir);
+        $objImage = new SC_Image_Ex($this->temp_dir);
 
         foreach($this->keyname as $val) {
             if(isset($this->temp_file[$cnt]) && $this->temp_file[$cnt] != "") {
@@ -240,7 +240,7 @@ class SC_UploadFile {
     // ダウンロード一時ファイルを保存ディレクトリに移す
     function moveTempDownFile() {
         $cnt = 0;
-        $objImage = new SC_Image($this->temp_dir);
+        $objImage = new SC_Image_Ex($this->temp_dir);
         foreach($this->keyname as $val) {
         	if(isset($this->temp_file[$cnt]) && $this->temp_file[$cnt] != "") {
                 $objImage->moveTempImage($this->temp_file[$cnt], $this->save_dir);
@@ -431,7 +431,7 @@ class SC_UploadFile {
 
     // DB上のファイルの内削除要求があったファイルを削除する。
     function deleteDBFile($arrVal) {
-        $objImage = new SC_Image($this->temp_dir);
+        $objImage = new SC_Image_Ex($this->temp_dir);
         $cnt = 0;
         foreach($this->keyname as $val) {
             if($arrVal[$val] != "") {
@@ -445,7 +445,7 @@ class SC_UploadFile {
 
     // DB上のダウンロードファイルの内削除要求があったファイルを削除する。
     function deleteDBDownFile($arrVal) {
-        $objImage = new SC_Image($this->temp_dir);
+        $objImage = new SC_Image_Ex($this->temp_dir);
         $cnt = 0;
         if($arrVal['down_realfilename'] != "") {
             if($this->save_file[$cnt] == "" && !ereg("^sub/", $arrVal['down_realfilename'])) {

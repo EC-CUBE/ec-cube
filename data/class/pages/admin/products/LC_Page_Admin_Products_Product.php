@@ -694,7 +694,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
      */
     function lfSaveUploadFiles(&$objUpFile, &$objDownFile, $product_id) {
         // TODO: SC_UploadFile::moveTempFileの画像削除条件見直し要
-        $objImage = new SC_Image($objUpFile->temp_dir);
+        $objImage = new SC_Image_Ex($objUpFile->temp_dir);
         $arrKeyName = $objUpFile->keyname;
         $arrTempFile = $objUpFile->temp_file;
         $arrSaveFile = $objUpFile->save_file;
@@ -1001,7 +1001,7 @@ __EOF__;
             // 削除要求のあった既存ファイルの削除
             $arrRet = $this->lfGetProductData_FromDB($arrList['product_id']);
             // TODO: SC_UploadFile::deleteDBFileの画像削除条件見直し要
-            $objImage = new SC_Image($objUpFile->temp_dir);
+            $objImage = new SC_Image_Ex($objUpFile->temp_dir);
             $arrKeyName = $objUpFile->keyname;
             $arrSaveFile = $objUpFile->save_file;
             $arrImageKey = array();
