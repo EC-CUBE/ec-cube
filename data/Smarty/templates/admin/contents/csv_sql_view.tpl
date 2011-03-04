@@ -24,25 +24,25 @@
 <!--{include file="`$smarty.const.TEMPLATE_ADMIN_REALDIR`admin_popup_header.tpl"}-->
 
 <table class="form">
-  <tr>
-    <th>SQL文</th>
-    <td>SELECT <!--{$arrForm.csv_sql|h|nl2br}--></td>
-  </tr>
-  <tr>
-    <th>エラー内容</th>
-    <td>
-      <!--{if $arrErr}-->
-         <!--{foreach key=key item=item from=$arrErr key=key}-->
-            <!--{$item}-->
-         <!--{/foreach}-->
-      <!--{/if}-->
-      <!--{if $sqlerr != ""}-->
-        <!--{$sqlerr|h|nl2br}-->
-      <!--{elseif !$arrErr}-->
-        エラーはありません
-      <!--{/if}-->
-    </td>
-  </tr>
+    <tr>
+        <th>SQL文</th>
+        <td>SELECT <!--{$arrForm.csv_sql|h|nl2br}--></td>
+    </tr>
+    <tr>
+        <th>エラー内容</th>
+        <td>
+            <!--{if $arrErr}-->
+                <!--{foreach key=key item=item from=$arrErr key=key}-->
+                    <!--{$item}-->
+                <!--{/foreach}-->
+            <!--{/if}-->
+            <!--{if $sqlerr != ""}-->
+                <!--{$sqlerr|h|nl2br}-->
+            <!--{elseif !$arrErr}-->
+                エラーはありません
+            <!--{/if}-->
+        </td>
+    </tr>
 </table>
 
 <!--{include file="`$smarty.const.TEMPLATE_ADMIN_REALDIR`admin_popup_footer.tpl"}-->
